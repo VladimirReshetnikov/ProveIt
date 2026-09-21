@@ -1,0 +1,2137 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,
+ pdftitle={Surcomplex Analysis: Germs, Holomorphic Profiles, and Infinitesimal Zero Geometry},
+ pdfauthor={OpenAI},pdfsubject={A constructive theory of analysis over No(i)}}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\K}{\mathbb K}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\tmon}{\mathfrak t}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\mm}{\mathfrak m}
+\newcommand{\HH}{\mathscr H}
+\newcommand{\GG}{\mathscr G}
+\newcommand{\PP}{\mathscr P}
+\newcommand{\st}{\operatorname{st}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\lc}{\operatorname{lc}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\hhat}[1]{\widehat{#1}}
+\newcommand{\hint}{\int^{\!H}}
+\newcommand{\hoint}{\oint^{\!H}}
+\newcommand{\vprof}{v_{\!H}}
+\newcommand{\fin}{\mathrm{fin}}
+\newcommand{\infp}{\uparrow}
+\newcommand{\D}{\mathbb D}
+\DeclareMathOperator{\Ree}{Re}
+\DeclareMathOperator{\Imm}{Im}
+\DeclareMathOperator{\divisor}{div}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\parskip}{3.3pt plus 1pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Surcomplex analysis}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\sectionmark}[1]{\markboth{Section \thesection}{}}
+\renewcommand{\headrulewidth}{0.3pt}
+\newcommand{\shortsection}[2]{\section[#1]{#2}\markboth{\thesection\enspace #1}{}}
+
+\title{\textbf{Surcomplex Analysis}\\[6pt]
+\large Hahn-analytic germs, holomorphic profiles,\\
+and infinitesimal zero geometry}
+\author{}
+\date{21 September 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We develop a two-level analytic theory over the algebraically closed proper-class
+field $\K=\No(i)$. At the local level, every formal power series with surcomplex
+coefficients becomes an actual function on a sufficiently small neighborhood,
+when its sum is interpreted by Hahn summability rather than by convergence of
+partial sums. We prove a scale-separation theorem, differentiation and
+substitution rules, inverse and implicit function theorems, a local ramification
+normal form, and local open-mapping and maximum-modulus principles.
+
+At the global level, we introduce holomorphic profiles: Hahn series whose
+coefficients are ordinary holomorphic functions on one common complex domain.
+They lift canonically to its infinitesimal thickening. We prove an identity
+theorem, Cauchy formulas at nonstandard points, a residue theorem, a constructive
+Weierstrass preparation theorem, and an argument principle. In particular, a zero
+of multiplicity $d$ of the leading complex coefficient lifts to exactly $d$
+surcomplex zeros, counted with multiplicity, in its infinitesimal neighborhood.
+Their power sums are recovered by contour integrals.
+
+The distinction between the two levels is essential. In the full surreal
+valuation topology every set-indexed convergent net is eventually constant;
+Hahn sums need not be topological limits. We exhibit bounded nonconstant
+analytic functions, nonunique globally analytic exponentials, and a global
+locally analytic logarithm on $\K^\times$. These examples identify precisely why
+classical global conclusions cannot be imported from local differentiability
+alone. All assertions are made with explicit support, domain, and integration
+conventions.
+\end{abstract}
+\thispagestyle{empty}
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{The analytic structure has to be specified}
+
+A surcomplex number is an expression $x+iy$ with $x,y\in\No$ and $i^2=-1$.
+The ordered field $\No$ is real closed, so its complexification is algebraically
+closed. This is an excellent algebraic starting point, but it does not by itself
+supply a topology, a notion of summation, or a contour integral. Those choices
+are part of an analytic theory, not consequences of algebraic closedness.
+The foundational facts about $\No$ used here are standard; see
+\cite{Gonshor,Alling,BMder}.
+
+The aim is to retain both the infinitesimal richness of $\No$ and the
+coherence of ordinary complex analysis. We use two complementary categories.
+
+\paragraph{Local Hahn-analytic functions.}
+Near an arbitrary $a\in\K$, including an infinite point, a function is represented
+by a Hahn-summable evaluation of a power series
+$\sum_{n\geq0}a_n(z-a)^n$. The coefficients may be arbitrary surcomplex numbers.
+The resulting germ algebra is exactly $\K[[T]]$. Local algebra is therefore
+unusually strong, while global uniqueness is unusually weak.
+
+\paragraph{Holomorphic profiles.}
+On an ordinary complex domain $U$, we consider a single controlled Hahn family
+$F=\sum_\gamma f_\gamma\tmon^\gamma$, with every $f_\gamma$ holomorphic on $U$.
+Its actual surcomplex arguments range over the entire infinitesimal thickening
+$U^\sharp=\st^{-1}(U)$. The ordinary complex variable controls analytic
+continuation and contours; the Hahn variable controls infinitesimal scales.
+This additional coherence recovers a substantial global theory.
+
+\subsection{The principal structural result}
+
+The central zero-counting statement can be stated before the technical details.
+Suppose
+\[
+ F(z)=f_0(z)+\sum_{\gamma\in S} f_\gamma(z)\tmon^\gamma,
+ \qquad S\subset\No_{>0}\text{ a well-ordered set},
+\]
+and all coefficients are holomorphic on a common neighborhood of a complex
+point $a$. If $f_0$ has a zero of multiplicity $d$ at $a$, then the lifted function
+has exactly $d$ zeros, counted with multiplicity, with standard part $a$.
+The proof constructs
+\[
+ F(a+T)=P(T)U(T),\qquad
+ P(T)=T^d+p_{d-1}T^{d-1}+\cdots+p_0,\quad p_j\in\mm,
+\]
+where $U$ has nonvanishing leading complex coefficient. The construction uses
+well-ordered recursion with finite coefficient calculations, not a completeness
+assumption or a convergence assertion about Newton iterates.
+
+This theorem links three kinds of information: an ordinary complex divisor,
+a polynomial over the full surcomplex field, and infinitesimal positions of
+actual zeros. The Cauchy and argument-principle formulas then recover the
+positions through their symmetric functions.
+
+\subsection{Relation to earlier work}
+
+Surreal analysis is not a new subject. Alling's book develops formal power
+series and hyperconvergence over surreal number fields \cite{Alling}; its
+power-series chapter is directly relevant to the principle that arbitrary
+formal coefficients can be accommodated by sufficiently small scales.
+Rubinstein-Salzedo and Swaminathan study functions, limits, derivatives, and
+integration with other explicitly chosen conventions \cite{RSS}.
+Berarducci and Mantova construct surreal derivations and develop composition
+and analyticity for substantial transseries classes \cite{BMder,BMgerms}.
+The present variable derivative is not their derivation of the coefficient
+field: every constant surcomplex coefficient has variable derivative zero.
+
+There is also a developed theory called Hahn-holomorphic or Hahn-meromorphic
+function theory, notably in work of M\"uller and Strohmaier \cite{MS}. Their
+monomials are functions of a complex argument near a logarithmic covering
+point and satisfy analytic convergence conditions. Here $\tmon^\gamma$ is a
+surreal monomial independent of the ordinary variable, and the support may be
+an arbitrary well-ordered \emph{set}. To avoid conflating these constructions,
+we use the name \emph{holomorphic profile}.
+
+The results below are a constructive synthesis with proofs in the stated
+categories. The local formal results belong to the general tradition of
+Hahn-series analysis, and the deformation arguments have the character of
+Hensel and Weierstrass methods. No claim that these broad ideas originate here
+is needed. The exact formulations, their compatibility, and the counterexamples
+are what matter. Classical complex-analysis results used as inputs are
+identified when invoked; accessible references include \cite{Orloff,ConwayComplex}.
+
+\section{Algebra, valuation, and admissible sums}
+
+\subsection{Class-size conventions and normal form}
+
+We work in a class theory supporting the usual surreal construction, with
+sets distinguished from proper classes. A coefficient sequence, a support,
+a contour, and the family of data in any single construction are sets.
+No sum in this article is indexed by all surreal numbers with proper-class
+support. Recursion on a well-ordered support is set recursion. Topological
+statements are understood through neighborhood predicates on classes; they do
+not postulate a set of all open subclasses of $\K$.
+
+Write a surcomplex normal form as
+\begin{equation}\label{eq:normal}
+ z=\sum_{\gamma\in S}c_\gamma\tmon^\gamma,
+ \qquad c_\gamma\in\C,\qquad
+ \tmon^\gamma:=\omega^{-\gamma},
+\end{equation}
+where $S$ is a well-ordered set in the additive ordered group $\No$ and the
+power of $\omega$ is Conway's monomial operation. Thus
+$\tmon^{\alpha+\beta}=\tmon^\alpha\tmon^\beta$.
+This notation is \emph{not} a definition by the surreal exponential:
+one must not replace $\log(\tmon^\gamma)$ by
+$-\gamma\log\omega$ for arbitrary surreal $\gamma$.
+
+For $z\neq0$, define
+\[
+ v(z)=\min\supp(z),\qquad \lc(z)=c_{v(z)},\qquad v(0)=+\infty.
+\]
+Then
+\begin{equation}\label{eq:valrules}
+ v(zw)=v(z)+v(w),\qquad
+ v(z+w)\geq\min\{v(z),v(w)\}.
+\end{equation}
+Every nonzero element has a unique decomposition
+\begin{equation}\label{eq:leadingunit}
+ z=c\tmon^\gamma(1+\eta),\qquad
+ c\in\C^\times,\quad\gamma\in\No,\quad v(\eta)>0.
+\end{equation}
+These are the usual Hahn-series descriptions of the surreal normal form
+\cite{Alling,BMder}.
+
+\subsection{Modulus and the residue field}
+
+For $z=x+iy$, put
+\[
+ \bar z=x-iy,\qquad |z|=(x^2+y^2)^{1/2}\in\No_{\geq0}.
+\]
+Real closedness supplies the nonnegative square root. Algebraic
+Cauchy--Schwarz gives
+\[
+ |zw|=|z||w|,\qquad |z+w|\leq|z|+|w|.
+\]
+The leading term of $|c\tmon^\gamma(1+\eta)|$ is
+$|c|\tmon^\gamma$, so $v(|z|)=v(z)$.
+
+Set
+\[
+ \OO=\{z:v(z)\geq0\},\qquad
+ \mm=\{z:v(z)>0\}.
+\]
+These are the finite elements and the infinitesimals, respectively, with zero
+included by the convention for $v(0)$. The standard-part map
+\[
+ \st:\OO\longrightarrow\C
+\]
+is the coefficient of $\tmon^0$. It is a surjective ring homomorphism with
+kernel $\mm$. Hence $\OO/\mm\simeq\C$, and every finite $z$ is uniquely
+$a+\eta$ with $a\in\C$ and $\eta\in\mm$.
+For a set $U\subseteq\C$, write
+\[
+ U^\sharp=\{a+\eta:a\in U,\ \eta\in\mm\}.
+\]
+Even when $U$ is a set, $U^\sharp$ is generally a proper class.
+
+\subsection{Strong or Hahn summability}
+
+\begin{definition}\label{def:summable}
+A set-indexed family $(z_j)_{j\in J}$ in $\K$ is \emph{Hahn summable}, or
+\emph{strongly summable}, if
+\[
+ \bigcup_{j\in J}\supp(z_j)
+\]
+is well ordered and each exponent belongs to the supports of only finitely
+many members of the family. Its sum is formed by adding, at each exponent,
+that finite collection of complex coefficients.
+\end{definition}
+
+Thus all coefficients of a Hahn sum are obtained by finite arithmetic.
+A summable family can be regrouped arbitrarily, and a subfamily is summable.
+Products of summable families can be expanded and regrouped whenever the
+combined family meets the same support criterion. This is a summation
+operation, not an assertion about limits of finite partial sums.
+
+\begin{lemma}[Neumann's summability lemma]\label{lem:neumann}
+Let $A,B$ be well-ordered subsets of an ordered abelian group. Then $A+B$ is
+well ordered, and each element of the group has only finitely many
+representations $a+b$ with $a\in A$, $b\in B$. If $S$ is a well-ordered subset
+of the strictly positive cone, its generated additive monoid
+\[
+ M(S)=\{s_1+\cdots+s_n:n\geq0,\ s_j\in S\}
+\]
+is well ordered, and each group element has only finitely many representations
+as an ordered finite word in $S$.
+\end{lemma}
+
+The positivity in the last assertion is essential. This standard
+combinatorial lemma underlies Hahn fields and geometric-series inversion;
+see \cite{Neumann,MS}. For the two-set assertion, a decreasing sequence of sums
+would have a subsequence with nondecreasing first coordinates, forcing its
+second coordinates to decrease. The same argument rules out infinitely many
+decompositions of a fixed sum. The finite-word assertion is the corresponding
+Neumann lemma for arbitrary word lengths; it does not require an Archimedean
+value group.
+
+\begin{corollary}\label{cor:infseries}
+If $\eta_1,\ldots,\eta_r\in\mm$ and
+$A\in\C[[X_1,\ldots,X_r]]$, then $A(\eta_1,\ldots,\eta_r)$ is a well-defined
+Hahn sum. Formal identities, differentiation identities, and compositions
+with zero constant term may be evaluated this way.
+\end{corollary}
+\begin{proof}
+The union of the finitely many positive supports is well ordered. Every
+expanded monomial has support in its generated monoid. Neumann's lemma gives
+both well-ordering and the finite number of words that can contribute to
+any exponent. There are only finitely many assignments of a word to the
+fixed number of variables. Hence all formal expansions in question are
+legitimate regroupings of summable families.
+\end{proof}
+
+In particular,
+\begin{equation}\label{eq:small-explog}
+ \exp_H(\eta)=\sum_{n\geq0}\frac{\eta^n}{n!},\qquad
+ \log_H(1+\eta)=\sum_{n\geq1}\frac{(-1)^{n+1}\eta^n}{n}
+\end{equation}
+are inverse group isomorphisms between $(\mm,+)$ and $(1+\mm,\cdot)$.
+The same convention defines $(1+\eta)^\alpha$ for $\alpha\in\C$ by its formal
+binomial series. In particular, these operations commute with conjugation.
+
+\section{What the full surreal topology does and does not do}
+
+We use the topology with basic neighborhoods
+\[
+ B_\rho(a)=\{z:v(z-a)>\rho\},\qquad\rho\in\No.
+\]
+We call it the \emph{sharp topology}. It is the same as the topology generated
+by the surreal-modulus balls $|z-a|<r$, $r\in\No_{>0}$. To check the
+coincidence, a sufficiently large valuation makes a quantity smaller than a
+given $r$, while a ball of radius $\tmon^{\rho+1}$ is contained in $B_\rho(0)$.
+Every valuation ball is also closed, by the ultrametric inequality.
+
+The following elementary size fact controls the topology.
+
+\begin{lemma}[A set has room above and below it]\label{lem:room}
+Every set of surreal numbers is bounded above and below by surreal numbers.
+Every set $E\subset\No_{>0}$ has a strictly positive lower bound strictly
+smaller than every member of $E$.
+\end{lemma}
+\begin{proof}
+For a set $A$, the surreal cuts $\{A\mid\}$ and $\{\mid A\}$ provide an
+upper and a lower bound. For the second assertion the cut $\{0\mid E\}$ is a
+positive surreal smaller than every member of $E$.
+\end{proof}
+
+\begin{theorem}[Set-discreteness]\label{thm:setdiscrete}
+Every set $A\subset\K$ is closed and discrete in the induced sharp topology.
+Every convergent net in $\K$ indexed by a set is eventually equal to its limit.
+In particular, every sharply convergent ordinary sequence is eventually constant.
+\end{theorem}
+\begin{proof}
+For any $p\in\K$, apply \cref{lem:room} to the set of nonzero distances
+$\{|p-a|:a\in A,\ a\neq p\}$. A sufficiently small modulus ball about $p$
+contains no point of $A$ other than possibly $p$ itself. This proves both
+closedness and discreteness.
+
+If $(z_j)_{j\in J}$ converges to $z$ and $J$ is a set, the nonzero distances
+$|z_j-z|$ also form a set. A ball smaller than all these distances contains no
+value of the net except $z$. Convergence therefore makes the net eventually
+identically $z$.
+\end{proof}
+
+\begin{example}[A sum which is not a sequential limit]\label{ex:geom}
+For $t=\tmon^1=\omega^{-1}$, Neumann's lemma gives
+\[
+ \sum_{n\geq0}t^n=(1-t)^{-1}.
+\]
+But the remainder after degree $N$ has valuation $N+1$, which never exceeds
+$\omega$. Thus the partial sums do not converge sharply to $(1-t)^{-1}$.
+Even the real sequence $1/n$ does not converge sharply to zero.
+\end{example}
+
+This is not a defect in the sum. It is a warning against giving one operation
+the name of another. Strong summation is coefficientwise and algebraic;
+sharp convergence tests all surreal precision scales at once.
+
+\begin{proposition}[Ordinary paths are not sharp paths]\label{prop:paths}
+A continuous map from a connected ordinary topological space into $\K$ whose
+image is a set is constant. In particular, a nonconstant usual complex contour,
+viewed as a map from a real interval into $\K$, is not sharp-continuous.
+\end{proposition}
+\begin{proof}
+Its image has the discrete subspace topology by \cref{thm:setdiscrete}.
+A continuous image of a connected space is connected, and a discrete space
+has no connected subset containing two points.
+\end{proof}
+
+Consequently, our later contour integral will be explicitly \emph{coefficientwise
+along an ordinary complex contour}. It is not an unspecified surreal-valued
+Riemann integral. Other topologies and transfinite notions of convergence may
+be useful, but their theorems cannot be silently mixed with this topology.
+
+\begin{example}[Local constancy is not global constancy]\label{ex:indicator}
+The function on all of $\K$ that is zero on $\OO$ and one on $\K\setminus\OO$
+is locally constant, hence locally power-series analytic, with derivative zero.
+It is bounded and nonconstant. The set $\OO$ and its complement are both open.
+This already rules out an unrestricted global identity theorem, Liouville
+theorem, or uniqueness theorem for a differential equation based only on
+local power-series analyticity.
+\end{example}
+
+\section{Every formal series defines a local analytic germ}
+
+\subsection{A scale-separation theorem}
+
+The complex version of the small-radius phenomenon is particularly transparent
+with the full surreal value group. The essential point is to bound
+\emph{supports}, not merely leading valuations.
+
+\begin{theorem}[Scale separation]\label{thm:scale}
+Let $(a_n)_{n\geq0}$ be any sequence in $\K$. There exists $\beta>0$ such that
+\[
+ \supp(a_n)\subset[-\beta,\beta]\quad\text{for every }n.
+\]
+For every $h\in\K$ with $v(h)>2\beta$, the family $(a_nh^n)_{n\geq0}$ is
+Hahn summable. Its sum defines a function on $B_{2\beta}(0)$.
+The analogous assertion holds for formal series in finitely many variables,
+with $\min_jv(h_j)>2\beta$.
+\end{theorem}
+\begin{proof}
+The union of the coefficient supports is a set, even though it need not be
+well ordered. By \cref{lem:room} it lies in some $[-\beta,\beta]$.
+The case $h=0$ is immediate. Otherwise write
+\[
+ h=c\tmon^\lambda(1+u),\qquad\lambda>2\beta,\quad u\in\mm.
+\]
+The sets
+\[
+ A_n=\supp(a_n)+n\lambda\subset[n\lambda-\beta,n\lambda+\beta]
+\]
+are individually well ordered and occur in strictly separated increasing
+bands. Their union $A$ is therefore well ordered, and its elements determine
+$n$ uniquely. Put $M=M(\supp u)$. Expanding the finite polynomial $(1+u)^n$
+shows that all the supports of $a_nh^n$ lie in $A+M$.
+
+For a fixed exponent, Neumann's lemma gives finitely many decompositions into
+an element of $A$ and an element of $M$. The former fixes $n$; the latter has
+finitely many contributing words in $\supp u$. This proves local finiteness
+as well as well-ordering, hence summability.
+
+For finitely many nonzero $h_j$, put $\lambda=\min_jv(h_j)$ and write
+$h_j=\tmon^\lambda u_j$ with $u_j\in\OO$. The union of the strictly positive
+supports of these finitely many $u_j$ is well ordered. Group the formal
+monomials by total degree $n$, of which there are finitely many in each degree.
+The same separated bands and generated positive monoid prove the assertion.
+\end{proof}
+
+\begin{remark}
+The proof does not require $n\lambda$ to tend to infinity in the full value
+group. It usually does not. It only requires separation of the coefficient
+bands and the finite-word property.
+\end{remark}
+
+\begin{example}[Valuation bounds alone are insufficient]\label{ex:badcoeff}
+For $n\geq1$, take
+\[
+ a_n=\tmon^{\omega-n+1/n}.
+\]
+Every $a_n$ is infinitesimal. Nevertheless, at $h=\tmon$ the proposed summands
+are $a_nh^n=\tmon^{\omega+1/n}$, whose support is strictly decreasing and
+has no least element. The family is not summable. An assertion that
+``all finite coefficients can be evaluated at every infinitesimal'' would be
+false. The common-support hypotheses used later prevent precisely this problem.
+\end{example}
+
+\begin{example}[A radius unavailable at rank one]
+The formal series $\sum_{n\geq0}\tmon^{-n^2}T^n$ cannot be strongly evaluated
+at a nonzero argument of positive real valuation: the valuations
+$-n^2+n\lambda$ are unbounded below. Over the full surcomplex field it is
+summable at $T=\tmon^\omega$, since $n\omega-n^2$ is strictly increasing.
+More generally, \cref{thm:scale} supplies a whole neighborhood.
+\end{example}
+
+\subsection{Differentiation and recentering}
+
+A derivative will always be a full sharp limit, equivalently a
+surreal-modulus $\varepsilon$--$\delta$ limit. The domain of a difference quotient
+contains a proper class of small increments, so \cref{thm:setdiscrete} does not
+make this definition vacuous.
+
+\begin{theorem}[Taylor calculus]\label{thm:taylor}
+Let $A(T)=\sum_{n\geq0}a_nT^n$, and choose $\beta$ as in
+\cref{thm:scale}. On $B_{2\beta}(0)$ its Hahn evaluation is differentiable and
+\[
+ A'(h)=\sum_{n\geq1}na_nh^{n-1}.
+\]
+It has derivatives of all finite orders. Whenever $h,k\in B_{2\beta}(0)$,
+its binomial expansion may be regrouped as
+\begin{equation}\label{eq:taylor-shift}
+ A(h+k)=\sum_{j\geq0}\frac{A^{(j)}(h)}{j!}k^j.
+\end{equation}
+The displayed family is Hahn summable. In particular, for sufficiently small
+nonzero $k$,
+\begin{equation}\label{eq:remainder}
+ v\bigl(A(h+k)-A(h)-A'(h)k\bigr)\geq2v(k)-\beta.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Expand $a_n(h+k)^n$ as a sum over $0\leq j\leq n$. This is a series in two
+variables with finitely many terms in each total degree; the proof of
+\cref{thm:scale} applies to the fully expanded family. Regrouping first in $j$
+gives \eqref{eq:taylor-shift}, with the indicated derivative coefficients.
+
+In the tail with $j\geq2$, each term has valuation at least
+\[
+ -\beta+(n-j)v(h)+jv(k)\geq-\beta+2v(k).
+\]
+A Hahn sum of terms with a common lower valuation bound has the same lower
+bound, proving \eqref{eq:remainder}. After division by $k$, the error has
+valuation at least $v(k)-\beta$. Given any target valuation $\rho$, choose
+$v(k)>\rho+\beta$ as well as $v(k)>2\beta$. This proves the derivative claim.
+The same argument applies repeatedly; multiplication of coefficients by
+ordinary integers does not enlarge their supports.
+\end{proof}
+
+\begin{lemma}[Formal identities pass to germs]\label{lem:formal-eval}
+Addition, multiplication, formal differentiation, and composition
+$A(B(T))$ with $B(0)=0$ commute with Hahn evaluation after shrinking the
+neighborhood if necessary. The assertion also holds in finitely many variables.
+\end{lemma}
+\begin{proof}
+For each total degree, every coefficient in a formal product or such a
+composition is a finite sum of finite products of input coefficients.
+Consider all the individual coefficient products before collecting like
+terms, over all degrees. This is a set of surcomplex numbers. Their supports
+have a common surreal bound by \cref{lem:room}. The separated-band proof
+therefore applies to the fully expanded family, with finitely many
+combinatorial terms in each degree. All parenthesizations and groupings give
+the same sum. Shrinking also ensures that the evaluated inner series lies
+in a neighborhood on which the outer series is defined, since its constant
+term is zero and its evaluation is continuous.
+\end{proof}
+
+\subsection{The germ algebra and its local theorems}
+
+\begin{definition}
+A function on a sharp-open class is \emph{germ-analytic} if near each point
+$a$ it agrees with a Hahn evaluation of a formal power series in $z-a$.
+Denote its germ algebra at $a$ by $\GG_a$.
+\end{definition}
+
+This definition deliberately requires a power-series representation.
+We do not assert a surcomplex Goursat theorem saying that the existence of
+one complex derivative everywhere implies this representation.
+
+\begin{theorem}[Classification of analytic germs]\label{thm:germs}
+Hahn evaluation gives an isomorphism of $\K$-algebras
+\[
+ \K[[T]]\xrightarrow{\ \sim\ }\GG_a,
+ \qquad \sum a_nT^n\longmapsto\left[z\mapsto\sum a_n(z-a)^n\right].
+\]
+The coefficient of $T^n$ is the $n$th derivative at $a$ divided by $n!$.
+Every analytic germ has a primitive. A germ is a unit exactly when its
+constant coefficient is nonzero.
+\end{theorem}
+\begin{proof}
+Existence and compatibility are \cref{thm:scale,lem:formal-eval}.
+Surjectivity is the definition of $\GG_a$. For injectivity, let $m$ be the
+first index with $a_m\neq0$. If $v(h)$ is sufficiently large, the tail after
+$a_mh^m$ has valuation at least $(m+1)v(h)-\beta$, strictly greater than
+$v(a_m)+mv(h)$. Thus the value is nonzero for all sufficiently small nonzero
+$h$. A nonzero formal series cannot represent the zero germ.
+
+The derivative formula gives the coefficients. Formal integration divides
+$a_n$ by $n+1$ and shifts degree; its evaluation is a primitive.
+Formal inversion applies exactly to nonzero constant terms, and
+\cref{lem:formal-eval} evaluates the inverse identity.
+\end{proof}
+
+\begin{theorem}[Inverse and implicit function theorems]\label{thm:inverse}
+If $f$ is germ-analytic at $a$ and $f'(a)\neq0$, then it has a germ-analytic
+inverse between suitable sharp neighborhoods of $a$ and $f(a)$.
+More generally, if a germ-analytic map $F(X,Y)$ in finitely many variables
+satisfies $F(0,0)=0$ and its square Jacobian matrix with respect to $Y$ at
+$(0,0)$ is invertible, there is a unique formal, and hence germ-analytic,
+solution $Y=G(X)$ with $G(0)=0$.
+\end{theorem}
+\begin{proof}
+For one variable translate to $a=f(a)=0$, and write
+$f(T)=a_1T+a_2T^2+\cdots$ with $a_1\neq0$. In
+$g(S)=b_1S+b_2S^2+\cdots$, the equation $f(g(S))=S$ determines
+$b_1=a_1^{-1}$ and then $b_n$ uniquely, because the degree-$n$ equation has
+linear term $a_1b_n$ and otherwise involves earlier $b_j$. Substitution shows
+$g(f(T))=T$ as well, either by the same uniqueness or by formal cancellation.
+The identities evaluate on sufficiently small neighborhoods. Restricting
+one neighborhood to the inverse image of the other gives an actual local
+bijection.
+
+In several variables, let $J=\partial_YF(0,0)$. Inductively suppose all
+homogeneous terms of $G$ below degree $n$ are known. The degree-$n$ equation
+has the form $JG_n+R_n=0$, where $R_n$ is already known, so
+$G_n=-J^{-1}R_n$. This proves existence and uniqueness by degree recursion.
+The multivariable scale theorem evaluates the solution and its formal identity.
+Equivalently apply the formal inverse construction to $(X,Y)\mapsto(X,F(X,Y))$;
+this also gives local uniqueness among actual sufficiently small solutions.
+\end{proof}
+
+\begin{theorem}[Ramification normal form]\label{thm:normalform}
+If $f-f(a)$ is a nonzero analytic germ of order $m\geq1$, there is an invertible
+analytic coordinate $\psi$ at $a$, with $\psi(a)=0$, such that
+\begin{equation}\label{eq:ramification}
+ f(z)=f(a)+\psi(z)^m.
+\end{equation}
+For all sufficiently small nonzero $w-f(a)$ there are exactly $m$ distinct
+solutions of $f(z)=w$ in an appropriate fixed neighborhood of $a$.
+At $w=f(a)$ there is the single zero $a$ of multiplicity $m$ in that neighborhood.
+\end{theorem}
+\begin{proof}
+Write $f(a+T)-f(a)=T^m u(T)$ with $u(0)\neq0$. Choose an $m$th root
+$c$ of $u(0)$ in $\K$. The formal binomial series constructs
+$b(T)=c\bigl(u(T)/u(0)\bigr)^{1/m}$, with $b(T)^m=u(T)$.
+The coordinate $Tb(T)$ has nonzero linear coefficient and is invertible by
+\cref{thm:inverse}. Evaluation proves \eqref{eq:ramification}.
+
+Choose a valuation ball in the image of this coordinate and restrict the
+source to its inverse image. The polynomial $Y^m-s$ has exactly $m$ distinct
+roots when $s\neq0$, all of valuation $v(s)/m$. For sufficiently large $v(s)$,
+all lie in that image ball, and there are no others there. For $s=0$ the
+only root is zero, with multiplicity $m$.
+\end{proof}
+
+\begin{corollary}[Open mapping and maximum modulus]\label{cor:openmax}
+At a point where its germ is nonconstant, a germ-analytic function maps every
+sufficiently small neighborhood onto a set containing a neighborhood of its
+value. A germ-analytic function whose germ is nonconstant at every point is
+an open map. Such a function has no local maximum of its surreal modulus.
+Its real part has no local maximum or local minimum either.
+\end{corollary}
+\begin{proof}
+The power map in \eqref{eq:ramification} maps a valuation ball onto a valuation
+ball, using algebraic closedness and $v(Y^m)=mv(Y)$. The invertible coordinate
+is a local homeomorphism. This proves openness. Every neighborhood of a
+nonzero $b$ contains $(1+\delta)b$ for some positive infinitesimal $\delta$,
+which has larger modulus; neighborhoods of zero contain nonzero points.
+Similarly, any neighborhood of $b$ contains points with larger and smaller
+real part. None of these extrema is therefore possible.
+\end{proof}
+
+The modulus in this corollary is $|z|=\sqrt{z\bar z}$, not an ultrametric
+absolute value obtained from $v$. A valuation can be locally constant on
+nonzero values, and would not satisfy the same maximum principle.
+
+\subsection{Cauchy--Riemann equations and harmonic components}
+
+Writing $f=u+iv$ and a small increment as $h=\xi+i\eta$, the first-order
+term $f'(a)h$ gives
+\[
+ u_x=v_y,\qquad u_y=-v_x.
+\]
+The same power-series calculus justifies repeated real partial derivatives,
+so
+\[
+ u_{xx}+u_{yy}=0,\qquad v_{xx}+v_{yy}=0.
+\]
+These are genuine local analogs of the Cauchy--Riemann and harmonicity
+statements. Conversely, a real Fr\'echet derivative satisfying the
+Cauchy--Riemann equations is $\K$-linear and hence gives a complex derivative.
+This converse is a statement about the derivative, not an unproved
+characterization of germ-analyticity.
+
+\section{Holomorphic profiles and their canonical lifts}
+
+\subsection{The profile algebra}
+
+\begin{definition}\label{def:profile}
+For an ordinary complex domain $U$, a \emph{holomorphic profile} is a formal
+Hahn series
+\begin{equation}\label{eq:profile}
+ F=\sum_{\gamma\in S}f_\gamma\tmon^\gamma,
+ \qquad f_\gamma\in\OO(U),
+\end{equation}
+where the set $S=\{\gamma:f_\gamma\not\equiv0\}$ is well ordered. Denote the
+algebra of these profiles by $\HH(U)$. Its valuation is
+$\vprof(F)=\min S$ for $F\neq0$, with $\vprof(0)=+\infty$. A profile of strictly positive valuation is
+an \emph{infinitesimal profile}.
+\end{definition}
+
+Here $\OO(U)$ means ordinary complex holomorphic functions; it should not be
+confused with the previously defined finite-element ring $\OO$. The context
+and the presence of a domain distinguish them. A profile is not merely an
+arbitrary function $U\to\K$: its coefficients must be holomorphic on one
+common domain and its global support must be well ordered.
+
+Neumann's lemma makes $\HH(U)$ a $\K$-algebra under coefficientwise addition
+and Hahn multiplication. Constants from all of $\K$, including infinite ones,
+are allowed. Define $F'=\sum f_\gamma'\tmon^\gamma$. Differentiation commutes
+with algebra operations, and $\vprof(F')\geq\vprof(F)$.
+
+This globally controlled algebra is naturally a presheaf under restriction.
+We do not assume that arbitrary infinite gluing preserves a single global
+well-ordered support. A sheaf version can instead require such support control
+locally, but the global theorems below are stated in $\HH(U)$ itself.
+
+\begin{theorem}[Canonical lift]\label{thm:lift}
+For $F\in\HH(U)$ and $z=a+\eta\in U^\sharp$, the expression
+\begin{equation}\label{eq:lift}
+ \hhat F(a+\eta)=
+ \sum_{\gamma\in S}\sum_{n\geq0}
+ \frac{f_\gamma^{(n)}(a)}{n!}\tmon^\gamma\eta^n
+\end{equation}
+is Hahn summable. It defines a germ-analytic function on $U^\sharp$, and
+\[
+ \hhat{F+G}=\hhat F+\hhat G,\qquad
+ \hhat{FG}=\hhat F\hhat G,\qquad
+ (\hhat F)'=\hhat{F'}.
+\]
+For every $z\in U^\sharp$ and $h\in\mm$, one has the summable Taylor identity
+\begin{equation}\label{eq:profile-taylor}
+ \hhat F(z+h)=\sum_{n\geq0}\frac{\hhat{F^{(n)}}(z)}{n!}h^n.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Let $M$ be the positive monoid generated by $\supp\eta$.
+Every expanded term in \eqref{eq:lift} lies in $S+M$. For a fixed exponent,
+there are finitely many decompositions into an element of $S$ and a word
+from $\supp\eta$. The word length is $n$, so only finitely many terms of the
+double family contribute. This proves summability.
+
+The ordinary Taylor identities for addition and multiplication can now be
+regrouped within these summable families. For \eqref{eq:profile-taylor},
+expand at the common standard part $a=\st z$, using the two infinitesimals
+$\eta=z-a$ and $h$. The positive monoid generated by their joint support again
+provides finite coefficient calculations, and the binomial formula gives
+the displayed identity. If $\gamma_0=\min S$, the tail after the linear term
+has valuation at least $\gamma_0+2v(h)$. Division by $h$ proves the derivative
+formula in the sharp topology. The Taylor identity also supplies a local
+power-series representation, so the lift is germ-analytic.
+\end{proof}
+
+\begin{corollary}[Leading coefficient and standard part]\label{cor:reduction}
+If $F\neq0$ has leading exponent $\gamma_0$ and leading coefficient
+$f_{\gamma_0}$, then for $z=a+\eta\in U^\sharp$,
+\[
+ v\bigl(\hhat F(z)\bigr)\geq\gamma_0,
+ \qquad
+ \st\bigl(\tmon^{-\gamma_0}\hhat F(z)\bigr)=f_{\gamma_0}(a).
+\]
+In particular, a zero of $\hhat F$ can occur only in a monad above a zero
+of $f_{\gamma_0}$.
+\end{corollary}
+\begin{proof}
+After factoring $\tmon^{\gamma_0}$, all terms except the constant Taylor
+term of $f_{\gamma_0}$ have strictly positive valuation.
+\end{proof}
+
+\subsection{Identity and uniqueness of continuation}
+
+\begin{theorem}[Identity theorem for profiles]\label{thm:profileidentity}
+Let $U$ be connected and $F,G\in\HH(U)$. Each of the following implies $F=G$:
+\begin{enumerate}[label=(\roman*)]
+\item their values agree on a set of ordinary complex points with an
+accumulation point in $U$;
+\item their lifts agree on a nonempty sharp-open subset of $U^\sharp$;
+\item all derivatives of their lifts agree at one point of $U^\sharp$.
+\end{enumerate}
+In particular, a nonconstant profile on a connected domain has a nonconstant
+analytic germ at every point of its thickening.
+\end{theorem}
+\begin{proof}
+Replace $F-G$ by $F$. At an ordinary complex point $a$, normal-form uniqueness
+says that $\hhat F(a)=0$ implies $f_\gamma(a)=0$ for every $\gamma$.
+The classical identity theorem applied coefficientwise proves (i).
+
+For (iii), let $z=a+\eta$ be the point in question. Applying
+\eqref{eq:profile-taylor} to every derivative, with increment $-\eta$, gives
+\[
+ \hhat{F^{(j)}}(a)=
+ \sum_{n\geq0}\frac{\hhat{F^{(j+n)}}(z)}{n!}(-\eta)^n=0.
+\]
+Normal-form uniqueness implies $f_\gamma^{(j)}(a)=0$ for all $j,\gamma$.
+Ordinary holomorphic uniqueness then gives $f_\gamma\equiv0$ on $U$.
+Agreement on a sharp-open subset gives equality of all derivatives at one
+of its points, so (ii) follows from (iii).
+
+Finally, if $\hhat F$ has a constant germ, its derivative has zero germ.
+Applying the proven result to $F'$ shows $F'=0$, and connectedness makes all
+its coefficient functions constant.
+\end{proof}
+
+Thus global uniqueness is recovered not from sharp connectedness, which is
+unavailable, but from coherence of the ordinary coefficient functions.
+Combining this theorem with \cref{cor:openmax} gives an open-mapping and
+maximum-modulus principle for every nonconstant profile on a connected base.
+
+\subsection{Substitution of infinitesimal deformations}
+
+\begin{theorem}[Profile composition]\label{thm:profilecomposition}
+Let $g:V\to U$ be ordinary holomorphic, $H\in\HH(V)$ have strictly positive
+valuation, and $F\in\HH(U)$. Then
+\begin{equation}\label{eq:profilecomp}
+ F\circ(g+H):=
+ \sum_{\substack{\gamma\in\supp F\\n\geq0}}
+ \frac{f_\gamma^{(n)}(g)}{n!}\tmon^\gamma H^n
+\end{equation}
+defines a member of $\HH(V)$. Its lift is the actual composition
+$\hhat F\circ\hhat{(g+H)}$. The ordinary chain rule holds.
+\end{theorem}
+\begin{proof}
+If $S$ is the support of $F$ and $A$ is the positive support of $H$, the
+expanded profile has support in $S+M(A)$. At each exponent only finitely many
+words contribute. Their coefficient functions are finite sums of products
+of holomorphic functions on $V$, so they are holomorphic there.
+Evaluation at $b+\eta$ adds the positive support of $\eta$ to this same
+finite-word calculation. The ordinary formal Taylor composition identity
+then proves the lift assertion. Differentiating the formal expression, with
+all regroupings justified by the same support set, proves the chain rule.
+\end{proof}
+
+For example, if $H$ has positive profile valuation, then
+$\exp_H(H)$ and $\log_H(1+H)$ are profiles. If
+$F=f_0+H$ with $f_0$ nowhere zero and $H$ of positive valuation, then
+\begin{equation}\label{eq:profileinverse}
+ F^{-1}=f_0^{-1}\sum_{n\geq0}(-H/f_0)^n\in\HH(U).
+\end{equation}
+This is an inverse in the profile algebra and, after lifting, a pointwise
+inverse on all of $U^\sharp$.
+
+\section{Cauchy theory with a specified contour integral}
+
+\subsection{Coefficientwise integration}
+
+Let $\Gamma$ be an ordinary piecewise $C^1$ complex path with compact image.
+Suppose $F=\sum f_\gamma\tmon^\gamma$ has one well-ordered support and each
+coefficient is continuous on the path. Define
+\begin{equation}\label{eq:integral}
+ \hint_\Gamma F(\zeta)\,d\zeta
+ :=\sum_\gamma\tmon^\gamma
+     \int_\Gamma f_\gamma(\zeta)\,d\zeta.
+\end{equation}
+The outer sum is a Hahn sum whose support is a subset of the original support;
+the inner integrals are the ordinary complex integrals. The notation $H$
+records this convention.
+
+This integral is $\K$-linear and invariant under the usual piecewise smooth
+reparametrizations. Both assertions follow coefficientwise; multiplication
+by a surcomplex constant uses a Hahn product with finite coefficients.
+For profiles, the usual fundamental-theorem identity at ordinary endpoints is
+\[
+ \hint_\Gamma F'(\zeta)\,d\zeta
+   =\hhat F(\Gamma(1))-\hhat F(\Gamma(0)).
+\]
+No claim is made here about an arbitrary sharp path or an arbitrary
+surreal-valued Riemann sum.
+
+\begin{theorem}[Cauchy's theorem and primitives]\label{thm:cauchythm}
+If $F\in\HH(U)$ and an ordinary closed contour $\Gamma$ is null-homologous
+in $U$, then
+\[
+ \hoint_\Gamma F(\zeta)\,d\zeta=0.
+\]
+If $U$ is simply connected, every $F\in\HH(U)$ has a primitive in $\HH(U)$.
+\end{theorem}
+\begin{proof}
+Classical Cauchy's theorem makes the integral of each coefficient zero.
+For a primitive, choose an ordinary base point $a_0\in U$ and let
+$g_\gamma(z)=\int_{a_0}^z f_\gamma(\zeta)\,d\zeta$, using the classical
+path-independent integral. The family $\sum g_\gamma\tmon^\gamma$ has support
+contained in the original one and derivative $F$.
+\end{proof}
+
+\begin{theorem}[Cauchy formula at a surcomplex point]\label{thm:cauchyformula}
+Let $\Gamma$ be a positively oriented piecewise smooth Jordan contour, with
+interior $D$, and suppose $F\in\HH(U)$ for a neighborhood $U$ of $\overline D$.
+For $w=a+\eta\in D^\sharp$ and every integer $m\geq0$,
+\begin{equation}\label{eq:cauchysharp}
+ \hhat{F^{(m)}}(w)=
+ \frac{m!}{2\pi i}\hoint_\Gamma
+       \frac{F(\zeta)}{(\zeta-w)^{m+1}}\,d\zeta.
+\end{equation}
+The integrand is defined by expanding its kernel about $a$ and taking the
+resulting Hahn profile along the contour.
+\end{theorem}
+\begin{proof}
+For $\zeta$ near the contour, $\zeta-a\neq0$. The valid Hahn expansion is
+\[
+ \frac1{(\zeta-a-\eta)^{m+1}}
+ =\sum_{n\geq0}\binom{m+n}{n}
+       \frac{\eta^n}{(\zeta-a)^{m+n+1}}.
+\]
+Its product with $F$ is supported in $S+M(\supp\eta)$, with finite
+contributions at every exponent. Therefore \eqref{eq:integral} applies.
+Classical Cauchy differentiation gives
+\[
+ \frac{m!}{2\pi i}\int_\Gamma
+ \binom{m+n}{n}\frac{f_\gamma(\zeta)}{(\zeta-a)^{m+n+1}}\,d\zeta
+ =\frac{f_\gamma^{(m+n)}(a)}{n!}.
+\]
+The resulting double Hahn sum is exactly the lift of $F^{(m)}$ at $a+\eta$.
+\end{proof}
+
+This formula determines values at nonstandard points from a single ordinary
+contour. It is stronger than merely writing down the classical formula at
+ordinary complex arguments, but its validity depends on the controlled
+profile structure.
+
+\subsection{Morera and coefficientwise Cauchy estimates}
+
+\begin{proposition}[Morera's theorem for profiles]
+Let $F=\sum f_\gamma\tmon^\gamma$ have a common well-ordered support and
+continuous complex coefficients on $U$. If its coefficientwise integral
+around every triangle contained in $U$ is zero, then $F\in\HH(U)$.
+\end{proposition}
+\begin{proof}
+Normal-form uniqueness says that the ordinary integral of each $f_\gamma$
+around every such triangle is zero. Classical Morera's theorem makes every
+coefficient holomorphic.
+\end{proof}
+
+If $\overline{D(a,r)}\subset U$, define the real number
+$M_\gamma=\max_{|\zeta-a|=r}|f_\gamma(\zeta)|$. Then the ordinary Cauchy
+estimate gives, for every $n,\gamma$,
+\begin{equation}\label{eq:cauchyest}
+ |f_\gamma^{(n)}(a)|\leq \frac{n!M_\gamma}{r^n}.
+\end{equation}
+These are simultaneous estimates at every Hahn scale. No uniform bound on
+the numbers $M_\gamma$ is needed for the profile calculus: each appears as a
+complex coefficient at its own exponent. On the other hand, a single
+surreal pointwise bound is generally too coarse to recover these separate
+bounds. This distinction will explain the failure of a naive Liouville theorem.
+
+\subsection{Profile residues}
+
+\begin{definition}
+A \emph{meromorphic profile with common pole set $E$} is a Hahn series
+$F=\sum f_\gamma\tmon^\gamma$ with common well-ordered support, where each
+$f_\gamma$ is meromorphic on $U$ and all its poles lie in the same closed
+discrete subset $E\subset U$. At $a\in E$, define its \emph{profile residue}
+by
+\[
+ \Res^H_a F=\sum_\gamma
+       \bigl(\Res_{z=a}f_\gamma(z)\bigr)\tmon^\gamma.
+\]
+There is no requirement that pole orders be uniformly bounded in $\gamma$.
+\end{definition}
+
+\begin{theorem}[Residue theorem]\label{thm:residue}
+Let $\Gamma$ be an ordinary positively oriented Jordan contour in $U\setminus E$
+whose closed interior lies in $U$. Then
+\begin{equation}\label{eq:residue}
+ \hoint_\Gamma F(\zeta)\,d\zeta
+   =2\pi i\sum_{a\in E\cap\operatorname{int}\Gamma}\Res^H_a F.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Only finitely many points of the closed discrete set $E$ lie in the compact
+closed interior. Apply the classical residue theorem to every coefficient
+and interchange a finite sum with the Hahn sum.
+\end{proof}
+
+The qualification ``profile'' matters. Consider a nonzero infinitesimal
+$\varepsilon$. On an ordinary annulus about zero,
+\begin{equation}\label{eq:movingpole}
+ \frac1{z-\varepsilon}
+   =\sum_{n\geq0}\varepsilon^n z^{-n-1}.
+\end{equation}
+After expanding the powers of $\varepsilon$, this is a meromorphic profile
+with common pole set $\{0\}$, and its profile residue at zero is $1$.
+But the rational function on $\K$ has its actual pole at $\varepsilon$, not
+at zero. Indeed its local meromorphic residue at zero is zero. A profile
+residue can encode a whole infinitesimal cluster above a standard point;
+it is not automatically the local residue at that exact point.
+
+\section{Constructive Weierstrass preparation}
+
+This section supplies the main bridge from complex zero multiplicity to
+surcomplex zero geometry. Write the ordinary local variable as $T=z-a$.
+All holomorphic coefficient functions in the proof live on a \emph{fixed}
+ordinary disk, not on disks whose radii shrink with the exponent.
+
+\begin{theorem}[Preparation for an infinitesimal deformation]\label{thm:weierstrass}
+Let $D=D(0,r)$ be an ordinary complex disk. Suppose
+\begin{equation}\label{eq:prepinput}
+ F(T)=T^d u_0(T)+H(T),\qquad
+ u_0\in\OO(D),\quad u_0(T)\neq0\text{ on }D,\quad
+ \vprof(H)>0,
+\end{equation}
+where $d\geq1$. Then there is a unique factorization in $\HH(D)$
+\begin{equation}\label{eq:prep}
+ F(T)=P(T)U(T)
+\end{equation}
+with
+\[
+ P(T)=T^d+p_{d-1}T^{d-1}+\cdots+p_0,\qquad p_j\in\mm,
+\]
+and $U$ a profile whose exponent-zero coefficient is $u_0$ and whose other
+exponents are strictly positive. The lift of $U$ is nowhere zero on $D^\sharp$.
+If $S=\supp H$, all positive exponents of $P$ and $U$ may be taken in $M(S)$.
+\end{theorem}
+\begin{proof}
+Set $M=M(S)$, a well-ordered monoid by Neumann's lemma. We seek
+\[
+ P=T^d+\sum_{\gamma\in M\setminus\{0\}}p_\gamma(T)\tmon^\gamma,
+ \qquad
+ U=u_0+\sum_{\gamma\in M\setminus\{0\}}u_\gamma(T)\tmon^\gamma,
+\]
+where every $p_\gamma$ has degree less than $d$, and $u_\gamma$ is holomorphic
+on $D$. Let $F_\gamma$ denote the coefficient of $F$, setting it to zero at
+exponents not in its support.
+
+At a positive exponent $\gamma$, assume the coefficients at all smaller
+exponents have been determined. The known residual is
+\begin{equation}\label{eq:prepresidual}
+ R_\gamma=F_\gamma-
+ \sum_{\substack{\alpha+\beta=\gamma\\\alpha,\beta\in M_{>0}}}
+           p_\alpha u_\beta.
+\end{equation}
+This sum is finite, and every index in it is smaller than $\gamma$.
+The coefficient equation to solve is
+\begin{equation}\label{eq:preplinear}
+ u_0p_\gamma+T^du_\gamma=R_\gamma.
+\end{equation}
+For a holomorphic function $q$, let $J_{<d}q$ be its Taylor polynomial at zero
+through degree $d-1$. The unique solution is
+\begin{align}
+ p_\gamma&=J_{<d}(R_\gamma/u_0),\label{eq:prepp}\\
+ u_\gamma&=
+ u_0\,\frac{R_\gamma/u_0-p_\gamma}{T^d}.\label{eq:prepu}
+\end{align}
+Division by $u_0$ is holomorphic on the same disk. The numerator in
+\eqref{eq:prepu} vanishes to order at least $d$ at zero, so the quotient
+extends holomorphically there, also on the same disk.
+
+Well-ordered recursion defines all coefficients. Their supports are subsets
+of $M$, and all coefficient equations are finite, so these are legitimate
+profiles and their product is $F$. For each $j<d$, the coefficients of $T^j$
+in the $p_\gamma$ form a Hahn series with positive support, giving $p_j\in\mm$.
+The lift of $U$ has nonzero standard part $u_0(\st T)$, so it never vanishes.
+
+For uniqueness, take two factorizations of the stated form. The union of
+their positive supports is a well-ordered set. If they differ, choose the
+least exponent where a coefficient differs. All lower product terms cancel,
+and their differences satisfy
+$u_0\Delta p+T^d\Delta u=0$. Dividing by $u_0$ and taking the Taylor polynomial
+of degree less than $d$ gives $\Delta p=0$, then $\Delta u=0$, a contradiction.
+\end{proof}
+
+The argument remains valid when $S$ is uncountable, or when its positive
+scales are not contained in a rank-one subgroup. Even at a limit position
+in the ordered monoid, the coefficient equation is a finite equation.
+There is no hidden passage to the limit of a sequence of approximants.
+
+\begin{corollary}[The infinitesimal zero cluster]\label{cor:zerocluster}
+Under \cref{thm:weierstrass}, $\hhat F$ has exactly $d$ zeros in $D^\sharp$,
+counted with analytic multiplicity. All of them belong to $\mm$.
+\end{corollary}
+\begin{proof}
+Algebraic closedness factors $P$ into $d$ linear factors over $\K$, counted
+with multiplicity. Every root $\rho$ is infinitesimal. Indeed, if
+$\lambda=v(\rho)<0$, then
+\[
+ v(\rho^d)=d\lambda<j\lambda+v(p_j)=v(p_j\rho^j)
+ \quad(j<d),
+\]
+so the leading term could not cancel. If $\lambda=0$, the leading term again
+has valuation zero while all other terms have positive valuation. Both cases
+are impossible. A zero root is included in $\mm$ by convention.
+
+Thus all $d$ roots lie in $D^\sharp$. Conversely, the factor $\hhat U$ is
+nowhere zero there, so there are no additional zeros. Its germ at any root
+is a unit, and multiplication by a unit does not change the order of
+vanishing in $\K[[T]]$. Hence polynomial and analytic multiplicities agree.
+\end{proof}
+
+\begin{theorem}[Specialization of the zero divisor]\label{thm:divisor}
+Let $U$ be connected and $0\neq F\in\HH(U)$ have leading exponent
+$\gamma_0$ and leading complex coefficient $f_{\gamma_0}$. For each $a\in U$,
+\begin{equation}\label{eq:divisor}
+ \sum_{\substack{z\in U^\sharp,\ \hhat F(z)=0\\\st z=a}}
+       \ord_z(\hhat F)
+       =\ord_a(f_{\gamma_0}).
+\end{equation}
+The fiber on the left is finite. In divisor notation,
+$\st_*\divisor(\hhat F)=\divisor(f_{\gamma_0})$.
+\end{theorem}
+\begin{proof}
+Normalize by $\tmon^{-\gamma_0}$. If the leading coefficient is nonzero at
+$a$, \cref{cor:reduction} rules out zeros in its monad. Otherwise its ordinary
+holomorphic zero has some finite multiplicity $d$. Choose a disk about $a$
+with no other zero of the leading coefficient. On that disk write
+$f_{\gamma_0}(a+T)=T^du_0(T)$ with $u_0$ nowhere zero.
+Apply \cref{thm:weierstrass,cor:zerocluster}. This yields exactly the stated
+finite fiber and its total multiplicity.
+\end{proof}
+
+This is a conservation theorem for zero multiplicity, not a statement that
+each classical zero has a unique lift. A multiple zero can split into roots
+at several infinitesimal separations. If the classical zero is simple,
+its lift is unique and is simple.
+
+\section{Argument principle, Rouch\'e, and contour moments}
+
+\subsection{The exact argument principle}
+
+Let $F\in\HH(U)$ be nonzero, with leading coefficient $f_0$ after a constant
+monomial normalization. Let $\Gamma$ be a positively oriented ordinary Jordan
+contour whose closed interior lies in $U$, and assume $f_0$ has no zeros on
+$\Gamma$. Near the contour, write
+\[
+ F=f_0(1+Q),\qquad\vprof(Q)>0.
+\]
+The inverse of $F$ is a well-defined profile there, and
+\begin{equation}\label{eq:logder}
+ \frac{F'}F=\frac{f_0'}{f_0}+
+              \bigl(\log_H(1+Q)\bigr)'.
+\end{equation}
+
+\begin{theorem}[Surcomplex argument principle]\label{thm:argument}
+With the preceding hypotheses,
+\begin{equation}\label{eq:argument}
+ \frac1{2\pi i}\hoint_\Gamma\frac{F'}F\,dz
+  =\sum_{\substack{z\in(\operatorname{int}\Gamma)^\sharp\\\hhat F(z)=0}}
+           \ord_z(\hhat F)
+  =\sum_{a\in\operatorname{int}\Gamma}\ord_a(f_0).
+\end{equation}
+In particular, this Hahn-valued integral is exactly a nonnegative ordinary
+integer: all its nonconstant Hahn coefficients vanish.
+\end{theorem}
+\begin{proof}
+The derivative of every coefficient of $\log_H(1+Q)$ integrates to zero
+around the closed path. This requires no classical logarithm of $f_0$.
+The integral in \eqref{eq:logder} is therefore the classical argument-principle
+integral of $f_0$, which is the sum of its zero multiplicities inside.
+There are finitely many such zeros by compactness and the absence of boundary
+zeros. The equality with the actual surcomplex zero count follows from
+\cref{thm:divisor}.
+\end{proof}
+
+For a quotient $F/G$ of such profiles with leading coefficients nonzero on
+the contour, subtracting the two formulas gives the number of zeros minus
+the number of poles, with common factors canceled in the local germ sense.
+
+\begin{corollary}[Infinitesimal Rouch\'e theorem]\label{cor:rouche}
+If $F\in\HH(U)$ is nonzero and
+$\vprof(H)>\vprof(F)$, then $\hhat F$ and $\hhat{F+H}$ have the same total
+zero multiplicity in every standard monad in $U^\sharp$. They also have the
+same total zero count inside any contour to which \cref{thm:argument} applies.
+More generally, after a common normalization to nonnegative exponents, if the
+exponent-zero complex coefficients satisfy $|h_0|<|f_0|$ on $\Gamma$, the zero counts of
+$F$ and $F+H$ inside the thickened interior are equal.
+\end{corollary}
+\begin{proof}
+In the strictly higher-valuation case the leading complex coefficient is
+unchanged, so apply \cref{thm:divisor}. In the second case classical Rouch\'e
+applied to $f_0$ and $h_0$ gives equal classical counts and guarantees no
+boundary zeros for $f_0+h_0$. Apply \cref{thm:divisor} to both profiles.
+\end{proof}
+
+\subsection{Recovering infinitesimal root positions}
+
+Counting is only the zeroth contour moment. Higher moments detect positions
+in the surcomplex field, including scales invisible to standard part.
+
+\begin{theorem}[Contour moments of a zero cluster]\label{thm:moments}
+In \cref{thm:weierstrass}, let $\Gamma$ be a positively oriented ordinary
+circle $|T|=r_1$ with $0<r_1<r$. Let the roots of the prepared polynomial be
+$\rho_1,\ldots,\rho_d$, listed with multiplicity. Then for every $k\geq0$,
+\begin{equation}\label{eq:moments}
+ s_k:=\frac1{2\pi i}\hoint_\Gamma
+         T^k\frac{F'(T)}{F(T)}\,dT
+      =\sum_{j=1}^d\rho_j^k,
+\end{equation}
+where $s_0=d$. The moments $s_1,\ldots,s_d$ reconstruct $P$ uniquely.
+\end{theorem}
+\begin{proof}
+Differentiate $F=PU$ to get $F'/F=P'/P+U'/U$. The latter term is a
+holomorphic profile on $D$, because $U$ has nowhere-zero leading coefficient.
+Thus its product with $T^k$ integrates to zero.
+
+In $\K(T)$, logarithmic differentiation of the factorization of $P$ gives
+$P'/P=\sum_j(T-\rho_j)^{-1}$. On the ordinary circle, each $\rho_j$ is
+infinitesimal, so
+\[
+ \frac1{T-\rho_j}=\sum_{n\geq0}\rho_j^nT^{-n-1}
+\]
+is a well-defined profile. The coefficientwise contour integral of
+$T^k/(T-\rho_j)$ is $2\pi i\rho_j^k$, proving \eqref{eq:moments}.
+
+Let $e_0=1$ and define the elementary symmetric functions recursively by
+Newton's identities
+\begin{equation}\label{eq:newtonidentities}
+ k e_k=\sum_{j=1}^k(-1)^{j-1}e_{k-j}s_j,\qquad 1\leq k\leq d.
+\end{equation}
+Characteristic zero permits the divisions by $k$, and
+$P(T)=T^d-e_1T^{d-1}+e_2T^{d-2}-\cdots+(-1)^de_d$.
+\end{proof}
+
+Thus the prepared polynomial has two constructive descriptions: a recursion
+using Taylor division, and a finite collection of Hahn-valued contour moments.
+Neither description discards infinitesimal corrections to the roots.
+
+\section{Biholomorphisms and a thickened Riemann mapping theorem}
+
+\begin{theorem}[Lifting an infinitesimal deformation of a biholomorphism]
+\label{thm:biholo}
+Let $f_0:U\to V$ be an ordinary biholomorphism of complex domains, and let
+$F=f_0+H\in\HH(U)$ with $\vprof(H)>0$. There is a profile
+$G=g_0+J\in\HH(V)$, where $g_0=f_0^{-1}$ and $\vprof(J)>0$, such that
+\[
+ F\circ G=\id_V,\qquad G\circ F=\id_U.
+\]
+Consequently, $\hhat F:U^\sharp\to V^\sharp$ is a bijection with germ-analytic
+inverse $\hhat G$. Its derivative never vanishes.
+\end{theorem}
+\begin{proof}
+Let $M$ be the positive monoid generated by the support of $H$. Seek
+$J=\sum_{\gamma\in M_{>0}}j_\gamma\tmon^\gamma$.
+In the coefficient equation at exponent $\gamma$ in $F(g_0+J)=\id$, the
+only term involving the new unknown $j_\gamma$ is
+$f_0'(g_0)j_\gamma$. All other terms involve lower exponents or known
+coefficients of $H$. Neumann's lemma makes each such equation finite.
+Because $f_0'(g_0)$ is nowhere zero on $V$, it determines a holomorphic
+$j_\gamma$ on that same domain. Well-ordered recursion constructs $G$,
+and \cref{thm:profilecomposition} justifies the composition identity.
+
+The standard part of $\hhat F(a+\eta)$ is $f_0(a)$, so its image is in
+$V^\sharp$. The evaluated identity $\hhat F\circ\hhat G=\id$ gives
+surjectivity. For $w=b+\varepsilon\in V^\sharp$, the profile $F-w$ has leading
+complex coefficient $f_0-b$, with a unique simple zero at $a=g_0(b)$.
+By \cref{thm:divisor}, there is exactly one solution of $\hhat F(z)=w$ in
+that monad, and there are no solutions in other monads. Thus $\hhat F$ is
+injective as well. Evaluation is faithful, so the other profile composition
+is the identity. Finally $\st\bigl(\hhat{F'}(a+\eta)\bigr)=f_0'(a)\neq0$.
+\end{proof}
+
+\begin{corollary}[Riemann mapping for infinitesimal thickenings]
+\label{cor:riemann}
+If $U\subsetneq\C$ is nonempty and simply connected, then $U^\sharp$ is
+biholomorphic in the profile sense to $\D^\sharp$. Every ordinary Riemann map
+lifts, and every infinitesimal holomorphic-profile deformation of that map
+is again such a biholomorphism onto the same thickened target.
+\end{corollary}
+\begin{proof}
+Use the classical Riemann mapping theorem to obtain a biholomorphism
+$f_0:\D\to U$, and apply \cref{thm:biholo}.
+\end{proof}
+
+This is a theorem about domains of the form $U^\sharp$, not a Riemann mapping
+theorem for arbitrary sharp-open subsets of $\K$. In particular,
+\[
+ \D^\sharp=\{z\in\OO:|\st z|<1\}
+ \quad\text{is strictly smaller than}\quad\{z\in\K:|z|<1\}.
+\]
+The latter set also contains points such as $1-\varepsilon$ with positive
+infinitesimal $\varepsilon$, whose standard part lies on the unit circle.
+None of that boundary monad belongs to $\D^\sharp$.
+
+\subsection{Schwarz's lemma and the importance of the category}
+
+\begin{proposition}[Schwarz's lemma for canonical classical lifts]
+\label{prop:schwarz}
+Let $f:\D\to\D$ be ordinary holomorphic with $f(0)=0$, and let $\hhat f$
+be its canonical lift, with no additional Hahn coefficients. Then
+\[
+ |\hhat f(z)|\leq|z|\qquad(z\in\D^\sharp).
+\]
+For nonzero $z$, equality is possible only when $f(z)=e^{i\theta}z$ for an
+ordinary real $\theta$, in which case equality holds everywhere.
+\end{proposition}
+\begin{proof}
+Classical Schwarz's lemma writes $f(z)=zg(z)$, with $g$ holomorphic on $\D$.
+Unless $f$ is a rotation, the classical maximum principle gives $|g(a)|<1$
+for every $a\in\D$, including $a=0$. Therefore
+$|\hhat g(a+\eta)|<1$: its standard modulus is strictly below one by an
+ordinary positive margin. Lifting the product identity proves the strict
+inequality at every nonzero surcomplex point. A rotation lifts exactly.
+\end{proof}
+
+The same conclusion fails for general profiles, even very simple ones.
+For $t=\tmon>0$, the profile
+\[
+ F(z)=(1+t)z
+\]
+is a biholomorphism of $\D^\sharp$ onto itself, fixes zero, and satisfies
+$|\hhat F(z)|>|z|$ for every nonzero $z$. Its leading complex map is the
+identity, so \cref{thm:biholo} applies. Likewise
+\[
+ G(z)=z+t z^2
+\]
+is a nonidentity biholomorphism of $\D^\sharp$ fixing zero and satisfying
+$G'(0)=1$. Thus even the usual normalization that would characterize an
+ordinary disk automorphism does not eliminate infinitesimal profile
+freedom. There is no contradiction with \cref{prop:schwarz}, whose hypothesis
+specifies the canonical lift of an ordinary disk map.
+
+\section{Newton geometry: seeing zeros at infinite as well as finite scales}
+
+Profiles over $\C$ naturally describe finite arguments. Arbitrary centers and
+scales are reached through affine charts $z=A+R w$, with $A\in\K$ and
+$R\in\K^\times$. The local theory is unchanged by such a substitution.
+For polynomials there is a particularly efficient global scale detector.
+
+\begin{definition}
+For a nonzero polynomial $P(Z)=\sum_{j=0}^d a_j Z^j$ and $\lambda\in\No$, put
+\[
+ g_P(\lambda)=\min_{a_j\neq0}\{v(a_j)+j\lambda\}.
+\]
+This is the weighted Gauss valuation of $P$ at scale $\lambda$.
+\end{definition}
+
+\begin{theorem}[Newton polygon in the surcomplex field]\label{thm:newton}
+For nonzero polynomials $P,Q$,
+\[
+ g_{PQ}(\lambda)=g_P(\lambda)+g_Q(\lambda).
+\]
+If
+$P(Z)=a_d\prod_{j=1}^d(Z-\rho_j)$, with roots listed with multiplicity, then
+\begin{equation}\label{eq:tropical}
+ g_P(\lambda)=v(a_d)+\sum_{j=1}^d\min\{\lambda,v(\rho_j)\},
+\end{equation}
+where $v(0)=+\infty$. Thus its changes of slope occur at the valuations of
+the nonzero roots, with drops equal to their multiplicities. Equivalently,
+the lower Newton-polygon edges through the finite points $(j,v(a_j))$,
+with $a_j\neq0$, have slopes $-v(\rho_j)$ for nonzero roots and horizontal
+lengths equal to the corresponding multiplicities. Zero roots are recorded
+by the largest power of $Z$ dividing $P$.
+\end{theorem}
+\begin{proof}
+Replace $Z$ by $\tmon^\lambda W$ and divide $P$ by
+$\tmon^{g_P(\lambda)}$. All coefficients of the resulting polynomial lie in
+$\OO$, and its reduction in $\C[W]$ is nonzero. Do the same for $Q$.
+The product of their nonzero reductions is nonzero, because $\C[W]$ is an
+integral domain. The normalized product therefore has coefficient valuation
+zero, which proves multiplicativity. Applying it to the linear factors gives
+\eqref{eq:tropical}.
+
+Each summand $\min\{\lambda,v(\rho_j)\}$ has slope one before its breakpoint
+and zero afterwards. This proves the multiplicity assertion. Taking the
+lower envelope of the finitely many affine functions $v(a_j)+j\lambda$
+is exactly the dual description of the lower Newton polygon. Only finite
+arithmetic and division by positive integers in the ordered group are used.
+\end{proof}
+
+A direct necessary condition for a nonzero root with valuation $\lambda$ is
+that the minimum defining $g_P(\lambda)$ occur at least twice; otherwise the
+unique least-valued term could not cancel. The factorization proof shows how
+this familiar tropical condition becomes an exact multiplicity statement.
+
+\begin{example}[Two infinitesimal ranks in one cubic]\label{ex:cubic}
+Consider
+\[
+ P(Z)=Z^3-\tmon^2 Z-\tmon^{\omega+2}.
+\]
+Its lower Newton polygon has edges joining
+$(0,\omega+2)$ to $(1,2)$ and $(1,2)$ to $(3,0)$.
+There is one root of valuation $\omega$ and two roots of valuation $1$.
+Set $Z=\tmon Y$ and $q=\tmon^{\omega-1}$. Then
+\[
+ P(\tmon Y)=\tmon^3(Y^3-Y-q).
+\]
+The three simple ordinary roots $0,1,-1$ of $Y^3-Y$ lift uniquely. Their first
+terms are
+\begin{align*}
+ Y_0&=-q-q^3-3q^5+O(q^7),\\
+ Y_+&=1+\tfrac12q-\tfrac38q^2+\tfrac12q^3+O(q^4),\\
+ Y_-&=-1+\tfrac12q+\tfrac38q^2+\tfrac12q^3+O(q^4).
+\end{align*}
+Multiplying by $\tmon$ displays the finer scales of the original roots:
+\[
+ Z_0=-\tmon^\omega-\tmon^{3\omega-2}+\cdots,\qquad
+ Z_\pm=\pm\tmon+\tfrac12\tmon^\omega
+          \mp\tfrac38\tmon^{2\omega-1}+\cdots.
+\]
+Here $q$ is a formal parameter subsequently evaluated as an infinitesimal;
+$O(q^N)$ denotes a formal series divisible by $q^N$, not a claim of sharp
+sequential convergence. The gap between valuations $1$ and $\omega$ is
+not visible in a rank-one Archimedean value group.
+\end{example}
+
+As a simpler domain warning, $1+\tmon z$ has no zero in $\C^\sharp=\OO$,
+although as a polynomial on $\K$ it has the root $-\tmon^{-1}$.
+The profile theorem counts all zeros in its specified thickening, not zeros
+outside that domain. A rescaling reveals the infinite root immediately.
+
+\section{Laurent expansions, removability, and growth}
+
+\subsection{Two different meanings of a Laurent expansion}
+
+For $F=\sum f_\gamma\tmon^\gamma\in\HH(A)$ on an ordinary annulus
+$A=\{r<|z-a|<R\}$, every coefficient has its ordinary Laurent expansion
+\[
+ f_\gamma(z)=\sum_{n\in\Z}c_{\gamma,n}(z-a)^n,
+ \qquad
+ c_{\gamma,n}=\frac1{2\pi i}\int_{|\zeta-a|=s}
+       \frac{f_\gamma(\zeta)}{(\zeta-a)^{n+1}}\,d\zeta,
+\]
+for $r<s<R$. This is a \emph{coefficientwise Laurent expansion}.
+The inner Laurent series is first evaluated in the usual complex sense,
+and the resulting holomorphic functions are then lifted by
+\eqref{eq:lift}. There is no general justification for interpreting the
+whole array $(\gamma,n)$ as one strong Hahn sum at a nonzero ordinary
+complex argument. Infinitely many ordinary scalar terms would contribute
+at exponent $\gamma$.
+
+By contrast, a \emph{meromorphic germ} at an arbitrary $a\in\K$ is an element
+of $\K((T))$, with $T=z-a$ and only finitely many negative powers. Its positive
+part is evaluated by \cref{thm:scale}, and its finite principal part by field
+arithmetic. This gives a local meromorphic function on a sufficiently small
+punctured sharp neighborhood. The formal residue calculus for these germs
+is developed in \cref{sec:formalresidue}.
+
+\begin{proposition}[Coefficientwise removable singularities]\label{prop:removal}
+Suppose $F=\sum f_\gamma\tmon^\gamma$ has common support and is holomorphic
+on an ordinary punctured disk $D\setminus\{a\}$. It extends to a profile in
+$\HH(D)$ if and only if each coefficient $f_\gamma$ has a removable singularity
+at $a$. In particular, extension holds if every $f_\gamma$ is bounded near $a$,
+with a bound allowed to depend on $\gamma$.
+\end{proposition}
+\begin{proof}
+Any profile extension restricts coefficientwise to the given functions,
+by normal-form uniqueness at ordinary points, so necessity is immediate.
+Conversely, the ordinary holomorphic extensions have support contained in
+the same well-ordered set and therefore form a profile on $D$.
+For bounded coefficients the classical removable singularity theorem applies;
+alternatively its Cauchy estimate makes every negative Laurent coefficient
+zero by letting the ordinary contour radius tend to zero.
+\end{proof}
+
+Uniformly bounded pole order has a stronger consequence. If for one finite
+integer $d$ all functions $(z-a)^d f_\gamma(z)$ extend holomorphically across
+$a$, then $(z-a)^dF$ is a holomorphic profile on $D$. Its lift divided by
+$(z-a)^d$ defines a meromorphic function on $D^\sharp\setminus\{a\}$ with a
+pole of order at most $d$ at the exact point $a$. In this case the profile
+residue agrees with the local meromorphic residue there. The common finite
+pole-order condition excludes the displaced-pole phenomenon in
+\eqref{eq:movingpole}.
+
+\subsection{What a valid Liouville theorem says}
+
+\begin{theorem}[Coefficientwise polynomial growth]\label{thm:growth}
+Let $F=\sum f_\gamma\tmon^\gamma\in\HH(\C)$, and fix an ordinary integer
+$d\geq0$. Suppose that for each $\gamma$ there is a real constant $C_\gamma$
+such that
+\[
+ |f_\gamma(z)|\leq C_\gamma(1+|z|)^d\qquad(z\in\C).
+\]
+Then $F$ is a polynomial of degree at most $d$ with coefficients in $\K$.
+In particular, if every coefficient is bounded on $\C$, then $F$ is constant.
+\end{theorem}
+\begin{proof}
+For fixed $a\in\C$ and $n>d$, the ordinary Cauchy estimate on a circle of
+radius $R$ gives
+\[
+ |f_\gamma^{(n)}(a)|\leq
+ \frac{n!C_\gamma(1+|a|+R)^d}{R^n}.
+\]
+Let $R$ tend to infinity in the ordinary real sense. The right side tends
+to zero, so each $f_\gamma$ is a complex polynomial of degree at most $d$.
+Write $f_\gamma(z)=\sum_{j=0}^d c_{\gamma,j}z^j$. For every $j$, the series
+$A_j=\sum_\gamma c_{\gamma,j}\tmon^\gamma$ has support contained in the original
+support and defines an element of $\K$. Regrouping the finite sum over $j$
+gives $F(z)=\sum_{j=0}^d A_jz^j$.
+\end{proof}
+
+A pointwise surreal bound is much weaker. The profile $F(z)=\tmon z$ is
+nonconstant on $\C^\sharp=\OO$, yet $|\hhat F(z)|<1$ for every finite $z$.
+Its coefficient $z$ is unbounded on $\C$; the infinitesimal factor hides that
+unboundedness from any single ordinary positive pointwise bound.
+
+Likewise,
+\[
+ F(z)=\tmon e^{1/z}
+\]
+is bounded in modulus by $1$ on $(D\setminus\{0\})^\sharp$, because at every
+point of that domain its exponential factor is finite. It has no holomorphic
+profile extension over zero, since its coefficient $e^{1/z}$ has an essential
+singularity. Notice that $(D\setminus\{0\})^\sharp$ deletes the entire zero
+monad, not merely the point zero. The two punctured domains must not be
+identified.
+
+Even on a full sharp punctured neighborhood, boundedness alone is insufficient
+for arbitrary germ-analytic functions. For $z\neq0$, define $b(z)$ to be $1$
+when the surreal $v(z)$ is an ordinal, and $0$ otherwise. Valuation is locally
+constant away from zero, so $b$ is locally constant and hence germ-analytic.
+Ordinals are cofinal in $\No$, and both $\tmon^\alpha$ and
+$\tmon^{\alpha+1/2}$ can be made arbitrarily small by choosing a sufficiently
+large ordinal $\alpha$. Their $b$-values differ. Thus $b$ is bounded and has
+no sharp limit at zero. This is an explicit failure of an unrestricted
+Riemann removable-singularity theorem.
+
+\section{Exponentials and logarithms: local strength, global freedom}
+
+\subsection{The canonical exponential on a large strip}
+
+We use the standard Kruskal--Gonshor exponential
+$\exp_{\No}:\No\to\No_{>0}$ and its inverse $\log_{\No}$. It is an increasing
+group isomorphism extending the real exponential, and on infinitesimals it
+agrees with its Hahn power series \cite{Gonshor,BMder}.
+For a finite surcomplex number $a+\eta$ with $a\in\C$ and $\eta\in\mm$, define
+\[
+ \exp_{\fin}(a+\eta)=e^a\exp_H(\eta).
+\]
+The formal addition law proves that this is an exponential homomorphism on
+the additive group $\OO$.
+
+Consider the open additive class
+\[
+ \mathcal A=\No+i(\No\cap\OO).
+\]
+Its elements may have an arbitrary, even infinite, real part, but have a
+finite imaginary part. Define
+\begin{equation}\label{eq:strip-exp}
+ E(x+iy)=\exp_{\No}(x)\,\exp_{\fin}(iy),\qquad x+iy\in\mathcal A.
+\end{equation}
+
+\begin{theorem}[An exponential covering all nonzero values]\label{thm:strip-exp}
+The map $E:\mathcal A\to\K^\times$ is a surjective group homomorphism,
+is germ-analytic, and satisfies
+\[
+ E'=E,\qquad |E(x+iy)|=\exp_{\No}(x),\qquad
+ \ker E=2\pi i\Z.
+\]
+Thus there is an exact sequence of additive and multiplicative class groups
+\[
+ 0\longrightarrow2\pi i\Z\longrightarrow\mathcal A
+       \xrightarrow{\ E\ }\K^\times\longrightarrow1.
+\]
+\end{theorem}
+\begin{proof}
+The addition law follows separately from the surreal real exponential and
+the finite complex exponential. If $h\in\mm$, its real and imaginary parts
+are infinitesimal, and the formal exponential product identity gives
+\begin{equation}\label{eq:exp-local}
+ E(z+h)=E(z)\exp_H(h).
+\end{equation}
+This proves germ-analyticity and $E'=E$.
+Conjugation and the addition law show that $\exp_{\fin}(iy)$ has modulus one,
+which gives the modulus formula. If $E(x+iy)=1$, the injectivity of the real
+exponential forces $x=0$. Write $y=y_0+\varepsilon$ with $y_0\in\R$.
+Taking standard part gives $e^{iy_0}=1$, hence $y_0\in2\pi\Z$; then
+$\exp_H(i\varepsilon)=1$ forces $\varepsilon=0$ by the inverse logarithm.
+This proves the kernel assertion.
+
+For surjectivity, write a nonzero $w$ in the unique form
+$w=c\tmon^\gamma(1+\eta)$ from \eqref{eq:leadingunit}. Choose any ordinary
+complex logarithm $\ell(c)$ of $c$. Then
+\begin{equation}\label{eq:logsection}
+ L(w)=\log_{\No}(\tmon^\gamma)+\ell(c)+\log_H(1+\eta)
+\end{equation}
+belongs to $\mathcal A$ and satisfies $E(L(w))=w$. Its imaginary part is finite,
+because the first term is real and the other two have finite imaginary part.
+\end{proof}
+
+This surjectivity is worth emphasizing: arbitrary nonzero surcomplex values
+do not require an infinite imaginary logarithm. An arbitrary real logarithmic
+magnitude together with a finite phase is sufficient.
+
+\subsection{A global locally analytic logarithm}
+
+Choose once and for all a single-valued set-theoretic logarithm
+$\ell:\C^\times\to\C$, for example a principal-value convention, and define
+$L$ by \eqref{eq:logsection} for every $w\in\K^\times$.
+
+\begin{theorem}[Global logarithmic section]\label{thm:globallog}
+The function $L:\K^\times\to\mathcal A$ is germ-analytic on its entire domain,
+with
+\[
+ E(L(w))=w,\qquad L'(w)=\frac1w.
+\]
+In particular, $1/w$ has a global primitive in the category of germ-analytic
+functions on $\K^\times$.
+\end{theorem}
+\begin{proof}
+The exponential identity was already proved. Fix $w\neq0$ and take
+$h$ with $v(h)>v(w)$. Then $h/w\in\mm$, and $w+h$ has the same leading
+exponent and the same leading complex coefficient as $w$. In
+\eqref{eq:logsection}, the first two terms therefore do not change. Its unit
+part changes from $1+\eta$ to $(1+\eta)(1+h/w)$. The formal logarithm's
+addition law gives the exact local identity
+\begin{equation}\label{eq:global-log-local}
+ L(w+h)-L(w)=\log_H(1+h/w).
+\end{equation}
+This is a power series in $h$ with linear coefficient $1/w$.
+\end{proof}
+
+There is no conflict with
+$\hoint_{|z|=1}dz/z=2\pi i$. The function $L$ is not a holomorphic profile on
+$\C^\times$. At ordinary complex points it equals the chosen branch
+$\ell$, which cannot be holomorphic on all of $\C^\times$. The coefficientwise
+fundamental theorem applies to profile primitives, not to every sharp-local
+primitive. The usual monodromy obstruction survives in the profile category
+and disappears in the more permissive local category.
+
+\subsection{Many globally germ-analytic exponentials}
+
+The normal form splits every real surreal uniquely as
+\[
+ y=y^{\infp}+y^{\fin},
+\]
+where $y^{\infp}$ consists of all strictly infinite monomials and
+$y^{\fin}\in\No\cap\OO$ consists of the remaining terms. Both projections
+are additive. Let $c_\omega(y)\in\R$ be the coefficient of the Conway monomial
+$\omega$ in $y$. For any ordinary real $\lambda$, put
+\[
+ P_\lambda(y)=y^{\fin}+\lambda c_\omega(y),\qquad
+ \mathcal E_\lambda(x+iy)=
+       \exp_{\No}(x)\exp_{\fin}\bigl(iP_\lambda(y)\bigr).
+\]
+
+\begin{proposition}[Nonuniqueness even with the exponential laws]
+\label{prop:manyexp}
+Each $\mathcal E_\lambda$ is a germ-analytic function on all of $\K$ satisfying
+\[
+ \mathcal E_\lambda(z+w)=\mathcal E_\lambda(z)\mathcal E_\lambda(w),\qquad
+ \mathcal E_\lambda'=\mathcal E_\lambda,\qquad
+ \mathcal E_\lambda(0)=1.
+\]
+It extends the ordinary complex exponential and the surreal real exponential,
+commutes with conjugation, and has
+$|\mathcal E_\lambda(z)|=\exp_{\No}(\Ree z)$.
+Nevertheless,
+\[
+ \mathcal E_\lambda(i\omega)=e^{i\lambda}.
+\]
+Thus these conditions do not select a unique global surcomplex exponential.
+\end{proposition}
+\begin{proof}
+Additivity of $P_\lambda$ gives the group law, and it is the identity on finite
+real surreals, giving both extension properties. Conjugation and modulus
+follow as in \cref{thm:strip-exp}. For an infinitesimal real increment
+$\varepsilon$, one has $P_\lambda(y+\varepsilon)=P_\lambda(y)+\varepsilon$.
+Consequently \eqref{eq:exp-local} holds for $\mathcal E_\lambda$ at every point
+of $\K$, proving its analytic power-series representation and derivative.
+Finally $P_\lambda(\omega)=\lambda$.
+\end{proof}
+
+For $\lambda=0$, the kernel is
+$i(\mathbb J+2\pi\Z)$, where $\mathbb J$ is the additive class of purely
+infinite real surreals. These constructions are legitimate but choice-dependent
+global analytic structures. They are not a claim that infinite imaginary
+phases have a uniquely preferred extension. Local differential equations
+cannot determine data on separated sharp regions.
+
+\section{Worked deformations and explicit calculations}
+
+The expansions below are exact formal power-series identities followed by
+Hahn evaluation at an infinitesimal parameter. They are not numerical
+approximations to real or complex solutions. Truncations only abbreviate the
+higher formal coefficients.
+
+\subsection{Motion of a simple zero}
+
+Let $f_0,g,h$ be ordinary holomorphic near $a$, with $f_0(a)=0$ and
+$A=f_0'(a)\neq0$. For a positive-valuation parameter $q$, consider
+\[
+ F(z)=f_0(z)+qg(z)+q^2h(z).
+\]
+Its unique zero in the monad of $a$ has the expansion
+\begin{equation}\label{eq:simplemotion}
+ \rho=a-\frac{g(a)}Aq+
+ \left(
+ \frac{g(a)g'(a)}{A^2}
+ -\frac{f_0''(a)g(a)^2}{2A^3}
+ -\frac{h(a)}A
+ \right)q^2+O(q^3).
+\end{equation}
+Indeed, substituting $\rho=a+c_1q+c_2q^2+\cdots$ yields the equations
+\[
+ Ac_1+g(a)=0,\qquad
+ Ac_2+\tfrac12f_0''(a)c_1^2+g'(a)c_1+h(a)=0.
+\]
+The higher coefficients are determined successively by the same invertible
+linear coefficient $A$. The zero-counting theorem guarantees that this
+constructed formal root is the only actual zero in that monad.
+
+\subsection{A double zero of a transcendental profile}
+\label{subsec:doubleexample}
+
+Take
+\[
+ F(T)=T^2+q e^T,\qquad v(q)>0.
+\]
+The leading complex function has a double zero at zero. The preparation
+recursion with $u_0=1$ gives
+\begin{align}
+ P(T)&=T^2+q(1+T)-q^2\left(\tfrac12+\tfrac23T\right)+O(q^3),
+       \label{eq:exampleP}\\
+ U(T)&=1+q\,\frac{e^T-1-T}{T^2}+O(q^2).
+       \label{eq:exampleU}
+\end{align}
+For the second coefficient in $P$, the residual is
+$-(1+T)(e^T-1-T)/T^2$; its constant and linear terms are $-1/2$ and $-2/3$.
+All apparent singularities in $U$ are removable.
+
+Write $q=s^2$ and put $T=sY$. The equation becomes
+$Y^2+e^{sY}=0$. At $s=0$ its roots $Y=\pm i$ are simple, so the formal
+implicit function theorem constructs both branches. Matching coefficients
+gives the two roots
+\begin{equation}\label{eq:doubleroots}
+ \rho_\pm=\pm is-\tfrac12s^2\mp\tfrac{3i}{8}s^3
+                 +\tfrac13s^4+O(s^5).
+\end{equation}
+The prepared polynomial therefore records, to this order,
+\[
+ \rho_++\rho_-=-q+\tfrac23q^2+O(q^3),\qquad
+ \rho_+\rho_-=q-\tfrac12q^2+O(q^3).
+\]
+These agree with \eqref{eq:exampleP}. For any fixed ordinary circle around
+zero, \cref{thm:moments} gives
+\[
+ \frac1{2\pi i}\hoint \frac{F'}F\,dT=2,\qquad
+ \frac1{2\pi i}\hoint T\frac{F'}F\,dT=-q+\tfrac23q^2+O(q^3),
+\]
+and
+\[
+ \frac1{2\pi i}\hoint T^2\frac{F'}F\,dT=-2q+2q^2+O(q^3).
+\]
+The zeroth moment is an exact integer; the higher moments retain the
+infinitesimal displacement information.
+
+\subsection{Arbitrary coefficient growth at infinitesimal arguments}
+
+The ordinary divergent series
+\[
+ A(T)=\sum_{n\geq0}n!\,T^n
+\]
+is well-defined as a Hahn-analytic function at every infinitesimal $T$:
+its coefficients are complex scalars, and \cref{cor:infseries} applies.
+As a formal identity,
+\begin{equation}\label{eq:factorialODE}
+ T^2 A'(T)+(T-1)A(T)+1=0.
+\end{equation}
+For $n\geq1$, the coefficient equation is
+$(n-1)(n-1)!+(n-1)!-n!=0$; the constant term also cancels.
+Thus the divergent classical formal solution becomes an actual surcomplex
+local analytic solution, without introducing Borel summation or identifying
+Hahn summation with an ordinary real limiting process.
+It does not thereby become a holomorphic profile over any ordinary
+neighborhood of zero. Indeed, matching all derivatives at zero would force
+every nonzero-exponent coefficient of such a profile to have zero Taylor
+series and hence to vanish identically. Its exponent-zero coefficient would
+then be an ordinary holomorphic function with Taylor coefficients $n!$,
+which is impossible by the ordinary Cauchy estimates.
+
+\section{A compatible second derivation}
+\label{sec:derivations}
+
+Surreal transseries calculus offers a second, different derivative. Let
+$\partial:\K\to\K$ be a field derivation killing $\C$ and \emph{strongly
+additive}: whenever a family is Hahn summable, the family of its derivatives
+is summable and the derivative of the sum is the sum of the derivatives.
+The Berarducci--Mantova derivation on $\No$, extended with $\partial i=0$,
+is an example \cite{BMder}.
+
+This derivation can change a constant such as $\omega$. The variable derivative
+$D_z$ used above cannot: $D_z\omega=0$. The two derivatives nevertheless admit
+a precise compatibility law.
+
+\begin{theorem}[Coefficient and variable differentiation]\label{thm:twoderiv}
+For $F=\sum f_\gamma\tmon^\gamma\in\HH(U)$, define
+\[
+ \partial_cF=\sum_\gamma f_\gamma\,\partial(\tmon^\gamma),
+\]
+expanding the derivatives into normal form and regrouping. This is a
+well-defined holomorphic profile, and
+\[
+ D_z\partial_cF=\partial_cD_zF.
+\]
+At every $z\in U^\sharp$, its evaluation satisfies the total derivative law
+\begin{equation}\label{eq:two-deriv}
+ \partial\bigl(\hhat F(z)\bigr)
+   =\hhat{\partial_cF}(z)+\hhat{F'}(z)\,\partial z.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The monomial family $(\tmon^\gamma)_{\gamma\in S}$ is summable. Strong
+additivity says that $(\partial\tmon^\gamma)_{\gamma\in S}$ is summable as
+well. Its joint support is therefore well ordered, with only finitely many
+contributing $\gamma$ at each new exponent. Multiplication by the complex
+coefficient functions leaves that support bound unchanged. Every new
+coefficient is a finite complex linear combination of holomorphic functions,
+so $\partial_cF$ is a profile. Ordinary variable differentiation commutes
+with these finite linear combinations.
+
+Write $z=a+\eta$. Apply strong additivity to the summable family in
+\eqref{eq:lift}, and use $\partial a=0$. Leibniz gives
+\[
+ \partial\bigl(\tmon^\gamma\eta^n\bigr)
+   =\partial(\tmon^\gamma)\eta^n
+       +\tmon^\gamma n\eta^{n-1}\partial\eta.
+\]
+The first family regroups to $\hhat{\partial_cF}(z)$: its support is the
+well-ordered derivative support plus the positive monoid generated by
+$\supp\eta$. The second regroups to $\hhat{F'}(z)\partial\eta$.
+All these families are summable by Neumann's lemma and multiplication of a
+summable family by a fixed element. Since $\partial\eta=\partial z$, this
+is \eqref{eq:two-deriv}.
+\end{proof}
+
+\begin{corollary}[Differentiating a moving simple zero]
+If $\rho\in U^\sharp$ is a simple zero of $\hhat F$, then
+\[
+ \partial\rho=-\frac{\hhat{\partial_cF}(\rho)}{\hhat{F'}(\rho)}.
+\]
+\end{corollary}
+\begin{proof}
+Differentiate the equality $\hhat F(\rho)=0$ using \eqref{eq:two-deriv},
+and divide by the nonzero variable derivative at the simple zero.
+\end{proof}
+
+This connects infinitesimal zero geometry to asymptotic differential algebra
+without confusing differentiation of the argument with differentiation of
+the coefficient field.
+
+\section{Scope, structural lessons, and further development}
+\label{sec:scope}
+
+\subsection{Which hypotheses recover which theorems?}
+
+The following table summarizes the actual scope of the results. In particular,
+``analytic'' is never used as an unqualified substitute for every classical
+hypothesis at once.
+
+\renewcommand{\arraystretch}{1.18}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.27\textwidth}p{0.67\textwidth}@{}}
+\toprule
+Classical theme & Surcomplex statement and essential convention\\
+\midrule
+\endfirsthead
+\toprule
+Classical theme & Surcomplex statement and essential convention\\
+\midrule
+\endhead
+Power-series calculus & Every element of $\K[[T]]$ has a local Hahn-summable
+realization. Its radius may have to be smaller than every member of a
+specified set of positive scales. Partial sums need not converge sharply.\\
+Inverse, implicit, and ramification theorems & These hold for germ-analytic
+functions at arbitrary finite or infinite points. They are consequences of
+formal algebra together with the scale-separation theorem.\\
+Identity theorem & A holomorphic profile over a connected ordinary domain is
+determined by one full jet, or by its values on any nonempty sharp-open set.
+An arbitrary globally germ-analytic function has no such uniqueness.\\
+Cauchy and residue formulas & Contours are ordinary complex contours and
+integration is coefficientwise. Cauchy formulas evaluate the lifted function
+at infinitesimally displaced arguments. A profile residue may represent an
+entire moving pole cluster.\\
+Preparation and zero counting & A positive-valuation deformation of a complex
+zero of multiplicity $d$ has a unique monic degree-$d$ prepared polynomial
+and exactly $d$ zeros, with multiplicities, in that monad.\\
+Open mapping and maximum modulus & They hold locally at every point where the
+analytic germ is nonconstant. A nonconstant profile on a connected base has
+this property everywhere. The modulus is the surreal Euclidean modulus,
+not an ultrametric absolute value.\\
+Riemann mapping & Ordinary conformal maps and their positive-valuation profile
+deformations give biholomorphisms between infinitesimal thickenings. No claim
+is made about all sharp-open subclasses or the missing boundary monads.\\
+Schwarz rigidity & The usual sharp inequality and equality case hold for
+canonical lifts of ordinary disk maps. Infinitesimal profile deformations can
+violate both the inequality and normalized uniqueness.\\
+Liouville and removability & Coefficientwise complex bounds give valid
+statements. A single surcomplex bound on the evaluated function can hide an
+unbounded or singular coefficient and is not sufficient.\\
+Logarithms & A global logarithm exists in the very local germ-analytic
+category. It is not a holomorphic profile on $\C^\times$, where the usual
+contour obstruction survives.\\
+\bottomrule
+\end{longtable}
+\renewcommand{\arraystretch}{1}
+
+\subsection{What uses the full class of surreal numbers?}
+
+Most of the profile arguments use only a Hahn presentation, the ordered
+abelian group law on exponents, Neumann's lemma, and ordinary complex analysis.
+Preparation itself is a support-controlled algebraic recursion. Algebraic
+closedness is additionally used to split its polynomial and identify actual
+roots. Consequently these arguments also apply in an algebraically closed
+set-sized Hahn field with coefficient field $\C$, whenever the stated
+supports and operations belong to that field.
+
+Two assertions are specifically strengthened by working in the full $\No$.
+First, a set of coefficient supports, however large, has a surreal upper and
+lower bound. This is the reason \emph{every} formal series acquires a local
+radius in \cref{thm:scale}. Second, the same bounding property makes every set
+subset sharply closed and discrete. These are complementary manifestations
+of the enormous range of scales: local algebra gains room, while ordinary
+set-indexed convergence loses power. Neither assertion should be transferred
+without examination to a fixed set-sized subfield.
+
+The construction does not prove that arbitrary sharply complex-differentiable
+functions are germ-analytic. Such a converse would be a separate analogue of
+Goursat's theorem, with its own regularity and domain hypotheses. Here the
+power-series condition is explicit from the outset, and each global theorem
+specifies the additional profile coherence that it needs.
+
+\subsection{Natural extensions of the framework}
+
+There are several concrete directions in which the theory can be enlarged
+without changing its basic discipline.
+
+\paragraph{An atlas of scales.}
+The affine changes $z=A+Rw$ already transport local theorems to infinite
+centers and arbitrary surreal radii. A global atlas can retain the common
+support data on overlaps, rather than treating all independently analytic
+local functions as one coherent object. This would incorporate the boundary
+monads omitted by $U^\sharp$ and organize the multiple scales visible in
+Newton polygons.
+
+\paragraph{Locally controlled profiles.}
+The present $\HH(U)$ is a presheaf with a global support requirement. For
+infinite gluing, one can instead require a common well-ordered support on each
+member of a specified ordinary open cover, together with exact compatibility
+on overlaps. To preserve integration, every compact contour must admit a
+finite subcover with a jointly admissible support. Stating this condition is
+essential: arbitrary gluing need not preserve a single Hahn support.
+
+\paragraph{Deformed contours.}
+For a profile deformation of a parametrized ordinary contour, the natural
+candidate integral is obtained by pullback and coefficientwise integration.
+Its validity requires one support bound for the pullback, its parameter
+derivative, and the products involved. The fixed-contour Cauchy formulas proved
+here supply the reference case; they do not silently authorize integration
+along every sharp-continuous class-parametrized path.
+
+\paragraph{Asymptotic differential geometry.}
+The two-derivation identity \eqref{eq:two-deriv} gives a usable starting point
+for differential equations whose coefficients and zeros both move through
+surreal scales. The coefficientwise preparation recursion then separates the
+finite algebra of a zero cluster from the asymptotic evolution of its
+coefficients.
+
+\subsection{Reproducibility and the status of the constructions}
+
+The companion script \texttt{verify\_examples.py} checks the finite symbolic
+expansions in the worked examples: the cubic root branches, the double-zero
+preparation and root splitting, the contour moments, the quadratic inverse,
+and the factorial-series differential identity. These are exact symbolic
+checks, not numerical tests at a large finite surrogate for $\omega$.
+They verify the printed finite calculations; they are not a formal proof
+verification of the general theorems.
+
+The foundational surreal facts, Hahn summation lemma, classical complex
+results, and existing surreal derivation are attributed to their sources.
+The analytic structures and deductions are developed explicitly here, with
+proofs. This is a proposed framework and research exposition, not a claim
+that every formulation has no antecedent in the literature, nor that one
+unique canonical global theory has been selected. Its central mathematical
+point is positive: support control and ordinary holomorphic coherence recover
+strong complex-analytic structure without suppressing genuinely surreal
+infinitesimal geometry.
+
+\appendix
+\section{Formal residues and meromorphic germs}
+\label{sec:formalresidue}
+
+This appendix records the purely local residue calculus, which does not
+require a contour or a standard-part domain. Let
+\[
+ \K((T))=\left\{\sum_{n\geq N}a_nT^n:N\in\Z,\ a_n\in\K\right\}.
+\]
+The negative part is finite. The positive part becomes a germ-analytic
+function by \cref{thm:scale}; dividing by a power of $T$ gives an actual
+meromorphic germ on a sufficiently small punctured neighborhood. Define
+\[
+ \Res_T\left(\sum_{n\geq N}a_nT^n\,dT\right)=a_{-1}.
+\]
+
+\begin{proposition}[Primitives and coefficient extraction]
+A formal meromorphic differential $A(T)\,dT$ has a primitive in $\K((T))$
+if and only if its residue is zero. Moreover, for $B(T)=\sum_{j\geq0}b_jT^j$,
+\[
+ \Res_T\frac{B(T)}{T^{n+1}}\,dT=b_n=\frac{B^{(n)}(0)}{n!}
+ \qquad(n\geq0).
+\]
+\end{proposition}
+\begin{proof}
+A derivative has no $T^{-1}$ coefficient. Conversely, when $a_{-1}=0$,
+\[
+ \sum_{\substack{n\geq N\\n\neq-1}}\frac{a_n}{n+1}T^{n+1}
+\]
+is a well-defined Laurent series and differentiates to $A$. Coefficient
+extraction in the second statement is immediate. The corresponding germ
+identities follow from the local realization theorem.
+\end{proof}
+
+\begin{proposition}[Logarithmic residue]
+For $0\neq f\in\K((T))$,
+\[
+ \Res_T\frac{f'(T)}{f(T)}\,dT=\ord_T f\in\Z.
+\]
+\end{proposition}
+\begin{proof}
+Write $f=T^m u$, where $m\in\Z$ and $u\in\K[[T]]$ is a unit. Then
+$f'/f=m/T+u'/u$, and the second summand is a power series.
+\end{proof}
+
+\begin{theorem}[Change of coordinate and ramification]
+Let $\psi(T)=T^m u(T)$, where $m\geq1$ and $u(0)\neq0$. For every
+$A(Z)\in\K((Z))$,
+\begin{equation}\label{eq:formal-change}
+ \Res_T A(\psi(T))\psi'(T)\,dT
+       =m\Res_Z A(Z)\,dZ.
+\end{equation}
+In particular, residues are invariant under every invertible local analytic
+coordinate change.
+\end{theorem}
+\begin{proof}
+For a Laurent monomial $A(Z)=Z^n$ with $n\neq-1$, the pullback is the
+formal derivative of $\psi^{n+1}/(n+1)$ and has residue zero. For $n=-1$,
+it is $\psi'/\psi$, whose residue is $m$ by the preceding proposition.
+Only finitely many negative Laurent monomials occur in $A$, while a
+nonnegative monomial cannot contribute a residue after substitution.
+Thus coefficient extraction commutes with the substitution, and linearity
+proves \eqref{eq:formal-change}. An invertible coordinate has $m=1$.
+\end{proof}
+
+\begin{theorem}[Rational residue theorem over $\K$]
+For a rational differential $R(Z)\,dZ$ on the projective line over $\K$,
+\[
+ \sum_{a\in\K}\Res_a R(Z)\,dZ+\Res_\infty R(Z)\,dZ=0,
+\]
+where only finitely many terms are nonzero and
+\[
+ \Res_\infty R(Z)\,dZ
+      =\Res_{T=0}\bigl(-T^{-2}R(T^{-1})\bigr)\,dT.
+\]
+\end{theorem}
+\begin{proof}
+Algebraic closedness gives a finite partial-fraction decomposition
+\[
+ R(Z)=Q(Z)+\sum_a\sum_{j=1}^{m_a}\frac{c_{a,j}}{(Z-a)^j}.
+\]
+The finite residue at $a$ is $c_{a,1}$. After substituting $Z=T^{-1}$,
+the polynomial part has no $T^{-1}$ term. A summand with $j\geq2$ becomes
+$-c_{a,j}T^{j-2}(1-aT)^{-j}$ and also has no $T^{-1}$ term. A summand
+with $j=1$ has residue $-c_{a,1}$ at $T=0$. Summation proves the result.
+\end{proof}
+
+There is no inconsistency between this appendix and the global primitive
+$L'(z)=1/z$ from \cref{thm:globallog}. That $L$ is locally analytic at each
+\emph{nonzero} point; it is not a meromorphic Laurent germ at zero. A
+primitive in the enormous category of locally analytic functions on a
+punctured class-domain need not belong to $\K((T))$ at the puncture.
+
+\section{Notation and conventions}
+
+\renewcommand{\arraystretch}{1.16}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.27\textwidth}p{0.67\textwidth}@{}}
+\toprule
+Notation & Meaning\\
+\midrule
+\endfirsthead
+\toprule
+Notation & Meaning\\
+\midrule
+\endhead
+$\No$, $\K=\No(i)$ & The surreal ordered field and its complexification.
+Both are proper classes.\\
+$\tmon^\gamma=\omega^{-\gamma}$ & Conway monomial notation, with the order
+reversed so that positive exponents represent infinitesimal monomials.
+It is not defined by $\exp(-\gamma\log\omega)$.\\
+$v(z)$, $\lc(z)$ & Least normal-form exponent and its nonzero complex
+coefficient; $v(0)=+\infty$.\\
+$\OO$, $\mm$ & Finite valuation ring $\{v\geq0\}$ and infinitesimal
+ideal $\{v>0\}$, respectively. In $\OO(U)$, the same conventional letter
+instead denotes ordinary holomorphic functions on $U$.\\
+$\st$, $U^\sharp$ & Standard-part map $\OO\to\C$ and the inverse image
+$\st^{-1}(U)$.\\
+$\GG_a$ & The algebra of Hahn-analytic germs at $a$, naturally isomorphic
+to $\K[[T]]$ with $T=z-a$.\\
+$\HH(U)$, $\vprof$ & Holomorphic profiles with one common well-ordered
+set of exponents, and their least nonzero coefficient exponent.\\
+$\hhat F$ & Canonical evaluation of a profile on $U^\sharp$ by complex
+Taylor expansion in the infinitesimal displacement.\\
+$\hint$, $\hoint$ & Coefficientwise Hahn-valued integration over an
+ordinary complex contour. These symbols do not denote sharp limits of
+Riemann sums.\\
+$D_z$, $\partial$ & Variable differentiation and a strongly additive
+derivation of the coefficient field, respectively.\\
+$O(q^n)$ & In the formal worked examples, membership in the ideal
+$q^n\C[[q]]$ (or its specified coefficient extension), not convergence
+of a sequence in the full sharp topology.\\
+\bottomrule
+\end{longtable}
+\renewcommand{\arraystretch}{1}
+
+\begin{thebibliography}{99}
+\addcontentsline{toc}{section}{References}
+\markboth{References}{}
+
+\bibitem{Alling}
+N. L. Alling, \emph{Foundations of Analysis over Surreal Number Fields},
+North-Holland Mathematics Studies \textbf{141}, North-Holland, 1987.
+In particular, Chapter 7, ``Power Series: Formal and Hyper-Convergent.''
+
+\bibitem{BMder}
+A. Berarducci and V. Mantova, ``Surreal numbers, derivations and
+transseries,'' \emph{Journal of the European Mathematical Society}
+\textbf{20} (2018), 339--390.
+\href{https://doi.org/10.4171/JEMS/769}{doi:10.4171/JEMS/769}.
+Preprint: \url{https://arxiv.org/abs/1503.00315}.
+
+\bibitem{BMgerms}
+A. Berarducci and V. Mantova, ``Transseries as germs of surreal functions,''
+\emph{Transactions of the American Mathematical Society}
+\textbf{371} (2019), 3549--3592.
+\href{https://doi.org/10.1090/tran/7428}{doi:10.1090/tran/7428}.
+Preprint: \url{https://arxiv.org/abs/1703.01995}.
+
+\bibitem{ConwayComplex}
+J. B. Conway, \emph{Functions of One Complex Variable I}, second edition,
+Graduate Texts in Mathematics \textbf{11}, Springer, 1978.
+\href{https://doi.org/10.1007/978-1-4612-6313-5}{doi:10.1007/978-1-4612-6313-5}.
+
+\bibitem{Gonshor}
+H. Gonshor, \emph{An Introduction to the Theory of Surreal Numbers},
+London Mathematical Society Lecture Note Series \textbf{110},
+Cambridge University Press, 1986.
+
+\bibitem{MS}
+J. M\"uller and A. Strohmaier, ``The theory of Hahn-meromorphic functions,
+a holomorphic Fredholm theorem, and its applications,''
+\emph{Analysis \& PDE} \textbf{7} (2014), 745--770.
+\href{https://doi.org/10.2140/apde.2014.7.745}{doi:10.2140/apde.2014.7.745}.
+Preprint: \url{https://arxiv.org/abs/1205.0236}.
+
+\bibitem{Neumann}
+B. H. Neumann, ``On ordered division rings,''
+\emph{Transactions of the American Mathematical Society}
+\textbf{66} (1949), 202--252.
+
+\bibitem{Orloff}
+J. Orloff, \emph{18.04 Complex Variables with Applications},
+MIT OpenCourseWare, Spring 2018, lecture notes, especially Topics 4--5
+(Cauchy theory) and Topic 11 (argument principle).
+\href{https://ocw.mit.edu/courses/18-04-complex-variables-with-applications-spring-2018/pages/lecture-notes/}{MIT OpenCourseWare lecture-note collection}.
+
+\bibitem{RSS}
+S. Rubinstein-Salzedo and A. Swaminathan, ``Analysis on surreal numbers,''
+\emph{Journal of Logic and Analysis} \textbf{6}(5) (2014), 1--39.
+Preprint and revised version: \url{https://arxiv.org/abs/1307.7392}.
+
+\end{thebibliography}
+\end{document}

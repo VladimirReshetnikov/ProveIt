@@ -2,15 +2,15 @@
 
 # Research reports
 
-One hundred and ten independent mathematical research packages, unpacked from
-the
+One hundred and eleven independent mathematical research packages, unpacked
+from the
 archives in which they were delivered and grouped by subject.  Each directory
 holds a typeset article with its LaTeX source, a `README.md`, and in most cases
 verification code together with the recorded output of running it.
 
 **[`manifest.pdf`](manifest.pdf)** ([source](manifest.tex)) is the catalogue: it
-numbers all one hundred and ten reports, names the problem each one attacks and
-the
+numbers all one hundred and eleven reports, names the problem each one attacks
+and the
 result it claims, and records the archives each directory came from.  These are
 AI-assisted drafts; none is refereed or machine-checked, and the manifest
 records what each report claims rather than verifying it.
@@ -22,13 +22,13 @@ records what each report claims rather than verifying it.
 | [`hankel-determinants/`](hankel-determinants) — Somos and elliptic, Catalan and ballot, Cigler's conjectures, growth and runs, arithmetic numerators | 10 |
 | [`log-concavity-and-unimodality/`](log-concavity-and-unimodality) — cluster variables, chromatic coefficients, Stirling rows, independence systems, MDS codes, binomial decompositions, Bernoulli entropy | 12 |
 | [`congruences-and-valuations/`](congruences-and-valuations) — supercongruences, Apéry and Motzkin congruences, iterated series, valuations and periodicity | 9 |
-| [`surreal-numbers/`](surreal-numbers) — birthdays under multiplication, option graphs, genetic functions and gaps, evaluating formal sums | 6 |
+| [`surreal-numbers/`](surreal-numbers) — birthdays under multiplication, option graphs, genetic functions and gaps, evaluating formal sums, surcomplex analysis | 7 |
 | [`tetration-and-digit-stabilization/`](tetration-and-digit-stabilization) — congruence speed, frozen digits, `q`-Newton series | 6 |
 | [`generating-functions-and-asymptotics/`](generating-functions-and-asymptotics) — Stanley's rationality question, Gregory thresholds, records, discrepancy, single-sequence OEIS studies, Apéry arrays | 16 |
 | [`automata-and-formal-languages/`](automata-and-formal-languages) — shuffle state complexity, DFAO reversal, synchronization, language hierarchies, additive complexity | 6 |
 | [`quaternionic-analysis/`](quaternionic-analysis) — slice regularity, Cauchy–Fueter analysis, the global inverse Fueter problem | 1 |
 | [`graph-theory/`](graph-theory) — mutual visibility, domination roots, minimal dominating sets | 3 |
-| **Total** | **110** |
+| **Total** | **111** |
 
 ## Rebuilding the manifest
 
@@ -38,8 +38,8 @@ latexmk -pdf manifest.tex && latexmk -c manifest.tex
 
 ## Merged reports
 
-One hundred and forty-five archives arrived, in nine deliveries, and yield
-one hundred and ten reports.  Two different things reduced the count, and the
+One hundred and fifty-four archives arrived, in ten deliveries, and yield
+one hundred and eleven reports.  Two different things reduced the count, and the
 difference between them is worth keeping straight.
 
 **Duplicates.**  Twenty archives duplicated another: sixteen pairs, three
@@ -63,6 +63,25 @@ accompanied the merge.  This was editorial, not deduplication — those three
 went through the duplicate sweep first and *cleared* it, below.  Their three
 theorems are three different theorems, and the merged article is at pains to say
 so rather than let a shared setup suggest the answers are connected.
+
+**The tenth delivery was nine manuscripts on one foundation**, and that turned
+out to be a different problem from nine manuscripts on one theorem.  All nine
+arrived under the name `surcomplex_analysis`, all dated the same day, all
+developing holomorphic function theory over `No[i]` on Hahn-supported series.
+They were merged into
+[`surcomplex-analysis`](surreal-numbers/surcomplex-analysis).
+
+Nine attempts at a theorem either agree or they do not.  Nine attempts at a
+*foundation* can come out nine slightly different ways that look alike and are
+not interchangeable, and they did: of seventeen load-bearing notions, **six are
+genuinely inequivalent across the sources**, and a theorem proved under one is
+false under another.  The identity theorem, the global maximum principle,
+Liouville and the open mapping theorem hold for coherent sections and fail for
+germs; sharp Schwarz and Schwarz–Pick hold for lifts and fail for coherent
+sections.  Two of the three residue notions disagree numerically at the same
+point.  A single ordinary bound in Liouville gives a characterization, not
+constancy.  All of this is recorded in the package's `MERGE_NOTES.md` rather
+than smoothed over.
 
 **The ninth delivery was ten manuscripts on one question.**  One was an
 expository survey of quaternionic analysis; the other nine were independent
