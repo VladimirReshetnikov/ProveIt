@@ -1,6 +1,6 @@
 # The surreal and surcomplex reports
 
-Thirteen research packages, in two families. The typeset catalogue is
+Fifteen research packages, in three families. The typeset catalogue is
 [`manifest.pdf`](manifest.pdf) (source [`manifest.tex`](manifest.tex)); it
 gives a paragraph on what each report claims. This page is the map: which
 family a report belongs to, and what to read before what.
@@ -95,6 +95,73 @@ represents that functional is a separate question, and it is answered in
 `contours-and-stokes`. And `analytic-geometry` cites `finite-deformations`
 §15.3 for the fact that a determinant-only stability threshold is provably
 lossy, rather than restating it.
+
+## `foundations-and-computation/` — about the subject rather than inside it
+
+Two reports that take the rest of the collection as their object. Read either
+independently; neither depends on the other.
+
+| directory | subject |
+|---|---|
+| [`foundations`](foundations-and-computation/foundations/) | in what foundation does this mathematics legally live, and how would a proof assistant encode it |
+| [`computer-algebra`](foundations-and-computation/computer-algebra/) | what can actually be computed exactly, and what only denoted or approximated |
+
+Each merges three manuscripts delivered together, and in each the difficulty
+was a collision of near-identical names rather than overlapping content.
+
+**`foundations`** compares ZF/ZFC with definable classes, NBG, Kelley–Morse,
+Grothendieck universes, constructive set theory, dependent type theory and
+univalent foundations, and proves the size obstructions each must respect. Two
+things in it are worth knowing before reading anything else in the collection.
+
+First, the *localization theorem*: every **set** of surcomplex numbers already
+lies inside one divisible set-sized workspace `K_Γ = C((t^Γ))`. That is why the
+analytic reports can work in a fixed workspace without losing generality, and
+why a finite zero scheme gains no points in a larger one.
+
+Second, a pair of series over the same field `C((t^Q))` that differ only in the
+sign of an exponent and reach opposite conclusions:
+
+    sum t^(-n^2) X^n   is strongly summable at NO nonzero argument
+    sum t^(+n^2) z^n   is summable everywhere, and is NONPOLYNOMIAL
+                       while coherent at every radius
+
+The second does not refute the all-scale rigidity theorem in
+[`surcomplex/analysis`](surcomplex/analysis/), which is about class functions on
+the whole `No[i]`, where the proper class of scales supplies the dominating
+exponent the proof needs. It shows that theorem does not transfer to a fixed
+value group such as `Q`. Do not read the two series as contradicting each other.
+
+Three of the five Lean files shipped with this report were compiled for this
+repository and `#print axioms` run on every declaration: no `sorryAx` and no
+`Classical.choice` anywhere, and the two size-obstruction theorems depend on no
+axioms at all. The toolchain used is **not** the one the sources pin, and one
+shipped file does not compile as delivered. The report says so in its own
+section rather than in a footnote.
+
+**`computer-algebra`** separates finite exact denotation, effective coefficient
+access, decidable equality and order, and certified approximation into capability
+tiers, then works through exact representations up to transseries and a proposed
+Wolfram Language architecture. Its three source manuscripts each ship an
+executable Wolfram package, and **the three are not interchangeable**:
+
+| | coefficients | exponent lattice | complex operations |
+|---|---|---|---|
+| `RationalHahn` | `Q` only | `Z^d`, `v(t_j) = ω^(j-1)` | none |
+| `SurrealCASCore` | `Q(i)` | **`Q^r`** — fractional exponents | conjugate |
+| `HahnRational` | `Q(i)` | `Z^rank` | conjugate, Re, Im, modulus |
+
+Two of them are near-anagrams, two export six identical public symbol names with
+incompatible signatures, and two order their monomial variables by **opposite**
+conventions — which reverses every inequality. A ramified root is representable
+in `SurrealCASCore` and not in `HahnRational`. The report never says "the
+prototype"; neither should anyone quoting it.
+
+All three check suites reproduce exactly (34/34, 110/110, 88/88 in Wolfram;
+69/69 and 323/323 in Python), but `RationalHahn` **cannot be loaded at all as
+shipped** — an unclosed bracket stops it parsing, which is why its own record
+submits definitions to an evaluator rather than loading the file. One character
+repairs it. It ships here as delivered, defect included.
 
 ## Building
 

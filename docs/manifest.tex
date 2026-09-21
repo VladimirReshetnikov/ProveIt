@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={The surreal and surcomplex reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of thirteen research packages on surreal and surcomplex numbers}}
+  pdfsubject={Catalogue of fifteen research packages on surreal and surcomplex numbers}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -51,14 +51,16 @@
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\No}{\mathbf{No}}
 \newcommand{\SC}{\mathbf{No}[i]}
+\newcommand{\Z}{\mathbb{Z}}
 
 
 \begin{document}
 
 \begin{center}
  {\LARGE\bfseries\color{Ink} The surreal and surcomplex reports}\\[8pt]
- {\large Thirteen independent mathematical research packages,\\
- on the surreal field and its algebraic closure}\\[10pt]
+ {\large Fifteen independent mathematical research packages,\\
+ on the surreal field, its algebraic closure,\\
+ and the foundations and computation of both}\\[10pt]
  {\small September 2026}
 \end{center}
 
@@ -67,16 +69,19 @@
 \section*{Scope}
 \addcontentsline{toc}{section}{Scope}
 
-This document catalogues the thirteen research packages stored under
+This document catalogues the fifteen research packages stored under
 \dir{docs}.  Each entry names the problem the report attacks, the result it
 claims, and the archive it arrived in.
 
-The collection divides in two, and so does the directory tree.  Six reports,
+The collection divides in three, and so does the directory tree.  Six reports,
 under \dir{docs/surreal}, are about the surreal field $\No$ itself: birthdays
 and their behaviour under multiplication, the option graphs of surreal forms,
 genetic functions and gaps, and two questions of Lipparini about evaluating
 formal sums.  Seven, under \dir{docs/surcomplex}, are about the algebraic
-closure $\SC$ and the theory of holomorphic functions over it.
+closure $\SC$ and the theory of holomorphic functions over it.  The last two,
+under \dir{docs/foundations-and-computation}, stand outside both: they are
+about the subject rather than inside it, asking in what foundation this
+mathematics legally lives and how one computes with it exactly.
 
 These reports were previously part of a larger collection, in a repository
 whose subject was elsewhere; they were moved here with their git history.
@@ -398,6 +403,70 @@ bounded sine of infinite frequency, and all-scale coherence forces a
 polynomial.  \emph{No mathematical disagreement was found between the three
 sources; the duplication was near-total on the first two thirds and the
 divergence near-total on the last.}}
+
+
+\section{Foundations and computation}
+
+Two reports that take the rest of the collection as their object.  Neither
+belongs under \dir{surreal} or \dir{surcomplex}, because both range over the
+whole subject.  Each is a merge of three manuscripts delivered together on
+21~September 2026, and in each the hazard was not overlap but a collision of
+near-identical names.
+
+\entry{Foundations for surreal and surcomplex mathematics}
+{foundations-and-computation/foundations}
+{article.pdf}{surreal\_surcomplex\_foundations.zip + surcomplex\_foundations.zip
++ surreal\_foundations.zip}
+{In what foundation does this mathematics legally live, and how would a proof
+assistant encode it?  Compares ZF/ZFC with definable classes, GB/GBC/NBG,
+Kelley--Morse, Grothendieck universes and TG, Feferman reflection, constructive
+set theory, dependent type theory, univalent foundations and native Lean, and
+proves the size obstructions each must respect: no unrestricted cut operation
+can accept every subclass of its own carrier, the surreals are not Dedekind
+complete, and a universe cannot cut itself.  The positive counterpart is a
+localization theorem --- every \emph{set} of surcomplex numbers already lies in
+one divisible set-sized workspace $K_\Gamma=\C((t^\Gamma))$ --- with a
+finite-algebra descent theorem explaining why a finite zero scheme gains no
+points in a larger workspace.  Carries two series over $\C((t^\Q))$ that differ
+only in the sign of an exponent and reach opposite conclusions:
+$\sum t^{-n^2}X^n$ is summable at no nonzero argument, while $\sum t^{+n^2}z^n$
+is summable everywhere and is a \emph{nonpolynomial} function coherent at every
+radius --- which does not refute the all-scale rigidity theorem of
+\nolinkurl{surcomplex/analysis}, stated for class functions on the whole $\SC$,
+but shows it does not transfer to a fixed value group.  \emph{Merged; the danger
+was aggregation.  All three manuscripts read the same Lean repository at the
+same revision on the same day, so their agreement is one act of source reading
+performed three times, not three confirmations.  The findings are printed once
+and the verification boundary has its own early section.}  Three of the five
+shipped Lean files were compiled for this repository and \texttt{\#print axioms}
+run on every declaration: no \texttt{sorryAx} and no \texttt{Classical.choice}
+anywhere, and both size-obstruction theorems depend on no axioms at all.  The
+toolchain used was not the one the sources pin, and one shipped file does not
+compile as delivered.}
+
+\entry{Surreal and surcomplex numbers in symbolic computer algebra}
+{foundations-and-computation/computer-algebra}
+{article.pdf}{surreal\_surcomplex\_cas.zip and two same-named archives}
+{What can actually be computed exactly, and what only approximated or denoted?
+Separates finite exact denotation, effective coefficient access, decidable
+equality and order, and certified approximation into capability tiers, then
+works through an ordered rational-monomial core, real-algebraic closure,
+certified Hahn series, formal germs, analytic lifts, transseries, Newton
+profiles, Hensel lifting, finite quotient algebras, residues, and a proposed
+Wolfram Language architecture.  \emph{Merged; the danger was three prototypes
+with one name.}  Each manuscript ships an executable Wolfram package, two of
+them near-anagrams of each other, two exporting six identical public symbol
+names with incompatible signatures, and all three calling themselves the
+rational monomial core.  They are three different objects: coefficients $\Q$ in
+one and $\Q(i)$ in the others; exponent lattices $\Z^d$ against $\Q^r$, so a
+ramified root is representable in one and not the next; and two of them order
+their monomial variables by opposite conventions, which reverses every
+inequality.  The report never writes ``the prototype'' and tabulates the
+divergences instead.  All three check suites were rerun for this repository and
+reproduce exactly --- 34/34, 110/110 and 88/88 in Wolfram, 69/69 and 323/323 in
+Python --- but one package cannot be loaded at all as shipped: an unclosed
+bracket stops it parsing, which is why its own record submits definitions rather
+than loading the file.}
 
 
 \end{document}
