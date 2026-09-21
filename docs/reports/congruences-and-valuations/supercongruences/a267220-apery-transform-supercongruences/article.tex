@@ -70,9 +70,20 @@ counterexamples to two tempting stronger assertions. The general
 framing-integrality mechanism is established prior work of Schwarz,
 Vologodsky, and Walcher, not a novelty claim of this note. The purpose here
 is to resolve the specific OEIS assertions with a complete, directly
-checkable argument. A standard-library Python program and its exact
+checkable argument. We also give a second, independent proof of the
+framing step, as one exact Frobenius-defect identity in the framed
+coordinate, and we exhibit an infinite family of binomial-moment seeds
+for which the entire argument goes through unchanged. Two
+standard-library Python programs and their exact
 verification records accompany the article.
 \end{abstract}
+
+\vspace{2pt}
+\noindent\textbf{Scope and status.} This article supplies mathematical proofs,
+not an inference from numerical experiments. The general framing principle
+is prior work, not a novelty claim. The specific OEIS applications and
+refinements are proved explicitly here. This is an unrefereed research
+exposition; no proof-assistant verification or OEIS submission is claimed.
 
 \section{The two conjectures and the result}\label{sec:target}
 
@@ -113,7 +124,10 @@ v_m(np^r)&\equiv v_m(np^{r-1})\pmod{p^{2r}}
 \end{equation}
 for every prime $p\geq5$ and all positive integers $n,r$.
 These assertions were still labeled conjectural when the entry was
-checked on September 20, 2026.
+checked on September 20, 2026. An older,
+different integrality comment in that entry already cites a proof; it is
+not being presented here as an open problem. That older comment, with its
+2020 attribution to Beukers, is not one of the two targeted conjectures.
 
 The notation $a_n$ in this article always denotes the Ap\'ery numbers,
 \emph{not} the coefficients of A267220. In particular, these are two
@@ -171,6 +185,8 @@ mechanism in an explicit normalization adapted to the two OEIS families.
 No claim is made that the general preservation theorem, or its connection
 to dilogarithms, is new. Nor does a conjectural label in OEIS establish
 that no earlier specialist has deduced this particular application.
+Nor does an entry's conjectural label establish that no proof exists
+elsewhere.
 
 The contribution of this note is a self-contained resolution of the
 stated formulas, with all parameter values and the prime two handled
@@ -296,11 +312,26 @@ If $p\nmid n$, the coefficient is $\alpha_n/n^2\in\Zp$. If $p\mid n$,
 it is $(\alpha_n-\alpha_{n/p})/n^2$, again in $\Zp$ by the hypothesis.
 \end{proof}
 
+Although $W$ and $H=\dd W$ may have denominators, all \emph{higher}
+derivatives are integral with no hypothesis at all:
+\begin{equation}\label{eq:higher-derivatives}
+\dd^kW(x)=\sum_{n\geq1}n^{k-2}\alpha_nx^n\in x\Z[[x]]
+\qquad(k\geq2).
+\end{equation}
+The distinction between the first derivative and the higher derivatives is
+what makes the cancellation in Section~\ref{sec:defect-route} work.
+
 \section{The required Ap\'ery congruence from the binomial sum}\label{sec:apery}
 
 We now return to the sequence $a_n$ in \eqref{eq:apery}. Only a
 second-order congruence is needed. It admits a short proof that works
 uniformly at all primes, including $2$ and $3$.
+It is classical that the Ap\'ery numbers satisfy the stronger order-three
+congruences at primes at least $5$; the historical results of Gessel and
+Coster are reviewed in \cite{liu}, which also records the standard
+recurrence. That material is background and context only. Nothing below
+depends on it: the required order-two input is proved here directly from
+the binomial sum.
 
 \begin{proposition}\label{prop:apery-gauss}
 For every prime $p$ and positive integer $N$ divisible by $p$,
@@ -352,10 +383,13 @@ Consequently, Lemma~\ref{lem:mobius} applies to $a_n$, and the series
 $A$ in \eqref{eq:A-F} is integral by \eqref{eq:euler}. Its primitive
 dilogarithm coefficients begin
 \begin{equation}\label{eq:initial-c}
-c_1=5,\qquad c_2=17,\qquad c_3=160,\qquad
-c_4=2058,\qquad c_5=32760.
+\begin{gathered}
+c_1=5,\qquad c_2=17,\qquad c_3=160,\\
+c_4=2058,\qquad c_5=32760,\qquad c_6=596092.
+\end{gathered}
 \end{equation}
-For example, $c_4=(a_4-a_2)/16=2058$. Thus
+For example, $c_4=(a_4-a_2)/16=2058$ and
+$c_6=(a_6-a_3-a_2+a_1)/36=596092$. Thus
 \[
 A(x)=(1-x)^{-5}(1-x^2)^{-34}(1-x^3)^{-480}
        (1-x^4)^{-8232}\cdots.
@@ -837,6 +871,267 @@ additional hypothesis is invoked here. In particular, the arithmetic of
 the input must not be assumed to transfer at every stronger order merely
 because second order transfers.
 
+\subsection{A second proof of the framing congruence: an exact Frobenius
+defect}\label{sec:defect-route}
+
+The odd-prime part of Theorem~\ref{thm:normalized} admits a second proof,
+logically independent of the constant-term computation of
+Section~\ref{sec:odd}. Instead of working index by index in the original
+coordinate $x$, it produces a single exact series identity for the
+Frobenius defect of the framed potential $\Wm_m$ in the framed coordinate
+$y$, from which integrality of $b_m(n)$ and the congruence follow
+simultaneously. Both proofs are recorded because they have different
+strengths, compared at the end of this subsection. Nothing in
+Sections~\ref{sec:odd}--\ref{sec:deduction} depends on what follows.
+
+Throughout, fix a prime $p$ and an integer $m$, and write
+\begin{equation}\label{eq:x-and-xp}
+x=X_m(y),\qquad
+x_p=X_m(y^p),\qquad
+A_m(y)=A(X_m(y))\in1+y\Z[[y]].
+\end{equation}
+The series $x_p$ and $x^p$ are different, and the whole calculation turns
+on comparing them. Put
+\begin{equation}\label{eq:S}
+S(y)=\frac1pH(x_p)-H(x).
+\end{equation}
+
+\begin{lemma}[Integral logarithmic error]\label{lem:log-error}
+For every prime $p$, including $2$, we have $S(y)\in y\Zp[[y]]$, and
+\begin{equation}\label{eq:xp-vs-xp}
+x_p=x^p\exp\bigl(pmS(y)\bigr).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Since $A_m$ has integer coefficients, reduction modulo $p$ gives
+$A_m(y^p)\equiv A_m(y)^p$, so
+\[
+\frac{A_m(y^p)}{A_m(y)^p}=1+p\Theta(y),
+\qquad\Theta(y)\in y\Zp[[y]].
+\]
+Because $H=\log A$, we have $\log A_m(y)=H(x)$ and
+$\log A_m(y^p)=H(x_p)$, whence
+\[
+S(y)=\frac1p\log\bigl(1+p\Theta(y)\bigr)
+     =\sum_{j\geq1}\frac{(-1)^{j+1}p^{j-1}}{j}\Theta(y)^j.
+\]
+Each scalar $p^{j-1}/j$ is $p$-integral: if $e=\nu_p(j)$ then
+$j\geq p^e\geq e+1$, so $j-1-\nu_p(j)\geq0$. This includes $p=2$. As
+$\Theta$ has zero constant term, the sum is finite in each degree.
+
+For \eqref{eq:xp-vs-xp}, the coordinate equation \eqref{eq:X} says
+$x=yA_m(y)^m$. Applying it at $y^p$ and dividing by
+$x^p=y^pA_m(y)^{pm}$ gives
+\[
+\frac{x_p}{x^p}=\left(\frac{A_m(y^p)}{A_m(y)^p}\right)^{m}
+=\exp(pmS),
+\]
+all quotients being quotients of formal units after cancelling the common
+leading monomial.
+\end{proof}
+
+The second ingredient is the logarithmic Taylor identity: for a series
+$V$ in a variable $\xi$ with zero constant coefficient, and a series $q$
+with zero constant term,
+\begin{equation}\label{eq:log-taylor}
+V(\xi e^{q})=\sum_{k\geq0}\frac{q^k}{k!}(\dd^kV)(\xi).
+\end{equation}
+It suffices to check it on the monomials $\xi^n$, where both sides equal
+$\xi^ne^{nq}$; one may then substitute series with zero constant term,
+and every coefficient involves only finitely many terms.
+
+\begin{proposition}[Explicit defect formula]\label{prop:defect-identity}
+Let
+\begin{equation}\label{eq:framed-defect}
+\widetilde E_{p,m}(y)=\Wm_m(y)-\frac1{p^2}\Wm_m(y^p).
+\end{equation}
+Then, as an identity of formal series over $\Q$,
+\begin{equation}\label{eq:defect-identity}
+\boxed{\begin{aligned}
+\widetilde E_{p,m}(y)
+&=E_p(x)+mS\,\dd E_p(x)+\frac m2S^2\\
+&\quad-\sum_{k\geq2}\frac{p^{k-2}m^k}{k!}S^k(\dd^kW)(x^p).
+\end{aligned}}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Apply \eqref{eq:log-taylor} to $V=W$ with $\xi=x^p$ and
+$q=pmS$, which by \eqref{eq:xp-vs-xp} evaluates $W$ at $x_p$. Dividing by
+$p^2$ and using $\dd W=H$ for the term $k=1$,
+\[
+\frac1{p^2}W(x_p)
+=\frac1{p^2}W(x^p)+\frac{mS}{p}H(x^p)
+ +\sum_{k\geq2}\frac{p^{k-2}m^k}{k!}S^k(\dd^kW)(x^p).
+\]
+By \eqref{eq:framed-potential},
+\[
+\widetilde E_{p,m}
+=\Bigl(W(x)-\frac1{p^2}W(x_p)\Bigr)
+ -\frac m2\Bigl(H(x)^2-\bigl(p^{-1}H(x_p)\bigr)^2\Bigr).
+\]
+The definition \eqref{eq:S} gives $p^{-1}H(x_p)=H(x)+S$, so the second
+bracket equals $-2H(x)S-S^2$ and its contribution is
+$mH(x)S+\frac m2S^2$. Substituting the displayed expansion into the
+first bracket turns it into
+\[
+E_p(x)-\frac{mS}{p}H(x^p)
+-\sum_{k\geq2}\frac{p^{k-2}m^k}{k!}S^k(\dd^kW)(x^p).
+\]
+Adding the two contributions and using
+$\dd E_p(x)=H(x)-p^{-1}H(x^p)$ from \eqref{eq:frob-A} proves
+\eqref{eq:defect-identity}.
+\end{proof}
+
+The series $H(x)$ and $p^{-1}H(x^p)$ need not be integral separately.
+Their cancellation into $\dd E_p$ and $S$ is exactly what prevents the
+denominator $n$ in the logarithm from costing a power of the modulus.
+After it, only integral series and explicit factorial denominators remain.
+
+\begin{theorem}[Framing congruence by the defect identity]\label{thm:defect-route}
+For every integer $m$,
+\begin{equation}\label{eq:defect-integrality}
+\widetilde E_{p,m}(y)\in
+\begin{cases}
+y\Zp[[y]],&p\text{ odd},\\
+y\Ztwo[[y]],&p=2\text{ and }m\text{ even},\\
+\tfrac12y\Ztwo[[y]],&p=2\text{ and }m\text{ odd}.
+\end{cases}
+\end{equation}
+Consequently $b_m(n)\in\Z$ for every integer $m$ and every $n\geq1$, and
+\[
+b_m(N)\equiv b_m(N/p)\pmod{p^{2\nu_p(N)}}
+\]
+whenever $p\mid N$ and either $p$ is odd or $m$ is even; for $p=2$ and
+$m$ odd this route yields
+$\nu_2(b_m(N)-b_m(N/2))\geq2\nu_2(N)-1$.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:defect} and \eqref{eq:frob-A}, the series $E_p$ and
+$\dd E_p$ lie in $x\Zp[[x]]$; by Lemma~\ref{lem:log-error}, $S\in
+y\Zp[[y]]$; by \eqref{eq:higher-derivatives}, $\dd^kW\in x\Z[[x]]$ for
+$k\geq2$. Composition preserves integrality because $x\in y\Z[[y]]$ and
+$x^p\in y\Z[[y]]$.
+
+For odd $p$ the scalar $1/2$ is $p$-integral, and
+\eqref{eq:factorial-odd} makes every scalar $p^{k-2}m^k/k!$ $p$-integral.
+Hence the right side of \eqref{eq:defect-identity} lies in $y\Zp[[y]]$.
+For $p=2$ the same estimates allow at worst one factor $1/2$, arising
+both from $\frac m2S^2$ and from the factorial scalars. If $m$ is even
+and nonzero, then for $k\geq2$
+\[
+\nu_2\left(\frac{2^{k-2}m^k}{k!}\right)
+\geq(k-2)+k-(k-1)=k-1\geq1,
+\]
+and $\frac m2S^2$ is integral as well; if $m=0$, all these terms vanish.
+This proves \eqref{eq:defect-integrality}.
+
+Now extract coefficients, \emph{without} assuming in advance that
+$b_m(n)$ is integral. By \eqref{eq:potential-coeff},
+\begin{equation}\label{eq:defect-coeff}
+[y^N]\widetilde E_{p,m}(y)=
+\begin{cases}
+b_m(N)/N^2,&p\nmid N,\\
+\bigl(b_m(N)-b_m(N/p)\bigr)/N^2,&p\mid N.
+\end{cases}
+\end{equation}
+When the defect is integral, the first case shows that $b_m(N)$ is
+$p$-integral for $p\nmid N$, and the second case then proves by induction
+on $\nu_p(N)$ that every $b_m(N)$ is $p$-integral, while simultaneously
+giving $\nu_p(b_m(N)-b_m(N/p))\geq2\nu_p(N)$. This covers every odd prime
+and also $p=2$ with $m$ even.
+
+For $p=2$ and $m$ odd, the defect is only half-integral, and
+\eqref{eq:defect-coeff} yields exactly the weaker bound
+$2\nu_2(N)-1$. Integrality at $2$ is nonetheless available in this case
+from the quotient $b_m(n)=\frac1m[x^n]A(x)^{mn}$ of
+Proposition~\ref{prop:B-coefficient}, whose numerator is an integer,
+because $A^{mn}$ is an integer power of an integral unit, and whose
+denominator $m$ is odd. The case $m=0$ is
+Proposition~\ref{prop:apery-gauss}. Thus every $b_m(n)$ is integral at
+every prime, hence lies in $\Z$.
+\end{proof}
+
+\begin{remark}[The stated dyadic bound is the sharper one]\label{rem:which-bound}
+Theorem~\ref{thm:defect-route} is a correct lower bound, not an error,
+but for $p=2$ with odd $m$ it is superseded. The constant-term argument
+of Section~\ref{sec:two} improves $2\nu_2(N)-1$ to the full precision
+$2\nu_2(N)$ as soon as $\nu_2(N)\geq2$, see \eqref{eq:two-higher}, and at
+the first dyadic descent it replaces the difference by the exact signed
+sum \eqref{eq:two-plus-goal}, which the defect route does not see at all.
+Everywhere the two disagree, the value asserted by this article is the
+one proved in Section~\ref{sec:two}. Likewise, for the second family with
+nonzero even $m$ and $\nu_2(N)\geq2$, the bound recorded in this article
+is $2\nu_2(N)+\nu_2(m)$, from Section~\ref{sec:deduction}, rather than
+the $2\nu_2(N)+\nu_2(m)-1$ that the defect route alone gives. At
+$\nu_2(N)=1$ the two agree: both give the exponent $\nu_2(m)+1$, and
+\eqref{eq:V2-boundary} together with the example
+$v_2(2)-v_2(1)=236$ shows that this is attained.
+\end{remark}
+
+\begin{remark}[What each route buys]
+The constant-term route of Sections~\ref{sec:odd}--\ref{sec:two} works
+index by index in the original coordinate $x$; its engine is the
+integration by parts \eqref{eq:linear}, which recovers the second power of
+$N$ in the linear term. Because it keeps the exact Laurent identity
+\eqref{eq:ct-zero} in reach, it is what makes the delicate dyadic sign
+analysis, and hence the signed all-prime Theorem~\ref{thm:normalized},
+accessible. The defect route of this subsection replaces that bookkeeping
+by one exact series identity \eqref{eq:defect-identity} in the framed
+coordinate; it yields integrality of $b_m(n)$ and the congruence together
+by induction on $\nu_p(N)$ at every odd prime, and at $p=2$ for even $m$,
+without appealing to the separate integral definition
+\eqref{eq:B-definition}; only the residual $p=2$, $m$ odd case is still
+read off from the quotient of Proposition~\ref{prop:B-coefficient}, it can be checked symbolically as a formal
+identity rather than only through its numerical consequences, and it is
+the form that transparently transfers to other admissible seeds, as in
+Section~\ref{sec:seeds}. Neither route is a specialization of the other.
+\end{remark}
+
+\section{An infinite family of admissible seeds}\label{sec:seeds}
+
+Both proofs of the framing congruence used only that the input sequence is
+an integer sequence satisfying Definition~\ref{def:gauss}. The Ap\'ery
+numbers are not an isolated such input: the elementary argument of
+Proposition~\ref{prop:apery-gauss} extends verbatim to every even
+binomial moment.
+
+\begin{proposition}[Binomial moments]\label{prop:moments}
+For every positive integer $h$, the sequence
+\[
+a_n^{(h)}=\sum_{k=0}^n\left(\binom nk\binom{n+k}k\right)^{2h}
+=\sum_{k=0}^nP(n,k)^{2h}
+\]
+satisfies the second-order Gauss congruences of
+Definition~\ref{def:gauss}. Consequently
+Theorem~\ref{thm:normalized} and Theorem~\ref{thm:main} hold verbatim
+with $a_n^{(h)}$ in place of $a_n$, for the exponential family and for its
+reversion alike.
+\end{proposition}
+
+\begin{proof}
+Fix a prime $p$, a positive $N$ divisible by $p$, and put $R=\nu_p(N)$.
+If $p\nmid k$, then $\nu_p(P(N,k))\geq R$ as in
+Proposition~\ref{prop:apery-gauss}, so
+$\nu_p\bigl(P(N,k)^{2h}\bigr)\geq2hR\geq2R$ and the summand vanishes
+modulo $p^{2R}$. If $k=p\ell$, raise the split product
+\eqref{eq:P-split} to the even power $2h$: the sign disappears and each
+remaining factor lies in $1+p^{2R}\Zp$, so
+$P(N,p\ell)^{2h}\equiv P(N/p,\ell)^{2h}\pmod{p^{2R}}$. The term $k=0$ is
+one on both sides. Summing over $k$ gives
+$a_N^{(h)}\equiv a_{N/p}^{(h)}\pmod{p^{2R}}$. With this input, the proofs
+of Sections~\ref{sec:normalization}--\ref{sec:deduction} and of
+Section~\ref{sec:defect-route} apply without change.
+\end{proof}
+
+The case $h=1$ is the classical Ap\'ery sequence used to resolve the two
+selected conjectures. The extension is included to show what the argument
+actually depends on: an arithmetic property of a binomial sum and an
+integral change of variable, not a numerical fit or an unproved
+classification of recurrences.
+
 \section{Examples and limits of stronger assertions}\label{sec:examples}
 
 \subsection{Low-degree values and exceptional parameters}
@@ -853,13 +1148,27 @@ parameter:
 \begin{split}
 b_m(1)&=5,\\
 b_m(2)&=73+50m,\\
-b_m(3)&=\frac{2890+3285m+1125m^2}{2}.
+b_m(3)&=\frac{2890+3285m+1125m^2}{2},\\
+b_m(4)&=\frac{99003+147574m+87600m^2+20000m^3}{3}.
 \end{split}
 \end{equation}
-The third expression has rational polynomial coefficients but takes
+The last two expressions have rational polynomial coefficients but take
 integer values at every integer $m$, as guaranteed structurally by
 \eqref{eq:B-definition}. One should not confuse an integer-valued
 polynomial with a polynomial all of whose coefficients are integers.
+
+Expanding the exponential gives the finite closed expression
+\begin{equation}\label{eq:partition-formula}
+b_m(n)=\sum_{\substack{k_1,\ldots,k_n\geq0\\
+                       k_1+2k_2+\cdots+nk_n=n}}
+n^Km^{K-1}\prod_{j=1}^n\frac{(a_j/j)^{k_j}}{k_j!},
+\qquad K=k_1+\cdots+k_n.
+\end{equation}
+Since $n\geq1$, every summand has $K\geq1$; at $m=0$ only $K=1$ survives
+and that term is $a_n$, in agreement with $b_0(n)=a_n$. Formula
+\eqref{eq:partition-formula} is convenient for symbolic experimentation,
+but its denominators do not by themselves explain either integrality or
+the supercongruences.
 
 \begin{center}
 \small
@@ -926,30 +1235,61 @@ congruence still holds, and the signed sum is $256$, divisible by $8$.
 
 \subsection{Second order cannot uniformly be replaced by third order}
 
-A small odd-prime example also limits the possible strengthening:
+A small odd-prime example also limits the possible strengthening. Exact
+coefficient extraction gives $u_1(7)=5\,082\,313\,276$, hence
 \begin{equation}\label{eq:sharpness}
 \begin{aligned}
 u_1(7)-u_1(1)
 &=5082313271\\
 &=7^2\cdot103720679,
-\qquad103720679\equiv6\pmod7.
+\qquad103720679\equiv6\pmod7,
 \end{aligned}
 \end{equation}
+so that $u_1(7)-u_1(1)\equiv294\pmod{343}$. By $v_2(n)=2u_1(n)$,
+\[
+v_2(7)-v_2(1)=10\,164\,626\,542\equiv245\pmod{343},
+\]
+again of valuation exactly two.
 The valuation is exactly two, not three. Therefore a universal
 replacement of $p^{2r}$ by $p^{3r}$ in the first conjecture is false.
 Because $v_2(n)=2u_1(n)$ and $7\nmid2$, the same example rules out that
 replacement for the second family as well. This is a counterexample to
 a uniform higher-order assertion, not a claim that no individual
 parameters or primes can exhibit stronger divisibility.
+These are counterexamples to stronger variants, not to either formula
+actually listed in OEIS.
 
 \section{Exact computation and reproducibility}\label{sec:computation}
 
-The companion file \texttt{verify.py} uses only the Python standard
-library and arbitrary-precision integers. Every division that is
-mathematically supposed to be exact is checked with a remainder test.
-The general proof above is independent of the computations; the program
-checks identities, edge cases, and representative congruences by routes
-that expose indexing or normalization mistakes.
+Two independent companion programs accompany this article, one written
+for each of the two proofs. Both use only the Python standard library and
+exact arithmetic, and every division that is mathematically supposed to be
+exact is checked with a remainder test.
+
+\begin{center}
+\small
+\begin{tabular}{p{0.33\linewidth}p{0.59\linewidth}}
+\toprule
+Program & What it tests\\
+\midrule
+\texttt{verify\_constant\_term\_}\newline\texttt{route.py} &
+Arbitrary-precision integers. Index range to $250$, signed and unsigned
+normalized congruences, direct degree-$12$ polynomial powers, both
+directions of compositional inversion. Output in \texttt{verification/}.\\
+\texttt{verify\_defect\_route.py} &
+Integers and \texttt{Fraction}. Framing parameters $-10$ to $10$, and
+$18$ symbolic checks of the defect identity
+\eqref{eq:defect-identity} itself through degree $14$. Output in
+\texttt{verification-defect-route/}.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+They are deliberately not refactored into one program: they compute the
+same quantities by different routes, and their independence is the point.
+The general proofs above are independent of both; the programs check
+identities, edge cases, and representative congruences by routes that
+expose indexing or normalization mistakes.
 
 \subsection{Coefficient algorithms}
 
@@ -986,6 +1326,8 @@ A005259 \cite{oeis-apery}:
 =(34n^3+51n^2+27n+5)a_n-n^3a_{n-1},
 \qquad a_0=1,\ a_1=5.
 \end{equation}
+The leading polynomial is often written in the equivalent factored form
+$(2n+1)(17n^2+17n+5)$; the second program uses that spelling.
 This familiar recurrence is used only as a cross-check; neither its
 validity nor a proof of it is needed for the congruence argument.
 
@@ -1002,9 +1344,10 @@ inversion, and direct polynomial powers of $A$ and $F$ through degree
 12. These direct power checks do not assume the formulas $u_m=m b_m$
 and $v_m=m b_{m-1}$ as their coefficient-computation method.
 
-\subsection{The included run}
+\subsection{The first included run: the constant-term program}
 
-The archived run used maximum index $250$, original parameters
+The archived run of \texttt{verify\_constant\_term\_route.py}
+used maximum index $250$, original parameters
 $-6\leq m\leq6$, and normalized parameters $-7\leq m\leq6$.
 For the transformed congruences it used primes
 $2,3,5,7,11,13$ and indices $N=hp^r\leq250$ with
@@ -1045,19 +1388,79 @@ counts, the exact counterexample values, and the arithmetic environment.
 The CSV file records sample values of the sequences. No floating-point
 approximation or probabilistic primality test is used.
 
+\subsection{The second included run: the defect-identity program}
+
+The program \texttt{verify\_defect\_route.py} was written for the proof
+of Section~\ref{sec:defect-route} and uses a different grid. It generates
+the seed by the recurrence \eqref{eq:apery-recurrence} and compares it
+against an independent evaluation of the defining binomial sum at every
+index. It constructs the compositional inverse of $xA(x)$ by solving its
+coefficients successively, checks the composition, forms $F=y/X_{-1}(y)$,
+and computes the powers $F^{mn}$ by rational polynomial convolution, so
+that those tests do not generate the left side of $v_m(n)=mb_{m-1}(n)$
+from the identity being tested. Finally it constructs both sides of
+\eqref{eq:defect-identity} as truncated rational series through degree
+$14$, which tests the sign of the quadratic correction, the factor
+$p^{k-2}$, and the placement of $x^p$ as distinct from $x_p$, rather than
+only comparing a selection of final congruences.
+
+\begin{center}
+\small
+\begin{tabular}{p{0.78\linewidth}r}
+\toprule
+Check category & Count\\
+\midrule
+Binomial sum versus recurrence, indices $0$--$150$ & 151\\
+Seed congruences, all primes and multiples $N\leq150$ & 269\\
+Odd-prime normalized congruences on the specified grid & 798\\
+Normalized dyadic bounds, all even $N\leq150$ & 1575\\
+Parameter-sensitive odd-prime bounds for $u_m$ & 840\\
+Parameter-sensitive dyadic bounds for $u_m$ & 1575\\
+Bounds for $v_m$, including the prime two & 2415\\
+Independent reversion-and-power identities & 126\\
+Full Frobenius-defect identities through degree $14$ & 18\\
+\midrule
+Total & 7767\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The normalized odd-prime grid uses $m=-10,-9,\ldots,10$,
+$p\in\{3,5,7,11,13\}$, $1\leq r\leq4$, $1\leq n\leq4$, retaining
+$N=np^r\leq150$. The dyadic normalized tests use all even $N\leq150$ for
+the same parameter range. The independent reversion tests use
+$m=-4,\ldots,4$ and $1\leq n\leq14$, and the $18$ formal defect tests use
+$m\in\{-3,-1,0,1,2,4\}$ and $p\in\{2,3,5\}$. The dyadic bounds tested by
+this program are the ones its own proof yields, namely
+$2\nu_2(N)-1$ for odd framing parameters; the sharper bounds asserted in
+Theorem~\ref{thm:main} and Theorem~\ref{thm:normalized} are tested by the
+first program.
+
+The two runs are different finite samples, not comparable totals: the
+first reaches higher indices, the second reaches wider parameters and is
+the only one that checks its central identity symbolically. Neither is an
+exhaustive search.
+
 \subsection{Reproduction commands}
 
 From the archive directory, with Python 3.9 or later, run
 \begin{lstlisting}
-python verify.py --max-index 250 --output-dir verification
+python verify_constant_term_route.py --max-index 250 \
+    --output-dir verification
 \end{lstlisting}
 A larger finite test can be requested, for example, with
 \begin{lstlisting}
-python verify.py --max-index 500 --parameter-radius 8 \
-    --multipliers 8 --primes 2 3 5 7 11 13 17 \
-    --output-dir verification-500
+python verify_constant_term_route.py --max-index 500 \
+    --parameter-radius 8 --multipliers 8 \
+    --primes 2 3 5 7 11 13 17 --output-dir verification-500
 \end{lstlisting}
-Only the default run described above is represented by the archived
+The second program requires Python 3.10 or later and is run as
+\begin{lstlisting}
+python verify_defect_route.py --limit 150 \
+    --out verification-defect-route
+\end{lstlisting}
+Run it normally, not with the \texttt{-O} option: it uses assertions.
+Only the default runs described above are represented by the archived
 verification results. To rebuild the article, use
 \begin{lstlisting}
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
@@ -1065,6 +1468,10 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 The source is also compatible with two ordinary \texttt{pdflatex} runs.
 The computational artifact is not a proof-assistant formalization; the
 proof is the mathematical argument in this article.
+Numerical checks cannot prove an infinite family of congruences. Their
+role here is to make the examples reproducible and to expose
+implementation, normalization, or sign errors in independently computed
+quantities.
 
 \section{Conclusion}
 
@@ -1073,7 +1480,13 @@ normalized transform, with a shift of one in the framing parameter.
 The central arithmetic fact is preservation of second-order Gauss
 congruences after this normalization. Its coefficient proof isolates
 the only linear term that appears to lose one power of the index and
-recovers that power by formal integration by parts.
+recovers that power by formal integration by parts. The same preservation
+is proved a second time, independently, as the single exact identity
+\eqref{eq:defect-identity} for the Frobenius defect in the framed
+coordinate; that route yields integrality and the congruence at once and
+transfers unchanged to the infinite family of binomial-moment seeds of
+Proposition~\ref{prop:moments}, while the constant-term route is what
+reaches the dyadic sign correction.
 
 For the stated OEIS conjectures the conclusion is unconditional: every
 integer parameter, every allowed prime, and every positive pair of
@@ -1123,6 +1536,43 @@ derivative and rearranging shows that the last display equals
 as required.
 \end{proof}
 
+\section{Proof dependencies and boundary cases}\label{app:audit}
+
+For an independent audit, the logical dependencies can be summarized
+without treating computation as a lemma. The binomial identity
+\eqref{eq:P-product} proves Proposition~\ref{prop:apery-gauss}.
+M\"obius inversion proves Lemma~\ref{lem:mobius}, including integrality of
+$A$. Integral compositional inversion and the Lagrange formula identify
+the coefficients of $\Bn_m$ and $\Wm_m$. The constant-term identity
+\eqref{eq:linear}, the factorial bounds, and the three dyadic cases prove
+Theorem~\ref{thm:normalized}; alternatively, the logarithmic lemma, the
+exact Taylor cancellation, and the same factorial bounds prove its
+odd-prime part through Theorem~\ref{thm:defect-route}. The parameter-shift
+identity \eqref{eq:V-B} then proves both OEIS statements.
+
+The points most vulnerable to an incorrect shortcut are the following.
+The inverse is \emph{compositional}, and $F=A\circ X_{-1}$, not
+$A\circ X_{1}$; it is not a multiplicative reciprocal. The quadratic
+correction in \eqref{eq:framed-potential} has sign $-m/2$ for the
+coordinate $y=xA(x)^{-m}$. The Frobenius Taylor expansion is taken at
+$x^p$, whereas $x_p$ denotes $X_m(y^p)$; these are generally different,
+and \eqref{eq:xp-vs-xp} is exactly their comparison. The normalized
+coefficient $b_m(n)$ is not assumed integral before it is proved so.
+Division by $m-1$ is avoided at $m=1$ and is never performed modulo $p$,
+and division by $m$ is never performed modulo $p$ either. Negative
+parameters are integer powers of units and need no positivity assumption.
+The dyadic half-integrality of the framed defect is retained rather than
+silently replaced by integrality, and where the two routes give different
+dyadic exponents the sharper proved one is the one asserted, as recorded
+in Remark~\ref{rem:which-bound}. Finally, the modulus depends on the full
+valuation of $N$, not on a representation of $N$ with a tacitly
+prime-to-$p$ leading factor.
+
+At index zero the original definitions give $u_m(0)=v_m(0)=1$, even for
+$m=0$. All normalized identities in this article are stated for positive
+indices. The conjectures themselves have positive $n$ and $r$, so this
+convention causes no exceptional case in their application.
+
 \begin{thebibliography}{9}
 \bibitem{oeis-target}
 OEIS Foundation Inc., \emph{A267220: Expansion of
@@ -1154,6 +1604,16 @@ L.~Felipe M\"uller,
 \emph{Wolstenholme Type Congruences and Framing of Rational 2-Functions},
 arXiv:2104.10754 (2021).
 \url{https://arxiv.org/abs/2104.10754}.
+
+\bibitem{liu}
+J.-C. Liu,
+\emph{An extension of Gauss congruences for Ap\'ery numbers},
+arXiv:2404.16636v1 (25 April 2024).
+\url{https://arxiv.org/abs/2404.16636}.
+Used for background, the standard recurrence, and the historical
+order-three congruences of Gessel and Coster; the input order-two
+congruence is proved directly in this article, so this reference is
+context and not a dependency.
 \end{thebibliography}
 
 \end{document}

@@ -1,10 +1,19 @@
 #!/usr/bin/env python3
-"""Exact-arithmetic checks for the Apéry framing supercongruences.
+"""Constant-term route: exact checks for the Apéry framing supercongruences.
+
+This is the verifier written for the constant-term / integration-by-parts
+proof of the framing step (article sections 5-7).  Its distinctive content is
+the index range to 250, the SIGNED all-prime normalized congruences, the
+sharper dyadic bounds, the framed dilogarithm coefficients, direct degree-12
+polynomial powers, and both directions of compositional inversion.  It is
+deliberately a SEPARATE implementation from verify_defect_route.py, which
+computes the same quantities by a different route on a different grid; the
+independence of the two is the point and they are not merged.
 
 Python 3.9+, standard library only.  These finite checks supplement, and do
 not replace, the all-index proofs in article.pdf.
 
-Run: python verify.py --max-index 250 --output-dir verification
+Run: python verify_constant_term_route.py --max-index 250 --output-dir verification
 """
 from __future__ import annotations
 

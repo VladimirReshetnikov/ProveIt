@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={A manifest of the research reports in docs/reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of 103 independent mathematical research packages}}
+  pdfsubject={Catalogue of 109 independent mathematical research packages}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -53,7 +53,7 @@
 
 \begin{center}
   {\LARGE\bfseries\color{Ink} A manifest of \texttt{docs/reports}}\\[0.6em]
-  {\large One hundred and three independent mathematical research packages,\\
+  {\large One hundred and nine independent mathematical research packages,\\
    classified by subject}\\[1.0em]
   {\normalsize Vladimir Reshetnikov}\\[0.3em]
   {\normalsize 20 September 2026}
@@ -63,7 +63,7 @@
 
 \section{Scope and conventions}
 
-This document catalogues the one hundred and three research packages stored
+This document catalogues the one hundred and nine research packages stored
 under \dir{docs/reports}.  They arrived as one hundred and twenty-five ZIP
 archives, in seven deliveries, which have been unpacked and grouped into the
 subject hierarchy described in Section~\ref{sec:tree}.  The archives themselves
@@ -801,6 +801,37 @@ $a(m3^h)\equiv a(m3^{h-1})\bmod 3^{3h-1}$, with $m$ not required coprime to
 $p$.  Covers A352373, A348410, A351856 and A351857 as specialisations; the only
 non-elementary import is the classical Jacobsthal binomial congruence.}
 
+\entry{Apéry numbers under exponentiation and series reversion}
+{congruences-and-valuations/supercongruences/a267220-apery-transform-supercongruences}
+{article.pdf}{Apery\_OEIS\_Supercongruences.zip, apery\_oeis\_conjectures(1).zip}
+{Proves both supercongruence conjectures contributed by Peter Bala to OEIS
+A267220 on 17 October 2024, for every integer parameter including negative and
+zero.  With $A(x)=\exp\sum_{n\ge1}a_nx^n/n$ for the Apéry numbers $a_n$,
+$F(x)=x/\mathrm{Rev}(xA(x))$, $u_m(n)=[x^n]A(x)^{mn}$ and
+$v_m(n)=[x^n]F(x)^{mn}$: for odd $p$ and $R=\nu_p(N)$ both families satisfy
+$\nu_p(u_m(N)-u_m(N/p))\ge2R+\nu_p(m)$, the unsigned statement for $v_m$ holds
+at \emph{every} prime including $2$, and a \emph{signed} refinement
+$(-1)^{mN}u_m(N)\equiv(-1)^{mN/p}u_m(N/p)$ recovers full precision at $p=2$,
+where the unsigned bound genuinely loses one power.  Merged from two reports
+that share a seed lemma and a Möbius/dilogarithm layer but diverge at the crux;
+both routes are kept, and the merged text is careful that the signed and
+unsigned $2$-adic statements are different statements, not a sharper and a
+weaker version of one.}
+
+\entry{Four Motzkin congruences}
+{congruences-and-valuations/supercongruences/a001006-motzkin-congruences}
+{article.pdf}{motzkin\_congruences.zip}
+{Proves all four conjectures in Peter Bala's comment of 10 February 2022 on OEIS
+A001006, with sharp ranges.  The engine is a prime-power block-transfer theorem:
+for odd $p$ and $q=p^{k-s+1}$, $h=mp^{s-1}$, the Motzkin numbers satisfy
+$M_{mp^k+d}\equiv T_hM_d$ for $0\le d\le q-3$, with explicit corrections at
+$d=q-2$ and $d=q-1$; the boundary case gives
+$M_{np^r-2}\equiv\tfrac{\varepsilon_p^r-1}{2}T_{n-1}-U_{n-1}\pmod p$.  Adds the
+exact first failures beyond the two initial-block ranges, arbitrary-multiplier
+and all-prime-power boundary extensions, a prime-modulus digit algorithm, and
+examples showing why unweighted repetition modulo a prime cube is generally
+false.  Discusses Burns, Kohen and Pan--Sun rather than claiming novelty.}
+
 \subsection{Congruences for iterated and compositional series}
 
 \entry{Arithmetic of a Self-Iterating Generating Function}
@@ -1085,7 +1116,7 @@ at 30 is made.  Three independent exact polynomial computations agree.}
 
 \entry{A marked-cycle proof of the trapezohedral domination conjecture}
 {graph-theory/trapezohedral-minimal-dominating-sets}
-{article.pdf}{trapezohedral\_domination\_research.zip}
+{article.pdf}{trapezohedral\_domination\_research.zip, A381190\_proof\_package.zip}
 {Proves the generating function labelled conjectural in OEIS A381190: for the
 $n$-trapezohedral graph, the number of dominating sets that are
 inclusion-minimal among all dominating sets and induce a connected subgraph is
@@ -1259,6 +1290,39 @@ carrying eight normalized endpoint states.  For an ordinal sum of antichains,
 $s_O=r+\nu$ with $\nu$ a maximum $b$-matching of the layer path under capacities
 $\min(a_i-1,2)$, and $s_C=r+\max(0,k-1)$.  The extremal gap is sharp:
 $0\le s_C-s_O\le\lfloor(n-2)/3\rfloor$, attained for every $n\ge2$.}
+
+\entry{Skew partitions, continued fractions and connected components}
+{enumerative-combinatorics/skew-partition-continued-fractions}
+{article.pdf}{A225114\_proof\_bundle.zip}
+{Proves the repeated-power continued-fraction formula recorded as conjectural in
+OEIS A225114, which counts skew partition diagrams with no empty row or column.
+Unique concatenation gives $A(q)=1/(1-P(q))$ for the edge-connected diagrams,
+and a boundary-path encoding followed by a weighted two-coloured Motzkin-path
+decomposition gives
+$P(q)=q/(1-2q-q^3/(1-2q^2-q^5/(1-2q^3-\cdots)))$, whence $A(q)=1/(2-C(q))$ with
+$C=1+P$.  Adds a four-variable refinement, a formula by height, width and
+component count, a sharp truncation bound, exponential asymptotics and a central
+limit theorem for the number of components.  \textbf{Explicitly not a novelty
+claim}: a prior-art check found Pasechnik's MathOverflow sketch of ten September
+2024, and the entry credits Kurkov; the report says so first and credits both.}
+
+\entry{From mesh avoidance to Catalan inflation}
+{enumerative-combinatorics/mesh-avoidance-catalan-inflation}
+{article.pdf}{A289587\_proof.zip, OEIS\_A289587\_proof.zip}
+{Proves Scheuerle's generating-function conjecture in OEIS A289587 for
+permutations avoiding $321$ and the mesh pattern $(12,174)$, and the equal count
+for $(12,234)$ by inversion: with $D=x^4-2x^3-5x^2-2x+1$,
+$P=x^4+4x^3+11x^2+10x+3$ and $Q=x^2+5x+3$, the generating function is
+$(P-Q\sqrt D)/(8x(1+x)^2)$.  The headline structural result is the exact
+\emph{occurrence count} $\mathrm{occ}=\binom{f}{2}+\sum_U\binom{|U|}{2}$, of
+which avoidance is the case $\mathrm{occ}=0$.  Merged from two reports that
+reached the identical generating function by the identical run-contraction
+substitution $u\mapsto u/(1+xu)$; the merge keeps \emph{both} refinements,
+because they refine the same sequence by different statistics --- excedances and
+records --- and are genuinely different theorems, agreeing only in total.  The
+two local predicates they are built on disagree on $31$ of the $321$-avoiders of
+length at most six, the smallest being $12$, and the merged article proves where
+they coincide rather than assuming it.}
 
 \entry{Prescribed coefficient-lattice minima}
 {enumerative-combinatorics/coefficient-lattice-minima}
@@ -1462,6 +1526,20 @@ $2^{2^{\,n-r_n-4}}\le a_n\le 2^{2^{\,n-1}}$, hence
 $\log\log a_n=n+O(\sqrt{\log n})$.  The step is simultaneous, not repeated
 closure --- a distinction the report is careful about.}
 
+\entry{Distinct third derivatives of a power tower}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a199085-exponentiation-derivative-values}
+{article.pdf}{A199085\_generating\_function.zip}
+{For OEIS A199085, the number of distinct values taken by the third derivative
+at $x=1$ over all fully parenthesized exponentiations of $n$ copies of $x$,
+proves $a(1)=a(2)=1$ and $a(n)=\lfloor(n^2-2)/3\rfloor$ for $n\ge3$, with the
+rational generating function $z/(1-z)+z^3/(1-z)^3-z^7/((1-z)^2(1-z^3))$.  The
+proof is for all $n$, not an extrapolation: every attainable pair of second and
+third derivatives is classified and a witness constructed for each admissible
+pair.  Despite the shared vocabulary this is a different question from
+\emph{power-tower-derivative-term-counts}, which fixes the function and varies
+the derivative order; here the order is fixed at three and the parenthesization
+varies.}
+
 \subsection{Asymptotics, records and discrepancy}
 
 \entry{The Exponential Scale of Gregory Sign Thresholds}
@@ -1509,5 +1587,20 @@ uniqueness-and-location conjecture of Tarnu (J.~Approx.\ Theory 287 (2023)
 105866), repeated as Conjecture~1.5 of Choi--Tarnu (2025), including the limit
 $k_m^\ast/2^m\to2/3$.  The certificate is a rational polytope argument with
 exact arithmetic.}
+
+\entry{Apéry arrays and conjectural zeta accelerations}
+{generating-functions-and-asymptotics/apery-array-zeta-accelerations}
+{article.pdf}{Apery\_OEIS\_Conjectures\_Proofs.zip, apery\_oeis\_conjectures.zip}
+{Proves the entire shifted-diagonal $\zeta(3)$ family recorded as conjectural in
+OEIS A143007, and both the super- and subdiagonal $\zeta(2)$ families of
+A108625, at every nonnegative offset: for all $k\ge0$,
+$\zeta(3)=H_k^{(3)}+\sum_{n\ge1}(2n+k)(3n^2+3nk+k^2)/
+(n^3(n+k)^3T_{n-1,n+k-1}T_{n,n+k})$.  The main diagonals are the classical
+Apéry sequences A005259 and A005258.  Proofs are finite telescoping identities
+with rational lattice potentials and explicit limit estimates; no computer test
+or unproved conjecture enters.  Adds rational error bounds, numerator and
+denominator recurrences, a three-term recurrence along every shifted diagonal,
+and sharp fixed-offset asymptotic constants.  Merged from two reports whose
+boxed identities were character-identical up to macro names.}
 
 \end{document}

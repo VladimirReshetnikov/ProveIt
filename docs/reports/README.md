@@ -2,14 +2,14 @@
 
 # Research reports
 
-One hundred and three independent mathematical research packages, unpacked from
+One hundred and nine independent mathematical research packages, unpacked from
 the
 archives in which they were delivered and grouped by subject.  Each directory
 holds a typeset article with its LaTeX source, a `README.md`, and in most cases
 verification code together with the recorded output of running it.
 
 **[`manifest.pdf`](manifest.pdf)** ([source](manifest.tex)) is the catalogue: it
-numbers all one hundred and three reports, names the problem each one attacks and
+numbers all one hundred and nine reports, names the problem each one attacks and
 the
 result it claims, and records the archives each directory came from.  These are
 AI-assisted drafts; none is refereed or machine-checked, and the manifest
@@ -18,16 +18,16 @@ records what each report claims rather than verifying it.
 | Category | Reports |
 |---|---:|
 | [`ordinals-and-order-types/`](ordinals-and-order-types) — friendly order types, wqo powersets and statures, transfinite words, ordinal arithmetic, games, graph minors, filter sites, ideals, lattice congruences | 20 |
-| [`enumerative-combinatorics/`](enumerative-combinatorics) — parking functions, pattern avoidance, preorder and order polytopes, numerical semigroups, lattice arrays, coefficient lattices, tropical degree | 19 |
+| [`enumerative-combinatorics/`](enumerative-combinatorics) — parking functions, pattern avoidance, preorder and order polytopes, numerical semigroups, lattice arrays, tropical degree, mesh patterns, skew partitions | 21 |
 | [`hankel-determinants/`](hankel-determinants) — Somos and elliptic, Catalan and ballot, Cigler's conjectures, growth and runs, arithmetic numerators | 10 |
 | [`log-concavity-and-unimodality/`](log-concavity-and-unimodality) — cluster variables, chromatic coefficients, Stirling rows, independence systems, MDS codes, binomial decompositions, Bernoulli entropy | 12 |
-| [`congruences-and-valuations/`](congruences-and-valuations) — supercongruences, iterated series, valuations and periodicity | 7 |
+| [`congruences-and-valuations/`](congruences-and-valuations) — supercongruences, Apéry and Motzkin congruences, iterated series, valuations and periodicity | 9 |
 | [`surreal-numbers/`](surreal-numbers) — birthdays under multiplication, option graphs, genetic functions and gaps, evaluating formal sums | 6 |
 | [`tetration-and-digit-stabilization/`](tetration-and-digit-stabilization) — congruence speed, frozen digits, `q`-Newton series | 6 |
-| [`generating-functions-and-asymptotics/`](generating-functions-and-asymptotics) — Stanley's rationality question, Gregory thresholds, records, discrepancy, single-sequence OEIS studies | 14 |
+| [`generating-functions-and-asymptotics/`](generating-functions-and-asymptotics) — Stanley's rationality question, Gregory thresholds, records, discrepancy, single-sequence OEIS studies, Apéry arrays | 16 |
 | [`automata-and-formal-languages/`](automata-and-formal-languages) — shuffle state complexity, DFAO reversal, synchronization, language hierarchies, additive complexity | 6 |
 | [`graph-theory/`](graph-theory) — mutual visibility, domination roots, minimal dominating sets | 3 |
-| **Total** | **103** |
+| **Total** | **109** |
 
 ## Rebuilding the manifest
 
@@ -37,8 +37,8 @@ latexmk -pdf manifest.tex && latexmk -c manifest.tex
 
 ## Merged reports
 
-One hundred and twenty-five archives arrived, in seven deliveries, and yield
-one hundred and three reports.  Two different things reduced the count, and the
+One hundred and thirty-five archives arrived, in eight deliveries, and yield
+one hundred and nine reports.  Two different things reduced the count, and the
 difference between them is worth keeping straight.
 
 **Duplicates.**  Twenty archives duplicated another: sixteen pairs, three
@@ -63,8 +63,19 @@ went through the duplicate sweep first and *cleared* it, below.  Their three
 theorems are three different theorems, and the merged article is at pains to say
 so rather than let a shared setup suggest the answers are connected.
 
-**The sweep that found nothing.**  The seventh delivery of eighteen produced no
-duplicate at all: the sweep checked every OEIS A-number and every cited arXiv
+**The eighth delivery, by contrast, was mostly duplicates.**  Ten archives
+arrived and yield six reports.  Four clusters were confirmed at proof level and
+merged, one of them against a report already in the tree
+([`trapezohedral-minimal-dominating-sets`](graph-theory/trapezohedral-minimal-dominating-sets),
+which absorbed an incoming proof of the same A381190 conjecture).  Every
+same-proof verdict was put to two adversarial challengers; one challenge
+succeeded in part, and it changed the merge: the two A289587 reports refine the
+same sequence by *different* statistics — excedances and records — so the merged
+article keeps both refinements rather than collapsing them.  Their two local
+predicates disagree on 31 of the 321-avoiders of length at most six, the
+smallest being `12`.
+
+**The seventh delivery, by contrast, produced no duplicate at all:** the sweep checked every OEIS A-number and every cited arXiv
 identifier in the tree against the eighteen, and rejected twelve near-misses on
 inspection — among them those same three power-tower reports, and two that
 share a Bell-scale saddle-point method on unrelated sequences.  Shared technique

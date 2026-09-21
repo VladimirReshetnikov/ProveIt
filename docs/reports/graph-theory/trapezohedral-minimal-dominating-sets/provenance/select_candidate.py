@@ -4,9 +4,12 @@ import json
 import secrets
 from pathlib import Path
 
-root = Path(__file__).resolve().parents[1]
-candidates = json.loads((root / 'data/candidates.json').read_text())
-output = root / 'data/selection.json'
+# The recorded draw lives beside this script, in the archive's provenance/
+# directory. It concerns how the incoming manuscript's author chose this
+# problem; it is not part of the A381190 proof or its verification.
+here = Path(__file__).resolve().parent
+candidates = json.loads((here / 'candidates.json').read_text())
+output = here / 'selection.json'
 if output.exists():
     raise SystemExit('Refusing to replace the recorded selection.')
 # randbelow uses rejection sampling; no outcome-dependent reroll is performed.

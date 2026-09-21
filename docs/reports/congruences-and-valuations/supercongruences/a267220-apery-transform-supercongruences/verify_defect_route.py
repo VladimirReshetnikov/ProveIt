@@ -1,7 +1,21 @@
 #!/usr/bin/env python3
-"""Exact-arithmetic checks for the Apéry framing supercongruences.
+"""Defect-identity route: exact checks for the Apéry framing supercongruences.
 
-Python 3.10+, standard library only.  Run: python verify.py --out data
+This is the verifier written for the Frobenius-defect proof of the framing
+step (article section 8.3, the boxed identity).  Its distinctive content is
+the 18 symbolic checks of that identity itself through degree 14, and a wide
+framing-parameter grid t = -10..10.  It is deliberately a SECOND, independent
+implementation: verify_constant_term_route.py computes the same quantities by
+different routes and over a different grid, and the two are not merged.
+
+Note on the 2-adic bounds tested here: this program tests the bounds that the
+defect route alone yields, namely ord_2 >= 2*ord_2(N) - 1 for odd framing
+parameters.  The sharper bounds asserted in the article (full precision
+2*ord_2(N) once ord_2(N) >= 2, and the signed first-descent statement) come
+from the constant-term route and are tested by verify_constant_term_route.py.
+
+Python 3.10+, standard library only.
+Run: python verify_defect_route.py --out verification-defect-route --limit 150
 Finite checks supplement, and do not replace, the proofs in article.pdf.
 """
 from __future__ import annotations
@@ -244,7 +258,7 @@ def main() -> None:
     if not __debug__:
         raise RuntimeError("Run without -O: verification assertions must be enabled")
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--out',type=Path,default=Path('data'))
+    parser.add_argument('--out',type=Path,default=Path('verification-defect-route'))
     parser.add_argument('--limit',type=int,default=150)
     args=parser.parse_args()
     if args.limit < 125:

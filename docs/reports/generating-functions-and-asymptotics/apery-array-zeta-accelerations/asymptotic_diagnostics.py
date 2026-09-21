@@ -2,7 +2,7 @@
 """Optional high-precision diagnostics (mpmath); not used as a proof oracle."""
 from pathlib import Path
 import mpmath as mp
-from verify import T, U, F2, F3
+from verify_independent import T, U, F2, F3
 
 mp.mp.dps = 420
 phi=(1+mp.sqrt(5))/2
@@ -39,5 +39,5 @@ lines += ['', 'Asymptotic decimal digits per added diagonal term:',
           'zeta(3): '+mp.nstr(2*mp.log10(lam),17),
           'zeta(2): '+mp.nstr(2*mp.log10(rho),17)]
 text='\n'.join(lines)+'\n'
-Path(__file__).with_name('asymptotic_diagnostics.txt').write_text(text)
+(Path(__file__).resolve().parent / 'data' / 'asymptotic_diagnostics.txt').write_text(text)
 print(text)

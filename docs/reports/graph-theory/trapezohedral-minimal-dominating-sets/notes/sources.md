@@ -54,13 +54,13 @@ self-contained in the article.
   function. The entry describes avoidance of 321 and mesh pattern
   (12,174), or the equinumerous class with mesh pattern (12,234).
 
-See candidate_formulas.md for the specific target expressions. These
+See provenance/candidate_formulas.md for the specific target expressions. These
 records substantiate the shortlist; no inference about their solution
 status beyond the inspected conjectural labels is made.
 
 ## Mathematical provenance
 
-The classification, marked-block proof, refinements, and consequences
+The classification, marked-gap bijection, refinements, and consequences
 are developed in the article itself. No pre-existing source is claimed
 for this proof, and no claim of global novelty or literature priority
 is made. The accompanying OEIS-style note is a draft only; it was not

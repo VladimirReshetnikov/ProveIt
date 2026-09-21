@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 """Optional exact algebra certificates and high-precision asymptotic checks.
-Requires sympy and mpmath. The main verification program has no dependencies.
+
+Companion to code/verify_records.py, and independent of
+code/symbolic_checks.py: it certifies the two polynomial identities that
+make the final algebraic step hand-checkable, and evaluates the asymptotic
+constants to 90 digits.  Requires sympy and mpmath; the standard-library
+checkers have no dependencies.
 """
 from __future__ import annotations
 import csv
@@ -8,12 +13,12 @@ import json
 from pathlib import Path
 import sympy as sp
 import mpmath as mp
-from verify import fast_coefficients
+from verify_records import fast_coefficients
 
 
 def main() -> None:
-    outdir = Path('data')
-    outdir.mkdir(exist_ok=True)
+    outdir = Path(__file__).resolve().parents[1]/'data'
+    outdir.mkdir(parents=True,exist_ok=True)
     x, y, r = sp.symbols('x y r')
     D = x**4-2*x**3-5*x**2-2*x+1
     P = x**4+4*x**3+11*x**2+10*x+3

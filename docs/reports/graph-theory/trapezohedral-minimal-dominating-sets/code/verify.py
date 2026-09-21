@@ -4,6 +4,29 @@
 The exhaustive verifier uses the literal definition: domination, failure of
 all one-vertex deletions to dominate, and induced connectivity. It does not use
 the structural classification or the private-neighbor lemma to filter sets.
+
+This is the third, separately written implementation of the acceptance test in
+this archive, and shares no code with code/research.py or code/exhaustive.cpp.
+Keeping all three is deliberate: their independence is what the cross-check is
+worth. See section "A third, independent standard-library exhaustion" of the
+article.
+
+Vertex labels here are the one-based labels u, v, a_1..a_n, b_1..b_n of the
+incoming manuscript, not the article's N, S, a_0..a_{n-1}, b_0..b_{n-1}.
+The dictionary is u = N, v = S, a_i = a_{i-1}, b_i = b_{i-1}. The labels appear
+in data/certificates_n5.json, which this program writes.
+
+Files written, all under data/:
+    exhaustive_checks.json
+    terms.csv
+    size_distribution_by_cardinality.csv   (indexed by cardinality d; the
+        article's own data/size_distribution.csv is indexed by the number k
+        of zeros and is written by code/research.py -- the two are kept
+        separate because they are independent computations)
+    certificates_n5.json
+    asymptotics.json
+Files read: data/oeis_a381190_3_42.txt, provenance/candidates.json,
+provenance/selection.json.
 """
 from __future__ import annotations
 
@@ -201,8 +224,9 @@ def main() -> None:
     print('Python:', platform.python_version())
     print('No external Python packages are required.')
 
-    candidates = json.loads((out / 'candidates.json').read_text())
-    selection = json.loads((out / 'selection.json').read_text())
+    prov = ROOT / 'provenance'
+    candidates = json.loads((prov / 'candidates.json').read_text())
+    selection = json.loads((prov / 'selection.json').read_text())
     assert candidates[selection['zero_based_index']]['oeis'] == 'A381190'
     assert selection['one_based_index'] == 4 and selection['rerolls'] == 0
     print('Recorded RNG selection: candidate 4 / 4, A381190; no new random draw.')
@@ -251,7 +275,7 @@ def main() -> None:
     with (out / 'terms.csv').open('w', newline='') as f:
         w = csv.writer(f); w.writerow(['n', 'a_n'])
         w.writerows((n, a[n]) for n in range(3, args.max_n + 1))
-    with (out / 'size_distribution.csv').open('w', newline='') as f:
+    with (out / 'size_distribution_by_cardinality.csv').open('w', newline='') as f:
         w = csv.writer(f); w.writerow(['n', 'set_size', 'count'])
         for n in range(3, min(100, args.max_n) + 1):
             w.writerows((n, d, value) for d, value in sorted(count_by_size(n).items()))

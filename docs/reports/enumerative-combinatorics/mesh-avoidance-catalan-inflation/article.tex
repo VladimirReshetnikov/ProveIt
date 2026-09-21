@@ -40,6 +40,7 @@
 \DeclareMathOperator{\exc}{exc}
 \DeclareMathOperator{\fix}{fix}
 \DeclareMathOperator{\occ}{occ}
+\DeclareMathOperator{\rec}{rec}
 \newcommand{\N}{\mathbb N}
 \newcommand{\Q}{\mathbb Q}
 \newcommand{\Cat}{\operatorname{Cat}}
@@ -75,10 +76,13 @@ is a reversible operation; at the level of the Narayana generating function
 it becomes the substitution $u\mapsto u/(1+xu)$. A direct-sum decomposition
 then gives the conjectured radical expression. We also derive a full
 mesh-occurrence statistic, multivariate refinements, positive coefficient
-recurrences and finite sums, and the precise asymptotic
-$a_n\sim 0.4139310680\ldots\,(3.5464554447\ldots)^n n^{-3/2}$.
-The proof is self-contained, and the accompanying exact-arithmetic programs
-check the literal mesh definition independently of the generating function.
+recurrences and finite sums, an algorithm computing the first $N$ terms with
+$O(N)$ integer arithmetic operations, and the precise asymptotic
+$a_n\sim 0.4139310680\ldots\,(3.5464554447\ldots)^n n^{-3/2}$ together with
+its $1/n$ correction.
+The proof is self-contained, and the two accompanying independent
+exact-arithmetic programs check the literal mesh definition independently of
+the generating function.
 \end{abstract}
 
 \vspace{5pt}
@@ -104,6 +108,8 @@ columns and rows $0,1,2$, from left to right and from bottom to top.
 A pair is an occurrence of $(12,R)$ if every rectangle indexed by
 $(c,r)\in R$ is empty. Points on the selected lines cause no ambiguity,
 since a permutation has distinct positions and distinct values.
+This is the usual mesh-pattern framework of Br\"and\'en and
+Claesson~\cite{branden-claesson}, specialized to a length-two pattern.
 
 The shading sets relevant to A289587 are
 \begin{align}
@@ -112,7 +118,10 @@ The shading sets relevant to A289587 are
  \label{eq:Rtwo}
 \end{align}
 These coordinates agree with the encoding described in the linked SeqFan
-thread~\cite{seqfan}. They also remove any dependence of our proof or
+thread~\cite{seqfan}, which assigns the cell $(c,r)$ the weight $2^{3c+r}$;
+summing the weights of the shaded cells gives the displayed labels $174$
+and $234$. Those labels only name the patterns and play no arithmetic role
+in the proof. The explicit sets also remove any dependence of our proof or
 programs on an unexplained numerical pattern identifier.
 
 \begin{figure}[ht]
@@ -146,9 +155,27 @@ Transposition of the diagram interchanges the two mesh patterns.}
 \end{figure}
 
 Let $a_n$ count $\pi\in\Av_n(321)$ avoiding $(12,\Rone)$, including the
-empty permutation at $n=0$. Since $\Rtwo=\Rone^{\mathsf T}$, inversion is
-a bijection to the class avoiding $(12,\Rtwo)$. Thus both versions in the
-OEIS definition have the same counting sequence.
+empty permutation at $n=0$.
+
+\begin{lemma}[Inverse equivalence]
+\label{lem:inverse}
+The map $\pi\mapsto\pi^{-1}$ is a bijection between the class of
+$321$-avoiders avoiding $(12,\Rone)$ and the class of $321$-avoiders
+avoiding $(12,\Rtwo)$.
+\end{lemma}
+\begin{proof}
+Inverting a permutation transposes its point plot. The pattern $12$ is
+invariant under transposition, the classical pattern $321$ is its own
+inverse, and transposing every cell of $\Rone$ gives exactly $\Rtwo$.
+Thus inversion preserves $321$-avoidance and exchanges the two mesh
+restrictions, in both directions.
+\end{proof}
+
+\noindent
+Both versions in the OEIS definition therefore have the same counting
+sequence. This equivalence is proved, not inferred from agreement of
+initial terms. Refinements by excedances below refer to the $(12,\Rone)$
+class; the inverse bijection need not preserve that statistic.
 
 The OEIS entry~\cite{oeis} lists
 \[
@@ -177,8 +204,17 @@ Here $\sqrt{D(x)}$ is the formal square root with constant term $1$;
 the apparent singularity at $x=0$ is removable.
 \end{theorem}
 
+The interesting issue is not recognizing a square root from these numbers.
+A mesh condition quantifies over two selected entries and the emptiness of
+several surrounding rectangles. It can detect arbitrarily distant entries,
+and so need not reduce to a local prohibition. Here it does not: besides a
+local obstruction there is a genuinely global one, namely two singleton
+direct-sum components, even when they are separated by a nontrivial
+component. The proof below isolates that obstruction before any
+generating-function manipulation is performed.
+
 \paragraph{Status and scope.}
-The entry retrieved for this note still labels \eqref{eq:main}
+The entry, consulted on September 20, 2026, still labels \eqref{eq:main}
 ``Conjectured g.f.'' and credits Scheuerle on December 23, 2025.
 The proof below establishes the exact identity, not merely an initial
 coefficient agreement. I did not locate a proof of this formula in the entry
@@ -248,6 +284,53 @@ By \cref{lem:fixed}, fixed points of a $321$-avoider are exactly the
 singleton blocks in this decomposition. No triple $321$ straddles a
 direct-sum boundary, so each block is itself a $321$-avoider.
 These facts will make the fixed-point restriction particularly simple.
+We use ``fixed point'' and ``singleton direct-sum component''
+interchangeably from now on; inside $\Av(321)$ they are the same thing.
+
+The class can also be described using left-to-right maxima instead of
+excedances, and the literature on $321$-avoiders uses both. The two
+descriptions are not interchangeable as local conditions, and the next
+lemma records exactly where they agree. It is used in
+\cref{rem:records} and in the second verification program, and nowhere in
+the main line of the proof.
+
+\begin{lemma}[Records, excedances and fixed points]
+\label{lem:records}
+Let $\pi\in\Av_n(321)$ and write $\rec(\pi)$ for its number of
+left-to-right maxima. Then:
+\begin{enumerate}[label=\upshape(\roman*)]
+\item $\pi_i$ is a left-to-right maximum if and only if $i$ is an
+  excedance or a fixed point. Hence
+  $\rec(\pi)=\exc(\pi)+\fix(\pi)$.
+\item A sum-indecomposable $\pi$ of length at least two has no fixed
+  point. On such a permutation the left-to-right maxima are exactly the
+  excedance entries, so $\rec(\pi)=\exc(\pi)$.
+\item If $\pi_i$ is a left-to-right maximum, $\pi_{i+1}=\pi_i+1$, and
+  there is a sum cut at $i$, then the entries at positions $i$ and $i+1$
+  are two adjacent singleton components.
+\item Within a direct-sum component, being a left-to-right maximum is
+  equivalent to being one after standardizing that component.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(i) An excedance entry is a left-to-right maximum by \cref{lem:biinc};
+a fixed point is one by \cref{lem:fixed}. Conversely, if $\pi_i$ exceeds
+all $i-1$ preceding entries then $\pi_i\ge i$, so $i$ is an excedance or
+a fixed point. The two cases are disjoint.
+
+(ii) A fixed point is a singleton block, so an indecomposable permutation
+of length at least two has none, and (i) applies.
+
+(iii) A sum cut at $i$ means $\{\pi_1,\ldots,\pi_i\}=\{1,\ldots,i\}$, so
+the largest of the first $i$ entries is $i$; since $\pi_i$ is a
+left-to-right maximum, $\pi_i=i$ and therefore $\pi_{i+1}=i+1$. Then
+$\{\pi_1,\ldots,\pi_{i-1}\}=\{1,\ldots,i-1\}$ and
+$\{\pi_1,\ldots,\pi_{i+1}\}=\{1,\ldots,i+1\}$, so $i-1$ and $i+1$ are
+sum cuts as well and both entries are singleton components.
+
+(iv) Every earlier component consists of values smaller than every value
+of the current one, so it neither creates nor destroys a maximum.
+\end{proof}
 
 \section{The exact mesh-occurrence statistic}
 \label{sec:mesh}
@@ -327,15 +410,56 @@ it has no upper succession and has at most one fixed point.
 
 This is the decisive step: a condition involving five empty rectangles
 has become one local prohibition and one global restriction on singleton
-sum blocks.
+sum blocks. Equivalently, and this is the form in which the criterion is
+most often stated, a $321$-avoider \emph{contains} $(12,\Rone)$ exactly
+when it has an upper succession or at least two singleton direct-sum
+components. \Cref{thm:occ} is strictly stronger: \cref{cor:character} is
+its specialization to $\occ=0$.
+
+\begin{remark}[Two local conditions that are not the same condition]
+\label{rem:records}
+A variant of \eqref{eq:bond} appears naturally if one marks left-to-right
+maxima instead of excedances: call $i$ a \emph{record bond} when $\pi_i$
+is a left-to-right maximum and $\pi_{i+1}=\pi_i+1$. These are genuinely
+different predicates. The permutation $123$ has the record bonds $1,2$
+and $2,3$ but no upper succession at all, since every entry is a fixed
+point; among the $321$-avoiders of length at most six there are $31$ on
+which the two predicates disagree. What is true is the following.
+By \cref{lem:records}(i), a record bond that is not an upper succession
+starts at a fixed point $\pi_i=i$ and then $\pi_{i+1}=i+1$, which by
+\cref{lem:records}(iii) makes both entries singleton components; so a
+record bond that is not an upper succession forces a second fixed point.
+Hence
+\[
+ \text{no upper succession and }\fix\le1
+ \quad\Longleftrightarrow\quad
+ \text{no record bond and }\fix\le1,
+\]
+and the two conjunctions cut out the same class, even though neither
+local condition implies the other. On the nontrivial sum-indecomposable
+$321$-avoiders, where the contraction of \cref{sec:core} is actually
+performed, \cref{lem:records}(ii) makes the two predicates literally
+identical, because there are no fixed points there. This is why the
+record-refined and excedance-refined core series of \cref{sec:refinements}
+are the same series and not a shift of one another; both descriptions are
+correct, and the merged notation below uses excedances throughout.
+\end{remark}
 
 \begin{example}
 The five $321$-avoiders of length three are
 $123,132,213,231,312$. The first has three fixed points, while $231$ has
 the upper succession $2,3$. The remaining three are accepted, giving
-$a_3=3$. The permutation $1324$ has no upper succession, but its two
+$a_3=3$. The permutation $1324=1\oplus21\oplus1$ has no upper succession, but its two
 fixed points, $1$ and $4$, form a mesh occurrence. Thus the fixed-point
-condition cannot be omitted.
+condition cannot be omitted; note that the two singleton blocks producing
+it are not adjacent, so banning adjacent singletons would not suffice
+either.
+
+By contrast, $4123$ is accepted. Its consecutive ascents $1,2$ and $2,3$
+are neither excedance successions nor ascents beginning at a left-to-right
+maximum, and it is sum-indecomposable with no fixed point. This is the
+example to keep in mind: plain succession-avoidance is the wrong local
+condition, and the word ``upper'' in \eqref{eq:bond} is doing real work.
 \end{example}
 
 \section{Contracting upper runs}
@@ -494,7 +618,7 @@ is $1+xC(1+u(C-1))$, proving \eqref{eq:narayana}. The factor $x$ determines
 each coefficient from earlier ones, giving uniqueness.
 
 For the coefficient formula put $Y=C-1$. Then
-$Y=x(1+Y)(1+uY)$. Formal Lagrange inversion gives
+$Y=x(1+Y)(1+uY)$. Formal Lagrange inversion~\cite{flajolet-sedgewick} gives
 \[
  \coeff{x}{n}Y=\frac1n\coeff{z}{n-1}(1+z)^n(1+uz)^n.
 \]
@@ -519,7 +643,12 @@ The canonical decomposition in \cref{thm:core} gives
  \label{eq:substitution}
 \end{equation}
 The two substitutions are compositional inverses as formal power
-series in $x$. No analytic convergence assertion is involved.
+series in $x$. No analytic convergence assertion is involved: every
+coefficient of $x$ on either side is a polynomial in $u$, and the
+substituted denominators have constant term $1$. The alternating signs
+produced by $u\mapsto u/(1+xu)$ express the inversion of a bijection that
+has been proved, not an unmotivated guess and not an assumed
+inclusion--exclusion rule.
 
 At $u=1$, write simply $B(x)=B(x,1)$. Substitution into
 \eqref{eq:narayana} yields
@@ -559,7 +688,10 @@ bond-free permutation on either side. It follows that
  \label{eq:AfromH}
 \end{equation}
 This identity has a literal bijective interpretation: split at the
-unique singleton block when one exists.
+unique singleton block when one exists. The term $xH^2$ counts an actual
+singleton direct-sum component, not a marked arbitrary position; written
+in terms of $I$ through $H=1/(1-I)$, it says that a permutation with $m$
+nontrivial blocks offers exactly $m+1$ places for that singleton.
 
 \begin{proof}[Completion of the proof of \cref{thm:main}]
 Substitute \eqref{eq:H} into \eqref{eq:AfromH} and replace
@@ -569,6 +701,30 @@ $8x(1+x)^2$, exactly as in \eqref{eq:main}. Every prior identity was
 derived from a bijection or a unique formal functional equation, so
 this proves the formula for all coefficients simultaneously.
 \end{proof}
+
+\paragraph{Two polynomial certificates for the last step.}
+The final substitution can be checked by hand, without trusting any
+symbolic simplification. Let $r$ be an indeterminate and put
+\begin{equation}
+ G(x,r)=(1+x)r^2+(x+x^2-1)r+x^2,
+ \qquad
+ \sigma(x,r)=1-x-x^2-2(1+x)r.
+ \label{eq:Gdef}
+\end{equation}
+By \eqref{eq:Ipositive} below, equivalently by \eqref{eq:I}, the series
+$I(x)$ is the unique formal solution of $G(x,I)=0$ with $I(0)=0$.
+Direct expansion of polynomials gives the two identities
+\begin{align}
+ \sigma^2-D(x)&=4(1+x)\,G(x,r),\label{eq:cert1}\\
+ (P-Q\sigma)(1-r)^2-8x(1+x)^2(1-r+x)
+   &=2\bigl(Q(x)r-3x^2-7x-3\bigr)G(x,r).\label{eq:cert2}
+\end{align}
+Set $r=I(x)$. The right-hand sides vanish. Then \eqref{eq:cert1} says
+$\sigma(x,I)^2=D(x)$, and $\sigma(x,I)$ has constant term $1$, so
+$\sigma(x,I)=\sqrt{D(x)}$. Since $A=H+xH^2=(1-I+x)/(1-I)^2$ by
+\eqref{eq:AfromH} and $H=1/(1-I)$, identity \eqref{eq:cert2} is exactly
+$8x(1+x)^2A=P-Q\sqrt D$. Both certificates are polynomial identities in
+two indeterminates; verifying them requires only expansion.
 
 \paragraph{Why the quartic occurs.}
 The discriminant of the Narayana equation becomes
@@ -672,6 +828,107 @@ The difference between \eqref{eq:allocc} and \eqref{eq:bondref} is
 essential: a length-three run gives two adjacent bonds but three mesh
 occurrences.
 
+\subsection*{The refined core series}
+
+It is worth isolating the excedance refinement of the core series $I$ of
+\eqref{eq:I}, since the bond-free cores are the objects everything else
+is assembled from. Set
+\begin{equation}
+ I(x,u)=1-x-\frac1{B(x,u)},
+ \qquad\text{so that}\qquad
+ H(x,u)=\frac1{1-I(x,u)},
+ \label{eq:Ixu}
+\end{equation}
+the generating function of the nontrivial sum-indecomposable
+$321$-avoiders with no upper succession, by length and excedances.
+That \eqref{eq:Ixu} is what it claims to be is the refinement of
+\eqref{eq:I}: a bond-free permutation is a sequence of singleton blocks,
+of weight $x$ and no excedance, and nontrivial bond-free indecomposable
+blocks, and excedance number is additive under direct sum.
+By \cref{lem:records}(ii) these cores have no fixed point, so on
+this class the excedance refinement and the left-to-right-maximum
+refinement are the same refinement, entry by entry.
+
+\begin{proposition}[The bivariate core equation]
+\label{prop:corequation}
+$I(x,u)$ is the unique formal power series with zero constant term
+satisfying
+\begin{equation}
+ (1+xu)\,I(x,u)^2+(x+x^2u-1)\,I(x,u)+x^2u=0.
+ \label{eq:Ibiv}
+\end{equation}
+At $u=1$ this is \eqref{eq:Ipositive}.
+\end{proposition}
+\begin{proof}
+Let $J(x,u)$ count \emph{all} nontrivial sum-indecomposable
+$321$-avoiders by length and excedances. Blocks are independent, a
+singleton block has weight $x$ and no excedance, so $C=1/(1-x-J)$, that
+is, $J=1-x-1/C$. Using \eqref{eq:narayana} this simplifies to
+$J=xu\,(C-1)$, and substituting $C=1+J/(xu)$ back into
+\eqref{eq:narayana} gives
+\begin{equation}
+ J^2+\bigl(x(1+u)-1\bigr)J+x^2u=0.
+ \label{eq:Jquad}
+\end{equation}
+Now $B(x,u)=C(x,u/(1+xu))$ by \eqref{eq:substitution}, so
+$I(x,u)=1-x-1/B(x,u)=J\bigl(x,u/(1+xu)\bigr)$ directly from the two
+definitions. Making that substitution in
+\eqref{eq:Jquad} and multiplying by the invertible series $1+xu$ gives
+\eqref{eq:Ibiv}. Uniqueness holds because the coefficient of $I^1$ has
+constant term $-1$.
+\end{proof}
+
+\begin{corollary}[An alternating Narayana formula for the cores]
+\label{cor:alternating}
+Write $i_{n,k}=\coeff{x}{n}\coeff{u}{k}I(x,u)$ and let
+$\nu(n,k)=\frac1n\binom nk\binom n{k+1}$ be the Narayana number of
+\eqref{eq:Nnumber}, taken to be zero outside $n\ge1$, $0\le k<n$.
+Then, for $n\ge2$ and $k\ge1$,
+\begin{equation}
+ \boxed{\displaystyle
+ i_{n,k}=\sum_{d=0}^{k-1}(-1)^d\binom{k-1}d\,\nu(n-d-1,\,k-d-1).}
+ \label{eq:ialternating}
+\end{equation}
+\end{corollary}
+\begin{proof}
+From $J=xu(C-1)$ and \eqref{eq:Nnumber},
+$\coeff{x}{m}\coeff{u}{\ell}J=\nu(m-1,\ell-1)$. Hence
+\[
+ I(x,u)=\sum_{m\ge2}\sum_{\ell\ge1}
+   \nu(m-1,\ell-1)\,x^mu^\ell(1+xu)^{-\ell},
+\]
+and expanding $(1+xu)^{-\ell}=\sum_{d\ge0}(-1)^d\binom{\ell+d-1}dx^du^d$,
+then setting $m=n-d$ and $\ell=k-d$, gives \eqref{eq:ialternating}.
+\end{proof}
+
+The sum alternates, but its value is a nonnegative integer because it
+counts cores. For example \eqref{eq:ialternating} gives
+$\coeff{x}{4}I(x,u)=u+2u^2$ and
+$\coeff{x}{5}I(x,u)=u+5u^2+u^3$. The three cores of length four are
+indeed $4123$, with one excedance, and $2413$ and $3142$, with two.
+
+\begin{corollary}[Components and the singleton]
+\label{cor:componentref}
+Let $m(\pi)$ be the number of nontrivial direct-sum components of $\pi$
+and $s(\pi)\in\{0,1\}$ its number of singleton components. Then
+\begin{equation}
+ \sum_{\pi}x^{|\pi|}u^{\exc(\pi)}w^{m(\pi)}v^{s(\pi)}
+  =\frac1{1-w\,I(x,u)}+\frac{vx}{\bigl(1-w\,I(x,u)\bigr)^2},
+ \label{eq:componentref}
+\end{equation}
+the sum being over the permutations counted by $a_n$. In particular the
+members with $m$ nontrivial components and no singleton are counted by
+$I(x,u)^m$, and those with one singleton by $(m+1)\,x\,I(x,u)^m$.
+\end{corollary}
+\begin{proof}
+This is the decomposition behind \eqref{eq:AfromH}, with the two
+additional markers carried along. No interaction term is needed:
+by \cref{lem:records}(iii) and \cref{thm:core} no upper succession
+straddles a direct-sum boundary, so the components are chosen
+independently. Note that a singleton contributes the weight $x$ and no
+excedance, which is why $v$ appears multiplied by $x$ alone.
+\end{proof}
+
 \section{Exact coefficients: recurrences and finite sums}
 \label{sec:coefficients}
 
@@ -726,6 +983,78 @@ $n$ & $i_n$ & $h_n$ & $\coeff{x}{n}B$ & $a_n$\\
 \label{tab:coeffs}
 \end{table}
 
+\subsection{A linear-arithmetic coefficient algorithm}
+\label{sec:linear}
+
+The recurrences \eqref{eq:irec}--\eqref{eq:arec} are convolutions. The
+radical form \eqref{eq:main} supports a much cheaper signed alternative,
+in which the number of integer arithmetic operations is linear rather
+than quadratic. Write
+\[
+ T(x)=\sqrt{D(x)}=\sum_{n\ge0}t_nx^n,
+ \qquad (d_0,d_1,d_2,d_3,d_4)=(1,-2,-5,-2,1).
+\]
+
+\begin{proposition}[Holonomic recurrence for the radical]
+\label{prop:trec}
+With $t_n=0$ for $n<0$,
+\begin{equation}
+ \boxed{\displaystyle
+ t_0=1,\qquad
+ 2n\,t_n=\sum_{k=1}^{\min(4,n)}(3k-2n)\,d_k\,t_{n-k}
+ \quad(n\ge1).}
+ \label{eq:trec}
+\end{equation}
+Every $t_n$ is an integer, and every division indicated is exact.
+\end{proposition}
+\begin{proof}
+Differentiating $T^2=D$ gives $2DT'=D'T$. Comparing coefficients of
+$x^{n-1}$,
+\[
+ 2\sum_{k=0}^4 d_k(n-k)t_{n-k}=\sum_{k=0}^4 k\,d_k\,t_{n-k}.
+\]
+The $k=0$ term contributes $2nt_n$ on the left and nothing on the right,
+because $d_0=1$; collecting the remaining terms gives \eqref{eq:trec}.
+Integrality is not an accident of the recurrence: \eqref{eq:I} rearranges
+to $T=1-x-x^2-2(1+x)I(x)$, and $I$ has integer coefficients.
+\end{proof}
+
+\begin{theorem}[Linear-arithmetic coefficients]
+\label{thm:fastA}
+Let $p_j=\coeff{x}{j}P$, so $(p_0,\ldots,p_4)=(3,10,11,4,1)$ and $p_j=0$
+for $j>4$. With negative subscripts read as zero,
+\begin{equation}
+ \boxed{\displaystyle
+ a_n=\frac{p_{n+1}-3t_{n+1}-5t_n-t_{n-1}}8-2a_{n-1}-a_{n-2}
+ \qquad(n\ge0).}
+ \label{eq:fastA}
+\end{equation}
+All divisions by $8$ are exact.
+\end{theorem}
+\begin{proof}
+\Cref{thm:main} states $8x(1+x)^2A=P-QT$ with $Q=3+5x+x^2$. Comparing
+coefficients of $x^{n+1}$ gives
+$8(a_n+2a_{n-1}+a_{n-2})=p_{n+1}-3t_{n+1}-5t_n-t_{n-1}$, which is
+\eqref{eq:fastA}. Exactness of the division follows from the fact that
+the $a_n$ count permutations. Compute $t_1=-1$ from \eqref{eq:trec}
+before using \eqref{eq:fastA} at $n=0$, which then returns $a_0=1$.
+\end{proof}
+
+There are at most four summands in \eqref{eq:trec} and a fixed number of
+operations in \eqref{eq:fastA}, so all terms through index $N$ cost
+$O(N)$ integer arithmetic operations, against the $O(N^2)$ of
+\eqref{eq:irec}--\eqref{eq:arec}. As before this is an
+arithmetic-operation bound and not a claim of $O(N)$ bit complexity.
+\Cref{sec:asymptotics} shows that $a_n$ has $\Theta(n)$ bits, so the
+complete output through index $N$ occupies $\Theta(N^2)$ bits; a
+streaming implementation keeps only a fixed number of recent large
+integers and therefore needs $O(N)$ working bits beyond its output.
+The supplied programs keep whole arrays instead, for convenient
+comparison. The two routes are genuinely independent checks on one
+another: \eqref{eq:irec}--\eqref{eq:arec} use nonnegative integers only
+and no cancellation, while \eqref{eq:trec}--\eqref{eq:fastA} are heavily
+signed.
+
 \subsection{A minimal polynomial for the target series}
 
 Squaring the radical formula and simplifying gives
@@ -767,6 +1096,25 @@ Expanding the two remaining factors gives, for $n\ge2$,
 Indeed, the coefficient of $x^{a+2b}$ in
 $(1-x-x^2)^{-m}$ contributed by $a$ copies of $x$ and $b$ copies of
 $x^2$ is $(m+a+b-1)!/((m-1)!a!b!)$.
+
+The same rational factors can be expanded a second way, with one summation
+index instead of two. Since $(1-x-x^2)^{-1}$ is the Fibonacci generating
+function, this is a Fibonacci-power identity: for integers $h\ge1$ and
+$m\ge0$,
+\begin{equation}
+ \coeff{x}{m}(1-x-x^2)^{-h}
+ =\sum_{\ell=0}^{\lfloor m/2\rfloor}
+   \binom{h+m-\ell-1}{m-\ell}\binom{m-\ell}{\ell}.
+ \label{eq:fibpower}
+\end{equation}
+To see this, expand first in powers of $x+x^2$, which contributes
+$\binom{h+j-1}{j}$ for the $j$th power, and then choose which $\ell$ of
+those $j$ factors supply $x^2$ rather than $x$; writing $j=m-\ell$ gives
+\eqref{eq:fibpower}. Together with the finite expansion of $(1+x)^j$,
+identity \eqref{eq:fibpower} turns \eqref{eq:Icat} into a nonalternating
+binomial formula for $i_n$ with one fewer summation than
+\eqref{eq:ifinite}. Both are recorded because they are independent
+evaluations of the same series.
 
 For a completely recurrence-free formula for $a_n$, let
 $\mathcal C_{\ge2}(m,k)$ be the ordered $k$-tuples of integers at least
@@ -810,18 +1158,25 @@ for that reason it is useful as an independent exact-arithmetic check.
 \label{sec:asymptotics}
 
 The radical formula also determines the exponential growth and its
-polynomial correction. Factor
+polynomial correction. Two complementary ways of locating the zeros of
+$D$ are worth recording. The first is an explicit real factorization,
 \begin{equation}
  D(x)=\bigl(x^2-(1+2\sqrt2)x+1\bigr)
       \bigl(x^2+(2\sqrt2-1)x+1\bigr).
  \label{eq:Dfactor}
 \end{equation}
-The first factor has two positive reciprocal roots, and the second has
-two nonreal roots on the unit circle. Hence the smallest-modulus zero
-is the positive number
+The second uses the fact that $D$ is reciprocal: for $x\ne0$,
+\begin{equation}
+ x^{-2}D(x)=(x+x^{-1})^2-2(x+x^{-1})-7,
+ \label{eq:reciprocal}
+\end{equation}
+so the zeros satisfy $x+x^{-1}=1\pm2\sqrt2$. The plus sign gives a
+positive reciprocal pair; the minus sign gives $|1-2\sqrt2|<2$ and hence
+a conjugate pair on the unit circle. Either route shows that the
+smallest-modulus zero is the positive simple number
 \begin{equation}
  \rho=\frac{1+2\sqrt2-\sqrt{5+4\sqrt2}}2
-       =0.2819716800611948531\ldots.
+       =0.281971680061194853146616\ldots.
  \label{eq:rho}
 \end{equation}
 The rational denominator in \eqref{eq:main} has no nonremovable zero
@@ -834,13 +1189,14 @@ Let
 \begin{align}
  \gamma&=\rho^{-1}
        =\frac{1+2\sqrt2+\sqrt{5+4\sqrt2}}2
-        =3.5464554446849952445\ldots,\label{eq:gamma}\\
+        =3.546455444684995244456761\ldots,\label{eq:gamma}\\
  \delta&=\sqrt{-\rho D'(\rho)},\qquad
- K=\frac{(\rho^2+5\rho+3)\delta}
+ K=\frac{Q(\rho)\,\delta}
           {16\sqrt\pi\,\rho(1+\rho)^2}
-       =0.4139310680369706448\ldots.
+       =0.413931068036970644808821\ldots,
  \label{eq:K}
 \end{align}
+where $Q(\rho)=\rho^2+5\rho+3>0$, so the square-root term does not cancel.
 Then
 \begin{equation}
  \boxed{a_n\sim K\,\gamma^n n^{-3/2}.}
@@ -870,7 +1226,8 @@ strictly larger than $\rho$ without meeting another singularity.
 The convergent local square-root expansion therefore transfers termwise;
 the next nonanalytic term is of order $z^{3/2}$ and contributes
 $O(\rho^{-n}n^{-5/2})$. Equivalently, this is the usual square-root
-singularity transfer, obtained by deforming a Cauchy coefficient contour
+singularity transfer~\cite{flajolet-sedgewick}, obtained by deforming a
+Cauchy coefficient contour
 to the slit at $\rho$. Thus the leading constant is
 $S(\rho)\delta/(2\sqrt\pi)$, namely \eqref{eq:K}.
 \end{proof}
@@ -880,9 +1237,16 @@ The first relative correction is also explicit. Define
  c_1=\frac38-\frac32\left(
      \frac{\rho^2D''(\rho)}{4\delta^2}
        -\frac{\rho S'(\rho)}{S(\rho)}\right)
-    =-1.0082530378112395475\ldots.
+    =-1.008253037811239547502410\ldots.
  \label{eq:c1}
 \end{equation}
+Since $\delta^2=-\rho D'(\rho)$, this is the same number as
+\begin{equation}
+ c_1=\frac38+\frac{3\rho S'(\rho)}{2S(\rho)}
+          +\frac{3\rho D''(\rho)}{8D'(\rho)},
+ \label{eq:c1alt}
+\end{equation}
+which is the form the programs evaluate.
 Expanding one term further gives
 \begin{equation}
  a_n=K\gamma^n n^{-3/2}
@@ -897,64 +1261,154 @@ $-3/2$ is $\Gamma(-1/2)/\Gamma(-3/2)$.
 
 \begin{table}[ht]
 \centering
-\caption{Exact coefficients divided by the leading asymptotic.}
-\begin{tabular}{r l}
+\caption{Exact coefficients against the one- and two-term asymptotics.
+The middle column should converge to $c_1$, the last to $1$.}
+\begin{tabular}{r l l l}
 \toprule
-$n$ & $a_n/(K\gamma^n n^{-3/2})$\\
+$n$ & $a_n/(K\gamma^n n^{-3/2})$
+    & $n\bigl(a_n/(K\gamma^n n^{-3/2})-1\bigr)$
+    & $a_n/\bigl(K\gamma^nn^{-3/2}(1+c_1/n)\bigr)$\\
 \midrule
-20 & $0.951983446713366\ldots$\\
-50 & $0.980230192459601\ldots$\\
-100 & $0.990017308750539\ldots$\\
-200 & $0.994983824600422\ldots$\\
+10 & $0.907817390152669\ldots$ & $-0.9218260984733\ldots$ & $1.009611807327\ldots$\\
+20 & $0.951983446713366\ldots$ & $-0.9603310657327\ldots$ & $1.002523305106\ldots$\\
+25 & $0.961218942324211\ldots$ & $-0.9695264418947\ldots$ & $1.001614163236\ldots$\\
+50 & $0.980230192459601\ldots$ & $-0.9884903770200\ldots$ & $1.000403387550\ldots$\\
+100 & $0.990017308750539\ldots$ & $-0.9982691249461\ldots$ & $1.000100856012\ldots$\\
+200 & $0.994983824600422\ldots$ & $-1.0032350799160\ldots$ & $1.000025216915\ldots$\\
+250 & $0.995983062047636\ldots$ & $-1.0042344880910\ldots$ & $1.000016139289\ldots$\\
+500 & $0.997987520864276\ldots$ & $-1.0062395678620\ldots$ & $1.000004035077\ldots$\\
+1000 & $0.998992754748870\ldots$ & $-1.0072452511300\ldots$ & $1.000001008804\ldots$\\
 \bottomrule
 \end{tabular}
+\label{tab:ratios}
 \end{table}
 
+The last column shrinks towards $1$ at the rate $n^{-2}$ predicted by
+\eqref{eq:asymp2}, which is what a merely fitted correction term would
+not be expected to do.
+
+\paragraph{Two consequences.}
+First, $\log_2a_n=n\log_2\gamma+O(\log n)$, so $a_n$ occupies $\Theta(n)$
+bits; this is the size estimate used in \cref{sec:linear}. Second, since
+$|\Av_n(321)|=\Cat_n\sim4^n/(\sqrt\pi\,n^{3/2})$, the proportion of
+$321$-avoiders meeting the mesh restriction is
+\begin{equation}
+ \frac{a_n}{\Cat_n}\sim K\sqrt\pi\left(\frac\gamma4\right)^n.
+ \label{eq:proportion}
+\end{equation}
+The extra geometric condition is therefore exponentially selective inside
+the Catalan class, while the characteristic exponent $n^{-3/2}$ survives.
+
 \begin{corollary}[A limiting fixed-point probability]
+\label{cor:fixedprob}
 Choose an A289587 permutation uniformly at random from those of length
-$n$. The probability that it has exactly one fixed point tends to
+$n$. The probability that it has exactly one fixed point, equivalently
+exactly one singleton direct-sum component, tends to
 \begin{equation}
  \frac{2\rho H(\rho)}{1+2\rho H(\rho)}
-    =0.4288852556670782555\ldots,
- \qquad
- H(\rho)=\frac{1+3\rho+\rho^2}{4\rho(1+\rho)}.
+    =\frac{2\rho}{1-I(\rho)+2\rho}
+    =0.428885255667078255465240\ldots,
  \label{eq:fixedprob}
+\end{equation}
+where
+\begin{equation}
+ H(\rho)=\frac{1+3\rho+\rho^2}{4\rho(1+\rho)},
+ \qquad
+ I(\rho)=\frac{1-\rho-\rho^2}{2(1+\rho)}
+        =0.249038376398374331486125\ldots.
+ \label{eq:Irho}
 \end{equation}
 \end{corollary}
 \begin{proof}
 Write $H=h_0-h_1\sqrt{1-x/\rho}+O(1-x/\rho)$, where $h_1>0$.
 The corresponding square-root coefficients in $H+xH^2$ and $xH^2$
 are $-h_1(1+2\rho h_0)$ and $-2\rho h_0h_1$. Their coefficient ratio
-gives \eqref{eq:fixedprob}.
+gives the first expression in \eqref{eq:fixedprob}; singularity transfer
+applies to both summands separately. The second expression follows from
+$H=1/(1-I)$, and $I(\rho)$ is obtained by putting $D(\rho)=0$ in
+\eqref{eq:I}.
 \end{proof}
 
 \section{Reproducibility and proof audit}
 \label{sec:checks}
 
-The archive contains a standard-library Python verifier,
-\texttt{code/verify.py}, and an optional SymPy/mpmath script,
-\texttt{code/symbolic\_checks.py}. Neither program downloads data or
-uses numerical guessing to establish the formula.
+The archive contains \emph{two} independent standard-library Python
+verifiers, living in \texttt{code/}:
+\begin{itemize}
+\item \texttt{verify.py}, with the optional SymPy/mpmath companion
+ \texttt{symbolic\_checks.py};
+\item \texttt{verify\_records.py}, with the optional companion
+ \texttt{symbolic\_check\_records.py}.
+\end{itemize}
+The two verifiers were written separately and share no code.  They are
+independent implementations of the same test design: each generates
+$\mathrm{Av}(321)$ by inserting the new maximum, and each then has its own
+mesh predicate, its own contraction routine and its own coefficient
+algorithm, the first organized around excedances and the second around
+left-to-right maxima.  What is independent is the implementation, not the
+generation strategy.
+That duplication is deliberate and is retained on purpose; a third short
+script, \texttt{code/cross\_check.py}, compares their four coefficient
+algorithms against each other. No program downloads data or uses
+numerical guessing to establish the formula.
 
 \paragraph{Independent enumeration.}
 To generate all $321$-avoiders, insert a new maximum into every position
 whose following suffix is increasing. A newly created $321$ would have
 to start at the new maximum, so this criterion is necessary and
 sufficient. Every resulting permutation has a unique parent obtained by
-deleting its maximum. Catalan totals are checked at each length.
-For mesh membership, the program tests the nine-rectangle definition
+deleting its maximum. Catalan totals are checked at each length, and the
+second verifier additionally compares its generated sets against a filter
+of all $n!$ permutations through $n=8$.
+For mesh membership, both programs test the nine-rectangle definition
 directly, rather than replacing it by \cref{cor:character}.
 This is important because the structural theorem is exactly the result
-that the independent test should be capable of falsifying.
+that the independent tests should be capable of falsifying.
 
 \begin{table}[ht]
 \centering
-\caption{Executed checks included in the reproducibility logs.}
+\caption{Direct geometric enumeration by the second verifier. These
+columns are counted from the nine-rectangle definition, not expanded from
+the conjectured formula. The last column counts the nontrivial
+sum-indecomposable bond-free cores, $i_n$.}
+\begin{tabular}{r r r r r}
+\toprule
+$n$ & $|\Av_n(321)|$ & avoid $(12,\Rone)$ & avoid $(12,\Rtwo)$ & $i_n$\\
+\midrule
+0 & 1 & 1 & 1 & 0\\
+1 & 1 & 1 & 1 & 0\\
+2 & 2 & 1 & 1 & 1\\
+3 & 5 & 3 & 3 & 1\\
+4 & 14 & 6 & 6 & 3\\
+5 & 42 & 18 & 18 & 7\\
+6 & 132 & 47 & 47 & 19\\
+7 & 429 & 139 & 139 & 53\\
+8 & 1430 & 405 & 405 & 153\\
+9 & 4862 & 1225 & 1225 & 453\\
+10 & 16796 & 3740 & 3740 & 1367\\
+11 & 58786 & 11602 & 11602 & 4191\\
+\bottomrule
+\end{tabular}
+\label{tab:exhaustive}
+\end{table}
+
+The first verifier carries the literal nine-rectangle test three lengths
+further, to $n=12$ for both patterns and to $n=13$ structurally.
+\Cref{tab:exhaustive} additionally exhibits the two mesh columns side by
+side, which is the finite counterpart of \cref{lem:inverse}; the second
+verifier also checks that inversion matches the two occurrence sets
+pointwise through $n=8$.
+
+\begin{table}[ht]
+\centering
+\caption{Executed checks included in the reproducibility logs. The first
+group is \texttt{verify.py}, the second \texttt{verify\_records.py}, the
+third \texttt{cross\_check.py}.}
 \begin{tabular}{p{0.69\textwidth}r}
 \toprule
 Check & Range\\
 \midrule
-Literal mesh test, both $R_{174}$ and $R_{234}$, against the structural
+Literal mesh test, both $\Rone$ and $\Rtwo$, against the structural
 characterization and coefficient recurrence & $0\le n\le12$\\
 Structural counts and every fixed-point refinement against the
 coefficient recurrences & $0\le n\le13$\\
@@ -964,6 +1418,23 @@ Radical expansion versus the positive recurrences & $0\le n\le200$\\
 Narayana-substitution finite sum \eqref{eq:Bfinite} & $0\le n\le60$\\
 Positive finite sum \eqref{eq:ifinite} & $0\le n\le45$\\
 Published OEIS initial values & $0\le n\le16$\\
+\midrule
+Generator against a filter of all $n!$ permutations & $0\le n\le8$\\
+Literal mesh test, both patterns, against the structural
+characterization & $0\le n\le11$\\
+Pointwise inversion of mesh occurrences, \cref{lem:inverse} &
+$0\le n\le8$\\
+Record-to-Dyck bijection round trips and the Narayana distribution of
+left-to-right maxima & $0\le n\le11$\\
+Refined core formula \eqref{eq:ialternating} and the full refinement
+\eqref{eq:componentref} against joint counts & $0\le n\le11$\\
+Contraction/inflation round trips on indecomposables &
+$23713$ round trips\\
+Independent inflations of small cores & $102$ tests\\
+\midrule
+All four coefficient algorithms against each other, including
+\eqref{eq:trec}--\eqref{eq:fastA} against
+\eqref{eq:irec}--\eqref{eq:arec} & $0\le n\le1000$\\
 \bottomrule
 \end{tabular}
 \label{tab:checks}
@@ -972,11 +1443,34 @@ Published OEIS initial values & $0\le n\le16$\\
 All checks passed. At length $12$, the literal test examines all
 $208012$ Catalan permutations and counts $36357$ accepted ones; at
 length $13$, the structural test examines all $742900$ Catalan
-permutations and counts $115049$. The symbolic script verifies seven
-algebraic residuals identically equal to zero, including
-\eqref{eq:AfromH}, \eqref{eq:Apoly}, and \eqref{eq:Dfactor}. The coefficient
-file extends the sequence through $n=200$ and is explicitly identified
-as computed from this proof, not as an official OEIS file.
+permutations and counts $115049$. The second verifier examines all
+$82500$ Catalan permutations of lengths $0$ through $11$.
+The first symbolic script verifies seven algebraic residuals identically
+equal to zero, including \eqref{eq:AfromH}, \eqref{eq:Apoly}, and
+\eqref{eq:Dfactor}; the second certifies \eqref{eq:cert1} and
+\eqref{eq:cert2} as exact polynomial divisions with the quotients
+$4(1+x)$ and $2(Q(x)r-3x^2-7x-3)$ displayed in \cref{sec:proof}, and
+evaluates the constants of \cref{sec:asymptotics} at $90$ digits.
+Both sets of constants agree to every digit printed here.
+The coefficient files extend the sequence through $n=200$ and through
+$n=1000$; both are explicitly identified as computed from this proof and
+neither is an official OEIS file. For orientation the extension begins
+\begin{center}
+\begin{tabular}{r r@{\qquad}r r}
+\toprule
+$n$ & $a_n$ & $n$ & $a_n$\\
+\midrule
+17 & 12380078 & 22 & 4778632088\\
+18 & 40423803 & 23 & 15884348886\\
+19 & 132564051 & 24 & 52941973417\\
+20 & 436417933 & 25 & 176889898401\\
+21 & 1441809621 & 26 & 592374142673\\
+\bottomrule
+\end{tabular}
+\end{center}
+These tests guard against errors in the shading convention, in the
+bijections, in the refinements and in the algebra. They are not a proof
+of an identity for all $n$.
 
 \paragraph{What constitutes the proof.}
 Finite tests are corroboration, not a substitute for the argument.
@@ -992,15 +1486,22 @@ on checking only the currently displayed OEIS terms.
 From the archive directory, run
 \begin{verbatim}
 python3 code/verify.py
-python3 code/symbolic_checks.py       # optional; needs sympy, mpmath
+python3 code/verify_records.py --max-n 1000 --exhaustive 11
+python3 code/cross_check.py
+python3 code/symbolic_checks.py         # optional; needs sympy, mpmath
+python3 code/symbolic_check_records.py  # optional; needs sympy, mpmath
 pdflatex -interaction=nonstopmode article.tex
 pdflatex -interaction=nonstopmode article.tex
 \end{verbatim}
-The first program writes coefficient tables and a machine-readable
-verification report to \texttt{data/}. The second writes exact symbolic
-check results and high-precision numerical approximations. This note
-provides a conventional mathematical proof; it is not a proof-assistant
-formalization, and its numerical approximations are not presented as
+Do not use Python's \texttt{-O} flag, which disables the assertions that
+are the checks. The verifiers write coefficient tables and
+machine-readable reports to \texttt{data/} under distinct names; the
+optional scripts write exact symbolic check results and high-precision
+numerical approximations. Raising the exhaustive limit entails Catalan
+growth and is unrelated to the linear cost of generating coefficients.
+This note provides a conventional mathematical proof; it is not a
+proof-assistant formalization, and its numerical approximations are
+high-precision evaluations of exact expressions, not
 interval-arithmetic certificates.
 
 \section{Conclusion}
@@ -1013,7 +1514,8 @@ $H=B/(1+xB)$ and $A=H+xH^2$. Thus the conjectured quartic radical
 comes from the Narayana equation after a canonical change of variables,
 not from extrapolating a finite coefficient list. The same structure
 yields refined occurrence enumeration, positive recurrences and finite
-formulas, and a precise asymptotic expansion.
+formulas, a coefficient algorithm of linear arithmetic cost, and a
+precise asymptotic expansion with its $1/n$ correction.
 
 \begin{thebibliography}{9}
 \small
@@ -1032,6 +1534,24 @@ December 2025,
 \url{https://groups.google.com/g/seqfan/c/9jqIgQGj8Gg}.
 The thread specifies the mesh-shading encoding and identifies the pair
 of patterns numbered 174 and 234. Consulted September 20, 2026.
+
+\bibitem{branden-claesson}
+Petter Br\"and\'en and Anders Claesson,
+\emph{Mesh patterns and the expansion of permutation statistics as sums
+of permutation patterns}, Electronic Journal of Combinatorics
+\textbf{18}(2) (2011), Paper P5, \url{https://doi.org/10.37236/2001}.
+Preprint: \url{https://arxiv.org/abs/1102.4226}.
+The foundational source for the general mesh-pattern framework; it is not
+a source for the specific argument given here.
+
+\bibitem{flajolet-sedgewick}
+Philippe Flajolet and Robert Sedgewick,
+\emph{Analytic Combinatorics}, Cambridge University Press, 2009,
+\url{https://ac.cs.princeton.edu/home/}.
+Background for formal Lagrange inversion and for the transfer of
+square-root singular expansions. The functional equations and the local
+expansion used above are derived here explicitly, and the
+dominant-singularity hypotheses are checked.
 
 \bibitem{reifegerste}
 Astrid Reifegerste,

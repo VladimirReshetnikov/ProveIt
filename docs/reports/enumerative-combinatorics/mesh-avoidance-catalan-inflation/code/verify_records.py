@@ -1,5 +1,14 @@
 #!/usr/bin/env python3
-"""Exact and exhaustive checks for the proof of OEIS A289587.
+"""Second, independent exact and exhaustive checker for OEIS A289587.
+
+This is the record-based implementation of the same test design as
+code/verify.py, kept deliberately separate: its permutation generator,
+mesh predicate, contraction routine and coefficient algorithms were
+written independently of that file and share no code with it.  It also
+carries the linear-arithmetic coefficient algorithm, which code/verify.py
+does not have.  Its outputs are written under the "_records" names so that
+they never overwrite the excedance-based checker's outputs.
+
 Python 3.9+; standard library only. Run without Python's -O switch.
 Finite checks support, but do not replace, the mathematical proof.
 """
@@ -234,7 +243,8 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--max-n',type=int,default=1000)
     parser.add_argument('--exhaustive',type=int,default=11)
-    parser.add_argument('--outdir',type=Path,default=Path('data'))
+    parser.add_argument('--outdir',type=Path,
+                        default=Path(__file__).resolve().parents[1]/'data')
     args = parser.parse_args()
     if not __debug__:
         parser.error('Do not use -O: this checker uses assertions.')
@@ -328,11 +338,11 @@ def main() -> None:
                 assert avoids_321(p) and len(components(p))==1
                 assert contract(p)==(core,tuple(lengths))
                 inflation_tests += 1
-    with (args.outdir/'coefficients.csv').open('w',newline='') as stream:
+    with (args.outdir/'coefficients_records.csv').open('w',newline='') as stream:
         writer = csv.writer(stream)
         writer.writerow(['n','a_n','reduced_core_r_n'])
         writer.writerows((n,a[n],r[n]) for n in range(args.max_n+1))
-    with (args.outdir/'b289587_extended.txt').open('w') as stream:
+    with (args.outdir/'b289587_extended_n1000.txt').open('w') as stream:
         stream.write('# Computed from the proved formula; not an official OEIS b-file.\n')
         stream.writelines(f'{n} {value}\n' for n,value in enumerate(a))
     with (args.outdir/'exhaustive_counts.csv').open('w',newline='') as stream:
@@ -355,7 +365,7 @@ def main() -> None:
                   'four-variable class generating function'],
         'elapsed_seconds':round(perf_counter()-start,3),
         'note':'Finite checks support but do not replace the mathematical proof.'}
-    (args.outdir/'verification_report.json').write_text(json.dumps(report,indent=2)+'\n')
+    (args.outdir/'verification_report_records.json').write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps(report,indent=2),flush=True)
 
 

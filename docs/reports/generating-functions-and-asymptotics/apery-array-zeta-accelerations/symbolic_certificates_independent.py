@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
-"""Optional exact symbolic verification; requires SymPy. No numerical input."""
+"""Independent optional symbolic verification; requires SymPy. No numerical input.
+
+Second, independent SymPy suite carried over from the merged archive.  It uses
+the transposed naming convention of its original author (``n`` = dimension,
+``m`` = radius, ``f3``/``f2`` for the polynomials called ``s``/``q`` in the
+article, ``g3``/``g2`` for their conjugates).  The companion program
+``symbolic_certificates.py`` checks the article's own certificates.
+"""
 from pathlib import Path
 import sympy as s
 
@@ -33,5 +40,5 @@ for name, expr in identities.items():
     lines.append(name + ': residual = 0')
 lines.append('PASS')
 text='\n'.join(lines)+'\n'
-Path(__file__).with_name('symbolic_report.txt').write_text(text)
+(Path(__file__).resolve().parent / 'data' / 'symbolic_report_independent.txt').write_text(text)
 print(text)

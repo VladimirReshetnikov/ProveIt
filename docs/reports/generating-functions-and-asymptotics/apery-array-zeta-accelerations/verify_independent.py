@@ -1,7 +1,18 @@
 #!/usr/bin/env python3
-"""Exact-arithmetic regression checks and theorem-based rational enclosures.
+"""Independent exact-arithmetic reimplementation of the same checks.
 
-Python 3.10+; standard library only.  Run: python3 verify.py
+This file is the second, deliberately independent implementation carried over
+from the merged archive.  It uses the transposed naming convention of its
+original author: the array of A108625 is called ``U`` here (it is ``C`` in
+``verify.py`` and in the article), and its index pair is written ``(n, m)``
+with ``n`` the lattice dimension and ``m`` the radius -- the same roles as
+``(m, n)`` in ``verify.py``.  Keeping both implementations is intentional:
+their independence is what makes the agreement meaningful.
+
+The headline check count reported by the article comes from ``verify.py``,
+which runs the union suite.  This program is an additional audit.
+
+Python 3.10+; standard library only.  Run: python3 verify_independent.py
 Finite checks are not substituted for the all-parameter proofs in article.pdf.
 The enclosures follow from those proofs; no numerical zeta oracle is used.
 """
@@ -15,7 +26,8 @@ from functools import lru_cache
 from math import comb
 from pathlib import Path
 
-OUT = Path(__file__).resolve().parent
+OUT = Path(__file__).resolve().parent / "data"
+OUT.mkdir(parents=True, exist_ok=True)
 COUNTS: dict[str, int] = {}
 
 
@@ -268,7 +280,7 @@ def write_certificates() -> list[str]:
         lows = [Q(int(r["lower"]["numerator"]), int(r["lower"]["denominator"])) for r in rows]
         highs = [Q(int(r["upper"]["numerator"]), int(r["upper"]["denominator"])) for r in rows]
         require(max(lows) < min(highs), "independent interval intersection", power)
-    (OUT / "certificates.json").write_text(json.dumps(records, indent=2) + "\n")
+    (OUT / "decimal_certificates.json").write_text(json.dumps(records, indent=2) + "\n")
     with (OUT / "convergence_table.csv").open("w", newline="") as fp:
         writer = csv.writer(fp)
         writer.writerow(["family", "N", "k", "width_less_than_10_to_minus_d", "certified_decimal_places"])
@@ -279,7 +291,7 @@ def write_certificates() -> list[str]:
                     lo, hi = bounds(3 if family == "zeta3" else 2, n, m)
                     digits, _ = common_digits(lo, hi)
                     writer.writerow([family, N, k, width_exponent(hi - lo), digits])
-    with (OUT / "array_sample.csv").open("w", newline="") as fp:
+    with (OUT / "array_sample_independent.csv").open("w", newline="") as fp:
         writer = csv.writer(fp)
         writer.writerow(["n", "m", "U_A108625", "T_A143007"])
         for n in range(11):
@@ -297,9 +309,9 @@ def main() -> None:
     lines.extend(f"{key}: {value}" for key, value in COUNTS.items())
     lines += [f"TOTAL CHECKS: {sum(COUNTS.values())}", "", "RATIONAL ENCLOSURES (N = 60)"]
     lines.extend(summaries)
-    lines += ["", "Full exact endpoints: certificates.json", "PASS"]
+    lines += ["", "Full exact endpoints: data/decimal_certificates.json", "PASS"]
     text = "\n".join(lines) + "\n"
-    (OUT / "verification_report.txt").write_text(text)
+    (OUT / "verification_report_independent.txt").write_text(text)
     print(text)
 
 

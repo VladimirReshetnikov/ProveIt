@@ -51,13 +51,34 @@ A convenient nonnegative-integer recurrence uses I(0)=0 and
     H = 1/(1-I),
     A = H+x*H^2.
 
-Also a(n) ~ K*gamma^n*n^(-3/2), with
+This costs O(N^2) integer arithmetic operations for the first N terms. A
+signed recurrence costs only O(N). Let T=sqrt(D)=sum t(n)*x^n and
+(d0,...,d4)=(1,-2,-5,-2,1). Differentiating T^2=D gives 2*D*T'=D'*T, hence
+
+    t(0) = 1,
+    2*n*t(n) = sum_{k=1..min(4,n)} (3*k-2*n)*d(k)*t(n-k)   for n >= 1.
+
+Then, comparing coefficients of x^(n+1) in 8*x*(1+x)^2*A = P-Q*T, and writing
+(p0,...,p4)=(3,10,11,4,1) with p(j)=0 for j>4 and negative subscripts read as
+zero,
+
+    a(n) = (p(n+1)-3*t(n+1)-5*t(n)-t(n-1))/8 - 2*a(n-1) - a(n-2).
+
+All divisions are exact. (These are arithmetic-operation counts, not bit
+complexity; a(n) has Theta(n) bits.)
+
+Also a(n) ~ K*gamma^n*n^(-3/2)*(1+c1/n+O(n^-2)), with
 
     gamma = (1+2*sqrt(2)+sqrt(5+4*sqrt(2)))/2
-          = 3.5464554446849952445...,
-    K = 0.4139310680369706448....
+          = 3.546455444684995244456761...,
+    K  = 0.413931068036970644808821...,
+    c1 = -1.008253037811239547502410....
 
 Inversion transposes the shading from 174 to 234, proving the equivalence of
 the two versions in the sequence definition. The accompanying article gives
-all details, refinements, and the exact expression for K. Independent literal
-mesh tests through n=12 and exact series checks through degree 200 passed.
+all details, refinements, and the exact expressions for K and c1. Two
+independent programs were run: literal mesh tests through n=12 and exact
+series checks through degree 200, and a second, separately written checker
+with literal mesh tests through n=11 and exact series checks through degree
+1000. All four coefficient algorithms agree at every index through 1000.
+Nothing here has been submitted to OEIS.

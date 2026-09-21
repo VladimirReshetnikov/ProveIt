@@ -1,14 +1,27 @@
-.PHONY: pdf check symbolic clean
+PYTHON ?= python3
+
+.PHONY: all pdf check check-records cross symbolic clean
+
+all: pdf check check-records cross
 
 pdf:
-	pdflatex -interaction=nonstopmode -halt-on-error article.tex
-	pdflatex -interaction=nonstopmode -halt-on-error article.tex
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+	latexmk -c
 
 check:
-	python3 code/verify.py
+	$(PYTHON) code/verify.py
+
+check-records:
+	$(PYTHON) code/verify_records.py --max-n 1000 --exhaustive 11
+
+cross:
+	$(PYTHON) code/cross_check.py
 
 symbolic:
-	python3 code/symbolic_checks.py
+	$(PYTHON) code/symbolic_checks.py
+	$(PYTHON) code/symbolic_check_records.py
 
 clean:
-	rm -f article.aux article.log article.out article.toc
+	rm -f article.aux article.log article.out article.toc \
+	      article.fdb_latexmk article.fls
+	rm -rf code/__pycache__

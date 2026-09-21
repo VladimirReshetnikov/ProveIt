@@ -87,10 +87,12 @@ vertex marks an eligible edge of that word. Cutting at the marked gap gives
 The same bijection gives an explicit size distribution, a trivariate generating
 function, strict log-concavity, a distinction between tree and unicyclic
 induced subgraphs, exact extremal counts, and an unbiased sampler. We also
-obtain a Binet formula, exponentially small absolute asymptotic error, an exact
-nearest-integer formula, and a central limit theorem for set size. Independent
-exhaustion of all 22,369,536 vertex subsets for $3\le n\le11$ agrees with the
-classification at the level of individual sets, not merely totals.
+obtain a Binet formula, exponentially small absolute asymptotic error, two
+exact nearest-integer formulas, a closed finite binomial sum, and a central
+limit theorem for set size. Independent exhaustion of all 22,369,536 vertex
+subsets for $3\le n\le11$ agrees with the classification at the level of
+individual sets, not merely totals; the cases $3\le n\le10$ are independently reproduced by a second, separately written exhaustion, and is reproduced by a second, separately
+written exhaustive program in another language.
 \end{abstract}
 
 \begin{resultbox}
@@ -100,7 +102,11 @@ the generating function as conjectured, with attribution to Joerg Arndt on
 self-contained proof of that assertion. Targeted searches did not locate an
 earlier proof; that is not a guarantee of literature priority. The proofs have
 been computationally cross-checked, but not formally verified in a proof
-assistant or independently peer-reviewed.
+assistant or independently peer-reviewed. The OEIS status was checked, but an
+exhaustive priority search was not performed; no claim of being the first proof
+anywhere in the literature is made. The computational material is independently
+reproducible, but is not a formal proof-assistant verification or a substitute
+for peer review. No OEIS edit or submission has been made.
 \end{resultbox}
 
 \newpage
@@ -328,6 +334,42 @@ other zero is not incident to the marked edge. Again it is private for $N$.
 Thus every selected vertex has a private neighbor, proving minimality.
 \end{proof}
 
+\begin{example}[A complete certificate at $n=5$]\label{ex:n5}
+Let $n=5$ and take the cyclic word $x_0x_1x_2x_3x_4=01101$ with the marked
+edge $e_1=(a_1,a_2)$, so that the selected opposite-class vertex is $b_1$ and
+\[
+ D=\{N,a_1,a_2,a_4,b_1\}.
+\]
+The word has no $00$ and no $111$, and the marker has endpoints $11$ sitting
+as the middle edge of the cyclic pattern $x_0x_1x_2x_3=0110$; conditions
+(i) and (ii) of \cref{thm:classification} therefore hold. A complete
+private-neighbor certificate is
+\begin{center}
+\begin{tabular}{l@{\qquad}ccccc}
+\toprule
+Selected vertex & $N$ & $a_1$ & $a_2$ & $a_4$ & $b_1$\\
+Private neighbor & $a_0$ & $b_0$ & $b_2$ & $b_3$ & $S$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Each column is checked directly from \eqref{eq:edges}. For instance
+$N[a_0]=\{a_0,N,b_4,b_0\}$ meets $D$ only in $N$, and
+$N[b_0]=\{b_0,S,a_0,a_1\}$ meets $D$ only in $a_1$; the pole $S$ is adjacent
+to $b_1$ alone among the selected vertices. The zero set is $Y=\{0,3\}$, so
+$k=2$ with one gap of each length, and \eqref{eq:eligiblecount} predicts
+$4k-n=3$ eligible markers. Counting the five labeled rotations, the three
+markers, and the two poles gives $a_5=2\cdot5\cdot3=30$, in agreement with
+\eqref{eq:sizecount} below.
+\end{example}
+
+The archived file \texttt{data/certificates\_n5.json} lists all thirty members
+of $\CM_5$ together with such a witness for every selected vertex. That file
+and the standard-library verifier that produced it use the one-based labels
+$u,v,a_1,\dots,a_n,b_1,\dots,b_n$ of the incoming package
+(\cref{sec:provenance}); the dictionary to the labels used here is
+$u=N$, $v=S$, $a_i=a_{i-1}$, $b_i=b_{i-1}$. Under it, the certificate above
+is the row $D=\{u,a_2,a_3,a_5,b_2\}$ of that file.
+
 \subsection{The gap formulation}
 Let $Y=\{i:x_i=0\}$. The absence of $00$ means that $Y$ is independent in
 $C_n$; the absence of $111$ means that every vertex outside $Y$ is adjacent
@@ -388,6 +430,15 @@ pole and marker. The length-$2$ alternatives contribute $p_1=0$.
 There are two choices of the selected pole and $n$ choices of its unique
 opposite-class vertex. These choices are recoverable from $D$, so they cannot
 create overcounting. This proves \cref{thm:main}.
+
+The same bijection can be read blockwise instead of gapwise: starting at the
+initial zero of the marked gap and reading in the fixed cyclic orientation
+produces a \emph{marked first block} --- a block $01$ carrying either of its two
+marks, or a block $011$ carrying its unique mark, which is exactly the
+numerator $2x^2+x^3$ of \eqref{eq:R} below --- followed by a free ordered list
+of unmarked blocks, which is exactly the factor $1/(1-x^2-x^3)$. In either
+reading the mark singles out one specific block, so a periodic word creates no
+rotational ambiguity and no division by an orbit size is needed.
 
 \subsection{The generating function}
 Introduce
@@ -479,6 +530,37 @@ use $(s/k)\binom{k}{t}=\binom{k-1}{t}$ and
 $(t/k)\binom{k}{t}=\binom{k-1}{t-1}$, with $2s+t=4k-n$.
 \end{proof}
 
+Summing \cref{thm:size} over the admissible sizes turns the Padovan recurrence
+of \cref{thm:main} into a closed finite sum, with no recurrence and no
+generating function.
+
+\begin{corollary}[A finite binomial sum for the total]\label{cor:finitesum}
+For every $n\ge3$, with $s$ and $t$ the numbers of length-$2$ and length-$3$
+gaps as in \eqref{eq:st},
+\begin{equation}\label{eq:finitesum}
+ a_n=2n\!\!\sum_{\substack{s,t\ge0\\2s+3t=n}}\!\!
+ \left(2\binom{s+t-1}{t}+\binom{s+t-1}{t-1}\right)
+ =2n\!\!\sum_{\substack{s,t\ge0\\2s+3t=n}}\!\!
+ \frac{2s+t}{s+t}\binom{s+t}{t}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+Each pair $(s,t)$ with $2s+3t=n$ corresponds to the single admissible
+$k=s+t$ of \eqref{eq:st}, and the summand is $c_{n,k}/(2n)$ in the two forms
+of \eqref{eq:sizecount}. Summing over $k$ gives $a_n$. The two summands agree
+term by term because, writing $k=s+t$ and $s=k-t$,
+\begin{equation}\label{eq:binomid}
+ 2\binom{k-1}{t}+\binom{k-1}{t-1}
+ =\frac{2(k-t)+t}{k}\binom{k}{t}
+ =\frac{2s+t}{k}\binom{k}{t}.
+\end{equation}
+\end{proof}
+Although the second form of \eqref{eq:finitesum} displays a quotient, every
+summand of the first form is visibly a nonnegative integer. This gives a direct
+combinatorial reason, independent of \eqref{eq:divisibility} below, that
+$a_n/(2n)$ is an integer: it is the number of completions once one pole and one
+marker block have been fixed.
+
 \subsection{Only two induced graph shapes occur}
 In \eqref{eq:Dword}, the pole $N$ is joined to all $n-k$ selected $a$-vertices.
 The vertex $b_j$ is joined to either one or two of them, depending on its marker.
@@ -552,7 +634,24 @@ Writing $f_n(y)=f_n(y,1)$, the first examples are
  f_8(y)&=32y^6+64y^7.
 \end{align*}
 The unexpanded derivative form of \eqref{eq:trivariate} retains the combinatorial
-meaning more clearly than its expanded rational numerator.
+meaning more clearly than its expanded rational numerator. For symbolic use,
+however, the size-refined specialization does have a compact closed form.
+
+\begin{corollary}[Expanded size-refined generating function]\label{cor:bivariate}
+Carrying out the differentiation in \eqref{eq:trivariate} at $v=1$ gives
+\begin{equation}\label{eq:bivariate}
+ F(x,y,1)=\sum_{n\ge3}f_n(y)x^n
+ =\frac{-2x^3y^4\bigl(4x^5y^3+8x^4y^2+4x^3y-9x^2y-8x-3\bigr)}
+        {(x^3y^2+x^2y-1)^2}.
+\end{equation}
+Setting $y=1$ recovers \eqref{eq:conjecture}.
+\end{corollary}
+The substitution $x\mapsto x$, $y\mapsto1$ sends the denominator
+$(x^3y^2+x^2y-1)^2$ to $(x^3+x^2-1)^2$ and the numerator to that of
+\eqref{eq:conjecture}, so \eqref{eq:bivariate} is a genuine refinement of the
+conjectured formula rather than a separate claim. It is the convenient form for
+automatic coefficient extraction; \eqref{eq:trivariate} is the convenient form
+for reading off the combinatorics.
 
 \subsection{A weighted Perrin identity}
 Let
@@ -608,10 +707,25 @@ has degree $8$. The six initial values are
 $a_3=6,a_4=16,a_5=30,a_6=36,a_7=70,a_8=96$.
 
 In fact, order $6$ is the minimal order of an eventual constant-coefficient
-homogeneous recurrence. Each of the three roots of $1-x^2-x^3$ is simple;
-$R$ has a nonzero residue there, and $2xR'$ consequently has a genuine double
-pole there. Subtracting a polynomial does not remove a pole. Thus the reduced
-denominator has degree $6$ and no lower-order recurrence can suffice.
+homogeneous recurrence. Write $Q(x)=1-x^2-x^3$ and $\Pi(x)=2x^2+x^3=x^2(2+x)$,
+so that $R=\Pi/Q$ in \eqref{eq:R}. Each step is a concrete evaluation.
+\begin{itemize}[leftmargin=1.6em,itemsep=1pt]
+\item The roots of $Q$ are simple. Indeed $Q'(x)=-x(2+3x)$ vanishes only at
+ $x=0$ and $x=-2/3$, while $Q(0)=1$ and $Q(-2/3)=23/27$ are both nonzero, so
+ $Q$ and $Q'$ have no common root.
+\item $\Pi$ and $Q$ have no common root. The roots of $\Pi$ are $0$ and $-2$,
+ while $Q(0)=1$ and $Q(-2)=5$.
+\item At a root $x_0$ of $Q$ the numerator $2x(\Pi'Q-\Pi Q')$ of $2xR'$ takes
+ the value $-2x_0\Pi(x_0)Q'(x_0)$, which is nonzero by the two preceding points and
+ $x_0\ne0$. Hence $2xR'$ has a genuine double pole at each of the three roots,
+ and subtracting the polynomial $8x^2$ cannot remove it.
+\end{itemize}
+Thus the reduced denominator of $A$ is $Q^2$, of degree $6$. An eventual
+constant-coefficient recurrence with characteristic polynomial $\Phi$ makes
+$\Phi(x)A(x)$ a polynomial, so $Q^2$ divides $\Phi$ and $\deg\Phi\ge6$; no
+lower-order recurrence can suffice. This is a statement about \emph{constant}
+coefficients only, and does not conflict with the three-term
+polynomial-coefficient recurrence \eqref{eq:anpolyrec}.
 
 The factor $2n$ in \eqref{eq:sizecount} proves the stronger divisibility
 \begin{equation}\label{eq:divisibility}
@@ -824,6 +938,77 @@ function $C(z)z^n$ for $z>1$:
 Their nearest integers are $b_4=2$ and $b_5=3$. Finally,
 $1.50<C(\alpha)\alpha^3<1.51$, whose nearest integer is $2$, whereas $b_3=1$.
 \end{proof}
+
+\Cref{thm:rounding} rounds the \emph{normalized} count $b_n=a_n/(2n)$.
+One can also round $a_n$ itself, at the cost of a much later threshold.
+
+\begin{corollary}[Rounding the unnormalized count]\label{cor:roundingraw}
+For every integer $n\ge45$,
+\begin{equation}\label{eq:roundingraw}
+ a_n=\left\lfloor Kn\alpha^n+\frac12\right\rfloor,
+ \qquad K=2C(\alpha).
+\end{equation}
+The threshold $45$ is sufficient; no minimality claim is made for it.
+\end{corollary}
+\begin{proof}
+First, $|C(\beta)|<1$, by an exact comparison rather than by its decimal value.
+With the expression for $|C(\beta)|^2$ displayed in the proof of
+\cref{thm:rounding}, the denominator $4-6\alpha^2+9\alpha$ exceeds the
+numerator $4-2\alpha^2+\alpha$ by $4\alpha(2-\alpha)>0$, and the denominator is
+positive on the certified interval $13247/10000<\alpha<13248/10000$.
+Hence \eqref{eq:error} weakens to
+\begin{equation}\label{eq:crudeerror}
+ |a_n-Kn\alpha^n|<4n\alpha^{-n/2}.
+\end{equation}
+Next, $\alpha>64/49$. The function $t^3-t-1$ is increasing for $t>1$, and
+\[
+ \left(\frac{64}{49}\right)^{3}-\frac{64}{49}-1=-\frac{9169}{117649}<0,
+\]
+so the real root lies above $64/49$. Therefore $\alpha^{-1/2}<7/8$ and
+\eqref{eq:crudeerror} gives $|a_n-Kn\alpha^n|<4n(7/8)^n$. The right-hand side
+decreases for integer $n\ge8$, since $\frac{n+1}{n}\cdot\frac78<1$ exactly when
+$n>7$. At $n=45$ the inequality $4\cdot45\cdot7^{45}<\tfrac12\cdot8^{45}$ is the
+integer statement
+\begin{equation}\label{eq:integercertificate}
+ 360\cdot7^{45}<8^{45},
+\end{equation}
+which holds. Hence the error is strictly below $1/2$ for every $n\ge45$, and
+since $a_n$ is an integer, \eqref{eq:roundingraw} follows.
+\end{proof}
+
+\begin{remark}\label{rem:twothresholds}
+\Cref{thm:rounding} and \cref{cor:roundingraw} round \emph{different}
+quantities, and neither threshold corrects the other. The normalized error
+$|b_n-C(\alpha)\alpha^n|\le2|C(\beta)|\alpha^{-n/2}$ carries no factor of $n$
+and falls below $1/2$ already at $n=6$, with $n=4,5$ settled by rational
+interval substitution; only $n=3$ is exceptional. The unnormalized error
+carries the factor $n$, so it decays only after $n$ has been overtaken by
+$\alpha^{-n/2}$; the table below shows it is still about $2.70$ at $n=20$, and
+\eqref{eq:roundingraw} does fail for many indices below its threshold, the
+largest such index being $n=34$. A threshold well beyond the normalized one is
+therefore genuinely needed for the unnormalized form. Which statement is more
+useful depends on the purpose: \eqref{eq:rounding} recovers essentially every
+term, while \eqref{eq:roundingraw} expresses $a_n$ itself by a single closed
+expression in one real algebraic number.
+\end{remark}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrr}
+\toprule
+$n$ & $a_n$ & $a_n-Kn\alpha^n$ (approximately)\\
+\midrule
+20 & $7160$ & $2.701743849$\\
+45 & $18197730$ & $-0.100362733$\\
+50 & $82488200$ & $-0.083242473$\\
+100 & $210665294616400$ & $0.000181710$\\
+\bottomrule
+\end{tabular}
+\caption{The absolute error in \eqref{eq:asymptotic}, illustrating
+\cref{rem:twothresholds}. These decimals are diagnostics; the uniform
+statements are \cref{thm:rounding} and \cref{cor:roundingraw}.}
+\label{tab:rawerror}
+\end{table}
 
 \subsection{The limiting induced topology}
 From \eqref{eq:topologytotal} and the same dominant-root calculation,
@@ -1076,12 +1261,83 @@ Total&&22,369,536&926\\
 \caption{Exhaustion of all subsets, with no reliance on the marked-cycle
 classification in the acceptance predicate.}
 \end{table}
-There is also a separate Python-only exhaustive check for $3\le n\le7$.
+There is also a separate Python-only exhaustive check for $3\le n\le7$ inside
+\texttt{code/research.py}.
 The much faster exact formulas are cross-checked through $n=1000$, including
 the size recurrence, total and topology counts, endpoint multiplicities,
 divisibility, and strict log-concavity. All 40 terms displayed in the retrieved
 OEIS entry agree with the formulas. Finally, 900 sampled sets at nine sizes
 from $n=3$ to $100$ pass the independent graph-based membership test.
+
+\subsection{A third, independent standard-library exhaustion}
+\label{sec:secondverifier}
+The archive carries a second, separately written exhaustive verifier,
+\texttt{code/verify.py}, which uses only the Python standard library and shares
+no code with either \texttt{code/research.py} or \texttt{code/exhaustive.cpp}.
+Its independence is the point of keeping it: it builds the graph from
+\eqref{eq:edges} under the one-based labels $u,v,a_1,\dots,a_n,b_1,\dots,b_n$,
+and applies the literal definition --- coverage of every vertex, failure of
+every one-vertex deletion to dominate, and induced connectivity --- with no
+appeal to \cref{lem:private} or to \cref{thm:classification} as a filter.
+
+Its coverage test is an incremental dynamic program over bit masks. If $d$ is
+one set bit of a mask $D$, then
+\begin{equation}\label{eq:coveragedp}
+ \operatorname{coverage}(D)
+ =\operatorname{coverage}(D\setminus\{d\})\ \mathrm{OR}\ N[d],
+\end{equation}
+so processing masks in increasing numerical order makes every smaller coverage
+mask already available. Connectivity is a separate traversal restricted to the
+selected vertices. A second routine generates the sets predicted by the cyclic
+word and mark description, and the program compares the resulting
+\emph{families of subsets}, not merely their cardinalities.
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrr}
+\toprule
+$n$ & $|V(T_n)|$ & Subsets examined & Count $a_n$\\
+\midrule
+3&8&256&6\\
+4&10&1,024&16\\
+5&12&4,096&30\\
+6&14&16,384&36\\
+7&16&65,536&70\\
+8&18&262,144&96\\
+9&20&1,048,576&144\\
+10&22&4,194,304&220\\
+\bottomrule
+\end{tabular}
+\caption{The archived run of the standard-library verifier
+\texttt{code/verify.py}. Exhaustive checking ends at $n=10$ in this run; the
+C++ program of \cref{sec:computation} extends the same check to $n=11$ in a
+different language. Every value shared by the two runs agrees, at the level of
+the individual accepted subsets.}
+\label{tab:secondverifier}
+\end{table}
+The same program expands the conjectured rational function by exact formal
+division, evaluates \eqref{eq:padovan} and \eqref{eq:finitesum}, checks both
+recurrences with their correct starting indices, and checks that summing
+\eqref{eq:sizecount} over sizes gives the total; these agree for every
+$3\le n\le1000$. All 40 published terms, covering $3\le n\le42$, agree. It also
+checks \eqref{eq:integercertificate} and $\alpha>64/49$ in exact integer and
+rational arithmetic, and then verifies \eqref{eq:roundingraw} numerically for
+$45\le n\le1000$ at high \texttt{Decimal} precision. Those decimal asymptotic
+calculations are diagnostics, not interval certificates; the nearest-integer
+claim has a separate uniform proof, \cref{cor:roundingraw}. Its archived
+private-neighbor certificates for all thirty sets at $n=5$ are the file cited
+in \cref{ex:n5}. Computing the first $N$ terms from the recurrence takes $O(N)$
+integer arithmetic operations; these are arithmetic-operation counts, not
+unit-cost bit-complexity claims for unbounded integers.
+
+\subsection{What the computation does and does not establish}
+The exhaustive checks are strong guards against a mistaken graph model, a
+reversed minimality convention, a missing small case, an incorrect symmetry
+factor, or an erroneous size refinement. They do not prove a statement about
+infinitely many graphs. That role belongs to \cref{thm:classification} and the
+marked-gap bijection of \cref{sec:proofgf}. Likewise, agreement with all
+current OEIS terms is a useful external cross-check, not the logical basis of
+the generating function. The generating function is proved by the mathematical
+argument, not by finite agreement alone.
 
 \subsection{Symbolic and numerical audit}
 The optional script \texttt{code/verify\_symbolic.py} uses SymPy and mpmath.
@@ -1106,16 +1362,21 @@ g++ -O3 -std=c++17 code/exhaustive.cpp -o exhaustive
 ./exhaustive 11 > data/exhaustive.csv
 python code/research.py verify --exhaustive-csv data/exhaustive.csv
 python code/research.py data --maximum 1000
+python code/verify.py --brute-max 10 --max-n 1000
 python code/verify_symbolic.py
-pdflatex -interaction=nonstopmode -halt-on-error article.tex
-pdflatex -interaction=nonstopmode -halt-on-error article.tex
+latexmk -pdf -interaction=nonstopmode article.tex
 \end{lstlisting}
-External Python packages are needed only for the optional symbolic audit;
-they are listed in \path{requirements-optional.txt}. The archive includes the complete article
-source and PDF, source code, a 998-row term table covering $3\le n\le1000$,
-a size distribution through $n=100$, all exhaustive accepted masks, and
-machine-readable verification reports. A ready-to-paste OEIS formula/proof
-note is supplied separately. No claim has been submitted to OEIS automatically.
+The third command is the independent standard-library verifier of
+\cref{sec:secondverifier}; run it with ordinary Python, not \texttt{python -O},
+because it implements its checks as assertions. External Python packages are
+needed only for the optional symbolic audit; they are listed in
+\path{requirements-optional.txt}. The archive includes the complete article
+source and PDF, three independent implementations of the acceptance test, a
+998-row term table covering $3\le n\le1000$, two independently produced size
+distributions through $n=100$, all exhaustive accepted masks, private-neighbor
+certificates at $n=5$, and machine-readable verification reports. A
+ready-to-paste OEIS formula/proof note is supplied separately. No claim has
+been submitted to OEIS automatically.
 
 \section{What has been established}\label{sec:conclusion}
 The conjectured rational function \eqref{eq:conjecture} follows from an explicit
@@ -1184,6 +1445,58 @@ apparently unresolved in the available public record. The known Padovan
 composition interpretation and Perrin maximal-independent-cycle interpretation
 are explicitly credited rather than claimed as new. The proof and refinements
 in this manuscript were developed in the present investigation.
+
+\section{Provenance of this archive}\label{sec:provenance}
+This package is the union of two independently prepared manuscripts on
+A381190 that turned out to contain the same theorem established by the same
+argument. The text above is this package's original manuscript; a second,
+incoming manuscript has been folded into it. The classification of
+\cref{sec:classification} and the marked-gap bijection of \cref{sec:proofgf}
+are kept as the \emph{single} proof. The incoming manuscript's
+``marked-block'' presentation is that same bijection read one block at a time
+rather than one gap at a time, and is recorded as such in \cref{sec:proofgf};
+it is deliberately not offered as an alternative proof, because there is only
+one argument here.
+
+Carried across from the incoming manuscript, and restated above in the
+notation used here rather than in its own, are: the finite binomial sum
+\cref{cor:finitesum}; the unnormalized nearest-integer formula
+\cref{cor:roundingraw} with its integer certificate
+\eqref{eq:integercertificate}; the expanded size-refined rational form
+\cref{cor:bivariate}; the explicit evaluations $Q(0)=1$, $Q(-2/3)=23/27$ and
+$Q(-2)=5$ supporting the minimality of order $6$; the worked certificate of
+\cref{ex:n5}; the error table \cref{tab:rawerror}; and the third independent
+verifier of \cref{sec:secondverifier}. Three notational conversions had to be
+applied, and each one would silently corrupt an imported formula if omitted.
+\begin{itemize}[leftmargin=1.6em,itemsep=1pt]
+\item The incoming manuscript wrote $(r,s)$ for the numbers of length-$2$ and
+ length-$3$ blocks. Those are the quantities written $(s,t)$ here, as in
+ \eqref{eq:st}; in particular its $s$ is this text's $t$, not this text's $s$.
+ Every imported formula was rewritten accordingly, and its ``number of legal
+ marks'' $2r+s$ is the quantity $2s+t=4k-n$ of \eqref{eq:eligiblecount}.
+\item It wrote $C$ for the leading asymptotic constant and $\lambda$ for the
+ plastic constant. Its $C$ is the constant written $K=2C(\alpha)$ here, which
+ is \emph{twice} the $C(\alpha)$ of \eqref{eq:C}; its $\lambda$ is $\alpha$.
+\item It indexed the size-refined counts by the cardinality $d$, writing
+ $a_{n,d}$ where this text writes $c_{n,k}$ with $k=n-d+2$. Under that
+ substitution $3n-4d+8=4k-n$ and $2d-n-4=n-2k$, so the two formulas and the two
+ size ranges agree identically; its sample values $a_{12,8}=48$,
+ $a_{12,9}=384$, $a_{12,10}=24$ are $c_{12,6}$, $c_{12,5}$, $c_{12,4}$ in
+ \eqref{eq:sizecount}.
+\end{itemize}
+The two packages' term tables agree digit for digit for all $3\le n\le1000$,
+and their exhaustive runs agree at the level of individual accepted subsets for
+every $n$ they share, so no reconciliation of data was required.
+
+The incoming manuscript also recorded how its author came to this problem: a
+pre-registered four-entry shortlist and one operating-system random draw that
+returned its fourth entry, with no rerolls. That record is provenance for that
+manuscript's problem selection, not a statement about A381190, so it is
+retained outside this text in the archive's \texttt{provenance/} directory and
+is not restated here. Its randomness came from the operating system and was not
+generated from a published deterministic seed. The record therefore documents
+the actual selection, not a seed-replayable experiment. The three unselected
+conjectures on that shortlist are not claimed to be solved here.
 
 \begin{thebibliography}{9}
 \bibitem{A381190}

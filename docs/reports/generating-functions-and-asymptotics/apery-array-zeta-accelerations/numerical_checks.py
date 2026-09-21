@@ -20,12 +20,15 @@ def number(value: Fraction) -> mp.mpf:
 def predict(family: str, k: int, n: int) -> mp.mpf:
     if family == 'zeta3':
         lam = 17 + 12*mp.sqrt(2)
-        return 96*mp.sqrt(2)*mp.pi**3/(lam**k*(lam**2-1))*lam**(-2*n)
+        # 4 pi^3 lambda^-(2N+k+1); equals 96 sqrt2 pi^3 / (lambda^k (lambda^2-1))
+        # times lambda^-2N, by lambda^2 - 1 = 24 sqrt2 lambda.
+        return 4*mp.pi**3*lam**(-(2*n+k+1))
     phi = (1+mp.sqrt(5))/2
     lam = phi**5
     offset_power = 4*k if family == 'zeta2_upper' else 6*k
     sign = (-1)**(n if family == 'zeta2_upper' else n+k)
-    return sign*20*mp.pi**2*mp.sqrt(5)/(phi**offset_power*(lam**2+1))*lam**(-2*n)
+    # 4 pi^2 phi^-4k rho^-(2N+1); equals the unsimplified form by rho^2+1 = 5 sqrt5 rho.
+    return sign*4*mp.pi**2/phi**offset_power*lam**(-(2*n+1))
 
 def main() -> None:
     with (ROOT/'data/certified_intervals.csv').open(newline='') as stream:
