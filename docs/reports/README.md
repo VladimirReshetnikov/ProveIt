@@ -104,6 +104,38 @@ The largest merges:
 | [`canonical-forms-need-not-be-subgraphs`](surreal-numbers/canonical-forms-need-not-be-subgraphs) | 1 | two non-isomorphic five-vertex witnesses |
 | [`multiple-chain-exponential-formula`](enumerative-combinatorics/multiple-chain-exponential-formula) | 1 | two proofs of the identity, plus eleven listed redundancies |
 
+**A pair that an earlier sweep missed, checked and kept separate.**  A
+crosscheck during the eighth delivery flagged
+[`a348410-all-prime-congruences`](congruences-and-valuations/supercongruences/a348410-all-prime-congruences)
+and
+[`a352373-signed-binomial-supercongruences`](congruences-and-valuations/supercongruences/a352373-signed-binomial-supercongruences)
+as possible duplicates: the second's family
+`a_{r,s,t}(n) = [x^{tn}](1+x)^{rn}(1-x)^{sn}` does specialize, at `t = 1` and
+`(r,s) = (-beta,-alpha)`, to the first's coefficient, and the two odd-prime
+congruences then agree (the first states its modulus by the exact valuation
+`v_p(N)` and the second by a declared level, but these carry the same content
+once the multiplier is reindexed).
+
+Both articles were then read in full, and **neither contains the other**.
+a352373 is general in the extraction step `t`, which a348410 fixes at 1 —
+a348410's "change of step" corollary varies the period `d` in `(1-x^d)`, not
+the extraction index. a348410 proves, and a352373 does not: the `p = 2` case
+with an exact first binary defect and its sharpness (valuation exactly
+`3r-3` when both parameters are odd and `m = 1`), a single all-prime bound
+`v_p >= 3r - v_p(12)` with each loss shown necessary, sharp common
+denominators with both constants minimal, the primitive-cyclic-word
+interpretation, a Lambert series and Euler product, algebraic generating
+functions by Lagrange reversion, a spacing-three counterexample showing the
+conclusion fails at `p = 5` when `1+x^2` is replaced by `1-x^3`, and a
+sufficient criterion abstracting the proof beyond the family.
+
+The proofs are also genuinely different arguments, not one argument twice:
+a352373 imports Jacobsthal's congruence and uses it throughout, a348410 does
+not invoke it at all and instead pairs a quadratic-tail estimate with a
+coefficient estimate. **Decision: keep both.** This is the collection's
+"incomparable in both directions" shape, and it is recorded here so a later
+sweep does not re-litigate it.
+
 Pairs aimed at one problem are not always duplicates, and several were kept
 separate on inspection: the two Gonshor product-birthday reports prove the same
 bound on domains incomparable in both directions; Cigler's Conjectures 8, 13–15
