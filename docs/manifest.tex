@@ -1,0 +1,228 @@
+% SPDX-License-Identifier: MIT-0
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.4cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{titlesec}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue,
+            citecolor=MidnightBlue]{hyperref}
+
+\hypersetup{%
+  pdftitle={The surreal-number reports},
+  pdfauthor={Vladimir Reshetnikov},
+  pdfsubject={Catalogue of seven research packages on surreal and surcomplex numbers}}
+
+\definecolor{Ink}{HTML}{16324F}
+\definecolor{Accent}{HTML}{4E5C3D}
+
+\titleformat{\section}{\Large\bfseries\color{Ink}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{Accent}}{\thesubsection}{0.7em}{}
+
+\newcounter{entrynum}
+\setcounter{entrynum}{0}
+
+\emergencystretch=1.6em
+
+\def\UrlBreaks{\do\/\do\-\do\_\do\.}
+\def\UrlBigBreaks{\do\/}
+
+% \entry{title}{directory}{main document}{source archive}{description}
+\newcommand{\entry}[5]{%
+  \par\medskip\noindent
+  \refstepcounter{entrynum}%
+  \textbf{\theentrynum.\; #1}\par\nopagebreak
+  \nopagebreak{\raggedright\small\color{Ink}%
+    \nolinkurl{#2/}\textbf{\nolinkurl{#3}}\par}\nopagebreak
+  \nopagebreak{\raggedright\footnotesize\color{gray}%
+    from \texttt{#4}\par}\nopagebreak
+  \smallskip\noindent #5\par}
+
+\newcommand{\dir}[1]{\texttt{#1}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+
+
+\begin{document}
+
+\begin{center}
+ {\LARGE\bfseries\color{Ink} The surreal-number reports}\\[8pt]
+ {\large Seven independent mathematical research packages,\\
+ on surreal and surcomplex numbers}\\[10pt]
+ {\small September 2026}
+\end{center}
+
+\vspace{4pt}
+
+\section*{Scope}
+\addcontentsline{toc}{section}{Scope}
+
+This document catalogues the seven research packages stored under
+\dir{docs}.  Each entry names the problem the report attacks, the result it
+claims, and the archive it arrived in.
+
+These reports were previously part of a larger collection, in a repository
+whose subject was elsewhere; they were moved here with their git history.
+That is why an entry may refer to a merge, a duplicate sweep or a delivery
+number: those describe how the report reached its present form, and the
+record is kept rather than rewritten.
+
+Each directory holds a typeset article with its \LaTeX{} source, a
+\texttt{README.md}, and in most cases verification code together with the
+recorded output of running it.  These are AI-assisted drafts.  None is
+refereed or machine-checked, and this catalogue records what each report
+claims rather than verifying it.
+
+\medskip
+\noindent
+Rebuild this document with
+\begin{quote}\ttfamily
+latexmk -pdf manifest.tex \&\& latexmk -c manifest.tex
+\end{quote}
+
+\section{The reports}
+
+Six of the seven are about the surreal field itself: birthdays and their
+behaviour under multiplication, the option graphs of surreal forms, genetic
+functions and gaps, and two questions of Lipparini about evaluating formal sums
+in the surreals.  The first four of those arrived as two pairs, and each pair
+was merged.
+
+The seventh, \emph{surcomplex-analysis}, is about the algebraic closure
+$\mathbf{No}[i]$ rather than $\mathbf{No}$, and is itself a merge of nine
+manuscripts that attacked one foundational question independently on the same
+day.  It is the longest report here by a wide margin, and its
+\nolinkurl{MERGE_NOTES.md} is worth reading before the article: six of the
+seventeen load-bearing notions turned out to be inequivalent across those nine
+sources, so a theorem proved under one is false under another.
+
+\entry{A square-root obstruction to evaluating increasing Hahn series at $\omega$}
+{hahn-evaluation-at-omega}
+{article.pdf}{hahn\_evaluation\_research.zip + reversed\_hahn\_series.zip}
+{Answers Problem~7.7 (p.~38) of Lipparini (arXiv:2505.00424v2) negatively: there
+is no ring homomorphism from the field of set-supported real-coefficient Hahn
+series with strictly increasing surreal exponents into the surreals sending
+$x^a$ to $\omega^a$.  The certificate is $B\in\Q[[x]]$ with $B^2=1-x$, built by
+the recursion $b_n=-\tfrac12\sum_{k=1}^{n-1}b_kb_{n-k}$: any such map would force
+a square to equal $1-\omega<0$.  The homomorphism is applied only to the finite
+identity, so no continuity, valuation, order preservation or preservation of
+infinite sums is assumed.  Adds the exact classification of admissible images of
+the variable as the infinitesimals, the monomial classification over an
+arbitrary ordered abelian group, and order-uniqueness on the source field.
+\emph{Merged; the core certificate was identical in both originals and is proved
+once, but the two toolkits are kept --- in particular a nonnegative-coefficient
+semiring obstruction with strictly weaker hypotheses that the square-root
+certificate cannot reach.}}
+
+\entry{Gonshor's Product-Birthday Conjecture for ordinal-support series}
+{gonshor-product-birthdays}
+{surreal\_product\_birthdays.pdf}{gonshor\_product\_birthdays\_research.zip}
+{Proves Gonshor's bound $b(xy)\le b(x)\otimes b(y)$ on the ring of Conway normal
+forms $\sum_{\alpha\in S}c_\alpha\omega^{-\alpha}$ with $S$ an arbitrary set of
+ordinals, so transfinite and uncountable supports are allowed.  Supplies an
+exact birthday formula by transfinite induction over the support with maintained
+prefix bounds and an explicit limit stage, and a complete classification of the
+equality cases.  The route is a leading-Cantor-degree gap, which also gives that
+the degree of the birthday never rises under multiplication.  The conjecture for
+arbitrary surreal numbers is not solved.  The domain is incomparable with that of the
+Laurent-series report that follows: it excludes $\omega$ and every positive
+power.}
+
+\entry{A Laurent-series case of Gonshor's birthday conjecture}
+{gonshor-laurent-birthdays}
+{article.pdf}{Gonshor\_Laurent\_Birthday\_Research.zip}
+{Proves the same bound $b(xy)\le b(x)\otimes b(y)$ on the canonically embedded
+field $\R((\omega^{-1}))$, which unlike the ring of the preceding entry
+contains $\omega$
+and its positive powers but restricts supports to order type at most $\omega$ on
+the integer lattice.  The route is a bilinear budget: an exact splitting
+$b(x)=b(P)\oplus b(u)$ into polynomial and infinitesimal parts, three separate
+product estimates for the resulting cross terms, and a finite-jet stabilisation
+carrying the finite bound to infinite series without any continuity claim.  Also
+treats finite normal forms with arbitrary ordinal exponents, derives exact
+birthdays for finite and infinite Laurent series, and proves a reciprocal
+corollary.  Neither this theorem nor the preceding one contains the other; on
+their common corner $\R[[\omega^{-1}]]$ the two agree and are proved twice.}
+
+\entry{Canonical forms need not be subgraphs}
+{canonical-forms-need-not-be-subgraphs}
+{surreal\_graphs.pdf}{surreal\_graphs\_research.zip + surreal\_sparse\_graphs.zip}
+{Answers negatively the question in the Figure~3 caption of Roughan,
+\emph{Surreal Birthdays and Their Arithmetic} (arXiv:1810.10373v2, p.~7):
+the canonical form of a surreal value need not be a subgraph of every other form
+of that value.  Five vertices and rank three are both least possible, and there
+are exactly sixteen five-vertex counterexamples, eight triangle-free, four of
+value $1/2$.  Adds cycle representations of $1/2$ at every admissible length,
+the exact extremal function, a planar construction of maximum degree three and
+arbitrarily large girth, classifications of which canonical graphs are
+unavoidable, and transfinite witnesses.  \emph{Merged; the two originals
+exhibited genuinely different five-vertex witnesses --- one passing through a
+vertex of value $-1$, one with no negative value at all --- and both are printed
+in full, as are two odd-cycle families, two high-girth constructions and two
+proofs of the Fibonacci bound.}}
+
+\entry{A countable genetic cut across the finite--infinite gap}
+{genetic-gaps-and-primitives}
+{article.pdf}{genetic\_gap\_counterexamples.zip}
+{With $q(t)=t/(1+t^2)$ and $B(x)=1-\{q(n-x):n\in\N\mid\;\}$ as a Conway cut,
+proves that $B$ is the indicator of the positive infinite surreals, is genetic
+under the set-sized option constructors of the cited sources, and has pointwise
+derivative zero everywhere.  Consequently $x$ and $x-B(x)$ are genetic
+primitives of $1$ agreeing at every real input that do not differ by a constant,
+the latter also an increasing bijection.  The sublevel class
+$\{x:0<x<\omega,\;B(x)\le\tfrac12\}$ is nonempty and bounded yet has no surreal
+supremum, so neither end gap supplies one.}
+
+\entry{A Number-Valued Broadcast Sum of Surreal Sequences}
+{broadcast-sum-of-surreal-sequences}
+{article.pdf}{surreal\_broadcast\_sum.zip}
+{Analyses the sign-truncation game of Lipparini (arXiv:2505.00424v2,
+Remark~7.6(3), in connection with Problem~7.5).  Proves the game always has a
+surreal-number value, that it agrees with finite surreal sums and with
+Lipparini's ordinal operation on their respective domains, and that it fails
+weak coordinatewise monotonicity, with an explicit family
+$s[n]=3\cdot2^{-n-d-1}$ on a subset $E$ and $2^{-n-d}$ off it realising the
+failure.  The underlying rule is Lipparini's; the name and the notation are
+local to the report.}
+
+\entry{Surcomplex analysis: holomorphic functions on $\mathbf{No}[i]$}
+{surcomplex-analysis}
+{article.pdf}{surcomplex\_analysis.zip and eight companion archives}
+{One article assembled from nine manuscripts, all delivered under the same
+name on 21 September 2026 as independent attempts at one subject: a theory of
+holomorphic functions over $\mathbf{K}=\mathbf{No}[i]$ built on Hahn-supported
+series.  The shared core is a calculus with no topological convergence at all.
+All nine prove that every \emph{set} of surcomplex numbers is closed and
+discrete, that a convergent set-indexed net is eventually constant, and that
+every continuous map $[0,1]\to\mathbf K$ is constant; so $\sum t^n=(1-t)^{-1}$
+is a Hahn identity, never a limit of partial sums, and contour integration is
+defined coefficientwise on ordinary complex paths.  On that base the article
+develops germs, the coherent algebra $\mathcal H(U)$ over an ordinary domain,
+Weierstrass preparation and infinitesimal zero clusters, a residue calculus,
+the global principles, exponentials and logarithms, and an all-scale rigidity
+theorem.  \textbf{Nine independent runs at a foundation do not agree the way
+nine runs at a theorem would, and the merge turned on that.}  Of seventeen
+load-bearing notions, six are genuinely inequivalent across the sources, and a
+theorem proved under one is false under another: there are three inequivalent
+function classes (the identity theorem, the global maximum principle,
+Liouville and the open mapping theorem hold for coherent sections and fail for
+germs; sharp Schwarz and Schwarz--Pick hold for lifts and fail for coherent
+sections), and three inequivalent residues, two of which disagree numerically
+--- for $1/(\zeta-\varepsilon)$ with $\varepsilon$ infinitesimal the cluster
+residue at the ordinary centre $0$ is $1$ while the local residue at $0$ is
+$0$, the actual pole sitting at $\varepsilon$.  A single ordinary bound in
+Liouville gives a characterization and not constancy: $t z$ is real-bounded by
+$1$ on the whole finite plane and is not constant.  Eleven further conflicts
+are resolved and recorded, including two functions both called ``the''
+logarithm that differ by exactly $2\pi i$.  All nine manuscripts and all nine
+verification programs are kept; the deduplication is in the article.}
+
+
+\end{document}
