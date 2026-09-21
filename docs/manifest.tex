@@ -15,9 +15,9 @@
             citecolor=MidnightBlue]{hyperref}
 
 \hypersetup{%
-  pdftitle={The surreal-number reports},
+  pdftitle={The surreal and surcomplex reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of seven research packages on surreal and surcomplex numbers}}
+  pdfsubject={Catalogue of thirteen research packages on surreal and surcomplex numbers}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -48,14 +48,17 @@
 \newcommand{\Q}{\mathbb{Q}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\N}{\mathbb{N}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\SC}{\mathbf{No}[i]}
 
 
 \begin{document}
 
 \begin{center}
- {\LARGE\bfseries\color{Ink} The surreal-number reports}\\[8pt]
- {\large Seven independent mathematical research packages,\\
- on surreal and surcomplex numbers}\\[10pt]
+ {\LARGE\bfseries\color{Ink} The surreal and surcomplex reports}\\[8pt]
+ {\large Thirteen independent mathematical research packages,\\
+ on the surreal field and its algebraic closure}\\[10pt]
  {\small September 2026}
 \end{center}
 
@@ -64,9 +67,16 @@
 \section*{Scope}
 \addcontentsline{toc}{section}{Scope}
 
-This document catalogues the seven research packages stored under
+This document catalogues the thirteen research packages stored under
 \dir{docs}.  Each entry names the problem the report attacks, the result it
 claims, and the archive it arrived in.
+
+The collection divides in two, and so does the directory tree.  Six reports,
+under \dir{docs/surreal}, are about the surreal field $\No$ itself: birthdays
+and their behaviour under multiplication, the option graphs of surreal forms,
+genetic functions and gaps, and two questions of Lipparini about evaluating
+formal sums.  Seven, under \dir{docs/surcomplex}, are about the algebraic
+closure $\SC$ and the theory of holomorphic functions over it.
 
 These reports were previously part of a larger collection, in a repository
 whose subject was elsewhere; they were moved here with their git history.
@@ -76,7 +86,9 @@ record is kept rather than rewritten.
 
 Each directory holds a typeset article with its \LaTeX{} source, a
 \texttt{README.md}, and in most cases verification code together with the
-recorded output of running it.  These are AI-assisted drafts.  None is
+recorded output of running it.  A merged report additionally keeps every
+source manuscript verbatim under \texttt{sources/}, so the merge can be
+audited against what went into it.  These are AI-assisted drafts.  None is
 refereed or machine-checked, and this catalogue records what each report
 claims rather than verifying it.
 
@@ -87,24 +99,17 @@ Rebuild this document with
 latexmk -pdf manifest.tex \&\& latexmk -c manifest.tex
 \end{quote}
 
-\section{The reports}
+\section{The surreal field}
 
-Six of the seven are about the surreal field itself: birthdays and their
-behaviour under multiplication, the option graphs of surreal forms, genetic
-functions and gaps, and two questions of Lipparini about evaluating formal sums
-in the surreals.  The first four of those arrived as two pairs, and each pair
-was merged.
-
-The seventh, \emph{surcomplex-analysis}, is about the algebraic closure
-$\mathbf{No}[i]$ rather than $\mathbf{No}$, and is itself a merge of nine
-manuscripts that attacked one foundational question independently on the same
-day.  It is the longest report here by a wide margin, and its
-\nolinkurl{MERGE_NOTES.md} is worth reading before the article: six of the
-seventeen load-bearing notions turned out to be inequivalent across those nine
-sources, so a theorem proved under one is false under another.
+Six reports about $\No$.  Two questions of Lipparini on evaluating formal
+sums; two independent halves of Gonshor's product-birthday conjecture, on
+domains neither of which contains the other; the subgraph question from
+Roughan's paper on birthday arithmetic; and a genetic counterexample
+separating pointwise derivatives from differences of constants.  The first
+and the fourth each arrived as a pair of archives and were merged.
 
 \entry{A square-root obstruction to evaluating increasing Hahn series at $\omega$}
-{hahn-evaluation-at-omega}
+{surreal/hahn-evaluation-at-omega}
 {article.pdf}{hahn\_evaluation\_research.zip + reversed\_hahn\_series.zip}
 {Answers Problem~7.7 (p.~38) of Lipparini (arXiv:2505.00424v2) negatively: there
 is no ring homomorphism from the field of set-supported real-coefficient Hahn
@@ -122,7 +127,7 @@ semiring obstruction with strictly weaker hypotheses that the square-root
 certificate cannot reach.}}
 
 \entry{Gonshor's Product-Birthday Conjecture for ordinal-support series}
-{gonshor-product-birthdays}
+{surreal/gonshor-product-birthdays}
 {surreal\_product\_birthdays.pdf}{gonshor\_product\_birthdays\_research.zip}
 {Proves Gonshor's bound $b(xy)\le b(x)\otimes b(y)$ on the ring of Conway normal
 forms $\sum_{\alpha\in S}c_\alpha\omega^{-\alpha}$ with $S$ an arbitrary set of
@@ -136,7 +141,7 @@ Laurent-series report that follows: it excludes $\omega$ and every positive
 power.}
 
 \entry{A Laurent-series case of Gonshor's birthday conjecture}
-{gonshor-laurent-birthdays}
+{surreal/gonshor-laurent-birthdays}
 {article.pdf}{Gonshor\_Laurent\_Birthday\_Research.zip}
 {Proves the same bound $b(xy)\le b(x)\otimes b(y)$ on the canonically embedded
 field $\R((\omega^{-1}))$, which unlike the ring of the preceding entry
@@ -152,7 +157,7 @@ corollary.  Neither this theorem nor the preceding one contains the other; on
 their common corner $\R[[\omega^{-1}]]$ the two agree and are proved twice.}
 
 \entry{Canonical forms need not be subgraphs}
-{canonical-forms-need-not-be-subgraphs}
+{surreal/canonical-forms-need-not-be-subgraphs}
 {surreal\_graphs.pdf}{surreal\_graphs\_research.zip + surreal\_sparse\_graphs.zip}
 {Answers negatively the question in the Figure~3 caption of Roughan,
 \emph{Surreal Birthdays and Their Arithmetic} (arXiv:1810.10373v2, p.~7):
@@ -169,7 +174,7 @@ in full, as are two odd-cycle families, two high-girth constructions and two
 proofs of the Fibonacci bound.}}
 
 \entry{A countable genetic cut across the finite--infinite gap}
-{genetic-gaps-and-primitives}
+{surreal/genetic-gaps-and-primitives}
 {article.pdf}{genetic\_gap\_counterexamples.zip}
 {With $q(t)=t/(1+t^2)$ and $B(x)=1-\{q(n-x):n\in\N\mid\;\}$ as a Conway cut,
 proves that $B$ is the indicator of the positive infinite surreals, is genetic
@@ -181,7 +186,7 @@ $\{x:0<x<\omega,\;B(x)\le\tfrac12\}$ is nonempty and bounded yet has no surreal
 supremum, so neither end gap supplies one.}
 
 \entry{A Number-Valued Broadcast Sum of Surreal Sequences}
-{broadcast-sum-of-surreal-sequences}
+{surreal/broadcast-sum-of-surreal-sequences}
 {article.pdf}{surreal\_broadcast\_sum.zip}
 {Analyses the sign-truncation game of Lipparini (arXiv:2505.00424v2,
 Remark~7.6(3), in connection with Problem~7.5).  Proves the game always has a
@@ -192,19 +197,46 @@ $s[n]=3\cdot2^{-n-d-1}$ on a subset $E$ and $2^{-n-d}$ off it realising the
 failure.  The underlying rule is Lipparini's; the name and the notation are
 local to the report.}
 
-\entry{Surcomplex analysis: holomorphic functions on $\mathbf{No}[i]$}
-{surcomplex-analysis}
+\section{The surcomplex plane}
+
+Seven reports about $\SC=\No[i]$ and holomorphic function theory over it.
+All seven rest on one framework and all seven are merges: twenty-seven
+manuscripts in total, delivered on a single day as independent attempts at
+one subject, reduced here to seven documents.
+
+\medskip
+\noindent
+\emph{Read \dir{analysis} first.}  It is the foundation the other six
+continue, and it is where the shared calculus is established: there is no
+topological convergence anywhere in this theory.  Every \emph{set} of
+surcomplex numbers is closed and discrete, a convergent set-indexed net is
+eventually constant, and every continuous map $[0,1]\to\SC$ is constant, so
+$\sum t^n=(1-t)^{-1}$ is a Hahn identity and never a limit of partial sums,
+and contour integration is defined coefficientwise on ordinary complex paths.
+
+\medskip
+\noindent
+\emph{Then read the ring table in \dir{analytic-geometry}, before anything
+else.}  Four coefficient rings circulate through this material under nearly
+identical notation --- the radius-free $\C\{z\}((t^\Gamma))$, the
+fixed-polydisk $\mathcal{O}(D)((t^\Gamma))$, the common-domain germ ring, and
+the formal $\C[[z]]((t^\Gamma))$ --- and the inclusions between them are
+strict, with $F(z)=\sum_{r\ge1}t^{r\eta}/(1-rz)$ the witness: its coefficient
+at $r\eta$ has a pole at $1/r$, so no ordinary disk carries the whole family.
+A theorem true over one of these rings can be false over another.  Every
+report therefore names the ring of every statement, and records that no
+theorem was transported between rings; the one place a bridge is used, it is
+one-directional and flagged in the proof that uses it.  The remaining five
+reports can be read in any order.
+
+\entry{Surcomplex analysis: holomorphic functions on $\SC$}
+{surcomplex/analysis}
 {article.pdf}{surcomplex\_analysis.zip and eight companion archives}
 {One article assembled from nine manuscripts, all delivered under the same
 name on 21 September 2026 as independent attempts at one subject: a theory of
-holomorphic functions over $\mathbf{K}=\mathbf{No}[i]$ built on Hahn-supported
-series.  The shared core is a calculus with no topological convergence at all.
-All nine prove that every \emph{set} of surcomplex numbers is closed and
-discrete, that a convergent set-indexed net is eventually constant, and that
-every continuous map $[0,1]\to\mathbf K$ is constant; so $\sum t^n=(1-t)^{-1}$
-is a Hahn identity, never a limit of partial sums, and contour integration is
-defined coefficientwise on ordinary complex paths.  On that base the article
-develops germs, the coherent algebra $\mathcal H(U)$ over an ordinary domain,
+holomorphic functions over $\mathbf{K}=\SC$ built on Hahn-supported
+series.  On the convergence-free base described above the article develops
+germs, the coherent algebra $\mathcal H(U)$ over an ordinary domain,
 Weierstrass preparation and infinitesimal zero clusters, a residue calculus,
 the global principles, exponentials and logarithms, and an all-scale rigidity
 theorem.  \textbf{Nine independent runs at a foundation do not agree the way
@@ -222,7 +254,150 @@ Liouville gives a characterization and not constancy: $t z$ is real-bounded by
 $1$ on the whole finite plane and is not constant.  Eleven further conflicts
 are resolved and recorded, including two functions both called ``the''
 logarithm that differ by exactly $2\pi i$.  All nine manuscripts and all nine
-verification programs are kept; the deduplication is in the article.}
+verification programs are kept; the deduplication is in the article.  Its
+\nolinkurl{MERGE_NOTES.md} is worth reading before the article.}
+
+\entry{Infinitesimal analytic geometry over the surcomplex numbers}
+{surcomplex/analytic-geometry}
+{article.pdf}{Surcomplex\_Analytic\_Geometry.zip + surcomplex\_finite\_geometry.zip}
+{The ring theory of the infinitesimal neighbourhood --- the monad
+$\mathfrak{m}_K^n$ of an ordinary point --- rather than the deformation theory
+of the reports that follow.  Proves, \emph{separately of each of} the
+radius-free $A_n=\C\{z_1,\dots,z_n\}((t^\Gamma))$ and the common-domain
+$R_n$, that it is a Noetherian Jacobson domain of dimension $n$ whose maximal
+ideals are exactly the infinitesimal evaluation ideals
+$\mathfrak{m}_a=(z_1-a_1,\dots,z_n-a_n)$ with residue field $K$, regular local
+at each, with completion $K[[X_1,\dots,X_n]]$ --- and that neither is local,
+each recording every infinitesimal point at once.  Carries Weierstrass
+division and preparation, a weak and a strong Nullstellensatz, Noether
+normalization, finite projection, contour residue duality, Hensel--Rouch\'e,
+and workspace invariance: every common zero over any larger divisible
+workspace already lies in $K_\Gamma^n$ with unchanged multiplicity, so the
+count accounts for all zeros in the whole proper class $\SC$.  The
+nonzero-value-group hypothesis is essential and not aesthetic --- for
+$\Gamma=\{0\}$ the strong Nullstellensatz fails at $I=(0)$.  \emph{This is the
+report that fixes the four-ring vocabulary and proves the inclusions strict;
+statements holding over both $A_n$ and $R_n$ are stated twice with both
+proofs, since the two proofs use different resources and neither transfers.}}
+
+\entry{Finite Hahn deformations: division, conservation of multiplicity, residue duality}
+{surcomplex/finite-deformations}
+{article.pdf}{surcomplex\_finite\_deformations.zip, \_finite\_fibres, \_finite\_maps,
+\_intersections, \_research}
+{Five manuscripts on one theorem: an ordinary holomorphic complete
+intersection $f$ on a fixed polydisk, with isolated zero at the origin and
+colength $\mu$, keeps its entire finite geometry under any Hahn perturbation
+$F=f+E$ of well-ordered \emph{strictly positive} error support --- on the
+unshrunk domain, with an explicit support certificate
+$\mathrm{supp}\subseteq\mathrm{supp}(G)+M$, $M$ the monoid generated by the
+error support.  The remainder of division is unique; the witnesses are
+explicitly not, their ambiguity being a Koszul syzygy carried by the same
+certificate.  Gives the integral structure $H^+_\Gamma(D)/(F)\cong(K^\circ)^\mu$
+over a valuation ring that may have high-rank value group and need not be
+Noetherian, with nothing completed; conservation of multiplicity at the
+\emph{actual} displaced surcomplex zeros rather than their standard parts,
+$\sum_\zeta\mu_\zeta=\mu$; and a coefficientwise residue $\mathrm{Res}_F$ ---
+defined by a series, not by a surcomplex contour integral --- whose Gram
+determinant is a unit even at a collision and which satisfies
+$\mathrm{Res}_F(G\cdot J_F)=\mathrm{Tr}(M_G)$, individual summands routinely
+infinite while the total is finite.  Also Hartogs, characters and local
+algebras, spectral invariants, trace-Jacobian and B\'ezoutian, monodromy and
+stability.  The engine throughout is positive-support Neumann inversion; no
+argument uses convergence of partial sums in any topology.}
+
+\entry{Jordan separation, Cauchy theory, and Stokes calculus on the surcomplex plane}
+{surcomplex/contours-and-stokes}
+{article.pdf}{surcomplex\_contours.zip and two same-named archives}
+{Three manuscripts whose titles differ by one word --- Stokes \emph{Calculus},
+\emph{Integration}, \emph{Formulae} --- over one body of work.  All three
+refuse to transfer the Jordan--Cauchy--Stokes package to $\SC$ as a unit, and
+all three split it the same way: a coarse Jordan separation theorem in the
+standard-part topology whose separator is the whole boundary monad rather than
+a curve; an imported semialgebraic Jordan theorem; a Hahn-coefficient de Rham
+complex with coefficientwise Stokes, extended to infinitesimally deformed
+chains; and the holomorphic consequences --- Cauchy, endpoint displacement,
+integer winding, and microscopic circle and torus realizations of the
+perturbation residue --- with an algebraic rational contour pairing
+characterized uniquely by vanishing on exact differentials and normalizing
+$dz/(z-a)$ to $2\pi i\cdot\mathrm{wind}_{\mathrm{sa}}$.  Adds a purely
+algebraic third chain category over any characteristic-zero field, a
+support-preserving Poincar\'e lemma, an order-valued ML estimate, and a
+root-of-unity/Schnirelman section.  This is where the question the
+deformation report leaves open is answered: supplying an actual surcomplex
+contour that represents the residue series.  \emph{Two thirds of each
+manuscript was the same mathematics in the same order; 82 numbered results
+became 59, by duplicate elimination only.}}
+
+\entry{Global support obstructions: moving divisors, Mittag--Leffler, and a Picard dichotomy}
+{surcomplex/global-divisors}
+{article.pdf}{surcomplex\_global\_support.zip + surcomplex\_global\_theorems.zip}
+{The local-to-global theory: when do infinitely many individually legitimate
+infinitesimal prescriptions admit one coherent global realization over the
+ordinary complex plane?  The sharp answer for divisors is a
+\emph{symmetric-support} criterion --- a cluster family
+$P_c(u)=u^{m_c}+\sum_{j<m_c}a_{c,j}u^j$ over a closed discrete ordinary
+$A\subset\C$ is the exact zero divisor of a nonzero global section iff
+$\bigcup_c\bigcup_j\mathrm{supp}(a_{c,j})$ is well ordered: the supports of
+the symmetric coefficients, not of separately chosen roots.  Hence the two
+discriminating examples --- $n+t^{1/n}$ alone is not realizable, its
+descending symmetric support $\{1/n\}$ failing, while \emph{all} roots of
+$(z-n)^n=t$ are, symmetric support the singleton $\{1\}$ --- and hence a
+globally principal effective divisor with a nonprincipal effective
+sub-divisor.  Also Mittag--Leffler at fixed centres and for moving poles, a
+support-restricted Chinese remainder theory with an explicit Neumann right
+inverse, an exact Cousin criterion in terms of singular support, and the
+Picard dichotomy: every ordinary-base stalk is a nonlocal principal ideal
+domain, $\mathrm{Pic}(\C,\mathcal{H}_\Gamma)=0$ iff $\Gamma=\{0\}$ or
+$\Gamma=\mathbb{Z}\delta$, and otherwise $\dim_\C\mathrm{Pic}\ge2^{\aleph_0}$,
+with equality for countable noncyclic $\Gamma$.}
+
+\entry{Surcomplex polynomial algebra: root geometry, Newton profiles, residue duality}
+{surcomplex/polynomial-algebra}
+{article.pdf}{surcomplex\_polynomial\_algebra.zip and two same-named archives}
+{Finite-degree polynomial algebra over $\SC$, worked inside set-sized
+algebraically closed Hahn workspaces and keeping two geometries deliberately
+apart throughout: the surreal-valued modulus, whose disks are ordered, and the
+natural Hahn valuation, whose balls have arbitrary ordered-group rank.  A
+Rouch\'e theorem in each.  Covers the finite polynomial algebra and the
+fundamental theorem there, CRT/Hermite jets, resultants and discriminants,
+ordered root geometry (root bounds, Gauss--Lucas, Jensen disks, a sharp
+Schoenberg second-moment inequality with its equality case), real-closed-field
+transfer with Hermite signature counting, exact root loci under coefficient
+uncertainty in both geometries, Newton profiles over an arbitrary ordered
+exponent group, image balls and branch values, exact Rolle counts and the
+finite root-cluster tree, support-controlled coprime Hensel factorization with
+a fixed-domain parameter form that shrinks no neighbourhood, and universal
+residue duality with the trace identity.  \emph{Three perturbation theorems
+with three different hypotheses are kept separate rather than collapsed, as
+are two discriminant layer formulas and two mapping theorems, with their
+agreement proved; the alternative was to lose what each source reached that
+the others did not.}}
+
+\entry{Trigonometry on the surcomplex plane}
+{surcomplex/trigonometry}
+{article.pdf}{surcomplex\_trigonometry.zip and two same-named archives}
+{Its organizing theorem is that every surcomplex direction has a \emph{finite}
+surreal angle: $\mathrm{cis}:(\mathcal{O}_\R,+)\to(T(\No),\cdot)$ is surjective
+with kernel exactly $2\pi\mathbb{Z}$, so
+$\mathcal{O}_\R/2\pi\mathbb{Z}\cong T(\No)\cong T(\R)\times(\mathfrak{m}_\R,+)$,
+and the whole of plane, spherical and hyperbolic triangle geometry is available
+at arbitrary surreal length scale without ever choosing a value for
+$\sin\omega$.  From it: canonical sine and cosine by Hahn summation, the unit
+circle with its branch conventions and projective half-angle chart, inverse
+functions on their full surreal domains, the angle-sum, cosine, sine, tangent,
+half-angle, Heron, incircle, Euler, angle-bisector, cevian, Ceva,
+inscribed-angle and Ptolemy theorems, an exact valuation dictionary between
+sides, angles and area with a quadratic triangle-inequality defect formula and
+two flat-triangle theorems, a rank-two collision-stable intersection algebra,
+the canonical complex extension to the strip where sine is surjective with
+completely determined fibres, finite Fourier inversion, Parseval and a
+surcomplex Fej\'er--Riesz factorization, and the classification of all global
+phase extensions, with the Ehrlich--Kaplan normalization placed inside that
+classification.  Two coherence obstructions close it: there is no coherent
+bounded sine of infinite frequency, and all-scale coherence forces a
+polynomial.  \emph{No mathematical disagreement was found between the three
+sources; the duplication was near-total on the first two thirds and the
+divergence near-total on the last.}}
 
 
 \end{document}
