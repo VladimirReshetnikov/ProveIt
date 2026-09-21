@@ -4611,6 +4611,30 @@ then contradict. The global rule stated once in \cref{cas:rem-convention} is
 that coordinate significance is \emph{declared as part of the domain
 descriptor}; each kernel's own declaration is given in its own subsection above.
 
+\subsection{Recovered on audit}
+An audit of this merge against its three sources found three scope disclaimers
+stated in a source and missing from the merged text. They are restored here.
+
+\begin{itemize}
+\item \textbf{Imported proofs were not re-audited.} This report does not
+re-audit the companion analytic-geometry manuscript's Noetherian, Jacobson or
+deformation proofs, nor the contour manuscript's general
+residue-transformation argument. Both are leaned on --- the first for the
+normal-form and perturbed-residue material, the second for the torus formula
+--- and their computational consequences are conditional on those stated
+results \emph{and} on effective input operations. ``Not independently
+machine-verified'' is a weaker statement than this one, and was the only form
+the merged text carried.
+\item \textbf{Every imported algorithm would still need its own review.} A
+complete implementation would require a separate engineering and proof review
+of each algorithm imported here, beyond anything the executed checks establish.
+\item \textbf{An umbrella layer inherits no guarantees.} A general symbolic
+layer can compose expressions freely, but it cannot claim the algorithmic
+guarantees of its strongest subdomain for every expression it contains. The
+architecture proposed in \cref{cas:sec-architecture} is precisely such a layer,
+which is where the prohibition most needs stating.
+\end{itemize}
+
 \subsection{Shared contract boundaries of all three prototypes}
 \label{cas:sub-sharedboundaries}
 Six statements hold of all three delivered packages and are recorded here once.

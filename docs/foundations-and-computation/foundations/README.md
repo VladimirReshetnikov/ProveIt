@@ -17,7 +17,7 @@ through footnotes.
 
 ## What this is
 
-`article.tex` / `article.pdf` — 93 pages, 26 numbered sections (21 main plus 5
+`article.tex` / `article.pdf` — 94 pages, 26 numbered sections (21 main plus 5
 appendices), 30 numbered theorem-environment results, 15 tables (11 longtables
 plus 4 inline), 9 Lean listings, 88 numbered non-claims, 58 bibliography
 entries. Standalone LaTeX: full preamble, internal `thebibliography`, no
@@ -242,7 +242,7 @@ Standard TeX Live or MiKTeX. Packages: `lmodern`, `geometry`, AMS, `mathrsfs`,
 `listings`, `xurl`, `needspace`, `hyperref`, `cleveref`. No external figures, no
 `.bib`, no bibliography processor, no shell escape.
 
-Final build status: **93 pages; 0 errors, 0 undefined references, 0 undefined
+Final build status: **94 pages; 0 errors, 0 undefined references, 0 undefined
 citations, 0 multiply-defined labels, 0 duplicate-destination warnings, 0
 overfull or underfull boxes, 0 warnings of any kind.**
 
@@ -255,8 +255,8 @@ never by their labels.
 ## Directory
 
 ```
-article.tex   the merged report (308,878 bytes)
-article.pdf   93 pages
+article.tex   the merged report (311,127 bytes)
+article.pdf   94 pages
 sources/      the three audit .tex files, their READMEs and source audits  (verbatim)
 code/         the five Lean files from M1 and M2, three since compiled  (verbatim)
 data/         the three build/audit records from M2 and M3                 (verbatim)
