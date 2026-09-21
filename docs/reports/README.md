@@ -2,14 +2,14 @@
 
 # Research reports
 
-One hundred and nine independent mathematical research packages, unpacked from
+One hundred and ten independent mathematical research packages, unpacked from
 the
 archives in which they were delivered and grouped by subject.  Each directory
 holds a typeset article with its LaTeX source, a `README.md`, and in most cases
 verification code together with the recorded output of running it.
 
 **[`manifest.pdf`](manifest.pdf)** ([source](manifest.tex)) is the catalogue: it
-numbers all one hundred and nine reports, names the problem each one attacks and
+numbers all one hundred and ten reports, names the problem each one attacks and
 the
 result it claims, and records the archives each directory came from.  These are
 AI-assisted drafts; none is refereed or machine-checked, and the manifest
@@ -26,8 +26,9 @@ records what each report claims rather than verifying it.
 | [`tetration-and-digit-stabilization/`](tetration-and-digit-stabilization) — congruence speed, frozen digits, `q`-Newton series | 6 |
 | [`generating-functions-and-asymptotics/`](generating-functions-and-asymptotics) — Stanley's rationality question, Gregory thresholds, records, discrepancy, single-sequence OEIS studies, Apéry arrays | 16 |
 | [`automata-and-formal-languages/`](automata-and-formal-languages) — shuffle state complexity, DFAO reversal, synchronization, language hierarchies, additive complexity | 6 |
+| [`quaternionic-analysis/`](quaternionic-analysis) — slice regularity, Cauchy–Fueter analysis, the global inverse Fueter problem | 1 |
 | [`graph-theory/`](graph-theory) — mutual visibility, domination roots, minimal dominating sets | 3 |
-| **Total** | **109** |
+| **Total** | **110** |
 
 ## Rebuilding the manifest
 
@@ -37,8 +38,8 @@ latexmk -pdf manifest.tex && latexmk -c manifest.tex
 
 ## Merged reports
 
-One hundred and thirty-five archives arrived, in eight deliveries, and yield
-one hundred and nine reports.  Two different things reduced the count, and the
+One hundred and forty-five archives arrived, in nine deliveries, and yield
+one hundred and ten reports.  Two different things reduced the count, and the
 difference between them is worth keeping straight.
 
 **Duplicates.**  Twenty archives duplicated another: sixteen pairs, three
@@ -62,6 +63,18 @@ accompanied the merge.  This was editorial, not deduplication — those three
 went through the duplicate sweep first and *cleared* it, below.  Their three
 theorems are three different theorems, and the merged article is at pains to say
 so rather than let a shared setup suggest the answers are connected.
+
+**The ninth delivery was ten manuscripts on one question.**  One was an
+expository survey of quaternionic analysis; the other nine were independent
+attempts at the same follow-up problem, all written the next day, and one of
+them shipped a verbatim copy of the survey as its own source context.  They
+were merged into a single article rather than catalogued as ten reports.  The
+nine agree — on the two obstruction forms, on the criterion, on the affine
+monodromy, on the `8m` cokernel and on the energy constant — and that agreement,
+from nine separate derivations, is the substance of the entry.  Thirteen
+conflicts between them were resolved and recorded; two were mathematical rather
+than notational, and either would have produced a false statement in a
+mechanical merge.
 
 **The eighth delivery, by contrast, was mostly duplicates.**  Ten archives
 arrived and yield six reports.  Four clusters were confirmed at proof level and
