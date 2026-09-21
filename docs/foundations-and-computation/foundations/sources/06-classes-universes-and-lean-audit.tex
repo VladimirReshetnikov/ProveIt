@@ -1,0 +1,1109 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{microtype,booktabs,longtable,tabularx,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{listings,fancyhdr,needspace}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,breaklinks=true]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{pdftitle={Rigorous Foundations for Surreal and Surcomplex Numbers},pdfauthor={Research exposition prepared for Vladimir Reshetnikov},pdfsubject={Sets, classes, universes, support restrictions, and Lean formalization}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Foundations of surreal and surcomplex mathematics}
+\fancyhead[R]{\small Sets, classes, and universes}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.3em}
+\setlength{\parindent}{1.25em}
+\setlength{\emergencystretch}{2em}
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+\setlist{leftmargin=2em,itemsep=0.2em,topsep=0.35em}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\SC}{\mathbf{SC}}
+\newcommand{\Ord}{\mathbf{Ord}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\U}{\mathcal U}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\HH}{\mathcal H}
+\newcommand{\mm}{\mathfrak m}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\st}{\operatorname{st}}
+\newcommand{\rk}{\operatorname{rank}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\Small}{\operatorname{Small}}
+\newcommand{\bd}{\operatorname{b}}
+\newcommand{\sh}{^{\sharp}}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\lstdefinestyle{leanstyle}{basicstyle=\small\ttfamily,columns=fullflexible,keepspaces=true,breaklines=true,showstringspaces=false,frame=single,rulecolor=\color{black!20},xleftmargin=0.5em,xrightmargin=0.5em,aboveskip=0.7em,belowskip=0.7em,commentstyle=\color{black!65},morecomment=[l]{--},morecomment=[s]{/-}{-/},keywordstyle=\bfseries,morekeywords={universe,inductive,structure,where,def,theorem,variable,namespace,end,import,noncomputable,section,by,exact,intro,have,let,fun,Type,Prop,forall,axiom,example}}
+\lstset{style=leanstyle}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{0.7cm}
+{\large\scshape A foundational companion to the supplied manuscripts\par}
+\vspace{1.0cm}
+{\Huge\bfseries Rigorous Foundations\par for Surreal and\par Surcomplex Numbers\par}
+\vspace{0.65cm}
+{\LARGE Sets, Classes, Universes,\par and Formalization in Lean\par}
+\vspace{0.8cm}
+{\large September 21, 2026\par}
+\vspace{0.8cm}
+\begin{minipage}{0.94\textwidth}
+\begin{abstract}
+Surreal numbers are individually set-sized but collectively form a proper class in ordinary set theory. Their complexification inherits this size, without introducing a new algebraic paradox. The real foundational issues are the permitted sizes of cuts, the coding of quotients, the strength of recursion, the scope of support and function quantifiers, and the interpretation of topology. We compare definable-class constructions in ZF and ZFC, explicit classes in G\"odel--Bernays and von Neumann--Bernays--G\"odel theories, stronger Kelley--Morse theories, Grothendieck universes, bounded surreal fields, constructive set theories, predicative dependent type theory, and higher inductive-inductive approaches.
+
+The three supplied manuscripts provide concrete test cases: set-sized Hahn workspaces, positive-support recursions, class-function replacement in Hartogs coherence, componentwise sheaves, and genuinely all-scale arguments. We give elementary proofs of the size obstructions and localization principles that distinguish these cases. A source-level audit of the current Lean ecosystem identifies existing surreal field and small-support Hahn infrastructure, separates it from unverified bridges, and proposes a modular implementation plan. The central discipline is to make \emph{smallness, algebraic closure, summability, and ambient topology separate hypotheses} rather than hiding them in the word ``surreal.''
+\end{abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{0.94\textwidth}\small
+\textbf{Status.} This is a researched mathematical exposition and implementation design, not a machine-checked formalization of the attached research manuscripts. ``Paradox-free'' means avoiding the identified invalid constructions within explicitly stated foundations; no absolute consistency proof of those foundations is claimed. Lean source observations are pinned where possible and dated. Illustrative Lean snippets have not been compiled in this environment.
+\end{minipage}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{The question, the sources, and the recommended separation}\label{sec:scope}
+
+\subsection{What is being formalized?}
+There are at least four distinct projects hidden in the phrase ``formalize the surreal numbers.'' One can construct canonical numbers and prove their ordered-field laws; characterize the resulting simplicity hierarchy; develop algebra over sufficiently large set-sized surreal subfields; or formalize functions, supports, and analysis over the full class. These projects share mathematics, but they do not have the same size requirements or the same proof-assistant dependencies.
+
+The surcomplex numbers in the supplied work are
+\[
+\SC=\No[i]=\{x+iy:x,y\in\No,\ i^2=-1\}.
+\]
+Here the braces denote a class, not a set asserted to contain all such pairs. The algebraic input is that $\No$ is real closed, and consequently $\SC$ is algebraically closed in the finite-polynomial sense. These are established results of surreal theory, not consequences of a notational definition alone \cite{Conway,Gonshor}. Neither statement supplies a complex-analytic topology, a general summation operation, or a set of all class functions.
+
+Our recommendation is a \emph{layered construction}. Use a canonical or quotient-based surreal carrier with an explicit size level; develop finite algebra generically over ordinary types or set-sized fields; add Hahn summation through a support-certified interface; and reserve full-class or universe-relative quantification for results that genuinely require it. A theorem proved over an arbitrary field should not depend on the representation of surreal cuts. Conversely, a theorem using a radius below every member of a set must not be presented as a theorem of every fixed non-Archimedean field.
+
+\subsection{What the supplied manuscripts actually assume}
+We use the following source abbreviations throughout:
+\begin{description}
+\item[P] \emph{Surcomplex Polynomial Algebra: Order Geometry, Newton Profiles, and Scale-Resolved Stability}, the supplied file \texttt{surcomplex\_polynomial\_algebra(2).tex} \cite{SourceP}.
+\item[R] \emph{Hartogs Coherence, Finite Maps, and Residue Duality over the Surcomplex Numbers}, the supplied file \texttt{surcomplex\_research.tex} \cite{SourceR}.
+\item[A] \emph{Surcomplex Analysis: Infinitesimal Calculus, Hahn-Coherent Holomorphy, and Contour Theory}, the supplied file \texttt{surcomplex\_analysis(3).tex} \cite{SourceA}.
+\end{description}
+P explicitly confines polynomials, supports, matrices, and the relevant recursions to sets. Its degrees are ordinary natural numbers. It introduces divisible set-sized exponent groups $\Gamma$ and algebraically closed fields $K_\Gamma=\C((t^\Gamma))$. R uses the same workspaces, but also considers an arbitrary class function on a full infinitesimal thickening and invokes class replacement after restricting it to an ordinary set of complex points. A works in NBG with global choice and explicitly identifies small-scale evaluation and all-scale rigidity as places where a scale may escape any previously fixed workspace.
+
+These are mathematical design choices already present in the sources. We retain their distinctions between fine-local germs, Hahn-coherent data, and all-scale coherence. We do not replace them with a generic non-Archimedean analytic structure. The three manuscripts state that they have not been independently proof-assistant verified; their theorems are therefore \emph{targets and supplied arguments}, not imported formal certificates. P also refers to a separate global-divisors manuscript that is not among the three files supplied for this task. We make no independent assessment of that fourth text.
+
+\subsection{Four meanings of ``rigorous''}
+A precise mathematical construction specifies its objects and permissible operations. An axiomatic construction additionally names the assumptions from which existence and theorems follow. A proof-assistant development supplies proof terms accepted by a specified kernel with an audited axiom set. A relative-consistency analysis compares the assumptions with another theory. These are different achievements.
+
+For example, a Lean declaration asserting an ordered field and arbitrary-cut filling can be syntactically accepted even when the asserted axioms imply a contradiction. Conversely, a class construction in ZFC can be rigorous without a proof-assistant implementation. The article gives mathematical arguments, source-grounded comparisons, and an implementation architecture. Its electronic checks concern document production and source provenance, not a new consistency proof or a completed verification of P, R, or A.
+
+\section{The central size obstruction}\label{sec:size}
+
+\subsection{Set-sized numbers, a proper-class totality}
+One canonical presentation identifies a surreal with a sign sequence
+\[
+s:\alpha\longrightarrow\{-,+\},\qquad \alpha\in\Ord.
+\]
+Its birthday is its length $\bd(s)=\alpha$. At every fixed ordinal bound $\beta$, all sequences with length less than $\beta$ form a set: the relevant function sets exist, and their union is indexed by the set $\beta$. The total collection over all ordinals is a definable class. The empty sequence is zero; the constantly positive sequence of length $\alpha$ represents the ordinal $\alpha$ \cite{Gonshor}.
+
+\begin{proposition}[There is no set of all surreal numbers]\label{prop:proper}
+In the sign-sequence construction, the class $\No$ is not a set. More generally, every set of surreal numbers has its birthdays bounded by an ordinal.
+\end{proposition}
+\begin{proof}
+For a set $B$ of sign sequences, replacement gives the set of their domains. The ordinal
+\[
+\beta=\sup\{\bd(x)+1:x\in B\}
+\]
+bounds their birthdays. If $B$ contained every surreal, it would contain the constantly positive sequence of length $\beta$, whose birthday is $\beta$ and so is not less than $\beta$. This is a contradiction. The empty case is harmless.
+\end{proof}
+The same argument is the essential size mechanism behind the Burali--Forti obstruction: a collection containing a distinct canonical object at every ordinal stage cannot itself be one of the bounded sets in that construction. It is not a defect in surreal arithmetic.
+
+\subsection{Exactly which cuts may be filled}
+A Conway presentation $\{L\mid R\}$ uses \emph{sets} of previously available numbers, with $l<r$ for every $l\in L$ and $r\in R$. It denotes the simplest number strictly between the two sides. It does not assert that every pair of proper subclasses with that separation property admits a separator.
+
+\begin{proposition}[The unrestricted cut axiom is inconsistent]\label{prop:allcuts}
+Let $S$ be a nonempty strict order. The assertion that every pair of subclasses $L,R\subseteq S$ with $L<R$ has an element strictly between them is false when the permitted pairs include $(S,\varnothing)$.
+\end{proposition}
+\begin{proof}
+Separation of $S$ from the empty right side is vacuous. A separator $a\in S$ would satisfy $x<a$ for every $x\in S$. Taking $x=a$ contradicts irreflexivity.
+\end{proof}
+This elementary substitution is the most useful foundational unit test in the subject. An interface that allows it has lost the smallness restriction. Moving from sets to classes does not validate the unrestricted axiom; it makes the excluded input easier to describe.
+
+\begin{lemma}[Bounds for sets of surreals]\label{lem:bounds}
+Every set $B\subseteq\No$ is bounded above and below in $\No$. For every set $A\subseteq\No_{>0}$ there is $\delta>0$ such that $\delta<a$ for all $a\in A$.
+\end{lemma}
+\begin{proof}
+The legal cut $\{B\mid\varnothing\}$ gives an upper bound, and negation gives a lower bound. The cut $\{0\mid A\}$ gives the final assertion. For $A=\varnothing$, one may use $\delta=1$.
+\end{proof}
+Here each input is a set, so \cref{prop:allcuts} does not apply. In particular, there is no greatest surreal, but every set of surreals has an upper bound. The collection of all surreals is precisely not one of those sets.
+
+\subsection{Bounds are not suprema}
+The surreal field is not a Dedekind-complete ordered field. The natural numbers have surreal upper bounds, such as $\omega$, but no least upper bound: if $s$ is an upper bound, then $s-1$ is also one, because $n+1\le s$ for every $n\in\N$. Thus $s$ cannot be least.
+
+More generally, if a nonempty set $B$ has no greatest member and $b$ is an upper bound, then every member of $B$ is strictly below $b$. The legal cut $\{B\mid\{b\}\}$ produces a smaller upper bound. The cut construction selects the simplest separator; it does not select a least upper bound in the numerical order. Consequently ``complete'' must always be qualified: real closedness, saturation for small cuts, valuation completeness, and Dedekind completeness are not interchangeable.
+
+\subsection{Russell's paradox and universal function spaces}
+In ZF, separation forms $\{x\in a:\varphi(x)\}$ from a pre-existing set $a$; it does not form a universal set of all sets. In an explicit class theory, the Russell class is allowed as a class but cannot be a set member. Similarly, the graph of a class function $\No\to\No$ may be a class, but the collection of \emph{all} such class functions is not automatically another class whose elements are those graphs. Classes in NBG are not themselves eligible to be members merely because they have been named.
+
+The same warning applies to ``all open subclasses,'' ``the category of all classes,'' and ``all equivalence classes of a class-sized relation.'' Each can be useful informal language, but a formalization needs a level of coding, a universe bound, a scheme of assertions, or a stronger framework. None is obtained by unrestricted braces.
+
+\section{Three constructions of the underlying numbers}\label{sec:constructions}
+
+\subsection{Raw games followed by the numeric quotient}
+A raw game is a well-founded, set-branching tree with designated left and right options at each node. Working with raw games first avoids requiring a numeric comparison predicate in the constructor itself. Define comparison recursively on pairs of trees, then define which games are numeric. For numeric raw games $x,y$, the comparison law is
+\begin{equation}\label{eq:comparison}
+x\le y\quad\Longleftrightarrow\quad
+\bigl(\forall x^L\in L_x,\ \neg(y\le x^L)\bigr)
+\ \land\ 
+\bigl(\forall y^R\in R_y,\ \neg(y^R\le x)\bigr).
+\end{equation}
+A raw game is numeric when its options are numeric and every left option is strictly less than every right option. Classical comparison and numeric induction establish that numerical equivalence
+\[
+x\sim y\quad\Longleftrightarrow\quad x\le y\ \land\ y\le x
+\]
+is an equivalence relation and that the quotient order is linear. The distinction between the preorder on presentations and equality of numbers must remain visible until quotienting \cite{Conway}.
+
+The recursive operations begin with
+\begin{align*}
+-x&=\{-x^R\mid -x^L\},\\
+x+y&=\{x^L+y,\ x+y^L\mid x^R+y,\ x+y^R\}.
+\end{align*}
+Multiplication uses the familiar correction terms. Its left options include
+\[
+x^Ly+xy^L-x^Ly^L,\qquad x^Ry+xy^R-x^Ry^R,
+\]
+and its right options use the mixed choices $(x^L,y^R)$ and $(x^R,y^L)$. One proves that these constructions preserve numericity and respect $\sim$ before transporting them to the quotient. Inversion requires a further construction and proof; it is not justified simply by displaying the multiplication cut.
+
+For recursion on two birthdays, the ordinal natural sum is a useful decreasing measure: it is strictly increasing in each coordinate, unlike ordinary ordinal addition in its left coordinate. Alternatively, one can use a well-founded product relation on subpositions. Formal termination arguments must name such a relation; ``one of the inputs became simpler'' is not itself a checked termination certificate.
+
+\subsection{Why a literal proper-class quotient is unsafe}
+The equivalence class of a numerical value among all raw presentations can be a proper class. For example, the cuts $\{-\alpha\mid\alpha\}$ for positive ordinals $\alpha$ all have numerical value zero, while their presentations have unbounded ranks. Therefore a purported set whose elements are these entire equivalence classes is not an ordinary set-theoretic quotient.
+
+There are three standard repairs. Use canonical sign sequences; quotient a fixed set of bounded presentations and prove compatibility between bounds; or use a Scott-style code that replaces a possibly large equivalence class by its set of representatives of least set-theoretic rank. The last method is worth spelling out.
+
+\begin{proposition}[Set codes for a definable class quotient]\label{prop:scott}
+Let $E$ be a definable equivalence relation on a definable class of sets. For each $x$, let $\rho_x$ be the least rank of a set equivalent to $x$, and define
+\[
+C_x=\{y\in V_{\rho_x+1}:E(x,y),\ \rk(y)=\rho_x\}.
+\]
+Then $C_x$ is a nonempty set, and $C_x=C_z$ if and only if $E(x,z)$.
+\end{proposition}
+\begin{proof}
+The ranks under consideration form a nonempty definable class of ordinals, containing $\rk(x)$; one obtains a least rank by searching the set $\rk(x)+1$. Separation in $V_{\rho_x+1}$ produces $C_x$. If $E(x,z)$, the two equivalent-representative classes agree, hence so do their least ranks and codes. Conversely, a member of their common nonempty code is equivalent to both $x$ and $z$, so transitivity gives $E(x,z)$.
+\end{proof}
+The resulting collection of codes can still be a proper class. The repair is that every \emph{code} is a set, not that the whole quotient has become small. Canonical representatives usually give a more usable surreal API; Scott codes explain why lack of a preferred representative is not inherently paradoxical.
+
+\subsection{Sign expansions as the canonical carrier}
+Sign sequences avoid the quotient at the level of the carrier. For two distinct sequences, compare at their first disagreement, treating termination as an intermediate sign:
+\[
+-\ <\ \text{undefined}\ <\ +.
+\]
+A set of disagreement positions has a least member, so this gives a classical linear order. The simplicity relation $x\prec_s y$ says that $x$ is a proper initial segment of $y$. Birthday precedence $x\prec_b y$ says only $\bd(x)<\bd(y)$. The latter does not imply the former: the sequence $+$ is shorter than $--$ but is not its initial segment.
+
+Each sign sequence has canonical left and right options obtained by truncating immediately before a plus or a minus, respectively. These option families are indexed by subsets of its ordinal length and are therefore sets. They reconstruct the sequence as the simplest separator. This is a particularly clean foundation for birthdays, initial embeddings, and no-size-collapse theorems \cite{Gonshor,EhrlichHierarchy}.
+
+The ordinal embedding preserves the canonical order, but one must distinguish ordinal arithmetic from field arithmetic. In the surreal field, $1+\omega=\omega+1$ by commutativity; in ordinary ordinal arithmetic, $1+\omega=\omega$. On embedded ordinals, surreal addition and multiplication agree with the natural (Hessenberg) operations, not generally with the usual noncommutative ordinal operations \cite{Conway}. The two meanings of the plus sign should have distinct names or types in a formal development.
+
+The tradeoff is that addition, multiplication, and the normal-form theorem are less immediate on strings. A productive formalization uses both descriptions and proves an order-preserving equivalence between numeric-game quotients and sign sequences. The Mizar development discussed in \cref{sec:ecosystem} provides an established example of using more than one presentation rather than requiring one representation to serve every proof \cite{PakKaliszyk}.
+
+\subsection{Hahn fields as workspaces, not a circular definition}
+A Hahn field $\R((t^\Gamma))$ can be constructed from an independently given ordered abelian group $\Gamma$. Its coefficients, support, and convolution have direct set-sized definitions. This makes Hahn fields excellent algebraic and analytic workspaces.
+
+The slogan $\No=\R((\omega^{\No}))$ has a different status. Its exponent class is the object being described, the supports are reverse well ordered and set-sized, and the evaluation map uses the Conway monomial construction. It summarizes a \emph{normal-form theorem}; it is not a nonrecursive set definition that automatically solves its own size problem. A formal development may use this theorem as a proved bridge, but must not postulate the bridge merely because a Hahn-series type already exists.
+
+\section{Set-theoretic foundations and their exact roles}\label{sec:settheories}
+
+\subsection{ZF: definable classes without class variables}
+In ZF, ``$x\in\No$'' can abbreviate a formula saying that $x$ is a sign sequence of ordinal length. Operations are definable relations whose existence and uniqueness are proved by set recursion. A class theorem is then an ordinary theorem about these formulas, or a scheme when an arbitrary definable function is involved. One need not add a new object called the proper class $\No$ to the set universe.
+
+The relevant axioms are concrete. Power set and separation produce bounded collections of sign sequences and supports. Replacement and union collect birthdays, coefficient families, and recursively generated sets. Foundation supports rank and well-founded induction. Infinity provides the ordinary natural numbers. These are sufficient resources for the usual set-theoretic construction; no inaccessible cardinal is required merely to speak about the full definable surreal class.
+
+ZF is classical logic without the axiom of choice; it is not constructive set theory. Canonical sign sequences, ordinal rank bounds, and unique normalized constructions should not be assigned a global-choice dependency just because they are discussed with classes. Nevertheless, a \emph{particular proof} using arbitrary representatives, a well-ordering of a coefficient field, or a decreasing sequence selected from a non-well-ordered set may require a choice principle. This article does not claim to minimize the axioms of every theorem in the supplied manuscripts.
+
+\subsection{ZFC: a sufficient baseline for the ordinary mathematics}
+Adding choice permits the usual classical field theory, ordinary complex analysis, and the selection arguments used in the supplied support proofs without a separate weak-choice analysis. For this reason ZFC is a practical baseline for the set-sized mathematical layers of P, R, and A.
+
+There is an important limitation in how one phrases a theorem about an arbitrary class function. ZFC has no variables ranging over classes. A theorem for a \emph{specified definable} $F$ can use its defining formula in replacement. A theorem quantified over all class functions is instead interpreted as a scheme over definitions, or stated in an explicit class theory. These formulations are related, but their quantifiers are not literally identical.
+
+For example, R takes a class function $F$ on an infinitesimal thickening, restricts it to an ordinary set $U$, and collects $F(c)$ for $c\in U$. In ZFC this is legitimate when the graph of $F$ is given by a formula for which the required functionality has been proved. An unformalized phrase ``arbitrary external assignment'' does not supply that formula.
+
+\subsection{GB, GBC, and NBG: explicit class parameters}
+We use \emph{GB} for a G\"odel--Bernays-style two-sorted theory with a stated set-theoretic part and elementary class comprehension. \emph{GBC} denotes the usual classical version with set choice and global choice. Naming conventions for NBG differ over whether choice or global choice is built into the name; therefore ``NBG with global choice,'' as in A, is preferable to leaving that convention implicit.
+
+Elementary class comprehension allows set quantifiers and existing class parameters, but not arbitrary bound class quantifiers in the defining formula. Class replacement ensures that the image of a set under a class function is a set. These principles are exactly suited to recording a surreal carrier, its operations, a class function $F$, and the set of its values on an ordinary domain. A pair of numbers remains a set, so graphs of finite-arity operations are classes of sets.
+
+The standard GBC/NBG framework is conservative over ZFC for sentences purely about sets. This is a relative proof-theoretic fact, not an assertion that every conceivable collection of subclasses can be added freely. The distinction between different class realizations of the same set universe, and the strength of class comprehension and recursion, is treated systematically by Williams \cite{Williams}.
+
+Global choice supplies a class-wide choice function, for example when a construction really asks for simultaneous selections across a proper class of nonempty sets. It is \emph{not} needed merely to pass from $\forall r\,\exists H_r$ to a proof that fixes one arbitrary $r$ and one witness for that $r$. Nor is a choice principle needed to define a graph whose output is already uniquely characterized. These two observations can substantially reduce an unnecessarily strong axiom ledger.
+
+\subsection{Ordinary recursion versus elementary transfinite recursion}\label{subsec:recursion}
+The words ``transfinite'' and ``class-length'' alone do not determine proof-theoretic strength. A recursion producing a \emph{set} at every ordinal stage, where each set stage uses a set-sized initial segment and a definable rule, can be assembled from set recursion and uniqueness. By contrast, a recursion that produces a whole \emph{class} at each stage, with access to previous class stages, is the subject of elementary transfinite recursion (ETR), a genuinely stronger scheme over GBC in its usual forms \cite{GitmanHamkins,ClassForcing}.
+
+The following localization argument explains what is needed for the ordinary constructions in this article.
+\begin{proposition}[Local recursion and coherent assembly]\label{prop:recursion}
+Suppose every input $x$ has a set $D_x$ of dependencies, closed under the predecessors required by a given recursive rule. Suppose the predecessor relation on $D_x$ is well founded, the rule has a unique set-valued output once predecessor outputs are known, and the recursion on different $D_x$ agrees wherever both are defined. Then the value at each input is obtained by set recursion. If the data and rule are definable, the assembled operation is a definable class function; in GB the same argument permits fixed class parameters.
+\end{proposition}
+\begin{proof}
+Perform well-founded recursion on the set $D_x$. Its values and graph are sets by replacement. For two dependency sets, uniqueness of recursively computed values proves agreement by induction on the common required predecessors. Define the global graph by saying that $y$ is the value at $x$ in such a local recursion. Existence and compatibility make this graph functional. No stage of this argument constructs a class-valued approximation as an element of a sequence of classes.
+\end{proof}
+For a raw game, the transitive closure of its coded option tree is set-sized. For the positive-support recursions in P and R, the dependency domain is the explicit set $E^*$. These are the relevant localization certificates. More elaborate surreal operations still require their actual recursive dependency proofs; the proposition is not a blanket certification of every informal class recursion.
+
+In particular, invoking ETR for a recursion on one well-ordered Hahn support is unnecessary. On the other hand, an iteration of class truth predicates is not made a set recursion by using the same word ``ordinal.'' The known connections between ETR, class forcing, and class games show why that distinction matters \cite{ClassForcing,GitmanHamkins}.
+
+\subsection{Kelley--Morse and stronger class theories}
+Kelley--Morse (KM, also called MK) permits impredicative class comprehension: class quantifiers can occur in the defining formulas. This is stronger than elementary comprehension. It is a legitimate foundation for surreal mathematics, but its extra strength should be justified by a task involving such comprehension or stronger class recursion, not by the mere fact that $\No$ is a proper class.
+
+The present polynomial workspaces, set-supported Hahn recursions, and restriction of a class function to an ordinary set do not by themselves require KM. Further strengthening by class collection, class choice, or higher-order objects must also be stated separately; variants of second-order set theory differ in these principles \cite{Williams}. Even KM does not make proper classes into ordinary set members or grant unrestricted power classes of all classes.
+
+\subsection{Weaker and constructive set theories}
+Zermelo set theory without replacement, Kripke--Platek set theory, intuitionistic ZF, and constructive ZF are not interchangeable alternatives. Bounded finite-day constructions may require very little, while collection of arbitrary ordinal-indexed supports and the full normal-form machinery needs more. In weak theories without power set, replacement and collection can differ in ways that are immaterial in ordinary ZFC but material to formalization \cite{ZFCminus}.
+
+In intuitionistic settings, excluded middle, choice, comparison of ordinals, and the inference from failure of well ordering to a descending sequence require fresh analysis. Constructive set theory uses carefully controlled inductive definitions and collection principles; regular extension axioms provide additional closure resources in some treatments \cite{Aczel,Rathjen}. One cannot obtain a constructive formalization simply by removing the word ``classical'' from a classical surreal proof.
+
+A sound project therefore specifies a theorem-sized axiom budget. For a constructive branch, start with a precise inductive notion of numbers and order, then prove only the field and analytic statements supported by that notion. For a classical verification of the attached manuscripts, ZFC-style mathematics or an explicitly classical type theory avoids disguising substantial constructive questions as routine implementation details.
+
+\section{Universes and bounded surreal fields}\label{sec:bounded}
+
+\subsection{Grothendieck universes as relative size boundaries}
+A Grothendieck universe $\U$ is a transitive set closed under the usual set operations and appropriately indexed unions; we assume it contains the ordinary infinite sets needed here. In a familiar set-theoretic model, $V_\kappa$ for a strongly inaccessible cardinal $\kappa$ is such a universe. A Tarski--Grothendieck universe principle provides arbitrarily large suitable universes. This is an additional foundational strength, not a disguised theorem of ZFC.
+
+Let $\No_\U$ consist of sign sequences whose lengths and sign data belong to $\U$. From outside $\U$, this is a set. From the small world represented by $\U$, it is the analogue of a proper class. If $I\in\U$ indexes a family of its elements, the union of their ordinal lengths is still bounded by an ordinal of $\U$. Their small Conway cut can therefore be filled inside $\No_\U$. But the full external collection $\No_\U$ is not an allowed small index set for its own cut constructor.
+
+\begin{proposition}[Why universe relativization avoids the cut contradiction]\label{prop:universe}
+For $\U=V_\kappa$ with $\kappa$ strongly inaccessible, $\No_\U$ contains a copy of every ordinal $\alpha<\kappa$, has no upper bound in itself, and fills separated cuts indexed by members of $\U$. The external set of all its elements is not an element of $\U$.
+\end{proposition}
+\begin{proof}
+The constantly positive sign sequence gives each $\alpha<\kappa$. Every $\U$-small family of birthdays has supremum below $\kappa$, by the closure properties of $\U$, so the ordinary small-cut construction remains below $\kappa$. If $\No_\U$ were itself in $\U$, its family of all birthdays would be $\U$-small and hence bounded below $\kappa$, contradicting the presence of every $\alpha<\kappa$. Finally, appending a plus sign to the sign sequence of a proposed upper bound $x$ gives a larger element still in $\No_\U$.
+\end{proof}
+One should not say that $\No_\U$ contains ``all surreals'' without the qualification relative to $\U$. Enlarging the universe produces more sign sequences and new scales.
+
+\subsection{Birthday cutoffs need not be universes}
+For an ordinal $\lambda$, put
+\[
+\No_{<\lambda}=\{x:\bd(x)<\lambda\}.
+\]
+This is a set in ZFC. Arbitrary cutoffs are not fields: a finite cutoff can lose even an integer sum. The corrected work of van den Dries and Ehrlich identifies the field cutoffs as the epsilon numbers, that is, the ordinals satisfying $\omega^\lambda=\lambda$, and establishes strong closure and elementary-extension properties for the resulting fields \cite{vdDE,vdDEerratum}. In particular, these provide real-closed set-sized alternatives. The accompanying erratum must be taken into account when reusing detailed ordinal support estimates from the original paper.
+
+An epsilon number need not be an inaccessible cardinal; $\varepsilon_0$ is already an epsilon number. Thus a large-cardinal universe axiom is not needed to produce useful set-sized surreal fields. What a birthday cutoff does \emph{not} automatically provide is closure under every family one calls ``small'' in an ambient set theory. Its own full set of elements cannot have an upper bound inside itself. More generally, the cofinality of the cutoff and the lengths of the input families become explicit constraints.
+
+The choices solve different problems. A birthday cutoff gives a concrete algebraic subfield with ordinal closure theorems. A Grothendieck universe gives systematic closure under a broad family of constructions. A Hahn workspace gives a specified value group and transparent supports. Their carriers may overlap substantially, but their universal properties are not the same.
+
+\subsection{Three distinct closure requirements}
+For a field or carrier $F$, distinguish:
+\begin{enumerate}
+\item closure under finitely many arithmetic operations and finite algebraic extensions;
+\item closure under specified set-indexed strongly summable families;
+\item the availability of a number above or below every member of each permitted small family.
+\end{enumerate}
+Real closedness supplies the first kind of algebraic closure, not the latter two. A fixed Hahn field has a natural summation operation for suitable supports, but its value group may have no element above a given unbounded sequence. A universe-relative surreal construction has the third property only for the lower-universe-small families built into its interface. This three-way distinction is indispensable for translating A's full-scale arguments.
+
+\section{Surcomplexification adds algebra, not a new size principle}\label{sec:complex}
+
+\subsection{Pairs with the correct multiplication}
+For a real-closed ordered field $F$, define $F[i]$ on pairs $(x,y)$ by
+\begin{align*}
+(x,y)+(u,v)&=(x+u,y+v),\\
+(x,y)(u,v)&=(xu-yv,xv+yu),\\
+\overline{(x,y)}&=(x,-y),\qquad i=(0,1).
+\end{align*}
+Then $i^2=(-1,0)$. If $(x,y)\ne(0,0)$,
+\begin{equation}\label{eq:inverse}
+(x,y)^{-1}=\left(\frac{x}{x^2+y^2},\frac{-y}{x^2+y^2}\right).
+\end{equation}
+In fact the field construction needs only an ordered field, not yet real closedness: the denominator is positive whenever the pair is nonzero. Direct multiplication verifies \eqref{eq:inverse}, and finite coordinate identities prove the ring laws. Real closedness is used for algebraic closedness of $F[i]$ and for the square root defining its modulus.
+
+\begin{proposition}[Finite data complexify safely]\label{prop:complex}
+The pair construction produces a field from any ordered field $F$ and an algebraically closed field when $F$ is real closed. Its carrier has the same set or class status as $F\times F$. The same coordinate formulas define the surcomplex class field from the surreal class field.
+\end{proposition}
+\begin{proof}
+The field laws follow from the coordinate identities and the nonzero denominator just established. The equivalence between real closedness of $F$ and algebraic closedness of $F[i]$ is the standard real-closed-field theorem. For a class carrier, each pair and each polynomial coefficient list is still a set-coded finite object; the graphs of the operations are class relations defined by the same formulas.
+\end{proof}
+Alternatively, in a set-sized workspace one can use $F[X]/(X^2+1)$; irreducibility follows because an ordered field has no square equal to $-1$. This is an ordinary ideal quotient. There is no need to form a quotient whose members are proper-class equivalence classes.
+
+A proof-assistant pitfall is to reuse the \emph{product ring} on $F\times F$: that ring has coordinatewise multiplication and zero divisors. Its identity is $(1,1)$, not $(1,0)$, and it is not $F[i]$. Use a new structure, a type synonym with carefully transported operations, or the quadratic-extension construction.
+
+\subsection{Real closed is not algebraically closed}
+No nontrivial ordered field is algebraically closed, because $X^2+1$ has no root in it. Thus the assertions
+\[
+\No\text{ is real closed},\qquad \SC\text{ is algebraically closed}
+\]
+must not be merged. This is also an audit rule for documentation: an abstract or a comment containing ``algebraically closed surreal field'' does not override the elementary obstruction, nor does it identify a formally proved theorem.
+
+There is likewise no order on $F[i]$ making it an ordered field with the same multiplication. Root geometry instead uses the order on its real subfield and the $F$-valued quantity
+\[
+|x+iy|=\sqrt{x^2+y^2}.
+\]
+Cauchy--Schwarz and the triangle inequality here are finite algebraic identities. Their values are not generally ordinary real numbers, so the standard real-valued normed-field API is not automatically the right formal interface.
+
+\subsection{Conjugation, modulus, and valuation are separate structures}
+In a Hahn workspace, the natural additive valuation is
+\[
+v\left(\sum_\gamma a_\gamma t^\gamma\right)=\min\supp(a),\qquad v(0)=+\infty.
+\]
+It has an ordered-group-valued target and is ultrametric. The modulus is $F$-valued and satisfies an ordinary triangle inequality. Even the targets differ. For instance $2t^\rho$ lies in the valuation ball $v(z)\ge\rho$, but not in the order disk $|z|\le t^\rho$.
+
+A surcomplex implementation should therefore expose a conjugation map, a positive quadratic form or modulus, and a valuation as independent pieces of structure. An ordinary complex-number type specialized to $\R$, or a class designed specifically for $\R$ and $\C$, should not be assumed to support an arbitrary real-closed coefficient field without checking its hypotheses.
+
+\section{Set-sized workspaces and theorem transfer}\label{sec:workspaces}
+
+\subsection{The localization principle used in the manuscripts}
+Write $t^\gamma=\omega^{-\gamma}$, as in the supplied manuscripts. A Hahn series uses a well-ordered support in the exponent order for $t$; this is the reverse of the customary decreasing-exponent convention for powers of $\omega$. Let $\Gamma\subseteq\No$ be a set-sized divisible ordered additive subgroup. Put
+\[
+F_\Gamma=\R((t^\Gamma)),\qquad K_\Gamma=\C((t^\Gamma)).
+\]
+The normal-form theorem embeds these fields in $\No$ and $\SC$. The classical Hahn-field theorem makes $K_\Gamma$ algebraically closed, and hence $F_\Gamma$ real closed \cite{Conway,Gonshor,Poonen}. These embeddings and closure statements are substantive prerequisites for localization, not consequences of the notation $((t^\Gamma))$.
+
+\begin{theorem}[Workspace localization]\label{thm:workspace}
+Assume the surreal normal-form theorem and the algebraic-closure theorem for Hahn fields with divisible exponent group and algebraically closed coefficient field. Every set of surcomplex numbers is contained in one algebraically closed set-sized field $K_\Gamma$. Any set of such workspaces is contained in a larger one. A nonzero polynomial split in one workspace has no new roots in a larger surcomplex extension.
+\end{theorem}
+\begin{proof}
+For the first assertion, form the union $S$ of the normal-form supports of the real and imaginary parts of all the given constants. Replacement and union make $S$ a set. Inside the additive group of $\No$, take
+\[
+\Gamma=\left\{\sum_{j=1}^n q_js_j:
+ n\in\N,\ q_j\in\Q,\ s_j\in S\right\}.
+\]
+Finite lists from sets form a set; their images under finite sums form a set. This $\Gamma$ is an ordered divisible additive subgroup and contains every input support. The cited normal-form and Hahn-field theorems now give the assertion.
+
+For a set of workspaces, first take the union of their exponent groups and repeat the rational-span construction. Finally, if
+\[
+P(X)=a\prod_{j=1}^n(X-\alpha_j),\qquad a\ne0,
+\]
+in one field, the same equality holds in every extension field. At a root $\beta$, the finite product is zero, so $\beta=\alpha_j$ for some $j$. There is no additional root location.
+\end{proof}
+This is the foundational content of P's workspace proposition, made explicit as a dependency theorem. It is already sufficient to support finite polynomial factorization, finite matrices, Hermite interpolation, and the residue-pairing constructions without a proper-class ring being passed to an ordinary algebraic-geometry functor \cite{SourceP}.
+
+\subsection{What descends to one workspace and what does not}
+Finite identities descend particularly well. A polynomial has finitely many coefficients; a matrix has finitely many entries; a quotient-algebra computation involves finitely many structure constants. A single common workspace contains all of them. A support recursion can also be set-sized even if it produces infinitely many coefficients, provided its entire input and recursion support is a set.
+
+However, a statement about \emph{every} point of $\SC$ is not automatically equivalent to its restriction to one $K_\Gamma$. A positive-dimensional algebraic variety can acquire new points over a larger field even when its defining equations do not change. A function defined separately on different infinitesimal monads can have behavior outside the chosen workspace that its restriction does not determine. A radius required to dominate every member of an unbounded subset of $\Gamma$ may lie outside $\Gamma$ altogether.
+
+A safe descent proof therefore names the mechanism: persistence of a polynomial identity; invariance of a finite root multiset; base change of a finite free algebra; coefficientwise uniqueness; or an explicitly applicable model-theoretic transfer theorem. ``The problem has finitely many symbols'' is not a replacement for this argument when those symbols include quantification over a full function class.
+
+\subsection{Real-closed-field transfer is a restricted logical tool}
+For a fixed finite degree bound, complex polynomial identities and inequalities can be encoded by pairs of real coordinates. Root counts with multiplicity can be expressed using a finite factorization list and finite case distinctions. Quantifier elimination for real-closed fields then permits transfer of such first-order statements between real-closed workspaces \cite{Tarski}.
+
+For example, P's order-circle polynomial Rouch\'e theorem is a scheme indexed by a fixed ordinary degree bound. Its hypotheses quantify over pairs of field coordinates on an algebraically specified circle. The count is encoded by a finite root list, not by a quantifier over arbitrary functions or subsets. This makes the transfer legitimate in $F_\Gamma$, after the polynomial coefficients, center, and radius have been localized \cite{SourceP}.
+
+The field language does not distinguish the ordinary integer subset from arbitrary field elements, and it does not contain birthday, simplicity, Hahn support, a particular exponential, or a predicate for ordinary holomorphic functions. Thus it cannot automatically transfer an assertion about all Taylor coefficients, all ordinal stages, or all coherent charts. Adding such symbols changes the theory and requires new arguments. In particular, pure real-closed-field axioms cannot characterize the canonical surreal simplicity hierarchy.
+
+\subsection{Enlargement as a system of compatible maps}
+For $\Gamma\subseteq\Delta$, extend a coefficient function by zero outside $\Gamma$ to obtain
+\[
+K_\Gamma\hookrightarrow K_\Delta.
+\]
+This preserves addition, multiplication, order on the real part, valuation with the corresponding target embedding, and coefficient extraction. Strong sums are preserved when the same summability certificate is transported. These are natural statements to prove once and reuse as explicit morphism laws.
+
+The collection of all set-sized exponent subgroups of the full surreal class is not a set-indexed diagram. Its ``direct limit'' is therefore not automatically an instance of a library theorem about colimits of small diagrams. One can instead reason with compatible inclusions and the localization theorem, or fix a universe in which the index category is an actual type at a higher level. This distinction prevents a well-intended categorical reformulation from reintroducing the original size problem.
+
+\section{Hahn support is a logical interface, not just notation}\label{sec:support}
+
+\subsection{Three independent certificates}
+A Hahn construction requires separate answers to three questions. Is the data indexed by a permitted set or small type? Is the resulting support well ordered? Does each coefficient receive only finitely many contributions? None of these conditions follows from the other two in the generality needed here.
+
+For a set-indexed family $(A_j)_{j\in J}$, the manuscripts define strong summability by
+\begin{equation}\label{eq:summability}
+S=\bigcup_{j\in J}\supp(A_j)\text{ is well ordered},\qquad
+\{j:\gamma\in\supp(A_j)\}\text{ is finite for every }\gamma.
+\end{equation}
+The sum has coefficient $\sum_j [t^\gamma]A_j$, a finite sum after the second condition is applied. Zero coefficients can be discarded; the actual support of the result is a subset of $S$.
+
+\begin{example}[Two failed simplifications]
+Each series $t^{1/n}$, $n\ge1$, has singleton support, but the family is not strongly summable because $\{1/n:n\ge1\}$ is not well ordered in the increasing exponent order. Conversely, the constant family $A_n=1$ has well-ordered union of supports $\{0\}$, but infinitely many terms contribute at exponent zero. It is not a formal Hahn sum either.
+\end{example}
+An ordinary convergent series of complex constants may have a perfectly good complex sum while failing the second condition in \eqref{eq:summability}. That operation belongs to the coefficient field's analysis, not to the formal Hahn summation operation. Mixing the two requires an explicit additional definition.
+
+\subsection{The positive-support mechanism}
+If $E$ is a well-ordered set of strictly positive elements of an ordered abelian group, let
+\[
+E^*=\{e_1+\cdots+e_k:k\in\N,\ e_j\in E\},
+\]
+including the empty sum. The Hahn--Neumann lemma says that $E^*$ is well ordered and each exponent has only finitely many representations by nondecreasing finite words in $E$; the corresponding finite-word expansions therefore have finite coefficient dependence \cite{Neumann}. Combining this with a well-ordered input support $S$ gives a controlled support $S+E^*$.
+
+There are two different uses of this lemma. It proves that the output expression denotes a Hahn series. It also proves that recursive coefficient equations really involve finite sums. A proof that checks only well ordering has not yet justified the coefficient calculation. Conversely, a pointwise finite formula does not guarantee that the union of its output exponents is well ordered.
+
+For instance, when $B$ has positive support, the formal geometric identity
+\[
+(1+B)^{-1}=\sum_{k\ge0}(-B)^k
+\]
+is justified by the support lemma and coefficientwise cancellation. No metric convergence theorem is being applied. The same reasoning underlies the matrix inverse and support-increasing operator calculus in R \cite{SourceR}.
+
+\subsection{Why natural-number iteration may not reach the required scale}
+Let the exponent group contain $1$ and an element $\Omega$ greater than every integer. The strongly summable series
+\[
+H=\sum_{n\ge0}t^n
+\]
+has a remainder beginning at $t^{N+1}$ after $N$ terms. That remainder is not smaller than $t^\Omega$ for any ordinary $N$. Thus finite partial sums need not converge in a topology whose neighborhoods include that scale. An argument asserting that $n\delta$ eventually exceeds every group element is an Archimedean argument and fails in this example.
+
+This is why P's coprime factor lifting is naturally formulated as well-founded recursion through a support monoid, rather than as an unspecified limit of Newton iterates. It is also why formal Hahn summability and topological summability have different interfaces in Mathlib \cite{HahnSummable}.
+
+\subsection{The full surreal exponent type needs a further restriction}
+At a fixed type-theoretic level, a coefficient function on the entire surreal type can have a well-ordered support that is too large to be a normal form for a surreal at that same level. The support must be \emph{small relative to the universe used to construct those surreals}, not merely a subtype of their larger carrier.
+
+There is a direct set-theoretic analogue. The proper-class expression
+\[
+\sum_{\alpha\in\Ord}t^\alpha
+\]
+has a well-ordered class of exponents, and each exponent receives one coefficient. Nevertheless, it is not a surreal normal form because its support is not a set. Well ordering and finite coefficient dependence do not repair the missing size condition.
+
+The inspected Lean library explicitly introduces a small-support version of surreal Hahn series, rather than identifying the unrestricted Hahn-series type with the surreal carrier. This is an important implemented safeguard, discussed in \cref{sec:ecosystem}.
+
+\section{Topology: full-class, intrinsic, and coefficientwise}\label{sec:topology}
+
+\subsection{A class neighborhood relation is enough}
+A's fine topology uses balls
+\[
+B(a,r)=\{z\in\SC:|z-a|<r\},\qquad r\in\No_{>0}.
+\]
+In class set theory, one can define openness of a given class $V$ by a formula: for every $a\in V$ there is $r>0$ with $B(a,r)\subseteq V$. There is no need to form a set, or a class with class members, of all open subclasses. Continuity and local analytic statements can likewise be formulated through the neighborhood relation.
+
+In Lean, a universe-relative surreal carrier is an actual type, so an ordinary \texttt{TopologicalSpace} on that type is available in principle. Its subsets are Lean predicates. This does \emph{not} mean that every such subset is small in the lower universe used for the cut construction. The apparent discrepancy disappears once the two meanings of ``set'' are distinguished.
+
+\begin{theorem}[Small subsets are discrete in the full fine topology]\label{thm:discrete}
+Every set-sized subset of the full surcomplex class is closed and discrete in the fine topology. Every convergent net with a set-sized directed index set is eventually equal to its limit; every fine-Cauchy net with such an index set is eventually constant.
+\end{theorem}
+\begin{proof}
+Let $A\subseteq\SC$ be a set and $p\in\SC$. The nonzero distances
+\[
+D_p=\{|p-a|:a\in A,\ a\ne p\}
+\]
+form a set of positive surreals. By \cref{lem:bounds}, choose $\delta>0$ smaller than each of them. Then $B(p,\delta)\cap A$ is empty if $p\notin A$, and is $\{p\}$ otherwise. This proves closedness and discreteness.
+
+For a convergent net, its range is a set. Apply the same construction to the nonzero distances of its terms from the proposed limit. Eventual membership in the resulting ball forces eventual equality. For a Cauchy net, instead collect the nonzero distances between all pairs of its terms; that is still a set. The Cauchy condition for a smaller positive tolerance makes a tail have all pairwise distances zero.
+\end{proof}
+This is the argument in A, with its essential size quantifier retained \cite{SourceA}. It does not make the whole full-class topology discrete: every ball contains a point distinct from its center, for example $a+r/2$. Its point set is not one of the sets to which the theorem applies.
+
+\subsection{The topology on a workspace depends on how it is obtained}
+There are two different topologies one might put on $K_\Gamma$. Its intrinsic ordered-field topology uses radii from $F_\Gamma$. Its subspace topology from the \emph{full} surcomplex fine topology allows intersections with balls whose radii may lie outside $F_\Gamma$. The second topology is discrete by \cref{thm:discrete}, because $K_\Gamma$ is a set. The first need not be discrete: for any intrinsic positive radius $r$, the point $r/2$ lies in the ball at zero.
+
+This is not a contradiction about subspace topology. The intrinsic field does not contain the arbitrarily small external radii used to isolate its points. Formal theorems about continuity, limits, or derivatives must specify which topology is being used before invoking an existing library result.
+
+At a universe-relative level the corresponding theorem is: every \emph{lower-universe-small} subset is discrete in the full topology of the larger surreal carrier. It is false with the smallness qualifier removed, since the carrier itself is a subset of itself and has no isolated points. This is one of the most important statement changes required in a faithful Lean translation.
+
+\subsection{Ordinary complex contours live in a third structure}
+The ordinary complex parameter domain $U\subseteq\C^d$ retains its usual topology and analytic structure. A Hahn-coherent datum is a family of ordinary holomorphic functions, on this common domain, indexed by a well-ordered support. Its contour integral in A or R integrates ordinary coefficient functions and then forms a Hahn series. It is not an integral along a nonconstant fine-continuous map from a real interval into the full surcomplex class.
+
+Indeed, the range of any such real-parameter map is a set; \cref{thm:discrete} makes that range discrete. A continuous image of a connected real interval in a discrete space has at most one point. Thus the contour formalism and the absence of nonconstant fine-continuous paths concern different structures, exactly as A emphasizes.
+
+Similarly, the global fine-analytic logarithm and nonunique fine-analytic exponentials described in A do not contradict classical complex analysis. Their local neighborhoods and global coherence conditions differ from the ordinary ones. A foundational formalization should preserve this distinction rather than silently replacing A's functions with ordinary holomorphic maps into a normed field.
+
+\section{Axiomatizing the surreal structure rather than constructing it}\label{sec:axiomatizations}
+
+\subsection{Why real-closed-field axioms are too weak}
+A type equipped with a real-closed-field structure supports much of finite polynomial geometry after complexification. It does not thereby become the canonical surreal field. Many nonisomorphic real-closed fields satisfy the same first-order ordered-field sentences. The distinguished birthday function, simplicity tree, ordinal embedding, normal-form monomials, and small-cut filling need separate data and laws.
+
+This observation suggests two legitimate axiomatic interfaces. A \emph{generic algebra interface} deliberately assumes only the field, order, valuation, or closure needed by a theorem. A \emph{surreal structure interface} also records the simplicity and size data and has a proved model given by a construction. The former is excellent for reusable mathematics. The latter is needed when one wants to justify that the generic results apply to the intended surreal object.
+
+\subsection{A safe working interface for classical surreal systems}
+A useful specification has a carrier $S$, a linear order, a birthday map to the appropriate ordinals, explicitly sized bounded birthday strata, and a cut constructor for separated \emph{small families}. The constructor's output must lie between its options and be characterized as the simplest eligible element. A compatibility theorem identifies the designated simplicity relation with initial truncation in a sign presentation. Addition and multiplication must be shown to obey the Conway recursions and to respect equality.
+
+These clauses describe an interface, not a claimed minimal or independent axiomatization. To establish categoricity one must state the precise notion of morphism and prove an isomorphism to a canonical construction. Pure numerical order and field operations are not enough; adding an arbitrary rank label does not force it to be the true birthday. Conversely, specifying every cut by all earlier numerical neighbors without a bound can make the options improperly large.
+
+Ehrlich's work on simplicity hierarchies develops structural characterizations and initial embeddings that supply a rigorous context for such interfaces \cite{EhrlichHierarchy,EhrlichKaplan}. In a Lean project, an axiomatic interface is best packaged as a structure with fields and laws, then inhabited by the constructed surreal model. Merely declaring an uninhabited interface is harmless; declaring a global inhabitant as a new axiom shifts the entire consistency burden to that assumption.
+
+\subsection{A recent first-order program, with a status boundary}
+A 2026 research announcement by Junhong Chen, Joel David Hamkins, and Ruizhi Yang considers an elementary theory of surreal arithmetic with an additional birthday-precedence relation and reports a proposed bi-interpretation with set theory. The publicly available March 2026 slides use schemes controlling birthday-bounded definable cuts and definable families. These restrictions are the important foundational feature: the proposed theory does not fill unrestricted definable cuts such as the entire carrier against the empty side \cite{SurrealArithmetic}.
+
+The slides explicitly describe the work as new and its details as still being checked. We therefore treat this as a promising research program, not as a completed Lean formalization or a substitute for a proved model of the interface above. The birthday relation in this program must also be distinguished from sign-prefix simplicity. An expanded first-order structure can encode information that the pure real-closed-field reduct cannot; statements about their theories must not be conflated.
+
+\subsection{Universal does not mean a final set-sized field}
+Universality claims need a specified class of inputs and embeddings. Embedding every \emph{set-sized} ordered field into the surreal class is different from asserting a final object among all class-sized ordered fields. Likewise, uniqueness of an initial simplicity-preserving embedding is different from uniqueness of an arbitrary ordered-field embedding. The adjective ``absolute'' in a structural account does not remove the need to say which parameters, presentations, and morphisms are being preserved \cite{EhrlichHierarchy}.
+
+For the attached manuscripts, an all-purpose universality theorem is not required. The concrete normal-form embedding of the selected Hahn workspaces, plus the compatibility laws needed for each theorem, is both more precise and more directly useful.
+
+\section{Dependent type theory: universes, inductives, and quotients}\label{sec:typetheory}
+
+\subsection{A universe-relative carrier}
+In dependent type theory, one normally constructs a family of surreal types relative to a universe of small indexing types. Schematically,
+\[
+\No_u:\operatorname{Type}(u+1),\qquad
+I,J:\operatorname{Type}u,
+\]
+with cut options $I\to\No_u$ and $J\to\No_u$. The larger universe contains the carrier, while the smaller universe controls permissible branching. The illegal cut $(\No_u,\varnothing)$ is excluded because its left index would generally require the larger level.
+
+This is the type-theoretic analogue of \cref{prop:universe}, not a claim that types are literally sets in a particular chosen model. A semantic interpretation by sufficiently large set-theoretic universes can explain the construction relative to those assumptions. It is not an exact lower-bound theorem for the consistency strength of every type theory or of Lean itself.
+
+Universe polymorphism gives a uniform \emph{family of declarations}. Universe levels are not ordinary values over which an internal function can iterate and take a final union of all types. There is no top universe containing every universe at its own level. Any purported final surreal type obtained by collapsing all levels must face \cref{prop:allcuts} again.
+
+\subsection{Small-branching well-founded trees}
+A classical implementation can begin with a W-type-like raw game constructor. The following is an \emph{illustrative design}, not a quotation of the current library's internal implementation:
+\begin{samepage}
+\begin{lstlisting}
+universe u
+
+inductive RawGame : Type (u + 1) where
+  | node (L R : Type u)
+      (left : L -> RawGame)
+      (right : R -> RawGame) : RawGame
+\end{lstlisting}
+\end{samepage}
+The recursive occurrences in the function codomains are positive. One can then define comparison by well-founded recursion, numericity, and the numerical equivalence relation. This route uses ordinary inductive types and set quotients rather than requiring a primitive inductive-inductive numeric constructor.
+
+A tempting alternative constructor taking \texttt{Set RawGame} on each side changes both positivity and size. A predicate has the form \texttt{RawGame -> Prop}; the recursive type occurs in its domain, so it is not the small positive family representation above. Moreover a predicate on the entire larger carrier need not have lower-universe-small support. A constructor is not validated merely because its surface notation resembles a mathematical set of options.
+
+\subsection{Quotient descent is a proof obligation}
+A function on raw games descends to numeric equivalence only after proving congruence. For addition this means
+\[
+x\sim x',\ y\sim y'\quad\Longrightarrow\quad x+y\sim x'+y'.
+\]
+For a map selecting representatives, choice can supply an output, but the mathematical result must not depend on which representative was selected. A quotient recursor is the proper boundary: its respectfulness proof records exactly this invariance.
+
+There are two different notions of equality in play. Structural equality compares raw presentations; quotient equality compares numerical values. A proof about the options of a selected raw representative is not automatically a theorem about arbitrary canonical options of the number. The distinction matters especially for birthday minimization and simplicity.
+
+In a universe-relative quotient the collection of raw games is an actual type, so the quotient constructor itself is a legitimate type-theoretic operation. This avoids the literal proper-class-quotient problem of \cref{prop:scott}, but it does not make all option families small or remove the need to prove congruence.
+
+\subsection{Lean's universe hierarchy and smallness predicates}
+Lean distinguishes its predicative \texttt{Type} hierarchy from the impredicative sort \texttt{Prop}. Its universes are not cumulative in the sense of automatic inclusion of an existing type into every higher universe; explicit lifting constructions and universe-polymorphic declarations handle changes of level \cite{LeanUniverses}. This matters when comparing $\No_u$ with $\No_v$: one should construct the embedding by lifting or re-encoding the underlying data, not assume a definitional equality of carriers.
+
+Choice at a fixed universe level can select representatives from the types under discussion. It does not form a single function quantified internally over all universe levels. Identifying such an axiom with set-theoretic global choice requires a specified interpretation of sets and classes; the common word ``choice'' alone is not a proof that the foundational principles are equivalent.
+
+A proposition asserting that a type is small is not the same thing as actually shrinking every type. Mathlib's \texttt{Small} mechanism records that a type is equivalent to one in a specified universe, and a shrink construction uses such a witness. The proof may be nonconstructive, but it is still a theorem to be supplied. The whole $\No_u$ cannot be declared $u$-small consistently with its small-cut filling property and linear order.
+
+Nor does impredicativity of \texttt{Prop} imply \texttt{Type : Type}. A subset of a large type can be specified by a proposition-valued predicate without reducing the universe of the underlying subtype. Propositional resizing principles, in foundations that adopt them, address proposition universes; they do not by themselves compress the ordinal-indexed surreal carrier or its arbitrary supports.
+
+\subsection{Formalizing sets inside type theory is a separate route}
+One can also formalize a set-theoretic universe inside Lean and define surreals as sets in that model. Mathlib's \texttt{ZFSet} is built by quotienting pre-sets by extensional equivalence; its documentation distinguishes these modeled ZFC sets from Lean's predicate-based \texttt{Set} construction \cite{LeanZFC}. This provides a route for translating a conventional set-theoretic argument almost literally.
+
+The cost is a bridge to ordinary algebraic types. An internal field described by set-coded operations is not definitionally a Lean \texttt{Field} instance on its external element type. One must extract the carrier, transport the operations, and establish the relation between internal membership and external predicates. This approach is valuable when the foundational interpretation is itself the subject of the theorem, but often unnecessarily indirect for proving a finite polynomial identity.
+
+Finally, Mathlib's use of the word \texttt{Definable} in its pre-set lifting interface is not automatically first-order definability in the model-theoretic sense. The documentation expressly notes that distinction. A formal assertion that all functions satisfy that implementation predicate must not be misreported as saying that every external class is definable by a first-order formula.
+
+\section{Constructive and homotopical approaches}\label{sec:hott}
+
+\subsection{Why the constructive order needs more information}
+Classically, strict comparison of numbers can be recovered from a suitable negated non-strict comparison. Constructively, absence of a proof of $y\le x$ need not give positive evidence that $x<y$. A definition based on that negation can also violate the positivity requirements of the intended inductive construction.
+
+The higher inductive-inductive account in the HoTT book defines the surreal carrier together with its strict and non-strict order relations. Small separated left and right families create a number, and an antisymmetry path constructor identifies $x$ and $y$ when both inequalities hold. Positive constructors for the order relations support recursion without requiring an arbitrary lift of quotient-valued option families to raw representatives \cite{HoTT}. Shulman's discussion further explains the relation with constructive, or plump, ordinals \cite{Shulman}.
+
+This is not merely the classical quotient construction with different syntax. In a constructive quotient approach, a family of equivalence classes need not have a chosen family of representatives. The higher inductive-inductive construction addresses that issue in its elimination principle. A formalization must specify that principle, the coherence of the resulting operations, and the status of the order relations as propositions.
+
+\subsection{The positive comparison pattern}
+At the level of a mathematical specification, the non-strict comparison is generated by the conditions that each left option of $x$ is below $y$ and $x$ is below each right option of $y$. Strict comparison has positive evidence from an appropriate option: a right option of $x$ at most $y$, or a left option of $y$ at least $x$. Together with the cut separation and identification constructors, these rules replace the classical negative test \eqref{eq:comparison} \cite{Shulman}.
+
+The numerical and order components depend on each other, so a standard W-type alone does not present the whole construction. A proof assistant supporting some higher inductive types does not thereby support every higher inductive-inductive signature with all required computation rules. General semantic work on higher inductive types is important background, but one must check the particular signature and elimination rules being used \cite{HITSemantics,CubicalHIT}.
+
+\subsection{What cannot be imported without further assumptions}
+The classical sign-sequence representation, linear trichotomy, every standard ordinal comparison, a global real-closed-field package, and the classical support-selection arguments should not be assumed automatically for the constructive object. Even familiar definitions of a field differ constructively: inversion from positive apartness from zero is stronger evidence than mere negation of equality. Ordinary Cauchy and Dedekind reals also need not coincide without additional principles.
+
+For a constructive version of the supplied analytic theory, the axiom ledger would have to revisit the extraction of decreasing sequences, Baire arguments, holomorphic zero-set reasoning, and the choice of roots or representatives. The aim need not be to recover the classical statements unchanged. One can prove a constructive theorem with explicit apartness, locatedness, or supplied enumeration hypotheses, and then recover a classical specialization when excluded middle and suitable choice are added.
+
+This is a meaningful research direction, but it is distinct from the classical Lean verification plan proposed below. We do not claim that the HoTT construction already supplies the full normal-form, algebraic-closure, and analytic package of P, R, and A.
+
+\subsection{Why full univalence cannot simply be added to ordinary Lean equality}
+Lean's ordinary equality is proposition-valued and proof irrelevant. Hence two proofs of equality between the same objects are equal. Full univalence for a universe with nontrivial automorphisms has a different homotopical equality structure: distinct self-equivalences need to correspond to distinct equality paths.
+
+\begin{proposition}[The elementary incompatibility test]\label{prop:univalence}
+Suppose a type theory has proof-irrelevant equality between types, contains a two-element type $B$, and asserts full univalence for a universe containing $B$. These assumptions are incompatible with the distinct identity and swap self-equivalences of $B$.
+\end{proposition}
+\begin{proof}
+Proof irrelevance makes the type of equality proofs $B=B$ have at most one element. Univalence makes its map to the type of self-equivalences $B\simeq B$ an equivalence. Therefore all self-equivalences of $B$ would be equal. The identity and swap maps are not equal, as evaluation at either element of $B$ shows.
+\end{proof}
+The conclusion is not that univalent mathematics is inconsistent. It is that incompatible equality mechanisms cannot be superimposed without changing the foundation. One can work in a HoTT or cubical assistant, or encode a model and a separate path notion inside Lean. Neither option is the same as declaring unrestricted univalence for Lean's native proof-irrelevant type equality.
+
+\subsection{Choosing the constructive route for the right purpose}
+A constructive development is attractive when the computational meaning of order, choice-free construction, or the elimination principle is central. A classical quotient-based Lean development is attractive when the immediate goal is to reuse algebra, ordinary complex analysis, and established classical mathematical libraries. The two routes can inform each other through explicit interpretation theorems; neither is a drop-in implementation of the other.
+
+\section{A foundational audit of the three supplied manuscripts}\label{sec:manuscripts}
+
+\subsection{Finite polynomial algebra: localize and reuse}
+P's finite-degree algebra is the easiest entry point. Its field-dependent statements should first be formalized for a generic field $K$, a generic real-closed real part $F$, or an algebraically closed valued field of residue characteristic zero, according to the theorem. The surcomplex specialization then consists of providing the required instances and transporting coefficients through the workspace embedding.
+
+For example, the perfect residue pairing on $K[X]/(P)$ for monic $P$ uses only finite remainders and a finite Gram matrix. If
+\[
+\lambda_P(H)=[X^{n-1}](H\bmod P),
+\]
+the matrix in the power basis has ones on its antidiagonal and zeros on one side of that antidiagonal; reversing columns makes it triangular. Its determinant is $(-1)^{n(n-1)/2}$. This argument does not depend on surreal representations, on a valuation, or even on $K$ being algebraically closed. It is a strong candidate for a generic reusable theorem before any full-class analytic layer is implemented \cite{SourceP,SourceR}.
+
+By contrast, an initial-polynomial root count needs a splitting field, the valuation and residue maps, and compatibility of those maps with finite polynomial operations. These assumptions should not be silently discharged by a bare \texttt{Field Surreal} instance. P's explicitly algebraically closed Hahn workspace is the intended source of the stronger hypotheses.
+
+\subsection{Positive-support recursion: no extra class-recursion axiom}
+The common mechanism in P's Hensel factorization and R's preparation and matrix division can be isolated in an algebraic theorem. This isolation is useful for formalization because it removes both surreal birthdays and ordinary complex topology from the recursion proof.
+
+\begin{proposition}[A support-local nonlinear recursion]\label{prop:positive}
+Let $A$ be a commutative coefficient ring and let $V=A^m$. Let $L:V\to V$ be an invertible $A$-linear map, and let $N:V\to V$ be a polynomial map all of whose monomials have total degree at least two. Let $X$ be a Hahn family in $V$ with well-ordered positive support contained in $E$. Then
+\[
+LY+N(Y)=X
+\]
+has a unique positive-support Hahn solution $Y$. Its support is contained in $E^*\setminus\{0\}$.
+\end{proposition}
+\begin{proof}
+Use well-founded recursion on $E^*\setminus\{0\}$. At an exponent $\nu$, each nonlinear contribution is a product of at least two already indexed positive coefficients whose exponents sum to $\nu$. Every exponent in such a product is strictly less than $\nu$. The Hahn--Neumann lemma makes the coefficient sum finite. Define
+\[
+Y_\nu=L^{-1}\bigl(X_\nu-[t^\nu]N(Y_{<\nu})\bigr).
+\]
+The constructed family is a Hahn family because its support is a subset of the well-ordered set $E^*$. Exponents outside that set receive no input and no contribution from the constructed nonlinear products. Thus the equation holds coefficientwise.
+
+For uniqueness among all positive-support solutions, take the least exponent where two candidate vectors differ; their finitely many component supports have well-ordered union. A difference in a nonlinear coefficient at that exponent would require a difference at a strictly smaller exponent. Hence the nonlinear differences vanish there, and injectivity of $L$ forces the alleged first difference to vanish as well.
+\end{proof}
+This proof uses set recursion on $E^*$, finite polynomial convolution, and a supplied inverse $L^{-1}$. When $A$ is a ring of holomorphic functions on one ordinary domain and the inverse preserves that ring, the same proof keeps every coefficient on the original domain. That is the crucial fixed-domain property in R. It does not require a Noetherian completion theorem, a fine-topological limit, or an ETR axiom.
+
+\subsection{Hartogs coherence: the point where class replacement matters}
+R's automatic Hahn--Hartogs theorem begins with a class function on a full product of thickenings. Its decisive size step is
+\[
+A=\bigcup_{c\in U}\supp(F(c)),
+\]
+where $U$ is an ordinary complex domain and therefore a set. Class replacement makes the family of values $F(c)$ a set; another replacement and union make $A$ a set. This is exactly the use of class parameters supported by GBC. In ZFC the same reasoning is a scheme for definable $F$ \cite{SourceR}.
+
+Once that step is justified, the coefficient family $(f_\gamma)_{\gamma\in A}$ is set-indexed. The classical separate-holomorphy theorem supplies joint holomorphicity. The automatic-support argument then excludes a decreasing sequence of globally active exponents by choosing a point where countably many nonzero holomorphic coefficient functions are simultaneously nonzero. The latter step uses a Baire-category argument and an appropriate classical choice principle to extract the decreasing sequence.
+
+The final extension from ordinary tuples to arbitrary surcomplex tuples is not another replacement argument. It proceeds one coordinate at a time using slice coherence and coefficientwise identity. The hypothesis must hold when all the other fixed coordinates are \emph{surcomplex}, not merely ordinary complex numbers. Weakening this hypothesis changes the theorem: arbitrary values at tuples with several nonordinary coordinates would otherwise remain unconstrained.
+
+A Lean specification should therefore expose a function on the relevant universe-relative type, prove that its values on the small ordinary domain have collectively small support, and then state the ordinary Hartogs and Baire lemmas independently. Availability of those exact ordinary analytic lemmas in the chosen dependency revision must be checked; the existence of a Hahn-series type does not provide them.
+
+\subsection{Sheaves: preserve the manuscripts' componentwise convention}
+A's gluing theorem on a connected ordinary domain obtains a common support by a strong identity argument. On overlapping connected open sets, a holomorphic coefficient that is nonzero cannot disappear identically on a nonempty open overlap. Consequently exact supports agree along the connected overlap graph. The theorem is not based on an arbitrary infinite union of unrelated well-ordered supports \cite{SourceA}.
+
+On a disconnected open set, the manuscript deliberately defines sections componentwise. This convention is necessary. Let $U$ be a union of pairwise disjoint ordinary disks $D_n$, and prescribe the constant section $t^{1/n}$ on $D_n$. Each local datum has singleton support, and the overlap conditions are vacuous. A definition insisting on \emph{one} globally well-ordered support for the whole disconnected $U$ would not admit their glue, since $\{1/n:n\ge1\}$ is decreasing. The componentwise definition does admit it.
+
+For fixed $\Gamma$, one can formalize this as a set- or type-valued sheaf with
+\[
+\HH_\Gamma(U)=\prod_{V\in\pi_0(U)}\HH_\Gamma(V),
+\]
+where the factors on connected components use the global-support convention. The component index is an ordinary set. Alternatively, use an appropriate sheafification and prove agreement on connected domains. For the full surreal exponent class, use set-coded individual sections and a schema of gluing assertions, or move to a specified higher universe. Do not invoke an ordinary category whose objects are literally all proper classes without supplying its foundations.
+
+\subsection{All-scale rigidity: a genuinely larger ambient resource}
+A's polynomial-rigidity argument can be expressed by a very small support-theoretic core. Suppose a function has Taylor coefficients $a_n$ at zero, and a coherent chart at every positive surreal radius $r$. For each $r$, the supports of $a_nr^n$ lie in one well-ordered chart support. If infinitely many $a_n$ are nonzero, their valuations form a set, so one can choose $\Delta>0$ with
+\[
+|v(a_n)|<\Delta/4\qquad(a_n\ne0).
+\]
+At $r=t^{-\Delta}$, successive nonzero coefficients, indexed by $m>n$, satisfy
+\[
+v(a_mr^m)-v(a_nr^n)
+=v(a_m)-v(a_n)-(m-n)\Delta<0.
+\]
+Their valuations form an infinite strictly decreasing sequence in one well-ordered support, a contradiction. Coefficientwise identity then identifies the function with its finite Taylor polynomial on every chart \cite{SourceA}.
+
+The foundational requirement is the ability to dominate this \emph{whole set} of valuations. The proof does not need a global choice of charts for every radius at once; it fixes the one radius constructed from the hypothetical infinite Taylor support. But it does need that radius to be available in the same ambient full-scale structure. A universe-relative formulation can retain the argument for small coefficient families. A fixed arbitrary Hahn field cannot.
+
+\begin{example}[Internal all-scale coherence need not force a polynomial]\label{ex:internal}
+Let $K=\C((t^\Q))$, with ordered real part $F=\R((t^\Q))$. Define
+\begin{equation}\label{eq:nonpoly}
+f(z)=\sum_{n\ge0}t^{n^2}z^n\qquad(z\in K),
+\end{equation}
+using strong Hahn summation. This is a nonpolynomial function that has a Hahn-coherent chart on the whole ordinary complex plane at every positive radius $r\in F$.
+
+To verify the claim, write any nonzero input $z=c\,t^\sigma(1+\eta)$, where $\sigma\in\Q$, $c\in\C^\times$, and $\eta$ has positive support. The base exponents $n^2+n\sigma$ tend upward and are strictly increasing for all sufficiently large $n$; the finite initial portion causes no obstruction. They form a well-ordered set, and each base exponent comes from at most two indices. Finite binomial expansion of $(1+\eta)^n$ has support contained in the positive monoid generated by $\supp(\eta)$. The support lemma therefore proves strong summability of \eqref{eq:nonpoly}; the value at zero is simply one.
+
+Apply the same argument with $z=r$ to see that the coefficient family $t^{n^2}r^n$ is strongly summable. Regrouping
+\[
+\sum_{n\ge0}t^{n^2}r^n w^n
+\]
+by Hahn exponent gives an ordinary polynomial in $w$ at each exponent, because only finitely many indices contribute. These entire coefficient polynomials have one well-ordered support and define the claimed chart. Evaluation at finite $w$ agrees with $f(rw)$ by the same finite-word support calculation.
+
+Finally, at $r=1$ the coefficient at exponent $n^2$ is $w^n$. A finite-degree polynomial over $K$ has a uniform bound on the degrees of all of its ordinary coefficient polynomials. Coefficient uniqueness on ordinary points therefore rules out equality with $f$. This does not refute A: the value group $\Q$ has no exponent dominating all the values $n^2$, and A explicitly quantifies over the larger surreal scale system.
+\end{example}
+This example is an elementary comparison supplied here. It is not attributed to an unpublished theorem in the attached manuscripts, and no priority claim is made for it.
+
+\subsection{Characters and actual analytic fibers}
+R explicitly avoids assuming that an arbitrary algebra homomorphism commutes with an infinite Hahn sum. Instead it proves finite identities such as
+\[
+H(w)-H(\xi)=\sum_j(w_j-\xi_j)G_j(w)
+\]
+inside the coherent ring. A character sending $w_j$ to $\xi_j$ must then send $H$ to $H(\xi)$ by an ordinary finite homomorphism calculation. This is a model formalization pattern: prove a finite identity that carries the intended semantic information instead of silently assigning continuity or strong-sum preservation to every homomorphism \cite{SourceR}.
+
+Similarly, a finite algebra $K[X_1,\ldots,X_d]/I$ can be treated with ordinary ideal quotients, finite-dimensional modules, and localization. A statement about $\Spec$ should use that set-sized ring. It should not treat the full class field as an object of a small category of commutative rings without a universe specification.
+
+\section{What exists in the current formalization ecosystem}\label{sec:ecosystem}
+
+\subsection{An explicitly dated source audit}
+The observations in this section were made on September 21, 2026. For the separate Lean 4 repository \texttt{vihdzp/combinatorial-games}, the inspected revision is
+\begin{center}\small\ttfamily
+02b4a908ea2ecfefffecb438f691951a814a5264.
+\end{center}
+The commit is dated September 19, 2026. The checked toolchain is
+\begin{center}\small\ttfamily
+leanprover/lean4:v4.35.0-rc2.
+\end{center}
+The checked \texttt{lake-manifest.json} pins Mathlib to
+\begin{center}\small\ttfamily
+dec5b2b780537b6eaf7f5e5f000c12f7387fb24d.
+\end{center}
+These are source snapshots, not an assertion that this article has rebuilt the library or checked its entire transitive axiom closure \cite{GamesRepo,GamesManifest}.
+
+This distinction matters historically. Old Lean 3 surreal documentation describes an earlier stage of the development and is not a reliable inventory of the current separate Lean 4 project. Conversely, finding a theorem in that project does not mean it is automatically available after importing upstream Mathlib alone.
+
+\subsection{The surreal carrier and field structure}
+At the pinned revision, \texttt{CombinatorialGames.Surreal.Basic} defines the carrier in universe $u+1$ by antisymmetrizing the subtype of numeric games. The quotient construction, comparison lemmas, and a selected representative interface are visible in the source. The file records the separation between additive structure, multiplication, and division \cite{GamesBasic}.
+
+The inspected \texttt{CombinatorialGames.Surreal.Division} contains an actual noncomputable \texttt{Field Surreal} instance. Its inverse descends from numeric-game inversion by a quotient map and uses a congruence theorem; the field cancellation proof is then transported through numerical equivalence. Thus it would be incorrect to describe surreal multiplication or inversion as wholly unimplemented in the current inspected ecosystem \cite{GamesDivision}.
+
+There is a documentation caution: prose in the basic module uses the phrase ``complete ordered field.'' It should not be read as a proved Dedekind-completeness statement. The field structure and actual theorem signatures are what matter, and \cref{sec:size} gives the elementary obstruction to that stronger interpretation. This is a useful example of why a source audit cannot stop at a module's introductory paragraph.
+
+\subsection{A small-support surreal Hahn type is already present}
+The pinned Hahn module is
+\begin{center}\small\ttfamily
+CombinatorialGames.Surreal.HahnSeries.Basic.
+\end{center}
+It introduces \texttt{SurrealHahnSeries} in universe $u+1$. It uses the ordinary Hahn-series infrastructure with the dual order on surreal exponents and restricts supports to be $u$-small. Its constructor requires both a smallness witness and reverse well-foundedness; it provides field and ordered-ring infrastructure, coefficient extraction, truncation, and ordinal indexing of the small support \cite{GamesHahn}.
+
+The module explicitly presents this as a translation layer for surreal Hahn series. In the inspected file, including its end, we did \emph{not} verify a completed ordered-field isomorphism between the surreal carrier and this Hahn type. A constructor for the target type, or a comment describing an intended future isomorphism, is not that isomorphism. Normal-form existence, surjectivity of evaluation, and its compatibility with multiplication remain proof obligations unless a separately located theorem discharges them.
+
+This is a scope-limited audit, not a claim that no other branch, repository, or subsequently added module proves such a result. Likewise, no real-closedness instance or surcomplex algebraic-closure theorem was verified in the inspected surreal modules. Those must be checked or supplied before specializing the algebraically closed-field parts of P and R.
+
+\subsection{The word ``cut'' names more than one implemented object}
+The inspected \texttt{CombinatorialGames.Surreal.Cut} concerns complementary lower and upper sections of the entire universe-relative surreal order. It builds a complete linear order of such sections via concept-lattice machinery. A number corresponds to two adjacent sections, according to which side contains it \cite{GamesCuts}.
+
+This is not the same object as a small pair of Conway options. A section of the full carrier may be large and need not be filled by a number in that carrier. Therefore its completeness does not yield an unrestricted Conway cut constructor, and does not turn the surreal field into a complete ordered field. A formal API should name these two interfaces distinctly, even if the literature calls both ``cuts.''
+
+\subsection{What generic Mathlib Hahn infrastructure supplies}
+Mathlib's Hahn-series development already provides coefficient functions with support restrictions, convolution operations, and formal summable families. In the inspected documentation, \texttt{HahnSeries.SummableFamily} carries both a partially well-ordered union-of-supports condition and finite coefficient co-supports. The order hypotheses specialize that support condition to the usual well-ordered condition used here. Its \texttt{hsum} operation is the formal sum, not an unqualified topological series \cite{HahnBasic,HahnSummable}.
+
+The implementation also provides field infrastructure under its stated hypotheses and lexicographic order tools in separate modules. The new work should therefore concentrate on the \emph{surreal-specific} small-support bridge and the analytic coefficient interfaces, not duplicate generic convolution. Exact module imports and instance hypotheses must be tested against the pinned Mathlib version; online generated documentation is a moving reference, not a reproducible dependency lock.
+
+\subsection{Mizar as an independent completed milestone}
+P\k ak and Kaliszyk's ITP 2024 paper describes a substantial Mizar formalization combining complementary presentations of surreal numbers and reaching Conway normal form. It discusses how ordinary transfinite methods replace an otherwise troublesome inductive-recursive presentation and how sign-based and Conway-style reasoning support different parts of the development \cite{PakKaliszyk}.
+
+Mizar's Tarski--Grothendieck foundation and its set-theoretic proof style differ from Lean's native dependent type theory. Consequently the development is a valuable mathematical and formal-engineering reference, not a source of Lean proof terms that can be imported unchanged. Its abstract's description of the surreal field as algebraically closed should also be distinguished from the actual real-versus-complex field statements: the ordered surreal field cannot have a root of $X^2+1$.
+
+We did not run Mizar, inspect every formal article in that development, or reconstruct its axiom closure here. The publication establishes the existence of a serious formal predecessor; the precise claims transferred to a Lean project must still be matched to definitions and theorem statements.
+
+\section{A practical Lean architecture for this program}\label{sec:leanarchitecture}
+
+\subsection{Four implementation strategies}
+There is no need to commit the entire project to one representation.
+\begin{longtable}{@{}P{0.21\textwidth}P{0.34\textwidth}P{0.36\textwidth}@{}}
+\toprule
+Strategy & Best use & Principal proof burden\\
+\midrule\endhead
+Extend the current surreal library & Canonical numbers, birthdays, small cuts, full-scale theorems & Validate the current APIs; locate or prove real-closedness and normal-form bridges.\\[0.55em]
+Develop over generic Hahn fields & Polynomial valuations, support recursion, coherent coefficients & Prove the needed closure hypotheses and later embed the workspace into the intended surreal carrier.\\[0.55em]
+Use a bounded surreal field & A concrete set-sized target with strong algebraic closure & Prove the chosen birthday cutoff and all operations stay inside it; expose its scale limitations.\\[0.55em]
+Internal set-theoretic model in Lean & Formal foundational interpretation and comparison of set axioms & Bridge modeled sets and operations to external algebraic types; maintain internal/external semantics.\\
+\bottomrule
+\end{longtable}
+For the supplied program, a hybrid of the first two is the most direct recommendation. The polynomial and support lemmas can progress over generic fields while the full surreal bridge is developed. A statement whose proof really needs all small cuts must wait for the corresponding carrier theorem rather than being smuggled into a generic Hahn interface as an axiom.
+
+\subsection{Separate four layers of definitions}
+The first layer is \emph{representation}: raw games, numerical equivalence, canonical sign data, birthdays, and universe lifts. The second is \emph{algebra}: ordered-field laws, real closedness, complexification, finite polynomial and matrix structures. The third is \emph{Hahn structure}: monomials, small normal forms, support-preserving maps, valuation, residue, and strong sums. The fourth is \emph{analysis}: ordinary holomorphic coefficient rings, coherent evaluation, finite-domain division, contours, and full-scale hypotheses.
+
+The dependencies should point in that direction. For example, a proof of a residue determinant should import finite algebra, not full surreal topology. A proof that a support recursion stays in $S+E^*$ should import ordered-group support theory, not Hartogs. The full-scale rigidity theorem may then combine the small-cut bound from the first layer with the common-support fact from the fourth.
+
+\subsection{Encode the permitted size of a cut in its data}
+The following uncompiled sketch records the intended universe boundary. It does not postulate a cut-filling axiom:
+\begin{samepage}
+\begin{lstlisting}
+universe u
+
+structure SmallCutData (A : Type (u + 1)) [LT A] where
+  Left : Type u
+  Right : Type u
+  left : Left -> A
+  right : Right -> A
+  separated : forall l r, left l < right r
+\end{lstlisting}
+\end{samepage}
+A constructor consuming this structure can fill exactly the lower-universe-small families. One may also work with a predicate-based set of options plus a \texttt{Small} witness for its subtype; the two interfaces should be related by a proved reindexing theorem. What should not be exposed is a filler for every unrestricted \texttt{Set A}.
+
+A smallness test belongs in the theorem statement for every analogue of \cref{lem:bounds,thm:discrete}. For a function from a small indexing type, its range is small. For a subtype of $\No_u$, smallness is an additional assertion, not a fact inferred merely from the word \texttt{Set}.
+
+\subsection{Complex pairs as an independently reusable algebra}
+The coordinate data can be introduced without any surreal-specific assumptions:
+\begin{samepage}
+\begin{lstlisting}
+universe u
+structure ComplexPair (F : Type u) where
+  re : F
+  im : F
+namespace ComplexPair
+variable {F : Type u} [CommRing F]
+def multiply (z w : ComplexPair F) : ComplexPair F :=
+  { re := z.re * w.re - z.im * w.im
+    im := z.re * w.im + z.im * w.re }
+end ComplexPair
+\end{lstlisting}
+\end{samepage}
+The next steps are coordinate extensionality, ring laws, the real embedding, conjugation, and the quadratic norm $x^2+y^2$. Prove positivity over an ordered field, then implement inversion and its laws. A quadratic quotient is an alternative with different API advantages. Neither design should inherit the coordinatewise product-ring instance.
+
+Real closedness and algebraic closedness should enter only where needed. For example, construct the field before introducing a square-root-valued modulus; prove polynomial algebra generically over the resulting algebraically closed extension only after the real-closedness bridge is available. Exact typeclass names should be taken from the pinned dependency source, rather than invented to match a mathematical phrase.
+
+\subsection{Formal sums should be carried by certified data}
+Reuse \texttt{HahnSeries.SummableFamily} when its hypotheses match the desired operation. For a full surreal-support interface, add the lower-universe-smallness certificate where it is not already implied by the input types. If $I$ is small and each $A_i$ has small support, prove the smallness of the dependent union as a separate lemma; do not leave it to an informal cardinality argument at each use.
+
+The central transport results should have the following mathematical meanings: coefficients of a sum are finite coefficient sums; embeddings commute with the certified sum; a positive correction has inverse supported in its generated monoid; and reindexing preserves the sum under the stated finiteness conditions. These are stronger and more precise than declaring a generic infinite-sum notation and hoping elaboration will choose the intended convergence theory.
+
+For computations, distinguish a mathematically defined coefficient function from an effective data structure. Arbitrary well-ordered supports need not have a computable enumeration or decidable coefficient equality. Exact finite-prefix computation requires a representation and a theorem that the prefix depends only on the supplied finite data. Noncomputable definitions in a proof do not promise executable expansion algorithms.
+
+\subsection{Normal form is a bridge with several independent obligations}
+A usable normal-form bridge needs more than a map between two carriers. It should prove injectivity and surjectivity, agreement with canonical monomials, preservation of addition and multiplication, order compatibility on real coefficients, and preservation of the specified strong sums. To support A and R, one also needs coefficient extraction, standard part, and Taylor evaluation to commute with the bridge.
+
+If the bridge is first established at a fixed exponent group, prove its coherence under group enlargement. If it is established for a universe-relative small-support Hahn type, prove the corresponding smallness and universe-lift compatibility. These are mathematical obligations, not cosmetic coercion lemmas: a noncanonical field isomorphism may fail to preserve the distinguished monomials or strong summation.
+
+\subsection{A theorem-sized implementation sequence}
+A practical sequence is as follows. First lock the toolchain and rebuild the existing carrier and field imports. Next prove or locate the needed small-cut and universe-lift laws, and independently implement generic complexification. Then establish the real-closedness or algebraic-closure input, followed by the normal-form and support transport bridge. In parallel, develop generic polynomial identities and the finite residue pairing. After that, prove support-local recursion, construct ordinary holomorphic coefficient rings, and formalize coherent evaluation and fixed-domain division. Only then combine the layers for automatic Hartogs coherence and all-scale rigidity.
+
+This ordering has a useful failure mode: missing normal-form or closure theorems do not block generic algebra, but they do prevent incorrectly advertised surreal specializations. Each milestone should produce named theorems with audited hypotheses, rather than a growing collection of unproved global instances. The final analytic theorems remain conditional until their ordinary complex-analytic dependencies have also been checked.
+
+\section{Trust, consistency, and reproducible verification}\label{sec:trust}
+
+\subsection{A kernel checks proofs relative to its axioms}
+Lean's official documentation distinguishes its logical axioms, including choice, propositional extensionality, and quotient soundness, from computational trust mechanisms and unfinished proofs. It also explains how to inspect a theorem's axiom dependencies \cite{LeanAxioms,LeanValidation}. A declaration accepted by the parser is not a proof, and a theorem depending on \texttt{sorryAx} is not a completed result.
+
+The important command is the pattern
+\begin{samepage}
+\begin{lstlisting}
+#print axioms theoremName
+\end{lstlisting}
+\end{samepage}
+where \texttt{theoremName} is replaced by the actual exported theorem being audited. One must inspect the transitive dependency set, not just search the final file for the word \texttt{axiom}. A trusted library theorem, an imported assumed instance, or a computationally generated axiom can carry a dependency not visible in the local proof script.
+
+Tactics that produce ordinary proof terms leave those terms to the kernel. Native evaluation can involve additional trust in the evaluation or compilation mechanism; the current reference documents the distinction. A project should state whether its certification target permits such dependencies rather than treating all successful tactic invocations as identical trust events.
+
+\subsection{Relative consistency is the correct foundational claim}
+A construction in ZFC shows that the added surreal notation can be interpreted in that foundation without an additional surreal-specific axiom. A universe-relative type construction gives a corresponding interpretation relative to the chosen type theory and any semantic universe assumptions used to justify it. An axiomatic surreal interface becomes safer when one proves that a known construction inhabits it.
+
+None of these statements is an absolute proof that ZFC, GBC, KM, a universe principle, or Lean's full foundations are consistent. It would also be incorrect to infer a specific minimal consistency strength merely from the use of universe levels in source code. The article's ``paradox-free'' claim is the more concrete one: the constructions do not use the invalid self-cut, proper-class-member quotient, unrestricted support sum, or incompatible equality principles identified above.
+
+\Needspace{10\baselineskip}
+\subsection{Regression tests for mathematical statements}
+The following tests detect specification mistakes before a long formalization is attempted:
+\begin{longtable}{@{}P{0.34\textwidth}P{0.57\textwidth}@{}}
+\toprule
+Proposed statement & Diagnostic input or contradiction\\
+\midrule\endhead
+Every pair of subsets of the carrier has a Conway separator & The carrier itself on the left and the empty set on the right.\\[0.45em]
+The ordered surreal field is algebraically closed & The polynomial $X^2+1$.\\[0.45em]
+The surreal field is Dedekind complete & The set of natural numbers; subtract one from a proposed least upper bound.\\[0.45em]
+Every well-ordered support defines a same-level surreal & The too-large ordinal-indexed support; require relative smallness.\\[0.45em]
+Individual legal supports imply a legal family sum & The singleton supports $\{1/n\}$.\\[0.45em]
+Well-ordered union suffices for a Hahn family sum & Infinitely many copies of the constant series one.\\[0.45em]
+Every internal all-scale coherent function is polynomial & \cref{ex:internal} in $\C((t^\Q))$.\\[0.45em]
+Every subset of a universe-relative surreal type is discrete & The entire carrier; only the lower-universe-small subsets satisfy the theorem.\\[0.45em]
+The product ring on two real-field copies is surcomplex & $(1,0)(0,1)=0$ in the product ring, unlike complex multiplication.\\[0.45em]
+Every algebra homomorphism preserves infinite Hahn evaluation & Require a strong-sum preservation theorem or replace the step by a finite divided-difference identity.\\
+\bottomrule
+\end{longtable}
+These are specification checks, not randomized evidence for a general theorem. They are especially effective when a mathematically strong typeclass instance is about to be introduced.
+
+\subsection{What was checked for this article}
+The supplied foundational sections and the relevant Hartogs, gluing, and all-scale arguments were read in their actual uploaded versions. Public sources were consulted for set-theoretic, constructive, and current implementation claims. The separate Lean repository was inspected at the pinned revision for the carrier, division instance, small-support Hahn module, section-cut module, toolchain, and dependency manifest. The normal-form bridge and real-closedness specialization were not verified in those inspected modules, and their absence from that inspection is not a global nonexistence claim.
+
+No Lean or Lake executable was available in the working environment, so the illustrative snippets and the repository were not compiled here. No Mizar execution or independent full proof audit of P, R, or A was performed. The article's LaTeX source and PDF are the delivered artifacts; the archive also records the source-audit boundaries and document build instructions. This separation makes the deliverable reproducible without confusing source inspection with kernel verification.
+
+\Needspace{14\baselineskip}
+\section{Comparison and final recommendations}\label{sec:conclusion}
+
+\subsection{Which foundation fits which objective?}
+\begin{longtable}{@{}P{0.19\textwidth}P{0.35\textwidth}P{0.37\textwidth}@{}}
+\toprule
+Foundation & Natural formulation & Main limitation to keep explicit\\
+\midrule\endhead
+ZF or ZFC & Canonical set-coded numbers; full $\No$ as a definable class; local set recursion & Arbitrary class functions require definability or a theorem scheme; choice use depends on the proof.\\[0.55em]
+GB/GBC or specified NBG & Explicit surreal class and class-function parameters; replacement on ordinary domains & No unrestricted class-member quotients or collection of all classes; stronger recursion is not automatic.\\[0.55em]
+KM and extensions & Impredicative class definitions and stronger class-recursive frameworks & More strength than the present local algebra requires; class collection and other variants must be named.\\[0.55em]
+Grothendieck universes / TG & Externally set-sized but internally large surreal systems; systematic size closure & Extra universe assumptions; no single small carrier fills all of its external cuts.\\[0.55em]
+Birthday cutoffs & Explicit real-closed set-sized fields at suitable epsilon bounds & Closure under arbitrary families and full surreal scales is not automatic.\\[0.55em]
+Classical dependent type theory & Small-branching raw games, numeric quotient, universe-polymorphic algebra & Smallness certificates, quotient congruence, and universe maps require proofs.\\[0.55em]
+Constructive / HoTT routes & Positive order evidence and inductive-inductive or higher constructions & Classical comparison, quotient choice, and analytic transfer need fresh hypotheses; native support for the exact signature must be established.\\
+\bottomrule
+\end{longtable}
+
+\subsection{The recommendation for the supplied research program}
+Use a classical, universe-explicit Lean development unless constructive content is itself a research goal. Build on the current separate surreal library rather than an outdated snapshot of the old additive theory. At the same time, keep finite polynomial algebra and Hahn support calculus generic, so that they remain useful independently of the full surreal model.
+
+Require a proved normal-form bridge, not just a Hahn-series datatype. Require a proved real-closedness or algebraic-closure input where root existence is used, not just a field instance. Represent the manuscripts' coherent data on ordinary complex domains with explicit support certificates and their componentwise sheaf convention. State full-class topological and all-scale results as lower-universe-small-family theorems, or as precise class-theoretic schemes. Keep the entire-carrier cut outside the constructor's domain by design.
+
+The resulting architecture does not weaken the interesting mathematics. It explains why finite polynomial theory can be developed in an ordinary set-sized field, why positive-support preparation needs only set recursion, why the Hartogs support argument needs replacement on the ordinary domain, and why all-scale rigidity uses a resource unavailable in an arbitrary fixed Hahn field. Those distinctions are the main path from the supplied research prose to a rigorous, reusable formal library.
+
+\subsection{The unifying principle}
+The surreal numbers do not force unrestricted comprehension. They force clarity about what is small. Once every cut, quotient, support, family, and function has an explicit size boundary, the apparent paradoxes become either short contradictions to an overstrong specification or ordinary theorems about different ambient structures. Surcomplexification then adds a finite algebraic layer rather than a new foundational difficulty.
+
+The most robust formalization therefore keeps five items visible: the carrier's universe or class status; the permissible index sizes; the exact algebraic closure available; the summability certificate; and the topology or coefficient structure used by the theorem. With those items stated, the foundational choices become transparent alternatives rather than competing informal interpretations of a single ambiguous notation.
+
+\appendix
+\section{A dependency ledger for the proposed development}\label{app:ledger}
+\begin{longtable}{@{}P{0.28\textwidth}P{0.33\textwidth}P{0.30\textwidth}@{}}
+\toprule
+Construction or theorem & Explicit input & What it does not supply\\
+\midrule\endhead
+Canonical sign carrier & Ordinal-indexed two-sign functions; bounded function sets & Field operations or normal form.\\[0.45em]
+Numeric-game quotient & Well-founded game relation, numericity, equivalence, congruence & Smallness of arbitrary subsets of the quotient.\\[0.45em]
+Small-cut filling & Small separated option families; birthday control & Filling arbitrary proper-class or larger-universe cuts.\\[0.45em]
+Complexification & Ordered-field laws; pair multiplication & Algebraic closedness without real closedness.\\[0.45em]
+Hahn field & Ordered exponent group and coefficient field; support calculus & Normal-form equivalence with the surreal carrier.\\[0.45em]
+Algebraically closed workspace & Divisible group; algebraically closed coefficients; Hahn closure theorem & Every full-scale analytic theorem.\\[0.45em]
+Strong Hahn evaluation & Well-ordered union; finite coefficient dependence; small support & Topological convergence of partial sums.\\[0.45em]
+Positive-support recursion & Set $E^*$, finite convolution, invertible linear step & General class-valued ETR.\\[0.45em]
+Automatic Hartogs support & Set-indexed holomorphic coefficients, Baire and choice; class replacement for the initial restriction & Coherence when only ordinary slices have been specified.\\[0.45em]
+Full-scale polynomial rigidity & One chart support per scale; a bound for the entire small valuation family & The same conclusion in a fixed value group such as $\Q$.\\[0.45em]
+Kernel-verified specialization & All required instances constructed, dependency audit, pinned build & Absolute consistency of the foundational kernel and axioms.\\
+\bottomrule
+\end{longtable}
+
+\section{Pinning, source boundaries, and rebuilding}\label{app:repro}
+The source-audit record in the archive gives the repository revisions and inspected paths. The standalone LaTeX file includes its bibliography and requires no external figures or bibliography database. Build it with
+\begin{samepage}
+\begin{lstlisting}
+latexmk -pdf -interaction=nonstopmode -halt-on-error \
+  surreal_surcomplex_foundations.tex
+\end{lstlisting}
+\end{samepage}
+Repeated \texttt{pdflatex} runs are an alternative once references stabilize. The typeset code blocks are explanatory designs, not a released Lean package. Their testing status is intentionally different from that of the document build.
+
+The internal bibliography distinguishes the three supplied manuscripts, published mathematical sources, an explicitly provisional 2026 research announcement, official Lean and Mathlib documentation, and pinned repository files. A source that uses a suggestive phrase such as ``complete field'' or ``will show'' is not treated as proving an uninspected theorem. No bibliographic entry attributes authorship to an uploaded manuscript merely from its filename.
+
+\begin{thebibliography}{99}
+\addcontentsline{toc}{section}{References}
+\small
+
+\bibitem{SourceP}
+\emph{Surcomplex Polynomial Algebra: Order Geometry, Newton Profiles, and Scale-Resolved Stability}. Supplied manuscript, September 21, 2026. File \texttt{surcomplex\_polynomial\_algebra(2).tex}. Especially ``Fields, supports, and the two notions of size,'' ``Polynomial Rouch\'e on order circles,'' ``Coprime factor lifting with controlled Hahn support,'' and the finite-dependency audit. Not an independently verified publication.
+
+\bibitem{SourceR}
+\emph{Hartogs Coherence, Finite Maps, and Residue Duality over the Surcomplex Numbers}. Supplied manuscript, September 21, 2026. File \texttt{surcomplex\_research.tex}. Especially the foundations, automatic-support theorem, class replacement in Hahn--Hartogs, fixed-domain division, and finite divided-difference argument. Not independently proof-assistant verified.
+
+\bibitem{SourceA}
+\emph{Surcomplex Analysis: Infinitesimal Calculus, Hahn-Coherent Holomorphy, and Contour Theory}. Supplied manuscript, September 21, 2026. File \texttt{surcomplex\_analysis(3).tex}. Especially class conventions, fine-topological degeneracy, support-preserving gluing, arbitrary-series rescaling, and all-scale rigidity. The componentwise convention on disconnected bases is retained here.
+
+\bibitem{Conway}
+John H. Conway. \emph{On Numbers and Games}. Second edition, A K Peters, 2001; first edition, Academic Press, 1976. Foundational constructions and arithmetic of surreal numbers.
+
+\bibitem{Gonshor}
+Harry Gonshor. \emph{An Introduction to the Theory of Surreal Numbers}. London Mathematical Society Lecture Note Series 110, Cambridge University Press, 1986. Sign expansions, arithmetic, and normal forms.
+
+\bibitem{EhrlichHierarchy}
+Philip Ehrlich. ``Number systems with simplicity hierarchies: a generalization of Conway's theory of surreal numbers.'' \emph{Journal of Symbolic Logic} 66 (2001), 1231--1258.
+\href{https://www.cambridge.org/core/journals/journal-of-symbolic-logic/article/abs/number-systems-with-simplicity-hierarchies-a-generalization-of-conways-theory-of-surreal-numbers/D3A23E34429CD0D6350D83B568C9F477}{Publisher record}.
+
+\bibitem{EhrlichKaplan}
+Philip Ehrlich and Elliot Kaplan. ``Number systems with simplicity hierarchies II.'' Research article; author preprint \href{https://arxiv.org/abs/1512.04001}{arXiv:1512.04001}. Used for the structural simplicity-hierarchy viewpoint, not for an asserted Lean implementation.
+
+\bibitem{vdDE}
+Lou van den Dries and Philip Ehrlich. ``Fields of surreal numbers and exponentiation.'' \emph{Fundamenta Mathematicae} 167 (2001), 173--188.
+\href{https://doi.org/10.4064/fm167-2-3}{doi:10.4064/fm167-2-3}. Read together with the erratum below.
+
+\bibitem{vdDEerratum}
+Lou van den Dries and Philip Ehrlich. Erratum to ``Fields of surreal numbers and exponentiation.'' \emph{Fundamenta Mathematicae} 168 (2001), 295--297.
+\href{https://doi.org/10.4064/fm168-3-5}{doi:10.4064/fm168-3-5}. Detailed ordinal support estimates from the original article require the correction.
+
+\bibitem{Poonen}
+Bjorn Poonen. ``Maximally complete fields.'' \emph{L'Enseignement Math\'ematique} (2) 39 (1993), 87--106.
+\href{https://math.mit.edu/~poonen/papers/amsval.pdf}{Author-hosted text}. Corollary 4 provides the divisible-group, algebraically closed-coefficient Hahn-field input.
+
+\bibitem{Neumann}
+B. H. Neumann. ``On ordered division rings.'' \emph{Transactions of the American Mathematical Society} 66 (1949), 202--252. The ordered-support and finite-word summability machinery.
+
+\bibitem{Tarski}
+Lou van den Dries. ``Alfred Tarski's elimination theory for real closed fields.'' \emph{Journal of Symbolic Logic} 53 (1988), 7--19.
+\href{https://doi.org/10.2307/2274424}{doi:10.2307/2274424}. First-order transfer is used only in its specified language.
+
+\bibitem{Williams}
+Kameryn J. Williams. \emph{The Structure of Models of Second-order Set Theories}. Ph.D. dissertation, City University of New York, 2018.
+\href{https://arxiv.org/abs/1804.09526}{arXiv:1804.09526};
+\href{https://juliakw.net/research/pubs/diss/}{Author's publication page}. Source for distinctions among GBC, KM, class realizations, and recursion principles.
+
+\bibitem{GitmanHamkins}
+Victoria Gitman and Joel David Hamkins. ``Open determinacy for class games.'' Author preprint, 2015.
+\href{https://arxiv.org/abs/1509.01099}{arXiv:1509.01099}. Class-game determinacy and elementary transfinite recursion.
+
+\bibitem{ClassForcing}
+Victoria Gitman, Joel David Hamkins, Peter Holy, Philipp Schlicht, and Kameryn J. Williams. ``The exact strength of the class forcing theorem.'' Author preprint, 2017.
+\href{https://arxiv.org/abs/1707.03700}{arXiv:1707.03700}. The strength of class-recursive principles over GBC.
+
+\bibitem{ZFCminus}
+Victoria Gitman, Joel David Hamkins, and Thomas A. Johnstone. ``What is the theory ZFC without power set?'' Author preprint, 2011.
+\href{https://arxiv.org/abs/1110.2430}{arXiv:1110.2430}. Distinctions between replacement and collection in weaker set theories.
+
+\bibitem{Aczel}
+Peter Aczel. ``The type theoretic interpretation of constructive set theory: inductive definitions.'' In \emph{Logic, Methodology and Philosophy of Science VII}, Studies in Logic and the Foundations of Mathematics 114, Elsevier, 1986, 17--49.
+\href{https://doi.org/10.1016/S0049-237X(09)70683-4}{doi:10.1016/S0049-237X(09)70683-4}.
+
+\bibitem{Rathjen}
+Michael Rathjen. ``On the regular extension axiom and its variants.'' \emph{Mathematical Logic Quarterly} 49 (2003), 511--518.
+\href{https://doi.org/10.1002/malq.200310054}{doi:10.1002/malq.200310054}.
+
+\bibitem{HoTT}
+The Univalent Foundations Program. \emph{Homotopy Type Theory: Univalent Foundations of Mathematics}. Institute for Advanced Study, 2013. Section 11.6, ``The surreal numbers.''
+\href{https://homotopytypetheory.org/book/}{Book page};
+\href{https://github.com/HoTT/book/blob/master/reals.tex}{Public chapter source}. Higher inductive-inductive construction with a universe-relative small-option condition.
+
+\bibitem{Shulman}
+Michael Shulman. ``Surreal numbers and plump ordinals.'' Author exposition, February 22, 2014.
+\href{https://homotopytypetheory.org/2014/02/22/surreals-plump-ordinals/}{Article}. Constructive order evidence and the ordinal comparison.
+
+\bibitem{HITSemantics}
+Peter LeFanu Lumsdaine and Michael Shulman. ``The semantics of higher inductive types.'' Author preprint, 2017.
+\href{https://arxiv.org/abs/1705.07088}{arXiv:1705.07088}. General background, not a claim that every surreal HIIT signature is automatically supported.
+
+\bibitem{CubicalHIT}
+Thierry Coquand, Simon Huber, and Anders M\"ortberg. ``On higher inductive types in cubical type theory.'' Author preprint, 2018.
+\href{https://arxiv.org/abs/1802.01170}{arXiv:1802.01170}. Cubical higher-inductive background.
+
+\bibitem{SurrealArithmetic}
+Joel David Hamkins, reporting joint work with Junhong Chen and Ruizhi Yang. ``Surreal arithmetic is bi-interpretable with set theory.'' CUNY Logic Workshop announcement and March 2026 slides.
+\href{https://jdh.hamkins.org/surreal-arithmetic-cuny-logic-workshop-march-2026/}{Author's announcement};
+\href{https://jdh.hamkins.org/wp-content/uploads/Slides-Elementary-theory-of-surreal-arithmetic-Hamkins-CUNY-March-2026.pdf}{Slides}. The slides explicitly mark the work as new, with details still being checked; cited with that status, not as a completed formal result.
+
+\bibitem{PakKaliszyk}
+Karol P\k ak and Cezary Kaliszyk. ``Conway normal form: bridging approaches for comprehensive formalization of surreal numbers.'' In \emph{15th International Conference on Interactive Theorem Proving (ITP 2024)}, LIPIcs 309, Article 29, 29:1--29:18, 2024.
+\href{https://doi.org/10.4230/LIPIcs.ITP.2024.29}{doi:10.4230/LIPIcs.ITP.2024.29}. Mizar formalization; the abstract's algebraic-closure wording is not used as a field theorem here.
+
+\bibitem{LeanUniverses}
+Lean Language Reference. ``Universes,'' in ``The Type System.''
+\href{https://lean-lang.org/doc/reference/latest/The-Type-System/Universes/}{Official documentation}. Consulted September 21, 2026; moving documentation rather than a pinned toolchain artifact.
+
+\bibitem{LeanAxioms}
+Lean Language Reference. ``Axioms.''
+\href{https://lean-lang.org/doc/reference/latest/Axioms/}{Official documentation}. Consulted September 21, 2026. Logical axioms, unfinished proofs, and computational trust.
+
+\bibitem{LeanValidation}
+Lean Language Reference. ``Validating Proofs.''
+\href{https://lean-lang.org/doc/reference/latest/ValidatingProofs/}{Official documentation}. Consulted September 21, 2026. Axiom inspection and validation boundaries.
+
+\bibitem{LeanZFC}
+Mathlib contributors. \texttt{Mathlib.SetTheory.ZFC.Basic} and the documented pre-set and class interfaces.
+\href{https://leanprover-community.github.io/mathlib4_docs/Mathlib/SetTheory/ZFC/Basic.html}{Generated documentation}. Consulted September 21, 2026. The modeled ZFC set type and Lean's predicate-based sets are distinct.
+
+\bibitem{HahnBasic}
+Mathlib contributors. \texttt{Mathlib.RingTheory.HahnSeries.Basic}, \texttt{Multiplication}, and \texttt{Lex}.
+\href{https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/HahnSeries/Basic.html}{Basic documentation};
+\href{https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/HahnSeries/Lex.html}{Lexicographic order documentation}. Consulted September 21, 2026.
+
+\bibitem{HahnSummable}
+Mathlib contributors. \texttt{Mathlib.RingTheory.HahnSeries.Summable}.
+\href{https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/HahnSeries/Summable.html}{Generated documentation}. Consulted September 21, 2026. Formal summable families, coefficient finiteness, and Hahn sums; not a generic topological convergence API.
+
+\bibitem{GamesRepo}
+Violeta Hern\'andez Palacios and contributors. \emph{Combinatorial Games}, Lean 4 repository \texttt{vihdzp/combinatorial-games}.
+\href{https://github.com/vihdzp/combinatorial-games/tree/02b4a908ea2ecfefffecb438f691951a814a5264}{Pinned source tree}. Revision recorded in \cref{sec:ecosystem}, dated September 19, 2026; inspected September 21, 2026.
+
+\bibitem{GamesManifest}
+Same repository and revision. \texttt{lean-toolchain} and \texttt{lake-manifest.json}.
+\href{https://github.com/vihdzp/combinatorial-games/blob/02b4a908ea2ecfefffecb438f691951a814a5264/lean-toolchain}{Toolchain};
+\href{https://github.com/vihdzp/combinatorial-games/blob/02b4a908ea2ecfefffecb438f691951a814a5264/lake-manifest.json}{Dependency manifest}. Lean \texttt{v4.35.0-rc2}, with the Mathlib revision recorded in the text.
+
+\bibitem{GamesBasic}
+Same repository and revision. \texttt{CombinatorialGames/Surreal/Basic.lean}.
+\href{https://github.com/vihdzp/combinatorial-games/blob/02b4a908ea2ecfefffecb438f691951a814a5264/CombinatorialGames/Surreal/Basic.lean}{Pinned file}. Carrier, numerical quotient, and simplicity-related infrastructure.
+
+\bibitem{GamesDivision}
+Same repository and revision. \texttt{CombinatorialGames/Surreal/Division.lean}.
+\href{https://github.com/vihdzp/combinatorial-games/blob/02b4a908ea2ecfefffecb438f691951a814a5264/CombinatorialGames/Surreal/Division.lean}{Pinned file}. Numeric inverse congruence and the noncomputable \texttt{Field Surreal} instance were inspected.
+
+\bibitem{GamesHahn}
+Same repository and revision. \texttt{CombinatorialGames/Surreal/HahnSeries/Basic.lean}.
+\href{https://github.com/vihdzp/combinatorial-games/blob/02b4a908ea2ecfefffecb438f691951a814a5264/CombinatorialGames/Surreal/HahnSeries/Basic.lean}{Pinned file}. Small-support Hahn carrier, coefficients, truncation, and ordinal support indexing; no completed normal-form isomorphism was verified in this inspected file.
+
+\bibitem{GamesCuts}
+Same repository and revision. \texttt{CombinatorialGames/Surreal/Cut.lean}.
+\href{https://github.com/vihdzp/combinatorial-games/blob/02b4a908ea2ecfefffecb438f691951a814a5264/CombinatorialGames/Surreal/Cut.lean}{Pinned file}. Complementary sections of the entire fixed-universe order, distinct from small Conway option pairs.
+
+\end{thebibliography}
+\end{document}
