@@ -2,14 +2,14 @@
 
 # Research reports
 
-One hundred and eleven independent mathematical research packages, unpacked
+One hundred and four independent mathematical research packages, unpacked
 from the
 archives in which they were delivered and grouped by subject.  Each directory
 holds a typeset article with its LaTeX source, a `README.md`, and in most cases
 verification code together with the recorded output of running it.
 
 **[`manifest.pdf`](manifest.pdf)** ([source](manifest.tex)) is the catalogue: it
-numbers all one hundred and eleven reports, names the problem each one attacks
+numbers all one hundred and four reports, names the problem each one attacks
 and the
 result it claims, and records the archives each directory came from.  These are
 AI-assisted drafts; none is refereed or machine-checked, and the manifest
@@ -22,13 +22,12 @@ records what each report claims rather than verifying it.
 | [`hankel-determinants/`](hankel-determinants) — Somos and elliptic, Catalan and ballot, Cigler's conjectures, growth and runs, arithmetic numerators | 10 |
 | [`log-concavity-and-unimodality/`](log-concavity-and-unimodality) — cluster variables, chromatic coefficients, Stirling rows, independence systems, MDS codes, binomial decompositions, Bernoulli entropy | 12 |
 | [`congruences-and-valuations/`](congruences-and-valuations) — supercongruences, Apéry and Motzkin congruences, iterated series, valuations and periodicity | 9 |
-| [`surreal-numbers/`](surreal-numbers) — birthdays under multiplication, option graphs, genetic functions and gaps, evaluating formal sums, surcomplex analysis | 7 |
 | [`tetration-and-digit-stabilization/`](tetration-and-digit-stabilization) — congruence speed, frozen digits, `q`-Newton series | 6 |
 | [`generating-functions-and-asymptotics/`](generating-functions-and-asymptotics) — Stanley's rationality question, Gregory thresholds, records, discrepancy, single-sequence OEIS studies, Apéry arrays | 16 |
 | [`automata-and-formal-languages/`](automata-and-formal-languages) — shuffle state complexity, DFAO reversal, synchronization, language hierarchies, additive complexity | 6 |
 | [`quaternionic-analysis/`](quaternionic-analysis) — slice regularity, Cauchy–Fueter analysis, the global inverse Fueter problem | 1 |
 | [`graph-theory/`](graph-theory) — mutual visibility, domination roots, minimal dominating sets | 3 |
-| **Total** | **111** |
+| **Total** | **104** |
 
 ## Rebuilding the manifest
 
@@ -38,8 +37,10 @@ latexmk -pdf manifest.tex && latexmk -c manifest.tex
 
 ## Merged reports
 
-One hundred and fifty-four archives arrived, in ten deliveries, and yield
-one hundred and eleven reports.  Two different things reduced the count, and the
+One hundred and fifty-four archives arrived, in ten deliveries.  Seven of the
+resulting reports — the surreal-number ones, including the merged surcomplex
+article — were later moved out to a repository of their own, with their git
+history, leaving one hundred and four here.  Two different things reduced the count, and the
 difference between them is worth keeping straight.
 
 **Duplicates.**  Twenty archives duplicated another: sixteen pairs, three
@@ -68,8 +69,8 @@ so rather than let a shared setup suggest the answers are connected.
 out to be a different problem from nine manuscripts on one theorem.  All nine
 arrived under the name `surcomplex_analysis`, all dated the same day, all
 developing holomorphic function theory over `No[i]` on Hahn-supported series.
-They were merged into
-[`surcomplex-analysis`](surreal-numbers/surcomplex-analysis).
+They were merged into a single article, which has since moved with the rest of
+the surreal-number reports to a repository of its own.
 
 Nine attempts at a theorem either agree or they do not.  Nine attempts at a
 *foundation* can come out nine slightly different ways that look alike and are
@@ -120,7 +121,7 @@ The largest merges:
 | [`shuffle-six-state-bound`](automata-and-formal-languages/shuffle-six-state-bound) | 3 | three independent finite certifications, two of them with disjoint witness sets |
 | [`preorder-q-zeta-reciprocity`](enumerative-combinatorics/preorder-q-zeta-reciprocity) | 2 | three architecturally independent proofs of the same two theorems |
 | [`components-forests-and-ordinal-products`](ordinals-and-order-types/friendly-order-types/components-forests-and-ordinal-products) | 1 | two proofs of the Cartesian formula |
-| [`canonical-forms-need-not-be-subgraphs`](surreal-numbers/canonical-forms-need-not-be-subgraphs) | 1 | two non-isomorphic five-vertex witnesses |
+| `canonical-forms-need-not-be-subgraphs` (since moved out) | 1 | two non-isomorphic five-vertex witnesses |
 | [`multiple-chain-exponential-formula`](enumerative-combinatorics/multiple-chain-exponential-formula) | 1 | two proofs of the identity, plus eleven listed redundancies |
 
 **A pair that an earlier sweep missed, checked and kept separate.**  A
