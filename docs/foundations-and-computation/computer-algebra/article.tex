@@ -716,8 +716,13 @@ is nonzero does not give a universal algorithm for its exact valuation or its
 sign.
 \end{proposition}
 \begin{proof}
-Use exponents in $\Q^2_{\mathrm{lex}}$ and let $a_n$ be the bounded-simulation
-coefficients of Reduction~A, with halting steps indexed from $1$. Put
+Use exponents in $\Q^2_{\mathrm{lex}}$ and let $a_n$ be the first-halt
+coefficients $b_M(n)$ of Reduction~B, with halting steps indexed from $1$; their
+support is empty or a singleton, which is what makes the object below finite.
+(Reduction~A's coefficients are cumulative --- $a_n=1$ once $M$ has halted
+\emph{within} $n$ steps --- so they would give infinitely many terms. The
+valuation and sign conclusions would survive, but the count below would not.)
+Put
 \[
  B_M=t^{(1,0)}-\sum_{n\ge1}a_nt^{(0,n)} .
 \]
@@ -3133,10 +3138,11 @@ global atlas has already been implemented.
 \end{remark}
 
 \begin{remark}[Sharpness over a fixed value group]\label{cas:rem-rigiditysharp}
-A companion report in this repository --- the surcomplex-foundations merged
-report under \path{docs/surcomplex/}, whose analysis volume states the rigidity
-theorem for class functions on all of $\No[i]$ --- records a sharpness witness
-that should be read alongside the boundary above. Over the \emph{fixed} value
+Two companion reports in this repository bear on the boundary above. The
+rigidity theorem for class functions on all of $\No[i]$ is stated in
+\path{docs/surcomplex/analysis/}; the sharpness witness below is recorded not
+there but in \path{docs/foundations-and-computation/foundations/}, whose
+worked example carries the support proof. Over the \emph{fixed} value
 group of $K=\C((t^\Q))$, the function $f(z)=\sum_{n\ge0}t^{n^2}z^n$ is
 nonpolynomial yet has a Hahn-coherent chart on the whole ordinary complex plane
 at every positive radius in $\R((t^\Q))$. The rigidity proof cannot run there
@@ -3628,7 +3634,10 @@ algebraic coefficients and implicit-root precedents. & Ordered monomial domains,
 non-Archimedean selectors, custom coefficient semantics; do not borrow ordinary
 complex root ordering blindly.\\[0.5em]
 \texttt{Together}, \texttt{Cancel}, polynomial routines & Exact fraction and
-finite polynomial arithmetic --- the engine all three prototypes actually use. &
+finite polynomial arithmetic. The engine \texttt{RationalHahn} and
+\texttt{HahnRational} actually use; \texttt{SurrealCASCore} uses none of
+these, its sparse layer being a hand-built canonical map and its fraction
+wrapper deliberately unreduced. &
 Declare the independent monomials and their ordered exponent parent before
 interpreting the result.\\[0.5em]
 \texttt{SeriesData}, \texttt{SeriesCoefficient} & Finite power and Puiseux
@@ -4192,9 +4201,11 @@ root extensions and root selectors, arbitrary exponent groups, lazy or arbitrary
 infinite Hahn supports, transcendental functions, general complex powers, and
 proof checking. These are subsequent design layers, \emph{not hidden features}.
 
-\textbf{Session, in this kernel's own convention.}
+\textbf{Session, in this kernel's own convention.} The opening
+\texttt{Get} succeeds only against the one-character repair of \S18.3; the
+file as delivered does not parse.
 \begin{lstlisting}
-Get["code/RationalHahn.wl"];
+Get["code/RationalHahn.wl"];   (* after the repair of 18.3 *)
 Clear[t, s];                 (* t = omega^-1 ; s = omega^(-omega) *)
 a = RHMake[1 + t, t, {t, s}];
 b = RHMake[s, t^10000, {t, s}];
@@ -4285,10 +4296,13 @@ e.g.\ \texttt{\{-2\}}). Plus the two private data heads \texttt{HData} and
 \texttt{HIm} or squared modulus. No inverse on the sparse layer --- only
 \texttt{RInverse} on fractions.
 
-\textbf{Not implemented} (stated identically in the package comment, the README,
-the test report and the article): arbitrary surreal cuts, algebraic coefficient
-extensions, algebraic root isolation and selectors, infinite series generators,
-certified analytic domains, general Hahn-coherent functions, the transserial
+\textbf{Not implemented} (stated in the package comment, the README, the test
+report and the article, though no two of them phrase the list identically and
+none of them mentions standard part, which is recorded above as absent by
+inspection rather than by the package's own disclosure): arbitrary surreal cuts,
+algebraic coefficient extensions, algebraic root isolation and selectors,
+infinite series generators, certified analytic domains, general Hahn-coherent
+functions, the transserial
 layer, and standard part. No definitions are attached to \texttt{System`Plus},
 \texttt{System`Times}, \texttt{System`Power}, \texttt{System`Infinity},
 \texttt{System`N} or \texttt{NumericQ}.
@@ -4629,8 +4643,9 @@ be pooled.} RationalHahn omits the real closure, complex pairs, algebraic root
 extensions, arbitrary exponent groups, lazy infinite supports, transcendental
 functions, general complex powers and proof checking. SurrealCASCore omits
 algebraic coefficient fields, algebraic root selectors, infinite series
-generators, certified analytic domains, arbitrary Conway cuts, the transserial
-layer and \emph{standard part}. HahnRational omits general Hahn coefficient
+generators, certified analytic domains, arbitrary Conway cuts and the transserial
+layer; it also has no \emph{standard part}, which is an omission observed by
+inspecting its exported symbols rather than one the package declares. HahnRational omits general Hahn coefficient
 programs, \emph{rational-exponent parent refinement}, algebraic closure,
 arbitrary analytic germs, transseries, global exponential extensions and contour
 integration. Merging these into one list would understate each package's gaps
@@ -4765,7 +4780,10 @@ one-character fix &
 \end{longtable}
 \endgroup
 
-Every recorded claim reproduces. The quoted sessions of
+Every recorded \emph{numeric} claim reproduces, once
+\texttt{RationalHahn} is repaired; as delivered that package loads in no
+kernel at all, so the 22 rational-kernel checks its archive records cannot be
+run from the shipped file (\S18.3). The quoted sessions of
 \cref{cas:sec-prototypes} were also re-executed and produce the outputs shown,
 including the cancellation trap $\{1,1\}$, the acceptance of the half-integer
 exponent $1/2$ by SurrealCASCore, its rejection of $\sqrt2$, and all three

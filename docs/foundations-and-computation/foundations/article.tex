@@ -467,12 +467,15 @@ and source inspection, not formal mathematical verification.''
 \subsection{Three archives, three different code inventories, none compiled}
 \label{found:sub:archives}
 The three archives do not ship the same things, and the difference matters for
-what a future reader could actually check.
+what a future reader could actually check. The ``State'' column below records
+each file \emph{as its archive delivered it}; ``Not compiled'' is a statement
+about that archive, not about the present report, which compiled three of the
+five (\cref{found:sub:compiled}).
 
 {\small
 \begin{longtable}{@{}P{0.08\textwidth}P{0.25\textwidth}P{0.20\textwidth}P{0.34\textwidth}@{}}
 \toprule
-Audit & Lean files shipped & Import footprint & State\\
+Audit & Lean files shipped & Import footprint & State as delivered\\
 \midrule\endhead
 M1 & \path{FoundationsSketch.lean} (38 lines)
    & \texttt{Init} \emph{only}
@@ -1609,8 +1612,9 @@ two-dimensional Gram identity
 \begin{equation}\label{found:eq:gram}
  (ac+bd)^2+(ad-bc)^2=(a^2+b^2)(c^2+d^2),
 \end{equation}
-which M2 ships as a Lean one-liner proved \texttt{by ring} (uncompiled; see
-\cref{found:sub:archives}). These are order-valued estimates, valid over every
+which M2 ships as a Lean one-liner proved \texttt{by ring} (uncompiled in the
+archive; compiled here, depending on \texttt{propext} and \texttt{Quot.sound}
+--- see \cref{found:sub:compiled}). These are order-valued estimates, valid over every
 real-closed field at infinite as well as infinitesimal scales, and they need no
 reconstruction from Conway cuts.
 
@@ -3706,7 +3710,8 @@ section, where it belongs. Its single most important line bears repeating here:
 M1 ships three uncompiled Lean files, one of which imports \texttt{Init} only;
 M2 ships two uncompiled Lean files, one of which imports all of Mathlib; and M3
 ships \emph{no Lean files at all}, its five code blocks existing only as
-typeset listings inside its PDF. None of the five files was compiled.
+typeset listings inside its PDF. None of the five files was compiled by the audit that shipped it; three of
+the five have since been compiled for this report (\cref{found:sub:compiled}).
 \section{A layered Lean architecture}
 \label{found:sec:architecture}
 
@@ -3922,7 +3927,7 @@ delivered as Lean source, uncompiled:
 
 \begin{samepage}
 \begin{lstlisting}
--- Subset-based variant (M2), shipped as Lean source, NOT compiled.
+-- Subset-based variant (M2), shipped as Lean source; compiled for this report, see \S2.5.
 theorem noUnrestrictedUpperBounds (F : Type u) [Preorder F] :
     Not (forall s : Set F, exists x : F, forall y in s, y < x) := by
   intro h
@@ -3936,7 +3941,7 @@ a set, and imports \texttt{Init} only:
 
 \begin{samepage}
 \begin{lstlisting}
--- Predicate-based variant (M1), shipped as Lean source, NOT compiled.
+-- Predicate-based variant (M1), shipped as Lean source; compiled for this report, see \S2.5.
 theorem noUniversalStrictBound
     {X : Type u} (lt : X -> X -> Prop)
     (irrefl : forall x, Not (lt x x))
@@ -3947,8 +3952,10 @@ theorem noUniversalStrictBound
 \end{lstlisting}
 \end{samepage}
 
-Both are the machine-level form of \cref{found:prop:allcuts}, and neither has
-been run (\cref{found:sub:archives}). A smallness test belongs in the statement
+Both are the machine-level form of \cref{found:prop:allcuts}. Neither had
+been run when the archives were prepared; both have since been compiled and
+axiom-audited for this report, and each depends on no axioms whatever
+(\cref{found:sub:compiled}). A smallness test belongs in the statement
 of every analogue of \cref{found:lem:bounds} and \cref{found:thm:discrete}: for
 a function from a small indexing type the range is small, but for a subtype of
 $\No_u$ smallness is an additional assertion, not a fact inferred from the word
@@ -4257,9 +4264,13 @@ randomized evidence for any general theorem.
 \subsection{This report's own verification status}
 \label{found:sub:ownstatus}
 Stated once, in \cref{found:sec:boundary}, and not repeated here beyond the
-single sentence that governs everything above: three read-only inspections, zero
-compilations, zero rebuilds, zero axiom audits, nothing kernel-checked; the
-\LaTeX{} builds are the only executed step. The per-audit build evidence and the
+two sentences that govern everything above. Of the three source audits: three
+read-only inspections, zero compilations, zero rebuilds, zero axiom audits,
+nothing kernel-checked, the \LaTeX{} builds the only executed step. Of the
+merged report: three of the five shipped Lean files compiled and
+\texttt{\#print axioms} run on every declaration in them, under a toolchain
+that is not the pinned one, as recorded in \cref{found:sub:compiled} --- and
+nothing else machine-checked, no repository rebuilt, no manuscript verified. The per-audit build evidence and the
 per-archive inventories are in
 \cref{found:sub:executed,found:sub:archives}, together with M2's instruction not
 to run \texttt{lake update} and then describe the result as a check of the
@@ -4763,11 +4774,16 @@ report's apparent strength.
 \begin{enumerate}
 \item No Lean or Lake executable was available in any of the three preparation
 environments.
-\item No Lean file in any archive was compiled or kernel-checked.
+\item No Lean file in any archive was compiled or kernel-checked \emph{by
+the three audits}. Three of the five were compiled for the merged report; see
+\cref{found:sub:compiled}, and item~\ref{found:item:compiledscope} below for
+what that does and does not cover.
 \item The external Lean repository was not rebuilt.
 \item No transitive \texttt{\#print axioms} audit was executed. The
-\texttt{\#print axioms} commands present in M1's and M2's files are unexecuted
-source, and their output is recorded nowhere.
+\texttt{\#print axioms} commands present in M1's and M2's files were unexecuted
+source in all three archives; their output is now recorded, for three of the
+five files, in \cref{found:sub:compiled}. A per-declaration axiom list is not a
+transitive audit of the libraries those declarations import.
 \item No Mizar run was performed; the Mizar development was not inspected
 article by article and its axiom closure was not reconstructed.
 \item None of the five supplied manuscripts was machine-verified.
@@ -4776,8 +4792,10 @@ packages.
 \item A successful future execution of the small illustrative examples would not
 constitute verification of the full surreal theory or of any manuscript.
 \item Source inspection and compilation are different verification levels.
-\item Only the \LaTeX{} builds were actually executed. That is the only step
-common to all three audits.
+\item Only the \LaTeX{} builds were executed by the audits themselves. That
+is the only step common to all three. The merged report adds three Lean
+compilations and their axiom probes, and nothing else.
+\label{found:item:compiledscope}
 \item M2's README refers to a \texttt{SHA256SUMS} file which its archive did
 ship and which this repository does not carry, checksum manifests being outside
 the collection's scope. The verbatim README was left unaltered rather than
@@ -4999,7 +5017,11 @@ conditional until those ordinary complex-analytic dependencies have been checked
 \item This report merges three independently written audits.
 \item Their agreement on the pinned Lean revision reflects \emph{three readings
 of one source}, not independent execution.
-\item No claim in this report was kernel-checked.
+\item Of the claims in this report, exactly one has been kernel-checked:
+\cref{found:prop:allcuts}, the unrestricted-cut obstruction, in the two Lean
+encodings of \cref{found:sub:compiled}, each depending on no axioms. Nothing
+else here was machine-checked, and that one check says nothing about the
+surrounding mathematics.
 \item Where the three audits differ in scope, sources or emphasis, the
 differences are printed rather than averaged.
 \item No merged sentence asserts more than the strongest single source proves.

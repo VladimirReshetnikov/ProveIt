@@ -4,7 +4,7 @@
 Contour Layers, Branch and Phase Conventions, and Three Delivered Wolfram
 Prototypes**
 
-A single merged research report, 94 pages, built from three independently
+A single merged research report, 95 pages, built from three independently
 written source articles that answer the same question: *which surreals and
 surcomplexes admit exact finite representation in a computer algebra system,
 which operations on them terminate, and how should Wolfram Language be
@@ -44,7 +44,7 @@ The merge rule was **union, not selection**:
 | Path | What it is |
 |---|---|
 | `article.tex` | The merged report. Standalone LaTeX, internal `thebibliography` (40 entries), no external `.bib`, no graphics. Every `\label` carries the prefix `cas:`. |
-| `article.pdf` | Built output (94 pages). |
+| `article.pdf` | Built output (95 pages). |
 | `sources/` | The three source articles, their READMEs and one verification record. **Ships verbatim.** |
 | `code/` | The executable files of all three delivered prototypes. **Ships verbatim, including the defective one.** |
 | `data/` | The recorded verification reports of the prototypes. **Ships verbatim.** |
@@ -227,24 +227,29 @@ Standard TeX Live or MiKTeX with the packages listed in the preamble. No
 bibliography processor, no external graphics, no data files. The final build is
 clean: **0 errors, 0 warnings, 0 undefined references, 0 undefined citations, 0
 multiply-defined labels, 0 duplicate PDF destinations, 0 overfull boxes**,
-94 pages.
+95 pages.
 
 ## How to re-run the prototypes
 
-Do not modify `code/`. Copy the files to a scratch directory under the names the
-harnesses expect, then:
+Do not modify `code/`. The files there carry `02-`, `04-` and `05-` prefixes,
+while each harness expects its archive's own basename, so copy them to a scratch
+directory under those original names first — `RationalHahn.wl`, `Checks.wl`,
+`RunChecks.wl`; `SurrealCASCore.wl`, `TestCore.wls`, `verify_examples.py`;
+`HahnRational.wl`, `test_HahnRational.wl`, `verify_examples.py`. `RationalHahn.wl`
+also needs the one-character repair of the report's §18.3 before it will load.
+Then, from that scratch directory:
 
 ```sh
 # RationalHahn (02) — apply the one-character repair to the COPY first
-wolframscript -file code/RunChecks.wl            # 34/34 after the repair
+wolframscript -file RunChecks.wl            # 34/34 after the repair
 
 # SurrealCASCore (04)
 wolframscript -file TestCore.wls                 # 110/110
 python verify_examples.py                        # 69/69
 
 # HahnRational (05)
-wolframscript -file code/test_HahnRational.wl    # 88/88
-python code/verify_examples.py                   # 323 exact checks
+wolframscript -file test_HahnRational.wl    # 88/88
+python verify_examples.py                   # 323 exact checks
 ```
 
 Randomized cases use `SeedRandom[20260921]` (Wolfram) and
