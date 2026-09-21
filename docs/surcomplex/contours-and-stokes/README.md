@@ -73,8 +73,9 @@ from the base, all preserved:
 
 **`04-category-sensitive-contour-calculus`.**
 
-- The separately numbered **winding-stability theorem** and the numbered
-  **admissible-deformation definition** (the base leaves both implicit).
+- The numbered **admissible-deformation definition** (the base leaves it
+  implicit). Both 03 and 04 number a winding-stability theorem; the merged
+  article prints 03's affine-scale form, which is the stronger.
 - A second, independent route to a determinant torus formula, through
   univariate separating denominators `Q_i` and characteristic polynomials, with
   the explicit `det C` and the four-point cluster worked out — including the

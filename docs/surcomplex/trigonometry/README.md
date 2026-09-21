@@ -143,7 +143,8 @@ inverse sine does not exist as a surreal-valued derivative, and no derivation on
 `No` is being chosen; the side–side–angle ambiguity remains; quadrances and
 spreads forget orientation; no directed Menelaus/Ceva; cyclic order is not
 defined by fine-continuous motion; angular error must not be inferred from cosine
-error alone; equal least side valuation is attained twice but not thrice; the
+error alone; the least side valuation is attained at least twice, which is not to say
+all three are equal; the
 flatness denominator `bc/(b+c)` is essential; the branch-matching conditions
 `e ≺ τ` and `σ > 2κ` cannot be relaxed; the dimension four of `B_{s,u}` is a total
 multiplicity, not a per-root claim; the cluster support bound belongs to factor

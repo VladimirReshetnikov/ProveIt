@@ -18,7 +18,7 @@ The headline results:
 - **Mittag–Leffler**, at the ordinary centres (Thm 7.2: solvable iff the union of principal-part supports is well ordered) and for **moving poles** relative to an admissible bound (Thm 11.1).
 - **Support-restricted Chinese remainder theory** (§10): the correct target of global interpolation is the restricted product `𝔅(P)` of the `K_Γ[u]/(P_c)`, with an explicit Neumann right inverse, and `ℋ_Γ(ℂ)/(G) ≅ 𝔅(P)`.
 - **Exact Cousin criterion** (Thm 13.1) on the puncture-and-disk cover, in terms of the *singular support* `Σ(b)`: only exponents carrying nonremovable ordinary coefficient singularities count.
-- **PID stalks and the Picard dichotomy** (Thm 6.1, Thm 14.3, Thm 14.4): every ordinary-base stalk is a principal ideal domain though nonlocal, so tensor-invertible = locally free rank one here; `Pic(ℂ, ℋ_Γ) = 0` iff `Γ = {0}` or `Γ = Zδ`; otherwise `dim_ℂ Pic ≥ 2^ℵ₀`, with equality for countable noncyclic `Γ`, so `dim_ℂ Pic(ℂ, ℋ_ℚ) = 2^ℵ₀`.
+- **PID stalks and the Picard dichotomy** (Thm 6.1, Thm 14.3, Thm 14.4): every ordinary-base stalk is a principal ideal domain though nonlocal when `Γ ≠ {0}`, so tensor-invertible = locally free rank one here; `Pic(ℂ, ℋ_Γ) = 0` iff `Γ = {0}` or `Γ = Zδ`; otherwise `dim_ℂ Pic ≥ 2^ℵ₀`, with equality for countable noncyclic `Γ`, so `dim_ℂ Pic(ℂ, ℋ_ℚ) = 2^ℵ₀`.
 
 ## Which archives it came from
 

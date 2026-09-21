@@ -135,11 +135,13 @@ separating residue duality from trace degeneration.
   general certificate it is; plus the recorded remark that `0 ≤ κ_a ≤ v(det A)`,
   so the determinant-only bound is strictly weaker.
 * **The trace element `e_F = Σ b_a b^a`.** 06 and 15 state it and explicitly
-  decline to assert `e_F = [J_F]` in general, verifying it only in examples. 08
-  and 11 prove it. Remark 13.7 prints both proofs and says which manuscripts
-  declined: 08's finite-witness transfer settles it for an arbitrary isolated
-  complete intersection, 11's Bézoutian settles it for coordinate-power systems
-  and additionally yields the reproducing kernel.
+  decline to assert `e_F = [J_F]` in general, verifying it only in examples. Only 11
+  proves it, by its Bézoutian, which additionally yields the reproducing
+  kernel; 08 never defines the trace element, proving instead the
+  trace-Jacobian identity `Res_F(G·J_F) = Tr(M_G)` for an arbitrary isolated
+  complete intersection by finite-witness transfer. Remark 13.7 prints both,
+  says which manuscripts declined, and supplies the step from the
+  trace-Jacobian identity to the identification.
 * **Two symbols named `Δ_F`.** Fixed once: `Δ_F = det M_{J_F}` (basis independent)
   and `disc_F = det T_F` (basis relative), with the proved relation
   `disc_F = (det G_F)·Δ_F`.

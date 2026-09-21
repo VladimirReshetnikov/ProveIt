@@ -950,7 +950,7 @@ In particular every $B_\zeta$ is finite dimensional, every zero is formally isol
  \sum_{F\sh(\zeta)=0}\mu_\zeta=\mu,
  \qquad \mu_\zeta:=\dim_KB_\zeta .
 \end{equation}
-A zero is \emph{simple}, that is $\mu_\zeta=1$, exactly when $J_F\sh(\zeta)\neq0$; in that case there are exactly $\mu$ distinct zeros. The same local dimensions are obtained after extending scalars from $K$ to any larger algebraically closed Hahn workspace, or to $\SC$ in the finite-dimensional computations.
+A zero $\zeta$ is \emph{simple}, that is $\mu_\zeta=1$, exactly when $J_F\sh(\zeta)\neq0$; if \emph{every} zero is simple there are exactly $\mu$ distinct zeros. The same local dimensions are obtained after extending scalars from $K$ to any larger algebraically closed Hahn workspace, or to $\SC$ in the finite-dimensional computations.
 \end{theorem}
 
 \begin{proof}
@@ -1280,7 +1280,7 @@ Expand every inverse as in \cref{finite:lem:operator}, after factoring out its i
 \label{finite:rem:transfer}
 Two further points make the transfer usable rather than merely formal.
 \begin{enumerate}
-\item \emph{Finite-jet reduction.} For normal forms, the total $z$-adic order estimate in the proof of \cref{finite:lem:matrix} reduces the computation at a fixed exponent to finitely many Taylor \emph{jets} of the finitely many contributing coefficient functions. A ``finite witness'' means finitely many ordinary coefficient \emph{functions}; the jet estimate is what additionally bounds the Taylor data needed from each.
+\item \emph{Finite-jet reduction.} For normal forms \emph{over a coordinate-power leading system}, which is the setting of \cref{finite:lem:matrix}, the total $z$-adic order estimate in the proof of that lemma reduces the computation at a fixed exponent to finitely many Taylor \emph{jets} of the finitely many contributing coefficient functions. A ``finite witness'' means finitely many ordinary coefficient \emph{functions}; the jet estimate is what additionally bounds the Taylor data needed from each.
 \item \emph{Where ordinary convergence is licensed.} The ordinary operator formulas really are the Taylor formulas of the finite ordinary deformations. Work on a smaller \emph{closed} polydisk strictly inside $D$, in the Banach space of functions holomorphic inside and continuous on the closure. Each $R_i$ is bounded by Cauchy estimates and finite truncation, and the removable quotient $D_i$ is bounded by the maximum principle on the $z_i$ boundary, a bound $(m_i+1)\rho_i^{-m_i}$ sufficing. Hence $\delta h$ has norm less than one for sufficiently small ordinary parameters and its Neumann series converges in that ordinary Banach space, while the contour denominators are nonzero with normally convergent geometric expansions. This licenses the ordinary Taylor identities used \emph{before} substitution. \emph{No corresponding Banach convergence is claimed for the Hahn substitution}, and the smaller closed polydisk is a device internal to this proof: the actual Hahn operators and their output coefficient functions remain defined on the original open $D$, by \cref{finite:cor:restriction}.
 \end{enumerate}
 \end{remark}
@@ -1369,7 +1369,9 @@ Define, for any of the finite free algebras above with its residue-dual basis,
 \end{equation}
 for every $G$, by expanding $Ge_a$ and summing the diagonal coefficients $\Res_F(e^aGe_a)$; the perfect pairing determines $\Eul_F$ uniquely from the trace functional, so $\Eul_F$ is basis independent, its normal-form coefficients have support in $M$, and in the coordinate-power case its exponent-zero part is $\mu\,z_1^{m_1-1}\cdots z_n^{m_n-1}$.
 
-Two of the five sources merged here state \eqref{finite:eq:Eulerelement} and then \emph{explicitly decline} to assert $\Eul_F=[J_F]$ in this coefficient category, verifying it only in their worked examples: one writes that it does not need, and does not assert without further proof, a general identification of $\Eul_F$ with the Jacobian determinant for every analytic perturbation; the other writes that a general identity $\Eul_F=\det(\partial F_i/\partial w_j)$ is not needed to prove duality or trace conservation, and that extending the identification in complete generality is a compatibility question beyond the theorems it asserts. The remaining three prove it. We print the proofs rather than averaging: \cref{finite:thm:trace} proves $\Res_F(GJ_F)=\Tr(M_G)$ for an \emph{arbitrary} isolated complete intersection over $\HH_\Gamma(D)$, by finite-witness transfer, and perfectness of the pairing then forces $\Eul_F=[J_F]$; \cref{finite:thm:bezout} proves the same for coordinate-power leading systems by an independent route which additionally yields the reproducing kernel \eqref{finite:eq:casimir}. The two declining manuscripts are not contradicted --- their theorems are true as stated --- but their caution is superseded here, and the identification is used below only in the ring and generality in which it has been proved.
+Two of the five sources merged here state \eqref{finite:eq:Eulerelement} and then \emph{explicitly decline} to assert $\Eul_F=[J_F]$ in this coefficient category, verifying it only in their worked examples: one writes that it does not need, and does not assert without further proof, a general identification of $\Eul_F$ with the Jacobian determinant for every analytic perturbation; the other writes that a general identity $\Eul_F=\det(\partial F_i/\partial w_j)$ is not needed to prove duality or trace conservation, and that extending the identification in complete generality is a compatibility question beyond the theorems it asserts. One of the remaining three proves it outright; the other two prove
+the trace-Jacobian identity $\Res_F(GJ_F)=\Tr(M_G)$ without identifying the
+trace element, and the step from the one to the other is supplied here. We print the proofs rather than averaging: \cref{finite:thm:trace} proves $\Res_F(GJ_F)=\Tr(M_G)$ for an \emph{arbitrary} isolated complete intersection over $\HH_\Gamma(D)$, by finite-witness transfer, and perfectness of the pairing then forces $\Eul_F=[J_F]$; \cref{finite:thm:bezout} proves the same for coordinate-power leading systems by an independent route which additionally yields the reproducing kernel \eqref{finite:eq:casimir}. The two declining manuscripts are not contradicted --- their theorems are true as stated --- but their caution is superseded here, and the identification is used below only in the ring and generality in which it has been proved.
 \end{remark}
 
 \subsection{Localized residues at actual surcomplex points}
@@ -2225,9 +2227,11 @@ Journal of the European Mathematical Society \textbf{13} (2011), 1147--1223.
 \url{https://doi.org/10.4171/JEMS/278}.
 
 \bibitem{finite:JoswigSmith}
-M. Joswig and B. Smith, \emph{Convergent Puiseux series and tropical geometry of higher rank},
-preprint (2018), arXiv:1809.01457.
-\url{https://arxiv.org/abs/1809.01457}.
+Michael Joswig and Ben Smith,
+``Convergent Hahn Series and Tropical Geometry of Higher Rank,''
+\href{https://arxiv.org/abs/1809.01457}{arXiv:1809.01457}, version 4,
+January 16, 2023.
+Cited for the distinct existing higher-rank Hahn-geometric setting.
 
 \bibitem{finite:Crainic}
 M. Crainic, \emph{On the perturbation lemma, and deformations},
@@ -2257,10 +2261,12 @@ open-content textbook, version 4.x.
 Theorems 4.3.1 and 6.2.5.
 
 \bibitem{finite:BK}
-H. Behnke and P. Thullen (H. Grauert and R. Remmert, eds.),
-\emph{Theorie der Funktionen mehrerer komplexer Ver\"anderlichen},
-2nd ed., Ergebnisse der Mathematik und ihrer Grenzgebiete, Springer, Berlin, 1970.
-(Classical formulation of Hartogs' theorem on separate holomorphy.)
+Jacek Bochnak and Wojciech Kucharz,
+``Global variants of Hartogs' theorem,''
+\emph{Archiv der Mathematik} \textbf{113} (2019), 281--290.
+\href{https://doi.org/10.1007/s00013-019-01340-7}{doi:10.1007/s00013-019-01340-7}.
+The classical separate-holomorphy theorem recalled there is the background
+input in \cref{finite:thm:hartogs}.
 
 \bibitem{finite:GriffithsHarris}
 P. Griffiths and J. Harris, \emph{Residues and zero-cycles on algebraic varieties},
@@ -2291,10 +2297,11 @@ Birkh\"auser, Basel, 1996, pp.~135--164.
 \url{https://arxiv.org/abs/alg-geom/9404011}.
 
 \bibitem{finite:Cox}
-D. A. Cox, \emph{Solving equations via algebras},
-in: Solving Polynomial Equations, Algorithms and Computation in Mathematics, vol.~14,
-Springer, Berlin, 2005, pp.~63--123.
-\url{https://doi.org/10.1007/3-540-27357-3_2}.
+David A. Cox,
+\emph{Solving Equations via Algebras},
+CIMPA Graduate School lecture notes, Buenos Aires, 2003.
+\href{https://mate.dm.uba.ar/~visita16/cimpa/notes/Cox.pdf}{Author's course notes}.
+An expanded chapter appears in \emph{Solving Polynomial Equations}, Springer, 2005.
 
 \bibitem{finite:NayakSastry}
 S. Nayak and P. Sastry,
@@ -2303,10 +2310,15 @@ preprint (2019), arXiv:1903.01783.
 \url{https://arxiv.org/abs/1903.01783}.
 
 \bibitem{finite:StacksKoszul}
-The Stacks Project Authors, \emph{The Stacks Project},
-tags \texttt{0621} (Koszul complexes), \texttt{00LK} (regular sequences and Cohen--Macaulay rings),
-\texttt{00NP} (regular local rings).
-\url{https://stacks.math.columbia.edu}.
+The Stacks Project Authors, \emph{The Stacks Project}.
+``Koszul regular sequences,'' Section 15.31, especially Lemma 15.31.2 and the
+distinctions preceding it,
+\href{https://stacks.math.columbia.edu/tag/062D}{Tag 062D};
+``Cohen--Macaulay rings,'' Section 10.104, especially Lemma 10.104.2,
+\href{https://stacks.math.columbia.edu/tag/00N7}{Tag 00N7};
+``Regular local rings,'' Section 10.106, especially Lemma 10.106.3,
+\href{https://stacks.math.columbia.edu/tag/00NN}{Tag 00NN}.
+Accessed September 21, 2026.
 
 \end{thebibliography}
 \endgroup

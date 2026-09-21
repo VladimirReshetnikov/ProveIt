@@ -318,11 +318,13 @@ manuscript alone. The uniqueness characterization of the algebraic pairing
 finite-partition obstruction \cref{contours:prop:mesh}, and above all the
 unconditional general contour representation
 \cref{contours:lem:residuetransform,contours:thm:generalrepresentation} come from
-the first. The separately numbered winding-stability theorem
-\cref{contours:thm:winding}, the numbered admissible-deformation definition
+the first. The numbered admissible-deformation definition
 \cref{contours:def:deformation}, the independent separating-torus route of
 \cref{contours:thm:septorus}, and the finite-parameter appendix
-\cref{contours:app:transform} come from the third.
+\cref{contours:app:transform} come from the third.  The second and the third
+both number a winding-stability theorem; \cref{contours:thm:winding} is the
+second's affine-scale form, which is the stronger of the two and is the one
+printed.
 
 Two of these overlap in a way that is a genuine disagreement about status rather
 than about arithmetic, and one is a disagreement about emphasis. Both are resolved
@@ -440,8 +442,9 @@ Common-domain coherent & $\HH(U)=\OO(U)((t^\Gamma))$, $U\subset\C$ ordinary open
     all share \emph{one} well-ordered support. This is the fixed-domain (in one
     variable, fixed-disk) ring.\\[0.5em]
 Polynomial-coefficient & $\C[w_1,\ldots,w_n]((t^\Gamma))$
-  & Every Hahn coefficient is an ordinary polynomial; equivalently the
-    common-domain ring with $U=\C^n$. This is the uniform-support target of
+  & Every Hahn coefficient is an ordinary polynomial; contained in, but
+    strictly smaller than, the common-domain ring with $U=\C^n$, since
+    $e^{w}$ is entire and is not a polynomial. This is the uniform-support target of
     rescaling, \cref{contours:thm:rescaling}.\\[0.5em]
 Radius-free germs & $\A_n=\C\{z_1,\ldots,z_n\}((t^\Gamma))$
   & Every coefficient is an ordinary convergent germ at $0$, but their convergence
@@ -1314,8 +1317,9 @@ image with a fine-topological measure.
 \begin{theorem}[Stokes for Hahn-deformed chains]
 \label{contours:thm:deformedstokes}
 Let $M$ be compact oriented of dimension $n$, let $\Phi$ be an admissible
-deformation, and let $\omega$ be a Hahn $(n-1)$-form with real-analytic coefficient
-forms on the ordinary coefficient neighborhood $U$. Then
+deformation, and let $\omega\in\Omega_H^{n-1}(U)$ on the ordinary coefficient
+neighborhood $U$ --- so its coefficient forms are ordinary \emph{smooth} forms,
+with no analyticity assumed. Then
 \begin{equation}\label{contours:eq:deformedstokes}
  \boxed{\qquad
  \HInt_{\partial\Phi}\omega=\HInt_\Phi d\omega .
@@ -1340,6 +1344,19 @@ restricted parameterization. Ordinary change of variables at every coefficient
 proves reparameterization invariance, and subdivision follows by finite boundary
 cancellation; internal faces cancel for finite chains.
 \end{proof}
+
+\begin{remark}[Why smoothness suffices]
+Two of the three merged manuscripts state this theorem for real-analytic
+coefficient forms. Smoothness is enough, and the reason is the one that runs
+through the whole subject: the Taylor-jet pullback
+\eqref{contours:eq:formpullback} is not summed by any convergence argument.
+Because $\Phi$ moves the chain by an infinitesimal of strictly positive
+support, $\eta^\alpha$ has support bounded below by $|\alpha|\cdot\inf E$, so at
+each Hahn exponent only finitely many multi-indices $\alpha$ contribute, and
+only finitely many ordinary derivatives $\partial^\alpha a$ are ever read.
+Those exist for a smooth $a$. Requiring the ordinary Taylor series to converge
+would be importing exactly the kind of limit this calculus does without.
+\end{remark}
 
 This is not merely a formal rewriting of $d^2=0$: it constructs a defined pairing
 with a chain complex and proves that the pairing intertwines $d$ with the oriented
@@ -3677,10 +3694,11 @@ A. Berarducci and M. Otero, ``An additive measure in o-minimal expansions of fie
 \href{https://doi.org/10.1093/qmath/hah010}{doi:10.1093/qmath/hah010}.
 
 \bibitem{BR}
-M. Baker and R. Rumely, \emph{Potential Theory and Dynamics on the Berkovich
-Projective Line}, Mathematical Surveys and Monographs, vol.~159, American
-Mathematical Society, 2010.
-\href{https://doi.org/10.1090/surv/159}{doi:10.1090/surv/159}.
+Robert Rumely and Matthew Baker,
+``Analysis and dynamics on the Berkovich projective line,'' 2004.
+\href{https://arxiv.org/abs/math/0407433}{arXiv:math/0407433}.
+Expanded lecture notes; used for the tree and unique-path geometry, not as a
+contour-integral comparison theorem.
 
 \bibitem{CDS}
 E. Cattani, A. Dickenstein, and B. Sturmfels, ``Computing multidimensional residues,''
@@ -3698,9 +3716,10 @@ Mathematics} \textbf{452} (2024), article 109823.
 \href{https://arxiv.org/abs/2208.14331}{arXiv:2208.14331}.
 
 \bibitem{Cherry}
-W. Cherry, \emph{Non-Archimedean Analytic Curves in Abelian Varieties} and lecture
-notes on non-Archimedean function theory, especially \S1.3 on the Schnirelman
-integral.
+William Cherry, ``Lectures on Non-Archimedean Function Theory,'' 2009.
+\href{https://arxiv.org/abs/0909.4509}{arXiv:0909.4509}.
+Section 1.3 gives the weighted Schnirelman normalization, its limit condition,
+and the caution about dependence on the chosen radius element.
 
 \bibitem{CLD}
 A. Chambert-Loir and A. Ducros, \emph{Formes diff\'erentielles r\'eelles et courants
@@ -3741,9 +3760,12 @@ V. Guillemin and P. J. Haine, \emph{Differential Forms}, World Scientific, 2019.
 Stokes theorem used here.
 
 \bibitem{Kaiser}
-T. Kaiser, ``Integration of semialgebraic functions and integrated Nash functions''
-and related work on tame measure and integration over non-Archimedean real closed
-fields with Archimedean value group.
+Tobias Kaiser,
+``Lebesgue measure theory and integration theory on non-archimedean real closed
+fields with archimedean value group.''
+\href{https://arxiv.org/abs/1409.2241}{arXiv:1409.2241}.
+Used only with its stated value-group, valuation-section, and output-ring
+qualifications.
 
 \bibitem{Lee}
 J. M. Lee, \emph{Introduction to Smooth Manifolds}, 2nd ed., Graduate Texts in
