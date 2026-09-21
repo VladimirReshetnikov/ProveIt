@@ -1,0 +1,1250 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr,aliascnt}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{pdftitle={Infinitesimal Analytic Geometry over the Surcomplex Numbers},pdfauthor={Research manuscript},pdfsubject={Hahn analytic germs, singularity deformation, residues, and surcomplex zeros}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Surcomplex analytic geometry}
+\fancyhead[R]{\small Hahn germs and singular zeros}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.3em}
+\setlength{\parindent}{1.3em}
+\setlist{nosep,leftmargin=2em}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\crefname{theorem}{theorem}{theorems}
+\crefname{lemma}{lemma}{lemmas}
+\crefname{proposition}{proposition}{propositions}
+\crefname{corollary}{corollary}{corollaries}
+\crefname{definition}{definition}{definitions}
+\crefname{example}{example}{examples}
+\crefname{remark}{remark}{remarks}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\SC}{\mathbf{SC}}
+\newcommand{\A}{\mathscr A}
+\newcommand{\m}{\mathfrak m}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\res}{\operatorname{res}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\lc}{\operatorname{lc}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\ev}{\operatorname{ev}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\Max}{\operatorname{Max}}
+\newcommand{\Frac}{\operatorname{Frac}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\NF}{\operatorname{NF}}
+\newcommand{\Mat}{\operatorname{Mat}}
+\newcommand{\vH}{v_{\!H}}
+\newcommand{\vmin}{v_{\min}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\numberwithin{equation}{section}
+\begin{document}
+\begin{titlepage}
+\centering
+\vspace*{0.8cm}
+{\Large\scshape A research continuation\par}
+\vspace{0.7cm}
+{\Huge\bfseries Infinitesimal Analytic Geometry\par}
+\vspace{0.35cm}
+{\LARGE over the Surcomplex Numbers\par}
+\vspace{0.75cm}
+{\Large Radius-Free Hahn Germs, a Nullstellensatz,\par and Conservation of Singular Zeros\par}
+\vspace{0.65cm}
+{\large September 21, 2026\par}
+\vspace{0.45cm}
+\begin{minipage}{0.93\textwidth}
+\begin{abstract}
+We develop several-variable analytic geometry on an infinitesimal surcomplex neighborhood. For a nonzero divisible set-sized ordered subgroup $\Gamma\subset\No$, put $K=\C((t^\Gamma))$ and
+\[
+ \A_n=\C\{z_1,\ldots,z_n\}((t^\Gamma)).
+\]
+Each Hahn coefficient is a convergent complex germ, but the coefficients need not share any ordinary radius of convergence. We prove division and preparation with explicit support bounds, and show that $\A_n$ is a regular Noetherian Jacobson domain of dimension $n$. Its maximal ideals are exactly evaluation ideals at infinitesimal $K$-points; consequently it satisfies a strong Nullstellensatz on that infinitesimal neighborhood.
+
+The principal deformation theorem treats an arbitrary isolated analytic complete intersection, not merely a simple zero or a triangular system. Every perturbation with strictly positive Hahn support preserves its finite algebraic length. An explicit normal-form construction and a strongly summable multidimensional residue give a perfect pairing, a trace--Jacobian identity, and exact conservation of zero multiplicities. Enlarging the surreal workspace creates no additional zeros. A quantitative Hensel--Rouch\'e theorem then gives a root-by-root correspondence under a sharp inverse-Jacobian valuation bound. A four-point two-variable example exhibits splitting across different valuation ranks and cancellation of infinite individual residues.
+\end{abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{0.93\textwidth}\small
+\textbf{Status.} The assertions are proved below from explicitly identified classical inputs. The proposed contribution is the precise radius-free Hahn-germ and support-controlled deformation package, not the invention of non-Archimedean Weierstrass theory or residue duality. No named published conjecture is claimed solved, no exhaustive novelty certification is asserted, and the proofs have not been formally verified.
+\end{minipage}
+\end{titlepage}
+\tableofcontents
+\newpage
+
+\section{Research question, contribution, and provenance}\label{sec:intro}
+
+\subsection{From one moving zero to an analytic zero scheme}
+The supplied manuscript \emph{Surcomplex Analysis: Infinitesimal Calculus, Hahn-Coherent Holomorphy, and Contour Theory} constructs one-variable preparation and moving-zero residue theory, and identifies several-variable division and finite mappings as further targets \cite{Companion}. The natural next question is not simply whether a simple root lifts. The implicit function theorem already answers that. The more substantial question is whether a singular system in several variables retains its entire local algebra when its equations acquire arbitrary infinitesimal Hahn perturbations.
+
+For instance, the ordinary system $(x^2,y^2)$ has a zero of length four. An infinitesimal coupling can split it into four points with different coordinate scales. Counting only the ordinary leading zeros sees one point; counting only distinct perturbed zeros misses collisions; an argument that treats all infinitesimals as powers of one real-valued parameter can miss entire valuation ranks. The appropriate invariant is the dimension of the finite quotient algebra, together with its residue pairing and multiplication operators.
+
+We establish such a theory. A second issue arises at the same time: infinitely many ordinary analytic coefficients may have radii tending to zero. Requiring a common ordinary disk excludes them, even though each coefficient has an unambiguous Taylor expansion at an infinitesimal argument. We therefore work with Hahn series of \emph{germs}, rather than Hahn families on a fixed ordinary domain. This enlargement is part of every statement; it is not an unnoticed change of hypotheses.
+
+\subsection{Main statements}
+Throughout the paper $\Gamma$ is nonzero, divisible, ordered, and set-sized. Set
+\[
+ K=\C((t^\Gamma)),\qquad
+ \m_K=\{a\in K:v(a)>0\},\qquad
+ R_n=\C\{z_1,\ldots,z_n\},\qquad
+ \A_n=R_n((t^\Gamma)).
+\]
+Here $\N$ includes zero, and $v(0)=+\infty$. The following is a guide to the results, with precise definitions and proofs supplied in the indicated sections.
+
+\begin{theorem}[Structural theorem, overview]\label{thm:overview-structure}
+The ring $\A_n$ is a regular Noetherian Jacobson domain of dimension $n$. There is a bijection
+\[
+ \m_K^n\longrightarrow\Max(\A_n),\qquad
+ a\longmapsto\m_a=(z_1-a_1,\ldots,z_n-a_n).
+\]
+Every residue field is $K$. For every ideal $I\subseteq\A_n$,
+\[
+ I\bigl(Z_{\m_K^n}(I)\bigr)=\sqrt I.
+\]
+Moreover, the completion of $(\A_n)_{\m_a}$ is $K[[z-a]]$.
+\end{theorem}
+
+The proof is in \cref{sec:division,sec:structure}. The maximal-ideal assertion is stronger than the mere ability to substitute infinitesimals: it says that substitution accounts for \emph{all} closed points of this algebra.
+
+\begin{theorem}[Conservation and duality, overview]\label{thm:overview-deform}
+Let $f_1,\ldots,f_n\in R_n$ vanish at zero and satisfy
+\[
+ \mu=\dim_\C R_n/(f_1,\ldots,f_n)<\infty.
+\]
+For $E_i\in\A_n$ with $\vH(E_i)>0$, put $F_i=f_i+E_i$. Then
+\[
+ \dim_K\A_n/(F_1,\ldots,F_n)=\mu.
+\]
+Any fixed ordinary monomial basis of $R_n/(f)$ remains a basis. The quotient admits an explicit perfect residue pairing, and its zeros $a\in\m_K^n$ satisfy
+\[
+ \sum_a e_a=\mu,\qquad
+ \Res_F(HJ_F)=\Tr(M_H)=\sum_a e_aH(a).
+\]
+Here $e_a$ is the local algebraic multiplicity, $J_F$ is the Jacobian determinant, and $M_H$ is multiplication by $H$ in the quotient. These zeros and their multiplicities do not change when the divisible Hahn workspace is enlarged, even to accommodate an arbitrary surcomplex tuple.
+\end{theorem}
+
+The support control is explicit: if $S$ is the support of a numerator and $E$ is the union of perturbation supports, the normal form and residue use only exponents in $S+E^*$, where $E^*$ is the additive monoid generated by $E$. This is proved in \cref{sec:deform,sec:trace,sec:extension}.
+
+\begin{theorem}[Quantitative stability, overview]\label{thm:overview-stability}
+Suppose all coefficients of a system $F\in\A_n^n$ have nonnegative Hahn valuation, and $a\in\m_K^n$ is a simple zero. Put
+\[
+ \kappa_a=\max\left(0,-\min_{i,j}v\bigl((DF(a)^{-1})_{ij}\bigr)\right).
+\]
+If $G=F+D$ and $\delta=\min_i\vH(D_i)>2\kappa_a$, there is exactly one zero $b$ of $G$ in
+\[
+ \{b\in\m_K^n:\vmin(b-a)>\kappa_a\},
+\]
+and $\vmin(b-a)\ge\delta-\kappa_a$. Applied to every point of a simple finite cluster from \cref{thm:overview-deform}, this gives a bijection of the two clusters. The strict factor-two threshold cannot be weakened in general.
+\end{theorem}
+
+This statement, proved in \cref{sec:stability}, is a Hahn-germ version of a familiar Hensel phenomenon. Its proof uses strong summability, not an unjustified assertion that Newton iterates converge in every valuation rank.
+
+\subsection{What is inherited and what is proposed as new}
+Surreal analysis has substantial antecedents. Alling develops analytic constructions over surreal number fields \cite{Alling}. Berarducci and Mantova study transseries as surreal function germs \cite{BM}; Costin and Ehrlich develop surreal extension and integration theory \cite{CE}. Our differentiation is differentiation in the variables $z_i$, keeping Hahn coefficients fixed; it is not a derivation on the field of surreal numbers.
+
+There is an especially close precedent in non-Archimedean analytic geometry. Cluckers and Lipshitz construct Hahn analytic systems, including common-radius families and full separated systems, and prove Noetherian and Nullstellensatz results for suitable analytic rings \cite[\S\S3.1, 4.4, 5.2]{CL}. Thus neither a Hahn Weierstrass theorem nor a non-Archimedean Nullstellensatz is claimed here as a new general idea. The coefficient ring and its support restrictions must be compared, not just theorem titles. Our ring retains convergence of each complex coefficient germ but imposes no common radius; \cref{ex:no-radius} proves that it strictly contains the common-radius germ ring. We do not claim it is outside every broader analytic-structure framework.
+
+Likewise, residue expansions, normal forms, and trace identities have classical antecedents, notably Cattani--Dickenstein--Sturmfels \cite{CDS}, Scheja--Storch \cite{SS}, and Kunz--Waldi \cite{KW}. The additional work here is to make those constructions simultaneously valid for arbitrary well-ordered perturbation supports, non-Archimedean value groups of any rank, and coefficient germs with no shared analytic neighborhood.
+
+\textbf{Novelty assessment.} In the sources inspected, we did not locate the exact combined statements proved here for $\C\{z\}((t^\Gamma))$, particularly the explicit support-preserving finite-algebra construction, workspace invariance, and its quantitative root correspondence. We offer these as proposed new results in this precisely specified setting. They may also be derivable from a broader existing framework. The article supplies proofs rather than treating a failure to locate an identical statement as proof of priority. The search was conducted on September 21, 2026; it was not a systematic review of all publications.
+
+\section{Hahn workspaces and the summability mechanism}\label{sec:hahn}
+
+\subsection{Set-sized fields inside the surcomplex class}
+A surcomplex number is an element of $\SC=\No[i]$. We use the monomials
+\[
+ t^\gamma=\omega^{-\gamma}.
+\]
+The normal-form theorem identifies $\C((t^\Gamma))$ with a subfield of $\SC$: its elements have well-ordered exponent support and complex coefficients. The usual Hahn-field theorem says that $K$ is algebraically closed when $\Gamma$ is divisible and the coefficient field is algebraically closed of characteristic zero; see \cite{Poonen}. No proper-class polynomial ring or proper-class sum is used here. Every theorem about a ring concerns a fixed set-sized $\Gamma$.
+
+The valuation of a nonzero series is its least exponent. The valuation ring and residue map are
+\[
+ K^\circ=\{a:v(a)\ge0\},\qquad
+ \operatorname{red}:K^\circ\to\C,
+\]
+where reduction extracts the coefficient of $t^0$. Under the surreal embedding, $\m_K$ consists exactly of the $K$-elements infinitesimal relative to positive real numbers. For a vector $a$, write $\vmin(a)=\min_i v(a_i)$.
+
+Every finite tuple of surcomplex numbers is contained in some such algebraically closed set-sized workspace: take the additive subgroup generated by the union of its normal-form supports, enlarge by a positive element if necessary, and take its divisible hull. This observation will later turn a workspace theorem into a statement about all surcomplex zeros.
+
+\subsection{The support lemma}
+\begin{definition}
+A family of Hahn series is \emph{strongly summable} if the union of its supports is well ordered and only finitely many members contribute to each exponent. Its sum is then defined coefficientwise.
+For a well-ordered $E\subset\Gamma_{>0}$, write
+\[
+ E^*=\{0\}\cup\{e_1+\cdots+e_r:r\ge1,\ e_j\in E\}.
+\]
+\end{definition}
+
+We use the classical Hahn--Neumann support lemma: sums of well-ordered supports are well ordered with finitely many decompositions at each exponent; $E^*$ is well ordered, and a fixed exponent has only finitely many expressions as an ordered word in $E$. These facts also hold after adding another well-ordered support $S$. The ring construction and geometric inversion are reviewed in \cite[\S3]{Poonen}; the ordered-series support theorem originates in \cite{Neumann}.
+
+\begin{lemma}[Positive-support operator inversion]\label{lem:operator}
+Let $V$ be a complex vector space and $V((t^\Gamma))$ its Hahn extension. Suppose
+\[
+ T=\sum_{e\in E}t^eT_e,
+\]
+where $E\subset\Gamma_{>0}$ is well ordered and each $T_e:V\to V$ is complex-linear. Then
+\begin{equation}\label{eq:operator-inverse}
+ (\id+T)^{-1}G=\sum_{r\ge0}(-T)^rG
+\end{equation}
+is strongly summable for every $G$. If $S=\supp G$, its support lies in $S+E^*$. The same statement holds for finite direct sums of vector spaces and matrices of such operators.
+\end{lemma}
+\begin{proof}
+A contribution to the coefficient at $\gamma$ in $T^rG$ is indexed by
+\[
+ s+e_1+\cdots+e_r=\gamma,
+ \qquad s\in S,\quad e_j\in E.
+\]
+The support lemma gives only finitely many such words, including their possible lengths. The union of all possible exponents is contained in the well-ordered set $S+E^*$. This proves strong summability, including the finiteness needed to compose $T$ with the displayed sum. Multiplication by $\id+T$ telescopes coefficientwise to $G$, on either side. All these arguments also apply to a finite matrix index set.
+\end{proof}
+
+Every complex-linear map $L:V\to W$ extends coefficientwise and cannot increase the exponent support. No continuity of $L$ in an ordinary analytic norm is needed. This simple observation is important: it allows division and finite-dimensional projections to act on infinitely many germs without requiring them to share a disk.
+
+\begin{remark}[Why a numerical contraction estimate is insufficient]\label{rem:rank}
+Take $\Gamma=\Q+\Q\omega$ with its inherited order. For every natural number $N$, $N<\omega$. The partial sums of $\sum_{r\ge0}t^r$ therefore need not converge in the valuation topology: their tails never have valuation greater than $\omega$. Nevertheless the family is strongly summable and its sum is $(1-t)^{-1}$. An argument saying only that the valuation improves by a fixed positive amount per iteration would not justify our constructions. \Cref{lem:operator} does justify them.
+\end{remark}
+
+\section{Radius-free analytic germs and their values}\label{sec:germs}
+
+\subsection{The coefficientwise analytic ring}
+\begin{definition}\label{def:ring}
+Let $R_n=\C\{z_1,\ldots,z_n\}$ be the ring of convergent power-series germs at zero, and define
+\begin{equation}\label{eq:ring}
+ \A_n=R_n((t^\Gamma))
+ =\left\{\sum_{\gamma\in S}f_\gamma(z)t^\gamma:
+ S\subset\Gamma\text{ well ordered},\ f_\gamma\in R_n\right\}.
+\end{equation}
+For $F\ne0$, $\vH(F)=\min\supp F$ and $\lc(F)$ is its leading coefficient germ. A condition $\vH(F)>0$ permits $F=0$.
+\end{definition}
+
+The symbol $\A_n$ does not mean an unspecified ring of convergent series over $K$. Definition \ref{def:ring} is the entire convention. In particular, no convergence condition on the numerical sizes of the complex Taylor coefficients is imposed uniformly in $\gamma$.
+
+The Hahn construction gives a $K$-algebra and an integral domain: the leading coefficient of a product is the product of the leading coefficients in the domain $R_n$. We have $\A_0=K$. Taking Taylor coefficients embeds $\A_n$ in $K[[z]]$, but this embedding is not an equality; see \cref{rem:formal-distinction} below.
+
+\begin{proposition}[Units]\label{prop:units}
+For $F=t^\lambda(f_0+E)$ with $\vH(E)>0$ and $f_0\ne0$, the following are equivalent: $F$ is a unit of $\A_n$; $f_0$ is a unit of $R_n$; $f_0(0)\ne0$.
+\end{proposition}
+\begin{proof}
+If $f_0$ is a unit, then
+\[
+ F^{-1}=t^{-\lambda}f_0^{-1}
+ \sum_{r\ge0}(-f_0^{-1}E)^r
+\]
+is strongly summable by \cref{lem:operator}. Conversely, if $FG=1$, the product of the leading coefficient germs is $1$, so $f_0$ is a unit. The last equivalence is ordinary analytic local algebra.
+\end{proof}
+
+\subsection{Evaluation at every infinitesimal point}
+\begin{proposition}[Evaluation and translation]\label{prop:translation}
+For $a\in\m_K^n$ and $F=\sum f_\gamma t^\gamma\in\A_n$, the expression
+\begin{equation}\label{eq:evaluation}
+ F(a)=\sum_{\gamma,\alpha}
+ \frac{\partial^\alpha f_\gamma(0)}{\alpha!}\,t^\gamma a^\alpha
+\end{equation}
+is strongly summable and defines a $K$-algebra homomorphism $\ev_a:\A_n\to K$. The formula
+\begin{equation}\label{eq:translation}
+ \tau_aF(z)=\sum_{\gamma,\alpha}
+ \frac{\partial^\alpha f_\gamma(z)}{\alpha!}\,t^\gamma a^\alpha
+\end{equation}
+defines an automorphism of $\A_n$, with
+\[
+ \tau_a\tau_b=\tau_{a+b},\qquad \tau_a^{-1}=\tau_{-a},\qquad
+ (\tau_aF)(b)=F(a+b).
+\]
+\end{proposition}
+\begin{proof}
+Let $S=\supp F$ and let $E_a$ be the union of the supports of the coordinates of $a$. It is a well-ordered positive set. All expanded terms in either formula have support in $S+E_a^*$. For a fixed exponent, the support lemma permits only finitely many source exponents, coordinate choices, and products of coefficients of $a$. Thus each coefficient in \eqref{eq:translation} is a finite sum of derivatives of ordinary analytic germs and is again an analytic germ. The same argument proves strong summability of \eqref{eq:evaluation}.
+
+The product rule, the multinomial identity, and the formal Taylor translation identity now prove all the asserted algebraic identities. Rearrangements are legitimate because they are finite at each Hahn exponent. In particular, this proof does not translate an ordinary germ by a nonzero complex number outside its domain; it translates by an infinitesimal using derivatives at the original center.
+\end{proof}
+
+\begin{proposition}[Evaluation kernels and finite jets]\label{prop:kernels}
+For every $a\in\m_K^n$,
+\begin{equation}\label{eq:kernel}
+ \ker\ev_a=\m_a=(z_1-a_1,\ldots,z_n-a_n).
+\end{equation}
+For $N\ge1$, the Taylor map induces
+\begin{equation}\label{eq:jets}
+ \A_n/\m_a^N\simeq K[X_1,\ldots,X_n]/(X_1,\ldots,X_n)^N.
+\end{equation}
+\end{proposition}
+\begin{proof}
+At $a=0$, apply ordinary Taylor division to each coefficient germ. If its constant term vanishes, write it as $\sum_i z_i g_i$ using fixed complex-linear coordinate-division maps. Extending those maps coefficientwise proves \eqref{eq:kernel}. More generally, subtract the Taylor polynomial of degree less than $N$ and divide the remainder by the finitely many monomials of degree $N$. This proves that the kernel of the finite-jet map is exactly $(z)^N$, while polynomial representatives prove surjectivity. Translation reduces arbitrary $a$ to zero.
+\end{proof}
+
+\begin{proposition}[Faithful interpretation as functions]\label{prop:faithful}
+If $F\in\A_n$ vanishes at every point of $\m_K^n$, then $F=0$.
+\end{proposition}
+\begin{proof}
+The case $n=0$ is immediate. Normalize a nonzero $F$ as $f_0+E$, and let $m$ be the ordinary order of vanishing of $f_0$. Choose $c\in\C^n$ at which its degree-$m$ homogeneous part $H_m$ is nonzero. If $E\ne0$, write $e=\vH(E)>0$ and choose $\eta>0$ in $\Gamma$ with $m\eta<e$; divisibility permits this. If $E=0$, choose any $\eta>0$. At $a=ct^\eta$,
+\[
+ f_0(a)=H_m(c)t^{m\eta}+\text{terms of larger valuation},
+ \qquad v(E(a))\ge e
+\]
+when $E\ne0$. Thus $F(a)\ne0$, a contradiction. The case $m=0$ is included.
+\end{proof}
+
+\begin{remark}[Formal power series are different]\label{rem:formal-distinction}
+The Taylor embedding $\A_n\hookrightarrow K[[z]]$ is not an identification of rings of functions. For example, the coefficientwise formal inverse
+\[
+ (z-t^\eta)^{-1}=-\sum_{r\ge0}t^{-(r+1)\eta}z^r
+\]
+belongs to $K[[z]]$ but not to $\A_1$, since its combined Hahn support is not well ordered. Accordingly, $z-t^\eta$ is a nonunit of $\A_1$ and actually vanishes at an infinitesimal point. Completing at a point and working on the entire monad are different operations.
+\end{remark}
+
+\subsection{The enlargement beyond a common radius is genuine}
+\begin{example}[No shared ordinary neighborhood]\label{ex:no-radius}
+Fix $\eta\in\Gamma_{>0}$ and consider
+\begin{equation}\label{eq:no-radius}
+ F(z)=\sum_{r\ge1}\frac{t^{r\eta}}{1-rz}.
+\end{equation}
+This is an element of $\A_1$, and it is evaluable at every infinitesimal argument. Yet it cannot be represented by a Hahn family of holomorphic functions on any common ordinary disk centered at zero. Its coefficient at $r\eta$ has a pole at $1/r$. Equality of germwise Hahn expressions forces equality of these coefficient germs; equality as functions on the whole monad does so as well by \cref{prop:faithful}. An ordinary disk of positive radius contains $1/r$ for all sufficiently large $r$, making the proposed representative impossible.
+\end{example}
+
+Thus taking Hahn series and passing to germs do not commute in the naive common-radius sense. This is why invoking a theorem stated only for coefficients holomorphic on one fixed polydisk would leave a gap in the present setting.
+
+\subsection{Taylor calculus}
+Differentiation acts coefficientwise. Translation gives a Taylor expansion at every infinitesimal center, and its remainder has a useful valuation bound. If $\vH(F)\ge\lambda$, $a,h\in\m_K^n$, and $\vmin(h)=\rho>0$, then
+\begin{equation}\label{eq:taylor-bound}
+ v\left(F(a+h)-\sum_{|\alpha|<N}
+ \frac{\partial^\alpha F(a)}{\alpha!}h^\alpha\right)
+ \ge\lambda+N\rho.
+\end{equation}
+Indeed, translation does not decrease the lower support bound, and every remaining monomial contains at least $N$ factors from $h$. This proves, in particular, the expected differential and chain rules on the monad. These estimates also hold after enlarging the workspace. Strong summability remains the definition of the series; the estimates do not turn every sequence of its partial sums into a convergent sequence.
+
+\section{Weierstrass division with support control}\label{sec:division}
+
+\subsection{The ordinary input}
+Write $z=(x,w)$, where $x=(z_1,\ldots,z_{n-1})$ and $w=z_n$. An ordinary germ $f\in R_n$ is \emph{$w$-regular of order $m$} if
+\[
+ f(0,w)=c w^m+O(w^{m+1}),\qquad c\ne0.
+\]
+The classical Weierstrass theorem gives $f=u_0P_0$, where $u_0$ is a unit and
+\[
+ P_0=w^m+\sum_{j<m}p_{0j}(x)w^j,\qquad p_{0j}(0)=0.
+\]
+Classical division gives unique $R_{n-1}$-linear maps
+\[
+ D:R_n\to R_n,\qquad
+ \Pi:R_n\to R_{n-1}[w]_{<m}
+\]
+satisfying
+\begin{equation}\label{eq:ordinary-division}
+ g=fDg+\Pi g.
+\end{equation}
+In particular, $D(fg)=g$ and $D(r)=0$ when $\deg_w r<m$. We use precisely this ordinary germ theorem; standard treatments include \cite{GR}. Hahn analogues occur in \cite{CL,CLR}, but the proof below directly verifies the required coefficient and support conditions.
+
+\begin{theorem}[Hahn-germ division]\label{thm:division}
+Let $F=f+E\in\A_n$, where $f\in R_n$ is $w$-regular of order $m\ge1$ and $\vH(E)>0$. Every $G\in\A_n$ has a unique decomposition
+\begin{equation}\label{eq:division}
+ G=FQ+R,\qquad Q\in\A_n,\quad R\in\A_{n-1}[w]_{<m}.
+\end{equation}
+Writing $E_+=\supp E$ and $S=\supp G$, both $Q$ and $R$ have support contained in $S+E_+^*$. Explicitly,
+\begin{equation}\label{eq:division-formula}
+ Q=(\id+D M_E)^{-1}DG,
+ \qquad R=\Pi(G-EQ),
+\end{equation}
+where $M_E$ is multiplication by $E$ and $D,\Pi$ act coefficientwise.
+\end{theorem}
+\begin{proof}
+Apply $D$ to the desired equation. Since $D(fQ)=Q$ and $D(R)=0$, it becomes
+\[
+ (\id+D M_E)Q=DG.
+\]
+The operator $D M_E$ is a sum of positive-support complex-linear operators on $R_n$. Therefore \cref{lem:operator} proves the existence of the first expression in \eqref{eq:division-formula}, with the stated support bound. The identity defining $Q$ says $D(G-EQ)=Q$. Applying \eqref{eq:ordinary-division} to $G-EQ$ now gives
+\[
+ G-EQ=fQ+\Pi(G-EQ),
+\]
+which is \eqref{eq:division}.
+
+The remainder has the required polynomial degree because $\Pi$ does so coefficientwise, and its support is contained in $S+E_+^*$. To prove uniqueness, subtract two decompositions and apply $D$. The difference of the quotients lies in the kernel of the invertible operator $\id+D M_E$, so it is zero; then so is the remainder difference. All coefficients produced are ordinary analytic germs, since a fixed Hahn coefficient involves only finitely many applications of ordinary division.
+\end{proof}
+
+\begin{theorem}[Preparation and finite projection]\label{thm:prep}
+Under the hypotheses of \cref{thm:division}, there is a unique factorization
+\begin{equation}\label{eq:prep}
+ F=UP,
+ \qquad P=w^m+\sum_{j<m}p_j(x)w^j,
+\end{equation}
+where $U\in\A_n$ is a unit, each $p_j\in\A_{n-1}$ has nonnegative support, $P$ has leading coefficient $P_0$, and $U$ has leading coefficient $u_0$. The supports of $P$ and $U$ are contained in $E_+^*$. In particular,
+\begin{equation}\label{eq:free-hypersurface}
+ \A_n/(F)\simeq\A_{n-1}[w]/(P)
+\end{equation}
+is free of rank $m$ over $\A_{n-1}$, with basis $1,w,\ldots,w^{m-1}$.
+\end{theorem}
+\begin{proof}
+Divide $w^m$ by $F$: $w^m=FQ+R$. The leading coefficient of $Q$ is $D(w^m)=u_0^{-1}$, because $w^m=P_0+(w^m-P_0)$ is ordinary division by $P_0$. Hence $Q$ is a unit by \cref{prop:units}. Set $P=w^m-R$ and $U=Q^{-1}$. Their leading coefficients are $P_0$ and $u_0$; the support assertion for $Q,R$ follows from division, and geometric inversion gives the assertion for $U$.
+
+For uniqueness, suppose $F=\widetilde U\widetilde P$ is another such preparation. Then
+\[
+ w^m=F\widetilde U^{-1}+(w^m-\widetilde P)
+\]
+is another division of $w^m$ with remainder degree less than $m$. Uniqueness in \cref{thm:division} implies $\widetilde P=P$ and $\widetilde U=U$. Finally, division gives both surjectivity and uniqueness of polynomial representatives in \eqref{eq:free-hypersurface}.
+\end{proof}
+
+For a general nonzero $F$, first factor out $t^{\vH(F)}$. A complex-linear change of coordinates makes its leading germ regular in the last variable: choose a direction on which the first nonzero homogeneous part does not vanish. Such a change acts coefficientwise on $\A_n$ and preserves all exponent supports. These operations reduce any nonunit to the situation of \cref{thm:prep} with $m\ge1$.
+
+\begin{corollary}[Fibers of a prepared hypersurface]\label{cor:hypersurface-fiber}
+For $a'\in\m_K^{n-1}$, the fiber algebra of \eqref{eq:free-hypersurface} is
+\[
+ K[w]/P(a',w).
+\]
+It has length $m$, all its roots are infinitesimal, and it has $m$ distinct roots exactly when the discriminant of $P(a',w)$ is nonzero.
+\end{corollary}
+\begin{proof}
+The lower coefficients of $P(a',w)$ lie in $\m_K$: their exponent-zero coefficient germs vanish at the origin in the $x$ variables, and all remaining Hahn terms have positive valuation. A root of negative valuation would make its leading monomial $w^m$ the unique term of least valuation. A root of valuation zero would reduce to a nonzero root of $w^m$ over $\C$. Both are impossible. Algebraic closedness of $K$ and the standard discriminant criterion finish the proof.
+\end{proof}
+
+This is a genuine finite-mapping statement with infinitesimal parameter values, not only a one-variable factorization at a single point. It does not assert that the roots can be globally labeled by single-valued analytic functions through a branch locus.
+
+\section{Noetherian geometry and an infinitesimal Nullstellensatz}\label{sec:structure}
+
+\subsection{Finite generation}
+\begin{theorem}[Noetherianity]\label{thm:noetherian}
+For every $n\ge0$, $\A_n$ is Noetherian.
+\end{theorem}
+\begin{proof}
+Induct on $n$, starting with the field $\A_0=K$. Let $I\subseteq\A_n$ be a nonzero proper ideal, and choose $0\ne F\in I$. Normalize and change complex-linear coordinates so that \cref{thm:prep} applies with degree $m\ge1$. The quotient $\A_n/(F)$ is finite free over $\A_{n-1}$. By the induction hypothesis it is a Noetherian $\A_{n-1}$-module. Its submodule $I/(F)$ is therefore finitely generated over $\A_{n-1}$. Lifting these generators and adjoining $F$ gives finitely many generators for $I$ as an ideal of $\A_n$. The zero and unit ideals require no additional argument.
+\end{proof}
+
+\subsection{Every maximal ideal is evaluation}
+\begin{theorem}[Weak Nullstellensatz]\label{thm:weak-null}
+Every maximal ideal of $\A_n$ is $\m_a$ for a unique $a\in\m_K^n$, and its residue field is $K$.
+\end{theorem}
+\begin{proof}
+The assertion is clear for $n=0$. Suppose it holds in dimension $n-1$, and let $M$ be a maximal ideal of $\A_n$. Since $\A_n$ is not a field for $n\ge1$, $M$ contains a nonzero element. Make it regular as in the preceding proof. We obtain a finite integral algebra
+\[
+ \A_n/(F)\simeq\A_{n-1}[w]/(P).
+\]
+The contraction of $M/(F)$ to $\A_{n-1}$ is maximal, by integrality. By induction it is evaluation at $a'\in\m_K^{n-1}$, with residue field $K$. Therefore $\A_n/M$ is a finite field extension of $K$, hence equals $K$.
+
+Let $a_n$ be the image of $w$ in that field. It satisfies $P(a',a_n)=0$, so \cref{cor:hypersurface-fiber} gives $a_n\in\m_K$. The images of all coordinates are thus an infinitesimal tuple $a$. The ideal $(z-a)$ is contained in $M$ and is maximal by \cref{prop:kernels}; consequently $M=(z-a)$. Reversing the complex-linear coordinate change keeps the coordinates infinitesimal. Uniqueness follows by evaluating the coordinate functions.
+
+Notice that this proof never assumes an abstract field-valued homomorphism commutes with an infinite Hahn sum. The finite integral quotient identifies the coordinate images, and the independently proved kernel formula identifies the ideal.
+\end{proof}
+
+\subsection{The strong theorem}
+For $X\subseteq\m_K^n$, define
+\[
+ I(X)=\{F\in\A_n:F(a)=0\text{ for every }a\in X\},
+\]
+and for an ideal $I$ define $Z(I)$ to be its common zero set in $\m_K^n$.
+
+\begin{theorem}[Jacobson property and strong Nullstellensatz]\label{thm:strong-null}
+The ring $\A_n$ is Jacobson. For every ideal $I\subseteq\A_n$,
+\begin{equation}\label{eq:strong-null}
+ I(Z(I))=\sqrt I.
+\end{equation}
+\end{theorem}
+\begin{proof}
+We prove the Jacobson assertion by induction on $n$. The base is a field. Let $\mathfrak p\ne0$ be a prime ideal of $\A_n$. Choose $0\ne F\in\mathfrak p$ and prepare it after a coordinate change. Then $\A_n/\mathfrak p$ is finite over
+\[
+ \A_{n-1}/(\mathfrak p\cap\A_{n-1}).
+\]
+The latter is Jacobson by induction and passage to a quotient. A finite algebra over a Jacobson ring is Jacobson. These standard ring-theoretic implications are stated in \cite[\S10.35]{Stacks}. Hence $\mathfrak p$ is the intersection of the maximal ideals containing it.
+
+The zero prime requires a separate argument; the preceding finite-quotient reduction does not apply to it. By \cref{prop:faithful}, the intersection of all evaluation ideals $\m_a$ is zero. Thus every prime is an intersection of maximal ideals, which proves the Jacobson property. By \cref{thm:weak-null}, those maximal ideals are precisely the evaluation ideals. Intersecting the maximal ideals containing $I$ therefore proves \eqref{eq:strong-null}.
+\end{proof}
+
+For example, a family of Hahn-germ equations with no common infinitesimal zero generates the unit ideal. Because $\A_n$ is Noetherian, this assertion always has a finite witness: finitely many equations $F_j$ and coefficients $G_j\in\A_n$ satisfy $\sum_jG_jF_j=1$. The theorem gives existence, not a uniform bound on the complexity of finding such a witness from arbitrary support presentations.
+
+\subsection{Regularity and local completions}
+\begin{theorem}[Local geometry]\label{thm:regular}
+The ring $\A_n$ has dimension $n$ and is regular. For every $a\in\m_K^n$,
+\begin{equation}\label{eq:completion}
+ \widehat{(\A_n)_{\m_a}}\simeq K[[X_1,\ldots,X_n]],
+ \qquad X_i=z_i-a_i.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Translate to $a=0$. For $0\le r\le n$, coefficientwise restriction gives
+\[
+ \A_n/(z_1,\ldots,z_r)\simeq\A_{n-r},
+\]
+which is a domain. The resulting chain of coordinate prime ideals remains strict after localization at $\m_0$, so that local ring has dimension at least $n$. Its maximal ideal is generated by the $n$ coordinate functions, and the standard dimension bound for a Noetherian local ring gives dimension at most $n$. The finite-jet calculation \eqref{eq:jets} shows that its cotangent space has dimension $n$. Thus the local ring is regular.
+
+Every maximal localization is of this form by \cref{thm:weak-null}. It follows that $\A_n$ has dimension $n$ and all its localizations at primes are regular, using preservation of regularity under localization. Finally, an element outside $\m_a$ is already invertible modulo each $\m_a^N$, since its constant term there is nonzero. Localization therefore does not change the finite-jet quotients in \eqref{eq:jets}. Taking their inverse limit proves \eqref{eq:completion}.
+\end{proof}
+
+The entire ring $\A_n$ is not local: it simultaneously records every infinitesimal point. Its ordinary coefficient ring $R_n$, by contrast, is local. This distinction explains why an infinitesimal Nullstellensatz can coexist with nontrivial local analytic geometry.
+
+\begin{remark}[Why the valuation must be nontrivial]
+If $\Gamma=\{0\}$, then $\m_K^n=\{0\}$ and $\A_n=R_n$. For $n>0$, the vanishing ideal of that single point is $(z)$, whereas $\sqrt{(0)}=(0)$. Thus \eqref{eq:strong-null} fails for $I=(0)$. The nonzero-group hypothesis is used essentially in \cref{prop:faithful}; it is not an aesthetic restriction.
+\end{remark}
+
+\section{Isolated complete intersections: the ordinary ingredients}\label{sec:ordinary-residue}
+
+Let $f=(f_1,\ldots,f_n)\in R_n^n$ vanish at the origin and assume
+\begin{equation}\label{eq:mu}
+ 0<\mu=\dim_\C R_n/(f_1,\ldots,f_n)<\infty.
+\end{equation}
+This is the algebraic form of an isolated common zero. Since $R_n$ is regular local and the ideal is generated by $n$ elements with zero-dimensional quotient, it is a complete intersection. Choose monomials $b_1,\ldots,b_\mu$ whose classes form a basis of
+\[
+ B_0=R_n/(f).
+\]
+Such a choice exists because some power of $(z)$ lies in $(f)$, so finitely many monomials span the quotient and a subset is a basis.
+
+\subsection{A linear division splitting}
+Let $i:\C^\mu\to R_n$ send coordinate vectors to the chosen monomials. Let $p:R_n\to\C^\mu$ be the coordinate map of the quotient in this basis. There is a complex-linear map $h:R_n\to R_n^n$ such that
+\begin{equation}\label{eq:splitting}
+ g=i p(g)+\sum_{j=1}^n f_jh_j(g),\qquad
+ pi=\id,\qquad hi=0.
+\end{equation}
+To construct it, take a complex-linear right inverse of the surjection $R_n^n\to(f)$, and apply it to $g-ip(g)$. This is a choice of linear splitting, not a claim of uniqueness of the quotients $h_j(g)$. One can instead use a fixed constructive local division procedure when an effective presentation is available.
+
+No ordinary norm bound on this splitting is assumed. It maps analytic germs to analytic germs, which is exactly what coefficientwise Hahn extension requires. This freedom removes the need to choose one analytic neighborhood for infinitely many input coefficients.
+
+\subsection{Local residues and duality}
+We explicitly import the following classical facts about the local Grothendieck residue; they are not novelty claims. For an isolated tuple $g=(g_1,\ldots,g_n)$, it is the complex-linear functional
+\begin{equation}\label{eq:classical-residue}
+ \res_g(q):=\Res_{0;g}(q)
+ =\frac{1}{(2\pi i)^n}\int_{\{|g_j|=\epsilon_j\}}
+ \frac{q(z)\,dz_1\wedge\cdots\wedge dz_n}{g_1\cdots g_n},
+\end{equation}
+with sufficiently small regular radii and the orientation given by increasing arguments of the $g_j$. In this section only, $\res_g$ is ordinary complex-valued; below it is extended coefficientwise to Hahn numerators. For background and the equivalent algebraic treatment, see \cite{Tsikh,SS,CDS}.
+
+The residue annihilates $(g)$ and induces a nondegenerate bilinear pairing on $R_n/(g)$. For coordinate powers,
+\begin{equation}\label{eq:coordinate-residue}
+ \res_{(z_1^{d_1},\ldots,z_n^{d_n})}(q)
+ =[z_1^{d_1-1}\cdots z_n^{d_n-1}]q.
+\end{equation}
+For $k\in\N^n$, write $f^{k+1}=(f_1^{k_1+1},\ldots,f_n^{k_n+1})$. Cancellation of a denominator power gives
+\begin{equation}\label{eq:pole-cancel}
+ \res_{f^{k+1}}(f_jq)=
+ \begin{cases}
+ 0,& k_j=0,\\
+ \res_{f^{k+1-e_j}}(q),& k_j>0.
+ \end{cases}
+\end{equation}
+The denominator tuple in the second line still has every exponent positive. These identities are special cases of the residue transformation rule.
+
+We will also use the ordinary finite-family trace identity. In a sufficiently small analytic deformation $g_u$ of $f$ by finitely many ordinary parameters $u$, the cluster originating at zero has a finite free algebra of rank $\mu$ over the parameter-germ ring, and
+\begin{equation}\label{eq:ordinary-trace}
+ \res_{g_u}^{\mathrm{cluster}}(qJ_{g_u})
+ =\Tr(M_q).
+\end{equation}
+Here the cluster residue is the sum over all points in a fixed small representative neighborhood. The formula includes multiple points. Its algebraic form is the trace--residue theorem of \cite{SS}; deformation and computational formulations are discussed in \cite{KW,CDS}. A justification of the finite-family input and its exact role appears in \cref{app:classical-family}.
+
+The classical facts above are used on one finite family at a time. We never assert that all coefficient germs of a Hahn perturbation admit a common contour or a common analytic representative.
+
+\section{A support-controlled finite deformation theorem}\label{sec:deform}
+
+\subsection{Definition of the perturbed residue}
+Keep \eqref{eq:mu}. Let
+\begin{equation}\label{eq:perturbed}
+ F_j=f_j+E_j,\qquad E_j\in\A_n,\quad \vH(E_j)>0,
+ \qquad E=\bigcup_j\supp E_j\subset\Gamma_{>0}.
+\end{equation}
+Extend each ordinary residue functional coefficientwise to Hahn numerators. For $H\in\A_n$, define
+\begin{equation}\label{eq:hahn-residue}
+ \boxed{\quad
+ \Res_F(H)=\sum_{k\in\N^n}(-1)^{|k|}
+ \res_{f^{k+1}}\!\left(H E_1^{k_1}\cdots E_n^{k_n}\right).
+ \quad}
+\end{equation}
+This is motivated by expanding each reciprocal $(f_j+E_j)^{-1}$, but \eqref{eq:hahn-residue}, not a putative surcomplex contour integral, is the definition.
+
+\begin{lemma}[Well-definedness and annihilation]\label{lem:residue-annihilate}
+The sum in \eqref{eq:hahn-residue} is strongly summable and defines a $K$-linear functional $\A_n\to K$. If $S=\supp H$, then
+\[
+ \supp\Res_F(H)\subseteq S+E^*.
+\]
+For every $j$ and $H$, $\Res_F(F_jH)=0$.
+\end{lemma}
+\begin{proof}
+The ordinary residue operators do not enlarge Hahn support. A term of multi-index $k$ in \eqref{eq:hahn-residue} is supported on sums of a source exponent from $S$ and $|k|$ positive perturbation exponents. The support lemma proves both well-ordering and finiteness of the full family at each exponent, even though the residue functional itself varies with $k$. This also proves $K$-linearity by the allowed finite rearrangements.
+
+For annihilation, split $F_jH=f_jH+E_jH$. In the first part, terms with $k_j=0$ vanish by \eqref{eq:pole-cancel}. In the other terms cancel one power of $f_j$ and replace $k$ by $k-e_j$. The result is the negative of the second part of the sum. The reindexing is legitimate coefficientwise by the finiteness already proved. Hence $\Res_F(F_jH)=0$.
+\end{proof}
+
+\subsection{An explicit normal form}
+Extend $i,p,h$ from \eqref{eq:splitting} coefficientwise. Define the positive-support operator
+\begin{equation}\label{eq:T}
+ T:G\longmapsto\sum_{j=1}^n E_jh_j(G).
+\end{equation}
+For $G\in\A_n$, set
+\begin{equation}\label{eq:normal-form}
+ L_G=(\id+T)^{-1}G,\qquad
+ \NF_F(G)=p(L_G)\in K^\mu,\qquad
+ Q_j(G)=h_j(L_G).
+\end{equation}
+The inverse is the strong Neumann sum of \cref{lem:operator}.
+
+\begin{lemma}[Spanning with a support certificate]\label{lem:spanning}
+For every $G\in\A_n$,
+\begin{equation}\label{eq:normal-decomposition}
+ G=\sum_{r=1}^\mu\NF_F(G)_r b_r
+   +\sum_{j=1}^nF_jQ_j(G).
+\end{equation}
+The supports of all displayed coordinates and quotients lie in $\supp G+E^*$.
+\end{lemma}
+\begin{proof}
+The support claim follows from \cref{lem:operator} and coefficientwise action of $p,h$. Since $G=L_G+T L_G$, the ordinary splitting extended to $L_G$ gives
+\[
+ G=i p(L_G)+\sum_jf_jh_j(L_G)+\sum_jE_jh_j(L_G),
+\]
+which is exactly \eqref{eq:normal-decomposition}.
+\end{proof}
+
+This proves that the $b_r$ span the perturbed quotient. Spanning alone is not conservation of multiplicity: the dimension might still have dropped. The residue pairing prevents that drop.
+
+\begin{theorem}[Finite complete-intersection deformation]\label{thm:finite-deform}
+Under \eqref{eq:mu} and \eqref{eq:perturbed}, the classes of $b_1,\ldots,b_\mu$ form a $K$-basis of
+\[
+ B_F=\A_n/(F_1,\ldots,F_n).
+\]
+In particular, $\dim_K B_F=\mu$. The functional $\Res_F$ descends to $B_F$ and the pairing
+\begin{equation}\label{eq:pairing}
+ B_F\times B_F\longrightarrow K,
+ \qquad (u,v)\longmapsto\Res_F(uv)
+\end{equation}
+is perfect. For the fixed basis, \eqref{eq:normal-form} is the unique normal-coordinate map, independently of the auxiliary splitting $h$.
+\end{theorem}
+\begin{proof}
+By \cref{lem:residue-annihilate}, the residue descends to the quotient. Its Gram matrix in the spanning family is
+\[
+ \mathcal G_F=\bigl(\Res_F(b_rb_s)\bigr)_{r,s=1}^\mu.
+\]
+The $k=0$ term in \eqref{eq:hahn-residue} is the ordinary Gram matrix $\mathcal G_0$ of the residue pairing on $B_0$. All other terms have strictly positive support. Classical local duality says $\det\mathcal G_0\ne0$. Therefore
+\[
+ \mathcal G_F=\mathcal G_0+\text{a positive-support matrix}
+\]
+is invertible over $K$.
+
+If $\sum_r c_rb_r$ lies in the ideal $(F)$, pairing it with each $b_s$ gives $\mathcal G_Fc=0$, so all $c_r$ vanish. Thus the spanning family is a basis and \eqref{eq:pairing} is perfect. Any decomposition modulo $(F)$ has the same coordinates in a fixed basis, which proves the asserted independence of $h$. The quotients $Q_j$ themselves need not be unique for $n>1$.
+\end{proof}
+
+The proof has a useful division of labor. A support-controlled Neumann operator prevents the dimension from increasing. A perturbed nondegenerate residue matrix prevents it from decreasing. Neither step assumes a simple zero, a triangular system, a polynomial perturbation, or a common radius of convergence for the perturbation coefficients.
+
+\subsection{Multiplication operators and residue reconstruction}
+For $H\in\A_n$, define
+\begin{equation}\label{eq:multiplication-matrix}
+ M_H=\bigl(\NF_F(Hb_s)_r\bigr)_{r,s=1}^\mu.
+\end{equation}
+Then $M_H$ is multiplication by the class of $H$ in $B_F$. In particular,
+\[
+ M_{H_1H_2}=M_{H_1}M_{H_2},\qquad
+ [M_{z_i},M_{z_j}]=0.
+\]
+For ordinary basis elements and coordinate functions, the matrix entries have support in $E^*$ and reduce to their ordinary counterparts. This gives explicit finite-dimensional data for a deformation whose coefficient support may be infinite and of arbitrary valuation rank.
+
+The normal form can also be reconstructed from residues. Put
+\[
+ r_F(H)=\bigl(\Res_F(Hb_s)\bigr)_{s=1}^\mu.
+\]
+With the column-vector convention used above,
+\begin{equation}\label{eq:residue-reconstruction}
+ \NF_F(H)=\mathcal G_F^{-1}r_F(H).
+\end{equation}
+The symmetry of the Gram matrix removes any transpose ambiguity. Since $\mathcal G_0$ is invertible, geometric matrix inversion shows that $\mathcal G_F^{-1}$ has support in $E^*$. Formula \eqref{eq:residue-reconstruction} gives a second construction with exactly the same support bound.
+
+\section{Residue traces and exact zero multiplicities}\label{sec:trace}
+
+\subsection{Finite-parameter testing without a uniform radius}
+The passage from ordinary identities to a Hahn identity needs care. An infinite perturbation cannot simply be assigned infinitely many small complex parameters and placed on one common contour. The following argument avoids that step.
+
+\begin{lemma}[Finite dependency at a prescribed exponent]\label{lem:finite-dependency}
+Fix the leading system $f$, a positive perturbation-support set $E$, and a well-ordered numerator support $S$. At any prescribed exponent $\gamma$, every coefficient constructed from \eqref{eq:normal-form}, \eqref{eq:hahn-residue}, finite products, and coefficientwise differentiation depends on only finitely many perturbation coefficient germs and finitely many numerator coefficient germs. The contributing words also have a finite maximum length.
+\end{lemma}
+\begin{proof}
+Each construction has an expansion whose contributions are indexed by a source exponent in $S$ and a finite word in $E$. Finite products only concatenate finitely many such words; differentiation changes coefficient germs but not their exponents. The Hahn--Neumann lemma gives finitely many words producing $\gamma$. Retain exactly the source coefficients and perturbation coefficients occurring in them. This finite list, with the finite maximum word length, determines the coefficient in question. No assertion is made that there are only finitely many exponents below $\gamma$.
+\end{proof}
+
+\begin{theorem}[Trace--Jacobian identity]\label{thm:trace}
+For the complete-intersection deformation of \cref{thm:finite-deform} and every $H\in\A_n$,
+\begin{equation}\label{eq:trace}
+ \boxed{\qquad \Res_F(HJ_F)=\Tr_K(M_H),\qquad
+ J_F=\det\left(\frac{\partial F_i}{\partial z_j}\right).\qquad}
+\end{equation}
+In particular, $\Res_F(J_F)=\mu$.
+\end{theorem}
+\begin{proof}
+Fix a Hahn exponent $\gamma$. By \cref{lem:finite-dependency}, the coefficients at $\gamma$ on both sides of \eqref{eq:trace} involve only finitely many ordinary analytic coefficient germs. Temporarily replace the associated perturbation monomials by independent ordinary complex parameters $u_1,\ldots,u_r$. Treat the finitely many numerator coefficients separately by linearity. This produces a finite analytic deformation of $f$.
+
+For that finite deformation, the ordinary cluster algebra is finite free with the chosen basis after restricting the parameter neighborhood, and \eqref{eq:ordinary-trace} holds. The Taylor series in the parameters of its residue is the geometric denominator expansion \eqref{eq:hahn-residue}: on a sufficiently small ordinary residue cycle the expansion is uniformly convergent. The formal parameter expansion of its normal-coordinate map is \eqref{eq:normal-form}. Indeed, that Neumann expression gives a decomposition in the parameter-adic completion, where the basis coordinates are unique. This identifies the expansion even when the chosen linear splitting $h$ was not norm-continuous.
+
+Thus the required ordinary Taylor-coefficient identities hold. Substitute $u_\ell=t^{e_\ell}$ for the finitely many retained perturbation exponents and extract the coefficient of $t^\gamma$. If several parameter monomials have the same Hahn exponent, their contributions are added; there are finitely many by the support lemma. Omitted coefficient germs cannot contribute, by their selection. This proves equality at $\gamma$. As $\gamma$ was arbitrary, the Hahn identity follows. Taking $H=1$ gives the last assertion.
+\end{proof}
+
+The point of this proof is not to rebrand the ordinary trace identity as new. It is to verify that this identity survives the absence of a common ordinary radius and the absence of an Archimedean valuation scale.
+
+\subsection{Actual points account for the whole length}
+\begin{theorem}[Conservation of singular zeros]\label{thm:zeros}
+Let $Z_F=\{a\in\m_K^n:F_1(a)=\cdots=F_n(a)=0\}$. Under the hypotheses of \cref{thm:finite-deform}, this set is finite and nonempty. There is an Artin-algebra decomposition
+\begin{equation}\label{eq:artin}
+ B_F\simeq\prod_{a\in Z_F}B_a,
+ \qquad e_a:=\dim_K B_a\ge1,
+ \qquad \sum_{a\in Z_F}e_a=\mu.
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:local-multiplicity}
+ e_a=\dim_K\frac{K[[X_1,\ldots,X_n]]}
+ {(F_1(a+X),\ldots,F_n(a+X))}.
+\end{equation}
+A point is simple, equivalently $e_a=1$, exactly when $J_F(a)\ne0$.
+\end{theorem}
+\begin{proof}
+By \cref{thm:finite-deform}, $B_F$ is a nonzero finite-dimensional commutative $K$-algebra. It is Artinian and decomposes as a product of its finitely many local factors. By \cref{thm:weak-null}, its maximal ideals are exactly the common zero evaluations, and their residue fields are $K$. This proves \eqref{eq:artin}.
+
+The factor at $a$ is the quotient of $(\A_n)_{\m_a}$ by the ideal generated by the $F_i$. It has finite length, so completion does not change it. Apply \cref{thm:regular} to identify the completed quotient and obtain \eqref{eq:local-multiplicity}.
+
+In this formal local quotient, the cotangent space is $K^n$ modulo the rows of the Jacobian matrix at $a$. If that matrix is invertible, the maximal ideal has zero cotangent space, hence is zero by Nakayama's lemma, and the local algebra is $K$. Conversely, a length-one local algebra is $K$ and has zero cotangent space, forcing the Jacobian to have rank $n$.
+\end{proof}
+
+\begin{corollary}[Weighted evaluation and simple residues]\label{cor:weighted}
+For every $H\in\A_n$,
+\begin{equation}\label{eq:weighted}
+ \Res_F(HJ_F)=\sum_{a\in Z_F}e_aH(a).
+\end{equation}
+If all points are simple, then
+\begin{equation}\label{eq:simple-residue}
+ \Res_F(H)=\sum_{a\in Z_F}\frac{H(a)}{J_F(a)}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+On $B_a$, multiplication by $H$ is multiplication by the scalar $H(a)$ plus a nilpotent operator. Its trace is therefore $e_aH(a)$. Summing and applying \cref{thm:trace} proves \eqref{eq:weighted}.
+
+If every point is simple, $B_F\simeq K^{Z_F}$. Let $\epsilon_a$ be the corresponding idempotent. Applying \eqref{eq:trace} to $\epsilon_a$ gives $\Res_F(\epsilon_a)J_F(a)=1$. Expand the class of $H$ as $\sum_aH(a)\epsilon_a$ to obtain \eqref{eq:simple-residue}.
+\end{proof}
+
+Individual summands in \eqref{eq:simple-residue} may be infinite surcomplex numbers. Their finite sum is nevertheless the strongly defined residue in \eqref{eq:hahn-residue}. The support of the total residue can be much smaller than the supports of the individual local contributions; \cref{sec:example} makes this cancellation explicit.
+
+\section{Workspace invariance and the analytic--formal comparison}\label{sec:extension}
+
+\subsection{No additional roots at unrepresented surreal scales}
+Let $\Gamma\subseteq\Delta\subset\No$ be nonzero divisible set-sized ordered subgroups. Use subscripts to distinguish
+\[
+ K_\Gamma\subseteq K_\Delta,\qquad
+ \A_{n,\Gamma}\subseteq\A_{n,\Delta}.
+\]
+
+\begin{theorem}[Workspace invariance]\label{thm:workspace}
+For a system $F$ as in \cref{thm:finite-deform} with coefficients in $\A_{n,\Gamma}$, there is a natural isomorphism
+\begin{equation}\label{eq:base-change}
+ \frac{\A_{n,\Delta}}{(F)}
+ \simeq
+ K_\Delta\otimes_{K_\Gamma}
+ \frac{\A_{n,\Gamma}}{(F)}.
+\end{equation}
+The infinitesimal zero set is already contained in $K_\Gamma^n$, and its local multiplicities do not change over $K_\Delta$.
+\end{theorem}
+\begin{proof}
+Use the same ordinary basis $b_1,\ldots,b_\mu$ and the same splitting $p,h$ in both workspaces. The proof of \cref{thm:finite-deform} applies in both and gives this basis on each side. The multiplication constants computed by \eqref{eq:normal-form} for products $b_rb_s$ already lie in $K_\Gamma$ and are unchanged in $K_\Delta$. Thus the canonical map in \eqref{eq:base-change} identifies the bases and their products.
+
+A point over $K_\Delta$ defines a character of this finite algebra. Every coordinate of the point satisfies the characteristic polynomial of the corresponding coordinate multiplication matrix over $K_\Gamma$. Since $K_\Gamma$ is algebraically closed, all roots of that polynomial lie in $K_\Gamma$. Hence all coordinates already lie in the smaller field. Equivalently, base change of each finite local factor retains its residue field as $K_\Delta$ and retains its dimension; the nilpotent maximal ideal remains nilpotent. This proves preservation of points and multiplicities.
+\end{proof}
+
+\begin{corollary}[Full-surcomplex conservation]\label{cor:full-sc}
+Interpret the equations of \cref{thm:workspace} at arbitrary surcomplex tuples infinitesimal relative to $\C$. Every such common zero belongs to the original field $K_\Gamma^n$. Consequently, the exact count $\sum_a e_a=\mu$ already accounts for all full-surcomplex infinitesimal zeros.
+\end{corollary}
+\begin{proof}
+Any proposed tuple lies in a set-sized divisible workspace $K_\Delta$ containing $K_\Gamma$. Evaluation in it is compatible with the smaller workspace by the strong-sum definitions. Apply \cref{thm:workspace}.
+\end{proof}
+
+This rules out a specific possible defect of a set-sized construction: an isolated cluster cannot acquire extra roots merely because one allows a new surreal scale. The conclusion uses both finite dimensionality and algebraic closedness. It is not a statement that arbitrary infinite-dimensional equations have workspace-independent solution sets.
+
+\subsection{Allowing divergent ordinary coefficient series}
+There is also a useful comparison with the larger ring
+\[
+ \mathscr F_n=\C[[z_1,\ldots,z_n]]((t^\Gamma)).
+\]
+Its coefficients are arbitrary formal complex power series. Strong evaluation still makes sense at every infinitesimal tuple, but coefficientwise ordinary analyticity has been dropped. The following result precisely separates that change from completion at a point.
+
+\begin{theorem}[Analytic--formal comparison]\label{thm:formal-comparison}
+The inclusion $\A_n\hookrightarrow\mathscr F_n$ is faithfully flat. Both rings have the same evaluation maximal ideals, the same residue fields, and the same completed local rings at corresponding points. If $I\subseteq\A_n$ has finite-dimensional quotient over $K$, then the natural map
+\begin{equation}\label{eq:formal-finite}
+ \A_n/I\longrightarrow\mathscr F_n/I\mathscr F_n
+\end{equation}
+is an isomorphism. In particular, allowing divergent ordinary coefficient germs does not change a finite zero scheme defined over $\A_n$.
+\end{theorem}
+\begin{proof}
+The arguments of \cref{sec:germs,sec:division,sec:structure} work with $\C[[z]]$ in place of $\C\{z\}$, using formal Weierstrass division. Translation, finite jets, and faithful evaluation use only formal Taylor identities and the support lemma. Consequently, $\mathscr F_n$ is Noetherian; its maximal ideals are the same coordinate evaluation ideals; and its local completion at $a$ is $K[[X]]$.
+
+Let $A=(\A_n)_{\m_a}$ and $B=(\mathscr F_n)_{\m_a}$. The induced map of completions is the identity on $K[[X]]$. Completion of a Noetherian local ring is faithfully flat \cite[tag 00MC]{Stacks}. It follows that $A\to B$ is flat: after tensoring any flatness obstruction $\operatorname{Tor}_1^A(M,B)$ with the faithfully flat $B$-module $\widehat B$, it becomes
+\[
+ \operatorname{Tor}_1^A(M,\widehat B)
+ =\operatorname{Tor}_1^A(M,\widehat A)=0.
+\]
+Faithfulness of $B\to\widehat B$ forces the obstruction to vanish. Flatness can be checked at maximal ideals of the target, so $\A_n\to\mathscr F_n$ is flat. Every maximal ideal of the source has its corresponding evaluation ideal in the target, making the map faithfully flat.
+
+Now assume $\dim_K\A_n/I<\infty$. Its Artin decomposition has finitely many supporting points $a_1,\ldots,a_r$. For some $N$, the product
+\[
+ J=\prod_{\ell=1}^r\m_{a_\ell}^N
+\]
+is contained in $I$. The ideals for distinct points are comaximal. By the Chinese remainder theorem and the identical finite-jet quotients of the two rings, $\A_n/J\to\mathscr F_n/J\mathscr F_n$ is an isomorphism. Quotienting by the image of $I/J$ proves \eqref{eq:formal-finite}.
+\end{proof}
+
+The inclusion is nevertheless strict: the constant-Hahn-support expression $\sum_{r\ge0}r!z^r$ lies in $\mathscr F_1$ but not in $\A_1$. Thus the comparison theorem has content beyond a change of notation. It also provides a precise bridge to formal or full separated Hahn analytic structures without asserting that the two coefficient rings are equal.
+
+\section{Quantitative Hensel--Rouch\'e stability}\label{sec:stability}
+
+Conservation of total length does not by itself label roots after a perturbation. A singular point may split, and several simple points may collide. We now obtain a root-by-root statement with an explicit threshold. The estimate is formulated using the valuation loss in the inverse Jacobian; it can be substantially better than a bound using only its determinant.
+
+\subsection{A local estimate at a simple root}
+Assume that $F\in\A_n^n$ satisfies $\vH(F_i)\ge0$ and that $F(a)=0$ for $a\in\m_K^n$. If $L=DF(a)$ is invertible, define
+\begin{equation}\label{eq:kappa}
+ \kappa_a=\max\left(0,-\min_{i,j}v((L^{-1})_{ij})\right).
+\end{equation}
+Thus every entry of $L^{-1}$ has valuation at least $-\kappa_a$. Every entry of $L$ has nonnegative valuation. The adjugate formula yields the convenient, sometimes weaker bound
+\begin{equation}\label{eq:det-bound}
+ 0\le\kappa_a\le v(\det L).
+\end{equation}
+
+\begin{lemma}[Scaled Taylor polynomials at each Hahn exponent]\label{lem:scaled-polynomial}
+For $a\in\m_K^n$, $s\in\Gamma_{>0}$, and $F\in\A_n$, the expansion $F(a+t^sy)$ has polynomial complex coefficient functions in $y$ at every fixed Hahn exponent. Consequently it can be translated by any fixed complex vector in the $y$ variables.
+\end{lemma}
+\begin{proof}
+First translate by $a$, using \cref{prop:translation}, and then expand in monomials in $t^sy$. At a fixed exponent $\gamma$, the possible Taylor degrees and source exponents satisfy $\lambda+rs=\gamma$. The support lemma gives finitely many such decompositions and therefore finitely many degrees. Each degree has finitely many multivariate monomials. The resulting coefficient is a polynomial, so a fixed complex translation is legitimate coefficientwise and preserves Hahn support.
+\end{proof}
+
+\begin{theorem}[One-root Hensel--Rouch\'e bound]\label{thm:local-stability}
+Under the hypotheses above, let $G=F+D$, where $D\in\A_n^n$ is nonzero and
+\[
+ \delta=\min_i\vH(D_i)>2\kappa_a.
+\]
+Then $G$ has a unique zero $b$ in the ball
+\begin{equation}\label{eq:stability-ball}
+ \mathcal B_a=\{b\in\m_K^n:\vmin(b-a)>\kappa_a\}.
+\end{equation}
+It satisfies
+\begin{equation}\label{eq:displacement}
+ \vmin(b-a)\ge\delta-\kappa_a.
+\end{equation}
+This zero is simple.
+\end{theorem}
+\begin{proof}
+Put $\kappa=\kappa_a$ and $s=\delta-\kappa>\kappa$. Introduce the normalized system
+\[
+ H(y)=t^{-s}L^{-1}G(a+t^sy).
+\]
+Its linear contribution from $F$ is exactly $y$. Since all Taylor coefficients of $F$ at $a$ have valuation at least zero, the terms of degree at least two in this normalized contribution have coefficients of valuation at least
+\[
+ 2s-s-\kappa=s-\kappa=\delta-2\kappa>0.
+\]
+The constant vector $c=t^{-s}L^{-1}D(a)$ has valuation at least zero. Every nonconstant contribution of $D$ has coefficient valuation at least $\delta-\kappa=s>0$. Thus
+\begin{equation}\label{eq:normalized-stability}
+ H(y)=y+c_0+P(y),\qquad c_0=\operatorname{red}(c)\in\C^n,
+ \quad\vH(P_i)>0.
+\end{equation}
+By \cref{lem:scaled-polynomial}, the coefficient functions here are polynomials, so substitution $y=-c_0+u$ is valid even though the original coefficients were only germs. The resulting system is $u+\widetilde P(u)$ with strictly positive perturbation support.
+
+Apply \cref{thm:finite-deform,thm:zeros} to the ordinary leading system $(u_1,\ldots,u_n)$ of length one. It has exactly one infinitesimal zero $u$. Hence $b=a+t^s(-c_0+u)$ is a zero of $G$, lies in $\m_K^n$, and satisfies \eqref{eq:displacement}. The length-one assertion also makes this zero simple, since the affine change of variables and the invertible normalization matrix preserve nonvanishing of the Jacobian.
+
+It remains to show uniqueness in the entire larger ball \eqref{eq:stability-ball}, not just in the residue class used to construct the zero. Suppose $a+h$ and $a+k$ are zeros with $\vmin(h),\vmin(k)>\kappa$. Formal Taylor subtraction, factoring each difference of monomials, gives
+\[
+ G(a+h)-G(a+k)=(L+C)(h-k),
+\]
+where every entry of $C$ has valuation at least
+\[
+ \min\{\vmin(h),\vmin(k),\delta\}>\kappa.
+\]
+Terms from $F$ beyond its linear term have at least one factor from $h$ or $k$ after subtraction; terms from $D$ retain valuation at least $\delta$. All sums are strongly defined by the support lemma. Thus $L^{-1}C$ has strictly positive entries in valuation, and $I+L^{-1}C$ is invertible by strong matrix geometric inversion. The displayed difference equation forces $h=k$.
+\end{proof}
+
+The construction proves existence inside $K$ itself. It does not invoke sequential completeness or a rank-one Banach contraction theorem. All normalizations use actual monomials $t^s$ with $s\in\Gamma$.
+
+\subsection{Correspondence for an entire finite cluster}
+\begin{corollary}[Separation of simple zeros]\label{cor:separation}
+If $a\ne a'$ are two simple infinitesimal zeros of the same nonnegative-support system $F$, then
+\begin{equation}\label{eq:separation}
+ \vmin(a-a')\le\min(\kappa_a,\kappa_{a'}).
+\end{equation}
+The balls $\mathcal B_a$ around its simple zeros are pairwise disjoint.
+\end{corollary}
+\begin{proof}
+The uniqueness argument in \cref{thm:local-stability}, with $D=0$, says that $a$ is the only zero of $F$ satisfying $\vmin(b-a)>\kappa_a$. Applying this at both points proves \eqref{eq:separation}. If a point lay in both balls, the ultrametric inequality would give $\vmin(a-a')>\min(\kappa_a,\kappa_{a'})$, a contradiction.
+\end{proof}
+
+\begin{theorem}[Finite-cluster correspondence]\label{thm:cluster-stability}
+Let $F$ satisfy \cref{thm:finite-deform}, and suppose all its $\mu$ zeros are simple. For $G=F+D$, assume
+\begin{equation}\label{eq:global-threshold}
+ \delta=\min_i\vH(D_i)>2\max_{a\in Z_F}\kappa_a.
+\end{equation}
+Then $G$ also has $\mu$ simple infinitesimal zeros. There is a unique bijection $a\mapsto b_a$ from $Z_F$ to $Z_G$ with
+\[
+ \vmin(b_a-a)>\kappa_a,
+ \qquad \vmin(b_a-a)\ge\delta-\kappa_a.
+\]
+The same assertion accounts for all infinitesimal surcomplex zeros.
+\end{theorem}
+\begin{proof}
+The case $D=0$ is immediate. Otherwise each ball has a unique simple zero of $G$ by \cref{thm:local-stability}; the balls are disjoint by \cref{cor:separation}. Thus we have found $\mu$ distinct simple zeros. Since $G$ is still a positive-support perturbation of the same leading system $f$, \cref{thm:zeros} says its total length is $\mu$. There can be no other zeros. The full-surcomplex assertion follows from \cref{cor:full-sc}, using a workspace containing both systems.
+\end{proof}
+
+\begin{example}[Sharpness of the strict threshold]\label{ex:sharpness}
+Fix $\eta>0$ and set
+\[
+ F(z)=z^2-t^{2\eta},\qquad D(z)=t^{2\eta},\qquad G(z)=z^2.
+\]
+The two roots of $F$ are $a=\pm t^\eta$, and $\kappa_a=\eta$. Here $\delta=2\eta=2\kappa_a$, but the two simple roots coalesce into a double root. The displacement to zero has valuation exactly $\eta$, not greater than $\kappa_a$. Thus replacing the strict inequality in \eqref{eq:global-threshold} by equality is false; any universal factor smaller than two is false as well. This is the familiar sharp scalar Hensel obstruction, now situated in the present analytic setting.
+\end{example}
+
+For higher-rank groups the inequality is an inequality in $\Gamma$, not an estimate after replacing valuation by a real-valued magnitude. With $\Gamma=\Q+\Q\omega$, a perturbation of valuation $N$ for arbitrarily large natural $N$ still need not be smaller than a separation scale governed by $\omega$.
+
+\section{Two-variable examples across multiple scales}\label{sec:example}
+
+\subsection{Four coupled roots and a perfect residue matrix}
+Let $A,B\in\m_K$ be nonzero, and consider
+\begin{equation}\label{eq:four-system}
+ F_1=x^2-Ay,\qquad F_2=y^2-Bx.
+\end{equation}
+The ordinary leading ideal is $(x^2,y^2)$, with basis $1,x,y,xy$ and length four. Our theorem gives the same basis for the perturbed quotient, without eliminating variables. Put $q=AB$. In the quotient,
+\[
+ x^2=Ay,\quad y^2=Bx,\quad
+ x^2y=qx,\quad xy^2=qy,\quad (xy)^2=qxy.
+\]
+With columns indexed by multiplication of the ordered basis $(1,x,y,xy)$, the coordinate matrices are
+\begin{equation}\label{eq:example-matrices}
+ M_x=\begin{pmatrix}
+ 0&0&0&0\\1&0&0&q\\0&A&0&0\\0&0&1&0
+ \end{pmatrix},\qquad
+ M_y=\begin{pmatrix}
+ 0&0&0&0\\0&0&B&0\\1&0&0&q\\0&1&0&0
+ \end{pmatrix}.
+\end{equation}
+They commute and satisfy the two defining relations. Their characteristic polynomials are
+\begin{equation}\label{eq:example-char}
+ \chi_x(\lambda)=\lambda(\lambda^3-A^2B),\qquad
+ \chi_y(\lambda)=\lambda(\lambda^3-AB^2).
+\end{equation}
+
+The Hahn residue expansion is especially explicit. From \eqref{eq:hahn-residue} and coordinate-power residues,
+\begin{equation}\label{eq:example-coeff}
+ \Res_F(H)=\sum_{k,\ell\ge0}A^kB^\ell
+ [x^{2k+1-\ell}y^{2\ell+1-k}]H,
+\end{equation}
+where a coefficient with a negative index is zero. The two signs from the negative perturbations cancel the factor $(-1)^{k+\ell}$. For a monomial $x^py^r$, the only possible indices are
+\[
+ k=\frac{2p+r-3}{3},\qquad
+ \ell=\frac{p+2r-3}{3}.
+\]
+Thus its residue is $A^kB^\ell$ when these are nonnegative integers and zero otherwise. In particular,
+\[
+ \Res_F(1)=\Res_F(x)=\Res_F(y)=0,\qquad \Res_F(xy)=1.
+\]
+The Gram matrix of the perfect pairing is therefore
+\begin{equation}\label{eq:example-gram}
+ \mathcal G_F=
+ \begin{pmatrix}
+ 0&0&0&1\\
+ 0&0&1&0\\
+ 0&1&0&0\\
+ 1&0&0&q
+ \end{pmatrix},\qquad \det\mathcal G_F=1.
+\end{equation}
+Its determinant remains a unit even as the points collide when the parameters are specialized. This is why the residue pairing, rather than a list of distinct roots alone, is a stable invariant.
+
+\subsection{Explicit roots and cancellation of infinite residues}
+Choose $r\in K$ with $r^3=A^2B$, and let $\zeta\in\C$ be a primitive cube root of unity. The four roots are
+\begin{equation}\label{eq:four-roots}
+ (0,0),\qquad
+ \left(r\zeta^j,\frac{r^2}{A}\zeta^{2j}\right),\quad j=0,1,2.
+\end{equation}
+Indeed, a nonzero solution has $y=x^2/A$ and hence $x^3=A^2B$; conversely these expressions solve both equations. Writing $\alpha=v(A)>0$ and $\beta=v(B)>0$, their nonzero coordinate valuations are
+\begin{equation}\label{eq:four-valuations}
+ v(x)=\frac{2\alpha+\beta}{3},\qquad
+ v(y)=\frac{\alpha+2\beta}{3}.
+\end{equation}
+They are all infinitesimal, with no assumption that $\alpha$ and $\beta$ are Archimedean-equivalent.
+
+The Jacobian is $J_F=4xy-q$. At the origin it is $-q$, while at every nonzero root it is $3q$. All four points are simple. Their residue weights for $H=1$ are
+\[
+ -\frac1q,\qquad \frac1{3q},\qquad\frac1{3q},\qquad\frac1{3q},
+\]
+and sum to zero. Each is infinite relative to $\C$. For $H=xy$ the sum is instead $1$, and
+\[
+ \Res_F(J_F)=4,\qquad \Tr(M_{xy})=3q.
+\]
+These agree with both \eqref{eq:example-coeff} and the trace theorem.
+
+Take, in particular, $\Gamma=\Q+\Q\omega$, $A=t$, and $B=t^\omega$. The nonzero $x$ and $y$ coordinates have valuations $(2+\omega)/3$ and $(1+2\omega)/3$, and every nonzero residue weight has valuation $-(1+\omega)$. Replacing this value group by a single real-valued small parameter would discard the distinction that $\omega$ dominates every positive integer.
+
+For this example the inverse-Jacobian loss can be computed exactly. At zero,
+\[
+ DF(0)^{-1}=\begin{pmatrix}0&-B^{-1}\\-A^{-1}&0\end{pmatrix}.
+\]
+At a nonzero root,
+\[
+ DF(a)^{-1}=\frac1{3AB}
+ \begin{pmatrix}2y&A\\B&2x\end{pmatrix}.
+\]
+Using \eqref{eq:four-valuations} gives, at all four roots,
+\begin{equation}\label{eq:example-kappa}
+ \kappa_a=\max(\alpha,\beta),
+ \qquad v(J_F(a))=\alpha+\beta.
+\end{equation}
+Thus a further perturbation with $\delta>2\max(\alpha,\beta)$ preserves all four roots individually with the displacement bound in \cref{thm:cluster-stability}. The inverse-matrix bound is better here than the determinant-only sufficient condition $\delta>2(\alpha+\beta)$.
+
+\subsection{A genuinely radius-free, higher-rank deformation}\label{subsec:radius-free-example}
+Now choose $\Gamma=\Q+\Q\omega$ and consider the analytic-germ system
+\begin{equation}\label{eq:radius-free-system}
+ F_1=x^2+\sum_{r\ge1}\frac{t^r}{1-rx-r^2y},\qquad
+ F_2=y^2+t^\omega x.
+\end{equation}
+The family of coefficient germs in $F_1$ has no common ordinary neighborhood of zero: restriction to $y=0$ has poles $x=1/r$. Nevertheless its support is the well-ordered set of positive integers, and the combined perturbation support is contained in $\N_{>0}\cup\{\omega\}$. The finite deformation theorem applies and gives total length four on the full surcomplex infinitesimal neighborhood.
+
+More can be read off without solving the infinite equations explicitly. Make the diagonal rescaling
+\begin{equation}\label{eq:radius-free-scaling}
+ x=t^{1/2}u,\qquad y=t^{\omega/2+1/4}v.
+\end{equation}
+Divide the first equation by $t$ and the second by $t^{\omega+1/2}$. The resulting leading system is
+\begin{equation}\label{eq:radius-free-leading}
+ u^2+1=0,\qquad v^2+u=0.
+\end{equation}
+Every remaining coefficient has strictly positive Hahn valuation. After this rescaling, each Hahn coefficient is a polynomial in $(u,v)$, by the coordinatewise version of \cref{lem:scaled-polynomial}. We may therefore translate to each of the four ordinary solutions $(u_0,v_0)$ of \eqref{eq:radius-free-leading}. At each one,
+\[
+ u_0=\pm i,\qquad v_0^2=-u_0,\qquad
+ \det D(u^2+1,v^2+u)=4u_0v_0\ne0.
+\]
+The length-one case of the deformation theorem supplies one infinitesimal lift in each of these four translated charts. The charts are disjoint by their different complex residues. Since the unscaled system has total length four, these are all the zeros, and all are simple.
+
+Their leading coordinates are
+\begin{equation}\label{eq:radius-free-roots}
+ x=u_0t^{1/2}+\text{terms of larger valuation},\qquad
+ y=v_0t^{\omega/2+1/4}+\text{terms of larger valuation}.
+\end{equation}
+At such a root the Jacobian has leading term
+\begin{equation}\label{eq:radius-free-J}
+ J_F=4u_0v_0\,t^{\omega/2+3/4}
+       +\text{terms of larger valuation}.
+\end{equation}
+To see this directly, the derivative of the positive perturbation in $F_1$ has valuation at least $1$, whereas $v(x)=1/2$ and $v(y)=\omega/2+1/4$. Thus $4xy$ dominates the remaining terms in the determinant.
+
+Although every individual simple residue $1/J_F(a)$ is infinite, their sum is not merely finite: it is infinitesimal. In fact,
+\begin{equation}\label{eq:radius-free-residue}
+ \boxed{\qquad
+ \Res_F(1)=-4t+R,\qquad v(R)>1.
+ \qquad}
+\end{equation}
+For this calculation, use $f=(x^2,y^2)$ in \eqref{eq:hahn-residue}. The exponent-zero contribution vanishes. A contribution at exponent $1$ can only come from $k=1$, $\ell=0$, and the coefficient $1/(1-x-y)$ of $t$ in the first perturbation. It equals
+\[
+ -[x^3y]\frac1{1-x-y}=-4.
+\]
+Every other nonzero contribution has valuation strictly greater than $1$; terms involving the second perturbation have valuation at least $\omega$. Equation \eqref{eq:simple-residue} identifies \eqref{eq:radius-free-residue} with the sum over the four infinite local weights. This example simultaneously uses shrinking ordinary radii, several-variable coupling, different valuation ranks, and cancellation beyond the leading pole scale.
+
+\section{Hypothesis audit, limits, and further questions}\label{sec:limits}
+
+\subsection{What the hypotheses prevent}
+The complete-intersection assumption is essential for the stated conservation theorem. Arbitrary overdetermined perturbations can decrease length. For example, the leading ideal generated by $(z^2,0)$ has colength two in $\C\{z\}$. Perturb it to $(z^2,t^\eta z)$ with $\eta>0$. Since $t^\eta$ is a unit in $K$, the new quotient is $K$ and has length one. This does not contradict \cref{thm:finite-deform}, which requires exactly $n$ equations with an isolated complete-intersection leading zero in $n$ variables.
+
+The leading zero must also be isolated. The quotient by the single equation $x$ in two variables has infinite dimension over the coefficient field, and there is no finite length to conserve. Positivity of perturbation support fixes the leading system; changing it may of course change the invariant. Finally, well-ordering cannot be replaced by the assertion that every exponent is positive: the set $\{1/r:r\ge1\}$ is positive but not well ordered, so the corresponding putative Hahn series is not an element of our ring.
+
+\subsection{What has and has not been established}
+The new paper extends the supplied manuscript in a particular direction. It supplies a several-variable division theorem, an infinitesimal Nullstellensatz, a finite-algebra deformation theory, and explicit root stability, while enlarging the coefficient setting from common-radius families to radius-free germs. The inclusion in \cref{thm:formal-comparison} explains exactly how this intermediate setting compares with arbitrary formal Hahn coefficients.
+
+It does not construct a global sheaf theory on all surcomplex domains, prove Cartan's theorems for such domains, or extend ordinary contour integration to arbitrary fine-topological paths. It does not assert that fine holomorphy alone forces any of these conclusions. All zero statements concern the functions specified by \eqref{eq:ring} and their strongly summable evaluations. For a monad centered at $c\in\C^n$, replace $z$ by $z-c$ throughout.
+
+The arguments are algebraic and support-theoretic rather than a complexity analysis. The set of dependencies of a fixed coefficient is finite, but an arbitrary ordered group or support need not have an effective representation from which those dependencies can be enumerated. The explicit normal-form formula becomes an algorithm only after the ordinary division maps and the support arithmetic have been supplied effectively.
+
+\subsection{Specific research directions left open by these proofs}
+One next question is whether natural common-domain versions of the radius-free construction support useful global gluing and coherent sheaf theorems without reinstating a hidden uniform-radius assumption. The present Noetherian result is a ring theorem on an entire monad, not such a gluing theorem.
+
+A second direction is a weighted version of \cref{thm:local-stability}. The single scalar loss $\kappa_a$ treats every coordinate with the same valuation threshold. Diagonal weights adapted to the Newton data may improve separation bounds for anisotropic clusters such as \eqref{eq:four-system}. The sharpness example prevents a universal improvement of the scalar factor two, but it does not preclude stronger coordinate-sensitive hypotheses.
+
+A third is a detailed comparison with existing separated analytic structures: one should determine the exact axiomatic status of the radius-free convergent-coefficient subsystem, including uniformity properties not used here. The faithful-flat comparison does not by itself prove every model-theoretic or global analytic property of a larger full separated system.
+
+These are questions beyond the theorems proved in this manuscript, not claims about the current published status of a named conjecture. The principal result already obtained is that singular finite zero schemes, residues, and quantitative root correspondence can be handled without collapsing all infinitesimal scales into one parameter.
+
+\appendix
+\section{The finite-family classical input and the trace proof}\label{app:classical-family}
+
+For clarity, we spell out the ordinary deformation statement invoked in \cref{thm:trace}. Let
+\[
+ g_i(z,u)=f_i(z)+\sum_{\ell=1}^r u_\ell q_{i\ell}(z),
+ \qquad q_{i\ell}\in R_n,
+\]
+with $f$ satisfying \eqref{eq:mu}. The germs in this \emph{finite} family have a common ordinary representative neighborhood. The ordinary finite-mapping theorem, obtained from Weierstrass division, says that
+\[
+ C=\C\{z,u\}/(g_1,\ldots,g_n)
+\]
+is a finite module over $\C\{u\}$ near the distinguished fiber. The sequence consisting of the $g_i$ followed by the parameters $u_\ell$ is a system of parameters in the regular local ring $\C\{z,u\}$: quotienting by it gives the finite-dimensional algebra $R_n/(f)$. Regular local rings are Cohen--Macaulay, so this system of parameters is a regular sequence. Hence the parameters form a regular sequence on $C$. The usual finite-module flatness criterion over the regular parameter ring shows that $C$ is free over $\C\{u\}$, of rank $\mu$. Its reduction modulo $(u)$ has basis the chosen $b_1,\ldots,b_\mu$, so those same lifts form a basis by Nakayama's lemma. These are standard local analytic and commutative-algebra facts; see \cite{GR,Stacks}.
+
+For small representatives, the finite algebra records the entire cluster near zero, not just a separately chosen point of a nearby fiber. Classical local duality equips it with a parameter-holomorphic residue functional. Expanding the reciprocal factors on an ordinary protecting residue cycle gives
+\[
+ \res^{\mathrm{cluster}}_{g_u}(H)
+ =\sum_{k\in\N^n}(-1)^{|k|}
+ \res_{f^{k+1}}
+ \left(H\prod_i\left(\sum_\ell u_\ell q_{i\ell}\right)^{k_i}\right).
+\]
+This is an ordinary convergent expansion for sufficiently small parameters. Equivalently it is an equality of formal parameter series, which is all the Hahn proof needs. Powers of the $f_i$ in the denominators do not change the residue cycle class used to extract the coefficients.
+
+The classical trace--Jacobian identity may be understood first on fibers where all points are simple, using change of variables at each point and the decomposition of the algebra into one-dimensional factors. To include multiple fibers, augment the family by independent constant parameters in the equations. Generic small target values of a finite holomorphic map in characteristic zero are regular values. Both the cluster residue and the trace matrix are holomorphic in all parameters, so equality on the regular fibers extends to all fibers, and one then sets the added parameters to zero. The algebraic version is the theorem in \cite{SS}; related finite intersection deformations appear in \cite{KW}.
+
+There is a subtle point about the arbitrary splitting $h$ in \eqref{eq:splitting}. The Neumann series built from it need not converge in an ordinary analytic norm. Nevertheless, in the $(u)$-adic formal completion it gives a valid identity: every coefficient of total parameter degree less than $N$ uses finitely many Neumann terms. Since the completed finite algebra is free with the chosen basis, those formal coordinates are unique and coincide with the Taylor coefficients of the actual analytic coordinates. This is why no continuity assertion about $h$ is hidden in \cref{thm:trace}.
+
+Finally, the Hahn application never needs an infinite-parameter version of this ordinary argument. At a chosen exponent, \cref{lem:finite-dependency} reduces everything to one of these finite families and a finite list of its coefficient identities. That reduction is the precise substitute for an unavailable common contour for the original infinite collection of germs.
+
+\section{Support accounting and proof dependencies}\label{app:support}
+
+The following table records the support certificates actually used. In it, $S$ is a source support, $E$ is a well-ordered positive perturbation support, and $E_a$ is the union of the supports of an infinitesimal displacement.
+
+\begin{center}\small
+\begin{tabular}{@{}L{0.48\textwidth}L{0.43\textwidth}@{}}
+\toprule
+Construction & Containing exponent set\\
+\midrule
+Coefficientwise linear operation or differentiation & $S$\\[0.35em]
+Evaluation or infinitesimal translation & $S+E_a^*$\\[0.35em]
+Positive-support operator inverse on an input & $S+E^*$\\[0.35em]
+Division quotient and remainder & $S+E^*$\\[0.35em]
+Normalized preparation factors & $E^*$\\[0.35em]
+Complete-intersection normal coordinates and quotients & $S+E^*$\\[0.35em]
+Perturbed residue of a numerator & $S+E^*$\\[0.35em]
+Residue Gram matrix and its inverse & $E^*$\\[0.35em]
+Multiplication constants of the fixed ordinary basis & $E^*$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The support lemma proves two facts for every entry: the containing set is well ordered, and only finitely many source terms contribute at one exponent. The second fact is what licenses regrouping, differentiating coefficientwise, and comparing a chosen coefficient to a finite-parameter problem. A mere lower bound on valuation would not provide that license.
+
+The dependency order also avoids circularity. Division first proves Noetherianity, then the maximal-ideal theorem and the strong Nullstellensatz. The complete-intersection normal form proves spanning without knowing the perturbed dimension. The residue formula is defined independently of roots and annihilates the perturbed ideal. Its ordinary leading Gram matrix proves independence and perfect duality. Only then are maximal ideals interpreted as points and local dimensions summed. The trace theorem uses ordinary finite-family residue theory, not the still-to-be-proved Hahn zero count. The local stability theorem uses the already established length-one deformation case after a rigorously allowed rescaling.
+
+\section{Reproducibility and notation}
+The accompanying \texttt{verify\_examples.py} uses exact symbolic arithmetic. It checks the two coordinate matrices, their defining relations and characteristic polynomials, the Gram determinant and adjointness identities, the origin idempotent, the residue and trace--Jacobian formulas for all $121$ monomials $x^py^r$ with $0\le p,r\le10$, the coefficient $-4$ in \eqref{eq:radius-free-residue}, and the scalar sharpness calculation. The recorded run passes $258$ exact checks. These checks validate the displayed examples; they do not implement arbitrary Hahn fields and are not machine verification of the general proofs.
+
+\begin{center}\small
+\begin{tabular}{@{}L{0.27\textwidth}L{0.64\textwidth}@{}}
+\toprule
+Notation & Meaning\\
+\midrule
+$\Gamma$, $t^\gamma$ & Nonzero divisible set-sized ordered exponent group; $\omega^{-\gamma}$\\[0.35em]
+$K$, $\m_K$ & $\C((t^\Gamma))$ and its positive-valuation ideal\\[0.35em]
+$R_n$, $\A_n$ & Ordinary convergent germs; Hahn series of such germs\\[0.35em]
+$\mathscr F_n$ & Hahn series of arbitrary formal complex coefficient series\\[0.35em]
+$v$, $\vH$, $\vmin$ & Field valuation, coefficient-ring Hahn valuation, minimum coordinate valuation\\[0.35em]
+$E^*$ & Additive monoid generated by a well-ordered positive support\\[0.35em]
+$\m_a$ & Evaluation ideal $(z_1-a_1,\ldots,z_n-a_n)$\\[0.35em]
+$B_F$, $e_a$ & Finite deformed algebra and its local lengths\\[0.35em]
+$\res_f$, $\Res_F$ & Ordinary local residue and the Hahn perturbation residue\\[0.35em]
+$\NF_F$, $M_H$ & Basis-coordinate normal form and multiplication matrix\\[0.35em]
+$J_F$, $\kappa_a$ & Jacobian determinant and inverse-Jacobian valuation loss\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{thebibliography}{99}
+\addcontentsline{toc}{section}{References}
+
+\bibitem{Alling}
+Norman L. Alling,
+\emph{Foundations of Analysis over Surreal Number Fields},
+North-Holland Mathematics Studies \textbf{141}, North-Holland, 1987.
+\href{https://shop.elsevier.com/books/foundations-of-analysis-over-surreal-number-fields/alling/978-0-444-70226-5}{Publisher record}.
+
+\bibitem{BM}
+Alessandro Berarducci and Vincenzo Mantova,
+``Transseries as germs of surreal functions,''
+\emph{Transactions of the American Mathematical Society} \textbf{371} (2019), 3549--3592.
+\href{https://arxiv.org/abs/1703.01995}{arXiv:1703.01995}.
+
+\bibitem{CDS}
+Eduardo Cattani, Alicia Dickenstein, and Bernd Sturmfels,
+``Computing multidimensional residues,'' in L.~Gonz\'alez-Vega and T.~Recio (eds.),
+\emph{Algorithms in Algebraic Geometry and Applications},
+Progress in Mathematics \textbf{143}, Birkh\"auser, 1996, pp.~135--164.
+\href{https://arxiv.org/abs/alg-geom/9404011}{arXiv:alg-geom/9404011};
+\href{https://doi.org/10.1007/978-3-0348-9104-2_8}{doi:10.1007/978-3-0348-9104-2\_8}.
+The paper's \S0 and \S4 give the residue-duality and trace background used here.
+
+\bibitem{CL}
+Raf Cluckers and Leonard Lipshitz,
+``Fields with analytic structure,'' preprint, 2009.
+\href{https://arxiv.org/abs/0908.2376}{arXiv:0908.2376}.
+In particular, \S3.1, \S4.4(4), and Propositions 5.2.5--5.2.7 are close antecedents.
+
+\bibitem{CLR}
+Raf Cluckers, Leonard Lipshitz, and Zachary Robinson,
+``Real closed fields with nonstandard and standard analytic structure,'' preprint, 2006.
+\href{https://arxiv.org/abs/math/0610666}{arXiv:math/0610666};
+\href{https://doi.org/10.1112/jlms/jdn024}{doi:10.1112/jlms/jdn024}.
+
+\bibitem{Companion}
+\emph{Surcomplex Analysis: Infinitesimal Calculus, Hahn-Coherent Holomorphy, and Contour Theory},
+supplied research manuscript, September 21, 2026.
+Source filename: \texttt{surcomplex\_analysis(3).tex}.
+Its several-variable research target motivates this continuation; none of its unproved targets is used as a theorem.
+
+\bibitem{CE}
+Ovidiu Costin and Philip Ehrlich,
+``Integration on the Surreals,''
+\href{https://arxiv.org/abs/2208.14331}{arXiv:2208.14331}, version 5, 2024.
+
+\bibitem{GR}
+Hans Grauert and Reinhold Remmert,
+\emph{Coherent Analytic Sheaves},
+Grundlehren der mathematischen Wissenschaften \textbf{265}, Springer, 1984.
+Classical Weierstrass division, local analytic algebras, and finite mappings.
+
+\bibitem{KW}
+Ernst Kunz and Rolf Waldi,
+``Deformations of zero-dimensional intersection schemes and residues,''
+\emph{Note di Matematica} \textbf{11} (1991), 247--259.
+Bibliographic details also appear in \cite{CDS}, reference [20].
+
+\bibitem{Neumann}
+B. H. Neumann,
+``On ordered division rings,''
+\emph{Transactions of the American Mathematical Society} \textbf{66} (1949), 202--252.
+
+\bibitem{Poonen}
+Bjorn Poonen,
+``Maximally complete fields,''
+\emph{L'Enseignement Math\'ematique} (2) \textbf{39} (1993), 87--106.
+\href{https://math.mit.edu/~poonen/papers/amsval.pdf}{Author's full text}.
+
+\bibitem{SS}
+G\"unter Scheja and Uwe Storch,
+``\"Uber Spurfunktionen bei vollst\"andigen Durchschnitten,''
+\emph{Journal f\"ur die reine und angewandte Mathematik} \textbf{278/279} (1975), 174--190.
+\href{https://doi.org/10.1515/crll.1975.278-279.174}{doi:10.1515/crll.1975.278-279.174}.
+
+\bibitem{Stacks}
+The Stacks Project Authors,
+\emph{The Stacks Project},
+\href{https://stacks.math.columbia.edu/tag/00FZ}{Section 10.35, Jacobson rings (tag 00FZ)},
+and \href{https://stacks.math.columbia.edu/tag/00MC}{Lemma 10.97.3, faithful flatness of completion (tag 00MC)}.
+Accessed September 21, 2026.
+
+\bibitem{Tsikh}
+A. K. Tsikh,
+\emph{Multidimensional Residues and Their Applications},
+Translations of Mathematical Monographs \textbf{103}, American Mathematical Society, 1992.
+\href{https://doi.org/10.1090/mmono/103}{doi:10.1090/mmono/103}.
+
+\end{thebibliography}
+\end{document}

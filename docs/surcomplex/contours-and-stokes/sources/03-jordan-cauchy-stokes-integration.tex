@@ -1,0 +1,1235 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr,aliascnt}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{pdftitle={Jordan Separation, Cauchy Theory, and Stokes Integration on the Surcomplex Plane},pdfauthor={Research exposition},pdfsubject={Surcomplex contours, Hahn differential forms, definable Jordan separation, and Stokes theorems}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Surcomplex contours and separation}
+\fancyhead[R]{\small Jordan, Cauchy, and Stokes}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.3em}\setlength{\parindent}{1.3em}
+\setlist{nosep,leftmargin=2em}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{lemma}{theorem}\newtheorem{lemma}[lemma]{Lemma}\aliascntresetthe{lemma}
+\newaliascnt{proposition}{theorem}\newtheorem{proposition}[proposition]{Proposition}\aliascntresetthe{proposition}
+\newaliascnt{corollary}{theorem}\newtheorem{corollary}[corollary]{Corollary}\aliascntresetthe{corollary}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}\newtheorem{definition}[definition]{Definition}\aliascntresetthe{definition}
+\newaliascnt{example}{theorem}\newtheorem{example}[example]{Example}\aliascntresetthe{example}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}\newtheorem{remark}[remark]{Remark}\aliascntresetthe{remark}
+\newcommand{\DD}{\mathbb D}\newcommand{\No}{\mathbf{No}}\newcommand{\SC}{\mathbf{SC}}
+\newcommand{\C}{\mathbb C}\newcommand{\R}{\mathbb R}\newcommand{\Q}{\mathbb Q}\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\OO}{\mathcal O}\newcommand{\HH}{\mathcal H}\newcommand{\A}{\mathscr A}\newcommand{\m}{\mathfrak m}
+\newcommand{\supp}{\operatorname{supp}}\newcommand{\red}{\operatorname{red}}\newcommand{\st}{\operatorname{st}}
+\newcommand{\Res}{\operatorname{Res}}\newcommand{\res}{\operatorname{res}}\newcommand{\ord}{\operatorname{ord}}\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\wind}{\operatorname{wind}}\newcommand{\Ind}{\operatorname{Ind}}\newcommand{\id}{\operatorname{id}}
+\newcommand{\vH}{v_{\!H}}\newcommand{\re}{\operatorname{Re}}\newcommand{\im}{\operatorname{Im}}
+\newcommand{\HInt}{\mathop{\int^{\!H}}\nolimits}\newcommand{\HCoint}{\mathop{\oint^{\!H}}\nolimits}
+\newcommand{\PInt}{\mathop{\int^{\!\mathrm{pol}}}\nolimits}\newcommand{\ACoint}{\mathop{\oint^{\!\mathrm{alg}}}\nolimits}
+\newcommand{\dR}{\mathrm{dR}}\newcommand{\sh}{^{\sharp}}\newcommand{\abs}[1]{\left|#1\right|}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\numberwithin{equation}{section}
+\begin{document}
+\begin{titlepage}\centering
+\vspace*{0.5cm}
+{\Large\scshape A research continuation and comparison\par}
+\vspace{0.75cm}
+{\Huge\bfseries Jordan Separation,\par Cauchy Theory,\par and Stokes Integration\par}
+\vspace{0.4cm}
+{\LARGE on the Surcomplex Plane\par}
+\vspace{0.65cm}
+{\large Fine-topological obstructions, definable geometry,\par and support-controlled contour calculus\par}
+\vspace{0.6cm}
+{\large September 21, 2026\par}
+\vspace{0.5cm}
+\begin{minipage}{0.94\textwidth}
+\begin{abstract}
+The three classical theorems in the title do not transfer to $\No[i]$ as a single package. The full fine topology admits no nonconstant ordinary real-parameter paths; a fixed Hahn workspace has a different, still totally separated, intrinsic topology. Nevertheless, meaningful Jordan, Cauchy, and Stokes theories survive after their geometric and analytic categories are specified.
+
+We distinguish two separation theorems: a Jordan theorem in the reduction topology at any affine surreal scale, and the established semialgebraic Jordan theorem over real closed fields. We then construct polynomial integration over nonstandard simplices and a Hahn extension of the de Rham complex. The latter has a coefficientwise Stokes pairing, an explicit homotopy operator, and cohomology $H^q_{\dR}(M;\C)((t^\Gamma))$. A support-controlled Taylor pullback extends Stokes to infinitesimally deformed chains, including deformed contours and surfaces. For holomorphic one-forms, the change of an open contour is exactly a difference of endpoint Taylor corrections; closed-contour periods are unchanged under admissible deformation.
+
+These constructions recover the supplied manuscripts' Cauchy and moving-residue theorems, resolve individual infinitesimal poles by changes of scale, and realize one-variable radius-free Hahn-germ residues on sufficiently small actual parametrized circles. We also give a several-variable torus realization under an explicit dominating-coordinate-power hypothesis. Algebraic winding and residue integration provide an alternative for rational functions on semialgebraic loops. Root-of-unity sampling reveals precisely why coefficientwise contour recovery need not be a Schnirelman limit, especially in higher valuation rank. Berkovich, tropical, perfectoid, tame, and surreal extension theories are compared without identifying their distinct integration targets.
+\end{abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{0.94\textwidth}\small
+\textbf{Status.} The article separates imported theorems, results already in the supplied drafts, and extensions proved here. It does not claim a unique accepted foundation for surcomplex analysis, an exhaustive novelty search, or formal verification of its general proofs. All Hahn sums and computational workspaces are set-sized.
+\end{minipage}
+\end{titlepage}
+\begingroup\small\setlength{\parskip}{0pt}\tableofcontents\endgroup\newpage
+
+\section{The question, the sources, and the main conclusions}\label{sec:intro}
+\subsection{Three theorems, three kinds of structure}
+The ordinary Jordan curve theorem is a statement about separation by a topological circle. Cauchy's integral theorem concerns a holomorphic differential and a suitable closed contour, with a homological or domain hypothesis. Generalized Stokes concerns an oriented chain, a boundary operation, differential forms, and an integration pairing. Even over $\C$, a Jordan curve need not be rectifiable, and being closed does not make a contour null-homologous in a punctured domain. Thus neither the existence of an ``inside'' nor the identity $d^2=0$ alone defines an integral. The question's three reference pages provide this classical starting point \cite{WikiJordan,WikiCauchy,WikiStokes}; our classical analytic input is the usual Cauchy and differential-form theory \cite{Ahlfors,Spivak}.
+
+Over the surcomplex class field, the distinctions become unavoidable. The useful answer is not one unrestricted transplantation, but a collection of precisely compatible counterparts. In particular, the failure of ordinary fine-continuous paths does \emph{not} rule out parametrized algebraic contours, coefficientwise integration, or a chain-level Stokes theorem.
+
+\subsection{What the supplied manuscripts already contain}
+We refer to \emph{Surcomplex Analysis: Infinitesimal Calculus, Hahn-Coherent Holomorphy, and Contour Theory} as the \emph{analysis manuscript} \cite{Analysis}, and to \emph{Infinitesimal Analytic Geometry over the Surcomplex Numbers} as the \emph{geometry manuscript} \cite{Geometry}.
+
+The analysis manuscript already proves the fine-topological obstruction, defines Hahn-coherent functions on thickenings of ordinary complex domains, and constructs their coefficientwise contour integral. Its results include Cauchy's theorem and formula, coherent primitives, microscopic endpoint corrections, preparation, and a residue theorem at actual moving surcomplex poles. Its affine charts allow infinitesimal and infinite contour scales. Those facts are inherited, not claimed as new here.
+
+The geometry manuscript enlarges common-domain coefficient families to Hahn series of convergent germs with no common ordinary radius. It proves support-controlled division and finite complete-intersection deformation results. Its multidimensional residue is explicitly defined through ordinary residue functionals and a strong perturbation expansion, \emph{not} through an already available general surcomplex contour. We preserve that distinction. Our one-variable small-circle theorem and our restricted several-variable torus theorem explain when such algebraic residues do acquire a contour realization.
+
+The principal extensions in this article are the organization of separation categories, polynomial-chain integration, a Hahn de Rham and homotopy calculus, deformed-chain Stokes, and precise comparison statements. These are proved from named classical inputs and the support lemma. Their value is the complete package and its hypotheses; no priority claim is based merely on not finding an identical formulation in the literature.
+
+\subsection{A theorem map}
+\begin{center}\small
+\begin{longtable}{@{}L{0.21\textwidth}L{0.40\textwidth}L{0.29\textwidth}@{}}
+\toprule
+Question & Valid counterpart & Necessary qualification\\\midrule\endhead
+Jordan separation & Two reduction-topological components; two semialgebraically connected components & These are different notions of component, neither the full fine one.\\[0.5em]
+Generalized Stokes & Polynomial simplices and Hahn-supported smooth forms on deformed chains & Chains, pullbacks, and integration are explicitly specified.\\[0.5em]
+Cauchy theorem & Closed coherent holomorphic forms have zero periods on bounding admissible chains & A puncture can obstruct bounding, even when a fine-local primitive exists.\\[0.5em]
+Contour deformation & Closed-form homotopy invariance; exact endpoint corrections for holomorphic one-forms & The entire homotopy must have admissible support and avoid singularities in its coefficient domain.\\[0.5em]
+Residues & Moving poles, scaled cluster separation, and small-circle realization of radius-free one-variable germs & Leading denominators must be nonsingular on the chosen base contour.\\[0.5em]
+Arbitrary rational loops & Residue functional weighted by algebraic winding & This is a definition with compatibility theorems, not a Riemann-limit construction.\\[0.5em]
+Sampling a circle & Coefficientwise root-of-unity recovery; classical non-Archimedean limits on their own analytic class & Coefficientwise, valuation, and full fine convergence are not interchangeable.\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\section{Fields, supports, and the topological obstruction}\label{sec:foundations}
+\subsection{A set-sized workspace}
+Write $\SC=\No[i]$, and use the normal-form monomials $t^\gamma=\omega^{-\gamma}$. Fix a nonzero divisible set-sized ordered subgroup $\Gamma\subset\No$ and put
+\begin{equation}\label{eq:fields}
+ R_\Gamma=\R((t^\Gamma)),\qquad K=\C((t^\Gamma))=R_\Gamma[i].
+\end{equation}
+An element has a well-ordered set of exponents. Its valuation $v$ is its least exponent, and $v(0)=+\infty$. The standard Hahn-field facts give real closedness of $R_\Gamma$ and algebraic closedness of $K$; the normal-form realization embeds them in the surreal and surcomplex fields \cite{Poonen,Analysis,Geometry}. We write
+\[
+ K^\circ=\{x:v(x)\ge0\},\qquad \m_K=\{x:v(x)>0\},\qquad
+ \red:K^\circ\longrightarrow\C.
+\]
+Reduction extracts the coefficient of $t^0$. Thus $z\in K^\circ$ has a unique form $c+\varepsilon$, with $c\in\C$ and $\varepsilon\in\m_K$. The ordered-field modulus is $|x+iy|=\sqrt{x^2+y^2}$; it is not a real-valued non-Archimedean norm. Infinitesimal means infinitesimal relative to the ordinary positive reals.
+
+Every set of surcomplex constants in a construction can be placed in a larger such workspace by taking the divisible hull of the group generated by their supports. This does not authorize a sum over a proper class. Nor does it imply that every required rescaling already lies in a previously chosen $\Gamma$.
+
+\begin{definition}[Strong summability]
+A family of Hahn series is strongly summable when the union of its supports is well ordered and only finitely many family members contribute to any one exponent. The sum is defined by finite addition at each exponent. If $E\subset\Gamma_{>0}$ is well ordered, let $E^*$ be the additive monoid it generates, including $0$.
+\end{definition}
+
+\begin{lemma}[Support mechanism]\label{lem:support}
+If $S,T\subset\Gamma$ are well ordered, $S+T$ is well ordered and each exponent has only finitely many decompositions as $s+t$. If $E\subset\Gamma_{>0}$ is well ordered, $E^*$ is well ordered and a fixed exponent has only finitely many representations as a finite ordered word in $E$. The corresponding assertions hold for $S+E^*$.
+\end{lemma}
+The last statement includes finiteness of possible word lengths. These are the Hahn--Neumann facts used in both supplied manuscripts; see also \cite{Neumann,Poonen}. Consequently any complex-linear operator applied coefficientwise preserves the containing support. Positive-support substitutions and geometric inverses have support in $S+E^*$.
+
+\begin{example}[Strong sums without valuation limits]\label{ex:rank}
+For $\Gamma=\Q+\Q\omega$, every integer is less than $\omega$. The strong sum $\sum_{n\ge0}t^n=(1-t)^{-1}$ exists, but its finite partial sums do not converge to it in the valuation topology: their nonzero tails never have valuation greater than $\omega$. Increasing valuation by a fixed positive amount at each iteration is not enough in arbitrary rank.
+\end{example}
+
+\subsection{Full fine topology versus intrinsic workspace topology}
+The full fine topology uses $B(a,r)=\{z:|z-a|<r\}$ for every positive surreal $r$. A statement about it is a class-topological statement, not a claim that all open classes form a set.
+
+\begin{proposition}[Fine no-go theorem; inherited with proof]\label{prop:fine}
+Every set-sized subset of $\SC$ is closed and discrete in the full fine topology. Every fine-convergent set-indexed net is eventually its limit. Every fine-continuous map from an ordinary connected real interval or ordinary circle is constant.
+\end{proposition}
+\begin{proof}
+For any set $A$ of positive surreal numbers, the cut $\{0\mid A\}$ is a positive surreal smaller than every element of $A$. For a set $X\subset\SC$ and a point $p$, apply this to the set of nonzero distances $|x-p|$, $x\in X$. A sufficiently small fine ball contains no point of $X$ other than possibly $p$. This proves closedness and discreteness. Applied to the set of nonzero distances of a net from its proposed limit, it proves eventual equality. The image of an ordinary connected parameter space is a set; as a discrete connected image it has at most one point.
+\end{proof}
+
+The topology \emph{induced from the full class} on the set $K$ is therefore discrete. It must not be confused with the intrinsic topology whose radii belong to $R_\Gamma$. The latter is nondiscrete for nontrivial $\Gamma$, and is equivalent to the natural valuation topology. It is still totally separated.
+
+\begin{proposition}[Intrinsic separation]\label{prop:intrinsic}
+In the intrinsic topology of $K$, the cosets $a+r\m_K$, $r\ne0$, are open and closed and separate any pair of distinct points. All connected subsets are singletons. Ordinary singular homology in positive degrees is zero.
+\end{proposition}
+\begin{proof}
+The subgroup $r\m_K$ is the valuation ball $\{x:v(x)>v(r)\}$. It is open; its complement is the union of the other open cosets. For $a\ne b$, the coset $a+(b-a)\m_K$ contains $a$ and not $b$. Thus a connected subset has at most one point. Every ordinary singular simplex has connected parameter space and hence is constant. The resulting singular chain complex is the direct sum, over points, of the singular chain complex of a point, whose positive-degree homology vanishes.
+\end{proof}
+
+In particular, deleting a putative circle does not turn the fine or intrinsic plane into precisely two nontrivial ordinary connected components. Using a field-valued interval $[0,1]_{R_\Gamma}$ as parameter gives a different object: that interval is not the connected compact real interval appearing in \cref{prop:fine}. Definable geometry will make exactly this change, openly.
+
+\subsection{Why unrestricted fundamental theorems also fail}
+Let $\m\subset\SC$ denote all infinitesimals and define $q=0$ on $\m$, $q=1$ elsewhere. Its two level sets are fine-clopen, so $q$ is fine-locally constant and fine-locally analytic, with $q'=0$. Nevertheless $q(0)\ne q(1)$. Hence no endpoint integral with zero integral for the zero function can satisfy
+\[
+ \int_a^b H'(z)\,dz=H(b)-H(a)
+\]
+for \emph{every} fine-locally analytic $H$ and arbitrary endpoints. This is the obstruction proved in \cite{Analysis}, not an obstruction to a smaller coherent calculus.
+
+There is also a mesh obstruction. A partition of $[0,1]_{R_\Gamma}$ with an ordinary finite number $N$ of subintervals cannot have all lengths less than a positive infinitesimal $\delta$, since their sum would be at most $N\delta<1$. Thus the usual finite-partition argument that the mesh can be made smaller than every positive field element is unavailable. Hyperfinite partitions require an additional nonstandard universe and transfer structure, neither supplied by the ordered-field notation nor by the surreal normal form.
+
+\section{Jordan separation at a chosen scale}\label{sec:jordan-shadow}
+\subsection{The reduction plane and its thick boundary}
+Fix $a\in K$ and $r\in R_\Gamma$ with $r>0$. On the affine finite arena
+\[
+ X_{a,r}=a+rK^\circ
+\]
+consider the surjection
+\begin{equation}\label{eq:shadow}
+ q_{a,r}:X_{a,r}\longrightarrow\C,\qquad
+ q_{a,r}(z)=\red\bigl((z-a)/r\bigr).
+\end{equation}
+Give $X_{a,r}$ the \emph{reduction topology}: its open sets are exactly $q_{a,r}^{-1}(V)$, with $V\subset\C$ ordinary open. This is a deliberately coarse topology. Each fiber is topologically indistinguishable internally, and its Hausdorff quotient is $\C$.
+
+\begin{theorem}[Jordan separation in the reduction topology]\label{thm:shadow}
+Let $J\subset\C$ be an ordinary Jordan curve, with bounded interior $D$ and exterior $E$. Then
+\[
+ X_{a,r}\setminus q_{a,r}^{-1}(J)
+   =q_{a,r}^{-1}(D)\ \sqcup\ q_{a,r}^{-1}(E)
+\]
+has exactly two connected components in the reduction topology. Both have boundary $q_{a,r}^{-1}(J)$ relative to $X_{a,r}$.
+\end{theorem}
+\begin{proof}
+For any subset $B\subset\C$, the subspace $q^{-1}(B)$ has precisely the saturated open sets pulled back from $B$. A separation of $q^{-1}(B)$ therefore descends to a separation of $B$, and conversely. Thus $q^{-1}(B)$ is connected exactly when $B$ is connected. Apply the ordinary Jordan theorem to $D$ and $E$. Also
+\[
+ \overline{q^{-1}(B)}=q^{-1}(\overline B),\qquad
+ \operatorname{int}(q^{-1}(B))=q^{-1}(\operatorname{int}B),
+\]
+as follows directly from the neighborhood definition and surjectivity of $q$. The ordinary boundary identities give the assertion.
+\end{proof}
+
+The separator is the whole \emph{boundary tube}
+\[
+ q^{-1}(J)=a+r(J+\m_K),
+\]
+not the thin trace $\{a+r\gamma(s):s\in S^1(\R)\}$ of one parametrization. This is an exact topological theorem, but it recovers only the geometry visible at the selected scale. Different points in a fiber can lie on opposite sides of a finer-scale separator.
+
+\begin{example}[A boundary layer cannot be discarded silently]
+At $a=0,r=1$, both $1-t$ and $1+t$ reduce to the point $1$ on the unit circle. Neither belongs to the reduction-thickened disk $\DD\sh=q^{-1}(\DD)$, although $|1-t|<1<|1+t|$. The theorem's interior is not the ordered-radius ball $\{|z|<1\}$. A Cauchy formula whose hypothesis is $z\in\DD\sh$ does not automatically cover $z=1-t$.
+\end{example}
+
+This construction remains available at every infinitesimal or infinite affine scale. It explains the topology underlying the ordinary-base coherence of \cite{Analysis}, without asserting that its coefficient functions are continuous for every other topology under discussion.
+
+\section{Definable Jordan curves and algebraic winding}\label{sec:definable}
+\subsection{The established real-closed-field counterpart}
+For this section let $R$ be a real closed field containing $\R$, and put $K=R[i]$. A set is semialgebraic if it is described by a finite Boolean combination of polynomial equations and inequalities with parameters in $R$. A semialgebraic set is \emph{semialgebraically connected} if it has no separation into two nonempty relatively open semialgebraic subsets. Parameters for a semialgebraic path range over $[0,1]_R$.
+
+\begin{theorem}[Semialgebraic Jordan theorem; classical input]\label{thm:def-jordan}
+Let $j:S^1(R)\to R^2$ be a semialgebraic homeomorphism onto its image $J$. Then $R^2\setminus J$ has exactly two semialgebraically connected components. They are semialgebraically path connected, one is bounded by an element of $R$ and the other is unbounded, and both have boundary $J$ in the order topology.
+\end{theorem}
+This is the semialgebraic form of Jordan separation, obtained by triangulation and the finite simplicial separation theorem; semialgebraic topology is developed in \cite{BCR}. The more general o-minimal homology route to Jordan--Brouwer is developed by Woerheide \cite{Woerheide}; intersection-theoretic winding and separation for definable manifolds are treated by Berarducci--Otero \cite{BO}. We import this theorem, rather than claim to prove arbitrary topological Jordan separation by elementary first-order transfer.
+
+A way to see why it is plausible over non-Archimedean $R$ is to compactify the plane semialgebraically and triangulate compatibly with $J$. The remaining separation question is encoded by a finite complex, not by a real sequence tending to a gap in $R$. For a polygon, it reduces directly to finite incidence and orientation information. Definable connectedness is the essential word: the infinitesimal clopen cuts in \cref{prop:intrinsic} need not be semialgebraic, so they do not contradict \cref{thm:def-jordan}. Likewise $R$-bounded does not mean bounded by an ordinary real number.
+
+For $R=R_\Gamma$ this is a genuine separation theorem for a surcomplex workspace, allowing curves with infinite coordinates and infinitesimal features. A semialgebraic problem involving full surreal parameters may be placed in a real closed set-sized workspace containing those parameters. Definable results concern that finite description and its real-closed extensions; they do not supply ordinary singular homology of a proper class.
+
+\subsection{An integer-valued index without a contour integral}
+For a semialgebraic loop $\gamma$ avoiding $b$, one can define its index by the definable degree of
+\[
+ s\longmapsto\frac{\gamma(s)-b}{|\gamma(s)-b|}\quad\text{into }S^1(R).
+\]
+With positive orientation it is $1$ inside a semialgebraic Jordan curve and $0$ outside. It is an ordinary integer and is invariant under definable homotopies avoiding $b$. This is definable degree, not the ordinary topological degree of an ordinary real-parameter map into the intrinsic field topology.
+
+For piecewise polynomial or rational parametrizations, there is a computationally explicit substitute. After a generic fixed rotation of the coordinate axes, write $\gamma-b=x+iy$ on each piece and form a Cauchy index; the rotation can be chosen so that no piece has identically zero $y$. With the convention that a jump from $-\infty$ to $+\infty$ contributes $+1$, one has the normalized expression
+\begin{equation}\label{eq:cauchyindex}
+ \wind_{\mathrm{alg}}(\gamma,b)
+   =\frac12\sum_{\text{pieces}}\Ind\left(\frac{x}{y}\right),
+\end{equation}
+with the usual half-endpoint conventions and subdivision at exceptional points. A constant piece contributes zero, and can be removed before this computation. Sturm chains compute these indices using field arithmetic and sign tests. Eisermann develops this construction over arbitrary real closed fields \cite{Eisermann}. Boundary conventions are not needed below: every pole will be disjoint from the loop.
+
+The availability of a finite algebraic prescription does not mean arbitrary surreal inputs have computable normal forms or decidable sign tests. It becomes an algorithm only when the coefficient field and support arithmetic have effective presentations.
+
+\section{A completely algebraic Stokes theorem for polynomial chains}\label{sec:polynomial}
+There is a direct counterpart of generalized Stokes that needs neither ordinary fine paths nor infinite summation. It will also give a compatibility test for the Hahn construction.
+
+\subsection{Polynomial integration on a simplex}
+For a characteristic-zero field $L$, define a linear functional on polynomials on the standard $n$-simplex by
+\begin{equation}\label{eq:simplexint}
+ \PInt_{\Delta^n}u_1^{\nu_1}\cdots u_n^{\nu_n}\,du_1\wedge\cdots\wedge du_n
+ =\frac{\nu_1!\cdots\nu_n!}{(|\nu|+n)!}.
+\end{equation}
+The geometric notation $\Delta_R^n=\{u_i\ge0,\sum u_i\le1\}$ is available when $L$ contains an ordered field $R$. Formula \eqref{eq:simplexint}, extended $L$-linearly, is the definition. The $0$-simplex functional is evaluation. Give the simplex the ordered vertices $(0,e_1,\ldots,e_n)$ and its boundary the alternating face orientation.
+
+A polynomial simplex $\sigma:\Delta_R^n\to R^d$ is a polynomial map with field coefficients. For a polynomial $n$-form $\alpha$ with coefficients in $L$, set
+\[
+ \PInt_\sigma\alpha=\PInt_{\Delta^n}\sigma^*\alpha.
+\]
+Only finitely many algebraic operations are involved.
+
+\begin{theorem}[Polynomial-chain Stokes]\label{thm:pol-stokes}
+For every polynomial simplex $\sigma$ and polynomial $(n-1)$-form $\alpha$,
+\begin{equation}\label{eq:pol-stokes}
+ \PInt_\sigma d\alpha=\PInt_{\partial\sigma}\alpha.
+\end{equation}
+The identity extends to finite polynomial chains. It holds over every characteristic-zero coefficient field, in particular over every surcomplex workspace.
+\end{theorem}
+\begin{proof}
+Pullback commutes with $d$ by the polynomial chain rule, so it suffices to prove the identity on the standard simplex. Fix bounds on the degrees of the coefficients of $\alpha$. Both sides, using \eqref{eq:simplexint} and the affine face maps, are polynomials with rational coefficients in the finitely many coefficients of $\alpha$. Over $\R$, formula \eqref{eq:simplexint} is the ordinary monomial simplex integral, so ordinary Stokes proves their equality for every assignment of real coefficients. A polynomial over $\Q$ vanishing at every real tuple is zero, by induction on its number of variables. Hence the identity is a rational polynomial identity and holds over any characteristic-zero field. The boundary signs and all face substitutions are finite, so linearity proves the chain assertion.
+\end{proof}
+
+This proof uses classical Stokes to certify a \emph{finite algebraic identity}; it does not transfer a statement quantifying over arbitrary integrable functions. Equivalent direct proofs expand the monomial factorials and cancel adjacent faces.
+
+\begin{example}[Infinite width, infinitesimal height]\label{ex:triangle}
+Let $L,H>0$ be arbitrary elements of $R_\Gamma$, and orient the triangle with vertices $0,L,iH$ counterclockwise. Since
+\[
+ d(\bar z\,dz)=d\bar z\wedge dz=2i\,dx\wedge dy,
+\]
+polynomial Stokes gives
+\begin{equation}\label{eq:triangle}
+ \PInt_{\partial T}\bar z\,dz=iLH.
+\end{equation}
+In particular, $L=\omega$ and $H=\omega^{-1}$ give the ordinary finite answer $i$, despite the extreme aspect ratio. The signed area functional is $LH/2$. No ordinary compactness of the entire field-valued triangle is asserted.
+\end{example}
+
+The construction also handles polynomial forms on triangulated polytopes, whenever oriented internal faces cancel. It does not define an integral for every semialgebraic function, nor for a rational form whose denominator vanishes somewhere on the chain. Rational contour periods will require residues or additional analytic data.
+
+\section{Hahn differential forms and coefficientwise Stokes}\label{sec:derham}
+\subsection{The differential graded algebra}
+Let $M$ be an ordinary smooth manifold, with corners allowed when integration is used. Define
+\begin{equation}\label{eq:hahnforms}
+ \Omega_H^q(M)=\Omega^q(M;\C)((t^\Gamma)).
+\end{equation}
+An element $\alpha=\sum_{\lambda\in S}\alpha_\lambda t^\lambda$ has one global well-ordered support and ordinary smooth coefficient forms. Smoothness up to a boundary means smooth extension in ordinary local corner charts. Exterior differentiation and wedge product are
+\[
+ d\alpha=\sum_\lambda(d\alpha_\lambda)t^\lambda,
+ \qquad
+ \alpha\wedge\beta=\sum_\nu\left(\sum_{\lambda+\mu=\nu}
+          \alpha_\lambda\wedge\beta_\mu\right)t^\nu.
+\]
+The inner sum is finite. Thus $\Omega_H^\bullet(M)$ is a differential graded algebra over $K$, and $d^2=0$. This $d$ differentiates ordinary variables, holding every Hahn constant fixed. It is not a derivation of the surreal field considered as a transseries field.
+
+For a compact oriented $n$-manifold $M$ and $\beta\in\Omega_H^n(M)$ set
+\begin{equation}\label{eq:hintforms}
+ \HInt_M\beta=\sum_\lambda t^\lambda\int_M\beta_\lambda.
+\end{equation}
+Its support is contained in $\supp\beta$. The same definition works on a finite smooth singular chain by pulling back to its ordinary simplices and adding the finitely many integrals. There is no infinite interchange justified by an unstated analytic bound: the operation is the coefficientwise extension of an ordinary linear functional.
+
+\begin{theorem}[Coefficientwise generalized Stokes]\label{thm:hahn-stokes}
+For compact oriented $M$ of dimension $n$ and $\alpha\in\Omega_H^{n-1}(M)$,
+\begin{equation}\label{eq:hahn-stokes}
+ \boxed{\quad\HInt_{\partial M}\alpha=\HInt_M d\alpha.\quad}
+\end{equation}
+More generally $\HInt_{\partial C}\alpha=\HInt_Cd\alpha$ for a finite smooth chain $C$. Integration is $K$-linear and is invariant under ordinary orientation-preserving smooth reparametrization.
+\end{theorem}
+\begin{proof}
+At exponent $\lambda$, \eqref{eq:hahn-stokes} is ordinary Stokes for $\alpha_\lambda$. The two Hahn series have support in the same well-ordered containing set, so coefficient equality proves equality in $K$. For a chain, internal faces have equal pulled-back forms and opposite signs and cancel coefficientwise. Ordinary change of variables proves reparametrization invariance. Finally, for $A=\sum a_\mu t^\mu\in K$, the coefficient of $A\alpha$ at a fixed exponent is a finite convolution; ordinary linearity therefore proves $\HInt A\alpha=A\HInt\alpha$.
+\end{proof}
+
+The statement is a generalized Stokes theorem with surcomplex-valued outputs. Its chain geometry initially lives over an ordinary manifold, unlike the geometric carrier of \cref{thm:pol-stokes}. The next section will make the chains themselves nonstandard.
+
+\subsection{Poincar\'e homotopy and cohomology}
+On an ordinary star-shaped open $U\subset\R^d$ containing $0$, define the usual radial homotopy operator, for $q\ge1$, by
+\begin{equation}\label{eq:radial}
+ (h\alpha)_x(v_1,\ldots,v_{q-1})=
+ \int_0^1 s^{q-1}\alpha_{sx}(x,v_1,\ldots,v_{q-1})\,ds.
+\end{equation}
+Apply it to each Hahn coefficient. Ordinary smoothness at $s=0$ makes this an ordinary smooth form; the Hahn support does not increase.
+
+\begin{proposition}[Support-preserving Poincar\'e lemma]\label{prop:poincare}
+The coefficientwise extension of \eqref{eq:radial} satisfies
+\[
+ dh+hd=\id-c_0^*,
+\]
+where $c_0$ is the constant map to $0$. Every closed positive-degree Hahn form on $U$ is exact, with a primitive supported in the support of the original form. A Hahn function with zero differential on a connected ordinary manifold is a single constant in $K$.
+\end{proposition}
+\begin{proof}
+Differentiate the pullback under $x\mapsto sx$ with respect to $s$ and use the ordinary chain rule. Integrating from $0$ to $1$ gives the displayed homotopy identity for each coefficient. Equivalently, this is the ordinary fundamental theorem applied to the radial homotopy. Every operation is complex-linear, so its extension is support-preserving. In positive degree $c_0^*=0$. In degree zero, a zero differential makes each smooth coefficient locally constant, hence constant on a connected ordinary base.
+\end{proof}
+
+\begin{theorem}[Cohomology of the uniform Hahn complex]\label{thm:cohomology}
+There is a natural $K$-linear isomorphism
+\begin{equation}\label{eq:cohomology}
+ H^q\bigl(\Omega_H^\bullet(M),d\bigr)
+ \simeq H^q_{\dR}(M;\C)((t^\Gamma)).
+\end{equation}
+If the ordinary Betti number $b_q$ is finite, this space is isomorphic to $K^{b_q}$. Integration on ordinary cycles extends the usual de Rham period pairing. When the ordinary homology in degree $q$ is finite dimensional, this pairing is nondegenerate over $K$.
+\end{theorem}
+\begin{proof}
+A Hahn form is closed precisely when all its coefficients are closed. Send its class to the series of their ordinary cohomology classes, discarding zero coefficients. This has support contained in the original support, and exact Hahn forms map to zero. Conversely, choose a complex-linear section from ordinary cohomology to closed forms. Applying it coefficientwise lifts every Hahn series of cohomology classes, proving surjectivity. If the proposed image is zero, all coefficient forms are exact. Choose a complex-linear right inverse to $d$ on its image and apply it coefficientwise to obtain a primitive. This proves injectivity. These auxiliary choices prove the assertions but are not part of the canonical map to cohomology classes. Finite convolution proves $K$-linearity.
+
+For finite $b_q$, choose an ordinary basis and expand in it coefficientwise. A finite union of supports is well ordered, giving $K^{b_q}$. The ordinary de Rham theorem identifies a nonsingular finite period matrix against a basis of ordinary homology. The same matrix is nonsingular over $K$, proving the last assertion.
+\end{proof}
+
+For infinite-dimensional ordinary cohomology, \eqref{eq:cohomology} should \emph{not} be replaced without qualification by an algebraic tensor product with $K$: a Hahn series can use infinitely many independent cohomology directions. Nor have we claimed that the global uniform-support assignment \eqref{eq:hahnforms} is a sheaf for arbitrary infinite covers. Unlike holomorphic coefficient functions on a connected domain, smooth coefficients can vanish on entire open sets, and their supports need not propagate across a cover. All chain integrals and homotopies below have explicitly common supports or involve finitely many charts.
+
+\begin{example}[The surviving puncture class]
+On $\C^\times$, the class of $dz/z$ spans $H^1_{\dR}(\C^\times;\C)$, normalized by its ordinary unit-circle period $2\pi i$. Therefore its Hahn extension has first cohomology $K\,[dz/z]$. This is ordinary-base cohomology with enlarged coefficients. It is not the positive-degree singular cohomology of the totally separated intrinsic $K^\times$.
+\end{example}
+
+\section{Infinitesimally deformed chains}\label{sec:deformed}
+\subsection{Uniformly supported deformations and Taylor pullback}
+Let $M$ be a compact ordinary smooth manifold with corners and let $U\subset\R^d$ be ordinary open. An admissible deformed parametrization consists of
+\begin{equation}\label{eq:deformedmap}
+ \Phi=\phi+\eta,\qquad
+ \phi:M\longrightarrow U,\qquad
+ \eta=\sum_{e\in E}\eta_e t^e,
+\end{equation}
+where $\phi$ and the real-valued vector coefficients $\eta_e$ are smooth, and $E\subset\Gamma_{>0}$ is one well-ordered set. The maps extend to a neighborhood in each corner chart. At each ordinary parameter value, $\eta$ is an infinitesimal vector. No assertion of fine continuity of the real-parameter map $\Phi$ is intended.
+
+For a smooth coefficient function $f$ on $U$, define its Taylor-jet pullback by
+\begin{equation}\label{eq:jetpullback}
+ T_\Phi f=\sum_{\alpha\in\N^d}
+    \frac{(\partial^\alpha f)\circ\phi}{\alpha!}\eta^\alpha.
+\end{equation}
+For analytic $f$ this agrees with the infinitesimal evaluation used in the supplied manuscripts. For merely $C^\infty$ functions, \eqref{eq:jetpullback} is the \emph{specified jet prolongation}. We do not assert ordinary convergence of its Taylor series or identify it with every possible fine extension of $f$.
+
+If $\alpha=\sum_{\lambda,I}f_{\lambda,I}t^\lambda dx_{i_1}\wedge\cdots\wedge dx_{i_q}$, define
+\begin{equation}\label{eq:formpullback}
+ \Phi^*\alpha=
+ \sum_{\lambda,I}t^\lambda T_\Phi f_{\lambda,I}
+       \,d\Phi_{i_1}\wedge\cdots\wedge d\Phi_{i_q},
+ \qquad d\Phi_j=d\phi_j+d\eta_j.
+\end{equation}
+This defines a form on the \emph{ordinary parameter manifold} with Hahn coefficients.
+
+\begin{lemma}[Pullback and differential with a support certificate]\label{lem:pullback}
+For $\alpha\in\Omega_H^q(U)$ with support $S$, formula \eqref{eq:formpullback} belongs to $\Omega_H^q(M)$ and has support in $S+E^*$. Pullback respects products, wedge products, and the differential:
+\begin{equation}\label{eq:dcommute}
+ d(\Phi^*\alpha)=\Phi^*(d\alpha).
+\end{equation}
+Restriction to a boundary face commutes with this pullback. Ordinary smooth reparametrizations of $M$ commute with the construction.
+\end{lemma}
+\begin{proof}
+Every term is indexed by a source exponent in $S$ and a finite word in the positive set $E$. Differentiating $\eta_e$ changes its coefficient function but not its exponent. Thus \cref{lem:support} proves that the combined support is well ordered and that only finitely many terms contribute at any prescribed exponent. Each resulting coefficient is a finite sum of products of ordinary smooth functions and forms. This proves existence and the support bound.
+
+For functions, ordinary Taylor product identities prove $T_\Phi(fg)=(T_\Phi f)(T_\Phi g)$. Differentiating \eqref{eq:jetpullback} gives two groups of terms: differentiating $(\partial^\alpha f)\circ\phi$ contributes $d\phi_j$, and differentiating $\eta^\alpha$ contributes $d\eta_j$. Reindexing yields
+\[
+ d(T_\Phi f)=\sum_{j=1}^d T_\Phi(\partial_jf)\,(d\phi_j+d\eta_j).
+\]
+The reindexing is finite at every Hahn exponent by the first part of the proof. This is the chain rule needed for \eqref{eq:dcommute}; the exterior product rule completes it. Boundary restriction and ordinary reparametrization commute with ordinary derivatives and products, so they commute coefficientwise as well.
+\end{proof}
+
+We define the integral along the deformed parametrized chain, not along an unspecified underlying point set, by
+\begin{equation}\label{eq:deformedint}
+ \HInt_\Phi\alpha:=\HInt_M\Phi^*\alpha.
+\end{equation}
+A finite chain is a finite linear combination of such parametrizations; common faces are required to agree as parametrized Hahn data, with the appropriate orientations.
+
+\begin{theorem}[Stokes for Hahn-deformed chains]\label{thm:deformed-stokes}
+For an admissible $n$-chain $\Phi$ and a smooth Hahn $(n-1)$-form on its ordinary coefficient neighborhood,
+\begin{equation}\label{eq:deformedstokes}
+ \boxed{\qquad\HInt_{\partial\Phi}\alpha
+       =\HInt_\Phi d\alpha.\qquad}
+\end{equation}
+The same identity holds for finite sums of admissible chains with matching faces. All terms have the support bound supplied by \cref{lem:pullback}.
+\end{theorem}
+\begin{proof}
+Apply \cref{thm:hahn-stokes} on the parameter manifold to $\Phi^*\alpha$ and then \cref{lem:pullback}:
+\[
+ \HInt_{\partial M}\Phi^*\alpha
+ =\HInt_M d(\Phi^*\alpha)
+ =\HInt_M\Phi^*(d\alpha).
+\]
+Boundary compatibility identifies the first term with the integral on $\partial\Phi$. Internal faces cancel for finite chains.
+\end{proof}
+
+This is not merely a formal rewriting of $d^2=0$: it constructs a defined pairing with a chain complex, and proves that pairing intertwines $d$ with the oriented boundary. Infinitesimal motion of the chain can affect an integral of a nonclosed form; \cref{ex:ellipse} below exhibits that effect exactly.
+
+\subsection{Affine and polynomial compatibility}
+At an arbitrary scale write $z=a+rw$, with $a\in K$, $r\in R_\Gamma$ positive, and suppose the pulled-back form in the $w$ chart has admissible Hahn coefficients. Define its integral by the chart pullback. For a one-form this gives
+\[
+ \HInt_{a+r\Phi}F(z)\,dz
+ =\HInt_\Phi rF(a+rw)\,dw.
+\]
+For a real area form the Jacobian is $r^2$, and for an arbitrary constant invertible real linear map the usual determinant appears. Such factors lie in $K$ and do not disturb finite convolution. This is the affine-scale convention of \cite{Analysis}, now for deformed chains and all form degrees.
+
+A polynomial map with arbitrary Hahn coefficients need not have the specific normalization $\phi+\eta$ in \eqref{eq:deformedmap}. It still has a finite polynomial pullback, so it can be integrated coefficientwise. Expanding its finite polynomial coefficients and applying ordinary simplex integration gives exactly \eqref{eq:simplexint}. Thus polynomial Stokes and Hahn Stokes agree on their common domain. Polynomial parametrizations give a useful enlargement beyond a single positive-support normalization.
+
+Whenever two admissible descriptions produce the same pointwise pulled-back Hahn form on the same ordinary parameter domain, uniqueness of normal forms gives the same coefficient forms and hence the same integral. This is a genuine overlap criterion. Equality of bare fine germs in unrelated, unverified summation descriptions is not a substitute for it.
+
+\section{Homotopy, transport, and endpoint corrections}\label{sec:homotopy}
+\subsection{An explicit homotopy operator}
+For real $U$, write $U\sh$ for its coordinatewise infinitesimal thickening. Let $H:M\times[0,1]\to U\sh$ be admissible in the sense of \eqref{eq:deformedmap}, now with one common positive support on the product. Write $H_u$ for its restrictions. Define a degree-minus-one operator
+\begin{equation}\label{eq:homotopyoperator}
+ K_H\alpha=\HInt_0^1\iota_{\partial/\partial u}(H^*\alpha)\,du.
+\end{equation}
+The integration in \eqref{eq:homotopyoperator} is coefficientwise in $u$, leaving a differential form in the $M$ variables.
+
+\begin{theorem}[Hahn homotopy formula]\label{thm:homotopy}
+For admissible $H$,
+\begin{equation}\label{eq:homotopyformula}
+ H_1^*\alpha-H_0^*\alpha=dK_H\alpha+K_Hd\alpha.
+\end{equation}
+The operator has support in $S+E^*$ if $\alpha$ has support $S$ and $H$ has positive perturbation support $E$. Integrals of closed forms on closed oriented parameter manifolds are invariant under such homotopies.
+\end{theorem}
+\begin{proof}
+Write a coefficient of $H^*\alpha$ as $\beta(u)+du\wedge\gamma(u)$, where both forms use only the $M$ variables. Exterior differentiation on the product gives the ordinary coefficient identity behind
+\[
+ \beta(1)-\beta(0)
+ =d_M\int_0^1\gamma(u)\,du
+   +\int_0^1\iota_{\partial_u}d(H^*\alpha)\,du.
+\]
+Use \eqref{eq:dcommute}. All coefficient integrations preserve support, and finite contributions at each exponent make the calculation valid in the Hahn complex. If $d\alpha=0$, the difference is exact. Its integral on a closed parameter manifold is zero by \cref{thm:hahn-stokes}.
+\end{proof}
+
+Ordinary deformations of the base map are allowed if their whole image lies in the same ordinary coefficient domain. An infinitesimal deformation with fixed base is automatically of this form. A homotopy passing through a pole is not admissible for a form singular at that pole; its period can change.
+
+\subsection{Exact transport of an open holomorphic contour}
+Let $U\subset\C$ be ordinary open and
+\[
+ \HH(U)=\OO(U)((t^\Gamma)).
+\]
+For $F=\sum f_\lambda t^\lambda$, the coherent value at $c+\varepsilon$ is
+\[
+ F\sh(c+\varepsilon)=\sum_{\lambda,n\ge0}
+          t^\lambda\frac{f_\lambda^{(n)}(c)}{n!}\varepsilon^n.
+\]
+Let $\gamma:[a,b]\to U$ be ordinary smooth and $\Gamma=\gamma+\eta$ an admissible complex-valued deformation. Piecewise smooth paths are handled by finite subdivision. Define
+\begin{equation}\label{eq:Tendpoint}
+ T_F(c,e)=\sum_{n\ge0}\frac{F^{(n)}(c)}{(n+1)!}e^{n+1}
+ \qquad(c\in U,\ e\in\m_K).
+\end{equation}
+
+\begin{theorem}[Exact endpoint-transport formula]\label{thm:endpoints}
+For the preceding data,
+\begin{equation}\label{eq:endpoints}
+ \boxed{\quad
+ \HInt_\Gamma F\,dz-\HInt_\gamma F\,dz
+ =T_F(\gamma(b),\eta(b))-T_F(\gamma(a),\eta(a)).
+ \quad}
+\end{equation}
+No simply connectedness assumption on $U$ is needed. In particular, a closed deformed contour with matching endpoint displacement has the same period as its ordinary base contour.
+\end{theorem}
+\begin{proof}
+Differentiate $T(s)=T_F(\gamma(s),\eta(s))$ coefficientwise. The derivative of the $F^{(n)}$ factor gives
+\[
+ \gamma'(s)\sum_{n\ge0}\frac{F^{(n+1)}(\gamma(s))}{(n+1)!}\eta(s)^{n+1}
+ =\gamma'(s)\bigl(F\sh(\Gamma(s))-F(\gamma(s))\bigr).
+\]
+The derivative of the displacement gives $\eta'(s)F\sh(\Gamma(s))$. Therefore
+\[
+ T'(s)=F\sh(\Gamma(s))\Gamma'(s)-F(\gamma(s))\gamma'(s).
+\]
+All series have support in $\supp F+E^*$; the support lemma justifies every reindexing. Integrate the ordinary parameter coefficientwise and use the ordinary fundamental theorem on each coefficient to obtain \eqref{eq:endpoints}.
+\end{proof}
+
+The analysis manuscript's endpoint integral is consequently the value of \emph{every} admissible infinitesimal deformation of its base contour with those endpoints. Its endpoint correction is not just an arbitrary prescription. In contrast, choosing a different ordinary homology class can still change the answer by a period. A coherent global primitive eliminates those periods; merely fine-local primitives do not.
+
+\begin{example}[The logarithm obstruction has not disappeared]
+The analysis manuscript constructs a global fine-locally analytic logarithm $\mathcal L$ on $\SC^\times$ with $\mathcal L'=1/z$. Its ordinary values use a selected argument cut. It is not a coherent primitive on $(\C^\times)\sh$ \cite[section on global logarithms]{Analysis}. Accordingly, $\HCoint_{|z|=1}dz/z=2\pi i$ does not contradict the existence of $\mathcal L$. Applying the coherent endpoint theorem to this noncoherent global function would be an invalid change of category.
+\end{example}
+
+\section{Cauchy theory for deformed contours}\label{sec:cauchy}
+\subsection{Closed holomorphic forms and the correct homology condition}
+For $F\in\HH(U)$, the form $F\,dz$ is closed in the real differential-form complex:
+\[
+ d(F\,dz)=\frac{\partial F}{\partial\bar z}\,d\bar z\wedge dz=0.
+\]
+Here the Cauchy--Riemann equation holds for each coefficient, not merely for an arbitrary fine-local function.
+
+\begin{theorem}[Cauchy's theorem on admissible chains]\label{thm:cauchy}
+If an admissible closed contour is the boundary of a finite admissible $2$-chain on which the coefficient functions of $F\in\HH(U)$ are holomorphic, then
+\[
+ \HCoint_\Gamma F(z)\,dz=0.
+\]
+In particular, if $\Gamma=\gamma+\eta$ is an admissible closed deformation and its ordinary base $\gamma$ is null-homologous in $U$, the same conclusion holds. Every such closed contour has zero period when $U$ is simply connected.
+\end{theorem}
+\begin{proof}
+The first assertion is \cref{thm:deformed-stokes} applied to the closed form $F\,dz$. For the second, \cref{thm:endpoints} identifies the period with that of $\gamma$, and ordinary Cauchy's theorem makes every coefficient of the latter vanish. The simply connected case follows from ordinary complex homology or from coefficientwise primitives.
+\end{proof}
+
+For example, $1/z$ on $U=\C^\times$ is holomorphic but has nonzero unit-circle period. A closed loop alone is not the needed condition. Conversely, self-intersections do not obstruct Cauchy's theorem when the cycle is null-homologous. Jordan separation is useful for specifying one interior region, but is not a prerequisite for all contour integration.
+
+\subsection{Winding at a nonstandard center}
+\begin{theorem}[Winding stability at one scale]\label{thm:winding}
+Let $\gamma$ be an ordinary closed piecewise smooth curve, let $c\notin\gamma$, and let $\eta$ be an admissible closed positive-support deformation. For $\varepsilon\in\m_K$, $a\in K$, and $r>0$, set
+\[
+ \Gamma=a+r(\gamma+\eta),\qquad b=a+r(c+\varepsilon).
+\]
+Then the integrand is coherent on a neighborhood of the base contour and
+\begin{equation}\label{eq:winding}
+ \frac1{2\pi i}\HCoint_\Gamma\frac{dz}{z-b}
+       =\wind(\gamma,c)\in\Z.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The affine factor cancels. On an ordinary neighborhood of $\gamma$ avoiding $c$, the expansion
+\[
+ \frac1{w-c-\varepsilon}
+   =\sum_{n\ge0}\frac{\varepsilon^n}{(w-c)^{n+1}}
+\]
+is Hahn-coherent. By \cref{thm:endpoints}, contour deformation from $\gamma$ to $\gamma+\eta$ leaves its closed period unchanged. On the ordinary base, the $n=0$ term has integral $2\pi i\wind(\gamma,c)$ and each $n>0$ term is an ordinary derivative and has zero integral. Strong summability justifies coefficientwise integration.
+\end{proof}
+
+Thus an admissible contour has an exact integer period index, not an unspecified surreal winding number. The theorem only treats points whose reduction avoids the base curve. A point reducing to the curve belongs to its boundary tube, and requires a finer chart, a suitable detour, or a separate algebraic definition.
+
+\begin{theorem}[Cauchy formula on a deformed Jordan contour]\label{thm:cauchyformula}
+Let $D$ be a bounded ordinary Jordan domain with piecewise smooth positive boundary, let $\overline D\subset U$, and let $F\in\HH(U)$. Let $\Gamma$ be an admissible closed infinitesimal deformation of $\partial D$. For $z=c+\varepsilon$ with $c\in D$, $\varepsilon\in\m_K$, and $n\ge0$,
+\begin{equation}\label{eq:cauchyformula}
+ (F^{(n)})\sh(z)=\frac{n!}{2\pi i}\HCoint_\Gamma
+                 \frac{F(\zeta)}{(\zeta-z)^{n+1}}\,d\zeta.
+\end{equation}
+The corresponding statement holds after any admissible affine rescaling.
+\end{theorem}
+\begin{proof}
+The integrand is a Hahn-holomorphic one-form on an ordinary collar of $\partial D$ avoiding $c$. Its closed period is unchanged by \cref{thm:endpoints}. On the undeformed contour, expand
+\[
+ (\zeta-c-\varepsilon)^{-n-1}
+ =\sum_{k\ge0}\binom{n+k}{k}
+       \varepsilon^k(\zeta-c)^{-n-k-1}.
+\]
+Ordinary Cauchy's formula for each coefficient gives
+\[
+ \sum_{\lambda,k}t^\lambda
+      \frac{f_\lambda^{(n+k)}(c)}{k!}\varepsilon^k,
+\]
+which is precisely the left side. The support is contained in
+$\supp F+(\supp\varepsilon)^*$ before the additional contour deformation, and remains strongly controlled afterwards. Affine substitution gives the final statement with the ordinary derivative and differential factors.
+\end{proof}
+
+This proves a formula for genuinely displaced points and contours, without claiming that the deformed trace is the fine-topological boundary of a fine-connected interior.
+
+\subsection{Positivity and useful estimates}
+The coefficientwise integral of a uniformly supported continuous real Hahn function that is nonnegative at every ordinary parameter is nonnegative. Indeed, its first nonzero coefficient function is nonnegative everywhere and has a positive integral on a nondegenerate compact interval unless it is zero. Applying this observation to a suitably rotated complex integrand gives a useful ordered-field estimate.
+
+\begin{proposition}[An order-valued parameter estimate]\label{prop:ML}
+Write an admissible pullback as $B(s)\,ds$ on an ordinary interval. Suppose $m(s)$ is an ordinary nonnegative continuous function and $M\in R_\Gamma$ is nonnegative with $|B(s)|\le M m(s)$ for all ordinary $s$. Then
+\[
+ \left|\HInt B(s)\,ds\right|\le M\int m(s)\,ds.
+\]
+For ordinary contours this recovers the usual surreal-valued $ML$ estimate of the analysis manuscript.
+\end{proposition}
+\begin{proof}
+If $I=\HInt B\,ds\ne0$, let $u=\bar I/|I|$, so $|u|=1$ and $\re(uI)=|I|$. The real Hahn function $Mm(s)-\re(uB(s))$ is pointwise nonnegative and uniformly supported. Positivity and $K$-linearity give the inequality. The case $I=0$ is immediate. Piecewise regular data are treated on finitely many intervals.
+\end{proof}
+
+This formulation avoids assuming that the speed $|\Gamma'(s)|$ automatically possesses a globally uniform smooth Hahn expansion through every possible zero of its leading speed. When such an expansion and its integral are separately available, one can use it to define the corresponding length functional. Ordered estimates do not imply convergence of set-indexed nets in the full fine topology.
+
+\section{Green identities, residues, and changes of scale}\label{sec:residues}
+\subsection{Stokes really includes area and flux formulas}
+For a Hahn one-form $P\,dx+Q\,dy$ on an admissible oriented planar $2$-chain $\Sigma$, \cref{thm:deformed-stokes} reads
+\begin{equation}\label{eq:green}
+ \HInt_{\partial\Sigma}(P\,dx+Q\,dy)
+ =\HInt_\Sigma(Q_x-P_y)\,dx\wedge dy.
+\end{equation}
+In complex notation this becomes
+\begin{equation}\label{eq:cauchygreen}
+ \HInt_{\partial\Sigma}F\,dz
+ =2i\HInt_\Sigma\partial_{\bar z}F\,dx\wedge dy.
+\end{equation}
+These are exact identities for the specified pullbacks. They imply Cauchy's theorem for coherent holomorphic coefficients, but also apply to nonholomorphic coefficients. In three dimensions the same construction applied to
+$V_1\,dy\wedge dz+V_2\,dz\wedge dx+V_3\,dx\wedge dy$
+gives the divergence identity. Defining flux by this form avoids introducing an unproved independent theory of surreal surface area and unit normals.
+
+\begin{example}[A deformed ellipse and its exact area]\label{ex:ellipse}
+Let $\varepsilon,\delta\in\m_K\cap R_\Gamma$ and map the ordinary unit disk by
+\[
+ \Phi(x,y)=(1+\varepsilon)x+i(1+\delta)y.
+\]
+Its boundary is the admissible contour
+$\Gamma(\theta)=(1+\varepsilon)\cos\theta+i(1+\delta)\sin\theta$.
+For $\alpha=\bar z\,dz$, Stokes gives
+\begin{equation}\label{eq:ellipse}
+ \HCoint_\Gamma\bar z\,dz
+ =2\pi i(1+\varepsilon)(1+\delta)
+ =2\pi i(1+\varepsilon+\delta+\varepsilon\delta).
+\end{equation}
+Indeed the pullback of $dx\wedge dy$ is
+$(1+\varepsilon)(1+\delta)\,dx\wedge dy$.
+Thus an infinitesimal deformation changes a nonclosed form's integral by a genuine infinitesimal, including a second-order mixed term. Setting $\delta=\varepsilon$ gives the circular result $2\pi i(1+\varepsilon)^2$. Further affine scaling by $r$ multiplies the result by $r^2$; translation adds an exact one-form with zero closed period.
+\end{example}
+
+\subsection{The inherited moving-pole residue theorem}
+Let $F,G\in\HH(U)$ with $G\ne0$. Suppose its leading coefficient function $g_0$ after monomial normalization is nonzero on the ordinary boundary of a bounded Jordan domain $D$ with $\overline D\subset U$. The analysis manuscript proves
+\begin{equation}\label{eq:movingres}
+ \frac1{2\pi i}\HCoint_{\partial D}\frac{F}{G}\,dz
+ =\sum_{b\in D\sh}\Res_b\frac{F}{G}\,dz,
+\end{equation}
+with only finitely many actual poles contributing \cite[section on moving poles]{Analysis}. Residue at $b$ means the coefficient of $(z-b)^{-1}$ in the local finite-meromorphic germ, after cancellations. It is not merely the residue of one ordinary coefficient at $\red(b)$.
+
+For completeness, the decisive local reduction is as follows. Preparation near a leading zero writes $G$ as a coherent unit times a monic polynomial $P$ whose lower coefficients are infinitesimal. Division writes $F/G=J+R/P$, with $J$ coherent holomorphic and $\deg R<\deg P$. The polynomial has finitely many infinitesimal roots, and rational partial fractions give
+\[
+ \frac{R(z)}{P(z)}=\sum_b\sum_{j=1}^{m_b}\frac{A_{b,j}}{(z-b)^j}.
+\]
+On a small ordinary protecting circle, only the $j=1$ terms have nonzero coefficientwise period; they contribute $2\pi i A_{b,1}$. The holomorphic part contributes zero. Finitely many protecting circles prove \eqref{eq:movingres}. This argument is valid in higher rank because the expansions are strong sums, not sequential limits.
+
+\begin{corollary}[Residues on a deformed protecting contour]\label{cor:deformedres}
+Formula \eqref{eq:movingres} remains true when the ordinary boundary is replaced by an admissible closed infinitesimal deformation in a coefficient collar on which $g_0$ is nonzero. The right side is still the divisor selected by the ordinary interior $D\sh$.
+\end{corollary}
+\begin{proof}
+The fraction is Hahn-holomorphic on that collar. Its closed period is unchanged by \cref{thm:endpoints}, so \eqref{eq:movingres} applies.
+\end{proof}
+
+This describes the selected divisor without inventing a fine-connected interior of the deformed trace. The same theorem applied to $F'/F$ gives the argument principle: its normalized period is the total zero multiplicity, or zeros minus poles for a fraction. Positive-support perturbations preserving the leading function preserve the total multiplicity in each ordinary monad, as established by preparation in \cite{Analysis,Geometry}. Individual roots can nevertheless split at finer scales.
+
+\subsection{One coarse contour, two microscopic contours}
+\begin{example}[Separating residues invisible at the coarse scale]\label{ex:cluster}
+Let $t=\omega^{-1}$ and consider
+\[
+ R(z)=\frac1{z^2-t^2}.
+\]
+Its residues at $t$ and $-t$ are respectively $1/(2t)$ and $-1/(2t)$. Hence
+\[
+ \frac1{2\pi i}\HCoint_{|z|=1}R(z)\,dz=0.
+\]
+Both poles reduce to zero, and the coarse contour sees only their cancelling sum.
+
+Choose $\rho=t^\beta$ with $\beta>1$; this includes a scale in a higher Archimedean class, such as $\beta=\omega$. On the contour $z=t+\rho w$, $|w|=1$ in the ordinary parameter,
+\begin{equation}\label{eq:clusterpullback}
+ R(z)\,dz=\frac{dw}{w(2t+\rho w)}
+ =\frac1{2t}\sum_{k\ge0}
+       \left(-\frac{\rho}{2t}\right)^k w^{k-1}\,dw.
+\end{equation}
+The expansion has positive relative support because $v(\rho/t)=\beta-1>0$. Its normalized period is $1/(2t)$, so the actual integral is $\pi i/t$. The analogous circle about $-t$ gives $-\pi i/t$. Thus the same support-controlled calculus resolves the two infinite residues individually and recovers their cancellation on the larger contour. For $z/(z^2-t^2)$, the two residues are $1/2$, and the coarse normalized period is instead $1$.
+\end{example}
+
+No all-scale coherence hypothesis on an arbitrary transcendental function was used. A contour only needs a valid representation at its chosen scale. The all-scale polynomial and rational rigidity theorems in the analysis manuscript therefore pose no obstruction to this local multiscale contour calculus.
+
+\section{Radius-free germs acquire small-circle contours}\label{sec:radiusfree}
+\subsection{Why ordinary radii are insufficient}
+The geometry manuscript works with
+\[
+ \A_n=\C\{z_1,\ldots,z_n\}((t^\Gamma)).
+\]
+Each coefficient is a convergent ordinary germ, but no common representative neighborhood is required. For example,
+\begin{equation}\label{eq:noradius}
+ H(z)=\sum_{j\ge1}\frac{t^j}{1-jz}
+\end{equation}
+has coefficient poles at $1/j$. No fixed positive ordinary radius about zero works for all its coefficient germs \cite[example on a shared ordinary neighborhood]{Geometry}. Integrating it on one fixed ordinary circle as though all coefficients were holomorphic inside that circle would be invalid.
+
+The correct remedy for the following results is not a uniform ordinary bound. It is infinitesimal rescaling, which turns each resulting Hahn coefficient into a polynomial.
+
+\begin{lemma}[Polynomial coefficients after infinitesimal rescaling]\label{lem:rescale}
+Let $H\in\A_n$, let $a\in\m_K^n$, and let $\beta_1,\ldots,\beta_n\in\Gamma_{>0}$. Set $\rho_j=t^{\beta_j}$. Then
+\begin{equation}\label{eq:polynomialrescale}
+ H(a_1+\rho_1 w_1,\ldots,a_n+\rho_n w_n)
+       \in\C[w_1,\ldots,w_n]((t^\Gamma)).
+\end{equation}
+In particular it is a common-domain Hahn-holomorphic datum on every ordinary $w$-domain. Its evaluation agrees with the original germ evaluation whenever the $w_j$ are finite.
+\end{lemma}
+\begin{proof}
+First translate by $a$ using the strongly summable translation proved in the geometry manuscript. Its support lies in $S+E_a^*$, where $S=\supp H$ and $E_a$ is the union of the coordinate supports of $a$. Expand the translated coefficient germs in ordinary Taylor monomials and replace $z_j$ by $\rho_j w_j$. The resulting support is contained in
+\[
+ S+\bigl(E_a\cup\{\beta_1,\ldots,\beta_n\}\bigr)^*.
+\]
+For a fixed exponent only finitely many source terms and finite words contribute. Therefore only finitely many multi-indices occur at that exponent, and its coefficient is a polynomial in $w$. Evaluating at finite $w$ uses their ordinary parts and infinitesimal parts; applying the same support lemma to the additional positive supports justifies the rearrangement and proves agreement with the original evaluation. No common radius of the original coefficients was used.
+\end{proof}
+
+This is the scaling mechanism of \cite[scaled Taylor polynomials lemma]{Geometry}, here used to build common contours. It also works for Hahn series of arbitrary \emph{formal} complex coefficient series at infinitesimal arguments, although the original ring in this section is the analytic-germ ring.
+
+\subsection{A contour realization theorem in one variable}
+Normalize a nonzero denominator as
+\begin{equation}\label{eq:RFdenominator}
+ F=f+E\in\A_1,\qquad
+ f(z)=cz^m+O(z^{m+1}),\quad c\ne0,\quad m\ge1,
+ \qquad \vH(E)=\delta>0.
+\end{equation}
+If $E=0$, put $\delta=+\infty$. Multiplying a general denominator by a nonzero Hahn constant to reach this normalization merely rescales the numerator.
+
+\begin{theorem}[Small-circle realization of a radius-free residue]\label{thm:radiusfree}
+For $H\in\A_1$, choose $\beta\in\Gamma_{>0}$ such that $m\beta<\delta$, and put $\rho=t^\beta$. The parametrized circle
+\[
+ C_\rho:\theta\longmapsto\rho e^{i\theta},\qquad 0\le\theta\le2\pi,
+\]
+admits a well-defined Hahn contour integral of $H/F$. Every infinitesimal zero of $F$ lies strictly deeper than this scale, namely $v(z)>\beta$, and
+\begin{equation}\label{eq:RFresidue}
+ \frac1{2\pi i}\HCoint_{C_\rho}\frac{H(z)}{F(z)}\,dz
+   =\sum_{b\in\m_K}\Res_b\frac{H(z)}{F(z)}\,dz.
+\end{equation}
+There are exactly $m$ denominator zeros counted with multiplicity, so the sum of actual pole residues is finite. The integral is independent of every permissible choice of $\beta$. It equals the one-variable perturbation residue
+\begin{equation}\label{eq:RFseries}
+ \sum_{k\ge0}(-1)^k\res_{f^{k+1}}(H E^k),
+\end{equation}
+where each ordinary germ residue is extended coefficientwise.
+\end{theorem}
+\begin{proof}
+By \cref{lem:rescale}, $H(\rho w)$ and $F(\rho w)$ have polynomial Hahn coefficients on the entire ordinary $w$-plane. Moreover
+\[
+ \rho^{-m}F(\rho w)=cw^m+P(w),\qquad \vH(P)>0.
+\]
+The higher Taylor terms of $f$ have exponents $(j-m)\beta>0$, while terms from $E$ have exponents at least $\delta-m\beta>0$. Thus the leading denominator is $cw^m$, which has no zeros on the ordinary unit circle. The inherited coherent moving-residue theorem applies to the scaled fraction, including the differential factor $\rho\,dw$. It gives $m$ zeros in the monad of $w=0$, hence $m$ original zeros with valuation greater than $\beta$, and gives \eqref{eq:RFresidue} for those points.
+
+There are no other infinitesimal zeros. If $0<v(z)\le\beta$, then the leading germ has valuation $v(f(z))=m v(z)\le m\beta<\delta$, whereas $v(E(z))\ge\delta$. Their values cannot cancel. The point $z=0$, if a zero, is already in the scaled monad. Thus the scaled contour accounts for all infinitesimal zeros. The same finite set of local residues proves independence of $\beta$.
+
+To identify \eqref{eq:RFseries}, expand the scaled reciprocal geometrically in $E(\rho w)/f(\rho w)$ on an ordinary annulus about $|w|=1$. Its relative support is strictly positive by $\delta-m\beta>0$. Expanding the unit in $f(z)=z^m u(z)$ introduces only further positive powers of $\rho$. Consequently the full expansion is strongly summable. At each fixed Hahn exponent one may therefore integrate the finitely many contributing Laurent monomials. In a term $g(z)\,dz$ of the ordinary meromorphic germ expansion, scaling sends $z^j\,dz$ to $\rho^{j+1}w^j\,dw$; the circle residue retains only $j=-1$. It is exactly the ordinary germ residue, with no scale factor. Summing the resulting coefficients gives \eqref{eq:RFseries}. The latter also has the original support certificate $\supp H+(\supp E)^*$ from the perturbation-residue construction in \cite{Geometry}.
+\end{proof}
+
+This is a contour theorem for a strictly larger coefficient setting than a common ordinary disk. It is not a claim that the same germ can be evaluated at arbitrary noninfinitesimal points, or that its original coefficient functions have acquired a common ordinary analytic radius.
+
+\begin{example}[An explicit radius-free contour value]\label{ex:radiusfreevalue}
+Take $H$ from \eqref{eq:noradius} and $F(z)=z$. For any $\beta>0$, \cref{thm:radiusfree} gives
+\begin{equation}\label{eq:radiusfreevalue}
+ \frac1{2\pi i}\HCoint_{C_{t^\beta}}\frac{H(z)}z\,dz
+ =H(0)=\sum_{j\ge1}t^j=\frac{t}{1-t}.
+\end{equation}
+Indeed, after scaling, the integrand is
+\[
+ \sum_{j\ge1}\sum_{k\ge0}j^k t^{j+k\beta}w^{k-1}\,dw.
+\]
+At each exponent the coefficient is a finite Laurent polynomial, and the residue selects exactly $k=0$. This calculation is valid also when $\Gamma$ has higher rank. The output is a strong sum, not a claim about the convergence of its partial sums in the full fine topology.
+\end{example}
+
+\section{Several variables: Stokes, tori, and local residues}\label{sec:multivariable}
+\subsection{Differential forms are not limited to one complex variable}
+The Hahn de Rham construction works on any ordinary real manifold, and hence on ordinary complex manifolds regarded as real manifolds. The boundary of a complex $n$-dimensional domain is real $(2n-1)$-dimensional; a Grothendieck residue cycle is instead typically real $n$-dimensional. These are different cycles and different integral kernels. A multidimensional residue should not be described as the direct application of the planar Jordan theorem.
+
+For an isolated ordinary complete intersection $f=(f_1,\ldots,f_n)$ at $0$, ordinary local residue is
+\[
+ \res_f(H)=\frac1{(2\pi i)^n}
+ \int_{\{|f_j|=\epsilon_j\}}
+       \frac{H\,dz_1\wedge\cdots\wedge dz_n}{f_1\cdots f_n},
+\]
+with suitable small regular radii and the orientation $d\arg f_1\wedge\cdots\wedge d\arg f_n$. This is classical local residue theory; the geometry manuscript states its imported duality and deformation inputs explicitly \cite{Geometry,CDS}. Its positive-support deformation $F_i=f_i+E_i$ has the residue
+\begin{equation}\label{eq:multires}
+ \Res_F(H)=\sum_{k\in\N^n}(-1)^{|k|}
+       \res_{f_1^{k_1+1},\ldots,f_n^{k_n+1}}
+                  (H E_1^{k_1}\cdots E_n^{k_n}).
+\end{equation}
+This is strongly defined on radius-free germs and has a perfect pairing on the finite quotient, as proved in that manuscript. We next give a direct contour realization in a substantial special case.
+
+\subsection{A scaled torus theorem}
+\begin{theorem}[Torus realization for a dominating coordinate-power system]\label{thm:torus}
+Let
+\[
+ F_i(z)=z_i^{m_i}+E_i(z)\in\A_n,\qquad m_i\ge1,\qquad
+ \vH(E_i)=\delta_i>0,
+\]
+with $\delta_i=+\infty$ if $E_i=0$. Choose $\beta_i>0$ in $\Gamma$ satisfying $m_i\beta_i<\delta_i$ and put $\rho_i=t^{\beta_i}$. The product contour
+\[
+ T_\rho:\ (\theta_1,\ldots,\theta_n)
+       \longmapsto(\rho_1e^{i\theta_1},\ldots,\rho_ne^{i\theta_n})
+\]
+with the product orientation has a well-defined Hahn integral, and
+\begin{equation}\label{eq:torus}
+ \frac1{(2\pi i)^n}\HInt_{T_\rho}
+      \frac{H(z)\,dz_1\wedge\cdots\wedge dz_n}{F_1(z)\cdots F_n(z)}
+       =\Res_F(H)\qquad(H\in\A_n).
+\end{equation}
+It is independent of the allowed $\beta_i$. Every infinitesimal common zero has $v(z_i)>\beta_i$ for every $i$.
+\end{theorem}
+\begin{proof}
+By \cref{lem:rescale}, all rescaled numerator and denominator coefficients are polynomials on the ordinary $w$-space. The normalized denominator
+\[
+ \rho_i^{-m_i}F_i(\rho_1w_1,\ldots,\rho_nw_n)
+ =w_i^{m_i}+\widetilde E_i(w)
+\]
+has strictly positive-support error, since its exponents are at least $\delta_i-m_i\beta_i$. On an ordinary polyannulus about the unit torus, all leading $w_i$ are nonzero, so each reciprocal has a strong geometric expansion. The pulled-back $n$-form can therefore be integrated coefficientwise.
+
+Expanding those reciprocals gives a sum indexed by $k\in\N^n$. At each exponent the iterated ordinary circle integrals select the coefficient of $w_1^{-1}\cdots w_n^{-1}$. The factors $\rho_i$ from the differentials cancel the scaling of the selected monomials. The result is exactly
+\[
+ \sum_k(-1)^{|k|}
+ [z_1^{m_1(k_1+1)-1}\cdots z_n^{m_n(k_n+1)-1}]
+      (H E_1^{k_1}\cdots E_n^{k_n}),
+\]
+which is \eqref{eq:multires} for $f_i=z_i^{m_i}$. All rearrangements are justified by the positive normalized supports. The expression on the right does not depend on $\rho$, proving independence. Finally, for an infinitesimal common zero, $m_i v(z_i)=v(E_i(z))\ge\delta_i$ whenever $z_i\ne0$, and a zero coordinate has valuation $+\infty$. The strict inequalities follow.
+\end{proof}
+
+The geometry manuscript's conservation theorem then identifies the total local algebraic length as $\prod_i m_i$. When all its zeros are simple, \eqref{eq:torus} is the sum $\sum_b H(b)/J_F(b)$, where $J_F$ is the Jacobian determinant. The torus integral therefore realizes the cancellation of infinite individual residues in the coupled examples of that manuscript. The theorem does not assume the perturbations are polynomial or that their coefficient germs share an ordinary neighborhood.
+
+\subsection{What a general isolated complete intersection still requires}
+For arbitrary isolated $f$, a single diagonal rescaling need not make the leading equations coordinate powers or even keep the leading homogeneous system isolated. Thus \cref{thm:torus} cannot simply be applied after deleting its hypothesis. The usual cycle $\{|f_i|=\epsilon_i\}$ is not in general a coordinate product torus.
+
+There is nevertheless an exact \emph{coefficient-dependent cycle interpretation} of \eqref{eq:multires}. At a prescribed Hahn exponent, the support lemma retains only finitely many numerator germs and perturbation germs, and finitely many multi-indices. Those finitely many germs have a common ordinary representative neighborhood. Their ordinary residues can be computed on suitable protecting cycles there. The answer is independent of these representatives and radii by ordinary local residue theory. Doing this at each exponent gives precisely \eqref{eq:multires}.
+
+This is a compatible germwise procedure, not one fixed ordinary cycle for the entire original infinite family. Nor does its existence prove that no single suitably nonstandard cycle is possible. A general realization theorem would have to construct such a cycle, supply an admissible parametrization or a larger chain category, and prove agreement with \eqref{eq:multires}. The present article proves that realization for one variable and for the coordinate-power class above; it does not assume it for every complete intersection.
+
+\section{Rational contour integration from algebraic winding}\label{sec:algebraic-residue}
+\subsection{A definition independent of topological limits}
+Let $R$ be a real closed field containing $\R$, let $K=R[i]$, let $C$ be an oriented semialgebraic loop, and let $Q\in K(z)$ have no poles on $C$. Define
+\begin{equation}\label{eq:algint}
+ \boxed{\qquad
+ \ACoint_C Q(z)\,dz
+   :=2\pi i\sum_{b\in K}
+           \wind_{\mathrm{alg}}(C,b)\Res_b Q(z)\,dz.
+ \qquad}
+\end{equation}
+The sum is finite because a rational function has finitely many poles. The ordinary constant $2\pi i$ is a normalization chosen to agree with complex contour integration; an abstract real closed field without a distinguished copy of $\R$ would require a specified normalization instead.
+
+Equation \eqref{eq:algint} is the definition of an algebraic contour functional. It is not a claim that a finite-partition Riemann net converges to this value. Its ingredients are algebraic local residues and the independently defined degree or index from \cref{sec:definable}.
+
+\begin{theorem}[Rational Cauchy and residue calculus]\label{thm:algrational}
+The functional \eqref{eq:algint} is $K$-linear, additive on loop chains, orientation reversing, and invariant under definable contour homotopies avoiding the poles. For $S\in K(z)$ regular on $C$,
+\[
+ \ACoint_C S'(z)\,dz=0.
+\]
+If $Q$ has no poles in or on a positively oriented semialgebraic Jordan curve and $b$ lies inside, then
+\begin{equation}\label{eq:algcauchy}
+ \frac1{2\pi i}\ACoint_C\frac{Q(z)}{z-b}\,dz=Q(b).
+\end{equation}
+If a nonzero rational function $S$ has neither zeros nor poles on $C$, then
+\begin{equation}\label{eq:algargument}
+ \frac1{2\pi i}\ACoint_C\frac{S'}S\,dz
+   =\sum_b\wind_{\mathrm{alg}}(C,b)\,\ord_bS.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Linearity and chain properties follow from finite residue sums and the corresponding index properties. A derivative has zero local residue: differentiating a Laurent term cannot produce exponent $-1$. This proves the exact-form statement. In \eqref{eq:algcauchy}, poles of $Q$ have index zero, and the only nonzero weighted residue is $Q(b)$ at $b$. Finally, if $S=(z-b)^m U$ with $U(b)\ne0$, then $S'/S=m/(z-b)+U'/U$ has residue $m$. Substitution into the definition gives \eqref{eq:algargument}.
+\end{proof}
+
+This supplies a finite and exact rational contour theory at arbitrary field scales, including loops too close to poles for a coarse reduction contour to distinguish them. It does not by itself extend to a general Hahn-holomorphic function with an infinite collection of coefficient singularities. Nor does it canonically define open-path integrals of $1/(z-b)$: those require logarithmic continuation or a path/period convention, not just endpoints.
+
+\subsection{Agreement with the coherent functional on an explicit overlap}
+For this comparison, return specifically to the Hahn workspace $K=\C((t^\Gamma))$, with real part $R_\Gamma$.
+\begin{proposition}[An overlap comparison]\label{prop:overlap}
+Let $C=a+r\gamma_R$, where $\gamma$ is an ordinary piecewise-polynomial closed loop and $\gamma_R$ is its semialgebraic extension to field-valued parameters. Let $Q\in K(z)$. Suppose each pole $b$, when $(b-a)/r$ is finite, has reduction outside the ordinary trace of $\gamma$. Then the coherent affine-chart contour on the ordinary parameters exists, and its value agrees with \eqref{eq:algint}. The same is true after a polynomial infinitesimal deformation for which a definable pole-avoiding homotopy to this loop is verified.
+\end{proposition}
+\begin{proof}
+Use finite partial fractions after the affine substitution. Polynomial terms have coherent primitives and zero period. A term of order greater than one has a rational primitive, coherent on the coefficient collar, and also has zero period. For a simple pole with finite normalized position $c+\varepsilon$, \cref{thm:winding} gives period $2\pi i\wind(\gamma,c)$. The definable straight homotopy moving $c+\varepsilon$ to $c$ avoids $\gamma_R$: on its ordinary compact trace there is a positive real separation, and the polynomial extension preserves that separation up to infinitesimals at field-valued parameters. Thus its algebraic index equals the ordinary index.
+
+If the normalized pole is infinite, its inverse is infinitesimal. The reciprocal has a coherent expansion in nonnegative powers of the finite chart variable, with zero period. The field-valued polynomial loop is bounded by an ordinary constant in that chart; an infinite pole lies in the unbounded component and has index zero. These calculations prove equality term by term. For the last assertion, use the specified definable homotopy for algebraic indices and \cref{thm:homotopy} or \cref{thm:endpoints} for the coherent integrals.
+\end{proof}
+
+The restriction on the overlap is intentional. A general Hahn deformation with arbitrary smooth coefficient functions is not automatically a semialgebraic map over $R$. Agreement of the two constructions is proved where both are defined, not postulated for different chain categories.
+
+\subsection{Formal residues and incompatible Laurent expansions}
+For a local variable $u$, the characteristic-zero identity
+\begin{equation}\label{eq:formalcohom}
+ K((u))\,du\big/dK((u))\ \simeq\ K\,\frac{du}{u}
+\end{equation}
+follows by integrating every Laurent monomial other than $u^{-1}du$. The remaining coefficient is the residue. Under an invertible local coordinate change $u=\phi(v)$, exact differentials stay exact and
+$\phi'(v)/\phi(v)=1/v+$ a formal regular series; hence residue is coordinate invariant. These are algebraic facts, independent of any contour topology.
+
+One must distinguish Laurent expansion in a local variable from the outer Hahn expansion in $t$. For instance,
+\begin{equation}\label{eq:twoexpansions}
+ \frac1{z-t}=
+ \begin{cases}
+ \displaystyle\sum_{n\ge0}t^n z^{-n-1},& |t|\prec|z|,\\[0.7em]
+ \displaystyle-\sum_{n\ge0}t^{-n-1}z^n,& |z|\prec|t|.
+ \end{cases}
+\end{equation}
+The first is an outer expansion enclosing the displaced pole; the second is a Taylor expansion on a smaller region not enclosing it. Their respective contour residues about zero are $1$ and $0$. There is no contradiction: the admissible regions differ. In particular, the second expression is an element of $K[[z]]$ but not of the unscaled radius-free Hahn-germ ring, since its combined coefficient support in $t$ is not well ordered. Changing the order of formal completion and Hahn extension can change the domain of the resulting expression, as emphasized in \cite{Geometry}.
+
+\section{Root-of-unity sampling and Schnirelman-type integrals}\label{sec:sampling}
+\subsection{What the classical non-Archimedean construction assumes}
+For a complete algebraically closed field with a real-valued non-Archimedean absolute value, a useful circle integral is a limit of the weighted samples
+\begin{equation}\label{eq:samples}
+ S_n(f;a,r)=\frac r n\sum_{\xi^n=1}f(a+r\xi)\xi.
+\end{equation}
+Cherry's presentation of the Schnirelman integral uses this normalization, takes $n\to\infty$ with $|n|=1$, and defines the integral only when the field-valued limit exists \cite[\S1.3]{Cherry}. Its residue normalization is $1$, not $2\pi i$. The chosen $r$ is part of the datum for arbitrary functions, not just its absolute value. In a Hahn field with coefficient field $\C$, the natural valuation has residue characteristic zero and $v(n)=0$ for every positive integer.
+
+This is a valuable comparison, but the words ``complete Hahn field'' alone do not justify the limit. A common ordinary analytic coefficient expansion and a convergent non-Archimedean Laurent expansion are different hypotheses.
+
+\subsection{A rank-independent sufficient condition for a valuation limit}
+\begin{proposition}[A precise sampling criterion]\label{prop:samplingcriterion}
+Suppose $A_k\in K$, $k\in\Z$, satisfy
+\begin{equation}\label{eq:decay}
+ \text{for each }\gamma\in\Gamma,\quad
+       \{k\in\Z:v(A_k)\le\gamma\}\text{ is finite}.
+\end{equation}
+Then $f(\xi)=\sum_{k\in\Z}A_k\xi^k$ is strongly defined at every root of unity, and
+\begin{equation}\label{eq:alias}
+ S_n(f;0,1)=\sum_{\ell\in\Z}A_{\ell n-1}
+       \longrightarrow A_{-1}
+\end{equation}
+in the valuation topology as the ordinary integer $n$ tends to infinity. This holds even when $\Gamma$ has higher rank.
+\end{proposition}
+\begin{proof}
+For a fixed exponent bound $\gamma$, only finitely many coefficient series $A_k$ can contribute below that bound. Their supports form a finite union of well-ordered sets. This proves that the full union is well ordered: a descending sequence would be bounded above by its first term and hence lie in that finite union. It also proves local finiteness of contributions. Multiplication by a root of unity does not change support. Thus the series defining $f(\xi)$ is strong.
+
+The finite root-of-unity sum gives
+$n^{-1}\sum_{\xi^n=1}\xi^{k+1}=1$ when $n\mid k+1$, and $0$ otherwise. Strong summability permits applying this finite linear operation, proving the alias formula. Given $\gamma$, choose $N$ so large that the finitely many $k\ne-1$ with $v(A_k)\le\gamma$ all have $|k+1|<N$. For $n\ge N$ none of them has $n\mid k+1$. Every remaining nonprincipal term in \eqref{eq:alias} has valuation greater than $\gamma$, so the error does also. This is exactly valuation convergence.
+\end{proof}
+
+Condition \eqref{eq:decay} demands eventual domination of \emph{every} value-group threshold. It is stronger than the existence of a strong sum. When no countable subset is cofinal in the positive value group, a nontrivial infinite sequence of finite valuations cannot satisfy this tail condition; this is one reason sequential constructions have a limited role at very large ranks.
+
+\subsection{Coefficientwise recovery always has a different meaning}
+Let $F=\sum_{\lambda\in S}f_\lambda t^\lambda$ have one well-ordered support and ordinary continuous coefficient functions on the unit circle. In the fixed support space $\C^S$, use the product topology of the ordinary complex coefficient topologies. This is a topology on coefficient presentations; it is not the natural valuation topology of $K$.
+
+\begin{theorem}[Coefficientwise recovery of a Hahn contour]\label{thm:sampling}
+The samples $S_n(F;0,1)$ have support contained in $S$ and satisfy
+\begin{equation}\label{eq:coefflimit}
+ \operatorname*{lim}_{n\to\infty}^{\mathrm{coefficientwise}}
+       S_n(F;0,1)
+ =\frac1{2\pi i}\HCoint_{|z|=1}F(z)\,dz.
+\end{equation}
+The right side is a Hahn series with support contained in $S$. If the $f_\lambda$ are holomorphic on a common ordinary annulus, the coefficient at $\lambda$ is their ordinary Laurent residue.
+\end{theorem}
+\begin{proof}
+At exponent $\lambda$, the sample is
+$n^{-1}\sum_{j=0}^{n-1}f_\lambda(e^{2\pi ij/n})e^{2\pi ij/n}$.
+This is an ordinary Riemann sum for
+$(2\pi)^{-1}\int_0^{2\pi}f_\lambda(e^{i\theta})e^{i\theta}\,d\theta$,
+which is the normalized ordinary contour integral. Its convergence requires no uniformity in $\lambda$. Taking these limits creates no exponents outside the fixed well-ordered $S$, so it gives a legitimate element of $K$. The annulus assertion is the ordinary Laurent coefficient formula.
+\end{proof}
+
+The theorem is a realization of the already defined coefficientwise integral by finite samples in a \emph{specified coefficient topology}. It does not make that integral a fine limit. In general it does not make it a valuation limit either.
+
+\begin{example}[Ordinary convergence invisible to the Hahn valuation]\label{ex:ordinarysampling}
+Take the ordinary function $f(z)=1/(1-z/2)$ on a neighborhood of the unit disk, embedded as the sole coefficient at exponent zero. A finite algebraic calculation gives
+\begin{equation}\label{eq:ordinarysample}
+ S_n(f;0,1)=\frac{2}{2^n-1}.
+\end{equation}
+It tends to $0$ ordinarily and coefficientwise, agreeing with its zero contour integral. Every displayed nonzero number has Hahn valuation $0$, and distinct samples have nonzero real differences of valuation $0$. Thus the sequence is not valuation Cauchy. Its ordinary Taylor coefficients $2^{-k}$ do not tend to zero in the natural non-Archimedean valuation. No classical Schnirelman theorem on valuation-convergent analytic series is being contradicted.
+\end{example}
+
+\begin{example}[An obstruction occurring only in higher rank]\label{ex:highranksampling}
+In $\Gamma=\Q+\Q\omega$, let $f(z)=1/(1-tz)$. Its coherent unit-circle integral is again zero, but
+\begin{equation}\label{eq:highranksample}
+ S_n(f;0,1)=\frac{t^{n-1}}{1-t^n},\qquad
+ v(S_n)=n-1<\omega.
+\end{equation}
+The samples fail to converge to zero in the valuation topology, although each fixed Hahn coefficient is eventually zero. In a rank-one workspace with value group $\Q$, the same formula does converge to zero. In the full fine topology it cannot converge to zero, since it is never eventually zero. One exact formula therefore distinguishes three notions of convergence.
+\end{example}
+
+Both sample identities follow without any infinite-series argument. From
+$\prod_{\xi^n=1}(1-q\xi)=1-q^n$, logarithmic differentiation gives
+\[
+ \frac1n\sum_{\xi^n=1}\frac{\xi}{1-q\xi}
+       =\frac{q^{n-1}}{1-q^n}.
+\]
+Substitute $q=1/2$ and $q=t$. This calculation is also an effective diagnostic: before interpreting root-of-unity samples as an integral in a chosen topology, check whether their error valuations dominate the thresholds that topology actually uses.
+
+\section{Other established approaches and their precise relevance}\label{sec:alternatives}
+The following theories are genuine precedents or alternatives. They do not all integrate the same forms, take values in the same field, or use the same notion of path. The comparisons are intentionally narrower than a claim of equivalence.
+
+\subsection{Berkovich geometry: enriching points rather than connecting field elements}
+For a complete algebraically closed rank-one non-Archimedean field, the Berkovich projective line adds seminorm points, including points associated to disks. It has a tree structure with a unique arc between distinct points; Baker--Rumely develop its topology and potential theory \cite{BR}. Thus the enriched line acquires meaningful paths, but not a planar Jordan circle: two different arcs around a circle would contradict uniqueness. An annulus has an interval skeleton rather than an ordinary circular one.
+
+For the present problem, a more appropriate boundary intuition is a disk point with outgoing directions, or the ends of an annular skeleton, not a fine-connected one-dimensional curve in $K$. This is useful geometric guidance, not a derivation of the contour functional \eqref{eq:deformedint}. For higher-rank $\Gamma$, the standard real-valued norm construction requires restricting to a rank-one workspace or a separately justified coarsening. A faithful real-valued norm cannot preserve every higher-rank comparison. No canonical reduction of all surreal scales to one rank is asserted here.
+
+\subsection{Tropical differential forms and Stokes on Berkovich spaces}
+Chambert-Loir and Ducros construct real $(p,q)$-forms and currents on Berkovich spaces using tropicalizations and calibrated skeleta, with integration of top-bidegree forms and a Stokes formula \cite{CLD}. The current arXiv version inspected is their substantially expanded 2025 revision. This provides an established non-Archimedean analogue of real differential-form integration, rather than a reason to regard $d^2=0$ as an integration theorem by itself.
+
+Its integrals are real-valued and its geometric objects are enriched analytic spaces. Our $K$-valued periods of $F(z)\,dz$, with the chosen complex normalization $2\pi i$, are different objects. A comparison could associate tropical quantities to valuations or norms of analytic data, but one should not expect that operation alone to recover complex phase or the cancellation of opposite residues such as $\pm1/(2t)$. A theorem connecting the pairings would need additional hypotheses and an explicit map on both forms and chains.
+
+\subsection{Perfectoid analytic cycles: an actual Stokes theorem, but a different base}
+Mihara's revised work constructs analytic singular homology from a cosimplicial perfectoid object and integration over a restricted class of integrable analytic simplices \cite{Mihara}. In the integration part of the current text, the base field is a finite extension of $\Q_p$, the target is the de Rham period ring $B_{\dR}$, and Theorem~5.15 proves a Stokes formula for the specified simplices.
+
+This is directly relevant as evidence that replacing ordinary simplices and carefully restricting integrability can produce a non-Archimedean cycle pairing. It is \emph{not} a theorem for our natural Hahn valuation with residue field $\C$: the residue characteristic and the integration target differ. In particular, citing an older title or an abstract about ``non-Archimedean integration'' would not justify silently applying its period-ring construction to all surcomplex numbers. The common lesson is methodological: a chain category and its face compatibility must be constructed before a Stokes assertion is meaningful.
+
+\subsection{Tame measure and integration over real closed fields}
+Kaiser develops semialgebraic measure and integration over non-Archimedean real closed fields containing $\R$ with Archimedean value group, using valuation-section data \cite{Kaiser}. The construction can enlarge the value ring of the integral; for Puiseux series, a polynomial ring in an additional variable occurs. Its field and value-group hypotheses are part of the theorem, not optional terminology.
+
+This approach is a natural candidate when one wants integrals over entire semialgebraic regions, rather than a coefficientwise parametrization or a residue-defined closed period. It also warns that the integrals of rational functions may require logarithmic values outside the initial workspace. It does not, just from semialgebraic Jordan separation, supply a $K$-valued Stokes theorem for every higher-rank Hahn domain. Our polynomial theorem avoids these issues by using finite factorial identities; our rational closed-period theorem avoids open-path logarithms by using residues.
+
+\subsection{Surreal extension and integration theories}
+Costin--Ehrlich develop extension and integration on the surreals for substantial specified classes of functions, including resurgent analytic settings \cite{CE}. Their theory is an important source of possible transcendental integrands beyond globally uniform all-scale coherence. It is not merely the coefficientwise integral on a fixed ordinary domain.
+
+Extending a real one-variable integral to surreal endpoints is not automatically a construction of complex contour integration: complexification, phase and branch data, pullback along a path, and compatibility with a two-dimensional boundary operator remain to be established. A useful comparison problem is to identify a class of jointly supported expansions on which the extension operator commutes with the coefficientwise pullbacks and primitives used here. Outside such an overlap, equality of integration operators should be a theorem, not an assumption.
+
+\subsection{Why a hyperreal workaround is additional structure}
+A nonstandard model with a specified star map can transfer ordinary smooth integration and can use internal hyperfinite sums. That is a different route from a bare ordered-field identification or an embedding of a field into the surreals. The transferred domain, functions, and partitions have to be internal; standard-part or summation operations then determine what information the output retains. It is invalid to call a proper-class surreal interval an internal hyperfinite interval merely because both contain infinitesimals. This observation does not rule out constructing a comparison through a selected nonstandard model; it identifies the extra data such a comparison would have to carry.
+
+\section{A usable contour-integration procedure}\label{sec:procedure}
+\subsection{Choose the object before choosing the formula}
+For an application, the most effective first decision is whether the input is a rational function on a semialgebraic loop, a coherent analytic family on an ordinary base, or a radius-free germ. Those choices lead respectively to \eqref{eq:algint}, \eqref{eq:deformedint}, and a small-scale realization such as \cref{thm:radiusfree,thm:torus}. Merely declaring the function fine-holomorphic does not select any of these integrals.
+
+A reliable workflow is the following finite sequence of checks.
+\begin{enumerate}
+\item \textbf{Specify the workspace and the category of chain.} Record $\Gamma$, the chosen monomials, and whether the parameters are ordinary real parameters, field-valued semialgebraic parameters, or polynomial simplex data. State which notion of interior or component is used.
+\item \textbf{Normalize the scale and the integrand.} In a chart $z=a+rw$, compute the pulled-back differential including its factor $r$. For a meromorphic function, normalize its denominator by a leading monomial and inspect the resulting ordinary leading coefficient on the base contour.
+\item \textbf{Prove the support certificate.} Identify the source support $S$ and the positive perturbation set $E$, and check $S+E^*$. Positivity without well-ordering is insufficient. A lower valuation bound without finite contribution at each exponent is also insufficient.
+\item \textbf{Choose the simplification justified by the hypotheses.} Use Stokes or a coherent primitive for a bounding contour; use Cauchy's formula for an evaluation; use preparation and residues for finite moving poles; use algebraic indices when rational semialgebraic geometry is more informative than a coarse shadow.
+\item \textbf{Resolve a boundary layer rather than assigning it a side.} When a normalized pole reduces to the base contour, the coefficient inverse may not exist on a common collar. Move the contour by an explicitly admissible detour, zoom into the offending scale, or use a separately defined algebraic contour. State the resulting convention.
+\item \textbf{Keep equality distinct from convergence.} A strong sum, a coefficientwise limit, a rank-one valuation limit, and a full fine limit are different assertions. Return the exact Hahn result with its support justification; add an asymptotic or numerical approximation only in an explicitly chosen topology.
+\end{enumerate}
+
+\subsection{When a coefficient calculation is actually finite}
+An arbitrary support can contain infinitely many exponents below a prescribed bound. It is therefore unsafe to argue that ``truncating below $\gamma$ is a finite calculation.'' The useful statement is different: a \emph{fixed output exponent} in the constructions based on $S+E^*$ depends on only finitely many source words. Those words can involve germs whose ordinary radii are extremely small, but there are only finitely many of them for that coefficient.
+
+This distinction matters computationally in higher rank. For $\Gamma=\Q+\Q\omega$, the interval of exponents below $\omega$ contains all positive integers. An order cutoff at $\omega$ can require infinitely many coefficients, while extraction of a particular coefficient still has finite combinatorial dependency. An implementation needs an effective representation of supports and a way to enumerate exactly those dependencies; the existence proof alone does not provide such a data structure.
+
+\subsection{A compact decision table}
+\begin{center}\small
+\begin{longtable}{@{}L{0.29\textwidth}L{0.35\textwidth}L{0.26\textwidth}@{}}
+\toprule
+Input & Natural method & Check before applying it\\\midrule\endhead
+Polynomial differential on a nonstandard simplex or polytope & Factorial simplex integral and polynomial Stokes & Finite polynomial presentation and matching oriented faces.\\[0.45em]
+Coherent holomorphic $F$ on an ordinary-base domain & Hahn contour integral; Cauchy; primitives & One common coefficient domain and well-ordered support.\\[0.45em]
+Uniform positive-support contour deformation & Taylor pullback and endpoint transport & Common support throughout the deformation and a nonsingular coefficient collar.\\[0.45em]
+Rational $Q$ and a semialgebraic loop & Algebraic winding weighted by local residues & No pole on the loop; normalization and orientation fixed.\\[0.45em]
+Radius-free one-variable germs & Rescale to a sufficiently small circle & The strict inequality $m\beta<\vH(E)$.\\[0.45em]
+Radius-free coordinate-power complete intersection & Scaled product torus & All $m_i\beta_i<\vH(E_i)$.\\[0.45em]
+General isolated complete intersection & Strong local residue expansion, finite dependency at each coefficient & A single geometric cycle needs a separate realization theorem.\\[0.45em]
+Root-of-unity sample sequence & Coefficientwise recovery or a verified valuation-tail criterion & Never infer the topology of the limit from the sampling formula alone.\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\section{Research directions with exact missing steps}\label{sec:research}
+\subsection{A multiscale analytic atlas rather than all-scale uniformity}
+The analysis manuscript proves that entire functions coherent at \emph{every} surreal scale are polynomials. A useful transcendental contour theory should therefore not demand that all its functions have one kind of uniform chart at every possible radius. A more flexible candidate is an atlas of selected coherent or asymptotic charts, with finitely many used by each contour. To descend our integral to such an atlas one would need: admissible transition pullbacks, a common-refinement property for contour descriptions, and equality of the two pulled-back integrands on each overlap. \Cref{lem:pullback,thm:deformed-stokes} supply local tools, not that global atlas theorem.
+
+If local primitives are used, their overlap differences must lie in a controlled constant or period system. Otherwise the fine-local logarithm example can destroy path invariance. A successful theory should remember branch changes and winding, rather than force all locally exact differentials to have zero periods.
+
+\subsection{A single-cycle realization for arbitrary finite Hahn zero schemes}
+The main unanswered realization question left by \cref{sec:multivariable} is precise. Given arbitrary isolated $f$ and radius-free positive-support $E$, construct one admissible $n$-cycle for which the integral equals \eqref{eq:multires}. A solution may require a non-diagonal analytic change of variables, a finite resolution-type decomposition, or chains on an enlarged analytic space. It must also prove that no omitted summation or radius assumption is hidden in the parametrization.
+
+The established finite-algebra and trace identities in the geometry manuscript offer a robust target: any proposed cycle integral should annihilate the ideal $(F)$ and should satisfy $\Res_F(HJ_F)=\Tr(M_H)$. These are strong compatibility tests. They do not by themselves construct the cycle.
+
+\subsection{Locally supported smooth forms and global cohomology}
+There is a natural larger smooth object than \eqref{eq:hahnforms}: forms whose supports are uniform only on neighborhoods of ordinary base points. For instance, if $\psi_j$ are smooth bumps supported near the positive integers, then
+\[
+ \sum_{j\ge1}t^{-j}\psi_j(x)
+\]
+is locally a finite Hahn family on $\R$, but its global exponent set $\{-j:j\ge1\}$ is not well ordered. It does not belong to the global uniform-support space in \eqref{eq:hahnforms}.
+
+On a compact ordinary chain, a finite subcover recovers a finite union of well-ordered supports, so local integration can still be meaningful. The global sheafified de Rham cohomology need not be described by \cref{thm:cohomology} without an additional argument. A useful next step is to compare these two complexes, especially on noncompact bases and for locally finite chains. This is a distinct question from the holomorphic support-propagation theorem in the analysis manuscript.
+
+\subsection{Comparison with summation and enriched analytic spaces}
+Another concrete target is a commuting diagram between a selected surreal extension operator and a Hahn contour functional on an overlapping class of resurgent functions. The diagram must include variable differentiation, endpoint primitives, and branch continuation. Agreement just on ordinary values is insufficient, because distinct fine-local extensions can have different nonstandard behavior.
+
+For Berkovich or tropical constructions the comparison must also identify what replaces a contour and what happens to its output. A real-valued tropical integral may encode orders, lengths, or valuations while forgetting complex residues. For perfectoid cycle integrals the base and target period ring first have to be reconciled with the equicharacteristic-zero Hahn setting. These are potentially fruitful links, but none is an automatic corollary of the shared word ``non-Archimedean.''
+
+\section{Conclusion}\label{sec:conclusion}
+There are substantial counterparts of all three classical theorems, but no justified reason to put them under one unspecified topology on $\No[i]$. The full fine topology obstructs ordinary real-parameter Jordan curves and a universal endpoint theorem for all fine-local primitives. Reduction geometry restores an exact two-component theorem for a thick boundary at a chosen scale. Semialgebraic geometry restores an exact two-component theorem using definable paths and definable connectedness.
+
+Integration can then be built independently and compared on overlaps. Polynomial simplex integration gives finite algebraic Stokes identities at arbitrary field scales. Hahn differential forms give a surcomplex-valued Stokes pairing and an explicit cohomology calculation. Support-controlled Taylor pullback extends that pairing to infinitesimally deformed chains. In the holomorphic case it yields exact endpoint transport, Cauchy's theorem, Cauchy's formula, winding stability, and deformed residue contours. Rescaling converts radius-free one-variable germs into common-domain polynomial-coefficient families and gives genuine small-circle residue realizations; a corresponding torus theorem holds for dominating coordinate-power complete intersections.
+
+The central principle is therefore constructive rather than prohibitive: specify the parameter category, preserve the support algebra, and prove that boundary, pullback, and integration commute. Within those conditions, nonstandard scales and infinite residues are manageable. Outside them, changing topology or summation method is a new mathematical step that must be stated and justified.
+
+\appendix
+\section{Support and hypothesis audit}\label{app:audit}
+\begin{center}\small
+\begin{longtable}{@{}L{0.40\textwidth}L{0.50\textwidth}@{}}
+\toprule
+Construction & Controlling support or finite mechanism\\\midrule\endhead
+Coefficientwise $d$, ordinary integration, or a fixed linear homotopy operator & Output support contained in the input support $S$.\\[0.45em]
+Hahn product & $S+T$, with finite convolution at each exponent.\\[0.45em]
+Deformed Taylor pullback and chain differential & $S+E^*$, where $E$ is the common well-ordered positive deformation support.\\[0.45em]
+Deformed homotopy operator & The same $S+E^*$; ordinary integration in the homotopy parameter adds no exponents.\\[0.45em]
+Endpoint correction & $S+(\supp e)^*$, with at least one displacement factor in every term.\\[0.45em]
+Infinitesimal rescaling of radius-free germs & $S+(E_a\cup\{\beta_1,\ldots,\beta_n\})^*$; a fixed output exponent has a polynomial coefficient.\\[0.45em]
+Normalized one-variable denominator & Positive error because $\delta-m\beta>0$; inverse valid on a base annulus avoiding $w=0$.\\[0.45em]
+Normalized coordinate-power denominator tuple & Positive errors because $\delta_i-m_i\beta_i>0$; inverse valid on a common polyannulus.\\[0.45em]
+Algebraic rational contour & Finite pole set and integer algebraic winding; no infinite sum or limit.\\[0.45em]
+Polynomial simplex integral & Finite rational factorial identities in finitely many coefficients.\\[0.45em]
+Coefficientwise sampling limit & A fixed containing support $S$ and ordinary convergence in every coefficient; no valuation-convergence inference.\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+Several hypotheses have deliberately not been weakened. The curve in the topological Jordan theorem can be arbitrary, but integration here uses piecewise smooth or polynomial parametrizations. The bounded Jordan domain in Cauchy's formula has closure inside the common coefficient domain. Positive perturbation supports must be well ordered, not just positive subsets. Homotopies share one support on their whole ordinary compact parameter space. The torus theorem assumes coordinate-power leading equations. Rational closed-period integration is a definition and is compared to analytic integration only on an explicitly established overlap.
+
+The new proofs depend on ordinary coefficient identities and finite contributions at one Hahn exponent. They do not depend on the Noetherian or Nullstellensatz claims of the geometry manuscript except where that manuscript's finite-zero and residue results are expressly invoked. In particular, polynomial Stokes, Hahn Stokes, the cohomology theorem, the deformed-chain homotopy formula, and the sampling comparisons stand independently of those deeper analytic-algebra claims.
+
+\section{Exact checks and reproducibility}\label{app:checks}
+The archive includes \texttt{verify\_examples.py}, an exact symbolic check of the displayed examples and selected finite identities. It verifies polynomial Stokes on all monomial one-forms of total degree at most six on a triangle, polynomial Stokes on monomial two-forms of total degree at most three on a tetrahedron, the extreme-aspect-ratio triangle calculation, the ellipse coefficient, the root-of-unity rational identity by polynomial reduction, the pole-cluster residues, and truncated coefficients of the radius-free circle and a two-variable residue example. It also tests the endpoint-transport identity on a nontrivial polynomial deformation. The included report records 244 exact checks passing. These counts include the trace--Jacobian identities in the companion two-variable example.
+
+These checks are deliberately modest claims. They do not implement arbitrary Hahn fields, enumerate arbitrary ordered supports, prove semialgebraic Jordan separation, or formally verify the general theorems. They test exact algebraic identities and finite coefficients that can expose sign, normalization, and scaling mistakes in the examples. The full proofs above supply the general support arguments.
+
+The LaTeX source is self-contained apart from standard packages. Running \texttt{latexmk -pdf surcomplex\_contours.tex} builds the PDF. Running \texttt{python verify\_examples.py} with SymPy installed reproduces the accompanying verification report. The original supplied manuscripts are cited by filename and title; they are not altered or repackaged as newly established results.
+
+\section{Notation}\label{app:notation}
+\begin{center}\small
+\begin{tabular}{@{}L{0.27\textwidth}L{0.63\textwidth}@{}}
+\toprule
+Symbol & Meaning\\\midrule
+$\SC=\No[i]$ & Full surcomplex class field.\\[0.35em]
+$R_\Gamma,K$ & Real and complex Hahn workspaces with monomials $t^\gamma=\omega^{-\gamma}$.\\[0.35em]
+$v,\vH$ & Least exponent of a field element or of a Hahn coefficient-family datum.\\[0.35em]
+$K^\circ,\m_K,\red$ & Finite elements, infinitesimals, and complex reduction.\\[0.35em]
+$U\sh$ & $\{c+\varepsilon:c\in U,\ \varepsilon\in\m_K\}$.\\[0.35em]
+$\HH(U)$ & $\OO(U)((t^\Gamma))$, with one common ordinary coefficient domain.\\[0.35em]
+$\A_n$ & $\C\{z_1,\ldots,z_n\}((t^\Gamma))$, with radius-free coefficient germs.\\[0.35em]
+$E^*$ & Monoid of finite words in a well-ordered positive support $E$.\\[0.35em]
+$\Omega_H^q(M)$ & Globally uniform Hahn series of ordinary smooth complex $q$-forms.\\[0.35em]
+$\Phi=\phi+\eta$ & Ordinary base parametrization plus a uniformly supported infinitesimal deformation.\\[0.35em]
+$\HInt,\PInt,\ACoint$ & Hahn, polynomial-simplex, and algebraic-residue integration, respectively.\\[0.35em]
+$T_F(c,e)$ & Microscopic endpoint Taylor correction.\\[0.35em]
+$\wind_{\mathrm{alg}}$ & Definable/algebraic integer winding, not fine-topological degree.\\[0.35em]
+$\res_f,\Res_F$ & Ordinary local residue and its strong Hahn perturbation extension.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{thebibliography}{99}
+\addcontentsline{toc}{section}{References}
+\bibitem{Analysis}
+\emph{Surcomplex Analysis: Infinitesimal Calculus, Hahn-Coherent Holomorphy, and Contour Theory}.
+Supplied research manuscript, September 21, 2026.
+Source file: \texttt{surcomplex\_analysis(3).tex}.
+Used for its stated fine-topology, coherent-contour, preparation, moving-residue, endpoint, affine-scale, and rigidity results; not treated as a published priority certification.
+
+\bibitem{Geometry}
+\emph{Infinitesimal Analytic Geometry over the Surcomplex Numbers: Radius-Free Hahn Germs, a Nullstellensatz, and Conservation of Singular Zeros}.
+Supplied research manuscript, September 21, 2026.
+Source file: \texttt{surcomplex\_analytic\_geometry.tex}.
+Used for its radius-free germ convention, support-controlled evaluation, rescaling lemma, finite deformation theorem, and perturbation residues.
+
+\bibitem{Ahlfors}
+Lars V. Ahlfors, \emph{Complex Analysis}, 3rd ed., McGraw--Hill, 1979.
+Chapter 4 contains the classical contour, Cauchy, and residue theory.
+\href{https://abel.math.harvard.edu/graduate/books/ahlfors.html}{Harvard chapter listing}.
+
+\bibitem{Spivak}
+Michael Spivak, \emph{Calculus on Manifolds: A Modern Approach to Classical Theorems of Advanced Calculus}, W. A. Benjamin, 1965.
+\href{https://www.routledge.com/Calculus-On-Manifolds-A-Modern-Approach-To-Classical-Theorems-Of-Advan/Spivak/p/book/9780805390216}{Current publisher record}.
+Ordinary differential forms, integration, and Stokes are the coefficient-level inputs.
+
+\bibitem{BCR}
+Jacek Bochnak, Michel Coste, and Marie-Fran\c{c}oise Roy,
+\emph{Real Algebraic Geometry}, Ergebnisse der Mathematik und ihrer Grenzgebiete, 3. Folge, vol.~36, Springer, 1998.
+\href{https://doi.org/10.1007/978-3-662-03718-8}{doi:10.1007/978-3-662-03718-8}.
+
+\bibitem{Woerheide}
+Arthur Anderson Woerheide, \emph{O-minimal Homology}, Ph.D. dissertation, University of Illinois at Urbana--Champaign, 1996.
+\href{https://www.ideals.illinois.edu/items/19783}{Institutional record};
+\href{https://hdl.handle.net/2142/19648}{permanent handle}.
+The repository abstract explicitly identifies the o-minimal Jordan--Brouwer application.
+
+\bibitem{BO}
+Alessandro Berarducci and Margarita Otero,
+``Intersection theory for o-minimal manifolds,''
+\emph{Annals of Pure and Applied Logic} \textbf{107} (2001), 87--119.
+\href{https://doi.org/10.1016/S0168-0072(00)00027-0}{doi:10.1016/S0168-0072(00)00027-0};
+\href{https://web.dm.unipi.it/berardu/pubblicazioni_abstracts.html}{Author's bibliography and abstract}.
+
+\bibitem{Eisermann}
+Michael Eisermann,
+``The Fundamental Theorem of Algebra made effective: an elementary real-algebraic proof via Sturm chains,''
+\emph{American Mathematical Monthly} \textbf{119} (2012).
+\href{https://arxiv.org/abs/0808.0097}{arXiv:0808.0097};
+\href{https://doi.org/10.4169/amer.math.monthly.119.09.715}{doi:10.4169/amer.math.monthly.119.09.715}.
+Sections 3--4 give the Cauchy-index and algebraic-winding constructions used in the comparison.
+
+\bibitem{Neumann}
+B. H. Neumann, ``On ordered division rings,''
+\emph{Transactions of the American Mathematical Society} \textbf{66} (1949), 202--252.
+Classical ordered-support summability input, as used in the supplied manuscripts.
+
+\bibitem{Poonen}
+Bjorn Poonen, ``Maximally complete fields,''
+\emph{L'Enseignement Math\'ematique} (2) \textbf{39} (1993), 87--106.
+\href{https://math.mit.edu/~poonen/papers/amsval.pdf}{Author's full text}.
+In particular, Corollary 4 gives the relevant algebraic-closedness statement for divisible-value-group series fields.
+
+\bibitem{CDS}
+Eduardo Cattani, Alicia Dickenstein, and Bernd Sturmfels,
+``Computing multidimensional residues,'' in \emph{Algorithms in Algebraic Geometry and Applications}, Progress in Mathematics \textbf{143}, Birkh\"auser, 1996, pp.~135--164.
+\href{https://arxiv.org/abs/alg-geom/9404011}{arXiv:alg-geom/9404011};
+\href{https://doi.org/10.1007/978-3-0348-9104-2_8}{doi:10.1007/978-3-0348-9104-2\_8}.
+The ordinary local-residue inputs are also stated explicitly in \cite{Geometry}.
+
+\bibitem{Cherry}
+William Cherry, ``Lectures on Non-Archimedean Function Theory,'' 2009.
+\href{https://arxiv.org/abs/0909.4509}{arXiv:0909.4509}.
+Section 1.3 gives the weighted Schnirelman normalization, its limit condition, and the caution about dependence on the chosen radius element.
+
+\bibitem{BR}
+Robert Rumely and Matthew Baker,
+``Analysis and dynamics on the Berkovich projective line,'' 2004.
+\href{https://arxiv.org/abs/math/0407433}{arXiv:math/0407433}.
+Expanded lecture notes; used for the tree and unique-path geometry, not as a contour-integral comparison theorem.
+
+\bibitem{CLD}
+Antoine Chambert-Loir and Antoine Ducros,
+\emph{Formes diff\'erentielles r\'eelles et courants sur les espaces de Berkovich}.
+\href{https://arxiv.org/abs/1204.6277}{arXiv:1204.6277}, version 2, July 25, 2025.
+Real tropical differential forms, currents, integration, and a Stokes formula on Berkovich spaces.
+
+\bibitem{Mihara}
+Tomoki Mihara,
+``Non-Archimedean Analytic Singular Homology Based On Cosimplicial Perfectoid Spaces and Integration along Cycles,''
+\emph{The Ramanujan Journal} \textbf{68} (2025), article 98.
+\href{https://arxiv.org/abs/1211.1422}{arXiv:1211.1422}, version 2, September 16, 2024;
+\href{https://doi.org/10.1007/s11139-025-01255-8}{doi:10.1007/s11139-025-01255-8}.
+Section 5 specifies the $p$-adic base and $B_{\dR}$ target; Theorem 5.15 is the Stokes identity for integrable simplices.
+
+\bibitem{Kaiser}
+Tobias Kaiser,
+``Lebesgue measure theory and integration theory on non-archimedean real closed fields with archimedean value group.''
+\href{https://arxiv.org/abs/1409.2241}{arXiv:1409.2241}.
+Used only with its stated value-group, valuation-section, and output-ring qualifications.
+
+\bibitem{CE}
+Ovidiu Costin and Philip Ehrlich,
+``Integration on the Surreals,''
+\emph{Advances in Mathematics} \textbf{452} (2024), article 109823.
+\href{https://arxiv.org/abs/2208.14331}{arXiv:2208.14331}.
+A separate extension/integration theory, not assumed to coincide with the contour functionals defined here.
+
+\bibitem{WikiJordan}
+Wikipedia contributors, ``Jordan curve theorem.''
+\url{https://en.wikipedia.org/wiki/Jordan_curve_theorem}.
+Question-supplied orientation reference, accessed September 21, 2026.
+
+\bibitem{WikiCauchy}
+Wikipedia contributors, ``Cauchy's integral theorem.''
+\url{https://en.wikipedia.org/wiki/Cauchy's_integral_theorem}.
+Question-supplied orientation reference, accessed September 21, 2026.
+
+\bibitem{WikiStokes}
+Wikipedia contributors, ``Generalized Stokes theorem.''
+\url{https://en.wikipedia.org/wiki/Generalized_Stokes_theorem}.
+Question-supplied orientation reference, accessed September 21, 2026.
+\end{thebibliography}
+\end{document}

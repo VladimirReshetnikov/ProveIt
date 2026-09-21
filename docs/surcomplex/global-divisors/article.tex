@@ -1,0 +1,1473 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr,aliascnt}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{%
+  pdftitle={Global Support Obstructions: Moving Divisors, Mittag-Leffler, and a Picard Dichotomy},
+  pdfauthor={Merged research manuscript},
+  pdfsubject={Hahn-coherent surcomplex analysis; global divisors; Cousin problems; line bundles}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Global support obstructions}
+\fancyhead[R]{\small Divisors, Mittag--Leffler, Picard}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.3em}
+\setlength{\parindent}{1.25em}
+\setlist{nosep,leftmargin=2em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\SC}{\mathbf{SC}}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\HH}{\mathscr H_\Gamma}
+\newcommand{\HP}{\mathscr H_{\Gamma,+}}
+\newcommand{\HI}{\mathscr H_{\Gamma,\ge0}}
+\newcommand{\KK}{K_\Gamma}
+\newcommand{\mK}{\mathfrak m_\Gamma}
+\newcommand{\mSC}{\mathfrak m_{\SC}}
+\newcommand{\sh}{^{\sharp}}
+\newcommand{\st}{\operatorname{st}}
+\newcommand{\red}{\operatorname{red}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Pic}{\operatorname{Pic}}
+\newcommand{\Piclf}{\operatorname{Pic}_{\mathrm{lf}}}
+\newcommand{\ExpH}{\operatorname{Exp}_{H}}
+\newcommand{\LogH}{\operatorname{Log}_{H}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\jet}{\mathcal R}
+\newcommand{\BB}{\mathscr B(P)}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\numberwithin{equation}{section}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{0.6cm}
+{\Large\scshape A merged research continuation\par}
+\vspace{0.6cm}
+{\Huge\bfseries Global Support Obstructions\par}
+\vspace{0.3cm}
+{\LARGE\bfseries Moving Divisors, Mittag--Leffler,\par and a Picard Dichotomy\par}
+\vspace{0.8cm}
+{\large September 21, 2026\par}
+\vspace{0.6cm}
+\begin{minipage}{0.93\textwidth}
+\begin{abstract}
+We study the sheaf $\HH$ of well-ordered Hahn series whose coefficients are ordinary holomorphic functions on a \emph{common} ordinary domain, for a fixed set-sized surreal value group $\Gamma$, together with its nonnegative-support subring sheaf $\HI$ and its positive-support additive subsheaf $\HP$. The questions are global: when do infinitely many individually legitimate infinitesimal analytic prescriptions admit one coherent realization over the ordinary complex plane?
+
+We prove a sharp moving-divisor theorem. A family of prescribed infinitesimal root clusters, encoded by monic cluster polynomials $P_c(u)=u^{m_c}+\sum_{j<m_c}a_{c,j}u^j$ over a closed discrete ordinary set $A$, is the exact zero divisor of one nonzero element of $\HH(\C)$ if and only if the \emph{symmetric support} $E(P)=\bigcup_{c}\bigcup_{j<m_c}\supp(a_{c,j})$ is well ordered. It is the support of the symmetric coefficients, not of separately labelled roots, that decides. Simple zeros at $n+t^{1/n}$ are therefore not realizable alone, while \emph{all} roots of $(z-n)^n=t$ are, so a globally principal effective divisor can have a nonprincipal effective sub-divisor.
+
+We prove the matching criteria for discrete Hahn principal parts, for deformed Hermite interpolation --- whose correct target is a \emph{support-restricted} product of the finite algebras $\KK[u]/(P_c)$, not their unrestricted product --- for moving poles, and an exact additive Cousin criterion in terms of the singular support on a puncture-and-disk cover. We show that every ordinary-base stalk of $\HH$ is a principal ideal domain, though not a local ring, which is what licenses classifying all tensor-invertible modules rather than only locally free rank-one sheaves. The resulting Picard group vanishes exactly when $\Gamma=\{0\}$ or $\Gamma$ is order-isomorphic to $\Z$; for noncyclic $\Gamma$ its complex dimension is at least $2^{\aleph_0}$, with equality when $\Gamma$ is countable.
+
+All proofs are support-controlled constructions in a fixed set-sized workspace, not convergence arguments in the fine surreal topology.
+\end{abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{0.93\textwidth}\small
+\textbf{Status.} This article is a merge of two independent research continuations of one supplied manuscript; see \cref{global:sub:provenance}. The principal global criteria, the restricted interpolation algebra, the exact singular-support obstruction and the Picard-group dichotomy are proposed new results in the precise framework of that manuscript, and full proofs are given. The literature check, conducted on 21 September 2026, was targeted rather than exhaustive; it did not locate these formulations, and it does not certify priority. No established named published conjecture is claimed solved. The proofs have not been refereed or machine checked; the accompanying symbolic scripts validate displayed finite examples and are not machine verification of the general arguments.
+\end{minipage}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\tableofcontents
+\newpage
+\pagenumbering{arabic}
+
+\section{The question: from local roots to global compatibility}\label{global:sec:intro}
+
+The supplied manuscript \cite{Source} develops surcomplex analysis by separating fine-local power-series calculus on $\SC=\No[i]$ from Hahn-coherent holomorphy over an ordinary complex domain. In that middle layer a function on the infinitesimal thickening of an ordinary domain $U$ is represented by
+\[
+  F(z)=\sum_{\gamma\in S}f_\gamma(z)t^\gamma,
+  \qquad f_\gamma\in\OO(U),\qquad S\subseteq\Gamma\ \text{well ordered},
+\]
+with $t^\gamma=\omega^{-\gamma}$ in the surcomplex interpretation. Its one-variable preparation theorem associates a finite monic polynomial to every infinitesimal zero cluster, and its root-lifting theorem counts the roots in a monad exactly. Those are starting points here, not new claims.
+
+A question that local preparation does not answer is global. Suppose an ordinary discrete set has infinitely many points and a finite infinitesimal root configuration has been specified above each one. Can a single coherent entire datum realize all these configurations simultaneously? The classical Weierstrass theorem might suggest that ordinary discreteness suffices. It does not. A condition on the union of the \emph{Hahn supports} is necessary, and --- once the right invariant is extracted --- sufficient.
+
+A first illustration is the proposed list of simple zeros
+\begin{equation}\label{global:eq:impossibleintro}
+  z_n=n+t^{1/n},\qquad n\ge2 .
+\end{equation}
+Every individual point is legitimate and every finite sublist is realizable, even by a polynomial. Nevertheless no Hahn-coherent entire datum has exactly these simple zeros and no others in the thickened plane. In contrast one can simultaneously realize, at every integer $n$, \emph{all} roots of
+\begin{equation}\label{global:eq:possibleintro}
+  (z-n)^n-t=0 .
+\end{equation}
+These roots also involve the decreasing exponents $1/n$. The difference is that their symmetric cluster polynomial uses only the single exponent $1$. That distinction is the content of the first main theorem, not an artifact of an overly strong sufficient hypothesis.
+
+The same issue appears in the additive Cousin, or Mittag--Leffler, problem. Solving each complex coefficient separately is easy; assembling the solutions into one Hahn series may be impossible. Exponentiating the positive-support version of this obstruction produces nontrivial line bundles even though the ordinary base is the contractible Stein manifold $\C$.
+
+\subsection{The main results in concrete form}\label{global:sub:mainresults}
+
+Fix a set-sized ordered additive subgroup $\Gamma\subseteq\No$ and a closed discrete $A\subset\C$. At each $c\in A$ prescribe a monic cluster polynomial
+\begin{equation}\label{global:eq:clusterintro}
+  P_c(u)=u^{m_c}+\sum_{j<m_c}a_{c,j}u^j,
+  \qquad a_{c,j}\in\mK,\quad m_c\ge1,
+\end{equation}
+with no common upper bound on the multiplicities $m_c$ and no separation assumption on the roots inside a cluster. The \emph{symmetric support} is
+\begin{equation}\label{global:eq:symmsupportintro}
+  E(P)=\bigcup_{c\in A}\bigcup_{j<m_c}\supp(a_{c,j})\subseteq\Gamma_{>0},
+\end{equation}
+and the family is \emph{admissible} when $E(P)$ is well ordered. The principal conclusions are as follows.
+
+\begin{enumerate}
+\item \textbf{Sharp moving-divisor realization} (\cref{global:thm:divisor}). The family \eqref{global:eq:clusterintro} is the exact zero divisor of a nonzero $F\in\HH(\C)$ if and only if it is admissible; and then any prescribed ordinary entire $f_0$ with zero divisor $\sum_c m_c[c]$ can be retained as the exponent-zero coefficient of a realizer supported in $E(P)^*$.
+\item \textbf{Sharp principal-part compatibility} (\cref{global:thm:ML}). A discrete family of Hahn principal parts is the family of principal parts of a single section on the punctured plane if and only if the union of the principal-part exponents is well ordered. Relative to an admissible pole bound the same happens for moving poles (\cref{global:thm:MLmoving}).
+\item \textbf{Support-restricted interpolation} (\cref{global:thm:interpolation,global:cor:CRT}). For an admissible family the correct target of global interpolation is the \emph{support-restricted} product $\BB$ of the finite algebras $\KK[u]/(P_c)$, not their unrestricted product, and $\HH(\C)/(G)\cong\BB$ for any divisor realizer $G$.
+\item \textbf{An exact Cousin obstruction} (\cref{global:thm:cousincriterion}). On a puncture-and-disk cover, additive gluing is possible exactly when the exponents carrying \emph{nonremovable} ordinary coefficient singularities form a well-ordered set.
+\item \textbf{Principal-ideal-domain stalks and a line-bundle dichotomy} (\cref{global:thm:PID,global:thm:dichotomy,global:thm:dimension}). Every ordinary-base stalk of $\HH$ is a principal ideal domain, though nonlocal for $\Gamma\ne\{0\}$; consequently every tensor-invertible $\HH$-module is locally free of rank one, and
+\[
+  \Pic(\C,\HH)=0
+  \iff \Gamma=\{0\}\ \text{or}\ \Gamma=\Z\delta\ (\delta>0).
+\]
+For noncyclic $\Gamma$ one has $\dim_\C\Pic(\C,\HH)\ge2^{\aleph_0}$, with equality when $\Gamma$ is countable; in particular $\dim_\C\Pic(\C,\mathscr H_\Q)=2^{\aleph_0}$.
+\end{enumerate}
+
+These are global existence and obstruction theorems, not formal analogues of local identities. They distinguish finite from infinite collections of local data and cyclic from noncyclic value groups.
+
+\subsection{Conventions, and the coefficient ring that every theorem is stated over}\label{global:sub:conventions}
+
+Several conventions are fixed once here and used without further comment.
+
+\smallskip
+\noindent\textbf{One coefficient ring.} \emph{Every} numbered statement in this article is a statement about the sheaf
+\[
+  \HH(U)=\OO(U)((t^\Gamma)),
+\]
+whose Hahn coefficients are ordinary holomorphic functions on the \emph{common} ordinary domain $U$, or about its subsheaves $\HI$ and $\HP$, or about the ordinary-base stalks
+\[
+  R_c=(\HH)_c=\varinjlim_{U\ni c}\HH(U)
+\]
+formed by shrinking ordinary neighbourhoods of an ordinary point $c$. Nothing here is asserted about, or transported to or from, a radius-free coefficient ring $\C\{z\}((t^\Gamma))$ whose Hahn coefficients are individually convergent germs with no common domain of convergence, or a formal coefficient ring $\C[[z]]((t^\Gamma))$, or a uniform-support variant. The common-domain requirement is used essentially and repeatedly: in the sheaf property (\cref{global:prop:sheaf}), in the ``no disk shrinking'' clause of the divisor recursion (\cref{global:thm:divisor}), and in the uniform support bound of local preparation (\cref{global:thm:preparation}). The two rings that do occur are distinguished by name where it matters: the \emph{fixed-disk ring} $\OO(D)((t^\Gamma))$ of sections over one chosen ordinary disk $D$, in which preparation and division take place, and the \emph{ordinary-base stalk} $R_c$, a filtered colimit of such rings, of which the principal-ideal-domain theorem speaks. The theorems are not interchangeable between the two: $\OO(D)((t^\Gamma))$ is not claimed to be a principal ideal domain for a fixed $D$.
+
+\smallskip
+\noindent\textbf{Reduction.} The exponent-zero coefficient map
+\[
+  \red:\HI\longrightarrow\OO,
+  \qquad \sum_{\gamma\ge0}f_\gamma t^\gamma\longmapsto f_0,
+\]
+is called the \emph{reduction}. The two source manuscripts and the wider literature also call the induced operation the residue map, the standard part and the shadow; those are synonyms recorded once here and not used again. We write $\st$ only for the scalar standard part $\OO_\Gamma\to\C$, $a\mapsto a_0$. Reduction is \emph{not} defined on $\HH$; see \cref{global:rem:reduction}.
+
+\smallskip
+\noindent\textbf{Symbols.} $\mK$ denotes the infinitesimals of the fixed Hahn field $\KK$ and $\mSC$ the infinitesimals of $\SC$; $\mK=\mSC\cap\KK$. Cluster data are indexed by ordinary centres $c\in A$, with $u=z-c$ the local coordinate. The symmetric support of a cluster family is written $E(P)$ throughout; one of the sources writes $S_{\mathcal D}$ for the same set. The positive-support exponential and logarithm are written $\ExpH$ and $\LogH$ to keep them apart from the ordinary exponential $e^h$ of a holomorphic function. The simultaneous deformed remainder map is $\jet_P$. Line-bundle groups are written $\Piclf$ for locally free rank-one modules and $\Pic$ for tensor-invertible modules; \cref{global:cor:Picmeaning} proves these agree here, and \cref{global:rem:piclf} records exactly what that proof buys.
+
+\smallskip
+\noindent\textbf{Set-sizedness.} All supports, families, covers and recursions are sets. The value group $\Gamma$ is fixed and set-sized, which is what makes the sheaves and their cohomology set-valued. Every finite tuple of surcomplex numbers occurring in an argument lies in some set-sized divisible workspace, obtained as the divisible hull of the group generated by the relevant normal-form supports; this never authorizes a proper-class sum or a proper-class polynomial ring.
+
+\subsection{Provenance, and relation to published work}\label{global:sub:provenance}
+
+This article merges two independent continuations of the same supplied manuscript \cite{Source}, referred to below as \emph{Manuscript~A} (``Global Support Obstructions in Surcomplex Analysis: Moving Divisors, Mittag--Leffler Theory, and a Picard-Group Dichotomy'') and \emph{Manuscript~B} (``Global Divisors and Cohomological Obstructions in Hahn-Coherent Surcomplex Analysis''). The terminology $U\sh$, strong summability and Hahn coherence follows \cite{Source}, as do the ordinary-base gluing mechanism, the injectivity and compatibility of evaluation, and the one-variable preparation, division, root-lifting and pole-free-fraction arguments. These are credited, reproved here in the fixed-$\Gamma$ form needed for infinitely many simultaneous prescriptions, and not claimed as new.
+
+Where the two continuations prove the same theorem, the merged text prints one proof; where one proves strictly more, the stronger statement is printed and the weaker one is retained as the statement that survives without the extra ingredient. Two such places are flagged explicitly in the text: \cref{global:rem:piclf} on tensor-invertible versus locally free rank-one modules, and \cref{global:rem:dimension} on the size of the Picard group. Attribution of the individually contributed results is recorded in \cref{global:app:provenance}.
+
+Normal forms, infinitesimal power-series evaluation and the underlying surreal field theory have established predecessors, including van den Dries--Ehrlich \cite{vdDE} and Gonshor \cite{Gonshor}; the algebraic closure of Hahn fields with divisible value group is Poonen's \cite[Corollary~4]{Poonen}. The summability algebra is the classical Hahn--Neumann support theory \cite{Neumann}. Berarducci--Mantova's surreal function theory \cite{BM} and Costin--Ehrlich's integration theory \cite{CE} address different extension and summation questions; \emph{we do not identify their function classes with the sheaf studied here}. Ehrlich--Kaplan construct canonical exponentials for surreal and surcomplex exponential fields \cite{EK}; \emph{no novelty claim about merely defining a surcomplex exponential is made here, and no global exponential construction is claimed as a contribution}.
+
+A terminological distinction matters. M\"uller--Strohmaier's Hahn-holomorphic and Hahn-meromorphic functions are normally convergent generalized expansions near a point on a logarithmic cover, with a different analytic variable and admissibility condition \cite[Definitions~2.3 and~2.5]{MS}. In our notation the Hahn parameter is an independent surreal scale and the coefficients are ordinary holomorphic functions on a common ordinary base; there is no ordinary convergence requirement across the Hahn exponents. \emph{Similar terminology does not make the objects or the global support conditions identical, and no equivalence of the two categories is assumed.}
+
+The classical analytic inputs are the Weierstrass product theorem, Mittag--Leffler's theorem, entire Hermite interpolation, the scalar additive Cousin theorem and the vanishing of $H^1(\C,\OO)$ and $\Pic(\C,\OO)$; see \cite{Ahlfors,McMullen,Demailly}. These are proved or cited in \cref{global:sec:scalar} and are kept strictly separate from the Hahn arguments. \emph{The ordinary interpolation tools are classical, not new results of this article. The present proofs do not apply Cartan's theorem to $\HH$ as though it were a coherent $\OO$-module}; see \cref{global:sub:notcoherent}. The cocycle and torsor interpretation of degree-one cohomology is standard \cite[Tag~02FQ]{Stacks}, and the local-stalk qualification for invertible sheaves is \cite[Tag~09NT]{Stacks}.
+
+\section{The workspace and the support calculus}\label{global:sec:workspace}
+
+\subsection{Fixed Hahn fields and infinitesimals}
+
+Let $\Gamma$ be a set-sized ordered additive subgroup of $\No$. Its complex Hahn field is
+\begin{equation}\label{global:eq:Kdef}
+  \KK=\C((t^\Gamma))
+  =\Bigl\{\sum_{\gamma\in S}a_\gamma t^\gamma:
+  S\subseteq\Gamma\text{ well ordered},\ a_\gamma\in\C\Bigr\},
+\end{equation}
+with zero coefficients omitted. Conway normal forms embed this field in $\SC$ by $t^\gamma=\omega^{-\gamma}$. For $a\ne0$ put $v(a)=\min\supp(a)$, and $v(0)=+\infty$. Write
+\[
+  \mK=\{a\in\KK:v(a)>0\},
+  \qquad \OO_\Gamma=\{a\in\KK:v(a)\ge0\},
+\]
+so that $0\in\mK$. Elements of $\mK$ are infinitesimal in the surreal modulus and $\OO_\Gamma$ consists of the finite elements of the workspace; the coefficient at exponent $0$ is the standard part $\st$ of a finite element. We use algebraic closedness of $\SC$, and occasionally of $\KK$ when $\Gamma$ is divisible \cite[Corollary~4]{Poonen}. No divisibility assumption enters the support, preparation, Mittag--Leffler, interpolation, Cousin or Picard theorems; roots of polynomials may always be discussed in $\SC$ or in a divisible Hahn enlargement.
+
+A family of Hahn series is \emph{strongly summable} when its total support is well ordered \emph{and} only finitely many members contribute at each exponent. Addition at an exponent is then a finite sum. Both conditions are checked separately everywhere below.
+
+\subsection{The Hahn--Neumann support lemma}
+
+For $E\subseteq\Gamma_{>0}$ set $E^*=\{e_1+\cdots+e_k:k\ge0,\ e_i\in E\}$, the empty sum being zero.
+
+\begin{lemma}[Support calculus]\label{global:lem:support}
+If $S,T$ are well-ordered subsets of an ordered abelian group, then $S+T$ is well ordered and every element has only finitely many representations $s+t$ with $s\in S$, $t\in T$. If $E\subseteq\Gamma_{>0}$ is well ordered, then $E^*$ is well ordered and every exponent is represented by only finitely many finite nondecreasing words in $E$; in particular only finitely many word lengths occur at a fixed exponent. Consequently, a formal power series in finitely many positive-support Hahn elements is strongly summable, and more generally a family indexed by a term of a well-ordered set $S$ together with a finite word in $E$ is strongly summable whenever each such word contributes finitely many terms.
+\end{lemma}
+
+\begin{proof}
+The first two assertions are the Hahn--Neumann support lemma \cite{Neumann,Poonen}. For the last assertion the two requirements are separated. Well ordering follows by applying the first assertion to $S$ and $E^*$. For a fixed output exponent there are finitely many pairs $(s,m)\in S\times E^*$ with $s+m$ equal to it; for each $m$ there are finitely many nondecreasing words in $E$ summing to $m$, and each finite word has finitely many orderings. Hence there are finitely many contributions before cancellation, which is exactly strong summability.
+\end{proof}
+
+The finiteness assertion refers to words in the \emph{set of exponents}. It does not refer to an infinite family of spatial points carrying the same exponent, and a well-ordered support alone does not justify an arbitrary rearrangement when infinitely many summands contribute at one exponent. Every infinite operation performed below is audited against \cref{global:lem:support}; the audit is collected in \cref{global:app:audit}.
+
+\begin{remark}[Two negative companions, both load-bearing]\label{global:rem:nonarch}
+First, strong summability is \emph{not} a valuation limit. For $\Gamma=\Q+\Q\omega$ the strong sum of $t^n$ over $n\ge0$ is $(1-t)^{-1}$, yet the tails never reach valuation $\omega$. No argument below has the form ``the valuation improves by a fixed positive amount at each iteration''; the recursions are well founded on a well-ordered exponent set, not contractive.
+
+Second, ``finitely many dependencies at a given exponent'' does not mean ``finitely many exponents below it''. The latter already fails below $\omega$ in $\Q+\Q\omega$. It is the former, and only the former, that legitimizes the finite-parameter replacements in the recursions of \cref{global:thm:preparation,global:lem:division,global:thm:divisor,global:thm:aut}.
+
+Third, the phrase \emph{positive perturbation} always refers to a well-ordered positive support, never merely to positive valuations of separately chosen terms: in a non-Archimedean ordered group $n\delta$ need not eventually exceed every positive element, and no proof below relies on that false implication. Relatedly, well ordering cannot be weakened to positivity, since $\{1/r:r\ge1\}$ is positive but not well ordered --- this is precisely the set that obstructs \eqref{global:eq:impossibleintro}.
+\end{remark}
+
+For a complex vector space $V$ we write $V((t^\Gamma))$ for Hahn families with coefficients in $V$. Every complex-linear map $V\to W$ extends coefficientwise, without increasing support and without any continuity or norm hypothesis. This applies to differentiation, Taylor-jet extraction, ordinary interpolation operators and division by a fixed ordinary monomial, and it is used constantly.
+
+\section{The coefficient sheaf}\label{global:sec:sheaf}
+
+\subsection{Sections, evaluation and gluing}
+
+\begin{definition}[Hahn-coherent coefficient sheaf]\label{global:def:sheaf}
+For connected nonempty ordinary open $U\subseteq\C$ define
+\begin{equation}\label{global:eq:Hdef}
+  \HH(U)=\OO(U)((t^\Gamma))
+  =\Bigl\{\sum_{\gamma\in S}f_\gamma t^\gamma:
+  f_\gamma\in\OO(U),\ S\subseteq\Gamma\text{ well ordered}\Bigr\}.
+\end{equation}
+For disconnected $U$ take the product over connected components. Let $\HP$ be given by requiring strictly positive exponents and $\HI$ by requiring nonnegative exponents, componentwise; these are respectively an additive sheaf closed under multiplication and a sheaf of unital subrings of $\HH$. The \emph{support} of a datum is the set of exponents whose coefficient function is not identically zero --- not the support of its value at a particular point. Derivatives differentiate coefficient functions and leave $t^\gamma$ fixed. Because $\OO(U)$ is a domain for connected $U$, the least exponent $v_H(F)$ satisfies the usual valuation identities for sums and products. The subscript $+$ refers to exponents, never to the sign of a complex coefficient.
+\end{definition}
+
+Note the asymmetry that defines the whole theory: the coefficients are ordinary holomorphic functions on a common ordinary domain, while the Hahn variable is an independent surreal scale.
+
+For an ordinary domain $U$ write
+\[
+  U\sh=\{c+\epsilon:c\in U,\ \epsilon\in\mSC\},
+  \qquad \mu(c)=c+\mSC,
+\]
+and define the evaluation of \eqref{global:eq:Hdef} by
+\begin{equation}\label{global:eq:eval}
+  F\sh(c+\epsilon)
+  =\sum_{\gamma\in S}\sum_{k\ge0}
+  t^\gamma\,\frac{f_\gamma^{(k)}(c)}{k!}\,\epsilon^k .
+\end{equation}
+
+\begin{proposition}[Evaluation and identity]\label{global:prop:evaluation}
+Formula \eqref{global:eq:eval} is strongly summable, with support in $S+(\supp\epsilon)^*$, and defines an injective algebra homomorphism from $\HH(U)$ into functions on $U\sh$. It respects addition, multiplication, coefficientwise differentiation and formal Taylor expansion in infinitesimal displacements. A coherent datum vanishing on a nonempty ordinary open subset of connected $U$ is zero.
+\end{proposition}
+
+\begin{proof}
+Let $E=\supp(\epsilon)$. The total support lies in $S+E^*$, and a power $\epsilon^k$ contributes words of length $k$, so \cref{global:lem:support} gives both well ordering and finite multiplicity at each exponent. The ordinary Taylor multiplication identities may therefore be regrouped, which proves the algebra assertion. Evaluation at an ordinary point is $\sum_\gamma f_\gamma(c)t^\gamma$, so uniqueness of Hahn normal forms and the ordinary identity theorem give injectivity and the last assertion. Taylor recentring uses the same support computation with the union of the finitely many displacement supports; the resulting local series has the coefficientwise derivatives, and its fine differentiability follows by factoring the remainder as the square of the increment times a locally bounded Hahn expression, as in the local evaluation argument of \cite[\S5]{Source}.
+\end{proof}
+
+On the workspace thickening, where $\epsilon\in\mK$, the output lies in $\KK$. Allowing infinitesimals outside the workspace changes the evaluation domain, not the coefficient sheaf or its cohomology; roots are counted in the full monad in $\SC$ unless a field is explicitly fixed. The global constructions below are first equalities of coefficient data, and evaluation is applied only after those data have been assembled. \emph{No sequence of partial Hahn sums is asserted to converge in the full fine surreal topology, and there is no claim that ordinary partial sums converge in that topology.}
+
+For $F=f_0+E$ with $E\in\HP(U)$ and $f_0(U)\subseteq V$, composition with $H=\sum_\delta h_\delta t^\delta\in\HH(V)$ is
+\begin{equation}\label{global:eq:comp}
+  H\circ F=\sum_{\delta}\sum_{k\ge0}t^\delta\,
+  \frac{h_\delta^{(k)}\circ f_0}{k!}\,E^k,
+\end{equation}
+with support contained in $\supp H+(\supp E)^*$; evaluation turns \eqref{global:eq:comp} into actual composition. This formula is used in \cref{global:sec:aut}.
+
+\begin{proposition}[Support-preserving sheaf property]\label{global:prop:sheaf}
+The prescriptions $\HH$, $\HI$, $\HP$ are sheaves on the ordinary plane. On a connected base, compatible local sections glue to a section with a \emph{single} well-ordered support.
+\end{proposition}
+
+\begin{proof}
+Refine a cover to connected opens. On an overlap, equality of Hahn data is equality of each coefficient function. A holomorphic coefficient that is nonzero on a connected open cannot vanish identically on a nonempty open subset, so two sections on intersecting connected opens with equal restrictions have the same exact support. The intersection graph of a cover of a connected space by connected opens is connected --- otherwise its graph components would separate the space --- hence all nonempty local descriptions share one support. Glue each holomorphic coefficient and retain that support; uniqueness is coefficientwise, and positivity and nonnegativity are preserved. On disconnected bases apply this to each component. This is the gluing mechanism of \cite[\S5]{Source}.
+\end{proof}
+
+Notice what this does \emph{not} say. Equality on overlaps supplies extra rigidity that an additive or multiplicative cocycle does not have. Arbitrary local sections need not glue after solving a correction problem: the corrections themselves may fail to have a common admissible support. That failure is the obstruction studied in \cref{global:sec:cousin,global:sec:pic}, and it is why arbitrary unions of supports are not permitted merely because a problem is stated locally.
+
+\subsection{Units, positive logarithms, and the integral subring}
+
+\begin{proposition}[Exact unit criterion]\label{global:prop:units}
+A nonzero $F=t^\lambda(f_\lambda+E)\in\HH(U)$ on connected $U$, with $E\in\HP(U)$, is a unit if and only if the ordinary function $f_\lambda$ is nowhere zero on $U$. In that case
+\begin{equation}\label{global:eq:unitinverse}
+  F^{-1}=t^{-\lambda}f_\lambda^{-1}\sum_{k\ge0}(-E/f_\lambda)^k,
+\end{equation}
+and every unit has a unique factorization
+\begin{equation}\label{global:eq:unitfactor}
+  F=t^\lambda h(1+E'),\qquad
+  \lambda\in\Gamma,\quad h\in\OO(U)^\times,\quad E'\in\HP(U).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The valuation of a product is the sum of the leading exponents because $\OO(U)$ is a domain; if $FG=1$ the leading coefficient functions multiply to $1$, so $f_\lambda$ has no zeros. Conversely, dividing by the leading monomial and leading coefficient gives $1+E/f_\lambda$ with positive support, and $\sum_{k\ge0}(-E/f_\lambda)^k$ is strongly summable by \cref{global:lem:support} and inverts it. Uniqueness follows by comparing leading exponents and coefficients.
+\end{proof}
+
+\begin{proposition}[Positive-support exponential and logarithm]\label{global:prop:explog}
+The formulas
+\begin{equation}\label{global:eq:explog}
+  \ExpH A=\sum_{k\ge0}\frac{A^k}{k!},
+  \qquad
+  \LogH(1+E)=\sum_{k\ge1}\frac{(-1)^{k+1}E^k}{k}
+\end{equation}
+define mutually inverse isomorphisms of abelian sheaves $(\HP,+)\simeq(1+\HP,\cdot)$, with supports contained in $(\supp A)^*$ and $(\supp E)^*\setminus\{0\}$ respectively, the constant term of the exponential being treated separately. Consequently there are isomorphisms of abelian sheaves
+\begin{align}
+  \HI^\times&\simeq\OO^\times\times\HP,\label{global:eq:Iunits}\\
+  \HH^\times&\simeq\underline\Gamma\times\OO^\times\times\HP,
+  \qquad (\lambda,h,A)\longmapsto t^\lambda h\ExpH A,\label{global:eq:unitsplit}
+\end{align}
+where $\underline\Gamma$ is the locally constant sheaf with values in the additive group $\Gamma$.
+\end{proposition}
+
+\begin{proof}
+All displayed terms have supports controlled by a positive monoid with finite word decompositions, so by \cref{global:lem:support} the formal characteristic-zero identities for $\exp$ and $\log$ may be evaluated and regrouped coefficientwise; they give the inverse identities and $\ExpH(A+B)=\ExpH(A)\ExpH(B)$ in the commutative ring $\HH(U)$. For \eqref{global:eq:unitsplit} apply \cref{global:prop:units} componentwise: on a connected patch every unit has the unique leading-term decomposition $t^\lambda f_\lambda\ExpH A$, multiplication adds $\lambda$, multiplies $f_\lambda$ and adds $A$. A unit of $\HI$ must have $\lambda=0$, which gives \eqref{global:eq:Iunits}. All constructions commute with restriction.
+\end{proof}
+
+\emph{There is no selection of a global logarithm of an arbitrary ordinary holomorphic unit in this decomposition: that factor remains in $\OO^\times$, and only the positive-support factor is logarithmized canonically. This logarithm is a logarithm of a positive-exponent perturbation of one; it has nothing to do with choosing a global branch of the ordinary logarithm, or with a global surcomplex exponential at infinite imaginary arguments.} On $\C$ an ordinary nowhere-zero entire function is $e^h$ for entire $h$ determined up to $2\pi i\Z$, so a general global unit of $\HH(\C)$ is $t^\lambda e^h\ExpH A$.
+
+\begin{remark}[Reduction is not defined on the full coefficient sheaf]\label{global:rem:reduction}
+The reduction $\red$ of \cref{global:sub:conventions} is a surjective ring homomorphism $\HI\to\OO$ with kernel $\HP$, so $\HI/\HP\cong\OO$ as sheaves of rings. It is \emph{not} a ring homomorphism on $\HH$: for $\delta>0$ both $t^\delta$ and $t^{-\delta}$ would map to zero while their product is $1$. Below, a line bundle with transitions in $1+\HP$ has an integral model over $\HI$ whose reduction is the trivial ordinary line bundle; \emph{this statement does not assert a reduction map on the full ring $\HH$}, and reduction is always performed on the $\HI$ model instead.
+\end{remark}
+
+\section{The ordinary analytic input, with constructions}\label{global:sec:scalar}
+
+The following classical facts are the only places where analytic approximation occurs, and it occurs strictly at the level of one complex coefficient function. Including the constructions makes that separation visible. \emph{These ordinary tools are classical and are not new results of this article.}
+
+\begin{lemma}[Scalar Weierstrass and Mittag--Leffler]\label{global:lem:scalarML}
+Let $A\subset\C$ be closed and discrete.
+\begin{enumerate}
+\item For positive integers $m_c$ there is an entire $f_0$ whose zeros are precisely the points $c\in A$, with orders $m_c$.
+\item For a finite Laurent principal part $p_c$ prescribed at every $c\in A$ there is a meromorphic function on $\C$ with exactly those principal parts and no other poles.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+The finite case is immediate; in the infinite case enumerate the nonzero points as $c_n$ with $\abs{c_n}\to\infty$, treating a prescription at the origin by one separate factor or summand.
+
+For (1) use the canonical factors $E_p(w)=(1-w)\exp\bigl(w+w^2/2+\cdots+w^p/p\bigr)$. On $\abs w\le1/2$ the branch vanishing at the origin satisfies $\log E_p(w)=-\sum_{k>p}w^k/k$, so $\abs{\log E_p(w)}\le2\abs w^{p+1}$. Choose $p_n$ with $m_{c_n}\abs{\log E_{p_n}(z/c_n)}\le2^{-n}$ for $\abs z\le\abs{c_n}/2$. The product of $E_{p_n}(z/c_n)^{m_{c_n}}$ then converges normally on compact sets once finitely many factors are separated, and off the specified zeros the tail is the exponential of a normally convergent sum, hence nonzero.
+
+For (2) note that $p_{c_n}$ is holomorphic on $\abs z<\abs{c_n}$. Choose a polynomial $q_n$ approximating it within $2^{-n}$ on $\abs z\le\abs{c_n}/2$ from its Taylor expansion there. Then $h=\sum_n(p_{c_n}-q_n)$ converges normally on compact subsets of $\C\setminus A$, and near any one point of $A$ the remaining terms are holomorphic, so $h$ has exactly the prescribed principal part. See also \cite[Theorem~3.26]{McMullen} and \cite{Ahlfors}.
+\end{proof}
+
+\begin{lemma}[Discrete Hermite interpolation]\label{global:lem:hermite}
+For closed discrete $A\subset\C$ and finite $m_c\ge1$ the simultaneous jet map
+\begin{equation}\label{global:eq:scalarjets}
+  R_0:\OO(\C)\longrightarrow V:=\prod_{c\in A}\C[u]_{<m_c},
+  \qquad
+  R_0(f)_c=\sum_{j<m_c}\frac{f^{(j)}(c)}{j!}u^j,
+\end{equation}
+is onto, and has a complex-linear right inverse $L:V\to\OO(\C)$.
+\end{lemma}
+
+\begin{proof}
+Choose $f_0$ as in \cref{global:lem:scalarML}. Given $B_c\in\C[u]_{<m_c}$, take the principal part at $c$ of $B_c(z-c)/f_0(z)$ and let $h$ be a meromorphic function with exactly these principal parts. Then $f=f_0h$ is entire and
+\[
+  f(c+u)-B_c(u)
+  =f_0(c+u)\Bigl(h(c+u)-\frac{B_c(u)}{f_0(c+u)}\Bigr)
+\]
+is holomorphically divisible by $u^{m_c}$, so $R_0f=B$. A surjective linear map of complex vector spaces has a linear section, obtained by choosing a basis of the target and preimages of its members.
+\end{proof}
+
+The operator $L$ is not claimed to be continuous, unique or effective on arbitrary infinite input. What is used below is only the algebraic identity $R_0L=\id$, and the fact that extending $L$ coefficientwise introduces no new Hahn exponent.
+
+\begin{lemma}[Scalar additive Cousin theorem on $\C$]\label{global:lem:scalarCousin}
+For any ordinary open cover $(U_i)$ of $\C$ and any holomorphic additive cocycle $b_{ij}$ there are $a_i\in\OO(U_i)$ with $b_{ij}=a_i-a_j$. In particular $H^1(\C,\OO)=0$.
+\end{lemma}
+
+\begin{proof}
+A smooth partition of unity $(\rho_k)$ subordinate to the cover, or to a locally finite refinement, gives smooth $v_i=\sum_k\rho_kb_{ik}$ with $v_i-v_j=b_{ij}$ for the convention $b_{ij}+b_{jk}=b_{ik}$. Their $\bar\partial v_i$ agree and define a global smooth $(0,1)$-form $a\,d\bar z$.
+
+Every such form on $\C$ is $\bar\partial u$ for a global smooth $u$. Split $a=\sum_{n\ge0}a_n$ by a locally finite smooth annular partition, each $a_n$ compactly supported and, for large $n$, vanishing on $\abs z<n-1$. Its Cauchy transform
+\[
+  u_n(z)=\frac1\pi\int_\C\frac{a_n(\zeta)}{z-\zeta}\,dA(\zeta)
+\]
+is smooth, satisfies $\bar\partial u_n=a_n$ and is holomorphic off $\supp a_n$. For large $n$ approximate the Taylor series of $u_n$ at the origin by a polynomial $p_n$ so that all derivatives of order at most $n$ of $u_n-p_n$ are at most $2^{-n}$ on $\abs z\le n-2$; no correction is needed for the finitely many small indices. Then $u=\sum_n(u_n-p_n)$ converges in every $C^k$ norm on every compact set and satisfies $\bar\partial u=a$. Hence $a_i=v_i-u$ are holomorphic with the required differences. If a refinement was used, the local torsor sections still descend to a splitting on the original cover. The standard cocycle--torsor dictionary identifies this with $H^1(\C,\OO)=0$ \cite[Tag~02FQ]{Stacks}.
+\end{proof}
+
+We also use that every ordinary holomorphic line bundle on $\C$ is trivial. One route is the exponential sheaf sequence $0\to\underline\Z\to\OO\to\OO^\times\to1$: the preceding lemma gives $H^1(\C,\OO)=0$ and contractibility gives $H^2(\C,\underline\Z)=0$, hence $H^1(\C,\OO^\times)=0$; see \cite{Demailly}. Similarly $H^1(\C,\underline G)=0$ for any constant abelian-group sheaf $\underline G$, in particular for $\underline\Gamma$. These are facts about the ordinary topological base, not about the fine topology of $\SC$.
+
+\begin{remark}[A support-safe implementation of the scalar step]\label{global:rem:supportsafe}
+When \cref{global:lem:scalarML}(2) is applied once for every exponent $\gamma$ of a well-ordered set $S$, the classical construction may be arranged as follows: exhaust $\C$ by closed disks whose boundary circles avoid $A$, group the finitely many new principal parts appearing at each stage, and subtract enough Taylor terms from each new rational principal part that its remaining tail is bounded by a prescribed summable positive real sequence on the preceding disk. The number of subtracted terms may depend arbitrarily on $\gamma$ and on the spatial point. \emph{None of these choices introduces a new Hahn exponent}, which is exactly why the construction preserves $S$, and no common real norm estimate across the coefficient functions is required. The same remark applies to \cref{global:lem:hermite,global:lem:scalarCousin}.
+\end{remark}
+
+\section{Local preparation and deformed division, with uniform support}\label{global:sec:local}
+
+This section records the local input from \cite{Source} in the fixed-$\Gamma$ form needed for infinitely many simultaneous prescriptions. The essential extra bookkeeping is that \emph{one} positive support monoid controls all centres at once, even when the multiplicities are unbounded. Without that, local preparation would be a black box whose supports might depend uncontrollably on the centre, and no statement about an infinite family of centres could be made.
+
+Throughout this section $D$ is a fixed ordinary disk about the origin in the local coordinate $u$, and the ambient ring is the fixed-disk ring $\HH(D)=\OO(D)((t^\Gamma))$. For $h\in\OO(D)$ put
+\[
+  R_mh=\sum_{j<m}\frac{h^{(j)}(0)}{j!}u^j,
+  \qquad
+  D_mh=\frac{h-R_mh}{u^m},
+\]
+so that both are holomorphic on the \emph{same} disk, both are complex-linear, and
+\begin{equation}\label{global:eq:ordinarydivision}
+  h=R_mh+u^mD_mh .
+\end{equation}
+They act coefficientwise on Hahn data without increasing support.
+
+\subsection{Preparation by an exponent recursion}
+
+\begin{theorem}[Uniform-support local preparation]\label{global:thm:preparation}
+Let $F\in\HH(U)$ be nonzero, with leading exponent $\lambda=v_H(F)$ and leading coefficient $f_\lambda$. Put
+\[
+  T=\bigl(\supp F-\lambda\bigr)\setminus\{0\}\subseteq\Gamma_{>0},
+  \qquad M=T^* .
+\]
+If $f_\lambda$ has a zero of order $m\ge1$ at $c\in U$, there is an ordinary disk $D$ about the origin in $u=z-c$ on which
+\begin{equation}\label{global:eq:prep}
+  F(c+u)=t^\lambda q_0(u)P_c(u)Q_c(u),
+\end{equation}
+where $q_0(u)=f_\lambda(c+u)/u^m$ is an ordinary holomorphic unit,
+\[
+  P_c(u)=u^m+\sum_{r<m}a_{c,r}u^r,\qquad a_{c,r}\in\mK,
+  \qquad Q_c\in1+\HP(D).
+\]
+Every support $\supp(a_{c,r})$ and $\supp(Q_c-1)$ lies in $M\setminus\{0\}$. The monoid $M$ depends on $F$ alone, not on $c$ or $m$. The monic polynomial $P_c$ and the normalized factor $Q_c$ are unique.
+\end{theorem}
+
+\begin{proof}
+Choose $D$ so that $q_0$ has no zeros on it. Dividing by $t^\lambda q_0$ gives $u^m+E$ with $\supp E\subseteq T$; division by a nonzero ordinary function changes no Hahn exponent, which is why the same $T$ serves at every centre. Seek $P_c=u^m+A$ with $\deg_uA<m$ and $Q_c=1+B$ with positive supports. The equation is
+\begin{equation}\label{global:eq:prep-rec}
+  E=A+u^mB+AB .
+\end{equation}
+At $\nu\in M_{>0}$, after all smaller exponents have been treated, set
+\begin{equation}\label{global:eq:prepsteps}
+  h_\nu=E_\nu-\sum_{\substack{\alpha+\beta=\nu\\ \alpha,\beta>0}}A_\alpha B_\beta,
+  \qquad A_\nu=R_mh_\nu,\qquad B_\nu=D_mh_\nu .
+\end{equation}
+The sum is finite by \cref{global:lem:support} and all its indices are strictly smaller than $\nu$, so the recursion is legitimate and well founded on the well-ordered set $M_{>0}$. Identity \eqref{global:eq:ordinarydivision} verifies \eqref{global:eq:prep-rec} at each exponent, the coefficient functions are holomorphic on the same disk $D$, and the resulting supports lie in the fixed well-ordered $M$; the finitely many coefficients of $A$ have positive support and hence lie in $\mK$.
+
+For uniqueness compare two normalized pairs and take the least exponent $\nu$ at which $A$ or $B$ differs, using the well-ordered union of the two candidate supports --- so no common monoid need be assumed in advance. Products involving a positive exponent and a difference cannot contribute at $\nu$, so $\Delta A_\nu+u^m\Delta B_\nu=0$; applying $R_m$ and $D_m$ makes both terms zero, a contradiction. This is the preparation argument of \cite[\S7]{Source}, with its centre-independent support bound made explicit.
+\end{proof}
+
+\begin{corollary}[All roots in a monad]\label{global:cor:roots}
+The zeros of $F\sh$ in the monad $\mu(c)$ are exactly $c$ plus the roots of $P_c$, with their polynomial multiplicities, and their total multiplicity is $\ord_cf_\lambda$. If $f_\lambda(c)\ne0$ there are no zeros in that monad. When $\Gamma$ is divisible all these roots lie in $c+\mK$.
+\end{corollary}
+
+\begin{proof}
+The evaluated factors $q_0$ and $Q_c$ in \eqref{global:eq:prep} are nonzero throughout a small enough thickened disk: the relevant leading ordinary values are nonzero and $Q_c$ is $1$ plus an infinitesimal, and local nonvanishing units do not change zero orders. Every root $\xi$ of a monic polynomial $u^m+\sum_{r<m}a_ru^r$ with infinitesimal lower coefficients is infinitesimal: otherwise $1/\xi$ is finite and
+\[
+  P_c(\xi)/\xi^m=1+\sum_{r<m}a_r\xi^{r-m}
+\]
+is one plus an infinitesimal, hence nonzero. Algebraic closedness of $\SC$ then gives exactly $m$ roots with multiplicity. If $f_\lambda(c)\ne0$, evaluation at $c+\epsilon$ retains a nonzero leading value. The divisible case follows from algebraic closedness of $\KK$ \cite[Corollary~4]{Poonen}.
+\end{proof}
+
+In particular any two monic infinitesimal cluster polynomials with the same surcomplex roots and multiplicities are equal. This elementary uniqueness is what identifies $P_c$ intrinsically as the monic polynomial of the whole infinitesimal cluster rather than as a choice of labels for its roots, and it is used at every passage from a divisor to its coefficients.
+
+\subsection{Deformed division and uniform remainders}
+
+\begin{lemma}[Deformed division]\label{global:lem:division}
+Let $P=u^m+A$ with $\deg_uA<m$ and positive-exponent coefficients. For every $N\in\HH(D)$ there are unique $J\in\HH(D)$ and $R\in\KK[u]_{<m}$ with
+\begin{equation}\label{global:eq:deformeddivision}
+  N=PJ+R .
+\end{equation}
+If $S=\supp(N)$ and $E$ is a well-ordered positive set containing the supports of the coefficients of $A$, then $J$ and $R$ have support in $S+E^*$. Explicitly, with $T(J)=D_m(AJ)$,
+\begin{equation}\label{global:eq:divisioninverse}
+  J=\sum_{k\ge0}(-T)^kD_mN,
+  \qquad R=R_m(N-AJ).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Applying $D_m$ to \eqref{global:eq:deformeddivision} requires $(\id+T)J=D_mN$, which \eqref{global:eq:divisioninverse} solves by the formal geometric identity; \eqref{global:eq:ordinarydivision} then gives \eqref{global:eq:deformeddivision}. Every application of $T$ inserts one exponent from $E$ together with a finite Taylor-division operation, so the support and finite-contribution assertions follow from \cref{global:lem:support}.
+
+For uniqueness a difference satisfies $P\,\Delta J+\Delta R=0$. If either is nonzero take the least exponent $\nu$ occurring in the two supports; multiplication by $A$ cannot contribute at $\nu$ because it raises exponents and all earlier differences vanish, so $u^m\Delta J_\nu+\Delta R_\nu=0$, and ordinary Taylor division forces both to vanish.
+\end{proof}
+
+Write $\jet_PN=R$ for the remainder; it is $\KK$-linear, and its correction to the ordinary Taylor remainder,
+\begin{equation}\label{global:eq:remaindercorrection}
+  (\jet_P-R_m)N=-R_m(AJ),
+\end{equation}
+is supported in $S+E^*_{>0}$, every term containing at least one exponent from $E$. For a family $(P_c)$ whose coefficient supports lie in the \emph{same} $E$, all these conclusions hold with the same controlling set. Different $m_c$ change the scalar operators but introduce no new exponent, and when the coefficients at all centres are viewed as one product vector the number of exponent decompositions is still finite; it is never necessary to sum over the centres.
+
+\begin{lemma}[Pole-free fractions]\label{global:lem:polefree}
+Let $F,G\in\HH(U)$ with $G\ne0$. If the evaluated finite-meromorphic fraction $F/G$ has no actual poles in $U\sh$, then after filling removable values it is a member of $\HH(U)$.
+\end{lemma}
+
+\begin{proof}
+Where the leading coefficient of $G$ is nonzero use its coherent inverse from \cref{global:prop:units}. Near a leading zero, \cref{global:thm:preparation} writes $G$ as a coherent unit times a monic $P$ with infinitesimal roots; absorb the unit into $F$ and divide, $N/P=J+R/P$ with $\deg R<\deg P$ by \cref{global:lem:division}. Pole-freeness says $R/P$ has no pole at any root of $P$, so $P$ divides $R$ over $\SC$, and the degree bound forces $R=0$. This produces coherent representatives on ordinary neighbourhoods of every base point; they agree as fractions on overlaps and glue by \cref{global:prop:sheaf}.
+\end{proof}
+
+Applying the lemma to both quotients shows that two nonzero coherent data with the same actual zero divisor differ by a coherent unit. That observation is used in \cref{global:prop:realizationtorsor,global:cor:CRT,global:thm:MLmoving}.
+
+\section{The ordinary-base stalks, and what they buy}\label{global:sec:stalks}
+
+Let $R_c=(\HH)_c$ be the stalk at the \emph{ordinary} base point $c$, formed by shrinking ordinary neighbourhoods. Such shrinking never separates two surcomplex points lying in the same monad. As fixed in \cref{global:sub:conventions}, $R_c$ is a filtered colimit of the fixed-disk rings $\OO(D)((t^\Gamma))$ and the theorems below are about the colimit.
+
+\begin{theorem}[Principal-ideal-domain stalks]\label{global:thm:PID}
+For every $c\in\C$ the domain $R_c$ is a principal ideal domain. Every nonzero element is associated to a unique monic polynomial in $u=z-c$ whose lower coefficients are infinitesimal. If $\Gamma\ne\{0\}$ then $R_c$ is \emph{not} a local ring. If $\Gamma$ is divisible, its maximal ideals are precisely
+\begin{equation}\label{global:eq:maxideals}
+  (u-\varepsilon),\qquad \varepsilon\in\mK,
+\end{equation}
+with residue fields $\KK$.
+\end{theorem}
+
+\begin{proof}
+The ring is a domain because a nonzero coefficient function remains nonzero on smaller connected neighbourhoods. \Cref{global:thm:preparation} shows that every nonzero germ is a unit times a distinguished monic polynomial, a unit being represented by the polynomial $1$; uniqueness follows from \cref{global:cor:roots}. Let $d(F)$ be the degree of that polynomial: a nonnegative integer vanishing exactly on units.
+
+First take two nonzero germs $F,G$ associated to $P,Q\in\KK[u]$ and let $D$ be their monic greatest common divisor. The Euclidean algorithm in $\KK[u]$ gives $\mathcal A P+\mathcal B Q=D$ with $D\mid P$ and $D\mid Q$, so $(F,G)=(D)$ in $R_c$. Moreover $D$ is distinguished: in an algebraically closed Hahn enlargement all its roots are roots of $P$, hence infinitesimal, and its lower coefficients are finite elementary symmetric sums of such roots. Thus $d(D)=\deg D$.
+
+Now let $I$ be any nonzero ideal and choose $F\in I\setminus\{0\}$ with $d(F)$ minimal. For every nonzero $G\in I$ the greatest common divisor just constructed lies in $I$ and has degree at most $d(F)$, so by minimality its degree equals $d(F)$; the monic polynomial of $F$ therefore divides that of $G$, and $F\mid G$ in $R_c$. Hence $I=(F)$. This treats arbitrary ideals, not merely finitely generated ones, and it uses only the Euclidean algorithm on \emph{finite-degree} polynomials together with the least element of a nonempty set of nonnegative integers; no Noetherian property of an infinite coefficient ring is invoked.
+
+If $\Gamma\ne0$ choose $\delta\in\Gamma_{>0}$. Both $u$ and $u-t^\delta$ are nonunits, their leading ordinary coefficient being $u$, while their difference $t^\delta$ is a unit; so the nonunits are not an ideal and $R_c$ is not local.
+
+If $\Gamma$ is divisible, every distinguished polynomial factors into linear factors $u-\varepsilon$ with $\varepsilon\in\mK$, each a nonunit and irreducible by degree, so every nonzero maximal ideal of this principal ideal domain is generated by one of them. Conversely, evaluation at $c+\varepsilon$ is a surjection $R_c\to\KK$ because constants are available, and preparation with polynomial division identifies its kernel as $(u-\varepsilon)$. This proves \eqref{global:eq:maxideals} and the residue-field claim.
+\end{proof}
+
+For $\Gamma=0$ this is the familiar local ring of ordinary one-variable holomorphic germs. For nonzero $\Gamma$ the extra maximal ideals record exactly the infinitesimally separated points that the ordinary base has collapsed into one point. \emph{There is no contradiction with the fine-germ ring at a single surcomplex point considered in \cite{Source}: the two stalk constructions use different neighbourhoods.}
+
+\begin{proposition}[Non-locality, and the integral model]\label{global:prop:nonlocal}
+If $\Gamma\ne0$ the stalk $\mathscr H_{\Gamma,c}=R_c$ is not local. In contrast $\mathscr H_{\Gamma,\ge0,c}$ \emph{is} local, with residue field $\C$ and residue map
+\[
+  \sum_{\gamma\ge0}f_\gamma t^\gamma\longmapsto f_0(c),
+\]
+and as sheaves of rings $\HI/\HP\cong\OO$.
+\end{proposition}
+
+\begin{proof}
+Non-locality is the third paragraph of the proof of \cref{global:thm:PID}. For $\HI$, the displayed map is a surjective ring homomorphism. A germ outside its kernel has exponent-zero coefficient nonzero at $c$, hence nonzero on a smaller disk, and then the geometric inverse of \eqref{global:eq:unitinverse} lies in $\HI$ there; every germ in the kernel is a nonunit. So the kernel is the unique maximal ideal and the residue field is $\C$. Since $\red:\HI\to\OO$ is already a surjective sheaf map with kernel $\HP$ (\cref{global:rem:reduction}), the final assertion follows.
+\end{proof}
+
+This is the \emph{integral model}: the nonnegative-support subsheaf is a genuinely locally ringed structure sheaf, and it is the object on which reduction to ordinary complex geometry is performed. The Laurent sheaf $\HH$ is not.
+
+\begin{corollary}[Meaning of the Picard group here]\label{global:cor:Picmeaning}
+For the ringed space $(\C,\HH)$, every tensor-invertible sheaf of modules is locally free of rank one. Hence
+\[
+  \Pic(\C,\HH)=\Piclf(\C,\HH)\simeq H^1(\C,\HH^\times),
+\]
+classified by unit-valued transition cocycles.
+\end{corollary}
+
+\begin{proof}
+A tensor-invertible module over a commutative ring is a finitely generated projective module of rank one; at every stalk $R_c$ it is free, by \cref{global:thm:PID}. Let $\mathcal L$ have tensor inverse $\mathcal M$. Choose mutually dual generators at a stalk and represent them by local sections $s$ of $\mathcal L$ and $r$ of $\mathcal M$; after shrinking, their pairing is $1$. At every nearby stalk both modules are free of rank one, and a pairing equal to $1$ makes $s$ a generator there. Hence multiplication by $s$ is an isomorphism $\HH\to\mathcal L$ on that neighbourhood. Local bases have unit transition functions, changing bases multiplies the cocycle by a coboundary, and gluing copies of $\HH$ along a unit cocycle constructs the converse. Separately, for \emph{any} sheaf of commutative rings $\mathscr R$ the same gluing gives
+\begin{equation}\label{global:eq:lfclassification}
+  \Piclf(\C,\mathscr R)=H^1(\C,\mathscr R^\times),
+\end{equation}
+without any hypothesis on stalks.
+\end{proof}
+
+\begin{remark}[What the stalk theorem buys, and what is at stake without it]\label{global:rem:piclf}
+The stalk argument is not a formality. \emph{For a general ringed space with nonlocal stalks, tensor-invertibility need not imply local generation by one section}; the distinction is explicitly noted in \cite[Tag~09NT]{Stacks}, and by \cref{global:prop:nonlocal} our stalks are exactly of that kind whenever $\Gamma\ne0$. \Cref{global:cor:Picmeaning} is what licenses dropping the qualification ``locally free of rank one'' from every Picard statement below.
+
+One of the two merged manuscripts declines that step. It proves \cref{global:prop:nonlocal}, cites the same Stacks tag, and states its dichotomy only for $\Piclf(\C,\HH)$ and for $\Pic(\C,\HI)$ --- writing that it \emph{does not silently substitute the larger category of all tensor-invertible modules on an arbitrary ringed space}. We keep that distinction rather than delete it as superseded. The honest summary is: \eqref{global:eq:lfclassification} holds unconditionally; the identification of $\Pic$ with $\Piclf$ on $(\C,\HH)$ holds \emph{because} of \cref{global:thm:PID} and not otherwise; and every theorem below stated for $\Pic(\C,\HH)$ specializes verbatim to $\Piclf(\C,\HH)$ for a reader who declines \cref{global:thm:PID}.
+\end{remark}
+
+\begin{definition}[The line-bundle groups used here]\label{global:def:bundles}
+A \emph{Hahn-coherent line bundle} over the ordinary plane is a sheaf of $\HH$-modules locally isomorphic to $\HH$; its class lies in $\Piclf(\C,\HH)$. We also use the ordinary Picard group of locally free rank-one $\HI$-modules; since $\HI$ has local stalks by \cref{global:prop:nonlocal}, that group coincides with its group of tensor-invertible modules and is written $\Pic(\C,\HI)$.
+\end{definition}
+
+\section{A sharp Hahn Mittag--Leffler theorem}\label{global:sec:ML}
+
+\subsection{Discrete principal-part data}
+
+Let $A=\{c_j:j\in J\}\subset\C$ be closed and discrete, with $J$ finite or countably infinite. Choose pairwise disjoint ordinary disks $U_j$ centred at $c_j$ and set $U_0=\C\setminus A$; the punctured plane $U_0$ is connected, the sets $U_0,U_j$ cover $\C$, and the only nonempty overlaps between distinct members are the punctured disks $U_0\cap U_j$. Prescribe, for each $j$,
+\begin{equation}\label{global:eq:ppdata}
+  p_j(u)=\sum_{\gamma\in S_j}p_{j,\gamma}(u)\,t^\gamma,
+  \qquad p_{j,\gamma}(u)\in u^{-1}\C[u^{-1}],
+  \qquad u=z-c_j,
+\end{equation}
+where $S_j\subseteq\Gamma$ is well ordered and zero principal parts are omitted. The pole order of $p_{j,\gamma}$ is finite but need not be bounded as $j$ or $\gamma$ varies. Each $p_j$ is a legitimate section of $\HH$ on its punctured disk.
+
+\begin{definition}[Coherent Mittag--Leffler solution]\label{global:def:MLsolution}
+A \emph{solution} for \eqref{global:eq:ppdata} is a section $B\in\HH(U_0)$ such that $B-p_j$ extends to a section of $\HH(U_j)$ for every $j$.
+\end{definition}
+
+The definition imposes extension \emph{coefficientwise across the ordinary centre}. It does not pretend that an arbitrary infinite family of meromorphic coefficients already has a finite moving-pole description on the omitted monad; the moving-pole version, where it does, is \cref{global:thm:MLmoving}.
+
+\begin{theorem}[Uniform-support Mittag--Leffler criterion]\label{global:thm:ML}
+The principal-part data \eqref{global:eq:ppdata} have a coherent solution if and only if
+\begin{equation}\label{global:eq:MLcriterion}
+  S:=\bigcup_{j\in J}S_j\quad\text{is well ordered.}
+\end{equation}
+When this holds a solution can be chosen with support contained in $S$, its coefficients being ordinary meromorphic functions on $\C$ with poles only in $A$. If $S\subseteq\Gamma_{>0}$, the solution and all holomorphic differences $B-p_j$ can be chosen with positive support. Any two solutions differ by a section of $\HH(\C)$.
+\end{theorem}
+
+\begin{proof}
+Suppose $B=\sum_{\gamma\in T}b_\gamma t^\gamma$ is a solution. If some $\gamma\in S_j$ were absent from $T$, the coefficient of $B-p_j$ at $\gamma$ would be the nonzero principal part $-p_{j,\gamma}$, which cannot extend holomorphically across $c_j$. Hence $S_j\subseteq T$ for every $j$, and a subset of a well-ordered set is well ordered, proving necessity of \eqref{global:eq:MLcriterion}.
+
+Conversely assume $S$ well ordered. For each $\gamma\in S$ apply \cref{global:lem:scalarML}(2) to the principal parts $p_{j,\gamma}$, taking zero where $\gamma\notin S_j$, and obtain an ordinary meromorphic $b_\gamma$ on $\C$ with precisely those principal parts and no other poles. These choices are independent at different exponents and, by \cref{global:rem:supportsafe}, introduce no new exponent. Then $B=\sum_{\gamma\in S}b_\gamma|_{U_0}t^\gamma$ is a section of $\HH(U_0)$; every coefficient of $B-p_j$ extends holomorphically to $U_j$ and the support is contained in $S$, so the extensions assemble into a valid section. If all exponents are positive so is the constructed solution.
+
+Finally the difference of two solutions extends across each $c_j$, and the extensions agree on overlaps, so \cref{global:prop:sheaf} glues them to a section of $\HH(\C)$; no arbitrary union of the two solutions' local supports is taken in this step.
+\end{proof}
+
+\subsection{Why this is not a summability condition over the points}
+
+Condition \eqref{global:eq:MLcriterion} permits a fixed exponent at infinitely many points. For example $p_j=t/(z-j)$ is solvable: apply the ordinary Mittag--Leffler theorem once and multiply the result by $t$. The numerical family $(t,t,t,\dots)$ is not strongly summable, but no sum of that family is required --- ordinary analytic summation across the spatial points takes place \emph{within one coefficient function}.
+
+In the opposite direction the data
+\begin{equation}\label{global:eq:descendingPP}
+  p_j(z)=\frac{t^{1/j}}{z-j},\qquad j\ge2,
+\end{equation}
+are individually single-term Hahn sections and every finite subproblem is solvable, but their exponent union contains a strictly decreasing sequence and is not well ordered, so the infinite problem has no coherent solution. A common positive lower bound on valuations is insufficient: replacing $t^{1/j}$ by $t^{1+1/j}$ gives valuations greater than $1$ and still violates \eqref{global:eq:MLcriterion}. The obstruction concerns order structure throughout the support, not the smallest magnitude among the data.
+
+\begin{corollary}[Entire interpolation with an exact support criterion]\label{global:cor:interp}
+Let $a_j\in\KK$ be prescribed at a closed discrete set $\{c_j\}$. There exists $A\in\HH(\C)$ with $A(c_j)=a_j$ for all $j$ if and only if $\bigcup_j\supp(a_j)$ is well ordered; when that union is positive, $A$ may be chosen in $\HP(\C)$. The same holds for finitely many prescribed derivatives at each point, the union being taken over all prescribed values.
+\end{corollary}
+
+\begin{proof}
+Necessity holds because evaluation at an ordinary point introduces no new exponent. For sufficiency interpolate the complex values, or the finite jets, at each exponent by \cref{global:lem:hermite}, and assemble over the given well-ordered union.
+\end{proof}
+
+\Cref{global:cor:interp} is the undeformed case $P_c=u^{m_c}$ of the deformed interpolation theorem proved in \cref{global:sec:crt}; it is recorded separately here because it is what \cref{global:sec:aut} needs, and because its proof requires nothing beyond \cref{global:lem:hermite}.
+
+\section{The global theorem for moving surcomplex divisors}\label{global:sec:divisor}
+
+\subsection{Cluster polynomials and the correct compatibility invariant}
+
+Fix a closed discrete $A\subset\C$ and cluster data $P_c$ as in \eqref{global:eq:clusterintro}. Every root of $P_c$ in $\SC$ is infinitesimal, by the argument in \cref{global:cor:roots}, and when $\Gamma$ is divisible prescribing $P_c$ is the same as prescribing an unordered finite multiset of elements of $\mK$. The zeros define an effective divisor on $\C\sh$: at the finite point $c+\xi$ take the multiplicity of $\xi$ as a root of $P_c$. \emph{Discreteness} means here that there are finitely many roots in each monad and only finitely many relevant monads above a compact ordinary set; fine-topological discreteness alone would be too weak.
+
+\begin{definition}[Symmetric support; admissibility]\label{global:def:admissible}
+The symmetric support of the cluster data is $E(P)$ of \eqref{global:eq:symmsupportintro}, and the family is \emph{admissible}, equivalently \emph{uniformly supported}, when $E(P)$ is well ordered. The definition includes exact zeros $a_{c,j}=0$, which contribute nothing to the union. For finitely many centres admissibility is automatic, a finite union of well-ordered sets being well ordered; for infinitely many centres it is a genuine restriction. The test is on the \emph{symmetric coefficients}, not on separately chosen roots.
+\end{definition}
+
+\begin{theorem}[Sharp global moving-divisor criterion]\label{global:thm:divisor}
+For cluster data \eqref{global:eq:clusterintro} over a closed discrete $A\subset\C$, the following are equivalent.
+\begin{enumerate}
+\item The symmetric support $E(P)$ is well ordered.
+\item There is a nonzero $F\in\HH(\C)$ whose complete zero divisor on $\C\sh$ consists exactly of the roots of $P_c(z-c)$ in the monads $\mu(c)$, $c\in A$, with their polynomial multiplicities.
+\item For \emph{every} ordinary entire $f_0$ whose zero divisor is $\sum_{c\in A}m_c[c]$ there is such an $F$ with exponent-zero coefficient equal to $f_0$, no negative exponents, and support contained in $M=E(P)^*$:
+\begin{equation}\label{global:eq:realizer}
+  F=f_0+\sum_{\nu\in M_{>0}}f_\nu t^\nu\in\HH(\C).
+\end{equation}
+\end{enumerate}
+Equivalently, the prepared polynomial of $F$ at every $c\in A$ is exactly $P_c$ and its leading ordinary coefficient has no other zeros. On a fixed ordinary disk about each $c$ the realizer factors as
+\begin{equation}\label{global:eq:realizerlocal}
+  F(c+u)=P_c(u)Q_c(u),
+  \qquad (Q_c)_0(u)=\frac{f_0(c+u)}{u^{m_c}},
+\end{equation}
+with $Q_c$ a coherent unit supported in $M$. The ordinary function $f_0$ exists by the classical Weierstrass theorem, \cref{global:lem:scalarML}(1).
+\end{theorem}
+
+\begin{proof}
+\emph{Necessity, (2)$\Rightarrow$(1).} Let $F$ be as in (2), with leading exponent $\lambda$ and leading coefficient $f_\lambda$. By \cref{global:cor:roots} the zeros of $f_\lambda$ are exactly the points of $A$, with orders $m_c$. Put $T=(\supp F-\lambda)\setminus\{0\}$. At every $c$, \cref{global:thm:preparation} constructs a monic polynomial whose lower coefficients have supports in $T^*\setminus\{0\}$; its roots and multiplicities are precisely those prescribed, so by the uniqueness after \cref{global:cor:roots} it equals $P_c$. Hence $E(P)\subseteq T^*\setminus\{0\}$, a well-ordered set, and every subset of a well-ordered set is well ordered. Multiplying $F$ by an infinite or infinitesimal scalar cannot evade this: the normalization by $t^\lambda$ has already removed that freedom.
+
+\emph{Sufficiency, (1)$\Rightarrow$(3).} Assume $E=E(P)$ well ordered, put $M=E^*$, and fix $f_0$ as in (3). Shrink disjoint disks $U_c$ so that $q_c(u)=f_0(c+u)/u^{m_c}$ is an ordinary holomorphic unit on each. On the puncture define
+\begin{equation}\label{global:eq:Lc}
+  L_c(u)=\LogH\!\left(\frac{P_c(u)}{u^{m_c}}\right)
+  =\sum_{k\ge1}\frac{(-1)^{k+1}}{k}
+  \Bigl(\sum_{j<m_c}a_{c,j}u^{j-m_c}\Bigr)^{\!k}.
+\end{equation}
+Each $L_c$ has support in $M\setminus\{0\}$, and at every exponent its coefficient is a \emph{finite} polynomial in negative powers of $u$: finite decomposition in the positive monoid bounds the number of contributing exponent words by \cref{global:lem:support}, and there are only finitely many indices $j$ at each fixed $c$. Thus \eqref{global:eq:Lc} is exactly a principal-part datum of the kind in \cref{global:thm:ML}, not an unrestricted Laurent germ.
+
+Apply the positive-support half of \cref{global:thm:ML} to all the $L_c$: it gives $B\in\HP(U_0)$ with support in $M\setminus\{0\}$ such that $C_c=B-L_c\in\HP(U_c)$. On the covering sets define
+\begin{equation}\label{global:eq:Fglue}
+  F_0=f_0\ExpH B\ \text{ on }U_0,
+  \qquad
+  F_c=q_cP_c\ExpH C_c\ \text{ on }U_c .
+\end{equation}
+The exponential law and $\ExpH L_c=P_c/u^{m_c}$ show that these agree on every overlap, so by \cref{global:prop:sheaf} they glue to $F\in\HH(\C)$, with support in $M$ and exponent-zero coefficient $f_0$. On $U_c\sh$ the factors $q_c$ and $\ExpH C_c$ are units, so the zeros and multiplicities there are exactly those of $P_c$, and \eqref{global:eq:realizerlocal} holds with $Q_c=q_c\ExpH C_c$. On every other monad $f_0$ is nonzero, hence so is $F\sh$ by \cref{global:cor:roots}. Finally (3)$\Rightarrow$(2) is immediate.
+\end{proof}
+
+\begin{remark}[A second, purely recursive construction of the realizer]\label{global:rem:secondproof}
+Sufficiency can also be proved without logarithms or Mittag--Leffler, by a direct well-founded recursion on $M_{>0}$ which builds $F$ and the local units $Q_c=\sum_{\nu\in M}q_{c,\nu}t^\nu$ simultaneously. Write $P_c=u^{m_c}+A_c$ and fix disks $D_c$ on which $q_{c,0}=f_0(c+u)/u^{m_c}$ is nowhere zero. Suppose all coefficients below $\nu$ are chosen. The coefficient equation of \eqref{global:eq:realizerlocal} at $\nu$ is
+\begin{equation}\label{global:eq:globalrecursion}
+  f_\nu(c+u)=u^{m_c}q_{c,\nu}(u)+h_{c,\nu}(u),
+  \qquad
+  h_{c,\nu}=\sum_{\substack{\alpha+\beta=\nu\\ \alpha>0,\ \beta\ge0}}(A_c)_\alpha\,q_{c,\beta},
+\end{equation}
+where the correction $h_{c,\nu}$ is known: there are finitely many exponent pairs by \cref{global:lem:support} and every $\beta$ is smaller than $\nu$. Prescribe at every centre the finite ordinary jet $R_{m_c}\bigl(f_\nu(c+u)\bigr)=R_{m_c}h_{c,\nu}(u)$; \cref{global:lem:hermite} supplies one entire $f_\nu$ meeting all of these conditions at once, regardless of the number or the sizes of the jets. Then
+\begin{equation}\label{global:eq:quotientrecursion}
+  q_{c,\nu}(u)=\frac{f_\nu(c+u)-h_{c,\nu}(u)}{u^{m_c}}
+\end{equation}
+is holomorphic on the \emph{same} disk $D_c$, since the numerator has the required vanishing order; no disk shrinking occurs during the recursion, which is where the common-domain hypothesis on the coefficient ring is used. All coefficients then live on the single well-ordered support $M$, and \eqref{global:eq:globalrecursion}--\eqref{global:eq:quotientrecursion} prove the factorization exponent by exponent. This route is the one that generalizes in \cref{global:sec:crt}, since it produces the interpolation data directly.
+\end{remark}
+
+\subsection{Uniqueness modulo global units}
+
+\begin{proposition}[The freedom in realization]\label{global:prop:realizationtorsor}
+Two nonzero sections of $\HH(\C)$ have the same complete zero divisor on $\C\sh$ if and only if their quotient is a global unit. In particular all realizations in \cref{global:thm:divisor} differ by multiplication by a unit of $\HH(\C)$, that is, by
+\[
+  t^\lambda e^{h}\ExpH A,
+  \qquad \lambda\in\Gamma,\quad h\in\OO(\C),\quad A\in\HP(\C),
+\]
+with $h$ determined up to $2\pi i\Z$. When the exponent-zero leading coefficient is fixed to be the same $f_0$, the unit is uniquely $\ExpH A$ with $A\in\HP(\C)$, so the normalized realizers form a torsor under $1+\HP(\C)=\ExpH\HP(\C)$.
+\end{proposition}
+
+\begin{proof}
+One implication is \cref{global:prop:units}. Conversely, both quotients are pole free, hence coherent by \cref{global:lem:polefree}, and they are mutually inverse; so the quotient is a global unit. If both leading coefficients are $f_0$ at exponent zero, the ratio has leading monomial $1$ and leading coefficient function $1$, and \cref{global:prop:explog} identifies it as $\ExpH A$. Multiplying any realizer by a unit changes no zero order, and \cref{global:prop:explog} with $\OO(\C)^\times=e^{\OO(\C)}$ gives the displayed form of a general global unit.
+\end{proof}
+
+\subsection{Root supports versus symmetric supports}
+
+Suppose a cluster has roots $\varepsilon_{c,1},\dots,\varepsilon_{c,m_c}$. Its coefficients are the elementary symmetric polynomials in those roots with alternating signs. A well-ordered union of all root supports is therefore \emph{sufficient} for admissibility, because finite products use the positive monoid generated by that union. It is not \emph{necessary}: symmetric cancellation can remove descending exponents from the coefficients even when they remain visible in every individual root.
+
+This distinction is intrinsic, because a divisor is unordered. A root labelling, or the choice of one branch, can destroy precisely the cancellations that make a coherent global equation possible. The next section shows that this is not a marginal phenomenon.
+
+\section{Sharp examples and a nonfactorable divisor splitting}\label{global:sec:examples}
+
+Throughout this section $t=\omega^{-1}$, and the displayed roots lie in $K_\Q$ even when their defining equations have integer Hahn exponents.
+
+\subsection{An impossible sequence of simple zeros}
+
+\begin{example}[Individually valid motions with no exact global realization]\label{global:ex:simple}
+For every integer $j\ge2$ prescribe a single simple zero at $z_j=j+t^{1/j}$. The cluster polynomial is $P_j(u)=u-t^{1/j}$, so
+\[
+  E(P)=\{1/2,1/3,1/4,\dots\}
+\]
+is not well ordered. By \cref{global:thm:divisor} there is no nonzero coherent entire datum having \emph{exactly} these simple zeros and no other zeros on $\C\sh$. More generally the prescription $P_j(u)=u-a_jt^{1/j}$ with $a_j\in\C$ is realizable if and only if the sequence $(a_j)$ has finite support, since an infinite subset of these decreasing exponents has no least element.
+\end{example}
+
+Every finite sub-divisor is realizable, even by a polynomial, so this is a genuinely infinite compatibility obstruction. It does \emph{not} assert that the points $z_j$ cannot all be among the zeros of a coherent entire datum; additional roots can restore the missing symmetric cancellations, as \cref{global:ex:fullclusters} shows.
+
+\subsection{Complete clusters with unbounded multiplicities}
+
+\begin{example}[Uniform equations with nonuniform root scales]\label{global:ex:fullclusters}
+At the centre $j\ge2$ prescribe
+\begin{equation}\label{global:eq:unboundedclusters}
+  P_j(u)=u^j-t .
+\end{equation}
+There is a single nonzero lower coefficient, with support $\{1\}$, so $E(P)=\{1\}$ and \cref{global:thm:divisor} produces a coherent entire datum with exactly the clusters
+\[
+  z_{j,k}=j+\zeta_j^kt^{1/j},\qquad 0\le k<j,\qquad \zeta_j=e^{2\pi i/j}.
+\]
+All roots are simple and the total multiplicity over the ordinary point $j$ is $j$. The union of the root supports contains the descending sequence $(1/j)$, while the symmetric-coefficient support is the singleton $\{1\}$; indeed the defining datum can be chosen in $\mathscr H_\Z(\C)\subset\OO(\C)[[t]]$, although the roots require rational exponents and must be read in $K_\Q$ or in $\SC$.
+\end{example}
+
+This is an exact realization theorem for infinitely many clusters of unbounded size, not a finite-degree polynomial calculation in disguise. There is a relatively explicit construction. Let
+\begin{equation}\label{global:eq:f0product}
+  f_0(z)=\prod_{j=2}^{\infty}
+  \Bigl[(1-z/j)\exp\bigl(z/j+z^2/(2j^2)\bigr)\Bigr]^{j}
+  =\prod_{j=2}^\infty E_2(z/j)^j .
+\end{equation}
+This ordinary Weierstrass product converges locally uniformly: on $\abs z\le R$ and $j>2R$ the logarithm of its $j$th factor is bounded by $2j(R/j)^3=2R^3/j^2$. Its zeros are exactly the integers $j\ge2$, with multiplicity $j$. On $U_0=\C\setminus\{2,3,\dots\}$ put
+\begin{equation}\label{global:eq:bn}
+  b_k(z)=-\frac1k\sum_{j=2}^{\infty}\frac1{(z-j)^{jk}},
+  \qquad B=\sum_{k\ge1}b_k(z)t^k .
+\end{equation}
+For each fixed $k$ the ordinary sum over $j$ converges locally uniformly away from the indicated points: for large $j$ on a compact set $\abs{z-j}\ge j/2$, so the terms are bounded by $(2/j)^{jk}$. The principal part of $b_k$ at $j$ is exactly $-1/[k(z-j)^{jk}]$, so
+\[
+  B-\LogH\bigl(1-t/(z-j)^j\bigr)
+\]
+has holomorphic coefficients at $j$, and the section $f_0\ExpH B$ on $U_0$ extends coherently to all of $\C$ by \eqref{global:eq:Fglue}, with local polynomial $u^j-t$.
+
+Equations \eqref{global:eq:f0product} and \eqref{global:eq:bn} involve \emph{ordinary} convergence inside single coefficient functions; the subsequent sum over $k$ is an exact Hahn construction. These are two different operations, justified separately, and the proof never takes an infinite Hahn product of the cluster factors over $j$. An unqualified infinite product over the centres would obscure exactly that distinction.
+
+\subsection{A principal effective divisor with a nonprincipal sub-divisor}
+
+\begin{corollary}[Failure of arbitrary global divisor splitting]\label{global:cor:splitting}
+Let $F$ be a coherent entire datum realizing \cref{global:ex:fullclusters}, and select the root $j+t^{1/j}$ from each cluster. There is no factorization $F=GH$ by coherent entire data such that $G$ has exactly the selected roots and $H$ exactly the remaining roots, with the indicated multiplicities. Both prescribed sub-divisors are locally coherent, but neither is globally principal.
+\end{corollary}
+
+\begin{proof}
+The selected divisor is nonprincipal by \cref{global:ex:simple}. For the complement write $a=t^{1/j}$; its local polynomial is
+\[
+  Q_j(u)=\frac{u^j-a^j}{u-a}=u^{j-1}+au^{j-2}+\cdots+a^{j-1},
+\]
+whose coefficient of $u^{j-2}$ is $t^{1/j}$, so its symmetric support union is again $\{1/j:j\ge2\}$ and is not well ordered. The necessity half of \cref{global:thm:divisor} excludes a global realization. Local equations exist on each $U_j$ and are units on the punctured overlaps, so the sub-divisors are locally coherent; a factorization with the prescribed zero divisors would contradict their nonprincipality.
+\end{proof}
+
+This does \emph{not} claim that $F$ is irreducible, that every factorization of $F$ fails, or that the global ring has any particular unique-factorization property. The assertion concerns this specific, intrinsically meaningful partition of one effective divisor.
+
+\subsection{No repair by enlarging the value group}\label{global:sub:norepair}
+
+The nonexistence in \cref{global:ex:simple} persists after any set-sized enlargement of $\Gamma$ inside $\No$, and even for a putative section with an arbitrary set-sized surreal support: a larger ambient ordered group does not make the strictly decreasing sequence $1/2,1/3,\dots$ well ordered, and the necessity proof forces that same sequence into one alleged support monoid. The obstruction is therefore also a nonexistence statement in the full set-supported Hahn-coherent category of \cite{Source}. By contrast, finite truncation of the \emph{spatial} set removes the obstruction entirely. These two ways of enlarging or approximating the problem must not be confused.
+
+\section{A support-restricted Chinese remainder theorem}\label{global:sec:crt}
+
+\Cref{global:thm:divisor} says when a divisor exists. It does not say what can be prescribed \emph{on} that divisor. The answer is not the full product of the local finite algebras: the correct target is a support-restricted subalgebra, and the restriction is forced by the existence of a single coherent source datum rather than chosen as a convenient topology.
+
+\subsection{The correct target algebra}
+
+Assume the family $P=(P_c)_{c\in A}$ is admissible and set $E=E(P)$, $M=E^*$. Define
+\begin{equation}\label{global:eq:restrictedproduct}
+  \BB=\left\{(B_c)_{c\in A}:
+  \begin{array}{l}
+  B_c\in\KK[u]_{<m_c},\\[2pt]
+  \displaystyle\bigcup_{c\in A}\supp(B_c)\ \text{is well ordered}
+  \end{array}\right\},
+\end{equation}
+where $\supp(B_c)$ means the union of the supports of the finitely many polynomial coefficients of $B_c$. Multiplication is performed at each centre modulo $P_c$, taking the unique representative of degree $<m_c$ supplied by \cref{global:lem:division}.
+
+\begin{proposition}[Restricted product algebra]\label{global:prop:restrictedalgebra}
+Formula \eqref{global:eq:restrictedproduct} defines a $\KK$-algebra. For families supported in $S$ and $T$ the product is supported in $S+T+M$. The simultaneous deformed remainder map
+\begin{equation}\label{global:eq:globalremainder}
+  \jet_P:\HH(\C)\longrightarrow\BB,
+  \qquad
+  F\longmapsto\bigl(\jet_{P_c}(F(c+u))\bigr)_{c\in A}
+\end{equation}
+is a homomorphism of $\KK$-algebras.
+\end{proposition}
+
+\begin{proof}
+Addition has support in the finite union of the two supports. For multiplication apply \cref{global:lem:division} to $B_cC_c$ at each centre: the input support lies in $S+T$ and all the divisions use the same positive well-ordered set $E$, so the output support lies in $S+T+M$, which is well ordered by \cref{global:lem:support}. Uniqueness of division makes the ordinary quotient-ring identities valid. The same lemma shows that the image of \eqref{global:eq:globalremainder} has a common well-ordered support, contained in $\supp(F)+M$, and uniqueness makes $\jet_P$ multiplicative and $\KK$-linear.
+\end{proof}
+
+\subsection{A support-controlled right inverse}
+
+\begin{theorem}[Deformed Hermite interpolation]\label{global:thm:interpolation}
+For an admissible cluster family, prescribed polynomial remainders $B_c\in\KK[u]_{<m_c}$ are simultaneously realized by a member of $\HH(\C)$ if and only if their total coefficient support is well ordered. Thus \eqref{global:eq:globalremainder} is surjective. If that support is $S$, a realizing datum can be chosen with support in $S+E^*$. Explicitly, let $L$ be a complex-linear right inverse as in \cref{global:lem:hermite}, extended coefficientwise, let $R_0$ be the jet map \eqref{global:eq:scalarjets} extended coefficientwise, and put $N=\jet_P-R_0$. Then a $\KK$-linear right inverse of $\jet_P$ is
+\begin{equation}\label{global:eq:interpolator}
+  \mathcal I_P(B)=L\sum_{k\ge0}(-NL)^kB .
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Necessity is immediate from uniform deformed division: if $F$ has support $S_F$ then all its remainders lie in $S_F+E^*$ by \cref{global:lem:division}, a well-ordered set.
+
+For sufficiency identify \eqref{global:eq:restrictedproduct}, as a vector space, with $V((t^\Gamma))$ for $V$ the product in \eqref{global:eq:scalarjets}. A coefficient at one exponent is one element of that product; no sum over the centres is being taken. The scalar operator $L$ extends to $V((t^\Gamma))$ without increasing support, and it is $\KK$-linear because multiplication by a fixed Hahn constant is finite convolution at each exponent.
+
+By \eqref{global:eq:divisioninverse} and \eqref{global:eq:remaindercorrection}, every term of $N$ inserts a nonempty finite word of exponents from $E$, so $NL$ strictly raises the support by such words. In \eqref{global:eq:interpolator} a contribution from $(NL)^k$ is indexed by a term of $S$ together with a word from $E$ partitioned into $k$ nonempty consecutive blocks. For a fixed output exponent \cref{global:lem:support} leaves finitely many such words; each word has finite length and finitely many block partitions, so only finitely many $k$ contribute. This is strong summability, not merely formal plausibility of a Neumann series, and the support lies in $S+E^*$.
+
+Let $C=\sum_{k\ge0}(-NL)^kB$, so that $(\id+NL)C=B$. Since $R_0L=\id$,
+\[
+  \jet_P(LC)=(R_0+N)LC=(\id+NL)C=B .
+\]
+This proves existence, the support estimate and the stated right inverse.
+\end{proof}
+
+The proof is valid for arbitrary ordered groups. It never assumes an Archimedean value group, a discrete valuation, a norm estimate for $L$, or a uniform bound on the multiplicities $m_c$.
+
+\begin{corollary}[Chinese remainder quotient]\label{global:cor:CRT}
+Let $G$ be any realizer of the admissible cluster divisor. Then
+\begin{equation}\label{global:eq:CRT}
+  \HH(\C)/(G)\ \cong\ \BB
+\end{equation}
+as $\KK$-algebras, and the quotient map admits a noncanonical $\KK$-linear section.
+\end{corollary}
+
+\begin{proof}
+Surjectivity and the linear section are \cref{global:thm:interpolation}. If every local remainder of $F$ vanishes then $F$ vanishes to at least the multiplicity of every zero of $G$, so $F/G$ has no actual pole and is coherent by \cref{global:lem:polefree}; hence the kernel is contained in $(G)$. The reverse inclusion follows from $G=P_cQ_c$ locally, \eqref{global:eq:realizerlocal}. Apply the first isomorphism theorem.
+\end{proof}
+
+This is an infinite Chinese remainder statement with a precisely identified image. \emph{Replacing $\BB$ by the full product $\prod_c\KK[u]/(P_c)$ would be false}, and the next example shows that the failure occurs already for prescribed values in $\{0,1\}$.
+
+\subsection{Bounded raw values need not be interpolable}
+
+\begin{example}[Selecting one root in every growing cluster]\label{global:ex:selector}
+Work in $\Gamma=\Q$ with the admissible family $P_n(u)=u^n-t$, $n\ge1$, and write $s_n=t^{1/n}$. At the $n$ roots of $P_n$ prescribe the value $1$ at $s_n$ and the value $0$ at each $\zeta_n^ks_n$, $1\le k<n$. The unique polynomial of degree $<n$ with those values is
+\begin{equation}\label{global:eq:selector}
+  B_n(u)=\frac1n\sum_{j=0}^{n-1}(u/s_n)^j
+  =\frac1n\sum_{j=0}^{n-1}t^{-j/n}u^j,
+\end{equation}
+since the finite geometric sum equals $n$ at the root $1$ of unity and $0$ at the others. Its coefficient supports contain
+\[
+  -\frac{n-1}{n}=-1+\frac1n,\qquad n\ge2,
+\]
+an infinite strictly decreasing sequence, so \cref{global:thm:interpolation} rules out a global coherent interpolant.
+\end{example}
+
+Every prescribed scalar value here was $0$ or $1$, and the underlying zero divisor is realizable even with integer Hahn exponents by \cref{global:ex:fullclusters}. The obstruction appears only after converting point values into the intrinsic finite quotient coordinates. Every finite collection of these root-selection conditions is solvable. If repeated roots occur, values are replaced by finite jets at those roots and the same principle applies: solve the ordinary finite-dimensional polynomial Chinese remainder problem over a splitting field to obtain $B_c$, then test its global coefficient support. Raw jet coordinates at infinitesimally close points can conceal arbitrarily large negative powers of their separations.
+
+\section{A Mittag--Leffler theorem for moving poles}\label{global:sec:movingML}
+
+\Cref{global:thm:ML} prescribes principal parts at the ordinary centres. We now prescribe them at the \emph{moving} infinitesimal poles, relative to an admissible pole bound.
+
+Keep an admissible family $(P_c)$. A prescribed moving principal part at $c$ is a proper rational function
+\begin{equation}\label{global:eq:movingpart}
+  \frac{R_c(u)}{P_c(u)},\qquad R_c\in\KK[u]_{<m_c}.
+\end{equation}
+Two local fractions have the same such principal part when their difference extends to a coherent holomorphic datum on a disk about the ordinary centre. By \cref{global:lem:division} every local coherent fraction whose poles are bounded by $P_c$ has a unique representative of the form \eqref{global:eq:movingpart}; this representative packages all the individual poles and residues of the cluster, including cancellations. A \emph{global coherent meromorphic function} means here one fraction $F/G$ with $F,G\in\HH(\C)$, $G\ne0$, interpreted as finite-meromorphic germs with removable values filled. \emph{We do not assume that an arbitrary componentwise meromorphic Hahn family belongs to this fraction field.}
+
+\begin{theorem}[Sharp moving-pole Mittag--Leffler theorem]\label{global:thm:MLmoving}
+For an admissible pole bound $(P_c)$, the moving principal parts \eqref{global:eq:movingpart} are realized by a global coherent meromorphic fraction with no poles outside that bound if and only if
+\begin{equation}\label{global:eq:MLsupport}
+  S_R=\bigcup_{c\in A}\supp(R_c)
+\end{equation}
+is well ordered. Any two solutions differ by a member of $\HH(\C)$.
+\end{theorem}
+
+\begin{proof}
+Choose the divisor realizer $G$ of \cref{global:thm:divisor}, so that on the disks $D_c$ one has $G(c+u)=P_c(u)Q_c(u)$ with $Q_c$ and $Q_c^{-1}$ uniformly supported in $E(P)^*$ and with ordinary unit leading coefficient functions.
+
+Suppose $S_R$ is well ordered. Form the targets $B_c=\jet_{P_c}(Q_cR_c)$; their total support lies in $S_R+E(P)^*$ by \cref{global:prop:restrictedalgebra}. By \cref{global:thm:interpolation} choose $F\in\HH(\C)$ with those local remainders. Then $F-Q_cR_c$ is coherently divisible by $P_c$, and
+\[
+  \frac{F(c+u)}{G(c+u)}-\frac{R_c(u)}{P_c(u)}
+  =\frac{F(c+u)-Q_c(u)R_c(u)}{P_c(u)Q_c(u)}
+\]
+is holomorphic on the thickened disk. The fraction $F/G$ has no other poles because the zeros of $G$ are exactly the specified bound.
+
+Conversely let a global fraction $H$ have the required principal parts and no poles outside the bound. Then $GH$ is pole free, hence equal to some $F\in\HH(\C)$ by \cref{global:lem:polefree}, and locally $R_c=\jet_{P_c}\bigl(F(c+u)/Q_c(u)\bigr)$. Uniform inversion and deformed division put all these numerators in $\supp(F)+E(P)^*$, so $S_R$ is well ordered. Finally the difference of two solutions has no actual poles and is coherent by the same lemma.
+\end{proof}
+
+The pole bound is part of the theorem. Without its admissibility one cannot assume that a single global denominator exists at all; \cref{global:thm:divisor} is the exact obstruction to that preliminary step.
+
+\begin{example}[Globally realizable poles with unbounded residue scales]\label{global:ex:MLresidues}
+Let $P_n(u)=u^n-t$ and prescribe $R_n(u)=1$. Both the divisor support and the numerator support are admissible, so there is a global coherent meromorphic fraction locally congruent to $1/\bigl((z-n)^n-t\bigr)$ modulo coherent holomorphic data. At a root $\xi=\zeta_n^ks_n$ its residue is
+\begin{equation}\label{global:eq:individualresidues}
+  \frac1{n\xi^{n-1}}=\frac{\zeta_n^k}{n}\,t^{-(n-1)/n},
+\end{equation}
+and the union of these individual residue supports is not well ordered. This does not prevent the global fraction from existing: its proper numerators are all equal to $1$. For $n>1$ the residues within the $n$th cluster sum to zero, while the $n=1$ cluster contributes $1$.
+\end{example}
+
+On an ordinary compact contour avoiding the leading denominator zeros, the moving-pole residue theorem of \cite{Source} applies to only finitely many clusters and returns the sum of their actual residues. \emph{Neither the present theorem nor that contour theorem calls for an infinite sum of residues over the plane.} The example shows why the correct global input consists of proper rational cluster representatives rather than independently enumerated residue coefficients.
+
+\section{Near-identity automorphisms and interpolation of motions}\label{global:sec:aut}
+
+For simple zero motions there is an alternative constructive mechanism, which also shows how rich the coherent category remains despite the obstruction theorems.
+
+\begin{theorem}[Global inverse for positive-support perturbations]\label{global:thm:aut}
+Let $U\subseteq\C$ be an ordinary domain and $E\in\HP(U)$. The coherent map $G(z)=z+E(z)$ evaluates to an automorphism of $U\sh$. Its inverse is $H(z)=z+\mathcal A(z)$ for a unique $\mathcal A\in\HP(U)$, and both compositions are identities as Hahn-coherent data. If $T=\supp E$ then $\supp(\mathcal A)\subseteq T^*\setminus\{0\}$.
+\end{theorem}
+
+\begin{proof}
+The standard part of $G(c+\epsilon)$ is $c$, so evaluation maps $U\sh$ into itself. To construct a right inverse, solve
+\begin{equation}\label{global:eq:inverse-rec}
+  \mathcal A(z)=-E\bigl(z+\mathcal A(z)\bigr)
+  =-\sum_{\gamma\in T}\sum_{k\ge0}
+  \frac{e_\gamma^{(k)}(z)}{k!}\,t^\gamma\,\mathcal A(z)^k
+\end{equation}
+by well-founded recursion on $T^*\setminus\{0\}$. At $\nu$, the terms with $k\ge1$ involve only coefficients of $\mathcal A$ at exponents strictly smaller than $\nu$, because the external exponent $\gamma$ is strictly positive, and the term with $k=0$ is already known. Finite word decomposition (\cref{global:lem:support}) makes each coefficient formula finite, so the recursion defines holomorphic coefficients on the same $U$ with the asserted support, and $G\circ H=\id$ as coherent data by \eqref{global:eq:comp}.
+
+For cancellation, suppose two positive perturbations $H_1,H_2$ differ and let $\nu$ be the least exponent of their difference. In
+\[
+  G\circ H_1-G\circ H_2=(H_1-H_2)+(E\circ H_1-E\circ H_2)
+\]
+the second summand has no term at $\nu$, since every term containing a difference also carries an external positive exponent from $E$; so the coefficient at $\nu$ of the displayed difference is nonzero, and left composition by $G$ is injective in this class. Associativity of \eqref{global:eq:comp} then gives
+\[
+  G\circ(H\circ G)=(G\circ H)\circ G=G=G\circ\id,
+\]
+whence $H\circ G=\id$. The same least-exponent argument proves uniqueness among \emph{all} positive-support inverses, not only those supported in $T^*$.
+\end{proof}
+
+\begin{corollary}[Exact interpolation of simple motions]\label{global:cor:motion}
+Let $\{c_j\}$ be closed discrete and prescribe $\delta_j\in\mK$. There is a coherent automorphism $G=\id+E$ with $E\in\HP(\C)$ satisfying $G(c_j)=c_j+\delta_j$ for every $j$ if and only if $\bigcup_j\supp(\delta_j)$ is well ordered.
+\end{corollary}
+
+\begin{proof}
+Necessity follows by evaluating $E$ at ordinary points. For sufficiency use \cref{global:cor:interp} to find $E\in\HP(\C)$ with $E(c_j)=\delta_j$ and apply \cref{global:thm:aut}.
+\end{proof}
+
+If $f_0$ has simple zeros exactly at the $c_j$, then $f_0\circ G^{-1}$ realizes the moved simple divisor. This is consistent with, but strictly weaker than, \cref{global:thm:divisor}: a bijective change of coordinate cannot split a multiple zero into distinct roots, whereas the moving-divisor theorem permits precisely that splitting and allows arbitrarily large cluster degrees.
+
+For example $G(z)=z+tz^2$ is a coherent automorphism of the finite surcomplex plane, although the same quadratic is not injective on all of $\SC$: its other algebraic preimage is generally infinite and lies outside $\C\sh$. Its inverse on $\C\sh$ is the positive-support branch
+\[
+  G^{-1}(z)=z-tz^2+2t^2z^3-5t^3z^4+14t^4z^5-\cdots,
+\]
+whose coefficients are the Catalan numbers with alternating signs. This domain distinction is another reason not to identify coherent entire data on the finite plane with all-scale entire functions on the full class field.
+
+\section{The exact additive Cousin obstruction}\label{global:sec:cousin}
+
+The existence theorems above use a common support hypothesis and show it is sharp. We now identify the gluing obstruction directly, in a form that is invisible to every ordinary coefficientwise existence theorem.
+
+\subsection{A puncture-and-disk cover, and the singular support}
+
+Consider the ordinary cover
+\begin{equation}\label{global:eq:starcover}
+  U_0=\C\setminus\N_{>0},
+  \qquad U_n=D(n,1/4)\quad(n\ge1).
+\end{equation}
+The disks are disjoint, so the only nonempty pairwise intersections involving different patches are $W_n=U_0\cap U_n=U_n\setminus\{n\}$, and there are no triple overlaps to check. Any family $b_n\in\HH(W_n)$ is therefore additive Cousin data, with splitting convention
+\begin{equation}\label{global:eq:cousinsplit}
+  b_n=a_n-a_0\quad\text{on }W_n .
+\end{equation}
+Each $b_n$ separately has well-ordered support; their union need not. Write $b_n=\sum_\gamma b_{n,\gamma}t^\gamma$, absent coefficients being zero, and define the \emph{singular support}
+\begin{equation}\label{global:eq:singularsupport}
+  \Sigma(b)=\{\gamma\in\Gamma:\ \text{some }b_{n,\gamma}
+  \text{ has a nonremovable singularity at }n\}.
+\end{equation}
+The singularity may be a pole or an ordinary essential singularity. This definition concerns ordinary coefficient functions; it is not about extending a coefficient's essential singularity into the infinitesimal monad.
+
+\begin{theorem}[Necessary and sufficient Cousin criterion]\label{global:thm:cousincriterion}
+For the cover \eqref{global:eq:starcover}, the data $(b_n)$ admit a splitting \eqref{global:eq:cousinsplit} with $a_0\in\HH(U_0)$ and $a_n\in\HH(U_n)$ if and only if $\Sigma(b)$ is well ordered. If all $b_n$ have strictly positive support, the same condition is equivalent to a splitting with all $a_i\in\HP(U_i)$.
+\end{theorem}
+
+\begin{proof}
+\emph{Necessity.} If $b_{n,\gamma}$ has a nonremovable singularity at $n$ then $(a_0)_\gamma$ cannot be identically zero on $U_0$: otherwise $b_{n,\gamma}=(a_n)_\gamma$ would extend across $n$. Hence $\Sigma(b)\subseteq\supp(a_0)$, which is well ordered.
+
+\emph{Sufficiency.} Fix $\gamma\in\Sigma(b)$. The scalar functions $b_{n,\gamma}$ form ordinary additive Cousin data, so \cref{global:lem:scalarCousin} gives $a_{0,\gamma}\in\OO(U_0)$ such that every $b_{n,\gamma}+a_{0,\gamma}$ extends holomorphically across $n$. For $\gamma\notin\Sigma(b)$ set $a_{0,\gamma}=0$, the corresponding $b_{n,\gamma}$ already extending. Let $a_{n,\gamma}$ be those extensions and assemble
+\[
+  a_0=\sum_{\gamma\in\Sigma(b)}a_{0,\gamma}t^\gamma,
+  \qquad a_n=\sum_\gamma a_{n,\gamma}t^\gamma .
+\]
+Then $\supp(a_0)\subseteq\Sigma(b)$ and, for each fixed $n$, $\supp(a_n)\subseteq\Sigma(b)\cup\supp(b_n)$, a finite union of well-ordered sets. So every displayed expression is a legitimate coherent section and the coefficient equations give \eqref{global:eq:cousinsplit}. If the input supports are positive then both sets in the last inclusion are positive, and the constructed splitting is positive.
+\end{proof}
+
+A union of bad supports is therefore not, by itself, the obstruction. Exponents attached only to \emph{removable} coefficient germs may stay on the separate disk patches; the exact obstruction is the support that must be carried by the single connected central patch.
+
+\begin{remark}[An explicit scalar solution on this cover]\label{global:rem:explicitCousin}
+The scalar step can be written without sheaf cohomology. For fixed $\gamma$ take the negative Laurent part $p_n$ of $b_{n,\gamma}$ at $n$. Since its inner Laurent radius is zero, $p_n$ is holomorphic on all of $\C\setminus\{n\}$ even when it is an infinite negative Laurent series. Choose a polynomial $q_n$ with $\abs{p_n-q_n}\le2^{-n}$ on $\abs z\le n/2$. Then
+\[
+  a_{0,\gamma}=-\sum_{n\ge1}(p_n-q_n)
+\]
+converges normally on compact subsets of $U_0$ and cancels every prescribed negative Laurent part, all other terms extending holomorphically at each centre. This is the correcting-polynomial proof of the required scalar Cousin step, and it applies verbatim when the negative part is an infinite series.
+\end{remark}
+
+\subsection{An explicit infinite-dimensional family of obstructions}
+
+Fix the discrete centres $c_j=j$, $j\ge2$, with the cover of \cref{global:sec:ML}, and define complex vector spaces
+\begin{align}
+  \mathcal V_\Gamma&=\prod_{j\ge2}\mK,\label{global:eq:Vspace}\\
+  \mathcal W_\Gamma&=\Bigl\{(a_j)\in\mathcal V_\Gamma:
+  \bigcup_{j\ge2}\supp(a_j)\ \text{is well ordered}\Bigr\}.\label{global:eq:Wspace}
+\end{align}
+The second is a vector subspace, since finite unions of well-ordered sets are well ordered and addition can only remove exponents from such a union. \emph{No Hahn summation over $j$ is intended in the product \eqref{global:eq:Vspace}.} An element $a=(a_j)$ determines an additive cocycle on the cover by
+\begin{equation}\label{global:eq:addcocycle}
+  p_{0j}(z)=\frac{a_j}{z-j},\qquad p_{j0}=-p_{0j}.
+\end{equation}
+
+\begin{theorem}[A concrete obstruction subspace]\label{global:thm:obstruction}
+The construction \eqref{global:eq:addcocycle} induces an injective complex-linear map
+\begin{equation}\label{global:eq:injH1}
+  \mathcal V_\Gamma/\mathcal W_\Gamma
+  \lhook\joinrel\longrightarrow H^1(\C,\HP).
+\end{equation}
+Exponentiating the transition functions gives an injective group homomorphism
+\begin{equation}\label{global:eq:injPic}
+  \mathcal V_\Gamma/\mathcal W_\Gamma
+  \lhook\joinrel\longrightarrow\Pic(\C,\HH),
+  \qquad a\longmapsto\mathcal L(a),
+\end{equation}
+where $\mathcal L(a)$ is glued by
+\begin{equation}\label{global:eq:transitions}
+  g_{0j}(z)=\ExpH\!\left(\frac{a_j}{z-j}\right)\in1+\HP(U_0\cap U_j).
+\end{equation}
+Its transitions lie in $1+\HP$, so $\mathcal L(a)$ has an integral model over $\HI$ with trivial ordinary reduction; nevertheless $\mathcal L(a)$ is nontrivial exactly when $a\notin\mathcal W_\Gamma$.
+\end{theorem}
+
+\begin{proof}
+An additive coboundary representation on this cover is a system $p_{0j}=B_0-B_j$ with $B_0\in\HP(U_0)$ and $B_j\in\HP(U_j)$, which is exactly the positive-support Mittag--Leffler problem for the principal parts $a_j/(z-j)$. By \cref{global:thm:ML} it is solvable precisely when the support union is well ordered, so the kernel of the map from $\mathcal V_\Gamma$ is $\mathcal W_\Gamma$. Equivalently, the singular support of this cocycle is $\bigcup_j\supp(a_j)$, and \cref{global:thm:cousincriterion} gives the same conclusion.
+
+This concerns the actual first cohomology class, not an artifact of one cover. An additive cocycle defines a sheaf torsor; if its class vanishes after refinement then the torsor has a global section, and expressing that section in the original local trivializations supplies a coboundary on the original cover \cite[Tag~02FQ]{Stacks}. No refinement can remove the obstruction without solving the stated Mittag--Leffler problem.
+
+Nontriviality after exponentiation can also be checked directly. Suppose the line bundle with transitions \eqref{global:eq:transitions} is trivial, so there are units $b_0\in\HH(U_0)^\times$, $b_j\in\HH(U_j)^\times$ with $g_{0j}=b_0/b_j$ on the punctures. Write their leading factors as in \eqref{global:eq:unitfactor}. Since every $g_{0j}$ has leading term $1$, all leading exponents equal one $\lambda$ and all leading ordinary coefficient functions agree on overlaps, so they glue to one nowhere-zero entire $h$. Dividing each $b_i$ by $t^\lambda h|_{U_i}$ normalizes every unit into $1+\HP(U_i)$, and applying $\LogH$ produces the forbidden additive coboundary unless $a\in\mathcal W_\Gamma$. Conversely, exponentiating an additive solution trivializes the bundle, and the exponential law makes tensor product correspond to addition of sequences, which gives \eqref{global:eq:injPic}. Finally the same transitions define a locally free rank-one $\HI$-module whose reduction is $1$ on every patch, which is the integral-model statement of \cref{global:rem:reduction}.
+\end{proof}
+
+\begin{corollary}[First cohomology detected by descending scales]\label{global:cor:H1injection}
+Suppose $\Gamma$ contains a strictly decreasing sequence $\gamma_1>\gamma_2>\cdots>0$. Then the cocycles
+\begin{equation}\label{global:eq:obstructioncocycle}
+  b_n(a)=\frac{a_nt^{\gamma_n}}{z-n},
+  \qquad a=(a_n)\in\C^{\N_{>0}},
+\end{equation}
+induce an injective complex-linear map
+\begin{equation}\label{global:eq:cohomologyinjection}
+  \C^{\N_{>0}}/\C^{(\N_{>0})}
+  \lhook\joinrel\longrightarrow H^1(\C,\HP),
+\end{equation}
+where $\C^{(\N_{>0})}$ denotes the finitely supported sequences.
+\end{corollary}
+
+\begin{proof}
+Each component of \eqref{global:eq:obstructioncocycle} is a legitimate positive Hahn section with one-element support, and its singular support is $\{\gamma_n:a_n\ne0\}$. An infinite subset of a strictly decreasing sequence indexed by positive integers has no least element, so by \cref{global:thm:cousincriterion} --- or by the special case $a_j\mapsto a_jt^{\gamma_j}$ of \cref{global:thm:obstruction} --- the cocycle is a coboundary exactly when $(a_n)$ is finitely supported. Linearity is immediate.
+\end{proof}
+
+\begin{corollary}[Size and local invisibility]\label{global:cor:H1size}
+The space in \eqref{global:eq:cohomologyinjection} has complex dimension $2^{\aleph_0}$. Every individual class constructed there restricts to zero on every bounded ordinary disk, although globally it need not vanish.
+\end{corollary}
+
+\begin{proof}
+There are only continuum many complex sequences, which bounds the dimension above. For each $\lambda\in\C^\times$ consider $(\lambda^n)_{n\ge1}$; any finite linear combination of such sequences with distinct $\lambda$ that is eventually zero has all coefficients zero, by applying the Vandermonde determinant to a sufficiently late block of consecutive indices. These give continuum many independent vectors in the quotient. For the second assertion, only finitely many $U_n$ meet a bounded disk, so the restricted cocycle has finite singular support and splits. \emph{This statement is about these particular classes; it does not assert vanishing of the sheaf cohomology of every bounded disk for arbitrary data.}
+\end{proof}
+
+\begin{example}[An explicit nontrivial bundle over the ordinary plane]\label{global:ex:bundle}
+For $\Gamma=\Q$ take $a_j=t^{1/j}$. Then
+\[
+  g_{0j}(z)=\ExpH\!\left(\frac{t^{1/j}}{z-j}\right)
+  =\sum_{k\ge0}\frac{t^{k/j}}{k!\,(z-j)^k}
+\]
+is a valid Hahn unit on every punctured disk, and these transitions define a nontrivial line bundle on $(\C,\mathscr H_\Q)$. At each fixed $j$ the support is a perfectly well-ordered arithmetic progression; nontriviality comes only from trying to trivialize all the transitions simultaneously, which would force the descending set $\{1/j:j\ge2\}$ into one global support.
+\end{example}
+
+For the bundles of \cref{global:thm:obstruction}, restriction to any relatively compact ordinary domain is trivial: only finitely many centres lie in it, the finite principal-part problem is solvable, and principal parts at outside centres are already holomorphic there and are absorbed into the local gauges. A bundle can therefore be trivial on every disk of an ordinary exhaustion while admitting no compatible global trivialization.
+
+\subsection{The divisor obstruction as a line-bundle class}
+
+The cluster data \eqref{global:eq:clusterintro} yield unit transitions
+\[
+  h_{0c}=P_c(z-c)/(z-c)^{m_c}\in1+\HP(U_0\cap U_c),
+\]
+which define a line bundle even without a common support across $c$; its logarithmic cocycle is $L_c$ from \eqref{global:eq:Lc}.
+
+\begin{proposition}[The divisor and logarithmic obstructions coincide]\label{global:prop:divPic}
+This line bundle is trivial if and only if the clusters are admissible; equivalently, exactly when the prescribed effective divisor is globally realizable as in \cref{global:thm:divisor}.
+\end{proposition}
+
+\begin{proof}
+The normalization argument in \cref{global:thm:obstruction} shows that triviality is equivalent to an additive Mittag--Leffler solution for the principal parts $L_c$, which by \cref{global:thm:ML} is equivalent to well ordering of $T=\bigcup_c\supp L_c$. If $E(P)$ is well ordered then all the logarithmic supports lie in $E(P)^*\setminus\{0\}$. Conversely, if $T$ is well ordered then exponentiating each $L_c$ puts every coefficient support of $P_c$ in $T^*$, so $E(P)$ is well ordered. Apply \cref{global:thm:divisor} for the final equivalence.
+\end{proof}
+
+In particular the effective sub-divisor of \cref{global:cor:splitting} carries a genuine line-bundle obstruction; it is not merely the failure of a particular product formula. The transitions for a moved simple root are $1-a_c/(z-c)$, whose logarithm has higher pole terms, and should not be confused with the simpler exponential transitions \eqref{global:eq:transitions}: both constructions detect the same well-ordering issue, but their cocycles are not asserted to be equal.
+
+\section{The Picard-group dichotomy}\label{global:sec:pic}
+
+\subsection{Separating the ordinary and positive-support factors}
+
+\begin{proposition}[Reduction of the Picard group to positive supports]\label{global:prop:Picreduction}
+There are natural isomorphisms of abelian groups
+\begin{equation}\label{global:eq:PicH1}
+  \Pic(\C,\HI)\ \cong\ \Pic(\C,\HH)=\Piclf(\C,\HH)\ \cong\ H^1(\C,\HP).
+\end{equation}
+In particular all of these groups carry a complex vector-space structure in which tensor product corresponds to vector addition, and the map \eqref{global:eq:injPic} is complex-linear for it. Every class has an integral model over $\HI$ whose ordinary reduction is the trivial holomorphic line bundle.
+\end{proposition}
+
+\begin{proof}
+By \cref{global:cor:Picmeaning} and \eqref{global:eq:lfclassification}, $\Pic(\C,\HH)=\Piclf(\C,\HH)=H^1(\C,\HH^\times)$ and $\Pic(\C,\HI)=H^1(\C,\HI^\times)$. Taking first cohomology in \eqref{global:eq:Iunits} and \eqref{global:eq:unitsplit} of \cref{global:prop:explog} gives
+\[
+  H^1(\C,\HH^\times)\cong
+  H^1(\C,\underline\Gamma)\times H^1(\C,\OO^\times)\times H^1(\C,\HP),
+  \qquad
+  H^1(\C,\HI^\times)\cong H^1(\C,\OO^\times)\times H^1(\C,\HP).
+\]
+The factor $H^1(\C,\underline\Gamma)$ vanishes because locally constant torsors over the simply connected, locally contractible plane have trivial monodromy and a global section. The factor $H^1(\C,\OO^\times)$ vanishes by the classical triviality of holomorphic line bundles on $\C$, derived in \cref{global:sec:scalar} from $H^1(\C,\OO)=0$, $H^2(\C,\underline\Z)=0$ and the exponential sequence \cite{Demailly}. Only $H^1(\C,\HP)$ remains, and extension of scalars from $\HI$ to $\HH$ is the displayed isomorphism because both unit decompositions contain the same $\HP$ factor. The last assertion is \cref{global:rem:reduction} together with the transitions being in $1+\HP$ after normalization.
+\end{proof}
+
+This does not say that a contractible space can carry a nontrivial ordinary complex line bundle. It says that the coefficient sheaf is different: the obstruction lies in holomorphic dependence coupled to a global well-ordered support, not in ordinary monodromy. \emph{There is no reduction ring map $\HH\to\OO$ sending positive monomials to zero, because those monomials are units in $\HH$; reduction is always performed on the $\HI$ model.}
+
+\subsection{Exactly which value groups give vanishing}
+
+\begin{lemma}[Descending positive sequences]\label{global:lem:descending}
+A nonzero ordered abelian group $\Gamma$ has no infinite strictly decreasing sequence of positive elements if and only if it is order-isomorphic to $\Z$, that is, $\Gamma=\Z\delta$ for some $\delta>0$.
+\end{lemma}
+
+\begin{proof}
+For $\Gamma=\Z\delta$ with $\delta>0$ every positive element is a positive integer multiple of $\delta$, so no such sequence exists. Conversely, if the positive cone has no least element, choose a smaller positive element repeatedly to construct the forbidden sequence. So there is a least positive $\delta$. If $\Gamma\ne\Z\delta$, choose $\gamma>0$ not an integer multiple of $\delta$; we claim $\gamma-n\delta>0$ for every $n\ge0$. Otherwise take the first $n$ with $\gamma-n\delta\le0$; then $0<\gamma-(n-1)\delta\le\delta$, and minimality of $\delta$ forces equality, so $\gamma=n\delta$, a contradiction. Hence $\gamma,\gamma-\delta,\gamma-2\delta,\dots$ is a strictly decreasing positive sequence, contradicting the hypothesis.
+\end{proof}
+
+\begin{theorem}[Picard-group vanishing dichotomy]\label{global:thm:dichotomy}
+For every set-sized ordered additive subgroup $\Gamma\subseteq\No$,
+\begin{equation}\label{global:eq:dichotomy}
+  \Pic(\C,\HI)=0
+  \iff
+  \Pic(\C,\HH)=0
+  \iff
+  \Gamma=\{0\}\ \text{or}\ \Gamma=\Z\delta\ \text{for some }\delta>0 .
+\end{equation}
+In every other case both groups, identified as in \eqref{global:eq:PicH1}, contain an embedded complex vector space $\C^\N/\C^{(\N)}$, and hence continuum many linearly independent classes, realized by the explicit transitions
+\begin{equation}\label{global:eq:explicitbundles}
+  g_{n0}(a)=\ExpH\!\left(\frac{a_nt^{\gamma_n}}{z-n}\right)
+  \quad\text{on }W_n,
+  \qquad \gamma_1>\gamma_2>\cdots>0 .
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By \cref{global:prop:Picreduction} it suffices to decide when $H^1(\C,\HP)$ vanishes. For $\Gamma=0$ one has $\HP=0$ and $\HH=\OO$.
+
+Suppose $\Gamma=\Z\delta$ with $\delta>0$. On any ordinary open set a positive-support section is simply $\sum_{k\ge1}a_k(z)t^{k\delta}$ with $a_k\in\OO(U)$ and no condition beyond holomorphy, every subset of $\{k\delta:k\ge1\}$ being well ordered; as an additive sheaf $\HP=\prod_{k\ge1}\OO\,t^{k\delta}$. Given a positive-support additive cocycle on an ordinary cover, expand it at each $k\delta$; each coefficient is an ordinary holomorphic additive cocycle, so \cref{global:lem:scalarCousin} splits it on the \emph{same} cover, giving local cochains $b_{i,k}$. Their series $b_i=\sum_{k\ge1}b_{i,k}t^{k\delta}$ are valid positive-support sections and solve the original cocycle. This argument works on the original cover and does not assume that infinite products commute with higher sheaf cohomology; alternatively the torsor interpretation supplies local coordinates in the original trivializations. Hence $H^1(\C,\HP)=0$.
+
+If $\Gamma$ is neither trivial nor cyclic, \cref{global:lem:descending} supplies a strictly decreasing positive sequence $(\gamma_n)$, and the sequence $a_n=t^{\gamma_n}$ lies in $\mathcal V_\Gamma\setminus\mathcal W_\Gamma$, so its bundle is nontrivial by \cref{global:thm:obstruction}; \cref{global:cor:H1injection,global:cor:H1size} supply the embedded vector space and its dimension, and exponentiation turns those additive cocycles into \eqref{global:eq:explicitbundles}, legitimate on each overlap by positive-support summability. The unit decomposition \eqref{global:eq:unitsplit} shows that no extra ordinary unit or monomial change of frame can trivialize these classes unless the underlying additive cocycle was already a coboundary.
+\end{proof}
+
+The word \emph{cyclic} cannot be replaced by ``has a least positive element''. For example $\Gamma=\Z+\Z\omega\subseteq\No$ has least positive element $1$ but is not cyclic, and $\gamma_n=\omega-n$ is positive and strictly decreasing, so the transitions $\ExpH\bigl(t^{\omega-n}/(z-n)\bigr)$ give a nontrivial line bundle. Higher-rank exponents beyond all multiples of the least positive element matter. Every nonzero divisible group, in particular $\Gamma=\Q$, also lies on the nontrivial side.
+
+\subsection{The size of the nonzero Picard groups}
+
+\begin{theorem}[Continuum many independent classes, and the exact dimension]\label{global:thm:dimension}
+If $\Gamma$ is noncyclic then
+\begin{equation}\label{global:eq:lowerdim}
+  \dim_\C\Pic(\C,\HH)\ge2^{\aleph_0}.
+\end{equation}
+If $\Gamma$ is countable and noncyclic, equality holds; in particular
+\begin{equation}\label{global:eq:Qdim}
+  \dim_\C\Pic(\C,\mathscr H_\Q)=2^{\aleph_0}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Choose a strictly decreasing positive sequence $(\gamma_j)_{j\ge2}$. There is a family $(I_x)_{x\in X}$ of infinite subsets of $\{2,3,\dots\}$ with $\abs X=2^{\aleph_0}$ and all pairwise intersections finite: encode finite binary strings by integers and let $I_x$ be the set of finite prefixes of an infinite binary sequence $x$, two distinct infinite sequences sharing only finitely many prefixes. For each $x$ set $a^{(x)}_j=t^{\gamma_j}$ if $j\in I_x$ and $0$ otherwise. Consider a finite nonzero complex-linear combination of the $a^{(x)}$ and pick one $x$ with nonzero coefficient; infinitely many indices of $I_x$ lie in none of the finitely many other selected sets, and at each such index the combination still has a nonzero coefficient at $\gamma_j$. Those exponents contain an infinite strictly decreasing subsequence, so the combination is not in $\mathcal W_\Gamma$. Hence the classes of the $a^{(x)}$ are linearly independent in $\mathcal V_\Gamma/\mathcal W_\Gamma$, and \cref{global:thm:obstruction,global:prop:Picreduction} give \eqref{global:eq:lowerdim}.
+
+Assume now $\Gamma$ countable. On any ordinary open set the number of holomorphic functions is at most $\mathfrak c=2^{\aleph_0}$, since a function on each connected component is determined by its values on a countable dense set and there are at most countably many components. A section of $\HP$ is specified by a subset of a countable group together with countably many such functions, so $\abs{\HP(U)}\le\mathfrak c$ for every $U$. Every torsor can be trivialized on a countable cover selected from a fixed countable basis of the plane, and there are at most $\mathfrak c$ such covers; for each, a cocycle consists of countably many sections, so there are at most $\mathfrak c^{\aleph_0}=\mathfrak c$ cocycles. Hence $\abs{H^1(\C,\HP)}\le\mathfrak c$, and with the independent family already constructed the dimension is exactly $\mathfrak c$.
+\end{proof}
+
+This determines vanishing for every value group and the exact dimension for countable noncyclic groups. It does \emph{not} claim that \eqref{global:eq:injH1} is surjective, and it supplies no canonical basis or normal form for an arbitrary line-bundle class; those are different classification questions.
+
+\begin{remark}[What survives without the stalk theorem]\label{global:rem:dimension}
+\Cref{global:thm:dichotomy,global:thm:dimension} are stated for the unrestricted Picard group because \cref{global:cor:Picmeaning}, resting on \cref{global:thm:PID}, identifies it with $\Piclf$. A reader who declines that identification --- as one of the two merged manuscripts deliberately does, see \cref{global:rem:piclf} --- still obtains every statement above verbatim for $\Piclf(\C,\HH)$ and for $\Pic(\C,\HI)$, since \eqref{global:eq:lfclassification} and \cref{global:prop:Picreduction} need no hypothesis on stalks. What that manuscript asserts, and all it asserts, about the size in the nonvanishing cases is the \emph{containment} of a copy of $\C^\N/\C^{(\N)}$, i.e.\ \cref{global:cor:H1injection,global:cor:H1size}. The exact dimension in \eqref{global:eq:Qdim}, with its countability hypothesis and the cocycle-counting upper bound, is the sharper statement and is the one proved here. The two are not in conflict: the containment is what survives without the stalk theorem and without the counting argument, and it is the sharper statement for the purpose of exhibiting explicit independent classes, while \eqref{global:eq:Qdim} is the sharper statement for the purpose of measuring the group.
+\end{remark}
+
+\subsection{Additive cohomology behaves differently}
+
+\begin{proposition}[The full additive sheaf is already obstructed in cyclic rank]\label{global:prop:fullH1}
+For every nonzero $\Gamma$ the group $H^1(\C,\HH)$ contains a copy of $\C^\N/\C^{(\N)}$; in particular $H^1(\C,\HH)\ne0$ even when $\Gamma$ is cyclic and the Picard group vanishes.
+\end{proposition}
+
+\begin{proof}
+Choose $\delta>0$ in $\Gamma$ and repeat the construction of \cref{global:cor:H1injection} with the exponents $\gamma_n=-n\delta$, which are strictly decreasing but not positive. The general, not necessarily positive, version of \cref{global:thm:cousincriterion} applies unchanged and gives precisely the same kernel: the cocycle $b_n(a)=a_nt^{-n\delta}/(z-n)$ is a coboundary exactly when $(a_n)$ is finitely supported. The weaker assertion $H^1(\C,\HH)\ne0$ also follows directly from the necessity half of \cref{global:thm:ML} applied to $p_j=t^{-j\delta}/(z-j)$, since $\{-j\delta:j\ge2\}$ is not well ordered.
+\end{proof}
+
+There is no contradiction with \cref{global:thm:dichotomy}: Hahn exponentiation cannot be applied to negative-support cochains, so logarithms of units are governed by $\HP$ and not by the full Laurent sheaf $\HH$. The line-bundle group and the additive cohomology of $\HH$ therefore vanish under different conditions, and only the former is cyclic-rank sensitive.
+
+\subsection{Why this does not contradict ordinary complex geometry}\label{global:sub:notcoherent}
+
+The ordinary plane is contractible and its ordinary holomorphic line bundles are trivial. The nontrivial bundles above are locally trivial for a \emph{different} coefficient sheaf, and their obstruction is neither an ordinary winding number nor a topological hole: it is the impossibility of putting infinitely many forced exponents into one well-ordered coherent section on the central patch.
+
+Nor is ``Hahn-coherent'' synonymous with ``coherent $\OO$-module''. For $\Gamma\ne0$ the sheaf $\HH$ is not locally finitely generated over $\OO$: at a point $c$, evaluation gives
+\[
+  R_c/(z-c)R_c\ \cong\ \KK,
+\]
+which is infinite-dimensional over $\C$, while a finitely generated $\OO_c$-module would have a finite-dimensional quotient by its maximal ideal. The same computation for $\HP$ gives the complex vector space of positive Hahn constants, which already contains the infinitely many independent elements $t^{k\delta}$ for any $\delta>0$. \emph{The adjective ``Hahn-coherent'' specifies a common-support condition, not ordinary module coherence, and the present proofs do not apply Cartan's theorem to $\HH$ as though it were a coherent $\OO$-module.}
+
+\section{Moving divisors as nontrivial line bundles}\label{global:sec:geometric}
+
+The realization theorem and the cohomology theorem describe one failure in two complementary languages. The following statement isolates the geometric form of that failure.
+
+\begin{proposition}[An effective divisor with trivial ordinary reduction but no global equation]\label{global:prop:Cartierexample}
+Let $\gamma_1>\gamma_2>\cdots>0$ in $\Gamma$. There is a locally principal effective divisor on $(\C,\HI)$ whose local surcomplex zeros are the simple points $n+t^{\gamma_n}$, $n\ge1$, whose ordinary reduction is a principal ordinary divisor, and whose associated line bundle is nontrivial both over $\HI$ and after extension of scalars to $\HH$.
+\end{proposition}
+
+\begin{proof}
+Choose an ordinary entire $f_0$ with simple zeros exactly at the positive integers. On the cover \eqref{global:eq:starcover} take the local equations
+\[
+  h_0(z)=f_0(z)\ \text{ on }U_0,
+  \qquad
+  h_n(z)=\frac{f_0(z)}{z-n}\bigl(z-n-t^{\gamma_n}\bigr)\ \text{ on }U_n,
+\]
+noting that $f_0(z)/(z-n)$ is ordinary holomorphic and nowhere zero on $U_n$. On $W_n$ the ratio is
+\begin{equation}\label{global:eq:divisortransition}
+  g_{n0}=\frac{h_n}{h_0}=1-\frac{t^{\gamma_n}}{z-n},
+\end{equation}
+a unit of $\HI(W_n)$ by \cref{global:prop:units}. The equations are nonzerodivisors with unit ratios, so they define the asserted effective locally principal divisor and a rank-one line bundle, and reduction gives the ordinary equation $f_0$ on every patch.
+
+Its positive logarithmic cocycle is
+\begin{equation}\label{global:eq:divisorlog}
+  \LogH g_{n0}=-\sum_{k\ge1}\frac{t^{k\gamma_n}}{k\,(z-n)^k}.
+\end{equation}
+At the exponent $\gamma_n$ the $n$th component has a genuine simple pole, so the singular support contains the whole descending sequence $(\gamma_n)$ and is not well ordered. \Cref{global:thm:cousincriterion} and \cref{global:prop:Picreduction} then show that the bundle is nontrivial in both categories. Equivalently, a trivializing unit frame $v_i$ with $g_{n0}=v_n/v_0$ would make $h_i/v_i$ glue to a global coherent datum with precisely the prescribed divisor, whose symmetric support is $\{\gamma_n:n\ge1\}$; \cref{global:thm:divisor} rules that out.
+\end{proof}
+
+This construction has three simultaneous features: all local equations are elementary, the ordinary reduction is globally principal, and the full coherent divisor is not principal. It therefore isolates a genuinely new support obstruction rather than importing a familiar nontrivial ordinary line bundle.
+
+\subsection{What the existence and obstruction results say together}
+
+There are four distinct levels of data in the examples.
+
+\begin{center}\small
+\begin{tabular}{@{}L{0.30\textwidth}L{0.28\textwidth}L{0.34\textwidth}@{}}
+\toprule
+Prescription & Intrinsic global datum & Outcome\\
+\midrule
+One displaced simple root at each $n$ & $u-t^{1/n}$ & Not realizable: descending symmetric support (\cref{global:ex:simple}).\\[0.45em]
+All $n$ roots of $u^n-t$ at each $n$ & The single coefficient $-t$ & Realizable, even with integer Hahn exponents (\cref{global:ex:fullclusters}).\\[0.45em]
+Select one of those roots by a $0/1$ value & Polynomial \eqref{global:eq:selector} & Not interpolable: descending negative remainder support (\cref{global:ex:selector}).\\[0.45em]
+Reciprocal principal part at each cluster & Numerator $1$ over $u^n-t$ & Realizable despite descending individual residue scales (\cref{global:ex:MLresidues}).\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Neither ordinary discreteness, nor finite solvability, nor bounded raw values, nor the support of individually labelled roots or residues is the correct universal test. The appropriate finite-dimensional invariant must be extracted first --- a monic cluster polynomial, a polynomial remainder, or a proper rational numerator --- and only then is global support admissibility tested.
+
+\section{Interpretation, boundaries, and further questions}\label{global:sec:scope}
+
+\subsection{What has been established}
+
+The main results are local-to-global theorems with exact obstructions. Ordinary analytic discreteness handles the positions of the standard parts; well ordering handles the distribution of surreal scales; neither condition can substitute for the other. The proofs succeed because ordinary Mittag--Leffler summation and ordinary Hermite interpolation introduce no new Hahn exponents, while the positive-support logarithm converts a nonlinear cluster equation into an additive principal-part problem --- or, along the route of \cref{global:rem:secondproof}, because a well-founded recursion on one fixed monoid can call the scalar interpolation lemma once per exponent.
+
+\begin{center}\small
+\begin{tabular}{@{}L{0.26\textwidth}L{0.32\textwidth}L{0.32\textwidth}@{}}
+\toprule
+Question & Exact positive result & Sharp boundary\\
+\midrule
+Principal parts at a discrete set & Realizable exactly for a well-ordered union of principal-part supports & A descending exponent sequence prevents a coherent solution.\\[0.45em]
+Finite moving clusters & Realizable exactly for a well-ordered union of symmetric coefficient supports & Individually well-defined roots need not form a principal divisor.\\[0.45em]
+Prescribed data on a realizable divisor & The image is the support-restricted product $\BB$, with an explicit Neumann right inverse & Bounded $0/1$ values can still be non-interpolable.\\[0.45em]
+Additive gluing on the star cover & Splitting exactly when the singular support is well ordered & Removable coefficient germs impose no condition at all.\\[0.45em]
+Ordinary-base local algebra & Every stalk is a principal ideal domain & It is nonlocal for every nonzero value group.\\[0.45em]
+Simple infinitesimal motions & Uniform support gives a near-identity coherent automorphism & A bijection cannot split a multiple zero.\\[0.45em]
+Line bundles over the plane & Vanishing exactly for trivial or cyclic value groups & Every noncyclic group gives continuum many independent classes.\\[0.45em]
+Ordinary reduction & Positive-unit transition bundles have trivial integral reduction & Trivial reduction does not imply triviality over $\HH$.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{What the conclusions do not say}
+
+All cohomology groups and line bundles here live over the ordinary complex plane with its usual topology. \emph{We have not assigned ordinary sheaf cohomology to the proper class of all surcomplex points}; each fixed coefficient group is a set, and every algebraic support and recursive construction is set-sized. \emph{No ordinary real-parameter contour is claimed to be fine-continuous, and no transfinite support recursion is treated as a convergent fine-topological iteration.}
+
+The divisor theorem concerns $\C\sh$, the finite surcomplex plane. It neither contradicts nor weakens the all-scale polynomial rigidity theorem of \cite[\S12]{Source}: a datum constructed by \cref{global:thm:divisor} has a coherent description at the ordinary scale and need not have coherent descriptions at every infinite surreal scale; and an infinite prescribed zero divisor cannot be the divisor of a polynomial, so these realizers cannot satisfy that stronger hypothesis. The word \emph{entire} here means that every coefficient is ordinary entire and the evaluation is defined on $\C\sh$; it does not mean coherence at every surreal scale.
+
+A Hahn principal-part solution on $\C\setminus A$ is not automatically a meromorphic function on every omitted monad with only finitely many poles. For moving divisors, finite polynomial cancellation supplies that extra structure and \cref{global:thm:MLmoving} is available; for the general \cref{global:thm:ML} no such additional conclusion is claimed.
+
+\emph{Our line-bundle classification is a vanishing/nonvanishing dichotomy plus a large explicit subspace, together with an exact dimension in the countable noncyclic case. It is not a computation of every element of $H^1(\C,\HP)$ for every noncyclic $\Gamma$. The exact Cousin criterion is for the displayed puncture-and-disk cover; a similarly explicit criterion for arbitrary covers has not been established here.} Nor does this article claim to settle canonical global exponentiation, sectorial summation, essential singularities in other surreal frameworks, or an all-scale transcendental theory. These limitations do not weaken the stated equivalences, whose proofs are complete within their hypotheses.
+
+\subsection{Further precise directions}
+
+The injections \eqref{global:eq:injH1} and \eqref{global:eq:cohomologyinjection} leave a structural problem: characterize the cokernel, or find a useful normal form for an arbitrary class in $H^1(\C,\HP)$. The proof of \cref{global:thm:dimension} counts classes for countable $\Gamma$ but supplies no such normal form, and for uncountable value groups the lower bound $2^{\aleph_0}$ need not be optimal; determining the dimension in terms of cardinal and order invariants of the positive cone would refine the dichotomy.
+
+A second direction is the finite-rank vector-bundle theory: matrix-valued positive transition functions no longer reduce to an abelian logarithm identity, so a noncommutative support recursion must replace the rank-one argument. A third is the same package over general ordinary open Riemann surfaces, where the support recursions must be compared carefully with scalar interpolation and line-bundle obstructions on the base; no such generalization is used here.
+
+Finally, the several-variable analogue. The present proofs use finite polynomial remainders in one distinguished local coordinate and isolated clusters indexed by a discrete ordinary set. Positive-dimensional analytic sets would require coherent parameter-dependent division and compatibility between local finite modules, and an exact global support criterion for higher-codimension analytic sets needs more than the one-variable logarithmic reduction. This article provides a test case and explicit obstructions that any such extension should preserve; it does not claim that result.
+
+\section{Conclusion}
+
+The globally coherent category has a precise compatibility boundary. Infinitely many infinitesimal data are compatible exactly when the appropriate coefficient supports can coexist inside one well-ordered set. For divisors the relevant coefficients are the symmetric coefficients of the local cluster polynomials; for additive principal parts they are the principal-part exponents themselves, and more precisely only those carrying nonremovable singularities; for prescribed data on a divisor they are the coefficients of the intrinsic polynomial remainders; for line bundles the positive logarithm exhibits the same issue as a first-cohomology class.
+
+This yields a global Weierstrass theorem with an exact converse, a support-restricted Chinese remainder theorem, explicit principal divisors with nonprincipal effective sub-divisors, an exact Cousin criterion, and a complete vanishing dichotomy for the Picard group together with its exact dimension over countable noncyclic value groups. The phenomena already occur in the countable divisible workspace $\Gamma=\Q$, and they require neither proper-class summation nor any problematic notion of fine-topological convergence.
+
+\appendix
+
+\section{Support and dependency audit}\label{global:app:audit}
+
+The table records the operations at which infinite formal expressions occur, together with the set that controls them. A support in the right column is a \emph{containing} support; cancellation may make the actual support smaller. Throughout, $S$ is an input support and $E$ a well-ordered positive set with $M=E^*$.
+
+\begin{center}\small
+\begin{longtable}{@{}L{0.36\textwidth}L{0.55\textwidth}@{}}
+\toprule
+Construction & Controlling support and finiteness mechanism\\
+\midrule
+\endhead
+Evaluation at $c+\epsilon$ & $S+(\supp\epsilon)^*$; words account for the Taylor powers, and finite exponent decompositions justify the regrouping.\\[0.4em]
+Positive inverse, exponential, logarithm & $M$ for positive well-ordered $E$; finitely many exponent words contribute at each exponent.\\[0.4em]
+Local preparation at any ordinary centre & $T^*$ with $T$ the relative positive support of the section; \emph{the same monoid works at every centre}.\\[0.4em]
+Deformed division & $S+E^*$, independently of the cluster multiplicity; each application of $T$ inserts one exponent from $E$.\\[0.4em]
+Global divisor construction & $E(P)^*$ throughout the additive solution, the exponentiation and the gluing; alternatively one scalar entire coefficient chosen per exponent.\\[0.4em]
+Logarithm of a cluster polynomial & $E(P)^*$; finitely many coefficients at each centre keep every Hahn coefficient a finite principal part.\\[0.4em]
+Interpolation Neumann series & $S+E(P)^*$; finite words and their finitely many block partitions bound the contributing powers of $NL$.\\[0.4em]
+Moving Mittag--Leffler & $S_R+E(P)^*$ after multiplication by local units and deformed division.\\[0.4em]
+Mittag--Leffler at ordinary centres & The union of the principal-part supports; ordinary analytic choices at a fixed exponent introduce no new exponent.\\[0.4em]
+Cousin splitting & Central support $\Sigma(b)$; each disk support lies in $\Sigma(b)\cup\supp b_n$.\\[0.4em]
+Near-identity inverse & $(\supp E)^*$; external positive exponents make the coefficient recursion triangular.\\[0.4em]
+Cyclic-group additive coboundary & The universal set $\{\delta,2\delta,\dots\}$; every coefficientwise solution is automatically admissible.\\[0.4em]
+Nontriviality arguments & A forced infinite descending positive sequence would have to sit inside one legitimate support.\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+Only the ordinary scalar constructions use analytic convergence: normal convergence of correcting-polynomial series, of Weierstrass products, and smooth convergence of corrected Cauchy transforms. In all Hahn constructions, well ordering \emph{and} finite coefficient multiplicity are checked separately. The dependency chains are
+\[
+  \begin{gathered}
+  \text{support calculus}\Longrightarrow
+  \text{units, logarithms, evaluation, preparation, division},\\
+  \text{preparation}+\text{scalar interpolation}\Longrightarrow
+  \text{global divisor realization}+\text{deformed interpolation}
+  \Longrightarrow\text{moving Mittag--Leffler},\\
+  \text{preparation}\Longrightarrow\text{principal-ideal-domain stalks}
+  \Longrightarrow\text{tensor-invertible}=\text{rank-one locally free},\\
+  \text{scalar Cousin}+\text{exact singular-support criterion}
+  \Longrightarrow\text{descending-scale classes}
+  \Longrightarrow\text{the line-bundle dichotomy}.
+  \end{gathered}
+\]
+The connection between the last two chains is the explicit divisor-transition cocycle of \cref{global:prop:Cartierexample}. The principal-ideal-domain argument uses the Euclidean algorithm on finite-degree polynomials and the least element of a set of nonnegative integers; it does not invoke an unproved Noetherian property of an infinite coefficient ring. The Picard argument does not silently assume local stalks: local rank-one triviality is established separately in \cref{global:cor:Picmeaning}.
+
+\section{Reproducible symbolic checks}\label{global:app:checks}
+
+The source archives carry \texttt{verify\_examples.py}, which uses exact symbolic algebra to check finite truncations and polynomial identities illustrating the proofs: a mixed principal-part logarithm and exponential through degree six in $t$; cancellation for two finite root clusters; the two-sided inverse of $z+tz^2$ through degree seven, against the Catalan recurrence; complementary root-cluster factors for degrees two through ten; finite Lagrange interpolation of positive-support motions; a truncated instance of the preparation recursion; finite instances of the global divisor recursion and of local divisibility; root-selector idempotents; and finite residue identities. For the preparation check one takes
+\[
+  F(u)=u^2+t(1+u^3)+t^2(2u+u^4),
+\]
+constructs $A_n$ of degree less than two and polynomial $B_n$ from $h_n=F_n-\sum_{i=1}^{n-1}A_iB_{n-i}$, $A_n=R_2h_n$, $B_n=D_2h_n$, and checks $(u^2+A)(1+B)=F$ through degree six --- a finite example of the well-founded recursion in \cref{global:thm:preparation}. For exponential coefficients the exact recurrence
+\[
+  e_0=1,\qquad n e_n=\sum_{k=1}^{n}k\,b_k\,e_{n-k},
+  \qquad \ExpH\Bigl(\sum_{k\ge1}b_kt^k\Bigr)=\sum_{n\ge0}e_nt^n,
+\]
+avoids numerical error and makes every truncation order explicit.
+
+\emph{These tests are deliberately separate from the proofs. No finite symbolic computation establishes the nonexistence of a well ordering for an infinite descending sequence, the Picard-group dimension, the universality of the dichotomy, or the validity of an arbitrary-support transfinite recursion; those are proved in the main text. The scripts check signs, coefficients and finite algebraic instances. They are not a proof assistant, a machine verification of the general arguments, or a novelty checker.}
+
+\section{Provenance of the merged material}\label{global:app:provenance}
+
+Both source manuscripts prove \cref{global:lem:support,global:prop:sheaf,global:prop:units,global:prop:explog,global:thm:preparation,global:thm:divisor,global:thm:dichotomy,global:lem:descending}, the two discriminating examples \cref{global:ex:simple,global:ex:fullclusters}, the realization torsor, and the remark that a globally principal effective divisor can have a nonprincipal effective sub-divisor; they also both insist on the boundaries recorded in \cref{global:sub:provenance,global:sub:notcoherent}. Those are printed once.
+
+Manuscript~A is the base. Beyond the shared core it supplies \cref{global:thm:PID} and \cref{global:cor:Picmeaning}; \cref{global:thm:dimension}, with the almost-disjoint prefix family and the cocycle-counting upper bound; the whole of \cref{global:sec:aut}, including \cref{global:thm:aut,global:cor:motion} and the Catalan inverse; \cref{global:cor:splitting} with the explicit complementary factor and \cref{global:sub:norepair}; the explicit construction \eqref{global:eq:f0product}--\eqref{global:eq:bn}; \cref{global:thm:ML} in the fixed-centre form, with \cref{global:cor:interp}; and \cref{global:thm:obstruction,global:ex:bundle,global:prop:divPic}.
+
+Manuscript~B supplies the constructive scalar section \cref{global:sec:scalar} (\cref{global:lem:scalarML,global:lem:hermite,global:lem:scalarCousin}); \cref{global:lem:division,global:lem:polefree}; the recursive route to the divisor theorem recorded in \cref{global:rem:secondproof}; the whole of \cref{global:sec:crt} --- \cref{global:prop:restrictedalgebra,global:thm:interpolation,global:cor:CRT,global:ex:selector} --- and with it the identification of the correct interpolation target as a support-restricted product; \cref{global:thm:MLmoving,global:ex:MLresidues}; the exact Cousin criterion \cref{global:thm:cousincriterion} with the singular support and \cref{global:rem:explicitCousin}; \cref{global:cor:H1injection,global:cor:H1size,global:prop:fullH1} in the containment form; the positive half of \cref{global:prop:nonlocal}, that the nonnegative-support subsheaf is local with residue field $\C$ --- the integral model; and the $\Piclf$ distinction with its Stacks citation, preserved in \cref{global:rem:piclf,global:rem:dimension}.
+
+\section{Notation}\label{global:app:notation}
+
+\begin{center}\small
+\begin{tabular}{@{}L{0.26\textwidth}L{0.63\textwidth}@{}}
+\toprule
+Symbol & Meaning\\
+\midrule
+$\SC=\No[i]$ & Algebraically closed surcomplex class field.\\[0.3em]
+$t^\gamma$ & Conway monomial $\omega^{-\gamma}$; not an independently chosen exponential.\\[0.3em]
+$\KK$, $\mK$, $\OO_\Gamma$ & Fixed complex Hahn field, its infinitesimals, its finite elements.\\[0.3em]
+$\HH$ & Sheaf of Hahn data with ordinary holomorphic coefficients on a common ordinary base.\\[0.3em]
+$\HP$, $\HI$ & Positive-support additive subsheaf and nonnegative-support subring sheaf.\\[0.3em]
+$U\sh$, $F\sh$, $\mu(c)$ & Infinitesimal thickening, Taylor--Hahn evaluation, the monad of $c$.\\[0.3em]
+$E^*$ & Additive monoid generated by a positive well-ordered set $E$, including zero.\\[0.3em]
+$P_c$, $E(P)$, $M$ & Monic cluster polynomial at $c$; symmetric support; $M=E(P)^*$.\\[0.3em]
+$\jet_P$, $\BB$ & Simultaneous deformed remainder map and its support-restricted target algebra.\\[0.3em]
+$\Sigma(b)$ & Singular support of additive Cousin data on the star cover.\\[0.3em]
+$R_c$ & Stalk of $\HH$ at an ordinary base point --- not a fine germ at one surcomplex point.\\[0.3em]
+$\mathcal V_\Gamma/\mathcal W_\Gamma$ & Infinitesimal sequences modulo uniformly supported sequences.\\[0.3em]
+$\red$, $\st$ & Reduction $\HI\to\OO$ (synonyms: residue, shadow, standard-part map) and the scalar standard part.\\[0.3em]
+$\Pic$, $\Piclf$ & Tensor-invertible modules; locally free rank-one modules. Equal on $(\C,\HH)$ by \cref{global:cor:Picmeaning}.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{thebibliography}{99}
+\addcontentsline{toc}{section}{References}
+
+\bibitem{Source}
+\emph{Surcomplex Analysis: Infinitesimal Calculus, Hahn-Coherent Holomorphy, and Contour Theory}.
+User-supplied manuscript, September 21, 2026, file \texttt{surcomplex\_analysis(3).tex}.
+The present article uses its \S5 (coherent data, evaluation and support-preserving gluing), \S7 (preparation, division, root lifting and pole-free fractions), its moving-pole residue theorem, and its distinction between finite-scale and all-scale coherence. Authorship and publication status were not supplied, and none is inferred from the filename.
+
+\bibitem{Ahlfors}
+Lars V. Ahlfors, \emph{Complex Analysis}, 3rd edition, McGraw--Hill, 1979.
+Classical Weierstrass products, Mittag--Leffler theory, and elementary holomorphic function theory.
+
+\bibitem{BM}
+Alessandro Berarducci and Vincenzo Mantova,
+``Transseries as germs of surreal functions,''
+\emph{Transactions of the American Mathematical Society} \textbf{371} (2019), 3549--3592.
+\href{https://arxiv.org/abs/1703.01995}{arXiv:1703.01995}.
+
+\bibitem{CE}
+Ovidiu Costin and Philip Ehrlich,
+``Integration on the surreals,''
+\emph{Advances in Mathematics} \textbf{452} (2024), article 109823.
+\href{https://arxiv.org/abs/2208.14331}{arXiv:2208.14331}.
+
+\bibitem{Demailly}
+Jean-Pierre Demailly, \emph{Complex Analytic and Differential Geometry}, online book.
+Chapter V, \S11 (holomorphic vector bundles) and Chapter IX (cohomological vanishing on Stein spaces).
+\href{https://www-fourier.univ-grenoble-alpes.fr/~demailly/manuscripts/agbook.pdf}{Author's full text}, accessed September 21, 2026.
+
+\bibitem{EK}
+Philip Ehrlich and Elliot Kaplan,
+``Surreal ordered exponential fields,''
+\emph{The Journal of Symbolic Logic} \textbf{86} (2021), no.~3, 1066--1115.
+\href{https://doi.org/10.1017/jsl.2021.59}{doi:10.1017/jsl.2021.59};
+\href{https://arxiv.org/abs/2002.07739}{arXiv:2002.07739}.
+The surcomplex exponentiation discussion is in \S11 of the arXiv version. Used to delimit prior work, not as an input to any proof here.
+
+\bibitem{Gonshor}
+Harry Gonshor, \emph{An Introduction to the Theory of Surreal Numbers},
+London Mathematical Society Lecture Note Series \textbf{110}, Cambridge University Press, 1986.
+
+\bibitem{McMullen}
+Curtis T. McMullen, \emph{Advanced Complex Analysis}, Harvard University Math~213a course notes, November 30, 2023.
+\href{https://people.math.harvard.edu/~ctm/home/text/class/harvard/213a/23/html/home/course/course.pdf}{Author's notes}.
+See \S3 for ordinary entire and meromorphic functions, and Theorem~3.26 for Mittag--Leffler.
+
+\bibitem{MS}
+J\"orn M\"uller and Alexander Strohmaier,
+``The theory of Hahn-meromorphic functions, a holomorphic Fredholm theorem, and its applications,''
+\emph{Analysis \& PDE} \textbf{7} (2014), no.~3, 745--770.
+\href{https://doi.org/10.2140/apde.2014.7.745}{doi:10.2140/apde.2014.7.745};
+\href{https://arxiv.org/abs/1205.0236}{arXiv:1205.0236}.
+Definitions~2.3 and~2.5 are the normally convergent generalized expansions from which the present coefficient sheaf is explicitly distinguished.
+
+\bibitem{Neumann}
+B. H. Neumann, ``On ordered division rings,''
+\emph{Transactions of the American Mathematical Society} \textbf{66} (1949), 202--252.
+The support lemma underlying \cref{global:lem:support}.
+
+\bibitem{Poonen}
+Bjorn Poonen, ``Maximally complete fields,''
+\emph{L'Enseignement Math\'ematique} (2) \textbf{39} (1993), 87--106.
+\href{https://math.mit.edu/~poonen/papers/amsval.pdf}{Author's full text}.
+Corollary~4 supplies the algebraic-closure statement for Hahn fields with divisible value group.
+
+\bibitem{Stacks}
+The Stacks Project Authors, \emph{The Stacks Project}.
+\href{https://stacks.math.columbia.edu/tag/02FQ}{Tag~02FQ} (abelian torsors and first cohomology);
+\href{https://stacks.math.columbia.edu/tag/09NT}{Tag~09NT} (first cohomology and invertible sheaves).
+Accessed September 21, 2026. The local-stalk hypothesis in the latter is why \cref{global:cor:Picmeaning} is proved rather than assumed, and why \cref{global:rem:piclf} keeps the $\Piclf$ distinction on record.
+
+\bibitem{vdDE}
+Lou van den Dries and Philip Ehrlich,
+``Fields of surreal numbers and exponentiation,''
+\emph{Fundamenta Mathematicae} \textbf{167} (2001), 173--188.
+\href{https://doi.org/10.4064/fm167-2-3}{doi:10.4064/fm167-2-3};
+erratum, \emph{Fundamenta Mathematicae} \textbf{168} (2001), 295--297.
+
+\end{thebibliography}
+\end{document}
