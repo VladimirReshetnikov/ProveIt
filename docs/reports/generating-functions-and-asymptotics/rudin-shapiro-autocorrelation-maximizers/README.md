@@ -119,6 +119,5 @@ and `test_log.txt` record successful executions.
 
 `notes/sources.md` gives primary references and the dated search audit.
 `notes/selection_exclusion.md` records the manifest hash and area-selection method.
-`SHA256SUMS` inventories the delivered files. No third-party paper or font file
-is bundled. Original text, code and generated certificate data are released
+No third-party paper or font file is bundled. Original text, code and generated certificate data are released
 under MIT-0; external mathematical results retain the cited attribution.

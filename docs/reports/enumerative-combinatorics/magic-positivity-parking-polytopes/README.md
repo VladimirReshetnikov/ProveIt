@@ -74,7 +74,6 @@ is `data/selection.json`; no redraw was made after observing the subject.
 - `data/verification.json`: exact cases, integer results, and verification summary.
 - `data/example_2_3_1.json`: worked asymmetric example.
 - `notes/`: source audit, exclusion audit, and precise claim boundaries.
-- `SHA256SUMS`: hashes for all other delivered files.
 
 Each polynomial is stored as a sorted list `[[exponent_vector], coefficient]`,
 with integer coefficients, dimension, and scale. Divide coefficients by n!.

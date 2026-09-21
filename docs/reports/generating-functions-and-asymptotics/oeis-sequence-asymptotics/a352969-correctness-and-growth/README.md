@@ -135,7 +135,6 @@ written to `article.pdf`; the transcript goes to
   acyclic graph unfolds to a legal binary formula of the same height.
 - `verification/`: run transcripts, metadata, proof-audit notes, and build
   output.
-- `SHA256SUMS`: integrity hashes for the other package files.
 
 ## Source and attribution
 

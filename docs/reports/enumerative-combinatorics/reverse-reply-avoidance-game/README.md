@@ -41,7 +41,6 @@ threshold is not determined.
 - `STATUS.md`, `SOURCES.md`, `notes/selection_and_exclusions.md`: claim scope,
   source audit, and manifest-exclusion record.
 - `build.sh`: PDF build command.
-- `SHA256SUMS`: hashes of the delivered files.
 
 ## Reproduce
 

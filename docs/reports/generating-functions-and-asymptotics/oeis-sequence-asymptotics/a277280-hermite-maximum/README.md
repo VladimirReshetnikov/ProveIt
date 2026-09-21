@@ -37,7 +37,6 @@ limiting distributions, and a(n+1)/(a(n)*sqrt(n)) -> sqrt(2).
 - `sources.md`: source URLs, normalization, and verification scope.
 - `oeis_note.txt`: a compact formula/comment summary, not submitted to OEIS.
 - `environment.json`: versions used for the supplied run.
-- `SHA256SUMS`: integrity hashes of the other delivered files.
 
 ## Run the code
 
