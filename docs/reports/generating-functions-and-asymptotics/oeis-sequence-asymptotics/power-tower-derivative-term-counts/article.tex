@@ -1,0 +1,3624 @@
+% Merged from three separately delivered research reports on the number of
+% terms in the derivatives of a power tower.  See the README for provenance.
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{needspace}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{bookmark}
+
+\definecolor{linkink}{HTML}{294E47}
+\hypersetup{colorlinks=true,linkcolor=linkink,citecolor=linkink,urlcolor=linkink,
+ pdftitle={Term counts in the derivatives of power towers: OEIS A293239, A290268, A281434},
+ pdfauthor={Research notes prepared for Vladimir Reshetnikov},
+ pdfsubject={One framework, three sequences; none of the three headline questions is fully settled}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Term counts in the derivatives of power towers}
+\fancyhead[R]{\small\leftmark}
+\fancyfoot[C]{\thepage}
+\renewcommand{\sectionmark}[1]{\markboth{#1}{}}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\theoremstyle{plain}
+
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\atanh}{atanh}
+
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\ZZ}{\mathcal Z}
+\newcommand{\EE}{\mathcal E}
+\newcommand{\U}{U}
+\newcommand{\D}{\frac{d}{dx}}
+\newcommand{\epsn}{\varepsilon_n}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\newcommand{\ind}[1]{\mathbf{1}_{\{#1\}}}
+% The three sources wrote the falling factorial two ways, (u)_{\underline n} and
+% u^{\underline n}.  They are the same object -- each use in the text is
+% accompanied by its explicit product expansion -- and the merge fixes one form.
+\newcommand{\fall}[2]{#1^{\underline{#2}}}
+\newcommand{\rise}[2]{#1^{\overline{#2}}}
+
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,breaklines=true,
+ frame=single,framerule=0.3pt,rulecolor=\color{black!25},keepspaces=true,
+ showstringspaces=false,xleftmargin=5pt,xrightmargin=5pt,
+ aboveskip=10pt,belowskip=10pt}
+
+\title{\textbf{Term counts in the derivatives of power towers}\\[5pt]
+\large One framework and three sequences:\\
+OEIS A293239 \ ($x^x$), \ A290268 \ ($x^{x^2}$), \ A281434 \ ($x^{x^x}$)}
+\author{Research notes prepared for Vladimir Reshetnikov}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+For a function $f$, let $a(n)$ be the number of distinct monomials in the fully
+collected $n$th derivative $f^{(n)}$.  This article treats three instances of
+that question at once: $f=x^x$ (OEIS A293239), $f=x^{x^2}$ (A290268) and
+$f=x^{x^x}$ (A281434).
+
+Part~\ref{fw:sec} proves, once, the apparatus the three share: a canonical
+differential-polynomial form $f^{(n)}=f\cdot P_n$ or $f\cdot x^{-n}P_n$ with a
+first-order recurrence for $P_n$ over $\Z$, integrality of its coefficients, and
+the envelope bound that turns an upper estimate into a cancellation count.  It
+also proves the linear independence of logarithmic monomials that makes ``the
+number of terms'' an invariant of $f$ rather than of a differentiation
+algorithm, and the resulting identity $a(n)=|\supp P_n|$ --- for two of the
+three frames; $x^{x^x}$ falls outside that statement and supplies its own, as
+Part~\ref{fw:sec} is careful to say.  Two normalizations are stated, because neither one covers
+all three parts in the frames those parts use; Remark~\ref{fw:rem:twoforms} is
+careful about what that does and does not mean.
+
+The three remaining parts are the three original investigations, unabridged.
+They reach different answers by different routes.  \textbf{None of the three
+headline questions is fully settled here, and this article does not obscure
+that.}  Two of the three entries print a conjectured closed form and neither is
+proved; the third prints no closed form, and there the growth \emph{order} is
+settled while the constant is not.  For $x^x$ the
+term count is reduced exactly to the zeros of the first-kind Lehmer--Comtet
+triangle A008296, giving $a(n)=1+\binom{n+1}{2}-Z(n)$ and $a(n)=\Theta(n^2)$,
+but the principal closed formula needs a nonvanishing statement that is isolated
+and left open; separately, the recurrence printed in the entry with the range
+$n>6$ is \emph{disproved} at $n=8$.  For $x^{x^2}$ the conjectured expression is
+proved to be an upper bound, every predicted cancellation is explained, and
+$a(n)=\Theta(n^2)$ is established, but the conjectured leading constant is not.
+For $x^{x^x}$ two explicit polynomial bounds give $a(n)=\Theta(n^3)$
+unconditionally, while the sharper equivalent $a(n)\sim\tfrac23n^3$ is not
+proved --- and there, unlike the other two, the obstruction is not a
+nonvanishing statement at all but a density one, because additional zeros
+provably exist.  Part~\ref{syn:sec} sets the three side by side, says what the
+shared method does and does not buy, and records the one piece of structure they
+share beyond it: every cancellation any of them can prove is a parity zero of
+the same falling factorial.
+
+All computations reported here are exact.  Every modular certificate is
+confirmed by exact integer arithmetic before a coefficient is declared to
+vanish, so no claim rests on a probabilistic zero test; but every computation
+certifies a finite range and none of them is an all-$n$ proof.
+\end{abstract}
+
+\setcounter{tocdepth}{2}
+\tableofcontents
+\clearpage
+
+\section*{How this article is arranged}
+\addcontentsline{toc}{section}{How this article is arranged}
+
+Three separate reports were written on three OEIS sequences that ask the same
+question about three different functions.  They are collected here as one
+article because they share a construction, and kept as four distinct parts
+because the questions they answer are different: three functions, three
+recurrences, three answers.  They do share one thing beyond the construction,
+and Section~\ref{syn:share} sets it out --- all three reduce to integer zeros of
+derivatives and differences of the same falling factorial --- but no argument in
+any part carries over to another.  Nothing that was proved in any of the three
+has been dropped, weakened or strengthened in the merge.
+
+\begin{itemize}[leftmargin=1.6em,itemsep=2pt]
+\item \textbf{Part~\ref{fw:sec}} is new to this article.  It states and proves
+ the machinery that the three reports had each established separately, and is
+ explicit about where that generality stops: the canonical form, the recurrence
+ and the envelope bound cover all three, the independence statement covers two
+ of the three.  It settles none of the
+ three counting problems and is not intended to: the content of the subject is
+ in the nonvanishing questions, and those do not transfer between the three
+ functions.
+\item \textbf{Parts~\ref{xx:part}, \ref{xxb:part} and~\ref{xxc:part}} are the
+ three original articles.  Each opens with a status box saying what it does and
+ does not prove, and a note on how it instantiates Part~\ref{fw:sec}.  Each part
+ retains the setup section it was written with, so it can still be read on its
+ own; those sections are now instances of Part~\ref{fw:sec} rather than
+ independent developments, and are flagged as such where they begin.
+\item \textbf{Part~\ref{syn:sec}} compares the three.
+\end{itemize}
+
+The parts keep the notation of their sources, which is not uniform across them.
+Section~\ref{fw:notation} sets out what a reader crossing between parts needs.
+Two things are worth carrying in advance: \textbf{$j$ is the exponent of
+$\log x$ in Parts~\ref{xx:part} and~\ref{xxb:part} but the exponent of $x^{-1}$
+in Part~\ref{xxc:part}}, where $\ell$ is the logarithm exponent; and
+\textbf{$z$ is $x^2$ in Part~\ref{xxb:part}, $\log x$ in Part~\ref{xxc:part},
+and a formal generating-function variable in Part~\ref{xx:part}}.  Also
+$a(n)$ means a different sequence in each of the three parts.
+
+Each part ends with a description of the code and data that accompanied it.
+Those descriptions have been updated to the merged package, in which every
+script lives under \texttt{code/} and every generated table under
+\texttt{data/}, and the article is \texttt{article.tex} and
+\texttt{article.pdf}.  The three groups of scripts do not collide and each was
+run from the merged layout before this article was built.
+
+These are AI-assisted research notes.  None of the three has been refereed or
+machine-checked.
+
+\section{The common framework}\label{fw:sec}
+
+Each of the three parts that follow studies a different function, obtains a
+different recurrence and arrives at a different answer.  What they share is the
+apparatus in this part: a canonical polynomial form for the $n$th derivative, a
+uniqueness statement that makes ``the number of terms'' well defined, a
+first-order recurrence on that form, and the reduction of the counting problem
+to a nonvanishing problem.  Each of the three source reports established this
+apparatus for its own function.  Here it is proved once.
+
+Nothing in this part decides any of the three counting problems.  It is
+deliberately cheap: every statement below is an exercise, and the work in this
+subject is entirely in the nonvanishing questions that Parts~\ref{xx:part},
+\ref{xxb:part} and~\ref{xxc:part} take up.
+
+\subsection{Setting}\label{fw:setting}
+
+Throughout, functions are real-valued and smooth on $(0,\infty)$, and $f$ is
+positive there, so $\log f$ is defined and $f'/f$ makes sense.
+
+\begin{definition}[Differential frame]\label{fw:def:frame}
+A \emph{differential frame} is a tuple $w=(w_1,\dots,w_m)$ of smooth functions
+on $(0,\infty)$ together with the polynomial ring $R=\Z[w_1,\dots,w_m]$, where
+the $w_i$ are treated as independent indeterminates.  We write $\supp P$ for the
+set of exponent vectors of the monomials occurring in $P\in R$ with a nonzero
+coefficient, and $|\supp P|$ for its cardinality.
+\end{definition}
+
+The distinction between $R$ as an abstract polynomial ring and the functions the
+$w_i$ denote is the point of Section~\ref{fw:independence}: a priori a
+polynomial identity in $R$ is a stronger statement than the corresponding
+identity of functions, and it is the converse that has to be proved.
+
+\subsection{The canonical form and its recurrence}\label{fw:canonical}
+
+\begin{theorem}[Canonical differential-polynomial form]\label{fw:thm:canonical}
+Let $w$ be a differential frame with ring $R=\Z[w_1,\dots,w_m]$, and let
+$D\colon R\to R$ be the $\Z$-derivation determined by $Dw_i=\delta_i$ for some
+$\delta_1,\dots,\delta_m\in R$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item\label{fw:can:a}
+ \textup{(Unnormalized form.)}  Suppose
+ \[
+  w_i'=\delta_i(w)\quad(1\le i\le m),
+  \qquad \frac{f'}{f}=M(w)\ \text{ for some }M\in R .
+ \]
+ Then for every $n\ge0$,
+ \begin{equation}\label{fw:eq:cana}
+  f^{(n)}=f\cdot P_n(w),\qquad
+  P_0=1,\qquad P_{n+1}=M\,P_n+D\,P_n ,
+ \end{equation}
+ and $P_n\in R$; in particular every coefficient of $P_n$ is an integer.
+\item\label{fw:can:b}
+ \textup{(Form normalized by $x^{-n}$.)}  Suppose instead
+ \[
+  w_i'=\frac1x\,\delta_i(w)\quad(1\le i\le m),
+  \qquad x\,\frac{f'}{f}=M(w)\ \text{ for some }M\in R .
+ \]
+ Then for every $n\ge0$,
+ \begin{equation}\label{fw:eq:canb}
+  f^{(n)}=f\cdot x^{-n}P_n(w),\qquad
+  P_0=1,\qquad P_{n+1}=(M-n)\,P_n+D\,P_n ,
+ \end{equation}
+ and again $P_n\in R$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+For~\ref{fw:can:a}, induct on $n$.  The case $n=0$ is $P_0=1$.  Assuming
+$f^{(n)}=fP_n(w)$ and differentiating,
+\[
+ f^{(n+1)}
+ =f'P_n(w)+f\sum_{i=1}^m w_i'\,\frac{\partial P_n}{\partial w_i}(w)
+ =f\Bigl(M(w)P_n(w)+\sum_{i=1}^m\delta_i(w)\frac{\partial P_n}{\partial w_i}(w)\Bigr),
+\]
+which is $f\bigl(MP_n+DP_n\bigr)(w)$.  Since $M,\delta_i\in R$ and $P_0=1\in R$,
+induction also gives $P_n\in R$, and $R$ consists of polynomials with integer
+coefficients.
+
+For~\ref{fw:can:b}, the case $n=0$ reads $f=f\,x^{0}\cdot1$.  Assume
+$f^{(n)}=fx^{-n}P_n(w)$ and differentiate:
+\[
+ f^{(n+1)}
+ =f'x^{-n}P_n-nfx^{-n-1}P_n+fx^{-n}\sum_i w_i'\frac{\partial P_n}{\partial w_i}.
+\]
+Multiplying by $x^{n+1}/f$ and using $xf'/f=M$ and $xw_i'=\delta_i$ gives
+\[
+ \frac{x^{n+1}f^{(n+1)}}{f}=\bigl(M-n\bigr)P_n+\sum_i\delta_i\frac{\partial P_n}{\partial w_i}
+ =\bigl((M-n)P_n+DP_n\bigr)(w),
+\]
+which is the assertion for $n+1$.  Integrality follows as before.
+\end{proof}
+
+\begin{remark}[Why both clauses are kept]\label{fw:rem:twoforms}
+Neither clause covers all three parts \emph{in the frames those parts use}, and
+since the parts are reproduced here unchanged, both clauses are needed.
+
+Part~\ref{xxb:part} uses the frame $z=x^2$, $L=\log x$, for which
+$z'=2x\notin\Z[z,L]$: clause~\ref{fw:can:a} does not apply, and
+clause~\ref{fw:can:b} applies verbatim.  Conversely Part~\ref{xxc:part} uses
+$u=x^x$, $v=x^{-1}$, $z=\log x$, for which $xu'=u(z+1)/v\notin\Z[u,v,z]$:
+clause~\ref{fw:can:b} does not apply, while clause~\ref{fw:can:a} does.
+
+It would overstate the situation to say that no single clause \emph{could} have
+covered all three.  Clause~\ref{fw:can:b} in fact does, once the frames are
+changed so that $x$ appears in place of $x^{-1}$:
+\[
+ x^x:\ (x,\log x),\qquad x^{x^2}:\ (x^2,\log x),\qquad x^{x^x}:\ (x^x,x,\log x),
+\]
+each of which satisfies $xw_i'\in R$ and $xf'/f\in R$, and each of which gives
+the same term counts.  For $x^{x^x}$ this is legitimate only because the
+exponent of $x^{-1}$ in that part's envelope never exceeds $n$, so multiplying
+by $x^{n}$ really does clear it.  What one cannot do is change the frames and
+keep the parts: each part's transition table, envelope, coefficient indices and
+data files are written in its own variables, and rewriting some two and a half
+thousand lines of dense manipulation to gain a cosmetic uniformity in this
+section would be a poor trade.  So the parts keep their frames and this theorem
+keeps two clauses.
+
+One genuine obstruction is worth recording separately, since it is about
+independence rather than convenience.  In Part~\ref{xxb:part} one might try to
+make clause~\ref{fw:can:a} apply by adjoining $y=x^{-1}$ to the frame
+$(x^2,\log x)$.  The derivatives then are polynomial, but $zy^2=1$ identically,
+so the monomials of the enlarged frame are no longer independent as functions
+and $|\supp P_n|$ stops counting anything at all.  That failure is not a matter
+of taste.
+\end{remark}
+
+Each of the three parts instantiates Theorem~\ref{fw:thm:canonical} in one line;
+the resulting recurrences are collected in Table~\ref{fw:tab:instances}.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+Part & $f$ & frame and clause & recurrence for $P_{n+1}$\\
+\midrule
+\ref{xx:part} & $x^{x}$ &
+ $t=x^{-1},\ L=\log x$; \ref{fw:can:a} &
+ $(1+L)P_n+t\,\partial_LP_n-t^2\,\partial_tP_n$\\[2pt]
+\ref{xxb:part} & $x^{x^2}$ &
+ $z=x^2,\ L=\log x$; \ref{fw:can:b} &
+ $\bigl(z(2L+1)-n\bigr)P_n+2z\,\partial_zP_n+\partial_LP_n$\\[2pt]
+\ref{xxc:part} & $x^{x^x}$ &
+ $u=x^x,\ v=x^{-1},\ z=\log x$; \ref{fw:can:a} &
+ $u(z^2{+}z{+}v)P_n+u(z{+}1)\partial_uP_n-v^2\partial_vP_n+v\,\partial_zP_n$\\
+\bottomrule
+\end{tabular}
+\caption{The three instances.  In each case the displayed recurrence is exactly
+the one derived independently in the corresponding part
+(Propositions~\ref{xx:prop:Prec}, \ref{xxb:prop:recurrence}
+and~\ref{xxc:prop:recurrence}).  Note that $z$ denotes $x^2$ in
+Part~\ref{xxb:part} and $\log x$ in Part~\ref{xxc:part}; see
+Section~\ref{fw:notation}.}
+\label{fw:tab:instances}
+\end{table}
+
+\subsection{Independence, and why the count is well posed}\label{fw:independence}
+
+Counting ``the terms of the $n$th derivative'' is meaningless until one fixes
+what a term is, because a symbolic differentiator can be made to produce almost
+any number of summands by factoring differently.  The following classical
+statement is what makes the count an invariant of the function rather than of an
+algorithm.  Parts~\ref{xx:part} and~\ref{xxb:part} each prove the special case
+they need by this argument.  Part~\ref{xxc:part}'s frame is not of this form,
+for the reason given after Corollary~\ref{fw:cor:welldefined}, and it proves its
+own independence statement by a related but genuinely different asymptotic
+argument.
+
+\begin{theorem}[Independence of logarithmic monomials]\label{fw:thm:independence}
+Let $(\lambda_1,j_1),\dots,(\lambda_N,j_N)$ be distinct pairs with
+$\lambda_k\in\R$ and $j_k\in\Z_{\ge0}$.  Then the functions
+$x^{\lambda_k}(\log x)^{j_k}$ are linearly independent over $\R$ on every
+interval $(a,\infty)$ with $a\ge0$.
+\end{theorem}
+
+\begin{proof}
+Suppose $\sum_k c_kx^{\lambda_k}(\log x)^{j_k}=0$ on $(a,\infty)$ with not all
+$c_k$ zero.  Substitute $x=e^s$ and group by exponent: the identity becomes
+\begin{equation}\label{fw:eq:indep}
+ \sum_{\lambda}e^{\lambda s}p_\lambda(s)=0\qquad(s>\log\max(a,1)),
+\end{equation}
+where $\lambda$ runs over the distinct values among the $\lambda_k$ and
+$p_\lambda(s)=\sum_{k:\lambda_k=\lambda}c_ks^{j_k}$ is a polynomial.  Because the
+pairs are distinct, $p_\lambda$ is not the zero polynomial for at least one
+$\lambda$.  Let $\Lambda$ be the largest such $\lambda$.  Dividing
+\eqref{fw:eq:indep} by $e^{\Lambda s}$ gives
+\[
+ p_\Lambda(s)=-\sum_{\lambda<\Lambda}e^{(\lambda-\Lambda)s}p_\lambda(s)
+ \xrightarrow[s\to+\infty]{}0,
+\]
+since each exponent $\lambda-\Lambda$ is strictly negative and an exponential
+decay beats a polynomial.  No nonzero polynomial tends to $0$ at $+\infty$, so
+$p_\Lambda=0$, a contradiction.
+\end{proof}
+
+\begin{corollary}[The count is well defined]\label{fw:cor:welldefined}
+Let $f$ and $w$ be as in either clause of Theorem~\textup{\ref{fw:thm:canonical}},
+and suppose that the monomials $w^\alpha$ of the frame correspond to pairwise
+distinct pairs $(\lambda(\alpha),j(\alpha))$ in the sense that
+$w^\alpha=x^{\lambda(\alpha)}(\log x)^{j(\alpha)}$.  Then the representation
+of $f^{(n)}$ in \eqref{fw:eq:cana}, respectively \eqref{fw:eq:canb}, is unique,
+and the number of distinct monomials in the fully collected $n$th derivative is
+\begin{equation}\label{fw:eq:count}
+ a(n)=|\supp P_n| .
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Two representations would differ by a finite vanishing linear combination of the
+functions $w^\alpha$, hence of pairwise distinct $x^{\lambda}(\log x)^{j}$,
+which Theorem~\ref{fw:thm:independence} forbids.  Uniqueness turns
+\eqref{fw:eq:count} into a definition that does not refer to any particular way
+of performing the differentiation.
+\end{proof}
+
+The hypothesis of Corollary~\ref{fw:cor:welldefined} is verified separately in
+each part, since it depends on the frame: for $x^x$ the monomials $t^kL^j$ are
+$x^{-k}(\log x)^j$; for $x^{x^2}$ the monomials $z^kL^j$ carry the extra factor
+$x^{-n}$ and give $x^{2k-n}(\log x)^j$; for $x^{x^x}$ the variable $u=x^x$ is
+itself not of the form $x^\lambda$ with constant $\lambda$, and
+Part~\ref{xxc:part} accordingly proves its independence statement by a related
+but genuinely different asymptotic argument, which is retained there in full.
+
+\subsection{Envelopes, upper bounds and exact computation}\label{fw:envelope}
+
+\begin{proposition}[Envelope bound]\label{fw:prop:envelope}
+Write $P_{n+1}=\Phi_n(P_n)$ for either recurrence of
+Theorem~\textup{\ref{fw:thm:canonical}}, so that $\Phi_n(P)=MP+DP$ in
+clause~\textup{\ref{fw:can:a}} and $\Phi_n(P)=(M-n)P+DP$ in
+clause~\textup{\ref{fw:can:b}}; note that in the second case the operator
+depends on $n$, although $\supp\bigl((M-n)P\bigr)\subseteq\supp(MP)\cup\supp P$
+for every $n$, so the support behaviour does not.  Suppose $\mathcal
+E_0,\mathcal E_1,\dots$ are finite sets of exponent vectors with $\supp
+P_0\subseteq\mathcal E_0$ and with the property that $\Phi_n$ maps any
+polynomial supported in $\mathcal E_n$ to a polynomial supported in $\mathcal
+E_{n+1}$.  Then $\supp P_n\subseteq\mathcal E_n$ for every $n$; and if moreover
+the count is well defined in the sense of
+Corollary~\textup{\ref{fw:cor:welldefined}}, or by the part's own substitute for
+it, then
+\[
+ a(n)\le|\mathcal E_n| .
+\]
+\end{proposition}
+
+\begin{proof}
+Immediate induction for the support statement.  Only the direction matters:
+$\Phi_n$ sends each monomial to a bounded set of monomials, so a cell outside
+$\mathcal E_{n+1}$ receives no contribution at all.  Cancellation between
+contributions can remove a cell of $\mathcal E_{n+1}$ from the support, but it
+can never create one outside.  The bound on $a(n)$ is then
+\eqref{fw:eq:count}.
+\end{proof}
+
+The deficit
+\begin{equation}\label{fw:eq:deficit}
+ \Delta(n)=|\mathcal E_n|-a(n)\ \ge 0
+\end{equation}
+is therefore exactly the number of cells inside the envelope whose coefficient
+vanishes.  This is the shape every one of the three problems takes: an envelope
+that is easy to count, and a cancellation count that is not.  The three parts
+differ precisely in how much they can say about $\Delta$.
+
+\begin{remark}[The parts count deficits differently]\label{fw:rem:deficits}
+A reader moving between the parts must not compare their deficit numbers
+directly.  Part~\ref{xxc:part} writes $\Delta(n)$ for \emph{all} vanishing cells
+of its envelope, including the ones it proves must vanish; that quantity is
+itself a published sequence, OEIS A352697.  Part~\ref{xx:part} writes $E(n)$
+for only the zeros \emph{outside} the families it has already proved to vanish,
+so $E$ is the residual defect and is conjectured to be identically zero, which
+$\Delta$ certainly is not.  Part~\ref{xxb:part} likewise subtracts its proved
+reflection zeros before counting.  Both conventions are useful and each part
+keeps its own; the generic $\Delta$ of \eqref{fw:eq:deficit} is the first kind.
+\end{remark}
+
+\begin{proposition}[Exact and modular computation]\label{fw:prop:computation}
+With notation as above, $P_0,\dots,P_N$ can be computed in
+$O\bigl(\sum_{n\le N}|\mathcal E_n|\bigr)$ integer ring operations, using only
+integer arithmetic; the implied constant is the frame's transition count
+$|\supp M|+\sum_i|\supp\delta_i|$.  Moreover, for any modulus $q\ge2$, a
+coefficient of $P_n$ whose residue modulo $q$ is nonzero is nonzero.
+\end{proposition}
+
+\begin{proof}
+Each recurrence applies at most $|\supp M|+\sum_i|\supp\delta_i|$
+monomial-to-monomial transitions to each cell of the support --- a constant
+depending on the frame and not on $n$ --- so one step costs $O(|\mathcal E_n|)$
+operations; the coefficients are integers by
+Theorem~\ref{fw:thm:canonical}.  Reduction modulo $q$ is a ring homomorphism, so
+it commutes with the recurrence; a nonzero image forces a nonzero preimage.
+\end{proof}
+
+Proposition~\ref{fw:prop:computation} is the reason the computations reported in
+the three parts are certifications and not samples: a nonzero residue settles
+nonvanishing outright.  The converse direction is the weak one --- a zero
+residue on its own certifies nothing --- and the three parts close it in three
+different ways, which is worth stating precisely rather than in one sentence:
+
+\begin{itemize}[leftmargin=1.6em,itemsep=2pt]
+\item Part~\ref{xx:part} computes the triangle in exact integer arithmetic
+ outright, so no residue has to be resolved; its modular lemma is used for a
+ different purpose, to rule out integer roots of a fixed polynomial over a whole
+ diagonal.
+\item Part~\ref{xxb:part} runs two moduli and checks that the two lists of
+ vanishing residues are disjoint, so at least one residue of every coefficient
+ is nonzero.  Its exact integer run stops at $n=200$; the certification to
+ $3000$ is modular.
+\item Part~\ref{xxc:part} re-evaluates every vanishing residue with an
+ independent exact coefficient formula, and never accepts a zero residue as
+ evidence.
+\end{itemize}
+
+\noindent
+All three are deterministic.  No statement anywhere in this article rests on a
+probabilistic zero test.  None of them, however, is an all-$n$ proof: each
+certifies a finite range, and each part says so where it reports the range.
+
+\subsection{Notation across the parts}\label{fw:notation}
+
+The three parts below retain the notation of the reports they come from.  That
+notation is not consistent between them, and rewriting it would have meant
+altering some two and a half thousand lines of dense manipulation with no way to
+check the result; declaring the clash is safer than silently repairing it.
+
+The table that matters is not a dictionary of letters --- nearly every letter is
+reused somewhere as a summation index, a residue or a generating-function
+variable, and no short table can be both complete and correct about that.  What
+a reader does need, before crossing from one part to another, is the canonical
+monomial each part counts, and in particular which of its indices is the
+exponent of $\log x$.
+
+\begin{center}
+\begin{tabular}{@{}llll@{}}
+\toprule
+ & Part~\ref{xx:part}: $x^x$ & Part~\ref{xxb:part}: $x^{x^2}$ &
+ Part~\ref{xxc:part}: $x^{x^x}$\\
+\midrule
+frame & $t=x^{-1}$, $L=\log x$ & $z=x^2$, $L=\log x$ &
+ $u=x^x$, $v=x^{-1}$, $z=\log x$\\[3pt]
+monomial & $x^{\,x-k}(\log x)^{j}$ & $x^{\,x^2+2k-n}(\log x)^{j}$ &
+ $x^{\,x^x+kx-j}(\log x)^{\ell}$\\[3pt]
+$\log x$ exponent & $j$ & $j$ & $\boldsymbol{\ell}$\\[3pt]
+power of $x^{-1}$ & $k$ & --- (absorbed in $x^{-n}$) & $\boldsymbol{j}$\\[3pt]
+normalization & $f^{(n)}=x^xP_n$ & $f^{(n)}=f\,x^{-n}P_n$ & $f^{(n)}=f\,P_n$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+Two warnings follow from that table, and they are the two places where a reader
+who is skimming will go wrong.
+
+\begin{enumerate}[leftmargin=1.8em,itemsep=3pt]
+\item \textbf{$j$ changes role.}  In Parts~\ref{xx:part} and~\ref{xxb:part} the
+ index $j$ is the exponent of $\log x$.  In Part~\ref{xxc:part} it is the
+ exponent of $x^{-1}$, and the exponent of $\log x$ is $\ell$.  Every envelope,
+ every bound and every cancellation family in Part~\ref{xxc:part} is indexed in
+ the second convention.
+\item \textbf{$z$ has three meanings.}  It is $x^2$ in Part~\ref{xxb:part} and
+ $\log x$ in Part~\ref{xxc:part} --- a direct contradiction --- and in
+ Part~\ref{xx:part} it is neither: there it is the formal variable in which the
+ Lehmer--Comtet numbers are defined, through $\Phi(z)=(1+z)\log(1+z)$ and
+ $b(m,r)=\tfrac{m!}{r!}[z^m]\Phi(z)^r$.
+\end{enumerate}
+
+\noindent
+Beyond these, the letters $u$, $v$, $t$, $q$, $U$, $Z$, $E$ and $\Delta$ all
+occur in more than one part with unrelated meanings, as frame variables in one
+place and as summation indices, residues, primes, proposed closed forms or
+generating-function variables in another.  Each is introduced where it is used,
+and within any one paragraph the meaning is fixed; but nothing in this article
+guarantees that a letter carries the same meaning two parts later, and the
+reader should not assume it.  Finally, $a(n)$ denotes a different sequence in
+each of the three parts --- its own --- and the deficit conventions differ as
+described in Remark~\ref{fw:rem:deficits}.
+
+\clearpage
+\section{\texorpdfstring{$x^x$}{x^x}: OEIS A293239}\label{xx:part}
+
+\begin{quote}\small
+\textbf{Framework.}  This part instantiates
+Theorem~\ref{fw:thm:canonical}\ref{fw:can:a} with the frame $t=x^{-1}$,
+$L=\log x$; Proposition~\ref{xx:prop:Prec} below is that instance, derived here
+independently.  Lemma~\ref{xx:lem:independence} is the special case of
+Theorem~\ref{fw:thm:independence} this part needs.  Both are retained in full so
+that the part can be read on its own.  Throughout this part $a(n)$ denotes the
+term count for $x^x$.
+
+\medskip
+\textbf{Abstract of the original report.}\itshape
+The sequence A293239 counts the nonzero terms in the fully expanded $n$th
+derivative of $x^x$. Its proposed generating function is rational, and its
+proposed eventual formula is a quadratic quasipolynomial of period four.
+We reduce the counting problem exactly to the zero set of the first-kind
+Lehmer--Comtet numbers. All cancellations predicted by the conjecture are
+proved: a symmetry family and one additional zero. The converse assertion,
+excluding every further zero, is not established here; consequently this
+report does \upshape\emph{not}\itshape{} claim a complete proof of the principal
+closed formula.
+The unconditional results include an exact defect formula, upper and lower
+bounds proving quadratic-order growth, nonvanishing on every prime-offset
+diagonal with an exact prime-adic valuation, and complete zero classifications
+for the first three columns and offsets one through sixteen. Independently
+implemented exact computations confirm the formula through $n=3000$.
+A separate conjectured recurrence in the OEIS entry is false with its printed
+range: it already fails at $n=8$. For the proposed sequence its correct
+eventual starting point is $n=14$. The accompanying code and certificates
+distinguish finite verification from statements proved for infinitely many
+indices.
+\end{quote}
+
+\subsection{The question and the status of the answer}
+
+For $x>0$, put $f(x)=x^x=\exp(x\log x)$. Let $a(n)$ be the number of nonzero
+summands after $f^{(n)}(x)$ is expanded into the monomials
+\begin{equation}\label{xx:eq:monomials}
+ x^{x-k}(\log x)^j,\qquad k,j\in\Z_{\ge0},
+\end{equation}
+and coefficients of identical monomials are collected. In particular, an
+unexpanded expression such as $x^x(1+\log x)^n$ is not one term for this
+purpose. This is the convention in OEIS A293239, introduced by Vladimir
+Reshetnikov in 2017 \cite{oeis293239}.
+
+The entry attributes the rational generating function and closed formula to
+Colin Barker and the proposed asymptotic equivalent to V\'aclav
+Kote\v{s}ovec. To separate a proved object from the proposed answer, define
+\begin{equation}\label{xx:eq:q}
+ q(0)=1,\qquad
+ q(n)=1+\frac{n(n+1)}2-\left\lfloor\frac{n-1}{4}\right\rfloor
+             -\ind{n\ge8}\quad(n\ge1).
+\end{equation}
+The principal conjecture is $a(n)=q(n)$. For $n\ge8$, this says simply
+\begin{equation}\label{xx:eq:eventual}
+ a(n)\stackrel{?}{=}\frac{n(n+1)}2-\left\lfloor\frac{n-1}{4}\right\rfloor.
+\end{equation}
+The proposed generating function is
+\begin{equation}\label{xx:eq:targetgf}
+ Q(z):=\sum_{n\ge0}q(n)z^n
+ =\frac{1+z^2+z^3+z^6-z^8+z^9+z^{12}-z^{13}}
+ {(1-z)^2(1-z^4)}.
+\end{equation}
+The rational function in \eqref{xx:eq:targetgf} is indeed the generating function
+of the explicitly defined sequence $q$. What remains to be proved is its
+identification with the derivative count $a$.
+
+\subsubsection{What is proved}
+The central unconditional identity will be
+\begin{equation}\label{xx:eq:introdefect}
+ a(n)=q(n)-E(n),
+\end{equation}
+where $E(n)$ counts a precisely defined set of additional zero coefficients.
+In particular, $E(n)$ is a nonnegative, nondecreasing integer. Thus the
+proposed answer is an upper bound, not a formula that can be exceeded by a
+previously overlooked cancellation.
+
+We prove, for all $n\ge0$,
+\begin{equation}\label{xx:eq:introbounds}
+ n+1+\left\lfloor\frac{n^2}{4}\right\rfloor\le a(n)\le q(n).
+\end{equation}
+Consequently $a(n)=\Theta(n^2)$. This does not establish the sharper claim
+$a(n)\sim n^2/2$; that claim is equivalent to $E(n)=o(n^2)$.
+We also prove infinite nonvanishing results that substantially restrict where
+additional zeros could lie. The remaining gap is stated explicitly in
+Conjecture~\ref{xx:conj:zeros}.
+
+\subsubsection{A correction that is unconditional}
+The OEIS entry also proposes
+\begin{equation}\label{xx:eq:recprinted}
+ a(n)=2a(n-1)-a(n-2)+a(n-4)-2a(n-5)+a(n-6)\qquad(n>6).
+\end{equation}
+This range is incorrect. Exact low-order differentiation gives
+\[
+ a(2)=4,\quad a(3)=7,\quad a(4)=11,\quad a(6)=21,\quad
+ a(7)=28,\quad a(8)=35,
+\]
+whereas the right side of \eqref{xx:eq:recprinted} at $n=8$ is
+\[
+ 2\cdot28-21+11-2\cdot7+4=36\ne35.
+\]
+For $q$, the recurrence holds for every $n\ge14$, and it fails at $n=13$.
+This correction does not disprove the proposed generating function or
+closed formula. Section~\ref{xx:sec:gf} explains the distinction.
+
+\subsection{A canonical polynomial for each derivative}
+
+Set $t=x^{-1}$ and $L=\log x$. There is a polynomial $P_n\in\Z[t,L]$ such that
+\begin{equation}\label{xx:eq:Pdefinition}
+ f^{(n)}(x)=x^x P_n(x^{-1},\log x).
+\end{equation}
+Differentiating this expression and using $t'=-t^2$, $L'=t$, and
+$(x^x)'=x^x(1+L)$ gives the following exact recurrence.
+
+\begin{proposition}\label{xx:prop:Prec}
+The derivative polynomials satisfy
+\begin{equation}\label{xx:eq:Prec}
+ P_0=1,\qquad P_{n+1}=(1+L)P_n+t\frac{\partial P_n}{\partial L}
+                         -t^2\frac{\partial P_n}{\partial t}.
+\end{equation}
+In particular, they have integer coefficients and can be computed using
+integer arithmetic only.
+\end{proposition}
+
+For example,
+\begin{align*}
+ P_1&=1+L,\\
+ P_2&=1+2L+L^2+t,\\
+ P_3&=1+3L+3L^2+L^3+3t+3tL-t^2.
+\end{align*}
+Thus $a(3)=7$, consistently with the example in the entry.
+
+\begin{lemma}\label{xx:lem:independence}
+The monomials in \eqref{xx:eq:monomials} are linearly independent over $\R$
+when only finitely many are used. Consequently the collected expansion is
+unique, and $a(n)=|\supp P_n|$.
+\end{lemma}
+\begin{proof}
+Divide a putative relation by the positive function $x^x$ and set $x=e^s$.
+The result is $\sum_{k=0}^K e^{-ks}p_k(s)=0$, with polynomial $p_k$.
+If some $p_k$ is nonzero, let $k_0$ be the smallest such index. Multiplication
+by $e^{k_0s}$ shows that $p_{k_0}(s)$ tends to zero as $s\to+\infty$, because
+all remaining summands decay exponentially times a polynomial. No nonzero
+polynomial has that property. This is a contradiction.
+\end{proof}
+
+The independence statement matters: the variables $t$ and $L$ are related
+by $t=e^{-L}$ after substitution, but this relation causes no additional
+finite polynomial identities.
+
+\subsection{The Lehmer--Comtet coefficient triangle}
+
+\subsubsection{Definition and generating function}
+Put
+\begin{equation}\label{xx:eq:phi}
+ \Phi(z)=(1+z)\log(1+z)
+ =z+\sum_{d\ge1}\frac{(-1)^{d-1}}{d(d+1)}z^{d+1}.
+\end{equation}
+Define
+\begin{equation}\label{xx:eq:bdef}
+ b(m,r)=\frac{m!}{r!}\coef{z}{m}\Phi(z)^r
+ \quad(m,r\ge0).
+\end{equation}
+Here $b(0,0)=1$, $b(m,0)=0$ for $m>0$, and $b(m,r)=0$ when $r>m$.
+These are the first-kind Lehmer--Comtet numbers, tabulated in OEIS A008296
+\cite{oeis8296}. The general derivative problem and these numbers belong to
+the classical literature of Comtet, Lehmer, and Gould
+\cite{comtet,lehmer,gould}. A recent treatment of their identities is
+Jeong's preprint \cite{jeong}. We derive the identities needed here rather
+than assuming a nonvanishing conclusion from those formulas.
+
+\begin{theorem}[Exact coefficient formula]\label{xx:thm:expansion}
+For every $n\ge0$,
+\begin{equation}\label{xx:eq:expansion}
+ \boxed{\displaystyle
+ f^{(n)}(x)=x^x\sum_{m=0}^n\binom nm (\log x)^{n-m}
+                         \sum_{r=0}^m b(m,r)x^{r-m}.}
+\end{equation}
+Equivalently,
+\begin{equation}\label{xx:eq:cformula}
+ \coef{t}{k}\coef{L}{j}P_n(t,L)
+ =\binom nj\,b(n-j,n-j-k),
+\end{equation}
+with out-of-range entries interpreted as zero.
+\end{theorem}
+\begin{proof}
+Taylor expansion at a fixed $x>0$ gives
+\[
+ \sum_{n\ge0}\frac{f^{(n)}(x)}{x^x}\frac{u^n}{n!}
+ =\frac{(x+u)^{x+u}}{x^x}
+ =\exp(u\log x)\exp\bigl(x\Phi(u/x)\bigr).
+\]
+Using \eqref{xx:eq:bdef}, expand the second exponential:
+\begin{align*}
+ \exp\bigl(x\Phi(u/x)\bigr)
+ &=\sum_{r\ge0}\frac{x^r}{r!}\Phi(u/x)^r\\
+ &=\sum_{m\ge0}\frac{u^m}{m!}\sum_{r=0}^m b(m,r)x^{r-m}.
+\end{align*}
+Multiplication by $\exp(u\log x)$ and extraction of the coefficient of
+$u^n$ proves \eqref{xx:eq:expansion}. All manipulations can also be performed
+formally, since only finitely many terms affect any prescribed coefficient.
+\end{proof}
+
+\subsubsection{A shifted falling-factorial formula}
+Let
+\[
+ F_m(y)=\fall{y}{m}=\prod_{h=0}^{m-1}(y-h),\qquad F_0(y)=1.
+\]
+
+\begin{proposition}\label{xx:prop:falling}
+For $0\le r\le m$,
+\begin{equation}\label{xx:eq:falling}
+ b(m,r)=\frac{F_m^{(r)}(r)}{r!}
+       =\coef{u}{r}\prod_{h=0}^{m-1}(u+r-h).
+\end{equation}
+In particular, all $b(m,r)$ are integers.
+\end{proposition}
+\begin{proof}
+The binomial-series identity is
+$(1+z)^y=\sum_{m\ge0}F_m(y)z^m/m!$.
+Differentiate $r$ times in $y$ and set $y=r$. The left side becomes
+$(1+z)^r\log(1+z)^r=\Phi(z)^r$. Comparing coefficients gives the first
+formula. The second is the polynomial Taylor formula at $y=r$.
+\end{proof}
+
+Writing $F_m(y)=\sum_{\ell=0}^m s(m,\ell)y^\ell$ in terms of the signed
+Stirling numbers of the first kind also gives
+\begin{equation}\label{xx:eq:stirling}
+ b(m,r)=\sum_{\ell=r}^m\binom\ell r r^{\ell-r}s(m,\ell).
+\end{equation}
+This is another exact formula, but its alternating summands do not by
+themselves resolve whether the result can vanish.
+
+\subsubsection{An integer recurrence}
+\begin{proposition}\label{xx:prop:brec}
+For $m\ge2$ and $1\le r\le m$,
+\begin{equation}\label{xx:eq:brec}
+ b(m,r)=(r-m+1)b(m-1,r)+b(m-1,r-1)+(m-1)b(m-2,r-1).
+\end{equation}
+Together with rows $b(0,0)=1$ and $(b(1,0),b(1,1))=(0,1)$, this determines
+the entire triangle.
+\end{proposition}
+\begin{proof}
+Let $B_r(z)=\Phi(z)^r/r!$. Since
+$(1+z)\Phi'(z)=1+z+\Phi(z)$, we have
+\[
+ (1+z)B_r'(z)=(1+z)B_{r-1}(z)+rB_r(z).
+\]
+Compare coefficients of $z^{m-1}/(m-1)!$. The result is
+\[
+ b(m,r)+(m-1)b(m-1,r)
+ =b(m-1,r-1)+(m-1)b(m-2,r-1)+r b(m-1,r),
+\]
+which rearranges to \eqref{xx:eq:brec}.
+\end{proof}
+
+For reference, the first rows, omitting column zero, are
+\begin{center}
+\setlength{\tabcolsep}{4pt}
+\small
+\begin{tabular}{r|rrrrrrrrr}
+$m\backslash r$&1&2&3&4&5&6&7&8&9\\\hline
+1&1\\
+2&1&1\\
+3&$-1$&3&1\\
+4&2&$-1$&6&1\\
+5&$-6$&0&5&10&1\\
+6&24&4&$-15$&25&15&1\\
+7&$-120$&$-28$&49&$-35$&70&21&1\\
+8&720&188&$-196$&49&0&154&28&1\\
+9&$-5040$&$-1368$&944&0&$-231$&252&294&36&1
+\end{tabular}
+\end{center}
+
+\subsection{The exact zero-count reduction}
+
+\begin{definition}
+For $n\ge0$, let
+\[
+ Z(n)=\#\{(m,r):1\le r\le m\le n,\ b(m,r)=0\}.
+\]
+Column zero is not included: its zeros for $m>0$ are forced by the definition
+and never represent potential nonzero derivative terms.
+\end{definition}
+
+\begin{theorem}\label{xx:thm:count}
+For every $n\ge0$,
+\begin{equation}\label{xx:eq:count}
+ \boxed{\displaystyle a(n)=1+\frac{n(n+1)}2-Z(n).}
+\end{equation}
+\end{theorem}
+\begin{proof}
+In \eqref{xx:eq:expansion}, the pair $(m,r)$ gives the monomial
+\[
+ x^{x-(m-r)}(\log x)^{n-m}
+\]
+with coefficient $\binom nm b(m,r)$. The map
+$(m,r)\mapsto(m-r,n-m)$ is injective for fixed $n$: the second coordinate
+recovers $m$, and the first then recovers $r$. Thus different pairs do not
+cancel each other. The factor $\binom nm$ is positive. There is one nonzero
+entry at $(0,0)$, and $m$ potentially nonzero entries $1\le r\le m$ in every
+row $m\ge1$. Removing exactly the zero entries proves the formula.
+\end{proof}
+
+This argument isolates the main difficulty. Once the triangle is known,
+term counting is easy; proving that its list of zeros is complete is not
+a consequence of merely writing down the triangle's recurrence.
+
+\subsubsection{Cancellations that are proved}
+\begin{proposition}[Symmetry zeros]\label{xx:prop:symmetry}
+For every integer $h\ge1$,
+\begin{equation}\label{xx:eq:symmetry}
+ b(4h+1,2h)=0.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Center the product in \eqref{xx:eq:falling} at $r=2h$:
+\[
+ F_{4h+1}(2h+u)=u\prod_{s=1}^{2h}(u^2-s^2).
+\]
+This polynomial is odd. Its coefficient of the even power $u^{2h}$ is zero.
+\end{proof}
+
+This family is not claimed as new: it appears as Proposition 3.10(iii) in
+Jeong \cite{jeong}, with attribution there to Theorem 7 of Lehmer
+\cite{lehmer}. Its elementary proof is included to make the reduction
+self-contained.
+
+There is one further zero required by the proposed formula:
+\begin{equation}\label{xx:eq:exception}
+ b(8,5)=0.
+\end{equation}
+It follows immediately from the factorization proved in
+Section~\ref{xx:sec:diagonals}:
+\[
+ b(m,m-3)=\frac{m(m-1)(m-2)(m-3)(m-5)(m-8)}{48}.
+\]
+The root $m=5$ is the first symmetry zero; $m=8$ is genuinely additional.
+
+\subsubsection{The precise missing assertion}
+\begin{conjecture}[Complete zero classification]\label{xx:conj:zeros}
+For integers $1\le r\le m$,
+\begin{equation}\label{xx:eq:zeroconj}
+ b(m,r)=0\quad\Longleftrightarrow\quad
+ (m,r)=(8,5)\ \text{or}\ (m,r)=(4h+1,2h)\text{ for some }h\ge1.
+\end{equation}
+\end{conjecture}
+
+The right-to-left implication is proved above. The left-to-right implication
+is the unproved step in this report.
+
+Let
+\[
+ \ZZ_0=\{(8,5)\}\cup\{(4h+1,2h):h\ge1\}
+\]
+be the proved set of zeros, and define
+\begin{align*}
+ e_m&=\#\{r:1\le r\le m,\ b(m,r)=0,\ (m,r)\notin\ZZ_0\},\\
+ E(n)&=\sum_{m=1}^n e_m.
+\end{align*}
+Thus $E$ counts only zeros not in the proved list.
+
+\begin{theorem}[Exact defect formula]\label{xx:thm:defect}
+For every $n\ge0$,
+\[
+ a(n)=q(n)-E(n).
+\]
+The following are equivalent: Conjecture~\ref{xx:conj:zeros}; $E(n)=0$ for all
+$n$; $a(n)=q(n)$ for all $n$; and the proposed eventual formula
+\eqref{xx:eq:eventual} for every $n\ge8$.
+\end{theorem}
+\begin{proof}
+For $n\ge1$, the number of symmetry zeros with first coordinate at most $n$
+is $\lfloor(n-1)/4\rfloor$. The zero $(8,5)$ contributes
+$\ind{n\ge8}$. Substituting
+\[
+ Z(n)=\left\lfloor\frac{n-1}{4}\right\rfloor+\ind{n\ge8}+E(n)
+\]
+into \eqref{xx:eq:count} proves the identity for $n\ge1$; $n=0$ is immediate.
+The first three equivalences follow from the definitions. The eventual
+formula also forces $E(n)=0$ for every $n\ge8$, and nonnegativity and
+monotonicity then force $E(n)=0$ for smaller $n$ as well.
+\end{proof}
+
+A hypothetical new zero at row $M$ would decrease every count $a(n)$ for
+$n\ge M$ relative to $q(n)$. It would not merely alter a single isolated
+term of the sequence. This persistent-deficit property is a useful safeguard
+when testing proposed proofs or numerical data.
+
+\subsection{Diagonal polynomials and exact nonvanishing}\label{xx:sec:diagonals}
+
+\subsubsection{A polynomial for each fixed offset}
+Define
+\begin{equation}\label{xx:eq:H}
+ H(z)=\frac{\Phi(z)}z
+ =1+\frac z2-\frac{z^2}{6}+\frac{z^3}{12}-\frac{z^4}{20}+\cdots,
+ \qquad T_d(Y)=\coef{z}{d}H(z)^Y.
+\end{equation}
+For a fixed integer $d\ge0$, $T_d$ is a polynomial over $\Q$ in $Y$.
+
+\begin{lemma}\label{xx:lem:diagdegree}
+For $m\ge d$,
+\begin{equation}\label{xx:eq:diag}
+ b(m,m-d)=\fall m d\,T_d(m-d).
+\end{equation}
+For $d\ge1$, $T_d(Y)$ has degree $d$, leading coefficient $1/(2^d d!)$,
+and a factor $Y$. Consequently $T_d(Y)/Y$ is a nonzero polynomial of
+degree $d-1$.
+\end{lemma}
+\begin{proof}
+Since $\Phi(z)^{m-d}=z^{m-d}H(z)^{m-d}$, definition \eqref{xx:eq:bdef} gives
+\eqref{xx:eq:diag}. Now assume $d\ge1$ and write $h(z)=H(z)-1$. Then
+\begin{equation}\label{xx:eq:Tbinomial}
+ T_d(Y)=\sum_{\ell=1}^d\binom Y\ell\coef{z}{d}h(z)^\ell.
+\end{equation}
+Every summand is divisible by $Y$. The only term of degree $d$ in $Y$
+comes from $\ell=d$, and $\coef{z}{d}h(z)^d=2^{-d}$. This proves the
+remaining assertions.
+\end{proof}
+
+The first three cases are
+\begin{align}
+ b(m,m-1)&=\frac{m(m-1)}2,\label{xx:eq:d1}\\
+ b(m,m-2)&=\frac{m(m-1)(m-2)(3m-13)}{24},\label{xx:eq:d2}\\
+ b(m,m-3)&=\frac{m(m-1)(m-2)(m-3)(m-5)(m-8)}{48}.
+ \label{xx:eq:d3}
+\end{align}
+For instance,
+\[
+ T_3(Y)=\frac{Y}{12}-\frac{Y(Y-1)}{12}
+                  +\frac{Y(Y-1)(Y-2)}{48}
+        =\frac{Y(Y-2)(Y-5)}{48}.
+\]
+This proves both zeros on the third offset and excludes all others on that
+entire diagonal, not just up to a numerical cutoff.
+
+\subsubsection{Prime offsets: an infinite family of nonvanishing results}
+For a nonzero rational number $v$, write $v_p(v)$ for its exponent of the
+prime $p$ in its prime factorization. A rational number is called
+$p$-integral when its denominator in lowest terms is not divisible by $p$.
+
+\begin{theorem}[Prime-offset nonvanishing]\label{xx:thm:prime}
+Let $p$ be any prime and let $m\ge p$. Then
+\begin{equation}\label{xx:eq:primevaluation}
+ b(m,m-p+1)\ne0,\qquad
+ v_p\bigl(b(m,m-p+1)\bigr)=v_p\left(\left\lfloor\frac mp\right\rfloor\right).
+\end{equation}
+In particular, an additional zero cannot occur on any offset $d=m-r$
+for which $d+1$ is prime.
+\end{theorem}
+\begin{proof}
+Put $d=p-1$ and $h_j=\coef{z}{j}(H(z)-1)$.
+For $1\le j\le p-2$, the number
+$h_j=(-1)^{j-1}/(j(j+1))$ is $p$-integral. Moreover,
+\[
+ p h_{p-1}\equiv1\pmod p.
+\]
+For odd $p$, this follows from $p h_{p-1}=-1/(p-1)$; for $p=2$, it is
+$2h_1=1$.
+
+Divide \eqref{xx:eq:Tbinomial} by $Y$. Its $\ell=1$ summand is $h_{p-1}$.
+For every $2\le\ell\le p-1$, a composition of $p-1$ into $\ell$ positive
+parts has all parts at most $p-2$. Therefore every coefficient contributing
+to $\coef{z}{p-1}h(z)^\ell$ is $p$-integral. Also,
+\[
+ \frac1Y\binom Y\ell
+ =\frac{(Y-1)\cdots(Y-\ell+1)}{\ell!}
+\]
+has $p$-integral coefficients, because $\ell!$ is not divisible by $p$.
+It follows, as a polynomial congruence over the $p$-integral rationals, that
+\begin{equation}\label{xx:eq:punit}
+ p\,\frac{T_{p-1}(Y)}Y\equiv1\pmod p.
+\end{equation}
+For every positive integer $Y$, the left side is therefore nonzero and has
+$p$-adic valuation zero. Hence
+$v_p(T_{p-1}(Y))=v_p(Y)-1$.
+
+Set $Y=m-p+1>0$ and use \eqref{xx:eq:diag}. This yields
+\[
+ v_p\bigl(b(m,m-p+1)\bigr)=v_p(\fall m p)-1.
+\]
+Among the $p$ consecutive positive integers $m-p+1,\ldots,m$, exactly one
+is divisible by $p$: it is $p\lfloor m/p\rfloor$. Its valuation is
+$1+v_p(\lfloor m/p\rfloor)$, proving \eqref{xx:eq:primevaluation}.
+\end{proof}
+
+This proof explains, for example, why the residual polynomial $3m-13$ in
+\eqref{xx:eq:d2} is a nonzero constant modulo $3$, and why analogous residual
+polynomials for offsets $4,6,10,12,16$ are nonzero constants modulo
+$5,7,11,13,17$, respectively.
+
+\subsubsection{Finite certificates that cover infinitely many row indices}
+For a fixed $d\ge1$, put
+\[
+ S_d(X)=T_d(X-d).
+\]
+The factor $X-d$ is forced by Lemma~\ref{xx:lem:diagdegree}. When $d\ge3$ is
+odd, the symmetry zero also forces $X-(2d-1)$; for $d=3$ there is in
+addition the factor $X-8$.
+Remove these factors from $S_d$, clear rational denominators, divide out
+the greatest common divisor of the integer coefficients, and normalize the
+leading coefficient to be positive. Call the resulting polynomial $R_d(X)$.
+Thus, with a positive rational constant $c_d$,
+\begin{equation}\label{xx:eq:Rd}
+ S_d(X)=c_d(X-d)
+ \begin{cases}
+ (X-5)(X-8)R_d(X),&d=3,\\
+ (X-(2d-1))R_d(X),&d\ge5\text{ odd},\\
+ R_d(X),&\text{otherwise}.
+ \end{cases}
+\end{equation}
+
+\begin{lemma}[Modular certificate]\label{xx:lem:modcert}
+If $R\in\Z[X]$ satisfies $R(t)\not\equiv0\pmod p$ for every
+$t\in\{0,1,\ldots,p-1\}$, then $R$ has no integer root.
+\end{lemma}
+\begin{proof}
+An integer root, reduced modulo $p$, would be one of those residues and
+would give a zero value modulo $p$.
+\end{proof}
+
+\begin{theorem}[Computer-assisted diagonal classification]\label{xx:thm:16}
+Conjecture~\ref{xx:conj:zeros} holds for every pair $1\le r\le m$ with
+$m-r\le16$.
+\end{theorem}
+\begin{proof}
+For offset zero, $b(m,m)=1$. For $1\le d\le16$, compute $S_d$ exactly from
+\eqref{xx:eq:Tbinomial} and factor it as in \eqref{xx:eq:Rd}. The supplied
+\texttt{data/diagonal\_certificates.json} records the full rational
+coefficients of $S_d$, the scalar $c_d$, all removed linear factors, the
+full integer coefficients of $R_d$, and every value of $R_d(t)$ modulo
+the certifying prime. All of those values are nonzero. The following
+summary identifies the certificates:
+\begin{center}
+\begin{tabular}{rrrr@{\qquad}rrrr}
+\toprule
+$d$&$\deg R_d$&$p$&roots mod $p$&$d$&$\deg R_d$&$p$&roots mod $p$\\
+\midrule
+1&0&2&0&9&7&7&0\\
+2&1&3&0&10&9&11&0\\
+3&0&2&0&11&9&13&0\\
+4&3&5&0&12&11&13&0\\
+5&3&3&0&13&11&11&0\\
+6&5&7&0&14&13&23&0\\
+7&5&5&0&15&13&19&0\\
+8&7&11&0&16&15&17&0\\
+\bottomrule
+\end{tabular}
+\end{center}
+The standard-library program \texttt{code/verify\_diagonals.py} reconstructs
+every polynomial using rational arithmetic and checks the factorization
+and each residue. The modular lemma excludes every integer root of every
+$R_d$. For $m>d$, the removed factor $m-d$ cannot vanish; the remaining
+removed factors give exactly the stated symmetry and exceptional zeros.
+\end{proof}
+
+These certificates are not extrapolations from finitely many values of
+$m$: each modular argument excludes integer roots for \emph{all} $m$ on
+its fixed diagonal. What is finite is the set of offsets treated.
+
+For a small example not requiring the machine-readable file,
+\begin{align*}
+ R_4(X)&=15X^3-390X^2+3245X-8638\equiv2\pmod5,\\
+ R_5(X)&=3X^3-103X^2+1118X-3776
+                  \equiv2X^2+2X+1\pmod3.
+\end{align*}
+The second reduced polynomial takes the values $1,2,1$ at the three
+residues modulo $3$. Hence there are no additional zeros on offset $4$,
+and the only zero on offset $5$ is the symmetry zero $m=9$.
+
+\subsection{The first three columns for all row indices}\label{xx:sec:columns}
+
+The diagonal results keep $m-r$ fixed. A complementary calculation keeps
+$r$ fixed and proves nonvanishing in a different infinite region.
+
+\begin{proposition}\label{xx:prop:firstcolumns}
+Column $r=1$ has no zero. Column $r=2$ has exactly the zero $m=5$.
+Column $r=3$ has no zero.
+\end{proposition}
+\begin{proof}
+For $r=1$, \eqref{xx:eq:falling} gives
+\[
+ b(1,1)=1,\qquad b(m,1)=(-1)^m(m-2)!\quad(m\ge2).
+\]
+For $r=2$, put $t=m-3\ge0$. The shifted product is
+\[
+ F_m(2+u)=u(u+1)(u+2)\prod_{j=1}^{t}(u-j).
+\]
+The coefficient of $u^2$ is
+\begin{equation}\label{xx:eq:col2}
+ b(m,2)=(-1)^m(m-3)!\,(2H_{m-3}-3),\qquad m\ge3,
+\end{equation}
+where $H_t=\sum_{j=1}^t1/j$ and $H_0=0$. The harmonic numbers strictly
+increase, and $H_2=3/2$, so the only zero is $m-3=2$. The remaining
+boundary entry is $b(2,2)=1$.
+
+For $r=3$, the boundary entry is $b(3,3)=1$. Put $t=m-4\ge0$ and define
+\[
+ H_t^{(2)}=\sum_{j=1}^t\frac1{j^2},\qquad
+ g(t)=6-11H_t+3\bigl(H_t^2-H_t^{(2)}\bigr).
+\]
+Extracting the coefficient of $u^3$ from
+$u(u+1)(u+2)(u+3)\prod_{j=1}^t(u-j)$ gives
+\begin{equation}\label{xx:eq:col3}
+ b(m,3)=(-1)^t t!\,g(t).
+\end{equation}
+The elementary identity
+\begin{equation}\label{xx:eq:gdiff}
+ g(t+1)-g(t)=\frac{6H_t-11}{t+1}
+\end{equation}
+controls its entire sign pattern. We have $g(0)=6$, $g(1)=-5$, and
+$H_3=11/6$. Thus $g$ decreases through $t=3$, has
+$g(3)=g(4)=-49/6$, and is strictly increasing thereafter.
+Finally, exact rational evaluation gives
+\[
+ g(19)=-\frac{4571462267}{97772875200}<0,\qquad
+ g(20)=\frac{537826687}{1150269120}>0.
+\]
+It follows that $g(t)<0$ for $1\le t\le19$, whereas $g(t)>0$ for
+$t\ge20$. There is no integer zero.
+\end{proof}
+
+The last argument illustrates a distinction from a numerical search: exact
+values at two adjacent integers, together with a proved monotonicity
+statement outside a finite initial segment, settle the entire column.
+
+\subsection{Unconditional quadratic growth}\label{xx:sec:bounds}
+
+\begin{theorem}\label{xx:thm:bounds}
+For every integer $n\ge0$,
+\begin{equation}\label{xx:eq:bounds}
+ n+1+\left\lfloor\frac{n^2}{4}\right\rfloor\le a(n)\le q(n).
+\end{equation}
+In particular,
+\[
+ \frac14\le\liminf_{n\to\infty}\frac{a(n)}{n^2}
+ \le\limsup_{n\to\infty}\frac{a(n)}{n^2}\le\frac12,
+ \qquad a(n)=\Theta(n^2).
+\]
+\end{theorem}
+\begin{proof}
+The upper bound is Theorem~\ref{xx:thm:defect}. For the lower bound, count
+nonzero entries along diagonals of the triangle in
+Theorem~\ref{xx:thm:count}. The main diagonal, including $(0,0)$, contributes
+$n+1$ entries.
+
+Fix $1\le d\le n-1$. The diagonal $m-r=d$ has $n-d$ relevant positions,
+$m=d+1,\ldots,n$. By Lemma~\ref{xx:lem:diagdegree}, its zero positions are
+roots of the nonzero polynomial $T_d(m-d)/(m-d)$ of degree $d-1$.
+There are therefore at most $d-1$ such positions, and at least
+\[
+ \max(0,n-d-(d-1))=\max(0,n-2d+1)
+\]
+nonzero entries on the diagonal. Summing over all $d\ge1$ gives
+\[
+ a(n)\ge n+1+\sum_{d\ge1}\max(0,n-2d+1)
+       =n+1+\left\lfloor\frac{n^2}{4}\right\rfloor.
+\]
+The last equality follows by summing the odd numbers $1,3,\ldots,2s-1$
+when $n=2s$, and the even numbers $2,4,\ldots,2s$ when $n=2s+1$.
+The asymptotic bounds follow immediately.
+\end{proof}
+
+\begin{corollary}[A stronger explicit lower bound]\label{xx:cor:primebound}
+For every $n\ge0$,
+\begin{equation}\label{xx:eq:primebound}
+ a(n)\ge n+1+\left\lfloor\frac{n^2}{4}\right\rfloor
+       +\sum_{\substack{p\le n\\p\text{ prime}}}\min(p-2,n-p+1).
+\end{equation}
+\end{corollary}
+\begin{proof}
+On offset $d=p-1$, Theorem~\ref{xx:thm:prime} guarantees all $n-d=n-p+1$
+entries, rather than just $\max(0,n-2p+3)$. The improvement is
+$\min(p-2,n-p+1)$. These diagonals are disjoint, so their improvements add.
+\end{proof}
+
+The prime-enhanced bound is useful without invoking any theorem about the
+density of primes. It still does not close the factor-of-two gap in the
+leading quadratic coefficient. In terms of the exact defect,
+\begin{equation}\label{xx:eq:asympeq}
+ a(n)\sim\frac{n^2}{2}\quad\Longleftrightarrow\quad E(n)=o(n^2).
+\end{equation}
+Thus the proposed asymptotic equivalent is potentially a weaker target than
+the complete zero classification: it would allow a sufficiently sparse set
+of additional zeros.
+
+\subsection{The rational function, quasipolynomial, and recurrence}\label{xx:sec:gf}
+
+\subsubsection{Deriving the proposed generating function}
+There is one potential term at $(0,0)$ and $m$ potential terms in row $m$.
+The cumulative potential count therefore has generating function
+\[
+ \sum_{n\ge0}\left(1+\frac{n(n+1)}2\right)z^n
+ =\frac1{1-z}+\frac{z}{(1-z)^3}.
+\]
+The symmetry zeros are born at rows $5,9,13,\ldots$, and each remains
+absent from every later derivative. Their cumulative generating function is
+$z^5/((1-z)(1-z^4))$. The exceptional zero is born at row $8$ and
+contributes $z^8/(1-z)$. Subtracting these two \emph{proved} families gives
+\begin{align}
+ Q(z)
+ &=\frac1{1-z}+\frac{z}{(1-z)^3}
+       -\frac{z^5}{(1-z)(1-z^4)}-\frac{z^8}{1-z}\notag\\
+ &=\frac{1+z^2+z^3+z^6-z^8+z^9+z^{12}-z^{13}}
+        {(1-z)^2(1-z^4)}.\label{xx:eq:gfderive}
+\end{align}
+This explains every correction term in the proposed rational function.
+
+\begin{theorem}[Exact generating-function correction]\label{xx:thm:gfdefect}
+With $A(z)=\sum_{n\ge0}a(n)z^n$ and
+$\mathcal E(z)=\sum_{m\ge1}e_m z^m$,
+\begin{equation}\label{xx:eq:gfdefect}
+ A(z)=Q(z)-\frac{\mathcal E(z)}{1-z}.
+\end{equation}
+Consequently the proposed rational function equals $A(z)$ if and only if
+Conjecture~\ref{xx:conj:zeros} is true.
+\end{theorem}
+\begin{proof}
+Sum $a(n)=q(n)-\sum_{m\le n}e_m$ as a formal power series. Each $e_m$
+contributes $e_mz^m/(1-z)$ to the cumulative sum.
+\end{proof}
+
+\subsubsection{The real form of the complex expression}
+For $n\ge8$, division into the four residue classes gives
+\begin{equation}\label{xx:eq:residueq}
+ q(n)=\frac{n^2}{2}+\frac n4+
+ \begin{cases}
+ 1,&n\equiv0\pmod4,\\
+ \tfrac14,&n\equiv1\pmod4,\\
+ \tfrac12,&n\equiv2\pmod4,\\
+ \tfrac34,&n\equiv3\pmod4.
+ \end{cases}
+\end{equation}
+The same periodic correction is
+\[
+ \frac{5+(-1)^n+(1-i)(-i)^n+(1+i)i^n}{8},\qquad i^2=-1.
+\]
+Substitution yields exactly the complex-valued-looking expression printed
+in OEIS, whose total value is real and integral. This is an algebraic
+identity for $q$, independent of the unresolved equality $a=q$.
+
+For all $n\ge0$, another convenient form is
+\[
+ q(n)=\frac{n(n+1)}2-\left\lfloor\frac{n-1}{4}\right\rfloor
+                         +\ind{1\le n\le7}.
+\]
+Here $\lfloor-1/4\rfloor=-1$ correctly gives $q(0)=1$.
+The first terms are
+\[
+ 1,2,4,7,11,15,21,28,35,43,53,64,76,88,102,117,133,\ldots.
+\]
+
+\subsubsection{Why the recurrence starts at fourteen}
+Set
+\begin{align*}
+ D(z)&=(1-z)^2(1-z^4)=1-2z+z^2-z^4+2z^5-z^6,\\
+ N(z)&=1+z^2+z^3+z^6-z^8+z^9+z^{12}-z^{13}.
+\end{align*}
+The identity $D(z)Q(z)=N(z)$ implies, for $n\ge6$,
+\begin{equation}\label{xx:eq:inhomogeneous}
+ q(n)-2q(n-1)+q(n-2)-q(n-4)+2q(n-5)-q(n-6)
+ =\coef{z}{n}N(z).
+\end{equation}
+The right side vanishes for every $n\ge14$, but at $n=13$ it equals $-1$.
+Thus the least starting index from which the homogeneous recurrence holds
+for \emph{every} subsequent index of $q$ is $14$.
+For $7\le n\le13$, its only nonzero residuals are
+\begin{center}
+\begin{tabular}{c|rrrr}
+$n$&8&9&12&13\\\hline
+residual&$-1$&1&1&$-1$
+\end{tabular}
+\end{center}
+This proves the range correction asserted at the start of this part.
+If the original derivative sequence satisfies the corrected recurrence
+for all $n\ge14$, its directly verified initial values $a(0),\ldots,a(13)$
+force $a=q$ by induction. Consequently the corrected recurrence for $a$
+is itself equivalent to the main conjecture, once those initial values
+are supplied; it is not an independent proved consequence for arbitrary
+orders.
+
+The second forward differences $q(n+2)-2q(n+1)+q(n)$ begin
+\[
+ 1,1,1,0,2,1,0,1,\underbrace{2,1,1,0,2,1,1,0,\ldots}_{n\ge8}.
+\]
+Again, this is proved for $q$; transferring the entire pattern to $a$
+requires the missing nonvanishing statement.
+
+\subsection{Reproducible verification}\label{xx:sec:computation}
+
+\subsubsection{What was actually checked}
+All reported checks use exact arithmetic. No floating-point threshold was
+used to decide that a coefficient was zero.
+
+The C++ implementation with GMP computes the recurrence \eqref{xx:eq:brec}
+through row $3000$. It tests all $4{,}501{,}500$ entries with
+$1\le r\le m\le3000$. Exactly $750$ are zero: $749$ symmetry zeros and
+$(8,5)$. There are no other zeros in that range, and therefore
+\begin{equation}\label{xx:eq:3000}
+ a(n)=q(n)\quad(0\le n\le3000),\qquad
+ a(3000)=4{,}500{,}751.
+\end{equation}
+These are finite computational results, not an induction proving all $n$.
+
+A separate Python standard-library implementation computes the triangle
+through row $1500$ and agrees with the C++ term counts at all $1501$
+indices $0,\ldots,1500$. Further independent checks include the complete
+polynomials from the differential recurrence \eqref{xx:eq:Prec} through order
+$60$, all $496$ shifted-product coefficients \eqref{xx:eq:falling} with
+$0\le r\le m\le30$, and $11{,}865$ instances of the prime-adic valuation
+formula. All $54$ values displayed directly in the OEIS entry agree with
+the exact computation. The separately linked OEIS table through $500$ was
+not used as an independent data source for this report.
+
+The sixteen diagonal certificates were reconstructed and checked with a
+third, rational-polynomial computation. In addition to showing no unexpected
+zeros in a finite triangular region, these certificates prove there are no
+unexpected zeros on those fixed diagonals for any row index.
+
+\subsubsection{Algorithm and complexity}
+Only two preceding rows are required for \eqref{xx:eq:brec}. A schematic
+implementation is
+\begin{quote}\ttfamily\small
+previousprevious = [1]\\
+previous = [0, 1]\\
+count = 2\\
+for m = 2, ..., N:\\
+\hspace*{1em}current[0] = 0\\
+\hspace*{1em}for r = 1, ..., m:\\
+\hspace*{2em}current[r] = (r-m+1)*previous[r]\\
+\hspace*{3em}+ previous[r-1] + (m-1)*previousprevious[r-1]\\
+\hspace*{1em}count += number of nonzero current[r] for 1 <= r <= m\\
+\hspace*{1em}rotate the three rows
+\end{quote}
+Indices beyond the end of a row mean zero. The supplied implementations
+handle these boundaries explicitly.
+
+The computation uses $O(N^2)$ arithmetic operations and stores $O(N)$
+integers. These are not bit-complexity claims: the integers grow with $N$.
+From the product formula,
+\[
+ |b(m,r)|\le\prod_{h=0}^{m-1}(1+|r-h|)\le(m+1)^m,
+\]
+so a coefficient has $O(m\log m)$ bits. The rolling-row implementation thus
+has an $O(N^2\log N)$-bit storage bound. A crude schoolbook arithmetic bound
+for the running time is $O(N^3\log^2 N)$ bit operations.
+
+\subsubsection{Files and commands}
+The archive contains \texttt{article.tex}, the compiled \texttt{article.pdf},
+a build script, both triangle verifiers, the rational certificate verifier,
+the complete count and zero-position tables through $3000$, and the exact
+verification reports. From the extracted directory, run
+\begin{quote}\ttfamily\small
+python3 code/verify.py --max-n 1500 --data-dir data\\
+python3 code/verify\_diagonals.py --output-dir data --check-only
+\end{quote}
+The C++ implementation requires a C++17 compiler and GMP development files:
+\begin{quote}\ttfamily\small
+c++ -O3 -std=c++17 code/verify\_gmp.cpp -lgmpxx -lgmp -o verify\_gmp\\
+./verify\_gmp 3000 data
+\end{quote}
+The Python programs use only the standard library. The diagonal checker
+constructs the coefficients afresh rather than trusting the saved residue
+tables. Its proof obligations are elementary rational polynomial identities
+and finite modular evaluations; it does not require a general-purpose
+computer algebra system.
+
+\subsection{What remains to finish the requested proof}
+
+The derivation of the candidate rational function is complete, but the
+identification of that function with the derivative count is conditional.
+The exact outstanding statement is
+\[
+ \coef{u}{r}\prod_{h=0}^{m-1}(u+r-h)\ne0
+\]
+for all $1\le r\le m$ outside the explicitly proved zero set $\ZZ_0$.
+The preceding results settle this for $r\le3$, for $m-r\le16$, and whenever
+$m-r+1$ is prime, in addition to all rows through $3000$ by exact computation.
+They do not cover every remaining pair.
+
+The diagonal-polynomial formulation gives a particularly precise route to
+a complete proof. For every offset $d$, it would suffice to show that the
+residual polynomial $R_d$ in \eqref{xx:eq:Rd} has no integer root $m>d$.
+Irreducibility would be stronger than necessary. A uniform family of
+modular nonvanishing certificates would also suffice, but the fact that
+such certificates work for $d\le16$ does not establish that they work for
+all $d$.
+
+For the asymptotic conjecture alone, an exclusion of every additional zero
+is unnecessary: by \eqref{xx:eq:asympeq}, it suffices to bound their cumulative
+number by $o(n^2)$. The present root-counting argument proves quadratic
+order but not this sharper estimate.
+
+\medskip
+\noindent\textbf{Conclusion.}
+The printed recurrence with range $n>6$ is disproved, and its correct
+range for the proposed sequence is identified. The principal closed formula
+is supported by an exact structural reduction, several infinite
+nonvanishing theorems, and extensive reproducible verification. A complete
+all-order proof of that formula is \emph{not} supplied: the missing converse
+in Conjecture~\ref{xx:conj:zeros} is left explicit rather than being replaced
+by an inference from numerical agreement.
+
+\clearpage
+\section{\texorpdfstring{$x^{x^2}$}{x^(x^2)}: OEIS A290268}\label{xxb:part}
+
+\begin{quote}\small
+\textbf{Framework.}  This part instantiates
+Theorem~\ref{fw:thm:canonical}\ref{fw:can:b} --- the clause normalized by
+$x^{-n}$ --- with the frame $z=x^2$, $L=\log x$;
+Proposition~\ref{xxb:prop:recurrence} below is that instance, derived here
+independently, and the $-n$ in its recurrence is the normalizer's contribution.
+Lemma~\ref{xxb:lem:unique} is the special case of
+Theorem~\ref{fw:thm:independence} this part needs.
+
+\smallskip
+\textbf{Notation.}  In this part \textbf{$z$ denotes $x^2$}, not $\log x$;
+compare Part~\ref{xxc:part}, where $z$ is $\log x$.  See
+Section~\ref{fw:notation}.  Throughout this part $a(n)$ denotes the term count
+for $x^{x^2}$.
+
+\medskip
+\textbf{Abstract of the original report.}\itshape
+Let $a(n)$ be the number of nonzero monomials in the fully collected $n$th
+derivative of $x^{x^2}$. The conjecture in OEIS A290268 predicts
+\[
+ a(n)=\U(n):=\frac{n^2}{2}+n+1
+ -(n\bmod2)\left(\frac12+\left\lfloor\frac{n+1}{8}\right\rfloor\right).
+\]
+This article does \upshape\emph{not}\itshape{} establish the equality for all
+$n$. It proves the
+unconditional bound $a(n)\le\U(n)$ by identifying every cancellation needed to
+explain the proposed formula. It also proves positivity throughout the upper
+half of the coefficient triangle, classifies all zeros on the first two
+logarithmic-deficit diagonals, and gives explicit quadratic lower bounds.
+An exact generating-function identity and a finite-difference formula reduce
+the full conjecture to a precise nonvanishing assertion. Integer arithmetic
+verifies the support through $n=200$; two complete modular computations,
+combined with the proved zero identities, certify $a(n)=\U(n)$ for every
+$0\le n\le3000$. All source code, finite certificates, and reproduction
+instructions accompany the article. The remaining nonvanishing step is
+stated explicitly rather than assumed.
+\end{quote}
+
+\subsection{The problem and the status of the result}\label{xxb:sec:introduction}
+Put
+\[
+ f(x)=x^{x^2}=\exp(x^2\log x),\qquad x>0.
+\]
+The sequence A290268 counts the terms in the fully expanded derivative
+$f^{(n)}(x)$, after identical monomials have been collected. The OEIS entry
+was contributed by Vladimir Reshetnikov in October 2017; its formula section
+labels both the generating function and the explicit expression as
+conjectural. Peter Luschny's equivalent floor-function form is explicitly
+conditional on that conjecture~\cite{oeis290268}.
+
+For clarity, throughout this article the letter $\U$ denotes the
+\emph{proposed} answer, not an already proved formula for $a$:
+\begin{equation}\label{xxb:eq:U}
+ \U(n)=\frac{n^2}{2}+n+1
+ -(n\bmod2)\left(\frac12+\left\lfloor\frac{n+1}{8}\right\rfloor\right).
+\end{equation}
+Equivalently,
+\begin{equation}\label{xxb:eq:U-parity}
+ \U(2r)=2r^2+2r+1,\qquad
+ \U(2r+1)=2(r+1)^2-\left\lfloor\frac{r+1}{4}\right\rfloor.
+\end{equation}
+The two central issues are different. One must explain why certain
+coefficients vanish, and one must also exclude every other cancellation.
+The first task is completed here. The second is completed in substantial
+regions and in a large finite range, but not in full generality.
+
+\begin{theorem}[Unconditional bounds]\label{xxb:thm:main-bounds}
+For every integer $n\ge0$,
+\begin{equation}\label{xxb:eq:bounds}
+ \Lambda(n)\le a(n)\le\U(n),
+ \qquad
+ \Lambda(n)=
+ \begin{cases}
+ (3n^2+10n+8)/8,&n\text{ even},\\[2pt]
+ (3n^2+12n+1)/8,&n\text{ odd}.
+ \end{cases}
+\end{equation}
+In particular, $a(n)=\Theta(n^2)$. The proposed leading constant $1/2$ is
+not established by these bounds.
+\end{theorem}
+
+The upper bound is proved in Section~\ref{xxb:sec:counting}; the lower bound is
+proved in Section~\ref{xxb:sec:positivity}. Section~\ref{xxb:sec:computation} gives a
+reproducible finite certification of the stronger equality through $3000$.
+The exact outstanding assertion appears in Section~\ref{xxb:sec:remaining}.
+
+
+\subsection{A canonical polynomial expansion}\label{xxb:sec:canonical}
+Set $z=x^2$ and $L=\log x$. Define polynomials $P_n\in\Z[z,L]$ by
+\begin{equation}\label{xxb:eq:canonical}
+ f^{(n)}(x)=f(x)x^{-n}P_n(x^2,\log x),\qquad P_0=1.
+\end{equation}
+Write
+\begin{equation}\label{xxb:eq:c-def}
+ P_n(z,L)=\sum_{k,j}c_{n,k,j}z^kL^j.
+\end{equation}
+Thus $c_{n,k,j}$ is the coefficient of
+$x^{x^2+2k-n}(\log x)^j$ in the derivative. Counting terms means counting
+nonzero $c_{n,k,j}$, rather than counting the summands generated by a
+particular symbolic differentiation algorithm.
+
+\begin{lemma}[Uniqueness of the collected expansion]\label{xxb:lem:unique}
+A finite identity $\sum_{k,j}b_{k,j}x^{2k}(\log x)^j=0$ for all $x>0$
+forces every $b_{k,j}$ to vanish. Consequently, the expansion
+\eqref{xxb:eq:canonical}--\eqref{xxb:eq:c-def} is canonical.
+\end{lemma}
+\begin{proof}
+Substitute $x=e^L$ and group the identity as
+$\sum_k e^{2kL}B_k(L)=0$, with polynomial $B_k$. If $K$ is the largest
+index with $B_K\ne0$, division by $e^{2KL}$ shows that $B_K(L)$ tends to
+zero as $L\to+\infty$: all remaining terms are polynomials multiplied by
+decaying exponentials. A nonzero polynomial cannot tend to zero at
+$+\infty$. This contradiction eliminates $K$, and then all indices.
+\end{proof}
+
+The normalized derivative obeys a particularly small recurrence.
+\begin{proposition}[Polynomial and coefficient recurrences]\label{xxb:prop:recurrence}
+For every $n\ge0$,
+\begin{equation}\label{xxb:eq:P-recurrence}
+ P_{n+1}=\bigl(z(2L+1)-n\bigr)P_n
+          +2z\frac{\partial P_n}{\partial z}
+          +\frac{\partial P_n}{\partial L}.
+\end{equation}
+With nonexistent coefficients interpreted as zero,
+\begin{equation}\label{xxb:eq:c-recurrence}
+ \boxed{\;
+ c_{n+1,k,j}=(2k-n)c_{n,k,j}+(j+1)c_{n,k,j+1}
+             +c_{n,k-1,j}+2c_{n,k-1,j-1}.
+ \;}
+\end{equation}
+For $n\ge1$, the only possible nonzero indices satisfy
+\begin{equation}\label{xxb:eq:triangle}
+ 1\le k\le n,\qquad 0\le j\le k.
+\end{equation}
+\end{proposition}
+\begin{proof}
+We have $f'/f=x(2L+1)$, $dz/dx=2z/x$, and $dL/dx=1/x$.
+Differentiate \eqref{xxb:eq:canonical} and factor out $f(x)x^{-n-1}$ to obtain
+\eqref{xxb:eq:P-recurrence}. Taking the coefficient of $z^kL^j$ gives
+\eqref{xxb:eq:c-recurrence}. Starting from $P_0=1$, the first derivative is
+$P_1=z(2L+1)$. The four operations in \eqref{xxb:eq:P-recurrence} preserve
+$k\ge1$ and $j\le k$, and increase $k$ by at most one. Induction proves
+\eqref{xxb:eq:triangle} and integrality.
+\end{proof}
+
+For example,
+\begin{align*}
+ P_1&=z(2L+1),\\
+ P_2&=z(2L+3)+z^2(2L+1)^2,\\
+ P_3&=2z+z^2(12L^2+24L+9)+z^3(2L+1)^3.
+\end{align*}
+These have respectively $2$, $5$, and $8$ nonzero coefficients, in
+agreement with the definition. Already $P_3$ illustrates a degree loss:
+its $z$-coefficient has no $L$-term. Later cancellations are less obvious.
+For instance,
+\begin{equation}\label{xxb:eq:examples-cancel}
+ [z^2]P_7(z,L)=28,\qquad [z^2]P_9(z,L)=-864L.
+\end{equation}
+The missing $L$-term in the first polynomial and the missing constant in
+the second will follow from the same reflection principle.
+
+\subsection{Exact formulas for individual coefficients}\label{xxb:sec:formulas}
+\subsubsection{An exponential generating function}
+Define two formal power series
+\begin{equation}\label{xxb:eq:AB}
+ A(t)=t(2+t)=(1+t)^2-1,\qquad
+ B(t)=(1+t)^2\log(1+t).
+\end{equation}
+Formal coefficient extraction is denoted by $[t^n]$. All logarithms in
+formal series are expanded at the origin.
+
+\begin{proposition}[Generating function]\label{xxb:prop:egf}
+The complete coefficient array is described by
+\begin{equation}\label{xxb:eq:egf}
+ \sum_{n\ge0}P_n(z,L)\frac{t^n}{n!}
+   =\exp\bigl(z(A(t)L+B(t))\bigr).
+\end{equation}
+In particular, if $m=k-j\ge0$, then
+\begin{equation}\label{xxb:eq:coefficient-AB}
+ \boxed{\quad
+ c_{n,k,j}=\frac{n!}{j!m!}[t^n]A(t)^j B(t)^m.
+ \quad}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Taylor expansion at the point $x$ gives
+\[
+ \frac{f(x(1+t))}{f(x)}
+ =\sum_{n\ge0}\frac{x^nf^{(n)}(x)}{f(x)}\frac{t^n}{n!}.
+\]
+The logarithm of the ratio on the left is
+\[
+ x^2\bigl(((1+t)^2-1)\log x+(1+t)^2\log(1+t)\bigr).
+\]
+This proves \eqref{xxb:eq:egf} after substitution of $z,L$. Alternatively,
+its coefficients satisfy \eqref{xxb:eq:P-recurrence}, so the identity also
+holds with $z,L$ algebraically independent. Expanding separately the two
+exponentials $\exp(zA(t)L)$ and $\exp(zB(t))$ gives
+\eqref{xxb:eq:coefficient-AB}.
+\end{proof}
+
+Because both $A$ and $B$ start with a nonzero term of degree one, their
+product in \eqref{xxb:eq:coefficient-AB} starts at degree $k$. This independently
+explains $k\le n$. The difficulty is that $B$ does not have only positive
+coefficients:
+\[
+ B(t)=t+\frac32t^2+\frac13t^3-\frac1{12}t^4+\frac1{30}t^5-\cdots.
+\]
+Consequently, the coefficient formula is not itself a proof of
+nonvanishing.
+
+\subsubsection{Falling factorials and finite differences}
+Let
+\[
+ F_n(u)=\fall{u}{n}=u(u-1)\cdots(u-n+1),\qquad F_0(u)=1,
+\]
+and let $\Delta_2G(u)=G(u+2)-G(u)$. Set
+$Q_{n,j}(u)=\Delta_2^jF_n(u)$.
+
+\begin{proposition}[Finite-difference formula]\label{xxb:prop:difference}
+For $m=k-j\ge0$,
+\begin{align}
+ c_{n,k,j}
+ &=\frac{1}{j!m!}
+       \left.\frac{d^m}{du^m}Q_{n,j}(u)\right|_{u=2m}
+       \label{xxb:eq:difference}\\
+ &=\frac1{j!}[v^m]\sum_{h=0}^j(-1)^{j-h}\binom jh
+       F_n(2m+2h+v).\label{xxb:eq:difference-coeff}
+\end{align}
+\end{proposition}
+\begin{proof}
+The generalized binomial theorem gives
+$n![t^n](1+t)^u=F_n(u)$. Differentiating $m$ times in $u$ introduces
+$\log^m(1+t)$. Taking $j$ forward differences of step two introduces
+$((1+t)^2-1)^j=A(t)^j$. Evaluation at $u=2m$ introduces
+$(1+t)^{2m}$, which combines with the logarithm to give $B(t)^m$.
+Equation~\eqref{xxb:eq:coefficient-AB} now proves \eqref{xxb:eq:difference};
+Taylor's formula proves \eqref{xxb:eq:difference-coeff}.
+\end{proof}
+
+Derivatives of falling factorials also occur in the theory of shifted
+Stirling numbers and elementary symmetric harmonic sums; Poon gives a
+broader account of these connections~\cite{poon}. No general nonvanishing
+theorem from that literature is being assumed here. Formula
+\eqref{xxb:eq:difference-coeff} is also an independent way to compute a
+coefficient using integer polynomial products.
+
+\subsection{A transformation proving positivity}\label{xxb:sec:positivity}
+A fractional-linear change of variable turns a large region of the
+coefficient array into a manifestly positive expression. Define
+\begin{equation}\label{xxb:eq:H}
+ H(u)=\frac{\atanh u}{u}=\sum_{r\ge0}\frac{u^{2r}}{2r+1},
+ \qquad H(0)=1.
+\end{equation}
+The value at zero is understood by its formal power series.
+
+\begin{proposition}[Transformed coefficient formula]\label{xxb:prop:mobius}
+For $m=k-j\ge0$ and $n\ge k$,
+\begin{equation}\label{xxb:eq:mobius}
+ c_{n,k,j}=\frac{n!}{j!m!}\,2^{\,2j+m-n}
+ [u^{n-k}](1-u)^{n-2k-1}(1+u)^{2m}H(u)^m.
+\end{equation}
+Negative integer powers of $1-u$ have their usual formal expansions.
+\end{proposition}
+\begin{proof}
+In the residue expression for $[t^n]A(t)^jB(t)^m$, substitute
+$t=2u/(1-u)$. Then
+\[
+ 1+t=\frac{1+u}{1-u},\quad
+ A(t)=\frac{4u}{(1-u)^2},\quad
+ B(t)=\frac{2(1+u)^2}{(1-u)^2}\atanh u,
+ \quad dt=\frac{2\,du}{(1-u)^2}.
+\]
+Using $[t^n]G(t)=\Res_{t=0}G(t)t^{-n-1}\,dt$, the constant factor becomes
+$2^{2j+m-n}$. The remaining power of $1-u$ is $n-2k-1$.
+The factors $u^j(\atanh u)^m$ contribute $u^kH(u)^m$, so the resulting
+residue extracts the coefficient of $u^{n-k}$. Multiplying by
+$n!/(j!m!)$ proves the formula. The formal change-of-variable rule applies
+because $2u/(1-u)$ has zero constant term and nonzero linear coefficient.
+\end{proof}
+
+\begin{theorem}[A nonvanishing region]\label{xxb:thm:positive}
+For $1\le k\le n$ and $0\le j\le k$,
+\begin{equation}\label{xxb:eq:positive}
+ \begin{split}
+ n\le2k&\quad\Longrightarrow\quad c_{n,k,j}>0,\\
+ n=2k+1,\ j<k&\quad\Longrightarrow\quad c_{n,k,j}>0.
+ \end{split}
+\end{equation}
+\end{theorem}
+\begin{proof}
+If $n\le2k$, the factor $(1-u)^{n-2k-1}$ is $(1-u)^{-q}$ with $q\ge1$.
+Every coefficient of this factor is strictly positive. The other two
+factors in \eqref{xxb:eq:mobius} have nonnegative coefficients and constant
+term one. Their product therefore has a strictly positive coefficient in
+every nonnegative degree.
+
+If $n=2k+1$, that factor disappears. The condition $j<k$ means $m\ge1$.
+The series $H(u)^m$ has a strictly positive coefficient in every even
+degree. The polynomial $(1+u)^{2m}$ has positive constant and linear
+coefficients. An even target degree can be supplied entirely by $H(u)^m$;
+an odd target degree can use the linear term of $(1+u)^{2m}$ and an even
+degree from $H(u)^m$. Thus the target coefficient of degree $n-k$ is
+strictly positive in both cases. The prefactor in \eqref{xxb:eq:mobius} is
+positive.
+\end{proof}
+
+\begin{corollary}[Quadratic lower bounds]\label{xxb:cor:lower}
+The lower bound in Theorem~\ref{xxb:thm:main-bounds} holds.
+\end{corollary}
+\begin{proof}
+For $n=2r\ge2$, Theorem~\ref{xxb:thm:positive} supplies all coefficients with
+$r\le k\le2r$, giving
+\[
+ a(2r)\ge\sum_{k=r}^{2r}(k+1)=\frac{(r+1)(3r+2)}2.
+\]
+For $n=2r+1$ with $r\ge1$, it supplies all coefficients with
+$r+1\le k\le2r+1$ and the $r$ coefficients $0\le j<r$ at $k=r$.
+Hence
+\[
+ a(2r+1)\ge r+\sum_{k=r+1}^{2r+1}(k+1)
+ =\frac{3(r+1)(r+2)}2-1.
+\]
+These are precisely \eqref{xxb:eq:bounds}. The cases $n=0,1$ follow directly
+from $P_0=1$ and $P_1=z(2L+1)$.
+\end{proof}
+
+\subsection{The two forced families of zeros}\label{xxb:sec:zeros}
+\subsubsection{Degree-forced zeros on the top diagonal}
+Setting $j=k$, and therefore $m=0$, in \eqref{xxb:eq:coefficient-AB} yields
+an explicit coefficient.
+\begin{proposition}[Top logarithmic degree]\label{xxb:prop:top}
+For $k\ge1$ and $k\le n\le2k$,
+\begin{equation}\label{xxb:eq:top}
+ c_{n,k,k}=\frac{n!}{k!}\binom{k}{n-k}2^{2k-n}>0.
+\end{equation}
+For $n>2k$, one has $c_{n,k,k}=0$.
+\end{proposition}
+\begin{proof}
+The relevant series is the polynomial
+$A(t)^k=t^k(2+t)^k$, of degree $2k$. Its coefficient of $t^n$ is
+$\binom{k}{n-k}2^{2k-n}$ in the indicated range and zero above it.
+\end{proof}
+For a fixed $n\ge1$, this removes exactly
+$\lfloor(n-1)/2\rfloor$ cells from the possible triangle.
+
+\subsubsection{Reflection-forced cancellations}
+The less obvious zeros follow from symmetry about the midpoint of the
+roots of a falling factorial.
+\begin{lemma}[Reflection of a finite difference]\label{xxb:lem:reflection}
+For all $n,j\ge0$,
+\begin{equation}\label{xxb:eq:reflection}
+ Q_{n,j}(n-2j-1-u)=(-1)^{n-j}Q_{n,j}(u).
+\end{equation}
+\end{lemma}
+\begin{proof}
+First,
+$F_n(n-1-u)=(-1)^nF_n(u)$, by reversing the order of the factors.
+Expand the left side of \eqref{xxb:eq:reflection}:
+\[
+ \sum_{h=0}^j(-1)^{j-h}\binom jh
+ F_n(n-2j-1-u+2h).
+\]
+Reflection turns its last factor into
+$(-1)^nF_n(u+2(j-h))$. Reindexing by $\ell=j-h$ leaves the factor
+$(-1)^{n-j}$ times the usual expansion of $\Delta_2^jF_n(u)$.
+\end{proof}
+
+\begin{theorem}[Reflection zeros]\label{xxb:thm:reflection-zeros}
+Suppose $1\le k\le n$ and $0\le j<k$. Then
+\begin{equation}\label{xxb:eq:reflection-zeros}
+ k\text{ even},\qquad n=4k-2j+1
+ \quad\Longrightarrow\quad c_{n,k,j}=0.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Put $m=k-j$. The reflection center in Lemma~\ref{xxb:lem:reflection} is
+$(n-2j-1)/2$. Under the displayed condition this equals $2m$, precisely
+the evaluation point in \eqref{xxb:eq:difference}. The parity of
+$Q_{n,j}(2m+v)$ as a polynomial in $v$ is $n-j$. Its coefficient of $v^m$
+therefore vanishes whenever $n-j-m=n-k$ is odd. The relation
+$n=4k-2j+1$ makes $n$ odd, so $n-k$ is odd when $k$ is even.
+Equation~\eqref{xxb:eq:difference-coeff} completes the proof.
+\end{proof}
+
+There is also a direct proof using \eqref{xxb:eq:mobius}. The relation in
+\eqref{xxb:eq:reflection-zeros} gives $n-2k-1=2m$, so the series whose
+coefficient is extracted becomes
+\begin{equation}\label{xxb:eq:even-kernel}
+ (1-u^2)^{2m}H(u)^m.
+\end{equation}
+This series is even. When $k$ is even, $n-k$ is odd, and its coefficient
+of that degree is zero. This second proof makes the cancellation visible
+without evaluating any large integer coefficient.
+
+\begin{remark}[What symmetry does not say]\label{xxb:rem:symmetry-gap}
+The theorem is an implication, not an equivalence. An even power series
+has zero odd coefficients, but it can also have zero even coefficients.
+Similarly, away from the reflection center, a derivative of a polynomial
+can vanish for reasons unrelated to symmetry. Excluding such additional
+zeros is a separate requirement of the full conjecture.
+\end{remark}
+
+\subsection{Counting the forced zeros}\label{xxb:sec:counting}
+For $n\ge1$, the triangle \eqref{xxb:eq:triangle} has
+\begin{equation}\label{xxb:eq:triangle-size}
+ T(n)=\sum_{k=1}^n(k+1)=\frac{n(n+3)}2
+\end{equation}
+cells. Let $Z_n^{\mathrm{top}}$ be the top-diagonal cells removed by
+Proposition~\ref{xxb:prop:top}, and let $Z_n^{\mathrm{ref}}$ be the cells in
+Theorem~\ref{xxb:thm:reflection-zeros}. These sets are disjoint, since the
+second requires $j<k$.
+
+\begin{lemma}[Number of reflection zeros]\label{xxb:lem:reflection-count}
+For even $n$, $Z_n^{\mathrm{ref}}$ is empty. For odd $n$,
+\begin{equation}\label{xxb:eq:reflection-count}
+ |Z_n^{\mathrm{ref}}|=\left\lfloor\frac{n+1}{8}\right\rfloor.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Reflection zeros have odd $n$. Write $n=2r+1$ and $k=2\ell$.
+The reflection relation determines
+$j=2k-r=4\ell-r$. The inequalities $0\le j<k$ become
+\[
+ \frac r4\le\ell<\frac r2.
+\]
+For $r\ge1$, these automatically give $\ell\ge1$ whenever the interval
+contains an integer. Its number of integers is
+\[
+ \left\lceil\frac r2\right\rceil-
+ \left\lceil\frac r4\right\rceil
+ =\left\lfloor\frac{r+1}{4}\right\rfloor,
+\]
+as is checked in the four residue classes of $r$ modulo four. For $r=0$
+both sides are zero. Since $(r+1)/4=(n+1)/8$, the result follows.
+\end{proof}
+
+\begin{theorem}[The conjectured expression is an upper bound]\label{xxb:thm:upper}
+For every $n\ge0$,
+\begin{equation}\label{xxb:eq:upper}
+ a(n)\le\U(n).
+\end{equation}
+Equality holds for a given $n$ if and only if the coefficient triangle has
+no zeros other than $Z_n^{\mathrm{top}}\cup Z_n^{\mathrm{ref}}$.
+\end{theorem}
+\begin{proof}
+For even $n=2r\ge2$, subtraction of the top-diagonal zeros from
+\eqref{xxb:eq:triangle-size} gives
+\[
+ 2r^2+3r-(r-1)=2r^2+2r+1.
+\]
+For odd $n=2r+1$, subtraction of both disjoint families gives
+\[
+ 2r^2+5r+2-r-\left\lfloor\frac{r+1}{4}\right\rfloor
+ =2(r+1)^2-\left\lfloor\frac{r+1}{4}\right\rfloor.
+\]
+These are \eqref{xxb:eq:U-parity}. Additional zeros could only decrease the
+number of nonzero coefficients, proving the inequality and the stated
+equivalence. Finally $a(0)=\U(0)=1$.
+\end{proof}
+
+For example, at $n=7$ there are $35$ potential cells, three top-diagonal
+zeros, and the reflection zero $(k,j)=(2,1)$, leaving $31$. At $n=9$,
+there are $54$ potential cells, four top-diagonal zeros, and the reflection
+zero $(2,0)$, leaving $49$. The exact expansions in
+\eqref{xxb:eq:examples-cancel} display those two different cancellations.
+The floor term in the proposed formula is thus explained by a proved
+symmetry, not merely by fitting initial values.
+
+\subsection{Nonvanishing on the first two deficit diagonals}\label{xxb:sec:small-m}
+Call $m=k-j$ the \emph{logarithmic deficit}. This section gives a complete
+zero classification for $m=1$ and $m=2$. Together with
+Theorem~\ref{xxb:thm:positive}, it narrows the unproved portion of the problem.
+
+\subsubsection{A beta-integral representation}
+Suppose $n>2k$, $m=k-j\ge1$, and put
+\begin{equation}\label{xxb:eq:d}
+ d=n-2k-1\ge0.
+\end{equation}
+For sufficiently small complex $\varepsilon$, define
+\begin{equation}\label{xxb:eq:I}
+ I_{m,j,d}(\varepsilon)=
+ \int_0^1 t^{2m+\varepsilon}(1-t)^{d-\varepsilon}(2t-1)^j\,dt.
+\end{equation}
+The integral and all derivatives required below converge uniformly on
+compact subsets of $|\varepsilon|<1/2$.
+
+\begin{lemma}[Integral formula]\label{xxb:lem:beta}
+Under these assumptions,
+\begin{equation}\label{xxb:eq:beta-Q}
+ Q_{n,j}(2m+\varepsilon)
+ =(-1)^{n-1}n!\frac{\sin(\pi\varepsilon)}{\pi}
+    I_{m,j,d}(\varepsilon),
+\end{equation}
+and consequently
+\begin{equation}\label{xxb:eq:beta-c}
+ c_{n,k,j}=\frac{(-1)^{n-1}n!}{j!}
+ [\varepsilon^m]\left(
+ \frac{\sin(\pi\varepsilon)}{\pi}I_{m,j,d}(\varepsilon)\right).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Euler's reflection formula and beta integral~\cite{dlmf-reflection,dlmf-beta}
+give, initially away from integer $\alpha$,
+\begin{align*}
+ F_n(\alpha)
+ &=(-1)^{n-1}\frac{\sin(\pi\alpha)}{\pi}
+      \Gamma(\alpha+1)\Gamma(n-\alpha)\\
+ &=(-1)^{n-1}n!\frac{\sin(\pi\alpha)}{\pi}
+      \int_0^1t^\alpha(1-t)^{n-\alpha-1}\,dt.
+\end{align*}
+In the $j$th difference put $\alpha=2m+2h+\varepsilon$. The sine factor
+is independent of the integer $h$. The finite sum inside the integral is
+\[
+ \sum_{h=0}^j(-1)^{j-h}\binom jh
+     \left(\frac{t}{1-t}\right)^{2h}
+ =\frac{(2t-1)^j}{(1-t)^{2j}}.
+\]
+The remaining exponent of $1-t$ is $d-\varepsilon$, proving
+\eqref{xxb:eq:beta-Q}. All terms are analytic near $\varepsilon=0$, so the
+identity extends to zero as well. Taking the coefficient of
+$\varepsilon^m$ and using \eqref{xxb:eq:difference-coeff} gives
+\eqref{xxb:eq:beta-c}.
+\end{proof}
+
+\subsubsection{Deficit one}
+\begin{theorem}[Complete signs for $m=1$]\label{xxb:thm:m1}
+Suppose $m=k-j=1$ and $n>2k$, and define $d$ by \eqref{xxb:eq:d}. Then
+\begin{equation}\label{xxb:eq:m1-sign}
+ \sgn c_{n,k,j}=(-1)^{n-1}
+ \begin{cases}
+ 1,&j\text{ even},\\
+ \sgn(2-d),&j\text{ odd}.
+ \end{cases}
+\end{equation}
+In particular the only zeros in this range have $j$ odd and $d=2$.
+\end{theorem}
+\begin{proof}
+The coefficient of $\varepsilon$ in \eqref{xxb:eq:beta-c} is
+\begin{equation}\label{xxb:eq:m1-integral}
+ c_{n,k,j}=\frac{(-1)^{n-1}n!}{j!}
+ \int_0^1t^2(1-t)^d(2t-1)^j\,dt.
+\end{equation}
+For even $j$, the integrand is nonnegative and positive except at finitely
+many points, so the integral is strictly positive. For odd $j$, pair $t$
+with $1-t$ and integrate over $1/2<t<1$. The paired integrand is
+\[
+ (2t-1)^j\bigl(t^2(1-t)^d-t^d(1-t)^2\bigr).
+\]
+The ratio of the two positive terms in parentheses is
+$(t/(1-t))^{2-d}$. Since $t/(1-t)>1$, their difference is identically
+zero when $d=2$ and otherwise has the strict sign of $2-d$ throughout
+the open interval. This proves the sign formula.
+\end{proof}
+These zeros are exactly the previously identified reflection zeros:
+$j$ odd means $k=j+1$ is even, and $d=2$ means
+$n=2k+3=4k-2j+1$.
+
+\subsubsection{Deficit two}
+\begin{theorem}[Complete signs for $m=2$]\label{xxb:thm:m2}
+Suppose $m=k-j=2$ and $n>2k$. Then
+\begin{equation}\label{xxb:eq:m2-sign}
+ \sgn c_{n,k,j}=(-1)^{n-1}
+ \begin{cases}
+ 1,&j\text{ odd},\\
+ \sgn(4-d),&j\text{ even}.
+ \end{cases}
+\end{equation}
+The only zeros in this range have $j$ even and $d=4$.
+\end{theorem}
+\begin{proof}
+The coefficient of $\varepsilon^2$ in \eqref{xxb:eq:beta-c} is
+\begin{equation}\label{xxb:eq:m2-integral}
+ c_{n,k,j}=\frac{(-1)^{n-1}n!}{j!}
+ \int_0^1t^4(1-t)^d(2t-1)^j
+       \log\frac{t}{1-t}\,dt.
+\end{equation}
+For odd $j$, the factors $(2t-1)^j$ and $\log(t/(1-t))$ have the same
+sign, so the integral is strictly positive. For even $j$, their product
+is antisymmetric under $t\mapsto1-t$. Pairing the integral as before
+leaves, on $1/2<t<1$,
+\[
+ (2t-1)^j\log\frac{t}{1-t}
+ \bigl(t^4(1-t)^d-t^d(1-t)^4\bigr).
+\]
+The first two factors are positive there. The bracket has the strict
+sign of $4-d$, or is identically zero when $d=4$. This proves the claim.
+\end{proof}
+Again the zero condition is exactly reflection: $k=j+2$ is even and
+$n=2k+5=4k-2j+1$.
+
+For $n\le2k$, positivity has already been proved, and the borderline
+$n=2k+1$ is included in both sign arguments. Thus these two theorems,
+together with Proposition~\ref{xxb:prop:top}, classify all zeros for
+$k-j\le2$ throughout the possible triangle.
+
+\subsubsection{Why the same sign proof does not settle higher deficits}
+At $m=3$, formula \eqref{xxb:eq:beta-c} gives the integral of
+\begin{equation}\label{xxb:eq:m3-kernel}
+ t^6(1-t)^d(2t-1)^j
+ \left(\frac12\log^2\frac{t}{1-t}-\frac{\pi^2}{6}\right)
+\end{equation}
+multiplied by $(-1)^{n-1}n!/j!$. The last factor changes sign inside
+$(0,1)$. Thus positivity of the weight, or pairing $t$ with $1-t$, no
+longer excludes cancellation. This is a concrete obstruction to simply
+extending the proofs above. It is not a counterexample to the conjecture.
+
+\subsection{Generating functions and equivalent formulas for the upper bound}
+\label{xxb:sec:gf}
+All identities in this section are proved identities for $\U(n)$.
+They become identities for $a(n)$ only after the remaining nonvanishing
+assertion is supplied, or when restricted to a certified finite range.
+
+\subsubsection{Derivation of the rational generating function}
+By \eqref{xxb:eq:U-parity}, the even and odd subsequences have generating
+functions
+\begin{align}
+ E(y)&=\sum_{r\ge0}\U(2r)y^r
+       =\frac{(1+y)^2}{(1-y)^3},\label{xxb:eq:E}\\
+ O(y)&=\sum_{r\ge0}\U(2r+1)y^r
+       =\frac{2(1+y)}{(1-y)^3}
+          -\frac{y^3}{(1-y)(1-y^4)}.\label{xxb:eq:O}
+\end{align}
+For the last term, write
+$\lfloor(r+1)/4\rfloor=\sum_{h\ge1}\mathbf1_{r\ge4h-1}$ and sum each
+geometric tail. Therefore
+\begin{align}
+ G(t):=\sum_{n\ge0}\U(n)t^n
+ &=E(t^2)+tO(t^2)\notag\\
+ &=\frac{1+t^2}{(1-t)^3(1+t)}
+       -\frac{t^7}{(1-t^2)(1-t^8)}\notag\\
+ &=\frac{N(t)}{(1-t)(1-t^2)(1-t^8)},\label{xxb:eq:GF}
+\end{align}
+where
+\begin{equation}\label{xxb:eq:N}
+ N(t)=1+t+2t^2+2t^3+2t^4+2t^5+2t^6+t^7+2t^8+t^9.
+\end{equation}
+Indeed,
+$N(t)=(1+t^2)(1+t+\cdots+t^7)-t^7(1-t)$.
+This is exactly the rational function proposed in the OEIS entry~\cite{oeis290268}.
+The derivation shows why period eight appears: it counts the even values
+of $k$ on the reflection line, in addition to the parity split of the
+ordinary triangle.
+
+\subsubsection{The eight constituent polynomials}
+Writing $n=8q+s$ with $0\le s\le7$, \eqref{xxb:eq:U} becomes the following
+degree-two quasipolynomial.
+\begin{center}
+\begin{tabular}{cl}
+\toprule
+$s$ & $\U(8q+s)$\\
+\midrule
+0 & $32q^2+8q+1$\\
+1 & $32q^2+15q+2$\\
+2 & $32q^2+24q+5$\\
+3 & $32q^2+31q+8$\\
+4 & $32q^2+40q+13$\\
+5 & $32q^2+47q+18$\\
+6 & $32q^2+56q+25$\\
+7 & $32q^2+63q+31$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The trigonometric expression from the OEIS entry is another way to write
+the same eight polynomials:
+\begin{equation}\label{xxb:eq:trig}
+ \U(n)=\frac{8n^2+15n+14+(n+2)(-1)^n
+ +(2-4\sqrt2\sin(\pi n/4))\sin(\pi n/2)}{16}.
+\end{equation}
+To verify the equivalence without an approximation, substitute $n=8q+s$.
+The sine factors take their exact values at multiples of $\pi/4$ and
+$\pi/2$. Substitution in each of the eight residue classes yields the
+polynomials in the table. In particular, no irrational value remains.
+
+\subsubsection{Linear recurrences}
+Multiplication of \eqref{xxb:eq:GF} by its denominator yields
+\begin{equation}\label{xxb:eq:rec11}
+ \begin{split}
+ \U(n)={}&\U(n-1)+\U(n-2)-\U(n-3)+\U(n-8)\\
+         &-\U(n-9)-\U(n-10)+\U(n-11),\qquad n\ge11.
+ \end{split}
+\end{equation}
+Multiplying the denominator by $1+t$ gives the convenient order-twelve
+form recorded in the OEIS entry:
+\begin{equation}\label{xxb:eq:rec12}
+ \U(n)=2\U(n-2)-\U(n-4)+\U(n-8)-2\U(n-10)+\U(n-12),
+ \qquad n\ge12.
+\end{equation}
+The twelve initial values are
+\[
+ 1,2,5,8,13,18,25,31,41,49,61,71.
+\]
+Using these recurrences to \emph{generate} the claimed values of $a(n)$
+would be circular in a proof of the conjecture. The computations in the
+next section instead use the independently derived coefficient recurrence
+\eqref{xxb:eq:c-recurrence}.
+
+\subsection{Exact finite verification and certificates}\label{xxb:sec:computation}
+\subsubsection{Integer arithmetic and independent formula checks}
+The accompanying Python program applies \eqref{xxb:eq:c-recurrence} with
+arbitrary-precision integers. Through $n=200$, it checks not only the
+term count but the entire zero pattern: a coefficient is zero if and only
+if it belongs to one of the two proved zero families. This examines
+$1{,}373{,}500$ cells with $1\le k\le n\le200$, $0\le j\le k$.
+
+For $0\le n\le16$, the program independently recomputes $969$ triples
+$(n,k,j)$, including the $k=0$ boundary, using each of
+\eqref{xxb:eq:coefficient-AB}, \eqref{xxb:eq:difference-coeff}, and
+\eqref{xxb:eq:mobius}. Fractions are exact rational numbers. All three formulas
+agree with the integer recurrence. The positivity and deficit-one and
+-deficit-two sign theorems are also checked throughout the integer range.
+These checks test the derivations and their implementation; the proofs in
+the preceding sections do not depend on them.
+
+\subsubsection{Why modular arithmetic gives a rigorous finite certificate}
+A nonzero residue modulo any integer $M\ge2$ proves that the original
+integer is nonzero. A zero residue, in contrast, might mean only that
+$M$ divides a nonzero integer. We use two moduli,
+\begin{equation}\label{xxb:eq:moduli}
+ M_1=1{,}000{,}000{,}007,\qquad M_2=1{,}000{,}000{,}009.
+\end{equation}
+Their primality is not needed for this argument: only exact reduction of
+an integer recurrence is used, with no modular division.
+
+For each modulus, a C++ program computes every row through $n=3000$ and
+records every zero residue outside the two mathematically proved zero
+families. There are three such residues modulo $M_1$ and four modulo
+$M_2$. The two lists are disjoint. Their union and the corresponding
+residues are as follows.
+\begin{center}
+\small
+\begin{tabular}{rrr|rr}
+\toprule
+$n$ & $k$ & $j$ & $c_{n,k,j}\bmod M_1$ & $c_{n,k,j}\bmod M_2$\\
+\midrule
+1471&1046&521&847578491&0\\
+1701&610&505&0&439228697\\
+1854&1713&549&0&366891231\\
+2336&1689&145&0&782191592\\
+2543&1785&663&405694396&0\\
+2807&2566&502&607368440&0\\
+2842&2673&2118&474540977&0\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every entry in this table is therefore a nonzero integer coefficient.
+All other cells outside the proved zero families have a nonzero residue
+in both runs. Each modulus run checks $4{,}509{,}002{,}501$ potential
+cells, including the single cell at $n=0$.
+
+\begin{proposition}[Finite computational certification]\label{xxb:prop:finite}
+The accompanying exact computations, together with
+Proposition~\ref{xxb:prop:top} and Theorem~\ref{xxb:thm:reflection-zeros}, certify
+\begin{equation}\label{xxb:eq:finite}
+ a(n)=\U(n)\qquad\text{for every integer }0\le n\le3000.
+\end{equation}
+\end{proposition}
+\begin{proof}[Certificate argument]
+The two analytic results prove that every predicted zero is an actual
+integer zero. For any other coefficient in the finite range, membership
+in neither, one, or both modular zero lists exhausts the possibilities.
+The intersection of the lists is empty. Thus at least one of its two
+residues is nonzero, proving that the integer coefficient is nonzero.
+Theorem~\ref{xxb:thm:upper} now gives the equality for every row in the range.
+\end{proof}
+This is a deterministic finite verification, not a probabilistic claim
+based on the size of the moduli. It is also not a formal proof-assistant
+certificate: it relies on the supplied ordinary programs and their
+execution, which can be independently reproduced.
+
+\subsubsection{Implementation details and limitations}
+The C++ program stores two coefficient rows in arrays of unsigned
+32-bit integers. An update is evaluated in signed 64-bit arithmetic
+before reduction. Its explicit input bounds guarantee that these
+intermediates cannot overflow. It never approximates logarithms or
+transcendental values. The arrays have $O(N^2)$ entries and the computation
+uses $O(N^3)$ fixed-modulus arithmetic operations through order $N$.
+
+The Python implementation uses a different update organization: it
+scatters each existing coefficient into its four successors, whereas
+the C++ implementation gathers four contributions into each destination.
+The small-range generating-function and finite-difference calculations
+provide further independent comparisons. The archive retains both raw
+modular zero lists, row-by-row support statistics, explicit nonzero
+witnesses, the combined certificate, and the exact small-range counts.
+
+No finite range, regardless of its size, proves the nonvanishing assertion
+for all $n$. In particular, the certificate supplies neither an induction
+step beyond $3000$ nor a theorem bounding where a first additional zero
+could occur.
+
+\subsection{The precise missing step}\label{xxb:sec:remaining}
+The coefficient problem can now be stated independently of the original
+transcendental function.
+\begin{conjecture}[Complete support classification]\label{xxb:conj:support}
+Let $n\ge1$, $1\le k\le n$, $0\le j\le k$, and $m=k-j$. Then
+\begin{equation}\label{xxb:eq:classification}
+ \frac{1}{j!m!}
+ \left.\frac{d^m}{du^m}\Delta_2^j\fall{u}{n}\right|_{u=2m}=0
+\end{equation}
+if and only if at least one of the following holds:
+\begin{equation}\label{xxb:eq:only-zeros}
+ \bigl(j=k\text{ and }n>2k\bigr),
+ \qquad
+ \bigl(k\text{ even and }n=4k-2j+1\bigr).
+\end{equation}
+\end{conjecture}
+The implication from \eqref{xxb:eq:only-zeros} to \eqref{xxb:eq:classification}
+is proved above. The converse remains unproved in the following precise
+region:
+\begin{equation}\label{xxb:eq:gap-region}
+ m=k-j\ge3,\qquad n\ge2k+2,
+\end{equation}
+away from the reflection zeros. All other regions have been handled by
+the preceding analytic theorems.
+
+\begin{theorem}[Exact reduction of the OEIS conjecture]\label{xxb:thm:equivalence}
+The equality $a(n)=\U(n)$ for every $n\ge0$ is equivalent to
+Conjecture~\ref{xxb:conj:support}. It is also equivalent to proving the
+nonvanishing assertion only in the remaining region
+\eqref{xxb:eq:gap-region}, excluding the reflection-zero family.
+\end{theorem}
+\begin{proof}
+Formula~\eqref{xxb:eq:difference} identifies the expression in
+\eqref{xxb:eq:classification} with the actual derivative coefficient.
+Theorem~\ref{xxb:thm:upper} counts exactly the cells left after removal of the
+two proved, disjoint zero families. Hence any additional zero makes the
+corresponding inequality strict, and no additional zeros makes it an
+equality. Theorem~\ref{xxb:thm:positive}, Proposition~\ref{xxb:prop:top}, and
+Theorems~\ref{xxb:thm:m1}--\ref{xxb:thm:m2} eliminate the complementary regions.
+\end{proof}
+
+A tempting shortcut would assert that a derivative of a falling factorial
+cannot vanish at an integer other than its reflection center. That
+assertion is false. Direct differentiation gives
+\begin{equation}\label{xxb:eq:false-shortcut}
+ \frac{d^5}{du^5}\fall{u}{8}
+ =3360(u-5)(u-2)(2u-7).
+\end{equation}
+It vanishes at $u=2$ and $u=5$, as well as at the reflection center
+$u=7/2$. This is \emph{not} a counterexample to
+Conjecture~\ref{xxb:conj:support}, because the derivative order, evaluation
+point, and finite-difference order in that conjecture are linked in a
+special way. It does show why those constraints must be used in a genuine
+proof of the missing implication.
+
+The transformed formula provides an alternative target. With
+$d=n-2k-1\ge1$, the outstanding task is to prove that
+\begin{equation}\label{xxb:eq:gap-transform}
+ [u^{k+d+1}](1-u)^d(1+u)^{2m}
+       \left(\frac{\atanh u}{u}\right)^m
+\end{equation}
+is nonzero for $m\ge3$, except when $d=2m$ and $k$ is even. The
+reflection case is transparent because the series then becomes even;
+the remaining finite-difference cancellations are the essential issue.
+Equation~\eqref{xxb:eq:gap-transform} is an equivalent residual lemma, not an
+additional theorem claimed by this article.
+
+\subsection{Conclusion}
+The proposed formula has a rigorous structural explanation. The obvious
+degree loss removes the top logarithmic coefficients with $n>2k$.
+A separate reflection symmetry removes exactly
+$\lfloor(n+1)/8\rfloor$ further coefficients for odd $n$. Their total
+produces the OEIS floor expression and its rational generating function
+as an unconditional upper bound.
+
+A fractional-linear transformation proves that a large region of the
+coefficient triangle is strictly positive, and beta-integral arguments
+exclude additional zeros on the first two deficit diagonals. These
+results prove quadratic growth and reduce the full formula to the
+explicit residual nonvanishing problem \eqref{xxb:eq:gap-transform}.
+Exact finite computations settle every derivative order through $3000$.
+The global equality is not proved here: its remaining obligation is the
+nonvanishing statement in \eqref{xxb:eq:gap-region}, not any of the counting
+or generating-function manipulations.
+
+\subsection{Reproducing the computations}\label{xxb:app:reproduce}
+The archive needs Python 3.10 or later and a C++17 compiler for the
+computations. Python uses only its standard library. The PDF can be
+rebuilt with a conventional LaTeX installation containing the packages
+listed in the source preamble.
+
+Run the following commands from the archive directory. The Makefile
+wraps the same operations.
+\begin{lstlisting}
+python3 code/verify_exact.py --max-n 200 --formula-n 16
+mkdir -p build
+g++ -O3 -std=c++17 -Wall -Wextra \
+    code/verify_modular.cpp -o build/verify_modular
+build/verify_modular 3000 1000000007 data/p1000000007 \
+    data/watch_coordinates.csv
+build/verify_modular 3000 1000000009 data/p1000000009 \
+    data/watch_coordinates.csv
+python3 code/combine_certificates.py
+pdflatex -interaction=nonstopmode -halt-on-error \
+    A290268_partial_results.tex
+pdflatex -interaction=nonstopmode -halt-on-error \
+    A290268_partial_results.tex
+\end{lstlisting}
+The watch file requests explicit residues at the seven exceptional
+coordinates found in the modular runs. It does not restrict the search:
+the C++ program checks every coefficient in every row regardless of the
+watch file. The combiner checks that the complete exceptional zero lists
+are disjoint and that all listed witnesses are consistent with them.
+
+For a smaller test, the optional watch file can be omitted. For example,
+\texttt{build/verify\_modular 100 1000000007 data/test} performs the full
+modular recurrence through $100$. A watch file containing indices beyond
+the chosen bound is rejected, rather than silently ignored.
+
+\subsection{Files included in the archive}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.43\textwidth}>{\raggedright\arraybackslash}p{0.53\textwidth}@{}}
+\toprule
+File or directory & Purpose\\
+\midrule
+\endhead
+\texttt{article.tex} & Complete source of the merged article; this part is its Part~3.\\
+\texttt{article.pdf} & The compiled merged article.\\
+\texttt{README.md}, \texttt{Makefile} & Status, dependency notes, and reproduction commands.\\
+\texttt{code/verify\_exact.py} & Arbitrary-precision recurrence and three independent coefficient-formula checks.\\
+\texttt{code/verify\_modular.cpp} & Complete modular coefficient search with explicit overflow bounds.\\
+\texttt{code/combine\_certificates.py} & Verification and combination of the two finite modular certificates.\\
+\texttt{data/exact\_counts.csv} & Exact term counts through $200$.\\
+\texttt{data/certified\_counts.csv} & Certified term counts through $3000$.\\
+\texttt{data/p1000000007\_*} and \texttt{data/p1000000009\_*} & Complete exceptional zero lists, row statistics, witness residues, run logs, and summaries.\\
+\texttt{data/modular\_witnesses.csv} & The seven coordinates at which one residue vanishes, with the nonzero residue in the other modulus.\\
+\texttt{data/*summary.json} & Machine-readable verification scope and results.\\
+\texttt{data/sample\_coefficients.json} & Fully collected low-order coefficient arrays and cancellation examples.\\
+\bottomrule
+\end{longtable}
+
+\clearpage
+\section{\texorpdfstring{$x^{x^x}$}{x^(x^x)}: OEIS A281434}\label{xxc:part}
+
+\begin{quote}\small
+\textbf{Framework.}  This part instantiates
+Theorem~\ref{fw:thm:canonical}\ref{fw:can:a} with the three-variable frame
+$u=x^x$, $v=x^{-1}$, $z=\log x$; Proposition~\ref{xxc:prop:recurrence} below is
+that instance, derived here independently, and it is the only one of the three
+whose frame is not two-dimensional.  Because $u=x^x$ is not of the form
+$x^{\lambda}$ with $\lambda$ constant, the independence statement this part
+needs is \emph{not} a special case of Theorem~\ref{fw:thm:independence}; the
+asymptotic argument that replaces it is given in full below.
+
+\smallskip
+\textbf{Notation.}  In this part \textbf{$z$ denotes $\log x$}, not $x^2$;
+compare Part~\ref{xxb:part}.  See Section~\ref{fw:notation}.  Throughout this
+part $a(n)$ denotes the term count for $x^{x^x}$.
+
+\medskip
+\textbf{Abstract of the original report.}\itshape
+Let $a(n)$ be the number of nonzero monomials in the fully expanded $n$th
+derivative of $x^{x^x}$, after collecting identical terms. We replace repeated
+symbolic differentiation by a seven-transition integer recurrence on three
+exponents. It computes the prefix through $n$ in $O(n^4)$ integer arithmetic
+operations and $O(n^3)$ live integers. A faster implementation performs the
+recurrence modulo a machine-size integer and verifies every possible zero
+by an independent exact coefficient formula; this method is deterministic,
+not a probabilistic zero test. We prove the explicit bounds
+\[
+ \frac{7n^3+39n^2+26n+3\epsn(n-1)}{24}
+ \ \le a(n)\le\ \frac{2n^3+3n^2+4n}{3},\qquad n\ge1,
+\]
+where $\epsn$ is $1$ for odd $n$ and $0$ for even $n$. In particular,
+$a(n)=\Theta(n^3)$. The upper bound counts an explicit lattice envelope;
+the lower bound uses nonvanishing leading coefficients and high-multiplicity
+roots of coefficient polynomials. We also identify an unavoidable family of
+logarithm-free cancellations and an infinite family with positive logarithm
+exponent. The stronger statement $a(n)\sim \tfrac23n^3$, and the still stronger
+linear-deficit conjecture, are \upshape\emph{not proved here}\itshape. Exact
+code, tests, terms through $n=100$, and selected computations through $n=200$
+accompany this article.
+\end{quote}
+
+\subsection{The problem and the scope of the results}
+
+The sequence A281434 is defined in the OEIS as the number of terms in the fully
+expanded $n$th derivative of $x^{x^x}$, with offset $0$~\cite{oeis281434}.
+Exponentiation is right-associated. Thus the function in question is
+\[
+ f(x)=x^{(x^x)}=\exp\bigl(x^x\log x\bigr),\qquad x>0,
+\]
+not $(x^x)^x=x^{x^2}$. Its initial term counts are
+\[
+1,3,12,30,64,113,188,285,415,577,780,1017,1312,\ldots.
+\]
+The positivity restriction supplies an unambiguous real logarithm; all
+subsequent coefficient manipulations are exact polynomial identities.
+
+The phrase ``fully expanded'' must include collecting like terms and deleting
+zero coefficients. Counting product-rule branches is a different problem.
+Even recording every monomial that could be reached by differentiation gives
+an overcount: distinct contributions can cancel exactly.
+
+For $n\ge1$, define
+\begin{equation}\label{xxc:eq:B}
+ B(n)=\frac{2n^3+3n^2+4n}{3},\qquad
+ \Delta(n)=B(n)-a(n).
+\end{equation}
+The polynomial $B(n)$ is A037237$(n-1)$~\cite{oeis037237}. The related OEIS
+entry A352697 records the differences $\Delta(n)$ and conjectures both
+$\Delta(n)=O(n)$ and infinitely many zero differences~\cite{oeis352697}.
+These observations are useful motivation, but neither is needed by our
+algorithms or proofs.
+
+\begin{theorem}[Main results]\label{xxc:thm:main}
+There is a deterministic exact algorithm for A281434 requiring $O(n^4)$
+integer arithmetic operations and $O(n^3)$ stored integers to compute
+$a(0),\ldots,a(n)$. There is also a machine-modular implementation for a
+single $a(n)$, with exact verification of every candidate cancellation.
+For $n\ge1$,
+\begin{equation}\label{xxc:eq:mainbounds}
+ L(n):=\frac{7n^3+39n^2+26n+3\epsn(n-1)}{24}
+ \le a(n)\le B(n),
+ \quad \epsn=\frac{1-(-1)^n}{2}.
+\end{equation}
+Consequently
+\begin{equation}\label{xxc:eq:theta}
+ a(n)=\Theta(n^3),\qquad
+ \lim_{n\to\infty}\frac{\log a(n)}{\log n}=3.
+\end{equation}
+\end{theorem}
+
+The distinction between a growth \emph{order} and an asymptotic
+\emph{equivalent} is important. Equation~\eqref{xxc:eq:theta} is unconditional.
+An equivalent $a(n)\sim\tfrac23n^3$ would additionally require
+$\Delta(n)=o(n^3)$; the present bounds do not establish that. The computations
+are consistent with a much smaller deficit, but this numerical observation
+will not be substituted for a nonvanishing theorem.
+
+\subsection{A canonical differential-polynomial representation}
+
+\subsubsection{Three auxiliary variables}
+Put
+\[
+ u=x^x,\qquad v=x^{-1},\qquad z=\log x,\qquad A=z(z+1).
+\]
+The three elementary derivatives and the logarithmic derivative of $f$ are
+\begin{equation}\label{xxc:eq:basicderivatives}
+ u'=u(z+1),\qquad v'=-v^2,\qquad z'=v,
+ \qquad \frac{f'}{f}=u(A+v).
+\end{equation}
+There is a unique polynomial $P_n\in\Z[u,v,z]$ such that
+\begin{equation}\label{xxc:eq:Pdefinition}
+ f^{(n)}(x)=f(x)P_n(x^x,x^{-1},\log x).
+\end{equation}
+Write
+\begin{equation}\label{xxc:eq:coeffdefinition}
+ P_n(u,v,z)=\sum_{k,j,\ell\ge0}c_n(k,j,\ell)u^kv^jz^\ell.
+\end{equation}
+The corresponding expanded term of the original derivative is
+\[
+ c_n(k,j,\ell)\,x^{x^x+kx-j}(\log x)^\ell.
+\]
+Therefore
+\begin{equation}\label{xxc:eq:count}
+ a(n)=\#\{(k,j,\ell):c_n(k,j,\ell)\ne0\}.
+\end{equation}
+In particular, a negative coefficient contributes one term, not minus one.
+
+\subsubsection{Why the representation is unambiguous}
+
+Suppose a finite linear combination of $u^kv^jz^\ell$, after substitution,
+vanishes for all sufficiently large positive $x$. Group it by $k$ and choose
+the largest $k$ having a nonzero Laurent-polynomial coefficient in $x$ and
+$\log x$. Division by $x^{kx}$ makes every smaller-$k$ group exponentially
+small relative to that coefficient. Within the largest group, choose the
+smallest $j$, and then the largest $\ell$ with nonzero coefficient. Its
+asymptotic magnitude cannot be canceled by the remaining Laurent-logarithmic
+terms. This is a contradiction. Hence the displayed monomials are linearly
+independent in the required finite sense.
+
+This argument is also a safeguard against a representation-dependent term
+count: we are counting a specified canonical basis, not the summands in an
+arbitrarily factored expression.
+
+\subsubsection{The recurrence and its proof}
+
+\begin{proposition}[Differential recurrence]\label{xxc:prop:recurrence}
+Starting from $P_0=1$, the polynomials satisfy
+\begin{equation}\label{xxc:eq:PRec}
+ P_{n+1}=u(z^2+z+v)P_n+u(z+1)\partial_uP_n
+          -v^2\partial_vP_n+v\partial_zP_n.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Differentiate~\eqref{xxc:eq:Pdefinition}, apply the product rule, and substitute
+\eqref{xxc:eq:basicderivatives}. The result is exactly~\eqref{xxc:eq:PRec}.
+The base case is $f^{(0)}=f$. Induction proves the identity at every order,
+and also proves integrality of every coefficient.
+\end{proof}
+
+For one coefficient $c=c_n(k,j,\ell)$ the seven contributions are as follows.
+All contributions with the same destination must be added before zero
+coefficients are removed.
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Destination at order $n+1$ & Contribution & Source in the derivative\\
+\midrule
+$(k+1,j,\ell+2)$ & $c$ & $f'/f$: $uz^2$\\
+$(k+1,j,\ell+1)$ & $c$ & $f'/f$: $uz$\\
+$(k+1,j+1,\ell)$ & $c$ & $f'/f$: $uv$\\
+$(k,j,\ell+1)$ & $kc$ & differentiation of $u^k$\\
+$(k,j,\ell)$ & $kc$ & differentiation of $u^k$\\
+$(k,j+1,\ell)$ & $-jc$ & differentiation of $v^j$\\
+$(k,j+1,\ell-1)$ & $\ell c$ & differentiation of $z^\ell$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Transitions with a zero multiplier are omitted. In particular, no negative
+logarithm exponent is ever introduced.
+
+\subsubsection{The first cancellation}
+
+The first two polynomials have the compact forms
+\begin{align}
+ P_1&=u(A+v),\label{xxc:eq:P1}\\
+ P_2&=u^2(A+v)^2+
+ u\bigl((z+1)A+(3z+2)v-v^2\bigr).\label{xxc:eq:P2}
+\end{align}
+Expansion gives $a(1)=3$ and $a(2)=12$. At the next order, the coefficient
+polynomial of $uv^2$ is
+\[
+ -(z+1)+\bigl(\partial_z-1\bigr)(3z+2)=-4z.
+\]
+Its constant term vanishes. The candidate envelope has $31$ cells at order
+$3$, but the derivative has $30$ terms. A Boolean reachability calculation
+would fail at this very early example.
+
+\subsection{The support envelope and the cubic upper bound}
+
+\begin{definition}
+For $n\ge1$, $1\le k\le n$, and $0\le j\le n$, put
+\begin{align}
+ m_{n,k,j}&=\max(0,k-j),\label{xxc:eq:lo}\\
+ U_{n,k,j}&=
+ \begin{cases}
+ n+k,&j=0,\\
+ \min(n+k-j-1,\,2n-2j),&j\ge1.
+ \end{cases}\label{xxc:eq:hi}
+\end{align}
+Let $\mathcal E_n$ consist of the integer triples with these ranges and
+$m_{n,k,j}\le\ell\le U_{n,k,j}$.
+\end{definition}
+
+\begin{proposition}[Support containment]\label{xxc:prop:envelope}
+For $n\ge1$, $\supp P_n\subseteq\mathcal E_n$.
+\end{proposition}
+\begin{proof}
+Consider a nonzero differentiation path, and let $a,b,c,d,e,r,s$ count its
+uses of the seven transitions in the displayed table, in that order. Then
+\[
+ k=a+b+c,\quad j=c+r+s,\quad
+ \ell=2a+b+d-s,\quad
+ n=a+b+c+d+e+r+s.
+\]
+In particular,
+\begin{align*}
+ n-j&=a+b+d+e,\\
+ \ell-(k-j)&=a+d+r\ge0,\\
+ 2(n-j)-\ell&=b+d+2e+s\ge0,\\
+ n+k-j-\ell&=b+c+e+s\ge0.
+\end{align*}
+If $j>0$, at least one transition of type $c$ or $s$ must occur: the transition
+of type $r$ has multiplier $-j$ and cannot create the first positive $j$.
+Thus $n+k-j-\ell\ge1$ when $j>0$. The remaining ranges follow immediately
+from the transition table and the first differentiation. Every coefficient
+is a sum over such paths, so cancellation can remove cells but cannot add a
+cell outside these constraints.
+\end{proof}
+
+\begin{proposition}[Size of the envelope]\label{xxc:prop:envelopesize}
+For $n\ge1$, $\#\mathcal E_n=B(n)$.
+\end{proposition}
+\begin{proof}
+For $j=0$ there are $n+1$ logarithm exponents for each of $n$ values of $k$,
+giving $n(n+1)$ cells. For $j\ge1$, set $d=n-j$, so $0\le d\le n-1$.
+The number of cells in this $j$-slice is
+\begin{align*}
+ \sum_{k=1}^n\bigl(\min(d+k,2d+1)-\max(0,k-n+d)\bigr)
+ &=n(2d+1)-d(d+1).
+\end{align*}
+Indeed, replacing each minimum by $2d+1$ overcounts by
+$d(d+1)/2$, and the sum of the subtracted maxima is another $d(d+1)/2$.
+Consequently
+\begin{align*}
+ \#\mathcal E_n
+ &=n(n+1)+\sum_{d=0}^{n-1}\bigl(n(2d+1)-d(d+1)\bigr)\\
+ &=n(n+1)+n^3-\frac{(n-1)n(n+1)}3\\
+ &=\frac{2n^3+3n^2+4n}{3}.
+\end{align*}
+\end{proof}
+
+This proves the upper bound in~\eqref{xxc:eq:mainbounds}. More precisely,
+$\Delta(n)$ is exactly the number of zero coefficients \emph{inside}
+$\mathcal E_n$. The polynomial $B(n)$ is not being guessed by interpolation:
+it is the exact count of a proved finite set of candidate monomials.
+
+\subsection{An independent exact formula for every coefficient}
+
+The recurrence is already an exact algorithm. An independent formula is
+valuable for two other reasons: it certifies possible cancellations after a
+modular computation, and it proves that every $(k,j)$ row is nonzero.
+
+\subsubsection{Notation for Stirling numbers and auxiliary polynomials}
+
+We use signed Stirling numbers $s(n,k)$ of the first kind and Stirling
+numbers $S(n,k)$ of the second kind, with the conventions
+\[
+ \fall{y}{n}=\prod_{i=0}^{n-1}(y-i)=\sum_k s(n,k)y^k,
+ \qquad y^n=\sum_k S(n,k)\fall{y}{k}.
+\]
+These conventions agree with DLMF \S26.8~\cite{dlmf}. In particular,
+$s(n,k)$ has sign $(-1)^{n-k}$ and is nonzero for $1\le k\le n$;
+$S(n,k)>0$ on the same range.
+
+For nonnegative $d,p,q$, define the noncentral Stirling numbers
+\begin{equation}\label{xxc:eq:Tdef}
+ T_d(p;q)=\sum_{r=0}^d\binom dr q^{d-r}S(r,p).
+\end{equation}
+They can be computed without rational arithmetic:
+\begin{equation}\label{xxc:eq:Trec}
+ T_0(p;q)=\mathbf1_{p=0},\qquad
+ T_{d+1}(p;q)=(p+q)T_d(p;q)+T_d(p-1;q).
+\end{equation}
+Indices $p<0$ or $p>d$ have value zero. The useful boundary values are
+\[
+ T_d(0;q)=q^d,\qquad T_d(d;q)=1,\qquad
+ T_d(p;0)=S(d,p),\qquad T_d(p;1)=S(d+1,p+1),
+\]
+where $0^0=1$. Equivalently,
+\begin{equation}\label{xxc:eq:Tmoment}
+ e^{-w}\sum_{m\ge0}(m+q)^d\frac{w^m}{m!}
+ =\sum_{p=0}^dT_d(p;q)w^p.
+\end{equation}
+To verify this identity, expand $(m+q)^d$, express powers of $m$ in falling
+factorials, and sum $\sum_m\fall{m}{p}w^m/m!=w^pe^w$.
+
+Define
+\begin{equation}\label{xxc:eq:Qdef}
+ Q_{j,r}(\beta)=\fall{\beta}{j}\,\rise{(\beta+1)}{r}
+ =\prod_{i=0}^{j-1}(\beta-i)\prod_{i=1}^{r}(\beta+i).
+\end{equation}
+These integer polynomials are easy to build by multiplying by linear
+factors. Notice that $\deg Q_{j,r}=j+r$.
+
+\subsubsection{A parameterized derivative identity}
+
+For parameters $\alpha,\beta$, Taylor expansion with the increment $xt$ gives
+\begin{equation}\label{xxc:eq:taylorparam}
+ \frac{(x+xt)^{\alpha(x+xt)+\beta}}{x^{\alpha x+\beta}}
+ =(1+t)^\beta
+ \exp\!\left(\alpha x\,[tz+(1+t)\log(1+t)]\right).
+\end{equation}
+Comparing coefficients of $t^n$ and then of $(\alpha x)^d$ yields
+\begin{equation}\label{xxc:eq:parameteridentity}
+ \frac{d^n}{dx^n}x^{\alpha x+\beta}
+ =x^{\alpha x+\beta-n}\sum_{d=0}^n(\alpha x)^d
+ C_{n,d}(z,\beta),
+\end{equation}
+where, with $j=n-d$,
+\begin{equation}\label{xxc:eq:Cformula}
+ C_{n,d}(z,\beta)
+ =\sum_{s=0}^d\binom ns\frac{z^s}{(d-s)!}
+ \partial_\beta^{\,d-s}Q_{j,d-s}(\beta).
+\end{equation}
+For completeness, choose $s$ factors $tz$ from the $d$th power of the bracket
+in~\eqref{xxc:eq:taylorparam}. The remaining factors contribute
+$(1+t)^{d-s}\log^{d-s}(1+t)$. Write the logarithm power as
+$\partial_\beta^{d-s}$ acting on $(1+t)^{\beta+d-s}$ and use
+\[
+ [t^{n-s}](1+t)^{\beta+d-s}
+ =\frac{\fall{(\beta+d-s)}{n-s}}{(n-s)!}
+ =\frac{Q_{j,d-s}(\beta)}{(n-s)!}.
+\]
+The factorial prefactors simplify to $\binom ns/(d-s)!$, proving the formula.
+
+\subsubsection{The coefficient oracle}
+
+\begin{theorem}[Exact coefficient formula]\label{xxc:thm:oracle}
+Suppose $(k,j,\ell)\in\mathcal E_n$, and put
+\[
+ d=n-j,\qquad h=d+k-\ell,
+\]
+\[
+ q_- =\max(0,k-\ell,k-d),\qquad q_+=\min(k,h,j).
+\]
+Then
+\begin{equation}\label{xxc:eq:oracle}
+\boxed{\displaystyle
+ c_n(k,j,\ell)=\sum_{q=q_-}^{q_+}
+ \binom n{\ell-k+q}\binom hq\,
+ T_d(k-q;q)\,[\beta^h]Q_{j,h-q}(\beta).}
+\end{equation}
+An empty sum is zero. Outside the envelope, the coefficient is zero.
+\end{theorem}
+\begin{proof}
+Expand the outer exponential:
+\[
+ f(x)=\sum_{m\ge0}\frac{x^{mx}z^m}{m!},\qquad
+ x^{mx}z^m=\left.\partial_\beta^m x^{mx+\beta}\right|_{\beta=0}.
+\]
+Apply~\eqref{xxc:eq:parameteridentity} with $\alpha=m$. For any polynomial
+$C(\beta)$,
+\[
+ \left.\partial_\beta^m\bigl(e^{\beta z}C(\beta)\bigr)\right|_{\beta=0}
+ =\sum_{q=0}^m\frac{m!}{(m-q)!}z^{m-q}[\beta^q]C(\beta).
+\]
+After division by $f=e^{uz}$, the sum over $m$ occurring for fixed $d,q$ is
+\begin{align*}
+ e^{-uz}\sum_{m\ge q}\frac{m^d u^m z^{m-q}}{(m-q)!}
+ &=u^q e^{-uz}\sum_{r\ge0}(r+q)^d\frac{(uz)^r}{r!}\\
+ &=u^q\sum_{p=0}^dT_d(p;q)(uz)^p.
+\end{align*}
+To obtain $u^kz^\ell$, take $p=k-q$ and take
+$s=\ell-k+q$ from~\eqref{xxc:eq:Cformula}. Set $r=d-s=h-q$.
+Finally,
+\[
+ [\beta^q]\frac{\partial_\beta^rQ_{j,r}(\beta)}{r!}
+ =\binom{q+r}{q}[\beta^{q+r}]Q_{j,r}(\beta),
+\]
+and $q+r=h$. This proves~\eqref{xxc:eq:oracle}; the stated bounds on $q$ enforce
+$p\in[0,d]$, $s\in[0,d]$, and $q\le j$.
+
+The infinite series can be read as locally normally convergent analytic
+series for positive $x$ near any fixed point, or as formal exponential
+identities followed by extraction of the finitely many relevant coefficients.
+\end{proof}
+
+\subsubsection{Three boundary checks}
+
+Useful independently checkable consequences are
+\begin{align}
+ [v^0]P_n&=(z+1)^n\sum_{k=1}^nS(n,k)(uz)^k,
+                 &&n\ge1,\label{xxc:eq:vzero}\\
+ [u^n]P_n&=(z(z+1)+v)^n,\label{xxc:eq:umax}\\
+ [v^n]P_n&=\fall{u}{n}.\label{xxc:eq:vmax}
+\end{align}
+The first follows either from~\eqref{xxc:eq:oracle} or from setting $v=0$ in the
+recurrence. The second follows because reaching $u$-degree $n$ requires every
+step to differentiate the outer factor $f$. For the third, the coefficient
+of the next highest $v$-power is obtained by multiplication by $u-n$,
+starting from $1$.
+
+\subsection{A rigorous cubic lower bound}
+
+An upper bound alone does not establish cubic growth. We now show that a
+positive cubic number of the candidate cells must survive, without
+assuming that cancellations are rare.
+
+\subsubsection{Every row has its advertised highest coefficient}
+
+Let
+\[
+ R_{n,k,j}(z)=[u^kv^j]P_n(u,v,z).
+\]
+
+\begin{lemma}[Nonzero leading coefficient]\label{xxc:lem:leading}
+For every $1\le k\le n$ and $0\le j\le n$, the polynomial $R_{n,k,j}$ is
+nonzero and has degree exactly $U_{n,k,j}$.
+\end{lemma}
+\begin{proof}
+For $j=0$, equation~\eqref{xxc:eq:vzero} gives
+\[
+ R_{n,k,0}(z)=S(n,k)z^k(z+1)^n.
+\]
+Now let $j\ge1$ and put $d=n-j$. If $k\le d$, the proposed highest exponent
+is $\ell=d+k-1$, so $h=1$ in~\eqref{xxc:eq:oracle}. Only $q=0,1$ contribute.
+The coefficient is
+\begin{equation}\label{xxc:eq:leadlowk}
+ (-1)^{j-1}(j-1)!\left(
+ \binom n{d-1}S(d,k)+\binom nd S(d+1,k)\right),
+\end{equation}
+which is nonzero. Here we used
+$[\beta]Q_{j,0}=[\beta]Q_{j,1}=(-1)^{j-1}(j-1)!$.
+
+If $k\ge d+1$, the highest exponent is $\ell=2d$, and $h=k-d$.
+The only possible summand is $q=h$, giving
+\begin{equation}\label{xxc:eq:leadhighk}
+ [z^{2d}]R_{n,k,j}(z)=\binom nd s(j,k-d).
+\end{equation}
+It is nonzero because $1\le k-d\le j$. The support envelope already rules
+out higher exponents, completing the proof.
+\end{proof}
+
+\subsubsection{A high-multiplicity root}
+
+\begin{lemma}[Divisibility]\label{xxc:lem:divisibility}
+The row polynomial is divisible by
+\begin{equation}\label{xxc:eq:divisibility}
+ z^{\max(k-j,0)}(z+1)^{M_{n,k,j}},
+ \qquad M_{n,k,j}=\max(n-2j,k-j,0).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Extracting $u^kv^j$ from~\eqref{xxc:eq:PRec} gives
+\begin{align}\label{xxc:eq:rowrec}
+ R_{n+1,k,j}={}&z(z+1)R_{n,k-1,j}+R_{n,k-1,j-1}
+              +k(z+1)R_{n,k,j}\notag\\
+ &+\bigl(\partial_z-(j-1)\bigr)R_{n,k,j-1}.
+\end{align}
+Rows with out-of-range indices are zero. Begin with $R_{0,0,0}=1$.
+For the factor $z+1$, the first and third terms increase the inherited
+multiplicity by one. The second term has inherited multiplicity at least
+$\max(n-2j+2,k-j,0)$. The derivative in the last term can reduce its inherited
+multiplicity by at most one; before differentiation it is at least
+$\max(n-2j+2,k-j+1,0)$. Each is sufficient for the target exponent
+$\max(n+1-2j,k-j,0)$. This proves the $(z+1)$ assertion by induction.
+The same argument with the factor $z$ proves the exponent $\max(k-j,0)$.
+Since $z$ and $z+1$ are relatively prime, both divisibilities hold together.
+\end{proof}
+
+\begin{lemma}[Multiplicity forces many terms]\label{xxc:lem:sparse}
+A nonzero polynomial with a nonzero root of multiplicity at least $M$ has
+at least $M+1$ nonzero coefficients.
+\end{lemma}
+\begin{proof}
+Suppose $p(z)=\sum_{i=1}^t b_i z^{e_i}$, with distinct nonnegative integers
+$e_i$ and $b_i\ne0$. If a root $\alpha\ne0$ has multiplicity at least $t$,
+then $(z\partial_z)^r p(\alpha)=0$ for $0\le r<t$. Thus
+\[
+ \sum_{i=1}^t e_i^r b_i\alpha^{e_i}=0,\qquad 0\le r<t.
+\]
+The matrix $(e_i^r)$ is an invertible Vandermonde matrix, contradicting
+$b_i\alpha^{e_i}\ne0$. Therefore the multiplicity is at most $t-1$.
+\end{proof}
+
+\subsubsection{Summing the mandatory terms}
+
+By Lemmas~\ref{xxc:lem:leading}--\ref{xxc:lem:sparse}, each $(k,j)$ row contributes at
+least $1+M_{n,k,j}$ nonzero monomials. Rows are disjoint in the canonical
+basis, so
+\begin{equation}\label{xxc:eq:lowersum}
+ a(n)\ge\sum_{k=1}^n\sum_{j=0}^n
+ \bigl(1+\max(n-2j,k-j,0)\bigr).
+\end{equation}
+For fixed $j$, the sum of the maxima over $k$ is
+\begin{equation}\label{xxc:eq:Mslice}
+ \sum_{k=1}^n M_{n,k,j}=
+ \begin{cases}
+ n(n-2j)+\dfrac{j(j+1)}2,&0\le j\le\lfloor n/2\rfloor,\\[5pt]
+ \dfrac{(n-j)(n-j+1)}2,&j>\lfloor n/2\rfloor.
+ \end{cases}
+\end{equation}
+In the first case, start with $n-2j$ in each row and add the excess
+$1+\cdots+j$. In the second case, only $k>j$ contributes.
+Summing these elementary progressions, and adding the $n(n+1)$ ones
+in~\eqref{xxc:eq:lowersum}, gives exactly $L(n)$ in~\eqref{xxc:eq:mainbounds}.
+This completes the proof of the growth bounds in Theorem~\ref{xxc:thm:main}.
+
+In particular,
+\begin{equation}\label{xxc:eq:limbounds}
+ \frac7{24}\le\liminf_{n\to\infty}\frac{a(n)}{n^3}
+ \le\limsup_{n\to\infty}\frac{a(n)}{n^3}\le\frac23.
+\end{equation}
+These constants are proved bounds, not estimates of an experimentally fitted
+leading coefficient.
+
+\subsection{Exact cancellation families}
+
+\subsubsection{Logarithm-free coefficients and derivatives of a falling factorial}
+
+Let $F_n(y)=\fall{y}{n}$. In~\eqref{xxc:eq:oracle}, setting $\ell=0$ forces
+$q=k$, so for $d=n-j$ and $1\le k\le j$,
+\begin{equation}\label{xxc:eq:logfree}
+\boxed{\displaystyle
+ c_n(k,j,0)=\frac{k^d}{d!\,k!}F_n^{(d+k)}(d).}
+\end{equation}
+Although written using factorial quotients, this expression is an integer;
+the implementation instead uses integer polynomial coefficients and binomial
+coefficients. Formula~\eqref{xxc:eq:logfree} reduces every logarithm-free
+cancellation to an exact derivative evaluation of a single elementary
+polynomial.
+
+\begin{proposition}[Central cancellations at every odd order]\label{xxc:prop:odd}
+For odd $n\ge1$,
+\begin{equation}\label{xxc:eq:odddeficit}
+ \Delta(n)\ge\left\lfloor\frac{n+1}{4}\right\rfloor.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Write $n=2d+1$ and set $j=d+1$. Then
+\[
+ F_n(d+\beta)=\beta\prod_{r=1}^d(\beta^2-r^2)
+\]
+is odd. For each $1\le k\le d+1$ with $k\equiv d\pmod2$, its coefficient of
+$\beta^{d+k}$ vanishes. Formula~\eqref{xxc:eq:logfree} gives a missing monomial
+$(k,d+1,0)$. There are $\lfloor(d+1)/2\rfloor=\lfloor(n+1)/4\rfloor$ such
+values of $k$.
+\end{proof}
+
+Thus $a(n)=B(n)$ is impossible at every odd $n\ge3$. This does not resolve
+whether equality occurs infinitely often at even orders. Nor does it
+classify all logarithm-free cancellations: additional integer derivative
+zeros occur away from the central symmetry.
+
+\subsubsection{An infinite family with positive logarithm exponent}
+
+It is tempting to guess that all cancellations are logarithm-free.
+The following family disproves that guess.
+
+Since $f=e^g$ with $g=uz$, the $u^{n-1}$ part of $f^{(n)}/f$ consists of the
+partition type having one block of size two and all other blocks of size one.
+Equivalently, induction in~\eqref{xxc:eq:PRec} gives
+\begin{equation}\label{xxc:eq:almosttop}
+ [u^{n-1}]P_n=\binom n2(A+v)^{n-2}
+ \bigl((z+1)A+(3z+2)v-v^2\bigr),\qquad n\ge2.
+\end{equation}
+For $2\le j\le n-1$, put $m=n-j-1$ and
+\[
+ a=\binom{n-2}{j},\qquad b=\binom{n-2}{j-1},\qquad
+ c=\binom{n-2}{j-2}.
+\]
+The coefficient of $v^j$, after removing the common factor $\binom n2$, is
+\begin{equation}\label{xxc:eq:quadraticrow}
+ z^m(z+1)^m\left[-cz^2+(a+3b-c)z+(a+2b)\right].
+\end{equation}
+Its coefficient of $z^{2m+1}$ is
+\begin{equation}\label{xxc:eq:nexttotop}
+ a+3b-(m+1)c.
+\end{equation}
+Using
+\[
+ \frac ac=\frac{m(m+1)}{j(j-1)},\qquad
+ \frac bc=\frac{m+1}{j-1},
+\]
+this vanishes exactly when $m=j^2-4j$ in the stated range.
+
+\begin{proposition}[Non-logarithm-free cancellation family]\label{xxc:prop:family}
+For every integer $t\ge2$, let
+\begin{equation}\label{xxc:eq:family}
+ n=t^2+t-1,\quad k=n-1,\quad j=t+2,\quad \ell=2t^2-7.
+\end{equation}
+Then $(k,j,\ell)\in\mathcal E_n$, $\ell>0$, and
+$c_n(k,j,\ell)=0$.
+\end{proposition}
+\begin{proof}
+Substitute $j=t+2$ into $m=j^2-4j$: it gives $m=t^2-4$ and
+$n=m+j+1=t^2+t-1$. Then $\ell=2m+1$ is positive, is inside the envelope,
+and its coefficient vanishes by~\eqref{xxc:eq:nexttotop}. The next higher
+coefficient is $-\binom n2c\ne0$, so this is a genuine internal missing term.
+\end{proof}
+
+The first corresponding orders are $5,11,19,29,41,55,\ldots$, with missing
+triples
+\[
+ (4,4,1),\ (10,5,11),\ (18,6,25),\ (28,7,43),\ldots.
+\]
+These are additional to the logarithm-free central cancellations. Since all
+orders in~\eqref{xxc:eq:family} are odd, this proves
+$\Delta(n)\ge\lfloor(n+1)/4\rfloor+1$ along that infinite subsequence.
+
+\subsection{Algorithms and complexity}
+
+\subsubsection{The dependency-free exact recurrence}
+
+The most direct implementation stores a dictionary from triples to integer
+coefficients. At each differentiation it applies the seven transitions,
+combines equal keys, and removes zeros. A short reference version is given
+in Section~\ref{xxc:app:code}. It uses no symbolic-algebra system and no
+numerical approximation.
+
+The supplied production version packs a triple into one integer key. For a
+requested maximum order $N$, take
+\[
+ b=N+2,\qquad c=2N+3,\qquad \operatorname{key}(k,j,\ell)=(kb+j)c+\ell.
+\]
+Incrementing $k,j,\ell$ corresponds to adding $bc,c,1$, respectively. The
+chosen bases exceed every possible exponent, so no carries can identify
+different monomials. The packed representation reduces tuple allocation
+and dictionary overhead; it does not change the mathematics.
+
+\begin{proposition}[Arithmetic complexity]\label{xxc:prop:complexity}
+The exact recurrence computes the entire prefix through $N$ in $O(N^4)$
+integer arithmetic operations and $O(N^3)$ live integer coefficients.
+Each coefficient has $O(N\log N)$ bits.
+\end{proposition}
+\begin{proof}
+At order $n$ there are at most $B(n)=O(n^3)$ terms, and each contributes to
+at most seven destinations. Summing through $N$ gives $O(N^4)$ operations.
+Only the current and next dictionaries are needed, giving $O(N^3)$ storage.
+
+Let $H_n$ be the sum of the absolute values of the coefficients of $P_n$.
+The absolute sum of all multipliers leaving a term is
+$3+2k+j+\ell\le3+5n$. Therefore
+\[
+ H_{n+1}\le(5n+3)H_n,\qquad H_0=1,
+ \qquad H_n\le\prod_{r=0}^{n-1}(5r+3)\le5^n n!.
+\]
+Every individual coefficient satisfies this bound, so its bit length is
+$O(n\log n)$.
+\end{proof}
+
+This is a unit-cost \emph{integer-arithmetic} bound, not a claim that
+arbitrarily large integers are machine words. With elementary small-integer
+multiplication, a conservative bit bound is $O(N^5\log^2N)$ time and
+$O(N^4\log N)$ coefficient-storage bits. Hashing and object overhead affect
+practical memory. We do not claim the algorithm is asymptotically optimal.
+
+\subsubsection{A deterministic modular sieve with exact refinement}
+
+Most coefficients need never be constructed as large integers. Fix any
+integer modulus $M\ge2$, and run the same recurrence in $\Z/M\Z$.
+If a residue is nonzero, the original integer coefficient is certainly
+nonzero. Only zero residues need further attention.
+
+The exact single-term algorithm is:
+\begin{enumerate}
+\item Compute $P_n\bmod M$ by the seven-transition recurrence.
+\item Enumerate the triples in $\mathcal E_n$ whose residues are zero.
+\item Evaluate each such coefficient with~\eqref{xxc:eq:oracle}, using integer
+      arithmetic, and count only the coefficients that are actually zero.
+\item Return $B(n)$ minus that exact zero count.
+\end{enumerate}
+A zero residue is \emph{never} accepted as proof of a zero coefficient.
+Consequently this algorithm is correct for every admissible modulus,
+including small or composite moduli. No randomness, primality assumption,
+or conjecture about support is required. Tests deliberately use moduli
+$2$, $7$, and $12$ to force many false modular zeros.
+
+The supplied NumPy implementation uses signed 64-bit arrays and the modulus
+$1\,000\,000\,007$ by default. At order $m$, the array has shape
+$(m+1,m+1,2m+1)$. The next array has shape
+$(m+2,m+2,2m+3)$, and each transition becomes a shifted slice addition.
+All entries are reduced modulo $M$ after each step. The implementation checks
+\[
+ (10n+10)M<2^{63}
+\]
+before starting; this conservative condition bounds the intermediate
+products and sums before modular reduction. Overflow would invalidate the
+certificate, so the check is part of correctness rather than merely an
+optimization detail.
+
+The dense modular pass takes $O(n^4)$ fixed-width operations and $O(n^3)$
+fixed-width words. Let $Z_M(n)$ denote the number of zero residues inside
+the envelope. The oracle tables $Q_{j,r}$ and $T_d(p;q)$, and Pascal's
+triangle for binomial coefficients, are built lazily. For a single target
+$n$, filling all potentially needed tables takes $O(n^3)$ integer arithmetic
+operations and storage; each candidate coefficient then requires at most
+$O(n)$ integer products and additions. Thus a conservative oracle bound is
+\[
+ O(n^3+nZ_M(n))\subseteq O(n^4).
+\]
+In practice the lazy tables are much smaller when the modular pass leaves
+few candidates. Unlike the reference recurrence, the oracle may multiply
+two large integers, so its unit-arithmetic bound should again not be read
+as a bit-operation bound.
+
+\subsubsection{Which implementation to use}
+
+For a whole prefix, the dependency-free recurrence has the simplest predictable
+cost and automatically supplies every intermediate count. For an isolated
+larger index, the modular method usually avoids nearly all large-integer
+coefficient work. Running a new modular pass separately for every prefix
+index would discard this advantage and incur repeated work.
+
+Neither method differentiates a transcendental expression in a computer
+algebra system. Both return the exact OEIS term count, including signed
+cancellations, rather than an expression-size estimate.
+
+\subsection{Computational validation and results}
+
+\subsubsection{Checks actually performed}
+
+The accompanying files record ten passing test groups. The tests compare the
+reference recurrence with all $43$ published A281434 values through $n=42$,
+and compare the generated prefix with all $80$ published A352697 deficits
+through $n=80$~\cite{oeis281434,oeis352697}. Every candidate coefficient
+through $n=12$ is checked against the independent formula~\eqref{xxc:eq:oracle}.
+The two methods are also compared through $n=12$ for each of four moduli,
+including the deliberately small and composite choices described above.
+
+Additional tests verify the envelope, its exact cardinality, the lower-bound
+sum, the $(z+1)$ multiplicities, the two leading-coefficient formulas,
+the odd central cancellations, and initial instances of the infinite
+non-logarithm-free family. Such finite tests check the implementations and
+help detect algebraic mistakes; the universal statements are justified by
+the proofs, not by the tests.
+
+The integer recurrence was run through $n=100$. The modular implementation
+was separately checked against it at $n=20,40,60,80,100$. Selected larger
+computations used the modular pass and exact verification of all candidate
+zeros. The archive contains the complete generated prefix, the tests, and
+the selected missing triples.
+
+\subsubsection{Selected exact values}
+
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+$n$ & $a(n)$ & $B(n)$ & $\Delta(n)$\\
+\midrule
+0 & 1 & \multicolumn{1}{c}{--} & \multicolumn{1}{c}{--}\\
+1 & 3 & 3 & 0\\
+2 & 12 & 12 & 0\\
+3 & 30 & 31 & 1\\
+5 & 113 & 115 & 2\\
+11 & 1\,017 & 1\,023 & 6\\
+20 & 5\,760 & 5\,760 & 0\\
+40 & 44\,320 & 44\,320 & 0\\
+60 & 147\,680 & 147\,680 & 0\\
+80 & 347\,838 & 347\,840 & 2\\
+100 & 676\,800 & 676\,800 & 0\\
+101 & 697\,178 & 697\,203 & 25\\
+150 & 2\,272\,700 & 2\,272\,700 & 0\\
+151 & 2\,318\,265 & 2\,318\,303 & 38\\
+200 & 5\,373\,600 & 5\,373\,600 & 0\\
+\bottomrule
+\end{tabular}
+\end{center}
+For example, the two missing triples at $n=80$ are
+$(33,36,0)$ and $(42,45,0)$. At $n=101$, all $25$ missing terms are supplied
+by the central logarithm-free symmetry in Proposition~\ref{xxc:prop:odd}.
+These are exact statements about the recorded finite computations.
+
+\subsubsection{Measured performance}
+
+On the execution environment used for this report, the packed integer
+recurrence generated the full prefix $0\le n\le100$ in approximately
+$26.16$ seconds. Selected single-index modular runs were:
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+$n$ & Modular zero candidates & Actual zeros & Elapsed seconds\\
+\midrule
+40 & 0 & 0 & 0.021\\
+60 & 0 & 0 & 0.096\\
+80 & 2 & 2 & 0.342\\
+100 & 0 & 0 & 0.820\\
+101 & 25 & 25 & 0.698\\
+150 & 0 & 0 & 4.970\\
+151 & 38 & 38 & 5.460\\
+200 & 0 & 0 & 17.769\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are individual measurements, not a controlled benchmark suite or a
+promise of timings on other hardware. In particular, computing one target
+by the modular method and computing an entire prefix by the integer method
+are different workloads. The exact timings, interpreter information, and
+modulus are saved in \texttt{data/benchmarks.csv} and
+\texttt{data/environment.json}.
+
+The fact that every zero residue in this small selection was a genuine zero
+is not assumed by the algorithm. The small-modulus tests exercise the
+opposite situation and confirm that false modular zeros are rejected by
+the exact oracle.
+
+\subsection{What is and is not established asymptotically}
+
+The unconditional conclusion is cubic-order growth, with the fully explicit
+bounds~\eqref{xxc:eq:mainbounds}. Consequently, $a(n)=n^{3+o(1)}$ in the
+logarithmic-exponent sense. The lower bound remains valid even if many more
+cancellations occur at orders far beyond the computed range.
+
+There are three progressively stronger claims:
+\begin{align*}
+ \text{Proved here:}\qquad &a(n)=\Theta(n^3).\\
+ \text{Not proved here:}\qquad &a(n)\sim\frac23n^3.\\
+ \text{Stronger OEIS conjecture:}\qquad
+ &a(n)=\frac23n^3+n^2+O(n).
+\end{align*}
+The last statement is equivalent to $\Delta(n)=O(n)$, given the exact
+formula for $B(n)$, and implies the middle statement. Neither follows from
+agreement with $B(n)$ at many computed indices.
+
+A proof of the middle statement needs only a subcubic bound on the number
+of holes; it need not classify every cancellation. In particular, the
+entire plane $\ell=0$ has only $O(n^2)$ candidate cells. Thus even a complete
+failure to classify the logarithm-free derivative zeros would not by itself
+prevent proving the leading equivalent. The remaining issue is a uniform
+bound on cancellations with $\ell>0$ across the three-dimensional envelope.
+Formula~\eqref{xxc:eq:oracle} supplies an explicit integer expression for those
+coefficients, and the family in Proposition~\ref{xxc:prop:family} shows why a
+blanket nonvanishing assertion would be false.
+
+For the stronger linear-deficit conjecture, even the logarithm-free plane
+requires more delicate control. Its central symmetry already forces
+$\Delta(n)$ to be at least a positive linear function along the odd orders,
+so an $o(n)$ bound is impossible. The appropriate target is an upper bound
+of matching order, not an assertion that the derivative eventually fills
+its whole envelope.
+
+The computation problem is therefore resolved by unconditional exact
+algorithms, and the polynomial growth exponent is established. Determining
+the exact leading asymptotic constant remains a separate nonvanishing
+problem in this analysis.
+
+\subsection{A compact exact implementation}\label{xxc:app:code}
+
+The following version emphasizes transparency. The archive's
+\texttt{code/a281434.py} additionally provides packed keys, the coefficient
+oracle, modular arrays, input validation, and a command-line interface.
+
+\begin{lstlisting}[language=Python]
+from collections import defaultdict
+
+def a281434_prefix(N):
+    if not isinstance(N, int) or isinstance(N, bool) or N < 0:
+        raise ValueError("N must be a nonnegative integer")
+    p = {(0, 0, 0): 1}
+    values = [1]
+    for _ in range(N):
+        q = defaultdict(int)
+        for (k, j, ell), c in p.items():
+            q[k+1, j, ell+2] += c
+            q[k+1, j, ell+1] += c
+            q[k+1, j+1, ell] += c
+            if k:
+                q[k, j, ell+1] += k*c
+                q[k, j, ell] += k*c
+            if j:
+                q[k, j+1, ell] -= j*c
+            if ell:
+                q[k, j+1, ell-1] += ell*c
+        p = {key: c for key, c in q.items() if c}
+        values.append(len(p))
+    return values
+\end{lstlisting}
+
+The only potentially negative transition is the one with multiplier $-j$.
+Deleting it, taking absolute values before accumulation, or replacing the
+dictionary by a set changes the sequence.
+
+\subsection{Reproducing the supplied computations}
+
+Python 3.9 or later is sufficient for the dependency-free method. The modular
+method additionally requires NumPy. From the archive's \texttt{code}
+directory, the commands below produce a single term, inspect missing
+monomials, create a prefix, and run the tests.
+\begin{lstlisting}[language={}]
+python a281434.py 100 --method modular
+python a281434.py 80 --method modular --holes
+python a281434.py 100 --prefix
+python -m unittest -v test_a281434.py
+python run_experiments.py --reference
+python run_experiments.py 20 40 60 80 100 101 150 151 200
+\end{lstlisting}
+The first command returns \texttt{676800}. The second returns
+\texttt{347838} and the two missing triples listed in the article.
+The full prefix and related deficits are in \texttt{data/b281434.txt} and
+\texttt{data/b352697.txt}. These are generated data files accompanying this
+report, not claims that the OEIS has incorporated the additional terms.
+
+The LaTeX source builds with
+\begin{lstlisting}[language={}]
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+Repeated runs resolve the table of contents and cross-references. The bundled
+\texttt{build.sh} and \texttt{build.ps1} perform these commands.
+
+\Needspace{15\baselineskip}
+
+\clearpage
+\section{The three answers side by side}\label{syn:sec}
+
+\subsection{What was proved}\label{syn:table}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.16\textwidth}p{0.25\textwidth}p{0.25\textwidth}p{0.25\textwidth}@{}}
+\toprule
+ & Part~\ref{xx:part}: $x^{x}$ & Part~\ref{xxb:part}: $x^{x^2}$ &
+ Part~\ref{xxc:part}: $x^{x^x}$\\
+ & A293239 & A290268 & A281434\\
+\midrule
+Frame &
+ $t=x^{-1}$, $L=\log x$ \newline (2 variables) &
+ $z=x^{2}$, $L=\log x$ \newline (2 variables) &
+ $u=x^{x}$, $v=x^{-1}$, $z=\log x$ \newline (3 variables)\\[4pt]
+Clause of Thm~\ref{fw:thm:canonical} &
+ \ref{fw:can:a} &
+ \ref{fw:can:b} &
+ \ref{fw:can:a}\\[4pt]
+Growth order &
+ $\Theta(n^{2})$ &
+ $\Theta(n^{2})$ &
+ $\Theta(n^{3})$\\[4pt]
+Upper bound &
+ $a(n)\le q(n)$, the proposed value &
+ $a(n)\le\U(n)$, the conjectured value &
+ $a(n)\le\dfrac{2n^{3}+3n^{2}+4n}{3}$ \newline $(n\ge1$; at $n=0$ it reads
+ $0\ge1)$\\[4pt]
+Lower bound &
+ $n+1+\left\lfloor n^{2}/4\right\rfloor$ &
+ $(3n^{2}{+}10n{+}8)/8$ even, \newline $(3n^{2}{+}12n{+}1)/8$ odd &
+ $\dfrac{7n^{3}{+}39n^{2}{+}26n{+}3\epsn(n{-}1)}{24}$\\[4pt]
+Exact structure &
+ $a(n)=1+\binom{n+1}{2}-Z(n)$, \newline $Z$ counting zeros of the
+ Lehmer--Comtet triangle A008296 &
+ $a(n)=\U(n)-(\text{extra zeros})$, all predicted zeros explained &
+ $a(n)=|\EE_n|-\Delta(n)$, $\Delta$ the in-envelope cancellation count\\[4pt]
+Settled &
+ the reduction; the $\Theta$; a \emph{disproof} of the recurrence printed with
+ range $n>6$, at $n=8$ &
+ the upper bound; the cancellation mechanism; the $\Theta$; a complete zero
+ classification on the first two deficit diagonals &
+ the $\Theta$; two exact algorithms; central cancellations at every odd
+ order $n\ge3$\\[4pt]
+\textbf{Not settled} &
+ the principal closed formula: needs Conjecture~\ref{xx:conj:zeros} &
+ the conjecture itself, and the constant $\tfrac12$: needs
+ Conjecture~\ref{xxb:conj:support} &
+ the constant: $a(n)\sim\tfrac23n^{3}$ would need $\Delta(n)=o(n^{3})$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Why the orders differ}\label{syn:orders}
+
+The growth orders line up with the number of variables in the frame, and
+Part~\ref{fw:sec} explains why the upper half of that observation must hold.  In
+a frame of $m$ variables, each exponent in $\supp P_n$ is bounded by a constant
+multiple of $n$, because each application of the recurrence raises any one
+exponent by a bounded amount.  The envelope therefore lies in a box of side
+$O(n)$ in $m$ dimensions, so $|\EE_n|=O(n^m)$; with
+Corollary~\ref{fw:cor:welldefined} for the two frames it covers, and
+Part~\ref{xxc:part}'s own independence argument for the third,
+Proposition~\ref{fw:prop:envelope} then gives $a(n)=O(n^m)$.  With $m=2$ for
+$x^x$ and $x^{x^2}$ and $m=3$ for $x^{x^x}$, the observed orders $n^2$, $n^2$,
+$n^3$ are exactly the envelope dimensions.
+
+Two cautions are worth stating, because the pattern invites more than it
+supports.
+
+First, the matching \emph{lower} bounds are not a consequence of the frame at
+all.  A frame bounds the support from outside; it says nothing about how much of
+the envelope survives cancellation, and in principle almost all of it could
+vanish.  Each part proves its own lower bound by exhibiting coefficients that
+are nonzero, and those arguments have nothing in common.  Part~\ref{xx:part}
+counts nonzero entries along each diagonal of its triangle, bounding the zeros
+there by the degree of a polynomial that cannot vanish identically.
+Part~\ref{xxb:part} proves strict \emph{positivity} on a region, through a
+substitution that turns its coefficients into an integral with a
+sign-definite kernel.  Part~\ref{xxc:part} forces a root of high multiplicity
+and then uses the fact that a polynomial with a nonzero root of multiplicity
+$M$ has at least $M+1$ nonzero coefficients.  Three mechanisms, no common
+method; the framework supplies none of them.
+
+Second, the frame is a choice, not an invariant.  Nothing stops one from
+embedding any of these problems in a larger frame and obtaining a worse upper
+bound; what the three parts exhibit is the smallest frame each author found in
+which the derivative closes.  The claim ``the order is the dimension'' is
+therefore a statement about these three constructions, not a theorem about power
+towers, and it should not be extrapolated to $x^{x^{x^x}}$ without doing the
+work.
+
+\subsection{What the shared framework buys, and what it does not}\label{syn:buys}
+
+It buys four things, with two qualifications that should be stated rather than
+glossed.  The count is an invariant of the function rather than of a
+differentiation algorithm --- by Corollary~\ref{fw:cor:welldefined} for
+Parts~\ref{xx:part} and~\ref{xxb:part}, and by Part~\ref{xxc:part}'s own
+argument for the third frame, which that corollary does not cover.  The
+coefficients are integers, so the computations are exact and a nonzero residue
+is a proof of nonvanishing (Proposition~\ref{fw:prop:computation}).  The
+\emph{envelope} bound is free once the envelope is described
+(Proposition~\ref{fw:prop:envelope}) --- though only Part~\ref{xxc:part}'s
+advertised upper bound is the bare envelope count; the bounds listed for the
+other two in Section~\ref{syn:table} are the envelope minus proved cancellation
+families, and those families are real theorems, not framework.  And the problem
+is reduced from ``count the terms'' to ``find the zeros'', which is the form all
+three parts actually work in.
+
+It buys nothing at all about the zeros.  That is where each of the three
+problems becomes its own problem, and where all three still have something
+open.  In
+Part~\ref{xx:part} the zeros are the vanishing entries of a classical triangle
+and the missing step is their complete classification.  In Part~\ref{xxb:part}
+the zeros are forced by a reflection symmetry and the missing step is that there
+are no others.  In Part~\ref{xxc:part} the zeros are not even conjecturally
+classified, and the open question is the weaker one of their density.  These
+three statements are not special cases of one another, and no argument in any
+part transfers to any other.
+
+\subsection{What the three do share, beyond the framework}\label{syn:share}
+
+There is more common structure than the framework alone, and it is worth setting
+down, because it is the one thing a reader could take from these three parts
+that none of them states on its own.
+
+Every cancellation family that any of the three parts \emph{proves} comes from
+the same source: the falling factorial $\fall{y}{n}=y(y-1)\cdots(y-n+1)$ is
+symmetric about its centre, so that $\fall{(n-1-y)}{n}=(-1)^n\fall{y}{n}$, and a
+polynomial that is odd about a point has no even coefficient there.  Each part
+reaches that fact in its own coordinates:
+\begin{itemize}[leftmargin=1.6em,itemsep=2pt]
+\item Part~\ref{xx:part}, Proposition~\ref{xx:prop:symmetry}, centres at $r=2h$
+ to get $F_{4h+1}(2h+u)=u\prod_{s=1}^{2h}(u^2-s^2)$, an odd polynomial, killing
+ the coefficient of $u^{2h}$;
+\item Part~\ref{xxb:part}, Lemma~\ref{xxb:lem:reflection}, uses
+ $F_n(n-1-u)=(-1)^nF_n(u)$ directly, transported through a $2$-step difference;
+\item Part~\ref{xxc:part}, Proposition~\ref{xxc:prop:odd}, gets
+ $F_n(d+\beta)=\beta\prod_{r=1}^d(\beta^2-r^2)$, again odd.
+\end{itemize}
+So all three counting problems are, at bottom, questions about the integer zeros
+of derivatives and finite differences of one classical polynomial, and every
+zero any of them can currently explain is a parity zero of that polynomial about
+its centre.  What is \emph{not} shared is everything past that point: the
+triangles the parity acts on are different, the difference operators are
+different, and --- this is the crux --- in no case is the parity family known to
+be the whole zero set, which is exactly what each part's open question asks.
+
+Given that, a caution about the two $\Theta(n^2)$ results.  Parts~\ref{xx:part}
+and~\ref{xxb:part} both bound a two-dimensional envelope and subtract
+cancellations, and both leave the leading constant open, and it would be easy to
+read them as one result twice.  They are not: the arrays are different, one is
+normalized by $x^{-n}$ and the other is not, and the open statements are
+statements about different objects.  What can be said honestly is the
+metamathematical thing: no argument given in either part carries over to the
+other.  Whether either open conjecture \emph{implies} the other is not something
+this article can settle, and it does not claim to.
+
+\subsection{What would settle each one}\label{syn:open}
+
+\begin{itemize}[leftmargin=1.6em,itemsep=3pt]
+\item \textbf{$x^x$ (Part~\ref{xx:part}).}  Conjecture~\ref{xx:conj:zeros}: that
+ for $1\le r\le m$ the only vanishing first-kind Lehmer--Comtet entries are
+ the sporadic $b(8,5)$ and the symmetry family $b(4h+1,2h)$, $h\ge1$.  The
+ sporadic entry and the whole family are both \emph{proved} to vanish in
+ Part~\ref{xx:part} --- and the sporadic one is genuinely sporadic, not the
+ first term of a second family, which is part of what makes the converse hard;
+ the open direction is that there are no others.  A proof would give the closed formula for $a(n)$ and,
+ with it, the corrected recurrence for the actual derivative count on its true
+ range $n\ge14$.
+\item \textbf{$x^{x^2}$ (Part~\ref{xxb:part}).}  The nonvanishing statement
+ isolated in Conjecture~\ref{xxb:conj:support}: that no coefficient vanishes
+ outside the \emph{two} explained families --- the degree-forced top diagonal
+ ($j=k$ with $n>2k$) and the reflection family ($k$ even, $n=4k-2j+1$).
+ Coefficients do vanish in bulk outside the reflection family alone; it is the
+ union that is conjecturally complete.  Theorem~\ref{xxb:thm:equivalence} shows
+ the statement is exactly equivalent to the OEIS conjecture, so nothing weaker
+ will do.
+\item \textbf{$x^{x^x}$ (Part~\ref{xxc:part}).}  A uniform bound
+ $\Delta(n)=o(n^3)$ would give the equivalent $a(n)\sim\tfrac23n^3$; the
+ stronger $\Delta(n)=O(n)$, conjectured not in A281434 itself but in the
+ companion entry A352697 which records the deficits, needs control even on the
+ logarithm-free plane, where only $O(n^2)$ cells are candidates.  Whether
+ equality $\Delta(n)=0$ recurs infinitely often at even orders is open.
+\end{itemize}
+
+The three obstructions do not even have the same shape.  In
+Parts~\ref{xx:part} and~\ref{xxb:part} the open statement is a nonvanishing
+statement: no coefficient outside the explained families is zero.  In
+Part~\ref{xxc:part} it cannot be, because additional zeros provably exist ---
+Proposition~\ref{xxc:prop:family} exhibits an infinite family of them with
+positive logarithm exponent, and Proposition~\ref{xxc:prop:odd} forces more at
+every odd order $n\ge3$.  There the open question is only \emph{how many}: a
+density statement, $\Delta(n)=o(n^3)$, not a nonvanishing one.  That difference
+is the sharpest thing the comparison has to offer, and it is the reason the
+three investigations are printed here as three.
+
+\clearpage
+\begin{thebibliography}{99}
+
+\bibitem{oeis293239}
+V. Reshetnikov and contributors,
+\emph{A293239: Number of terms in the fully expanded $n$th derivative of $x^x$},
+The On-Line Encyclopedia of Integer Sequences, 2017.
+Conjectured formulas attributed in the entry to C. Barker and V. Kote\v{s}ovec.
+Consulted 20 September 2026.
+\url{https://oeis.org/A293239}.
+
+\bibitem{oeis290268}
+The OEIS Foundation Inc.,
+\emph{A290268: Number of terms in the fully expanded $n$-th derivative of
+$x^{x^2}$}, contributed by Vladimir Reshetnikov, with formula comments by
+Peter Luschny, October 2017. Accessed September 20, 2026.
+\url{https://oeis.org/A290268}.
+
+\bibitem{oeis281434}
+Vladimir Reshetnikov,
+\emph{A281434: Number of terms in the fully expanded $n$-th derivative of
+$x^{(x^x)}$}, The On-Line Encyclopedia of Integer Sequences, entry created
+October 5, 2017.
+\url{https://oeis.org/search?q=id:A281434&fmt=text}.
+Accessed September 20, 2026.
+
+\bibitem{oeis8296}
+N. J. A. Sloane and contributors,
+\emph{A008296: Triangle of Lehmer--Comtet numbers of the first kind},
+The On-Line Encyclopedia of Integer Sequences.
+Consulted 20 September 2026.
+\url{https://oeis.org/A008296}.
+
+\bibitem{oeis352697}
+Vladimir Reshetnikov,
+\emph{A352697: $a(n)=\mathrm{A037237}(n-1)-\mathrm{A281434}(n)$},
+The On-Line Encyclopedia of Integer Sequences, March 29, 2022.
+\url{https://oeis.org/A352697}.
+Accessed September 20, 2026.
+
+\bibitem{oeis037237}
+N. J. A. Sloane and contributors,
+\emph{A037237: Expansion of $(3+x^2)/(1-x)^4$},
+The On-Line Encyclopedia of Integer Sequences.
+\url{https://oeis.org/A037237}.
+Accessed September 20, 2026.
+
+\bibitem{comtet}
+L. Comtet,
+\emph{Advanced Combinatorics: The Art of Finite and Infinite Expansions},
+D. Reidel, Dordrecht, 1974, p. 139.
+
+\bibitem{lehmer}
+D. H. Lehmer,
+\emph{Numbers associated with Stirling numbers and $x^x$},
+Rocky Mountain Journal of Mathematics \textbf{15}(2) (1985), 461--479.
+\url{https://projecteuclid.org/euclid.rmjm/1250127221}.
+
+\bibitem{gould}
+H. W. Gould,
+\emph{A set of polynomials associated with the higher derivatives of $y=x^x$},
+Rocky Mountain Journal of Mathematics \textbf{26}(2) (1996), 615--625.
+\url{https://doi.org/10.1216/rmjm/1181072076}.
+
+\bibitem{jeong}
+S. Jeong,
+\emph{On a question of Lehmer concerning the Comtet numbers},
+arXiv:2607.26613v1, 2026.
+In particular, Proposition 3.10(iii) records the symmetry zero family.
+The recurrence question answered there concerns the numbers of the
+\emph{second} kind, not the complete first-kind zero classification used here.
+\url{https://arxiv.org/abs/2607.26613}.
+
+\bibitem{poon}
+Steven S. Poon,
+\emph{Higher Derivatives of the Falling Factorial and Related
+Generalizations of the Stirling and Harmonic Numbers},
+arXiv:1401.2737, 2014.
+\url{https://arxiv.org/abs/1401.2737}.
+
+\bibitem{dlmf}
+NIST Digital Library of Mathematical Functions,
+\emph{\S26.8: Set Partitions---Stirling Numbers}.
+\url{https://dlmf.nist.gov/26.8}.
+Accessed September 20, 2026.
+
+\bibitem{dlmf-reflection}
+NIST Digital Library of Mathematical Functions,
+\S5.5(ii), especially Eq.~5.5.3, Euler's reflection formula.
+Accessed September 20, 2026.
+\url{https://dlmf.nist.gov/5.5.E3}.
+
+\bibitem{dlmf-beta}
+NIST Digital Library of Mathematical Functions,
+\S5.12, especially Eq.~5.12.1, Euler's beta integral.
+Accessed September 20, 2026.
+\url{https://dlmf.nist.gov/5.12.E1}.
+
+\end{thebibliography}
+
+\end{document}

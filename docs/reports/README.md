@@ -2,14 +2,14 @@
 
 # Research reports
 
-One hundred and five independent mathematical research packages, unpacked from
+One hundred and three independent mathematical research packages, unpacked from
 the
 archives in which they were delivered and grouped by subject.  Each directory
 holds a typeset article with its LaTeX source, a `README.md`, and in most cases
 verification code together with the recorded output of running it.
 
 **[`manifest.pdf`](manifest.pdf)** ([source](manifest.tex)) is the catalogue: it
-numbers all one hundred and five reports, names the problem each one attacks and
+numbers all one hundred and three reports, names the problem each one attacks and
 the
 result it claims, and records the archives each directory came from.  These are
 AI-assisted drafts; none is refereed or machine-checked, and the manifest
@@ -24,10 +24,10 @@ records what each report claims rather than verifying it.
 | [`congruences-and-valuations/`](congruences-and-valuations) — supercongruences, iterated series, valuations and periodicity | 7 |
 | [`surreal-numbers/`](surreal-numbers) — birthdays under multiplication, option graphs, genetic functions and gaps, evaluating formal sums | 6 |
 | [`tetration-and-digit-stabilization/`](tetration-and-digit-stabilization) — congruence speed, frozen digits, `q`-Newton series | 6 |
-| [`generating-functions-and-asymptotics/`](generating-functions-and-asymptotics) — Stanley's rationality question, Gregory thresholds, records, discrepancy, and nine single-sequence OEIS studies | 16 |
+| [`generating-functions-and-asymptotics/`](generating-functions-and-asymptotics) — Stanley's rationality question, Gregory thresholds, records, discrepancy, single-sequence OEIS studies | 14 |
 | [`automata-and-formal-languages/`](automata-and-formal-languages) — shuffle state complexity, DFAO reversal, synchronization, language hierarchies, additive complexity | 6 |
 | [`graph-theory/`](graph-theory) — mutual visibility, domination roots, minimal dominating sets | 3 |
-| **Total** | **105** |
+| **Total** | **103** |
 
 ## Rebuilding the manifest
 
@@ -38,19 +38,37 @@ latexmk -pdf manifest.tex && latexmk -c manifest.tex
 ## Merged reports
 
 One hundred and twenty-five archives arrived, in seven deliveries, and yield
-one hundred and five reports.  Twenty archives duplicated another: sixteen
-pairs, three three-way clusters and one four-way cluster.  The seventh delivery
-of eighteen produced no merge at all: the sweep checked every OEIS A-number and
-every cited arXiv identifier in the tree against the eighteen, and rejected
-twelve near-misses on inspection — among them three reports that all count the
-terms in the derivatives of a power tower, and two that share a Bell-scale
-saddle-point method on unrelated sequences.  Shared technique is not a shared
-theorem.  Each cluster was merged into a
+one hundred and three reports.  Two different things reduced the count, and the
+difference between them is worth keeping straight.
+
+**Duplicates.**  Twenty archives duplicated another: sixteen pairs, three
+three-way clusters and one four-way cluster.  Each cluster was merged into a
 single report that proves the shared theorem once and keeps everything every
 original built on top of it.  Where the originals reached a result by genuinely
 different routes, every route is kept and marked as an alternative, with a
-sentence on what each one buys.  The manifest names both or all source archives
-on a merged entry and says what was doubled.
+sentence on what each one buys.  The manifest names all source archives on a
+merged entry and says what was doubled.
+
+**One thematic consolidation.**  Two further reports were folded into a
+neighbour for a different reason — not because they repeated it, but because
+they shared a subject.  The three reports on the number of terms in the
+derivatives of a power tower, for `x^x` (A293239), `x^(x^2)` (A290268) and
+`x^(x^x)` (A281434), are now
+[`power-tower-derivative-term-counts`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/power-tower-derivative-term-counts):
+a common framework proved once, then the three original investigations
+unabridged, then a part comparing them.  All fifty of their numbered results
+survive unchanged, and a record of every edit made to the three source texts
+accompanied the merge.  This was editorial, not deduplication — those three
+went through the duplicate sweep first and *cleared* it, below.  Their three
+theorems are three different theorems, and the merged article is at pains to say
+so rather than let a shared setup suggest the answers are connected.
+
+**The sweep that found nothing.**  The seventh delivery of eighteen produced no
+duplicate at all: the sweep checked every OEIS A-number and every cited arXiv
+identifier in the tree against the eighteen, and rejected twelve near-misses on
+inspection — among them those same three power-tower reports, and two that
+share a Bell-scale saddle-point method on unrelated sequences.  Shared technique
+is not a shared theorem.
 
 The largest merges:
 
