@@ -16,6 +16,9 @@ has three proof-script compatibility changes in two files, recorded in
 - Finish a subtype/image simplification with `aesop` in `Game/Birthday.lean`.
 - Remove a stale `SetLike.mem_coe` rewrite in `Game/Birthday.lean`.
 
+The patch omits context lines; apply it to the pinned upstream checkout with
+`git apply --unidiff-zero compatibility.patch`.
+
 No mathematical statement is changed. The root import and `lakefile.toml`
 are local package scaffolding for this subset. Keeping the patched sources
 here makes the dependency reproducible without moving the Mathlib pin or

@@ -150,6 +150,14 @@ absolute differences valued in the sign carrier itself.
 The net of all positive radii, directed by reverse order, converges to zero
 and is Cauchy but is never eventually constant. Its index type is proved
 not small at the lower universe level.
+Canonical sign options also define a small, well-founded game graph. Its
+recursive game construction preserves and reflects comparison, proves the
+image games numeric, and gives an explicit order embedding into the reused
+numeric-game surreal field. Surjectivity and arithmetic compatibility remain
+to be proved before transferring that field to the sign carrier.
+The empty and one-plus sequences map literally to the raw games zero and one.
+The numeric-game quotient also satisfies the indexed small-cut interface and
+its comparison rule, including reconstruction from a numeric game's moves.
 Multiplication, field inverses, real closedness and the normal-form bridge to
 Hahn series remain open. A successful build proves only the imported Lean
 statements, not coverage of all the source documents.
