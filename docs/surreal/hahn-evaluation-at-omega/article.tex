@@ -167,7 +167,7 @@ is the union of the two toolkits rather than a deduplication of them: the
 semiring certificate of \cref{sec:semiring}, the general unit square root
 of \cref{lem:unit-root}, the elementary two-support argument of
 \cref{lem:two-supports}, and several scope remarks in \cref{sec:audit} come
-from the second report, while the three-way evaluation criterion, the
+from the second report, while the infinitesimal evaluation criterion, the
 order-forcing theorem, the monomial classification over an arbitrary exponent
 group, and the appendix on Higman's lemma come from the first. Where the two
 reports phrased an attribution or a priority caveat differently, the more
@@ -689,7 +689,9 @@ $\phi(x)=0$, then $\phi$ is the constant-term map. If $\phi(x)\ne0$,
 then $\phi$ is injective.
 \end{proposition}
 \begin{proof}
-Unitality forces the rational constants to be fixed. If $\phi(x)=0$, write
+The restriction of $\phi$ to $\Q$ is injective, so $F$ has characteristic
+zero; identify its prime subfield with $\Q$. Unitality then fixes these
+rational constants. If $\phi(x)=0$, write
 $f=f_0+xg$ to obtain $\phi(f)=f_0$. If $\phi(x)\ne0$, every nonzero series
 has a factorization $f=x^m v$ with $m\ge0$ and $v$ a unit. Both factors
 have nonzero images, so $\phi(f)\ne0$.
@@ -774,8 +776,11 @@ union support lies in a fixed reverse well-ordered set. Hence \eqref{eq:ev}
 preserves every source-summable family.
 
 Finally, for $f\ne0$ write $f=x^m v$, where $v$ is a unit in $\R[[x]]$.
-The map just constructed sends $u^m$ and $v$ to nonzero elements, so it is
-injective. The argument for $u=0$ is the direct constant-term calculation.
+The map just constructed sends $x^m$ to $u^m\ne0$ and sends the unit $v$
+to a nonzero element, so it is injective. For $u=0$, constant-term evaluation
+is a coefficient-fixing homomorphism. It is strongly additive because only
+finitely many members of a source-summable family have a nonzero constant
+term, so taking that coefficient commutes with the sum.
 \end{proof}
 
 \begin{remark}[Injectivity again, by leading terms]\label{rem:leading-inj}
@@ -800,11 +805,15 @@ family of its monomials. We do \emph{not} infer uniqueness among arbitrary
 abstract ring homomorphisms. Describing the maps that fail to respect infinite
 sums is a separate question, and the distinction between arbitrary and
 strongly additive maps is a substantive one in the surreal setting; compare
-\citep[Sections 3 and 4]{KKS}. The successful termwise construction is the
-familiar change-of-value-group construction for Hahn fields, written in the
-opposite exponent convention; compare \citep[Section 2.3]{KKS}. In particular,
-the nonexistence theorem
-requires far less structure than the positive construction uses.
+\citep[Sections 3 and 4]{KKS}. The construction here is substitution of an
+arbitrary infinitesimal series. When $u=\omega^a$ with $a<0$, it reduces to
+the exponent change $n\mapsto na$ on monomials; this special case belongs
+to the familiar change-of-value-group construction for Hahn fields, written
+in the opposite exponent convention; compare \citep[Section 2.3]{KKS}.
+For a general $u$, its powers can have many terms, so the substitution is
+not just a relabeling of exponents. The finite-word support argument is what
+justifies it. In particular, the nonexistence theorem requires far less
+structure than the positive construction uses.
 
 There is no contradiction with classical analytic convergence. A series may
 have zero radius of convergence over the real numbers and still admit
@@ -832,9 +841,17 @@ and the omega-map is strictly increasing by \eqref{eq:omega}. The single fixed p
 surreal $\omega^{-\omega}$ therefore determines a neighbourhood of $s$ in the
 order topology that \emph{no} partial sum $s_N$ ever enters. The family is
 summable and its sum is $s$, yet the sequence of partial sums does not
-converge to $s$ in any order-theoretic sense. This is why
-\cref{thm:exact} is stated in terms of Hahn summability and why no appeal to
-convergence is made anywhere in this note.
+converge to $s$ in the full surreal order topology.
+
+The ambient field matters. In the ordered subfield
+$K=\R((\omega^{-1}))$, the same partial sums do converge to $s$ in its
+\emph{intrinsic} order topology. Indeed, every $\eta\in K_{>0}$ has leading
+term $c\omega^{-k}$ with $c>0$ and $k\in\Z$. For $N+1>k$, the positive
+tail $s-s_N$ has leading exponent $-(N+1)<-k$, so $0<s-s_N<\eta$.
+The surreal interval of radius $\omega^{-\omega}$ about $s$ intersects $K$
+only in $\{s\}$. Thus the intrinsic order topology on $K$ differs from the
+subspace topology inherited from $\No$. \Cref{thm:exact} uses Hahn summability,
+whose support criterion specifies the sum without choosing either topology.
 
 \section{The order hidden in the full Hahn field}\label{sec:order}
 The main proof deliberately avoids assuming source-order preservation. In the
@@ -1058,6 +1075,8 @@ the finite convolution coefficients agree.
 
 The construction fixes the real constants and preserves $1$. A nonzero
 coefficient remains nonzero at a unique image exponent, so $T_f$ is injective.
+Its leading coefficient is unchanged, so it also preserves the canonical
+field order, even when $G$ is not $2$-divisible.
 A summable family has a well-ordered union support and finite occurrence at
 each source exponent. Its image has a reverse well-ordered union support
 and the identical occurrence counts. This proves strong additivity and
@@ -1198,13 +1217,17 @@ Let $p(Y)\in\R(x)[Y]$ be monic and irreducible, and let
 $L=\R(x)[Y]/(p)$. The evaluation $x\mapsto\omega$ extends to an embedding
 $L\to\No$ if and only if the polynomial $p^\omega(Y)$ obtained by evaluating
 its rational-function coefficients at $\omega$ has a root in $\No$.
+More precisely, the extending embeddings correspond bijectively to those
+roots, by the image of the residue class of $Y$.
 \end{proposition}
 \begin{proof}
 Any extension sends the residue class of $Y$ to such a root. Conversely, a
 root induces a unital homomorphism from $\R(x)[Y]$ to $\No$ that annihilates
 $(p)$. It factors through $L$, which is a field because $p$ is irreducible.
 A unital homomorphism from a field has zero kernel, so the induced map is
-an embedding.
+an embedding. Since $L$ is generated over $\R(x)$ by the residue class of
+$Y$, that root determines the extension uniquely, and different roots give
+different extensions.
 \end{proof}
 
 The pair $p=Y^2-(1-x)$ and $p=Y^2-(1+x)$ therefore separates two very similar

@@ -98,11 +98,13 @@ used.
 **Two square-root lemmas, both retained.** The merged article keeps both the
 substitution proof that 1+qx is a unit square (obtained by substituting -qx
 into B) and the general recursion giving a unique square root in 1 + x k[[x]]
-for every unit with constant term 1 over a characteristic-zero field k. Neither subsumes the other
-in practice: the substitution proof needs only the already-constructed B and
-is the one reproduced in the standalone `short-proof.tex`; the general lemma
-supplies uniqueness, an arbitrary unit with constant term 1 and an arbitrary base field, and is
-what the Laurent-expansion and injectivity arguments later use.
+for every unit with constant term 1 over a characteristic-zero field k.
+The general statement subsumes the special case, but the two proofs have
+different dependencies. The substitution proof needs only the
+already-constructed B and is the one reproduced in the standalone
+`short-proof.tex`; the general lemma supplies uniqueness, an arbitrary unit
+with constant term 1 and an arbitrary base field, and is what the
+Laurent-expansion and injectivity arguments later use.
 
 **Two proofs of the two-support fact, both retained.** That A+B is well
 ordered with finite fibres is derived twice: once as a corollary of Higman's
@@ -125,8 +127,25 @@ use.
 **Summability is not convergence.** The merged article includes an explicit
 counterexample: sum omega^{-n} = 1/(1-omega^{-1}) is a legitimate Hahn sum,
 yet s - s_N > omega^{-omega} for every N, so no partial sum enters that
-neighbourhood of s. Statements about infinite sums in this package are always
-about Hahn summability, never about a topological limit.
+neighbourhood of s in the full surreal order topology. The former phrase
+“in any order-theoretic sense” was too broad: in the intrinsic order topology
+of K = R((omega^{-1})), every positive radius has leading term
+c omega^{-k} for an integer k, and the tail is smaller once N+1 > k.
+The same partial sums therefore do converge in K. The article now proves
+both statements. The evaluation construction uses Hahn summability and
+does not depend on a topological limit.
+
+**General infinitesimal substitution versus exponent change.** The former
+description of the construction as a change of value group applies to the
+pure monomial case u = omega^a, a < 0. A general infinitesimal u can have
+many terms, so its powers do too. The finite-word lemma supplies the missing
+support control: at a target exponent there are finitely many contributing
+words, hence finitely many degrees and finitely many splits for a product.
+For a source-summable family, each of those degrees occurs in only finitely
+many members; this proves strong additivity. At u = 0, the same property
+reduces to finite occurrence at degree zero. The injectivity proof now
+correctly says that x^m maps to u^m, rather than treating u^m as a source
+element.
 
 **Infinitesimal bounds.** The roots of 1±nx are units. Their images are nonzero,
 so their squares are strictly positive and yield strict inequalities.
@@ -141,6 +160,9 @@ necessary for every unital homomorphism, with no strong-additivity hypothesis.
 The sufficient construction is coefficient-fixing and strongly additive.
 Uniqueness is proved only among maps with those two properties, not among all
 abstract homomorphisms with the same monomial images.
+The constructed map preserves leading coefficients and therefore the
+canonical order even for a non-2-divisible exponent group; this does not
+assert that every abstract homomorphism from such a Hahn field is ordered.
 
 **Coefficient embeddings.** An arbitrary embedding of the real field into No
 is not assumed to fix each real merely because it fixes Q. The obstruction
@@ -158,6 +180,13 @@ field order.
 **Geometric series.** Sending 1+x+x^2+... to 1/(1-omega) is consistent on the
 rational subfield. Its negative value alone is not a contradiction to an
 ordinary ring homomorphism. The square-root relation supplies the contradiction.
+
+**Simple algebraic extensions.** Evaluating coefficients gives an embedding
+of R(x) into No. A root of the evaluated irreducible polynomial induces a
+unital map from the quotient field, so its kernel is zero. The root determines
+the map because the residue class of Y generates the extension. Thus roots
+correspond bijectively to extending embeddings; finding a root is the only
+additional condition in this simple algebraic case.
 
 **Positive-support lemma.** The support is a well-ordered set of strictly
 positive group elements. Higman's finite-word lemma gives both well-ordering

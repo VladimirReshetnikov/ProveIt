@@ -28,7 +28,7 @@ That shared core theorem is proved exactly once in the merged article. The
 supporting material diverged, so this report is the union of the two toolkits
 rather than a deduplication: the semiring certificate, the general
 unit-square-root lemma, the elementary two-support lemma and several scope
-remarks come from the second report; the three-way evaluation criterion, the
+remarks come from the second report; the infinitesimal evaluation criterion, the
 order-forcing theorem, the monomial classification over an arbitrary exponent
 group and the Higman appendix come from the first. Where the two reports
 worded an attribution or a priority caveat differently, the more cautious
@@ -90,6 +90,29 @@ provides a direct semiring certificate, while `B² = 1-x` gives the shorter
 ring argument. The standalone short proof remains valid and makes no claim
 of logical incomparability. The correction is also recorded in
 [`proof-audit.md`](proof-audit.md).
+
+## Substitution, topology, and extension criteria
+
+The infinitesimal criterion permits a general surreal series as the value
+of `x`. Its finite-word proof controls every coefficient of every power and
+justifies their regrouping. Only the pure monomial case `x -> omega^a`,
+`a < 0`, reduces to an exponent change. The earlier description of the whole
+construction as a change of value group was too narrow.
+
+The geometric partial sums of `sum omega^(-n)` fail to converge in the full
+surreal order topology, because every tail exceeds `omega^(-omega)`. They
+do converge in the intrinsic order topology of `R((omega^(-1)))`: each
+positive radius there has an integer leading exponent, eventually exceeded
+in smallness by the tail. The earlier phrase “in any order-theoretic sense”
+was therefore too broad. Hahn summability itself requires neither topology.
+
+The pure monomial criterion applies to arbitrary ordered abelian exponent
+groups, without a divisibility assumption. Its constructed map preserves
+the leading coefficient and hence the canonical order. For a simple
+algebraic extension of `R(x)`, extending embeddings correspond exactly to
+the surreal roots of the evaluated minimal polynomial; the image of its
+generator determines the extension. These are separate existence criteria,
+not a classification of all abstract Hahn-field embeddings.
 
 ## Run the exact checks
 
