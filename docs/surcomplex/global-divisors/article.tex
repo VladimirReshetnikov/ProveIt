@@ -7,6 +7,7 @@
 \usepackage{microtype,booktabs,longtable,array,enumitem}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{fancyhdr,aliascnt}
+\usepackage{xurl}
 \usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
 \hypersetup{%
@@ -104,7 +105,7 @@ We prove a sharp moving-divisor theorem. A family of prescribed infinitesimal ro
 
 We prove the matching criteria for discrete Hahn principal parts, for deformed Hermite interpolation --- whose correct target is a \emph{support-restricted} product of the finite algebras $\KK[u]/(P_c)$, not their unrestricted product --- for moving poles, and an exact additive Cousin criterion in terms of the singular support on a puncture-and-disk cover. We show that every ordinary-base stalk of $\HH$ is a principal ideal domain, though generally not a local ring, which is what licenses classifying all tensor-invertible modules rather than only locally free rank-one sheaves. The resulting Picard group vanishes exactly when $\Gamma=\{0\}$ or $\Gamma$ is order-isomorphic to $\Z$; for noncyclic $\Gamma$ its complex dimension is at least $2^{\aleph_0}$, with equality when $\Gamma$ is countable.
 
-A second part carries the same coefficient sheaf over a second ordinary base: a fixed \emph{compact} connected ordinary Riemann surface $X$ of genus $g$. There the answers are different in both directions. Only finitely many clusters can be prescribed, so the well-ordering obstruction disappears; in its place the Picard group splits canonically and completely,
+A second part carries the same coefficient sheaf over a second ordinary base: a fixed \emph{compact} connected ordinary Riemann surface $X$ of genus $g$. There the answers are different in both directions. A closed discrete cluster set is finite on this base, so its well-ordering obstruction disappears; in its place the Picard group splits canonically and completely,
 \[
   \Piclf(X,\HH)\cong H^1(X,\underline\Gamma)\oplus\Pic(X)
    \oplus\bigl(H^1(X,\OO_X)\otimes_\C\mK\bigr)
@@ -191,7 +192,7 @@ whose Hahn coefficients are ordinary holomorphic functions on the \emph{common} 
 \[
   R_c=(\HH)_c=\varinjlim_{U\ni c}\HH(U)
 \]
-formed by shrinking ordinary neighbourhoods of an ordinary point $c$. \emph{The ordinary base itself is part of the statement}: in \crefrange{global:sec:workspace}{global:sec:geometric} it is the plane $\C$ and $U\subseteq\C$, while in \crefrange{global:sec:compactbridge}{global:sec:onescale} the identical coefficient recipe is applied with $U$ ranging over the opens of a fixed compact connected ordinary Riemann surface $X$ (\cref{global:def:compactsheaf}), the ordinary meromorphic version $\MG$ being introduced there as well. Every numbered statement names its base, and \cref{global:sub:twobasewarning} records that no theorem of either part may be transported to the other. Nothing here is asserted about, or transported to or from, a radius-free coefficient ring $\C\{z\}((t^\Gamma))$ whose Hahn coefficients are individually convergent germs with no common domain of convergence, or a formal coefficient ring $\C[[z]]((t^\Gamma))$, or a uniform-support variant. The common-domain requirement is used essentially and repeatedly: in the sheaf property (\cref{global:prop:sheaf}), in the ``no disk shrinking'' clause of the divisor recursion (\cref{global:thm:divisor}), and in the uniform support bound of local preparation (\cref{global:thm:preparation}). The two rings that do occur are distinguished by name where it matters: the \emph{fixed-disk ring} $\OO(D)((t^\Gamma))$ of sections over one chosen ordinary disk $D$, in which preparation and division take place, and the \emph{ordinary-base stalk} $R_c$, a filtered colimit of such rings, of which the principal-ideal-domain theorem speaks. The theorems are not interchangeable between the two: $\OO(D)((t^\Gamma))$ is not claimed to be a principal ideal domain for a fixed $D$.
+formed by shrinking ordinary neighbourhoods of an ordinary point $c$. \emph{The ordinary base itself is part of the statement}: in \crefrange{global:sec:workspace}{global:sec:geometric} it is the plane $\C$ and $U\subseteq\C$, while in \crefrange{global:sec:compactbridge}{global:sec:onescale} the identical coefficient recipe is applied with $U$ ranging over the opens of a fixed compact connected ordinary Riemann surface $X$ (\cref{global:def:compactsheaf}), the ordinary meromorphic version $\MG$ being introduced there as well. Every numbered statement names its base, and \cref{global:sub:twobasewarning} records why the global theorems require their stated bases; local stalks agree in coordinate charts as explained in \cref{global:rem:piclfcompact}. Nothing here is asserted about, or transported to or from, a radius-free coefficient ring $\C\{z\}((t^\Gamma))$ whose Hahn coefficients are individually convergent germs with no common domain of convergence, or a formal coefficient ring $\C[[z]]((t^\Gamma))$. The common-domain requirement is used essentially and repeatedly: in the sheaf property (\cref{global:prop:sheaf}), in the ``no disk shrinking'' clause of the divisor recursion (\cref{global:thm:divisor}), and in the uniform support bound of local preparation (\cref{global:thm:preparation}). The two rings that do occur are distinguished by name where it matters: the \emph{fixed-disk ring} $\OO(D)((t^\Gamma))$ of sections over one chosen ordinary disk $D$, in which preparation and division take place, and the \emph{ordinary-base stalk} $R_c$, a filtered colimit of such rings, of which the principal-ideal-domain theorem speaks. The theorems are not interchangeable between the two: $\OO(D)((t^\Gamma))$ is not claimed to be a principal ideal domain for a fixed $D$.
 
 \smallskip
 \noindent\textbf{Reduction.} The exponent-zero coefficient map
@@ -199,7 +200,7 @@ formed by shrinking ordinary neighbourhoods of an ordinary point $c$. \emph{The 
   \red:\HI\longrightarrow\OO,
   \qquad \sum_{\gamma\ge0}f_\gamma t^\gamma\longmapsto f_0,
 \]
-is called the \emph{reduction}. The two source manuscripts and the wider literature also call the induced operation the residue map, the standard part and the shadow; those are synonyms recorded once here and not used again. We write $\st$ only for the scalar standard part $\OO_\Gamma\to\C$, $a\mapsto a_0$. Reduction is \emph{not} defined on $\HH$; see \cref{global:rem:reduction}.
+is called the \emph{reduction}. The two source manuscripts and the wider literature also call the induced operation the residue map, the standard part and the shadow; those are synonyms recorded once here and not used again. We write $\st$ only for the scalar standard part $\OO_\Gamma\to\C$, $a\mapsto a_0$. For $\Gamma\ne0$ this reduction does not extend to a ring map on $\HH$; see \cref{global:rem:reduction}.
 
 \smallskip
 \noindent\textbf{Symbols.} $\mK$ denotes the infinitesimals of the fixed Hahn field $\KK$ and $\mSC$ the infinitesimals of $\SC$; $\mK=\mSC\cap\KK$. Cluster data are indexed by ordinary centres $c\in A$, with $u=z-c$ the local coordinate. The symmetric support of a cluster family is written $E(P)$ throughout; one of the sources writes $S_{\mathcal D}$ for the same set. The positive-support exponential and logarithm are written $\ExpH$ and $\LogH$ to keep them apart from the ordinary exponential $e^h$ of a holomorphic function. The simultaneous deformed remainder map is $\jet_P$. Line-bundle groups are written $\Piclf$ for locally free rank-one modules and $\Pic$ for tensor-invertible modules; \cref{global:cor:Picmeaning} proves these agree here, and \cref{global:rem:piclf} records exactly what that proof buys.
@@ -219,7 +220,7 @@ Manuscript~C is a continuation of a different kind: it changes the ordinary base
 
 Normal forms, infinitesimal power-series evaluation and the underlying surreal field theory have established predecessors, including van den Dries--Ehrlich \cite{vdDE} and Gonshor \cite{Gonshor}; the algebraic closure of Hahn fields with divisible value group is Poonen's \cite[Corollary~4]{Poonen}. The summability algebra is the classical Hahn--Neumann support theory \cite{Neumann}. Berarducci--Mantova's surreal function theory \cite{BM} and Costin--Ehrlich's integration theory \cite{CE} address different extension and summation questions; \emph{we do not identify their function classes with the sheaf studied here}. Ehrlich--Kaplan construct canonical exponentials for surreal and surcomplex exponential fields \cite{EK}; \emph{no novelty claim about merely defining a surcomplex exponential is made here, and no global exponential construction is claimed as a contribution}.
 
-A terminological distinction matters. M\"uller--Strohmaier's Hahn-holomorphic and Hahn-meromorphic functions are normally convergent generalized expansions near a point on a logarithmic cover, with a different analytic variable and admissibility condition \cite[Definitions~2.3 and~2.5]{MS}. In our notation the Hahn parameter is an independent surreal scale and the coefficients are ordinary holomorphic functions on a common ordinary base; there is no ordinary convergence requirement across the Hahn exponents. \emph{Similar terminology does not make the objects or the global support conditions identical, and no equivalence of the two categories is assumed.}
+A terminological distinction matters. The Hahn-holomorphic and Hahn-meromorphic functions of M\"uller and Strohmaier are normally convergent generalized expansions near a point on a logarithmic cover, with a different analytic variable and admissibility condition \cite[Definitions~2.3 and~2.5]{MS}. In our notation the Hahn parameter is an independent surreal scale and the coefficients are ordinary holomorphic functions on a common ordinary base; there is no ordinary convergence requirement across the Hahn exponents. \emph{Similar terminology does not make the objects or the global support conditions identical, and no equivalence of the two categories is assumed.}
 
 The classical analytic inputs are the Weierstrass product theorem, Mittag--Leffler's theorem, entire Hermite interpolation, the scalar additive Cousin theorem and the vanishing of $H^1(\C,\OO)$ and $\Pic(\C,\OO)$; see \cite{Ahlfors,McMullen,Demailly}. These are proved or cited in \cref{global:sec:scalar} and are kept strictly separate from the Hahn arguments. \emph{The ordinary interpolation tools are classical, not new results of this article. The present proofs do not apply Cartan's theorem to $\HH$ as though it were a coherent $\OO$-module}; see \cref{global:sub:notcoherent}. The cocycle and torsor interpretation of degree-one cohomology is standard \cite[Tag~02FQ]{Stacks}, and the local-stalk qualification for invertible sheaves is \cite[Tag~09NT]{Stacks}.
 
@@ -256,7 +257,7 @@ The first two assertions are the Hahn--Neumann support lemma \cite{Neumann,Poone
 
 The finiteness assertion refers to words in the \emph{set of exponents}. It does not refer to an infinite family of spatial points carrying the same exponent, and a well-ordered support alone does not justify an arbitrary rearrangement when infinitely many summands contribute at one exponent. Every infinite operation performed below is audited against \cref{global:lem:support}; the audit is collected in \cref{global:app:audit}.
 
-\begin{remark}[Two negative companions, both load-bearing]\label{global:rem:nonarch}
+\begin{remark}[Three support cautions]\label{global:rem:nonarch}
 First, strong summability is \emph{not} a valuation limit. For $\Gamma=\Q+\Q\omega$ the strong sum of $t^n$ over $n\ge0$ is $(1-t)^{-1}$, yet the tails never reach valuation $\omega$. No argument below has the form ``the valuation improves by a fixed positive amount at each iteration''; the recursions are well founded on a well-ordered exponent set, not contractive.
 
 Second, ``finitely many dependencies at a given exponent'' does not mean ``finitely many exponents below it''. The latter already fails below $\omega$ in $\Q+\Q\omega$. It is the former, and only the former, that legitimizes the finite-parameter replacements in the recursions of \cref{global:thm:preparation,global:lem:division,global:thm:divisor,global:thm:aut}.
@@ -361,8 +362,8 @@ All displayed terms have supports controlled by a positive monoid with finite wo
 
 \emph{There is no selection of a global logarithm of an arbitrary ordinary holomorphic unit in this decomposition: that factor remains in $\OO^\times$, and only the positive-support factor is logarithmized canonically. This logarithm is a logarithm of a positive-exponent perturbation of one; it has nothing to do with choosing a global branch of the ordinary logarithm, or with a global surcomplex exponential at infinite imaginary arguments.} On $\C$ an ordinary nowhere-zero entire function is $e^h$ for entire $h$ determined up to $2\pi i\Z$, so a general global unit of $\HH(\C)$ is $t^\lambda e^h\ExpH A$.
 
-\begin{remark}[Reduction is not defined on the full coefficient sheaf]\label{global:rem:reduction}
-The reduction $\red$ of \cref{global:sub:conventions} is a surjective ring homomorphism $\HI\to\OO$ with kernel $\HP$, so $\HI/\HP\cong\OO$ as sheaves of rings. It is \emph{not} a ring homomorphism on $\HH$: for $\delta>0$ both $t^\delta$ and $t^{-\delta}$ would map to zero while their product is $1$. Below, a line bundle with transitions in $1+\HP$ has an integral model over $\HI$ whose reduction is the trivial ordinary line bundle; \emph{this statement does not assert a reduction map on the full ring $\HH$}, and reduction is always performed on the $\HI$ model instead.
+\begin{remark}[Reduction and the full coefficient sheaf]\label{global:rem:reduction}
+The reduction $\red$ of \cref{global:sub:conventions} is a surjective ring homomorphism $\HI\to\OO$ with kernel $\HP$, so $\HI/\HP\cong\OO$ as sheaves of rings. When $\Gamma\ne0$ it does not extend to a ring homomorphism on $\HH$: for $\delta\in\Gamma_{>0}$ the unit $t^\delta$ has reduction zero, whereas a unital ring map must send a unit to a unit. For $\Gamma=0$, both sheaves are $\OO$ and reduction is the identity. Below, a line bundle with transitions in $1+\HP$ has an integral model over $\HI$ whose reduction is the trivial ordinary line bundle; \emph{this statement does not assert a reduction map on the full ring $\HH$}, and reduction is always performed on the $\HI$ model instead.
 \end{remark}
 
 \section{The ordinary analytic input, with constructions}\label{global:sec:scalar}
@@ -586,7 +587,7 @@ without any hypothesis on stalks.
 \begin{remark}[What the stalk theorem buys over the plane, and what is at stake without it]\label{global:rem:piclf}
 The stalk argument is not a formality. \emph{For a general ringed space with nonlocal stalks, tensor-invertibility need not imply local generation by one section}; the distinction is explicitly noted in \cite[Tag~09NT]{Stacks}, and by \cref{global:prop:nonlocal} our stalks are exactly of that kind whenever $\Gamma\ne0$. \Cref{global:cor:Picmeaning} is what licenses dropping the qualification ``locally free of rank one'' from every Picard statement below.
 
-One of the merged manuscripts declines that step. It proves \cref{global:prop:nonlocal}, cites the same Stacks tag, and states its dichotomy only for $\Piclf(\C,\HH)$ and for $\Pic(\C,\HI)$ --- writing that it \emph{does not silently substitute the larger category of all tensor-invertible modules on an arbitrary ringed space}. We keep that distinction rather than delete it as superseded, and a third manuscript, written independently over a compact base, declines it again for the same reason and on the same authority: see \cref{global:rem:piclfcompact}, where the entire compact classification is stated for $\Piclf$ and no local-ring property of a Hahn stalk is used anywhere. That independent refusal is a confirmation of \cref{global:prop:nonlocal}, not a competing claim. The honest summary is: \eqref{global:eq:lfclassification} holds unconditionally; the identification of $\Pic$ with $\Piclf$ on $(\C,\HH)$ holds \emph{because} of \cref{global:thm:PID} and not otherwise; and every theorem below stated for $\Pic(\C,\HH)$ specializes verbatim to $\Piclf(\C,\HH)$ for a reader who declines \cref{global:thm:PID}.
+One of the merged manuscripts declines that step. It proves \cref{global:prop:nonlocal}, cites the same Stacks tag, and states its dichotomy only for $\Piclf(\C,\HH)$ and for $\Pic(\C,\HI)$ --- writing that it \emph{does not silently substitute the larger category of all tensor-invertible modules on an arbitrary ringed space}. We keep that distinction rather than delete it as superseded, and a third manuscript, written independently over a compact base, declines it again for the same reason and on the same authority: see \cref{global:rem:piclfcompact}, where the compact classification is proved for $\Piclf$ without a stalk hypothesis and the coordinate-chart consequence is recorded separately. That independent refusal is a confirmation of \cref{global:prop:nonlocal}, not a competing claim. The honest summary is: \eqref{global:eq:lfclassification} holds unconditionally; the identification of $\Pic$ with $\Piclf$ on $(\C,\HH)$ follows here from \cref{global:thm:PID}; and every theorem below stated for $\Pic(\C,\HH)$ specializes verbatim to $\Piclf(\C,\HH)$ for a reader who declines \cref{global:thm:PID}.
 \end{remark}
 
 \begin{definition}[The line-bundle groups over the plane]\label{global:def:bundles}
@@ -790,7 +791,7 @@ The selected divisor is nonprincipal by \cref{global:ex:simple}. For the complem
 \[
   Q_j(u)=\frac{u^j-a^j}{u-a}=u^{j-1}+au^{j-2}+\cdots+a^{j-1},
 \]
-whose coefficient of $u^{j-2}$ is $t^{1/j}$, so its symmetric support union is again $\{1/j:j\ge2\}$ and is not well ordered. The necessity half of \cref{global:thm:divisor} excludes a global realization. Local equations exist on each $U_j$ and are units on the punctured overlaps, so the sub-divisors are locally coherent; a factorization with the prescribed zero divisors would contradict their nonprincipality.
+whose coefficient of $u^{j-2}$ is $t^{1/j}$, so its symmetric support union contains $\{1/j:j\ge2\}$ and is not well ordered. In fact that union is $\{k/j:j\ge2,\ 1\le k<j\}=\Q\cap(0,1)$. The necessity half of \cref{global:thm:divisor} excludes a global realization. Local equations exist on each $U_j$ and are units on the punctured overlaps, so the sub-divisors are locally coherent; a factorization with the prescribed zero divisors would contradict their nonprincipality.
 \end{proof}
 
 This does \emph{not} claim that $F$ is irreducible, that every factorization of $F$ fails, or that the global ring has any particular unique-factorization property. The assertion concerns this specific, intrinsically meaningful partition of one effective divisor.
@@ -1131,13 +1132,14 @@ By \cref{global:cor:Picmeaning} and \eqref{global:eq:lfclassification}, $\Pic(\C
 \[
   H^1(\C,\HH^\times)\cong
   H^1(\C,\underline\Gamma)\times H^1(\C,\OO^\times)\times H^1(\C,\HP),
-  \qquad
+\]
+\[
   H^1(\C,\HI^\times)\cong H^1(\C,\OO^\times)\times H^1(\C,\HP).
 \]
 The factor $H^1(\C,\underline\Gamma)$ vanishes because locally constant torsors over the simply connected, locally contractible plane have trivial monodromy and a global section. The factor $H^1(\C,\OO^\times)$ vanishes by the classical triviality of holomorphic line bundles on $\C$, derived in \cref{global:sec:scalar} from $H^1(\C,\OO)=0$, $H^2(\C,\underline\Z)=0$ and the exponential sequence \cite{Demailly}. Only $H^1(\C,\HP)$ remains, and extension of scalars from $\HI$ to $\HH$ is the displayed isomorphism because both unit decompositions contain the same $\HP$ factor. The last assertion is \cref{global:rem:reduction} together with the transitions being in $1+\HP$ after normalization.
 \end{proof}
 
-This does not say that a contractible space can carry a nontrivial ordinary complex line bundle. It says that the coefficient sheaf is different: the obstruction lies in holomorphic dependence coupled to a global well-ordered support, not in ordinary monodromy. \emph{There is no reduction ring map $\HH\to\OO$ sending positive monomials to zero, because those monomials are units in $\HH$; reduction is always performed on the $\HI$ model.}
+This does not say that a contractible space can carry a nontrivial ordinary complex line bundle. It says that the coefficient sheaf is different: the obstruction lies in holomorphic dependence coupled to a global well-ordered support, not in ordinary monodromy. \emph{When $\Gamma\ne0$ there is no reduction ring map $\HH\to\OO$ sending positive monomials to zero, because those monomials are units in $\HH$; reduction is always performed on the $\HI$ model.}
 
 \subsection{Exactly which value groups give vanishing over the plane}
 
@@ -1276,9 +1278,9 @@ Neither ordinary discreteness, nor finite solvability, nor bounded raw values, n
 
 Everything up to this point is a theorem about one ordinary base, the complex plane $\C$. The plane is noncompact, contractible and Stein, and each of those three properties is used somewhere above: contractibility kills $H^1(\C,\underline\Gamma)$ and $H^1(\C,\OO^\times)$ in \cref{global:prop:Picreduction}, Steinness supplies \cref{global:lem:scalarCousin}, and noncompactness is what allows infinitely many prescribed centres in the first place --- which is exactly where all the plane obstructions come from.
 
-This part of the article changes exactly one thing: the ordinary base becomes a \emph{fixed compact connected ordinary Riemann surface} $X$ of genus $g$. The coefficient recipe, the value group, the monomial convention $t^\gamma=\omega^{-\gamma}$, the support calculus and the summability discipline are unchanged. What changes is the answer, and it changes in both directions at once. On a compact base there are only finitely many centres, so the plane's well-ordering obstruction evaporates; in its place appear three genuinely new invariants that the plane cannot see, because on the plane two of them are the cohomology of a contractible space.
+This part of the article changes exactly one thing: the ordinary base becomes a \emph{fixed compact connected ordinary Riemann surface} $X$ of genus $g$. The coefficient recipe, the value group, the monomial convention $t^\gamma=\omega^{-\gamma}$, the support calculus and the summability discipline are unchanged. What changes is the answer, and it changes in both directions at once. On a compact base a closed discrete set of centres is finite, so the plane's well-ordering obstruction evaporates; in its place appear three genuinely new invariants that the plane cannot see, because on the plane two of them are the cohomology of a contractible space.
 
-\subsection{Why this is not a corollary of the plane theory, and not a corollary of it either}\label{global:sub:twobasewarning}
+\subsection{Why the two global theories do not specialize to each other}\label{global:sub:twobasewarning}
 
 Neither part implies the other, and the failure is not symmetric.
 
@@ -1366,7 +1368,7 @@ is a well-defined two-sided inverse: acting on a family with support in $S$, it 
 \end{lemma}
 
 \begin{proof}
-By \cref{global:lem:support} the set $S+E^*$ is well ordered and a fixed exponent has only finitely many representations $s+e_1+\cdots+e_n$, with only finitely many word lengths $n$ occurring. Hence the displayed coefficient of $A^nx$ at a fixed exponent is a finite sum, and summing over $n$ adds only finitely many further terms. Every coefficient of \eqref{global:eq:operatorneumann} is therefore defined by finite linear algebra, and multiplying by $1+A$ cancels the terms pairwise at each exponent.
+By \cref{global:lem:support} the set $S+E^*$ is well ordered and a fixed exponent has only finitely many representations $s+e_1+\cdots+e_n$, with only finitely many word lengths $n$ occurring. Hence the displayed coefficient of $A^nx$ at a fixed exponent is a finite sum, and summing over $n$ adds only finitely many further terms. Every coefficient of \eqref{global:eq:operatorneumann} is therefore a finite sum of ordinary operator compositions, and multiplying by $1+A$ cancels the terms pairwise at each exponent.
 \end{proof}
 
 \begin{remark}[What a support certificate is, and what it refuses]\label{global:rem:certificate}
@@ -1480,8 +1482,32 @@ If $\nu(L)=0$, take a finite good trivializing cover and change local frames by 
 \end{equation}
 the $a_{ij}$ defining $L_0$ and the $h_{ij}$ forming an additive cocycle. The cover being finite, a union of finitely many well-ordered sets gives one well-ordered $E\subseteq\Gamma_{>0}$ containing every $\supp h_{ij}$; local smooth gauges and all later nonlinear operations are then certified in $E^*$ by \cref{global:rem:certificate}. \emph{It is finiteness of the cover, not any property of $\Gamma$, that produces $E$}; this is the compact counterpart of the plane's admissibility hypothesis, and it is why that hypothesis disappears here.
 
-\begin{remark}[The classification assumes no local-ring property]\label{global:rem:piclfcompact}
-\Cref{global:thm:piccompact} is stated for $\Piclf$, defined by actual rank-one local trivializations, and its proof uses no hypothesis whatever on the stalks of $\HH$ over $X$. This is deliberate and it is the same distinction the plane part keeps on record in \cref{global:rem:piclf}: an ordinary-base Hahn stalk need not be a local ring, so the passage from tensor-invertible modules to locally free rank-one modules is a theorem and not a definition. Over $\C$ that passage \emph{is} available, by \cref{global:thm:PID,global:cor:Picmeaning}; over $X$ nothing of the kind is proved or used, and no analogue of \cref{global:thm:PID} for the stalks of $\HH$ on a compact base is asserted here. A reader who wishes to compare the two parts should note that \cref{global:prop:nonlocal} --- nonlocality of the stalks for $\Gamma\ne0$ --- is exactly what makes the present restraint necessary, and that the compact part was developed independently of the plane part's principal-ideal-domain theorem and does not import it.
+\begin{remark}[Local stalk identification and the compact Picard group]\label{global:rem:piclfcompact}
+The proof of \cref{global:thm:piccompact} uses only actual rank-one local
+trivializations and the unit sheaf, so it needs no hypothesis on stalks.
+The independently written compact source deliberately restricted its statements
+to $\Piclf$ and did not import the plane source's PID theorem. That is a
+statement about its proof dependencies, not an obstruction to comparing the
+stalks in the merged article.
+
+Indeed, choose an ordinary holomorphic coordinate $u:U\to D$ about $x\in X$,
+with $u(x)=0$. Composition with $u^{-1}$ sends each holomorphic coefficient on
+$U$ to one on $D$, introduces no Hahn exponent and commutes with restriction.
+It therefore identifies $(\HH)_x$ with the ordinary-base plane stalk $R_0$.
+By \cref{global:thm:PID} this stalk is a PID. The same argument works on
+any ordinary Riemann surface and uses no compactness.
+
+Consequently the local dual-generator argument of
+\cref{global:cor:Picmeaning} gives
+\[
+  \Pic(X,\HH)=\Piclf(X,\HH).
+\]
+The integral stalk is local by the same coordinate identification and
+\cref{global:prop:nonlocal}, so the analogous equality holds for $\HI$.
+Thus the compact classification also describes tensor-invertible modules.
+We retain $\Piclf$ in its statements to make their original proof scope
+visible. This local transfer supplies neither the plane's global vanishing
+dichotomy on $X$ nor the compact cohomology comparison on the plane.
 \end{remark}
 
 \subsection{The two bases side by side}\label{global:sub:twohalves}
@@ -1490,9 +1516,9 @@ the $a_{ij}$ defining $L_0$ and the $h_{ij}$ forming an additive cocycle. The co
 
 Over $\C$: $\Pic(\C,\HH)=\Piclf(\C,\HH)\cong H^1(\C,\HP)$, which vanishes exactly when $\Gamma=\{0\}$ or $\Gamma=\Z\delta$, and otherwise has complex dimension at least $2^{\aleph_0}$, with equality for countable noncyclic $\Gamma$. The two vanishing factors $H^1(\C,\underline\Gamma)$ and $H^1(\C,\OO^\times)$ carry no information, and the surviving factor is \emph{not} computed in closed form.
 
-Over compact $X$: all three factors survive and the third \emph{is} computed in closed form, $\Gamma^{2g}\oplus\Pic(X)\oplus\mK^{\,g}$. There is no well-ordering dichotomy at all: for $g\ge1$ and $\Gamma\ne0$ the group is never zero, and for $g=0$ it is $\Z$ for every $\Gamma$, cyclic or not.
+Over compact $X$: the three factors are identified, although individual factors can vanish, and the third is computed explicitly, $\Gamma^{2g}\oplus\Pic(X)\oplus\mK^{\,g}$. There is no well-ordering dichotomy at all: for $g\ge1$ and $\Gamma\ne0$ the group is never zero, and for $g=0$ it is $\Z$ for every $\Gamma$, cyclic or not.
 
-Neither statement is a special case of the other, and neither survives transport to the other base. The shared content is the coefficient sheaf, the unit splitting \eqref{global:eq:unitsX}, and the principle that the obstruction lives in the positive-support factor.
+Neither statement is a special case of the other, and neither survives transport to the other base. The shared content includes the coefficient sheaf and the unit splitting \eqref{global:eq:unitsX}. On the plane only the positive-support cohomology remains; the compact base can also contribute ordinary and valuation classes.
 
 \section{A finite matrix for the zero-valuation sector}\label{global:sec:finitematrix}
 
@@ -1577,7 +1603,7 @@ Every map used is coefficientwise linear or carries the positive Neumann support
 \end{proof}
 
 \begin{remark}[Relation to homological perturbation]\label{global:rem:perturbation}
-The operators $Ti_0$, $P_1$ and $Th$ are the usual transferred inclusion, projection and homotopy of a two-term contraction, and $B$ is its Schur complement. Homological perturbation and its deformation applications are classical \cite{Crainic,GL}, and \emph{no discovery of that lemma is claimed}. What requires proof here is that the infinite expressions are admissible in an arbitrary-rank Hahn workspace and that the resulting global complex computes the common-domain sheaf cohomology of \cref{global:def:compactsheaf}.
+The operators $Ti_0$, $P_1$ and $Th$ are the usual transferred inclusion, projection and homotopy of a two-term contraction, and $B$ is its Schur complement. Homological perturbation and its deformation applications are classical \cite[\S2, especially Lemma~2.4]{Crainic}\cite{GL}, and \emph{no discovery of that lemma is claimed}. Crainic uses $ip=1+dh+hd$; replacing his homotopy by $-h$ gives the sign convention \eqref{global:eq:hodge} and the inverse $1+h\delta$ here. What requires proof here is that the infinite expressions are admissible in an arbitrary-rank Hahn workspace and that the resulting global complex computes the common-domain sheaf cohomology of \cref{global:def:compactsheaf}.
 \end{remark}
 
 \subsection{Riemann--Roch, stable section counts, and integral torsion}
@@ -1685,7 +1711,7 @@ an empty cluster having $m=0$ and $P=1$. Let $D$ be the coherent Cartier datum g
 \end{equation}
 and the valuation class of the associated Hahn line bundle is zero.
 
-These are divisor data at infinitesimally displaced points, not merely values at the ordinary centres. \emph{If $\Gamma$ is divisible} then $\KK$ is algebraically closed \cite[Corollary~4]{Poonen} and the roots of each nontrivial cluster polynomial lie in $\mK$ --- a root of valuation $\beta\le0$ would give its leading term strictly smaller valuation than every lower term, which cannot cancel --- so $D$ may be read as a finite signed multiset of infinitesimal points. \emph{The criterion below needs no roots and is stated without any divisibility hypothesis; the root picture is simply unavailable when $\Gamma$ is not divisible, and nothing below uses it.}
+These are divisor data at infinitesimally displaced points, not merely values at the ordinary centres. \emph{If $\Gamma$ is divisible} then $\KK$ is algebraically closed \cite[Corollary~4]{Poonen} and the roots of each nontrivial cluster polynomial lie in $\mK$ --- a root of valuation $\beta\le0$ would give its leading term strictly smaller valuation than every lower term, which cannot cancel --- so $D$ may be read as a finite signed multiset of infinitesimal points. \emph{The criterion below needs no roots and is stated without any divisibility hypothesis; without divisibility a cluster need not split in $\KK$, although its roots always exist in a divisible Hahn enlargement. Nothing below requires such an enlargement.}
 
 \subsection{Newton sums are the correct symmetric coordinates}
 
@@ -1779,7 +1805,7 @@ Changing the Serre sign convention changes both sides by one overall sign and no
 
 If (i) holds the class of $D$ vanishes; its ordinary component is $[D_0]$ and its positive component is $\xi_D$, so \cref{global:thm:piccompact} gives (ii). Conversely (ii) kills those two components while the valuation component is already zero, and \cref{global:cor:divseq} then gives principality, which is (i).
 
-For the constructive addendum, suppose $\xi_D=0$. Every coefficient of the logarithmic \v Cech cocycle is then an ordinary coboundary on this fixed cover, and a support-preserving splitting is explicit: take a fixed partition of unity to get smooth $b_i$ with $b_i-b_j=\ell_{ij}$, form the global exact $(0,1)$-form $\alpha=\bar\partial b_i$, and set $c=h\alpha$; then $k_i=b_i-c$ is holomorphic with $k_i-k_j=\ell_{ij}$. Applied coefficientwise this shrinks no domain and gives $\supp k_i\subseteq E^*\setminus\{0\}$. Let $f_i$ be the local defining function of $D$ and let $f^0_i$ be $u_c^{m_c^+-m_c^-}$ on a cluster disk and $1$ on $U_0$. The quotients $q_i=(f_i/f^0_i)\ExpH(-k_i)$ agree on overlaps, have meromorphic coefficients, exponent-zero coefficient $1$ and support in $E^*$, so they define $q\in\MG(X)$, and $F=f_0q$ has the required local unit ratios and leading coefficient $f_0$. Two such generators differ by a global unit of $\HH$, which is a nonzero element of $\KK$ by \cref{global:thm:comparison}. Finally ordinary principality is unaffected by workspace enlargement and a nonzero Hahn coefficient of $\mathcal A_D$ stays nonzero, which is the last assertion.
+For the constructive addendum, suppose $\xi_D=0$. Every coefficient of the logarithmic \v Cech cocycle is then an ordinary coboundary on this fixed cover, and a support-preserving splitting is explicit: take a fixed partition of unity to get smooth $b_i$ with $b_i-b_j=\ell_{ij}$, form the global exact $(0,1)$-form $\alpha=\bar\partial b_i$, and set $c=h\alpha$; then $k_i=b_i-c$ is holomorphic with $k_i-k_j=\ell_{ij}$. Applied coefficientwise this shrinks no domain and gives $\supp k_i\subseteq E^*\setminus\{0\}$. Let $f_i$ be the local defining function of $D$ and let $f^0_i$ be $u_c^{m_c^+-m_c^-}$ on a cluster disk and $1$ on $U_0$. The quotients $q_i=(f_i/f^0_i)\ExpH(-k_i)$ agree on overlaps, have meromorphic coefficients, exponent-zero coefficient $1$ and support in $E^*$, so they define $q\in\MG(X)$, and $F=f_0q$ has the required local unit ratios and leading coefficient $f_0$. Two such generators differ by a global unit of $\HH$, which is a nonzero element of $\KK$ by \cref{global:thm:comparison}. If the generators are normalized to have the same leading coefficient $f_0$ at exponent zero, their ratio lies in $1+\mK$. Finally ordinary principality is unaffected by workspace enlargement and a nonzero Hahn coefficient of $\mathcal A_D$ stays nonzero, which is the last assertion.
 \end{proof}
 
 \begin{remark}[Ordinary periods versus infinitesimal displacement]\label{global:rem:periods}
@@ -1801,7 +1827,7 @@ If $X=\mathbb P^1(\C)$ then $g=0$ and \cref{global:thm:piccompact} gives
 \[
   \Piclf(\mathbb P^1,\HH)\cong\Pic(\mathbb P^1)\cong\Z .
 \]
-There is neither valuation monodromy nor an infinitesimal Abel obstruction, and by \cref{global:thm:abelcompact} every finite signed cluster datum of total degree zero is principal: in one affine coordinate the product of the defining polynomials is the expected rational generator, the factor at infinity accounting for the total degree.
+There is neither valuation monodromy nor an infinitesimal Abel obstruction, and by \cref{global:thm:abelcompact} every finite signed cluster datum of total degree zero is principal: in standard affine coordinates the finite product of the defining polynomial ratios gives a rational generator, the factor at infinity accounting for the total degree. This explicit product uses coordinates $u_c=z-c$ at finite centres and $u_\infty=1/z$ at infinity; for arbitrary chosen local coordinates the existence assertion follows from the Abel criterion, without identifying those coordinates with $z-c$.
 
 \emph{This is not a global Mittag--Leffler assertion for the noncompact ordinary plane.} On a compact base there are only finitely many prescribed clusters and the union of their supports is automatically well ordered, so the hypothesis of \cref{global:thm:divisor} is vacuous. Over $\C$ the same value group $\Gamma=\Q$ gives $\dim_\C\Pic(\C,\mathscr H_\Q)=2^{\aleph_0}$ by \cref{global:thm:dimension}, and \cref{global:ex:simple} exhibits an unrealizable divisor of exactly the kind that cannot occur here. Both statements are about genus zero and about the same sheaf; they differ only in compactness of the base, and neither may be quoted for the other.
 \end{example}
@@ -1949,9 +1975,19 @@ Let $X$ be compact with $g\ge1$ and let $B$ be \emph{any} set of positive surrea
 The set of all those integer multiples is still a set, and every set of surreal numbers has a surreal strict upper bound, for instance by the usual set-sized cut construction. Choose a positive $\eta$ strictly above that set and let $\Gamma$ be the divisible additive subgroup generated by $B\cup\{\eta\}$, which is set-sized. Use the cocycle $\ExpH(t^\eta h_{ij})$ for a nonzero ordinary class $[h_{ij}]$: its Picard class is nonzero by \cref{global:thm:piccompact}, while all the stated reductions are trivial because $\eta>n\beta$ for every relevant $n$ and $\beta$. \emph{No cohomology of a proper-class space is formed anywhere in this construction}, in accordance with the set-sizedness convention of \cref{global:sub:conventions}.
 \end{proof}
 
+The order of the quantifiers in \cref{global:cor:setcutoffs} matters: the
+workspace is chosen after the set of cutoffs. In a fixed nonzero $\Gamma$,
+all positive cutoffs together do detect every integral Picard class. The
+ordinary Picard component survives every reduction. If the positive component
+is nonzero, choose a basis of $H^1(X,\OO_X)$ and a nonzero coordinate with
+least exponent $\gamma>0$. Its coefficient at $\gamma$ survives modulo
+$t^\beta$ for any $\beta>\gamma$, for example $\beta=2\gamma$, so
+\cref{global:lem:truncatedpic} detects it. No single prescribed set of surreal
+cutoffs has this property uniformly over all enlarged workspaces.
+
 \subsection{Three tests, not one}\label{global:sub:threetests}
 
-The compact part separates three decisions that are easy to conflate. To decide whether a Hahn line bundle has any nonzero coherent meromorphic section, compute its valuation class (\cref{global:thm:meromorphic}). To decide whether a finite moving divisor is principal, compute its ordinary divisor class and its positive Abel functional (\cref{global:thm:abelcompact}). To decide whether a one-scale formal test is faithful, decide whether that scale is cofinal in the value group, that is whether $\Delta=\Gamma$ (\cref{global:thm:adic}).
+The compact part separates three decisions that are easy to conflate. To decide whether a Hahn line bundle has any nonzero coherent meromorphic section, compute its valuation class (\cref{global:thm:meromorphic}). To decide whether a finite moving divisor is principal, compute its ordinary divisor class and its positive Abel functional (\cref{global:thm:abelcompact}). For $g>0$, a one-scale formal test is faithful exactly when the scale is cofinal in the value group, that is when $\Delta=\Gamma$; for $g=0$ it is always faithful (\cref{global:thm:adic}).
 
 None subsumes another. A nonzero valuation class prevents every meromorphic section, even in high degree (\cref{global:ex:highdegree}). A nonzero infinitesimal class may admit many meromorphic sections while admitting no nowhere-vanishing holomorphic one. A nonzero infinitesimal class may also be invisible to every power of a smaller scale (\cref{global:ex:tomega}). And \cref{global:ex:genustwo} shows that cancellation of the first displacement does not make the full infinitesimal Abel class vanish.
 
@@ -1992,18 +2028,18 @@ The compact results are classification and comparison theorems, and their mechan
 Question & Exact positive result & Sharp boundary\\
 \midrule
 Cohomology of an ordinary bundle with Hahn coefficients & $H^q(X,V)\otimes_\C$ the coefficient ring, for $q=0,1$, with higher vanishing & Compactness used twice; false over the noncompact plane\\[0.45em]
-Which rank-one modules exist & $\Gamma^{2g}\oplus\Pic(X)\oplus\mK^{\,g}$, canonically split & Stated for $\Piclf$; no local-ring property of stalks is used or proved\\[0.45em]
+Which rank-one modules exist & $\Gamma^{2g}\oplus\Pic(X)\oplus\mK^{\,g}$ after choosing bases & The $\Piclf$ proof is independent of stalks; coordinate charts also identify $\Pic$ with $\Piclf$\\[0.45em]
 Nonzero coherent meromorphic section & Exists exactly when the valuation class vanishes & High degree with no section at all; $H^1$ in that sector is \emph{not} computed\\[0.45em]
 Cohomology when the valuation class vanishes & $\ker B$ and $\coker B$ for a finite matrix over $\OO_\Gamma$ with entries in $\mK$; Riemann--Roch & Integral torsion $\OO_\Gamma/\lambda\OO_\Gamma$ invisible over the field\\[0.45em]
 Principality of a finite moving cluster & Ordinary principality \emph{and} vanishing of a root-free Newton-sum Abel functional & Zero first displacement does not suffice: $y^2=1+x^5$\\[0.45em]
-What all powers of one scale see & Split surjection onto the limit, kernel $H^1(X,\OO_X)\otimes_\C I_\delta$ & Injective only for $g=0$ or $\Delta=\Gamma$; no set of cutoffs suffices\\
+What all powers of one scale see & Split surjection onto the limit, kernel $H^1(X,\OO_X)\otimes_\C I_\delta$ & Injective exactly for $g=0$ or $\Delta=\Gamma$; prescribed cutoffs can be defeated after enlarging the workspace\\
 \bottomrule
 \end{tabular}
 \end{center}
 
 \subsection{What the conclusions do not say}
 
-All cohomology groups and line bundles here live over the ordinary complex plane with its usual topology. \emph{We have not assigned ordinary sheaf cohomology to the proper class of all surcomplex points}; each fixed coefficient group is a set, and every algebraic support and recursive construction is set-sized. \emph{No ordinary real-parameter contour is claimed to be fine-continuous, and no transfinite support recursion is treated as a convergent fine-topological iteration.}
+All cohomology groups and line bundles here live over the ordinary complex plane or the specified compact Riemann surface, with its ordinary topology. \emph{We have not assigned ordinary sheaf cohomology to the proper class of all surcomplex points}; each fixed coefficient group is a set, and every algebraic support and recursive construction is set-sized. \emph{No ordinary real-parameter contour is claimed to be fine-continuous, and no transfinite support recursion is treated as a convergent fine-topological iteration.}
 
 The divisor theorem concerns $\C\sh$, the finite surcomplex plane. It neither contradicts nor weakens the all-scale polynomial rigidity theorem of \cite[\S12]{Source}: a datum constructed by \cref{global:thm:divisor} has a coherent description at the ordinary scale and need not have coherent descriptions at every infinite surreal scale; and an infinite prescribed zero divisor cannot be the divisor of a polynomial, so these realizers cannot satisfy that stronger hypothesis. The word \emph{entire} here means that every coefficient is ordinary entire and the evaluation is defined on $\C\sh$; it does not mean coherence at every surreal scale.
 
@@ -2013,15 +2049,15 @@ A Hahn principal-part solution on $\C\setminus A$ is not automatically a meromor
 
 The compact part carries its own boundaries, and they are different ones.
 
-\emph{The compact theorems are not statements about the plane.} \Cref{global:thm:comparison} uses compactness twice --- finite-dimensional ordinary harmonic spaces, and one global well-ordered support bound for smooth Hahn forms --- and \emph{it must not be applied to the noncompact plane by replacing $X$ by $\C$ and setting $g=0$} (\cref{global:rem:whycompact}). In the opposite direction, no compact statement is a corollary of the plane part.
+\emph{The compact theorems are not statements about the plane.} \Cref{global:thm:comparison} uses compactness twice --- finite-dimensional ordinary harmonic spaces, and one global well-ordered support bound for smooth Hahn forms --- and \emph{it must not be applied to the noncompact plane by replacing $X$ by $\C$ and setting $g=0$} (\cref{global:rem:whycompact}). The global compact comparison does not follow from the plane results; local algebra does transfer through coordinate charts (\cref{global:rem:piclfcompact}).
 
 \emph{Cohomology in the nonzero-valuation sector is not computed.} \Cref{global:thm:finitecoh,global:cor:RRcompact} apply only when $\nu(L)=0$, because the positive perturbation argument of \cref{global:prop:normalform} has no global ordinary bundle and no global scalar positive gauge in the required form otherwise. \Cref{global:thm:meromorphic} proves $H^0(X,L)=0$ when $\nu(L)\ne0$, and \emph{that vanishing determines neither $H^1(X,L)$ nor an Euler characteristic there}; see \cref{global:rem:nonzerovaluation}. The plane part has no such gap, since over $\C$ the valuation factor vanishes identically.
 
-\emph{The compact Abel theorem covers finite polynomial cluster Cartier data only.} It is not asserted that every section of $\DG$ admits such a presentation, nor that an arbitrary meromorphic-coefficient Hahn series has a classical finite zero count (\cref{global:rem:abelscope}). Divisibility of $\Gamma$ is what would license the root interpretation of a cluster, and what makes $\KK$ algebraically closed; the theorems are stated root-free precisely to avoid it, and \emph{without divisibility the root picture is simply unavailable}.
+\emph{The compact Abel theorem covers finite polynomial cluster Cartier data only.} It is not asserted that every section of $\DG$ admits such a presentation, nor that an arbitrary meromorphic-coefficient Hahn series has a classical finite zero count (\cref{global:rem:abelscope}). Divisibility of $\Gamma$ makes $\KK$ algebraically closed and guarantees that every cluster splits there. Without it an individual cluster may still split, and roots always exist in a divisible Hahn enlargement; the root-free criterion requires neither splitting nor enlargement.
 
 \emph{No comparison functor is constructed} to an algebraic curve over $\KK$, or to a rigid-analytic, Berkovich or logarithmic Picard functor. Such identifications would require comparison functors with stated hypotheses, and the valuation-monodromy examples of \cref{global:ex:highdegree} already rule out the most naive degree- and section-preserving comparison. \emph{The compact objects are not compact subsets of the fine surcomplex plane}: the base topology is ordinary complex topology, no fine-topological convergence occurs, and no general surreal version of Hodge theory or Serre duality is proved or assumed.
 
-\emph{No uniform decision procedure is asserted} for unrestricted surcomplex symbolic inputs. The formulas make each \emph{fixed} Hahn coefficient a finite computation; a uniform algorithm over arbitrary symbolic coefficient families would need additional representability and equality assumptions that are not made here.
+\emph{No uniform decision procedure is asserted} for unrestricted surcomplex symbolic inputs. Each fixed Hahn coefficient uses finitely many ordinary operations, some of which are analytic solution operators rather than effective finite-dimensional calculations; a uniform algorithm over arbitrary symbolic coefficient families would need additional representability and equality assumptions that are not made here.
 
 \subsection{Further precise directions}
 
@@ -2039,9 +2075,9 @@ The globally coherent category has a precise compatibility boundary. Infinitely 
 
 This yields a global Weierstrass theorem with an exact converse, a support-restricted Chinese remainder theorem, explicit principal divisors with nonprincipal effective sub-divisors, an exact Cousin criterion, and a complete vanishing dichotomy for the plane Picard group together with its exact dimension over countable noncyclic value groups. The phenomena already occur in the countable divisible workspace $\Gamma=\Q$, and they require neither proper-class summation nor any problematic notion of fine-topological convergence.
 
-Over a compact ordinary base the same coefficient sheaf behaves differently and is classified completely. Finitely many clusters make the well-ordering question vacuous, and what remains is cohomological: a valuation monodromy in $\Gamma^{2g}$ that is exactly the obstruction to a nonzero coherent meromorphic section, an ordinary line bundle, and an infinitesimal class in $\mK^{\,g}$ that a finite matrix over $\OO_\Gamma$ turns into computable cohomology and a Riemann--Roch identity. Principality of a finite moving divisor is decided by ordinary principality together with a root-free Abel functional, and a genus-two witness shows that cancelling the first symmetric displacement is not enough. Finally, no set of cutoffs at one scale --- indeed no set of scales at all --- detects every integral class once the genus is positive.
+Over a compact ordinary base the same coefficient sheaf behaves differently and is classified completely. Finitely many clusters make the well-ordering question vacuous, and what remains is cohomological: a valuation monodromy in $\Gamma^{2g}$ that is exactly the obstruction to a nonzero coherent meromorphic section, an ordinary line bundle, and an infinitesimal class in $\mK^{\,g}$ that a finite matrix over $\OO_\Gamma$ turns into computable cohomology and a Riemann--Roch identity. Principality of a finite moving divisor is decided by ordinary principality together with a root-free Abel functional, and a genus-two witness shows that cancelling the first symmetric displacement is not enough. Finally, if $g>0$, any prescribed set of surreal cutoffs can be defeated in a larger set-sized workspace. This quantifies over workspaces: in one fixed nonzero $\Gamma$, allowing all positive cutoffs detects every class, while powers of a single scale do so exactly when that scale is cofinal.
 
-The two parts share their coefficient sheaf, their support calculus and their insistence that symmetric coordinates, not labelled roots, are what a global criterion may test. They share nothing else, and neither may be quoted for the other's base.
+The two parts share their coefficient sheaf, their support calculus and their insistence that symmetric coordinates, not labelled roots, are what a global criterion may test. Their local algebra also agrees in coordinate charts; their global existence and classification theorems retain the stated base hypotheses.
 
 \appendix
 
@@ -2073,7 +2109,7 @@ Nontriviality arguments & A forced infinite descending positive sequence would h
 \midrule
 Global smooth Hahn forms on $X$ & One well-ordered support from a finite subcover (\cref{global:lem:compactsupport}); false on a noncompact base.\\[0.4em]
 Coefficientwise Green and Hodge operators & The same global support; a \emph{fixed} cutoff solves $\bar\partial$ for every coefficient on one fixed smaller disk.\\[0.4em]
-Operator Neumann inverse $(1+A)^{-1}$ & $S+E^*$ with unbounded coefficient operators; finitely many words, hence finite linear algebra at each exponent.\\[0.4em]
+Operator Neumann inverse $(1+A)^{-1}$ & $S+E^*$ with unbounded coefficient operators; finitely many words, hence finitely many operator applications at each exponent.\\[0.4em]
 Positive Dolbeault normal form & $E$ for $\alpha$, $E^*$ for the smooth gauges; the harmonic correction $\bar\partial c$ adds no exponent.\\[0.4em]
 Transferred matrix $B=p_1\delta(1+h\delta)^{-1}i_0$ & $E^*\setminus\{0\}$; a finite matrix because ordinary harmonic spaces are finite-dimensional.\\[0.4em]
 Logarithm of a cluster polynomial, Newton form & $E^*\setminus\{0\}$; finitely many negative powers of $u$ at each fixed exponent.\\[0.4em]
@@ -2089,13 +2125,13 @@ Only the ordinary scalar constructions use analytic convergence: normal converge
   \text{support calculus}\Longrightarrow
   \text{units, logarithms, evaluation, preparation, division},\\
   \text{preparation}+\text{scalar interpolation}\Longrightarrow
-  \text{global divisor realization}+\text{deformed interpolation}
-  \Longrightarrow\text{moving Mittag--Leffler},\\
-  \text{preparation}\Longrightarrow\text{principal-ideal-domain stalks}
-  \Longrightarrow\text{tensor-invertible}=\text{rank-one locally free},\\
+  \text{global divisor realization}+\text{deformed interpolation},\\
+  \text{these two constructions}\Longrightarrow\text{moving Mittag--Leffler},\\
+  \text{preparation}\Longrightarrow\text{principal-ideal-domain stalks},\\
+  \text{PID stalks}\Longrightarrow\text{tensor-invertible}=\text{rank-one locally free},\\
   \text{scalar Cousin}+\text{exact singular-support criterion}
-  \Longrightarrow\text{descending-scale classes}
-  \Longrightarrow\text{the line-bundle dichotomy}.
+  \Longrightarrow\text{descending-scale classes},\\
+  \text{these classes}+\text{cyclic case}\Longrightarrow\text{the line-bundle dichotomy}.
   \end{gathered}
 \]
 The connection between the last two chains is the explicit divisor-transition cocycle of \cref{global:prop:Cartierexample}. The principal-ideal-domain argument uses the Euclidean algorithm on finite-degree polynomials and the least element of a set of nonnegative integers; it does not invoke an unproved Noetherian property of an infinite coefficient ring. The plane Picard argument does not silently assume local stalks: local rank-one triviality is established separately in \cref{global:cor:Picmeaning}.
@@ -2122,7 +2158,7 @@ Potential failure points explicitly avoided there: no infinite-dimensional smoot
 
 \section{Reproducible symbolic checks}\label{global:app:checks}
 
-The source archives carry \texttt{verify\_examples.py}, which uses exact symbolic algebra to check finite truncations and polynomial identities illustrating the proofs: a mixed principal-part logarithm and exponential through degree six in $t$; cancellation for two finite root clusters; the two-sided inverse of $z+tz^2$ through degree seven, against the Catalan recurrence; complementary root-cluster factors for degrees two through ten; finite Lagrange interpolation of positive-support motions; a truncated instance of the preparation recursion; finite instances of the global divisor recursion and of local divisibility; root-selector idempotents; and finite residue identities. For the preparation check one takes
+The source archives supplied two plane verification scripts, maintained as \nolinkurl{code/09-moving-divisors-picard-dichotomy.py} and \nolinkurl{code/10-cohomological-obstructions.py}. They use exact symbolic algebra to check finite truncations and polynomial identities illustrating the proofs: a mixed principal-part logarithm and exponential through degree six in $t$; cancellation for two finite root clusters; the two-sided inverse of $z+tz^2$ through degree seven, against the Catalan recurrence; complementary root-cluster factors for degrees two through ten; finite Lagrange interpolation of positive-support motions; a truncated instance of the preparation recursion; finite instances of the global divisor recursion and of local divisibility; root-selector idempotents; and finite residue identities. For the preparation check one takes
 \[
   F(u)=u^2+t(1+u^3)+t^2(2u+u^4),
 \]
@@ -2133,7 +2169,7 @@ constructs $A_n$ of degree less than two and polynomial $B_n$ from $h_n=F_n-\sum
 \]
 avoids numerical error and makes every truncation order explicit.
 
-For the compact part the source archive carries a separate \texttt{verification.py}, an ordinary Python program using SymPy, whose recorded execution passed \textbf{53 of 53 exact checks} with no floating-point tolerances and no network access. It checks the Newton/logarithm generating identity for monic polynomials of degrees two and three through power nine; the displayed initial coefficients of the genus-two Abel functionals of \cref{global:ex:genustwo}, namely $-1/6$ at $s^3$ and $-5/128$ at $s^8$ for $\eta_0$ and $1$ at $s$, $1/16$ at $s^6$, $35/1408$ at $s^{11}$ for $\eta_1$; and a purely algebraic three-dimensional two-term contraction model with
+For the compact part the source script is maintained as \nolinkurl{code/11-compact-curve-picard-classification-verification.py}, an ordinary Python program using SymPy, whose recorded execution passed \textbf{53 of 53 exact checks} with no floating-point tolerances and no network access. It checks the Newton/logarithm generating identity for monic polynomials of degrees two and three through power nine; the displayed initial coefficients of the genus-two Abel functionals of \cref{global:ex:genustwo}, namely $-1/6$ at $s^3$ and $-5/128$ at $s^8$ for $\eta_0$ and $1$ at $s$, $1/16$ at $s^6$, $35/1408$ at $s^{11}$ for $\eta_1$; and a purely algebraic three-dimensional two-term contraction model with
 \[
   d=h=\operatorname{diag}(0,1,1),\qquad
   i=\begin{pmatrix}1\\0\\0\end{pmatrix},\qquad p=i^{\mathsf T},
@@ -2149,10 +2185,10 @@ for which the transferred $1\times1$ matrix is exactly
 The program verifies that this equals the Schur complement, verifies $DI_0=iB$, $HD=1-I_0p$, $DH=1-iP_1$ and $P_1D=Bp$ with $I_0=(1+h\delta)^{-1}i$, $H=(1+h\delta)^{-1}h$, $P_1=p(1+\delta h)^{-1}$, and compares the first five positive coefficients with the truncated Neumann expansion \eqref{global:eq:Bexpanded}. \emph{This is an algebraic model, not an assertion that these matrices arise from a particular curve}; the leading order $t^2$ in \eqref{global:eq:testB} illustrates why a linearized obstruction need not be the whole transferred matrix. Only the first few coefficients of \eqref{global:eq:genus2A0}--\eqref{global:eq:genus2A1} were confirmed symbolically; the infinite formulas and their consequence for divisors are proved in \cref{global:sec:compactexamples}.
 
 \begin{remark}[A defect in the shipped compact script, recorded]\label{global:rem:scriptdefect}
-The compact script writes its results file \texttt{verification\_results.json} beside itself, so running it --- or running its \texttt{make verify} target --- silently overwrites the shipped evidence in place. Worse, its check helper raises an \texttt{AssertionError} on the first nonzero residual while the results file is written only after every check has passed. \emph{The results file can therefore never structurally record a failure}: a failing run aborts before writing and leaves the previous all-pass file untouched. The recorded all-pass JSON is consequently evidence that some run completed, not evidence that the current source passes. Nothing in this article depends on that file; the checks it describes are reproducible by running the script, and in any case they certify only finite instances.
+The compact script writes \texttt{verification\_results.json} beside itself. In the original delivery this could overwrite the supplied results; after repository ingestion the historical results live under \texttt{data/}, but a rerun still overwrites any previous generated sibling file. Run a temporary copy to keep both the report tree and historical evidence untouched. Worse, its check helper raises an \texttt{AssertionError} on the first nonzero residual while the results file is written only after every check has passed. \emph{The results file can therefore never structurally record a failure}: a failing run aborts before writing and leaves the previous all-pass file untouched. The recorded all-pass JSON is consequently evidence that some run completed, not evidence that the current source passes. Nothing in this article depends on that file; the checks it describes are reproducible by running the script, and in any case they certify only finite instances.
 \end{remark}
 
-\emph{These tests are deliberately separate from the proofs. No finite symbolic computation establishes the nonexistence of a well ordering for an infinite descending sequence, the plane Picard-group dimension, the universality of the plane dichotomy, the infinite support lemma, the compact sheaf comparison, the compact Picard classification, the nonexistence of a meromorphic section, or the validity of an arbitrary-support transfinite recursion; those are proved in the main text. The scripts check signs, coefficients and finite algebraic instances. They are not a proof assistant, a machine verification of the general arguments, or a novelty checker, and there is no Lean formalization of any statement here.}
+\emph{These tests are deliberately separate from the proofs. No finite symbolic computation establishes the nonexistence of a well ordering for an infinite descending sequence, the plane Picard-group dimension, the universality of the plane dichotomy, the infinite support lemma, the compact sheaf comparison, the compact Picard classification, the nonexistence of a meromorphic section, or the validity of an arbitrary-support transfinite recursion; those are proved in the main text. The scripts check signs, coefficients and finite algebraic instances. They are not a proof assistant, a machine verification of the general arguments, or a novelty checker, and do not establish Lean coverage. The repository's maintained formalization index records the current coverage; the global sheaf and Picard results remain unformalized.}
 
 \section{Provenance of the merged material}\label{global:app:provenance}
 
@@ -2164,7 +2200,7 @@ convergence estimate given here is Manuscript~B's);
 \cref{global:cor:splitting}'s nonprincipal effective sub-divisor, which
 Manuscript~B does not treat; \cref{global:thm:ML} in the fixed-centre form, with \cref{global:cor:interp}; and \cref{global:thm:obstruction,global:ex:bundle,global:prop:divPic}.
 
-Manuscript~C supplies the whole of the compact-base part, \crefrange{global:sec:compactbridge}{global:sec:onescale}: \cref{global:lem:compactsupport,global:lem:operatorneumann,global:prop:dolbeault,global:thm:comparison} with the compactness warning \cref{global:rem:whycompact}; the classification \cref{global:thm:piccompact} with the normal cocycle \eqref{global:eq:normalcocycle} and the nonzero-valuation gap \cref{global:rem:nonzerovaluation}; the finite matrix, \cref{global:prop:normalform,global:thm:finitecoh,global:cor:RRcompact,global:prop:degreezero,global:cor:baseext}, including the elliptic integral torsion \eqref{global:eq:elliptictorsion}; the meromorphic criterion \cref{global:thm:meromorphic} with \cref{global:cor:divseq,global:ex:highdegree}; the root-free Abel package \cref{global:lem:lognewton,global:def:abel,global:prop:abelresidue,global:thm:abelcompact} with \cref{global:rem:periods,global:rem:abelscope}; the three compact examples \cref{global:ex:sphere,global:ex:elliptic,global:ex:genustwo}; and the one-scale comparison \cref{global:lem:truncatedpic,global:lem:coefficientlimit,global:thm:adic} with \cref{global:ex:tomega,global:cor:setcutoffs}. It also supplies the compact rows of \cref{global:app:audit} and the compact half of \cref{global:app:checks}. Its refusal to identify $\Piclf$ with any larger category of invertible objects, and its refusal of any local-ring hypothesis on Hahn stalks, are kept as \cref{global:rem:piclfcompact}; its negative cofinality remark is kept as the second paragraph of \cref{global:rem:certificate}, alongside the third paragraph of \cref{global:rem:nonarch} which says the same thing for the plane. Manuscript~C was written against this repository rather than against \cite{Source} and shares no proof with Manuscripts~A and~B beyond the support calculus and the unit splitting, both of which it proves for itself and which are printed here once, in the plane part.
+Manuscript~C supplies the whole of the compact-base part, \crefrange{global:sec:compactbridge}{global:sec:onescale}: \cref{global:lem:compactsupport,global:lem:operatorneumann,global:prop:dolbeault,global:thm:comparison} with the compactness warning \cref{global:rem:whycompact}; the classification \cref{global:thm:piccompact} with the normal cocycle \eqref{global:eq:normalcocycle} and the nonzero-valuation gap \cref{global:rem:nonzerovaluation}; the finite matrix, \cref{global:prop:normalform,global:thm:finitecoh,global:cor:RRcompact,global:prop:degreezero,global:cor:baseext}, including the elliptic integral torsion \eqref{global:eq:elliptictorsion}; the meromorphic criterion \cref{global:thm:meromorphic} with \cref{global:cor:divseq,global:ex:highdegree}; the root-free Abel package \cref{global:lem:lognewton,global:def:abel,global:prop:abelresidue,global:thm:abelcompact} with \cref{global:rem:periods,global:rem:abelscope}; the three compact examples \cref{global:ex:sphere,global:ex:elliptic,global:ex:genustwo}; and the one-scale comparison \cref{global:lem:truncatedpic,global:lem:coefficientlimit,global:thm:adic} with \cref{global:ex:tomega,global:cor:setcutoffs}. It also supplies the compact rows of \cref{global:app:audit} and the compact half of \cref{global:app:checks}. Its original restriction to $\Piclf$, without a stalk hypothesis, is recorded in \cref{global:rem:piclfcompact}; the maintained review there adds the coordinate-chart consequence of the PID theorem in the merged text; its negative cofinality remark is kept as the second paragraph of \cref{global:rem:certificate}, alongside the third paragraph of \cref{global:rem:nonarch} which says the same thing for the plane. Manuscript~C was written against this repository rather than against \cite{Source} and shares no proof with Manuscripts~A and~B beyond the support calculus and the unit splitting, both of which it proves for itself and which are printed here once, in the plane part.
 
 Manuscript~B supplies the constructive scalar section \cref{global:sec:scalar} (\cref{global:lem:scalarML,global:lem:hermite,global:lem:scalarCousin}); \cref{global:lem:division,global:lem:polefree}; the recursive route to the divisor theorem recorded in \cref{global:rem:secondproof}; the whole of \cref{global:sec:crt} --- \cref{global:prop:restrictedalgebra,global:thm:interpolation,global:cor:CRT,global:ex:selector} --- and with it the identification of the correct interpolation target as a support-restricted product; \cref{global:thm:MLmoving,global:ex:MLresidues}; the exact Cousin criterion \cref{global:thm:cousincriterion} with the singular support and \cref{global:rem:explicitCousin}; \cref{global:cor:H1injection,global:cor:H1size,global:prop:fullH1} in the containment form; the positive half of \cref{global:prop:nonlocal}, that the nonnegative-support subsheaf is local with residue field $\C$ --- the integral model; and the $\Piclf$ distinction with its Stacks citation, preserved in \cref{global:rem:piclf,global:rem:dimension}.
 
@@ -2188,7 +2224,7 @@ $\Sigma(b)$ & Singular support of additive Cousin data on the star cover.\\[0.3e
 $R_c$ & Stalk of $\HH$ at an ordinary base point --- not a fine germ at one surcomplex point.\\[0.3em]
 $\mathcal V_\Gamma/\mathcal W_\Gamma$ & Infinitesimal sequences modulo uniformly supported sequences.\\[0.3em]
 $\red$, $\st$ & Reduction $\HI\to\OO$ (synonyms: residue, shadow, standard-part map) and the scalar standard part.\\[0.3em]
-$\Pic$, $\Piclf$ & Tensor-invertible modules; locally free rank-one modules. Equal on $(\C,\HH)$ by \cref{global:cor:Picmeaning}; over a compact base only $\Piclf$ is used.\\[0.3em]
+$\Pic$, $\Piclf$ & Tensor-invertible modules; locally free rank-one modules. Equal on the plane by \cref{global:cor:Picmeaning} and on a Riemann surface by \cref{global:rem:piclfcompact}; compact statements retain $\Piclf$.\\[0.3em]
 \midrule
 \multicolumn{2}{@{}l}{\emph{Compact base only} (\crefrange{global:sec:compactbridge}{global:sec:onescale}).}\\[0.3em]
 $X$, $g$ & Fixed compact connected ordinary Riemann surface and its genus.\\[0.3em]
@@ -2229,13 +2265,12 @@ Ovidiu Costin and Philip Ehrlich,
 
 \bibitem{Crainic}
 Marius Crainic, ``On the perturbation lemma, and deformations,''
-preprint, 2004.
-\href{https://arxiv.org/abs/math/0403266}{arXiv:math/0403266}.
+preprint, version~1 (2004), \S2.
+\href{https://arxiv.org/abs/math/0403266v1}{arXiv:math/0403266v1}.
 The two-term transferred complex of \cref{global:thm:finitecoh} is an instance of this classical lemma; no discovery of the lemma is claimed here.
 
 \bibitem{Demailly}
-Jean-Pierre Demailly, \emph{Complex Analytic and Differential Geometry}, online book.
-Chapter V, \S11 (holomorphic vector bundles) and Chapter IX (cohomological vanishing on Stein spaces).
+Jean-Pierre Demailly, \emph{Complex Analytic and Differential Geometry}, online book. Chapter V, \S11 (holomorphic vector bundles) and Chapter IX (cohomological vanishing on Stein spaces).
 \href{https://www-fourier.univ-grenoble-alpes.fr/~demailly/manuscripts/agbook.pdf}{Author's full text}, accessed September 21, 2026.
 
 \bibitem{EK}
