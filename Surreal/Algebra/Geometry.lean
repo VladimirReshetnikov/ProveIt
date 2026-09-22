@@ -9,7 +9,8 @@ This implements the coordinate geometry in the trigonometry report:
 Angles, circle ordering, and the cyclic equality case require further proofs.
 
 Mathlib's Euclidean Ptolemy theorem uses a real-valued distance; here all
-lengths take values in the arbitrary real closed base field.
+lengths take values in the ordered base field itself. Nonnegative square
+roots suffice; real closedness is not needed for these finite identities.
 -/
 
 namespace Surreal.Complexify
@@ -66,7 +67,7 @@ end Ring
 
 section OrderedField
 
-variable {F : Type*} [Field F] [LinearOrder F] [IsStrictOrderedRing F] [IsRealClosed F]
+variable {F : Type*} [Field F] [LinearOrder F] [IsStrictOrderedRing F] [HasNonnegSquareRoots F]
 
 /-- Cauchy--Schwarz in the dot-product notation of the trigonometry report. -/
 theorem abs_dot_le (z w : Complexify F) : |dot z w| ≤ modulus z * modulus w := by
@@ -90,12 +91,12 @@ theorem modulus_add_eq_iff_dot (z w : Complexify F) :
     rw [modulus_sq, normSq_add, ← modulus_sq z, ← modulus_sq w, h]
     ring
 
-omit [IsRealClosed F] in
+omit [HasNonnegSquareRoots F] in
 theorem quotient_re (w z : Complexify F) : (w / z).re = dot z w / normSq z := by
   simp only [div_eq_mul_inv, mul_re, inv_re, inv_im, dot_def]
   ring
 
-omit [IsRealClosed F] in
+omit [HasNonnegSquareRoots F] in
 theorem quotient_im (w z : Complexify F) : (w / z).im = cross z w / normSq z := by
   simp only [div_eq_mul_inv, mul_im, inv_re, inv_im, cross_def]
   ring
@@ -140,11 +141,11 @@ theorem ptolemy (a b c d : Complexify F) :
 /-- The area of the triangle with vertices `0`, `z`, `w`. -/
 noncomputable def triangleArea (z w : Complexify F) : F := |cross z w| / 2
 
-omit [IsRealClosed F] in
+omit [HasNonnegSquareRoots F] in
 theorem triangleArea_nonneg (z w : Complexify F) : 0 ≤ triangleArea z w := by
   exact div_nonneg (abs_nonneg _) (by norm_num)
 
-omit [LinearOrder F] [IsStrictOrderedRing F] [IsRealClosed F] in
+omit [LinearOrder F] [IsStrictOrderedRing F] [HasNonnegSquareRoots F] in
 /-- The polynomial factorization used in `trigonometry:eq:heronfactor`. -/
 theorem heron_factorization (a b c : F) :
     (a + b + c) * (-a + b + c) * (a - b + c) * (a + b - c) =

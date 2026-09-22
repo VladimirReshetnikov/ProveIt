@@ -1,24 +1,24 @@
 import Surreal.Algebra.Complexify
-import Mathlib.FieldTheory.IsRealClosed.Basic
+import Surreal.Algebra.OrderedSquareRoots
 import Mathlib.Algebra.Order.Ring.Abs
 
 /-!
 # Base-field-valued modulus
 
 The modulus identities of `a:prop:triangle` in
-`docs/surcomplex/analysis/article.tex`, over any real closed ordered field.
+`docs/surcomplex/analysis/article.tex`, over any ordered field in which
+nonnegative elements have square roots (in particular, any real closed field).
 This is the square-root part of Layer A. No real-valued norm or topology is
 installed on the quadratic extension.
 -/
 
 namespace Surreal.Complexify
 
-variable {F : Type*} [Field F] [LinearOrder F] [IsStrictOrderedRing F] [IsRealClosed F]
+variable {F : Type*} [Field F] [LinearOrder F] [IsStrictOrderedRing F] [HasNonnegSquareRoots F]
 
-/-- Real closedness supplies a nonnegative square root of a nonnegative element. -/
+/-- The square-root property supplies a nonnegative root. -/
 theorem exists_nonneg_sq {x : F} (hx : 0 ≤ x) : ∃ y : F, 0 ≤ y ∧ y ^ 2 = x := by
-  obtain ⟨y, hy⟩ := IsSquare.of_nonneg hx
-  exact ⟨|y|, abs_nonneg y, by simpa [pow_two] using hy.symm⟩
+  exact HasNonnegSquareRoots.exists_nonneg_sq hx
 
 /-- The modulus has values in `F`, including its infinite and infinitesimal scales. -/
 noncomputable def modulus (z : Complexify F) : F :=

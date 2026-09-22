@@ -4,6 +4,7 @@ import Surreal.Algebra.ComplexNumbers
 import Surreal.Algebra.Circle
 import Surreal.Algebra.Geometry
 import Surreal.Algebra.Modulus
+import Surreal.Algebra.OrderedSquareRoots
 import Surreal.Algebra.Polynomial
 import Surreal.Algebra.PolynomialBezoutKernel
 import Surreal.Algebra.PolynomialCRT
@@ -63,10 +64,14 @@ import Surreal.Foundations.SignSequenceDyadics
 import Surreal.Foundations.SignSequenceRealBirthday
 import Surreal.Foundations.SignSequenceBirthdayArithmetic
 import Surreal.Foundations.SignSequenceProductCuts
+import Surreal.Foundations.SignSequenceRoots
+import Surreal.Foundations.DyadicBirthdayArithmetic
+import Surreal.Foundations.SignSequenceDyadicBirthday
 import Surreal.Surcomplex.Basic
 import Surreal.Surcomplex.OrderObstructions
 import Surreal.Surcomplex.FineTopology
 import Surreal.Surcomplex.TopologicalField
+import Surreal.Surcomplex.Modulus
 import Surreal.HahnSeries.Binomial
 import Surreal.HahnSeries.BinomialOrder
 import Surreal.HahnSeries.BinomialRoots

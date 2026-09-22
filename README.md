@@ -179,6 +179,12 @@ Finite birthdays characterize exactly the embedded dyadic rationals. They form
 a subring, but the reciprocal of three has birthday omega, so this fragment
 is not a subfield. Every embedded ordinary real has birthday at most omega;
 the non-dyadic reals have birthday exactly omega.
+For a dyadic value with reduced denominator `2^k`, the exact birthday is
+the ceiling of its absolute value plus `k`. Its standard dyadic game attains
+this same minimum birthday.
+Every nonnegative sign number now has a unique nonnegative square root,
+constructed by simplicity induction and a countable closure of small
+algebraic option families. The resulting `sqrt` takes zero on negative inputs.
 The concrete surcomplex field is now the quadratic extension of that sign
 field. It has the coordinate product, conjugation and inverse formulas, a
 positive surreal-valued norm square away from zero, and dimension two over
@@ -193,6 +199,11 @@ Multiplication is jointly continuous, inversion is continuous away from zero,
 and conjugation is a uniform equivalence. The real-axis positive-radius net
 converges to zero and is Cauchy without becoming constant; both its index
 type and range are proved not small at the permitted universe level.
+The proved square roots also instantiate the actual surreal-valued modulus,
+its multiplicativity, triangle inequality, coordinate bounds and inverse
+formula. Its balls give exactly the existing fine topology and uniformity.
+Heron's area formula, Ptolemy's inequality and the positive-quotient
+triangle-equality criterion now apply to the concrete surcomplex field.
 The surreal field is not algebraically closed, and no linear order is
 compatible with surcomplex multiplication.
 Real closedness and the normal-form bridge to Hahn series remain open.
