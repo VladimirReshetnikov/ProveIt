@@ -1,0 +1,36 @@
+diff --git a/CombinatorialGames/Game/Birthday.lean b/CombinatorialGames/Game/Birthday.lean
+index 960878d..9abe21c 100644
+--- a/CombinatorialGames/Game/Birthday.lean
++++ b/CombinatorialGames/Game/Birthday.lean
+@@ -208,7 +208,7 @@ instance small_setOf_birthday_lt (o : NatOrdinal.{u}) : Small.{u} {x | birthday
+         (!{s.1 | ↑s.2} : IGame))
+     refine fun x hx ↦ ⟨((↑) ⁻¹' xᴸ, (↑) ⁻¹' xᴿ), ?_⟩
+     simp_rw [lt_succ_iff, birthday_le_iff] at hx
+-    ext p; cases p <;> simp_all
++    ext p; cases p <;> simp_all <;> aesop
+   | isSuccPrelimit o ho ih =>
+     convert @small_biUnion _ _ (Iio o) _ (fun i _ => {x : IGame.{u} | x.birthday < i}) ih
+     ext x
+@@ -275,7 +275,7 @@ theorem mem_birthdayFinset {x : IGame} {n : ℕ} : x ∈ birthdayFinset n ↔ x.
+ 
+ theorem strictMono_birthdayFinset : StrictMono birthdayFinset := by
+   refine strictMono_nat_of_lt_succ fun n ↦ ⟨fun y hy ↦ ?_, fun h ↦ ?_⟩
+-  · rw [SetLike.mem_coe, mem_birthdayFinset] at *
++  · rw [mem_birthdayFinset] at *
+     apply hy.trans
+     simp
+   · have := Finset.card_le_card h
+diff --git a/CombinatorialGames/Mathlib/Small.lean b/CombinatorialGames/Mathlib/Small.lean
+index 851817e..02b532e 100644
+--- a/CombinatorialGames/Mathlib/Small.lean
++++ b/CombinatorialGames/Mathlib/Small.lean
+@@ -33,7 +33,8 @@ private theorem small_level (x : α) : ∀ n, Small.{u} (level r x n)
+     refine @small_sUnion _ _ ?_ ?_
+     · have := small_level x n
+       exact small_image ..
+-    · simp_all
++    · rintro ⟨s, a, _, rfl⟩
++      exact H a
+ 
+ private theorem small_sUnion_level (x : α) : Small.{u} (⋃₀ range (level r x)) := by
+   refine @small_sUnion _ _ ?_ ?_

@@ -1,3 +1,4 @@
+import CombinatorialGames
 import Surreal.Algebra.Complexify
 import Surreal.Algebra.ComplexNumbers
 import Surreal.Algebra.Circle

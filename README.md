@@ -18,6 +18,10 @@ lake build
 Lean warnings are treated as errors, including warnings for incomplete proofs.
 The default build also checks `SurrealAudit.lean`, which rejects transitive
 axiom dependencies other than `propext`, `Quot.sound`, and `Classical.choice`.
+The numeric-game field and game-graph recursion reuse a pinned subset of
+[combinatorial-games](vendor/combinatorial-games/README.md), with three
+documented proof-script adjustments for this Lean version. Its source and
+Apache license are included in the repository.
 
 ## Formalization
 

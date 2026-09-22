@@ -62,6 +62,17 @@ existing polynomial factorization/extension results. Repository declarations
 should expose the manuscript correspondence and prove the genuinely missing
 bridges rather than duplicate the library.
 
+The independently maintained `combinatorial-games` library supplies the
+numeric-game quotient and its proved ordered field. A
+[vendored dependency](../vendor/combinatorial-games/README.md) records the
+exact upstream revision, 20-module import closure, Apache license and three
+proof-script compatibility changes for the pinned Lean/Mathlib version.
+No mathematical statement or arithmetic definition is changed. Its field
+construction is included in the transitive axiom audit. Transport to the
+existing sign carrier still requires an explicit checked equivalence which
+preserves the order and already constructed arithmetic; importing the field
+does not establish that bridge, real closedness or a Hahn normal form.
+
 ## Implementation mappings
 
 The mapped modules pass `lake build`, including the default `SurrealAudit`
