@@ -32,6 +32,8 @@ Complexification uses mathlib's `QuadraticAlgebra`, with its cross-term
 multiplication, conjugation, and field construction. The modulus takes values
 in the ordered base field. Polynomial results reuse mathlib's splitting,
 algebraic-closedness, and integrality theorems.
+The rational circle chart is an equivalence from the ordered base field to
+the norm-square-one points other than `-1`, with inverse `im / (1 + re)`.
 
 These generic prerequisites do not yet construct the surreal field or establish
 the normal-form bridge to Hahn series. A successful build proves only the
