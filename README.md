@@ -34,6 +34,8 @@ in the ordered base field. Polynomial results reuse mathlib's splitting,
 algebraic-closedness, and integrality theorems.
 The rational circle chart is an equivalence from the ordered base field to
 the norm-square-one points other than `-1`, with inverse `im / (1 + re)`.
+It extends to Mathlib's projective line, with the homogeneous direction
+product law and an explicit treatment of the point at infinity.
 Finite geometry includes Heron's area identity, Ptolemy's inequality and the
 positive-quotient criterion for equality in the triangle inequality. Formal
 polynomial derivatives give multiplicity, finite Taylor expansion and the
@@ -49,12 +51,17 @@ computed by repeated formal differentiation of the reciprocal. The simple-root
 case gives the Lagrange formula, with nonzero derivative denominators.
 The finite inverse-jet weighted sum gives an explicit Hermite interpolant
 after taking its polynomial remainder.
+Viète's formula and both Newton recurrences use finite root multisets.
+Resultants have their Sylvester determinant and root-product formulas,
+with common-root and finite Bézout-kernel criteria.
 
 The Hahn layer uses mathlib's `SummableFamily` and proves the full Neumann
 support lemma, including finiteness across all word lengths. It distinguishes
 Hahn summation from ordinary summation of constant coefficients and exposes
 univariate evaluation only with a positive-order proof. Geometric-series
 identities and exact finite remainders are formal Hahn identities.
+Admissible binomial expansions satisfy exponent addition and give the unique
+natural-degree root near one over a characteristic-zero coefficient field.
 Arbitrary regrouping and double-sum interchange preserve jointly summable
 families. Coefficient-zero extraction gives standard part on the nonnegative-order
 subring, with residue field and a unique constant-plus-infinitesimal decomposition.

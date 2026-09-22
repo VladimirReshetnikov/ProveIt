@@ -11,8 +11,13 @@ import Surreal.Algebra.PolynomialInterpolation
 import Surreal.Algebra.PolynomialInverseJet
 import Surreal.Algebra.PolynomialLagrange
 import Surreal.Algebra.PolynomialMultiplicity
+import Surreal.Algebra.PolynomialNewton
 import Surreal.Algebra.PolynomialRationalJets
+import Surreal.Algebra.PolynomialResultant
+import Surreal.Algebra.ProjectiveCircle
 import Surreal.Foundations.SizeObstructions
+import Surreal.HahnSeries.Binomial
+import Surreal.HahnSeries.BinomialRoots
 import Surreal.HahnSeries.Constants
 import Surreal.HahnSeries.Complexify
 import Surreal.HahnSeries.ComplexNumbers
