@@ -2758,24 +2758,24 @@ Mappings cover only the hypotheses and clauses they state.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `tail:lem:basechange` (line 287) | Finite base change |
-| Lemma | `tail:lem:signs` (line 330) | Independent sign changes |
-| Theorem | `tail:thm:coefficient` (line 371) | Coefficient-field criterion |
-| Lemma | `tail:lem:stabilization` (line 443) | Stabilization and exceptions |
-| Lemma | `tail:lem:multilinear` (line 465) | Cofinite spanning detects multilinear forms |
-| Lemma | `tail:lem:difference` (line 488) | Top-degree mixed difference |
-| Proposition | `tail:prop:orbit` (line 514) | Sign-orbit independence |
-| Theorem | `tail:thm:tail` (line 557) | Exact tail-span classification |
-| Theorem | `tail:thm:planes` (line 632) | Relation ideal as disjoint affine planes |
-| Corollary | `tail:cor:finitewitness` (line 747) | Untitled |
-| Theorem | `tail:thm:onesurreal` (line 848) | Every infinite subseries is differentially transcendental |
-| Theorem | `tail:thm:surreal` (line 894) | Explicit maximal differential transcendence |
-| Lemma | `tail:lem:analyticclasses` (line 1006) | Independent analytic square classes |
-| Lemma | `tail:lem:expgraph` (line 1083) | Untitled |
-| Lemma | `tail:lem:jetspan` (line 1106) | Hereditary full jet span |
-| Theorem | `tail:thm:mixed` (line 1140) | Hereditary mixed differential independence |
-| Theorem | `tail:thm:continuumanalytic` (line 1273) | Continuum many jointly independent mixed jets |
-| Proposition | `tail:prop:halo` (line 1332) | Joint summability of the halo formula |
-| Proposition | `tail:prop:functionalmeaning` (line 1362) | Untitled |
-| Theorem | `tail:thm:closure` (line 1411) | Closure of the algebraic coefficient part |
-| Proposition | `tail:prop:undecidable` (line 1475) | Untitled |
+| Lemma | `tail:lem:basechange` (line 290) | Finite base change |
+| Lemma | `tail:lem:signs` (line 333) | Independent sign changes |
+| Theorem | `tail:thm:coefficient` (line 381) | Coefficient-field criterion |
+| Lemma | `tail:lem:stabilization` (line 455) | Stabilization and exceptions |
+| Lemma | `tail:lem:multilinear` (line 477) | Cofinite spanning detects multilinear forms |
+| Lemma | `tail:lem:difference` (line 500) | Top-degree mixed difference |
+| Proposition | `tail:prop:orbit` (line 534) | Sign-orbit independence |
+| Theorem | `tail:thm:tail` (line 578) | Exact tail-span classification |
+| Theorem | `tail:thm:planes` (line 660) | Relation ideal as disjoint affine planes |
+| Corollary | `tail:cor:finitewitness` (line 780) | Untitled |
+| Theorem | `tail:thm:onesurreal` (line 881) | Every infinite subseries is differentially transcendental |
+| Theorem | `tail:thm:surreal` (line 927) | Explicit maximal differential transcendence |
+| Lemma | `tail:lem:analyticclasses` (line 1039) | Independent analytic square classes |
+| Lemma | `tail:lem:expgraph` (line 1116) | Untitled |
+| Lemma | `tail:lem:jetspan` (line 1139) | Hereditary full jet span |
+| Theorem | `tail:thm:mixed` (line 1173) | Hereditary mixed differential independence |
+| Theorem | `tail:thm:continuumanalytic` (line 1306) | Continuum many jointly independent mixed jets |
+| Proposition | `tail:prop:halo` (line 1365) | Joint summability of the halo formula |
+| Proposition | `tail:prop:functionalmeaning` (line 1395) | Untitled |
+| Theorem | `tail:thm:closure` (line 1444) | Closure of the algebraic coefficient part |
+| Proposition | `tail:prop:undecidable` (line 1511) | Untitled |
