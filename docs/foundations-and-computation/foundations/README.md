@@ -3,22 +3,49 @@
 Sets, classes, universes, type theories, and a pinned Lean audit.
 One article, merged from **three independently written foundational audits**.
 
-**The single most important thing to know about this report: none of its three
-source audits compiled a Lean file, rebuilt a repository, or ran
-`#print axioms`.** For the merged report that changed in exactly one respect:
-three of the five shipped Lean files were compiled here, and `#print axioms`
-was run on every declaration in them. Nothing else was machine-checked — no
-repository was rebuilt, and no supplied manuscript was verified. Both halves of
-that get their own section in the article (section 2, "The verification
-boundary of this report"), deliberately placed early rather than scattered
-through footnotes.
+The article separates three verification records: the September 21 source
+audits (source reading only), the original merge's checks of three illustrative
+Lean files, and subsequent work in this repository. The latter is tracked in
+[the formalization ledger](../../FORMALIZATION.md), with exact theorem mappings
+and remaining obligations. At checkpoint `ebda0e0`, canonical normal-form
+evaluation is an order isomorphism with inverse extraction; preservation of
+arithmetic and strong sums, and real closedness of the concrete surreal carrier,
+remain separate obligations. The proposed architecture is not a completion
+report, and no complete verification of this article is claimed.
+
+## September 22 exposition corrections
+
+- **Workspace localization:** states the arithmetic preservation required of
+  normal-form evaluation and gives a universe-relative version. An input family
+  and the resulting exponent group must be small in the specified universe;
+  being an arbitrary external set of elements of `No_U[i]` does not suffice.
+  The proof now checks support unions, coefficient-function sets and compatible
+  workspace inclusions.
+- **Support recursion:** explicitly requires the controlling set `E` to be
+  positive and well ordered, and explains why each nonlinear coefficient uses
+  only finitely many decompositions into smaller positive exponents.
+- **Topologies and convergence:** proves that intrinsic modulus and valuation
+  balls define the same topology on a nontrivial Hahn workspace, although they
+  are different balls and differ from the ambient fine subspace topology.
+  Geometric partial sums converge exactly when their exponent multiples are
+  cofinal. The new rank-one example `Σ t^(n/(n+1))` shows that arbitrary strong
+  summation still need not be topological summation, even over `Q`.
+- **Verification scope:** labels the historical checks as historical, links
+  the later implementation ledger, and clarifies that `#print axioms` follows
+  transitive dependencies of the named declaration without auditing all other
+  declarations in imported modules.
+
+These corrections change only the maintained article and this README.
+The historical originals in `code/` and `data/` are unchanged. Source manuscripts
+and their READMEs are retained in [Git history before their retirement from the
+working tree](https://github.com/VladimirReshetnikov/Surreal/tree/251bd32/docs/foundations-and-computation/foundations/sources).
 
 ---
 
 ## What this is
 
-`article.tex` / `article.pdf` — 94 pages, 26 numbered sections (21 main plus 5
-appendices), 30 numbered theorem-environment results, 15 tables (11 longtables
+`article.tex` / `article.pdf` — 95 pages, 26 numbered sections (21 main plus 5
+appendices), 31 numbered theorem-environment results, 15 tables (11 longtables
 plus 4 inline), 9 Lean listings, 88 numbered non-claims, 58 bibliography
 entries. Standalone LaTeX: full preamble, internal `thebibliography`, no
 external `.bib`, no graphics, no bibliography processor. It compiles in its own
@@ -67,9 +94,10 @@ The `build_report.json` / `build_report.txt` and `source_audit.json` records
 ship verbatim in `data/`. The five Lean files from M1 and M2 ship verbatim in
 `code/` — including M2's `LogicalGuards`, which does not compile as delivered
 (see below). **Nothing in `code/` or `data/` was modified.** The three audit
-manuscripts themselves, and their READMEs, are not redistributed here; what
-each contributed, and how each of their results was disposed of, is recorded in
-the provenance material below and in the article.
+manuscripts themselves, and their READMEs, are available in Git history at
+checkpoint `251bd32`, under this report's former `sources/` directory. What each
+contributed, and how each of their results was disposed of, is recorded in the
+provenance material below and in the article.
 
 ### What each contributed uniquely
 
@@ -171,21 +199,22 @@ labels.
 The full union of the three audits' limitation lists is **Appendix E**, 88
 numbered items in eight groups. The headline items:
 
-- **Verification.** No Lean or Lake executable was available in any of the three
+- **Historical verification.** No Lean or Lake executable was available in any of the three
   preparation environments, so none of the three audits compiled anything. Both
   were available where this merge was prepared. Three of the five shipped files
   were compiled and axiom-audited, under Lean 4.32.0 with Mathlib — **not** the
   `v4.35.0-rc2` the sources pin, which is not installed here. `FoundationsSketch`
   and `ComplexifySketch` compile as shipped; `LogicalGuards` does **not**, because
   a `/-!` module docstring precedes its `import`, and a docstring is a command.
-  Moving the import to the first line fixes it. No `sorryAx` and no
-  `Classical.choice` appears anywhere, and the two size-obstruction theorems
-  depend on no axioms at all. The two files importing the external
+  Moving the import to the first line fixes it. No `sorryAx` or
+  `Classical.choice` occurs in those illustrative files' reported dependencies,
+  and the two size-obstruction theorems depend on no axioms at all. The two files importing the external
   combinatorial-games library were not attempted, that repository being absent.
-  Beyond this: the external repository was not rebuilt, no transitive axiom audit
-  was performed, no Mizar was run, and none of the five manuscripts was
-  machine-verified. Source inspection and compilation are different verification
-  levels, and compiling three small illustrative files is neither an audit of the
+  In that original merge, the external repository was not rebuilt, its complete
+  declaration set was not axiom-audited, no Mizar was run, and none of the five
+  manuscripts was machine-verified. Later checks are recorded in the repository
+  ledger and are separate from these historical results. Source inspection and
+  compilation are different verification levels, and compiling three small illustrative files is neither an audit of the
   pinned revision nor a verification of any manuscript.
 - **The pinned inspection.** Source reading only — no clone, no build, no
   comprehensive placeholder search, no axiom audit. Module names do not prove
@@ -219,8 +248,8 @@ numbered items in eight groups. The headline items:
 - **This merged document.** The three audits' agreement on the pinned revision
   reflects three readings of one source, not independent execution. Where they
   differ in scope, sources or emphasis, the differences are printed rather than
-  averaged, and no merged sentence asserts more than the strongest single source
-  proves.
+  averaged. The September 22 corrections and expanded arguments listed above
+  are additions to the historical synthesis.
 
 Two further record-keeping notes carried forward. M2's README refers to a
 `SHA256SUMS` file: its archive did ship one, and this repository does not carry
@@ -243,7 +272,7 @@ Standard TeX Live or MiKTeX. Packages: `lmodern`, `geometry`, AMS, `mathrsfs`,
 `listings`, `xurl`, `needspace`, `hyperref`, `cleveref`. No external figures, no
 `.bib`, no bibliography processor, no shell escape.
 
-Final build status: **94 pages; 0 errors, 0 undefined references, 0 undefined
+Final build status: **95 pages; 0 errors, 0 undefined references, 0 undefined
 citations, 0 multiply-defined labels, 0 duplicate-destination warnings, 0
 overfull or underfull boxes, 0 warnings of any kind.**
 
@@ -256,8 +285,8 @@ never by their labels.
 ## Directory
 
 ```
-article.tex   the merged report (311,143 bytes)
-article.pdf   94 pages
+article.tex   the maintained merged report
+article.pdf   95 pages
 code/         the five Lean files from M1 and M2, three since compiled  (verbatim)
 data/         the three build/audit records from M2 and M3                 (verbatim)
 ```

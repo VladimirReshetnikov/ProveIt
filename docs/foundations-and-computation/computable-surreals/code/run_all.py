@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from datetime import datetime, timezone
 import platform
 import re
 import subprocess
@@ -12,8 +13,8 @@ from pathlib import Path
 
 def main() -> int:
     root = Path(__file__).resolve().parents[1]
-    data = root / "data"
-    data.mkdir(exist_ok=True)
+    run_data = root / "data"
+    run_data.mkdir(exist_ok=True)
     suites = {
         "A": ["code/original_A-verify.py", "--output", "data/A.json"],
         "B": ["code/original_B-verify.py"],
@@ -22,6 +23,7 @@ def main() -> int:
     }
     summary: dict[str, object] = {
         "python": platform.python_version(),
+        "run_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "scope": "Finite tests, not formal verification; unlike units are not added together.",
         "suites": {},
     }
@@ -34,12 +36,12 @@ def main() -> int:
             text, code = run.stdout, run.returncode
         except (OSError, subprocess.TimeoutExpired) as exc:
             text, code = f"Unable to finish suite: {exc}\n", 1
-        (data/f"{name}.txt").write_text(text, encoding="utf-8")
+        (run_data/f"{name}.txt").write_text(text, encoding="utf-8")
         status = "PASS" if code == 0 else "FAIL"
         detail: dict[str, object] = {"status": status, "return_code": code,
                                      "log": f"data/{name}.txt"}
         if code == 0 and name in ("A", "merged"):
-            payload = json.loads((data/f"{name}.json").read_text(encoding="utf-8"))
+            payload = json.loads((run_data/f"{name}.json").read_text(encoding="utf-8"))
             detail.update(count=payload["total_checks"], unit="exact checks")
         elif code == 0 and name == "B":
             match = re.search(r"Ran (\d+) tests", text)
@@ -55,7 +57,7 @@ def main() -> int:
         if code:
             print(text)
     summary["status"] = "FAIL" if failed else "PASS"
-    (data/"summary.json").write_text(json.dumps(summary, indent=2)+"\n", encoding="utf-8")
+    (run_data/"summary.json").write_text(json.dumps(summary, indent=2)+"\n", encoding="utf-8")
     return int(failed)
 
 

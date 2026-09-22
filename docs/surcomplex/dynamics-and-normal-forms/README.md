@@ -1,12 +1,12 @@
 # Surcomplex Dynamics: Linearization Thresholds, Periods, and Normal Forms
 
-**A merged research report, 129 pages.** Everything in this directory other
+**A merged research report.** Everything in this directory other
 than `article.tex`, `article.pdf` and this README is preserved source
 material.
 
 ```
 article.tex   the merged report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled 106-page report
+article.pdf   the compiled report
 README.md     this guide
 code/         the seven source verification programs, unmodified
 data/         the seven recorded verification and build records, unmodified
@@ -96,8 +96,9 @@ about the surreal size `v(k . Upsilon)` of the divisor itself (Warning
 **The two radii.** Valuation balls `B_r = {v(z) > r}` and valuation
 polydisks `D_rho` **shrink** as the threshold grows; ordinary disks and
 polydisks `D_R` **grow** as `R` grows. Section 2.4 tabulates both, and the
-report warns that a treatment using the decreasing-support Conway
-convention has every inequality here reversed.
+report distinguishes exponent inequalities from ordinary coefficient estimates.
+Passing from valuation exponents to Conway growth exponents negates the
+exponent and reverses its threshold inequality; ordinary estimates are unchanged.
 
 ## Which archive contributed what
 
@@ -190,6 +191,38 @@ reciprocal-jet mechanism. The two are not averaged into a single
 "intermediate case" claim, and the exact radius law is never quoted without
 its drift hypothesis (Warnings 2.6 and 7.11).
 
+## Correction to finite ancestry
+
+The merged article previously claimed that an operator adding positive
+support words could reach a fixed output exponent `gamma` in at most
+`ell_S(gamma)` steps, independently of its Hahn input. That is false for
+arbitrary input supports: with `T(A) = t A`, the input `t^(-n)` contributes
+`T^n(t^(-n)) = 1` at exponent zero after `n` steps, while `ell_{ {1} }(0) = 0`.
+
+Corollary `dyn:cor:ancestry` now keeps the input support `B`. It counts
+pairs `(b, w)` with `b in B` and positive word `w` of weight `gamma - b`,
+and bounds the number of operator applications by their maximum word
+length `ell_{B,S}(gamma)`. The proof counts the finitely many ways to split
+a contributing word into nonempty operator steps. It also establishes the
+joint summability statement for a strongly summable family of inputs.
+
+The arbitrary-input substitution, exponential/logarithm, discrete-equation
+and torus-substitution proofs now retain this dependence explicitly.
+The linearizer's stronger bound `k + 1 <= ell_S(gamma)` is unchanged:
+its initial input `L^(-1) f` already supplies a positive letter from `S`.
+The associated radius and degree bounds therefore keep their stated form.
+
+Source 03, retained in Git history, already distinguished arbitrary input support in
+its lemma “Adding an arbitrary input support” and claimed only finite
+dependence in “Support-increasing operators.” The incorrect absolute bound
+was introduced in the merged corollary. The original manuscripts are now
+accessible through Git history; the verification programs and recorded
+outputs in `code/` and `data/` remain unchanged. The corrected combinatorial statement
+and counterexample are checked in
+[`Ancestry.lean`](../../../Surreal/HahnSeries/Ancestry.lean); the full
+operator statement has a mathematical proof here but is not yet formalized.
+See the [formalization ledger](../../FORMALIZATION.md) for exact coverage.
+
 ## What is NOT claimed
 
 Section 25 is the consolidated record: **80 numbered items covering the 78
@@ -197,10 +230,12 @@ distinct limitations stated by the seven sources**, distributed
 11/9/10/14/12/12/10 across sources 01–07, each with its originating source
 named. None was merged away or softened. The load-bearing ones:
 
-- **Status.** Seven AI-assisted, unrefereed research drafts; the merged
-  report is likewise not refereed and not proof-assistant verified. **No
-  Lean or other formal development corresponds to any theorem here.**
-  Priority is not certified for any statement and no named published
+- **Status.** Seven AI-assisted, unrefereed research drafts; the full merged
+  report is not proof-assistant verified. The repository now has checked
+  Lean proofs of the finite-word support lemma, the corrected combinatorial
+  ancestry bounds, and the counterexample above. This partial coverage
+  does not certify the operator calculus or the analytic classification
+  theorems. Priority is not certified for any statement and no named published
   conjecture is claimed solved. Every repository and literature inspection
   was *targeted*, not exhaustive.
 - **The exact ball is a valuation ball.** "Exact" means the maximal
@@ -216,7 +251,7 @@ named. None was merged away or softened. The load-bearing ones:
   shell-periodicity conclusion must **not** be transported to `C_p`; the
   source cites `p`-adic examples whose bounding sphere carries no periodic
   point at all.
-- **No uniform bounds anywhere.** No uniform ordinary norm bound on any
+- **No uniform coefficient norm bound.** No uniform ordinary norm bound on any
   coefficient family, no norm, no Gevrey or weighted estimates, no ordinary
   holomorphic dependence on `t` near `t = 0`, no fixed real-valued norm and
   no sequential completeness. All control is by supports.

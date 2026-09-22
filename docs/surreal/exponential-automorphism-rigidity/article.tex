@@ -84,8 +84,9 @@ Kaplan--Krapp--Serra, arXiv:2509.22374v3, negatively.
 We then exhibit extensive families of ordered value-group automorphisms that
 have explicit Hahn-field lifts but no exponential lift. These include every
 nonidentity reweighting confined to a bounded collection of normal-form layers,
-and every nonidentity positive rational dilation. Finally, for
-$K=F(i)$ equipped with $L(z)=\log\abs z$, we determine its automorphisms and show
+and every nonidentity positive rational dilation. Finally, assuming in addition
+that $F$ is real closed, for $K=F(i)$ equipped with
+$L:K^\times\to F$, $L(z)=\log\abs z$, we determine its automorphisms and show
 that the kernel of their action on any invariant nontrivial convex value
 quotient is exactly complex conjugation together with the identity.
 All rigidity proofs are algebraic and order-theoretic; none exchanges an
@@ -118,7 +119,8 @@ Kaplan, Krapp, and Serra ask in \cite[Question~5.4]{KKS} whether the surreal
 exponential field has a nonidentity $1$-automorphism. Their
 Proposition~5.2 rules this out under strong $\R$-linearity; the unrestricted
 question is printed on page~10 of version~3. A $1$-automorphism fixes every
-leading term. We prove the stronger assertion that fixing every valuation
+leading term, as specified in their Definition~2.5 and Remark~2.6.
+We prove the stronger assertion that fixing every valuation
 value already forces the identity. The argument does not assume strong
 additivity, fixation of the embedded real field, or representation as the
 exponential of a derivation.
@@ -197,9 +199,9 @@ is exactly $\{\id,\text{conjugation}\}$. Marking $i$ removes this final ambiguit
 
 The inspected repository documentation already has a substantial analysis
 program, including contour theory, differential equations, and finite spectral
-theory \cite{Repo}. We therefore study the automorphism problem rather than
-repackage those topics. The reference snapshot is specified in the bibliography;
-this is an independent article, not an edit to that repository.
+theory \cite{Repo}. This article studies the exponential-automorphism problem.
+The reference snapshot in the bibliography records the original research
+context; this maintained copy now belongs to the repository collection.
 
 The concrete literature comparison is the explicit Question~5.4 above.
 The general cofinal-displacement theorem, its coarsening consequence, the
@@ -823,7 +825,13 @@ By \cref{prop:finite-log},
 \begin{equation}\label{eq:dilation-error}
  \sigma x-rx\in\OO\qquad(x\in\No).
 \end{equation}
-Choose $x=\omega$ and write
+For a direct valuation contradiction, take $x=\omega$. The finite error in
+\eqref{eq:dilation-error} cannot change the leading term $r\omega$, so
+$v(\sigma\omega)=-1$. But the prescribed value action gives
+$v(\sigma\omega)=r\,v(\omega)=-r$. Thus $r=1$, a contradiction.
+
+There is also a useful multiplication-based contradiction, independent of
+this final comparison of values. Again choose $x=\omega$ and write
 \[
  \sigma x=rx+e,\qquad \sigma(x^2)=rx^2+f,
  \qquad e,f\in\OO.
@@ -852,7 +860,8 @@ independent of the bounded-displacement obstruction on the value group.
 
 \subsection{An intrinsic operation that does not choose a complex logarithm}
 
-Let $F$ now be real closed and equipped with an ordered exponential.
+Throughout this section, assume in addition that $F$ is real closed;
+it still carries the ordered exponential specified above.
 Put $K=F(i)$, where $i^2=-1$. The standard algebraic complexification has
 conjugation
 \[
@@ -1099,7 +1108,14 @@ errors with multiplicative ratios. Its surjectivity makes $\nu$ onto the
 whole value group. Convexity makes $\nu$ order-reversing. Nontriviality
 prevents the value group from collapsing to zero. Stabilization supplies a
 well-defined induced action. No completeness, saturation, differentiability,
-or infinite-sum preservation is part of these arguments.
+or infinite-sum preservation is part of these arguments. The logarithmic-modulus
+results of Section~7 additionally assume that $F$ is real closed, as stated
+there; the preceding value-action theorems need no such assumption.
+
+The comparison with \cite{KKS} was checked against the pinned version~3 PDF
+on 22 September 2026: Definitions~2.4--2.5 and Remark~2.6 on p.~4, and
+Proposition~5.2 and Question~5.4 on p.~10. This checks the definition and
+the question used by \cref{cor:question54}; it does not establish priority.
 
 \subsection{Class-sized fields and quotients}
 
@@ -1167,7 +1183,7 @@ Faithful value action & Amplification; the surjective order-reversing map $w\cir
 Coarsening rigidity & Cofinal displacement; proper convex subgroups are not cofinal.\\
 Question 5.4 & $v(\exp x)=0$ exactly for finite $x$; bounded-displacement rigidity.\\
 Bounded-layer obstruction & Normal forms; leading-exponent domination; cofinal displacement.\\
-Rational-dilation obstruction & Rational linearity of $v\circ\exp$; multiplicativity at $\omega$ and $\omega^2$.\\
+Rational-dilation obstruction & Rational linearity of $v\circ\exp$; value comparison at $\omega$, or multiplicativity at $\omega$ and $\omega^2$.\\
 Surcomplex kernel & Range of $L$; real closedness; quadratic extension; real-field rigidity.\\
 \bottomrule
 \end{tabular}
@@ -1248,8 +1264,8 @@ independent of any convergence interpretation of surreal normal forms.
 E.~Kaplan, L.~S.~Krapp, and M.~Serra,
 \emph{Decomposing the automorphism group of the surreal numbers},
 arXiv:2509.22374v3, version submitted 23 April 2026; PDF dated 27 April 2026.
-In particular, Definitions~2.4--2.5, Remark~2.1, Proposition~5.2, and
-Question~5.4, p.~10.
+In particular, Definitions~2.4--2.5 and Remark~2.6, p.~4; Remark~2.1;
+Proposition~5.2 and Question~5.4, p.~10.
 \url{https://arxiv.org/abs/2509.22374v3}.
 
 \bibitem{Gonshor}

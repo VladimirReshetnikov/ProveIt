@@ -18,7 +18,7 @@
   pdftitle={A Square-Root Obstruction to Evaluating Increasing Hahn Series at Omega},
   pdfauthor={Research note prepared for Vladimir Reshetnikov},
   pdfsubject={Negative answer to Lipparini Problem 7.7; Hahn series and surreal numbers;
-    nonnegative-coefficient semiring strengthening},
+    nonnegative-coefficient semiring certificate},
   pdfkeywords={surreal numbers, Hahn series, ordered fields, formal power series,
     semirings, well-quasi-orders, ordinal-indexed supports}]{hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
@@ -112,7 +112,7 @@
 {\LARGE\bfseries to evaluating increasing\par Hahn series at $\omega$\par}
 \vspace{.28in}
 {\large A negative answer to Lipparini's Problem 7.7,\par
-with a nonnegative-coefficient semiring strengthening,\par
+with a nonnegative-coefficient semiring certificate,\par
 infinitesimal evaluation and monomial classification\par}
 \vspace{.22in}
 {\color{Quiet}20 September 2026\par}
@@ -140,10 +140,11 @@ posed as Problem 7.7 in the April 2026 extended version of Paolo Lipparini's pap
 on monotone infinitary ordinal operations. The obstruction is elementary and
 algebraic: the formal square root of $1-x$ exists in the source, whereas $1-\omega$
 has no square root in an ordered field. No continuity, order preservation, or
-preservation of infinite sums is assumed. We then strengthen the obstruction
-along two axes at once: it survives on the semiring $\Qnn[[x]]$ of
-nonnegative-coefficient series, where there are no additive inverses at all,
-and there it already excludes every value $u\ge1$. We prove that the possible
+preservation of infinite sums is assumed. We also give a direct obstruction
+on the semiring $\Qnn[[x]]$ of nonnegative-coefficient series, where there
+are no additive inverses, excluding every value $u\ge1$. Restriction and
+extension of homomorphisms relate the two formulations; the positive witness
+supplies a separate elementary proof. We prove that the possible
 images of $x$ under unital homomorphisms $\Q[[x]]\to\No$ are exactly the surreal
 infinitesimals, including zero. For general Hahn series we classify the pure
 monomial prescriptions that admit a homomorphism: the exponent map must be
@@ -163,10 +164,10 @@ hypothetical homomorphism only to that one finite identity. That shared core
 theorem is therefore proved exactly once below, in \cref{lem:witness} and
 \cref{thm:main}. The supporting material genuinely diverged, and this document
 is the union of the two toolkits rather than a deduplication of them: the
-semiring strengthening of \cref{sec:semiring}, the general unit square root
+semiring certificate of \cref{sec:semiring}, the general unit square root
 of \cref{lem:unit-root}, the elementary two-support argument of
 \cref{lem:two-supports}, and several scope remarks in \cref{sec:audit} come
-from the second report, while the three-way evaluation criterion, the
+from the second report, while the infinitesimal evaluation criterion, the
 order-forcing theorem, the monomial classification over an arbitrary exponent
 group, and the appendix on Higman's lemma come from the first. Where the two
 reports phrased an attribution or a priority caveat differently, the more
@@ -184,9 +185,10 @@ This manuscript has not undergone independent refereeing or proof-assistant veri
 \begin{resultbox}
 \textbf{Reading guide.} Section~\ref{sec:main} contains the complete negative
 solution and does not depend on the later sections.
-Section~\ref{sec:semiring} is an independent second obstruction using only
-nonnegative coefficients and semiring operations; it needs nothing from
-Section~\ref{sec:main} and is not implied by it. Sections~\ref{sec:inf}
+Section~\ref{sec:semiring} gives a separate proof using only nonnegative
+coefficients and semiring identities. It does not use the proof in
+Section~\ref{sec:main}; its obstruction also implies that section's theorem
+by restriction of homomorphisms. Sections~\ref{sec:inf}
 and~\ref{sec:classification} describe exactly what can be evaluated instead.
 Section~\ref{sec:audit} collects the scope limits and the misreadings the
 result invites. Appendix~\ref{app:summability} supplies the order-combinatorial
@@ -553,17 +555,42 @@ $(1-u)g=1$. Since $u\ge1$ and $g\ge0$, the left-hand side is nonpositive,
 while the right-hand side is $1>0$. This is a contradiction.
 \end{proof}
 
-\begin{remark}[The two obstructions are incomparable]\label{rem:incomparable}
-\Cref{thm:semiring} is not a corollary of \cref{thm:main}, nor conversely,
-and neither makes the other redundant. It weakens the hypotheses of
-\cref{thm:main} along two axes simultaneously: the source is only a semiring,
-with no additive inverses and therefore with strictly fewer identities
-available to the argument, and the excluded values are all $u\ge1$ rather than
-only $u>1$. In the other direction, \cref{thm:main} applies to every unital
-ring homomorphism defined on all of $\Q[[x]]$, a domain on which $\psi$ need
-not be defined at all, and a ring homomorphism out of $\Q[[x]]$ does not
-restrict to a semiring homomorphism claim about $\Qnn[[x]]$ unless one already
-knows that the restriction lands where required. The reader should keep both.
+\begin{remark}[How the ring and semiring obstructions relate]
+\label{rem:incomparable}
+The two arguments give different elementary certificates. Their
+homomorphism claims are related by restriction and extension. Every unital ring
+homomorphism $\Q[[x]]\to K$ restricts to a unital semiring homomorphism
+$\Qnn[[x]]\to K$, with the same image of $x$. Its codomain is still $K$;
+no claim that every series has a nonnegative image is needed. Consequently
+\cref{thm:semiring} implies \cref{thm:main} and also excludes $u=1$.
+
+In fact, restriction is a bijection between these two kinds of maps into
+any fixed commutative ring $K$. To see this without an abstract completion
+theorem, write each $f\in\Q[[x]]$ as $f=a-b$ with $a,b\in\Qnn[[x]]$,
+using the positive and negative parts of each rational coefficient. Given
+a semiring map $\psi$, define
+\[
+ \overline\psi(f)=\psi(a)-\psi(b).
+\]
+This is independent of the representation: if $a-b=a'-b'$, then
+$a+b'=a'+b$ in the semiring, so applying $\psi$ gives the required equality
+of differences in $K$. The formulas
+\[
+ (a-b)+(c-d)=(a+c)-(b+d),\qquad
+ (a-b)(c-d)=(ac+bd)-(ad+bc)
+\]
+show that $\overline\psi$ preserves addition and multiplication. It preserves
+$0$ and $1$, extends $\psi$, and is the only ring map doing so because
+every $f$ is such a difference. Conversely, extending the restriction of
+a ring map recovers that map.
+
+Thus \cref{thm:main}, applied to the extension, already excludes semiring
+maps with $u>1$. The endpoint $u=1$ is excluded directly by
+$\psi(G)=1+\psi(G)$. The positive witness in \cref{lem:H} remains useful:
+it proves the full $u\ge1$ obstruction from two identities in the semiring,
+without introducing a ring extension. The earlier version of this remark
+incorrectly described the statements as incomparable; the distinction is
+between their explicit proofs, not the existence of the corresponding maps.
 \end{remark}
 
 Only the subsemiring generated by $x$, $H$, $G$ and the nonnegative rational
@@ -604,7 +631,7 @@ by $w_0=1$ and $w_n=-\sum_{k=1}^{n}v_kw_{n-k}$.
 \Cref{lem:unitsquare} is all that \cref{thm:necessary} needs, and it has the
 merit of using nothing beyond the single series $B$ already constructed. The
 following companion statement is strictly more general in three directions at
-once --- an arbitrary unit rather than $1+qx$, an arbitrary field of
+once --- an arbitrary unit with constant term $1$ rather than $1+qx$, a field of
 characteristic zero rather than $\Q$, and uniqueness as well as existence ---
 and it is what the arguments of \cref{prop:rational,thm:exact} use later.
 Both are kept: the substitution proof of \cref{lem:unitsquare} is the one
@@ -662,7 +689,9 @@ $\phi(x)=0$, then $\phi$ is the constant-term map. If $\phi(x)\ne0$,
 then $\phi$ is injective.
 \end{proposition}
 \begin{proof}
-Unitality forces the rational constants to be fixed. If $\phi(x)=0$, write
+The restriction of $\phi$ to $\Q$ is injective, so $F$ has characteristic
+zero; identify its prime subfield with $\Q$. Unitality then fixes these
+rational constants. If $\phi(x)=0$, write
 $f=f_0+xg$ to obtain $\phi(f)=f_0$. If $\phi(x)\ne0$, every nonzero series
 has a factorization $f=x^m v$ with $m\ge0$ and $v$ a unit. Both factors
 have nonzero images, so $\phi(f)\ne0$.
@@ -747,8 +776,11 @@ union support lies in a fixed reverse well-ordered set. Hence \eqref{eq:ev}
 preserves every source-summable family.
 
 Finally, for $f\ne0$ write $f=x^m v$, where $v$ is a unit in $\R[[x]]$.
-The map just constructed sends $u^m$ and $v$ to nonzero elements, so it is
-injective. The argument for $u=0$ is the direct constant-term calculation.
+The map just constructed sends $x^m$ to $u^m\ne0$ and sends the unit $v$
+to a nonzero element, so it is injective. For $u=0$, constant-term evaluation
+is a coefficient-fixing homomorphism. It is strongly additive because only
+finitely many members of a source-summable family have a nonzero constant
+term, so taking that coefficient commutes with the sum.
 \end{proof}
 
 \begin{remark}[Injectivity again, by leading terms]\label{rem:leading-inj}
@@ -773,11 +805,15 @@ family of its monomials. We do \emph{not} infer uniqueness among arbitrary
 abstract ring homomorphisms. Describing the maps that fail to respect infinite
 sums is a separate question, and the distinction between arbitrary and
 strongly additive maps is a substantive one in the surreal setting; compare
-\citep[Sections 3 and 4]{KKS}. The successful termwise construction is the
-familiar change-of-value-group construction for Hahn fields, written in the
-opposite exponent convention; compare \citep[Section 2.3]{KKS}. In particular,
-the nonexistence theorem
-requires far less structure than the positive construction uses.
+\citep[Sections 3 and 4]{KKS}. The construction here is substitution of an
+arbitrary infinitesimal series. When $u=\omega^a$ with $a<0$, it reduces to
+the exponent change $n\mapsto na$ on monomials; this special case belongs
+to the familiar change-of-value-group construction for Hahn fields, written
+in the opposite exponent convention; compare \citep[Section 2.3]{KKS}.
+For a general $u$, its powers can have many terms, so the substitution is
+not just a relabeling of exponents. The finite-word support argument is what
+justifies it. In particular, the nonexistence theorem requires far less
+structure than the positive construction uses.
 
 There is no contradiction with classical analytic convergence. A series may
 have zero radius of convergence over the real numbers and still admit
@@ -805,9 +841,17 @@ and the omega-map is strictly increasing by \eqref{eq:omega}. The single fixed p
 surreal $\omega^{-\omega}$ therefore determines a neighbourhood of $s$ in the
 order topology that \emph{no} partial sum $s_N$ ever enters. The family is
 summable and its sum is $s$, yet the sequence of partial sums does not
-converge to $s$ in any order-theoretic sense. This is why
-\cref{thm:exact} is stated in terms of Hahn summability and why no appeal to
-convergence is made anywhere in this note.
+converge to $s$ in the full surreal order topology.
+
+The ambient field matters. In the ordered subfield
+$K=\R((\omega^{-1}))$, the same partial sums do converge to $s$ in its
+\emph{intrinsic} order topology. Indeed, every $\eta\in K_{>0}$ has leading
+term $c\omega^{-k}$ with $c>0$ and $k\in\Z$. For $N+1>k$, the positive
+tail $s-s_N$ has leading exponent $-(N+1)<-k$, so $0<s-s_N<\eta$.
+The surreal interval of radius $\omega^{-\omega}$ about $s$ intersects $K$
+only in $\{s\}$. Thus the intrinsic order topology on $K$ differs from the
+subspace topology inherited from $\No$. \Cref{thm:exact} uses Hahn summability,
+whose support criterion specifies the sum without choosing either topology.
 
 \section{The order hidden in the full Hahn field}\label{sec:order}
 The main proof deliberately avoids assuming source-order preservation. In the
@@ -1031,6 +1075,8 @@ the finite convolution coefficients agree.
 
 The construction fixes the real constants and preserves $1$. A nonzero
 coefficient remains nonzero at a unique image exponent, so $T_f$ is injective.
+Its leading coefficient is unchanged, so it also preserves the canonical
+field order, even when $G$ is not $2$-divisible.
 A summable family has a well-ordered union support and finite occurrence at
 each source exponent. Its image has a reverse well-ordered union support
 and the identical occurrence counts. This proves strong additivity and
@@ -1171,13 +1217,17 @@ Let $p(Y)\in\R(x)[Y]$ be monic and irreducible, and let
 $L=\R(x)[Y]/(p)$. The evaluation $x\mapsto\omega$ extends to an embedding
 $L\to\No$ if and only if the polynomial $p^\omega(Y)$ obtained by evaluating
 its rational-function coefficients at $\omega$ has a root in $\No$.
+More precisely, the extending embeddings correspond bijectively to those
+roots, by the image of the residue class of $Y$.
 \end{proposition}
 \begin{proof}
 Any extension sends the residue class of $Y$ to such a root. Conversely, a
 root induces a unital homomorphism from $\R(x)[Y]$ to $\No$ that annihilates
 $(p)$. It factors through $L$, which is a field because $p$ is irreducible.
 A unital homomorphism from a field has zero kernel, so the induced map is
-an embedding.
+an embedding. Since $L$ is generated over $\R(x)$ by the residue class of
+$Y$, that root determines the extension uniquely, and different roots give
+different extensions.
 \end{proof}
 
 The pair $p=Y^2-(1-x)$ and $p=Y^2-(1+x)$ therefore separates two very similar
@@ -1203,8 +1253,8 @@ settle the separate questions in the surrounding paper about other possible
 infinitary operations on surreal numbers or combinatorial games.
 
 The additional conclusions are exact statements with distinct scopes:
-Theorem~\ref{thm:semiring} strengthens the obstruction to a semiring source
-with no additive inverses and to all values $u\ge1$;
+Theorem~\ref{thm:semiring} proves the obstruction directly in a semiring
+source with no additive inverses and excludes all values $u\ge1$;
 Theorem~\ref{thm:exact} classifies possible values of one power-series variable
 in $\No$; Theorem~\ref{thm:classification} classifies pure monomial data for
 Hahn-field homomorphisms; Theorem~\ref{thm:reversal} recalls the standard
@@ -1213,8 +1263,8 @@ of the surreal field, all non-monomial Hahn substitutions, or all maximal
 subfields on which evaluation at $\omega$ is possible.
 
 Stated as a ledger, exactly four things are proved: the nonexistence theorem
-for the posed prescription; its nonnegative-coefficient semiring
-strengthening; the image criterion for a single power-series variable; and the
+for the posed prescription; the nonnegative-coefficient semiring
+obstruction; the image criterion for a single power-series variable; and the
 existence criterion for prescribed monomial images. Everything else in this
 note is either classical background, a worked example, or a scope
 disclaimer.

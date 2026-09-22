@@ -547,10 +547,15 @@ The set $A$ is fixed before the function is defined.
 For every nonempty set $A\subset\No$, $T_A$ and $B_A$ are entire uniform
 genetic functions under the same option rules, with
 $T_A=\ind_{\D_A}$ and $B_A=\ind_{\U_A}$. Both values occur.
-If $A$ has no largest element, both functions are locally constant
-everywhere and have zero derivative everywhere. If $A$ has a largest
-element $m$, they are discontinuous at $m$ and are not differentiable
-there.
+If $A$ has no largest element, there is one surreal $\delta_A>0$ such that
+\begin{equation}\label{eq:uniform-general}
+ |h|<\delta_A\quad\Longrightarrow\quad
+ B_A(x+h)=B_A(x),\quad T_A(x+h)=T_A(x)
+ \qquad(x\in\No).
+\end{equation}
+In particular, both functions are locally constant everywhere and have zero
+derivative everywhere. If $A$ has a largest element $m$, they are
+discontinuous at $m$ and are not differentiable there.
 \end{theorem}
 \begin{proof}
 The option expressions are a set of affine translates of $q$ with surreal
@@ -561,16 +566,30 @@ The sign argument of \cref{thm:evaluation} proves the stated values.
 Any $a\in A$ lies in $\D_A$, while $\cut{A}{}$ lies in $\U_A$, so the
 function is nonconstant.
 
-Suppose first that $A$ has no largest element. If $x\in\D_A$, choose
-$a\in A$ with $x\le a$ and then $a'\in A$ with $a'>a$. Put
-$\delta=(a'-x)/2$. For $|h|<\delta$ we have $x+h<a'$, so
-$x+h\in\D_A$.
+Suppose first that $A$ has no largest element. Form the set of all its
+positive differences and one separating cut:
+\[
+ \Delta_A=\{b-a:a,b\in A,\ a<b\},\qquad
+ \delta_A=\cut{0}{\Delta_A}.
+\]
+Replacement makes $\Delta_A$ a set, every member is positive, and the cut
+therefore gives $0<\delta_A<d$ for every $d\in\Delta_A$. The radius is
+chosen once from $A$, independently of the point $x$.
 
-If $x\in\U_A$, form the legitimate set-sized cut
-$y=\cut{A}{x}$. It satisfies $a<y<x$ for every $a\in A$. With
-$\delta=(x-y)/2$, the inequality $|h|<\delta$ gives $x+h>y>a$ for
-all $a\in A$, hence $x+h\in\U_A$. Thus $B_A$ and $T_A$ are locally
-constant and their difference quotients vanish near each point.
+If $x\in\D_A$, choose $a\in A$ with $x\le a$ and then $b\in A$ with
+$b>a$. For $|h|<\delta_A$,
+\[
+ x+h<x+\delta_A\le a+\delta_A<b,
+\]
+so $x+h\in\D_A$. If $x\in\U_A$, fix any $a\in A$ and choose $b\in A$
+with $b>a$. Since $x>b$ and $\delta_A<b-a$, the same radius gives
+\[
+ x+h>x-\delta_A>b-\delta_A>a.
+\]
+This holds for every $a\in A$, so $x+h\in\U_A$. No simultaneous selection
+of the witnesses $b$ is needed: each inequality is proved for an arbitrary
+fixed $a$. The two indicator formulas now give \eqref{eq:uniform-general},
+and every punctured difference quotient is exactly zero on this radius.
 
 Suppose instead that $m=\max A$. Then $B_A(x)=0$ for $x\le m$ and
 $B_A(x)=1$ for $x>m$. In every neighborhood of $m$ there are points of
@@ -599,9 +618,13 @@ and the same argument works in reverse. Thus $\U_A=\U_C$, and the
 explicit indicator formulas apply.
 \end{proof}
 
-The derivatives therefore depend on the endpoint-free cut encoded by
-$A$, not on a particular enumeration or on the detailed magnitudes of
-the rational options. No real supremum of $A$ needs to exist.
+The indicator depends only on the cut encoded by $A$, not on an enumeration
+or on the magnitudes of the rational options. The displayed choice of
+$\delta_A$ is sufficient, but not intrinsic to the indicator or necessarily
+largest: cofinal sets can give the same indicator with different such radii. No real supremum of
+$A$ is used. The uniform radius comes from a cut with a \emph{set} of right
+options; this argument does not supply one radius simultaneously for a
+proper class of indexing sets.
 
 \section{Order automorphisms and an ordinal-indexed kernel}\label{sec:extensions}
 \subsection{A group of normalized primitives}
@@ -712,11 +735,16 @@ analysis: the class whose endpoint one needs may have a gap as its
 supremum, as in \cref{thm:sup}.
 
 \subsection{Local openness versus the set-union topology}
-The original article uses an openness convention built from
+Two openness conventions occur here and must be named separately. The
+local order-field convention declares a class open when each point has an
+interval contained in it; it is the convention relevant to the
+$\varepsilon$--$\delta$ derivative in \eqref{eq:derivative}.
+The original article instead uses a global openness convention built from
 \emph{set-sized} unions of intervals whose endpoints are surreal numbers
 or the two end gaps \source{Definition~7}{RSS}. This is weaker than
 allowing every locally open proper class to count as open. The distinction
-can be seen directly here.
+can be seen directly here. It is not a distinction between two choices of
+small numerical tolerance: it is a restriction on the allowed global unions.
 
 Both $\D$ and $\U$ are locally open. Also
 \[

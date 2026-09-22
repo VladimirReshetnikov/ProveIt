@@ -57,6 +57,7 @@
 \newcommand{\Oh}{\mathcal O}
 \newcommand{\mh}{\mathfrak m}
 \DeclareMathOperator{\lcm}{lcm}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 \lstset{basicstyle=\small\ttfamily,columns=fullflexible,breaklines=true,
  frame=single,rulecolor=\color{muted},showstringspaces=false}
 
@@ -194,7 +195,7 @@ of independent novelty.
 
 \begin{center}
 \renewcommand{\arraystretch}{1.17}
-\begin{tabular}{@{}p{.16\textwidth}p{.29\textwidth}p{.22\textwidth}p{.24\textwidth}@{}}
+\begin{tabular}{@{}P{.16\textwidth}P{.29\textwidth}P{.22\textwidth}P{.24\textwidth}@{}}
 \toprule
 Model & Information supplied by a name & Real trace & Main qualification\\
 \midrule
@@ -358,9 +359,12 @@ resulting value has some computable name.
 
 \begin{proposition}[No small nontrivial convergence in the fine order topology]
 \label{prop:topology}
-A set-indexed net in $\No$ which converges in the full order topology is
-eventually equal to its limit. A set-indexed Cauchy net for its ordered-field
-uniformity is eventually constant.
+For the full surreal class $\No$, a set-indexed net converging in the full
+order topology is eventually equal to its limit, and a set-indexed Cauchy net
+for the ordered-field uniformity is eventually constant. For a
+universe-relative carrier $\No_u$ living one universe above its admissible
+option types, both conclusions require the directed index type to be
+\emph{small in the lower universe}.
 \end{proposition}
 \begin{proof}
 For a net $(x_i)_{i\in I}$ and a proposed limit $x$, form the set
@@ -369,8 +373,19 @@ $\varepsilon=\cut 0D$ is positive and smaller than every member of $D$.
 Convergence eventually gives $|x_i-x|<\varepsilon$, forcing $x_i=x$.
 For the Cauchy assertion use instead the set of all nonzero pairwise
 distances. The Cauchy condition makes all sufficiently late pairwise
-differences zero. Empty distance sets cause no difficulty.
+differences zero. Empty distance sets cause no difficulty. At a fixed
+universe level, images and finite products of a lower-universe-small index
+type are still small there, so the same proof uses admissible option families.
 \end{proof}
+
+The size qualifier is necessary. On $\No_u$, index the net $x_r=r$ by all
+positive elements of that carrier, ordered in reverse numerical order. For
+any $\varepsilon>0$, the tail beyond $r=\varepsilon/2$ satisfies
+$0<x_s\le\varepsilon/2<\varepsilon$. The net converges to zero but is never
+zero. Its index is a legitimate type in the carrier's larger universe, not
+an admissible lower-universe-small type. In the full-class reading the
+analogous index is a proper class, so it is not a counterexample to the
+set-indexed statement.
 
 This is consistent with the topology results documented in the repository
 \cite{repo}. It does not prevent computation in a fixed workspace. Inside
@@ -1060,11 +1075,24 @@ $(1-h)G(h)=1$ and, for every $N\ge0$,
 Extract a positive gap $\delta$. Each $h^n$ is numerically computable by
 Theorem~\ref{thm:ring} and has support in $[n\delta,\infty)$. At any
 threshold $B$, only the finitely many $n$ with $n\delta<B$ can contribute.
-The union of their computed covers is a finite cover for $G(h)$ below $B$.
+Use lower bound zero and the finite candidate cover
+\[
+ F_G(B)=[0,B)\cap
+ \bigcup_{\substack{n\in\N\\n\delta<B}}F_{h^n}(B).
+\]
+The intersection is part of the algorithm. The input can have a negative
+supplied lower bound and negative candidates whose coefficients are zero;
+ring operations need not remove those redundant candidates. For example,
+$h=0$ may have lower bound $-1$ and the valid cover
+$F_h(B)=\{-1/2\}$ when $B>-1/2$, empty otherwise. The unfiltered union at
+$B=2$ could retain $-1/2$ even though $G(h)=1$. Intersecting with $[0,B)$
+removes it without a coefficient-zero test. This filtering preserves every
+nonzero term because all powers have nonnegative support, and for $B\le0$
+the output cover is empty.
+
 For a queried exponent $q$, choose $N$ with $(N+1)\delta>q$ and compute
 the coefficient of the finite sum through $N$. This stabilizes the exact
 coefficient, after which its real precision is computed separately.
-A lower bound is zero.
 
 Finite multiplication proves the displayed remainder identity. At every
 fixed coefficient, $h^{N+1}$ eventually contributes zero. Hence the
@@ -2886,7 +2914,8 @@ mathematical contracts can actually be met.
 \subsection{Rerun checks from all three reports}
 All three original verification programs are retained unchanged, alongside
 a new cross-model suite. They use Python standard-library exact arithmetic
-without network access. Rerun results:
+without network access. The September 22, 2026 rerun, recorded with its
+Python version and UTC timestamp in \texttt{data/summary.json}, gives:
 \begin{center}
 \begin{tabular}{@{}lll@{}}
 \toprule
@@ -2895,13 +2924,15 @@ Suite & Reported unit & Rerun result\\
 A & 4,967 exact comparisons & PASS\\
 B & 18 named unit tests & PASS\\
 C & 266 exact checks & PASS\\
-Merged & 4,321 cross-model exact checks & PASS\\
+Merged & 4,366 cross-model exact checks & PASS\\
 \bottomrule
 \end{tabular}
 \end{center}
 Unlike test units are not added together. The merged suite compares dense
 and sparse convolution, redundant finite covers, branch transforms, residue
-identities, and denominator examples. Synthetic halting fixtures do not
+identities, and denominator examples. Its geometric-cover regression includes
+negative zero candidates and checks both support completeness and the output
+cover range; an exact sparse-series identity would not check that contract. Synthetic halting fixtures do not
 compute the halting set.
 
 These finite checks do not prove the infinite theorems or validate arbitrary
@@ -3014,7 +3045,7 @@ not an open question about the classical surreal field.
 
 \subsection{Topic-by-topic disposition}
 \small
-\begin{longtable}{@{}p{.23\textwidth}p{.25\textwidth}p{.44\textwidth}@{}}
+\begin{longtable}{@{}P{.23\textwidth}P{.25\textwidth}P{.44\textwidth}@{}}
 \toprule
 Topic & Original locations & Merged disposition\\
 \midrule
