@@ -2,8 +2,10 @@
 
 This implementation note records the assessment made on 2026-09-22. The
 repository proves evaluation, arithmetic, valuation, leading coefficients,
-and real order for **finite** normal forms. It does not yet construct infinite
-normal-form evaluation or an equivalence with the actual surreal carrier.
+and real order for **finite** normal forms. It now constructs a canonical cut
+candidate for every small formal normal form, with recursive residual bounds,
+leading data and negation. Arithmetic preservation and an equivalence with
+the actual surreal carrier remain open.
 The obligations are those in `found:eq:normalform`, `found:sub:bridge`, and
 `found:thm:workspace` of the [foundations report](foundations-and-computation/foundations/article.tex).
 
@@ -82,14 +84,43 @@ sum, prove an arithmetic identity, or select a normal form. This nonuniqueness i
 [`SignSequenceValuationApproximation.lean`](../Surreal/Foundations/SignSequenceValuationApproximation.lean).
 The simplicity condition is essential.
 
-## Dependency order after that lemma
+## Constructed recursive candidate
+
+[`SmallNormalFormTruncation.lean`](../Surreal/Foundations/SmallNormalFormTruncation.lean)
+proves support and coefficient formulas for exponent and ordinal truncations,
+including the successor-term identity. Recursion on the strictly decreasing
+support length in
+[`SmallNormalFormEvaluation.lean`](../Surreal/Foundations/SmallNormalFormEvaluation.lean)
+then defines `cutEvaluation F`. At each supported growth exponent `a`, it obeys
+
+```text
+↑(-a) < valuation (cutEvaluation F -
+  (cutEvaluation (trunc F a) + ofReal (coeff F a) * omegaPower a)).
+```
+
+Length induction proves compatibility of every recursive center, so the
+definition's fallback branch is never used. The result is a prefix of every
+solution of these constraints; uniqueness is asserted only with that
+simplicity condition. The empty form gives zero.
+
+[`SignSequenceLeadingTerm.lean`](../Surreal/Foundations/SignSequenceLeadingTerm.lean)
+transfers leading-term removal and identifies leading data from a strict
+residual bound. Consequently
+[`SmallNormalFormLeading.lean`](../Surreal/Foundations/SmallNormalFormLeading.lean)
+identifies the first formal exponent and coefficient with the actual leading
+data. It preserves and reflects zero, positivity and nonnegativity.
+[`SmallNormalFormNegation.lean`](../Surreal/Foundations/SmallNormalFormNegation.lean)
+proves negation preservation by length induction and two prefix comparisons.
+These facts do not yet give two-input injectivity or full order preservation.
+
+## Remaining dependency order
 
 1. The pinned small-support module and its ordinal truncation APIs are now reused.
    Retain `Small.{u}` support explicitly; finite evaluation's independent
    universe parameters do not justify arbitrary infinite supports.
-2. Construct evaluation by ordinal-length recursion, with the prescribed
-   successor terms and simplest choices at limit stages. Prove the intended
-   residual valuation and coefficient statements at each truncation.
+2. The ordinal-length cut candidate and recursive residual bounds at supported
+   exponents are constructed. Extend the bounds to gaps in the support and
+   prove compatibility with truncation and the existing finite evaluation.
 3. Prove the substantive simplicity and truncation compatibility results
    needed for canonical choices to preserve addition and multiplication.
    Merely showing both sides satisfy approximation bounds is insufficient.

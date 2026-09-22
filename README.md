@@ -25,7 +25,7 @@ Apache license are included in the repository.
 
 ## Formalization
 
-The [source inventory](docs/FORMALIZATION.md) covers twenty-two research reports
+The [source inventory](docs/FORMALIZATION.md) covers twenty-five research reports
 and their preserved source manuscripts. The
 [coverage and dependency ledger](docs/FORMALIZATION.md) records their statements,
 the proposed Layer A–E implementation order, and the exact scope of each
@@ -116,6 +116,8 @@ ordinary integral multiples of `2πi` as its kernel.
 Every nonzero complex Hahn series is its positive modulus times the finite
 exponential of an imaginary finite real angle. These angles are unique modulo
 ordinary integral multiples of `2π`.
+Each has exactly one representative in the actual ordered interval `(-π, π]`,
+and every negative real Hahn input has principal polar angle `π`.
 Roots of monic polynomials over this subring stay in it; for split polynomials,
 standard part preserves the root multiset with multiplicities.
 Resultant and nodal-derivative valuations are finite sums of root-separation
@@ -315,10 +317,14 @@ compatible with surcomplex multiplication.
 Real closedness of the actual sign field and the infinite normal-form bridge to Hahn
 series remain open.
 The bridge now has an explicit formal carrier of small reverse-well-ordered
-supports, reusing the pinned upstream ordinal truncation APIs. Compatible
-small families of valuation balls have a proved unique simplest common point.
-Their approximation inequalities alone never give uniqueness: a sufficiently
-small positive monomial produces another solution. The next construction uses
-support-length recursion and must prove arithmetic and truncation compatibility.
+supports, reusing the pinned upstream ordinal truncation APIs. Recursion on
+support length constructs a canonical actual surreal candidate: the simplest
+point meeting all recursive truncation bounds. Its leading exponent and
+coefficient agree with the formal form; zero, positivity and nonnegativity
+are preserved and reflected, and negating the form negates the candidate.
+The approximation inequalities alone never give uniqueness: a sufficiently
+small positive monomial produces another solution. Arithmetic compatibility,
+comparison of arbitrary candidates, and an inverse normal-form theorem remain
+separate obligations.
 A successful build proves only the imported Lean
 statements, not coverage of all the source documents.
