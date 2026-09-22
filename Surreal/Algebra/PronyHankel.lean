@@ -7,7 +7,7 @@ import Mathlib.Tactic.LinearCombination
 /-!
 # Classical Prony uniqueness
 
-This file proves `prop:prony` and the orthogonality relations `eq:orthog` of
+This file proves `prony:prop:prony` and the orthogonality relations `prony:eq:orthog` of
 `docs/surcomplex/prony-reconstruction-at-surreal-scales/article.tex` over an
 arbitrary field, which includes the complex Hahn fields and actual surcomplex
 workspaces used there.
@@ -55,13 +55,13 @@ theorem hankel_moment_eq (a w : Fin k → K) :
   simp only [mul_diagonal, transpose_apply, hankel, moment, powerMatrix, of_apply, pow_add]
   exact Finset.sum_congr rfl fun i _ => by ring
 
-/-- `eq:hankel`: `H = V diag(w) Vᵀ`, written with Mathlib's row-indexed Vandermonde
+/-- `prony:eq:hankel`: `H = V diag(w) Vᵀ`, written with Mathlib's row-indexed Vandermonde
 matrix. -/
 theorem hankel_moment (a w : Fin n → K) :
     hankel n (moment a w) = (vandermonde a)ᵀ * diagonal w * vandermonde a :=
   hankel_moment_eq a w
 
-/-- `eq:hankel`: the determinant formula. -/
+/-- `prony:eq:hankel`: the determinant formula. -/
 theorem det_hankel_moment (a w : Fin n → K) :
     (hankel n (moment a w)).det =
       (∏ i, w i) * (∏ i : Fin n, ∏ j ∈ Ioi i, (a j - a i)) ^ 2 := by
@@ -107,7 +107,7 @@ theorem eval_nodePoly_eq_zero_iff (a : Fin k → K) (x : K) :
   simp only [eval_sub, eval_X, eval_C, sub_eq_zero, mem_univ, true_and, Set.mem_range]
   exact ⟨fun ⟨i, h⟩ => ⟨i, h.symm⟩, fun ⟨i, h⟩ => ⟨i, h.symm⟩⟩
 
-/-- `eq:orthog`: the node polynomial annihilates every polynomial multiple. -/
+/-- `prony:eq:orthog`: the node polynomial annihilates every polynomial multiple. -/
 theorem momentFunctional_nodePoly_mul (a w : Fin k → K) (q : K[X]) :
     momentFunctional a w (nodePoly a * q) = 0 := by
   refine Finset.sum_eq_zero fun i _ => ?_
@@ -126,7 +126,7 @@ theorem eval_cofactor_of_ne (a : Fin k → K) {i l : Fin k} (hil : l ≠ i) :
   rw [cofactor, eval_prod]
   exact prod_eq_zero (mem_erase.mpr ⟨hil, mem_univ l⟩) (by simp)
 
-/-- `eq:orthog`: the cofactors are orthogonal, with diagonal values
+/-- `prony:eq:orthog`: the cofactors are orthogonal, with diagonal values
 `c_i = w_i p_i²`, where `p_i = Q_i(a_i)`. -/
 theorem momentFunctional_cofactor_mul (a w : Fin k → K) (i j : Fin k) :
     momentFunctional a w (cofactor a i * cofactor a j) =
@@ -147,7 +147,7 @@ theorem eval_cofactor_ne_zero (a : Fin k → K) {i : Fin k} {x : K} (hx : ∀ j 
   exact prod_ne_zero_iff.mpr fun j hj => by
     simpa [sub_eq_zero] using hx j (mem_erase.mp hj).1
 
-/-- `eq:localeq`: dividing a cofactor-coordinate perturbation `P + ∑ b_j Q_j` by
+/-- `prony:eq:localeq`: dividing a cofactor-coordinate perturbation `P + ∑ b_j Q_j` by
 `Q_i` at a point `x` away from the other nodes gives, with `z = x - a_i`,
 `z + b_i + ∑_{j ≠ i} b_j z/(a_i - a_j + z)`. The identity is exact. -/
 theorem eval_perturbed_eq (a b : Fin k → K) {i : Fin k} {x : K} (hx : ∀ j ≠ i, x ≠ a j) :
@@ -176,7 +176,7 @@ theorem eval_perturbed_eq (a b : Fin k → K) {i : Fin k} {x : K} (hx : ∀ j �
   rw [hsum]
   ring
 
-/-- `eq:localeq`: a root of the perturbation away from the other nodes satisfies
+/-- `prony:eq:localeq`: a root of the perturbation away from the other nodes satisfies
 the local equation. -/
 theorem local_root_equation (a b : Fin k → K) {i : Fin k} {x : K} (hx : ∀ j ≠ i, x ≠ a j)
     (hroot : (nodePoly a + ∑ j, C (b j) * cofactor a j).eval x = 0) :
@@ -184,7 +184,7 @@ theorem local_root_equation (a b : Fin k → K) {i : Fin k} {x : K} (hx : ∀ j 
   rw [eval_perturbed_eq a b hx] at hroot
   exact (mul_eq_zero.mp hroot).resolve_left (eval_cofactor_ne_zero a hx)
 
-/-- `eq:rootexact`, multiplied out: `z(1 + ∑_{j ≠ i} b_j/(a_i - a_j + z)) = -b_i`. -/
+/-- `prony:eq:rootexact`, multiplied out: `z(1 + ∑_{j ≠ i} b_j/(a_i - a_j + z)) = -b_i`. -/
 theorem local_root_mul (a b : Fin k → K) {i : Fin k} {x : K} (hx : ∀ j ≠ i, x ≠ a j)
     (hroot : (nodePoly a + ∑ j, C (b j) * cofactor a j).eval x = 0) :
     (x - a i) * (1 + ∑ j ∈ univ.erase i, b j / (x - a j)) = -b i := by
@@ -196,7 +196,7 @@ theorem local_root_mul (a b : Fin k → K) {i : Fin k} {x : K} (hx : ∀ j ≠ i
   rw [hs] at h
   linear_combination h
 
-/-- `eq:rootexact`: the node displacement is `-b_i(1 + ∑_{j ≠ i} b_j/(a_i - a_j + z))⁻¹`
+/-- `prony:eq:rootexact`: the node displacement is `-b_i(1 + ∑_{j ≠ i} b_j/(a_i - a_j + z))⁻¹`
 whenever the bracket is nonzero, as it is when all its summands are infinitesimal. -/
 theorem local_root_exact (a b : Fin k → K) {i : Fin k} {x : K} (hx : ∀ j ≠ i, x ≠ a j)
     (hroot : (nodePoly a + ∑ j, C (b j) * cofactor a j).eval x = 0)
@@ -209,7 +209,7 @@ def lowCoeffs (a : Fin n → K) : Fin n → K :=
   fun j => (nodePoly a).coeff j
 
 /-- The node polynomial's lower coefficients solve the Hankel system of the
-proof of `prop:prony`. -/
+proof of `prony:prop:prony`. -/
 theorem hankel_mulVec_lowCoeffs (a w : Fin n → K) :
     hankel n (moment a w) *ᵥ lowCoeffs a = fun r : Fin n => -moment a w (n + r) := by
   funext r
@@ -235,7 +235,7 @@ theorem hankel_mulVec_lowCoeffs (a w : Fin n → K) :
   congr 1
   exact Finset.sum_congr rfl fun j _ => mul_comm _ _
 
-/-- `prop:prony`, annihilator step: any `n`-node configuration whose first `2n`
+/-- `prony:prop:prony`, annihilator step: any `n`-node configuration whose first `2n`
 moments agree with those of a regular one has the same node polynomial. -/
 theorem nodePoly_eq_of_moment_eq {a w b u : Fin n → K} (ha : Function.Injective a)
     (hw : ∀ i, w i ≠ 0) (hm : ∀ r < 2 * n, moment a w r = moment b u r) :
@@ -261,7 +261,7 @@ theorem nodePoly_eq_of_moment_eq {a w b u : Fin n → K} (ha : Function.Injectiv
   · rw [coeff_eq_zero_of_natDegree_lt (by rwa [natDegree_nodePoly]),
       coeff_eq_zero_of_natDegree_lt (by rwa [natDegree_nodePoly])]
 
-/-- `prop:prony`: a regular `n`-node realization of the first `2n` moments is
+/-- `prony:prop:prony`: a regular `n`-node realization of the first `2n` moments is
 unique up to permutation. The competing configuration is not assumed regular. -/
 theorem exists_perm_of_moment_eq {a w b u : Fin n → K} (ha : Function.Injective a)
     (hw : ∀ i, w i ≠ 0) (hm : ∀ r < 2 * n, moment a w r = moment b u r) :
@@ -306,7 +306,7 @@ theorem exists_perm_of_moment_eq {a w b u : Fin n → K} (ha : Function.Injectiv
   have := congrFun hwu (σ j)
   simpa using this.symm
 
-/-- `prop:prony`: a regular `n`-node moment vector has no realization with fewer
+/-- `prony:prop:prony`: a regular `n`-node moment vector has no realization with fewer
 than `n` nodes, even using only its first `2n - 1` moments. -/
 theorem not_moment_eq_of_lt {a w : Fin n → K} (ha : Function.Injective a) (hw : ∀ i, w i ≠ 0)
     {k : ℕ} (hk : k < n) (b u : Fin k → K) :
@@ -408,7 +408,7 @@ theorem momentLinear_lastPerturbed (a w : Fin n → K) (e : K) (f : K[X]) :
   rw [if_pos (by omega)]
   ring
 
-/-- `eq:Pe`: `P_e = P - e ∑ Q_i/(w_i P'(a_i)²)`, written with `P'(a_i) = Q_i(a_i)`. -/
+/-- `prony:eq:Pe`: `P_e = P - e ∑ Q_i/(w_i P'(a_i)²)`, written with `P'(a_i) = Q_i(a_i)`. -/
 def lastMomentPoly (a w : Fin n → K) (e : K) : K[X] :=
   nodePoly a - ∑ i, C (e / (w i * (cofactor a i).eval (a i) ^ 2)) * cofactor a i
 
@@ -492,7 +492,7 @@ theorem lagrange_basis_eq (a : Fin n → K) (j : Fin n) :
   simp only [Lagrange.basisDivisor, Finset.prod_mul_distrib, ← map_prod, eval_sub, eval_X,
     eval_C, Finset.prod_inv_distrib]
 
-/-- `prop:last`: for every `e`, regardless of its valuation, `P_e` annihilates all
+/-- `prony:prop:last`: for every `e`, regardless of its valuation, `P_e` annihilates all
 polynomials of degree below `n` for the perturbed moment functional. -/
 theorem momentLinear_lastMomentPoly_mul {a w : Fin n → K} (ha : Function.Injective a)
     (hw : ∀ i, w i ≠ 0) (e : K) {f : K[X]} (hf : f.degree < n) :
@@ -510,7 +510,7 @@ theorem momentLinear_lastMomentPoly_mul {a w : Fin n → K} (ha : Function.Injec
   rw [hsm, map_smul, momentLinear_lastPerturbed, momentFunctional_lastMomentPoly_mul_cofactor ha hw,
     coeff_lastMomentPoly_mul_cofactor, mul_one, neg_add_cancel, smul_zero]
 
-/-- `prop:last`: `P_e` is the unique monic annihilator of the perturbed moments. -/
+/-- `prony:prop:last`: `P_e` is the unique monic annihilator of the perturbed moments. -/
 theorem lastMomentPoly_unique {a w : Fin n → K} (ha : Function.Injective a)
     (hw : ∀ i, w i ≠ 0) (e : K) (hn : 0 < n) {Q : K[X]} (hQm : Q.Monic)
     (hQd : Q.natDegree = n)

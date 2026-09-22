@@ -5,24 +5,24 @@ import Surreal.HahnSeries.Regroup
 /-!
 # Strong Hahn measures with an atomic representation
 
-This file formalizes the converse half of `thm:atomic` and its consequences in
+This file formalizes the converse half of `meas:thm:atomic` and its consequences in
 `docs/surreal/hahn-valued-measures-and-probability/article.tex`.
 
-`lem:positive-sum` is proved for Hahn series over any linearly ordered
+`meas:lem:sumalgebra` is proved for Hahn series over any linearly ordered
 cancellative coefficient monoid: a strong sum of nonnegative series is
 nonnegative, and positive as soon as one summand is positive. No divisibility
 or countability assumption on the exponents is used.
 
-`IsStrongHahnMeasure` is `def:measure`: the empty set has mass zero, and every
+`IsStrongHahnMeasure` is `meas:def:strong`: the empty set has mass zero, and every
 pairwise disjoint measurable sequence has a strongly summable family of masses
 whose Hahn sum is the mass of the union. A strongly summable family `w`
 defines the set function `A ↦ ∑ˢ_{x ∈ A} w x` of equation (2) on all subsets.
 It is a strong Hahn measure for every measurable structure. It is additive on
-arbitrary set-indexed disjoint families (`cor:all-subsets`), with the family of
+arbitrary set-indexed disjoint families (`meas:thm:atomic`(iv)), with the family of
 masses constructed as a regrouping of `w`. Over ordered coefficients it is
 positive exactly when every singleton mass is nonnegative.
 
-Pushforwards and coefficientwise scalar integration (`prop:integration`) are
+Pushforwards and coefficientwise scalar integration (`meas:prop:integration`) are
 proved for these atomic measures, with no boundedness or measurability
 condition on the integrand. The atomicity theorem for arbitrary strong measures
 on countably separated spaces, which requires the scalar Boolean-algebra lemmas,
@@ -54,7 +54,7 @@ theorem pos_of_coeff {x : R⟦Γ⟧} {i : Γ} (hi : ∀ j < i, x.coeff j = 0)
     (hpos : 0 < x.coeff i) : 0 < toLex x :=
   (lt_iff _ _).mpr ⟨i, fun j hj => by simpa using (hi j hj).symm, by simpa using hpos⟩
 
-/-- `lem:positive-sum`, strict part: a strong sum of nonnegative Hahn series is
+/-- `meas:lem:sumalgebra`, strict part: a strong sum of nonnegative Hahn series is
 positive when one summand is positive. At the least exponent of the common
 support, the only contributions are positive leading coefficients. -/
 theorem hsum_pos (s : SummableFamily Γ R α) (hs : ∀ a, 0 ≤ toLex (s a)) {a₀ : α}
@@ -94,7 +94,7 @@ theorem hsum_pos (s : SummableFamily Γ R α) (hs : ∀ a, 0 ≤ toLex (s a)) {a
     refine Finset.sum_pos' (fun a _ => hnonneg a) ⟨a₁, ?_, hcoeff a₁ ha₁'⟩
     simpa [SummableFamily.coeff_def] using ha₁'
 
-/-- `lem:positive-sum`: a strong sum of nonnegative Hahn series is nonnegative. -/
+/-- `meas:lem:sumalgebra`: a strong sum of nonnegative Hahn series is nonnegative. -/
 theorem hsum_nonneg (s : SummableFamily Γ R α) (hs : ∀ a, 0 ≤ toLex (s a)) :
     0 ≤ toLex s.hsum := by
   by_cases h : ∃ a, s a ≠ 0
@@ -114,7 +114,7 @@ section Atomic
 
 variable {Γ R X Y ι : Type*} [PartialOrder Γ] [AddCommMonoid R]
 
-/-- `def:measure`: a strong Hahn measure on a measurable space. Every pairwise
+/-- `meas:def:strong`: a strong Hahn measure on a measurable space. Every pairwise
 disjoint measurable sequence has strongly summable masses, summing to the mass of
 the union. No common support or valuation-topological continuity is imposed. -/
 structure IsStrongHahnMeasure [MeasurableSpace X] (μ : Set X → R⟦Γ⟧) : Prop where
@@ -122,7 +122,7 @@ structure IsStrongHahnMeasure [MeasurableSpace X] (μ : Set X → R⟦Γ⟧) : P
   iUnion : ∀ A : ℕ → Set X, (∀ n, MeasurableSet (A n)) → Pairwise (Function.onFun Disjoint A) →
     ∃ s : SummableFamily Γ R ℕ, (∀ n, s n = μ (A n)) ∧ μ (⋃ n, A n) = s.hsum
 
-/-- Equation (2) of `thm:atomic`: the strong sum of the singleton weights over
+/-- Equation (2) of `meas:thm:atomic`: the strong sum of the singleton weights over
 an arbitrary subset. -/
 def atomicMeasure (w : SummableFamily Γ R X) (A : Set X) : R⟦Γ⟧ :=
   (restrict w A).hsum
@@ -191,7 +191,7 @@ theorem hsum_disjointFamily (w : SummableFamily Γ R X) (A : ι → Set X) :
     (disjointFamily w A).hsum = atomicMeasure w (⋃ i, A i) :=
   hsum_regroup _ _
 
-/-- `cor:all-subsets`: an atomic measure is additive on every set-indexed disjoint
+/-- `meas:thm:atomic`(iv): an atomic measure is additive on every set-indexed disjoint
 family, with the sum interpreted strongly. -/
 theorem atomicMeasure_iUnion (w : SummableFamily Γ R X) {A : ι → Set X}
     (hA : Pairwise (Function.onFun Disjoint A)) :
@@ -208,7 +208,7 @@ theorem atomicMeasure_union (w : SummableFamily Γ R X) {A B : Set X} (h : Disjo
   exact finsum_mem_union' h ((w.finite_co_support g).subset fun x hx => hx.2)
     ((w.finite_co_support g).subset fun x hx => hx.2)
 
-/-- The converse half of `thm:atomic`: every strongly summable family defines a
+/-- The converse half of `meas:thm:atomic`: every strongly summable family defines a
 strong Hahn measure on all subsets, whatever measurable structure is used. -/
 theorem isStrongHahnMeasure_atomicMeasure [MeasurableSpace X] (w : SummableFamily Γ R X) :
     IsStrongHahnMeasure (atomicMeasure w) where
@@ -217,7 +217,7 @@ theorem isStrongHahnMeasure_atomicMeasure [MeasurableSpace X] (w : SummableFamil
     obtain ⟨s, hs, hsum⟩ := atomicMeasure_iUnion w hA
     exact ⟨s, hs, hsum⟩
 
-/-- `prop:integration`(i): the pushforward of an atomic measure is atomic, with
+/-- `meas:prop:integration`(i): the pushforward of an atomic measure is atomic, with
 the fiber masses as weights. -/
 theorem atomicMeasure_regroup (w : SummableFamily Γ R X) (f : X → Y) (B : Set Y) :
     atomicMeasure (regroup w f) B = atomicMeasure w (f ⁻¹' B) := by
@@ -235,12 +235,12 @@ theorem atomicMeasure_regroup (w : SummableFamily Γ R X) (f : X → Y) (B : Set
   rw [disjointFamily_apply w hA]
   rfl
 
-/-- `prop:integration`(i): pushforward along any map is a strong Hahn measure. -/
+/-- `meas:prop:integration`(i): pushforward along any map is a strong Hahn measure. -/
 theorem isStrongHahnMeasure_pushforward [MeasurableSpace Y] (w : SummableFamily Γ R X)
     (f : X → Y) : IsStrongHahnMeasure fun B => atomicMeasure w (f ⁻¹' B) := by
   simpa only [← atomicMeasure_regroup] using isStrongHahnMeasure_atomicMeasure (regroup w f)
 
-/-- `cor:cardinality`: the atomic set is the union, over exponents, of the finite
+/-- `meas:cor:cardinality`: the atomic set is the union, over exponents, of the finite
 sets of points with a nonzero coefficient there. -/
 theorem setOf_ne_zero_eq_iUnion (w : SummableFamily Γ R X) :
     {x | w x ≠ 0} = ⋃ g, {x | (w x).coeff g ≠ 0} := by
@@ -265,7 +265,7 @@ section Positive
 variable {Γ R X : Type*} [LinearOrder Γ] [AddCommMonoid R] [LinearOrder R]
   [IsOrderedCancelAddMonoid R]
 
-/-- The positivity clause of `thm:atomic`: an atomic measure is positive on all
+/-- The positivity clause of `meas:thm:atomic`: an atomic measure is positive on all
 subsets exactly when every singleton weight is nonnegative. -/
 theorem atomicMeasure_nonneg_iff (w : SummableFamily Γ R X) :
     (∀ A, 0 ≤ toLex (atomicMeasure w A)) ↔ ∀ x, 0 ≤ toLex (w x) := by
@@ -288,7 +288,7 @@ section Integration
 
 variable {Γ R X : Type*} [PartialOrder Γ] [Semiring R]
 
-/-- `prop:integration`(ii): the coefficientwise integral `∑ˢ_x g(x) w_x` of an
+/-- `meas:prop:integration`(ii): the coefficientwise integral `∑ˢ_x g(x) w_x` of an
 arbitrary scalar function, with no boundedness or measurability hypothesis. -/
 def atomicIntegral (w : SummableFamily Γ R X) (g : X → R) : R⟦Γ⟧ :=
   (SummableFamily.smulFamily g w).hsum
@@ -346,7 +346,7 @@ theorem smul_nonneg_toLex {c : R} {x : R⟦Γ⟧} (hc : 0 ≤ c) (hx : 0 ≤ toL
   · simp [hi j hj]
   · simpa using mul_pos hc hpos
 
-/-- `prop:integration`(iii): a nonnegative integrand has nonnegative integral
+/-- `meas:prop:integration`(iii): a nonnegative integrand has nonnegative integral
 against a positive atomic measure. -/
 theorem atomicIntegral_nonneg (w : SummableFamily Γ R X) (hw : ∀ x, 0 ≤ toLex (w x))
     {g : X → R} (hg : ∀ x, 0 ≤ g x) : 0 ≤ toLex (atomicIntegral w g) :=

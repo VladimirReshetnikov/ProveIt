@@ -6,7 +6,7 @@ import Mathlib.Data.Fintype.Powerset
 /-!
 # Infinite Boolean algebras contain infinite disjoint families
 
-This file proves `lem:boolean` in
+This file proves `meas:lem:boolean` in
 `docs/surreal/hahn-valued-measures-and-probability/article.tex`: an infinite
 Boolean algebra contains a sequence of pairwise disjoint nonzero elements.
 
@@ -51,7 +51,7 @@ theorem exists_disjoint_of_atomless_below {c : α} (hc : c ≠ ⊥)
     refine Disjoint.mono_right (sdiff_le.trans (hanti (m + 1) n hlt)) ?_
     exact disjoint_sdiff_self_left
 
-/-- `lem:boolean`: an infinite Boolean algebra contains a sequence of pairwise
+/-- `meas:lem:boolean`: an infinite Boolean algebra contains a sequence of pairwise
 disjoint nonzero elements. -/
 theorem exists_pairwise_disjoint_ne_bot [Infinite α] :
     ∃ f : ℕ → α, (∀ n, f n ≠ ⊥) ∧ Pairwise (Function.onFun Disjoint f) := by

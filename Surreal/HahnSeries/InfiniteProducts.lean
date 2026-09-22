@@ -4,12 +4,12 @@ import Surreal.HahnSeries.Regroup
 /-!
 # Infinite positive-order products and ratio families
 
-This file proves `prop:products` in
+This file proves `meas:prop:products` in
 `docs/surreal/hahn-valued-measures-and-probability/article.tex`.
 
 For a strongly summable family `q` of positive-order Hahn series, the products
 over all finite subsets of indices form a strongly summable family; this is the
-finite-subset subfamily of `lem:labeled`. Its strong sum with alternating signs
+finite-subset subfamily of `meas:lem:labeled`. Its strong sum with alternating signs
 is the infinite product `U = ∏ (1 - q_n)` of equation (13). Every nonempty
 subset contributes a positive-order term, so `U - 1` has positive order and `U`
 is a unit.
@@ -105,12 +105,12 @@ theorem oneSubProduct_term (q : SummableFamily Γ R I) (F : Finset I) :
     ∏ i ∈ F, (-q) i = (-1) ^ F.card * ∏ i ∈ F, q i := by
   simp only [SummableFamily.neg_apply, Finset.prod_neg]
 
-/-- `prop:products`: `U ∈ 1 + 𝔪`. -/
+/-- `meas:prop:products`: `U ∈ 1 + 𝔪`. -/
 theorem orderTop_oneSubProduct_sub_one_pos (q : SummableFamily Γ R I)
     (hpos : ∀ i, 0 < (q i).orderTop) : 0 < (oneSubProduct q hpos - 1).orderTop :=
   orderTop_hsum_finsetProductFamily_sub_one_pos _ _
 
-/-- `prop:products`: `U` is a unit. -/
+/-- `meas:prop:products`: `U` is a unit. -/
 theorem isUnit_oneSubProduct (q : SummableFamily Γ R I) (hpos : ∀ i, 0 < (q i).orderTop) :
     IsUnit (oneSubProduct q hpos) :=
   isUnit_of_orderTop_pos (orderTop_oneSubProduct_sub_one_pos q hpos)
