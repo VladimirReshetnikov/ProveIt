@@ -106,6 +106,21 @@ belongs to a larger group. The distinction from the Prony certificate above
 is that the Wick equivalence explicitly asks for the scaling exponents
 in the original group.
 
+The [holonomic report](surcomplex/holonomic-rigidity-for-entire-hahn-functions/article.tex)
+uses `Dom_str(f)` for strong evaluation of the fixed formal coefficient
+family. Its inward-stability lemma `hol:lem:inward` shows that membership
+depends only on the nonzero argument's valuation and is preserved when that
+valuation increases. This does not mean that the leading valuations of the
+coefficients determine the domain; their higher support tails are retained.
+The torsion substitution `z^r G(z^m)` preserves and reflects entireness
+without divisible exponents.
+
+A valuation coarsening changes the value map on the same field. Projecting
+each Hahn exponent through a quotient with a nonzero kernel can collapse
+infinitely many supported exponents to one value; it need not produce a
+Hahn series over the quotient group. The example in `hol:rem:thetacoarse`
+makes this distinction explicit.
+
 ## Finite elements, standard part, and reduction
 
 Use `O_F = {v ≥ 0}` and `m_F = {v > 0}` for the finite valuation ring and

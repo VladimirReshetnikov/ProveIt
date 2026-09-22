@@ -26,17 +26,19 @@ finite-step escape lemma, the same partial-theta sharpness witness, and the
 same explicit counterexample series. **08 is the base** because it assumes only
 `Γ ≠ 0`, while 09 assumes divisibility. Every proof taken from 09 was re-read
 for a hidden division before it was attached to an 08 statement. Divisibility
-now enters in exactly four places, and each prints the hypothesis itself
+now enters in three threshold constructions, and each prints the hypothesis itself
 (Section 1.4):
 
 1. the refined recurrence threshold of Corollary 3.5 (`hol:cor:periodic`),
    whose divisibility-free predecessor is Corollary 3.4 (`hol:cor:boundedcost`);
 2. the refined coarsened threshold in Theorem 7.4 (`hol:thm:coarse`), which
    also states the divisibility-free form;
-3. the "only if" half of the torsion eigenspace equivalence,
-   Proposition 9.1(c) (`hol:prop:torsion`), which extracts an `m`th root;
-4. the worked sparse threshold of Example 13.1 (`hol:ex:sparse`), an
+3. the worked sparse threshold of Example 13.1 (`hol:ex:sparse`), an
    instance of (1).
+
+The torsion eigenspace equivalence, Proposition 9.1(c), now needs no
+divisibility. The review below replaces root extraction by inward stability
+of strong evaluation.
 
 The divisibility-free predecessors are weaker in the constant only, not in the
 conclusion.
@@ -66,7 +68,7 @@ surcomplex class.
 - Further: mixed differential–dilation rigidity at every nonzero noncofinal
   scale (Theorem 10.2); a recurrence exclusion bound that is **attained**,
   boundary included, by a formal exponential (Proposition 5.3); a coarsened
-  exclusion bound valid at every nonzero dilation valuation (Theorem 7.4); and the exact strong evaluation domain of
+  exclusion bound valid at every nonzero noncofinal dilation valuation (Theorem 7.4); and the exact strong evaluation domain of
   the partial theta series for an arbitrary Hahn parameter (Theorem 8.1).
 - In an explicit surreal workspace with countable cofinality and no order
   unit, `Σ ω^(−ω^n) z^n` is strongly entire (Theorem 11.2) yet satisfies no
@@ -77,8 +79,11 @@ surcomplex class.
 
 - The arbitrary-rank classification is offered as a **proposed original
   contribution**. Priority is not certified, no named published conjecture is
-  claimed solved, and the proofs have not been independently refereed or
-  checked in Lean.
+  claimed solved, and the proofs have not been independently refereed.
+  The [Lean ledger](../../FORMALIZATION.md) maps the positive-support word
+  lemma to [NeumannWords.lean](../../../Surreal/HahnSeries/NeumannWords.lean);
+  the main theorem package and the new inward-stability result remain
+  unformalized.
 - Classical material is credited, not claimed: Stanley's D-finite/P-recursive
   correspondence, Hahn–Neumann support lemmas and Higman's lemma, partial
   theta series and their functional identity, and the Conway normal-form
@@ -126,3 +131,43 @@ library with exact integer and rational arithmetic. Run them on a copy of this
 directory. `08-finite-recurrences-verify.py` requires an explicit `--output`
 path, so that a rerun cannot overwrite the delivered record. The recorded runs
 passed 3,705 checks (08) and 2,043 checks (09), with no failures.
+
+
+## Subsequent proof review
+
+The main support, recurrence, orbit, differential, generic-line, dilation,
+theta-domain, torsion and mixed-operator proofs were read with the examples
+and their downstream uses.
+
+A new support lemma proves inward stability: if a nonzero `x` admits strong
+evaluation, so does every `y` with `v(y) ≥ v(x)`. Membership of a fixed series'
+domain therefore depends only on the argument valuation, and entireness can
+be tested on monomials. This retains the full Hahn coefficient supports;
+leading coefficient valuations alone need not determine a boundary domain.
+
+The torsion equivalence now holds without divisible exponents. For an argument
+of valuation `δ`, evaluate the outer series at `t^γ` with `γ = min(δ,0)`.
+The inner series is then evaluable at `t^(mγ)` and inward stability reaches
+the desired argument. No `m`th root in the Hahn field is needed.
+
+The refined recurrence statements now handle absent forward slots explicitly
+and place the starting index after the periodic pattern begins. The unit-orbit
+application chooses period one for a nontorsion residue. The explicit
+infinite-rank witness's cofinal-valuation proof works for arbitrary Hahn tails.
+
+The optional coarsening remark now retains the original field and changes
+only its valuation. It is not a coefficientwise map into a smaller Hahn field:
+projecting `Σ t^(nε)` along a quotient killing `ε` would collapse infinitely
+many coefficients to one exponent. The normal-form, generic-line and
+cofinality proofs remain distinct from finite numerical verification.
+
+Historical code, data and source audit files are preserved. Literature priority,
+original-source reconciliation and the unformalized main theorem package remain
+separate review obligations.
+
+The classical recurrence correspondence was checked against
+[Stanley's author-hosted paper](https://math.mit.edu/~rstan/pubs/pubfiles/45.pdf),
+Theorem 1.5 (printed page 176). The report supplies its own coefficient
+conversion over the stated Hahn field. The optional coarsening was checked
+against the local `ent:lem:coarsening`; the broader literature comparisons
+were not independently re-audited.

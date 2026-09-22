@@ -89,7 +89,7 @@ field $\K=\C((t^\Gamma))$. \emph{Entire} means strong Hahn summability of the
 evaluation family at every point of this one field. We prove that every
 strongly entire D-finite power series is a polynomial, in one or in finitely
 many variables, and that a fixed differential operator already excludes every
-nonterminating formal solution on a computable exterior valuation region,
+nonterminating formal solution on an explicit exterior valuation region,
 with a common degree bound.
 
 For dilations there is an exact alternative. If $q\in\K^\times$ has infinite
@@ -116,7 +116,7 @@ nonzero linear differential equation and no nonzero linear dilation equation
 for any nontorsion parameter of that workspace.
 
 $\Gamma$ is \emph{not} assumed divisible. Divisibility is hypothesised only
-where it is used, in the four statements listed in
+where it is used, in the three threshold constructions listed in
 Section~\ref{hol:sub:divisibility}, and each of those statements prints the
 hypothesis itself.
 \end{abstract}
@@ -128,8 +128,9 @@ hypothesis itself.
 mathematical proofs and two independent finite exact-arithmetic check suites.
 The arbitrary-rank classification is offered as a proposed original
 contribution, not as certified bibliographic priority and not as the
-resolution of a named published conjecture. No independent refereeing and no
-Lean verification is claimed. The variable derivative used throughout is not
+resolution of a named published conjecture. The positive-support word lemma
+has Lean coverage; the main theorem package remains unformalized and has not
+been independently refereed. The variable derivative used throughout is not
 the Berarducci--Mantova derivation on surreal coefficients.
 \end{minipage}
 \end{titlepage}
@@ -292,7 +293,7 @@ theorem at every nonzero noncofinal dilation scale
 \emph{attained}, boundary included, by an explicit formal exponential
 (Corollary~\ref{hol:cor:periodic} and
 Proposition~\ref{hol:prop:expdomain}); a coarsened exclusion bound valid at
-every nonzero dilation valuation (Theorem~\ref{hol:thm:coarse}); and the exact
+every nonzero noncofinal dilation valuation (Theorem~\ref{hol:thm:coarse}); and the exact
 strong evaluation domain of the partial theta series for an arbitrary Hahn
 parameter, including arbitrary tails (Theorem~\ref{hol:thm:thetadomain}).
 
@@ -303,7 +304,7 @@ The core arguments --- the escape mechanism, the orbit valuation lemmas, the
 two conversions, the theta domain theorem, and all of
 Theorems~\ref{hol:main:ode}--\ref{hol:main:multi} --- use only
 Convention~\ref{hol:conv:group}. Divisibility of $\Gamma$ enters in exactly
-four places, and each is hypothesised where it is used.
+three threshold constructions, with the hypothesis stated where it is used.
 \begin{enumerate}[label=\textup{(\arabic*)}]
 \item The refined recurrence threshold $B_{\mathrm{rec}}$ of
 \eqref{hol:eq:radiusbound}, whose defining maximum divides a valuation
@@ -315,12 +316,13 @@ qualitative conclusion.
 \eqref{hol:eq:coarsebound}, for the same reason, in the quotient group.
 Theorem~\ref{hol:thm:coarse} states the divisibility-free form and the
 divisible refinement separately.
-\item The ``only if'' half of the torsion eigenspace entireness equivalence,
-Proposition~\ref{hol:prop:torsion}\,(c), which extracts an $m$th root of an
-arbitrary element of $\K$ and therefore needs $\delta/m\in\Gamma$.
 \item The worked sparse threshold in Example~\ref{hol:ex:sparse}, an instance
 of (1).
 \end{enumerate}
+The torsion eigenspace equivalence in Proposition~\ref{hol:prop:torsion}
+needs no divisibility: inward stability of strong evaluation replaces the
+root-extraction argument of the source manuscripts.
+
 No theorem in this report states a conclusion under
 Convention~\ref{hol:conv:group} while resting on a proof step that divides by
 an integer in $\Gamma$. The division-free predecessors in (1) and (2) are
@@ -515,6 +517,36 @@ really do escape every bound. Criterion~(b) is what survives at the boundary,
 where the term valuations increase strictly but remain trapped below a fixed
 element of $\Gamma$; Theorem~\ref{hol:thm:thetadomain} is exactly such a case,
 and no leading-valuation argument alone can decide it.
+
+\begin{lemma}[Inward stability of strong evaluation]\label{hol:lem:inward}
+Let $f=\sum_na_nz^n\in\K[[z]]$, and let $x,y\in\K^\times$ with
+$v(y)\ge v(x)$. If $x\in\Dom(f)$, then $y\in\Dom(f)$.
+Thus membership of a nonzero argument in $\Dom(f)$ depends only on its
+valuation, and entireness can be tested on monomial arguments.
+\end{lemma}
+
+\begin{proof}
+Put $b_n=a_nx^n$ and $u=y/x$, so $(b_n)$ is strongly summable and
+$v(u)=\eta\ge0$. Write $u=c\,t^\eta(1+w)$, where $c\in\C^\times$
+and $w$ is zero or has positive valuation. Let $S$ be $\supp(w)$,
+with $\eta$ adjoined when $\eta>0$, and put $M=M(S)$.
+This is a well-ordered positive alphabet, so Lemma~\ref{hol:lem:support}
+makes $M$ well ordered. Every finite power $u^n$ has support in $M$.
+
+Let $A=\bigcup_n\supp(b_n)$. The supports of
+$a_ny^n=b_nu^n$ lie in $A+M$, a well-ordered set.
+For a fixed exponent $\gamma$ there are only finitely many pairs
+$(\alpha,\mu)\in A\times M$ with $\alpha+\mu=\gamma$.
+For each such $\alpha$, strong summability of $(b_n)$ leaves only
+finitely many indices $n$. Hence $\gamma$ occurs in only finitely many
+supports of $b_nu^n$, proving strong summability. Equal valuations allow
+the argument in both directions; compare an arbitrary nonzero $y$ with
+$t^{v(y)}$ to obtain the monomial test. Evaluation at zero is always finite.
+\end{proof}
+
+The statement fixes the full coefficient series $a_n$. It does not say
+that their leading valuations alone determine the domain: higher
+coefficient tails can still matter at a boundary scale.
 
 \subsection{Positive valuation is not cofinal decay}
 
@@ -750,22 +782,25 @@ exists, so no cofinal cyclic subgroup is needed.
 \end{proof}
 
 The absence of a cofinality requirement here is exactly why the mechanism
-proves rigidity in groups of very large rank. It is also why the strict
-version below, which divides by $j$, is a refinement of the constant and never
+proves rigidity in groups of very large rank. It is also why the refined
+bound below, which divides by $j$, is a refinement of the constant and never
 of the conclusion.
 
 \begin{corollary}[Refined periodic threshold; requires $\Gamma$ divisible]
 \label{hol:cor:periodic}
 Assume in addition that $\Gamma$ is divisible. Assume each slot of
 \eqref{hol:eq:generalrecurrence} is either identically zero for $n\ge N$ or
-nonzero for all $n\ge N$ with eventually periodic valuation of common period
-$m$, and let $\alpha_{j,r}$ be the valuation of slot $j$ on the residue class
+nonzero for all $n\ge N$ with periodic valuation there of common period
+$m\ge1$; enlarge $N$ past any initial nonperiodic range first.
+Let $\alpha_{j,r}$ be the valuation of slot $j$ on the residue class
 $r\bmod m$, the identically zero slots being omitted. Put
 \begin{equation}\label{hol:eq:radiusbound}
  B_{\mathrm{rec}}
  =\max_{\substack{0\le r<m\\ 1\le j\le s,\ c_j\not\equiv0}}
    \frac{\alpha_{0,r}-\alpha_{j,r}}{j}\ \in\Gamma.
 \end{equation}
+If there is no active forward slot $j\ge1$, set $B_{\mathrm{rec}}=0$;
+the recurrence then forces $a_n=0$ for all $n\ge N$ directly.
 Then for every $x\ne0$ with $v(x)\le-B_{\mathrm{rec}}$, strong summability of
 $(a_nx^n)_n$ forces $a_n=0$ for all $n\ge N$. In particular every solution
 with $a_n\ne0$ for some $n\ge N$ --- so in particular every nonpolynomial
@@ -777,7 +812,8 @@ solution --- satisfies
 \end{corollary}
 
 \begin{proof}
-Divisibility makes each quotient $(\alpha_{0,r}-\alpha_{j,r})/j$ an element of
+The case with no forward slot was handled in the statement. Otherwise
+divisibility makes each quotient $(\alpha_{0,r}-\alpha_{j,r})/j$ an element of
 $\Gamma$, so $B_{\mathrm{rec}}$ is defined. If $v(x)\le-B_{\mathrm{rec}}$ then
 $jv(x)\le-j\,(\alpha_{0,r}-\alpha_{j,r})/j=-(\alpha_{0,r}-\alpha_{j,r})$,
 because multiplying a weak inequality by the positive integer $j$ preserves
@@ -927,7 +963,7 @@ unity, put $q^h=1+u$ directly, with $\eta=v(u)>0$ and $u\ne0$ for the same
 reason. Write $n=r+hk$ and expand the polynomial $Q_r(Y)=P(q^rY)$ as
 $Q_r(1+V)=\sum_kb_{r,k}V^k$. The finite binomial expansion gives
 $V_k=(1+u)^k-1$ with $v(V_k)=\eta$ and $\lc(V_k)=k\lc(u)$, and
-$P(q^n)=Q_r(1+V_k)$. The same minimum \eqref{hol:eq:betar} and the same
+$P(q^n)=Q_r(1+V_k)$. The minimum construction \eqref{hol:eq:betar} and the corresponding
 nonzero residue polynomial \eqref{hol:eq:residuepoly}, now in the variable
 $k$ rather than $n$, finish the argument. Neither version sums a binomial
 series to a noninteger exponent; every expansion is finite, and arbitrary
@@ -1029,6 +1065,8 @@ smaller threshold
  =\max\Bigl(\Bigl\{\tfrac{\beta_0-\beta_j}{j}:j\ge1,\ P_j\ne0\Bigr\}\Bigr),
 \end{equation}
 which is \eqref{hol:eq:radiusbound} with period $m=1$.
+If the displayed set is empty, take $B_{\mathrm{rec}}=0$; then every
+solution terminates beyond $N$ without an evaluation hypothesis.
 \end{proposition}
 
 \begin{proof}
@@ -1046,7 +1084,7 @@ restrictions or can terminate much earlier.
 \begin{proof}[Proof of Theorem~\ref{hol:main:ode}]
 Lemma~\ref{hol:lem:drec} converts $L$ into \eqref{hol:eq:precursive}. Take
 $B_L=B$ from Proposition~\ref{hol:prop:precursive} and take $N_L$ to be an
-integer beyond the recurrence's starting index and beyond every nonnegative
+positive integer beyond the recurrence's starting index and beyond every nonnegative
 integer root of the finitely many residue polynomials $\overline{P_j}$. If a
 formal solution is strongly evaluable at one $x\ne0$ with $v(x)\le-B_L$, then
 $a_n=0$ for all $n\ge N_L$, so its degree is less than $N_L$. An entire
@@ -1350,7 +1388,9 @@ order $h_0$ of $\res(q)$. All differences $v(R_0(q^n))-v(R_h(q^n))$ are
 therefore bounded above by a single element of $\Gamma$, and
 Corollary~\ref{hol:cor:boundedcost} gives the exterior obstruction and, via
 the residue polynomials, the degree bound. When $\Gamma$ is divisible,
-Corollary~\ref{hol:cor:periodic} applies with $m=h_0$.
+Corollary~\ref{hol:cor:periodic} applies with $m=1$ if the residue has
+infinite order, and $m=h_0$ otherwise. In both cases take the starting
+index beyond the exceptional range.
 \end{proof}
 
 This includes parameters arbitrarily close to a root of unity without being
@@ -1570,13 +1610,22 @@ essential.
 
 \begin{remark}[The order-unit case has an optional rank-one picture]
 \label{hol:rem:thetacoarse}
-When $\beta$ is an order unit one may, if desired, push the workspace forward
-by the real-valued coarsening
-$\pi:\Gamma\to\R$ of~\cite[Lemma~9.1]{repoentire} with $\pi(\beta)=1$, in
-which $\Theta_p$ becomes an ordinary rank-one partial theta series. We record
-this only as an orientation. It is used in no proof here, and it is
-unavailable in exactly the case the classification is about, namely when no
-order unit exists.
+When $\beta$ is an order unit, the real-valued coarsening
+$\pi:\Gamma\to\R$ of~\cite[Lemma~9.1]{repoentire}, normalized by
+$\pi(\beta)=1$, gives the same field $\K$ a rank-one absolute value.
+For $x\ne0$, its theta terms have coarsened valuations
+$\binom n2+n\pi(v(x))$, tending to $+\infty$.
+This is an optional normed-field picture of the order-unit case,
+not a map that replaces the Hahn exponents by their images in $\R$.
+
+Such a coefficientwise replacement need not define a Hahn series.
+In $\Q H\oplus\Q\epsilon$ with $H$ dominating all $n\epsilon$,
+the coarsening normalized by $H$ kills $\epsilon$.
+The valid series $\sum_{n\ge0}t^{n\epsilon}$ would then place infinitely
+many coefficients at exponent zero. Coarsening a valuation retains
+the field and changes the value map; it is not an embedding into a
+complex-coefficient Hahn field with smaller exponent group.
+No proof here requires this optional coarsening.
 \end{remark}
 
 \subsection{Completion of the sharp criterion}
@@ -1682,13 +1731,11 @@ Let $q\in\C^\times$ have exact finite order $m$ and let $0\le r<m$.
 \item A formal series satisfies $f(qz)=q^rf(z)$ if and only if
 $f(z)=z^rG(z^m)$ for a unique $G\in\K[[z]]$.
 \item If $G\in\E$ then $f=z^rG(z^m)\in\E$.
-\item If in addition $\Gamma$ is divisible, the converse of \textup{(b)} also
-holds, so $f\in\E$ if and only if $G\in\E$.
+\item The converse of \textup{(b)} also holds, so
+$f\in\E$ if and only if $G\in\E$, without divisibility of $\Gamma$.
 \end{enumerate}
 Moreover, every root of unity of $\K$ lies in $\C$, so the hypothesis
-$q\in\C^\times$ loses no torsion element of the Hahn field. Parts
-\textup{(a)}, \textup{(b)} and this last assertion use only
-Convention~\ref{hol:conv:group}.
+$q\in\C^\times$ loses no torsion element of the Hahn field. All parts use only Convention~\ref{hol:conv:group}.
 \end{proposition}
 
 \begin{proof}
@@ -1700,20 +1747,13 @@ $x^m$, reindexed; multiplication by the fixed element $x^r$ preserves strong
 summability by Lemma~\ref{hol:lem:support}\,(3), and at $x=0$ the evaluation
 is finite.
 
-For (c) assume $\Gamma$ divisible and let $y\in\K^\times$. Write
-$y=c\,t^{\delta}(1+u)$ with $c\in\C^\times$ and $u$ zero or of positive
-valuation. Choose an $m$th root of $c$ in $\C$, and use $\delta/m\in\Gamma$,
-which is exactly where divisibility is needed. For $u\ne0$ the family
-$\bigl(\binom{1/m}{k}u^k\bigr)_{k\ge0}$ is strongly summable: its supports lie
-in $M(\supp u)$, which is well ordered, and each of its elements has only
-finitely many word representations by Lemma~\ref{hol:lem:support}\,(2), so it
-lies in $\supp(u^k)$ for only finitely many $k$. Its sum $(1+u)^{1/m}$
-satisfies $\bigl((1+u)^{1/m}\bigr)^m=1+u$, the rearrangement at each exponent
-being finite; for $u=0$ take the value $1$. This produces $x\in\K^\times$ with
-$x^m=y$.
-The evaluation family for $G$ at $y$ is then $x^{-r}$ times the subsequence in
-degrees $r+mn$ of the evaluation family for $f$ at $x$, hence strongly
-summable; at $y=0$ the evaluation is finite.
+For (c), suppose $f\in\E$ and let $y\in\K^\times$.
+Set $\delta=v(y)$, $\gamma=\min(\delta,0)$, and $x=t^\gamma$.
+Since $m\ge1$, we have $v(x^m)=m\gamma\le\delta$.
+Strong evaluation of $f$ at $x$, restricted to the degrees $r+mn$
+and multiplied by $x^{-r}$, gives strong evaluation of $G$ at $x^m$.
+Lemma~\ref{hol:lem:inward} then gives strong evaluation at $y$.
+At $y=0$ evaluation is finite. No root of $y$ is extracted.
 
 Finally, let $\zeta\in\K$ be a root of unity. Then $v(\zeta)=0$; dividing by
 $\res(\zeta)$ gives $1+u$ with $u$ zero or of positive valuation, and
@@ -1722,10 +1762,10 @@ $v(u)$ and leading coefficient $m'\lc(u)\ne0$ in characteristic zero, a
 contradiction. So $u=0$ and $\zeta=\res(\zeta)\in\C$.
 \end{proof}
 
-Part (c) is the one place in this report where an entireness \emph{equivalence}
-needs divisibility, and the hypothesis is printed in the statement for that
-reason. Parts (a) and (b), and the classification of roots of unity, hold
-under Convention~\ref{hol:conv:group}.
+The converse uses only that the values $m\gamma$ are coinitial in $\Gamma$,
+as the explicit choice $\gamma=\min(\delta,0)$ shows. Actual $m$th roots
+need not exist in the original Hahn field; this stronger algebraic
+requirement is unnecessary for the entireness equivalence.
 
 \section{An extension to mixed differential--dilation equations}
 \label{hol:sec:mixed}
@@ -1871,7 +1911,9 @@ nonpolynomial.
 Alternatively, for any $\beta\in\Gamma_\infty$ choose $j$ larger than every
 active coordinate index of $\delta$ and of $\beta$; for $n>j$ the largest
 active coordinate of $h_n-\beta$ is $n$ with coefficient $1$, so $h_n>\beta$,
-and Lemma~\ref{hol:lem:certificate}\,(a) applies when $w=0$.
+and Lemma~\ref{hol:lem:certificate}\,(a) applies for arbitrary $w$.
+Cofinal leading valuations control the whole support, since every exponent
+of a Hahn term is at least its leading exponent.
 
 The differential conclusion is Theorem~\ref{hol:main:ode}. Since
 $\Gamma_\infty$ has no order unit, Theorem~\ref{hol:main:q} --- equivalently
@@ -2094,7 +2136,7 @@ Section~\ref{hol:sub:divisibility}.
 
 \subsection{What a Lean implementation would have to establish}
 
-The most reusable formalization target is Lemma~\ref{hol:lem:escape} together
+Beyond the existing support lemma, the most reusable formalization target is Lemma~\ref{hol:lem:escape} together
 with Theorem~\ref{hol:thm:escapeexclusion}, separated from the rest of the
 analysis. They require a discrete index sequence, a valuation into an ordered
 additive group, and a finite-successor selection; the contradiction then
@@ -2113,9 +2155,13 @@ Theorem~\ref{hol:thm:thetadomain}. The several-variable extension adds
 countable polynomial avoidance and generic restriction of a finite rational
 differential system; it need not be part of a first implementation stage.
 
-The Python checks distributed with this report are not a Lean formalization,
-and the decomposition above is a dependency plan, not a claim that these
-statements already occur in the repository's verified code.
+The ledger \texttt{docs/FORMALIZATION.md} now maps part~(2) of
+Lemma~\ref{hol:lem:support} to the existing positive-support and finite-word
+theorems in \texttt{Surreal/HahnSeries/NeumannWords.lean}.
+The other parts of that lemma and the main holonomic theorem package remain
+unformalized. In particular, the new inward-stability lemma and strengthened
+torsion equivalence are written proofs, not Lean results.
+The Python checks establish none of these infinite statements.
 
 \section{The two finite check suites}\label{hol:sec:verification}
 
@@ -2301,8 +2347,9 @@ here; the unit-valuation mixed case is left open.\\[4pt]
 Several-variable rigidity and multivariate algebraic rigidity & Proved here;
 the generic line is an existence device.\\[4pt]
 Named published open conjecture & None claimed solved.\\[4pt]
-Priority, peer review, formal verification & Not certified; no Lean proof is
-supplied or claimed.\\
+Priority, peer review, formal verification & Priority and independent
+refereeing are not certified. Only the positive-support word lemma is mapped
+to Lean; the main theorem package remains unformalized.\\
 \bottomrule
 \end{longtable}
 
@@ -2316,7 +2363,7 @@ and were not treated as evidence of absence; a repository content search for
 anywhere in the repository can be reformulated into one of these results.
 Accordingly this is a proposed original result with proofs, not a certified
 claim of bibliographic priority. Independent mathematical review is still
-needed and no machine-checked correctness is asserted.
+needed; machine-checked scope is limited to the support lemma recorded above.
 
 \subsection{Further mathematical questions}
 
@@ -2474,8 +2521,7 @@ all integer indices are ordinary nonnegative integers.
 \item $\Gamma\ne0$, set-sized, ordered abelian. \emph{Divisibility is not
 assumed} except in Corollary~\ref{hol:cor:periodic}, the refined threshold
 \eqref{hol:eq:refinedthreshold}, Theorem~\ref{hol:thm:coarse}\,(b),
-Proposition~\ref{hol:prop:torsion}\,(c), and
-Example~\ref{hol:ex:sparse}, each of which states it.
+and Example~\ref{hol:ex:sparse}, each of which states it.
 \item Series are ordinary $\N$-indexed power series in one variable, except in
 Section~\ref{hol:sec:multi}. Equation coefficients are rational functions of
 that variable, not arbitrary entire functions; their scalar coefficients may
@@ -2507,15 +2553,16 @@ finite-order $q$ is excluded from the main classification and has genuine
 periodic-support counterexamples; mixed operators at unit valuation are not
 classified; no nonlinear differential algebraic rigidity is claimed; no
 complete algorithm for arbitrary surreal comparisons or cofinality decisions
-is claimed; the finite checks prove no infinite theorem; and no Lean
-verification or independent mathematical review is claimed.
+is claimed; the finite checks prove no infinite theorem. The main theorem
+package has no Lean verification or independent refereeing; the existing
+support-lemma coverage is recorded in the formalization ledger.
 
 \section{Reproducing the document and the finite checks}
 \label{hol:app:reproduce}
 
 The directory contains this standalone \LaTeX{} source, its compiled PDF, a
 README, both source verification programs under \texttt{code/}, both recorded
-outputs and both source build reports under \texttt{data/}, and the two source
+outputs and both source build reports under \texttt{data/}, and the three source
 audit documents. No source document from the inspected repository is
 redistributed. The bibliography is embedded: no BibTeX run, external graphics,
 shell escape, or repository checkout is required, and a conventional TeX Live
@@ -2543,7 +2590,9 @@ R. P. Stanley,
 European Journal of Combinatorics \textbf{1} (1980), no.~2, 175--188.
 Author-hosted copy:
 \url{https://math.mit.edu/~rstan/pubs/pubfiles/45.pdf}.
-Theorem~1.5 gives the D-finite/P-recursive equivalence.
+Theorem~1.5 (printed page 176) gives the D-finite/P-recursive equivalence.
+The finite coefficient conversion is reproved in this report for its stated
+characteristic-zero Hahn coefficient field.
 
 \bibitem{ramis}
 J.-P. Ramis,

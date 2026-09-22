@@ -316,7 +316,7 @@ remaining clauses of a partially mapped statement.
 | Algebraic clauses of `markov:lem:resolvent`, `markov:thm:flag-realization` and `markov:lem:completion` in [Markov generators](surreal/markov-generators-at-every-scale/article.tex) | `Surreal.Markov.resolvent`, `inv_sub_inv`, `resolvent_mul_resolvent_eq`, `resolvent_commute`, `IsFlag`, `flagGenerator`, `resolvent_flagGenerator`, `flagGenerator_eq_abel`, `flagGenerator_mulVec_one`, `flagGenerator_offDiag_nonpos`, `resolvent_completion`, `completion_offDiag_neg` in [MarkovResolvent.lean](../Surreal/Algebra/MarkovResolvent.lean) | Over an arbitrary field, normalized resolvents satisfy `markov:eq:resolvent-identity` and commute. A flag with `P_iP_j=P_{max(i,j)}` gives the generator of `markov:eq:simple-inverse` with exactly the resolvent `markov:eq:simple-inverse-resolvent`. Stochastic flags give zero row sums, and the Abel-summed form `markov:eq:inverse-signs` makes off-diagonal entries nonpositive for nonnegative flags and `τ_1>⋯>τ_m>0`. The rank-one completion has the exact resolvent `markov:eq:completion-convex`, without commuting `𝟙ν` past `H`, and strictly negative off-diagonal entries. **Proved for these algebraic clauses**; residues, the shadows `markov:eq:same-scale`, `markov:eq:cross-scale` and `markov:eq:simple-inverse-shadow`, and the remaining hierarchy theorems are pending. Build and axiom audit pass. |
 | `tail:lem:stabilization` and `tail:lem:multilinear` in [tail spans](surreal/tail-spans-and-differential-transcendence/article.tex) | `Surreal.TailSpan.deletedSpan`, `cofiniteSpan`, `exists_deletedSpan_eq_cofiniteSpan`, `finite_setOf_not_mem_cofiniteSpan`, `span_eq_cofiniteSpan_of_exceptions`, `multilinear_eq_zero_of_distinct`, `span_baseChange_eq_top`, `multilinear_baseChange_eq_zero` in [TailSpan.lean](../Surreal/Algebra/TailSpan.lean) | For an arbitrary family in a finite-dimensional space over any field, one finite deletion attains the cofinite span `W`, only finitely many members lie outside `W`, and after removing them every cofinite subfamily spans exactly `W`. A multilinear form vanishing on all tuples of pairwise distinct members of a family whose cofinite subfamilies span is zero, including for zero arguments and an empty index set. Spanning transfers to `K ⊗ W` through `Submodule.baseChange`, giving the source's scalar-extended form. **Proved** for both lemmas, with no countability or alphabet hypothesis. Build and axiom audit pass. |
 | `wick:lem:dickson`, `wick:prop:hilbert`, `wick:prop:module` and `wick:lem:valCS` in [Wick summability](surcomplex/wick-summability-certificates/article.tex) | `Surreal.Wick.finite_setOf_minimal`, `exists_minimal_le`, `hilbertBasis`, `finite_hilbertBasis`, `mem_hilbertBasis_iff`, `mem_closure_hilbertBasis`, `fiber_eq_biUnion`, `finite_minimal_fiber`, `diag_pos_and_sq_lt`, `orderTop_add_le_of_sq_lt`, `valuation_cauchySchwarz` in [WickSemigroup.lean](../Surreal/Algebra/WickSemigroup.lean) | Dickson's lemma is Mathlib's well-quasi-order instance on `ℕ^ι`. For the nonnegative kernel of any additive map to an abelian group, which covers `Am = Dk`, the minimal nonzero elements are finite, are exactly the indecomposable elements, and generate the kernel; every fiber is the union of kernel translates by its finitely many minimal elements. A symmetric positive-definite matrix over an ordered field has positive diagonal and `C_ij² < C_ii C_jj`; over the lexicographic Hahn field this gives `v(C_ii)+v(C_jj) ≤ 2v(C_ij)` without divisibility of the exponent group. **Proved** for these four statements. Build and axiom audit pass. |
-| `meas:lem:neumann` and `wick:lem:neumann` in both [Wick summability](surcomplex/wick-summability-certificates/article.tex) and [hahn-valued measures](surreal/hahn-valued-measures-and-probability/article.tex); `meas:lem:labeled` in the latter | `Surreal.HahnSeries.isPWO_closure_of_pos`, `wordsWithSum`, `finite_wordsWithSum`, `finite_multisetsWithSum`, `wordProduct`, `exists_exponents_of_coeff_wordProduct_ne_zero`, `labeledWordFamily` in [NeumannWords.lean](../Surreal/HahnSeries/NeumannWords.lean) | For a partially well-ordered set of positive elements of a linearly ordered cancellative monoid, the generated monoid is partially well-ordered and each element has finitely many representations as an ordered word, hence as a multiset. The proof uses well-founded induction through finite antidiagonals and no Archimedean bound on word lengths. Products over all finite labeled index words of a strongly summable positive-order family form a strongly summable family. **Proved**. Build and axiom audit pass. |
+| Part (2) of `hol:lem:support` in [holonomic rigidity](surcomplex/holonomic-rigidity-for-entire-hahn-functions/article.tex), and `meas:lem:neumann` and `wick:lem:neumann` in [Wick summability](surcomplex/wick-summability-certificates/article.tex) and [hahn-valued measures](surreal/hahn-valued-measures-and-probability/article.tex); `meas:lem:labeled` in the latter | `Surreal.HahnSeries.isPWO_closure_of_pos`, `wordsWithSum`, `finite_wordsWithSum`, `finite_multisetsWithSum`, `wordProduct`, `exists_exponents_of_coeff_wordProduct_ne_zero`, `labeledWordFamily` in [NeumannWords.lean](../Surreal/HahnSeries/NeumannWords.lean) | For a partially well-ordered set of positive elements of a linearly ordered cancellative monoid, the generated monoid is partially well-ordered and each element has finitely many representations as an ordered word, hence as a multiset. The proof uses well-founded induction through finite antidiagonals and no Archimedean bound on word lengths. Products over all finite labeled index words of a strongly summable positive-order family form a strongly summable family. **Proved**. Build and axiom audit pass. |
 | `meas:prop:products` in [hahn-valued measures](surreal/hahn-valued-measures-and-probability/article.tex) | `Surreal.HahnSeries.finsetProductFamily`, `oneSubProduct`, `oneSubProduct_term`, `orderTop_oneSubProduct_sub_one_pos`, `isUnit_oneSubProduct`, `support_inv_one_sub_subset`, `ratioFamily`, `ratioFamily_id_apply` in [InfiniteProducts.lean](../Surreal/HahnSeries/InfiniteProducts.lean) | Finite-subset products of a strongly summable positive-order family are strongly summable, and the infinite product `U = ∏(1-q_n)` of equation (13) satisfies `U ∈ 1+𝔪` and is a unit. The ratios `a_i/(1-q_{g(i)})` of equation (14) are strongly summable for rows given by an arbitrary grouping map, which includes the source's finite rows and `q_n/(1-q_n)`. **Proved**; the coefficientwise finite-factor product identities used afterwards with (13), `meas:lem:recover` and `meas:thm:independent` remain pending. Build and axiom audit pass. |
 | `meas:lem:boolean` in [hahn-valued measures](surreal/hahn-valued-measures-and-probability/article.tex) | `Surreal.BooleanDisjoint.exists_disjoint_of_atomless_below`, `exists_pairwise_disjoint_ne_bot` in [BooleanDisjoint.lean](../Surreal/Algebra/BooleanDisjoint.lean) | Every infinite Boolean algebra has a sequence of pairwise disjoint nonzero elements: distinct atoms when there are infinitely many; otherwise the atoms' join is not the top (else every element would be the join of the atoms below it, making the algebra finite), and a strictly decreasing chain below its atomless complement gives disjoint differences. **Proved**. Build and axiom audit pass. |
 | `meas:lem:scalar` and `meas:prop:coefficients` in [hahn-valued measures](surreal/hahn-valued-measures-and-probability/article.tex) | `Surreal.HahnSeries.IsCountablySeparated`, `IsFinsumAdditive`, `measurableSet_singleton_of_separated`, `finite_setOf_singleton_ne_zero`, `finiteAtomic`, `HereditarilyNull`, `hereditarilyNull_iUnion`, `eq_zero_of_singleton_eq_zero`, `eq_finiteAtomic`, `finiteAtomic_unique`, `isFinsumAdditive_coeff`, `coeff_eq_finiteAtomic` in [ScalarAtomicity.lean](../Surreal/HahnSeries/ScalarAtomicity.lean) | A scalar set function whose disjoint measurable sequences have finitely many nonzero values summing to the value of the union is, on a countably separated space, the finite combination of its nonzero point masses, uniquely. No topology on the scalars is used. The proof replaces the quotient Boolean algebra by a bisection along the separating sets: hereditarily null measurable sets form a σ-ideal, only finitely many set-aside pieces can fail to be hereditarily null, and the chain intersection has at most one point. Every coefficient of a strong Hahn measure satisfies the hypothesis. **Proved** for both statements. Build and axiom audit pass. |
@@ -480,7 +480,7 @@ named `article.tex`. The document map and typeset catalogue list the same report
 | [surcomplex/global-divisors/article.tex](surcomplex/global-divisors/article.tex) | 17 | 13 | 15 | 12 | 57 |
 | [surcomplex/hahn-herglotz-positivity/article.tex](surcomplex/hahn-herglotz-positivity/article.tex) | 12 | 2 | 2 | 4 | 20 |
 | [surcomplex/hahn-tate-uniformization/article.tex](surcomplex/hahn-tate-uniformization/article.tex) | 25 | 19 | 10 | 16 | 70 |
-| [surcomplex/holonomic-rigidity-for-entire-hahn-functions/article.tex](surcomplex/holonomic-rigidity-for-entire-hahn-functions/article.tex) | 6 | 10 | 7 | 8 | 31 |
+| [surcomplex/holonomic-rigidity-for-entire-hahn-functions/article.tex](surcomplex/holonomic-rigidity-for-entire-hahn-functions/article.tex) | 6 | 11 | 7 | 8 | 32 |
 | [surcomplex/infinite-dimensional-hahn-spectral-theory/article.tex](surcomplex/infinite-dimensional-hahn-spectral-theory/article.tex) | 19 | 8 | 11 | 14 | 52 |
 | [surcomplex/nonabelian-support/article.tex](surcomplex/nonabelian-support/article.tex) | 24 | 16 | 15 | 19 | 74 |
 | [surcomplex/polynomial-algebra/article.tex](surcomplex/polynomial-algebra/article.tex) | 28 | 6 | 9 | 14 | 57 |
@@ -501,7 +501,7 @@ named `article.tex`. The document map and typeset catalogue list the same report
 | [surreal/hahn-valued-measures-and-probability/article.tex](surreal/hahn-valued-measures-and-probability/article.tex) | 19 | 14 | 8 | 18 | 59 |
 | [surreal/markov-generators-at-every-scale/article.tex](surreal/markov-generators-at-every-scale/article.tex) | 9 | 5 | 3 | 3 | 20 |
 | [surreal/tail-spans-and-differential-transcendence/article.tex](surreal/tail-spans-and-differential-transcendence/article.tex) | 8 | 8 | 4 | 1 | 21 |
-| **Total** | 677 | 345 | 379 | 352 | **1753** |
+| **Total** | 677 | 346 | 379 | 352 | **1754** |
 
 The earlier refresh from `796f8d4` through `1f6d6b8` added four reports and
 expanded an existing one.
@@ -2496,37 +2496,38 @@ Mappings cover only the hypotheses and clauses they state.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `hol:lem:support` (line 419) | Hahn--Neumann support calculus and the positive monoid |
-| Lemma | `hol:lem:nonincreasing` (line 465) | The nonincreasing leading-exponent obstruction |
-| Lemma | `hol:lem:certificate` (line 483) | Two sufficient certificates |
-| Proposition | `hol:prop:closure` (line 576) | Closure |
-| Proposition | `hol:prop:faithful` (line 598) | Faithfulness of evaluation |
-| Lemma | `hol:lem:escape` (line 660) | Escape chain |
-| Theorem | `hol:thm:escapeexclusion` (line 701) | Evaluation exclusion criterion |
-| Corollary | `hol:cor:boundedcost` (line 734) | Uniform bounded cost; no divisibility |
-| Corollary | `hol:cor:periodic` (line 757) | Refined periodic threshold; requires $\Gamma$ divisible |
-| Lemma | `hol:lem:integer` (line 799) | Integer evaluation |
-| Lemma | `hol:lem:affine` (line 827) | Eventually affine valuation |
-| Theorem | `hol:thm:unitorbit` (line 867) | Unit-orbit valuations |
-| Lemma | `hol:lem:drec` (line 982) | Differential coefficient recurrence |
-| Proposition | `hol:prop:precursive` (line 1014) | Uniform obstruction for P-recursive coefficients |
-| Proposition | `hol:prop:expdomain` (line 1074) | Formal exponential domain |
-| Corollary | `hol:cor:algebraic` (line 1121) | Algebraic entire series |
-| Corollary | `hol:cor:systems` (line 1139) | Rational differential systems |
-| Proposition | `hol:prop:inhomogeneous` (line 1153) | Rational inhomogeneous equations |
-| Lemma | `hol:lem:generic` (line 1210) | Avoiding countably many polynomial conditions |
-| Corollary | `hol:cor:multialg` (line 1274) | Multivariate algebraic rigidity |
-| Lemma | `hol:lem:qrec` (line 1297) | Dilation coefficient recurrence |
-| Corollary | `hol:cor:unitrigid` (line 1334) | Every unit dilation is globally rigid |
-| Proposition | `hol:prop:noncofinal` (line 1362) | Noncofinal dilation scales force polynomiality |
-| Theorem | `hol:thm:coarse` (line 1422) | Coarsened exclusion |
-| Theorem | `hol:thm:thetadomain` (line 1484) | Exact partial theta domain |
-| Proposition | `hol:prop:torsion` (line 1679) | Torsion covariance |
-| Lemma | `hol:lem:bivariate` (line 1737) | Polynomial dependence on the index as well as the dilation |
-| Theorem | `hol:thm:mixed` (line 1756) | Mixed rigidity at a noncofinal nonzero scale |
-| Corollary | `hol:cor:universal` (line 1824) | Universal nontorsion dilation rigidity |
-| Theorem | `hol:thm:explicit` (line 1842) | An explicit universally nonholonomic entire series |
-| Corollary | `hol:cor:detect` (line 1961) | Detecting order units by functional equations |
+| Lemma | `hol:lem:support` (line 421) | Hahn--Neumann support calculus and the positive monoid |
+| Lemma | `hol:lem:nonincreasing` (line 467) | The nonincreasing leading-exponent obstruction |
+| Lemma | `hol:lem:certificate` (line 485) | Two sufficient certificates |
+| Lemma | `hol:lem:inward` (line 521) | Inward stability of strong evaluation |
+| Proposition | `hol:prop:closure` (line 608) | Closure |
+| Proposition | `hol:prop:faithful` (line 630) | Faithfulness of evaluation |
+| Lemma | `hol:lem:escape` (line 692) | Escape chain |
+| Theorem | `hol:thm:escapeexclusion` (line 733) | Evaluation exclusion criterion |
+| Corollary | `hol:cor:boundedcost` (line 766) | Uniform bounded cost; no divisibility |
+| Corollary | `hol:cor:periodic` (line 789) | Refined periodic threshold; requires $\Gamma$ divisible |
+| Lemma | `hol:lem:integer` (line 835) | Integer evaluation |
+| Lemma | `hol:lem:affine` (line 863) | Eventually affine valuation |
+| Theorem | `hol:thm:unitorbit` (line 903) | Unit-orbit valuations |
+| Lemma | `hol:lem:drec` (line 1018) | Differential coefficient recurrence |
+| Proposition | `hol:prop:precursive` (line 1050) | Uniform obstruction for P-recursive coefficients |
+| Proposition | `hol:prop:expdomain` (line 1112) | Formal exponential domain |
+| Corollary | `hol:cor:algebraic` (line 1159) | Algebraic entire series |
+| Corollary | `hol:cor:systems` (line 1177) | Rational differential systems |
+| Proposition | `hol:prop:inhomogeneous` (line 1191) | Rational inhomogeneous equations |
+| Lemma | `hol:lem:generic` (line 1248) | Avoiding countably many polynomial conditions |
+| Corollary | `hol:cor:multialg` (line 1312) | Multivariate algebraic rigidity |
+| Lemma | `hol:lem:qrec` (line 1335) | Dilation coefficient recurrence |
+| Corollary | `hol:cor:unitrigid` (line 1372) | Every unit dilation is globally rigid |
+| Proposition | `hol:prop:noncofinal` (line 1402) | Noncofinal dilation scales force polynomiality |
+| Theorem | `hol:thm:coarse` (line 1462) | Coarsened exclusion |
+| Theorem | `hol:thm:thetadomain` (line 1524) | Exact partial theta domain |
+| Proposition | `hol:prop:torsion` (line 1728) | Torsion covariance |
+| Lemma | `hol:lem:bivariate` (line 1777) | Polynomial dependence on the index as well as the dilation |
+| Theorem | `hol:thm:mixed` (line 1796) | Mixed rigidity at a noncofinal nonzero scale |
+| Corollary | `hol:cor:universal` (line 1864) | Universal nontorsion dilation rigidity |
+| Theorem | `hol:thm:explicit` (line 1882) | An explicit universally nonholonomic entire series |
+| Corollary | `hol:cor:detect` (line 2003) | Detecting order units by functional equations |
 
 ### infinite-dimensional-hahn-spectral-theory
 
