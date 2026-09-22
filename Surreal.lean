@@ -122,6 +122,9 @@ import Surreal.HahnSeries.PolynomialFactorUniqueness
 import Surreal.HahnSeries.PolynomialFactorLifting
 import Surreal.HahnSeries.PolynomialFiniteFactorSupport
 import Surreal.HahnSeries.PolynomialSimpleRootLifting
+import Surreal.HahnSeries.PolynomialFirstRootCorrection
+import Surreal.HahnSeries.PolynomialSimpleRootCorrection
+import Surreal.HahnSeries.PolynomialClusterFactors
 import Surreal.HahnSeries.PolynomialGaussValuation
 import Surreal.HahnSeries.PolynomialInitialRoots
 import Surreal.HahnSeries.PolynomialInitialDerivative

@@ -238,6 +238,11 @@ factors now proves full finite-family Hensel lifting in Hahn valuation rings:
 the lower-degree corrections have positive supports inside the monoid generated
 by the original errors. Every simple residue root lifts uniquely with the
 same support control.
+Its first correction coefficient is the negative error coefficient evaluated
+at the residue root, divided by the residue derivative; cancellation is allowed.
+The distinct complex residue roots also index unique cluster factors, with
+the prescribed multiplicities and a characterization of every existing Hahn
+root by its standard part.
 Conway monomials and leading exponents now act on the actual sign field.
 A maximum of finitely many weighted exponents gives a positive scale making
 all coefficients finite while preserving at least one nonzero real residue.
