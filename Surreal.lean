@@ -59,6 +59,7 @@ import Surreal.Foundations.SignSequenceAddition
 import Surreal.Foundations.SignSequenceAddAssociative
 import Surreal.Foundations.SignSequenceAddInverse
 import Surreal.Foundations.SignSequenceAddGroup
+import Surreal.Foundations.SignSequenceSumCutSimplicity
 import Surreal.Foundations.SignSequenceIntegers
 import Surreal.Foundations.SignSequenceTopology
 import Surreal.Foundations.SmallCauchy
@@ -107,6 +108,19 @@ import Surreal.Foundations.SmallNormalFormExtension
 import Surreal.Foundations.SmallNormalFormPartialChain
 import Surreal.Foundations.SmallNormalFormUnion
 import Surreal.Foundations.SmallNormalFormExtraction
+import Surreal.Foundations.SmallNormalFormSumSimplicity
+import Surreal.Foundations.SmallNormalFormAddition
+import Surreal.Foundations.SmallNormalFormRealMonomials
+import Surreal.Foundations.SmallNormalFormAddEquiv
+import Surreal.Foundations.SmallNormalFormFiniteEvaluation
+import Surreal.Foundations.SmallNormalFormProductFrontier
+import Surreal.Foundations.SmallNormalFormMultiplication
+import Surreal.Foundations.SmallNormalFormFieldEquiv
+import Surreal.Foundations.SmallNormalFormHahnEmbedding
+import Surreal.Foundations.SignSequenceHahnEmbedding
+import Surreal.Foundations.SmallNormalFormWorkspace
+import Surreal.Foundations.SmallNormalFormRealClosed
+import Surreal.Foundations.SignSequenceRealClosed
 import Surreal.Foundations.SignSequenceDyadics
 import Surreal.Foundations.SignSequenceRealBirthday
 import Surreal.Foundations.SignSequenceBirthdayArithmetic
