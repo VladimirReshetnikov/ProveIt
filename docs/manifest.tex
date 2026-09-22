@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={The surreal and surcomplex reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of fifteen research packages on surreal and surcomplex numbers}}
+  pdfsubject={Catalogue of eighteen research packages on surreal and surcomplex numbers}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -52,13 +52,14 @@
 \newcommand{\No}{\mathbf{No}}
 \newcommand{\SC}{\mathbf{No}[i]}
 \newcommand{\Z}{\mathbb{Z}}
+\newcommand{\der}{\partial}
 
 
 \begin{document}
 
 \begin{center}
  {\LARGE\bfseries\color{Ink} The surreal and surcomplex reports}\\[8pt]
- {\large Fifteen independent mathematical research packages,\\
+ {\large Eighteen independent mathematical research packages,\\
  on the surreal field, its algebraic closure,\\
  and the foundations and computation of both}\\[10pt]
  {\small September 2026}
@@ -69,7 +70,7 @@
 \section*{Scope}
 \addcontentsline{toc}{section}{Scope}
 
-This document catalogues the fifteen research packages stored under
+This document catalogues the eighteen research packages stored under
 \dir{docs}.  Each entry names the problem the report attacks, the result it
 claims, and the archive it arrived in.
 
@@ -77,8 +78,9 @@ The collection divides in three, and so does the directory tree.  Six reports,
 under \dir{docs/surreal}, are about the surreal field $\No$ itself: birthdays
 and their behaviour under multiplication, the option graphs of surreal forms,
 genetic functions and gaps, and two questions of Lipparini about evaluating
-formal sums.  Seven, under \dir{docs/surcomplex}, are about the algebraic
-closure $\SC$ and the theory of holomorphic functions over it.  The last two,
+formal sums.  Ten, under \dir{docs/surcomplex}, are about the algebraic
+closure $\SC$: the theory of holomorphic functions over it, its differential
+algebra, its rank-one analytic geometry, and its finite matrices.  The last two,
 under \dir{docs/foundations-and-computation}, stand outside both: they are
 about the subject rather than inside it, asking in what foundation this
 mathematics legally lives and how one computes with it exactly.
@@ -204,10 +206,12 @@ local to the report.}
 
 \section{The surcomplex plane}
 
-Seven reports about $\SC=\No[i]$ and holomorphic function theory over it.
-All seven rest on one framework and all seven are merges: twenty-seven
-manuscripts in total, delivered on a single day as independent attempts at
-one subject, reduced here to seven documents.
+Ten reports about $\SC=\No[i]$.  Seven are about holomorphic function theory,
+rest on one framework, and are all merges: twenty-seven manuscripts reduced to
+seven documents.  The last three came later and are listed after them --- a
+merge of seven manuscripts on differential algebra, and two standalone reports,
+on rank-one analytic geometry and on finite matrices, each written against this
+repository and each naming the gap it fills.
 
 \medskip
 \noindent
@@ -403,6 +407,91 @@ bounded sine of infinite frequency, and all-scale coherence forces a
 polynomial.  \emph{No mathematical disagreement was found between the three
 sources; the duplication was near-total on the first two thirds and the
 divergence near-total on the last.}}
+
+
+
+\entry{Differential algebra and differential equations over the surreal and surcomplex numbers}
+{surcomplex/differential-equations}
+{article.pdf}{surreal\_differential\_algebra.zip and six companion archives}
+{Seven manuscripts on the Berarducci--Mantova derivation $\der$ on $\No$,
+normalized by $\der\omega=1$, and its unique extension to $\SC$ --- unique
+because differentiating $i^2+1=0$ forces $\der i=0$.  The organizing identity is
+exact: the image of the logarithmic derivative is $\No+i\mathcal{A}$ with
+$\mathcal{A}=\der\mathfrak{m}=\der\mathcal{O}$, so $\der y=(a+ib)y$ has a nonzero
+surcomplex solution exactly when $b$ has a \emph{finite} primitive.  Two things
+carry the subject.  The two printed forms of that image agree only through the
+proved lemma $\der\mathcal{O}=\der\mathfrak{m}$, never as notational variants.
+And $\mathcal{A}$ is a \emph{strict} subclass of $\mathfrak{m}$: $\omega^{-1}$ is
+infinitesimal while its primitive $\log\omega$ is infinite, so
+$\der y=i\omega^{-1}y$ has only the zero solution --- collapsing
+$\der\mathcal{O}$ to $\mathcal{O}$ would make it solvable, which all seven
+sources refute.  Hence there is no formal oscillator: $\der y=iy$ needs a finite
+primitive of $1$, and those are $\omega+c$, all infinite, so $\der^2y+y=0$
+factors as $(\der-i)(\der+i)y=0$ and has only $y=0$.  Also: the purely infinite
+part of the accumulated phase as a complete gauge invariant in a four-term exact
+sequence; a sharp threshold over real-exponent Hahn fields, solvable iff
+$\min\operatorname{supp}b>1$, with the strictness at exponent~$1$ forced by the
+$\log\omega$ term and a counterexample pair showing the criterion cannot be
+globalized by valuation; Picard--Vessiot extensions with diagonal phase tori; and
+a coherent nonlinear initial-value theorem.  \emph{Merged; the hazard was a
+word.}  Three different objects were all called ``phase'' --- the finite angle in
+$\mathcal{O}$, the infinitesimal residue in $\mathfrak{m}$ left after removing a
+constant unit, and the accumulated phase, which is no angle at all and leaves
+$\mathcal{O}$ whenever its purely infinite part is nonzero.  One source printed
+two of them twenty lines apart.  The merged report fixes three symbols, relates
+them rather than identifying them, and prints the tempting false sentence beside
+the true one.  The letter $J$, which meant three unrelated things across the
+batch, is retired.}
+
+\entry{Rank-one non-Archimedean analytic geometry inside the surcomplex numbers}
+{surcomplex/rank-one-berkovich}
+{article.pdf}{surcomplex\_rank\_one\_berkovich.zip}
+{The one report in the collection where convergence is \emph{real} convergence.
+Inside the rank-one workspace $K=\C((t^\R))$ the absolute value
+$|a|_v=\exp(-v(a))$ is genuine and $K$ is spherically complete, complete and
+algebraically closed, so it is a legitimate base for Tate algebras and Berkovich
+spaces.  Proves strict inclusions among the Tate, polynomial-coefficient Hahn,
+common-domain, radius-free germ, formal-coefficient and open-disk analytic rings
+with named witnesses, extending the ring table of
+\nolinkurl{surcomplex/analytic-geometry}; gives a constructive one-variable
+preparation theorem, principal-ideal and finite-quotient results, analytic root
+counts and a valuation Rouch\'e theorem; constructs the Berkovich disk points and
+the annulus retraction; and contrasts the contractible annulus spectrum with its
+nonzero analytic de Rham class.  The worked case study is the entire series
+$F(Z)=\sum_{n\ge0}t^{n^2}Z^n$, taken from \nolinkurl{foundations-and-computation/foundations}
+and credited there: its full zero geometry is settled, and the first correction of
+the $m$th normalized root occurs at $t^{m(m+1)}$.  \emph{This does not contradict
+the no-convergence theorems of \nolinkurl{surcomplex/analysis}.}  The convergence
+here is in the intrinsic valuation topology of one fixed rank-one field, not the
+fine topology induced from $\SC$; and at $Z=t^{-\omega}$ the exponents $n^2-n\omega$
+strictly decrease, so the support is not well ordered and $F$ is not an
+all-surcomplex entire function --- the obstruction agrees with all-scale rigidity
+rather than refuting it.  Written against this repository; its claim that a
+Berkovich \emph{comparison} already exists in \nolinkurl{surcomplex/contours-and-stokes}
+is correct, and what was absent is the development.}
+
+\entry{Surcomplex spectral theory: singular values, infinitesimal rank, multiscale stability}
+{surcomplex/spectral-theory}
+{article.pdf}{surcomplex\_spectral\_theory.zip}
+{The finite-matrix chapter the collection lacked, and the one report here with no
+derivation, no phase and no differential equation in it.  Proves the finite
+spectral theorem and the singular value decomposition over a real closed field
+and its complexification \emph{without compactness}: real closedness suffices,
+and the proofs exhibit the extremal witnesses rather than extracting them from a
+compactness argument, so Courant--Fischer and Ky Fan hold with extrema
+\emph{attained}.  On that base: positive square roots and polar decomposition,
+generalized Hermitian eigenproblems, Moore--Penrose inverses, least squares, best
+low-rank approximation, and conditioning.  The scale-sensitive core identifies
+singular-value valuations with successive differences of minimum minor
+valuations, and recovers both those valuations and the leading singular
+coefficients from positive Gram coefficients one scale block at a time.
+Applications include an intrinsic rank filtration, root-free scale elimination,
+perturbation precision certificates, nonnormal pseudospectra, gap-sensitive
+spectral projectors and Schur-complement corrections.  Written against this
+repository; its gap claim checks out --- \nolinkurl{surcomplex/polynomial-algebra}
+does carry Schur-type arguments and Hermite signatures, and no report in the
+collection had a singular value, a pseudoinverse or a matrix polar decomposition
+anywhere.}
 
 
 \section{Foundations and computation}
