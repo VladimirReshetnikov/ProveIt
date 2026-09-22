@@ -372,8 +372,32 @@ also gives unique normalized square roots and unique two-sided inverses.
 [`Surcomplex/PowerSeriesHom.lean`](../Surreal/Surcomplex/PowerSeriesHom.lean)
 proves the actual rational and real-coefficient existence criteria,
 injectivity at nonzero infinitesimals, and the precise formal-order valuation
-formula. Preservation of arbitrary source-summable families and uniqueness
-among strongly additive maps remain separate obligations.
+formula. [PowerSeriesLeading.lean](../Surreal/Surcomplex/PowerSeriesLeading.lean)
+adds the explicit leading coefficient and growth exponent.
+
+[HahnSeries/StrongEvaluation.lean](../Surreal/HahnSeries/StrongEvaluation.lean)
+constructs a joint family indexed by source member and formal degree.
+[PowerSeriesSummation.lean](../Surreal/HahnSeries/PowerSeriesSummation.lean)
+identifies the source predicate and sum with native Hahn summation over natural
+exponents, including monomial reconstruction and equivalence reindexing.
+[Surcomplex/StrongEvaluation.lean](../Surreal/Surcomplex/StrongEvaluation.lean)
+transports preservation of these sums to both actual fields, with the small
+index bound on actual sums. [PowerSeriesStrongHom.lean](../Surreal/Surcomplex/PowerSeriesStrongHom.lean)
+proves uniqueness of a coefficient-fixing strongly additive map at its given
+infinitesimal argument. [SignSequencePowerSeriesAlgebra.lean](../Surreal/Foundations/SignSequencePowerSeriesAlgebra.lean)
+supplies the native real-algebra homomorphism alternative, completing all four
+clauses of the evaluation-at-omega theorem in this universe-indexed setting.
+
+[Surcomplex/FiniteExponential.lean](../Surreal/Surcomplex/FiniteExponential.lean)
+constructs the actual finite exponential from ordinary and infinitesimal
+parts. It maps onto the finite units and has exactly the ordinary `2πiℤ`
+kernel. [Surcomplex/Polar.lean](../Surreal/Surcomplex/Polar.lean) proves
+finite-angle polar existence for every actual nonzero surcomplex and exact
+ordinary-period ambiguity.
+[Surcomplex/PolarNormalization.lean](../Surreal/Surcomplex/PolarNormalization.lean)
+proves unique principal angles in the actual interval `(-π, π]`, including
+infinitesimal endpoint corrections, and identifies the angle of every negative
+real input as `π`. No exponential at infinite imaginary arguments is required.
 
 ## Remaining dependency order
 
