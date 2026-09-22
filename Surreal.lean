@@ -14,6 +14,7 @@ import Surreal.Algebra.PolynomialDepression
 import Surreal.Algebra.PolynomialFactorLinearization
 import Surreal.Algebra.PolynomialFactorUniqueness
 import Surreal.Algebra.PolynomialFiniteFactorLinearization
+import Surreal.Algebra.PolynomialFiniteFactorLifting
 import Surreal.Algebra.PolynomialGaussLucas
 import Surreal.Algebra.PolynomialHermiteFormula
 import Surreal.Algebra.PolynomialInterpolation
@@ -114,9 +115,13 @@ import Surreal.HahnSeries.Composition
 import Surreal.HahnSeries.DiscriminantValuation
 import Surreal.HahnSeries.Evaluation
 import Surreal.HahnSeries.MvEvaluation
+import Surreal.HahnSeries.MvComposition
 import Surreal.HahnSeries.Neumann
 import Surreal.HahnSeries.PolynomialReduction
 import Surreal.HahnSeries.PolynomialFactorUniqueness
+import Surreal.HahnSeries.PolynomialFactorLifting
+import Surreal.HahnSeries.PolynomialFiniteFactorSupport
+import Surreal.HahnSeries.PolynomialSimpleRootLifting
 import Surreal.HahnSeries.PolynomialGaussValuation
 import Surreal.HahnSeries.PolynomialInitialRoots
 import Surreal.HahnSeries.PolynomialInitialDerivative
