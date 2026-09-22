@@ -380,7 +380,15 @@ with the constructed square root.
 Formal-variable images under homomorphisms into ordered fields must be
 infinitesimal. Every actual surreal infinitesimal occurs as such an image,
 and actual real or complex evaluation is injective exactly at nonzero inputs.
-Its valuation is the first nonzero formal degree times the input valuation.
+Its valuation is the first nonzero formal degree times the input valuation,
+with explicit leading coefficient and growth exponent. Evaluation preserves
+source-summable families and their small strong sums; coefficient fixing,
+strong additivity and the variable image uniquely determine it.
+The actual finite exponential maps onto the finite units with exact kernel
+`2πiℤ`. Every nonzero surcomplex has a finite-angle polar representation,
+and two finite angles give the same phase exactly modulo ordinary `2πℤ`.
+Each has a unique principal angle in `(-π, π]`, with angle `π` for every
+negative real input, including infinite and infinitesimal scales.
 The approximation inequalities alone never give uniqueness: a sufficiently
 small positive monomial produces another solution. Differentiation,
 recentered analytic Taylor lifting, and universe coherence

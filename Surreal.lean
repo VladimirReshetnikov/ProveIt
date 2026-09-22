@@ -155,9 +155,16 @@ import Surreal.Surcomplex.StrongConstants
 import Surreal.Surcomplex.Workspace
 import Surreal.Surcomplex.PowerSeries
 import Surreal.Surcomplex.PowerSeriesHom
+import Surreal.Surcomplex.PowerSeriesLeading
+import Surreal.Surcomplex.StrongEvaluation
+import Surreal.Surcomplex.PowerSeriesStrongHom
+import Surreal.Foundations.SignSequencePowerSeriesAlgebra
 import Surreal.Surcomplex.Binomial
 import Surreal.Surcomplex.ExpLog
 import Surreal.Surcomplex.ExpLogEquiv
+import Surreal.Surcomplex.FiniteExponential
+import Surreal.Surcomplex.Polar
+import Surreal.Surcomplex.PolarNormalization
 import Surreal.Surcomplex.StrongConjugation
 import Surreal.Surcomplex.ExpLogConjugation
 import Surreal.Surcomplex.MvPowerSeries
@@ -194,6 +201,8 @@ import Surreal.HahnSeries.Composition
 import Surreal.HahnSeries.CoefficientMapping
 import Surreal.HahnSeries.DiscriminantValuation
 import Surreal.HahnSeries.Evaluation
+import Surreal.HahnSeries.StrongEvaluation
+import Surreal.HahnSeries.PowerSeriesSummation
 import Surreal.HahnSeries.ExponentialLogarithm
 import Surreal.HahnSeries.ExponentialAddition
 import Surreal.HahnSeries.ExponentialConjugation
