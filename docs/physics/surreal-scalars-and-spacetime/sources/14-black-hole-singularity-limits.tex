@@ -1,0 +1,1874 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,
+ pdftitle={Surreal Scalars and Black-Hole Singularities},
+ pdfauthor={Research assessment prepared for Vladimir Reshetnikov},
+ pdfsubject={Surreal and surcomplex numbers in theoretical physics}}
+\urlstyle{same}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.1em}
+\setlist{itemsep=3pt,topsep=5pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Surreal scalars and black-hole singularities}
+\fancyhead[R]{\small Research assessment}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\st}{\operatorname{st}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Ric}{\operatorname{Ric}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\Planck}{\ell_{\mathrm P}}
+\newcommand{\Kretsch}{\mathcal K}
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{lemma}[proposition]{Lemma}
+\newtheorem{corollary}[proposition]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[proposition]{Definition}
+\newtheorem{example}[proposition]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[proposition]{Remark}
+\newcommand{\status}[1]{\par\noindent\textbf{Status.} #1\par}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{0.5in}
+\noindent{\small\sffamily MATHEMATICAL PHYSICS \quad / \quad FOUNDATIONS AND ASYMPTOTICS}
+\vspace{0.45in}
+\begin{flushleft}
+{\LARGE\bfseries Surreal Scalars and\\[6pt] Black-Hole Singularities}\par
+\vspace{0.24in}
+{\Large What replacing $\R$ and $\C$ can accomplish,\\[3pt]
+what it cannot accomplish by itself,\\[3pt]
+and a rigorous research program}
+\end{flushleft}
+\vspace{0.35in}
+\noindent Prepared for Vladimir Reshetnikov\par
+\noindent 21 September 2026
+\vspace{0.35in}
+\begin{abstract}
+The surreal field contains genuine infinite and infinitesimal numbers, and its
+complexification is algebraically closed. These properties make it attractive
+for describing the extreme hierarchies occurring near gravitational
+singularities. They do not, however, turn a singular spacetime into a regular
+one. We separate scalar extension, asymptotic representation, geometric
+extension, and physical singularity resolution. Explicit Schwarzschild
+calculations show how surreal evaluation retains invariant curvature blow-up,
+finite-proper-time termination, and tidal deformation. A two-scale analysis of
+radial versus nonradial infall illustrates a constructive use of ordered
+asymptotic fields. We also prove a regular-reduction result for formal Einstein
+equations, examine a nonsingular-core metric, and distinguish finite-dimensional
+surcomplex quantum algebra from the analytic structures required for quantum
+field theory. The assessment incorporates established surreal integration and
+transseries results and the supplied repository's actual scope. The strongest
+near-term role is a carefully specified asymptotic coefficient language over
+ordinary spacetime, not an unqualified replacement of the continuum or a
+stand-alone theory of quantum gravity.
+\end{abstract}
+\vfill
+\noindent\small\textbf{Evidence and verification.} Literature and repository snapshot checked
+as of 21 September 2026. This is a research assessment, not a claim of a new
+empirically validated theory. The accompanying program checks 37 finite
+symbolic identities. It does not verify the general analytic statements or the
+repository's Lean build.
+\end{titlepage}
+
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{Executive assessment: a promising language, not a cure by arithmetic}
+\label{sec:assessment}
+
+There are two different questions hidden in the proposal to replace real and
+complex numbers by surreal and surcomplex numbers.
+The first is mathematical: can one formulate useful equations, asymptotic
+expansions, geometries, or quantum models with these scalars? The answer is
+\emph{yes}, provided the function classes, derivatives, sums, and interpretation
+are specified. The second is physical: does the existence of infinite surreal
+numbers itself remove black-hole singularities? The answer is \emph{no}. That
+conclusion follows from explicit examples below, not from a general prejudice
+against non-Archimedean models.
+
+A singularity in general relativity is not normally a point of spacetime whose
+coordinate has failed to fit inside $\R$. The basic singularity theorems concern
+incomplete causal geodesics under geometric and causal hypotheses. Curvature
+blow-up is a related but distinct issue. Replacing the scalar field does not,
+by itself, supply an endpoint, an extension of the metric, a continuation law,
+or an observational interpretation \cite{Penrose,Witten,Landsman}.
+
+The genuinely constructive possibility is to represent processes \emph{approaching}
+a singular regime by exact ordered scales. For example, if $\eps>0$ is
+infinitesimal, then
+\[
+ \eps^{-6},\qquad \eps^{-2}\log(\eps^{-1}),\qquad
+ \exp(\eps^{-1})
+\]
+are distinguishable, algebraically manipulable quantities. They carry more
+information than one undifferentiated symbol $+\infty$. Established work on
+surreal derivations, transseries, and integration gives substance to this
+possibility; it is not merely a notational proposal
+\cite{BerarducciMantova,ADH,CostinEhrlich}.
+
+\begin{center}
+\small
+\begin{tabular}{@{}P{0.26\textwidth}P{0.63\textwidth}@{}}
+\toprule
+Proposed role & Assessment \\
+\midrule
+Exact representation of scales & Strong mathematical potential for selected algebraic,
+transseries, and resurgent classes. A realization or summation theorem is still needed
+when real functions are intended. \\
+Perturbative tensor calculations & Feasible with real coordinate domains and controlled
+formal or Hahn coefficient rings. Local algebraic identities survive. \\
+Full replacement of spacetime scalars & A substantial foundational and analytic redesign,
+not a substitution in existing formulas. \\
+Automatic removal of black-hole singularities & Not established and refuted as a general
+mechanism by invariant-pole examples. \\
+New fundamental physical theory & Logically possible, but requires dynamics, measurement,
+recovery of known physics, and discriminating predictions beyond scalar extension. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The remainder develops this assessment constructively. Some propositions are
+included to make the logical boundaries explicit. They are elementary
+consequences of the stated assumptions or standard calculations presented here
+in full; no claim of priority is made for them. Open questions are distinguished
+from facts proved in the article.
+
+\section{What is being enlarged?}
+\label{sec:scalars}
+
+\subsection{Surreal and surcomplex numbers}
+
+The surreal numbers $\No$ form a real-closed ordered field in the appropriate
+class-sized sense. They contain the real numbers, infinite elements such as
+$\omega$, and positive infinitesimals such as $\omega^{-1}$. Their
+complexification
+\[
+ \No[\ii]=\{a+\ii b:a,b\in\No\},\qquad \ii^2=-1,
+\]
+is algebraically closed. Conjugation and modulus are defined by
+\[
+ \overline{a+\ii b}=a-\ii b,
+ \qquad |a+\ii b|=\sqrt{a^2+b^2}\in\No_{\geq 0}.
+\]
+The latter is a surreal-valued modulus, not an ordinary real-valued Banach-space
+norm \cite{Conway,Gonshor}.
+
+These algebraic facts preserve much finite-dimensional mathematics. One can
+solve polynomial equations, invert nonsingular matrices, construct quadratic
+forms, and manipulate tensor components. None of these facts alone supplies
+a satisfactory theory of smooth functions, partial differential equations,
+measures, or infinite-dimensional Hilbert spaces.
+
+\begin{definition}
+In an ordered field $F\supseteq\R$, an element $x$ is \emph{limited} if
+$|x|<M$ for some real $M>0$. It is \emph{infinitesimal} if $|x|<r$ for every
+real $r>0$. An element not limited is \emph{unlimited}.
+\end{definition}
+
+This vocabulary prevents an important ambiguity. An infinite surreal is an
+individual field element, but it is not thereby a finite physical magnitude
+relative to ordinary units. Saying that curvature has become ``a number'' is
+not the same as saying that a curvature observable is limited.
+
+Moreover, $\eps\neq0$ does not make division by zero legal. In every nontrivial
+field, including $\No$, the equation $0y=1$ has no solution. An infinite surreal
+has a nonzero infinitesimal inverse; it is not the reciprocal of zero. Nor do
+surreals provide a smallest positive length: $0<\eps/2<\eps$. The Planck length,
+when treated as an ordinary physical constant, is a small positive real length,
+not a literal positive infinitesimal.
+
+\subsection{Normal forms and set-sized workspaces}
+
+A surreal normal form has the schematic shape
+\[
+ x=\sum_{\alpha<\lambda}r_\alpha\omega^{a_\alpha},
+ \qquad r_\alpha\in\R\setminus\{0\},
+ \qquad a_\alpha\ \text{strictly decreasing},
+\]
+with \emph{set-sized} support. This is not a sum over all ordinals. For most
+calculations it is better to fix a set-sized ordered abelian group $\Gamma$ and
+work in a Hahn field
+\[
+ F_\Gamma=\R((t^\Gamma)),\qquad
+ K_\Gamma=\C((t^\Gamma)).
+\]
+Its elements have well-ordered exponent support, and a positive exponent
+represents a smaller scale. If $\Gamma$ is divisible, these are respectively
+real closed and algebraically closed. An ordered additive embedding of
+$\Gamma$ into surreal exponents identifies such series with an appropriate
+surreal subfield using $t^\gamma\mapsto\omega^{-\gamma}$, with the embedding
+understood in the exponent \cite{Conway,Gonshor,RepoDocs}.
+
+Any concrete set of surreal coefficients has only a set of exponents in its
+combined support. Taking the divisible group generated by those exponents
+produces a workspace containing that data. This observation removes a
+proper-class obstacle from individual calculations. It does \emph{not} prove
+that an arbitrary chosen workspace is closed under every desired derivative,
+exponential, integral, or infinite summation. Those closure properties must be
+specified separately.
+
+The full proper class is therefore not an obvious physical advantage. It is
+an ambient language within which particular set-sized structures can be
+selected. For computation and proof assistance, the smaller structure is
+usually the meaningful object.
+
+\subsection{What summation means}
+
+A family of Hahn series is \emph{strongly summable} if the union of its supports
+is well ordered and each exponent receives contributions from only finitely
+many members. These are algebraic support conditions. They are different from
+ordinary convergence of partial sums \cite{Gonshor,RepoAnalysis}.
+
+For instance, with $\eps=\omega^{-1}$,
+\[
+ \sum_{n\geq0}\eps^n=(1-\eps)^{-1}
+\]
+is a valid Hahn identity. Its finite remainder identity is simply
+\begin{equation}
+ (1-\eps)^{-1}-\sum_{n=0}^{N}\eps^n
+   =\frac{\eps^{N+1}}{1-\eps}.
+ \label{eq:geom}
+\end{equation}
+This equation is useful without claiming convergence in the full surreal order
+topology. Similarly, $\sum_{n\geq0}n!\eps^{n+1}$ is strongly summable: its
+support is a subset of the positive integers and each exponent occurs once.
+The corresponding real power series has zero radius of convergence. The
+surreal sum does not automatically select a particular real function with
+that asymptotic expansion; Section~\ref{sec:resurgence} makes the distinction
+explicit.
+
+\section{The analytic structures that do not transfer automatically}
+\label{sec:analysis}
+
+\subsection{The full order topology is unsuitable for ordinary histories}
+
+Use order balls on $\No$, or modulus balls on $\No[\ii]$, as the default
+neighborhoods. The following observation explains why a direct substitution
+in standard real analysis is unsafe.
+
+\begin{proposition}[Set-sized discreteness]
+\label{prop:discrete}
+Every set-sized subset of $\No[\ii]$ is closed and discrete in this topology.
+Every convergent set-indexed net is eventually equal to its limit. Every
+continuous map from an ordinary connected real interval into $\No[\ii]$ is
+constant.
+\end{proposition}
+\begin{proof}
+Let $A$ be a set of surcomplex numbers and let $x$ be any surcomplex point.
+The nonzero distances $|x-a|$, for $a\in A\setminus\{x\}$, form a set of
+positive surreals. The surreal cut construction gives a positive $\delta$
+smaller than every member of that set. Thus the ball of radius $\delta$ at
+$x$ meets $A$ only at $x$, if $x\in A$, and otherwise misses $A$.
+This proves discreteness and closedness. Empty sets of distances cause no
+difficulty: any positive radius may be chosen.
+
+For a set-indexed net, its range together with a proposed limit is a set.
+A neighborhood of the limit isolates it from every other point in this set;
+convergence forces eventual equality. Finally, the image of a real interval
+is a set, hence discrete, whereas a continuous image of a connected space is
+connected. The image therefore contains at most one point.
+\end{proof}
+
+In particular, the ordinary inclusion of a real interval in the full surreal
+field is not continuous for this finer topology. Even ordinary real sequences
+converging in $\R$ need not converge after inclusion. The proposition does not
+say that the full class is a discrete space: a singleton is not an open ball,
+and the proof cannot choose one radius below a \emph{proper class} of positive
+distances.
+
+There are several ways around this obstacle, but each changes the model. One
+can use a valuation topology on a set-sized field, a coefficientwise topology,
+a standard-part topology, or a specialized notion of surreal analytic function.
+For a rank-one Hahn field, powers $t^n$ can tend to zero in its own valuation
+topology, even though this convergence is destroyed by inclusion in the full
+surreal order topology. One can also retain ordinary real spacetime as the
+parameter domain and attach formal coefficients to its fields. That last
+option will be our constructive framework.
+
+The supplied repository emphasizes precisely the distinction between Hahn
+summation and topological convergence. It also distinguishes functions given
+by local germs, coherent coefficient functions on a common ordinary domain,
+and lifts of ordinary holomorphic functions. A theorem for one class cannot
+be silently applied to another \cite{RepoDocs,RepoAnalysis}.
+
+\subsection{Three different meanings of differentiation}
+
+The following operations answer different questions.
+
+\paragraph{Spacetime differentiation.}
+For a field $f(x;\eps)=\sum_n f_n(x)\eps^n$ on an ordinary real coordinate
+patch, one may define
+\[
+ \partial_\mu f=\sum_n (\partial_\mu f_n)\eps^n,
+ \qquad \partial_\mu\eps=0.
+\]
+The small parameter is a scalar constant. This is the derivative required for
+formal metric perturbations.
+
+\paragraph{A derivation of the scalar field.}
+Berarducci and Mantova construct a derivation on $\No$ compatible with its
+exponential and asymptotic structure. In its usual normalization $D\omega=1$,
+so $D(\omega^{-1})=-\omega^{-2}$, whereas real constants are annihilated.
+Subsequent work relates this differential field to transseries and Hardy fields
+\cite{BerarducciMantova,ADH}. This is valuable asymptotic differential algebra.
+It is not automatically a physical time derivative. In particular, applying
+$D$ to a real number used as a time coordinate does not recover differentiation
+of a real time-dependent function.
+
+\paragraph{Differentiation of surreal functions.}
+A function on a surreal domain can have its own derivative, subject to a
+specified function theory. Costin and Ehrlich develop extensions and integration
+for substantial classes associated with resurgent analysis, including suitable
+ordinary differential and difference equations \cite{CostinEhrlich}. This is
+positive evidence that meaningful surreal calculus exists. It does not assert
+a general extension theorem for arbitrary smooth spacetime fields or the full
+nonlinear Einstein initial-value problem.
+
+These distinctions matter physically. Choosing a scalar derivation by analogy
+with time evolution can inadvertently make a supposedly constant regulator
+time-dependent. Conversely, declaring all infinitesimals constant is compatible
+with coefficientwise perturbation theory but does not capture every
+asymptotic differential-field construction. A model must state which operation
+is used and prove its chain rules in the chosen category.
+
+\subsection{Transfer: substantial, but language-dependent}
+
+Surreals do not lack all transfer principles. Real-closed fields satisfy the
+same first-order theory in the language of ordered fields. There are also
+strong elementary-extension results for surreal exponentiation
+\cite{vanDenDriesEhrlich}. These results justify many algebraic and definable
+arguments.
+
+They do not transfer arbitrary theorems about real functions, compact sets,
+Lebesgue integration, distributions, or Hilbert spaces. Those objects require
+additional sorts, predicates, or constructions. Robinson-style nonstandard
+analysis packages a transferred mathematical universe with distinguished
+internal objects; an ordered-field embedding into the surreals does not by
+itself retain that entire package. It would be equally misleading to say
+``everything transfers'' or ``nothing transfers.'' The question is which
+language, structure, and hypotheses have actually been transported.
+
+\section{What a black-hole singularity is}
+\label{sec:singularity}
+
+\subsection{Four notions that must remain separate}
+
+A coordinate formula can diverge even when the underlying geometry is regular.
+A curvature tensor can diverge in a freely falling frame even if some scalar
+invariants remain bounded. A causal geodesic can be incomplete even without
+an established curvature blow-up theorem. A spacetime can admit a continuous
+metric extension but no extension with the differentiability needed for the
+classical field equations. These are different defects, requiring different
+notions of resolution \cite{Witten,Landsman,DafermosLuk}.
+
+For present purposes, a genuine resolution must specify what replaces the
+incomplete region and what governs propagation there. Depending on the theory,
+this might mean a regular Lorentzian extension, a weaker geometry with a
+well-posed evolution law, or a quantum description in which operational
+observables and evolution remain meaningful. It need not mean that every
+classical variable stays finite, but then the replacement observables and
+rules must be stated explicitly.
+
+The phrase ``usual real analysis fails'' therefore needs refinement. Real
+analysis often succeeds at proving that a particular classical solution cannot
+be extended with a specified regularity. That is a diagnosis of the solution
+or model, not a contradiction in the real numbers. A different number system
+can help express the diagnosis or organize a replacement model. It does not
+invalidate the diagnosis without changing the relevant assumptions.
+
+\subsection{The singularity theorem is not a division-by-zero theorem}
+
+One standard form of Penrose's theorem combines a trapped surface, the null
+convergence condition, and suitable global causal assumptions including a
+noncompact Cauchy surface to infer future null geodesic incompleteness
+\cite{Penrose,Witten}. Its proof combines local focusing with global geometry.
+It does not merely encounter a fraction with a vanishing denominator, and it
+does not assert that every incomplete geodesic has divergent Kretschmann
+scalar.
+
+The local null Raychaudhuri equation, in four dimensions for a twist-free
+congruence, gives under the null convergence condition
+\begin{equation}
+ \frac{\dd\theta}{\dd\lambda}
+ =-\frac12\theta^2-\sigma_{ab}\sigma^{ab}
+   -R_{ab}k^ak^b
+ \leq-\frac12\theta^2.
+ \label{eq:ray}
+\end{equation}
+An initially negative expansion is driven to focusing within affine parameter
+at most $2/|\theta_0|$, as long as the regular evolution in question exists.
+The algebraic inequality can be represented in an ordered extension field.
+The global assumptions concerning causality and completeness cannot simply be
+replaced by field arithmetic. Conversely, showing that the classical proof
+cannot be copied into an unfamiliar topology does not exhibit a nonsingular
+physical spacetime.
+
+\subsection{Affine and proper time are not optional conventions}
+
+Suppose a timelike geodesic reaches the end of its domain at finite proper time
+$\tau_*$. Introducing $u=-\log(\tau_*-\tau)$ moves that endpoint to $u=+\infty$.
+This does not make the geodesic complete: $u$ is not its proper-time parameter,
+and in general is not affine. Incompleteness is not cured by relabeling the
+clock. A surreal value for $u$ may encode an extraordinarily late stage in
+this reparameterization, but the missing proper-time continuation remains a
+separate problem.
+
+\section{Schwarzschild: what infinitesimal radius actually represents}
+\label{sec:schwarzschild}
+
+We use signature $(-,+,+,+)$ and geometrized units $G=c=1$ unless otherwise
+stated. Thus mass $m=GM/c^2$, radial distance, and proper time expressed as a
+length have the same dimension. Physical seconds are recovered by dividing
+proper-time lengths by $c$.
+
+\subsection{The horizon is already regular over the reals}
+
+The Schwarzschild metric in its familiar static chart is
+\begin{equation}
+ \dd s^2=-f(r)\dd t^2+f(r)^{-1}\dd r^2+r^2\dd\Omega^2,
+ \qquad f(r)=1-\frac{2m}{r}.
+ \label{eq:schwarzmetric}
+\end{equation}
+The coefficient $f^{-1}$ diverges at $r=2m$. Introduce the advanced coordinate
+$v=t+r_*$, where $\dd r_*/\dd r=f^{-1}$. Direct substitution gives
+\begin{equation}
+ \dd s^2=-f(r)\dd v^2+2\dd v\dd r+r^2\dd\Omega^2.
+ \label{eq:ef}
+\end{equation}
+Its determinant is $-r^4\sin^2\theta$, nonzero at $r=2m$ away from the ordinary
+angular-coordinate poles. Thus the apparent horizon divergence did not require
+new scalars. A different real coordinate chart removes it.
+
+For any metric of the form \eqref{eq:schwarzmetric}, a direct curvature
+calculation yields
+\begin{equation}
+ \Kretsch:=R_{abcd}R^{abcd}
+   =[f''(r)]^2+4\left[\frac{f'(r)}r\right]^2
+       +4\left[\frac{1-f(r)}{r^2}\right]^2.
+ \label{eq:generalK}
+\end{equation}
+Consequently Schwarzschild has
+\begin{equation}
+ \Kretsch=\frac{48m^2}{r^6},
+ \qquad \Kretsch\big|_{r=2m}=\frac{3}{4m^4}.
+ \label{eq:schwarzK}
+\end{equation}
+The companion program derives \eqref{eq:generalK} by contracting the full
+Riemann tensor, rather than merely substituting into an assumed Schwarzschild
+answer. It also verifies $R_{ab}=0$ and the determinant in
+\eqref{eq:ef}. The physical distinction between a regular horizon and the
+central singularity is standard \cite{Witten}.
+
+\subsection{The center is not fixed by evaluating at a small nonzero number}
+
+Let $L>0$ be an ordinary reference length, set $m=\mu L$ with $\mu>0$ real,
+and evaluate the exterior/interior formula at a positive infinitesimal radius
+$r=L\eps$. Then
+\begin{equation}
+ L^4\Kretsch=48\mu^2\eps^{-6}.
+ \label{eq:infK}
+\end{equation}
+This is a well-defined, unlimited surreal number. It identifies the exact
+order of the curvature divergence. It does not make that divergence disappear.
+The statement is dimensionally meaningful because the compared quantity is
+$L^4\Kretsch$, not a bare dimensionful number declared ``infinite'' without
+units.
+
+The radius here is not an arbitrary coordinate label: it is the areal radius,
+defined by the area $4\pi r^2$ of symmetry spheres. A change of coordinates
+cannot change the scalar value in \eqref{eq:schwarzK} at a fixed event.
+One may alter the notion of event or replace the spacetime model, but that is
+more than an algebraic relabeling.
+
+\begin{proposition}[A leading pole stays unlimited]
+\label{prop:pole}
+Let $F\supseteq\R$ be an ordered field, let $\eps>0$ be infinitesimal, and let
+$p>0$ be such that $\eps^p$ is defined and infinitesimal in the chosen field.
+If $a\in\R\setminus\{0\}$ and $u$ is infinitesimal, then
+\[
+ I=a\eps^{-p}(1+u)
+\]
+is unlimited. An ordered extension of $F$ that fixes the real numbers does not
+make this same element limited.
+\end{proposition}
+\begin{proof}
+Since $|u|<1/2$, $|I|>|a|\eps^{-p}/2$. The latter exceeds every positive real
+bound by infinitesimality of $\eps^p$. Every inequality with a real bound is
+preserved by an ordered extension.
+\end{proof}
+
+Thus changing from a smaller ordered asymptotic field to all of $\No$ cannot
+turn the same curvature observable into a limited one. Subtracting terms,
+rescaling the measured observable by an infinitesimal, or changing the metric
+can change the conclusion, but each introduces additional structure or a new
+physical claim.
+
+There is a second, purely algebraic obstruction to filling in the original
+formula at the exact center. On the Schwarzschild region,
+\begin{equation}
+ r^6\Kretsch=48m^2.
+ \label{eq:polyobstruction}
+\end{equation}
+No field-valued assignment with $r=0$ and $m\ne0$ can satisfy this identity.
+A regular extension preserving this relation at its endpoint is therefore
+impossible in any field, not just $\R$. This is a conditional obstruction to
+that kind of extension, not a theorem excluding every proposed quantum or
+nonclassical replacement of the endpoint. Setting $r=\eps$ merely avoids
+$r=0$; it does not provide the missing assignment.
+
+\subsection{Exact radial proper-time asymptotics}
+
+For a radial timelike geodesic, the conserved specific energy is
+$E=f\,\dd t/\dd\tau$. Normalization of the four-velocity gives
+\[
+ \left(\frac{\dd r}{\dd\tau}\right)^2=E^2-f(r).
+\]
+Choose infall with $E=1$, and let
+\[
+ s=\tau_*-\tau>0
+\]
+be the remaining proper-time length before the classical endpoint. Then
+\[
+ \frac{\dd r}{\dd\tau}=-\sqrt{\frac{2m}{r}},
+ \qquad
+ r^{3/2}=\frac32\sqrt{2m}\,s.
+\]
+Therefore
+\begin{equation}
+ r=A s^{2/3},\qquad A=\left(\frac{9m}{2}\right)^{1/3},
+ \qquad
+ \frac{m}{r^3}=\frac{2}{9s^2},\qquad
+ \Kretsch=\frac{64}{27s^4}.
+ \label{eq:radial}
+\end{equation}
+These formulas are exact for this geodesic family. They are especially suited
+to a Puiseux or Hahn representation. Taking $s=L\eps$ produces exact
+infinitesimal distances and unlimited curvature while retaining the relation
+to the infaller's clock.
+
+The endpoint is still at finite proper time. Replacing a real $s>0$ by a
+positive infinitesimal specifies an extraordinarily close approach in the
+enlarged model. It does not define the solution at $s=0$ or decide what follows
+it. Allowing negative $s$ in the algebraic relation
+$r^3=(9m/2)s^2$ produces a formal other branch, but that relation alone omits
+the differentiability, curvature, orientation, and matching information needed
+for a physical extension.
+
+\subsection{Tidal deformation is not hidden by scalar extension}
+
+In a freely falling orthonormal frame along radial Schwarzschild infall, the
+radial and transverse Jacobi equations take the form
+\begin{equation}
+ \frac{\dd^2J_r}{\dd\tau^2}=\frac{2m}{r^3}J_r,
+ \qquad
+ \frac{\dd^2J_\perp}{\dd\tau^2}=-\frac{m}{r^3}J_\perp.
+ \label{eq:jacobi}
+\end{equation}
+Using $\dd^2/\dd\tau^2=\dd^2/\dd s^2$ and \eqref{eq:radial}, the indicial
+equations are
+\[
+ p(p-1)=\frac49 \quad\text{and}\quad p(p-1)=-\frac29.
+\]
+Thus
+\begin{align}
+ J_r&=C_1s^{4/3}+C_2s^{-1/3},\label{eq:Jr}\\
+ J_\perp&=D_1s^{2/3}+D_2s^{1/3}.\label{eq:Jt}
+\end{align}
+For generic nonzero leading coefficients, radial separation grows like
+$s^{-1/3}$ while two independent transverse separations shrink like $s^{1/3}$.
+The corresponding infinitesimal volume scales like $s^{1/3}$ and tends to zero.
+Special initial conditions can remove leading terms and change these rates;
+the displayed generic behavior is not a claim about every Jacobi field.
+
+A surreal evaluation records both the unlimited stretching and the
+infinitesimal collapse. Calling each value an available field element does not
+supply a surviving detector, restore a nonzero volume, or determine propagation
+through the endpoint. This example is more informative than the statement
+``infinite curvature is now allowed'': it connects the singular regime with
+an observer's clock and neighboring freely falling trajectories.
+
+\section{A constructive multiscale application: small angular momentum}
+\label{sec:angular}
+
+The preceding $s^{-4}$ curvature law should not be universalized to every
+Schwarzschild geodesic. The dependence on angular momentum gives a useful
+example of what an ordered asymptotic field can genuinely organize.
+
+\subsection{Nonradial infall changes the proper-time exponent}
+
+Restrict by spherical symmetry to the equatorial plane and let
+$j=r^2\dd\phi/\dd\tau$ be the conserved specific angular momentum. For finite
+$E$ and $j\ne0$,
+\begin{equation}
+ \dot r^{\,2}=E^2-
+    \left(1-\frac{2m}{r}\right)\left(1+\frac{j^2}{r^2}\right)
+ =\frac{2mj^2}{r^3}+\frac{2m}{r}-\frac{j^2}{r^2}+E^2-1.
+ \label{eq:radialgeneral}
+\end{equation}
+The first term dominates as $r\downarrow0$ with $j$ fixed and nonzero.
+Integrating the leading balance yields
+\begin{equation}
+ r\sim\left[\frac52\sqrt{2m}\,|j|\,s\right]^{2/5},
+ \quad
+ \Kretsch\sim
+ 48m^2\left[\frac52\sqrt{2m}\,|j|\right]^{-12/5}s^{-12/5}.
+ \label{eq:nonradial}
+\end{equation}
+The divergence remains, but its power in remaining proper time changes. This
+is not a change in the curvature as a function of areal radius. It is a change
+in how the worldline approaches the same invariantly characterized region.
+
+\subsection{A uniform crossover problem}
+
+Let $J=|j|>0$, set $r=JR$, and define the dimensionless remaining clock
+\[
+ S=\frac{\sqrt{2m}}{J^{3/2}}s.
+\]
+For the ingoing branch that reaches $r=0$, integration of the exact first
+integral gives
+\begin{equation}
+ S=\int_0^R
+ \frac{u^{3/2}\,\dd u}
+ {\sqrt{1+u^2+\dfrac{J}{2m}\bigl[(E^2-1)u^3-u\bigr]}}.
+ \label{eq:crossoverexact}
+\end{equation}
+The radicand is positive in the sufficiently small interior region under
+consideration. For $J/m\to0$ with $E$ fixed and $R$ in any bounded positive
+interval, its reciprocal square root converges uniformly to that of $1+u^2$.
+Consequently
+\begin{equation}
+ S\longrightarrow\Phi(R):=
+   \int_0^R\frac{u^{3/2}}{\sqrt{1+u^2}}\,\dd u.
+ \label{eq:Phi}
+\end{equation}
+The elementary endpoint expansions are
+\begin{equation}
+ \Phi(R)\sim\frac25R^{5/2}\quad(R\downarrow0),
+ \qquad
+ \Phi(R)\sim\frac23R^{3/2}\quad(R\to\infty).
+ \label{eq:Philimits}
+\end{equation}
+The first yields the angular-momentum-dominated law; the second recovers the
+radial law in the overlap region $J\ll r\ll m$. The large-$R$ asymptotic of the
+limiting function is a matched-asymptotic statement: it is not a claim that
+convergence in \eqref{eq:Phi} is uniform on an unbounded interval.
+
+This construction uses ordinary real analysis to supply an actual crossover
+function. Hahn valuations then give a concise way to select its asymptotic
+regions. With $m=\mu L$, $J=L\eps^\beta$, and $s=L\eps^\alpha$, where
+$\alpha,\beta>0$ are real, the consistency conditions are
+\begin{align}
+ \alpha<\frac32\beta &: \quad
+        r/L\ \text{has leading exponent }\frac{2\alpha}{3},
+        \qquad r\gg J,\label{eq:radialsector}\\
+ \alpha>\frac32\beta &: \quad
+        r/L\ \text{has leading exponent }\frac{2(\alpha+\beta)}{5},
+        \qquad r\ll J.\label{eq:angularsector}
+\end{align}
+At equality neither monomial should be discarded; $\Phi$ describes the
+transition. Real coefficients of order one can be restored without changing
+these exponent tests.
+
+This is an example of useful surreal-compatible physics mathematics: retain
+several small scales, determine which terms dominate, and avoid taking
+incompatible limits. It offers no new gravitational law and is equally
+expressible in suitable transseries or generalized-series fields. Its value
+must be judged by clarity, support control, and computational reliability,
+not by whether the ambient field contains a proper class of still larger
+numbers.
+
+\section{The classical theory loses control before a literal infinitesimal scale}
+\label{sec:EFT}
+
+A mathematical extension of a classical formula and a controlled physical
+prediction are different things. In a low-energy effective description of
+gravity, higher-curvature and quantum corrections are organized relative to
+appropriate scales. The coefficients, field content, and state are physical
+inputs, not consequences of choosing $\No$ \cite{Donoghue}.
+
+Restore
+\[
+ \Planck=\sqrt{\frac{\hbar G}{c^3}},\qquad m=\frac{GM}{c^2}.
+\]
+A dimensional indicator for large curvature corrections is
+$\Planck^4\Kretsch$. For Schwarzschild, setting this indicator to order one
+gives
+\begin{equation}
+ r_{\mathrm Q}=48^{1/6}(m\Planck^2)^{1/3}.
+ \label{eq:rQ}
+\end{equation}
+This is an estimate of a curvature scale, not a derived minimum radius or a
+universal theorem identifying where a particular quantum-gravity theory takes
+over. Additional scales or large state-dependent effects can invalidate a
+simple curvature criterion sooner.
+
+For $m\gg\Planck$, the ratio $r_{\mathrm Q}/(2m)$ is small, while
+$r_{\mathrm Q}/\Planck$ is large. Thus a macroscopic areal radius inside a large
+black hole can coexist with Planck-scale curvature. ``Small radius'' and
+``high curvature'' cannot be identified without specifying the mass.
+
+Now fix ordinary positive real $L$ and $\Planck/L$. A literal positive
+infinitesimal $\eps$ satisfies $\eps<\Planck/L$, and indeed lies below every
+other positive real cutoff ratio. Evaluating the unchanged classical solution
+at $r=L\eps$ explores a regime beyond any such fixed cutoff. It does not
+justify ignoring the terms that made the classical approximation unreliable.
+
+An ordered asymptotic field can instead encode a \emph{joint family}, for
+example $\Planck/L=\eps^b$ and $r/L=\eps^a$. That can be useful for comparing
+classical and quantum corrections symbolically. But it is a formal scaling
+model, not a deduction that the physical Planck length is itself infinitesimal.
+In a higher-curvature effective action, one must still specify the independent
+operators and their coefficients; in four dimensions some quadratic curvature
+terms are related by identities or field redefinitions. Merely writing
+additional powers of curvature does not determine a UV completion.
+
+\section{Regularization, extension, and new dynamics}
+\label{sec:regularization}
+
+\subsection{A pole in an ordinary differential equation}
+
+Consider
+\[
+ \frac{\dd y}{\dd t}=y^2,\qquad y(t)=\frac{1}{t_*-t}.
+\]
+At $t=t_*-\eps$, the solution is $y=\eps^{-1}$. At $t=t_*$, the identity
+$(t_*-t)y=1$ has no field-valued solution. This is the simplest illustration of
+the difference between an infinite nearby value and a value at the pole.
+
+There is nevertheless a legitimate geometric maneuver: introduce the
+projective coordinate $z=1/y$. Then $z=t_*-t$ is smooth through zero, and the
+vector field becomes $\dot z=-1$. A compactified state space may therefore
+continue the \emph{projective} trajectory. Whether this solves a physical
+problem depends on whether the physical observables and evolution laws are
+regular in that state space. If $y$ itself is a measured stress, replacing it
+by $z$ has not made the measured stress bounded.
+
+This example guards against two opposite errors. Not every divergence is a
+fundamental obstruction, because some are removable by changing the geometric
+description. But not every compactification is a physical resolution, because
+the regularity of the relevant observables must be checked. Schwarzschild's
+scalar curvature pole is not removed merely by complexifying a coordinate or
+adjoining an infinite scalar.
+
+\subsection{Complex continuation is not causal continuation}
+
+Surcomplex values can be useful in algebraic or analytic continuation, just
+as ordinary complex values already are. For instance, fractional powers in
+\eqref{eq:radial} admit complex branches. A path in a complexified coordinate
+domain may avoid a pole or branch point.
+
+To turn such a construction into a real physical continuation, one must
+recover a real Lorentzian slice, specify the reality conditions, choose the
+branch and matching data, and show that the resulting evolution satisfies the
+intended equations. Neither the ordinary complex plane nor its surcomplex
+enlargement supplies these choices. Analytic continuation in a parameter is
+not the same operation as extending an infalling observer's causal worldline.
+
+\subsection{What a proposed singularity resolution must deliver}
+
+A useful test is to require an explicit answer to four questions. What are the
+states or events replacing the classical endpoint? What equations govern
+propagation there? Which observables remain meaningful, and in what sense?
+Does the replacement determine a continuation uniquely from admissible data,
+or does it introduce new boundary conditions?
+
+The answer may involve nonclassical geometry or quantum states rather than a
+smooth metric. That is allowed. What is not enough is to retain every classical
+formula, replace the word ``divergent'' by ``surreal-valued,'' and regard the
+missing choices as settled.
+
+\section{A rigorous coefficientwise formulation of gravitational perturbations}
+\label{sec:formalGR}
+
+The most conservative useful architecture keeps spacetime real and enlarges
+its coefficient algebra. This avoids pretending that ordinary real histories
+are continuous in the full surreal order topology.
+
+\subsection{The differential algebra}
+
+Let $U$ be a real coordinate domain and set
+\[
+ \mathcal A(U)=C^\infty(U)[[\eps]].
+\]
+Coefficients are ordinary smooth functions on \emph{one common domain}. Products
+are formal Cauchy products, with only finitely many contributions at each
+integer order. Define differentiation coefficientwise and let
+\[
+ \pi_0:\mathcal A(U)\longrightarrow C^\infty(U),
+ \qquad \sum_{n\geq0}f_n\eps^n\longmapsto f_0.
+\]
+Then $\pi_0$ is a ring homomorphism and
+$\pi_0\partial_\mu=\partial_\mu\pi_0$.
+
+This is initially formal differential algebra. At an ordinary point $x$, the
+series can be evaluated in an appropriate Hahn field, but that fact alone does
+not make the map $x\mapsto f(x;\eps)$ smooth in the full surreal order topology.
+The specified derivative, not an unstated topological identification, carries
+the geometric construction.
+
+More elaborate rings $C^\infty(U)((t^\Gamma))$ can be useful, but require common
+domains, controlled supports, and summability under the operations employed.
+A collection of coefficient germs with shrinking domains is not the same
+object. The repository's explicit separation of these coefficient categories
+is directly relevant here \cite{RepoDocs}.
+
+\subsection{Formal metric inversion and curvature}
+
+Let
+\begin{equation}
+ g_{\mu\nu}=g^{(0)}_{\mu\nu}
+       +\eps g^{(1)}_{\mu\nu}+\eps^2g^{(2)}_{\mu\nu}+\cdots,
+ \label{eq:formalg}
+\end{equation}
+where $g^{(0)}$ is a smooth nondegenerate Lorentzian metric on $U$. Since
+$\det g^{(0)}$ never vanishes, $g$ has a formal inverse. In matrix notation,
+write $g=g^{(0)}(I+H)$ with $H$ of positive order. Then
+\begin{equation}
+ g^{-1}=\left(\sum_{n\geq0}(-H)^n\right)(g^{(0)})^{-1}.
+ \label{eq:ginv}
+\end{equation}
+Every coefficient is a finite sum, so this formula needs no analytic
+convergence assumption.
+
+Define the Levi-Civita coefficients by their usual finite expression,
+\[
+ \Gamma^\rho_{\mu\nu}
+ =\frac12g^{\rho\sigma}
+ (\partial_\mu g_{\sigma\nu}+\partial_\nu g_{\sigma\mu}
+                  -\partial_\sigma g_{\mu\nu}),
+\]
+and then form the curvature and Einstein tensor. These constructions make
+sense in the differential algebra. The usual tensor identities and contracted
+Bianchi identity hold coefficientwise because their proofs use the same
+product rule, commuting coordinate derivatives, inverse identities, and finite
+contractions. They do not assert global existence, stability, or causal
+properties of a spacetime over a new scalar field.
+
+\begin{proposition}[Regular reduction of the Einstein equations]
+\label{prop:reduction}
+Let $g$ be as in \eqref{eq:formalg} and let $T$ be a formal symmetric tensor.
+For ordinary real constants $\Lambda$ and $\kappa$, suppose
+\begin{equation}
+ G[g]+\Lambda g=\kappa T
+ \label{eq:formalEinstein}
+\end{equation}
+holds coefficientwise on $U$. Then
+\begin{equation}
+ G[g^{(0)}]+\Lambda g^{(0)}=\kappa T^{(0)}.
+ \label{eq:shadowEinstein}
+\end{equation}
+In particular, $\pi_0(G[g])=G[\pi_0(g)]$.
+\end{proposition}
+\begin{proof}
+Reduction preserves products and sums, commutes with coordinate derivatives,
+and sends the inverse in \eqref{eq:ginv} to $(g^{(0)})^{-1}$. Apply these facts
+successively to the connection, Riemann tensor, Ricci tensor, scalar curvature,
+and Einstein tensor. Reducing \eqref{eq:formalEinstein} gives
+\eqref{eq:shadowEinstein}.
+\end{proof}
+
+This gives a precise consistency theorem: ordinary general relativity is
+recovered at leading order in a regular formal deformation. Higher orders
+encode perturbations; at first order one obtains the linearized Einstein
+operator together with the corresponding matter perturbation.
+
+The same theorem limits what this regular construction can claim. If the
+leading metric has a classical singular boundary, the theorem does not extend
+it through that boundary. Its hypotheses require a common smooth domain and
+an invertible leading metric. A proposed resolution may involve an inner
+region where those hypotheses fail, resummed terms become dominant, or a new
+leading geometry appears. That is a singular perturbation problem, not a
+contradiction of the reduction theorem.
+
+\subsection{Gauge transformations and support control}
+
+Ordinary coordinate transformations of $U$ act on the coefficient tensors in
+the usual way. Formal diffeomorphisms near the identity can also be defined
+order by order using Lie derivatives. Neither operation changes the invariant
+content merely because the coefficients lie in a larger algebra.
+
+A practical implementation should treat support conditions as part of every
+operation's input contract. Inversion requires an invertible leading term;
+composition requires the relevant positive-order or domain hypotheses;
+integration requires both a coefficientwise integral and an admissible combined
+support. It is unsafe to derive an identity in a formal ring, interpret it as
+an ordinary convergent sum, and then use ordinary interchange-of-limit theorems
+without proving a bridge.
+
+\section{Measurement, standard part, and noncanonical subtraction}
+\label{sec:measurement}
+
+\subsection{The standard-part map has a precise domain}
+
+For an ordered field $F\supseteq\R$, write
+\[
+ \mathcal O_F=\{x\in F:x\text{ is limited}\},\qquad
+ \mathfrak m_F=\{x\in F:x\text{ is infinitesimal}\}.
+\]
+Real completeness implies that every limited $x$ is infinitely close to a
+unique real number. Indeed, take the supremum in $\R$ of the real numbers
+below $x$; any noninfinitesimal discrepancy would contradict the defining
+upper-bound property. This defines
+\[
+ \st:\mathcal O_F\longrightarrow\R,
+ \qquad \ker\st=\mathfrak m_F.
+\]
+The map is a ring homomorphism, and
+$\mathcal O_F/\mathfrak m_F\cong\R$. Its complex version applies separately to
+real and imaginary parts. The repository implements a corresponding
+coefficient-zero reduction for its nonnegative-order Hahn subring
+\cite{RepoRoot}.
+
+A model can postulate that limited quantities are read by ordinary apparatus
+through standard part. That is an intelligible correspondence rule, but it is
+an additional modeling assumption. It is not defined on an unlimited
+curvature such as \eqref{eq:infK}. Extending the codomain to include
+$+\infty$ still does not provide an ordinary finite detector output.
+
+The reduction theorem in Section~\ref{sec:formalGR} used a particularly strong
+compatibility: reduction commuted with differentiation \emph{by definition} in
+a regular formal algebra. This does not hold for arbitrary families followed
+by a limiting or standard-part operation. For example, the real functions
+\[
+ f_\delta(x)=\delta\sin(x/\delta),\qquad\delta>0,
+\]
+converge uniformly to zero as $\delta\downarrow0$, but
+$f_\delta'(0)=1$ for every $\delta$. The derivative of the limiting function
+is zero. This is a real-family counterexample; no choice of a value for
+$\sin\omega$ is needed to state it. Highly oscillatory or boundary-layer
+families require additional estimates before reduction and differentiation
+can be interchanged.
+
+\subsection{Discarding the infinite part is not a canonical physical rule}
+
+Consider the dimensionless Laurent expression
+\[
+ F(\eps)=\eps^{-1}+a,
+ \qquad a\in\R.
+\]
+Its coefficient of $\eps^0$ is $a$. Under the equally legitimate formal
+parameter change $\eps=\eta+c\eta^2$,
+\begin{equation}
+ F(\eta+c\eta^2)
+   =\eta^{-1}+(a-c)+c^2\eta-\cdots.
+ \label{eq:finitepart}
+\end{equation}
+The constant coefficient is now $a-c$. Thus ``keep the finite part'' for an
+unlimited expression depends on a scale coordinate or subtraction scheme.
+This does not contradict the uniqueness of standard part: $F$ was never in
+$\mathcal O_F$.
+
+Renormalization in a physical theory can include subtraction choices together
+with covariance requirements and physical normalization conditions. Surreal
+arithmetic does not make those requirements disappear. A coefficient-extraction
+rule must be shown to respect the relevant coordinate and gauge symmetries,
+and its observable consequences must not depend on arbitrary regulator
+choices. Otherwise, a supposedly resolved curvature may be a scheme-dependent
+number rather than a physical prediction.
+
+\section{A regular-core example: why the dynamics, not the field, does the work}
+\label{sec:Hayward}
+
+Hayward's proposed nonsingular black-hole model provides a useful comparison
+\cite{Hayward}. Consider its static metric function
+\begin{equation}
+ f_\ell(r)=1-\frac{2mr^2}{r^3+2m\ell^2},
+ \qquad m>0,\quad\ell>0.
+ \label{eq:hayward}
+\end{equation}
+For every fixed positive \emph{real} $\ell$, the central expansion is
+\begin{equation}
+ f_\ell(r)=1-\frac{r^2}{\ell^2}
+                  +\frac{r^5}{2m\ell^4}+O(r^8).
+ \label{eq:haywardexp}
+\end{equation}
+The core is de Sitter-like. Substitution into \eqref{eq:generalK} gives
+\begin{equation}
+ \Kretsch(0)=\frac{24}{\ell^4}.
+ \label{eq:haywardK}
+\end{equation}
+For the metric convention used here,
+\[
+ G^t{}_t=\frac{r f'(r)+f(r)-1}{r^2}.
+\]
+With Einstein's equation $G^a{}_b=8\pi T^a{}_b$ and
+$T^t{}_t=-\rho$, the core density is
+\begin{equation}
+ \rho(0)=\frac{3}{8\pi\ell^2}.
+ \label{eq:haywardrho}
+\end{equation}
+These two central limits are checked by the companion program. Here a
+``regular core'' refers to finite curvature and the corresponding classical
+$C^2$-level metric regularity, not automatically to analytic or all-orders
+smoothness. In fact, the $r^5$ term becomes $|x|^5$ along a Cartesian line
+through the center, so this specific ansatz should not be advertised as a
+$C^\infty$ Cartesian metric there. Unlike
+Schwarzschild, the model is not vacuum in the core. Its effective stress tensor
+and geometric modification are doing the regularizing work.
+
+Now let $\ell=L\delta$ with $\delta$ a positive infinitesimal. The center has
+\[
+ L^4\Kretsch(0)=24\delta^{-4},
+\]
+which is unlimited. A family regular at every nonzero real regulator need not
+have a bounded zero-regulator limit. Taking the regulator infinitesimal makes
+that nonuniformity explicit; it does not supply a uniformly finite core.
+
+The relevant crossover radius follows from balancing the denominator terms:
+\begin{equation}
+ r_{\mathrm c}=(2m\ell^2)^{1/3}.
+ \label{eq:haywardcrossover}
+\end{equation}
+For $r^3\gg2m\ell^2$, the metric is approximately Schwarzschild. For
+$r^3\ll2m\ell^2$, its leading central geometry is \eqref{eq:haywardexp}.
+If $r/L=\eps^a$, $\ell/L=\eps^b$, and $m/L$ is ordinary and nonzero,
+comparison of $3a$ with $2b$ identifies the outer and inner asymptotic sectors.
+At equality one must retain both terms. This is another useful application of
+ordered scale arithmetic and another warning against interchanging limits.
+
+The regular center of this ansatz alone does not prove that a complete collapse
+and evaporation model is globally stable, geodesically complete, or the
+prediction of a consistent quantum theory. Those are additional physical and
+geometric questions. General analyses of geodesically complete black-hole
+models make such qualifications explicit \cite{CarballoRubio}. The lesson is
+not that regular models are impossible, but that their success must be credited
+to specified new geometry and dynamics rather than to allowing infinite
+coefficients.
+
+\section{Beyond Schwarzschild: weak singularities, Kerr, and oscillatory regimes}
+\label{sec:beyond}
+
+\subsection{Metric regularity and curvature regularity can separate}
+
+The central Schwarzschild example is deliberately simple. Charged and rotating
+interiors involve Cauchy horizons and instability mechanisms with different
+regularity behavior. Dafermos and Luk prove a $C^0$ stability theorem for the
+Kerr Cauchy horizon under their prescribed interior-data hypotheses, obtaining
+continuous metric extensions across a nontrivial portion of that horizon
+\cite{DafermosLuk}. This is not a theorem that generic black holes have a smooth,
+unique, physically harmless interior continuation.
+
+The result matters here because it demonstrates that even within real
+mathematics, asking whether ``the singularity is removed'' without naming the
+regularity class is incomplete. Finite or continuous metric components do not
+imply bounded curvature, a $C^2$ extension, or uniqueness of the continued
+Einstein evolution. Replacing those components by surreal numbers does not
+settle any of these distinctions.
+
+\subsection{Integrated tidal effects distinguish kinds of divergence}
+
+Consider a positive tidal profile modeled near $s=0$ by
+\begin{equation}
+ T(s)=\frac{1}{s^2[\log(1/s)]^p},\qquad 0<s<s_0<1.
+ \label{eq:logtidal}
+\end{equation}
+The logarithm uses a dimensionless time ratio; a reference time has been set
+to one. As a simple diagnostic of twice-integrated tidal forcing, examine
+\[
+ \int_0^{s_0}sT(s)\,\dd s
+ =\int_{\log(1/s_0)}^\infty u^{-p}\,\dd u.
+\]
+This is finite precisely when $p>1$. The weight $s$ arises by integrating a
+positive forcing twice up to the endpoint and reversing the order of
+integration. It is a useful model criterion, not a substitute for all
+hypotheses in a geometric definition of singularity strength.
+
+Thus two profiles that both have leading power $s^{-2}$ can have different
+integrated effects because of logarithmic factors. A surreal/transseries
+representation can preserve that distinction. The undifferentiated statement
+``the tidal field is an infinite number'' cannot. Weak mass-inflation-type
+singularities motivate examining such distinctions; representative charged
+black-hole analyses explicitly separate diverging curvature from finite tidal
+distortion \cite{Bhattacharjee}.
+
+\subsection{Not every singular regime is a single tame transseries}
+
+Another limitation is oscillation. Near a spacelike singularity, BKL-type
+analyses describe changing anisotropic regimes, often represented by billiard
+behavior. The scope and assumptions of such descriptions are nontrivial
+\cite{DamourHenneauxNicolai}. One cannot infer that a generic dynamical interior
+has one globally valid well-ordered power-log expansion merely because a
+Schwarzschild geodesic has a Puiseux law.
+
+Hardy fields and many asymptotic transseries constructions are designed for
+eventually ordered, nonoscillatory behavior. Oscillatory phases, repeated
+changes of dominant balance, or spatially localized features may require
+additional variables, sectors, or a different function category. The real
+surreal exponential does not by itself define an unrestricted periodic
+function at every infinite argument. A successful application must prove that
+the specific solution lies in its chosen class and that the representation
+preserves the physical boundary or initial conditions.
+
+\section{Surcomplex quantum mechanics: what survives, and what is missing}
+\label{sec:quantum}
+
+A proposal to replace both $\R$ and $\C$ should address quantum theory as well
+as classical geometry. The answer is mixed: finite algebra survives very well;
+the analytic and operational structures are not automatic.
+
+\subsection{Finite-dimensional Hermitian algebra does survive}
+
+Let $F$ be a real-closed ordered field containing $\R$, and let $K=F[\ii]$.
+For $v,w\in K^n$, define
+\[
+ \langle v,w\rangle=\sum_{a=1}^n\overline{v_a}w_a.
+\]
+Then $\langle v,v\rangle>0$ for every $v\ne0$, because it is a finite sum of
+squares of real and imaginary parts.
+
+\begin{proposition}[Finite Hermitian spectral theorem]
+\label{prop:spectral}
+Every Hermitian $n\times n$ matrix over $K$ has an orthonormal basis of
+eigenvectors and all its eigenvalues lie in $F$.
+\end{proposition}
+\begin{proof}
+Since $K$ is algebraically closed, the characteristic polynomial has a root
+$\lambda$ and there is a nonzero eigenvector $v$. Hermiticity gives
+\[
+ \lambda\langle v,v\rangle
+ =\langle v,Av\rangle
+ =\overline{\langle v,Av\rangle}
+ =\overline\lambda\langle v,v\rangle.
+\]
+Positivity implies $\langle v,v\rangle\ne0$, so
+$\lambda=\overline\lambda\in F$. The positive element
+$\langle v,v\rangle$ has a square root, allowing normalization of $v$.
+Its orthogonal complement is invariant under $A$, and induction gives an
+orthonormal eigenbasis.
+\end{proof}
+
+This is a substantive algebraic starting point. It supports finite-state
+amplitudes, projectors, observables, and unitary changes of basis over a
+surcomplex workspace. Infinite eigenvalues can be represented; whether they
+represent physical energies requires an interpretation and dynamics.
+
+\subsection{Finite measurements have an ordinary shadow under a natural rule}
+
+For a normalized state $\psi\in K^n$, finite-outcome Born probabilities are
+\[
+ p_a=|\psi_a|^2\in F,\qquad p_a\geq0,\qquad\sum_a p_a=1.
+\]
+Every component of $\psi$ is limited because its squared modulus is at most
+one. Let $\psi_0=\st(\psi)$ componentwise. Then
+\begin{equation}
+ \sum_a|\psi_{0,a}|^2=1,
+ \qquad \st(p_a)=|\psi_{0,a}|^2.
+ \label{eq:bornshadow}
+\end{equation}
+Likewise, the entries of a finite unitary matrix are limited, and its standard
+part is an ordinary complex unitary matrix. These statements follow directly
+from the finite ring identities and positivity, not from an infinite-dimensional
+spectral theorem.
+
+Thus a model using ordinary finite apparatus and the standard-part readout
+rule reproduces ordinary Born probabilities for these measurements. An
+infinitesimal change need not be observable in any specified finite experiment
+under that rule. This is not a theorem that every non-Archimedean model is
+experimentally indistinguishable: dynamics or an amplification mechanism could
+convert a small correction into a limited observable difference. Such a
+mechanism and its finite resource scales must be provided. Invoking an
+unlimited number of repetitions is not yet a finite experimental protocol.
+
+\subsection{Probability requires a summation theory, not just positive scalars}
+
+For infinitely many outcomes, the equation ``sum of probabilities equals one''
+needs a definition. A countable family assigning the same positive
+infinitesimal $\eps$ to each outcome is not strongly Hahn summable: infinitely
+many summands contribute to the same exponent. Ordinary finite additivity
+therefore cannot simply be promoted to a countably additive probability theory
+by declaring each term infinitesimal.
+
+Non-Archimedean probability theories exist and introduce explicit structures
+for infinite addition and conditioning \cite{BenciHorstenWenmackers}. They are
+examples of additional mathematics a physical proposal would have to choose,
+not consequences of the fact that $F$ is an ordered field. Ordinary
+measure-theoretic or nonstandard probability constructions can be incorporated
+only after their relevant assumptions and interpretation are supplied.
+
+\subsection{Time evolution and arbitrary infinite phases}
+
+The expression
+\[
+ U(t)=\exp(-\ii Ht/\hbar)
+\]
+is not fully defined by the existence of $K=F[\ii]$. A real exponential on $F$
+defines growth and decay, but it does not automatically choose values for
+all oscillatory phases with unlimited arguments. A general complex exponential
+requires a compatible function theory, periodic structure, and branch or
+extension choices. Parametrizing the unit circle algebraically or using finite
+angles does not by itself define a canonical value of $\sin\omega$.
+
+There are tractable subclasses. One may keep the unperturbed real-time
+propagator over $\C$ and solve a formal perturbation problem coefficientwise.
+One may exponentiate a positive-order formal matrix, for which each coefficient
+receives only finitely many relevant terms. One may work with an explicitly
+constructed analytic extension on a restricted domain. What is not legitimate
+is to infer a global unitary evolution for an unlimited Hamiltonian from the
+finite Hermitian spectral theorem alone.
+
+\subsection{Infinite-dimensional quantum theory and singular boundaries}
+
+Quantum field theory and continuum quantum mechanics need more than finite
+matrices: operator domains, infinite sums, spectral measures, distributions,
+and suitable continuity or completeness. An algebraically closed scalar field
+does not provide these structures, and a surreal-valued inner product is not
+an ordinary Hilbert norm. A replacement theory must establish the relevant
+functional analysis rather than silently import it.
+
+There is also a distinct notion of quantum singularity. Horowitz and Marolf
+study scalar quantum probes of static singular spacetimes and relate unique
+quantum evolution to essential self-adjointness of the relevant spatial
+operator \cite{HorowitzMarolf}. Their setting does not establish a universal
+resolution of the spacelike Schwarzschild singularity. It does illustrate
+what a meaningful question looks like: does the dynamics require extra
+boundary conditions? Changing scalars alone does not select an operator domain
+or remove an ambiguity in self-adjoint extension.
+
+For semiclassical gravity, the problem is more demanding still. One must
+specify the quantum state, renormalized stress tensor, and backreaction
+prescription. None is selected by the availability of infinite surreal
+energies or surcomplex amplitudes.
+
+\section{The strongest positive connection: transseries, resurgence, and wave physics}
+\label{sec:resurgence}
+
+\subsection{Beyond-all-orders information is naturally ordered}
+
+The hierarchy
+\[
+ 0<e^{-1/\eps}\ll\eps^n\ll1
+ \qquad(n\in\N\text{ fixed})
+\]
+expresses the fact that an exponentially small effect can be invisible to every
+fixed algebraic order. Appropriate exponential transseries embed into the
+surreal setting with compatible differential structure
+\cite{BerarducciMantova,ADH}. This makes surreals a possible common language for
+powers, logarithms, exponentials, and iterated scale hierarchies.
+
+Such information is relevant to singular perturbation theory, tunneling,
+semiclassical approximations, and wave matching. However, an asymptotic scale
+is not itself a solution of a physical boundary-value problem. One must still
+identify the actual function, determine free constants, and establish a valid
+reconstruction or summation procedure.
+
+\subsection{An explicit differential equation with hidden data}
+
+Consider the dimensionless equation
+\begin{equation}
+ y'(x)+y(x)=\frac1x,
+ \qquad x\to+\infty.
+ \label{eq:factorialODE}
+\end{equation}
+A formal inverse-power solution is
+\begin{equation}
+ \widehat y(x)=\sum_{n\geq0}\frac{n!}{x^{n+1}}.
+ \label{eq:factorialseries}
+\end{equation}
+To see this directly, substitute $\sum a_nx^{-n-1}$: $a_0=1$ and
+$a_n=n a_{n-1}$, hence $a_n=n!$. For the truncated sum $y_N$,
+\begin{equation}
+ y_N'+y_N-\frac1x=-\frac{(N+1)!}{x^{N+2}}.
+ \label{eq:factorialresidual}
+\end{equation}
+At $x=\omega$, \eqref{eq:factorialseries} is Hahn-summable. Under a compatible
+strong derivation with $D\omega=1$, its differentiated terms cancel in the same
+way. Nevertheless, the homogeneous equation has solutions $Ce^{-x}$. Thus
+\begin{equation}
+ y(x)=y_{\mathrm{part}}(x)+Ce^{-x}
+ \label{eq:ambiguity}
+\end{equation}
+shares the same expansion in inverse powers for every ordinary constant $C$.
+In the enlarged exponential field, $Ce^{-\omega}$ is a distinct,
+beyond-all-orders scale.
+
+The coefficient sequence in \eqref{eq:factorialseries} therefore does not
+specify the complete solution. The value of $C$ must come from boundary or
+initial data, or a prescribed summation and matching condition. A richer field
+can \emph{retain} this information once supplied; it cannot infer it from data
+that do not determine it. This is a useful miniature of the difficulty faced
+when asymptotic black-hole solutions are mistaken for complete dynamics.
+
+Costin and Ehrlich's integration theory is significant precisely because it
+constructs controlled extensions for specified resurgent classes, rather than
+asserting that every formal series automatically represents every desired
+function \cite{CostinEhrlich}. Extending such methods to a particular reduced
+gravitational system is a plausible project. Extending them to unrestricted
+Einstein PDE dynamics would require substantially more analysis.
+
+\subsection{A realistic black-hole benchmark}
+
+Black-hole quasinormal-mode and scattering problems already use complex
+analysis, asymptotic series, and boundary conditions. Hatsuda's work relates
+black-hole quasinormal frequencies to high-order WKB expansions and shows, in
+the cases studied, how Borel summation recovers the numerical frequencies
+\cite{Hatsuda}. This provides a concrete benchmark for a surreal-compatible
+implementation: preserve perturbative and nonperturbative sectors, enforce
+the physical boundary conditions, and reproduce an established complex
+frequency calculation.
+
+Success would demonstrate calculational utility. It would not by itself
+resolve an interior spacetime singularity, because the wave problem and its
+boundary conditions are separate from a replacement of the central geometry.
+The benchmark is attractive precisely because the claim is testable and
+limited: compare coefficient generation, support certification, summation,
+accuracy, and error control with established methods.
+
+\subsection{Near-extremal and multiple-limit problems}
+
+Another tractable algebraic example comes from the Reissner--Nordstr\"om
+metric function $f(r)=1-2m/r+q^2/r^2$, whose horizon polynomial is
+$r^2-2mr+q^2$. In geometrized units, let
+$\delta=\sqrt{m^2-q^2}/m$ for $0<|q|<m$. Then
+\[
+ r_\pm=m(1\pm\delta),\qquad
+ \kappa_+=\frac{r_+-r_-}{2r_+^2}
+          =\frac{\delta}{m(1+\delta)^2}.
+\]
+A symbolic infinitesimal $\delta$ cleanly records the splitting of a double
+root and the small surface-gravity scale. Multiple parameters can keep this
+limit separate from a wave-frequency limit or a small perturbation amplitude.
+These are algebraic identities and asymptotic bookkeeping, not claims that
+extremality or a Cauchy horizon is physically harmless. The repository's
+polynomial jets and finite-deformation work are much closer to this application
+than to an already established non-Archimedean theory of spacetime.
+
+\section{Comparison with alternative mathematical frameworks}
+\label{sec:comparison}
+
+A research program should explain why surreals are preferable to an existing
+smaller tool for a particular task. Universality alone is not an efficiency or
+prediction theorem.
+
+\begin{center}
+\small
+\begin{tabular}{@{}P{0.22\textwidth}P{0.32\textwidth}P{0.35\textwidth}@{}}
+\toprule
+Framework & Natural advantage & What it does not supply by itself \\
+\midrule
+Formal power/Puiseux series & Finite coefficient algorithms; ramified scaling;
+clear order-by-order equations & A convergent or uniquely selected real solution \\
+Hahn fields & General ordered supports and multiple scales; exact algebraic
+summation & Arbitrary smooth function theory or physical interpretation \\
+Transseries and resurgence & Exponential sectors, asymptotic differential
+structure, selected reconstruction methods & Universal applicability to nonlinear
+spacetime PDEs \\
+Hyperreal/nonstandard models & Infinitesimals with a separately constructed
+transfer framework & New gravitational dynamics merely from changing scalars \\
+Surreal/surcomplex framework & A broad common ambient field with algebraic,
+exponential, and selected differential structures & Canonical topology, global
+oscillatory calculus, probability, or singularity resolution \\
+Weak or generalized geometric formulations & Explicitly altered regularity and
+notions of solution & Uniqueness or physical admissibility without additional
+conditions \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The comparison is structural, not a ranking of all possible theories. For an
+individual expansion with rational powers, a Puiseux field may suffice. For
+several ordered scales, a Hahn field may be the correct working object.
+Surreals become attractive as an ambient framework connecting many such
+structures or supporting a particularly useful normal form, not simply because
+they are larger.
+
+Likewise, representing a distributional source or multiplying singular fields
+requires a theory of generalized functions and products. Substituting an
+infinite scalar for a delta distribution does not retain its action on test
+functions. A black-hole proposal involving weak stress tensors must address
+that issue explicitly, irrespective of the chosen field.
+
+\section{What the supplied repository contributes}
+\label{sec:repo}
+
+\subsection{Scope of the inspection}
+
+The repository was inspected at commit
+\begin{center}
+\small\texttt{39f2be6667ade51bca2b45daa47e289d69c09764}.
+\end{center}
+The inspection covered the repository tree, root README, documentation catalog,
+and surcomplex-analysis README. These are enough to assess the advertised
+architecture and its stated limitations. This article does not claim a full
+source audit, a new Lean build, or independent verification of all research
+drafts \cite{RepoRoot,RepoDocs,RepoAnalysis}.
+
+The catalog describes fifteen research packages. Its analytic reports
+explicitly separate Hahn sums from topological limits, distinguish coefficient
+rings and function classes, and warn that the reports are AI-assisted drafts
+rather than fully refereed or machine-checked foundations. Those distinctions
+are essential for any physics application, not incidental editorial details.
+
+The root README describes implemented generic finite algebra, polynomial
+operations and jets, complexification, and Hahn support and reduction results.
+It explicitly states that these prerequisites do not yet construct the full
+surreal field or establish its normal-form bridge to Hahn series. The source
+documents have broader ambitions than the imported Lean statements. The
+article's physical conclusions therefore do not rest on a claim that the
+repository already formalizes surcomplex analysis, Lorentzian geometry, or
+Einstein evolution in full \cite{RepoRoot}.
+
+\subsection{The most relevant existing ingredients}
+
+The finite algebra layer is relevant to polynomial horizon equations,
+degenerating eigenvalue problems, tensor contractions, and finite jets. The
+Hahn layer's explicit support conditions are relevant to perturbative
+inversion, composition, and regrouping. Coefficient-zero reduction is relevant
+to a formal correspondence map such as Proposition~\ref{prop:reduction}.
+
+The analytic documents' common-domain warnings are especially important for
+physics. A sequence of coefficient functions that are each analytic somewhere
+near a point need not share a neighborhood on which an infinite coefficient
+family defines the intended object. Uniform domain and support assumptions
+must accompany any claim about a perturbative metric, wave solution, or
+integration procedure \cite{RepoDocs,RepoAnalysis}.
+
+The trigonometric and complex-algebraic material should not be read as a
+finished unrestricted phase calculus for quantum evolution. Similarly, a
+polynomial factorization theorem is not an existence theorem for a nonlinear
+hyperbolic PDE. Recognizing these boundaries allows the repository to be used
+productively without overinterpreting it.
+
+\subsection{A focused extension plan}
+
+A first physics-oriented layer should be generic over a controlled ordered
+coefficient field or formal differential algebra, rather than require all of
+$\No$ at the outset. The following are proposed additions, not descriptions of
+existing modules.
+
+
+\paragraph{Formal metric algebra.}
+Represent symmetric matrices with an invertible leading metric, prove the
+formal inverse identity, and implement connection and curvature constructions
+with coefficientwise derivatives.
+\paragraph{Regular reduction and gauge covariance.}
+Formalize Proposition~\ref{prop:reduction}, the finite Bianchi identities, and
+compatibility with ordinary coordinate transformations. Record the exact
+coefficient-ring assumptions.
+\paragraph{Certified benchmark calculations.}
+Reproduce the Eddington--Finkelstein determinant, Schwarzschild curvature,
+proper-time and Jacobi exponents, angular crossover balances, and Hayward core
+limits. Distinguish symbolic identity checking from analytic error estimates.
+\paragraph{Asymptotic realization interfaces.}
+For a selected ODE or wave problem, attach a real-domain solution theorem,
+remainder bounds, and a summation or matching prescription to the formal
+series. Do not expose an unrestricted evaluation operation lacking hypotheses.
+\paragraph{Operational correspondence.}
+Specify which quantities are limited, when standard part commutes with an
+operation, and which outputs are intended as physical observables.
+
+
+This route produces reusable mathematics even if surreals never become
+fundamental physical scalars. It also creates explicit interfaces where a
+future genuinely non-Archimedean physical proposal would have to add new
+assumptions.
+
+\section{Published surreal-physics proposals and the status of the idea}
+\label{sec:literaturestatus}
+
+There are published and preprint discussions connecting surreals to physics.
+Nieto discusses links involving dualities, matroids, quantum structures, and
+gravity, and suggests that available surreal infinities may help with
+black-hole or cosmological divergences \cite{Nieto2016,Nieto2018}. Such work
+establishes that the suggestion has precedents; it does not justify dismissing
+it as an unasked or meaningless question.
+
+The specific inference from ``infinite values belong to the number system''
+to ``the singularity problem has been solved'' needs more argument.
+Equations~\eqref{eq:infK}, \eqref{eq:radial}, and \eqref{eq:polyobstruction}
+exhibit what is missing: unlimited invariant curvature remains unlimited, a
+finite proper-time endpoint is still present, and the exact central identity
+still has no field-valued solution. A complete alternative might replace the
+metric, state space, observables, or dynamical law, but those replacements
+must be constructed.
+
+The literature reviewed here does not establish an empirically tested theory
+in which the scalar replacement alone resolves a black-hole singularity.
+This is a bounded assessment of the cited work, not a proof that no future
+non-Archimedean theory can do so. Conversely, the established mathematical
+results on surreal differential fields and integration are genuine and should
+not be conflated with speculative gravitational interpretations
+\cite{BerarducciMantova,ADH,CostinEhrlich}.
+
+\section{A research program with clear success criteria}
+\label{sec:research}
+
+The central research challenge is to make a proposal precise enough that it
+can fail a test. A larger collection of named numbers is not yet such a
+proposal.
+
+\subsection{A minimal model specification}
+
+A candidate theory should specify its scalar workspace and foundational size;
+its spaces of states, events, and fields; its topology and derivatives; its
+rules for infinite sums and integration; its field equations and admissible
+initial data; its causal or quantum evolution law; its gauge and unit
+conventions; and its operational readout. Recovery of ordinary physics must
+be a theorem or a controlled approximation in the chosen model, not an appeal
+to the inclusion $\R\subset\No$.
+
+For a singularity claim, the specification must additionally state what
+``resolved'' means. Examples include extension of every relevant causal
+geodesic, bounded detector responses, existence and uniqueness of weak
+evolution, or a specified quantum propagation criterion. These conditions
+are not equivalent. A model may intentionally replace classical geodesics,
+but then it must replace the question of their termination with an operationally
+meaningful one.
+
+\subsection{Projects that are realistic and scientifically useful}
+
+\paragraph{Project A: certified multiscale infall.}
+Develop the crossover problem \eqref{eq:crossoverexact} in a controlled
+Puiseux/Hahn setting, prove uniform remainder estimates on matching domains,
+and compare with high-precision real integration. A success is a theorem
+connecting the symbolic sectors to actual geodesics, not merely a list of
+formal dominant terms.
+
+\paragraph{Project B: a regular-core singular perturbation problem.}
+Use \eqref{eq:hayward} or another explicitly specified model to track the
+outer Schwarzschild and inner-core expansions, their overlap, and invariant
+curvature bounds as functions of the regulator. A success distinguishes
+regularity at fixed regulator from uniform control as the regulator vanishes,
+and identifies the required stress tensor.
+
+\paragraph{Project C: a wave/resurgence benchmark.}
+Select a single black-hole wave equation with known boundary conditions and
+well-tested frequencies. Construct its transseries representation, prove the
+needed support and summation statements, and recover the physical solution.
+A success is reproducible accuracy or a new theorem about the asymptotic
+structure, not a numerical coincidence from an unspecified infinite sum.
+
+\paragraph{Project D: a genuine non-Archimedean modification.}
+Only after the preceding interfaces are understood, choose an explicit new
+dynamical or operational postulate. Prove a well-posedness result in a reduced
+model, show what replaces the classical endpoint, and determine whether the
+ordinary observable prediction differs from the corresponding real model.
+A success would be a substantive physical proposal; no such postulate is
+forced by surreal arithmetic alone.
+
+\subsection{What would constitute a decisive advance?}
+
+On the mathematical side, an extension theorem for a relevant gravitational
+solution class, compatible with gauge transformations and controlled remainder
+bounds, would be valuable. So would a rigorous matching theorem across a
+singular perturbation layer or a spectral result for a precisely defined
+surcomplex wave operator.
+
+On the physical side, a decisive advance would require a replacement evolution
+that remains predictive where the classical model ceases to be, together with
+an interpretation of its observables and a demonstrable ordinary limit.
+An observable consequence would have to come from this additional dynamics or
+interpretation, rather than from the verbal reclassification of a divergent
+quantity as an infinite field element.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+Surreal and surcomplex numbers can represent the hierarchy of quantities near
+a singular regime with exceptional algebraic precision. The explicit examples
+in this article preserve powers of proper time, competing angular-momentum
+scales, logarithmic corrections, and exponentially small sectors. Established
+surreal differential and integration theories make selected applications more
+than speculative notation.
+
+They do not make the original Schwarzschild singularity regular simply by
+admitting its nearby infinite values. Its invariant curvature, clock behavior,
+and tidal equations survive the scalar extension. The exact center still
+requires a new geometric or physical construction. Nor can one replace $\R$
+and $\C$ wholesale while leaving the topology, differential equations,
+probability, and quantum functional analysis unspecified.
+
+The most productive interpretation is therefore \emph{surreal-compatible
+asymptotic physics}: retain ordinary spacetime and operational observables,
+use a carefully chosen formal or Hahn coefficient structure, connect it to
+actual solutions by proved realization and matching results, and formalize
+the algebraic interfaces. A more radical theory remains possible, but its
+singularity-resolving content must lie in explicit new dynamics or a rigorously
+defined replacement of the classical state space. The larger field can help
+express that theory; it cannot supply it on its own.
+
+\appendix
+\section{Curvature calculation and dimensional conventions}
+\label{app:curvature}
+
+For clarity, the curvature convention used by the companion checker is
+\[
+ R^a{}_{bcd}=\partial_c\Gamma^a_{db}-\partial_d\Gamma^a_{cb}
+       +\Gamma^a_{ce}\Gamma^e_{db}-\Gamma^a_{de}\Gamma^e_{cb},
+ \qquad R_{bd}=R^a{}_{bad}.
+\]
+With $g=\diag(-f,f^{-1},r^2,r^2\sin^2\theta)$, the independent curvature
+magnitudes in an orthonormal description are built from $f''/2$, $f'/(2r)$,
+and $(1-f)/r^2$. Their multiplicities yield
+\[
+ R_{abcd}R^{abcd}=(f'')^2+\frac{4(f')^2}{r^2}
+                        +\frac{4(1-f)^2}{r^4}.
+\]
+The coordinate calculation in the script checks the same result without
+relying on a static orthonormal frame across the horizon. It is carried out
+where the original chart is nonsingular and gives an invariant rational
+expression that can then be evaluated in a horizon-regular chart.
+
+All curvature powers are stated with $[\Kretsch]=\text{length}^{-4}$. The
+proper-time variable in equations such as \eqref{eq:radial} is a length;
+if $\Delta\tau_{\rm sec}$ is measured in seconds, replace $s$ by
+$c\Delta\tau_{\rm sec}$. For example,
+\[
+ \Kretsch=\frac{64}{27c^4(\Delta\tau_{\rm sec})^4}
+\]
+for the specified $E=1$ radial infall. This convention prevents dimensional
+constants from being mistaken for new asymptotic exponents.
+
+The scalar $\Kretsch$ is a particularly convenient diagnostic for the
+Schwarzschild and regular-core examples, where it is positive. It is not a
+universal positive norm of curvature in Lorentzian geometry. More general
+spacetimes can require frame components or other invariants to detect a
+singular regime. No conclusion in this article equates bounded Kretschmann
+scalar with general spacetime regularity.
+
+\section{Verification and reproducibility}
+\label{app:verification}
+
+The archive includes \texttt{verify\_examples.py} and its recorded output.
+The program uses SymPy to compute the Levi-Civita connection and full Riemann
+tensor of the generic spherical metric, contract its invariant, and verify
+selected identities used in the article. It then checks the Schwarzschild
+Ricci tensor, the regular-horizon determinant, proper-time curvature, Jacobi
+indicial solutions, the nonradial dominant balance, the exact crossover
+integrand factor, the regular-core curvature and density limits, the
+finite-part reparameterization, and factorial-series ODE residuals at eight
+finite truncation orders.
+
+The recorded run passed all \textbf{37 checks} under Python 3.13.5 and
+SymPy 1.14.0. The tests are finite symbolic calculations. They do not verify
+Propositions~\ref{prop:discrete}, \ref{prop:reduction}, or
+\ref{prop:spectral} in a proof assistant; these have ordinary mathematical
+proofs in the text. Nor do the tests establish convergence of a transseries,
+validate a physical model, or execute the repository's Lean project.
+
+The LaTeX source uses an internal bibliography and no external graphics.
+It can be built using two or more runs of \texttt{pdflatex}, or with
+\texttt{latexmk -pdf surreal\_physics.tex}. The archive README records the
+build and the scope of verification. Bibliographic references distinguish
+peer-reviewed mathematical results, physics papers, speculative connections,
+and repository documentation.
+
+\section{Compact claim ledger}
+\label{app:ledger}
+
+\begin{longtable}{@{}P{0.43\textwidth}P{0.46\textwidth}@{}}
+\toprule
+Claim & Status and dependency \\
+\midrule
+\endfirsthead
+\toprule
+Claim & Status and dependency \\
+\midrule
+\endhead
+Surreal/surcomplex algebra supports ordered and algebraically closed
+extensions. & Established mathematical background; not a complete physical
+model \cite{Conway,Gonshor}. \\
+Full order-topological real histories are constant. & Proved here for ordinary
+connected real domains by set-sized discreteness; other topologies are not
+excluded. \\
+Surreal calculus has substantial rigorous subclasses. & Established results
+on differential fields and resurgent integration; no general Einstein PDE
+claim \cite{BerarducciMantova,ADH,CostinEhrlich}. \\
+Schwarzschild $r=L\eps$ has unlimited curvature. & Exact invariant calculation;
+verified symbolically and explained by Proposition~\ref{prop:pole}. \\
+Radial $E=1$ infall has $\Kretsch=64/(27s^4)$. & Exact calculation for the named
+geodesic class; not the universal nonradial law. \\
+Small angular momentum produces a crossover. & Exact integral identity plus
+stated bounded-domain limit and asymptotic balances; no new dynamics. \\
+Regular formal Einstein solutions reduce to real ones. & Proved in the
+specified differential algebra with invertible smooth leading metric. \\
+A finite real core parameter can regularize the model's center. & Explicit
+Hayward metric calculation; global physical viability is a separate issue. \\
+Finite surcomplex Hermitian quantum algebra works. & Proved for finite matrices
+over the complexification of a real-closed field. \\
+The scalar replacement alone resolves physical black-hole singularities. & Not
+established by the reviewed sources; the unchanged Schwarzschild identities
+show why assigning infinite values is insufficient. \\
+A future non-Archimedean theory might yield new physics. & Open possibility,
+conditional on explicit dynamics, analytic structure, and observational
+interpretation; not a result claimed here. \\
+\bottomrule
+\end{longtable}
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begingroup
+\raggedright
+\begin{thebibliography}{99}
+\setlength{\itemsep}{0.45em}
+
+\bibitem{Conway}
+J. H. Conway, \emph{On Numbers and Games}, second edition,
+A K Peters, 2001; first edition, Academic Press, 1976.
+
+\bibitem{Gonshor}
+H. Gonshor, \emph{An Introduction to the Theory of Surreal Numbers},
+London Mathematical Society Lecture Note Series 110,
+Cambridge University Press, 1986.
+
+\bibitem{vanDenDriesEhrlich}
+L. van den Dries and P. Ehrlich,
+``Fields of surreal numbers and exponentiation,''
+\emph{Fundamenta Mathematicae} \textbf{167} (2001), 173--188.
+\href{https://doi.org/10.4064/fm167-2-3}{doi:10.4064/fm167-2-3}.
+
+\bibitem{BerarducciMantova}
+A. Berarducci and V. Mantova,
+``Surreal numbers, derivations and transseries,''
+\emph{Journal of the European Mathematical Society} \textbf{20} (2018), 339--390.
+\href{https://doi.org/10.4171/JEMS/769}{doi:10.4171/JEMS/769};
+\href{https://arxiv.org/abs/1503.00315}{arXiv:1503.00315}.
+
+\bibitem{ADH}
+M. Aschenbrenner, L. van den Dries, and J. van der Hoeven,
+``The surreal numbers as a universal $H$-field,''
+\href{https://arxiv.org/abs/1512.02267}{arXiv:1512.02267},
+version 3, 2016. The cited version records acceptance for publication in the
+\emph{Journal of the European Mathematical Society}.
+
+\bibitem{CostinEhrlich}
+O. Costin and P. Ehrlich,
+``Integration on the surreals,''
+\emph{Advances in Mathematics} \textbf{452} (2024), 109823.
+\href{https://arxiv.org/abs/2208.14331}{arXiv:2208.14331};
+\href{https://arxiv.org/html/2208.14331v5}{full text, version 5}.
+
+\bibitem{Penrose}
+R. Penrose, ``Gravitational collapse and space-time singularities,''
+\emph{Physical Review Letters} \textbf{14} (1965), 57--59.
+\href{https://doi.org/10.1103/PhysRevLett.14.57}{doi:10.1103/PhysRevLett.14.57}.
+
+\bibitem{Witten}
+E. Witten, ``Light rays, singularities, and all that,''
+\emph{Reviews of Modern Physics} \textbf{92} (2020), 045004.
+\href{https://doi.org/10.1103/RevModPhys.92.045004}{doi:10.1103/RevModPhys.92.045004};
+\href{https://arxiv.org/abs/1901.03928}{arXiv:1901.03928}.
+
+\bibitem{Landsman}
+K. Landsman, ``Penrose's 1965 singularity theorem: From geodesic incompleteness
+to cosmic censorship,''
+\href{https://arxiv.org/abs/2205.01680}{arXiv:2205.01680}, 2022.
+
+\bibitem{DafermosLuk}
+M. Dafermos and J. Luk,
+``The interior of dynamical vacuum black holes I: The $C^0$-stability of the
+Kerr Cauchy horizon,''
+\emph{Annals of Mathematics} \textbf{202} (2025), 309--630.
+\href{https://doi.org/10.4007/annals.2025.202.2.1}{doi:10.4007/annals.2025.202.2.1};
+\href{https://arxiv.org/abs/1710.01722}{arXiv:1710.01722}.
+
+\bibitem{Donoghue}
+J. F. Donoghue,
+``General relativity as an effective field theory: The leading quantum corrections,''
+\emph{Physical Review D} \textbf{50} (1994), 3874--3888.
+\href{https://doi.org/10.1103/PhysRevD.50.3874}{doi:10.1103/PhysRevD.50.3874};
+\href{https://arxiv.org/abs/gr-qc/9405057}{arXiv:gr-qc/9405057}.
+
+\bibitem{Hayward}
+S. A. Hayward, ``Formation and evaporation of non-singular black holes,''
+\emph{Physical Review Letters} \textbf{96} (2006), 031103.
+\href{https://doi.org/10.1103/PhysRevLett.96.031103}{doi:10.1103/PhysRevLett.96.031103};
+\href{https://arxiv.org/abs/gr-qc/0506126}{arXiv:gr-qc/0506126}.
+
+\bibitem{CarballoRubio}
+R. Carballo-Rubio, F. Di Filippo, S. Liberati, and M. Visser,
+``Geodesically complete black holes,''
+\emph{Physical Review D} \textbf{101} (2020), 084047.
+\href{https://doi.org/10.1103/PhysRevD.101.084047}{doi:10.1103/PhysRevD.101.084047};
+\href{https://arxiv.org/abs/1911.11200}{arXiv:1911.11200}.
+
+\bibitem{Bhattacharjee}
+S. Bhattacharjee, S. Sarkar, and A. Virmani,
+``Internal structure of charged AdS black holes,''
+\href{https://arxiv.org/abs/1604.03730}{arXiv:1604.03730}, 2016.
+
+\bibitem{DamourHenneauxNicolai}
+T. Damour, M. Henneaux, and H. Nicolai,
+``Cosmological billiards,''
+\emph{Classical and Quantum Gravity} \textbf{20} (2003), R145--R200.
+\href{https://arxiv.org/abs/hep-th/0212256}{arXiv:hep-th/0212256}.
+
+\bibitem{BenciHorstenWenmackers}
+V. Benci, L. Horsten, and S. Wenmackers,
+``Non-Archimedean probability,''
+\emph{Milan Journal of Mathematics} \textbf{81} (2013), 121--151.
+\href{https://arxiv.org/abs/1106.1524}{arXiv:1106.1524}.
+
+\bibitem{HorowitzMarolf}
+G. T. Horowitz and D. Marolf,
+``Quantum probes of spacetime singularities,''
+\emph{Physical Review D} \textbf{52} (1995), 5670--5675.
+\href{https://doi.org/10.1103/PhysRevD.52.5670}{doi:10.1103/PhysRevD.52.5670};
+\href{https://arxiv.org/abs/gr-qc/9504028}{arXiv:gr-qc/9504028}.
+
+\bibitem{Hatsuda}
+Y. Hatsuda, ``Quasinormal modes of black holes and Borel summation,''
+\emph{Physical Review D} \textbf{101} (2020), 024008.
+\href{https://doi.org/10.1103/PhysRevD.101.024008}{doi:10.1103/PhysRevD.101.024008};
+\href{https://arxiv.org/abs/1906.07232}{arXiv:1906.07232}.
+
+\bibitem{Nieto2016}
+J. A. Nieto, ``Some mathematical and physical remarks on surreal numbers,''
+2016.
+\href{https://doi.org/10.4236/jmp.2016.715188}{doi:10.4236/jmp.2016.715188};
+\href{https://arxiv.org/abs/1611.09699}{arXiv:1611.09699}.
+
+\bibitem{Nieto2018}
+J. A. Nieto, ``Duality, matroids, qubits, twistors and surreal numbers,''
+\href{https://arxiv.org/abs/1810.04521}{arXiv:1810.04521}, 2018.
+
+\bibitem{RepoRoot}
+\texttt{VladimirReshetnikov/Surreal}, root \texttt{README.md}.
+\href{https://github.com/VladimirReshetnikov/Surreal/blob/39f2be6667ade51bca2b45daa47e289d69c09764/README.md}{Pinned repository overview},
+commit \texttt{39f2be6667ade51bca2b45daa47e289d69c09764},
+accessed 21 September 2026. Scope and limitations of implemented Lean prerequisites.
+
+\bibitem{RepoDocs}
+\texttt{VladimirReshetnikov/Surreal}, \texttt{docs/README.md}.
+\href{https://github.com/VladimirReshetnikov/Surreal/blob/39f2be6667ade51bca2b45daa47e289d69c09764/docs/README.md}{Pinned documentation catalog},
+same commit and access date. Includes the explicit status and coefficient-category
+warnings for the research reports.
+
+\bibitem{RepoAnalysis}
+\texttt{VladimirReshetnikov/Surreal},
+\texttt{docs/surcomplex/analysis/README.md}.
+\href{https://github.com/VladimirReshetnikov/Surreal/blob/39f2be6667ade51bca2b45daa47e289d69c09764/docs/surcomplex/analysis/README.md}{Pinned analysis overview},
+same commit and access date. Distinguishes summability, function classes, and
+residue notions; not treated here as a fully verified physics foundation.
+
+\end{thebibliography}
+\endgroup
+\end{document}

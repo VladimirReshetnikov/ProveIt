@@ -71,7 +71,7 @@
 {\LARGE on the Surcomplex Plane\par}
 \vspace{0.6cm}
 {\large Topologies, admissible chains, polynomial and deformed Stokes,\par
-multiscale contours, and radius-free residues\par}
+multiscale contours, radius-free residues, and untransformed Leray cycles\par}
 \vspace{0.6cm}
 {\large September 21, 2026\par}
 \vspace{0.5cm}
@@ -99,7 +99,14 @@ contours, and moving-pole residues. Fourth, a positive-monomial rescaling theore
 that converts radius-free Hahn analytic germs into polynomial-coefficient
 families, and with it microscopic circle and torus realizations of the
 perturbation residue, including a determinant-transformed realization for an
-arbitrary isolated complete intersection.
+arbitrary isolated complete intersection. That realization left open the
+question of a cycle for the \emph{untransformed} integrand, and the question is
+then settled: a ramified finite covering of the coordinate torus, built from the
+leading map and one positive valuation threshold alone, carries the original form
+$H\dd z/(F_1\cdots F_n)$ to the perturbation residue for every perturbation above
+that threshold and every radius-free numerator, with an exact equation-adapted
+lift, a pole-free Hahn homotopy, a degree normalization, a finite-sheet trace,
+and an extension to formal coefficient germs.
 
 A rational contour pairing built from semialgebraic winding numbers is
 characterized by a uniqueness property and compared with Hahn integration on
@@ -155,10 +162,14 @@ intentionally coarse Jordan statement is available after passing to standard
 parts. An exact $\SC$-valued Stokes calculus is available in three separate chain
 categories: polynomial simplices, Hahn-coherent chains over an ordinary base, and
 infinitesimal deformations of the latter. Cauchy theory becomes a closed-form
-period theory rather than a consequence of fine connectedness. Finally, positive
+period theory rather than a consequence of fine connectedness. Positive
 monomial rescaling makes radius-free analytic germs accessible to contour methods,
 and rational differentials admit a contour pairing based on algebraic winding
 numbers even when an ordinary leading contour meets the reduction of a pole.
+Finally, the untransformed integrand of an arbitrary isolated complete
+intersection has a genuine single cycle, once the chain category is allowed the
+ramified finite coverings of the coordinate torus that it always admitted; the
+cycle is not a coordinate torus, and could not have been.
 These answers coexist; they are not interchangeable.
 
 \subsection{What the supplied manuscripts provide}
@@ -246,6 +257,9 @@ Contour deformation & Closed-form homotopy invariance; exact endpoint correction
   & The whole homotopy must be admissible and avoid singular coefficients\\[0.45em]
 Radius-free residues & Microscopic circle, or torus after positive monomial
   rescaling & A determinant transform for a general complete intersection\\[0.45em]
+Untransformed residues & One Hahn cycle on a ramified finite cover of the torus,
+  built from $f$ and one valuation threshold & A convergent isolated leading map
+  and a positive support bound; the cycle is not a coordinate torus\\[0.45em]
 Arbitrary rational loops & Residue functional weighted by algebraic winding
   & A definition with compatibility theorems, not a Riemann limit\\[0.45em]
 Sampling a circle & Coefficientwise root-of-unity recovery, or a verified
@@ -299,8 +313,8 @@ are tabulated in \cref{contours:subsec:rings}.
 \end{enumerate}
 
 \subsection{What is merged here, and from where}
-This article merges three manuscripts of September 21, 2026 that share roughly two
-thirds of their content: \emph{Stokes Calculus}, \emph{Stokes Integration}, and
+This article merges four manuscripts of September 21, 2026. Three of them share
+roughly two thirds of their content: \emph{Stokes Calculus}, \emph{Stokes Integration}, and
 \emph{Stokes Formulae on the Surcomplex Plane}. The shared material --- the
 fine-topology no-go results, the standard-part Jordan theorem, the imported
 semialgebraic Jordan theorem, the Hahn form complex and its cohomology, deformed
@@ -330,6 +344,37 @@ Two of these overlap in a way that is a genuine disagreement about status rather
 than about arithmetic, and one is a disagreement about emphasis. Both are resolved
 in the open in \cref{contours:subsec:scope} and \cref{contours:sec:sampling}
 respectively, rather than averaged away.
+
+A fourth manuscript, \emph{Untransformed Leray Cycles for Radius-Free Hahn
+Analytic Residues} \cite{Leray}, was written afterwards and against this
+article, and is integrated here as
+\cref{contours:sec:untransformed,contours:sec:adapted}. It
+does not overlap the other three: it takes from them the perturbation residue
+\eqref{contours:eq:generalres}, the positive-monomial rescaling discipline, the
+coefficient rings of \cref{contours:subsec:rings}, the support lemma
+\cref{contours:lem:support} with the sharpening recorded after
+\cref{contours:ex:rank}, and the standing refusal to convert strong summability
+into fine convergence; and it adds the construction that
+\cref{contours:subsec:scope} and \cref{contours:subsec:problems} had asked for
+by name. Everything it contributes is new to this article: the ramified finite
+covering \cref{contours:thm:ramifiedleray} and the target-monomial direction
+\cref{contours:lem:targetmonomial} that avoids the discriminant; substitution of
+a positive-support Hahn map into a radius-free or formal germ,
+\cref{contours:lem:radiusfreesub}, which is not
+\cref{contours:thm:rescaling}; the rooted-tree implicit-function lemma
+\cref{contours:lem:positiveimplicit}; the universal protecting cycle and its
+period \cref{contours:thm:untransformed}; the exact adapted lift
+\cref{contours:thm:adaptedlift} with the pole-free homotopy
+\cref{contours:thm:untransformedhomotopy}; the direct degree normalization
+\cref{contours:thm:degreenormalization}, the finite-sheet trace
+\cref{contours:cor:protectedtrace} and the ideal annihilation
+\cref{contours:prop:idealannihilation}; and the formal-coefficient extension
+\cref{contours:thm:formalcontour}. Accordingly
+\cref{contours:subsec:scope,contours:subsec:problems} are rewritten below as the
+record of a question that was open and of the exact hypotheses under which it is
+now closed --- not deleted, because a reader must still be able to see what was
+asked and that \cref{contours:thm:generalrepresentation} answered only the
+transformed form.
 
 \section{Workspaces, supports, and the four coefficient rings}
 \label{contours:sec:foundations}
@@ -457,6 +502,15 @@ Formal & $K[[z]]$, and $\C[[z]]((t^\Gamma))$
 \end{longtable}
 \end{center}
 
+One variant of the first row is used later and is not a fifth ring but the same
+requirement on a larger base: for a fixed ordinary complex \emph{manifold}
+$\mathsf X$, possibly disconnected, $\HH(\mathsf X)=\OO(\mathsf X)((t^\Gamma))$
+demands holomorphy of every coefficient on that one fixed $\mathsf X$ and one
+common well-ordered support. It appears in
+\cref{contours:sec:untransformed,contours:sec:adapted}, where $\mathsf X$ is a
+finite covering of a polyannulus; see \eqref{contours:eq:HXring}. No theorem
+stated over $\HH(U)$ for an ordinary open $U\subset\C$ is transferred to it.
+
 The inclusions $\C[w]((t^\Gamma))\subset\HH(\C^n)$ and
 $\A_n\subset\C[[z]]((t^\Gamma))$ are strict, and the containment
 $\HH(U)\subset\A_n$ (for $U$ a polydisk about $0$, after taking germs) is strict as
@@ -514,7 +568,32 @@ We state emphatically, once, what these formulas are. \emph{Equation
 integral.} The geometry manuscript defines it algebraically precisely because no
 contour was available on $\A_n$. Supplying a contour that represents it is a
 separate task, and is the subject of
-\cref{contours:sec:radiusfree,contours:sec:multi}. The sign $(-1)^{|k|}$ and the
+\cref{contours:sec:radiusfree,contours:sec:multi,contours:sec:untransformed,contours:sec:adapted}.
+
+\emph{One functional, defined in two companion reports by the same series.} The
+report \emph{Finite Hahn Deformations: Division, Conservation of Multiplicity,
+and Residue Duality} \cite{FiniteDeformations}, in this repository at
+\texttt{docs/surcomplex/finite-deformations}, defines a Hahn local-cluster
+residue by exactly the expansion \eqref{contours:eq:generalres} --- the same
+alternating sum of ordinary local residues of $H\prod_jE_j^{k_j}$ against
+$\prod_jf_j^{k_j+1}$, applied coefficientwise, with the same sign $(-1)^{|k|}$,
+the same factor $(2\pi i)^{-n}$, the same ordered tuple $F_1,\ldots,F_n$ and the
+same orientation convention. That report says emphatically that \emph{the series
+is the definition}, that no fine-topological Riemann integral over a surcomplex
+parameterized torus is intended, and that supplying a genuine representing
+contour is a separate question left to this report. Its functional is stated over
+the common-domain ring $\HH(D)$ for a fixed ordinary polydisk $D$, whereas
+\eqref{contours:eq:generalres} is the radius-free version over $\A_n$; the two
+formulas agree wherever both are defined, and neither is a residue invented to
+make a contour identity tautological. \emph{This identification is the point of
+the whole exercise}: every contour theorem below ---
+\cref{contours:thm:microcircle,contours:thm:microtorus,contours:thm:generalrepresentation,contours:thm:septorus,contours:thm:untransformed}
+--- earns its value by computing that independently defined functional and
+nothing else. The companion report's residue duality, its perfect pairing, and
+its conservation of multiplicity are results about the functional and are cited,
+not reproved, here; the trace identity \eqref{contours:eq:traceresidue} below,
+which \cref{contours:sec:multi} takes from the supplied geometry
+manuscript, is among the results that report establishes as well. The sign $(-1)^{|k|}$ and the
 factor $(2\pi i)^{-n}$ on the contour side are the chosen normalization; they are
 fixed so that $\Res_F(J_F)=\mu$ and $\Res_F(H)=\sum_aH(a)/J_F(a)$ at simple zeros,
 where $J_F=\det(\partial F_i/\partial z_j)$.
@@ -2383,10 +2462,19 @@ transformation and the real $n$-torus play the corresponding roles. \emph{There 
 no need to postulate a new Jordan separation theorem for a $(2n-1)$-sphere in order
 to justify these residues.}
 
-\subsection{Scope: what a general isolated complete intersection still requires}
+\subsection[Scope: the transformed representation, the objection, and the
+resolution]{Scope: the transformed representation, the objection it drew, and the
+resolution of the untransformed question}
 \label{contours:subsec:scope}
 This subsection records a disagreement about \emph{status} among the three
-manuscripts merged here. It is the sharpest in the set, and it is not averaged.
+manuscripts originally merged here, and then records what became of the question
+that disagreement was about. \emph{The history is kept deliberately: the
+objection below was raised, it was correct about the coordinate torus, and it
+identified by name a problem that a fourth manuscript later solved with a
+different cycle.} Nothing in the resolution reaches back and strengthens
+\cref{contours:thm:generalrepresentation}, whose own non-claim about the
+untransformed form stands exactly as printed above. The disagreement about status
+is the sharpest in the set, and it is not averaged.
 \Cref{contours:lem:residuetransform,contours:thm:generalrepresentation} above are
 proved unconditionally and are printed with their proof. One of the three sources
 judged the corresponding statement \emph{unproved} and declined to assert it, and a
@@ -2416,7 +2504,9 @@ construct \emph{one} admissible $n$-cycle whose integral equals
 \eqref{contours:eq:generalres}, possibly requiring a non-diagonal analytic change of
 variables, a finite resolution-type decomposition, or chains on an enlarged analytic
 space, and prove that no omitted summation or radius assumption is hidden in the
-parameterization.
+parameterization. \emph{That is the problem now solved in
+\cref{contours:sec:untransformed,contours:sec:adapted}}; the last paragraph of
+this subsection states under exactly which hypotheses.
 
 \paragraph{What the objection does and does not refute.} It does not refute
 \cref{contours:thm:generalrepresentation}, and the two are consistent, because they
@@ -2432,6 +2522,12 @@ single suitably nonstandard cycle is possible. Conversely,
 the transformed form, unconditionally, from finite colength alone. A reader should
 take away both: a general isolated complete intersection \emph{does} have a
 controlled microscopic contour representation, and it is \emph{not} the naive one.
+The objection's positive part is also confirmed rather than overturned by what
+follows: \cref{contours:ex:wrongtorus} exhibits an ordinary germ for which the
+original coordinate product torus returns $0$ while the residue is $1/2$, so no
+theorem about the untransformed integrand on a coordinate torus was ever
+available. It is the \emph{cycle} that had to change, not
+\cref{contours:thm:generalrepresentation}.
 
 \paragraph{The conditional third route.} A second and genuinely independent route to
 a determinant torus formula runs through univariate separating denominators. It is
@@ -2581,6 +2677,1501 @@ extracting the coefficient of $x^{-1}y^{-1}$ reproduces
 in agreement with \eqref{contours:eq:coupledres}. The general equality is proved by
 \cref{contours:thm:septorus}, not inferred from the finite tests.
 \end{example}
+
+
+\paragraph{The resolution, and its exact hypotheses.}
+\label{contours:para:resolution}
+The open problem quoted above is solved in
+\cref{contours:sec:untransformed,contours:sec:adapted}, and the solution should
+be read with its hypotheses attached rather than as a removal of the scope
+discussion. What is now proved, by \cref{contours:thm:untransformed}, is that for
+\begin{enumerate}
+\item an ordinary \emph{convergent} analytic map germ $f$ with an isolated common
+zero of finite colength $\mu$ --- the hypothesis of
+\cref{contours:subsec:general}, unchanged;
+\item one \emph{specified} positive valuation lower bound $\delta\in\Gamma_{>0}$
+on the perturbation support, $\supp E\subset[\delta,\infty)$ --- a hypothesis
+that \eqref{contours:eq:generalres} did not need, and the only genuinely new
+one, since a positive well-ordered support always has a least element and each
+individual $E$ therefore qualifies with $\delta=\min\supp E$; and
+\item a radius-free numerator $H\in\A_n$, or a formal one by
+\cref{contours:thm:formalcontour},
+\end{enumerate}
+there is one compact oriented ordinary parameter $n$-manifold, a finite covering
+of the coordinate torus of total degree $\mu$, and one Hahn parameterization of
+it, built from $f$ and $\delta$ alone, on which the \emph{untransformed} form
+$H\dd z_1\wedge\cdots\wedge \dd z_n/(F_1\cdots F_n)$ integrates to
+\eqref{contours:eq:generalres} for \emph{every} $E$ above the threshold. The
+problem's final demand --- that no omitted summation or radius assumption be
+hidden in the parameterization --- is met by the explicit support certificates
+\eqref{contours:eq:untransformedsupport} and
+\eqref{contours:eq:Upsilonsupport}, by the separation of the two finiteness
+principles in \cref{contours:subsec:tworadii}, and by
+\cref{contours:thm:degreenormalization,contours:thm:untransformedhomotopy},
+which together fix the degree of the cycle and identify the periods of the
+protecting and adapted cycles.
+
+\emph{Four things remain exactly as they were.}
+\Cref{contours:thm:generalrepresentation} still does not assert that the
+untransformed form has the same \emph{coordinate-torus} integral; that assertion
+is false, by \cref{contours:ex:wrongtorus}. The new cycle is a ramified finite
+cover, in general disconnected, and its construction does not eliminate
+$\det A$ from \cref{contours:thm:generalrepresentation} or $\det\mathsf C$ from
+\cref{contours:thm:septorus}, both of which remain non-optional for their own
+formulas. The objection's germwise, coefficient-dependent cycle interpretation
+recorded above remains correct and remains the right description of what
+\eqref{contours:eq:generalres} does by itself. And the question is closed only
+under the three hypotheses just listed: an arbitrary Hahn tuple with no
+convergent isolated leading map, a non-isolated leading zero, and a perturbation
+support not bounded below by a positive element are all still outside the
+theorem, as \cref{contours:subsec:untransformedscope} states in detail.
+
+
+\section{One cycle for the untransformed integrand}
+\label{contours:sec:untransformed}
+
+\Cref{contours:subsec:scope} distinguished two questions and answered one of
+them. \Cref{contours:thm:generalrepresentation} represents the perturbation
+residue of an arbitrary isolated complete intersection by a coordinate torus
+carrying the \emph{transformed} integrand $H\det A\dd z/(G_1\cdots G_n)$, and
+explicitly declines the untransformed form. The remaining question --- one
+admissible $n$-cycle on which the original form
+$H\dd z_1\wedge\cdots\wedge \dd z_n/(F_1\cdots F_n)$ itself integrates to
+\eqref{contours:eq:generalres} --- was recorded there and in
+\cref{contours:subsec:problems} as an open problem.
+
+This section and \cref{contours:sec:adapted} construct such a cycle. The
+hypotheses are exactly those of \cref{contours:subsec:general} together with
+\emph{one} positive lower bound on the perturbation support: a convergent
+ordinary leading map with an isolated zero, a specified $\delta>0$ with
+$\supp E\subset[\delta,\infty)$, and a radius-free numerator. No determinant
+transformation is made, no equation is replaced, and no common convergence
+radius is assumed for the coefficient germs of $E$ or of $H$. The cycle is
+built from $f$ and $\delta$ alone and then serves \emph{every} perturbation
+above that threshold and every numerator at once.
+
+\subsection{What ``one cycle'' is allowed to be}
+\label{contours:subsec:onecycle}
+The answer depends on a decision about the chain category, and that decision is
+made explicitly here rather than left implicit in the word ``cycle''.
+
+\begin{definition}[Admissible Hahn cycle on an ordinary cover]
+\label{contours:def:hahncycle}
+An \emph{admissible Hahn $n$-cycle} consists of one compact oriented ordinary
+smooth $n$-manifold $\mathsf T$ without boundary --- \emph{possibly a finite
+disjoint union} --- together with one Hahn parameterization
+$Z:\mathsf T\to K^n$ whose coordinates lie in
+$\OO(\mathsf X)((t^\Gamma))$ for a fixed ordinary complex manifold
+$\mathsf X\supset\mathsf T$ and have strictly positive support. Its integral is
+the coefficientwise integral \eqref{contours:eq:chainintegral} of the pulled-back
+top-degree form on $\mathsf T$, and the image is written $Z[\mathsf T]$.
+\end{definition}
+
+Three features of this definition are the ones that make the construction
+possible, and each was already licensed by the chain formalism of
+\cref{contours:sec:derham,contours:sec:deformed}: the parameter manifold is
+ordinary and compact, so \cref{contours:thm:hahnstokes} applies to it; it need
+not be connected, so a finite covering of the ordinary torus is a legitimate
+single cycle; and the parameterization is a positive-support Hahn family, so it
+is an admissible deformation of the constant map to the origin in the sense of
+\cref{contours:def:deformation}. What is \emph{not} required is that
+$Z[\mathsf T]$ be a connected coordinate product torus in the original
+variables $z$; the counterexample of \cref{contours:ex:wrongtorus} shows that
+requiring that much would make the problem unsolvable. Nor is
+$Z:\mathsf T\to K^n$ asserted to be continuous for any of the three topologies
+of \cref{contours:rem:threetopologies}; by \cref{contours:prop:fullfine} a
+nonconstant such map cannot be.
+
+One point of care is that \cref{contours:lem:pullback} cannot supply the
+pullback certificate here. That lemma pulls back a form whose coefficients are
+ordinary smooth functions on \emph{one} common ordinary target neighborhood; the
+integrands below have radius-free coefficient germs and no such neighborhood
+exists, by \eqref{contours:eq:shrinking}. The certificate is supplied instead by
+\cref{contours:lem:radiusfreesub}. Once the pullback has been formed on
+$\mathsf T$, the ordinary-base Stokes theorems apply without change.
+
+\paragraph{The data, and one threshold.}
+Throughout \cref{contours:sec:untransformed,contours:sec:adapted} fix
+\begin{equation}\label{contours:eq:untransformeddata}
+  f\in\C\{z_1,\ldots,z_n\}^n,\quad f(0)=0,\quad
+  \mu=\dim_\C\C\{z\}/(f_1,\ldots,f_n)<\infty,
+  \qquad F=f+E,
+\end{equation}
+with $E\in\A_n^n$, and fix a \emph{specified} $\delta\in\Gamma_{>0}$ with
+\begin{equation}\label{contours:eq:threshold}
+  S_E:=\supp E=\bigcup_{j=1}^n\supp E_j\ \subset\ [\delta,\infty).
+\end{equation}
+The set $S_E$ is well ordered, and $S_E^*$ is the monoid written $E^*$ in
+\cref{contours:def:strongsum} and in \cref{contours:thm:microtorus}; in the
+per-coordinate notation $\delta_j=\vH(E_j)$ of \eqref{contours:eq:powerleading},
+condition \eqref{contours:eq:threshold} says $\delta\le\min_j\delta_j$, but it is
+stated as a single threshold on the whole support because a single threshold is
+what the cycle is built from. Since a
+nonempty well-ordered subset of $\Gamma_{>0}$ has a least element, every
+individual positive-support perturbation satisfies
+\eqref{contours:eq:threshold} with $\delta=\min S_E$; the force of stating
+$\delta$ first is that one cycle then serves the whole valuation ball of
+perturbations with support above $\delta$. \emph{No bound of any kind is imposed
+on the complex coefficients of the germs $E_{j,\lambda}$ or $H_\lambda$, and
+their convergence radii may tend to zero.} As in
+\cref{contours:subsec:conventions}, $\vH$ denotes the least exponent carrying a
+nonzero coefficient \emph{function}; it is not a pointwise minimum of valuations
+over a parameter domain, and no such pointwise notion is used.
+
+\paragraph{The fixed-manifold coherent ring.}
+The construction needs the common-domain ring of
+\cref{contours:subsec:rings} with the ordinary open $U\subset\C$ replaced by a
+fixed ordinary complex manifold. For such an $\mathsf X$, possibly
+disconnected, write
+\begin{equation}\label{contours:eq:HXring}
+  \HH(\mathsf X)=\OO(\mathsf X)((t^\Gamma)),
+\end{equation}
+and $\HH(\mathsf X)_+$ for the elements of strictly positive support. The ring
+discipline of \cref{contours:subsec:rings} is unchanged: every coefficient is
+holomorphic on \emph{one} fixed $\mathsf X$ and all share one well-ordered
+support. No theorem of \cref{contours:sec:cauchy} is transferred to
+$\HH(\mathsf X)$ for a higher-dimensional or disconnected $\mathsf X$, and
+nothing below asserts a sheaf property for $\HH$ on arbitrary covers.
+
+\paragraph{Notation reconciled with the source.}
+The source manuscript of these two sections writes $m_j$ for the target radial
+weights, $M$ for their sum, $b$ and $c$ for the two ordinary radial bounds,
+$T$ and $X$ for the parameter manifold and its ambient complex manifold,
+$\langle P\rangle_\N$ for the monoid generated by $P$, and $\mathcal R_F$ for
+the perturbation residue. All six are renamed here to preserve the conventions
+already fixed in this article. The weights are $\kappa_j$ with
+$\kappa_*=\max_j\kappa_j$ and $\kappa_\Sigma=\sum_j\kappa_j$, because $m$ is
+reserved for the order of a one-variable germ and $d_j$ for coordinate powers
+by \cref{contours:subsec:conventions}. The radial bounds are
+$b_{\mathrm{pole}}$ and $c_{\mathrm{sep}}$. The manifolds are $\mathsf T$ and
+$\mathsf X$, because $T_r$ is the coordinate torus of
+\cref{contours:thm:microtorus} and $T_F$ the endpoint correction
+\eqref{contours:eq:endpointT}. The monoid is $P^*$. The residue is
+$\Res_F$ throughout, \emph{never} $\mathcal R_F$: in this article
+$\mathcal R_F$ already denotes the coordinate-torus functional
+\eqref{contours:eq:microtorus}, and the entire content of the theorems below is
+that a \emph{different} cycle computes $\Res_F$.
+
+\subsection{Substitution of a positive-support Hahn map, and a nonlinear
+support lemma}
+\label{contours:subsec:hahnsub}
+\Cref{contours:lem:support} is the only summability input, and the sharpening
+recorded after \cref{contours:ex:rank} --- finitely many dependencies at an
+\emph{exact} exponent, not finitely many exponents below it --- is used at every
+step. The source proves \cref{contours:lem:support} by a second route, through
+Higman's lemma on words over a well-quasi-ordered alphabet \cite{Higman}: a
+well-order is a well-quasi-order, an embedding of words with each matched letter
+no larger than its partner cannot increase the sum, equality of sums forces
+identical words because every letter is strictly positive, and both a descending
+sequence of word sums and an infinite family of distinct words with one fixed sum
+therefore contradict Higman's lemma. That is an independent proof of the same
+classical statement \cite{Neumann,Higman}; the statement itself is not restated
+here.
+
+Two genuinely new lemmas are needed. The first replaces
+\cref{contours:thm:rescaling} in a situation where the substituted map is not a
+diagonal monomial rescaling but an arbitrary positive-support Hahn family of
+holomorphic maps.
+
+\begin{lemma}[Radius-free substitution into a Hahn map]
+\label{contours:lem:radiusfreesub}
+Let $\mathsf X$ be a fixed ordinary complex manifold, let
+$W=(W_1,\ldots,W_n)\in\HH(\mathsf X)_+^n$, and let $P_W$ be the union of the
+supports of its coordinates, a well-ordered subset of $\Gamma_{>0}$. For every
+$H=\sum_{\lambda\in S_H}t^\lambda h_\lambda$ with formal coefficient germs
+$h_\lambda\in\C[[z]]$ --- in particular for every $H\in\A_n$ --- the fully
+expanded family
+\begin{equation}\label{contours:eq:radiusfreesub}
+  H(W)=\sum_{\lambda\in S_H}\ \sum_{\alpha\in\N^n}
+  t^\lambda\,[z^\alpha]h_\lambda\;W^\alpha
+\end{equation}
+is strongly summable, lies in $\HH(\mathsf X)$, and has support contained in
+$S_H+P_W^*$. The assignment $H\mapsto H(W)$ respects sums and products and
+commutes with differentiation in the ordinary parameters of $\mathsf X$. No
+common convergence radius for the $h_\lambda$ is used, and none is produced.
+\end{lemma}
+\begin{proof}
+A fully expanded monomial $t^\lambda[z^\alpha]h_\lambda W^\alpha$ contributes at
+exponents $\lambda$ plus a finite word of $|\alpha|$ letters drawn from $P_W$,
+one letter for each of the $|\alpha|$ factors. Fix a target exponent $\nu$. By
+\cref{contours:lem:support} only finitely many pairs consisting of an element of
+$S_H$ and a finite word in $P_W$ sum to $\nu$, and only finitely many word
+lengths occur; hence only finitely many $\lambda$ and finitely many multi-indices
+$\alpha$ can contribute, and for each there are finitely many ways to distribute
+the letters of the word among the $n$ coordinates and their repeated factors. The
+coefficient of $t^\nu$ is therefore a finite sum of finite products of ordinary
+holomorphic functions on $\mathsf X$, so it is holomorphic on $\mathsf X$, and
+the total support is contained in the well-ordered set $S_H+P_W^*$. The same
+finiteness at each exponent licenses every regrouping, which gives the ring
+identities, and ordinary differentiation of a coefficient function leaves its
+exponent unchanged, so termwise differentiation is a finite operation at each
+exponent. \emph{Convergence of the formal series $h_\lambda$ was never used};
+what is used is that each individual output coefficient is a finite polynomial
+expression in finitely many Taylor coefficients of finitely many $h_\lambda$ and
+finitely many coefficient functions of $W$.
+\end{proof}
+
+\begin{corollary}[Radial evaluation of an ordinary family]
+\label{contours:cor:radialeval}
+Let $W(q,s)=\sum_{\ell\ge1}s^\ell W_\ell(q)$ be holomorphic on
+$\mathsf X\times\DD_\epsilon$ with $W(q,0)=0$. For every $\rho\in\Gamma_{>0}$
+the substitution $s=t^\rho$ produces an element of $\HH(\mathsf X)_+^n$ with
+support in $\N_{>0}\rho$, and \cref{contours:lem:radiusfreesub} applies to it.
+Each coefficient of the result is formed from finitely many ordinary Taylor
+coefficients of the $W_\ell$, even when no single ordinary $\epsilon$ serves
+all the germs $h_\lambda$ simultaneously.
+\end{corollary}
+\begin{proof}
+The exponents of the substituted family are the positive integer multiples of
+$\rho$, a well-ordered positive set, and $W(q,0)=0$ removes the exponent $0$.
+Apply \cref{contours:lem:radiusfreesub} with $P_W=\{\rho\}$; at a fixed output
+exponent only finitely many radial degrees $\ell$ occur, by
+\cref{contours:lem:support}.
+\end{proof}
+
+\emph{This is where the direction of the argument differs from
+\cref{contours:thm:rescaling}.} Rescaling moves a radius-free germ into the
+polynomial-coefficient ring by substituting a monomial for each coordinate.
+\Cref{contours:lem:radiusfreesub} instead substitutes an entire Hahn family of
+holomorphic maps on a fixed ordinary manifold, and lands in the coherent ring of
+that manifold. Neither statement implies the other, and neither produces a
+common ordinary radius for the original coefficient germs.
+
+The second lemma solves the implicit equation that will produce the
+equation-adapted lift of \cref{contours:sec:adapted}. Its coefficient ring is
+not required to be a field, and its proof is combinatorial rather than
+iterative.
+
+\begin{lemma}[Positive implicit equation]
+\label{contours:lem:positiveimplicit}
+Let $R$ be a commutative complex algebra and let
+$B(V)=(B_1(V),\ldots,B_n(V))$ be a formal power series in finitely many
+variables $V=(V_1,\ldots,V_n)$ whose coefficients lie in $R((t^\Gamma))$, and
+suppose the union of the supports of \emph{all} coefficients of $B$ is a
+well-ordered subset $W\subset\Gamma_{>0}$. Then the equation
+\begin{equation}\label{contours:eq:positiveimplicit}
+  V=B(V)
+\end{equation}
+has exactly one solution with strictly positive coordinate supports. Its support
+is contained in $W^*\setminus\{0\}$, it is given by a strongly summable family of
+finite rooted trees, and each of its coefficients is computed by finitely many
+coefficient operations in $R$.
+\end{lemma}
+\begin{proof}
+Expand repeated substitution into finite ordered rooted trees. A vertex selects
+one coefficient of one component of $B$; the multi-index of the selected monomial
+prescribes how many children it has and which component each child computes.
+Nullary vertices select constant terms. Assign to every vertex the exponent of
+its selected coefficient, an element of $W$, and give a tree the sum of its
+vertex exponents as its weight.
+
+Fix a weight $\nu$. By \cref{contours:lem:support} only finitely many finite
+ordered words in $W$ sum to $\nu$, and only finitely many lengths occur, so the
+number of vertices of a contributing tree is bounded. There are finitely many
+ordered rooted trees with at most that many vertices, finitely many ways to
+colour their vertices by components, and finitely many compatible multi-indices,
+since a vertex cannot have more children than there are other vertices. Hence the
+tree family is strongly summable, and its sum has support in
+$W^*\setminus\{0\}$; grafting all trees below a common root is a permitted
+regrouping and proves \eqref{contours:eq:positiveimplicit}.
+
+For uniqueness, suppose $V\ne V'$ both solve \eqref{contours:eq:positiveimplicit}
+with positive coordinate supports, and let $\nu_0$ be the least exponent at which
+some coordinate of $V$ and $V'$ differ. Every term of $B(V)-B(V')$ contains such a
+difference multiplied by a coefficient of $B$, whose exponent is strictly
+positive, and possibly by further coordinates of positive support. No such term
+can contribute at $\nu_0$, so $V$ and $V'$ agree there, a contradiction.
+\end{proof}
+
+\begin{remark}[Not a Picard limit]
+\label{contours:rem:notpicard}
+\Cref{contours:lem:positiveimplicit} does not identify its support-defined sum
+with a limit of iterates. That distinction is the one recorded in
+\cref{contours:ex:rank}: the statement remains valid when the integer multiples
+of the least coefficient valuation are \emph{not} cofinal in $\Gamma_{>0}$, where
+no iteration argument based on a fixed improvement of valuation is available.
+The lemma also needs no norm on $R$ and no completeness assumption; it needs only
+positivity and well-ordering of the coefficient supports.
+\end{remark}
+
+\subsection{A fixed ramified family of ordinary Leray cycles}
+\label{contours:subsec:ramified}
+\emph{Everything in this subsection is ordinary complex analysis, and its radial
+variable $s$ is an ordinary complex number.} The substitution
+$s=t^\rho$ is made only in \cref{contours:subsec:protecting}. This order of
+operations is the whole mechanism: it prevents the interchange of ordinary
+analytic convergence with Hahn summability that
+\cref{contours:subsec:rings,contours:ex:rank} warn against, and it is the reason
+the construction never needs a common radius.
+
+The classical input is the finite mapping theorem in its standard form
+\cite[Chapters~II--III]{GrauertRemmert}. For $f$ as in
+\eqref{contours:eq:untransformeddata} one may choose bounded representatives
+$U_f$ of the source and $V_f$ of the target with $f:U_f\to V_f$ proper and finite,
+$f^{-1}(0)=\{0\}$, and degree $\mu$, and a nonzero convergent germ $\Delta(w)$
+vanishing on the branch locus, so that $f$ is an unramified covering of degree
+$\mu$ over $V_f\setminus\{\Delta=0\}$. Concretely, take a small closed source ball
+whose boundary avoids $f^{-1}(0)$ and then a target polydisk whose inverse image
+stays clear of that boundary; properness follows, and the fibres are finite
+because a positive-dimensional compact analytic subset of a domain in $\C^n$
+cannot occur. If $f$ is already unramified near $0$ take $\Delta=1$. These are
+ordinary finite-map facts, and none of them is a statement about a Hahn analytic
+space.
+
+\begin{lemma}[A discriminant-avoiding monomial direction in the \emph{target}]
+\label{contours:lem:targetmonomial}
+For every nonzero convergent germ $\Delta(w_1,\ldots,w_n)$ there are positive
+integers $q_1,\ldots,q_n$, an integer $d\ge0$, a multi-index $\alpha$, and
+$c\ne0$ such that on a fixed polyannulus
+$\mathsf A=\{\varrho_1<|\xi_j|<\varrho_2\}$ around the ordinary torus
+\begin{equation}\label{contours:eq:targetmonomial}
+  \Delta(\tau^{q_1}\xi_1,\ldots,\tau^{q_n}\xi_n)
+  =\tau^d\bigl(c\,\xi^\alpha+\tau R(\xi,\tau)\bigr),
+\end{equation}
+and, after shrinking the $\tau$ disk and if necessary the polyannulus, the
+bracket is nowhere zero on a neighborhood of $\overline{\mathsf A}\times\{0\}$. Hence the
+displayed target points avoid the branch locus for every sufficiently small
+$\tau\ne0$.
+\end{lemma}
+\begin{proof}
+Let $d_0$ be the least total degree of a nonzero term of $\Delta$. Choose
+positive rational weights very close to $1$ and generic on the finitely many
+monomials of total degree $d_0$, so that exactly one of them has least weighted
+degree; taking the weights close enough to $1$ also makes every monomial of total
+degree at least $d_0+1$ have strictly larger weighted degree than all
+degree-$d_0$ monomials. Clearing denominators gives positive integers $q_j$ and a
+unique least-weight monomial $c\,w^\alpha$ of weighted degree $d$. Substituting
+in the convergent series gives \eqref{contours:eq:targetmonomial}, every other
+weighted degree exceeding $d$ by a positive integer, and the remainder $R$ is
+holomorphic for bounded $\xi$ and small $\tau$. On a closed polyannulus
+$c\,\xi^\alpha$ is bounded away from zero, so compactness gives uniform
+nonvanishing of the bracket for small $\tau$.
+\end{proof}
+
+The monomial direction is chosen in the \emph{target}, not in the source. This is
+what allows an arbitrary isolated $f$: the lemma does \emph{not} require the
+lowest weighted homogeneous parts of the $f_j$ to form an isolated complete
+intersection, and it is exactly the step at which the objection recorded in
+\cref{contours:subsec:scope} --- that a diagonal source rescaling need not keep
+the leading system isolated or of coordinate-power shape --- is bypassed rather
+than contradicted.
+
+\begin{theorem}[Ramified Leray family; ordinary analysis]
+\label{contours:thm:ramifiedleray}
+For $f$ as in \eqref{contours:eq:untransformeddata} there exist a polyannulus
+$\mathsf A$ around the ordinary torus $(S^1)^n$, a finite unramified holomorphic
+covering $p:\mathsf X\to\mathsf A$ of total degree $\mu$ --- with $\mathsf X$ possibly
+disconnected --- positive integers $\kappa_1,\ldots,\kappa_n$, and a
+holomorphic map
+\[
+  Z:\mathsf X\times\DD_\epsilon\longrightarrow\C^n
+\]
+with
+\begin{equation}\label{contours:eq:ordinaryZ}
+  Z(q,0)=0,\qquad f_j\bigl(Z(q,s)\bigr)=s^{\kappa_j}p_j(q)
+  \quad(1\le j\le n),
+\end{equation}
+where $p=(p_1,\ldots,p_n)$. For $s\ne0$ the fibre of $p$ over $\xi$ is
+identified with the set of all $\mu$ inverse images in $U_f$ of
+$(s^{\kappa_j}\xi_j)_j$. The restriction
+$\mathsf T=p^{-1}\bigl((S^1)^n\bigr)$ is a compact oriented real
+$n$-manifold without boundary, a finite disjoint union of tori, and
+$Z(\mathsf T,s)$ is the ordinary Leray cycle of $f$ for target radii
+$|s|^{\kappa_j}$. One may take $\kappa_j=Nq_j$ with $q_j$ as in
+\cref{contours:lem:targetmonomial} and $N$ dividing
+$\operatorname{lcm}(1,\ldots,\mu)$.
+\end{theorem}
+\begin{proof}
+Pull the finite map $f:U_f\to V_f$ back along
+\[
+  A\times\DD^*\longrightarrow V_f,\qquad
+  (\xi,\tau)\longmapsto(\tau^{q_j}\xi_j)_j .
+\]
+By \cref{contours:lem:targetmonomial} the image avoids the branch locus, so the
+pullback is an unramified holomorphic covering of degree $\mu$, and its monodromy
+is a permutation representation of
+$\pi_1(A\times\DD^*)\simeq\Z^n\times\Z$. Let $\sigma$ be the permutation induced
+by the radial generator and $N$ its order, so $N$ divides
+$\operatorname{lcm}(1,\ldots,\mu)$ by the elementary order bound for a
+permutation of $\mu$ letters. The substitution $\tau=s^N$ replaces $\sigma$ by
+$\sigma^N=\id$, so the resulting covering has trivial monodromy along the radial
+factor and is therefore pulled back from a finite covering $p:\mathsf X\to\mathsf A$;
+the classification of coverings gives an isomorphism of the total space with
+$\mathsf X\times\DD^*$, holomorphic because locally it identifies two
+holomorphic local inverses of the same base map. \emph{No global labelling of
+all $\mu$ sheets over $\mathsf A$ is required, and $\mathsf X$ may be disconnected.}
+
+Composing with the source-coordinate projection gives a holomorphic
+$Z:\mathsf X\times\DD^*\to U_f$ satisfying \eqref{contours:eq:ordinaryZ} for
+$s\ne0$, with $\kappa_j=Nq_j$. It is bounded, because $U_f$ was chosen bounded, so
+the removable-singularity theorem with holomorphic parameters extends it across
+$s=0$: in a local chart, the Cauchy integral formula in $s$ kills every negative
+Laurent coefficient, the remaining coefficients are holomorphic in $q$, and
+extensions agree on overlaps. Continuity gives $f(Z(q,0))=0$, whence
+$Z(q,0)=0$ because $f^{-1}(0)=\{0\}$.
+
+For fixed $s\ne0$ every inverse image of the scaled target torus occurs exactly
+once in this covering, and the source-coordinate map is injective on
+$\mathsf T$: equality of source points forces equality of target points and then
+equality of the sheet. Orient $\mathsf T$ so that
+$p^*(d\arg\xi_1\wedge\cdots\wedge d\arg\xi_n)$ is positive; multiplying the
+$j$th target coordinate by $s^{\kappa_j}$ only adds a constant phase, so the
+induced orientation is the Leray orientation
+$d\arg f_1\wedge\cdots\wedge d\arg f_n$ fixed in
+\cref{contours:subsec:residuedef}. A finite covering of a compact torus is
+compact with finitely many components, each a torus.
+\end{proof}
+
+\begin{lemma}[Coefficientwise constant-period identity]
+\label{contours:lem:constantperiod}
+For $h\in\C\{z\}$ and $k\in\N^n$ set
+\begin{equation}\label{contours:eq:ordinaryform}
+  \beta_{h,k}(s)=
+  \frac{h\bigl(Z(q,s)\bigr)\,
+    d_qZ_1(q,s)\wedge\cdots\wedge d_qZ_n(q,s)}
+  {s^{\sum_j\kappa_j(k_j+1)}\,p_1(q)^{k_1+1}\cdots p_n(q)^{k_n+1}},
+\end{equation}
+where $d_q$ differentiates the angular parameters only. For each fixed $h$ and
+$k$ this form has a convergent Laurent expansion in $s$ with finitely many
+negative powers, on one ordinary neighborhood of $\mathsf T$ and for
+sufficiently small $s$, and
+\begin{equation}\label{contours:eq:constantperiod}
+  \frac1{(2\pi i)^n}\int_{\mathsf T}\beta_{h,k}(s)
+  =\res_{(f_1^{k_1+1},\ldots,f_n^{k_n+1})}(h).
+\end{equation}
+Equivalently, every nonconstant radial Laurent coefficient integrates to zero
+and the constant one integrates to $(2\pi i)^n$ times the ordinary residue. The
+admissible $s$ disk may depend on $h$ and on $k$; \emph{no simultaneous disk for
+an infinite Hahn family of germs is asserted.}
+\end{lemma}
+\begin{proof}
+Compactness of $\mathsf T$ and $Z(q,0)=0$ give an ordinary $s$ disk on which
+$h(Z(q,s))$ is holomorphic on one neighborhood of $\mathsf T$. The remaining
+numerator factors are holomorphic there, and the denominator contributes only
+the displayed finite negative power of $s$, since the $p_j$ are nowhere zero on
+$\mathsf A$. Ordinary compact-uniform convergence justifies integrating that single
+Laurent expansion term by term. For small positive real $s$ the cycle
+$Z(\mathsf T,s)$ is an ordinary regular Leray cycle for $f$ with target radii
+$|s|^{\kappa_j}$, so its normalized integral is the ordinary local Grothendieck
+residue of $h\dd z/\prod_jf_j^{k_j+1}$ \cite{GriffithsHarris,TajimaNabeshima}.
+Holomorphy in the punctured $s$ disk and uniqueness of the Laurent expansion
+upgrade that single value to the coefficient statement.
+\end{proof}
+
+\subsection{The universal protecting cycle}
+\label{contours:subsec:protecting}
+Now, and only now, the radial variable becomes a Hahn monomial. Set
+\begin{equation}\label{contours:eq:kappastar}
+  \kappa_*=\max_j\kappa_j,\qquad \kappa_\Sigma=\sum_j\kappa_j,
+\end{equation}
+and choose $\rho\in\Gamma_{>0}$ with
+\begin{equation}\label{contours:eq:protectingrho}
+  \kappa_*\rho<\delta ;
+\end{equation}
+divisibility of $\Gamma$ supplies one, for example $\rho=\delta/(\kappa_*+1)$.
+The direction of \eqref{contours:eq:protectingrho} is the one already recorded
+in \cref{contours:lem:protect}: a \emph{smaller} positive exponent is a
+\emph{larger} infinitesimal, so the cycle must be large in valuation in order to
+protect the perturbation. Expanding the ordinary family of
+\cref{contours:thm:ramifiedleray} as $Z(q,s)=\sum_{\ell\ge1}s^\ell Z_\ell(q)$,
+put
+\begin{equation}\label{contours:eq:Zzero}
+  Z_0=\sum_{\ell\ge1}t^{\ell\rho}Z_\ell
+  \ \in\ \HH(\mathsf X)_+^n ,
+  \qquad\text{so}\qquad
+  f_j(Z_0)=t^{\kappa_j\rho}p_j .
+\end{equation}
+This is legitimate by \cref{contours:cor:radialeval}, all coordinate supports lie
+in $\N_{>0}\rho$, and $(\mathsf T,Z_0)$ is an admissible Hahn cycle in the sense
+of \cref{contours:def:hahncycle}. \emph{It depends only on $f$ and $\delta$.}
+
+For the particular $E$ under consideration put
+\begin{equation}\label{contours:eq:Pzero}
+  P_0=\{\rho\}\cup\bigcup_{j=1}^n\bigl(S_E-\kappa_j\rho\bigr),
+  \qquad \mathcal M_0=P_0^* .
+\end{equation}
+Finite unions and translates of well-ordered sets are well ordered, and
+\eqref{contours:eq:protectingrho} makes every element of $P_0$ strictly
+positive.
+
+\begin{proposition}[Admissibility of the untransformed pullback]
+\label{contours:prop:admissiblepullback}
+For every $H\in\A_n$ the pullback by $Z_0$ of the untransformed form
+$H\dd z_1\wedge\cdots\wedge \dd z_n/(F_1\cdots F_n)$ is a Hahn family of
+holomorphic $n$-forms on $\mathsf X$ with support contained in
+\begin{equation}\label{contours:eq:untransformedsupport}
+  S_H-\kappa_\Sigma\rho+\mathcal M_0 ,
+\end{equation}
+each coefficient being a finite sum of ordinary holomorphic $n$-forms on
+$\mathsf X$. The assertion holds for the \emph{fully expanded} family, before any
+Taylor, perturbation, or radial index has been regrouped.
+\end{proposition}
+\begin{proof}
+By \cref{contours:lem:radiusfreesub}, $H(Z_0)\in\HH(\mathsf X)$ with support in
+$S_H+\N\rho$, and likewise $\supp E_j(Z_0)\subset S_E+\N\rho$. Put
+\[
+  Q_j=\frac{E_j(Z_0)}{t^{\kappa_j\rho}p_j},
+\]
+whose support lies in $S_E-\kappa_j\rho+\N\rho$, a positive subset of
+$\mathcal M_0$; the functions $p_j^{-1}$ are ordinary holomorphic units on the
+same $\mathsf X$. Hence
+\begin{equation}\label{contours:eq:strongdenominator}
+  \frac1{F_j(Z_0)}
+  =t^{-\kappa_j\rho}p_j^{-1}\sum_{r\ge0}(-Q_j)^r
+\end{equation}
+is a strongly summable identity in $\HH(\mathsf X)$, by the Neumann inversion
+recorded after \cref{contours:lem:support}. Each angular derivative of $Z_0$
+still has support in $\N_{>0}\rho$, so multiplying the numerator and the
+differential factors by \eqref{contours:eq:strongdenominator} gives
+\eqref{contours:eq:untransformedsupport}.
+
+For the stronger indexed assertion, expand a contribution carrying $k_j$ factors
+from $E_j$. Its exponent has the form
+\begin{equation}\label{contours:eq:exponentaccounting}
+  \lambda-\kappa_\Sigma\rho
+  +\sum_{j=1}^n\sum_{a=1}^{k_j}\bigl(e_{j,a}-\kappa_j\rho\bigr)+r\rho,
+  \qquad \lambda\in S_H,\ e_{j,a}\in S_E,\ r\ge0,
+\end{equation}
+and every letter after the fixed shift $-\kappa_\Sigma\rho$ belongs to $P_0$. At
+an exact total exponent, \cref{contours:lem:support} permits only finitely many
+words, hence finitely many multi-indices $k$, finitely many perturbation
+coefficient germs and finitely many radial degrees; and for a fixed radial
+degree, substitution into $Z(q,s)$ reads only finitely many Taylor monomials,
+because $Z(q,0)=0$. This is local finiteness before regrouping, which is what
+the integration step requires.
+\end{proof}
+
+\begin{theorem}[Universal untransformed contour]
+\label{contours:thm:untransformed}
+Let $f$ and $\delta$ be as in
+\eqref{contours:eq:untransformeddata}--\eqref{contours:eq:threshold}, and let
+$\mathsf T$, $p$, $\kappa_j$ and $Z_0$ be as in
+\cref{contours:thm:ramifiedleray} and \eqref{contours:eq:Zzero}. Then for
+\emph{every} $E\in\A_n^n$ with $\supp E\subset[\delta,\infty)$ and \emph{every}
+$H\in\A_n$, the untransformed form has a well-defined coefficientwise pullback
+and
+\begin{equation}\label{contours:eq:untransformed}
+ \boxed{\qquad
+ \Res_F(H)=\frac1{(2\pi i)^n}
+ \HInt_{Z_0[\mathsf T]}
+ \frac{H(z)\dd z_1\wedge\cdots\wedge \dd z_n}{F_1(z)\cdots F_n(z)} ,
+ \qquad}
+\end{equation}
+with $\Res_F$ the perturbation residue \eqref{contours:eq:generalres}. The cycle
+$(\mathsf T,Z_0)$ is constructed from $f$ and $\delta$ alone, independently of
+$E$ and of $H$; no determinant transformation of $F$ is made and no equation is
+replaced; and all resulting coefficient functions are holomorphic on one common
+ordinary neighborhood of $\mathsf T$, with the explicit support certificate
+\eqref{contours:eq:untransformedsupport}.
+\end{theorem}
+\begin{proof}
+Expand the reciprocal denominators by
+\eqref{contours:eq:strongdenominator}. The proposed normalized integral becomes
+\begin{equation}\label{contours:eq:expandedintegral}
+  \frac1{(2\pi i)^n}\sum_{k\in\N^n}(-1)^{|k|}
+  \HInt_{\mathsf T}
+  \frac{\bigl(H\,E_1^{k_1}\cdots E_n^{k_n}\bigr)(Z_0)\;
+    dZ_{0,1}\wedge\cdots\wedge dZ_{0,n}}
+  {\prod_{j=1}^nf_j(Z_0)^{k_j+1}} ,
+\end{equation}
+and the whole expanded family is strongly summable by
+\cref{contours:prop:admissiblepullback}, so integration and every regrouping are
+legitimate --- the coefficientwise integral \eqref{contours:eq:chainintegral}
+being a complex-linear operation applied at each exponent, with no interchange of
+an infinite limit.
+
+Fix one selection of Hahn coefficients from $H$ and from the finitely many
+perturbation factors occurring in one term of index $k$. Their ordinary product
+is a single convergent germ $h$, and \emph{before} the substitution $s=t^\rho$
+the angular pullback of the corresponding summand is exactly the ordinary form
+\eqref{contours:eq:ordinaryform}. By \cref{contours:lem:constantperiod} its
+integral kills every nonconstant radial Laurent coefficient and returns
+$\res_{(f_1^{k_1+1},\ldots,f_n^{k_n+1})}(h)$. Multiplying by the selected Hahn
+monomial and summing the strongly summable family reproduces
+\eqref{contours:eq:generalres} term for term, including the sign $(-1)^{|k|}$
+and the normalization $(2\pi i)^{-n}$ fixed in
+\cref{contours:subsec:residuedef}.
+
+Only $f$ and $\delta$ entered the construction of $\mathsf T$, $p$ and $Z_0$.
+The support certificate \eqref{contours:eq:Pzero} depends on $S_E$, but the cycle
+does not, and $H$ was arbitrary throughout.
+\end{proof}
+
+\begin{corollary}[Cancellation of the auxiliary scales]
+\label{contours:cor:scalecancel}
+Although the pulled-back form carries exponents in the larger set
+\eqref{contours:eq:untransformedsupport}, the integral
+\eqref{contours:eq:untransformed} has support contained in $\supp H+(\supp E)^*$
+and is independent of the chosen discriminant $\Delta$, the target weights
+$q_j$, the radial ramification order $N$, the identification of the covering,
+and the protecting exponent $\rho$.
+\end{corollary}
+\begin{proof}
+The value equals the independently defined series
+\eqref{contours:eq:generalres}, whose support bound was established in
+\cref{contours:subsec:residuedef} and whose definition mentions none of those
+choices.
+\end{proof}
+
+\emph{This is independence of the period only.} It does not assert that two
+differently scaled or differently ramified cycles are joined by a pole-free
+homotopy in some larger chain category; the only homotopy proved below is the
+one of \cref{contours:thm:untransformedhomotopy}, between the protecting cycle
+and its own adapted lift at a fixed scale. A chain-level comparison across
+weights, covers and scales remains open; see
+\cref{contours:subsec:untransformedscope}.
+
+\subsection{Why the missing common radius causes no gap}
+\label{contours:subsec:tworadii}
+Two different finiteness principles are used in the proof of
+\cref{contours:thm:untransformed}, and the construction works precisely because
+they are kept apart.
+
+\begin{enumerate}
+\item \textbf{For a fixed ordinary coefficient product}, ordinary compactness of
+$\mathsf T$ supplies a small ordinary $s$ disk and proves the Laurent period
+identity \eqref{contours:eq:constantperiod}. This is an ordinary analytic
+statement about one germ; the disk may shrink as the germ changes.
+\item \textbf{For a fixed Hahn exponent}, \cref{contours:lem:support} supplies a
+finite list of contributing coefficient products, multi-indices and radial
+degrees. This is an algebraic statement about supports; it says nothing about
+any disk.
+\end{enumerate}
+
+No step asks for one ordinary disk that serves all coefficient germs
+simultaneously, which is what \eqref{contours:eq:shrinking} shows to be
+unavailable. The common parameter domain of the cycle comes from the finite map
+$f$ and its covering --- objects built before any perturbation is named --- and
+not from an intersection of infinitely many convergence neighborhoods. This is
+also why the conclusion is stronger than a representation assembled separately
+for each numerator or each perturbation: one cycle serves an entire valuation
+ball of perturbations whose coefficient germs may have radii tending to zero.
+It is the same distinction as the one recorded after \cref{contours:ex:rank} and
+used in \cref{contours:lem:residuetransform}, applied here to a contour rather
+than to a transformation law.
+
+\section{The equation-adapted lift, its normalizations, and its limits}
+\label{contours:sec:adapted}
+
+The protecting cycle of \cref{contours:thm:untransformed} is adapted to the
+\emph{leading} equations: it satisfies $f_j(Z_0)=t^{\kappa_j\rho}p_j$ exactly,
+while $F_j(Z_0)$ differs from that by a positive-support error. This section
+corrects it, on the same finite cover, to a cycle on which the \emph{perturbed}
+equations hold exactly, connects the two by a pole-free Hahn homotopy, and
+derives the normalizations that \cref{contours:subsec:problems} named as the
+acceptance tests for any proposed cycle. It closes with the example, the
+pathologies, the construction guide, and the exact boundaries of the result.
+
+\subsection{Two uniform ordinary radial bounds}
+\label{contours:subsec:radialbounds}
+The following bounds are ordinary, depend only on the finite map and its ramified
+family of \cref{contours:thm:ramifiedleray}, and are fixed before any Hahn
+coefficient germ is named.
+
+\begin{lemma}[Finite radial bounds]
+\label{contours:lem:radialbounds}
+After shrinking the polyannulus and the ordinary $s$ disk around the same compact
+$\mathsf T$, there are integers $b_{\mathrm{pole}},c_{\mathrm{sep}}\ge0$ such
+that
+\begin{equation}\label{contours:eq:Jbound}
+  \bigl(D_zf(Z(q,s))\bigr)^{-1}=s^{-b_{\mathrm{pole}}}\,\mathsf J(q,s)
+\end{equation}
+with $\mathsf J$ holomorphic on the fixed product neighborhood, and such that
+for any distinct $q,q'\in\mathsf T$ with $p(q)=p(q')$ at least one coordinate of
+$Z(q,s)-Z(q',s)$ has a nonzero Taylor coefficient in $s$ of degree at most
+$c_{\mathrm{sep}}$. If $\mu=1$ one may take $c_{\mathrm{sep}}=0$.
+\end{lemma}
+\begin{proof}
+The determinant $a(q,s)=\det D_zf(Z(q,s))$ is holomorphic across $s=0$ and
+nowhere zero for $s\ne0$, because $Z(\mathsf T,s)$ then lies over regular target
+values. Near a point $(q_0,0)$, Weierstrass preparation in $s$ writes $a$ as a
+unit times a monic polynomial in $s$; every root of that polynomial must be $0$,
+since no zero with $s\ne0$ occurs in the product neighborhood, so locally
+$a=s^ru$ with $u$ a holomorphic unit and $r$ locally constant along
+$\mathsf X\times\{0\}$. A finite cover of the compact $\mathsf T$ by such
+neighborhoods, together with the adjugate formula for the inverse, gives a
+common finite pole order, and shrinking to a common collar of $\mathsf T$ and a
+common $s$ disk gives \eqref{contours:eq:Jbound}.
+
+For the separation bound, consider the off-diagonal fibre product
+$\mathsf T\times_{(S^1)^n}\mathsf T\setminus\operatorname{diag}(\mathsf T)$,
+which is compact, being a union of components of a finite cover. At each of its
+points the two holomorphic source-coordinate vectors differ for $s\ne0$, so some
+Taylor coefficient of their difference is nonzero, and nonvanishing of that
+coefficient persists on an ordinary neighborhood. A finite subcover gives a
+uniform upper bound $c_{\mathrm{sep}}$ on a degree at which a difference is
+already detected.
+\end{proof}
+
+Fix now
+\begin{equation}\label{contours:eq:Lrho}
+  L=\max\{b_{\mathrm{pole}},c_{\mathrm{sep}},\kappa_*\}+1,
+  \qquad
+  \rho\in\Gamma_{>0}\ \text{with}\ (L+b_{\mathrm{pole}})\rho<\delta ,
+\end{equation}
+for example $\rho=\delta/\bigl[2(L+b_{\mathrm{pole}}+1)\bigr]$, available by
+divisibility. Rebuild $Z_0$ by \eqref{contours:eq:Zzero} with this possibly
+smaller exponent; since $L+b_{\mathrm{pole}}\ge\kappa_*$, the protecting
+inequality \eqref{contours:eq:protectingrho} still holds and
+\cref{contours:thm:untransformed} is unaffected. Put
+\begin{equation}\label{contours:eq:Pfull}
+  P=\{\rho\}\cup\bigl(S_E-(L+b_{\mathrm{pole}})\rho\bigr),
+  \qquad \mathcal M=P^* ,
+\end{equation}
+a well-ordered positive generating set with $P_0\subset\mathcal M$, because
+$L+b_{\mathrm{pole}}\ge\kappa_j$ for every $j$.
+
+\subsection{The scaled implicit equation and the exact lift}
+\label{contours:subsec:exactlift}
+Write $s=t^\rho$ from here on as an algebraic abbreviation only --- the ordinary
+analysis is finished --- and set
+\[
+  J_0=D_zf(Z_0),\qquad \Phi=Z_0+t^{L\rho}V .
+\]
+The requirement $F(\Phi)=f(Z_0)$ is equivalent to the fixed-point equation
+\begin{align}
+  V&=B(V),\label{contours:eq:Bequation}\\
+  B(V)&=-t^{-L\rho}J_0^{-1}\Bigl(
+    f\bigl(Z_0+t^{L\rho}V\bigr)-f(Z_0)-t^{L\rho}J_0V
+    +E\bigl(Z_0+t^{L\rho}V\bigr)\Bigr),
+  \label{contours:eq:Bdefinition}
+\end{align}
+a formal power series in $V$ with coefficients in $\HH(\mathsf X)$.
+
+\begin{theorem}[Equation-adapted lift on the same cover]
+\label{contours:thm:adaptedlift}
+Equation \eqref{contours:eq:Bequation} has exactly one solution with strictly
+positive coordinate supports. The correction $\Upsilon=t^{L\rho}V$ satisfies
+\begin{equation}\label{contours:eq:Upsilonsupport}
+  \supp\Upsilon\subset L\rho+\bigl(\mathcal M\setminus\{0\}\bigr),
+  \qquad
+  \supp\Upsilon\subset S_E-b_{\mathrm{pole}}\rho+\mathcal M ,
+\end{equation}
+so $\vH(\Upsilon)>L\rho$ and $\vH(\Upsilon)\ge\delta-b_{\mathrm{pole}}\rho$ when
+$\Upsilon\ne0$, and $\Upsilon=0$ when $E=0$. The parameterization
+$\Phi=Z_0+\Upsilon$ lies in $\HH(\mathsf X)_+^n$ on the \emph{same} fixed
+ordinary parameter domain, is an admissible Hahn cycle on the same finite cover
+$\mathsf T$ in the sense of \cref{contours:def:hahncycle}, and satisfies the
+perturbed target equations exactly:
+\begin{equation}\label{contours:eq:adapted}
+  F_j\bigl(\Phi(q)\bigr)=t^{\kappa_j\rho}p_j(q)
+  \qquad (q\in\mathsf T,\ 1\le j\le n).
+\end{equation}
+It is the unique parameterization of the form $Z_0+\Upsilon$ with
+$\vH(\Upsilon)>L\rho$ satisfying \eqref{contours:eq:adapted}. No shrinking of the
+parameter domain depending on $E$ occurs.
+\end{theorem}
+\begin{proof}
+Consider the coefficients of \eqref{contours:eq:Bdefinition}. A coefficient of
+total $V$-degree $r\ge2$ coming from the ordinary nonlinear part has exponents in
+$\bigl((r-1)L-b_{\mathrm{pole}}\bigr)\rho+\N\rho$, positive and contained in
+$\mathcal M$ because $L>b_{\mathrm{pole}}$. A coefficient of total degree
+$r\ge0$ coming from the perturbation has exponents in
+$S_E-(L+b_{\mathrm{pole}})\rho+rL\rho+\N\rho$, again a positive subset of
+$\mathcal M$. Both assertions follow from Taylor expansion together with
+\eqref{contours:eq:Jbound}, and all coefficient functions are holomorphic on the
+same $\mathsf X$ by \cref{contours:lem:radiusfreesub}. Hence the union of the
+supports of all coefficients of $B$ is a well-ordered subset of
+$\mathcal M\setminus\{0\}$, and \cref{contours:lem:positiveimplicit} applies with
+$R=\OO(\mathsf X)$, giving existence, uniqueness in the positive ball, and
+$\supp V\subset\mathcal M\setminus\{0\}$. The first bound in
+\eqref{contours:eq:Upsilonsupport} is immediate.
+
+For the second bound, every finite rooted tree in the expansion of
+\cref{contours:lem:positiveimplicit} has at least one nullary vertex, and the
+constant coefficient of $B$ is exactly $-t^{-L\rho}J_0^{-1}E(Z_0)$, with support
+in $S_E-(L+b_{\mathrm{pole}})\rho+\N\rho$. Removing one such vertex exponent from
+a tree's weight leaves exponents in $\mathcal M$, so
+$\supp V\subset S_E-(L+b_{\mathrm{pole}})\rho+\mathcal M$; multiplying by
+$t^{L\rho}$ gives the second bound. If $E=0$ that constant coefficient vanishes,
+every tree has weight belonging to no admissible word, and $V=0$.
+
+All substitutions used to pass between $F(\Phi)=f(Z_0)$ and
+\eqref{contours:eq:Bequation} are covered by the same support bounds and
+\cref{contours:lem:radiusfreesub}, so reversing the algebra gives
+$F(\Phi)=f(Z_0)=\bigl(t^{\kappa_j\rho}p_j\bigr)_j$ \emph{exactly}, not modulo a
+truncation. Uniqueness among corrections with $\vH(\Upsilon)>L\rho$ is
+uniqueness in \cref{contours:lem:positiveimplicit}.
+\end{proof}
+
+\begin{corollary}[Regular protected sheets]
+\label{contours:cor:protectedsheets}
+The matrix $D_zF(\Phi)$ is invertible in the Hahn matrix algebra over
+$\HH(\mathsf X)$. For each fixed ordinary $\xi\in(S^1)^n$ the $\mu$ values
+$\Phi(q)$ with $p(q)=\xi$ are pairwise distinct. In local holomorphic
+coordinates on $\mathsf X$ the angular derivative of $\Phi$ has full rank over
+the Hahn coefficient ring.
+\end{corollary}
+\begin{proof}
+Write $J_0^{-1}D_zF(\Phi)=I+J_0^{-1}\bigl(D_zF(\Phi)-J_0\bigr)$. The ordinary
+part of the difference contains at least one factor $\Upsilon$, so after
+multiplication by $J_0^{-1}$ its exponents exceed
+$(L-b_{\mathrm{pole}})\rho>0$; the perturbation derivative contributes exponents
+at least $\delta-b_{\mathrm{pole}}\rho>0$. A matrix Neumann series inverts the
+right-hand side, and $J_0$ is invertible by \eqref{contours:eq:Jbound}. For two
+distinct sheets, \cref{contours:lem:radialbounds} detects a nonzero coefficient
+of $Z_0(q)-Z_0(q')$ at an exponent at most $c_{\mathrm{sep}}\rho$, while the
+difference of the corrections has all exponents strictly above
+$L\rho>c_{\mathrm{sep}}\rho$ and cannot cancel it. Finally, differentiating
+\eqref{contours:eq:adapted} gives
+\[
+  D_zF(\Phi)\,d\Phi
+  =\operatorname{diag}\bigl(t^{\kappa_1\rho},\ldots,t^{\kappa_n\rho}\bigr)\,dp,
+\]
+whose right-hand side has invertible determinant in local coordinates, since $p$
+is an unramified covering and the monomials are units in $K$.
+\end{proof}
+
+\emph{These are statements about the protected sheets only.} They do not count
+the zeros of $F$ in any larger surreal domain, they do not assert that every
+zero of $F$ is simple, and they do not assume that the displaced zero scheme is
+reduced; singular leading zeros are allowed throughout, and the cycle lies over
+regular nonzero target values. In particular \eqref{contours:eq:adapted} is an
+exact identity about \emph{one parameterized cycle}. \emph{The image
+$\Phi[\mathsf T]$ is not identified with the entire class of surcomplex
+solutions of $|F_j|=t^{\kappa_j\rho}$, and no such identification is needed for
+any integral below.} The distinction is the same one drawn in
+\cref{contours:ex:definablecircle} between a full semialgebraic circle and an
+ordinary-parameter contour trace.
+
+\subsection{A pole-free homotopy between the two cycles}
+\label{contours:subsec:polefree}
+Let $\Phi_u=Z_0+u\Upsilon$ for $0\le u\le1$, with $u$ an \emph{ordinary} real
+homotopy parameter as in \eqref{contours:eq:homotopyoperator}; it does not index
+a limit in $K$.
+
+\begin{lemma}[Admissible straight homotopy]
+\label{contours:lem:straighthomotopy}
+For each $j$ and $0\le u\le1$,
+\[
+  F_j(\Phi_u)=t^{\kappa_j\rho}p_j\,(1+Q_{j,u}),
+\]
+where $Q_{j,u}$ has positive support contained in $\mathcal M$ and coefficients
+smooth on $\mathsf X\times[0,1]$. Every Taylor substitution, geometric
+inversion, differentiation and pullback for the untransformed form is strongly
+summable there, and the total pullback has support contained in
+$S_H-\kappa_\Sigma\rho+\mathcal M$.
+\end{lemma}
+\begin{proof}
+The difference $f_j(Z_0+u\Upsilon)-f_j(Z_0)$ carries at least one factor
+$\Upsilon$, so its support lies in $L\rho+(\mathcal M\setminus\{0\})$, and
+division by $t^{\kappa_j\rho}p_j$ leaves positive support because
+$L>\kappa_j$. The perturbation part has support in $S_E+\mathcal M$, and division
+leaves positive support because $S_E-\kappa_j\rho\subset\mathcal M\setminus\{0\}$
+by \eqref{contours:eq:protectingrho}. Expand $(1+Q_{j,u})^{-1}$ geometrically;
+\cref{contours:lem:support} controls the whole indexed family, exactly as in
+\cref{contours:prop:admissiblepullback}. At each exact exponent only finitely
+many Taylor and geometric terms contribute, so the dependence on $u$ is
+polynomial there, and ordinary differentiation in $u$ or in the angular
+parameters cannot enlarge support. This covers the total pullback including its
+$\dd u$ terms.
+\end{proof}
+
+\begin{theorem}[Untransformed homotopy invariance]
+\label{contours:thm:untransformedhomotopy}
+For every $H\in\A_n$,
+\begin{equation}\label{contours:eq:untransformedhomotopy}
+  \HInt_{\Phi[\mathsf T]}
+  \frac{H\dd z_1\wedge\cdots\wedge \dd z_n}{F_1\cdots F_n}
+  =\HInt_{Z_0[\mathsf T]}
+  \frac{H\dd z_1\wedge\cdots\wedge \dd z_n}{F_1\cdots F_n} .
+\end{equation}
+Consequently \eqref{contours:eq:untransformed} holds with $\Phi[\mathsf T]$ in
+place of $Z_0[\mathsf T]$: the equation-adapted cycle of
+\cref{contours:thm:adaptedlift} also represents $\Res_F$.
+\end{theorem}
+\begin{proof}
+A meromorphic top-degree form in $n$ complex variables is closed wherever its
+denominators are invertible, since differentiating its coefficient produces an
+extra $\dd z_j$ which wedges to zero against
+$\dd z_1\wedge\cdots\wedge \dd z_n$; this is a differential-algebra identity and
+needs no analytic hypothesis. The support-justified chain rule of
+\cref{contours:lem:radiusfreesub} transports it to the total pullback under
+$\Phi_u$. By \cref{contours:lem:straighthomotopy} that pullback is a
+strongly summable family of smooth closed $n$-forms on the compact ordinary
+cylinder $\mathsf T\times[0,1]$, so \cref{contours:thm:hahnstokes} applies to
+each coefficient. Since $\partial\mathsf T=\varnothing$, the only boundary terms
+are the two end cycles with opposite orientations, and their difference
+vanishes. Combining with \cref{contours:thm:untransformed} gives the last
+assertion.
+\end{proof}
+
+The ordinary pullback Jacobian $d\Phi_1\wedge\cdots\wedge d\Phi_n$ is of course
+present in \eqref{contours:eq:untransformedhomotopy}; it is the
+change-of-parameters factor that every pullback of a differential form carries,
+and it is \emph{not} an auxiliary determinant arising from replacing the equation
+system $F$ by $AF$. Neither the integrand nor its list of denominators has been
+altered, which is the precise difference from
+\cref{contours:thm:generalrepresentation} and
+\cref{contours:thm:septorus}, where $\det A$ and $\det\mathsf C$ are not
+optional.
+
+\subsection{Degree normalization, a finite-sheet trace, and the two acceptance
+tests}
+\label{contours:subsec:normalization}
+Write $J_F=\det(\partial F_i/\partial z_j)$ as in
+\eqref{contours:eq:traceresidue}.
+
+\begin{theorem}[Degree normalization on the adapted cycle]
+\label{contours:thm:degreenormalization}
+Under the hypotheses of \cref{contours:thm:untransformed},
+\begin{equation}\label{contours:eq:jacobiannorm}
+  \Res_F(J_F)=\mu ,
+\end{equation}
+and more generally, for $G\in\A_n$ in the target variables $w$,
+\begin{equation}\label{contours:eq:targetnorm}
+  \Res_F\bigl(G(F)\,J_F\bigr)=\mu\,G(0),
+\end{equation}
+where $G(F)$ is expanded about the ordinary map $f$ in the positive perturbation
+$E$ and is therefore a well-defined radius-free Hahn germ.
+\end{theorem}
+\begin{proof}
+Work on the adapted cycle, using
+\cref{contours:thm:adaptedlift,contours:thm:untransformedhomotopy}. By
+\eqref{contours:eq:adapted} and \cref{contours:cor:protectedsheets},
+\[
+  \Phi^*\Bigl(\frac{J_F\dd z_1\wedge\cdots\wedge \dd z_n}{F_1\cdots F_n}\Bigr)
+  =\bigwedge_{j=1}^n\frac{d(F_j\circ\Phi)}{F_j\circ\Phi}
+  =p^*\Bigl(\frac{\dd w_1}{w_1}\wedge\cdots\wedge\frac{\dd w_n}{w_n}\Bigr),
+\]
+whose normalized integral over the degree-$\mu$ covering $\mathsf T$ is $\mu$.
+This proves \eqref{contours:eq:jacobiannorm} \emph{without} importing a Hahn
+flatness theorem or a Nullstellensatz. For the second identity, $f(0)=0$ makes
+each ordinary composition with $f$ a convergent germ and the expansion in $E$ is
+support-controlled by \cref{contours:lem:radiusfreesub}; on the adapted cycle
+$G(F\circ\Phi)=G\bigl(t^{\kappa_1\rho}p_1,\ldots,t^{\kappa_n\rho}p_n\bigr)$,
+whose nonconstant target Taylor monomials integrate to zero against
+$\bigwedge_j\dd p_j/p_j$ on the torus, while its constant monomial is $G(0)$.
+Finite covering degree and strong summability give
+\eqref{contours:eq:targetnorm}.
+\end{proof}
+
+The ordinary degree-residue identity behind \eqref{contours:eq:jacobiannorm} is
+classical. What is added is that it survives for entirely unrestricted
+radius-free positive-support perturbations and follows from an actual admissible
+parameterized cycle rather than from a finite-algebra package. \emph{Calling
+\eqref{contours:eq:jacobiannorm} a conservation law for local algebra length
+would additionally require the relevant finite-flatness identification; that
+identification is not smuggled into this proof.}
+
+\begin{corollary}[Protected trace representation]
+\label{contours:cor:protectedtrace}
+For $H\in\A_n$ the fibrewise sum
+\[
+  \Theta_H(\xi)=\sum_{q\in p^{-1}(\xi)}
+  \frac{H(\Phi(q))}{J_F(\Phi(q))}
+\]
+is a single-valued Hahn-holomorphic function on the polyannulus $\mathsf A$, and
+\begin{equation}\label{contours:eq:finitetrace}
+  \Res_F(H)=\frac1{(2\pi i)^n}
+  \HInt_{(S^1)^n}\Theta_H(\xi)\,
+  \frac{\dd\xi_1}{\xi_1}\wedge\cdots\wedge\frac{\dd\xi_n}{\xi_n} .
+\end{equation}
+\end{corollary}
+\begin{proof}
+Invertibility of $D_zF(\Phi)$ and the differential of
+\eqref{contours:eq:adapted} give
+\[
+  \Phi^*\Bigl(\frac{H\dd z_1\wedge\cdots\wedge \dd z_n}{\prod_jF_j}\Bigr)
+  =\frac{H(\Phi)}{J_F(\Phi)}\bigwedge_j\frac{\dd p_j}{p_j},
+\]
+and integration over a finite covering is integration of the fibrewise sum,
+valid for each ordinary coefficient and hence for the Hahn family. The matrix
+inverse used here is a fixed finite monomial shift times a positive-support
+expansion, so it adds no summability question.
+\end{proof}
+
+This is a trace over \emph{protected regular fibres}. It is not a claim that all
+individual zeros of $F$ at target value $0$ have been separated or
+parameterized, and it does not identify $\Theta_H$ with a multiplication trace on
+a finite algebra.
+
+\begin{proposition}[Annihilation of the equation ideal, and descent]
+\label{contours:prop:idealannihilation}
+For every $H\in\A_n$ and every $j$, $\Res_F(F_jH)=0$. Hence $\Res_F$ descends to
+a nonzero $K$-linear functional on $\A_n/(F_1,\ldots,F_n)$.
+\end{proposition}
+\begin{proof}
+Classical residue annihilation gives
+$\res_{(f_1^{k_1+1},\ldots,f_n^{k_n+1})}(f_jh)=0$ when $k_j=0$, and equals
+$\res_{(\ldots,f_j^{k_j},\ldots)}(h)$ --- the same functional with $k_j$ lowered
+by one --- when $k_j>0$. Substituting these identities into
+\eqref{contours:eq:generalres} and shifting the $j$th summation index gives
+$\Res_F(f_jH)=-\Res_F(E_jH)$, every reindexing being licensed by positive
+support and \cref{contours:lem:support}; adding $\Res_F(E_jH)$ gives
+$\Res_F(F_jH)=0$. The functional is nonzero by
+\eqref{contours:eq:jacobiannorm} in characteristic zero. \emph{This is descent
+only, and not nondegeneracy of a duality pairing.}
+\end{proof}
+
+\paragraph{The two acceptance tests, checked.}
+\Cref{contours:subsec:problems} fixed two compatibility tests for any proposed
+cycle: its integral should annihilate $(F)$, and it should satisfy
+$\Res_F(HJ_F)=\Tr(M_H)$. The first is now proved for the cycle itself, by
+\cref{contours:prop:idealannihilation}, from classical residue annihilation and
+nothing else. The second is a statement about the functional $\Res_F$, and it is
+the reported companion result \eqref{contours:eq:traceresidue}; what the new
+theorem contributes is that the untransformed cycle integral \emph{is} that
+functional, so the test is met exactly to the extent that
+\eqref{contours:eq:traceresidue} holds --- and its $H=1$ case,
+$\Res_F(J_F)=\mu=\Tr(M_1)$, is now proved directly on the cycle by
+\cref{contours:thm:degreenormalization}, without the finite-algebra package.
+\emph{Neither test is offered as a substitute for the construction, and passing
+them was never in doubt for a functional defined by
+\eqref{contours:eq:generalres}; their role is to certify that the cycle computes
+the right functional and not some near neighbour of it.}
+
+\subsection{Formal coefficient germs}
+\label{contours:subsec:formalcoeff}
+The radius-free theorem needs no common radius but still assumes each coefficient
+germ converges. That hypothesis can be removed from $E$ and $H$, by a separate
+argument. The leading map $f$ remains an ordinary \emph{convergent} map with an
+isolated zero throughout; its convergence is what produced the bounded finite
+covering, and no formal substitute for that object is offered here.
+
+\begin{lemma}[Finite-jet extension of an ordinary local residue]
+\label{contours:lem:finitejet}
+For fixed $f$ and $k$ the functional
+$\res_{(f_1^{k_1+1},\ldots,f_n^{k_n+1})}$ depends only on a finite Taylor jet of
+its numerator, and has a unique extension to $\C[[z]]$ continuous for the formal
+maximal-ideal filtration.
+\end{lemma}
+\begin{proof}
+The ideal $I_k=(f_1^{k_1+1},\ldots,f_n^{k_n+1})\subset\C\{z\}$ has the same
+radical as $(f)$, hence is primary to the maximal ideal
+$\mathfrak n=(z_1,\ldots,z_n)$ of $\C\{z\}$ --- which is not the symbol $\m$ of
+\cref{contours:subsec:conventions} --- so $\mathfrak n^{a_k}\subset I_k$ for some
+finite $a_k$. Ordinary residue annihilation makes the functional vanish on $I_k$
+and therefore on $\mathfrak n^{a_k}$, so
+evaluation on the Taylor polynomial of degree less than $a_k$ defines the
+extension, and any higher truncation gives the same value. Uniqueness follows
+because polynomials are dense for that filtration. This is the classical
+finite-jet property of local residue functionals
+\cite{GriffithsHarris,TajimaNabeshima}, not a new duality theorem.
+\end{proof}
+
+For $E$ and $H$ with formal coefficient germs, \eqref{contours:eq:generalres}
+still defines $\Res_F$ using these extended functionals, and positive Hahn
+support still makes the series strongly summable.
+
+\begin{theorem}[Formal-coefficient contour theorem]
+\label{contours:thm:formalcontour}
+In \cref{contours:thm:untransformed,contours:thm:adaptedlift,contours:thm:untransformedhomotopy}
+the hypotheses $E\in\A_n^n$ and $H\in\A_n$ may be replaced by
+$E\in\C[[z]]((t^\Gamma))^n$ and $H\in\C[[z]]((t^\Gamma))$, with $f$ still
+convergent with an isolated zero. The same cycle, the same support certificates
+and the same homotopy apply, the pullback coefficients are still ordinary
+holomorphic functions on the fixed parameter domain, and
+\eqref{contours:eq:untransformed} holds with the finite-jet definition of the
+residue.
+\end{theorem}
+\begin{proof}
+The construction of $p,\mathsf X,\mathsf T,Z$ uses only $f$ and is unchanged.
+Every substitution of a formal coefficient germ into $Z_0$, into $\Phi$ or into
+the homotopy is licensed by \cref{contours:lem:radiusfreesub}, which was stated
+for formal $h_\lambda$ precisely for this purpose; the lift of
+\cref{contours:thm:adaptedlift} uses only such substitutions, derivatives of
+formal germs, and finite coefficient operations, so its proof and its support
+estimates survive verbatim. What must be redone is the residue equality, because
+\cref{contours:lem:constantperiod} cannot be quoted for a divergent formal
+numerator.
+
+Fix an output exponent $\nu$. On the contour side the accounting
+\eqref{contours:eq:exponentaccounting} admits only finitely many numerator
+exponents, perturbation exponents and radial degrees at $\nu$, and each
+contributing radial coefficient reads only a finite Taylor jet of the selected
+formal germs. On the series side \cref{contours:lem:support} admits only finitely
+many coefficient selections and multi-indices $k$ at $\nu$, and by
+\cref{contours:lem:finitejet} their residues also read only finite Taylor jets.
+Take the union of these two finite lists of jet requirements, and replace each
+selected formal germ by a Taylor polynomial meeting all of them, setting the
+other coefficients to zero. This introduces no new Hahn exponents and changes the
+coefficient at $\nu$ on neither side. The already proved analytic theorem applies
+to these polynomial coefficient data and identifies the two coefficients at
+$\nu$; as $\nu$ was arbitrary, the protecting-cycle identity follows. Finally the
+homotopy proof is coefficientwise ordinary Stokes applied to expressions that are
+polynomial in the real parameter $u$ at each exponent, and never uses convergence
+of an original coefficient germ, so it identifies the adapted period with the
+protecting period as before.
+\end{proof}
+
+\emph{The finite-jet argument is a bridge between two of the rings of
+\cref{contours:subsec:rings}, not an identification of them.} It does not assert
+that a formal germ is an ordinary function on a complex neighborhood; it becomes
+a Hahn family of holomorphic functions only after the positive-support
+substitution. Nor does it construct the initial ramified covering when $f$ itself
+is formal: that is a different extension problem, recorded in
+\cref{contours:subsec:untransformedscope}.
+
+\subsection{A mixed six-sheeted example, and the shortcut that fails}
+\label{contours:subsec:sixsheeted}
+
+\begin{example}[A six-sheeted singularity, its adapted cycle, and all its
+monomial residues]
+\label{contours:ex:sixsheeted}
+Work over $\Gamma=\Q$ and take
+\begin{equation}\label{contours:eq:examplef}
+  f_1=x^2+y^3,\qquad f_2=x^2+3y^3 .
+\end{equation}
+Then $(f_1,f_2)=(x^2,y^3)$, so $\mu=6$, and the ordered-denominator
+transformation matrix is
+$\left(\begin{smallmatrix}1&1\\1&3\end{smallmatrix}\right)$ with determinant
+$2$; already at the ordinary origin
+$\res_{(f_1,f_2)}(xy^2)=1/2$. \emph{That factor $2$ is the tripwire of this
+example}: any calculation that silently replaces the integrand by an
+ordered-denominator transform of it, without the compensating determinant of
+\cref{contours:lem:residuetransform}, will differ from the correct answer by
+exactly this factor.
+
+For a target point $w$ the inverse equations are
+$x^2=(3w_1-w_2)/2$ and $y^3=(w_2-w_1)/2$, so the branch divisor lies in
+$(3w_1-w_2)(w_2-w_1)=0$. Choose target weights $(1,2)$ and radial ramification
+$N=6$, giving $(\kappa_1,\kappa_2)=(6,12)$, and on a polyannulus in coordinates
+$(a,b)$ put $p(a,b)=(a^6,b)$, a covering of degree $6$. The ordinary family of
+\cref{contours:thm:ramifiedleray} may be written explicitly as
+\begin{equation}\label{contours:eq:exampleZ}
+  Z_x=\sqrt{\tfrac32}\,s^3a^3
+    \Bigl(1-\frac{s^6b}{3a^6}\Bigr)^{1/2},
+  \qquad
+  Z_y=-2^{-1/3}s^2a^2
+    \Bigl(1-\frac{s^6b}{a^6}\Bigr)^{1/3},
+\end{equation}
+both binomial branches being $1$ at $s=0$, single-valued and holomorphic for
+small ordinary $s$ on a fixed collar of $|a|=|b|=1$. Substitution gives
+$f_1(Z)=s^6a^6$ and $f_2(Z)=s^{12}b$. As $a$ runs over the six preimages of a
+fixed $a^6$, the powers $a^3$ and $a^2$ realize every pair of square-root and
+cube-root choices exactly once, \emph{so this is the full six-sheeted cycle and
+not one selected branch}.
+
+Now deform by
+\begin{equation}\label{contours:eq:exampleF}
+  F_1=x^2+y^3-t,\qquad F_2=x^2+3y^3-5t,
+\end{equation}
+so $\delta=1$ is an admissible threshold and
+$J_F=\det\left(\begin{smallmatrix}2x&3y^2\\2x&9y^2\end{smallmatrix}\right)
+=12xy^2$. On \eqref{contours:eq:exampleZ} the coordinate $x$ has radial order
+$3$ and $y$ has radial order $2$, the inverse Jacobian has pole order at most
+$4$, and distinct sheets separate at radial order at most $3$; so one may take
+$b_{\mathrm{pole}}=4$, $c_{\mathrm{sep}}=3$, $L=13$ and $\rho=1/40$, the
+inequality \eqref{contours:eq:Lrho} reading $17/40<1$. With $s=t^{1/40}$ the
+adapted roots of \cref{contours:thm:adaptedlift} are characterized by
+\begin{equation}\label{contours:eq:examplePhi}
+  \Phi_x^2=\frac{3s^6a^6-s^{12}b}{2}-s^{40},
+  \qquad
+  \Phi_y^3=\frac{s^{12}b-s^6a^6}{2}+2s^{40},
+\end{equation}
+with the branches selected by their leading terms, and then
+$F_1(\Phi)=s^6a^6$, $F_2(\Phi)=s^{12}b$ exactly. Their leading displacements are
+\[
+  \Phi_x-Z_x=-\frac{\sqrt6}{6a^3}\,s^{37}+\cdots,
+  \qquad
+  \Phi_y-Z_y=\frac{2\cdot2^{2/3}}{3a^4}\,s^{36}+\cdots,
+\]
+the omitted terms having strictly larger integer radial support --- \emph{this
+is a statement about supports, not a limit in any surreal topology}. The general
+estimate $\vH(\Upsilon)\ge\delta-b_{\mathrm{pole}}\rho=36/40$ is attained by the
+second coordinate, whereas the uniqueness ball $\vH(\Upsilon)>13/40$ of
+\cref{contours:thm:adaptedlift} is much larger than the actual correction: it is
+a uniqueness region, not a sharp bound.
+
+The displaced zeros of \eqref{contours:eq:exampleF} satisfy $x^2=-t$ and
+$y^3=2t$, six distinct points of $K^2$, and the monomial residues are
+\begin{equation}\label{contours:eq:examplemonomials}
+ \boxed{\quad
+  \Res_F(x^\alpha y^\beta)=
+  \begin{cases}
+    \tfrac12(-t)^{p}(2t)^{q},
+      &\alpha=2p+1,\ \beta=3q+2,\ p,q\in\N,\\[2pt]
+    0,&\text{otherwise},
+  \end{cases}\quad}
+\end{equation}
+for $\alpha,\beta\in\N$. An independent verification transforms the ordered
+equations to $(x^2+t,\,y^3-2t)$, includes the factor $1/2$, and uses the
+one-variable residues $(-t)^p$ of $x^\alpha/(x^2+t)$ and $(2t)^q$ of
+$y^\beta/(y^3-2t)$; equivalently it reduces in the quotient basis
+$1,y,y^2,x,xy,xy^2$ by $x^2=-t$ and $y^3=2t$ and halves the coefficient of
+$xy^2$. In particular
+\[
+  \Res_F(xy^2)=\tfrac12,\quad
+  \Res_F(x^3y^2)=-\tfrac t2,\quad
+  \Res_F(xy^5)=t,\quad
+  \Res_F(J_F)=6 ,
+\]
+the last checking the total degree of the cycle and detecting the loss of a
+sheet or a reversed orientation. For the entire numerator $H=e^{x+y}$ the
+positive substitution is legitimate and gives the exact Hahn series
+\begin{equation}\label{contours:eq:exampleexp}
+  \Res_F(e^{x+y})
+  =\frac12\sum_{p,q\ge0}
+   \frac{(-1)^p2^q}{(2p+1)!\,(3q+2)!}\;t^{p+q},
+\end{equation}
+whose constant coefficient is $1/4$, not $1/2$, because the $xy^2$ coefficient
+of the numerator is $1/2$. \emph{This is a strong Hahn sum; ordinary numerical
+convergence at a complex value of $t$ is irrelevant to the statement.} Neither
+of the two independent verifications substitutes for the arbitrary-support proof
+of \cref{contours:thm:untransformed}.
+\end{example}
+
+\begin{example}[The original coordinate torus is the wrong shortcut]
+\label{contours:ex:wrongtorus}
+In the setting of \eqref{contours:eq:examplef}, integrate the original form over
+a small coordinate product circle in $(x,y)$ instead. On a torus with
+$|y|^3\ll|x|^2$ both denominators are dominated by $x^2$; on one with the
+opposite inequality both are dominated by $y^3$. Neither is the
+equation-adapted Leray cycle. In the first region
+\[
+  \frac{xy^2}{(x^2+y^3)(x^2+3y^3)}
+  =x^{-3}y^2\sum_{r,\sigma\ge0}(-1)^r(-3)^\sigma
+   \frac{y^{3(r+\sigma)}}{x^{2(r+\sigma)}},
+\]
+which has no $x^{-1}y^{-1}$ term, so its coordinate-torus integral is $0$ while
+$\Res_F(xy^2)=1/2$. \emph{This is why \cref{contours:def:hahncycle} must allow a
+finite ramified cover:} the ramification fixes the geometry without multiplying
+the integrand by an auxiliary determinant, and a Jacobian from the actual
+parameterization remains, as it must for any pullback of a differential form.
+The example also shows that the objection recorded in
+\cref{contours:subsec:scope} was correct about the coordinate torus: it is the
+\emph{cycle}, not the theorem, that had to change.
+\end{example}
+
+\begin{remark}[What the executable checks do and do not establish]
+\label{contours:rem:leraychecks}
+The source archive ships an exact symbolic suite, preserved in this repository
+as \texttt{code/05-untransformed-leray-cycles-checks.py} with its recorded run
+in \texttt{data/05-untransformed-leray-cycles-checks.json}: $632$ exact checks
+pass under SymPy 1.14.0, in eight groups --- $180$ binomial-jet identities,
+$225$ monomial residues, $200$ ideal-annihilation instances, $9$ coefficients of
+\eqref{contours:eq:exampleexp}, $7$ quotient relations, $5$ target equations, $4$
+leading displacements and $2$ normalizations. The arithmetic is exact over
+$\Q(t)$ with no floating point, and the matrix route is deliberately independent
+of the contour derivation: with $M_x,M_y$ the multiplication matrices on the
+basis $1,y,y^2,x,xy,xy^2$, the trace
+$\Tr\bigl(M_x^\alpha M_y^\beta(12M_xM_y^2)^{-1}\bigr)$ computes the sum of the
+simple-zero residues of $x^\alpha y^\beta$ and is compared with
+\eqref{contours:eq:examplemonomials}, which tests the determinant factor and all
+six sheets at once. \emph{These are finite examples only.} They do not verify
+well-ordering for every input support, parameterized removable singularities for
+every germ, the rooted-tree construction of
+\cref{contours:lem:positiveimplicit}, or novelty, and the source's own README and
+recorded output say so.
+\end{remark}
+
+\subsection{Radius collapse and non-Archimedean supports}
+\label{contours:subsec:pathologies}
+Two pathologies exercise the hypotheses, and both are handled by the same cycle.
+
+\begin{example}[Infinitely shrinking coefficient radii in the perturbation]
+\label{contours:ex:radiuscollapse}
+Keep \eqref{contours:eq:examplef} and take
+\[
+  E_1=-\sum_{j\ge1}\frac{t^j}{1-jx}\ \in\A_2,\qquad E_2=0,
+\]
+that is, the witness \eqref{contours:eq:shrinking} of
+\cref{contours:subsec:rings} used now as a \emph{perturbation} rather than as a
+numerator. Its support is $\N_{>0}$, so $\delta=1$, but its $j$th coefficient has
+a pole at $x=1/j$, so there is no common ordinary neighborhood of the origin
+carrying all of its coefficient germs, and any argument resting on a uniformly
+convergent family on a fixed source disk fails outright. The protecting cycle
+\eqref{contours:eq:exampleZ} with $s=t^{1/40}$ nevertheless works: on it
+\[
+  \frac1{1-jZ_x}=\sum_{r\ge0}j^rZ_x^{\,r}
+\]
+is a strongly summable Hahn identity, each exact output exponent sees only
+finitely many pairs $(j,r)$ and finitely many radial coefficient choices, and
+every coefficient function is a finite polynomial expression in the coefficient
+functions of $Z_x$ and therefore holomorphic on the same annular parameter
+domain. \emph{Their sizes may grow without bound as the exponent varies; no
+coefficient norm was imposed or used.} The exact adapted lift also exists, by
+\cref{contours:thm:adaptedlift}, although no closed formula such as
+\eqref{contours:eq:examplePhi} is available: its coefficients come from the
+finite rooted trees of \cref{contours:lem:positiveimplicit}, all on the same
+parameter domain, with the certificate \eqref{contours:eq:Upsilonsupport}.
+\end{example}
+
+\begin{example}[A value group in which radial powers are not cofinal]
+\label{contours:ex:nonarchsupport}
+Let $\Gamma=\Q^2$ with the lexicographic order, and put $\rho=(0,1)$ and
+$\eta=(1,0)$, so that $r\rho<\eta$ for every positive integer $r$. No sequence of
+radial Taylor truncations indexed by $r\in\N$ is then a valuation approximation
+at all scales --- the phenomenon of \cref{contours:ex:rank} --- yet
+$\sum_{r\ge0}t^{r\rho}$ is a perfectly good Hahn sum with well-ordered support
+and a single radial degree at each exact exponent. Combining this with radius
+collapse and a support that lies in no finitely generated positive semigroup,
+take
+\[
+  S=\bigl\{(0,1-1/j):j\ge2\bigr\}\cup\bigl\{(1,0)\bigr\}
+\]
+as the perturbation support, of order type $\omega+1$ with least element
+$\delta=(0,1/2)$, and assign to its first part the coefficient germs
+$(1-jx)^{-1}$. Choosing $\rho=\delta/40$ supplies the same protecting and lifting
+inequalities as before, and the support proofs remain valid although infinitely
+many radial degrees lie below $(1,0)$. \emph{Every proof above uses finiteness at
+an exact exponent, never finiteness of an initial segment}, which is exactly the
+distinction recorded after \cref{contours:ex:rank} and in
+\cref{contours:rem:notpicard}.
+\end{example}
+
+\begin{remark}[Why positivity cannot simply be dropped]
+\label{contours:rem:positivityneeded}
+The positive-support condition is structural, not cosmetic. If arbitrary Hahn
+perturbations were allowed one could take $E=-f$, leaving $F=0$ and no
+denominator at all. Less crudely, a support unbounded below destroys the
+finite-jet property of substitution: an expression such as
+$\sum_{r\ge0}t^{-r^2}z^r$ does not lie in $\C[[z]]((t^\Gamma))$, its coefficient
+support failing to be well ordered, and it must not enter the argument merely
+because each individual coefficient exists. \emph{The results above do not assert
+that positivity is necessary in every individual example}; they give one uniform
+sufficient condition under which the cycle, the substitution, the geometric
+inversion and the homotopy all carry verifiable support certificates.
+\end{remark}
+
+\subsection{A construction guide, and an explicit refusal of effectivity}
+\label{contours:subsec:construction}
+When the leading germ is polynomial or effectively algebraic the proof is an
+actionable recipe, and it is worth stating separately from the workflow of
+\cref{contours:sec:procedure} because its steps are specific to this cycle.
+Compute a finite-map representative or a local elimination description; find a
+nonzero discriminant equation; choose positive integer weights exposing one of
+its monomials, as in \cref{contours:lem:targetmonomial}; compute the radial
+monodromy, or simply use an exponent dividing $\operatorname{lcm}(1,\ldots,\mu)$
+that kills it; retain the finite annular cover rather than forcing globally
+single-valued branches over the target; and expand the source-coordinate map in
+the ramified radial variable. For a protecting cycle only
+\eqref{contours:eq:protectingrho} is required. For an adapted cycle, compute the
+inverse-Jacobian pole bound $b_{\mathrm{pole}}$ and the sheet-separation bound
+$c_{\mathrm{sep}}$ of \cref{contours:lem:radialbounds}, choose $L$ and $\rho$ by
+\eqref{contours:eq:Lrho}, and solve \eqref{contours:eq:Bequation} by coefficient
+recursion; the certificate \eqref{contours:eq:Pfull} is part of the output.
+
+\emph{This is not an effectivity claim, and the difference matters for computer
+algebra.} A requested individual Hahn coefficient uses only finitely many tree
+terms, but the existence of a finite dependency set supplies no decision
+procedure for membership in an arbitrary well-ordered subset of a general
+ordered group --- the same caution already recorded for Sturm and sign
+algorithms in \cref{contours:sec:jordan}. Practical implementations should use
+rational lattices, explicitly presented support semigroups, algebraic
+coefficient germs, and exact branch specifications. Arbitrary convergent germs
+need not admit finite effective descriptions, no uniform complexity bound is
+asserted for any class of inputs, and the scale estimates \eqref{contours:eq:Lrho}
+are transparent but can be far from sharp, as
+\cref{contours:ex:sixsheeted} shows.
+
+\begin{center}\small
+\begin{longtable}{@{}L{0.24\textwidth}L{0.34\textwidth}L{0.34\textwidth}@{}}
+\toprule
+Step & Established input & What must be checked here\\\midrule\endhead
+Finite ordinary map & Isolated convergent zero; finite mapping theorem
+  & Proper bounded representative, degree $\mu$, a nonzero
+    discriminant\\[0.4em]
+Target weighting, \cref{contours:lem:targetmonomial} & Convergent nonzero
+    discriminant
+  & Unique least-weight monomial and uniform annular avoidance\\[0.4em]
+Radial ramification, \cref{contours:thm:ramifiedleray} & Finite covering
+    monodromy
+  & Kill the \emph{radial} permutation only, not all angular monodromy\\[0.4em]
+Extension across $s=0$ & Bounded source representative
+  & Holomorphic parameter extension and $Z(q,0)=0$\\[0.4em]
+Radius-free substitution, \cref{contours:lem:radiusfreesub} & Positive
+    well-ordered support
+  & Finitely many contributions at each \emph{exact} exponent\\[0.4em]
+Protecting cycle, \eqref{contours:eq:protectingrho} & $\kappa_*\rho<\delta$
+  & Positive denominator errors and the certificate
+    \eqref{contours:eq:Pzero}\\[0.4em]
+Residue equality, \cref{contours:thm:untransformed} & Fixed-germ Laurent period
+    identity
+  & Strong regrouping, with no common radius for all germs\\[0.4em]
+Adapted cycle, \cref{contours:thm:adaptedlift} & Inverse-Jacobian bound
+    $b_{\mathrm{pole}}$; $L>b_{\mathrm{pole}}$
+  & Positive implicit coefficients; the nullary-vertex support bound\\[0.4em]
+Homotopy, \cref{contours:thm:untransformedhomotopy} & $L>\kappa_*$ and positive
+    support
+  & No denominator zero; coefficientwise closedness and Stokes\\[0.4em]
+Formal extension, \cref{contours:thm:formalcontour} & Finite jets of ordinary
+    residues
+  & A separate finite-jet comparison, not an analytic assertion about a formal
+    germ\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\subsection{What is classical, what is new, and what remains open}
+\label{contours:subsec:untransformedscope}
+Ordinary Leray cycles and the Grothendieck residue are classical
+\cite{GriffithsHarris,TajimaNabeshima,Tsikh}, as are finite holomorphic maps,
+analytic discriminants and Weierstrass preparation \cite{GrauertRemmert}. The
+passage from a finite unramified cover to ramified single-valued analytic data
+is an established ingredient of Abhyankar--Jung theory; Parusi\'nski and Rond
+use a finite covering, a power substitution and removable singularities in their
+analytic proof \cite[Prop.~2.1]{ParRond}. The positive support lemma is
+classical \cite{Neumann,Higman}. \emph{None of these ingredients is claimed here
+as an independent discovery}, and the particular one-radial-parameter version of
+the ramification step is proved above rather than quoted.
+
+What is proposed as new is their combination: an original-form period on a
+single fixed finite-cover cycle, uniformly for every perturbation above one
+specified positive valuation and for every radius-free or formal numerator, with
+an explicit well-ordered support certificate, an exact adapted lift, and an
+admissible homotopy inside the same chain category. \emph{The targeted literature
+search of September 21, 2026 did not locate a published theorem with these
+arbitrary-support, radius-free, uniform-protecting-cycle hypotheses; that is not
+a priority certification}, and it is subject to the same consolidated status
+statement as the rest of this article, \cref{contours:app:status}.
+
+Three comparisons must not be collapsed. M\"uller and Strohmaier's
+Hahn-holomorphic and Hahn-meromorphic functions are another genuine use of Hahn
+series in complex analysis \cite{MuellerStrohmaier}, but their analytic
+summation category is \emph{not} identified with the coefficientwise ring $\A_n$
+of arbitrary radius-free germs used here; the two are different objects and no
+comparison theorem between them is asserted. Second, the determinant-transformed
+formula \eqref{contours:eq:generalrepresentation} remains valid and useful; the
+new theorem answers a different question and does not supersede it. Third, the
+lift of \cref{contours:thm:adaptedlift} refines, but does not reprove, the
+support-preserving lift of the ordinary root cover with unchanged monodromy of
+the companion report \emph{Finite Hahn Deformations: Division, Conservation of
+Multiplicity, and Residue Duality} \cite{FiniteDeformations} at
+\texttt{docs/surcomplex/finite-deformations}: there a coherent root cover is
+lifted with its monodromy intact, whereas here the finite \emph{radial}
+monodromy is deliberately killed, before any Hahn substitution, in order to
+obtain one fixed cover. That report is cited for the lift rather than having it
+rebuilt.
+
+\paragraph{Exact boundaries.}
+All supports, covers and parameter manifolds are set-sized, and every
+coefficientwise integral is an ordinary integral over a compact real manifold.
+The Hahn parameterization is \emph{not} asserted continuous for the fine surreal
+topology, and \cref{contours:thm:untransformedhomotopy} is not a
+fine-topological homotopy; no surreal-valued measure and no unrestricted
+Riemann-sum construction is invoked, consistently with
+\cref{contours:prop:fullfine,contours:prop:mesh}. The input must have an isolated
+\emph{convergent} ordinary leading map and a positive-support perturbation: an
+arbitrary Hahn tuple with no such leading map, and a non-isolated leading zero,
+are both out of scope. The theorems produce no canonical choice-independent
+contour; they prove that the \emph{period} is independent of the choices, by
+\cref{contours:cor:scalecancel}. The parameter space may be disconnected, and no
+claim is made that every admissible cycle is homologous to the chosen one.
+\Cref{contours:cor:protectedsheets} gives $\mu$ distinct regular points over each
+protected target point but does not assert that every zero of $F$ is simple or
+that the deformed zero algebra is reduced, and
+\cref{contours:prop:idealannihilation} establishes nonzero descent without a
+perfect-pairing or flatness theorem.
+
+\paragraph{What is now more precise, and still open.}
+First, whether the convergent leading map can be replaced by an arbitrary
+\emph{formal} isolated map while keeping a fixed ordinary compact parameter
+manifold. \Cref{contours:thm:formalcontour} removes convergence from $E$ and
+$H$ only; the construction of the cycle depends on a bounded analytic finite
+covering obtained before any Hahn substitution, and formal algebra alone does
+not supply that object. Second, effective scale selection: an intrinsic
+invariant of the finite map controlling the best protecting and lifting scales
+would improve both the mathematics and exact symbolic implementations, and the
+attained bound $36/40$ in \cref{contours:ex:sixsheeted} shows that the
+inverse-Jacobian pole order carries real information even where the uniqueness
+radius is conservative. Third, a homology comparison among different protecting
+weights, covers and microscopic scales: equality of the periods is proved by
+\cref{contours:cor:scalecancel}, but a chain-level comparison in a precisely
+specified larger Hahn category is strictly stronger and does not follow from
+period equality. This last item is the surviving part of the
+\emph{admissible scale atlas} question of \cref{contours:subsec:problems}.
 
 \section{An algebraic contour pairing for rational differentials}
 \label{contours:sec:algebraic}
@@ -3232,6 +4823,12 @@ General isolated complete intersection in $\A_n$
   & Determinant transformation, \cref{contours:thm:generalrepresentation}
   & The integrand must be the \emph{transformed} one; see
     \cref{contours:subsec:scope}.\\[0.45em]
+The same, with the \emph{untransformed} integrand
+  & Ramified finite-cover cycle, \cref{contours:thm:untransformed}; adapted lift
+    \cref{contours:thm:adaptedlift}
+  & A convergent isolated $f$ and one threshold $\delta$ with
+    $\kappa_*\rho<\delta$; the cycle is not a coordinate torus
+    (\cref{contours:ex:wrongtorus}).\\[0.45em]
 Root-of-unity sample sequence
   & Coefficientwise recovery, or a verified valuation-tail criterion
   & Never infer the topology of the limit from the sampling formula alone.\\
@@ -3240,7 +4837,9 @@ Root-of-unity sample sequence
 \end{center}
 
 \subsection{Research problems sharpened by these results}
-\emph{A single-cycle realization for arbitrary finite Hahn zero schemes.} Given
+\label{contours:subsec:problems}
+\emph{A single-cycle realization for arbitrary finite Hahn zero schemes ---
+posed here, and now solved.} The problem, as this article posed it, was: given
 arbitrary isolated $f$ and radius-free positive-support $E$, construct one
 admissible $n$-cycle on which the \emph{untransformed} integrand integrates to
 \eqref{contours:eq:generalres}. A solution may require a non-diagonal analytic change
@@ -3252,6 +4851,31 @@ should annihilate $(F)$ and satisfy $\Res_F(HJ_F)=\Tr(M_H)$. These are strong
 compatibility tests; they do not by themselves construct the cycle. See
 \cref{contours:subsec:scope} for exactly how this problem relates to
 \cref{contours:thm:generalrepresentation}, which solves the transformed version.
+
+\emph{The statement of the problem is retained above because it is the record of
+what was asked.} It is answered by
+\cref{contours:thm:untransformed,contours:thm:adaptedlift}, under the three
+hypotheses set out in the closing paragraph of \cref{contours:subsec:scope}: a
+convergent isolated leading map, one specified positive valuation lower bound
+$\delta$ on the perturbation support, and a radius-free --- or, by
+\cref{contours:thm:formalcontour}, formal --- numerator. The solution takes the
+first of the three routes the problem allowed, in a form the problem did not
+name: not a change of variables in the source but a monomial direction in the
+\emph{target} combined with a ramified finite covering of the coordinate torus,
+\cref{contours:lem:targetmonomial,contours:thm:ramifiedleray}. Both acceptance
+tests are met, and are discussed where they are proved,
+\cref{contours:subsec:normalization}: annihilation of $(F)$ is
+\cref{contours:prop:idealannihilation}, and the trace test is met because the
+cycle computes $\Res_F$ itself, with its $H=1$ case
+$\Res_F(J_F)=\mu$ now proved directly on the cycle by
+\cref{contours:thm:degreenormalization} without the finite-algebra package. What
+was \emph{not} achieved, and remains open, is a canonical choice-independent
+cycle and a chain-level homology comparison across protecting weights, covers and
+scales; only equality of the periods is proved, by
+\cref{contours:cor:scalecancel}. The formal-leading-map case, an intrinsic
+invariant governing the best protecting and lifting scales, and the effectivity
+question are the three further problems listed in
+\cref{contours:subsec:untransformedscope}.
 
 \emph{A boundary-layer atlas theorem.} Under explicit tame hypotheses, can rational
 or selected analytic data with poles infinitesimally close to a leading contour be
@@ -3320,7 +4944,16 @@ families and gives genuine small-circle and torus residue realizations; residue
 transformation with its essential determinant represents arbitrary isolated
 complete-intersection residues by controlled microscopic tori. Rational winding
 pairings fill an important part of the gap where macroscopic coefficientwise
-pullbacks fail.
+pullbacks fail. And the question that determinant transformation left open --- a
+single cycle for the \emph{untransformed} integrand --- is answered by enlarging
+the cycle rather than the theorem: a target monomial direction avoids the
+ordinary discriminant, finite radial ramification supplies one fixed compact
+parameter manifold, a sufficiently large infinitesimal radius protects the whole
+perturbation, and the positive support lemma turns every radius-free
+substitution into finite coefficient algebra. One such cycle, chosen from the
+leading map and one valuation threshold alone, carries the original form to the
+independently defined perturbation residue for an entire valuation ball of
+perturbations whose coefficient germs need share no radius at all.
 
 The unifying principle is constructive rather than prohibitive, and it is not to
 discard infinitesimals or force every scale into one real-valued metric. It is to
@@ -3372,6 +5005,41 @@ Perturbation residue after integration,
   & $S+E^*$; before integration the numerator and volume factors may introduce a
     fixed shift, but a shift of a well-ordered support is still well
     ordered.\\[0.45em]
+Substitution of a positive-support Hahn map into a radius-free or formal germ,
+  \cref{contours:lem:radiusfreesub}
+  & $S+P_W^*$, where $P_W$ is the union of the coordinate supports of the
+    substituted map; each output coefficient is a finite sum of products of
+    ordinary holomorphic functions on the one fixed $\mathsf X$.\\[0.45em]
+Radial evaluation $s=t^\rho$ of an ordinary family vanishing at $s=0$,
+  \cref{contours:cor:radialeval}
+  & $\N_{>0}\rho$; a fixed output exponent sees finitely many radial
+    degrees.\\[0.45em]
+Untransformed pullback on the protecting cycle,
+  \cref{contours:prop:admissiblepullback}
+  & $S-\kappa_\Sigma\rho+\mathcal M_0$ with
+    $P_0=\{\rho\}\cup\bigcup_j(S_E-\kappa_j\rho)$ positive by
+    $\kappa_*\rho<\delta$; asserted for the \emph{fully expanded} family, before
+    any regrouping, via the accounting
+    \eqref{contours:eq:exponentaccounting}.\\[0.45em]
+Rooted-tree solution of a positive implicit equation,
+  \cref{contours:lem:positiveimplicit}
+  & $W^*\setminus\{0\}$; at a fixed weight the vertex count is bounded, so
+    finitely many trees contribute. \emph{Not} a limit of iterates.\\[0.45em]
+Equation-adapted correction, \cref{contours:thm:adaptedlift}
+  & $L\rho+(\mathcal M\setminus\{0\})$ and also
+    $S_E-b_{\mathrm{pole}}\rho+\mathcal M$, with
+    $P=\{\rho\}\cup(S_E-(L+b_{\mathrm{pole}})\rho)$; the second bound comes from
+    the nullary vertex every finite tree has.\\[0.45em]
+Straight homotopy of the two untransformed cycles,
+  \cref{contours:lem:straighthomotopy}
+  & $S-\kappa_\Sigma\rho+\mathcal M$, uniformly on the ordinary compact cylinder
+    $\mathsf T\times[0,1]$; at each exact exponent the dependence on the ordinary
+    parameter is polynomial.\\[0.45em]
+Untransformed period after integration,
+  \eqref{contours:eq:untransformed}
+  & $S+E^*$; every auxiliary scale in
+    \eqref{contours:eq:untransformedsupport} cancels after angular integration,
+    by \cref{contours:cor:scalecancel}.\\[0.45em]
 Algebraic rational contour \eqref{contours:eq:algebraicpairing}
   & Finite pole set and integer algebraic winding; no infinite sum or limit.\\[0.45em]
 Polynomial simplex integral \eqref{contours:eq:simplexint}
@@ -3398,6 +5066,12 @@ well ordered, not just positive. Homotopies share one support on their whole ord
 compact parameter space. \Cref{contours:thm:microtorus} assumes coordinate-power
 leading equations. Rational closed-period integration is a definition, compared to
 analytic integration only on an explicitly established overlap.
+\Cref{contours:thm:untransformed} assumes a convergent isolated leading map and
+\emph{one specified} positive lower bound $\delta$ on the perturbation support;
+\cref{contours:thm:formalcontour} removes convergence from the perturbation and
+the numerator, but not from the leading map, and
+\cref{contours:rem:positivityneeded} records why positivity of the support cannot
+simply be dropped.
 
 The dependency structure is explicit. \Cref{contours:lem:support} defines the Hahn
 operations. Ordinary Stokes proves \cref{contours:thm:hahnstokes}. Taylor pullback
@@ -3405,15 +5079,30 @@ and finite-jet identities prove \cref{contours:thm:deformedstokes}. Cauchy follo
 from closedness and ordinary coefficient Cauchy. Independently, positive rescaling
 and Laurent coefficient extraction realize the perturbation residue, and classical
 finite-family residue transformation extends the realization to general isolated
-complete intersections. The rational pairing is defined independently from
+complete intersections. Independently again, the untransformed realization runs
+ordinary finite-map theory, a target monomial direction, radial ramification and
+a removable-singularity extension entirely in an \emph{ordinary} complex radial
+variable (\cref{contours:lem:targetmonomial,contours:thm:ramifiedleray,contours:lem:constantperiod,contours:lem:radialbounds}),
+and only afterwards substitutes $s=t^\rho$; the Hahn half of that argument uses
+\cref{contours:lem:support,contours:lem:radiusfreesub,contours:lem:positiveimplicit}
+and ordinary Stokes on a compact cylinder, and nothing else. \emph{Reversing that
+order of operations --- substituting the Hahn monomial before the covering and
+the removable-singularity step --- would be exactly the interchange of analytic
+convergence with Hahn summability that this article refuses throughout.} The
+rational pairing is defined independently from
 semialgebraic winding and compared with Hahn integration only afterward. \emph{No
 Jordan statement in the fine topology, and no unproved general fine integration rule,
 enters this chain of arguments.} The new proofs do not depend on the Noetherian or
 Nullstellensatz claims of \cite{Geometry} except where that manuscript's finite-zero
 and residue results are expressly invoked --- in
 \eqref{contours:eq:traceresidue} and, conditionally and with that dependence stated,
-in \cref{contours:thm:septorus}. In particular \cref{contours:thm:polstokes,contours:thm:hahnstokes,contours:thm:cohomology,contours:thm:homotopy,contours:thm:generalrepresentation} and the sampling comparisons stand independently
-of those deeper analytic-algebra claims.
+in \cref{contours:thm:septorus}. In particular \cref{contours:thm:polstokes,contours:thm:hahnstokes,contours:thm:cohomology,contours:thm:homotopy,contours:thm:generalrepresentation,contours:thm:untransformed,contours:thm:adaptedlift,contours:thm:degreenormalization} and the sampling comparisons stand independently
+of those deeper analytic-algebra claims; \cref{contours:thm:degreenormalization}
+in particular proves $\Res_F(J_F)=\mu$ without any Hahn flatness or
+Nullstellensatz input, and the only place where the new sections rely on
+\cite{Geometry} at all is the second acceptance test discussed in
+\cref{contours:subsec:normalization}, which is a statement about the functional
+and not about the cycle.
 
 \section{Why finite-parameter testing proves residue transformation}
 \label{contours:app:transform}
@@ -3595,6 +5284,55 @@ logarithms and is not a definition on all of $\HH(U)$ or $\A_n$.
 \item \emph{On \cref{contours:thm:sampling}.} Coefficientwise recovery does not make
 the Hahn integral a fine limit, and in general does not make it a valuation limit
 either.
+\item \emph{On \cref{contours:thm:untransformed} --- hypotheses.} An isolated
+\emph{convergent} ordinary leading map and a positive-support perturbation are
+required. An arbitrary Hahn tuple with no such leading map, a non-isolated
+leading zero, and a support not bounded below by a positive element are all out
+of scope. Extending to a \emph{formal} isolated leading map is a different open
+problem, because the proof needs a bounded analytic finite covering constructed
+before any Hahn substitution; \cref{contours:thm:formalcontour} removes
+convergence only from $E$ and $H$.
+\item \emph{On \cref{contours:thm:untransformed} --- what independence means.}
+Period independence is proved (\cref{contours:cor:scalecancel}); no canonical
+choice-independent contour is produced. The parameter space may be disconnected,
+and it is not claimed that every admissible cycle is homologous to the chosen
+one. A chain-level homology comparison across weights, covers and scales is
+listed as open.
+\item \emph{On \cref{contours:thm:adaptedlift,contours:cor:protectedsheets}.} The
+adapted parameterization gives $\mu$ distinct \emph{regular} points over each
+protected target point. It does not assert that every zero of $F$ is simple, nor
+that the deformed zero algebra is reduced, and \emph{its image is not identified
+with the entire class of surcomplex solutions of $|F_j|=t^{\kappa_j\rho}$} --- no
+such identification is needed for any integral proved here.
+\item \emph{On \cref{contours:prop:idealannihilation}.} Nonzero descent of
+$\Res_F$ to $\A_n/(F)$ is established; a perfect-pairing or flatness theorem is
+not inferred from it. \Cref{contours:thm:degreenormalization} is not called a
+conservation law for local algebra length, which would additionally require the
+finite-flatness identification.
+\item \emph{On \cref{contours:thm:untransformedhomotopy}.} The Hahn
+parameterizations are not asserted continuous for the fine surreal topology, and
+the homotopy is not a fine-topological homotopy; the parameter $u$ is an ordinary
+real parameter. All supports, covers and parameter manifolds are set-sized.
+\item \emph{On \cref{contours:subsec:construction}.} A finite coefficient
+dependency set supplies no decision procedure for membership in an arbitrary
+well-ordered subset of a general ordered group; no uniform complexity bound is
+claimed; arbitrary convergent germs need not have finite effective descriptions;
+and the scale estimates \eqref{contours:eq:Lrho} are transparent but can be far
+from sharp.
+\item \emph{On \cref{contours:rem:leraychecks}.} The $632$ exact symbolic checks
+are finite examples only. They do not verify arbitrary-support Hahn summability,
+parameterized removable singularities, the rooted-tree construction of
+\cref{contours:lem:positiveimplicit}, or novelty; the source's README and its
+recorded output both say so.
+\item \emph{On \cref{contours:subsec:untransformedscope}.} M\"uller and
+Strohmaier's Hahn-meromorphic category \cite{MuellerStrohmaier} is explicitly
+\emph{not} identified with the coefficientwise ring $\A_n$ of radius-free germs,
+and no comparison theorem between them is asserted. The targeted literature
+search of September 21, 2026 found no published theorem with the
+arbitrary-support, radius-free, uniform-protecting-cycle hypotheses proved here,
+and \emph{that is not a priority certification}. The publisher endpoint for the
+Neumann reference \cite{Neumann} could not be fetched during that search and its
+details were corroborated indirectly.
 \end{itemize}
 
 \section{Notation}
@@ -3643,7 +5381,32 @@ $\rho_j,\ r_j=t^{\rho_j}$ & Rescaling exponents and the corresponding microscopi
 $d_j$ & Coordinate powers in a coordinate-power leading system
   \eqref{contours:eq:powerleading}.\\[0.35em]
 $J_F,\ M_H,\ B_F$ & Jacobian determinant; multiplication operator; the finite quotient
-  algebra $\A_n/(F)$.\\
+  algebra $\A_n/(F)$.\\[0.35em]
+$\HH(\mathsf X)$ & $\OO(\mathsf X)((t^\Gamma))$ for one fixed ordinary complex
+  manifold $\mathsf X$, possibly disconnected; $\HH(\mathsf X)_+$ for strictly
+  positive support, \eqref{contours:eq:HXring}.\\[0.35em]
+$\mathsf A,\ p,\ \mathsf X,\ \mathsf T$ & A polyannulus around the ordinary
+  torus; a finite unramified covering $p:\mathsf X\to\mathsf A$ of degree $\mu$;
+  its total space; and $\mathsf T=p^{-1}\bigl((S^1)^n\bigr)$, the compact
+  oriented ordinary parameter manifold of
+  \cref{contours:thm:ramifiedleray}.\\[0.35em]
+$\kappa_j,\ \kappa_*,\ \kappa_\Sigma$ & Target radial weights with
+  $f_j(Z(q,s))=s^{\kappa_j}p_j(q)$, their maximum and their sum. \emph{Written
+  $m_j$ and $M$ in the source manuscript}; renamed because $m$ is the order of a
+  one-variable germ.\\[0.35em]
+$s,\ \rho,\ \delta$ & The \emph{ordinary} complex radial variable of
+  \cref{contours:subsec:ramified}; the protecting exponent with
+  $\kappa_*\rho<\delta$; the specified positive lower bound on
+  $\supp E$.\\[0.35em]
+$Z,\ Z_0,\ \Phi,\ \Upsilon$ & The ordinary ramified family; the protecting Hahn
+  cycle $\sum_{\ell\ge1}t^{\ell\rho}Z_\ell$; the equation-adapted lift
+  $Z_0+\Upsilon$; and its correction.\\[0.35em]
+$b_{\mathrm{pole}},\ c_{\mathrm{sep}},\ L$ & Inverse-Jacobian pole order and
+  sheet-separation degree of \cref{contours:lem:radialbounds}; the lift exponent
+  $L=\max\{b_{\mathrm{pole}},c_{\mathrm{sep}},\kappa_*\}+1$.\\[0.35em]
+$S_E,\ P_0,\ \mathcal M_0,\ P,\ \mathcal M$ & $\supp E=\bigcup_j\supp E_j$; the
+  protecting and lifting generating sets \eqref{contours:eq:Pzero} and
+  \eqref{contours:eq:Pfull}, and the monoids they generate.\\
 \bottomrule
 \end{longtable}
 \end{center}
@@ -3658,6 +5421,26 @@ Contour Theory}. Supplied research manuscript, September 21, 2026. Source file:
 coherent contour functionals, preparation and moving-pole residues, endpoint
 corrections, affine scales, global fine logarithms, and all-scale rigidity results;
 not treated as a published priority certification.
+
+\bibitem{Leray}
+\emph{Untransformed Leray Cycles for Radius-Free Hahn Analytic Residues}.
+Supplied research manuscript, September 21, 2026, written against this report at
+repository commit \texttt{39f2be66}. Its verbatim source, its exact symbolic
+check script and that script's recorded run are kept in this directory under
+\texttt{sources/}, \texttt{code/} and \texttt{data/}, all three carrying the
+file-name stem \texttt{05-untransformed-\allowbreak leray-\allowbreak cycles}.
+It is the source of
+\cref{contours:sec:untransformed,contours:sec:adapted}, and is not treated as a
+published priority certification.
+
+\bibitem{FiniteDeformations}
+\emph{Finite Hahn Deformations: Division, Conservation of Multiplicity, and
+Residue Duality}. Companion merged report in this repository at
+\texttt{docs/surcomplex/finite-deformations}. Cited for the Hahn local-cluster
+residue defined by a \emph{series} rather than by a contour, for residue duality
+and conservation of multiplicity, and for the support-preserving lift of the
+ordinary root cover with unchanged monodromy. Its results are cited, not
+reproved here.
 
 \bibitem{Geometry}
 \emph{Infinitesimal Analytic Geometry over the Surcomplex Numbers: Radius-Free Hahn
@@ -3759,6 +5542,28 @@ V. Guillemin and P. J. Haine, \emph{Differential Forms}, World Scientific, 2019.
 \href{https://doi.org/10.1142/11058}{doi:10.1142/11058}. Theorem 4.6.1 is the ordinary
 Stokes theorem used here.
 
+\bibitem{GrauertRemmert}
+H. Grauert and R. Remmert, \emph{Coherent Analytic Sheaves}, Grundlehren der
+mathematischen Wissenschaften, vol.~265, Springer, 1984.
+\href{https://doi.org/10.1007/978-3-642-69582-7}{doi:10.1007/978-3-642-69582-7}.
+Chapters~II--III: local Weierstrass theory and finite holomorphic maps, the
+ordinary finite-map input to \cref{contours:thm:ramifiedleray}.
+
+\bibitem{GriffithsHarris}
+P. Griffiths and J. Harris, \emph{Principles of Algebraic Geometry}, Wiley, 1978;
+Wiley Classics Library edition, 1994.
+\href{https://doi.org/10.1002/9781118032527}{doi:10.1002/9781118032527}.
+Chapter~5, ``Residues,'' pp.~647--732: ordinary Leray cycles, the Grothendieck
+residue, and its finite-jet and annihilation properties. \emph{Not to be confused
+with \cite{GH}}, which is Guillemin--Haine.
+
+\bibitem{Higman}
+G. Higman, ``Ordering by divisibility in abstract algebras,'' \emph{Proceedings
+of the London Mathematical Society}, series~3, \textbf{2} (1952), 326--336.
+\href{https://doi.org/10.1112/plms/s3-2.1.326}{doi:10.1112/plms/s3-2.1.326}.
+The word lemma giving the second proof of \cref{contours:lem:support} recorded in
+\cref{contours:subsec:hahnsub}.
+
 \bibitem{Kaiser}
 Tobias Kaiser,
 ``Lebesgue measure theory and integration theory on non-archimedean real closed
@@ -3788,6 +5593,16 @@ J. Ma\v r\'{\i}kov\'a and M. Shiota, ``Measuring definable sets in o-minimal fie
 \href{https://arxiv.org/abs/1402.4787}{arXiv:1402.4787}. The measure target is an
 ordered semiring, not the original scalar field.
 
+\bibitem{MuellerStrohmaier}
+J. M\"uller and A. Strohmaier, ``The theory of Hahn-meromorphic functions, a
+holomorphic Fredholm theorem, and its applications,'' \emph{Analysis \& PDE}
+\textbf{7} (2014), no.~3, 745--770.
+\href{https://doi.org/10.2140/apde.2014.7.745}{doi:10.2140/apde.2014.7.745};
+\href{https://arxiv.org/abs/1205.0236}{arXiv:1205.0236}. A genuine and different
+use of Hahn series in complex analysis; its analytic summation category is
+\emph{not} identified with $\A_n$ here. \emph{Not to be confused with
+\cite{MS}}, which is Ma\v r\'{\i}kov\'a--Shiota.
+
 \bibitem{Neumann}
 B. H. Neumann, ``On ordered division rings,'' \emph{Transactions of the American
 Mathematical Society} \textbf{66} (1949), 202--252. The ordered-series support lemma is
@@ -3800,6 +5615,15 @@ T. Ohmoto and M. Shiota, ``$C^1$-triangulations of semialgebraic sets,''
 \href{https://arxiv.org/abs/1505.03970}{arXiv:1505.03970}. See \S4 for triangulated
 integration and Stokes, and the introduction for the non-Archimedean codomain
 qualification.
+
+\bibitem{ParRond}
+A. Parusi\'nski and G. Rond, ``The Abhyankar--Jung theorem,'' \emph{Journal of
+Algebra} \textbf{365} (2012), 29--41.
+\href{https://doi.org/10.1016/j.jalgebra.2012.05.003}{doi:10.1016/j.jalgebra.2012.05.003};
+\href{https://arxiv.org/abs/1103.2559}{arXiv:1103.2559}. Proposition~2.1 and its
+finite-covering, power-substitution and removable-singularity steps are the
+classical mechanism behind \cref{contours:thm:ramifiedleray}. \emph{Not to be
+confused with \cite{PR}}, which is Perrucci--Roy.
 
 \bibitem{Poonen}
 B. Poonen, ``Maximally complete fields,'' \emph{L'Enseignement Math\'ematique} (2)
@@ -3816,6 +5640,13 @@ Theorems 12--13 and the corrected product-formula discussion.
 M. Spivak, \emph{Calculus on Manifolds: A Modern Approach to Classical Theorems of
 Advanced Calculus}, W. A. Benjamin, 1965. Ordinary differential forms, integration,
 and Stokes at the coefficient level.
+
+\bibitem{TajimaNabeshima}
+S. Tajima and K. Nabeshima, ``An effective method for computing Grothendieck
+point residue mappings,'' preprint, 2020.
+\href{https://arxiv.org/abs/2011.09092}{arXiv:2011.09092}. Used for the local
+residue, its transformation law, and the finite local-algebra discussion behind
+\cref{contours:lem:finitejet}.
 
 \bibitem{Temkin}
 M. Temkin, ``Introduction to Berkovich analytic spaces,''

@@ -1,0 +1,1893 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage{xcolor,fancyhdr,enumitem}
+\usepackage{hyperref,bookmark}
+\definecolor{Ink}{HTML}{233240}
+\definecolor{Accent}{HTML}{245A69}
+\hypersetup{colorlinks=true,linkcolor=Ink,citecolor=Accent,urlcolor=Accent,
+ pdftitle={Small Divisors in Surcomplex Dynamics},
+ pdfauthor={Research article prepared for Vladimir Reshetnikov},
+ pdfsubject={A sharp common-domain linearization trichotomy for Hahn-supported holomorphic perturbations}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Small divisors in surcomplex dynamics}
+\fancyhead[R]{\small Research article}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\K}{\mathbb K}
+\newcommand{\HH}{\mathcal H}
+\newcommand{\GG}{\mathcal G}
+\newcommand{\RR}{\mathcal R}
+\newcommand{\FF}{\mathcal F}
+\newcommand{\EE}{\mathcal E}
+\newcommand{\mm}{\mathfrak m}
+\newcommand{\nn}{\mathfrak n}
+\newcommand{\LL}{\mathcal L}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\st}{\operatorname{st}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Gstar}{\Gamma_*}
+\newcommand{\pos}{\Gamma_{>0}}
+\newcommand{\doi}[1]{\href{https://doi.org/#1}{doi:#1}}
+\newcommand{\arxiv}[1]{\href{https://arxiv.org/abs/#1}{arXiv:#1}}
+\newcommand{\repoURL}{https://github.com/VladimirReshetnikov/Surreal}
+\newcommand{\snapshot}{39f2be6667ade51bca2b45daa47e289d69c09764}
+
+\title{\textbf{Small Divisors in Surcomplex Dynamics}\\[5pt]
+\large A sharp common-domain linearization trichotomy\\
+\normalsize Hahn perturbations of rotations, collapsing coefficient radii,\\
+and the distinction between coefficientwise and joint analyticity}
+\author{Research article prepared for Vladimir Reshetnikov}
+\date{21 September 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We investigate the Schr\"oder equation for infinitesimal Hahn-supported
+perturbations of an irrational complex rotation. The analytic requirement is
+that each Hahn coefficient be an ordinary holomorphic function; requiring one
+common disk for all coefficients is strictly stronger than requiring a
+convergent germ for each coefficient separately. For
+$\lambda=e^{2\pi i\theta}$, define
+$\sigma(\lambda)=\limsup_{n\to\infty}n^{-1}
+\log^+\abs{\lambda^n-\lambda}^{-1}$.
+We prove that $\sigma=0$ gives a unique normalized linearization on exactly
+the original common disk, with an explicit support certificate and a
+same-domain compositional inverse. Finite $\sigma$ always gives a
+coefficient-germ linearization. Both thresholds are sharp when the class of
+workspaces includes $\C((t^{\Q+\sqrt2\Q}))$.
+The key obstruction is the two-monomial family
+$F(z)=(\lambda+u)z+vz^2/(1-z/R)$, where $u=t$ and $v=t^{\sqrt2}$.
+For $\sigma>0$, the coefficient of $u^kv$ in its unique formal linearizer has
+exact convergence radius $R\exp(-(k+1)\sigma)$. Thus positive finite
+$\sigma$ produces individually convergent coefficients but no common
+neighborhood whatsoever. We also prove a several-variable version,
+coefficientwise-entire and polynomial variants, and simultaneous
+linearization for commuting perturbations. A quadratic example explains why
+Hahn linearization can exist although the corresponding ordinary complex
+linearizer diverges. The sharp radius-collapse result and its nonlinear
+category consequences are proposed as new results; the underlying
+small-divisor and Hahn-algebra tools are classical. No resolution of a named
+published conjecture or independently verified priority is claimed.
+\end{abstract}
+
+\medskip
+\noindent\textbf{Status.} AI-assisted research draft with complete mathematical
+arguments and exact finite algebraic checks. It is not refereed or
+proof-assistant verified. The novelty assessment is limited to the repository
+snapshot and literature identified in Section~\ref{sec:context}.
+
+\clearpage
+\setcounter{tocdepth}{2}
+\tableofcontents
+\clearpage
+
+\section{The question and the proposed contribution}\label{sec:intro}
+
+\subsection{A dynamical problem in a genuinely different analytic category}
+
+The classical local linearization problem asks when a holomorphic map
+$f(z)=\lambda z+O(z^2)$ is conjugate to its derivative by a holomorphic change
+of coordinate. The denominators $\lambda^n-\lambda$ make irrational
+rotations arithmetically delicate. A surcomplex analogue must first say what
+``holomorphic'' means. A Hahn series with holomorphic coefficient functions
+is not the same object as an ordinary holomorphic family in a small complex
+parameter, nor is it the same object as an arbitrary power series over a
+non-Archimedean field.
+
+The documents in the Surreal repository distinguish precisely these sorts
+of analytic categories~\cite{Repo}. We continue that distinction rather than
+identifying its inequivalent rings. Our objects have the form
+\begin{equation}\label{eq:introF}
+ F(z)=\lambda z+\sum_{a\in A}t^a f_a(z),\qquad
+ A\subset\Gamma_{>0}\text{ well ordered},\qquad f_a(0)=0.
+\end{equation}
+The coefficients are ordinary functions on a disk $D_R=\{z\in\C:|z|<R\}$.
+There is no ordinary convergence condition in the parameter $t$ and no
+uniform bound on the family $(f_a)$. A well-ordered support and coefficientwise
+finiteness, not a limiting process, govern the Hahn sums.
+
+We seek
+\begin{equation}\label{eq:schroeder}
+ H\circ F=\Lambda H,\qquad
+ \Lambda=F'(0),\qquad
+ H(z)=z+\sum_{\gamma>0}t^\gamma h_\gamma(z),\qquad
+ h_\gamma(0)=h_\gamma'(0)=0.
+\end{equation}
+The multiplier $\Lambda$ is allowed to have an infinitesimal part. This last
+point is important: the sharp common-domain obstruction below uses a
+moving multiplier, not just a perturbation whose derivative is fixed
+exactly at $\lambda$.
+
+\subsection{The arithmetic invariant}
+
+Throughout the one-variable theory, $|\lambda|=1$ and $\lambda$ is not a root
+of unity. Write $\log^+x=\max(0,\log x)$ and put
+\begin{equation}\label{eq:sigma}
+ \sigma(\lambda)=\limsup_{n\to\infty}
+ \frac{\log^+|\lambda^n-\lambda|^{-1}}{n}\in[0,\infty].
+\end{equation}
+For $\lambda=e^{2\pi i\theta}$ and continued-fraction denominators $q_j$,
+we prove in Section~\ref{sec:arithmetic} that
+\begin{equation}\label{eq:sigmaqintro}
+ \sigma(\lambda)=\limsup_j\frac{\log q_{j+1}}{q_j}.
+\end{equation}
+Consequently, $\sigma=0$ is the familiar subexponential small-divisor
+condition, often expressed as $\log q_{j+1}=o(q_j)$. It is strictly weaker
+than the Brjuno condition. The distinction between the corresponding linear
+and nonlinear arithmetic conditions is classical; see, for example,
+Bounemoura's discussion~\cite{Bounemoura}. The content here is what happens
+when the nonlinear problem is graded by positive Hahn exponents.
+
+\subsection{Main results, before the technical definitions}
+
+The precise versions are Theorems~\ref{thm:lifting},
+\ref{thm:collapse}, and~\ref{thm:trichotomy}.
+
+\begin{theorem}[Overview of the trichotomy]\label{thm:overview}
+Consider all maps of the form \eqref{eq:introF} over set-sized ordered
+abelian value groups; counterexamples already occur for
+$\Gstar=\Q+\sqrt2\Q\subset\R$.
+If $\sigma(\lambda)=0$, every such map with coefficients holomorphic on
+$D_R$ has a unique normalized linearizer with all coefficients holomorphic
+on that same disk. If $0<\sigma(\lambda)<\infty$, every such map has a
+linearizer whose coefficients are convergent germs, but some maps with
+coefficients on $D_R$ have no normalized linearizer whose coefficients share
+any disk $D_r$, $r>0$. If $\sigma(\lambda)=\infty$, even universal
+coefficient-germ linearization fails.
+In every regime, polynomial coefficient perturbations admit polynomial
+coefficient linearizers.
+\end{theorem}
+
+Here ``every'' permits arbitrary well-ordered positive supports, arbitrary
+coefficient sizes, and infinitesimal changes of the multiplier. It does not
+mean every arbitrary germ-analytic function on $\No[i]$. Conversely, failure
+of a common domain means failure within the normalized Hahn-holomorphic
+category, not a claim about all imaginable set-theoretic conjugacies.
+
+The quantitative reason for the middle regime is particularly explicit.
+Set $u=t$, $v=t^{\sqrt2}$, and
+\begin{equation}\label{eq:familyintro}
+ F_{u,v}(z)=(\lambda+u)z+vP_R(z),\qquad
+ P_R(z)=\frac{z^2}{1-z/R}.
+\end{equation}
+Write the unique formal solution as
+$H(z)=z+\sum_{k+\ell>0}u^kv^\ell h_{k,\ell}(z)$.
+For every $k\ge0$, if $\sigma>0$, we obtain
+\begin{equation}\label{eq:radiusintro}
+ \boxed{\quad\rad(h_{k,1})=R\exp(-(k+1)\sigma).\quad}
+\end{equation}
+For $0<\sigma<\infty$, every displayed radius is positive and their infimum
+is zero. This is not merely loss of the input radius at the first step:
+it prevents the existence of any common neighborhood after all steps.
+
+\subsection{Why the result is not an ordinary Siegel theorem}
+
+A Hahn coefficient at a fixed exponent depends on only finitely many
+perturbation coefficients and finitely many homological inversions. There
+is no demand that the resulting coefficients have a common bound as their
+Hahn exponents increase. Under $\sigma=0$, each of those individual
+inversions preserves the open disk. In ordinary analytic linearization one
+also has to sum the entire nonlinear expansion in an ordinary variable;
+that additional requirement is absent here.
+
+This distinction gives a meaningful gain and an equally meaningful
+limitation. The positive theorem gives actual maps on finite surcomplex
+halos, not just a bare formal symbol, but it does not extend those maps to
+arbitrary infinite spatial scales. The scale obstruction in
+Section~\ref{sec:quadratic} makes the limitation visible.
+
+\section{Analytic categories and support discipline}\label{sec:categories}
+
+\subsection{A set-sized Hahn workspace}
+
+Let $\Gamma$ be a set-sized ordered abelian group, written additively, and
+let $\K_\Gamma=\C((t^\Gamma))$ be its Hahn field. An element is a series
+$\sum_\gamma c_\gamma t^\gamma$ with well-ordered support. Its valuation is
+$\nu(\sum c_\gamma t^\gamma)=\min\{\gamma:c_\gamma\ne0\}$, with
+$\nu(0)=+\infty$. Put
+\[
+ \mathcal O_\Gamma=\{x:\nu(x)\ge0\},\qquad
+ \mm_\Gamma=\{x:\nu(x)>0\}.
+\]
+The standard part on $\mathcal O_\Gamma$ is its coefficient at exponent
+zero. It takes values in $\C$.
+
+When $\Gamma$ is an ordered additive subgroup of $\No$, the assignment
+$t^\gamma=\omega^{-\gamma}$ identifies this workspace with the corresponding
+normal-form subfield of $\No[i]$. In particular, the counterexamples use only
+real exponents in $\Gstar$ and have this direct surcomplex interpretation.
+We need neither a set of all surcomplex numbers nor a proper-class support.
+All sums, inductions, coefficient families, and value groups used in a single
+construction are sets. The ordinary variable $z$ and each Taylor degree are
+ordinary complex and finite-dimensional objects.
+
+\begin{definition}[Summability]
+A family $(x_i)_{i\in I}$ of Hahn series is summable if the union of its
+supports is well ordered and each exponent occurs in the support of only
+finitely many $x_i$. Its sum is then formed coefficient by coefficient.
+\end{definition}
+
+Summability in this definition is not convergence of partial sums in an
+ordinary complex parameter. Nothing in the proofs below asserts such
+convergence. We also keep two absolute-value notions apart: the ordinary
+complex $|\lambda^n-\lambda|$ controls holomorphic coefficient radii, whereas
+the Hahn valuation of every nonzero complex constant is zero.
+
+\subsection{Four coefficient categories}
+
+For a complex algebra $B$, write
+\[
+ B[[t^{\Gamma_{\ge0}}]]_{\mathrm H}
+ =\left\{\sum_{\gamma\ge0}t^\gamma b_\gamma:
+               \supp(b)\text{ is well ordered}\right\}.
+\]
+The subscript reminds us that the exponents need not be integers. We use
+\begin{align*}
+ \HH_\Gamma(R)&=\mathcal O(D_R)[[t^{\Gamma_{\ge0}}]]_{\mathrm H},\\
+ \GG_\Gamma&=\C\{z\}[[t^{\Gamma_{\ge0}}]]_{\mathrm H},\\
+ \FF_\Gamma&=\C[[z]][[t^{\Gamma_{\ge0}}]]_{\mathrm H},\\
+ \EE_\Gamma&=\mathcal O(\C)[[t^{\Gamma_{\ge0}}]]_{\mathrm H}.
+\end{align*}
+Here $\C\{z\}$ is the ring of convergent ordinary power-series germs at
+zero. The ring of \emph{common-domain germs} is
+\[
+ \RR_\Gamma=\varinjlim_{R>0}\HH_\Gamma(R),
+\]
+with restriction as $R$ decreases. Taylor expansion gives injections
+$\RR_\Gamma\hookrightarrow\GG_\Gamma\hookrightarrow\FF_\Gamma$.
+The first injection is generally not surjective: the family
+$\sum_{m\ge1}t^m/(1-mz)$ has a convergent germ at every Hahn coefficient
+but no common disk. This elementary distinction is emphasized in the
+repository~\cite{Repo}; our obstruction will derive a much sharper dynamical
+version of it.
+
+For any of these rings, $\nn$ denotes the ideal of series supported in
+$\Gamma_{>0}$. A normalized coordinate change is
+$H=z+U$ with $U\in\nn$ and every coefficient of $U$ divisible by $z^2$.
+Whenever the category is specified, the same requirement applies to the
+coefficient functions or germs in that category.
+
+\begin{remark}[A common disk is not a uniform estimate]
+Membership in $\HH_\Gamma(R)$ requires each coefficient to be holomorphic
+on $D_R$. It does not impose a common supremum bound on a smaller disk,
+a norm summability condition, or a growth condition in $\gamma$. Our
+positive theorem would not, as stated, prove those stronger conclusions.
+\end{remark}
+
+\subsection{The support lemma, including finite dependence}
+
+For $A\subset\Gamma_{>0}$, let
+\[
+ M(A)=\{0\}\cup\{a_1+\cdots+a_k:k\ge1,\ a_i\in A\}.
+\]
+The following classical support principle is often called the
+Hahn--Neumann lemma. We give its reduction to the finite-word theorem to
+make explicit the finiteness actually used in our recursion.
+
+\begin{lemma}[Positive supports]\label{lem:neumann}
+If $A\subset\Gamma_{>0}$ is well ordered, then $M(A)$ is well ordered.
+For each $\gamma\in\Gamma$, there are only finitely many finite ordered
+words $(a_1,\ldots,a_k)$ in $A$ whose sum is $\gamma$. In particular,
+each fixed coefficient in a Taylor expansion in a positive Hahn series
+receives only finitely many contributions.
+\end{lemma}
+
+\begin{proof}
+Use the finite-word well-quasi-ordering theorem of
+Higman~\cite{Higman}: if an alphabet is well-quasi-ordered, its finite words
+are well-quasi-ordered by subsequence embedding with componentwise
+increase. A well-ordered alphabet has this property. If a word embeds in
+another, its sum is at most the other's sum. Equality of sums is possible
+only when no positive letter has been inserted and no letter has been
+strictly increased; then the words are identical.
+
+A strictly decreasing sequence of elements of $M(A)$, after choosing a
+word for each term, would give two words in their original order with the
+first embedding in the second, contradicting decreasing sums. Thus no such
+sequence exists and $M(A)$ is well ordered. Infinitely many distinct words
+with a fixed sum would likewise contain an embedding pair. The equality
+observation makes that impossible. These arguments prove both claims.
+
+For completeness, the finite-word theorem in the well-ordered alphabet
+case has the following standard minimal-bad-sequence proof. Suppose an
+infinite sequence with no embedding pair exists. Successively choose each
+word of smallest length that allows such a continuation. No chosen word is
+empty. Write $w_i=a_iv_i$, and select an infinite nondecreasing subsequence
+of the letters $a_i$, at indices $i_1<i_2<\cdots$; every sequence in a
+well-order has such a subsequence. The sequence
+$w_1,\ldots,w_{i_1-1},v_{i_1},v_{i_2},\ldots$ cannot be bad, by minimality
+at position $i_1$. An embedding pair among its initial words already
+contradicts the original choice. An initial word embedding in a later
+$v_{i_j}$ also embeds in $w_{i_j}$. Finally, an embedding of one selected
+$v_{i_j}$ in a later one extends to the corresponding $w$'s because their
+first letters are nondecreasing. Each possibility is a contradiction.
+\end{proof}
+
+\begin{corollary}[Finite ancestral data]\label{cor:ancestry}
+Fix $\gamma\in M(A)$. Any expression formed by successively multiplying
+positive-support inputs from $A$, while preserving exponent addition,
+involves only finitely many input exponents and finite depths at the
+coefficient $t^\gamma$.
+\end{corollary}
+
+\begin{proof}
+Flatten each occurrence of an intermediate exponent into a word in $A$.
+There are finitely many words of total exponent $\gamma$ by
+Lemma~\ref{lem:neumann}. Their letters and lengths form finite sets.
+\end{proof}
+
+The conclusion is stronger than saying that a formal infinite sum has
+well-ordered support. It rules out an infinite chain of radius losses
+\emph{inside one fixed Hahn coefficient}. The radii can still decrease
+without bound as the exponent itself varies; that is exactly what our
+counterexample does.
+
+\subsection{Composition and inversion without ordinary parameter limits}
+
+If $F(z)=\lambda z+P(z)$ and $P\in\nn$, define composition by
+\begin{equation}\label{eq:taylorcomposition}
+ U(F(z))=
+ \sum_{\beta>0}\sum_{k\ge0}
+ t^\beta\frac{u_\beta^{(k)}(\lambda z)}{k!}P(z)^k,
+ \qquad U=\sum_{\beta>0}t^\beta u_\beta.
+\end{equation}
+In the formal or germ categories this is a coefficientwise definition. In
+$\HH_\Gamma(R)$ it is valid when $|\lambda|=1$, because
+$\lambda D_R=D_R$. Lemma~\ref{lem:neumann}, applied to the union of the
+positive supports involved, makes every Hahn coefficient a finite sum.
+The same argument justifies regrouping and the usual formal Taylor
+identities. These identities may also be checked at each coefficient by
+passing to a finite nilpotent polynomial calculation: choose the finitely
+many ancestral words and discard higher contributions.
+
+\begin{lemma}[Near-identity inverses]\label{lem:inverse}
+Let $H=z+U$ be normalized, with coefficients in any of
+$\mathcal O(D_R)$, $\C\{z\}$, $\C[[z]]$, $\mathcal O(\C)$, or $\C[z]$,
+and positive Hahn support $B$. There is a unique normalized inverse
+$J=z+V$ with coefficient support contained in $M(B)\setminus\{0\}$ and
+coefficients in that same algebra. Both $H\circ J=\id$ and
+$J\circ H=\id$ hold.
+\end{lemma}
+
+\begin{proof}
+In $H(J)=J+U(J)$, the coefficient $v_\gamma$ occurs with coefficient one;
+every other contribution at exponent $\gamma$ uses only previously
+constructed $v_\beta$, $\beta<\gamma$. Set $v_\gamma$ to minus that
+finite sum and recurse on $M(B)$. Derivatives, products, and finite sums
+preserve each stated coefficient algebra; the order-$z^2$ normalization
+is preserved as well. This constructs a right inverse. The identical
+triangular argument constructs a left inverse. Associativity, which
+follows coefficientwise from finite Taylor identities, shows that these
+two inverses coincide: $J_{\rm left}\circ(H\circ J_{\rm right})=
+(J_{\rm left}\circ H)\circ J_{\rm right}$.
+\end{proof}
+
+\section{The ordinary homological equation}\label{sec:homological}
+
+\subsection{An exact coefficient formula}
+
+For $h\in z^2\C[[z]]$, put
+\[
+ \LL_\lambda h=h(\lambda z)-\lambda h(z),\qquad
+ d_n=\lambda^n-\lambda\quad(n\ge2).
+\]
+Nonresonance means $d_n\ne0$. Thus $\LL_\lambda$ is a bijection on
+$z^2\C[[z]]$, with
+\begin{equation}\label{eq:homologicalinverse}
+ \LL_\lambda^{-1}\!\left(\sum_{n\ge2}q_nz^n\right)
+       =\sum_{n\ge2}\frac{q_n}{d_n}z^n.
+\end{equation}
+This elementary homological inverse is standard in local dynamics; its
+role in nonlinear linearization is discussed in
+\cite{Marmi,FauvetMenousSauzin}. We record exactly which analytic spaces
+it preserves, since no other small-divisor estimate is required for the
+positive Hahn theorem.
+
+\begin{proposition}[Radius and domain preservation]\label{prop:homological}
+Let $q\in z^2\C[[z]]$, let $\rho=\rad(q)$, and let $\sigma=\sigma(\lambda)$.
+The following assertions hold.
+\begin{enumerate}[label=(\roman*),leftmargin=2em]
+\item If $\sigma=0$, the inverse $\LL_\lambda^{-1}$ maps
+$z^2\mathcal O(D_R)$ into itself for every $R>0$.
+\item If $\sigma<\infty$ and $0<\rho<\infty$, then
+$\rad(\LL_\lambda^{-1}q)\ge\rho e^{-\sigma}$. In particular, it
+preserves convergent germs.
+\item If $\sigma<\infty$, it preserves entire functions.
+For arbitrary $\sigma$, it preserves polynomials.
+\item For $P_R(z)=z^2/(1-z/R)$,
+$\rad(\LL_\lambda^{-1}P_R)=Re^{-\sigma}$,
+where $e^{-\infty}=0$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+The definition of $\sigma$ implies
+\begin{equation}\label{eq:divisorroot}
+ \limsup_{n\to\infty}|d_n|^{-1/n}=e^\sigma.
+\end{equation}
+Indeed, $|d_n|\le2$, so replacing $\log|d_n|^{-1}$ with its positive part
+does not change the limsup after division by $n$.
+The Cauchy--Hadamard formula applied to \eqref{eq:homologicalinverse}
+gives (ii). When $\sigma=0$ and $q$ is holomorphic on $D_R$, it gives a
+radius at least $R$, which proves (i) without any assertion on the
+boundary. If $q$ is entire, its coefficient roots tend to zero; a finite
+exponential divisor loss still leaves root limit zero. Polynomial support
+in the Taylor degree is not changed at all. Finally, the coefficient of
+$z^n$ in $P_R$ is $R^{2-n}$ for every $n\ge2$, so
+\eqref{eq:divisorroot} gives the equality in (iv), including the
+infinite-$\sigma$ case.
+\end{proof}
+
+\begin{proposition}[A useful compact-disk estimate]\label{prop:norm}
+Suppose $\sigma=0$ and $0<r<s<R$. Then
+\begin{equation}\label{eq:compactestimate}
+ \norm{\LL_\lambda^{-1}q}_{r}
+ \le \norm{q}_{s}
+       \sum_{n\ge2}\frac{(r/s)^n}{|d_n|},
+ \qquad
+ \norm{q}_{s}=\max_{|z|\le s}|q(z)|.
+\end{equation}
+The numerical series on the right converges.
+\end{proposition}
+
+\begin{proof}
+Cauchy's estimate gives $|q_n|\le\norm q_s s^{-n}$. Sum the resulting
+absolutely convergent Taylor majorant on $|z|\le r$; its convergence follows
+from \eqref{eq:divisorroot}. Thus the inverse is continuous for the
+compact-open Fr\'echet topology, although an estimate on $D_r$ uses a
+slightly larger compact disk. The holomorphy domain remains the full
+open disk $D_R$.
+\end{proof}
+
+\subsection{Sharpness already at first order}
+
+If $\sigma>0$, the forcing $P_R$ shows that the inverse need not preserve
+$D_R$. If $\sigma=\infty$, it need not preserve convergent germs at all.
+For later reference, even entire forcing can fail in the latter regime.
+
+\begin{lemma}[Entire forcing with divergent solution]\label{lem:entirebad}
+If $\sigma=\infty$, there exists $q\in z^2\mathcal O(\C)$ such that
+$\LL_\lambda^{-1}q$ has radius zero.
+\end{lemma}
+
+\begin{proof}
+Choose an increasing sequence $n_j$ with
+$|d_{n_j}|^{-1/n_j}\to\infty$. Set
+$q_{n_j}=|d_{n_j}|^{1/2}$ and all other coefficients to zero. Then
+$|q_{n_j}|^{1/n_j}\to0$, so $q$ is entire, whereas
+$|q_{n_j}/d_{n_j}|^{1/n_j}=|d_{n_j}|^{-1/(2n_j)}\to\infty$.
+\end{proof}
+
+These are linear facts. They do not by themselves show that a nonlinear
+Hahn linearizer loses \emph{every} common neighborhood when
+$0<\sigma<\infty$. Establishing that stronger failure is the purpose of
+Section~\ref{sec:collapse}.
+
+\section{Nonlinear Hahn lifting with a support certificate}\label{sec:lifting}
+
+\subsection{The theorem in its full coefficient-algebra form}
+
+Write
+\begin{equation}\label{eq:data}
+ \begin{aligned}
+ F(z)&=\lambda z+P(z),&P(z)&=\sum_{a\in A}t^a f_a(z),\\
+ \delta_a&=f_a'(0),&\delta&=\sum_{a\in A}t^a\delta_a,\\
+ \Lambda&=\lambda+\delta,&N(z)&=P(z)-\delta z.
+ \end{aligned}
+\end{equation}
+Thus every coefficient of $N$ vanishes to order at least two.
+A coefficient indexed outside its declared support is always interpreted
+as zero.
+
+\begin{theorem}[Support-controlled linearization]\label{thm:lifting}
+Assume $\lambda$ is an irrational unit multiplier and $A\subset\Gamma_{>0}$
+is well ordered. For any $F$ as in \eqref{eq:data}, with
+$f_a\in z\C[[z]]$, there is a unique normalized positive-support formal
+solution $H=z+U$ of
+\[
+ H(F(z))=\Lambda H(z).
+\]
+Its support satisfies
+\begin{equation}\label{eq:supportcertificate}
+ \supp(H-z)\subset M(A)\setminus\{0\}.
+\end{equation}
+It has a normalized compositional inverse with the same support bound.
+Moreover:
+\begin{enumerate}[label=(\roman*),leftmargin=2em]
+\item If $\sigma=0$ and all $f_a$ are holomorphic on $D_R$, all coefficients
+of $H$ and $H^{-1}$ are holomorphic on that same $D_R$.
+\item If $\sigma<\infty$ and all $f_a$ are convergent germs, the coefficients
+of $H$ and $H^{-1}$ are convergent germs.
+\item If $\sigma<\infty$ and all $f_a$ are entire, the coefficients of
+$H$ and $H^{-1}$ are entire.
+\item If all $f_a$ are polynomials, all coefficients of $H$ and $H^{-1}$
+are polynomials, with no arithmetic assumption beyond nonresonance.
+\end{enumerate}
+No uniform coefficient bound, lower Archimedean bound on the positive
+exponents, or convergence in a complex parameter is assumed.
+\end{theorem}
+
+\subsection{The recursion and its proof}
+
+\begin{proof}
+Substitute $H=z+U$ in the conjugacy equation and expand at $\lambda z$.
+After cancelling $\Lambda z$, one obtains
+\begin{equation}\label{eq:masterrecursion}
+ \LL_\lambda U
+ =-N+\delta U-
+ \sum_{\beta>0}\sum_{k\ge1}
+ t^\beta\frac{h_\beta^{(k)}(\lambda z)}{k!}P(z)^k.
+\end{equation}
+At exponent $\gamma\in M(A)\setminus\{0\}$, this becomes
+\begin{equation}\label{eq:recursion}
+ \begin{split}
+ \LL_\lambda h_\gamma={}&-N_\gamma
+ +\sum_{\substack{a\in A,\ \beta\in M(A)_{>0}\\a+\beta=\gamma}}
+                 \delta_a h_\beta\\
+ &-\sum_{\substack{k\ge1,\ \beta\in M(A)_{>0}\\
+                  a_1,\ldots,a_k\in A\\
+                  \beta+a_1+\cdots+a_k=\gamma}}
+       \frac{h_\beta^{(k)}(\lambda z)}{k!}
+       f_{a_1}(z)\cdots f_{a_k}(z).
+ \end{split}
+\end{equation}
+Every sum on the right is finite. To see this even when the order on
+$\Gamma$ is non-Archimedean, represent $\beta$ by a word in $A$ and append
+the $a_i$'s. Lemma~\ref{lem:neumann} gives only finitely many possible
+flattened words of sum $\gamma$. Their finitely many splits give only
+finitely many tuples in \eqref{eq:recursion}. Every occurring $\beta$
+is strictly less than $\gamma$, since all appended exponents are positive.
+
+The right side vanishes to order at least two. The term $N_\gamma$ does so
+by definition; $\delta_a h_\beta$ does so by induction. In the last line,
+$h_\beta^{(k)}$ vanishes to order at least $\max(2-k,0)$, while the product
+of the $k$ functions $f_{a_i}$ vanishes to order at least $k$. Their product
+therefore has order at least two for $k=1$ and for every $k\ge2$.
+
+Since $M(A)$ is well ordered and $\LL_\lambda$ is invertible on
+$z^2\C[[z]]$, equation \eqref{eq:recursion} defines $h_\gamma$ by
+well-founded recursion. Setting all coefficients outside $M(A)$ to zero
+constructs $H$. The support is a subset of a well-ordered set, so $H$ is
+an admissible Hahn section. The coefficientwise derivation of the recursion
+shows that it satisfies the conjugacy equation, not merely a finite
+truncation of that equation.
+
+For (i), apply induction on $\gamma$. The operations on the right of
+\eqref{eq:recursion} are differentiation, rotation, multiplication, and
+finite addition on $D_R$. They preserve holomorphy on $D_R$.
+Proposition~\ref{prop:homological}(i) then does the same for the
+homological inverse. This induction does not successively replace the
+common disk by a sequence of smaller disks. It retains exactly $D_R$
+at each exponent.
+
+For (ii), a finite sum of products of convergent germs is again a
+convergent germ, and Proposition~\ref{prop:homological}(ii) applies.
+There may be different resulting radii for different $\gamma$, but each
+individual radius is positive. The same reasoning with entire functions
+proves (iii). With polynomial coefficients, the right side is a polynomial
+and the homological inverse merely divides its finitely many Taylor
+coefficients by nonzero constants. This proves (iv).
+
+It remains to verify uniqueness without assuming in advance the support
+bound \eqref{eq:supportcertificate}. Let $H_1,H_2$ be two normalized
+positive-support formal solutions. If they differ, the well-ordered union
+of their supports contains a least exponent $\gamma$ at which their
+coefficients differ. Subtract \eqref{eq:masterrecursion}. At exponent
+$\gamma$, every term on the right involving a difference has a positive
+extra exponent, so uses only a lower difference and is zero. Hence
+$\LL_\lambda(h_{1,\gamma}-h_{2,\gamma})=0$, contradicting its
+invertibility on $z^2\C[[z]]$.
+
+Finally, Lemma~\ref{lem:inverse} constructs the inverse in the same
+coefficient algebra, with support in
+$M(M(A)\setminus\{0\})\subset M(A)$. This also proves
+$H\circ F\circ H^{-1}(z)=\Lambda z$ as a Hahn identity.
+\end{proof}
+
+\begin{remark}[Why large Taylor coefficients are allowed]
+Even if $|d_n|$ is extraordinarily small, its reciprocal is a complex
+constant and has Hahn valuation zero. Polynomial coefficients therefore
+survive every homological inversion regardless of their size. For
+nonpolynomial coefficients, their ordinary radius is the additional
+invariant that must be controlled. Neither statement can be replaced by a
+claim that ``all small divisors are units, so all analytic problems disappear.''
+\end{remark}
+
+\subsection{The first two orders in a one-parameter example}
+
+Take
+\[
+ F(z)=\lambda z+t f(z),\qquad
+ a=f'(0),\qquad n(z)=f(z)-az,
+\]
+and write $H=z+t h_1+t^2h_2+\cdots$. The first equations are
+\begin{align}
+ \LL_\lambda h_1&=-n,\label{eq:firstorder}\\
+ \LL_\lambda h_2&=a h_1-h_1'(\lambda z)f(z),\label{eq:secondorder}\\
+ \LL_\lambda h_3&=a h_2-h_2'(\lambda z)f(z)
+                   -\tfrac12 h_1''(\lambda z)f(z)^2.
+\end{align}
+These formulas display the mechanism: the new Hahn coefficient is obtained
+by a finite differential expression in earlier ones and one homological
+inverse. They also show why multiplier variation contributes the term
+$a h_j$. Omitting that term would give the wrong recurrence and would miss
+the obstruction developed below.
+
+\subsection{Evaluation on surcomplex halos}\label{subsec:halos}
+
+For an ordinary disk define its finite halo in the workspace by
+\[
+ D_R^\#=\{z_0+\zeta:z_0\in D_R,\ \zeta\in\mm_\Gamma\}.
+\]
+The representation $z_0+\zeta$ is unique. For
+$Q=\sum_{\gamma\ge0}t^\gamma q_\gamma\in\HH_\Gamma(R)$, set
+\begin{equation}\label{eq:haloeval}
+ Q^\#(z_0+\zeta)=
+ \sum_{\gamma\ge0}\sum_{k\ge0}
+ t^\gamma\frac{q_\gamma^{(k)}(z_0)}{k!}\zeta^k.
+\end{equation}
+The positive supports of $Q$ and $\zeta$, together with zero, satisfy
+Lemma~\ref{lem:neumann}. Thus the double family is summable. No estimate
+on the sizes of the derivatives in $\gamma$ or $k$ is needed.
+
+\begin{proposition}[Actual conjugacy on a finite halo]\label{prop:halo}
+Under Theorem~\ref{thm:lifting}(i), $H^\#$ is a bijection of $D_R^\#$,
+with inverse $(H^{-1})^\#$. Both $F^\#$ and multiplication by $\Lambda$
+are bijections of this halo, and
+\[
+ H^\#\!\left(F^\#(w)\right)=\Lambda H^\#(w)
+       \qquad(w\in D_R^\#).
+\]
+If the coefficients are entire and the hypotheses of
+Theorem~\ref{thm:lifting}(iii) or (iv) apply, the same statement holds on
+$\C^\#=\C+\mm_\Gamma$.
+\end{proposition}
+
+\begin{proof}
+Hahn--Taylor evaluation respects composition whenever the reductions map
+the base domains into one another. This follows by expanding both sides
+and regrouping at a fixed exponent; Lemma~\ref{lem:neumann} reduces the
+calculation to finite Taylor identities. Here the reductions of $H$ and
+$H^{-1}$ are the identity, so they preserve $D_R$. The reduction of $F$
+and of multiplication by $\Lambda$ is $z\mapsto\lambda z$, which preserves
+$D_R$ because $|\lambda|=1$. Evaluation of the two inverse identities and
+the conjugacy identity gives the result. Multiplication by $\Lambda$ has
+an inverse with reduction $\lambda^{-1}$, and conjugacy then gives the
+bijectivity of $F^\#$ as well.
+\end{proof}
+
+\begin{proposition}[The smaller infinitesimal monad needs no arithmetic]\label{prop:monad}
+For every irrational unit multiplier, the formal coefficient solution of
+Theorem~\ref{thm:lifting} can be evaluated on
+$\mm_\Gamma$ and yields a bijective conjugacy there, even when some of its
+ordinary coefficient series have radius zero.
+\end{proposition}
+
+\begin{proof}
+At an argument $\zeta\in\mm_\Gamma$, use the formal Taylor coefficients
+at zero in \eqref{eq:haloeval}. A coefficient may be an arbitrary element
+of $\C[[z]]$: all its scalar coefficients still have valuation zero, and
+powers of $\zeta$ have positive-support factors. The same support lemma
+makes the resulting family summable. The condition $F(0)=0$ ensures that
+$F(\zeta)\in\mm_\Gamma$; the normalized inverse identities and conjugacy
+identity survive evaluation. This proves the assertion.
+\end{proof}
+
+Thus the negative theorems below concern analyticity of the \emph{ordinary
+coefficient functions on neighborhoods}, not an absence of every form of
+surcomplex linearization at infinitesimal arguments. This separation is
+essential when comparing our claims with non-Archimedean dynamical results.
+
+\section{An exact collapsing-radius obstruction}\label{sec:collapse}
+
+\subsection{Two independent monomials in one Hahn field}
+
+Work in the divisible ordered group
+\[
+ \Gstar=\Q+\sqrt2\Q\subset\R,
+ \qquad u=t,\qquad v=t^{\sqrt2}.
+\]
+The map $(k,\ell)\mapsto k+\ell\sqrt2$ is injective on $\N^2$.
+Moreover, only finitely many such pairs lie below any fixed real bound.
+Consequently, the image of $\N^2$ is a well-ordered additive monoid, and
+an arbitrary double formal series
+$\sum_{k,\ell\ge0}b_{k,\ell}u^kv^\ell$ has an unambiguous interpretation
+as a Hahn series with this support. This is a use of two independent
+\emph{exponents}, not two ordinary complex parameter values.
+
+For a fixed finite $R>0$, consider again
+\[
+ F_{u,v}(z)=(\lambda+u)z+vP_R(z),\qquad
+ P_R(z)=\sum_{n\ge2}R^{2-n}z^n.
+\]
+Both perturbation coefficients are holomorphic on $D_R$ and the multiplier
+is $\Lambda=\lambda+u$. Theorem~\ref{thm:lifting} gives a unique formal
+linearizer with support in $\N+\sqrt2\N$.
+
+At $v=0$ the map is already linear and its normalized linearizer is the
+identity. This can be seen either by setting $v=0$ in the recursion or by
+ordinary formal uniqueness for the multiplier $\lambda+u$, since every
+$(\lambda+u)^n-(\lambda+u)$ has nonzero constant term in $u$.
+Thus its first nontrivial $v$-block is
+\begin{equation}\label{eq:Qblock}
+ H(z)=z+vQ(u,z)+O(v^2),\qquad
+ Q(u,z)=\sum_{k\ge0}u^k h_{k,1}(z).
+\end{equation}
+Here $O(v^2)$ means only the blocks with $v$-degree at least two; it is not
+an asymptotic assertion in an ordinary real or complex parameter.
+
+Extracting the coefficient of $v$ in $H(F)=\Lambda H$ gives
+\begin{equation}\label{eq:Qeq}
+ Q(u,(\lambda+u)z)-(\lambda+u)Q(u,z)=-P_R(z).
+\end{equation}
+Hence
+\begin{equation}\label{eq:blockformula}
+ h_{k,1}(z)=-\sum_{n\ge2}R^{2-n}c_{n,k}z^n,
+ \qquad
+ c_{n,k}=[u^k]\frac1{(\lambda+u)^n-(\lambda+u)}.
+\end{equation}
+The radius problem is reduced to an exact estimate of the reciprocal jets
+$c_{n,k}$ for fixed $k$ and increasing Taylor degree $n$.
+
+\subsection{Reciprocal jets and dominance of the highest pole}
+
+Put
+\[
+ a_{n,1}=n\lambda^{n-1}-1,
+ \qquad
+ a_{n,j}=\binom nj\lambda^{n-j}\quad(j\ge2),
+\]
+where $\binom nj=0$ for $j>n$. Then
+\[
+ (\lambda+u)^n-(\lambda+u)
+ =d_n+\sum_{j\ge1}a_{n,j}u^j.
+\]
+Expansion of the reciprocal in formal powers of $u$ gives, for $k\ge1$,
+\begin{equation}\label{eq:reciprocaljet}
+ c_{n,k}=\sum_{r=1}^k(-1)^r d_n^{-r-1}
+     \sum_{\substack{j_1+\cdots+j_r=k\\j_i\ge1}}
+           a_{n,j_1}\cdots a_{n,j_r},
+ \qquad c_{n,0}=d_n^{-1}.
+\end{equation}
+For fixed $k$, the term with $r=k$ is unique and equals
+\begin{equation}\label{eq:highestpole}
+ (-1)^k a_{n,1}^k d_n^{-k-1}.
+\end{equation}
+It is this highest pole in the small divisor, rather than just its first
+power, that drives the successive radius losses.
+
+\begin{lemma}[Uniform reciprocal-jet estimates]\label{lem:jets}
+For each fixed $k\ge1$ there is a constant $C_k>0$, independent of $n$,
+such that
+\begin{align}
+ |c_{n,k}|&\le C_k n^k\max\{1,|d_n|^{-k-1}\},\label{eq:jetupper}\\
+ \left|c_{n,k}-(-1)^ka_{n,1}^kd_n^{-k-1}\right|
+ &\le C_k n^k|d_n|^{-k}
+       \quad\text{when }|d_n|\le1.\label{eq:jetremainder}
+\end{align}
+In addition, $|a_{n,1}|\ge n-1$. Consequently, along any sequence with
+$n\to\infty$ and $d_n\to0$,
+\begin{equation}\label{eq:jetasymptotic}
+ c_{n,k}=(-1)^ka_{n,1}^kd_n^{-k-1}(1+o(1)).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The reverse triangle inequality gives
+$|n\lambda^{n-1}-1|\ge n-1$; also $|a_{n,1}|\le n+1$.
+For $j\ge2$, $|a_{n,j}|\le n^j/j!$. Therefore any product indexed by a
+composition $j_1+\cdots+j_r=k$ is bounded by a constant depending only
+on $k$ times $n^k$. There are finitely many compositions of $k$.
+Summing \eqref{eq:reciprocaljet} gives \eqref{eq:jetupper}, because
+$|d_n|\le2$ and every pole order is at most $k+1$.
+
+After removing the $r=k$ term, all remaining pole orders are at most $k$.
+For $|d_n|\le1$ this proves \eqref{eq:jetremainder}. The magnitude of
+the removed term is at least $(n-1)^k|d_n|^{-k-1}$. The ratio of the
+remainder bound to that lower bound is at most
+$C_k(n/(n-1))^k|d_n|$, which tends to zero when $d_n\to0$.
+This proves \eqref{eq:jetasymptotic} and, importantly, excludes cancellation
+of the highest-pole contribution along the subsequences that control
+exponential growth.
+\end{proof}
+
+\begin{theorem}[Exact coefficient-radius collapse]\label{thm:collapse}
+For the family \eqref{eq:familyintro}, suppose
+$\sigma(\lambda)>0$, allowing $\sigma=\infty$. Then, for every $k\ge0$,
+\begin{equation}\label{eq:jetroot}
+ \limsup_{n\to\infty}|c_{n,k}|^{1/n}=e^{(k+1)\sigma},
+\end{equation}
+and the coefficient of $u^kv$ in its normalized formal linearizer has
+exact radius
+\begin{equation}\label{eq:collapse}
+ \rad(h_{k,1})=R e^{-(k+1)\sigma}.
+\end{equation}
+If $0<\sigma<\infty$, the full normalized linearizer belongs to
+$\GG_{\Gstar}$ but not to $\RR_{\Gstar}$. If $\sigma=\infty$, it does
+not even belong to $\GG_{\Gstar}$.
+\end{theorem}
+
+\begin{proof}
+For $k=0$, \eqref{eq:jetroot} is \eqref{eq:divisorroot}.
+For fixed $k\ge1$ and finite positive $\sigma$,
+\eqref{eq:jetupper} gives the upper bound $e^{(k+1)\sigma}$ after taking
+$n$th roots and a limsup, since $(C_kn^k)^{1/n}\to1$.
+Choose a subsequence $n_j$ on which
+$n_j^{-1}\log|d_{n_j}|^{-1}\to\sigma$. Because $\sigma>0$, along that
+subsequence $d_{n_j}\to0$. Equation~\eqref{eq:jetasymptotic} applies, and
+\[
+ |c_{n_j,k}|^{1/n_j}
+ =|a_{n_j,1}|^{k/n_j}|d_{n_j}|^{-(k+1)/n_j}
+   |1+o(1)|^{1/n_j}\longrightarrow e^{(k+1)\sigma}.
+\]
+We used $n_j-1\le|a_{n_j,1}|\le n_j+1$ for the first factor. This proves
+the matching lower bound.
+
+If $\sigma=\infty$, choose $n_j$ so that
+$|d_{n_j}|^{-1/n_j}\to\infty$. Again $d_{n_j}\to0$ and the same
+asymptotic implies $|c_{n_j,k}|^{1/n_j}\to\infty$. Thus
+\eqref{eq:jetroot} remains true with an infinite right side.
+The Cauchy--Hadamard formula in \eqref{eq:blockformula} now gives
+\eqref{eq:collapse}.
+
+When $0<\sigma<\infty$, Theorem~\ref{thm:lifting}(ii) says that every
+coefficient of the full nonlinear linearizer is a convergent germ.
+However, the particular radii in \eqref{eq:collapse} have infimum zero,
+so its coefficients cannot all be holomorphic on any $D_r$, $r>0$.
+When $\sigma=\infty$, even $h_{0,1}$ has radius zero and is not a
+convergent germ. Formal uniqueness in Theorem~\ref{thm:lifting} shows
+that no alternative normalized solution, even with additional positive
+Hahn exponents, can avoid these coefficients.
+\end{proof}
+
+\subsection{What the example proves, and why two exponents matter}
+
+The first coefficient $h_{0,1}$ alone only loses the radius by $e^{-\sigma}$.
+For finite positive $\sigma$, that loss is compatible with the existence
+of some smaller common disk. The higher multiplier jets $h_{k,1}$ force
+losses by every power $e^{-(k+1)\sigma}$ and exclude such a disk. The
+argument is therefore strictly stronger than a first-order homological
+counterexample.
+
+The independence of $1$ and $\sqrt2$ prevents different pairs $(k,\ell)$
+from merging into the same Hahn coefficient. It lets us isolate the
+$v$-linear block without contamination by higher $v$-powers. Replacing
+$v$ by an integer power of $u$ would merge blocks and could introduce
+cancellation; the proof above would no longer establish the claimed
+radius for a particular Hahn coefficient. We do not silently make that
+replacement.
+
+\begin{corollary}[A finite-support instability]\label{cor:finitefailure}
+For every irrational multiplier with $0<\sigma<\infty$, two nonzero
+positive Hahn coefficients suffice for a holomorphic perturbation of a
+rotation to have a coefficient-germ linearizer but no common-domain
+linearizer. The input coefficients can be rational functions of $z$.
+\end{corollary}
+
+\begin{proof}
+The only nonzero perturbation coefficients are $z$ at exponent $1$ and
+$P_R(z)$ at exponent $\sqrt2$. Apply Theorem~\ref{thm:collapse}.
+\end{proof}
+
+\section{Sharp category thresholds}\label{sec:thresholds}
+
+\subsection{A precise universal formulation}
+
+Let $\mathsf{CD}(\lambda)$ be the assertion that, for every set-sized
+ordered abelian group $\Gamma$, every $R>0$, and every normalized input
+$F$ as in \eqref{eq:data} in $\HH_\Gamma(R)$, there is a normalized
+linearizer in $\RR_\Gamma$. Let $\mathsf{CG}(\lambda)$ be the assertion
+that every such input with coefficient germs has a normalized linearizer
+in $\GG_\Gamma$. These are universal statements about specified
+coefficient categories.
+
+\begin{theorem}[The common-domain/coefficient-germ trichotomy]\label{thm:trichotomy}
+For an irrational unit multiplier $\lambda$,
+\begin{equation}\label{eq:equiv}
+ \mathsf{CD}(\lambda)\ \Longleftrightarrow\ \sigma(\lambda)=0,
+ \qquad
+ \mathsf{CG}(\lambda)\ \Longleftrightarrow\ \sigma(\lambda)<\infty.
+\end{equation}
+The same equivalences hold when the universal quantifier over $\Gamma$
+is replaced by the single group $\Gstar=\Q+\sqrt2\Q$. In the positive
+common-domain case, the linearizer and its inverse preserve the original
+disk, not just an unspecified smaller disk.
+\end{theorem}
+
+\begin{proof}
+The positive implications are Theorem~\ref{thm:lifting}(i) and (ii).
+For $0<\sigma<\infty$, Theorem~\ref{thm:collapse} disproves
+$\mathsf{CD}(\lambda)$ within $\Gstar$ while the positive coefficient-germ
+implication still holds. For $\sigma=\infty$, the same example has a
+nonconvergent coefficient and disproves both universal properties.
+\end{proof}
+
+\begin{corollary}[The entire-coefficient threshold]\label{cor:entirethreshold}
+Universal linearization of entire-coefficient perturbations by
+entire-coefficient normalized coordinate changes holds exactly when
+$\sigma<\infty$. In contrast, universal polynomial-coefficient
+linearization holds for every irrational unit multiplier.
+\end{corollary}
+
+\begin{proof}
+The positive assertions follow from Theorem~\ref{thm:lifting}(iii)--(iv).
+For $\sigma=\infty$, choose the entire forcing $q$ from
+Lemma~\ref{lem:entirebad} and set $F(z)=\lambda z+tq(z)$.
+The coefficient of $t$ in its normalized linearizer is
+$-\LL_\lambda^{-1}q$, which is not even a convergent germ.
+\end{proof}
+
+\subsection{The meaning of sharpness}
+
+Table~\ref{tab:trichotomy} summarizes the result. The polynomial column
+means that each Hahn coefficient is a polynomial; it does not mean that
+the complete coordinate change is a finite polynomial over the Hahn field.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.18\textwidth}>{\raggedright\arraybackslash}p{.26\textwidth}>{\raggedright\arraybackslash}p{.24\textwidth}>{\raggedright\arraybackslash}p{.22\textwidth}@{}}
+\toprule
+Arithmetic & Common ordinary disk & Coefficient germs / entire coefficients
+& Polynomial coefficients\\
+\midrule
+$\sigma=0$ & Always, with the same $D_R$ & Always / always & Always\\[3pt]
+$0<\sigma<\infty$ & Not universally; explicit radii collapse to zero
+& Always / always & Always\\[3pt]
+$\sigma=\infty$ & Not universally & Neither universally & Always\\
+\bottomrule
+\end{tabular}
+\caption{Universal normalized linearization in the specified Hahn categories.
+Negative common-domain assertions use $\Gstar$; positive assertions hold
+for every set-sized ordered abelian group.}\label{tab:trichotomy}
+\end{table}
+
+The distinction between the middle two columns is not contradictory.
+For entire input coefficients, a finite exponential loss of Taylor
+coefficient growth leaves every coefficient entire. For coefficients
+with a finite input radius, repeated losses can exhaust every positive
+common radius. The fixed coefficient algebra, not just the existence of
+Hahn sums, determines the answer.
+
+\section{Arithmetic examples and the Brjuno comparison}\label{sec:arithmetic}
+
+\subsection{Continued fractions measure the exponential loss}
+
+Let $\theta\in\R\setminus\Q$, let $p_j/q_j$ be its continued-fraction
+convergents, and let $\|x\|_{\Z}$ denote distance to the nearest integer.
+We use the classical approximation estimates
+\begin{equation}\label{eq:cfbounds}
+ \frac1{q_j+q_{j+1}}<\|q_j\theta\|_{\Z}<\frac1{q_{j+1}},
+ \qquad
+ \|m\theta\|_{\Z}\ge\|q_j\theta\|_{\Z}
+       \quad(q_j\le m<q_{j+1}).
+\end{equation}
+These standard continued-fraction facts and their role in small-divisor
+problems are treated in Marmi's lectures~\cite{Marmi}. The short argument
+below translates them to our particular invariant; it is included to make
+all arithmetic examples explicit.
+
+\begin{proposition}[Continued-fraction formula]\label{prop:continued}
+For $\lambda=e^{2\pi i\theta}$,
+\[
+ \sigma(\lambda)=\limsup_{j\to\infty}\frac{\log q_{j+1}}{q_j}.
+\]
+\end{proposition}
+
+\begin{proof}
+For every real $x$,
+\[
+ 4\|x\|_{\Z}\le|1-e^{2\pi ix}|\le2\pi\|x\|_{\Z}.
+\]
+The upper bound follows from $|\sin y|\le|y|$, and the lower bound
+from concavity of $\sin$ on $[0,\pi/2]$. Constants do not affect a
+logarithmic limsup divided by $m$. Thus $\sigma$ is the same as
+\[
+ \limsup_{m\to\infty}\frac{\log\|m\theta\|_{\Z}^{-1}}m,
+\]
+since $m=n-1$ and the ratio $m/(m+1)$ tends to one. At $m=q_j$,
+\eqref{eq:cfbounds} gives the lower bound
+$\log q_{j+1}/q_j$ for this limsup. If $q_j\le m<q_{j+1}$, the other
+half of \eqref{eq:cfbounds} gives
+\[
+ \frac{\log\|m\theta\|_{\Z}^{-1}}m
+ \le\frac{\log(q_j+q_{j+1})}{q_j}
+ \le\frac{\log q_{j+1}}{q_j}+\frac{\log2}{q_j}.
+\]
+This proves the reverse bound, including the possibility of an infinite
+limsup.
+\end{proof}
+
+\subsection{A strictly weaker condition than Brjuno}
+
+The Brjuno condition is
+\begin{equation}\label{eq:brjuno}
+ B(\theta)=\sum_{j\ge0}\frac{\log q_{j+1}}{q_j}<\infty.
+\end{equation}
+It implies $\sigma=0$, since the nonnegative summands tend to zero.
+It is a much stronger requirement than mere convergence of those summands
+to zero. The following construction gives a concrete infinite
+continued-fraction specification witnessing the difference.
+
+\begin{example}[Subexponential, but not Brjuno]\label{ex:nonbrjuno}
+Start with a positive initial continued-fraction coefficient, for example
+$a_1=2$, and choose successively
+\begin{equation}\label{eq:cfzero}
+ a_{j+1}=\left\lceil\exp\left(\frac{q_j}{j+1}\right)\right\rceil
+       \qquad(j\ge1).
+\end{equation}
+Let $\theta=[0;a_1,a_2,\ldots]$. Then $\sigma(e^{2\pi i\theta})=0$
+but $B(\theta)=\infty$.
+\end{example}
+
+\begin{proof}
+The denominator recurrence is $q_{j+1}=a_{j+1}q_j+q_{j-1}$.
+With $x_j=q_j/(j+1)$, the bounds
+$e^{x_j}\le a_{j+1}\le e^{x_j}+1$ and $q_{j-1}\le q_j$ imply
+\[
+ \frac1{j+1}+\frac{\log q_j}{q_j}
+ \le\frac{\log q_{j+1}}{q_j}
+ \le\frac1{j+1}+\frac{\log q_j}{q_j}+\frac{\log3}{q_j}.
+\]
+The denominators tend to infinity, so both outside expressions tend to
+zero. Proposition~\ref{prop:continued} gives $\sigma=0$. The lower bound
+$1/(j+1)$ makes the Brjuno sum diverge.
+\end{proof}
+
+By Theorem~\ref{thm:lifting}, this multiplier linearizes every positive
+Hahn perturbation with common-disk coefficients in the common-disk sense.
+In contrast, the classical Brjuno--Yoccoz theorem implies that its ordinary
+quadratic germ $w\mapsto\lambda w+w^2$ is not holomorphically
+linearizable~\cite{Yoccoz}. There is no contradiction: the positive Hahn
+perturbation $\lambda z+tz^2$ and the ordinary quadratic germ have different
+coefficient categories and different spatial scales.
+
+\subsection{Every remaining regime occurs}
+
+\begin{example}[A prescribed finite loss exponent]\label{ex:positive}
+For any real $s>0$, choose
+$a_{j+1}=\lceil e^{s q_j}\rceil$. Then the resulting irrational
+$\theta$ satisfies $\sigma(e^{2\pi i\theta})=s$.
+Indeed,
+\[
+ s+\frac{\log q_j}{q_j}
+ \le\frac{\log q_{j+1}}{q_j}
+ \le s+\frac{\log q_j}{q_j}+\frac{\log3}{q_j},
+\]
+so the quotient tends to $s$.
+\end{example}
+
+\begin{example}[Superexponential small divisors]\label{ex:infinite}
+Choose $a_{j+1}=\lceil e^{q_j^2}\rceil$. The same argument gives
+\[
+ \frac{\log q_{j+1}}{q_j}=q_j+o(1),
+\]
+so $\sigma=\infty$.
+\end{example}
+
+At the other end, any polynomial lower bound
+$|\lambda^n-\lambda|\ge Cn^{-\tau}$ implies $\sigma=0$ immediately.
+The preceding continued-fraction constructions are useful because they
+show that all three regimes of Theorem~\ref{thm:trichotomy} occur, and that
+the positive regime genuinely extends beyond the ordinary Brjuno class.
+
+\section{Polynomial perturbations and the critical spatial scale}\label{sec:quadratic}
+
+\subsection{An explicit coefficientwise-entire conjugacy}
+
+For the ordinary formal quadratic map
+$p_\lambda(w)=\lambda w+w^2$, let
+\[
+ h_\lambda(w)=w+\sum_{n\ge2}b_n w^n
+\]
+be its unique normalized formal solution of
+$h_\lambda(p_\lambda(w))=\lambda h_\lambda(w)$.
+It exists for every nonresonant $\lambda$, by induction in the ordinary
+Taylor degree. More explicitly,
+\begin{equation}\label{eq:quadraticrecurrence}
+ b_1=1,\qquad
+ b_n=-\frac{1}{\lambda^n-\lambda}
+       \sum_{m=\lceil n/2\rceil}^{n-1}
+         b_m\binom m{n-m}\lambda^{2m-n}
+       \quad(n\ge2).
+\end{equation}
+The binomial coefficient is the coefficient of $w^n$ in
+$(\lambda w+w^2)^m$. Thus this recurrence follows directly by comparing
+Taylor coefficients and is not a convergence assertion.
+The first values are
+\[
+ b_2=-\frac1{\lambda^2-\lambda},\qquad
+ b_3=\frac{2\lambda}{(\lambda^2-\lambda)(\lambda^3-\lambda)}.
+\]
+
+Now take the positive Hahn perturbation
+\begin{equation}\label{eq:quadraticF}
+ F_t(z)=\lambda z+tz^2.
+\end{equation}
+Its normalized linearizer is
+\begin{equation}\label{eq:quadraticH}
+ H_t(z)=z+\sum_{n\ge2}b_n t^{n-1}z^n.
+\end{equation}
+At every Hahn exponent there is only one polynomial coefficient. Therefore
+$H_t$ lies in the entire-coefficient category for every irrational
+multiplier, including those with $\sigma=\infty$.
+
+\begin{proposition}[Quadratic scaling identity]\label{prop:quadraticscale}
+As formal identities,
+\[
+ H_t(z)=t^{-1}h_\lambda(tz),\qquad
+ H_t(F_t(z))=\lambda H_t(z).
+\]
+The change of variable $H_t$ and its inverse are well defined by Hahn sums
+on the full set
+\begin{equation}\label{eq:subcritical}
+ \{z\in\K_\Gamma:\nu(tz)>0\},
+\end{equation}
+whenever the workspace contains the monomial $t$ of positive valuation.
+They give a conjugacy on that set.
+\end{proposition}
+
+\begin{proof}
+The first identity is coefficientwise algebra. The relation
+$tF_t(z)=p_\lambda(tz)$ then proves the second by formal substitution.
+At any argument with $tz\in\mm_\Gamma$, the ordinary formal series
+$h_\lambda(tz)$ is Hahn summable: its scalar coefficients have valuation
+zero, and the powers of the positive-support argument satisfy
+Lemma~\ref{lem:neumann}. Its ordinary formal inverse has the same property.
+Both preserve the infinitesimal monad, because they have linear term the
+identity and higher terms of strictly higher valuation. After multiplication
+by $t^{-1}$, they preserve \eqref{eq:subcritical}. The identities and their
+inverse counterparts may be evaluated there coefficientwise.
+\end{proof}
+
+For $t=\omega^{-1}$, the domain includes every finite surcomplex number
+and many infinite ones, but it excludes the critical scale where $tz$ has
+nonzero ordinary standard part. This is consistent with the familiar
+non-Archimedean linearization phenomenon over a trivially valued
+coefficient field; it is not presented as a new replacement for the
+ultrametric results of Lindahl~\cite{Lindahl}.
+
+\subsection{Why a divergent classical germ does not become convergent}
+
+Rescale the spatial variable to the critical scale, $z=t^{-1}w$.
+As a formal Taylor series in $w$ over the Hahn field,
+\begin{equation}\label{eq:critical}
+ tH_t(t^{-1}w)=h_\lambda(w).
+\end{equation}
+On the right, every coefficient has Hahn exponent zero. If
+$\rad(h_\lambda)=0$, it is not a convergent ordinary germ.
+
+\begin{proposition}[A precise rescaled-germ obstruction]\label{prop:critical}
+The formal germ in \eqref{eq:critical} is the Taylor germ of a
+common-domain Hahn-holomorphic section at $w=0$ if and only if the ordinary
+formal series $h_\lambda$ has positive convergence radius.
+\end{proposition}
+
+\begin{proof}
+Suppose a section $A(w)=\sum_{\gamma\ge0}t^\gamma a_\gamma(w)$, with all
+$a_\gamma$ holomorphic on one $D_r$, has Taylor series equal to
+$h_\lambda(w)$ in $\K_\Gamma[[w]]$. The coefficient at Hahn exponent
+zero has ordinary Taylor series $h_\lambda$. It must therefore converge
+at least on $D_r$. All other coefficient germs have zero Taylor series.
+Conversely, if $h_\lambda$ converges on a disk, the section with only
+exponent-zero coefficient $h_\lambda$ is the desired section.
+\end{proof}
+
+For the non-Brjuno multiplier of Example~\ref{ex:nonbrjuno}, Yoccoz's
+quadratic theorem gives $\rad(h_\lambda)=0$~\cite{Yoccoz}.
+Thus $H_t$ is coefficientwise entire and an actual conjugacy on the
+subcritical domain, while its rescaled germ cannot be realized by a
+common-domain analytic section at the critical scale.
+
+Even when $h_\lambda$ converges ordinarily, substituting a nonzero ordinary
+$w$ directly into the displayed Hahn family in \eqref{eq:critical} is
+\emph{not} a Hahn summation: infinitely many nonzero terms would occupy
+exponent zero. One must first use the separately justified ordinary
+holomorphic germ, and then its canonical Taylor lift. This avoids an
+illegitimate exchange of ordinary analytic summation with Hahn summation.
+
+\subsection{What this example does not say}
+
+A coefficientwise-entire section need not be a globally analytic map on
+all of $\No[i]$ under every spatial rescaling. The common-domain category
+controls ordinary coefficient domains around ordinary centers. It does
+not itself supply coherence between every possible infinite-scale chart.
+Likewise, the existence of the Hahn conjugacy does not imply ordinary
+holomorphic dependence on $t$ near $t=0$. For a divergent $h_\lambda$, the
+formal dependence encoded in \eqref{eq:quadraticH} need not converge as an
+ordinary two-variable series in $(t,z)$.
+
+\section{Commuting perturbations and simultaneous linearization}\label{sec:centralizer}
+
+The existence theorem also gives a clean dynamical consequence. This
+corollary uses the standard nonresonant centralizer argument; its role is
+to show that the support and common-domain conclusions are preserved when
+one passes from a single map to a commuting family.
+
+\begin{theorem}[A common coordinate for the centralizer]\label{thm:centralizer}
+Suppose $\sigma(\lambda)=0$ and $F$ satisfies
+Theorem~\ref{thm:lifting}(i) on $D_R$. Let $H$ be its normalized
+linearizer and $\Lambda=F'(0)$. Let
+\[
+ G(z)=\mu z+\sum_{b\in B}t^b g_b(z),\qquad
+ |\mu|=1,\quad g_b\in z\mathcal O(D_R),\quad B\subset\Gamma_{>0}
+\]
+be another positive-support perturbation, and suppose $G\circ F=F\circ G$.
+Then, with $M=G'(0)$,
+\begin{equation}\label{eq:simultaneous}
+ H\circ G\circ H^{-1}(z)=Mz.
+\end{equation}
+No nonresonance or small-divisor assumption on $\mu$ is required.
+Consequently, every such map commuting with $F$ is linearized by the same
+$H$, and any two such maps commute with each other.
+\end{theorem}
+
+\begin{proof}
+All compositions are legitimate on $D_R$ by the support lemma and
+$|\lambda|=|\mu|=1$. Put $K=H\circ G\circ H^{-1}$. It commutes with
+$z\mapsto\Lambda z$, fixes zero, and has derivative $M$ at zero.
+Expand its ordinary Taylor germ over the Hahn field:
+$K(z)=\sum_{n\ge1}k_nz^n$. Comparing coefficients in
+$K(\Lambda z)=\Lambda K(z)$ gives
+\[
+ (\Lambda^n-\Lambda)k_n=0\quad(n\ge2).
+\]
+The factor $\Lambda^n-\Lambda$ is a nonzero Hahn-field element: its
+exponent-zero coefficient is $\lambda^n-\lambda\ne0$. Hence every
+$k_n$ with $n\ge2$ vanishes and $k_1=M$. At each Hahn exponent the
+corresponding holomorphic coefficient function has the Taylor series of
+a linear function, so the identity theorem on $D_R$ yields $K(z)=Mz$
+as a common-domain section. Equation~\eqref{eq:simultaneous} follows.
+Two scalar multiplications commute; conjugating back proves the final
+assertion.
+\end{proof}
+
+\begin{corollary}[No nontrivial tangent-to-identity centralizer element]
+Under the preceding hypotheses, a commuting perturbation $G$ with
+$G'(0)=1$ is the identity. More generally, within this class the multiplier
+$G'(0)$ determines $G$ uniquely.
+\end{corollary}
+
+\begin{proof}
+In the coordinate $H$, the map is multiplication by its multiplier.
+\end{proof}
+
+The same proof works in the coefficient-germ category when $\sigma<\infty$,
+and in the polynomial-coefficient setting whenever the constructed
+linearizers have polynomial coefficients. In those statements equality is
+interpreted in the indicated category, rather than on a disk that has not
+been shown to exist. A set-indexed family can be treated one member at a
+time using the same $H$; no unsupported sum over the whole family is taken.
+
+\section{Several variables: the same sharp mechanism}\label{sec:several}
+
+\subsection{Diagonal unitary reduction and nonresonance}
+
+Let $d\ge1$, let
+\[
+ L=\operatorname{diag}(\lambda_1,\ldots,\lambda_d),\qquad
+ |\lambda_j|=1,
+\]
+and assume the nonresonance condition
+\begin{equation}\label{eq:multinonresonance}
+ \lambda^\alpha\ne\lambda_j
+ \quad\text{for every }\alpha\in\N^d,\ |\alpha|\ge2,
+ \quad j=1,\ldots,d,
+ \qquad\lambda^\alpha=\lambda_1^{\alpha_1}\cdots\lambda_d^{\alpha_d}.
+\end{equation}
+For $n\ge2$ put
+\begin{equation}\label{eq:multisigma}
+ \Delta_n=\min_{\substack{|\alpha|=n\\1\le j\le d}}
+                 |\lambda^\alpha-\lambda_j|>0,
+ \qquad
+ \sigma_d(L)=\limsup_{n\to\infty}\frac{\log^+\Delta_n^{-1}}n.
+\end{equation}
+The common domain is the equal-radius polydisk
+$\mathbb D_R^d=\{z:\max_j|z_j|<R\}$. Our assertions are about this
+specified geometry; no claim about an optimal general Reinhardt domain
+is needed.
+
+For a vector formal power series $q(z)=\sum_{|\alpha|\ge2}q_\alpha z^\alpha$,
+define its isotropic radius by
+\begin{equation}\label{eq:isotropic}
+ \rho(q)^{-1}=
+ \limsup_{n\to\infty}
+ \left(\max_{\substack{|\alpha|=n\\1\le j\le d}}
+              |q_{\alpha,j}|\right)^{1/n},
+\end{equation}
+with the usual zero/infinity conventions. It is the supremum of radii
+of equal-radius polydisks of Taylor convergence. Indeed, the number of
+multiindices of degree $n$ is $\binom{n+d-1}{d-1}$, whose $n$th root
+tends to one. Coefficient bounds and the root test therefore establish
+both implications in this interpretation.
+
+\begin{lemma}[Multivariable homological inverse]\label{lem:multihomological}
+The operator $\LL_Lh=h(Lz)-Lh(z)$ is invertible on vector formal series
+of order at least two, with
+\begin{equation}\label{eq:multihomological}
+ (\LL_L^{-1}q)_{\alpha,j}
+       =\frac{q_{\alpha,j}}{\lambda^\alpha-\lambda_j}.
+\end{equation}
+If $\sigma_d=0$, it preserves holomorphy on every
+$\mathbb D_R^d$. If $\sigma_d<\infty$, it preserves convergent germs and
+entire functions; a finite nonzero isotropic radius loses at most the
+factor $e^{-\sigma_d}$. It preserves polynomial vectors under
+nonresonance alone.
+\end{lemma}
+
+\begin{proof}
+The monomial $z^\alpha e_j$ is an eigenvector of $\LL_L$ with eigenvalue
+$\lambda^\alpha-\lambda_j$. This proves the formal formula.
+Taking maxima at total degree $n$ in \eqref{eq:multihomological} yields
+\[
+ \max_{|\alpha|=n,j}|(\LL_L^{-1}q)_{\alpha,j}|
+ \le\Delta_n^{-1}\max_{|\alpha|=n,j}|q_{\alpha,j}|.
+\]
+Now use \eqref{eq:isotropic}, or Cauchy estimates on nested polydisks.
+The number of degree-$n$ monomials has only polynomial growth, so it adds
+no exponential loss. The entire and polynomial assertions follow exactly
+as in Proposition~\ref{prop:homological}.
+\end{proof}
+
+\subsection{A nonlinear common-polydisk theorem}
+
+\begin{theorem}[Multivariable support-controlled lifting]\label{thm:multilifting}
+Let
+\[
+ F(z)=Lz+\sum_{a\in A}t^a f_a(z),\qquad f_a(0)=0,
+ \qquad M=DF(0)=L+\sum_{a\in A}t^a Df_a(0),
+\]
+where $A\subset\Gamma_{>0}$ is well ordered. Under
+\eqref{eq:multinonresonance}, there is a unique normalized formal
+coordinate change $H=z+U$, with $DU(0)=0$ coefficientwise, such that
+\begin{equation}\label{eq:multischroeder}
+ H(F(z))=M H(z),\qquad
+ \supp(H-z)\subset M(A)\setminus\{0\}.
+\end{equation}
+If $\sigma_d=0$ and all $f_a$ are holomorphic on $\mathbb D_R^d$, then
+$H$ and its inverse have coefficients holomorphic on that same polydisk.
+For finite $\sigma_d$, coefficient germs and entire coefficients are
+preserved. Polynomial coefficients are preserved for every nonresonant
+$L$. The infinitesimal matrix $M-L$ need not be diagonal.
+\end{theorem}
+
+\begin{proof}
+Write $P=F-Lz$, $E=M-L$, and $N=P-Ez$. The vector version of
+\eqref{eq:masterrecursion} is
+\begin{equation}\label{eq:multimaster}
+ \LL_LU=-N+EU-
+ \sum_{\beta>0}\sum_{k\ge1}\frac{t^\beta}{k!}
+       D^kh_\beta(Lz)[P(z),\ldots,P(z)],
+\end{equation}
+where $D^kh$ is the symmetric $k$-linear derivative. At a fixed Hahn
+exponent only finitely many terms occur by
+Lemma~\ref{lem:neumann}, and every previously occurring $h_\beta$ has
+strictly smaller exponent. The right side has total Taylor order at
+least two: $P$ has order one, $h_\beta$ has order two, and the same
+order count as in the one-variable proof applies to its $k$th derivative.
+Apply \eqref{eq:multihomological} by well-founded recursion.
+
+The operations in \eqref{eq:multimaster} preserve the common polydisk
+because $L$ preserves it, and Lemma~\ref{lem:multihomological} provides
+the required analytic inverse. For germs, entire functions, and
+polynomials, use the corresponding parts of that lemma. The least-exponent
+argument proves uniqueness. The inverse-coordinate recursion is vectorial
+but still has coefficient one on the new unknown, so the proof of
+Lemma~\ref{lem:inverse} applies with multilinear derivatives and gives
+the same coefficient algebra and support certificate.
+\end{proof}
+
+As in Proposition~\ref{prop:halo}, common-polydisk solutions evaluate to
+actual conjugacies on
+$(\mathbb D_R^d)^\#=\mathbb D_R^d+\mm_\Gamma^d$. Both the reduction of
+$F$ and the reduction of its linear normal form are $L$, which preserves
+the base polydisk. Positive perturbations of the invertible matrix $L$
+have a Hahn inverse, so the conjugate maps are bijections of the halo.
+
+\subsection{A sharp multivariable radius-collapse family}
+
+Set
+\begin{equation}\label{eq:multiP}
+ P_R^{(d)}(z)=
+ \prod_{j=1}^d(1-z_j/R)^{-1}-1-\sum_{j=1}^d z_j/R
+ =\sum_{|\alpha|\ge2}R^{-|\alpha|}z^\alpha,
+\end{equation}
+and let $\mathbf1=(1,\ldots,1)^T$. In the same two-monomial workspace,
+consider
+\begin{equation}\label{eq:multiF}
+ F_{u,v}(z)=(1+u)Lz+vP_R^{(d)}(z)\mathbf1.
+\end{equation}
+The choice of a \emph{multiplicative} detuning $(1+u)L$ makes the highest
+reciprocal pole uniform over every component and every multiindex.
+
+\begin{theorem}[Exact multivariable radius collapse]\label{thm:multicollapse}
+Assume \eqref{eq:multinonresonance} and $\sigma_d(L)>0$. In the unique
+normalized formal linearizer of \eqref{eq:multiF}, let $h_{k,1}(z)$ be
+the coefficient vector of $u^kv$. Then, for every $k\ge0$,
+\begin{equation}\label{eq:multicollapse}
+ \rho(h_{k,1})=R e^{-(k+1)\sigma_d(L)}.
+\end{equation}
+Consequently, the universal common-polydisk-germ property holds exactly
+when $\sigma_d=0$, and the universal coefficient-germ property holds
+exactly when $\sigma_d<\infty$, when workspaces include $\Gstar$.
+\end{theorem}
+
+\begin{proof}
+At $v=0$, the map is linear and its normalized coordinate change is the
+identity. The coefficient of $v$ therefore satisfies the homological
+equation for the diagonal multiplier $(1+u)L$. In component $j$ and
+at multiindex $\alpha$, with $n=|\alpha|$, its coefficient is
+\[
+ -\frac{R^{-n}}{(1+u)^n\lambda^\alpha-(1+u)\lambda_j}.
+\]
+Write
+\[
+ D_{\alpha,j}=\lambda^\alpha-\lambda_j,
+ \qquad
+ A_{\alpha,j,1}=n\lambda^\alpha-\lambda_j,
+ \qquad
+ A_{\alpha,j,r}=\binom nr\lambda^\alpha\quad(r\ge2).
+\]
+The reciprocal-jet formula \eqref{eq:reciprocaljet} remains valid with
+these replacements. Because all the phases have modulus one,
+\[
+ |A_{\alpha,j,1}|\ge n-1,
+ \qquad |A_{\alpha,j,r}|\le n^r/r!\quad(r\ge2).
+\]
+Thus, for each fixed $k$, the estimates in Lemma~\ref{lem:jets} hold
+with constants independent not only of $n$ but also of $\alpha$ and $j$.
+
+Let $C_{\alpha,j,k}$ be the corresponding coefficient of $u^k$ in the
+reciprocal. The upper estimate yields
+\[
+ \max_{|\alpha|=n,j}|C_{\alpha,j,k}|
+ \le C_k n^k\max\{1,\Delta_n^{-k-1}\}.
+\]
+For the lower bound, choose $n$ along a subsequence realizing the
+limsup in \eqref{eq:multisigma}, and at each such degree choose
+$(\alpha,j)$ attaining the finite minimum $\Delta_n$. Positive
+$\sigma_d$ ensures $\Delta_n\to0$ along this subsequence.
+The highest-pole term dominates its remainder, uniformly in the chosen
+multiindices, and therefore
+\[
+ \limsup_{n\to\infty}
+ \left(\max_{|\alpha|=n,j}|C_{\alpha,j,k}|\right)^{1/n}
+       =e^{(k+1)\sigma_d}.
+\]
+For infinite $\sigma_d$ the same subsequence argument gives an infinite
+limsup. Multiplication by $R^{-n}$ and the definition
+\eqref{eq:isotropic} prove \eqref{eq:multicollapse}.
+
+For finite positive $\sigma_d$, Theorem~\ref{thm:multilifting} ensures
+that every coefficient of the full linearizer is a convergent germ.
+But the displayed isotropic radii have infimum zero, so no common
+ordinary neighborhood exists: every neighborhood of zero in $\C^d$
+contains an equal-radius polydisk. For infinite $\sigma_d$, the first
+$v$ coefficient already fails to be a germ. The positive threshold
+implications were proved in Theorem~\ref{thm:multilifting}, and uniqueness
+excludes alternative positive-support solutions.
+\end{proof}
+
+\begin{remark}[Nonresonance is indispensable]
+If $\lambda^\alpha=\lambda_j$, a first-order forcing
+$t z^\alpha e_j$ lies outside the range of $\LL_L$ at that monomial.
+It cannot be removed by a normalized near-identity coordinate change.
+Resonant normal forms require a different target equation, not the
+linear normal form used in this article. The multivariable result does
+not presume that every tuple of unit multipliers is nonresonant.
+\end{remark}
+
+\section{Relation to the repository and published work}\label{sec:context}
+
+\subsection{The repository snapshot and the gap selected}
+
+The initial repository inspection was pinned to commit
+\begin{center}
+\small\texttt{39f2be6667ade51bca2b45daa47e289d69c09764}.
+\end{center}
+The catalogue at \texttt{docs/README.md}, the foundation report's
+\texttt{README.md}, and its opening definitions were examined directly.
+The catalogue maps seven surcomplex packages: analysis, analytic geometry,
+finite deformations, contours and Stokes, global divisors, polynomial
+algebra, and trigonometry. It explicitly separates coherent common-domain
+sections from coefficientwise germs and warns against transferring theorems
+between these rings~\cite{Repo}.
+
+The topic selected here is holomorphic \emph{iteration and linearization},
+not another treatment of local inversion, residues, divisor realization,
+or finite zero schemes. In particular, inversion of a function and
+conjugation of a dynamical system to its derivative are different problems.
+Our support recursion solves the latter, and the exact radius-collapse
+family shows that its common-domain answer can fail even though every
+coefficient-germ step succeeds.
+
+The new arguments do not depend on accepting every theorem asserted in
+the repository's unrefereed drafts. The support, composition, homological,
+and radius arguments needed here are given explicitly. The catalogue
+inspection is not a claim to have performed a line-by-line audit of every
+source manuscript or every Lean file in the repository.
+
+\subsection{Classical local dynamics}
+
+The ordinary homological denominators and recursive linearization methods
+are classical. Marmi's lectures provide a systematic entry point, and
+Yoccoz's work supplies the sharp quadratic obstruction used in the
+illustrative example~\cite{Marmi,Yoccoz}. We do not reprove Yoccoz's theorem
+or claim that its arithmetic threshold has been improved within its
+original analytic category.
+
+Carminati and Marmi study regular dependence of ordinary linearization on
+the multiplier, including Whitney-smooth and monogenic
+behavior~\cite{CarminatiMarmi}. Our reciprocal jets are related to this
+natural parameter question, but our main statement concerns a different
+requirement: after replacing two independent parameters by Hahn monomials,
+do the resulting ordinary coefficient functions have a common disk? We
+impose no Whitney estimates or joint analytic parameter convergence.
+
+Fauvet, Menous, and Sauzin develop explicit tree expansions and recover
+classical convergence estimates as well as refined multiplier
+regularity~\cite{FauvetMenousSauzin}. The finite-dependence structure of our
+recursion is compatible with such expansions; the use of recursive or
+tree-organized formal coefficients is not itself a novelty claim.
+Bounemoura's analysis of linear versus nonlinear arithmetic conditions
+in different regularity classes gives useful conceptual context, but does
+not concern the Hahn coefficient categories defined here~\cite{Bounemoura}.
+
+\subsection{Non-Archimedean and Hahn analysis}
+
+Lindahl studies analytic linearization disks over complete ultrametric
+fields of equal characteristic zero, explicitly including Laurent series
+fields with trivially valued complex coefficient fields~\cite{Lindahl}.
+In that valuation, a nonzero complex small divisor is a unit of absolute
+value one. Our quantity $\sigma$ instead measures its ordinary complex
+absolute value, and therefore the analyticity of the \emph{coefficient
+functions} in an ordinary variable. The common-domain obstruction is
+invisible to the Hahn valuation alone. Proposition~\ref{prop:monad}
+explains why unrestricted formal evaluation on the infinitesimal monad can
+still work when ordinary coefficient analyticity fails.
+
+M\"uller and Strohmaier develop Hahn-meromorphic functions with convergent
+generalized power expansions on the logarithmic cover of the complex
+plane~\cite{MuellerStrohmaier}. Their theory is an important precedent for
+analytic theorems involving Hahn-type expansions. Its convergence
+conditions and analytic variable differ from the formal positive-Hahn
+parameter and ordinary coefficient-domain conditions used here. No theorem
+is transferred between these categories without a separate proof.
+
+\subsection{The novelty claim, delimited}
+
+The specific candidate contributions are the exact multiplier-jet radius
+law in Theorem~\ref{thm:collapse}, the resulting sharp nonlinear
+common-domain/coefficient-germ trichotomy in
+Theorem~\ref{thm:trichotomy}, and their multivariable counterpart in
+Theorem~\ref{thm:multicollapse}. The positive lifting theorem supplies
+the necessary arbitrary-support and actual-halo foundations. The sharp
+obstruction uses only two positive monomials and rational input
+coefficient functions.
+
+The searched and consulted sources did not reveal these exact statements
+in these Hahn coefficient categories. This is a provisional literature
+assessment, not proof of priority. The linear homological estimates,
+formal nonresonant conjugacy, support lemma, quadratic scaling trick,
+and centralizer argument have classical antecedents and are not offered
+as independent discoveries. A specialist could identify an existing
+formal-family theorem that subsumes part of the present formulation;
+that possibility should be checked before any publication claim.
+
+\section{Reproducibility and exact finite verification}\label{sec:verification}
+
+\subsection{What was computed}
+
+The accompanying program \texttt{code/verify.py} uses only the Python
+standard library and performs all arithmetic exactly in $\Q(i)$ using
+\texttt{fractions.Fraction}. Its principal test multiplier is
+\[
+ \lambda=\frac35+\frac45i.
+\]
+This is not a root of unity: a root of unity in $\Q(i)$ is an algebraic
+integer, hence lies in $\Z[i]$, whereas this number does not. This
+argument is only used to justify nonzero denominators in exact test
+examples; it is not an assertion about its continued-fraction loss exponent.
+
+The recorded run used Python 3.13.5 and passed all 1,109 checks:
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Identity checked & Exact assertions\\
+\midrule
+Reciprocal-jet formula versus inverse recurrence &133\\
+Truncated product of a denominator and its reciprocal &133\\
+Ordinary quadratic Schr\"oder identity through degree 12 &13\\
+Hahn-scaled quadratic identity &156\\
+Nonlinear recursion with multiplier drift and cubic forcing &154\\
+Two-variable multiplicative-detuning reciprocal jets &520\\
+\midrule
+Total &1109\\
+\bottomrule
+\end{tabular}
+\end{center}
+The first two groups use $2\le n\le20$ and $0\le k\le6$.
+The mixed-forcing test uses
+$F(z)=(\lambda+t)z+t(z^2+z^3)$ and checks the conjugacy after each
+parameter step through $t^4$ and spatial degree ten. The multivariable
+check uses the two exact unit phases
+$(3+4i)/5$ and $(5+12i)/13$, total degrees two through nine, both components,
+and reciprocal-jet orders zero through four. It checks nonzero
+denominators in that finite range; it does not certify nonresonance for
+all multiindices for this sample tuple.
+
+For a readily inspectable output example, the quadratic coefficients are
+\[
+ b_2=\frac{11}{10}+\frac15 i,
+ \qquad b_3=\frac{19}{20}+\frac{41}{40}i.
+\]
+The complete recorded output is in \texttt{data/verification.txt}.
+To reproduce it, run
+\begin{verbatim}
+python code/verify.py
+\end{verbatim}
+from the article directory. The script raises an exception immediately if
+an identity fails and prints the count of successful exact assertions.
+
+\subsection{What the computation does not establish}
+
+These finite checks are tests of algebraic formulas, signs, normalizations,
+and the implementation of truncation. They do not prove Hahn summability,
+well-founded recursion, ordinary analytic domain preservation, an infinite
+small-divisor limsup, exact convergence radii, or novelty. Those conclusions
+are supported by the mathematical arguments in this article, not by a
+numerical experiment. No Lean theorem corresponding to the new analytic
+results has been compiled or checked as part of this package.
+
+\subsection{An implementable coefficient procedure}
+
+For finitely generated positive support, a symbolic implementation can
+follow \eqref{eq:recursion} directly. The input is a requested exponent
+$\gamma$, the input functions indexed by $A$, and an oracle or certificate
+for their ordinary homological inverse in the selected coefficient algebra.
+First enumerate the finite words in $A$ summing to $\gamma$. Their letters
+and partial sums give the finite dependency set. Then evaluate lower
+coefficients in increasing exponent order, form the finite differential
+right side, and divide each Taylor coefficient by its nonresonant divisor.
+Finally, attach the inherited or computed domain certificate to the output.
+
+This procedure is a mathematical finite-dependence description, not a
+claim that arbitrary well-ordered supports or arbitrary holomorphic
+functions have computable presentations. A computer algebra implementation
+needs effective support and coefficient representations. In the polynomial
+case, all operations are finite exact polynomial operations. In the
+rational-function case, the homological inverse may cease to be rational,
+so an exact implementation should retain a coefficient-generating operator
+or a series object rather than pretending rational closure.
+
+The obstruction family illustrates why a domain certificate cannot be a
+single global Boolean flag. For its $u^kv$ coefficient, the appropriate
+certificate is the exact radius $Re^{-(k+1)\sigma}$; reporting merely
+``each coefficient converges'' would erase the decisive failure of a
+common analytic neighborhood.
+
+\section{Scope boundaries and further questions}\label{sec:scope}
+
+\subsection{Fixed multiplier versus infinitesimal drift}
+
+The sharp negative common-domain example varies the multiplier by $u$.
+For the narrower class $F'(0)=\lambda$ exactly, the sufficiency of
+$\sigma=0$ remains true by Theorem~\ref{thm:lifting}, and $\sigma=\infty$
+can already obstruct coefficient germs at first order. The present argument
+does not settle the optimal common-domain condition for all perturbations
+with fixed multiplier when $0<\sigma<\infty$. Eliminating drift removes
+the direct reciprocal-jet mechanism. A different counterexample, or a
+positive cancellation theorem, would be needed for that narrower problem.
+
+\subsection{Restricting the value group}
+
+All positive results hold over every set-sized ordered abelian group.
+The no-common-neighborhood counterexample is established for
+$\Gstar=\Q+\sqrt2\Q$, and hence for the universal class of workspaces.
+It also embeds in any surcomplex workspace containing this ordered subgroup.
+The proof does not assert the same necessity statement for a fixed cyclic
+value group such as $\Z$. There, different parameter blocks can collide
+at the same Hahn exponent. Resolving the effect of those collisions is a
+separate problem, not a consequence of the two-independent-exponent proof.
+
+For the weaker requirement of retaining the \emph{original} disk, however,
+one positive parameter is already enough: Proposition~\ref{prop:homological}
+and the first-order equation show failure whenever $\sigma>0$.
+The unresolved cyclic-group issue concerns the existence of \emph{some}
+common smaller neighborhood for every input, not this weaker statement.
+
+\subsection{Normed coefficient classes and ordinary parameter convergence}
+
+The theorem imposes no common bound on $\norm{h_\gamma}_r$ as $\gamma$
+varies. Adding weighted coefficient norms, Gevrey bounds in the parameter,
+or ordinary convergence in $(u,v)$ produces stronger problems.
+The compact estimate \eqref{eq:compactestimate} is a starting point for
+such questions, but the present support recursion alone does not solve
+them. Their arithmetic thresholds could differ from the common-domain
+threshold established here.
+
+\subsection{Resonance and global scales}
+
+Resonant multipliers require normal forms with retained resonant terms.
+Moreover, extending a finite-halo conjugacy to all infinite scales requires
+compatibility conditions that ordinary coefficientwise entire functions do
+not automatically satisfy. The critical-scale computation in
+Section~\ref{sec:quadratic} supplies a concrete test that such an extension
+must pass. No global conjugacy on all of $\No[i]$, no surreal-time flow,
+and no arbitrary class-sized analytic construction is claimed.
+
+\subsection{Conclusions}
+
+The results answer a specific nontrivial question prompted by the
+repository's distinct analytic rings: when does nonlinear infinitesimal
+linearization stay in the common-domain ring, rather than merely existing
+coefficient by coefficient? For irrational rotations and arbitrary
+positive Hahn perturbations with multiplier drift, the answer is exact:
+subexponential small divisors preserve the original domain; finite
+exponential losses preserve individual germs but can destroy every common
+domain; superexponential losses can destroy coefficient germs themselves.
+The two-monomial reciprocal-jet construction measures that destruction
+by the explicit law $Re^{-(k+1)\sigma}$, and the same mechanism persists
+in several variables.
+
+This is a category-sensitive extension of local dynamics, not a claim that
+infinitesimals abolish the classical small-divisor problem. They separate
+two issues that ordinary analytic convergence often forces one to solve
+at once: algebraic dependence across perturbation orders and ordinary
+analyticity within each coefficient. The sharp trichotomy describes the
+resulting separation.
+
+\appendix
+\section{A dependency and hypothesis audit}\label{app:audit}
+
+The new results can be checked along a short dependency chain.
+The support lemma gives finite dependence at every Hahn exponent.
+The homological inverse gives the analytic-space mapping property.
+Their combination proves nonlinear lifting. The reciprocal-jet formula,
+highest-pole dominance, and Cauchy--Hadamard then give an independent sharp
+counterexample, which closes the universal characterization. The
+multivariable proof repeats this chain with diagonal monomial divisors.
+
+For a mathematical audit, the most consequential hypotheses are the
+following. Positivity of the perturbation support makes all dependencies
+strictly lower; arbitrary signed supports would invalidate that inference.
+Well ordering ensures the sums exist and gives a least exponent in the
+uniqueness argument. Vanishing at zero guarantees preservation of the
+fixed point and the Taylor-order count. Nonresonance makes the homological
+inverse exist. Unit-modulus reduction preserves the chosen disk or
+polydisk. Common-domain analyticity is explicitly stronger than
+coefficient-germ analyticity. Finally, rational independence of the two
+obstruction exponents isolates the first nonlinear parameter block.
+
+No compactness principle, limit of partial Hahn sums, or exchange of an
+infinite ordinary sum with a Hahn coefficient extraction is hidden in the
+proof. The limits used for radii are ordinary complex coefficient-growth
+limits at a fixed Hahn exponent. The well-founded support recursion itself
+is not a convergence process. This distinction is especially important
+at \eqref{eq:critical}, where the naive Hahn sum is not defined at a
+nonzero ordinary argument.
+
+\section{A compact statement suitable for reuse}\label{app:reusable}
+
+Let $B$ be one of the ordinary coefficient algebras used in this article,
+closed under differentiation, finite products, and rotation by $\lambda$.
+Assume the nonresonant homological inverse preserves $z^2B$.
+Then every positive Hahn perturbation
+$F=\lambda z+\sum t^a f_a$ with $f_a\in zB$ admits a unique normalized
+linearizer with coefficients in $B$ and support in the additive monoid
+generated by the input support. Its inverse has the same properties.
+This assertion is exactly the proof of Theorem~\ref{thm:lifting} with
+its coefficient algebra left abstract; it requires no norm on $B$.
+
+The common-disk, germ, entire, and polynomial theorems are obtained by
+checking this one closure property. The obstruction theorem shows that
+such a closure check is sufficient but that passing to an inductive limit
+of domains cannot simply be interchanged with taking a full Hahn family.
+For finite positive $\sigma$, every coefficient belongs to the germ
+inductive limit, while the entire Hahn family does not belong to the
+common-domain inductive limit. This noncommutation is the algebraic form
+of the exact radius-collapse phenomenon.
+
+\begin{thebibliography}{99}
+
+\bibitem{Repo}
+Vladimir Reshetnikov, \emph{Surreal}, GitHub repository, inspected at
+commit \texttt{39f2be6667ad} (full identifier in Section~\ref{sec:context}).
+Catalogue \texttt{docs/README.md}; foundation material under
+\texttt{docs/surcomplex/analysis/}.
+\href{https://github.com/VladimirReshetnikov/Surreal/tree/39f2be6667ade51bca2b45daa47e289d69c09764}{Pinned repository snapshot}.
+Accessed 21 September 2026. AI-assisted, unrefereed repository reports.
+
+\bibitem{Higman}
+Graham Higman, \emph{Ordering by divisibility in abstract algebras},
+Proceedings of the London Mathematical Society (3) \textbf{2} (1952),
+326--336. \doi{10.1112/plms/s3-2.1.326}.
+
+\bibitem{Marmi}
+Stefano Marmi, \emph{An Introduction to Small Divisors Problems},
+Istituti Editoriali e Poligrafici Internazionali, 2000.
+\arxiv{math/0009232}.
+
+\bibitem{Yoccoz}
+Jean-Christophe Yoccoz, \emph{Th\'eor\`eme de Siegel, nombres de Bruno et
+polyn\^omes quadratiques}, in \emph{Petits diviseurs en dimension 1},
+Ast\'erisque \textbf{231} (1995), 1--88 (Numdam pagination).
+\href{https://www.numdam.org/item/AST_1995__231__1_0/}{Numdam publication record}.
+
+\bibitem{CarminatiMarmi}
+Stefano Marmi and Carlo Carminati,
+\emph{Linearization of germs: regular dependence on the multiplier},
+Bulletin de la Soci\'et\'e Math\'ematique de France \textbf{136} (2008),
+no.~4, 533--564. \doi{10.24033/bsmf.2565}; \arxiv{0801.2844}.
+
+\bibitem{FauvetMenousSauzin}
+Fr\'ed\'eric Fauvet, Fr\'ed\'eric Menous, and David Sauzin,
+\emph{Explicit linearization of one-dimensional germs through
+tree-expansions}, Bulletin de la Soci\'et\'e Math\'ematique de France
+\textbf{146} (2018), no.~2, 241--285.
+\doi{10.24033/bsmf.2757}.
+
+\bibitem{Bounemoura}
+Abed Bounemoura, \emph{Optimal linearization of vector fields on the torus
+in non-analytic Gevrey classes}, 2020. \arxiv{2006.05673}.
+
+\bibitem{Lindahl}
+Karl-Olof Lindahl, \emph{Linearization in ultrametric dynamics in fields
+of characteristic zero---equal characteristic case}, p-Adic Numbers,
+Ultrametric Analysis and Applications \textbf{1} (2009), no.~4, 307--316.
+\arxiv{1111.1993}.
+
+\bibitem{MuellerStrohmaier}
+J\"orn M\"uller and Alexander Strohmaier, \emph{The theory of
+Hahn-meromorphic functions, a holomorphic Fredholm theorem, and its
+applications}, Analysis \& PDE \textbf{7} (2014), no.~3, 745--770.
+\doi{10.2140/apde.2014.7.745}; \arxiv{1205.0236}.
+
+\end{thebibliography}
+\end{document}

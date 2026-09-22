@@ -1,0 +1,3401 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{microtype,booktabs,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr,aliascnt}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,breaklinks=true]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{%
+  pdftitle={Nonabelian Support Obstructions: A Matrix Cousin Criterion and the Surcomplex Riemann-Hilbert Problem},
+  pdfauthor={Merged research manuscript},
+  pdfsubject={Positive Hahn matrix gluing, polar supports, and inverse monodromy}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Nonabelian support obstructions}
+\fancyhead[R]{\small Matrix Cousin and Riemann--Hilbert}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.28em}
+\setlength{\parindent}{1.2em}
+\setlist{nosep,leftmargin=2em}
+\emergencystretch=2em
+
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\SC}{\mathbf{SC}}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\HH}{\mathscr H_\Gamma}
+\newcommand{\II}{\mathscr I_\Gamma}
+\newcommand{\JJ}{\mathscr J_\Gamma}
+\newcommand{\GG}{\mathscr G_{r,\Gamma}}
+\newcommand{\K}{K_\Gamma}
+\newcommand{\mm}{\mathfrak m_\Gamma}
+\newcommand{\LL}{\mathcal L}
+\newcommand{\Mat}{\operatorname{Mat}}
+\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\SL}{\operatorname{SL}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\red}{\operatorname{red}}
+\newcommand{\Pol}{\operatorname{Pol}}
+\newcommand{\Reg}{\operatorname{Reg}}
+\newcommand{\Hol}{\operatorname{Hol}}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\val}{\operatorname{v}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\Endsh}{\mathcal End}
+\newcommand{\PP}{\mathcal P}
+\newcommand{\EU}{\mathcal E}
+\newcommand{\coeff}[1]{[t^{#1}]}
+\newcommand{\angles}[1]{\langle #1\rangle_{\N}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\numberwithin{equation}{section}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{0.4cm}
+{\large\scshape A merged research continuation of the Surreal repository\par}
+\vspace{0.7cm}
+{\Huge\bfseries Nonabelian Support\par Obstructions\par}
+\vspace{0.5cm}
+{\LARGE A Matrix Cousin Criterion\par and the Surcomplex\par Riemann--Hilbert Problem\par}
+\vspace{0.7cm}
+{\large September 21, 2026\par}
+\vspace{0.55cm}
+\begin{minipage}{0.94\textwidth}
+\begin{abstract}
+We study one coefficient category from two sides. Its objects are matrices
+congruent to the identity modulo positive Hahn exponents,
+$I_r+\Mat_r(\JJ)$, over a set-sized and possibly non-Archimedean ordered
+value group $\Gamma$, with ordinary holomorphic coefficient functions on a
+single fixed ordinary complex domain; when $\Gamma\subseteq\No$, the
+substitution $t^\gamma=\omega^{-\gamma}$ gives the surcomplex reading.
+
+Part~I solves the multiplicative gluing problem. On a puncture-and-disk cover
+of a connected open Riemann surface we prove an exact criterion: factor each
+transition matrix \emph{independently} into a normalized polar factor and a
+factor holomorphic on the full disk, and test whether the union of the
+supports of the \emph{polar} factors is well ordered. The criterion is
+invariant under arbitrary local holomorphic right gauges and under ordered
+value-group extension, and it produces genuinely nonabelian counterexamples:
+a rank-three family whose determinant is one, whose only raw singular
+exponent is $1$, and whose abelianized problem splits, yet whose integral
+vector bundle is nontrivial; a repair of that family by a term which
+\emph{worsens} its raw singular support; and, for every $r\ge3$, an example
+trivial modulo the last central subgroup of the upper-unitriangular group but
+nonsplit in full positive rank $r$. We also prove support-controlled Stein
+splitting and deformation rigidity, with a cyclic-versus-noncyclic dichotomy.
+
+Part~II solves the inverse monodromy problem in the same category. A
+near-identity representation of $\pi_1(\C\setminus D)$ is the monodromy of a
+positive globally common-domain Hahn connection exactly when the union over
+punctures of the supports of $\rho(\ell_d)-I_r$ is well ordered; the realizer
+may then be taken coefficientwise logarithmic, and a fixed linear
+Mittag--Leffler period section selects a unique normalized realizer. We prove
+framed gauge classification, entire extension of logarithmic comparison
+gauges, a positive Frobenius form, a determinant-one refinement, calibrating
+examples on both sides of the criterion, an explicit mixed commutator
+correction in the value group $\Q+\Q\omega$, and the impossibility of a
+continuous linear period right inverse for infinitely many punctures.
+
+\medskip
+\noindent\textbf{The two headline criteria are different criteria on
+different objects.} Part~I tests the supports of normalized polar factors, not
+the raw transition supports; Part~II tests the raw meridian monodromy
+supports. \Cref{nab:sec:twocriteria} states which object each is a criterion
+on, and \cref{nab:sec:rankthree} contains the example that makes the
+distinction unavoidable.
+\end{abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{0.94\textwidth}\small
+\textbf{Status and scope.} This report merges two independently written
+manuscripts; see \cref{nab:app:repro}. The exact global criteria and the
+explicit obstruction families are proposed new results in the specified
+Hahn-coherent categories. The local factorization mechanisms, the Neumann
+support calculus and every ordinary analytic input are established
+mathematics and are credited as such. The literature checks were targeted and
+certify no priority; no named published conjecture is claimed solved. Nothing
+here is refereed or machine checked. Nontriviality in Part~I is proved over
+the \emph{integral} coefficient sheaf only, and Part~II assumes positive
+support and near-identity monodromy throughout: neither theorem is restated
+over a coefficient field in which negative-valuation changes of frame are
+admitted, and neither is the unrestricted classical Cousin or
+Riemann--Hilbert theorem. All infinite algebra is by well-ordered supports and
+finite coefficient multiplicity, never by convergence in the fine surreal
+topology.
+\end{minipage}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\tableofcontents
+\newpage
+\pagenumbering{arabic}
+
+\section{Two questions, one category}\label{nab:sec:intro}
+
+\subsection{The shared setting}
+
+Let $\Gamma$ be a set-sized totally ordered abelian group and let
+$t^\Gamma$ be its monomial group. A coefficient of our objects is an ordinary
+holomorphic function on a \emph{single fixed} ordinary complex domain, and an
+object is a Hahn series in $t$ with well-ordered support whose coefficients
+all live on that same domain. The matrices we glue and the matrices we realize
+as monodromy both lie in
+\[
+ I_r+\Mat_r\bigl(\text{positive-support part}\bigr),
+\]
+so they are congruent to the identity modulo positive exponents. When
+$\Gamma$ is an ordered additive subgroup of the surreal numbers $\No$, the
+Conway normal form substitution $t^\gamma=\omega^{-\gamma}$ interprets
+everything inside $\SC=\No[i]$. That interpretation is a reading of a Hahn
+model; it is never an assertion that a fine-topological surcomplex manifold or
+a fine-continuous surcomplex path is involved.
+
+Two problems are asked in this one category.
+
+\paragraph{Part I: multiplicative gluing (a matrix Cousin problem).}
+Let $X$ be a connected open Riemann surface, let $A\subset X$ be closed and
+discrete, let $(D_a,u_a)$ be pairwise disjoint coordinate disks, and put
+$U_0=X\setminus A$, $W_a=D_a\setminus\{a\}$. Given, \emph{separately for each
+$a$}, a positive matrix $G_a$ on $W_a$, when are there positive matrices
+$B_0$ on $U_0$ and $B_a$ on $D_a$ with
+\begin{equation}\label{nab:eq:splitintro}
+ G_a=B_0B_a^{-1}\quad\text{on }W_a?
+\end{equation}
+Each local equation is harmless. The difficulty is that the entries of the
+\emph{one global matrix} $B_0$ must have a legitimate, that is well ordered,
+Hahn support.
+
+\paragraph{Part II: inverse monodromy (a Riemann--Hilbert problem).}
+Let $D\subset\C$ be closed and discrete, $U=\C\setminus D$, and let
+$\rho:\pi_1(U,p)\to I_r+\Mat_r(\mm)$ be a near-identity representation. When
+is $\rho$ the monodromy of a connection $dY=\Omega Y$ whose coefficients are
+ordinary holomorphic matrix one-forms on all of $U$ and whose Hahn support is
+a single well-ordered positive set?
+
+These are the same question asked multiplicatively and additively. Both need
+the local positive factorization at a puncture, both need an ordinary
+analytic input of Mittag--Leffler type applied one exponent at a time, both
+build their obstruction from a mixed term that the abelianization cannot see,
+and in both the answer is that a certain \emph{union of Hahn supports must be
+well ordered}. That last coincidence of wording is also the one real trap in
+reading this report, so we state it immediately.
+
+\subsection{The two criteria, and why they are two}
+
+\begin{center}
+\fbox{\begin{minipage}{0.93\textwidth}
+\textbf{Criterion P} (Part~I, \cref{nab:thm:criterion}). Gluing
+\eqref{nab:eq:splitintro} is solvable if and only if
+\[
+ \EU(G)=\bigcup_{a\in A}\supp\bigl(\Pol(G_a)-I_r\bigr)
+ \quad\text{is well ordered,}
+\]
+where $\Pol(G_a)$ is the normalized polar factor produced by an
+\emph{independent local factorization} of each transition matrix
+$G_a=\Pol(G_a)\Reg(G_a)$. This is a criterion on the polar factors, not on
+the transition matrices. It is \emph{false} with
+$\bigcup_a\supp(G_a-I_r)$ in place of $\EU(G)$, in both directions.
+
+\medskip
+\textbf{Criterion M} (Part~II, \cref{nab:thm:RH}). A near-identity
+representation $\rho$ is realizable if and only if
+\[
+ E_\rho=\bigcup_{d\in D}\supp\bigl(\rho(\ell_d)-I_r\bigr)
+ \quad\text{is well ordered,}
+\]
+the union being over the matrices themselves, for a compatible system of
+based meridians $\ell_d$ freely generating $\pi_1(U,p)$. No factorization is
+applied first, and none may be: this is a criterion on the monodromy
+matrices, and it is basis- and basepoint-independent
+(\cref{nab:prop:intrinsic}).
+
+\medskip
+A reader who carries one ``well-ordered support criterion'' away from this
+report will test the wrong object in one of the two problems.
+\end{minipage}}
+\end{center}
+
+\medskip
+The distinction is not pedantic. \Cref{nab:sec:rankthree} contains a
+rank-three family over $\Gamma=\Q$ whose raw singular support is the single
+exponent $\{1\}$ and which nevertheless cannot be glued, because the
+normalized polar factors are forced to carry the descending set
+$\{1+1/n\}$; and it contains the opposite example, in which \emph{adding} a
+term that introduces exactly that descending set among the raw poles
+\emph{removes} the obstruction. So in Part~I the raw singular support is
+neither sufficient nor necessary, and the factorization must be performed
+first. In Part~II, by contrast, the raw monodromy support is exactly the
+invariant, and applying a factorization to $\rho(\ell_d)$ before testing
+would be a mistake of the opposite kind.
+
+\subsection{What each part contributes}
+
+Part~I owns the machinery the two parts share: the integral common-domain
+Hahn sheaf on an ordinary base, the noncommutative support calculus, the
+normalized local polar factorization with right-gauge invariance, invariance
+under ordered value-group extension, the recovery of the known rank-one
+scalar test, and the Stein branch. Its own new content is the exact criterion
+$\EU(G)$, the rank-three cross-term obstruction with its repair and its
+logarithm diagnostic, the arbitrary-depth central hierarchy, the resulting
+determinant-one integral vector bundles that are trivial on every bounded
+plane domain, the explicit localization boundary, and the
+cyclic-versus-noncyclic rigidity dichotomy.
+
+Part~II reads as the connection-and-monodromy application of that machinery,
+with its own new content: the three-way equivalence of
+\cref{nab:thm:RH} including \emph{necessity}, which comes from a uniform
+support bound on holonomy valid for every group element; the fixed
+complex-linear period section that selects a unique normalized realizer; the
+framed gauge classification and the entire extension of logarithmic
+comparison gauges; the positive Frobenius form in which no spectral resonance
+operator is ever inverted; the $\SL_r$ refinement; three calibrating examples
+that pin the criterion from both sides; the explicit first nonabelian
+correction with its $\Q+\Q\omega$ specialization; and the proof that an
+unrestricted infinite-puncture linear period right inverse cannot also be
+continuous.
+
+\subsection{Relation to reports already in the collection}
+
+This report is a continuation of the repository
+\texttt{VladimirReshetnikov/Surreal}, reviewed at commit
+\begin{center}\small\ttfamily
+39f2be6667ade51bca2b45daa47e289d69c09764,
+\end{center}
+inspected September 21, 2026. Two companion reports are leaned on and are
+\emph{cited rather than reproved}.
+
+\emph{Global Support Obstructions: Moving Divisors, Mittag--Leffler, and a
+Picard Dichotomy}, at \texttt{docs/surcomplex/global-divisors/article.tex}
+\cite{RepoGlobal}, proves the scalar support criteria and the Picard-group
+dichotomy for this workspace, and its subsection ``Further precise
+directions'' asks for exactly the present work: ``the finite-rank
+vector-bundle theory: matrix-valued positive transition functions no longer
+reduce to an abelian logarithm identity, so a noncommutative support
+recursion must replace the rank-one argument'', and the same package over
+general ordinary open Riemann surfaces. Part~I answers both. Its rank-one
+specialization \emph{recovers} that report's exact Cousin criterion, its
+Theorem~13.1, stated there in terms of the singular support $\Sigma(b)$; we
+cite that theorem as the scalar case rather than reprove it
+(\cref{nab:prop:rankone}). Likewise the Picard-group vanishing dichotomy of
+that report --- vanishing exactly when $\Gamma=\{0\}$ or $\Gamma=\Z\delta$ ---
+is the rank-one shadow of our Stein dichotomy
+(\cref{nab:thm:dichotomy}), driven by the same universal well-ordered set
+$\{\delta,2\delta,\ldots\}$.
+
+\emph{Differential Algebra and Differential Equations over the Surreal and
+Surcomplex Numbers}, at
+\texttt{docs/surcomplex/differential-equations/article.tex}
+\cite{RepoDiff}, contains the \emph{forward} map that Part~II inverts: its
+theorem ``Monodromy valued in $\GL_d(K_\Gamma)$'' constructs $M_\ell$ in
+$\GL_d(\K)$ from a coherent connection, records that the coefficient of
+$M_\ell$ at exponent $0$ is the ordinary monodromy matrix and that all other
+exponents lie in $S^*\setminus\{0\}$, and then states the categorical
+boundary we adopt verbatim rather than re-argue: ``No fine-continuous
+surcomplex path is asserted: the loop is an ordinary complex path,
+continuation is coefficientwise, and the result is a matrix of Hahn
+constants.'' \Cref{nab:thm:RH} is the converse of that map for near-identity
+representations, together with the exact condition on which ones arise.
+
+\subsection{What is and is not claimed as new}
+
+The Hahn support calculus is classical \cite{Neumann,Poonen}. The analytic
+interpretation of restricted ordinary functions over surreal workspaces is
+classical \cite{vdDE}, and the broader landscape is surveyed in
+\cite{MantovaMatusinski}. Algebraic Birkhoff factorization in complete
+filtered noncommutative algebras, including its recursive form and the
+necessity of commutator corrections, is established \cite{EFGK,EFMP}, as are
+the ordinary Laurent, Mittag--Leffler, Behnke--Stein and Cartan inputs
+\cite{BS,Cartan,Schmitt}, iterated path integrals \cite{Chen}, and the
+classical regular-singular and Riemann--Hilbert background
+\cite{Deligne,Ilyashenko}. We reprove only what we need with explicit
+arbitrary-ordered-group support control, and we claim no new general
+factorization principle and no new ordinary analytic theorem.
+
+We do not classify bundles or connections beyond the stated questions. Part~I
+decides triviality on a puncture-and-disk cover for arbitrary finite rank and
+proves a sufficient theorem for arbitrary Stein covers; Part~II inverts
+holonomy for near-identity representations on a punctured plane. The
+boundaries in \cref{nab:sec:scope} are part of the theorem statements, not
+qualifications added afterwards.
+
+\section{The coefficient category}\label{nab:sec:category}
+
+\subsection{One set-sized workspace}
+
+For a complex algebra $R$, the Hahn algebra $R((t^\Gamma))$ consists of formal
+sums $F=\sum_{\gamma\in S}f_\gamma t^\gamma$ with $f_\gamma\in R$ whose
+nonzero support $S$ is well ordered in the given order; addition is
+coefficientwise and multiplication is convolution. For matrices the support
+is the union of the supports of the finitely many entries, and an exponent
+occurs exactly when the corresponding coefficient matrix is not identically
+zero. The Hahn field of constants is
+\[
+ \K=\C((t^\Gamma)),\qquad
+ \mm=\{a\in\K:\val(a)>0\}\cup\{0\},
+\]
+where $\val$ of a nonzero series is its least exponent. Divisibility of
+$\Gamma$ and algebraic closedness of $\K$ are never used: we extract no roots
+and take no algebraic closure.
+
+When $\Gamma\subseteq\No$ is an ordered additive subgroup, Conway normal forms
+give the interpretation
+\begin{equation}\label{nab:eq:surrealembedding}
+ \C((t^\Gamma))\longrightarrow\No[i]=\SC,
+ \qquad \sum c_\gamma t^\gamma\longmapsto\sum c_\gamma\omega^{-\gamma},
+\end{equation}
+with real and imaginary parts interpreted separately
+\cite{vdDE,Poonen,Bournez}. All supports here are sets; no sum indexed by a
+proper class, no proper-class fundamental group and no proper-class
+coefficient ring occurs anywhere.
+
+All ordinary manifolds and Riemann surfaces carry their usual Hausdorff,
+second-countable topology. For a connected ordinary complex domain $V$ set
+\begin{align}
+ \HH(V)&=\OO(V)((t^\Gamma)),\label{nab:eq:H}\\
+ \II(V)&=\{F\in\HH(V):\supp F\subseteq\Gamma_{\geq0}\},\label{nab:eq:I}\\
+ \JJ(V)&=\{F\in\HH(V):\supp F\subseteq\Gamma_{>0}\}.\label{nab:eq:J}
+\end{align}
+Every coefficient must be holomorphic on the \emph{same fixed domain} $V$; we
+never substitute a family of convergent germs with unrelated radii, and
+$\HH(V)$ is in general \emph{not} the algebraic tensor product
+$\K\otimes_\C\OO(V)$, since a legitimate family may involve infinitely many
+linearly independent coefficient functions. For disconnected open sets,
+sections are specified component by component. Writing
+$\Omega^1_{\mathrm{hol}}(V)$ for ordinary holomorphic one-forms, the same
+notation with one-form coefficients denotes one-form families. There is a
+reduction map
+\begin{equation}\label{nab:eq:reduction}
+ \red:\II\longrightarrow\OO,\qquad
+ \sum_{\gamma\geq0}f_\gamma t^\gamma\longmapsto f_0,
+ \qquad\ker\red=\JJ,
+\end{equation}
+and the positive matrix group is
+\begin{equation}\label{nab:eq:G}
+ \GG(V)=I_r+\Mat_r(\JJ(V)).
+\end{equation}
+Its elements are automatically two-sided invertible by
+\cref{nab:lem:inverse}. Throughout, ``positive'' refers to \emph{Hahn
+exponents only}: never to positivity of a Hermitian matrix, never to
+positivity of entries, and never to positive-definiteness. Elements of
+$I_r+\Mat_r(\mm)$ need not be algebraically unipotent.
+
+\subsection{Two standing conventions that differ between the two parts}
+\label{nab:sub:conventions}
+
+The two parts of this report were developed independently and do not make
+identical structural assumptions. Both assumptions are correct as stated and
+neither is weakened here.
+
+Part~I \emph{proves and uses} the sheaf property of these assignments on the
+ordinary base. The point is a support point. A nonzero ordinary holomorphic
+coefficient on a connected domain cannot vanish on a nonempty open subset, so
+restriction between nonempty connected ordinary domains preserves support. If
+compatible local sections are given on a cover of a connected domain, the
+identity theorem along chains of intersecting patches shows that their
+coefficient functions glue and that the global support equals the support seen
+on any one nonempty connected patch; that support is well ordered. For
+disconnected opens one takes the product over connected components. In
+particular, if a section on $X\setminus A$ extends separately across each
+point of a discrete $A$, it extends \emph{with its existing global support}:
+no new exponent can appear only at an isolated ordinary point. This
+observation is used whenever a matrix quotient is extended across a puncture.
+
+Part~II deliberately does \emph{not} assume that the global-support assignment
+is a sheaf for arbitrary covers, and none of its proofs uses that. All its
+gluing is done directly, by descending families already supported in one
+specified monoid, and its only analytic input is the ordinary
+Mittag--Leffler theorem applied one exponent at a time. Consequently no
+application of a Cartan-type theorem to an infinite-dimensional Hahn
+coefficient sheaf is hidden in Part~II, and no companion claim about Hahn
+Noetherianity or a Hahn Nullstellensatz is relied upon anywhere in this
+report.
+
+\subsection{Comparison of names across the two parts}
+\label{nab:sub:names}
+
+The following table fixes one vocabulary. Where the two source manuscripts
+used different names for the same object, the merged name is given first;
+where they used the same word for genuinely different objects, the objects are
+separated.
+
+\begin{center}\small
+\begin{tabular}{@{}L{0.26\textwidth}L{0.33\textwidth}L{0.33\textwidth}@{}}
+\toprule
+Merged name & Part~I usage & Part~II usage\\
+\midrule
+$\HH(V),\II(V),\JJ(V)$ & full, integral and positive common-domain sheaves;
+sheaf property proved on the ordinary base &
+$\JJ(V)$ is the positive part of the common-domain family; no sheaf property
+assumed\\[0.35em]
+$\GG(V)=I_r+\Mat_r(\JJ(V))$ & the positive matrix group being split &
+the group of positive framed gauges, and the target of $\rho$ after
+restriction to one domain\\[0.35em]
+$\mm$ & not used; positivity is imposed sheaf-wise &
+positive-valuation elements of $\K$; $\rho$ takes values in
+$I_r+\Mat_r(\mm)$\\[0.35em]
+Well-ordered union of supports & taken over normalized \emph{polar factors}
+$\Pol(G_a)$: the invariant $\EU(G)$ &
+taken over the \emph{monodromy matrices} $\rho(\ell_d)$: the invariant
+$E_\rho$\\[0.35em]
+Local positive factorization & $G=\Pol(G)\Reg(G)$ on a punctured disk,
+normalized Birkhoff type &
+$Y=H\exp(R\Log z)$ on a punctured disk, positive Frobenius type\\[0.35em]
+$\Sigma(\cdot)$ & the rank-one logarithmic singular support, used only for
+the scalar comparison & not used\\[0.35em]
+Strong summability & implicit in Hahn summability of finite expressions &
+a named condition on set-indexed families; distinguished sharply from
+valuation-topology convergence\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{remark}[Resonance does not occur in this report]
+\label{nab:rem:resonance}
+Neither part imposes, or needs, any arithmetic or small-divisor hypothesis,
+and the word \emph{resonance} appears here only as an absence: in
+\cref{nab:thm:frobenius} no spectral resonance operator is inverted, because
+positivity forces the exponent-zero part of the residue to vanish. Other
+reports in this collection use ``resonance'' in several mutually inequivalent
+senses; none of them is in force here, and no theorem of this report may be
+combined with one of those hypotheses by analogy.
+\end{remark}
+
+\begin{remark}[Which exponential and which logarithm]
+\label{nab:rem:explog}
+Every $\exp$ and $\log$ in this report is the formal one-variable
+substitution of \cref{nab:lem:inverse}, applied to a matrix with positive
+Hahn support and computed coefficientwise on a fixed ordinary domain. Its
+domain is $\Mat_r(\JJ(V))$, and the only law used is that $\exp$ and $\log$
+are mutually inverse as one-variable substitutions. In particular
+$\log(AB)\neq\log A+\log B$ for noncommuting arguments --- this failure is the
+entire difficulty in Part~I --- and no exponentiation here is the
+Ehrlich--Kaplan surcomplex exponential, or any radial or quaternionic
+extension of it, whose homomorphism properties are separate questions
+belonging to separate reports. The scalar identity
+$\Pol(G)=\exp(\pi_-\log G)$ of \eqref{nab:eq:scalarPol} is used only in rank
+one, and \cref{nab:prop:logdiag} shows what happens if one tries to use it in
+rank three.
+\end{remark}
+
+\subsection{Surcomplex evaluation on a halo}
+
+At an ordinary point $z_0\in V$ and an $\varepsilon\in\mm$, a positive family
+is evaluated by the ordinary Taylor series of its coefficients:
+\begin{equation}\label{nab:eq:halo}
+ F^\sharp(z_0+\varepsilon)
+ =\sum_{\gamma}\sum_{k\geq0}
+   t^\gamma\frac{F_\gamma^{(k)}(z_0)}{k!}\varepsilon^k,
+\end{equation}
+the exponent-zero term being allowed separately in the integral case. If $S$
+is the Hahn support and $T=\supp\varepsilon$, the resulting support lies in
+$S+\angles T$, and each fixed exponent receives only finitely many
+contributions by \cref{nab:lem:neumann}. So our matrices do give matrices on
+finite surcomplex thickenings of ordinary charts, entry by entry. This is
+offered only to explain why the category deserves to be called surcomplex.
+The ordinary complex base is not being replaced by a fine-topological
+surcomplex manifold, and no monodromy or gluing statement below is obtained by
+transport along a fine-continuous surcomplex loop.
+
+\subsection{Ordinary paths, not fine-surreal paths}
+\label{nab:sub:ordinarypaths}
+
+For a piecewise smooth ordinary path $c$ in an ordinary domain, integrals of
+coefficient one-forms and their iterated integrals are ordinary complex
+integrals; their values are then assembled as Hahn coefficients. Paths, the
+universal cover, iterated integrals and Mittag--Leffler are all ordinary
+complex. Only the assembly of coefficients is Hahn. We assert no convergence
+of partial Hahn sums in the fine topology of $\SC$, and
+\cref{nab:ex:boundedsupport} shows that such partial sums can fail to converge
+even in the valuation topology. This is the same domain separation stated in
+the repository's differential-equations report \cite{RepoDiff}, whose wording
+we adopt rather than re-argue: the loop is an ordinary complex path,
+continuation is coefficientwise, and the result is a matrix of Hahn constants.
+
+\section{Support calculus without any convergence assumption}
+\label{nab:sec:support}
+
+\begin{definition}[Strong summability]\label{nab:def:strong}
+A set-indexed family of Hahn series, or of matrices of Hahn series, is
+\emph{strongly summable} if the union of its supports is well ordered and each
+exponent occurs in the support of only finitely many members. Its sum is then
+the finite coefficientwise sum at each exponent. This is not
+valuation-topology convergence, which is never used below.
+\end{definition}
+
+\begin{lemma}[Neumann support calculus; classical input]
+\label{nab:lem:neumann}
+Let $E\subseteq\Gamma_{>0}$ be well ordered and let
+$M=\angles E=\{0\}\cup\{e_1+\cdots+e_n:n\geq1,\ e_j\in E\}$. Then $M$ is well
+ordered, and for each $\gamma\in\Gamma$ only finitely many finite words in
+$E$, across all word lengths, have sum $\gamma$. Consequently, if
+$S\subseteq\Gamma$ is well ordered then $S+M$ is well ordered, a fixed element
+has only finitely many decompositions with one summand in each of two
+well-ordered sets, and every fixed coefficient of an expression formed by
+adjoining finitely many positive-support factors receives only finitely many
+contributions.
+\end{lemma}
+
+This is the positive-support form of Neumann's lemma
+\cite{Neumann}, with the maximally complete field background in
+\cite{Poonen}. We use it as an established combinatorial input and do not
+rename it. It is strictly stronger than the statement that all exponents are
+positive, and the finite-word clause across all word lengths is exactly what
+powers noncommutative Dyson expansions and geometric inverses below. Both
+source manuscripts of this report state and use it independently, in the same
+form.
+
+\begin{remark}[No hidden Archimedean or cofinality assumption]
+\label{nab:rem:nonarch}
+A least positive input exponent $\delta$ need not have the property that
+$n\delta$ eventually exceeds a prescribed $\gamma$. In $\Z^2$ with
+lexicographic order, $n(0,1)<(1,0)$ for every ordinary integer $n$. In
+$\Gamma=\Q+\Q\omega$ with its induced surreal order, $n<\omega$ for every
+ordinary positive integer $n$, so repeatedly increasing a valuation by $1$
+never reaches $\omega$; nevertheless $\sum_{n\geq0}t^n$ is a valid Hahn sum
+and the support calculus works equally well at the exponents $\omega$ and
+$\omega+1$, which is where the correction of \cref{nab:prop:mixed} will sit.
+No proof below infers coefficient finiteness from that false cofinality.
+Every recursion is a well-founded recursion on a well-ordered support set.
+\end{remark}
+
+\begin{lemma}[Positive inversion and formal functions]\label{nab:lem:inverse}
+Let $V$ be an ordinary domain and $A\in\Mat_r(\JJ(V))$, with
+$\supp A\subseteq E$ for a positive well-ordered $E$. Then
+\[
+ (I_r+A)^{-1}=\sum_{k\geq0}(-A)^k,
+ \qquad
+ \exp A=\sum_{k\geq0}\frac{A^k}{k!},
+ \qquad
+ \log(I_r+A)=\sum_{k\geq1}\frac{(-1)^{k+1}}{k}A^k
+\]
+are strongly summable coefficientwise on $V$, with nonconstant supports in
+$\angles E\setminus\{0\}$. The inverse is two-sided, and $\exp$ and $\log$ are
+mutually inverse as one-variable formal substitutions. They do not make matrix
+multiplication additive. The same statements hold with coefficients in any
+associative complex algebra for which the finitely many operations in each
+displayed coefficient are defined.
+\end{lemma}
+
+\begin{proof}
+Expand an entry of $A^k$: its terms are indexed by a word of $k$ positive
+exponents together with a path through $r$ matrix indices. At a fixed total
+exponent only finitely many exponent words occur by \cref{nab:lem:neumann},
+and each word admits only finitely many matrix-index paths. Hence every
+displayed coefficient sum is finite and its value is holomorphic on the
+original $V$, and all supports lie in $\angles E$. Ordinary formal identities
+in one variable, and the geometric-series cancellation, may therefore be
+checked coefficientwise, because at a fixed exponent all sufficiently long
+words fail to contribute. Noncommuting independent arguments do not satisfy
+the scalar exponential addition law.
+\end{proof}
+
+\begin{lemma}[Finite decomposition inside the generated monoid]
+\label{nab:lem:finiteclosure}
+Put $S=\angles E\setminus\{0\}$ for a positive well-ordered $E$. Each
+$\gamma\in\Gamma$ has only finitely many ordered decompositions into members
+of $S$, and only finitely many members of $S$ can occur as a part in such a
+decomposition of a fixed $\gamma$.
+\end{lemma}
+
+\begin{proof}
+Choose an $E$-word representing each member of $S$. Flattening a word in $S$
+of total weight $\gamma$ gives an $E$-word of that weight, and there are
+finitely many such by \cref{nab:lem:neumann}. A fixed finite word has only
+finitely many partitions into nonempty consecutive blocks, and every original
+$S$-word is recovered from one of these finitely many possibilities. Taking
+all parts of those words gives the second assertion.
+\end{proof}
+
+\Cref{nab:lem:finiteclosure} is what makes the effectivity statement
+\cref{nab:prop:dependence} possible; it is not needed for
+\cref{nab:lem:inverse}.
+\section{The ordinary analytic inputs}\label{nab:sec:ordinary}
+
+Everything analytic in this report is an ordinary complex theorem applied at
+\emph{one Hahn exponent at a time}. That is the reason the criteria exist at
+all: the ordinary problems are always solvable, and the obstruction is that
+their outputs across exponents must assemble into one legitimate Hahn
+section. The two parts use two different packagings of the ordinary input, and
+both are kept, because each theorem below uses its own.
+
+\subsection{A fixed-disk Laurent splitting}
+
+Fix $D=\{|u|<\rho\}$ and $D^*=D\setminus\{0\}$. A function $f\in\OO(D^*)$ has
+the Laurent decomposition
+\begin{equation}\label{nab:eq:Laurent}
+ f=f_-+f_+,\qquad
+ f_-=\sum_{k\geq1}a_{-k}u^{-k},\qquad
+ f_+=\sum_{k\geq0}a_ku^k.
+\end{equation}
+Write $\PP$ for the algebra of all such negative parts and $\pi_-,\pi_+$ for
+the projections, acting entrywise on matrices.
+
+\begin{lemma}[The ordinary splitting algebras]\label{nab:lem:laurent}
+There is a direct-sum decomposition of complex vector spaces
+$\OO(D^*)=\PP\oplus\OO(D)$. Both summands are closed under multiplication,
+although $\PP$ has no multiplicative identity; their intersection is zero; and
+the decomposition does not shrink $D$.
+\end{lemma}
+
+\begin{proof}
+For every $s\in(0,\rho)$, Cauchy's formula bounds the negative Laurent
+coefficients by $|a_{-k}|\leq M_ss^k$, so the series in $1/u$ converges for
+$|u|>s$ with $s$ arbitrarily small, and vanishes at infinity. Conversely a
+function holomorphic on $\C\setminus\{0\}$ and vanishing at infinity has only
+negative Laurent powers. Products retain these properties. A function in the
+intersection extends across zero and across infinity, hence is constant on the
+sphere with value zero at infinity. The positive part converges on the
+original disk of radius $\rho$.
+\end{proof}
+
+The negative part may have an essential singularity at zero; no bound on pole
+orders is imposed. The explicit obstruction families below use only simple
+poles.
+
+\subsection{Isolated singular parts: the Part~I packaging}
+
+\begin{lemma}[Isolated singular parts on the plane]\label{nab:lem:mlplane}
+Let $A\subset\C$ be closed and discrete and let $p_a$ be a prescribed negative
+Laurent part in $z-a$ at each $a\in A$. There exists $f\in\OO(\C\setminus A)$
+such that $f-p_a$ extends holomorphically through each disk $D_a$. One may
+additionally prescribe $f(z_*)$ at one fixed $z_*\notin A$.
+\end{lemma}
+
+\begin{proof}
+The finite case is a finite sum. Otherwise enumerate $A=\{a_n\}$ with
+$|a_n|\to\infty$ and choose radii $R_n\to\infty$ with $R_n<|a_n|$ for all
+large $n$. Each $p_{a_n}(z-a_n)$ is holomorphic on $|z|<|a_n|$; choose a
+Taylor polynomial $q_n$ at zero with
+$\sup_{|z|\leq R_n}|p_{a_n}(z-a_n)-q_n(z)|<2^{-n}$. After separating finitely
+many early indices, $f(z)=\sum_n(p_{a_n}(z-a_n)-q_n(z))$ converges normally on
+every compact subset of $\C\setminus A$. Near a fixed $a_m$ all terms except
+the $m$th form a normally convergent holomorphic series, so the required
+negative part is $p_{a_m}$, and the differences extend over the full $D_{a_m}$
+by uniqueness. Adding a constant fixes $f(z_*)$.
+\end{proof}
+
+The proof allows essential isolated singularities, because it approximates the
+entire negative part away from its centre, and uses no bound on pole orders.
+The same correcting-polynomial mechanism appears in the scalar Cousin step of
+the repository's global-divisor report \cite{RepoGlobal}.
+
+\begin{lemma}[Open-surface version]\label{nab:lem:mlsurface}
+The conclusion of \cref{nab:lem:mlplane} holds on any connected open Riemann
+surface $X$, with $A$ closed and discrete, pairwise disjoint coordinate disks
+$D_a$, and negative Laurent parts in the chosen coordinates.
+\end{lemma}
+
+\begin{proof}
+An open Riemann surface is Stein by the Behnke--Stein theorem \cite{BS}. The
+data $p_a$ define an ordinary additive holomorphic cocycle on the cover
+$X\setminus A$, $D_a$. Cartan's theorem B gives $H^1(X,\OO)=0$ and hence a
+splitting of that cocycle; in the chosen sign convention the central component
+is the desired $f$. A trivial additive torsor has a section expressed in the
+original charts, so no acyclicity assumption on this particular cover is
+needed. A constant again prescribes one value. See \cite{Cartan,Schmitt} for
+the ordinary coherent-sheaf input.
+\end{proof}
+
+On the plane, \cref{nab:lem:mlplane} makes the analytic existence step of
+\cref{nab:thm:criterion} self-contained. The general open-surface statement
+uses exactly the two established ordinary theorems named in its proof, and not
+an unproved theorem B for a Hahn coefficient sheaf.
+
+\subsection{The period map and a linear section: the Part~II packaging}
+
+Let $D\subset\C$ be closed and discrete. Every compact set meets $D$ in a
+finite set, so $D$ is at most countable, and $U=\C\setminus D$ is connected.
+
+\begin{lemma}[Free based meridians]\label{nab:lem:free}
+There is a collection of based positively oriented meridians
+$(\ell_d)_{d\in D}$ forming a free basis of $\pi_1(U,p)$; every group element
+is a finite word in these meridians and their inverses.
+\end{lemma}
+
+\begin{proof}
+Exhaust $\C$ by nested disks centred at $p$ with boundaries missing $D$. Each
+disk contains finitely many punctures and has free fundamental group generated
+by based meridians. When the disk is enlarged, the old meridians can be
+retained and meridians for the new punctures added: cutting the annular region
+along arcs to the newly included punctures, or applying van Kampen, exhibits
+the old group as a free factor. Choose these bases compatibly. A loop and any
+specified homotopy have compact image, hence occur in a sufficiently large
+disk, so the fundamental group of the union is free on the union of the
+compatible bases. For $D=\varnothing$ the group is trivial.
+\end{proof}
+
+We fix such a basis throughout Part~II. The numerical matrices assigned to
+based meridians depend on the chosen tails and on the base point, and that
+dependence is not suppressed. So that $dY=\Omega Y$ yields a homomorphism for
+matrix multiplication, $\alpha\beta$ means traversal of $\beta$ first and then
+$\alpha$. All meridians are positively oriented.
+
+Let $\LL(D)$ be the complex vector space of meromorphic one-forms on $\C$ with
+at most simple poles at the points of $D$ and no other finite poles. There is
+\emph{no condition at infinity}. Define
+\begin{equation}\label{nab:eq:periodmap}
+ P:\LL(D)\longrightarrow\C^D,
+ \qquad (P\alpha)_d=\int_{\ell_d}\alpha=2\pi i\Res_d\alpha.
+\end{equation}
+The target is the full \emph{product} of complex vector spaces, not the direct
+sum. That is the whole reason no summability across punctures is needed in
+\cref{nab:thm:RH}.
+
+\begin{lemma}[A linear period right inverse]\label{nab:lem:period}
+The map $P$ is surjective, and there is a complex-linear
+$\sigma:\C^D\to\LL(D)$ with $P\sigma=\id$. For finite $D$ one may take
+\begin{equation}\label{nab:eq:finitesection}
+ \sigma\bigl((v_d)_{d\in D}\bigr)
+ =\frac1{2\pi i}\sum_{d\in D}v_d\frac{dz}{z-d}.
+\end{equation}
+For $D=\varnothing$ the right inverse has zero image.
+\end{lemma}
+
+\begin{proof}
+Prescribing the principal part $v_d\,dz/(2\pi i(z-d))$ at each $d$ and
+applying the ordinary Mittag--Leffler theorem proves surjectivity; the
+elementary mechanism is the correcting-polynomial argument of
+\cref{nab:lem:mlplane}, applied to the one-form data. That construction need
+not be linear in the input, because the chosen polynomial degrees may depend
+on it. To obtain a linear section, split the surjection of complex vector
+spaces: choose a basis of $\C^D$, choose one preimage of each basis element,
+and extend linearly. This uses the axiom of choice for vector spaces. For
+finite $D$ the displayed finite sum is an explicit linear section.
+\end{proof}
+
+\begin{remark}[What is and is not required of the section]
+\label{nab:rem:section}
+For infinite $D$ we assert neither continuity nor a norm estimate nor an
+effective algorithm for $\sigma$; \cref{nab:prop:discontinuous} shows that
+continuity is in fact impossible for the natural topologies. In particular
+$\sum_dv_d/(z-d)$ cannot simply be written without a convergence correction.
+The theorem needs only an ordinary complex-linear splitting. The section is
+chosen once, independently of the Hahn exponent, and is applied
+\emph{entrywise} to matrix data; that last point is what makes the traceless
+refinement \cref{nab:thm:SL} true.
+\end{remark}
+
+Both packagings are the ordinary Mittag--Leffler theorem, and neither is
+derived from the other here. \Cref{nab:lem:mlplane} gives, for each exponent
+separately, one function with prescribed negative parts of unbounded order;
+\cref{nab:lem:period} gives a single \emph{linear} choice of simple-pole
+one-form, valid simultaneously for all exponents, at the cost of the axiom of
+choice and of continuity. Part~I needs the first because its prescribed local
+data are arbitrary negative Laurent matrices; Part~II needs the second because
+uniqueness of its normalized realizer is exactly injectivity of $P$ on
+$\im\sigma$.
+
+\section{Local positive factorizations at a puncture}\label{nab:sec:local}
+
+Two local normal forms are used, one per part. They are different
+normalizations of different objects and neither is a consequence of the other.
+
+\subsection{The normalized polar factorization}
+
+For the chosen disk and coordinate put
+\[
+ \mathscr P_{r,\Gamma}=I_r+\Mat_r\bigl(\PP((t^\Gamma))_{>0}\bigr),
+\]
+meaning that the nonconstant coefficients lie in $\PP$ and have positive well
+ordered support. This is a group: nonconstant coefficients of a product or of
+a positive inverse are finite sums of products of negative Laurent parts, and
+each such product still vanishes at auxiliary infinity.
+
+\begin{theorem}[Local normalized factorization]\label{nab:thm:local}
+Let $G\in\GG(D^*)$ and $S=\supp(G-I_r)$. There exist unique matrices
+\begin{equation}\label{nab:eq:localfactor}
+ P\in\mathscr P_{r,\Gamma},\qquad H\in\GG(D),\qquad G=PH,
+\end{equation}
+and both nonconstant supports lie in $M=\angles S\setminus\{0\}$. We write
+$P=\Pol(G)$ and $H=\Reg(G)$. Every coefficient of $H$ is holomorphic on the
+\emph{original} disk, not on an exponent-dependent smaller disk.
+\end{theorem}
+
+\begin{proof}
+The case $S=\varnothing$ is immediate. Otherwise write
+$G=I_r+\sum_{\gamma>0}g_\gamma t^\gamma$,
+$P=I_r+\sum_{\gamma\in M}p_\gamma t^\gamma$,
+$H=I_r+\sum_{\gamma\in M}h_\gamma t^\gamma$, with $g_\gamma=0$ at exponents
+not originally present, and use well-founded recursion on $M$. Once all
+smaller coefficients are chosen, define
+\begin{align}
+ r_\gamma&=g_\gamma-
+   \sum_{\substack{\eta+\theta=\gamma\\ \eta,\theta>0}}p_\eta h_\theta,
+   \label{nab:eq:factorrec1}\\
+ p_\gamma&=\pi_-(r_\gamma),\qquad h_\gamma=\pi_+(r_\gamma).
+   \label{nab:eq:factorrec2}
+\end{align}
+Every summand involves strictly smaller exponents and the sum is finite by
+\cref{nab:lem:neumann}, so each step produces a negative Laurent matrix and a
+matrix holomorphic on $D$. The series have supports in $M$ and satisfy $PH=G$
+coefficientwise; their inverses exist by \cref{nab:lem:inverse}.
+
+For uniqueness, suppose $P_1H_1=P_2H_2$, so $P_2^{-1}P_1=H_2H_1^{-1}$. The
+nonconstant coefficients on the left lie in $\PP$ and those on the right are
+holomorphic on $D$. After placing the finitely many input supports in a common
+positive generated monoid, coefficientwise comparison and
+\cref{nab:lem:laurent} force both sides to equal $I_r$.
+\end{proof}
+
+\begin{proposition}[Right-gauge invariance]\label{nab:prop:rightgauge}
+If $Q\in\GG(D)$ then
+\begin{equation}\label{nab:eq:rightgauge}
+ \Pol(GQ)=\Pol(G).
+\end{equation}
+The analogous statement for multiplication on the left is generally false.
+\end{proposition}
+
+\begin{proof}
+The factorization $GQ=\Pol(G)(\Reg(G)Q)$ has the defining properties of
+\cref{nab:thm:local}, and uniqueness gives the equality. Left multiplication
+can mix regular and polar terms in the opposite order; the examples of
+\cref{nab:sec:rankthree} show that the order matters.
+\end{proof}
+
+\begin{corollary}[Unitriangular factors]\label{nab:cor:unitriangular}
+If $G$ is upper unitriangular then so are $\Pol(G)$ and $\Reg(G)$. If a fixed
+pattern of strictly upper-triangular entries is closed under matrix
+multiplication, the factors preserve that pattern too.
+\end{corollary}
+
+\begin{proof}
+Both Laurent projections preserve zero entries, and every nonlinear term in
+\eqref{nab:eq:factorrec1} is a product of previously constructed matrices in
+the specified multiplicatively closed pattern. Induction finishes the proof.
+\end{proof}
+
+\subsection{Where the obstruction is manufactured}
+
+For a single positive parameter, writing
+$G=I_r+tg_1+t^2g_2+t^3g_3+\cdots$, the recursion begins
+\begin{align*}
+ p_1&=\pi_-g_1,& h_1&=\pi_+g_1,\\
+ p_2&=\pi_-(g_2-p_1h_1),& h_2&=\pi_+(g_2-p_1h_1),\\
+ p_3&=\pi_-(g_3-p_1h_2-p_2h_1).&&
+\end{align*}
+The second-order correction already contains the product of a polar part and a
+regular part, and it can be nonzero even when $g_2=0$. With different positive
+exponents at different punctures, the exponents of such products can form a
+descending sequence absent from the raw singular data. That single mechanism is
+the whole content of \cref{nab:thm:hidden} and \cref{nab:thm:depth}.
+
+In rank one, and only there, the factorization has a closed form:
+\begin{equation}\label{nab:eq:scalarPol}
+ \Pol(G)=\exp\bigl(\pi_-\log G\bigr),
+ \qquad
+ \Reg(G)=\exp\bigl(\pi_+\log G\bigr),
+\end{equation}
+with the projections acting coefficientwise and the scalar exponential
+addition law verifying the factorization. In a noncommutative matrix algebra,
+replacing \cref{nab:thm:local} by \eqref{nab:eq:scalarPol} is invalid; the
+algebraic Birkhoff literature describes the associated
+Baker--Campbell--Hausdorff corrections in a filtered setting
+\cite{EFGK,EFMP}, and our direct recursion avoids expanding that formula.
+\Cref{nab:prop:logdiag} exhibits the exact numerical discrepancy in rank
+three.
+
+\subsection{The positive Frobenius form}
+
+The next theorem is the local normal form used in Part~II. It explains why
+residues still control \emph{local} monodromy while being unreadable directly
+from the prescribed \emph{based} monodromy matrices. It is a
+support-controlled version of the elementary nonresonant regular-singular
+construction, not a new claim about classical Frobenius theory.
+
+\begin{theorem}[A common-disk positive Frobenius factorization]
+\label{nab:thm:frobenius}
+Let $\Delta$ be an ordinary disk about $0$ and suppose a positive Hahn
+connection on $\Delta\setminus\{0\}$ has the form
+\begin{equation}\label{nab:eq:localconnection}
+ \Omega=R\frac{dz}{z}+B(z)\,dz,
+\end{equation}
+with $R\in\Mat_r(\mm)$ and $B\in\Mat_r(\JJ(\Delta))$ sharing one positive well
+ordered support $E$. Then there is a unique
+$H\in I_r+\Mat_r(\JJ(\Delta))$ with $H(0)=I_r$ such that, on a branch of the
+logarithm,
+\begin{equation}\label{nab:eq:frobenius}
+ Y(z)=H(z)\exp(R\Log z)
+\end{equation}
+solves $dY=\Omega Y$. The supports of $H-I_r$ and $H^{-1}-I_r$ lie in
+$\angles E\setminus\{0\}$, and the local monodromy based at
+$z_0\in\Delta\setminus\{0\}$ is
+\begin{equation}\label{nab:eq:localmonodromy}
+ H(z_0)\exp(2\pi iR)H(z_0)^{-1}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The required equation is $H'=[R,H]/z+BH$ with $H(0)=I_r$. Construct its
+coefficients recursively on $\angles E\setminus\{0\}$: at weight $\gamma$ one
+must solve
+\[
+ H_\gamma'=B_\gamma+
+ \sum_{\substack{\alpha+\beta=\gamma\\ \alpha,\beta>0}}
+  \Bigl(B_\alpha H_\beta+\frac{[R_\alpha,H_\beta]}{z}\Bigr),
+ \qquad H_\gamma(0)=0,
+\]
+a finite sum. The previously constructed $H_\beta$ vanish at $0$, so
+$H_\beta/z$ is holomorphic on the entire disk; the right-hand side is
+therefore holomorphic on that same disk, and integration from $0$ defines a
+unique holomorphic $H_\gamma$ vanishing there. The resulting family has the
+claimed support and its inverse is given by \cref{nab:lem:inverse}. A
+least-difference argument proves uniqueness.
+
+Because $R$ has positive support, $\exp(R\Log z)$ is a strongly summable
+family of ordinary holomorphic functions on any logarithm branch, and
+coefficientwise differentiation gives
+$(\exp(R\Log z))'=R\exp(R\Log z)/z$; the equation for $H$ then verifies
+\eqref{nab:eq:frobenius}. Continuing once positively around $0$ increases
+$\Log z$ by $2\pi i$ and multiplies the fundamental matrix on the right by
+$\exp(2\pi iR)$. Normalizing at $z_0$ conjugates that factor by
+$H(z_0)\exp(R\Log z_0)$, and the exponential factor commutes with
+$\exp(2\pi iR)$ and cancels, giving \eqref{nab:eq:localmonodromy}.
+\end{proof}
+
+There is no division by a spectral resonance operator in this proof: the
+exponent-zero coefficient of the residue is zero, so the equation at each new
+exponent is an ordinary primitive problem. Positivity is doing real work here
+(compare \cref{nab:rem:resonance}).
+
+If a meridian is based at a distant point $p$, its tail contributes a further
+transport conjugation to \eqref{nab:eq:localmonodromy}, and with several
+punctures these conjugations interact. Choosing
+$R_d=(2\pi i)^{-1}\log M_d$ separately at each puncture therefore need not
+solve the based inverse problem. The explicit failure appears as a mixed
+commutator term in \cref{nab:prop:mixed}.
+\part*{Part I. Multiplicative gluing: the polar-support criterion}
+\addcontentsline{toc}{section}{\textbf{Part I. Multiplicative gluing: the polar-support criterion}}
+
+\section{The sharp global matrix Cousin criterion}\label{nab:sec:cousin}
+
+Let $X$ be a connected open Riemann surface, $A\subset X$ closed and discrete,
+and choose pairwise disjoint coordinate disks $(D_a,u_a)$ with $u_a(a)=0$. Put
+$U_0=X\setminus A$ and $W_a=D_a\setminus\{a\}$; the punctured surface $U_0$ is
+connected. For each $a$, \emph{independently}, let $G_a\in\GG(W_a)$. The disks
+do not meet one another, so this is a complete positive matrix cocycle on the
+displayed cover, with the inverse transition on the reversed overlap. There
+need not be one well-ordered set containing the supports of all the $G_a$.
+
+\begin{definition}[Normalized polar support]\label{nab:def:polsupport}
+Factor $G_a=P_aH_a$ by \cref{nab:thm:local} and define
+\begin{equation}\label{nab:eq:polsupport}
+ \EU(G)=\bigcup_{a\in A}\supp(P_a-I_r)\subseteq\Gamma_{>0}.
+\end{equation}
+The datum is \emph{polar-admissible} when $\EU(G)$ is well ordered. No sum
+over $a$ is intended in \eqref{nab:eq:polsupport}: it is a set-theoretic union
+of supports, taken across all matrix entries.
+\end{definition}
+
+\begin{theorem}[Exact nonabelian Cousin criterion: Criterion P]
+\label{nab:thm:criterion}
+The following are equivalent.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item There exist $B_0\in\GG(U_0)$ and $B_a\in\GG(D_a)$ with
+$G_a=B_0B_a^{-1}$ on every $W_a$.
+\item The set $\EU(G)$ is well ordered.
+\end{enumerate}
+When these hold, let $M=\angles{\EU(G)}$. One can choose
+\begin{equation}\label{nab:eq:centralsupport}
+ \supp(B_0-I_r)\subseteq M\setminus\{0\},
+\end{equation}
+and in the local factorizations $B_0=P_aQ_a$ the matrices $Q_a-I_r$ can also
+be supported in $M\setminus\{0\}$. The disk trivializers are
+$B_a=H_a^{-1}Q_a$ and hence have individually legitimate supports. A value
+$B_0(z_*)=I_r$ may be imposed at any chosen $z_*\in U_0$.
+\end{theorem}
+
+\begin{proof}
+\emph{Necessity.} Suppose $G_a=B_0B_a^{-1}$. By right-gauge invariance
+\eqref{nab:eq:rightgauge},
+\[
+ P_a=\Pol(G_a)=\Pol\bigl(B_0|_{W_a}\bigr).
+\]
+Let $S=\supp(B_0-I_r)$. The local support estimate in \cref{nab:thm:local} is
+independent of the puncture and of the Laurent coefficients of the input, so
+$\supp(P_a-I_r)\subseteq\angles S\setminus\{0\}$ for every $a$. That one
+generated monoid is well ordered by \cref{nab:lem:neumann}, and $\EU(G)$ is a
+subset of it.
+
+\emph{Sufficiency.} Assume $E=\EU(G)$ is well ordered and put $M=\angles E$.
+We construct a global $F\in\GG(U_0)$ and local $Q_a\in\GG(D_a)$ with
+\begin{equation}\label{nab:eq:Fgoal}
+ F=P_aQ_a
+\end{equation}
+and every nonconstant coefficient supported in $M$. Write
+$P_a=I_r+\sum_{\gamma>0}p_{a,\gamma}t^\gamma$,
+$F=I_r+\sum_{\gamma>0}f_\gamma t^\gamma$,
+$Q_a=I_r+\sum_{\gamma>0}q_{a,\gamma}t^\gamma$. At a positive $\gamma\in M$,
+with all smaller coefficients constructed, define on $W_a$
+\begin{equation}\label{nab:eq:globalrec}
+ R_{a,\gamma}=p_{a,\gamma}+
+ \sum_{\substack{\eta+\theta=\gamma\\ \eta,\theta>0}}p_{a,\eta}q_{a,\theta},
+\end{equation}
+a finite sum. Apply \cref{nab:lem:mlsurface} entry by entry to the prescribed
+ordinary negative Laurent matrices $\pi_-R_{a,\gamma}$. It supplies a single
+matrix $f_\gamma\in\Mat_r(\OO(U_0))$ such that $f_\gamma-R_{a,\gamma}$ extends
+holomorphically across $D_a$ for every $a$; set
+\begin{equation}\label{nab:eq:qrec}
+ q_{a,\gamma}=f_\gamma-R_{a,\gamma}.
+\end{equation}
+The prescribed zero value at $z_*$ can be imposed on every $f_\gamma$.
+
+Recursion on the well-ordered set $M\setminus\{0\}$ constructs all
+coefficients. The scalar analytic step changes coefficient functions but
+introduces no new Hahn exponents, and every coefficient of every $Q_a$ is
+holomorphic on its original disk. The resulting Hahn matrices satisfy
+\eqref{nab:eq:Fgoal} coefficientwise and are invertible by
+\cref{nab:lem:inverse}. Finally $G_a=P_aH_a$ and $F=P_aQ_a$ give
+$G_a=F(H_a^{-1}Q_a)^{-1}$; take $B_0=F$ and $B_a=H_a^{-1}Q_a$. The support of
+$H_a-I_r$ lies in the monoid generated by the original support of $G_a-I_r$
+and the support of $Q_a-I_r$ lies in $M$; a finite union of two well-ordered
+positive sets generates a legitimate monoid, so $B_a$ is a well-defined
+section on $D_a$. There is no requirement that the disk supports have a
+globally well-ordered union.
+\end{proof}
+
+\subsection{Why the converse is sharp}
+
+An infinite puncture set does not by itself prevent a solution: at each fixed
+exponent the ordinary analytic problem is always solvable, and the obstruction
+is not a divergent ordinary sum, since the ordinary coefficient construction
+uses normal convergence independent of the formal exponents. The failure occurs
+exactly when the \emph{necessary normalized polar information} cannot fit into
+a single well-ordered support.
+
+The test cannot be replaced by $\bigcup_a\supp(G_a-I_r)$. First, $G_a$ may
+itself be holomorphic on $D_a$, in which case $P_a=I_r$ and the solution
+$B_0=I_r$, $B_a=G_a^{-1}$ exists even if those raw supports have a descending
+union. Second, and less obviously, discarding all raw holomorphic coefficients
+is also not enough: noncommutative products between discarded and retained
+terms can create essential polar information. That is the content of
+\cref{nab:sec:rankthree}, and it is why \cref{nab:sec:twocriteria} exists.
+
+\subsection{The space of solutions}
+
+\begin{proposition}[Right torsor of splittings]\label{nab:prop:torsor}
+For a polar-admissible datum, all splittings are obtained from any one by
+\[
+ (B_0,B_a)\longmapsto(B_0T,\,B_aT|_{D_a}),\qquad T\in\GG(X),
+\]
+and the action is free and transitive. Under the normalization $B_0(z_*)=I_r$,
+use the subgroup with $T(z_*)=I_r$.
+\end{proposition}
+
+\begin{proof}
+Right multiplication by a common $T$ preserves $B_0B_a^{-1}$. Conversely two
+splittings give $B_0^{-1}B_0'=B_a^{-1}B_a'$ on $W_a$; the central quotient
+extends through every disk by that equality, and the sheaf observation of
+\cref{nab:sub:conventions} yields a global positive section $T$ with one
+legitimate support on connected $X$. It is the unique element relating the two
+splittings.
+\end{proof}
+
+This describes all solutions once a splitting exists. It is not a
+classification of the nonsplit objects; see \cref{nab:sec:scope}.
+
+\section{Invariance, and the scalar case that is recovered}
+\label{nab:sec:invariance}
+
+\begin{corollary}[Removal of arbitrarily supported regular data]
+\label{nab:cor:localgauges}
+For independently chosen $R_a\in\GG(D_a)$, the families $(G_a)$ and
+$(G_aR_a)$ have the same normalized polar factors and the same solvability
+status. No well-ordering condition on $\bigcup_a\supp(R_a-I_r)$ is needed.
+\end{corollary}
+
+\begin{proof}
+Immediate from \cref{nab:prop:rightgauge} and \cref{nab:thm:criterion}.
+\end{proof}
+
+This is stronger than invariance under finitely many transformations: the
+infinitely many regular parts are genuinely irrelevant, but only \emph{after}
+they have been removed in the correct multiplication order.
+
+\begin{corollary}[Coordinate independence of admissibility]
+\label{nab:cor:coordinates}
+Changing the local coordinates, or shrinking the disks, can change individual
+normalized polar coefficients but cannot change whether their global support
+union is well ordered.
+\end{corollary}
+
+\begin{proof}
+Existence of the splitting in \cref{nab:thm:criterion} is invariant under
+these changes. Shrinking a disk cannot turn a previously nonextendible germ
+into an extendible one: a local splitting on smaller disks yields extension of
+the same central matrix, hence a splitting on the original disks by analytic
+continuation of $G_a^{-1}B_0$. Alternatively, re-expressing a previously
+constructed polar factor in the new coordinate and applying
+\cref{nab:thm:local} puts every new support in the monoid generated by the old
+support union, and the inverse coordinate change gives the converse.
+\end{proof}
+
+\begin{corollary}[Absoluteness under ordered extension]
+\label{nab:cor:extension}
+Let $\Gamma\hookrightarrow\Delta$ be an order-preserving embedding of
+set-sized ordered abelian groups. A datum defined over $\Gamma$ splits in the
+positive matrix category over $\Delta$ if and only if it splits over $\Gamma$.
+\end{corollary}
+
+\begin{proof}
+The recursive local polar factor computed in $\Gamma$ is also a factor in
+$\Delta$ and remains the unique normalized factor, so its support union is the
+image of $\EU(G)$. An order embedding preserves and reflects well-ordering of
+a subset. Apply \cref{nab:thm:criterion} in both groups.
+\end{proof}
+
+In particular the obstructions below cannot be removed by allowing more
+surreal exponents in the same integral positive-matrix problem. This is not a
+claim about passing to another analytic category, and in particular not a
+claim about admitting negative-valuation gauges; see
+\cref{nab:sec:bundles} and item~\ref{nab:nc:localization} of
+\cref{nab:sec:scope}.
+
+\begin{proposition}[Recovery of the rank-one singular-support test]
+\label{nab:prop:rankone}
+Let $r=1$, put $L_a=\log G_a$, and define the logarithmic singular support
+\[
+ \Sigma(G)=\bigcup_a\supp(\pi_-L_a).
+\]
+Then
+\begin{equation}\label{nab:eq:scalarequiv}
+ \EU(G)\ \text{well ordered}
+ \quad\Longleftrightarrow\quad
+ \Sigma(G)\ \text{well ordered}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+By \eqref{nab:eq:scalarPol}, $\log P_a=\pi_-L_a$ is supported in the positive
+monoid generated by $\EU(G)$, which gives the forward direction; conversely
+exponentiation puts every $P_a-I_1$ inside the monoid generated by
+$\Sigma(G)$. Apply \cref{nab:lem:neumann}.
+\end{proof}
+
+Combined with \cref{nab:thm:criterion}, \eqref{nab:eq:scalarequiv} says that
+in rank one our criterion is exactly the exact Cousin criterion already proved
+in the repository's global-divisor report --- its Theorem~13.1, stated there in
+terms of the singular support of the additive data on a puncture-and-disk
+cover \cite{RepoGlobal}. We cite that theorem as the case we recover; it is not
+reproved here, and no priority for the scalar statement is claimed. What is
+new is that the correct matrix replacement for $\pi_-\log$ is the normalized
+polar factor and not any entrywise logarithm: no analogous entrywise formula
+is substituted for $\Pol$ in rank $\geq2$, precisely because
+$\log(AB)\neq\log A+\log B$ (\cref{nab:rem:explog}), and
+\cref{nab:prop:logdiag} measures the error.
+
+\section{A rank-three obstruction invisible in the raw poles}
+\label{nab:sec:rankthree}
+
+This section contains the example that forces the distinction of
+\cref{nab:sec:twocriteria}. Read it before generalizing either criterion.
+
+\subsection{The closed factorization in the Heisenberg group}
+
+\begin{proposition}[Closed Heisenberg factorization]
+\label{nab:prop:heisenberg}
+Let
+\[
+ G=\begin{pmatrix}1&a&b\\0&1&c\\0&0&1\end{pmatrix},
+ \qquad a,b,c\in\JJ(D^*),
+\]
+and write $a=a_-+a_+$, $c=c_-+c_+$ by coefficientwise Laurent projection. Then
+\begin{equation}\label{nab:eq:HeisenbergP}
+ \Pol(G)=
+ \begin{pmatrix}
+  1&a_-&\pi_-(b-a_-c_+)\\ 0&1&c_-\\ 0&0&1
+ \end{pmatrix},
+ \qquad
+ \Reg(G)=
+ \begin{pmatrix}
+  1&a_+&\pi_+(b-a_-c_+)\\ 0&1&c_+\\ 0&0&1
+ \end{pmatrix}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+All products are legitimate, being finite expressions in finitely many Hahn
+series. Direct multiplication verifies $\Pol(G)\Reg(G)=G$, the left factor is
+polar and the right factor is holomorphic on the full disk, so uniqueness in
+\cref{nab:thm:local} identifies them as the canonical factors.
+\end{proof}
+
+The subtraction of $a_-c_+$ is the essential term: a product of a \emph{polar}
+coefficient of one entry with a \emph{holomorphic} coefficient of another. Its
+exponent is a sum of two input exponents that need not appear in the input.
+
+\subsection{The obstructed datum}
+
+Take $X=\C$, $A=\{n:n\geq2\}$, $D_n=\{|z-n|<1/4\}$, $\Gamma=\Q$, and
+$u_n=z-n$. Consider
+\begin{equation}\label{nab:eq:badG}
+ G_n=I_3+\frac{t}{u_n}E_{12}+t^{1/n}E_{23},
+\end{equation}
+with $E_{ij}$ the matrix units. Each $G_n$ is a finite Hahn expression, has
+determinant exactly one, and reduces to $I_3$. By
+\eqref{nab:eq:HeisenbergP},
+\begin{equation}\label{nab:eq:badPH}
+ P_n=I_3+\frac{t}{u_n}E_{12}-\frac{t^{1+1/n}}{u_n}E_{13},
+ \qquad
+ H_n=I_3+t^{1/n}E_{23},
+\end{equation}
+and the product $P_nH_n$ has zero $(1,3)$ entry because its two contributions
+cancel.
+
+\begin{theorem}[Hidden rank-three obstruction]\label{nab:thm:hidden}
+The matrices \eqref{nab:eq:badG} admit no splitting by general positive
+$3\times3$ matrices. Their abelianized upper-unitriangular cocycle does split.
+Their raw nonremovable coefficient support is the singleton $\{1\}$, and their
+determinant cocycle is identically one.
+\end{theorem}
+
+\begin{proof}
+The normalized polar support contains $\{1+1/n:n\geq2\}$, a strictly
+decreasing infinite sequence, hence is not well ordered, and
+\cref{nab:thm:criterion} rules out a splitting even in the full positive
+matrix group.
+
+The abelianization of the upper-unitriangular $3\times3$ group remembers the
+$(1,2)$ and $(2,3)$ entries and adds them componentwise. Let
+$\phi\in\OO(U_0)$ have principal part $1/(z-n)$ at every $n\geq2$ and no
+singularities outside $A$; such $\phi$ exists by \cref{nab:lem:mlplane}, one
+explicit choice being
+\begin{equation}\label{nab:eq:phi}
+ \phi(z)=\sum_{n=2}^\infty\Bigl(\frac1{z-n}+\frac1n\Bigr),
+\end{equation}
+whose $n$th summand is $O_K(n^{-2})$ on each compact set away from $A$. The
+$(1,2)$ component splits using the central function $t\phi$ and the disk
+functions $t(\phi-1/u_n)$; the $(2,3)$ component splits using central function
+$0$ and disk functions $-t^{1/n}$. Finally the only original singular
+coefficient is $E_{12}/u_n$ at exponent $1$, and unitriangular matrices have
+determinant one.
+\end{proof}
+
+The example is stronger than a determinant obstruction, and stronger even than
+the statement that a noncommutative cocycle has nontrivial abelianization: the
+abelianized problem \emph{is} solvable, and the obstruction appears only when
+its solutions are required to fit together in the original multiplication law.
+The obstruction also lives in a matrix entry that is identically zero in the
+input.
+
+\subsection{Adding a singular term repairs the problem}
+
+\begin{example}[The repair, which worsens the raw support]
+\label{nab:ex:repair}
+Define
+\begin{equation}\label{nab:eq:goodG}
+ \widetilde G_n=I_3+\frac{t}{u_n}E_{12}+t^{1/n}E_{23}
+  +\frac{t^{1+1/n}}{u_n}E_{13}.
+\end{equation}
+Then
+\[
+ \widetilde G_n=\Bigl(I_3+\frac{t}{u_n}E_{12}\Bigr)
+                \bigl(I_3+t^{1/n}E_{23}\bigr),
+\]
+so $\Pol(\widetilde G_n)=I_3+tE_{12}/u_n$ and
+$\EU(\widetilde G)=\{1\}$, and a global splitting exists. Explicitly, with
+$\phi$ as in \eqref{nab:eq:phi}, put $F=I_3+t\phi E_{12}$,
+\[
+ Q_n=I_3+t\Bigl(\phi-\frac1{u_n}\Bigr)E_{12},
+ \qquad
+ \widetilde H_n=I_3+t^{1/n}E_{23};
+\]
+then $F=\Pol(\widetilde G_n)Q_n$ and
+$\widetilde G_n=F(\widetilde H_n^{-1}Q_n)^{-1}$, all disk factors being
+holomorphic on $D_n$. Yet the raw singular support of \eqref{nab:eq:goodG}
+\emph{contains} the descending set $\{1+1/n\}$.
+\end{example}
+
+So \eqref{nab:eq:badG} has raw singular support $\{1\}$ and is obstructed,
+while \eqref{nab:eq:goodG} has a descending raw singular support and is
+solvable. Raw singular support is therefore neither a sufficient nor a
+necessary test, in the strongest possible sense: the two directions fail on
+data that differ by one term.
+
+\subsection{Why an entrywise logarithm is not a repair}
+
+\begin{proposition}[Logarithm diagnostic]\label{nab:prop:logdiag}
+The matrix logarithm of \eqref{nab:eq:badG} is finite, namely
+\[
+ \log G_n=\frac{t}{u_n}E_{12}+t^{1/n}E_{23}
+  -\frac12\frac{t^{1+1/n}}{u_n}E_{13},
+\]
+so exponentiating its negative Laurent part alone gives the $(1,3)$
+coefficient $-\tfrac12t^{1+1/n}/u_n$, whereas the correct polar coefficient in
+\eqref{nab:eq:badPH} is $-t^{1+1/n}/u_n$.
+\end{proposition}
+
+\begin{proof}
+$G_n-I_3$ is nilpotent of order three, so the series of
+\cref{nab:lem:inverse} terminates: with $a=t/u_n$ and $c=t^{1/n}$ one has
+$(G_n-I_3)^2=ac\,E_{13}$ and $(G_n-I_3)^3=0$, giving
+$\log G_n=(G_n-I_3)-\tfrac12ac\,E_{13}$, which is the display. Comparison with
+\eqref{nab:eq:badPH} gives the factor $\tfrac12$. The symbolic check is
+recorded in the companion code (\cref{nab:sec:verification}).
+\end{proof}
+
+Thus even the true matrix logarithm is not a substitute for the factorization:
+one still needs the noncommutative correction, and the global criterion is
+built from the actual normalized factor rather than from an \emph{ad hoc}
+linearization. Note also that the discrepancy is only a factor, not a change
+of exponent, so a reader who used the logarithm would find the same descending
+set here --- and \cref{nab:ex:repair} shows that agreement is an accident of
+this example, not a method.
+
+\section{Obstructions at arbitrary nilpotent depth}\label{nab:sec:depth}
+
+\subsection{A chain identity}
+
+\begin{lemma}[Chain identity]\label{nab:lem:chain}
+Let $r\geq3$, let $a$ be a negative Laurent Hahn function with positive
+support, and let $c_2,\ldots,c_{r-1}$ be positive Hahn constants. Put
+\[
+ C=\sum_{j=2}^{r-1}c_jE_{j,j+1},\qquad H=I_r+C,\qquad G=I_r+C+aE_{12}.
+\]
+Since $C^{r-1}=0$,
+\begin{equation}\label{nab:eq:chainP}
+ P=GH^{-1}=I_r+aE_{12}(I_r+C)^{-1}
+  =I_r+\sum_{k=2}^{r}(-1)^{k-2}a\Bigl(\prod_{j=2}^{k-1}c_j\Bigr)E_{1k},
+\end{equation}
+the empty product for $k=2$ being $1$, and \eqref{nab:eq:chainP} is the
+normalized polar factorization $P=\Pol(G)$, $H=\Reg(G)$.
+\end{lemma}
+
+\begin{proof}
+The finite geometric inverse of $I_r+C$ gives the displayed signs. Every
+nonconstant coefficient of $P$ is a negative Laurent part, because each is a
+constant multiple of $a$, while $H$ is holomorphic on the disk. Uniqueness in
+\cref{nab:thm:local} identifies the factors.
+\end{proof}
+
+\subsection{The exponent design}
+
+For $r\geq4$ and $n\geq2$ set
+\begin{equation}\label{nab:eq:deepdata}
+ a_n=\frac{t}{z-n},\qquad
+ c_{2,n}=t^{1-1/n},\qquad
+ c_{j,n}=t\ (3\leq j\leq r-2),\qquad
+ c_{r-1,n}=t^{2/n},
+\end{equation}
+the middle range being empty for $r=4$. Let $C_n$ and $G_n$ be the matrices of
+\cref{nab:lem:chain} built from these data. Every $G_n$ is finite, upper
+unitriangular, and has exactly one raw singular matrix coefficient, namely
+$E_{12}/(z-n)$ at exponent $1$. For $3\leq k\leq r-1$ the exponent in
+$(P_n)_{1k}$ is
+\begin{equation}\label{nab:eq:lowerexponents}
+ \lambda_{k,n}=k-1-\frac1n,
+\end{equation}
+whereas the exponent in the final entry is
+\begin{equation}\label{nab:eq:lastexponent}
+ \lambda_{r,n}=r-2+\frac1n.
+\end{equation}
+For each fixed $k<r$ the exponents \eqref{nab:eq:lowerexponents} increase with
+$n$ and their set has order type $\omega$; there are finitely many such sets,
+so their union with $\{1\}$ is well ordered. The final exponents
+\eqref{nab:eq:lastexponent} strictly decrease.
+
+\begin{theorem}[Arbitrarily deep central support obstructions]
+\label{nab:thm:depth}
+For each integer $r\geq3$ there is a positive upper-unitriangular cocycle on
+the puncture-and-disk cover of $\C$ with $A=\{2,3,\ldots\}$, over
+$\Gamma=\Q$, such that:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item its original singular coefficient support is $\{1\}$ and its determinant
+is one;
+\item its image in the quotient of the upper-unitriangular group by
+$Z_r=\{I_r+cE_{1r}:c\in\JJ\}$ is a coboundary;
+\item it is not a coboundary in the full group of positive $r\times r$
+matrices;
+\item it remains nonsplit after every ordered value-group extension.
+\end{enumerate}
+For $r=3$ use \eqref{nab:eq:badG}; for $r\geq4$ use \eqref{nab:eq:deepdata}
+with \cref{nab:lem:chain}.
+\end{theorem}
+
+\begin{proof}
+Property (i) was checked directly above. \Cref{nab:lem:chain} and
+\eqref{nab:eq:lastexponent} show that the normalized polar support contains a
+strictly descending infinite sequence, so \cref{nab:thm:criterion} proves
+(iii) and \cref{nab:cor:extension} proves (iv).
+
+For (ii), let $P_n'$ be obtained from $P_n$ by deleting its $(1,r)$ entry.
+Their global support union is well ordered by
+\eqref{nab:eq:lowerexponents}, the case $r=3$ leaving only exponent $1$. Every
+$P_n'-I_r$ belongs to the row-one algebra
+\[
+ V=\operatorname{span}\{E_{12},\ldots,E_{1,r-1}\},\qquad V^2=0,
+\]
+so the gluing problem for the $P_n'$ is additive and splits by the scalar
+construction with this one well-ordered support union: solve the ordinary
+principal-part problem for each coefficient of each allowed row entry, using
+\cref{nab:lem:mlplane}. This gives $F'$ on $U_0$ and $Q_n'$ on $D_n$, valued
+in $I_r+V$, with $F'=P_n'Q_n'$. In the quotient by $Z_r$ one has
+$\overline P_n=\overline P_n'$, and since $G_n=P_nH_n$ with $H_n$ holomorphic,
+\[
+ \overline G_n=\overline F'\bigl(\overline H_n^{-1}\overline Q_n'\bigr)^{-1}
+\]
+provides the required coboundary. All factors have individually legitimate
+positive supports. No matrix representative for the quotient is silently
+assumed: the bars denote the ordinary group quotient by the central subgroup.
+\end{proof}
+
+Here $Z_r$ is the central subgroup with $c\in\JJ$. Over $\Gamma=\Q$ one has
+$\JJ^m=\JJ$ for every positive integer $m$, since a nonzero section of least
+exponent $\delta>0$ factors into $m-1$ monomials $t^{\delta/m}$ and one
+remaining positive section. The elementary commutator identity
+$[I+aE_{ij},I+bE_{jk}]=I+abE_{ik}$ then shows that $Z_r$ is the final nonzero
+term of the lower central series of the positive upper-unitriangular group, and
+every further lower-central quotient factors through the quotient in (ii). So
+all those lower-depth tests pass, and the full obstruction first appears at
+depth $r-1$, for arbitrarily large finite $r$.
+
+\begin{remark}[What the depth assertion means]\label{nab:rem:depth}
+The theorem does not say that a scalar equation cannot detect the final
+obstruction once a noncommutative normal form has been found --- the final
+coefficient is of course scalar. It says that discarding the last central
+level \emph{before} normalizing loses an obstruction created by the
+multiplication law. The new information sits in a genuinely higher
+noncommutative compatibility condition.
+\end{remark}
+
+\section{Integral vector bundles and local invisibility}
+\label{nab:sec:bundles}
+
+\subsection{From positive matrices to actual vector bundles}
+
+The transition matrices $G_a$ define a locally free rank-$r$ sheaf
+$\mathcal E_G$ over $\II$ on the ordinary surface $X$. Its ordinary reduction
+is canonically the trivial rank-$r$ holomorphic bundle, because every
+transition reduces to $I_r$, and a positive splitting is a trivialization
+compatible with that reduced framing.
+
+\begin{proposition}[For triviality, the reduced framing costs nothing]
+\label{nab:prop:integraltrivial}
+For a bundle defined by positive transition matrices the following are
+equivalent, on an arbitrary ordinary complex base and not only on a star
+cover:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\mathcal E_G$ is trivial as an $\II$-module;
+\item its transition cocycle splits by positive matrices.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+A positive splitting gives a trivialization. Conversely, suppose
+$A_i\in\GL_r(\II(U_i))$ satisfy $G_{ij}=A_iA_j^{-1}$ and reduce modulo $\JJ$.
+Since $\red G_{ij}=I_r$, the ordinary invertible matrices $\red A_i$ agree on
+overlaps and glue to $A\in\GL_r(\OO(X))$. Right multiplication by the ordinary
+matrix $A^{-1}$ produces $B_i=A_iA^{-1}$ with reduction $I_r$, hence
+$B_i\in\GG(U_i)$ and $G_{ij}=B_iB_j^{-1}$.
+\end{proof}
+
+\begin{corollary}[Nontrivial determinant-one integral bundles]
+\label{nab:cor:nontrivialbundles}
+The examples of \cref{nab:thm:hidden,nab:thm:depth} define nontrivial locally
+free $\II$-modules even after forgetting the upper-triangular flag and the
+chosen reduced framing. Their ordinary reductions and determinant line bundles
+are trivial, the transition determinants being exactly one and not merely one
+modulo positive exponents.
+\end{corollary}
+
+\begin{proof}
+A general integral trivialization would give a positive matrix splitting by
+\cref{nab:prop:integraltrivial}, contradicting \cref{nab:thm:criterion}.
+\end{proof}
+
+\subsection{Every bounded restriction is trivial}
+
+\begin{corollary}[Exhaustion-invisible nontriviality]\label{nab:cor:bounded}
+Each integral bundle in \cref{nab:cor:nontrivialbundles} restricts trivially
+to every bounded ordinary domain in $\C$. In particular it is trivial on every
+disk of an increasing exhaustion of the plane, but not on the plane itself.
+\end{corollary}
+
+\begin{proof}
+A bounded domain meets only finitely many of the fixed disks $D_n$, so on the
+restricted cover there are only finitely many nonidentity transition matrices,
+each with legitimate positive support, and their union is well ordered. Every
+ordinary plane domain is Stein, so \cref{nab:thm:Stein} applies. Equivalently,
+apply the finite-puncture construction directly and absorb transitions on
+pieces containing no puncture into holomorphic local gauges.
+\end{proof}
+
+The failure is compatibility of infinitely many local trivializations, not
+existence on any one bounded domain. Consequently a numerical experiment
+involving finitely many punctures cannot establish global triviality: it will
+necessarily miss these examples. This is an explicit limit on what any
+implementation can decide, and it is recorded again as
+item~\ref{nab:nc:blackbox} of \cref{nab:sec:scope}.
+
+\subsection{The localization boundary}
+
+Let $\HH=\OO((t^\Gamma))$ be the sheaf in which arbitrary monomial shifts are
+allowed; the natural map $\II\to\HH$ extends scalars from $\mathcal E_G$ to a
+rank-$r$ $\HH$-module. We have \emph{not} proved that the resulting module is
+nontrivial, and we decline the claim rather than gesture at it. The reduction
+argument of \cref{nab:prop:integraltrivial} cannot be repeated over $\HH$:
+there is no reduction ring homomorphism $\HH\to\OO$ killing positive
+monomials, because those monomials are units in $\HH$.
+
+Accordingly the precise conclusions of Part~I are nonexistence of a positive
+coherent matrix splitting and nontriviality of the corresponding
+\emph{integral} coherent vector bundle. Whether negative-valuation changes of
+frame can trivialize particular higher-rank examples is a separate question.
+The scalar report proves more in rank one by a special leading-unit
+normalization \cite{RepoGlobal}; no matrix analogue of that argument is
+assumed here.
+
+This distinction matters for the surcomplex interpretation. Integral models
+describe holomorphic matrices with a defined ordinary reduction and
+infinitesimal corrections. They are not the entire unrestricted matrix
+geometry over $\SC$, and our theorems are strong within the former category
+without conflating the two.
+
+\section{Positive rigidity on Stein manifolds}\label{nab:sec:stein}
+
+\subsection{An arbitrary-cover theorem with a support hypothesis}
+
+Let $X$ be a connected Stein manifold and $(U_i)_{i\in I}$ a set-indexed open
+cover; on disconnected intersections, support statements refer to all connected
+components. Suppose
+\[
+ G_{ij}\in\GG(U_i\cap U_j),\qquad G_{ij}G_{jk}=G_{ik},\quad G_{ii}=I_r.
+\]
+Call the cocycle \emph{globally support-admissible} if
+\begin{equation}\label{nab:eq:Ecover}
+ E=\bigcup_{i,j}\supp(G_{ij}-I_r)
+\end{equation}
+is well ordered. This is a sufficient condition \emph{on a presentation}, not
+an invariant necessary condition: regular local gauges may destroy it without
+destroying triviality. It must not be conflated with the invariant $\EU(G)$ of
+\cref{nab:def:polsupport}, nor with $E_\rho$ of \cref{nab:sec:rh}.
+
+\begin{theorem}[Support-controlled Stein splitting]\label{nab:thm:Stein}
+A globally support-admissible positive matrix cocycle on a Stein manifold
+splits on its original cover: $G_{ij}=B_iB_j^{-1}$ with $B_i\in\GG(U_i)$. All
+supports $\supp(B_i-I_r)$ can be contained in the one monoid
+$\angles E\setminus\{0\}$.
+\end{theorem}
+
+\begin{proof}
+Set $M=\angles E$ and solve $G_{ij}B_j=B_i$ coefficientwise with
+$B_i=I_r+\sum_{\gamma\in M\setminus\{0\}}b_{i,\gamma}t^\gamma$. Assume the
+equations hold at all exponents below $\gamma$; the coefficient equation at
+$\gamma$ is
+\begin{equation}\label{nab:eq:Steinrec}
+ b_{i,\gamma}-b_{j,\gamma}
+ =g_{ij,\gamma}
+ +\sum_{\substack{\eta+\theta=\gamma\\ \eta,\theta>0}}g_{ij,\eta}b_{j,\theta}
+ =:R_{ij,\gamma},
+\end{equation}
+a finite sum using only earlier coefficients. The cocycle identity
+$G_{ij}G_{jk}=G_{ik}$ together with the equations already solved below
+$\gamma$ implies $R_{ij,\gamma}+R_{jk,\gamma}=R_{ik,\gamma}$ on triple
+overlaps; expand
+$G_{ij}(G_{jk}B_k-B_j)+(G_{ij}B_j-B_i)=G_{ik}B_k-B_i$ at exponent $\gamma$ and
+note that all positive multipliers of a lower defect vanish by induction.
+
+Thus $R_{ij,\gamma}$ is an ordinary additive cocycle with values in
+$\OO^{r^2}$. Cartan's theorem B gives $H^1(X,\OO^{r^2})=0$
+\cite{Cartan,Schmitt}, so it has a coboundary $b_{i,\gamma}$ on the original
+cover; this is again the torsor interpretation of first cohomology and assumes
+nothing about coherence of the Hahn sheaf. Recursion on $M\setminus\{0\}$
+gives the required matrices with a common support bound, and positive
+inversion proves they are invertible. No new ordinary domains and no new Hahn
+exponents are introduced.
+\end{proof}
+
+\subsection{Deformations of a nontrivial ordinary bundle}
+
+The principle is not limited to a trivial ordinary reduction. Let
+$\mathcal V$ be an ordinary holomorphic rank-$r$ bundle on $X$ with transition
+matrices $g^0_{ij}$, and suppose Hahn transitions $G_{ij}$ have reduction
+$g^0_{ij}$ and are invertible over $\II$. The relative transitions
+$G_{ij}(g^0_{ij})^{-1}-I_r$ then have positive support on overlaps.
+
+\begin{theorem}[Support-controlled deformation rigidity]
+\label{nab:thm:deformation}
+If the union of these relative positive supports is well ordered and $X$ is
+Stein, there exist positive local matrices $B_i$ with
+\begin{equation}\label{nab:eq:deformation}
+ G_{ij}=B_ig^0_{ij}B_j^{-1},
+\end{equation}
+and the nonconstant supports of all $B_i$ lie in the monoid generated by the
+given support union. Thus the integral Hahn deformation is isomorphic, by an
+isomorphism reducing to the identity, to the scalar extension of its ordinary
+bundle.
+\end{theorem}
+
+\begin{proof}
+Proceed as in \cref{nab:thm:Stein}, now solving $G_{ij}B_j=B_ig^0_{ij}$. At a
+fixed positive exponent, multiply the residual equation on the right by
+$(g^0_{ij})^{-1}$; the unknown coefficients appear as
+$b_{i,\gamma}-g^0_{ij}b_{j,\gamma}(g^0_{ij})^{-1}$. The residual is an
+additive cocycle for the ordinary endomorphism sheaf $\Endsh(\mathcal V)$, the
+cocycle identity following from $G_{ij}G_{jk}=G_{ik}$ and the lower solved
+equations exactly as before. That sheaf is locally free, hence coherent, and
+Cartan's theorem B gives $H^1(X,\Endsh(\mathcal V))=0$. Solve the ordinary
+coefficient cocycle and continue the support-controlled recursion. All
+multiplications by $g^0_{ij}$ and its inverse occur at exponent zero and do not
+enlarge the exponent set.
+\end{proof}
+
+This is a formal deformation-rigidity argument with a precise support
+certificate. It is not a new proof of the ordinary Oka--Grauert principle, and
+it is not an unconditional theorem about every Hahn-valued deformation on a
+noncompact base. Note that the cohomological input is acyclicity of
+$\Endsh(\mathcal V)$, not of $\OO^{r^2}$: the theorem is about deformations of
+a genuinely nontrivial ordinary bundle.
+
+\subsection{A cyclic versus noncyclic dichotomy}
+
+\begin{lemma}[Ordered-group alternative]\label{nab:lem:groups}
+For a nonzero ordered abelian group $\Gamma$, the positive cone contains no
+infinite strictly decreasing sequence if and only if $\Gamma=\Z\delta$ for a
+least positive element $\delta$.
+\end{lemma}
+
+\begin{proof}
+The cyclic case is immediate. Conversely, if there is no least positive
+element, choose a smaller positive element repeatedly. If there is a least
+positive $\delta$ but $\Gamma\neq\Z\delta$, choose a positive
+$\gamma\notin\Z\delta$; then $\gamma-n\delta>0$ for every integer $n\geq0$,
+since the first nonpositive difference would either leave an element strictly
+between $0$ and $\delta$ or force $\gamma\in\Z\delta$. The sequence
+$\gamma,\gamma-\delta,\ldots$ is strictly decreasing and positive.
+\end{proof}
+
+\begin{theorem}[Universal positive rigidity and its failure]
+\label{nab:thm:dichotomy}
+Fix a rank $r\geq1$. Every positive rank-$r$ cocycle on every Stein manifold
+is a coboundary if and only if
+\[
+ \Gamma=\{0\}\quad\text{or}\quad\Gamma=\Z\delta\ \text{for some }\delta>0.
+\]
+For every noncyclic nonzero $\Gamma$ and every $r\geq2$ there is a nonsplit
+determinant-one positive rank-$r$ cocycle already on the puncture-and-disk
+cover of $\C$.
+\end{theorem}
+
+\begin{proof}
+In the cyclic case every transition support is a subset of the universal well
+ordered positive set $\{\delta,2\delta,\ldots\}$, so its global union is
+automatically well ordered and \cref{nab:thm:Stein} applies on any cover; the
+zero group gives only the identity cocycle.
+
+For the converse choose a strictly decreasing positive sequence $\gamma_n$ by
+\cref{nab:lem:groups} and set
+\[
+ g_n=\exp\Bigl(\frac{t^{\gamma_n}}{z-n}\Bigr).
+\]
+This scalar matrix is its own normalized polar factor, every nonconstant
+coefficient being a multiple of a negative power of $z-n$, and its support
+union contains the descending set $\{\gamma_n\}$, so it is nonsplit. In rank
+$r\geq2$ use
+\begin{equation}\label{nab:eq:SLcounter}
+ G_n=\operatorname{diag}(g_n,g_n^{-1},1,\ldots,1).
+\end{equation}
+Every nonconstant coefficient of this matrix is polar, so $P_n=G_n$; the same
+descending support prevents splitting in the full positive matrix group, while
+$\det G_n=1$. For rank one the scalar example suffices.
+\Cref{nab:prop:integraltrivial} converts these examples into nontrivial
+integral vector bundles.
+\end{proof}
+
+The rank-one part agrees with the Picard-group vanishing dichotomy of the
+repository's global-divisor report \cite{RepoGlobal}, which vanishes exactly
+for $\Gamma=\{0\}$ or $\Gamma=\Z\delta$; that statement is the rank-one shadow
+of \cref{nab:thm:dichotomy}, driven by the same universal set
+$\{\delta,2\delta,\ldots\}$, and we cite rather than reprove it. The
+higher-rank conclusion here is stated for integral positive deformations, and
+the diagonal family \eqref{nab:eq:SLcounter} by itself supplies no nonabelian
+information: that is what \cref{nab:thm:hidden} and \cref{nab:thm:depth} are
+for.
+\section{The two well-ordered-support criteria are not the same criterion}
+\label{nab:sec:twocriteria}
+
+Both headline theorems of this report read ``the union of the supports is well
+ordered''. The two unions are taken over different objects, and each criterion
+is false for the other's object.
+
+\begin{center}\small
+\begin{tabular}{@{}L{0.17\textwidth}L{0.38\textwidth}L{0.38\textwidth}@{}}
+\toprule
+& \textbf{Criterion P} (\cref{nab:thm:criterion}) &
+  \textbf{Criterion M} (\cref{nab:thm:RH})\\
+\midrule
+Problem &
+multiplicative gluing $G_a=B_0B_a^{-1}$ on a puncture-and-disk cover &
+realization of a prescribed monodromy by a global positive connection\\[0.3em]
+Tested object &
+$\Pol(G_a)-I_r$, the normalized polar factor of an \emph{independent local
+factorization} of each transition matrix &
+$\rho(\ell_d)-I_r$, the prescribed monodromy matrices themselves, for a
+compatible based-meridian basis\\[0.3em]
+Invariant &
+$\EU(G)=\bigcup_a\supp(\Pol(G_a)-I_r)$ &
+$E_\rho=\bigcup_{d}\supp(\rho(\ell_d)-I_r)$\\[0.3em]
+Raw data &
+raw transition support $\bigcup_a\supp(G_a-I_r)$ is \emph{neither necessary
+nor sufficient}: \cref{nab:thm:hidden} and \cref{nab:ex:repair} &
+the raw meridian support \emph{is} the invariant; it is basis- and
+basepoint-independent by \cref{nab:prop:intrinsic}\\[0.3em]
+Must one factor first? &
+Yes. Skipping the factorization tests an object that is provably inequivalent
+&
+No. The monodromy matrices are already the right object; a local
+factorization of $\rho(\ell_d)$ is not part of the criterion\\[0.3em]
+Invariance &
+under arbitrary local holomorphic right gauges
+(\cref{nab:cor:localgauges}), coordinate change
+(\cref{nab:cor:coordinates}) and ordered value-group extension
+(\cref{nab:cor:extension}) &
+under change of free meridian basis and base point
+(\cref{nab:prop:intrinsic}), one fixed $\GL_r(\K)$ conjugation and ordered
+value-group enlargement (\cref{nab:prop:conjugation})\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\medskip
+The trap is concrete, and it has already been printed. In
+\cref{nab:thm:hidden} the raw singular support is the single exponent $\{1\}$
+and no splitting exists; in \cref{nab:ex:repair}, \emph{adding} a term whose
+exponents form the descending set $\{1+1/n\}$ among the raw poles
+\emph{removes} the obstruction. So for Criterion P the raw singular support is
+not the invariant, and the factorization must be performed first. Nothing of
+the kind happens for Criterion M: there the union is over the prescribed
+matrices, \cref{nab:prop:intrinsic} shows the condition does not depend on the
+presentation at all, and \cref{nab:ex:descending} obstructs precisely because
+the prescribed matrices themselves carry $\{1/n\}$.
+
+Two further consequences of the difference are worth stating so that neither
+criterion is quoted for the other's conclusion. First, the objects tested live
+in different places: $\Pol(G_a)$ is a matrix of negative Laurent tails in a
+local coordinate at $a$, whereas $\rho(\ell_d)$ is a matrix of Hahn constants.
+Second, the two criteria are not two instances of one general theorem proved
+here; they are two theorems with two proofs, sharing
+\cref{nab:lem:neumann,nab:lem:inverse} and an ordinary Mittag--Leffler input.
+This report does not claim a common generalization, and
+\cref{nab:sec:open} lists the obvious attempt as open.
+\part*{Part II. Inverse monodromy: the meridian-support criterion}
+\addcontentsline{toc}{section}{\textbf{Part II. Inverse monodromy: the meridian-support criterion}}
+
+\section{Connections, fundamental matrices, and holonomy}
+\label{nab:sec:holonomy}
+
+A positive connection on the trivial rank-$r$ bundle over an ordinary domain
+$U$ means
+\begin{equation}\label{nab:eq:connection}
+ dY=\Omega Y,\qquad
+ \Omega=\sum_{\gamma\in S}t^\gamma\Omega_\gamma,
+ \qquad S\subseteq\Gamma_{>0}\ \text{well ordered},
+\end{equation}
+where each $\Omega_\gamma$ is an ordinary holomorphic matrix one-form on
+\emph{all} of $U$. In complex dimension one such connections are automatically
+flat: both the exterior derivative of a holomorphic one-form and the wedge of
+two of them vanish. As always, ``positive'' concerns exponents only.
+
+Let $\widetilde U\to U$ be the ordinary universal covering with a chosen lift
+$\widetilde p$ of the base point $p$; pullbacks of coefficients are
+understood.
+
+\begin{theorem}[Fundamental matrix with a support certificate]
+\label{nab:thm:fundamental}
+For a connection \eqref{nab:eq:connection} there is a unique positive
+fundamental matrix
+\[
+ Y=I_r+\sum_{\gamma>0}t^\gamma Y_\gamma\ \text{on }\widetilde U,
+ \qquad dY=\Omega Y,\quad Y(\widetilde p)=I_r.
+\]
+Every coefficient is holomorphic on all of $\widetilde U$ and
+\[
+ \supp(Y-I_r)\cup\supp(Y^{-1}-I_r)\subseteq\angles S\setminus\{0\}.
+\]
+Analytic continuation determines a representation
+$\Hol_\Omega:\pi_1(U,p)\to I_r+\Mat_r(\mm)$ with the same uniform support
+bound for \emph{every} group element.
+\end{theorem}
+
+\begin{proof}
+Write $T=\angles S\setminus\{0\}$ and define the coefficients by well-founded
+recursion on $T$, missing coefficients of $\Omega$ being zero. At weight
+$\gamma$ set
+\begin{equation}\label{nab:eq:solrec}
+ dY_\gamma=\Omega_\gamma
+ +\sum_{\substack{\alpha+\beta=\gamma\\ \alpha,\beta>0}}\Omega_\alpha Y_\beta,
+ \qquad Y_\gamma(\widetilde p)=0.
+\end{equation}
+Only finitely many pairs contribute by \cref{nab:lem:neumann}, and
+$\beta<\gamma$. The right-hand side is a holomorphic matrix one-form on the
+simply connected Riemann surface $\widetilde U$, so its entries have unique
+holomorphic primitives vanishing at $\widetilde p$; this constructs $Y_\gamma$
+on the whole cover. The family has support in the well-ordered set $T$ and
+satisfies the equation coefficientwise, and \cref{nab:lem:inverse} gives its
+inverse with the same monoid support.
+
+For uniqueness even against a solution with a different positive well-ordered
+support, take the least exponent at which two solutions differ, in the
+well-ordered union of their supports: at that exponent the difference has zero
+derivative and zero value at $\widetilde p$, hence is zero, a contradiction.
+
+A continued fundamental matrix differs from the original branch on a connected
+overlap by a constant matrix on the right, since $d(Y^{-1}\widehat Y)=0$
+follows coefficientwise from the equation. Continuing around a based loop gives
+the normalized monodromy matrix, whose coefficients are values of coefficients
+of $Y$; therefore all its positive exponents lie in $T$, independently of the
+loop. Uniqueness of continuation gives the group law with the convention of
+\cref{nab:lem:free}, and homotopy invariance follows from the universal-cover
+construction.
+\end{proof}
+
+This theorem is the precise form of the \emph{forward} map that the
+repository's differential-equations report constructs from a coherent
+connection, recording that the exponent-zero coefficient is the ordinary
+monodromy matrix and that all other exponents lie in the generated monoid
+\cite{RepoDiff}. Here the exponent-zero coefficient is $I_r$ by positivity.
+\Cref{nab:thm:RH} is the converse.
+
+\subsection{The explicit iterated-integral expression}
+
+For a piecewise smooth path $c:[0,1]\to U$ write
+$c^*\Omega_\gamma=A_\gamma(s)\,ds$. Its transport is
+\begin{equation}\label{nab:eq:dyson}
+ T_\Omega(c)=I_r+\sum_{n\geq1}\ \sum_{\gamma_1,\ldots,\gamma_n\in S}
+ t^{\gamma_1+\cdots+\gamma_n}
+ \int_{0<s_1<\cdots<s_n<1}
+ A_{\gamma_n}(s_n)\cdots A_{\gamma_1}(s_1)\,ds_1\cdots ds_n.
+\end{equation}
+This is the usual ordered-integral solution, a classical mechanism related to
+iterated path integrals \cite{Chen}; the name ``Dyson expansion'' is used for
+it purely as classical mathematics, with no physical reading attached. Its
+meaning here is strict: the outer family is strongly summable by the
+finite-word clause of \cref{nab:lem:neumann}, and each individual coefficient
+is a \emph{finite} sum of ordinary iterated integrals. The expression agrees
+with \cref{nab:thm:fundamental}, since termwise differentiation gives
+\eqref{nab:eq:solrec}; for a loop it gives $\Hol_\Omega$.
+
+\begin{lemma}[Triangular change of monodromy]\label{nab:lem:triangular}
+Suppose two positive connections $\Omega$ and $\Psi$ agree at every exponent
+strictly below $\gamma$. Then their transports along any fixed path agree below
+$\gamma$, and for a based loop $\ell$,
+\begin{equation}\label{nab:eq:triangular}
+ \coeff{\gamma}\bigl(\Hol_\Psi(\ell)-\Hol_\Omega(\ell)\bigr)
+ =\int_\ell(\Psi_\gamma-\Omega_\gamma).
+\end{equation}
+Terms strictly above $\gamma$ cannot affect coefficients at or below $\gamma$.
+\end{lemma}
+
+\begin{proof}
+Compare the word expansions \eqref{nab:eq:dyson} over the well-ordered union
+of the two positive supports. A differing coefficient of weight at least
+$\gamma$ cannot occur in a word of total weight less than $\gamma$; at weight
+exactly $\gamma$ it can occur only as the single letter of the word, every
+additional letter having strictly positive weight. The length-one term is the
+displayed ordinary period. All comparisons are finite at each exponent.
+\end{proof}
+
+The crucial feature is that the linearized map at \emph{every} successive
+weight is the same ordinary period map $P$ of \eqref{nab:eq:periodmap}.
+Noncommutativity appears in the already determined lower-weight terms; it does
+not change the operator needed to solve the new correction equation.
+
+\section{The exact realization theorem}\label{nab:sec:rh}
+
+\begin{definition}[Uniform support admissibility and $\sigma$-normalization]
+\label{nab:def:admissible}
+For $\rho:\pi_1(U,p)\to I_r+\Mat_r(\mm)$ with $U=\C\setminus D$ and
+$M_d=\rho(\ell_d)$, put
+\begin{equation}\label{nab:eq:Erho}
+ E_\rho=\bigcup_{d\in D}\supp(M_d-I_r),
+\end{equation}
+the union being over all matrix entries and all based meridians of the fixed
+free basis of \cref{nab:lem:free}. The representation is \emph{uniformly
+support-admissible} when $E_\rho$ is well ordered. For a fixed period section
+$\sigma$ of \cref{nab:lem:period}, a connection is
+\emph{$\sigma$-normalized} if every entry of every coefficient lies in
+$\im\sigma\subseteq\LL(D)$.
+\end{definition}
+
+\begin{theorem}[Support-sensitive Riemann--Hilbert realization: Criterion M]
+\label{nab:thm:RH}
+Let $D\subset\C$ be closed and discrete, $p\in U=\C\setminus D$, with free
+based meridians fixed. For $\rho:\pi_1(U,p)\to I_r+\Mat_r(\mm)$ the following
+are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $E_\rho$ is well ordered;
+\item $\rho$ is the monodromy of a positive globally common-domain Hahn
+connection on $U$;
+\item $\rho$ is the monodromy of such a connection whose coefficients are
+meromorphic on $\C$ with at most simple poles in $D$ and no other finite
+poles.
+\end{enumerate}
+If these hold then for every fixed complex-linear period section $\sigma$
+there is exactly one $\sigma$-normalized realizer $\Omega^\sigma$, and
+\begin{equation}\label{nab:eq:RHsupport}
+ \supp\Omega^\sigma\subseteq\angles{E_\rho}\setminus\{0\}.
+\end{equation}
+Uniqueness is among \emph{all} positive globally supported
+$\sigma$-normalized connections, not only those whose support was assumed in
+advance to lie in the right-hand side of \eqref{nab:eq:RHsupport}.
+\end{theorem}
+
+\begin{proof}
+\emph{Necessity.} If $\rho=\Hol_\Omega$ with $\supp\Omega=S$ then
+\cref{nab:thm:fundamental} gives
+$\supp(\rho(g)-I_r)\subseteq\angles S\setminus\{0\}$ for \emph{every} group
+element $g$, so $E_\rho$ is a subset of one well-ordered set. This proves
+(ii)$\Rightarrow$(i), and (iii)$\Rightarrow$(ii) is immediate.
+
+\emph{Construction.} Assume (i), put $T=\angles{E_\rho}\setminus\{0\}$, and
+write $M_d=I_r+\sum_{\gamma\in T}t^\gamma m_{d,\gamma}$, missing coefficients
+being zero. We construct $\Omega_\gamma\in\Mat_r(\LL(D))$ for $\gamma\in T$ by
+recursion. Suppose all lower coefficients have been constructed and form the
+legitimate positive connection
+$\Omega^{<\gamma}=\sum_{\delta\in T,\ \delta<\gamma}t^\delta\Omega_\delta$,
+whose support is a well-ordered subset of $T$; the initial segment need not be
+finite. Define the lower-order prediction and the remaining defect by
+\begin{equation}\label{nab:eq:defect}
+ h^{<\gamma}_{d,\gamma}=\coeff{\gamma}\Hol_{\Omega^{<\gamma}}(\ell_d),
+ \qquad
+ b_{d,\gamma}=m_{d,\gamma}-h^{<\gamma}_{d,\gamma}.
+\end{equation}
+The prediction exists by \cref{nab:thm:fundamental}; equivalently it is the
+finite sum of all iterated-integral words of total weight $\gamma$ formed from
+previously constructed coefficients. Apply the period section entrywise and
+set
+\begin{equation}\label{nab:eq:RHrecursion}
+ \Omega_\gamma=\sigma\bigl((b_{d,\gamma})_{d\in D}\bigr).
+\end{equation}
+The datum at one exponent is an arbitrary matrix-valued element of the
+\emph{product} $\C^D$, and \cref{nab:lem:period} applies even when infinitely
+many of its entries are nonzero; this is why no summability across punctures is
+required.
+
+The coefficient $\Omega_\gamma$ is meromorphic on $\C$ with at most simple
+poles in $D$. It corrects exactly the defect at weight $\gamma$, since
+$\int_{\ell_d}\Omega_\gamma=b_{d,\gamma}$ and \cref{nab:lem:triangular}
+applies, and it leaves all lower weights unchanged. Transfinite recursion on
+the well-ordered set $T$ therefore constructs
+$\Omega^\sigma=\sum_{\gamma\in T}t^\gamma\Omega_\gamma$, all of whose
+coefficients are holomorphic on the same domain $U$ and whose support is a
+subset of $T$. No limiting assertion at a limit ordinal is involved: a
+coefficient is simply assigned to every member of a well-ordered set.
+
+To verify the monodromy, fix $\gamma\in T$. Coefficients at weights above
+$\gamma$ cannot affect it by \cref{nab:lem:triangular}, and the recursion has
+already set it equal to $m_{d,\gamma}$. The monodromy support of the final
+connection lies in $\angles T\setminus\{0\}=T$, so no exponent outside $T$
+appears. Thus every meridian has its prescribed monodromy, and the meridians
+freely generate the fundamental group by \cref{nab:lem:free}, proving
+$\Hol_{\Omega^\sigma}=\rho$ and (iii).
+
+\emph{Uniqueness.} Let $\Omega$ and $\Psi$ be two positive
+$\sigma$-normalized realizers. If they differ, the union of their supports is
+well ordered and there is a least differing exponent $\gamma$. Their
+holonomies are equal, so \cref{nab:lem:triangular} gives
+$P(\Psi_\gamma-\Omega_\gamma)=0$. But $\Psi_\gamma-\Omega_\gamma$ lies
+entrywise in $\im\sigma$, and $P\sigma=\id$ says that $P$ is injective there.
+Hence the difference is zero, a contradiction.
+\end{proof}
+
+\begin{remark}[No hidden convergence over the puncture set]
+\label{nab:rem:noconv}
+The construction is not a sum of one independently built differential equation
+per puncture. At a fixed Hahn exponent it first collapses \emph{all} puncture
+data into one ordinary meromorphic one-form using the period section, and only
+then are these ordinary forms assembled in Hahn exponents. This move is
+indispensable when infinitely many punctures use the same exponent; see
+\cref{nab:ex:sameexponent}.
+\end{remark}
+
+\subsection{An intrinsic version of the support condition}
+
+\begin{proposition}[Independence of the meridian basis]
+\label{nab:prop:intrinsic}
+For a near-identity representation $\rho$ put
+$E_{\mathrm{all}}(\rho)=\bigcup_{g\in\pi_1(U,p)}\supp(\rho(g)-I_r)$. Then
+$E_\rho$ is well ordered if and only if $E_{\mathrm{all}}(\rho)$ is well
+ordered. Hence admissibility does not depend on the chosen free meridians or,
+after a base-point identification, on the base point.
+\end{proposition}
+
+\begin{proof}
+One implication follows from $E_\rho\subseteq E_{\mathrm{all}}(\rho)$. For the
+other, assume $E_\rho$ well ordered. Each group element is a finite word in the
+$M_d$ and their inverses; \cref{nab:lem:inverse} expands the inverses in the
+common monoid $\angles{E_\rho}$, and multiplication preserves that monoid, so
+$E_{\mathrm{all}}(\rho)\subseteq\angles{E_\rho}\setminus\{0\}$. Changing based
+meridians, or identifying fundamental groups at different base points, changes
+the presentation of the same representation and not this condition on all its
+values.
+\end{proof}
+
+This is the precise sense in which Criterion M tests an invariant of $\rho$
+itself. Contrast \cref{nab:sec:twocriteria}: Criterion P is \emph{not} a
+condition on the raw transition data, and the analogue of
+\cref{nab:prop:intrinsic} for $\bigcup_a\supp(G_a-I_r)$ is false.
+
+\begin{proposition}[Fixed conjugation and enlargement cannot repair support]
+\label{nab:prop:conjugation}
+For a family $(M_d)$ over $\K$, well-ordering of
+$\bigcup_d\supp(M_d-I_r)$ is invariant under conjugation by any one fixed
+$C\in\GL_r(\K)$, and is unchanged when the family is embedded by an
+order-preserving value-group embedding into a larger Hahn workspace. An
+arbitrary conjugation need not preserve near-identity positivity; the assertion
+about well-ordered supports does not require that property.
+\end{proposition}
+
+\begin{proof}
+Let $A$ and $B$ be the supports of the finitely many entries of $C$ and
+$C^{-1}$; they are well ordered. If $E$ is the union of the supports of
+$M_d-I_r$ then
+$\bigcup_d\supp(C(M_d-I_r)C^{-1})\subseteq A+E+B$, which is well ordered by
+the last clause of \cref{nab:lem:neumann} when $E$ is. The converse follows by
+conjugating with $C^{-1}$. An order embedding preserves and reflects the
+ordering of a subset, hence preserves and reflects its being well ordered.
+\end{proof}
+
+\Cref{nab:prop:conjugation} for Criterion M and \cref{nab:cor:extension} for
+Criterion P are two independent proofs, for two different objects, of the same
+moral: enlarging the surreal workspace never repairs these obstructions.
+
+\section{Framed gauge classification and removable gauges}
+\label{nab:sec:gauge}
+
+\begin{definition}[Positive framed gauge]\label{nab:def:gauge}
+A positive gauge on $U$ is a matrix $G\in\GG(U)$. It is \emph{framed} at $p$
+when $G(p)=I_r$ as an equality of Hahn matrices. Its inverse is a positive
+globally supported holomorphic matrix by \cref{nab:lem:inverse}, and it
+transforms a connection by
+\begin{equation}\label{nab:eq:gaugeact}
+ \Psi=dG\,G^{-1}+G\Omega G^{-1}.
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Framed classification with controlled support]
+\label{nab:thm:gauge}
+Two positive globally Hahn-supported connections $\Omega$ and $\Psi$ on $U$
+have the same based monodromy if and only if there is a positive framed gauge
+$G$ satisfying \eqref{nab:eq:gaugeact}. Such a gauge is unique, and if
+$E=\supp\Omega\cup\supp\Psi$ then
+\begin{equation}\label{nab:eq:gaugesupport}
+ \supp(G-I_r)\cup\supp(G^{-1}-I_r)\subseteq\angles E\setminus\{0\}.
+\end{equation}
+Consequently holonomy is a bijection between framed positive gauge classes and
+uniformly support-admissible near-identity representations.
+\end{theorem}
+
+\begin{proof}
+Let $Y_\Omega,Y_\Psi$ be the normalized fundamental matrices on
+$\widetilde U$. If the based monodromies agree, form
+$\widetilde G=Y_\Psi Y_\Omega^{-1}$. Upon continuation around any loop both
+fundamental matrices acquire the same right factor $M$, so the product becomes
+$Y_\Psi M(Y_\Omega M)^{-1}=Y_\Psi Y_\Omega^{-1}$. Each ordinary coefficient
+descends to $U$, and the whole family already has support in $\angles E$ by
+\cref{nab:thm:fundamental,nab:lem:inverse}. Thus the descended matrix is a
+globally supported positive gauge $G$ with $G(p)=I_r$, and differentiation
+gives $dG=\Psi G-G\Omega$, equivalent to \eqref{nab:eq:gaugeact}.
+
+Conversely, if a framed gauge exists then $GY_\Omega$ solves the $\Psi$
+equation with initial value $I_r$, so uniqueness in
+\cref{nab:thm:fundamental} gives $GY_\Omega=Y_\Psi$. Since $G$ is single
+valued on $U$ the monodromy matrices agree, and the equality also forces
+$G=Y_\Psi Y_\Omega^{-1}$, proving uniqueness and the support bound. The
+bijection now follows from \cref{nab:thm:RH}.
+\end{proof}
+
+The logarithmic subclass has a stronger rigidity property: although the
+comparison gauge is initially defined only on the punctured plane, no
+coefficient of it actually needs a puncture.
+
+\begin{theorem}[Entire extension of a logarithmic comparison gauge]
+\label{nab:thm:entiregauge}
+Suppose $\Omega$ and $\Psi$ are as in \cref{nab:thm:gauge}, have the same
+based monodromy, and every coefficient of both lies in $\Mat_r(\LL(D))$. Then
+the unique framed gauge and its inverse extend coefficientwise holomorphically
+to all of $\C$; in particular $G,G^{-1}\in\GG(\C)$, with the same support
+bound \eqref{nab:eq:gaugesupport}.
+\end{theorem}
+
+\begin{proof}
+Write $G=I_r+\sum_{\gamma>0}t^\gamma G_\gamma$. The gauge equation at weight
+$\gamma$ reads
+\begin{equation}\label{nab:eq:gaugerec}
+ dG_\gamma=\Psi_\gamma-\Omega_\gamma
+ +\sum_{\substack{\alpha+\beta=\gamma\\ \alpha,\beta>0}}
+  (\Psi_\alpha G_\beta-G_\beta\Omega_\alpha).
+\end{equation}
+Induct on the positive support monoid in \eqref{nab:eq:gaugesupport}. If every
+lower $G_\beta$ is entire, the right-hand side is an ordinary meromorphic
+one-form on $\C$ with at most simple poles in $D$, the sum being finite. Fix
+$d\in D$ and a disk containing no other point of $D$. The coefficient
+$G_\gamma$ is already single valued and holomorphic on the punctured disk, so
+the integral of its derivative around a small circle vanishes; hence the
+right-hand side of \eqref{nab:eq:gaugerec} has residue zero at $d$, and having
+at most a simple pole it is holomorphic there. Its primitive on the full disk
+differs from $G_\gamma$ by a constant on the punctured disk, so $G_\gamma$
+extends holomorphically across $d$. Doing this for all $d$ extends $G_\gamma$
+to an entire function, with no uniform bound on the sizes of coefficient
+functions required, and the ordinary domain after extension is the same $\C$
+for every coefficient. Finally the geometric inverse of a positive entire
+family has entire coefficients and the same monoid support.
+\end{proof}
+
+\begin{corollary}[A global normal slice for logarithmic connections]
+\label{nab:cor:slice}
+For a fixed $\sigma$, every positive logarithmic connection has exactly one
+$\sigma$-normalized representative under framed positive entire gauges, namely
+the connection constructed from its monodromy by
+\eqref{nab:eq:RHrecursion}.
+\end{corollary}
+
+\begin{proof}
+Its monodromy is admissible by \cref{nab:thm:fundamental};
+\cref{nab:thm:RH,nab:thm:entiregauge} give existence, and uniqueness of the
+normalized connection and of the framed gauge has already been proved.
+\end{proof}
+
+\begin{example}[A nonlogarithmic connection with trivial monodromy]
+\label{nab:ex:nonlog}
+On $\C^*$ consider the scalar connection $\Omega=-t\,dz/z^2$ with base point
+$p=1$. Its normalized solution is $Y=\exp(t(1/z-1))$, a positive globally
+supported holomorphic family on $\C^*$, single valued, so the monodromy is
+trivial. The unique framed gauge from $\Omega$ to the zero connection is
+$G=Y^{-1}=\exp(-t(1/z-1))$, whose coefficient at $t$ has a pole at $0$.
+Therefore \cref{nab:thm:entiregauge} cannot be extended to connections with
+arbitrary higher-order coefficient poles.
+\end{example}
+
+\section{Finite-puncture inversion and determinant one}\label{nab:sec:sl}
+
+\begin{corollary}[Unique positive residue matrices for finite data]
+\label{nab:cor:finite}
+Let $D=\{a_1,\ldots,a_m\}$ be finite, fix based meridians, and let
+$M_j\in I_r+\Mat_r(\mm)$ be arbitrary. There are unique residue matrices
+$R_j\in\Mat_r(\mm)$ for which
+\begin{equation}\label{nab:eq:fuchsian}
+ \Omega=\sum_{j=1}^mR_j\frac{dz}{z-a_j}
+\end{equation}
+has based meridian monodromies $M_j$. If $E=\bigcup_j\supp(M_j-I_r)$ then
+$\supp R_j\subseteq\angles E\setminus\{0\}$. The form has at most a simple pole
+at infinity, with residue $-\sum_jR_j$ there.
+\end{corollary}
+
+\begin{proof}
+A finite union of well-ordered sets in a linear order is well ordered, so $E$
+is admissible. Use the explicit section \eqref{nab:eq:finitesection} in
+\cref{nab:thm:RH}: being normalized for that section is precisely the form
+\eqref{nab:eq:fuchsian}, and coefficientwise uniqueness gives uniqueness of all
+the $R_j$. In the coordinate $w=1/z$ one has
+$dz/(z-a_j)=-dw/(w(1-a_jw))$, proving the assertion at infinity.
+\end{proof}
+
+This is a near-identity Hahn version of a classical Fuchsian inverse problem,
+not a realization result for arbitrary complex monodromy on a globally trivial
+bundle. The residue matrices must have positive support, a regular singularity
+at infinity is permitted, no assertion is made that the connection is
+holomorphic at infinity, and uniqueness is not claimed among arbitrary residue
+matrices with the same monodromy: ordinary integer shifts of exponents, which
+already destroy such unrestricted uniqueness, are excluded by the
+positive-support hypothesis.
+
+\begin{lemma}[Determinants and positive connections]\label{nab:lem:det}
+For the normalized fundamental matrix $Y$ of a positive connection,
+$d(\det Y)=(\tr\Omega)\det Y$. Consequently a traceless positive connection
+has determinant-one transport along every path.
+\end{lemma}
+
+\begin{proof}
+The determinant is a finite polynomial in the entries of $Y$, so the adjugate
+identity and the Leibniz rule apply coefficientwise, and $Y$ is invertible by
+\cref{nab:thm:fundamental}. Jacobi's formula reduces to the displayed
+identity. If $\tr\Omega=0$ the determinant is constant along the normalized
+solution and equals $1$ at the starting point. All identities involve finite
+coefficientwise algebra or already justified support products.
+\end{proof}
+
+\begin{theorem}[Traceless normalized realization]\label{nab:thm:SL}
+Suppose an admissible representation in \cref{nab:thm:RH} takes values in
+$\SL_r(\K)$. For an entrywise complex-linear period section its unique
+normalized realizer satisfies $\tr\Omega^\sigma=0$. Conversely every traceless
+positive connection has monodromy in $\SL_r(\K)$, and the unique framed gauge
+between two traceless connections with the same monodromy has determinant one.
+These statements retain all the support and logarithmic-extension conclusions
+above.
+\end{theorem}
+
+\begin{proof}
+Use the recursion \eqref{nab:eq:RHrecursion} and assume every lower
+coefficient $\Omega_\delta$ traceless. Then $\Omega^{<\gamma}$ is traceless, so
+its monodromy $N_d$ has determinant one by \cref{nab:lem:det}; by construction
+$N_d$ and the target $M_d$ agree below $\gamma$, and both have constant term
+$I_r$. In the determinant polynomial a difference at weight $\gamma$ can
+contribute to that weight only with all other factors of weight zero, so
+\[
+ \coeff{\gamma}(\det M_d-\det N_d)
+ =\tr\bigl(m_{d,\gamma}-h^{<\gamma}_{d,\gamma}\bigr).
+\]
+The left side is zero, hence the defect vector in \eqref{nab:eq:defect} is
+traceless at every puncture. Since the same linear section is used for each
+matrix entry,
+$\tr\Omega_\gamma=\sigma((\tr b_{d,\gamma})_{d\in D})=0$, proving the
+induction. The converse is \cref{nab:lem:det}. For a gauge satisfying
+$dG=\Psi G-G\Omega$, Jacobi's formula gives
+$d\det G=(\tr\Psi-\tr\Omega)\det G=0$, and its value at $p$ is $1$.
+\end{proof}
+
+\section{Sharp global obstructions and calibrating examples}
+\label{nab:sec:examples}
+
+\subsection{Finite solvability does not imply global solvability}
+
+\begin{example}[A countable special-linear obstruction]
+\label{nab:ex:descending}
+Let $D=\{1,2,3,\ldots\}$, $\Gamma=\Q$, and
+\[
+ N=\begin{pmatrix}0&1\\0&0\end{pmatrix},\qquad M_n=I_2+t^{1/n}N.
+\]
+Because the meridians form a free basis, this prescription defines a
+representation $\rho:\pi_1(\C\setminus D,p)\to\SL_2(\K)$. Each generator matrix
+has one positive exponent, is invertible, and is an entirely legitimate Hahn
+matrix, and every finite initial collection of the prescribed monodromies is
+realizable on the corresponding finitely punctured plane by
+\cref{nab:cor:finite}. Nevertheless no positive globally Hahn-supported
+holomorphic connection on $\C\setminus D$ has all the prescribed monodromies.
+\end{example}
+
+\begin{proof}
+The determinant is $1$ because $N^2=0$ and $N$ is strictly upper triangular. A
+finite set of the exponents $1/n$ is well ordered, but the full union
+$E_\rho=\{1,1/2,1/3,\ldots\}$ is a strictly decreasing sequence with no least
+member, hence not well ordered. Nonexistence follows from
+\cref{nab:thm:RH}, even without any requirement of simple poles, and
+\cref{nab:prop:conjugation} shows that a fixed change of matrix basis or an
+enlargement of the value group cannot repair it.
+\end{proof}
+
+One-puncture realizers can even be written down:
+\[
+ \Omega_n=\frac{t^{1/n}}{2\pi i}N\frac{dz}{z-n},
+ \qquad
+ \exp\Bigl(\int_{\ell_n}\Omega_n\Bigr)=I_2+t^{1/n}N.
+\]
+The failure is not an inability to solve a differential equation at any one
+puncture; it is the impossibility of placing the entire prescription in one
+global support set. This is a genuine local-to-global obstruction in the chosen
+coefficient category, not a claim that no ordinary local system exists: the
+representation itself already defines an algebraic local system over $\K$.
+
+\subsection{The union condition must not be strengthened to point-finiteness}
+
+\begin{example}[Infinitely many punctures at one exponent]
+\label{nab:ex:sameexponent}
+Let $D=\Z$, $U=\C\setminus\Z$, $\Gamma=\Q$, and use the same nilpotent $N$.
+Then
+\begin{equation}\label{nab:eq:cot}
+ \Omega=\frac{t}{2i}N\cot(\pi z)\,dz
+\end{equation}
+has monodromy $I_2+tN$ at every positive based meridian. The family
+$(M_n-I_2)_{n\in\Z}$ is \emph{not} strongly summable as a family indexed by
+punctures, because exponent $1$ appears infinitely many times; it is
+nevertheless globally realizable.
+\end{example}
+
+\begin{proof}
+The ordinary form $\cot(\pi z)\,dz$ has residue $1/\pi$ at every integer, so
+each meridian period of \eqref{nab:eq:cot} is $tN$. Every product of two
+coefficient matrices vanishes, both being multiples of $N$ with $N^2=0$, so the
+Dyson expansion \eqref{nab:eq:dyson} terminates after its length-one term and
+gives $I_2+tN$. The connection has the singleton support $\{1\}$ and is
+holomorphic on one common domain $U$. Nothing in the definition asks that its
+periods over \emph{different} loops form a summable family.
+\end{proof}
+
+Together, \cref{nab:ex:descending,nab:ex:sameexponent} identify the precise
+strength of Criterion M. Requiring only that individual matrices be legitimate
+Hahn matrices is too weak; requiring a strongly summable family over punctures
+is too strong; a well-ordered \emph{union} of supports is exactly right.
+
+\subsection{Admissible supports need not be locally finite in an interval}
+
+\begin{example}[Infinitely many exponents below one bound]
+\label{nab:ex:boundedsupport}
+On $D=\{1,2,\ldots\}$ prescribe $M_n=I_2+t^{2-1/n}N$. The support
+$E=\{2-1/n:n\geq1\}$ is increasing of order type $\omega$, hence well ordered,
+although it has infinitely many elements below $2$. These data are realizable:
+for a fixed period section put $\alpha_n=\sigma(e_n)$ and
+\[
+ \Omega=N\sum_{n\geq1}t^{2-1/n}\alpha_n,
+\]
+where $e_n\in\C^D$ is $1$ at $n$ and $0$ elsewhere. The connection has support
+in $E$, and its holonomy is exactly the prescribed family because $N^2=0$.
+\end{example}
+
+The displayed sum is a Hahn family, not an assertion that its ordinary partial
+sums converge in the valuation topology. In $\Q$ the tail valuations $2-1/n$
+stay below $2$, so those partial sums do not even approach the full family in
+that topology. The example also shows why our theorems supply no procedure
+enumerating all coefficients below a fixed bound in finitely many steps.
+
+\section{A noncommuting calculation across two valuation ranks}
+\label{nab:sec:mixed}
+
+\subsection{The targets and the first-order guess}
+
+Take $U=\C\setminus\{0,1\}$ and base point $b=1/2$, with the usual positive
+based meridians: a real tail to a small circle about the puncture, a positive
+circuit, and the reversed tail. Define
+\[
+ N_+=\begin{pmatrix}0&1\\0&0\end{pmatrix},\quad
+ N_-=\begin{pmatrix}0&0\\1&0\end{pmatrix},\quad
+ H=[N_+,N_-]=\begin{pmatrix}1&0\\0&-1\end{pmatrix},
+\]
+so $N_+^2=N_-^2=0$. Initially use two independent formal bookkeeping variables
+$u,v$ of positive degree and prescribe
+\begin{equation}\label{nab:eq:twotargets}
+ M_0=I_2+uN_+,\qquad M_1=I_2+vN_-.
+\end{equation}
+At the end set $u=t^\alpha$ and $v=t^\beta$ for positive, rationally
+independent $\alpha,\beta\in\Gamma$; the choice $\alpha=1$, $\beta=\omega$ is
+the rank-two surcomplex example. Put
+\[
+ \eta_0=\frac{dz}{2\pi iz},\qquad
+ \eta_1=\frac{dz}{2\pi i(z-1)},\qquad
+ C=\frac{\log2}{2\pi i}.
+\]
+The obvious first-order guess is
+\begin{equation}\label{nab:eq:linearguess}
+ \Omega^{(1)}=uN_+\eta_0+vN_-\eta_1.
+\end{equation}
+Its first-order periods are correct. Its mixed-order monodromy is not.
+
+\begin{proposition}[The first nonabelian correction]\label{nab:prop:mixed}
+For the connection \eqref{nab:eq:linearguess} the coefficient of $uv$ in the
+based monodromy is $CH$ at the meridian of $0$ and $-CH$ at the meridian of
+$1$. Consequently the unique normalized realizer has expansion
+\begin{equation}\label{nab:eq:mixedconnection}
+ \Omega=uN_+\eta_0+vN_-\eta_1-uv\,CH(\eta_0-\eta_1)+O_{\deg\geq3},
+\end{equation}
+and its coefficients of $u^2$ and $v^2$ are zero. The remainder notation refers
+only to total degree in $u,v$, not to a claimed valuation bound.
+\end{proposition}
+
+\begin{proof}
+Along a chosen meridian let $L_j(s)=\int_0^s\eta_j$ be the accumulated
+integral from the base point. The first-order transport is
+$I_2+uN_+L_0+vN_-L_1$, so the mixed term in the coefficient equation is
+\begin{equation}\label{nab:eq:mixedintegral}
+ N_+N_-\int_\ell L_1\eta_0+N_-N_+\int_\ell L_0\eta_1.
+\end{equation}
+For the meridian of $0$, $L_1$ is the single-valued ordinary function
+$L_1(z)=(\log(1-z)-\log(1-b))/2\pi i$ on a neighbourhood containing the tail
+and the disk about $0$ but not $1$; it satisfies $L_1(b)=0$ and $L_1(0)=C$.
+Integrating $d(L_0L_1)$ along the full loop gives
+$\int_\ell L_0\eta_1=-\int_\ell L_1\eta_0$, because the product vanishes at
+both endpoints, $L_0$ ending at $1$ but $L_1$ ending at $0$. The residue
+theorem gives $\int_\ell L_1\eta_0=L_1(0)=C$, contributions of the outgoing and
+incoming tails cancelling. Thus \eqref{nab:eq:mixedintegral} equals
+$C(N_+N_--N_-N_+)=CH$.
+
+For the meridian of $1$ use instead $L_0(z)=(\log z-\log b)/2\pi i$, which is
+single valued near that tail and disk with $L_0(b)=0$ and $L_0(1)=C$; now
+$\int_\ell L_0\eta_1=C$ and $\int_\ell L_1\eta_0=-C$, so the mixed coefficient
+is $-CH$. The prescribed matrices \eqref{nab:eq:twotargets} have zero $uv$
+coefficient, so the ordinary period section for $\{0,1\}$ assigns the
+correcting one-form $-CH\eta_0+CH\eta_1$ at that degree, which is
+\eqref{nab:eq:mixedconnection}. Pure second-order terms in the uncorrected
+transport vanish because $N_+^2=N_-^2=0$, so their defects and normalized
+correction coefficients are zero.
+\end{proof}
+
+In residue form the same calculation reads
+\begin{align}
+ R_0&=\frac{u}{2\pi i}N_+-\frac{uv\log2}{(2\pi i)^2}H+O_{\deg\geq3},
+ \label{nab:eq:R0}\\
+ R_1&=\frac{v}{2\pi i}N_-+\frac{uv\log2}{(2\pi i)^2}H+O_{\deg\geq3}.
+ \label{nab:eq:R1}
+\end{align}
+The mixed corrections cancel in the residue at infinity but are essential at
+the two finite poles. All displayed coefficient matrices are traceless, in
+agreement with \cref{nab:thm:SL}.
+
+\subsection{The representation is genuinely nonabelian}
+
+The exact group commutator of the prescribed matrices is
+\begin{equation}\label{nab:eq:commutator}
+ M_0M_1M_0^{-1}M_1^{-1}
+ =\begin{pmatrix}1+uv+u^2v^2&-u^2v\\ uv^2&1-uv\end{pmatrix},
+\end{equation}
+with determinant $1$ and leading mixed term $uvH\neq0$. So the realization
+theorem here is not an entrywise construction of independent scalar equations:
+the extra commutator in \eqref{nab:eq:mixedconnection} is exactly the
+interaction that a scalar period prescription would miss. This is the Part~II
+counterpart of the cross term $-a_-c_+$ of \cref{nab:prop:heisenberg}: in both
+parts the obstruction is manufactured by a mixed product that the
+abelianization cannot see.
+
+\subsection{Specialization to a genuinely higher-rank Hahn group}
+
+Set $\Gamma=\Q+\Q\omega$, $u=t$ and $v=t^\omega$. The monoid generated by $1$
+and $\omega$ is $\{a+b\omega:a,b\in\N\cup\{0\}\}$, ordered first by $b$ and
+then by $a$, and it is well ordered. The correction in
+\eqref{nab:eq:mixedconnection} occurs at exponent $1+\omega$. No finite number
+of increments by $1$ reaches even $\omega$, but the well-founded recursion
+handles $\omega$ and $1+\omega$ directly, with no change in the proof or in its
+support certificate; compare \cref{nab:rem:nonarch}.
+
+The notation $O_{\deg\geq3}$ is especially important here. A term $t^3$ has
+total degree three and yet smaller valuation than $t^\omega$, while
+$t^{3\omega}$ has much larger valuation. A finite bivariate degree truncation
+is therefore \emph{not} an approximation uniformly valid below a single Hahn
+valuation threshold. The accompanying computation checks a finite coefficient
+identity, not a truncation of all coefficients below $1+\omega$.
+\part*{Part III. Effectivity, verification, and boundaries}
+\addcontentsline{toc}{section}{\textbf{Part III. Effectivity, verification, and boundaries}}
+
+\section{How to compute the invariants, and what computation cannot decide}
+\label{nab:sec:effectivity}
+
+\subsection{A support-aware procedure for Criterion P}
+
+For a presented star-cover datum the mathematical procedure is:
+\begin{enumerate}
+\item at each puncture compute the normalized factor by
+\eqref{nab:eq:factorrec1}--\eqref{nab:eq:factorrec2}, or exploit a finite
+matrix identity such as \eqref{nab:eq:HeisenbergP} or
+\eqref{nab:eq:chainP};
+\item extract the union of the supports of the normalized \emph{polar}
+coefficients --- not the supports of the raw entries, and not just the leading
+valuations;
+\item supply a proof of well-ordering, or a descending-sequence obstruction,
+for that union. In the admissible case use
+\eqref{nab:eq:globalrec}--\eqref{nab:eq:qrec} to construct a splitting with a
+monoid support certificate.
+\end{enumerate}
+These steps give an exact criterion, not a decision algorithm for an arbitrary
+black-box infinite family of functions. In general an input description must
+support a proof of the required infinite order property: checking many
+exponents or many punctures does not settle it, and \cref{nab:cor:bounded}
+shows that a finite-puncture computation provably cannot.
+
+\subsection{Finite truncations}
+
+For finitely generated positive rational exponent monoids every bounded
+exponent interval is finite, so a sparse dictionary keyed by exact rational
+exponents suffices for a finite-cutoff implementation of the local recursion,
+each dictionary value being a matrix of ordinary Laurent polynomials, with
+$\pi_-$ keeping the negative powers of $u$ and $\pi_+$ the nonnegative ones.
+For a general higher-rank ordered group a bounded interval can be infinite and
+no such finite-cutoff assumption is justified: an implementation must either
+work with a certified finite dependency set or restrict its representation
+class. This is the computational counterpart of \cref{nab:rem:nonarch}, and
+\cref{nab:ex:boundedsupport} is a case where even the admissible answer cannot
+be enumerated below a fixed bound in finitely many steps.
+
+\subsection{What the Criterion M recursion actually depends on}
+
+\begin{proposition}[Finite exponent dependence]\label{nab:prop:dependence}
+Fix an admissible support $E$, a period section $\sigma$, a target exponent
+$\gamma\in\angles E\setminus\{0\}$, and the meridian paths. The coefficient
+$\Omega^\sigma_\gamma$ is determined by finitely many exponent-indexed vectors
+of target coefficients $(m_{d,\delta})_{d\in D}$, $\delta\in E$, and finitely
+many exponent patterns of ordinary products, iterated integrals, and
+applications of $\sigma$. The set of punctures inside one such vector may still
+be infinite.
+\end{proposition}
+
+\begin{proof}
+Every lower coefficient entering the defect at $\gamma$ has a weight occurring
+as a part in a decomposition of $\gamma$ into members of $\angles E$, and there
+are finitely many such decompositions and parts by
+\cref{nab:lem:finiteclosure}. Recursively replacing a constructed coefficient
+by its own defining defect only refines one of these finite exponent-word
+decompositions; equivalently all expressions are organized by finite rooted
+trees whose leaves are $E$-letters summing to $\gamma$, and there are finitely
+many possible leaf words by \cref{nab:lem:neumann} and finitely many tree
+shapes and partitions for each fixed finite number of leaves. Applying $\sigma$
+may use an entire element of $\C^D$, so this argument says nothing about
+finite dependence on puncture coordinates.
+\end{proof}
+
+A relative algorithm is therefore explicit: represent the support well enough
+to list the finitely many words relevant to a requested exponent, compute the
+lower-weight iterated-integral prediction, subtract it from the target
+coefficient vector, and apply the chosen ordinary period section. This does not
+imply that the steps are computable for every set-theoretically specified Hahn
+series, nor that a non-effective support can be enumerated, nor that an
+infinite product vector can be supplied to a finite program. For finite
+puncture sets the period section is explicit and the remaining tasks are
+ordinary symbolic or numerical integrations.
+
+\begin{proposition}[Compatibility with enlargement of the workspace]
+\label{nab:prop:basechange}
+Let $\iota:\Gamma\hookrightarrow\Gamma'$ be an order-preserving group
+embedding, with the same complex coefficient data, meridians and period
+section. For an admissible representation, its normalized realizer in the
+larger Hahn workspace is obtained from the original realizer by replacing
+$t^\gamma$ with $t^{\iota(\gamma)}$, and the same compatibility holds for
+normalized fundamental matrices and framed comparison gauges.
+\end{proposition}
+
+\begin{proof}
+Order embeddings preserve Hahn summability and addition of exponents, and the
+finite coefficient formulas for products, iterated integrals and ordinary
+primitives are unchanged, so the transfinite recursion on $\angles E$ maps to
+the same recursion on $\angles{\iota(E)}$ with no extra coefficients outside
+that monoid. Alternatively the transported family satisfies all defining
+equations and normalizations, so uniqueness in
+\cref{nab:thm:fundamental,nab:thm:RH,nab:thm:gauge} identifies it with the
+larger-workspace construction.
+\end{proof}
+
+\subsection{Why an infinite linear period section cannot be continuous}
+
+The choice-dependent section of \cref{nab:lem:period} is not merely missing an
+estimate that could be supplied later. Give $\C^D$ its product topology and
+give holomorphic one-forms on $U$ the topology of uniform convergence of the
+coefficient functions on compact subsets, restricted to $\LL(D)$. The
+following is an auxiliary observation, not a claim of novelty for the general
+functional-analytic phenomenon.
+
+\begin{proposition}[No continuous linear period right inverse]
+\label{nab:prop:discontinuous}
+If $D$ is infinite there is no continuous complex-linear right inverse
+$\sigma:\C^D\to\LL(D)$ to $P$ for these topologies. No such continuous linear
+right inverse exists even if its values are allowed to be arbitrary
+holomorphic one-forms on $U$ with the specified meridian periods.
+\end{proposition}
+
+\begin{proof}
+Choose a closed ordinary disk $K\subset U$ with nonempty interior, write a
+one-form on $U$ as $f(z)\,dz$ and put $q_K(f\,dz)=\sup_{z\in K}|f(z)|$. If
+$\sigma$ were continuous and linear, the continuous seminorm $q_K\circ\sigma$
+on the product $\C^D$ would be bounded by a constant times a maximum of
+finitely many coordinate absolute values, so there would be a finite
+$F\subset D$ and $C_0>0$ with
+\[
+ q_K(\sigma(v))\leq C_0\max_{d\in F}|v_d|\qquad(v\in\C^D);
+\]
+this standard product-topology bound also follows by taking a basic
+finite-coordinate neighbourhood on which the seminorm is less than one and
+scaling. Choose $d\in D\setminus F$ and take the coordinate vector $e_d$. The
+bound implies $q_K(\sigma(e_d))=0$, so the coefficient function of
+$\sigma(e_d)$ vanishes on a disk and the ordinary identity theorem on the
+connected domain $U$ makes it identically zero; its period around $\ell_d$ is
+then zero, contradicting $(P\sigma(e_d))_d=1$.
+\end{proof}
+
+So the algebraic splitting used in the infinite-puncture normal form cannot
+have product-topology continuity. This does not contradict
+\cref{nab:thm:RH}, whose coefficient category imposes no continuity, and it
+does not rule out nonlinear choices with other regularity properties, or useful
+linear choices on smaller weighted sequence spaces; those are different
+problems. For finite $D$ the explicit section \eqref{nab:eq:finitesection} is
+continuous and the obstruction disappears.
+
+\section{The accompanying exact and numerical checks}
+\label{nab:sec:verification}
+
+Two independent check suites were delivered with the two source manuscripts and
+are preserved unchanged in \texttt{code/} and \texttt{data/} of this report
+directory. Neither suite verifies a theorem; both audit finite identities, and
+both print their own scope disclaimer. The facts recorded in this section were
+confirmed by an independent run of the code, described in
+\cref{nab:app:repro}.
+
+\paragraph{Part~I: exact symbolic algebra.}
+The script \texttt{08-polar-support-matrix-cousin-verify.py} uses Python with
+SymPy and exact rational arithmetic, with no floating-point comparison in any
+checked identity. It verifies: the rank-three factors and the missing cross
+term, including $P H=G$, $\det=1$, nilpotence of $G-I_3$, the repaired product
+of \cref{nab:ex:repair}, the matrix logarithm of \cref{nab:prop:logdiag} with
+its $(1,3)$ coefficient $-xy/2u$ and the exact discrepancy $xy/2u$ between the
+naive exponentiated-logarithm factor and the true polar factor; the chain
+inverse, chain factorization, row-one square-zero property and determinant for
+ranks $3$ through $10$ with symbolic $c_j$, together with the closed exponent
+formulas \eqref{nab:eq:lowerexponents}--\eqref{nab:eq:lastexponent} and their
+monotonicity in $n$ for ranks $4$ through $12$ and $n=2,\ldots,25$; a genuinely
+noncommuting $2\times2$ series over the monoid generated by $\{1/2,2/3\}$
+truncated at cutoff $3$ (sixteen exponents including zero), on which it runs
+the actual $\pi_-/\pi_+$ recursion
+\eqref{nab:eq:factorrec1}--\eqref{nab:eq:factorrec2} and checks $PH=G$
+coefficientwise, that polar outputs are negative Laurent and regular outputs
+holomorphic, holomorphic right-gauge invariance
+$\Pol(GQ)=\Pol(G)$ with $\Reg(GQ)=\Reg(G)Q$, and a two-sided inverse; and an
+exact four-puncture splitting with extension of every local frame. The
+recorded run reports \textbf{2{,}899 exact checks passed} under Python 3.13.5
+and SymPy 1.14.0; the independent rerun reproduced the same four PASS lines and
+the identical count of 2{,}899 under Python 3.14.4 and SymPy 1.14.0, the
+version banner being the only differing output line.
+
+\paragraph{Part~II: exact algebra plus a coefficient-ODE audit.}
+The script
+\nolinkurl{09-support-monodromy-realization-verify-examples.py} has two
+components. SymPy checks eight exact algebraic assertions:
+$N_+^2=N_-^2=0$, $[N_+,N_-]=H$, both target determinants equal one, the exact
+group commutator \eqref{nab:eq:commutator} and its determinant, and
+tracelessness of the correction. A second component integrates the
+degree-graded coefficient ODE system over the bivariate degrees
+$(0,0),(1,0),(0,1),(2,0),(1,1),(0,2)$ with \texttt{scipy} \texttt{solve\_ivp}
+\texttt{DOP853} at \texttt{rtol}~$2\cdot10^{-12}$ and
+\texttt{atol}~$2\cdot10^{-13}$, along explicit meridian paths: from $1/2$ to
+$1/4$, once positively around the radius-$1/4$ circle about $0$, and back; and
+from $1/2$ to $3/4$, around the radius-$1/4$ circle about $1$ from angle $\pi$
+to $3\pi$, and back. It does \emph{not} substitute floating-point surrogates
+for $u$ or $v$. The uncorrected mixed term is compared with $\pm CH$ and the
+corrected transport with the target through degree two. Recorded maximum
+entrywise errors are $1.17\cdot10^{-13}$ and $1.47\cdot10^{-13}$ respectively
+at both meridians; the assertions use a looser absolute tolerance of
+$2\cdot10^{-9}$ so as not to depend on platform-specific last digits. The
+recorded environment is Python 3.13.5 on Linux with NumPy 2.3.5, SciPy 1.17.0
+and SymPy 1.14.0.
+
+\paragraph{A warning about rerunning the Part~II script.}
+That script \emph{writes its own evidence}: it emits
+\texttt{verification\_results.json} beside itself, via
+\texttt{Path(\_\_file\_\_).with\_name}, so rerunning it in place overwrites the
+delivered record. Any byte-identity check performed after an in-place rerun
+compares two equally modified copies and proves nothing. The independent rerun
+reported in \cref{nab:app:repro} was therefore performed on a copy outside this
+report directory, and the delivered
+\texttt{09-support-monodromy-realization-verification-results.json} in
+\texttt{data/} is the original record.
+
+\paragraph{What the checks do not establish.}
+The Part~I checks audit algebraic signs, multiplication order and finite
+coefficient identities; they do not prove the support lemma, Cartan's theorem
+B, any infinite descending obstruction, an analytic existence theorem, or
+novelty. The Part~II numerical results are observed floating-point errors, not
+rigorous enclosures, and test only a finite bivariate degree-two identity; the
+exact checks are algebraic identities in two formal variables. Neither suite
+tests an arbitrary Hahn field, justifies a transfinite recursion, proves any
+support set well ordered, verifies anything in a proof assistant, or
+establishes that the results are unpublished. No implication in this report
+depends on the outcome of either script: the general proofs are the arguments
+in the body.
+
+\section{Exactly what is not claimed}\label{nab:sec:scope}
+
+The following list merges the honest limitations stated by both source
+manuscripts. Every one of them survives this merge, and none is weakened.
+Items \ref{nab:nc:refereed} through \ref{nab:nc:formal} come from Part~I's
+scope, items \ref{nab:nc:positivity} through \ref{nab:nc:mueller} from
+Part~II's, and the boundary note at the end records the one place where the two
+parts make different standing assumptions.
+
+\begin{enumerate}
+\item\label{nab:nc:refereed}
+Nothing here is refereed or proof-assistant verified. Both source manuscripts
+are self-described AI-assisted research drafts and say so on their title pages
+and in their READMEs.
+
+\item\label{nab:nc:localization}
+Nontriviality in Part~I is proved \emph{only} over the integral sheaf $\II$.
+We explicitly do not claim that the examples survive after all monomials are
+inverted, that is over $\HH$, because positive monomials become units there,
+no reduction homomorphism $\HH\to\OO$ exists, and the framing-normalization
+argument of \cref{nab:prop:integraltrivial} cannot be repeated. This is listed
+as an open question, not as a believed consequence. In particular neither
+criterion of this report is restated over a coefficient field in which
+negative-valuation changes of frame are admitted.
+
+\item\label{nab:nc:starcover}
+The exact criterion of \cref{nab:thm:criterion} is only for the
+puncture-and-disk (star) cover, where each overlap has a distinguished isolated
+Laurent singularity. For general covers only the \emph{sufficient} globally
+support-admissible theorem \cref{nab:thm:Stein} is available, and its
+hypothesis \eqref{nab:eq:Ecover} is a condition on a \emph{presentation}, not
+an invariant necessary condition: regular local gauges can destroy it without
+destroying triviality.
+
+\item\label{nab:nc:blackbox}
+Neither criterion is a decision algorithm for a black-box infinite family. An
+input description must support a proof of the infinite order property;
+checking many exponents or many punctures does not settle it, and
+\cref{nab:cor:bounded} shows that finite-puncture computation provably cannot
+detect the Part~I examples.
+
+\item\label{nab:nc:truncation}
+Finite-cutoff implementation is justified only for finitely generated positive
+rational exponent monoids. For a general higher-rank ordered group a bounded
+exponent interval can be infinite.
+
+\item\label{nab:nc:classification}
+No classification of isomorphism classes is offered; only triviality is
+decided. \Cref{nab:prop:torsor} describes all solutions once a splitting
+exists, not the nonsplit objects.
+
+\item\label{nab:nc:higherdim}
+The sharp star-cover invariant does not generalize to positive-dimensional
+analytic singular loci: there is no one-variable Laurent projection there, and
+an ideal-theoretic or cohomological replacement may have nontrivial relations.
+
+\item\label{nab:nc:credits}
+Credited as established mathematics and not new: the Neumann support calculus;
+the ordinary Laurent, Mittag--Leffler, Cartan~B and Behnke--Stein inputs; and
+algebraic noncommutative Birkhoff factorization in complete filtered algebras.
+The local factorization is reproved only for explicit arbitrary-ordered-group
+support control. The citation of \cite{EFGK} is to the \emph{algebra} of
+recursive Birkhoff factorization and to the necessity of commutator
+corrections; nothing in this report imports, endorses or reinterprets any
+application of that algebra, and no assertion here is physical, empirical or
+applied in any way. Likewise ``positive'' never means Hermitian positivity,
+and the normalized polar factorization is \emph{not} the Hilbert-space polar
+decomposition.
+
+\item\label{nab:nc:priority}
+The literature checks were targeted and are explicitly not certifications of
+priority. Broad searches that returned irrelevant material were not treated as
+evidence of absence, a repository code-search response marked incomplete was
+not used as evidence of absence, and no named published conjecture is claimed
+solved.
+
+\item\label{nab:nc:code}
+The companion code checks exact finite algebra and one finite numerical
+example only; see the final paragraph of \cref{nab:sec:verification}.
+
+\item\label{nab:nc:formal}
+Formal verification is future work. The local support recursion, the chain
+identity and the necessity directions appear well suited to formalization
+with Hahn series and finite matrix algebra, but the global sufficiency proofs
+additionally need a formal ordinary Mittag--Leffler theorem or a suitable
+sheaf-cohomology interface. Neither script is a substitute for such a
+formalization.
+
+\item\label{nab:nc:positivity}
+Positivity of exponents is essential throughout Part~II. There is no treatment
+of nontrivial exponent-zero monodromy, of arbitrary ordinary residues with
+resonances, or of arbitrary algebraic groups.
+
+\item\label{nab:nc:notclassical}
+\Cref{nab:thm:RH} is not an unrestricted classical Riemann--Hilbert theorem and
+not a Riemann--Hilbert correspondence on a general surcomplex domain; likewise
+\cref{nab:thm:criterion} is not the unrestricted classical Cousin theorem over
+$\HH$. The base, the universal cover and the path category are \emph{ordinary}
+complex by design, not provisional notation for a fine-topological
+construction.
+
+\item\label{nab:nc:finetop}
+There is no fine-topological theory of surcomplex loops here. Convergence of
+Hahn partial sums in the fine topology is never asserted, and
+\cref{nab:ex:boundedsupport} shows that partial sums can fail to converge even
+in the valuation topology. The surcomplex reading is an interpretation of a
+Hahn model via $t^\gamma=\omega^{-\gamma}$ and does not assert an ambient
+surcomplex manifold.
+
+\item\label{nab:nc:choice}
+The infinite-puncture period section is obtained by a vector-space splitting
+using the axiom of choice. It is not continuous ---
+\cref{nab:prop:discontinuous} proves that impossible --- not normed, not
+effective and not computable; only an ordinary complex-linear splitting is
+claimed.
+
+\item\label{nab:nc:infinity}
+For infinitely many punctures, no regularity or growth condition at infinity is
+imposed on realizers. This is deliberate, and the freedom to use arbitrary
+ordinary entire correction terms at each exponent is important to the existence
+proof.
+
+\item\label{nab:nc:nosheaf}
+Part~II does not assume that the global-support assignment is a sheaf for
+arbitrary covers, uses no Cartan theorem and no sheaf cohomology for a Hahn
+coefficient sheaf, and relies on no companion claim about Hahn Noetherianity or
+a Hahn Nullstellensatz.
+
+\item\label{nab:nc:deformations}
+Deformations of a \emph{nontrivial ordinary connection} are open. The
+linearized operator there becomes a twisted period map with values in an
+adjoint local system rather than the scalar period map $P$, and the triangular
+proof of \cref{nab:lem:triangular} supplies no right inverse for it. This is
+not to be confused with \cref{nab:thm:deformation}, which deforms a nontrivial
+ordinary \emph{vector bundle} on a Stein base and does have its cohomological
+input available.
+
+\item\label{nab:nc:dimension}
+Higher-dimensional bases are open for Part~II: flatness is automatic only for
+holomorphic one-forms on a curve, a proposed correction must satisfy the
+nonlinear flatness equation as well as the period conditions, and the result
+cannot be inferred by changing $z$ to a tuple.
+
+\item\label{nab:nc:numerics}
+The Part~II numerical checks are observed floating-point errors, not rigorous
+enclosures, and test only a finite bivariate degree-two identity.
+
+\item\label{nab:nc:mueller}
+The Hahn-meromorphic category of M\"uller--Strohmaier \cite{Muller} is
+explicitly \emph{not} identified with ours: there the parameter is tied to an
+expansion near zero on a logarithmic cover, whereas here $t$ is an independent
+Hahn parameter and $z$ the ordinary analytic variable.
+
+\item\label{nab:nc:common}
+No theorem of either part is claimed to be an instance of a common
+generalization proved here. The two criteria are two theorems with two proofs
+(\cref{nab:sec:twocriteria}); they share only
+\cref{nab:lem:neumann,nab:lem:inverse} and an ordinary Mittag--Leffler input.
+\end{enumerate}
+
+\paragraph{Boundary note on the sheaf convention.}
+As recorded in \cref{nab:sub:conventions}, Part~I proves and uses the sheaf
+property of the integral common-domain assignment on the ordinary base, while
+Part~II deliberately assumes nothing of the kind. Both are correct as stated,
+the difference is one of standing hypotheses rather than of fact, and no
+theorem of Part~II is strengthened here by importing Part~I's convention.
+
+\section{Questions exposed by the results}\label{nab:sec:open}
+
+\paragraph{Monomial localization.}
+Does $\mathcal E_G\otimes_{\II}\HH$ remain nontrivial for the explicit hidden
+and deep examples? A proof would need control of general Hahn matrix gauges,
+not just positive ones, and the ordinary reduction normalization is unavailable
+after localization. This question is intentionally not answered.
+
+\paragraph{Arbitrary-cover normal forms.}
+The polar support is exact on the puncture-and-disk cover because every overlap
+has a distinguished isolated Laurent singularity. An equally explicit invariant
+for general covers would require a substitute for that canonical local negative
+factor; \cref{nab:thm:Stein} does not provide one.
+
+\paragraph{Classification beyond triviality.}
+Deciding whether a positive star-cover cocycle represents the trivial integral
+bundle is not classifying all isomorphism classes, which would require
+understanding the action of global and local gauges on \emph{pairs} of polar
+families.
+
+\paragraph{A common generalization of the two criteria.}
+Both criteria say that a union of supports must be well ordered, over different
+objects (\cref{nab:sec:twocriteria}). Is there a single statement, in some
+category of positive Hahn objects on a punctured base with a distinguished
+local normalization, of which both are instances? We do not know, and nothing
+in this report should be read as evidence that the naive common statement ---
+taking the union over raw local data --- is true: \cref{nab:thm:hidden} and
+\cref{nab:ex:repair} refute it for Criterion P.
+
+\paragraph{Deformations of a nontrivial ordinary connection.}
+Fix an ordinary connection $\Omega_0$ and a representation reducing to its
+monodromy rather than to the identity. The first correction operator is then a
+twisted period map into the adjoint local system. A precise extension should
+specify when that map has a right inverse within a chosen pole class, and
+should track local resonances.
+
+\paragraph{Controlled growth and effective infinite data.}
+For a prescribed weight or growth condition on residues at $D$, identify
+spaces on which a useful continuous or computable period section exists. The
+exact question is to characterize the residue sequence spaces admitted by the
+chosen coefficient growth class, and then to prove that nonlinear monodromy
+corrections stay inside them; arbitrary algebraic splittings need not preserve
+any such structure.
+
+\paragraph{Higher-dimensional bases.}
+For Stein manifolds of dimension greater than one the support-controlled
+rigidity theorems still apply, but the sharp star-cover invariant does not
+generalize, and for connections the nonlinear flatness equation enters. Both
+directions are open.
+
+\paragraph{Formal verification.}
+See item~\ref{nab:nc:formal} of \cref{nab:sec:scope}.
+
+\section{Conclusion}\label{nab:sec:conclusion}
+
+In the positive integral Hahn category over a set-sized ordered value group,
+both the multiplicative gluing problem and the inverse monodromy problem have
+exact answers, and in both the answer is a well-ordering condition on a union
+of Hahn supports. They are not the same condition.
+
+For gluing, the correct obstruction is not the support of the input entries,
+nor the support of their raw principal parts, nor a determinant. One must first
+remove the holomorphic factors in the correct noncommutative order; the
+resulting normalized polar support is then an exact necessary and sufficient
+criterion on a puncture-and-disk cover. The explicit examples show why that
+normalization is consequential: a family with one singular input exponent can
+force a descending support at a hidden matrix entry; adding a cross term can
+repair the family while worsening its raw singular support; and the same
+phenomenon can be postponed to the final central layer of upper-unitriangular
+groups of arbitrarily large finite rank, yielding nontrivial determinant-one
+integral Hahn bundles with trivial ordinary reduction that are trivial on every
+bounded plane domain. At the opposite boundary, one globally well-ordered
+support certificate restores Stein rigidity in every finite rank; cyclic value
+groups supply such a certificate automatically and noncyclic ones do not.
+
+For monodromy, the correct obstruction \emph{is} the raw support of the
+prescribed matrices, and it is an invariant of the representation. Realizers
+can be taken coefficientwise logarithmic, a fixed linear period section
+selects a unique normalized one, framed positive gauges classify connections
+with equal monodromy, and within the logarithmic class the comparison gauge
+extends across every puncture. The order of the value group may have several
+ranks, the singularity set may be infinite, and the monodromy may be
+noncommutative; none of this requires a false topological limiting argument.
+
+What both halves separate cleanly is ordinary analytic solvability,
+noncommutative compatibility, and generalized-series admissibility. The
+analytic work is done coefficientwise on the ordinary base; the Hahn support
+calculus is exactly what makes those ordinary constructions coexist in one
+surcomplex workspace; and the noncommutative correction --- the cross term
+$-a_-c_+$ in Part~I, the mixed commutator $-uv\,CH(\eta_0-\eta_1)$ in Part~II
+--- is what the abelianization cannot see.
+\appendix
+\crefalias{section}{appendix}
+\crefalias{subsection}{appendix}
+
+\section{A proof and support audit}\label{nab:app:audit}
+
+The table records every place where an infinite formal expression occurs,
+together with the set that controls it and the ordinary analytic fact required.
+A support in the middle column is a \emph{containing} support; cancellation may
+make the actual support smaller.
+
+\medskip\noindent\textbf{Part~I constructions.}
+\begin{center}\small
+\begin{tabular}{@{}L{0.26\textwidth}L{0.35\textwidth}L{0.29\textwidth}@{}}
+\toprule
+Construction & Support control & Ordinary analytic requirement\\
+\midrule
+Positive matrix inverse, $\exp$, $\log$ &
+Positive monoid generated by the input support; finitely many exponent words
+and finitely many matrix paths at each coefficient
+(\cref{nab:lem:neumann,nab:lem:inverse}) &
+Coefficients remain on the original domain.\\ \addlinespace[0.35em]
+Local polar factorization &
+$\angles{\supp(G-I_r)}$; well-founded triangular recursion &
+Laurent splitting on one fixed punctured disk, with no shrinking
+(\cref{nab:lem:laurent}).\\ \addlinespace[0.35em]
+Necessity of Criterion P &
+All $P_a-I_r$ lie in the one monoid generated by $\supp(B_0-I_r)$ &
+Right-gauge invariance and uniqueness of the local factorization.\\ \addlinespace[0.35em]
+Sufficiency of Criterion P &
+$\angles{\EU(G)}$, for the central matrix and for the $Q_a$ &
+One ordinary isolated-singularity interpolation per matrix coefficient and
+exponent (\cref{nab:lem:mlplane,nab:lem:mlsurface}).\\ \addlinespace[0.35em]
+Disk trivializers &
+Generated monoid of the global polar support together with that disk's own
+original support &
+Products of matrices holomorphic on that disk.\\ \addlinespace[0.35em]
+Right torsor of splittings &
+Finite union of the two solution supports, then positive monoid closure &
+Identity-theorem extension across each puncture.\\ \addlinespace[0.35em]
+Stein splitting &
+One monoid generated by all transition supports &
+Ordinary $H^1(X,\OO^{r^2})=0$.\\ \addlinespace[0.35em]
+Deformation rigidity &
+The same positive monoid; ordinary transitions are exponent-zero coefficients
+&
+Ordinary $H^1(X,\Endsh(\mathcal V))=0$.\\ \addlinespace[0.35em]
+Rank-three obstruction &
+Forced descending set $\{1+1/n\}$ &
+Only simple poles are used.\\ \addlinespace[0.35em]
+Depth-$(r-1)$ obstruction &
+Lower partial-sum supports well ordered; final support $\{r-2+1/n\}$ descends
+&
+Only simple poles and holomorphic constants are used.\\ \addlinespace[0.35em]
+Integral nontriviality &
+A hypothetical integral frame normalizes to a positive frame &
+Reduction of invertible matrices and gluing of the reduced frame.\\ \addlinespace[0.35em]
+\bottomrule
+\end{tabular}
+\end{center}
+
+\medskip\noindent\textbf{Part~II constructions.}
+\begin{center}\small
+\begin{tabular}{@{}L{0.26\textwidth}L{0.35\textwidth}L{0.29\textwidth}@{}}
+\toprule
+Construction & Support control & Ordinary analytic requirement\\
+\midrule
+Fundamental matrix on the cover &
+$\angles{\supp\Omega}$, for $Y$ and for $Y^{-1}$; the same bound for
+\emph{every} holonomy matrix &
+Holomorphic primitives on a simply connected Riemann surface.\\ \addlinespace[0.35em]
+Dyson transport &
+Strong summability by the finite-word clause; each coefficient a finite sum of
+iterated integrals &
+Ordinary iterated path integrals along an ordinary path.\\ \addlinespace[0.35em]
+Necessity of Criterion M &
+$E_\rho\subseteq\angles{\supp\Omega}\setminus\{0\}$, uniformly in the group
+element &
+None beyond the fundamental-matrix theorem.\\ \addlinespace[0.35em]
+Sufficiency of Criterion M &
+$\angles{E_\rho}$; transfinite recursion with no limit-ordinal passage &
+Ordinary Mittag--Leffler through the period map $P$, plus one fixed linear
+section $\sigma$ (axiom of choice for infinite $D$).\\ \addlinespace[0.35em]
+Uniqueness of the normalized realizer &
+Least differing exponent in a well-ordered union &
+Injectivity of $P$ on $\im\sigma$.\\ \addlinespace[0.35em]
+Framed gauge and its inverse &
+$\angles{\supp\Omega\cup\supp\Psi}$ &
+Single-valuedness on $U$; descent of coefficients from the cover.\\ \addlinespace[0.35em]
+Entire extension of a logarithmic gauge &
+The same monoid, unchanged by the extension &
+A simple pole with zero residue is removable.\\ \addlinespace[0.35em]
+Positive Frobenius form &
+$\angles E$ for $H$ and $H^{-1}$ &
+Primitives on a disk; $H_\beta(0)=0$ makes $H_\beta/z$ holomorphic.\\ \addlinespace[0.35em]
+Traceless refinement &
+No change of support &
+Finite polynomial determinant identity; one entrywise linear section.\\ \addlinespace[0.35em]
+Finite exponent dependence &
+Finitely many decompositions and parts inside $\angles E$
+(\cref{nab:lem:finiteclosure}) &
+Finitely many rooted trees and ordinary operations per exponent.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The indispensable hypotheses are these. The value group is a set and is
+totally ordered. Supports are well ordered, not merely bounded below. Matrix
+rank is finite. The puncture set is ordinary closed and discrete. Coefficient
+functions share their stated ordinary domains. In Part~I the gluing matrices
+reduce to the identity, or to a specified ordinary bundle in
+\cref{nab:thm:deformation}; in Part~II the representation is near-identity with
+positive support. None of these hypotheses is replaced anywhere by a
+fine-topological convergence assumption.
+
+\section{A dependency map}\label{nab:app:dep}
+
+The Part~I chain is
+\[
+\begin{gathered}
+\text{Neumann support lemma}+\text{ordinary Laurent splitting}\\
+\Downarrow\\
+\text{local normalized factorization and right-gauge invariance}\\
+\Downarrow\quad\text{with ordinary isolated-singularity interpolation}\\
+\text{exact global polar-support criterion (Criterion P)}\\
+\Downarrow\\
+\text{rank-three cross-term obstruction and arbitrary-depth examples}\\
+\Downarrow\quad\text{with reduction of an integral frame}\\
+\text{nontrivial integral vector bundles.}
+\end{gathered}
+\]
+The arbitrary-cover Stein theorem is a separate positive branch whose only
+cohomological input is ordinary coherent-sheaf acyclicity. It is not used to
+justify the infinite star-cover criterion on the plane, whose interpolation
+step has its own direct proof; it is used for the statement about all bounded
+restrictions and for the universal cyclic-group result.
+
+The Part~II chain is
+\[
+\begin{gathered}
+\text{Neumann support lemma}\\
+\Downarrow\\
+\text{support control for inverses and Dyson expansions}\\
+\Downarrow\quad\text{with ordinary primitives on a simply connected cover}\\
+\text{fundamental matrix and the triangular variation lemma}\\
+\Downarrow\quad\text{meeting ordinary Mittag--Leffler through }P\text{ and }
+\sigma\\
+\text{exact realization recursion (Criterion M)}\\
+\Downarrow\\
+\text{framed gauge classification, entire extension, }\SL_r\text{ refinement.}
+\end{gathered}
+\]
+The gauge classification uses only the fundamental matrices; its entire
+extension uses only single-valuedness and removability of a simple pole with
+zero residue. The traceless refinement adds a finite polynomial determinant
+identity. The counterexamples use the necessity half of
+\cref{nab:thm:RH} and explicit support orderings. No implication in either
+chain depends on the outcome of a verification script.
+
+The two chains meet only at \cref{nab:lem:neumann,nab:lem:inverse} and at the
+shared observation that the ordinary analytic input is applied one exponent at
+a time. Neither criterion is derived from the other.
+
+\section{Provenance, reproduction, and the merge record}\label{nab:app:repro}
+
+\subsection{Sources of this report}
+
+This report merges two independently written manuscripts, both dated
+September 21, 2026, both delivered with their own code and recorded output, and
+both preserved unchanged in \texttt{sources/}, \texttt{code/} and
+\texttt{data/} of this directory:
+
+\begin{itemize}
+\item \emph{Nonabelian Support Obstructions in Surcomplex Analysis: A Sharp
+Matrix Cousin Criterion and Arbitrarily Deep Unipotent Examples}, from the
+archive \texttt{surcomplex\_nonabelian\_support}; source file
+\texttt{sources/08-polar-support-matrix-cousin.tex} with its README. It
+contributes Part~I entire, the shared coefficient category and support
+calculus, the Laurent and isolated-singular-part inputs, the normalized polar
+factorization, the exact Criterion P with its invariance corollaries and torsor
+statement, the rank-one recovery, the rank-three obstruction with its repair
+and logarithm diagnostic, the chain identity and depth hierarchy, the integral
+vector-bundle statements with the localization boundary, and the Stein
+splitting, deformation rigidity and cyclic dichotomy.
+
+\item \emph{Global Hahn Support and the Surcomplex Riemann--Hilbert Problem:
+Noncommutative monodromy, countably many singularities, and an exact
+realization obstruction}, from the archive
+\texttt{surcomplex\_riemann\_hilbert}; source file
+\nolinkurl{sources/09-support-monodromy-realization.tex} with its README and
+its
+\texttt{BUILD\_AND\_PROVENANCE.json}. It contributes Part~II entire: strong
+summability and the finite-decomposition lemma, the free-meridian lemma, the
+period map with its linear section, the fundamental-matrix and triangular
+lemmas, Criterion M with its intrinsic and conjugation-invariance forms, the
+framed gauge classification and entire extension, the positive Frobenius form,
+the finite Fuchsian specialization and the $\SL_r$ refinement, the three
+calibrating examples, the mixed commutator correction with its $\Q+\Q\omega$
+specialization, the finite-dependence and base-change propositions, and the
+impossibility of a continuous linear period right inverse.
+\end{itemize}
+
+Where the two manuscripts proved the same fact --- the Neumann support calculus
+as an input, and the positive inversion, exponential and logarithm lemma ---
+the statement is printed once, in
+\cref{nab:lem:neumann,nab:lem:inverse}, and both members verified it
+independently in the same form. Where they supplied genuinely different routes
+to a needed ingredient, both routes are kept and marked: the ordinary
+Mittag--Leffler input appears twice, as the unbounded-order
+isolated-singular-part construction
+\cref{nab:lem:mlplane,nab:lem:mlsurface} and as the linear period section
+\cref{nab:lem:period}, for the reasons given at the end of
+\cref{nab:sec:ordinary}; and the impossibility of repair by enlarging the value
+group is proved twice, for two different objects, in
+\cref{nab:cor:extension} and \cref{nab:prop:conjugation}. The local
+factorizations of \cref{nab:thm:local} and \cref{nab:thm:frobenius} are
+likewise two different normalizations of two different objects, and neither is
+derived from the other here.
+
+\subsection{Repository provenance}
+
+Repository: \url{https://github.com/VladimirReshetnikov/Surreal}, reviewed at
+commit \texttt{39f2be6667ade51bca2b45daa47e289d69c09764}, inspected
+September 21, 2026. No repository files were changed by either source
+manuscript and nothing was pushed by them. The report catalogue
+\cite{RepoMap} supplies the report map and the distinctions between coefficient
+rings, which both members call essential. The global-divisor report
+\cite{RepoGlobal} is the source of the motivating open direction and of the
+scalar results we recover rather than reprove; the differential-equations
+report \cite{RepoDiff} supplies the forward monodromy map and the
+ordinary-paths wording. The analysis, analytic-geometry and contour packages
+\cite{RepoAnalysis,RepoGeometry,RepoContours} are credited by Part~II as
+antecedents for scalar global support obstructions and for the coefficientwise
+differential and integration viewpoint; they are not contributions claimed
+here, and no draft ring theorem or Hahn sheaf-cohomology theorem from them is
+used in any proof.
+
+Neither source manuscript conducted an exhaustive audit of every source
+manuscript in the repository, and one repository code-search response was
+marked incomplete; its empty result is not evidence of absence. The comparison
+above is with the documented contents actually reviewed.
+
+\subsection{Building this report}
+
+The source is standalone, with an internal bibliography, no external
+bibliography file, no graphics and no separately distributed fonts. A standard
+TeX Live installation builds it with
+\begin{verbatim}
+latexmk -pdf -interaction=nonstopmode article.tex
+\end{verbatim}
+
+\subsection{Rerunning the delivered checks}
+
+The two scripts are preserved under \texttt{code/} with their original
+contents and their recorded outputs under \texttt{data/}. The Part~I script
+needs Python 3.10 or later with SymPy; the Part~II script needs NumPy, SciPy
+and SymPy. From a working copy:
+\begin{verbatim}
+python code/08-polar-support-matrix-cousin-verify.py
+python code/09-support-monodromy-realization-verify-examples.py
+\end{verbatim}
+
+Two operational cautions, both verified directly rather than taken from a
+README.
+
+First, the Part~II script writes \texttt{verification\_results.json} beside
+itself and therefore overwrites its own delivered record when run in place. Run
+it on a copy outside this directory. A byte-identity comparison performed after
+an in-place run compares two equally modified copies and proves nothing.
+
+Second, the Part~II README as delivered lists a file
+\texttt{SHA256SUMS.txt} among the archive contents. That file is
+\emph{not} present in the delivered directory and is not present here, so no
+checksum verification of the original archive is possible from what was
+shipped.
+
+An independent rerun of both suites, on copies and not in the extraction tree,
+found: the Part~I suite exits zero and prints its four PASS lines and
+\texttt{SUCCESS: 2899 exact checks passed}, identical in count to the recorded
+run, under Python 3.14.4 with SymPy 1.14.0 against the recorded Python 3.13.5
+with SymPy 1.14.0, the version banner being the only differing line; and the
+Part~II suite exits zero with all eight exact checks and all four numerical
+error checks passing. The recorded Part~II build metadata claims zero warnings,
+zero overfull or underfull boxes, zero undefined references, a 25-page
+document, and a Poppler render review of all pages, and records
+\texttt{formal\_verification: false}, \texttt{priority\_certified: false},
+\texttt{peer\_reviewed: false}. Those three flags remain false for this merged
+report.
+
+\begin{thebibliography}{99}
+\small\raggedright
+\setlength{\itemsep}{0.3em}
+\addcontentsline{toc}{section}{References}
+
+\bibitem{RepoMap}
+V.~Reshetnikov, \emph{Surreal repository: report catalogue},
+\texttt{docs/README.md}, commit
+\texttt{39f2be6667ade51bca2b45daa47e289d69c09764}, inspected September 21,
+2026.
+\url{https://github.com/VladimirReshetnikov/Surreal/blob/39f2be6667ade51bca2b45daa47e289d69c09764/docs/README.md}.
+
+\bibitem{RepoGlobal}
+\emph{Global Support Obstructions: Moving Divisors, Mittag--Leffler, and a
+Picard Dichotomy}, AI-assisted merged research draft in V.~Reshetnikov's
+\emph{Surreal} repository, \texttt{docs/surcomplex/global-divisors/}. Pinned
+commit as above; see especially the exact Cousin criterion (Theorem~13.1), the
+Picard-group vanishing dichotomy, and the subsection ``Further precise
+directions''.
+\url{https://github.com/VladimirReshetnikov/Surreal/blob/39f2be6667ade51bca2b45daa47e289d69c09764/docs/surcomplex/global-divisors/article.tex}.
+
+\bibitem{RepoDiff}
+\emph{Differential Algebra and Differential Equations over the Surreal and
+Surcomplex Numbers}, AI-assisted merged research draft in V.~Reshetnikov's
+\emph{Surreal} repository, \texttt{docs/surcomplex/differential-equations/}.
+Pinned commit as above; see especially the theorem ``Monodromy valued in
+$\GL_d(K_\Gamma)$'' and the ordinary-path remark following it.
+\url{https://github.com/VladimirReshetnikov/Surreal/blob/39f2be6667ade51bca2b45daa47e289d69c09764/docs/surcomplex/differential-equations/article.tex}.
+
+\bibitem{RepoAnalysis}
+\emph{Surcomplex analysis: holomorphic functions on $\No[i]$},
+\texttt{docs/surcomplex/analysis/README.md}, same repository and commit.
+AI-assisted, unrefereed research documentation.
+
+\bibitem{RepoGeometry}
+\emph{Infinitesimal analytic geometry over the surcomplex numbers:
+radius-free germs, a Nullstellensatz, and finite maps},
+\texttt{docs/surcomplex/analytic-geometry/README.md}, same repository and
+commit. AI-assisted, unrefereed research documentation.
+
+\bibitem{RepoContours}
+\emph{Contours and Stokes: Jordan separation, Cauchy theory, and Stokes
+calculus on the surcomplex plane},
+\texttt{docs/surcomplex/contours-and-stokes/README.md}, same repository and
+commit. AI-assisted, unrefereed research documentation.
+
+\bibitem{Neumann}
+B.~H.~Neumann, On ordered division rings,
+\emph{Transactions of the American Mathematical Society} \textbf{66} (1949),
+202--252.
+\url{https://www.jstor.org/stable/1990552}.
+
+\bibitem{Poonen}
+B.~Poonen, \emph{Maximally complete fields},
+L'Enseignement Math\'ematique (2) \textbf{39} (1993), 87--106.
+DOI: \url{https://doi.org/10.5169/seals-60414}.
+
+\bibitem{vdDE}
+L.~van den Dries and P.~Ehrlich, Fields of surreal numbers and exponentiation,
+\emph{Fundamenta Mathematicae} \textbf{167} (2001), 173--188.
+\url{https://doi.org/10.4064/fm167-2-3}.
+
+\bibitem{MantovaMatusinski}
+V.~Mantova and M.~Matusinski, \emph{Surreal numbers with derivation, Hardy
+fields and transseries: a survey}, arXiv:1608.03413.
+\url{https://arxiv.org/abs/1608.03413}.
+
+\bibitem{Bournez}
+O.~Bournez and Q.~Guilmant, \emph{Surreal fields stable under exponential and
+logarithmic functions}, preprint (2022), arXiv:2201.08199. Cited for
+normal-form and set-sized-surreal-field background only.
+\url{https://arxiv.org/abs/2201.08199}.
+
+\bibitem{EFGK}
+K.~Ebrahimi-Fard, L.~Guo, and D.~Kreimer,
+Spitzer's identity and the algebraic Birkhoff decomposition in pQFT,
+\emph{Journal of Physics A: Mathematical and General} \textbf{37} (2004),
+11037--11052. Cited solely as the closest algebraic antecedent for recursive
+Birkhoff factorization in complete filtered noncommutative algebras and for the
+necessity of commutator corrections; no application of that algebra is imported
+here.
+\url{https://arxiv.org/abs/hep-th/0407082}.
+
+\bibitem{EFMP}
+K.~Ebrahimi-Fard, D.~Manchon, and F.~Patras, \emph{A noncommutative
+Bohnenblust--Spitzer identity for Rota--Baxter algebras solves Bogoliubov's
+recursion}, arXiv:0705.1265.
+\url{https://arxiv.org/abs/0705.1265}.
+
+\bibitem{BS}
+H.~Behnke and K.~Stein, Entwicklung analytischer Funktionen auf Riemannschen
+Fl\"achen, \emph{Mathematische Annalen} \textbf{120} (1947/1949), 430--461.
+\url{https://doi.org/10.1007/BF01447838}.
+
+\bibitem{Cartan}
+H.~Cartan, Vari\'et\'es analytiques complexes et cohomologie, in
+\emph{Colloque sur les fonctions de plusieurs variables}, Brussels, 1953,
+41--55. Classical source for coherent-sheaf acyclicity on Stein manifolds.
+
+\bibitem{Schmitt}
+M.~M.~Schmitt, \emph{Kohomologie mit Schranken und Fortsetzung holomorpher
+Funktionen durch lineare stetige Operatoren}, doctoral thesis,
+arXiv:math/0202263 (2002). Includes a proof of Cartan's theorem B for coherent
+subsheaves of finite free holomorphic sheaves and coefficientwise coboundary
+constructions.
+\url{https://arxiv.org/abs/math/0202263}.
+
+\bibitem{Wone}
+O.~Wone, \emph{The Birkhoff--Grothendieck theorem}, arXiv:2304.08037,
+version~2. Historical and mathematical exposition of bundle splitting and
+Birkhoff factorization; its usual single-loop setting differs from the
+infinitely many independently supported gluing data treated here.
+\url{https://arxiv.org/abs/2304.08037}.
+
+\bibitem{Chen}
+K.-T.~Chen, \emph{Iterated path integrals},
+Bulletin of the American Mathematical Society \textbf{83} (1977), 831--879.
+DOI: \url{https://doi.org/10.1090/S0002-9904-1977-14320-6}.
+
+\bibitem{Deligne}
+P.~Deligne, \emph{\'Equations diff\'erentielles \`a points singuliers
+r\'eguliers}, Lecture Notes in Mathematics, vol.~163, Springer, 1970. A
+classical reference point, not a theorem reproved here in its original
+generality.
+DOI: \url{https://doi.org/10.1007/BFb0061194}.
+
+\bibitem{Ilyashenko}
+Y.~Ilyashenko and S.~Yakovenko, \emph{Lectures on Analytic Differential
+Equations}, Graduate Studies in Mathematics, vol.~86, American Mathematical
+Society, 2008.
+DOI: \url{https://doi.org/10.1090/gsm/086}.
+
+\bibitem{Muller}
+J.~M\"uller and A.~Strohmaier, \emph{The theory of Hahn-meromorphic functions,
+a holomorphic Fredholm theorem, and its applications},
+Analysis \& PDE \textbf{7} (2014), no.~3, 745--770. Their analytic category is
+explicitly not identified with ours; see item~\ref{nab:nc:mueller} of
+\cref{nab:sec:scope}.
+DOI: \url{https://doi.org/10.2140/apde.2014.7.745}.
+
+\end{thebibliography}
+\end{document}

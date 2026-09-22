@@ -1,0 +1,1954 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{microtype,booktabs,array,longtable,aliascnt}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,
+ urlcolor=blue!40!black,pdftitle={Global Infinitesimal Surcomplex Dynamics},
+ pdfauthor={AI-assisted research manuscript},pdfsubject={Hahn-coherent dynamics and period invariants}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Global infinitesimal surcomplex dynamics}
+\fancyhead[R]{\small Research manuscript}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.3em}
+\setlist{itemsep=2pt,topsep=4pt}
+\emergencystretch=1.5em
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\crefname{proposition}{proposition}{propositions}
+\Crefname{proposition}{Proposition}{Propositions}
+\crefname{lemma}{lemma}{lemmas}
+\Crefname{lemma}{Lemma}{Lemmas}
+\crefname{corollary}{corollary}{corollaries}
+\Crefname{corollary}{Corollary}{Corollaries}
+\crefname{definition}{definition}{definitions}
+\Crefname{definition}{Definition}{Definitions}
+\crefname{example}{example}{examples}
+\Crefname{example}{Example}{Examples}
+\crefname{remark}{remark}{remarks}
+\Crefname{remark}{Remark}{Remarks}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\A}{\mathcal A}
+\newcommand{\G}{\mathcal G}
+\newcommand{\Oh}{\mathcal O}
+\newcommand{\Mh}{\mathcal M}
+\newcommand{\mm}{\mathfrak m}
+\newcommand{\DD}{\mathscr D}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\st}{\operatorname{st}}
+\newcommand{\Per}{\operatorname{Per}}
+\newcommand{\val}{\operatorname{v}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\dd}{\,dz}
+\newcommand{\Fexp}[1]{\exp(#1\partial_z)z}
+\newcommand{\pos}{_{>0}}
+\newcommand{\nonneg}{_{\geq0}}
+\newcommand{\Oe}[1]{O(\eps^{#1})}
+\newcommand{\snapshot}{39f2be6667ade51bca2b45daa47e289d69c09764}
+
+\title{\textbf{Global Infinitesimal Surcomplex Dynamics}\\[5pt]
+\large Complete period invariants, difference equations,\\
+and moduli beyond every power of one infinitesimal}
+\author{AI-assisted research manuscript}
+\date{21 September 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We study near-identity holomorphic dynamics with coefficients in a set-sized
+Hahn field $K=\C((t^\Gamma))$, allowing an arbitrary ordered value group.
+All Hahn coefficient functions are holomorphic on one fixed ordinary domain
+$D\subset\C$.  This common-domain requirement makes global analytic questions
+meaningful without importing an inappropriate notion of convergence on
+$\No[i]$.
+
+The principal result classifies maps with a fixed nowhere-vanishing leading
+infinitesimal displacement: two such maps are conjugate by a globally defined
+Hahn-coherent near-identity change of variable precisely when the periods of
+their canonical time forms agree.  A basepoint normalization makes the
+conjugacy unique.  On a plane with $r$ punctures, the resulting moduli space is
+exactly $\mm_K^r$.  We also identify the cokernel of the discrete difference
+operator with $K^r$ and give an explicit Bernoulli-operator solution whenever
+the period obstructions vanish.
+
+In higher rank these results produce a family of pairwise nonconjugate maps
+that are indistinguishable modulo every power of a chosen infinitesimal.
+Their exact period invariants are nonzero at a smaller scale.  A further
+theorem constructs all Hahn coefficients of a slow-time flow on any specified
+ordinary flow chart, without successive shrinking of that chart.
+
+The exponential--logarithm correspondence for summable automorphisms is
+established background, not a novelty claim.  The proposed contributions are
+the common-domain global classification, its explicit obstruction theory,
+and the higher-rank invisible-moduli construction.  Full proofs are supplied;
+novelty is assessed by a targeted, not exhaustive, literature search.  No
+named published conjecture is claimed solved, and the manuscript is not
+independently refereed or formally verified.
+\end{abstract}
+
+\newpage
+{\fontsize{10}{11}\selectfont\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section{The problem and the main conclusions}
+\label{sec:introduction}
+
+An infinitesimal displacement can be small at every ordinary point of a
+complex domain and nevertheless carry a global obstruction.  The distinction
+is not about the magnitude of the displacement.  It is about whether locally
+constructed coordinates agree after continuation around an ordinary loop.
+This observation suggests studying surcomplex dynamics through differential
+forms rather than through sequences of iterates.
+
+Fix an ordered abelian group $\Gamma$ which is a set and a connected ordinary
+complex domain $D$.  The function algebra used throughout is
+\begin{equation}\label{eq:algebra-intro}
+ \A_\Gamma(D)=\Oh(D)((t^\Gamma)).
+\end{equation}
+Its elements are Hahn series in which \emph{every} coefficient is holomorphic
+on the same $D$.  The variable is $z$; the Hahn monomials are constants.
+An infinitesimal map is
+\[
+ F(z)=z+h(z),\qquad h\in\A_\Gamma(D),\quad \val(h)>0.
+\]
+Although $F$ need not be an ordinary complex-valued self-map of $D$, it is a
+well-defined map on its infinitesimal halo.  Its inverse is defined in the
+same category.  Composition is Taylor substitution justified by support
+finiteness, not by taking limits of partial sums.
+
+For such a map there is a canonical positive Hahn vector field $W_F$ with
+\begin{equation}\label{eq:log-intro}
+ F=\exp(W_F\partial_z)z.
+\end{equation}
+The general algebraic mechanism behind this formula is known.  We prove the
+particular version needed here, including its global-domain and support
+properties, in \cref{sec:logarithm}.
+
+Suppose that for some $\delta>0$ and some nowhere-zero $a\in\Oh(D)$,
+\begin{equation}\label{eq:stratum-intro}
+ F(z)=z+t^\delta a(z)+r(z),\qquad \val(r)>\delta.
+\end{equation}
+Then $W_F=t^\delta(a+u)$ with $\val(u)>0$.  Thus $W_F$ is invertible in
+$\A_\Gamma(D)$ and the \emph{time form}
+\[
+ \Omega_F=\frac{dz}{W_F}
+\]
+is a globally defined Hahn-coherent holomorphic one-form on $D$.
+The adjective ``holomorphic'' here refers to all its ordinary coefficient
+functions; its valuation may be negative.
+
+\subsection{A classification by periods}
+
+The main equivalence, proved in \cref{thm:classification}, is
+\begin{equation}\label{eq:main-intro}
+ \begin{split}
+ &H\circ F_1=F_2\circ H\quad\text{for some }H=z+\text{positive Hahn terms}
+ \\
+ &\hspace{12mm}\Longleftrightarrow\quad
+ \oint_\gamma\Omega_{F_1}=\oint_\gamma\Omega_{F_2}
+ \quad\text{for every ordinary closed curve }\gamma\subset D.
+ \end{split}
+\end{equation}
+Both maps must have the same data $(\delta,a)$ in
+\eqref{eq:stratum-intro}.  No shrinking of $D$ is permitted in this
+statement.  All the contour integrals are coefficientwise ordinary complex
+integrals.  For every $z_*\in D$, there is exactly one conjugacy in
+\eqref{eq:main-intro} satisfying $H(z_*)=z_*$.
+
+For
+\[
+ D=\C\setminus\{a_1,\ldots,a_r\},
+\]
+only $r$ periods are required.  After subtracting the leading time form and
+normalizing by $t^\delta$, they can be prescribed arbitrarily in
+$\mm_K^r$; see \cref{thm:moduli}.  Thus the classification is not merely
+an obstruction: it gives an explicit parametrization and representatives
+of all the conjugacy classes in the specified stratum.
+
+\subsection{Discrete cohomology and a global Abel equation}
+
+Writing $\Delta_F\psi=\psi\circ F-\psi$, we show that
+\begin{equation}\label{eq:exact-intro}
+ 0\longrightarrow K\longrightarrow\A_\Gamma(D)
+ \xrightarrow{\Delta_F}\A_\Gamma(D)
+ \xrightarrow{\mathcal P_F}K^r\longrightarrow0
+\end{equation}
+is exact on a finitely punctured plane, where
+\[
+ (\mathcal P_Fg)_j=\frac1{2\pi i}\oint_{\gamma_j}\frac{g(z)}{W_F(z)}\,dz.
+\]
+In particular, the global Abel equation
+\[
+ \psi\circ F=\psi+1
+\]
+has a solution in the common-domain algebra exactly when every period of
+$\Omega_F$ vanishes.  A solution is an Abel function, not automatically a
+globally injective coordinate.  This distinction will be retained throughout.
+
+\subsection{A phenomenon genuinely involving more than one scale}
+
+Suppose $\eta>n\delta$ for every positive ordinary integer $n$.  Put
+$\eps=t^\delta$ and choose constants $c_1,\ldots,c_r$ whose valuations are
+larger than every $n\delta$.  The fields and maps
+\begin{equation}\label{eq:flat-intro}
+ W_{\mathbf c}(z)=
+ \frac{\eps}{1+\eps\displaystyle\sum_{j=1}^r c_j/(z-a_j)},
+ \qquad F_{\mathbf c}=\exp(W_{\mathbf c}\partial_z)z
+\end{equation}
+satisfy
+\[
+ F_{\mathbf c}\equiv z+\eps\pmod{\eps^n\A_\Gamma(D)_{\geq0}}
+ \quad\text{for every }n\geq1.
+\]
+Nevertheless,
+\begin{equation}\label{eq:flat-time-intro}
+ \Omega_{F_{\mathbf c}}=\eps^{-1}dz+
+       \sum_{j=1}^r\frac{c_j\,dz}{z-a_j}
+\end{equation}
+shows that distinct parameter vectors give nonconjugate maps.  Their Abel
+obstructions are exactly $(c_1,\ldots,c_r)$.  Thus a complete collection of
+one-scale jets can omit exact global dynamical information.
+This is proved in \cref{thm:flat}, including the valuation estimate and a
+concrete realization inside $\No[i]$.
+
+\section{Context, provenance, and the boundary of the claims}
+\label{sec:context}
+
+\subsection{Relation to the supplied repository}
+
+The repository was consulted at the snapshot
+\begin{center}
+\small\ttfamily 39f2be6667ade51bca2b45daa47e289d69c09764.
+\end{center}
+Its catalogue and the relevant analysis and contour-calculus documentation
+separate common-domain Hahn functions from radius-free coefficient germs,
+and coefficientwise contour integration from fine-topological convergence
+\cite{repo-catalogue,repo-analysis,repo-contours}.  We use that distinction,
+but do not assume the global geometric assertions of the repository's other
+research drafts.  In particular, the argument below does not depend on an
+unproved surcomplex Nullstellensatz, a contour representation for a
+multivariate residue, or a general global Picard theorem.
+
+The review was of the catalogue and the relevant analysis/contour material,
+not a line-by-line audit of every manuscript in the repository.  The subject
+selected here is the global dynamics of near-identity maps and their time
+forms, rather than another treatment of local Taylor calculus, polynomial
+root clusters, or divisor existence.
+
+\subsection{Established mathematics used here}
+
+The exponential correspondence between suitably summable derivations and
+automorphisms of generalized-series algebras was developed in general form
+by Bagayoko, Krapp, Kuhlmann, Panazzolo, and Serra
+\cite{bkkps}.  Accordingly, the mere existence of a formal logarithm in
+\eqref{eq:log-intro} is \emph{not} proposed as new.  Our proof specializes
+that mechanism to holomorphic coefficient functions on one fixed domain and
+makes the finite support dependencies explicit.
+
+Classical iterative logarithms also have a substantial theory.  The work of
+Aschenbrenner and Bergweiler \cite{ab} treats Julia's equation and
+transcendence properties of iterative logarithms.  Our parameter-Hahn
+construction is a different category: no convergence in an ordinary
+nonzero parameter is asserted.  It does not remove the analytic embedding
+obstructions for ordinary parabolic germs, nor classify their analytic
+sectorial invariants.
+
+Modified differential equations in backward error analysis provide another
+close antecedent.  Hairer's lectures \cite{hairer} explain their formal
+construction and warn that the ordinary step-size series generally diverges.
+The Euler coefficients displayed in \cref{sec:examples} are known examples,
+not new coefficients.  Their role here is to exhibit an exact global period
+obstruction in the Hahn category.  The slow-time result in
+\cref{sec:slowtime} concerns coefficientwise holomorphic existence on a
+specified ordinary flow chart, not analytic convergence of the modified
+series in a real step size.
+
+\subsection{What is proposed as a contribution}
+
+The main proposed result is the complete \emph{global}, \emph{common-domain},
+\emph{arbitrary-rank} classification in \cref{thm:classification}, together
+with the explicit moduli realization in \cref{thm:moduli}.  The discrete
+cohomology calculation, the higher-rank invisible-moduli family, and the
+common-chart slow-time construction are complementary results.  The proofs
+combine known algebraic and analytic ingredients, but the precise package
+of statements was not located in the targeted search.
+
+That assessment is deliberately narrower than a priority claim.  An
+unlocated result may exist in literature on formal flows, deformation of
+one-forms, or generalized series.  The manuscript therefore offers the
+stated theorems and their proofs as candidate new results, rather than
+claiming to settle a named published open problem.  None of the central
+claims is presented as an independently checked theorem of Lean.
+
+\section{The common-domain Hahn calculus}
+\label{sec:hahn}
+
+\subsection{Fields, coefficients, and summability}
+
+Let $\Gamma$ be a totally ordered abelian group which is a set.  For a
+commutative $\C$-algebra $R$, write
+\[
+ R((t^\Gamma))=
+ \left\{\sum_{\gamma\in S}r_\gamma t^\gamma:
+              S\subset\Gamma\text{ is well ordered}\right\}.
+\]
+Zero coefficients are discarded from the support.  An element has one
+coefficient at each exponent, and no infinite ordinary sum is hidden in a
+single coefficient.  Addition and multiplication are the Hahn operations.
+When $R$ is an integral domain, the valuation of a nonzero series is its
+least support exponent; set $\val(0)=+\infty$.
+
+We will use
+\[
+ K=\C((t^\Gamma)),\qquad
+ \A=\Oh(D)((t^\Gamma)),\qquad
+ \mathcal B=\Mh(D)((t^\Gamma)),
+\]
+where $D$ is nonempty, open, and connected, and $\Mh(D)$ is the field of
+ordinary meromorphic functions on $D$.  Thus $K$ and $\mathcal B$ are
+fields, but $\A$ is generally not a field.  Constants embed as $K\subset\A$.
+Write
+\[
+ \A_{\geq0}=\{f:\val(f)\geq0\},\quad
+ \A_{>0}=\{f:\val(f)>0\},\quad
+ \mm_K=\{c\in K:\val(c)>0\}.
+\]
+These sets include zero under our convention for its valuation.
+
+\begin{definition}[Strong summability]\label{def:summability}
+A set-indexed family $(f_i)_{i\in I}$ in $R((t^\Gamma))$ is strongly
+summable if the union of its supports is well ordered and, for every
+$\gamma\in\Gamma$, only finitely many $i$ have a nonzero coefficient at
+$\gamma$.  Its sum is then defined coefficientwise by finite sums in $R$.
+A map is strongly linear if it is linear and preserves these summable
+families and their sums.
+\end{definition}
+
+The support condition, not a metric estimate, is the basis of every infinite
+operator expression below.  In particular, knowing that an operator raises
+valuation by $\delta>0$ does not by itself justify a sequential argument
+which silently assumes that $n\delta$ is cofinal in $\Gamma$.
+
+\subsection{A support lemma with a finite-word proof}
+
+For $S\subset\Gamma_{>0}$, let $S^*$ be the set of all finite sums of
+members of $S$, including the empty sum $0$.
+
+\begin{lemma}[Positive-support lemma]\label{lem:neumann}
+If $S$ is well ordered and positive, then $S^*$ is well ordered, and every
+$\gamma\in\Gamma$ is the sum of only finitely many ordered words with
+letters in $S$.  If $T\subset\Gamma$ is well ordered, then $T+S^*$ is
+well ordered and every $\gamma$ has only finitely many decompositions
+$\gamma=\tau+\mu$ with $\tau\in T$, $\mu\in S^*$.
+\end{lemma}
+
+\begin{proof}
+We give the usual finite-word argument to emphasize that no Archimedean
+hypothesis is involved.  A word $u$ is embedded in a word $w$ if the letters
+of $u$ can be matched, in their order, to a subsequence of the letters of
+$w$, with each matched letter no larger than its partner.
+
+First, every infinite sequence of words over a well-ordered alphabet has
+an earlier word embedded in a later word.  Otherwise choose a bad sequence
+$w_0,w_1,\ldots$, at each position choosing a word of least possible length
+among those allowing a bad continuation after the chosen prefix.  No word
+is empty.  Write $w_n=v_n a_n$, with last letter $a_n$.  The sequence of
+last letters has an infinite nondecreasing subsequence
+$a_{n_0}\leq a_{n_1}\leq\cdots$: successively choose a minimum in each
+remaining infinite tail.  The sequence
+\[
+ w_0,\ldots,w_{n_0-1},v_{n_0},v_{n_1},v_{n_2},\ldots
+\]
+cannot be bad, by minimality of the length of $w_{n_0}$.  An embedding
+among the original prefix words, or from one of them into a $v_{n_j}$,
+contradicts the original badness.  An embedding $v_{n_j}\hookrightarrow
+v_{n_k}$ extends to $w_{n_j}\hookrightarrow w_{n_k}$ by matching the last
+letters.  This is again a contradiction.
+
+When the letters are positive elements of $\Gamma$, an embedding implies
+that the sum of the earlier word is at most the sum of the later word.
+The inequality is strict unless the words are identical: an additional
+letter contributes positively, and a strictly increased matched letter
+also increases the sum.  Consequently an infinite strictly descending
+sequence of word sums is impossible.  Also an infinite sequence of distinct
+words with the same sum is impossible.  This proves both assertions about
+$S^*$.
+
+Finally, any infinite sequence in a well-ordered set has an infinite
+nondecreasing subsequence.  Applying this successively to the coordinates
+of pairs in $T\times S^*$ shows that the product order admits no infinite
+sequence with no comparable earlier/later pair.  A strictly descending
+sequence of pair sums would have that property.  Infinitely many distinct
+pairs with a fixed sum would have it as well, since a comparable pair with
+the same sum must have equal coordinates.  This proves the last assertions.
+\end{proof}
+
+\begin{corollary}[Finite dependency]\label{cor:dependency}
+Suppose an expression is built from a seed series with support $T$ by
+finitely many operations at each stage, and every additional perturbative
+factor contributes an exponent from a fixed well-ordered positive set
+$S$.  A sum over all finite such perturbative words is strongly summable,
+provided each fixed word contributes only finitely many terms.  Its support
+is contained in $T+S^*$.
+\end{corollary}
+
+\begin{proof}
+For a prescribed output exponent there are finitely many seed/word
+possibilities by \cref{lem:neumann}.  Each of these has only finitely many
+internal contributions.  The union of output supports is contained in the
+well-ordered set $T+S^*$.
+\end{proof}
+
+We use this corollary also for derivatives, which do not introduce new Hahn
+exponents.  The derivative order at a fixed output exponent is finite,
+although no common finite derivative order is asserted for the whole series.
+
+\subsection{Differentiation, units, and primitives}
+
+Define
+\[
+ \partial_z\left(\sum f_\gamma(z)t^\gamma\right)
+       =\sum f_\gamma'(z)t^\gamma.
+\]
+This is a strongly $K$-linear derivation, and its kernel is $K$, because an
+ordinary holomorphic function with zero derivative is constant on connected
+$D$.  The same kernel statement holds in $\mathcal B$.
+
+\begin{lemma}[A sufficient unit criterion]\label{lem:unit}
+If $f=t^\lambda(a+u)$ with $a\in\Oh(D)$ nowhere zero and
+$u\in\A_{>0}$, then $f$ is invertible in $\A$, with
+\[
+ f^{-1}=t^{-\lambda}a^{-1}\sum_{n\geq0}(-u/a)^n.
+\]
+Every coefficient of the inverse is holomorphic on the original $D$.
+\end{lemma}
+\begin{proof}
+The displayed family is summable by \cref{lem:neumann}.  Multiplication by
+$1+u/a$ telescopes coefficientwise to $1$.  Powers of $a^{-1}$ are
+holomorphic on $D$, so no new singularity is introduced there.
+\end{proof}
+
+We make no converse assertion about arbitrary units of $\A$; only the
+stated criterion is needed.  Every nonzero series is invertible in
+$\mathcal B$, since its leading nonzero coefficient is invertible as a
+meromorphic function.
+
+\begin{lemma}[Support-preserving primitives]\label{lem:primitive}
+For $g\in\A$, a primitive $P\in\A$ with $P'=g$ exists if and only if
+\[
+ \oint_\gamma g(z)\,dz=0
+\]
+for every ordinary closed piecewise $C^1$ curve in $D$, where the integral
+is taken coefficientwise.  If it exists, the primitive with $P(z_*)=0$
+is unique and introduces no new support exponents.
+\end{lemma}
+\begin{proof}
+Necessity holds coefficientwise by the ordinary fundamental theorem for
+line integrals.  Conversely define each coefficient primitive by path
+integration from $z_*$ to $z$.  Vanishing periods make this independent of
+the path.  On an ordinary disk the resulting function is an ordinary
+holomorphic primitive, hence it is holomorphic on all of $D$.  Use zero for
+a coefficient that was zero.  The resulting support is a subset of
+$\supp(g)$, so the collection is a Hahn series.  Any two primitives differ
+by a member of $K$, and the normalization removes that constant.
+\end{proof}
+
+\subsection{Taylor substitution and actual halo values}
+
+For $h\in\A_{>0}$, put $F=z+h$ and define
+\begin{equation}\label{eq:substitution}
+ T_Fg=g\circ F:=\sum_{n\geq0}\frac{h^n}{n!}\,g^{(n)}.
+\end{equation}
+With $S=\supp(h)$ and $T=\supp(g)$, this is strongly summable, with support
+in $T+S^*$.  It is strongly $K$-linear.  Leibniz's formula proves that it
+is an algebra homomorphism, and the usual Taylor chain rule gives
+\[
+ (g\circ F)'=(g'\circ F)F'.
+\]
+These identities may be checked at each exponent, where there are only
+finitely many terms; there is no unjustified rearrangement of ordinary
+infinite sums.  The same argument proves associativity of substitution.
+Notice the operator-order convention
+\begin{equation}\label{eq:antiorder}
+ T_FT_G=T_{G\circ F}.
+\end{equation}
+
+For an actual point of the halo
+\[
+ D^\#=\{z_0+\xi:z_0\in D,\ \xi\in\mm_K\}\subset K,
+\]
+define
+\begin{equation}\label{eq:halo-eval}
+ g(z_0+\xi)=\sum_{\gamma,n}
+      \frac{g_\gamma^{(n)}(z_0)}{n!}\,t^\gamma\xi^n.
+\end{equation}
+The same support lemma applies.  No common lower bound on the ordinary
+Taylor radii of infinitely many functions is required to justify the Hahn
+sum; each coefficient is differentiated only finitely often for a fixed
+output exponent.  Equation \eqref{eq:halo-eval} respects sums, products, and
+substitution.  It sends $F=z+h$ to a map of $D^\#$ into itself, because
+$\st(F(z_0+\xi))=z_0$.
+
+Evaluation is faithful for this coefficient-function category.  If
+$g\ne0$, choose an ordinary point where its leading nonzero coefficient
+function is nonzero; then $g$ has nonzero value at that point.  Thus the
+identities below are identities of genuine halo functions as well as of
+Hahn coefficient families.
+
+\subsection{Why this gives surcomplex results}
+
+When $\Gamma$ is an additive subgroup of $\No$, the standard Conway normal
+form identification sends $t^\gamma$ to $\omega^{-\gamma}$.  A Hahn
+series with complex coefficients is sent to its real and imaginary surreal
+normal forms.  Their supports are sets, so this gives a field embedding
+\[
+ \C((t^\Gamma))\hookrightarrow\No[i].
+\]
+This uses the classical normal-form arithmetic of the surreal numbers
+\cite{gonshor}; it does not require a set containing all surreal numbers.
+The positive-support sums used in this paper remain set-indexed after the
+embedding.  One can also enlarge $\Gamma$ to contain the supports of a
+specified set of data and then work entirely in that workspace.
+
+The particular rank-two example in \cref{sec:flat} needs only
+$\Gamma=\Q+\Q\omega$.  The resulting theorems therefore already describe
+explicit surcomplex maps.  They are not statements about arbitrary class
+functions on the entire surcomplex plane, and $\partial_z$ is not an
+intrinsic derivation of the scalar field $\No$.
+
+\section{Canonical logarithms and exact infinitesimal suspension}
+\label{sec:logarithm}
+
+Let
+\[
+ \G_+(D)=\{z+h:h\in\A_{>0}\}.
+\]
+We will prove that this is a group, rather than assuming its invertibility
+properties.  For $F=z+h$ put $\Delta=T_F-I$.
+
+\begin{theorem}[Common-domain logarithm--exponential correspondence]
+\label{thm:logexp}
+For every $F\in\G_+(D)$, the strongly summable operator
+\begin{equation}\label{eq:operatorlog}
+ L_F=\log T_F=\sum_{n\geq1}\frac{(-1)^{n+1}}{n}\Delta^n
+\end{equation}
+has the form $L_F=W_F\partial_z$ for a unique $W_F\in\A_{>0}$.
+Conversely, every $W\in\A_{>0}$ defines
+\begin{equation}\label{eq:operatorexp}
+ T=\exp(W\partial_z)=\sum_{n\geq0}\frac{(W\partial_z)^n}{n!},
+ \qquad F=Tz\in\G_+(D),
+\end{equation}
+and $T=T_F$.  The two constructions are inverse bijections.  They preserve
+the original coefficient domain $D$.  If $h\ne0$, then
+\[
+ \val(W_F)=\val(h),\qquad
+ \text{the leading coefficient of }W_F\text{ equals that of }h.
+\]
+The inverse of $F$ is $\exp(-W_F\partial_z)z$.
+\end{theorem}
+
+\begin{proof}
+\emph{Summability.}
+From Taylor substitution,
+\[
+ \Delta g=\sum_{k\geq1}\frac{h^k}{k!}g^{(k)}.
+\]
+Every term of $\Delta^n g$ contains at least $n$ perturbative factors from
+$h$ or its derivatives.  At a fixed Hahn exponent, the allowed words in
+$\supp(h)$ and the seed exponent of $g$ are finite in number, by
+\cref{cor:dependency}.  Consequently the sum over $n$ in
+\eqref{eq:operatorlog} is strongly summable.  Its coefficients, on an
+ordinary input function, are finite-order differential operators with
+holomorphic coefficients on $D$.  The same reasoning applies to the
+exponential of $W\partial_z$, using $\supp(W)$.
+
+\emph{The logarithm is a derivation.}
+Introduce an ordinary indeterminate $u$ and the binomial expression
+\[
+ U_u=\sum_{n\geq0}\binom un\Delta^n.
+\]
+For every fixed output exponent on fixed inputs, this is a polynomial in
+$u$, not an infinite power series in $u$.  When $u=N$ is a nonnegative
+integer, $U_N=T_F^N$ is multiplicative.  Hence the coefficient of every
+Hahn exponent in
+\[
+ U_u(fg)-(U_uf)(U_ug)
+\]
+is a polynomial which vanishes at all nonnegative integers.  It is zero.
+Differentiating this polynomial identity at $u=0$, and using
+\[
+ \left.\frac{d}{du}\binom un\right|_{u=0}
+   =\frac{(-1)^{n+1}}n\quad(n\geq1),
+\]
+proves the Leibniz identity for $L_F$.
+
+\emph{The derivation is a vector field.}
+Let $W_F=L_Fz$.  On an ordinary holomorphic input, the coefficient of any
+fixed exponent in $L_F$ is a finite-order differential operator $P$ and
+is a derivation.  It annihilates constants.  At any $z_0\in D$, apply
+Leibniz to powers of $z-z_0$.  The value of $P$ on $(z-z_0)^j$ at $z_0$
+is zero for $j\ne1$, and the value for $j=1$ is the coefficient of $W_F$
+at $z_0$.  These polynomials determine a finite jet, so
+$P f(z_0)=Pz(z_0)f'(z_0)$ for every holomorphic $f$.  Varying $z_0$ gives
+$L_F=W_F\partial_z$ on ordinary coefficients.  Strong $K$-linearity
+extends this identity to $\A$.
+
+This finite-jet step is important: no claim about arbitrary abstract
+$\C$-derivations of a function algebra is being smuggled into the proof.
+Only the explicitly constructed differential operators are involved.
+
+\emph{Exponentiating a vector field.}
+Repeated Leibniz gives
+\[
+ (W\partial_z)^n(fg)=\sum_{j=0}^n\binom nj
+    ((W\partial_z)^j f)((W\partial_z)^{n-j}g).
+\]
+After a summable rearrangement this proves that
+$\exp(W\partial_z)$ is multiplicative and fixes $K$.
+Set $F=\exp(W\partial_z)z$.  It equals $z+$ positive terms.
+On polynomials in $z$, the exponential homomorphism equals substitution by
+$F$.  At each Hahn exponent, both operations are finite-order differential
+operators on an ordinary holomorphic input.  Equality on polynomial jets
+at every point therefore implies equality on all holomorphic inputs, and
+then on $\A$ by strong linearity.
+
+\emph{Inverse identities and the leading term.}
+The formal scalar identities
+$\exp(\log(1+X))=1+X$ and $\log(\exp X)=X$ hold here coefficientwise:
+at each exponent their compositions use only finitely many perturbative
+words.  Thus the constructions are inverse.  The first term of $L_Fz$
+is $h$, and every remaining term contains at least two factors from
+$h$ and its derivatives.  If $\val(h)=\delta>0$, the remainder has
+valuation at least $2\delta>\delta$.  The leading-term assertion follows.
+Finally $\exp(W\partial_z)\exp(-W\partial_z)=I$, which gives the
+stated inverse map with the composition convention
+\eqref{eq:antiorder}.
+\end{proof}
+
+\begin{remark}[What ``exact suspension'' means]
+The theorem supplies a strongly summable vector field whose time-one
+substitution is exactly $F$.  It does not claim that an ordinary complex
+specialization of the Hahn parameter has a convergent iterative logarithm.
+Nor does it construct a continuous trajectory for the fine topology on
+all of $\No[i]$.  The analytic extension to an ordinary slow-time chart
+will require a separate construction in \cref{sec:slowtime}.
+\end{remark}
+
+\begin{corollary}[Julia equation]\label{cor:julia}
+For every $F\in\G_+(D)$,
+\begin{equation}\label{eq:julia}
+ W_F(F(z))=F'(z)W_F(z).
+\end{equation}
+\end{corollary}
+\begin{proof}
+$T_F$ commutes with its logarithm.  Apply
+$T_F(W_F\partial_z)=(W_F\partial_z)T_F$ to $z$.
+\end{proof}
+
+\begin{proposition}[Conjugacy and vector fields]\label{prop:intertwine}
+For $F_1,F_2,H\in\G_+(D)$, the following are equivalent:
+\[
+ H\circ F_1=F_2\circ H,
+ \qquad W_{F_2}(H)=H'W_{F_1}.
+\]
+\end{proposition}
+\begin{proof}
+The conjugacy relation is $T_{F_1}T_H=T_HT_{F_2}$.  Conjugating the
+summable logarithm gives
+$(W_{F_1}\partial_z)T_H=T_H(W_{F_2}\partial_z)$.
+Evaluation on $z$ gives the displayed vector-field identity.  Conversely
+that identity and the chain rule give the operator intertwining on all
+of $\A$.  Exponentiation recovers the conjugacy.
+\end{proof}
+
+\section{Time forms and their global periods}
+\label{sec:timeforms}
+
+Assume for the moment that $W=W_F$ has a nowhere-zero leading coefficient.
+By \cref{lem:unit}, the time form
+\[
+ \Omega_F=W^{-1}dz
+\]
+belongs to $\A\,dz$.  Its significance is elementary: in a local primitive
+coordinate $P$ with $P'=1/W$, the vector field $W\partial_z$ becomes a
+unit translation vector field.  The issue is whether such local primitives
+fit together globally and whether one can compare the primitives of two
+maps without leaving the common coefficient domain.
+
+For $H=z+h\in\G_+(D)$ define the pullback of a one-form by
+\[
+ H^*(g\,dz)=(g\circ H)H'\,dz.
+\]
+All operations are those already justified in \cref{sec:hahn}.
+
+\begin{lemma}[Explicit exactness of an infinitesimal pullback]
+\label{lem:homotopy}
+For $g\in\A$ and $h\in\A_{>0}$, the series
+\begin{equation}\label{eq:Q}
+ Q_h(g)=\sum_{n\geq1}\frac{h^n}{n!}g^{(n-1)}
+\end{equation}
+is strongly summable and satisfies
+\begin{equation}\label{eq:pullback-exact}
+ (z+h)^*(g\,dz)-g\,dz=dQ_h(g).
+\end{equation}
+Consequently every coefficientwise period is unchanged by a near-identity
+pullback.
+\end{lemma}
+\begin{proof}
+For $S=\supp(h)$, the support in \eqref{eq:Q} is contained in
+$\supp(g)+(S^*\setminus\{0\})$, and each coefficient has finitely many
+contributions.  Termwise differentiation is therefore legitimate.  It gives
+\begin{align*}
+ (Q_h(g))'
+ &=\sum_{n\geq1}\frac{h^n}{n!}g^{(n)}
+   +h'\sum_{n\geq1}\frac{h^{n-1}}{(n-1)!}g^{(n-1)}\\
+ &=g(z+h)-g(z)+h'g(z+h)\\
+ &=g(z+h)(1+h')-g(z).
+\end{align*}
+This is \eqref{eq:pullback-exact}.  Exact coefficient forms have zero
+ordinary periods by \cref{lem:primitive}.
+\end{proof}
+
+This lemma is a support-controlled version of the familiar fact that an
+infinitesimal change of coordinate acts trivially on one-dimensional
+holomorphic de Rham cohomology.  The proof is included as infrastructure;
+the homotopy principle itself is not a novelty claim.  In particular,
+there is no assertion that $s\mapsto z+sh$ is a fine-continuous path in the
+full surreal topology.  Formula \eqref{eq:Q} is the construction, and its
+support certificate is what licenses it.
+
+\begin{proposition}[Time forms under conjugacy]\label{prop:time-conjugacy}
+Let $F_1,F_2$ have invertible $W_{F_1},W_{F_2}$ in $\A$.  Then
+\[
+ H\circ F_1=F_2\circ H
+ \quad\Longleftrightarrow\quad
+ H^*\Omega_{F_2}=\Omega_{F_1}
+ \qquad(H\in\G_+(D)).
+\]
+In particular, conjugate maps have identical time-form periods on every
+ordinary closed curve in $D$.
+\end{proposition}
+\begin{proof}
+The equality of time forms reads
+$H'/W_{F_2}(H)=1/W_{F_1}$, which is equivalent to the vector-field identity
+in \cref{prop:intertwine}.  Period invariance now follows from
+\cref{lem:homotopy}.
+\end{proof}
+
+\begin{remark}[The function class matters]
+The periods here are attached to coefficient functions on $D$.  If one
+allows an unrelated choice of primitive on each monad, one has enlarged the
+function class and can destroy the global obstruction.  The theorem is
+about a single element of $\Oh(D)((t^\Gamma))$, not a collection of
+unrelated infinitesimal germs.  Likewise, a period about an ordinary
+puncture is not being identified with a local residue at an arbitrary
+surcomplex point.
+\end{remark}
+
+\section{Difference equations and their complete obstruction}
+\label{sec:difference}
+
+Let $F\in\G_+(D)$ be nonidentity, set $W=W_F$, and let
+$\DD=W\partial_z$.  Define the scalar formal series
+\begin{equation}\label{eq:E-B}
+ E(X)=\frac{e^X-1}{X}=\sum_{n\geq0}\frac{X^n}{(n+1)!},\qquad
+ B(X)=\frac{X}{e^X-1}=\sum_{n\geq0}\frac{B_n}{n!}X^n,
+\end{equation}
+where $B_0=1$ and $B_1=-1/2$.  Substitution of $\DD$ into either series
+is strongly summable.  These operators are inverse automorphisms of the
+underlying strongly linear space $\A$; no multiplicativity of $B(\DD)$
+or $E(\DD)$ is asserted.
+
+\begin{theorem}[Discrete equation as a primitive problem]
+\label{thm:difference}
+For a nonidentity $F\in\G_+(D)$,
+\begin{equation}\label{eq:images}
+ \ker\Delta_F=K,\qquad
+ \Delta_F(\A)=W\partial_z\A.
+\end{equation}
+For $g\in\A$, the equation
+\begin{equation}\label{eq:cohomological}
+ \psi\circ F-\psi=g
+\end{equation}
+has a solution $\psi\in\A$ if and only if the meromorphic Hahn quotient
+$g/W$ belongs to $\A$ and
+\begin{equation}\label{eq:periodcondition}
+ \oint_\gamma\frac{g(z)}{W(z)}\,dz=0
+ \quad\text{for every ordinary closed curve }\gamma\subset D.
+\end{equation}
+If $P' =g/W$, all solutions are
+\begin{equation}\label{eq:bernoulli-solver}
+ \psi=B(\DD)P+C,\qquad C\in K.
+\end{equation}
+When the leading coefficient of $W$ is nowhere zero, membership $g/W\in\A$
+is automatic.
+\end{theorem}
+
+\begin{proof}
+By \cref{thm:logexp} and the formal identity in \eqref{eq:E-B},
+\begin{equation}\label{eq:factor-difference}
+ \Delta_F=e^{\DD}-I=\DD E(\DD)=E(\DD)\DD.
+\end{equation}
+The identities $E(\DD)B(\DD)=I=B(\DD)E(\DD)$ follow coefficientwise
+from the scalar identities; \cref{cor:dependency} permits every
+rearrangement.  Thus the image in \eqref{eq:images} equals $\DD\A$.
+The kernel of $\DD$ is $K$, since $W\ne0$, $\A$ is a domain, and the
+kernel of $\partial_z$ is $K$.  Both $E(\DD)$ and its inverse act as the
+identity on constants, so \eqref{eq:factor-difference} also gives
+$\ker\Delta_F=K$.
+
+Since division by $W$ is available in $\mathcal B$, membership in
+$W\partial_z\A$ is equivalent to $g/W$ being the derivative of an
+element of $\A$.  \Cref{lem:primitive} gives precisely the two stated
+conditions.  Finally
+\[
+ \Delta_F B(\DD)P=\DD P=W P'=g,
+\]
+and the kernel statement gives uniqueness up to $K$.  The last assertion
+uses \cref{lem:unit}.
+\end{proof}
+
+\begin{remark}[Why the forcing, not a corrected forcing, supplies the periods]
+One might instead multiply \eqref{eq:cohomological} by $B(\DD)$ and
+attempt to integrate $B(\DD)g/W$.  This gives the same obstruction:
+for $n\geq1$,
+\[
+ \frac{\DD^n g}{W}=(\DD^{n-1}g)'
+\]
+is exact.  Thus all Bernoulli correction terms have zero periods.  The
+factorization \eqref{eq:factor-difference} makes the uncorrected quotient
+$g/W$ and its obstruction especially transparent.
+\end{remark}
+
+\subsection{Abel functions}
+
+\begin{corollary}[Exact global Abel criterion]\label{cor:abel}
+Suppose the leading coefficient of $W_F$ is nowhere zero.  The equation
+$\psi\circ F=\psi+1$ has a solution in $\A$ if and only if all the
+periods of $\Omega_F$ vanish.  In this case any primitive $P'=1/W_F$
+already satisfies the equation; all solutions differ from $P$ by a
+constant in $K$.
+\end{corollary}
+\begin{proof}
+Apply \cref{thm:difference} with $g=1$.  In addition,
+$\DD P=1$ and $\DD^2P=0$, so
+$e^{\DD}P=P+1$.  The Bernoulli formula would give
+$B(\DD)P=P-1/2$, which differs only by a constant.
+\end{proof}
+
+The equality $P'=1/W_F$ guarantees a nonvanishing derivative on the halo
+under the leading-unit hypothesis.  It does not make $P$ globally
+injective on a multiply covered domain.  Even in ordinary complex analysis,
+a locally univalent primitive need not be globally univalent.  Thus the
+corollary is an Abel-function theorem, not an unconditional global
+conjugacy with translation on a subset of $K$.
+
+\subsection{An exact sequence on the punctured plane}
+
+Let $D_r=\C\setminus\{a_1,\ldots,a_r\}$ with distinct ordinary points.
+Choose positively oriented small ordinary circles $\gamma_j$ about $a_j$
+which contain no other puncture.  Put
+\begin{equation}\label{eq:periodmap}
+ (\mathcal P_Fg)_j=\frac1{2\pi i}
+       \oint_{\gamma_j}\frac{g}{W_F}\,dz.
+\end{equation}
+
+\begin{theorem}[Complete finite-dimensional discrete obstruction]
+\label{thm:exact-sequence}
+If $F\in\G_+(D_r)$ has a nowhere-zero leading displacement coefficient,
+then the sequence \eqref{eq:exact-intro}, with the map
+\eqref{eq:periodmap}, is an exact sequence of $K$-vector spaces.
+A right inverse of $\mathcal P_F$ is
+\begin{equation}\label{eq:rightinverse}
+ (q_1,\ldots,q_r)\longmapsto
+       W_F(z)\sum_{j=1}^r\frac{q_j}{z-a_j}.
+\end{equation}
+Consequently every forcing admits the decomposition
+\begin{equation}\label{eq:forcing-decomposition}
+ g=\Delta_F\psi+
+       W_F\sum_{j=1}^r\frac{(\mathcal P_Fg)_j}{z-a_j},
+\end{equation}
+with $\psi$ determined up to a constant after the second term is fixed.
+\end{theorem}
+
+\begin{proof}
+The initial kernel statement is \cref{thm:difference}.  Every ordinary
+closed curve in $D_r$ has the same periods, against a holomorphic
+one-form, as the integer combination of small puncture circles specified
+by its winding numbers.  For completeness, one may remove small disks
+about the punctures inside a large disk containing the curve, and cut the
+remaining planar region along arcs joining the boundary components.  The
+cut region is simply connected, and the integrals along the two sides of
+each cut cancel.  This reduces its periods to those of the boundary
+circles.  Applying this ordinary argument to each coefficient proves that
+vanishing of the $r$ components in \eqref{eq:periodmap} is equivalent to
+\eqref{eq:periodcondition}.  Thus the middle exactness follows from
+\cref{thm:difference}.
+
+The rational differential $dz/(z-a_j)$ has integral $2\pi i$ around
+$\gamma_j$ and zero around the other chosen circles.  Hence
+\eqref{eq:rightinverse} is a right inverse, proving surjectivity.  Subtract
+this right-inverse term from $g$ and apply exactness to obtain
+\eqref{eq:forcing-decomposition}.
+\end{proof}
+
+No identification of the infinite-dimensional space $\A$ with
+$K\otimes_\C\Oh(D_r)$ has been used.  The finite-dimensional quotient is
+computed directly by coefficientwise periods and explicit representatives.
+
+\subsection{A local obstruction when the leading coefficient has zeros}
+
+The quotient condition in \cref{thm:difference} must not be dropped outside
+the nonsingular stratum.  On a disk containing $0$, take
+\[
+ W=\eps z^2,\qquad F=\frac{z}{1-\eps z},
+ \qquad\eps=t^\delta,\quad\delta>0.
+\]
+This $F$ is the exponential of $W\partial_z$ in $\G_+(D)$.
+The equation $\psi\circ F-\psi=1$ has no solution in $\A$ because
+$1/W=\eps^{-1}z^{-2}$ is not holomorphic at $0$.  Equivalently, $F$ fixes
+$0$, and evaluation of the equation there would give $0=1$.
+On a punctured disk, by contrast, $-1/(\eps z)$ is an Abel function.
+This example separates a local divisibility obstruction from the global
+period obstruction.
+
+\section{Complete global conjugacy classification}
+\label{sec:classification}
+
+Fix $\delta>0$, set $\eps=t^\delta$, and let $a\in\Oh(D)$ be nowhere
+zero.  Define the stratum
+\begin{equation}\label{eq:stratum}
+ \G_{\delta,a}(D)=
+ \{F\in\G_+(D):F=z+\eps a+r,\ \val(r)>\delta\}.
+\end{equation}
+By \cref{thm:logexp}, this is equivalently the class of maps whose
+logarithmic vector fields have the form
+$W_F=\eps(a+u)$ with $u\in\A_{>0}$.
+The normalized time form is
+\begin{equation}\label{eq:normalized-form}
+ \beta_F=\eps\Omega_F=b_F(z)\,dz,
+ \qquad b_F=a^{-1}+\text{positive Hahn terms}.
+\end{equation}
+
+The leading data $(\delta,a)$ are preserved by conjugacy in $\G_+(D)$.
+Indeed, the identity $W_2(H)=H'W_1$ of
+\cref{prop:intertwine} does not change the leading coefficient or valuation:
+$H=z+$ positive terms and $H'=1+$ positive terms.  Thus it is natural to
+classify one stratum at a time.
+
+\subsection{A global displacement inverse}
+
+\begin{lemma}[Implicit displacement lemma]\label{lem:displacement}
+Let $b=b_0+u\in\A_{\geq0}$, where $b_0\in\Oh(D)$ is nowhere zero and
+$u\in\A_{>0}$.  For each $p\in\A_{>0}$, there is a unique
+$h\in\A_{>0}$ satisfying
+\begin{equation}\label{eq:implicit-displacement}
+ b h+\frac{b'}{2!}h^2+\frac{b''}{3!}h^3+\cdots=p.
+\end{equation}
+Every coefficient of $h$ is holomorphic on $D$.  If
+$S=\supp(u)\cup\supp(p)$, its support is contained in
+$S^*\setminus\{0\}$.  If $p(z_*)=0$, then $h(z_*)=0$.
+\end{lemma}
+
+\begin{proof}
+When $S$ is empty, $h=0$ works.  Otherwise let
+$M=S^*$, a well-ordered monoid by \cref{lem:neumann}.  Set the coefficient
+of $h$ at $0$ to zero and determine its coefficients for
+$\gamma\in M\setminus\{0\}$ in increasing order.
+
+The coefficient of $h_\gamma$ in the left side of
+\eqref{eq:implicit-displacement} is precisely $b_0$.  Any other linear
+term comes from $u_\alpha h_\nu$ with $\alpha>0$ and
+$\nu=\gamma-\alpha<\gamma$.  In a term containing $n\geq2$ factors
+of $h$, every factor exponent is positive and strictly smaller than
+$\gamma$.  The coefficient is a finite sum: the possible factors can be
+expanded into words in $S$, and \cref{lem:neumann} gives finitely many
+such words of total exponent $\gamma$.  Therefore the recursion has the
+form
+\[
+ h_\gamma=b_0^{-1}(p_\gamma-R_\gamma),
+\]
+where $R_\gamma$ is a finite expression in earlier coefficients and
+ordinary derivatives of $b$.  It defines a holomorphic function on $D$.
+This constructs a Hahn series with the claimed support and proves existence.
+
+For unrestricted uniqueness, let $h_1,h_2\in\A_{>0}$ be two solutions,
+not necessarily with supports in the chosen monoid.  The difference of the
+two left sides factors as
+\[
+ (h_1-h_2)(b_0+v),\qquad v\in\A_{>0}.
+\]
+This follows by factoring each difference of powers; the resulting sum is
+strongly summable using the finite union of the positive supports of
+$u,h_1,h_2$.  The second factor is a unit by \cref{lem:unit}.  Thus
+$h_1=h_2$.
+
+At $z_*$, evaluation gives the same scalar implicit equation over $K$,
+whose linear leading coefficient is $b_0(z_*)\ne0$.  If $p(z_*)=0$,
+zero is a solution and the same factorization proves it is the only
+positive solution.  Hence $h(z_*)=0$.
+\end{proof}
+
+The common-domain conclusion is stronger than merely solving a separate
+germ problem at each point.  Every stage divides only by the same
+nowhere-zero ordinary function $b_0$ and uses derivatives of functions
+already holomorphic on $D$.  No radius is lost at any Hahn exponent.
+
+\subsection{The classification theorem}
+
+\begin{theorem}[Complete period invariant and marked conjugacy]
+\label{thm:classification}
+For $F_1,F_2\in\G_{\delta,a}(D)$, the following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item There is $H\in\G_+(D)$ with $H\circ F_1=F_2\circ H$.
+\item For every ordinary closed piecewise $C^1$ curve $\gamma\subset D$,
+\[
+ \oint_\gamma\Omega_{F_1}=\oint_\gamma\Omega_{F_2}.
+\]
+\item $\beta_{F_1}-\beta_{F_2}=dp$ for some $p\in\A_{>0}$.
+\end{enumerate}
+When these conditions hold, for every specified $z_*\in D$ there is a
+unique conjugacy $H$ as in \textup{(i)} satisfying $H(z_*)=z_*$.
+One obtains it by taking the normalized primitive $p(z_*)=0$ in
+\textup{(iii)} and solving
+\begin{equation}\label{eq:construct-conjugacy}
+ \sum_{n\geq1}\frac{b_{F_2}^{(n-1)}}{n!}h^n=p,
+ \qquad H=z+h.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By \cref{prop:time-conjugacy}, condition (i) implies (ii).
+Multiplication by the nonzero constant $\eps$ shows that (ii) is equivalent
+to vanishing of all periods of $\beta_{F_1}-\beta_{F_2}$.
+Both normalized time forms have the same leading coefficient $a^{-1}$.
+Their difference therefore has positive support.  The normalized primitive
+of \cref{lem:primitive}, when it exists, also has positive support.  This
+proves equivalence of (ii) and (iii), including the normalization of $p$.
+
+Assume (iii).  The leading coefficient of $b_{F_2}$ is $a^{-1}$, which
+is nowhere zero.  Apply \cref{lem:displacement} to obtain the unique
+positive $h$ in \eqref{eq:construct-conjugacy}.  The explicit pullback
+identity of \cref{lem:homotopy} gives
+\[
+ H^*\beta_{F_2}-\beta_{F_2}=dp
+             =\beta_{F_1}-\beta_{F_2}.
+\]
+Thus $H^*\beta_{F_2}=\beta_{F_1}$, equivalently
+$H^*\Omega_{F_2}=\Omega_{F_1}$.  By
+\cref{prop:time-conjugacy}, $H$ is a conjugacy.  Its inverse belongs to
+$\G_+(D)$ by \cref{thm:logexp}, and
+\cref{lem:displacement} gives $H(z_*)=z_*$.
+
+Finally suppose $\widetilde H=z+\widetilde h$ is any conjugacy fixing
+$z_*$.  The same pullback identity yields
+\[
+ d\bigl(Q_{\widetilde h}(b_{F_2})-p\bigr)=0.
+\]
+The expression in parentheses is a constant in $K$, and its value at
+$z_*$ is zero.  Hence $\widetilde h$ satisfies the same implicit equation
+\eqref{eq:construct-conjugacy}.  Its uniqueness in
+\cref{lem:displacement} proves $\widetilde H=H$.
+\end{proof}
+
+\begin{corollary}[Simply connected domains]\label{cor:simplyconnected}
+If $D$ is simply connected, every two maps in $\G_{\delta,a}(D)$ are
+conjugate by a unique near-identity change of variable fixing a prescribed
+ordinary basepoint.  In particular, each is conjugate to
+$\exp(\eps a\partial_z)z$.
+\end{corollary}
+\begin{proof}
+Every ordinary holomorphic coefficient one-form on $D$ has a primitive,
+so condition (iii) of \cref{thm:classification} holds.
+\end{proof}
+
+For $a=1$, the reference map is $z+\eps$ and this is a genuine global
+near-identity conjugacy to that translation on $D^\#$.  For general $a$,
+the reference map is the indicated vector-field exponential; no
+univalence of a primitive of $dz/a$ is required.
+
+\subsection{Why the hypotheses cannot be silently weakened}
+
+Three restrictions do actual work.  The leading coefficient $a$ must not
+vanish, because inversion and the implicit displacement recursion divide by
+$a$ or $a^{-1}$.  The conjugating map must have identity ordinary part,
+because otherwise it can act nontrivially on ordinary homology and on the
+leading form.  Finally, all coefficient functions must be defined on the
+same $D$; replacing global functions by independent germs removes the
+meaning of a single period comparison.  The theorem is not claimed after
+any of these hypotheses is erased.
+
+\section{Explicit moduli and the centralizer}
+\label{sec:moduli}
+
+\subsection{Every period vector occurs}
+
+Continue with $D_r=\C\setminus\{a_1,\ldots,a_r\}$.  For the fixed
+stratum $(\delta,a)$ define
+\begin{equation}\label{eq:moduli-map}
+ q_j(F)=\frac1{2\pi i}\oint_{\gamma_j}
+          \left(\beta_F-\frac{dz}{a(z)}\right).
+\end{equation}
+Its values belong to $\mm_K$, because the difference has positive support.
+
+\begin{theorem}[An explicit moduli space]\label{thm:moduli}
+The map $F\mapsto(q_1(F),\ldots,q_r(F))$ induces a bijection
+\begin{equation}\label{eq:moduli-bijection}
+ \G_{\delta,a}(D_r)/\text{conjugacy by }\G_+(D_r)
+       \ \longleftrightarrow\ \mm_K^r.
+\end{equation}
+For $\mathbf q=(q_1,\ldots,q_r)\in\mm_K^r$, a representative is
+\begin{equation}\label{eq:moduli-representative}
+ b_{\mathbf q}(z)=\frac1{a(z)}+\sum_{j=1}^r\frac{q_j}{z-a_j},
+ \qquad W_{\mathbf q}=\frac{\eps}{b_{\mathbf q}},
+ \qquad F_{\mathbf q}=\exp(W_{\mathbf q}\partial_z)z.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The finite union of the supports of the $q_j$ is positive and well ordered.
+Thus $b_{\mathbf q}\in\A_{\geq0}$ with nowhere-zero leading coefficient
+$a^{-1}$, and it is invertible by \cref{lem:unit}.  Consequently
+$W_{\mathbf q}=\eps(a+\text{positive terms})$, and
+$F_{\mathbf q}$ belongs to the specified stratum.  Its normalized time
+form is exactly $b_{\mathbf q}dz$.  The integrals of the simple-pole
+representatives give $q_j(F_{\mathbf q})=q_j$.
+
+Conjugate maps have the same vector by period invariance.  Conversely, equal
+vectors give equal periods around each puncture.  As in
+\cref{thm:exact-sequence}, this gives equality of every ordinary period.
+\Cref{thm:classification} then gives a conjugacy.  This proves both
+surjectivity and injectivity in \eqref{eq:moduli-bijection}.
+\end{proof}
+
+The parametrization is algebraic over the Hahn constants in its displayed
+one-form representatives.  It imposes no countability, finite generation,
+or rank-one condition on the possible supports of the $q_j$.
+
+\subsection{Centralizers and uniqueness of roots}
+
+The next result needs no nowhere-zero leading coefficient.
+
+\begin{theorem}[Centralizer of a nonidentity infinitesimal map]
+\label{thm:centralizer}
+Let $F\in\G_+(D)$ be nonidentity, with $W=W_F$ and
+$\delta=\val(W)>0$.  Its centralizer in $\G_+(D)$ is
+\begin{equation}\label{eq:centralizer}
+ Z_{\G_+(D)}(F)=
+ \left\{\exp(cW\partial_z)z:
+ c\in K,\ c=0\text{ or }\val(c)+\delta>0\right\}.
+\end{equation}
+The parametrization is an isomorphism from the indicated additive subgroup
+of $K$ to the centralizer.  Every $F\in\G_+(D)$ has exactly one $n$th
+root in $\G_+(D)$ for every integer $n\geq1$, namely
+$\exp((W_F/n)\partial_z)z$.  The group $\G_+(D)$ is torsion-free.
+\end{theorem}
+
+\begin{proof}
+If $H$ commutes with $F$, their substitution operators commute, so their
+summable logarithms commute.  Write $W_H=V$.  The bracket is
+\[
+ [W\partial_z,V\partial_z]=(WV'-VW')\partial_z,
+\]
+and therefore $WV'-VW'=0$.  In the meromorphic Hahn field $\mathcal B$,
+\[
+ (V/W)'=0.
+\]
+Its constant field is $K$, so $V=cW$ for some $c\in K$.
+If $c\ne0$, positivity of $V$ is exactly
+$\val(c)+\delta>0$.  Conversely, for each such $c$, the positive vector
+field $cW$ exponentiates, and its exponential commutes with that of $W$.
+The group law follows from
+\[
+ \exp(cW\partial_z)\exp(dW\partial_z)
+     =\exp((c+d)W\partial_z).
+\]
+Injectivity follows by taking logarithms and using $W\ne0$.
+
+The displayed $n$th root certainly exists.  If $H^n=F$ and $W_H=V$,
+then $T_H^n=\exp(nV\partial_z)$; uniqueness of logarithms gives
+$nV=W_F$.  This proves uniqueness.  If $H^n=\id$, the same argument gives
+$nW_H=0$, hence $H=\id$ in characteristic zero.
+\end{proof}
+
+If the leading coefficient of $W_F$ is nowhere zero at $z_*$, no
+nonidentity centralizer element fixes $z_*$.  Indeed, its leading
+displacement is the nonzero value of $cW_F$ there.  Thus the basepoint
+normalization in \cref{thm:classification} removes exactly the
+centralizer freedom.  More generally, the unnormalized conjugacies between
+two conjugate maps form a torsor under either centralizer.
+
+The time constants in \eqref{eq:centralizer} may have negative valuation,
+provided $cW$ remains positive.  This is a legitimate Hahn-defined family
+of maps, not a claim that arbitrary large times are available for every
+flow.  The positivity threshold is part of the conclusion.
+
+\section{Nonconjugate dynamics beyond every one-scale jet}
+\label{sec:flat}
+
+\subsection{The flat ideal of a noncofinal scale}
+
+Fix $\delta>0$, set $\eps=t^\delta$, and define
+\begin{equation}\label{eq:flat-ideal}
+ J_\delta=\{0\}\cup
+ \{c\in K:\val(c)>n\delta\text{ for every integer }n\geq1\}.
+\end{equation}
+It is an ideal in the valuation ring $K_{\geq0}$.  It is nonzero precisely
+when there is some $\eta\in\Gamma$ larger than all the $n\delta$.
+The forward implication follows by taking the valuation of a nonzero
+member; the reverse implication follows from $t^\eta\in J_\delta$.
+In particular $J_\delta=0$ when the multiples of $\delta$ are cofinal,
+as happens in an Archimedean value group.
+
+For coefficient functions, the corresponding ideal is
+\begin{equation}\label{eq:flat-functions}
+ I_\delta(D)=\bigcap_{n\geq1}\eps^n\A_{\geq0}
+   =\{0\}\cup\{f\in\A:\val(f)>n\delta\text{ for all }n\geq1\}.
+\end{equation}
+The equivalence between weak and strict inequalities here follows by
+replacing $n$ with $n+1$.  It is essential that these ideals are formed in
+$\A_{\geq0}$, \emph{not} in $\A$: $\eps$ is a unit in the latter,
+so its powers generate the whole ring there.
+
+Consequently the map to one-scale jets
+\begin{equation}\label{eq:jet-map}
+ \A_{\geq0}\longrightarrow
+       \varprojlim_n\A_{\geq0}/\eps^n\A_{\geq0}
+\end{equation}
+has kernel $I_\delta(D)$.  In the noncofinal case it loses nonzero
+information.  The next theorem shows that it can lose a complete family
+of global conjugacy obstructions, not merely some irrelevant constants.
+
+\subsection{An exact family of invisible moduli}
+
+\begin{theorem}[Flatly indistinguishable but globally nonconjugate]
+\label{thm:flat}
+Let $r\geq1$, let $D_r=\C\setminus\{a_1,\ldots,a_r\}$, and suppose
+$J_\delta\ne0$.  For $\mathbf c=(c_1,\ldots,c_r)\in J_\delta^r$ set
+\begin{equation}\label{eq:flat-family}
+ R_{\mathbf c}(z)=\sum_{j=1}^r\frac{c_j}{z-a_j},\qquad
+ W_{\mathbf c}=\frac{\eps}{1+\eps R_{\mathbf c}},\qquad
+ F_{\mathbf c}=\exp(W_{\mathbf c}\partial_z)z.
+\end{equation}
+Then all these maps belong to $\G_{\delta,1}(D_r)$ and satisfy:
+\begin{enumerate}[label=(\alph*)]
+\item $F_{\mathbf0}=z+\eps$ and
+$F_{\mathbf c}-F_{\mathbf0}\in I_\delta(D_r)$ for every $\mathbf c$.
+If $\mathbf c\ne0$ and $\eta=\min_{c_j\ne0}\val(c_j)$, then more precisely
+\begin{equation}\label{eq:flat-valuation}
+ \val(F_{\mathbf c}-F_{\mathbf0})=2\delta+\eta.
+\end{equation}
+\item Their time forms are exactly
+\begin{equation}\label{eq:exact-flat-form}
+ \Omega_{F_{\mathbf c}}=\eps^{-1}dz+
+                    \sum_{j=1}^r\frac{c_j\,dz}{z-a_j}.
+\end{equation}
+\item $F_{\mathbf c}$ and $F_{\mathbf d}$ are conjugate by an element
+of $\G_+(D_r)$ if and only if $\mathbf c=\mathbf d$.
+\item A global Abel function in $\A_\Gamma(D_r)$ exists for
+$F_{\mathbf c}$ if and only if $\mathbf c=\mathbf0$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The finite union of the supports of the $c_j$ is well ordered and positive.
+Hence $R_{\mathbf c}\in\A_{>0}$.  The denominator in
+\eqref{eq:flat-family} has leading coefficient $1$ and is a unit, so
+$W_{\mathbf c}=\eps+$ terms of valuation greater than $\delta$.
+The exponential theorem places $F_{\mathbf c}$ in the stated stratum.
+For $\mathbf c=0$ the vector field is constant, and its exponential is
+exactly $z+\eps$.
+
+If $\mathbf c\ne0$, then
+$\val(R_{\mathbf c})=\eta$.  Indeed, a nontrivial linear combination of
+the rational functions $(z-a_j)^{-1}$ cannot vanish identically: taking
+ordinary residues at the punctures recovers its coefficients.
+The geometric expansion gives
+\begin{equation}\label{eq:Wflat-difference}
+ W_{\mathbf c}-\eps=-\eps^2R_{\mathbf c}
+                    +\eps^3R_{\mathbf c}^2-\cdots,
+ \qquad\val(W_{\mathbf c}-\eps)=2\delta+\eta.
+\end{equation}
+Put $V=W_{\mathbf c}-\eps$ and $\lambda=2\delta+\eta$.
+In the exponential expansion of $(\eps\partial_z+V\partial_z)^n z$
+for $n\geq2$, the word with no factor $V\partial_z$ vanishes, because
+$(\eps\partial_z)^2z=0$.  Every other word has valuation at least
+$\lambda+(n-1)\delta$, since derivatives do not lower Hahn valuation.
+This is strictly greater than $\lambda$.  All such words are summable
+by \cref{lem:neumann}.  Thus the leading difference between
+$F_{\mathbf c}$ and $z+\eps$ comes from $V$ itself, proving
+\eqref{eq:flat-valuation}.  Since $\eta>n\delta$ for all $n$, the
+difference belongs to \eqref{eq:flat-functions}.
+
+The logarithm of $F_{\mathbf c}$ is $W_{\mathbf c}$, by the inverse
+identity in \cref{thm:logexp}.  Taking its reciprocal gives the exact
+formula \eqref{eq:exact-flat-form}.  Thus $(2\pi i)^{-1}\oint_{\gamma_j}\Omega_{F_{\mathbf c}}=c_j$;
+for the normalized time form $\beta_{F_{\mathbf c}}$ the corresponding
+value is $\eps c_j$.
+Thus equality of time-form periods is equivalent to
+$\mathbf c=\mathbf d$.  \Cref{thm:classification} proves (c), while
+\cref{cor:abel} proves (d).
+\end{proof}
+
+\begin{remark}[A failure of separated one-scale information, not of Hahn equality]
+All the maps in the theorem have the same image under the one-scale jet map
+\eqref{eq:jet-map}.  They do \emph{not} have the same full Hahn coefficients.
+The missing coefficients occur at exponents larger than every $n\delta$.
+Thus the result does not contradict uniqueness of Hahn expansions, nor
+separation by arbitrary value-group cutoffs.  It shows exactly why replacing
+arbitrary-rank support control by a single ``small parameter completion''
+can erase a global obstruction.
+\end{remark}
+
+\subsection{A concrete surcomplex instance}
+
+Take the ordered group
+\[
+ \Gamma=\Q\oplus\Q\quad\text{with lexicographic order},\qquad
+ \delta=(0,1),\quad\eta=(1,0).
+\]
+For every integer $n\geq1$, $\eta>n\delta$, because comparison is decided
+by the first coordinate.  This group can be represented inside the
+surreals as $\Q\omega+\Q$, with $(q,r)\mapsto q\omega+r$.
+Under the normal-form embedding,
+\[
+ \eps=\omega^{-1},\qquad c=t^\eta=\omega^{-\omega}.
+\]
+On $D=\C^*$, the field
+\begin{equation}\label{eq:surreal-flat-example}
+ W_c(z)=\frac{\omega^{-1}}{1+\omega^{-(\omega+1)}/z}
+\end{equation}
+therefore defines an explicit surcomplex map $F_c=\exp(W_c\partial_z)z$.
+It has the same truncation as $z+\omega^{-1}$ modulo every positive integer
+power of $\omega^{-1}$, but
+\[
+ \frac1{2\pi i}\oint_{|z|=1}\Omega_{F_c}=\omega^{-\omega}\ne0.
+\]
+It is not globally near-identity conjugate to that translation and has no
+single-valued Hahn-coherent Abel function on the punctured plane.
+
+This is a global effect at a strictly smaller scale, not a claim about
+ordinary exponentially small asymptotics of complex numbers.  The quantity
+$\omega^{-\omega}$ is an exact Hahn monomial in a rank-two workspace.
+A nonzero ordinary multiple of it already gives a different member of the
+family; the full parameter space $J_\delta$ is much larger.
+
+\section{Worked dynamical examples}
+\label{sec:examples}
+
+\subsection{First terms of the logarithm}
+
+For a map written in powers of one positive monomial,
+\[
+ F=z+\eps v+\eps^2b+\eps^3c+\Oe4,
+\]
+where $v,b,c\in\Oh(D)$, direct expansion of
+\eqref{eq:operatorlog} gives
+\begin{align}
+ W_F={}&\eps v+\eps^2\left(b-\tfrac12vv'\right)\notag\\
+ &+\eps^3\left(c-\tfrac12(vb'+bv')
+       +\tfrac1{12}v^2v''+\tfrac13v(v')^2\right)+\Oe4.
+ \label{eq:log-first-terms}
+\end{align}
+Here $\Oe4$ means membership in $\eps^4\Oh(D)[[\eps]]$; this notation
+is used only in examples already specified to be one-parameter series.
+It is not used as a substitute for arbitrary-rank support conditions.
+
+To obtain the cubic terms, write $h=F-z$.  Up to cubic perturbative degree,
+\[
+ \Delta z=h,\quad
+ \Delta^2z=hh'+\tfrac12h^2h''+\cdots,\quad
+ \Delta^3z=h(h')^2+h^2h''+\cdots.
+\]
+Inserting the logarithm coefficients $1,-1/2,1/3$ gives
+$h-\frac12hh'+\frac1{12}h^2h''+\frac13h(h')^2$, from which
+\eqref{eq:log-first-terms} follows.
+
+If $v$ is nowhere zero, its time form begins
+\begin{equation}\label{eq:time-first-terms}
+ \Omega_F=
+ \left[\frac1{\eps v}+\frac{v'}{2v}-\frac{b}{v^2}
+                 +O(\eps)\right]dz.
+\end{equation}
+Thus already at the next order, the ordinary logarithmic derivative of the
+leading vector field can create a nonzero period.
+
+\subsection{Euler maps and an exact iterative-residue obstruction}
+
+Consider, on $D=\C^*$,
+\begin{equation}\label{eq:euler-map}
+ F_p(z)=z+\eps z^{p+1},\qquad p\geq1.
+\end{equation}
+The support is contained in $\N\delta$, so these examples are available
+in every group containing $\delta>0$.
+
+\begin{proposition}[Exact residue of the Euler time form]
+\label{prop:euler-residue}
+The logarithmic vector field and its reciprocal have the forms
+\begin{align}
+ W_{F_p}(z)&=\sum_{n\geq1}c_{p,n}\eps^n z^{np+1},
+      &c_{p,1}&=1,& c_{p,2}&=-\frac{p+1}{2},\label{eq:euler-grading}\\
+ \frac1{W_{F_p}(z)}&=\eps^{-1}z^{-p-1}
+       +\frac{p+1}{2}z^{-1}
+       +\sum_{n\geq1}d_{p,n}\eps^n z^{np-1}.
+       \label{eq:euler-reciprocal}
+\end{align}
+In particular,
+\begin{equation}\label{eq:euler-residue}
+ \Res_{z=0}\Omega_{F_p}=\frac{p+1}{2}
+\end{equation}
+exactly, with no omitted positive-valuation correction.  There is no global
+Abel function for $F_p$ in $\Oh(\C^*)((t^\Gamma))$.
+\end{proposition}
+
+\begin{proof}
+Taylor substitution by \eqref{eq:euler-map} preserves the grading in which
+$\eps^n z^{np+1}$ has grade $n$.  Explicitly,
+\[
+ (z+\eps z^{p+1})^{kp+1}
+     =z^{kp+1}(1+\eps z^p)^{kp+1}.
+\]
+Every term of the finite difference and its iterates therefore has the
+form prescribed in \eqref{eq:euler-grading}.  Taking the logarithm preserves
+it.  The first two coefficients follow from
+\eqref{eq:log-first-terms}.
+
+Factor $W_{F_p}=\eps z^{p+1}C_p(\eps z^p)$ with
+$C_p(u)=1-(p+1)u/2+\cdots$.  Inverting $C_p$ gives
+\eqref{eq:euler-reciprocal}.  For $n\geq1$, the exponent $np-1$ is
+nonnegative.  Therefore none of the last terms has a $z^{-1}$ coefficient,
+and \eqref{eq:euler-residue} is exact.  The period about $0$ is nonzero,
+so \cref{cor:abel} forbids a global Abel function.
+\end{proof}
+
+The leading vector field $\eps z^{p+1}$ itself has zero period on
+$\C^*$, and its exponential has Abel function
+$-1/(p\eps z^p)$.  Hence passing from that exact flow to its Euler map
+changes the global obstruction even though their first displacements agree.
+The constant in \eqref{eq:euler-residue} is the familiar iterative-residue
+phenomenon; the assertion here is its exact interpretation in the stated
+common-domain Hahn category, not the discovery of that classical invariant.
+
+For $p=1$ the first terms are
+\begin{equation}\label{eq:euler-known}
+ W_{F_1}=\eps z^2-\eps^2z^3+\tfrac32\eps^3z^4
+ -\tfrac83\eps^4z^5+\tfrac{31}{6}\eps^5z^6
+ -\tfrac{157}{15}\eps^6z^7+\Oe7.
+\end{equation}
+These coefficients agree with the standard modified equation in Hairer's
+example \cite{hairer}, after multiplication by the step size.  They are
+recomputed in the accompanying verifier.
+
+\begin{corollary}[A global coherent normal form for the Euler family]
+\label{cor:euler-normal}
+The map $F_p$ is conjugate on $(\C^*)^\#$, by a near-identity
+Hahn-coherent change of variable, to the time-one map of
+\begin{equation}\label{eq:euler-normal}
+ V_p(z)=\frac{\eps z^{p+1}}
+             {1+\frac{p+1}{2}\eps z^p}.
+\end{equation}
+The conjugacy fixing $z=1$ is unique.  It is not a conjugacy of $F_p$ to
+the time-one map of $\eps z^{p+1}$.
+\end{corollary}
+\begin{proof}
+The time form of \eqref{eq:euler-normal} is exactly
+\[
+ \eps^{-1}z^{-p-1}dz+\frac{p+1}{2}\frac{dz}{z}.
+\]
+It has the same period as \eqref{eq:euler-reciprocal}.
+The difference consists of nonnegative powers of $z$, coefficientwise,
+so it is exact on $\C^*$.  Apply \cref{thm:classification}.
+The last assertion follows because the leading vector-field flow has zero
+period while $F_p$ does not.
+\end{proof}
+
+On any simply connected slit domain in $\C^*$, the normal form has the
+local Abel function
+\[
+ -\frac1{p\eps z^p}+\frac{p+1}{2}\log z.
+\]
+Its logarithmic monodromy is precisely the obstruction to a single-valued
+global Abel function on $\C^*$.
+
+\subsection{A simple difference equation with an explicit correction}
+
+Take $W=\eps z$, so $F=e^\eps z$, on $D=\C^*$.  The forcing $g=z^m$
+with nonzero integer $m$ has zero period after division by $W$, and
+\[
+ \psi(z)=\frac{z^m}{e^{m\eps}-1}
+\]
+is a solution.  The denominator has valuation $\delta$, so its reciprocal
+is a legitimate Laurent-Hahn constant.  Expanding it gives
+\[
+ \psi(z)=\left(\frac1{m\eps}-\frac12
+                    +\frac{m\eps}{12}-\cdots\right)z^m,
+\]
+exactly the Bernoulli solver of \cref{thm:difference} applied to
+$P=z^m/(m\eps)$.  For the constant forcing $g=1$, on the other hand,
+$g\,dz/W=\eps^{-1}dz/z$ has nonzero period and no global solution exists.
+This directly displays the one-dimensional cokernel for the punctured plane.
+
+\subsection{Local straightening does not erase global periods}
+
+The maps $F(z)=(1+\eps)z$ and $G(z)=e^\eps z$ have leading displacement
+$\eps z$ on $\C^*$.  Their logarithmic vector fields are respectively
+$\log(1+\eps)z$ and $\eps z$.  Their periods are
+\[
+ \frac{2\pi i}{\log(1+\eps)}\quad\text{and}\quad\frac{2\pi i}{\eps},
+\]
+which differ, so there is no global near-identity conjugacy on $\C^*$.
+On a simply connected domain with a branch of $\log z$, there is one:
+\[
+ H(z)=z\exp\left(\left[\frac{\eps}{\log(1+\eps)}-1\right]\log z\right).
+\]
+The bracketed coefficient has positive valuation, so the exponential is a
+strongly summable Hahn expansion with coefficients holomorphic on the chosen
+branch domain.  Direct substitution gives $H\circ F=G\circ H$.
+The failure to make that formula single-valued on $\C^*$ is exactly what
+the period theorem detects.
+
+\section{Ordinary slow time on one fixed holomorphic flow chart}
+\label{sec:slowtime}
+
+The suspension in \cref{thm:logexp} concerns an infinitesimal vector field.
+One may also ask what happens on the larger time scale at which its leading
+ordinary vector field moves a finite distance.  A direct exponential is
+generally not a strongly summable Hahn expression on that scale.  The
+correct construction first solves the leading ordinary flow and then lifts
+all positive Hahn coefficients along it.
+
+Write
+\begin{equation}\label{eq:slow-vector}
+ W=\eps X,\qquad
+ X(z)=a(z)+\sum_{\beta\in S}t^\beta X_\beta(z),
+\end{equation}
+where $S\subset\Gamma_{>0}$ is well ordered and all coefficient functions
+are holomorphic on $D$.  In this section $a$ may have zeros.  Let
+$\Sigma\subset\C$ be an ordinary disk centered at $0$, and let
+$D_0\subset D$ be an ordinary open domain.  Assume that a holomorphic
+ordinary flow chart
+\begin{equation}\label{eq:ordinary-flow}
+ \phi:\Sigma\times D_0\longrightarrow D,
+ \qquad \partial_s\phi(s,z)=a(\phi(s,z)),\qquad\phi(0,z)=z,
+\end{equation}
+is specified.  Set $J(s,z)=\partial_z\phi(s,z)$ and assume $J$ never
+vanishes on this chart.  The latter also follows from the usual variational
+equation on a nonsingular ordinary flow chart; we include it among the
+explicit hypotheses used in the formula below.
+
+\begin{theorem}[Common-chart Hahn lifting of the slow flow]
+\label{thm:slowtime}
+There is exactly one series
+\begin{equation}\label{eq:slow-solution}
+ \Psi(s,z)=\phi(s,z)+
+    \sum_{\gamma\in S^*\setminus\{0\}}t^\gamma\psi_\gamma(s,z)
+\end{equation}
+with coefficients holomorphic on the \emph{same} product domain
+$\Sigma\times D_0$, satisfying
+\begin{equation}\label{eq:slow-equation}
+ \partial_s\Psi=X(\Psi),\qquad\Psi(0,z)=z.
+\end{equation}
+Here $X(\Psi)$ means Taylor expansion at the ordinary point $\phi(s,z)$.
+Uniqueness also holds among all positive-Hahn perturbations of $\phi$ on
+this product domain, not just those with the displayed support bound.
+
+Each coefficient is obtained by one ordinary integral:
+\begin{equation}\label{eq:variation-formula}
+ \psi_\gamma(s,z)=J(s,z)
+       \int_0^s J(u,z)^{-1}R_\gamma(u,z)\,du,
+\end{equation}
+where $R_\gamma$ is a finite expression in previously determined
+coefficients and in ordinary derivatives of the $X_\beta$ and $a$
+along $\phi$.
+
+Finally, Taylor evaluation at $s=\eps$ is strongly summable and satisfies
+\begin{equation}\label{eq:slow-epsilon}
+ \Psi(\eps,z)=\exp(W\partial_z)z\quad(z\in D_0^\#).
+\end{equation}
+More generally, for $c\in K$ with $c=0$ or $\val(c)+\delta>0$,
+Taylor evaluation at $s=c\eps$ is defined and gives
+$\Psi(c\eps,z)=\exp(cW\partial_z)z$.
+\end{theorem}
+
+\begin{proof}
+Let $M=S^*$ and seek $q=\Psi-\phi$ with support in
+$M\setminus\{0\}$.  Expand
+\begin{align*}
+ X(\phi+q)
+ &=a(\phi)+a'(\phi)q+
+      \sum_{n\geq2}\frac{a^{(n)}(\phi)}{n!}q^n\\
+ &\quad+\sum_{\beta\in S}t^\beta
+            \sum_{n\geq0}\frac{X_\beta^{(n)}(\phi)}{n!}q^n.
+\end{align*}
+All the compositions with $\phi$ are holomorphic on the specified product
+because its image lies in $D$.  For each $\gamma\in M\setminus\{0\}$,
+the coefficient equation is
+\begin{equation}\label{eq:variational}
+ \partial_s\psi_\gamma=a'(\phi)\psi_\gamma+R_\gamma,
+ \qquad\psi_\gamma(0,z)=0.
+\end{equation}
+Every factor in $R_\gamma$ involves a positive exponent smaller than
+$\gamma$, except for specified coefficients of $X$.  The number of
+contributions is finite by the word lemma, exactly as in
+\cref{lem:displacement}.  Thus well-ordered recursion is possible.
+
+Differentiating the ordinary flow equation in $z$ gives
+\[
+ \partial_s J=a'(\phi)J,\qquad J(0,z)=1.
+\]
+Variation of constants solves \eqref{eq:variational} by
+\eqref{eq:variation-formula}.  Since $J$ is nowhere zero and $\Sigma$ is
+simply connected, the integral is independent of its path in $\Sigma$.
+It is holomorphic jointly in $(s,z)$; this follows locally by integrating
+the holomorphic power series in $s$, with coefficients holomorphic in $z$,
+and patching the uniquely normalized primitives.  Therefore every newly
+constructed coefficient is holomorphic on the original product domain.
+There is no successive domain shrinkage and no requirement of a uniform
+bound on the size of these coefficients as $\gamma$ varies.
+
+The support of the resulting series is contained in the well-ordered set
+$M$.  The expansion of $X(\Psi)$ is strongly summable by
+\cref{lem:neumann}, so the coefficient construction indeed solves
+\eqref{eq:slow-equation}.  For uniqueness, compare any two positive-Hahn
+perturbations of $\phi$ satisfying that equation.  At the least exponent
+where they differ, their difference solves the homogeneous version of
+\eqref{eq:variational} with zero initial condition.  It is zero, a
+contradiction.  This argument does not require either support to lie in
+$M$.
+
+For the last assertion, expand every coefficient at $s=0$ and substitute
+$s=\eps$.  The possible exponents lie in the monoid generated by
+$S\cup\{\delta\}$, and a fixed exponent has finitely many word
+representations.  Hence this is a strongly summable evaluation.  Repeated
+differentiation of \eqref{eq:slow-equation}, or induction using the chain
+rule, gives the coefficientwise Taylor identities
+\[
+ \partial_s^n\Psi(0,z)=(X\partial_z)^n z\quad(n\geq0).
+\]
+Therefore
+\[
+ \Psi(\eps,z)=\sum_{n\geq0}\frac{\eps^n}{n!}
+                       (X\partial_z)^n z
+             =\exp(W\partial_z)z.
+\]
+For $s=c\eps\in\mm_K$, replace the singleton support $\{\delta\}$
+by the well-ordered positive support of $c\eps$.  The same word argument
+justifies evaluation, and the identical Taylor calculation gives the
+stated expression with $cW$.
+\end{proof}
+
+\subsection{What this construction adds}
+
+At an ordinary time $s_0\in\Sigma$, evaluation of
+\eqref{eq:slow-solution} produces an element with leading ordinary part
+$\phi(s_0,z)$ and positive Hahn corrections.  The ordinary coefficient
+integrals have already been performed before this evaluation.  This is a
+separate analytic operation from an unregrouped Hahn exponential.
+
+For example, take $X=z^2$ and $W=\eps z^2$.  The slow flow is the ordinary
+rational function
+\[
+ \phi(s,z)=\frac{z}{1-sz}
+\]
+on any product chart avoiding $sz=1$.  At a nonzero ordinary $s$, the raw
+formal terms of
+\[
+ \exp(s z^2\partial_z)z=\sum_{n\geq0}s^n z^{n+1}
+\]
+all have Hahn exponent $0$, and infinitely many are nonzero.  They are
+\emph{not} a strongly summable Hahn family.  The rational function is
+available from ordinary complex analysis on its chart, not from silently
+declaring that family to be a Hahn sum.
+
+Thus \cref{thm:slowtime} licenses a particular passage to the time scale
+$\eps^{-1}$: solve the leading ordinary motion and then integrate each
+positive correction along it.  It does not license arbitrary exchange of
+ordinary summation with Hahn summation, global continuation across a
+singularity of $\phi$, or an interpretation of every surreal-valued time
+as an actual continuous trajectory.
+
+\section{Scope, proof dependencies, and further directions}
+\label{sec:scope}
+
+\subsection{The precise category in which the results hold}
+
+The input to every main theorem consists of set-sized supports, ordinary
+holomorphic coefficient functions on a named common domain, and positive
+Hahn perturbations.  All differentiation is with respect to the ordinary
+coordinate $z$ extended coefficientwise.  Every constant from $K$ is
+annihilated.  All loops are ordinary complex loops and all their integrals
+are coefficientwise.  No fine-topological convergence theorem on
+$\No[i]$ is used.
+
+In particular, these arguments do not identify
+$\Oh(D)((t^\Gamma))$ with a ring of coefficient germs without a common
+domain, or with $\C[[z]]((t^\Gamma))$.  They do not construct a global
+sheaf from a uniform-support convention on arbitrary covers.  None of
+these extra identifications is needed: the proofs stay on a specified $D$
+and use support-preserving primitives there.
+
+The entire argument is compatible with adjoining further Hahn exponents:
+the displayed formulas remain valid in a larger ordered workspace, and an
+equality or a nonzero existing period remains an equality or a nonzero
+period under the natural embedding.  The statements still quantify over
+the explicitly specified coefficient-function category in that workspace,
+not over all conceivable surcomplex functions.
+
+\subsection{Where the new work sits in the dependency chain}
+
+The proof dependencies are
+\[
+ \begin{gathered}
+ \text{finite-word support lemma}
+ \ \Longrightarrow\ \text{Taylor calculus and positive operators}
+ \\
+ \Longrightarrow\ \text{canonical vector field}\
+ \Longrightarrow\ \text{time form and discrete equation factorization},
+ \\
+ \text{primitive criterion}+
+ \text{implicit displacement lemma}
+ \ \Longrightarrow\ \text{complete global conjugacy},
+ \\
+ \text{conjugacy theorem}+
+ \text{explicit rational time forms}
+ \ \Longrightarrow\ \text{moduli and flat nonconjugacy}.
+ \end{gathered}
+\]
+The slow-time theorem branches directly from the support lemma and the
+ordinary variational equation.  It does not assume the classification.
+The positive-operator logarithm is established theory in a new concrete
+setting; the global obstruction and moduli statements are the principal
+proposed contributions.
+
+\subsection{Problems not settled by these results}
+
+When the leading coefficient has zeros, the discrete equation remains
+controlled by \cref{thm:difference}, but the conjugacy classification needs
+more information.  Local zero divisors, multiplicities, and singular
+normal-form obstructions must be combined with global periods.  The unit
+hypothesis in the displacement lemma is exactly the point at which our
+classification proof stops applying.
+
+A conjugacy with nonidentity ordinary part can change the leading vector
+field and the homology basis.  Extending the classification to that group
+would require the ordinary automorphism action on the leading form and on
+its periods; equal period vectors in a fixed basis would no longer be the
+correct equivalence relation by themselves.
+
+In several variables, there is no single reciprocal time one-form which
+encodes a vector field, and commuting vector fields need not be constant
+multiples of one another.  The one-variable centralizer proof and
+finite-period normal form should therefore not be transported unchanged.
+
+Finally, ordinary analytic specialization of a Hahn or formal parameter
+requires growth estimates or an additional summation theory.  The present
+results neither supply those estimates nor remove sectorial analytic
+moduli.  Establishing which members of the global Hahn normal forms admit
+compatible ordinary analytic realizations is a distinct problem.
+
+\section{Reproducibility and verification record}
+\label{sec:verification}
+
+The accompanying \texttt{verify.py} works in the finite jet ring
+$\Q(z)[\eps]/(\eps^8)$, except for explicitly marked exact rational
+identities and finite ordered-group illustrations.  It implements Taylor
+substitution, powers of the finite-difference operator, the logarithm,
+vector-field exponentiation, and the Bernoulli operator using exact
+arithmetic.
+
+The recorded run, with Python 3.13.5 and SymPy 1.14.0, passes
+\textbf{245 exact assertions}.  It checks the Euler families $p=1,2,3$,
+logarithm--exponential round trips, inverse maps, Julia's identity, the
+homogeneous grading and residue coefficients, a mixed-coefficient example,
+Leibniz's identity, the Bernoulli difference solver, flow composition, a
+square-root formula, a nontrivial conjugacy and time-form pullback, and
+the rational identity for the flat family.  Fifty assertions are explicitly
+labelled finite illustrations of the rank-two comparison; the all-integer
+inequality is proved by lexicographic order in \cref{sec:flat}, not by
+those tests.
+
+The verifier handles a loss of one known coefficient on division by
+$\eps$ explicitly: any subsequent reciprocal/pullback comparison stops
+before the uncomputed top coefficient.  It uses no floating point tolerance.
+The output is retained in \texttt{verification.txt}.
+
+These tests are not a proof of arbitrary-rank summability, global primitive
+existence, the classification, or the slow-time theorem.  Those depend on
+the arguments in the main text.  A passing finite test is evidence against
+an algebraic transcription error, not a replacement for a proof and not a
+formal proof-assistant certificate.
+
+\appendix
+\section{A coefficient-level recipe for constructing a conjugacy}
+\label{app:recipe}
+
+The construction in \cref{thm:classification} is explicit even when it is
+not an effective algorithm for arbitrary input coefficients.  Here is its
+coefficient-level content.  Starting with $F_1,F_2$ in the same nonsingular
+stratum, first form their logarithmic vector fields by
+\eqref{eq:operatorlog}; compute the normalized reciprocal forms
+$\beta_i=b_i dz$ by the geometric unit expansion; and test the periods of
+$(b_1-b_2)dz$.  On a finitely punctured plane this is a finite list of Hahn
+periods, though computing an arbitrary coefficient integral is not assumed
+to be decidable.
+
+When the periods vanish, integrate coefficientwise from $z_*$ to get
+$p$ with $p'=b_1-b_2$ and $p(z_*)=0$.  Let $b_2=b_0+u$ and let $S$
+be the positive union of the supports of $p$ and $u$.  The desired
+$h=H-z$ has support in $S^*\setminus\{0\}$.  For each $\gamma$ in that
+well-ordered set, define
+\begin{equation}\label{eq:explicit-recursion}
+ h_\gamma=b_0^{-1}\left(
+ p_\gamma-[t^\gamma]\left[
+ uh+\sum_{n\geq2}\frac{b_2^{(n-1)}}{n!}h^n
+ \right]\right).
+\end{equation}
+The expression in brackets uses only earlier coefficients of $h$.
+The number of operations at each exponent is finite, but the total support
+may be transfinite and need not have a finite presentation.
+
+For an ordinary single-parameter expansion
+$b_2=b_0+\eps b_1+\eps^2b_2^{[2]}+\cdots$ and
+$p=\eps p_1+\eps^2p_2+\cdots$, the first coefficients are
+\begin{align*}
+ h_1&=\frac{p_1}{b_0},\\
+ h_2&=\frac1{b_0}\left(p_2-b_1h_1-\frac12b_0'h_1^2\right).
+\end{align*}
+They display both sources of nonlinear correction: the tail of the target
+time form and the change of its ordinary leading coefficient along the
+displacement.  The general recursion is the same calculation with a
+well-ordered support rather than integer powers.
+
+The support certificate is part of the result.  It tells us why each
+coefficient in \eqref{eq:explicit-recursion} is defined even if the
+multiples of the smallest input exponent are not cofinal.  It is not a
+promise that arbitrary Hahn-series equality, primitive existence, or
+period evaluation can be decided by a finite computer program.
+
+\section{A compact hypothesis audit}
+\label{app:audit}
+
+\begin{longtable}{@{}p{0.28\textwidth}p{0.66\textwidth}@{}}
+\toprule
+Statement & Indispensable hypotheses and conclusion boundaries\\
+\midrule
+\endhead
+Logarithm and exponential &
+Set-sized ordered value group; common-domain holomorphic coefficients;
+positive perturbative support.  No ordinary parameter convergence is
+asserted.\\[5pt]
+Difference equation &
+$F\ne\id$.  If $W_F$ has a singular leading coefficient, the quotient
+$g/W_F$ must still belong to the holomorphic Hahn algebra; period vanishing
+alone is insufficient.\\[5pt]
+Global conjugacy &
+Same leading data $(\delta,a)$, $a$ nowhere zero, and a near-identity
+conjugator on the original common domain.  Periods are ordinary
+coefficientwise periods.\\[5pt]
+Finite moduli &
+The ordinary domain is the plane minus finitely many named points.
+The basis consists of the specified puncture loops; arbitrary changes of
+ordinary coordinates are not quotiented out.\\[5pt]
+Flat nonconjugacy &
+The chosen $\delta$ is noncofinal.  Jets are formed in
+$\A_{\geq0}$; the ideal interpretation would be wrong in the full
+algebra where $\eps$ is invertible.\\[5pt]
+Centralizer &
+A connected ordinary domain and a nonidentity map.  Permitted constants
+satisfy $\val(cW_F)>0$; unrestricted large-time maps are not asserted.\\[5pt]
+Slow time &
+A specified ordinary holomorphic flow chart with image in $D$ and nonzero
+variational factor $J$.  All Hahn coefficients exist on that chart;
+continuation past its ordinary singularities is not supplied.\\
+\bottomrule
+\end{longtable}
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begingroup
+\small\raggedright
+\begin{thebibliography}{9}
+
+\bibitem{bkkps}
+V. Bagayoko, L. S. Krapp, S. Kuhlmann, D. Panazzolo, and M. Serra,
+\emph{Automorphisms and derivations on algebras endowed with formal infinite
+sums}, arXiv:2403.05827, version 2, 2025 (first posted 2024).
+\url{https://arxiv.org/abs/2403.05827}.
+
+\bibitem{ab}
+M. Aschenbrenner and W. Bergweiler,
+\emph{Julia's equation and differential transcendence},
+Illinois Journal of Mathematics \textbf{59} (2015), 277--294.
+Preprint: \url{https://arxiv.org/abs/1307.6381}.
+
+\bibitem{hairer}
+E. Hairer, \emph{Geometric Numerical Integration, Lecture 3: Backward error
+analysis}, TU M\"unchen lectures, January--February 2010.
+\url{https://www.unige.ch/~hairer/poly_geoint/week3.pdf}.
+
+\bibitem{gonshor}
+H. Gonshor, \emph{An Introduction to the Theory of Surreal Numbers},
+London Mathematical Society Lecture Note Series 110,
+Cambridge University Press, 1986.
+\url{https://www.cambridge.org/core/books/an-introduction-to-the-theory-of-surreal-numbers/312AE504A3E88E804054BFB390446374}.
+
+\bibitem{repo-catalogue}
+V. Reshetnikov, \emph{Surreal repository: research-document catalogue},
+\texttt{docs/README.md}, snapshot
+\texttt{39f2be6667ade51bca2b45daa47e289d69c09764}, consulted 21 September 2026.
+\url{https://github.com/VladimirReshetnikov/Surreal/blob/39f2be6667ade51bca2b45daa47e289d69c09764/docs/README.md}.
+
+\bibitem{repo-analysis}
+\emph{Surcomplex analysis: holomorphic functions on $K=\No[i]$},
+research-package documentation in the Surreal repository,
+\texttt{docs/surcomplex/analysis/README.md}, same snapshot.
+\url{https://github.com/VladimirReshetnikov/Surreal/blob/39f2be6667ade51bca2b45daa47e289d69c09764/docs/surcomplex/analysis/README.md}.
+
+\bibitem{repo-contours}
+\emph{Contours and Stokes: Jordan separation, Cauchy theory, and Stokes
+calculus on the surcomplex plane}, research-package documentation in the
+Surreal repository, \texttt{docs/surcomplex/contours-and-stokes/README.md},
+same snapshot.
+\url{https://github.com/VladimirReshetnikov/Surreal/blob/39f2be6667ade51bca2b45daa47e289d69c09764/docs/surcomplex/contours-and-stokes/README.md}.
+
+\end{thebibliography}
+\endgroup
+\end{document}
