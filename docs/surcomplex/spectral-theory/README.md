@@ -119,9 +119,11 @@ genuinely does.
 `spec:rem:divisibility` says it in one place: the Schur triangularization of
 a non-normal matrix (`prop:normal`), the positive square root of an
 arbitrary positive semidefinite matrix with the Cholesky factorization and
-generalized eigenproblem built on it (`prop:positive`), and the statements
-that invoke an eigenvalue of an arbitrary square matrix. Those live in
-`Γ ⊗ Q`, at the cost `spec:thm:ramification` computes exactly. Everything
+generalized eigenproblem built on it (`prop:positive`), and obtaining all eigenvalues
+of an arbitrary square matrix. These constructions can be carried out in `Γ ⊗ Q`. The exact cost
+computed by `spec:thm:ramification` concerns principal positive matrix roots,
+not the splitting field of an arbitrary matrix. The pseudospectrum over
+`K_Γ` and its perturbation characterization remain valid without divisibility. Everything
 else — the Hermitian and normal spectral theorems, the SVD, the polar
 decomposition, every norm and variational principle, `thm:scales`,
 `thm:gram`, the rank filtration, the scale algorithm, the perturbation
@@ -201,43 +203,26 @@ and discrete in the fine topology.
 - [`computer-algebra`](../../foundations-and-computation/computer-algebra/) is
   where the exact-operation contracts belong: §13.2, which operations a
   symbolic scalar representation must supply for the scale algorithm to run;
-  §13.3, why finite truncation cannot certify every exact rank; and the new
-  §13.4, the strictly harder contract for the splitting-tree construction
+  §13.4, why finite truncation cannot certify every exact rank; and
+  §13.3, the strictly harder contract for the splitting-tree construction
   together with `spec:warn:qgamma`. That report's own inventory already makes
-  the matching distinction on the implementation side — a ramified root is
-  representable in a model whose exponent lattice is `Q^r` and not in one
-  whose lattice is finite-rank free abelian — which is this article's
-  non-divisibility distinction seen from the other end. **No merge**: the
-  contact is a cross-reference, and nothing here claims to solve that
+  a related distinction on the implementation side: a fixed rational exponent
+  lattice permits fractional exponents that a fixed integer lattice may lack.
+  This is only an exponent condition. Even `sqrt(1+t)` has integer exponents
+  but requires an algebraic or series representation beyond rational functions.
+  This cross-reference does not claim to solve that
   report's representation or computability problems.
 
-## The gap claim, checked
+## Scope of the historical coverage audit
 
-The report claims that `docs/surcomplex/polynomial-algebra/` has Schur-type
-arguments, differentiating compressions and Hermite signatures **but no
-unified SVD, conditioning or singular-value scale theory**, and it states
-that this is a coverage assessment rather than a claim that the repository
-contains no matrices. Checked against the tree at commit `e260237`, **the
-claim is accurate**, with one qualification.
-
-- The three cited ingredients are really there. `polynomial-algebra`'s own
-  README lists the sharp Schoenberg second-moment inequality "with the
-  differentiating compression, an algebraic Schur inequality, and the
-  collinearity equality case", and Hermite's signature criterion with the
-  interval count `(sig T_1 + sig T_q)/2`.
-- The claimed absence holds. Across all of `docs/`, *singular value*, *SVD*,
-  *pseudoinverse* and *polar decomposition* occur outside this directory only
-  in unrelated senses: `trigonometry`'s polar decomposition is the scalar
-  `z = r·u` factorization, not the matrix one; `polynomial-algebra`'s
-  "condition number" is a rootwise root-separation quantity; and
-  `finite-deformations`' Gram matrices are residue pairings. No existing
-  report proves a spectral theorem or an SVD over `F[i]`, and none develops
-  matrix conditioning or a singular-value valuation theory.
-- The qualification: the gap statement names `polynomial-algebra` as though
-  it were the only place adjacent matrix material lives. It is not — Gram
-  matrices in `finite-deformations` and Jordan/eigenvalue arguments in
-  `differential-equations` are also nearby. This narrows the citation, not
-  the gap; nothing in either report supplies what this one proves.
+The original audit at `e260237` compared the catalogue, the polynomial report's
+inventory and opening sections, and nearby matrix material. It distinguished
+polynomial-root tools and residue pairings from this report's systematic SVD,
+conditioning and singular-scale development. That targeted reading explains
+why this report was added; it does not prove that every other source lacked
+every relevant theorem. The collection has since expanded, including Hermitian
+spectral arguments in differential equations and surquaternions. Consult the
+current reader map and local hypotheses when transferring those results.
 
 ## What it does not claim
 
@@ -286,10 +271,11 @@ Every limitation both manuscripts shipped with is kept here.
   supports, arbitrary ordered groups, the proper-class foundations, or an
   effective representation of all surreal numbers. Exact symbolic zero tests
   are not replaced by truncation. Assertion counts include individual zero
-  coefficients and are **not** counts of independent theorems. None of the
-  proofs has been formally verified; there is **no Lean formalization** of
-  any result here, and §20's formalization order is a proposed dependency
-  order, not a report of code that has been compiled. These are AI-assisted
+  coefficients and are **not** counts of independent theorems. The original
+  source reports did not supply a complete proof-assistant formalization.
+  The current [coverage ledger](../../FORMALIZATION.md) separately maps checked
+  prerequisites and source claims; §20's proposed dependency order is not
+  evidence that the whole spectral package has been compiled. These are AI-assisted
   drafts, not refereed. B's PDF metadata names its author as "OpenAI,
   research assistance for Vladimir Reshetnikov".
 - The audits behind both manuscripts were targeted. A's
@@ -300,6 +286,31 @@ Every limitation both manuscripts shipped with is kept here.
   README, and selected visible material of the differential-equations article. Neither was
   line-by-line, and neither treats a search returning no matches as proof
   that a topic occurs nowhere.
+
+## Proof review: 22 September 2026
+
+The main mathematical reading followed finite Hermitian geometry, variational
+principles, determinantal scales, support-controlled splitting, ramification
+and primitive traces, then the stability and matrix-series applications.
+The maintained revision clarifies the following boundaries:
+
+- The Gram-factorization criterion uses `2Γ`; `qΓ` controls the principal
+  `q`th root. Root-field sums use only `1 ≤ k ≤ rank A`, avoiding the added
+  infinite valuations of vanishing higher minors.
+- Perturbation statements explicitly retain Hermitian inputs and orthogonal
+  projectors. Zero norm squares and the empty Ky Fan sum are treated separately.
+- The finite-precision rank obstruction assumes `Γ ≠ {0}`. For the trivial
+  group, truncation through zero gives every coefficient.
+- The elimination contract includes valuation extraction. Exponent permission
+  and full root representation are distinct computational requirements.
+- The hypothesis ledger now lists actual assumptions and proof mechanisms in
+  their respective columns, including the arbitrary-group scale theorems.
+  `O_v(β)` consistently takes an exponent threshold.
+
+Historical verification code and data are unchanged. Imported foundational
+results and any complete formalization remain separate from this proof review.
+The historical symbolic suites were not rerun for this documentation revision.
+The corrections received a second independent review.
 
 ## Build
 
@@ -315,7 +326,9 @@ hyperref, aliascnt, cleveref) is sufficient. The bibliography is embedded;
 there is no BibTeX step, no external figure asset, no custom font, and no
 shell escape. Without `latexmk`, run `pdflatex` three times. Last build:
 **52 pages**, 0 errors, 0 undefined references or citations, 0 multiply
-defined labels, 0 LaTeX warnings, 0 overfull and 0 underfull boxes.
+defined labels, 0 LaTeX warnings, 0 overfull and 0 underfull boxes. The revised
+three-pass build removes the baseline's overfull filename line; changed pages
+were rendered and inspected.
 
 Neither manuscript's build script works from `code/`. Both pairs
 (`code/build.sh`, `code/build.ps1` and their `02-` prefixed counterparts)
@@ -387,9 +400,9 @@ examples are checked separately with exact square-root expressions.
 Files were renamed on ingest, and text carried over from the manuscripts
 still names their delivery paths.
 
-- A's Appendix B and `repository-audit.md` name `code/verify_examples.py` and
-  `data/verification_report.json`; the files are `code/verify-examples.py`
-  and `data/verification-report.json`.
+- The historical `repository-audit.md` uses `code/verify_examples.py` and
+  `data/verification_report.json`. The maintained Appendix B now uses the
+  actual paths `code/verify-examples.py` and `data/verification-report.json`.
 - B's §12.2 names `code/verify.py`, `data/verification.json` and
   `data/verification.txt`; the files carry the
   `02-determinantal-ramification-descent-` prefix.
