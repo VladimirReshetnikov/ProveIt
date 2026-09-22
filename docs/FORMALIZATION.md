@@ -24,6 +24,31 @@ The foundations report has 31 numbered result/example/principle environments,
 including seven examples and one design principle; the narrower inventory
 counts its 23 standard results.
 
+Ten reports arrived after this inventory was written and are **not yet
+indexed or mapped**:
+- `surreal/tail-spans-and-differential-transcendence`
+- `surreal/hahn-valued-measures-and-probability`
+- `surreal/markov-generators-at-every-scale`
+- `surcomplex/hahn-tate-uniformization`
+- `surcomplex/holonomic-rigidity-for-entire-hahn-functions`
+- `surcomplex/infinite-dimensional-hahn-spectral-theory`
+- `surcomplex/expanding-polynomial-dynamics`
+- `surcomplex/hahn-herglotz-positivity`
+- `surcomplex/prony-reconstruction-at-surreal-scales`
+- `surcomplex/wick-summability-certificates`
+
+Six indexed reports also gained sections since:
+- `surcomplex/entire-functions-at-arbitrary-rank`
+- `surcomplex/dynamics-and-normal-forms`
+- `surcomplex/differential-equations`
+- `surcomplex/nonabelian-support`
+- `surcomplex/spectral-theory`
+- `surreal/exponential-automorphism-rigidity`
+
+Their new result environments are not indexed either, and some line hints
+below have moved. All of this material is outside every count on this page.
+Every report label this ledger cites still resolves in its report.
+
 Before archive retirement in `e5791a8`, the tree contained 63 source
 manuscripts with 1582 literal standard result environments. Those are historical
 counts, not additional independent results: merged reports overlap them and
@@ -441,9 +466,10 @@ cannot replace strong Hahn summability.
 
 `T`, `L`, `P`, `C` mean literal `theorem`, `lemma`, `proposition` and
 `corollary` environments; examples, computations, assessments and other
-custom environments are not included. Paths below identify the 26 canonical
-main texts present in the repository, including the two whose source is not
-named `article.tex`. The document map and typeset catalogue list the same reports.
+custom environments are not included. Paths below identify 26 of the 36
+canonical main texts present in the repository, including the two whose source
+is not named `article.tex`; the other ten are listed in the scope section
+above. The document map and typeset catalogue list all 36.
 
 | Main report source | T | L | P | C | Total |
 |---|---:|---:|---:|---:|---:|
