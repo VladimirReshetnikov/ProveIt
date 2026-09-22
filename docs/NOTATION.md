@@ -318,6 +318,12 @@ ordered value group, and an **order unit** has cofinal integer multiples.
 Countable cofinality does not by itself assert the existence of an order unit
 (`ent:rem:one-name`).
 
+A sequence whose **range is cofinal** need not tend cofinally to infinity:
+it can keep returning to one small value. An eventual growth estimate must
+state the latter condition. The entire-functions growth barrier
+(`ent:lem:growth-barrier`) requires eventual cofinal growth and gives a
+counterexample to the weaker range condition.
+
 Finally, distinguish ordinary ordinal arithmetic from Hessenberg natural
 operations `⊕`, `⊗` and from surreal field operations. On embedded ordinals,
 the field operations agree with the natural operations, while ordinal

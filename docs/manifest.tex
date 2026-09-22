@@ -449,7 +449,7 @@ became 59, by duplicate elimination only.}}
 
 \entry{Global support obstructions: moving divisors, Mittag--Leffler, and a Picard dichotomy}
 {surcomplex/global-divisors}
-{article.pdf}{surcomplex\_global\_support.zip + surcomplex\_global\_theorems.zip}
+{article.pdf}{surcomplex\_global\_support, \_global\_theorems, \_compact\_curves}
 {The local-to-global theory: when do infinitely many individually legitimate
 infinitesimal prescriptions admit one coherent global realization over the
 ordinary complex plane?  The sharp answer for divisors is a
@@ -465,10 +465,25 @@ globally principal effective divisor with a nonprincipal effective
 sub-divisor.  Also Mittag--Leffler at fixed centres and for moving poles, a
 support-restricted Chinese remainder theory with an explicit Neumann right
 inverse, an exact Cousin criterion in terms of singular support, and the
-Picard dichotomy: every ordinary-base stalk is a nonlocal principal ideal
-domain, $\mathrm{Pic}(\C,\mathcal{H}_\Gamma)=0$ iff $\Gamma=\{0\}$ or
+Picard dichotomy: every ordinary-base stalk is a principal ideal domain,
+nonlocal when $\Gamma\ne0$; $\mathrm{Pic}(\C,\mathscr{H}_\Gamma)=0$ iff $\Gamma=\{0\}$ or
 $\Gamma=\mathbb{Z}\delta$, and otherwise $\dim_\C\mathrm{Pic}\ge2^{\aleph_0}$,
-with equality for countable noncyclic $\Gamma$.}
+with equality for countable noncyclic $\Gamma$.
+A third manuscript studies a compact connected ordinary Riemann surface $X$
+of genus $g$. Its Picard group splits into
+$H^1(X,\underline\Gamma)\oplus\mathrm{Pic}(X)\oplus
+(H^1(X,\mathcal O_X)\otimes_\C\mathfrak m_\Gamma)$.
+The valuation class is exactly the obstruction to a nonzero coherent
+meromorphic section, even in arbitrarily high degree. In the zero-valuation
+sector a finite matrix with positive-support entries computes cohomology and
+gives Riemann--Roch. A root-free Newton-sum Abel functional decides principality
+of finite signed clusters. The one-scale comparison has kernel
+$H^1(X,\mathcal O_X)\otimes_\C\bigcap_n t^{n\delta}\mathcal O_\Gamma$;
+it is injective exactly when $g=0$ or $\delta$ is cofinal in $\Gamma$.
+Any prescribed set of surreal cutoffs can be defeated after enlarging the
+workspace; all positive cutoffs detect classes in a fixed nonzero workspace.
+Coordinate charts transfer the local PID argument to $X$, but the global plane
+and compact classification theorems retain their different base hypotheses.}
 
 \entry{Surcomplex polynomial algebra: root geometry, Newton profiles, residue duality}
 {surcomplex/polynomial-algebra}
@@ -675,10 +690,11 @@ theorems both read ``the union of the supports is well ordered'' and are
 \emph{not} the same criterion}, and a whole section exists to keep them apart:
 the gluing criterion is about the supports of the \emph{normalized polar
 factors} $\mathrm{Pol}(G_a)-I_r$, each transition matrix being factored
-independently and first, and it is false in \emph{both} directions with the raw
-transition support in its place; the realizability criterion is about the
+independently and first. Well-ordering of the full raw transition support is
+sufficient but not necessary; raw singular-coefficient support fails in
+\emph{both} directions. The realizability criterion is about the
 \emph{raw} monodromy matrices $\rho(\ell_d)-I_r$, where the raw support is the
-invariant and is basis- and basepoint-independent.  The trap is printed where a
+tested support, whose well-ordering is basis- and basepoint-independent. The trap is printed where a
 reader would otherwise generalize: a rank-three family over $\Gamma=\Q$ with
 determinant one, a single raw singular exponent and a \emph{splitting}
 abelianized cocycle admits no splitting, because the polar factors are forced to
@@ -696,7 +712,7 @@ Every \texttt{\textbackslash label} in its source carries the prefix
 {surcomplex/entire-functions-at-arbitrary-rank}
 {article.pdf}{two manuscripts, delivered 21~September 2026}
 {Ordinary power series $\sum a_nZ^n$ over a \emph{fixed} Hahn field
-$K_\Gamma=\C((t^\Gamma))$ with $\Gamma$ set-sized, divisible and of arbitrary
+$K_\Gamma=\C((t^\Gamma))$ with $\Gamma$ nonzero, set-sized, divisible and of arbitrary
 valuation rank, where \emph{entire} means strongly Hahn-summable at every point
 of that one field; both sources explicitly disclaim all of $\SC$.  Two
 manuscripts that were the same paper twice on the engine and complementary on
@@ -705,7 +721,7 @@ support-controlled preparation theorem, arbitrary-rank root counts, genus-zero
 canonical product, factorization by zeros and sharp change-of-workspace
 criterion, by the same witness --- so each is printed once and both payloads
 are kept in full.  \textbf{The trichotomy.}  The entire ring $E_\Gamma$ is
-always a GCD domain with units exactly $K_\Gamma^\times$, and exactly one of:
+a GCD domain with units exactly $K_\Gamma^\times$, and exactly one of:
 uncountable cofinality, where only polynomials are entire and the ring is a
 PID; an \emph{order unit} exists, where nonpolynomial series exist and the ring
 is B\'ezout, non-Noetherian, with full Hermite interpolation; or countable
@@ -715,8 +731,9 @@ a proper ideal, the obstruction an exact valuation computation against a growth
 barrier every entire function obeys.  The middle case is \emph{sharp}, not
 merely sufficient: a nonconstant valuation-restricted series is invertible iff
 its least coefficient gap is a positive order unit, necessity proved by
-coarsening.  \textbf{The scalar-extension package.}  For any ordered-group
-extension $\Gamma\subseteq\Delta$, \emph{every} nonpolynomial entire series over
+coarsening. For $\Gamma=0$ the strong-summation convention gives $\C[Z]$.
+\textbf{The scalar-extension package.} For an extension of divisible ordered
+groups $\Gamma\subseteq\Delta$, \emph{every} nonpolynomial entire series over
 $K_\Gamma$ has the \emph{same} exact strong evaluation domain in $K_\Delta$ ---
 the valuation ring of $v_\Delta$ coarsened by the convex hull of $\Gamma$, whose
 residue field is a Hahn field rather than $\C$ --- entireness survives exactly
@@ -733,7 +750,7 @@ corollary is presented as a \emph{re-derivation} from the extension theorem,
 crediting \nolinkurl{surcomplex/analysis} for all-scale polynomial rigidity and
 \nolinkurl{foundations-and-computation/foundations} for the sign-flipped pair
 over $\C((t^\Q))$ and for the localization principle it consumes.  Rank is not
-the driver: a rank-two group with an order unit is B\'ezout, and a countable
+the driver: a rank-two group with an order unit is B\'ezout, and the direct
 sum of copies of $\Q$ indexed by $\omega_1$ admits only polynomials.}
 
 

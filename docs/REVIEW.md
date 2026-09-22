@@ -29,6 +29,9 @@ No row below certifies every claim in an entire report.
 | [Finite deformations](surcomplex/finite-deformations/) | Read the main support, division, finite-algebra, residue and stability chain. Constructed the inverse in the uniform-support formal ring before establishing fine analyticity, with a second independent check. Corrected quotient-ring and residue/trace summaries, common-domain germ warnings, coordinate-power scope and the effectivity contract. Added the missing positive control-set hypothesis and Jacobian precision reasoning. |
 | [Spectral theory](surcomplex/spectral-theory/) | Read the main finite geometry, variational, scale, splitting, root-field and stability proofs. Corrected the summary's Gram criterion to `2Γ`, bounded root-field sums by rank, and made Hermitian, orthogonal, zero-case and valuation-access requirements explicit. Separated principal-root extension costs from arbitrary-matrix splitting fields and exponent permission from root representation. Repaired the hypothesis ledger and trivial-group precision exception. The corrections received a second independent review. |
 | [Rank-one Berkovich geometry](surcomplex/rank-one-berkovich/) | Read the main convergence, division, preparation, root-count, seminorm, annulus and entire-function arguments. Added the nonzero norm-profile hypothesis and reduction domain; expanded division uniqueness, seminorm normalization, canonical-product cancellation and the local Laurent remainder in the theta-root calculation. Checked the precise imported field, point-classification and annulus-retraction statements against primary sources. |
+| [Entire functions at arbitrary rank](surcomplex/entire-functions-at-arbitrary-rank/) | Read the full main text and finite-variable appendix. Strengthened the growth barrier to eventual cofinal growth, with an oscillating-range counterexample; expanded linear division, the multivariate attained-minimum argument and the preparation-only finite-zero bound. Corrected the fixed-element order-unit equivalence, nonzero-group convention and universal Bézout scope. Revised arguments received a second independent review. |
+| [Global divisors](surcomplex/global-divisors/) | Read the main plane and compact proof chains through the cutoff comparison. Corrected complementary divisor support, fixed-field root-splitting scope and trivial-group reduction. Proved the coordinate-chart transfer of PID stalks and `Pic = Pic_lf`, with a second independent check. Made the genus-zero exception and workspace quantifiers explicit, proving detection by all positive cutoffs in a fixed nonzero workspace; corrected analytic-operation and source-comparison summaries. |
+| [Nonabelian support](surcomplex/nonabelian-support/) | Read the full main matrix Cousin and monodromy chains. Proved that well-ordering of full raw transition support is sufficient but not necessary, while raw singular support fails both directions. Added a left-gauge counterexample; corrected matrix exp/log domains, support-condition invariance, classification scope and unsupported computation claims. The main support correction received a second review. |
 
 Each correction was reviewed against its local definitions and downstream uses
 within the stated scope. Changed PDFs were rebuilt and affected pages inspected.
@@ -63,6 +66,14 @@ second review. The catalogue rebuilt without warnings. An independent parser
 checked all 1,229 indexed theorem, lemma, proposition and corollary entries
 against the 26 report sources; line hints were refreshed after the edits.
 
+The entire-function, global-divisor and nonabelian PDFs rebuilt without warnings
+or box issues; the global-divisor build removes its baseline overfull and
+underfull boxes. The two entire-function suites passed 831/831 and 664/664;
+the three global-divisor suites passed six check groups, 38 checks and 53/53;
+the nonabelian suites passed 2,899 exact checks plus eight exact and four
+numerical monodromy comparisons (maximum error `1.472e-13`, below `2e-9`).
+All were run on temporary copies, preserving historical programs and data.
+
 ## Collection-wide work
 
 The [reader map](README.md), [catalogue](manifest.tex) and
@@ -80,11 +91,13 @@ from the current tree does not discharge source-claim reconciliation.
 The reports above have received targeted corrections or a main-text reading,
 as recorded in each row. Uninspected portions, imported results, source-claim
 reconciliation and any formalization remain separate obligations. The other
-six main reports have been mapped for notation and navigation but have not
+three main reports have been mapped for notation and navigation but have not
 received a full mathematical review in this pass:
 
-- Surcomplex analysis; contours and Stokes; differential equations; entire
-  functions at arbitrary rank; global divisors; nonabelian support.
+- Surcomplex analysis; contours and Stokes; differential equations.
+
+These three reviews are now in progress. Their unfinished edits are not
+covered by the completed-review rows above.
 
 Continue with elementary statements and their dependencies before broad
 classification theorems. For each portion, check definitions and size/domain

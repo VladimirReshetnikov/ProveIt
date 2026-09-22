@@ -1212,53 +1212,53 @@ whole-class corollary additionally needs the actual workspace bridge.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Theorem | `ent:thm:main` (line 284) | Cofinality--rank trichotomy |
-| Theorem | `ent:thm:main-extension` (line 309) | Universal scalar-extension package |
-| Lemma | `ent:lem:neumann` (line 433) | Hahn--Neumann support calculus |
-| Lemma | `ent:lem:cofinal-tails` (line 454) | Cofinal tails |
-| Theorem | `ent:thm:criterion` (line 541) | All-point strong summability |
-| Corollary | `ent:cor:cofinality` (line 611) | Cofinality dichotomy |
-| Proposition | `ent:prop:operations` (line 640) | Entire operations |
-| Theorem | `ent:thm:units` (line 708) | Restricted-unit criterion |
-| Corollary | `ent:cor:unit-structure` (line 771) | Unit group of the restricted algebra |
-| Lemma | `ent:lem:A-units` (line 839) | Units and integral substitution |
-| Theorem | `ent:thm:prep` (line 866) | Support-controlled preparation |
-| Corollary | `ent:cor:prep-extension` (line 915) | The certificate survives enlargement of the value group |
-| Corollary | `ent:cor:integral-zeros` (line 980) | Finite zero geometry on the integral disk |
-| Theorem | `ent:thm:roots` (line 995) | Ball, shell, and residue-direction counts |
-| Corollary | `ent:cor:units` (line 1033) | Units, faithfulness, and values |
-| Lemma | `ent:lem:linear-division` (line 1054) | Division by a linear zero factor |
-| Corollary | `ent:cor:stability` (line 1066) | Initial-form stability |
-| Proposition | `ent:prop:newton` (line 1076) | Locally finite Newton profile |
-| Lemma | `ent:lem:divisor-countable` (line 1124) | Countability and escape |
-| Theorem | `ent:thm:product` (line 1149) | Canonical product for a radial divisor |
-| Theorem | `ent:thm:factorization` (line 1194) | Factorization by zeros |
-| Corollary | `ent:cor:gcd` (line 1243) | Divisibility, GCDs, and least common multiples |
-| Corollary | `ent:cor:evaluation` (line 1266) | Finite jets and evaluation ideals |
-| Corollary | `ent:cor:value-distribution` (line 1280) | Rigidity and value distribution |
-| Corollary | `ent:cor:conjugation` (line 1312) | Conjugation and real-coefficient functions |
-| Proposition | `ent:prop:nonnoetherian` (line 1326) | Untitled |
-| Lemma | `ent:lem:escaping-classes` (line 1366) | Untitled |
-| Lemma | `ent:lem:growth-barrier` (line 1385) | Archimedean growth barrier |
-| Corollary | `ent:cor:no-interpolation` (line 1410) | Explicit failure of value interpolation |
-| Theorem | `ent:thm:no-bezout` (line 1431) | An explicit pointwise B\'ezout failure |
-| Corollary | `ent:cor:invisible-ideal` (line 1492) | A finitely generated ideal invisible to point tests |
-| Lemma | `ent:lem:coarsening` (line 1544) | Real-valued coarsening |
-| Theorem | `ent:thm:interpolation` (line 1611) | Arbitrary radial Hermite interpolation |
-| Theorem | `ent:thm:bezout` (line 1690) | B\'ezout in the order-unit case |
-| Theorem | `ent:thm:extension-criterion` (line 1732) | Sharp change-of-workspace criterion |
-| Lemma | `ent:lem:coarsened-ring` (line 1777) | Untitled |
-| Theorem | `ent:thm:extension` (line 1809) | Universal scalar-extension domain |
-| Corollary | `ent:cor:entire-extension` (line 1841) | Cofinal extensions are exactly the entire extensions |
-| Theorem | `ent:thm:zero-conservation` (line 1877) | Zero conservation under arbitrary enlargement |
-| Proposition | `ent:prop:identity` (line 1909) | Identity on constants |
-| Theorem | `ent:thm:no-continuation` (line 1920) | Obstruction to any entire-series continuation |
-| Corollary | `ent:cor:intrinsic-boundary` (line 1941) | Intrinsic description of the extension boundary |
-| Corollary | `ent:cor:no-repair` (line 1967) | No repair of the counterexample by a Hahn extension |
-| Corollary | `ent:cor:all-no` (line 1987) | Whole-class rigidity on the surcomplex numbers |
-| Theorem | `ent:thm:infinite-example` (line 2170) | A genuine infinite-rank surcomplex entire function |
-| Theorem | `ent:thm:multi-criterion` (line 2755) | Untitled |
-| Theorem | `ent:thm:multi-unit` (line 2789) | Untitled |
+| Theorem | `ent:thm:main` (line 288) | Cofinality--rank trichotomy |
+| Theorem | `ent:thm:main-extension` (line 313) | Universal scalar-extension package |
+| Lemma | `ent:lem:neumann` (line 438) | Hahn--Neumann support calculus |
+| Lemma | `ent:lem:cofinal-tails` (line 459) | Cofinal tails |
+| Theorem | `ent:thm:criterion` (line 546) | All-point strong summability |
+| Corollary | `ent:cor:cofinality` (line 616) | Cofinality dichotomy |
+| Proposition | `ent:prop:operations` (line 645) | Entire operations |
+| Theorem | `ent:thm:units` (line 713) | Restricted-unit criterion |
+| Corollary | `ent:cor:unit-structure` (line 776) | Unit group of the restricted algebra |
+| Lemma | `ent:lem:A-units` (line 844) | Units and integral substitution |
+| Theorem | `ent:thm:prep` (line 873) | Support-controlled preparation |
+| Corollary | `ent:cor:prep-extension` (line 922) | The certificate survives enlargement of the value group |
+| Corollary | `ent:cor:integral-zeros` (line 987) | Finite zero geometry on the integral disk |
+| Theorem | `ent:thm:roots` (line 1002) | Ball, shell, and residue-direction counts |
+| Corollary | `ent:cor:units` (line 1040) | Units, faithfulness, and values |
+| Lemma | `ent:lem:linear-division` (line 1061) | Division by a linear zero factor |
+| Corollary | `ent:cor:stability` (line 1079) | Initial-form stability |
+| Proposition | `ent:prop:newton` (line 1089) | Locally finite Newton profile |
+| Lemma | `ent:lem:divisor-countable` (line 1137) | Countability and escape |
+| Theorem | `ent:thm:product` (line 1162) | Canonical product for a radial divisor |
+| Theorem | `ent:thm:factorization` (line 1207) | Factorization by zeros |
+| Corollary | `ent:cor:gcd` (line 1256) | Divisibility, GCDs, and least common multiples |
+| Corollary | `ent:cor:evaluation` (line 1279) | Finite jets and evaluation ideals |
+| Corollary | `ent:cor:value-distribution` (line 1293) | Rigidity and value distribution |
+| Corollary | `ent:cor:conjugation` (line 1325) | Conjugation and real-coefficient functions |
+| Proposition | `ent:prop:nonnoetherian` (line 1339) | Untitled |
+| Lemma | `ent:lem:escaping-classes` (line 1379) | Untitled |
+| Lemma | `ent:lem:growth-barrier` (line 1398) | Archimedean growth barrier |
+| Corollary | `ent:cor:no-interpolation` (line 1434) | Explicit failure of value interpolation |
+| Theorem | `ent:thm:no-bezout` (line 1455) | An explicit pointwise B\'ezout failure |
+| Corollary | `ent:cor:invisible-ideal` (line 1516) | A finitely generated ideal invisible to point tests |
+| Lemma | `ent:lem:coarsening` (line 1568) | Real-valued coarsening |
+| Theorem | `ent:thm:interpolation` (line 1635) | Arbitrary radial Hermite interpolation |
+| Theorem | `ent:thm:bezout` (line 1714) | B\'ezout in the order-unit case |
+| Theorem | `ent:thm:extension-criterion` (line 1756) | Sharp change-of-workspace criterion |
+| Lemma | `ent:lem:coarsened-ring` (line 1801) | Untitled |
+| Theorem | `ent:thm:extension` (line 1833) | Universal scalar-extension domain |
+| Corollary | `ent:cor:entire-extension` (line 1865) | Cofinal extensions are exactly the entire extensions |
+| Theorem | `ent:thm:zero-conservation` (line 1901) | Zero conservation under arbitrary enlargement |
+| Proposition | `ent:prop:identity` (line 1933) | Identity on constants |
+| Theorem | `ent:thm:no-continuation` (line 1949) | Obstruction to any entire-series continuation |
+| Corollary | `ent:cor:intrinsic-boundary` (line 1970) | Intrinsic description of the extension boundary |
+| Corollary | `ent:cor:no-repair` (line 1996) | No repair of the counterexample by a Hahn extension |
+| Corollary | `ent:cor:all-no` (line 2016) | Whole-class rigidity on the surcomplex numbers |
+| Theorem | `ent:thm:infinite-example` (line 2199) | A genuine infinite-rank surcomplex entire function |
+| Theorem | `ent:thm:multi-criterion` (line 2790) | Untitled |
+| Theorem | `ent:thm:multi-unit` (line 2835) | Untitled |
 
 ### finite-deformations
 
@@ -1331,63 +1331,63 @@ remain distinct.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `global:lem:support` (line 249) | Support calculus |
-| Proposition | `global:prop:evaluation` (line 297) | Evaluation and identity |
-| Proposition | `global:prop:sheaf` (line 314) | Support-preserving sheaf property |
-| Proposition | `global:prop:units` (line 326) | Exact unit criterion |
-| Proposition | `global:prop:explog` (line 342) | Positive-support exponential and logarithm |
-| Lemma | `global:lem:scalarML` (line 372) | Scalar Weierstrass and Mittag--Leffler |
-| Lemma | `global:lem:hermite` (line 388) | Discrete Hermite interpolation |
-| Lemma | `global:lem:scalarCousin` (line 409) | Scalar additive Cousin theorem on $\C$ |
-| Theorem | `global:thm:preparation` (line 447) | Uniform-support local preparation |
-| Corollary | `global:cor:roots` (line 480) | All roots in a monad |
-| Lemma | `global:lem:division` (line 496) | Deformed division |
-| Lemma | `global:lem:polefree` (line 520) | Pole-free fractions |
-| Theorem | `global:thm:PID` (line 534) | Principal-ideal-domain stalks |
-| Proposition | `global:prop:nonlocal` (line 556) | Non-locality, and the integral model |
-| Corollary | `global:cor:Picmeaning` (line 570) | Meaning of the Picard group over the plane |
-| Theorem | `global:thm:ML` (line 614) | Uniform-support Mittag--Leffler criterion |
-| Corollary | `global:cor:interp` (line 640) | Entire interpolation with an exact support criterion |
-| Theorem | `global:thm:divisor` (line 660) | Sharp global moving-divisor criterion |
-| Proposition | `global:prop:realizationtorsor` (line 714) | The freedom in realization |
-| Corollary | `global:cor:splitting` (line 784) | Failure of arbitrary global divisor splitting |
-| Proposition | `global:prop:restrictedalgebra` (line 818) | Restricted product algebra |
-| Theorem | `global:thm:interpolation` (line 834) | Deformed Hermite interpolation |
-| Corollary | `global:cor:CRT` (line 857) | Chinese remainder quotient |
-| Theorem | `global:thm:MLmoving` (line 898) | Sharp moving-pole Mittag--Leffler theorem |
-| Theorem | `global:thm:aut` (line 935) | Global inverse for positive-support perturbations |
-| Corollary | `global:cor:motion` (line 959) | Exact interpolation of simple motions |
-| Theorem | `global:thm:cousincriterion` (line 997) | Necessary and sufficient Cousin criterion |
-| Theorem | `global:thm:obstruction` (line 1035) | A concrete obstruction subspace |
-| Corollary | `global:cor:H1injection` (line 1062) | First cohomology detected by descending scales |
-| Corollary | `global:cor:H1size` (line 1080) | Size and local invisibility |
-| Proposition | `global:prop:divPic` (line 1107) | The divisor and logarithmic obstructions coincide |
-| Proposition | `global:prop:Picreduction` (line 1121) | Reduction of the plane Picard group to positive supports |
-| Lemma | `global:lem:descending` (line 1144) | Descending positive sequences |
-| Theorem | `global:thm:dichotomy` (line 1152) | Picard-group vanishing dichotomy over the plane |
-| Theorem | `global:thm:dimension` (line 1181) | Continuum many independent classes over the plane, and the exact dimension |
-| Proposition | `global:prop:fullH1` (line 1206) | The full additive sheaf over the plane is already obstructed in cyclic rank |
-| Proposition | `global:prop:Cartierexample` (line 1230) | A plane divisor with trivial ordinary reduction but no global equation |
-| Lemma | `global:lem:compactsupport` (line 1344) | Compact support uniformity |
-| Lemma | `global:lem:operatorneumann` (line 1360) | Neumann inverse, operator form |
-| Proposition | `global:prop:dolbeault` (line 1384) | Dolbeault resolution over a compact base |
-| Theorem | `global:thm:comparison` (line 1404) | Compact cohomology comparison |
-| Lemma | `global:lem:unitsX` (line 1430) | Unit decomposition over a compact base |
-| Theorem | `global:thm:piccompact` (line 1449) | Exact Picard classification over a compact base |
-| Proposition | `global:prop:normalform` (line 1501) | Positive Dolbeault normal form |
-| Theorem | `global:thm:finitecoh` (line 1539) | Finite cohomology and explicit representatives |
-| Corollary | `global:cor:RRcompact` (line 1585) | Riemann--Roch in the zero-valuation sector |
-| Proposition | `global:prop:degreezero` (line 1598) | Degree-zero deformations of the trivial bundle |
-| Corollary | `global:cor:baseext` (line 1611) | Base extension does not remove an obstruction |
-| Theorem | `global:thm:meromorphic` (line 1630) | Exact meromorphic-section criterion |
-| Corollary | `global:cor:divseq` (line 1648) | The divisor-class sequence |
-| Lemma | `global:lem:lognewton` (line 1703) | Logarithmic principal-part identity |
-| Proposition | `global:prop:abelresidue` (line 1734) | Well-definedness and a residue formula |
-| Theorem | `global:thm:abelcompact` (line 1758) | Support-controlled Abel criterion |
-| Lemma | `global:lem:truncatedpic` (line 1864) | Truncated Picard classification |
-| Lemma | `global:lem:coefficientlimit` (line 1894) | Inverse limit of the coefficient truncations |
-| Theorem | `global:thm:adic` (line 1907) | Exact one-scale Picard comparison |
-| Corollary | `global:cor:setcutoffs` (line 1944) | A set-indexed detection obstruction |
+| Lemma | `global:lem:support` (line 250) | Support calculus |
+| Proposition | `global:prop:evaluation` (line 298) | Evaluation and identity |
+| Proposition | `global:prop:sheaf` (line 315) | Support-preserving sheaf property |
+| Proposition | `global:prop:units` (line 327) | Exact unit criterion |
+| Proposition | `global:prop:explog` (line 343) | Positive-support exponential and logarithm |
+| Lemma | `global:lem:scalarML` (line 373) | Scalar Weierstrass and Mittag--Leffler |
+| Lemma | `global:lem:hermite` (line 389) | Discrete Hermite interpolation |
+| Lemma | `global:lem:scalarCousin` (line 410) | Scalar additive Cousin theorem on $\C$ |
+| Theorem | `global:thm:preparation` (line 448) | Uniform-support local preparation |
+| Corollary | `global:cor:roots` (line 481) | All roots in a monad |
+| Lemma | `global:lem:division` (line 497) | Deformed division |
+| Lemma | `global:lem:polefree` (line 521) | Pole-free fractions |
+| Theorem | `global:thm:PID` (line 535) | Principal-ideal-domain stalks |
+| Proposition | `global:prop:nonlocal` (line 557) | Non-locality, and the integral model |
+| Corollary | `global:cor:Picmeaning` (line 571) | Meaning of the Picard group over the plane |
+| Theorem | `global:thm:ML` (line 615) | Uniform-support Mittag--Leffler criterion |
+| Corollary | `global:cor:interp` (line 641) | Entire interpolation with an exact support criterion |
+| Theorem | `global:thm:divisor` (line 661) | Sharp global moving-divisor criterion |
+| Proposition | `global:prop:realizationtorsor` (line 715) | The freedom in realization |
+| Corollary | `global:cor:splitting` (line 785) | Failure of arbitrary global divisor splitting |
+| Proposition | `global:prop:restrictedalgebra` (line 819) | Restricted product algebra |
+| Theorem | `global:thm:interpolation` (line 835) | Deformed Hermite interpolation |
+| Corollary | `global:cor:CRT` (line 858) | Chinese remainder quotient |
+| Theorem | `global:thm:MLmoving` (line 899) | Sharp moving-pole Mittag--Leffler theorem |
+| Theorem | `global:thm:aut` (line 936) | Global inverse for positive-support perturbations |
+| Corollary | `global:cor:motion` (line 960) | Exact interpolation of simple motions |
+| Theorem | `global:thm:cousincriterion` (line 998) | Necessary and sufficient Cousin criterion |
+| Theorem | `global:thm:obstruction` (line 1036) | A concrete obstruction subspace |
+| Corollary | `global:cor:H1injection` (line 1063) | First cohomology detected by descending scales |
+| Corollary | `global:cor:H1size` (line 1081) | Size and local invisibility |
+| Proposition | `global:prop:divPic` (line 1108) | The divisor and logarithmic obstructions coincide |
+| Proposition | `global:prop:Picreduction` (line 1122) | Reduction of the plane Picard group to positive supports |
+| Lemma | `global:lem:descending` (line 1146) | Descending positive sequences |
+| Theorem | `global:thm:dichotomy` (line 1154) | Picard-group vanishing dichotomy over the plane |
+| Theorem | `global:thm:dimension` (line 1183) | Continuum many independent classes over the plane, and the exact dimension |
+| Proposition | `global:prop:fullH1` (line 1208) | The full additive sheaf over the plane is already obstructed in cyclic rank |
+| Proposition | `global:prop:Cartierexample` (line 1232) | A plane divisor with trivial ordinary reduction but no global equation |
+| Lemma | `global:lem:compactsupport` (line 1346) | Compact support uniformity |
+| Lemma | `global:lem:operatorneumann` (line 1362) | Neumann inverse, operator form |
+| Proposition | `global:prop:dolbeault` (line 1386) | Dolbeault resolution over a compact base |
+| Theorem | `global:thm:comparison` (line 1406) | Compact cohomology comparison |
+| Lemma | `global:lem:unitsX` (line 1432) | Unit decomposition over a compact base |
+| Theorem | `global:thm:piccompact` (line 1451) | Exact Picard classification over a compact base |
+| Proposition | `global:prop:normalform` (line 1527) | Positive Dolbeault normal form |
+| Theorem | `global:thm:finitecoh` (line 1565) | Finite cohomology and explicit representatives |
+| Corollary | `global:cor:RRcompact` (line 1611) | Riemann--Roch in the zero-valuation sector |
+| Proposition | `global:prop:degreezero` (line 1624) | Degree-zero deformations of the trivial bundle |
+| Corollary | `global:cor:baseext` (line 1637) | Base extension does not remove an obstruction |
+| Theorem | `global:thm:meromorphic` (line 1656) | Exact meromorphic-section criterion |
+| Corollary | `global:cor:divseq` (line 1674) | The divisor-class sequence |
+| Lemma | `global:lem:lognewton` (line 1729) | Logarithmic principal-part identity |
+| Proposition | `global:prop:abelresidue` (line 1760) | Well-definedness and a residue formula |
+| Theorem | `global:thm:abelcompact` (line 1784) | Support-controlled Abel criterion |
+| Lemma | `global:lem:truncatedpic` (line 1890) | Truncated Picard classification |
+| Lemma | `global:lem:coefficientlimit` (line 1920) | Inverse limit of the coefficient truncations |
+| Theorem | `global:thm:adic` (line 1933) | Exact one-scale Picard comparison |
+| Corollary | `global:cor:setcutoffs` (line 1970) | A set-indexed detection obstruction |
 
 ### nonabelian-support
 
@@ -1399,51 +1399,51 @@ support; the two predicates must not be identified.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `nab:lem:neumann` (line 561) | Neumann support calculus; classical input |
-| Lemma | `nab:lem:inverse` (line 597) | Positive inversion and formal functions |
-| Lemma | `nab:lem:finiteclosure` (line 628) | Finite decomposition inside the generated monoid |
-| Lemma | `nab:lem:laurent` (line 669) | The ordinary splitting algebras |
-| Lemma | `nab:lem:mlplane` (line 693) | Isolated singular parts on the plane |
-| Lemma | `nab:lem:mlsurface` (line 718) | Open-surface version |
-| Lemma | `nab:lem:free` (line 745) | Free based meridians |
-| Lemma | `nab:lem:period` (line 780) | A linear period right inverse |
-| Theorem | `nab:thm:local` (line 840) | Local normalized factorization |
-| Proposition | `nab:prop:rightgauge` (line 876) | Right-gauge invariance |
-| Corollary | `nab:cor:unitriangular` (line 891) | Unitriangular factors |
-| Theorem | `nab:thm:frobenius` (line 941) | A common-disk positive Frobenius factorization |
-| Theorem | `nab:thm:criterion` (line 1025) | Exact nonabelian Cousin criterion: Criterion P |
-| Proposition | `nab:prop:torsor` (line 1111) | Right torsor of splittings |
-| Corollary | `nab:cor:localgauges` (line 1135) | Removal of arbitrarily supported regular data |
-| Corollary | `nab:cor:coordinates` (line 1150) | Coordinate independence of admissibility |
-| Corollary | `nab:cor:extension` (line 1168) | Absoluteness under ordered extension |
-| Proposition | `nab:prop:rankone` (line 1189) | Recovery of the rank-one singular-support test |
-| Proposition | `nab:prop:heisenberg` (line 1230) | Closed Heisenberg factorization |
-| Theorem | `nab:thm:hidden` (line 1280) | Hidden rank-three obstruction |
-| Proposition | `nab:prop:logdiag` (line 1352) | Logarithm diagnostic |
-| Lemma | `nab:lem:chain` (line 1384) | Chain identity |
-| Theorem | `nab:thm:depth` (line 1432) | Arbitrarily deep central support obstructions |
-| Proposition | `nab:prop:integraltrivial` (line 1507) | For triviality, the reduced framing costs nothing |
-| Corollary | `nab:cor:nontrivialbundles` (line 1527) | Nontrivial determinant-one integral bundles |
-| Corollary | `nab:cor:bounded` (line 1543) | Exhaustion-invisible nontriviality |
-| Theorem | `nab:thm:Stein` (line 1608) | Support-controlled Stein splitting |
-| Theorem | `nab:thm:deformation` (line 1651) | Support-controlled deformation rigidity |
-| Lemma | `nab:lem:groups` (line 1687) | Ordered-group alternative |
-| Theorem | `nab:thm:dichotomy` (line 1703) | Universal positive rigidity and its failure |
-| Theorem | `nab:thm:fundamental` (line 1838) | Fundamental matrix with a support certificate |
-| Lemma | `nab:lem:triangular` (line 1913) | Triangular change of monodromy |
-| Theorem | `nab:thm:RH` (line 1955) | Support-sensitive Riemann--Hilbert realization: Criterion M |
-| Proposition | `nab:prop:intrinsic` (line 2049) | Independence of the meridian basis |
-| Proposition | `nab:prop:conjugation` (line 2074) | Fixed conjugation and enlargement cannot repair support |
-| Theorem | `nab:thm:gauge` (line 2111) | Framed classification with controlled support |
-| Theorem | `nab:thm:entiregauge` (line 2147) | Entire extension of a logarithmic comparison gauge |
-| Corollary | `nab:cor:slice` (line 2180) | A global normal slice for logarithmic connections |
-| Corollary | `nab:cor:finite` (line 2207) | Unique positive residue matrices for finite data |
-| Lemma | `nab:lem:det` (line 2238) | Determinants and positive connections |
-| Theorem | `nab:thm:SL` (line 2253) | Traceless normalized realization |
-| Proposition | `nab:prop:mixed` (line 2408) | The first nonabelian correction |
-| Proposition | `nab:prop:dependence` (line 2533) | Finite exponent dependence |
-| Proposition | `nab:prop:basechange` (line 2567) | Compatibility with enlargement of the workspace |
-| Proposition | `nab:prop:discontinuous` (line 2597) | No continuous linear period right inverse |
+| Lemma | `nab:lem:neumann` (line 565) | Neumann support calculus; classical input |
+| Lemma | `nab:lem:inverse` (line 601) | Positive inversion and formal functions |
+| Lemma | `nab:lem:finiteclosure` (line 632) | Finite decomposition inside the generated monoid |
+| Lemma | `nab:lem:laurent` (line 673) | The ordinary splitting algebras |
+| Lemma | `nab:lem:mlplane` (line 697) | Isolated singular parts on the plane |
+| Lemma | `nab:lem:mlsurface` (line 722) | Open-surface version |
+| Lemma | `nab:lem:free` (line 749) | Free based meridians |
+| Lemma | `nab:lem:period` (line 784) | A linear period right inverse |
+| Theorem | `nab:thm:local` (line 844) | Local normalized factorization |
+| Proposition | `nab:prop:rightgauge` (line 880) | Right-gauge invariance |
+| Corollary | `nab:cor:unitriangular` (line 901) | Unitriangular factors |
+| Theorem | `nab:thm:frobenius` (line 953) | A common-disk positive Frobenius factorization |
+| Theorem | `nab:thm:criterion` (line 1037) | Exact nonabelian Cousin criterion: Criterion P |
+| Proposition | `nab:prop:torsor` (line 1128) | Right torsor of splittings |
+| Corollary | `nab:cor:localgauges` (line 1152) | Removal of arbitrarily supported regular data |
+| Corollary | `nab:cor:coordinates` (line 1167) | Coordinate independence of admissibility |
+| Corollary | `nab:cor:extension` (line 1185) | Absoluteness under ordered extension |
+| Proposition | `nab:prop:rankone` (line 1206) | Recovery of the rank-one singular-support test |
+| Proposition | `nab:prop:heisenberg` (line 1247) | Closed Heisenberg factorization |
+| Theorem | `nab:thm:hidden` (line 1297) | Hidden rank-three obstruction |
+| Proposition | `nab:prop:logdiag` (line 1369) | Logarithm diagnostic |
+| Lemma | `nab:lem:chain` (line 1401) | Chain identity |
+| Theorem | `nab:thm:depth` (line 1449) | Arbitrarily deep central support obstructions |
+| Proposition | `nab:prop:integraltrivial` (line 1524) | For triviality, the reduced framing costs nothing |
+| Corollary | `nab:cor:nontrivialbundles` (line 1544) | Nontrivial determinant-one integral bundles |
+| Corollary | `nab:cor:bounded` (line 1560) | Exhaustion-invisible nontriviality |
+| Theorem | `nab:thm:Stein` (line 1625) | Support-controlled Stein splitting |
+| Theorem | `nab:thm:deformation` (line 1668) | Support-controlled deformation rigidity |
+| Lemma | `nab:lem:groups` (line 1704) | Ordered-group alternative |
+| Theorem | `nab:thm:dichotomy` (line 1720) | Universal positive rigidity and its failure |
+| Theorem | `nab:thm:fundamental` (line 1857) | Fundamental matrix with a support certificate |
+| Lemma | `nab:lem:triangular` (line 1932) | Triangular change of monodromy |
+| Theorem | `nab:thm:RH` (line 1974) | Support-sensitive Riemann--Hilbert realization: Criterion M |
+| Proposition | `nab:prop:intrinsic` (line 2068) | Independence of the meridian basis |
+| Proposition | `nab:prop:conjugation` (line 2094) | Fixed conjugation and enlargement cannot repair support |
+| Theorem | `nab:thm:gauge` (line 2131) | Framed classification with controlled support |
+| Theorem | `nab:thm:entiregauge` (line 2167) | Entire extension of a logarithmic comparison gauge |
+| Corollary | `nab:cor:slice` (line 2200) | A global normal slice for logarithmic connections |
+| Corollary | `nab:cor:finite` (line 2227) | Unique positive residue matrices for finite data |
+| Lemma | `nab:lem:det` (line 2258) | Determinants and positive connections |
+| Theorem | `nab:thm:SL` (line 2273) | Traceless normalized realization |
+| Proposition | `nab:prop:mixed` (line 2428) | The first nonabelian correction |
+| Proposition | `nab:prop:dependence` (line 2554) | Finite exponent dependence |
+| Proposition | `nab:prop:basechange` (line 2588) | Compatibility with enlargement of the workspace |
+| Proposition | `nab:prop:discontinuous` (line 2618) | No continuous linear period right inverse |
 
 ### polynomial-algebra
 
