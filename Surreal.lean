@@ -6,6 +6,7 @@ import Surreal.Algebra.Modulus
 import Surreal.Algebra.Polynomial
 import Surreal.Algebra.PolynomialCRT
 import Surreal.Algebra.PolynomialDivision
+import Surreal.Algebra.PolynomialHermiteFormula
 import Surreal.Algebra.PolynomialInterpolation
 import Surreal.Algebra.PolynomialInverseJet
 import Surreal.Algebra.PolynomialLagrange
@@ -18,5 +19,6 @@ import Surreal.HahnSeries.ComplexNumbers
 import Surreal.HahnSeries.Conjugation
 import Surreal.HahnSeries.Evaluation
 import Surreal.HahnSeries.Neumann
+import Surreal.HahnSeries.PolynomialReduction
 import Surreal.HahnSeries.Regroup
 import Surreal.HahnSeries.StandardPart

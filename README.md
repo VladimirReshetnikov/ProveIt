@@ -47,6 +47,8 @@ rings and provides orthogonal idempotents summing to one. Explicit truncated
 inverse jets construct their polynomial representatives, with coefficients
 computed by repeated formal differentiation of the reciprocal. The simple-root
 case gives the Lagrange formula, with nonzero derivative denominators.
+The finite inverse-jet weighted sum gives an explicit Hermite interpolant
+after taking its polynomial remainder.
 
 The Hahn layer uses mathlib's `SummableFamily` and proves the full Neumann
 support lemma, including finiteness across all word lengths. It distinguishes
@@ -56,6 +58,8 @@ identities and exact finite remainders are formal Hahn identities.
 Arbitrary regrouping and double-sum interchange preserve jointly summable
 families. Coefficient-zero extraction gives standard part on the nonnegative-order
 subring, with residue field and a unique constant-plus-infinitesimal decomposition.
+Roots of monic polynomials over this subring stay in it; for split polynomials,
+standard part preserves the root multiset with multiplicities.
 Coefficientwise real and imaginary parts identify Hahn series over `R[i]`
 with the quadratic extension of Hahn series over `R`. This identification
 also uses Mathlib's native real and complex coefficients; conjugation fixes
