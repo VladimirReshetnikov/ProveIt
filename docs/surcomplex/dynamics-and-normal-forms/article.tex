@@ -209,9 +209,10 @@ density.
 \vfill
 \begin{minipage}{0.92\textwidth}\small
 \textbf{Status.} This is a merged report assembled from seven AI-assisted,
-unrefereed research drafts. It is not refereed and not proof-assistant
-verified; no Lean or other formal development corresponds to any theorem
-below. Priority is not certified for any statement, and no named published
+unrefereed research drafts. The full report is not proof-assistant verified.
+The repository's Lean development checks the finite-word support lemma and
+the input-relative ancestry bounds; its coverage ledger is
+\texttt{docs/FORMALIZATION.md}. Priority is not certified, and no named published
 conjecture is claimed solved. The seven sources' own verification programs
 supply finite exact symbolic checks only; \cref{dyn:sec:verification}
 records exactly what each one does and does not establish, and
@@ -1093,26 +1094,97 @@ all word lengths, together with a \emph{labelled} refinement of it
 For $\gamma\in S^{*}$ let $D_S(\gamma)$ be the finite set of letters
 occurring in the words of $\word_S(\gamma)$.
 
-\begin{corollary}[Finite ancestry]\label{dyn:cor:ancestry}
-Suppose $T$ is a $\C$-linear operator on coefficient families such that
-every term of $T(A)$ adds a nonempty word from $S$ to an input exponent of
-$A$, with finitely many coefficient operations per word. Then
-$\sum_{k\ge0}c_kT^{k}(A)$ is strongly summable for any ordinary scalars
-$c_k$, its support lies in $\supp A+S^{*}$, and at a fixed output exponent
-$\gamma$ only finitely many input exponents, word lengths and operations
-contribute --- at most $\ell_S(\gamma)$ applications of $T$, and only
-input data at letters in $D_S(\gamma)$. Consequently polynomial identities
-valid for a nilpotent operator may be used coefficientwise, which is what
-justifies the geometric, logarithmic and exponential identities below. The
-same statement holds for operators with Hahn coefficients, for vector and
-matrix operators, and for a strongly summable input family simultaneously.
+For a well-ordered input support $B\subset\Gamma$, retain the starting
+exponent as well as the positive word. Define
+\begin{align*}
+ \word_{B,S}(\gamma)
+ &=\{(b,w):b\in B,\ w\in\word_S(\gamma-b)\},\\
+ \ell_{B,S}(\gamma)
+ &=\max\bigl(\{0\}\cup\{|w|:(b,w)\in\word_{B,S}(\gamma)\}\bigr).
+\end{align*}
+Here $|w|$ is the number of letters of $w$. Let $E_{B,S}(\gamma)$ be the
+set of starting exponents $b$ in these pairs, and $D_{B,S}(\gamma)$ the set
+of positive letters occurring in their words. All three sets are finite by
+\cref{dyn:lem:neumann}; the depth is zero if there is no pair. When
+$B=\{0\}$ and $\gamma\in S^{*}$, this depth is $\ell_S(\gamma)$.
+
+\begin{corollary}[Finite ancestry relative to the input support]
+\label{dyn:cor:ancestry}
+Let $S\subset\Gamma_{>0}$ be well ordered, and suppose a $\C$-linear
+operator $T$ on Hahn coefficient families is given coefficientwise by
+\[
+ (TA)_\gamma
+ =\sum_{b\in\supp A}\;
+   \sum_{\substack{w\in\word_S(\gamma-b)\\ |w|\ge1}}
+       T_{b,w}(A_b).
+\]
+Each $T_{b,w}$ is a fixed linear coefficient operator, expressible by
+finitely many operations in the chosen coefficient category. For any Hahn
+input $A$ with $B=\supp A$ and any ordinary scalars $c_k$, the family
+$(c_kT^kA)_{k\ge0}$ is strongly summable and its sum has support in
+$B+S^{*}$. At an output exponent $\gamma$, contributions use at most
+$\ell_{B,S}(\gamma)$ applications of $T$, only input coefficients $A_b$
+with $b\in E_{B,S}(\gamma)$, and only positive support letters in
+$D_{B,S}(\gamma)$. Only finitely many coefficient operations contribute.
+
+These conclusions hold for finite-dimensional vector and matrix
+coefficient families and for operators with Hahn coefficients whenever
+the displayed positive-word hypothesis holds. If $(A_i)_{i\in I}$ is
+strongly summable, the family $(c_kT^kA_i)_{(i,k)\in I\times\N}$ is
+strongly summable too, using $B=\bigcup_i\supp A_i$. Formal power-series
+identities in one operator may therefore be evaluated coefficientwise;
+this applies to the geometric, logarithmic and exponential identities used
+below.
 \end{corollary}
 \begin{proof}
-Flatten every intermediate exponent into a word in $S$ and apply
-\cref{dyn:lem:neumann}; \cref{dyn:lem:neumann}'s last assertion bounds the
-relevant input weights, and local finiteness of the input family bounds the
-number of contributing members.
+The displayed definition of $T$ is meaningful: at a fixed output exponent,
+\cref{dyn:lem:neumann} gives only finitely many input-exponent/word pairs.
+Its support is contained in $B+(S^{*}\setminus\{0\})$, a subset of the
+well-ordered set $B+S^{*}$, so iteration is legitimate.
+
+Expand a contribution to $(T^kA)_\gamma$ by its successive nonempty
+words $w_1,\ldots,w_k$, starting at $b\in B$. Their concatenation $w$
+satisfies $b+\sum w=\gamma$, hence $(b,w)\in\word_{B,S}(\gamma)$.
+Conversely, once $(b,w)$ and its decomposition into $k$ consecutive
+nonempty blocks are specified, all intermediate exponents are determined
+by the partial sums. A word of length $n\ge1$ has only $2^{n-1}$ such
+block decompositions across all possible $k$, with $k\le n$; the empty
+word occurs only for $k=0$. Since $\word_{B,S}(\gamma)$ is finite and
+every block uses finitely many coefficient operations, only finitely many
+expanded contributions occur at $\gamma$, across all iterates. This also
+proves the stated depth and input-data bounds. Their supports all lie in
+$B+S^{*}$, proving both requirements of strong summability.
+
+For a strongly summable input family, its union of supports $B$ is well
+ordered. There are finitely many relevant pairs $(b,w)$, and for each such
+$b$ only finitely many $i$ have $(A_i)_b\ne0$. The same argument thus
+proves the joint assertion and permits commuting $T$ with the input sum.
+Finite-dimensional vector and matrix operations introduce only finitely
+many component choices and do not change the argument.
+
+Finally, fix an input and an output exponent. All contributing powers of
+$T$ have bounded degree; in a product or a composition of scalar formal
+power series, each such degree has only finitely many decompositions.
+Consequently the formal identity reduces to a finite coefficient
+identity. Compositions are understood in their usual formal domain (in
+particular the inner series has zero constant term), as for
+$\log(1+T)$ and $\exp(T)-I$.
 \end{proof}
+
+\noindent\textbf{Why the input support cannot be omitted.}
+Take $\Gamma=\Z$, $S=\{1\}$ and $T(A)=tA$. For every integer $n\ge0$,
+\[
+ T^n(t^{-n})=1,\qquad
+ \ell_S(0)=0,\qquad \ell_{\{-n\},S}(0)=n.
+\]
+Thus no bound depending only on $S$ and the output exponent can control
+all Hahn inputs, and input exponents need not be letters of $S$.
+The earlier version of \cref{dyn:cor:ancestry} used $\ell_S(\gamma)$ and
+$D_S(\gamma)$ for arbitrary input; the relative sets above correct that
+statement. The sharper unshifted bound remains valid in
+\cref{dyn:prop:linearization}: its initial input $\Li^{-1}f$ is already
+supported in $S$, so its starting exponent itself supplies a positive
+letter. The preserved source manuscripts have not been altered.
 
 \begin{warning}[Why a valuation-contraction argument would be incomplete]
 \label{dyn:warn:contraction}
@@ -1315,12 +1387,14 @@ entire, polynomial and formal categories, with the evaluation domains of
 pullback reverses composition.
 \end{proposition}
 \begin{proof}
-Strong summability is \cref{dyn:lem:neumann,dyn:cor:ancestry}. At a fixed
-Hahn exponent only finitely many derivatives and products contribute;
-introduce a formal parameter for each of the finitely many input support
-letters involved and discard parameter monomials beyond the required word
-length. Taylor composition in that finite nilpotent parameter algebra is
-associative and multiplicative, and each asserted coefficient identity is
+Strong summability is \cref{dyn:lem:neumann,dyn:cor:ancestry}, applied
+with the support of each Hahn input retained. At a fixed Hahn exponent
+only finitely many input coefficients, derivatives and products contribute.
+Keep those input coefficients separately, introduce a formal parameter for
+each relevant positive support letter, and discard parameter monomials
+beyond the corresponding relative word depth. Taylor composition in that
+finite nilpotent parameter algebra is associative and multiplicative, and
+each asserted coefficient identity is
 one of those identities. For the inverse put $\Delta=C_F-I$: every term of
 $\Delta$ adds a nonempty word from $S$, so $C_F^{-1}=\sum_{k\ge0}(-\Delta)^{k}$
 is defined coefficientwise and is a two-sided multiplicative inverse. Let
@@ -1399,8 +1473,11 @@ germ, radius-free germ, entire, polynomial or formal coefficients.
 \emph{Summability.} Put $\Delta=C_F-I$ and $S=\supp(F-\id)$. By
 \eqref{dyn:eq:pullback}, $\Delta$ adds nonempty words from $S$, so both
 series in \eqref{dyn:eq:explog} are strongly summable by
-\cref{dyn:cor:ancestry}, and every output coefficient is a finite
-differential expression with coefficients holomorphic on $U$.
+\cref{dyn:cor:ancestry} for each fixed Hahn input $A$, with depth
+$\ell_{\supp A,S}(\gamma)$ at output $\gamma$. Every output coefficient is
+a finite differential expression with coefficients holomorphic on $U$.
+For the coordinate input $z$, the input support is $\{0\}$, so the
+unshifted depth $\ell_S(\gamma)$ applies for $\gamma\in S^{*}$.
 
 \emph{The derivation identity.} Introduce an ordinary indeterminate $s$ and
 put $C_F^{s}=\sum_{k\ge0}\binom{s}{k}\Delta^{k}$. For fixed inputs and a
@@ -1902,9 +1979,14 @@ are involved.
 Each term of $\NN_f$ contains at least one coefficient of $f$, hence adds a
 nonempty word in $S$, and the initial input $\Li^{-1}f$ already contains one
 letter; a term with $k$ copies of $T$ therefore contains at least $k+1$
-letters. \Cref{dyn:lem:neumann,dyn:cor:ancestry} give the support
-inclusion, strong summability, \eqref{dyn:eq:word-term-bound}, and the
-finiteness of the relevant letters and intermediate sums. Every
+letters. More explicitly, prefix the initial support exponent to the
+concatenated operator words: the resulting word belongs to
+$\word_S(\gamma)$ and has length at least $k+1$. This gives
+\eqref{dyn:eq:word-term-bound} and puts every participating coefficient of
+$f$ at a letter of $D_S(\gamma)$. \Cref{dyn:cor:ancestry}, with input
+support $\supp(\Li^{-1}f)\subseteq S$, gives strong summability and the
+support inclusion. This use of the unshifted depth relies on the initial
+positive letter, not on an input-independent operator bound. Every
 contributing expression is assembled from finitely many derivatives,
 products, compositions with the fixed diagonal rotation, and applications
 of $\Li^{-1}$, all of which preserve the assumed category, so $h_\gamma\in
@@ -4483,8 +4565,10 @@ By \cref{dyn:thm:exp-log} and the scalar identities in
  \Delta_F=e^{\mathscr D}-I=\mathscr DE(\mathscr D)=E(\mathscr D)\mathscr D,
 \end{equation}
 and $E(\mathscr D)B(\mathscr D)=I=B(\mathscr D)E(\mathscr D)$ follows
-coefficientwise, \cref{dyn:cor:ancestry} permitting every rearrangement; so
-the image equals $\mathscr D\AAA$. The kernel of $\mathscr D$ is $K$ since
+coefficientwise: for each input $\psi\in\AAA$, apply
+\cref{dyn:cor:ancestry} with $B=\supp\psi$ and $S=\supp W$ to justify
+every rearrangement. Thus the image equals $\mathscr D\AAA$. The kernel of
+$\mathscr D$ is $K$ since
 $W\ne0$, $\AAA$ is a domain and $\ker\partial_z=K$, and both
 $E(\mathscr D)$ and its inverse act as the identity on constants, so
 \eqref{dyn:eq:factor-difference} also gives $\ker\Delta_F=K$. Since
@@ -6131,9 +6215,9 @@ for positive-valuation $h,g$,
 Well-definedness, the support bound and the algebraic identities are
 \cref{dyn:lem:neumann,dyn:cor:ancestry,dyn:prop:subgroup} applied with
 $U=\TT^{d}_\rho$: at each exponent the word lemma permits only finitely
-many Taylor monomials and finitely many decompositions involving
-$\supp f$, and every resulting coefficient is a finite sum of products of
-derivatives of functions in $\strip$, hence lies in $\strip$. For the
+many Taylor monomials and finitely many shifted word pairs in
+$\word_{\supp f,C}(\gamma)$, and every resulting coefficient is a finite
+sum of products of derivatives of functions in $\strip$, hence lies in $\strip$. For the
 second estimate in \eqref{dyn:eq:qplipschitz} subtract corresponding Taylor
 monomials and telescope the products: every surviving term carries one
 factor from $h-g$ and all its other factors have positive valuation, and
@@ -7497,7 +7581,7 @@ Only the word $(\Omega)$ contributes in the first line, and only
 $(\Omega,1)$ and $(1,\Omega)$ can contribute in the second. Infinitely many
 input coefficients at rational weights below $\Omega$ enter neither
 formula. This is a direct use of finite word dependence
-(\cref{dyn:cor:ancestry}), not a rank-one approximation to the value
+(\cref{dyn:prop:linearization}), not a rank-one approximation to the value
 group.
 
 \section{Relation to the companion reports in this collection}
@@ -7621,9 +7705,15 @@ result of that one is transferred in either direction.
 
 The seven verification programs are preserved unmodified in \texttt{code/}
 and their recorded outputs in \texttt{data/}. They supply \emph{finite
-exact symbolic} checks. None of them is a proof of any infinite statement
-in this report, and no Lean or other proof-assistant development
-corresponds to any theorem here.
+exact symbolic} checks. None of them proves an infinite statement in
+this report. Separately, the repository's Lean modules
+\texttt{Surreal/HahnSeries/Neumann.lean} and
+\texttt{Surreal/HahnSeries/Ancestry.lean} prove the finite-word support
+lemma, the corrected input-relative combinatorial ancestry bounds, and the
+counterexample to an input-independent bound. This does not yet formalize
+the corollary's full operator-summability assertion or the analytic
+theorems built on it. The exact coverage is recorded in
+\texttt{docs/FORMALIZATION.md}.
 
 \subsection{What each suite checks, and what it does not}
 
@@ -8006,6 +8096,9 @@ into a stronger statement. Where two sources state overlapping limitations,
 both wordings are preserved because their scopes differ.
 
 \subsection{Status, refereeing, and formalization}
+The following items record the status of the preserved source packages.
+For the later, partial repository formalization of the support results,
+see \cref{dyn:sec:verification}.
 \begin{enumerate}[label=\textbf{N\arabic*.},leftmargin=3.2em]
 \item (01) An AI-assisted, unrefereed research draft; not refereed and not
 formally verified. Its PDF metadata records the author as ``Research
@@ -8748,6 +8841,12 @@ $S^{*}=M(S)$, $\word_S(\gamma)$, $\ell_S(\gamma)$, $D_S(\gamma)$ &
 Additive monoid, ordered words of weight $\gamma$, maximum word length,
 occurring letters (\cref{dyn:lem:neumann}). $\ell_S(\gamma)$ is finite even
 when infinitely many support elements precede $\gamma$.\\[3pt]
+$\word_{B,S}(\gamma)$, $\ell_{B,S}(\gamma)$,
+$E_{B,S}(\gamma)$, $D_{B,S}(\gamma)$ &
+Input-exponent/word pairs reaching $\gamma$ from $B$, their maximum word
+length (zero if there are no pairs), their starting exponents, and their
+positive letters. These are the relative data for arbitrary Hahn inputs
+in \cref{dyn:cor:ancestry}.\\[3pt]
 $\BB_{\mathsf M}$ & Uniform-monoid support algebra
 (\cref{dyn:def:BM}); the uniformity across Taylor degrees is
 load-bearing.\\[3pt]
