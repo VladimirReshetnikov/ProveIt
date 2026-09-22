@@ -96,6 +96,10 @@ root of a positive-order perturbation of one.
 Arbitrary regrouping and double-sum interchange preserve jointly summable
 families. Coefficient-zero extraction gives standard part on the nonnegative-order
 subring, with residue field and a unique constant-plus-infinitesimal decomposition.
+Strictly increasing additive exponent embeddings preserve Hahn sums, formal
+evaluation in one or finitely many variables, valuations and standard part.
+Infinitesimal exponential and logarithm have explicit strongly summable
+families and are mutually inverse, by proved formal substitution identities.
 Roots of monic polynomials over this subring stay in it; for split polynomials,
 standard part preserves the root multiset with multiplicities.
 Resultant and nodal-derivative valuations are finite sums of root-separation
@@ -252,6 +256,11 @@ and the binomial series, and odd-degree roots follow by degree induction.
 Thus complex Hahn polynomials split in their original workspace, with unchanged
 root multiplicities in every field extension.
 Conway monomials and leading exponents now act on the actual sign field.
+Finite monomial expressions form an injective ring map into that field for
+every strictly increasing additive exponent map. Their valuation, leading
+coefficient and positivity agree with their finitely supported Hahn series.
+The monoid algebra also embeds into Hahn series with image exactly the
+finite-support series, giving unique finite coefficient representations.
 A maximum of finitely many weighted exponents gives a positive scale making
 all coefficients finite while preserving at least one nonzero real residue.
 The full finite-family coprime-factor linearization is proved over arbitrary
@@ -278,7 +287,7 @@ finite coefficients is finite. For explicitly split monic polynomials,
 standard part preserves the linear factorization and root multiplicities.
 The surreal field is not algebraically closed, and no linear order is
 compatible with surcomplex multiplication.
-Real closedness of the actual sign field and the normal-form bridge to Hahn
+Real closedness of the actual sign field and the infinite normal-form bridge to Hahn
 series remain open.
 A successful build proves only the imported Lean
 statements, not coverage of all the source documents.

@@ -36,6 +36,7 @@ import Surreal.Algebra.PolynomialUniversalPerturbation
 import Surreal.Algebra.PolynomialScaling
 import Surreal.Algebra.ProjectiveCircle
 import Surreal.Algebra.PowerSeriesFactorLifting
+import Surreal.Algebra.PowerSeriesExpLog
 import Surreal.Algebra.PowerSeriesPolynomialFactorLifting
 import Surreal.Algebra.MvPowerSeriesFactorLifting
 import Surreal.Algebra.MvPowerSeriesPolynomialFactorLifting
@@ -81,6 +82,9 @@ import Surreal.Foundations.SignSequencePolynomialScaling
 import Surreal.Foundations.SignSequencePolynomialNormalization
 import Surreal.Foundations.SignSequenceRealClosedReduction
 import Surreal.Foundations.SignSequenceValuation
+import Surreal.Foundations.SignSequenceFiniteLeading
+import Surreal.Foundations.SignSequenceMonomialAlgebra
+import Surreal.Foundations.SignSequenceFiniteNormalForm
 import Surreal.Foundations.SignSequenceDyadics
 import Surreal.Foundations.SignSequenceRealBirthday
 import Surreal.Foundations.SignSequenceBirthdayArithmetic
@@ -119,6 +123,8 @@ import Surreal.HahnSeries.Conjugation
 import Surreal.HahnSeries.Composition
 import Surreal.HahnSeries.DiscriminantValuation
 import Surreal.HahnSeries.Evaluation
+import Surreal.HahnSeries.ExponentialLogarithm
+import Surreal.HahnSeries.FiniteSupport
 import Surreal.HahnSeries.MvEvaluation
 import Surreal.HahnSeries.MvComposition
 import Surreal.HahnSeries.Neumann
@@ -144,3 +150,4 @@ import Surreal.HahnSeries.Regroup
 import Surreal.HahnSeries.RealClosed
 import Surreal.HahnSeries.SquareRoots
 import Surreal.HahnSeries.StandardPart
+import Surreal.HahnSeries.WorkspaceEmbedding
