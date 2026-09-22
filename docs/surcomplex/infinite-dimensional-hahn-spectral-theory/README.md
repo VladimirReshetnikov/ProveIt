@@ -1,93 +1,146 @@
-# Infinitesimal Spectral Thickening and Closed-Range Defects in Hahn–Hilbert Spaces
+# Infinite-Dimensional Hahn Spectral Theory
 
-Research manuscript prepared for Vladimir Reshetnikov, September 22, 2026.
+**Part I: infinitesimal thickening and range defects in Hahn–Hilbert spaces.
+Part II: exact synthesis and algebra-relative spectra for row- and
+column-finite Hahn matrices.**
+Two research manuscripts, 22 September 2026, assembled as one report in two
+parts.
 
-## Files
+```
+article.tex   the report, standalone LaTeX with an internal bibliography
+article.pdf   the compiled report, 54 pages
+README.md     this guide
+03-infinite-spectral-PROVENANCE.md   Part II's delivered provenance record
+code/         02-hahn-hilbert-spectral-{verify.py,build.sh}   (Part I)
+              03-infinite-spectral-{verify.py,build.sh}       (Part II)
+data/         the recorded outputs and pinned requirements of both suites
+```
 
-- `article.pdf`: typeset article, with complete proofs relative to explicitly named classical inputs.
-- `article.tex`: self-contained LaTeX source, including the bibliography.
-- `code/verify.py`: exact finite symbolic checks, with scope limitations in the source.
-- `data/verification.txt`: output of an actual successful run (218 assertions, six groups).
-- `build.sh`: compile the article and rerun the checks.
-- `requirements.txt`: the SymPy version used for the recorded checks.
+Every label in `article.tex` carries the prefix `ihs:`; Part I labels continue
+with `ihs:hh:` and Part II labels with `ihs:rf:`. The files under `code/` and
+`data/` keep the source numbers `02` (Part I) and `03` (Part II) of the batch
+they arrived in.
 
-## Mathematical setting
+## Why one report, and why two parts
 
-The scalar field is K_Gamma = C((t^Gamma)), with Gamma a nonzero set-sized
-divisible ordered abelian group. The vector space is H((t^Gamma)), with H an
-ordinary complex Hilbert space. Its inner product uses ordinary Hilbert
-inner products on coefficients followed by finite Hahn convolution. This is
-not an unspecified l2(K), not the algebraic tensor product, and not a claim
-about every possible surcomplex Hilbert-space model.
+Both manuscripts continue the same sentence of the finite-dimensional
+[spectral-theory](../spectral-theory/) report, which closes by listing what it
+does not contain: "There is no theorem here about infinite-dimensional Hilbert
+spaces over No[i], bounded-operator spectra, compact or trace-class operators,
+or spectral measures." This report supplies the first two of those items and
+the compact half of the third. **Trace-class operators and spectral measures
+remain untouched.** Part II's spectral projections form a complete Boolean
+algebra, but the family of rank-one projections is not strongly Hahn summable
+as a family of operators, so that calculus is not a spectral measure and is not
+offered as one.
 
-When Gamma is an ordered subgroup of the surreal additive group, t^gamma maps
-to omega^(-gamma). In particular, Gamma = Q, t = omega^(-1) realizes the explicit
-counterexamples inside a set-sized surcomplex scalar workspace.
+The two parts are **not** one theory with one hypothesis paragraph. The word
+*spectrum* means different things on different vector spaces, and the
+hypotheses on `Γ` point in opposite directions:
 
-## Principal results
+| | Part I | Part II |
+|---|---|---|
+| Vector space | `H((t^Γ))`, `H` an ordinary complex Hilbert space | `C^(I)((t^Γ))`: each Hahn coefficient has finite coordinate support |
+| Operators | Hahn series of **ordinary bounded** operators | Hahn series of **row- and column-finite** matrices, no boundedness |
+| "Spectrum" | failure of bijectivity on the space (equivalently, in the adjointable algebra) | failure of invertibility **inside the named algebra** |
+| `Γ` | nonzero, set-sized, **divisible**; Section 12 further assumes `Γ ⊆ R` | nonzero, set-sized, **not assumed divisible** |
+| Accumulation | accumulation points of `σ_C(T)` thicken into whole infinitesimal monads | accumulating residues `d_i` do **not** enlarge the spectrum beyond the labeled eigenvalues |
 
-1. Every everywhere-defined adjointable operator is automatically a Hahn series
-   of bounded ordinary operators, with a single well-ordered support. No prior
-   strong-summability assumption is required.
-2. For an ordinary bounded normal T, the full algebraic and adjointable-algebra
-   spectra agree and equal sigma_C(T) union (sigma_C(T)' + m_Gamma), where the
-   prime denotes accumulation points and m_Gamma the infinitesimals. There are
-   no new eigenvalues. Isolated points do not thicken.
-3. An injective ordinary leading operator S retains its whole algebraic range
-   defect after every globally supported positive-order Hahn perturbation E:
-   coker(S+E) is noncanonically W((t^Gamma)), where V = Ran(S) direct-sum W.
-4. For D e_n = e_n/n, C = D^2 + t^(2 eta) I is bounded, self-adjoint, positive,
-   coercive and injective, but not onto. Its cokernel dimension over K_Gamma is
-   at least the continuum. In rank one its range is closed and proper with
-   zero orthogonal complement, despite completeness of the ambient space.
-5. Constant data admit the monomial-shift resolvent of an injective S exactly
-   when they lie in every Ran(S^k).
-6. The Hahn extension of an ordinary bounded operator has a least field-valued
-   norm bound exactly when the ordinary operator attains its Hilbert norm.
+Quoted without their categories, the two accumulation statements read as a
+contradiction. They are not one; Section 3 works the apparent conflict out on a
+single operator. No theorem of Part I is used in Part II or conversely.
 
-## Status and attribution
+## What Part I claims
 
-These are candidate original results in the specified construction, with
-proofs in the manuscript. No named published open problem is claimed solved.
-The repository audit and literature comparison did not identify the exact
-package in the inspected sources, but priority has not been certified.
-The proofs have not been independently refereed or verified by a proof
-assistant. Standard Hilbert spectral theory, Baire category, the closed graph
-theorem, Hahn–Neumann support lemmas and Conway normal forms are imported and
-attributed. The general failure of non-Archimedean orthogonal decomposition is
-not claimed as new.
+For `K = C((t^Γ))`, `Γ` divisible, and `𝓗 = H((t^Γ))` with the
+coefficientwise-convolution inner product:
 
-The 218 exact checks concern finite identities only. They do not verify the
-infinite-dimensional spectrum formula, the Baire argument, arbitrary support
-well-ordering, completeness or continuum-dimensional cokernels. The
-rectangular splitting test is explicitly a finite analogue, not a finite
-injective nonsurjective endomorphism.
+1. **Automatic structure.** Every everywhere-defined adjointable `K`-linear
+   operator is a Hahn series of ordinary bounded operators with one common
+   well-ordered support. No continuity or support condition is assumed.
+2. **Exact spectrum of constant normal operators.** For ordinary bounded
+   normal `T`, `σ_Γ(T) = σ_C(T) ∪ (σ_C(T)' + m_K)`, where the prime is the
+   ordinary accumulation set and `m_K` the infinitesimals. No new eigenvalues
+   appear, and isolated points do not thicken.
+3. **Range defects persist.** If `S` is injective, every endomorphism-valued
+   Hahn perturbation `E` of strictly positive order leaves
+   `coker(S+E) ≅ W((t^Γ))`, where `V = Ran S ⊕ W`. No commutation hypothesis is
+   needed.
+4. **A coercive operator that is not onto.** For `D e_n = e_n / n` and
+   `η > 0`, `C = D² + t^(2η) I` is bounded, positive, self-adjoint, coercive
+   and injective, yet its cokernel has dimension at least the continuum. In
+   rank one its range is closed and proper with zero orthogonal complement.
+5. **Least norm bounds.** The extension of an ordinary bounded `T` has a least
+   field-valued norm bound exactly when `T` attains its ordinary norm.
 
-## Repository snapshot
+## What Part II claims
 
-VladimirReshetnikov/Surreal, commit:
-608dd23c0539fce73723843949ee627641c27b30
+For arbitrary nonzero set-sized `Γ`, the algebra
+`𝒜 = RCF_I(C)((t^Γ))` acting on `C^(I)((t^Γ))`, and `A = D + B` with
+`D = diag(d_i)` of pairwise distinct ordinary real entries and `B = B*` of
+globally well-ordered positive support:
 
-Inspected: repository tree, main README, full documentation catalogue, the
-opening 250 lines of the spectral article, and the opening 230 lines of the
-differential-equations article. This is a targeted coverage audit, not an
-inspection or verification of every repository file. No repository files were
-modified.
+1. **Exact infinite diagonalization.** There is a unique near-identity
+   normalized Hahn-unitary `U` with `AU = UΛ`. All correction exponents lie in
+   the monoid generated by `supp B`, so the value group is never enlarged.
+2. **Synthesis, commutants, projections.** Exact vectorwise spectral
+   synthesis, and a classification of every commuting operator and spectral
+   projection.
+3. **The algebra-relative spectrum.** `σ_𝒜(A) = {λ_i}`, even when the real
+   residues accumulate, with a coherent resolvent at every noneigenvalue.
+   This is a spectrum relative to a specified unital `K`-algebra, not a
+   Banach-algebra spectrum.
+4. **Walks and finite sections.** Closed weighted walks control every
+   eigenvalue coefficient; a change outside a finite section is first seen only
+   through a walk that leaves the section and returns; the order `2r+2`
+   finite-section threshold is sharp for one-scale locally finite graphs.
 
-## Rebuilding
+## What the report does not claim
 
-A TeX Live installation providing pdflatex and the packages listed in the
-source is sufficient. No external figures, bibliography database or bundled
-fonts are needed.
+- Neither part claims to solve a named published open problem, and **priority
+  is not certified** for either. Both literature comparisons were targeted
+  searches, not exhaustive ones.
+- Classical inputs are credited, not claimed: the spectral theorem, Baire
+  category, the closed-graph theorem, Hahn–Neumann support lemmas, Higman's
+  lemma, Rayleigh–Schrödinger perturbation, and the row- and column-finite
+  algebra of Ara, Goodearl and O'Meara. The failure of non-Archimedean
+  orthogonal decomposition is known in other models (Aguayo–Nova,
+  Aguayo–Nova–Shamseddine).
+- "Compact" in Part I describes the original operator on the ordinary Hilbert
+  space. Nothing is asserted about compactness or compactoidness in the Hahn
+  valuation topology.
+- The Part I spectral formula concerns **constant normal** operators. It is
+  not a classification of spectra of general Hahn operator series.
+- The Part II hypothesis of distinct real labels forces `|I| ≤ |R|`.
+- **No trace-class theory and no spectral measure** are provided.
+- The proofs have not been independently refereed or checked by a proof
+  assistant.
+- The two programs check finite algebraic identities only. They do not
+  establish Baire category, arbitrary support well-ordering, an infinite
+  cokernel dimension, the spectral formulas, or any infinite-dimensional
+  theorem.
+- Both suites report exactly **218 checks** and both recorded runs used
+  Python 3.13.5 with SymPy 1.14.0. This is a coincidence of two independently
+  written programs. The counts are of entirely different assertions.
+- The two manuscripts audited the repository at different pinned revisions,
+  `608dd23` (Part I) and `a3124af` (Part II). Neither audit was repeated
+  against the other's pin when they were assembled.
 
-    pdflatex -interaction=nonstopmode -halt-on-error article.tex
-    pdflatex -interaction=nonstopmode -halt-on-error article.tex
-    pdflatex -interaction=nonstopmode -halt-on-error article.tex
+## Relation to the neighbouring reports
 
-For the checks, use Python 3.10+ with SymPy. The recorded run used Python 3.13.5
-and SymPy 1.14.0.
+**[spectral-theory](../spectral-theory/)** is the finite-dimensional sibling:
+52 pages of determinantal matrix theory over real closed fields, in which every
+dimension is an ordinary integer. This report is not a continuation of it.
+Part II's source proved Higman's lemma in an appendix. That proof is not
+reprinted here, because the identical argument is already written out there as
+`spec:lem:words` and `spec:lem:neumann`.
 
-    python code/verify.py
+## Build
 
-Alternatively run `bash build.sh`. The checks are exact rather than numerical;
-finite symbolic simplification can take a few minutes on a modest machine.
+```sh
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+```
+
+The recorded build has zero errors, zero undefined references and citations,
+and zero duplicate PDF destinations. To rerun the checks, run the scripts in
+`code/` on a copy of this directory; SymPy 1.14.0 is pinned in `data/`.

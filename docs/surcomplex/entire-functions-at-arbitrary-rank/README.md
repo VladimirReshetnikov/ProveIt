@@ -1,15 +1,15 @@
 # Cofinality, Factorization and Scalar Extension for Entire Hahn Functions at Arbitrary Rank
 
-**A merged research report, 44 pages.** Everything in this directory other
-than `article.tex`, `article.pdf` and this README is preserved source
-material.
+**A merged research report, 62 pages, from three manuscripts.** Everything in
+this directory other than `article.tex`, `article.pdf` and this README is
+preserved source material.
 
 ```
 article.tex   the merged report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled 44-page report
+article.pdf   the compiled 62-page report
 README.md     this guide
-code/         the two source verification programs, unmodified
-data/         the two recorded verification records and the source build report
+code/         the three source verification programs, unmodified
+data/         the three recorded verification records and the source build reports
 ```
 
 ## What the report is
@@ -33,7 +33,21 @@ under two titles. Here each is printed **once**, and the two payloads — a
 ring-theoretic trichotomy and a scalar-extension package — are both kept in
 full.
 
-## The two headline classifications
+A **third manuscript**, dated 22 September 2026, was written later against
+the merged report itself, pinned at `a3124af`. It answers the question the
+merged report had recorded as open under the heading *The missing image of
+the infinite jet map*, now Question 14.1 and marked answered. Its
+contribution is Theorem 1.6, proved in Section 8 (chiefly Sections 8.2–8.4 and
+8.6–8.8, beside the first two sources' growth barrier and non-Bézout pair). It
+credits, rather than claims, the coefficient criterion, the canonical product, the order-unit
+interpolation theorem and the explicit non-Bézout pair, and reproves them
+only for dependency control. It arrived with the opposite convention for the
+two letters that matter most — its `rho_n` was a value-group radius and its
+`a_(n,j)` a field point — and every statement taken from it was rewritten in
+this report's convention (`rho` a point of `K`, `gamma` an element of
+`Gamma`). The conversion table is in Section 2.5.
+
+## The three headline results
 
 Write `cf(Gamma)` for the cofinality of the value group as an ordered set,
 and call `delta > 0` an **order unit** when its positive integer multiples
@@ -65,7 +79,7 @@ sufficient: a nonconstant valuation-restricted series is invertible in
 Necessity is proved by coarsening, not by observing that one geometric series
 fails.
 
-**2. The scalar-extension package (Theorem 1.6).** For any ordered-group
+**2. The scalar-extension package (Theorem 1.7).** For any ordered-group
 extension `Gamma` inside `Delta`, *every* nonpolynomial entire series over
 `K_Gamma` has the **same** exact strong evaluation domain in `K_Delta`: the
 valuation ring `D_(Gamma,Delta)` of `v_Delta` coarsened by the convex hull of
@@ -77,9 +91,29 @@ ordinary complex constants. And the boundary is intrinsic: `Gamma`, the
 coefficient slopes `v(a_n)/n`, and the negated zero valuations `-v(r)`
 generate the same convex subgroup.
 
+**3. The exact image of the infinite jet map (Theorem 1.6).** Let `D` be an
+infinite radially finite divisor, group its nodes into valuation shells of
+radii `gamma_1 < gamma_2 < ...` cofinal in `Gamma`, and let `R_n` be the
+finite Hermite interpolation polynomial of shell `n` in the normalized
+coordinate. Let `V_n` be the valuation ring obtained by killing the
+Archimedean scale of `gamma_n`. Then an entire function realizing all the
+prescribed jets exists **if and only if** `R_n` has coefficients in `V_n`
+for all sufficiently large `n`. No bound on the nodes per shell, the jet
+orders or the admitted scale exponents is required. Consequently
+`E_Gamma / (P_D)` is an algebraic restricted product of the finite shell
+algebras (Theorem 8.7); a Bézout identity `A P_D + B F = 1` exists exactly
+when `F` is nonzero at every node and its values are eventually
+`V_n`-bounded (Theorem 8.20); and for one simple node per shell every
+nonprincipal ultrafilter gives an explicit maximal ideal that is not an
+evaluation ideal, with residue field an ultraproduct of the lower-rank Hahn
+fields `C((t^(H_n)))` (Theorem 8.24). All of this also holds over
+`R((t^Gamma))`, without algebraic closedness (Proposition 8.27). The
+restricted product is an algebraic union, **not** a topological or adelic
+object: no norm, local compactness or completion is asserted.
+
 ## Three things to read before using a theorem from here
 
-**The two extension statements are one statement (Remarks 1.7 and 10.6).**
+**The two extension statements are one statement (Remarks 1.8 and 10.6).**
 One source states the noncofinal case negatively — the series is simply *not
 entire* over `K_Delta`, and `E_Delta ∩ K_Gamma[[Z]] = K_Gamma[Z]` — while the
 other proves the same series stays strongly summable on exactly
@@ -177,9 +211,11 @@ under `code/` or `data/` have been modified.
 
 ## The finite checks prove no infinite theorem
 
-Two exact-arithmetic suites are preserved, one reporting **831** passing
-checks and one reporting **664**, both standard-library Python with
-`fractions.Fraction` and no floating point. They verify finite formulas,
+Three exact-arithmetic suites are preserved, reporting **831**, **664** and
+**1,958** passing checks, all standard-library Python with
+`fractions.Fraction` and no floating point. The third checks finite Hermite
+jet identities, shell corrections and the paired-root valuation formula; it
+cannot establish the infinite quotient or ultrafilter theorems, and says so. They verify finite formulas,
 finite preparation recursions, finite Newton counts, inverse jets and the
 paired-root valuation formula in finitely many coordinates. They prove none
 of the infinite support, cofinality, factorization, unit-necessity or
@@ -188,8 +224,9 @@ counterexample pair are coprime polynomials and do satisfy polynomial Bézout
 identities**, so no finite computation can witness the main negative result.
 Appendix C states this in full.
 
-One usage note: the 831-check script takes a **required** `--output` path and
-exits nonzero without one. That is deliberate — it prevents a re-run from
+One usage note: the 831-check and 1,958-check scripts take a **required**
+`--output` path; the first exits nonzero without one, and the second refuses
+to overwrite an existing file. That is deliberate — it prevents a re-run from
 overwriting the delivered record — and is not a broken suite. Run correctly
 it reproduces 831 of 831.
 
@@ -203,7 +240,7 @@ BibTeX file, external graphics, shell escape or repository checkout is needed.
 latexmk -pdf -interaction=nonstopmode article.tex
 ```
 
-The delivered build is clean: 44 pages, 0 errors, 0 undefined references or
-citations, 0 package warnings, 0 overfull or underfull boxes, 66 numbered
-statements (18 theorems, 9 lemmas, 4 propositions, 16 corollaries, 4
-definitions, 1 convention, 3 examples, 4 questions, 7 remarks).
+The recorded build is clean: 62 pages, 0 errors, 0 undefined references or
+citations, 0 duplicate PDF destinations, 91 numbered statements (24
+theorems, 16 lemmas, 6 propositions, 20 corollaries, 6 definitions, 1
+convention, 3 examples, 6 questions, 9 remarks).

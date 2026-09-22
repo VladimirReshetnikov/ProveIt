@@ -4066,11 +4066,12 @@ variables.
 
 \section{Reproducible finite checks}
 \label{ent:app:checks}
-Two independent exact-arithmetic suites accompany this report, preserved
-unmodified in \texttt{code/} and \texttt{data/}. Both use only the Python
-standard library, with exact \texttt{fractions.Fraction} arithmetic and no
-floating point, and both represent group elements as tuples of rational
-coordinates ordered by the largest nonzero coordinate.
+Three independent exact-arithmetic suites accompany this report, one from
+each source manuscript, preserved unmodified in \texttt{code/} and
+\texttt{data/}. All three use only the Python standard library, with exact
+\texttt{fractions.Fraction} arithmetic and no floating point, and all three
+represent group elements as tuples of rational coordinates ordered by the
+largest nonzero coordinate.
 
 \paragraph{Suite A (831 checks).}
 \texttt{verify\_examples.py} checks finite instances of the
@@ -4101,8 +4102,27 @@ $\lambda\in\{-7,-\tfrac12,0,\tfrac32,10\}$, and the preparation recursion for
 \eqref{ent:eq:cubic} through perturbation order eight. The delivered run
 reports \textbf{664} passing checks.
 
+\paragraph{Suite C (1958 checks).}
+\texttt{code/01-exact-jet-image-verify.py} accompanies the third source and
+the material of \cref{ent:subsec:shells,ent:subsec:jet-image,ent:subsec:image-proof}.
+It checks, over $24$ finite polynomial cases, $5$ damping exponents and rank
+vectors of dimension $12$, the finite Hermite jet identities and degree
+bounds, preservation of earlier jets under a shell correction, the shell
+correction congruence and its low-degree vanishing, the finite quotient
+inverse and the multiplication-determinant formula, the paired-root
+valuation formula and its coarse maximal ideal, and the close-pair corrected
+value and forbidden coefficient. The delivered record
+\texttt{data/01-exact-jet-image-checks.json} reports \textbf{1958} passing
+checks in $17$ categories, with random seed $20260922$. The script takes a
+required output path and refuses to overwrite an existing file. Its own
+record lists what it does not verify: infinite strong summability or
+cofinality, the existence or nonexistence of an infinite entire interpolant,
+the infinite quotient and ultrafilter theorems, and independent refereeing or
+Lean verification.
+
 \paragraph{What the checks cannot do.}
-Both suites print their own scope disclaimers, and both are correct to do so.
+All three suites print their own scope disclaimers, and all three are correct
+to do so.
 The counts are counts of finite assertions, not confidence scores for any
 infinite theorem. Neither suite can prove cofinality statements, Hahn support
 well-ordering for every permitted group, any infinite product identity, the
@@ -4121,8 +4141,8 @@ coefficient. Everything else rests on the proofs in the body.
 
 \section{Source and novelty ledger}
 \label{ent:app:sources}
-This report merges two manuscripts, both dated 21 September 2026, each of
-which pinned the repository at its own snapshot: one at commit
+The first two of this report's three source manuscripts are both dated
+21 September 2026, and each pinned the repository at its own snapshot: one at commit
 \texttt{4896a2808ce30e01b1c86ae3ba2295a64762d246} and the other at
 \texttt{aa846271b4dcae2c055b216126a87210292ec19b}. The first re-read four
 files at its pinned commit --- the root README, the documentation catalogue,
@@ -4145,7 +4165,23 @@ Conway and Gonshor were not re-audited in full. General web searches were
 attempted; several returned irrelevant results and were not treated as
 evidence that a theorem is absent from the literature.
 
-The strongest proposed original statements are
+A third manuscript, dated 22 September 2026, was written later against the
+merged report itself, at the snapshot
+\texttt{a3124af79f66b8b9c196d76b4cbc5ac3938907c4}. Its decisive comparison
+was that snapshot's subsection recording the missing image of the infinite
+jet map, now answered by \cref{ent:thm:main-image}. It was a targeted source
+inspection through repository file reads, not a local clone, a line-by-line
+audit of every report, or a Lean build. Its literature comparison covered
+Lazard, Cherry and van der Hoeven and located no matching statement of the
+shellwise restricted-product theorem; that is a reason to propose it as new,
+not a proof that it occurs nowhere. The ultrafilter construction is standard
+algebra; what is proposed there is the concrete analytic surjection and the
+explicitly identified residue fields. It credits the coefficient criterion,
+the canonical product, the order-unit interpolation theorem and the explicit
+non-B\'ezout pair to the first two sources and reproves them only for
+dependency control.
+
+The strongest proposed original statements of the first two sources are
 \cref{ent:thm:no-bezout} and its use in \cref{ent:thm:main}, together with
 \cref{ent:thm:extension,ent:thm:zero-conservation,ent:thm:no-continuation}
 and their assembly in \cref{ent:thm:main-extension}. The sharp workspace
