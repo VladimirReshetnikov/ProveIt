@@ -5,7 +5,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
 \usepackage[a4paper,margin=2.4cm]{geometry}
-\usepackage{amsmath,amssymb}
+\usepackage{amsmath,amssymb,mathrsfs}
 \usepackage{microtype}
 \usepackage{booktabs}
 \usepackage{longtable,needspace}
@@ -276,30 +276,34 @@ bound across monomials, both signs allowed, and no merely-convex member exists.
 Every member of the family, convex or not, preserves $\Gamma_a(1)=1$, the
 recurrence $\Gamma_a(x+1)=x\Gamma_a(x)$, every finite Gauss multiplication
 formula, every normalized finite-translation germ and all positive-order fine
-derivatives of log-Gamma, so \textbf{Bohr--Mollerup fails on $\No$ in the
-strongest available sense}: $a_\lambda(m)=\lambda e^{-m}$ gives pairwise
-distinct strictly log-convex extensions whose differences are smaller than
+derivatives of log-Gamma, so the literal surreal Bohr--Mollerup conditions
+do not give uniqueness: $a_\lambda(m)=\lambda e^{-m}$, $\lambda\in\R$, gives pairwise
+distinct strictly log-convex extensions whose logarithmic and relative differences are smaller than
 \emph{every} ordinary inverse power at \emph{every} infinite argument, the
 log-difference at $\omega$ being exactly $\lambda\,\omega e^{-\omega}$, and
-adding all ordinary-order Stirling envelopes does not restore uniqueness.  The
+adding all ordinary-order Stirling envelopes does not restore uniqueness.
+Absolute Gamma differences need not be small: at $\omega$ the difference
+$\Gamma_1-\Gamma_0$ exceeds every ordinary power of $\omega$. The
 convexity proof uses no second derivatives and no mean value theorem: it works
 with the tangent gap $D_F(y,x)=F(y)-F(x)-F'(x)(y-x)$ through four exhaustive
 relative-scale regimes, the margin $(y-x)^2/(2x)$ being exactly what generates
 the $O(m^{-1})$ threshold, and the mechanism is then isolated as a reusable
 scale-margin gauge principle.  A positive second derivative does \emph{not}
-imply convexity in this calculus --- a gauge on one monomial has all fine
+imply convexity in this calculus --- the gauge with value one on one monomial
+and zero elsewhere has all fine
 derivatives equal to the baseline's and a negative tangent gap --- because such
 gauges are finely locally constant and convexity cannot be decided locally.
 Compatibility with the Berarducci--Mantova derivation forces $h_a$ into
 $\ker\der=\R$ and kills every member but $a=0$, yet a different real-valued
 non-flat gauge survives, so \emph{scalar compatibility alone is not a
 uniqueness characterization}.  Closes with an exact finite-phase domain on the
-tube $\mathrm{Re}(z)>0$, $\mathrm{Im}(z)$ finite, computed in the sense of
-\nolinkurl{surcomplex/differential-equations} rather than as a new notion of
-phase.  \emph{Not offered as a resolution of a named published problem}, and
+tube $\mathrm{Re}(z)>0$, $\mathrm{Im}(z)$ finite, using the finite-angle
+exponential of the imaginary log-Gamma value, distinct from choosing a
+primitive in \nolinkurl{surcomplex/differential-equations}.
+\emph{Not offered as a resolution of a named published problem}, and
 the classification is exact only for the named monomialwise family.  Its own
-audit read an earlier state of this catalogue and describes the collection as
-holding eighteen packages; that description is stale.}
+audit read an earlier state of this catalogue; its eighteen-package count
+is a historical description, not the current inventory.}
 
 \section{The surcomplex plane}
 
@@ -374,7 +378,7 @@ reading before the article.}
 $\mathfrak{m}_K^n$ of an ordinary point --- rather than the deformation theory
 of the reports that follow.  Proves, \emph{separately of each of} the
 radius-free $A_n=\C\{z_1,\dots,z_n\}((t^\Gamma))$ and the common-domain
-$R_n$, that it is a Noetherian Jacobson domain of dimension $n$ whose maximal
+$\mathscr R_n$, that it is a Noetherian Jacobson domain of dimension $n$ whose maximal
 ideals are exactly the infinitesimal evaluation ideals
 $\mathfrak{m}_a=(z_1-a_1,\dots,z_n-a_n)$ with residue field $K$, regular local
 at each, with completion $K[[X_1,\dots,X_n]]$ --- and that neither is local,
@@ -387,7 +391,7 @@ count accounts for all zeros in the whole proper class $\SC$.  The
 nonzero-value-group hypothesis is essential and not aesthetic --- for
 $\Gamma=\{0\}$ the strong Nullstellensatz fails at $I=(0)$.  \emph{This is the
 report that fixes the four-ring vocabulary and proves the inclusions strict;
-statements holding over both $A_n$ and $R_n$ are stated twice with both
+statements holding over both $A_n$ and $\mathscr R_n$ are stated twice with both
 proofs, since the two proofs use different resources and neither transfers.}}
 
 \entry{Finite Hahn deformations: division, conservation of multiplicity, residue duality}
@@ -395,13 +399,13 @@ proofs, since the two proofs use different resources and neither transfers.}}
 {article.pdf}{surcomplex\_finite\_deformations.zip, \_finite\_fibres, \_finite\_maps,
 \_intersections, \_research}
 {Five manuscripts on one theorem: an ordinary holomorphic complete
-intersection $f$ on a fixed polydisk, with isolated zero at the origin and
+intersection $f$ on a fixed polydisk, with the origin as its only common zero and
 colength $\mu$, keeps its entire finite geometry under any Hahn perturbation
 $F=f+E$ of well-ordered \emph{strictly positive} error support --- on the
 unshrunk domain, with an explicit support certificate
 $\mathrm{supp}\subseteq\mathrm{supp}(G)+M$, $M$ the monoid generated by the
-error support.  The remainder of division is unique; the witnesses are
-explicitly not, their ambiguity being a Koszul syzygy carried by the same
+error support.  The remainder of division is unique; the witnesses need not
+be, their ambiguity being a Koszul syzygy carried by the same
 certificate.  Gives the integral structure $H^+_\Gamma(D)/(F)\cong(K^\circ)^\mu$
 over a valuation ring that may have high-rank value group and need not be
 Noetherian, with nothing completed; conservation of multiplicity at the
@@ -409,11 +413,16 @@ Noetherian, with nothing completed; conservation of multiplicity at the
 $\sum_\zeta\mu_\zeta=\mu$; and a coefficientwise residue $\mathrm{Res}_F$ ---
 defined by a series, not by a surcomplex contour integral --- whose Gram
 determinant is a unit even at a collision and which satisfies
-$\mathrm{Res}_F(G\cdot J_F)=\mathrm{Tr}(M_G)$, individual summands routinely
-infinite while the total is finite.  Also Hartogs, characters and local
+$\mathrm{Res}_F(G\cdot J_F)=\mathrm{Tr}(M_G)$. The separate
+residue formula, when all zeros are simple, is
+$\mathrm{Res}_F(G)=\sum_\zeta G(\zeta)/J_F(\zeta)$;
+for nonnegative-support $G$, individual terms can be infinite while the total
+is finite. Also Hartogs, characters and local
 algebras, spectral invariants, trace-Jacobian and B\'ezoutian, monodromy and
-stability.  The engine throughout is positive-support Neumann inversion; no
-argument uses convergence of partial sums in any topology.}
+stability. For $\mu=1$, the inverse-map proof constructs one uniform Hahn support before
+evaluation. The engine throughout is positive-support Neumann inversion;
+ordinary analytic convergence occurs in finite-parameter comparisons, while
+the Hahn constructions use strong support summation.}
 
 \entry{Jordan separation, Cauchy theory, and Stokes calculus on the surcomplex plane}
 {surcomplex/contours-and-stokes}
@@ -566,16 +575,16 @@ the no-convergence theorems of \nolinkurl{surcomplex/analysis}.}  The convergenc
 here is in the intrinsic valuation topology of one fixed rank-one field, not the
 fine topology induced from $\SC$; and at $Z=t^{-\omega}$ the exponents $n^2-n\omega$
 strictly decrease, so the support is not well ordered and $F$ is not an
-all-surcomplex entire function --- the obstruction agrees with all-scale rigidity
-rather than refuting it.  Written against this repository; its claim that a
-Berkovich \emph{comparison} already exists in \nolinkurl{surcomplex/contours-and-stokes}
-is correct, and what was absent is the development.}
+all-surcomplex entire function --- the obstruction agrees with all-scale rigidity.
+The original audit credits the Berkovich \emph{comparison} in
+\nolinkurl{surcomplex/contours-and-stokes}; its development-gap claim concerns
+that inspected snapshot, not an exhaustive search of the current collection.}
 
 \entry{Surcomplex spectral theory: singular values, infinitesimal rank, multiscale stability}
 {surcomplex/spectral-theory}
-{article.pdf}{surcomplex\_spectral\_theory.zip}
-{The finite-matrix chapter the collection lacked, and the one report here with no
-derivation, no phase and no differential equation in it.  Proves the finite
+{article.pdf}{two manuscripts, delivered 21~September 2026}
+{Finite-dimensional matrix algebra, singular scales and principal-root fields.
+Proves the finite
 spectral theorem and the singular value decomposition over a real closed field
 and its complexification \emph{without compactness}: real closedness suffices,
 and the proofs exhibit the extremal witnesses rather than extracting them from a
@@ -588,11 +597,19 @@ valuations, and recovers both those valuations and the leading singular
 coefficients from positive Gram coefficients one scale block at a time.
 Applications include an intrinsic rank filtration, root-free scale elimination,
 perturbation precision certificates, nonnormal pseudospectra, gap-sensitive
-spectral projectors and Schur-complement corrections.  Written against this
-repository; its gap claim checks out --- \nolinkurl{surcomplex/polynomial-algebra}
-does carry Schur-type arguments and Hermite signatures, and no report in the
-collection had a singular value, a pseudoinverse or a matrix polar decomposition
-anywhere.}
+spectral projectors and Schur-complement corrections. A second manuscript
+supplies Hermitian and normal spectral descent and the SVD over arbitrary
+set-sized ordered exponent groups, preserving the subgroup generated by the
+input supports through a finite splitting tree. For a positive semidefinite
+matrix and integer $q\ge2$, the principal $q$th root generates the field with exponent group
+$\Gamma+\sum_{k=1}^{\operatorname{rank}A}\Z\Delta_k(A)/q$; the degree is the
+order of the subgroup generated by the determinantal minima $\Delta_k(A)$
+modulo $q\Gamma$.
+Its trace generates the same extension. At $q=2$, the condition
+$\Delta_k(A)\in2\Gamma$ for $1\le k\le\operatorname{rank}A$ is also the
+exact Gram-factorization criterion.
+The targeted historical audit explains the report's organization; it does
+not establish absence of every related result elsewhere in the collection.}
 
 \entry{Surcomplex dynamics: linearization thresholds, periods, and normal forms}
 {surcomplex/dynamics-and-normal-forms}
@@ -726,8 +743,8 @@ One report, which is where commutativity stops.  It is filed on its own
 because commutative arguments from \dir{docs/surcomplex} require review on moving to
 a division algebra: conjugation, multiplicativity of the modulus, valuation and
 leading coefficients, polynomial evaluation, matrix adjoints, exponential laws
-and every chain rule all need separate treatment, and every commutative result
-quoted from a companion report is reproved over $\mathbb{H}$.
+and every chain rule need their scalar and slice hypotheses checked. The report
+proves the additional noncommutative assertions with factor order retained.
 
 \entry{Surquaternions: algebra, infinitesimal geometry, and support-controlled analysis}
 {surquaternions/surquaternions}
@@ -737,8 +754,8 @@ $\mathbb{H}_{\No}=\No+\No i+\No j+\No k$, with central surreal coefficients, in
 three levels that are never silently mixed.  \emph{Finite algebra over an
 arbitrary real closed field}: division, conjugation, the field-valued modulus,
 complex slices and centralizers, conjugacy spheres, explicit square roots, the
-spin/rotation description with two independent surjectivity proofs, two
-rational charts on the unit group, quaternionic M\"obius maps, one-sided
+spin/rotation description with two independent surjectivity proofs, Cayley and
+stereographic presentations of one rational chart, quaternionic M\"obius maps, one-sided
 polynomials with a constructive fundamental theorem and a complete zero-class
 algorithm, and finite-dimensional Hermitian spectral theory with SVD and polar
 decomposition.  \emph{Set-sized Hahn workspaces}
@@ -753,7 +770,7 @@ implicit lifting, and an exact square-root conditioning analysis.  \emph{The
 full surreal class}: finite angles at arbitrary radius, the Ehrlich--Kaplan
 global phase normalization, the global radial exponential with its complete
 logarithm fibres and four-coordinate differential --- rank-two critical spheres
-at radii in $\pi\mathbf{Oz}$, $\mathbf{Oz}$ the omnific integers, the infinite
+at positive radii in $\pi\mathbf{Oz}$, $\mathbf{Oz}$ the omnific integers, the infinite
 radius $\omega$ among them --- the
 componentwise Berarducci--Mantova derivation with a no-oscillation theorem and
 its chain-rule corollary, and coefficientwise slice, Cauchy and Fueter analysis
@@ -766,7 +783,7 @@ statement that the radial exponential is \emph{not} an additive-to-multiplicativ
 homomorphism is consistent with the physics report's correct claim that the
 \emph{commutative} Ehrlich--Kaplan exponential \emph{is} one: the restriction to
 any single slice is exactly that commutative exponential and the law holds
-there, failing only across \emph{noncommuting} arguments, where no common slice
+there, and it can fail across \emph{noncommuting} arguments, where no common slice
 exists --- witness $\mathrm{Exp}(\omega i+\pi j)=1+(\pi^2/2\omega)i+O(\omega^{-2})$
 against $\mathrm{Exp}(\omega i)\mathrm{Exp}(\pi j)=-1$.  A merged sentence
 blurring the two would manufacture a false contradiction across the collection.

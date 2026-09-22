@@ -130,9 +130,9 @@ $\SQ=\No\oplus\No\ii\oplus\No\jj\oplus\No\kk$ with Hamilton's multiplication. Th
 definition is elementary; a usable theory must also say which parts of quaternionic
 geometry survive non-Archimedean scales, what an infinite sum denotes, and which
 notions of differentiation are compatible with the surreal field. The algebra is
-noncommutative, and that is the whole difficulty: no commutative argument may be
-reused, and every commutative result quoted from a companion report is reproved here
-over $\mathbb H$.
+noncommutative, so factor order must be retained in every extension. Commutative
+results apply within explicitly identified central fields or complex slices; the
+quaternionic extensions require the additional arguments given here.
 
 We develop the division algebra and its ordered-field-valued modulus, algebraically
 closed complex slices, conjugacy spheres, the algebraic rotation and spin description,
@@ -217,8 +217,8 @@ The one structural fact that governs the whole report is that $\SQ$ is
 ``valuation'', leading coefficients, polynomial evaluation, matrix adjoints, exponential
 laws and every chain rule require separate treatment from the commutative surcomplex
 case. Where a companion report in the same repository proves a commutative statement, we
-cite it for orientation and reprove what we need over $\mathbb H$; we never transport a
-commutative argument.
+identify its scalar or slice hypotheses before using it, and prove the additional
+noncommutative assertions over $\mathbb H$.
 
 \subsection{Three levels of scalars}\label{squat:sub:levels}
 Three levels organize the development, and a theorem at one level is never silently
@@ -263,8 +263,8 @@ separate --- the right-module structure, the adjoint $A^*=\bar A^{\,T}$ and the 
 of eigenvalues of quaternionic Hermitian matrices are genuinely different --- and cites
 that report for the complex case. One hard constraint is recorded at
 \cref{squat:warn:nodet}: that report's determinantal singular-scale theorem and its
-positive Cauchy--Binet argument are determinant arguments and are \emph{not} available
-over the quaternions.
+positive Cauchy--Binet argument use commutative minors and cannot be transferred
+unchanged to quaternionic matrices.
 
 \emph{Trigonometry on the Surcomplex Plane: Canonical Phases, Arbitrary-Scale Geometry,
 and Infinitesimal Degeneration}, \texttt{docs/surcomplex/trigonometry/article.tex}
@@ -322,8 +322,10 @@ For a set-sized ordered subgroup $\Gamma\subset(\No,+)$ let
 \[
  K_\Gamma=\R((t^\Gamma)),\qquad D_\Gamma=\mathbb H_{K_\Gamma}.
 \]
-A Hahn series has a well-ordered support in $\Gamma$, with our increasing-exponent
-convention. If $\Gamma$ is divisible, the standard real-closed Hahn-field theorem makes
+Here $K_\Gamma$ denotes the \emph{real} Hahn field (the workspace denoted
+$F_\Gamma$ in the repository notation guide), not its complexification. A Hahn series
+has a well-ordered support in $\Gamma$, with our increasing-exponent convention.
+If $\Gamma$ is divisible, the standard real-closed Hahn-field theorem makes
 $K_\Gamma$ real closed \cite{Alling,EK}. That theorem, and the surreal normal-form
 theorem that embeds these series in $\No$, are foundational inputs, not consequences of
 quaternion multiplication.
@@ -403,8 +405,8 @@ writes $\Exp_0$; source~11 does not isolate this intermediate object.
 \item The \emph{global radial exponential} $\Expr$, defined on all of $\SQ$ by
 \cref{squat:eq:globalexp} using the Ehrlich--Kaplan initial-integer-part normalization
 of the scalar phase, applied to the \emph{actual modulus and direction} of the imaginary
-part. It is surjective onto $\SQ^\times$, conjugation-equivariant, and multiplicative
-only on commuting pairs; it is \emph{not} an everywhere Hahn-summed power series and
+part. It is surjective onto $\SQ^\times$, conjugation-equivariant, and obeys the
+addition law on commuting pairs; it is \emph{not} an everywhere Hahn-summed power series and
 \emph{not} an additive-to-multiplicative homomorphism on the whole noncommutative
 algebra, so its fibre over $1$ must not be called a kernel
 (\cref{squat:thm:globalexp,squat:thm:logfibres}). Source~10 writes $\Exp_{\mathrm{EK}}$
@@ -464,7 +466,8 @@ $\Expm$, $\Logm$ &
 $\mm_H\leftrightarrow1+\mm_H$, by strong Hahn summation &
 Bijection; conjugation- and inner-equivariant; $w(\Expm(x)-1)=w(x)$; additive on
 commuting pairs; $\BCH$ otherwise &
-Not additive on noncommuting pairs; not an isomorphism onto $K$, the transported law
+Not additive on noncommuting pairs; not an additive-group isomorphism onto
+$1+\mm_H$, the transported law
 being noncommutative\\[3pt]
 $\Expt$ &
 the tube $\mathcal T$, excluding $\omega\ii$ &
@@ -530,6 +533,10 @@ $\Expr(\omega\ii)\Expr(\pi\jj)=-1$. Both computations are exact, and the two arg
 $\omega\ii$ and $\pi\jj$ do not commute. So the homomorphism law is a theorem on each
 slice and false across slices, and the additive group being abelian while the
 multiplicative group is not already shows that a global homomorphism is not available.
+
+Commutation is a sufficient condition for this law, not a necessary condition for an
+individual pair: $p=6\pi\ii$, $q=8\pi\jj$ do not commute, but
+$\Expr(p)=\Expr(q)=\Expr(p+q)=1$, since $\abs{p+q}=10\pi$.
 
 A third statement must be kept out of this comparison. \Cref{squat:cor:nochain} says
 that no map $E:\SQ\to\SQ^\times$ satisfies $\dH(E(q))=E(q)\dH q$ on commuting pairs
@@ -603,14 +610,15 @@ an order on $\HF$ itself.
 The center of $\HF$ is $F$, and
 \[
  [a+u,b+v]=2\,u\times v,\qquad
- \abs{[p,q]}\le2\abs{\Ima p}\,\abs{\Ima q}.
+ N([p,q])\le4N(\Ima p)N(\Ima q).
 \]
 There is no ordered-division-ring ordering on $\HF$ extending the order of $F$.
 \end{proposition}
 \begin{proof}
 \Cref{squat:eq:product} gives the commutator, and a vector whose cross product with each
 coordinate vector vanishes is zero, which is the assertion about the center. The identity
-$\abs{u\times v}^2=\abs u^2\abs v^2-(u\cdot v)^2$ proves the inequality. In an ordered
+$N(u\times v)=N(u)N(v)-(u\cdot v)^2$ proves the squared-norm inequality, which
+requires no square roots in $F$. In an ordered
 division ring every nonzero square is positive, contradicting $\ii^2=-1$.
 \end{proof}
 
@@ -619,6 +627,9 @@ Define the \emph{$F$-valued modulus} and the scalar inner product by
 \[
  \abs q=\sqrt{N(q)},\qquad (p,q)=\Rea(p\bar q).
 \]
+Taking positive square roots in \cref{squat:prop:center} now gives
+$\abs{[p,q]}\le2\abs{\Ima p}\abs{\Ima q}$. The distinction matters already
+over $F=\Q$: $N(1+\ii)=2$ belongs to $F$, whereas its positive square root does not.
 This is not an ordinary real norm when $F$ is non-Archimedean, and an implementation must
 not replace it by a machine floating-point norm.
 
@@ -641,7 +652,8 @@ only after extension.
 \begin{proof}
 Multiplicativity and the coordinate bounds follow from multiplicativity of $N$ and the
 four coordinate squares. For Cauchy--Schwarz, the polynomial $N(p-sq)$ in the central
-variable $s$ is nonnegative for every $s\in F$; substituting $s=(p,q)/N(q)$ gives
+variable $s$ is nonnegative for every $s\in F$. The case $q=0$ is immediate; otherwise
+substituting $s=(p,q)/N(q)$ gives
 $(p,q)^2\le N(p)N(q)$. Therefore $N(p+q)\le(\abs p+\abs q)^2$, proving the triangle
 inequality; equality forces $(p,q)=\abs p\abs q$ and equality in Cauchy--Schwarz, and the
 same substitution gives $p=((p,q)/N(q))q$ with positive scalar coefficient. The inverse
@@ -826,7 +838,10 @@ For \cref{squat:eq:spin4}, take an orientation-preserving isometry $A$ of $\HF$ 
 $z=A(1)$. Left multiplication by $z^{-1}$ has determinant $1$ and makes the composite fix
 $1$; its restriction to $V$ lies in $\SO(3,F)$, so equals conjugation by a unit $u$, and
 $A(q)=zuqu^{-1}$. Here the determinant of left multiplication by $q$ is $N(q)^2$,
-obtainable from its four-coordinate matrix.
+obtainable from its four-coordinate matrix. For the kernel, $uqv^{-1}=q$ for
+every $q$ first gives $u=v$ at $q=1$, then forces $u$ to be central. A central
+modulus-one scalar is $1$ or $-1$, so the kernel is exactly
+$\{(1,1),(-1,-1)\}$.
 \end{proof}
 
 Equation \cref{squat:eq:spin3} is a two-to-one map on algebraic group points. It is
@@ -839,17 +854,18 @@ individual class automorphism, without forming a collection of all class functio
 
 Consequently arbitrary-scale spatial rotations need no trigonometric value at an infinite
 argument: they are constructed by rational operations and positive square roots alone.
-Two rational charts on the unit group are available, and both are exact at every scale,
-including scales whose radii are infinitesimal.
+The source manuscripts give Cayley and stereographic presentations of the same rational
+chart on the unit group. Both formulas are exact at every scale, including infinitesimal
+ones.
 
-\begin{proposition}[Two rational charts on the unit group]\label{squat:prop:charts}
+\begin{proposition}[Cayley and stereographic presentations of one chart]\label{squat:prop:charts}
 For $x\in V$ the \emph{Cayley chart}
 \begin{equation}\label{squat:eq:cayley}
  \operatorname{Cay}(x)=(1+x)(1-x)^{-1}
 \end{equation}
 is defined because $N(1-x)=1+N(x)>0$, has modulus one, never equals $-1$, and is
 inverted on $S^3(F)\setminus\{-1\}$ by $x=(u-1)(u+1)^{-1}$, which is imaginary.
-Independently, the \emph{stereographic chart}
+Equivalently, its \emph{stereographic presentation}
 \begin{equation}\label{squat:eq:stereographic}
  u=\frac{1-\abs x^2+2x}{1+\abs x^2},\qquad
  x=\frac{\Ima u}{1+\Rea u}\quad(u\ne-1),
@@ -857,15 +873,28 @@ Independently, the \emph{stereographic chart}
 has positive denominators and exact modulus one.
 \end{proposition}
 \begin{proof}
-For \cref{squat:eq:cayley}, conjugation gives
-$\overline{\operatorname{Cay}(x)}=(1-x)^{-1}(1+x)$ up to the order of the commuting
-rational factors in one quaternion, and the modulus is $1$ by multiplicativity; all the
-factors used are rational functions of the single element $x$ and therefore commute with
-one another where the verification uses that. The displayed inverse is checked by
-substitution. For \cref{squat:eq:stereographic}, expand
-$N(1-\abs x^2+2x)=(1-\abs x^2)^2+4\abs x^2=(1+\abs x^2)^2$; the displayed inverse is
-again checked by substitution. Neither chart is a claim that $\Sp(1,F)$ is topologically
-a real three-sphere.
+Since $\bar x=-x$, conjugation reverses the two factors and gives
+\[
+ \overline{\operatorname{Cay}(x)}=(1+x)^{-1}(1-x)
+ =\operatorname{Cay}(x)^{-1}.
+\]
+All displayed rational functions of the single element $x$ commute, and
+$N(1+x)=N(1-x)=1+N(x)$, proving modulus one. The equation
+$\operatorname{Cay}(x)=-1$ would give $1+x=-1+x$, which is impossible.
+Conversely, for $N(u)=1$ and $u\ne-1$, let $x=(u-1)(u+1)^{-1}$.
+Using $\bar u=u^{-1}$ gives
+$\bar x=(u^{-1}+1)^{-1}(u^{-1}-1)=-x$; substitution recovers $u$.
+Thus this inverse is imaginary and the chart is a bijection onto the indicated domain.
+
+Finally $(1-x)^{-1}=(1+x)/(1+N(x))$ and $x^2=-N(x)$ give
+\[
+ \operatorname{Cay}(x)=\frac{(1+x)^2}{1+N(x)}
+ =\frac{1-N(x)+2x}{1+N(x)},
+\]
+which identifies the two presentations. Independently checking the stereographic norm
+amounts to $(1-N(x))^2+4N(x)=(1+N(x))^2$. Its inverse follows from
+$\operatorname{Im}u=2x/(1+N(x))$ and $1+\operatorname{Re}u=2/(1+N(x))>0$.
+Neither presentation asserts that $\Sp(1,F)$ is topologically a real three-sphere.
 \end{proof}
 
 \subsection{Standard part of the unit group}\label{squat:sub:unitreduction}
@@ -995,7 +1024,8 @@ case $N(B)=(a^2+r^2)N(A)$ and $\Rea(A\bar B)=-aN(A)$, so
 
 \begin{theorem}[Complete zero-class criterion]\label{squat:thm:polynomialzeros}
 Let $F$ be real closed and $P$ nonzero of degree $d$. For each $a\in F$ and $r>0$, $P$
-has a root on $[a,r]$ if and only if $\Delta_{a,r}\mid N_P$; if $A=0$ in
+has a root on $[a,r]$ if and only if $\Delta_{a,r}\mid N_P$. \emph{When this
+divisibility holds}, if $A=0$ in
 \cref{squat:eq:sphereremainder} then $B=0$ and the whole sphere consists of roots, and if
 $A\ne0$ there is exactly one root there, $q=-BA^{-1}$. The central roots of $P$ are
 exactly the roots of $N_P$ in $F$. This is an effective algebraic algorithm relative to
@@ -1138,7 +1168,8 @@ belongs to the supports of only finitely many $q_j$. Its sum is defined coeffici
 by adding those finitely many quaternion coefficients at each exponent. Every infinite
 sum below means this, unless an ordinary real or complex integral is explicitly named
 \cite{BM}. Ordinary convergence of infinitely many real coefficients is not a substitute,
-and such a sum is explicitly not a limit of partial sums.
+and this definition does not require convergence of partial sums in a topology. Such
+convergence may hold in a specified workspace, but is a separate assertion.
 \end{definition}
 
 \begin{theorem}[Exact valuation, leading coefficients, and residue]\label{squat:thm:valuation}
@@ -1328,12 +1359,22 @@ neighbourhood test; the subspace topology that the entire workspace inherits fro
 discrete, whereas its intrinsic topology is not.
 
 \begin{remark}[A workspace carries three different topologies]\label{squat:rem:threetopologies}
-On a workspace $K_\Gamma$ or $D_\Gamma$ one must distinguish: the \emph{intrinsic} order
-or valuation topology, using only radii available in that workspace; the subspace topology
-inherited from the full fine topology, which is discrete because the workspace is a set;
-and a deliberately coarse \emph{standard-part} topology on finite surquaternions, pulled
-back from $\HR\simeq\R^4$ by \cref{squat:eq:residue}, which is not Hausdorff, since points
-with the same standard part cannot be separated. In particular no sequence of distinct
+For $\Gamma\ne0$, on $K_\Gamma$ or $D_\Gamma$ one must distinguish the
+\emph{intrinsic} valuation topology, equivalently the topology of scalar modulus balls
+using radii in that workspace (the order topology on $K_\Gamma$); the discrete subspace
+topology inherited from the full fine topology; and the \emph{standard-part} topology on
+the finite part, pulled back from $\R$ or $\HR\simeq\R^4$ by
+\cref{squat:eq:residue}. The latter is not Hausdorff: $0$ and a nonzero infinitesimal
+have the same standard part. For the stated equivalence of intrinsic topologies, choose
+$\delta>0$ in $\Gamma$. Monomial radii bound valuation balls, and, for any workspace
+radius $r>0$, a valuation ball with threshold greater than $w(r)$ lies inside the
+modulus ball of radius $r$; conversely a modulus ball of radius $t^{\gamma+\delta}$
+lies inside $\{x:w(x)>\gamma\}$.
+
+The degenerate group $\Gamma=0$ is an exception: $K_0=\R$ and $D_0=\HR$, the trivial
+valuation topology and the inherited full fine topology are discrete, whereas the
+modulus and standard-part topologies are the usual Hausdorff real or Euclidean ones.
+In the full fine topology no sequence of distinct
 rational approximations converges finely to $\sqrt2$, and the partial sums of
 $\sum\omega^{-n}$ do not converge finely to their Hahn sum. Coefficientwise analysis over
 ordinary domains uses its ordinary domain as a geometric base and does not pretend that its
@@ -1480,7 +1521,7 @@ $x^rqx^s$.
 \begin{theorem}[Logarithms of infinitesimal rotations]\label{squat:thm:rotation-log}
 The maps $\Expm$ and $\Logm$ restrict to mutually inverse bijections between the
 imaginary infinitesimals $\Ima(\mm_H)$ and $U_1$. On the left the group law is $\BCH$, not
-addition. Every finite unit $u$ factors uniquely as $u=\st(u)\,\omega_1$ with
+addition. Every modulus-one $u$ factors uniquely as $u=\st(u)\,\omega_1$ with
 $\omega_1\in U_1$, once this multiplication order is fixed; equivalently the sequence
 \cref{squat:eq:unitsreduction} splits, and every unit quaternion is finite, so this
 describes the whole modulus-one group.
@@ -1650,8 +1691,9 @@ $\Expt(q)$ is \emph{not} in general $\exp(q_0)\Expm(\eps)$: the two summands nee
 commute. Nor is \cref{squat:eq:tubeexp} obtained by Hahn-summing $\sum q^n/n!$ for every
 $q\in\mathcal T$, and the two failure modes are distinct: at a nonzero ordinary scalar all
 those terms have exponent zero, violating finite overlap in
-\cref{squat:def:summable}; at $q=\omega\ii$ their exponents are unbounded in the wrong
-direction. Neither failure is repaired by citing ordinary real convergence.
+\cref{squat:def:summable}; at the central $q=\omega\in\mathcal T$ their exponents
+are unbounded below. The latter failure also occurs for $q=\omega\ii$, which lies
+outside the tube. Neither failure is repaired by citing ordinary real convergence.
 \end{warning}
 
 \subsection{The Ehrlich--Kaplan scalar normalization}\label{squat:sub:ekphase}
@@ -1965,17 +2007,26 @@ differential equations have solutions, and a set-sized Hahn workspace need not b
 under $\partial$: statements about a differential workspace require closure under that
 derivation or an explicit enlargement.
 
-For an infinitesimal $x$, differentiating its Hahn exponential gives the valid
-noncommutative formula
+For an infinitesimal $x$, strong additivity of the \emph{chosen Berarducci--Mantova}
+derivation justifies differentiating its Hahn exponential term by term, giving
 \begin{equation}\label{squat:eq:dexp}
- \delH\Expm(x)=\sum_{n\ge1}\frac1{n!}\sum_{m=0}^{n-1}x^m\,\delH(x)\,x^{n-1-m},
+ \dH\Expm(x)=\sum_{n\ge1}\frac1{n!}\sum_{m=0}^{n-1}x^m\,\dH(x)\,x^{n-1-m},
 \end{equation}
 whose right-hand family is support-controlled: it is built from words in the positive
-support of $x$ with one distinguished factor from $\supp\delH(x)$, and
+support of $x$ with one distinguished factor from $\supp\dH(x)$, and
 \cref{squat:lem:neumann} with the finite antidiagonals of sums of well-ordered sets
-justifies the regrouping. In general this is \emph{not} $\Expm(x)\delH(x)$; that simpler
-expression is valid exactly when $[x,\delH(x)]=0$. Nothing in this local assertion implies
-a global commuting chain rule for any extension of the quaternion exponential.
+justifies the regrouping. An arbitrary scalar derivation $\delta$ need not be strongly
+additive, so this passage does not follow merely from the algebraic extension theorem.
+For completeness, write $y=\dH(x)$. The formal noncommutative exponential identity gives
+\[
+ \Expm(-x)\dH\Expm(x)-y
+ =-\tfrac12[x,y]+\sum_{n\ge2}\frac{(-1)^n}{(n+1)!}\ad_x^n(y).
+\]
+The same support argument justifies this evaluation. If $[x,y]\ne0$, every term in
+the sum has valuation at least $w([x,y])+w(x)>w([x,y])$, so cannot cancel the first
+term. Thus the simpler expression $\dH\Expm(x)=\Expm(x)\dH(x)$ holds exactly when
+$[x,\dH(x)]=0$ (the case $x=0$ is immediate). This local assertion supplies no global
+commuting chain rule.
 
 \begin{proposition}[Angular velocity identity]\label{squat:prop:angular}
 Let $u\in\HF$ satisfy $N(u)=1$ and set $\xi=\delH(u)u^{-1}$. Then $\xi$ is imaginary, and
@@ -2173,12 +2224,13 @@ quaternions, must not be copied to matrices.
 \begin{warning}[Two determinant arguments that are unavailable here]\label{squat:warn:nodet}
 The companion report \cite{RepoSpec} proves a determinantal singular-scale theorem, in
 which the $k$th determinantal valuation recovers the singular scales, and it uses a
-positive Cauchy--Binet expansion of the minors of a product. \emph{Neither is available
-over the quaternions}, because there is no determinant on $M_n(\HF)$ with the required
-multiplicative and positivity properties; the Dieudonn\'e determinant takes values in an
-abelianization and does not support that argument. Nothing below reuses either statement,
-and the multiscale results of this section are proved by the min--max and projector
-arguments instead. That report's explicit warning about Gram squaring applies here
+positive Cauchy--Binet expansion of the minors of a product. These proofs use the
+ordinary determinant of matrices over a commutative field; their minor identities cannot
+be transferred unchanged to $M_n(\HF)$. Noncommutative determinants and the complex
+matrix realization provide other tools, but relating them to quaternionic singular
+scales would require a separate argument. No such determinant theorem is proved here;
+the multiscale results of this section use the min--max and projector arguments.
+That report's explicit warning about Gram squaring applies here
 verbatim and is inherited, not restated.
 \end{warning}
 
@@ -2346,8 +2398,15 @@ $h\mapsto xh+hx$ rather than $h\mapsto2hx$ in all directions, as
 \label{squat:warn:commonsupport}
 Two independent failures must be recorded.
 \begin{enumerate}[label=\textup{(\arabic*)},leftmargin=2.4em]
-\item Knowing $w(a_n)\ge0$ individually is \emph{not} a substitute for a common $S$. In
-the workspace with $\Gamma=\Q$ the series $\sum_{n\ge0}t^{-n^2}x^n$ is not Hahn-summable at
+\item Knowing $w(a_n)\ge0$ individually is \emph{not} a substitute for a common $S$.
+For a counterexample with integral coefficients, take $\Gamma=\Q\times\Q$ in
+lexicographic order, realized inside $\No$ by $(a,b)\mapsto a\omega+b$, and put
+$x=t^{(0,1)}$ and $a_n=t^{(1,-n^2)}$ for $n\ge1$. Every $a_n$ has positive valuation,
+but $x^na_n=t^{(1,n-n^2)}$ has a strictly decreasing sequence of exponents for $n\ge1$,
+so the family is not Hahn-summable.
+
+A separate failure, allowing nonintegral coefficients, illustrates dependence on the
+workspace. In $\Gamma=\Q$, the series $\sum_{n\ge0}t^{-n^2}x^n$ is not Hahn-summable at
 any nonzero argument: if $w(x)=\delta\in\Q$ then the leading exponents $-n^2+n\delta$ are
 unbounded below. Enlarging the workspace can change this: at the surreal argument
 $x=t^\omega$ those leading exponents increase and the monomial family is Hahn-summable. A
@@ -2930,7 +2989,8 @@ specifications, and a correct program records both the computed expression and t
 or valuation information proving what has been omitted.
 
 \subsection{Two proposed formalization layerings}\label{squat:sub:lean}
-The repository snapshot uses generic algebra and Hahn-series infrastructure rather than a
+The historical repository snapshot cited by the source manuscripts uses generic algebra
+and Hahn-series infrastructure rather than a
 completed surreal construction, and its README explicitly says that its generic Lean
 prerequisites do \emph{not} yet construct the surreal field or the normal-form bridge
 \cite{Repo}. We neither identify those prerequisites with a formalization of this article
@@ -2940,7 +3000,9 @@ ordered-field hypotheses \cite{Mathlib}; an initial formalization should instant
 extend those objects rather than duplicate their multiplication proofs, and in particular a
 commutative complexification abstraction alone does not encode the noncommuting quaternion
 units. The following are \emph{proposed layers, not claims that corresponding modules
-exist or compile}. Both source manuscripts proposed a layering, and they differ in
+exist or compile}. The current theorem-by-theorem status is maintained separately in
+\texttt{docs/FORMALIZATION.md}; at this review all $48$ indexed statements of this
+report remain pending. Both source manuscripts proposed a layering, and they differ in
 granularity and in where they place the surreal bridge; both orderings are recorded.
 
 \paragraph{Layering I, five layers, bridge last.}
@@ -3082,8 +3144,8 @@ theorem for trajectories; and ``condition number'' in
 not a numerical heuristic.
 \item\label{squat:nc:covering} The two-to-one map $S^3(F)\to\SO(3,F)$ is stated only as a
 map on algebraic group points, \emph{not} as a covering-space theorem for the fine
-topology. Neither rational chart of \cref{squat:prop:charts} claims that $\Sp(1,F)$ is
-topologically a real three-sphere, and the polar decomposition
+topology. Neither presentation of the rational chart in \cref{squat:prop:charts}
+claims that $\Sp(1,F)$ is topologically a real three-sphere, and the polar decomposition
 \cref{squat:eq:polargroup} is algebraic and does not assert compactness of $S^3(\No)$.
 \item\label{squat:nc:onesided} The root theorem covers \emph{only} one-sided polynomials
 with a central formal indeterminate and coefficients on the right. Arbitrary
@@ -3095,9 +3157,10 @@ algebra. No Hilbert-space, infinite-dimensional or proper-class spectral theorem
 asserted, and no compactness of a surreal unit sphere is used.
 \item\label{squat:nc:nodeterminant} The determinantal singular-scale theorem and the
 positive Cauchy--Binet argument of the companion spectral-theory report \cite{RepoSpec} are
-determinant arguments and are not available over the quaternions; nothing here reuses them
-(\cref{squat:warn:nodet}). More generally no commutative result is reused: every
-commutative argument in this subject is reproved over $\mathbb H$.
+commutative determinant arguments and cannot be transferred unchanged to quaternionic
+matrices; no quaternionic determinant version is claimed here
+(\cref{squat:warn:nodet}). Commutative results are used only with their scalar or
+slice hypotheses established.
 \item\label{squat:nc:matrixval} For matrices only $w(AB)\ge w(A)+w(B)$ holds. The equality
 \cref{squat:eq:valuation-product}, valid for individual nonzero quaternions, must not be
 copied to matrices.
@@ -3157,8 +3220,8 @@ perturbation direction.
 scalar oracle. Arbitrary surreal coefficients have no finite computable encoding; root
 finding needs factorization over the real closed scalar field; infinite supports can have
 infinitely many exponents below a cutoff, so truncation is not generally finitely
-computable; and the top row of \cref{squat:sub:hierarchy} carries no decidability or
-evaluation guarantee.
+computable; and the unrestricted-symbolic-expression row of
+\cref{squat:sub:hierarchy} carries no decidability or evaluation guarantee.
 \item\label{squat:nc:octonions} The Cayley--Dickson construction over $\No$ also produces
 an octonion algebra with positive sum-of-eight-squares norm and hence no zero divisors, but
 it is \emph{alternative} rather than associative, and the centralizer, linear-factor and
