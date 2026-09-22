@@ -326,7 +326,7 @@ formal coefficients give jointly strongly summable substituted monomials,
 whose strong sum is the resulting ring homomorphism. Constant standard
 parts and zero-constant multivariate composition are preserved. The
 construction includes empty variable types and zero arguments; formal
-differentiation and recentered analytic lifting remain separate.
+multivariable differentiation and recentered analytic lifting remain separate.
 
 [`Surcomplex/GeometricSeries.lean`](../Surreal/Surcomplex/GeometricSeries.lean)
 specializes actual evaluation to the formal geometric series in both fields.
@@ -399,11 +399,47 @@ proves unique principal angles in the actual interval `(-π, π]`, including
 infinitesimal endpoint corrections, and identifies the angle of every negative
 real input as `π`. No exponential at infinite imaginary arguments is required.
 
+[Algebra/FineDerivative.lean](../Surreal/Algebra/FineDerivative.lean) defines
+punctured-neighborhood difference-quotient derivatives over topological fields,
+with uniqueness, local congruence, continuity, arithmetic and polynomial rules.
+[Surcomplex/FineDerivative.lean](../Surreal/Surcomplex/FineDerivative.lean)
+identifies this predicate with the actual real and complex scalar-valued
+ε–δ conditions and proves the bounded quadratic-remainder criterion.
+[PowerSeriesRemainder.lean](../Surreal/Surcomplex/PowerSeriesRemainder.lean)
+provides that exact remainder and a uniform ordinary bound for all infinitesimal
+inputs. [PowerSeriesFineDerivative.lean](../Surreal/Surcomplex/PowerSeriesFineDerivative.lean)
+then proves the fine derivative of formal evaluation at zero in both fields.
+[LocallyConstantDerivative.lean](../Surreal/Surcomplex/LocallyConstantDerivative.lean)
+constructs a nonconstant function, constant on infinitesimal cosets, with zero
+fine derivative everywhere. No ordinary connected-domain uniqueness principle
+is imported into this topology.
+
+[Algebra/AnalyticTaylor.lean](../Surreal/Algebra/AnalyticTaylor.lean) connects
+ordinary iterated derivatives to Mathlib's actual convergent analytic-germ
+witness, with germ equality, sum/product and formal differentiation identities.
+[Surcomplex/AnalyticTaylor.lean](../Surreal/Surcomplex/AnalyticTaylor.lean)
+constructs the actual complex Taylor lift at an ordinary center plus an
+infinitesimal displacement. Finite inputs are explicitly recentered at their
+standard part; the exact strong sum, residue, and sum/product laws are proved.
+[AnalyticFineDerivative.lean](../Surreal/Surcomplex/AnalyticFineDerivative.lean)
+proves the corresponding fine derivative at ordinary centers and agreement
+with the recentered lift. The derivative at nonordinary points needs additional
+re-expansion results.
+
+[FiniteTrigonometry.lean](../Surreal/Surcomplex/FiniteTrigonometry.lean)
+proves the finite phase-coordinate sine/cosine identities, including ordinary
+constants, addition, parity, period and integer de Moivre. Finite Euler has
+its literal exponential strong-sum formula. The separate even/odd Taylor
+series and trigonometric derivative identifications remain obligations.
+
 ## Remaining dependency order
 
-1. Prove the differentiation laws for actual formal evaluation, then
-   construct recentered analytic Taylor lifting.
-2. Prove compatibility under universe lifts and the remaining
+1. Prove re-expansion and fine differentiation at arbitrary infinitesimal
+   displacements, extending the proved derivative at zero and ordinary centers.
+2. Extend recentered complex analytic lifting to the remaining real,
+   multivariable and composition assertions, and identify the trigonometric
+   even/odd Taylor series and derivatives.
+3. Prove compatibility under universe lifts and the remaining
    analytic-operation correspondences.
 
 Existence, inverse extraction, real monomials, finite evaluation and field

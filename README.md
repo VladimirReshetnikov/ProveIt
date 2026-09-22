@@ -389,9 +389,18 @@ The actual finite exponential maps onto the finite units with exact kernel
 and two finite angles give the same phase exactly modulo ordinary `2πℤ`.
 Each has a unique principal angle in `(-π, π]`, with angle `π` for every
 negative real input, including infinite and infinitesimal scales.
+Finite phase coordinates give sine and cosine with ordinary-constant agreement,
+addition identities, parity, periodicity and integer de Moivre.
+Recentered ordinary complex analytic germs evaluate by their actual Taylor
+strong sums, preserving sums, products and standard parts. Fine derivatives
+use every positive surreal tolerance: polynomials have their formal derivatives,
+formal evaluation at zero has derivative equal to its linear coefficient, and
+Taylor lifts have the ordinary derivative at their ordinary centers.
+A nonconstant infinitesimal-coset indicator has zero fine derivative everywhere.
 The approximation inequalities alone never give uniqueness: a sufficiently
-small positive monomial produces another solution. Differentiation,
-recentered analytic Taylor lifting, and universe coherence
-remain separate obligations.
+small positive monomial produces another solution. Differentiation at arbitrary
+infinitesimal displacements, multivariable analytic lifting, analytic composition,
+the separate trigonometric Taylor formulas, and universe coherence remain
+separate obligations.
 A successful build proves only the imported Lean
 statements, not coverage of all the source documents.

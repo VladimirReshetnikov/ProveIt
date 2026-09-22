@@ -39,6 +39,9 @@ import Surreal.Algebra.PowerSeriesFactorLifting
 import Surreal.Algebra.PowerSeriesExpLog
 import Surreal.Algebra.PowerSeriesHom
 import Surreal.Algebra.PowerSeriesUnitRoots
+import Surreal.Algebra.PowerSeriesRemainder
+import Surreal.Algebra.FineDerivative
+import Surreal.Algebra.AnalyticTaylor
 import Surreal.Algebra.PowerSeriesPolynomialFactorLifting
 import Surreal.Algebra.MvPowerSeriesFactorLifting
 import Surreal.Algebra.MvPowerSeriesPolynomialFactorLifting
@@ -156,6 +159,10 @@ import Surreal.Surcomplex.Workspace
 import Surreal.Surcomplex.PowerSeries
 import Surreal.Surcomplex.PowerSeriesHom
 import Surreal.Surcomplex.PowerSeriesLeading
+import Surreal.Surcomplex.PowerSeriesRemainder
+import Surreal.Surcomplex.PowerSeriesFineDerivative
+import Surreal.Surcomplex.AnalyticTaylor
+import Surreal.Surcomplex.AnalyticFineDerivative
 import Surreal.Surcomplex.StrongEvaluation
 import Surreal.Surcomplex.PowerSeriesStrongHom
 import Surreal.Foundations.SignSequencePowerSeriesAlgebra
@@ -165,6 +172,7 @@ import Surreal.Surcomplex.ExpLogEquiv
 import Surreal.Surcomplex.FiniteExponential
 import Surreal.Surcomplex.Polar
 import Surreal.Surcomplex.PolarNormalization
+import Surreal.Surcomplex.FiniteTrigonometry
 import Surreal.Surcomplex.StrongConjugation
 import Surreal.Surcomplex.ExpLogConjugation
 import Surreal.Surcomplex.MvPowerSeries
@@ -183,6 +191,8 @@ import Surreal.Surcomplex.Leading
 import Surreal.Surcomplex.FiniteLeading
 import Surreal.Surcomplex.FiniteNormalForm
 import Surreal.Surcomplex.StandardPartTopology
+import Surreal.Surcomplex.FineDerivative
+import Surreal.Surcomplex.LocallyConstantDerivative
 import Surreal.Surcomplex.Halos
 import Surreal.Surcomplex.PolynomialGeometry
 import Surreal.Surcomplex.PolynomialReduction
