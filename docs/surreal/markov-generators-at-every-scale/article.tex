@@ -85,7 +85,7 @@ stability bound, uniform over all positive resolvent parameters and without a
 spectral-gap loss, and show that the entire finite leading-term diagram admits a
 rank-one monomial realization. Finally, the effective characteristic polynomial
 recovers the leading surcomplex eigenvalue amplitudes, including tied scales and
-nonreal eigenvalues. All proofs use finite algebra in a set-sized Hahn workspace;
+nonreal eigenvalues. All Hahn calculations use finite algebra in a set-sized workspace;
 no countable convergence in the full surreal topology is asserted.
 Throughout, the value group of that workspace is nonzero, set-sized and
 divisible. Path measures, sample paths and infinite state spaces are not
@@ -99,9 +99,11 @@ aggregation, stochastic-idempotent structure, and rank-one metastability theory
 are credited explicitly. The arbitrary-rank realization and stability package is
 presented as a candidate original contribution after a targeted, non-exhaustive
 comparison. Priority and absence from every repository archive are not certified.
-The arguments are mathematical proofs, not Lean-checked proofs. Like every report
-in this collection, it is an AI-assisted research draft; it has not been
-refereed. It is built from a single manuscript;
+The Lean ledger in \path{docs/FORMALIZATION.md} records checked algebraic
+clauses of the resolvent identity, projection-flag construction and irreducible
+completion. The residue calculations and remaining hierarchy theorems are
+pending. This is an AI-assisted research draft; it has not been refereed.
+It is built from a single manuscript;
 Section~\ref{markov:sec:provenance} records how that manuscript was placed in
 the collection and what was changed.
 
@@ -303,7 +305,7 @@ full hierarchy of large-deviation transition events.
 lists where it is used. No statement is claimed for a nondivisible value group.
 \item \emph{One notion of critical time.} Plateaux and crossovers refer only to
 the resolvent hierarchy. The bound $n-1$ bounds these crossover scales, which
-are the distinct nonzero eigenvalue valuations. It does not bound the path-event
+are the distinct valuations of nonzero eigenvalues. It does not bound the path-event
 or typical-transition-graph hierarchies of the metastability literature, which
 can contain more scales.
 \item \emph{Rank-one realization preserves finite leading data only.}
@@ -342,8 +344,10 @@ and the finite rational sign-separation lemma are not proposed as new.
 is a candidate original contribution after a targeted, non-exhaustive
 literature comparison. Priority is not certified, and neither is absence from
 every archive of the repository at the pin
-(Section~\ref{markov:sec:comparison}). The proofs are not Lean-checked and have
-not been refereed. The three further questions of
+(Section~\ref{markov:sec:comparison}). The opening status paragraph identifies
+the algebraic clauses checked in Lean; it does not claim formal verification of
+the full hierarchy. The report has not been refereed. The three further
+questions of
 Section~\ref{markov:sec:directions} are not solved.
 \end{enumerate}
 The delivered audit file \texttt{SOURCE\_AUDIT.md} states the audit boundaries
@@ -369,7 +373,7 @@ so its profile at $\alpha$ is exactly $m_\alpha$ of \eqref{markov:eq:m-alpha},
 and they give the three assertions of Lemma~\ref{markov:lem:initial-spectrum}:
 the valuation identity \eqref{markov:eq:sum-min}, the initial factorization
 \eqref{markov:eq:initial-factorization}, and the identification of the critical
-scales with the nonzero eigenvalue valuations. The direct proof given here is
+scales with the valuations of nonzero eigenvalues. The direct proof given here is
 kept. Two features are specific to rate matrices. First, the coefficient
 valuations $h_k$ are read from forests with no possible cancellation, because
 every forest weight is positive. Second, Theorem~\ref{markov:thm:convexity}
@@ -452,7 +456,8 @@ as provenance (Section~\ref{markov:sec:comparison}).
 \item In Section~\ref{markov:sec:checks}, the description of what the program
 compares was made exact on one point (multiplicities).
 \end{enumerate}
-The mathematics of the manuscript is unchanged. The source archive, its PDF and
+Placement left the mathematics unchanged. Subsequent proof corrections are
+recorded in the maintained README. The source archive, its PDF and
 its README are not shipped.
 
 \section{Hahn workspaces and positive rate matrices}\label{markov:sec:workspace}
@@ -491,9 +496,13 @@ is the corresponding normal-form embedding. The minus sign reverses the
 increasing Hahn support into a decreasing Conway support.
 
 Any finite collection of surreal or surcomplex coefficients is contained in one
-such workspace: take the union of their normal-form supports, change signs, and
-take the rational span. This is a set-sized divisible ordered subgroup of
-$\No$. All subsequent operations take place in its Hahn field or, where stated,
+such workspace: take the union of their normal-form supports (using real and
+imaginary parts for surcomplex inputs), change signs, adjoin $1$, and take the
+rational span. Each support is a set, though it need not be finite. The resulting
+span is a nonzero set-sized divisible ordered subgroup of $\No$; adjoining $1$
+also covers purely real inputs, whose support exponents alone could give the
+zero group. All subsequent operations take place in its Hahn field or, where
+stated,
 a larger set-sized one. No set of all surreal numbers is formed.
 
 \begin{remark}[No hidden convergence assertion]\label{markov:rem:noconv}
@@ -525,9 +534,11 @@ Each existing rate has a unique leading representation
 allowing $\varepsilon_e=0$. The coefficients beyond $a_e$ need not be positive.
 The leading data are the finite family $(a_e,\gamma_e)_{e\in E}$.
 
-For $\rho\in\Gamma$ write $x=\bigO{\rho}$ to mean $v(x)\ge\rho$; for a matrix
-this means the bound entrywise. This is a valuation assertion, not a bound with
-an unspecified real constant. Products of finitely many factors
+For $\rho\in\Gamma\cup\{+\infty\}$ write $x=\bigO{\rho}$ to mean
+$v(x)\ge\rho$; for a matrix this means the bound entrywise. In particular,
+$x=\bigO{+\infty}$ means $x=0$, including the zero matrix in the matrix case.
+This is a valuation assertion, not a bound with an unspecified real constant.
+Products of finitely many factors
 $1+\bigO{\rho}$, for $\rho>0$, again have the form $1+\bigO{\rho}$.
 
 \subsection{Where divisibility of the value group is used}\label{markov:sec:divisible}
@@ -548,8 +559,11 @@ the rational span $W=\Span_\Q\{\gamma_e\}$ as a subgroup of $\Gamma$.
 which is algebraically closed because $\Gamma$ is divisible.
 Lemma~\ref{markov:lem:initial-spectrum} and Theorems~\ref{markov:thm:char}
 and~\ref{markov:thm:convexity} rely on this.
-\item The surreal transfer above takes the rational span of finitely many
-normal-form exponents, which is a divisible subgroup of $\No$.
+\item The surreal transfer above takes the rational span of the set of
+normal-form exponents of finitely many coefficients, after changing signs and
+adjoining $1$. This set can be infinite, unlike the finite family of leading
+edge exponents used to define $W$. Its rational span is still a set-sized
+divisible subgroup of $\No$.
 \end{enumerate}
 The report claims none of its statements for a nondivisible value group. It
 does not determine which of them would survive without divisibility.
@@ -641,10 +655,13 @@ belong to $\Ocal$ and admit real residues.
 
 \begin{proof}
 The determinant and adjugate identities are the directed matrix-forest theorem
-\cite{CA}. They are polynomial identities with integer coefficients in the edge
-weights and $s$. Thus their validity for real weights implies their validity in
-any characteristic-zero coefficient field; alternatively one may use the usual
-cycle-cancellation proof with formal weights. There is no specialization or
+\cite[Propositions~2 and~3]{CA}, with the same row-Laplacian and
+in-forest orientation. They are polynomial identities with integer coefficients
+in the edge weights and $s$. Their differences vanish on the open positive
+orthant of real weights and positive $s$, so these polynomials are identically
+zero. Thus the identities hold in any characteristic-zero coefficient field;
+alternatively one may use the usual cycle-cancellation proof with formal
+weights. There is no specialization or
 continuity assumption on Hahn series in this step.
 
 For $s>0$, all terms in $D(s)$ are positive, so $sI+L$ is invertible and cancellation
@@ -739,7 +756,7 @@ Then
    \label{markov:eq:marked-leading-coeff}
 \end{align}
 In particular the data $(a_e,\gamma_e)$ determine the leading term of every
-entry, including entries whose unnormalized residue is zero.
+entry, including entries whose residue is zero.
 \end{theorem}
 
 \begin{proof}
@@ -928,9 +945,14 @@ has the form
 \]
 where $C$ is block diagonal with irreducible stochastic blocks. Every transient
 state has a finite positive-probability path to a closed class. By finiteness,
-there are an integer $r$ and a real $\eta>0$ such that every row sum of $T_0^r$
-is at most $1-\eta$. It follows that $T_0^m\to0$ as $m\to\infty$.
-But $P^2=P$ implies $T_0^2=T_0$, so $T_0=0$.
+there are an integer $r\ge1$ and a real $\eta>0$ such that every row sum of $T_0^r$
+is at most $1-\eta$. Taking $0<\eta<1$ if necessary, the maximum-row-sum
+norm satisfies
+\[
+ \|T_0^m\|_\infty\le(1-\eta)^{\lfloor m/r\rfloor}\longrightarrow0.
+\]
+(The assertion is vacuous if there are no transient states.) But $P^2=P$
+implies $T_0^2=T_0$, so $T_0=0$.
 
 For a closed irreducible block $C_a$, each real vector $x$ with $C_ax=x$ is
 constant: choose a maximal coordinate; its expression as a convex combination
@@ -988,7 +1010,8 @@ so that $H(e)$ is invertible. Rearranging \eqref{markov:eq:compressed-identity} 
 \[
  H(c)\bigl[cI_p+e(H(e)^{-1}-I_p)\bigr]=cI_p
 \]
-for $c\ne e$, and the identity extends to $c=e$. Define
+for $c\ne e$. At $c=e$ the bracket is $eH(e)^{-1}$, so the same
+identity holds directly. Define
 $G_\alpha=e(H(e)^{-1}-I_p)$. A square matrix with a right inverse is invertible,
 so the first identity of \eqref{markov:eq:effective-resolvent} holds for every $c>0$.
 It then gives \eqref{markov:eq:effective-one} and uniqueness.
@@ -1039,8 +1062,14 @@ $T=I-G_\alpha/M$ is stochastic, and the ordinary absolutely convergent identity
 proves nonnegativity and row sums one. The semigroup identity follows from
 $VU=I$. To see the large-$u$ limit, all nonzero eigenvalues of a real row
 Laplacian have strictly positive real part: if $Gz=\lambda z$ and $|z_a|$ is
-maximal and nonzero, the $a$th row shows $\Rea\lambda\ge0$. Equality forces
-$z_b/z_a=1$ for every positive outgoing rate, and then forces $\lambda=0$.
+maximal and nonzero, write $q_{ab}=-G_{ab}\ge0$ for $b\ne a$. Then
+\[
+ \Rea\lambda=\sum_{b\ne a}q_{ab}
+       \bigl(1-\Rea(z_b/z_a)\bigr)\ge0,
+\]
+because $|z_b/z_a|\le1$. Equality forces $z_b/z_a=1$ for every positive
+outgoing rate. The original complex row equation then gives $\lambda=0$,
+also when that row has no outgoing rate.
 The zero eigenvalue is semisimple by the preceding theorem, so the exponential
 converges to $\widehat Q$. The Laplace transform identity follows by integrating
 the finite-dimensional real resolvent, or directly by differentiating
@@ -1253,8 +1282,12 @@ block, at $s=ct^\alpha$, is
 If $\alpha<\alpha_i$, factor out $ct^\alpha$; the residue is the identity.
 If $\alpha>\alpha_i$, factor out $t^{\alpha_i}$; invertibility of the real
 $A_i$ shows that the residue is zero. If $\alpha=\alpha_i$, the residue is
-$c(cI+A_i|_{\im E_i})^{-1}$. These residue statements use only inversion of a
-matrix with invertible real residue. Therefore the only crossovers are the
+$c(cI+A_i|_{\im E_i})^{-1}$. This last inverse exists: under the retract
+isomorphism, $A_i|_{\im E_i}$ is the restriction of $G_i$ to its invariant
+nonzero block, and $cI+G_i$ is invertible for every $c>0$ by the real
+matrix-forest identity, including its reducible case. These residue statements
+therefore use only inversion of a matrix with invertible real residue. The only
+crossovers are the
 $\alpha_i$, and between them the shadows telescope to the prescribed $P_i$.
 
 At $\alpha_j$ the later blocks together with $P_m$ sum to $P_j$. Under
@@ -1521,7 +1554,7 @@ $\delta=(0,1)$ and $\beta=(1,0)$. Then
 \[
  0<N\delta<\beta\qquad\text{for every positive integer }N.
 \]
-No real linear functional can preserve all these inequalities while sending
+No $\Q$-linear map $\Gamma\to\R$ can preserve all these inequalities while sending
 $\delta$ to a positive number: it would require the finite real number
 $\ell(\beta)$ to exceed $N\ell(\delta)$ for every $N$. A finite family of
 inequalities can be preserved, for example by sending $\delta$ to $1$ and
@@ -1553,8 +1586,8 @@ $\zeta_r=\alpha$, then
  \prod_{\zeta_r=\alpha}(c+\rho_r),
 \end{equation}
 where $C_\alpha\ne0$ is the product of the leading coefficients of the faster
-factors. Consequently the critical scales are exactly the distinct nonzero
-eigenvalue valuations.
+factors. Consequently the critical scales are exactly the distinct valuations of
+nonzero eigenvalues, including valuation zero when it occurs.
 \end{lemma}
 
 \begin{proof}
@@ -1635,7 +1668,7 @@ The forest profile satisfies
 \begin{equation}\label{markov:eq:convexity}
  h_1-h_0\ \le\ h_2-h_1\ \le\ \cdots\ \le\ h_d-h_{d-1}.
 \end{equation}
-These $d$ increments are precisely the nonzero eigenvalue valuations of $L$ in
+These $d$ increments are precisely the valuations of nonzero eigenvalues of $L$ in
 nondecreasing order, including repetitions. At any critical scale,
 $I_\alpha$ consists of every integer from $k_-$ through $k_+$; no intermediate
 forest size is missing from the initial polynomial.
@@ -1930,7 +1963,8 @@ absence of an extra crossover at its positivity-correction scale. The resulting
 \texttt{data/verification.json} records \texttt{PASS} and the individual instance
 sizes. These checks do not establish the general theorems: in particular they do
 not replace the arbitrary-rank separation proof or the positivity argument for
-all compatible effective generators. No Lean verification is claimed.
+all compatible effective generators. They are independent of the algebraic
+Lean coverage described in the opening status paragraph.
 
 The program writes its output over \texttt{data/verification.json} next to it,
 so it should be run on a copy of this directory. Such a rerun at placement,
@@ -1948,7 +1982,7 @@ ordered eigenvalue list. This is a definite theorem with a constructive proof,
 not a suggestion to investigate the problem later.
 
 The marked formula and the relative bound give two different levels of
-information. The unnormalized real shadow describes effective stochastic motion.
+information. The residue matrix describes effective stochastic motion.
 The marked entry's valuation and amplitude describe transitions too rare to
 appear in that shadow. Relative stability controls both uniformly over the
 observation parameter. The characteristic identity, in turn, explains why the
@@ -2039,6 +2073,7 @@ to the row Laplacian $L$, not to the conventional generator $-L$; nonzero real
 parts therefore have the positive sign.
 
 \begin{thebibliography}{99}
+\small
 
 \bibitem{Conway}
 J.~H. Conway,
@@ -2057,8 +2092,10 @@ P. Chebotarev and R. Agaev,
 Forest matrices around the Laplacian matrix,
 \emph{Linear Algebra and its Applications} \textbf{356} (2002), 253--274.
 \doi{10.1016/S0024-3795(02)00388-9}.
-Author-deposited version:
-\url{https://arxiv.org/abs/math/0508178}.
+Author-deposited version (v2, 4 February 2006):
+\url{https://arxiv.org/abs/math/0508178v2}.
+Propositions~2 and~3 give the determinant and adjugate coefficients with the
+row-Laplacian convention of Section~2.2.
 
 \bibitem{GC}
 T. Gan and M. Cameron,

@@ -3,8 +3,10 @@
 **Stochastic retracts, prescribed effective chains, relative stability, and rank-one realization**
 Single-source research report, 22 September 2026, built from one manuscript
 (batch 18, number 14, archive `surreal_markov_hierarchies`). Prepared for
-Vladimir Reshetnikov. An AI-assisted research draft: not refereed, not checked
-in Lean.
+Vladimir Reshetnikov. An AI-assisted research draft, not refereed. The
+[Lean ledger](../../FORMALIZATION.md) records proved algebraic clauses of the
+resolvent identity, projection-flag construction and irreducible completion;
+residue calculations and the remaining hierarchy theorems are pending.
 
 This directory holds one manuscript. It is not a merge. There was no second
 source, and nothing here was selected out of a larger body of work.
@@ -43,8 +45,9 @@ generator in the usual sign convention is `−L`. The object of study is the
 **normalized resolvent** `R_L(s) = s(sI + L)^{-1}` for `s > 0`, taken as a
 rational-algebraic definition. Its residue matrix at scale `α ∈ Γ` is
 `K_α(c) = res R_L(c t^α)` for real `c > 0`; the article calls it the *shadow*.
-All proofs are finite algebra in one set-sized Hahn workspace. The surreal form
-comes through the normal-form embedding `t^γ ↦ ω^{−γ}`.
+The Hahn calculations use finite algebra in one set-sized workspace; the
+effective chains use ordinary real matrix limits and exponentials. The surreal
+form comes through the normal-form embedding `t^γ ↦ ω^{−γ}`.
 
 1. **Every scale and every marked entry** (Theorem 4.1, `markov:thm:leading`).
    The residue matrix is `N_α(c)/D_α(c)`, built from minimal-weight in-forests.
@@ -91,7 +94,7 @@ comes through the normal-form embedding `t^γ ↦ ω^{−γ}`.
    effective characteristic polynomial gives the **leading surcomplex eigenvalue
    amplitudes, including tied scales and nonreal eigenvalues**, and every nonzero
    eigenvalue has `v(Re λ) = v(λ)`. The forest profile is convex, its increments
-   are the nonzero eigenvalue valuations with multiplicity, and at a critical
+   are the valuations of nonzero eigenvalues with multiplicity, and at a critical
    scale every intermediate forest size is active. Eigenvalues are those of `L`,
    not of `−L`.
 
@@ -184,9 +187,9 @@ Here the same mechanism works for positive forest weights of a row Laplacian
 Hermitian, while row Laplacians are generally not normal and can have nonreal
 eigenvalues. Neither result implies the other. "Spectrum" in Section 10 has that
 report's sense, fixed in `spec:sec:spectrumword`: the eigenvalue list of a
-finite matrix over `K` with its valuations. The only other occurrence of
-"stochastic" in the collection's LaTeX, apart from bibliography titles, is a proof
-remark there. It follows its Frobenius eigenvalue bound (`thm:HW`, Theorem 5.3
+finite matrix over `K` with its valuations. At the placement snapshot
+`e9a9650`, the reported search found only one other occurrence of "stochastic"
+in the collection's LaTeX, apart from bibliography titles: a proof remark there. It follows its Frobenius eigenvalue bound (`thm:HW`, Theorem 5.3
 there) and says the proof does not use a doubly stochastic decomposition.
 
 The theorem numbers of other reports quoted here are from their PDFs as committed
@@ -233,8 +236,8 @@ bibliography database.
 changes into its own directory (`code/`) and builds `surreal_markov_hierarchies.tex`,
 which no longer exists. Use the `latexmk` command above instead. The delivered
 record in `data/build_validation.json` (28 pages, Python 3.13.5, SymPy 1.14.0)
-describes the manuscript's own build. The difference in pages is the material
-added on placement.
+describes the manuscript's own build. The current page count also includes the
+material added on placement and the subsequent proof review.
 
 `code/verify.py` **overwrites `data/verification.json`**, since it writes to
 `../data/` relative to its own location. Run it on a copy of this directory:
@@ -265,7 +268,7 @@ critical kernels, plus seven symbolic checks:
 A rerun on a copy at placement took about four seconds under Python 3.14.4 and
 SymPy 1.14.0. It reproduced the recorded file exactly, apart from the line
 endings the operating system writes. These are finite checks. They are not a
-proof of the general theorems, and there is no Lean formalization.
+proof of the general theorems. The algebraic Lean coverage is described above.
 
 ## Provenance
 
@@ -286,4 +289,30 @@ Placement made the following changes:
 - It added the AI-assisted-draft status and the divisibility and path-measure
   sentences to the abstract and status paragraph.
 
-The mathematics is unchanged. Section 1.6 of the article records the same.
+Placement left the mathematics unchanged, as recorded in Section 1.6 of the
+article. The subsequent corrections are recorded below.
+
+## Subsequent proof review
+
+The maintained article now makes the workspace construction valid even for
+purely real inputs: adjoin exponent `1` before taking the rational span. A finite
+input can have infinite normal-form supports; only the leading edge exponents
+span the finite-dimensional space used for rank-one specialization. The
+valuation-error convention includes `O_v(+∞) = 0`, as needed when a remainder
+vanishes exactly.
+
+The review expands the transient-block decay estimate, the effective-generator
+inverse at the repeated parameter, the spectral real-part argument, and
+invertibility at the prescribed crossover. It also clarifies that critical
+scales are valuations of **nonzero eigenvalues**; valuation zero is allowed.
+The matrix-forest import was checked against Propositions 2 and 3 of
+[Chebotarev–Agaev v2](https://arxiv.org/abs/math/0508178v2), including its
+row-Laplacian and in-forest orientation. This review does not certify the other
+literature comparisons or priority claims.
+
+A review rerun under Python 3.13.14 and SymPy 1.14.0 passed all 48 instances
+(17,280 forests and 105 critical kernels) and all seven symbolic checks. Its
+JSON content matches the delivered record. The copied program and build files
+were unchanged, and the maintained article rebuilt in three passes to 33 pages
+without warnings or box issues. These counts describe finite checks, not
+coverage of every theorem.

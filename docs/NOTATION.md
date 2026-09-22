@@ -339,6 +339,9 @@ ball. See [dynamics](surcomplex/dynamics-and-normal-forms/article.tex)
 
 The computer-algebra convention `O_v(β)` means an error with valuation at least
 the **exponent** `β`. Thus for `v(t) = 1`, write `O_v(7)`, not `O_v(t^7)`.
+The [Markov report](surreal/markov-generators-at-every-scale/article.tex) also
+allows `β = +∞`: with `v(0) = +∞`, the bound `O_v(+∞)` means exactly zero,
+entrywise for matrices.
 Other reports may instead define an ordinary asymptotic `O(t^7)`; quote its
 local definition before translating the notation.
 

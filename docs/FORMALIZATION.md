@@ -2728,26 +2728,26 @@ Mappings cover only the hypotheses and clauses they state.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Proposition | `markov:prop:forest` (line 628) | Classical matrix-forest identity |
-| Theorem | `markov:thm:leading` (line 713) | The complete leading-forest formula |
-| Proposition | `markov:prop:remainder` (line 768) | A valuation remainder certificate |
-| Lemma | `markov:lem:resolvent` (line 813) | Resolvent compatibility |
-| Theorem | `markov:thm:flag` (line 839) | Projection hierarchy |
-| Lemma | `markov:lem:splitting` (line 909) | Classical splitting of a stochastic idempotent |
-| Theorem | `markov:thm:effective` (line 957) | Effective-generator reconstruction |
-| Corollary | `markov:cor:effective-semigroup` (line 1020) | A real semigroup on each retract |
-| Theorem | `markov:thm:flag-realization` (line 1065) | Projection-flag realization |
-| Lemma | `markov:lem:completion` (line 1107) | Irreducible completion invisible to the hierarchy |
-| Theorem | `markov:thm:general-realization` (line 1174) | Prescribed-crossover realization |
-| Corollary | `markov:cor:classification` (line 1275) | A necessary and sufficient criterion |
-| Proposition | `markov:prop:reversible` (line 1293) | Full-support reversible flags |
-| Theorem | `markov:thm:stability` (line 1332) | All-parameter, entrywise relative stability |
-| Corollary | `markov:cor:leading-equivalence` (line 1364) | Leading data suffice simultaneously |
-| Lemma | `markov:lem:separation` (line 1405) | Finite positive signs can be represented rationally |
-| Theorem | `markov:thm:rank-one` (line 1453) | Simultaneous rank-one realization of the leading diagram |
-| Lemma | `markov:lem:initial-spectrum` (line 1543) | Valuations and initial eigenvalue factors |
-| Theorem | `markov:thm:char` (line 1582) | Effective characteristic and amplitude identity |
-| Theorem | `markov:thm:convexity` (line 1632) | Discrete convexity and all eigenvalue valuations |
+| Proposition | `markov:prop:forest` (line 642) | Classical matrix-forest identity |
+| Theorem | `markov:thm:leading` (line 730) | The complete leading-forest formula |
+| Proposition | `markov:prop:remainder` (line 785) | A valuation remainder certificate |
+| Lemma | `markov:lem:resolvent` (line 830) | Resolvent compatibility |
+| Theorem | `markov:thm:flag` (line 856) | Projection hierarchy |
+| Lemma | `markov:lem:splitting` (line 926) | Classical splitting of a stochastic idempotent |
+| Theorem | `markov:thm:effective` (line 979) | Effective-generator reconstruction |
+| Corollary | `markov:cor:effective-semigroup` (line 1043) | A real semigroup on each retract |
+| Theorem | `markov:thm:flag-realization` (line 1094) | Projection-flag realization |
+| Lemma | `markov:lem:completion` (line 1136) | Irreducible completion invisible to the hierarchy |
+| Theorem | `markov:thm:general-realization` (line 1203) | Prescribed-crossover realization |
+| Corollary | `markov:cor:classification` (line 1308) | A necessary and sufficient criterion |
+| Proposition | `markov:prop:reversible` (line 1326) | Full-support reversible flags |
+| Theorem | `markov:thm:stability` (line 1365) | All-parameter, entrywise relative stability |
+| Corollary | `markov:cor:leading-equivalence` (line 1397) | Leading data suffice simultaneously |
+| Lemma | `markov:lem:separation` (line 1438) | Finite positive signs can be represented rationally |
+| Theorem | `markov:thm:rank-one` (line 1486) | Simultaneous rank-one realization of the leading diagram |
+| Lemma | `markov:lem:initial-spectrum` (line 1576) | Valuations and initial eigenvalue factors |
+| Theorem | `markov:thm:char` (line 1615) | Effective characteristic and amplitude identity |
+| Theorem | `markov:thm:convexity` (line 1665) | Discrete convexity and all eigenvalue valuations |
 
 ### tail-spans-and-differential-transcendence
 
