@@ -152,8 +152,9 @@ and is Cauchy but is never eventually constant. Its index type is proved
 not small at the lower universe level.
 Canonical sign options also define a small, well-founded game graph. Its
 recursive game construction preserves and reflects comparison, proves the
-image games numeric, and gives an explicit order embedding into the reused
-numeric-game surreal field. Surjectivity and arithmetic compatibility remain
+image games numeric, and gives an explicit order isomorphism with the reused
+numeric-game surreal field. Every small cut is preserved, and induction on
+numeric-game options proves surjectivity. Arithmetic compatibility remains
 to be proved before transferring that field to the sign carrier.
 The empty and one-plus sequences map literally to the raw games zero and one.
 The numeric-game quotient also satisfies the indexed small-cut interface and
