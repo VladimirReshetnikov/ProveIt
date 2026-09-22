@@ -2,6 +2,7 @@ import Mathlib.LinearAlgebra.Vandermonde
 import Mathlib.LinearAlgebra.Matrix.Rank
 import Mathlib.LinearAlgebra.Matrix.Nondegenerate
 import Mathlib.LinearAlgebra.Lagrange
+import Mathlib.Tactic.LinearCombination
 
 /-!
 # Classical Prony uniqueness
@@ -140,6 +141,69 @@ theorem momentFunctional_cofactor_mul (a w : Fin k → K) (i j : Fin k) :
     rw [eval_mul, eval_cofactor_of_ne a hli, zero_mul, mul_zero]
   · simp
 
+theorem eval_cofactor_ne_zero (a : Fin k → K) {i : Fin k} {x : K} (hx : ∀ j ≠ i, x ≠ a j) :
+    (cofactor a i).eval x ≠ 0 := by
+  rw [cofactor, eval_prod]
+  exact prod_ne_zero_iff.mpr fun j hj => by
+    simpa [sub_eq_zero] using hx j (mem_erase.mp hj).1
+
+/-- `eq:localeq`: dividing a cofactor-coordinate perturbation `P + ∑ b_j Q_j` by
+`Q_i` at a point `x` away from the other nodes gives, with `z = x - a_i`,
+`z + b_i + ∑_{j ≠ i} b_j z/(a_i - a_j + z)`. The identity is exact. -/
+theorem eval_perturbed_eq (a b : Fin k → K) {i : Fin k} {x : K} (hx : ∀ j ≠ i, x ≠ a j) :
+    (nodePoly a + ∑ j, C (b j) * cofactor a j).eval x =
+      (cofactor a i).eval x *
+        (x - a i + b i + ∑ j ∈ univ.erase i, b j * (x - a i) / (x - a j)) := by
+  have hQ : ∀ j ∈ univ.erase i, (cofactor a j).eval x =
+      (x - a i) * (cofactor a i).eval x / (x - a j) := by
+    intro j hj
+    have hxj : x - a j ≠ 0 := sub_ne_zero.mpr (hx j (mem_erase.mp hj).1)
+    rw [eq_div_iff hxj]
+    have h1 := congrArg (eval x) (nodePoly_eq_mul_cofactor a j)
+    have h2 := congrArg (eval x) (nodePoly_eq_mul_cofactor a i)
+    simp only [eval_mul, eval_sub, eval_X, eval_C] at h1 h2
+    rw [mul_comm, ← h1, h2]
+  have hsum : ∑ j ∈ univ.erase i, b j * (cofactor a j).eval x =
+      (cofactor a i).eval x * ∑ j ∈ univ.erase i, b j * (x - a i) / (x - a j) := by
+    rw [Finset.mul_sum]
+    refine Finset.sum_congr rfl fun j hj => ?_
+    rw [hQ j hj]
+    ring
+  have h2 := congrArg (eval x) (nodePoly_eq_mul_cofactor a i)
+  simp only [eval_mul, eval_sub, eval_X, eval_C] at h2
+  rw [eval_add, eval_finsetSum, ← Finset.add_sum_erase _ _ (mem_univ i), h2]
+  simp only [eval_mul, eval_C]
+  rw [hsum]
+  ring
+
+/-- `eq:localeq`: a root of the perturbation away from the other nodes satisfies
+the local equation. -/
+theorem local_root_equation (a b : Fin k → K) {i : Fin k} {x : K} (hx : ∀ j ≠ i, x ≠ a j)
+    (hroot : (nodePoly a + ∑ j, C (b j) * cofactor a j).eval x = 0) :
+    x - a i + b i + ∑ j ∈ univ.erase i, b j * (x - a i) / (x - a j) = 0 := by
+  rw [eval_perturbed_eq a b hx] at hroot
+  exact (mul_eq_zero.mp hroot).resolve_left (eval_cofactor_ne_zero a hx)
+
+/-- `eq:rootexact`, multiplied out: `z(1 + ∑_{j ≠ i} b_j/(a_i - a_j + z)) = -b_i`. -/
+theorem local_root_mul (a b : Fin k → K) {i : Fin k} {x : K} (hx : ∀ j ≠ i, x ≠ a j)
+    (hroot : (nodePoly a + ∑ j, C (b j) * cofactor a j).eval x = 0) :
+    (x - a i) * (1 + ∑ j ∈ univ.erase i, b j / (x - a j)) = -b i := by
+  have h := local_root_equation a b hx hroot
+  have hs : ∑ j ∈ univ.erase i, b j * (x - a i) / (x - a j) =
+      (x - a i) * ∑ j ∈ univ.erase i, b j / (x - a j) := by
+    rw [Finset.mul_sum]
+    exact Finset.sum_congr rfl fun j _ => by ring
+  rw [hs] at h
+  linear_combination h
+
+/-- `eq:rootexact`: the node displacement is `-b_i(1 + ∑_{j ≠ i} b_j/(a_i - a_j + z))⁻¹`
+whenever the bracket is nonzero, as it is when all its summands are infinitesimal. -/
+theorem local_root_exact (a b : Fin k → K) {i : Fin k} {x : K} (hx : ∀ j ≠ i, x ≠ a j)
+    (hroot : (nodePoly a + ∑ j, C (b j) * cofactor a j).eval x = 0)
+    (hbr : 1 + ∑ j ∈ univ.erase i, b j / (x - a j) ≠ 0) :
+    x - a i = -b i * (1 + ∑ j ∈ univ.erase i, b j / (x - a j))⁻¹ := by
+  rw [← local_root_mul a b hx hroot, mul_assoc, mul_inv_cancel₀ hbr, mul_one]
+
 /-- The lower coefficients `(P_0, …, P_{n-1})` of the node polynomial. -/
 def lowCoeffs (a : Fin n → K) : Fin n → K :=
   fun j => (nodePoly a).coeff j
@@ -261,6 +325,206 @@ theorem not_moment_eq_of_lt {a w : Fin n → K} (ha : Function.Injective a) (hw 
     rw [hH]
     exact (rank_mul_le_left _ _).trans ((rank_mul_le_left _ _).trans (rank_le_width _))
   omega
+
+section LastMoment
+
+/-- The linear moment functional `f ↦ ∑ f_j m_j` of an arbitrary moment sequence. -/
+def momentLinear (m : ℕ → K) : K[X] →ₗ[K] K :=
+  Polynomial.lsum fun j => LinearMap.mulRight K (m j)
+
+theorem momentLinear_eq_sum (m : ℕ → K) (f : K[X]) {N : ℕ} (hN : f.natDegree < N) :
+    momentLinear m f = ∑ j ∈ range N, f.coeff j * m j := by
+  rw [momentLinear, Polynomial.lsum_apply, sum_over_range' f (by simp) N hN]
+  rfl
+
+theorem momentLinear_C_mul_X_pow (m : ℕ → K) (c : K) (r : ℕ) :
+    momentLinear m (C c * X ^ r) = c * m r := by
+  rw [momentLinear, Polynomial.lsum_apply, C_mul_X_pow_eq_monomial,
+    sum_monomial_index _ _ (by simp)]
+  rfl
+
+theorem momentLinear_moment (a w : Fin k → K) (f : K[X]) :
+    momentLinear (moment a w) f = momentFunctional a w f := by
+  rw [momentLinear_eq_sum _ _ (Nat.lt_succ_self _),
+    momentFunctional_eq_sum_coeff _ _ _ (Nat.lt_succ_self _)]
+
+/-- Multiplying by `X^r` shifts the moment indices. -/
+theorem momentLinear_mul_X_pow (m : ℕ → K) {P : K[X]} {d : ℕ} (hP : P.natDegree ≤ d) (r : ℕ) :
+    momentLinear m (P * X ^ r) = ∑ j ∈ range (d + 1), P.coeff j * m (j + r) := by
+  conv_lhs => rw [P.as_sum_range' (d + 1) (by omega)]
+  rw [Finset.sum_mul, map_sum]
+  refine Finset.sum_congr rfl fun j _ => ?_
+  rw [← C_mul_X_pow_eq_monomial, mul_assoc, ← pow_add, momentLinear_C_mul_X_pow]
+
+/-- A monic degree-`n` annihilator of `1, X, …, X^{n-1}` solves the Hankel system. -/
+theorem hankel_mulVec_of_annihilates (m : ℕ → K) {P : K[X]} (hPm : P.Monic)
+    (hPd : P.natDegree = n) (hann : ∀ r < n, momentLinear m (P * X ^ r) = 0) :
+    hankel n m *ᵥ (fun j : Fin n => P.coeff j) = fun r : Fin n => -m (n + r) := by
+  funext r
+  have h := hann r r.2
+  have hn1 : P.coeff n = 1 := by
+    rw [← hPd]
+    exact hPm.coeff_natDegree
+  rw [momentLinear_mul_X_pow m hPd.le, Finset.sum_range_succ, hn1, one_mul,
+    ← Fin.sum_univ_eq_sum_range (fun j => P.coeff j * m (j + r))] at h
+  simp only [mulVec, dotProduct, hankel, of_apply]
+  rw [eq_neg_iff_add_eq_zero, ← h]
+  congr 1
+  exact Finset.sum_congr rfl fun j _ => by rw [mul_comm, add_comm (r : ℕ)]
+
+/-- Uniqueness of the monic annihilator when the Hankel matrix is invertible. -/
+theorem monic_annihilator_unique (m : ℕ → K) (hH : (hankel n m).det ≠ 0) {P Q : K[X]}
+    (hPm : P.Monic) (hPd : P.natDegree = n) (hPann : ∀ r < n, momentLinear m (P * X ^ r) = 0)
+    (hQm : Q.Monic) (hQd : Q.natDegree = n)
+    (hQann : ∀ r < n, momentLinear m (Q * X ^ r) = 0) : P = Q := by
+  have hzero : hankel n m *ᵥ ((fun j : Fin n => P.coeff j) - fun j : Fin n => Q.coeff j) = 0 := by
+    rw [mulVec_sub, hankel_mulVec_of_annihilates m hPm hPd hPann,
+      hankel_mulVec_of_annihilates m hQm hQd hQann, sub_self]
+  have hlow := sub_eq_zero.mp (eq_zero_of_mulVec_eq_zero hH hzero)
+  ext j
+  rcases lt_trichotomy j n with hj | rfl | hj
+  · exact congrFun hlow ⟨j, hj⟩
+  · rw [← hPd, hPm.coeff_natDegree, ← hQd.trans hPd.symm, hQm.coeff_natDegree]
+  · rw [coeff_eq_zero_of_natDegree_lt (by omega), coeff_eq_zero_of_natDegree_lt (by omega)]
+
+/-- The moments with only `m_{2n-1}` perturbed by `e`. -/
+def lastPerturbed (a w : Fin n → K) (e : K) (r : ℕ) : K :=
+  moment a w r + if r = 2 * n - 1 then e else 0
+
+/-- The original Hankel matrix is unchanged by the last-moment perturbation. -/
+theorem hankel_lastPerturbed (a w : Fin n → K) (e : K) :
+    hankel n (lastPerturbed a w e) = hankel n (moment a w) := by
+  ext r s
+  simp only [hankel, of_apply, lastPerturbed]
+  rw [if_neg (by omega), add_zero]
+
+theorem momentLinear_lastPerturbed (a w : Fin n → K) (e : K) (f : K[X]) :
+    momentLinear (lastPerturbed a w e) f =
+      momentFunctional a w f + e * f.coeff (2 * n - 1) := by
+  have hN : f.natDegree < f.natDegree + 2 * n + 1 := by omega
+  rw [momentLinear_eq_sum _ _ hN, ← momentLinear_moment, momentLinear_eq_sum _ _ hN]
+  simp only [lastPerturbed, mul_add, Finset.sum_add_distrib, mul_ite, mul_zero,
+    Finset.sum_ite_eq', mem_range]
+  rw [if_pos (by omega)]
+  ring
+
+/-- `eq:Pe`: `P_e = P - e ∑ Q_i/(w_i P'(a_i)²)`, written with `P'(a_i) = Q_i(a_i)`. -/
+def lastMomentPoly (a w : Fin n → K) (e : K) : K[X] :=
+  nodePoly a - ∑ i, C (e / (w i * (cofactor a i).eval (a i) ^ 2)) * cofactor a i
+
+theorem natDegree_cofactor (a : Fin n → K) (i : Fin n) :
+    (cofactor a i).natDegree = n - 1 := by
+  rw [cofactor, natDegree_prod_of_monic _ _ fun j _ => monic_X_sub_C (a j)]
+  simp [Finset.card_erase_of_mem]
+
+theorem cofactor_monic (a : Fin n → K) (i : Fin n) : (cofactor a i).Monic :=
+  monic_prod_of_monic _ _ fun j _ => monic_X_sub_C (a j)
+
+theorem natDegree_lastMomentCorrection_le (a w : Fin n → K) (e : K) :
+    (∑ i, C (e / (w i * (cofactor a i).eval (a i) ^ 2)) * cofactor a i).natDegree ≤ n - 1 :=
+  natDegree_sum_le_of_forall_le _ _ fun i _ =>
+    (natDegree_C_mul_le _ _).trans (natDegree_cofactor a i).le
+
+theorem lastMomentPoly_monic (a w : Fin n → K) (e : K) (hn : 0 < n) :
+    (lastMomentPoly a w e).Monic := by
+  refine (nodePoly_monic a).sub_of_left ?_
+  refine (degree_le_natDegree.trans (WithBot.coe_le_coe.mpr
+    (natDegree_lastMomentCorrection_le a w e))).trans_lt ?_
+  rw [degree_eq_natDegree (nodePoly_monic a).ne_zero, natDegree_nodePoly]
+  exact WithBot.coe_lt_coe.mpr (Nat.sub_lt hn one_pos)
+
+theorem natDegree_lastMomentPoly (a w : Fin n → K) (e : K) (hn : 0 < n) :
+    (lastMomentPoly a w e).natDegree = n := by
+  rw [lastMomentPoly, natDegree_sub_eq_left_of_natDegree_lt, natDegree_nodePoly]
+  rw [natDegree_nodePoly]
+  exact (natDegree_lastMomentCorrection_le a w e).trans_lt (by omega)
+
+/-- The node values of the perturbed annihilator: `P_e(a_j) = -e/(w_j p_j)`. -/
+theorem eval_lastMomentPoly (a w : Fin n → K) (e : K) (j : Fin n) :
+    (lastMomentPoly a w e).eval (a j) =
+      -(e / (w j * (cofactor a j).eval (a j) ^ 2) * (cofactor a j).eval (a j)) := by
+  rw [lastMomentPoly, eval_sub, (eval_nodePoly_eq_zero_iff a _).mpr ⟨j, rfl⟩, zero_sub,
+    eval_finsetSum, Finset.sum_eq_single j]
+  · simp only [eval_mul, eval_C]
+  · intro i _ hij
+    rw [eval_mul, eval_cofactor_of_ne a (Ne.symm hij), mul_zero]
+  · simp
+
+theorem eval_cofactor_self_ne_zero {a : Fin n → K} (ha : Function.Injective a) (j : Fin n) :
+    (cofactor a j).eval (a j) ≠ 0 :=
+  eval_cofactor_ne_zero a fun _ hij h => hij (ha h).symm
+
+/-- The test against a cofactor: the node part contributes `-e`. -/
+theorem momentFunctional_lastMomentPoly_mul_cofactor {a w : Fin n → K}
+    (ha : Function.Injective a) (hw : ∀ i, w i ≠ 0) (e : K) (j : Fin n) :
+    momentFunctional a w (lastMomentPoly a w e * cofactor a j) = -e := by
+  rw [momentFunctional, Finset.sum_eq_single j]
+  · rw [eval_mul, eval_lastMomentPoly]
+    have hp := eval_cofactor_self_ne_zero ha j
+    have hwj := hw j
+    set p := (cofactor a j).eval (a j)
+    have hden : w j * p ^ 2 ≠ 0 := mul_ne_zero hwj (pow_ne_zero 2 hp)
+    calc w j * (-(e / (w j * p ^ 2) * p) * p) = -(e / (w j * p ^ 2) * (w j * p ^ 2)) := by
+          ring
+      _ = -e := by rw [div_mul_cancel₀ e hden]
+  · intro l _ hlj
+    rw [eval_mul, eval_cofactor_of_ne a hlj, mul_zero, mul_zero]
+  · simp
+
+/-- The top coefficient of the test against a cofactor is `1`. -/
+theorem coeff_lastMomentPoly_mul_cofactor (a w : Fin n → K) (e : K) (j : Fin n) :
+    (lastMomentPoly a w e * cofactor a j).coeff (2 * n - 1) = 1 := by
+  have hn : 0 < n := Fin.pos j
+  have h := coeff_mul_add_eq_of_natDegree_le (natDegree_lastMomentPoly a w e hn).le
+    (natDegree_cofactor a j).le
+  rw [show n + (n - 1) = 2 * n - 1 by omega] at h
+  rw [h]
+  have h1 := (lastMomentPoly_monic a w e hn).coeff_natDegree
+  have h2 := (cofactor_monic a j).coeff_natDegree
+  rw [natDegree_lastMomentPoly a w e hn] at h1
+  rw [natDegree_cofactor a j] at h2
+  rw [h1, h2, one_mul]
+
+/-- The cofactors divided by their node values are Mathlib's Lagrange basis. -/
+theorem lagrange_basis_eq (a : Fin n → K) (j : Fin n) :
+    Lagrange.basis Finset.univ a j = C ((cofactor a j).eval (a j))⁻¹ * cofactor a j := by
+  rw [Lagrange.basis, cofactor, eval_prod]
+  simp only [Lagrange.basisDivisor, Finset.prod_mul_distrib, ← map_prod, eval_sub, eval_X,
+    eval_C, Finset.prod_inv_distrib]
+
+/-- `prop:last`: for every `e`, regardless of its valuation, `P_e` annihilates all
+polynomials of degree below `n` for the perturbed moment functional. -/
+theorem momentLinear_lastMomentPoly_mul {a w : Fin n → K} (ha : Function.Injective a)
+    (hw : ∀ i, w i ≠ 0) (e : K) {f : K[X]} (hf : f.degree < n) :
+    momentLinear (lastPerturbed a w e) (lastMomentPoly a w e * f) = 0 := by
+  have hf' : f.degree < (Finset.univ : Finset (Fin n)).card := by simpa using hf
+  rw [Lagrange.eq_interpolate (v := a) ha.injOn hf', Lagrange.interpolate_apply,
+    Finset.mul_sum, map_sum]
+  refine Finset.sum_eq_zero fun j _ => ?_
+  rw [lagrange_basis_eq]
+  have hsm : lastMomentPoly a w e * (C (f.eval (a j)) *
+      (C ((cofactor a j).eval (a j))⁻¹ * cofactor a j)) =
+      (f.eval (a j) * ((cofactor a j).eval (a j))⁻¹) • (lastMomentPoly a w e * cofactor a j) := by
+    rw [← C_mul', C_mul]
+    ring
+  rw [hsm, map_smul, momentLinear_lastPerturbed, momentFunctional_lastMomentPoly_mul_cofactor ha hw,
+    coeff_lastMomentPoly_mul_cofactor, mul_one, neg_add_cancel, smul_zero]
+
+/-- `prop:last`: `P_e` is the unique monic annihilator of the perturbed moments. -/
+theorem lastMomentPoly_unique {a w : Fin n → K} (ha : Function.Injective a)
+    (hw : ∀ i, w i ≠ 0) (e : K) (hn : 0 < n) {Q : K[X]} (hQm : Q.Monic)
+    (hQd : Q.natDegree = n)
+    (hQann : ∀ r < n, momentLinear (lastPerturbed a w e) (Q * X ^ r) = 0) :
+    Q = lastMomentPoly a w e := by
+  refine monic_annihilator_unique _ ?_ hQm hQd hQann (lastMomentPoly_monic a w e hn)
+    (natDegree_lastMomentPoly a w e hn) fun r hr => ?_
+  · rw [hankel_lastPerturbed]
+    exact det_hankel_moment_ne_zero ha hw
+  · refine momentLinear_lastMomentPoly_mul ha hw e ?_
+    rw [degree_X_pow]
+    exact WithBot.coe_lt_coe.mpr hr
+
+end LastMoment
 
 end
 
