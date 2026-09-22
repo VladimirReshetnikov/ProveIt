@@ -84,7 +84,8 @@
 \vspace{0.45cm}
 {\LARGE Sets, Classes, Universes, Type Theories,\par and a Pinned Lean Audit\par}
 \vspace{0.5cm}
-{\large September 21, 2026\par}
+{\large Source audits: September 21, 2026\par}
+{\small Revised exposition: September 22, 2026\par}
 \vspace{0.5cm}
 \begin{minipage}{0.94\textwidth}\small
 \begin{abstract}
@@ -163,11 +164,13 @@ where possible and dated. Illustrative Lean snippets have not been compiled in
 this environment.''
 
 \smallskip
-\emph{For the merged document.} Three of the five shipped Lean files were
-compiled and axiom-audited for this report, under a toolchain that is not the
-one the sources pin; nothing else here was machine-checked. See
-\cref{found:sec:boundary}, which states the verification boundary in one place
-and in plain language.
+\emph{For the original merged document.} Three of the five shipped Lean files
+were compiled and axiom-audited, under a toolchain different from the one the
+sources pin. Those historical checks are recorded in
+\cref{found:sub:compiled}. Subsequent repository formalization is a separate
+body of evidence, summarized in \cref{found:sub:currentimplementation} and
+tracked theorem by theorem in \path{docs/FORMALIZATION.md}. The present
+exposition is not a claim that all its results have been formalized.
 \end{minipage}
 \clearpage
 \begingroup\small\setlength{\parskip}{0pt}\tableofcontents\endgroup
@@ -399,18 +402,43 @@ names the two questions separately, and we adopt it for that reason.
 \section{The verification boundary of this report}
 \label{found:sec:boundary}
 
-\textbf{None of the three source audits compiled any Lean file, rebuilt any
-repository, or ran \texttt{\#print axioms}. For the merged report that changed
-in exactly one respect, recorded in \cref{found:sub:compiled}: three of the five
-shipped Lean files were compiled, and \texttt{\#print axioms} was run on every
-declaration in them. Nothing else here was machine-checked. No repository was
-rebuilt, and no supplied manuscript was verified.}
+The three September 21 source audits were source inspections: none compiled
+a Lean file, rebuilt a repository, or ran \texttt{\#print axioms}. The original
+merge additionally compiled three illustrative files, as recorded in
+\cref{found:sub:compiled}. The repository has since developed a larger Lean
+library. These are three different verification records, with different
+revisions and scopes; the later work does not retroactively turn the historical
+source inspections into executed audits.
 
-Those sentences are the whole of the verification status of the present
-document, and they are stated here, early, in their own section, rather than
-distributed across footnotes where a skimming reader would miss them. The
-remainder of this section records exactly what \emph{was} done, by whom, and
-what follows from it.
+\subsection{The current implementation and the historical proposal}
+\label{found:sub:currentimplementation}
+At repository checkpoint \texttt{ebda0e0}, the checked-development ledger
+\path{docs/FORMALIZATION.md} records the constructed sign-sequence ordered
+field, its game-quotient comparison, small-cut and fine-topology results, the
+concrete surcomplex pair field, and many generic Hahn-field results. It also
+records canonical evaluation of small formal normal forms as an order
+isomorphism with inverse extraction. That last result does not yet supply the
+arithmetic and strong-sum preservation required by the full bridge in
+\cref{found:sub:bridge}. Real closedness of the concrete sign carrier and the
+resulting surcomplex algebraic-closure specialization remain separate
+obligations at this checkpoint.
+
+The implementation uses Lean \texttt{4.32.0} and the dependency revisions in
+\path{lake-manifest.json}, rather than the source audits' toolchain. Its
+\path{SurrealAudit.lean} target imports the library and checks transitive axiom
+dependencies of every imported declaration in the \texttt{Surreal} and
+\texttt{SurrealHahnSeries} namespaces, allowing only \texttt{propext},
+\texttt{Quot.sound}, and \texttt{Classical.choice}. This is broader than the
+three illustrative-file checks, but it still requires a statement-level mapping
+to each manuscript claim. The ledger distinguishes complete mappings from
+prerequisites, conditional results and pending work; neither a successful build
+nor an order isomorphism alone verifies the whole article.
+
+The layers and suggested module paths in \cref{found:sec:architecture} retain
+their role as a plan. For implementation status, follow the ledger and actual
+imports in \path{Surreal.lean}; do not infer completion from a proposed module
+name. The preserved files in this report's \path{sources/}, \path{code/}, and
+\path{data/} directories remain the historical originals.
 
 \subsection{One inspection, three readers}
 \label{found:sub:onethree}
@@ -544,11 +572,12 @@ larger blueprint, not a certificate. Specifically:
 \item zero machine-verified any of the five supplied manuscripts.
 \end{itemize}
 
-\noindent Every one of those six remains true of the three source audits. The
-merged report changes the first and the third, and only for the three files
-named in \cref{found:sub:compiled}. The other four are unchanged: no
-repository was rebuilt, no transitive axiom audit was performed, no Mizar was
-run, and no supplied manuscript was machine-verified.
+\noindent Every one of those six remains true of the three source audits. The original
+merged report changed the first and the third only for the three files named in
+\cref{found:sub:compiled}. Its own checks did not rebuild the external
+repository, audit all its declarations, run Mizar, or verify a complete supplied
+manuscript. Subsequent work in this repository is recorded separately in
+\cref{found:sub:currentimplementation}.
 
 \subsection{What was compiled for this report}
 \label{found:sub:compiled}
@@ -566,28 +595,28 @@ installed on the machine used here. The compilations below ran under Lean
 about the pinned revision or about code that depends on it.
 
 \begin{center}\small
-\begin{tabular}{@{}p{0.29\textwidth}p{0.17\textwidth}p{0.20\textwidth}p{0.26\textwidth}@{}}
+\begin{tabular}{@{}P{0.29\textwidth}P{0.17\textwidth}P{0.20\textwidth}P{0.26\textwidth}@{}}
 \toprule
 \textbf{File} & \textbf{Imports} & \textbf{As shipped} & \textbf{Axioms reported}\\
 \midrule
 M1 \texttt{FoundationsSketch} & \texttt{Init} only & compiles, exit 0 &
-  \texttt{noUniversalStrictBound}: none at all\\[0.35em]
+  \path{noUniversalStrictBound}: none at all\\[0.35em]
 M1 \texttt{ComplexifySketch} & Mathlib & compiles, exit 0 &
   three of five none; \texttt{neg} and \texttt{imaginaryUnit\_sq}:
   \texttt{propext}\\[0.35em]
 M2 \texttt{LogicalGuards} & Mathlib & \textbf{does not compile} &
-  after repair: \texttt{noUnrestrictedUpperBounds} none; two others
+  after repair: \path{noUnrestrictedUpperBounds} none; two others
   \texttt{propext}, \texttt{Quot.sound}\\[0.35em]
-M1 \texttt{InspectCurrentLibrary} & \texttt{CombinatorialGames} & not attempted &
+M1 \path{InspectCurrentLibrary} & \path{CombinatorialGames} & not attempted &
   repository absent\\[0.35em]
-M2 \texttt{SourceAudit} & \texttt{CombinatorialGames} & not attempted &
+M2 \texttt{SourceAudit} & \path{CombinatorialGames} & not attempted &
   repository absent\\
 \bottomrule
 \end{tabular}
 \end{center}
 
-\textbf{No \texttt{sorryAx} and no \texttt{Classical.choice} appears anywhere.}
-Every axiom reported is \texttt{propext} or \texttt{Quot.sound}, both ordinary
+\textbf{Neither \texttt{sorryAx} nor \texttt{Classical.choice} occurs in the
+reported dependencies of these illustrative files.} Every axiom reported is \texttt{propext} or \texttt{Quot.sound}, both ordinary
 kernel axioms of Lean~4 rather than holes. In particular the two size-obstruction
 theorems that carry the argument of \cref{found:sec:size} --- M1's
 \texttt{noUniversalStrictBound} and M2's \texttt{noUnrestrictedUpperBounds} ---
@@ -1688,9 +1717,11 @@ and taking the $\Q$-span. We print the proof once, in M3's three-clause form,
 which is the strongest statement any of them reaches.
 
 \begin{theorem}[Workspace localization]\label{found:thm:workspace}
-Assume the surreal normal-form theorem, the usual arithmetic compatibility of
-its monomials, and the algebraic-closure theorem for Hahn fields with divisible
-exponent group and algebraically closed coefficient field. Then:
+Assume existence and uniqueness of set-supported surreal normal forms, with
+evaluation preserving coefficientwise addition and Hahn convolution and sending
+$t^\gamma$ to $\omega^{-\gamma}$. Assume also the algebraic-closure theorem
+for Hahn fields with divisible exponent group and algebraically closed
+coefficient field. Then, in the full-class interpretation:
 \begin{enumerate}
 \item every \emph{set} $A\subseteq\SC$ is contained in one algebraically closed
 set-sized field $K_\Gamma$, for some nonzero divisible set-sized ordered
@@ -1699,6 +1730,11 @@ subgroup $\Gamma\subseteq\No$;
 \item a nonzero polynomial that splits in one workspace acquires no new roots
 in a larger surcomplex extension.
 \end{enumerate}
+For $\U=V_\kappa$ as in \cref{found:prop:universe}, the same statements hold
+inside $\SC_\U=\No_\U[i]$ when the input family in (1), and the family of
+$\U$-small workspaces in (2), are indexed by members of $\U$. The resulting
+$\Gamma$, $F_\Gamma$ and $K_\Gamma$ are $\U$-small. An arbitrary external set
+of elements of $\SC_\U$ is not sufficient for this relative conclusion.
 \end{theorem}
 \begin{proof}
 For (1), take for each $a=x+iy\in A$ the union of the exponent supports of the
@@ -1718,7 +1754,19 @@ inclusion $A\subseteq K_\Gamma\subseteq\SC$ with $K_\Gamma$ algebraically
 closed.
 
 For (2), take the union of the exponent groups of the given workspaces and
-repeat the rational-span construction.
+repeat the rational-span construction. The coefficient-extension maps agree
+with normal-form evaluation, so this gives inclusions of the specified
+workspaces, not merely abstract isomorphic copies.
+
+For the universe-relative version, each input sign sequence and its normal-form
+support have codes in $\U$. Regularity of $\kappa$ bounds the ranks of the
+codes in a $\U$-small indexed family strictly below $\kappa$; their union is
+therefore in $\U$. The finite-list and rational-span constructions above stay
+in $\U$. Since $\Gamma,\R,\C\in\U$, the coefficient-function sets
+$\R^\Gamma$ and $\C^\Gamma$, and their Hahn subfields, also belong to $\U$.
+The internal normal-form theorem evaluates them in $\No_\U$ and $\SC_\U$.
+This is the step that fails for an externally arbitrary family whose support
+codes can have ranks cofinal in $\kappa$.
 
 For (3), if $P(X)=a\prod_{j=1}^{n}(X-\alpha_j)$ with $a\ne0$ in one field, the
 same equality holds in every extension field. At a root $\beta$ the finite
@@ -2023,10 +2071,13 @@ because it removes both surreal birthdays and ordinary complex topology from the
 recursion proof.
 
 \begin{proposition}[Support-local nonlinear recursion]\label{found:prop:positive}
-Let $A$ be a commutative coefficient ring, $V=A^m$, let $L:V\to V$ be an
-invertible $A$-linear map, and let $N:V\to V$ be a polynomial map all of whose
-monomials have total degree at least two. Let $X$ be a Hahn family in $V$ with
-well-ordered positive support contained in $E$. Then
+Let $A$ be a commutative coefficient ring, $m\in\N$, $V=A^m$, and let
+$\Gamma$ be an ordered abelian group. Fix a \emph{set} $E\subseteq\Gamma_{>0}$
+that is well ordered in the increasing exponent order. Let $L:V\to V$ be an
+invertible $A$-linear map, and let $N:V\to V$ be given by finitely many
+polynomials over $A$, each with no terms of total degree zero or one. Extend
+these maps coefficientwise and by finite Hahn convolution, respectively. If
+$X$ is a $V$-valued Hahn series with $\supp X\subseteq E$, then
 \[
  LY+N(Y)=X
 \]
@@ -2034,11 +2085,18 @@ has a unique positive-support Hahn solution $Y$, and $\supp Y\subseteq
 E^*\setminus\{0\}$.
 \end{proposition}
 \begin{proof}
-Use well-founded recursion on $E^*\setminus\{0\}$. At an exponent $\nu$ each
-nonlinear contribution is a product of at least two already indexed positive
-coefficients whose exponents sum to $\nu$, so every exponent in such a product
-is strictly less than $\nu$; the Hahn--Neumann lemma makes the coefficient sum
-finite. Define
+Use well-founded recursion on $E^*\setminus\{0\}$. Its well-ordering follows
+from the stated hypotheses on $E$ and the Hahn--Neumann lemma. For each
+polynomial monomial of degree $d\ge2$, a contribution at exponent $\nu$ uses
+positive exponents $\nu_1,\ldots,\nu_d\in E^*$ with
+$\nu_1+\cdots+\nu_d=\nu$. Each $\nu_j$ is strictly smaller than $\nu$.
+There are finitely many such tuples: expand their entries into words in $E$;
+the Hahn--Neumann lemma gives finitely many nondecreasing words with total
+$\nu$, and each finite word has finitely many permutations and partitions
+into $d$ nonempty groups. There are also only finitely many polynomial
+monomials and coordinates. Thus the following coefficient is a finite sum of
+already constructed data:
+
 \[
  Y_\nu=L^{-1}\bigl(X_\nu-[t^\nu]N(Y_{<\nu})\bigr).
 \]
@@ -2069,8 +2127,8 @@ limit, and no ETR axiom. It is the concrete instance of
 
 \subsection{Formal summability is not \texttt{tsum}}
 \label{found:sub:tsum}
-Two examples are needed here, and both survive, because they fail in different
-ways.
+The two source examples are retained below. A third shows that rank one alone
+does not identify strong summation with topological summation.
 
 \begin{example}[The geometric series that never enters the neighbourhood]\label{found:ex:geometric}
 Let $\Gamma=\Q+\Q\omega$ and consider $1+t+t^2+\cdots$. It is a valid Hahn sum,
@@ -2087,6 +2145,22 @@ integer. The strongly summable series $H=\sum_{n\ge0}t^n$ has a remainder
 beginning at $t^{N+1}$ after $N$ terms, and that remainder is \emph{not} smaller
 than $t^\Omega$ for any ordinary $N$. So finite partial sums need not converge
 in a topology whose neighbourhoods include that scale (M3).
+\end{example}
+
+\begin{example}[Strong summation can fail to be a limit even in rank one]
+\label{found:ex:boundedrankone}
+In $\C((t^\Q))$ the family $A_n=t^{n/(n+1)}$, $n\ge0$, is strongly summable:
+its union of supports is a strictly increasing sequence, hence well ordered,
+and every exponent occurs once. Let $H$ be its formal sum. For
+$P_N=\sum_{n=0}^N A_n$ one has
+\[
+ v(H-P_N)=\frac{N+1}{N+2}<1.
+\]
+Thus no partial sum lies in the neighbourhood $\{z:v(H-z)>1\}$. Even the net
+of all finite subsums misses that neighbourhood, since some exponent below
+$1$ is always omitted. Rank one alone therefore does not identify arbitrary
+strong sums with topological sums. What matters for a particular family is
+whether its remaining exponents eventually escape every valuation bound.
 \end{example}
 
 \begin{remark}[The Archimedean-argument warning]\label{found:rem:archimedean}
@@ -2489,10 +2563,40 @@ of \cref{found:lem:bounds} need not lie in any previously specified subfield.
 The intrinsic valuation topology is likewise nondiscrete for a nontrivial
 ordered exponent group, since there are monomials of arbitrarily high valuation
 \emph{within that group}; indeed $t^n\to0$ intrinsically in $\R((t^\Q))$ but not
-finely (M2). An order embedding of workspaces preserves algebra and strong sums
-but need not preserve the intended ambient topology in the naive subspace sense.
+finely (M2). The canonical coefficient-extension embeddings of workspaces
+preserve algebra and strong sums but need not preserve the intended ambient
+topology in the naive subspace sense.
 Formal theorems about continuity, limits or derivatives must specify which
 topology is meant before invoking a library result.
+
+\paragraph{Which intrinsic topology?}
+For these nontrivial workspaces, intrinsic order-modulus balls and intrinsic
+valuation balls generate the \emph{same} topology, although the individual
+balls are different as \cref{found:eq:separator} shows. Write
+$V_\gamma=\{z:v(z)>\gamma\}$. If $r\in(F_\Gamma)_{>0}$ and
+$\rho=v(r)$, then $V_\rho\subseteq B(0,r)$: higher valuation means a smaller
+positive leading magnitude. Conversely, given $\gamma\in\Gamma$, choose
+$\eta>\gamma$, possible because $\Gamma\ne0$. Then
+$B(0,t^\eta)\subseteq V_\gamma$, since $|z|<t^\eta$ implies
+$v(z)\ge\eta>\gamma$. On the complex field the same argument uses
+$v(|z|)=v(z)$: in $|z|^2=x^2+y^2$ the first nonzero real coefficients are
+squares, so the leading terms cannot cancel. Translation gives the comparison
+at every centre. None of these comparisons identifies the topology with the
+\emph{external} fine subspace topology.
+
+For a geometric family this gives an exact convergence criterion. If
+$\delta\in\Gamma_{>0}$, the strong sum
+$H=\sum_{n\ge0}t^{n\delta}=(1-t^\delta)^{-1}$ always exists, and
+\[
+ v\!\left(H-\sum_{n=0}^N t^{n\delta}\right)=(N+1)\delta.
+\]
+Consequently its partial sums converge intrinsically if and only if the
+multiples $n\delta$ are cofinal in $\Gamma$: for every $\gamma\in\Gamma$
+some $n$ satisfies $n\delta>\gamma$. This holds for every $\delta>0$ in an
+Archimedean ordered group such as $\Q$, but fails for $\delta=1$ in
+$\Q+\Q\omega$. The criterion concerns this geometric family;
+\cref{found:ex:boundedrankone} explains why rank one does not suffice for an
+arbitrary strongly summable family.
 
 The consequence for Lean is direct (M1): if a native type is used as the whole
 carrier and every Lean subset is declared to satisfy the small-subset theorem,
@@ -3423,7 +3527,7 @@ principles, its quotient policy, and its use of choice or propositional resizing
 The two routes can inform each other through explicit interpretation theorems;
 neither is a drop-in implementation of the other.
 
-\section{The current Lean ecosystem: one inspection, three readers}
+\section{The Lean ecosystem in the source audits: one inspection, three readers}
 \label{found:sec:ecosystem}
 
 \subsection{The aggregation warning, in plain language}
@@ -3717,7 +3821,10 @@ the five have since been compiled for this report (\cref{found:sub:compiled}).
 
 \emph{All module names, layers, architectures, completion criteria and
 implementation sequences in this section are design suggestions. None of them is
-a claim that files with those paths exist.}
+a claim that files with those paths exist.} The implementation has progressed
+since the source audits; see \cref{found:sub:currentimplementation} and the
+repository ledger for the current correspondence. Historical expressions such
+as ``the next target'' below describe the proposal's dependency order.
 
 \subsection{Separate the global number type from the local algebra}
 \label{found:sub:twotracks}
@@ -4263,18 +4370,14 @@ randomized evidence for any general theorem.
 
 \subsection{This report's own verification status}
 \label{found:sub:ownstatus}
-Stated once, in \cref{found:sec:boundary}, and not repeated here beyond the
-two sentences that govern everything above. Of the three source audits: three
-read-only inspections, zero compilations, zero rebuilds, zero axiom audits,
-nothing kernel-checked, the \LaTeX{} builds the only executed step. Of the
-merged report: three of the five shipped Lean files compiled and
-\texttt{\#print axioms} run on every declaration in them, under a toolchain
-that is not the pinned one, as recorded in \cref{found:sub:compiled} --- and
-nothing else machine-checked, no repository rebuilt, no manuscript verified. The per-audit build evidence and the
-per-archive inventories are in
-\cref{found:sub:executed,found:sub:archives}, together with M2's instruction not
-to run \texttt{lake update} and then describe the result as a check of the
-pinned revision, and the record of the missing \texttt{SHA256SUMS} file.
+The September 21 source inspections, the original merge's three illustrative
+Lean checks, and the later repository implementation are separated in
+\cref{found:sec:boundary}. The last is tracked by
+\path{docs/FORMALIZATION.md}; it does not verify every claim in this report.
+The historical per-audit build evidence and per-archive inventories remain in
+\cref{found:sub:executed,found:sub:archives}. In particular, checking a changed
+dependency graph after \texttt{lake update} would not be a check of the original
+pinned revision.
 
 \section{Comparison and recommendations}
 \label{found:sec:comparison}
@@ -4765,9 +4868,11 @@ GB / GBC / NBG & See \cref{found:sub:gbconvention}; the convention is fixed befo
 \section{Precise limitations of the present verification}
 \label{found:app:limitations}
 
-This appendix is the union of the three audits' limitation lists, deduplicated.
-Every item is load-bearing. Dropping any one of them silently upgrades the
-report's apparent strength.
+This appendix preserves the three source audits' limitation lists, deduplicated,
+and the original merge's verification boundary. Statements about what was
+compiled refer to that historical work; subsequent repository formalization is
+tracked separately in \cref{found:sub:currentimplementation}. The mathematical
+and size qualifications continue to apply to the revised exposition.
 
 \subsection{On verification and build status}
 \label{found:app:limbuild}
@@ -4782,8 +4887,9 @@ what that does and does not cover.
 \item No transitive \texttt{\#print axioms} audit was executed. The
 \texttt{\#print axioms} commands present in M1's and M2's files were unexecuted
 source in all three archives; their output is now recorded, for three of the
-five files, in \cref{found:sub:compiled}. A per-declaration axiom list is not a
-transitive audit of the libraries those declarations import.
+five files, in \cref{found:sub:compiled}. Each \texttt{\#print axioms} result includes the named declaration's
+transitive dependencies; it does not audit every other declaration in the
+imported libraries.
 \item No Mizar run was performed; the Mizar development was not inspected
 article by article and its axiom closure was not reconstructed.
 \item None of the five supplied manuscripts was machine-verified.
@@ -5054,14 +5160,17 @@ manuscript merely from its filename (M3, followed in practice throughout
 \item This report merges three independently written audits.
 \item Their agreement on the pinned Lean revision reflects \emph{three readings
 of one source}, not independent execution.
-\item Of the claims in this report, exactly one has been kernel-checked:
-\cref{found:prop:allcuts}, the unrestricted-cut obstruction, in the two Lean
-encodings of \cref{found:sub:compiled}, each depending on no axioms. Nothing
-else here was machine-checked, and that one check says nothing about the
-surrounding mathematics.
+\item Of the claims in the original merged report, the illustrative checks
+covered only \cref{found:prop:allcuts}, the unrestricted-cut obstruction, in
+the two Lean encodings of \cref{found:sub:compiled}, each depending on no
+axioms. The later implementation mappings in
+\cref{found:sub:currentimplementation} have a different and explicitly recorded
+scope.
 \item Where the three audits differ in scope, sources or emphasis, the
 differences are printed rather than averaged.
-\item No merged sentence asserts more than the strongest single source proves.
+\item The historical synthesis does not promote agreement among source audits
+into stronger verification evidence. Later corrections and expanded arguments
+are identified in the report's README; the archived sources remain unchanged.
 \item The merged report's greater length, its five source manuscripts, its
 proved propositions and its bibliography are not execution. The union of three
 read-only audits is a larger blueprint, not a certificate.
