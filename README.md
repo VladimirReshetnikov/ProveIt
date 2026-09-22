@@ -111,7 +111,9 @@ valuation preserve the entire initial polynomial and these local root counts,
 even when the polynomial degree changes. In residue characteristic zero,
 differentiating through the initial polynomial's degree lowers the weighted
 value by the expected multiple of the scale and differentiates the initial
-polynomial exactly.
+polynomial exactly. Occupied open and closed valuation balls consequently
+contain exactly `k-r` roots of the `r`th derivative in the permitted range,
+with explicit splitting assumptions and multiplicities retained.
 Coefficientwise real and imaginary parts identify Hahn series over `R[i]`
 with the quadratic extension of Hahn series over `R`. This identification
 also uses Mathlib's native real and complex coefficients; conjugation fixes
@@ -126,6 +128,15 @@ birthday bound. The cut operation reconstructs canonical sign options, respects
 reindexing and satisfies Conway's negation rule. It gives upper, lower and
 positive lower bounds for small families. Small sets with no greatest member
 have no supremum; embedded finite ordinals give a concrete bounded example.
-Field arithmetic and the normal-form bridge to Hahn series remain open. A
-successful build proves only the imported Lean statements, not coverage of all
-the source documents.
+Conway addition is now constructed by well-founded recursion with proved
+option separation. Its zero, commutativity, associativity, inverse and order
+laws make the sign carrier an ordered additive commutative group. The addition
+cut equation also holds for arbitrary small presentations of the summands.
+In its native order topology and compatible additive uniformity, every small
+subset is closed and discrete, convergent small-index nets are eventually
+equal to their limits, and small-index Cauchy nets are eventually constant.
+The whole carrier has no isolated points. Neighborhoods and entourages use
+absolute differences valued in the sign carrier itself.
+Multiplication, field inverses, real closedness and the normal-form bridge to
+Hahn series remain open. A successful build proves only the imported Lean
+statements, not coverage of all the source documents.

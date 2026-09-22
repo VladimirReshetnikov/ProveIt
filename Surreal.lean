@@ -35,6 +35,16 @@ import Surreal.Foundations.SignSequenceSimplicity
 import Surreal.Foundations.SignSequenceCut
 import Surreal.Foundations.SignSequenceCutOperation
 import Surreal.Foundations.SignSequenceBounds
+import Surreal.Foundations.SignSequenceCutComparison
+import Surreal.Foundations.SignSequenceRecursion
+import Surreal.Foundations.SignSequenceTruncation
+import Surreal.Foundations.SignSequenceAddition
+import Surreal.Foundations.SignSequenceAddAssociative
+import Surreal.Foundations.SignSequenceAddInverse
+import Surreal.Foundations.SignSequenceAddGroup
+import Surreal.Foundations.SignSequenceTopology
+import Surreal.Foundations.SmallCauchy
+import Surreal.Foundations.SignSequenceUniformity
 import Surreal.HahnSeries.Binomial
 import Surreal.HahnSeries.BinomialOrder
 import Surreal.HahnSeries.BinomialRoots
@@ -50,6 +60,7 @@ import Surreal.HahnSeries.PolynomialReduction
 import Surreal.HahnSeries.PolynomialGaussValuation
 import Surreal.HahnSeries.PolynomialInitialRoots
 import Surreal.HahnSeries.PolynomialInitialDerivative
+import Surreal.HahnSeries.PolynomialCriticalBalls
 import Surreal.HahnSeries.PolynomialNewtonProfile
 import Surreal.HahnSeries.PolynomialRouche
 import Surreal.HahnSeries.PolynomialValuation
