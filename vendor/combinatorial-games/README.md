@@ -1,10 +1,12 @@
 # Vendored combinatorial-games dependency
 
 This directory contains the transitive source dependencies of
-`CombinatorialGames.Surreal.Division` and `CombinatorialGames.Game.Graph`
+`CombinatorialGames.Surreal.Division`, `CombinatorialGames.Surreal.Ordinal`,
+`CombinatorialGames.Surreal.Real`,
+and `CombinatorialGames.Game.Graph`
 from [vihdzp/combinatorial-games](https://github.com/vihdzp/combinatorial-games),
 commit `3c6dcdbc1ce9e4a16f9b6aa16ee485a744568404`.
-`UPSTREAM_MODULES.txt` lists the exact 20 imported upstream modules.
+`UPSTREAM_MODULES.txt` lists the exact 24 imported upstream modules.
 
 The source files retain their author and copyright notices and are licensed
 under Apache 2.0; see `LICENSE`. The upstream commit pins Lean 4.31.0-rc2.
@@ -26,7 +28,7 @@ requiring a separate remote fork. The parent project's build treats warnings
 as errors and audits all imported project declarations transitively.
 
 The library proves the ordered field of numeric games modulo equivalence.
-Its game-graph recursion exposes canonical options for a bridge from our sign
-carrier. It does not supply an existing sign-sequence equivalence, a proof of
-real closedness, or the normal-form equivalence with Hahn series. Those remain
-separate formalization obligations.
+It also supplies the natural-ordinal and ordinary-real embeddings. The parent
+project constructs its own explicit sign/game equivalence using the library's
+game-graph recursion. Real closedness and the normal-form equivalence with Hahn
+series remain separate formalization obligations.

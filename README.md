@@ -142,6 +142,12 @@ cut equation also holds for arbitrary small presentations of the summands.
 Native natural-number casts agree with finite all-plus sequences, and integer
 casts form an additive order embedding. Subtracting one from any upper bound
 of the naturals proves directly that they have no supremum.
+The ordered field extends these casts to rationals and ordinary reals.
+Halving any upper bound of the naturals gives another strictly smaller upper
+bound. The all-plus sequence of length omega exceeds every embedded real;
+its reciprocal is positive and smaller than every positive embedded real.
+Ordinal signs use Hessenberg natural addition and multiplication, with an
+explicit counterexample to preservation of ordinary ordinal addition.
 In its native order topology and compatible additive uniformity, every small
 subset is closed and discrete, convergent small-index nets are eventually
 equal to their limits, and small-index Cauchy nets are eventually constant.
@@ -163,10 +169,14 @@ small option indices and proved separation.
 The empty and one-plus sequences map literally to the raw games zero and one.
 The numeric-game quotient also satisfies the indexed small-cut interface and
 its comparison rule, including reconstruction from a numeric game's moves.
+The canonical raw-game birthday equals sign length and is minimal among
+all numeric games representing the same number.
 The concrete surcomplex field is now the quadratic extension of that sign
 field. It has the coordinate product, conjugation and inverse formulas, a
 positive surreal-valued norm square away from zero, and dimension two over
 its real subfield. Its carrier is also not small at the birthday universe.
+The surreal field is not algebraically closed, and no linear order is
+compatible with surcomplex multiplication.
 Real closedness and the normal-form bridge to Hahn series remain open.
 A successful build proves only the imported Lean
 statements, not coverage of all the source documents.

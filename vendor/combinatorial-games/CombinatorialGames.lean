@@ -1,2 +1,4 @@
 import CombinatorialGames.Surreal.Division
 import CombinatorialGames.Game.Graph
+import CombinatorialGames.Surreal.Ordinal
+import CombinatorialGames.Surreal.Real

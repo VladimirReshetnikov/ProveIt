@@ -52,10 +52,15 @@ import Surreal.Foundations.SignSequenceGames
 import Surreal.Foundations.SignSequenceGameConstants
 import Surreal.Foundations.GameCuts
 import Surreal.Foundations.SignSequenceGameEquiv
+import Surreal.Foundations.SignSequenceGameBirthday
 import Surreal.Foundations.SignSequenceGameAddition
 import Surreal.Foundations.SignSequenceField
 import Surreal.Foundations.SignSequenceMultiplication
+import Surreal.Foundations.SignSequenceRationals
+import Surreal.Foundations.SignSequenceOrdinals
+import Surreal.Foundations.SignSequenceReal
 import Surreal.Surcomplex.Basic
+import Surreal.Surcomplex.OrderObstructions
 import Surreal.HahnSeries.Binomial
 import Surreal.HahnSeries.BinomialOrder
 import Surreal.HahnSeries.BinomialRoots
