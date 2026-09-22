@@ -75,7 +75,10 @@ form comes through the normal-form embedding `t^γ ↦ ω^{−γ}`.
    positivity corrections add no crossover. So the forward conditions are
    necessary and sufficient. Proposition 7.6 treats the reversible case with
    full-support residue stationary law, where the plateaux are weighted nested
-   partitions. Example 11.1 shows that the full-support hypothesis is needed.
+   partitions. Its converse prescribes a strictly coarsening chain from the
+   discrete partition to the one-block partition, a strictly positive real
+   probability row, and strictly increasing crossover scales.
+   Example 11.1 shows that the full-support hypothesis is needed.
 5. **Uniform relative stability** (Theorem 8.1, `markov:thm:stability`). If
    every rate has a relative error of valuation `≥ δ` on the same graph, then
    every resolvent entry has a relative error of valuation `≥ δ`. This holds

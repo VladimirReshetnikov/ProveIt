@@ -266,8 +266,8 @@ $\sigma_{\Arf}(X)=\{z\in\K:X-z\Id$ has no two-sided inverse
 $\K$-algebra\\
 \addlinespace
 Hypothesis on $\Gamma$ &
-nonzero, set-sized, ordered abelian and \textbf{divisible}; divisibility is
-used only for positive square roots in $\Fld=\R((t^\Gamma))$, and
+nonzero, set-sized, ordered abelian and \textbf{divisible} as a standing
+convention; the norm itself exists without divisibility, and
 \cref{ihs:sec:topology} further restricts $\Gamma$ to a subgroup of $\R$ &
 nonzero, set-sized, ordered abelian, \textbf{not assumed divisible}; the
 source manuscript records the absence of that hypothesis as a feature, and
@@ -662,18 +662,19 @@ theorem of Part II is used in Part I. Each part has its own inner product,
 its own operator algebra, its own spectral definition, and its own
 hypothesis on $\Gamma$, and each proves its own positivity statement from
 scratch:
-\cref{ihs:hh:prop:inner} uses divisibility of $\Gamma$ to obtain the
-positive square root defining $\norm x=\sqrt{\ip xx}$, while
-\cref{ihs:rf:prop:inner} proves positivity of $\ip xx$ \emph{without}
-assuming that every positive element of $\Fld$ has a square root, and
-\cref{ihs:rf:cor:scales} records the absence of divisibility as part of its
-conclusion.
+\cref{ihs:hh:prop:inner} constructs the positive square root
+$\norm x=\sqrt{\ip xx}$ from the even leading exponent of $\ip xx$ and a
+near-one binomial root; this works for every ordered value group.
+Likewise, \cref{ihs:rf:prop:inner} proves positivity without assuming that
+every positive scalar has a square root. Part II uses no norm, and
+\cref{ihs:rf:cor:scales} explicitly allows nondivisible groups.
 
-Divisibility is therefore not unified below, and no reader should carry a
-hypothesis across the boundary. The two hypotheses are not merely different
-in strength: Part I needs positive square roots in $\Fld$ to define its norm
-at all, and Part II's point is partly that its construction never needs
-them.
+The stated standing hypotheses are retained separately below; no hypothesis
+should be carried across the boundary. In particular, divisibility remains
+a Part I convention, but is not necessary for its norm construction.
+General positive scalars and squared norms have different root requirements:
+$t$ has no square root in $\R((t^\Z))$, whereas $\norm{te}=t$ for any
+ordinary unit vector $e$.
 
 \subsection{The accumulation statements are about different objects}\label{ihs:sec:accum}
 Read without their categories, the two parts appear to disagree about
@@ -730,9 +731,11 @@ out against two different pinned revisions.
 
 \emph{Standing hypotheses for Part I.} $H\ne0$ is an ordinary complex
 Hilbert space and $\Gamma$ is a nonzero set-sized \emph{divisible} ordered
-abelian group. Divisibility is used only to obtain positive square roots in
-$\Fld=\R((t^\Gamma))$; \cref{ihs:sec:topology} temporarily strengthens the
-hypothesis to $\Gamma\subseteq\R$. ``Spectrum'' in this part means failure
+abelian group. This convention guarantees square roots of all positive
+scalars in $\Fld=\R((t^\Gamma))$; the norm construction below needs only
+roots of squared norms and works without divisibility.
+\Cref{ihs:sec:topology} temporarily strengthens the hypothesis to
+$\Gamma\subseteq\R$. ``Spectrum'' in this part means failure
 of bijectivity on $\Hil=H((t^\Gamma))$, or failure of invertibility in
 $\Ahh$, and \cref{ihs:hh:thm:spectrum} proves that for constant normal
 operators the two agree.
@@ -775,11 +778,12 @@ completeness, if $r=ct^\delta(1+u)>0$, where $c>0$ and $v(u)>0$, then
  \sqrt r=\sqrt c\,t^{\delta/2}\sum_{n\ge0}\binom{1/2}{n}u^n.
 \]
 The support lemma and the formal binomial identity prove its square is $r$;
-the positive root is unique in any ordered field. This elementary
-square-root construction is all the real-closed-field structure required in
-Part I, and it is the only place divisibility is used. It is used, however,
-in the definition of the norm itself, so it is not a hypothesis that can be
-dropped from the statements below without replacing that definition.
+the positive root is unique in any ordered field. Divisibility supplies
+$\delta/2$ for arbitrary positive scalars. For the norm, however, the
+leading exponent is already even, so no group extension is needed.
+The next proposition proves this directly. We retain the Part I standing
+hypotheses for the subsequent results; they are not a claim that divisibility
+is necessary to define the norm.
 
 \subsection{The Hahn--Hilbert inner product}\label{ihs:hh:sec:inner}
 We take ordinary and extended inner products to be linear in the first
@@ -794,10 +798,10 @@ though the separate family of its constant-coordinate squared magnitudes is
 not Hahn summable. We are not using that inadmissible family as a Hahn sum.
 
 \begin{proposition}[Positive-definite scalar extension]\label{ihs:hh:prop:inner}
-Formula \eqref{ihs:hh:eq:inner} defines a positive-definite Hermitian form.
-Its norm $\norm{x}=\sqrt{\ip{x}{x}}$, which exists in $\Fld$ because
-$\Gamma$ is divisible, satisfies the Cauchy--Schwarz and triangle
-inequalities, and
+For any ordered abelian group $\Gamma$, formula
+\eqref{ihs:hh:eq:inner} defines a positive-definite Hermitian form.
+Its norm $\norm{x}=\sqrt{\ip{x}{x}}$ exists in $\Fld$, satisfies the
+Cauchy--Schwarz and triangle inequalities, and
 \begin{equation}\label{ihs:hh:eq:normvaluation}
  v(\ip{x}{x})=2v(x),\qquad v(\norm{x})=v(x)\quad(x\ne0).
 \end{equation}
@@ -808,7 +812,21 @@ $\norm{x}=t^\delta(\norm{u}_H+\text{positive-order terms})$.
 \Cref{ihs:lem:support}(i) gives well-definedness and sesquilinearity. The
 coefficient at $2\delta$, where $\delta=v(x)$, is exactly
 $\norm{x_\delta}_H^2>0$; all other contributions have larger exponent. This
-proves positivity and the valuation statements. Completing a square, using
+proves positivity. For $x\ne0$ write
+\[
+ \ip{x}{x}=\norm{x_\delta}_H^2 t^{2\delta}(1+u),
+ \qquad u=0\ \text{or}\ v(u)>0.
+\]
+The binomial root of \cref{ihs:cor:binomial} gives
+\[
+ \norm{x}=\norm{x_\delta}_H t^\delta
+       \sum_{n\ge0}\binom{1/2}{n}u^n.
+\]
+This is a positive square root in $\Fld$ for every $\Gamma$; set
+$\norm0=0$. Its leading term proves both valuation assertions.
+The same argument for $H=\C$ defines the scalar modulus
+$\abs z=\sqrt{z\bar z}$ without divisibility. Completing a square for
+$y\ne0$ (the case $y=0$ is immediate), using
 $\ip{x-ay}{x-ay}\ge0$ with $a=\ip{x}{y}/\ip{y}{y}$, gives
 $\abs{\ip{x}{y}}^2\le\ip{x}{x}\ip{y}{y}$. The usual expansion of
 $\norm{x+y}^2$, followed by this inequality, gives the triangle inequality.
@@ -1854,8 +1872,10 @@ field $\Fld$ need not be real closed. The only roots used in the main
 construction are roots of units with residue $1$, obtained by binomial Hahn
 series through \cref{ihs:cor:binomial}. In particular no analogue of
 $\norm{x}=\sqrt{\ip{x}{x}}$ is introduced here; the norm of
-\cref{ihs:hh:prop:inner} is a Part I object and requires divisibility of
-$\Gamma$.
+\cref{ihs:hh:prop:inner} is a Part I object, but its construction does
+not require divisibility. The even-leading-exponent argument also supplies
+a square root of the squared length in Part II; we simply do not use a norm
+in this part's algebraic construction.
 \end{remark}
 
 \begin{lemma}[Strong sums are respected]\label{ihs:rf:lem:strongaction}
@@ -3176,7 +3196,7 @@ comparisons of sums.
 \toprule
 Result & Inputs & Independent restriction\\
 \midrule
-Positive inner product & Finite Hahn convolution; positive square roots & Divisible value group\\
+Positive inner product and norm & Finite Hahn convolution; even leading exponent; binomial root & No divisibility needed\\
 Automatic adjoint structure & Ordinary closed graph; Baire; Hahn support & Everywhere-defined adjoints\\
 Defect splitting & Injective leading term; Neumann support lemma & No topology or commutation needed\\
 Normal spectral formula & Defect splitting; ordinary normal spectral theorem & Constant normal operator\\

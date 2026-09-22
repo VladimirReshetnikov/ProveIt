@@ -255,7 +255,7 @@ The bilateral family
  \Theta_q(u)=\sum_{n\in\Z}(-1)^nq^{n(n-1)/2}u^n\label{tate:eq:theta}
 \end{equation}
 is strongly Hahn-summable if and only if $u\in U_q$.
-For $u\notin q^\Z$, each of the two bilateral families defining
+For $u\in K^\times\setminus q^\Z$, each of the two bilateral families defining
 \begin{align}
  X_q(u)&=\sum_{n\in\Z}\frac{q^nu}{(1-q^nu)^2}-2s_1(q),\label{tate:eq:X}\\
  Y_q(u)&=\sum_{n\in\Z}\frac{(q^nu)^2}{(1-q^nu)^3}+s_1(q)\label{tate:eq:Y}
@@ -811,7 +811,7 @@ $g(u)$ geometrically in $u$. They are finite rational operations, defined
 unless $u=1$. Their denominators may be arbitrarily small.
 
 \begin{theorem}[Coordinate domain and support certificate]\label{tate:thm:coordinates}
-For $u\notin q^\Z$, the families in \eqref{tate:eq:X} and \eqref{tate:eq:Y} are
+For $u\in K^\times\setminus q^\Z$, the families in \eqref{tate:eq:X} and \eqref{tate:eq:Y} are
 strongly summable exactly when $u\in U_q$.
 For $0\le v(u)<\alpha$ and $u\ne1$, let
 \begin{equation}
@@ -825,6 +825,12 @@ Then
 \end{equation}
 The bilateral and positive-tail formulas agree.
 \end{theorem}
+
+The restriction $u\ne0$ is necessary for this exact-domain assertion.
+At $u=0$ every term of each bilateral coordinate family is zero, so both
+families are strongly summable, although $0\notin U_q$. This does not
+extend the multiplicative uniformization domain, and the theta family,
+which contains negative powers of $u$, is not defined there.
 
 \begin{proof}
 The series $q^nu=q^{n-1}(qu)$ and $q^n/u=q^{n-1}(q/u)$ have positive
@@ -1865,7 +1871,7 @@ kernel assertion.
 Let $k$ be a field of characteristic zero, $\Gamma$ a set-sized ordered
 abelian group, $\KK=k((t^\Gamma))$, and $q\in\KK$ with $v(q)=\alpha>0$.
 The theta family \eqref{tate:eq:theta} is strongly summable exactly for
-$u\in U_q$; for $u\notin q^\Z$ each of the two bilateral coordinate
+$u\in U_q$; for $u\in\KK^\times\setminus q^\Z$ each of the two bilateral coordinate
 families is strongly summable exactly for $u\in U_q$; and $\Phi_q$ is a
 surjective group homomorphism $U_q\to E_q(\KK)$ with kernel $q^\Z$, so
 \[

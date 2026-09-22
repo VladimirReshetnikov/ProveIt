@@ -52,6 +52,12 @@ single operator. No theorem of Part I is used in Part II or conversely.
 
 ## What Part I claims
 
+Part I retains divisibility as a standing convention. Its norm itself needs
+no divisibility: a nonzero squared norm has leading exponent `2δ` and
+positive leading coefficient, so its square root is a scalar multiple of
+`t^δ` times a near-one binomial root. Proposition 5.1 proves this for every
+ordered value group; the later Part I hypotheses are unchanged.
+
 For `K = C((t^Γ))`, `Γ` divisible, and `𝓗 = H((t^Γ))` with the
 coefficientwise-convolution inner product:
 
