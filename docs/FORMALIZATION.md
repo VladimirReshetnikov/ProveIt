@@ -677,123 +677,123 @@ Source: [surcomplex/analysis/article.tex](surcomplex/analysis/article.tex).
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Proposition | `a:prop:triangle` (line 186) | Modulus identities over an ordered field |
-| Lemma | `a:lem:valbound` (line 291) | Crude valuation bound |
-| Proposition | `a:prop:fragment` (line 358) | Containment of set-sized data |
-| Lemma | `a:lem:neumann` (line 682) | Neumann support lemma |
-| Corollary | `a:cor:complexsub` (line 723) | No growth condition |
-| Theorem | `a:thm:discrete` (line 832) | Set-sized convergence collapses, with a uniform radius |
-| Proposition | `a:prop:clopen` (line 876) | Clopen infinitesimal cosets |
-| Corollary | `a:cor:nopath` (line 895) | No nonconstant continuous paths |
-| Proposition | `b:inclusions` (line 1048) | The inclusions, and what witnesses them |
-| Proposition | `b:fivefailures` (line 1118) | Five classical statements fail in the germ-analytic class |
-| Proposition | `b:noremoval` (line 1193) | No unrestricted removability theorem |
-| Proposition | `b:twistwitness` (line 1222) | The twisted-exponential witness |
-| Theorem | `b:nogo` (line 1268) | Contour no-go |
-| Corollary | `b:nogo-fundamental` (line 1298) | The fundamental theorem cannot be widened |
-| Corollary | `b:log-not-coherent` (line 1307) | $\mathcal L$ is not a coherent primitive of $1/z$ |
-| Corollary | `b:primitive-uniqueness-scope` (line 1320) | Uniqueness of primitives is a coherent statement |
-| Lemma | `b:blocks` (line 1391) | Separated degree blocks |
-| Theorem | `b:realization` (line 1461) | Realization of every formal series |
-| Proposition | `b:remainder` (line 1501) | Uniform Taylor remainder |
-| Corollary | `b:nogrowth` (line 1527) | No growth condition |
-| Proposition | `b:globalseries` (line 1544) | Everywhere-summable means polynomial |
-| Theorem | `b:germalgebra` (line 1574) | {The germ algebra is $\K[[X]]$} |
-| Corollary | `b:isolated` (line 1638) | Isolated zeros of a germ |
-| Theorem | `b:derivation-obstruction` (line 1681) | Derivation obstruction |
-| Theorem | `b:CRgerm` (line 1733) | Cauchy--Riemann criterion for germs |
-| Theorem | `b:harmonicgerm` (line 1768) | Harmonic conjugate germs |
-| Theorem | `b:inverse` (line 1807) | Local inverse and implicit function theorems for germs |
-| Theorem | `b:ramification` (line 1845) | Finite ramification normal form |
-| Corollary | `b:localopen` (line 1875) | Local openness and no local modulus maximum |
-| Corollary | `b:localidentity` (line 1916) | Local identity and maximum-modulus principles |
-| Proposition | `b:formalprimitive` (line 1968) | The only local primitive obstruction |
-| Theorem | `b:reschange` (line 1985) | Change of variable, with the ramification factor |
-| Corollary | `b:localargument` (line 2007) | Local argument principle |
-| Proposition | `b:formalres` (line 2016) | Formal residue facts and removability |
-| Theorem | `b:lagrange` (line 2051) | Lagrange--B\"urmann inversion |
-| Theorem | `c:p4:eval` (line 2262) | Faithful coherent evaluation |
-| Corollary | `c:p4:shadow` (line 2316) | Leading coefficients control zero shadows |
-| Theorem | `c:p4:monadtaylor` (line 2327) | Exact monad-wide Taylor expansion |
-| Theorem | `c:p4:derivbridge` (line 2356) | The section derivative is the fine derivative |
-| Proposition | `c:p4:prop-units` (line 2406) | Units |
-| Proposition | `c:p4:prop-calculus` (line 2428) | Infinitesimal functional calculus |
-| Theorem | `c:p4:composition` (line 2455) | Admissible composition |
-| Proposition | `c:p4:chartchange` (line 2499) | Chart-change criterion |
-| Theorem | `c:p4:identity` (line 2545) | Identity theorem for coherent sections |
-| Theorem | `c:p4:gluing` (line 2611) | Gluing over the ordinary base |
-| Theorem | `c:p4:lift` (line 2659) | Functoriality of the lift |
-| Proposition | `c:p4:liftzeros` (line 2687) | A lift creates no displaced zeros |
-| Theorem | `c:p4:bridge` (line 2731) | Scale embedding of arbitrary formal series |
-| Proposition | `c:p4:obstruction` (line 2766) | An obstruction in the original chart |
-| Proposition | `c:p5:calculus` (line 2844) | Elementary calculus of the functional |
-| Lemma | `c:p5:positivity` (line 2902) | Positivity of the coefficientwise integral |
-| Theorem | `c:p5:ML` (line 2927) | Surcomplex ML inequality |
-| Theorem | `c:p5:cauchy` (line 2992) | Cauchy's theorem and integral formula |
-| Corollary | `c:p5:cauchyest` (line 3046) | Cauchy estimates from a pointwise surreal bound |
-| Corollary | `c:p5:scaledCauchy` (line 3070) | Cauchy estimates in an affine chart |
-| Lemma | `c:p5:csmajorant` (line 3102) | Cauchy--Schwarz majorant lemma |
-| Proposition | `c:p5:majorant` (line 3118) | Coefficientwise Cauchy estimate |
-| Theorem | `c:p5:morera` (line 3161) | Coefficientwise Morera |
-| Theorem | `c:p5:primitive` (line 3198) | Coherent primitives |
-| Lemma | `d:lem:ordinarydivision` (line 3353) | Ordinary division, extended coefficientwise |
-| Theorem | `d:thm:preparation` (line 3394) | Hahn--Weierstrass preparation, global form |
-| Corollary | `d:cor:localprep` (line 3519) | Local preparation at a single zero |
-| Theorem | `d:thm:division` (line 3557) | Hahn--Weierstrass division |
-| Lemma | `d:lem:smallroots` (line 3595) | All corrections are infinitesimal |
-| Theorem | `d:thm:zerocluster` (line 3622) | Exact zero clustering; specialization of the zero divisor |
-| Corollary | `d:cor:displacement` (line 3696) | Simple-root lifting and its displacement |
-| Theorem | `d:thm:rouchevaluation` (line 3745) | Valuation Rouch\'e: fibrewise stability |
-| Theorem | `d:thm:rouchemargin` (line 3762) | Ordinary-margin Rouch\'e: stability of the total |
-| Corollary | `d:cor:rouchereal` (line 3794) | Real-margin Rouch\'e: a surcomplex-valued hypothesis |
-| Theorem | `d:thm:moments` (line 3852) | Contour moments of a zero cluster |
-| Theorem | `d:thm:Hresidue` (line 4035) | Cluster residue theorem on $\Mc(U)$ |
-| Proposition | `d:prop:quotientinM` (line 4094) | Quotients of coherent families lie in $\Mc(U)$ |
-| Theorem | `d:thm:bridge1` (line 4124) | Residue-cluster theorem |
-| Theorem | `d:thm:residuequotient` (line 4195) | Residue theorem for coherent quotients, global form |
-| Theorem | `d:thm:bridge2` (line 4234) | Uniformly bounded pole order |
-| Theorem | `d:thm:weightedarg` (line 4311) | Exact weighted argument principle |
-| Corollary | `d:cor:zerosminuspoles` (line 4371) | Zeros minus poles |
-| Theorem | `d:thm:deformation` (line 4405) | Deformation invariance under admissible infinitesimal deformations |
-| Theorem | `d:thm:rationalresidue` (line 4461) | Global rational residue theorem |
-| Lemma | `e:lem-normalize` (line 4560) | Infinitesimal rescaling; monomial radius |
-| Theorem | `e:thm-openmapping` (line 4615) | Local finite degree and the open mapping theorem |
-| Corollary | `e:cor-maxmod` (line 4644) | Strong local maximum modulus |
-| Lemma | `e:lem-reversion` (line 4683) | Hahn reversion |
-| Theorem | `e:thm-localinverse` (line 4716) | Coherent local inverse |
-| Proposition | `e:prop-autobounded` (line 4750) | Automatic surreal boundedness |
-| Theorem | `e:thm-realliouville` (line 4782) | Real-bounded macroscopically entire functions |
-| Theorem | `e:thm-coeffliouville` (line 4825) | Coefficientwise growth and polynomial degree |
-| Theorem | `e:thm-removable` (line 4883) | Coefficientwise removal is necessary and sufficient |
-| Theorem | `e:thm-schwarzpick` (line 4938) | Schwarz--Pick for canonical lifts |
-| Corollary | `e:cor-schwarz` (line 4986) | Schwarz lemma for canonical lifts |
-| Corollary | `e:cor-spstability` (line 5001) | Stability away from the equality case |
-| Theorem | `e:thm-biholo` (line 5048) | Lifting of infinitesimally deformed biholomorphisms |
-| Corollary | `e:cor-liftbiholo` (line 5085) | Lifted conformal equivalence |
-| Corollary | `e:cor-riemannmap` (line 5091) | Standard-halo Riemann mapping theorem |
-| Theorem | `e:thm-montel` (line 5126) | Countable-support Montel theorem |
-| Theorem | `e:thm-harmonic` (line 5188) | Coefficientwise harmonic conjugates |
-| Theorem | `e:thm-poisson` (line 5214) | Poisson's formula and a coherent Dirichlet problem |
-| Theorem | `e:thm-reflection` (line 5257) | Coherent Schwarz reflection |
-| Proposition | `e:prop-infexp` (line 5309) | Infinitesimal exponential and logarithm |
-| Proposition | `e:prop-polar` (line 5342) | The finite exponential and the polar form |
-| Theorem | `e:thm-exp` (line 5405) | Properties of the canonical exponential |
-| Theorem | `e:thm-twisted` (line 5492) | The twisted global exponentials |
-| Corollary | `e:cor-twistwitness` (line 5548) | A structured unit-modulus witness |
-| Theorem | `e:thm-periodobstruction` (line 5570) | The period obstruction |
-| Theorem | `e:thm-globallog` (line 5623) | A logarithm on the whole punctured class plane |
-| Corollary | `e:cor-lognotcoherent` (line 5667) | $\mathcal L$ is not a coherent primitive of $1/z$ |
-| Theorem | `e:thm-principallog` (line 5716) | Principal logarithm on the cut plane |
-| Proposition | `e:prop-logdiscrepancy` (line 5742) | $\mathcal L$ and $\Log$ are different functions |
-| Theorem | `e:thm-logcharts` (line 5786) | Logarithm charts on multiplicative monads |
-| Theorem | `e:thm-picard` (line 5822) | Every nonzero value at every surreal scale |
-| Theorem | `f:thm-affine` (line 5941) | Affine transport of the coherent theory |
-| Proposition | `f:prop-chartchange` (line 6034) | Chart-change criterion |
-| Corollary | `f:cor-scaledCauchy` (line 6088) | Cauchy estimates at an arbitrary coherent scale |
-| Theorem | `f:thm-rigidity` (line 6160) | All-scale polynomial rigidity |
-| Corollary | `f:cor-globalclassical` (line 6223) | Global classical consequences in the rigid category |
-| Lemma | `f:lem-polefree` (line 6285) | A pole-free coherent fraction is coherent holomorphic |
-| Theorem | `f:thm-rationalrigidity` (line 6339) | All-scale rational rigidity |
+| Proposition | `a:prop:triangle` (line 188) | Modulus identities over an ordered field |
+| Lemma | `a:lem:valbound` (line 293) | Crude valuation bound |
+| Proposition | `a:prop:fragment` (line 362) | Containment of set-sized data |
+| Lemma | `a:lem:neumann` (line 693) | Neumann support lemma |
+| Corollary | `a:cor:complexsub` (line 738) | No growth condition |
+| Theorem | `a:thm:discrete` (line 847) | Set-sized convergence collapses, with a uniform radius |
+| Proposition | `a:prop:clopen` (line 891) | Clopen infinitesimal cosets |
+| Corollary | `a:cor:nopath` (line 910) | No nonconstant continuous paths |
+| Proposition | `b:inclusions` (line 1069) | The inclusions, and what witnesses them |
+| Proposition | `b:fivefailures` (line 1145) | Five classical statements fail in the germ-analytic class |
+| Proposition | `b:noremoval` (line 1220) | No unrestricted removability theorem |
+| Proposition | `b:twistwitness` (line 1249) | The twisted-exponential witness |
+| Theorem | `b:nogo` (line 1295) | Contour no-go |
+| Corollary | `b:nogo-fundamental` (line 1325) | The fundamental theorem cannot be widened |
+| Corollary | `b:log-not-coherent` (line 1334) | $\mathcal L$ is not a coherent primitive of $1/z$ |
+| Corollary | `b:primitive-uniqueness-scope` (line 1347) | Uniqueness of primitives is a coherent statement |
+| Lemma | `b:blocks` (line 1417) | Separated degree blocks |
+| Theorem | `b:realization` (line 1487) | Realization of every formal series |
+| Proposition | `b:remainder` (line 1546) | Uniform Taylor remainder |
+| Corollary | `b:nogrowth` (line 1587) | No growth condition |
+| Proposition | `b:globalseries` (line 1604) | Everywhere-summable means polynomial |
+| Theorem | `b:germalgebra` (line 1636) | {The germ algebra is $\K[[X]]$} |
+| Corollary | `b:isolated` (line 1700) | Isolated zeros of a germ |
+| Theorem | `b:derivation-obstruction` (line 1744) | Derivation obstruction |
+| Theorem | `b:CRgerm` (line 1795) | Cauchy--Riemann criterion for germs |
+| Theorem | `b:harmonicgerm` (line 1830) | Harmonic conjugate germs |
+| Theorem | `b:inverse` (line 1869) | Local inverse and implicit function theorems for germs |
+| Theorem | `b:ramification` (line 1907) | Finite ramification normal form |
+| Corollary | `b:localopen` (line 1937) | Local openness and no local modulus maximum |
+| Corollary | `b:localidentity` (line 1979) | Local identity and maximum-modulus principles |
+| Proposition | `b:formalprimitive` (line 2032) | The only local primitive obstruction |
+| Theorem | `b:reschange` (line 2049) | Change of variable, with the ramification factor |
+| Corollary | `b:localargument` (line 2071) | Local argument principle |
+| Proposition | `b:formalres` (line 2080) | Formal residue facts and removability |
+| Theorem | `b:lagrange` (line 2115) | Lagrange--B\"urmann inversion |
+| Theorem | `c:p4:eval` (line 2330) | Faithful coherent evaluation |
+| Corollary | `c:p4:shadow` (line 2386) | Leading coefficients control zero shadows |
+| Theorem | `c:p4:monadtaylor` (line 2397) | Exact monad-wide Taylor expansion |
+| Theorem | `c:p4:derivbridge` (line 2426) | The section derivative is the fine derivative |
+| Proposition | `c:p4:prop-units` (line 2476) | Units |
+| Proposition | `c:p4:prop-calculus` (line 2498) | Infinitesimal functional calculus |
+| Theorem | `c:p4:composition` (line 2525) | Admissible composition |
+| Proposition | `c:p4:chartchange` (line 2569) | Chart-change criterion |
+| Theorem | `c:p4:identity` (line 2616) | Identity theorem for coherent sections |
+| Theorem | `c:p4:gluing` (line 2676) | Gluing over the ordinary base |
+| Theorem | `c:p4:lift` (line 2724) | Functoriality of the lift |
+| Proposition | `c:p4:liftzeros` (line 2754) | A lift creates no displaced zeros |
+| Theorem | `c:p4:bridge` (line 2801) | Scale embedding of arbitrary formal series |
+| Proposition | `c:p4:obstruction` (line 2836) | An obstruction in the original chart |
+| Proposition | `c:p5:calculus` (line 2914) | Elementary calculus of the functional |
+| Lemma | `c:p5:positivity` (line 2972) | Positivity of the coefficientwise integral |
+| Theorem | `c:p5:ML` (line 2997) | Surcomplex ML inequality |
+| Theorem | `c:p5:cauchy` (line 3062) | Cauchy's theorem and integral formula |
+| Corollary | `c:p5:cauchyest` (line 3116) | Cauchy estimates from a pointwise surreal bound |
+| Corollary | `c:p5:scaledCauchy` (line 3140) | Cauchy estimates in an affine chart |
+| Lemma | `c:p5:csmajorant` (line 3172) | Cauchy--Schwarz majorant lemma |
+| Proposition | `c:p5:majorant` (line 3188) | Coefficientwise Cauchy estimate |
+| Theorem | `c:p5:morera` (line 3238) | Coefficientwise Morera |
+| Theorem | `c:p5:primitive` (line 3275) | Coherent primitives |
+| Lemma | `d:lem:ordinarydivision` (line 3432) | Ordinary division, extended coefficientwise |
+| Theorem | `d:thm:preparation` (line 3473) | Hahn--Weierstrass preparation, global form |
+| Corollary | `d:cor:localprep` (line 3598) | Local preparation at a single zero |
+| Theorem | `d:thm:division` (line 3636) | Hahn--Weierstrass division |
+| Lemma | `d:lem:smallroots` (line 3674) | Finite roots and infinitesimal corrections |
+| Theorem | `d:thm:zerocluster` (line 3703) | Exact zero clustering; specialization of the zero divisor |
+| Corollary | `d:cor:displacement` (line 3778) | Simple-root lifting and its displacement |
+| Theorem | `d:thm:rouchevaluation` (line 3827) | Valuation Rouch\'e: fibrewise stability |
+| Theorem | `d:thm:rouchemargin` (line 3844) | Ordinary-margin Rouch\'e: stability of the total |
+| Corollary | `d:cor:rouchereal` (line 3876) | Real-margin Rouch\'e: a surcomplex-valued hypothesis |
+| Theorem | `d:thm:moments` (line 3945) | Contour moments of a zero cluster |
+| Theorem | `d:thm:Hresidue` (line 4137) | Cluster residue theorem on $\Mc(U)$ |
+| Proposition | `d:prop:quotientinM` (line 4196) | Quotients of coherent families lie in $\Mc(U)$ |
+| Theorem | `d:thm:bridge1` (line 4226) | Residue-cluster theorem |
+| Theorem | `d:thm:residuequotient` (line 4298) | Residue theorem for coherent quotients, global form |
+| Theorem | `d:thm:bridge2` (line 4337) | Uniformly bounded pole order |
+| Theorem | `d:thm:weightedarg` (line 4417) | Exact weighted argument principle |
+| Corollary | `d:cor:zerosminuspoles` (line 4477) | Zeros minus poles |
+| Theorem | `d:thm:deformation` (line 4511) | Deformation invariance under admissible infinitesimal deformations |
+| Theorem | `d:thm:rationalresidue` (line 4567) | Global rational residue theorem |
+| Lemma | `e:lem-normalize` (line 4666) | Infinitesimal rescaling; monomial radius |
+| Theorem | `e:thm-openmapping` (line 4723) | Local finite degree and the open mapping theorem |
+| Corollary | `e:cor-maxmod` (line 4752) | Strong local maximum modulus |
+| Lemma | `e:lem-reversion` (line 4791) | Hahn reversion |
+| Theorem | `e:thm-localinverse` (line 4824) | Coherent local inverse |
+| Proposition | `e:prop-autobounded` (line 4858) | Automatic surreal boundedness |
+| Theorem | `e:thm-realliouville` (line 4890) | Real-bounded macroscopically entire functions |
+| Theorem | `e:thm-coeffliouville` (line 4933) | Coefficientwise growth and polynomial degree |
+| Theorem | `e:thm-removable` (line 4996) | Coefficientwise removal is necessary and sufficient |
+| Theorem | `e:thm-schwarzpick` (line 5051) | Schwarz--Pick for canonical lifts |
+| Corollary | `e:cor-schwarz` (line 5099) | Schwarz lemma for canonical lifts |
+| Corollary | `e:cor-spstability` (line 5114) | Stability away from the equality case |
+| Theorem | `e:thm-biholo` (line 5161) | Lifting of infinitesimally deformed biholomorphisms |
+| Corollary | `e:cor-liftbiholo` (line 5198) | Lifted conformal equivalence |
+| Corollary | `e:cor-riemannmap` (line 5204) | Standard-halo Riemann mapping theorem |
+| Theorem | `e:thm-montel` (line 5239) | Countable-support Montel theorem |
+| Theorem | `e:thm-harmonic` (line 5301) | Coefficientwise harmonic conjugates |
+| Theorem | `e:thm-poisson` (line 5327) | Poisson's formula and a coherent Dirichlet problem |
+| Theorem | `e:thm-reflection` (line 5370) | Coherent Schwarz reflection |
+| Proposition | `e:prop-infexp` (line 5422) | Infinitesimal exponential and logarithm |
+| Proposition | `e:prop-polar` (line 5455) | The finite exponential and the polar form |
+| Theorem | `e:thm-exp` (line 5518) | Properties of the canonical exponential |
+| Theorem | `e:thm-twisted` (line 5606) | The twisted global exponentials |
+| Corollary | `e:cor-twistwitness` (line 5662) | A structured unit-modulus witness |
+| Theorem | `e:thm-periodobstruction` (line 5684) | The period obstruction |
+| Theorem | `e:thm-globallog` (line 5738) | A logarithm on the whole punctured class plane |
+| Corollary | `e:cor-lognotcoherent` (line 5782) | $\mathcal L$ is not a coherent primitive of $1/z$ |
+| Theorem | `e:thm-principallog` (line 5831) | Principal logarithm on the cut plane |
+| Proposition | `e:prop-logdiscrepancy` (line 5857) | $\mathcal L$ and $\Log$ are different functions |
+| Theorem | `e:thm-logcharts` (line 5903) | Logarithm charts on multiplicative monads |
+| Theorem | `e:thm-picard` (line 5941) | Every nonzero value at every surreal scale |
+| Theorem | `f:thm-affine` (line 6070) | Affine transport of the coherent theory |
+| Proposition | `f:prop-chartchange` (line 6163) | Chart-change criterion |
+| Corollary | `f:cor-scaledCauchy` (line 6220) | Cauchy estimates at an arbitrary coherent scale |
+| Theorem | `f:thm-rigidity` (line 6292) | All-scale polynomial rigidity |
+| Corollary | `f:cor-globalclassical` (line 6355) | Global classical consequences in the rigid category |
+| Lemma | `f:lem-polefree` (line 6417) | A pole-free coherent fraction is coherent holomorphic |
+| Theorem | `f:thm-rationalrigidity` (line 6471) | All-scale rational rigidity |
 
 ### analytic-geometry
 

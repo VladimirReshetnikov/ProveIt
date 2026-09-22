@@ -204,14 +204,26 @@ holomorphic functions; include a subscript or the domain when both occur.
 
 A **coherent section** on a fixed ordinary domain, a **canonical lift** of one
 ordinary function, a **germ-analytic** function, and a merely **fine
-differentiable** function are different classes. Their separation is the
-point of `a:def:classnames` in the analysis report. “Entire” in the
+differentiable** function name distinct hypotheses. Lifts form a proper
+subclass of coherent sections, and coherent sections a proper subclass of
+germ-analytic functions. Germ analyticity implies fine differentiability;
+the analysis report does not prove strictness of that last inclusion
+(`a:def:classnames`, `b:def-classes`). “Entire” in the
 arbitrary-rank report means its stated strong evaluation condition at every
 point of one fixed Hahn field; it does not mean coherence at every scale of
 the full surreal class. In the genetic-gap report, “entire” means a genetic
 function defined at every surreal input, without asserting analytic
 holomorphy. “Uniform support” should always state the ordinary
 domain or family over which one support is required.
+
+For coherent sections on the finite plane, **ordinary-real boundedness**
+and **coefficientwise boundedness** are incomparable. The section `tZ` has
+real-bounded values but an unbounded coefficient; the constant `ω` has
+bounded coefficients but no ordinary-real value bound. A single surreal
+value bound is weaker than either. State which bound a Liouville or Cauchy
+claim uses. Likewise, injectivity of formal-series evaluation as a
+**function germ** does not imply injectivity at one fixed point: `X−h`
+evaluates to zero at `h`.
 
 ## Computability and names
 

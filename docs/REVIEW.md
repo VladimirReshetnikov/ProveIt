@@ -33,6 +33,7 @@ No row below certifies every claim in an entire report.
 | [Global divisors](surcomplex/global-divisors/) | Read the main plane and compact proof chains through the cutoff comparison. Corrected complementary divisor support, fixed-field root-splitting scope and trivial-group reduction. Proved the coordinate-chart transfer of PID stalks and `Pic = Pic_lf`, with a second independent check. Made the genus-zero exception and workspace quantifiers explicit, proving detection by all positive cutoffs in a fixed nonzero workspace; corrected analytic-operation and source-comparison summaries. |
 | [Nonabelian support](surcomplex/nonabelian-support/) | Read the full main matrix Cousin and monodromy chains. Proved that well-ordering of full raw transition support is sufficient but not necessary, while raw singular support fails both directions. Added a left-gauge counterexample; corrected matrix exp/log domains, support-condition invariance, classification scope and unsupported computation claims. The main support correction received a second review. |
 | [Contours and Stokes](surcomplex/contours-and-stokes/) | Checked the revised support, smooth pullback, topology, microscopic-cycle, rational-comparison and sampling arguments. Replaced the false cofinality shortcut by finite-word incidence; corrected the word-embedding inequality and diagonal-substitution comparison. Supplied the properness and identity-theorem steps in the ramified Leray construction and expanded target composition about the ordinary map. Distinguished coefficientwise recovery from valuation limits and standard-part continuity from fine continuity. |
+| [Surcomplex analysis](surcomplex/analysis/) | Read the main local-to-global arguments. Corrected fixed-point evaluation to faithfulness of function germs, proved the uniform Taylor bound with summable absolute values, and separated fine class statements from fixed-workspace assertions. Repaired root and reciprocal-support hypotheses, boundedness and function-class comparisons, and the bare-inequality Rouché counterexample. Extended the stated reciprocal-exponential value distribution to every explicit twist using a surviving cofinal family of periods; corrected kernel and branch comparisons. |
 
 Each correction was reviewed against its local definitions and downstream uses
 within the stated scope. Changed PDFs were rebuilt and affected pages inspected.
@@ -80,6 +81,13 @@ four unchanged finite suites passed 317, 244, 167 and 632 exact checks on
 temporary copies; the copied programs match the maintained historical files.
 The revised passages were inspected in the 87-page PDF.
 
+The analysis PDF rebuilt in three passes with no errors, unresolved references,
+package warnings or overfull boxes. Eight underfull-box notices remain; the
+baseline had six overfull boxes and six PDF-string warnings, now removed.
+All nine unchanged finite programs passed on temporary copies, whose source
+hashes match the maintained programs. The revised theorem passages and
+catalogue entry were inspected.
+
 ## Collection-wide work
 
 The [reader map](README.md), [catalogue](manifest.tex) and statement index
@@ -111,14 +119,9 @@ the report versions and suites then reviewed.
 
 The reports above have received targeted corrections or a main-text reading,
 as recorded in each row. Uninspected portions, imported results, source-claim
-reconciliation and any formalization remain separate obligations. The other
-two main reports have been mapped for notation and navigation but have not
-received a full mathematical review in this pass:
-
-- Surcomplex analysis; differential equations.
-
-These two reviews are now in progress. Their unfinished edits are not
-covered by the completed-review rows above.
+reconciliation and any formalization remain separate obligations. The
+differential-equations report has unfinished edits from its review. These are
+not covered by the completed-review rows above.
 
 Continue with elementary statements and their dependencies before broad
 classification theorems. For each portion, check definitions and size/domain
