@@ -105,6 +105,13 @@ minimum, with degree and trailing degree giving their extrema.
 For explicitly split polynomials, the initial factorization counts roots in
 closed balls, open balls, shells and individual residue directions, preserving
 multiplicities even when their residues coincide.
+The resulting Newton profile counts roots at each finite valuation and identifies
+its finite set of breakpoints. Perturbations of strictly higher weighted
+valuation preserve the entire initial polynomial and these local root counts,
+even when the polynomial degree changes. In residue characteristic zero,
+differentiating through the initial polynomial's degree lowers the weighted
+value by the expected multiple of the scale and differentiates the initial
+polynomial exactly.
 Coefficientwise real and imaginary parts identify Hahn series over `R[i]`
 with the quadratic extension of Hahn series over `R`. This identification
 also uses Mathlib's native real and complex coefficients; conjugation fixes
@@ -114,7 +121,11 @@ The independent foundational track now constructs ordinal-length sign
 sequences with the numerical first-disagreement order, well-founded prefix
 simplicity and an ordinal order embedding. Birthday-bounded fragments are
 small, while the full carrier is not small at the same universe level.
-Canonical truncation options reconstruct a sequence as their simplest
-separator. General small-cut filling, field arithmetic and the normal-form
-bridge to Hahn series remain open. A successful build proves only the imported
-Lean statements, not coverage of all the source documents.
+Every small separated cut now has a canonical simplest separator with a proved
+birthday bound. The cut operation reconstructs canonical sign options, respects
+reindexing and satisfies Conway's negation rule. It gives upper, lower and
+positive lower bounds for small families. Small sets with no greatest member
+have no supremum; embedded finite ordinals give a concrete bounded example.
+Field arithmetic and the normal-form bridge to Hahn series remain open. A
+successful build proves only the imported Lean statements, not coverage of all
+the source documents.

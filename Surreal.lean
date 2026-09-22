@@ -27,8 +27,14 @@ import Surreal.Algebra.PolynomialRootBounds
 import Surreal.Algebra.PolynomialTraceGram
 import Surreal.Algebra.ProjectiveCircle
 import Surreal.Foundations.SizeObstructions
+import Surreal.Foundations.SmallCutData
 import Surreal.Foundations.SignSequence
 import Surreal.Foundations.SignSequenceOptions
+import Surreal.Foundations.SignSequenceComparison
+import Surreal.Foundations.SignSequenceSimplicity
+import Surreal.Foundations.SignSequenceCut
+import Surreal.Foundations.SignSequenceCutOperation
+import Surreal.Foundations.SignSequenceBounds
 import Surreal.HahnSeries.Binomial
 import Surreal.HahnSeries.BinomialOrder
 import Surreal.HahnSeries.BinomialRoots
@@ -43,6 +49,9 @@ import Surreal.HahnSeries.Neumann
 import Surreal.HahnSeries.PolynomialReduction
 import Surreal.HahnSeries.PolynomialGaussValuation
 import Surreal.HahnSeries.PolynomialInitialRoots
+import Surreal.HahnSeries.PolynomialInitialDerivative
+import Surreal.HahnSeries.PolynomialNewtonProfile
+import Surreal.HahnSeries.PolynomialRouche
 import Surreal.HahnSeries.PolynomialValuation
 import Surreal.HahnSeries.Regroup
 import Surreal.HahnSeries.StandardPart
