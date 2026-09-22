@@ -1,0 +1,13 @@
+.PHONY: all pdf check clean
+PYTHON ?= python
+
+all: check pdf
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+
+check:
+	$(PYTHON) code/verify.py --output data/verification.json
+
+clean:
+	latexmk -c article.tex

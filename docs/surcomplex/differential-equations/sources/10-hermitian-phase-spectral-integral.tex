@@ -1,0 +1,1862 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,aliascnt}
+\usepackage{microtype,booktabs,tabularx,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,fancyhdr,titlesec}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{Ink}{HTML}{21364A}
+\definecolor{Accent}{HTML}{45605C}
+\titleformat{\section}{\Large\bfseries\color{Ink}}{\thesection}{.65em}{}
+\titleformat{\subsection}{\large\bfseries\color{Accent}}{\thesubsection}{.65em}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Surcomplex differential systems}
+\fancyhead[R]{\small Spectra, phases, and positive metrics}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{.25em}
+\setlength{\parindent}{1.1em}
+\setlist{itemsep=.15em,topsep=.35em,leftmargin=2em}
+\setcounter{tocdepth}{2}
+\emergencystretch=2em
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\crefname{theorem}{Theorem}{Theorems}
+\crefname{section}{Section}{Sections}
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\crefname{proposition}{Proposition}{Propositions}
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\crefname{lemma}{Lemma}{Lemmas}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\crefname{corollary}{Corollary}{Corollarys}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\crefname{definition}{Definition}{Definitions}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\crefname{example}{Example}{Examples}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\crefname{remark}{Remark}{Remarks}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\K}{\mathbb K}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\T}{\mathbb T}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\mm}{\mathfrak m}
+\newcommand{\PP}{\mathcal P}
+\newcommand{\II}{\mathcal I}
+\newcommand{\st}{\operatorname{st}}
+\newcommand{\pp}{\operatorname{pp}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\SL}{\operatorname{SL}}
+\newcommand{\UU}{\operatorname U}
+\newcommand{\SO}{\operatorname{SO}}
+\newcommand{\Herm}{\operatorname{Herm}}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\Specph}{\operatorname{Ph}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\Mat}{\operatorname{Mat}}
+\newcommand{\Frac}{\operatorname{Frac}}
+\newcommand{\dlog}{\operatorname{dlog}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\repocommit}{aa846271b4dcae2c055b216126a87210292ec19b}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\hypersetup{pdftitle={A Spectral--Integral Classification of Surcomplex Unitary Differential Systems},pdfauthor={Research manuscript prepared for Vladimir Reshetnikov},pdfsubject={Berarducci--Mantova derivation, spectral phase formula, invariant metrics, Ermakov--Pinney equation}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{8mm}
+{\large\scshape Research development for the Surreal project\par}
+\vspace{12mm}
+{\Huge\bfseries\color{Ink} A Spectral--Integral\par Classification of\par Surcomplex Unitary\par Differential Systems\par}
+\vspace{8mm}
+{\Large Purely infinite phases, non-Abelian integration,\par and positive invariant metrics\par}
+\vspace{9mm}
+{\large September 21, 2026\par}
+\vspace{8mm}
+\begin{minipage}{.95\textwidth}
+\begin{abstract}
+Fix the Berarducci--Mantova derivation on the surreal field, with
+$\partial\omega=1$, and extend it to $\K=\No[i]$. Let
+$\II=\partial\OO$ be the real coefficients with a finite primitive, and let
+$\Psi(b)$ be the purely infinite part of any primitive of $b$.
+We prove that, for an arbitrary finite Hermitian matrix $H$ over $\K$,
+the complete differential phase spectrum of $\partial y=iHy$ is
+\[
+ \bigl\{\Psi(\lambda_1(H)),\ldots,\Psi(\lambda_n(H))\bigr\},
+\]
+where the $\lambda_j(H)$ are its ordinary algebraic eigenvalues in $\No$.
+The formula needs neither commuting coefficients nor a spectral gap.
+It yields an exact unitary normal form, a sharp finite-primitive
+perturbation principle, and a normalized noncommutative integration theorem.
+
+The proof combines established differential-field existence theorems with
+an explicit phase classification and an order-theoretic estimate on bounded
+gauges. We also classify all positive horizontal metrics of arbitrary
+surcomplex systems, derive the real rotation-block form, and obtain a
+positive Ermakov--Pinney existence/uniqueness dichotomy. An exact Hahn
+construction for the oscillatory Airy equation illustrates the nonlinear
+consequences. Further sections describe phase projectors, rational and
+polynomial first integrals, and finite Picard--Vessiot tori.
+\end{abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{.95\textwidth}\small
+\textbf{Research status.} The proposed new contribution is the precise
+spectral--integral theorem and its matrix consequences, not the construction
+of the surreal derivation or the general universal exponential extension.
+No claim to settle a named published open problem is made. Novelty is based
+on a targeted literature search, not an exhaustive priority determination.
+Proofs are supplied relative to explicitly stated published inputs; they
+have not been independently refereed or proof-assistant checked.
+\end{minipage}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\tableofcontents
+\clearpage\pagenumbering{arabic}
+
+\section{The question, the contribution, and prior coverage}\label{sec:intro}
+
+\subsection{From missing oscillations to a matrix classification}
+The surcomplex field is algebraically closed, but algebraic closedness does
+not make it a field containing every differential exponential. For its
+intrinsic Berarducci--Mantova derivation, $\partial y=iy$ has no nonzero
+solution. The obstruction is not the magnitude of the coefficient: even
+$i/\omega$ is obstructed, because its imaginary part has the infinite
+primitive $\log\omega$. Conversely, an infinitesimal with a finite primitive
+does permit a unit-modulus solution.
+
+The repository already develops this rank-one obstruction and several
+associated oscillatory extensions. The next question is substantially
+stronger: how can one recognize the missing oscillations of a \emph{coupled},
+variable-coefficient matrix system? In particular, can the algebraic
+spectrum of a Hermitian coefficient matrix detect them, despite the fact
+that the matrix need not commute with its derivative or with any of its
+primitives?
+
+The answer proved here is yes, after passing from a real coefficient to the
+purely infinite part of its primitive. This is not a claim that pointwise
+matrix diagonalization commutes with differentiation. It does not. The
+additional connection term is present, but its entries have finite
+primitives, and that is precisely the amount of information the phase
+invariant discards.
+
+\subsection{The main statement in one display}
+Write $F=\No$, $\K=F[i]$, and let $\lambda_1\le\cdots\le\lambda_n$ be the
+algebraic eigenvalues of $H=H^*\in\Mat_n(\K)$. Then there is a unitary
+$U\in\UU_n(\K)$ such that
+\begin{equation}\label{eq:main-intro}
+ U^*(iH)U-U^*\partial U
+   =i\diag\bigl(\partial p_1,\ldots,\partial p_n\bigr),
+ \qquad p_j=\Psi(\lambda_j).
+\end{equation}
+Here $\Psi(b)=\pp(B)$ for any $B\in F$ with $\partial B=b$. The multiset
+$\{p_j\}$ is a complete invariant for differential unitary equivalence.
+The $p_j$ are \emph{purely infinite surreal numbers}, not finite angles;
+when $p_j\ne0$, the missing symbol $e^{ip_j}$ must be adjoined in a
+differential extension rather than evaluated in $\K$.
+
+Three consequences distinguish \eqref{eq:main-intro} from an asymptotic
+approximation. First, perturbing every entry of $H$ by a coefficient with a
+finite primitive preserves its entire differential unitary class, with no
+gap assumption. Second, the dimension over $\C$ of the actual solution
+space in $\K^n$ equals the number of eigenvalues whose primitives are
+finite. Third, the matrix equation $\partial U=AU$ has a unique unitary
+solution with $\st(U)=I$ whenever $A^*=-A$ and every entry of $A$ has a
+finite primitive.
+
+\subsection{What was inspected, and what is not claimed as new}
+The repository was inspected at the tree revision
+\begin{center}\small\texttt{\repocommit}.\end{center}
+The documentation catalogue, the differential-equations report inventory,
+and the opening portions of the spectral-theory article were the main
+comparison sources~\cite{RepoMap,RepoDE,RepoSpectral}. This is a targeted
+coverage audit, not a certification of every archived manuscript. The
+catalogue identifies eighteen research packages and labels them as
+AI-assisted drafts. The differential-equations inventory expressly leaves
+general nontriangular systems and higher-rank differential modules outside
+its classification. Its rank-one phase criterion, finite-primitive ideal,
+and diagonal Galois tori are prior coverage, not discoveries of this paper.
+
+The external mathematical inputs are equally important. Berarducci and
+Mantova constructed the derivation~\cite{BM}. Aschenbrenner, van den Dries,
+and van der Hoeven proved the elementary embedding of transseries into the
+surreal differential field~\cite{ADHSur}. Their later work supplies the
+linear splitting and surjectivity facts used below; it also develops
+universal exponential extensions and abstract differential spectra
+\cite{ADHNorm}. The group-algebra construction in \cref{sec:galois} is
+therefore explicitly a concrete incarnation of existing theory.
+
+The closest classical nonlinear antecedent is the Ermakov--Pinney
+formula~\cite{Pinney}. The uniqueness conclusion below is a consequence of
+the absence of oscillatory elements in the base field, rather than a new
+classical integration formula. It also has an abstract antecedent in the
+$\sigma$-map and Schwarz-closed-field structure discussed in
+\cite[Introduction, equations (0.3)--(0.6)]{ADHNorm}.
+The 2026 paper \cite{ADHSecond} develops existence and sharp uniqueness
+of amplitude--phase representations over Hardy fields. That recent
+antecedent is especially relevant to the second-order consequences here;
+the main candidate novelty is the arbitrary-dimensional Hermitian
+spectral--integral formula, not the amplitude--phase idea.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}p{.29\textwidth}L@{}}
+\toprule
+Component & Status in this article\\
+\midrule
+Surreal derivation; transfer; linear splitting and surjectivity & Published inputs, explicitly attributed.\\
+Rank-one phase obstruction; universal exponential algebra & Existing repository/literature theory, reproved or specialized as needed.\\
+Complete finite matrix phase reduction & An explicit development of consequences of those inputs, not a claim of a new general differential-algebra principle.\\
+Spectral--integral formula for Hermitian coefficients & Principal candidate new theorem; no exact prior statement located in the targeted search.\\
+Gap-free perturbation and normalized non-Abelian integration & Matrix consequences proved here; included in the candidate contribution.\\
+Horizontal metric cones; real descent; Pinney dichotomy & Detailed consequences, with the classical and abstract antecedents kept visible.\\
+\bottomrule
+\end{tabularx}
+\caption{The novelty claim is narrower than the collection of theorems proved.}
+\end{table}
+
+\subsection{Scope and reading route}
+All dimensions are ordinary finite integers. All derivatives in this paper
+are the fixed intrinsic derivation $\partial$, not derivatives of a
+class-function of a surreal variable and not a coefficientwise derivative
+with respect to an independent complex coordinate. A displayed Hahn sum
+is a support-certified formal sum, not a limit in the fine order topology
+of the full surreal field.
+
+The main proof is in \cref{sec:spectralintegral}. Its ingredients are the
+finite-primitive order ideal in \cref{sec:ideal}, the phase normal form in
+\cref{sec:normal}, and the elementary finite-dimensional spectral estimates
+in \cref{sec:hermitian}. The reader interested in the nonlinear consequence
+can then proceed directly to \cref{sec:pinney,sec:airy}.
+
+\section{The differential field and its finite-primitive ideal}\label{sec:ideal}
+
+\subsection{Foundational inputs}
+We use $F=\No$ with the Berarducci--Mantova derivation, normalized by
+$\partial\omega=1$, and $\K=F[i]$. The following are background theorems,
+not reconstructed here:
+\begin{enumerate}
+\item $F$ is real closed, $\K$ is algebraically closed, and the constant
+fields of $F$ and $\K$ are $\R$ and $\C$, respectively.
+\item $\partial:F\to F$ is onto, is compatible with the surreal real
+exponential, and commutes with summable surreal families. Thus
+$\partial\exp(f)=\exp(f)\partial f$.
+\item The $H$-field positivity rule holds:
+\[
+ f>\R\quad\Longrightarrow\quad\partial f>0.
+\]
+Here $f>\R$ means that $f$ exceeds every real constant.
+\item The differential field $F$ is elementarily equivalent to the
+transseries field $\T$, with the natural inclusion of $\T$ into $F$
+elementary in the ordered differential-field language.
+\end{enumerate}
+The derivation inputs are due to \cite{BM}; the last statement is
+\cite[Theorem 1]{ADHSur}. The extension to $\K$ is
+$\partial(a+ib)=\partial a+i\partial b$ and commutes with conjugation.
+
+Let $\OO\subset F$ be the finite elements and $\mm\subset\OO$ the
+infinitesimals. Every $f\in F$ has a unique normal-form decomposition
+\begin{equation}\label{eq:decomposition}
+ f=p+c+\varepsilon,
+ \qquad p\in\PP,\quad c\in\R,\quad\varepsilon\in\mm.
+\end{equation}
+The class $\PP$ consists of zero and those normal forms supported entirely
+on monomials greater than $1$. We call it the \emph{purely infinite part};
+$\pp(f)=p$. Every nonzero member of $\PP$ is infinite in absolute value.
+The standard part of a finite $f$ is the real coefficient $c$ in
+\eqref{eq:decomposition}. Set
+$\OO_{\C}=\OO+i\OO$ and $\mm_{\C}=\mm+i\mm$.
+
+\begin{definition}
+The \emph{finite-primitive ideal} is
+\[
+ \II:=\partial\OO=\partial\mm\subset F,
+ \qquad \II_{\C}:=\II+i\II.
+\]
+For $b\in F$, define
+\begin{equation}\label{eq:Psi}
+ \Psi(b):=\pp(B)\quad\text{where }\partial B=b.
+\end{equation}
+\end{definition}
+The equality $\partial\OO=\partial\mm$ follows by removing the standard
+part. The map $\Psi$ is independent of the primitive, since two primitives
+differ by a real constant. It is $\R$-linear and onto $\PP$, with kernel
+$\II$. These are identities of classes and class maps, with each individual
+normal-form support a set.
+
+\subsection{The estimate that makes the matrix theorem possible}
+\begin{lemma}[Convexity and bounded multiplication]\label{lem:ideal}
+The class $\II$ is a convex additive subgroup of $F$, is an $\OO$-module,
+and is contained in $\mm$. In particular,
+\[
+ a\in\II,\quad |b|\le |a|\quad\Longrightarrow\quad b\in\II,
+ \qquad \OO\II\subseteq\II.
+\]
+\end{lemma}
+\begin{proof}
+Additivity is immediate. Suppose $a=\partial f$ with $f$ finite and
+$|b|\le |a|$. Choose $g$ with $\partial g=b$. If $g$ were infinite, replace
+$g,b$ by their negatives if necessary so that $g>\R$. Choose $h=f$ or
+$h=-f$ so that $\partial h=|a|$. Then $g-h>\R$, but
+\[
+ \partial(g-h)=b-|a|\le0,
+\]
+contradicting the $H$-field rule. Therefore $g$ is finite, so $b\in\II$.
+This proves the required convexity. If $c\in\OO$, choose a positive
+integer $N$ with $|c|\le N$. Since $Na\in\II$ and
+$|ca|\le N|a|$, convexity gives $ca\in\II$.
+
+Finally, let $f$ be finite and let $r>0$ be real. If
+$|\partial f|\ge r$, choose $s\in\{1,-1\}$ with
+$s\partial f=|\partial f|$. The number $\omega-sf/r$ is positive infinite,
+whereas its derivative is $1-|\partial f|/r\le0$, another contradiction.
+Thus $|\partial f|<r$ for every positive real $r$.
+\end{proof}
+
+\begin{lemma}[Order of the phase quotient]\label{lem:phaseorder}
+The map $\Psi:F\to\PP$ preserves order. It induces an order-preserving
+$\R$-linear bijection $F/\II\to\PP$, where the quotient is the ordered
+additive quotient. Also, for $p,q\in\PP$,
+\[
+ p<q\quad\Longleftrightarrow\quad\partial p<\partial q.
+\]
+\end{lemma}
+\begin{proof}
+If $b\ge0$ and $\partial B=b$, then $B$ cannot be negative infinite:
+$-B>\R$ would imply $-\partial B>0$. Therefore $\pp(B)\ge0$, proving
+order preservation. The kernel and surjectivity statements were established
+above. If $p<q$, then $q-p>\R$, hence
+$\partial(q-p)>0$. Injectivity of $\partial$ on $\PP$ and the total order
+give the converse.
+\end{proof}
+
+\begin{remark}[Not a field quotient]
+The notation $F/\II$ in \cref{lem:phaseorder} does \emph{not} denote a
+quotient field or a quotient ring. The ideal property is only for the
+finite-element ring $\OO$. Multiplication by an infinite element need not
+preserve $\II$. The spectral theorem below takes algebraic eigenvalues
+\emph{before} passing to their additive classes modulo $\II$.
+\end{remark}
+
+\begin{example}[Small is not the same as integrable]
+The coefficient $\omega^{-2}$ belongs to $\II$, since it is the derivative
+of $-\omega^{-1}$. The infinitesimal $\omega^{-1}$ does not: its primitives
+are $\log\omega+c$. Thus $\II\subsetneq\mm$. The distinction persists at
+arbitrarily slow logarithmic scales; it is not a universal single valuation
+threshold on the entire surreal field.
+\end{example}
+
+\subsection{Rank-one phases, with their prior provenance}
+For $a\in\K$, put
+\begin{equation}\label{eq:Phi}
+ \Phi(a):=\Psi(\operatorname{Im}a)\in\PP.
+\end{equation}
+The following rank-one statement is already present in the repository
+\cite{RepoDE}. We include the proof because it is the algebraic test behind
+every uniqueness argument in this paper.
+
+\begin{proposition}[Logarithmic derivatives]\label{prop:dlog}
+One has
+\begin{equation}\label{eq:dlog}
+ \left\{\frac{\partial z}{z}:z\in\K^\times\right\}
+   =F+i\II=\ker\Phi.
+\end{equation}
+Consequently $\partial z=az$ has a nonzero solution in $\K$ exactly when
+$\Phi(a)=0$. Every $a\in\K$ can be written
+\begin{equation}\label{eq:rankone}
+ a=\frac{\partial s}{s}+i\partial p,
+ \qquad s\in\K^\times,\quad p=\Phi(a).
+\end{equation}
+\end{proposition}
+\begin{proof}
+For $z\ne0$, write $z=ru$ with $r=\sqrt{z\bar z}>0$ and $u\bar u=1$.
+The coordinates of $u$ are finite, and its standard part is a constant
+$c\in\C$ of modulus one. Hence $u/c=1+\varepsilon$ with
+$\varepsilon\in\mm_{\C}$. The formal logarithm
+\[
+ L=\sum_{n\ge1}\frac{(-1)^{n+1}}{n}\varepsilon^n
+\]
+is a legitimate Hahn sum. Formal logarithm identities and $u\bar u=1$
+give $\bar L=-L$, so $L=i\eta$ with $\eta\in\mm$. Strong differentiation
+of this sum gives $\partial u/u=i\partial\eta$. Thus
+$\partial z/z=\partial r/r+i\partial\eta\in F+i\II$.
+
+Conversely, given $a_0+ib$ with $a_0\in F$ and $b\in\II$, choose
+$A\in F$ and $\eta\in\mm$ with $\partial A=a_0$ and
+$\partial\eta=b$. Then
+\[
+ s=\exp(A)\sum_{n\ge0}\frac{(i\eta)^n}{n!}
+\]
+is nonzero and has logarithmic derivative $a_0+ib$. The usual exponential
+and logarithm identities here are identities of formal power series
+substituted at an infinitesimal; the Neumann support principle justifies
+the substitutions, and strong differentiation justifies the chain rule.
+For general $a$, subtract $i\partial\Phi(a)$ and apply the established
+kernel statement.
+\end{proof}
+
+A useful special case is
+\begin{equation}\label{eq:phase-no-solution}
+ \partial z=i\partial(p-q)z,
+ \quad p,q\in\PP,
+ \qquad
+ z\ne0\Longrightarrow p=q\text{ and }z\in\C^\times.
+\end{equation}
+This does not identify $p$ with a finite argument of a unit complex number.
+It identifies the \emph{obstructed accumulated phase} of a differential
+equation.
+
+\section{The linear existence input and its precise transfer}\label{sec:existence}
+
+\subsection{Two properties, not a homogeneous-solution theorem}
+We require the following established properties of $\T[i]$:
+\begin{equation}\label{eq:inputs}
+ \begin{split}
+ &\text{every positive-order monic scalar differential operator splits into
+ first-order factors;}\\
+ &\text{every nonzero scalar linear differential operator is onto.}
+ \end{split}
+\end{equation}
+They are recorded explicitly in \cite[Lemma 2.4.19]{ADHNorm}; the
+surjectivity needed for our diagonal-reduction proof is only the order-one
+case. In that source, ``linearly closed'' means the first property, not the
+assertion that every homogeneous equation has a full set of solutions in
+the base field. Confusing these meanings would make $\partial y=iy$
+appear solvable and would destroy the argument.
+
+\begin{proposition}[Transfer to surcomplex coefficients]\label{prop:transfer}
+Both properties in \eqref{eq:inputs} hold over $\K=\No[i]$. In particular,
+for every $a,f\in\K$ there is $u\in\K$ with
+\[
+ \partial u-au=f.
+\]
+\end{proposition}
+\begin{proof}
+For each fixed order $n$, the assertion that every monic operator of order
+$n$ factors into $n$ first-order operators is a first-order sentence in the
+differential-field language. Expanding a product uses the finite rule
+$\partial a=a\partial+\partial(a)$, so its coefficient identities are
+polynomial identities in finitely many coefficients and their derivatives.
+Likewise, order-$n$ surjectivity is a first-order sentence, with a nonzero
+leading coefficient as a hypothesis.
+
+Interpret a complex coefficient as an ordered pair of real coefficients;
+complex multiplication, addition, and differentiation are definable in this
+interpretation. The corresponding sentences about $\T[i]$ are therefore
+sentences about the real differential field $\T$. Elementary equivalence
+with $\No$ transfers these \emph{universally quantified} sentences, giving
+the claims for arbitrary surreal coefficients, not merely coefficients in
+the embedded copy of $\T$.
+\end{proof}
+
+No effective factorization algorithm for arbitrary surreal input follows
+from this transfer. It supplies finite witnesses for each finite system.
+This logical distinction is important: later exact formulas reduce the
+phase problem to algebraic eigenvalues and scalar primitives, but neither
+operation is asserted to be computable on unrestricted normal forms.
+
+\subsection{A cyclic-vector proof for the finite algebra used below}
+We give the needed cyclic-vector argument to make the passage from scalar
+operators to matrix systems explicit. A differential module is a finite
+free $\K$-space $M$ with an additive operator $\nabla$ satisfying
+$\nabla(fv)=\partial f\,v+f\nabla v$.
+
+\begin{lemma}[Cyclic vector]\label{lem:cyclic}
+Every differential module of dimension $n\ge1$ over $\K$ has a vector $v$
+for which $v,\nabla v,\ldots,\nabla^{n-1}v$ is a basis.
+\end{lemma}
+\begin{proof}
+Fix a basis $e_0,\ldots,e_{n-1}$. Extend $\nabla$ to $M[T]$ by giving $T$
+derivative $1$. Recursively choose $v_0,\ldots,v_{n-1}$ so that
+\[
+ v_0=e_0,\qquad
+ v_k=e_k-\sum_{j=0}^{k-1}\binom{k}{j}\nabla^{k-j}v_j.
+\]
+For $v(T)=\sum_{j=0}^{n-1}T^jv_j/j!$, the Leibniz rule gives
+$\nabla^k v(T)|_{T=0}=e_k$ for $0\le k<n$. The determinant of the $n$
+columns $v(T),\nabla v(T),\ldots,\nabla^{n-1}v(T)$ is consequently a
+nonzero polynomial in $T$, with constant term $1$.
+
+Substitution $T=\omega-c$, for $c\in\R$, respects differentiation. A
+nonzero polynomial has only finitely many roots in a field, whereas the
+values $\omega-c$ are distinct. Choose a real $c$ outside that finite
+exceptional set. The specialized vector is cyclic.
+\end{proof}
+
+\begin{lemma}[A rank-one filtration]\label{lem:flag}
+Every finite differential module over $\K$ has a filtration by differential
+submodules whose successive quotients have dimension one.
+\end{lemma}
+\begin{proof}
+For a cyclic vector, the module is
+$\K[\partial]/\K[\partial]L$, where $L$ is its monic minimal annihilator
+of order $n$. By \cref{prop:transfer}, write
+$L=(\partial-b_n)R$, where $R$ is a product of $n-1$ first-order factors.
+The class of $R$ is nonzero, spans a one-dimensional differential submodule,
+and satisfies $\partial R=b_nR$ modulo $L$. The quotient is the module
+with annihilator $R$. Induction gives the filtration. The dimension claims
+follow directly from division by a monic operator: the remainder has order
+strictly below that operator's order.
+\end{proof}
+
+\section{Complete phase reduction of arbitrary finite systems}\label{sec:normal}
+
+\subsection{Gauge transformations and the normal form}
+A system has the form $\partial y=Ay$, with $A\in\Mat_n(\K)$. Under
+$y=Pz$, where $P\in\GL_n(\K)$, its coefficient matrix becomes
+\begin{equation}\label{eq:gauge}
+ A^P=P^{-1}AP-P^{-1}\partial P.
+\end{equation}
+The derivative term is essential. Similarity of matrices alone is not
+differential equivalence.
+
+\begin{theorem}[Complete phase normal form]\label{thm:normal}
+For every $A\in\Mat_n(\K)$, there exist $P\in\GL_n(\K)$ and
+$p_1,\ldots,p_n\in\PP$ such that
+\begin{equation}\label{eq:normal}
+ A^P=D_p:=i\diag(\partial p_1,\ldots,\partial p_n).
+\end{equation}
+The multiset $\Specph(A)=\{p_1,\ldots,p_n\}$ is independent of $P$ and is
+a complete invariant of differential equivalence.
+\end{theorem}
+\begin{proof}
+Apply \cref{lem:flag} to the connection $\nabla=\partial-A$ on $\K^n$.
+An adapted basis makes the system upper triangular. We now split its
+extensions explicitly. Suppose induction has diagonalized the first
+$n-1$ coordinates, leaving
+\[
+ A=\begin{pmatrix}D&b\\0&a\end{pmatrix},\qquad
+ D=\diag(d_1,\ldots,d_{n-1}).
+\]
+For $S=\left(\begin{smallmatrix}I&u\\0&1\end{smallmatrix}\right)$,
+the off-diagonal column of $A^S$ is
+\[
+ b+Du-ua-\partial u.
+\]
+Each equation $\partial u_j-(d_j-a)u_j=b_j$ has a solution by
+\cref{prop:transfer}. This kills the column and proves diagonalizability
+by induction. Repeated diagonal entries cause no obstruction: in that case
+the relevant equation is ordinary intrinsic integration.
+
+For each resulting scalar coefficient $a_j$, use \eqref{eq:rankone} to
+write $a_j=\partial s_j/s_j+i\partial p_j$. The diagonal gauge with entries
+$s_j$ gives \eqref{eq:normal}.
+
+For uniqueness, suppose two normal forms $D_p,D_q$ are related by an
+invertible matrix $T$. Then
+\begin{equation}\label{eq:intertwiner}
+ \partial T=D_pT-TD_q,
+ \qquad
+ \partial T_{jk}=i\partial(p_j-q_k)T_{jk}.
+\end{equation}
+By \eqref{eq:phase-no-solution}, an entry can be nonzero only when
+$p_j=q_k$, and then it is constant. Invertibility forces equality of each
+phase multiplicity. Conversely, equal phase multisets give the same normal
+form after permuting coordinates, proving completeness.
+\end{proof}
+
+\subsection{Solution spaces, projectors, and resonances}
+For $p\in\PP$, let $m_p(A)$ be its multiplicity, with omitted phases having
+multiplicity zero.
+
+\begin{corollary}[All inhomogeneous systems are solvable]\label{cor:inhomogeneous}
+For every $A\in\Mat_n(\K)$ and $f\in\K^n$, the equation
+$\partial y-Ay=f$ has a solution in $\K^n$. Its solution set is an affine
+space over $\C$ of dimension $m_0(A)$. In particular,
+\[
+ \dim_{\C}\ker_{\K^n}(\partial-A)=m_0(A).
+\]
+\end{corollary}
+\begin{proof}
+Use the gauge in \cref{thm:normal} and solve each inhomogeneous scalar
+equation by \cref{prop:transfer}. In the homogeneous equation a nonzero
+coordinate is possible exactly for phase zero, where it is a complex
+constant. The difference of two particular solutions is homogeneous.
+\end{proof}
+
+This strengthens an important limitation recorded in the repository:
+outside the rank-one admissible locus, there was only a uniqueness
+statement for general forcing. Here existence for \emph{every} forcing
+follows from the separate published linear-surjectivity input. It does not
+follow merely from the rank-one homogeneous criterion.
+
+\begin{proposition}[Canonical phase subspaces and endomorphisms]\label{prop:projectors}
+Let $E_p$ be the coordinate projector onto the phase-$p$ block of a normal
+form. Then
+\[
+ \Pi_p:=PE_pP^{-1}
+\]
+is independent of the choice of normalizing $P$. The projectors satisfy
+\[
+ \Pi_p\Pi_q=\delta_{pq}\Pi_p,\qquad
+ \sum_p\Pi_p=I,\qquad
+ \partial\Pi_p=A\Pi_p-\Pi_pA.
+\]
+The algebra of horizontal endomorphisms of the system is isomorphic to
+$\prod_p\Mat_{m_p(A)}(\C)$.
+\end{proposition}
+\begin{proof}
+Every change between normalizing gauges is constant and block diagonal by
+\eqref{eq:intertwiner}; it therefore commutes with each $E_p$. The displayed
+identities follow by multiplication and differentiation. The same entrywise
+calculation identifies the entire horizontal endomorphism algebra.
+\end{proof}
+
+More generally,
+\[
+ \dim_{\C}\Hom_{\partial}(A,B)=\sum_p m_p(A)m_p(B).
+\]
+There are no nonsplit extensions between finite differential modules over
+$\K$, as the explicit off-diagonal elimination proves. Direct sums unite
+phase multisets; tensor products add phases pairwise; duals negate phases.
+Thus the finite-module theory is equivalent, in this concrete sense, to
+finite-support $\PP$-graded finite-dimensional complex linear algebra.
+The classification is not the assertion that every grade has a horizontal
+vector in the original field.
+
+\begin{corollary}[The determinant sees only the phase sum]\label{cor:trace}
+For every $A$,
+\[
+ \Phi(\tr A)=\sum_p m_p(A)p.
+\]
+\end{corollary}
+\begin{proof}
+Take traces in $A=P'P^{-1}+PD_pP^{-1}$ and use the finite Jacobi identity
+$\tr(P'P^{-1})=(\det P)'/\det P$, whose phase is zero.
+\end{proof}
+The trace cannot recover the individual phases: $\{p,-p\}$ and $\{0,0\}$
+have the same sum. The Hermitian theorem below recovers the full multiset.
+
+\section{Horizontal metrics and exact unitary reduction}\label{sec:metrics}
+
+\subsection{Every system has a positive invariant metric}
+A Hermitian matrix $G\in\Mat_n(\K)$ is positive definite when
+$v^*Gv>0$ for every nonzero $v\in\K^n$. It is \emph{horizontal} for the
+system $A$ when
+\begin{equation}\label{eq:metric}
+ \partial G+A^*G+GA=0.
+\end{equation}
+Formally, \eqref{eq:metric} says that the quadratic expression $y^*Gy$ is
+constant along a solution, in any differential extension carrying the
+compatible conjugation. It does not assert that the system already has
+nonzero number-valued solutions in $\K^n$.
+
+\begin{theorem}[Complete metric cone]\label{thm:metric}
+Let $P$ normalize $A$ as in \cref{thm:normal}. Every horizontal Hermitian
+matrix is uniquely of the form
+\begin{equation}\label{eq:metriccone}
+ G=P^{-*}\left(\bigoplus_p C_p\right)P^{-1},
+ \qquad C_p\in\Herm_{m_p(A)}(\C).
+\end{equation}
+It is positive definite exactly when every $C_p$ is positive definite.
+In particular, every finite system has a positive horizontal metric, and
+the real dimension of its space of horizontal Hermitian forms is
+$\sum_p m_p(A)^2$.
+\end{theorem}
+\begin{proof}
+Put $B=P^*GP$. Since $P'=AP-PD_p$, differentiating gives
+\[
+ B'=-D_p^*B-BD_p=D_pB-BD_p.
+\]
+Thus $B_{jk}'=i\partial(p_j-p_k)B_{jk}$. Equation
+\eqref{eq:phase-no-solution} makes every off-phase entry zero and every
+within-phase entry constant. Hermitian symmetry gives exactly the matrices
+$C_p$ in \eqref{eq:metriccone}. Congruence by an invertible matrix preserves
+positive definiteness. For a constant Hermitian matrix, positivity over
+$\K$ is equivalent to ordinary complex positive definiteness: diagonalize
+it by an ordinary constant unitary matrix and inspect its real eigenvalues.
+Taking every $C_p=I$ proves existence. Finally,
+$\dim_{\R}\Herm_m(\C)=m^2$.
+\end{proof}
+
+\begin{example}[A positive metric is not an analytic stability claim]
+For
+\[
+ A=\begin{pmatrix}1&1\\0&1\end{pmatrix},\qquad
+ P=e^{\omega}\begin{pmatrix}1&\omega\\0&1\end{pmatrix},
+\]
+one has $P'=AP$, so both phases are zero. The metric
+\[
+ G=e^{-2\omega}\begin{pmatrix}1&-\omega\\-\omega&\omega^2+1\end{pmatrix}
+\]
+satisfies \eqref{eq:metric} and has positive determinant $e^{-4\omega}$.
+The ordinary differential equation with the same printed coefficients has
+growing solutions. There is no contradiction: the invariant metric itself
+has a strongly varying scale. Our theorem has no uniform-equivalence-to-
+the-Euclidean-norm hypothesis and makes no Lyapunov-stability assertion.
+\end{example}
+
+\subsection{When the original metric is already the identity}
+\begin{theorem}[Unitary phase normal form]\label{thm:unitary}
+If $A^*=-A$, its phase-normalizing matrix can be chosen unitary. For a fixed
+ordering of its phases, any two such unitary normalizing matrices differ
+by a constant block unitary matrix, with one block for each repeated phase.
+The canonical phase projectors in \cref{prop:projectors} are then
+Hermitian orthogonal projectors.
+\end{theorem}
+\begin{proof}
+The identity matrix satisfies \eqref{eq:metric}. For any normalizing $P$,
+\cref{thm:metric} therefore says that $P^*P=C$ is a constant positive
+definite block Hermitian matrix. Let $R=C^{-1/2}$, computed in the ordinary
+finite-dimensional complex block matrices. Then $R'=0$ and $R$ commutes
+with $D_p$, so $U=PR$ is still a normalizing gauge and $U^*U=I$.
+The uniqueness statement follows from \eqref{eq:intertwiner}; unitarity
+makes its constant diagonal blocks unitary. Finally $UE_pU^*$ is a
+Hermitian orthogonal projector.
+\end{proof}
+
+The positive square root used in this proof is of a \emph{constant complex
+matrix}. There is no appeal to analytic functional calculus on a
+class-sized surreal Hilbert space. More importantly, the theorem concerns
+differential diagonalization: the term $U^*U'$ remains in the formula.
+
+\section{Finite Hermitian algebra and the bounded-gauge estimate}\label{sec:hermitian}
+
+\subsection{Spectral algebra without compactness}
+We record the exact spectral estimate needed for the main theorem. It
+holds over any real closed field and its complexification; thus it does
+not rely on the specific surreal derivation. Related finite spectral
+material is already developed in the repository~\cite{RepoSpectral}.
+
+\begin{lemma}[Finite spectral theorem]\label{lem:spectral}
+Every Hermitian matrix over $\K$ has a unitary eigenbasis and real
+ eigenvalues. If $\lambda_1(H)\le\cdots\le\lambda_n(H)$, then
+\begin{equation}\label{eq:minmax}
+ \lambda_k(H)=\min_{\dim S=k}\ \max_{\substack{v\in S\\v^*v=1}}v^*Hv.
+\end{equation}
+Both extremal values in this formula are attained.
+\end{lemma}
+\begin{proof}
+Algebraic closedness gives an eigenvector $v\ne0$ and an eigenvalue
+$\lambda$. Since $v^*v>0$ and $v^*Hv$ is real, the identity
+$v^*Hv=\lambda v^*v$ implies $\lambda\in F$. Normalize $v$ by the positive
+square root of $v^*v$. Its orthogonal complement is invariant under $H$;
+finite induction gives a unitary eigenbasis.
+
+For any fixed $S$, the compression of $H$ to an orthonormal basis of $S$
+is again a finite Hermitian matrix, so its largest eigenvalue attains the
+inner maximum. Choosing $S$ spanned by the first $k$ ordered eigenvectors
+gives the value $\lambda_k(H)$. Every $k$-dimensional $S$ meets the span
+of the last $n-k+1$ eigenvectors nontrivially, and a unit vector in that
+intersection has Rayleigh quotient at least $\lambda_k(H)$. This proves
+\eqref{eq:minmax}, including attainment, by finite algebra alone.
+\end{proof}
+
+\begin{lemma}[An entrywise Weyl bound]\label{lem:weyl}
+For Hermitian $H,E\in\Mat_n(\K)$, put
+$m=\max_{j,k}|E_{jk}|$. Then
+\begin{equation}\label{eq:weyl}
+ |\lambda_j(H+E)-\lambda_j(H)|\le nm
+ \qquad(1\le j\le n).
+\end{equation}
+If every entry of $E$ belongs to $\II_{\C}$, then every eigenvalue
+difference in \eqref{eq:weyl} belongs to $\II$.
+\end{lemma}
+\begin{proof}
+For $v^*v=1$, the triangle and Cauchy--Schwarz inequalities over the real
+closed field give
+\[
+ |v^*Ev|\le m\left(\sum_j|v_j|\right)^2\le nm.
+\]
+Use the span of the first $j$ eigenvectors of $H$ in \eqref{eq:minmax} to
+obtain the upper bound; interchange $H$ and $H+E$ for the lower bound.
+If $E_{jk}=a+ib$ with $a,b\in\II$, then
+$|E_{jk}|\le|a|+|b|\in\II$, so convexity gives $|E_{jk}|\in\II$.
+The finite maximum and its multiple $nm$ belong to $\II$, and another
+application of convexity finishes the proof.
+\end{proof}
+
+\subsection{Bounded gauges have integrable connection terms}
+\begin{lemma}[Bounded-gauge estimate]\label{lem:boundedgauge}
+If $U\in\UU_n(\K)$, every entry of $U$ and $U^*$ is finite, every entry of
+$U'$ belongs to $\II_{\C}$, and every entry of $U^*U'$ belongs to
+$\II_{\C}$. Moreover $U^*U'$ is skew-Hermitian.
+\end{lemma}
+\begin{proof}
+A unitary column has sum of squared moduli $1$, so every entry has modulus
+at most $1$. Differentiating a finite real or imaginary coordinate gives an
+element of $\II$. Since $\II$ is an $\OO$-module, finite sums of products
+of entries of $U^*$ with entries of $U'$ stay in $\II_{\C}$.
+Differentiation of $U^*U=I$ gives $(U')^*U+U^*U'=0$.
+\end{proof}
+
+It is the conclusion $U^*U'\in\Mat_n(\II_{\C})$, not just its
+infinitesimal size, that matters. An arbitrary infinitesimal perturbation
+may accumulate an infinite phase. The bounded-primitive conclusion is what
+allows eigenvalue errors to disappear under $\Psi$.
+
+\section{The spectral--integral theorem}\label{sec:spectralintegral}
+
+\subsection{Complete phases from algebraic eigenvalues}
+\begin{theorem}[Spectral--integral classification]\label{thm:main}
+Let $H=H^*\in\Mat_n(\K)$, and let its algebraic eigenvalues be ordered
+$\lambda_1\le\cdots\le\lambda_n$. Define
+\[
+ p_j:=\Psi(\lambda_j)\in\PP.
+\]
+Then $p_1\le\cdots\le p_n$ and
+\begin{equation}\label{eq:main}
+ \Specph(iH)=\{p_1,\ldots,p_n\}.
+\end{equation}
+There exists $U\in\UU_n(\K)$ with
+\begin{equation}\label{eq:main-gauge}
+ U^*(iH)U-U^*U'=i\diag(p_1',\ldots,p_n').
+\end{equation}
+Two Hermitian coefficients $H_1,H_2$ give differentially unitarily
+equivalent systems $y'=iH_1y$ and $y'=iH_2y$ if and only if their ordered
+algebraic eigenvalues have identical images under $\Psi$, counted with
+multiplicity.
+\end{theorem}
+\begin{proof}
+By \cref{thm:unitary}, choose a unitary normalizing gauge with phases
+$q_1\le\cdots\le q_n$. Rearranging its defining identity gives
+\begin{equation}\label{eq:spectral-proof}
+ U^*HU=\diag(q_1',\ldots,q_n')-iU^*U'.
+\end{equation}
+By \cref{lem:boundedgauge}, $E=-iU^*U'$ is Hermitian and has all entries in
+$\II_{\C}$. By \cref{lem:phaseorder}, the derivatives $q_j'$ are in the
+same order as the phases $q_j$. The entrywise Weyl bound therefore gives
+\[
+ \lambda_j(H)-q_j'\in\II.
+\]
+Apply $\Psi$ and use $\Psi(q_j')=q_j$ to obtain
+$\Psi(\lambda_j(H))=q_j$. This proves \eqref{eq:main} and
+\eqref{eq:main-gauge}. The order of the $p_j$ follows from order
+preservation of $\Psi$. Completeness follows from \cref{thm:normal}; when
+both systems are skew-Hermitian their normalizing gauges are unitary, so
+the resulting equivalence is unitary as well.
+\end{proof}
+
+The formula is exact for arbitrary surreal scales and arbitrary ordinary
+finite multiplicities. There is no requirement that the $\lambda_j$ be
+distinct, that the nonzero gaps dominate a derivative, or that $H$ commute
+with anything. At the same time, the theorem does \emph{not} remove the
+connection term in \eqref{eq:spectral-proof}. That term is merely invisible
+in the ordered additive quotient by $\II$.
+
+\subsection{Gap-free perturbations and actual number-valued solutions}
+\begin{corollary}[Finite-primitive perturbation invariance]\label{cor:perturbation}
+If $H_1,H_2$ are Hermitian and every entry of $H_1-H_2$ lies in
+$\II_{\C}$, then $y'=iH_1y$ and $y'=iH_2y$ are differentially unitarily
+equivalent. This conclusion has no spectral-gap hypothesis.
+\end{corollary}
+\begin{proof}
+By \cref{lem:weyl}, corresponding ordered eigenvalues differ by elements
+of $\II$. Their $\Psi$-images are equal, so apply \cref{thm:main}.
+\end{proof}
+
+\begin{corollary}[Exact kernel count]\label{cor:kernel}
+For Hermitian $H$,
+\begin{equation}\label{eq:kernel-count}
+ \dim_{\C}\{y\in\K^n:y'=iHy\}
+   =\#\{j:\lambda_j(H)\in\II\}.
+\end{equation}
+The count includes algebraic multiplicity. The inhomogeneous equation
+$y'-iHy=f$ is solvable for every $f\in\K^n$, and is uniquely solvable
+exactly when none of the eigenvalues belongs to $\II$.
+\end{corollary}
+\begin{proof}
+Combine \cref{thm:main,cor:inhomogeneous} with $\ker\Psi=\II$.
+\end{proof}
+
+For instance, if $H=\diag(\omega^{-2},\omega^{-1},1)$, the kernel has
+complex dimension one. Replacing $H$ by any Hermitian matrix differing
+from it entrywise by $\II_{\C}$ preserves that answer, even though such a
+perturbation can be much larger than a gap at a more remote infinitesimal
+scale.
+
+\begin{proposition}[Sharpness of the perturbation class]\label{prop:sharp}
+For scalar real coefficients $h,k$, the equations $y'=ihy$ and $y'=iky$
+are differentially unitarily equivalent exactly when $h-k\in\II$.
+Consequently no strictly larger additive class of scalar perturbations can
+preserve the phase of every Hermitian system.
+\end{proposition}
+\begin{proof}
+Scalar gauge equivalence is $i(h-k)=u'/u$ with $|u|=1$.
+\Cref{prop:dlog} proves necessity and constructs a unit solution for
+sufficiency. If $b\notin\II$, the one-dimensional systems with
+coefficients $0$ and $b$ have different phases.
+\end{proof}
+In particular, ``infinitesimal perturbation'' cannot replace
+``finite-primitive perturbation'': the scalar change $0\mapsto\omega^{-1}$
+already changes the phase from $0$ to $\log\omega$.
+
+\subsection{Why the Hermitian hypothesis is essential}
+\begin{example}[A nonnormal counterexample]\label{ex:nonnormal}
+Let $x=\omega$ and set
+\[
+ P=\begin{pmatrix}1-x^2&x\\-x&1\end{pmatrix},\qquad
+ A=\begin{pmatrix}-x&1+x^2\\-1&x\end{pmatrix}.
+\]
+Then $\det P=1$ and $P'=AP$. Hence $A$ has phase multiset $\{0,0\}$ and a
+fundamental matrix in the original real field. But
+\[
+ \det(zI-A)=z^2+1,
+\]
+so its instantaneous algebraic eigenvalues are $i$ and $-i$.
+Taking primitives of their imaginary parts would incorrectly predict
+$\{\omega,-\omega\}$. The similarity gauges needed for a general
+nonnormal matrix need not be bounded. Their derivative correction can
+therefore carry a nonzero phase. This example also rules out extending the
+main formula to arbitrary matrices by simply extracting the imaginary
+parts of their eigenvalues.
+\end{example}
+
+\subsection{A genuinely coupled unitary example}\label{subsec:unitaryexample}
+Let $x=\omega$ and
+\[
+ a=\frac{1-x^2}{1+x^2},\qquad b=\frac{2x}{1+x^2},\qquad
+ U=\begin{pmatrix}a&-b\\b&a\end{pmatrix},\qquad
+ D=i\diag(x,x^{-1}).
+\]
+Define $A=U'U^{\mathsf T}+UDU^{\mathsf T}$. Then $A^*=-A$ and its exact
+phase normal form is $D$, with
+\[
+ \Specph(A)=\left\{\frac{\omega^2}{2},\log\omega\right\}.
+\]
+For clarity, its entries are
+\[
+ A=\begin{pmatrix}
+ i(a^2x+b^2/x)&-\dfrac{2}{1+x^2}+iab(x-x^{-1})\\[4pt]
+ \dfrac{2}{1+x^2}+iab(x-x^{-1})&i(b^2x+a^2/x)
+ \end{pmatrix}.
+\]
+It is neither diagonal nor a constant-matrix system. If $H=-iA$, then
+\[
+ \tr H=x+x^{-1},\qquad
+ \det H=1-\frac{4}{(1+x^2)^2}.
+\]
+Thus the instantaneous eigenvalues of $H$ are \emph{not} exactly $x$ and
+$x^{-1}$. Their discrepancies have finite primitives, however, so the main
+theorem recovers the same two phases. Both are nonzero, and every forced
+system $y'-Ay=f$ has a unique surcomplex solution. The phases are also
+$\Q$-linearly independent, a fact used by the Galois interpretation below.
+
+\section{Normalized non-Abelian integration}\label{sec:nonabelian}
+
+\subsection{A matrix criterion with no ordering prescription}
+Let
+\[
+ \mathfrak u_n(\II_{\C})
+   =\{A\in\Mat_n(\II_{\C}):A^*=-A\},
+\]
+and let $\UU_n(1+\mm_{\C})$ denote the unitary matrices $U$ with
+$U-I\in\Mat_n(\mm_{\C})$. This notation describes a congruence subgroup,
+not an entrywise restriction that off-diagonal entries be close to $1$.
+
+\begin{theorem}[Normalized compact integration]\label{thm:nonabelian}
+The logarithmic derivative map
+\begin{equation}\label{eq:nonabelian}
+ \UU_n(1+\mm_{\C})\longrightarrow\mathfrak u_n(\II_{\C}),
+ \qquad U\longmapsto U'U^*
+\end{equation}
+is a bijection of classes. Equivalently, for a skew-Hermitian $A$, the
+following are equivalent:
+\begin{enumerate}
+\item every entry of $A$ has finite real and imaginary primitives;
+\item $y'=Ay$ has a fundamental matrix in $\K$;
+\item $U'=AU$ has a unitary solution with $\st(U)=I$.
+\end{enumerate}
+The solution in (3) is unique.
+\end{theorem}
+\begin{proof}
+The bounded-gauge estimate shows that \eqref{eq:nonabelian} is well-defined
+and that (3) implies (1). Suppose (1). For $H=-iA$, every entry belongs to
+$\II_{\C}$, so \cref{lem:weyl}, applied against the zero matrix, places
+every eigenvalue in $\II$. The main theorem gives a unitary $V$ with
+$A^V=0$, hence $V'=AV$. Taking standard parts of $V^*V=I$ shows that
+$C=\st(V)$ is an ordinary unitary matrix. The matrix $U=VC^{-1}$ has the
+required derivative and standard part.
+
+If $U_1,U_2$ are two normalized solutions, then
+$(U_1^{-1}U_2)'=0$. This ratio is a constant complex matrix and has standard
+part $I$, so it equals $I$. This proves uniqueness and injectivity of
+\eqref{eq:nonabelian}. Clearly (3) implies (2). Conversely, a fundamental
+matrix makes all phases zero by \cref{cor:inhomogeneous}; for a
+skew-Hermitian system, \cref{thm:unitary} then supplies a unitary
+fundamental matrix, proving (2) implies (3).
+\end{proof}
+
+This is a noncommutative existence theorem, not a formula
+$U=\exp(\int A)$. Its normalization is residue data, $\st(U)=I$, not an
+initial value at a real or surreal time. There is no chosen contour and
+no claimed topological convergence of Picard iteration.
+
+For the unique solution $U_A$, the ordinary product rule yields
+\begin{equation}\label{eq:cocycle}
+ (U_AU_B)'(U_AU_B)^*
+    =A+U_ABU_A^*.
+\end{equation}
+The right side again lies in $\mathfrak u_n(\II_{\C})$. Thus the bijection
+transports the group law of the near-identity unitary group to
+$A\star B=A+U_ABU_A^*$. This is not ordinary addition unless the relevant
+matrices commute.
+
+\subsection{An exact noncommuting Hahn example}
+Let $t=\omega^{-1}$, so $\partial t=-t^2$, and take the constant
+skew-Hermitian matrices
+\[
+ X=\begin{pmatrix}0&i\\i&0\end{pmatrix},\qquad
+ Y=\begin{pmatrix}i&0\\0&-i\end{pmatrix}.
+\]
+For $A=-t^2X-2t^3Y$, the normalized solution can be written as a Hahn series
+$U=\sum_{n\ge0}U_nt^n$. The exact coefficient recurrence is
+\begin{equation}\label{eq:noncommrec}
+ U_0=I,\qquad
+ (n+1)U_{n+1}=XU_n+2YU_{n-1},\qquad U_{-1}=0.
+\end{equation}
+Its first terms are
+\begin{align*}
+ U={}&I+tX+t^2\left(\frac{X^2}{2}+Y\right)\\
+ &+t^3\left(\frac{X^3}{6}+\frac{XY}{3}+\frac{2YX}{3}\right)+\cdots.
+\end{align*}
+This differs from $\exp(tX+t^2Y)$ at order $t^3$ by
+$(YX-XY)/6\ne0$. The nonnegative integer support makes the series strongly
+summable, so the recurrence proves the equation exactly. Since
+$(U^*U)'=0$ and its standard part is $I$, it is unitary and is the unique
+solution supplied by \cref{thm:nonabelian}. The example provides an explicit
+computation in a restricted Hahn workspace; the general theorem does not
+assume that such a coefficient recurrence is effectively available.
+
+\section{Real systems, rotation blocks, and metric signatures}\label{sec:real}
+
+\subsection{Descent from conjugate phases}
+Set
+\[
+ J=\begin{pmatrix}0&1\\-1&0\end{pmatrix}.
+\]
+For a real system, complex conjugation sends phase $p$ to phase $-p$.
+The two phase multiplicities are therefore equal.
+
+\begin{theorem}[Real rotation-block classification]\label{thm:real}
+For every $A\in\Mat_n(F)$, there is $P\in\GL_n(F)$ for which
+\begin{equation}\label{eq:realnormal}
+ A^P=0_{m_0}\ \oplus\!\bigoplus_{p>0}
+          \bigl(p'J\bigr)^{\oplus m_p},
+ \qquad n=m_0+2\sum_{p>0}m_p.
+\end{equation}
+The positive phases $p\in\PP$ and multiplicities are unique. Every finite
+real differential module is a direct sum of trivial one-dimensional
+modules and nontrivial two-dimensional rotation modules. If $A$ is
+skew-symmetric, $P$ can be chosen orthogonal.
+\end{theorem}
+\begin{proof}
+The uniqueness of complex phase subspaces makes conjugation interchange
+the $p$ and $-p$ subspaces. On the zero-phase subspace, its horizontal
+complex vector space is stable under conjugation. Any vector is the sum of
+a real vector and $i$ times a real vector; a real basis of the fixed part
+is therefore a complex basis after complexification.
+
+For $p>0$, choose normalizing columns $v_1,\ldots,v_{m_p}$ for phase $p$;
+their conjugates give a basis for phase $-p$. Write $v_j=a_j+ib_j$. Since
+$v_j'=Av_j-ip'v_j$,
+\[
+ a_j'=Aa_j+p'b_j,\qquad b_j'=Ab_j-p'a_j.
+\]
+The real columns $a_j,b_j$ thus give the block $p'J$ in
+\eqref{eq:realnormal}. They are independent because the change between
+$(v_j,\bar v_j)$ and $(a_j,b_j)$ is invertible over $\C$.
+Uniqueness follows from the complex theorem. The only invariant real
+subspaces in one nonzero phase pair are $0$ and the entire pair, because
+a real subspace complexifies to a conjugation-stable sum of its two
+one-dimensional distinct phase lines.
+
+For skew-symmetric $A$, the identity metric is horizontal. In the real
+normal form, $P^{\mathsf T}P$ is a positive constant block matrix commuting
+with the rotation blocks, as is also shown explicitly below. Its positive
+constant square root commutes with those blocks. Multiplication by its
+inverse square root makes $P$ orthogonal without changing the normal form.
+\end{proof}
+
+\subsection{The complete real cone}
+\begin{theorem}[Real metric cone and parity]\label{thm:realmetrics}
+Every real system has a positive symmetric horizontal metric. For the
+multiplicities in \eqref{eq:realnormal}, its cone of such metrics is
+isomorphic to
+\begin{equation}\label{eq:realmetriccone}
+ \Sym_{m_0}^{+}(\R)\ \times\!\prod_{p>0}\Herm_{m_p}^{+}(\C).
+\end{equation}
+Here and below a product over an empty set is a point. The real vector
+space of all horizontal symmetric forms has dimension
+\[
+ \frac{m_0(m_0+1)}2+\sum_{p>0}m_p^2.
+\]
+On each nonzero real phase block, the positive and negative indices of any
+nondegenerate horizontal symmetric form are both even.
+\end{theorem}
+\begin{proof}
+Pull a real horizontal form back by the real gauge $P$ in
+\cref{thm:real}. Complex phase separation eliminates all terms between
+different positive phase pairs or between such a pair and phase zero.
+The zero block is an arbitrary constant real symmetric matrix.
+
+Group a repeated positive phase as $p'J_m$, where
+$J_m=\left(\begin{smallmatrix}0&I_m\\-I_m&0\end{smallmatrix}\right)$.
+The remaining real symmetric horizontal matrices are constant matrices
+commuting with $J_m$, hence exactly
+\[
+ C=\begin{pmatrix}S&T\\-T&S\end{pmatrix},
+ \qquad S^{\mathsf T}=S,\quad T^{\mathsf T}=-T.
+\]
+This is the realification of the Hermitian matrix $S-iT$. A constant
+complex unitary diagonalization of $S-iT$ becomes a real orthogonal
+diagonalization of $C$, with every eigenvalue repeated twice. This proves
+positivity, the cone formula, and the parity statement. Congruence by
+$P^{-1}$ gives all metrics in the original coordinates.
+\end{proof}
+
+The products in \eqref{eq:realmetriccone} refer to finite collections of
+constant-matrix cones; there is no integration over phases. In particular,
+a real irreducible two-dimensional system has a one-dimensional space of
+horizontal symmetric forms and a single positive ray. This fact is the
+source of the uniqueness phenomenon in the next section.
+
+\section{A positive Ermakov--Pinney dichotomy}\label{sec:pinney}
+
+\subsection{Existence for every surreal potential}
+For $q\in F$, consider the intrinsic scalar equations
+\begin{equation}\label{eq:linearq}
+ y''+qy=0
+\end{equation}
+and
+\begin{equation}\label{eq:pinney}
+ \rho''+q\rho=\rho^{-3},\qquad \rho>0.
+\end{equation}
+Primes always mean $\partial$. The sign on the right side is important:
+we consider the positive Pinney constant $+1$.
+
+\begin{theorem}[Positive Pinney existence and uniqueness]\label{thm:pinney}
+For every $q\in\No$, equation \eqref{eq:pinney} has a positive surreal
+solution. Exactly one of the following alternatives holds.
+\begin{enumerate}
+\item Equation \eqref{eq:linearq} has no nonzero solution in $F$. Then
+\eqref{eq:pinney} has exactly one positive solution in $F$.
+\item Equation \eqref{eq:linearq} has a real fundamental pair. Then the
+positive solutions of \eqref{eq:pinney} form the classical positive
+quadratic-form family, with two real parameters after determinant
+normalization.
+\end{enumerate}
+In the first alternative, $y''+qy=f$ has a unique surreal solution for
+every $f\in F$.
+\end{theorem}
+\begin{proof}
+Let $A_q=\left(\begin{smallmatrix}0&1\\-q&0\end{smallmatrix}\right)$.
+By \cref{thm:realmetrics}, it has a positive symmetric horizontal metric
+$G$. The determinant identity for \eqref{eq:metric} gives
+\[
+ (\det G)'=-2\tr(A_q)\det G=0.
+\]
+Thus $\det G$ is a positive real constant. Scale $G$ by its inverse square
+root to arrange $\det G=1$.
+
+Write $G=\left(\begin{smallmatrix}a&b\\b&c\end{smallmatrix}\right)$.
+The horizontal equation is exactly
+\begin{equation}\label{eq:metric-components}
+ a'=2qb,\qquad b'=qc-a,\qquad c'=-2b.
+\end{equation}
+Since $c>0$, put $\rho=\sqrt c$. The last equation gives $b=-\rho\rho'$;
+the determinant condition gives $a=(\rho')^2+\rho^{-2}$. The middle
+equation then becomes \eqref{eq:pinney}. Conversely, every positive
+solution of \eqref{eq:pinney} produces the positive determinant-one metric
+\begin{equation}\label{eq:PinneyMetric}
+ G_\rho=
+ \begin{pmatrix}
+ (\rho')^2+\rho^{-2}&-\rho\rho'\\
+ -\rho\rho'&\rho^2
+ \end{pmatrix}.
+\end{equation}
+Positivity follows from its positive lower diagonal entry and determinant
+one. This establishes a bijection between positive Pinney solutions and
+positive determinant-one horizontal metrics.
+
+In dimension two, the real normal form has either two zero phases or one
+nonzero conjugate pair. If \eqref{eq:linearq} has no nonzero real solution,
+it must be the second case. The positive metric cone is then a single
+positive ray; determinant one selects one point, proving uniqueness.
+In the zero-phase case, a real fundamental matrix exists and the metric
+cone is the three-dimensional positive symmetric constant-matrix cone.
+The determinant-one slice gives the asserted two-parameter family.
+Finally, \cref{cor:inhomogeneous} gives a unique complex solution to every
+forced equation in the nonzero-phase case; conjugating it shows that it is
+real when $f$ is real.
+\end{proof}
+
+For completeness, the absence of an intermediate one-dimensional real
+solution space can also be seen directly. If $u\in F^\times$ satisfies
+\eqref{eq:linearq}, choose $B$ with $B'=u^{-2}$ and put $v=uB$. Then
+$uv'-u'v=1$, so $u,v$ are an independent real fundamental pair.
+
+\subsection{What is classical in the formula}
+If $u,v\in F$ are a real fundamental pair with constant Wronskian
+$W=uv'-u'v\ne0$, the second alternative is explicitly
+\begin{equation}\label{eq:pinney-classical}
+ \rho=\sqrt{a u^2+2buv+c v^2},
+ \qquad a>0,\quad c>0,\quad ac-b^2=W^{-2},
+ \quad a,b,c\in\R.
+\end{equation}
+This is the classical Pinney parametrization~\cite{Pinney}, now interpreted
+in an ordered differential field. The new-field phenomenon is that the
+first alternative is possible and collapses the positive family to one
+point. The manuscript does not claim priority for the classical formula
+or for the abstract Schwarz-closed-field existence principle underlying
+it. Its metric proof exposes why positivity and the phase multiplicities
+control uniqueness.
+For recent existence and uniqueness results on the Hardy-field side,
+see \cite[Theorems A and B]{ADHSecond}; no new solution of its named
+Boshernitzan conjecture is being claimed here.
+
+For example, $q=1$ lies in the first alternative, and its unique positive
+Pinney solution is $\rho=1$. For $q=-1$, the linear equation has
+$e^{\omega},e^{-\omega}$ as solutions, and the second alternative gives
+many positive amplitudes. The existence of a unique positive solution of a
+second-order equation is not a contradiction to ordinary initial-value
+theory: intrinsic surreal differentiation has no arbitrary two-real-number
+initial-data interpretation.
+
+\subsection{A canonical symplectic phase for an oscillatory potential}
+We call the first alternative \emph{intrinsically oscillatory}, meaning
+only that the nonzero homogeneous oscillations are missing from the real
+base field. Let $\rho$ be its unique positive Pinney solution, and put
+$h=\rho^{-2}$. There is a unique primitive $B$ of $h$ whose coefficient of
+the monomial $1$ is zero. Write
+\[
+ B=p+\eta,\qquad p\in\PP,\quad\eta\in\mm.
+\]
+
+\begin{theorem}[Canonical amplitude--phase reduction]\label{thm:canonicalpinney}
+For an intrinsically oscillatory $q$, one has $p>0$. With
+\[
+ P_\rho=\begin{pmatrix}\rho&0\\\rho'&\rho^{-1}\end{pmatrix},
+ \qquad R(\eta)=\exp(\eta J),
+\]
+the matrix $S_q=P_\rho R(\eta)\in\SL_2(F)$ satisfies
+\begin{equation}\label{eq:canonical-gauge}
+ S_q^{-1}A_qS_q-S_q^{-1}S_q'=p'J.
+\end{equation}
+The amplitude $\rho$, normalized primitive $B$, phase $p$, and this
+specified amplitude--infinitesimal-rotation gauge are canonical. No
+uniqueness among all possible symplectic gauges is asserted.
+\end{theorem}
+\begin{proof}
+A direct multiplication using \eqref{eq:pinney} gives
+\[
+ P_\rho^{-1}A_qP_\rho-P_\rho^{-1}P_\rho'=\rho^{-2}J=hJ.
+\]
+The infinitesimal exponential $R(\eta)$ is a well-defined real rotation,
+commutes with $J$, has determinant one, and satisfies
+$R^{-1}R'=\eta'J$. This proves \eqref{eq:canonical-gauge}.
+If $p=0$, then $B=\eta$ is finite and this same calculation reduces the
+system to zero, supplying a real fundamental matrix, a contradiction.
+Since $B'=h>0$, $B$ cannot be negative infinite by the $H$-field rule.
+Therefore its nonzero purely infinite part is positive. The uniqueness
+claims follow from \cref{thm:pinney} and the chosen constant-term
+normalization of a primitive.
+\end{proof}
+
+The conserved quadratic expression is
+\begin{equation}\label{eq:LewisInvariant}
+ \mathcal E_\rho(y,y')=(\rho y'-\rho'y)^2+(y/\rho)^2.
+\end{equation}
+Its derivative vanishes formally under \eqref{eq:linearq}, by
+\eqref{eq:PinneyMetric}. This expression is meaningful in an oscillatory
+extension even when the only solution in $F$ is zero. It gives an exact
+positive invariant, not an averaged energy.
+
+\section{The oscillatory Airy equation: an exact Hahn example}\label{sec:airy}
+
+\subsection{A formal oscillation with a genuine surreal amplitude}
+Let $x=\omega$ and consider
+\begin{equation}\label{eq:airy}
+ y''+xy=0.
+\end{equation}
+Put $p=\tfrac23 x^{3/2}$, so $p'=x^{1/2}$. A formal oscillatory symbol
+$X^p$ will mean a new invertible element with
+$(X^p)'=ip'X^p$; it is \emph{not} a surcomplex number. Seek a solution
+$aX^p$, where
+\begin{equation}\label{eq:airyamp}
+ a=x^{-1/4}\sum_{n\ge0}c_nx^{-3n/2},\qquad c_0=1.
+\end{equation}
+Substitution into \eqref{eq:airy} gives
+\begin{equation}\label{eq:airyamp-eq}
+ a''+2ix^{1/2}a'+\frac{i}{2x^{1/2}}a=0.
+\end{equation}
+Writing $\alpha_n=-\tfrac14-\tfrac32n$, coefficient comparison yields
+\begin{equation}\label{eq:airyrec}
+ c_{n+1}=\frac{\alpha_n(\alpha_n-1)}{3i(n+1)}c_n
+       =-i\frac{(6n+1)(6n+5)}{48(n+1)}c_n.
+\end{equation}
+Equivalently,
+\[
+ c_n=(-i)^n\left(\frac34\right)^n
+          \frac{(1/6)_n(5/6)_n}{n!}.
+\]
+The exponents in \eqref{eq:airyamp} decrease strictly to negative infinity,
+so the displayed expression is a well-defined surcomplex Hahn sum,
+regardless of factorial growth in the ordinary coefficients. Its termwise
+derivative is justified by the strong property of the fixed derivation.
+The recurrence proves \eqref{eq:airyamp-eq} exactly.
+
+\subsection{A full phase gauge and its Wronskian}
+Set
+\[
+ b=a'+ix^{1/2}a,\qquad
+ P=\begin{pmatrix}a&\bar a\\b&\bar b\end{pmatrix}.
+\]
+The two columns satisfy $v'=A_xv-ip'v$ and its conjugate, where
+$A_x=\left(\begin{smallmatrix}0&1\\-x&0\end{smallmatrix}\right)$. Thus
+\[
+ P'=A_xP-P\diag(ip',-ip').
+\]
+The determinant $W=a\bar b-\bar a b$ has derivative zero. Its leading term
+is $-2i$, since $a\sim x^{-1/4}$ and $b\sim ix^{1/4}$. A differential
+constant belongs to $\C$, so $W=-2i$ exactly. Hence $P$ is invertible and
+\begin{equation}\label{eq:airyphases}
+ \Specph(A_x)=\left\{\frac23\omega^{3/2},-\frac23\omega^{3/2}\right\}.
+\end{equation}
+It follows that \eqref{eq:airy} has no nonzero solution in $\K$, and that
+$y''+\omega y=f$ has a unique surcomplex solution for every $f\in\K$.
+This statement concerns intrinsic number solutions. It does not deny the
+usual Airy functions of an ordinary real or complex variable.
+
+\subsection{The unique positive nonlinear amplitude}
+The unique positive solution of
+\[
+ \rho''+\omega\rho=\rho^{-3}
+\]
+is
+\begin{equation}\label{eq:airyrho}
+ \rho=\sqrt{a\bar a}.
+\end{equation}
+To verify the normalization without relying on a heuristic WKB argument,
+form
+\[
+ C=\operatorname{Re}(vv^*)
+ =\begin{pmatrix}|a|^2&\operatorname{Re}(a\bar b)\\
+                  \operatorname{Re}(a\bar b)&|b|^2\end{pmatrix},
+ \qquad v=\binom ab.
+\]
+The equation for $v$ implies $C'=A_xC+CA_x^{\mathsf T}$, because the scalar
+imaginary phase cancels. Also
+\[
+ \det C=\bigl(\operatorname{Im}(a\bar b)\bigr)^2=1,
+\]
+as $W=-2i$. Therefore
+\begin{equation}\label{eq:airymetric}
+ G=C^{-1}=
+ \begin{pmatrix}|b|^2&-\operatorname{Re}(a\bar b)\\
+ -\operatorname{Re}(a\bar b)&|a|^2\end{pmatrix}
+\end{equation}
+is a positive determinant-one horizontal metric. The metric--Pinney
+bijection proves \eqref{eq:airyrho}, and the nonzero phases in
+\eqref{eq:airyphases} prove its uniqueness.
+
+The expansion begins
+\begin{equation}\label{eq:rhojet}
+ \rho=\omega^{-1/4}\left(
+ 1-\frac5{64}\omega^{-3}
+ +\frac{2285}{8192}\omega^{-6}
+ -\frac{1690275}{524288}\omega^{-9}
+ +\frac{10371973875}{134217728}\omega^{-12}
+ +\cdots\right).
+\end{equation}
+These are coefficients of an exact Hahn series, not estimates for an
+ordinary convergent power series. The normalized primitive of $\rho^{-2}$
+has the form
+\[
+ B=\frac23\omega^{3/2}-\frac5{48}\omega^{-3/2}+\cdots,
+\]
+so its purely infinite part is exactly the positive phase in
+\eqref{eq:airyphases}. The lower-order phase correction is finite and is
+absorbed by the infinitesimal rotation in \cref{thm:canonicalpinney}.
+
+\subsection{A residual certificate for truncation}
+Let $a_N=\sum_{n=0}^N c_nx^{\alpha_n}$. The recurrence cancels every term
+except the final second derivative, giving the exact identity
+\begin{equation}\label{eq:airyres}
+ a_N''+2ix^{1/2}a_N'+\frac{i}{2x^{1/2}}a_N
+    =\alpha_N(\alpha_N-1)c_Nx^{\alpha_N-2}.
+\end{equation}
+The verification script checks this identity at $N=16$, as well as the
+coefficient recurrence and the displayed amplitude coefficients. The
+infinite-support proof is the recurrence plus Hahn summability; a finite
+symbolic check by itself would not establish it.
+
+\section{Polynomial and rational first integrals from phase resonance}\label{sec:invariants}
+
+\subsection{Formal state variables and their total derivation}
+Let $y_1,\ldots,y_n$ be algebraically independent formal variables and
+extend the derivation to $\K[y_1,\ldots,y_n]$ by
+\[
+ \mathcal D_A f=\partial_{\mathrm{coeff}}f
+   +\sum_j(Ay)_j\frac{\partial f}{\partial y_j}.
+\]
+A polynomial or rational \emph{first integral} means an element killed by
+this derivation. This definition does not presuppose a nonzero solution in
+$\K^n$. Under a phase gauge $y=Pz$, one has $\mathcal D_A z_j=ip_j'z_j$.
+
+Let
+\[
+ \Lambda=\sum_{j=1}^n\Z p_j\subset\PP,\qquad
+ L=\left\{m\in\Z^n:\sum_jm_jp_j=0\right\},\qquad
+ S=L\cap\N^n.
+\]
+Write $r=\dim_{\Q}\Span_{\Q}\{p_1,\ldots,p_n\}$, so $\Lambda$ is a free
+abelian group of rank $r$ and $L$ has rank $n-r$.
+
+\begin{theorem}[Resonance algebra]\label{thm:invariants}
+In phase coordinates, the polynomial first-integral algebra and rational
+first-integral field are respectively
+\begin{equation}\label{eq:invariantring}
+ \ker\mathcal D_A\big|_{\K[z]}=\C[z^m:m\in S],
+ \qquad
+ \ker\mathcal D_A\big|_{\K(z)}=\C(z^m:m\in L).
+\end{equation}
+The polynomial algebra is finitely generated. The rational field is purely
+transcendental over $\C$ of transcendence degree $n-r$.
+\end{theorem}
+\begin{proof}
+For a polynomial $f=\sum_\alpha c_\alpha z^\alpha$, its derivative vanishes
+if and only if
+\[
+ c_\alpha'+i\left(\sum_j\alpha_jp_j\right)'c_\alpha=0
+\]
+for each exponent. By \eqref{eq:phase-no-solution}, a nonzero coefficient
+requires $\alpha\in S$ and $c_\alpha\in\C$. This proves the polynomial
+formula.
+
+For the rational statement, work in the Laurent polynomial ring and write
+$f/g$ with coprime nonzero Laurent polynomials. If its derivative is zero,
+then $f\mid\mathcal D_A f$ and $g\mid\mathcal D_A g$. The derivative does
+not enlarge Laurent support. For each individual variable, the highest
+and lowest Laurent degrees are additive under multiplication. Consequently
+$\mathcal D_A f=hf$ and $\mathcal D_A g=hg$ for some $h\in\K$; the case
+of a zero derivative is included by $h=0$.
+
+Compare two coefficients of $f$. Their ratio has logarithmic derivative
+$i(\beta\cdot p-\alpha\cdot p)'$, so their phases must agree and the
+ratio is constant. Thus all monomials of $f$ have one phase, and after
+factoring one coefficient and one monomial the remaining Laurent polynomial
+has constant coefficients and exponents in $L$. The same holds for $g$.
+The common value of $h$ forces their two factored phases to agree and their
+factored coefficient ratio to be constant. Hence $f/g$ is a rational
+function of the monomials with exponents in $L$, proving the second
+formula. The reverse inclusion is immediate.
+
+To prove finite generation of $S$, call a nonzero element indecomposable
+when it is not a sum of two nonzero elements of $S$. Two distinct
+indecomposables cannot be comparable in the coordinatewise order on
+$\N^n$: if $u<v$, then $v-u\in S\setminus\{0\}$. Dickson's elementary
+finite-antichain lemma for $\N^n$ therefore makes the indecomposables
+finite. Induction on total degree writes every member of $S$ as a sum of
+them. Finally, a $\Z$-basis of $L$ gives $n-r$ monomials which generate
+the rational field and are algebraically independent: distinct integer
+combinations of basis exponents give distinct Laurent monomials.
+\end{proof}
+
+One elementary proof of the finite-antichain lemma used here is by
+induction on the number of coordinates: every infinite sequence of
+nonnegative integers has an infinite nondecreasing subsequence, and
+successively extracting such subsequences for finitely many coordinates
+produces two coordinatewise comparable terms. No analytic finiteness
+principle enters the argument.
+
+\subsection{A coupled system with a singular invariant algebra}
+Take $x=\omega$ and
+\[
+ P=\begin{pmatrix}1&x^{-1}&0\\0&1&x^{-2}\\0&0&1\end{pmatrix},
+ \qquad D=\diag(i,i,-2i),\qquad A=P'P^{-1}+PDP^{-1}.
+\]
+Explicitly,
+\begin{equation}\label{eq:3matrix}
+ A=\begin{pmatrix}
+ i&-x^{-2}&x^{-4}\\
+ 0&i&(-3ix-2)/x^3\\
+ 0&0&-2i
+ \end{pmatrix}.
+\end{equation}
+Its phases are $\{\omega,\omega,-2\omega\}$, so it has no nonzero solution
+in $\K^3$. Nevertheless, its formal polynomial first integrals are
+nontrivial. Put $z=P^{-1}y$. The condition on an exponent is
+$\alpha_1+\alpha_2=2\alpha_3$, and the invariant algebra is
+\begin{equation}\label{eq:toricexample}
+ \C[U,V,W]/(UW-V^2),\qquad
+ U=z_1^2z_3,\quad V=z_1z_2z_3,\quad W=z_2^2z_3.
+\end{equation}
+Indeed these are the indecomposable nonnegative resonances; reduction by
+the relation leaves distinct exponent monomials, so it generates the whole
+kernel of the presentation map. The rational invariant field is
+$\C(z_1/z_2,z_2^2z_3)$, of transcendence degree two. The cone in
+\eqref{eq:toricexample} shows that complete reducibility of the differential
+module does not force its polynomial invariant algebra to be a polynomial
+ring. The accompanying script checks all three first-integral identities
+in the original coupled coordinates.
+
+\section{Finite oscillatory extensions and their Galois tori}\label{sec:galois}
+
+\subsection{The finite phase lattice, not a class-sized choice of generators}
+Let $A$ have phase multiset $\{p_1,\ldots,p_n\}$ and put
+\[
+ \Lambda=\Z p_1+\cdots+\Z p_n\subset\PP,
+ \qquad r=\dim_{\Q}\Span_{\Q}\{p_1,\ldots,p_n\}.
+\]
+This is a finitely generated torsion-free abelian group, hence free of
+rank $r$. Choose a $\Z$-basis $q_1,\ldots,q_r$ and form the Laurent
+polynomial differential algebra
+\begin{equation}\label{eq:PVring}
+ R_\Lambda=\K[T_1^{\pm1},\ldots,T_r^{\pm1}],
+ \qquad T_j'=i q_j'T_j.
+\end{equation}
+For $q=\sum_jm_jq_j$ write $X^q=\prod_jT_j^{m_j}$. Thus
+$X^{q+s}=X^qX^s$ and $(X^q)'=iq'X^q$. Every expression in $R_\Lambda$
+is a \emph{finite} sum. There is no Hahn summability question and no
+attempt to define $e^{ip}$ in $\K$.
+
+The general universal-exponential construction and its connection with
+Picard--Vessiot theory are established theory~\cite[\S2.4]{ADHNorm}.
+The point of the following proof is to identify exactly the finite
+extension attached to the normal form, without invoking an existence
+theorem for extensions of a proper-class field.
+
+\begin{theorem}[The phase-lattice Picard--Vessiot algebra]\label{thm:PV}
+The algebra $R_\Lambda$ is differentially simple, and the constants of
+$E_\Lambda=\Frac(R_\Lambda)$ are exactly $\C$. If $P$ is a phase-normalizing
+gauge for $A$, then
+\[
+ Y=P\diag(X^{p_1},\ldots,X^{p_n})
+\]
+is a fundamental matrix for $y'=Ay$. Its entries and inverse determinant
+generate $R_\Lambda$ over $\K$. The differential Galois group is
+\begin{equation}\label{eq:galoistorus}
+ \operatorname{Gal}_\partial(E_\Lambda/\K)
+   =\Hom(\Lambda,\C^\times)\simeq(\C^\times)^r,
+\end{equation}
+with its algebraic-group structure the split torus $\mathbb G_m^r$.
+In particular, $\operatorname{trdeg}_{\K}E_\Lambda=r$.
+\end{theorem}
+\begin{proof}
+Suppose $J\ne0$ is a differential ideal of $R_\Lambda$. Choose an element
+of $J$ with a minimum number of nonzero monomials. Multiply it by a
+Laurent monomial and a nonzero coefficient to arrange that its constant
+term is $1$. Write the result as $f=1+\sum_{q\ne0}c_qX^q$.
+Differentiation kills its constant term and cannot introduce new
+monomials. If $f'\ne0$, it contradicts minimality. If $f'=0$, each
+remaining coefficient satisfies
+\[
+ c_q'/c_q=-i q',
+\]
+which is impossible for nonzero $q\in\PP$ by the rank-one phase
+criterion. Therefore $f=1$ and $J=R_\Lambda$.
+
+To check the constant field directly, let $(f/g)'=0$ with coprime
+nonzero Laurent polynomials $f,g$. Then $f'g=fg'$, so $f\mid f'$ and
+$g\mid g'$. Differentiation preserves or reduces the range of powers of
+each $T_j$. Since the largest and smallest powers in a product add,
+the quotients must lie in $\K$: $f'=hf$ and $g'=hg$ for a common
+$h\in\K$. Two different monomials $c_qX^q,c_sX^s$ in $f$ would give
+\[
+ (c_q/c_s)'/(c_q/c_s)=-i(q-s)',
+\]
+contradicting $q-s\ne0$. Thus $f$ and $g$ are each monomials.
+Their quotient can have derivative zero only if their exponents coincide
+and their coefficient ratio lies in $\C$. This proves
+$C_{E_\Lambda}=\C$.
+
+The normal-form equation $P'=AP-PD_p$ immediately gives $Y'=AY$.
+Conversely, the entries of $P^{-1}Y$ supply every $X^{p_j}$, and the
+inverse determinant supplies their product inverse. Multiplying this by
+all the factors except one supplies each $(X^{p_j})^{-1}$. These
+characters generate exactly the group algebra of $\Lambda$, namely
+$R_\Lambda$.
+
+A differential $\K$-automorphism must take $X^{q_j}$ to
+$c_jX^{q_j}$ with $c_j\in\C^\times$, because the ratio of two solutions
+of the same rank-one equation is constant. Every choice of these $r$
+constants defines an automorphism of the Laurent algebra and its fraction
+field. This proves \eqref{eq:galoistorus}; the description as a Laurent
+rational field also proves the transcendence-degree statement.
+\end{proof}
+
+Equivalently, in column coordinates the Galois group is the subgroup of
+$(\C^\times)^n$ cut out by
+\[
+ \prod_{j=1}^n z_j^{m_j}=1
+ \qquad\text{for every }m\in\Z^n\text{ with }\sum_jm_jp_j=0.
+\]
+The integer relation lattice is saturated: if a nonzero integer multiple
+of $\sum_jm_jp_j$ vanishes, that sum already vanishes. This explains why
+the resulting torus is connected and has no extra finite component group.
+The rank is a \emph{rational} rank. The phases $\omega$ and
+$\sqrt2\,\omega$ give a two-dimensional torus, although their real span
+has dimension one. The phases $\omega$ and $2\omega$ give only one
+dimension. The three-phase example \eqref{eq:3matrix} also gives rank one.
+
+\subsection{Real structure and the scope of the Galois conclusion}
+For a real system, its phase lattice is stable under negation.
+Complex conjugation extends to an involution of $R_\Lambda$ by
+\[
+ \overline{cX^q}=\bar cX^{-q}.
+\]
+It commutes with differentiation. The combinations
+$(X^q+X^{-q})/2$ and $(X^q-X^{-q})/(2i)$ are fixed and supply the
+formal cosine and sine entries of a real fundamental matrix in the
+real block normal form. An automorphism commuting with this involution
+has $\chi(q)\overline{\chi(q)}=1$. Thus the real form of the torus is
+\[
+ \bigl(\operatorname{Res}^{1}_{\C/\R}\mathbb G_m\bigr)^r,
+\]
+whose real points are $(S^1)^r$. This is an algebraic-group assertion,
+not a construction of trigonometric functions on all surreals.
+
+The statement that all these finite Galois groups are tori concerns the
+very large base field $\K$, with its factorization and inhomogeneous
+surjectivity properties. It says nothing comparable for an equation over
+its original small rational-function field. In particular, the Airy
+calculation is not a claim that the usual Airy differential Galois group
+over $\C(x)$ is a torus. Enlarging the base to $\K$ has already supplied
+the nonoscillatory gauge entries.
+
+When $\Lambda\ne0$, no differential embedding $E_\Lambda\to\K$ fixing
+$\K$ can exist: the image of $X^q$ for nonzero $q$ would solve an
+obstructed rank-one equation in $\K$. The extension does not erase the
+original obstruction; it represents it explicitly.
+
+\section{Foundations, proof audit, and reproducibility}\label{sec:audit}
+
+\subsection{Handling the proper class without a class-sized basis theorem}
+The full surreal field is a proper class. One possible formal setting
+for the present exposition is class theory with global choice, reading
+finite-dimensional algebra as a scheme about class operations on
+set-coded finite tuples. No proper class is used as an element of a set,
+and no proof needs a basis of $\PP$ as a class-sized vector space.
+Every phase lattice above is finitely generated, and every Laurent
+polynomial has finitely many terms.
+
+There is also a set-sized interpretation of each finite-data argument.
+Starting from a set of given surreal coefficients and $\R\cup\{\omega\}$,
+form a countable chain of set-sized subfields inside $F$. At each stage
+adjoin the real algebraic roots, derivatives, real exponentials, purely
+infinite parts, primitives, and finite-angle trigonometric values needed
+for the previous stage. Also adjoin witnesses for all finite-order
+factorizations and inhomogeneous first-order equations whose coefficients
+belong to that stage. There are only set many such requests at each
+stage, and every request has a witness in $F$ or $F[i]$ by the established
+inputs. Global choice permits the simultaneous selections. Taking field
+closures and a countable union still yields a set.
+
+The resulting real differential subfield $F_0\subset F$ is real closed,
+contains $\R$, inherits the $H$-field rule, and has the designated
+primitive and linear-equation witnesses. Its complexification has
+constant field exactly $\C$. All finite tuples of its elements occur
+at some stage, so their required witnesses occur later. The elementary
+proofs of the finite-primitive and rank-one lemmas then hold internally,
+as do the finite matrix arguments. Explicit Hahn series that are to be
+used can be included in the initial set. One may therefore interpret
+\cref{thm:PV} as an ordinary set-sized Picard--Vessiot statement over a
+suitable witness-closed $F_0[i]$, as well as through its explicit finite
+class-algebra formulas over $\K$.
+
+This construction does \emph{not} say that an arbitrary fixed Hahn
+workspace already has every needed differential primitive or solution.
+Nor does it give effective presentations, birthday bounds, or a minimal
+such subfield. It is a size justification for the proof, not an algorithm.
+
+\subsection{The dependency chain and its load-bearing steps}
+The proof of the principal theorem has a short logical structure even
+though establishing its hypotheses is deep:
+\begin{enumerate}
+\item The Berarducci--Mantova and Aschenbrenner--van den Dries--van der
+Hoeven results give the $H$-field rule, primitives, scalar exponential
+compatibility, linear splitting, and inhomogeneous first-order
+surjectivity.
+\item The $H$-field rule makes $\II$ an order-convex $\OO$-module.
+The polar logarithm gives the exact scalar phase obstruction.
+\item First-order factorization and surjectivity give the diagonal
+phase normal form. Horizontal Hermitian forms make that normal form
+unitary when the original coefficient is skew-Hermitian.
+\item A unitary matrix is bounded, so every entry of its connection
+term belongs to $\II_{\C}$. The algebraic Weyl estimate puts the changes
+of the ordered eigenvalues in $\II$ too. Applying $\Psi$ removes exactly
+these changes and proves \cref{thm:main}.
+\end{enumerate}
+Only the first step is imported at this level of generality. The
+intermediate finite-dimensional, order, and gauge arguments are proved
+in the manuscript. In particular, neither an asymptotic adiabatic theorem
+nor an unproved claim that diagonalization commutes with differentiation
+is hidden in the fourth step.
+
+The main calculation also exposes two essential boundaries. Removing
+Hermitian symmetry permits the counterexample in \cref{ex:nonnormal}.
+Replacing the finite-primitive ideal by all infinitesimals permits the
+scalar counterexample $\omega^{-1}$ in \cref{prop:sharp}. Neither
+hypothesis is decorative.
+
+\subsection{What was checked computationally}
+The archive contains \texttt{code/verify\_examples.py}, requiring Python
+and SymPy. Its recorded execution with SymPy~1.14.0 passed \textbf{62}
+exact checks. These comprise the nonnormal isospectral counterexample;
+the rational unitary coupled example; a positive horizontal metric with
+an unbounded gauge; the three-phase normal form and its polynomial
+invariants; the noncommuting matrix recurrence and its unitary jet; the
+Airy coefficient recurrence, amplitude jet, and exact truncation
+residual; and the symbolic Pinney metric and symplectic gauge identities.
+
+The deliberate counterexamples are checked as counterexamples: the
+nonnormal coefficient has eigenvalues $\pm i$ but a fundamental matrix
+in the base field, and the noncommuting exponential defect is required
+to be \emph{nonzero}. The report is in
+\texttt{data/verification.json}. Re-running the script regenerates it.
+The checks use exact rational and symbolic arithmetic, not numerical
+agreement at selected real sample points.
+
+These tests do not verify the arbitrary-support Hahn arguments, the
+published model-theoretic inputs, the existence of a gauge for an
+arbitrary surreal matrix, or the general theorems. The article is not a
+Lean formalization and no proof-assistant verification is claimed.
+Its strongest claims require independent mathematical review.
+
+\subsection{Limitations and questions left genuinely open}
+The main novelty assessment is provisional. The targeted search located
+the spectral and differential-algebra ingredients but not the exact
+Hermitian spectral--integral formula, its sharp entrywise perturbation
+criterion, or the normalized non-Abelian integration statement in this
+form. This is evidence for treating them as candidate new results, not
+proof of historical priority. In contrast, the rank-one obstruction,
+universal exponential algebra, classical Pinney formula, and general
+amplitude--phase methods have explicit antecedents.
+
+All results depend on the specified intrinsic derivation. They are not
+claims about every surreal derivation, arbitrary class-function
+derivatives, or the independent complex-coordinate calculus used in other
+repository reports. Infinite-dimensional matrices, topological initial
+value problems on $\No$, Stokes data over smaller analytic fields, and a
+global surcomplex exponential are outside the assertions.
+
+The phase map and the normalizing gauge are semantic operations. Even
+for finite matrices, arbitrary surreal input has no assumed finite
+computable encoding. A useful further problem is to identify restricted
+support-certified input languages for which the eigenvalue primitives,
+their purely infinite parts, and a normalizing unitary gauge admit
+certified effective computation. The exact recurrence examples here are
+instances, not a solution of that general effectivity problem.
+
+\section{Conclusion}
+For intrinsic surcomplex differential systems, the obstruction to
+integration is not exhausted by scalar examples, but it is still exactly
+controlled by scalar phases after the necessary finite-dimensional
+reduction. Hermitian symmetry makes this classification unusually
+explicit: integrate the algebraic eigenvalues, retain their purely
+infinite parts, and obtain the complete differential unitary class.
+The connection term is neither ignored nor approximated; it belongs to
+the precise finite-primitive ideal that the invariant annihilates.
+
+This yields exact, gap-free perturbation invariance and a non-Abelian
+integration theorem. The same phase decomposition classifies all positive
+horizontal metrics, resolves the real two-dimensional amplitude problem,
+and identifies the finite resonances and oscillatory extension needed
+for any coupled system. The results therefore connect surreal order,
+normal-form truncation, finite spectral algebra, and differential Galois
+theory in a way that is not merely a replacement of ordinary scalar
+symbols by surreal ones.
+
+\begingroup\small\raggedright
+\begin{thebibliography}{99}
+\setlength{\itemsep}{.25em}
+
+\bibitem{BM}
+A.~Berarducci and V.~Mantova,
+\emph{Surreal numbers, derivations and transseries},
+Journal of the European Mathematical Society \textbf{20} (2018),
+no.~2, 339--390.
+\href{https://doi.org/10.4171/JEMS/769}{doi:10.4171/JEMS/769}.
+Preprint: \href{https://arxiv.org/abs/1503.00315}{arXiv:1503.00315}.
+
+\bibitem{ADHSur}
+M.~Aschenbrenner, L.~van den Dries, and J.~van der Hoeven,
+\emph{The surreal numbers as a universal $H$-field},
+Journal of the European Mathematical Society \textbf{21} (2019),
+no.~4, 1179--1199.
+\href{https://doi.org/10.4171/JEMS/858}{doi:10.4171/JEMS/858}.
+Preprint: \href{https://arxiv.org/abs/1512.02267}{arXiv:1512.02267}.
+
+\bibitem{ADHNorm}
+M.~Aschenbrenner, L.~van den Dries, and J.~van der Hoeven,
+\emph{Normalizing Asymptotic Differential Equations},
+\href{https://arxiv.org/abs/2403.19732v5}{arXiv:2403.19732v5},
+April~24, 2026.
+Especially \S2.4 and Lemma~2.4.19; the earlier versions had the title
+\emph{A Normalization Theorem in Asymptotic Differential Algebra}.
+
+\bibitem{ADHSecond}
+M.~Aschenbrenner, L.~van den Dries, and J.~van der Hoeven,
+\emph{Revisiting Second-Order Linear Differential Equations over Hardy Fields},
+\href{https://arxiv.org/abs/2603.02013v1}{arXiv:2603.02013v1},
+March~2, 2026. Especially Theorems~A and~B and the amplitude--phase
+formulations in the introduction.
+
+\bibitem{Pinney}
+E.~Pinney,
+\emph{The nonlinear differential equation $y''+p(x)y+cy^{-3}=0$},
+Proceedings of the American Mathematical Society \textbf{1} (1950),
+no.~5, 681.
+\href{https://doi.org/10.1090/S0002-9939-1950-0037979-4}
+{doi:10.1090/S0002-9939-1950-0037979-4}.
+The sign of the parameter is convention dependent; the equation used
+in this article is $\rho''+q\rho=\rho^{-3}$.
+
+\bibitem{RepoMap}
+\texttt{VladimirReshetnikov/Surreal},
+\emph{The surreal and surcomplex reports}, documentation map,
+\texttt{docs/README.md}, repository revision \texttt{aa846271b4dc},
+accessed September~21, 2026.
+\href{https://github.com/VladimirReshetnikov/Surreal/blob/aa846271b4dcae2c055b216126a87210292ec19b/docs/README.md}
+{Pinned repository source}.
+
+\bibitem{RepoDE}
+\texttt{VladimirReshetnikov/Surreal},
+\emph{Differential Algebra and Differential Equations over the Surreal
+and Surcomplex Numbers}, report inventory,
+\texttt{docs/surcomplex/differential-equations/README.md},
+repository revision \texttt{aa846271b4dc}, accessed September~21, 2026.
+\href{https://github.com/VladimirReshetnikov/Surreal/blob/aa846271b4dcae2c055b216126a87210292ec19b/docs/surcomplex/differential-equations/README.md}
+{Pinned repository inventory}.
+
+\bibitem{RepoSpectral}
+\texttt{VladimirReshetnikov/Surreal},
+\emph{Surcomplex Spectral Theory: Singular Values, Infinitesimal Rank,
+and Multiscale Stability}, opening portions of the source manuscript,
+\texttt{docs/surcomplex/spectral-theory/article.tex},
+repository revision \texttt{aa846271b4dc}, accessed September~21, 2026.
+\href{https://github.com/VladimirReshetnikov/Surreal/blob/aa846271b4dcae2c055b216126a87210292ec19b/docs/surcomplex/spectral-theory/article.tex}
+{Pinned repository source}.
+
+\end{thebibliography}
+\endgroup
+\end{document}

@@ -38,12 +38,15 @@
 \newcommand{\R}{\mathbb R}
 \newcommand{\Q}{\mathbb Q}
 \newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
 \newcommand{\No}{\mathbf{No}}
 \newcommand{\SC}{\mathbf{SC}}
 \newcommand{\A}{\mathscr A}
 \newcommand{\RR}{\mathscr R}
 \newcommand{\FF}{\mathscr F}
 \newcommand{\HH}{\mathcal H}
+\newcommand{\BB}{\mathcal B}
+\newcommand{\UU}{\mathcal U}
 \newcommand{\m}{\mathfrak m}
 \newcommand{\pp}{\mathfrak p}
 \newcommand{\OO}{\mathcal O}
@@ -55,7 +58,9 @@
 \newcommand{\Tr}{\operatorname{Tr}}
 \newcommand{\ev}{\operatorname{ev}}
 \newcommand{\Max}{\operatorname{Max}}
+\newcommand{\Spec}{\operatorname{Spec}}
 \newcommand{\Frac}{\operatorname{Frac}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
 \newcommand{\disc}{\operatorname{disc}}
 \newcommand{\NF}{\operatorname{NF}}
 \newcommand{\red}{\operatorname{red}}
@@ -124,6 +129,23 @@ different valuation ranks, a genuinely radius-free two-variable system with
 infinite individual residues summing to an infinitesimal, and a
 length-five collision with the exact collision equation
 $3125u^6-108s^5=0$.
+
+A fourth coefficient ring occurs in this subject under nearly the same
+notation and does \emph{not} carry the package above: the fixed-polydisk
+ring $\OO(D)((t^\Gamma))$, whose coefficients are all holomorphic on one
+disk held fixed once and for all. We give its positive theory separately.
+Its geometric localizations are discrete valuation rings with completion
+$K[[X]]$, exactly as for the germ rings; but for $\Gamma=\R$ it is a
+complete uniform non-Archimedean Banach algebra in which an explicit pair
+$h,F$ with $\inf\max\{|h|_v,|F|_v\}=e^{-2}>0$ generates a proper,
+nonprincipal, two-generated ideal with empty geometric zero set, the
+distance from $1$ to it being exactly one and the obstruction surviving
+every enlargement of the value group; the exact criterion is finiteness,
+not boundedness, of a leading-valuation set. Separately, one fibre of its
+prime spectrum over a single classical free maximal ideal of $\OO(D)$ is a
+domain of infinite Krull dimension carrying a continuum chain of primes
+below an explicit nongeometric maximal ideal, and the ring is not
+Noetherian.
 \end{abstract}
 \end{minipage}
 \vfill
@@ -235,7 +257,35 @@ deformation package: division with a support certificate, finite freeness of
 rank $\mu$ over a valuation ring that may have high-rank value group and need
 not be Noetherian, conservation of multiplicity at the displaced zeros, and
 residue duality.  That is a different statement, and it is proved \emph{without}
-Noetherian hypotheses rather than by supplying them.
+Noetherian hypotheses rather than by supplying them.  For the avoidance of
+doubt: the mis-citation was this report's own overview sentence, and
+\cite{FiniteDeformations} is not its source --- that report never asserts the
+package for the fixed-polydisk ring, so nothing in the correction is a
+criticism of it.
+
+The fourth ring is not thereby left without a theory, and
+\crefrange{analytic:sec:fixed-polydisk}{analytic:sec:fixed-spectrum} now
+supply the positive one, for $D$ the ordinary unit disk in one variable.
+They also settle the matter negatively: for $\Gamma=\R$ the displayed
+package does not merely go unproved for this ring, it is false, and every
+clause of it that fails fails with an explicit witness. The
+row of the table that belongs to $\OO(D)((t^\Gamma))$ reads as follows, and
+\cref{analytic:thm:fixed-structure} is its formal statement.
+\begin{quote}
+The fixed-domain Hahn algebra has geometric evaluation maximal ideals with
+discrete valuation localizations and formal power-series completions. These
+do not exhaust the global algebraic spectrum. The algebra is non-Noetherian,
+has infinite-dimensional fibres over classical free maximal ideals, and
+admits proper two-generated ideals with no geometric zero, even under a
+uniform valuation lower bound.
+\end{quote}
+Two scoping remarks belong with that row and are made again where they are
+proved. Whether the ring is Jacobson is \emph{not} settled either way, and no
+classification of all its abstract maximal ideals is claimed
+(\cref{analytic:rem:fixed-open}). And none of the negative half transfers to
+the other three rings: it needs infinitely many ordinary centres approaching
+the boundary of the fixed disk, a resource that disappears on localizing at
+one ordinary centre (\cref{analytic:rem:fixed-not-transferred}).
 
 For the three rings that do carry the package, the statements are nearly word
 for word identical and the notation nearly collides. This is a definitional divergence that reads
@@ -271,7 +321,7 @@ convergent to formal coefficients, unlike the passage from common-domain to
 radius-free coefficients, changes nothing about a finite zero scheme.
 
 \subsection{Overview of the main statements}\label{analytic:subsec:overview}
-The following four theorems summarize the report. Each names its ring.
+The following five theorems summarize the report. Each names its ring.
 
 \begin{theorem}[Structure of the radius-free ring $\A_n$, overview]
 \label{analytic:thm:overview-structure-A}
@@ -328,16 +378,35 @@ with $\vmin(b-a)>\kappa_a$; it is simple and satisfies
 $\vmin(b-a)\ge\delta-\kappa_a$. The strict factor two cannot be weakened in general.
 \end{theorem}
 
+\begin{theorem}[The fixed-polydisk ring $\OO(D)((t^\Gamma))$, overview]
+\label{analytic:thm:overview-fixed}
+Let $D$ be the ordinary complex unit disk. At every geometric point
+$a\in D^\sharp_\Gamma$ the evaluation ideal $(z-a)$ of $\OO(D)((t^\Gamma))$
+is maximal with residue field $K_\Gamma$, its localization is a discrete
+valuation ring of dimension one, and its completion is $K_\Gamma[[X]]$.
+Globally, for $\Gamma=\R$, none of the rest of the package holds: the
+algebra is a complete uniform non-Archimedean Banach $K$-algebra in which
+an explicit two-generated ideal is proper, nonprincipal and free of
+geometric zeros under a uniform positive valuation lower bound, it is not
+Noetherian, and one fibre of its prime spectrum over a classical free
+maximal ideal of $\OO(D)$ is a domain of infinite Krull dimension carrying
+a continuum chain of primes below an explicit nongeometric maximal ideal.
+\end{theorem}
+
 \Cref{analytic:thm:overview-structure-A} is proved in
 \cref{analytic:sec:division,analytic:sec:structure-A};
 \cref{analytic:thm:overview-structure-R} in
 \cref{analytic:sec:structure-R,analytic:sec:finite};
 \cref{analytic:thm:overview-deform} in
-\cref{analytic:sec:deform,analytic:sec:trace,analytic:sec:extension}; and
-\cref{analytic:thm:overview-stability} in \cref{analytic:sec:stability}.
-The maximal-ideal assertions are stronger than the mere ability to
-substitute infinitesimals: they say that substitution accounts for
-\emph{all} closed points of these algebras.
+\cref{analytic:sec:deform,analytic:sec:trace,analytic:sec:extension};
+\cref{analytic:thm:overview-stability} in \cref{analytic:sec:stability};
+and \cref{analytic:thm:overview-fixed} in
+\crefrange{analytic:sec:fixed-polydisk}{analytic:sec:fixed-spectrum},
+assembled as \cref{analytic:thm:fixed-structure}.
+For the first two rings the maximal-ideal assertions are stronger than the
+mere ability to substitute infinitesimals: they say that substitution
+accounts for \emph{all} closed points of those algebras. The fifth theorem
+is the precise statement that for the fixed-polydisk ring it does not.
 
 \subsection{Predecessors and the status of novelty}
 \label{analytic:subsec:novelty}
@@ -3023,6 +3092,1266 @@ several distinct Archimedean classes of scales: the only summation
 requirements are well-ordering and finite contribution at each exponent, and
 no ordinary bound on coefficient derivatives is required.
 
+\section{The fixed-polydisk ring: evaluation, a uniform Banach norm, and an
+exact B\'ezout criterion}\label{analytic:sec:fixed-polydisk}
+
+\Cref{analytic:subsec:four-rings} states the structure package for three of
+the four coefficient rings and declines it for the fourth, the
+fixed-polydisk ring $\OO(D)((t^\Gamma))$, naming the obstruction that
+\cite{FiniteDeformations} supplies. That passage says what is \emph{not}
+true of the fourth ring. The present section and the three that follow say
+what is, and the answer is not a weakened copy of the germ-ring package. It
+separates into a local half that is exactly as strong as the germ-ring
+statements --- every geometric localization is a discrete valuation ring
+with completion $K_\Gamma[[X]]$ --- and a global half in which
+Noetherianity, the exhaustion of the maximal ideals by evaluation, and even
+a Nullstellensatz for \emph{finitely generated} ideals all fail, each with
+an explicit witness. The mechanism separating the two halves is the single
+global well-ordered Hahn support, which no local statement sees.
+
+\begin{convention}[Standing conventions for
+\crefrange{analytic:sec:fixed-polydisk}{analytic:sec:fixed-spectrum}]
+\label{analytic:conv:fixed}
+\begin{enumerate}
+\item \emph{The ring.} $D=\{z\in\C:|z|<1\}$ is the ordinary complex unit
+disk, and in the notation of \cref{analytic:def:ringR},
+\[
+ \HH_\Gamma(D)=\OO(D)((t^\Gamma))
+ =\Bigl\{\textstyle\sum_{\gamma\in S}f_\gamma t^\gamma:
+ S\subset\Gamma\ \text{well ordered},\ f_\gamma\in\OO(D)\Bigr\}
+\]
+is the fixed-polydisk ring of item~(1) of
+\cref{analytic:subsec:four-rings}, in one variable. Every coefficient
+function is holomorphic on the \emph{whole} of $D$, and one well-ordered
+support serves them all. No direct limit over shrinking neighbourhoods is
+taken, and no uniform ordinary bound on the $f_\gamma$ is imposed. This is
+not $\RR_1$, not $\A_1$, not $\FF_1$, not a Tate or affinoid algebra, and
+not the classical algebra $H^\infty(D)$ of bounded ordinary holomorphic
+functions. \Cref{analytic:conv:ring} applies to it without exception: no
+theorem below is transferred to or from the other three rings.
+\item \emph{The value group.} Here $\Gamma$ is required only to be a
+set-sized ordered abelian group. The standing hypothesis of
+\cref{analytic:subsec:four-rings} that $\Gamma$ be nonzero and divisible is
+used nowhere in these four sections, and
+\cref{analytic:subsec:fixed-value-group} deliberately takes $\Gamma$
+discrete. Algebraic closedness of $K_\Gamma$ is likewise not used. The
+normed statements, the corona example and the continuum prime chain take
+$\Gamma=\R$; we then write $K=K_\R$ and $\HH(D)=\HH_\R(D)$.
+\item \emph{Geometric points.} Evaluation is at
+\begin{equation}\label{analytic:eq:fixed-Dsharp}
+ D^\sharp_\Gamma=\{c+\varepsilon:c\in D,\ \varepsilon\in\m_{K_\Gamma}\},
+\end{equation}
+with $c$ ranging over the \emph{whole} disk rather than over a
+neighbourhood of one ordinary centre, and with ordinary points included
+since $v(0)=+\infty$. The elements of $D^\sharp_\Gamma$ are called the
+\emph{geometric} (or actual surcomplex) points. Evaluation is the
+coefficientwise Taylor sum \eqref{analytic:eq:evaluationR} of
+\cref{analytic:def:ringR}; it is not the Berarducci--Mantova derivation,
+and no sine of an infinite surreal argument is being defined.
+\item \emph{Spectrum.} The word \emph{spectrum} in these four sections
+always means the \emph{prime spectrum} $\Spec$ of a commutative ring: a set
+of prime ideals. It never means an eigenvalue list, a list of singular
+values, a differential phase multiset, or a set of divisor-valuation
+levels. The one competing usage introduced below is named in full every
+time: the \emph{finite leading-valuation spectrum} $\mathcal V(x)$ of
+\cref{analytic:thm:fixed-units} is a set of \emph{valuations}, not of prime
+ideals.
+\item \emph{Three valuations, kept apart.} $v$ is the minimum-support
+valuation on scalars in $K_\Gamma$; $\vH$ is the minimum-support valuation
+on coefficient families in $\HH_\Gamma(D)$, as in
+\cref{analytic:conv:notation}; and $d_a$, introduced in
+\cref{analytic:thm:fixed-dvr}, is the \emph{finite spatial order of
+vanishing} at a geometric point $a$. Conflating them hides the central
+contrast below, in which the local spatial dimension is one while a single
+global fibre has infinite Krull dimension.
+\end{enumerate}
+\end{convention}
+
+Throughout, the summability calculus is the one already fixed in
+\cref{analytic:sec:hahn}: \cref{analytic:def:strong-sum},
+\cref{analytic:lem:neumann} and \cref{analytic:lem:operator} are used as
+they stand and are not restated. Likewise
+\cref{analytic:prop:evaluationR}, which is a statement about
+$\HH_\Gamma(U)$ for an arbitrary ordinary connected open $U$, applies to
+$U=D$ verbatim: evaluation \eqref{analytic:eq:evaluationR} is strongly
+summable, respects sums, products and coefficientwise derivatives, and is
+injective on $\HH_\Gamma(D)$. Only the following valuation estimate, which
+that proposition does not record, is needed in addition.
+
+\begin{lemma}[Evaluation estimate over $\HH_\Gamma(D)$]
+\label{analytic:lem:fixed-eval}
+For every $a\in D^\sharp_\Gamma$ the map
+$\ev_a:\HH_\Gamma(D)\to K_\Gamma$ is a surjective $K_\Gamma$-algebra
+homomorphism, and for every $F$,
+\begin{equation}\label{analytic:eq:fixed-eval-bound}
+ v(F(a))\ \ge\ \vH(F).
+\end{equation}
+For an ordinary $f\in\OO(D)$ one has $v(f(a))\ge0$, with equality when
+$f(c)\ne0$, where $c=\red(a)$ is the ordinary part of $a$.
+\end{lemma}
+\begin{proof}
+The algebra properties are \cref{analytic:prop:evaluationR} applied to
+$U=D$, and surjectivity holds because $\ev_a$ fixes the constant
+coefficient families, which are exactly $K_\Gamma$. Every nonzero
+contribution to \eqref{analytic:eq:evaluationR} is a product of $t^\gamma$
+with $\gamma\in\supp F$ and a power of $\varepsilon$ of nonnegative
+valuation, so its exponent is at least $\vH(F)$; this gives
+\eqref{analytic:eq:fixed-eval-bound}. If $f(c)\ne0$ the exponent-zero term
+of $f(c+\varepsilon)$ is the nonzero complex number $f(c)$, while every
+other contribution has strictly positive valuation.
+\end{proof}
+
+\begin{lemma}[A sufficient global unit criterion]
+\label{analytic:lem:fixed-global-unit}
+If the leading coefficient $f_\alpha$ of $F\in\HH_\Gamma(D)$ is
+\emph{nowhere} zero on $D$, then $F$ is a unit of $\HH_\Gamma(D)$.
+\end{lemma}
+\begin{proof}
+Write $F=t^\alpha f_\alpha(1+U)$. Since $1/f_\alpha\in\OO(D)$, every
+coefficient function of $U$ is holomorphic on the same $D$, and $\supp U$
+is strictly positive. \Cref{analytic:lem:operator}, applied with the
+operators of multiplication by the coefficients of $U$, inverts $1+U$;
+multiplying by $t^{-\alpha}/f_\alpha$ finishes.
+\end{proof}
+
+The contrast with \cref{analytic:prop:units} is the whole difficulty of
+this ring and should be read once. Over $\A_n$ a leading coefficient is a
+unit as soon as it is nonzero \emph{at the one centre}. Over
+$\HH_\Gamma(D)$ the corresponding sufficient condition asks for
+nonvanishing \emph{on the entire fixed disk}, and it is only sufficient:
+\cref{analytic:thm:fixed-units} shows that the exact criterion for the
+elements that matter here involves the global Hahn support as well.
+
+\subsection{A uniform non-Archimedean Banach algebra}
+\label{analytic:subsec:fixed-banach}
+For this subsection $\Gamma=\R$. Give $K$ its intrinsic absolute value
+$|x|_v=e^{-v(x)}$ and set
+\begin{equation}\label{analytic:eq:fixed-norm}
+ \norm{F}_H=e^{-\vH(F)},\qquad \norm{0}_H=0 .
+\end{equation}
+This is a genuine real-valued non-Archimedean norm and is \emph{not} the
+ordered surreal modulus of a surcomplex number, nor the fine topology
+induced from $\SC$. In particular every nonzero ordinary complex constant
+has norm one.
+
+\begin{proposition}[Completeness and exact pointwise norm]
+\label{analytic:prop:fixed-banach}
+$\HH(D)$ is a complete normed $K$-algebra whose norm
+\eqref{analytic:eq:fixed-norm} is multiplicative, and
+\begin{equation}\label{analytic:eq:fixed-supnorm}
+ \norm{F}_H=\sup_{a\in D^\sharp_\R}|F(a)|_v .
+\end{equation}
+For nonzero $F$ the supremum is attained, at an ordinary point of $D$.
+Hence $\HH(D)$ is a uniform non-Archimedean Banach $K$-algebra.
+\end{proposition}
+\begin{proof}
+Multiplicativity is the identity $\vH(FG)=\vH(F)+\vH(G)$: the leading
+coefficient of a product is the product of the two nonzero leading
+coefficient functions, and $\OO(D)$ is a domain because $D$ is connected,
+so $\HH(D)$ is a domain as well. The ultrametric inequality is
+$\vH(F+G)\ge\min\{\vH(F),\vH(G)\}$, and scalar homogeneity follows by
+regarding $K$ as the constant coefficient families.
+
+For completeness, take a Cauchy sequence and select a subsequence $(G_j)$
+with $\vH(G_{j+1}-G_j)>j$ for all $j\ge1$; put $\Delta_j=G_{j+1}-G_j$. The
+family consisting of $G_1$ and all $\Delta_j$ is strongly summable in the
+sense of \cref{analytic:def:strong-sum}. Indeed only finitely many of the
+$\Delta_j$ have any support below a fixed real bound $B$, so a descending
+sequence in the union of the supports would be bounded above by its first
+term and would therefore lie in a finite union of well-ordered sets, which
+is impossible; and at each exponent only finitely many summands contribute,
+for the same reason. Each coefficient function of the sum is therefore a
+finite sum of elements of $\OO(D)$, so the sum $G$ lies in $\HH(D)$, and
+$\vH(G-G_j)\to+\infty$. The original Cauchy sequence has the same limit.
+
+The inequality $\sup_a|F(a)|_v\le\norm F_H$ is
+\eqref{analytic:eq:fixed-eval-bound}. For the reverse, let
+$\alpha=\vH(F)$ and choose an ordinary $c\in D$ with $f_\alpha(c)\ne0$,
+which exists because $f_\alpha\ne0$. Then $v(F(c))=\alpha$ by
+\cref{analytic:lem:fixed-eval}, so the supremum is attained and equals
+$\norm F_H$.
+\end{proof}
+
+Two consequences deserve to be recorded before they are used, because they
+remove the two explanations a reader would otherwise reach for when the
+corona identity fails in \cref{analytic:sec:fixed-corona}: the algebra is
+complete, and its norm is exactly the supremum of \emph{actual} surcomplex
+evaluations, so neither incompleteness nor a mismatch between the norm and
+the geometry is available as an excuse.
+
+\begin{lemma}[Unit neighbourhood and a distance obstruction]
+\label{analytic:lem:fixed-distance}
+If $\norm{E}_H<1$ then $1-E$ is a unit of $\HH(D)$. Consequently every
+proper ideal $I\subset\HH(D)$ satisfies
+\begin{equation}\label{analytic:eq:fixed-distance}
+ \inf_{A\in I}\norm{1-A}_H=1 ,
+\end{equation}
+the closure of a proper ideal is proper, and every maximal ideal is closed.
+\end{lemma}
+\begin{proof}
+The support of $E$ is strictly positive, so $\sum_{j\ge0}E^j$ is strongly
+summable by \cref{analytic:lem:operator} and inverts $1-E$. If $A\in I$ had
+$\norm{1-A}_H<1$ then $A$ would be a unit, contradicting properness; taking
+$A=0$ gives the opposite inequality in \eqref{analytic:eq:fixed-distance}.
+The closure assertions follow at once.
+\end{proof}
+
+\begin{remark}[Two different infinite sums]\label{analytic:rem:fixed-two-sums}
+The completeness proof uses differences whose valuations tend to
+$+\infty$. The series $F$ of \eqref{analytic:eq:fixed-F} below instead has
+exponents increasing to $2$: it is a perfectly valid Hahn series, but its
+finite partial sums do \emph{not} converge to it in $\norm{\cdot}_H$, the
+remainder after $N$ terms having norm $e^{-\gamma_{N+1}}\to e^{-2}\ne0$.
+Strong summability, not norm convergence, remains the definition of the
+series, exactly as in \cref{analytic:rem:rank}. Neither assertion concerns
+the fine topology on the proper class $\SC$.
+\end{remark}
+
+\subsection{A discrete divisor and the fixed-divisor interpolation quotient}
+\label{analytic:subsec:fixed-divisor}
+Set, for $n\ge1$,
+\begin{equation}\label{analytic:eq:fixed-cardinal-data}
+ a_n=1-\frac1n,\qquad h(z)=\sin\frac{\pi}{1-z},\qquad
+ e_n(z)=\frac{h(z)}{\pi n^2(-1)^n(z-a_n)},
+\end{equation}
+the removable value of $e_n$ at $a_n$ being understood.
+
+\begin{lemma}[The cardinal functions]\label{analytic:lem:fixed-cardinal}
+The zeros of $h$ in $D$ are precisely the $a_n$, each simple. Moreover
+$h'(a_n)=\pi n^2(-1)^n$ and $e_n(a_m)=\delta_{nm}$, and every $e_n$ lies in
+$\OO(D)$.
+\end{lemma}
+\begin{proof}
+For $w=1/(1-z)$ the condition $|z|<1$ is equivalent to $|w-1|<|w|$, hence
+to $\Re w>1/2$; the zeros of $\sin(\pi w)$ in that half-plane are exactly
+the positive integers $w=n$, which correspond to $z=a_n$. Since
+$h'(z)=\pi(1-z)^{-2}\cos(\pi/(1-z))$, one gets $h'(a_n)=\pi n^2(-1)^n\ne0$,
+so each zero is simple. Removing that simple zero in the quotient defining
+$e_n$ gives a function holomorphic on all of $D$ with value one at $a_n$
+and zero at every other $a_m$.
+\end{proof}
+
+\begin{lemma}[Unrestricted ordinary interpolation on $D$]
+\label{analytic:lem:fixed-interp}
+For every sequence $(c_n)\in\C^\N$ there is $f\in\OO(D)$ with $f(a_n)=c_n$
+for all $n$.
+\end{lemma}
+\begin{proof}
+For $n\ge3$ put $r_n=1-2/n<a_n$ and choose a nonnegative integer $N_n$ with
+\[
+ \sup_{|z|\le r_n}
+ \Bigl|c_ne_n(z)\Bigl(\frac{1+z}{1+a_n}\Bigr)^{N_n}\Bigr|\le2^{-n},
+\]
+possible because $|1+z|/(1+a_n)\le(1+r_n)/(1+a_n)<1$ on that closed disk.
+Take $N_1,N_2$ arbitrary. Since $r_n\to1$, the series
+$f(z)=\sum_{n\ge1}c_ne_n(z)\bigl((1+z)/(1+a_n)\bigr)^{N_n}$ converges
+locally uniformly on $D$ and defines an element of $\OO(D)$. At $a_m$ the
+only nonzero term is the $m$th, whose extra factor is one.
+\end{proof}
+
+This construction permits arbitrarily large prescribed values. It asserts
+no ordinary uniform bound on $D$, and it uses ordinary complex convergence
+only to build one coefficient function at a time; it is not a
+summability statement about a Hahn family.
+
+\begin{definition}[The common-support product]\label{analytic:def:fixed-B}
+Put
+\begin{equation}\label{analytic:eq:fixed-Bdef}
+ \BB_\Gamma=\Bigl\{(x_n)\in K_\Gamma^\N:
+ \textstyle\bigcup_{n\ge1}\supp x_n\ \text{is well ordered}\Bigr\},
+\end{equation}
+with coordinatewise operations. Equivalently
+$\BB_\Gamma=(\C^\N)((t^\Gamma))$, where $\C^\N$ is the ordinary product
+ring; \cref{analytic:lem:neumann} makes it a ring.
+\end{definition}
+
+The second description keeps the spatial index $n$ visibly distinct from
+any summation index. A coefficient sequence may have infinitely many
+nonzero entries; those entries are never added merely because they sit at
+one Hahn exponent. This is the same discipline recorded in
+\cref{analytic:def:vector-hahn} and is worth repeating here because the two
+indices are easy to conflate.
+
+\begin{theorem}[Fixed-divisor interpolation quotient]
+\label{analytic:thm:fixed-quotient}
+The map $q:\HH_\Gamma(D)\to\BB_\Gamma$, $q(F)=(F(a_n))_{n\ge1}$, is a
+surjective $K_\Gamma$-algebra homomorphism with
+\begin{equation}\label{analytic:eq:fixed-quotient}
+ \ker q=h\,\HH_\Gamma(D),\qquad
+ \HH_\Gamma(D)/(h)\ \simeq\ \BB_\Gamma .
+\end{equation}
+Every value family has a lift whose support is contained in the union of
+its coordinate supports.
+\end{theorem}
+\begin{proof}
+At an ordinary point evaluation merely evaluates coefficient functions, so
+$\supp F(a_n)\subseteq\supp F$ and $q$ lands in $\BB_\Gamma$; it is an
+algebra map by \cref{analytic:lem:fixed-eval}.
+
+Given $x=(x_n)\in\BB_\Gamma$ put $S=\bigcup_n\supp x_n$ and write
+$x_n=\sum_{\gamma\in S}c_{\gamma,n}t^\gamma$. For each $\gamma\in S$ apply
+\cref{analytic:lem:fixed-interp} to the sequence $(c_{\gamma,n})_n$ to get
+$f_\gamma\in\OO(D)$; then $F=\sum_{\gamma\in S}f_\gamma t^\gamma$ is a lift
+with $\supp F\subseteq S$. The set of choices is set-sized, and no two
+different coefficient functions are being added at one exponent.
+
+If $q(F)=0$ then every $f_\gamma$ vanishes at every $a_n$, so by
+\cref{analytic:lem:fixed-cardinal} the quotient $f_\gamma/h$ extends
+holomorphically across each simple zero and lies in $\OO(D)$. Dividing
+coefficientwise gives $F/h\in\HH_\Gamma(D)$ with the same support. The
+reverse inclusion is immediate.
+\end{proof}
+
+\Cref{analytic:thm:fixed-quotient} is the simple, undeformed case of the
+support-restricted Chinese remainder construction already developed in the
+companion report on global divisors \cite[\S10]{GlobalDivisors}, and it is
+credited to that report rather than relabelled as a discovery here; that
+report also states explicitly that it refrains from calling the fixed-disk
+ring a principal ideal domain. What is new below is the exact computation
+of the units of the quotient and the study of valuation growth inside its
+prime ideals.
+
+\begin{proposition}[The quotient norm]\label{analytic:prop:fixed-Bnorm}
+For $\Gamma=\R$ the ring $\BB=\BB_\R$ is a closed isometric unital
+subalgebra of $\ell^\infty(\N,K)$, with
+\[
+ \norm{x}_\BB=\sup_n|x_n|_v
+ =\exp\Bigl(-\min\textstyle\bigcup_n\supp x_n\Bigr)\qquad(x\ne0),
+\]
+and \eqref{analytic:eq:fixed-quotient} identifies this norm with the
+quotient norm from $\HH(D)/(h)$. In particular $h\,\HH(D)$ is closed.
+\end{proposition}
+\begin{proof}
+A common well-ordered support has a least element, which gives both
+boundedness of the coordinate norms and the displayed formula. Evaluation
+is contractive by \eqref{analytic:eq:fixed-eval-bound}, so every lift has
+norm at least $\norm x_\BB$, and the support-preserving lift of
+\cref{analytic:thm:fixed-quotient} attains that bound. Multiplication by
+$h$ is an isometry of the complete space $\HH(D)$ because $\vH(h)=0$, so
+its image is closed and the quotient is complete; hence the isometric image
+of $\BB$ in $\ell^\infty(\N,K)$ is closed as well.
+\end{proof}
+
+\subsection{Finite leading-valuation spectrum: units, matrices, B\'ezout}
+\label{analytic:subsec:fixed-units}
+
+\begin{lemma}[Two orders]\label{analytic:lem:fixed-two-orders}
+A subset $V$ of a linearly ordered set is finite if both its inherited
+order and its reverse order are well orders.
+\end{lemma}
+\begin{proof}
+If $V$ were infinite and well ordered, repeatedly taking the least element
+not yet chosen would produce an infinite strictly increasing sequence,
+which is strictly decreasing for the reverse order and so contradicts that
+the reverse order is a well order.
+\end{proof}
+
+\begin{theorem}[Exact unit criterion in the common-support product]
+\label{analytic:thm:fixed-units}
+Let $x=(x_n)\in\BB_\Gamma$ and call
+\begin{equation}\label{analytic:eq:fixed-V}
+ \mathcal V(x)=\{v(x_n):n\ge1\}
+\end{equation}
+its \emph{finite leading-valuation spectrum} --- a set of valuations, not
+of prime ideals. Then
+\[
+ x\in\BB_\Gamma^\times
+ \iff
+ x_n\ne0\ \text{for every }n\ \text{ and }\ \mathcal V(x)\ \text{is finite},
+\]
+and in the positive case the inverse has an explicit support certificate.
+\end{theorem}
+\begin{proof}
+If $y\in\BB_\Gamma$ inverts $x$ then $y_n=x_n^{-1}$, so all $x_n$ are
+nonzero. With $S=\bigcup_n\supp x_n$ and $T=\bigcup_n\supp y_n$ one has
+$\mathcal V(x)\subseteq S$ and $-\mathcal V(x)\subseteq T$, so both $\mathcal V(x)$ and its reverse
+order are well orders; \cref{analytic:lem:fixed-two-orders} makes $\mathcal V(x)$
+finite.
+
+Conversely suppose all coordinates are nonzero and $\mathcal V=\mathcal V(x)$ is finite.
+Write $x_n=c_nt^{\nu_n}(1+u_n)$ with $c_n\in\C^\times$ and
+$\nu_n\in\mathcal V$. The supports of all $u_n$ lie in the set
+\begin{equation}\label{analytic:eq:fixed-Efinite}
+ E=\bigcup_{\nu\in\mathcal V}\bigl((S-\nu)\cap\Gamma_{>0}\bigr),
+\end{equation}
+a finite union of well-ordered positive sets, hence well ordered and
+positive. By \cref{analytic:lem:operator},
+$x_n^{-1}=c_n^{-1}t^{-\nu_n}\sum_{k\ge0}(-u_n)^k$ exists, and all the
+inverse supports lie in the finite union
+\begin{equation}\label{analytic:eq:fixed-inverse-support}
+ \bigcup_{\nu\in\mathcal V}\bigl(-\nu+E^*\bigr),
+\end{equation}
+which is well ordered. Hence $(x_n^{-1})_n\in\BB_\Gamma$.
+\end{proof}
+
+The load-bearing word is \emph{finiteness}, not boundedness. Over
+$\Gamma=\R$ an infinite increasing \emph{bounded} sequence of leading
+valuations violates the criterion just as decisively as an unbounded one,
+and \cref{analytic:sec:fixed-corona} is built on exactly such a sequence.
+
+\begin{corollary}[Failure of inverse-closedness]
+\label{analytic:cor:fixed-inverseclosed}
+The closed subalgebra $\BB_\R\subset\ell^\infty(\N,K)$ is not
+inverse-closed: $x_n=t^{2-1/n}$ defines an element of $\BB_\R$ whose
+coordinatewise inverse is bounded in $\ell^\infty(\N,K)$ but does not lie
+in $\BB_\R$.
+\end{corollary}
+\begin{proof}
+The common support $\{2-1/n\}$ is well ordered and the inverse coordinate
+norms are $e^{2-1/n}<e^2$, but the required inverse support
+$\{-2+1/n:n\ge1\}$ is an infinite strictly decreasing sequence. Apply
+\cref{analytic:thm:fixed-units}.
+\end{proof}
+
+\begin{corollary}[Matrix inverse criterion]\label{analytic:cor:fixed-matrix}
+Let $A\in M_d(\BB_\Gamma)$ with $n$th coordinate matrix
+$A_n\in M_d(K_\Gamma)$. Then $A$ is invertible over $\BB_\Gamma$ if and
+only if every $A_n$ is invertible and $\{v(\det A_n):n\ge1\}$ is finite.
+Equivalently, for $A\in M_d(\HH_\Gamma(D))$ there are
+$B,C\in M_d(\HH_\Gamma(D))$ with $AB+hC=I_d$ exactly under these
+conditions at the $a_n$.
+\end{corollary}
+\begin{proof}
+Over a commutative ring a square matrix is invertible exactly when its
+determinant is a unit; apply \cref{analytic:thm:fixed-units} to the
+determinant and use the adjugate formula. The last assertion follows by
+lifting a matrix inverse through \cref{analytic:thm:fixed-quotient}, a
+right inverse over this commutative ring already forcing a unit
+determinant.
+\end{proof}
+
+This is a determinant consequence and is not offered as an independent
+matrix inversion theorem; its content is the exact support condition across
+infinitely many surcomplex fibres at once.
+
+\begin{theorem}[Exact B\'ezout criterion modulo a fixed simple divisor]
+\label{analytic:thm:fixed-bezout}
+Let $h$ be as in \eqref{analytic:eq:fixed-cardinal-data}. For
+$F\in\HH_\Gamma(D)$ the following are equivalent:
+\begin{enumerate}
+\item there are $U,V\in\HH_\Gamma(D)$ with $hU+FV=1$;
+\item $F(a_n)\ne0$ for every $n$, and $\{v(F(a_n)):n\ge1\}$ is finite.
+\end{enumerate}
+Moreover solvability is unchanged by every ordered value-group extension
+$\Gamma\subseteq\Gamma'$: a solution that exists over the larger
+coefficient ring already exists over the original one.
+\end{theorem}
+\begin{proof}
+The identity $hU+FV=1$ holds for some $U,V$ exactly when the class of $F$
+is a unit of $\HH_\Gamma(D)/(h)$, which by
+\cref{analytic:thm:fixed-quotient} is the class $(F(a_n))_n\in\BB_\Gamma$;
+apply \cref{analytic:thm:fixed-units}.
+
+For extension invariance, note that evaluation of $F$ at the ordinary
+points $a_n$ does not change when $\Gamma$ grows: the values are the same
+scalars and their valuations are the same elements of $\Gamma\subseteq
+\Gamma'$, with the same order and the same cardinality. Criterion~(2) is
+therefore literally unchanged.
+\end{proof}
+
+In the positive case a solution can be written down. Use
+\eqref{analytic:eq:fixed-inverse-support} to build the inverse value
+family, lift it to some $V$ by \cref{analytic:thm:fixed-quotient}, and put
+$U=(1-FV)/h$; the numerator vanishes coefficientwise at every $a_n$, so the
+quotient is coefficientwise holomorphic on the same $D$. The construction
+is noncanonical because ordinary interpolation is, but its support
+admissibility is proved rather than presumed.
+
+\begin{remark}[A pointwise minimum over several generators is not the
+criterion]\label{analytic:rem:fixed-minimum}
+\Cref{analytic:thm:fixed-bezout} concerns the pair $(h,F)$ with $h$ the
+fixed ordinary divisor. It is \emph{not} a criterion for an arbitrary row
+in $\BB_\Gamma$ obtained by replacing $v(x_n)$ with a pointwise minimum
+over the row. For instance, if $x_n=t^{2-1/n}$ then $x$ and $x+t^3$
+generate the unit ideal, their difference being the unit $t^3$, even though
+their pointwise minimum valuations form an infinite set. Finite
+cancellations among generators must be recorded as well as leading scales.
+\end{remark}
+\section{A uniform corona obstruction over the fixed polydisk}
+\label{analytic:sec:fixed-corona}
+
+Take $\Gamma=\R$ and keep the divisor $h$ and the cardinal functions $e_n$
+of \eqref{analytic:eq:fixed-cardinal-data}. Put
+\begin{equation}\label{analytic:eq:fixed-F}
+ \gamma_n=2-\frac1n,\qquad
+ F(z)=\sum_{n\ge1}t^{\gamma_n}e_n(z).
+\end{equation}
+The exponents $\gamma_n$ are strictly increasing, so their image is well
+ordered of order type $\omega$ and \eqref{analytic:eq:fixed-F} is an
+element of $\HH(D)$, with $\vH(F)=1$ and $F(a_n)=t^{\gamma_n}$. They are
+also \emph{bounded}, by $2$: that is the point of the example, and it is
+what \cref{analytic:thm:fixed-units} says is not enough.
+
+\begin{theorem}[Uniform corona failure over $\HH(D)$]
+\label{analytic:thm:fixed-corona}
+With $h$ and $F$ as above,
+\begin{align*}
+ \norm{h}_H&=1, & \norm{F}_H&=e^{-1},\\
+ \inf_{z\in D^\sharp_\R}\max\{|h(z)|_v,|F(z)|_v\}&=e^{-2}, &
+ \inf_{U,V\in\HH(D)}\norm{1-hU-FV}_H&=1 .
+\end{align*}
+Thus $h$ and $F$ have no common zero at any geometric point of
+$D^\sharp_\R$ and satisfy a uniform positive pointwise lower bound, yet
+$I=(h,F)$ is a proper, nonprincipal, two-generated ideal with empty
+geometric zero set, and even approximate identities $hU+FV\approx1$ with
+residual norm below one do not exist. Local B\'ezout identities do exist on
+ordinary neighbourhoods of every point of $D$, so the obstruction is
+purely global.
+\end{theorem}
+
+The proof occupies the rest of this section.
+
+\subsection{Properness, and the unavoidable descending support}
+\label{analytic:subsec:fixed-descending}
+Since $\{v(F(a_n))\}=\{\gamma_n\}$ is infinite,
+\cref{analytic:thm:fixed-bezout} gives
+\begin{equation}\label{analytic:eq:fixed-proper-I}
+ I=(h,F)\subsetneq\HH(D).
+\end{equation}
+The mechanism is worth seeing directly. Any putative identity $hU+FV=1$,
+evaluated at $a_n$, would force $V(a_n)=t^{-\gamma_n}=t^{-2+1/n}$ for every
+$n$. An ordinary evaluation can delete support exponents but never create
+them, so every $-2+1/n$ would have to lie in $\supp V$; that set is
+strictly decreasing and infinite, so it is not well ordered and no such $V$
+exists. Nothing in this argument depends on the ambient group, which is
+\cref{analytic:thm:fixed-bezout}'s extension invariance in concrete form.
+
+\begin{remark}[No repair by a larger surreal universe]
+\label{analytic:rem:fixed-extension}
+Any proposed solution $U,V$ is expressed by Hahn coefficient families whose
+exponents form a set; by \cref{analytic:lem:enlargement} the union of that
+set with the exponents of $h$ and $F$ lies in a set-sized ordered subgroup
+of $\No$, and \cref{analytic:thm:fixed-bezout} applies there. Hence no
+enlargement of the workspace repairs the identity, so long as the solution
+is still required to have one well-ordered global Hahn support. A change of
+the \emph{function class}, not merely of the size of the workspace, would
+be required. This is a sharper negative than
+\cref{analytic:thm:workspace,analytic:thm:basechange}, which say that
+enlargement adds no zeros; here enlargement adds no \emph{solutions}
+either.
+\end{remark}
+
+\subsection{Every actual surcomplex point satisfies the lower bound}
+\begin{lemma}[Simple ordinary zeros acquire no extra monad zeros]
+\label{analytic:lem:fixed-hzeros}
+For every ordered group containing the exponents, $h(c+\varepsilon)=0$ with
+$c\in D$ and $\varepsilon\in\m_{K_\Gamma}$ holds exactly when $c=a_n$ for
+some $n$ and $\varepsilon=0$.
+\end{lemma}
+\begin{proof}
+If $h(c)\ne0$, the nonzero exponent-zero Taylor term prevents vanishing, by
+\cref{analytic:lem:fixed-eval}. At a simple zero $a_n$ and for
+$\varepsilon\ne0$, Taylor expansion gives
+$h(a_n+\varepsilon)=h'(a_n)\varepsilon(1+\eta)$ with $v(\eta)>0$; the last
+factor is a unit of $K_\Gamma$ and the other two are nonzero. The case
+$\varepsilon=0$ is \cref{analytic:lem:fixed-cardinal}.
+\end{proof}
+
+Differentiating coefficientwise does not lower Hahn exponents, and every
+exponent of $F$ is at least $1$, so for $\varepsilon\ne0$ with
+$q=v(\varepsilon)>0$ each positive-order Taylor term of $F$ at $c$ carries
+a factor $\varepsilon$ and
+\begin{equation}\label{analytic:eq:fixed-lipschitz}
+ v\bigl(F(c+\varepsilon)-F(c)\bigr)\ \ge\ 1+q .
+\end{equation}
+
+\begin{proposition}[The sharp uniform lower bound]
+\label{analytic:prop:fixed-sharp-corona}
+For every $z\in D^\sharp_\R$,
+\begin{equation}\label{analytic:eq:fixed-strictlower}
+ \max\{|h(z)|_v,|F(z)|_v\}>e^{-2},
+\end{equation}
+and the infimum of the left-hand side over $D^\sharp_\R$ is exactly
+$e^{-2}$ and is not attained.
+\end{proposition}
+\begin{proof}
+Write $z=c+\varepsilon$. If $c\notin\{a_n\}$ then $v(h(z))=0$ by
+\cref{analytic:lem:fixed-eval}, so the maximum is at least $1$. If $c=a_n$
+and $\varepsilon=0$ then $h(z)=0$ while $v(F(z))=\gamma_n<2$, so the
+maximum is $e^{-\gamma_n}>e^{-2}$.
+
+Let $c=a_n$ and $\varepsilon\ne0$, and put $q=v(\varepsilon)>0$.
+Simplicity of the zero gives $v(h(z))=q$, so if $q<2$ then
+$|h(z)|_v>e^{-2}$ and we are done. If $q\ge2$ then
+\eqref{analytic:eq:fixed-lipschitz} gives
+$v(F(z)-t^{\gamma_n})\ge1+q\ge3>\gamma_n$, whence $v(F(z))=\gamma_n<2$ and
+again $|F(z)|_v>e^{-2}$.
+
+Finally at $z=a_n$ the maximum equals $e^{-\gamma_n}\to e^{-2}$, so the
+infimum is exactly $e^{-2}$; strictness of
+\eqref{analytic:eq:fixed-strictlower} shows it is never attained.
+\end{proof}
+
+By \cref{analytic:prop:fixed-banach}, $\norm h_H=e^{-\vH(h)}=1$ and
+$\norm F_H=e^{-1}$; by \eqref{analytic:eq:fixed-proper-I} and
+\cref{analytic:lem:fixed-distance} the distance from $1$ to $I$ is exactly
+one. Since the norm is the supremum of actual surcomplex evaluations and
+the algebra is complete, neither incompleteness nor a mismatch between norm
+and geometry explains the failure.
+
+\subsection{Local solutions, nonprincipality, and finite observations}
+\begin{proposition}[Local B\'ezout solutions on ordinary neighbourhoods]
+\label{analytic:prop:fixed-local-bezout}
+Every $c\in D$ has an ordinary neighbourhood $W\subseteq D$ carrying
+$U_W,V_W\in\OO(W)((t^\R))$ with $hU_W+FV_W=1$.
+\end{proposition}
+\begin{proof}
+If $h(c)\ne0$, shrink $W$ so that $h$ is nowhere zero on it and take
+$U_W=1/h$, $V_W=0$. If $c=a_n$, choose $W$ containing no other zero of $h$
+and put $V_W=t^{-\gamma_n}$ and $U_W=(1-t^{-\gamma_n}F)/h$. Each
+coefficient of the numerator vanishes at $a_n$, and division by the single
+simple zero leaves coefficients holomorphic on $W$. Translating the support
+by $-\gamma_n$ and adjoining the exponent $0$ preserves well ordering, so
+these are legitimate local Hahn sections.
+\end{proof}
+
+\begin{proposition}[A proper, nonprincipal, two-generated free ideal]
+\label{analytic:prop:fixed-nonprincipal}
+The ideal $I=(h,F)$ is not principal.
+\end{proposition}
+\begin{proof}
+Suppose $I=(g)$, so $h=gu$ and $F=gw$ with $u,w\in\HH(D)$. Put
+$\alpha=\vH(g)$; since $\vH(h)=0$ we get $\vH(u)=-\alpha$ and
+$g_\alpha u_{-\alpha}=h$ for the leading coefficients. Every zero of
+$g_\alpha$ is therefore some $a_n$, and at such a point simplicity of the
+zero of $h$ forces $u_{-\alpha}(a_n)\ne0$, hence $u(a_n)\ne0$ by
+\cref{analytic:lem:fixed-eval}. Evaluating $h=gu$ at $a_n$ then gives
+$g(a_n)=0$, and evaluating $F=gw$ gives $F(a_n)=0$, contradicting
+$F(a_n)=t^{\gamma_n}\ne0$. So $g_\alpha$ has no zero on $D$ and $g$ is a
+unit by \cref{analytic:lem:fixed-global-unit}, contradicting
+\eqref{analytic:eq:fixed-proper-I}.
+\end{proof}
+
+Call an ideal \emph{free} when its elements have no common geometric zero;
+the usage is local to these sections. In classical ordinary holomorphic
+function rings free ideals and their maximal extensions are old objects,
+but finitely generated ideals there are B\'ezout, so a proper finitely
+generated free ideal cannot occur \cite{Henriksen52,Henriksen53}. The ideal
+$I$ is proper, two-generated and free. That is a genuine change in
+\emph{finite} ideal theory caused by the global Hahn support, not a
+restatement that global function rings have free maximal ideals. It also
+shows that no Nullstellensatz of the form $I(Z(I))=\sqrt I$ can hold for
+finitely generated ideals of $\HH(D)$: the geometric vanishing ideal of $I$
+is the whole ring, while $\sqrt I$ is proper. The contrast with
+\cref{analytic:thm:strong-nullA,analytic:thm:strongnullR} is exactly the
+contrast between the germ rings and this one, and it is why
+\cref{analytic:conv:ring} forbids transferring either statement.
+
+\begin{remark}[Every finite observation misses the obstruction]
+\label{analytic:rem:fixed-finite-observation}
+For a \emph{finite} $J\subset\N$ the prescriptions $V(a_n)=t^{-\gamma_n}$,
+$n\in J$, have finite common support and are realized by
+$V_J=\sum_{n\in J}t^{-\gamma_n}e_n$. The obstruction is therefore invisible
+to any check of finitely many centres; enlarging $J$ merely forces a longer
+strictly decreasing sequence of inverse exponents. A finite exact
+computation can exhibit arbitrarily long initial portions of that sequence,
+but its incompatibility with well ordering is an infinite argument and is
+supplied in \cref{analytic:subsec:fixed-descending}, not by any
+computation.
+\end{remark}
+
+\begin{remark}[This does not contradict Carleson]
+\label{analytic:rem:fixed-carleson}
+\Cref{analytic:thm:fixed-corona} is not a counterexample to Carleson's
+corona theorem \cite{Carleson}, and is not asserted to be one. The scalar
+field, the absolute value and the function class are all different: the
+coefficients here are not required to be bounded in the ordinary complex
+norm, the norm \eqref{analytic:eq:fixed-norm} is a valuation norm under
+which every nonzero ordinary complex constant has size one, and the lower
+bound \eqref{analytic:eq:fixed-strictlower} is a bound on valuation norms
+of Hahn values, not on ordinary moduli. Neither does it contradict results
+for convergent Hahn-meromorphic expansions such as
+\cite{MullerStrohmaier}, whose function class again differs.
+\end{remark}
+
+\begin{proof}[Proof of \cref{analytic:thm:fixed-corona}]
+The four displayed quantities are \cref{analytic:prop:fixed-banach}
+applied to $h$ and $F$, \cref{analytic:prop:fixed-sharp-corona}, and
+\eqref{analytic:eq:fixed-proper-I} together with
+\cref{analytic:lem:fixed-distance}. Absence of a common geometric zero is
+\cref{analytic:lem:fixed-hzeros} together with $F(a_n)\ne0$; properness is
+\eqref{analytic:eq:fixed-proper-I}; nonprincipality is
+\cref{analytic:prop:fixed-nonprincipal}; the local identities are
+\cref{analytic:prop:fixed-local-bezout}.
+\end{proof}
+\section{Every geometric localization of the fixed-polydisk ring is a
+discrete valuation ring}\label{analytic:sec:fixed-local}
+
+Return to an arbitrary set-sized ordered abelian $\Gamma$. This section
+proves the positive local half of the structure theory for
+$\HH_\Gamma(D)$, and it proves it \emph{directly}: nothing below is
+inferred from a global Noetherian statement, which
+\cref{analytic:thm:fixed-fibre} will show is unavailable. Write $z$ for the
+ordinary coordinate function and $\partial_z$ for coefficientwise
+differentiation.
+
+\subsection{Global division by an infinitesimally shifted coordinate}
+Fix $a=c+\varepsilon\in D^\sharp_\Gamma$. For $f\in\OO(D)$ set
+$b_j=f^{(j)}(c)/j!$ and
+\begin{equation}\label{analytic:eq:fixed-remainders}
+ R_kf(z)=\frac{f(z)-\sum_{j=0}^kb_j(z-c)^j}{(z-c)^{k+1}},\qquad k\ge0 ;
+\end{equation}
+the singularity at $c$ is removable, so $R_kf\in\OO(D)$ --- on all of $D$,
+not merely near $c$. This globality is the one thing the germ-ring
+arguments of \cref{analytic:prop:evaluationR} do not need and this ring
+does.
+
+\begin{lemma}[Support-controlled divided difference over $\HH_\Gamma(D)$]
+\label{analytic:lem:fixed-division}
+For every $F\in\HH_\Gamma(D)$ there is $Q\in\HH_\Gamma(D)$ with
+\begin{equation}\label{analytic:eq:fixed-division}
+ F-F(a)=(z-a)\,Q .
+\end{equation}
+If $\varepsilon\ne0$, $S=\supp F$ and $E=\supp\varepsilon$, one may take
+\begin{equation}\label{analytic:eq:fixed-division-explicit}
+ Q(z)=\sum_{\gamma\in S}\sum_{k\ge0}t^\gamma\varepsilon^kR_kf_\gamma(z),
+ \qquad \supp Q\subseteq S+E^* .
+\end{equation}
+For $\varepsilon=0$ only the term $k=0$ is used.
+\end{lemma}
+\begin{proof}
+The displayed family is strongly summable by
+\cref{analytic:lem:neumann}: its exponents lie in $S+E^*$, and at each
+exponent only finitely many pairs $(\gamma,k)$ with a word in $E$
+contribute, so each Hahn coefficient of $Q$ is a finite sum of elements of
+$\OO(D)$ and $Q\in\HH_\Gamma(D)$.
+
+For the identity treat one coefficient $f$. The remainders satisfy
+\[
+ (z-c)R_0f=f-b_0,\qquad (z-c)R_kf-R_{k-1}f=-b_k\quad(k\ge1).
+\]
+Multiplying $\sum_{k\ge0}\varepsilon^kR_kf$ by $z-c-\varepsilon$ and
+collecting the finitely many contributions at each exponent gives
+$f(z)-\sum_{k\ge0}b_k\varepsilon^k=f(z)-f(a)$. Multiply by $t^\gamma$ and
+sum over $S$.
+\end{proof}
+
+\begin{corollary}[Geometric evaluation ideals]
+\label{analytic:cor:fixed-eval-ideal}
+For every $a\in D^\sharp_\Gamma$,
+\[
+ \ker\ev_a=\m_a=(z-a),\qquad \HH_\Gamma(D)/(z-a)\simeq K_\Gamma ,
+\]
+so $\m_a$ is a maximal ideal with residue field $K_\Gamma$.
+\end{corollary}
+\begin{proof}
+Evaluation is surjective by \cref{analytic:lem:fixed-eval}, and
+\cref{analytic:lem:fixed-division} identifies its kernel.
+\end{proof}
+
+\subsection{A finite spatial order of vanishing, and the local rings}
+\begin{lemma}[Finite order of vanishing]\label{analytic:lem:fixed-finite-order}
+If $F\in\HH_\Gamma(D)$ is nonzero and $a=c+\varepsilon\in D^\sharp_\Gamma$,
+then $\partial_z^jF(a)\ne0$ for some finite $j$; if the leading ordinary
+coefficient $f_\alpha$ vanishes to order $m$ at $c$, one may take $j=m$.
+\end{lemma}
+\begin{proof}
+The ordinary holomorphic $f_\alpha$ is nonzero, so its order of vanishing
+at $c$ is finite. The coefficient of $t^\alpha$ in $\partial_z^mF(a)$ is
+$f_\alpha^{(m)}(c)\ne0$; positive powers of $\varepsilon$ carry strictly
+positive exponents and all higher Hahn coefficients start above $\alpha$,
+so nothing can cancel it.
+\end{proof}
+
+\begin{theorem}[Geometric discrete valuation rings over $\HH_\Gamma(D)$]
+\label{analytic:thm:fixed-dvr}
+For $a\in D^\sharp_\Gamma$ let $d_a(F)$ be the least $j\ge0$ with
+$\partial_z^jF(a)\ne0$ --- the \emph{spatial} order of vanishing, distinct
+from $v$ and from $\vH$. Every nonzero $F\in\HH_\Gamma(D)$ factors, with
+respect to that exponent uniquely, as
+\begin{equation}\label{analytic:eq:fixed-localfactor}
+ F=(z-a)^{d_a(F)}G,\qquad G(a)\ne0 .
+\end{equation}
+The localization $\bigl(\HH_\Gamma(D)\bigr)_{\m_a}$ is a discrete
+valuation ring with uniformizer $z-a$, residue field $K_\Gamma$ and Krull
+dimension one.
+\end{theorem}
+\begin{proof}
+The least such $j$ exists by \cref{analytic:lem:fixed-finite-order}. If
+$F(a)=0$, divide by $z-a$ using \cref{analytic:lem:fixed-division}; the
+coefficientwise product rule gives
+$\partial_z^j\bigl((z-a)Q\bigr)(a)=j\,\partial_z^{j-1}Q(a)$ for $j\ge1$,
+so the least order of a nonzero derivative drops by exactly one at each
+step. After $d_a(F)$ steps one reaches
+\eqref{analytic:eq:fixed-localfactor} with
+$G(a)=\partial_z^{d_a(F)}F(a)/d_a(F)!\ne0$.
+
+A fraction in the localization has a denominator not vanishing at $a$; its
+numerator factors as above and $G$ becomes a unit, so every nonzero
+element of the local ring is a unit times a unique nonnegative power of
+$z-a$. A nonzero ideal contains an element of least such exponent and is
+generated by that power; the maximal ideal is nonzero and generated by
+$z-a$. This is a discrete valuation ring of dimension one, and its residue
+field was identified in \cref{analytic:cor:fixed-eval-ideal}.
+\end{proof}
+
+\begin{corollary}[Finite jets and completion]
+\label{analytic:cor:fixed-completion}
+For every $N\ge1$, Taylor jets identify
+\[
+ \bigl(\HH_\Gamma(D)\bigr)_{\m_a}/(z-a)^N\simeq K_\Gamma[X]/(X^N),
+ \qquad\text{hence}\qquad
+ \widehat{\bigl(\HH_\Gamma(D)\bigr)_{\m_a}}\simeq K_\Gamma[[X]] .
+\]
+\end{corollary}
+\begin{proof}
+Repeated divided differences (\cref{analytic:lem:fixed-division}) express
+any numerator modulo $(z-a)^N$ as its finite Taylor polynomial in $z-a$
+with coefficients in $K_\Gamma$; a denominator not vanishing at $a$ has a
+unit constant jet and is invertible in the truncated polynomial ring, and
+conversely every polynomial jet is represented. The kernel is exactly
+$(z-a)^N$ by \cref{analytic:thm:fixed-dvr}. Take the inverse limit.
+\end{proof}
+
+So the fixed-polydisk ring does possess, at every actual surcomplex point,
+exactly the local package that \cref{analytic:thm:regularA} and
+\cref{analytic:prop:completionR} supply for $\A_n$ and $\RR_n$ in
+dimension one. It is proved here from the divided-difference identity
+alone. In particular it is not obtained from, and does not require,
+Noetherianity of $\HH_\Gamma(D)$, a hypothesis
+\cref{analytic:thm:fixed-fibre} refutes; and it confirms independently the
+positive local statement that \cite{FiniteDeformations} establishes at each
+individual displaced zero of a finite isolated system.
+\section{The prime spectrum of the fixed-polydisk ring}
+\label{analytic:sec:fixed-spectrum}
+
+Every geometric localization is one-dimensional and regular
+(\cref{analytic:thm:fixed-dvr}). The global prime spectrum is not. This
+section exhibits, over $\Gamma=\R$, a continuum-sized strictly descending
+chain of primes lying in a \emph{single} fibre of
+$\Spec\HH(D)\to\Spec\OO(D)$, an explicit maximal ideal above the whole
+chain that is not an evaluation ideal, and an explicit ascending chain that
+refutes Noetherianity. Recall \cref{analytic:conv:fixed}(4): \emph{spectrum}
+means prime spectrum throughout.
+
+Fix a nonprincipal ultrafilter $\UU$ on $\N_{\ge1}$. Its existence is the
+only choice-theoretic input peculiar to this section; it is available in
+ZFC and is not constructible. Neither
+\cref{analytic:thm:fixed-bezout,analytic:thm:fixed-corona} nor
+\cref{analytic:thm:fixed-dvr} uses it.
+
+\subsection{Growth gauges and prime ideals}
+\label{analytic:subsec:fixed-gauges}
+By \eqref{analytic:eq:fixed-eval-bound}, every $G\in\HH(D)$ satisfies
+$v(G(a_n))\ge\vH(G)$ for all $n$: a lower bound for one fixed function, not
+one independent of $G$. It is what prevents multiplication by an arbitrary
+ring element from cancelling an arbitrarily fast growth rate of valuations,
+and it is used in exactly that way below.
+
+\begin{definition}[Growth-gauge ideal]\label{analytic:def:fixed-gauge}
+For $w:\N_{\ge1}\to\R_{\ge1}$ put
+\begin{equation}\label{analytic:eq:fixed-gauge-ideal}
+ P_w=\bigl\{G\in\HH(D):
+ \{n:v(G(a_n))>m\,w(n)\}\in\UU\ \text{for every integer }m\ge1\bigr\}.
+\end{equation}
+The growing quantity here is the \emph{Hahn valuation of a nonzero value}
+at the fixed simple divisor $h$. It is not an ordinary order of vanishing,
+and it is not the spatial order $d_a$ of \cref{analytic:thm:fixed-dvr}.
+\end{definition}
+
+\begin{theorem}[Prime ideals from arbitrary positive gauges]
+\label{analytic:thm:fixed-gauge-prime}
+For every $w:\N_{\ge1}\to\R_{\ge1}$ the set $P_w$ is a proper prime ideal
+of $\HH(D)$ containing $h$. If $\{n:w'(n)>Mw(n)\}\in\UU$ for every $M>0$,
+then $P_{w'}\subsetneq P_w$.
+\end{theorem}
+\begin{proof}
+Zero lies in $P_w$ and additive inverses do not change valuations. If
+$G,H\in P_w$, intersect the two ultrafilter-large sets on which the
+valuations exceed $mw(n)$; on the intersection the ultrametric inequality
+gives the same bound for $G+H$.
+
+Let $A\in\HH(D)$ be nonzero and $G\in P_w$. Put $L=\vH(A)$ and choose an
+integer $C\ge\max\{0,-L\}$. For each $m\ge1$, on an ultrafilter-large set
+$v(G(a_n))>(m+C)w(n)$ while $v(A(a_n))\ge L$ by
+\eqref{analytic:eq:fixed-eval-bound}. Since $w(n)\ge1$, these give
+$v((AG)(a_n))>mw(n)$, with the same conclusion when a value is zero. So
+$P_w$ is an ideal; it is proper because $v(1)=0$, and it contains $h$
+because $h(a_n)=0$ for all $n$.
+
+For primality argue contrapositively. If $G,H\notin P_w$ there are
+positive integers $m,k$ with $\{n:v(G(a_n))\le mw(n)\}\in\UU$ and
+$\{n:v(H(a_n))\le kw(n)\}\in\UU$, the ultrafilter supplying these
+complements. On their intersection both values are nonzero and
+$v((GH)(a_n))\le(m+k)w(n)$, so $GH\notin P_w$.
+
+Finally suppose $w'/w\to+\infty$ along $\UU$. Then $w'>w$ on an
+ultrafilter-large set, so $P_{w'}\subseteq P_w$. For strictness prescribe
+$W(a_n)=t^{\lceil w'(n)\rceil}$; all the exponents lie in $\N_{\ge1}$,
+which is well ordered, so \cref{analytic:thm:fixed-quotient} supplies
+$W\in\HH(D)$. Since $\lceil w'(n)\rceil\ge w'(n)$ we get $W\in P_w$, and
+since $\lceil w'(n)\rceil\le2w'(n)$ we get $W\notin P_{w'}$.
+\end{proof}
+
+\begin{remark}[The construction sees growth classes, not normalizations]
+\label{analytic:rem:fixed-growth-class}
+If $cw(n)\le w'(n)\le Cw(n)$ on an ultrafilter-large set for positive
+constants $c,C$, then $P_w=P_{w'}$: adjust the integer multiplier $m$ in
+\eqref{analytic:eq:fixed-gauge-ideal}. So the gauge detects an asymptotic
+growth class, not a chosen numerical normalization.
+\end{remark}
+
+Using growth to build prime chains has strong precedents: Henriksen
+attached prime ideals of the ring of entire functions to the growth of
+ordinary zero multiplicities \cite{Henriksen53}, and later power-series
+constructions are surveyed in \cite{KangToan}. Those are inputs and
+context, not the present point. What is added here is the \emph{relative}
+statement of \cref{analytic:thm:fixed-fibre}: the chain lies inside one
+fibre over one classical maximal ideal, and its order is created by the
+Hahn extension rather than inherited.
+
+\subsection{A continuum chain in one fibre}
+\label{analytic:subsec:fixed-fibre}
+For real $r\ge0$ put $w_r(n)=n^r$ and $P_r=P_{w_r}$. For $r<s$ one has
+$n^{s-r}\to+\infty$ ordinarily, hence along every nonprincipal
+ultrafilter, so \cref{analytic:thm:fixed-gauge-prime} gives
+\begin{equation}\label{analytic:eq:fixed-prime-chain}
+ P_s\subsetneq P_r\qquad(0\le r<s),
+\end{equation}
+with explicit separating witnesses $W_s\in P_r\setminus P_s$ determined by
+$W_s(a_n)=t^{\lceil n^s\rceil}$; for $s>0$ one concrete representative is
+$W_s=\sum_{k\ge1}t^k\sum_{\{n:\lceil n^s\rceil=k\}}e_n$, each inner sum
+being finite, and for $s=0$ one may take $W_0=t$.
+
+\begin{proposition}[All the gauges contract to one classical maximal ideal]
+\label{analytic:prop:fixed-contraction}
+For every gauge $w\ge1$,
+\begin{equation}\label{analytic:eq:fixed-contraction}
+ P_w\cap\OO(D)=\m_\UU:=\{f\in\OO(D):\{n:f(a_n)=0\}\in\UU\}.
+\end{equation}
+The ideal $\m_\UU$ is maximal with residue field $\C^\N/\UU$, and it is
+\emph{not} evaluation at any ordinary point of $D$.
+\end{proposition}
+\begin{proof}
+For ordinary $f$ each value $f(a_n)$ is either zero, of valuation
+$+\infty$, or a nonzero complex number, of valuation zero; so the
+condition in \eqref{analytic:eq:fixed-gauge-ideal} is exactly membership in
+$\m_\UU$. By \cref{analytic:lem:fixed-interp} ordinary evaluation maps
+$\OO(D)$ onto $\C^\N$, and quotienting $\C^\N$ by agreement on an
+ultrafilter-large set gives a field: a nonzero class is nonzero on such a
+set, and reciprocals there, with arbitrary values elsewhere, invert it.
+The composite $\OO(D)\to\C^\N/\UU$ has kernel $\m_\UU$, proving
+maximality. Finally $\m_\UU$ contains $h$, so a common ordinary zero would
+have to be some $a_n$; but $e_n\in\m_\UU$, since $e_n$ vanishes at every
+$a_m$ with $m\ne n$, a cofinite and hence ultrafilter-large set, while
+$e_n(a_n)=1$.
+\end{proof}
+
+There are two different ways to pass from $\m_\UU$ to Hahn families:
+ordinary ideal extension, which uses finite sums, and coefficientwise
+membership, which lets every coefficient lie in the ideal independently.
+They are not the same operation, and distinguishing them is what produces
+the explicit nongeometric maximal ideal.
+
+\begin{theorem}[Two ideals over the same classical point]
+\label{analytic:thm:fixed-two-ideals}
+Put $k_\UU=\OO(D)/\m_\UU\simeq\C^\N/\UU$ and
+\[
+ Q_\UU=\m_\UU\,\HH(D),\qquad
+ J_\UU=\Bigl\{\textstyle\sum_\gamma f_\gamma t^\gamma:
+ f_\gamma\in\m_\UU\ \text{for every}\ \gamma\Bigr\}.
+\]
+Then:
+\begin{enumerate}
+\item $Q_\UU=\{G:\{n:G(a_n)=0\}\in\UU\}$ is prime; in particular the fibre
+$\HH(D)/\m_\UU\HH(D)$ is a domain and embeds in the ultraproduct field
+$K^\N/\UU$;
+\item coefficientwise reduction induces a surjection
+$\rho:\HH(D)\twoheadrightarrow k_\UU((t^\R))$ with kernel $J_\UU$, so
+$J_\UU$ is an explicit maximal ideal;
+\item $Q_\UU\subsetneq P_r\subsetneq J_\UU$ for every finite real $r\ge0$,
+and the corona ideal $(h,F)$ of \cref{analytic:thm:fixed-corona} is
+contained in $J_\UU$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+If $G=\sum_{j=1}^mf_jG_j$ with $f_j\in\m_\UU$, the common zero set of the
+finitely many $f_j(a_n)$ lies in $\UU$, so $G(a_n)=0$ on an
+ultrafilter-large set. Conversely suppose $G(a_n)=0$ for $n\in E\in\UU$.
+By \cref{analytic:lem:fixed-interp} choose $f\in\OO(D)$ with $f(a_n)=0$ on
+$E$ and $f(a_n)=1$ off $E$; then $f\in\m_\UU$ and $(1-f)G$ vanishes at
+every $a_n$, so $(1-f)G=hB$ for some $B$ by
+\cref{analytic:thm:fixed-quotient}. Since $f,h\in\m_\UU$, the identity
+$G=fG+hB$ gives $G\in Q_\UU$. The resulting description is exactly the
+kernel of evaluation into $K^\N/\UU$, which proves primality and the
+embedding.
+
+Reducing each coefficient modulo $\m_\UU$ is a ring homomorphism, because
+Hahn multiplication uses only finite coefficient sums. Every Hahn series
+over $k_\UU$ lifts: choose a representative in $\OO(D)$ for each of its
+nonzero coefficients, on the same well-ordered support. The target is a
+Hahn field, so the kernel $J_\UU$ is maximal.
+
+An element of $Q_\UU$ has zero values on an ultrafilter-large set and so
+lies in every $P_r$; the inclusion is strict because $W_{r+1}\in P_r$ has
+nonzero values at every $a_n$. If $G=\sum f_\gamma t^\gamma\in P_r$, fix
+$\gamma$ and an integer $m>\max\{0,\gamma\}$; on an ultrafilter-large set
+$v(G(a_n))>mn^r\ge m>\gamma$, so $f_\gamma(a_n)=0$ there, whence
+$f_\gamma\in\m_\UU$ and $P_r\subseteq J_\UU$. That inclusion is strict
+because every $e_n$ lies in $\m_\UU$, so $F\in J_\UU$, while
+$v(F(a_n))=\gamma_n<2$ gives $F\notin P_r$. Finally $h\in\m_\UU\subset
+J_\UU$, so $(h,F)\subseteq J_\UU$.
+\end{proof}
+
+\begin{theorem}[Infinite relative dimension, and failure of Noetherianity]
+\label{analytic:thm:fixed-fibre}
+The domain
+\begin{equation}\label{analytic:eq:fixed-fibre-ring}
+ \HH(D)\otimes_{\OO(D)}k_\UU=\HH(D)/\m_\UU\HH(D)
+\end{equation}
+has infinite Krull dimension and contains the chain induced by
+$(P_r)_{r\ge0}$, of cardinality $2^{\aleph_0}$. Moreover $\HH(D)$ is
+\emph{not} Noetherian,
+$J_\UU\cap\OO(D)=\m_\UU$, and $\dim\HH(D)_{J_\UU}=\infty$.
+\end{theorem}
+\begin{proof}
+Identity \eqref{analytic:eq:fixed-fibre-ring} holds because $\m_\UU$ is
+maximal, and the domain assertion is
+\cref{analytic:thm:fixed-two-ideals}(1). Each $P_r$ contains $Q_\UU$ and
+contracts to $\m_\UU$ by \cref{analytic:prop:fixed-contraction}, so the
+strict inclusions \eqref{analytic:eq:fixed-prime-chain} survive in the
+quotient and give arbitrarily long finite prime chains there; the chain has
+cardinality $2^{\aleph_0}$.
+
+Non-Noetherianity is proved by the explicit \emph{ascending} chain
+\[
+ P_1\subsetneq P_{1/2}\subsetneq P_{1/3}\subsetneq\cdots ,
+\]
+which has no maximal member. We do not infer it from infinite Krull
+dimension, which by itself does not force a ring to be non-Noetherian.
+All the $P_r$ lie below $J_\UU$ by
+\cref{analytic:thm:fixed-two-ideals}(3); localizing there preserves strict
+inclusion, so $\dim\HH(D)_{J_\UU}=\infty$, and the contraction of $J_\UU$
+is $\m_\UU$ directly from its coefficientwise definition.
+\end{proof}
+
+\begin{corollary}[Coefficientwise reduction is not scalar base change]
+\label{analytic:cor:fixed-basechange}
+The natural surjection
+$\HH(D)\otimes_{\OO(D)}k_\UU\to k_\UU((t^\R))$ has nonzero kernel
+$J_\UU/Q_\UU$, of which the class of the corona element $F$ of
+\eqref{analytic:eq:fixed-F} is an explicit nonzero member. Thus the Hahn
+construction does not commute with naive coefficientwise residue-field base
+change.
+\end{corollary}
+\begin{proof}
+Factor $\rho$ through $Q_\UU$; its kernel is as stated. Every coefficient
+of $F$ is some $e_n\in\m_\UU$, yet $F$ has no zero value at any $a_n$, so
+$F\notin Q_\UU$ by \cref{analytic:thm:fixed-two-ideals}(1).
+\end{proof}
+
+This should be contrasted with, and not confused with,
+\cref{analytic:thm:workspace,analytic:thm:basechange}: those are
+\emph{scalar} base changes $K_\Gamma\to K_\Delta$ of a finite
+complete-intersection quotient, and they are isomorphisms.
+\Cref{analytic:cor:fixed-basechange} changes the ordinary coefficient ring
+instead, and fails.
+
+\subsection{All the growth primes have the same norm closure}
+\label{analytic:subsec:fixed-closure}
+\begin{theorem}[Closure collapse of the prime chain]
+\label{analytic:thm:fixed-closure}
+In the complete norm $\norm{\cdot}_H$ one has
+$\overline{Q_\UU}=P_0$ and $\overline{P_r}=P_0$ for every $r\ge0$. Hence
+$P_0$ is a closed nonmaximal prime while every $P_r$ with $r>0$ is
+nonclosed. Moreover
+\begin{equation}\label{analytic:eq:fixed-distance-F}
+ \operatorname{dist}(F,Q_\UU)=\operatorname{dist}(F,P_0)=e^{-2},
+\end{equation}
+and neither distance is attained.
+\end{theorem}
+\begin{proof}
+Let $G\in\overline{Q_\UU}$. For each integer $m\ge1$ pick $A\in Q_\UU$ with
+$\vH(G-A)>m$; on an ultrafilter-large set $A(a_n)=0$, so $v(G(a_n))>m$
+there. Hence $G\in P_0$.
+
+Conversely let $G=\sum f_\gamma t^\gamma\in P_0$ and, for an integer
+$m\ge1$, let $G_{\le m}$ be its Hahn truncation to exponents at most $m$.
+On the ultrafilter-large set where $v(G(a_n))>m$, every coefficient of that
+truncation vanishes at $a_n$, so $G_{\le m}\in Q_\UU$ by
+\cref{analytic:thm:fixed-two-ideals}. The remainder is zero or has
+valuation above $m$, so $G_{\le m}\to G$ and
+$\overline{Q_\UU}=P_0$. Since $Q_\UU\subseteq P_r\subseteq P_0$, every
+$P_r$ has the same closure; strictness of the chain and
+$P_0\subsetneq J_\UU$ give the closedness and nonmaximality assertions.
+
+For the distance, each finite partial sum
+$F_N=\sum_{n=1}^Nt^{\gamma_n}e_n$ lies in $Q_\UU$, its coefficients lying
+in $\m_\UU$ and the sum being finite, and
+$\norm{F-F_N}_H=e^{-\gamma_{N+1}}\to e^{-2}$, which gives the upper bounds.
+For any $A\in P_0$ there is an ultrafilter-large, hence nonempty, set of
+$n$ with $v(A(a_n))>2$; at such an $n$,
+$v(F(a_n)-A(a_n))=\gamma_n<2$, so
+$\norm{F-A}_H\ge e^{-\gamma_n}>e^{-2}$. This gives the lower bounds and
+nonattainment for $P_0$, hence for its subset $Q_\UU$.
+\end{proof}
+
+The truncation $G_{\le m}$ may itself carry infinitely many exponents; it
+is not an approximation by finitely many coefficients, and the argument
+never replaces it by one. That distinction is essential when a
+well-ordered support has a finite accumulation point, and it is the same
+point already made abstractly in
+\cref{analytic:rem:initial-segments}. The finite partial sums $F_N$
+therefore do not contradict \cref{analytic:thm:fixed-closure}: their
+distance from $F$ tends to $e^{-2}>0$, as
+\cref{analytic:rem:fixed-two-sums} already noted.
+
+\subsection{The chain is invisible at every geometric point}
+\begin{proposition}[Nongeometric maximal ideals]
+\label{analytic:prop:fixed-invisible}
+For no $r\ge0$ and no $a\in D^\sharp_\R$ is $P_r\subseteq\ker\ev_a$, and
+the same holds for evaluation in any larger surcomplex workspace.
+Consequently $J_\UU$, and every maximal ideal containing $P_0$, is
+genuinely nongeometric.
+\end{proposition}
+\begin{proof}
+Every $P_r$ contains $h$, so such an $a$ would have to be one of the exact
+points $a_n$, by \cref{analytic:lem:fixed-hzeros}, which also covers every
+larger workspace. But every $P_r$ contains every $e_n$, whose values are
+zero on a cofinite, hence ultrafilter-large, set, while $e_n(a_n)=1$. This
+excludes each $a_n$.
+\end{proof}
+
+So the failure recorded in \cref{analytic:thm:fixed-fibre} is not a missing
+point at another ordinary centre, nor evaluation at a point with an
+overlooked infinitesimal displacement: the offending primes are not
+contained in any evaluation kernel at all. Note also that the corona ideal
+and the growth primes illustrate \emph{different} mechanisms, and neither
+subsumes the other: the values of $F$ have bounded valuations, so
+$F\notin P_r$ for every $r\ge0$, while the common maximal ideal $J_\UU$
+contains both $(h,F)$ and the entire chain.
+
+\subsection{Real forms}\label{analytic:subsec:fixed-real}
+Let
+$\OO_\R(D)=\{f\in\OO(D):f(\overline z)=\overline{f(z)}\}$ and
+$\HH_{\R,\Gamma}(D)=\OO_\R(D)((t^\Gamma))$, whose constant field
+$\R((t^\Gamma))$ embeds in $\No$ for $\Gamma\subset\No$. Evaluate at
+$c+\varepsilon$ with $c\in(-1,1)$ and $\varepsilon$ a real infinitesimal.
+
+\begin{corollary}[Real coefficient form]\label{analytic:cor:fixed-real}
+The pair $h,F$ lies in $\HH_{\R,\R}(D)$ and has no common zero on the
+surreal thickening of $(-1,1)$; it satisfies the same sharp
+valuation-corona bound there and admits no B\'ezout identity even after
+complexification. The real algebra also carries the prime chains and the
+infinite-dimensional fibre constructed above, and its geometric
+localizations at real points are discrete valuation rings with residue
+field $\R((t^\R))$.
+\end{corollary}
+\begin{proof}
+All the $a_n$ are real and $h,e_n$ are invariant under complex
+conjugation. The bounds of \cref{analytic:prop:fixed-sharp-corona} remain
+valid on the real monads and are witnessed as sharp by the real points
+$a_n$. Nonexistence of a B\'ezout identity in the larger complex ring
+implies nonexistence in the real subring. For real interpolation values,
+symmetrize an ordinary interpolant of \cref{analytic:lem:fixed-interp} by
+replacing $f(z)$ with $\bigl(f(z)+\overline{f(\overline z)}\bigr)/2$, so
+\cref{analytic:thm:fixed-quotient} holds with $\R^\N$ in place of $\C^\N$;
+the valuation and ultrafilter arguments are unchanged, with residue field
+$\R^\N/\UU$ at the classical free maximal ideal. Finally
+\eqref{analytic:eq:fixed-remainders} preserves the real form when $c$ and
+$\varepsilon$ are real, so \cref{analytic:thm:fixed-dvr} carries over
+verbatim.
+\end{proof}
+
+\subsection{How much of this depends on the value group}
+\label{analytic:subsec:fixed-value-group}
+The exponents $\gamma_n=2-1/n$ are rational, so the algebraic
+nonexistence and the bounded corona phenomenon already occur over
+$\C((t^\Q))$, not only over $\C((t^\R))$. More generally any ordered value
+group containing an infinite increasing bounded sequence admits the same
+reciprocal-support obstruction in $\BB_\Gamma$.
+
+\begin{remark}[The bounded counterexample is genuinely value-group
+sensitive]\label{analytic:rem:fixed-value-group}
+Let $\Gamma=\Z\delta$ be discrete of rank one, $\delta>0$ --- a group that
+is \emph{not} divisible, which is why \cref{analytic:conv:fixed}(2)
+relaxes the standing hypothesis of \cref{analytic:subsec:four-rings}. A
+nonempty well-ordered set of valuations in $\Z\delta$ is bounded below; if
+it is also bounded above it is finite. Hence for the particular pair
+$(h,F)$ of \cref{analytic:thm:fixed-bezout} a uniform upper bound on
+$v(F(a_n))$ \emph{does} imply solvability when all those values are
+nonzero. The bounded-spectrum counterexample is therefore not available
+over $\Z\delta$.
+
+This does not restore unrestricted global B\'ezout theory there. The
+legitimate series $F_{\mathrm{unb}}=\sum_{n\ge1}t^{n\delta}e_n$ has
+$F_{\mathrm{unb}}(a_n)=t^{n\delta}$ and still generates, with $h$, a
+proper zero-free two-generated ideal --- its inverse value norms are
+merely unbounded rather than bounded. Likewise the prime-chain witnesses
+use only nonnegative integer exponents, so after multiplying exponents by
+$\delta$ the entire infinite-dimensional fibre construction of
+\cref{analytic:thm:fixed-fibre} already exists in the ordinary
+Laurent-series algebra $\OO(D)((t^\Z))$. Two effects are thus separated:
+infinitely many allowable leading scales suffice for global
+ideal-theoretic failure, whereas a \emph{bounded} infinite set of those
+scales is what turns that failure into the uniform valuation-corona
+counterexample.
+\end{remark}
+
+\subsection{The fixed-polydisk row of the ring table}
+\label{analytic:subsec:fixed-summary}
+\begin{theorem}[Structure of the fixed-polydisk ring]
+\label{analytic:thm:fixed-structure}
+Let $\HH_\Gamma(D)=\OO(D)((t^\Gamma))$ with $D$ the ordinary unit disk.
+\begin{enumerate}
+\item For every $a\in D^\sharp_\Gamma$ the evaluation ideal $\m_a=(z-a)$ is
+maximal with residue field $K_\Gamma$, its localization is a discrete
+valuation ring of dimension one, and the completion is $K_\Gamma[[X]]$.
+\item These geometric evaluation maximal ideals do not exhaust the
+spectrum: for $\Gamma=\R$ the ideal $J_\UU$ is maximal and contains no
+evaluation kernel, and no $P_r$ lies in one.
+\item $\HH_\R(D)$ is not Noetherian, and it has a fibre over a classical
+free maximal ideal of $\OO(D)$ which is a domain of infinite Krull
+dimension carrying a strictly ordered prime chain of cardinality
+$2^{\aleph_0}$.
+\item $\HH_\R(D)$ admits proper, nonprincipal, two-generated ideals with
+empty geometric zero set, even under a uniform positive valuation lower
+bound on the pair; consequently no Nullstellensatz of the form
+$I(Z(I))=\sqrt I$ holds for its finitely generated ideals.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(1) is \cref{analytic:cor:fixed-eval-ideal,analytic:thm:fixed-dvr}
+and \cref{analytic:cor:fixed-completion}; (2) is
+\cref{analytic:thm:fixed-two-ideals,analytic:prop:fixed-invisible}; (3) is
+\cref{analytic:thm:fixed-fibre}; (4) is
+\cref{analytic:thm:fixed-corona,analytic:prop:fixed-nonprincipal}.
+\end{proof}
+
+\begin{remark}[What \cref{analytic:thm:fixed-structure} does not settle]
+\label{analytic:rem:fixed-open}
+We have not proved that $\HH_\Gamma(D)$ is Jacobson, and we have not
+proved that it is not; no claim about that separate property is implicit
+above. Nor is any classification of \emph{all} abstract maximal ideals
+claimed: $J_\UU$ is one explicit nongeometric maximal ideal, produced from
+one chosen ultrafilter, and the growth-gauge primes are not claimed to
+exhaust the fibre over $\m_\UU$. In particular the bounded-valuation
+obstruction of the corona pair is not one of the faster-than-polynomial
+conditions of \cref{analytic:def:fixed-gauge}, and relating bounded support
+cuts to the remaining primes of that fibre is left open. Finally, nothing
+above transfers to the germ rings: see
+\cref{analytic:rem:fixed-not-transferred}.
+\end{remark}
+
+\begin{remark}[What is \emph{not} refuted by any of this]
+\label{analytic:rem:fixed-not-transferred}
+\Cref{analytic:conv:ring} is in force. The counterexample of
+\cref{analytic:sec:fixed-corona} uses infinitely many ordinary centres
+$a_n\to1$ approaching the boundary of $D$, a resource that disappears on
+localizing at a single ordinary centre; it therefore does not transfer to
+$\RR_n$, to $\A_n$ or to $\FF_n$, whose structure packages stand as proved
+in \cref{analytic:sec:structure-A,analytic:sec:structure-R} and
+\cref{analytic:thm:formal-comparison}. It also does not refute the
+finite-isolated-zero deformation theorem of \cite{FiniteDeformations}: the
+divisor $h$ has infinitely many ordinary zeros, so that theorem's
+hypothesis is simply absent, and at each individual geometric point
+\cref{analytic:thm:fixed-dvr} independently confirms the positive
+regularity statement. The misattribution corrected in
+\cref{analytic:subsec:four-rings} was this report's own overview sentence;
+\cite{FiniteDeformations} neither asserts nor needs the package for the
+fixed-polydisk ring.
+\end{remark}
+
 \section{Hypothesis audit, limits, and open questions}
 \label{analytic:sec:limits}
 
@@ -3082,6 +4411,23 @@ $I=(0)$ when $\Gamma=\{0\}$. The hypothesis is essential rather than
 aesthetic, and it enters through
 \cref{analytic:prop:faithful} and \cref{analytic:lem:density}.
 
+\paragraph{Which hypotheses the fixed-polydisk sections use, and which they
+drop.} \Crefrange{analytic:sec:fixed-polydisk}{analytic:sec:fixed-spectrum}
+deliberately run under weaker standing hypotheses than the rest of the
+report, and the difference is load-bearing in both directions.
+Divisibility of $\Gamma$ is \emph{not} assumed there and is violated on
+purpose in \cref{analytic:rem:fixed-value-group}, where $\Gamma=\Z\delta$
+is discrete and the bounded corona counterexample consequently disappears
+while the prime chains survive; algebraic closedness of $K_\Gamma$ is not
+used either. In the other direction those sections are proved for the
+one-variable unit disk, and no several-variable fixed-polydisk statement is
+asserted. What \emph{is} essential to the negative half is a fixed disk
+carrying infinitely many ordinary centres approaching its boundary: that is
+the resource \cref{analytic:rem:fixed-not-transferred} identifies as absent
+from the germ rings, and it is why \cref{analytic:conv:ring} is not merely
+bookkeeping here. The ultrafilter of
+\cref{analytic:sec:fixed-spectrum} is a hypothesis of that section alone.
+
 \paragraph{The chosen analytic categories.}
 These results do not classify arbitrary fine-locally analytic functions on
 the class plane, and they do not settle the supplied manuscripts' separate
@@ -3113,7 +4459,38 @@ specified setting, and they may also be derivable from a broader existing
 framework. This is a proposed original synthesis and formulation, not a
 certified first theorem in multivariable non-Archimedean analysis. The
 article supplies proofs rather than treating a failure to locate an
-identical statement as proof of priority.
+identical statement as proof of priority. The same framing governs
+\crefrange{analytic:sec:fixed-polydisk}{analytic:sec:fixed-spectrum}: their
+literature check was targeted rather than exhaustive, priority is not
+certified, none of their proofs has been independently refereed, and no
+proof-assistant certification of any statement in this report is claimed or
+supplied.
+
+\paragraph{What is conceded as classical in the fixed-polydisk sections.}
+The Hahn--Mal'cev--Neumann support lemma and positive-support inversion are
+classical inputs, imported as
+\cref{analytic:lem:neumann,analytic:lem:operator}; ordinary discrete
+interpolation on a disk is classical, and is proved in
+\cref{analytic:lem:fixed-interp} only to make the common-domain requirement
+visible; ordinary free maximal ideals of holomorphic function rings, and
+prime chains measured by growth, have long histories
+\cite{Henriksen52,Henriksen53,KangToan}. Merely exhibiting an
+infinite-dimensional global function ring would not justify a novelty claim
+and none is made on that basis; the proposed content is the
+\emph{relative} statement that the chain lies inside one fibre over one
+classical maximal ideal, together with the exact finite-leading-valuation
+criterion and the normed corona counterexample. The interpolation quotient
+\cref{analytic:thm:fixed-quotient} is credited to the companion global-divisor
+report \cite[\S10]{GlobalDivisors} as the simple undeformed case of its
+support-restricted Chinese remainder construction, and is not presented as
+new.
+
+\paragraph{A choice hypothesis, isolated.}
+The prime-spectrum half of \cref{analytic:sec:fixed-spectrum} assumes a
+nonprincipal ultrafilter on $\N_{\ge1}$, available in ZFC but not
+constructible; no explicit such ultrafilter is exhibited.
+\Cref{analytic:thm:fixed-bezout}, \cref{analytic:thm:fixed-corona} and
+\cref{analytic:thm:fixed-dvr} are free of that input.
 
 \paragraph{Scope discipline.}
 No proper-class polynomial ring or proper-class sum is used. Every theorem
@@ -3188,15 +4565,59 @@ assert that stronger relative linearity.
 theorem, including the second-order bound, is proved in the companion
 report \cite{FiniteDeformations} and is not re-proved here
 (\cref{analytic:rem:two-certificates}).
+\item \Cref{analytic:thm:fixed-structure} settles neither way whether
+$\OO(D)((t^\Gamma))$ is Jacobson, and claims \emph{no} classification of
+its abstract maximal ideals: $J_\UU$ is one explicit nongeometric maximal
+ideal built from one chosen ultrafilter
+(\cref{analytic:rem:fixed-open}). The growth-gauge primes are not claimed
+to exhaust the fibre over $\m_\UU$, and the bounded-valuation obstruction
+of the corona pair is not one of the faster-than-polynomial conditions of
+\cref{analytic:def:fixed-gauge}.
+\item Nothing in
+\crefrange{analytic:sec:fixed-polydisk}{analytic:sec:fixed-spectrum}
+transfers to $\RR_n$, $\A_n$ or $\FF_n$, whose packages stand as proved,
+and nothing there refutes the finite-isolated-zero deformation theorem of
+\cite{FiniteDeformations}: the divisor $h$ has infinitely many ordinary
+zeros, so that hypothesis is absent
+(\cref{analytic:rem:fixed-not-transferred}). The correction recorded in
+\cref{analytic:subsec:four-rings} concerns this report's own former
+overview sentence and is not a criticism of
+\cite{FiniteDeformations}.
+\item \Cref{analytic:thm:fixed-corona} is not asserted to contradict
+Carleson's corona theorem \cite{Carleson} or Hahn-meromorphic Fredholm
+results such as \cite{MullerStrohmaier}: the scalar field, the absolute
+value and the function class all differ
+(\cref{analytic:rem:fixed-carleson}).
+\item \Cref{analytic:rem:fixed-value-group} is a statement about one
+particular pair $(h,F)$ over one particular discrete group, not a general
+theorem that bounded valuations suffice for solvability.
 \item The symbolic checks accompanying the source manuscripts concern the
 displayed formulas only. They do not implement arbitrary Hahn fields and
 are not machine verification of the Noetherian, flatness, residue,
-conservation, or stability proofs.
+conservation, or stability proofs. For the fixed-polydisk material the
+delivered checks are finite consistency checks of exponent arithmetic,
+cardinal-function identities, polynomial divided differences, a rational
+grid of valuation inequalities, finite positive-support inverses and
+finite gauge witnesses; they do not compute an infinite Hahn series,
+construct an ultrafilter, verify an infinite prime chain, prove
+completeness, establish primality at arbitrary real rates, or establish
+novelty, and several sub-results are recorded in the delivered output as
+``written proof only''. We deliberately quote no count of those checks as
+evidence: an audit of the delivered script found that its valuation-%
+inequality routine asserts, inside the branch $q<2$, the condition $q<2$
+itself, so a large share of the recorded cases test nothing, and the
+delivered layout audit has no generating script at all. The recorded
+verification file is also rewritten in place by the script that produces
+it, so it is not an independent record. Every infinite argument is in the
+text above.
+\item The page-count and text-boundary audits that accompany the source
+manuscripts are typesetting checks. They are not mathematical
+verification of anything.
 \end{itemize}
 
 \subsection{Specific research directions left open}
 \label{analytic:subsec:open}
-Four questions are left open by these proofs, and they are questions, not
+Six questions are left open by these proofs, and they are questions, not
 claims about the current status of any named conjecture.
 
 First, whether natural common-domain versions of the radius-free
@@ -3231,6 +4652,26 @@ differential is supplied that still squares to zero; the genuinely new
 problem is to construct the required compatible perturbation of \emph{all}
 syzygies rather than of the first equations only. For complete
 intersections the Koszul construction supplies it automatically.
+
+Fifth, a support-theoretic criterion for a general finite row
+$(F_1,\ldots,F_m)$ to be unimodular in $\HH_\Gamma(D)$.
+\Cref{analytic:thm:fixed-bezout} settles the case of the pair $(h,F)$ with
+$h$ a fixed ordinary simple divisor, and
+\cref{analytic:rem:fixed-minimum} shows why the pointwise minimum of the
+leading valuations is not sufficient data: finite cancellations among
+generators must be recorded as well as leading scales. Relating bounded
+support cuts to the primes of the fibre over $\m_\UU$ that are not
+growth-gauge ideals is a separate problem, and is not settled by
+\cref{analytic:thm:fixed-fibre}.
+
+Sixth, a replacement function algebra for which a corona principle is
+valid. The geometric evaluations of $D^\sharp_\R$ norm every individual
+element of $\HH_\R(D)$, by \cref{analytic:prop:fixed-banach}, yet by
+\cref{analytic:thm:fixed-corona} they do not detect whether a finite row
+generates the unit ideal. Any candidate must specify its algebra and its
+topology; \cref{analytic:rem:fixed-extension} rules out enlarging the
+scalar field alone, so a change of function class rather than of workspace
+size would be required.
 
 \appendix
 \section{The finite-family classical input and the trace proof}
@@ -3337,6 +4778,28 @@ still-to-be-proved Hahn zero count, and the local stability theorem uses the
 already established length-one deformation case after a rigorously allowed
 rescaling.
 
+The fixed-polydisk sections rest on the same two foundations and on nothing
+else from the chain above. Their dependency structure is short:
+\begin{gather*}
+ \text{Hahn--Neumann lemma}\ \Longrightarrow\
+ \text{evaluation and positive-support inversion},\\
+ \text{ordinary cardinal interpolation}\ \Longrightarrow\
+ \text{the quotient by }h,\\
+ \text{the quotient by }h\ \Longrightarrow\
+ \text{exact units}\ \Longrightarrow\ \text{the B\'ezout criterion},\\
+ \text{a global Taylor divided difference}\ \Longrightarrow\
+ \text{every geometric discrete valuation ring},\\
+ \text{the evaluation valuation bound}+\text{an ultrafilter}\
+ \Longrightarrow\ \text{the growth primes and the fibre}.
+\end{gather*}
+The order again avoids circularity, and in one respect more sharply than
+above: no conclusion about global Noetherianity is used in any local
+argument of \cref{analytic:sec:fixed-local}, and no local preparation
+theorem is used in the prime construction of
+\cref{analytic:sec:fixed-spectrum}. That separation is what makes
+\cref{analytic:thm:fixed-dvr} and \cref{analytic:thm:fixed-fibre}
+compatible rather than contradictory.
+
 In the table, $S$ is a source support, $E$ a well-ordered positive
 perturbation support, and $E_a$ the union of the supports of an
 infinitesimal displacement.
@@ -3398,7 +4861,31 @@ $v$, $\vH$, $\vmin$, $\red$ & Field valuation ($v(0)=+\infty$); Hahn
 valuation on a coefficient ring; minimum coordinate valuation;
 reduction\\[0.3em]
 $R_n=\C\{z\}$ & Ordinary convergent germs at the origin\\[0.3em]
-$\OO(D)((t^\Gamma))$ & Fixed-polydisk ring\\[0.3em]
+$\OO(D)((t^\Gamma))=\HH_\Gamma(D)$ & Fixed-polydisk ring: one disk $D$ held
+fixed once and for all, every coefficient holomorphic on all of it
+(\cref{analytic:conv:fixed})\\[0.3em]
+$D^\sharp_\Gamma$ & Its geometric points $c+\varepsilon$, $c\in D$,
+$\varepsilon\in\m_K$; ordinary points included\\[0.3em]
+$d_a$ & Finite \emph{spatial} order of vanishing at $a\in D^\sharp_\Gamma$;
+neither $v$ nor $\vH$ (\cref{analytic:thm:fixed-dvr})\\[0.3em]
+$\norm{\cdot}_H$ & For $\Gamma=\R$, the norm $e^{-\vH(\cdot)}$ on
+$\HH_\R(D)$, equal to the supremum valuation norm over
+$D^\sharp_\R$\\[0.3em]
+$\BB_\Gamma$ & Sequences of scalar Hahn values sharing one well-ordered
+support; $\HH_\Gamma(D)/(h)$\\[0.3em]
+$h$, $a_n$, $e_n$ & The fixed simple divisor $\sin(\pi/(1-z))$, its zeros
+$1-1/n$, and its cardinal functions
+\eqref{analytic:eq:fixed-cardinal-data}\\[0.3em]
+$\gamma_n$, $F$ & The increasing bounded exponents $2-1/n$ and the corona
+interpolant \eqref{analytic:eq:fixed-F}\\[0.3em]
+$\mathcal V(x)$ & Finite leading-valuation spectrum: a set of
+\emph{valuations}, never of prime ideals\\[0.3em]
+$\UU$, $\m_\UU$ & A fixed nonprincipal ultrafilter on $\N_{\ge1}$; the
+classical free maximal ideal of $\OO(D)$ it determines\\[0.3em]
+$P_w$, $P_r$ & Growth-gauge primes of $\HH_\R(D)$; $P_r=P_w$ for
+$w(n)=n^r$\\[0.3em]
+$Q_\UU$, $J_\UU$ & $\m_\UU\HH_\R(D)$, prime; and the maximal ideal of
+families with every coefficient in $\m_\UU$\\[0.3em]
 $\HH_\Gamma(U)$, $\RR_n$ & Hahn families holomorphic on one $U$; their germ
 ring at the ordinary origin (common-domain ring)\\[0.3em]
 $\A_n=R_n((t^\Gamma))$ & Radius-free Hahn-germ ring\\[0.3em]
@@ -3446,6 +4933,15 @@ Progress in Mathematics \textbf{143}, Birkh\"auser, 1996, pp.~135--164.
 \href{https://arxiv.org/abs/alg-geom/9404011}{arXiv:alg-geom/9404011};
 \href{https://doi.org/10.1007/978-3-0348-9104-2_8}{doi:10.1007/978-3-0348-9104-2\_8}.
 Sections 0 and 4 give the residue-duality and trace background used here.
+
+\bibitem{Carleson}
+Lennart Carleson,
+``Interpolations by bounded analytic functions and the corona problem,''
+\emph{Annals of Mathematics} (2) \textbf{76} (1962), 547--559.
+\href{https://doi.org/10.2307/1970375}{doi:10.2307/1970375}.
+Cited in \cref{analytic:rem:fixed-carleson} only to record that the
+fixed-polydisk obstruction is in a different category and is not asserted
+to contradict it.
 
 \bibitem{CL}
 Raf Cluckers and Leonard Lipshitz,
@@ -3517,6 +5013,15 @@ Surcomplex Plane}, companion merged report in this collection,
 It addresses the separate question of supplying a surcomplex contour that
 represents the series \eqref{analytic:eq:hahn-residue}.
 
+\bibitem{GlobalDivisors}
+\emph{Global Support Obstructions: Moving Divisors, Mittag--Leffler, and a
+Picard Dichotomy}, companion merged report in this collection,
+\texttt{docs/surcomplex/global-divisors/}.
+Its \S10 develops the support-restricted Chinese remainder construction of
+which \cref{analytic:thm:fixed-quotient} is the simple undeformed case, and
+it states explicitly that it refrains from calling the fixed-disk ring a
+principal ideal domain.
+
 \bibitem{GrauertRemmert}
 Hans Grauert and Reinhold Remmert,
 \emph{Coherent Analytic Sheaves},
@@ -3538,10 +5043,46 @@ Ordinary Weierstrass theory, coherent analytic sheaves, and Stein-space
 theorems, including Cartan's theorem~B as used in
 \cref{analytic:lem:ordinarykoszul}.
 
+\bibitem{Henriksen52}
+Melvin Henriksen,
+``On the ideal structure of the ring of entire functions,''
+\emph{Pacific Journal of Mathematics} \textbf{2} (1952), 179--184.
+\url{https://msp.org/pjm/1952/2-2/pjm-v2-n2-p05-p.pdf}.
+Classical free ideals, and the fact that a finitely generated ideal of an
+ordinary holomorphic function ring is B\'ezout.
+
+\bibitem{Henriksen53}
+Melvin Henriksen,
+``On the prime ideals of the ring of entire functions,''
+\emph{Pacific Journal of Mathematics} \textbf{3} (1953), 711--720.
+\url{https://msp.org/pjm/1953/3-4/pjm-v3-n4-p04-p.pdf}.
+Prime chains measured by the growth of ordinary zero multiplicities; the
+disk analogue of the interpolation and B\'ezout arguments is noted on
+p.~712.
+
+\bibitem{KangToan}
+Byung Gyun Kang and Phan Thanh Toan,
+``How to construct huge chains of prime ideals in power series rings,'' in
+M.~Fontana, S.~Frisch, and S.~Glaz (eds.), \emph{Commutative Algebra},
+Springer, 2014, pp.~225--238.
+\href{https://doi.org/10.1007/978-1-4939-0925-4_13}{doi:10.1007/978-1-4939-0925-4\_13}.
+Cited as context for growth-rate prime constructions; it is not a proof
+dependency of anything below.
+
 \bibitem{KW}
 Ernst Kunz and Rolf Waldi,
 ``Deformations of zero-dimensional intersection schemes and residues,''
 \emph{Note di Matematica} \textbf{11} (1991), 247--259.
+
+\bibitem{MullerStrohmaier}
+Jan M\"uller and Alexander Strohmaier,
+``The theory of Hahn-meromorphic functions, a holomorphic Fredholm theorem,
+and its applications,''
+\emph{Analysis \& PDE} \textbf{7} (2014), no.~3, 745--770.
+\href{https://doi.org/10.2140/apde.2014.7.745}{doi:10.2140/apde.2014.7.745};
+\href{https://arxiv.org/abs/1205.0236}{arXiv:1205.0236}.
+A different function class; cited in \cref{analytic:rem:fixed-carleson}
+only to record that no contradiction with it is asserted.
 
 \bibitem{Neumann}
 B. H. Neumann,

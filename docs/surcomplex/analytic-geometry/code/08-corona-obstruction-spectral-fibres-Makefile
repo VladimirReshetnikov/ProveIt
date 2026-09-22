@@ -1,0 +1,17 @@
+.PHONY: all pdf verify clean
+
+PYTHON ?= python3
+PDFLATEX ?= pdflatex
+
+all: pdf verify
+
+pdf:
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error article.tex
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error article.tex
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error article.tex
+
+verify:
+	$(PYTHON) verify.py --output verification_results.json
+
+clean:
+	rm -f article.aux article.log article.out article.toc article.fls article.fdb_latexmk

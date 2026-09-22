@@ -90,9 +90,19 @@
 \newcommand{\Span}{\operatorname{span}}
 \newcommand{\Ker}{\operatorname{ker}}
 \newcommand{\gm}{\mathbf G_{\mathrm m}}
+\newcommand{\SL}{\operatorname{SL}}
+\newcommand{\Un}{\operatorname{U}}
+\newcommand{\Herm}{\operatorname{Herm}}
+\newcommand{\Symm}{\operatorname{Sym}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\Homd}{\operatorname{Hom}_{\der}}
+\newcommand{\Ph}{\operatorname{Ph}}
+\newcommand{\Rot}{\mathcal R}
+\newcommand{\Tser}{\mathcal T}
 \newcommand{\abs}[1]{\lvert#1\rvert}
 \newcommand{\Repo}{\texttt{VladimirReshetnikov/Surreal}}
 \newcommand{\Commit}{\nolinkurl{e260237db9b71da8b74a0c13c8e6355119091100}}
+\newcommand{\CommitB}{\nolinkurl{aa846271b4dcae2c055b216126a87210292ec19b}}
 \newcommand{\src}[1]{{\small\textsf{[#1]}}}
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
@@ -116,10 +126,12 @@ and support-certified coordinate systems\par}
 \begin{minipage}{0.93\textwidth}
 \begin{abstract}
 \noindent
-Seven independently written manuscripts developed the same theory of the
+Eight independently written manuscripts developed the same theory of the
 Berarducci--Mantova derivation $\der$ on the surreal class field $\No$,
 normalized by $\der\omega=1$, and of its unique extension to the surcomplex
-field $\SC$. This report is their union.
+field $\SC$. This report is their union. Seven of them share a twelve-item
+spine of scalar and workspace theory; the eighth carries the finite matrix
+stratum and joined later.
 
 The organizing identity is exact: the image of the logarithmic derivative is
 \[
@@ -145,6 +157,25 @@ factorially divergent Hahn solutions, differentially stable set-sized
 workspaces, and oscillatory Picard--Vessiot extensions with differential
 Galois tori --- at the cost, in the real form, of the $H$-field ordering rule.
 
+A later part classifies \emph{finite matrix} systems. Every $\der y=Ay$ with
+$A$ an ordinary finite matrix over $\SC$ is gauge equivalent to
+$i\operatorname{diag}(\der P_{1},\dots,\der P_{n})$ with each $P_{j}$ purely
+infinite, and the multiset $\{P_{j}\}$ is a complete invariant of differential
+equivalence; for a Hermitian $H$ it is computed by integrating the ordinary
+algebraic eigenvalues of $H$ and keeping the purely infinite parts of the
+primitives, with neither commutation nor a spectral gap assumed. From that
+follow a gap-free finite-primitive perturbation theorem, an exact kernel
+count, normalized non-Abelian integration, the complete cone of positive
+invariant metrics, a real rotation-block descent, a positive Ermakov--Pinney
+dichotomy, an exact Hahn expansion for the oscillatory Airy equation, and the
+phase-lattice Picard--Vessiot torus of an arbitrary finite system. A
+deliberate counterexample --- a nonnormal coefficient with instantaneous
+eigenvalues $\pm i$ and a fundamental matrix already in the base field ---
+marks the boundary: the non-Hermitian case is not classified. That part also
+invokes a separately imported linear-splitting and first-order surjectivity
+theorem, which is not a consequence of the scalar criterion and is flagged
+wherever it is used.
+
 A deliberately separate half treats \emph{coordinate} differential equations
 in fixed-common-domain Hahn rings $\Ofin(U)((t^{\Gamma}))$: existence,
 uniqueness, support certificates, variation of constants, a Liouville
@@ -161,8 +192,10 @@ claimed as new, refereed, or machine-checked.
 \end{minipage}
 \vfill
 \begin{minipage}{0.93\textwidth}\small
-\textbf{Status.} A merged exposition assembled from seven independent
-manuscripts, all pinned to \Repo\ at commit \Commit. Deep structural inputs
+\textbf{Status.} A merged exposition assembled from eight independent
+manuscripts: seven pinned to \Repo\ at commit \Commit, and the eighth,
+which supplies \cref{diff:part:matrix}, pinned to the later revision
+\CommitB. Deep structural inputs
 are attributed; the connecting deductions are proved in the text. No priority
 claim, no solution of a named published open problem, no independent
 refereeing, and no proof-assistant verification is asserted.
@@ -183,13 +216,14 @@ refereeing, and no proof-assistant verification is asserted.
 \section{What this report is}
 \label{diff:sec:intro}
 
-\subsection{Seven manuscripts, one theory}
+\subsection{Eight manuscripts, one theory}
 \label{diff:sub:seven}
 
-This report is the union of seven independently written manuscripts on the
-differential algebra of the surreal and surcomplex numbers. They were prepared
-separately, they are all pinned to the same documentation snapshot, and they
-prove --- in seven notations --- the same twelve-item spine:
+This report is the union of eight independently written manuscripts on the
+differential algebra of the surreal and surcomplex numbers. Seven of them form
+the original core: they were prepared separately, they are all pinned to the
+same documentation snapshot, and they prove --- in seven notations --- the same
+twelve-item spine:
 
 \begin{enumerate}[label=(\roman*),leftmargin=2.6em]
 \item the Berarducci--Mantova derivation $\der$ extends uniquely to
@@ -227,13 +261,26 @@ distinct payload, and those payloads are all built on the shared spine and
 cannot be extracted without carrying it along. \Cref{diff:app:provenance}
 records, member by member, what each contributed.
 
+The eighth manuscript joined later and is different in kind. It does not
+reprove the spine; it cites it, names the gap this report's own scope ledger
+recorded --- no classification of arbitrary nontriangular matrix systems ---
+and closes the Hermitian half of it. Its mathematics is
+\cref{diff:part:matrix}, and it is pinned to a later revision, \CommitB, of
+the same repository. Several of the twelve spine items are reproved inside it by
+its own routes, and where that happens the routes are recorded as agreement
+(\cref{diff:rem:matagreement,diff:rem:matrankone}) rather than printed twice.
+It also brings one \emph{new imported input}, the linear-splitting and
+first-order surjectivity theorem of \cref{diff:thm:matsurjectivity}, which the
+first seven do not use and which the register of non-claims accordingly
+records as an import rather than as a proved consequence.
+
 Merging carries a specific risk, which \cref{diff:sec:hazard} addresses before
-any theorem is stated: three different objects in these manuscripts are called
-``phase'', and two nearly identical classes are both called the exponential
-domain. A merged sentence that unifies either word, or either symbol, proves
-false statements. This report fixes three names and three symbols for the
-three phases, keeps the two classes visibly distinct, and states the
-distinction wherever a reader might carry one sense into another.
+any theorem is stated: several different objects in these manuscripts are
+called ``phase'', and two nearly identical classes are both called the
+exponential domain. A merged sentence that unifies either word, or either
+symbol, proves false statements. This report fixes one name and one symbol per
+object, keeps the two classes visibly distinct, and states the distinction
+wherever a reader might carry one sense into another.
 
 \subsection{The documented gap}
 \label{diff:sub:gap}
@@ -285,7 +332,15 @@ additionally proved in full in \cref{diff:app:support} because the original
 paper was not retrieved. Restricted composition and the global
 composition-incompatibility theorem for $\omega$-series are separately imported
 from \cite{BMGerms} and are flagged wherever used. The universal $H$-field
-results of \cite{ADH} are background, not premises. Ordinary complex
+results of \cite{ADH} are background for
+\cref{diff:part:foundations,diff:part:scalar,diff:part:workspaces,diff:part:coordinate},
+not premises; in \cref{diff:part:matrix} alone they become a premise, because
+\cref{diff:thm:matsurjectivity} transfers along the elementary embedding of
+\cite{ADH} two further published facts --- splitting of monic scalar operators
+into first-order factors and surjectivity of nonzero scalar operators
+\cite[Lemma 2.4.19]{ADHNorm}. That import is a genuine addition to the
+hypothesis base of this report and is flagged at every use
+(\cref{diff:warn:matimport}, item~N53). Ordinary complex
 initial-value theory \cite{Teschl} supplies the analytic ingredient of the
 coordinate half, and Picard--Vessiot terminology is used in the standard sense
 of \cite{PS,Singer}.
@@ -298,6 +353,8 @@ Everything else is proved here. None of it is claimed to be new.
 derives smallness, and installs the vocabulary discipline. Readers who want
 only the headline should then read \cref{diff:sec:phasecrit}.
 \Cref{diff:part:scalar} is the scalar theory over $\SC$;
+\cref{diff:part:matrix} raises it to finite matrix systems and contains the
+spectral--integral theorem \cref{diff:thm:matspectral};
 \cref{diff:part:workspaces} is its set-sized and Hahn workspaces;
 \cref{diff:part:coordinate} is the separate coordinate theory, whose only
 dependence on \cref{diff:part:scalar} is negative --- it explains what the
@@ -1042,12 +1099,47 @@ $d=m-\operatorname{rank}\Lambda$, a rank of a lattice of obstructions, and it
 is not a count of angles, residues or accumulated phases.  Wherever this report
 writes ``independent phases'' or ``phase generators'', that fourth sense is
 meant, and it is never any of (a)--(c).
+\item The \emph{differential phase spectrum} $\Ph(A)$. For a finite matrix
+system $\der y=Ay$ over $\SC$, \cref{diff:thm:matnormal} attaches a
+\emph{multiset} $\Ph(A)=\{P_{1},\dots,P_{n}\}$ of purely infinite surreals: the
+accumulated obstructions of the diagonal entries of its normal form. Its
+members are objects of sense~(c) --- more precisely, values of $\Obs$ --- so
+$\Ph$ adds no new kind of phase; what is new is that there are $n$ of them at
+once and that the multiset, not its sum, is the complete invariant
+(\cref{diff:cor:mattrace}). The eighth source manuscript writes $\Psi$ for the
+map $b\mapsto\pp(B)$ with $\der B=b$. That map is exactly $\Obs$ of
+\cref{diff:def:obs}, so this report keeps the single symbol $\Obs$ for it and
+does not adopt $\Psi$, in accordance with \cref{diff:conv:noJ}. The adoption
+would in any case have collided: the letter $\Psi$ already occurs once in this
+report, in \cref{diff:cor:noglobalPsi}, as a local placeholder for a putative
+derivation-compatible exponential $\SC\to\SC^{\times}$ --- a map that is there
+proved not to exist, and that is not a phase map of any of the senses
+(a)--(e).
 \end{enumerate}
 \end{convention}
 
+\begin{warning}[``Spectrum'' names three inequivalent things across the collection]
+\label{diff:warn:spectrum}
+The differential phase spectrum $\Ph(A)$ of sense~(e) is a multiset of
+\emph{purely infinite surreal numbers}. It is not a list of eigenvalues: the
+companion report \emph{Surcomplex Spectral Theory} \cite{RepoSpectral} uses
+``spectrum'' for the algebraic eigenvalue and singular-value lists of a finite
+matrix and their valuations, which are ordinary surcomplex numbers of the
+field, and \cref{diff:thm:matspectral} is precisely the theorem that relates
+the two --- by integrating and taking purely infinite parts, not by identifying
+them. \Cref{diff:ex:matnonnormal} shows that for a nonnormal coefficient the
+two are unrelated. Nor is $\Ph(A)$ a set of angles: no member of a phase
+spectrum is ever routed through the finite-angle map $\cis$ of sense~(a) or
+through the finite-angle constructions of \cite{RepoTrig}, since a nonzero
+member of $\Pcl$ is infinite and $\cis$ is defined on $\Ofin$ only. And it is
+not a prime spectrum of a ring: where the collection's analytic-geometry
+report discusses $\operatorname{Spec}$ of a coefficient ring, that is the
+ring-theoretic object and is written out as \emph{prime spectrum} there.
+\end{warning}
+
 \begin{table}[htbp]
 \centering\small
-\caption{The three phases, and where each source's notation lands.}
+\caption{The phase objects, and where each source's notation lands.}
 \label{diff:tab:phases}
 \begin{tabularx}{\textwidth}{@{}L{0.16\textwidth}L{0.10\textwidth}L{0.13\textwidth}YL{0.20\textwidth}@{}}
 \toprule
@@ -1063,15 +1155,22 @@ $\eta$, $\theta$, $\varepsilon$, $\delta$ \\[0.3em]
 Accumulated phase & $B$ & $\No$ &
 A primitive of the imaginary coefficient; \emph{not} an angle; obstructed
 exactly when $\pp(B)\neq0$ &
-$B$; $\Izero(b)$; and four different letters for the primitive operator \\
+$B$; $\Izero(b)$; and four different letters for the primitive operator \\[0.3em]
+Differential phase spectrum & $\Ph(A)$ & multisets in $\Pcl$ &
+The $n$ accumulated obstructions of a finite matrix system, as a multiset; the
+complete invariant of differential equivalence &
+$\operatorname{Ph}$; $\Psi(\lambda_{j})$, where the map $\Psi$ is this
+report's $\Obs$ \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-\begin{warning}[Where the three collide in the sources]
+\begin{warning}[Where the senses collide in the sources]
 \label{diff:warn:phasecollision}
-Two of the seven manuscripts use ``phase'' for sense (a), four use it for sense
-(b), and all seven use ``accumulated phase'' for sense (c). One of them prints
+Two of the first seven manuscripts use ``phase'' for sense (a), four use it for
+sense (b), and all seven use ``accumulated phase'' for sense (c); the eighth
+introduces sense (e) and, with it, a fourth letter for the primitive
+obstruction. One of them prints
 (a) and (b) twenty lines apart, both called the phase. Sense (c) is the one
 that carries the obstruction, and it is the one that is \emph{not} an angle:
 $\Obs(i)=\omega$ and $\Obs(i/\omega)=\log\omega$ are purely infinite surreals,
@@ -2780,8 +2879,1473 @@ vector system has no nonzero solution at all.
 Opposite phase obstructions can cancel in a determinant without disappearing
 from the individual modes, so a determinant-only test discards essential
 differential information. For a general matrix system the trace condition is
-only the first invariant; \cref{diff:sec:nonclaims} records that no
-classification of arbitrary nontriangular systems over $\SC$ is offered here.
+only the first invariant. The complete one is the \emph{multiset} of phases,
+and \cref{diff:part:matrix} supplies it: \cref{diff:thm:matnormal} shows that
+every finite system over $\SC$ has a well-defined differential phase spectrum
+$\Ph(A)\subset\Pcl$ which is a complete invariant of gauge equivalence, and
+\cref{diff:eq:mattrace} recovers \cref{diff:eq:tracenecessary} from it as the
+sum
+\[
+ \Phi(\tr A)=\sum_{P}m_{P}(A)\,P ,
+\]
+whose failure to determine the multiset is exactly why the trace test is
+insufficient. Two of the phase spectrum's consequences belong beside the trace
+test. First, by \cref{diff:cor:matinhom} a fundamental matrix exists in
+$\GL_{n}(\SC)$ if and only if every member of $\Ph(A)$ is zero, which extends
+\cref{diff:thm:triangular} beyond the triangular case. Second, by
+\cref{diff:cor:matperturbation}, perturbing every entry of a Hermitian $H$ by
+a coefficient with a finite primitive leaves the entire differential unitary
+class of $\der y=iHy$ unchanged, with \emph{no} spectral-gap hypothesis --- a
+statement the trace invariant cannot see at all, and one that
+\cref{diff:prop:sharpperturb} shows is sharp. For non-Hermitian coefficients no
+such spectral formula holds, and \cref{diff:ex:matnonnormal} is the
+counterexample that marks the line; \cref{diff:sub:nc:scalarscope} records what
+remains unclassified.
+\part{Finite matrix systems over \texorpdfstring{$\SC$}{No[i]}}
+\label{diff:part:matrix}
+
+\section{The differential phase spectrum of a finite system}
+\label{diff:sec:matrixphase}
+
+\subsection{From one necessary invariant to a complete one}
+\label{diff:sub:matbridge}
+
+\Cref{diff:prop:trace} leaves a finite matrix system with exactly one
+invariant, $\Phi(\tr A)$, and with a proof that it is not enough:
+$\operatorname{diag}(i,-i)$ has vanishing trace obstruction and no nonzero
+solution. The missing information is a \emph{multiset}, not a sum. This part
+supplies it for every finite system, and computes it from ordinary algebraic
+eigenvalues when the coefficient is Hermitian.
+
+The eighth source manuscript is the origin of this part
+(\cref{diff:app:provenance}). Its own audit names the gap in this report's
+terms --- general nontriangular systems and higher-rank differential modules
+left outside the classification --- and states that the rank-one phase
+criterion, the bounded-primitive ideal and the diagonal Galois tori of
+\cref{diff:part:scalar,diff:sec:PV} are prior coverage rather than discoveries
+of its own. That is how they are used below: nothing already proved in
+\cref{diff:part:scalar} is reproved here, and every statement of this part
+that coincides with one already in the report is cited, not restated.
+
+Two agreements are worth printing as agreements before anything new is proved.
+
+\begin{remark}[The eighth manuscript refutes the same collapse]
+\label{diff:rem:matagreement}
+\Cref{diff:warn:collapse} is load-bearing: $\Acl=\der\mm=\der\Ofin$ is a
+\emph{strict} subclass of $\mm$, so the criterion is never ``the coefficient
+is infinitesimal''. The eighth manuscript opens with exactly that point and
+exactly that witness: $i/\omega$ is obstructed because its imaginary part has
+the infinite primitive $\log\omega$. Its structure lemma for the ideal ---
+order-convexity, the $\Ofin$-module property, containment in $\mm$, and the
+separating pair $\omega^{-2}\in\Acl$, $\omega^{-1}\notin\Acl$ --- is
+\cref{diff:thm:idealstructure}(iii),(iv), proved there by the same
+order-theoretic route from \ref{diff:BM:positivity}. Nothing in this part
+weakens that warning, and \cref{diff:prop:sharpperturb} below shows that the
+strictness is sharp for matrices as well as for scalars.
+\end{remark}
+
+\begin{remark}[The rank-one criterion is imported from \cref{diff:part:scalar}]
+\label{diff:rem:matrankone}
+The eighth manuscript reproves the exact logarithmic-derivative image
+\cref{diff:eq:logimage} by polar decomposition and a formal Hahn logarithm,
+and credits it to this collection. It is \cref{diff:thm:logimage} and
+\cref{diff:thm:phasecriterion}, with the same proof idea as
+\cref{diff:cor:polar}; it is not reproved here. Every uniqueness argument
+below rests on the following special case of \cref{diff:thm:phasecriterion},
+which is used often enough to deserve a number.
+\end{remark}
+
+\begin{lemma}[The rank-one separation test]
+\label{diff:lem:matseparation}
+Let $P,Q\in\Pcl$ and let $x\in\SC$ satisfy
+$\der x=i\,\der(P-Q)\,x$. If $x\neq0$ then $P=Q$ and $x\in\C^{\times}$.
+\end{lemma}
+\begin{proof}
+By \cref{diff:thm:phasecriterion} a nonzero solution forces
+$\Phi\bigl(i\der(P-Q)\bigr)=\Obs\bigl(\der(P-Q)\bigr)=0$, which is $P-Q=0$ by
+\cref{diff:thm:idealstructure}(vi). Then $\der x=0$, so $x\in\C^{\times}$ by
+the constant-field statement of \cref{diff:thm:BM}.
+\end{proof}
+
+We also need the order behaviour of $\Obs$ itself, which
+\cref{diff:thm:idealstructure} contains but does not display.
+
+\begin{corollary}[The obstruction preserves order]
+\label{diff:cor:obsorder}
+The map $\Obs:\No\to\Pcl$ is order preserving: $b\leq c$ implies
+$\Obs(b)\leq\Obs(c)$. Consequently, for $P,Q\in\Pcl$,
+\[
+ P<Q\quad\Longleftrightarrow\quad\der P<\der Q ,
+\]
+and an ordered tuple of real coefficients has an ordered tuple of
+obstructions.
+\end{corollary}
+\begin{proof}
+The displayed equivalence is \cref{diff:thm:idealstructure}(vii), which states
+that $\der:\Pcl\to\der\Pcl$ is an order-preserving bijection. For the first
+assertion, suppose $b\leq c$ and put $P=\Obs(b)$, $Q=\Obs(c)$. If $Q<P$ then
+$\der Q<\der P$, and $b-\der P\in\Acl$, $c-\der Q\in\Acl$ by
+\cref{diff:thm:idealstructure}(vi),(vii); so
+$b-c=(\der P-\der Q)+d$ with $d\in\Acl$ and $\der P-\der Q>0$. Since
+$\der P-\der Q=\der(P-Q)$ with $P-Q\in\Pcl\setminus\{0\}$, it does not lie in
+$\Acl$, and convexity of $\Acl$
+(\cref{diff:thm:idealstructure}(iii)) then gives $b-c>0$, contradicting
+$b\leq c$.
+\end{proof}
+
+\begin{convention}[The alphabet of this part]
+\label{diff:conv:matalphabet}
+Throughout \cref{diff:part:matrix}, $n$ is an ordinary positive integer and
+all matrices are $n\times n$ over $\SC$ unless said otherwise; $\der$ acts
+entrywise, $A^{*}$ is the conjugate transpose for the conjugation of
+\cref{diff:prop:complexification}, and $I$ is the identity matrix.
+\begin{itemize}[leftmargin=1.6em]
+\item $A$ is a coefficient matrix, as in \cref{diff:sec:triangular};
+$Y$ is a fundamental matrix.
+\item $H$ is a \emph{Hermitian} matrix, $H^{*}=H$. In this report the letter
+$H$ otherwise occurs only in the hyphenated adjective ``$H$-field'' and in the
+subscripted coefficient fields $H_{\Gamma}=\R((t^{\Gamma}))$; a bare $H$ in
+this part is always a matrix and never either of those.
+\item $G\in\GL_{n}(\SC)$ is a gauge matrix --- the matrix upgrade of the
+scalar gauge $g$ of \cref{diff:eq:gauge} --- and $W$ is a gauge that is
+\emph{unitary}, $W^{*}W=I$. The letter $U$ is reserved for an ordinary complex
+domain (\cref{diff:warn:concordance}) and is not used for a unitary matrix;
+$\Un_{n}(\SC)$ denotes the unitary group.
+\item $\mathcal M$ is a horizontal Hermitian metric
+(\cref{diff:def:horizontal}), and $\Rot=\left(
+\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\right)$ is the rotation
+generator. The sources write $J$ for the latter; this report uses no letter
+$J$ (\cref{diff:conv:noJ}).
+\item $\Tser$ is the differential field of transseries, which occurs only in
+\cref{diff:thm:matsurjectivity}; it is never the unit circle $\Tor(\No)$ and never
+a transcendental generator $\mathsf T$.
+\item $\Pi$ is the additive \emph{phase lattice} generated inside $\Pcl$ by
+the phases of a system, and $\Lambda\subseteq\Z^{n}$ remains the integer
+\emph{relation} lattice of \cref{diff:eq:lattice}. The two are different
+objects over different groups and are never written with the same letter.
+\end{itemize}
+\end{convention}
+
+\subsection{Matrix gauge equivalence and the complete phase normal form}
+\label{diff:sub:matnormal}
+
+A change of unknown $y=Gz$ with $G\in\GL_{n}(\SC)$ carries $\der y=Ay$ to
+$\der z=A^{G}z$, where
+\begin{equation}\label{diff:eq:matgauge}
+ A^{G}=G^{-1}AG-G^{-1}\der G .
+\end{equation}
+Call $A,B$ \emph{differentially equivalent} when $B=A^{G}$ for some
+$G\in\GL_{n}(\SC)$, and \emph{differentially unitarily equivalent} when $G$
+may be taken unitary. The connection term $G^{-1}\der G$ is not optional:
+similarity of matrices alone is not differential equivalence, and
+\cref{diff:ex:matnonnormal} below turns on exactly that.
+
+Two inputs are needed that \cref{diff:part:scalar} does not contain. Both are
+imported, and the import is flagged here and in
+\cref{diff:sub:nc:matrixscope}.
+
+\begin{theorem}[Imported: splitting and first-order surjectivity, transferred]
+\label{diff:thm:matsurjectivity}
+The following two properties hold over $\Tser[i]$, where $\Tser$ is the field of
+transseries, and are recorded in the asymptotic-differential-algebra
+literature \cite[Lemma 2.4.19]{ADHNorm}:
+every monic scalar differential operator of positive order splits into
+first-order factors, and every nonzero scalar linear differential operator is
+surjective. Both transfer to $\SC$. In particular, for all $a,f\in\SC$ there
+is $u\in\SC$ with
+\begin{equation}\label{diff:eq:matfirstorder}
+ \der u-au=f .
+\end{equation}
+\end{theorem}
+\begin{proof}
+For each fixed order the two assertions are first-order sentences of the
+ordered differential-field language: expanding a product of first-order
+operators uses only the finite rule $\der a=a\der+\der(a)$, so the coefficient
+identities are polynomial identities in finitely many coefficients and their
+derivatives, and surjectivity of a given order is a first-order sentence with
+a nonzero leading coefficient as hypothesis. A complex coefficient is an
+ordered pair of real ones, and complex addition, multiplication and
+differentiation are definable in that interpretation, so the sentences about
+$\Tser[i]$ are sentences about $\Tser$. The elementary embedding
+$\Tser\preceq\No$ of \cite{ADH} transfers them to $\No$, hence to $\SC$, for
+arbitrary surreal coefficients and not merely for coefficients in the embedded
+copy of $\Tser$.
+\end{proof}
+
+\begin{warning}[What this import does and does not add]
+\label{diff:warn:matimport}
+\Cref{diff:thm:matsurjectivity} is an \emph{additional imported input}, on the
+same footing as \cref{diff:thm:BM} and not a consequence of anything proved in
+\cref{diff:part:scalar}. It must not be read as making $\SC$ differentially
+closed, and it must not be read as a homogeneous existence theorem: ``linearly
+closed'' there means the splitting property, not that every homogeneous
+equation has a full solution set in the base field. Reading it the second way
+would make $\der y=iy$ appear solvable and contradict
+\cref{diff:cor:oscillator}. It also yields no algorithm: no effective
+factorization of an arbitrary surreal-coefficient operator follows from a
+first-order transfer (\cref{diff:sub:nc:effectivity}). What it does supply is
+\emph{inhomogeneous existence} for first-order scalar equations, which
+\cref{diff:thm:variation} deliberately did not assert outside the admissible
+locus $\Phi(q)=0$; see \cref{diff:cor:matinhom} and the amended item~N22.
+\end{warning}
+
+\begin{lemma}[Cyclic vector, and a rank-one filtration]
+\label{diff:lem:matcyclic}
+Let $M$ be a differential module over $\SC$ of ordinary finite dimension
+$n\geq1$, that is, a free $\SC$-module of rank $n$ with an additive
+$\nabla$ satisfying $\nabla(fv)=(\der f)v+f\nabla v$. Then $M$ has a vector
+$v$ for which $v,\nabla v,\dots,\nabla^{n-1}v$ is a basis, and $M$ has a
+filtration by differential submodules whose successive quotients have
+dimension one.
+\end{lemma}
+\begin{proof}
+Fix a basis $e_{0},\dots,e_{n-1}$ and extend $\nabla$ to $M[T]$ by giving the
+indeterminate derivative $1$. Define $v_{0}=e_{0}$ and
+$v_{k}=e_{k}-\sum_{j<k}\binom{k}{j}\nabla^{k-j}v_{j}$, and put
+$v(T)=\sum_{j<n}T^{j}v_{j}/j!$. The Leibniz rule gives
+$\nabla^{k}v(T)\big|_{T=0}=e_{k}$ for $k<n$, so the determinant of the columns
+$v(T),\dots,\nabla^{n-1}v(T)$ is a polynomial in $T$ with constant term $1$,
+hence nonzero. Substituting $T=\omega-c$ for a real $c$ respects
+differentiation because $\der(\omega-c)=1$, and a nonzero polynomial has only
+finitely many roots while the elements $\omega-c$ are pairwise distinct; choose
+$c$ outside that finite exceptional set to get a cyclic vector.
+
+For the filtration, a cyclic vector presents $M$ as $\SC[\der]/\SC[\der]L$
+with $L$ monic of order $n$. By \cref{diff:thm:matsurjectivity} write
+$L=(\der-b)R$ with $R$ a product of $n-1$ first-order factors. The class of
+$R$ is nonzero, spans a one-dimensional differential submodule and satisfies
+$\der R\equiv bR$ modulo $L$; the quotient is the module with annihilator $R$,
+and induction on $n$ finishes. The dimension counts follow from division by a
+monic operator, whose remainder has strictly smaller order.
+\end{proof}
+
+\begin{theorem}[Complete phase normal form for finite systems]
+\label{diff:thm:matnormal}
+For every $A\in\Mat_{n}(\SC)$ there are $G\in\GL_{n}(\SC)$ and
+$P_{1},\dots,P_{n}\in\Pcl$ with
+\begin{equation}\label{diff:eq:matnormal}
+ A^{G}=i\operatorname{diag}(\der P_{1},\dots,\der P_{n}) .
+\end{equation}
+The multiset
+\[
+ \Ph(A):=\{P_{1},\dots,P_{n}\}\subset\Pcl
+\]
+does not depend on $G$, and it is a \emph{complete} invariant of differential
+equivalence: two finite systems of the same size are differentially equivalent
+if and only if their multisets agree. We call $\Ph(A)$ the \emph{differential
+phase spectrum} of $A$, in the sense of \cref{diff:conv:phases}(e).
+\end{theorem}
+\begin{proof}
+Apply \cref{diff:lem:matcyclic} to the connection $\nabla=\der-A$ on $\SC^{n}$;
+an adapted basis makes the system upper triangular. Suppose inductively that
+the first $n-1$ coordinates have been diagonalized, leaving
+\[
+ A=\begin{pmatrix}D&b\\0&a\end{pmatrix},
+ \qquad D=\operatorname{diag}(d_{1},\dots,d_{n-1}).
+\]
+For $S=\left(\begin{smallmatrix}I&u\\0&1\end{smallmatrix}\right)$ the
+off-diagonal column of $A^{S}$ is $b+Du-ua-\der u$, and each scalar equation
+$\der u_{j}-(d_{j}-a)u_{j}=b_{j}$ has a solution by
+\cref{diff:eq:matfirstorder}. This kills the column, with no hypothesis on
+repetitions among the diagonal entries: when $d_{j}=a$ the equation is
+ordinary intrinsic integration, available by \ref{diff:BM:surj}. Induction
+gives a diagonal form, and \cref{diff:thm:gauge} applied to each diagonal
+entry supplies a further diagonal gauge bringing it to
+\cref{diff:eq:matnormal} with $P_{j}=\Phi(a_{j})$.
+
+For independence and completeness, suppose $D_{P}=i\operatorname{diag}(\der
+P_{j})$ and $D_{Q}=i\operatorname{diag}(\der Q_{k})$ satisfy
+$D_{Q}=(D_{P})^{\Xi}$ for an invertible $\Xi$. Then $\der\Xi=D_{P}\Xi-\Xi D_{Q}$, that
+is
+\begin{equation}\label{diff:eq:matintertwine}
+ \der\Xi_{jk}=i\,\der(P_{j}-Q_{k})\,\Xi_{jk}
+\end{equation}
+entrywise. By \cref{diff:lem:matseparation} an entry can be nonzero only when
+$P_{j}=Q_{k}$, and is then a complex constant. Invertibility of $\Xi$ forces the
+two multisets to have the same multiplicities. Conversely equal multisets give
+the same normal form after a constant permutation.
+\end{proof}
+
+\begin{remark}[This is the matrix upgrade of \cref{diff:thm:gauge}, and of nothing else]
+\label{diff:rem:matupgrade}
+For $n=1$, \cref{diff:thm:matnormal} is \cref{diff:thm:gauge}. For $n>1$ it is
+a genuinely stronger statement, and it is the first classification in this
+report of a system that is neither triangular nor constant. It is still
+\emph{not} a module-theoretic filtration theorem with computable data: the
+normal form is obtained from an existence theorem, the phases are semantic
+values of $\Obs$, and \cref{diff:sub:nc:matrixscope} records what remains open.
+\end{remark}
+
+\subsection{Solution spaces, projectors, and the refined trace identity}
+\label{diff:sub:matprojectors}
+
+For $P\in\Pcl$ write $m_{P}(A)$ for the multiplicity of $P$ in $\Ph(A)$, zero
+if $P$ does not occur.
+
+\begin{corollary}[Existence for every forcing, and the exact kernel dimension]
+\label{diff:cor:matinhom}
+For every $A\in\Mat_{n}(\SC)$ and every $f\in\SC^{n}$ the equation
+$\der y-Ay=f$ has a solution in $\SC^{n}$, and its solution set is an affine
+space over $\C$ of dimension $m_{0}(A)$. In particular
+\[
+ \dim_{\C}\Ker\bigl(\der-A\bigr)\big|_{\SC^{n}}=m_{0}(A),
+\]
+and $\der-A$ is bijective on $\SC^{n}$ exactly when $0\notin\Ph(A)$.
+\end{corollary}
+\begin{proof}
+Transport by the gauge of \cref{diff:thm:matnormal} and solve each scalar
+inhomogeneous equation by \cref{diff:eq:matfirstorder}. In the homogeneous
+equation a coordinate can be nonzero only at phase $0$, where it is a complex
+constant, by \cref{diff:lem:matseparation}. The difference of two particular
+solutions is homogeneous.
+\end{proof}
+
+\begin{warning}[What \cref{diff:cor:matinhom} changes, and what it does not]
+\label{diff:warn:matinhom}
+\Cref{diff:thm:variation} proves surjectivity of $\der-q$ only on the
+admissible locus $\Phi(q)=0$, and \cref{diff:warn:atmostone} states the
+correct weaker conclusion elsewhere: \emph{at most one}, not none.
+\Cref{diff:cor:matinhom} upgrades ``at most one'' to ``exactly one'' in the
+obstructed case, and it does so \emph{only} by invoking the separately
+imported first-order surjectivity of \cref{diff:thm:matsurjectivity}. It does
+not follow from the rank-one criterion, it does not follow from
+\cref{diff:thm:variation}, and it does not make the homogeneous equation
+solvable. The examples of \cref{diff:warn:atmostone} are unaffected and remain
+correct; what changes is that their uniqueness is now known to be accompanied
+by existence. Item~N22 of \cref{diff:sec:nonclaims} is amended accordingly and
+not deleted.
+\end{warning}
+
+\begin{proposition}[Canonical phase projectors]
+\label{diff:prop:matprojectors}
+Let $E_{P}$ be the coordinate projector onto the phase-$P$ block of a normal
+form and put $\Pi_{P}=GE_{P}G^{-1}$ for a normalizing gauge $G$. Then
+$\Pi_{P}$ is independent of the choice of $G$, and
+\[
+ \Pi_{P}\Pi_{Q}=\delta_{PQ}\Pi_{P},
+ \qquad \sum_{P}\Pi_{P}=I,
+ \qquad \der\Pi_{P}=A\Pi_{P}-\Pi_{P}A .
+\]
+The algebra of horizontal endomorphisms of the system --- matrices $X$ with
+$\der X=AX-XA$ --- is isomorphic to $\prod_{P}\Mat_{m_{P}(A)}(\C)$, and for
+two systems
+\[
+ \dim_{\C}\Homd(A,B)=\sum_{P}m_{P}(A)\,m_{P}(B).
+\]
+Direct sums unite phase multisets, tensor products add phases pairwise, and
+duals negate them.
+\end{proposition}
+\begin{proof}
+By \cref{diff:eq:matintertwine} any change between normalizing gauges is a
+constant block-diagonal matrix, so it commutes with every $E_{P}$; the
+displayed identities follow by multiplying and differentiating
+$\Pi_{P}=GE_{P}G^{-1}$ and using $\der G=AG-GD_{P}$. The same entrywise
+calculation, applied to $\der X=AX-XB$ in normal-form coordinates, identifies
+the horizontal homomorphisms with constant matrices supported on matching
+phase blocks. The last three statements are the corresponding computations for
+$A\oplus B$, $A\otimes I+I\otimes B$ and $-A^{\mathsf T}$, in each case reduced
+to the scalar addition rule of \cref{diff:cor:tensor}.
+\end{proof}
+
+\begin{corollary}[The determinant sees only the phase sum]
+\label{diff:cor:mattrace}
+For every finite $A$,
+\begin{equation}\label{diff:eq:mattrace}
+ \Phi(\tr A)=\sum_{P}m_{P}(A)\,P .
+\end{equation}
+\end{corollary}
+\begin{proof}
+Take traces in $A=(\der G)G^{-1}+GD_{P}G^{-1}$ and use Jacobi's identity
+$\tr\bigl((\der G)G^{-1}\bigr)=(\det G)^{\dagger}$, whose obstruction is zero
+by \cref{diff:thm:phasecriterion}.
+\end{proof}
+
+\Cref{diff:eq:mattrace} contains \cref{diff:prop:trace} and explains it: a
+fundamental matrix exists only if every phase is zero, so
+$\Phi(\tr A)=0$ is necessary, and it fails to be sufficient precisely because
+a multiset is not recoverable from its sum. The witness
+$\operatorname{diag}(i,-i)$ of \cref{diff:prop:trace} has
+$\Ph=\{\omega,-\omega\}$, which sums to zero while
+$\{0,0\}$ does too; the two systems are not differentially equivalent, and
+\cref{diff:thm:matnormal} says so. The trace condition is the first invariant;
+the phase multiset is the complete one.
+
+\subsection{Horizontal metrics and the unitary normal form}
+\label{diff:sub:matmetrics}
+
+\begin{definition}[Horizontal metric]
+\label{diff:def:horizontal}
+A Hermitian $\mathcal M\in\Mat_{n}(\SC)$ is \emph{horizontal} for $A$ when
+\begin{equation}\label{diff:eq:horizontal}
+ \der\mathcal M+A^{*}\mathcal M+\mathcal M A=0 ,
+\end{equation}
+and \emph{positive definite} when $v^{*}\mathcal M v>0$ for every nonzero
+$v\in\SC^{n}$.
+\end{definition}
+
+Equation \cref{diff:eq:horizontal} says formally that $y^{*}\mathcal M y$ is
+constant along a solution, in any differential extension carrying the
+compatible conjugation. It does not assert that the system has nonzero
+solutions in $\SC^{n}$; by \cref{diff:cor:matinhom} it usually does not.
+
+\begin{theorem}[The complete metric cone]
+\label{diff:thm:matmetric}
+Let $G$ normalize $A$ as in \cref{diff:thm:matnormal}. Every horizontal
+Hermitian matrix is uniquely
+\begin{equation}\label{diff:eq:matmetriccone}
+ \mathcal M=G^{-*}\Bigl(\bigoplus_{P}C_{P}\Bigr)G^{-1},
+ \qquad C_{P}\in\Herm_{m_{P}(A)}(\C),
+\end{equation}
+and is positive definite exactly when every $C_{P}$ is. In particular every
+finite system has a positive horizontal metric, and the real dimension of its
+space of horizontal Hermitian forms is $\sum_{P}m_{P}(A)^{2}$.
+\end{theorem}
+\begin{proof}
+Put $B=G^{*}\mathcal M G$. Since $\der G=AG-GD_{P}$, differentiating gives
+$\der B=D_{P}B-BD_{P}$, that is
+$\der B_{jk}=i\,\der(P_{j}-P_{k})B_{jk}$, so
+\cref{diff:lem:matseparation} makes every off-phase entry zero and every
+within-phase entry a complex constant. Hermitian symmetry leaves exactly the
+blocks $C_{P}$. Congruence preserves definiteness, and for a \emph{constant}
+Hermitian matrix positivity over $\SC$ is ordinary complex positive
+definiteness: diagonalize by an ordinary constant unitary matrix and read off
+its real eigenvalues. Taking every $C_{P}=I$ gives existence, and
+$\dim_{\R}\Herm_{m}(\C)=m^{2}$.
+\end{proof}
+
+\begin{warning}[A positive horizontal metric is not a stability statement]
+\label{diff:warn:matlyapunov}
+For
+\[
+ A=\begin{pmatrix}1&1\\0&1\end{pmatrix},
+ \qquad
+ G=e^{\omega}\begin{pmatrix}1&\omega\\0&1\end{pmatrix},
+\]
+one has $\der G=AG$, so both phases are zero, and
+\[
+ \mathcal M=e^{-2\omega}
+ \begin{pmatrix}1&-\omega\\-\omega&\omega^{2}+1\end{pmatrix}
+\]
+is horizontal with $\det\mathcal M=e^{-4\omega}>0$. The ordinary differential
+equation with the same printed coefficients has growing solutions. There is no
+contradiction, and no Lyapunov or uniform-equivalence claim is made anywhere
+in this part: the invariant metric itself has a strongly varying scale, here
+$e^{-2\omega}$, and \cref{diff:thm:matmetric} has no hypothesis relating it to
+a fixed norm. This is the matrix form of the separation already made in
+\cref{diff:warn:separators}(7) between a printed equation read in $\SC$ and the
+same equation read in an ordinary coordinate.
+\end{warning}
+
+\begin{theorem}[Unitary phase normal form]
+\label{diff:thm:matunitary}
+If $A^{*}=-A$, the normalizing gauge of \cref{diff:thm:matnormal} can be taken
+unitary. For a fixed ordering of the phases, any two unitary normalizing
+gauges differ by a constant block unitary matrix, one block per repeated
+phase, and the projectors of \cref{diff:prop:matprojectors} are then Hermitian
+orthogonal projectors.
+\end{theorem}
+\begin{proof}
+The identity matrix is horizontal for a skew-Hermitian $A$, so
+\cref{diff:thm:matmetric} applied to any normalizing $G$ makes
+$G^{*}G=C$ a constant positive definite block Hermitian matrix. Let
+$R=C^{-1/2}$, computed in the ordinary finite-dimensional complex block
+matrices; then $\der R=0$ and $R$ commutes with $D_{P}$, so $W=GR$ is still
+normalizing and $W^{*}W=I$. Uniqueness is \cref{diff:eq:matintertwine} again,
+with unitarity making the constant diagonal blocks unitary, and
+$WE_{P}W^{*}$ is Hermitian and idempotent.
+\end{proof}
+
+The square root in that proof is of a \emph{constant complex} matrix. No
+analytic functional calculus on a class-sized space is used, and the theorem
+is about differential diagonalization: the term $W^{*}\der W$ has not been
+removed and reappears, essentially, in \cref{diff:eq:matspectralproof}.
+
+\section{The spectral--integral theorem for Hermitian coefficients}
+\label{diff:sec:matspectral}
+
+\subsection{Finite Hermitian algebra over a real closed field}
+\label{diff:sub:matweyl}
+
+The two lemmas of this subsection hold over any real closed field and its
+complexification, and use no property of $\der$ at all. Related finite
+spectral material for $\SC$ is developed in the companion report
+\emph{Surcomplex Spectral Theory} \cite{RepoSpectral}, whose ``spectrum'' is
+the algebraic eigenvalue list; see \cref{diff:conv:phases}(e) for why that is
+not the object named in \cref{diff:thm:matspectral}.
+
+\begin{lemma}[Finite spectral theorem with attained min--max]
+\label{diff:lem:matminmax}
+Every Hermitian $H\in\Mat_{n}(\SC)$ has a unitary eigenbasis and eigenvalues
+in $\No$. Writing $\lambda_{1}(H)\leq\cdots\leq\lambda_{n}(H)$,
+\begin{equation}\label{diff:eq:matminmax}
+ \lambda_{k}(H)=\min_{\dim S=k}\ \max_{v\in S,\ v^{*}v=1}v^{*}Hv ,
+\end{equation}
+and both extrema are attained.
+\end{lemma}
+\begin{proof}
+$\SC$ is algebraically closed, so there is an eigenvector $v\neq0$ with
+eigenvalue $\lambda$; since $v^{*}v>0$ and $v^{*}Hv$ is fixed by conjugation,
+$\lambda=v^{*}Hv/v^{*}v\in\No$. Normalize $v$ by the positive square root of
+$v^{*}v$, available because $\No$ is real closed; the orthogonal complement is
+$H$-invariant, and finite induction gives a unitary eigenbasis. For a fixed
+$k$-dimensional $S$ the compression of $H$ to an orthonormal basis of $S$ is
+again finite Hermitian, so its largest eigenvalue attains the inner maximum;
+the span of the first $k$ eigenvectors attains the value $\lambda_{k}(H)$, and
+every $k$-dimensional $S$ meets the span of the last $n-k+1$ eigenvectors
+nontrivially, where a unit vector has Rayleigh quotient at least
+$\lambda_{k}(H)$. No compactness and no completeness is used; the argument is
+finite algebra over an ordered field.
+\end{proof}
+
+\begin{lemma}[An entrywise Weyl bound, and its ideal form]
+\label{diff:lem:matweyl}
+For Hermitian $H,E\in\Mat_{n}(\SC)$ put $m=\max_{j,k}\abs{E_{jk}}$. Then
+\begin{equation}\label{diff:eq:matweyl}
+ \abs{\lambda_{j}(H+E)-\lambda_{j}(H)}\leq nm
+ \qquad(1\leq j\leq n).
+\end{equation}
+If every entry of $E$ lies in $\Acl_{\C}:=\Acl+i\Acl$, then every eigenvalue
+difference in \cref{diff:eq:matweyl} lies in $\Acl$.
+\end{lemma}
+\begin{proof}
+For $v^{*}v=1$ the triangle and Cauchy--Schwarz inequalities over the real
+closed field $\No$ give
+$\abs{v^{*}Ev}\leq m\bigl(\sum_{j}\abs{v_{j}}\bigr)^{2}\leq nm$. Using the
+span of the first $j$ eigenvectors of $H$ in \cref{diff:eq:matminmax} gives the
+upper bound, and interchanging $H$ and $H+E$ the lower one. If
+$E_{jk}=a+ib$ with $a,b\in\Acl$ then $\abs{E_{jk}}\leq\abs a+\abs b\in\Acl$,
+so convexity of $\Acl$ (\cref{diff:thm:idealstructure}(iii)) puts
+$\abs{E_{jk}}$ in $\Acl$; a finite maximum and the integer multiple $nm$ stay
+in $\Acl$, and one more application of convexity finishes the proof.
+\end{proof}
+
+\subsection{Bounded gauges have integrable connection terms}
+\label{diff:sub:matboundedgauge}
+
+\begin{lemma}[Bounded-gauge estimate]
+\label{diff:lem:matboundedgauge}
+Let $W\in\Un_{n}(\SC)$. Then every entry of $W$ and of $W^{*}$ is finite,
+every entry of $\der W$ lies in $\Acl_{\C}$, every entry of $W^{*}\der W$ lies
+in $\Acl_{\C}$, and $W^{*}\der W$ is skew-Hermitian.
+\end{lemma}
+\begin{proof}
+A unitary column has squared moduli summing to $1$, so each entry has modulus
+at most $1$ and is finite. Differentiating a finite real or imaginary
+coordinate lands in $\der\Ofin=\Acl$ by
+\cref{diff:thm:idealstructure}(i). Since $\Acl$ is an $\Ofin$-module
+(\cref{diff:thm:idealstructure}(iii)), finite sums of products of entries of
+$W^{*}$ with entries of $\der W$ stay in $\Acl_{\C}$. Differentiating
+$W^{*}W=I$ gives $(\der W)^{*}W+W^{*}\der W=0$.
+\end{proof}
+
+\begin{warning}[The conclusion is about primitives, not about size]
+\label{diff:warn:matboundedgauge}
+It is the conclusion $W^{*}\der W\in\Mat_{n}(\Acl_{\C})$, and not the weaker
+statement that its entries are infinitesimal, that makes
+\cref{diff:thm:matspectral} true. The two are different by
+\cref{diff:warn:collapse}: an infinitesimal entry may accumulate an infinite
+phase, as $\omega^{-1}$ does. This is the precise point at which the strictness
+$\Acl\subsetneq\mm$ is load-bearing for the matrix theory.
+\end{warning}
+
+\subsection{The theorem}
+\label{diff:sub:matmain}
+
+\begin{theorem}[Spectral--integral classification of Hermitian systems]
+\label{diff:thm:matspectral}
+Let $H=H^{*}\in\Mat_{n}(\SC)$ with algebraic eigenvalues ordered
+$\lambda_{1}\leq\cdots\leq\lambda_{n}$ in $\No$, and put
+\[
+ P_{j}:=\Obs(\lambda_{j})\in\Pcl .
+\]
+Then $P_{1}\leq\cdots\leq P_{n}$ and
+\begin{equation}\label{diff:eq:matspectral}
+ \Ph(iH)=\{P_{1},\dots,P_{n}\} .
+\end{equation}
+There is a unitary $W\in\Un_{n}(\SC)$ with
+\begin{equation}\label{diff:eq:matspectralgauge}
+ W^{*}(iH)W-W^{*}\der W
+   =i\operatorname{diag}(\der P_{1},\dots,\der P_{n}),
+\end{equation}
+and two Hermitian coefficients give differentially unitarily equivalent
+systems $\der y=iH_{1}y$ and $\der y=iH_{2}y$ if and only if their ordered
+algebraic eigenvalues have identical images under $\Obs$, counted with
+multiplicity. Neither commuting coefficients nor a spectral gap is assumed.
+\end{theorem}
+\begin{proof}
+The matrix $iH$ is skew-Hermitian, so \cref{diff:thm:matunitary} supplies a
+unitary normalizing gauge $W$ with phases $Q_{1}\leq\cdots\leq Q_{n}$, ordered
+by \cref{diff:cor:obsorder}. Rearranging its defining identity gives
+\begin{equation}\label{diff:eq:matspectralproof}
+ W^{*}HW=\operatorname{diag}(\der Q_{1},\dots,\der Q_{n})
+        +E,\qquad E:=-i\,W^{*}\der W .
+\end{equation}
+By \cref{diff:lem:matboundedgauge} the matrix $E$ is Hermitian with every
+entry in $\Acl_{\C}$. Conjugation by a unitary matrix does not change
+eigenvalues, and $\der Q_{1}\leq\cdots\leq\der Q_{n}$ by
+\cref{diff:cor:obsorder}; so \cref{diff:lem:matweyl}, applied to the diagonal
+matrix and the perturbation $E$, gives
+$\lambda_{j}(H)-\der Q_{j}\in\Acl$ for every $j$. Apply $\Obs$: its kernel is
+exactly $\Acl$ by \cref{diff:thm:idealstructure}(vi), and
+$\Obs(\der Q_{j})=Q_{j}$ by the same item, so
+$\Obs(\lambda_{j}(H))=Q_{j}$. This is
+\cref{diff:eq:matspectral,diff:eq:matspectralgauge}, and the ordering of the
+$P_{j}$ is \cref{diff:cor:obsorder}. The equivalence statement is
+\cref{diff:thm:matnormal} together with \cref{diff:thm:matunitary}, which makes
+the normalizing gauges of two skew-Hermitian systems unitary, so that the
+equivalence between them is unitary as well.
+\end{proof}
+
+\begin{warning}[The connection term is not removed]
+\label{diff:warn:matconnection}
+\Cref{diff:thm:matspectral} does \emph{not} say that pointwise diagonalization
+commutes with differentiation; it does not. The term $W^{*}\der W$ in
+\cref{diff:eq:matspectralproof} is present, and the theorem says only that it
+is invisible in the ordered additive quotient by $\Acl$ described in
+\cref{diff:thm:idealstructure}(viii). Nor is the classification the assertion
+that every phase grade has a horizontal vector in $\SC^{n}$: by
+\cref{diff:cor:matinhom} only the grade $P=0$ does. The formula is exact for
+arbitrary surreal scales and arbitrary ordinary finite multiplicities; there is
+no hypothesis that the $\lambda_{j}$ be distinct, that gaps dominate a
+derivative, or that $H$ commute with its derivative or with any of its
+primitives.
+\end{warning}
+
+\subsection{Gap-free perturbation, the exact kernel count, and sharpness}
+\label{diff:sub:matperturbation}
+
+\begin{corollary}[Finite-primitive perturbation invariance, with no gap hypothesis]
+\label{diff:cor:matperturbation}
+If $H_{1},H_{2}$ are Hermitian and every entry of $H_{1}-H_{2}$ lies in
+$\Acl_{\C}$, then $\der y=iH_{1}y$ and $\der y=iH_{2}y$ are differentially
+unitarily equivalent.
+\end{corollary}
+\begin{proof}
+\Cref{diff:lem:matweyl} puts corresponding ordered eigenvalue differences in
+$\Acl=\Ker\Obs$; apply \cref{diff:thm:matspectral}.
+\end{proof}
+
+\begin{corollary}[Exact kernel count]
+\label{diff:cor:matkernel}
+For Hermitian $H$,
+\begin{equation}\label{diff:eq:matkernelcount}
+ \dim_{\C}\{y\in\SC^{n}:\der y=iHy\}
+   =\#\{j:\lambda_{j}(H)\in\Acl\},
+\end{equation}
+counted with algebraic multiplicity. The forced equation $\der y-iHy=f$ is
+solvable for every $f\in\SC^{n}$, and uniquely so exactly when no eigenvalue
+of $H$ lies in $\Acl$.
+\end{corollary}
+\begin{proof}
+Combine \cref{diff:thm:matspectral,diff:cor:matinhom} with
+$\Ker\Obs=\Acl$.
+\end{proof}
+
+For $H=\operatorname{diag}(\omega^{-2},\omega^{-1},1)$ the kernel has complex
+dimension one, because $\omega^{-2}\in\Acl$ while $\omega^{-1}\notin\Acl$ and
+$1\notin\Acl$ (\cref{diff:eq:obsexamples}). Replacing $H$ by any Hermitian
+matrix differing from it entrywise by $\Acl_{\C}$ preserves that answer, even
+when the perturbation is far larger than a gap at some more remote
+infinitesimal scale --- which is exactly what a gap hypothesis would forbid.
+
+\begin{proposition}[Sharpness of the perturbation class]
+\label{diff:prop:sharpperturb}
+For real $h,k\in\No$ the equations $\der y=ihy$ and $\der y=iky$ are
+differentially unitarily equivalent exactly when $h-k\in\Acl$. Hence no
+strictly larger additive class of scalar perturbations preserves the phase of
+every Hermitian system.
+\end{proposition}
+\begin{proof}
+A scalar unitary gauge equivalence is $i(h-k)=u^{\dagger}$ with $u\bar u=1$;
+\cref{diff:thm:logimage} together with \cref{diff:thm:unitphase} gives
+necessity and constructs a unit solution for sufficiency. If $b\notin\Acl$ the
+one-dimensional systems with coefficients $0$ and $b$ have obstructions $0$ and
+$\Obs(b)\neq0$.
+\end{proof}
+
+``Infinitesimal perturbation'' therefore cannot replace ``finite-primitive
+perturbation'': the scalar change $0\mapsto\omega^{-1}$ already moves the phase
+from $0$ to $\log\omega$. This is \cref{diff:warn:collapse} again, now in its
+sharpest form: $\Acl$ is not merely a convenient subclass of $\mm$, it is the
+exact class for which \cref{diff:cor:matperturbation} is true.
+
+\subsection{The two boundaries, exhibited}
+\label{diff:sub:matboundaries}
+
+\begin{example}[A nonnormal system whose eigenvalues predict the wrong phases]
+\label{diff:ex:matnonnormal}
+Let $x=\omega$ and
+\[
+ G=\begin{pmatrix}1-x^{2}&x\\-x&1\end{pmatrix},
+ \qquad
+ A=\begin{pmatrix}-x&1+x^{2}\\-1&x\end{pmatrix}.
+\]
+Then $\det G=1$ and $\der G=AG$, so $A$ has a fundamental matrix in
+$\GL_{2}(\SC)$ and, by \cref{diff:cor:matinhom},
+$\Ph(A)=\{0,0\}$. Yet
+\[
+ \det(\zeta I-A)=\zeta^{2}+1 ,
+\]
+so the instantaneous algebraic eigenvalues of $A$ are $i$ and $-i$, and taking
+obstructions of their imaginary parts would predict $\{\omega,-\omega\}$. The
+prediction is wrong by \cref{diff:thm:matnormal}.
+\end{example}
+
+\begin{warning}[What the counterexample rules out, and what it marks]
+\label{diff:warn:matnonnormal}
+\Cref{diff:ex:matnonnormal} is not a curiosity; it is the boundary of
+\cref{diff:thm:matspectral}. It shows that the Hermitian hypothesis cannot be
+dropped and that the main formula does not extend to arbitrary matrices by
+extracting imaginary parts of eigenvalues. The mechanism is exactly the one
+\cref{diff:lem:matboundedgauge} controls in the Hermitian case: the similarity
+gauges needed for a general nonnormal matrix need not be entrywise finite, so
+their connection term need not lie in $\Mat_{n}(\Acl_{\C})$ and can carry a
+nonzero phase of its own. Here $G$ has the infinite entry $1-\omega^{2}$.
+
+The example also agrees with, rather than contradicts, the hedge already
+recorded in \cref{diff:sub:nc:open}: a classification of nontriangular systems
+by module-theoretic data cannot be replaced by the eigenvalues of an
+instantaneous coefficient matrix. \Cref{diff:thm:matspectral} does not do that
+either; it replaces them by the eigenvalues \emph{after} applying $\Obs$, and
+only under Hermitian symmetry. The non-Hermitian case remains open, and
+\cref{diff:ex:matnonnormal} is what marks the line.
+\end{warning}
+
+\begin{example}[A genuinely coupled unitary system with two independent phases]
+\label{diff:ex:matcoupled}
+Let $x=\omega$ and
+\[
+ a=\frac{1-x^{2}}{1+x^{2}},
+ \qquad b=\frac{2x}{1+x^{2}},
+ \qquad
+ W=\begin{pmatrix}a&-b\\b&a\end{pmatrix},
+ \qquad
+ D=i\operatorname{diag}(x,x^{-1}),
+\]
+so that $W$ is a real orthogonal matrix over $\No$ and
+$A:=(\der W)W^{\mathsf T}+WDW^{\mathsf T}$ satisfies $A^{*}=-A$. Explicitly
+\[
+ A=\begin{pmatrix}
+ i(a^{2}x+b^{2}x^{-1}) &
+ -\dfrac{2}{1+x^{2}}+iab(x-x^{-1})\\[6pt]
+ \dfrac{2}{1+x^{2}}+iab(x-x^{-1}) &
+ i(b^{2}x+a^{2}x^{-1})
+ \end{pmatrix},
+\]
+which is neither diagonal nor a constant-matrix system. Its exact normal form
+is $D$, so
+\[
+ \Ph(A)=\Bigl\{\tfrac12\omega^{2},\ \log\omega\Bigr\},
+\]
+using $\Obs(\omega)=\tfrac12\omega^{2}$ and $\Obs(\omega^{-1})=\log\omega$
+(\cref{diff:eq:obsexamples}). Writing $H=-iA$, one computes
+\[
+ \tr H=x+x^{-1},
+ \qquad
+ \det H=1-\frac{4}{(1+x^{2})^{2}},
+\]
+so the instantaneous eigenvalues of $H$ are \emph{not} $x$ and $x^{-1}$. Their
+discrepancies lie in $\Acl$, so \cref{diff:thm:matspectral} recovers the same
+two phases from them. Both phases are nonzero, so by
+\cref{diff:cor:matinhom} every forced system $\der y-Ay=f$ has a unique
+solution in $\SC^{2}$; and the two phases are $\Q$-linearly independent, which
+\cref{diff:sub:mattorus} uses.
+\end{example}
+
+\section{Consequences of the matrix normal form}
+\label{diff:sec:matconsequences}
+
+\subsection{Normalized non-Abelian integration}
+\label{diff:sub:matnonabelian}
+
+Write
+\[
+ \mathfrak u_{n}(\Acl_{\C})
+  =\{A\in\Mat_{n}(\Acl_{\C}):A^{*}=-A\},
+\]
+and let $\Un_{n}(1+\mm_{\C})$ be the unitary matrices $W$ with
+$W-I\in\Mat_{n}(\mm_{\C})$. The latter is a congruence subgroup, not the
+requirement that off-diagonal entries be near $1$.
+
+\begin{theorem}[Normalized compact integration]
+\label{diff:thm:matnonabelian}
+The logarithmic-derivative map
+\begin{equation}\label{diff:eq:matnonabelian}
+ \Un_{n}(1+\mm_{\C})\longrightarrow\mathfrak u_{n}(\Acl_{\C}),
+ \qquad W\longmapsto(\der W)W^{*},
+\end{equation}
+is a bijection of classes. Equivalently, for skew-Hermitian $A$ the following
+are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=2.4em]
+\item every entry of $A$ has finite real and imaginary primitives, that is
+$A\in\Mat_{n}(\Acl_{\C})$;
+\item $\der y=Ay$ has a fundamental matrix in $\GL_{n}(\SC)$;
+\item $\der W=AW$ has a unitary solution with $\st(W)=I$ entrywise.
+\end{enumerate}
+The solution in \textup{(iii)} is unique.
+\end{theorem}
+\begin{proof}
+\Cref{diff:lem:matboundedgauge} makes \cref{diff:eq:matnonabelian} well defined
+and gives (iii)$\Rightarrow$(i). Assume (i) and put $H=-iA$, Hermitian with
+entries in $\Acl_{\C}$. Comparing $H$ with the zero matrix,
+\cref{diff:lem:matweyl} places every eigenvalue of $H$ in $\Acl$, so
+\cref{diff:thm:matspectral} gives $\Ph(A)=\{0,\dots,0\}$ and a unitary $V$
+with $A^{V}=0$, that is $\der V=AV$. Taking standard parts entrywise in
+$V^{*}V=I$ --- legitimate because every entry is finite by
+\cref{diff:lem:matboundedgauge} --- shows that $C=\st(V)$ is an ordinary
+complex unitary matrix, and $W=VC^{-1}$ has $\der W=AW$ and $\st(W)=I$.
+
+If $W_{1},W_{2}$ are two normalized solutions then $\der(W_{1}^{-1}W_{2})=0$,
+so $W_{1}^{-1}W_{2}$ is a constant complex matrix with standard part $I$,
+hence $I$. That is uniqueness and injectivity of
+\cref{diff:eq:matnonabelian}. Clearly (iii)$\Rightarrow$(ii); conversely a
+fundamental matrix makes every phase zero by \cref{diff:cor:matinhom}, and for
+a skew-Hermitian system \cref{diff:thm:matunitary} then supplies a unitary
+fundamental matrix, which after multiplication by the inverse of its standard
+part is normalized.
+\end{proof}
+
+\begin{warning}[This is an existence theorem, not an exponential formula]
+\label{diff:warn:matnonabelian}
+\Cref{diff:thm:matnonabelian} is not the assertion that
+$W=\exp\bigl(\int A\bigr)$, and there is no ordering prescription, no chosen
+contour, and no claimed convergence of Picard iteration. Its normalization is
+residue data, $\st(W)=I$, not an initial value at a real or surreal time ---
+the same distinction \cref{diff:warn:Jnotalgorithm} makes for $\Izero$. For the
+unique solution $W_{A}$ the ordinary product rule gives
+\begin{equation}\label{diff:eq:matcocycle}
+ \bigl(\der(W_{A}W_{B})\bigr)(W_{A}W_{B})^{*}
+ =A+W_{A}BW_{A}^{*},
+\end{equation}
+whose right-hand side again lies in $\mathfrak u_{n}(\Acl_{\C})$. So the
+bijection transports the group law to $A\star B=A+W_{A}BW_{A}^{*}$, which is
+\emph{not} addition unless the matrices commute.
+\end{warning}
+
+\begin{example}[An exact noncommuting Hahn solution]
+\label{diff:ex:matnoncommuting}
+Let $t=\omega^{-1}$, so $\der t=-t^{2}$, and take the constant skew-Hermitian
+matrices
+\[
+ X=\begin{pmatrix}0&i\\i&0\end{pmatrix},
+ \qquad
+ Z=\begin{pmatrix}i&0\\0&-i\end{pmatrix} .
+\]
+For $A=-t^{2}X-2t^{3}Z$ --- every entry of which lies in $\Acl_{\C}$ --- the
+normalized solution of \cref{diff:thm:matnonabelian} is the Hahn series
+$W=\sum_{n\geq0}W_{n}t^{n}$ determined by
+\begin{equation}\label{diff:eq:matnoncommrec}
+ W_{0}=I,
+ \qquad
+ (n+1)W_{n+1}=XW_{n}+2ZW_{n-1},
+ \qquad W_{-1}=0 ,
+\end{equation}
+whose first terms are
+\[
+ W=I+tX+t^{2}\Bigl(\tfrac12X^{2}+Z\Bigr)
+   +t^{3}\Bigl(\tfrac16X^{3}+\tfrac13XZ+\tfrac23ZX\Bigr)+\cdots .
+\]
+This differs from $\exp(tX+t^{2}Z)$ at order $t^{3}$ by
+$(ZX-XZ)/6\neq0$. The support is contained in $\N$, so the series is strongly
+summable by \cref{diff:lem:neumann} and the recurrence proves the equation
+exactly; $(\der(W^{*}W))=0$ with standard part $I$ makes it unitary, so it is
+the unique solution. This is a computation in a restricted Hahn workspace and
+is not a claim that such a recurrence is effectively available for a general
+coefficient matrix.
+\end{example}
+
+\Cref{diff:ex:matnoncommuting} is the same phenomenon as the two-scale
+computation of \cref{diff:sec:twoscale}, which refutes the naive exponential
+for the \emph{coordinate} derivative $\Dz$; the two live in different
+categories (\cref{diff:tab:categories}) and neither is evidence for the other.
+What they share is the mechanism: a noncommuting pair of constant matrices
+produces an exact third-order defect that no exponential of an integral can
+absorb.
+
+\subsection{Real systems: rotation blocks and metric signatures}
+\label{diff:sub:matreal}
+
+For a real system, conjugation sends phase $P$ to phase $-P$, so the two
+multiplicities are equal.
+
+\begin{theorem}[Real rotation-block classification]
+\label{diff:thm:matreal}
+For every $A\in\Mat_{n}(\No)$ there is $G\in\GL_{n}(\No)$ with
+\begin{equation}\label{diff:eq:matrealnormal}
+ A^{G}=0_{m_{0}}\ \oplus\bigoplus_{P>0}\bigl((\der P)\Rot\bigr)^{\oplus m_{P}},
+ \qquad
+ n=m_{0}+2\sum_{P>0}m_{P},
+\end{equation}
+where $\Rot=\left(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\right)$. The
+positive phases $P\in\Pcl$ and their multiplicities are unique. Every finite
+real differential module over $\No$ is a direct sum of trivial
+one-dimensional modules and nontrivial two-dimensional rotation modules, and
+if $A^{\mathsf T}=-A$ then $G$ can be chosen orthogonal.
+\end{theorem}
+\begin{proof}
+Uniqueness of the complex phase subspaces
+(\cref{diff:prop:matprojectors}) makes conjugation interchange the $P$ and
+$-P$ subspaces. On the zero-phase subspace the horizontal complex space is
+conjugation stable, so a real basis of its fixed part is a complex basis after
+complexification. For $P>0$ take normalizing columns
+$v_{1},\dots,v_{m_{P}}$ of phase $P$; their conjugates span phase $-P$. Write
+$v_{j}=a_{j}+ib_{j}$. From $\der v_{j}=Av_{j}-i(\der P)v_{j}$,
+\[
+ \der a_{j}=Aa_{j}+(\der P)b_{j},
+ \qquad
+ \der b_{j}=Ab_{j}-(\der P)a_{j},
+\]
+which is the block $(\der P)\Rot$. The real columns are independent because
+the change between $(v_{j},\bar v_{j})$ and $(a_{j},b_{j})$ is invertible over
+$\C$. The only invariant real subspaces inside one nonzero phase pair are $0$
+and the whole pair, since a real subspace complexifies to a
+conjugation-stable sum of two distinct phase lines. For skew-symmetric $A$ the
+identity metric is horizontal, so $G^{\mathsf T}G$ is a positive constant matrix
+commuting with the rotation blocks, by \cref{diff:thm:matrealmetric} below;
+its positive constant square root commutes with them too, and multiplying $G$
+by that inverse square root makes it orthogonal without changing the normal
+form.
+\end{proof}
+
+\begin{theorem}[The real metric cone and its parity]
+\label{diff:thm:matrealmetric}
+Every real finite system has a positive symmetric horizontal metric. With the
+multiplicities of \cref{diff:eq:matrealnormal}, the cone of positive symmetric
+horizontal metrics is isomorphic to
+\begin{equation}\label{diff:eq:matrealcone}
+ \Symm^{+}_{m_{0}}(\R)\times\prod_{P>0}\Herm^{+}_{m_{P}}(\C),
+\end{equation}
+a product over a finite set, empty products being a point. The real vector
+space of all horizontal symmetric forms has dimension
+$\tfrac12 m_{0}(m_{0}+1)+\sum_{P>0}m_{P}^{2}$, and on each nonzero real phase
+block both indices of a nondegenerate horizontal symmetric form are even.
+\end{theorem}
+\begin{proof}
+Pull a real horizontal form back by the gauge of \cref{diff:thm:matreal}.
+Complex phase separation (\cref{diff:thm:matmetric}) eliminates all terms
+between different positive phase pairs and between such a pair and phase zero,
+and leaves an arbitrary constant real symmetric matrix on the zero block.
+Group a repeated positive phase as $(\der P)\Rot_{m}$ with
+$\Rot_{m}=\left(\begin{smallmatrix}0&I_{m}\\-I_{m}&0\end{smallmatrix}\right)$;
+the real symmetric horizontal matrices are then the constant matrices
+commuting with $\Rot_{m}$, that is
+\[
+ C=\begin{pmatrix}S&T\\-T&S\end{pmatrix},
+ \qquad S^{\mathsf T}=S,\quad T^{\mathsf T}=-T ,
+\]
+which is the realification of the complex Hermitian matrix $S-iT$. A constant
+complex unitary diagonalization of $S-iT$ becomes a real orthogonal
+diagonalization of $C$ with every eigenvalue repeated twice; this gives
+positivity, the cone formula and the parity statement. Congruence by $G^{-1}$
+returns to the original coordinates.
+\end{proof}
+
+There is no integration over phases in \cref{diff:eq:matrealcone}: the
+products are over a finite multiset of constant-matrix cones. In particular a
+real irreducible two-dimensional system has a one-dimensional space of
+horizontal symmetric forms, hence a single positive ray. That fact is the
+source of the uniqueness in \cref{diff:thm:matpinney}.
+
+\subsection{A positive Ermakov--Pinney dichotomy}
+\label{diff:sub:matpinney}
+
+For $q\in\No$ consider the intrinsic equations
+\begin{equation}\label{diff:eq:matlinearq}
+ \der^{2}y+qy=0
+\end{equation}
+and
+\begin{equation}\label{diff:eq:matpinney}
+ \der^{2}\rho+q\rho=\rho^{-3},\qquad \rho>0 .
+\end{equation}
+Both derivatives are the fixed $\der$. The positive sign on the right of
+\cref{diff:eq:matpinney} is part of the statement; the sign convention in the
+classical literature varies \cite{Pinney}.
+
+\begin{theorem}[Positive Pinney existence and uniqueness]
+\label{diff:thm:matpinney}
+For every $q\in\No$, equation \cref{diff:eq:matpinney} has a positive solution
+in $\No$, and exactly one of the following holds.
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=2.4em]
+\item \Cref{diff:eq:matlinearq} has no nonzero solution in $\No$. Then
+\cref{diff:eq:matpinney} has \emph{exactly one} positive solution in $\No$,
+and $\der^{2}y+qy=f$ has a unique solution in $\No$ for every $f\in\No$.
+\item \Cref{diff:eq:matlinearq} has a real fundamental pair in $\No$. Then the
+positive solutions of \cref{diff:eq:matpinney} form the classical positive
+quadratic-form family \cref{diff:eq:matpinneyclassical}, with two real
+parameters after determinant normalization.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Let $A_{q}=\left(\begin{smallmatrix}0&1\\-q&0\end{smallmatrix}\right)$. By
+\cref{diff:thm:matrealmetric} it has a positive symmetric horizontal metric
+$\mathcal M$, and \cref{diff:eq:horizontal} gives
+$\der\det\mathcal M=-2(\tr A_{q})\det\mathcal M=0$, so $\det\mathcal M$ is a
+positive real constant; scale it to $1$. Writing
+$\mathcal M=\left(\begin{smallmatrix}a&b\\b&c\end{smallmatrix}\right)$, the
+horizontality equations are
+\begin{equation}\label{diff:eq:matmetriccomponents}
+ \der a=2qb,\qquad \der b=qc-a,\qquad \der c=-2b .
+\end{equation}
+Since $c>0$ and $\No$ is real closed, put $\rho=\sqrt c$. The last equation
+gives $b=-\rho\,\der\rho$ and $\det\mathcal M=1$ gives
+$a=(\der\rho)^{2}+\rho^{-2}$; the middle equation becomes exactly
+\cref{diff:eq:matpinney}. Conversely a positive solution of
+\cref{diff:eq:matpinney} produces the positive determinant-one horizontal
+metric
+\begin{equation}\label{diff:eq:matpinneymetric}
+ \mathcal M_{\rho}=
+ \begin{pmatrix}
+ (\der\rho)^{2}+\rho^{-2} & -\rho\,\der\rho\\
+ -\rho\,\der\rho & \rho^{2}
+ \end{pmatrix},
+\end{equation}
+positive because its lower diagonal entry is positive and its determinant is
+$1$. So positive Pinney solutions correspond bijectively to positive
+determinant-one horizontal metrics.
+
+In dimension two the real normal form \cref{diff:eq:matrealnormal} has either
+two zero phases or one nonzero conjugate pair. If \cref{diff:eq:matlinearq}
+has no nonzero solution in $\No$ it must be the second case, the positive
+metric cone is a single ray by \cref{diff:eq:matrealcone}, and the
+determinant-one condition selects one point. In the zero-phase case a real
+fundamental matrix exists and the cone is the three-dimensional positive
+symmetric constant-matrix cone, whose determinant-one slice is the asserted
+two-parameter family. In the nonzero-phase case \cref{diff:cor:matinhom} gives
+a unique solution in $\SC^{2}$ of every forced system, and conjugating shows
+it is real when $f$ is.
+
+There is no intermediate one-dimensional case: if $u\in\No^{\times}$ solves
+\cref{diff:eq:matlinearq}, choose $B$ with $\der B=u^{-2}$ by
+\ref{diff:BM:surj} and put $v=uB$; then $u\der v-v\der u=1$, so $u,v$ are an
+independent real fundamental pair.
+\end{proof}
+
+With $u,v$ a real fundamental pair of constant Wronskian
+$\mathrm{Wr}=u\der v-v\der u\neq0$, alternative (ii) reads
+\begin{equation}\label{diff:eq:matpinneyclassical}
+ \rho=\sqrt{\alpha u^{2}+2\beta uv+\gamma v^{2}},
+ \qquad
+ \alpha,\gamma>0,\quad \alpha\gamma-\beta^{2}=\mathrm{Wr}^{-2},
+ \quad \alpha,\beta,\gamma\in\R .
+\end{equation}
+This is the classical Pinney parametrization \cite{Pinney}, here read in an
+ordered differential field; no priority is claimed for it, nor for the
+abstract Schwarz-closed-field existence principle that underlies it
+\cite{ADHNorm}. What is new to this field is that alternative (i) can occur,
+and that it collapses the positive family to a single point. For recent
+existence and sharp uniqueness results for amplitude--phase representations
+over Hardy fields see \cite{ADHSecond}; no solution of the named Boshernitzan
+conjecture discussed there is claimed here.
+
+For $q=1$ alternative (i) holds by \cref{diff:cor:oscillator}, and the unique
+positive Pinney solution is $\rho=1$. For $q=-1$ the linear equation has the
+fundamental pair $e^{\omega},e^{-\omega}$ and alternative (ii) gives many
+positive amplitudes. A unique positive solution of a second-order equation is
+not a contradiction to ordinary initial-value theory: intrinsic differentiation
+has no two-real-parameter initial-data interpretation
+(\cref{diff:warn:separators}).
+
+\begin{theorem}[Canonical amplitude--phase reduction]
+\label{diff:thm:matamplitude}
+Call $q\in\No$ \emph{intrinsically oscillatory} when alternative (i) of
+\cref{diff:thm:matpinney} holds; this means only that the nonzero homogeneous
+oscillations are missing from $\No$, and says nothing about oscillation of a
+function of a real variable. Let $\rho$ be the unique positive Pinney
+solution, $h=\rho^{-2}$, and $B=\Izero(h)=P+\eta$ with $P\in\Pcl$ and
+$\eta\in\mm$ (\cref{diff:eq:split}). Then $P>0$, and with
+\[
+ G_{\rho}=\begin{pmatrix}\rho&0\\ \der\rho&\rho^{-1}\end{pmatrix},
+ \qquad
+ R(\eta)=\Ree\bigl(\Emm(i\eta)\bigr)\,I+\Imm\bigl(\Emm(i\eta)\bigr)\,\Rot ,
+\]
+the matrix $S_{q}=G_{\rho}R(\eta)\in\SL_{2}(\No)$ satisfies
+\begin{equation}\label{diff:eq:matcanonicalgauge}
+ A_{q}^{S_{q}}=(\der P)\,\Rot .
+\end{equation}
+The amplitude $\rho$, the normalized primitive $B$, the phase $P$ and this
+amplitude-times-infinitesimal-rotation gauge are canonical; no uniqueness
+among all symplectic gauges is asserted.
+\end{theorem}
+\begin{proof}
+A direct multiplication using \cref{diff:eq:matpinney} gives
+$A_{q}^{G_{\rho}}=\rho^{-2}\Rot=h\Rot$. The rotation $R(\eta)$ is a
+well-defined real matrix with entries the infinitesimal cosine and sine of
+\cref{diff:thm:unitphase}; it has determinant one, commutes with $\Rot$, and
+satisfies $R(\eta)^{-1}\der R(\eta)=(\der\eta)\Rot$. Subtracting gives
+\cref{diff:eq:matcanonicalgauge}. If $P=0$ then $B=\eta$ is finite and the same
+calculation reduces the system to zero, producing a real fundamental matrix
+and contradicting alternative (i). Since $\der B=h>0$, $B$ cannot be negative
+infinite by \ref{diff:BM:positivity}, so its nonzero purely infinite part is
+positive. The uniqueness assertions are \cref{diff:thm:matpinney} and the
+normalization $\ct(B)=0$ of \cref{diff:prop:normprimitive}.
+\end{proof}
+
+The conserved quadratic expression attached to $\rho$ is
+\begin{equation}\label{diff:eq:matlewis}
+ \mathcal E_{\rho}(y,\der y)
+  =\bigl(\rho\,\der y-y\,\der\rho\bigr)^{2}+\bigl(y/\rho\bigr)^{2},
+\end{equation}
+whose derivative vanishes formally along \cref{diff:eq:matlinearq} by
+\cref{diff:eq:matpinneymetric}. It is meaningful in an oscillatory extension
+of the kind constructed in \cref{diff:sec:PV} even when the only solution in
+$\No$ is zero. It is an exact invariant, not an averaged energy.
+
+\subsection{The oscillatory Airy equation as an exact Hahn example}
+\label{diff:sub:matairy}
+
+Let $x=\omega$ and consider
+\begin{equation}\label{diff:eq:matairy}
+ \der^{2}y+xy=0 .
+\end{equation}
+Put $P=\tfrac23x^{3/2}$, so $\der P=x^{1/2}$ by the real-power rule
+(\cref{diff:warn:monomialmap}, applied at the ordinary real exponent
+$\tfrac32$). Let $\mathsf T_{P}$ denote a formal oscillatory symbol with
+$\der\mathsf T_{P}=i(\der P)\mathsf T_{P}$ in the sense of
+\cref{diff:thm:PVone}; it is a new differential element and never a surcomplex
+number. Seek a solution $a\mathsf T_{P}$ with
+\begin{equation}\label{diff:eq:matairyamp}
+ a=x^{-1/4}\sum_{n\geq0}c_{n}x^{-3n/2},\qquad c_{0}=1 .
+\end{equation}
+Substituting into \cref{diff:eq:matairy} gives
+\begin{equation}\label{diff:eq:matairyampeq}
+ \der^{2}a+2ix^{1/2}\der a+\frac{i}{2x^{1/2}}\,a=0 ,
+\end{equation}
+and with $\alpha_{n}=-\tfrac14-\tfrac32n$ coefficient comparison yields
+\begin{equation}\label{diff:eq:matairyrec}
+ c_{n+1}=\frac{\alpha_{n}(\alpha_{n}-1)}{3i(n+1)}c_{n}
+        =-i\,\frac{(6n+1)(6n+5)}{48(n+1)}\,c_{n},
+ \qquad
+ c_{n}=(-i)^{n}\Bigl(\tfrac34\Bigr)^{n}
+       \frac{(1/6)_{n}(5/6)_{n}}{n!} .
+\end{equation}
+The exponents in \cref{diff:eq:matairyamp} decrease strictly to $-\infty$, so
+the displayed expression is a legitimate surcomplex Hahn sum however fast the
+ordinary coefficients grow, and its termwise differentiation is justified by
+\ref{diff:BM:additive}. This is the same phenomenon as the factorially
+divergent solutions of \cref{diff:thm:factorial}, and it carries the same
+disclaimer (\cref{diff:warn:antitopological}): a strictly descending support is
+a summability certificate, not convergence in any topology on $\SC$.
+
+Put $b=\der a+ix^{1/2}a$ and $G=\left(\begin{smallmatrix}a&\bar a\\
+b&\bar b\end{smallmatrix}\right)$. The two columns satisfy
+$\der v=A_{x}v\mp i(\der P)v$ with
+$A_{x}=\left(\begin{smallmatrix}0&1\\-x&0\end{smallmatrix}\right)$, so
+$\der G=A_{x}G-G\operatorname{diag}(i\der P,-i\der P)$. The determinant
+$\mathrm{Wr}=a\bar b-\bar ab$ has zero derivative, hence lies in $\C$, and its
+leading term is $-2i$ because $a\sim x^{-1/4}$ and $b\sim ix^{1/4}$; so
+$\mathrm{Wr}=-2i$ exactly, $G$ is invertible, and
+\begin{equation}\label{diff:eq:matairyphases}
+ \Ph(A_{x})=\Bigl\{\tfrac23\omega^{3/2},\ -\tfrac23\omega^{3/2}\Bigr\}.
+\end{equation}
+By \cref{diff:cor:matinhom} equation \cref{diff:eq:matairy} has no nonzero
+solution in $\SC$, and $\der^{2}y+\omega y=f$ has a unique solution in $\SC$
+for every $f$. As always in this report that is a statement about surcomplex
+\emph{number} solutions under $\der$; it does not deny the ordinary Airy
+functions of a complex coordinate (\cref{diff:warn:whatnonexistence}).
+
+The unique positive solution of $\der^{2}\rho+\omega\rho=\rho^{-3}$ is
+\begin{equation}\label{diff:eq:matairyrho}
+ \rho=\sqrt{a\bar a}.
+\end{equation}
+Indeed, with $v=\binom ab$ the real matrix $C=\Ree(vv^{*})$ satisfies
+$\der C=A_{x}C+CA_{x}^{\mathsf T}$ --- the scalar imaginary phase cancels ---
+and $\det C=\bigl(\Imm(a\bar b)\bigr)^{2}=1$ since $\mathrm{Wr}=-2i$; so
+$\mathcal M=C^{-1}$ is a positive determinant-one horizontal metric and the
+bijection of \cref{diff:thm:matpinney} gives
+\cref{diff:eq:matairyrho}, with uniqueness because the phases
+\cref{diff:eq:matairyphases} are nonzero. Its expansion begins
+\begin{equation}\label{diff:eq:matairyjet}
+ \rho=\omega^{-1/4}\left(
+ 1-\frac{5}{64}\omega^{-3}
+ +\frac{2285}{8192}\omega^{-6}
+ -\frac{1690275}{524288}\omega^{-9}
+ +\frac{10371973875}{134217728}\omega^{-12}+\cdots\right),
+\end{equation}
+these being coefficients of an exact Hahn series and not estimates for a
+convergent ordinary power series. The normalized primitive of $\rho^{-2}$ is
+$B=\tfrac23\omega^{3/2}-\tfrac{5}{48}\omega^{-3/2}+\cdots$, whose purely
+infinite part is exactly the positive phase in
+\cref{diff:eq:matairyphases}; the remaining correction is infinitesimal and is
+absorbed by the rotation $R(\eta)$ of \cref{diff:thm:matamplitude}.
+
+For a truncation $a_{N}=\sum_{n\leq N}c_{n}x^{\alpha_{n}}$ the recurrence
+cancels everything but the last second derivative, giving the exact residual
+\begin{equation}\label{diff:eq:matairyres}
+ \der^{2}a_{N}+2ix^{1/2}\der a_{N}+\frac{i}{2x^{1/2}}a_{N}
+  =\alpha_{N}(\alpha_{N}-1)c_{N}x^{\alpha_{N}-2},
+\end{equation}
+which the delivered suite checks at $N=16$
+(\cref{diff:app:verification}). As \cref{diff:warn:truncationtype} requires,
+the residual records the \emph{type} of the omitted information: it is a formal
+remainder at a stated order, and the infinite-support statement is proved by
+the recurrence together with strict descent of exponents, not by the finite
+check.
+
+\subsection{First integrals from phase resonance}
+\label{diff:sub:matresonance}
+
+Let $y_{1},\dots,y_{n}$ be algebraically independent formal variables and
+extend $\der$ to $\SC[y_{1},\dots,y_{n}]$ by
+\[
+ \mathcal D_{A}f=\der_{\mathrm{coeff}}f+\sum_{j}(Ay)_{j}\frac{\partial f}{\partial y_{j}},
+\]
+where $\der_{\mathrm{coeff}}$ differentiates coefficients only. A polynomial or
+rational \emph{first integral} is an element killed by $\mathcal D_{A}$. This
+definition presupposes no nonzero solution in $\SC^{n}$. In phase coordinates
+$z=G^{-1}y$ one has $\mathcal D_{A}z_{j}=i(\der P_{j})z_{j}$.
+
+Put
+\[
+ \Pi=\sum_{j=1}^{n}\Z P_{j}\subseteq\Pcl,
+ \qquad
+ \Lambda=\Bigl\{m\in\Z^{n}:\textstyle\sum_{j}m_{j}P_{j}=0\Bigr\},
+ \qquad
+ \Lambda^{+}=\Lambda\cap\N^{n},
+\]
+and $r=\dim_{\Q}\Span_{\Q}\{P_{1},\dots,P_{n}\}$. This $\Lambda$ is the
+relation lattice of \cref{diff:eq:lattice} for the diagonal system
+$\Ph(A)$; it is saturated by \cref{diff:lem:saturated}, so
+$\operatorname{rank}\Lambda=n-r$ and $\Pi$ is free abelian of rank $r$.
+
+\begin{theorem}[The resonance algebra]
+\label{diff:thm:matresonance}
+In phase coordinates,
+\begin{equation}\label{diff:eq:matinvariantring}
+ \Ker\mathcal D_{A}\big|_{\SC[z]}=\C[z^{m}:m\in\Lambda^{+}],
+ \qquad
+ \Ker\mathcal D_{A}\big|_{\SC(z)}=\C(z^{m}:m\in\Lambda).
+\end{equation}
+The polynomial algebra is finitely generated, and the rational field is purely
+transcendental over $\C$ of transcendence degree $n-r$.
+\end{theorem}
+\begin{proof}
+For $f=\sum_{\alpha}c_{\alpha}z^{\alpha}$ the derivative vanishes exactly when
+$\der c_{\alpha}+i\bigl(\der\sum_{j}\alpha_{j}P_{j}\bigr)c_{\alpha}=0$ for each
+$\alpha$, and \cref{diff:lem:matseparation} makes a nonzero coefficient
+require $\alpha\in\Lambda^{+}$ and $c_{\alpha}\in\C$.
+
+For the rational statement work in the Laurent ring and write $f/g$ with
+coprime nonzero Laurent polynomials. A zero derivative gives
+$f\mid\mathcal D_{A}f$ and $g\mid\mathcal D_{A}g$; since
+$\mathcal D_{A}$ enlarges no Laurent support and the highest and lowest degrees
+in each variable are additive under multiplication, one gets
+$\mathcal D_{A}f=hf$ and $\mathcal D_{A}g=hg$ for a common $h\in\SC$, the case
+$h=0$ included. Comparing two coefficients of $f$ shows their ratio has
+logarithmic derivative $i\der(\beta\cdot P-\alpha\cdot P)$, so by
+\cref{diff:lem:matseparation} their phases agree and the ratio is constant;
+thus all monomials of $f$ share one phase, and after factoring out one
+coefficient and one monomial the rest has constant coefficients and exponents
+in $\Lambda$. The same holds for $g$, and equality of the two values of $h$
+forces the factored phases to agree and the factored coefficient ratio to be
+constant. Hence $f/g$ is a rational function of monomials with exponents in
+$\Lambda$; the reverse inclusion is immediate.
+
+For finite generation, call $0\neq u\in\Lambda^{+}$ indecomposable when it is
+not a sum of two nonzero members of $\Lambda^{+}$. Two distinct
+indecomposables are incomparable in the coordinatewise order on $\N^{n}$,
+since $u<v$ would give $v-u\in\Lambda^{+}\setminus\{0\}$; Dickson's
+finite-antichain lemma for $\N^{n}$ --- the special case of
+\cref{diff:app:support} in which the alphabet is $\{1,\dots,n\}$ and words are
+unordered --- therefore makes the indecomposables finite, and induction on
+total degree writes every member of $\Lambda^{+}$ as a sum of them. Finally a
+$\Z$-basis of $\Lambda$ gives $n-r$ Laurent monomials generating the rational
+field, algebraically independent because distinct integer combinations of
+basis exponents give distinct monomials. No analytic finiteness principle is
+used.
+\end{proof}
+
+\begin{example}[Complete reducibility does not make the invariant algebra a polynomial ring]
+\label{diff:ex:matthreephase}
+Let $x=\omega$ and
+\[
+ G=\begin{pmatrix}1&x^{-1}&0\\0&1&x^{-2}\\0&0&1\end{pmatrix},
+ \qquad
+ D=\operatorname{diag}(i,i,-2i),
+ \qquad
+ A=(\der G)G^{-1}+GDG^{-1},
+\]
+so that
+\begin{equation}\label{diff:eq:matthreematrix}
+ A=\begin{pmatrix}
+ i & -x^{-2} & x^{-4}\\
+ 0 & i & (-3ix-2)x^{-3}\\
+ 0 & 0 & -2i
+ \end{pmatrix}
+\end{equation}
+and $\Ph(A)=\{\omega,\omega,-2\omega\}$, so by \cref{diff:cor:matinhom} the
+system has no nonzero solution in $\SC^{3}$. Its formal first integrals are
+nevertheless nontrivial: with $z=G^{-1}y$ the resonance condition is
+$\alpha_{1}+\alpha_{2}=2\alpha_{3}$ and
+\begin{equation}\label{diff:eq:mattoric}
+ \Ker\mathcal D_{A}\big|_{\SC[z]}\cong\C[\mathcal U,\mathcal V,\mathcal W]
+   /(\mathcal U\mathcal W-\mathcal V^{2}),
+ \qquad
+ \mathcal U=z_{1}^{2}z_{3},\ \mathcal V=z_{1}z_{2}z_{3},\
+ \mathcal W=z_{2}^{2}z_{3},
+\end{equation}
+the rational invariant field being $\C(z_{1}/z_{2},z_{2}^{2}z_{3})$ of
+transcendence degree two. Here $r=1$, matching
+\cref{diff:ex:torusexamples}(i) in kind: $\omega$ and $-2\omega$ are
+$\Q$-dependent. The three first-integral identities are checked in the
+\emph{original} coupled coordinates by the delivered suite.
+\end{example}
+
+\subsection{The phase lattice as a differential Galois torus}
+\label{diff:sub:mattorus}
+
+\Cref{diff:thm:torus} classifies the Picard--Vessiot extension of a
+\emph{diagonal} system by its integer relation lattice.
+\Cref{diff:thm:matnormal} reduces every finite system to a diagonal one, so
+that theorem now applies to all of them. The point of this subsection is only
+to record what the reduction gives, and to add the two ingredients the
+diagonal treatment did not need: an explicit group-algebra presentation in
+rank $r$, and the real form. Nothing here is new Galois theory, and the eighth
+manuscript says so of itself.
+
+\begin{corollary}[Every finite system has a phase torus]
+\label{diff:cor:mattorus}
+Let $A\in\Mat_{n}(\SC)$ with $\Ph(A)=\{P_{1},\dots,P_{n}\}$, phase lattice
+$\Pi=\sum_{j}\Z P_{j}$ of rank $r$, and relation lattice $\Lambda$ as in
+\cref{diff:eq:lattice}. Then the number $d=n-\operatorname{rank}\Lambda$ of
+independent phase generators of \cref{diff:conv:phases}(d) equals $r$, and
+\cref{diff:thm:torus} applies to the normal form of $A$: a Picard--Vessiot
+extension for $\der y=Ay$ is obtained by adjoining $r$ algebraically
+independent generators, and its differential Galois group is
+$\gm(\C)^{r}\cong\Hom(\Pi,\C^{\times})$.
+\end{corollary}
+\begin{proof}
+$\Lambda$ is the kernel of the surjection $\Z^{n}\to\Pi$,
+$m\mapsto\sum m_{j}P_{j}$, so $\Z^{n}/\Lambda\cong\Pi$ is free of rank $r$ by
+\cref{diff:lem:saturated}, giving $d=r$; and
+$\Hom(\Pi,\C^{\times})\cong(\C^{\times})^{r}$ is the description of
+\cref{diff:eq:torus} in coordinates dual to a $\Z$-basis of $\Pi$. The
+Picard--Vessiot statement is \cref{diff:thm:torus} applied to
+$i\operatorname{diag}(\der P_{1},\dots,\der P_{n})$, transported back by the
+gauge of \cref{diff:thm:matnormal}, which lies in $\GL_{n}(\SC)$ and therefore
+generates no new constants.
+\end{proof}
+
+\begin{proposition}[The group algebra of the phase lattice, and its real form]
+\label{diff:prop:matPValgebra}
+Choose a $\Z$-basis $Q_{1},\dots,Q_{r}$ of $\Pi$ and form the Laurent
+differential algebra
+\begin{equation}\label{diff:eq:matPVring}
+ \mathcal L_{\Pi}=\SC[\mathsf T_{1}^{\pm1},\dots,\mathsf T_{r}^{\pm1}],
+ \qquad \der\mathsf T_{k}=i(\der Q_{k})\mathsf T_{k},
+\end{equation}
+writing $\mathsf T_{Q}=\prod_{k}\mathsf T_{k}^{m_{k}}$ for
+$Q=\sum_{k}m_{k}Q_{k}\in\Pi$, so that $\mathsf T_{Q}\mathsf T_{Q'}=\mathsf
+T_{Q+Q'}$ and $\der\mathsf T_{Q}=i(\der Q)\mathsf T_{Q}$. Then:
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=2.4em]
+\item $\mathcal L_{\Pi}$ has no nonzero proper differential ideal;
+\item if $G$ normalizes $A$ then
+$Y=G\operatorname{diag}(\mathsf T_{P_{1}},\dots,\mathsf T_{P_{n}})$ is a
+fundamental matrix for $\der y=Ay$, and its entries together with
+$(\det Y)^{-1}$ generate $\mathcal L_{\Pi}$ over $\SC$;
+\item for a real system $\Pi$ is stable under negation, the involution
+$\overline{c\,\mathsf T_{Q}}=\bar c\,\mathsf T_{-Q}$ commutes with $\der$,
+the fixed combinations $(\mathsf T_{Q}+\mathsf T_{-Q})/2$ and
+$(\mathsf T_{Q}-\mathsf T_{-Q})/2i$ supply the entries of a real fundamental
+matrix in the normal form \cref{diff:eq:matrealnormal}, and the real form of
+the torus is $\bigl(\operatorname{Res}^{1}_{\C/\R}\gm\bigr)^{r}$, whose real
+points are $(S^{1})^{r}$.
+\end{enumerate}
+Every element of $\mathcal L_{\Pi}$ is a \emph{finite} sum; no Hahn
+summability question arises, and no exponential $e^{iP}$ is defined in $\SC$.
+\end{proposition}
+\begin{proof}
+(i) Let $\mathfrak a\neq0$ be a differential ideal and choose $f\in\mathfrak a$
+with the fewest nonzero monomials; multiplying by a Laurent monomial and a
+nonzero scalar, arrange $f=1+\sum_{Q\neq0}c_{Q}\mathsf T_{Q}$. Differentiation
+kills the constant term and introduces no new monomials, so $\der f$ has fewer
+terms and must vanish; then $c_{Q}^{\dagger}=-i\der Q$ for each remaining $Q$,
+impossible for $Q\neq0$ by \cref{diff:thm:phasecriterion}. Hence $f=1$.
+This is the rank-$r$ form of the rank-one statement proved in
+\cref{diff:thm:extension}.
+
+(ii) $\der G=AG-i G\operatorname{diag}(\der P_{j})$ gives $\der Y=AY$ at once.
+Conversely the entries of $G^{-1}Y$ supply every $\mathsf T_{P_{j}}$, and
+$(\det Y)^{-1}$ supplies the inverse of their product, so multiplying by all
+but one supplies each $\mathsf T_{P_{j}}^{-1}$; these characters generate the
+group algebra of $\Pi$.
+
+(iii) Stability under negation is the conjugation symmetry used in
+\cref{diff:thm:matreal}, and
+$\overline{\der(c\mathsf T_{Q})}=\overline{(\der c+ic\der Q)\mathsf T_{Q}}
+=(\der\bar c-i\bar c\der Q)\mathsf T_{-Q}=\der(\bar c\mathsf T_{-Q})$. The
+fixed combinations satisfy $\der$-relations of the rotation block
+$(\der Q)\Rot$, by the computation of
+\cref{diff:prop:oscillatorExtension} applied with $a=i\der Q$. An automorphism
+commuting with the involution has $\chi(Q)\overline{\chi(Q)}=1$, which is the
+asserted real form.
+\end{proof}
+
+\begin{warning}[What the torus statement is about]
+\label{diff:warn:mattorus}
+\Cref{diff:cor:mattorus,diff:prop:matPValgebra} concern the very large base
+field $\SC$, with the factorization and surjectivity properties of
+\cref{diff:thm:matsurjectivity}. They say nothing comparable for the same
+printed equation over a small rational-function base: in particular
+\cref{diff:eq:matairyphases} is \emph{not} a claim that the ordinary Airy
+differential Galois group over $\C(x)$ is a torus. Enlarging the base to $\SC$
+has already supplied the nonoscillatory gauge entries. Nor is the real form of
+\cref{diff:prop:matPValgebra}(iii) a construction of trigonometric functions on
+surreals; it is an algebraic-group statement, and
+\cref{diff:thm:orderobstruction} records what such an extension costs. Finally,
+when $\Pi\neq0$ no differential embedding $\mathcal L_{\Pi}\to\SC$ over $\SC$
+exists, by \cref{diff:cor:nonembedding}: the extension represents the
+obstruction, it does not remove it.
+\end{warning}
+
+\subsection{What this part does not settle}
+\label{diff:sub:matlimits}
+
+\begin{warning}[The boundaries of the matrix theory]
+\label{diff:warn:matlimits}
+\Cref{diff:part:matrix} classifies systems $\der y=Ay$ for $A$ an $n\times n$
+matrix over $\SC$ with $n$ an ordinary finite integer, and computes the
+invariant from algebraic eigenvalues only when $A=iH$ with $H$ Hermitian. It
+does not classify non-Hermitian coefficients by their spectra ---
+\cref{diff:ex:matnonnormal} refutes that --- does not treat infinite matrices,
+does not supply an algorithm for the phase map or the normalizing gauge, and
+does not settle which nontriangular differential modules admit a filtration
+whose rank-one factors carry computable obstructions, which needs genuine
+module-theoretic information rather than the eigenvalues of an instantaneous
+coefficient matrix. Higher-rank differential modules remain outside the
+classification. All statements are for the one fixed $\der$ of
+\cref{diff:thm:BM} and for no other derivation, no class-function derivative
+and none of the coordinate operators of \cref{diff:tab:derivatives}. The
+consolidated list is \cref{diff:sub:nc:matrixscope}.
+\end{warning}
+
+\begin{remark}[Proper classes, and a set-sized reading]
+\label{diff:rem:matclasses}
+$\No$ is a proper class, and \cref{diff:sub:classes} fixes the framing this
+report uses. Nothing in \cref{diff:part:matrix} makes a proper class an element
+of a set or needs a class-sized basis of $\Pcl$: every phase lattice $\Pi$ is
+finitely generated and every element of $\mathcal L_{\Pi}$ is a finite sum.
+There is also a set-sized reading of each finite-data argument, in the spirit
+of \cref{diff:thm:localize}: starting from a set of given coefficients together
+with $\R\cup\{\omega\}$, form a countable chain of set-sized subfields of
+$\No$, adjoining at each stage the real algebraic roots, derivatives, real
+exponentials, purely infinite parts, primitives and finite angles needed by the
+previous stage, together with witnesses for the finitely many
+factorizations and first-order inhomogeneous equations of
+\cref{diff:thm:matsurjectivity} whose coefficients appear there. The union is a
+real closed differential subfield $\No_{0}$ inheriting the $H$-field rule and
+the designated witnesses, whose complexification has constant field exactly
+$\C$; every finite tuple appears at some stage and its witnesses at a later
+one, so the elementary lemmas of \cref{diff:sec:primitives} and all the finite
+matrix arguments hold internally. \Cref{diff:prop:matPValgebra} may therefore
+be read as an ordinary set-sized Picard--Vessiot statement over such an
+$\No_{0}[i]$.
+
+This is a size justification for the proofs and nothing more. It does
+\emph{not} say that any fixed Hahn workspace already contains the required
+primitives or solutions --- \cref{diff:ex:logmissing} shows one that does not
+--- and it gives no effective presentation, no birthday bound and no minimal
+such subfield.
+\end{remark}
 \part{Workspaces: Laurent, rational, Hahn, and set-sized}
 \label{diff:part:workspaces}
 
@@ -3992,8 +5556,16 @@ missing phases.
 \end{example}
 
 The theorem treats diagonal systems completely and supplies useful information
-for triangular extensions. It is \emph{not} a classification of
-Picard--Vessiot groups for arbitrary nontriangular matrices over $\SC$. For a
+for triangular extensions. Taken by itself it is \emph{not} a classification of
+Picard--Vessiot groups for arbitrary nontriangular matrices over $\SC$. It
+becomes one only in combination with the matrix normal form proved later:
+\cref{diff:thm:matnormal} reduces an arbitrary finite system to a diagonal one
+over $\SC$, and \cref{diff:cor:mattorus} then reads off its torus, identifying
+the count $d$ of \cref{diff:lem:saturated} with the rational rank $r$ of the
+phase lattice $\Pi\subseteq\Pcl$ generated by $\Ph(A)$.
+\Cref{diff:prop:matPValgebra} adds the group-algebra presentation in rank $r$
+and the real form; the differential simplicity proved there in rank $r$ is the
+general form of the rank-one statement of \cref{diff:thm:extension}. For a
 computational backend the lattice is additional required data: treating
 $i\omega$ and $2i\omega$ as independent phases would produce the wrong Galois
 group, and treating $i\omega$ and $i\sqrt2\,\omega$ as algebraically dependent
@@ -5308,8 +6880,17 @@ the workspace images, and the coordinate initial-value theorems.
 
 The universal $H$-field results \cite{ADH} explain why the differential
 viewpoint is a major part of surreal theory rather than an ad hoc extra
-operation; they are cited for context and are not a substitute for an
-unstated linear-solvability theorem. The $\omega$-series composition results
+operation; through \cref{diff:part:workspaces} they are cited for context and
+are not a substitute for an unstated linear-solvability theorem. In
+\cref{diff:part:matrix} that changes: the elementary embedding of \cite{ADH}
+is used as a transfer principle, and the splitting and surjectivity facts of
+\cite[Lemma 2.4.19]{ADHNorm} are used as premises
+(\cref{diff:thm:matsurjectivity}, item~N53). The amplitude--phase results of
+\cite{ADHSecond} over Hardy fields, and the classical Pinney parametrization
+\cite{Pinney}, are the antecedents of
+\cref{diff:thm:matpinney,diff:thm:matamplitude} and are kept visible there; no
+solution of the Boshernitzan conjecture named in \cite{ADHSecond} is claimed.
+The $\omega$-series composition results
 \cite{BMGerms} show that an external function interpretation is valid on a
 substantial specified class while warning against unrestricted composition
 (\cref{diff:warn:composition}). The global exponential construction \cite{EK}
@@ -5349,6 +6930,15 @@ the subsection ``Differential equations must name their category''
 \cite{RepoCAS}, and the four-interface discipline of \cite{RepoFound}, are
 answered directly by \cref{diff:tab:derivatives,diff:tab:outcomes,diff:tab:interface}
 and by the tiering contract of \cref{diff:sub:certificates}.
+\item \textbf{Spectral theory.} The companion report \emph{Surcomplex Spectral
+Theory} \cite{RepoSpectral} supplies the finite algebraic spectral vocabulary
+that \cref{diff:sub:matweyl} uses, and its ``spectrum'' is the algebraic
+eigenvalue and singular-value list. That is \emph{not} the differential phase
+spectrum of \cref{diff:conv:phases}(e), and
+\cref{diff:warn:spectrum} states the distinction in the terms both reports
+need. \Cref{diff:thm:matspectral} is the bridge between them for Hermitian
+coefficients; \cref{diff:ex:matnonnormal} shows there is no bridge in general.
+\textbf{Cross-link both ways.}
 \end{itemize}
 
 \section{The register of non-claims}
@@ -5538,29 +7128,55 @@ nonlinear equations have solutions, that $\SC$ is differentially closed --- it
 is not (\cref{diff:rem:algnotdiff}) --- that arbitrary nonlinear scalar
 equations or all higher-order operators on the full class are classified, or
 that primitives are computable from finite input descriptions.
-\item No general inhomogeneous existence theorem is claimed. Outside the
-admissible locus $\Phi(q)=0$ the only assertion is \emph{uniqueness}
+\item No general inhomogeneous existence theorem is claimed \emph{by
+\cref{diff:part:scalar}}. Outside the admissible locus $\Phi(q)=0$ its only
+assertion is \emph{uniqueness}
 (\cref{diff:thm:variation,diff:warn:atmostone}); the absence of a nonzero
 homogeneous solution does not imply inhomogeneous nonexistence, and the
 additional differential-field structure that a general inhomogeneous existence
-theorem would need is not invoked. Nor is it claimed that such broader
+theorem would need is not invoked there. Nor is it claimed that such broader
 solvability questions are open in the literature. \Cref{diff:thm:variation}
 proves surjectivity of $\der-q$ only in the admissible case, and no claim is
 made about surjectivity of all linear differential operators on $\SC$: a
 trivial kernel is explicitly distinguished from a failure of surjectivity, and
 $\der-i$ on $\C((t))$ is the witness (\cref{diff:rem:parentselection}).
+\Cref{diff:part:matrix} does prove first-order inhomogeneous existence
+(\cref{diff:eq:matfirstorder}) and, from it, existence for every forcing of
+every finite system (\cref{diff:cor:matinhom}); that conclusion rests
+\emph{entirely} on the separately imported
+\cref{diff:thm:matsurjectivity} and not on the rank-one criterion, as
+\cref{diff:warn:matinhom} states. It leaves the present item standing for the
+scalar theory as such, it does not make any homogeneous equation solvable, and
+it changes none of the witnesses of \cref{diff:warn:atmostone}: what it adds is
+that their uniqueness is now known to be accompanied by existence. No
+effectivity follows (item~N57).
 \item The constant-coefficient theorem and its matrix corollary concern
 \emph{ordinary complex constant} coefficients and matrices only, not arbitrary
 surcomplex-coefficient systems (\cref{diff:rem:realsolutions}). The kernel
 theorems classify \emph{homogeneous} solutions in $\SC$ only; a full kernel
 does not settle an inhomogeneous equation over a smaller subfield.
-\item No classification of arbitrary nontriangular matrix systems over $\SC$
-is given. The trace condition is only the first invariant
-(\cref{diff:prop:trace}), the torus theorem treats \emph{diagonal} systems
-only (\cref{diff:thm:torus}), constant matrices are settled while arbitrary
-matrices with surreal entries are not, no general matrix normal form follows
-from the scalar result, and higher-rank differential modules are not
-classified.
+\item The Hermitian case of the nontriangular matrix problem is settled; the
+non-Hermitian case is not. \Cref{diff:thm:matnormal} gives a complete phase
+normal form for every finite system, and \cref{diff:thm:matspectral} computes
+its invariant from ordinary algebraic eigenvalues \emph{when the coefficient is
+$iH$ with $H$ Hermitian}. Outside that hypothesis no spectral formula is
+claimed, and \cref{diff:ex:matnonnormal} refutes the obvious candidate: a
+nonnormal coefficient with instantaneous eigenvalues $\pm i$ whose system
+nevertheless has a fundamental matrix in $\GL_{2}(\SC)$, so that integrating
+imaginary parts of eigenvalues would predict $\{\omega,-\omega\}$ instead of
+the correct $\{0,0\}$. Within the scalar theory of \cref{diff:part:scalar}
+taken alone, none of this is available: there the trace condition is only the
+first invariant (\cref{diff:prop:trace}), the torus theorem treats
+\emph{diagonal} systems only (\cref{diff:thm:torus}), constant matrices are
+settled while arbitrary matrices with surreal entries are not, and no general
+matrix normal form follows from the scalar result --- the normal form of
+\cref{diff:part:matrix} needs the separate import of
+\cref{diff:thm:matsurjectivity}. Higher-rank differential modules remain
+unclassified, and so does the question of which nontriangular differential
+modules admit a filtration whose rank-one factors carry computable
+obstructions, which needs genuine module-theoretic information rather than the
+eigenvalues of an instantaneous coefficient matrix
+(\cref{diff:warn:matnonnormal,diff:warn:matlimits}).
 \item No differential closedness, no universal Picard--Vessiot closure, no
 classification of all differential extensions, and no decision procedure for
 arbitrary nonlinear differential equations is claimed. The Picard--Vessiot
@@ -5708,9 +7324,9 @@ positive-support recursion.
 \label{diff:sub:nc:checks}
 
 \begin{enumerate}[label=\textup{N\arabic*.},leftmargin=3.0em,itemsep=0.35em,start=48]
-\item The seven delivered verification suites check \emph{finite exact
+\item The eight delivered verification suites check \emph{finite exact
 symbolic identities and finite jets}, and nothing else. In total they record
-$1{,}395+115+149+258+291+150+259$ passing checks
+$1{,}395+115+149+258+291+150+259+62$ passing checks
 (\cref{diff:app:verification}); a matrix identity or a whole checked
 coefficient prefix counts as one check in two of the suites. They do not
 construct the surreal numbers, do not implement Conway normal forms or the
@@ -5752,19 +7368,160 @@ package's README lists a checksum file that is not present among the delivered
 files. Neither affects any mathematical statement.
 \end{enumerate}
 
+\subsection{Scope of the matrix theory}
+\label{diff:sub:nc:matrixscope}
+
+The eighth manuscript states twelve explicit non-claims of its own. All survive
+here, together with the audit findings recorded against its package.
+
+\begin{enumerate}[label=\textup{N\arabic*.},leftmargin=3.0em,itemsep=0.35em,start=53]
+\item \Cref{diff:thm:matsurjectivity} is an \emph{import}, not a result of this
+report. The splitting of monic scalar operators into first-order factors and
+the surjectivity of nonzero scalar operators are taken from
+\cite[Lemma 2.4.19]{ADHNorm} and transferred along the elementary embedding of
+\cite{ADH}; neither is reproved. The Berarducci--Mantova derivation and that
+elementary embedding are likewise imported wholesale
+(items~N1 and~N7). ``Linearly closed'' in the cited source means the splitting
+property and \emph{not} that every homogeneous equation has a full solution set
+in the base field; reading it the second way would contradict
+\cref{diff:cor:oscillator} (\cref{diff:warn:matimport}).
+\item The rank-one phase obstruction, the bounded-primitive ideal, the
+diagonal Galois tori and the universal exponential algebra used in
+\cref{diff:part:matrix} are existing repository or literature theory, reproved
+or specialized where a proof was wanted, and are not discoveries of the eighth
+manuscript; its own README and its comparison table say so
+(\cref{diff:rem:matagreement,diff:rem:matrankone,diff:sub:mattorus}). The
+classical Pinney parametrization \cref{diff:eq:matpinneyclassical} and the
+abstract Schwarz-closed-field existence principle behind it are likewise
+disclaimed as antecedents, not contributions
+\cite{Pinney,ADHNorm,ADHSecond}.
+\item No named published open problem is claimed solved by
+\cref{diff:part:matrix}, and in particular no new solution of the Boshernitzan
+conjecture discussed in \cite{ADHSecond} is claimed. Its own novelty
+assessment is provisional and is narrowed to three statements --- the
+arbitrary-dimensional Hermitian spectral--integral formula
+\cref{diff:eq:matspectral}, the sharp entrywise perturbation criterion
+\cref{diff:cor:matperturbation} with \cref{diff:prop:sharpperturb}, and the
+normalized non-Abelian integration theorem
+\cref{diff:thm:matnonabelian} --- on the basis of a \emph{targeted} literature
+search that did not locate an exact prior statement. That is evidence for
+treating them as candidate new results, not a priority determination, and this
+report makes no novelty claim of its own (item~N9).
+\item No proof-assistant verification, no Lean formalization and no
+independent refereeing of \cref{diff:part:matrix} is claimed; its strongest
+claims require independent mathematical review. This repeats items~N11
+and~N12 for the eighth member, whose own text states it in those words.
+\item Non-effectivity. The obstruction map $\Obs$ and the normalizing gauges
+$G$ and $W$ are exact \emph{semantic} operations, as $\Izero$ is
+(\cref{diff:warn:Jnotalgorithm}). Even for finite matrices, arbitrary surreal
+input carries no assumed finite computable encoding, and no factorization
+algorithm follows from the first-order transfer in
+\cref{diff:thm:matsurjectivity}. Identifying restricted, support-certified
+input languages for which eigenvalue primitives, their purely infinite parts
+and a normalizing unitary gauge admit certified effective computation is posed
+as an open problem, not solved; the exact recurrences of
+\cref{diff:ex:matnoncommuting,diff:eq:matairyrec} are instances, not a
+solution.
+\item Every statement of \cref{diff:part:matrix} is relative to the one fixed
+intrinsic $\der$ of \cref{diff:thm:BM} with $\der\omega=1$. None is a claim
+about every surreal derivation, about derivatives of a class function of a
+surreal variable, or about any of the coordinate operators of
+\cref{diff:tab:derivatives}. Infinite-dimensional matrices, topological
+initial-value problems on $\No$, Stokes data over smaller analytic fields and a
+global surcomplex exponential are all outside its assertions
+(\cref{diff:warn:matlimits}).
+\item All dimensions in \cref{diff:part:matrix} are ordinary finite integers,
+and every displayed Hahn sum there --- \cref{diff:eq:matnoncommrec},
+\cref{diff:eq:matairyamp}, \cref{diff:eq:matairyjet} --- is a
+support-certified formal sum, not a limit in any topology on $\SC$. This is
+item~N32 applied to the matrix part.
+\item The metric theorems make no Lyapunov and no uniform-equivalence claim.
+\Cref{diff:warn:matlyapunov} exhibits a positive horizontal metric of scale
+$e^{-2\omega}$ for printed coefficients whose ordinary solutions grow, and
+\cref{diff:thm:matmetric} has no hypothesis relating a horizontal metric to any
+fixed norm.
+\item \Cref{diff:thm:matspectral} does not remove the connection term
+$W^{*}\der W$ of \cref{diff:eq:matspectralproof}; that term is present and is
+merely invisible in the ordered additive quotient by $\Acl$. It is not the
+assertion that diagonalization commutes with differentiation, and the
+classification is not the assertion that every phase grade has a horizontal
+vector in $\SC^{n}$ --- by \cref{diff:cor:matinhom} only the zero grade does
+(\cref{diff:warn:matconnection}).
+\item The proper-class handling of \cref{diff:rem:matclasses} is a size
+justification for the proofs, not an algorithm. It does not say that any fixed
+Hahn workspace already contains the needed primitives or solutions
+(\cref{diff:ex:logmissing}), and it gives no effective presentation, no
+birthday or cardinal bound, and no minimal witness-closed subfield.
+\item The eighth suite's own scope statement is narrow by its authors'
+wording: its checks do not verify the arbitrary-support Hahn arguments, the
+published model-theoretic inputs, the existence of a gauge for an arbitrary
+surreal matrix, or the general theorems. Its deliberate counterexamples are
+asserted \emph{as} counterexamples --- the nonnormal coefficient is required to
+have eigenvalues $\pm i$ together with a base-field fundamental matrix, and the
+noncommuting exponential defect is required to be nonzero --- so a suite that
+passed while those assertions failed would be reporting the opposite of what it
+appears to report.
+\item The eighth package's verification program \emph{rewrites its own
+delivered evidence}. Its closing lines compute the package root as the parent
+of the script's directory, create \path{data/} there, and write
+\path{data/verification.json}; its README documents the behaviour as
+regeneration. \Cref{diff:app:verification} therefore reproduces the record
+\emph{as delivered} and does not re-run it, and \cref{diff:app:build} repeats
+the instruction to run any source suite on a copy. A byte-identity check made
+after such a run compares two equally modified copies and establishes nothing.
+This is an artifact-level hazard, like the two in item~N52; it affects no
+mathematical statement, but it is the reason no count in this report is
+presented as independently reproduced.
+\end{enumerate}
+
 \subsection{Open continuations, hedged}
 \label{diff:sub:nc:open}
 
 The following are directions for further development. They are \emph{not}
 assertions that the corresponding questions are unresolved in the literature.
-Classify logarithmic derivatives in multi-scale $\der$-stable Hahn workspaces
-where support shifts lack the uniform rational form of
-\cref{diff:eq:hahnderiv}. Determine useful classes of variable-coefficient
-matrix equations whose fundamental matrices remain in $\No[i]$, distinguishing
-genuine phase obstructions from workspace obstructions, and understand which
-nontriangular differential modules admit a filtration whose rank-one factors
-have computable obstructions --- which would require genuine module-theoretic
-information, not merely eigenvalues of an instantaneous coefficient matrix.
+
+Two items that earlier editions of this list posed have since been answered
+inside the report, by \cref{diff:part:matrix}, and are recorded here as
+answered rather than deleted.
+\begin{itemize}[leftmargin=1.6em]
+\item \emph{Which variable-coefficient matrix equations keep their fundamental
+matrices in $\No[i]$.} \Cref{diff:cor:matinhom} answers this for every finite
+system: a fundamental matrix exists in $\GL_{n}(\SC)$ exactly when every member
+of $\Ph(A)$ is zero, and $\dim_{\C}\Ker(\der-A)=m_{0}(A)$ in general. For
+Hermitian coefficients \cref{diff:cor:matkernel} makes the test explicit in
+terms of ordinary algebraic eigenvalues: the dimension is the number of
+eigenvalues lying in $\Acl$. The distinction the item asked for --- genuine
+phase obstruction against workspace obstruction --- is exactly the distinction
+between $\Ph(A)\neq\{0,\dots,0\}$ and the workspace phenomena of
+\cref{diff:part:workspaces}, and \cref{diff:cor:matperturbation} shows that the
+former is stable under every entrywise perturbation by $\Acl_{\C}$.
+
+What the item also asked --- which nontriangular differential modules admit a
+filtration whose rank-one factors have \emph{computable} obstructions ---
+remains open, and for the reason the item gave: that needs genuine
+module-theoretic information, not the eigenvalues of an instantaneous
+coefficient matrix. \Cref{diff:ex:matnonnormal} confirms the reason rather than
+removing it. Higher-rank differential modules likewise remain unclassified.
+\item \emph{Connecting the phase invariant with the strongest available
+linear-solvability theorems for this $H$-field.} This is done in
+\cref{diff:thm:matsurjectivity,diff:cor:matinhom,diff:cor:matkernel}, and it
+separates existence from dimension exactly as the item asked: existence for
+\emph{every} forcing holds unconditionally, while the dimension of the
+homogeneous solution space is the multiplicity $m_{0}(A)$ of the phase zero.
+The separation is not free --- existence comes from the imported
+\cref{diff:thm:matsurjectivity} and not from the rank-one criterion
+(\cref{diff:warn:matinhom}, item~N53) --- and no effective version of either
+half is claimed (item~N57).
+\end{itemize}
+
+The remaining continuations stand. Classify logarithmic derivatives in
+multi-scale $\der$-stable Hahn workspaces where support shifts lack the uniform
+rational form of \cref{diff:eq:hahnderiv}. Extend the phase spectrum to
+non-Hermitian coefficients, or show that no spectral formula can exist there,
+the obstruction being that a nonnormal similarity gauge need not be entrywise
+finite (\cref{diff:warn:matnonnormal}). Identify restricted, support-certified
+input languages on which the phase map, the purely infinite parts of eigenvalue
+primitives and a normalizing unitary gauge become effectively computable.
 Build explicitly typed analytic and coefficient interfaces that prove exchange
 rules with contour functionals under their correct common-domain and
 summability hypotheses, always fixing whether centres and contours move.
@@ -5775,9 +7532,7 @@ its infinite part. Separate negative-exponent coherent systems into finite
 nilpotent cases, cases reducible by a gauge transformation, and genuinely
 non-coherent cases, each proposed reduction carrying its own support proof.
 Develop monodromy for coherent coordinate equations on non-simply-connected
-domains in the nonlinear case. Connect the explicit phase invariant with the
-strongest available linear-solvability theorems for this $H$-field, separating
-existence from the dimension of the homogeneous solution space.
+domains in the nonlinear case.
 
 \section{Conclusion}
 \label{diff:sec:conclusion}
@@ -5810,6 +7565,22 @@ two sharper identities are available,
 giving exact auditable tests rather than heuristic simplification rules, and
 showing why derivative closure, primitive closure and exponential closure must
 be separate capabilities.
+
+The same obstruction survives the passage to finite matrices, and there it
+becomes a multiset. Every finite system over $\SC$ has a differential phase
+spectrum $\Ph(A)\subset\Pcl$, complete for gauge equivalence, of which the
+trace test \cref{diff:eq:tracenecessary} sees only the sum; and when the
+coefficient is $iH$ with $H$ Hermitian the spectrum is computed by integrating
+the ordinary algebraic eigenvalues of $H$ and keeping the purely infinite parts
+of their primitives. The connection term left behind by pointwise
+diagonalization is neither ignored nor approximated: by
+\cref{diff:lem:matboundedgauge} a unitary gauge is entrywise finite, so that
+term lands in $\Mat_{n}(\Acl_{\C})$, which is exactly the kernel the invariant
+annihilates. That is why the perturbation theorem needs no spectral gap. What
+the argument needs instead is the strictness $\Acl\subsetneq\mm$ that
+\cref{diff:warn:collapse} insists on, and an additional imported input; and it
+needs Hermitian symmetry, which \cref{diff:ex:matnonnormal} shows cannot be
+dropped.
 
 A distinct theory of coordinate initial-value problems remains available and
 useful. On a common ordinary complex domain, positive-support Hahn
@@ -6060,7 +7831,27 @@ placeholders in the statement of the exponential and logarithm identities
 (\cref{diff:lem:smallchain}), where they stand for nothing at all. One source manuscript flagged its own collision
 between $U$ as a transcendental differential generator and $U$ as an ordinary
 domain; the generator is $\mathsf T$ here, and neither use ever denotes a
-surreal number.
+surreal number or a matrix over one. The eighth manuscript writes $U$ for a
+unitary matrix; this report writes $W$, and
+\cref{diff:conv:matalphabet} fixes the rest of that part's alphabet:
+$H$ for a Hermitian matrix --- never the hyphenated adjective in ``$H$-field''
+and never the coefficient field $H_{\Gamma}$ --- $G$ for a gauge matrix, the
+upper-case upgrade of the scalar gauge $g$ of \cref{diff:eq:gauge};
+$\mathcal M$ for a horizontal metric, where the eighth manuscript writes $G$;
+$\Rot$ for the rotation generator, where it writes the forbidden $J$; and
+$\Pi$ for the additive phase lattice inside $\Pcl$, because $\Lambda$ is
+already the integer relation lattice of \cref{diff:eq:lattice}, which is the
+object that manuscript calls $L$. Its $\Psi$ is this report's $\Obs$
+(\cref{diff:conv:phases}(e)) and is \emph{not} the $\Psi$ of
+\cref{diff:cor:noglobalPsi}, which is a placeholder for a putative
+derivation-compatible exponential and is the letter's only occurrence here; its
+$\mathcal I$ is $\Acl$. In
+\cref{diff:part:matrix} the letter $W$ denotes a unitary matrix and $M$ a
+finite differential module; \cref{diff:part:coordinate} uses the same two
+letters for a positive-support matrix, an ordinary neighbourhood and a
+well-ordered exponent set, and the two parts never share a statement. The
+unitary group itself is $\Un_{n}(\SC)$, printed upright so that it is not read
+as a domain.
 
 Finally, $\Ofin$ never takes an argument. Where a source wrote
 $\mathcal O(V)$ for holomorphic functions, this report writes $\Hol(V)$.
@@ -6106,12 +7897,13 @@ classification.
 \section{Provenance: what each archive contributed}
 \label{diff:app:provenance}
 
-The seven source manuscripts are preserved unmodified in the
+The eight source manuscripts are preserved unmodified in the
 \path{sources/} directory of this report's package, together with their own
-READMEs and audit files. The identifiers below are the merge identifiers; the
-original archive names collided, three pairs of them differing only by a
-trailing marker, so the mapping is recorded here and in the package README
-because it is not recoverable from the filenames.
+READMEs and audit files. The identifiers below are the merge identifiers; among
+the first seven the original archive names collided, three pairs of them
+differing only by a trailing marker, so the mapping is recorded here and in the
+package README because it is not recoverable from the filenames. Members 01--09
+are pinned to \Commit; member 10 joined later and is pinned to \CommitB.
 
 \begin{longtable}{@{}L{0.13\textwidth}L{0.80\textwidth}@{}}
 \caption{Provenance by member.}
@@ -6247,13 +8039,49 @@ guarantee (\cref{diff:thm:resolvent,diff:rem:coefrecursion}); the
 constant-coefficient coefficient stream and the
 $\sum\omega^{n^{2}}X^{n}$ support counterexample
 (\cref{diff:rem:coefstream}); and the derivation-aware representation
-interface (\cref{diff:tab:interface}). \\
+interface (\cref{diff:tab:interface}). \\[0.3em]
+10 \newline\emph{Hermitian phase spectral integral} &
+The whole of \cref{diff:part:matrix}: matrix gauge equivalence and the complete
+phase normal form for every finite system, with the differential phase spectrum
+as its complete invariant
+(\cref{diff:thm:matnormal,diff:conv:phases}(e),\cref{diff:warn:spectrum});
+the imported splitting and first-order surjectivity input with its transfer
+(\cref{diff:thm:matsurjectivity,diff:warn:matimport}); existence for every
+forcing and the exact kernel dimension
+(\cref{diff:cor:matinhom,diff:warn:matinhom}); the canonical phase projectors
+and the refined trace identity
+(\cref{diff:prop:matprojectors,diff:cor:mattrace}); the complete horizontal
+metric cone with its anti-Lyapunov example and the unitary normal form
+(\cref{diff:thm:matmetric,diff:warn:matlyapunov,diff:thm:matunitary}); the
+attained min--max, the entrywise Weyl bound and the bounded-gauge estimate
+(\cref{diff:lem:matminmax,diff:lem:matweyl,diff:lem:matboundedgauge,diff:warn:matboundedgauge});
+the spectral--integral theorem itself with gap-free perturbation invariance,
+the exact kernel count and its sharpness
+(\cref{diff:thm:matspectral,diff:cor:matperturbation,diff:cor:matkernel,diff:prop:sharpperturb});
+the two deliberate boundary counterexamples and the coupled unitary example
+(\cref{diff:ex:matnonnormal,diff:warn:matnonnormal,diff:ex:matcoupled});
+normalized non-Abelian integration with its cocycle law and the exact
+noncommuting Hahn recurrence
+(\cref{diff:thm:matnonabelian,diff:warn:matnonabelian,diff:ex:matnoncommuting});
+the real rotation-block descent and the real metric cone with its parity
+(\cref{diff:thm:matreal,diff:thm:matrealmetric}); the positive
+Ermakov--Pinney dichotomy and the canonical amplitude--phase reduction
+(\cref{diff:thm:matpinney,diff:thm:matamplitude}); the exact Airy Hahn
+expansion with its Wronskian, amplitude jet and truncation residual
+(\cref{diff:sub:matairy}); the resonance algebra with its Dickson finiteness
+and the singular three-phase invariant algebra
+(\cref{diff:thm:matresonance,diff:ex:matthreephase}); the phase lattice as a
+Galois torus, its group algebra and real form
+(\cref{diff:cor:mattorus,diff:prop:matPValgebra,diff:warn:mattorus}); and the
+set-sized witness-closed reading of the proper-class arguments
+(\cref{diff:rem:matclasses}). \\
 \bottomrule
 \end{longtable}
 
 \begin{remark}[How the merge was performed, and the count of non-claims]
 \label{diff:rem:mergemethod}
 A result that all seven prove is printed once. Where two members proved the
+% (the paragraph below continues to describe the original seven-member merge)
 same statement by genuinely different routes, both routes are kept and marked:
 \cref{diff:lem:smallnegative} against \cref{diff:rem:sqrtsmallness} for
 smallness; the three proofs of \cref{diff:cor:oscillator}; the two
@@ -6269,12 +8097,31 @@ coefficient rings, the rings are named
 (\cref{diff:thm:resolvent,diff:thm:power,diff:prop:polyresolvent}). Nothing is
 strengthened beyond what a source proves.
 
-The seven manuscripts state, between them, $13+16+18+13+24+21+13=118$ explicit
-non-claims, with heavy overlap. \Cref{diff:sec:nonclaims} consolidates them
-into $52$ numbered items, organized by theme; every one of the $118$ has a
-home there, and many items carry several sources' phrasings at once. Two of
-the $118$ are artifact-level discrepancies in the source packages rather than
-mathematical limitations, and they are recorded as such in item~N52.
+The first seven manuscripts state, between them,
+$13+16+18+13+24+21+13=118$ explicit non-claims, with heavy overlap, and the
+eighth states a further $12$, giving $130$.
+\Cref{diff:sec:nonclaims} consolidates them into $64$ numbered items,
+organized by theme; every one of the $130$ has a home there, and many items
+carry several sources' phrasings at once. Two of the $118$ are artifact-level
+discrepancies in the source packages rather than mathematical limitations, and
+they are recorded as such in item~N52; a third, the eighth package's
+self-rewriting verification script, is item~N64.
+
+Integrating the eighth member followed the same rules. Its reproofs of results
+already in the report --- the convexity and strictness of $\Acl$, the exact
+logarithmic-derivative image, the saturation of the relation lattice --- are
+recorded as agreements and cited, not printed again
+(\cref{diff:rem:matagreement,diff:rem:matrankone,diff:sub:mattorus}). Its two
+genuinely different routes are kept and marked: the rank-$r$ differential
+simplicity of \cref{diff:prop:matPValgebra}(i) beside the rank-one argument of
+\cref{diff:thm:extension}, and the metric proof of the Pinney dichotomy beside
+the classical parametrization \cref{diff:eq:matpinneyclassical}. Where it
+strengthened a statement this report had deliberately hedged, the hedge was
+amended rather than removed and the new hypothesis was named: item~N22 now
+records that first-order inhomogeneous existence holds but only by the import
+of \cref{diff:thm:matsurjectivity}, and item~N24 now records the Hermitian case
+settled and the non-Hermitian case open, keeping the counterexample that marks
+the line. Nothing is strengthened beyond what a source proves.
 \end{remark}
 
 \section{Verification record, exactly as delivered}
@@ -6282,11 +8129,11 @@ mathematical limitations, and they are recorded as such in item~N52.
 
 Each source package shipped a deterministic exact-symbolic program together
 with its \emph{recorded} run. This appendix reproduces those records. It does
-not re-run them and does not merge their counts into a single suite: seven
-suites with seven scopes remain seven suites.
+not re-run them and does not merge their counts into a single suite: eight
+suites with eight scopes remain eight suites.
 
 \begin{longtable}{@{}L{0.09\textwidth}L{0.13\textwidth}L{0.70\textwidth}@{}}
-\caption{The seven recorded verification runs.}
+\caption{The eight recorded verification runs.}
 \label{diff:tab:verification}\\
 \toprule
 Member & Recorded & Scope and declared cutoffs \\
@@ -6373,18 +8220,47 @@ coefficient value $1-2/\omega^{2}-2/\omega^{3}$ and a moving-pole identity;
 general resolvent residuals $81$ for $\lambda\in\{i,2,1+i\}$ and $N=0..8$;
 factorial-series residuals $13$; whole-prefix coefficient recurrences $9$
 through $t^{10}$ with lower bounds $1,-2,-5$; constant-coefficient operator
-examples $33$; matrix identities $35$. \\
+examples $33$; matrix identities $35$. \\[0.3em]
+10 & $62$ checks passed &
+Python with SymPy, exact symbolic and rational arithmetic throughout, with no
+numerical sampling. Groups: the nonnormal counterexample $3$ --- unimodular
+gauge, $\der G=AG$, and characteristic polynomial $\zeta^{2}+1$, asserted
+\emph{as} a counterexample (\cref{diff:ex:matnonnormal}); the coupled unitary
+example $4$ (orthogonality, skew-Hermiticity, the exact phase gauge, the
+instantaneous determinant, \cref{diff:ex:matcoupled}); the Jordan metric $2$
+(\cref{diff:warn:matlyapunov}); the three-phase system $6$, including its
+invariant Hermitian metric, its gauge identity, three polynomial first
+integrals verified in the \emph{original} coupled coordinates, and the
+quadratic relation of \cref{diff:eq:mattoric}; the noncommuting recurrence
+$12$ with $12$ unitarity-coefficient checks, one naive-exponential defect
+identity and one assertion that the commutator defect is nonzero
+(\cref{diff:ex:matnoncommuting}); the Airy recurrence $16$ with the first
+amplitude correction and the exact truncation residual at $N=16$
+(\cref{diff:eq:matairyrec,diff:eq:matairyres}); and three Pinney checks
+(determinant one, invariant metric, symplectic amplitude reduction) carried out
+on arbitrary symbolic jets under the substitution for the second derivative
+(\cref{diff:eq:matpinneymetric,diff:eq:matcanonicalgauge}). The record also
+carries the degree-$8$ amplitude jet of \cref{diff:eq:matairyjet} and the
+$3\times3$ coefficient matrix of \cref{diff:eq:matthreematrix} as strings, both
+matching the displayed forms. Its own trailing scope note reads: finite exact
+symbolic checks; not a proof of general or infinite-support theorems. \\
 \bottomrule
 \end{longtable}
 
-All seven runs were recorded under Python 3.13.5, and the six SymPy-dependent
-suites under SymPy 1.14.0; the seventh uses the standard library only. All
-seven record zero failures. The consolidated scope limits are item~N48 to
-item~N52 of \cref{diff:sec:nonclaims}. Two artifact-level discrepancies are
-recorded there and repeated here for completeness: one package's PowerShell
-build script was supplied but not executed on Windows in its preparation
-environment, and one package's README lists a \path{SHA256SUMS.txt} that is
-not present among its delivered files.
+The first seven runs were recorded under Python 3.13.5, six of them under
+SymPy 1.14.0 and the seventh using the standard library only. The eighth
+records SymPy 1.14.0 and a status of \textsc{pass} with $62$ checks, but
+records no Python version; its package pins \path{sympy==1.14.0} and its README
+states Python 3.10 or later. All eight record zero failures. The consolidated
+scope limits are item~N48 to item~N52 and item~N63 to item~N64 of
+\cref{diff:sec:nonclaims}. Three artifact-level discrepancies are recorded
+there and repeated here for completeness: one package's PowerShell build script
+was supplied but not executed on Windows in its preparation environment; one
+package's README lists a \path{SHA256SUMS.txt} that is not present among its
+delivered files; and the eighth package's program rewrites its own delivered
+\path{data/verification.json}, computing the package root as the parent of its
+own directory, so the record reproduced above is the delivered one and a rerun
+would overwrite it.
 
 \section{Building this report}
 \label{diff:app:build}
@@ -6400,11 +8276,12 @@ and, if \texttt{latexmk} is unavailable, run \texttt{pdflatex} with
 \texttt{-interaction=nonstopmode} three times so that the table of contents,
 the cross-references and the \texttt{cleveref} labels settle. The directory
 also contains \path{README.md}, the unmodified \path{sources/}, and the
-unmodified \path{code/} and \path{data/} directories of the seven source
+unmodified \path{code/} and \path{data/} directories of the eight source
 packages. To re-run a source suite, run it \emph{on a copy}: several of the
-delivered programs rewrite their own evidence files beside themselves, so a
-byte-identity check performed after a run compares two equally modified copies
-and tells you nothing.
+delivered programs rewrite their own evidence files beside themselves, and the
+eighth writes to a \path{data/} directory it creates one level \emph{above} its
+own, so a byte-identity check performed after a run compares two equally
+modified copies and tells you nothing.
 
 \clearpage
 \phantomsection
@@ -6440,6 +8317,36 @@ Journal of the European Mathematical Society \textbf{21} (2019), 1179--1199.
 Preprint: \href{https://arxiv.org/abs/1512.02267}{arXiv:1512.02267v3}.
 Theorem 1 concerns an elementary embedding in the ordered differential
 language.
+
+\bibitem{ADHNorm}
+Matthias Aschenbrenner, Lou van den Dries and Joris van der Hoeven,
+\emph{Normalizing Asymptotic Differential Equations},
+\href{https://arxiv.org/abs/2403.19732v5}{arXiv:2403.19732v5} (2026).
+Earlier versions carried the title \emph{A Normalization Theorem in Asymptotic
+Differential Algebra}. Used for the splitting of monic scalar operators into
+first-order factors and the surjectivity of nonzero scalar operators
+(\S2.4, Lemma 2.4.19), which \cref{diff:thm:matsurjectivity} imports and
+transfers, and for the universal exponential extensions and the
+Schwarz-closed-field discussion cited in
+\cref{diff:sub:matpinney,diff:sub:mattorus}.
+
+\bibitem{ADHSecond}
+Matthias Aschenbrenner, Lou van den Dries and Joris van der Hoeven,
+\emph{Revisiting Second-Order Linear Differential Equations over Hardy Fields},
+\href{https://arxiv.org/abs/2603.02013v1}{arXiv:2603.02013v1} (2026).
+Theorems A and B and the amplitude--phase formulations of the introduction are
+the antecedent of
+\cref{diff:thm:matpinney,diff:thm:matamplitude}. No solution of the
+Boshernitzan conjecture named there is claimed here.
+
+\bibitem{Pinney}
+Edmund Pinney,
+\emph{The nonlinear differential equation $y''+p(x)y+cy^{-3}=0$},
+Proceedings of the American Mathematical Society \textbf{1} (1950), no.~5,
+681.
+\href{https://doi.org/10.1090/S0002-9939-1950-0037979-4}{doi:10.1090/S0002-9939-1950-0037979-4}.
+The sign of the parameter is convention dependent; the equation used in
+\cref{diff:sub:matpinney} is $\der^{2}\rho+q\rho=\rho^{-3}$.
 
 \bibitem{Gonshor}
 Harry Gonshor,
@@ -6548,6 +8455,16 @@ subsection ``Differential equations must name their category''.
 \url{https://github.com/VladimirReshetnikov/Surreal/blob/e260237db9b71da8b74a0c13c8e6355119091100/docs/foundations-and-computation/foundations/README.md}.
 Sets, classes, set-sized workspaces, the four-interface discipline, and the
 limits of verification claims.
+
+\bibitem{RepoSpectral}
+\Repo, \emph{Surcomplex Spectral Theory: Singular Values, Infinitesimal Rank,
+and Multiscale Stability},
+\path{docs/surcomplex/spectral-theory/}, at revision \CommitB, the snapshot to
+which the eighth source manuscript is pinned.
+\url{https://github.com/VladimirReshetnikov/Surreal/blob/aa846271b4dcae2c055b216126a87210292ec19b/docs/surcomplex/spectral-theory/article.tex}.
+Its ``spectrum'' is the algebraic eigenvalue and singular-value list of a
+finite matrix, which is \emph{not} the differential phase spectrum of
+\cref{diff:conv:phases}(e); see \cref{diff:warn:spectrum}.
 
 \bibitem{RepoGaps}
 \Repo, \emph{A countable genetic cut across the finite--infinite gap},

@@ -119,6 +119,20 @@
 \newcommand{\nres}{\mathsf{NR}}
 \newcommand{\fres}{\mathsf{FR}}
 \newcommand{\pares}{\mathsf{PAR}}
+\newcommand{\qres}{\mathsf{QR}}
+\newcommand{\sdss}{\mathsf{SD}_{\mathrm{ss}}}
+\newcommand{\TT}{\mathbb T}
+\newcommand{\strip}{\OO(\TT^{d}_{\rho})}
+\newcommand{\Cups}{\mathcal C_{\Upsilon}}
+\newcommand{\Gups}{\mathcal G_{\Upsilon}}
+\newcommand{\Tups}{\mathsf T_{\Upsilon}}
+\newcommand{\qlat}{\mathsf N_{\Upsilon}}
+\newcommand{\kups}{\kappa_{\Upsilon}}
+\newcommand{\fla}{\mathfrak a}
+\newcommand{\av}{\operatorname{av}}
+\newcommand{\Qz}{\mathsf Q_{0}}
+\newcommand{\diver}{\operatorname{div}}
+\newcommand{\rank}{\operatorname{rank}}
 \newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 \numberwithin{equation}{section}
 
@@ -139,7 +153,7 @@
 \vspace{0.40in}
 \begin{minipage}{0.92\textwidth}
 \begin{abstract}
-Six independently written manuscripts developed local and global dynamics
+Seven independently written manuscripts developed local and global dynamics
 over complex Hahn fields $K_\Gamma=\C((t^\Gamma))$ realized inside
 $\No[i]$, with $\Gamma$ a set-sized ordered abelian group of arbitrary rank.
 This report is their \emph{union}. Every result any one of them reached
@@ -147,8 +161,17 @@ survives; results all of them reached are printed once; results proved by
 genuinely different routes keep each route, marked; and every honest
 limitation is preserved.
 
-Four inequivalent conditions travelled under the single word
-\emph{resonance} across the six sources, and five inequivalent conditions
+Six of the seven are germ and fixed-point dynamics: multipliers, return
+iterates, periods, Hamiltonians at the origin of a phase halo. The seventh
+is the \emph{quasi-periodic} half of the same subject --- a cohomological
+equation on a real torus whose frequency vector has surreal components,
+with divisors indexed by an integer lattice --- and it is not a duplicate
+of any of the six: none of them contains a resonance lattice, a
+cohomological equation, a Fourier divisor or a conjugacy to a constant
+vector field.
+
+Five inequivalent conditions travelled under the single word
+\emph{resonance} across the seven sources, and six inequivalent conditions
 travelled under the words \emph{small divisor}; worse, two families of
 sources used the word \emph{radius} with opposite monotonicity.
 \Cref{dyn:sec:notions} therefore opens the report with a notion table that
@@ -169,18 +192,27 @@ cancellation phase diagram and its common-domain lifting; an algebraicity
 dichotomy and an exact coefficientwise monodromy exponent for parabolic
 Euler maps, whose infinitesimal part no finite branched cover removes; a
 complete period classification, explicit moduli and beyond-all-orders
-invisible moduli for global near-identity maps; and a gauge-normalized
+invisible moduli for global near-identity maps; a gauge-normalized
 symplectic Hamiltonian normal form, its full Poisson centralizer, and
-support-certified domains reaching infinite phase magnitudes.
+support-certified domains reaching infinite phase magnitudes; and, on the
+quasi-periodic side, the theorem that a frequency vector with $d$ surreal
+components has \textbf{at most $d$} arithmetically visible divisor
+valuations, identified by a canonical descending flag of integer resonance
+lattices, together with the exact arithmetic criterion for universal
+solvability of the cohomological equation on one fixed analytic strip, an
+arbitrary-order analytic lifting obstruction, a unique infinitesimal
+conjugacy to a constant vector field proved by marked support words rather
+than by sequential valuation convergence, and its canonical invariant
+density.
 \end{abstract}
 \end{minipage}
 \vfill
 \begin{minipage}{0.92\textwidth}\small
-\textbf{Status.} This is a merged report assembled from six AI-assisted,
+\textbf{Status.} This is a merged report assembled from seven AI-assisted,
 unrefereed research drafts. It is not refereed and not proof-assistant
 verified; no Lean or other formal development corresponds to any theorem
 below. Priority is not certified for any statement, and no named published
-conjecture is claimed solved. The six sources' own verification programs
+conjecture is claimed solved. The seven sources' own verification programs
 supply finite exact symbolic checks only; \cref{dyn:sec:verification}
 records exactly what each one does and does not establish, and
 \cref{dyn:sec:nonclaims} carries every limitation stated by every source.
@@ -195,17 +227,35 @@ records exactly what each one does and does not establish, and
 \section{What this report is, and how to read it}
 \label{dyn:sec:read}
 
-\subsection{Six manuscripts, one body of machinery}
-The six source manuscripts preserved in \texttt{sources/} were written
-independently on 21 September 2026 against the same pinned repository
-snapshot. They share a single body of machinery --- the set-sized Hahn
-workspace inside $\No[i]$, strong summability by well-ordered support and
-local finiteness, the positive-support lemma of Neumann in finite-word
-form, halo evaluation by coefficientwise double Taylor sums, Taylor
-substitution and its near-identity inverse --- and each of the six states
-that machinery from scratch. The positive-support lemma is stated in all
-six. Between $45$ and $55$ per cent of the combined text is the same
-theory.
+\subsection{Seven manuscripts, one body of machinery}
+The seven source manuscripts preserved in \texttt{sources/} were all
+written independently on 21 September 2026 against a pinned repository
+snapshot: sources 01--06 against commit
+\texttt{39f2be66\allowbreak 67ade51b\allowbreak ca2b45da\allowbreak
+a47e289d\allowbreak 69c09764} and source 07 against commit
+\texttt{aa846271\allowbreak b4dcae2c\allowbreak 055b2161\allowbreak
+26a87210\allowbreak 292ec19b}. They share a single body
+of machinery --- the set-sized Hahn workspace inside $\No[i]$, strong
+summability by well-ordered support and local finiteness, the
+positive-support lemma of Neumann in finite-word form, halo evaluation by
+coefficientwise double Taylor sums, Taylor substitution and its
+near-identity inverse --- and each of the seven states that machinery from
+scratch. The positive-support lemma is stated in all seven. Between $45$
+and $55$ per cent of the combined text of sources 01--06 is the same
+theory, and source 07 restates the same foundation again.
+
+Sources 01--06 are germ and fixed-point dynamics and were merged first;
+source 07 is the quasi-periodic half of the subject and was integrated
+afterwards, as \cref{dyn:sec:flag,dyn:sec:qplinear,dyn:sec:qpnonlinear}.
+It is genuinely additive rather than a seventh treatment of the same
+material: grepping sources 01--06 for a resonance lattice, a cohomological
+equation, a Fourier divisor or a mean-zero conjugacy to a constant vector
+field returns nothing, and conversely source 07 contains no multiplier, no
+return iterate and no period. What the two halves do share is this
+machinery, which is therefore stated once for both, and the
+coefficient-category architecture of \cref{dyn:rem:oneinvariant}, which is
+stated once and instantiated twice
+(\cref{dyn:rem:qponeinvariant}).
 
 They also disagree, in the specific and dangerous way that independent
 runs at one \emph{foundation} disagree: not by contradicting each other's
@@ -240,7 +290,7 @@ numbers is closed and discrete in the fine order topology, so
 $\sum_{n}t^{n}=(1-t)^{-1}$ is a Hahn identity about a summable family and
 never a limit of partial sums --- is the foundation fixed by
 \emph{Surcomplex analysis: holomorphic functions on $K=\No[i]$}
-(\texttt{docs/surcomplex/analysis/}). All six sources restate it; we cite
+(\texttt{docs/surcomplex/analysis/}). All seven sources restate it; we cite
 it and state it once, in \cref{dyn:def:summable}.
 \item the coefficient-ring taxonomy is the four-ring table of
 \emph{Infinitesimal Analytic Geometry over the Surcomplex Numbers}
@@ -251,9 +301,10 @@ not new rings: see \cref{dyn:subsec:rings}.
 be a constant for the scalar Berarducci--Mantova derivation is the
 cross-category warning of \emph{Differential Algebra and Differential
 Equations over the Surreal and Surcomplex Numbers}
-(\texttt{docs/surcomplex/differential-equations/}). All six sources derive
-it independently; we adopt that report's wording once, in
-\cref{dyn:warn:derivative}.
+(\texttt{docs/surcomplex/differential-equations/}). All seven sources
+derive it independently --- source 07 in the form that its torus
+derivatives are external derivations annihilating $K_\Gamma$ --- and we
+adopt that report's wording once, in \cref{dyn:warn:derivative}.
 \end{itemize}
 
 \subsection{What is offered as new, and what is not}
@@ -280,12 +331,20 @@ drifted radius-collapse law \cref{dyn:thm:collapse} and the trichotomy
 the algebraicity dichotomy \cref{dyn:thm:dichotomy} with the monodromy
 formula \cref{dyn:thm:monodromy} and its torsion obstruction; the period
 classification \cref{dyn:thm:classification} with
-\cref{dyn:thm:moduli,dyn:thm:flat,dyn:thm:slowtime}; and the Hamiltonian
-package \cref{dyn:thm:normalform,dyn:thm:universal,dyn:thm:pcentralizer,dyn:thm:rescale}.
+\cref{dyn:thm:moduli,dyn:thm:flat,dyn:thm:slowtime}; the Hamiltonian
+package \cref{dyn:thm:normalform,dyn:thm:universal,dyn:thm:pcentralizer,dyn:thm:rescale};
+and, from source 07, the finite resonance flag with its single common
+reciprocal support \cref{dyn:thm:flag}, the exact fixed-strip solvability
+criterion \cref{dyn:thm:qplinear}, the arbitrary-order analytic lifting
+obstruction \cref{dyn:thm:qpjet}, and the torus normal-form package
+\cref{dyn:thm:qpnormalform,dyn:thm:qpnecessity,dyn:prop:qpboundary,dyn:thm:qpdensity}.
 Each source's own bounded novelty assessment is reproduced in
-\cref{dyn:sec:nonclaims}.
+\cref{dyn:sec:nonclaims}. Source 07 adds to the classical list the ordinary
+Fourier division mechanism with its subexponential criterion, the Liouville
+construction method, and positive-support Hahn inversion
+\cite{Bounemoura,Kamienski,Neumann,Poonen}, none of which it claims.
 
-\section{The notion table: four resonances, five small divisors, two radii}
+\section{The notion table: five resonances, six small divisors, two radii}
 \label{dyn:sec:notions}
 
 This section is the load-bearing apparatus of the merge. Read it before
@@ -294,8 +353,8 @@ the tables below, and \cref{dyn:subsec:theoremtags} lists, theorem by
 theorem, which tags it actually uses.
 
 \subsection{Why unifying the notation without this table would invert results}
-The six sources use the word \emph{resonance} for four inequivalent
-conditions and the words \emph{small divisor} for five, and two groups of
+The seven sources use the word \emph{resonance} for five inequivalent
+conditions and the words \emph{small divisor} for six, and two groups of
 sources use the word \emph{radius} with opposite monotonicity. A merge that
 harmonized the symbols without separating the notions would produce
 statements that read correctly and are false: it would apply an exact
@@ -361,11 +420,28 @@ says plainly that the word in its own title is not a small-divisor
 condition, and source 05 says it has no resonance and no small-divisor
 condition at all because its maps are unipotent. A reader who reads
 $\pares$ as a small-divisor hypothesis will misattribute every theorem in
-those two sections.\\
+those two sections.\\[4pt]
+$\qres$\newline \emph{lattice-resonant, for a Hahn frequency}
+&
+For a frequency vector $\Upsilon\in F_\Gamma^{d}=\R((t^{\Gamma}))^{d}$ whose
+components are \textbf{Hahn (hence surreal) scalars}: the exact resonance
+lattice $\qlat=\{k\in\Z^{d}:k\cdot\Upsilon=0\}$ is nonzero. Its negation
+$\lnot\qres$ is $\qlat=\{0\}$.
+&
+The flag \cref{dyn:thm:flag} and the linear theorem
+\cref{dyn:thm:qplinear} \emph{permit} $\qres$; the torus normal form
+\cref{dyn:thm:qpnormalform} and all of \cref{dyn:sec:qpnonlinear} require
+$\lnot\qres$. This is \textbf{exact vanishing of a Hahn scalar}, never
+smallness of anything. It is \textbf{not} $\fres$: that one is a condition
+on ordinary complex $\omega\in\C^{d}$ with divisors graded by Taylor
+degree, whereas $\qres$ concerns surreal components with divisors
+$k\cdot\Upsilon$ graded by the Fourier index $|k|$ and of \emph{nonzero}
+valuation (\cref{dyn:warn:twofrequencies}).\\
 \bottomrule
 \end{longtable}
 
-\begin{warning}[The four notions do not intersect in the way the word suggests]
+\begin{warning}[The four germ notions do not intersect in the way the word
+suggests]
 \label{dyn:warn:resonance}
 $\resq$ requires $\lambda$ \emph{not} to be a root of unity while its
 residue is one; $\mres$ is about exact equality of ordinary unit
@@ -384,16 +460,25 @@ $\Lambda^{q}=I$ --- the multiplier itself of finite order --- which is
 \emph{neither} $\resq$ (where $\lambda$ is not a root of unity) nor mere
 $\mres$ (where resonances exist but need not have finite order).
 \end{itemize}
+The fifth notion $\qres$ intersects none of these four: it is a condition
+on an integer lattice attached to a vector of \emph{Hahn} scalars, it has
+no multiplier and no fixed point, and no theorem stated under $\resq$,
+$\mres$, $\fres$ or $\pares$ is quoted under it or vice versa.
 \end{warning}
 
-\subsection{Five notions of small divisor}
+\subsection{Six notions of small divisor}
 \label{dyn:subsec:smalldivisor}
 
-All five concern \emph{ordinary complex} divisors. Every nonzero ordinary
+The first five concern \emph{ordinary complex} divisors. Every nonzero ordinary
 complex number, however tiny, has Hahn valuation zero
 (\cref{dyn:rem:invisible}), so none of the five is visible to the Hahn
 valuation, and a proof that keeps only the valuation cannot distinguish
-them.
+them. The sixth, $\sdss$, is different in one respect and identical in
+another: its divisors $k\cdot\Upsilon$ are Hahn scalars of \emph{nonzero}
+valuation, but the arithmetic condition it imposes is again a condition on
+ordinary real numbers only --- the leading real forms --- so that here too
+the valuation cannot see the arithmetic
+(\cref{dyn:warn:qptwosizes}).
 
 \begin{longtable}{@{}P{0.12\textwidth}P{0.41\textwidth}P{0.40\textwidth}@{}}
 \toprule
@@ -458,7 +543,23 @@ No divisor condition, and no divisor family to impose one on.
 Sources 04 and 05. Under $\pares$ the multiplier is $1+\mu\eps$ or
 $1$, so $\lambda^{n}-\lambda$ is automatically nonzero for every
 $n\ge2$, formal uniqueness is free, and the entire difficulty is
-well-ordered support.\\
+well-ordered support.\\[4pt]
+$\sdss$\newline \emph{stratified subexponential}
+&
+For each flag stratum $\Sigma_j$ of \cref{dyn:thm:flag} and every real
+$\eps>0$ there is $C_{j,\eps}>0$ with
+$|\fla_j(k)|^{-1}\le C_{j,\eps}e^{\eps|k|}$ for $k\in\Sigma_j$, where
+$\fla_j(k)=k\cdot\varpi_{\gamma_j}$ is the leading \emph{real} form of the
+divisor $k\cdot\Upsilon$ on that stratum; equivalently
+$\limsup_{k\in\Sigma_j}\log^{+}(1/|\fla_j(k)|)/|k|=0$ for every $j$.
+&
+Source 07, where it is called $(\mathrm{SS})$. It is the vanishing-rate
+condition of \cref{dyn:rem:oneinvariant} on a \emph{fourth} divisor family
+(\cref{dyn:rem:qponeinvariant}), imposed stratum by stratum on the
+finitely many leading real forms. It therefore corresponds to $\tau=0$ and
+$\sigma=0$, \textbf{not} to $\tau<\infty$; and it says nothing whatever
+about the surreal size $v(k\cdot\Upsilon)=\gamma_j$ of the divisor itself
+(\cref{dyn:warn:qptwosizes}).\\
 \bottomrule
 \end{longtable}
 
@@ -493,6 +594,17 @@ The three sources reach this table on three divisor families, in three
 notations, with three different proofs of necessity. What they do
 \emph{not} share is the sixth category, common-domain germs; see
 \cref{dyn:sec:drift} and \cref{dyn:q:commongerm}.
+
+A \emph{fourth} divisor family, $k\cdot\Upsilon$ for a Hahn frequency
+vector graded by the Fourier index $|k|$, is added by source 07, and the
+first row of the table above is instantiated on it as
+\cref{dyn:thm:qplinear}: ``one fixed unchanged polydisk'' becomes ``one
+fixed unchanged strip'' and ``$\kappa=0$'' becomes $(\sdss)$, the same
+vanishing rate imposed on each of the finitely many strata. The table is
+stated here once and instantiated exactly twice; the two instantiations,
+and the rows that are \textbf{not} instantiated on the quasi-periodic
+side, are set out in \cref{dyn:rem:qponeinvariant}. Reading an
+uninstantiated row across would assert a theorem no source proves.
 \end{remark}
 
 \begin{remark}[Arithmetic invisible to the Hahn valuation]
@@ -645,6 +757,37 @@ Statement & Resonance & Divisor & Coefficient category & Domain notion\\
 & $\pares$ & $\sdno$ & $\OO(U)$, $U\subset\C$ connected & ordinary $U$\\
 \cref{dyn:thm:fixed-ideal} fixed-point ideals
 & $\pares$ & $\sdno$ & any of the five & finite halo\\
+\cref{dyn:thm:flag} finite resonance flag
+& $\qres$ allowed & none used & \emph{no coefficient functions}: a statement
+about $F_\Gamma^{d}$ and $\Z^{d}$ & none\\
+\cref{dyn:prop:qpjets} inverse coefficients
+& $\qres$ allowed & none used & scalar, in $K_\Gamma$ & none\\
+\cref{dyn:prop:qpvalbound} arithmetic-free bound
+& $\qres$ allowed & \textbf{none}: no divisor estimate at all
+& fixed strip $\HH_\Gamma(\strip)$ & $\TT^{d}_\rho$ (ordinary)\\
+\cref{dyn:thm:qplinear} fixed-strip solvability
+& $\qres$ allowed & $\sdss$, \textbf{iff} & fixed strip
+& $\TT^{d}_\rho$ (ordinary)\\
+\cref{dyn:cor:qpsharp} loss $\kups$ attained
+& $\qres$ allowed & $\sdss$ & fixed strip & $\TT^{d}_\rho$\\
+\cref{dyn:cor:qptail} higher tails
+& $\lnot\qres$ for the last clause & $\sdss$ preserved & fixed strip
+& $\TT^{d}_\rho$\\
+\cref{dyn:thm:qpjet} arbitrary-order lifting obstruction
+& $\lnot\qres$ & $\sdss$ \emph{fails}; Liouville & entire input, fixed-strip
+target & $\TT^{2}_\rho$, all $\rho$\\
+\cref{dyn:thm:qpnormalform} torus normal form
+& $\lnot\qres$ & $\sdss$; also $v(\mathcal V)>\kups$ & fixed strip
+& $\TT^{d}_\rho$\\
+\cref{dyn:lem:qpcoordinverse} coordinate inverses
+& --- & none used & fixed strip & $\TT^{d}_\rho$\\
+\cref{dyn:thm:qpnecessity} necessity beyond any scale
+& $\lnot\qres$ & $\sdss$ \emph{fails} & fixed strip & $\TT^{d}_\rho$\\
+\cref{dyn:prop:qpboundary} failure at $v(\mathcal V)=\kups$
+& $\lnot\qres$ & $\sdss$ \emph{holds} & fixed strip & $\TT^{d}_\rho$\\
+\cref{dyn:thm:qpdensity} invariant density
+& $\lnot\qres$ & $\sdss$ (through \cref{dyn:thm:qpnormalform})
+& fixed strip & $\TT^{d}_\rho$\\
 \bottomrule
 \end{longtable}
 
@@ -691,10 +834,70 @@ time form. A merge of either with a framework carrying a resonance or
 small-divisor hypothesis would identify two different frameworks.
 \end{warning}
 
+\begin{warning}[Two frequency vectors, two divisor families, two $\kappa$'s]
+\label{dyn:warn:twofrequencies}
+This report now contains two frequency vectors and they are objects of
+different kinds. Conflating them would attach a Hahn-scale statement to an
+ordinary-complex hypothesis, or the reverse.
+\begin{itemize}
+\item $\omega\in\C^{d}$ of \cref{dyn:sec:hamiltonian} is a vector of
+\textbf{ordinary complex constants}. Its divisors are
+$\omega\cdot(\alpha-\beta)$ for Taylor multi-indices, graded by the
+\emph{Taylor degree} $|\alpha|+|\beta|$, and they all have Hahn valuation
+zero (\cref{dyn:rem:invisible}). Its resonance notion is $\fres$ and its
+divisor notion $\sdfr$.
+\item $\Upsilon\in F_\Gamma^{d}=\R((t^{\Gamma}))^{d}$ of
+\cref{dyn:sec:flag,dyn:sec:qplinear,dyn:sec:qpnonlinear} is a
+vector of \textbf{Hahn (hence surreal) scalars}. Its divisors are
+$k\cdot\Upsilon$ for $k\in\Z^{d}$, graded by the \emph{Fourier index}
+$|k|=|k_1|+\cdots+|k_d|$, and they have \emph{nonzero} Hahn valuations ---
+that is the entire point of \cref{dyn:thm:flag}. Its resonance notion is
+$\qres$ and its divisor notion $\sdss$
+(\cref{dyn:subsec:resonance,dyn:subsec:smalldivisor}).
+\end{itemize}
+Further, $\kappa$ in \cref{dyn:rem:oneinvariant} is a generic
+\emph{logarithmic divisor rate} in $[0,\infty]$, whereas $\kups$ in
+\cref{dyn:sec:flag,dyn:sec:qplinear,dyn:sec:qpnonlinear} is an
+\emph{element of $\Gamma$}: the valuation of the last visible flag level. They are never compared. The symbol $\Omega$ continues to
+denote an infinite element of $\Gamma$
+(\cref{dyn:ex:ranktwo,dyn:ex:rank2}) and $\Omega_F=\dd z/W_F$ a time form
+(\cref{dyn:sec:periods}); the frequency vector is $\Upsilon$ and never
+$\Omega$. The coordinate change $\Phi_h=\id+h$ of
+\cref{dyn:thm:qpnormalform} is a change of torus coordinates, \emph{not}
+the flow map $\Phi_X$ or $\Phi_c$ of \cref{dyn:thm:exp-log,dyn:cor:flow}.
+\end{warning}
+
+\begin{warning}[The visible levels are not a spectrum]
+\label{dyn:warn:qpspectrum}
+The finitely many visible divisor valuations $\gamma_1<\cdots<\gamma_r$ of
+\cref{dyn:thm:flag} read like a spectrum of scales and are not one in any
+sense used in this collection: not an eigenvalue list, not a multiset of
+purely infinite phases, and not the prime spectrum of a ring. They are
+values of the valuation $v$ on a family of Hahn scalars. The word
+\emph{spectrum} is not used for them anywhere below.
+\end{warning}
+
+\begin{warning}[Arithmetic size and valuation size are incomparable]
+\label{dyn:warn:qptwosizes}
+In \eqref{dyn:eq:qpleading} the quantity $|\fla_j(k)|$ is an \emph{ordinary
+real absolute value} while $v(k\cdot\Upsilon)=\gamma_j$ lies in $\Gamma$.
+Neither bounds the other, and no inequality in one kind of size is used as
+an estimate for the other anywhere below without the explicit
+leading-coefficient formula \eqref{dyn:eq:qpleading}. A divisor can be
+infinitesimal (large $\gamma_j$) with completely harmless arithmetic, and a
+divisor of scale one ($\gamma_j=0$) can have disastrous arithmetic. This is
+the torus form of \cref{dyn:rem:invisible}: the arithmetic lives in the
+ordinary complex coefficient, not in the valuation --- with the one
+difference that here the \emph{divisors themselves} do have nonzero
+valuations, whereas the divisors of \cref{dyn:rem:invisible} all have
+valuation zero.
+\end{warning}
+
 \section{Workspaces, supports, coefficient categories, and evaluation}
 \label{dyn:sec:framework}
 
-All six sources set up this material independently. It is stated once here.
+All seven sources set up this material independently. It is stated once
+here.
 
 \subsection{The set-sized workspace inside \texorpdfstring{$\No[i]$}{No[i]}}
 Let $\Gamma$ be a nonzero ordered abelian group which is a \emph{set};
@@ -774,7 +977,7 @@ over the Surreal and Surcomplex Numbers}
 coordinate derivative need not be a constant for the scalar
 Berarducci--Mantova derivation, so $\eps=\omega^{-1}$ is permitted as a
 Hahn coefficient of a coordinate problem and prohibited as an infinitesimal
-phase residue of the scalar derivation. All six sources derive this
+phase residue of the scalar derivation. All seven sources derive this
 distinction independently; it is not restated again below.
 \end{warning}
 
@@ -879,10 +1082,13 @@ $A+S^{*}\subset a_0+T^{*}$.
 \end{proof}
 
 This is classical Hahn--Neumann mathematics \cite{Neumann,Poonen} and is not
-claimed as a contribution. All six sources state it; sources 02 and 05 each
-reproduce a minimal-bad-sequence proof of the underlying word order, which
-is the same argument as \cref{dyn:app:higman} and is therefore not printed
-again.
+claimed as a contribution. All seven sources state it; sources 02 and 05
+each reproduce a minimal-bad-sequence proof of the underlying word order,
+which is the same argument as \cref{dyn:app:higman} and is therefore not
+printed again. Source 07 uses the \emph{full} finiteness assertion, across
+all word lengths, together with a \emph{labelled} refinement of it
+(\cref{dyn:subsec:qpmarked}); both are already contained in
+\cref{dyn:lem:neumann}.
 
 For $\gamma\in S^{*}$ let $D_S(\gamma)$ be the finite set of letters
 occurring in the words of $\word_S(\gamma)$.
@@ -5779,6 +5985,1158 @@ sources 02, 03, 04 and 05 each also compute, in four different
 normalizations; \cref{dyn:subsec:quadratic} prints it once with the
 translation between them.
 
+\section{Quasi-periodic divisors: a finite flag for a surreal frequency}
+\label{dyn:sec:flag}
+
+Everything up to this point has been \emph{germ and fixed-point} dynamics:
+a map $F$ with a distinguished fixed point, its multiplier, its return
+iterates, its periods, or a Hamiltonian at the origin of a finite phase
+halo. Source 07 is the other classical half of small-divisor theory. Its
+object is a \emph{vector field on a real torus} whose frequency vector has
+surreal components, its divisors are the infinitely many scalars
+$k\cdot\Upsilon$ indexed by $k\in\Z^{d}$, and its equation is the
+cohomological equation. None of the six germ sources contains a resonance
+lattice, a cohomological equation, a Fourier divisor or a conjugacy to a
+constant vector field; conversely nothing in this part concerns a
+multiplier, a return iterate or a period. What the two halves share is the
+machinery of \cref{dyn:sec:framework} --- the set-sized workspace, strong
+summability, the positive-support word lemma, halo evaluation --- which is
+therefore not restated here, and the architecture of
+\cref{dyn:rem:oneinvariant}, which is instantiated a fourth time in
+\cref{dyn:sec:qplinear}.
+
+The headline of this part has no counterpart in the other six. A frequency
+vector with $d$ surreal components can carry a transfinite hierarchy of
+scales, and there are infinitely many Fourier divisors; yet only
+\textbf{at most $d$} distinct divisor valuations are arithmetically
+visible, and a canonical descending flag of integer lattices identifies
+them. That finite reduction is what turns an apparently transfinite problem
+into a finite one, and it is the reason this material occupies three
+sections rather than a remark.
+
+\subsection{The torus, the strip, and the notation of this part}
+\label{dyn:subsec:qpnotation}
+
+Before anything else, read
+\cref{dyn:warn:twofrequencies,dyn:warn:qpspectrum,dyn:warn:qptwosizes}.
+They record that this report now carries \emph{two} frequency vectors of
+different kinds, that $\kups$ below is an element of $\Gamma$ and not a
+rate, that $\Upsilon$ is never the exponent $\Omega$ of
+\cref{dyn:ex:ranktwo} nor the time form $\Omega_F$ of
+\cref{dyn:sec:periods}, and that the finitely many visible divisor
+valuations are not a spectrum in any sense this collection uses.
+
+Fix $d\ge1$ and write $\TT^{d}=(\R/2\pi\Z)^{d}$. Fix $\rho>0$ and let
+\begin{equation}\label{dyn:eq:strip}
+ \TT^{d}_\rho=\{z\in\C^{d}/(2\pi\Z)^{d}:|\operatorname{Im}z_j|<\rho\
+ \text{for all }j\},\qquad \strip
+\end{equation}
+be the \emph{open} complex strip of half-width $\rho$ around the real torus
+and the algebra of $2\pi\Z^{d}$-periodic functions holomorphic on it.
+Functions in $\strip$ need not be bounded at the boundary of the strip.
+With $|k|=|k_1|+\cdots+|k_d|$, write
+\begin{equation}\label{dyn:eq:seminorm}
+ f(\theta)=\sum_{k\in\Z^{d}}\widehat f(k)e^{ik\cdot\theta},
+ \qquad
+ \|f\|_{r}=\sum_{k\in\Z^{d}}|\widehat f(k)|e^{r|k|}\quad(0<r<\rho).
+\end{equation}
+A periodic holomorphic function lies in $\strip$ exactly when all these
+seminorms are finite: boundedness on a narrower closed strip and Cauchy's
+Fourier estimate give exponential decay there, and inserting an
+intermediate strip gives the weighted $\ell^{1}$ bound; conversely those
+bounds give locally uniform convergence of the Fourier series and its
+termwise derivatives on every narrower strip. Hence $\strip$ is closed
+under finite sums, products and all orders of differentiation, and Fourier
+projection onto \emph{any} subset of $\Z^{d}$ preserves it, since it only
+deletes terms from $\|f\|_{r}$.
+
+The torus derivatives $\partial/\partial\theta_j$ act coefficientwise and
+annihilate $K_\Gamma$: they are external derivations, and
+\cref{dyn:warn:derivative} applies verbatim --- they are not the
+Berarducci--Mantova derivation, and $\partial_\theta\sin\theta=\cos\theta$
+here says nothing about whether a surreal $y$ solves $\partial^{2}y+y=0$
+for that internal derivation. Source 07 states this disclaimer
+independently and in its own words; it is the same disclaimer, printed
+once.
+
+\subsection{The fixed-strip coefficient category}
+\label{dyn:subsec:qpstrip}
+
+\begin{definition}[The common-strip Hahn algebra]\label{dyn:def:qpstrip}
+$\HH_\Gamma(\strip)=\strip((t^{\Gamma}))$ is the Hahn algebra over the
+coefficient algebra \eqref{dyn:eq:strip}: elements are
+$f=\sum_{\beta\in B}t^{\beta}f_\beta$ with $B$ well ordered and every
+$f_\beta\in\strip$. Fourier coefficients and the torus mean are taken
+coefficientwise,
+\[
+ \widehat f(k)=\sum_\beta t^{\beta}\widehat{f_\beta}(k)\in K_\Gamma,
+ \qquad \av(f)=\widehat f(0),\qquad \Qz f=f-\av(f),
+\]
+and $\HH_\Gamma(\strip)_{>0}$ denotes positive support, zero included. For
+a vector the support is the union of the component supports and the
+valuation their minimum.
+\end{definition}
+
+This is the \emph{fixed-domain} row of \cref{dyn:subsec:rings} in its torus
+instantiation: one and the same $\rho$ serves every Hahn exponent $\beta$,
+and separate analytic germs for separate coefficients do not suffice. The
+distinction is stated once, in \cref{dyn:conv:rings}, and is not re-erected
+here; source 07 imports it from the collection's catalogue explicitly, as
+a hypothesis of each of its main theorems rather than as a convention. As
+in the entire row of \cref{dyn:subsec:rings}, \textbf{no} bound on
+$\|f_\beta\|_{r}$ uniform in $\beta$ is imposed --- a deliberate choice,
+and the reason nothing here specializes $t$ to a nonzero real number
+(\cref{dyn:subsec:qplimits}).
+
+Elements of $\HH_\Gamma(\strip)$ are genuine functions on infinitesimal
+thickenings: for ordinary $z_0\in\TT^{d}_\rho$ and $\xi\in\m_\Gamma^{d}$,
+\eqref{dyn:eq:halo-evaluation} applies verbatim and
+\cref{dyn:prop:eval} makes $f\mapsto f^{\#}(z_0+\xi)$ a faithful
+$K_\Gamma$-algebra homomorphism into $\SC$. No continuity from an ordinary
+torus into the fine topology of $\No[i]$ is claimed.
+
+\begin{lemma}[Subexponential Fourier multipliers]\label{dyn:lem:qpmultiplier}
+Let $m:\Z^{d}\to\C$ satisfy $|m(k)|\le C_\eps e^{\eps|k|}$ for every
+$\eps>0$. Then $\widehat{Tf}(k)=m(k)\widehat f(k)$ maps $\strip$ into
+itself, and so does any finite product of such multipliers with polynomial
+functions of $k$.
+\end{lemma}
+\begin{proof}
+For $r<r'<\rho$ apply the estimate with $\eps=r'-r$ to get
+$\|Tf\|_{r}\le C_{r'-r}\|f\|_{r'}$. A fixed polynomial in $k$ is bounded by
+a constant times $e^{\eta|k|}$ for every $\eta>0$; split an arbitrary
+exponent budget among finitely many factors.
+\end{proof}
+
+\begin{lemma}[Taylor substitution on the torus, with its Lipschitz
+estimate]\label{dyn:lem:qpsubstitution}
+Let $h\in\HH_\Gamma(\strip)^{d}$ have positive valuation. Then
+\begin{equation}\label{dyn:eq:qpsubstitution}
+ S_hf=f\circ(\id+h)
+ :=\sum_\beta t^{\beta}\sum_{\alpha\in\N^{d}}
+ \frac{\partial^{\alpha}f_\beta}{\alpha!}h^{\alpha}
+\end{equation}
+is well defined in $\HH_\Gamma(\strip)$, with
+$\supp(S_hf)\subseteq\supp(f)+C^{*}$ for $C\supseteq\supp h$ well ordered
+and positive. Substitution is a ring homomorphism, obeys the chain rule,
+and is associative for infinitesimal substitutions; these are the torus
+instances of \cref{dyn:prop:subgroup} and are not reproved. In addition,
+for positive-valuation $h,g$,
+\begin{equation}\label{dyn:eq:qplipschitz}
+ v(S_hf)\ge v(f),\qquad
+ v(S_hf-S_gf)\ge v(f)+v(h-g).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Well-definedness, the support bound and the algebraic identities are
+\cref{dyn:lem:neumann,dyn:cor:ancestry,dyn:prop:subgroup} applied with
+$U=\TT^{d}_\rho$: at each exponent the word lemma permits only finitely
+many Taylor monomials and finitely many decompositions involving
+$\supp f$, and every resulting coefficient is a finite sum of products of
+derivatives of functions in $\strip$, hence lies in $\strip$. For the
+second estimate in \eqref{dyn:eq:qplipschitz} subtract corresponding Taylor
+monomials and telescope the products: every surviving term carries one
+factor from $h-g$ and all its other factors have positive valuation, and
+the multi-index-zero terms cancel.
+\end{proof}
+
+\Cref{dyn:eq:qplipschitz} is the one part of the torus substitution
+calculus that is not already in \cref{dyn:prop:subgroup}; it is what
+forces uniqueness in \cref{dyn:thm:qpnormalform} and controls the remainder
+in \cref{dyn:thm:qpnecessity}.
+
+\begin{warning}[Two summations, never interchanged]\label{dyn:warn:qptwosums}
+The Fourier series of an ordinary coefficient is an ordinary complex
+analytic sum; the series in $t^{\Gamma}$ is a Hahn sum. Every argument
+below groups all Fourier modes \emph{inside each analytic coefficient}
+first. It is nowhere asserted that the unrestricted two-index family of
+Fourier and Hahn terms is Hahn-summable, and indeed a family with
+infinitely many nonzero terms at one Hahn exponent violates
+\cref{dyn:def:summable} however well its complex coefficients converge.
+This is the torus form of the discipline of \cref{dyn:def:summable}.
+\end{warning}
+
+\subsection{The flag, and one support for every reciprocal divisor}
+\label{dyn:subsec:qpflag}
+
+Let $\Upsilon\in F_\Gamma^{d}\setminus\{0\}$ and collect the component
+Conway/Hahn normal forms into
+\begin{equation}\label{dyn:eq:qpfrequency}
+ \Upsilon=\sum_{\beta\in S}t^{\beta}\varpi_\beta,
+ \qquad \varpi_\beta\in\R^{d}\setminus\{0\},\quad S\ \text{well ordered},
+\end{equation}
+so the \emph{exact resonance lattice} is
+\begin{equation}\label{dyn:eq:qpexactlattice}
+ \qlat=\{k\in\Z^{d}:k\cdot\Upsilon=0\}
+ =\bigcap_{\beta\in S}\ker(k\mapsto k\cdot\varpi_\beta).
+\end{equation}
+This is \emph{exact vanishing of a Hahn scalar}, never smallness; that is
+the content of the tag $\qres$.
+
+Set $\mathsf L_0=\Z^{d}$. While $\mathsf L_{j-1}\ne\qlat$, let $\gamma_j$ be
+the \emph{least} exponent of $S$ whose coefficient form does not vanish
+identically on $\mathsf L_{j-1}$, and put
+\begin{equation}\label{dyn:eq:qpflagdef}
+ \fla_j(k)=k\cdot\varpi_{\gamma_j},\qquad
+ \mathsf L_j=\{k\in\mathsf L_{j-1}:\fla_j(k)=0\},\qquad
+ \Sigma_j=\mathsf L_{j-1}\setminus\mathsf L_j .
+\end{equation}
+The construction stops as soon as the current lattice equals $\qlat$. The
+$\Sigma_j$ are the \emph{nonresonant strata}.
+
+\begin{theorem}[Finite flag and one common reciprocal support]
+\label{dyn:thm:flag}
+The construction \eqref{dyn:eq:qpflagdef} terminates after
+\begin{equation}\label{dyn:eq:qprbound}
+ r\le d
+\end{equation}
+steps, and:
+\begin{enumerate}[label=(\roman*),leftmargin=*]
+\item each $\mathsf L_j$ is a saturated subgroup of $\Z^{d}$ whose rank
+strictly decreases at each step, $\gamma_1<\cdots<\gamma_r$,
+$\mathsf L_r=\qlat$, and the strata partition $\Z^{d}\setminus\qlat$;
+\item for $k\in\Sigma_j$,
+\begin{equation}\label{dyn:eq:qpleading}
+ k\cdot\Upsilon=t^{\gamma_j}\fla_j(k)(1+\varrho_k),\qquad
+ v(\varrho_k)>0,\qquad v(k\cdot\Upsilon)=\gamma_j,
+\end{equation}
+with $\varrho_k=0$ permitted; in particular the divisor valuation takes at
+most $d$ distinct values on $\Z^{d}\setminus\qlat$;
+\item writing
+\begin{equation}\label{dyn:eq:qpE}
+ \mathsf E_j=\{\beta-\gamma_j:\beta\in S,\ \beta>\gamma_j\},\qquad
+ \mathsf E=\bigcup_{j=1}^{r}\mathsf E_j,\qquad
+ \Tups=\bigcup_{j=1}^{r}\bigl(-\gamma_j+\mathsf E^{*}\bigr),
+\end{equation}
+the set $\mathsf E$ is well ordered and positive, $\Tups$ is well ordered,
+and
+\begin{equation}\label{dyn:eq:qpTsupport}
+ \supp\bigl((k\cdot\Upsilon)^{-1}\bigr)\subseteq\Tups
+ \qquad\text{for every }k\notin\qlat .
+\end{equation}
+With $\kups=\gamma_r$ one has $\Tups\subseteq[-\kups,+\infty)$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Each $\mathsf L_j$ is a common kernel of real additive homomorphisms on
+$\Z^{d}$ and is therefore saturated: if a nonzero integer multiple of $k$
+lies in the kernel, so does $k$. At a nonterminal step $\fla_j$ is a
+nonzero homomorphism on the finitely generated free abelian group
+$\mathsf L_{j-1}$ with torsion-free nonzero image, so $\rank\mathsf L_j<\rank
+\mathsf L_{j-1}$; at most $d$ such decreases occur, which is
+\eqref{dyn:eq:qprbound}.
+
+By the minimal choice of $\gamma_j$, every coefficient form below
+$\gamma_j$ vanishes on $\mathsf L_{j-1}$, and the form at $\gamma_j$
+vanishes on $\mathsf L_j$; hence the next selected exponent is strictly
+larger. Termination occurs exactly when every coefficient form vanishes on
+the current lattice, i.e.\ at $\qlat$. The same observation identifies the
+leading term for $k\in\Sigma_j$: explicitly
+\begin{equation}\label{dyn:eq:qptail}
+ \varrho_k=\sum_{\substack{\beta\in S\\ \beta>\gamma_j}}
+ \frac{k\cdot\varpi_\beta}{\fla_j(k)}\,t^{\beta-\gamma_j},
+\end{equation}
+whose support lies in $\mathsf E_j$ and is positive. This is (i) and (ii).
+
+A tail of a well-ordered set translated by a fixed element is well ordered,
+and a finite union of well-ordered subsets of a linear order is well
+ordered; this gives $\mathsf E$. \Cref{dyn:lem:neumann} then gives
+$\mathsf E^{*}$ and $\Tups$. Finally
+\begin{equation}\label{dyn:eq:qpreciprocal}
+ \frac1{k\cdot\Upsilon}
+ =\frac{t^{-\gamma_j}}{\fla_j(k)}\sum_{n\ge0}(-\varrho_k)^{n}
+ \qquad(k\in\Sigma_j)
+\end{equation}
+is a Hahn identity by \cref{dyn:lem:neumann} --- not a limit of partial
+sums (\cref{dyn:def:summable,dyn:warn:contraction}) --- with the asserted
+support. Every element of $\mathsf E^{*}$ is nonnegative and
+$\gamma_j\le\kups$, giving the lower bound.
+\end{proof}
+
+\begin{remark}[$r$ counts visible scales, not monomials]
+\label{dyn:rem:qpvisible}
+The number $r$ counts \emph{arithmetically visible} scales, not the
+monomials of $\Upsilon$. Exponents of $S$ whose forms vanish on the current
+lattice are skipped, possibly across a long transfinite interval. The
+theorem does \textbf{not} say that only $d$ monomials of $\Upsilon$ matter
+to the eventual solution: every later coefficient can still move higher
+Hahn coefficients of the inverse, through \eqref{dyn:eq:qptail}. What is
+finite is the list of divisor valuations and the list of real forms on
+which all small-divisor arithmetic is tested.
+\end{remark}
+
+\begin{proposition}[Coefficient structure of the inverse]
+\label{dyn:prop:qpjets}
+Fix $\eta\in\Gamma$ and a stratum $\Sigma_j$. On that stratum the function
+$k\mapsto[t^{\eta}](k\cdot\Upsilon)^{-1}$ is a finite sum of expressions
+\begin{equation}\label{dyn:eq:qpmultform}
+ c\,\frac{\prod_{\ell=1}^{n}(k\cdot\varpi_{\beta_\ell})}
+ {\fla_j(k)^{n+1}},
+ \qquad \sum_{\ell=1}^{n}(\beta_\ell-\gamma_j)=\eta+\gamma_j,
+ \quad \beta_\ell>\gamma_j,
+\end{equation}
+with $c$ real and empty products allowed at $n=0$. The number of terms and
+the denominator powers depend on $\eta$ but are finite for each fixed
+$\eta$.
+\end{proposition}
+\begin{proof}
+Expand \eqref{dyn:eq:qpreciprocal} and extract the coefficient. All letters
+lie in $\mathsf E_j$, and \cref{dyn:lem:neumann} permits finitely many
+words of all lengths at a fixed weight; $\beta\mapsto\beta-\gamma_j$ is
+injective, so the coefficient choices are also finitely many.
+\end{proof}
+
+\begin{remark}[A common support is not summability over the modes]
+\label{dyn:rem:qpnotsummable}
+The family $\bigl((k\cdot\Upsilon)^{-1}\bigr)_{k\notin\qlat}$ is in general
+\textbf{not} a Hahn-summable family: infinitely many leading terms may
+occupy the exponent $-\gamma_j$. \Cref{dyn:thm:flag} supplies a
+\emph{common support}, not a Hahn sum over $k$, exactly as
+\cref{dyn:def:summable} requires. \Cref{dyn:prop:qpjets} is what permits
+ordinary Fourier summation at each Hahn coefficient; that is the additional
+analytic step, and it is where arithmetic enters.
+\end{remark}
+
+\begin{proposition}[An arithmetic-free valuation bound]
+\label{dyn:prop:qpvalbound}
+Let $\Cups=\Upsilon_1\partial_{\theta_1}+\cdots+\Upsilon_d\partial_{\theta_d}$.
+If $h\in\HH_\Gamma(\strip)$ has no Fourier modes in $\qlat$ and
+$\Cups h=g$, then $v(h)\ge v(g)-\kups$. No small-divisor hypothesis is used.
+\end{proposition}
+\begin{proof}
+For $h\ne0$ put $\beta=v(h)$. The nonzero $h_\beta$ has a nonzero Fourier
+coefficient at some $k\notin\qlat$, so $v(\widehat h(k))=\beta$ and
+$v(\widehat g(k))=\beta+v(k\cdot\Upsilon)\le\beta+\kups$ by
+\eqref{dyn:eq:qpleading}. Every Fourier coefficient of $g$ has valuation at
+least $v(g)$; rearrange. The zero case is immediate.
+\end{proof}
+
+\section{The fixed-strip solvability threshold, and an arbitrary-order
+lifting obstruction}
+\label{dyn:sec:qplinear}
+
+\subsection{The stratified condition, and the category table instantiated a
+second time}
+\label{dyn:subsec:qpss}
+
+\begin{definition}[Stratified subexponential condition $\sdss$]
+\label{dyn:def:qpss}
+$\Upsilon$ satisfies $(\sdss)$ if for each flag stratum $\Sigma_j$ and
+every real $\eps>0$ there is a real $C_{j,\eps}>0$ with
+\begin{equation}\label{dyn:eq:qpss}
+ \frac1{|\fla_j(k)|}\le C_{j,\eps}e^{\eps|k|}\qquad(k\in\Sigma_j),
+\end{equation}
+equivalently
+$\limsup_{|k|\to\infty,\,k\in\Sigma_j}\log^{+}(1/|\fla_j(k)|)/|k|=0$.
+\end{definition}
+
+\begin{remark}[The one invariant, a fourth divisor family, and two
+instantiations of one table]\label{dyn:rem:qponeinvariant}
+\Cref{dyn:rem:oneinvariant} defines one quantity --- the exponential rate
+of the reciprocals of a graded family of nonzero ordinary complex divisors
+--- and evaluates it on three families. $(\sdss)$ is that same quantity on
+a \emph{fourth} family, evaluated stratum by stratum:
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Divisor family & Grading & Rate\\
+\midrule
+$\lambda^{n}-\lambda$ (drifted multiplier) & $n$ & $\sigma$ ($\sddr$)\\
+$\lambda^{\alpha}-\lambda_j$ (exact multiplier) & $|\alpha|$ & $\tau$ ($\sdex$)\\
+$\omega\cdot(\alpha-\beta)$ (ordinary frequency) & $|\alpha|+|\beta|$
+ & $\log\Theta$ ($\sdfr$)\\
+$\fla_j(k)=k\cdot\varpi_{\gamma_j}$ (leading real forms of $\Upsilon$,
+ on $\Sigma_j$) & $|k|$ & $0$ required on every $j$ ($\sdss$)\\
+\bottomrule
+\end{tabular}
+\end{center}
+So $(\sdss)$ is the vanishing-rate condition, imposed on each of the
+finitely many strata; it is the exact analogue of $\tau=0$ and of
+$\sigma=0$, and it is \emph{not} the analogue of $\tau<\infty$. That is
+consistent with the category table of \cref{dyn:rem:oneinvariant}, which is
+stated there once and is instantiated twice in this report:
+\begin{center}
+\begin{tabular}{@{}P{0.30\textwidth}P{0.29\textwidth}P{0.31\textwidth}@{}}
+\toprule
+Row of \cref{dyn:rem:oneinvariant} & Germ instantiation, divisors
+$\lambda^{\alpha}-\lambda_j$ or $\lambda^{q}-1$ & Quasi-periodic
+instantiation, divisors $k\cdot\Upsilon$\\
+\midrule
+one fixed unchanged domain, rate $0$
+& fixed polydisk $\OO(\mathbb D_R^{d})((t^{\Gamma}))$, $\tau=0$
+ (row one of \cref{dyn:thm:main})
+& fixed strip $\HH_\Gamma(\strip)$, $(\sdss)$
+ (\cref{dyn:thm:qplinear})\\[3pt]
+polynomial / formal coefficients, no arithmetic
+& \cref{dyn:thm:main} rows four and five; $\sdz$
+& \textbf{not established here}: source 07 proves no polynomial or formal
+row for the torus, and none is claimed\\[3pt]
+radius-free germs / entire coefficients, rate finite
+& \cref{dyn:thm:main} rows two and three; \cref{dyn:thm:homological}
+& \textbf{not established here}; the fixed strip is the only category
+source 07 classifies\\
+\bottomrule
+\end{tabular}
+\end{center}
+Only the first row is instantiated on both sides. Reading across the other
+two rows, in either direction, would assert theorems no source proves.
+\end{remark}
+
+
+\subsection{Universal solvability on a fixed strip}
+
+Let $\Pi_{\qlat}$ denote coefficientwise Fourier projection onto $\qlat$;
+it preserves $\HH_\Gamma(\strip)$ because arbitrary Fourier projection
+preserves $\strip$.
+
+\begin{theorem}[Universal fixed-strip solvability]\label{dyn:thm:qplinear}
+For a nonzero $\Upsilon\in F_\Gamma^{d}$ the following are equivalent.
+\begin{enumerate}[label=(\roman*),leftmargin=*]
+\item $\Upsilon$ satisfies $(\sdss)$.
+\item For every $\rho>0$ and every $f\in\HH_\Gamma(\strip)$ with
+$\Pi_{\qlat}f=0$ there is a unique $u\in\HH_\Gamma(\strip)$ with
+$\Cups u=f$ and $\Pi_{\qlat}u=0$.
+\end{enumerate}
+When these hold, the solution operator is
+\begin{equation}\label{dyn:eq:qpgreen}
+ \widehat{\Gups f}(k)=
+ \begin{cases}
+ \widehat f(k)/(i\,k\cdot\Upsilon), & k\notin\qlat,\\
+ 0,& k\in\qlat,
+ \end{cases}
+\end{equation}
+and it satisfies
+\begin{equation}\label{dyn:eq:qpgreensupport}
+ \supp(\Gups f)\subseteq\supp(f)+\Tups,\qquad
+ v(\Gups f)\ge v(f)-\kups .
+\end{equation}
+Without the normalization the kernel consists exactly of the elements of
+$\HH_\Gamma(\strip)$ with Fourier support inside $\qlat$. If $(\sdss)$
+fails, there is already an ordinary real analytic mean-compatible forcing,
+supported at a single Hahn exponent and on one stratum, for which a forced
+coefficient of any putative solution is not a distribution on the real
+torus.
+\end{theorem}
+\begin{proof}[Sufficiency]
+For $\eta\in\Tups$ define the scalar multiplier
+$m_\eta(k)=[t^{\eta}](i\,k\cdot\Upsilon)^{-1}$ for $k\notin\qlat$ and
+$m_\eta(k)=0$ on $\qlat$. On each stratum \cref{dyn:prop:qpjets} writes
+$m_\eta$ as a finite sum of expressions with polynomial numerator in $k$
+and a finite power of $\fla_j(k)$ in the denominator; $(\sdss)$ and
+\cref{dyn:lem:qpmultiplier} make each a subexponential multiplier. There
+are finitely many strata --- this is where \eqref{dyn:eq:qprbound} is used
+--- and projection onto a stratum does not affect the estimate, so $m_\eta$
+defines $G_\eta:\strip\to\strip$.
+
+Write $f=\sum_{\beta\in B}t^{\beta}f_\beta$ and put
+\begin{equation}\label{dyn:eq:qpgreencoefficient}
+ u_\gamma=\sum_{\substack{\beta\in B,\ \eta\in\Tups\\ \beta+\eta=\gamma}}
+ G_\eta f_\beta .
+\end{equation}
+By \cref{dyn:lem:neumann} this sum is finite at each $\gamma$ and
+$B+\Tups$ is well ordered, so $u=\sum_\gamma t^{\gamma}u_\gamma$ lies in
+$\HH_\Gamma(\strip)$: the common domain and the common support are
+\emph{proved}, not inferred from the modewise formula. Fourier extraction
+gives \eqref{dyn:eq:qpgreen}, and multiplying modewise by
+$i\,k\cdot\Upsilon$ gives the equation. Uniqueness and the kernel
+description follow from the same modewise calculation, $K_\Gamma$ being a
+field. The support estimate is the construction and
+$\Tups\ge-\kups$ gives the valuation estimate.
+\end{proof}
+\begin{proof}[Necessity]
+Suppose $(\sdss)$ fails on $\Sigma_j$. Choose $\eps>0$ and modes
+$k_n\in\Sigma_j$, no two equal up to sign, with $|k_n|\to\infty$ and
+$|\fla_j(k_n)|^{-1}>e^{2\eps|k_n|}$; this is possible after decreasing
+$\eps$ if necessary. The real function
+\begin{equation}\label{dyn:eq:qpbadforcing}
+ f(\theta)=2\sum_{n\ge1}e^{-\eps|k_n|}\cos(k_n\cdot\theta)
+\end{equation}
+lies in $\OO(\TT^{d}_\eps)$, has no resonant modes and sits at Hahn
+exponent zero. Any solution must have
+$\widehat u(k_n)=e^{-\eps|k_n|}/(i\,k_n\cdot\Upsilon)$, so by
+\eqref{dyn:eq:qpleading} the coefficient of $t^{-\gamma_j}$ has Fourier
+coefficients of modulus greater than $e^{\eps|k_n|}$. Fourier coefficients
+of a distribution on a compact torus grow at most polynomially --- apply
+its finite-order continuity estimate to the Fourier characters --- so that
+forced coefficient is not a distribution, and in particular not holomorphic
+on any strip of positive width. Adding resonant modes cannot alter these
+nonresonant coefficients.
+\end{proof}
+
+\begin{corollary}[The divisor loss $\kups$ is attained]\label{dyn:cor:qpsharp}
+For any $k\in\Sigma_r$ and any $s\in\Gamma$ the solution for
+$f=t^{s}e^{ik\cdot\theta}$ has valuation $s-\kups$. Hence the valuation
+loss in \eqref{dyn:eq:qpgreensupport} cannot be improved uniformly.
+\end{corollary}
+\begin{proof}
+Its unique nonzero Fourier mode is divided by a scalar of valuation
+$\kups$.
+\end{proof}
+
+\begin{remark}[A stratified Diophantine sufficient condition]
+\label{dyn:rem:qpdiophantine}
+A convenient sufficient hypothesis is a stratified Diophantine bound
+$|\fla_j(k)|\ge c_j(1+|k|)^{-\tau_j}$ on $\Sigma_j$. A term of length $n$
+in \eqref{dyn:eq:qpmultform} then has a multiplier growing at most
+polynomially with exponent $n+(n+1)\tau_j$, so every individual coefficient
+operator has explicit finite loss estimates between narrower-strip
+seminorms. It is \textbf{not} asserted that those losses stay bounded as
+$\eta$ varies. The fixed-strip theorem is available precisely because the
+category demands a common open domain and not a single bounded analytic
+norm for every coefficient --- the same mechanism as in
+\cref{dyn:warn:nouniform}.
+\end{remark}
+
+\begin{corollary}[Higher tails do not change the arithmetic test]
+\label{dyn:cor:qptail}
+If $v(\widetilde\Upsilon-\Upsilon)>\kups$ then $\widetilde\Upsilon$ has the
+same flag, the same leading real forms, and --- whenever $\qlat=\{0\}$ ---
+the same exact resonance lattice; in that nonresonant case
+$\widetilde\Upsilon$ satisfies $(\sdss)$ exactly when $\Upsilon$ does.
+\end{corollary}
+\begin{proof}
+No coefficient at or below $\kups$ changes. Each nonzero integer vector
+already has a nonvanishing leading divisor coefficient at one of those
+levels, so no resonance can appear and its leading form is unchanged.
+\end{proof}
+
+The nonresonance qualification is not decoration: when $\qlat\ne\{0\}$ a
+new higher tail can split some exact resonances and introduce additional
+flag levels, and the criterion must then be applied to the extended flag.
+
+\subsection{Arbitrarily long analytic jets with no analytic lift}
+\label{dyn:subsec:qpjet}
+
+The next construction is a failure that no valuation-only argument can
+detect, and it lives entirely at integer exponents: the obstruction is not
+caused by exotic uncountable supports.
+
+Define integers and a real number by
+\begin{equation}\label{dyn:eq:qpliouvilleconstant}
+ b_1=2,\qquad b_{j+1}=10^{2b_j},\qquad
+ \mathfrak l=\sum_{j\ge1}10^{-b_j},
+\end{equation}
+and put $Q_j=10^{b_j}$, $P_j=Q_j\sum_{\ell\le j}10^{-b_\ell}$,
+$\mathfrak d_j=Q_j\mathfrak l-P_j$, $k_j=(-P_j,Q_j)$, $K_j=|k_j|$. Here
+$P_j$ is an integer with $0<P_j<Q_j$ and
+\begin{equation}\label{dyn:eq:qpliouville}
+ 0<\mathfrak d_j\le2Q_j10^{-Q_j^{2}},\qquad Q_j\le K_j<2Q_j ,
+\end{equation}
+by bounding the tail of the rapidly increasing sequence of decimal places;
+the same estimate proves $\mathfrak l$ irrational, since a fixed
+denominator $q$ would force $|\mathfrak d_j|\ge1/q$. Consider the
+infinitesimally detuned frequency and operator
+\begin{equation}\label{dyn:eq:qpdetuned}
+ \Upsilon=(1,\mathfrak l+t),\qquad
+ \Cups=\partial_x+(\mathfrak l+t)\partial_y=L_0+t\partial_y,
+ \quad L_0=\partial_x+\mathfrak l\,\partial_y .
+\end{equation}
+The real leading vector $(1,\mathfrak l)$ is already nonresonant, so there
+is one flag level, at $\gamma_1=0$, and $(\sdss)$ fails very strongly.
+
+\begin{theorem}[Arbitrary finite analytic lifting, but no full lift]
+\label{dyn:thm:qpjet}
+For every integer $N\ge1$ and every $\rho>0$ there is an ordinary real
+entire periodic $f_N$ such that
+\begin{enumerate}[label=(\roman*),leftmargin=*]
+\item $\Cups u=f_N$ has a mean-zero solution modulo $t^{N+1}$ with
+coefficients $u_0,\dots,u_N\in\strip$;
+\item $u_0,\dots,u_{N-1}$ are entire periodic functions;
+\item the forced coefficient $u_{N+1}$ is not a distribution on the real
+torus, so there is no solution in $\HH_\Gamma(\OO(\TT^{2}_{\rho'}))$ for
+any $\rho'>0$, \emph{and none after an order-preserving extension of the
+value group}.
+\end{enumerate}
+One may take
+\begin{equation}\label{dyn:eq:qpjetforcing}
+ f_N(x,y)=2\sum_{j\ge1}\mathfrak d_j^{\,N+1}e^{-\rho K_j}
+ \cos\bigl(k_j\cdot(x,y)\bigr).
+\end{equation}
+\end{theorem}
+\begin{proof}
+By \eqref{dyn:eq:qpliouville} the Fourier coefficients in
+\eqref{dyn:eq:qpjetforcing} decay faster than $e^{-RK_j}$ for every fixed
+$R>0$, so $f_N$ is entire, real and of zero mean. At the mode $k_j$ the
+divisor is $\mathfrak d_j+Q_jt$; expanding its inverse as a Hahn geometric
+series (legitimate by \cref{dyn:lem:neumann}) gives
+\begin{equation}\label{dyn:eq:qpjetcoefficients}
+ \widehat{u_n}(k_j)=\frac{(-1)^{n}}{i}\,
+ Q_j^{\,n}\mathfrak d_j^{\,N-n}e^{-\rho K_j}\qquad(n\ge0),
+\end{equation}
+with complex conjugates at $-k_j$ and no other nonzero modes; set every
+mean to zero. For $n<N$ the remaining positive power of $\mathfrak d_j$
+gives superexponential decay, so $u_n$ is entire. For $n=N$ the
+coefficients are the polynomial factor $Q_j^{N}$ times $e^{-\rho K_j}$,
+whose weighted Fourier sums are finite on every strip of width $r<\rho$, so
+$u_N\in\strip$. The scalar identities give $L_0u_0=f_N$ and
+$L_0u_n=-\partial_yu_{n-1}$ for $1\le n\le N$, which is the finite-jet
+statement in $\strip[[t]]/(t^{N+1})$. At the next coefficient
+\[
+ |\widehat{u_{N+1}}(k_j)|
+ =Q_j^{\,N+1}\mathfrak d_j^{-1}e^{-\rho K_j}
+ \ge\tfrac12Q_j^{\,N}10^{Q_j^{2}}e^{-2\rho Q_j},
+\]
+which exceeds every polynomial in $K_j$ along the sequence and so is not a
+distributional Fourier coefficient sequence.
+
+For the value-group clause: at each nonzero Fourier mode the scalar
+equation has the \emph{unique} solution
+$\widehat{f_N}(k)/(i\,k\cdot\Upsilon)$ in the Hahn field, and the inverse
+of that divisor is the same geometric series in any larger ordered-group
+Hahn field. Therefore the coefficient of $t^{N+1}$ remains exactly
+\eqref{dyn:eq:qpjetcoefficients}, and admitting negative or noninteger Hahn
+exponents in a proposed solution changes nothing; extra constants affect
+only the zero Fourier mode.
+\end{proof}
+
+\begin{warning}[The robustness under value-group extension is argued, not
+assumed]\label{dyn:warn:qpextension}
+This report's standing hazard is the temptation to assert that some norm or
+estimate is invariant under enlarging $\Gamma$. \Cref{dyn:thm:qpjet}(iii)
+does \textbf{not} do that. It cites no invariance of any norm across a
+value-group extension; it argues from \emph{uniqueness of the modewise Hahn
+inverse} in the larger field, which is an algebraic statement about a
+field, together with the fact that the same geometric expansion computes
+it. Source 07 states the argument in exactly that form, and the
+corresponding invariance in the positive direction is
+\cref{dyn:prop:workspace}, which is likewise proved rather than assumed.
+\end{warning}
+
+This is a finite-versus-infinite lifting obstruction in a precise analytic
+ring. It does not say that the scalar algebraic inverses fail to exist ---
+they all exist --- but that infinitely many modewise inverses do not
+assemble into even one analytic coefficient at a specified order. The same
+operator \eqref{dyn:eq:qpdetuned} works for every $N$; only the entire
+forcing changes. In particular \textbf{no test consisting of a fixed finite
+number of analytic coefficient equations can replace the arithmetic
+hypothesis} in a general lifting theorem. The construction adapts the
+classical Liouville mechanism \cite{Kamienski}, which is not claimed as
+new; what is offered is the arbitrarily prescribed order at which it first
+bites.
+
+\section{Torus normal form: conjugacy to a constant vector field}
+\label{dyn:sec:qpnonlinear}
+
+We pass from the scalar equation to vector fields. Multiplying the whole
+field by a scalar monomial normalizes
+\begin{equation}\label{dyn:eq:qpnormalized}
+ \gamma_1=0,\qquad 0\le\kups=\gamma_r ,
+\end{equation}
+which subtracts $\gamma_1$ from both the frequency and the perturbation
+valuations, so the eventual condition $v(\mathcal V)>\kups$ is unchanged
+when translated back. Throughout this section $\Gamma$ is nontrivial,
+$\qlat=\{0\}$ (tag $\lnot\qres$: no exact resonances) and
+$(\sdss)$ holds. The operator $\Gups$ then inverts $\Cups$ on all mean-zero
+elements and is applied componentwise. Let
+\begin{equation}\label{dyn:eq:qpvectorfield}
+ \mathcal X(\theta)=\Upsilon+\mathcal V(\theta),\qquad
+ \mathcal V\in\HH_\Gamma(\strip)^{d},\qquad
+ s_0=v(\mathcal V)>\kups .
+\end{equation}
+
+\begin{theorem}[Hahn-analytic constant normal form]
+\label{dyn:thm:qpnormalform}
+Under the preceding assumptions there is a \emph{unique} pair
+\[
+ h\in\HH_\Gamma(\strip)^{d},\qquad \mathfrak c\in K_\Gamma^{d},
+ \qquad v(h)>0,\qquad \av(h)=0,
+\]
+such that, with $\Phi_h=\id+h$,
+\begin{equation}\label{dyn:eq:qpconjugacy}
+ D\Phi_h(\theta)\,(\Upsilon+\mathfrak c)=\mathcal X(\Phi_h(\theta)).
+\end{equation}
+Moreover:
+\begin{enumerate}[label=(\roman*),leftmargin=*]
+\item $v(h)\ge s_0-\kups$ and $v(\mathfrak c)\ge s_0$;
+\item with $B=\supp\mathcal V$ and
+\begin{equation}\label{dyn:eq:qpmonoid}
+ P_0=\bigcup_{j=1}^{r}(B-\gamma_j),\qquad
+ P=\mathsf E\cup P_0,\qquad \mathsf M=P^{*},
+\end{equation}
+these are positive generators in a well-ordered set, and
+$\supp h\subseteq\mathsf M\setminus\{0\}$,
+$\supp\mathfrak c\subseteq B+\mathsf M$;
+\item $\Phi_h$ has an infinitesimal Taylor inverse on
+$\HH_\Gamma(\strip)$, and all nonzero integer divisors of
+$\Upsilon+\mathfrak c$ have the same leading real coefficients and the same
+valuations as those of $\Upsilon$;
+\item if $\mathcal V$ has real values coefficientwise on the real torus,
+then $h$ and $\mathfrak c$ are real in the same sense, with
+$\mathfrak c\in F_\Gamma^{d}$.
+\end{enumerate}
+The case $\mathcal V=0$ is included, with $h=\mathfrak c=0$.
+\end{theorem}
+
+\subsection{Reduction to a fixed-point equation}
+
+Taking the torus mean of \eqref{dyn:eq:qpconjugacy} and using
+$\av(Dh)=0$ gives
+\begin{equation}\label{dyn:eq:qpdrift}
+ \mathfrak c=\mathfrak c(h):=\av\bigl(\mathcal V\circ(\id+h)\bigr),
+\end{equation}
+and the remaining equation becomes
+\begin{equation}\label{dyn:eq:qpfixedpoint}
+ h=\mathcal T(h):=
+ \Gups\Bigl(\Qz\bigl(\mathcal V\circ(\id+h)\bigr)
+ -Dh\,\mathfrak c(h)\Bigr).
+\end{equation}
+The argument of $\Gups$ has zero mean, since $\mathfrak c(h)$ is constant
+and every column of $Dh$ has zero mean, so the inverse is used only where
+it is defined.
+
+All terms of $B-\gamma_j$ are positive because $s_0>\kups\ge\gamma_j$. The
+sets in \eqref{dyn:eq:qpmonoid} are well ordered and \cref{dyn:lem:neumann}
+applies. If $h$ has positive support in $\mathsf M$ then
+\cref{dyn:lem:qpsubstitution} gives
+$\supp(\mathcal V\circ(\id+h))\subseteq B+\mathsf M$ and the same for
+$\mathfrak c(h)$; $Dh\,\mathfrak c(h)$ adds $\mathsf M$ once more; and
+applying an inverse coefficient at $-\gamma_j+\mathsf E^{*}$ shifts these
+supports into $B-\gamma_j+\mathsf M\subseteq\mathsf M$. Every resulting
+term contains at least one letter from $P_0$, so no constant exponent
+appears. This proves preservation of a support certificate. Existence still
+requires proof that infinitely many iteration steps assemble into a Hahn
+series.
+
+\subsection{Existence by marked support words}
+\label{dyn:subsec:qpmarked}
+
+\begin{proof}[Existence in \cref{dyn:thm:qpnormalform}]
+Put $h^{(0)}=0$ and $h^{(n+1)}=\mathcal T(h^{(n)})$. Each iterate lies in
+$\HH_\Gamma(\strip)^{d}$, has zero mean and positive support in
+$\mathsf M$, its coefficients obtained by finitely many analytic operations
+at each exponent.
+
+Call a generator in $P_0$ a \emph{marked} letter and a generator in
+$\mathsf E$ \emph{unmarked}; an exponent lying in both keeps both labels.
+There are only finitely many origins for a given letter --- $j$ ranges over
+finitely many values and the translation determines the original exponent
+of $B$ or $S$ --- so the finite-word conclusion of \cref{dyn:lem:neumann}
+is unchanged by the labels.
+
+A term of $\mathcal T(h)$ consists of a coefficient of $\mathcal V$, an
+inverse coefficient, and finitely many factors of $h$ or its derivatives.
+The combined exponent of the $\mathcal V$ coefficient and the leading shift
+$-\gamma_j$ of that inverse supplies one marked letter $\beta-\gamma_j$;
+the higher inverse terms supply unmarked letters in $\mathsf E$; all other
+letters come from the factors of $h$. By induction, the difference
+\begin{equation}\label{dyn:eq:qpiteratedifference}
+ h^{(n+1)}-h^{(n)}
+\end{equation}
+can have a nonzero coefficient only at an exponent representable by a word
+with at least $n+1$ \emph{marked} letters. For $n=0$ there is at least one
+$\mathcal V$ factor. For the induction step, subtract the two Taylor
+expressions and telescope the finite products at each coefficient: every
+difference term contains a factor from $h^{(n)}-h^{(n-1)}$ or its
+derivative together with one additional $\mathcal V$ coefficient. The term
+$Dh\,\mathfrak c(h)$ has the same property, by writing its difference as
+$D(h-g)\mathfrak c(h)+Dg(\mathfrak c(h)-\mathfrak c(g))$ and expanding the
+second difference by the same telescoping. Applying $\Gups$ creates one new
+marked shift and unmarked inverse-tail letters, exactly as above.
+
+At a fixed exponent $\gamma$, \cref{dyn:lem:neumann} permits only finitely
+many labelled word representations, so their numbers of marked letters are
+bounded; hence \eqref{dyn:eq:qpiteratedifference} has zero coefficient at
+$\gamma$ for all large $n$. The coefficients $[t^{\gamma}]h^{(n)}$
+therefore stabilize \emph{exactly}, not approximately. The union of the
+difference supports lies in the well-ordered $\mathsf M$ and each exponent
+occurs in finitely many differences, so the differences form a
+Hahn-summable family in the sense of \cref{dyn:def:summable}; let $h$ be
+their sum. Each stabilized coefficient lies in $\strip$; no new analytic
+limit has been taken. At a fixed exponent $\mathcal T(h)$ uses only
+finitely many certified word decompositions and finitely many stabilized
+input coefficients, so passing to the stabilized coefficients gives
+$h=\mathcal T(h)$. Define $\mathfrak c$ by \eqref{dyn:eq:qpdrift};
+\eqref{dyn:eq:qpfixedpoint} and \eqref{dyn:eq:qpdrift} give
+\eqref{dyn:eq:qpconjugacy}.
+
+Since substitution does not lower valuation, $v(\mathfrak c)\ge s_0$; the
+right side inside $\Gups$ has valuation at least $s_0$ because $Dh$ has
+positive valuation; and \cref{dyn:prop:qpvalbound} or
+\eqref{dyn:eq:qpgreensupport} gives $v(h)\ge s_0-\kups$. The support
+statements are the construction.
+\end{proof}
+
+\begin{warning}[The word argument is the existence step, and the obvious
+substitute is invalid]\label{dyn:warn:qpcontraction}
+The weaker estimate
+$v(h^{(n+1)}-h^{(n)})\ge(n+1)(s_0-\kups)$ does \textbf{not} suffice in a
+general ordered group: that sequence of lower bounds need not be cofinal.
+With $\Gamma=\Z+\Z\Omega$ and $v(h)=1$ the bounds never pass $\Omega$, so a
+sequential valuation argument would prove nothing at or beyond that
+exponent, and \cref{dyn:ex:qpthree} exhibits a solution with coefficients
+exactly there. No Banach fixed-point theorem and no sequential
+completeness of $\No[i]$ is used. This is the same refusal as
+\cref{dyn:warn:contraction}, reached independently by source 07 and
+implemented by a \emph{labelled} refinement of the word certificate ---
+counting marked letters --- which is the one mechanism in this report that
+\cref{dyn:cor:ancestry} does not already supply.
+\end{warning}
+
+\subsection{Uniqueness and the inverse coordinate map}
+
+\begin{proof}[Uniqueness in \cref{dyn:thm:qpnormalform}]
+Let $h,g$ be positive-valuation mean-zero solutions with $h\ne g$ and put
+$\delta=v(h-g)>0$; their drifts are forced by \eqref{dyn:eq:qpdrift}. By
+\eqref{dyn:eq:qplipschitz},
+$v(\mathfrak c(h)-\mathfrak c(g))\ge s_0+\delta$, and subtracting the
+expressions inside \eqref{dyn:eq:qpfixedpoint} gives valuation at least
+$s_0+\delta$, since $\mathfrak c(h)$ has valuation at least $s_0$ and
+differentiation does not lower valuation. Hence
+$v(\mathcal T(h)-\mathcal T(g))\ge s_0+\delta-\kups>\delta$, contradicting
+$h-g=\mathcal T(h)-\mathcal T(g)$. Uniqueness holds among \emph{all}
+positive-valuation mean-zero solutions, not only those carrying the
+constructed support certificate.
+\end{proof}
+
+\begin{lemma}[Infinitesimal coordinate inverses on the torus]
+\label{dyn:lem:qpcoordinverse}
+Every $\Phi_h=\id+h$ with $v(h)>0$ has a unique inverse $\id+g$ of positive
+valuation in the Taylor sense, inducing an automorphism of
+$\HH_\Gamma(\strip)$.
+\end{lemma}
+\begin{proof}
+Solve $g=-h\circ(\id+g)$ by iteration from zero: the same marked-word
+stabilization, now marking each occurrence of a coefficient of $h$, gives
+coefficient stabilization inside the positive monoid generated by
+$\supp h$. Uniqueness follows from
+$v(h\circ(\id+g_1)-h\circ(\id+g_2))\ge v(h)+v(g_1-g_2)>v(g_1-g_2)$, which
+is \eqref{dyn:eq:qplipschitz}. For two-sidedness write
+$\Psi\circ\Phi_h=\id+q$; associativity gives
+$\Phi_h\circ(\id+q)=\Phi_h$, hence $q+h\circ(\id+q)-h=0$, and if $q\ne0$
+the second difference has valuation strictly greater than $v(q)$, which is
+impossible. This is the torus counterpart of \cref{dyn:lem:inverse} and
+\cref{dyn:prop:subgroup}, proved here by the labelled word certificate
+rather than by the triangular recursion, because the unknown is a full
+Hahn-analytic coefficient family rather than a Taylor coefficient list.
+\end{proof}
+
+\begin{proof}[Completion of \cref{dyn:thm:qpnormalform}]
+\Cref{dyn:lem:qpcoordinverse} gives the inverse assertion. Since
+$v(\mathfrak c)\ge s_0>\kups$, \cref{dyn:cor:qptail} applies and no leading
+coefficient of a nonzero integer divisor changes; for complex data the same
+leading real coefficients persist although some higher coefficients can be
+complex. Complex conjugation together with $k\mapsto-k$ preserves all
+scalar Fourier inversions for a real frequency, and Taylor substitution,
+mean and differentiation preserve coefficientwise reality, so real
+$\mathcal V$ gives real $h,\mathfrak c$; alternatively reality follows from
+uniqueness.
+\end{proof}
+
+\subsection{Necessity, and the sharp scale boundary}
+\label{dyn:subsec:qpnecessity}
+
+\begin{theorem}[Non-linearizable perturbations beyond any prescribed
+valuation]\label{dyn:thm:qpnecessity}
+Assume $\gamma_1=0$, $\qlat=\{0\}$ and $\Gamma$ nontrivial. If $(\sdss)$
+fails, then for every prescribed $H\in\Gamma$ there are $s>H$, a real
+$\rho>0$ and a real perturbation $\mathcal V\in\HH_\Gamma(\strip)^{d}$ with
+$v(\mathcal V)=s$ such that $\Upsilon+\mathcal V$ admits \emph{no}
+positive-valuation mean-zero Hahn-analytic conjugacy to a constant vector
+field, even on a narrower positive-width strip. One may require
+$s>2\kups$ and take $\mathcal V$ with a single Hahn exponent.
+\end{theorem}
+\begin{proof}
+Choose $s>\max\{H,2\kups\}$, possible in a nontrivial ordered abelian
+group. Take the real $f$ of \eqref{dyn:eq:qpbadforcing} on a failing
+stratum $\Sigma_j$ and put $\mathcal V=t^{s}fe_1$. Suppose
+$\Phi_h=\id+h$ were such a conjugacy on some strip; restrict to a common
+narrower strip if necessary. Taking means still forces
+$\mathfrak c=\av(\mathcal V\circ\Phi_h)$ with $v(\mathfrak c)\ge s$, and
+since $v(h)>0$ the equation
+$\Cups h=\Qz(\mathcal V\circ\Phi_h)-Dh\,\mathfrak c$ has right side of
+valuation at least $s$, so \cref{dyn:prop:qpvalbound} gives
+$v(h)\ge s-\kups$. Subtracting the uncomposed forcing, write
+$\Cups h=t^{s}fe_1+R$ with
+$R=\Qz(\mathcal V\circ\Phi_h-\mathcal V)-Dh\,\mathfrak c$; Taylor
+telescoping \eqref{dyn:eq:qplipschitz} gives $v(R)\ge s+v(h)\ge2s-\kups$.
+At every nonzero Fourier mode the scalar equation therefore gives
+\[
+ \widehat h(k)=\frac{t^{s}\widehat f(k)e_1}{i\,k\cdot\Upsilon}
+ +\frac{\widehat R(k)}{i\,k\cdot\Upsilon},\qquad
+ v\Bigl(\frac{\widehat R(k)}{i\,k\cdot\Upsilon}\Bigr)\ge2s-2\kups>s .
+\]
+For $k=k_n$ in the failing stratum the coefficient of $t^{s-\gamma_j}$ in
+the first component of $h$ is therefore forced to be
+$e^{-\eps|k_n|}/(i\,\fla_j(k_n))$ --- here $s-\gamma_j\le s$, so the
+remainder cannot contribute --- and those coefficients grow faster than
+$e^{\eps|k_n|}$ and cannot belong to a distribution, exactly as in the
+necessity proof of \cref{dyn:thm:qplinear}.
+\end{proof}
+
+\begin{corollary}[Exact universal infinitesimal normal-form criterion]
+\label{dyn:cor:qpequivalence}
+For normalized $\Upsilon$ with $\qlat=\{0\}$ over nontrivial $\Gamma$,
+$(\sdss)$ is equivalent to the assertion that for every $\rho>0$ every
+$\mathcal V\in\HH_\Gamma(\strip)^{d}$ of valuation greater than $\kups$
+admits the normalized conjugacy of \cref{dyn:thm:qpnormalform}. When
+$(\sdss)$ fails, restricting perturbations to arbitrarily higher valuations
+does \textbf{not} rescue a universal theorem.
+\end{corollary}
+
+\begin{proposition}[Failure exactly at the threshold, with no zero of the
+slow speed]\label{dyn:prop:qpboundary}
+Let $\kups>0$ lie in $\Gamma$ and take
+\[
+ \Upsilon=(1,t^{\kups}),\qquad
+ \mathcal V(\theta_1,\theta_2)=\bigl(0,\tfrac12t^{\kups}\cos\theta_2\bigr).
+\]
+Then $\Upsilon$ satisfies $(\sdss)$ and its last flag level is $\kups$, yet
+this perturbation of valuation \emph{exactly} $\kups$ admits no
+positive-valuation mean-zero conjugacy to a constant vector field.
+\end{proposition}
+\begin{proof}
+The two strata have leading forms $k_1$ and $k_2$, so $(\sdss)$ is
+immediate. Suppose a conjugacy existed. The mean equation forces
+$\mathfrak c_1=0$; since substitution by a positive-valuation $h$ does not
+change the coefficient at exponent $\kups$ of $\mathcal V$, that
+coefficient is $(0,\tfrac12\cos\theta_2)$, of mean zero, so
+$v(\mathfrak c_2)>\kups$ (with $\mathfrak c_2=0$ allowed). At exponent
+$\kups$ in the second component of \eqref{dyn:eq:qpconjugacy},
+$t^{\kups}\partial_2h_2$ contributes nothing because $[t^{0}]h_2=0$, and
+neither do the drift or $Dh\,\mathfrak c$. What remains is
+$\partial_1\bigl([t^{\kups}]h_2\bigr)=\tfrac12\cos\theta_2$; averaging in
+$\theta_1$ makes the left side zero and leaves the right side unchanged.
+\end{proof}
+
+The slow component of this field is
+$t^{\kups}\bigl(1+\tfrac12\cos\theta_2\bigr)$, whose leading real factor is
+everywhere positive: the example does \textbf{not} rely on introducing a
+stationary point. It says that a perturbation of the \emph{same} size as a
+slow frequency may require a coordinate correction of order one rather than
+an infinitesimal one. The strict threshold $v(\mathcal V)>\kups$ is
+therefore sharp \emph{as a uniform sufficient bound}; particular
+perturbations at the boundary can of course still be linearizable.
+
+\subsection{A canonical invariant density}
+\label{dyn:subsec:qpdensity}
+
+The claim here concerns coefficientwise integration of analytic functions
+on the torus. It is \textbf{not} a countably additive $\No$-valued
+probability measure on arbitrary subsets, and not a real-time ergodic
+theorem; \cref{dyn:warn:periods} and \cref{dyn:warn:hamflow} record the
+same refusal elsewhere in this report.
+
+\begin{lemma}[Formal change of variables]\label{dyn:lem:qpchangevar}
+For $\Phi_h=\id+h$ with $v(h)>0$ and every $f\in\HH_\Gamma(\strip)$,
+\begin{equation}\label{dyn:eq:qpchangevar}
+ \av\bigl((f\circ\Phi_h)\det D\Phi_h\bigr)=\av(f).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Introduce an ordinary formal auxiliary variable $z$ and
+$\Phi_z=\id+zh$. At each Hahn exponent Taylor substitution and the
+determinant produce a \emph{polynomial} in $z$, there being finitely many
+support words at that exponent (\cref{dyn:lem:neumann}). With $A=D\Phi_z$,
+the finite determinant identities and the chain rule give
+\begin{equation}\label{dyn:eq:qppiola}
+ \frac{\mathrm d}{\mathrm dz}\bigl((f\circ\Phi_z)\det A\bigr)
+ =\diver_\theta\bigl((f\circ\Phi_z)\operatorname{adj}(A)h\bigr):
+\end{equation}
+use $A\operatorname{adj}(A)=(\det A)I$ for the derivative of $f$, the
+derivative-of-determinant formula for the $Dh$ terms, and the elementary
+Piola identity --- the remaining cofactor derivatives cancel in pairs
+because mixed partials of $\Phi_z$ commute. Each coefficient on the right
+of \eqref{dyn:eq:qppiola} is a divergence of a periodic analytic vector
+field, hence of mean zero, so the mean on the left is independent of $z$;
+evaluate the coefficient polynomials at $z=0$ and $z=1$. There is no
+infinite integration in $z$ and no ordinary convergence of a Hahn sum is
+assumed.
+\end{proof}
+
+\begin{theorem}[Invariant density and its uniqueness]\label{dyn:thm:qpdensity}
+Let $\mathcal X$, $\Phi_h$ and $\mathfrak c$ be as in
+\cref{dyn:thm:qpnormalform} and put $\Psi=\Phi_h^{-1}$. Then
+\begin{equation}\label{dyn:eq:qpdensity}
+ \mu_{\mathcal X}=\det D\Psi\in1+\HH_\Gamma(\strip)_{>0}
+\end{equation}
+is the unique density in $\HH_\Gamma(\strip)$ with
+$\diver(\mu_{\mathcal X}\mathcal X)=0$ and $\av(\mu_{\mathcal X})=1$, and
+the $K_\Gamma$-linear functional
+\begin{equation}\label{dyn:eq:qpfunctional}
+ I_{\mathcal X}(f)=\av(f\circ\Phi_h)=\av(f\mu_{\mathcal X})
+\end{equation}
+satisfies $I_{\mathcal X}(1)=1$ and
+$I_{\mathcal X}(\mathcal X\cdot\nabla f)=0$. For real data
+$\mu_{\mathcal X}$ is real, with positive surcomplex values on the real
+torus, being one plus an infinitesimal.
+\end{theorem}
+\begin{proof}
+The inverse is infinitesimal, so its Jacobian determinant is one plus an
+element of positive valuation, and the chain rule gives
+$(\mu_{\mathcal X}\circ\Phi_h)\det D\Phi_h=1$. Applying
+\cref{dyn:lem:qpchangevar} to $f\mu_{\mathcal X}$ gives the equality in
+\eqref{dyn:eq:qpfunctional}, and $f=1$ gives the normalization.
+Conjugacy and the chain rule yield
+$(\mathcal X\cdot\nabla f)\circ\Phi_h=(\Upsilon+\mathfrak c)\cdot
+\nabla(f\circ\Phi_h)$, whose mean is zero; coefficientwise integration by
+parts against every Fourier character gives
+$\diver(\mu_{\mathcal X}\mathcal X)=0$. For uniqueness let
+$\widetilde\mu$ be a normalized solution and set
+$g=(\widetilde\mu\circ\Phi_h)\det D\Phi_h$; the same Jacobian identities
+transport its divergence equation to
+$(\Upsilon+\mathfrak c)\cdot\nabla g=0$, and since $\Upsilon+\mathfrak c$
+has no nonzero integer resonances (\cref{dyn:thm:qpnormalform}(iii)),
+Fourier uniqueness makes $g$ constant in $\theta$. Then
+\eqref{dyn:eq:qpchangevar} gives $\av(g)=\av(\widetilde\mu)=1$, so $g=1$
+and $\widetilde\mu=\mu_{\mathcal X}$. Reality and pointwise positivity
+follow from \cref{dyn:thm:qpnormalform}(iv) and the positive-valuation form
+of \eqref{dyn:eq:qpdensity}.
+\end{proof}
+
+The identity $I_{\mathcal X}(\mathcal X\cdot\nabla f)=0$ is the precise
+invariance assertion. No real-time flow taking values continuously in the
+fine topology of $\No[i]$ is constructed, and no ergodic theorem for such a
+flow is claimed.
+
+\subsection{Worked examples with genuinely different scales}
+\label{dyn:subsec:qpexamples}
+
+\begin{example}[Three visible scales and a reciprocal support of order type
+$\omega^{2}$]\label{dyn:ex:qpthree}
+Take $\Gamma=\Z+\Z\Omega$ with $\Omega$ greater than every ordinary
+positive integer --- the same use of the symbol $\Omega$ as in
+\cref{dyn:ex:ranktwo,dyn:ex:rank2}, an element of $\Gamma$ and not a
+frequency (\cref{dyn:warn:twofrequencies}) --- and
+\begin{equation}\label{dyn:eq:qpthreefreq}
+ \Upsilon=(1,t,t^{\Omega}).
+\end{equation}
+The flag is $\Z^{3}\supset\{k_1=0\}\supset\{k_1=k_2=0\}\supset\{0\}$ with
+levels $0,1,\Omega$ and leading forms $k_1,k_2,k_3$ on their strata. Each
+nonzero leading form is a nonzero integer, so its reciprocal has modulus at
+most one and $(\sdss)$ holds with no delicate ordinary arithmetic at all.
+Nevertheless the mode $k=(1,1,1)$ already has
+\begin{equation}\label{dyn:eq:qpranktwoinverse}
+ \frac1{1+t+t^{\Omega}}
+ =\sum_{n,m\ge0}(-1)^{n+m}\binom{n+m}{n}t^{\,n\Omega+m},
+\end{equation}
+whose support has order type $\omega^{2}$ --- the ordinal $\omega$, not a
+frequency --- since every exponent of the $n=0$ layer precedes every
+exponent of the $n=1$ layer, and so on. Formula
+\eqref{dyn:eq:qpranktwoinverse} follows by grouping words according to
+their numbers of letters $1$ and $\Omega$, and is confirmed by the finite
+recurrence $C_{n,m}+C_{n-1,m}+C_{n,m-1}=\delta_{(n,m),(0,0)}$ for
+$C_{n,m}=(-1)^{n+m}\binom{n+m}{n}$ (negative index meaning zero), which the
+verification program checks.
+
+On the second stratum
+$\bigl(k_2t+k_3t^{\Omega}\bigr)^{-1}
+ =\frac{t^{-1}}{k_2}\sum_{n\ge0}(-k_3/k_2)^{n}t^{\,n(\Omega-1)}$, and on
+the last stratum the inverse is simply $t^{-\Omega}/k_3$: a large support
+coexists with a three-level divisor classification. The forcing
+$f=t^{\Omega+1}(\sin\theta_1+\sin\theta_2+\sin\theta_3)$ has exact
+mean-zero solution
+\begin{equation}\label{dyn:eq:qpthreesolution}
+ u=-t^{\Omega+1}\cos\theta_1-t^{\Omega}\cos\theta_2-t\cos\theta_3 ,
+\end{equation}
+of valuation $1=v(f)-\Omega$, so the last scale really does control the
+worst inverse loss (\cref{dyn:cor:qpsharp}). A vector perturbation of
+valuation $\Omega+1$ falls under \cref{dyn:thm:qpnormalform} with a
+coordinate correction of valuation at least one. This is also the example
+that exposes the invalidity of a sequential contraction proof
+(\cref{dyn:warn:qpcontraction}): corrections of order $1,2,3,\dots$ never
+pass $\Omega$, while the coefficient-stabilization proof constructs the
+exact transformation including its coefficients at and beyond that scale.
+\end{example}
+
+\begin{example}[Real arithmetic on the leading stratum, and an arbitrary
+tail]\label{dyn:ex:qpsqrt2}
+Take $\Upsilon=(1,\sqrt2,t)$. Its first stratum is all $(p,q,r)$ with
+$(p,q)\ne(0,0)$, with leading form $p+\sqrt2q$; its second is $(0,0,r)$
+with $r\ne0$, at level one. Since
+$|p+\sqrt2q|^{-1}=|p-\sqrt2q|/|p^{2}-2q^{2}|\le|p|+\sqrt2|q|$ for
+$(p,q)\ne(0,0)$, the first stratum is Diophantine and the second has the
+integer leading form $r$; the universal conjugacy threshold is
+$v(\mathcal V)>1$. One may now append an arbitrary set-supported real
+vector tail of valuation greater than one: it can have transfinite support
+and change every higher coefficient of the solution, yet by
+\cref{dyn:cor:qptail} it changes neither the arithmetic test nor the
+threshold. This separates ordinary approximation properties from surreal
+support complexity.
+\end{example}
+
+\begin{example}[An explicit slow-circle normal form]\label{dyn:ex:qpcircle}
+Let $s>\kups>0$ and consider
+$\mathcal X(\theta_1,\theta_2)=(1,\,t^{\kups}+t^{s}\sin\theta_2)$, and put
+$\varrho=t^{\,s-\kups}$. The mean-zero conjugacy has the form
+$\Phi_h=(\theta_1,\theta_2+h(\theta_2))$ and carries $\mathcal X$ to
+$(1,\nu)$, where
+\begin{equation}\label{dyn:eq:qpcircleconjugacy}
+ (1+h'(\theta))\nu=t^{\kups}+t^{s}\sin(\theta+h(\theta)),
+\end{equation}
+and the new frequency is exactly
+\begin{equation}\label{dyn:eq:qpcirclefrequency}
+ \nu=t^{\kups}\sqrt{1-\varrho^{2}}
+ =t^{\kups}\Bigl(1-\tfrac12\varrho^{2}-\tfrac18\varrho^{4}
+ -\tfrac1{16}\varrho^{6}-\cdots\Bigr),
+\end{equation}
+the square root being the Hahn binomial branch with constant term one. To
+see this, use the inverse coordinate in the second variable: the inverse
+equation gives $\Psi'(\theta)=\nu\,t^{-\kups}(1+\varrho\sin\theta)^{-1}$,
+whose mean is one, so
+$t^{\kups}/\nu=\av\bigl((1+\varrho\sin\theta)^{-1}\bigr)
+ =\sum_{m\ge0}\binom{2m}{m}\varrho^{2m}4^{-m}=(1-\varrho^{2})^{-1/2}$,
+using the geometric expansion, the vanishing of odd sine moments and
+$\av(\sin^{2m}\theta)=\binom{2m}{m}4^{-m}$. All of these are Hahn
+identities in the positive monomial $\varrho$. The first terms of the
+unique mean-zero $h$ are
+\begin{equation}\label{dyn:eq:qpcircleh}
+ h(\theta)=-\varrho\cos\theta-\frac{\varrho^{2}}{4}\sin2\theta
+ +\varrho^{3}\Bigl(\frac1{12}\cos3\theta-\frac14\cos\theta\Bigr)
+ +O_H(\varrho^{4}),
+\end{equation}
+where $O_H(\varrho^{4})$ means that the remaining integer powers of
+$\varrho$ have exponent at least four and is \textbf{not} an assertion
+about convergence in a real parameter. In particular the lower bound
+$v(h)\ge s-\kups$ of \cref{dyn:thm:qpnormalform}(i) is attained, and the
+first frequency drift occurs later, at valuation $2s-\kups$. The invariant
+density of \cref{dyn:thm:qpdensity} is equally explicit,
+\begin{equation}\label{dyn:eq:qpcircledensity}
+ \mu_{\mathcal X}(\theta_2)
+ =\frac{\sqrt{1-\varrho^{2}}}{1+\varrho\sin\theta_2},
+\end{equation}
+with mean one, making $\mu_{\mathcal X}\cdot
+(t^{\kups}+t^{s}\sin\theta_2)$ independent of $\theta_2$. The verification
+program reconstructs $h$ and $\nu$ independently by exact Fourier
+arithmetic and checks \eqref{dyn:eq:qpcircleconjugacy} through degree ten
+in $\varrho$.
+\end{example}
+
+\subsection{What this part does not reach}
+\label{dyn:subsec:qplimits}
+
+Three delimitations belong here rather than only in
+\cref{dyn:sec:nonclaims}, because they bound the reading of every statement
+above.
+
+First, all of it is a \emph{coefficientwise Hahn} theory. A formal series
+$\sum_{n\ge0}t^{n}h_n(\theta)$ lies in $\HH_\Gamma(\strip)$ whenever every
+$h_n$ is holomorphic on the same strip, \emph{however fast} $\|h_n\|_{r}$
+grows --- faster than every exponential in $n$ is permitted --- so
+substituting a nonzero real number for $t$ need not be meaningful. Nothing
+here improves classical real analytic KAM or Brjuno arithmetic: those
+theorems must control Fourier decay and the accumulation of losses through
+infinitely many nonlinear steps simultaneously \cite{Bounemoura,Chevallier},
+whereas $(\sdss)$ only guarantees that each \emph{individual} coefficient
+operation stays holomorphic, the Hahn support argument handling how the
+coefficients are assembled. This is the torus instance of
+\textbf{N55}, \textbf{N56} and \cref{dyn:warn:refuse}.
+
+Second, the torus derivatives are external derivations annihilating
+$K_\Gamma$ (\cref{dyn:warn:derivative}); nothing above speaks to internal
+surreal differential equations, and source 07 says so in order to keep
+itself separate from the companion report on differential equations
+(\cref{dyn:subsec:diffeq}).
+
+Third, the nonlinear theorem requires $\qlat=\{0\}$. The linear theorem
+allows $\qlat\ne\{0\}$, but the resonant nonlinear case is open, and
+source 07 warns explicitly that replacing the mean projection by
+$\Pi_{\qlat}$ is \emph{not} justified, since the retained normal form is
+then no longer a constant vector field and creates additional terms in the
+conjugacy equation (\cref{dyn:q:qpresonant}). The flag itself is finite but
+not automatically computable: detecting exact integer relations among
+arbitrary named reals may be unavailable, so existence of the flag is
+separated from decidability of its entries (\cref{dyn:q:qpeffective}).
+
 \section{Finite-order multipliers and resonant splitting}
 \label{dyn:sec:resonant-normal}
 
@@ -6175,14 +7533,27 @@ coordinates \cref{dyn:prop:leadingalgebraic} with its
 already-transcendental first correction, and the dichotomy itself. That
 report's cross-category warning is also adopted verbatim, once, as
 \cref{dyn:warn:derivative}, in place of re-deriving the
-coordinate-versus-surreal-derivation distinction six times.
+coordinate-versus-surreal-derivation distinction seven times.
+
+\textbf{Source 07 separates itself from that report by name.} Its torus
+derivatives $\partial/\partial\theta_j$ are external derivations
+annihilating $K_\Gamma$, and it says in as many words that this convention
+``keeps the present theory separate from the repository's internal
+differential-equation report''. The cohomological equation
+\eqref{dyn:eq:qpgreen} is therefore not a surreal differential equation for
+the Berarducci--Mantova derivation, and no theorem of either report
+transfers to the other. That is the same boundary
+\cref{dyn:warn:derivative} draws for the germ half, stated once and
+applying to both. Source 07 also records that a targeted repository code
+search for ``cohomological'' returned no match, while stating that this is
+not an exhaustive audit of every manuscript or every synonym.
 
 \subsection{Adjacent: surcomplex analysis}
 \emph{Surcomplex analysis: holomorphic functions on $K=\No[i]$}
 (\texttt{docs/surcomplex/analysis/}) is the foundation that fixes the
 no-topological-convergence discipline and states the Neumann support
-material. All six sources restate that discipline and all six state the
-support lemma, with sources 02, 03 and 05 each reproducing a
+material. All seven sources restate that discipline and all seven state
+the support lemma, with sources 02, 03 and 05 each reproducing a
 minimal-bad-sequence Higman proof.
 
 \textbf{Inheritance.} Inherited, not restated. Exactly one proof of the
@@ -6248,7 +7619,7 @@ result of that one is transferred in either direction.
 \section{Computational record and reproducibility}
 \label{dyn:sec:verification}
 
-The six verification programs are preserved unmodified in \texttt{code/}
+The seven verification programs are preserved unmodified in \texttt{code/}
 and their recorded outputs in \texttt{data/}. They supply \emph{finite
 exact symbolic} checks. None of them is a proof of any infinite statement
 in this report, and no Lean or other proof-assistant development
@@ -6366,7 +7737,30 @@ Hahn valuation, and only to degree four. Explicitly not a proof of
 arbitrary-support summability, nor of
 \cref{dyn:thm:homological,dyn:thm:universal}, nor of
 \cref{dyn:thm:pcentralizer}, nor of the Liouville construction
-\cref{dyn:prop:explicitbad}.\\
+\cref{dyn:prop:explicitbad}.\\[4pt]
+07 & --- &
+No printed total; two named checks, every assertion exact. The slow-circle
+conjugacy \cref{dyn:ex:qpcircle} is reconstructed recursively from
+$(1+h')\nu=1+\varrho\sin(\theta+h)$ with $\nu(0)=1$: at each order the mean
+is determined first, giving the new coefficient of $\nu$, then the
+remaining zero-mean Fourier polynomial is integrated. It asserts at every
+order that the mean is real and that $h$ is Hermitian, that the full
+conjugacy residual vanishes through degree ten, that $\nu^{2}=1-\varrho^{2}$
+coefficientwise through the same degree, and that the three displayed terms
+of \eqref{dyn:eq:qpcircleh} are correct; the recorded frequency
+coefficients are $1,0,-\tfrac12,0,-\tfrac18,0,-\tfrac1{16},0,
+-\tfrac5{128},0,-\tfrac7{256}$. It then checks $117$ instances
+($n\in0..8$, $m\in0..12$) of the coefficient recurrence for
+\eqref{dyn:eq:qpranktwoinverse}, and classifies all $1{,}330$ nonzero
+integer modes in $[-5,5]^{3}$ into the three strata of
+\cref{dyn:ex:qpthree}, obtaining $1{,}210/110/10$. Exact $\Q(i)$
+arithmetic by pairs of \texttt{fractions.Fraction}; every check is an
+\texttt{assert}; no floating point and no tolerance anywhere.
+& Finite algebraic checks only. They verify neither the irrationality of
+\eqref{dyn:eq:qpliouvilleconstant}, nor any infinite-mode subexponential
+estimate, nor the word lemma, nor the infinite-support conjugacy theorem;
+those rest on the proofs in the text. No Lean or Wolfram verification of
+any infinite theorem is claimed.\\
 \bottomrule
 \end{longtable}
 
@@ -6377,18 +7771,24 @@ The following were checked directly against the delivered files and by
 running the code, and override any contrary statement in a source README.
 
 \begin{enumerate}[label=(\arabic*)]
-\item \textbf{All six suites pass.} Run on Python 3.14.4 with SymPy 1.14.0
+\item \textbf{All seven suites pass.} Run on Python 3.14.4 with SymPy 1.14.0
 where SymPy is used, every one exits $0$. Reported totals where a script
 prints one: $54$ (01), $1{,}109$ (02), $21$ (03), $2{,}764$ (04), $245$
-(05), $119$ (06). Source 04's count reproduced the recorded $2{,}764$
-exactly; source 05 reproduced its recorded transcript line for line; source
-03 reproduced its four recorded example expansions byte for byte; source
-06's regenerated JSON matched the shipped one up to line endings only.
-\item \textbf{Three of the six scripts rewrite their own evidence.} Source
+(05), $119$ (06); source 07 prints no total. Source 04's count reproduced
+the recorded $2{,}764$ exactly; source 05 reproduced its recorded
+transcript line for line; source 03 reproduced its four recorded example
+expansions byte for byte; and the regenerated JSON of sources 06 and 07
+matched the shipped ones up to line endings only.
+\item \textbf{Four of the seven scripts rewrite their own evidence.} Source
 03's \texttt{verify.py} writes \texttt{data/verification.json} by default;
 source 04's writes \texttt{data/verification.json} \emph{and}
 \texttt{data/coefficients.csv}; source 06's writes
-\texttt{data/verification.json}, and does so only after all checks pass.
+\texttt{data/verification.json}, and does so only after all checks pass;
+source 07's takes \texttt{-{}-output} with \emph{default}
+\texttt{verification.json} resolved against the current working directory
+and writes it with an unconditional \texttt{write\_text} --- no existence
+check, no backup, no dry run --- and the invocation documented in its own
+README is exactly the one that overwrites the delivered record.
 Source 01's script prints to stdout, but its \texttt{Makefile}'s
 \texttt{verify} target redirects that stdout into
 \texttt{verification.txt} in the same directory, overwriting the delivered
@@ -6408,6 +7808,27 @@ dynamics/\allowbreak data/\allowbreak verification.\allowbreak json},
 i.e.\ it
 was recorded in a different container from the delivered one. The check
 contents match the article's prose regardless.
+\item Source 07's README likewise lists \texttt{SHA256SUMS.txt} among its
+package contents, and no such file exists in the delivered archive. Like
+item~(4) this is recorded rather than repaired.
+\item \textbf{The finiteness bound of \cref{dyn:thm:flag} was checked
+independently of source 07.} Modelling
+$\Upsilon_i=\sum_jc_{ij}t^{\gamma_j}$ with $\gamma_1<\gamma_2<\cdots$ gives
+$k\cdot\Upsilon=\sum_jL_j(k)t^{\gamma_j}$ with
+$L_j(k)=\sum_ik_ic_{ij}$, so $v(k\cdot\Upsilon)$ is the least $\gamma_j$
+with $L_j(k)\ne0$ and
+$\{k:\text{level}\ge\gamma_{m+1}\}=\ker L_1\cap\cdots\cap\ker L_m$, whose
+saturation has rank $d-\rank(L_1,\dots,L_m)$. A new level appears exactly
+when that rank increases, so the kernel rank strictly drops, and it can
+drop at most $d$ times: that is both the bound and the flag. Brute-force
+testing over rational coefficient matrices with deliberate resonances
+forced in $40$ per cent of the cases gave \textbf{zero violations of the
+bound in $400$ random trials}, and a worked instance at $d=3$ had kernel
+ranks $2\to1\to0$ with achieved levels $\{0,1,3\}$ --- three levels,
+attaining the bound, with two indices skipped exactly where the rank did
+not move (\cref{dyn:rem:qpvisible}). The theorem and its stated mechanism
+both hold. This is an independent check of a finite mechanism, not a proof
+of any infinite statement.
 \end{enumerate}
 
 \subsection{Building this report}
@@ -6416,7 +7837,7 @@ external \texttt{.bib} file, graphics, shell escape or network access:
 \begin{verbatim}
 latexmk -pdf -interaction=nonstopmode article.tex
 \end{verbatim}
-Reproducing the six suites, each \emph{on a copy}, requires Python 3.10 or
+Reproducing the seven suites, each \emph{on a copy}, requires Python 3.10 or
 later and, for four of them, SymPy; the pinned versions recorded by the
 sources are \texttt{sympy==1.14.0}.
 
@@ -6529,17 +7950,60 @@ established here; \eqref{dyn:eq:compactestimate} is offered only as a
 starting point.
 \end{question}
 
+\begin{question}[The resonant quasi-periodic normal form]
+\label{dyn:q:qpresonant}
+\Cref{dyn:thm:qplinear} allows $\qres$, but the constant normal form
+\cref{dyn:thm:qpnormalform} requires $\qlat=\{0\}$. In the resonant case a
+natural target is a normal form retaining the Fourier modes in $\qlat$.
+Source 07 warns explicitly that simply replacing the mean projection $\Qz$
+by $\Pi_{\qlat}$ in the proof is \textbf{not} justified: the retained
+normal form is then no longer a constant vector field and creates
+additional terms in the conjugacy equation. Products and substitutions
+interact with those modes, and higher perturbations may split the remaining
+resonances, so the extended flag of \cref{dyn:cor:qptail} would have to be
+carried through the nonlinear argument. This is the quasi-periodic
+counterpart of \cref{dyn:q:resonant} and is open for the same structural
+reason --- a larger kernel for the inverse operator --- but it is a
+different problem on a different divisor family.
+\end{question}
+
+\begin{question}[Quantitative coefficient-growth classes on the torus]
+\label{dyn:q:qpgrowth}
+One may add bounds linking $\|f_\beta\|_{r}$ to a weight on the support.
+The argument of \cref{dyn:sec:qpnonlinear} does \emph{not} prove
+preservation of such a weighted class, because inverse denominator powers
+and derivative losses grow along support words
+(\cref{dyn:rem:qpdiophantine}). Identifying hypotheses that preserve these
+weights, and that would permit a meaningful specialization of selected
+monomials to small real parameters, is open; that is exactly where genuine
+non-linear convergence arithmetic would have to re-enter, and it is the
+torus form of \cref{dyn:q:realization}.
+\end{question}
+
+\begin{question}[Effective arithmetic certificates for the flag]
+\label{dyn:q:qpeffective}
+\Cref{dyn:thm:flag} makes the flag finite but not automatically computable
+from arbitrary real coefficients: detecting an exact integer relation among
+arbitrary named real numbers may itself be unavailable. For rational and
+suitable algebraic coefficient data, explicit lattice and approximation
+certificates can make the construction effective. The theorems as stated
+separate \emph{existence} of a finite flag from \emph{decidability} of its
+entries and its arithmetic bounds, and no complexity claim is made. This is
+the same distinction as \textbf{N64} and \cref{dyn:app:certificate} draw
+for the finite-return certificate.
+\end{question}
+
 \section{Limitations and non-claims}
 \label{dyn:sec:nonclaims}
 
 This section is the consolidated record required by
-\cref{dyn:conv:merge}(iv). It carries \textbf{sixty-eight} distinct
-limitations stated by the six sources --- eleven from source 01, nine from
+\cref{dyn:conv:merge}(iv). It carries \textbf{seventy-eight} distinct
+limitations stated by the seven sources --- eleven from source 01, nine from
 source 02, ten from source 03, fourteen from source 04, twelve from source
-05 and twelve from source 06 --- with the originating source named in each
-case. None has been merged away, softened, or absorbed into a stronger
-statement. Where two sources state overlapping limitations, both wordings
-are preserved because their scopes differ.
+05, twelve from source 06 and ten from source 07 --- with the originating
+source named in each case. None has been merged away, softened, or absorbed
+into a stronger statement. Where two sources state overlapping limitations,
+both wordings are preserved because their scopes differ.
 
 \subsection{Status, refereeing, and formalization}
 \begin{enumerate}[label=\textbf{N\arabic*.},leftmargin=3.2em]
@@ -6896,7 +8360,70 @@ They are explicitly not a proof of arbitrary-support summability, nor of
 \cref{dyn:prop:explicitbad}.
 \end{enumerate}
 
-\noindent The list above contains $70$ numbered items for the $68$ distinct
+\subsection{The quasi-periodic source}
+\begin{enumerate}[label=\textbf{N\arabic*.},leftmargin=3.2em,start=71]
+\item (07) Self-declared as proposed original results with detailed proofs,
+unrefereed, and not formalized in any proof assistant. Its README and title
+page both state that the exact theorem package was not located in a
+\emph{focused} literature review and that this does not establish priority;
+independent mathematical review is called for before correctness or
+originality is treated as settled. Its classical inputs --- ordinary
+Fourier division with its subexponential criterion, the Liouville
+construction method, positive-support Hahn inversion, and the finite
+Jacobian identities --- are named as classical and are not claimed
+\cite{Bounemoura,Kamienski,Neumann,Poonen}.
+\item (07) A \emph{coefficientwise Hahn} theorem only. It explicitly does
+\textbf{not} assert convergence after substituting a nonzero real parameter
+for a Hahn monomial, and does not improve classical real analytic KAM or
+Brjuno arithmetic \cite{Bounemoura,Chevallier}. No bound uniform in the
+Hahn exponent on the analytic seminorms $\|f_\beta\|_{r}$ is supplied, and
+growth faster than every exponential in the exponent index is permitted
+(\cref{dyn:subsec:qplimits}).
+\item (07) The torus derivatives are external derivations annihilating the
+Hahn scalar field, deliberately \textbf{not} the Berarducci--Mantova
+derivation on $\No$ \cite{BM}, so nothing in
+\cref{dyn:sec:flag,dyn:sec:qplinear,dyn:sec:qpnonlinear} speaks to internal
+surreal differential equations (\cref{dyn:warn:derivative}).
+\item (07) \textbf{A support bound is not summability.} The family of
+reciprocal divisors indexed by the Fourier modes is stated to be in general
+\emph{not} Hahn-summable; only a common support is proved
+(\cref{dyn:thm:flag}(iii), \cref{dyn:rem:qpnotsummable}), with ordinary
+Fourier summation performed inside each Hahn coefficient and never
+interchanged with it (\cref{dyn:warn:qptwosums}).
+\item (07) No class-sized objects. Everything is a set-sized workspace,
+with the full surreal field entering only through the embedding
+\eqref{dyn:eq:embedding}; no continuity into the fine topology of $\No[i]$
+and no class-indexed analytic limit is claimed. The invariant density
+\cref{dyn:thm:qpdensity} is coefficientwise integration of analytic
+functions --- \textbf{not} a countably additive $\No$-valued measure on
+arbitrary subsets and \textbf{not} a real-time ergodic theorem.
+\item (07) The nonlinear constant normal form requires a trivial exact
+resonance lattice. The resonant case is left open, and the source warns
+that replacing the mean projection by the resonant projection is not
+justified, because the retained normal form is then no longer a constant
+vector field (\cref{dyn:q:qpresonant}).
+\item (07) The flag is finite but \emph{not} automatically computable:
+detecting exact integer relations among arbitrary named reals may be
+unavailable, so existence of the flag is explicitly separated from
+decidability of its entries (\cref{dyn:q:qpeffective}).
+\item (07) Three extensions are listed as needing further work ---
+quantitative coefficient-growth classes preserved under the construction,
+the resonant normal form, and effective arithmetic certificates --- and the
+source states that these arise from the article and are \emph{not} claimed
+to be catalogued open problems
+(\cref{dyn:q:qpgrowth,dyn:q:qpresonant,dyn:q:qpeffective}).
+\item (07) The finite checks verify neither the irrationality of the
+Liouville constant \eqref{dyn:eq:qpliouvilleconstant}, nor any infinite-mode
+subexponential estimate, nor the word lemma, nor the infinite-support
+conjugacy theorem.
+\item (07) An instance of this report's standing hazard, but handled: the
+source cites \emph{no} invariance of any norm across a value-group
+extension. The robustness of \cref{dyn:thm:qpjet} under enlarging $\Gamma$
+is argued from uniqueness of the modewise Hahn inverse rather than assumed
+(\cref{dyn:warn:qpextension}).
+\end{enumerate}
+
+\noindent The list above contains $80$ numbered items for the $78$ distinct
 source-level limitations. The two extra entries arise because source 03's
 limitation on resonant normal forms is recorded in two places ---
 \textbf{N22}, the finite-order hypothesis $\Lambda^{q}=I$, and
@@ -6904,8 +8431,8 @@ limitation on resonant normal forms is recorded in two places ---
 source 04's hypothesis audit is given its own entry
 (\textbf{N23}) in addition to its fourteen listed non-claims. The
 distribution of \emph{distinct} source-level limitations is
-$11/9/10/14/12/12$ across sources $01$ through $06$; the corresponding
-numbered-item counts are $11/9/11/15/12/12$.
+$11/9/10/14/12/12/10$ across sources $01$ through $07$; the corresponding
+numbered-item counts are $11/9/11/15/12/12/10$.
 
 \begin{warning}[The one sentence this report refuses]
 \label{dyn:warn:refuse}
@@ -6918,10 +8445,14 @@ orders, and ordinary analyticity within each coefficient --- and the sharp
 thresholds describe exactly that separation. Support alone suffices for
 polynomial and formal coefficients at arbitrary rank
 ($\sdz$); arithmetic enters exactly when an ordinary domain or entirety is
-demanded ($\sddr$, $\sdex$, $\sdfr$); and under $\pares$ there is no
-divisor family at all ($\sdno$). The two positions are complementary, not
-opposed, and stating them without their coefficient categories is what
-would make them look contradictory.
+demanded ($\sddr$, $\sdex$, $\sdfr$, $\sdss$); and under $\pares$ there is
+no divisor family at all ($\sdno$). The quasi-periodic part makes the same
+point in its sharpest form: \cref{dyn:prop:qpvalbound} is a genuine
+theorem with \emph{no} arithmetic hypothesis whatever, and
+\cref{dyn:thm:qplinear} shows that the moment an analytic strip is demanded
+the arithmetic becomes not merely sufficient but necessary. The two
+positions are complementary, not opposed, and stating them without their
+coefficient categories is what would make them look contradictory.
 \end{warning}
 
 \appendix
@@ -7165,12 +8696,23 @@ structure \cite{CL}; Hahn-meromorphic function theory
 \cref{dyn:warn:derivative} and \textbf{N50} of
 \cref{dyn:sec:nonclaims}. No theorem is transferred between categories
 without a separate proof.\\[3pt]
+Linear versus nonlinear arithmetic conditions for torus vector fields
+\cite{Bounemoura}; the one-frequency cohomological equation and its
+Liouville obstructions \cite{Kamienski}; the Brjuno condition through best
+approximations \cite{Chevallier}
+& The classical small-divisor background of
+\cref{dyn:sec:qplinear,dyn:sec:qpnonlinear}: ordinary Fourier division and
+its subexponential criterion, and the Liouville mechanism adapted in
+\cref{dyn:thm:qpjet}. Neither the ingredient nor any strengthening of
+ordinary analytic KAM arithmetic is claimed
+(\textbf{N72}, \cref{dyn:subsec:qplimits}).\\[3pt]
 The motivating repository at its pinned snapshot \cite{Repo}
-& All six sources cite it at commit
-\texttt{39f2be6667ade51bca2b45daa47e289d69c09764}, for the
+& Sources 01--06 cite it at commit
+\texttt{39f2be6667ade51bca2b45daa47e289d69c09764} and source 07 at
+\texttt{aa846271b4dcae2c055b216126a87210292ec19b}, for the
 coefficient-category distinction only; none uses an unrefereed repository
 theorem as a premise. The inspections were targeted, not exhaustive
-(\textbf{N9}, \textbf{N13}).\\
+(\textbf{N9}, \textbf{N13}, \textbf{N71}).\\
 \bottomrule
 \end{longtable}
 
@@ -7216,11 +8758,40 @@ $\sigma(\lambda)$, $\tau(\Lambda)$, $\Theta(\omega)$ & The three divisor
 rates: drifted, exact-multiplier, frequency
 (\cref{dyn:subsec:smalldivisor}). $\sigma,\tau$ are log-rates in
 $[0,\infty]$; $\Theta\in[1,\infty]$ is the exponential of a rate.\\[3pt]
-$\resq$, $\mres$/$\nres$, $\fres$, $\pares$ & The four resonance notions
-(\cref{dyn:subsec:resonance}). A threshold proved under one is never quoted
-under another.\\[3pt]
-$\sdz$, $\sddr$, $\sdex$, $\sdfr$, $\sdno$ & The five small-divisor notions
-(\cref{dyn:subsec:smalldivisor}).\\[3pt]
+$\resq$, $\mres$/$\nres$, $\fres$, $\pares$, $\qres$ & The five resonance
+notions (\cref{dyn:subsec:resonance}). A threshold proved under one is
+never quoted under another.\\[3pt]
+$\sdz$, $\sddr$, $\sdex$, $\sdfr$, $\sdno$, $\sdss$ & The six small-divisor
+notions (\cref{dyn:subsec:smalldivisor}).\\[3pt]
+$\Upsilon$, $\varpi_\beta$, $\qlat$ & The \emph{Hahn} frequency vector in
+$F_\Gamma^{d}$, its real coefficient vectors, and its exact resonance
+lattice $\{k:k\cdot\Upsilon=0\}$. Never $\omega\in\C^{d}$ of
+\cref{dyn:sec:hamiltonian}, and never the exponent $\Omega$ of
+\cref{dyn:ex:ranktwo} (\cref{dyn:warn:twofrequencies}).\\[3pt]
+$\mathsf L_j$, $\Sigma_j$, $\gamma_j$, $\fla_j$, $r$ & The resonance
+lattices of the flag, its strata, its visible levels, its leading
+\emph{real} forms and its length $r\le d$
+(\cref{dyn:thm:flag}). $\mathsf L_j$ is not the multiplier $\Lambda$ and
+not the homological $\Li$; $\Sigma_j$ is not the ordinary time disk
+$\Sigma$ of \cref{dyn:thm:slowtime}.\\[3pt]
+$\mathsf E$, $\Tups$, $\kups$ & The shifted tail generators, the common
+reciprocal support $\bigcup_j(-\gamma_j+\mathsf E^{*})$, and the last
+visible level $\gamma_r$: an \emph{element of $\Gamma$}, never a rate
+(\cref{dyn:warn:twofrequencies}).\\[3pt]
+$\TT^{d}_\rho$, $\strip$, $\HH_\Gamma(\strip)$ & The fixed open complex
+strip, its periodic holomorphic functions, and the fixed-strip Hahn
+algebra: the torus instance of the fixed-domain row of
+\cref{dyn:subsec:rings}, with one $\rho$ for every Hahn exponent and no
+uniform seminorm bound.\\[3pt]
+$\Cups$, $\Gups$, $\Pi_{\qlat}$, $\av$, $\Qz$ & The cohomological operator
+$\sum_j\Upsilon_j\partial_{\theta_j}$, its normalized inverse
+\eqref{dyn:eq:qpgreen}, resonant Fourier projection, coefficientwise torus
+mean, and mean-zero projection. $\Qz$ is not the Hamiltonian $Q_\Pi$.\\[3pt]
+$\mathcal X$, $\mathcal V$, $\Phi_h$, $\mathfrak c$, $\mu_{\mathcal X}$ &
+The perturbed torus field $\Upsilon+\mathcal V$, its perturbation, the
+torus coordinate change $\id+h$ (\emph{not} the flow $\Phi_X$ or $\Phi_c$),
+the constant frequency correction, and the invariant density
+\eqref{dyn:eq:qpdensity}.\\[3pt]
 $r$, $q$, $c$, $\delta$, $P$, $M$ & Finite-return threshold
 \eqref{dyn:eq:exact-r}, residue order, $\lambda^{q}-1$, $v(c)$, shell
 polynomial \eqref{dyn:eq:P}, its degree.\\[3pt]
@@ -7369,7 +8940,50 @@ Polynomial input admissible at $\rho$: positivity, well-ordering
 \cref{dyn:thm:finite-order} &
 $\Lambda^{q}=I$ --- the multiplier itself of finite order, which is neither
 $\resq$ nor mere $\mres$. Resonant normal forms not unique
-(\cref{dyn:warn:finiteorder}).\\
+(\cref{dyn:warn:finiteorder}).\\[3pt]
+\cref{dyn:thm:flag} &
+Finite dimension $d$; \emph{one} well-ordered support for the whole
+frequency vector. Without finite $d$ the kernel rank need not reach its
+minimum in finitely many steps; independent unbounded scalar choices do not
+supply a shared support. Gives a \emph{common support}, not summability of
+the reciprocal family (\cref{dyn:rem:qpnotsummable}); and $r$ counts
+visible scales, not monomials of $\Upsilon$
+(\cref{dyn:rem:qpvisible}).\\[3pt]
+\cref{dyn:prop:qpvalbound} &
+No Fourier modes in $\qlat$. \textbf{No divisor estimate of any kind}; this
+is the one quantitative statement of the quasi-periodic part that is
+arithmetic-free.\\[3pt]
+\cref{dyn:thm:qplinear} &
+$(\sdss)$ on \emph{every} nonresonant stratum; \emph{all} input
+coefficients holomorphic on \emph{one} open strip. Without the first, a
+forced coefficient can fail to be a distribution; without the second,
+independent germs need not give a common analytic domain
+(\cref{dyn:conv:rings}). The loss $\kups$ is attained
+(\cref{dyn:cor:qpsharp}); no loss bound uniform in the Hahn exponent is
+asserted (\cref{dyn:rem:qpdiophantine}).\\[3pt]
+\cref{dyn:thm:qpjet} &
+Integer exponents only; the explicit Liouville constant
+\eqref{dyn:eq:qpliouvilleconstant}. The obstruction is to assembling
+infinitely many modewise inverses into \emph{one} analytic coefficient ---
+the scalar inverses all exist. Robustness under enlarging $\Gamma$ is
+argued from uniqueness of the modewise Hahn inverse, not from any norm
+invariance (\cref{dyn:warn:qpextension}).\\[3pt]
+\cref{dyn:thm:qpnormalform} &
+$\Gamma$ nontrivial; $\lnot\qres$; $(\sdss)$; normalization $\gamma_1=0$;
+$v(\mathcal V)>\kups$ \emph{strictly} --- \cref{dyn:prop:qpboundary} fails
+at equality. Existence needs finitely many labelled support words per
+exponent; increasing valuations alone do \textbf{not} produce a Hahn sum
+(\cref{dyn:warn:qpcontraction}). Uniqueness needs the mean-zero
+normalization and positive valuation of $h$; constant translations remove
+the normalization.\\[3pt]
+\cref{dyn:thm:qpnecessity,dyn:cor:qpequivalence} &
+$(\sdss)$ \emph{fails}; $\lnot\qres$; $\Gamma$ nontrivial. Refutes a
+\emph{universal} theorem at arbitrarily high valuation; says nothing about
+any particular perturbation.\\[3pt]
+\cref{dyn:thm:qpdensity} &
+Coefficientwise torus mean and finite Jacobian calculus, on the conjugacy
+of \cref{dyn:thm:qpnormalform}. No measure on arbitrary subsets and no
+real-time ergodic theorem follows (\textbf{N75}).\\
 \bottomrule
 \end{longtable}
 
@@ -7499,9 +9113,25 @@ Explicit linearization of one-dimensional germs through tree-expansions,
 
 \bibitem{Bounemoura}
 A.~Bounemoura,
-\emph{Optimal linearization of vector fields on the torus in non-analytic
-Gevrey classes}, 2020.
-\href{https://arxiv.org/abs/2006.05673}{arXiv:2006.05673}.
+Optimal linearization of vector fields on the torus in non-analytic
+Gevrey classes,
+\emph{Annales de l'Institut Henri Poincar\'e C, Analyse Non Lin\'eaire}
+\textbf{39} (2022), no.~3, 501--528.
+\href{https://doi.org/10.4171/AIHPC/12}{doi:10.4171/AIHPC/12};
+preprint \href{https://arxiv.org/abs/2006.05673}{arXiv:2006.05673} (2020).
+
+\bibitem{Kamienski}
+P.~Kamie\'nski,
+\emph{The one-frequency cohomological equation, Brjuno-like functions and
+Khintchine--L\'evy numbers}, preprint, 2019.
+\href{https://arxiv.org/abs/1903.00311}{arXiv:1903.00311}.
+
+\bibitem{Chevallier}
+N.~Chevallier, J.~Lopes Dias, J.~P. Gaiv\~ao, A.~Marnat, and
+N.~Moshchevitin,
+\emph{Brjuno condition through best approximations and the linearization
+problem}, July 2026.
+\href{https://arxiv.org/abs/2607.25610}{arXiv:2607.25610v1}.
 
 \bibitem{Lindahl}
 K.-O. Lindahl,
