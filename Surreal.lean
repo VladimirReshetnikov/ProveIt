@@ -74,6 +74,8 @@ import Surreal.Surcomplex.OrderObstructions
 import Surreal.Surcomplex.FineTopology
 import Surreal.Surcomplex.TopologicalField
 import Surreal.Surcomplex.Modulus
+import Surreal.Surcomplex.ComplexEmbedding
+import Surreal.Surcomplex.NoPaths
 import Surreal.Surcomplex.PolynomialGeometry
 import Surreal.HahnSeries.Binomial
 import Surreal.HahnSeries.BinomialOrder

@@ -207,6 +207,10 @@ formula. Its balls give exactly the existing fine topology and uniformity.
 Heron's area formula, Ptolemy's inequality and the positive-quotient
 triangle-equality criterion now apply to the concrete surcomplex field.
 Both strict Cauchy root bounds also apply to actual surcomplex polynomials.
+Ordinary complex numbers embed coordinatewise into this field, preserving
+conjugation and identifying their real norm with the surreal modulus.
+Fine-continuous maps with small range are constant on preconnected domains;
+in particular, ordinary real intervals admit no nonconstant fine-continuous paths.
 Gauss–Lucas and its multiplicity-weighted barycentric formula are instantiated
 with explicit splitting hypotheses; higher derivatives retain the required
 splitting of each preceding derivative.
