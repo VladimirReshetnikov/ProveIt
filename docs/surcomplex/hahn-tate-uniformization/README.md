@@ -27,8 +27,10 @@ Every label in `article.tex` carries the prefix `tate:`. Material from source
 collided with existing ones, among them `tate:thm:main`), and material from
 source 02 carries `tate:theta:`. **No pre-existing label was renamed or
 removed**: the report had 92 labels before this merge and has 223 after it,
-and all 92 original labels are still present. `docs/FORMALIZATION.md` cites no
-`tate:` label.
+and all 92 original labels are still present. The
+[formalization ledger](../../FORMALIZATION.md) indexes the report's statements
+and records source corrections; no `tate:` label currently has a Lean
+implementation mapping.
 
 ## Three sources, one report
 
@@ -84,6 +86,15 @@ reused); the real space `H`, form `B` and energy `F` became `𝓗`, `𝓑`, `�
 minimum `δ_β` became `μ_β`; and "admissible" in the Amini–Nicolussi sense is
 always written **AN-admissible**, since "admissible" in Part I refers to the
 Hahn-admissible domain `U_q`.
+
+The proof review has checked the support foundations, exact bilateral
+domains and first uniformization route through the coarse reduction diagram.
+It expands finite normalization and the two convex-subgroup arguments,
+makes the formal inverse lemma characteristic-free, and explains why
+fine-positive inputs alone do not permit arbitrary coarse-coefficient
+evaluation. The later Tate-curve statements retain their characteristic-zero
+hypotheses. The second route, arithmetic refinements and multiscale theta
+proofs remain for the next review.
 
 ## What the report claims
 
@@ -349,6 +360,11 @@ not cover Hahn fields with a coarse valuation.
   PDF destinations, no overfull or underfull boxes, no LaTeX or package
   warnings. `data/build_validation.json` is source 01's own record (26 pages,
   before it joined the collection) and is kept unchanged.
+
+During the first-route proof review, the 62-page PDF rebuilt without warnings
+or box issues, and source 01's unchanged verifier passed on a temporary copy
+with Python 3.13.14 and SymPy 1.14.0. Its JSON again matched the delivered
+record except for the Python version; no historical record was overwritten.
 
 A clean compile and passing finite checks prove nothing about the infinite
 arguments.

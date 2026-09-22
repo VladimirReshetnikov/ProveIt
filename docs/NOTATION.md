@@ -155,6 +155,24 @@ not converge in valuation. The failure of an operator-valued Hahn sum alone
 does not decide whether a projection-valued set function is a spectral
 measure; specify the intended additivity and topology.
 
+In [Hahn–Tate uniformization](surcomplex/hahn-tate-uniformization/article.tex),
+the positive period value is `α = v(q)`. Its two convex subgroups have
+different roles:
+
+| Subgroup | Definition and role |
+|---|---|
+| `H_α` | Values bounded in absolute value by some ordinary integer multiple of `α`. The quotient valuation `w = v mod H_α` on `K_Γ` has residue field `K_{H_α}`. |
+| `H_α^-` | Values `γ ∈ H_α` with `n\|γ\| < α` for every `n ≥ 1`. Quotienting `H_α` by this subgroup gives the rank-one valuation on `K_{H_α}` used for classical Tate uniformization. |
+
+The period is a unit for the first coarsening, but has positive rank-one
+valuation for the second. Arbitrary formal coefficients in `K_{H_α}`
+can be evaluated at inputs with `w(z) > 0`; fine positivity `v(z) > 0`
+alone is insufficient. These Part I coarsenings require no divisibility;
+Part II retains its separate hypothesis for halves of period exponents.
+Over the lexicographic group `ℤ ⊕ ℤ` with
+`H = {0} ⊕ ℤ`, substituting `z = t^(0,1)` into
+`Σₙ t^(0,−n) Zⁿ` makes every term `1` and fails strong summability.
+
 ## Finite elements, standard part, and reduction
 
 Use `O_F = {v ≥ 0}` and `m_F = {v > 0}` for the finite valuation ring and

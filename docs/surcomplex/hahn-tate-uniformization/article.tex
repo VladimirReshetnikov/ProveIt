@@ -533,7 +533,7 @@ A Hahn series is a formal expression
  \qquad a_\gamma\in\C,
 \]
 whose support $\supp(a)=\{\gamma:a_\gamma\ne0\}$ is well ordered in the
-increasing order. For $a\ne0$, its valuation is the least support element.
+increasing order. For $a\ne0$, its valuation is the least support element; put $v(0)=+\infty$.
 A family $(a_i)_{i\in I}$ is \emph{strongly summable} when
 $\bigcup_i\supp(a_i)$ is well ordered and each exponent occurs in the
 support of only finitely many $a_i$. Its sum is defined coefficientwise.
@@ -597,12 +597,13 @@ if $F(0)=0$, the value has positive valuation. The second proof of
 \cref{tate:thm:main} rests on the following lemma, taken from source~03.
 
 \begin{lemma}[Formal inverse and implicit function]\label{tate:node:lem:implicit}
-Let $k$ be a field of characteristic zero, and let $\m_v$ be the
+Let $k$ be any field, and let $\m_v$ be the
 elements of positive valuation in $k((t^\Gamma))$. Suppose
 $A(Z)\in k[[Z_1,\ldots,Z_d]]^d$ has zero constant term and invertible
 linear part $L_A\in\GL_d(k)$. It has a unique zero-constant formal inverse.
-If $L_A\in\GL_d(\Z)$ and $A$ has integral coefficients, the inverse has
-integral coefficients. Its evaluation gives a bijection of $\m_v^d$.
+Its evaluation gives a bijection of $\m_v^d$.
+If $A$ is defined over $\Z$ with $L_A\in\GL_d(\Z)$, its formal inverse
+is defined over $\Z$ as well, before any specialization to $k$.
 
 More generally, if $B(P,Z)$ has zero constant term and the matrix
 $\partial B/\partial Z$ at the origin is invertible, the equation
@@ -615,14 +616,22 @@ Determine the homogeneous terms of an inverse successively. At total
 degree $n$, the unknown correction enters only through multiplication by
 $L_A$; all other contributions were determined in earlier degrees. Solving
 this finite linear system constructs the inverse, proves uniqueness, and
-proves integrality when $L_A^{-1}$ is integral. Formal composition
-identities specialize by \cref{tate:lem:neumann}.
+proves integrality when $L_A^{-1}$ is integral. No division by the
+homogeneous degree occurs, so the construction works in every
+characteristic. Formal composition identities specialize by
+\cref{tate:lem:neumann}. The inverse and the original map both have zero
+constant term, hence preserve $\m_v^d$; their two composition identities
+give surjectivity and injectivity on that entire domain.
 
 Apply the same inverse construction to the map $(P,Z)\mapsto(P,B(P,Z))$
 for the implicit statement. Its inverse, specialized at $(P,0)$, gives
 $C(P)$. Specializing the two-sided inverse identity proves uniqueness among
 actual infinitesimal inputs, not merely among formal series.
 \end{proof}
+
+The characteristic-free formal inverse lemma does not remove the
+characteristic-zero hypotheses from the later Tate-curve statements;
+those retain their own coefficient assumptions.
 
 The limits of these lemmas should be stated. If $\epsilon>0$ lies in a
 proper convex subgroup of $\Gamma$, the sequence $n\epsilon$ need not be
@@ -649,11 +658,16 @@ $N\in\N$.
 \end{lemma}
 
 \begin{proof}
-If $|\beta|\le N\alpha$, the finite list of adjacent half-open intervals
-$[k\alpha,(k+1)\alpha)$ for sufficiently many integers $k$ covers
-$\beta$. Their interiors and endpoint convention give existence and
-uniqueness. The converse is immediate. Convexity of $H_\alpha$ gives the
-last alternative, or it follows directly by separating the two signs.
+If $|\beta|\le N\alpha$, choose the largest integer
+$k\in\{-N,\ldots,N\}$ with $k\alpha\le\beta$; this set is nonempty.
+Then $k\alpha\le\beta<(k+1)\alpha$: maximality gives the upper bound
+when $k<N$, and $\beta\le N\alpha$ gives it when $k=N$.
+Taking $m=-k$ proves existence. If $m'>m$, then
+$\beta+m'\alpha\ge\beta+m\alpha+\alpha\ge\alpha$, proving uniqueness.
+The converse follows from $|\beta|\le(|m|+1)\alpha$.
+Finally, if $\beta\notin H_\alpha$, then $|\beta|>N\alpha$ for every
+$N$; its fixed sign gives the stated alternative. No real-valued
+floor function or divisibility of $\Gamma$ is used.
 \end{proof}
 
 There is another convex subgroup inside $H_\alpha$:
@@ -663,11 +677,23 @@ There is another convex subgroup inside $H_\alpha$:
  \label{tate:eq:Hminus}
 \end{equation}
 It consists of the values infinitesimal relative to $\alpha$.
+To check it is a subgroup, take $\gamma,\delta\in H_\alpha^-$.
+For every $n\ge1$, the inequalities $2n|\gamma|<\alpha$ and
+$2n|\delta|<\alpha$ imply $n|\gamma+\delta|<\alpha$; negation
+preserves the defining condition. Convexity follows from
+$|\xi|\le|\gamma|$ with $\gamma\in H_\alpha^-$.
+It is proper because $\alpha\notin H_\alpha^-$.
+
 The quotient $H_\alpha/H_\alpha^-$ is nonzero and Archimedean.
-Indeed, for every positive $\gamma\notin H_\alpha^-$ some multiple of
-$\gamma$ is at least $\alpha$, and every element of $H_\alpha$ is bounded
-by a multiple of $\alpha$. This proves the Archimedean comparison in the
-quotient. H\"older's theorem embeds this quotient in $(\R,+)$; normalize
+Indeed, for positive $\gamma\notin H_\alpha^-$ some $n\ge1$
+satisfies $n\gamma\ge\alpha$. Given positive $\delta\in H_\alpha$,
+choose $N$ with $\delta\le N\alpha$; then
+$(N+1)n\gamma\ge(N+1)\alpha>\delta$, with the strict inequality
+still true in the quotient since the difference is at least $\alpha$.
+This gives the Archimedean comparison there. It also shows that
+$H_\alpha^-$ is the largest proper convex subgroup of $H_\alpha$:
+a convex subgroup containing such a $\gamma$ contains $\alpha$,
+and then every element bounded by an integer multiple of $\alpha$. H\"older's theorem embeds this quotient in $(\R,+)$; normalize
 the embedding so that $\alpha$ has image $1$.
 
 This construction is not new in the collection, and we do not present it
@@ -685,7 +711,7 @@ statement we need, with kernel exactly \eqref{tate:eq:Hminus}. We cite it
 rather than claim it. One hypothesis must be carried across with it: that
 report's standing assumption is that its exponent group is
 \emph{divisible}, and \emph{we do not assume $\Gamma$, or $H_\alpha$,
-divisible anywhere in this paper} --- \cref{tate:sec:torsion} depends on
+divisible in the one-period uniformization theorem} --- \cref{tate:sec:torsion} depends on
 keeping nondivisible groups. Its proof of that lemma uses only the
 order-unit property and no divisibility, so the statement does transfer;
 because the transfer is ours and not the cited report's, we retain the
@@ -1026,6 +1052,14 @@ is strongly summable, although its coefficient valuations
 $(0,-n^2)$ are unbounded below in $H$. The first coordinate separates
 the degrees. This is precisely the type of separation used in the
 uniformization proof.
+
+The coarse-positive condition cannot be replaced by fine positivity.
+In the same field, take $z=t^{(0,1)}$ and
+$F(Z)=\sum_{n\ge0}t^{(0,-n)}Z^n\in K_H[[Z]]$.
+Now $v(z)>0$ but $w(z)=0$, and every evaluated term is $1$.
+Infinitely many terms contribute at exponent zero, so this family is
+not strongly summable. A lower bound on the fine valuation of the
+input alone cannot compensate for unrestricted coefficient valuations.
 \end{example}
 
 \subsection{The rank-one field at the \texorpdfstring{$q$}{q}-scale}
@@ -1043,8 +1077,8 @@ This is \texttt{ent:lem:coarsening} of \cite{RepoEntire}, instantiated at
 the exponent group $H_\alpha$ with the order unit $\alpha$, and is cited
 rather than claimed as new; see \cref{tate:sec:hahn}. The proof below is
 recorded only because that report states its lemma under a standing
-divisibility hypothesis on the exponent group which this paper does not
-make, and because the package should read standalone. It is a second
+divisibility hypothesis on the exponent group which this one-period
+argument does not make, and because the package should read standalone. It is a second
 proof of a statement already in the collection, not an additional result.
 
 \begin{proof}
@@ -1057,7 +1091,10 @@ strictly larger integer.
 It follows that $(d_k)$ is strongly summable in $K_H$. Indeed, below any
 fixed exponent only finitely many of its supports can occur; any
 hypothetical descending sequence of support exponents would therefore
-lie in a finite union of well-ordered supports. The strong sum
+lie in a finite union of well-ordered supports. For each $m$, every term of the tail $\sum_{k\ge m}d_k$ has
+fine valuation greater than $m\alpha$, so the strong sum has fine
+valuation greater than $m\alpha$ as well, or is zero. Its $v_1$-value
+is therefore at least $m$. Thus
 $a_{n_1}+\sum_kd_k$ is the $v_1$-limit of the subsequence. The original
 Cauchy sequence has the same limit. The assertion about $q_0$ is
 $v_1(q_0)=1$.
@@ -1090,7 +1127,9 @@ are locally analytic in the parameter $q_0$ as well as in $u$.
 \end{theorem}
 
 The surjective group statement is Tate's Theorem~1
-\cite{Tate}. Local analyticity in both variables follows directly from
+\cite[author manuscript, p.~6]{Tate}, under the complete real-valued
+field assumptions stated on its first page. Neither discreteness nor
+algebraic closedness is required. Local analyticity in both variables follows directly from
 the rational tails: on sufficiently small neighborhoods of any non-pole
 pair, the finitely many relevant denominators remain nonzero and the
 remaining terms tend uniformly to zero geometrically. At a pole one
@@ -4486,8 +4525,8 @@ Functions at Arbitrary Rank}, research package in \cite{Repo},
 \texttt{docs/surcomplex/entire-functions-at-arbitrary-rank/}.
 The real-valued coarsening at an order unit is its
 \texttt{ent:lem:coarsening}; that report's standing hypothesis is a
-set-sized \emph{divisible} exponent group, which the present paper does
-not assume. This is a repository research draft, not an independently
+set-sized \emph{divisible} exponent group, which the one-period
+uniformization theorem here does not assume. This is a repository research draft, not an independently
 refereed source.
 
 \end{thebibliography}
