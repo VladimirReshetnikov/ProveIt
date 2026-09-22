@@ -4,6 +4,7 @@ import Surreal.Algebra.Circle
 import Surreal.Algebra.Geometry
 import Surreal.Algebra.Modulus
 import Surreal.Algebra.Polynomial
+import Surreal.Algebra.PolynomialBezoutKernel
 import Surreal.Algebra.PolynomialCRT
 import Surreal.Algebra.PolynomialDiscriminant
 import Surreal.Algebra.PolynomialDivision
@@ -17,9 +18,11 @@ import Surreal.Algebra.PolynomialNewton
 import Surreal.Algebra.PolynomialQuotient
 import Surreal.Algebra.PolynomialRationalJets
 import Surreal.Algebra.PolynomialResidueDual
+import Surreal.Algebra.PolynomialResidueGram
 import Surreal.Algebra.PolynomialResiduePairing
 import Surreal.Algebra.PolynomialResultant
 import Surreal.Algebra.PolynomialRootBounds
+import Surreal.Algebra.PolynomialTraceGram
 import Surreal.Algebra.ProjectiveCircle
 import Surreal.Foundations.SizeObstructions
 import Surreal.HahnSeries.Binomial
@@ -34,6 +37,7 @@ import Surreal.HahnSeries.DiscriminantValuation
 import Surreal.HahnSeries.Evaluation
 import Surreal.HahnSeries.Neumann
 import Surreal.HahnSeries.PolynomialReduction
+import Surreal.HahnSeries.PolynomialGaussValuation
 import Surreal.HahnSeries.PolynomialValuation
 import Surreal.HahnSeries.Regroup
 import Surreal.HahnSeries.StandardPart

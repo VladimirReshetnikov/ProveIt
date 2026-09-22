@@ -67,6 +67,9 @@ coefficient defines a perfect residue pairing with an explicit dual basis,
 and multiplication trace equals the residue of the derivative times the class.
 These identities also hold with zero divisors, repeated roots and positive
 characteristic.
+The residue Gram determinant is the fixed reversal sign and its inverse is
+the coefficient matrix of the finite bivariate Bézout kernel. The trace Gram
+matrix factors as the residue Gram matrix times multiplication by the derivative.
 
 The Hahn layer uses mathlib's `SummableFamily` and proves the full Neumann
 support lemma, including finiteness across all word lengths. It distinguishes
@@ -89,6 +92,12 @@ valuations, with infinity retained when a product vanishes.
 Discriminant valuations give twice the pairwise separation sum with the
 leading-coefficient term; in the monic case they also equal the sum of
 derivative valuations at the roots.
+The weighted Gauss valuation is the finite minimum of weighted Taylor
+coefficient valuations at any center and scale. Its initial polynomial is
+nonzero for nonzero input, is multiplicative, and equals coefficientwise
+standard part after monomial normalization.
+Its support consists exactly of the active indices attaining the weighted
+minimum, with degree and trailing degree giving their extrema.
 Coefficientwise real and imaginary parts identify Hahn series over `R[i]`
 with the quadratic extension of Hahn series over `R`. This identification
 also uses Mathlib's native real and complex coefficients; conjugation fixes
