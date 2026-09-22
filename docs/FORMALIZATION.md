@@ -62,7 +62,7 @@ existing polynomial factorization/extension results. Repository declarations
 should expose the manuscript correspondence and prove the genuinely missing
 bridges rather than duplicate the library.
 
-## Initial implementation mappings
+## Implementation mappings
 
 The mapped modules pass `lake build`, including the default `SurrealAudit`
 target. The audit checks every imported `Surreal` declaration and rejects any
@@ -92,6 +92,10 @@ remaining clauses of a partially mapped statement.
 | Inequality clause of `trigonometry:thm:ptolemy` | `Surreal.Complexify.ptolemy_identity`, `ptolemy` | The four-point inequality over any real closed ordered base field. Cyclic order and the cyclic equality case remain pending. **Prerequisites proved**; build and axiom audit pass. |
 | Root-persistence clause of `found:thm:workspace` | `Surreal.FinitePolynomial.roots_map`, `root_mem_range`, `roots_map_of_isAlgClosed` | Roots and multiplicities of split polynomials under field extension. Workspace construction, support compatibility and the other localization clauses remain pending. **Prerequisites proved**; build and axiom audit pass. |
 | Image-containment clause of `found:thm:finitepoints` | `Surreal.FinitePolynomial.finite_algebra_character_descends` | A character of a finite algebra over an algebraically closed base takes values in that base. Local decomposition and base-change/local-length assertions remain pending. **Prerequisites proved**; build and axiom audit pass. |
+| `a:lem:neumann`, `a:rule:wordlength` | `Surreal.HahnSeries.neumann_add`, `finite_words_of_sum_eq`, `finite_nondecreasing_words_of_sum_eq`, `neumann_positive` in [Neumann.lean](../Surreal/HahnSeries/Neumann.lean) | **Proved** over an arbitrary ordered abelian group: well-ordered sumsets, finite pair-sum fibers, a well-ordered positive generated monoid, and finite fixed-sum word fibers across all lengths. The all-word version strengthens the requested nondecreasing-word statement. Uses Mathlib's partial well-order and Higman APIs. |
+| Constant-family specialization of `a:def:summable`, `a:rule:clauseii`; nonsummability part of `a:ex:notsummable` | `Surreal.HahnSeries.summable_constants_iff`, `hsum_constants`, `not_summable_constants_of_infinite`, `not_summable_geometric_constants` in [Constants.lean](../Surreal/HahnSeries/Constants.lean) | A family of constants is strongly summable exactly when its coefficient function has finite support. The nonzero constants `2⁻ⁿ` give a counterexample even though their support union is contained in `{0}`. Uses Mathlib's actual `SummableFamily`; ordinary analytic convergence and surreal interpretation are separate obligations. **Prerequisites proved**; build and axiom audit pass. |
+| Univariate summability and ring-compatibility clauses of `a:cor:complexsub` | `Surreal.HahnSeries.evaluate`, `evaluate_X`, `summable_coeff_mul_powers`, `coeff_evaluate`, `coeff_zero_evaluate`, `summable_powers` in [Evaluation.lean](../Surreal/HahnSeries/Evaluation.lean) | Admissible evaluation reuses Mathlib `PowerSeries.heval` as an algebra homomorphism, with an explicit positive-`orderTop` proof and the actual coefficient-times-power term formula. Zero is included because its `orderTop` is infinity. Multivariable evaluation, composition, differentiation and the surreal bridge remain pending. **Prerequisites proved**; build and axiom audit pass. |
+| `a:eq:geom` and formal remainder in `a:ex:geometric` | `Surreal.HahnSeries.geometric_mul`, `geometric_hsum`, `geometric_remainder` | The strongly summable power family has sum `(1-x)⁻¹`, with exact finite-sum remainder `x^(N+1)/(1-x)`, when `x` has positive order. The identity is generic Hahn algebra. The valuation calculation at the named surreal scale and nonconvergence in the fine topology remain pending. **Prerequisites proved**; build and axiom audit pass. |
 
 ## Dependency order
 

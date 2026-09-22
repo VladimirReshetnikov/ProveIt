@@ -43,6 +43,12 @@ Bézout gcds, principal ideals, and the exact gcd-with-derivative formula.
 Finite Hermite interpolation realizes prescribed derivative jets at distinct
 nodes by a unique polynomial below the total multiplicity degree bound.
 
+The Hahn layer uses mathlib's `SummableFamily` and proves the full Neumann
+support lemma, including finiteness across all word lengths. It distinguishes
+Hahn summation from ordinary summation of constant coefficients and exposes
+univariate evaluation only with a positive-order proof. Geometric-series
+identities and exact finite remainders are formal Hahn identities.
+
 These generic prerequisites do not yet construct the surreal field or establish
 the normal-form bridge to Hahn series. A successful build proves only the
 imported Lean statements, not coverage of all the source documents.

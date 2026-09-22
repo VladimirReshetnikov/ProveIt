@@ -7,3 +7,6 @@ import Surreal.Algebra.PolynomialDivision
 import Surreal.Algebra.PolynomialInterpolation
 import Surreal.Algebra.PolynomialMultiplicity
 import Surreal.Foundations.SizeObstructions
+import Surreal.HahnSeries.Constants
+import Surreal.HahnSeries.Evaluation
+import Surreal.HahnSeries.Neumann
