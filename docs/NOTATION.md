@@ -159,6 +159,18 @@ valuations never exceed `ω`. In the full fine topology they do not converge
 to that sum. “There is no topological convergence” must therefore name the
 full fine setting and the relevant set-indexed convergence assertion.
 
+A **coefficientwise Hahn sum** in the
+[measure report](surreal/hahn-valued-measures-and-probability/article.tex)
+uses one common well-ordered support and ordinary absolutely convergent
+sums at each exponent; infinitely many members may contribute there
+(`meas:lem:coefpositive`). A **strong Hahn measure** requires strong
+summability for every disjoint event sequence. A **coefficientwise Hahn
+measure** instead has finite signed or complex coefficient measures on one
+common support. Only the strong axiom forces finite point support at every
+coefficient on a countably separated space. Positivity of the full Hahn value
+does not mean positivity of every coefficient measure: later signed
+coefficients may be negative while the leading nonzero coefficient is positive.
+
 ## Coefficient rings and functions
 
 State both the coefficient category and the ordinary base. The common

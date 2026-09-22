@@ -144,8 +144,12 @@ particular:
   Gaussian quadrature, Riesz–Markov, Kakutani's `ℓ²` phenomenon, Neumann's
   lemma and normal forms are classical inputs, not claims.
 - The contributions are candidates: priority is not certified, no named
-  published conjecture is claimed solved, nothing is refereed, nothing is
-  checked in Lean. The finite checks do not prove any infinite statement.
+  published conjecture is claimed solved, and the report is not independently
+  refereed or fully formalized. The
+  [Lean coverage ledger](../../FORMALIZATION.md) records the checked strong
+  atomicity core and product prerequisites with their exact scope; the
+  extension, moment and coefficientwise results still have pending work.
+  The finite checks do not prove any infinite statement.
 
 ## Relation to neighbouring reports
 
@@ -173,14 +177,32 @@ particular:
   and **[Markov generators](../markov-generators-at-every-scale/)** use
   "moment" and Markov structure in other senses; neither is used here.
 
+## Maintained review
+
+The review follows the scalar atomicity and common-support arguments through
+the cylinder, product, moment, quadrature and coefficientwise proof chains.
+It corrects the distinction between subfamilies and regroupings, and between
+nonnegative cylinders and strictly positive polynomial tests. An elementary
+coefficientwise positivity lemma now states the common-support and absolute
+summability hypotheses used by the boundary and mixed product constructions.
+
+The leading scalar measure does inherit positivity from cylinders by finite
+total-variation approximation. It is positivity of the full Hahn-valued
+measure that can fail. The revised text explains this distinction before the
+null-ideal criterion, expands the finite-factor argument for infinite products,
+and makes example exponent groups and the zero case of Cauchy–Schwarz explicit.
+Historical provenance files remain unchanged; the current formalization
+subsection supersedes the source deliveries' claims that nothing is Lean-checked.
+
 ## Build and reproduce
 
 ```sh
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The recorded build has 64 pages, zero errors, zero warnings, zero undefined
-references and zero overfull boxes.
+The maintained PDF has 64 pages. A three-pass build has no errors, warnings,
+unresolved references, or overfull or underfull boxes; the baseline was
+also clean. The revised proof passages were inspected in the PDF.
 
 The three check programs use only the Python standard library (3.10 or later)
 and exact rational arithmetic. **Run them on a copy of this directory**:
@@ -204,3 +226,9 @@ hard-coded value is negative). The delivered `*-build.sh` scripts are kept
 byte-identical; they refer to the source packages' own layouts and do not build
 this report. `15-infinite-products-of-probabilities-build_summary.json` is
 source 15's hand-written note on its own 23-page build.
+
+During the maintained review, the three unchanged programs passed again under
+Python 3.13.14 on temporary copies (5,135, 682 and 1,009 assertions).
+The copied source hashes match the preserved programs. Outputs remained
+outside the repository; the tautological check remains included in source 15's
+historical total.

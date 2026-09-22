@@ -15,7 +15,7 @@ that the current Lean target compiles or imports them.
 
 ## Scope and how to read this ledger
 
-The canonical inventory below identifies **36 main reports** with **1752**
+The canonical inventory below identifies **36 main reports** with **1753**
 standard result environments. Counts cover
 literal `theorem`, `lemma`, `proposition`, and `corollary` environments;
 examples, equations, prose assertions and companion proofs contain further
@@ -498,10 +498,10 @@ named `article.tex`. The document map and typeset catalogue list the same report
 | [surreal/gonshor-laurent-birthdays/article.tex](surreal/gonshor-laurent-birthdays/article.tex) | 5 | 8 | 0 | 5 | 18 |
 | [surreal/gonshor-product-birthdays/surreal_product_birthdays.tex](surreal/gonshor-product-birthdays/surreal_product_birthdays.tex) | 3 | 4 | 5 | 2 | 14 |
 | [surreal/hahn-evaluation-at-omega/article.tex](surreal/hahn-evaluation-at-omega/article.tex) | 7 | 9 | 5 | 2 | 23 |
-| [surreal/hahn-valued-measures-and-probability/article.tex](surreal/hahn-valued-measures-and-probability/article.tex) | 19 | 13 | 8 | 18 | 58 |
+| [surreal/hahn-valued-measures-and-probability/article.tex](surreal/hahn-valued-measures-and-probability/article.tex) | 19 | 14 | 8 | 18 | 59 |
 | [surreal/markov-generators-at-every-scale/article.tex](surreal/markov-generators-at-every-scale/article.tex) | 9 | 5 | 3 | 3 | 20 |
 | [surreal/tail-spans-and-differential-transcendence/article.tex](surreal/tail-spans-and-differential-transcendence/article.tex) | 8 | 8 | 4 | 1 | 21 |
-| **Total** | 677 | 344 | 379 | 352 | **1752** |
+| **Total** | 677 | 345 | 379 | 352 | **1753** |
 
 The earlier refresh from `796f8d4` through `1f6d6b8` added four reports and
 expanded an existing one.
@@ -2659,64 +2659,65 @@ Mappings cover only the hypotheses and clauses they state.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `meas:lem:sumalgebra` (line 552) | Regrouping, products, and positivity |
-| Lemma | `meas:lem:boolean` (line 809) | Infinite Boolean algebras contain disjoint sequences |
-| Lemma | `meas:lem:scalar` (line 824) | Disjoint-finite scalar measures are finitely point-atomic; sources 10 and 11 |
-| Proposition | `meas:prop:coefficients` (line 886) | Finite coefficient measures |
-| Lemma | `meas:lem:global` (line 916) | Automatic common well-order; source 11 |
-| Theorem | `meas:thm:atomic` (line 945) | Atomic classification with automatic common support; sources 10 and 11 |
-| Corollary | `meas:cor:coefficient-test` (line 995) | Coefficientwise criterion without a support hypothesis; source 10 |
-| Corollary | `meas:cor:two-axioms` (line 1038) | The two axioms on countably separated spaces |
-| Corollary | `meas:cor:shadow` (line 1069) | Finite real shadow of a strong probability; sources 10 and 11 |
-| Corollary | `meas:cor:cardinality` (line 1092) | Cardinality of the atomic set; source 10 |
-| Proposition | `meas:prop:integration` (line 1137) | Pushforward and scalar-valued integration; sources 10 and 11 |
-| Theorem | `meas:thm:orbits` (line 1215) | Finite-orbit rigidity; source 15 |
-| Corollary | `meas:cor:transitive` (line 1248) | No transitive invariant strong probability; source 11 |
-| Corollary | `meas:cor:exchangeable` (line 1262) | Exchangeability collapses; source 15 |
-| Corollary | `meas:cor:actual` (line 1338) | Actual surreal atomicity; source 10 |
-| Lemma | `meas:lem:tree` (line 1377) | Bounded-width coherent scalar trees |
-| Theorem | `meas:thm:cylinder` (line 1402) | Exact strong cylinder-extension criterion; source 10 |
-| Corollary | `meas:cor:positive-test` (line 1451) | Exact positivity test; source 10 |
-| Lemma | `meas:lem:neumann` (line 1475) | Neumann support lemma, classical; stated by sources 10 and 15 |
-| Lemma | `meas:lem:labeled` (line 1504) | Labelled words and subproducts |
-| Proposition | `meas:prop:products` (line 1528) | Infinite products of infinitesimal perturbations |
-| Lemma | `meas:lem:recover` (line 1557) | Recovering rare entries from first-error masses |
-| Theorem | `meas:thm:independent` (line 1604) | Exact independent finite-state criterion; source 10 |
-| Corollary | `meas:cor:bernoulli` (line 1712) | One-line Bernoulli criterion; source 10 |
-| Theorem | `meas:thm:coarse` (line 1777) | Extension may fail after refining a valid binary law; source 10 |
-| Proposition | `meas:prop:enlarge` (line 1822) | Absoluteness under exponent enlargement; source 10 |
-| Lemma | `meas:lem:prony` (line 1875) | Finite signed moment sequences |
-| Theorem | `meas:thm:momentcriterion` (line 1911) | Exact strong moment criterion; source 11 |
-| Theorem | `meas:thm:visibility` (line 1999) | Finite visibility detects a negative atom; source 11 |
-| Corollary | `meas:cor:hidden-necessary` (line 2025) | A necessary condition for hidden negative mass |
-| Corollary | `meas:cor:safesupport` (line 2038) | The safe support range; source 11 |
-| Theorem | `meas:thm:barrier` (line 2072) | Polynomial positivity barrier; source 11 |
-| Corollary | `meas:cor:hermitianbarrier` (line 2100) | Hermitian and localizing forms; source 11 |
-| Corollary | `meas:cor:multivariate` (line 2118) | Zariski-dense early atoms; source 11 |
-| Theorem | `meas:thm:continuousbarrier` (line 2140) | Continuous-test barrier; source 11 |
-| Proposition | `meas:prop:hidden-positive` (line 2199) | Every finite-dimensional law is nonnegative; source 10 |
-| Theorem | `meas:thm:example` (line 2275) | Full positivity but no positive strong representation; source 11 |
-| Corollary | `meas:cor:hausdorff` (line 2314) | All Hausdorff inequalities hold strictly; source 11 |
-| Theorem | `meas:thm:threshold` (line 2401) | The $\omega+1$ threshold for strong measures; sources 10 and 11 |
-| Lemma | `meas:lem:CB` (line 2485) | Strong atomic determinant formula; source 11 |
-| Theorem | `meas:thm:determinants` (line 2518) | Every determinant scale and leading coefficient; source 11 |
-| Corollary | `meas:cor:jacobi` (line 2588) | Explicit Jacobi scales; source 11 |
-| Theorem | `meas:thm:gauss` (line 2628) | Finite Gaussian quadrature over a real closed field; source 11 |
-| Lemma | `meas:lem:heine` (line 2674) | Orthogonal polynomial from atomic subsets; source 11 |
-| Theorem | `meas:thm:quadratureresidues` (line 2701) | Standard parts and nonreal quadrature nodes; source 11 |
-| Corollary | `meas:cor:actualNo` (line 2777) | No positive surreal strong measure for the moments; source 11 |
-| Theorem | `meas:thm:extension` (line 2839) | Coefficientwise signed extension test; source 15 |
-| Theorem | `meas:thm:nullideal` (line 2879) | Null-ideal positivity criterion; source 15, and independently source 18 |
-| Corollary | `meas:cor:dominated` (line 2963) | Dominated corrections; source 15 |
-| Theorem | `meas:thm:interior` (line 3024) | Interior extension criterion; source 15 |
-| Lemma | `meas:lem:chaos` (line 3060) | Multilinear chaos bound; source 15 |
-| Lemma | `meas:lem:L1lower` (line 3125) | Uniform $L^1$ lower bound; source 15 |
-| Theorem | `meas:thm:boundary` (line 3175) | Boundary extension criterion; source 15 |
-| Theorem | `meas:thm:mixed` (line 3326) | Mixed extension criterion; source 15 |
-| Corollary | `meas:cor:iid` (line 3377) | No coefficientwise nonreal i.i.d.\ bias; source 15 |
-| Proposition | `meas:prop:general-l1` (line 3458) | A universal $\ell^1$ sufficient condition; source 15 |
-| Proposition | `meas:prop:complex` (line 3501) | Surcomplex analogue; source 15 |
-| Proposition | `meas:prop:conditioning` (line 3522) | Conditioning on infinitesimal events; source 15 |
+| Lemma | `meas:lem:sumalgebra` (line 555) | Regrouping, products, and positivity |
+| Lemma | `meas:lem:coefpositive` (line 593) | Positivity of coefficientwise sums |
+| Lemma | `meas:lem:boolean` (line 841) | Infinite Boolean algebras contain disjoint sequences |
+| Lemma | `meas:lem:scalar` (line 856) | Disjoint-finite scalar measures are finitely point-atomic; sources 10 and 11 |
+| Proposition | `meas:prop:coefficients` (line 918) | Finite coefficient measures |
+| Lemma | `meas:lem:global` (line 948) | Automatic common well-order; source 11 |
+| Theorem | `meas:thm:atomic` (line 977) | Atomic classification with automatic common support; sources 10 and 11 |
+| Corollary | `meas:cor:coefficient-test` (line 1027) | Coefficientwise criterion without a support hypothesis; source 10 |
+| Corollary | `meas:cor:two-axioms` (line 1070) | The two axioms on countably separated spaces |
+| Corollary | `meas:cor:shadow` (line 1101) | Finite real shadow of a strong probability; sources 10 and 11 |
+| Corollary | `meas:cor:cardinality` (line 1124) | Cardinality of the atomic set; source 10 |
+| Proposition | `meas:prop:integration` (line 1170) | Pushforward and scalar-valued integration; sources 10 and 11 |
+| Theorem | `meas:thm:orbits` (line 1248) | Finite-orbit rigidity; source 15 |
+| Corollary | `meas:cor:transitive` (line 1281) | No transitive invariant strong probability; source 11 |
+| Corollary | `meas:cor:exchangeable` (line 1295) | Exchangeability collapses; source 15 |
+| Corollary | `meas:cor:actual` (line 1371) | Actual surreal atomicity; source 10 |
+| Lemma | `meas:lem:tree` (line 1410) | Bounded-width coherent scalar trees |
+| Theorem | `meas:thm:cylinder` (line 1435) | Exact strong cylinder-extension criterion; source 10 |
+| Corollary | `meas:cor:positive-test` (line 1484) | Exact positivity test; source 10 |
+| Lemma | `meas:lem:neumann` (line 1508) | Neumann support lemma, classical; stated by sources 10 and 15 |
+| Lemma | `meas:lem:labeled` (line 1537) | Labelled words and subproducts |
+| Proposition | `meas:prop:products` (line 1561) | Infinite products of infinitesimal perturbations |
+| Lemma | `meas:lem:recover` (line 1596) | Recovering rare entries from first-error masses |
+| Theorem | `meas:thm:independent` (line 1643) | Exact independent finite-state criterion; source 10 |
+| Corollary | `meas:cor:bernoulli` (line 1751) | One-line Bernoulli criterion; source 10 |
+| Theorem | `meas:thm:coarse` (line 1817) | Extension may fail after refining a valid binary law; source 10 |
+| Proposition | `meas:prop:enlarge` (line 1862) | Absoluteness under exponent enlargement; source 10 |
+| Lemma | `meas:lem:prony` (line 1916) | Finite signed moment sequences |
+| Theorem | `meas:thm:momentcriterion` (line 1952) | Exact strong moment criterion; source 11 |
+| Theorem | `meas:thm:visibility` (line 2040) | Finite visibility detects a negative atom; source 11 |
+| Corollary | `meas:cor:hidden-necessary` (line 2066) | A necessary condition for hidden negative mass |
+| Corollary | `meas:cor:safesupport` (line 2079) | The safe support range; source 11 |
+| Theorem | `meas:thm:barrier` (line 2113) | Polynomial positivity barrier; source 11 |
+| Corollary | `meas:cor:hermitianbarrier` (line 2142) | Hermitian and localizing forms; source 11 |
+| Corollary | `meas:cor:multivariate` (line 2160) | Zariski-dense early atoms; source 11 |
+| Theorem | `meas:thm:continuousbarrier` (line 2182) | Continuous-test barrier; source 11 |
+| Proposition | `meas:prop:hidden-positive` (line 2241) | Every finite-dimensional law is nonnegative; source 10 |
+| Theorem | `meas:thm:example` (line 2317) | Full positivity but no positive strong representation; source 11 |
+| Corollary | `meas:cor:hausdorff` (line 2356) | All Hausdorff inequalities hold strictly; source 11 |
+| Theorem | `meas:thm:threshold` (line 2443) | The $\omega+1$ threshold for strong measures; sources 10 and 11 |
+| Lemma | `meas:lem:CB` (line 2527) | Strong atomic determinant formula; source 11 |
+| Theorem | `meas:thm:determinants` (line 2560) | Every determinant scale and leading coefficient; source 11 |
+| Corollary | `meas:cor:jacobi` (line 2630) | Explicit Jacobi scales; source 11 |
+| Theorem | `meas:thm:gauss` (line 2670) | Finite Gaussian quadrature over a real closed field; source 11 |
+| Lemma | `meas:lem:heine` (line 2719) | Orthogonal polynomial from atomic subsets; source 11 |
+| Theorem | `meas:thm:quadratureresidues` (line 2746) | Standard parts and nonreal quadrature nodes; source 11 |
+| Corollary | `meas:cor:actualNo` (line 2823) | No positive surreal strong measure for the moments; source 11 |
+| Theorem | `meas:thm:extension` (line 2885) | Coefficientwise signed extension test; source 15 |
+| Theorem | `meas:thm:nullideal` (line 2931) | Null-ideal positivity criterion; source 15, and independently source 18 |
+| Corollary | `meas:cor:dominated` (line 3015) | Dominated corrections; source 15 |
+| Theorem | `meas:thm:interior` (line 3076) | Interior extension criterion; source 15 |
+| Lemma | `meas:lem:chaos` (line 3112) | Multilinear chaos bound; source 15 |
+| Lemma | `meas:lem:L1lower` (line 3177) | Uniform $L^1$ lower bound; source 15 |
+| Theorem | `meas:thm:boundary` (line 3227) | Boundary extension criterion; source 15 |
+| Theorem | `meas:thm:mixed` (line 3376) | Mixed extension criterion; source 15 |
+| Corollary | `meas:cor:iid` (line 3427) | No coefficientwise nonreal i.i.d.\ bias; source 15 |
+| Proposition | `meas:prop:general-l1` (line 3508) | A universal $\ell^1$ sufficient condition; source 15 |
+| Proposition | `meas:prop:complex` (line 3551) | Surcomplex analogue; source 15 |
+| Proposition | `meas:prop:conditioning` (line 3572) | Conditioning on infinitesimal events; source 15 |
 
 ### markov-generators-at-every-scale
 

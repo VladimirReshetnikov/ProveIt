@@ -35,6 +35,7 @@ No row below certifies every claim in an entire report.
 | [Contours and Stokes](surcomplex/contours-and-stokes/) | Checked the revised support, smooth pullback, topology, microscopic-cycle, rational-comparison and sampling arguments. Replaced the false cofinality shortcut by finite-word incidence; corrected the word-embedding inequality and diagonal-substitution comparison. Supplied the properness and identity-theorem steps in the ramified Leray construction and expanded target composition about the ordinary map. Distinguished coefficientwise recovery from valuation limits and standard-part continuity from fine continuity. |
 | [Surcomplex analysis](surcomplex/analysis/) | Read the main local-to-global arguments. Corrected fixed-point evaluation to faithfulness of function germs, proved the uniform Taylor bound with summable absolute values, and separated fine class statements from fixed-workspace assertions. Repaired root and reciprocal-support hypotheses, boundedness and function-class comparisons, and the bare-inequality Rouché counterexample. Extended the stated reciprocal-exponential value distribution to every explicit twist using a surviving cofinal family of periods; corrected kernel and branch comparisons. |
 | [Differential equations](surcomplex/differential-equations/) | Reviewed the earlier scalar, finite-matrix, workspace and coherent-coordinate chains and reconciled their scope statements with the later regular-singular comparison. Corrected the domains of `Obs`, `Φ` and the normalized primitive; separated finite-system classification from Hermitian eigenvalue computation. Added the exact cocycle counterexample, expanded Dickson's lemma and the set-sized witness construction, and supplied missing coefficient, nonzero and differential-hull hypotheses. Corrected differential algebraicity, monodromy assumptions, derivative notation and stale implementation claims. The new regular-singular and autonomous proof chains have not received a full review. |
+| [Hahn-valued measures](surreal/hahn-valued-measures-and-probability/) | Read the main scalar, common-support, cylinder, product, moment, quadrature, null-ideal and coefficientwise extension proofs through conditioning. Corrected subfamily versus regrouping sums, nonnegative versus strictly positive cylinder tests, and the false leading-scalar-positivity comparison. Added an elementary coefficientwise positivity lemma and used it in boundary and mixed product constructions; expanded finite-factor reduction and the quadrature compression argument. Supplied example group and zero-case hypotheses, narrowed the near-boundary non-necessity claim, and aligned current Lean scope with the ledger. Checked the compact-interval moment citations against Schmüdgen v1 and the finite spectral references against the local report; other imported results and original-source reconciliation remain outside this review. |
 
 Each correction was reviewed against its local definitions and downstream uses
 within the stated scope. Changed PDFs were rebuilt and affected pages inspected.
@@ -97,6 +98,15 @@ match the preserved originals. An independent exact calculation confirmed
 the nonzero fourth-order coefficient in the cocycle counterexample.
 Members 11 and 12 were not rerun in this review.
 
+The Hahn-measure article and catalogue rebuilt in three passes without warnings
+or box issues, at 64 and 21 pages, and the revised pages were inspected.
+All three unchanged programs passed on temporary copies at 5,135, 682 and
+1,009 assertions. All six copied program/build files match the preserved
+originals; the historical source-15 total still includes its explicitly
+identified tautological check. The new elementary positivity lemma brings
+the canonical index to 1,753 standard entries; an independent parser checks
+all 36 reports.
+
 ## Collection-wide work
 
 The [reader map](README.md), [catalogue](manifest.tex) and statement index
@@ -119,9 +129,12 @@ this checks the integration, not the new mathematical claims.
 
 ## Remaining scope
 
-The ten reports added on September 22 and the new sections in differential
-equations, dynamics, entire functions, nonabelian support, spectral theory and
-exponential automorphism rigidity are outside the earlier review scopes.
+Of the ten reports added on September 22, Hahn-valued measures has now
+received the main-text review recorded above. The other nine additions and
+the new sections in differential equations, dynamics, entire functions,
+nonabelian support, spectral theory and exponential automorphism rigidity
+remain outside the earlier review scopes, apart from explicitly recorded
+integration corrections.
 Their delivered proof and source audits are inputs to review, not evidence
 that this pass has checked them. Earlier validation counts above refer to
 the report versions and suites then reviewed.
