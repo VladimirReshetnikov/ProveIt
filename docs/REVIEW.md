@@ -20,6 +20,10 @@ No row below certifies every claim in an entire report.
 | [Canonical forms and option graphs](surreal/canonical-forms-need-not-be-subgraphs/) | Read the finite witnesses, prefix/minimum arguments, both girth constructions, classification and ordinal examples. Proved that the first spaced-spine construction already has maximum degree three and is planar in traversal leaf order. Supplied sign and template-disjointness steps; corrected the implications between triangle-free and containment failures, stronger-containment scope, and the recorded comparison-oracle claims. |
 | [Genetic gaps and primitives](surreal/genetic-gaps-and-primitives/) | Read the main article and short proof. Strengthened `thm:general` with one positive radius valid at every input, using the set of positive pairwise differences and no simultaneous choice of witnesses. Distinguished local order-field openness from the source's restricted set-union convention, and checked the cited option-construction and topology conventions against their primary texts. |
 | [Exponential automorphism rigidity](surreal/exponential-automorphism-rigidity/) | Read the displacement, valuation, lifting-obstruction, logarithmic-modulus and derivation arguments. Added a direct valuation proof of the rational-dilation obstruction while retaining the multiplication proof. Made the extra real-closedness hypothesis and nonzero logarithmic-modulus domain explicit in summaries. Verified the definition/question correspondence against the pinned KKS v3 PDF, without asserting priority or formal verification. |
+| [Ordinal-support product birthdays](surreal/gonshor-product-birthdays/) | Read the sign-block, coefficient-cancellation, endpoint and inverse arguments. Expanded the cofinal squeeze at arbitrary limit ordinals and the first-differing-Cantor-coefficient argument for the two predecessor pairs. Made the finite inverse cutoff explicit and restricted the executable four-coefficient algorithm to rational inputs with decidable dyadic tests. Checked the sign rules against the pinned primary source. |
+| [Laurent birthdays](surreal/gonshor-laurent-birthdays/) | Read the full mathematical dependency chain from real birthdays through finite products, infinite transfer, reciprocals and the spectrum. Corrected the pinned sign-rule citations, distinguished value birthdays from cut ranks, and specified original-prefix comparisons and successor deletion. Expanded extreme-term noncancellation, ordinal cofinal bounds and cancellation-aware finite jets; added the counterexample explaining the reciprocal's leading-exponent hypothesis. |
+| [Polynomial algebra](surcomplex/polynomial-algebra/) | Read the main proofs through the multivariate residue comparison. Added nonconstant/nonzero and occupied-ball hypotheses where needed; qualified the converse from open-ball bijectivity by a nontrivial value group and supplied its singleton counterexample. Corrected the binomial support shift and quartic directions. Expanded summability indexing, zero-error lifting and the finite Nullstellensatz certificate for an arbitrary ideal; distinguished the positive-support ideal and effective-input requirements. The corrections received a second independent review. |
+| [Computer algebra](foundations-and-computation/computer-algebra/) | Reviewed the main mathematical and representation contracts and compared prototype claims with their sources. Separated general Hahn residue from ordinary standard part, supplied coefficient/embedding and nonzero-polynomial hypotheses, and corrected valuation-error exponents, a geometric-tail index and constructor calls. Distinguished coordinate-significance changes from reversal of every inequality, and historical execution/package claims from current checks and Lean coverage. |
 
 Each correction was reviewed against its local definitions and downstream uses
 within the stated scope. Changed PDFs were rebuilt and affected pages inspected.
@@ -32,6 +36,14 @@ the range filter is removed. Both option-graph suites were rerun successfully,
 including all 3,860 exhaustive forms, 126 spaced-spine instances and 710
 sparse/cycle certificates. Original broadcast test data were preserved without
 a new run. These checks do not prove infinite statements.
+
+Both birthday PDFs and the polynomial PDF rebuilt without warnings. The revised
+computer-algebra PDF retains exactly its baseline eight underfull-box notices.
+Six product-birthday example checks agree across the three existing evaluators;
+the Laurent quick suite passes its 12 examples, 405 dyadic-length checks,
+3 ordinal checks and 1,000 random pairs. The unchanged computer-algebra Python
+suites pass separately at 69/69 and 323/323. No new Wolfram run is claimed.
+Historical programs and recorded outputs for these four reports were preserved.
 
 ## Collection-wide work
 
@@ -50,14 +62,14 @@ from the current tree does not discharge source-claim reconciliation.
 The reports above have received targeted corrections or a main-text reading,
 as recorded in each row. Uninspected portions, imported results, source-claim
 reconciliation and any formalization remain separate obligations. The other
-fifteen main reports have been mapped for notation and navigation but have not
+eleven main reports have been mapped for notation and navigation but have not
 received a full mathematical review in this pass:
 
-- Gamma functions; both birthday reports.
+- Gamma functions.
 - Surcomplex analysis; contours and Stokes; differential equations; entire
   functions at arbitrary rank; finite deformations; global divisors; nonabelian
-  support; polynomial algebra; rank-one Berkovich geometry; spectral theory.
-- Surquaternions; computer algebra.
+  support; rank-one Berkovich geometry; spectral theory.
+- Surquaternions.
 
 Continue with elementary statements and their dependencies before broad
 classification theorems. For each portion, check definitions and size/domain

@@ -517,20 +517,20 @@ Source: [foundations-and-computation/computer-algebra/article.tex](foundations-a
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Proposition | `cas:prop-countable` (line 560) | The finite-description bound |
-| Theorem | `cas:thm-zerotest` (line 610) | Total coefficient access does not decide zero |
-| Corollary | `cas:cor-sign` (line 662) | No universal three-way sign; equality reduces to zero testing |
-| Corollary | `cas:cor-leading` (line 669) | No universal leading-term algorithm |
-| Proposition | `cas:prop-validation` (line 695) | Unrestricted support validation is undecidable |
-| Proposition | `cas:prop-leading` (line 715) | A high-rank leading-term and sign obstruction |
-| Theorem | `cas:thm-core` (line 1073) | Effective rational monomial core |
-| Theorem | `cas:thm-realclosure` (line 1192) | An implementable real-closed and algebraically closed layer |
-| Theorem | `cas:thm-grid` (line 1420) | Finite extraction from a positive grid |
-| Proposition | `cas:prop-precision` (line 1571) | Basic certified precision rules |
-| Proposition | `cas:prop-finiteprefix` (line 1617) | Finite-prefix criterion for rank-one grids |
-| Proposition | `cas:prop-lift` (line 2134) | Correctness of infinitesimal substitution |
-| Proposition | `cas:prop-periods` (line 3379) | Every global extension acquires an infinite period |
-| Proposition | `cas:prop-archimedean` (line 3736) | No order-preserving embedding |
+| Proposition | `cas:prop-countable` (line 564) | The finite-description bound |
+| Theorem | `cas:thm-zerotest` (line 614) | Total coefficient access does not decide zero |
+| Corollary | `cas:cor-sign` (line 666) | No universal three-way sign; equality reduces to zero testing |
+| Corollary | `cas:cor-leading` (line 673) | No universal leading-term algorithm |
+| Proposition | `cas:prop-validation` (line 699) | Unrestricted support validation is undecidable |
+| Proposition | `cas:prop-leading` (line 719) | A high-rank leading-term and sign obstruction |
+| Theorem | `cas:thm-core` (line 1079) | Effective rational monomial core |
+| Theorem | `cas:thm-realclosure` (line 1209) | An implementable real-closed and algebraically closed layer |
+| Theorem | `cas:thm-grid` (line 1439) | Finite extraction from a positive grid |
+| Proposition | `cas:prop-precision` (line 1590) | Basic certified precision rules |
+| Proposition | `cas:prop-finiteprefix` (line 1636) | Finite-prefix criterion for rank-one grids |
+| Proposition | `cas:prop-lift` (line 2154) | Correctness of infinitesimal substitution |
+| Proposition | `cas:prop-periods` (line 3399) | Every global extension acquires an infinite period |
+| Proposition | `cas:prop-archimedean` (line 3756) | No order-preserving embedding |
 
 ### foundations
 
@@ -1436,63 +1436,63 @@ Source: [surcomplex/polynomial-algebra/article.tex](surcomplex/polynomial-algebr
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Proposition | `polynomial:prop:workspace` (line 376) | A workspace for every set of data |
-| Lemma | `polynomial:lem:support` (line 475) | Hahn--Neumann support calculus |
-| Theorem | `polynomial:thm:fta` (line 586) | Finite polynomial algebra over $K$ |
-| Theorem | `polynomial:thm:crt` (line 647) | Finite Hermite interpolation and CRT |
-| Proposition | `polynomial:prop:rootbounds` (line 725) | Cauchy bounds and a radial bound |
-| Theorem | `polynomial:thm:gausslucas` (line 762) | Surcomplex Gauss--Lucas |
-| Proposition | `polynomial:prop:weighted` (line 791) | Weighted incomplete polynomials, and a converse |
-| Theorem | `polynomial:thm:jensen` (line 817) | Surcomplex Jensen disk theorem |
-| Lemma | `polynomial:lem:compression` (line 861) | Differentiating compression |
-| Lemma | `polynomial:lem:schur` (line 872) | Finite-dimensional Schur inequality |
-| Theorem | `polynomial:thm:schoenberg` (line 891) | Sharp surcomplex Schoenberg inequality |
-| Theorem | `polynomial:thm:orderrouche` (line 966) | Rouch\'e on an order-modulus circle |
-| Corollary | `polynomial:cor:pellet` (line 996) | Monomial dominance |
-| Theorem | `polynomial:thm:hermite` (line 1047) | Hermite's signature criterion over surreal real closed fields |
-| Theorem | `polynomial:thm:pseudozeros` (line 1105) | Exact uncertainty root sets in two geometries |
-| Lemma | `polynomial:lem:gaussvaluation` (line 1193) | Multiplicativity |
-| Theorem | `polynomial:thm:initialroots` (line 1216) | Initial polynomial and all residue-direction root counts |
-| Corollary | `polynomial:cor:valrouche` (line 1272) | Valuation Rouch\'e: preservation of the whole initial polynomial |
-| Theorem | `polynomial:thm:newton` (line 1317) | Newton's root-valuation rule |
-| Theorem | `polynomial:thm:imageballs` (line 1419) | Exact image and fiber degree |
-| Corollary | `polynomial:cor:normalization` (line 1461) | Affine normalization of a finite polynomial problem |
-| Theorem | `polynomial:thm:finitemap` (line 1491) | A polynomial is a finite flat map of its degree |
-| Theorem | `polynomial:thm:branchvalues` (line 1515) | Branch-value polynomial |
-| Proposition | `polynomial:prop:ramification` (line 1543) | Finite and infinite ramification |
-| Corollary | `polynomial:cor:polynomialmaps` (line 1564) | Surjectivity and polynomial injections |
-| Lemma | `polynomial:lem:initialderivative` (line 1584) | The derivative of an initial polynomial |
-| Theorem | `polynomial:thm:criticalballs` (line 1607) | Exact critical-point conservation in occupied balls |
-| Corollary | `polynomial:cor:ramificationball` (line 1639) | Ramification count on an arbitrary mapping ball |
-| Corollary | `polynomial:cor:nearest` (line 1660) | Valuative Gauss--Lucas and nearest neighbours |
-| Theorem | `polynomial:thm:branch` (line 1686) | Critical residue directions inside a cluster |
-| Corollary | `polynomial:cor:tree` (line 1748) | Critical allocation by the root tree |
-| Proposition | `polynomial:prop:clusterdisc` (line 1815) | Discriminant as a finite level sum |
-| Proposition | `polynomial:prop:disctree` (line 1837) | Discriminant as a sum over the root tree |
-| Theorem | `polynomial:thm:hensel` (line 1889) | Support-controlled coprime Hensel factorization |
-| Corollary | `polynomial:cor:simpleroot` (line 1942) | Simple-root lifting and the first correction |
-| Corollary | `polynomial:cor:clusterfactor` (line 1961) | Canonical standard-part cluster factors |
-| Theorem | `polynomial:thm:parameterhensel` (line 1999) | Parameter factor lifting without repeated shrinking |
-| Theorem | `polynomial:thm:holder` (line 2081) | Optimal valuation-H\"older root matching |
-| Corollary | `polynomial:cor:derivativeholder` (line 2132) | Simultaneous stability for derivatives |
-| Theorem | `polynomial:thm:stability` (line 2182) | Exact matching, full cluster stability, and a second-order Newton error |
-| Corollary | `polynomial:cor:discprecision` (line 2309) | Discriminant precision protects all clusters |
-| Corollary | `polynomial:cor:treestability` (line 2388) | Preservation of the tree and of its critical directions |
-| Theorem | `polynomial:thm:residuepairing` (line 2464) | Universal residue pairing and explicit dual basis |
-| Theorem | `polynomial:thm:trace` (line 2524) | Universal trace identity |
-| Proposition | `polynomial:prop:localresidues` (line 2595) | Finite residue formula at multiple roots |
-| Proposition | `polynomial:prop:tracenormroots` (line 2636) | Field-level traces and norms, including collisions |
-| Theorem | `polynomial:thm:discriminant` (line 2661) | Discriminant and trace-pairing degeneration |
-| Lemma | `polynomial:lem:zariski` (line 2747) | Zariski's lemma in the needed form |
-| Theorem | `polynomial:thm:nullstellensatz` (line 2775) | Surcomplex Nullstellensatz |
-| Proposition | `polynomial:prop:finitealgebra` (line 2837) | Finite fibers and local lengths |
-| Theorem | `polynomial:thm:globalfree` (line 2926) | Global finite-free normal forms |
-| Corollary | `polynomial:cor:globalbezout` (line 2978) | A global B\'ezout count, including infinite-scale roots |
-| Theorem | `polynomial:thm:multiperfect` (line 3037) | A coefficient-independent perfect pairing |
-| Theorem | `polynomial:thm:jacobian` (line 3078) | B\'ezoutian kernel and Jacobian duality |
-| Corollary | `polynomial:cor:eulerjacobi` (line 3133) | Simple-root weights and Euler--Jacobi vanishing |
-| Theorem | `polynomial:thm:polyparameters` (line 3177) | Global polynomial families on one ordinary parameter domain |
-| Theorem | `polynomial:thm:analyticcomparison` (line 3219) | Polynomial identification of the Jacobian trace element |
+| Proposition | `polynomial:prop:workspace` (line 377) | A workspace for every set of data |
+| Lemma | `polynomial:lem:support` (line 476) | Hahn--Neumann support calculus |
+| Theorem | `polynomial:thm:fta` (line 589) | Finite polynomial algebra over $K$ |
+| Theorem | `polynomial:thm:crt` (line 651) | Finite Hermite interpolation and CRT |
+| Proposition | `polynomial:prop:rootbounds` (line 729) | Cauchy bounds and a radial bound |
+| Theorem | `polynomial:thm:gausslucas` (line 766) | Surcomplex Gauss--Lucas |
+| Proposition | `polynomial:prop:weighted` (line 795) | Weighted incomplete polynomials, and a converse |
+| Theorem | `polynomial:thm:jensen` (line 821) | Surcomplex Jensen disk theorem |
+| Lemma | `polynomial:lem:compression` (line 867) | Differentiating compression |
+| Lemma | `polynomial:lem:schur` (line 878) | Finite-dimensional Schur inequality |
+| Theorem | `polynomial:thm:schoenberg` (line 897) | Sharp surcomplex Schoenberg inequality |
+| Theorem | `polynomial:thm:orderrouche` (line 972) | Rouch\'e on an order-modulus circle |
+| Corollary | `polynomial:cor:pellet` (line 1002) | Monomial dominance |
+| Theorem | `polynomial:thm:hermite` (line 1053) | Hermite's signature criterion over surreal real closed fields |
+| Theorem | `polynomial:thm:pseudozeros` (line 1111) | Exact uncertainty root sets in two geometries |
+| Lemma | `polynomial:lem:gaussvaluation` (line 1199) | Multiplicativity |
+| Theorem | `polynomial:thm:initialroots` (line 1222) | Initial polynomial and all residue-direction root counts |
+| Corollary | `polynomial:cor:valrouche` (line 1278) | Valuation Rouch\'e: preservation of the whole initial polynomial |
+| Theorem | `polynomial:thm:newton` (line 1323) | Newton's root-valuation rule |
+| Theorem | `polynomial:thm:imageballs` (line 1428) | Exact image and fiber degree |
+| Corollary | `polynomial:cor:normalization` (line 1470) | Affine normalization of a finite polynomial problem |
+| Theorem | `polynomial:thm:finitemap` (line 1503) | A polynomial is a finite flat map of its degree |
+| Theorem | `polynomial:thm:branchvalues` (line 1527) | Branch-value polynomial |
+| Proposition | `polynomial:prop:ramification` (line 1555) | Finite and infinite ramification |
+| Corollary | `polynomial:cor:polynomialmaps` (line 1576) | Surjectivity and polynomial injections |
+| Lemma | `polynomial:lem:initialderivative` (line 1596) | The derivative of an initial polynomial |
+| Theorem | `polynomial:thm:criticalballs` (line 1619) | Exact critical-point conservation in occupied balls |
+| Corollary | `polynomial:cor:ramificationball` (line 1651) | Ramification count on an arbitrary mapping ball |
+| Corollary | `polynomial:cor:nearest` (line 1679) | Valuative Gauss--Lucas and nearest neighbours |
+| Theorem | `polynomial:thm:branch` (line 1705) | Critical residue directions inside a cluster |
+| Corollary | `polynomial:cor:tree` (line 1767) | Critical allocation by the root tree |
+| Proposition | `polynomial:prop:clusterdisc` (line 1834) | Discriminant as a finite level sum |
+| Proposition | `polynomial:prop:disctree` (line 1856) | Discriminant as a sum over the root tree |
+| Theorem | `polynomial:thm:hensel` (line 1908) | Support-controlled coprime Hensel factorization |
+| Corollary | `polynomial:cor:simpleroot` (line 1961) | Simple-root lifting and the first correction |
+| Corollary | `polynomial:cor:clusterfactor` (line 1982) | Canonical standard-part cluster factors |
+| Theorem | `polynomial:thm:parameterhensel` (line 2020) | Parameter factor lifting without repeated shrinking |
+| Theorem | `polynomial:thm:holder` (line 2102) | Optimal valuation-H\"older root matching |
+| Corollary | `polynomial:cor:derivativeholder` (line 2153) | Simultaneous stability for derivatives |
+| Theorem | `polynomial:thm:stability` (line 2203) | Exact matching, full cluster stability, and a second-order Newton error |
+| Corollary | `polynomial:cor:discprecision` (line 2330) | Discriminant precision protects all clusters |
+| Corollary | `polynomial:cor:treestability` (line 2410) | Preservation of the tree and of its critical directions |
+| Theorem | `polynomial:thm:residuepairing` (line 2486) | Universal residue pairing and explicit dual basis |
+| Theorem | `polynomial:thm:trace` (line 2546) | Universal trace identity |
+| Proposition | `polynomial:prop:localresidues` (line 2617) | Finite residue formula at multiple roots |
+| Proposition | `polynomial:prop:tracenormroots` (line 2658) | Field-level traces and norms, including collisions |
+| Theorem | `polynomial:thm:discriminant` (line 2683) | Discriminant and trace-pairing degeneration |
+| Lemma | `polynomial:lem:zariski` (line 2769) | Zariski's lemma in the needed form |
+| Theorem | `polynomial:thm:nullstellensatz` (line 2797) | Surcomplex Nullstellensatz |
+| Proposition | `polynomial:prop:finitealgebra` (line 2862) | Finite fibers and local lengths |
+| Theorem | `polynomial:thm:globalfree` (line 2951) | Global finite-free normal forms |
+| Corollary | `polynomial:cor:globalbezout` (line 3003) | A global B\'ezout count, including infinite-scale roots |
+| Theorem | `polynomial:thm:multiperfect` (line 3062) | A coefficient-independent perfect pairing |
+| Theorem | `polynomial:thm:jacobian` (line 3103) | B\'ezoutian kernel and Jacobian duality |
+| Corollary | `polynomial:cor:eulerjacobi` (line 3158) | Simple-root weights and Euler--Jacobi vanishing |
+| Theorem | `polynomial:thm:polyparameters` (line 3202) | Global polynomial families on one ordinary parameter domain |
+| Theorem | `polynomial:thm:analyticcomparison` (line 3244) | Polynomial identification of the Jacobian trace element |
 
 ### rank-one-berkovich
 
@@ -1923,23 +1923,23 @@ Source: [surreal/gonshor-laurent-birthdays/article.tex](surreal/gonshor-laurent-
 | Kind | Source label or line | Heading |
 |---|---|---|
 | Theorem | `thm:main` (line 143) | Laurent-series restriction |
-| Lemma | `lem:add` (line 253) | Untitled |
-| Lemma | `lem:realproduct` (line 291) | Real scalar product bound |
-| Lemma | `lem:prefix` (line 332) | Prefixes and countable unions |
-| Lemma | `lem:block` (line 355) | Untitled |
-| Theorem | `thm:ordinalpoly` (line 388) | Ordinal-exponent polynomials |
-| Theorem | `thm:finiteformula` (line 460) | Finite Laurent formula |
-| Corollary | `cor:split` (line 538) | Exact finite splitting |
-| Lemma | `lem:bounded` (line 579) | Untitled |
-| Lemma | `lem:degree` (line 615) | Untitled |
-| Lemma | `lem:crossmono` (line 637) | Positive monomial times bounded part |
-| Corollary | `cor:crosspoly` (line 687) | Untitled |
-| Theorem | `thm:finiteproduct` (line 704) | Finite Laurent product theorem |
-| Corollary | `cor:strict` (line 733) | Equality with a finite negative tail |
-| Theorem | `thm:infinite` (line 776) | Infinite Laurent birthday formula |
-| Lemma | `lem:jets` (line 820) | Finite-jet stabilization |
-| Corollary | `cor:reciprocal` (line 923) | Untitled |
-| Corollary | `cor:spectrum` (line 957) | Untitled |
+| Lemma | `lem:add` (line 260) | Untitled |
+| Lemma | `lem:realproduct` (line 300) | Real scalar product bound |
+| Lemma | `lem:prefix` (line 343) | Prefixes and countable unions |
+| Lemma | `lem:block` (line 366) | Untitled |
+| Theorem | `thm:ordinalpoly` (line 399) | Ordinal-exponent polynomials |
+| Theorem | `thm:finiteformula` (line 471) | Finite Laurent formula |
+| Corollary | `cor:split` (line 549) | Exact finite splitting |
+| Lemma | `lem:bounded` (line 590) | Untitled |
+| Lemma | `lem:degree` (line 626) | Untitled |
+| Lemma | `lem:crossmono` (line 649) | Positive monomial times bounded part |
+| Corollary | `cor:crosspoly` (line 699) | Untitled |
+| Theorem | `thm:finiteproduct` (line 716) | Finite Laurent product theorem |
+| Corollary | `cor:strict` (line 745) | Equality with a finite negative tail |
+| Theorem | `thm:infinite` (line 796) | Infinite Laurent birthday formula |
+| Lemma | `lem:jets` (line 846) | Finite-jet stabilization |
+| Corollary | `cor:reciprocal` (line 952) | Untitled |
+| Corollary | `cor:spectrum` (line 991) | Untitled |
 
 ### gonshor-product-birthdays
 
@@ -1947,20 +1947,20 @@ Source: [surreal/gonshor-product-birthdays/surreal_product_birthdays.tex](surrea
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `lem:degree-arithmetic` (line 256) | Untitled |
-| Lemma | `lem:interval` (line 287) | Untitled |
-| Proposition | `prop:closure` (line 332) | Untitled |
-| Theorem | `thm:endpoint` (line 453) | Exact birthday |
-| Corollary | `cor:support-sandwich` (line 575) | Untitled |
-| Theorem | `thm:support-product` (line 597) | Sharp support bound |
-| Proposition | `prop:infinite-gap` (line 627) | Strict degree gap |
-| Lemma | `lem:dyadic-product` (line 666) | Dyadic factors |
-| Lemma | `lem:scalar` (line 691) | A dyadic scalar cannot increase the leading birthday data |
-| Theorem | `thm:main` (line 742) | Product birthdays on \(\A\) |
-| Corollary | `cor:degree` (line 766) | Degree does not rise |
-| Proposition | `prop:four` (line 801) | No full convolution is needed |
-| Proposition | `prop:bounded` (line 948) | Untitled |
-| Proposition | `prop:local` (line 977) | Untitled |
+| Lemma | `lem:degree-arithmetic` (line 261) | Untitled |
+| Lemma | `lem:interval` (line 292) | Untitled |
+| Proposition | `prop:closure` (line 341) | Untitled |
+| Theorem | `thm:endpoint` (line 465) | Exact birthday |
+| Corollary | `cor:support-sandwich` (line 591) | Untitled |
+| Theorem | `thm:support-product` (line 613) | Sharp support bound |
+| Proposition | `prop:infinite-gap` (line 644) | Strict degree gap |
+| Lemma | `lem:dyadic-product` (line 683) | Dyadic factors |
+| Lemma | `lem:scalar` (line 708) | A dyadic scalar cannot increase the leading birthday data |
+| Theorem | `thm:main` (line 761) | Product birthdays on \(\A\) |
+| Corollary | `cor:degree` (line 785) | Degree does not rise |
+| Proposition | `prop:four` (line 821) | No full convolution is needed |
+| Proposition | `prop:bounded` (line 996) | Untitled |
+| Proposition | `prop:local` (line 1025) | Untitled |
 
 ### hahn-evaluation-at-omega
 
