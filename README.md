@@ -402,5 +402,19 @@ small positive monomial produces another solution. Differentiation at arbitrary
 infinitesimal displacements, multivariable analytic lifting, analytic composition,
 the separate trigonometric Taylor formulas, and universe coherence remain
 separate obligations.
+The reports placed after the canonical inventory are formalized clause by
+clause. Strong sums of nonnegative Hahn series are nonnegative, and strongly
+summable weights define strong Hahn measures on all subsets, additive on every
+set-indexed disjoint family, with pushforwards and coefficientwise integrals.
+Neumann's lemma bounds the words with a given sum without an Archimedean
+hypothesis, and labeled word products, finite-subset products and the infinite
+product `∏(1 - q_n)` are strongly summable. Prony's Hankel factorization,
+determinant, uniqueness up to permutation and exact last-moment annihilator hold
+over any field. The negative-atom Toeplitz matrices are positive definite for
+every ordinary size at a positive infinitesimal, with exact Schur iterates.
+Resolvent identities, projection-flag generators and rank-one completions are
+exact, cofinite spans stabilize after one finite deletion, the Wick diagram
+kernel has a finite indecomposable Hilbert basis, and valuations of
+positive-definite Hahn matrices obey Cauchy–Schwarz.
 A successful build proves only the imported Lean
 statements, not coverage of all the source documents.
