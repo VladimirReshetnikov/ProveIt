@@ -15,10 +15,12 @@ import Surreal.Algebra.PolynomialInverseJet
 import Surreal.Algebra.PolynomialLagrange
 import Surreal.Algebra.PolynomialMultiplicity
 import Surreal.Algebra.PolynomialNewton
+import Surreal.Algebra.PolynomialNormResultant
 import Surreal.Algebra.PolynomialQuotient
 import Surreal.Algebra.PolynomialRationalJets
 import Surreal.Algebra.PolynomialResidueDual
 import Surreal.Algebra.PolynomialResidueGram
+import Surreal.Algebra.PolynomialResidueInfinity
 import Surreal.Algebra.PolynomialResiduePairing
 import Surreal.Algebra.PolynomialResultant
 import Surreal.Algebra.PolynomialRootBounds

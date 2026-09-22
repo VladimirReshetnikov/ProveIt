@@ -70,6 +70,10 @@ characteristic.
 The residue Gram determinant is the fixed reversal sign and its inverse is
 the coefficient matrix of the finite bivariate Bézout kernel. The trace Gram
 matrix factors as the residue Gram matrix times multiplication by the derivative.
+The quotient norm equals the polynomial resultant over every commutative
+ring, so the trace Gram determinant equals the native discriminant even
+in positive characteristic. A verified formal Laurent inverse also identifies
+the residue functional with the coefficient at infinity.
 
 The Hahn layer uses mathlib's `SummableFamily` and proves the full Neumann
 support lemma, including finiteness across all word lengths. It distinguishes

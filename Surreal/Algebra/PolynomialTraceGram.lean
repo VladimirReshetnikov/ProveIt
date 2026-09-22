@@ -11,8 +11,9 @@ It holds over an arbitrary commutative coefficient ring, without a
 separability or reducedness assumption. Its determinant is the fixed
 residue-Gram sign times the quotient norm of the derivative.
 
-Identifying that norm with the polynomial resultant, and hence this
-determinant with the native polynomial discriminant, is a separate step.
+The identification of that norm with the polynomial resultant, and hence
+this determinant with the native polynomial discriminant, is proved in
+`PolynomialNormResultant`.
 -/
 
 namespace Surreal.FinitePolynomial
