@@ -517,9 +517,8 @@ run.
 M2's README lists a \texttt{SHA256SUMS} file among the package contents, and
 the delivered archive did contain one. It is not present in this repository:
 the collection carries no checksum manifests, so the file was removed when the
-package was unpacked. The README ships verbatim and therefore still refers to
-it. Nothing was dropped in transit, and the README does not overstate its
-archive's contents. M2's README also gives clone/checkout/build/run commands for
+package was unpacked. Nothing was dropped in transit, and the README did not
+overstate its archive's contents. M2's README also gives clone/checkout/build/run commands for
 both POSIX \texttt{sh} and PowerShell and explicitly labels them ``a
 reproduction recipe, NOT commands executed while preparing this package,'' with
 the instruction: build the upstream project with its original pinned dependency
@@ -4516,7 +4515,7 @@ duplicated in any of the three archives, and none of them was machine-verified.
 
 \subsection*{The three merged audits}
 For completeness, the three audit archives merged into this report are recorded
-in this repository's \texttt{sources/} directory as
+in this repository's provenance material as
 \texttt{01-size-ledger-and-universe-audit.tex} (M1, 110{,}177 bytes, 1073
 lines), \texttt{03-set-and-type-theory-comparison.tex} (M2, 100{,}299 bytes, 923
 lines) and \texttt{06-classes-universes-and-lean-audit.tex} (M3, 125{,}084
@@ -4525,7 +4524,9 @@ recorded SHA-256 values for its own \texttt{.tex}
 (\texttt{0f51c217e7b090089c245c46b0f8985cc16587d94b3d0796d5ddb361fcb31e17}) and
 its own \texttt{.pdf}
 (\texttt{aa7ea0641f50b40de9fe4a5146aefa6291cef0c7e5f53273ac0c83f62b6fc3d6}); it
-is the only audit that hashed its own outputs.
+is the only audit that hashed its own outputs. None of those files is
+redistributed with this report; the disposition of every result they contain is
+recorded in the provenance material that remains.
 
 \section{Forbidden shortcuts and regression tests}
 \label{found:app:shortcuts}
@@ -4798,8 +4799,7 @@ compilations and their axiom probes, and nothing else.
 \label{found:item:compiledscope}
 \item M2's README refers to a \texttt{SHA256SUMS} file which its archive did
 ship and which this repository does not carry, checksum manifests being outside
-the collection's scope. The verbatim README was left unaltered rather than
-edited to match.
+the collection's scope.
 \item M2's clone/build/run commands are a reproduction recipe, not commands that
 were executed. Do not run \texttt{lake update} and then describe the result as a
 check of the pinned revision.

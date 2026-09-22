@@ -4,9 +4,8 @@
 Determinantal Ramification**
 
 One article, `article.tex` (52 pages compiled), assembled from **two
-separately delivered manuscripts**, both kept verbatim in `sources/`, with
-`code/` and `data/` holding both sets of exact symbolic checks and their
-recorded output.
+separately delivered manuscripts**, with `code/` and `data/` holding both
+sets of exact symbolic checks and their recorded output.
 
 ## Provenance
 
@@ -296,10 +295,9 @@ Every limitation both manuscripts shipped with is kept here.
 - The audits behind both manuscripts were targeted. A's
   (`repository-audit.md`) inspected the catalogue, `polynomial-algebra`'s
   full inventory and the opening of its source, and the opening of the
-  `foundations` README. B's
-  (`sources/02-determinantal-ramification-descent-source-audit.md`) inspected
-  the repo map, the main README, the full spectral README, and selected
-  visible material of the differential-equations article. Neither was
+  `foundations` README. B's own source audit, delivered with the
+  manuscript, inspected the repo map, the main README, the full spectral
+  README, and selected visible material of the differential-equations article. Neither was
   line-by-line, and neither treats a search returning no matches as proof
   that a topic occurs nowhere.
 
@@ -386,8 +384,8 @@ examples are checked separately with exact square-root expressions.
 
 ## Shipped-layout notes
 
-Files were renamed on ingest and the manuscripts, which ship verbatim, still
-name their delivery paths.
+Files were renamed on ingest, and text carried over from the manuscripts
+still names their delivery paths.
 
 - A's Appendix B and `repository-audit.md` name `code/verify_examples.py` and
   `data/verification_report.json`; the files are `code/verify-examples.py`
@@ -399,7 +397,7 @@ name their delivery paths.
   `pdf_bytes: 492771`, which no longer matches the `article.pdf` beside it:
   the PDF is rebuilt on ingest, as every PDF in this collection is, and the
   article has since grown by a merge. Its `article_source_bytes: 88965` was
-  exact for A's text, which is now `sources/01-...tex` byte for byte.
+  exact for A's text as delivered.
   `data/02-determinantal-ramification-descent-build-report.json` is B's, and
   records its own delivered build: pdfTeX from TeX Live 2025/dev/Debian, 3
   passes, 26 pages, 0 TeX errors, 0 package warnings, 0 overfull or underfull

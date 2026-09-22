@@ -8,7 +8,7 @@ surcomplex analytic geometry rather than only its deformation theory.
 
 ## Provenance
 
-| Source in `sources/` | What it is the sole source of | Where it lands |
+| Source manuscript | What it is the sole source of | Where it lands |
 |---|---|---|
 | `01-radius-free-germs-nullstellensatz.tex` | the radius-free ring `A_n`, its strictness over `R_n`, germ-level division and preparation, the Noetherian / weak / strong Nullstellensatz / regularity package over `A_n`, workspace invariance and the full-surcomplex corollary, the analytic–formal comparison, the quantitative Hensel–Rouché theorem with root matching, and the two `A_2` examples | §3.1, §4.1, §5, §11.1, §11.2, §12, §§13.1–13.2 |
 | `07-finite-geometry-of-zeros.tex` | Noether normalization and finite maps over `R_n`, parameterized preparation and division on one fixed ordinary domain, the Koszul conjugacy and the vanishing of all higher Koszul homology, the base-change theorem, the contour-expansion residue `Lambda_F` and the constant residue frame, the length-five collision and the nonpolynomial corollary, and the predecessor assessment governing the novelty section | §1.4, §3.2, §4.2, §§6–7, §9.3, §10.1, §11.1, §§13.3–13.4 |
@@ -132,8 +132,9 @@ independently confirms the positive regularity statement.
 
 ## Which archives it came from, and what each contributed
 
-All three sources are in `sources/`, each with its own README and, for the
-third, its proof audit.
+The three source manuscripts are not shipped with this report; each arrived
+with its own README and, for the third, its proof audit, and what each one
+contributed is recorded below.
 
 ### `01-radius-free-germs-nullstellensatz.tex` — the base
 

@@ -33,8 +33,7 @@ inside that classification and two coherence obstructions.
 
 ## Which archives it came from
 
-Three independently written manuscripts of 21 September 2026, all kept in
-`sources/`:
+Three independently written manuscripts of 21 September 2026:
 
 | file | title |
 |---|---|

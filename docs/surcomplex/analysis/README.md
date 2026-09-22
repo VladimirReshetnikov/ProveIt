@@ -81,8 +81,6 @@ machine-checked, and merging them does not change that.
 - `article.pdf`, `article.tex` — the merged article.
 - `MERGE_NOTES.md` — provenance, notation, the seventeen notions, the eleven
   resolutions.
-- `sources/` — all nine manuscripts verbatim, `NN-slug.tex`, with their
-  READMEs. Nothing discarded.
 - `code/` — the nine verification programs, `NN-slug.py`. All nine were run and
   all nine pass; each states that finite symbolic checks do not establish the
   general theory.

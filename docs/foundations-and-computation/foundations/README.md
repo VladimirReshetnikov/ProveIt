@@ -51,7 +51,7 @@ The report does five things.
 
 ## Which archives it came from
 
-Three audit archives, all dated 21 September 2026, all shipped in `sources/`:
+Three audit archives, all dated 21 September 2026:
 
 | In this report | Archive | Size | Its own shape |
 |---|---|---|---|
@@ -63,11 +63,13 @@ M3 supplies the prose spine and the section order. M1's tabular apparatus and
 its finite-algebra descent theorem, and M2's topology counterexamples,
 forbidden-shortcut discipline and trigonometry material, are grafted onto it.
 
-The three READMEs, source-audit files, `build_report.json` / `build_report.txt`
-and `source_audit.json` ship verbatim in `sources/` and `data/`. The five Lean
-files from M1 and M2 ship verbatim in `code/` — including M2's `LogicalGuards`,
-which does not compile as delivered (see below). **Nothing in `sources/`,
-`code/` or `data/` was modified.**
+The `build_report.json` / `build_report.txt` and `source_audit.json` records
+ship verbatim in `data/`. The five Lean files from M1 and M2 ship verbatim in
+`code/` — including M2's `LogicalGuards`, which does not compile as delivered
+(see below). **Nothing in `code/` or `data/` was modified.** The three audit
+manuscripts themselves, and their READMEs, are not redistributed here; what
+each contributed, and how each of their results was disposed of, is recorded in
+the provenance material below and in the article.
 
 ### What each contributed uniquely
 
@@ -222,10 +224,9 @@ numbered items in eight groups. The headline items:
 
 Two further record-keeping notes carried forward. M2's README refers to a
 `SHA256SUMS` file: its archive did ship one, and this repository does not carry
-it, because the collection ships no checksum manifests. The README is preserved
-verbatim and so still names the file. And M2's reproduction recipe warns
-explicitly against running `lake update` and then describing the result as a
-check of the pinned revision.
+it, because the collection ships no checksum manifests. And M2's reproduction
+recipe warns explicitly against running `lake update` and then describing the
+result as a check of the pinned revision.
 
 ---
 
@@ -255,9 +256,8 @@ never by their labels.
 ## Directory
 
 ```
-article.tex   the merged report (311,127 bytes)
+article.tex   the merged report (311,143 bytes)
 article.pdf   94 pages
-sources/      the three audit .tex files, their READMEs and source audits  (verbatim)
 code/         the five Lean files from M1 and M2, three since compiled  (verbatim)
 data/         the three build/audit records from M2 and M3                 (verbatim)
 ```

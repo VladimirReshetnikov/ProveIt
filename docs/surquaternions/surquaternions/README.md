@@ -71,11 +71,12 @@ a false contradiction across the collection.
 ## Which archives it came from, and what each contributed
 
 The report is the **union** of two independently written manuscripts, both dated
-21 September 2026, preserved unchanged in `sources/`:
+21 September 2026. Neither is reproduced here; what each contributed is recorded below and
+in the article's own provenance material.
 
-* `sources/10-noncommutative-hahn-obstructions.tex` (+ its README), delivered as a 34-page
+* `10-noncommutative-hahn-obstructions.tex` (+ its README), delivered as a 34-page
   article with 27 numbered statements, from the archive `surquaternions_article(1).zip`;
-* `sources/11-radial-exponential-support-lifting.tex` (+ its README), delivered as a
+* `11-radial-exponential-support-lifting.tex` (+ its README), delivered as a
   32-page article, from the archive `surquaternions_article.zip`.
 
 Roughly two thirds of the mathematics is common to both — the algebra, norm, slice and
@@ -201,7 +202,7 @@ independently on copies of the trees** under Python 3.14.4 with SymPy 1.14.0; bo
 zero, reporting 252 identities in 69 groups and 31 checks respectively. Running on copies
 is not a formality — each script writes its result file beside itself, so an in-place re-run
 overwrites the delivered evidence and a byte-identity check afterwards would compare two
-equally modified copies and prove nothing. Nothing under `sources/`, `code/` or `data/` was
+equally modified copies and prove nothing. Nothing under `code/` or `data/` was
 modified in producing this report.
 
 To run them yourself, copy the tree first:
@@ -239,7 +240,6 @@ breaks across a page.
 article.tex   the merged report (all labels prefixed squat:)
 article.pdf   61 pages
 README.md     this guide
-sources/      the two source manuscripts and their READMEs, unchanged
 code/         the two source verification suites, unchanged
 data/         their recorded outputs and build metadata, unchanged
 ```

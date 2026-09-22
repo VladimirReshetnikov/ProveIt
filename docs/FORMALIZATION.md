@@ -30,12 +30,17 @@ theorem-environment results includes six examples and a design principle;
 the narrower inventory here counts its 23 theorem/lemma/proposition/corollary
 statements.
 
-There are also **40 preserved source manuscripts** under `sources/`. Their
-1075 literal standard result environments are not 1075 additional independent
-results: merged reports deliberately overlap them, and some change scope or
-resolve conflicting definitions. A complete coverage audit must map each source
-claim to an equivalent main-report statement, a separate proof obligation, or
-a documented mathematical correction. No such equivalence is presumed here.
+The merged reports were built from **40 source manuscripts**, which are **no
+longer shipped**: the `sources/` directories were removed from the collection.
+Those manuscripts carried 1075 literal standard result environments, which were
+never 1075 additional independent results -- merged reports deliberately overlap
+them, and some change scope or resolve conflicting definitions. The coverage
+obligation survives their removal: a complete audit must still map each source
+claim to an equivalent main-report statement, a separate proof obligation, or a
+documented mathematical correction. What remains in the tree to do that with is
+each report's own provenance material -- its per-member contribution tables, its
+reconciliation and conflict records, and the verification programs and recorded
+runs under `code/` and `data/`. No such equivalence is presumed here.
 The unnumbered companion texts
 [`short-proof.tex`](surreal/hahn-evaluation-at-omega/short-proof.tex) and
 [`short_proof.tex`](surreal/genetic-gaps-and-primitives/short_proof.tex)

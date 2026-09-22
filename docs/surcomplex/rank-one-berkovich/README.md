@@ -5,7 +5,7 @@ case study**
 
 One standalone research article, `article.tex` (30 pages compiled), with
 `code/` and `data/` holding the exact finite checks and their recorded
-output. Not a merge: it has no `sources/`.
+output. Not a merge: it is a single delivered manuscript.
 
 ## What the report is
 
