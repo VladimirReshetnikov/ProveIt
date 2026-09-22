@@ -26,6 +26,7 @@ import Surreal.HahnSeries.Complexify
 import Surreal.HahnSeries.ComplexNumbers
 import Surreal.HahnSeries.Conjugation
 import Surreal.HahnSeries.Composition
+import Surreal.HahnSeries.DiscriminantValuation
 import Surreal.HahnSeries.Evaluation
 import Surreal.HahnSeries.Neumann
 import Surreal.HahnSeries.PolynomialReduction

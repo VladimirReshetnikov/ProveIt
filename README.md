@@ -77,6 +77,9 @@ Roots of monic polynomials over this subring stay in it; for split polynomials,
 standard part preserves the root multiset with multiplicities.
 Resultant and nodal-derivative valuations are finite sums of root-separation
 valuations, with infinity retained when a product vanishes.
+Discriminant valuations give twice the pairwise separation sum with the
+leading-coefficient term; in the monic case they also equal the sum of
+derivative valuations at the roots.
 Coefficientwise real and imaginary parts identify Hahn series over `R[i]`
 with the quadratic extension of Hahn series over `R`. This identification
 also uses Mathlib's native real and complex coefficients; conjugation fixes
