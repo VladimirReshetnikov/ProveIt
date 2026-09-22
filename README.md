@@ -25,7 +25,7 @@ Apache license are included in the repository.
 
 ## Formalization
 
-The [source documents](docs/README.md) comprise fifteen research reports and
+The [source documents](docs/README.md) comprise eighteen research reports and
 their preserved source manuscripts. The
 [coverage and dependency ledger](docs/FORMALIZATION.md) records their statements,
 the proposed Layer A–E implementation order, and the exact scope of each
@@ -142,6 +142,12 @@ cut equation also holds for arbitrary small presentations of the summands.
 Native natural-number casts agree with finite all-plus sequences, and integer
 casts form an additive order embedding. Subtracting one from any upper bound
 of the naturals proves directly that they have no supremum.
+The ordered field extends these casts to rationals and ordinary reals.
+Halving any upper bound of the naturals gives another strictly smaller upper
+bound. The all-plus sequence of length omega exceeds every embedded real;
+its reciprocal is positive and smaller than every positive embedded real.
+Ordinal signs use Hessenberg natural addition and multiplication, with an
+explicit counterexample to preservation of ordinary ordinal addition.
 In its native order topology and compatible additive uniformity, every small
 subset is closed and discrete, convergent small-index nets are eventually
 equal to their limits, and small-index Cauchy nets are eventually constant.
@@ -158,9 +164,79 @@ numeric-game options proves surjectivity. The bridge preserves the original
 Conway addition, sign reversal, zero and one. Transporting the proved game
 multiplication and inverse then makes the sign carrier an ordered field,
 retaining its original additive structure and numerical order.
+This product satisfies Conway's four-family simplest-cut equation, with
+small option indices and proved separation.
+The equation also holds for arbitrary small presentations of both factors.
 The empty and one-plus sequences map literally to the raw games zero and one.
 The numeric-game quotient also satisfies the indexed small-cut interface and
 its comparison rule, including reconstruction from a numeric game's moves.
+The canonical raw-game birthday equals sign length and is minimal among
+all numeric games representing the same number.
+The birthday of a sum is bounded by the Hessenberg natural sum of the input
+birthdays, with the corresponding finite-sum bound. This natural sum also
+strictly decreases under either canonical option replacement.
+Finite birthdays characterize exactly the embedded dyadic rationals. They form
+a subring, but the reciprocal of three has birthday omega, so this fragment
+is not a subfield. Every embedded ordinary real has birthday at most omega;
+the non-dyadic reals have birthday exactly omega.
+For a dyadic value with reduced denominator `2^k`, the exact birthday is
+the ceiling of its absolute value plus `k`. Its standard dyadic game attains
+this same minimum birthday.
+For all embedded ordinary reals, the product birthday is bounded by the
+Hessenberg natural product of the factor birthdays.
+Every nonnegative sign number now has a unique nonnegative square root,
+constructed by simplicity induction and a countable closure of small
+algebraic option families. The resulting `sqrt` takes zero on negative inputs.
+The concrete surcomplex field is now the quadratic extension of that sign
+field. It has the coordinate product, conjugation and inverse formulas, a
+positive surreal-valued norm square away from zero, and dimension two over
+its real subfield. Its carrier is also not small at the birthday universe.
+Its native topology and uniformity are the product of those on the two surreal
+coordinates. Balls defined by `normSq (z - a) < r²`, for positive surreal `r`,
+give the neighborhood and entourage bases without requiring square roots.
+Small subsets are closed and discrete; convergent small-index nets are
+eventually equal to their limits, and small-index Cauchy nets are eventually
+constant. The full surcomplex carrier has no isolated points.
+Multiplication is jointly continuous, inversion is continuous away from zero,
+and conjugation is a uniform equivalence. The real-axis positive-radius net
+converges to zero and is Cauchy without becoming constant; both its index
+type and range are proved not small at the permitted universe level.
+The proved square roots also instantiate the actual surreal-valued modulus,
+its multiplicativity, triangle inequality, coordinate bounds and inverse
+formula. Its balls give exactly the existing fine topology and uniformity.
+Heron's area formula, Ptolemy's inequality and the positive-quotient
+triangle-equality criterion now apply to the concrete surcomplex field.
+Both strict Cauchy root bounds also apply to actual surcomplex polynomials.
+Ordinary complex numbers embed coordinatewise into this field, preserving
+conjugation and identifying their real norm with the surreal modulus.
+Fine-continuous maps with small range are constant on preconnected domains;
+in particular, ordinary real intervals admit no nonconstant fine-continuous paths.
+Gauss–Lucas and its multiplicity-weighted barycentric formula are instantiated
+with explicit splitting hypotheses; higher derivatives retain the required
+splitting of each preceding derivative.
+The actual finite surreal and surcomplex valuation rings have standard-part
+homomorphisms onto ordinary real and complex numbers. Their kernels are
+exactly the infinitesimals, their residue quotients are the ordinary fields,
+and each finite element has a unique constant-plus-infinitesimal decomposition.
+These predicates agree with natural-number absolute-value and modulus bounds.
+On the sign field, finite and infinitesimal sets and their nonzero affine
+images are clopen; scaled monads separate points in the native order topology.
+The coprime binary product linearization is an isomorphism on bounded-degree
+polynomials over any commutative ring, providing unique finite corrections
+for the later support-controlled factor lift.
+Conway monomials and leading exponents now act on the actual sign field.
+A maximum of finitely many weighted exponents gives a positive scale making
+all coefficients finite while preserving at least one nonzero real residue.
+The full finite-family coprime-factor linearization is proved over arbitrary
+commutative rings, including empty families and constant factors.
+On the actual surcomplex field, the finite ring, infinitesimal monads and their
+nonzero affine images are clopen, and the fine topology is totally separated.
+Halos are finite standard-part preimages; puncturing removes a whole monad.
+The explicit point `1 - omega⁻¹` distinguishes the halo of the ordinary disk
+from the full fine unit ball. No point has a countable neighborhood basis,
+so no ordinary real-valued metric or pseudometric induces the fine topology.
+The surreal field is not algebraically closed, and no linear order is
+compatible with surcomplex multiplication.
 Real closedness and the normal-form bridge to Hahn series remain open.
 A successful build proves only the imported Lean
 statements, not coverage of all the source documents.

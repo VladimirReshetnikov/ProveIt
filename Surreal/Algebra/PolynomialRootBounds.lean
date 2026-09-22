@@ -20,7 +20,7 @@ noncomputable section
 
 namespace Surreal.Complexify
 
-variable {F : Type*} [Field F] [LinearOrder F] [IsStrictOrderedRing F] [IsRealClosed F]
+variable {F : Type*} [Field F] [LinearOrder F] [IsStrictOrderedRing F] [HasNonnegSquareRoots F]
 
 /-- The base-field-valued modulus, bundled as an absolute value. -/
 def modulusAbsoluteValue : AbsoluteValue (Complexify F) F where
@@ -286,7 +286,7 @@ namespace Surreal.Complexify
 
 open Polynomial Surreal.FinitePolynomial
 
-variable {F : Type*} [Field F] [LinearOrder F] [IsStrictOrderedRing F] [IsRealClosed F]
+variable {F : Type*} [Field F] [LinearOrder F] [IsStrictOrderedRing F] [HasNonnegSquareRoots F]
 
 /-- The strict Cauchy bound for the base-field-valued surcomplex modulus. -/
 theorem modulus_root_lt_cauchy_bound (p : (Complexify F)[X])
@@ -301,7 +301,7 @@ theorem reciprocal_cauchy_bound_lt_modulus_root (p : (Complexify F)[X])
   reciprocal_cauchy_bound_lt_root modulusAbsoluteValue p hn h₀ hz
 
 /-- The radial bound for the surcomplex modulus, including a zero maximum. -/
-theorem modulus_root_le_two_mul_radialCoefficientMax (p : (Complexify F)[X])
+theorem modulus_root_le_two_mul_radialCoefficientMax [IsRealClosed F] (p : (Complexify F)[X])
     (hn : 0 < p.natDegree) {z : Complexify F} (hz : p.IsRoot z) :
     modulus z ≤ 2 * radialCoefficientMax modulusAbsoluteValue p hn :=
   root_le_two_mul_radialCoefficientMax modulusAbsoluteValue p hn hz

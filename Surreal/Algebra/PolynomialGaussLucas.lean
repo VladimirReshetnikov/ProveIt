@@ -21,7 +21,7 @@ namespace Surreal.FinitePolynomial
 
 open Polynomial Finset Surreal.Complexify
 
-variable {F : Type*} [Field F] [LinearOrder F] [IsStrictOrderedRing F] [IsRealClosed F]
+variable {F : Type*} [Field F] [LinearOrder F] [IsStrictOrderedRing F] [HasNonnegSquareRoots F]
 
 local instance polynomialGaussLucasDecidableEq : DecidableEq (Complexify F) := Classical.decEq _
 
