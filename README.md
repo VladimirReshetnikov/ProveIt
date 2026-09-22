@@ -224,6 +224,17 @@ images are clopen; scaled monads separate points in the native order topology.
 The coprime binary product linearization is an isomorphism on bounded-degree
 polynomials over any commutative ring, providing unique finite corrections
 for the later support-controlled factor lift.
+Conway monomials and leading exponents now act on the actual sign field.
+A maximum of finitely many weighted exponents gives a positive scale making
+all coefficients finite while preserving at least one nonzero real residue.
+The full finite-family coprime-factor linearization is proved over arbitrary
+commutative rings, including empty families and constant factors.
+On the actual surcomplex field, the finite ring, infinitesimal monads and their
+nonzero affine images are clopen, and the fine topology is totally separated.
+Halos are finite standard-part preimages; puncturing removes a whole monad.
+The explicit point `1 - omega⁻¹` distinguishes the halo of the ordinary disk
+from the full fine unit ball. No point has a countable neighborhood basis,
+so no ordinary real-valued metric or pseudometric induces the fine topology.
 The surreal field is not algebraically closed, and no linear order is
 compatible with surcomplex multiplication.
 Real closedness and the normal-form bridge to Hahn series remain open.
