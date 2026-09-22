@@ -3,14 +3,14 @@
 **Black-Hole Singularities, Asymptotic Structure, and the Limits of Replacing
 the Scalar Field**
 
-A merged research report, 79 pages. Everything in this directory other than
-`article.tex` and `article.pdf` is preserved source material.
+A merged research report, 79 pages. The three source manuscripts it merges are not
+reproduced here; `code/` and `data/` hold their verification material, preserved as
+delivered.
 
 ```
 article.tex   the merged report, standalone LaTeX with an internal bibliography
 article.pdf   the compiled 79-page report
 README.md     this guide
-sources/      the three source manuscripts, unmodified, with their READMEs and audit
 code/         the three source verification programs, unmodified
 data/         the three recorded verification records, unmodified
 ```
@@ -133,7 +133,7 @@ formula and not a physical regime.
 Three source archives, all pinned to `VladimirReshetnikov/Surreal` at commit
 `39f2be6667ade51bca2b45daa47e289d69c09764`.
 
-| id | manuscript | files in `sources/` |
+| id | manuscript | files as delivered (not reproduced here) |
 |---|---|---|
 | 12 | scalar-extension assessment (34 pp., 25 refs) — the base | `12-scalar-extension-assessment.tex`, `-README.md`, `-source-audit.md` |
 | 13 | no-go obstructions (29 pp., 18 refs) | `13-no-go-obstructions.tex`, `-README.md` |
@@ -376,4 +376,4 @@ all three pass again, on a newer interpreter than the one recorded: 45, 50 and
 but one member ships build helpers that create a `build/` directory and copy a
 PDF over the package-level one, which is why copies are the rule here.
 
-Nothing in `sources/`, `code/` or `data/` was modified to produce this report.
+Nothing in `code/` or `data/` was modified to produce this report.

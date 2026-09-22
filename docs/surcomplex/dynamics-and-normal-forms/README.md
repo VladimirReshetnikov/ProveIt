@@ -8,7 +8,6 @@ material.
 article.tex   the merged report, standalone LaTeX with an internal bibliography
 article.pdf   the compiled report
 README.md     this guide
-sources/      the seven source manuscripts, unmodified, with their READMEs and audits
 code/         the seven source verification programs, unmodified
 data/         the seven recorded verification and build records, unmodified
 ```
@@ -97,12 +96,13 @@ about the surreal size `v(k . Upsilon)` of the divisor itself (Warning
 **The two radii.** Valuation balls `B_r = {v(z) > r}` and valuation
 polydisks `D_rho` **shrink** as the threshold grows; ordinary disks and
 polydisks `D_R` **grow** as `R` grows. Section 2.4 tabulates both, and the
-report warns that a treatment using the decreasing-support Conway
-convention has every inequality here reversed.
+report distinguishes exponent inequalities from ordinary coefficient estimates.
+Passing from valuation exponents to Conway growth exponents negates the
+exponent and reverses its threshold inequality; ordinary estimates are unchanged.
 
 ## Which archive contributed what
 
-| Source in `sources/` | Contribution that survives here |
+| Source manuscript | Contribution that survives here |
 |---|---|
 | `01-exact-resonant-return-threshold` | The exact maximal centered valuation ball read off the **finite `q`-th return iterate** rather than off `f` (§8), with the tuned cubic whose factorization `z^5(z^2-2z+2)(z^2-z+2)` moves the threshold from `delta/2` to `delta/4`; the resonant shell theorem with `P(alpha X) = P(X)`, the cycle count and `res(((f^oq)'(p_a)-1)/c) = a P'(a)`; the two-parameter phase diagram `r = max{(delta-sigma)/2, delta/4}` with its three shell polynomials and three leading coordinates (§12); the rank>1 witness that coefficient-valuation bounds are insufficient; the explicit rank-2 `Gamma = Q + Q*Omega` example; the strongly-Hahn-evaluable-but-not-coherent proposition; the return-face stability certificate |
 | `02-radius-collapse-trichotomy` | The exact radius law `rad(h_{k,1}) = R exp(-(k+1) sigma)` (§7) and the highest-reciprocal-pole non-cancellation estimate that produces the factor `k+1`; the `Gamma_* = Q + sqrt2 Q` two-independent-exponent design and the explicit refusal to replace `v` by a power of `u`; the trichotomy `CD iff sigma=0`, `CG iff sigma<infinity`, which settles source 03's open question **in the drifted category**; the multiplicative-detuning several-variable version; the critical-scale representability test |
@@ -212,11 +212,12 @@ The linearizer's stronger bound `k + 1 <= ell_S(gamma)` is unchanged:
 its initial input `L^(-1) f` already supplies a positive letter from `S`.
 The associated radius and degree bounds therefore keep their stated form.
 
-The preserved source 03 already distinguished arbitrary input support in
+Source 03, retained in Git history, already distinguished arbitrary input support in
 its lemma “Adding an arbitrary input support” and claimed only finite
 dependence in “Support-increasing operators.” The incorrect absolute bound
-was introduced in the merged corollary. All files under `sources/`,
-`code/` and `data/` remain unchanged. The corrected combinatorial statement
+was introduced in the merged corollary. The original manuscripts are now
+accessible through Git history; the verification programs and recorded
+outputs in `code/` and `data/` remain unchanged. The corrected combinatorial statement
 and counterexample are checked in
 [`Ancestry.lean`](../../../Surreal/HahnSeries/Ancestry.lean); the full
 operator statement has a mathematical proof here but is not yet formalized.
@@ -349,8 +350,7 @@ for `n = 1..50`, an illustration and **not** the all-`n` proof, which is in
 the text; and its verifier loses one top coefficient on division by `eps`,
 so reciprocal and pullback comparisons are checked only through degree
 `N-1`. Sources 04 and 07 both list a `SHA256SUMS.txt` in their READMEs that does
-not exist in the delivered archive — recorded rather than repaired, since
-`sources/` and `code/` are preserved unmodified.
+not exist in the delivered archive — recorded rather than repaired.
 
 Reproducing a suite requires Python 3.10 or later and, for four of them,
 SymPy; the pinned version recorded by the sources is `sympy==1.14.0`.

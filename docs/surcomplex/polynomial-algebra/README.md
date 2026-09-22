@@ -4,7 +4,8 @@
 
 - `article.tex` — the merged, standalone LaTeX source (internal bibliography, no external `.bib`, no images).
 - `article.pdf` — the typeset article, 61 pages.
-- `sources/` — the three archived manuscripts this report was merged from, plus their READMEs and literature audit.
+
+This report was merged from three archived manuscripts; the manuscripts themselves are not shipped here, and what each one contributed is recorded below.
 
 Build with, from this directory:
 
@@ -54,7 +55,7 @@ a collision-stable perfect residue pairing with the trace identity, and a
 surcomplex Nullstellensatz for finite data. Duplication is high on that spine
 and low on the tails; the spine is stated once.
 
-### `sources/13-newton-profiles-order-geometry.tex` — the base
+### `13-newton-profiles-order-geometry.tex` — the base
 
 *Order Geometry, Newton Profiles, and Scale-Resolved Stability.* The largest
 of the three (2423 lines, 47 environments) and the source of the backbone:
@@ -75,7 +76,7 @@ of the three (2423 lines, 47 environments) and the source of the backbone:
   case;
 - the polynomials-versus-Hahn-coherent-entire-data comparison.
 
-### `sources/12-factorization-root-geometry.tex`
+### `12-factorization-root-geometry.tex`
 
 *Factorization, Root Geometry, Multiscale Stability, and Residue Duality.*
 Carried over into the merge:
@@ -102,7 +103,7 @@ Carried over into the merge:
 - the rescaling bookkeeping for using the threshold theorem at infinite
   scales.
 
-### `sources/14-valuative-root-trees.tex`
+### `14-valuative-root-trees.tex`
 
 *Ordered Geometry, Valuative Root Trees, and Residue Duality.* The only one of
 the three that leaves one variable. Carried over into the merge:

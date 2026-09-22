@@ -61,12 +61,12 @@ from the correct polar coefficient.
 
 ## Which archives it came from, and what each contributed
 
-Two independently written manuscripts, both dated September 21, 2026, both
-preserved unchanged under `sources/`, `code/` and `data/`.
+Two independently written manuscripts, both dated September 21, 2026. Their
+code and recorded output are preserved unchanged under `code/` and `data/`.
 
 ### `surcomplex_nonabelian_support` → Part I (base)
 
-`sources/08-polar-support-matrix-cousin.tex` (+ its README). It owns the
+`08-polar-support-matrix-cousin.tex` (+ its README). It owns the
 machinery the two parts share and contributes:
 
 * the integral/positive/full common-domain Hahn sheaves `H_Gamma`, `I_Gamma`,
@@ -98,7 +98,7 @@ machinery the two parts share and contributes:
 
 ### `surcomplex_riemann_hilbert` → Part II
 
-`sources/09-support-monodromy-realization.tex` (+ its README and
+`09-support-monodromy-realization.tex` (+ its README and
 `BUILD_AND_PROVENANCE.json`). It contributes:
 
 * strong summability and the finite-decomposition lemma inside a generated
@@ -246,7 +246,6 @@ python code/09-support-monodromy-realization-verify-examples.py  # + NumPy/SciPy
 article.tex   merged article, standalone LaTeX, all labels prefixed nab:
 article.pdf   52 pages
 README.md     this file
-sources/      the two source manuscripts and their READMEs, unchanged
 code/         both verification scripts and the Part I Makefile, unchanged
 data/         recorded outputs, requirement pins, build metadata, unchanged
 ```

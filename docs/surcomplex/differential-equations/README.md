@@ -10,7 +10,6 @@ A merged research report, 121 pages. Everything in this directory other than
 article.tex   the merged report, standalone LaTeX with an internal bibliography
 article.pdf   the compiled 121-page report
 README.md     this guide
-sources/      the eight source manuscripts, unmodified, with their READMEs and audits
 code/         the eight source verification programs, unmodified
 data/         the eight recorded verification and build records, unmodified
 ```
@@ -160,7 +159,7 @@ collided, differing only by a trailing marker, so the mapping from archive name
 to manuscript is recorded here because it is not recoverable from the
 filenames.
 
-| id | original archive | file in `sources/` |
+| id | original archive | manuscript |
 |---|---|---|
 | 01 | `surcomplex_differential_equations` | `01-thresholds-and-galois-tori.tex` |
 | 02 | `surcomplex_differential_equations` (second) | `02-word-lemma-and-nonlinear-ivp.tex` |
@@ -457,5 +456,5 @@ write their evidence files beside themselves — and member 10's program writes
 to a `data/` directory it creates one level *above* its own, overwriting the
 delivered `verification.json` — so a byte-identity check performed *after* a
 run compares two equally modified copies and tells you nothing. Their recorded outputs are already in `data/`, and Appendix D of the
-report reproduces them. Nothing in `sources/`, `code/` or `data/` was modified
-to produce this report.
+report reproduces them. Nothing in `code/` or `data/` was modified to
+produce this report.

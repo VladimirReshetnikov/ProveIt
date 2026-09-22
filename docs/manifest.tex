@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={The surreal and surcomplex reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of eighteen research packages on surreal and surcomplex numbers}}
+  pdfsubject={Catalogue of twenty-six research packages on surreal and surcomplex numbers}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -59,9 +59,9 @@
 
 \begin{center}
  {\LARGE\bfseries\color{Ink} The surreal and surcomplex reports}\\[8pt]
- {\large Eighteen independent mathematical research packages,\\
- on the surreal field, its algebraic closure,\\
- and the foundations and computation of both}\\[10pt]
+ {\large Twenty-six independent mathematical research packages,\\
+ on the surreal field, its algebraic closure, its quaternion algebra,\\
+ their reach into physics, and the foundations and computation of all of them}\\[10pt]
  {\small September 2026}
 \end{center}
 
@@ -70,20 +70,28 @@
 \section*{Scope}
 \addcontentsline{toc}{section}{Scope}
 
-This document catalogues the eighteen research packages stored under
+This document catalogues the twenty-six research packages stored under
 \dir{docs}.  Each entry names the problem the report attacks, the result it
-claims, and the archive it arrived in.
+claims, and the delivery it arrived in.
 
-The collection divides in three, and so does the directory tree.  Six reports,
+The collection divides in five, and so does the directory tree.  Eight reports,
 under \dir{docs/surreal}, are about the surreal field $\No$ itself: birthdays
 and their behaviour under multiplication, the option graphs of surreal forms,
-genetic functions and gaps, and two questions of Lipparini about evaluating
-formal sums.  Ten, under \dir{docs/surcomplex}, are about the algebraic
-closure $\SC$: the theory of holomorphic functions over it, its differential
-algebra, its rank-one analytic geometry, and its finite matrices.  The last two,
-under \dir{docs/foundations-and-computation}, stand outside both: they are
+genetic functions and gaps, two questions of Lipparini about evaluating formal
+sums, the rigidity of exponential automorphisms, and Gamma functions.
+Thirteen, under \dir{docs/surcomplex}, are about the algebraic closure $\SC$:
+the theory of holomorphic functions over it, its differential algebra, its
+rank-one analytic geometry, its finite matrices, its local and quasi-periodic
+dynamics, its nonabelian support obstructions, and its entire functions at
+arbitrary valuation rank.  One, under \dir{docs/surquaternions}, leaves
+commutativity behind for Hamilton's division algebra $\mathbb{H}_{\No}$ over
+$\No$.  One, under \dir{docs/physics}, is the only report here whose subject is
+not mathematics: it asks what surreal scalars do and do not buy in general
+relativity, and answers negatively.  The last three, under
+\dir{docs/foundations-and-computation}, stand outside all of these: they are
 about the subject rather than inside it, asking in what foundation this
-mathematics legally lives and how one computes with it exactly.
+mathematics legally lives, how one computes with it exactly, and which surreal
+numbers are computable at all.
 
 These reports were previously part of a larger collection, in a repository
 whose subject was elsewhere; they were moved here with their git history.
@@ -93,11 +101,13 @@ record is kept rather than rewritten.
 
 Each directory holds a typeset article with its \LaTeX{} source, a
 \texttt{README.md}, and in most cases verification code together with the
-recorded output of running it.  A merged report additionally keeps every
-source manuscript verbatim under \texttt{sources/}, so the merge can be
-audited against what went into it.  These are AI-assisted drafts.  None is
-refereed or machine-checked, and this catalogue records what each report
-claims rather than verifying it.
+recorded output of running it.  The source manuscripts a merged report was
+assembled from are not distributed here.  What is kept is the provenance
+record: each merged report states how many manuscripts it was merged from,
+what each contributed, and where the merge had to choose between them, and the
+disposition of every source result is recorded in that material.  These are
+AI-assisted drafts.  None is refereed or machine-checked, and this catalogue
+records what each report claims rather than verifying it.
 
 \medskip
 \noindent
@@ -108,12 +118,15 @@ latexmk -pdf manifest.tex \&\& latexmk -c manifest.tex
 
 \section{The surreal field}
 
-Six reports about $\No$.  Two questions of Lipparini on evaluating formal
+Eight reports about $\No$.  Two questions of Lipparini on evaluating formal
 sums; two independent halves of Gonshor's product-birthday conjecture, on
 domains neither of which contains the other; the subgraph question from
-Roughan's paper on birthday arithmetic; and a genetic counterexample
-separating pointwise derivatives from differences of constants.  The first
-and the fourth each arrived as a pair of archives and were merged.
+Roughan's paper on birthday arithmetic; a genetic counterexample separating
+pointwise derivatives from differences of constants; a rigidity theorem for
+exponential automorphisms; and a sharp convexity classification of surreal
+Gamma functions.  The first and the fourth each arrived as a pair of archives
+and were merged; the last two are standalone and independent of everything
+else here.
 
 \entry{A square-root obstruction to evaluating increasing Hahn series at $\omega$}
 {surreal/hahn-evaluation-at-omega}
@@ -144,15 +157,15 @@ prefix bounds and an explicit limit stage, and a complete classification of the
 equality cases.  The route is a leading-Cantor-degree gap, which also gives that
 the degree of the birthday never rises under multiplication.  The conjecture for
 arbitrary surreal numbers is not solved.  The domain is incomparable with that of the
-Laurent-series report that follows: it excludes $\omega$ and every positive
-power.}
+Laurent-series report \nolinkurl{surreal/gonshor-laurent-birthdays}: it
+excludes $\omega$ and every positive power.}
 
 \entry{A Laurent-series case of Gonshor's birthday conjecture}
 {surreal/gonshor-laurent-birthdays}
 {article.pdf}{Gonshor\_Laurent\_Birthday\_Research.zip}
 {Proves the same bound $b(xy)\le b(x)\otimes b(y)$ on the canonically embedded
-field $\R((\omega^{-1}))$, which unlike the ring of the preceding entry
-contains $\omega$
+field $\R((\omega^{-1}))$, which unlike the ring of
+\nolinkurl{surreal/gonshor-product-birthdays} contains $\omega$
 and its positive powers but restricts supports to order type at most $\omega$ on
 the integer lattice.  The route is a bilinear budget: an exact splitting
 $b(x)=b(P)\oplus b(u)$ into polynomial and infinitesimal parts, three separate
@@ -160,7 +173,7 @@ product estimates for the resulting cross terms, and a finite-jet stabilisation
 carrying the finite bound to infinite series without any continuity claim.  Also
 treats finite normal forms with arbitrary ordinal exponents, derives exact
 birthdays for finite and infinite Laurent series, and proves a reciprocal
-corollary.  Neither this theorem nor the preceding one contains the other; on
+corollary.  Neither this theorem nor that one contains the other; on
 their common corner $\R[[\omega^{-1}]]$ the two agree and are proved twice.}
 
 \entry{Canonical forms need not be subgraphs}
@@ -204,14 +217,96 @@ $s[n]=3\cdot2^{-n-d-1}$ on a subset $E$ and $2^{-n-d}$ off it realising the
 failure.  The underlying rule is Lipparini's; the name and the notation are
 local to the report.}
 
+\entry{Cofinal displacement and the rigidity of exponential automorphisms}
+{surreal/exponential-automorphism-rigidity}
+{article.pdf}{one manuscript, delivered 21~September 2026}
+{Let $F$ be an ordered field with a total increasing ordered exponential
+$E:(F,+)\to(F_{>0},\cdot)$ that is \emph{onto}, and $w$ a nontrivial convex
+valuation --- no Hahn workspace, no completeness, no saturation, no set-size
+hypothesis.  The engine is one finite lemma: for a unital field endomorphism
+$\sigma$ the displacement $D(x)=\sigma(x)-x$ is additive but is \emph{not} a
+derivation, the correct rule being the twisted identity
+$D(ab)=\sigma(a)D(b)+bD(a)$, with $\sigma(a)$ and not $a$; from $D(a)=d\ne0$
+the single probe pair $b=2B(1+|\sigma(a)|)/|d|$ and $ab$ forces
+$\max\{|D(b)|,|D(ab)|\}>B$.  Two probes, no transfinite construction, and
+neither surjectivity nor order preservation of $\sigma$ is needed, so
+self-embeddings and class-sized fields are covered.  Consequences: a
+nonidentity exponential automorphism stabilizing $\mathcal{O}_w$ displaces
+value-group elements cofinally \emph{and} coinitially, so
+$\rho_w:\mathrm{Aut}_{\exp}(F;\mathcal{O}_w)\to\mathrm{Aut}(\Gamma,+,<)$ is
+injective; coarsening rigidity on $\Gamma/\Delta$, with stabilization of
+$\Delta$ an explicit hypothesis; and on $K=F(i)$ the intrinsic logarithmic
+modulus $L(z)=\log\sqrt{z\bar z}$ --- real logarithm only, no branch, no
+argument --- gives $\mathrm{Aut}_L(K)\cong\mathrm{Aut}_{\exp}(F)\times C_2$.
+The bridge is $\nu=w\circ E$, additive, surjective and order-\emph{reversing},
+whose kernel is a proper convex additive subgroup; such a subgroup of an
+ordered field is bounded by a \emph{field} element and not by an integer or a
+real, which is the whole point --- the finite surreals are bounded by $\omega$,
+and the contradiction is the probe lemma run at $B=\omega$.  Specialized to
+$\No$: every exponential 1-automorphism is the identity, offered as a negative
+answer to Question~5.4 of Kaplan--Krapp--Serra, \emph{Decomposing the
+automorphism group of the surreal numbers}, arXiv:2509.22374v3.  \emph{The
+version pinning is deliberate and should stay prominent:} the claim is against
+one arXiv version, the reading of the question has not been checked anywhere
+else in this collection, and Gonshor's exponential and the natural valuation
+are cited rather than reproved.  Section~6 separates ordered-Hahn symmetry from
+exponential symmetry by two disjoint mechanisms, every one of which does lift
+as an ordered field automorphism --- so cofinal displacement is necessary and
+provably \emph{not} sufficient for exponential lifting.  This is a third thing
+called ``rigidity'' here: not the all-scale polynomial rigidity of
+\nolinkurl{surcomplex/analysis}, not the scalar rigidity of
+\nolinkurl{surreal/gamma-functions}, but faithfulness of $\rho_w$.}
+
+\entry{Gamma functions over the surreals: a sharp convexity classification}
+{surreal/gamma-functions}
+{article.pdf}{one manuscript, delivered 21~September 2026}
+{Write $M(x)$ for the leading Conway monomial of a positive infinite surreal
+with its real coefficient stripped and $\mathrm{pp}(x)$ for the purely infinite
+part; for an arbitrary class assignment $a$ on positive infinite monomials, no
+regularity assumed, set $h_a(x)=a(M(x))\,\mathrm{pp}(x)$ and
+$L_a=L_0+h_a$ over the Taylor--Stirling log-Gamma baseline.  The main theorem
+is a two-sided sharp threshold: $L_a$ is convex on all of $\No_{>0}$
+\emph{iff} $m\,a(m)$ is finite for every positive infinite monomial $m$, and in
+that case it is \emph{strictly} convex --- pointwise in $m$, no uniform real
+bound across monomials, both signs allowed, and no merely-convex member exists.
+Every member of the family, convex or not, preserves $\Gamma_a(1)=1$, the
+recurrence $\Gamma_a(x+1)=x\Gamma_a(x)$, every finite Gauss multiplication
+formula, every normalized finite-translation germ and all positive-order fine
+derivatives of log-Gamma, so \textbf{Bohr--Mollerup fails on $\No$ in the
+strongest available sense}: $a_\lambda(m)=\lambda e^{-m}$ gives pairwise
+distinct strictly log-convex extensions whose differences are smaller than
+\emph{every} ordinary inverse power at \emph{every} infinite argument, the
+log-difference at $\omega$ being exactly $\lambda\,\omega e^{-\omega}$, and
+adding all ordinary-order Stirling envelopes does not restore uniqueness.  The
+convexity proof uses no second derivatives and no mean value theorem: it works
+with the tangent gap $D_F(y,x)=F(y)-F(x)-F'(x)(y-x)$ through four exhaustive
+relative-scale regimes, the margin $(y-x)^2/(2x)$ being exactly what generates
+the $O(m^{-1})$ threshold, and the mechanism is then isolated as a reusable
+scale-margin gauge principle.  A positive second derivative does \emph{not}
+imply convexity in this calculus --- a gauge on one monomial has all fine
+derivatives equal to the baseline's and a negative tangent gap --- because such
+gauges are finely locally constant and convexity cannot be decided locally.
+Compatibility with the Berarducci--Mantova derivation forces $h_a$ into
+$\ker\der=\R$ and kills every member but $a=0$, yet a different real-valued
+non-flat gauge survives, so \emph{scalar compatibility alone is not a
+uniqueness characterization}.  Closes with an exact finite-phase domain on the
+tube $\mathrm{Re}(z)>0$, $\mathrm{Im}(z)$ finite, computed in the sense of
+\nolinkurl{surcomplex/differential-equations} rather than as a new notion of
+phase.  \emph{Not offered as a resolution of a named published problem}, and
+the classification is exact only for the named monomialwise family.  Its own
+audit read an earlier state of this catalogue and describes the collection as
+holding eighteen packages; that description is stale.}
+
 \section{The surcomplex plane}
 
-Ten reports about $\SC=\No[i]$.  Seven are about holomorphic function theory,
-rest on one framework, and are all merges: twenty-seven manuscripts reduced to
-seven documents.  The last three came later and are listed after them --- a
-merge of seven manuscripts on differential algebra, and two standalone reports,
-on rank-one analytic geometry and on finite matrices, each written against this
-repository and each naming the gap it fills.
+Thirteen reports about $\SC=\No[i]$.  Seven are about holomorphic function
+theory, rest on one framework, and are all merges: twenty-seven manuscripts
+reduced to seven documents.  The other six came later and are listed after
+them --- four merges, of seven manuscripts on differential algebra, seven on
+dynamics and normal forms, two on nonabelian support obstructions and two on
+entire functions at arbitrary rank, together with two standalone reports, on
+rank-one analytic geometry and on finite matrices.  Each of the six was
+written against this repository and each names the gap it fills.
 
 \medskip
 \noindent
@@ -262,9 +357,10 @@ $0$, the actual pole sitting at $\varepsilon$.  A single ordinary bound in
 Liouville gives a characterization and not constancy: $t z$ is real-bounded by
 $1$ on the whole finite plane and is not constant.  Eleven further conflicts
 are resolved and recorded, including two functions both called ``the''
-logarithm that differ by exactly $2\pi i$.  All nine manuscripts and all nine
-verification programs are kept; the deduplication is in the article.  Its
-\nolinkurl{MERGE_NOTES.md} is worth reading before the article.}
+logarithm that differ by exactly $2\pi i$.  All nine verification programs are
+kept, and the disposition of every source result is recorded; the
+deduplication is in the article.  Its \nolinkurl{MERGE_NOTES.md} is worth
+reading before the article.}
 
 \entry{Infinitesimal analytic geometry over the surcomplex numbers}
 {surcomplex/analytic-geometry}
@@ -493,14 +589,237 @@ does carry Schur-type arguments and Hermite signatures, and no report in the
 collection had a singular value, a pseudoinverse or a matrix polar decomposition
 anywhere.}
 
+\entry{Surcomplex dynamics: linearization thresholds, periods, and normal forms}
+{surcomplex/dynamics-and-normal-forms}
+{article.pdf}{seven manuscripts, delivered 21~September 2026}
+{Local and global dynamics over complex Hahn fields $K=\C((t^\Gamma))$ realized
+inside $\SC$, with $\Gamma$ a set-sized ordered abelian group of \emph{arbitrary}
+valuation rank.  Seven manuscripts, and the report is their \emph{union}: six
+are germ and fixed-point dynamics --- multipliers, return iterates, periods, a
+Hamiltonian at the origin of a phase halo --- and the seventh is the
+quasi-periodic half, a cohomological equation on a real torus whose frequency
+vector has \emph{surreal} components and whose divisors $k\cdot\Upsilon$ are
+indexed by an integer lattice.  The second half is genuinely additive: nothing
+in the first six carries a resonance lattice, a cohomological equation, a
+Fourier divisor or a conjugacy to a constant vector field, and the seventh
+carries no multiplier, no return iterate and no period.  \textbf{Read
+Section~2 first.}  Five \emph{inequivalent} conditions travelled under the
+single word \emph{resonance} across these manuscripts and six under
+\emph{small divisor}, and two groups of them used \emph{radius} with
+\textbf{opposite} monotonicity; unifying the notation without separating the
+notions would have produced statements that read correctly and are false.
+Section~2 gives each variant its own name and symbol, every threshold
+statement names which variant and which coefficient category it holds in, and
+Section~2.5 is a theorem-by-theorem tag ledger.  In particular lattice
+resonance is \emph{not} frequency resonance --- the latter is a condition on
+ordinary complex $\omega$ with divisors graded by Taylor degree and Hahn
+valuation zero, the former concerns surreal components with divisors graded by
+the Fourier index and of nonzero valuation --- and the finitely many visible
+divisor valuations are \emph{not} a spectrum in any sense this collection uses.
+The headline of the quasi-periodic half: a frequency vector with $d$ surreal
+components has \emph{at most $d$} arithmetically visible divisor valuations,
+identified by a canonical descending flag of saturated integer resonance
+lattices of strictly dropping rank, with one explicitly constructed
+well-ordered set containing the support of \emph{every} reciprocal nonzero
+divisor; an exact stratified subexponential criterion, necessary and
+sufficient for universal solvability of the cohomological equation over a
+single fixed torus strip; an arbitrary-order lifting obstruction; and a unique
+normalized mean-zero conjugacy to a constant vector field proved by marked
+support words rather than by sequential valuation convergence.  From the first
+half: the exact maximal centered valuation ball read off the finite $q$th
+return iterate rather than off $f$, the radius law
+$\mathrm{rad}=R\exp(-(k+1)\sigma)$ with its trichotomy, a five-row coefficient
+category table with per-row necessity witnessed at a single exponent, an
+algebraicity dichotomy over $\C(w)((t^\Gamma))$ with its monodromy and cover
+obstruction, periods as a complete conjugacy invariant with an explicit moduli
+space, and a gauge-normalized symplectic normal form carrying no arithmetic
+bound at all.}
+
+\entry{Nonabelian support obstructions: a matrix Cousin criterion and the surcomplex Riemann--Hilbert problem}
+{surcomplex/nonabelian-support}
+{article.pdf}{surcomplex\_nonabelian\_support + surcomplex\_riemann\_hilbert}
+{One coefficient category studied from two sides: matrices congruent to the
+identity modulo positive Hahn exponents, $I_r+\mathrm{Mat}_r(J_\Gamma)$, over a
+set-sized and possibly non-Archimedean value group $\Gamma$, with ordinary
+holomorphic coefficient functions on a \emph{single fixed} ordinary complex
+domain; when $\Gamma$ is an ordered subgroup of the surreals,
+$t^\gamma=\omega^{-\gamma}$ gives the surcomplex reading.  Part~I solves the
+multiplicative gluing problem --- a matrix Cousin problem on a
+puncture-and-disk cover of a connected open Riemann surface --- and develops
+the resulting integral vector bundles and the Stein branch; Part~II solves the
+inverse monodromy problem for near-identity representations of the fundamental
+group of a plane with a closed discrete puncture set.  \textbf{The two headline
+theorems both read ``the union of the supports is well ordered'' and are
+\emph{not} the same criterion}, and a whole section exists to keep them apart:
+the gluing criterion is about the supports of the \emph{normalized polar
+factors} $\mathrm{Pol}(G_a)-I_r$, each transition matrix being factored
+independently and first, and it is false in \emph{both} directions with the raw
+transition support in its place; the realizability criterion is about the
+\emph{raw} monodromy matrices $\rho(\ell_d)-I_r$, where the raw support is the
+invariant and is basis- and basepoint-independent.  The trap is printed where a
+reader would otherwise generalize: a rank-three family over $\Gamma=\Q$ with
+determinant one, a single raw singular exponent and a \emph{splitting}
+abelianized cocycle admits no splitting, because the polar factors are forced to
+carry a descending set; adding one term introduces that descending set among the
+raw poles and thereby \emph{removes} the obstruction; and the true matrix
+logarithm is not a repair, its coefficient being off by a factor of $1/2$.  Also
+the rank-one recovery of this collection's scalar Cousin criterion, the
+right-torsor description of all splittings, absoluteness under ordered
+value-group extension, and a depth hierarchy giving for every $r\ge3$ a cocycle
+trivial modulo the last central subgroup and nonsplit in full positive rank.
+Every \texttt{\textbackslash label} in its source carries the prefix
+\texttt{nab:}.}
+
+\entry{Cofinality, factorization and scalar extension for entire Hahn functions at arbitrary rank}
+{surcomplex/entire-functions-at-arbitrary-rank}
+{article.pdf}{two manuscripts, delivered 21~September 2026}
+{Ordinary power series $\sum a_nZ^n$ over a \emph{fixed} Hahn field
+$K_\Gamma=\C((t^\Gamma))$ with $\Gamma$ set-sized, divisible and of arbitrary
+valuation rank, where \emph{entire} means strongly Hahn-summable at every point
+of that one field; both sources explicitly disclaim all of $\SC$.  Two
+manuscripts that were the same paper twice on the engine and complementary on
+the payload --- the same exact coefficient criterion, cofinality dichotomy,
+support-controlled preparation theorem, arbitrary-rank root counts, genus-zero
+canonical product, factorization by zeros and sharp change-of-workspace
+criterion, by the same witness --- so each is printed once and both payloads
+are kept in full.  \textbf{The trichotomy.}  The entire ring $E_\Gamma$ is
+always a GCD domain with units exactly $K_\Gamma^\times$, and exactly one of:
+uncountable cofinality, where only polynomials are entire and the ring is a
+PID; an \emph{order unit} exists, where nonpolynomial series exist and the ring
+is B\'ezout, non-Noetherian, with full Hermite interpolation; or countable
+cofinality with no order unit, where the ring is GCD but \textbf{not} B\'ezout
+--- two canonical products with disjoint simple zero sets and $\gcd1$ generating
+a proper ideal, the obstruction an exact valuation computation against a growth
+barrier every entire function obeys.  The middle case is \emph{sharp}, not
+merely sufficient: a nonconstant valuation-restricted series is invertible iff
+its least coefficient gap is a positive order unit, necessity proved by
+coarsening.  \textbf{The scalar-extension package.}  For any ordered-group
+extension $\Gamma\subseteq\Delta$, \emph{every} nonpolynomial entire series over
+$K_\Gamma$ has the \emph{same} exact strong evaluation domain in $K_\Delta$ ---
+the valuation ring of $v_\Delta$ coarsened by the convex hull of $\Gamma$, whose
+residue field is a Hahn field rather than $\C$ --- entireness survives exactly
+for cofinal extensions, no new zeros appear in the surviving domain, and the
+boundary is intrinsic.  The two sources' extension statements look like
+disagreement about whether the function survives and are the coarse and the
+exact form of one fact: ``not entire over $K_\Delta$'' means precisely that the
+domain is a proper subring, and the extension theorem computes which.  One name
+is kept for the order invariant, with the synonym recorded once; it is not the
+same invariant as cofinality, and that gap is exactly the third case.  Extends
+the ring table of \nolinkurl{surcomplex/rank-one-berkovich}, which lands in the
+B\'ezout case so the third case is invisible there; its whole-class rigidity
+corollary is presented as a \emph{re-derivation} from the extension theorem,
+crediting \nolinkurl{surcomplex/analysis} for all-scale polynomial rigidity and
+\nolinkurl{foundations-and-computation/foundations} for the sign-flipped pair
+over $\C((t^\Q))$ and for the localization principle it consumes.  Rank is not
+the driver: a rank-two group with an order unit is B\'ezout, and a countable
+sum of copies of $\Q$ indexed by $\omega_1$ admits only polynomials.}
+
+
+\section{Surquaternions}
+
+One report, which is where commutativity stops.  It is filed on its own
+because no commutative argument from \dir{docs/surcomplex} survives the move to
+a division algebra: conjugation, multiplicativity of the modulus, valuation and
+leading coefficients, polynomial evaluation, matrix adjoints, exponential laws
+and every chain rule all need separate treatment, and every commutative result
+quoted from a companion report is reproved over $\mathbb{H}$.
+
+\entry{Surquaternions: algebra, infinitesimal geometry, and support-controlled analysis}
+{surquaternions/surquaternions}
+{article.pdf}{surquaternions\_article.zip + surquaternions\_article(1).zip}
+{Hamilton's quaternion division algebra over the surreals,
+$\mathbb{H}_{\No}=\No+\No i+\No j+\No k$, with central surreal coefficients, in
+three levels that are never silently mixed.  \emph{Finite algebra over an
+arbitrary real closed field}: division, conjugation, the field-valued modulus,
+complex slices and centralizers, conjugacy spheres, explicit square roots, the
+spin/rotation description with two independent surjectivity proofs, two
+rational charts on the unit group, quaternionic M\"obius maps, one-sided
+polynomials with a constructive fundamental theorem and a complete zero-class
+algorithm, and finite-dimensional Hermitian spectral theory with SVD and polar
+decomposition.  \emph{Set-sized Hahn workspaces}
+$D_\Gamma=\mathbb{H}(\R((t^\Gamma)))$: normal forms with a \textbf{noncommutative}
+residue algebra, exact multiplicative valuation and leading coefficients, the
+all-lengths Neumann support lemma proved through Higman's finite-word lemma, the
+exact geometric inverse with its truncation certificate, the infinitesimal Hahn
+exponential and logarithm, BCH at positive valuation, the filtered nonabelian
+rotation group with its graded bracket, a spectral-projector estimate at
+arbitrary surreal gap scale with a sharp two-scale example, support-controlled
+implicit lifting, and an exact square-root conditioning analysis.  \emph{The
+full surreal class}: finite angles at arbitrary radius, the Ehrlich--Kaplan
+global phase normalization, the global radial exponential with its complete
+logarithm fibres and four-coordinate differential --- rank-two critical spheres
+at radii in $\pi\mathbf{Oz}$, $\mathbf{Oz}$ the omnific integers, the infinite
+radius $\omega$ among them --- the
+componentwise Berarducci--Mantova derivation with a no-oscillation theorem and
+its chain-rule corollary, and coefficientwise slice, Cauchy and Fueter analysis
+on explicitly named coefficient spaces.  \textbf{Section~2 is the ledger and
+should be read first}: three exponentials and four derivative-like operators
+carry overlapping names here, each satisfying a \emph{different} law on a
+\emph{different} domain, and the section fixes one name and one symbol per
+object and tabulates which satisfies which.  It also explains why this report's
+statement that the radial exponential is \emph{not} an additive-to-multiplicative
+homomorphism is consistent with the physics report's correct claim that the
+\emph{commutative} Ehrlich--Kaplan exponential \emph{is} one: the restriction to
+any single slice is exactly that commutative exponential and the law holds
+there, failing only across \emph{noncommuting} arguments, where no common slice
+exists --- witness $\mathrm{Exp}(\omega i+\pi j)=1+(\pi^2/2\omega)i+O(\omega^{-2})$
+against $\mathrm{Exp}(\omega i)\mathrm{Exp}(\pi j)=-1$.  A merged sentence
+blurring the two would manufacture a false contradiction across the collection.
+\emph{Merged; roughly two thirds of the mathematics was common to both sources
+and is printed once.}  Every \texttt{\textbackslash label} in its source carries
+the prefix \texttt{squat:}.  It makes no claim about any empirical subject.}
+
+
+\section{Physics}
+
+One report, and the only one in the collection whose subject is not
+mathematics.  It is filed on its own because its entire value is a firewall
+between what is proved and what is proposed, and because its conclusion is
+negative.
+
+\entry{Surreal scalars in theoretical physics: black-hole singularities, asymptotic structure, and the limits of replacing the scalar field}
+{physics/surreal-scalars-and-spacetime}
+{article.pdf}{three manuscripts, delivered 21~September 2026}
+{\textbf{The sentence this report exists to refuse, in any form, is that
+surreal numbers resolve the black-hole singularity.}  Surreal and surcomplex
+scalars make the hierarchy of quantities near a gravitational singularity
+exactly representable; they do \emph{not} make the spacetime regular.  Four
+facts, each re-derived from the metric for the merge rather than copied from a
+source: the Kretschmann scalar of Schwarzschild is exactly $K=48M^2/r^6$; under
+a formal radial change $r=s^qw(s)$ with $w(0)\ne0$ the pole order becomes
+exactly $6q$ with leading coefficient $48M^2$ \emph{unchanged}, so no radial
+reparametrization removes the blow-up; the proper time from rest at $R$ to
+$r=0$ is $(\pi/2)\sqrt{R^3/2M}$, which for \emph{infinitesimal} $R$ is
+infinitesimal and hence still finite, so the infall terminates either way; and
+the tidal component $2M(2M-r)/r^4$ is unlimited at infinitesimal $r$.  The exact
+identity $r^6K=48m^2$ has \emph{no} field-valued solution at $r=0$ in any
+characteristic-zero field, not merely in $\R$: evaluating at a nonzero
+infinitesimal radius names another point of a punctured domain and supplies no
+missing endpoint, no continuation law and no observable rule.  What is true, and
+is what the report is for, is that the surreal/Hahn language records the power
+\emph{and} the coefficient of every divergence exactly, keeps competing scales
+separate, and detects when an expansion has been used outside its regime --- a
+gain in representation and nothing more.  \textbf{The claim-status firewall} is
+the rest of its value: every theorem header and every substantive paragraph
+carries one of four visible tags --- exact symbolic identity, checked exactly
+and never to a tolerance, which is the entire content of what the programs
+establish; conditional theorem, with hypotheses stated in full and
+\emph{established for no physical model}, nothing in the tier machine-checked;
+assessment, meaning an argument and not a result; and imported, a provenance
+marker rather than a fourth tier.  The article's own tag counts are 53, 51, 140
+and 34.  \emph{Merged; duplication between the three sources ran to about two
+thirds, all three independently rebuilding the static-spherical connection and
+the full Riemann tensor and re-deriving the same Schwarzschild quantities from
+the metric alone.}  No priority claim; not refereed.}
+
 
 \section{Foundations and computation}
 
-Two reports that take the rest of the collection as their object.  Neither
-belongs under \dir{surreal} or \dir{surcomplex}, because both range over the
-whole subject.  Each is a merge of three manuscripts delivered together on
-21~September 2026, and in each the hazard was not overlap but a collision of
-near-identical names.
+Three reports that take the rest of the collection as their object.  None
+belongs under \dir{surreal} or \dir{surcomplex}, because all three range over
+the whole subject.  Each is a merge of three manuscripts delivered together,
+the first two on 21~September 2026, and in those two the hazard was not overlap
+but a collision of near-identical names.
 
 \entry{Foundations for surreal and surcomplex mathematics}
 {foundations-and-computation/foundations}
@@ -556,6 +875,37 @@ reproduce exactly --- 34/34, 110/110 and 88/88 in Wolfram, 69/69 and 323/323 in
 Python --- but one package cannot be loaded at all as shipped: an unclosed
 bracket stops it parsing, which is why its own record submits definitions rather
 than loading the file.}
+
+\entry{Computable surreal numbers, merged and reconciled}
+{foundations-and-computation/computable-surreals}
+{article.pdf}{computable\_surreal\_numbers.zip + two same-named archives}
+{Which surreal numbers admit an algorithm, and in which representation?  Three
+manuscripts arrived with two different numerical representations of the same
+objects --- one using effective rational left-finite series with finite
+candidate covers, two using computable bounded-denominator Puiseux series ---
+and the report is one integrated development rather than a concatenation: it
+preserves the distinct representations instead of picking one, supplies an
+explicit reconciliation ledger disposing of every divergence, keeps
+complementary proofs where the two routes prove the same statement by different
+means, and separates mathematical existence from the existence of a uniform
+algorithm throughout.  \emph{Merged; and this is the one report whose source
+manuscripts were never redistributed with it in the first place.}  The ledger
+cites them by their original \TeX{} line numbers and
+\nolinkurl{data/provenance-manifest.json} records their archive identities, file
+hashes and line counts, so every disposition is traceable against a copy
+obtained elsewhere.  Four verification suites are rerun and pass --- 4{,}967
+exact comparisons, 18 named unit tests, 266 exact checks, and 4{,}321 exact
+cross-model checks new to the merge, comparing dense common-grid Puiseux
+convolution against sparse rational convolution, candidate covers with extra
+zeros and nonnested lists, the finite-jet root transformation, derivative and
+primitive identities, and finite instances of the two unbounded-denominator
+support examples.  \emph{The four units mean different things and are
+deliberately not added together.}  A finite test proves no infinite theorem, no
+real closedness, no computability classification and no undecidability
+reduction; the synthetic halting fixtures in the original programs do not
+compute the halting set; the package implements neither arbitrary computable
+reals nor arbitrary infinite surreal arithmetic; and there is no Lean-checked
+formalization and no literature-wide priority claim.}
 
 
 \end{document}
