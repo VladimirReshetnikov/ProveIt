@@ -25,8 +25,8 @@ Apache license are included in the repository.
 
 ## Formalization
 
-The [source documents](docs/README.md) comprise eighteen research reports and
-their preserved source manuscripts. The
+The [source inventory](docs/FORMALIZATION.md) covers twenty-two research reports
+and their preserved source manuscripts. The
 [coverage and dependency ledger](docs/FORMALIZATION.md) records their statements,
 the proposed Layer A–E implementation order, and the exact scope of each
 implemented result.
@@ -223,7 +223,9 @@ On the sign field, finite and infinitesimal sets and their nonzero affine
 images are clopen; scaled monads separate points in the native order topology.
 The coprime binary product linearization is an isomorphism on bounded-degree
 polynomials over any commutative ring, providing unique finite corrections
-for the later support-controlled factor lift.
+for the support-controlled factor lift. Recursing on a formal parameter now
+gives unique binary lifts, packaged as actual polynomials over a power-series
+ring with preserved monicity, degrees, constant specializations and coprimeness.
 Conway monomials and leading exponents now act on the actual sign field.
 A maximum of finitely many weighted exponents gives a positive scale making
 all coefficients finite while preserving at least one nonzero real residue.
@@ -243,6 +245,12 @@ has a proper positive odd-degree factor. The actual sign and surcomplex
 fields also carry additive valuations with surreal exponents and infinity
 at zero. Their finite rings agree with the existing modulus-bounded rings,
 and valuation lower bounds give the documented monomial modulus estimate.
+Actual surcomplex leading coefficients are multiplicative. Each nonzero element
+is its leading monomial times (a nonzero complex constant plus an infinitesimal);
+its modulus has the ordinary norm as leading coefficient. Removing the leading
+term strictly raises valuation. A root of a monic surcomplex polynomial with
+finite coefficients is finite. For explicitly split monic polynomials,
+standard part preserves the linear factorization and root multiplicities.
 The surreal field is not algebraically closed, and no linear order is
 compatible with surcomplex multiplication.
 Real closedness and the normal-form bridge to Hahn series remain open.
