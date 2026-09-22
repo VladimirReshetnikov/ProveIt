@@ -8,7 +8,7 @@ parts.
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 54 pages
+article.pdf   the compiled report, 53 pages
 README.md     this guide
 03-infinite-spectral-PROVENANCE.md   Part II's delivered provenance record
 code/         02-hahn-hilbert-spectral-{verify.py,build.sh}   (Part I)
@@ -35,30 +35,35 @@ as a family of operators, so that calculus is not a spectral measure and is not
 offered as one.
 
 The two parts are **not** one theory with one hypothesis paragraph. The word
-*spectrum* means different things on different vector spaces, and the
-hypotheses on `Γ` point in opposite directions:
+*spectrum* means different things on different vector spaces. Both now allow arbitrary nonzero set-sized ordered value groups:
 
 | | Part I | Part II |
 |---|---|---|
 | Vector space | `H((t^Γ))`, `H` an ordinary complex Hilbert space | `C^(I)((t^Γ))`: each Hahn coefficient has finite coordinate support |
 | Operators | Hahn series of **ordinary bounded** operators | Hahn series of **row- and column-finite** matrices, no boundedness |
-| "Spectrum" | failure of bijectivity on the space (equivalently, in the adjointable algebra) | failure of invertibility **inside the named algebra** |
-| `Γ` | nonzero, set-sized, **divisible**; Section 12 further assumes `Γ ⊆ R` | nonzero, set-sized, **not assumed divisible** |
+| "Spectrum" | failure of bijectivity on the space; for constant normal operators, equivalently failure of invertibility in the adjointable algebra | failure of invertibility **inside the named algebra** |
+| `Γ` | nonzero, set-sized, **not assumed divisible**; only Section 12.1 assumes `Γ ⊆ R` | nonzero, set-sized, **not assumed divisible** |
 | Accumulation | accumulation points of `σ_C(T)` thicken into whole infinitesimal monads | accumulating residues `d_i` do **not** enlarge the spectrum beyond the labeled eigenvalues |
 
 Quoted without their categories, the two accumulation statements read as a
 contradiction. They are not one; Section 3 works the apparent conflict out on a
-single operator. No theorem of Part I is used in Part II or conversely.
+single operator. No theorem of Part I is used in Part II or conversely. Part I
+takes inner products linear in the first variable; Part II takes them
+conjugate-linear in the first. Translate a pairing by conjugating its value
+(or exchanging its arguments), including the linearity of variational
+functionals.
 
 ## What Part I claims
 
-Part I retains divisibility as a standing convention. Its norm itself needs
-no divisibility: a nonzero squared norm has leading exponent `2δ` and
-positive leading coefficient, so its square root is a scalar multiple of
-`t^δ` times a near-one binomial root. Proposition 5.1 proves this for every
-ordered value group; the later Part I hypotheses are unchanged.
+The proof review removes the source's standing divisibility assumption.
+A nonzero squared norm has leading exponent `2δ`, so its root already
+lies in the original field. The scalar moduli and near-one binomial roots
+used in Part I need no larger group; ordinary positive operator square roots
+are taken before Hahn extension. General positive scalars have a square root
+exactly when their leading exponent lies in `2Γ`.
 
-For `K = C((t^Γ))`, `Γ` divisible, and `𝓗 = H((t^Γ))` with the
+For `K = C((t^Γ))` with arbitrary nonzero set-sized ordered `Γ`,
+and `𝓗 = H((t^Γ))` with the
 coefficientwise-convolution inner product:
 
 1. **Automatic structure.** Every everywhere-defined adjointable `K`-linear
@@ -74,8 +79,10 @@ coefficientwise-convolution inner product:
    needed.
 4. **A coercive operator that is not onto.** For `D e_n = e_n / n` and
    `η > 0`, `C = D² + t^(2η) I` is bounded, positive, self-adjoint, coercive
-   and injective, yet its cokernel has dimension at least the continuum. In
-   rank one its range is closed and proper with zero orthogonal complement.
+   and injective, yet its cokernel has dimension at least the continuum. Its
+   range is closed and proper at every rank, with zero orthogonal complement:
+   it is the kernel of the continuous defect projection. Section 12.1 also
+   proves metric completeness when `Γ ⊆ R`.
 5. **Least norm bounds.** The extension of an ordinary bounded `T` has a least
    field-valued norm bound exactly when `T` attains its ordinary norm.
 
@@ -152,6 +159,9 @@ It supplies no spectral-measure theory.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The recorded build has zero errors, zero undefined references and citations,
-and zero duplicate PDF destinations. To rerun the checks, run the scripts in
+The reviewed build has 53 pages, zero errors, zero undefined references and
+citations, and zero duplicate PDF destinations. It retains the baseline
+underfull box in the novelty table. The earlier 54-page build placed the
+status note alone on a second title page; adjusted spacing keeps it with
+the abstract. To rerun the checks, run the scripts in
 `code/` on a copy of this directory; SymPy 1.14.0 is pinned in `data/`.

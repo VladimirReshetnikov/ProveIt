@@ -121,6 +121,31 @@ infinitely many supported exponents to one value; it need not produce a
 Hahn series over the quotient group. The example in `hol:rem:thetacoarse`
 makes this distinction explicit.
 
+## Inner products and operator spectra
+
+The [finite-dimensional spectral report](surcomplex/spectral-theory/article.tex)
+uses `⟨x,y⟩ = x* y`, conjugate-linear in the first variable.
+[Infinite-dimensional Hahn spectral theory](surcomplex/infinite-dimensional-hahn-spectral-theory/article.tex)
+retains different source conventions: Part I is linear in the first variable;
+Part II is conjugate-linear in the first. Conjugate the scalar value, or
+exchange the arguments, when translating between them. Positivity and
+adjoint identities survive this change, but the linearity of a represented
+functional changes.
+
+In that report, `σ_Γ^alg` means failure of bijectivity on `H((t^Γ))` and
+`σ_Γ^adj` means failure of inversion in `B(H)((t^Γ))`. Their equality is
+proved for constant normal operators. Part II's `σ_𝒜` refers to inversion
+in the row- and column-finite Hahn algebra on a different vector space.
+A prime in `σ_ℂ(T)'` denotes ordinary spectral accumulation, not a derivative.
+
+Keep the three size notions distinct: `‖T‖_H` is an ordinary real operator
+norm, `‖x‖` is a positive Hahn scalar, and `ρ(x) = exp(−v(x))` is the real
+valuation size when `Γ ⊆ ℝ`. A field-valued operator bound need not have a
+least possible value. The vector norm and scalar modulus exist without
+divisibility because their squared values have even leading exponents;
+arbitrary positive Hahn scalars have a square root exactly when their
+leading exponent lies in `2Γ`.
+
 ## Finite elements, standard part, and reduction
 
 Use `O_F = {v ≥ 0}` and `m_F = {v > 0}` for the finite valuation ring and
