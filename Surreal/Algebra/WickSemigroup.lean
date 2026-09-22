@@ -11,7 +11,7 @@ import Mathlib.LinearAlgebra.Matrix.DotProduct
 /-!
 # Finite semigroups of Wick diagrams and valuation Cauchy–Schwarz
 
-This file proves `lem:dickson`, `prop:hilbert`, `prop:module` and `lem:valCS` in
+This file proves `wick:lem:dickson`, `wick:prop:hilbert`, `wick:prop:module` and `wick:lem:valCS` in
 `docs/surcomplex/wick-summability-certificates/article.tex`.
 
 Dickson's lemma is Mathlib's well-quasi-order instance on finite products of
@@ -36,11 +36,11 @@ section Dickson
 
 variable {ι : Type*} [Finite ι]
 
-/-- `lem:dickson`: every subset of `ℕ^ι` has finitely many minimal elements. -/
+/-- `wick:lem:dickson`: every subset of `ℕ^ι` has finitely many minimal elements. -/
 theorem finite_setOf_minimal (T : Set (ι → ℕ)) : {x | Minimal (· ∈ T) x}.Finite :=
   WellQuasiOrderedLE.finite_of_isAntichain (setOf_minimal_antichain _)
 
-/-- `lem:dickson`: every element of a subset of `ℕ^ι` lies above a minimal one. -/
+/-- `wick:lem:dickson`: every element of a subset of `ℕ^ι` lies above a minimal one. -/
 theorem exists_minimal_le {T : Set (ι → ℕ)} {x : ι → ℕ} (hx : x ∈ T) :
     ∃ y ≤ x, Minimal (· ∈ T) y :=
   exists_minimal_le_of_wellFoundedLT _ x hx
@@ -63,12 +63,12 @@ theorem map_tsub_eq_zero {x y : ι → ℕ} (hx : f x = 0) (hy : f y = 0) (hyx :
 def hilbertBasis : Set (ι → ℕ) :=
   {x | Minimal (fun y => f y = 0 ∧ y ≠ 0) x}
 
-/-- `prop:hilbert`: the Hilbert basis is finite. -/
+/-- `wick:prop:hilbert`: the Hilbert basis is finite. -/
 theorem finite_hilbertBasis : (hilbertBasis f).Finite :=
   finite_setOf_minimal {y | f y = 0 ∧ y ≠ 0}
 
 omit [Finite ι] in
-/-- `prop:hilbert`: the Hilbert basis consists exactly of the nonzero kernel
+/-- `wick:prop:hilbert`: the Hilbert basis consists exactly of the nonzero kernel
 elements that are not a sum of two nonzero kernel elements. -/
 theorem mem_hilbertBasis_iff {h : ι → ℕ} :
     h ∈ hilbertBasis f ↔ f h = 0 ∧ h ≠ 0 ∧
@@ -89,7 +89,7 @@ theorem mem_hilbertBasis_iff {h : ι → ℕ} :
       exact hyh' (le_antisymm hyh (tsub_eq_zero_iff_le.mp hd))
     exact hind y (h - y) hy (map_tsub_eq_zero f hf hy hyh) hy0 hd0 (add_tsub_cancel_of_le hyh)
 
-/-- `prop:hilbert`: every kernel element is a nonnegative integer combination of
+/-- `wick:prop:hilbert`: every kernel element is a nonnegative integer combination of
 Hilbert basis elements. -/
 theorem mem_closure_hilbertBasis {x : ι → ℕ} (hx : f x = 0) :
     x ∈ AddSubmonoid.closure (hilbertBasis f) := by
@@ -109,7 +109,7 @@ theorem mem_closure_hilbertBasis {x : ι → ℕ} (hx : f x = 0) :
     rw [← add_tsub_cancel_of_le hhx]
     exact add_mem (AddSubmonoid.subset_closure hh) (ih _ hlt hsub)
 
-/-- `prop:module`: every fiber of the count map is the union of the translates of
+/-- `wick:prop:module`: every fiber of the count map is the union of the translates of
 the kernel by the finitely many minimal elements of the fiber. -/
 theorem fiber_eq_biUnion (β : G) :
     {x | f x = β} = ⋃ q ∈ {q | Minimal (fun y => f y = β) q}, (q + ·) '' {s | f s = 0} := by
@@ -128,7 +128,7 @@ theorem fiber_eq_biUnion (β : G) :
     rw [map_add, hs, add_zero]
     exact hq.prop
 
-/-- `prop:module`: each fiber has finitely many minimal elements. -/
+/-- `wick:prop:module`: each fiber has finitely many minimal elements. -/
 theorem finite_minimal_fiber (β : G) : {q | Minimal (fun y => f y = β) q}.Finite :=
   finite_setOf_minimal {y | f y = β}
 
@@ -155,7 +155,7 @@ theorem quadForm_two {C : Matrix n n F} (hC : C.IsSymm) (i j : n) (a b : F) :
   rw [hji]
   ring
 
-/-- `lem:valCS`, order part: a symmetric positive-definite matrix has positive
+/-- `wick:lem:valCS`, order part: a symmetric positive-definite matrix has positive
 diagonal and strictly dominated off-diagonal squares. -/
 theorem diag_pos_and_sq_lt {C : Matrix n n F} (hC : C.IsSymm)
     (hpd : ∀ x : n → F, x ≠ 0 → 0 < x ⬝ᵥ (C *ᵥ x)) {i j : n} (hij : i ≠ j) :
@@ -184,7 +184,7 @@ variable {Γ R : Type*} [AddCommMonoid Γ] [LinearOrder Γ] [IsOrderedCancelAddM
 
 open HahnSeries
 
-/-- `lem:valCS`, valuation part: if `0 < a`, `0 < b` and `c² < ab` in the
+/-- `wick:lem:valCS`, valuation part: if `0 < a`, `0 < b` and `c² < ab` in the
 lexicographic Hahn order, then `v(a) + v(b) ≤ 2 v(c)`. -/
 theorem orderTop_add_le_of_sq_lt {a b c : Lex R⟦Γ⟧} (ha : 0 < a) (hb : 0 < b)
     (hc : c ^ 2 < a * b) :
@@ -199,7 +199,7 @@ theorem orderTop_add_le_of_sq_lt {a b c : Lex R⟦Γ⟧} (ha : 0 < a) (hb : 0 < 
   exact lt_asymm hc habs
 
 open Matrix in
-/-- `lem:valCS`: for a symmetric positive-definite matrix over the real-type Hahn
+/-- `wick:lem:valCS`: for a symmetric positive-definite matrix over the real-type Hahn
 field `R((t^Γ))`, every diagonal entry is positive and every off-diagonal entry
 satisfies `2 v(C_ij) ≥ v(C_ii) + v(C_jj)`. -/
 theorem valuation_cauchySchwarz {Γ' : Type*} [AddCommGroup Γ'] [LinearOrder Γ']

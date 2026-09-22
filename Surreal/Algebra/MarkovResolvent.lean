@@ -6,22 +6,22 @@ import Mathlib.Tactic.Module
 /-!
 # Normalized resolvents and projection flags of rate matrices
 
-This file proves the exact finite algebra behind `lem:resolvent`,
-`thm:flag-realization` and `lem:completion` in
+This file proves the exact finite algebra behind `markov:lem:resolvent`,
+`markov:thm:flag-realization` and `markov:lem:completion` in
 `docs/surreal/markov-generators-at-every-scale/article.tex`, over an arbitrary
 field. The normalized resolvent of a square matrix `L` is `R_L(s) = s(sI + L)⁻¹`.
 
-* `eq:resolvent-identity`: `R_L(s)R_L(u) = (uR_L(s) - sR_L(u))/(u - s)`, and
+* `markov:eq:resolvent-identity`: `R_L(s)R_L(u) = (uR_L(s) - sR_L(u))/(u - s)`, and
   resolvents at different parameters commute.
-* `thm:flag-realization`: for a flag `P_0 = I, P_1, …, P_m` of matrices with
+* `markov:thm:flag-realization`: for a flag `P_0 = I, P_1, …, P_m` of matrices with
   `P_iP_j = P_{max(i,j)}`, the matrix `H = ∑ τ_j(P_{j-1} - P_j)` has normalized
   resolvent exactly `P_m + ∑ s/(s + τ_j)(P_{j-1} - P_j)`. Stochastic flags give
-  zero row sums, and the Abel-summed form `eq:inverse-signs` shows that every
+  zero row sums, and the Abel-summed form `markov:eq:inverse-signs` shows that every
   off-diagonal entry is nonpositive when the flag is entrywise nonnegative and
   `τ_1 > ⋯ > τ_m > 0`. In a real Hahn field, `τ_j = t^{α_j}` with increasing
   `α_j` satisfies exactly these order hypotheses.
-* `lem:completion`: adding `ε(I - 𝟙ν)` for a probability row `ν` gives the exact
-  rank-one resolvent formula `eq:completion-convex`, with no commutation of
+* `markov:lem:completion`: adding `ε(I - 𝟙ν)` for a probability row `ν` gives the exact
+  rank-one resolvent formula `markov:eq:completion-convex`, with no commutation of
   `𝟙ν` and `H`, and strictly negative off-diagonal entries.
 
 Residue computations at prescribed Hahn scales are separate obligations.
@@ -55,7 +55,7 @@ theorem inv_sub_inv {L : Matrix n n K} {s u : K} (hs : IsUnit (s • (1 : Matrix
     Matrix.add_mul, Matrix.smul_mul, Matrix.one_mul, ← hBA] at key
   exact (eq_sub_of_add_eq key).symm
 
-/-- `eq:resolvent-identity` in multiplied-out form. -/
+/-- `markov:eq:resolvent-identity` in multiplied-out form. -/
 theorem resolvent_mul_resolvent {L : Matrix n n K} {s u : K}
     (hs : IsUnit (s • (1 : Matrix n n K) + L).det)
     (hu : IsUnit (u • (1 : Matrix n n K) + L).det) :
@@ -64,7 +64,7 @@ theorem resolvent_mul_resolvent {L : Matrix n n K} {s u : K}
   simp only [resolvent, Matrix.smul_mul, Matrix.mul_smul, smul_smul]
   rw [mul_comm (u - s), ← smul_smul, ← h, smul_sub, mul_comm s u]
 
-/-- `eq:resolvent-identity`: `R_L(s)R_L(u) = (uR_L(s) - sR_L(u))/(u - s)`. -/
+/-- `markov:eq:resolvent-identity`: `R_L(s)R_L(u) = (uR_L(s) - sR_L(u))/(u - s)`. -/
 theorem resolvent_mul_resolvent_eq {L : Matrix n n K} {s u : K} (hsu : s ≠ u)
     (hs : IsUnit (s • (1 : Matrix n n K) + L).det)
     (hu : IsUnit (u • (1 : Matrix n n K) + L).det) :
@@ -98,11 +98,11 @@ the source, so `τ j` is the source's `τ_{j+1}`. -/
 def flagStep (j : ℕ) : Matrix n n K :=
   P j - P (j + 1)
 
-/-- `eq:simple-inverse`: the generator `H = ∑ τ_j(P_{j-1} - P_j)`. -/
+/-- `markov:eq:simple-inverse`: the generator `H = ∑ τ_j(P_{j-1} - P_j)`. -/
 def flagGenerator : Matrix n n K :=
   ∑ j ∈ range m, τ j • flagStep P j
 
-/-- `eq:simple-inverse-resolvent`: the claimed resolvent. -/
+/-- `markov:eq:simple-inverse-resolvent`: the claimed resolvent. -/
 def flagResolvent (s : K) : Matrix n n K :=
   P m + ∑ j ∈ range m, (s / (s + τ j)) • flagStep P j
 
@@ -143,8 +143,8 @@ theorem last_add_sum_flagStep (hP : IsFlag P m) :
   rw [Finset.sum_range_sub' P m]
   abel
 
-/-- `thm:flag-realization`: the normalized resolvent of the flag generator is exactly
-`eq:simple-inverse-resolvent`, for every `s` with `s ≠ 0` and `s + τ_j ≠ 0`. -/
+/-- `markov:thm:flag-realization`: the normalized resolvent of the flag generator is exactly
+`markov:eq:simple-inverse-resolvent`, for every `s` with `s ≠ 0` and `s + τ_j ≠ 0`. -/
 theorem resolvent_flagGenerator (hP : IsFlag P m) {s : K} (hs : s ≠ 0)
     (hτ : ∀ j < m, s + τ j ≠ 0) :
     resolvent (flagGenerator P τ m) s = flagResolvent P τ m s := by
@@ -178,7 +178,7 @@ theorem resolvent_flagGenerator (hP : IsFlag P m) {s : K} (hs : s ≠ 0)
     add_assoc, ← Finset.sum_add_distrib, Finset.sum_congr rfl hcoef, ← Finset.smul_sum,
     ← smul_add, last_add_sum_flagStep hP]
 
-/-- `eq:inverse-signs`: Abel summation of the flag generator. -/
+/-- `markov:eq:inverse-signs`: Abel summation of the flag generator. -/
 theorem flagGenerator_eq_abel (hP : IsFlag P m) (hm : 0 < m) :
     flagGenerator P τ m = τ 0 • (1 : Matrix n n K) +
       ∑ j ∈ range (m - 1), (τ (j + 1) - τ j) • P (j + 1) - τ (m - 1) • P m := by
@@ -203,7 +203,7 @@ theorem flagGenerator_mulVec_one (hstoch : ∀ j ≤ m, P j *ᵥ (fun _ => (1 : 
   rw [Matrix.smul_mulVec, flagStep, Matrix.sub_mulVec, hstoch j (by simp at hj; omega),
     hstoch (j + 1) (by simp at hj; omega), sub_self, smul_zero]
 
-/-- `thm:flag-realization`: with an entrywise nonnegative flag and
+/-- `markov:thm:flag-realization`: with an entrywise nonnegative flag and
 `τ_1 > ⋯ > τ_m > 0`, every off-diagonal entry of the generator is nonpositive. -/
 theorem flagGenerator_offDiag_nonpos [LinearOrder K] [IsStrictOrderedRing K] (hP : IsFlag P m)
     (hm : 0 < m) (hnonneg : ∀ j ≤ m, ∀ a b, 0 ≤ P j a b)
@@ -241,7 +241,7 @@ theorem mul_onesRow {H : Matrix n n K} (hH : H *ᵥ (fun _ => (1 : K)) = 0) (ν 
   simp only [mulVec, dotProduct, mul_one, Pi.zero_apply] at this
   simp [onesRow, mul_apply, ← Finset.sum_mul, this]
 
-/-- `eq:completion-exact` and `eq:completion-convex`: for a zero-row-sum `H`, a
+/-- `markov:eq:completion-exact` and `markov:eq:completion-convex`: for a zero-row-sum `H`, a
 probability row `ν`, and `L = H + ε(I - 𝟙ν)`,
 `R_L(s) = (s/(s + ε) I + ε/(s + ε) 𝟙ν) R_H(s + ε)`. -/
 theorem resolvent_completion {H : Matrix n n K} (hH : H *ᵥ (fun _ => (1 : K)) = 0)
@@ -269,7 +269,7 @@ theorem resolvent_completion {H : Matrix n n K} (hH : H *ᵥ (fun _ => (1 : K)) 
     mul_nonsing_inv _ hM]
 
 omit [Fintype n] in
-/-- `lem:completion`: the completed generator has strictly negative off-diagonal
+/-- `markov:lem:completion`: the completed generator has strictly negative off-diagonal
 entries when `H` has nonpositive ones, `ε > 0` and `ν` is strictly positive. -/
 theorem completion_offDiag_neg [LinearOrder K] [IsStrictOrderedRing K] {H : Matrix n n K}
     {ν : n → K} {ε : K} (hε : 0 < ε) (hν : ∀ b, 0 < ν b)

@@ -7,8 +7,8 @@ import Surreal.Algebra.Complexify
 /-!
 # The negative-atom Toeplitz example
 
-This file proves the finite algebraic clauses of `thm:negativeatom`,
-`thm:quadrature` and `thm:schur` in
+This file proves the finite algebraic clauses of `herg:thm:negativeatom`,
+`herg:thm:quadrature` and `herg:thm:schur` in
 `docs/surcomplex/hahn-herglotz-positivity/article.tex`.
 
 The moments `c_0 = 1`, `c_n = -ε` for `n ≠ 0` have Toeplitz matrices
@@ -18,14 +18,14 @@ vector with coordinate sum zero has eigenvalue `1 + ε`, and
 make both the real quadratic form and the Hermitian form over the
 complexification strictly positive on nonzero vectors. For a positive
 infinitesimal `ε` in a Hahn field these hypotheses hold for every ordinary
-finite `N`, which is the non-Archimedean phenomenon of `thm:negativeatom`.
+finite `N`, which is the non-Archimedean phenomenon of `herg:thm:negativeatom`.
 
-The positive quadrature of `thm:quadrature` uses weights `(1 + ε)/M` at the
+The positive quadrature of `herg:thm:quadrature` uses weights `(1 + ε)/M` at the
 `M`th roots of unity, reduced by `ε` at `1`. Its weights are positive when
 `(M - 1)ε < 1`, and its moments are `1` at zero and `-ε` for `0 < |n| < M`.
 
 The normalized Cayley quotient of `H_ε(z) = 1 - 2εz/(1 - z)` and all its exact
-Schur iterates are the rational functions of `eq:schurformula`, with parameters
+Schur iterates are the rational functions of `herg:eq:schurformula`, with parameters
 `α_n = -ε/(1 - nε)` and poles at `r_n = (1 - nε)/(1 - (n - 1)ε)`. The
 measure-theoretic uniqueness of the representing signed measure is a separate
 obligation.
@@ -45,7 +45,7 @@ variable {F : Type*} [Field F]
 def toeplitz (N : ℕ) (c : ℤ → F) : Matrix (Fin (N + 1)) (Fin (N + 1)) F :=
   Matrix.of fun j k => c ((j : ℤ) - k)
 
-/-- `eq:mainmoments`: `c_0 = 1` and `c_n = -ε` for `n ≠ 0`. -/
+/-- `herg:eq:mainmoments`: `c_0 = 1` and `c_n = -ε` for `n ≠ 0`. -/
 def negAtomMoment (ε : F) (n : ℤ) : F :=
   if n = 0 then 1 else -ε
 
@@ -53,7 +53,7 @@ def negAtomMoment (ε : F) (n : ℤ) : F :=
 def allOnes (N : ℕ) : Matrix (Fin (N + 1)) (Fin (N + 1)) F :=
   Matrix.of fun _ _ => 1
 
-/-- `eq:mainmatrix`: `T_N(c) = (1 + ε) I - ε J`. -/
+/-- `herg:eq:mainmatrix`: `T_N(c) = (1 + ε) I - ε J`. -/
 theorem toeplitz_negAtomMoment (N : ℕ) (ε : F) :
     toeplitz N (negAtomMoment ε) = (1 + ε) • (1 : Matrix _ _ F) - ε • allOnes N := by
   ext j k
@@ -75,7 +75,7 @@ theorem toeplitz_negAtomMoment_mulVec (N : ℕ) (ε : F) (v : Fin (N + 1) → F)
   rw [toeplitz_negAtomMoment, sub_mulVec, smul_mulVec, smul_mulVec, one_mulVec,
     allOnes_mulVec]
 
-/-- `eq:eigen`: the constant vector has eigenvalue `1 - Nε`. -/
+/-- `herg:eq:eigen`: the constant vector has eigenvalue `1 - Nε`. -/
 theorem toeplitz_negAtomMoment_mulVec_one (N : ℕ) (ε : F) :
     toeplitz N (negAtomMoment ε) *ᵥ (fun _ => 1) = (1 - N * ε) • (fun _ => (1 : F)) := by
   rw [toeplitz_negAtomMoment_mulVec]
@@ -84,7 +84,7 @@ theorem toeplitz_negAtomMoment_mulVec_one (N : ℕ) (ε : F) :
     Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, Nat.cast_add, Nat.cast_one]
   ring
 
-/-- `eq:eigen`: every vector with coordinate sum zero has eigenvalue `1 + ε`;
+/-- `herg:eq:eigen`: every vector with coordinate sum zero has eigenvalue `1 + ε`;
 these vectors form a subspace of dimension `N`. -/
 theorem toeplitz_negAtomMoment_mulVec_of_sum_eq_zero (N : ℕ) (ε : F)
     {v : Fin (N + 1) → F} (hv : ∑ j, v j = 0) :
@@ -93,7 +93,7 @@ theorem toeplitz_negAtomMoment_mulVec_of_sum_eq_zero (N : ℕ) (ε : F)
   funext j
   simp
 
-/-- `eq:det`: the determinant of the negative-atom Toeplitz matrix. -/
+/-- `herg:eq:det`: the determinant of the negative-atom Toeplitz matrix. -/
 theorem det_toeplitz_negAtomMoment (N : ℕ) {ε : F} (hε : 1 + ε ≠ 0) :
     (toeplitz N (negAtomMoment ε)).det = (1 + ε) ^ N * (1 - N * ε) := by
   have hc : (1 + ε) * (-ε / (1 + ε)) = -ε := mul_div_cancel₀ _ hε
@@ -189,7 +189,7 @@ theorem sub_mul_sum_sq_le (N : ℕ) {ε : F} (hε : 0 ≤ ε) (x : Fin (N + 1) �
   simp only [card_univ, Fintype.card_fin, Nat.cast_add, Nat.cast_one] at hcs
   nlinarith [mul_le_mul_of_nonneg_left hcs hε]
 
-/-- `thm:negativeatom`: `T_N(c) ≻ 0` as a real quadratic form whenever `0 ≤ ε`
+/-- `herg:thm:negativeatom`: `T_N(c) ≻ 0` as a real quadratic form whenever `0 ≤ ε`
 and `Nε < 1`, in particular for every ordinary `N` when `ε` is a positive
 infinitesimal. -/
 theorem toeplitz_negAtomMoment_posDef (N : ℕ) {ε : F} (hε : 0 ≤ ε) (hNε : N * ε < 1)
@@ -202,7 +202,7 @@ theorem toeplitz_negAtomMoment_posDef (N : ℕ) {ε : F} (hε : 0 ≤ ε) (hNε 
       (single_le_sum (fun i _ => sq_nonneg (x i)) (mem_univ j))
   exact lt_of_lt_of_le (mul_pos (by linarith) hpos) (sub_mul_sum_sq_le N hε x)
 
-/-- `eq:det`: the determinant is positive under the same hypotheses. -/
+/-- `herg:eq:det`: the determinant is positive under the same hypotheses. -/
 theorem det_toeplitz_negAtomMoment_pos (N : ℕ) {ε : F} (hε : 0 ≤ ε) (hNε : N * ε < 1) :
     0 < (toeplitz N (negAtomMoment ε)).det := by
   rw [det_toeplitz_negAtomMoment N (by linarith)]
@@ -218,7 +218,7 @@ theorem im_sum {m : Type*} (s : Finset m) (x : m → Complexify F) :
     (∑ j ∈ s, x j).im = ∑ j ∈ s, (x j).im := by
   exact map_sum (QuadraticAlgebra.imₗ (R := F) (-1) 0) x s
 
-/-- `thm:negativeatom`: `T_N(c) ≻ 0` against all complex Hahn vectors, whenever
+/-- `herg:thm:negativeatom`: `T_N(c) ≻ 0` against all complex Hahn vectors, whenever
 `0 ≤ ε` and `Nε < 1`. -/
 theorem hermForm_toeplitz_negAtomMoment_pos (N : ℕ) {ε : F} (hε : 0 ≤ ε) (hNε : N * ε < 1)
     {x : Fin (N + 1) → Complexify F} (hx : x ≠ 0) :
@@ -243,22 +243,22 @@ section Schur
 
 variable {F : Type*} [Field F]
 
-/-- `eq:badH`: the rational Herglotz function of the negative-atom moments. -/
+/-- `herg:eq:badH`: the rational Herglotz function of the negative-atom moments. -/
 def negAtomHerglotz (ε z : F) : F :=
   1 - 2 * ε * z / (1 - z)
 
-/-- `eq:schurformula`: the `n`th Schur iterate. -/
+/-- `herg:eq:schurformula`: the `n`th Schur iterate. -/
 def schurIterate (ε z : F) (n : ℕ) : F :=
   -ε / (1 - n * ε - (1 - (n - 1) * ε) * z)
 
-/-- `eq:schurformula`: the `n`th Schur parameter `α_n = s_n(0)`. -/
+/-- `herg:eq:schurformula`: the `n`th Schur parameter `α_n = s_n(0)`. -/
 def schurParam (ε : F) (n : ℕ) : F :=
   -ε / (1 - n * ε)
 
 theorem schurIterate_zero_arg (ε : F) (n : ℕ) : schurIterate ε 0 n = schurParam ε n := by
   simp [schurIterate, schurParam]
 
-/-- `thm:schur`: the normalized Cayley quotient of `H_ε` is `s_0`. The factor `2`
+/-- `herg:thm:schur`: the normalized Cayley quotient of `H_ε` is `s_0`. The factor `2`
 must be invertible; ordered fields satisfy this. -/
 theorem cayley_negAtomHerglotz {ε z : F} (two : (2 : F) ≠ 0) (hz : z ≠ 0) (h1 : 1 - z ≠ 0)
     (h2 : 1 - (1 + ε) * z ≠ 0) :
@@ -277,7 +277,7 @@ theorem cayley_negAtomHerglotz {ε z : F} (two : (2 : F) ≠ 0) (hz : z ≠ 0) (
     div_eq_div_iff (mul_ne_zero hz (mul_ne_zero two h2)) h2]
   ring
 
-/-- `eq:schurrec`: the Schur recursion is solved exactly by `eq:schurformula`.
+/-- `herg:eq:schurrec`: the Schur recursion is solved exactly by `herg:eq:schurformula`.
 The Schur parameter is real, so conjugation is omitted. -/
 theorem schur_step {ε z : F} {n : ℕ} (hz : z ≠ 0) (h1 : 1 - n * ε ≠ 0)
     (h2 : 1 - (n - 1) * ε ≠ 0) (hD : 1 - n * ε - (1 - (n - 1) * ε) * z ≠ 0)
@@ -304,7 +304,7 @@ theorem schur_step {ε z : F} {n : ℕ} (hz : z ≠ 0) (h1 : 1 - n * ε ≠ 0)
     div_eq_div_iff (mul_ne_zero hz (mul_ne_zero h2 hD')) hD']
   ring
 
-/-- `eq:schurpole`: `s_n` has a pole at `r_n = (1 - nε)/(1 - (n - 1)ε)`. -/
+/-- `herg:eq:schurpole`: `s_n` has a pole at `r_n = (1 - nε)/(1 - (n - 1)ε)`. -/
 theorem schurIterate_denominator_eq_zero {ε : F} {n : ℕ} (h2 : 1 - (n - 1) * ε ≠ 0) :
     1 - n * ε - (1 - (n - 1) * ε) * ((1 - n * ε) / (1 - (n - 1) * ε)) = 0 := by
   rw [mul_div_cancel₀ _ h2, sub_self]
@@ -317,7 +317,7 @@ theorem one_sub_schurPole {ε : F} {n : ℕ} (h2 : 1 - (n - 1) * ε ≠ 0) :
   congr 1
   ring
 
-/-- `eq:boundarynegative`: `H_ε(1 - ε) = -1 + 2ε`. -/
+/-- `herg:eq:boundarynegative`: `H_ε(1 - ε) = -1 + 2ε`. -/
 theorem negAtomHerglotz_one_sub {ε : F} (hε : ε ≠ 0) :
     negAtomHerglotz ε (1 - ε) = -1 + 2 * ε := by
   rw [negAtomHerglotz, sub_sub_cancel, mul_comm 2 ε, mul_assoc, mul_div_cancel_left₀ _ hε]
@@ -325,14 +325,14 @@ theorem negAtomHerglotz_one_sub {ε : F} (hε : ε ≠ 0) :
 
 variable [LinearOrder F] [IsStrictOrderedRing F]
 
-/-- `thm:schur`: each ordinary Schur parameter lies strictly inside the unit disk. -/
+/-- `herg:thm:schur`: each ordinary Schur parameter lies strictly inside the unit disk. -/
 theorem abs_schurParam_lt_one {ε : F} {n : ℕ} (hε : 0 < ε) (hn : (n + 1) * ε < 1) :
     |schurParam ε n| < 1 := by
   have h1 : 0 < 1 - n * ε := by nlinarith
   rw [schurParam, abs_div, abs_neg, abs_of_pos hε, abs_of_pos h1, div_lt_one h1]
   nlinarith
 
-/-- `eq:schurpole`: the pole lies in the open interval `(0, 1)`. -/
+/-- `herg:eq:schurpole`: the pole lies in the open interval `(0, 1)`. -/
 theorem schurPole_mem_Ioo {ε : F} {n : ℕ} (hε : 0 < ε) (hn : n * ε < 1) :
     (1 - n * ε) / (1 - (n - 1) * ε) ∈ Set.Ioo (0 : F) 1 := by
   have h1 : 0 < 1 - n * ε := by linarith
@@ -345,12 +345,12 @@ section Quadrature
 
 variable {F : Type*} [Field F]
 
-/-- `eq:quadrature`: weight `(1 + ε)/M` at every `M`th root of unity, reduced by
+/-- `herg:eq:quadrature`: weight `(1 + ε)/M` at every `M`th root of unity, reduced by
 `ε` at the root `1`. -/
 def quadratureWeight (M : ℕ) (ε : F) (k : ℕ) : F :=
   (1 + ε) / M - if k = 0 then ε else 0
 
-/-- `thm:quadrature`: the quadrature is a Hahn probability. -/
+/-- `herg:thm:quadrature`: the quadrature is a Hahn probability. -/
 theorem sum_quadratureWeight {M : ℕ} (hM : (M : F) ≠ 0) (ε : F) :
     ∑ k ∈ range M, quadratureWeight M ε k = 1 := by
   have hM0 : 0 < M := Nat.pos_of_ne_zero fun h => hM (by simp [h])
@@ -359,7 +359,7 @@ theorem sum_quadratureWeight {M : ℕ} (hM : (M : F) ≠ 0) (ε : F) :
   field_simp
   ring
 
-/-- `thm:quadrature`: the moments of the quadrature at a primitive `M`th root of
+/-- `herg:thm:quadrature`: the moments of the quadrature at a primitive `M`th root of
 unity are `1` at zero and `-ε` for `0 < n < M`. -/
 theorem quadrature_moment {M : ℕ} {ζ : F} (hζ : IsPrimitiveRoot ζ M) (hM : (M : F) ≠ 0)
     (ε : F) {n : ℕ} (hn : n < M) :
@@ -381,7 +381,7 @@ theorem quadrature_moment {M : ℕ} {ζ : F} (hζ : IsPrimitiveRoot ζ M) (hM : 
       rw [← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one, one_pow]
     rw [geom_sum_eq hne, hpow, sub_self, zero_div, mul_zero, zero_sub]
 
-/-- `thm:quadrature`: the weights are positive when `0 < ε` and `(M - 1)ε < 1`. -/
+/-- `herg:thm:quadrature`: the weights are positive when `0 < ε` and `(M - 1)ε < 1`. -/
 theorem quadratureWeight_pos [LinearOrder F] [IsStrictOrderedRing F] {M : ℕ} (hM : 0 < M)
     {ε : F} (hε : 0 < ε) (hMε : (M - 1) * ε < 1) (k : ℕ) : 0 < quadratureWeight M ε k := by
   have hM' : (0 : F) < M := by exact_mod_cast hM

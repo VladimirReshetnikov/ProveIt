@@ -6,7 +6,7 @@ import Mathlib.Order.Preorder.Finite
 /-!
 # Simultaneous nonvanishing selection
 
-This file proves `lem:selection` in
+This file proves `meas:lem:global` in
 `docs/surreal/hahn-valued-measures-and-probability/article.tex`: given finitely
 supported functionals `L_n(A) = ∑_{x ∈ F_n ∩ A} c_{n,x}`, each with a nonzero
 coefficient, some set `A` makes infinitely many of them nonzero. The set can be
@@ -35,7 +35,7 @@ def supportedSum (F : Finset X) (c : X → k) (A : Set X) : k := by
   classical
   exact ∑ x ∈ F.filter (· ∈ A), c x
 
-/-- `lem:selection`: some set `A ⊆ ⋃ F_n` makes infinitely many of the functionals
+/-- `meas:lem:global`: some set `A ⊆ ⋃ F_n` makes infinitely many of the functionals
 nonzero. -/
 theorem exists_infinite_ne_zero (F : ℕ → Finset X) (c : ℕ → X → k)
     (hne : ∀ n, ∃ x ∈ F n, c n x ≠ 0) :

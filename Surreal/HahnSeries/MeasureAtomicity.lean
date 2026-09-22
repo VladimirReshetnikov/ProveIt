@@ -6,9 +6,9 @@ import Surreal.Algebra.NonvanishingSelection
 /-!
 # Atomicity of strong Hahn measures with automatic common support
 
-This file proves the forward half of `thm:atomic` and `cor:coefficient-test` in
+This file proves the forward half of `meas:thm:atomic` and `meas:cor:coefficient-test` in
 `docs/surreal/hahn-valued-measures-and-probability/article.tex`; the converse of
-`thm:atomic` and additivity on set-indexed families are in `StrongMeasure.lean`.
+`meas:thm:atomic` and additivity on set-indexed families are in `StrongMeasure.lean`.
 
 The key hypothesis is that each coefficient function `A ↦ coeff_γ μ(A)` is a
 finite combination of point masses; no common support and no strong additivity
@@ -21,9 +21,9 @@ contribute. Hence the singleton masses form a strongly summable family, every
 event mass is the strong sum of the masses of its points, and the global support
 equals the union of the supports of the singleton masses.
 
-Every strong Hahn measure has finitely atomic coefficients by `prop:coefficients`,
+Every strong Hahn measure has finitely atomic coefficients by `meas:prop:coefficients`,
 and conversely finitely atomic coefficients give a strong Hahn measure, which is
-`cor:coefficient-test`.
+`meas:cor:coefficient-test`.
 -/
 
 namespace Surreal.HahnSeries
@@ -68,7 +68,7 @@ theorem hasAtomicCoefficients_of_exists (hX : IsCountablySeparated X)
   change c x = (μ {x}).coeff γ
   rw [hrep _ (hsing x), finiteAtomic_singleton, if_pos (Finset.mem_filter.mp hx).1]
 
-/-- `prop:coefficients` in the form used below. -/
+/-- `meas:prop:coefficients` in the form used below. -/
 theorem hasAtomicCoefficients_of_isStrongHahnMeasure (hμ : IsStrongHahnMeasure μ)
     (hX : IsCountablySeparated X) : HasAtomicCoefficients μ := fun γ => by
   obtain ⟨F, -, hrep⟩ := coeff_eq_finiteAtomic hμ hX γ
@@ -88,7 +88,7 @@ theorem exists_singleton_coeff_ne_zero {γ : Γ} (hγ : γ ∈ globalSupport μ)
   obtain ⟨x, -, hx⟩ := Finset.exists_ne_zero_of_sum_ne_zero hne
   exact ⟨x, hx⟩
 
-/-- `thm:atomic`(iii): the global support is well ordered. -/
+/-- `meas:thm:atomic`(iii): the global support is well ordered. -/
 theorem isWF_globalSupport : (globalSupport μ).IsWF := by
   classical
   obtain ⟨E, hE, hsep⟩ := hX
@@ -124,7 +124,7 @@ theorem isWF_globalSupport : (globalSupport μ).IsWF := by
   rw [hrep _ A hAmeas, finiteAtomic_eq_supportedSum]
   exact heI m
 
-/-- `thm:atomic`(i): the singleton masses form a strongly summable family. -/
+/-- `meas:thm:atomic`(i): the singleton masses form a strongly summable family. -/
 def atomFamily : SummableFamily Γ R X where
   toFun x := μ {x}
   isPWO_iUnion_support' := by
@@ -146,7 +146,7 @@ def atomFamily : SummableFamily Γ R X where
 @[simp]
 theorem atomFamily_apply (x : X) : atomFamily hμ hX x = μ {x} := rfl
 
-/-- `thm:atomic`(ii): every event mass is the strong sum of its singleton masses. -/
+/-- `meas:thm:atomic`(ii): every event mass is the strong sum of its singleton masses. -/
 theorem eq_atomicMeasure {A : Set X} (hA : MeasurableSet A) :
     μ A = atomicMeasure (atomFamily hμ hX) A := by
   classical
@@ -169,7 +169,7 @@ theorem eq_atomicMeasure {A : Set X} (hA : MeasurableSet A) :
     simp only [Finset.coe_filter, Set.mem_setOf_eq] at hx
     exact hx.2
 
-/-- `thm:atomic`(iii): the global support is the union of the supports of the
+/-- `meas:thm:atomic`(iii): the global support is the union of the supports of the
 singleton masses. -/
 theorem globalSupport_eq_iUnion :
     globalSupport μ = ⋃ x, (μ {x}).support := by
@@ -189,7 +189,7 @@ theorem isStrongHahnMeasure_of_hasAtomicCoefficients : IsStrongHahnMeasure μ wh
     rw [eq_atomicMeasure hμ hX (MeasurableSet.iUnion hA), hsum]
 
 omit hμ in
-/-- `cor:coefficient-test`: on a countably separated space, a set function is a
+/-- `meas:cor:coefficient-test`: on a countably separated space, a set function is a
 strong Hahn measure exactly when every coefficient function is a finite linear
 combination of point masses. No common support or strong additivity is assumed in
 the second condition. -/

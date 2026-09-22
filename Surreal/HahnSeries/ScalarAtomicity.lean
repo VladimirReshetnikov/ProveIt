@@ -6,7 +6,7 @@ import Surreal.HahnSeries.StrongMeasure
 /-!
 # Disjoint-finite scalar measures are finitely point-atomic
 
-This file proves `lem:scalar` and `prop:coefficients` in
+This file proves `meas:lem:scalar` and `meas:prop:coefficients` in
 `docs/surreal/hahn-valued-measures-and-probability/article.tex`.
 
 A scalar set function on a measurable space is *finsum-additive* if every
@@ -26,7 +26,7 @@ stage the remaining set differs from the at most one-point intersection of the
 chain by a hereditarily null set, a contradiction.
 
 Every coefficient of a strong Hahn measure is finsum-additive, which gives
-`prop:coefficients` on countably separated spaces.
+`meas:prop:coefficients` on countably separated spaces.
 -/
 
 namespace Surreal.HahnSeries
@@ -197,7 +197,7 @@ theorem hereditarilyNull_iUnion (h : IsFinsumAdditive lam) {B : ℕ → Set X}
   exact finsum_eq_zero_of_forall_eq_zero fun n =>
     hnull n _ (hpieces n) (Set.inter_subset_right.trans (disjointed_subset B n))
 
-/-- The core of `lem:scalar`: a finsum-additive set function vanishing on points of
+/-- The core of `meas:lem:scalar`: a finsum-additive set function vanishing on points of
 a countably separated space vanishes on every measurable set. -/
 theorem eq_zero_of_singleton_eq_zero (h : IsFinsumAdditive lam) (hX : IsCountablySeparated X)
     (hpt : ∀ x, lam {x} = 0) {A : Set X} (hA : MeasurableSet A) : lam A = 0 := by
@@ -317,7 +317,7 @@ theorem finiteAtomic_singleton (F : Finset X) (c : X → k) (x : X) :
   simp only [finiteAtomic, Finset.sum_filter, Set.mem_singleton_iff]
   convert Finset.sum_ite_eq' F x c
 
-/-- `lem:scalar`: a disjoint-finite, countably additive scalar set function on a
+/-- `meas:lem:scalar`: a disjoint-finite, countably additive scalar set function on a
 countably separated space is the finite combination of its nonzero point masses. -/
 theorem eq_finiteAtomic (h : IsFinsumAdditive lam) (hX : IsCountablySeparated X) :
     ∃ F : Finset X, (∀ x ∈ F, lam {x} ≠ 0) ∧
@@ -337,7 +337,7 @@ theorem eq_finiteAtomic (h : IsFinsumAdditive lam) (hX : IsCountablySeparated X)
       by_contra hne
       exact hxF (hfin.mem_toFinset.mpr hne)
 
-/-- `lem:scalar`, uniqueness: a representation with nonzero coefficients has exactly
+/-- `meas:lem:scalar`, uniqueness: a representation with nonzero coefficients has exactly
 the points of nonzero mass as its support, and the point masses as coefficients. -/
 theorem finiteAtomic_unique {G : Finset X} {d : X → k} (hd : ∀ x ∈ G, d x ≠ 0)
     (hsing : ∀ x : X, MeasurableSet ({x} : Set X))
@@ -357,7 +357,7 @@ section Coefficients
 variable {Γ R : Type*} [PartialOrder Γ] [AddCommGroup R]
 
 /-- Every coefficient of a strong Hahn measure is disjoint-finite and countably
-additive, as in the proof of `prop:coefficients`. -/
+additive, as in the proof of `meas:prop:coefficients`. -/
 theorem isFinsumAdditive_coeff {μ : Set X → R⟦Γ⟧} (hμ : IsStrongHahnMeasure μ) (γ : Γ) :
     IsFinsumAdditive fun A => (μ A).coeff γ := by
   intro A hA hdisj
@@ -366,7 +366,7 @@ theorem isFinsumAdditive_coeff {μ : Set X → R⟦Γ⟧} (hμ : IsStrongHahnMea
   · simpa [hs n] using hn
   · simp only [hsum, SummableFamily.coeff_hsum, hs]
 
-/-- `prop:coefficients`: on a countably separated space, every coefficient of a
+/-- `meas:prop:coefficients`: on a countably separated space, every coefficient of a
 strong Hahn measure is a finite linear combination of point masses. -/
 theorem coeff_eq_finiteAtomic {μ : Set X → R⟦Γ⟧} (hμ : IsStrongHahnMeasure μ)
     (hX : IsCountablySeparated X) (γ : Γ) :
