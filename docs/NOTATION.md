@@ -90,6 +90,22 @@ inverse correction matrix and reconstructed nodes and weights remain in the
 original Hahn field. This temporary extension does not change the workspace
 named in the theorem.
 
+The [Wick report](surcomplex/wick-summability-certificates/article.tex)
+uses `Hilbert basis` for the finite indecomposable generators of its integer
+incidence semigroup, and `Gaussian expectation` for a finite pairing sum
+with symmetric bilinear covariance. Its `D` is an incidence matrix.
+Coefficientwise nonnegativity is stronger than ordered-field positivity.
+The grouping proposition `wick:prop:signcoherent` permits one common
+nonzero complex factor in the couplings; factoring its `n`th power out
+of each order block prevents cancellation there.
+
+The Wick balancing vector lies in the stated divisible group `Γ`.
+For `P = x²` and `C = t` over integer exponents, the atoms are summable but
+the required `0 < 2p < 1` has no solution in `ℤ`. A rational certificate
+belongs to a larger group. The distinction from the Prony certificate above
+is that the Wick equivalence explicitly asks for the scaling exponents
+in the original group.
+
 ## Finite elements, standard part, and reduction
 
 Use `O_F = {v ≥ 0}` and `m_F = {v > 0}` for the finite valuation ring and

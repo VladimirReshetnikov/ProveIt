@@ -39,6 +39,7 @@ No row below certifies every claim in an entire report.
 | [Markov generators](surreal/markov-generators-at-every-scale/) | Read the main forest, leading-entry, remainder, stochastic-retract, realization, stability, finite-specialization and spectral proof chains and their worked examples. Corrected the nonzero workspace construction for purely real inputs and the false finite-support inference; defined the exact infinite valuation-error bound. Expanded transient-block decay, effective inversion, the real-part argument and crossover invertibility. Clarified valuations of nonzero eigenvalues, the rational-linear obstruction and the current algebraic Lean scope. Checked the determinant and adjugate imports against Chebotarev–Agaev v2 with the same row orientation; other literature comparisons, priority and original-source reconciliation remain outside this review. |
 | [Tail spans and differential transcendence](surreal/tail-spans-and-differential-transcendence/) | Read the coefficient-field, cofinite-span, polarization, exceptional-field, affine-plane, actual-surreal, mixed-jet, halo, approximation and undecidability proofs. Made characteristic hypotheses explicit and supplied a characteristic-two counterexample; replaced the abbreviated mixed-difference argument by finite Taylor operators, including degenerate directions. Expanded separating-functional construction, coordinate recovery and Galois splitting. Corrected the purported value-group enlargement from lexicographic integers to rationals, with the embedding specified. Aligned the partial Lean scope and rerun instructions, checked the extension-of-embeddings citation and local BM restriction, and distinguished cofinite tails from valuation prefixes. Other foundational imports, literature comparisons and original-source reconciliation remain outside this review. |
 | [Prony reconstruction](surcomplex/prony-reconstruction-at-surreal-scales/) | Read the main support, reconstruction, sharpness, Hermite-precision and graph proofs and examples. Removed the graph theorem's divisibility assumption by auxiliary scaling and descent to the original Hahn field. Strengthened the classical uniqueness statement to arbitrary competing representations and the first-`2n−1`-moment rank obstruction, already covered in Lean. Corrected collision terminology, the measure-report comparison and stale formalization claims; checked the cited Caruso–Roe–Vaccon v1 hypotheses. |
+| [Wick summability](surcomplex/wick-summability-certificates/) | Read the main support, semigroup, strict-alternative, diagram, connected-graph, covariance, identity and cancellation proofs and examples. Corrected the zero-semigroup boundary and proved the exact finite-sector criterion; added an integer-group counterexample explaining original-group divisibility. Extended the grouping proposition to a common nonzero complex factor and repaired the quartic comparison for signed Hahn tails. Specified monomial-insertion, zero-derivative and unit-exponent conventions and current partial Lean coverage. Checked the BM normal-form references and Etingof's normalized connected identity; other imports, literature comparisons and original-source reconciliation remain outside this review. |
 
 Each correction was reviewed against its local definitions and downstream uses
 within the stated scope. Changed PDFs were rebuilt and affected pages inspected.
@@ -111,7 +112,7 @@ the canonical index to 1,753 standard entries; an independent parser checks
 all 36 reports.
 
 The Markov article and catalogue rebuilt without warnings or box issues, at
-33 and 21 pages. The unchanged exact program passed on a temporary copy:
+32 and 21 pages. The unchanged exact program passed on a temporary copy:
 48 graph instances, 17,280 forests, 105 critical kernels and seven symbolic
 checks. The resulting JSON matches the delivered record; historical programs,
 data and source audit were preserved. The standard-statement count remains
@@ -129,6 +130,13 @@ temporary copy; all output lines match the delivered record except the Python
 version. Copied verification inputs are byte-identical, and historical code
 and data were preserved. Statement numbering is unchanged; the independently
 checked index still contains 1,753 standard statements across 36 reports.
+
+The Wick article and catalogue rebuilt without warnings or box issues, at
+32 and 21 pages, with unchanged label numbers. The unchanged verifier passed
+all 7,684 cases on a temporary copy; its JSON matches the historical record
+apart from elapsed time. All three copied program/build files match the
+originals, and the historical data and two source audits were preserved.
+The independent index still checks 1,753 standard statements in 36 reports.
 
 ## Collection-wide work
 
@@ -153,8 +161,8 @@ this checks the integration, not the new mathematical claims.
 ## Remaining scope
 
 Of the ten reports added on September 22, Hahn-valued measures, Markov
-generators, tail spans and Prony reconstruction have received the main-text
-reviews recorded above. The other six additions and the new sections in differential equations,
+generators, tail spans, Prony reconstruction and Wick summability have received
+the main-text reviews recorded above. The other five additions and the new sections in differential equations,
 dynamics, entire functions,
 nonabelian support, spectral theory and exponential automorphism rigidity
 remain outside the earlier review scopes, apart from explicitly recorded

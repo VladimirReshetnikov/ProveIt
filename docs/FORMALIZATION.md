@@ -2626,29 +2626,29 @@ Mappings cover only the hypotheses and clauses they state.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `wick:lem:neumann` (line 362) | Neumann's positive-support lemma, classical |
-| Corollary | `wick:cor:substitution` (line 374) | Finite infinitesimal substitution |
-| Proposition | `wick:prop:embedding` (line 410) | Surcomplex realization |
-| Lemma | `wick:lem:wickcount` (line 495) | Colored matching multiplicity |
-| Lemma | `wick:lem:dickson` (line 564) | Dickson's finiteness lemma, classical |
-| Proposition | `wick:prop:hilbert` (line 581) | A finite Hilbert basis |
-| Proposition | `wick:prop:module` (line 602) | Finite generation of every observable sector |
-| Theorem | `wick:thm:alternative` (line 631) | Strict rational alternative |
-| Theorem | `wick:thm:main` (line 719) | Exact diagramwise Hahn domain |
-| Corollary | `wick:cor:obstruction` (line 790) | A computable obstruction pattern |
-| Corollary | `wick:cor:robustness` (line 802) | Valuation robustness and diagonal invariance |
-| Lemma | `wick:lem:indecompconnected` (line 845) | Indecomposable counts force connectedness |
-| Lemma | `wick:lem:rewire` (line 857) | Cyclic connected amplification |
-| Theorem | `wick:thm:connected` (line 901) | Equality of connected and full diagramwise domains |
-| Proposition | `wick:prop:connectedlog` (line 929) | Specialization of the connected identity |
-| Lemma | `wick:lem:valCS` (line 988) | Valuation Cauchy--Schwarz |
-| Theorem | `wick:thm:positive` (line 1007) | Positive-covariance criterion |
-| Corollary | `wick:cor:stationary` (line 1084) | Sharp multiscale power counting |
-| Lemma | `wick:lem:ibp` (line 1143) | Algebraic Gaussian integration by parts |
-| Theorem | `wick:thm:SD` (line 1160) | Exact perturbative Schwinger--Dyson identities |
-| Proposition | `wick:prop:tail` (line 1214) | A valuation error estimate |
-| Proposition | `wick:prop:quarticH` (line 1360) | Exact quartic Hilbert basis and irredundant tests |
-| Proposition | `wick:prop:signcoherent` (line 1498) | Sign-coherent equivalence |
+| Lemma | `wick:lem:neumann` (line 361) | Neumann's positive-support lemma, classical |
+| Corollary | `wick:cor:substitution` (line 373) | Finite infinitesimal substitution |
+| Proposition | `wick:prop:embedding` (line 409) | Surcomplex realization |
+| Lemma | `wick:lem:wickcount` (line 499) | Colored matching multiplicity |
+| Lemma | `wick:lem:dickson` (line 568) | Dickson's finiteness lemma, classical |
+| Proposition | `wick:prop:hilbert` (line 585) | A finite Hilbert basis |
+| Proposition | `wick:prop:module` (line 606) | Finite generation of every observable sector |
+| Theorem | `wick:thm:alternative` (line 642) | Strict rational alternative |
+| Theorem | `wick:thm:main` (line 730) | Exact diagramwise Hahn domain |
+| Corollary | `wick:cor:obstruction` (line 801) | A computable obstruction pattern |
+| Corollary | `wick:cor:robustness` (line 813) | Valuation robustness and diagonal invariance |
+| Lemma | `wick:lem:indecompconnected` (line 865) | Indecomposable counts force connectedness |
+| Lemma | `wick:lem:rewire` (line 877) | Cyclic connected amplification |
+| Theorem | `wick:thm:connected` (line 921) | Equality of connected and full diagramwise domains |
+| Proposition | `wick:prop:connectedlog` (line 949) | Specialization of the connected identity |
+| Lemma | `wick:lem:valCS` (line 1008) | Valuation Cauchy--Schwarz |
+| Theorem | `wick:thm:positive` (line 1027) | Positive-covariance criterion |
+| Corollary | `wick:cor:stationary` (line 1104) | Sharp multiscale power counting |
+| Lemma | `wick:lem:ibp` (line 1165) | Algebraic Gaussian integration by parts |
+| Theorem | `wick:thm:SD` (line 1184) | Exact perturbative Schwinger--Dyson identities |
+| Proposition | `wick:prop:tail` (line 1238) | A valuation error estimate |
+| Proposition | `wick:prop:quarticH` (line 1384) | Exact quartic Hilbert basis and irredundant tests |
+| Proposition | `wick:prop:signcoherent` (line 1522) | Sign-coherent equivalence |
 
 ### hahn-valued-measures-and-probability
 

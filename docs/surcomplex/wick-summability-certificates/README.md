@@ -3,12 +3,16 @@
 **Valuation balancing, connected obstructions, and multiscale Gaussian perturbations**
 Single-source research report, 22 September 2026, built from one manuscript
 (number 12 of batch 18) whose repository audit is pinned at `4cf691c`.
-An AI-assisted draft: not refereed, and not checked in Lean or any other proof
-assistant.
+An AI-assisted draft, not refereed. The [Lean ledger](../../FORMALIZATION.md)
+records the proved positive-support, finite-semigroup and valuation
+Cauchy–Schwarz lemmas in
+[WickSemigroup.lean](../../../Surreal/Algebra/WickSemigroup.lean) and
+[NeumannWords.lean](../../../Surreal/HahnSeries/NeumannWords.lean).
+The main summability and connected-domain theorems remain pending.
 
 ```
 article.tex         the report, standalone LaTeX with an internal bibliography
-article.pdf         the compiled report, 31 pages (title, contents, 29 numbered pages)
+article.pdf         the compiled report, 32 pages (title, contents, 30 numbered pages)
 README.md           this guide
 VERIFICATION.md     the source's verification record, as delivered
 RESEARCH_AUDIT.md   the source's novelty and repository audit, as delivered
@@ -156,8 +160,9 @@ These are the source's own limitations, kept in full (Sections 1.2, 11, 12 and
 8. **The finite checks are checks.** The 7,684 cases test formulas and the
    implementation at ranks 1, 2 and 3. They do not prove the infinite or
    arbitrary-rank statements.
-9. **No Lean, no refereeing.** No existing Lean coverage in the repository
-   covers this report.
+9. **Partial Lean coverage, no refereeing.** The lemmas listed above are
+   formalized; the full theorem package is not. The delivered audit files
+   retain their historical statements about the absence of Lean coverage.
 10. The three follow-on questions of Section 14 are **posed here**, not claimed
     to be established open problems.
 
@@ -182,10 +187,10 @@ corrects them for the present tree:
   since.
 
 `VERIFICATION.md` says the PDF has 27 pages. That was the delivered build. The
-build here has 31 pages because of the material added on placement: Sections
+placement build had 31 pages because of the material added on placement: Sections
 1.3, 13.4 and 13.5, the correction in Section 13.1 and the notes in Section
 12.3. The numbers cited by the two delivered files (Section 13 and Appendix A)
-are unchanged.
+are unchanged. The subsequent review brings the rebuilt article to 32 pages.
 
 ## Relation to the neighbouring reports
 
@@ -258,3 +263,44 @@ specified by omitting the edge.
 When this report was placed, the suite was rerun on a copy under Python 3.14.4.
 It passed all 7,684 cases. The rewritten record matched the delivered one in
 every entry except `elapsed_seconds`: 0.632 s recorded, 1.592 s on rerun.
+
+
+## Subsequent proof review
+
+The main support, semigroup, strict-alternative, summability, connected-graph,
+positive-covariance, identity and cancellation arguments were read together
+with their examples and downstream uses.
+
+- Corrected the zero-semigroup boundary: every nonempty observable sector is
+  finite exactly when `S = {0}`. Infinite support of one atom is a different
+  question.
+- Added the integer-value-group example `P = x²`, `C = t`: its Wick atoms
+  are summable, but the original-group balancing inequalities require
+  `0 < 2p < 1`. This explains the divisibility hypothesis; the fractional
+  certificate `p = 1/4` lives in a larger group.
+- Extended Proposition 11.1 to a common nonzero complex factor `σ`, since
+  `σ^n` can be factored out of each order block. Corrected the quartic
+  comparison: it has one atom per order for any Hahn coupling and does not
+  require coefficientwise positivity. The example `g = t−t²` distinguishes
+  these facts.
+- Specified the unit exponent in rational examples, used reverse
+  well-ordering for surreal normal forms, excluded empty graphs in the
+  amplification lemma, and made the monomial-insertion and zero-derivative
+  conventions explicit.
+- Updated current Lean scope while preserving the historical code, data and
+  audit files.
+
+The source comparison checked the normal-form and summability conventions
+against [Berarducci–Mantova v3](https://arxiv.org/abs/1503.00315v3),
+Sections 2.3–2.6, and the formal diagram identities against
+[Etingof's author-hosted book](https://math.mit.edu/~etingof/gsm254.pdf),
+Theorems 3.8 and 3.11 (printed pages 37 and 41). The latter concerns `log(Z/Z₀)`;
+this report uses an already normalized `Z`. Other literature comparisons,
+priority and original-source reconciliation remain outside this review.
+
+The reviewed article and catalogue rebuilt in three passes without warnings
+or box issues, at 32 and 21 pages. All label numbers are unchanged.
+The unchanged verifier passed all 7,684 cases on a temporary copy; the JSON
+matches the historical record except elapsed time, and the copied programs
+match the originals. Historical programs, data and both source audits are
+preserved.
