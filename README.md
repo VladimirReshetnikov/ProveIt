@@ -38,6 +38,10 @@ Finite geometry includes Heron's area identity, Ptolemy's inequality and the
 positive-quotient criterion for equality in the triangle inequality. Formal
 polynomial derivatives give multiplicity, finite Taylor expansion and the
 divisibility criterion for equal jets.
+Polynomial algebra also includes unique division and factorization, monic
+Bézout gcds, principal ideals, and the exact gcd-with-derivative formula.
+Finite Hermite interpolation realizes prescribed derivative jets at distinct
+nodes by a unique polynomial below the total multiplicity degree bound.
 
 These generic prerequisites do not yet construct the surreal field or establish
 the normal-form bridge to Hahn series. A successful build proves only the
