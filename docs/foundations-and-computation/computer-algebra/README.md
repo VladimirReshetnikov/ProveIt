@@ -45,7 +45,6 @@ The merge rule was **union, not selection**:
 |---|---|
 | `article.tex` | The merged report. Standalone LaTeX, internal `thebibliography` (40 entries), no external `.bib`, no graphics. Every `\label` carries the prefix `cas:`. |
 | `article.pdf` | Built output (95 pages). |
-| `sources/` | The three source articles, their READMEs and one verification record. **Ships verbatim.** |
 | `code/` | The executable files of all three delivered prototypes. **Ships verbatim, including the defective one.** |
 | `data/` | The recorded verification reports of the prototypes. **Ships verbatim.** |
 
@@ -62,8 +61,12 @@ of them in **two different revisions**: the surcomplex analysis manuscript in
 revision (2) for 02 and revision (3) for 04 and 05. The report names all six and
 attributes every imported result to the specific manuscript and revision that
 supplies it; it never writes "the supplied manuscript" in the singular. Only 02's
-archive bundled its sources; those two files are already committed elsewhere in
-this repository and are cited at their paths rather than re-shipped.
+archive bundled its sources. None of the six manuscripts is redistributed here;
+two of them also stand behind other merged reports in this collection —
+*Trigonometry on the Surcomplex Plane* (`docs/surcomplex/trigonometry/`) and
+*Surcomplex analysis: holomorphic functions on K = No[i]*
+(`docs/surcomplex/analysis/`) — and the article cites those reports rather than
+any manuscript file.
 
 ## The central hazard, and how the report guards against it
 
@@ -210,7 +213,7 @@ only together with that repair.
 
 02's README also lists `SHA256SUMS.txt`. That is not a defect in the archive,
 which did ship one. This repository carries no checksum manifests, so it was
-removed on unpacking, and the verbatim README still names it.
+removed on unpacking.
 
 04's and 05's packages both `Get`-load cleanly and their reported numbers are
 the numbers you get from running their own harnesses.

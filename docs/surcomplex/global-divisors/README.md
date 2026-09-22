@@ -54,9 +54,10 @@ Ex 22.1 computes `Pic_lf(ℙ¹, ℋ_Γ) = ℤ` with no Abel obstruction, and fla
 
 ## Which archives it came from
 
-Sources are in `sources/`:
+The three source manuscripts are not shipped with this report; what each one
+contributed is recorded below. They are:
 
-| file | manuscript |
+| source file name | manuscript |
 | --- | --- |
 | `09-moving-divisors-picard-dichotomy.tex` | **Manuscript A**, "Global Support Obstructions in Surcomplex Analysis: Moving Divisors, Mittag–Leffler Theory, and a Picard-Group Dichotomy" (archive `surcomplex_global_support`) |
 | `10-cohomological-obstructions.tex` | **Manuscript B**, "Global Divisors and Cohomological Obstructions in Hahn-Coherent Surcomplex Analysis" (archive `surcomplex_global_theorems`) |

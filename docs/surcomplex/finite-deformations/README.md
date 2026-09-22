@@ -61,7 +61,8 @@ and are not used to move any theorem.
 
 All five archives are dated 21 September 2026 and extend one supplied manuscript,
 *Surcomplex Analysis: Infinitesimal Calculus, Hahn-Coherent Holomorphy, and
-Contour Theory*. Their `.tex` sources are in `sources/`. Roughly 60–70% of each
+Contour Theory*. The manuscripts themselves are not shipped with this report;
+what each one contributed is recorded below. Roughly 60–70% of each
 was the shared core above; it is printed here once, in the base's formulation
 except where another source proved something strictly stronger.
 

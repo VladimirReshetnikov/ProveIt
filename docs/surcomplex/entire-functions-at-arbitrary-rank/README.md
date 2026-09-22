@@ -8,7 +8,6 @@ material.
 article.tex   the merged report, standalone LaTeX with an internal bibliography
 article.pdf   the compiled 44-page report
 README.md     this guide
-sources/      the two source manuscripts, unmodified, with their READMEs and audits
 code/         the two source verification programs, unmodified
 data/         the two recorded verification records and the source build report
 ```
@@ -174,7 +173,7 @@ keeps `C` fixed and uses full Hahn fields only; the hidden-tail table covers
 monomial arguments only; the uniform-domain statement is **false** in several
 variables; and strong summability, intrinsic valuation convergence and the
 fine surreal topology are deliberately never identified. No repository files
-under `sources/`, `code/` or `data/` have been modified.
+under `code/` or `data/` have been modified.
 
 ## The finite checks prove no infinite theorem
 

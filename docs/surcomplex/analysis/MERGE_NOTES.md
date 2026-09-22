@@ -24,9 +24,11 @@ are not interchangeable, and that is what happened here.
 | 08 | `surcomplex_analysis(2).zip` | Local calculus, coherent Hahn functions, and residue theory | 33 |
 | 09 | `surcomplex_analysis.zip` | A Hahn-Supported Theory of Holomorphic Functions on No(i) | 28 |
 
-All nine are preserved verbatim under `sources/`, and all nine verification
-programs under `code/`; all nine were run and all nine pass.  Nothing was
-discarded.  The deduplication is in the article.
+The nine manuscripts themselves are not shipped with this report; the
+disposition of every result they contain is recorded in the provenance and
+resolution tables below.  All nine verification programs are preserved under
+`code/`; all nine were run and all nine pass.  Nothing was discarded.  The
+deduplication is in the article.
 
 ## The six notions that are NOT equivalent
 

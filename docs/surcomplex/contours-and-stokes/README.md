@@ -36,9 +36,9 @@ exact hypotheses under which it is now closed, not as a deletion.
 
 ## Which archives, and what each contributed
 
-Sources are kept verbatim under [`sources/`](sources/); the verification
-scripts and their recorded runs are under [`code/`](code/) and
-[`data/`](data/).
+The source manuscripts are not shipped with this report; what each one
+contributed is recorded below. The verification scripts and their recorded
+runs are under [`code/`](code/) and [`data/`](data/).
 
 **`02-jordan-cauchy-stokes-calculus` — the base.** Its skeleton and its
 versions of the shared theorems are the ones printed. Uniquely it contributes:
@@ -401,7 +401,7 @@ python code/05-untransformed-leray-cycles-checks.py --output /tmp/checks.json
 The script's `--output` default is the *relative* path `data/checks.json`, and
 the archive's own `build.sh` changed into the script's directory first, so
 running it without that flag writes a stray `data/checks.json` here rather than
-updating the recorded run. Nothing under [`sources/`](sources/),
+updating the recorded run. Nothing under
 [`code/`](code/) or [`data/`](data/) is modified by a rebuild of the article, and
 nothing there was modified when 05 was merged in.
 
