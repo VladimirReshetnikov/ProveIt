@@ -222,11 +222,11 @@ installation with `amsmath`/`amssymb`/`amsthm`/`mathtools`/`mathrsfs`, `geometry
 `fancyhdr`, `hyperref`, `aliascnt` and `cleveref` suffices.
 
 ```sh
-latexmk -pdf -interaction=nonstopmode article.tex
-latexmk -c
+latexmk -pdf -halt-on-error -interaction=nonstopmode article.tex
 ```
 
-Then read `article.log`. The accepted build is clean: **no errors, no LaTeX warnings, no
+Inspect `article.log` before running `latexmk -c article.tex`, which removes
+auxiliary files. The recorded build is clean: **no errors, no LaTeX warnings, no
 undefined references or citations, no multiply-defined labels, no duplicate PDF
 destinations, and no overfull or underfull boxes**, giving a 61-page PDF. The front matter
 uses roman page numbers with `pageanchor=false` across the title page, which is what keeps

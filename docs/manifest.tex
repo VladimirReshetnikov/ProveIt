@@ -8,7 +8,7 @@
 \usepackage{amsmath,amssymb}
 \usepackage{microtype}
 \usepackage{booktabs}
-\usepackage{longtable}
+\usepackage{longtable,needspace}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{titlesec}
 \usepackage[colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue,
@@ -35,7 +35,7 @@
 
 % \entry{title}{directory}{main document}{source archive}{description}
 \newcommand{\entry}[5]{%
-  \par\medskip\noindent
+  \par\medskip\Needspace{7\baselineskip}\noindent
   \refstepcounter{entrynum}%
   \textbf{\theentrynum.\; #1}\par\nopagebreak
   \nopagebreak{\raggedright\small\color{Ink}%
@@ -106,8 +106,11 @@ assembled from are not distributed here.  What is kept is the provenance
 record: each merged report states how many manuscripts it was merged from,
 what each contributed, and where the merge had to choose between them, and the
 disposition of every source result is recorded in that material.  These are
-AI-assisted drafts.  None is refereed or machine-checked, and this catalogue
-records what each report claims rather than verifying it.
+AI-assisted research drafts. Some claims and prerequisites have checked Lean
+proofs, mapped precisely in \texttt{FORMALIZATION.md}; no complete verification
+of the collection is claimed. This catalogue describes the reports rather than
+certifying them. The cross-report \texttt{NOTATION.md} explains shared names
+and distinctions between local conventions.
 
 \medskip
 \noindent
@@ -311,12 +314,15 @@ written against this repository and each names the gap it fills.
 \medskip
 \noindent
 \emph{Read \dir{analysis} first.}  It is the foundation the other six
-continue, and it is where the shared calculus is established: there is no
-topological convergence anywhere in this theory.  Every \emph{set} of
-surcomplex numbers is closed and discrete, a convergent set-indexed net is
-eventually constant, and every continuous map $[0,1]\to\SC$ is constant, so
-$\sum t^n=(1-t)^{-1}$ is a Hahn identity and never a limit of partial sums,
-and contour integration is defined coefficientwise on ordinary complex paths.
+continue. In the \emph{full fine topology}, every set-sized subset is closed
+and discrete and every convergent set-indexed net is eventually constant.
+Universe-relative formulations require smaller-universe subsets and indices.
+These conclusions do not apply to the intrinsic valuation topology of a fixed
+Hahn field: $t^n\to0$ in $\C((t^\Q))$. Strong Hahn summability is a separate
+support condition; even in rank one it need not give convergence of finite
+subsums, as the foundations report's $\sum t^{n/(n+1)}$ demonstrates.
+Contour integration in the analytic reports is defined coefficientwise on
+ordinary complex paths.
 
 \medskip
 \noindent
@@ -324,14 +330,12 @@ and contour integration is defined coefficientwise on ordinary complex paths.
 else.}  Four coefficient rings circulate through this material under nearly
 identical notation --- the radius-free $\C\{z\}((t^\Gamma))$, the
 fixed-polydisk $\mathcal{O}(D)((t^\Gamma))$, the common-domain germ ring, and
-the formal $\C[[z]]((t^\Gamma))$ --- and the inclusions between them are
-strict, with $F(z)=\sum_{r\ge1}t^{r\eta}/(1-rz)$ the witness: its coefficient
-at $r\eta$ has a pole at $1/r$, so no ordinary disk carries the whole family.
-A theorem true over one of these rings can be false over another.  Every
-report therefore names the ring of every statement, and records that no
-theorem was transported between rings; the one place a bridge is used, it is
-one-directional and flagged in the proof that uses it.  The remaining five
-reports can be read in any order.
+the formal $\C[[z]]((t^\Gamma))$. These are not an interchangeable chain.
+For $\eta>0$, the family $F(z)=\sum_{r\ge1}t^{r\eta}/(1-rz)$ lies in the
+radius-free germ ring but not the common-domain germ ring: its coefficient
+poles $1/r$ approach zero. This witnesses that particular strict inclusion.
+The report gives separate fixed-domain obstructions and explains which local
+proofs require shrinking. The remaining five reports can be read in any order.
 
 \entry{Surcomplex analysis: holomorphic functions on $\SC$}
 {surcomplex/analysis}
@@ -542,7 +546,7 @@ batch, is retired.}
 \entry{Rank-one non-Archimedean analytic geometry inside the surcomplex numbers}
 {surcomplex/rank-one-berkovich}
 {article.pdf}{surcomplex\_rank\_one\_berkovich.zip}
-{The one report in the collection where convergence is \emph{real} convergence.
+{The report devoted to intrinsic rank-one nonarchimedean analytic convergence.
 Inside the rank-one workspace $K=\C((t^\R))$ the absolute value
 $|a|_v=\exp(-v(a))$ is genuine and $K$ is spherically complete, complete and
 algebraically closed, so it is a legitimate base for Tate algebras and Berkovich
@@ -718,7 +722,7 @@ sum of copies of $\Q$ indexed by $\omega_1$ admits only polynomials.}
 \section{Surquaternions}
 
 One report, which is where commutativity stops.  It is filed on its own
-because no commutative argument from \dir{docs/surcomplex} survives the move to
+because commutative arguments from \dir{docs/surcomplex} require review on moving to
 a division algebra: conjugation, multiplicativity of the modulus, valuation and
 leading coefficients, polynomial evaluation, matrix adjoints, exponential laws
 and every chain rule all need separate treatment, and every commutative result
@@ -786,9 +790,11 @@ scalars make the hierarchy of quantities near a gravitational singularity
 exactly representable; they do \emph{not} make the spacetime regular.  Four
 facts, each re-derived from the metric for the merge rather than copied from a
 source: the Kretschmann scalar of Schwarzschild is exactly $K=48M^2/r^6$; under
-a formal radial change $r=s^qw(s)$ with $w(0)\ne0$ the pole order becomes
-exactly $6q$ with leading coefficient $48M^2$ \emph{unchanged}, so no radial
-reparametrization removes the blow-up; the proper time from rest at $R$ to
+a formal radial change $r=s^qw(s)$, with integer $q\ge1$, $w(0)\ne0$ and
+$M\ne0$, and $w\in\R[[s]]$, the pole order becomes exactly $6q$ with leading coefficient
+$48M^2w(0)^{-6}$. The recorded checks use $w(s)=1+s$, whose constant term is
+one; this normalized case preserves $48M^2$. No substitution of the stated
+form removes the pole; the proper time from rest at $R$ to
 $r=0$ is $(\pi/2)\sqrt{R^3/2M}$, which for \emph{infinitesimal} $R$ is
 infinitesimal and hence still finite, so the infall terminates either way; and
 the tidal component $2M(2M-r)/r^4$ is unlimited at infinitesimal $r$.  The exact
@@ -845,12 +851,12 @@ but shows it does not transfer to a fixed value group.  \emph{Merged; the danger
 was aggregation.  All three manuscripts read the same Lean repository at the
 same revision on the same day, so their agreement is one act of source reading
 performed three times, not three confirmations.  The findings are printed once
-and the verification boundary has its own early section.}  Three of the five
-shipped Lean files were compiled for this repository and \texttt{\#print axioms}
-run on every declaration: no \texttt{sorryAx} and no \texttt{Classical.choice}
-anywhere, and both size-obstruction theorems depend on no axioms at all.  The
-toolchain used was not the one the sources pin, and one shipped file does not
-compile as delivered.}
+and the verification boundary has its own early section.} The original merge
+compiled three illustrative Lean files and inspected their axiom dependencies.
+Those historical checks are distinct from the later development mapped in
+\texttt{FORMALIZATION.md}. The maintained article also makes the
+universe-relative localization hypotheses explicit, expands the positive-support
+recursion proof, and separates intrinsic convergence from full fine topology.}
 
 \entry{Surreal and surcomplex numbers in symbolic computer algebra}
 {foundations-and-computation/computer-algebra}
@@ -868,8 +874,8 @@ names with incompatible signatures, and all three calling themselves the
 rational monomial core.  They are three different objects: coefficients $\Q$ in
 one and $\Q(i)$ in the others; exponent lattices $\Z^d$ against $\Q^r$, so a
 ramified root is representable in one and not the next; and two of them order
-their monomial variables by opposite conventions, which reverses every
-inequality.  The report never writes ``the prototype'' and tabulates the
+their monomial variables by opposite conventions, requiring the corresponding
+translation of monomial-order inequalities.  The report never writes ``the prototype'' and tabulates the
 divergences instead.  All three check suites were rerun for this repository and
 reproduce exactly --- 34/34, 110/110 and 88/88 in Wolfram, 69/69 and 323/323 in
 Python --- but one package cannot be loaded at all as shipped: an unclosed
@@ -894,10 +900,12 @@ cites them by their original \TeX{} line numbers and
 \nolinkurl{data/provenance-manifest.json} records their archive identities, file
 hashes and line counts, so every disposition is traceable against a copy
 obtained elsewhere.  Four verification suites are rerun and pass --- 4{,}967
-exact comparisons, 18 named unit tests, 266 exact checks, and 4{,}321 exact
-cross-model checks new to the merge, comparing dense common-grid Puiseux
+exact comparisons, 18 named unit tests, 266 exact checks, and 4{,}366 exact
+cross-model and cover-contract checks in the updated reconciliation suite.
+The latter compare dense common-grid Puiseux
 convolution against sparse rational convolution, candidate covers with extra
-zeros and nonnested lists, the finite-jet root transformation, derivative and
+zeros and nonnested lists (including negative zero candidates in the
+geometric-series construction), the finite-jet root transformation, derivative and
 primitive identities, and finite instances of the two unbounded-denominator
 support examples.  \emph{The four units mean different things and are
 deliberately not added together.}  A finite test proves no infinite theorem, no

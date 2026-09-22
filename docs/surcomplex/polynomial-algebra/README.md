@@ -150,13 +150,13 @@ order disks; ρ for the scale; w_{a,ρ}(P) and I_{a,ρ}(P) (not g_P(a,γ), not
 perturbation and its precision.
 
 §1.4 fixes the coefficient rings and every theorem names its own. The report
-uses exactly three: K (and O_K) for all univariate root/ball/precision
-statements; the **fixed ordinary domain** ring H_Γ(U) = O(U)((t^Γ)), with its
+uses exactly three: `K` (and `O_K`) for all univariate root/ball/precision
+statements; the **fixed ordinary domain** ring `H_Γ(U) = O(U)((t^Γ))`, with its
 nonnegative- and positive-support subrings, for the three parameter theorems
 and the coherent-families discussion; and an arbitrary commutative ring for
-the universal duality theorems. C[z]((t^Γ)) appears only as a counterexample
-ring. **No theorem here is stated over a radius-free ring C{z}((t^Γ)) or a
-formal-coefficient ring C[[z]]((t^Γ))**, and no theorem was moved between
+the universal duality theorems. `C[z]((t^Γ))` appears only as a counterexample
+ring. **No theorem here is stated over a radius-free ring `C{z}((t^Γ))` or a
+formal-coefficient ring `C[[z]]((t^Γ))`**, and no theorem was moved between
 rings.
 
 ## What is not proved
