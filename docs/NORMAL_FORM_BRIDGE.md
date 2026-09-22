@@ -4,8 +4,9 @@ This implementation note records the assessment made on 2026-09-22. The
 repository proves evaluation, arithmetic, valuation, leading coefficients,
 and real order for **finite** normal forms. It now constructs a canonical cut
 candidate for every small formal normal form, with recursive residual bounds,
-leading data and negation. Arithmetic preservation and an equivalence with
-the actual surreal carrier remain open.
+leading data and negation. Comparison and bounded extraction now make it an
+order isomorphism with the actual surreal carrier. Arithmetic preservation
+and compatibility with strong sums remain open.
 The obligations are those in `found:eq:normalform`, `found:sub:bridge`, and
 `found:thm:workspace` of the [foundations report](foundations-and-computation/foundations/article.tex).
 
@@ -111,27 +112,78 @@ identifies the first formal exponent and coefficient with the actual leading
 data. It preserves and reflects zero, positivity and nonnegativity.
 [`SmallNormalFormNegation.lean`](../Surreal/Foundations/SmallNormalFormNegation.lean)
 proves negation preservation by length induction and two prefix comparisons.
-These facts do not yet give two-input injectivity or full order preservation.
+The following modules supply comparison and extraction independently of arithmetic.
+
+## Comparison, birthday bounds, and inverse extraction
+
+[`SmallNormalFormCutTruncation.lean`](../Surreal/Foundations/SmallNormalFormCutTruncation.lean)
+proves that every truncation evaluates to a prefix and extends the residual
+bound to every exponent, including gaps in the support. If a cutoff is
+absent from the support, reverse well-foundedness supplies the greatest
+remaining exponent; if there is none, truncation retains the entire form.
+[`SmallNormalFormComparison.lean`](../Surreal/Foundations/SmallNormalFormComparison.lean)
+then compares two candidates at the greatest exponent where their forms
+differ. Their earlier truncations agree, so subtraction of the two residual
+bounds determines the actual difference's leading coefficient. This proves
+injectivity, full order comparison, and a valuation comparison for differences
+without assuming additivity.
+
+[`SmallNormalFormConstants.lean`](../Surreal/Foundations/SmallNormalFormConstants.lean)
+proves exact evaluation of real constants. Every singleton candidate is a
+prefix of its corresponding actual monomial. A proper prefix of a real has finite birthday and
+is dyadic, which gives the rigidity needed at exponent zero.
+[`SmallNormalFormMonomials.lean`](../Surreal/Foundations/SmallNormalFormMonomials.lean)
+also proves exact evaluation of `single a 1` as `omegaPower a`: the native
+omega cut is a prefix of every positive representative of its valuation
+class, providing the reverse simplicity relation. General real coefficients
+at arbitrary exponents remain to be handled.
+
+[`SmallNormalFormBirthday.lean`](../Surreal/Foundations/SmallNormalFormBirthday.lean)
+bounds support length by the candidate's birthday. A partial form is required
+to satisfy **all center bounds for the target**, a stronger invariant than
+being a sign prefix of it. In
+[`SmallNormalFormExtension.lean`](../Surreal/Foundations/SmallNormalFormExtension.lean),
+a nonzero residual has a leading exponent below the entire retained support;
+appending its leading term preserves those bounds and strictly extends the
+candidate's sign prefix.
+
+[`SmallNormalFormPartialChain.lean`](../Surreal/Foundations/SmallNormalFormPartialChain.lean)
+embeds all partial approximations to a fixed target into the ordinal interval
+bounded by its birthday. They are therefore small before any maximality
+argument is applied. Formal initial segments and their small chain unions are
+constructed in
+[`SmallNormalFormInitialSegment.lean`](../Surreal/Foundations/SmallNormalFormInitialSegment.lean),
+[`SmallNormalFormInitialEvaluation.lean`](../Surreal/Foundations/SmallNormalFormInitialEvaluation.lean),
+and [`SmallNormalFormUnion.lean`](../Surreal/Foundations/SmallNormalFormUnion.lean).
+Every union exponent already occurs in a stage with the same earlier
+truncation and coefficient, so the target's center constraints persist.
+
+Finally,
+[`SmallNormalFormExtraction.lean`](../Surreal/Foundations/SmallNormalFormExtraction.lean)
+uses Mathlib's Zorn lemma on this small collection. A maximal partial form
+cannot have nonzero residual, because the proved extension would contradict
+maximality. Thus `cutEvaluation_surjective` and `cutEvaluation_injective`
+give `cutEvaluationOrderIso`, with inverse `normalForm`. Both inverse laws
+and the zero, negation, ordinary-real, and Conway-monomial formulas are proved. This is an
+order isomorphism; no field isomorphism or strong-sum law is inferred from it.
 
 ## Remaining dependency order
 
-1. The pinned small-support module and its ordinal truncation APIs are now reused.
-   Retain `Small.{u}` support explicitly; finite evaluation's independent
-   universe parameters do not justify arbitrary infinite supports.
-2. The ordinal-length cut candidate and recursive residual bounds at supported
-   exponents are constructed. Extend the bounds to gaps in the support and
-   prove compatibility with truncation and the existing finite evaluation.
-3. Prove the substantive simplicity and truncation compatibility results
+1. Prove exact evaluation of singleton monomials with arbitrary real
+   coefficients and agreement with the existing finite ring evaluation.
+   Real constants and unit-coefficient Conway monomials are already proved.
+2. Prove the substantive simplicity and truncation compatibility results
    needed for canonical choices to preserve addition and multiplication.
    Merely showing both sides satisfy approximation bounds is insufficient.
-4. Extract the normal form of every actual surreal. Prove a birthday bound
-   and termination at a small ordinal, then the inverse laws. Strictly
-   increasing valuations alone do not prove termination.
-5. Prove preservation of strong sums, standard part, and admissible Taylor
+3. Package the resulting ordered field isomorphism, then transport the
+   fixed-Hahn closedness and localization theorems to actual surreal data.
+4. Prove preservation of strong sums, standard part, and admissible Taylor
    evaluation, with coherence under exponent enlargement and universe lifts.
    Extend the real bridge to surcomplex numbers through the coordinate field
    construction.
 
-These remain separate proof obligations. The existing Hahn closure and Hensel
-theorems can be transferred only after the requisite bridge is proved; they
-are not assumptions for constructing it.
+The order isomorphism and inverse extraction remove the previous existence
+and termination obligations. They do not remove the arithmetic obligations.
+The existing Hahn closure and Hensel theorems can be transferred only after
+the requisite field bridge is proved; they were not assumptions in the
+construction of the canonical order isomorphism.

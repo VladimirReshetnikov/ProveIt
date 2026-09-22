@@ -314,17 +314,23 @@ finite coefficients is finite. For explicitly split monic polynomials,
 standard part preserves the linear factorization and root multiplicities.
 The surreal field is not algebraically closed, and no linear order is
 compatible with surcomplex multiplication.
-Real closedness of the actual sign field and the infinite normal-form bridge to Hahn
-series remain open.
+Real closedness of the actual sign field and the arithmetic part of the
+infinite normal-form bridge to Hahn series remain open.
 The bridge now has an explicit formal carrier of small reverse-well-ordered
 supports, reusing the pinned upstream ordinal truncation APIs. Recursion on
 support length constructs a canonical actual surreal candidate: the simplest
 point meeting all recursive truncation bounds. Its leading exponent and
 coefficient agree with the formal form; zero, positivity and nonnegativity
 are preserved and reflected, and negating the form negates the candidate.
+Truncations evaluate to prefixes. The first differing coefficient gives full
+order comparison and injectivity. Ordinary real constants and unit-coefficient
+Conway monomials evaluate exactly. Birthday bounds make all partial approximations to a fixed target
+small. Unions of their initial-segment chains and a residual-extension lemma
+then give surjectivity by Zorn's lemma. Evaluation and canonical extraction
+therefore form an order isomorphism with proved inverse laws.
 The approximation inequalities alone never give uniqueness: a sufficiently
-small positive monomial produces another solution. Arithmetic compatibility,
-comparison of arbitrary candidates, and an inverse normal-form theorem remain
-separate obligations.
+small positive monomial produces another solution. Agreement with arbitrary
+finite monomial evaluation, preservation of addition and multiplication,
+and compatibility with strong sums remain separate obligations.
 A successful build proves only the imported Lean
 statements, not coverage of all the source documents.

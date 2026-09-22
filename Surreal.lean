@@ -96,6 +96,17 @@ import Surreal.Foundations.SmallNormalFormTruncation
 import Surreal.Foundations.SmallNormalFormEvaluation
 import Surreal.Foundations.SmallNormalFormLeading
 import Surreal.Foundations.SmallNormalFormNegation
+import Surreal.Foundations.SmallNormalFormCutTruncation
+import Surreal.Foundations.SmallNormalFormComparison
+import Surreal.Foundations.SmallNormalFormConstants
+import Surreal.Foundations.SmallNormalFormMonomials
+import Surreal.Foundations.SmallNormalFormBirthday
+import Surreal.Foundations.SmallNormalFormInitialSegment
+import Surreal.Foundations.SmallNormalFormInitialEvaluation
+import Surreal.Foundations.SmallNormalFormExtension
+import Surreal.Foundations.SmallNormalFormPartialChain
+import Surreal.Foundations.SmallNormalFormUnion
+import Surreal.Foundations.SmallNormalFormExtraction
 import Surreal.Foundations.SignSequenceDyadics
 import Surreal.Foundations.SignSequenceRealBirthday
 import Surreal.Foundations.SignSequenceBirthdayArithmetic
