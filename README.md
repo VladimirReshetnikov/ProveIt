@@ -25,7 +25,7 @@ Apache license are included in the repository.
 
 ## Formalization
 
-The [source documents](docs/README.md) comprise fifteen research reports and
+The [source documents](docs/README.md) comprise eighteen research reports and
 their preserved source manuscripts. The
 [coverage and dependency ledger](docs/FORMALIZATION.md) records their statements,
 the proposed Layer A–E implementation order, and the exact scope of each
@@ -171,6 +171,10 @@ The numeric-game quotient also satisfies the indexed small-cut interface and
 its comparison rule, including reconstruction from a numeric game's moves.
 The canonical raw-game birthday equals sign length and is minimal among
 all numeric games representing the same number.
+Finite birthdays characterize exactly the embedded dyadic rationals. They form
+a subring, but the reciprocal of three has birthday omega, so this fragment
+is not a subfield. Every embedded ordinary real has birthday at most omega;
+the non-dyadic reals have birthday exactly omega.
 The concrete surcomplex field is now the quadratic extension of that sign
 field. It has the coordinate product, conjugation and inverse formulas, a
 positive surreal-valued norm square away from zero, and dimension two over

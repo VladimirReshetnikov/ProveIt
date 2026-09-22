@@ -59,6 +59,8 @@ import Surreal.Foundations.SignSequenceMultiplication
 import Surreal.Foundations.SignSequenceRationals
 import Surreal.Foundations.SignSequenceOrdinals
 import Surreal.Foundations.SignSequenceReal
+import Surreal.Foundations.SignSequenceDyadics
+import Surreal.Foundations.SignSequenceRealBirthday
 import Surreal.Surcomplex.Basic
 import Surreal.Surcomplex.OrderObstructions
 import Surreal.HahnSeries.Binomial
