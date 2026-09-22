@@ -3,3 +3,4 @@ import CombinatorialGames.Game.Graph
 import CombinatorialGames.Surreal.Ordinal
 import CombinatorialGames.Surreal.Real
 import CombinatorialGames.Surreal.Leading
+import CombinatorialGames.Surreal.HahnSeries.Basic

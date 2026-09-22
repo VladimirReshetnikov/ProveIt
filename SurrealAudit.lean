@@ -4,8 +4,9 @@ import Lean.Util.CollectAxioms
 /-!
 # Axiom audit of the formalization
 
-Check every declaration in the project's `Surreal` namespace, including its
-transitive dependencies. Only Lean's standard classical axioms are permitted;
+Check every declaration in the project's `Surreal` namespace and the vendored
+`SurrealHahnSeries` namespace, including their transitive dependencies.
+Only Lean's standard classical axioms are permitted;
 in particular, incomplete proofs and new mathematical axioms fail this target.
 This checks proof dependencies, not correspondence with the source documents.
 -/
@@ -17,7 +18,7 @@ run_cmd do
   let mut count : Nat := 0
   let mut used : Array Name := #[]
   for (name, _) in env.constants.toList do
-    if (`Surreal).isPrefixOf name then
+    if (`Surreal).isPrefixOf name || (`SurrealHahnSeries).isPrefixOf name then
       count := count + 1
       for axiomName in ← collectAxioms name do
         unless allowed.contains axiomName do
@@ -31,3 +32,11 @@ run_cmd do
 -- The field instance is supplied by mathlib after proving that -1 is not a square.
 example {F : Type*} [Field F] [LinearOrder F] [IsStrictOrderedRing F] :
     Field (Surreal.Complexify F) := inferInstance
+
+-- The constructed closure instances apply to the ordinary real and complex
+-- Hahn workspaces, without assuming closedness of either Hahn field.
+example {Γ : Type*} [AddCommGroup Γ] [LinearOrder Γ] [IsOrderedAddMonoid Γ]
+    [DivisibleBy Γ ℕ] : IsRealClosed (Lex (HahnSeries Γ ℝ)) := inferInstance
+
+example {Γ : Type*} [AddCommGroup Γ] [LinearOrder Γ] [IsOrderedAddMonoid Γ]
+    [DivisibleBy Γ ℕ] : IsAlgClosed (HahnSeries Γ ℂ) := inferInstance

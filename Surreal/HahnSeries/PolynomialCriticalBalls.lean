@@ -1,3 +1,4 @@
+import Surreal.HahnSeries.Characteristic
 import Surreal.HahnSeries.PolynomialInitialDerivative
 import Surreal.HahnSeries.PolynomialNewtonProfile
 import Mathlib.Algebra.Polynomial.FieldDivision
@@ -183,12 +184,6 @@ theorem critical_direction_count (a : K⟦Γ⟧) (ρ : Γ)
     (by simpa only [Function.iterate_one] using hsd) hdeg d
 
 section GaussLucas
-
-local instance hahnCharZero : CharZero K⟦Γ⟧ where
-  cast_injective m n h := by
-    apply Nat.cast_injective (R := K)
-    apply _root_.HahnSeries.C_injective (Γ := Γ)
-    simpa only [map_natCast] using h
 
 /-- The closed-ball valuative Gauss--Lucas assertion, the first clause of
 `polynomial:cor:nearest`: a closed valuation ball containing every root of a
