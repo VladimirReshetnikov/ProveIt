@@ -1,0 +1,1604 @@
+% Standalone article. Build with: latexmk -pdf article.tex
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{pdftitle={Intrinsic Differential Calculus on the Surreal and Surcomplex Numbers},pdfauthor={Research exposition prepared for the Surreal documentation},pdfsubject={Berarducci--Mantova derivation, coherent calculus, bounded phases, and differential equations}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Intrinsic surreal and surcomplex calculus}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.2em}
+\setcounter{tocdepth}{2}
+\emergencystretch=2em
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\K}{K}
+\newcommand{\Lfield}{L}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\mm}{\mathfrak m}
+\newcommand{\II}{\mathcal I}
+\newcommand{\HH}{\mathcal H}
+\newcommand{\DD}{\partial}
+\newcommand{\Dc}{\partial_{\mathrm{coef}}}
+\newcommand{\Dz}{\partial_Z}
+\newcommand{\Prim}{\mathcal A}
+\newcommand{\Exp}{\operatorname{Exp}}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\ct}{\operatorname{ct}}
+\newcommand{\st}{\operatorname{st}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\ev}{\operatorname{ev}}
+\newcommand{\cis}{\operatorname{cis}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\re}{\operatorname{Re}}
+\newcommand{\imag}{\operatorname{Im}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\val}{v}
+\newcommand{\repo}{\texttt{VladimirReshetnikov/Surreal}}
+\newcommand{\snapshot}{\texttt{e260237db9b71da8b74a0c13c8e6355119091100}}
+\newcommand{\pathtext}[1]{\nolinkurl{#1}}
+\newcommand{\assertion}[1]{\par\smallskip\noindent\textbf{#1}\quad}
+\begin{document}
+\begin{center}
+{\LARGE\bfseries Intrinsic Differential Calculus\\[4pt]
+on the Surreal and Surcomplex Numbers}\par
+\vspace{10pt}
+{\large Strong derivations, coherent analytic families,\\
+bounded phases, and linear differential equations}\par
+\vspace{12pt}
+{Research exposition prepared for the \repo\ documentation}\par
+{21 September 2026}
+\end{center}
+\vspace{5pt}
+\begin{abstract}
+The repository develops an extensive function-variable calculus on
+$\No[i]$, but explicitly leaves the choice of an intrinsic derivation outside
+its trigonometric theory. This article supplies the missing bridge. We fix the
+Berarducci--Mantova derivation $\DD$ on $K=\No$, distinguish it from
+$\partial_Z$, and prove a total-derivative formula for common-domain
+Hahn-coherent analytic families. Differentiation preserves that coherence,
+although it may require a larger monomial workspace.
+
+The central application is an exact obstruction to complex exponential
+integration. Let $\OO$ be the finite surreals, $\mm$ the infinitesimals, and
+$\II=\DD(\OO)=\DD(\mm)$. We prove that $\II$ is a nonzero convex ideal of
+$\OO$, strictly smaller than $\mm$, and that
+\[
+ \left\{\frac{\DD y}{y}:y\in K[i]^\times\right\}=K+i\II.
+\]
+Consequently $\DD y=ay$ has a nonzero surcomplex solution precisely when the
+imaginary part of $a$ has a finite surreal primitive. The canonical
+exponential on $K+i\OO$ is compatible with $\DD$, and this is its maximal
+possible domain even for pointwise differential compatibility. In particular,
+$\DD y=iy$ and $\DD^2y+y=0$ have no nonzero solutions in $K[i]$.
+
+We also classify the kernels of all complex constant-coefficient differential
+operators and constant matrix systems, construct exact Laurent-series
+resolvents, and provide a set-sized differential-workspace theorem. A
+reproducible symbolic verifier checks finite identities and coefficient
+recurrences; it is not a formal verification of the general proofs. The deep
+existence and model-theoretic results are explicitly attributed to the
+literature. No priority claim is made for the consequences developed here.
+\end{abstract}
+\vfill
+{\small\noindent Repository snapshot: \snapshot.\\
+Scope: a documentation-gap article, not a proof audit of the whole repository.}
+\newpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\setlength{\baselineskip}{11pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{The documentation gap and the mathematical route}
+\label{sec:gap}
+
+\subsection{What was inspected}
+The audit was made against the pinned commit \snapshot, rather than against a
+moving branch. The repository catalogue identifies fifteen report packages:
+six about surreal arithmetic and constructions, seven about surcomplex
+analysis and geometry, and two about foundations and computation
+\cite{RepoMap,RepoManifest}. The principal evidence for the present choice
+is the scope boundary in the trigonometry report: that report develops
+finite-angle phases and global phase extensions, but expressly does not
+choose a derivation on $\No$ or classify solutions of a differential equation
+\cite{RepoTrig}. Its omission is deliberate, not a defect in its stated
+results.
+
+The analysis report distinguishes germ-analytic functions, common-domain
+coherent sections, and ordinary holomorphic lifts. Its derivatives and
+primitive theorems belong to these function classes \cite{RepoAnalysis}.
+The computer-algebra report mentions transseries and the
+Berarducci--Mantova literature in its representation and capability discussion
+\cite{RepoCAS}. A bibliographic mention, however, does not supply an interface
+between intrinsic differentiation of coefficients and differentiation in an
+analytic variable.
+
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.20\textwidth}>{\raggedright\arraybackslash}p{.34\textwidth}>{\raggedright\arraybackslash}p{.38\textwidth}@{}}
+\toprule
+Existing layer & Already supplied & The bridge developed here \\
+\midrule
+Analysis & Common-domain Hahn families and $Z$-derivatives & A coefficient derivation and the exact total-derivative rule \\
+Trigonometry & Finite angles, unit-circle phases, phase extensions & Differential compatibility and a bounded-primitive obstruction \\
+Computer algebra & Exact representation tiers and support contracts & Derivation-aware parents, Laurent resolvents, and verifiable residuals \\
+Foundations & Class/set distinctions and local workspaces & Closure under differentiation and chosen integration, not just field operations \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+This is a targeted scope audit, based on the catalogue and the relevant
+package documentation. It is not a claim that the word ``derivation'' is
+absent from every source manuscript, nor that every theorem in the existing
+collection has been checked. The concrete gap is a connected development of
+\emph{intrinsic differential algebra and its interaction with the already
+present analytic and phase constructions}.
+
+\subsection{Three results to keep in view}
+First, for a coherent family $F(Z)$ evaluated at a finite surcomplex point
+$z$, there are two contributions to the derivative:
+\begin{equation}\label{eq:introchain}
+ \DD\bigl(\ev_zF\bigr)
+ =\ev_z(\Dc F)+\ev_z(\Dz F)\,\DD z.
+\end{equation}
+The first term is indispensable: the coefficients of $F$ are surreal
+numbers and need not be constants of $\DD$.
+
+Second, a nonzero surcomplex number has a canonical infinitesimal phase
+relative to its ordinary unit-circle direction. That phase has an intrinsic
+derivative, but not every surreal number is the derivative of a finite
+phase. This gives the exact logarithmic-derivative image
+$K+i\DD(\mm)$.
+
+Third, absence of oscillatory homogeneous solutions is compatible with
+excellent inhomogeneous solvability. In $\C((\omega^{-1}))$, for example,
+$\DD-i$ is bijective, even though its homogeneous equation has no nonzero
+solution anywhere in $\No[i]$. These are different mathematical properties.
+
+\subsection{What is assumed, and what is proved}
+We take the construction of the surreal ordered exponential field, its Hahn
+normal forms, and the Berarducci--Mantova existence theorem as external
+inputs. The elementary-model statement for transseries is also cited, not
+reproved. The other main results of this article are proved from the stated
+inputs. Their purpose is to complete the documentation interface, not to
+announce a newly solved published problem. In particular, ordinary
+constant-coefficient differential algebra and formal resolvents have a long
+history; their specialization here is exposition, not a priority claim.
+
+\section{Algebraic setting and the intrinsic derivation}
+\label{sec:setting}
+
+\subsection{Classes, constants, and finite parts}
+Work in a classical class theory such as NBG, with the usual class
+constructions of the surreals. Put
+\[
+ K=\No,\qquad L=K[i]=\{a+ib:a,b\in K\},\qquad i^2=-1.
+\]
+$K$ is real closed, and $L$ is algebraically closed. Statements below about
+linear algebra involve only finite matrices or explicitly specified
+set-sized subfields. No summation over a proper class is used.
+
+For $a,b\in K$, write $a\prec b$ when $b\ne0$ and
+$|a|<|b|/n$ for every positive integer $n$. Define
+\[
+ \OO=\{a\in K:|a|<n\text{ for some }n\in\N\},\qquad
+ \mm=\{a\in K:|a|<1/n\text{ for every }n\ge1\}.
+\]
+Then $\OO=\R\oplus\mm$ additively. The projection
+$\st:\OO\to\R$ is a ring homomorphism with kernel $\mm$.
+On $L$ use
+\[
+ \overline{a+ib}=a-ib,\qquad |a+ib|=\sqrt{a^2+b^2}.
+\]
+The finite and infinitesimal subclasses are
+$\OO_L=\OO+i\OO$ and $\mm_L=\mm+i\mm$; standard part is taken
+coordinatewise.
+
+A Conway normal form is a set-supported sum
+\[
+ x=\sum_{\alpha\in S}r_\alpha\omega^\alpha,
+\]
+with real coefficients and reverse-well-ordered support $S$. Here and below,
+$\omega^\alpha$ denotes the Conway monomial map. The coefficient of the
+monomial $1=\omega^0$ defines an additive real-linear map
+\begin{equation}\label{eq:ct}
+ \ct:K\longrightarrow\R.
+\end{equation}
+It agrees with $\st$ on $\OO$, but is not multiplicative on $K$:
+$\ct(\omega)\ct(\omega^{-1})=0$, whereas
+$\ct(\omega\omega^{-1})=1$.
+
+\subsection{The external existence theorem}
+\begin{theorem}[Berarducci--Mantova; external input]\label{thm:BM}
+There is a derivation $\DD=\partial_{\mathrm{BM}}:K\to K$ with
+\begin{align}
+ \DD(xy)&=x\DD y+y\DD x, & \ker\DD&=\R,\label{eq:BM1}\\
+ \DD\!\left(\sum_jx_j\right)&=\sum_j\DD x_j,
+ &\DD(\exp x)&=(\exp x)\DD x,\label{eq:BM2}\\
+ x>\R&\Longrightarrow\DD x>0,
+ &\DD\omega&=1.\label{eq:BM3}
+\end{align}
+In \eqref{eq:BM2}, every summable set-indexed family has a summable family of
+derivatives. Moreover, $\DD$ is surjective.
+\end{theorem}
+
+These are the properties of the distinguished derivation constructed in
+\cite[Theorems A and B]{BM}; the published version is
+\cite{BMpub}. They imply that $K$ is a Liouville closed $H$-field.
+Existence of several surreal derivations is part of the same work; the
+listed structural ideas are not an assertion that the underlying field has
+only one possible derivation.
+
+\assertion{Construction perspective.}
+One cannot define $\DD$ simply by recursively differentiating an exponential
+expression for every number. Log-atomic numbers require extra initial data.
+The construction specifies a pre-derivation there and extends it through
+summable path derivatives. The summability proof and surjectivity proof are
+substantial inputs, not consequences of the product rule alone
+\cite[\S\S6--7]{BM}. This article uses their conclusions rather than a
+pretended implementation of that construction.
+
+\subsection{First consequences}
+All real numbers are constants, including real parameters that may occur in
+an exponent. Thus
+\begin{equation}\label{eq:basicderivatives}
+ \DD(\omega^q)=q\omega^{q-1}\quad(q\in\R),\qquad
+ \DD(\log\omega)=\omega^{-1},\qquad
+ \DD(\exp\omega)=\exp\omega.
+\end{equation}
+For rational $q$ the first formula follows from algebraic differentiation;
+for real $q$ use $\omega^q=\exp(q\log\omega)$ for real exponents and
+exponential compatibility. The logarithm identity follows by
+differentiating $\exp(\log x)=x$ for $x>0$.
+
+For $\ell_0=\omega$ and $\ell_{n+1}=\log\ell_n$, induction gives
+\begin{equation}\label{eq:logtower}
+ \DD\ell_n=\frac{1}{\ell_0\ell_1\cdots\ell_{n-1}}
+ \quad(n\ge1).
+\end{equation}
+All these $\ell_n$ are positive infinite. The empty product for $n=0$ is
+understood as $1$.
+
+\begin{remark}[Two different exponent constructions]
+For an arbitrary surreal exponent $a$, the Conway monomial $\omega^a$ must
+not be silently replaced by $\exp(a\log\omega)$. The latter expression has
+derivative
+\[
+ \exp(a\log\omega)\left((\DD a)\log\omega+a/\omega\right),
+\]
+but this does not give a general rule for the Conway monomial map. A
+symbolic implementation needs different constructors for the two operations.
+\end{remark}
+
+\subsection{Why this is not a derivative of a constant function}
+As an element of $K$, $\omega$ satisfies $\DD\omega=1$. As the constant
+function $Z\mapsto\omega$, it satisfies $\partial_Z\omega=0$. Similarly,
+for the ordinary function $f(Z)=e^Z$ at a real point $r$,
+\[
+ f'(r)=e^r,\qquad \DD(f(r))=\DD(e^r)=0.
+\]
+The first derivative varies an argument; the second acts on an element of a
+differential field. Neither equation contradicts the other.
+
+The transseries embedding gives a useful interpretation: the natural
+embedding sending the transseries variable to $\omega$ is elementary as an
+embedding of ordered differential fields \cite[Theorem 1]{ADHsurreal}.
+This explains the asymptotic intuition behind $\DD\omega=1$. It does not
+identify every arbitrary surcomplex function with a transseries.
+
+\section{Small derivatives and normalized integration}
+\label{sec:integration}
+
+\subsection{An order reversal on infinitesimals}
+\begin{lemma}\label{lem:smallnegative}
+If $0<\varepsilon\in\mm$, then $\DD\varepsilon<0$. Moreover
+$\DD(\OO)\subseteq\mm$.
+\end{lemma}
+\begin{proof}
+$1/\varepsilon$ is positive infinite, so the $H$-field axiom gives
+\[
+ 0<\DD(1/\varepsilon)=-\frac{\DD\varepsilon}{\varepsilon^2}.
+\]
+Hence $\DD\varepsilon<0$. For each positive integer $n$,
+$\omega+n\varepsilon$ is positive infinite. Its derivative is
+$1+n\DD\varepsilon>0$. Therefore
+$-1/n<\DD\varepsilon<0$ for every $n$, so
+$\DD\varepsilon\in\mm$. Negative infinitesimals follow by additivity.
+Every finite element is a real constant plus an infinitesimal.
+\end{proof}
+
+In particular, $\DD$ is strictly order-reversing on $\mm$: if
+$\varepsilon_1<\varepsilon_2$, apply the lemma to their positive
+infinitesimal difference. This order reversal is not a global property of
+$\DD$; positive infinite elements have positive derivative.
+
+\subsection{A fixed integration normalization}
+\begin{proposition}\label{prop:A}
+For each $b\in K$ there is a unique $\Prim(b)\in K$ such that
+\[
+ \DD\Prim(b)=b,\qquad \ct(\Prim(b))=0.
+\]
+The map $\Prim$ is real-linear and satisfies
+\begin{equation}\label{eq:Aidentities}
+ \DD\Prim=\id_K,\qquad \Prim\DD=\id_K-\ct.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Choose any primitive $B$ of $b$, using surjectivity, and replace it by
+$B-\ct(B)$. If two normalized primitives existed, their difference would
+lie in $\ker\DD=\R$ and have constant coefficient zero, hence be zero.
+Additivity and real homogeneity follow from uniqueness. Applying this to
+$\DD x$ gives the second identity.
+\end{proof}
+
+The existence proof does not require a simultaneous arbitrary choice of
+primitives: the normalization defines a unique value for each input.
+We do not claim that $\Prim$ preserves arbitrary Hahn sums, is multiplicative,
+or is an effective procedure for arbitrary surreal inputs. Its usefulness
+here is semantic precision. For example,
+\[
+ \Prim(1)=\omega,\qquad
+ \Prim(\omega^{-1})=\log\omega-\ct(\log\omega).
+\]
+The second primitive is infinite regardless of its real constant term.
+
+\subsection{The bounded-primitive ideal}
+\begin{definition}\label{def:I}
+The \emph{bounded-primitive ideal} is the additive subclass
+\[
+ \II:=\DD(\OO)=\DD(\mm)\subset K.
+\]
+The second equality follows because $\DD$ kills $\R$.
+\end{definition}
+
+\begin{theorem}\label{thm:I}
+The class $\II$ has the following properties.
+\begin{enumerate}[label=(\roman*),itemsep=2pt]
+\item $\DD:\mm\to\II$ is a real-linear, order-reversing bijection.
+\item $b\in\II$ if and only if $\Prim(b)\in\mm$, equivalently if and only if
+some, and hence every, primitive of $b$ is finite.
+\item $\II$ is convex in $K$ and is an ideal of the valuation ring $\OO$.
+\item $0\ne\II\subsetneq\mm\subsetneq\OO$.
+\item There is an exact cut description
+\begin{equation}\label{eq:Icut}
+ \II=\{b\in K: |b|<\DD f\text{ for every }f>\R\}.
+\end{equation}
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+The first two claims follow from \cref{lem:smallnegative,prop:A} and the
+constant field. To prove convexity, suppose $0\le b\le d$ with
+$d\in\II$, $d\ge0$. Write $d=-\DD\varepsilon$ with
+$\varepsilon\in\mm$, $\varepsilon\ge0$, using order reversal. Let
+$B'=b$. If $B$ were negative infinite, then $-B$ would be positive infinite
+and $b<0$, a contradiction. If $B$ were positive infinite, then
+$B+\varepsilon$ would be positive infinite but
+\[
+ \DD(B+\varepsilon)=b-d\le0,
+\]
+another contradiction. Thus $B$ is finite and $b\in\II$. Sign symmetry
+proves convexity in general.
+
+For $u\in\OO$ and $b\in\II$, choose a positive integer $n>|u|$.
+Then $|ub|\le n|b|$, and convexity and real-linearity imply
+$ub\in\II$. Thus $\II$ is an ideal of $\OO$.
+
+The lemma already gives $\II\subseteq\mm$. It is nonzero because
+$\DD(-\omega^{-1})=\omega^{-2}$. But $\omega^{-1}\notin\II$:
+every primitive differs from $\log\omega$ by a real constant and is
+infinite. This proves strictness.
+
+For \eqref{eq:Icut}, if $b=\DD\varepsilon$ with
+$\varepsilon\in\mm$, then $f+\varepsilon$ and $f-\varepsilon$ are
+positive infinite for every $f>\R$. Their positive derivatives give
+$\DD f>|b|$. Conversely, suppose $b\notin\II$, and choose $B'=b$.
+Then $B$ is infinite. For $f=|B|/2$ the $H$-field axiom gives
+$\DD|B|=|b|>0$, whence $\DD f=|b|/2$. The inequality required in
+\eqref{eq:Icut} fails.
+\end{proof}
+
+The inverse $J:\II\to\mm$ of $\DD|_\mm$ is the unique infinitesimal
+primitive. It equals $\Prim|_\II$. In contrast to a general primitive, it
+has no residual additive constant ambiguity.
+
+\begin{corollary}\label{cor:quotients}
+Differentiation induces an order-preserving real-linear isomorphism of
+ordered additive quotients
+\[
+ K/\OO\ \longrightarrow\ K/\II,\qquad x+\OO\longmapsto\DD x+\II.
+\]
+\end{corollary}
+\begin{proof}
+Surjectivity is inherited from $\DD$, and
+$\DD^{-1}(\II)=\OO$. If $x+\OO$ is positive, then $x$ is positive
+infinite. For any $d=\DD\varepsilon\in\II$, the element
+$x-\varepsilon$ is positive infinite, so $\DD x>d$. Hence the induced
+map preserves positivity. The converse follows by bijectivity and sign
+symmetry.
+\end{proof}
+
+\subsection{Examples at increasingly slow scales}
+For real $p$, integration gives
+\[
+ \DD\!\left(\frac{\omega^{1-p}}{1-p}\right)=\omega^{-p}
+ \quad(p\ne1).
+\]
+Therefore
+\begin{equation}\label{eq:powerthreshold}
+ \omega^{-p}\in\II\quad\Longleftrightarrow\quad p>1.
+\end{equation}
+The endpoint $p=1$ fails because its primitive is $\log\omega$.
+
+More generally, put
+\[
+ b_{n,p}=\frac{1}{\ell_0\ell_1\cdots\ell_{n-1}\ell_n^p}
+ \quad(n\ge0),
+\]
+where the prefix product is empty for $n=0$. For $p\ne1$ a primitive is
+$\ell_n^{1-p}/(1-p)$; for $p=1$ it is $\ell_{n+1}$. Thus
+\begin{equation}\label{eq:logthreshold}
+ b_{n,p}\in\II\quad\Longleftrightarrow\quad p>1.
+\end{equation}
+Being infinitesimal is not enough. In particular,
+$1/(\omega\log\omega)$ is infinitesimal but not in $\II$.
+These tests are exact algebraic statements about primitives, not claims
+about real improper integrals.
+
+\section{Complexification and infinitesimal formal calculus}
+\label{sec:complexification}
+
+\subsection{The extension of the derivation}
+\begin{proposition}\label{prop:complexextension}
+There is exactly one derivation on $L=K[i]$ extending $\DD$ on $K$. It is
+\[
+ \DD(a+ib)=\DD a+i\DD b.
+\]
+It commutes with conjugation, has constant field $\C$, is surjective, and
+is strongly additive on set-indexed Hahn-summable families in $L$.
+\end{proposition}
+\begin{proof}
+Differentiating $i^2=-1$ gives $2i\DD i=0$, so $\DD i=0$ in any
+extension. The displayed formula is therefore forced, and direct expansion
+verifies its product rule. The assertions about constants and surjectivity
+follow coordinatewise. For strong additivity, take real and imaginary
+parts of a summable family. Their derivative families are summable by
+\cref{thm:BM}; a finite union of reverse-well-ordered supports is again
+reverse well ordered, and each monomial still has finite multiplicity.
+\end{proof}
+
+The normalized primitive extends to
+$\Prim_L(a+ib)=\Prim(a)+i\Prim(b)$. It is $\C$-linear, satisfies
+$\DD\Prim_L=\id$, and has zero complex constant term. This is an
+algebraically specified class operation, not a promise of an effective
+integration algorithm for arbitrary input encodings.
+
+For $z\ne0$, write
+\[
+ z^\dagger=\frac{\DD z}{z}.
+\]
+The logarithmic derivative satisfies
+\begin{equation}\label{eq:logderivative}
+ (zw)^\dagger=z^\dagger+w^\dagger,\qquad
+ (z^{-1})^\dagger=-z^\dagger,\qquad
+ \ker({}^\dagger)=\C^\times.
+\end{equation}
+This notation does not presume that a global surcomplex logarithm exists.
+
+\begin{lemma}\label{lem:radial}
+For $z\in L^\times$ and $r=|z|$, one has
+\[
+ \frac{\DD r}{r}=\re(z^\dagger).
+\]
+\end{lemma}
+\begin{proof}
+Differentiate $r^2=z\bar z$ and divide by $2r^2$:
+$\DD r/r=(z^\dagger+\overline{z^\dagger})/2$.
+\end{proof}
+
+\subsection{Summability is a support condition}
+A family $(x_j)_{j\in J}$ of Hahn series is \emph{summable} when $J$ is a
+set, the union of their monomial supports is reverse well ordered, and each
+monomial occurs in only finitely many of the $x_j$. The sum is then
+coefficientwise. This is not convergence of partial sums in the fine
+surreal topology.
+
+We use the standard Hahn--Neumann support lemma: if $S$ is a
+reverse-well-ordered set of monomials strictly smaller than $1$, the
+multiplicative semigroup it generates is reverse well ordered; for any
+fixed monomial, only finitely many products from $S$ occur, counting
+multiplicities up to permutation. These are the summability facts used in
+the formal-series calculus of \cite[\S3.2]{BMgerms}. They hold for set supports,
+without a restriction to an Archimedean value group.
+
+Consequently, for $h\in\mm_L$ and an arbitrary formal series
+$f(X)=\sum_{n\ge0}c_nX^n\in\C[[X]]$, the family $(c_nh^n)_n$ is
+summable. Its value is denoted by $f(h)$. No lower bound on an ordinary
+radius of convergence is needed: factorially growing complex coefficients
+remain coefficients at the same Hahn monomials.
+
+\begin{proposition}[Infinitesimal chain rule]\label{prop:formalchain}
+For $f\in\C[[X]]$ and $h\in\mm_L$,
+\begin{equation}\label{eq:formalchain}
+ \DD(f(h))=f_{\mathrm{formal}}'(h)\,\DD h.
+\end{equation}
+\end{proposition}
+\begin{proof}
+For each $n$, the product rule gives
+$\DD(c_nh^n)=nc_nh^{n-1}\DD h$. Strong additivity applies to the
+summable family $(c_nh^n)_n$. The family
+$(nc_nh^{n-1})_{n\ge1}$ is separately summable by the support lemma,
+and multiplication by the fixed number $\DD h$ preserves summability.
+Hence its sum can be factored as stated. The case $h=0$ is immediate.
+\end{proof}
+
+The same support argument justifies addition, multiplication and formal
+composition whenever the inner series has zero constant term. In
+particular, define
+\begin{equation}\label{eq:smallExpLog}
+ \Exp(h)=\sum_{n\ge0}\frac{h^n}{n!},\qquad
+ \Log(1+h)=\sum_{n\ge1}\frac{(-1)^{n+1}h^n}{n}.
+\end{equation}
+These are inverse group isomorphisms
+\[
+ (\mm_L,+)\ \underset{\Log}{\stackrel{\Exp}{\rightleftarrows}}\
+ (1+\mm_L,\cdot).
+\]
+Formal identities give $\Exp(h+k)=\Exp(h)\Exp(k)$, and
+\begin{equation}\label{eq:smallExpLogderivatives}
+ \DD\Exp(h)=\Exp(h)\DD h,\qquad
+ \DD\Log(1+h)=\frac{\DD h}{1+h}.
+\end{equation}
+Both functions commute with conjugation. On real infinitesimal inputs,
+$\Exp$ agrees with the surreal exponential, and $\Log$ with its inverse
+on $1+\mm$.
+
+\begin{remark}[An important limit on the evaluation rule]
+The rule $f(h)$ above assumes \emph{constant} coefficients
+$c_n\in\C$. A formal series with arbitrary coefficients in $L$ need not
+be summable at any given nonzero infinitesimal. For example,
+$\sum_{n\ge0}\omega^{n^2}X^n$ is not summable at $X=\omega^{-1}$.
+Its monomials $\omega^{n^2-n}$ are not reverse well ordered. One must
+not export the infinitesimal chain rule to arbitrary coefficient streams
+without a joint support certificate.
+\end{remark}
+
+\section{A differential interface for coherent surcomplex analysis}
+\label{sec:coherent}
+
+\subsection{One coefficient domain, two derivations}
+Let $U\subseteq\C$ be an ordinary open set. Consider the common-domain
+Hahn algebra whose elements have the form
+\begin{equation}\label{eq:coherentF}
+ F(Z)=\sum_{m\in S}f_m(Z)m,
+ \qquad f_m\in\mathcal O(U),
+\end{equation}
+where $S$ is a set of surreal monomials, reverse well ordered. Zero
+coefficient functions may be discarded. All the coefficient functions live
+on the \emph{same} domain $U$. This is a common-domain construction of the
+kind distinguished in the repository, not the radius-free algebra of
+unrelated convergent germs \cite{RepoAnalysis}.
+
+Its ordinary analytic-variable derivation is
+\[
+ \Dz F=\sum_{m\in S}f_m'(Z)m.
+\]
+Its intrinsic coefficient derivation should instead satisfy
+\[
+ \Dc F=\sum_{m\in S}f_m(Z)\DD m.
+\]
+The second display is meaningful only after checking that its expanded
+coefficients remain a valid common-domain family.
+
+\begin{theorem}[Preservation of common-domain coherence]
+\label{thm:coefficientderivation}
+The operation $\Dc$ is a well-defined derivation of the common-domain
+Hahn algebra in \eqref{eq:coherentF}. It preserves the ordinary domain
+$U$ and commutes with $\Dz$:
+\begin{equation}\label{eq:commutingderivations}
+ \Dc\Dz F=\Dz\Dc F.
+\end{equation}
+It need not preserve a previously chosen smaller monomial group.
+\end{theorem}
+\begin{proof}
+The family $(m)_{m\in S}$ is summable. By strong additivity, the family
+$(\DD m)_{m\in S}$ is summable. Write
+\[
+ \DD m=\sum_n d_{n,m}n,\qquad d_{n,m}\in\R.
+\]
+The union $T$ of these supports is reverse well ordered, and, for each
+$n\in T$, only finitely many $m$ have $d_{n,m}\ne0$. Consequently
+\begin{equation}\label{eq:coefficientmatrix}
+ \Dc F=\sum_{n\in T}g_n(Z)n,
+ \qquad g_n(Z)=\sum_{m\in S}d_{n,m}f_m(Z)
+\end{equation}
+is legitimate, and every inner sum is finite. Each $g_n$ is holomorphic
+on the same $U$.
+
+Linearity is immediate. The product rule follows by expanding the Hahn
+product of two families: each coefficient receives finitely many
+contributions, and $\DD(m_1m_2)=(\DD m_1)m_2+m_1\DD m_2$.
+The support lemma permits the regrouping. Finally, ordinary differentiation
+of the finite sum in \eqref{eq:coefficientmatrix} replaces each $f_m$ by
+$f_m'$, giving \eqref{eq:commutingderivations}. The support of $\DD m$
+can contain monomials outside a preselected subgroup, which accounts for
+the last assertion.
+\end{proof}
+
+This proof makes the interface particularly concrete: the derivation is
+represented by a column-indexed family $(\DD m)_m$ whose matrix is
+\emph{row finite on every specified summable input support}. It does not
+assert that every individual derivative has finite support, or that the
+matrix has a finite global representation.
+
+\subsection{Evaluation and total differentiation}
+For $z\in\OO_L$ with $a=\st z\in U$, put $h=z-a\in\mm_L$ and
+define
+\begin{equation}\label{eq:evaluation}
+ \ev_z F=
+ \sum_{m\in S}\sum_{k\ge0}
+     m\,\frac{f_m^{(k)}(a)}{k!}h^k.
+\end{equation}
+The family is jointly summable. Indeed, the Taylor coefficient at each
+$(m,k)$ is an ordinary complex constant, and the supports are controlled
+by $S$ times the semigroup generated by the support of $h$. The
+Hahn--Neumann lemma gives both reverse well ordering and finite
+multiplicity. This remains true when the ordinary sizes of the Taylor
+coefficients grow without a common bound.
+
+\begin{theorem}[Total intrinsic derivative]\label{thm:totalchain}
+For $F$ and $z$ as above,
+\begin{equation}\label{eq:totalchain}
+ \DD(\ev_zF)=\ev_z(\Dc F)+\ev_z(\Dz F)\,\DD z.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Apply strong additivity to the double family in \eqref{eq:evaluation}.
+Since $a\in\C$, all numbers $f_m^{(k)}(a)/k!$ are constants of
+$\DD$, and $\DD h=\DD z$. The product rule splits the derivative
+of each term into
+\[
+ (\DD m)\frac{f_m^{(k)}(a)}{k!}h^k
+ \quad\text{and}\quad
+ m\frac{f_m^{(k)}(a)}{(k-1)!}h^{k-1}\DD z
+ \quad(k\ge1).
+\]
+Each of the two families is separately summable. For the first, use the
+summability of $(\DD m)_m$ and the same infinitesimal semigroup. For the
+second, use the support certificate for $\Dz F$ and multiply by the
+fixed number $\DD z$. The first sum is the evaluation of
+\eqref{eq:coefficientmatrix}; reindexing the second gives
+$\ev_z(\Dz F)\DD z$.
+\end{proof}
+
+An ordinary holomorphic lift $f^\#$ has constant coefficients with respect
+to $\DD$, so the formula reduces to
+$\DD(f^\#(z))=(f')^\#(z)\DD z$. A general coherent family has the
+additional coefficient term. This distinction is independent of whether
+one can write its evaluated value as a short expression.
+
+\begin{example}[A moving argument and moving coefficients]
+Let $t=\omega^{-1}$, $F(Z)=\omega Z^2+tZ$, and $z=1+t$. Then
+\[
+ \Dc F=Z^2-t^2Z,\qquad \Dz F=2\omega Z+t,\qquad \DD z=-t^2.
+\]
+The evaluated value is
+\[
+ F(z)=\omega+2+2t+t^2,
+ \qquad \DD(F(z))=1-2t^2-2t^3.
+\]
+Substituting in \eqref{eq:totalchain} gives exactly the same expression.
+Keeping only the argument derivative would miss the leading constant $1$.
+The simpler family $F(Z)=\omega$ already disproves that omission.
+\end{example}
+
+\subsection{Fixed contours and moving poles}
+Suppose a fixed ordinary piecewise smooth contour $\gamma$ lies in $U$.
+Define its coefficientwise integral by
+\[
+ \int_\gamma F(Z)\,dZ
+   =\sum_{m\in S}\left(\int_\gamma f_m(Z)\,dZ\right)m.
+\]
+The finite sums in \eqref{eq:coefficientmatrix} show directly that
+\begin{equation}\label{eq:contourcommutation}
+ \DD\!\left(\int_\gamma F\,dZ\right)
+       =\int_\gamma\Dc F\,dZ.
+\end{equation}
+The contour is fixed and ordinary, and the integral on either side is a
+coefficientwise functional. No surcomplex-valued Riemann integral is
+being introduced. The same argument applies to a coefficientwise residue
+at a fixed ordinary centre whenever all coefficients are meromorphic on
+one punctured neighbourhood: residue is a complex-linear functional, and
+each new coefficient is a finite linear combination.
+
+At an actual moving pole, the coefficient term cannot be ignored. For
+$a\in L$ and the rational expression $F(Z)=1/(Z-a)$,
+\begin{equation}\label{eq:movingpole}
+ \Dc F=\frac{\DD a}{(Z-a)^2},\qquad
+ \Dz F=-\frac{1}{(Z-a)^2},\qquad
+ \DD\frac1{z-a}=-\frac{\DD z-\DD a}{(z-a)^2}.
+\end{equation}
+These rational identities hold whenever the denominators are nonzero;
+they do not need a coherent expansion. The fixed-centre residue in
+\eqref{eq:contourcommutation} must not be silently replaced by an actual
+residue at $a$. The repository already distinguishes those residues;
+intrinsic differentiation supplies another reason to retain the distinction.
+
+\section{Canonical infinitesimal phase and exponential integration}
+\label{sec:phase}
+
+\subsection{A polar form with no branch choice}
+The ordinary unit circle is
+$\mathbb T(\C)=\{c\in\C:|c|=1\}$. Its surreal counterpart is
+$\mathbb T(K)=\{u\in L:|u|=1\}$.
+
+\begin{theorem}[Infinitesimal polar decomposition]\label{thm:polar}
+Every $z\in L^\times$ has a unique expression
+\begin{equation}\label{eq:polar}
+ z=r\,c\,\Exp(i\theta),
+ \qquad r\in K_{>0},\quad c\in\mathbb T(\C),\quad\theta\in\mm.
+\end{equation}
+Here $r=|z|$, $c=\st(z/|z|)$, and
+$i\theta=\Log\bigl(z/(rc)\bigr)$. In particular,
+\[
+ \mathbb T(K)\cong\mathbb T(\C)\times(\mm,+)
+\]
+as abelian groups.
+\end{theorem}
+\begin{proof}
+Set $r=|z|$ and $u=z/r$. Both coordinates of $u$ are finite, and
+$u\bar u=1$. Taking standard parts gives $c\bar c=1$ for
+$c=\st u$, so $c\ne0$. Then $w=u/c$ belongs to $1+\mm_L$ and
+satisfies $w\bar w=1$. Put $q=\Log w$. Conjugation and the formal
+logarithm identities give
+\[
+ q+\bar q=\Log(w\bar w)=0.
+\]
+Thus $q=i\theta$ for a unique real infinitesimal $\theta$.
+Exponentiating gives \eqref{eq:polar}. Conversely, that expression has
+modulus $r$ because $\Exp(i\theta)\Exp(-i\theta)=1$, has ordinary
+unit direction $c$, and has logarithm $i\theta$ after division by $rc$.
+These determine all three quantities uniquely. Multiplication multiplies
+$r,c$ and adds $\theta$, proving the group statement.
+\end{proof}
+
+The unit-circle decomposition is closely related to the finite-angle
+theorem already present in the repository \cite{RepoTrig}. What matters
+here is that its last factor has \emph{a unique infinitesimal parameter},
+so its intrinsic derivative has no branch ambiguity.
+
+\begin{corollary}\label{cor:polarlogderivative}
+For the polar decomposition \eqref{eq:polar},
+\begin{equation}\label{eq:polarlogderivative}
+ z^\dagger=\DD\log r+i\DD\theta.
+\end{equation}
+\end{corollary}
+\begin{proof}
+The ordinary number $c$ is a differential constant. Differentiate the
+three factors using exponential compatibility and
+\eqref{eq:smallExpLogderivatives}, then divide by $z$.
+\end{proof}
+
+\subsection{The exact logarithmic-derivative image}
+\begin{theorem}[Surcomplex exponential-integrability criterion]
+\label{thm:logderivativeimage}
+The image of the logarithmic derivative on $L^\times$ is exactly
+\begin{equation}\label{eq:logderivativeimage}
+ (L^\times)^\dagger=K+i\II,
+ \qquad \II=\DD(\OO)=\DD(\mm).
+\end{equation}
+For $a,b\in K$, the equation
+\begin{equation}\label{eq:firstorder}
+ \DD y=(a+ib)y
+\end{equation}
+has a nonzero solution in $L$ if and only if $b\in\II$. If this
+condition holds, all its solutions are
+\begin{equation}\label{eq:allfirstordersolutions}
+ y=c\,\exp(\Prim(a))\,\Exp(iJ(b)),\qquad c\in\C.
+\end{equation}
+\end{theorem}
+\begin{proof}
+For necessity, \eqref{eq:polarlogderivative} shows that the imaginary
+part of every logarithmic derivative is the derivative of an
+infinitesimal, hence belongs to $\II$.
+
+For sufficiency, $\Prim(a)$ is a primitive of $a$, and $J(b)\in\mm$
+is the unique infinitesimal primitive of $b$. The product
+$y_0=\exp(\Prim(a))\Exp(iJ(b))$ is nonzero and has logarithmic
+derivative $a+ib$. Finally, for two nonzero solutions,
+$\DD(y/y_0)=0$, so $y/y_0\in\C^\times$. Including $c=0$ gives
+all solutions in \eqref{eq:allfirstordersolutions}.
+\end{proof}
+
+The real component is unrestricted because $K$ is Liouville closed. The
+imaginary component is restricted not merely by smallness, but by the
+much sharper finite-primitive condition. Algebraic closure of $L$ supplies
+roots of polynomials in its elements; it does not supply roots of
+arbitrary differential equations.
+
+\begin{example}[The threshold is sharper than infinitesimality]
+For real $p$, the equation
+\[
+ \DD y=i\omega^{-p}y
+\]
+has a nonzero solution if and only if $p>1$. For $p>1$ one may take
+\[
+ y=\Exp\!\left(\frac{i\omega^{1-p}}{1-p}\right).
+\]
+For $p=1$, a real primitive of the angular velocity is $\log\omega$,
+which is infinite; for $p<1$, its primitive is also infinite. The
+logarithmic-scale family \eqref{eq:logthreshold} gives arbitrarily slower
+endpoint failures, for example $b=1/(\omega\log\omega)$.
+\end{example}
+
+There is a concise quotient formulation. The additive homomorphism
+\[
+ L\longrightarrow K/\II,\qquad a+ib\longmapsto b+\II
+\]
+is surjective and has kernel $(L^\times)^\dagger$. Therefore
+\begin{equation}\label{eq:logderivativequotient}
+ L/(L^\times)^\dagger\cong K/\II
+\end{equation}
+as additive real-vector-space quotients. These are not quotient fields.
+The class $b+\II$ is the complete obstruction to exponential integration.
+
+\section{The maximal differential exponential strip}
+\label{sec:strip}
+
+\subsection{Construction and kernel}
+For a finite real $\theta=s+\varepsilon$, with $s=\st\theta\in\R$
+and $\varepsilon\in\mm$, define
+\[
+ \cis(\theta)=e^{is}\Exp(i\varepsilon).
+\]
+This is an additive-to-multiplicative homomorphism on $\OO$. Its kernel
+is $2\pi\Z$: standard part first forces $s\in2\pi\Z$, then
+injectivity of the small exponential forces $\varepsilon=0$.
+
+Let
+\[
+ \mathcal S=K+i\OO.
+\]
+It is an additive subgroup and a real-vector subspace of $L$, not a
+subring: $\omega\in\mathcal S$ and $i\in\mathcal S$, but
+$i\omega\notin\mathcal S$. Define
+\begin{equation}\label{eq:stripExp}
+ E(a+i\theta)=\exp(a)\cis(\theta),
+ \qquad a\in K,\quad\theta\in\OO.
+\end{equation}
+
+\begin{theorem}\label{thm:stripexp}
+The map $E:(\mathcal S,+)\to(L^\times,\cdot)$ is a surjective
+homomorphism with kernel $2\pi i\Z$. It satisfies
+\begin{equation}\label{eq:stripcompatibility}
+ \DD E(w)=E(w)\DD w\qquad(w\in\mathcal S).
+\end{equation}
+Consequently
+$\mathcal S/(2\pi i\Z)\cong L^\times$ as abelian groups.
+\end{theorem}
+\begin{proof}
+Multiplicativity follows from the exponential and finite-phase group
+laws. If $E(a+i\theta)=1$, taking moduli gives $\exp a=1$, hence
+$a=0$, and the phase kernel gives $\theta\in2\pi\Z$. Conversely,
+these elements are in the kernel.
+
+For surjectivity, write $z=r c\Exp(i\varepsilon)$ by
+\cref{thm:polar}. Choose an ordinary real $s$ with $e^{is}=c$; then
+$z=E(\log r+i(s+\varepsilon))$. This uses the ordinary circle only,
+not a branch on the entire surcomplex plane.
+
+For compatibility, differentiate \eqref{eq:stripExp}. The ordinary
+number $s=\st\theta$ is a constant, and
+$\DD(\theta-s)=\DD\theta$. Therefore
+$\DD\cis(\theta)=i\cis(\theta)\DD\theta$, which proves
+\eqref{eq:stripcompatibility}.
+\end{proof}
+
+Every nonzero $z$ thus has strip logarithms, all differing by an ordinary
+period $2\pi i n$. All such logarithms have the same intrinsic
+derivative, namely $z^\dagger$. This derivative-level conclusion is
+canonical even when a chosen logarithm branch is not.
+
+\subsection{A pointwise maximality theorem}
+\begin{theorem}[Maximal domain of differential compatibility]
+\label{thm:maximalstrip}
+For $w=a+iB\in L$, there exists $y\in L^\times$ satisfying
+\begin{equation}\label{eq:pointwiseexpcondition}
+ y^\dagger=\DD w
+\end{equation}
+if and only if $B\in\OO$, equivalently $w\in\mathcal S$.
+In particular, no nonzero-valued global map $\mathcal E:L\to L^\times$
+can satisfy
+\[
+ \DD\mathcal E(w)=\mathcal E(w)\DD w
+ \quad\text{for every }w\in L.
+\]
+No homomorphism axiom is needed for this impossibility.
+\end{theorem}
+\begin{proof}
+By \cref{thm:logderivativeimage}, condition
+\eqref{eq:pointwiseexpcondition} is equivalent to $\DD B\in\II$.
+But $\DD^{-1}(\II)=\OO$, as proved in
+\cref{thm:I,cor:quotients}. Thus it is equivalent to $B$ being finite.
+For such $w$, \cref{thm:stripexp} provides a solution. For infinite $B$,
+no value at that single $w$ can meet the condition. Taking $w=i\omega$
+already rules out a global map.
+\end{proof}
+
+This theorem is about the fixed Berarducci--Mantova derivation, acting on
+values. It does not forbid a global surcomplex exponential defined by
+other structural requirements. In particular, the ordered-exponential and
+surcomplex exponential constructions studied by Ehrlich and Kaplan
+\cite{EhrlichKaplan} should not be described as nonexistent. The
+obstruction says that an extension to infinite imaginary arguments cannot
+also satisfy \eqref{eq:stripcompatibility} for this $\DD$.
+
+\begin{example}[Why discarding an infinite phase changes the calculus]
+A convention that discards the purely infinite part of an angle can assign
+phase $1$ to $\omega$. Such a value is algebraically meaningful under its
+specified convention, but its intrinsic derivative is $\DD 1=0$.
+Differential exponential compatibility at $i\omega$ would instead require
+$\DD 1=i$. Thus a phase convention and a differential solution are
+mathematically different objects, even when both are called
+$e^{i\omega}$.
+\end{example}
+
+There is no contradiction with ordinary sine and cosine lifts on finite
+halos. They obey the chain rule with the factor $\DD z$. For a finite
+$z$, this factor is infinitesimal; there is no finite surreal $z$ with
+$\DD z=1$. The forbidden oscillator would require a genuinely
+infinite intrinsic clock.
+
+\section{Nonoscillation and constant-coefficient equations}
+\label{sec:constantODE}
+
+\subsection{The elementary oscillator obstruction}
+\begin{corollary}\label{cor:oscillator}
+The equations
+\[
+ \DD y=iy,\qquad \DD y=-iy,\qquad \DD^2y+y=0
+\]
+have only the zero solution in $L$.
+\end{corollary}
+\begin{proof}
+The first two equations would require $1\in\II$ or $-1\in\II$,
+contradicting $\II\subseteq\mm$. For the third equation,
+\[
+ \DD^2+1=(\DD-i)(\DD+i).
+\]
+Both factors are injective by the first two cases, so their product is
+injective.
+\end{proof}
+
+There is a complementary proof for a real solution $y$. Its energy
+$y^2+(\DD y)^2$ has derivative zero, hence is an ordinary nonnegative
+real constant. Therefore $y$ and $\DD y$ are finite. The derivative of
+a finite surreal is infinitesimal, so $\DD y$ is infinitesimal, and
+$\DD^2y=-y$ then forces $y$ infinitesimal too. The real energy constant
+is infinitesimal and hence zero. Applying this to the real and imaginary
+parts proves the complex case. The factorization proof, however, scales
+more efficiently to general operators.
+
+\subsection{All scalar constant-coefficient kernels}
+For a nonzero polynomial $P(X)\in\C[X]$, the operator $P(\DD)$ is
+$\C$-linear on $L$. Let $m_r$ be the multiplicity of a real root $r$ of
+$P$.
+
+\begin{theorem}[Exact constant-coefficient solution space]
+\label{thm:constantoperators}
+One has
+\begin{equation}\label{eq:constantoperators}
+ \ker P(\DD)=
+ \bigoplus_{\substack{r\in\R\\P(r)=0}}
+   e^{r\omega}\{q(\omega):q\in\C[X],\ \deg q<m_r\}.
+\end{equation}
+In particular, its complex dimension is the sum of the multiplicities of
+\emph{real} roots of $P$, not necessarily $\deg P$.
+\end{theorem}
+\begin{proof}
+First, if $\lambda\in\C\setminus\R$, its imaginary part is a
+nonzero real constant and is not in $\II$. Thus $\DD-\lambda$ is
+injective by \cref{thm:logderivativeimage}. Every power and every finite
+product of such factors is injective.
+
+Second, for real $r$ and every $u\in L$,
+\[
+ (\DD-r)(e^{r\omega}u)=e^{r\omega}\DD u.
+\]
+Iterating gives
+\[
+ (\DD-r)^m(e^{r\omega}u)=e^{r\omega}\DD^m u.
+\]
+We claim that $\ker\DD^m=\C[\omega]_{<m}$. This is clear for
+$m=1$ since the constants are $\C$. If it holds for $m-1$ and
+$\DD^m u=0$, then $\DD u$ is a polynomial in $\omega$ of degree
+at most $m-2$. Integrate that polynomial termwise; the difference from
+$u$ is a complex constant. This proves the claim by induction, and gives
+the summand corresponding to $r$.
+
+Finally, factor $P=cQR$, with $Q$ the product of its real-root factors
+and $R$ the product of its nonreal-root factors. Since $R(\DD)$ is
+injective and commutes with $Q(\DD)$,
+$\ker P(\DD)=\ker Q(\DD)$. For pairwise coprime constant
+polynomials, the usual Bezout identity decomposes the kernel of their
+product as the direct sum of their kernels. Concretely, if $Q=AB$ and
+$uA+vB=1$, then a vector $y\in\ker(AB)(\DD)$ decomposes as
+$u(\DD)A(\DD)y+v(\DD)B(\DD)y$, in $\ker B(\DD)$ and
+$\ker A(\DD)$ respectively. The intersection is zero by the same
+identity. Repeating gives \eqref{eq:constantoperators}.
+\end{proof}
+
+For example,
+\[
+ \ker(\DD^2-1)=\C e^\omega\oplus\C e^{-\omega},\qquad
+ \ker(\DD^2+1)=0,
+\]
+while
+\[
+ \ker\!\bigl(\DD(\DD-1)^2(\DD^2+1)\bigr)
+     =\C\oplus e^\omega(\C+\C\omega).
+\]
+The latter fifth-order operator has a three-dimensional solution space.
+There is no contradiction with the ordinary five-dimensional space of
+complex analytic solutions as functions of a free variable. Its two
+oscillatory modes are not elements of this differential field.
+
+\subsection{Constant matrix systems}
+\begin{theorem}\label{thm:matrixsystems}
+Let $A\in M_n(\C)$, and consider
+\begin{equation}\label{eq:matrixsystem}
+ \DD Y=AY,\qquad Y\in L^n.
+\end{equation}
+Its solution space has complex dimension equal to the sum of the
+algebraic multiplicities of the real eigenvalues of $A$. On a Jordan block
+$rI+N$ of size $m$ with $r\in\R$, all solutions are
+\begin{equation}\label{eq:jordansolutions}
+ Y=e^{r\omega}
+       \left(\sum_{k=0}^{m-1}\frac{\omega^kN^k}{k!}\right)c,
+ \qquad c\in\C^m.
+\end{equation}
+On a Jordan block with nonreal eigenvalue, only the zero solution exists.
+An invertible fundamental solution matrix over $L$ exists if and only if
+all eigenvalues of $A$ are real.
+\end{theorem}
+\begin{proof}
+An ordinary complex similarity transformation is constant for $\DD$, so
+we may pass to Jordan form. On a nonreal block, the last coordinate solves
+$(\DD-\lambda)y_m=0$ and is zero. Upward substitution then makes
+all coordinates zero.
+
+On a real block, the finite matrix polynomial
+$B=\sum_{k=0}^{m-1}\omega^kN^k/k!$ satisfies $\DD B=NB$ and
+has inverse $\sum_{k=0}^{m-1}(-\omega)^kN^k/k!$. Thus multiplication
+by $e^{r\omega}B$ transforms a constant vector into a solution, and its
+inverse transforms any solution into a constant vector. This proves
+\eqref{eq:jordansolutions} and the dimension count. The block formula
+provides an invertible fundamental matrix when all eigenvalues are real;
+otherwise every solution is zero on some nonreal block, preventing
+invertibility.
+\end{proof}
+
+For the real rotation matrix
+$\left(\begin{smallmatrix}0&-1\\1&0\end{smallmatrix}\right)$ the
+solution space is zero. By contrast, a unipotent Jordan block has a
+fundamental matrix that is a polynomial in $\omega$. This contrast
+isolates oscillation rather than general complexity as the obstruction.
+
+\subsection{What these kernel results do not say}
+An operator can have zero kernel and still be surjective. Conversely,
+knowing a full kernel does not settle an inhomogeneous equation over a
+specified smaller subfield. The preceding theorems classify homogeneous
+solutions in $L$ only. The next section gives an explicit field on which
+$\DD-i$ is bijective. No claim of differential closedness, universal
+Picard--Vessiot closure, or a decision procedure for arbitrary nonlinear
+differential equations is being made.
+
+\section{An exact computational model: Laurent series at infinity}
+\label{sec:laurent}
+
+\subsection{A derivation-stable but not integration-closed field}
+Put $t=\omega^{-1}$ and identify
+\[
+ F=\C((t))\subset L
+\]
+by Hahn evaluation. Its elements are formal Laurent series
+$f=\sum_{n\ge n_0}c_nt^n$, with $n_0\in\Z$ and $c_n\in\C$.
+The intrinsic derivation is exactly
+\begin{equation}\label{eq:LaurentD}
+ D=-t^2\frac{d}{dt},\qquad
+ Df=\sum_{n\ge n_0}(-n)c_nt^{n+1}.
+\end{equation}
+Indeed, $\DD t=-t^2$, and strong additivity gives the formula for all
+Laurent series. We write $D$ here to emphasize the concrete operator,
+although it is the restriction of $\DD$.
+
+\begin{proposition}\label{prop:Laurentintegration}
+The constants of $(F,D)$ are $\C$, and
+\begin{equation}\label{eq:Laurentimage}
+ D(F)=\{f\in F:[t^1]f=0\}.
+\end{equation}
+For $f=\sum c_nt^n$ with $c_1=0$, a primitive is
+\begin{equation}\label{eq:Laurentprimitive}
+ \sum_{n\ne1}\frac{c_n}{1-n}t^{n-1}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+A coefficient of $t^1$ in $Df$ could only come from differentiating
+$t^0$, whose derivative vanishes. All other powers have the primitives
+shown in \eqref{eq:Laurentprimitive}; shifting the lower exponent by one
+preserves Laurent support. The same coefficient calculation shows that
+$Df=0$ forces all coefficients except $c_0$ to vanish.
+\end{proof}
+
+Thus $t$ has no primitive in $F$, although it has the primitive
+$\log\omega$ in $K$. This is not a failure of ambient surjectivity; it
+is a failure of closure of a particular representation parent.
+
+For another comparison, the power-series ideal $t^2\C[[t]]$ is the
+image under $D$ of $t\C[[t]]$. On the real Laurent field this is precisely
+$\II\cap\R((t))$: a finite Laurent primitive requires the absence of
+all powers below $t^2$, and conversely the displayed primitive is
+infinitesimal. A primitive outside the Laurent field cannot rescue a
+missing term, because primitives differ only by real constants. More
+explicitly, subtract the Laurent primitive of all terms except $c_1t$;
+the remaining primitive is $c_1\log\omega$. Any nonzero $c_1$, or any
+nonzero term whose primitive has a negative power of $t$, prevents
+finiteness. The logarithmic term cannot cancel a Laurent principal part.
+
+\subsection{Resolvents with a support certificate}
+\begin{theorem}[Exact Laurent resolvent]\label{thm:resolvent}
+For every $\lambda\in\C^\times$, the operator $D-\lambda$ is a
+bijection of $F$. Its inverse is the strongly summable operator series
+\begin{equation}\label{eq:resolvent}
+ R_\lambda f=-\sum_{j\ge0}\lambda^{-(j+1)}D^j f.
+\end{equation}
+For its finite truncation
+$R_{\lambda,N}f=-\sum_{j=0}^N\lambda^{-(j+1)}D^j f$, the residual is
+exactly
+\begin{equation}\label{eq:resolventresidual}
+ (D-\lambda)R_{\lambda,N}f
+   =f-\lambda^{-(N+1)}D^{N+1}f.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Write $f=p+g$, where $p\in\C[t^{-1}]$ is the finite part supported at
+nonpositive powers and $g\in t\C[[t]]$. Repeated application of $D$
+to $p$ eventually gives zero: under $t^{-1}=\omega$ this is ordinary
+differentiation of a polynomial in $\omega$. For $g$, every nonzero
+application of $D$ raises its least exponent by at least one. Hence the
+family $(D^jg)_j$ has a well-ordered union of exponents and only finitely
+many contributions to any fixed exponent. The finite family coming from
+$p$ causes no problem. This proves strong summability of
+\eqref{eq:resolvent}.
+
+The finite identity \eqref{eq:resolventresidual} follows by cancellation
+of adjacent terms. Direct coefficientwise cancellation in the summable
+infinite family then gives $(D-\lambda)R_\lambda f=f$. Equivalently,
+one can use strong additivity; there is no fine-topological limit.
+
+For injectivity, let $y\ne0$ have least exponent $n$. If $n\ne0$, the
+least exponent of $Dy$ is $n+1$, so the coefficient of $t^n$ in
+$(D-\lambda)y$ is $-\lambda[t^n]y\ne0$. If $n=0$, the constant
+term of $Dy$ is zero and the constant term of $(D-\lambda)y$ is again
+nonzero. Thus its kernel in $F$ is zero.
+\end{proof}
+
+For real nonzero $\lambda$, the ambient equation
+$(\DD-\lambda)y=0$ has nonzero solutions $ce^{\lambda\omega}$,
+but none lies in $F$. For nonreal $\lambda$, it has none even in $L$.
+The same Laurent inverse exists in both cases. Parent selection affects
+homogeneous solution spaces and must remain part of an algorithm's
+contract.
+
+\subsection{A factorially divergent but exact solution}
+For $f=t$ and $\lambda=i$,
+\[
+ D^jt=(-1)^j j!t^{j+1}.
+\]
+Substitution in \eqref{eq:resolvent} gives the exact Hahn series
+\begin{equation}\label{eq:factorialsolution}
+ y=\sum_{j\ge0}i^{j+1}j!t^{j+1}
+   =it-t^2-2it^3+6t^4+24it^5-120t^6+\cdots,
+ \qquad Dy-iy=t.
+\end{equation}
+Its corresponding ordinary power series has radius of convergence zero,
+since its coefficient magnitudes are factorials. Yet its support is the
+positive integer lattice, so it is a perfectly valid surcomplex value.
+This example demonstrates why analytic convergence, formal summability,
+and exact differential solvability must not be used interchangeably.
+
+Let $y_N$ be the sum through $j=N$. The exact residual is
+\begin{equation}\label{eq:factorialresidual}
+ (D-i)y_N-t
+   =-i^{-(N+1)}(-1)^{N+1}(N+1)!t^{N+2}.
+\end{equation}
+This is a useful certificate: a finite program can verify it without
+representing the entire infinite series. It certifies a formal remainder
+at a stated order, not convergence of the sequence $(y_N)$ in the full
+surreal topology.
+
+\subsection{A coefficient algorithm and its precise guarantee}
+Writing $(D-\lambda)y=f$ coefficientwise yields
+\begin{equation}\label{eq:coefficientrecursion}
+ -\lambda y_n-(n-1)y_{n-1}=f_n,
+ \qquad
+ y_n=-\lambda^{-1}\bigl(f_n+(n-1)y_{n-1}\bigr).
+\end{equation}
+Below a known lower exponent bound, all coefficients are zero. The
+recursion computes each requested finite prefix with one field inversion
+of $\lambda$ and a linear number of coefficient operations. It works
+also for negative lower bounds. It does not make equality of arbitrary
+program-generated streams decidable.
+
+For a nonzero polynomial $P\in\C[X]$ with $P(0)\ne0$, factor it
+over $\C$ and compose the resolvents, with multiplicities. This proves
+that $P(D)$ is a bijection on $F$. The proof is algebraic; an effective
+implementation additionally needs exact representations of the constant
+roots, or can derive a direct coefficient recurrence from $P$ instead.
+When $P(0)=0$, the factor $D$ brings the obstruction in
+\eqref{eq:Laurentimage}; it must not be handled by division by zero in a
+resolvent routine.
+
+\section{Set-sized differential workspaces}
+\label{sec:workspaces}
+
+The repository's field-localization principle explains why a set of
+surcomplex data can be handled inside a set-sized algebraic workspace.
+Differential tasks need additional closure operations. The following
+existence result states exactly what can be arranged without claiming an
+effective presentation or a closure under all Hahn sums.
+
+\begin{theorem}[Differential and local-analytic workspace]
+\label{thm:workspace}
+Let $S\subseteq K$ be a set. There exists a set-sized real-closed
+subfield $K_0\subseteq K$ containing $S\cup\R\cup\{\omega\}$
+and closed under $\DD$, $\Prim$, surreal exponential, and logarithm
+of positive elements. It can also be chosen so that, for every
+$h\in K_0(i)\cap\mm_L$ and every $f\in\C[[X]]$, the Hahn value
+$f(h)$ belongs to $K_0(i)$.
+
+The cardinality can be bounded by
+$\kappa=\max(|S|,|\R|,\aleph_0)$. The complexification $K_0(i)$ is
+algebraically closed, has differential constants exactly $\C$, and is
+closed under a chosen primitive of every element. For $a,b\in K_0$, the
+ambient criterion $b\in\II$ for a nonzero solution of
+$\DD y=(a+ib)y$ is already realized inside $K_0(i)$.
+\end{theorem}
+\begin{proof}
+Start with the field generated by $S\cup\R\cup\{\omega\}$.
+Given a set-sized intermediate field $E_n$, adjoin all values
+\[
+ \DD x,\quad \Prim(x),\quad \exp x\quad(x\in E_n),
+ \qquad \log x\quad(x\in E_n,\ x>0).
+\]
+Also adjoin the real and imaginary parts of all values $f(h)$ with
+$f\in\C[[X]]$ and $h\in E_n(i)\cap\mm_L$. Finally take the
+relative real algebraic closure of the generated field in $K$ to obtain
+$E_{n+1}$. Class replacement ensures that the image of each of these
+specified sets under the indicated class operation is a set.
+
+There are $|\R|$ formal complex power series, since
+$|\C|^{\aleph_0}=|\R|$. At each stage at most $\kappa$ elements are
+adjoined, and an algebraic closure of a field of that cardinality has the
+same cardinality. Thus $K_0=\bigcup_{n<\omega}E_n$ is a set of
+cardinality at most $\kappa$. Every operation applied to an element of
+$K_0$ is included at the next stage containing that element. Every finite
+polynomial with coefficients in $K_0$ occurs at one stage, so $K_0$ is real
+closed. The formal-series closure follows in the same manner.
+
+Since $K_0\subset K$ contains all reals, its constant field is exactly
+$\R$, and $K_0(i)$ has constants $\C$. Closure under $\Prim$ yields
+surjective differentiation on $K_0$, and then on $K_0(i)$. Real closedness
+implies algebraic closedness of $K_0(i)$.
+
+Finally, if $b\in K_0\cap\II$, then $\Prim(b)=J(b)\in K_0\cap\mm$.
+The explicit solution
+$\exp(\Prim(a))\Exp(iJ(b))$ therefore belongs to $K_0(i)$ by its
+closure properties. If $b\notin\II$, there is no nonzero solution
+in the ambient field, hence none in $K_0(i)$.
+\end{proof}
+
+In fact, every nonzero solution of the homogeneous first-order equation
+with coefficients in $K_0(i)$ belongs to $K_0(i)$ whenever one exists:
+its multiplier is in $\C$, which was included from the beginning.
+The same holds for the constant-coefficient solution spaces in
+\cref{thm:constantoperators,thm:matrixsystems}.
+
+\begin{remark}[Closure does not mean Hahn completeness]
+The theorem does not assert that $K_0$ contains every Hahn sum of every
+summable family of its elements. The added formal evaluations have
+constant coefficients and a \emph{single infinitesimal argument}; they
+are a specified set of operations. Unrestricted summation closure is a
+much stronger requirement. A particular coherent family and its requested
+evaluations can be included as set-sized data, but arbitrary future
+families are not automatically covered by the theorem.
+\end{remark}
+
+The workspace proof is an existence construction by repeated closure. It
+has no birthday bound, no computable enumeration, and no termination
+claim for symbolic integration. More specialized results about surreal
+fields stable under exponential, logarithmic, derivative and
+antiderivative operations are available in the literature
+\cite{BournezGuilmant}; the elementary closure argument above is sufficient
+for the finite-data foundational issue addressed here.
+
+\section{Composition boundaries and implementation contracts}
+\label{sec:contracts}
+
+\subsection{Evaluation is not unrestricted composition}
+The total-derivative theorem differentiates a specified common-domain
+Hahn family at a finite argument. It should not be restated as a
+composition operation on all surreal numbers.
+
+Berarducci and Mantova construct a composition theory for their
+$\omega$-series and prove a chain rule there. They also prove that the
+Berarducci--Mantova derivation on \emph{all} of $\No$ admits no
+composition compatible with their stated axioms
+\cite[Theorem 8.4]{BMgerms}. The hypotheses matter: their compatibility
+includes the appropriate constant rule, order behaviour for positive
+derivative, and a chain rule at positive infinite arguments. The theorem
+is not a claim that every conceivable notion of composition, or every
+different choice of derivation, is impossible.
+
+Thus three operations must remain distinct: formal composition of
+constant-coefficient series at infinitesimals, analytic evaluation of a
+common-domain family, and composition of transseries-like elements at
+positive infinite arguments. The first two were proved here with their
+support certificates. The third requires a separate function class and
+its own theorems.
+
+\subsection{A minimal derivation-aware representation interface}
+A useful exact parent should record both its ambient embedding and its
+closure capabilities. For example, a Laurent parent may advertise
+\[
+ \text{closed under }D,\quad
+ \text{closed under }(D-\lambda)^{-1}\ (\lambda\ne0),\quad
+ \text{not closed under primitives}.
+\]
+A log-exponential extension can support more primitives without thereby
+supporting arbitrary global phases. Adding a constructor named
+\texttt{Exp} is not enough: its domain and derivative contract must be
+stated.
+
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.23\textwidth}>{\raggedright\arraybackslash}p{.37\textwidth}>{\raggedright\arraybackslash}p{.31\textwidth}@{}}
+\toprule
+Operation & Required certificate & Failure or limitation \\
+\midrule
+Intrinsic derivative & Chosen derivation; supported image in a known parent & A formal monomial derivative need not lie in the old parent \\
+Hahn evaluation & Joint reverse-well-ordered support and finite multiplicity & A formal expression may not denote a sum at the input \\
+Coherent total derivative & One common coefficient domain; both derivatives & Dropping $\Dc$ changes the answer \\
+Exponential integration & A finite primitive of the imaginary coefficient & Smallness alone is insufficient \\
+Laurent resolvent & $\lambda\ne0$ and a lower exponent bound & Prefix computation is not stream equality \\
+Global phase & Explicit phase convention and supported domain & A group law does not imply BM compatibility \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For a practical implementation, the first reliable targets are rational
+functions in $\omega$, Laurent streams with exact coefficient access,
+and finite towers of explicitly represented logarithms and exponentials.
+At each extension, a derivative routine should return both a value and
+the parent in which it is represented. An integration routine should
+separate a proved primitive, a proved obstruction in the selected parent,
+and a failure of the available algorithm to decide. The Laurent missing
+$t$-coefficient is a proved parent obstruction; failure to recognize a
+complicated primitive in the full surreal field is not.
+
+\subsection{What a verification record can establish}
+The accompanying program treats $t$ and $\omega$ as formal variables in
+exact symbolic algebra. It checks finite product and chain identities,
+Laurent coefficient recurrences, resolvent residuals, truncated small
+exponential/logarithm identities, and examples of scalar and matrix
+differential equations. These checks detect sign, index and truncation
+errors. They do not verify the BM construction, class foundations,
+Hahn--Neumann lemma, or infinite-support arguments. Those remain the
+mathematical proofs and external inputs explicitly identified above.
+
+Numerical substitution $t=10^{-6}$ would not verify a Hahn identity and
+is not used. Nor does the program treat a successful truncation as a
+convergence theorem. Its output is an exact finite certificate at the
+specified order.
+
+\section{Synthesis and placement in the documentation}
+\label{sec:synthesis}
+
+The missing subject is not another list of formal derivative rules. It is
+the interaction among a derivation on numbers, a derivative in a function
+variable, and the restricted phase geometry of a nonoscillatory ordered
+differential field.
+
+The analytic interface is the commuting pair $(\Dc,\Dz)$ and its
+supported evaluation rule. The differential-algebraic interface is the
+ideal $\II=\DD(\mm)$, which measures exactly which imaginary
+logarithmic derivatives can occur. Together they explain why a rich
+surcomplex analytic calculus can coexist with the absence of a nonzero
+intrinsic oscillator. They also explain why a global algebraic phase
+extension and a derivative-compatible exponential are different promises.
+
+A suitable home for this article is a new package:
+\begin{quote}\pathtext{docs/surreal/intrinsic-differential-calculus/}\end{quote}
+It should have cross-links
+from the analysis, trigonometry, and computer-algebra reports. The current
+phase constructions need not be removed or renamed as false; their
+contracts need only be distinguished from the intrinsic differential one.
+The derivation itself should be named wherever it is used.
+
+The most useful next formalization target is modest and sharply bounded:
+start with a real-closed exponential differential field carrying the
+stated strong summation operations, formalize the infinitesimal polar
+lemma, and derive the logarithmic-derivative image theorem. The difficult
+BM existence construction can remain an explicit imported interface
+until separately formalized. This is a suggested decomposition of proof
+obligations, not a claim that Lean code is included or that the article
+has been machine checked.
+
+\appendix
+\section{Notation and hypotheses at a glance}
+\label{app:notation}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.19\textwidth}>{\raggedright\arraybackslash}p{.72\textwidth}@{}}
+\toprule
+Symbol & Meaning and domain \\
+\midrule
+\endfirsthead
+\toprule
+Symbol & Meaning and domain \\
+\midrule
+\endhead
+$K,L$ & $\No$ and $\No[i]$, treated as class fields; individual supports and computational workspaces are sets. \\
+$\DD$ & The fixed Berarducci--Mantova derivation, normalized by $\DD\omega=1$, extended to $L$. \\
+$\Dz$ & Analytic differentiation in the variable $Z$; coefficients in $L$ are held fixed. \\
+$\Dc$ & Intrinsic differentiation of the Hahn coefficients/monomials of a common-domain family; the ordinary variable is held fixed. \\
+$\OO,\mm$ & The finite surreals and the infinitesimals, with $\OO=\R\oplus\mm$. \\
+$\st$ & Standard part on finite elements only; a ring homomorphism. \\
+$\ct$ & The coefficient of the Conway monomial $1$, defined on all $K$; real-linear but not multiplicative. \\
+$\Prim$ & The primitive normalized by $\ct\Prim(b)=0$; defined on all $K$ using surjectivity. \\
+$\II$ & $\DD(\OO)=\DD(\mm)$, a nonzero convex ideal of $\OO$ strictly smaller than $\mm$. \\
+$J$ & The inverse $\II\to\mm$ of the restriction of $\DD$; the unique infinitesimal primitive. \\
+$z^\dagger$ & $(\DD z)/z$ for $z\ne0$; it does not require a preselected logarithm. \\
+$\Exp,\Log$ & Mutually inverse formal functions on $\mm_L$ and $1+\mm_L$. \\
+$E$ & The derivative-compatible exponential on $\mathcal S=K+i\OO$; $K_0$ denotes a set-sized workspace field. \\
+$t,D$ & $t=\omega^{-1}$ and $D=-t^2d/dt$ on $\C((t))$. \\
+$\omega^a$ & Conway monomial notation; for general surreal $a$ it is not a generic exp--log power constructor. \\
+\bottomrule
+\end{longtable}
+
+\section{Logical dependencies and reproducibility}
+\label{app:dependencies}
+
+\subsection{Dependency map}
+The ideal theorem uses only the constant field, surjective derivation,
+$H$-field sign axiom, and the normalization $\DD\omega=1$ for the
+smallness proof. The polar decomposition additionally uses real
+closedness, standard part, and infinitesimal formal exponential/logarithm.
+The logarithmic-derivative theorem then uses real exponential
+compatibility. Constant-coefficient kernel classification is finite
+linear differential algebra once that theorem is established.
+
+Strong additivity is essential for the infinitesimal chain rule and the
+coherence-preservation theorem. It is not supplied by the Leibniz rule
+alone. Conversely, the Laurent identities can be verified within formal
+series algebra independently of a construction of all surreals; the
+embedding into $L$ is what identifies their operator with $\DD$.
+
+The article does not prove the uniqueness of the chosen surreal
+derivation, unrestricted closure under composition, differential
+closedness of $L$, or the existence of a universally effective CAS for
+surreal numbers. Its maximal-strip theorem does not deny the existence
+of global phase maps with different axioms.
+
+\subsection{Build and check}
+The source is standalone, with an embedded bibliography and no external
+figures. From the package directory:
+\begin{verbatim}
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+python code/verify_identities.py --output data/verification.json
+\end{verbatim}
+The delivered run used Python 3.13.5 and SymPy 1.14.0 and passed
+259 of 259 checks. A matrix identity or a whole checked coefficient
+prefix counts as one check. These numbers describe finite symbolic
+identities, not 259 machine-checked theorems about the full surreal field.
+The report records every result. The accompanying README records the
+final PDF page count and build status. TeX auxiliary files are not part
+of the delivered archive.
+
+\begin{thebibliography}{99}
+\raggedright
+
+\bibitem{RepoMap}
+V.~Reshetnikov, \emph{The surreal and surcomplex reports}, repository
+navigation document, commit
+\texttt{e260237db9b71da8b74a0c13c8e6355119091100}.
+\url{https://github.com/VladimirReshetnikov/Surreal/blob/e260237db9b71da8b74a0c13c8e6355119091100/docs/README.md}.
+
+\bibitem{RepoManifest}
+V.~Reshetnikov, \emph{The surreal and surcomplex reports}, typeset
+catalogue source, same repository commit.
+\url{https://github.com/VladimirReshetnikov/Surreal/blob/e260237db9b71da8b74a0c13c8e6355119091100/docs/manifest.tex}.
+
+\bibitem{RepoAnalysis}
+\emph{Surcomplex analysis: holomorphic functions on $K=\No[i]$}, package
+scope and reading guide, same repository commit. AI-assisted research
+drafts; cited for their stated scope, not as independently verified theorems.
+\url{https://github.com/VladimirReshetnikov/Surreal/blob/e260237db9b71da8b74a0c13c8e6355119091100/docs/surcomplex/analysis/README.md}.
+
+\bibitem{RepoTrig}
+\emph{Trigonometry on the Surcomplex Plane: Canonical Phases,
+Arbitrary-Scale Geometry, and Infinitesimal Degeneration}, package scope
+and explicit non-claims, same repository commit.
+\url{https://github.com/VladimirReshetnikov/Surreal/blob/e260237db9b71da8b74a0c13c8e6355119091100/docs/surcomplex/trigonometry/README.md}.
+
+\bibitem{RepoCAS}
+\emph{Surreal and Surcomplex Numbers in Symbolic Computer Algebra},
+package scope and capability discussion, same repository commit.
+\url{https://github.com/VladimirReshetnikov/Surreal/blob/e260237db9b71da8b74a0c13c8e6355119091100/docs/foundations-and-computation/computer-algebra/README.md}.
+
+\bibitem{BM}
+A.~Berarducci and V.~Mantova,
+\emph{Surreal numbers, derivations and transseries},
+arXiv:1503.00315v3, 2015. Theorem numbering cited in the text refers to
+this version.
+\url{https://arxiv.org/abs/1503.00315v3}.
+
+\bibitem{BMpub}
+A.~Berarducci and V.~Mantova,
+\emph{Surreal numbers, derivations and transseries},
+Journal of the European Mathematical Society \textbf{20} (2018),
+339--390.
+\url{https://doi.org/10.4171/JEMS/769}.
+This is the published version of \cite{BM}, not an independent source.
+
+\bibitem{ADHsurreal}
+M.~Aschenbrenner, L.~van den Dries and J.~van der Hoeven,
+\emph{The surreal numbers as a universal $H$-field},
+arXiv:1512.02267v3, 2016.
+\url{https://arxiv.org/abs/1512.02267v3}.
+
+\bibitem{BMgerms}
+A.~Berarducci and V.~Mantova,
+\emph{Transseries as germs of surreal functions},
+Transactions of the American Mathematical Society \textbf{371} (2019),
+3549--3592; arXiv:1703.01995v3, 2017.
+\url{https://doi.org/10.1090/tran/7428};
+\url{https://arxiv.org/abs/1703.01995v3}.
+The composition obstruction is Theorem~8.4 in the cited arXiv version.
+
+\bibitem{EhrlichKaplan}
+P.~Ehrlich and E.~Kaplan,
+\emph{Surreal ordered exponential fields},
+arXiv:2002.07739v3, 2021.
+\url{https://arxiv.org/abs/2002.07739v3}.
+
+\bibitem{BournezGuilmant}
+O.~Bournez and Q.~Guilmant,
+\emph{Surreal fields stable under exponential, logarithmic, derivative
+and anti-derivative functions}, arXiv:2211.08396, 2022.
+\url{https://arxiv.org/abs/2211.08396}.
+
+\end{thebibliography}
+\end{document}

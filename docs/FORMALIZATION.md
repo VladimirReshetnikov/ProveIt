@@ -15,17 +15,25 @@ that the current Lean target compiles or imports them.
 
 ## Scope and how to read this ledger
 
-The [document map](README.md) identifies fifteen main reports. The index below
-records every literal `theorem`, `lemma`, `proposition`, and `corollary`
-environment in those reports. Counts are a navigation aid, **not a completeness
+The [document map](README.md) identifies eighteen main reports. The index
+below records every literal `theorem`, `lemma`, `proposition`, and `corollary`
+environment in those reports, except for the three noted immediately below.
+
+Three reports arrived after this ledger was written and are **not yet
+indexed or mapped**: `surcomplex/differential-equations` (a merge of seven
+manuscripts), `surcomplex/rank-one-berkovich` and
+`surcomplex/spectral-theory`. Their 136 result environments are outside every
+count on this page. Nothing else here is affected: all 416 report labels this
+ledger cites still resolve, so the merges did not rename anything it points
+at. Counts are a navigation aid, **not a completeness
 certificate**: examples, equations, prose assertions, short proofs, and archived
 manuscripts also contain mathematical claims. The foundations README's count of
 30 theorem-environment results includes six examples and a design principle;
 the narrower inventory here counts its 23 theorem/lemma/proposition/corollary
 statements.
 
-There are also **33 preserved source manuscripts** under `sources/`. Their
-893 literal standard result environments are not 893 additional independent
+There are also **40 preserved source manuscripts** under `sources/`. Their
+1075 literal standard result environments are not 1075 additional independent
 results: merged reports deliberately overlap them, and some change scope or
 resolve conflicting definitions. A complete coverage audit must map each source
 claim to an equivalent main-report statement, a separate proof obligation, or

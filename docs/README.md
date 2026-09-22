@@ -1,6 +1,6 @@
 # The surreal and surcomplex reports
 
-Fifteen research packages, in three families. The typeset catalogue is
+Eighteen research packages, in three families. The typeset catalogue is
 [`manifest.pdf`](manifest.pdf) (source [`manifest.tex`](manifest.tex)); it
 gives a paragraph on what each report claims. This page is the map: which
 family a report belongs to, and what to read before what.
@@ -35,8 +35,10 @@ separate deliberately — a future sweep should not merge them.
 
 ## `surcomplex/` — the algebraic closure **No**[i]
 
-Seven reports on one subject, from twenty-seven manuscripts delivered on a
-single day. Here the reading order matters.
+Ten reports. Seven are one subject — holomorphic function theory, from
+twenty-seven manuscripts delivered on a single day — and there the reading order
+matters. Three arrived later and stand apart from that spine; they are listed
+after it.
 
 ### 1. Read [`analysis`](surcomplex/analysis/) first
 
@@ -162,6 +164,72 @@ All three check suites reproduce exactly (34/34, 110/110, 88/88 in Wolfram;
 shipped** — an unclosed bracket stops it parsing, which is why its own record
 submits definitions to an evaluator rather than loading the file. One character
 repairs it. It ships here as delivered, defect included.
+
+
+### 4. Three later arrivals
+
+These three do not belong to the holomorphic-function spine above and do not
+need to be read in any order relative to it.
+
+| directory | subject |
+|---|---|
+| [`differential-equations`](surcomplex/differential-equations/) | the Berarducci–Mantova derivation on `No`, its unique extension to `No[i]`, and which equations have solutions |
+| [`rank-one-berkovich`](surcomplex/rank-one-berkovich/) | Tate algebras, Berkovich disks and annuli inside the fixed rank-one field `C((t^R))` |
+| [`spectral-theory`](surcomplex/spectral-theory/) | finite matrices: the SVD without compactness, and singular-value scales |
+
+**`differential-equations`** is a merge of seven manuscripts. Its organizing
+identity is exact — the image of the logarithmic derivative on `No[i]` is
+
+    { ∂y/y : y ≠ 0 }  =  No + i·A ,      A := ∂m = ∂O
+
+so `∂y = (a+ib)y` has a nonzero solution exactly when `b` has a **finite**
+primitive. Two warnings travel with that. The two printed forms `No + i·∂m` and
+`No + i·∂O` are equal *only through a proved lemma*, never as notational
+variants. And `A` is a **strict** subclass of `m`: `ω⁻¹` is infinitesimal while
+its primitive `log ω` is infinite, so `∂y = i·ω⁻¹·y` has only the zero solution.
+Collapsing `∂O` to `O` would turn the criterion into "`b` infinitesimal" and make
+that equation solvable — which is exactly what all seven sources refute.
+
+The headline negative consequence: `∂y = iy` needs a finite primitive of `1`, and
+those are `ω + c`, all infinite. So `∂²y + y = 0` factors as `(∂−i)(∂+i)y = 0`
+and has only `y = 0`. **There is no formal oscillator**, and that is why `sin ω`
+is not a Berarducci–Mantova-differential element of `No`.
+
+If you read only one convention from that report, read the one on **phase**.
+Three different objects in its sources were all called that, and one source
+printed two of them twenty lines apart:
+
+| symbol | object | lives in |
+|---|---|---|
+| `θ` | the finite angle, the argument of `cis` | `O` — always finite |
+| `η` | the infinitesimal residue after removing a constant unit | `m` |
+| `B` | the accumulated phase, any primitive of `Im a` | `No` — leaves `O` when its purely infinite part is nonzero |
+
+with `θ = st(θ) + η`, so the first two are related and not synonymous. "The phase
+of the solution is `log ω`" is a false sentence; the report prints it beside the
+true one.
+
+**`rank-one-berkovich`** is the one report in the collection where **convergence
+is real convergence**. Inside `K = C((t^R))` the absolute value `|a| = exp(−v(a))`
+is genuine and `K` is spherically complete. That does *not* contradict
+[`analysis`](surcomplex/analysis/): its convergence is in the intrinsic valuation
+topology of one fixed rank-one field, not the fine topology induced from `No[i]`.
+Its case study settles the zero geometry of `Σ t^(n²) Z^n` — the series
+[`foundations`](foundations-and-computation/foundations/) exhibited — with the
+first correction of the *m*-th normalized root at `t^(m(m+1))`. And at
+`Z = t^(−ω)` the exponents `n² − nω` strictly decrease, so the support is not
+well ordered and the series is *not* an all-surcomplex entire function: the
+obstruction **agrees with** all-scale rigidity rather than refuting it.
+
+**`spectral-theory`** is the linear-algebra chapter the collection lacked, and
+the only report here with no derivation, phase or differential equation in it.
+Its point is that the finite spectral theorem and the SVD need **real closedness,
+not Archimedean completeness** — the proofs exhibit the extremal witnesses, so
+Courant–Fischer and Ky Fan hold with extrema *attained* rather than extracted
+from a compactness argument.
+
+Both later standalones were written against this repository and each names the
+gap it fills. Both claims were checked against the tree and both hold.
 
 ## Building
 
