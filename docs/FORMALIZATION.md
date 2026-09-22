@@ -1799,8 +1799,10 @@ product and displacement lemmas can precede the valuation and exponential
 results. Later claims retain a total increasing surjective ordered
 exponential, a nontrivial convex valuation and any specified stabilization
 hypotheses; the existing infinitesimal and finite Hahn exponential does not
-supply that global structure. The asserted interpretation of the cited
-external Question 5.4 also needs an independent correspondence check.
+supply that global structure. The September 22 source check confirmed the
+correspondence with Question 5.4 in the pinned KKS v3 PDF, as recorded in the
+report; this is separate from proving the Lean statements. The logarithmic-modulus
+classification additionally retains the stated real-closedness hypothesis.
 
 | Kind | Source label or line | Heading |
 |---|---|---|

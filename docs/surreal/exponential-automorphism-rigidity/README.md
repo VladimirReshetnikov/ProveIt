@@ -47,12 +47,15 @@ Around that:
 - **Section 6.** Two *disjoint* obstruction mechanisms separating ordered-Hahn
   symmetry from exponential symmetry: bounded-layer reweightings `T_c` (bounded
   displacement) and positive rational dilations `T_r` (displacement image all
-  of `Γ`, killed instead by `Q`-linearity of `v∘exp` tested at `ω` and `ω²`).
+  of `Γ`, excluded by `Q`-linearity of `v∘exp` and a value comparison at `ω`,
+  with a second proof using multiplication at `ω` and `ω²`).
   Every one of them **does** lift as an ordered field automorphism (Prop 6.3),
   so cofinal displacement is necessary but provably **not sufficient** for
   exponential lifting.
-- **Section 7.** On `K = F(i)`, the intrinsic everywhere-defined logarithmic
-  modulus `L(z) = log √(z z̄)` — real logarithm only, no complex-log branch, no
+- **Section 7.** Here **assume additionally that `F` is real closed**. On
+  `K = F(i)`, the intrinsic logarithmic modulus
+  `L: K^× → F`, `L(z) = log √(z z̄)` — defined for every nonzero input,
+  real logarithm only, no complex-log branch, no
   argument, no sin/cos at infinite arguments — gives
   `Aut_L(K) ≅ Aut_exp(F) × C₂`, with invisible value-group kernel exactly
   `{id, conjugation}`. Preservation of `F` and of conjugation is *derived*, not
@@ -63,7 +66,7 @@ Around that:
 The elementary engine has been checked independently of the author: the
 twisted identity holds exactly, the untwisted version (`a` in place of
 `σ(a)`) does not, and the two-probe amplification holds with margin
-`2B + B|σ(a)|`. **That validates the engine only.** The published conclusion
+`2B + B|σ(a)|`. **That validates the engine only.** The report's conclusion
 additionally rests on four things that the engine does not supply:
 
 1. **The valuation step.** From `σ∘exp = exp∘σ` and `v(σy) = v(y)` one gets
@@ -77,18 +80,14 @@ additionally rests on four things that the engine does not supply:
 3. **Imported surreal facts.** Gonshor's total increasing exponential on No
    extending real `exp`, with increasing inverse, and the natural valuation
    whose ring is the finite surreals. These are cited, not reproved.
-4. **The reading of Question 5.4.** Corollary 5.2 turns Theorem 5.1 into an
-   answer by way of a single implication: a 1-automorphism fixes every
-   *leading term*, hence every value `v(y)`. Leading coefficients play no role
-   in the proof. Whether that implication, and the question it is answering,
-   match arXiv:2509.22374v3 has **not** been checked anywhere in this
-   collection. The article pins the version deliberately — v3, submitted
-   23 April 2026, PDF dated 27 April 2026, Question 5.4 on source page 10 —
-   and notes that KKS Proposition 5.2 already rules the case out under strong
-   `R`-linearity, while its Theorem 5.1 needs neither strong additivity nor
-   pointwise fixation of `R`. **Keep that version pinning prominent.** The
-   claim is against one specific arXiv version, and the collection holds no
-   other automorphism material to check it against.
+4. **The reading of Question 5.4, checked 22 September 2026.** The pinned
+   [KKS v3 PDF](https://arxiv.org/pdf/2509.22374v3), Definitions 2.4–2.5 and
+   Remark 2.6 on page 4, confirms that a 1-automorphism fixes each leading
+   term, hence each value `v(y)`. Proposition 5.2 on page 10 treats the
+   strongly `R`-linear case; Question 5.4 there asks the unrestricted question
+   used by this report's Corollary 5.2. The version remains **v3, submitted
+   23 April 2026, PDF dated 27 April 2026**. This replaces the earlier
+   unchecked-source disclaimer; it verifies the interpretation, not priority.
 
 The article also concedes that the elementary displacement lemma may be
 familiar in other language, and that a specialist may recognize further
@@ -99,13 +98,11 @@ antecedents; the searches behind it were targeted, not exhaustive.
 `surreal/` — the surreal field **No** itself, plus `No[i]` in Section 7.
 It is **independent of every other report here** and can be read on its own.
 
-Nothing else in this collection studies the automorphism group of No, or
-displacement, or value-group actions. The only neighbouring contact is
-Ehrlich–Kaplan on surreal ordered exponential *fields*, cited in
-`surcomplex/analysis` and in `foundations-and-computation/foundations` for the
-exponential construction, and two bibliography entries to Kaplan–Krapp–Serra in
-the sources of `surcomplex/dynamics-and-normal-forms`, both used only for
-class-size conventions.
+The [Hahn-evaluation report](../hahn-evaluation-at-omega/) gives related
+coefficient-fixing maps obtained by changing exponents. The present report
+asks which value-group actions can also preserve the exponential. The
+surcomplex analysis and foundations reports use surreal exponential fields
+as background; no result from those reports is needed in these proofs.
 
 **Disambiguation — three unrelated things in this collection are called
 "rigidity."** The *all-scale polynomial rigidity* of
@@ -116,8 +113,8 @@ that is Hahn-entire at every scale is a polynomial. The *scalar rigidity* of
 Berarducci–Mantova derivation forces a gauge to vanish. What is proved here is
 neither — it is faithfulness of `ρ_w`. The growth scale in this report is
 nothing but the natural-valuation value read through `ν = w∘E`; it is not a
-Hardy-field or germ order, and not a scale of function growth. No shared
-theorem, no shared lemma, only the shared English word.
+Hardy-field or germ order, and not a scale of function growth. The three
+rigidity statements have different objects and hypotheses.
 
 ## What it does NOT claim
 
@@ -152,8 +149,9 @@ theorem, no shared lemma, only the shared English word.
 - Repository documentation was inspected at commit
   `aa846271b4dcae2c055b216126a87210292ec19b` of `VladimirReshetnikov/Surreal`
   and is cited as **research context only**, not as an external proof source.
-  No repository files were changed. Note that the named gap this report fills
-  is external (KKS Question 5.4), not one posed by any report here.
+  That snapshot records the original research context; this maintained copy
+  now belongs to the collection and includes later exposition revisions.
+  The named question is external (KKS Question 5.4).
 
 ## Build
 

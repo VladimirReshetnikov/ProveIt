@@ -19,12 +19,13 @@ No row below certifies every claim in an entire report.
 | [Broadcast sums](surreal/broadcast-sum-of-surreal-sequences/) | Read the move/rank definitions, commuting truncations, number-valuedness, perturbation and nested classification proofs. Corrected `cor:cofinite` to compare families on the same index set and required an infinite index set in `cor:dyadic-tail`, with a singleton counterexample. Extended the stated constant-family theorem to arbitrary infinite index sets using its finite-exception argument. Proved the no-options criterion and clarified limit thresholds and finite normal play. |
 | [Canonical forms and option graphs](surreal/canonical-forms-need-not-be-subgraphs/) | Read the finite witnesses, prefix/minimum arguments, both girth constructions, classification and ordinal examples. Proved that the first spaced-spine construction already has maximum degree three and is planar in traversal leaf order. Supplied sign and template-disjointness steps; corrected the implications between triangle-free and containment failures, stronger-containment scope, and the recorded comparison-oracle claims. |
 | [Genetic gaps and primitives](surreal/genetic-gaps-and-primitives/) | Read the main article and short proof. Strengthened `thm:general` with one positive radius valid at every input, using the set of positive pairwise differences and no simultaneous choice of witnesses. Distinguished local order-field openness from the source's restricted set-union convention, and checked the cited option-construction and topology conventions against their primary texts. |
+| [Exponential automorphism rigidity](surreal/exponential-automorphism-rigidity/) | Read the displacement, valuation, lifting-obstruction, logarithmic-modulus and derivation arguments. Added a direct valuation proof of the rational-dilation obstruction while retaining the multiplication proof. Made the extra real-closedness hypothesis and nonzero logarithmic-modulus domain explicit in summaries. Verified the definition/question correspondence against the pinned KKS v3 PDF, without asserting priority or formal verification. |
 
 Each correction was reviewed against its local definitions and downstream uses
 within the stated scope. Changed PDFs were rebuilt and affected pages inspected.
 The dynamics PDF retains its three pre-existing small overfull boxes; the
 evaluation-at-omega and genetic-gap PDFs retain their baseline font/layout
-warnings. The revised broadcast and option-graph PDFs have no warnings. Finite
+warnings. The revised broadcast, option-graph and automorphism PDFs have no warnings. Finite
 symbolic checks support the physics examples; the corrected computability runner
 passes its four separately counted suites. Its new cover regression fails when
 the range filter is removed. Both option-graph suites were rerun successfully,
@@ -49,10 +50,10 @@ from the current tree does not discharge source-claim reconciliation.
 The reports above have received targeted corrections or a main-text reading,
 as recorded in each row. Uninspected portions, imported results, source-claim
 reconciliation and any formalization remain separate obligations. The other
-sixteen main reports have been mapped for notation and navigation but have not
+fifteen main reports have been mapped for notation and navigation but have not
 received a full mathematical review in this pass:
 
-- Exponential automorphism rigidity; Gamma functions; both birthday reports.
+- Gamma functions; both birthday reports.
 - Surcomplex analysis; contours and Stokes; differential equations; entire
   functions at arbitrary rank; finite deformations; global divisors; nonabelian
   support; polynomial algebra; rank-one Berkovich geometry; spectral theory.
