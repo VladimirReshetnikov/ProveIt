@@ -1,0 +1,1738 @@
+% Standalone source; compile with pdfLaTeX (three passes) or latexmk -pdf.
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=24mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{xurl,fancyhdr,listings}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+ urlcolor=MidnightBlue,bookmarksnumbered=true]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{Ink}{HTML}{19354D}
+\definecolor{Muted}{HTML}{53616D}
+\hypersetup{pdftitle={Differential Algebra of Surreal and Surcomplex Numbers},
+ pdfauthor={AI-assisted research exposition prepared for Vladimir Reshetnikov},
+ pdfsubject={Differential Hahn workspaces, bounded phases, and oscillation obstructions}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\SC}{\mathbf{No}[i]}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\D}{\partial}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\mm}{\mathfrak m}
+\newcommand{\BB}{\mathcal B}
+\newcommand{\JJ}{\mathcal J}
+\newcommand{\HH}{\mathscr H}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\st}{\operatorname{st}}
+\newcommand{\cis}{\operatorname{cis}}
+\newcommand{\Expzero}{\operatorname{Exp}_0}
+\newcommand{\Logzero}{\operatorname{Log}_0}
+\newcommand{\dlog}{\operatorname{dlog}_{\D}}
+\newcommand{\Ob}{\operatorname{ob}_{\D}}
+\newcommand{\Ip}{\mathsf I_0}
+\newcommand{\pinf}{\pi_{\infty}}
+\newcommand{\dd}{\mathop{}\!\mathrm d}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\Real}{\operatorname{Re}}
+\newcommand{\Imag}{\operatorname{Im}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\Frob}{\operatorname{Frob}}
+\DeclareMathOperator{\Arg}{Arg}
+\DeclareMathOperator{\Ker}{ker}
+\DeclareMathOperator{\im}{im}
+\setlist{nosep,leftmargin=1.6em}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1em}
+\emergencystretch=2em
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{Muted}Differential algebra of surreal and surcomplex numbers}
+\fancyhead[R]{\small\color{Muted}September 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,breaklines=true,
+ frame=single,framerule=0.3pt,showstringspaces=false}
+\numberwithin{equation}{section}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{12mm}
+{\small\sffamily\color{Muted}A DOCUMENTATION GAP STUDY\par}
+\vspace{9mm}
+{\Huge\bfseries\color{Ink}Differential Algebra of\par
+Surreal and Surcomplex\par Numbers\par}
+\vspace{7mm}
+{\Large Differential Hahn workspaces, bounded phases,\par
+logarithmic derivatives, and oscillation obstructions\par}
+\vspace{10mm}
+{\large Prepared for the \texttt{Surreal} documentation\par}
+{\normalsize Vladimir Reshetnikov\par}
+\vspace{4mm}
+{\normalsize September 21, 2026\par}
+\vspace{11mm}
+\begin{minipage}{0.91\textwidth}
+\begin{abstract}
+The documentation of the \texttt{Surreal} repository develops an extensive
+Hahn-supported theory of surcomplex functions, but deliberately separates
+that theory from derivations of the scalar field. This article supplies a
+bridge using the Berarducci--Mantova derivation $\D$, normalized by
+$\D\omega=1$.
+
+The first bridge is support-theoretic: every set of surcomplex numbers lies
+in a set-sized, algebraically closed Hahn field stable under $\D$. A
+countable closure of its exponent group constructs such a workspace, and
+strong additivity carries the construction to common-domain analytic
+coefficient families. The second bridge is differential-algebraic. Writing
+$\OO$ for the finite real surreals, we prove the exact identity
+\[
+ \dlog(\SC^\times)=\No+i\D\OO.
+\]
+Consequently $\D y=(a+ib)y$ has a nonzero surcomplex solution exactly when
+$b$ has a finite surreal primitive. An explicit, purely infinite phase
+obstruction classifies all rank-one equations up to multiplicative gauge.
+For rational $b(\omega)$ the criterion reduces to a degree comparison.
+Constant-coefficient equations admit a complete solution-space description:
+only their real characteristic roots contribute. In particular,
+$\D^2y+y=0$ has no nonzero solution in $\SC$, despite algebraic closedness
+and surjectivity of $\D$.
+
+The deep existence theorem for $\D$ is imported with attribution; the
+workspace construction, phase analysis, classifications, and coefficient
+interfaces are proved here. An explicit Picard--Vessiot extension explains
+where an oscillatory solution can live. Exact symbolic checks accompany the
+exposition, but are not a formal verification or a claim of priority.
+\end{abstract}
+\end{minipage}
+\vfill
+{\small\color{Muted}Repository snapshot:
+\texttt{e260237db9b71da8b74a0c13c8e6355119091100}\par}
+\end{titlepage}
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{The gap and the scope of this article}\label{sec:gap}
+
+\subsection{What the repository already covers}
+This article reviews \path{VladimirReshetnikov/Surreal} at commit
+\begin{quote}\small\ttfamily
+e260237db9b71da8b74a0c13c8e6355119091100
+\end{quote}
+Its documentation map lists fifteen
+research packages in three families: surreal arithmetic and constructions,
+surcomplex analysis and geometry, and foundations and computation
+\cite{RepoMap}. The topical review for this article used that map, the
+catalogue, and the specialist READMEs for analysis, trigonometry,
+foundations, and computer algebra. It was not a line-by-line verification
+of the collection or an exhaustive absence search through every source
+manuscript.
+
+The gap is particularly well documented by the collection itself. The
+trigonometry report explicitly leaves the choice of a derivation on $\No$
+outside its scope. The foundations report insists that a scalar-field
+derivation and a derivative of a function must remain distinct interfaces.
+The analysis report develops common-domain holomorphic coefficient
+families rather than a selected differential-field structure
+\cite{RepoTrig,RepoFound,RepoAnalysis}. Thus the missing topic is not
+``calculus'' in general. It is the \emph{interaction of a specified surreal
+field derivation with the existing analytic and phase structures}.
+
+A natural home for this article is
+\path{docs/surcomplex/differential-algebra/}. It complements the analysis,
+trigonometry, and foundations reports; it does not replace them. In
+particular, it preserves the distinction between fixed-domain holomorphic
+families, arbitrary formal germs, and pointwise derivatives.
+
+\subsection{Four operations that must not be conflated}
+Fix $t=\omega^{-1}$. The following comparison already prevents a serious
+category error.
+\begin{center}
+\begin{tabular}{L{0.25\textwidth}L{0.39\textwidth}L{0.25\textwidth}}
+\toprule
+Operation & What varies & Basic example\\
+\midrule
+Field derivation $\D$ & The scalar's differential-algebraic meaning &
+$\D\omega=1$, $\D t=-t^2$\\
+Formal derivative $\partial_Z$ & An indeterminate; coefficients are fixed &
+$\partial_Z(\omega Z)=\omega$\\
+Coefficient derivation $\D_H$ & Hahn scalar coefficients; the external variable is fixed &
+$\D_H(\omega z)=z$\\
+Fine pointwise derivative & A function's argument in its stated topology &
+The constant function $Z\mapsto\omega$ has derivative $0$\\
+\bottomrule
+\end{tabular}
+\end{center}
+A function derivative does not act on its constant coefficients. A field
+derivation does. A chain rule relating the two needs an evaluation theorem;
+it is not a consequence of using the same prime symbol.
+
+\subsection{The principal results and their status}
+The support construction in \cref{sec:hull} makes the scalar derivation
+available in a genuine set-sized Hahn workspace. The phase construction in
+\cref{sec:phase} identifies the logarithmic derivative of a unit-modulus
+surcomplex number. These combine in \cref{sec:logder} to yield an exact
+criterion for first-order homogeneous equations and a canonical gauge
+classification. \Cref{sec:constant} classifies constant-coefficient linear
+equations of every finite order. \Cref{sec:analytic} then returns to the
+repository's common-domain coefficient calculus and proves the relevant
+commutation and evaluation formulas.
+
+These are expository developments from explicitly stated hypotheses, not a
+claim that the individual consequences are new to the literature. The
+construction and surjectivity of the Berarducci--Mantova derivation are deep
+published results, not proved anew here. The paper does not claim a solution
+to a named open problem, a universal differential-equation solver, or a
+machine-checked formalization.
+
+\section{Set-supported normal forms and finite parts}\label{sec:support}
+
+\subsection{Class notation and actual sets}
+We use classical set theory with definable classes, or an appropriate
+conservative class-theoretic presentation. The symbols $\No$ and $\SC$
+denote proper classes. A ``class field'' assertion means that the field
+operations are class functions satisfying the usual identities. Every
+individual number, every support, every family to be summed, and every
+polynomial used below is a set. No proper-class sum is taken.
+
+Write a surreal normal form as
+\begin{equation}\label{eq:hahn}
+ x=\sum_{\gamma\in S}a_\gamma t^\gamma,
+ \qquad t^\gamma:=\omega^{-\gamma},\qquad a_\gamma\in\R,
+\end{equation}
+where $S$ is a well-ordered set of surreal exponents. For surcomplex numbers
+the coefficients belong to $\C$. Here $t^\gamma$ is \emph{notation for the
+Conway monomial} $\omega^{-\gamma}$. It is not a declaration that an
+arbitrary surreal exponent has been interpreted through the exponential
+function. Normal forms and strong summation are the background series
+structure used in \cite{BM,ADH}.
+
+If $\Gamma\subseteq\No$ is a set-sized additive subgroup, define
+\[
+ H_\Gamma=\R((t^\Gamma)),\qquad
+ K_\Gamma=\C((t^\Gamma))=H_\Gamma[i].
+\]
+These are actual sets, canonically embedded in $\No$ and $\SC$. Their
+supports may be uncountable, but are always subsets of the set $\Gamma$.
+When $\Gamma$ is divisible, $H_\Gamma$ is real closed and $K_\Gamma$ is
+algebraically closed. We use this standard Hahn-field fact; it concerns
+\emph{algebraic} equations, not differential equations \cite{ADH}.
+
+\begin{definition}[Strong summability]\label{def:summable}
+A set-indexed family $(x_j)_{j\in J}$ of Hahn series is summable if
+$\bigcup_j\supp x_j$ is well ordered and, for each exponent $\gamma$, only
+finitely many $j$ have a nonzero coefficient at $\gamma$. Its sum is formed
+by those finite coefficient sums.
+\end{definition}
+This definition allows coefficientwise rearrangement when the combined
+family is summable. It does not authorize an arbitrary exchange of two
+infinite sums. In particular, writing a formal geometric or exponential
+series is not by itself a summability proof.
+
+We use the positive-support form of the Hahn--Neumann lemma: the additive
+monoid generated by a well-ordered subset of positive exponents is well
+ordered, and each exponent has only finitely many representations by a
+finite nondecreasing list from that subset. Consequently formal power
+series with ordinary real or complex coefficients can be evaluated at
+infinitesimals. This is the ordered-series lemma behind the standard
+Hahn calculus; see \cite{Neumann} and the summability preliminaries of
+\cite{BM}. Every use below has positive infinitesimal support.
+
+\subsection{The valuation ring and the purely infinite projection}
+For real surreals put
+\[
+ \OO=\{x: |x|\le r\text{ for some }r\in\R_{>0}\},\qquad
+ \mm=\{x: |x|<1/n\text{ for every }n\ge1\}.
+\]
+Thus $\OO$ is the ring of finite elements and $\mm$ its maximal ideal.
+Let $\JJ$ be the additive class of purely infinite normal forms: all
+nonzero terms have $\gamma<0$ in \eqref{eq:hahn}. Splitting a support at
+zero gives the unique additive decomposition
+\begin{equation}\label{eq:threeparts}
+ \No=\JJ\oplus\R\oplus\mm,
+ \qquad x=x_\infty+c_0(x)+x_\mathrm{small}.
+\end{equation}
+The maps $\pinf(x)=x_\infty$ and $c_0(x)$ are $\R$-linear. Neither is
+asserted to be multiplicative. On $\OO$, $c_0$ is the standard-part map.
+
+For $z=a+ib$, let $\bar z=a-ib$ and
+$|z|=(a^2+b^2)^{1/2}$. Complex finite and infinitesimal elements form
+$\OO_\C=\OO+i\OO$ and $\mm_\C=\mm+i\mm$. Their standard parts lie in
+$\C$. A unit-modulus element is necessarily finite, irrespective of the
+birthdays of its real and imaginary parts.
+
+\begin{remark}[A quotient-class safeguard]\label{rem:quotient}
+The suggestive notation $\No/\OO$ must not be implemented as a collection
+whose members are proper-class cosets. In this paper it always means the
+\emph{represented quotient} $\JJ$, with quotient map $\pinf$. Its
+representatives are surreal numbers, hence sets. All later obstruction
+classes will likewise be given by actual surreal representatives. In a
+fixed set-sized field, ordinary set quotients are of course legitimate.
+\end{remark}
+
+\section{The selected scalar derivation}\label{sec:derivation}
+
+\subsection{The imported existence theorem}
+\begin{theorem}[Berarducci--Mantova, imported]\label{thm:BM}
+There is a specified derivation $\D:\No\to\No$ satisfying
+\begin{align*}
+ \D(xy)&=x\D y+y\D x, & \Ker\D&=\R,\\
+ \D\!\left(\sum_j x_j\right)&=\sum_j\D x_j,
+ & \D(e^x)&=e^x\D x,
+\end{align*}
+where strong additivity includes summability of the differentiated family
+whenever the original family is summable. Moreover,
+\[
+ x>\R\Longrightarrow\D x>0,\qquad
+ \D\omega=1,\qquad \D\No=\No.
+\]
+Here $e^x$ is the Gonshor exponential. We use the particular
+Berarducci--Mantova derivation with these properties.
+\end{theorem}
+The existence and integration assertions are Theorems A and B of
+\cite{BM}. They are assumptions imported from that paper, not consequences
+of the elementary calculations that follow. The normalization
+$\D\omega=1$ alone is not being claimed to characterize a derivation on
+all of $\No$.
+
+The expression ``Liouville closed'' in the real differential-field setting
+includes real closedness, primitives, and exponential integrals. In our
+setting the latter follow directly: if $\D A=a$, then
+\begin{equation}\label{eq:realexpintegral}
+ \frac{\D(e^A)}{e^A}=a.
+\end{equation}
+This observation will fail for a general \emph{complex} coefficient, not
+because primitives fail, but because a compatible global complex
+exponential is unavailable.
+
+\subsection{Elementary differential identities}
+\begin{proposition}\label{prop:calculus}
+For $x\ne0$, $u>0$, and $r\in\R$,
+\[
+ \D(x^{-1})=-x^{-2}\D x,\qquad
+ \D\log u=\frac{\D u}{u},\qquad
+ \D(u^r)=r u^{r-1}\D u,
+\]
+where $u^r=\exp(r\log u)$. In particular
+\[
+ \D\omega^r=r\omega^{r-1},\qquad
+ \D t^r=-r t^{r+1}\quad(r\in\R).
+\]
+\end{proposition}
+\begin{proof}
+Differentiate $xx^{-1}=1$ and $\exp(\log u)=u$. Then apply exponential
+compatibility to $\exp(r\log u)$, using $\D r=0$. For ordinary real $r$,
+the usual real-power interpretation of $\omega^r$ agrees with its Conway
+monomial interpretation; this is the real-exponent special case. Finally
+$t=\omega^{-1}$.
+\end{proof}
+For an arbitrary surreal $\gamma$, one must \emph{not} infer
+$\D(\omega^\gamma)=\omega^\gamma\D(\gamma\log\omega)$ by identifying the
+omega-map with generic exponentiation. The safe universal identity is
+\[
+ \D(\omega^\gamma)=\omega^\gamma\D\log(\omega^\gamma).
+\]
+The latter logarithm is the actual Gonshor logarithm of the monomial. The
+workspace theorem below intentionally uses its derivative as supplied by
+$\D$, rather than an incorrect universal exponent rule.
+
+\begin{proposition}[Complexification]\label{prop:complexification}
+There is a unique derivation extending $\D$ to $\SC$, namely
+\[
+ \D(a+ib)=\D a+i\D b.
+\]
+It commutes with conjugation, is strongly additive, has constant field
+$\C$, and is surjective.
+\end{proposition}
+\begin{proof}
+Differentiating $i^2+1=0$ gives $2i\D i=0$, hence $\D i=0$. This forces
+the displayed formula, and expansion of products verifies Leibniz's rule.
+The kernel and surjectivity follow componentwise from \cref{thm:BM}.
+Strong summability and strong additivity pass through the real and
+imaginary parts, since only finite unions of supports are involved.
+\end{proof}
+
+\begin{proposition}[Algebraic implicit differentiation]\label{prop:algdiff}
+Let $F$ be a differential subfield of $\SC$, and let $\alpha$ be algebraic
+over $F$. If $P(X)\in F[X]$ is its minimal polynomial, then
+\[
+ \D\alpha=-\frac{P^\D(\alpha)}{P_X(\alpha)},\qquad
+ P^\D(X)=\sum_k(\D a_k)X^k\quad\text{for }P=\sum_k a_kX^k.
+\]
+\end{proposition}
+\begin{proof}
+In characteristic zero the irreducible polynomial $P$ is separable, so
+$P_X(\alpha)\ne0$. Differentiating the finite identity $P(\alpha)=0$ gives
+$P^\D(\alpha)+P_X(\alpha)\D\alpha=0$.
+\end{proof}
+This is the appropriate derivative rule for an exact algebraic root
+object. It is not a choice of a numerical root branch.
+
+\subsection{A normalized primitive without an arbitrary constant}
+\begin{proposition}\label{prop:normalizedprimitive}
+For each $a\in\No$ there is a unique $\Ip(a)\in\No$ with
+\[
+ \D\Ip(a)=a,\qquad c_0(\Ip(a))=0.
+\]
+The map $\Ip$ is $\R$-linear and
+$\Ip(\D x)=x-c_0(x)$.
+\end{proposition}
+\begin{proof}
+Take any primitive and subtract its real coefficient at exponent zero.
+Any two primitives differ by a real constant, proving both existence and
+uniqueness under the normalization. Linearity and the last identity follow
+from uniqueness.
+\end{proof}
+The definition is a legitimate class function by uniqueness. It is not an
+algorithm for computing arbitrary primitives, and it does not assert
+strong additivity of integration.
+
+\section{Differentially stable Hahn workspaces}\label{sec:hull}
+
+The repository's set-sized workspace principle is algebraic. To use a
+scalar derivation on an entire Hahn workspace, its exponent group must
+also accommodate the supports created by differentiating monomials.
+This section supplies that missing closure condition.
+
+\begin{definition}
+A set-sized additive subgroup $\Gamma\subseteq\No$ is
+\emph{differentially closed on monomials} if
+\[
+ \supp\D(t^\gamma)\subseteq\Gamma\qquad(\gamma\in\Gamma).
+\]
+The support here and below is in the $t$-exponent convention of
+\eqref{eq:hahn}.
+\end{definition}
+
+\begin{lemma}[Monomial criterion]\label{lem:monomialcriterion}
+For a set-sized additive group $\Gamma$, the following are equivalent:
+\[
+ \D K_\Gamma\subseteq K_\Gamma
+ \quad\Longleftrightarrow\quad
+ \Gamma\text{ is differentially closed on monomials}.
+\]
+The same equivalence holds for $H_\Gamma$.
+\end{lemma}
+\begin{proof}
+Necessity follows by applying the field-closure condition to each
+$t^\gamma$. For sufficiency, write
+$x=\sum_{\gamma\in S}c_\gamma t^\gamma$ with $S\subseteq\Gamma$.
+Strong additivity gives the summable family
+$(c_\gamma\D t^\gamma)_{\gamma\in S}$ and
+\[
+ \D x=\sum_{\gamma\in S}c_\gamma\D t^\gamma.
+\]
+Every term has support in $\Gamma$, so the sum does too. Ordinary real
+and complex coefficients are constants of the derivation.
+\end{proof}
+
+\begin{theorem}[Countable differential Hahn hull]\label{thm:hull}
+Given a set-sized additive subgroup $\Gamma_0\subseteq\No$, define
+\begin{align}
+ \Gamma_{n+1}
+ &=\Span_\Q\!\left(\Gamma_n\cup
+        \bigcup_{\gamma\in\Gamma_n}\supp\D(t^\gamma)\right),
+       \label{eq:hullstage}\\
+ \Gamma_*&=\bigcup_{n<\omega}\Gamma_n.
+       \label{eq:hullunion}
+\end{align}
+Then $\Gamma_*$ is a set-sized divisible additive group,
+$K_{\Gamma_*}$ is algebraically closed, and
+$\D K_{\Gamma_*}\subseteq K_{\Gamma_*}$. It is the least such divisible
+monomial-closed exponent group containing $\Gamma_0$.
+\end{theorem}
+\begin{proof}
+Each derivative in \eqref{eq:hullstage} is an individual surreal and
+therefore has a set support. Replacement and union show that the displayed
+union is a set. The rational span is again a set. The stages are increasing,
+so their countable union is a set-sized additive group. Every member lies
+in a stage whose next stage contains all its rational multiples; thus the
+union is divisible.
+
+If $\gamma\in\Gamma_*$, it belongs to some $\Gamma_n$. The entire support
+of $\D(t^\gamma)$ is then in $\Gamma_{n+1}\subseteq\Gamma_*$. Apply
+\cref{lem:monomialcriterion} and the divisible-group Hahn-field theorem.
+For minimality, any divisible monomial-closed group containing $\Gamma_0$
+contains each stage by induction and hence their union.
+\end{proof}
+
+\begin{corollary}[Differential localization of arbitrary set data]
+Every set $A\subseteq\SC$ lies in a set-sized algebraically closed
+Hahn field stable under $\D$.
+\end{corollary}
+\begin{proof}
+Take $\Gamma_0$ to be the additive group generated by the union of the
+supports of the members of $A$, and apply \cref{thm:hull}.
+\end{proof}
+The group need not be countable: it is the \emph{number of closure stages}
+that is countable. Also, this is a minimality statement among full Hahn
+fields indexed by divisible exponent groups, not among all differential
+subfields.
+
+\subsection{An exact finite-rank example}
+\begin{proposition}\label{prop:realgroup}
+Let $0\ne\Gamma\subseteq\R$ be an additive subgroup. Then $K_\Gamma$ is
+stable under $\D$ if and only if $1\in\Gamma$. If $\Gamma$ is divisible,
+its differential Hahn hull is $\Gamma+\Q$.
+\end{proposition}
+\begin{proof}
+For nonzero $\gamma\in\Gamma$, \cref{prop:calculus} gives
+$\D t^\gamma=-\gamma t^{\gamma+1}$. Closure therefore requires
+$\gamma+1\in\Gamma$, hence $1\in\Gamma$. Conversely, containing $1$
+provides every exponent $\gamma+1$. The rational-span assertion follows
+from \cref{thm:hull}. The exceptional group $\{0\}$ gives the constant
+field and is already stable.
+\end{proof}
+For example, $\Gamma=\Q\sqrt2$ is divisible but not differentially stable:
+\[
+ \D t^{\sqrt2}=-\sqrt2\,t^{\sqrt2+1}\notin K_{\Q\sqrt2}.
+\]
+Its hull is $\Q+\Q\sqrt2$. This is a simple counterexample to the claim
+that an arbitrary algebraically closed Hahn workspace automatically
+supports the ambient derivation.
+
+\subsection{Differentiation closure is not integration closure}
+\begin{example}\label{ex:logintegral}
+The field $H_\Q=\R((t^\Q))$ is stable under $\D$, but $t$ has no primitive
+in it. Its primitives in $\No$ are $\log\omega+c$, $c\in\R$.
+\end{example}
+\begin{proof}
+For $x=\sum c_qt^q$, strong additivity gives
+$\D x=\sum(-q)c_qt^{q+1}$. The coefficient at exponent $1$ is always zero:
+the only possible source is $q=0$, whose multiplier is zero. The derivative
+therefore cannot equal $t$. On the other hand,
+$\D\log\omega=\omega^{-1}=t$.
+\end{proof}
+Thus the whole-field surjectivity of \cref{thm:BM} must not be silently
+transported to a localized workspace. The counterexample is about
+integration, not about algebraic closedness or Hahn completeness. General
+differentially stable Hahn subfields also occur in the model-theoretic
+analysis of \cite{ADH}; our elementary construction is designed specifically
+to expose the support contract needed here.
+
+\section{Finite phases and their scalar derivatives}\label{sec:phase}
+
+The finite-angle theorem is already central to the repository's
+trigonometry report \cite{RepoTrig}. We give the short formal-series route
+needed here, then prove its compatibility with the selected scalar
+derivation. This extra compatibility is the point of the section.
+
+\subsection{Small exponential and logarithm}
+For $h\in\mm_\C$, define the Hahn sums
+\begin{equation}\label{eq:smallfunctions}
+ \Expzero(h)=\sum_{n\ge0}\frac{h^n}{n!},\qquad
+ \Logzero(1+h)=\sum_{n\ge1}\frac{(-1)^{n+1}}n h^n.
+\end{equation}
+Positive support and the Hahn--Neumann lemma justify both sums. Formal
+power-series identities over $\Q$ therefore specialize to
+\begin{align}
+ \Expzero(h+k)&=\Expzero(h)\Expzero(k),\label{eq:smallgroup}\\
+ \Logzero(\Expzero(h))&=h,\qquad
+ \Expzero(\Logzero(1+h))=1+h.\label{eq:smallinverse}
+\end{align}
+To be explicit about the substitution principle, a coefficient at a fixed
+Hahn exponent receives contributions from only finitely many finite
+products of the supports of $h$ and $k$. The formal identity can thus be
+checked at that exponent by finite algebra. This is not an appeal to a
+limit of partial sums.
+
+\begin{lemma}[Scalar chain rules for small series]\label{lem:smallchain}
+For $h\in\mm_\C$,
+\[
+ \D\Expzero(h)=\Expzero(h)\D h,\qquad
+ \D\Logzero(1+h)=\frac{\D h}{1+h}.
+\]
+\end{lemma}
+\begin{proof}
+Strong additivity and the finite power rule give
+\[
+ \D\sum_{n\ge0}\frac{h^n}{n!}
+ =\sum_{n\ge1}\frac{h^{n-1}\D h}{(n-1)!}
+ =\D h\,\Expzero(h).
+\]
+Multiplication by the fixed number $\D h$ preserves summability. The same
+argument differentiates the logarithm series and gives
+$\D h\sum_{n\ge0}(-h)^n=\D h/(1+h)$. All evaluated series have positive
+infinitesimal support before the fixed multiplier is applied.
+\end{proof}
+
+\subsection{The entire unit circle has finite phase}
+Let
+\[
+ T(\No)=\{u\in\SC:u\bar u=1\}.
+\]
+For $\theta=r+\varepsilon\in\OO$, with $r\in\R$ and
+$\varepsilon\in\mm$, set
+\begin{equation}\label{eq:cis}
+ \cis(\theta)=e^{ir}\Expzero(i\varepsilon).
+\end{equation}
+The factor $e^{ir}$ is the ordinary complex exponential. No value of a
+circular function at an infinite angle is used.
+
+\begin{theorem}[Finite-phase parametrization]\label{thm:phase}
+The map $\cis:(\OO,+)\to(T(\No),\cdot)$ is a surjective group
+homomorphism with kernel $2\pi\Z$. Every $u\in T(\No)$ has a unique
+factorization
+\begin{equation}\label{eq:normalizedphase}
+ u=c\Expzero(i\varepsilon),\qquad
+ c\in T(\R),\quad\varepsilon\in\mm.
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:phasechain}
+ \frac{\D\cis(\theta)}{\cis(\theta)}=i\D\theta.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The group law follows from \eqref{eq:smallgroup}. Conjugation carries
+$\Expzero(i\varepsilon)$ to $\Expzero(-i\varepsilon)$, so its norm is
+one. Conversely, let $u\bar u=1$. Then $u$ is finite, and
+$c=\st(u)\in\C$ satisfies $c\bar c=1$. Write $u/c=1+h$, where
+$h\in\mm_\C$, and put $\eta=\Logzero(1+h)$. Since
+$\overline{1+h}=(1+h)^{-1}$, the formal logarithm identities give
+\[
+ \bar\eta=\Logzero((1+h)^{-1})=-\eta.
+\]
+Thus $\eta=i\varepsilon$ for a real infinitesimal $\varepsilon$, and
+$u=c\Expzero(i\varepsilon)$. Choose an ordinary real argument $r$ of
+$c$ to obtain $u=\cis(r+\varepsilon)$. The normalized factorization is
+unique because $c=\st(u)$ and $\Logzero$ is inverse to $\Expzero$ on
+infinitesimals.
+
+If $\cis(r+\varepsilon)=1$, standard parts give $e^{ir}=1$, so
+$r\in2\pi\Z$. Then \eqref{eq:smallinverse} gives $\varepsilon=0$.
+Finally, $r$ and $e^{ir}$ are differential constants, and
+\cref{lem:smallchain} proves \eqref{eq:phasechain}.
+\end{proof}
+The angular branch ambiguity is an ordinary constant $2\pi k$, so it
+vanishes under $\D$. More strongly, the infinitesimal angle in
+\eqref{eq:normalizedphase} is branch-free.
+
+\begin{corollary}[Differential polar decomposition]\label{cor:polar}
+Every nonzero $z\in\SC$ can be written as
+$z=\rho\cis\theta$, with $\rho=|z|>0$ and $\theta\in\OO$, and
+\begin{equation}\label{eq:polarlogder}
+ \frac{\D z}{z}=\frac{\D\rho}{\rho}+i\D\theta.
+\end{equation}
+In particular,
+\[
+ \Real\frac{\D z}{z}=\frac{\D|z|}{|z|},\qquad
+ \Imag\frac{\D z}{z}=\D\theta.
+\]
+\end{corollary}
+\begin{proof}
+Apply \cref{thm:phase} to $z/|z|$, and use the product rule. Both terms
+on the right side of \eqref{eq:polarlogder} have the indicated real or
+purely imaginary type.
+\end{proof}
+
+\section{The subgroup of finite-phase speeds}\label{sec:bounded}
+
+\begin{definition}\label{def:B}
+The finite-primitive subgroup is
+\[
+ \BB:=\D\OO=\{\D\theta:\theta\in\OO\}\subseteq\No.
+\]
+Membership means existence of a \emph{finite} primitive, not merely
+existence of some primitive.
+\end{definition}
+
+\subsection{Order-theoretic structure}
+\begin{lemma}[Every finite element has infinitesimal derivative]
+\label{lem:smallness}
+If $f\in\OO$, then $\D f\in\mm$.
+\end{lemma}
+\begin{proof}
+For every positive integer $n$, both $\omega/n+f$ and $\omega/n-f$
+are positive infinite. The $H$-field sign condition gives
+\[
+ 1/n+\D f>0,\qquad1/n-\D f>0.
+\]
+Hence $|\D f|<1/n$ for every $n$.
+\end{proof}
+This proof uses the normalization $\D\omega=1$ and the sign condition,
+not a topological limiting argument.
+
+\begin{theorem}[Structure of $\BB$]\label{thm:Bstructure}
+The following assertions hold.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\BB=\D\mm\subsetneq\mm$.
+\item $\D:\mm\to\BB$ is an $\R$-linear bijection that reverses strict
+order.
+\item $\BB$ is a convex additive subgroup of $\No$ and an $\OO$-submodule
+of the additive group of $\No$.
+\item An element $b$ belongs to $\BB$ exactly when $\Ip(b)$ is finite,
+equivalently when $\pinf\Ip(b)=0$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Since $\OO=\R\oplus\mm$ and $\D\R=0$, the first equality holds.
+\Cref{lem:smallness} gives containment in $\mm$. The kernel of the
+restriction to $\mm$ is zero, because a real infinitesimal constant is
+zero. If $0<\varepsilon\in\mm$, then $1/\varepsilon>\R$, so
+\[
+ 0<\D(1/\varepsilon)=-\varepsilon^{-2}\D\varepsilon.
+\]
+Thus $\D\varepsilon<0$, proving the order reversal.
+
+For convexity, suppose $0<b\le c$ with $c\in\BB$. Choose finite
+$\theta$ with $\D\theta=c$, and choose a primitive $u$ of $b$. If $u$
+were negative infinite, its derivative would be negative by the sign
+condition. If $u$ were positive infinite, $u-\theta$ would be positive
+infinite, giving $b-c>0$, a contradiction. Therefore $u$ is finite and
+$b\in\BB$. The zero case and negative elements follow by additivity.
+For $a\in\OO$ choose $r\in\R_{>0}$ with $|a|\le r$. If $b\in\BB$,
+then $|ab|\le r|b|$, and convexity together with real linearity gives
+$ab\in\BB$.
+
+All primitives of $b$ differ by real constants, so either all are finite
+or none are. This proves (iv). Finally $t=1/\omega$ is infinitesimal but
+has primitive $\log\omega$, which is positive infinite. Hence
+$t\notin\BB$, proving strictness. In contrast,
+$t^2=\D(-t)\in\BB$.
+\end{proof}
+
+\begin{proposition}[A represented differential quotient]\label{prop:decompB}
+There is a direct-sum decomposition of additive $\R$-vector classes
+\begin{equation}\label{eq:Bsplit}
+ \No=\D\JJ\oplus\BB.
+\end{equation}
+The projection onto the first summand is
+$b\mapsto\D\pinf\Ip(b)$. The restriction
+$\D:\JJ\to\D\JJ$ is an order-preserving $\R$-linear bijection.
+\end{proposition}
+\begin{proof}
+Decompose a normalized primitive as
+$\Ip(b)=j+\varepsilon$, with $j\in\JJ$, $\varepsilon\in\mm$.
+Then $b=\D j+\D\varepsilon$. If $\D j\in\BB$, choose finite
+$\theta$ with $\D j=\D\theta$. The difference $j-\theta$ is real,
+forcing the purely infinite $j$ to be finite, hence zero. This proves the
+direct sum. A nonzero positive member of $\JJ$ is positive infinite,
+so its derivative is positive. Apply this to differences to obtain the
+order assertion.
+\end{proof}
+This also explains the represented version of the familiar quotient
+isomorphism $\No/\OO\cong\No/\BB$ induced by differentiation. The actual
+representatives are $\JJ$ and $\D\JJ$; no proper-class coset is made into
+an object.
+
+\subsection{A hierarchy of explicit thresholds}
+For real $p$ the equation $\D\theta=\omega^{-p}$ has the primitives
+\begin{equation}\label{eq:powerprimitive}
+ \theta=
+ \begin{cases}
+ \displaystyle\frac{\omega^{1-p}}{1-p}+c,&p\ne1,\\[5pt]
+ \log\omega+c,&p=1,
+ \end{cases}
+ \qquad c\in\R.
+\end{equation}
+Consequently
+\begin{equation}\label{eq:powerthreshold}
+ \omega^{-p}\in\BB\quad\Longleftrightarrow\quad p>1.
+\end{equation}
+Thus even a positive infinitesimal frequency can be inadmissible.
+
+The same phenomenon repeats at each finite logarithmic depth. Put
+$L_0=\omega$ and $L_{k+1}=\log L_k$. For $k\ge0$, with an empty product
+interpreted as $1$, set
+\[
+ b_{k,p}=\frac{1}{L_0L_1\cdots L_{k-1}L_k^p}.
+\]
+The chain rule yields
+\[
+ \D L_k=\frac1{L_0\cdots L_{k-1}},\qquad
+ \Ip(b_{k,p})=
+ \begin{cases}
+ L_k^{1-p}/(1-p),&p\ne1,\\
+ L_{k+1},&p=1.
+ \end{cases}
+\]
+All these primitives have zero ordinary constant coefficient. Each $L_k$
+is positive infinite, so $b_{k,p}\in\BB$ exactly when $p>1$.
+In particular, neither $1/\omega$ nor
+$1/(\omega\log\omega)$ belongs to $\BB$; both are infinitesimal.
+
+\section{Logarithmic derivatives and complete rank-one classification}
+\label{sec:logder}
+
+For $y\ne0$ define $\dlog(y)=\D y/y$. It is a homomorphism from the
+multiplicative class group to the additive one, since
+$\dlog(yz)=\dlog(y)+\dlog(z)$.
+
+\begin{theorem}[Exact logarithmic-derivative image]\label{thm:logimage}
+For the selected derivation on $\SC$,
+\begin{equation}\label{eq:mainimage}
+ \boxed{\quad\dlog(\SC^\times)=\No+i\BB
+             =\No+i\D\OO.\quad}
+\end{equation}
+The kernel of $\dlog$ is $\C^\times$.
+\end{theorem}
+\begin{proof}
+For any nonzero $y$, \cref{cor:polar} gives
+$\dlog y=\D\rho/\rho+i\D\theta$, with $\theta$ finite. Thus its
+imaginary part lies in $\BB$.
+
+Conversely, let $a\in\No$ and $b\in\BB$. Choose $A=\Ip(a)$ and the
+unique $\varepsilon\in\mm$ with $\D\varepsilon=b$. Then
+\begin{equation}\label{eq:generator}
+ h=\exp(A)\Expzero(i\varepsilon)\ne0
+\end{equation}
+satisfies $\D h/h=a+ib$ by exponential compatibility and
+\cref{lem:smallchain}. Finally $\dlog y=0$ exactly when
+$\D y=0$, equivalently $y\in\C^\times$.
+\end{proof}
+
+\begin{corollary}[First-order homogeneous equation]\label{cor:rankone}
+For $q=a+ib\in\SC$, the following are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\D y=qy$ has a nonzero solution in $\SC$;
+\item $b\in\BB$;
+\item $\pinf\Ip(b)=0$.
+\end{enumerate}
+When they hold, every solution is $ch$ with $c\in\C$ and $h$ as in
+\eqref{eq:generator}; when they fail, the only solution is zero.
+\end{corollary}
+\begin{proof}
+Only the assertion about all solutions remains. If $h\ne0$ is one
+solution, $\D(y/h)=0$, so $y/h$ is an ordinary complex constant.
+\end{proof}
+In particular, a one-dimensional linear equation need not have the
+expected one-dimensional nonzero solution space \emph{inside this field}.
+The familiar dimension bound is an upper bound until a sufficiently large
+differential extension is supplied.
+
+\subsection{A canonical purely infinite phase obstruction}
+\begin{definition}\label{def:obstruction}
+For $q\in\SC$ put
+\begin{equation}\label{eq:obstruction}
+ \Ob(q)=\pinf\Ip(\Imag q)\in\JJ.
+\end{equation}
+\end{definition}
+The notation has an actual surreal representative, not an ambiguous
+choice of an antiderivative. The normalization of $\Ip$ is convenient;
+subtracting any other real integration constant would give the same
+purely infinite part.
+
+\begin{theorem}[Exact obstruction sequence]\label{thm:obstruction}
+The map $\Ob:\SC\to\JJ$ is a surjective $\R$-linear map with
+\[
+ \Ker\Ob=\dlog(\SC^\times).
+\]
+More explicitly, there is an exact sequence of class groups
+\begin{equation}\label{eq:exactsequence}
+ 1\longrightarrow\C^\times\longrightarrow\SC^\times
+ \xrightarrow{\,\dlog\,}(\SC,+)
+ \xrightarrow{\,\Ob\,}(\JJ,+)\longrightarrow0.
+\end{equation}
+Every map in the sequence acts on set-sized elements.
+\end{theorem}
+\begin{proof}
+Linearity follows from \cref{prop:normalizedprimitive} and
+\eqref{eq:threeparts}. The kernel is \cref{thm:logimage}. Given
+$j\in\JJ$, the normalized primitive of $\D j$ is $j$, so
+$\Ob(i\D j)=j$, proving surjectivity. Exactness at the multiplicative
+terms is the kernel statement of \cref{thm:logimage}.
+\end{proof}
+
+\begin{definition}[Multiplicative gauge equivalence]
+Two coefficients $q,r\in\SC$ are gauge equivalent if
+$q-r=\dlog u$ for some $u\in\SC^\times$. Equivalently, substitution
+$y=uv$ transforms $\D y=qy$ into $\D v=rv$.
+\end{definition}
+
+\begin{theorem}[Canonical rank-one representatives]\label{thm:gauge}
+Two rank-one equations are gauge equivalent if and only if their
+obstructions agree. Each class has a unique representative of the form
+\begin{equation}\label{eq:canonicalgauge}
+ \D y=i(\D j)y,\qquad j\in\JJ.
+\end{equation}
+Tensor product adds the representatives' parameters $j$, and passage to
+the dual negates $j$.
+\end{theorem}
+\begin{proof}
+The equivalence criterion follows from the kernel in
+\cref{thm:obstruction}. For an explicit reduction, write
+$\Ip(b)=j+\varepsilon$ with $\varepsilon\in\mm$, and put
+$u=\exp(\Ip(a))\Expzero(i\varepsilon)$. Then
+\[
+ q-\dlog u=i\D j.
+\]
+The obstruction of the latter coefficient is $j$, proving uniqueness.
+The coefficient of a tensor product is the sum of the two scalar
+coefficients, and that of a dual is its negative, giving the last claim.
+\end{proof}
+Examples of the parameter $j$ are informative:
+\[
+ \Ob(i)=\omega,\qquad
+ \Ob(i/\omega)=\log\omega,\qquad
+ \Ob(i/\omega^2)=0.
+\]
+The obstruction measures an \emph{accumulated infinite phase}, not merely
+the size of the instantaneous coefficient. A real coefficient has zero
+obstruction, however large it is.
+
+\subsection{What happens to inhomogeneous equations}
+\begin{proposition}[Variation of constants on the admissible locus]
+\label{prop:inhom}
+Suppose $\Ob(q)=0$, and let $h\ne0$ satisfy $\D h=qh$. For every
+$f\in\SC$, the solutions of
+$\D y-qy=f$ are
+\[
+ y=h(v+c),\qquad\D v=f/h,\qquad c\in\C.
+\]
+In particular the inhomogeneous equation is solvable.
+\end{proposition}
+\begin{proof}
+Surjectivity of $\D$ on $\SC$ supplies $v$. The product rule verifies
+the formula, and subtraction of two solutions reduces to the homogeneous
+equation.
+\end{proof}
+Outside the admissible locus, failure of a nonzero homogeneous solution
+does \emph{not} imply failure of every inhomogeneous equation. For example,
+\[
+ \D y-iy=1
+\]
+has the unique solution $y=i$: it is a solution by direct substitution,
+and any difference of two solutions would solve $\D u=iu$, whose only
+solution is zero. In general we make no inhomogeneous solvability claim
+outside the locus of \cref{prop:inhom}.
+
+\section{An exact decision criterion for rational coefficients}
+\label{sec:rational}
+
+The full obstruction map is a semantic classification rather than a
+universal effective procedure. For rational functions over the ordinary
+constants, however, the condition is decidable by finite algebra.
+
+\begin{theorem}[Rational phase criterion]\label{thm:rational}
+Let $b(X)\in\R(X)$ be nonzero, and write it in reduced form
+$b=P/Q$. Then
+\begin{equation}\label{eq:rationalcriterion}
+ b(\omega)\in\BB
+ \quad\Longleftrightarrow\quad
+ \deg Q-\deg P\ge2.
+\end{equation}
+For $q(\omega)=a(\omega)+ib(\omega)$ with $a,b\in\R(X)$, this is
+exactly the criterion for a nonzero solution of $\D y=q(\omega)y$.
+The case $b=0$ is always admissible.
+\end{theorem}
+\begin{proof}
+Let $p=\deg Q-\deg P$. Expanding the rational function at infinity gives
+\[
+ b(\omega)=c t^p+\text{higher integer powers of }t,
+ \qquad c\in\R^\times.
+\]
+If $p\ge2$, write $b(\omega)=\sum_{n\ge2}b_nt^n$. The Hahn series
+\[
+ \theta=-\sum_{n\ge2}\frac{b_n}{n-1}t^{n-1}
+\]
+is infinitesimal and differentiates strongly to $b(\omega)$. Thus
+$b(\omega)\in\BB$.
+
+If $p\le1$, its leading term gives
+$|b(\omega)|\ge |c|t^p/2$. Were $b(\omega)$ in $\BB$, real linearity
+and convexity would force $t^p\in\BB$. This contradicts
+\eqref{eq:powerthreshold}. The assertion for $q$ is
+\cref{cor:rankone}.
+\end{proof}
+No algorithm for an arbitrary real coefficient is asserted: the theorem is
+algebraic over $\R$, while the accompanying executable restricts its input
+to exact rational coefficients so that polynomial arithmetic and degree
+comparison are effective.
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+$b(\omega)$ & Finite primitive? & Reason or primitive\\
+\midrule
+$0$ & yes & $0$\\
+$1$ & no & $\omega$ is infinite\\
+$1/\omega$ & no & $\log\omega$ is infinite\\
+$1/\omega^2$ & yes & $-1/\omega$\\
+$\omega/(1+\omega^2)$ & no & degree gap $1$\\
+$1/(1+\omega^2)$ & yes & degree gap $2$\\
+$(1-\omega^2)/(1+\omega^2)^2$ & yes & $\omega/(1+\omega^2)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{example}[An algebraic solution with a small angular speed]
+\label{ex:algebraicphase}
+For $b=1/(1+\omega^2)$ the unit-modulus algebraic number
+\[
+ y=\frac{1+i\omega}{\sqrt{1+\omega^2}}
+\]
+satisfies $\D y=iby$. Indeed,
+\[
+ \frac{\D y}{y}
+ =\frac{i}{1+i\omega}-\frac{\omega}{1+\omega^2}
+ =\frac{i}{1+\omega^2}.
+\]
+This example needs neither a named inverse trigonometric function nor an
+infinite-phase exponential.
+\end{example}
+
+\begin{example}[A genuinely infinite Hahn phase solution]
+For $q=i/\omega^2$, the normalized solution is
+\[
+ y=\Expzero(-it)
+ =1-it-\frac{t^2}{2}+\frac{it^3}{6}+\frac{t^4}{24}-\cdots.
+\]
+Its support is contained in $\N$, so the series is strongly summable.
+The identity $\D y=it^2y$ is exact, not an asymptotic approximation.
+Finite truncations used in the verifier have a computable residual, but
+are not the entire solution.
+\end{example}
+
+\section{Oscillation obstructions and constant-coefficient equations}
+\label{sec:constant}
+
+\subsection{A short independent proof of the basic obstruction}
+\begin{theorem}[No scalar harmonic oscillation]\label{thm:noosc}
+The only solution in $\SC$ of $\D y=iy$ is zero. More generally,
+$\D y=i\beta y$ has no nonzero solution for any
+$\beta\in\R\setminus\{0\}$.
+\end{theorem}
+\begin{proof}
+Suppose first that $\D y=iy$ and $y\ne0$. Conjugation gives
+$\D\bar y=-i\bar y$, hence
+$\D(y\bar y)=0$. Its positive value is a real constant. Dividing $y$ by
+its positive real modulus therefore gives $u+iv$ with
+\[
+ u^2+v^2=1,\qquad \D u=-v,\qquad\D v=u.
+\]
+Both $u$ and $v$ are finite. By \cref{lem:smallness}, both derivatives
+are infinitesimal, and the differential equations then make $u,v$
+infinitesimal. Their squared sum cannot be $1$.
+
+For general $\beta$, the same argument gives
+$\D u=-\beta v$ and $\D v=\beta u$. Division by the nonzero real
+constant $\beta$ again makes both coordinates infinitesimal.
+\end{proof}
+This proof does not use the full finite-phase parametrization or
+surjectivity of $\D$. It uses the constant field, the $H$-field sign
+condition, and $\D\omega=1$. The obstruction is therefore not an artifact
+of a particular logarithm branch.
+
+\begin{corollary}\label{cor:constantlambda}
+For $\lambda\in\C$, the equation $\D y=\lambda y$ has a nonzero
+solution in $\SC$ exactly when $\lambda\in\R$. In that case its
+solutions are $c e^{\lambda\omega}$, $c\in\C$.
+\end{corollary}
+\begin{proof}
+Write $\lambda=\alpha+i\beta$. Multiplication by
+$e^{-\alpha\omega}$ transforms a solution into one of
+$\D v=i\beta v$. Apply \cref{thm:noosc}; when $\beta=0$, the quotient
+by $e^{\alpha\omega}$ has derivative zero.
+\end{proof}
+
+\subsection{All finite-order constant-coefficient equations}
+\begin{lemma}\label{lem:polykernel}
+For each integer $m\ge1$,
+\[
+ \Ker(\D^m)=\Span_\C\{1,\omega,\ldots,\omega^{m-1}\}.
+\]
+\end{lemma}
+\begin{proof}
+The inclusion from right to left is the ordinary power rule. For the
+reverse inclusion, induct on $m$. The case $m=1$ is the constant-field
+property. If $\D^m y=0$, then $\D^{m-1}y=c\in\C$. Subtract
+$c\omega^{m-1}/(m-1)!$ to reduce to the induction hypothesis.
+\end{proof}
+
+\begin{theorem}[Constant-coefficient solution-space classification]
+\label{thm:constantpolynomial}
+Let $0\ne P(T)\in\C[T]$, and let $m_\lambda$ be the multiplicity of
+$\lambda$ as a root of $P$. The complete solution space in $\SC$ of
+$P(\D)y=0$ is
+\begin{equation}\label{eq:constantbasis}
+ \bigoplus_{\substack{\lambda\in\R\\P(\lambda)=0}}
+ e^{\lambda\omega}\,
+ \Span_\C\{1,\omega,\ldots,\omega^{m_\lambda-1}\}.
+\end{equation}
+Its complex dimension is
+$\sum_{\lambda\in\R,\,P(\lambda)=0}m_\lambda$.
+For a nonzero constant polynomial this is the zero space.
+\end{theorem}
+\begin{proof}
+For real $\lambda$ and arbitrary $v$,
+\[
+ (\D-\lambda)(e^{\lambda\omega}v)=e^{\lambda\omega}\D v.
+\]
+Iteration and \cref{lem:polykernel} identify the kernel of
+$(\D-\lambda)^{m_\lambda}$ with the corresponding summand in
+\eqref{eq:constantbasis}. For nonreal $\lambda$,
+\cref{cor:constantlambda} says that $\D-\lambda$ is injective, so all
+its positive powers are injective.
+
+It remains to separate distinct roots. Factor $P$ into the pairwise
+coprime powers $P_j(T)=(T-\lambda_j)^{m_j}$. The Chinese remainder
+identities give polynomials $e_j(T)$ with
+$\sum_j e_j\equiv1\pmod P$, such that $e_j$ is $1$ modulo $P_j$ and
+$0$ modulo the other factors. For $y\in\Ker P(\D)$ put
+$y_j=e_j(\D)y$. Then $\sum_jy_j=y$ and $P_j(\D)y_j=0$.
+The same polynomial identities make the decomposition direct. The
+nonreal-root summands vanish, leaving exactly \eqref{eq:constantbasis}.
+Within each real-root summand the powers of $\omega$ are linearly
+independent over $\C$, since $\omega$ is transcendental over the
+ordinary constants. This gives the dimension.
+\end{proof}
+
+\begin{example}
+For
+\[
+ P(T)=(T-2)^2(T+1)(T^2+1),
+\]
+the order is $5$, but the solution space inside $\SC$ has dimension $3$:
+\[
+ y=(c_0+c_1\omega)e^{2\omega}+c_2e^{-\omega},
+ \qquad c_0,c_1,c_2\in\C.
+\]
+There are no additional sine and cosine terms associated with $T^2+1$.
+In particular, $\D^2y+y=0$ has only the zero solution, even for complex
+$y$.
+\end{example}
+
+\subsection{Constant matrices}
+\begin{theorem}\label{thm:matrix}
+Let $A\in M_n(\C)$. The solution space of $\D Y=AY$ in $(\SC)^n$ has
+complex dimension equal to the sum of the algebraic multiplicities of the
+\emph{real} eigenvalues of $A$. An invertible fundamental matrix in
+$\GL_n(\SC)$ exists if and only if all eigenvalues of $A$ are real.
+\end{theorem}
+\begin{proof}
+A similarity matrix over $\C$ is fixed by $\D$, so reduce to Jordan
+form. On a Jordan block $\lambda I+N$ with real $\lambda$, a fundamental
+matrix is
+\[
+ e^{\lambda\omega}\exp(\omega N)
+ =e^{\lambda\omega}\sum_{k=0}^{m-1}\frac{\omega^kN^k}{k!}.
+\]
+This is a finite polynomial in the nilpotent matrix $N$, not an infinite
+matrix exponential requiring convergence. Its inverse uses $-\omega N$.
+On a nonreal-eigenvalue block, the last coordinate satisfies
+$\D y_m=\lambda y_m$, so it is zero. Induction upward through the block
+makes every coordinate zero. The dimension and invertibility assertions
+follow block by block.
+\end{proof}
+
+\subsection{Global exponential and phase conventions cannot repair this}
+\begin{corollary}[No globally compatible complex exponential]
+\label{cor:noglobalexp}
+There is no map $E:\SC\to\SC^\times$ satisfying
+\begin{equation}\label{eq:forbiddenchain}
+ \D(E(z))=E(z)\D z\qquad\text{for every }z\in\SC.
+\end{equation}
+In particular, a global complex exponential with this scalar-derivation
+compatibility does not exist.
+\end{corollary}
+\begin{proof}
+At $z=i\omega$, \eqref{eq:forbiddenchain} would produce the nonzero
+solution $E(i\omega)$ of $\D y=iy$.
+\end{proof}
+Even the additive-to-multiplicative group law is unnecessary for this
+contradiction. Similarly, no extension of finite $\cis$ to all real
+surreals can satisfy $\D\cis(x)=i\D x\cis(x)$ everywhere.
+
+This does not contradict algebraically defined global phase conventions
+in the trigonometry report. It shows precisely which additional
+compatibility they cannot possess. Nor does it deny that the ordinary
+function $z\mapsto e^{iz}$ has a holomorphic germ or a finite-halo lift.
+That germ is differentiated with respect to its argument. It is a
+different assertion to evaluate a global exponential at $i\omega$ and
+require the resulting \emph{number} to obey the selected field derivation.
+
+\section{Where an oscillatory solution can live}\label{sec:PV}
+
+The obstruction is internal to $\SC$ with its specified derivation. It
+does not prevent constructing an abstract differential-field extension.
+A completely explicit set-sized example makes the distinction precise.
+
+\subsection{An algebraically closed base with no oscillatory element}
+Let
+\[
+ K_0=\C((t^\Q)),\qquad
+ \D\!\left(\sum_qc_qt^q\right)=\sum_q(-q)c_qt^{q+1}.
+\]
+This is the set-sized differential Hahn field of
+\cref{ex:logintegral}, now complexified. Its underlying field is
+algebraically closed and its differential constants are $\C$. It contains
+$\omega=t^{-1}$, with $\D\omega=1$, and contains no nonzero solution of
+$\D y=niy$ for $0\ne n\in\Z$, since it is a differential subfield of
+$\SC$.
+
+Adjoin a transcendental indeterminate $U$ and extend the derivation to
+$K_0(U)$ by
+\begin{equation}\label{eq:PVU}
+ \D U=iU.
+\end{equation}
+The ordinary polynomial product rule and the quotient rule define the
+extension uniquely. The formal generator $U$ is not a surreal number
+endowed with the original $\D$.
+
+\begin{theorem}[Explicit oscillatory Picard--Vessiot field]
+\label{thm:PV}
+The differential constants of $K_0(U)$ are exactly $\C$. The extension is
+a Picard--Vessiot field for $\D y=iy$, and its differential automorphisms
+over $K_0$ are precisely
+\[
+ U\longmapsto cU,\qquad c\in\C^\times.
+\]
+Thus its differential Galois group is the multiplicative group
+$\mathbb G_m$ over $\C$.
+\end{theorem}
+\begin{proof}
+Let $f\in K_0(U)^\times$ have $\D f=0$. Write
+$f=cP/Q$ with $c\in K_0^\times$ and monic coprime polynomials
+$P,Q\in K_0[U]$, of degrees $m,n$. After clearing denominators,
+\[
+ \frac{\D c}{c}PQ+(\D P)Q-P(\D Q)=0.
+\]
+Reduction modulo $P$ and modulo $Q$ gives $P\mid\D P$ and
+$Q\mid\D Q$. The derivation does not increase degree in $U$. Its leading
+coefficient on a monic degree-$m$ polynomial is $im$. Therefore
+\[
+ \D P=imP,\qquad\D Q=inQ,\qquad
+ \frac{\D c}{c}=i(n-m).
+\]
+If $m\ne n$, the last equation is forbidden in $K_0$. Hence $m=n$ and
+$c\in\C^\times$.
+
+For a coefficient $a_j$ of $U^j$ in $P$, with $j<m$, coefficient
+comparison gives
+$\D a_j=i(m-j)a_j$. Again there is no nonzero such coefficient in
+$K_0$. Thus $P=U^m$ and similarly $Q=U^n$. Coprimality and $m=n$ force
+$m=n=0$. Hence $f\in\C^\times$, proving that no new constants arise.
+
+The field is generated by the nonzero fundamental solution $U$ and has
+no new constants, which is the Picard--Vessiot field condition for this
+scalar equation. If $\sigma$ is a differential automorphism over $K_0$,
+then $\D(\sigma(U)/U)=0$, so $\sigma(U)=cU$ for some
+$c\in\C^\times$. Conversely every such scaling is an automorphism.
+The scaling action realizes the stated algebraic group.
+\end{proof}
+
+\subsection{Why a formal exponential is not already in the base}
+One might try to identify $U$ with
+\[
+ \sum_{n\ge0}\frac{(i\omega)^n}{n!}
+ =\sum_{n\ge0}\frac{i^n}{n!}t^{-n}.
+\]
+Its exponent set $\{0,-1,-2,\ldots\}$ is not well ordered, so it is not a
+Hahn series in $K_0$ or a summable surreal family. Choosing a larger
+exponent group does not repair that support defect. The differential
+extension is therefore not obtained simply by appending a missing value
+to the list of permitted exponents.
+
+Since $K_0$ is already algebraically closed, $U$ is necessarily
+transcendental as a field element. It is nevertheless
+\emph{differentially algebraic}, since it satisfies the nonzero
+differential polynomial $\D U-iU=0$. Field-transcendental must not be
+confused with differentially transcendental.
+
+The preceding explicit extension proves, without invoking a general
+existence theorem, that algebraic closedness and a rich scalar calculus do
+not make the original field differentially closed. For the full $\SC$,
+one can similarly formulate an extension symbolically, but the set-sized
+construction above avoids any need to form a field of class-sized
+rational expressions.
+
+\section{The analytic coefficient interface}\label{sec:analytic}
+
+This section connects the new scalar structure to the common-domain
+Hahn calculus in the repository. We do not transport statements between
+arbitrary formal germs and fixed-domain holomorphic families.
+
+\subsection{Differentiating an analytic Hahn family}
+Let $V\subseteq\C$ be an ordinary nonempty open set. Define
+\[
+ \HH_\Gamma(V)=\OO(V)((t^\Gamma))
+\]
+to consist of formal families
+\begin{equation}\label{eq:analyticfamily}
+ F(z)=\sum_{\gamma\in S}f_\gamma(z)t^\gamma,
+ \qquad f_\gamma\in\OO(V),
+\end{equation}
+with a common well-ordered support $S\subseteq\Gamma$.
+The symbol $\OO(V)$ here denotes ordinary holomorphic functions; it is
+not the finite-element valuation ring $\OO$ without an argument.
+The analytic derivative is
+$\partial_zF=\sum_\gamma f'_\gamma(z)t^\gamma$.
+
+For each $\gamma$ write
+\begin{equation}\label{eq:monomialmatrix}
+ \D t^\gamma=\sum_\delta d_{\delta\gamma}t^\delta,
+ \qquad d_{\delta\gamma}\in\R.
+\end{equation}
+These scalars form a support-controlled matrix, not a matrix indexed by
+all surreals as a set. Only set-sized columns are used at a time.
+
+\begin{lemma}[Finite incoming contributions]\label{lem:finiteincoming}
+For every well-ordered set $S$ of exponents, the union
+\[
+ T_S=\bigcup_{\gamma\in S}\supp\D t^\gamma
+\]
+is well ordered, and for each $\delta$ only finitely many
+$\gamma\in S$ have $d_{\delta\gamma}\ne0$.
+\end{lemma}
+\begin{proof}
+The family $(t^\gamma)_{\gamma\in S}$ is summable. Apply strong
+additivity, including its assertion that the derivative family is
+summable. The two conclusions are exactly the two clauses of
+\cref{def:summable}.
+\end{proof}
+
+\begin{theorem}[Support-controlled common-domain interface]
+\label{thm:analyticinterface}
+Let $\Gamma$ be a differentially stable set-sized exponent group. The
+rule
+\begin{equation}\label{eq:coefficientderivation}
+ \D_HF
+ =\sum_{\delta\in T_S}
+       \left(\sum_{\gamma\in S}d_{\delta\gamma}f_\gamma\right)t^\delta
+\end{equation}
+defines a $\C$-linear derivation
+$\D_H:\HH_\Gamma(V)\to\HH_\Gamma(V)$.
+Every inner sum is finite. In particular, differentiating the scalar
+coefficients does not shrink or destroy the common ordinary domain $V$.
+Moreover,
+\begin{equation}\label{eq:commuteanalytic}
+ \D_H\partial_zF=\partial_z\D_HF.
+\end{equation}
+For an arbitrary initial $\Gamma$, the same assertions hold after
+passing to its differential Hahn hull.
+\end{theorem}
+\begin{proof}
+\Cref{lem:finiteincoming} proves the well-ordered support and finiteness
+of each inner sum. Each new coefficient is a finite real-linear
+combination of holomorphic functions on the \emph{same} $V$, and so is
+holomorphic there. The supports lie in $\Gamma$ by stability.
+
+Linearity is immediate. To verify the product rule, expand the Hahn
+product of two families and apply
+$\D(t^{\gamma+\eta})=t^\gamma\D t^\eta+t^\eta\D t^\gamma$.
+The standard product summability and strong additivity make the expanded
+families summable; coefficient comparison then uses only finite sums.
+Finally ordinary differentiation is complex-linear and commutes with each
+finite inner sum in \eqref{eq:coefficientderivation}. This gives
+\eqref{eq:commuteanalytic}. The hull theorem supplies the last assertion.
+\end{proof}
+
+\subsection{Linear analytic operations commute with the scalar derivation}
+The proof uses only the linearity of $f\mapsto f'$. It therefore gives a
+more general useful statement.
+
+\begin{corollary}[Coefficientwise linear naturality]\label{cor:naturality}
+Any fixed $\C$-linear operation on ordinary coefficient functions commutes
+with $\D_H$, wherever that operation is defined coefficientwise. In
+particular, for a fixed ordinary piecewise smooth contour $C\subseteq V$,
+\begin{equation}\label{eq:contourcommute}
+ \D\left(\int_C F(z)\dd z\right)
+ =\int_C\D_HF(z)\dd z,
+ \qquad
+ \int_C F\dd z:=\sum_\gamma
+      \left(\int_C f_\gamma\dd z\right)t^\gamma.
+\end{equation}
+The analogous identity holds for Laurent-coefficient residues at a fixed
+ordinary center whenever all coefficient functions belong to the stated
+punctured-domain class.
+\end{corollary}
+\begin{proof}
+Apply the fixed linear operation to the finite inner sums in
+\eqref{eq:coefficientderivation}. Both orders of application have
+coefficient $\sum_\gamma d_{\delta\gamma}L(f_\gamma)$ at $\delta$.
+\end{proof}
+The contour is fixed and ordinary. A moving contour, moving endpoints,
+or a residue with a different center convention requires additional
+terms or a different statement; none is hidden in this corollary.
+
+For example, on a punctured ordinary disk about $a\in\C$,
+$F(z)=t/(z-a)$ has contour integral $2\pi it$ around a positive simple
+loop. Both sides of \eqref{eq:contourcommute} are $-2\pi it^2$. This is
+an exact Hahn identity.
+
+\subsection{Moving evaluation and the correct total derivative}
+For $c\in V$ and $h\in\mm_\C$, define the finite-halo evaluation of
+\eqref{eq:analyticfamily} by
+\begin{equation}\label{eq:haloevaluation}
+ F^\#(c+h)=
+ \sum_{\gamma\in S}\sum_{n\ge0}
+     \frac{f_\gamma^{(n)}(c)}{n!}\,t^\gamma h^n.
+\end{equation}
+The family is summable: its support is controlled by the sum of the
+well-ordered $S$ and the positive-support monoid generated by $h$.
+Finiteness of representations in the Hahn product and the
+Hahn--Neumann lemma give coefficientwise finiteness. No uniform bound on
+the ordinary Taylor coefficients is required for this strong-summation
+statement.
+
+\begin{theorem}[Total-derivative chain rule]\label{thm:totalchain}
+With the common-domain hypotheses above,
+\begin{equation}\label{eq:totalchain}
+ \D\bigl(F^\#(c+h)\bigr)
+ = (\D_HF)^\#(c+h)
+   +\D h\,(\partial_zF)^\#(c+h).
+\end{equation}
+All terms may be placed in one set-sized differentially stable Hahn
+workspace after adjoining the support of $h$ and taking the hull.
+\end{theorem}
+\begin{proof}
+Differentiate the summable family in \eqref{eq:haloevaluation}. The
+ordinary complex Taylor coefficients have derivative zero, so the
+product rule splits each term into
+\[
+ \frac{f_\gamma^{(n)}(c)}{n!}
+ \bigl((\D t^\gamma)h^n
+      +t^\gamma n h^{n-1}\D h\bigr),
+\]
+with the second term omitted for $n=0$. The first family is summable by
+\cref{lem:finiteincoming} followed by the same positive-support Taylor
+argument. The second is the corresponding Taylor family for
+$\partial_zF$, multiplied by the fixed scalar $\D h$. Thus the split
+and rearrangement are legitimate, and they give the two terms of
+\eqref{eq:totalchain}. The workspace assertion follows from
+\cref{thm:hull}.
+\end{proof}
+
+\begin{example}\label{ex:totalchain}
+Take $F(z)=t^2e^z$ and evaluate at $z=t$. The three relevant expressions
+are
+\[
+ \D_HF=-2t^3e^z,\qquad
+ \partial_zF=t^2e^z,\qquad
+ \D(t^2\Expzero(t))=(-2t^3-t^4)\Expzero(t).
+\]
+The extra $-t^4\Expzero(t)$ is the moving-argument term. Differentiating
+only the scalar prefactor or only the analytic argument would miss part
+of the answer.
+\end{example}
+
+\subsection{Formal power series need their own admissibility condition}
+For a general $F(Z)=\sum_{n\ge0}c_nZ^n\in K[[Z]]$, formal coefficient
+and variable derivatives commute:
+\[
+ \D_cF=\sum_n(\D c_n)Z^n,\qquad
+ \partial_ZF=\sum_{n\ge1}n c_nZ^{n-1},\qquad
+ \D_c\partial_ZF=\partial_Z\D_cF.
+\]
+Evaluation at $a$ requires summability. If the families defining
+$F(a)$, $(\D_cF)(a)$, and $(\partial_ZF)(a)$ are summable, then the same
+calculation proves
+\[
+ \D(F(a))=(\D_cF)(a)+\D a\,(\partial_ZF)(a).
+\]
+One must not apply this formula to an arbitrary unevaluable formal germ.
+The common-domain finite-halo theorem supplies its summability proof;
+an unrestricted formal coefficient sequence does not. This is exactly
+the kind of interface boundary emphasized in the repository's analysis
+and foundations reports \cite{RepoAnalysis,RepoFound}.
+
+\section{Transseries, composition, and the limits of transfer}
+\label{sec:transfer}
+
+Aschenbrenner, van den Dries, and van der Hoeven prove that the natural
+embedding of the ordered differential field of logarithmic-exponential
+transseries into $(\No,\D)$ is elementary, and that Hardy fields embed
+in the appropriate ordered differential sense \cite{ADH}. This places the
+selected derivation in a powerful nonoscillatory asymptotic setting. It is
+not a theorem that every algebraic differential equation has a solution.
+The explicit obstruction $\D y=iy$, $y\ne0$, already shows why
+complexification must not be called a differentially closed field.
+
+Berarducci and Mantova construct composition and a compatible Taylor
+calculus on the omega-series field. Their global incompatibility theorem
+says that the particular simplest derivation used here cannot be
+compatible with a composition on all of $\No$ under their stated
+compatibility axioms \cite{BMComposition}. Thus one must distinguish
+composition on its proved domain from a hypothetical functional
+interpretation of every surreal number. No assertion here settles the
+broader problem of alternative global composition structures.
+
+Several tempting inferences can now be rejected by concrete examples.
+Algebraic closedness does not imply logarithmic-derivative surjectivity:
+$i$ is missing from the image. Surjectivity of $\D$ does not imply
+closure under all exponential integrals: $i\omega$ is a primitive of $i$,
+but there is no compatible exponential of it in $\SC$. Differential
+stability of a Hahn workspace does not imply primitive closure:
+$\log\omega$ is missing from $H_\Q$. Infinitesimal imaginary part is
+necessary but not sufficient for a nonzero rank-one solution:
+$i/\omega$ is excluded whereas $i/\omega^2$ is included.
+
+There is also no contradiction between the missing harmonic oscillator
+and the existence of finite-angle sine and cosine. If
+$s=\sin(\varepsilon)$ and $c=\cos(\varepsilon)$ for an infinitesimal
+$\varepsilon$, then the proved identities are
+\[
+ \D s=c\D\varepsilon,\qquad
+ \D c=-s\D\varepsilon.
+\]
+The factor $\D\varepsilon$ is indispensable. Removing it would replace
+an infinitesimal phase speed by the forbidden constant speed $1$.
+
+\section{Computation and formalization contracts}\label{sec:computation}
+
+\subsection{What the accompanying program actually implements}
+The package includes an exact Python/SymPy verifier and a small decision
+routine for the rational criterion of \cref{thm:rational}. The routine
+accepts $b(X)\in\Q(X)$, cancels common factors, and reports whether the
+degree gap is at least two. Zero is handled separately. Inputs involving
+other functions or nonrational coefficients are rejected as outside the
+implemented domain, not classified as mathematical nonexistence.
+
+The verification program checks finite rational identities, truncated
+small-exponential equations and their exact residuals, the algebraic
+solution of \cref{ex:algebraicphase}, chain-rule examples, a finite Jordan
+fundamental matrix, and the displayed constant-coefficient basis.
+The symbol $X$ in these checks is an ordinary formal real variable. A
+successful symbolic derivative check validates the displayed finite
+identity; it does not implement the Berarducci--Mantova derivation on an
+arbitrary surreal normal form.
+
+For the truncated exponential
+\[
+ E_N(t)=\sum_{n=0}^N\frac{(-i)^n}{n!}t^n,
+ \qquad\D=-t^2\frac{\dd}{\dd t},
+\]
+the exact residual is
+\begin{equation}\label{eq:truncresidual}
+ \D E_N-it^2E_N
+ =-i\frac{(-i)^N}{N!}t^{N+2}.
+\end{equation}
+This identity, not numerical convergence, is the finite verification target.
+The infinite identity follows separately from strong summability.
+
+\subsection{A scalar derivative needs a monomial support contract}
+A useful extension to a symbolic Hahn representation should supply both
+$\D(t^\gamma)$ and its support certificate. A function returning a formal
+expression without an admissible support does not yet implement a strong
+Hahn derivation. The hull theorem supplies a semantic closure guarantee,
+but its countably many stages do not constitute a terminating algorithm
+for every input representation.
+
+For groups contained in $\R$, \cref{prop:realgroup} gives an unusually
+simple effective closure: adjoin exponent $1$ and its rational multiples.
+For genuinely surreal exponent groups, a derivative may introduce new
+logarithmic scales. The universal power shortcut warned against after
+\cref{prop:calculus} must not be used to hide that enlargement.
+
+The existing computer-algebra report separates exact denotation,
+coefficient access, and decision procedures \cite{RepoCAS}. The same
+separation applies here. Exact notation $\Ip(b)$ is not an algorithm for
+its leading purely infinite term. An obstruction certificate should be a
+proved nonzero value of $\pinf\Ip(b)$, or a theorem-specific witness such
+as the degree test, rather than a timeout in an integration routine.
+
+\subsection{A proof-assistant interface, without an implementation claim}
+A future formalization should distinguish a scalar derivation on a
+set-sized coefficient field, a strongly additive Hahn lift of it, formal
+variable differentiation, and an analytic evaluation map. The most useful
+new obligation is the implication
+\[
+ \text{monomial support closure}
+ \quad\Longrightarrow\quad
+ \text{closure of the full small-support Hahn type under }\D.
+\]
+This is the proof content of \cref{lem:monomialcriterion,thm:hull}.
+It complements, rather than duplicates, generic Hahn convolution.
+
+A second obligation is \cref{lem:finiteincoming}: for each admissible
+input support, each output coefficient receives only finitely many
+monomial-derivative contributions. Once available, the common-domain
+analytic coefficient interface is finite linear algebra at every output
+exponent. A third is the represented quotient $\JJ$ in
+\cref{rem:quotient}, so that rank-one classification does not accidentally
+require a type whose elements are proper classes.
+
+No Lean files are delivered or asserted to compile. In particular, this
+article does not claim that the concrete surreal carrier has already been
+connected to every required Hahn, real-closed-field, exponential, or
+derivation interface. The elementary classification can first be
+formalized over a differential ordered field satisfying the explicitly
+listed axioms, with the concrete surreal instantiation left as a separate
+proved dependency.
+
+\section{Conclusions and precise remaining tasks}\label{sec:conclusion}
+
+The central missing connection is now explicit. A scalar derivation can
+be made internal to a set-sized Hahn workspace, and it can act on a
+common-domain analytic Hahn family without destroying the common domain.
+Finite phase is not merely a geometric convenience: it exactly controls
+which imaginary logarithmic derivatives can occur. The purely infinite
+part of an imaginary primitive is a complete rank-one obstruction.
+
+The higher-rank situation remains a separate problem. Constant matrices
+are fully handled by \cref{thm:matrix}; arbitrary matrices with surreal
+entries are not. Rank-one gauge classification suggests studying how
+infinite phase obstructions interact with invariant subspaces and changes
+of basis, but no general matrix normal form follows from the scalar
+result. Likewise, an effective description of differential hulls for
+large symbolic exponent languages needs a separately specified
+representation and monomial-derivative procedure.
+
+For the repository, a concrete next mathematical task is to combine the
+coefficient derivation with its existing finite-deformation and residue
+interfaces, always fixing whether the centers and contours move. The
+fixed-domain, fixed-contour compatibility proved here is the appropriate
+starting theorem. It is not permission to differentiate every residue
+convention as though the center were constant.
+
+The resulting picture is coherent rather than paradoxical: $\SC$ is
+algebraically closed; $\D$ is surjective; real exponential integrals
+exist; finite angular motion is exact; and sustained nonzero constant
+angular velocity is nevertheless absent. These statements concern
+different closure properties, and the obstruction sequence
+\eqref{eq:exactsequence} records their precise boundary.
+
+\clearpage
+\appendix
+\section{Dependency and verification ledger}\label{app:ledger}
+
+\begin{longtable}{L{0.30\textwidth}L{0.33\textwidth}L{0.28\textwidth}}
+\toprule
+Claim & Mathematical input & Verification status\\
+\midrule
+\endhead
+Existence and surjectivity of $\D$ & Berarducci--Mantova theorem & Imported,
+not reproved or machine-checked\\
+Hahn workspace construction & Set-supported normal forms; strong additivity &
+Full proof in \cref{sec:hull}\\
+Finite phase & Positive-support formal exponential and logarithm & Full
+proof in \cref{sec:phase}; finite series checks supplement it\\
+Finite-primitive subgroup & $H$-field sign, normalization, primitives & Full
+proof in \cref{sec:bounded}\\
+Logarithmic-derivative image and gauge classes & Polar decomposition and
+real exponential integrals & Full proof in \cref{sec:logder}\\
+Rational decision criterion & Leading Laurent exponent; convexity of $\BB$ &
+Full proof; exact restricted implementation\\
+Constant-coefficient equations & Constant field, no oscillation, polynomial
+Bezout identities & Full proof; displayed examples symbolically checked\\
+Oscillatory extension & Rational-function divisibility and no constant
+imaginary logarithmic derivative & Full no-new-constants proof\\
+Analytic interface & Finite incoming derivative contributions; common
+ordinary domain & Full proof; worked examples checked\\
+Proof-assistant instantiation & Concrete surreal/Hahn bridge and chosen
+scalar derivation & Not implemented in this package\\
+\bottomrule
+\end{longtable}
+
+The generated verification record is \path{data/verification.json}.
+It contains the actual executed check count, software versions, and the
+statement of what was tested. \path{data/build_report.json} records the
+PDF build and layout checks. Neither file certifies a mathematical theorem
+beyond the finite identities explicitly executed. The paper's general
+proofs remain human-readable mathematical arguments, not kernel-checked
+proof objects.
+
+\section{Build and package contents}\label{app:build}
+The article is standalone: the bibliography is embedded and no external
+figures or bibliography processor are required. From the package directory,
+run
+\begin{lstlisting}
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+python code/verify_examples.py
+\end{lstlisting}
+Alternatively, run \path{build.sh}; it uses three pdfLaTeX passes if
+\texttt{latexmk} is unavailable. The verification script requires Python
+and SymPy; it uses exact arithmetic rather than floating-point simulation.
+The script can also be imported to use the restricted rational-phase
+classification routine.
+
+The repository audit is recorded separately in \path{REPOSITORY_AUDIT.md}
+with the inspected commit and document paths. It documents a targeted gap
+review and does not claim to certify the existing reports. Only the new
+article and its supporting artifacts are packaged; the repository was not
+modified.
+
+\begin{thebibliography}{99}
+
+\bibitem{BM}
+A. Berarducci and V. Mantova,
+\emph{Surreal numbers, derivations and transseries},
+Journal of the European Mathematical Society \textbf{20} (2018), 339--390.
+DOI: \href{https://doi.org/10.4171/JEMS/769}{10.4171/JEMS/769}.
+Public preprint: \url{https://arxiv.org/abs/1503.00315}; the theorem
+numbering A and B used here is visible in version 3.
+
+\bibitem{ADH}
+M. Aschenbrenner, L. van den Dries, and J. van der Hoeven,
+\emph{The surreal numbers as a universal $H$-field},
+arXiv:1512.02267, version 3 (2016).
+\url{https://arxiv.org/abs/1512.02267}.
+Theorems 1--3 and the Hahn-field preliminaries are the relevant passages.
+
+\bibitem{BMComposition}
+A. Berarducci and V. Mantova,
+\emph{Transseries as germs of surreal functions},
+Transactions of the American Mathematical Society \textbf{371} (2019),
+3549--3592.
+\url{https://arxiv.org/abs/1703.01995}.
+See the composition, Taylor, and incompatibility theorems (Theorems 6.3,
+7.14, and 8.4 in the consulted preprint).
+
+\bibitem{Neumann}
+B. H. Neumann,
+\emph{On ordered division rings},
+Transactions of the American Mathematical Society \textbf{66} (1949),
+202--252.
+DOI: \href{https://doi.org/10.1090/S0002-9947-1949-0032593-5}
+{10.1090/S0002-9947-1949-0032593-5}.
+\url{https://www.jstor.org/stable/1990552}.
+
+\bibitem{RepoMap}
+V. Reshetnikov, \texttt{Surreal} repository,
+\emph{The surreal and surcomplex reports},
+\path{docs/README.md} and \path{docs/manifest.tex},
+commit \texttt{e260237db9b71da8b74a0c13c8e6355119091100},
+inspected September 21, 2026.
+\url{https://github.com/VladimirReshetnikov/Surreal/tree/e260237db9b71da8b74a0c13c8e6355119091100/docs}.
+
+\bibitem{RepoTrig}
+\texttt{Surreal} repository,
+\emph{Trigonometry on the Surcomplex Plane}, specialist README,
+\path{docs/surcomplex/trigonometry/README.md}, same inspected commit.
+\url{https://github.com/VladimirReshetnikov/Surreal/blob/e260237db9b71da8b74a0c13c8e6355119091100/docs/surcomplex/trigonometry/README.md}.
+
+\bibitem{RepoAnalysis}
+\texttt{Surreal} repository,
+\emph{Surcomplex analysis: holomorphic functions on $K=\No[i]$},
+specialist README,
+\path{docs/surcomplex/analysis/README.md}, same inspected commit.
+\url{https://github.com/VladimirReshetnikov/Surreal/blob/e260237db9b71da8b74a0c13c8e6355119091100/docs/surcomplex/analysis/README.md}.
+
+\bibitem{RepoFound}
+\texttt{Surreal} repository,
+\emph{Foundations for surreal and surcomplex mathematics},
+specialist README,
+\path{docs/foundations-and-computation/foundations/README.md},
+same inspected commit.
+\url{https://github.com/VladimirReshetnikov/Surreal/blob/e260237db9b71da8b74a0c13c8e6355119091100/docs/foundations-and-computation/foundations/README.md}.
+
+\bibitem{RepoCAS}
+\texttt{Surreal} repository,
+\emph{Surreal and Surcomplex Numbers in Symbolic Computer Algebra},
+specialist README,
+\path{docs/foundations-and-computation/computer-algebra/README.md},
+same inspected commit.
+\url{https://github.com/VladimirReshetnikov/Surreal/blob/e260237db9b71da8b74a0c13c8e6355119091100/docs/foundations-and-computation/computer-algebra/README.md}.
+
+\end{thebibliography}
+\end{document}
