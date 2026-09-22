@@ -26,7 +26,7 @@ quadratic recursion for B, the identical coefficient check of B^2 = 1-x, and
 the identical application of the hypothetical map to that one finite identity.
 That shared core theorem is proved exactly once in the merged article. The
 supporting material diverged, so this report is the union of the two toolkits
-rather than a deduplication: the semiring strengthening, the general
+rather than a deduplication: the semiring certificate, the general
 unit-square-root lemma, the elementary two-support lemma and several scope
 remarks come from the second report; the three-way evaluation criterion, the
 order-forcing theorem, the monomial classification over an arbitrary exponent
@@ -55,9 +55,12 @@ wording was kept.
    image x -> omega is impossible on Q[[x]].
 2. The same obstruction holds over the semiring Q_{>=0}[[x]] of
    nonnegative-coefficient series, with no additive inverses in the source, and
-   there it excludes every value u >= 1 rather than only u > 1. This neither
-   implies nor is implied by result 1: the hypotheses are weaker on two axes
-   but the domain is smaller. Both are proved.
+   there it excludes every value u >= 1 rather than only u > 1. This implies
+   result 1 by restricting any proposed ring map. Conversely, every semiring
+   map to a ring extends uniquely to Q[[x]] by writing each rational series
+   as a difference of two nonnegative-coefficient series. The article proves
+   this correspondence and retains the positive witness as a separate
+   elementary proof.
 3. The possible images of x under unital homomorphisms Q[[x]] -> No are
    exactly the surreal infinitesimals, including zero. Each such value has a
    coefficient-fixing strongly additive evaluation on R[[x]].
@@ -71,6 +74,22 @@ wording was kept.
 The normal-form results, Hahn-field background, formal binomial series,
 Higman's lemma, and exponent-reversing embedding are classical. The paper
 identifies those ingredients rather than claiming them as new.
+
+## Correction to the comparison of the proofs
+
+The earlier article and audit called the ring and semiring obstructions
+“incomparable.” That was incorrect: the target of the semiring map is the
+whole ordered field, so restricting a ring map automatically has the
+required codomain. The revised comparison also proves the converse extension
+explicitly. If `a-b = a'-b'`, then `a+b' = a'+b`; applying the semiring map
+makes `ψ(a)-ψ(b)` independent of the chosen representation. Addition and
+multiplication then give a unique ring homomorphism.
+
+The two witness proofs themselves are unchanged. The positive pair `H, G`
+provides a direct semiring certificate, while `B² = 1-x` gives the shorter
+ring argument. The standalone short proof remains valid and makes no claim
+of logical incomparability. The correction is also recorded in
+[`proof-audit.md`](proof-audit.md).
 
 ## Run the exact checks
 

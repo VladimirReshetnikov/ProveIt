@@ -45,7 +45,7 @@ The recursion and the identity are internal to a set-sized ring. More strongly,
 the obstruction lies in the countable finitely generated Q-algebra Q[x,B]=Q[B].
 The larger ring Q[[x]] is not countable.
 
-## The second, independent obstruction
+## A direct nonnegative-coefficient obstruction
 
 **Claim.** No unital semiring homomorphism from Q_{>=0}[[x]] to an ordered
 field K sends x to any u >= 1.
@@ -65,12 +65,26 @@ The audit chain is:
 5. Applying psi gives g = z^2 >= 0 and g = 1 + ug, hence (1-u)g = 1 in K.
 6. For u >= 1 the left side is nonpositive and the right side is 1 > 0.
 
-**This is not a corollary of the main theorem, and the main theorem is not a
-corollary of it.** The hypotheses are weaker on two axes at once — a semiring
-source with no additive inverses, and u >= 1 rather than u > 1 — while the
-domain is smaller, so a ring homomorphism on Q[[x]] is not a semiring
-homomorphism claim about Q_{>=0}[[x]]. Both statements are proved and both are
-kept. Neither makes the other redundant.
+**Correction, 22 September 2026: the earlier incomparability claim was
+false.** A unital ring map `Q[[x]] → K` restricts to a unital semiring map
+`Q_{>=0}[[x]] → K`. The codomain is still the whole field `K`, not its
+nonnegative cone, so no extra image-positivity hypothesis is needed. The
+semiring obstruction therefore implies the ring obstruction.
+
+Conversely, every such semiring map extends uniquely to a ring map. Write
+`f = a-b` using coefficientwise positive and negative parts and define
+`φ(f) = ψ(a)-ψ(b)`. If also `f = a'-b'`, the semiring identity
+`a+b' = a'+b` proves that this definition is independent of the representation.
+Addition follows from `(a-b)+(c-d) = (a+c)-(b+d)`, and multiplication from
+`(a-b)(c-d) = (ac+bd)-(ad+bc)`. The extension preserves `0` and `1`, and its
+uniqueness follows because every rational series is such a difference.
+Thus the ring theorem excludes semiring maps at `u > 1`; the remaining
+endpoint `u = 1` is already contradicted by `G = 1+xG`.
+
+The positive-coefficient proof above is retained as a distinct explicit
+certificate: it uses only two identities inside the semiring and does not
+need this extension construction. The witness identities and their proofs
+are unaffected by the corrected logical comparison.
 
 **What is *not* assumed in the semiring argument.** No order is preserved and
 no infinite sum is preserved. The images of arbitrary positive-coefficient
@@ -84,10 +98,10 @@ used.
 **Two square-root lemmas, both retained.** The merged article keeps both the
 substitution proof that 1+qx is a unit square (obtained by substituting -qx
 into B) and the general recursion giving a unique square root in 1 + x k[[x]]
-for every unit over a characteristic-zero field k. Neither subsumes the other
+for every unit with constant term 1 over a characteristic-zero field k. Neither subsumes the other
 in practice: the substitution proof needs only the already-constructed B and
 is the one reproduced in the standalone `short-proof.tex`; the general lemma
-supplies uniqueness, an arbitrary unit and an arbitrary base field, and is
+supplies uniqueness, an arbitrary unit with constant term 1 and an arbitrary base field, and is
 what the Laurent-expansion and injectivity arguments later use.
 
 **Two proofs of the two-support fact, both retained.** That A+B is well
