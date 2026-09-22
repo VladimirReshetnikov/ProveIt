@@ -7,8 +7,7 @@ from pathlib import Path
 
 
 def main() -> None:
-    # article.tex lives in the package root; this script lives in code/.
-    root = Path(__file__).resolve().parent.parent
+    root = Path(__file__).resolve().parent
     compiler = shutil.which("pdflatex")
     if compiler is None:
         raise SystemExit("pdfLaTeX was not found. Install TeX Live or MiKTeX and the packages named in article.tex.")

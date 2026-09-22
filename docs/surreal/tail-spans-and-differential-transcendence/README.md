@@ -105,6 +105,13 @@ algebraic differential equation of any finite order. `tail:rem:dynupgrade` here
 and the added paragraph in `dyn:warn:diffalg` there state the relation from both
 sides.
 
+Since then, Part V of [differential-equations](../../surcomplex/differential-equations/)
+writes this report's Euler derivation as `∂_τ` (`diff:rs:lem:euler`), and its
+Part VI proves algebraic independence of differentially algebraic solutions
+(`diff:aut:cor:independent`). That is a different notion from the maximal
+differential transcendence degree here (`tail:eq:maxdtrdeg`); neither result
+bears on the other.
+
 ## What was checked when this was fitted into the collection
 
 The headline claim — `dtrdeg_{B_0} H_0 = 2^{ℵ_0}` with the explicit `ξ_α` —
@@ -193,15 +200,17 @@ no BibTeX, no shell escape, no external image, no network access. The source
 uses installed TeX fonts; no font files are distributed here.
 
 ```sh
-python code/build.py
+pdflatex -interaction=nonstopmode -halt-on-error article.tex   # three times
 ```
 
-or run `pdflatex -interaction=nonstopmode -halt-on-error article.tex` three
-times from the package root. Last verified build: exit 0, **25 pages**, no
+from the report directory. The delivered `code/build.py` does the same, but it
+looks for `article.tex` beside itself, as in the delivered package; to use it,
+copy the directory and move `build.py` next to `article.tex` in the copy. Last verified build: exit 0, **25 pages**, no
 LaTeX warnings, no undefined references, zero overfull or underfull boxes.
 
-`code/build.py` resolves `article.tex` in its parent directory, since the
-script sits in `code/` and the source sits in the package root.
+`code/build.py` is kept byte-identical to the delivery. An earlier edit that
+made it look one directory up has been undone, because delivered code is not
+modified in this collection.
 
 ## Rerun the checks
 

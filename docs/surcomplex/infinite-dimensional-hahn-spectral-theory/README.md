@@ -129,11 +129,16 @@ globally well-ordered positive support:
 ## Relation to the neighbouring reports
 
 **[spectral-theory](../spectral-theory/)** is the finite-dimensional sibling:
-52 pages of determinantal matrix theory over real closed fields, in which every
-dimension is an ordinary integer. This report is not a continuation of it.
+determinantal matrix theory over real closed fields, in which every dimension
+is an ordinary integer. This report is not a continuation of it.
 Part II's source proved Higman's lemma in an appendix. That proof is not
 reprinted here, because the identical argument is already written out there as
 `spec:lem:words` and `spec:lem:neumann`.
+
+**[hahn-herglotz-positivity](../hahn-herglotz-positivity/)** bears on the
+missing spectral measures only negatively: its `herg:cor:unitary` gives a
+cyclic algebraic unitary with no positive coefficientwise spectral measure.
+It supplies no spectral-measure theory.
 
 ## Build
 

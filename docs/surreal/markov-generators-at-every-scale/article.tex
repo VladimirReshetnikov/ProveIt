@@ -8,6 +8,9 @@
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{fancyhdr}
+\makeatletter
+\g@addto@macro\UrlBreaks{\do\:\do-}
+\makeatother
 \hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,
  urlcolor=blue!45!black,pdftitle={Surreal Markov Generators at Every Valuation Scale},
  pdfauthor={Research manuscript prepared for Vladimir Reshetnikov}}
@@ -84,6 +87,9 @@ rank-one monomial realization. Finally, the effective characteristic polynomial
 recovers the leading surcomplex eigenvalue amplitudes, including tied scales and
 nonreal eigenvalues. All proofs use finite algebra in a set-sized Hahn workspace;
 no countable convergence in the full surreal topology is asserted.
+Throughout, the value group of that workspace is nonzero, set-sized and
+divisible. Path measures, sample paths and infinite state spaces are not
+treated.
 \end{abstract}
 
 \paragraph{Status.}
@@ -93,17 +99,22 @@ aggregation, stochastic-idempotent structure, and rank-one metastability theory
 are credited explicitly. The arbitrary-rank realization and stability package is
 presented as a candidate original contribution after a targeted, non-exhaustive
 comparison. Priority and absence from every repository archive are not certified.
-The arguments are mathematical proofs, not Lean-checked proofs.
+The arguments are mathematical proofs, not Lean-checked proofs. Like every report
+in this collection, it is an AI-assisted research draft; it has not been
+refereed. It is built from a single manuscript;
+Section~\ref{markov:sec:provenance} records how that manuscript was placed in
+the collection and what was changed.
 
 \clearpage
 \begingroup
 \small
 \setlength{\parskip}{0pt}
+\enlargethispage{3\baselineskip}
 \tableofcontents
 \endgroup
 \clearpage
 
-\section{The question, the answer, and its boundaries}\label{sec:intro}
+\section{The question, the answer, and its boundaries}\label{markov:sec:intro}
 
 A real continuous-time Markov chain has a finite row Laplacian $L$: its
 off-diagonal entries are nonpositive and $L\one=0$. Replacing its rates by positive
@@ -117,12 +128,12 @@ Can the hierarchy, its rare entries, and its surcomplex spectral amplitudes be
 recovered without choosing a numerical small parameter?
 \end{quote}
 We answer this for the normalized resolvent
-\begin{equation}\label{eq:intro-resolvent}
+\begin{equation}\label{markov:eq:intro-resolvent}
  R_L(s)=s(sI+L)^{-1},\qquad s>0.
 \end{equation}
 For an ordinary real chain, this is the transition matrix observed at an
 independent exponential time of rate $s$. In a Hahn field we take
-\eqref{eq:intro-resolvent} as a rational-algebraic definition. This choice avoids
+\eqref{markov:eq:intro-resolvent} as a rational-algebraic definition. This choice avoids
 assuming a globally defined surreal matrix exponential or a surreal-valued
 probability measure on a path space.
 
@@ -131,11 +142,15 @@ The central object is
 \[
  K_\alpha(c)=\res R_L(c\,t^\alpha),
 \]
-where residue means the coefficient of $t^0$ of a bounded Hahn series. Smaller
+where residue means the coefficient of $t^0$ of a bounded Hahn series. We call
+the real matrix $K_\alpha(c)$ the \emph{shadow}, or residue matrix, of the
+resolvent at scale $\alpha$. Smaller
 $s$, hence larger $\alpha$, corresponds to longer observation. A \emph{plateau}
 is a range of $\alpha$ on which this matrix is constant in $c$. A
 \emph{crossover} is a scale at which nontrivial dependence on $c$ remains.
 These terms refer only to this precisely defined resolvent hierarchy.
+Section~\ref{markov:sec:words} records where these and other words of this
+report mean something different elsewhere in the collection.
 
 \subsection{Main conclusions}
 
@@ -160,7 +175,7 @@ reversibility, simple-eigenvalue, or unique-minimizing-forest assumption.
 
 The converse is stronger than realizing an eigenvalue list. Prescribe the whole
 nested family $P_j$ and, on each retract, any real effective generator whose
-limiting projection is the next $P_j$. Theorem~\ref{thm:general-realization}
+limiting projection is the next $P_j$. Theorem~\ref{markov:thm:general-realization}
 constructs an irreducible Hahn generator with exactly those crossovers at any
 prescribed ordered scales. Thus the compatibility conditions in the forward
 theorem are also sufficient.
@@ -225,9 +240,9 @@ the exact collection of realization, stability, and simultaneous specialization
 statements proved here. That is a statement about the search performed, not a
 proof of historical priority.
 
-\subsection{Comparison with the Surreal repository}
+\subsection{Comparison with the Surreal repository}\label{markov:sec:comparison}
 
-The comparison was pinned to commit
+The manuscript's comparison was pinned to commit
 \begin{center}\small\revsha\end{center}
 The maintained catalogue contains extensive analytic, dynamical, and spectral
 material~\cite{Repo}. In particular, its spectral report already treats finite
@@ -244,7 +259,203 @@ were not searched. Thus the warranted claim is that the package was not found
 in the inspected material, not an exhaustive assertion about every binary
 archive. The accompanying \texttt{SOURCE\_AUDIT.md} records this boundary.
 
-\section{Hahn workspaces and positive rate matrices}\label{sec:workspace}
+\paragraph{Since the pin.}
+Each of the 18 archives that \texttt{docs/new} held at the pin has since been
+unpacked, placed in the collection and removed from \texttt{docs/new}, and so
+has this manuscript. At commit \texttt{e9a9650}, which placed this report, a
+full-text search of every LaTeX source in the collection finds the words
+\texttt{Markov} and \texttt{metastab} only in this report. Apart from
+bibliography titles, the word \texttt{stochastic} occurs in exactly one other
+report: a proof remark in the spectral report~\cite{CollSpec}, following its
+Frobenius eigenvalue bound (\path{thm:HW}), says that the proof does not use a
+decomposition of a doubly stochastic matrix into permutations. That remark is
+about a proof technique, not about Markov dynamics. These searches, like the
+original one, locate words, not results stated under other names.
+
+\subsection{What this report does not claim}\label{markov:sec:nonclaims}
+
+Each limitation below is also stated where it applies. They are collected here
+so that none of them is lost when the results are quoted elsewhere.
+\begin{enumerate}[label=(N\arabic*),leftmargin=3.2em]
+\item \emph{No global surreal exponential and no path measure.} The object of
+study is the normalized resolvent, defined as a rational-algebraic expression.
+No globally defined surreal matrix exponential, surreal heat semigroup,
+surreal-valued probability measure on a path space, surreal sample path, or
+stochastic integral is constructed or assumed. The real semigroup
+$S_\alpha(u)$ of Corollary~\ref{markov:cor:effective-semigroup} is not claimed
+to be the residue of a global $\exp(-ut^{-\alpha}L)$
+(Remark~\ref{markov:rem:realsemigroup}). Constructing such objects would
+require further choices of convergence and summability structure
+(Section~\ref{markov:sec:directions}).
+\item \emph{No convergence in the full surreal topology.} Every proof is finite
+algebra in one set-sized Hahn workspace. Residue is a ring homomorphism, not a
+sequential limit in the fine topology of $\No$. Limits in the real variables $c$
+and $u$ are ordinary limits of finite real matrices, and no assertion that
+$t^n$ tends to zero in an arbitrary-rank Hahn topology is used
+(Remark~\ref{markov:rem:noconv}). A bound $\bigO{\rho}$ is a valuation
+assertion, not a bound with an unspecified real constant, and the remainder
+certificate of Proposition~\ref{markov:prop:remainder} uses neither a metric on
+the whole surreal class nor a convergence rate in an ordinary norm.
+\item \emph{Finite state spaces only.} No result covers countably infinite
+state spaces, time-inhomogeneous rates, uniform estimates as $n\to\infty$, or a
+full hierarchy of large-deviation transition events.
+\item \emph{Divisibility is assumed throughout.} Section~\ref{markov:sec:divisible}
+lists where it is used. No statement is claimed for a nondivisible value group.
+\item \emph{One notion of critical time.} Plateaux and crossovers refer only to
+the resolvent hierarchy. The bound $n-1$ bounds these crossover scales, which
+are the distinct nonzero eigenvalue valuations. It does not bound the path-event
+or typical-transition-graph hierarchies of the metastability literature, which
+can contain more scales.
+\item \emph{Rank-one realization preserves finite leading data only.}
+Theorem~\ref{markov:thm:rank-one} preserves the finite marked-forest leading
+diagram. It does not preserve complete Hahn series, all possible inequalities,
+or the ordered group, and it is not a global order embedding of $\Gamma$
+(Remark~\ref{markov:rem:preserved}). Higher rank remains meaningful for
+unbounded families of scale comparisons, for complete series, and for data whose
+size is not fixed in advance; the finite theorem is not to be extrapolated to
+those settings.
+\item \emph{The stability hypotheses matter.}
+Theorem~\ref{markov:thm:stability} needs positive rates on one fixed graph. A
+new edge is not a relative perturbation of a zero edge, and the theorem is not
+a condition-number bound for arbitrary matrices
+(Remark~\ref{markov:rem:hypotheses}).
+\item \emph{The leading spectrum need not be real.} No assertion is made that a
+nonreversible spectrum is real: leading amplitudes can form nonreal conjugate
+pairs (Example~\ref{markov:ex:prescribed}). Diagonalizability at nonzero
+eigenvalues is neither assumed nor proved.
+\item \emph{Computation.} Forest enumeration is finite, not efficient. It needs
+an exact comparison contract for the input valuations and coefficients, and a
+finiteness theorem is not a uniform algorithm on every representation of a
+surreal number (Section~\ref{markov:sec:procedure}). The finite checks of
+Section~\ref{markov:sec:checks} do not establish the general theorems.
+\item \emph{Credited, not claimed.} The directed matrix-forest theorem
+(Chebotarev--Agaev), the structure of stochastic idempotents
+(Dyer--Greenhill--Ullrich), metastability with nonreversible rates and
+optimal-forest eigenvalue exponents in rank one (Gan--Cameron, in the
+Freidlin--Wentzell tradition), singular-perturbation aggregation (Yin--Zhang),
+nested self-adjoint projections with prescribed hierarchical spectra
+(Bendikov--Krupski), generalized ultrametric inverse $M$-matrices
+(Nabben--Varga), and higher-rank Hahn specialization (Joswig--Smith) are
+inputs or context. The reversible partition case of the inverse construction
+and the finite rational sign-separation lemma are not proposed as new.
+\item \emph{Priority and verification.} The realization and stability package
+is a candidate original contribution after a targeted, non-exhaustive
+literature comparison. Priority is not certified, and neither is absence from
+every archive of the repository at the pin
+(Section~\ref{markov:sec:comparison}). The proofs are not Lean-checked and have
+not been refereed. The three further questions of
+Section~\ref{markov:sec:directions} are not solved.
+\end{enumerate}
+The delivered audit file \texttt{SOURCE\_AUDIT.md} states the audit boundaries
+in more detail.
+
+\subsection{Relation to other reports of the collection}\label{markov:sec:neighbours}
+
+No proof in this report depends on another report, and no other report depends
+on this one. The links below are comparisons.
+
+\paragraph{Newton's rule in the polynomial-algebra report.}
+The polynomial-algebra report~\cite{CollPoly} works, like this one, over
+$K=\C((t^\Gamma))$ with $\Gamma$ set-sized and divisible. It proves Newton's
+root-valuation rule at arbitrary rank
+(\path{polynomial:thm:newton}), together with the initial-polynomial root count
+and the profile formula
+$\phi_P(\rho)=v(a_n)+\sum_i\min\{\rho,v(\alpha_i)\}$
+(\path{polynomial:thm:initialroots} and \path{polynomial:eq:profileproduct}).
+Apply these at center zero to the monic forest polynomial
+$D(s)=\sum_k\sigma_ks^{d-k}=\prod_r(s+\lambda_r)$ of
+\eqref{markov:eq:forest-det}. Its coefficient of $s^{d-k}$ has valuation $h_k$,
+so its profile at $\alpha$ is exactly $m_\alpha$ of \eqref{markov:eq:m-alpha},
+and they give the three assertions of Lemma~\ref{markov:lem:initial-spectrum}:
+the valuation identity \eqref{markov:eq:sum-min}, the initial factorization
+\eqref{markov:eq:initial-factorization}, and the identification of the critical
+scales with the nonzero eigenvalue valuations. The direct proof given here is
+kept. Two features are specific to rate matrices. First, the coefficient
+valuations $h_k$ are read from forests with no possible cancellation, because
+every forest weight is positive. Second, Theorem~\ref{markov:thm:convexity}
+proves more than Newton's rule gives for a general polynomial: every point
+$(k,h_k)$ lies on the lower boundary, since the increments are nondecreasing,
+and at a critical scale every index from $k_-$ to $k_+$ is active. For a general
+polynomial some coefficient points may lie strictly above the lower boundary.
+Here the positivity of the forest coefficients of the effective generator rules
+that out.
+
+\paragraph{The positive Cauchy--Binet identity of the spectral report.}
+The spectral report's positive Cauchy--Binet identity (\path{thm:gram}, a label
+without report prefix in that report) writes the coefficients of
+$\det(I+sA^*A)$ as sums of squared moduli of minors. Because these are positive,
+no leading cancellation occurs, and the coefficient valuations are twice the
+minimal minor valuations. Equation~\eqref{markov:eq:profile-properties} uses the
+same mechanism for a different positive expansion: by
+Proposition~\ref{markov:prop:forest}, the coefficients $\sigma_k$ of
+$\det(sI+L)/s$ are sums of positive forest weights, so $v(\sigma_k)=h_k$ and
+$\lc(\sigma_k)=b_k>0$. The matrix classes differ. A Gram matrix is Hermitian
+and positive semidefinite, and its determinantal scales are singular-value
+scales. A row Laplacian is in general not normal, and its eigenvalues can be
+nonreal (Example~\ref{markov:ex:prescribed}). Neither result implies the
+other. The same report fixes the word \emph{spectrum} to mean the algebraic
+eigenvalue list of a finite matrix over $K$ together with the valuations
+(\path{spec:sec:spectrumword}). Section~\ref{markov:sec:spectrum} uses the word
+in that sense, for the row Laplacian $L$.
+
+\paragraph{Measures and probability.}
+The collection's report on measures and probability is
+\path{docs/surreal/hahn-valued-measures-and-probability/}~\cite{CollMeas}.
+This report does not use it, and it does not use this report. The path measures,
+sample paths and infinite state spaces excluded in (N1) and (N3) are not
+supplied here by an appeal to that report. Nothing here asserts or denies that
+its constructions apply to the rate matrices studied here.
+
+\subsection{Provenance of this report}\label{markov:sec:provenance}
+
+This report is built from one manuscript, \emph{Surreal Markov Generators at
+Every Valuation Scale}, dated 22 September 2026. It arrived as the archive
+\texttt{surreal\_markov\_hierarchies}, with LaTeX source
+\texttt{surreal\_markov\_hierarchies.tex}, the audit file
+\texttt{SOURCE\_AUDIT.md}, the verification program \texttt{verify.py} with its
+recorded output, a build record, a requirements file and a build script. It came
+with the second of two deliveries, repository commit \texttt{15d4bab}, and was
+placed at commit \texttt{e9a9650}. Its own repository comparison is pinned to
+\revsha{} (Section~\ref{markov:sec:comparison}).
+
+There is no second source, so there was no merge and no choice between sources.
+Nothing was selected out of a larger body of work. Every theorem, proof, example
+and disclaimer of the manuscript is kept. The report is a standalone member of
+the surreal family because its rates, plateau projections and effective
+generators are real Hahn objects in $F=\R((t^\Gamma))$. The surcomplex eigenvalue
+amplitudes of Section~\ref{markov:sec:spectrum} are a consequence of that real
+theory.
+
+Placement changed the following and nothing else.
+\begin{enumerate}[label=(\alph*)]
+\item The source was renamed \texttt{article.tex}. The audit file, the program,
+its recorded output and the build record are kept byte-identical. The build
+script was moved to \texttt{code/} and the requirements file to
+\texttt{data/}.
+\item Every label now carries the prefix \texttt{markov:}. All 100 labels of
+the manuscript were renamed in the same way, and none was dropped.
+\item Sections~\ref{markov:sec:nonclaims}, \ref{markov:sec:neighbours},
+\ref{markov:sec:provenance}, \ref{markov:sec:divisible} and
+\ref{markov:sec:words} were added, and so were
+Remarks~\ref{markov:rem:gram} and~\ref{markov:rem:newton}, which point to
+other reports. They were placed so that every theorem, equation and section
+number of the manuscript is unchanged. The abstract
+and the status paragraph now state the divisibility hypothesis, the exclusion of
+path measures, and the draft status. Sections~\ref{markov:sec:specialization}
+and~\ref{markov:sec:spectrum} now say where they use divisibility. One sentence
+defining the shadow was added to Section~\ref{markov:sec:intro}, because the
+manuscript used the word without defining it. One sentence in
+Section~\ref{markov:sec:directions} points to the measure report, and one
+paragraph in Section~\ref{markov:sec:checks} records how to rerun the checks.
+\item Repository statements that had gone stale were corrected, with the pin kept
+as provenance (Section~\ref{markov:sec:comparison}).
+\item In Section~\ref{markov:sec:checks}, the description of what the program
+compares was made exact on one point (multiplicities).
+\end{enumerate}
+The mathematics of the manuscript is unchanged. The source archive, its PDF and
+its README are not shipped.
+
+\section{Hahn workspaces and positive rate matrices}\label{markov:sec:workspace}
 
 \subsection{A set-sized setting inside the surreals}
 
@@ -272,7 +483,7 @@ The standard Hahn-field facts used below are that $F$ is real closed and $K$ is
 algebraically closed when $\Gamma$ is divisible. The identification $K=F[i]$ is
 coefficientwise. Conway normal form~\cite{Conway,Gonshor} supplies the connection
 to surreal numbers: for an ordered subgroup $\Gamma\subseteq\No$, the map
-\begin{equation}\label{eq:surreal-embedding}
+\begin{equation}\label{markov:eq:surreal-embedding}
  \sum_{\gamma}a_\gamma t^\gamma
  \longmapsto \sum_{\gamma}a_\gamma\omega^{-\gamma}
 \end{equation}
@@ -285,7 +496,7 @@ take the rational span. This is a set-sized divisible ordered subgroup of
 $\No$. All subsequent operations take place in its Hahn field or, where stated,
 a larger set-sized one. No set of all surreal numbers is formed.
 
-\begin{remark}[No hidden convergence assertion]
+\begin{remark}[No hidden convergence assertion]\label{markov:rem:noconv}
 Every determinant, forest sum, and matrix inverse in this paper is finite
 algebra. Residue is a ring homomorphism, not a sequential limit in the fine
 topology of $\No$. Limits in a real variable $c$ or $u$ later in the paper are
@@ -298,7 +509,7 @@ in an arbitrary-rank Hahn topology is used.
 Let $E$ be a strongly connected directed graph on $\{1,\ldots,n\}$, with $n\ge2$,
 without loops. For every allowed edge $e=(i,j)$ choose $q_e\in F_{>0}$. Set
 $q_{ij}=0$ on missing edges. The \emph{row Laplacian} is
-\begin{equation}\label{eq:laplacian}
+\begin{equation}\label{markov:eq:laplacian}
  L_{ij}=-q_{ij}\quad(i\ne j),\qquad
  L_{ii}=\sum_{j\ne i}q_{ij}.
 \end{equation}
@@ -306,7 +517,7 @@ The Markov generator in the usual sign convention is $-L$. All matrices act on
 column observables; distributions are row vectors. In particular $L\one=0$.
 
 Each existing rate has a unique leading representation
-\begin{equation}\label{eq:rates}
+\begin{equation}\label{markov:eq:rates}
  q_e=a_e t^{\gamma_e}(1+\varepsilon_e),
  \qquad a_e>0\text{ real},\quad \gamma_e\in\Gamma,
  \quad v(\varepsilon_e)>0,
@@ -319,7 +530,77 @@ this means the bound entrywise. This is a valuation assertion, not a bound with
 an unspecified real constant. Products of finitely many factors
 $1+\bigO{\rho}$, for $\rho>0$, again have the form $1+\bigO{\rho}$.
 
-\section{The finite forest algebra}\label{sec:forests}
+\subsection{Where divisibility of the value group is used}\label{markov:sec:divisible}
+
+Divisibility of $\Gamma$ is a standing hypothesis of every section. The text
+uses it explicitly in the following places.
+\begin{enumerate}[label=(D\arabic*),leftmargin=3.2em]
+\item The candidate critical scales \eqref{markov:eq:candidate-scales} are
+quotients $(h_\ell-h_k)/(\ell-k)$. They lie in $\Gamma$ because $\Gamma$ is
+divisible. The crossing points of the forest arrangement in
+Section~\ref{markov:sec:specialization} are quotients of the same kind.
+\item Step~2 of the proof of Theorem~\ref{markov:thm:general-realization} chooses
+scales $\beta_j$ strictly between $\alpha_{j-1}$ and $\alpha_j$, for example
+their midpoint.
+\item\label{markov:item:div-span} Section~\ref{markov:sec:specialization} uses
+the rational span $W=\Span_\Q\{\gamma_e\}$ as a subgroup of $\Gamma$.
+\item Section~\ref{markov:sec:spectrum} places the eigenvalues of $L$ in $K$,
+which is algebraically closed because $\Gamma$ is divisible.
+Lemma~\ref{markov:lem:initial-spectrum} and Theorems~\ref{markov:thm:char}
+and~\ref{markov:thm:convexity} rely on this.
+\item The surreal transfer above takes the rational span of finitely many
+normal-form exponents, which is a divisible subgroup of $\No$.
+\end{enumerate}
+The report claims none of its statements for a nondivisible value group. It
+does not determine which of them would survive without divisibility.
+
+\subsection{Words and symbols used differently elsewhere in the collection}
+\label{markov:sec:words}
+
+Several words of this report mean other things in other reports of the
+collection. Each has one meaning here.
+\begin{itemize}
+\item \emph{Shadow} means the real residue matrix
+$K_\alpha(c)=\res R_L(ct^\alpha)$ of the normalized resolvent, and its analogues
+for other matrices. It has nothing to do with the ``shadow topology'', which the
+collection's notation guide~\cite{CollNotation} lists as a local name for the
+standard-part topology. This report puts no topology on $F$. In prose about
+several reports, ``residue matrix'' should be used instead.
+\item \emph{Residue} $\res$ is the $t^0$ coefficient on $\Ocal$, applied
+entrywise to matrices. It is the scalar standard part $\operatorname{st}$ of the notation
+guide, which lists $\res$ as an alias on that domain. It is not a contour or
+local residue.
+\item \emph{Flag} means the nested chain of stochastic idempotents
+$P_0=I,P_1,\ldots,P_m=\one\pi_0$ with $P_iP_j=P_jP_i=P_{\max(i,j)}$. These are
+the plateaux of the projection hierarchy, Theorem~\ref{markov:thm:flag}, whose
+label keeps the manuscript's word, and the input of
+Theorem~\ref{markov:thm:flag-realization}.
+It has nothing to do with the chain of radicals of a lexicographic bilinear form
+that the multiscale theta-series material in the Hahn--Tate
+report~\cite{CollTate} also calls a flag. The report prefixes keep the two labels
+apart.
+\item \emph{Profile} always means the forest profile $(h_k)_{0\le k\le d}$ of
+\eqref{markov:eq:profile-h}. It is the Newton profile of the forest polynomial
+$D$ (Section~\ref{markov:sec:neighbours}). Other reports use the word for other
+finite data.
+\item The symbols $h_k$, $b_k$, $B_k$, $D(s)$, $D_\alpha(c)$, $N(s)$ and
+$N_\alpha(c)$ are local. In particular $h_k$ is the minimal forest weight, and
+$D$ and $D_\alpha$ are forest denominators. Other reports use these letters for
+unrelated quantities. In prose about several reports, the words ``minimal forest
+weight'' and ``forest denominator'' should be used instead of the symbols.
+\item \emph{Resolvent} means the normalized $R_L(s)=s(sI+L)^{-1}$ with $s>0$ in
+$F$. Elsewhere in the collection, for instance in the two spectral reports, a
+resolvent is the unnormalized inverse $(\zeta I-A)^{-1}$ or $(A-\zeta I)^{-1}$.
+Here $R_L(s)=s\,(L-\zeta I)^{-1}$ at $\zeta=-s$.
+\item \emph{Eigenvalues} are those of the row Laplacian $L$, not of the
+conventional generator $-L$. Nonzero eigenvalues therefore have positive real
+parts.
+\item Theorem~\ref{markov:thm:stability} is a relative stability bound for
+resolvent entries. It shares only its local label name with the root-stability
+theorem of the polynomial-algebra report (\path{polynomial:thm:stability}).
+\end{itemize}
+
+\section{The finite forest algebra}\label{markov:sec:forests}
 
 An \emph{in-forest} is a spanning directed forest in which every nonroot vertex
 has exactly one outgoing edge and following outgoing edges leads to a root.
@@ -334,24 +615,24 @@ $\F_d\ne\varnothing$, and deleting edges gives $\F_k\ne\varnothing$ for every
 $0\le k\le d$.
 
 Define the scalar and matrix forest coefficients
-\begin{equation}\label{eq:forest-coefficients}
+\begin{equation}\label{markov:eq:forest-coefficients}
  \sigma_k=\sum_{f\in\F_k}q(f),\qquad
  F_k(i,j)=\sum_{\substack{f\in\F_k\\r_f(i)=j}}q(f).
 \end{equation}
 Every row of $F_k$ sums to $\sigma_k$, and every forest has $n-k$ roots. Hence
-\begin{equation}\label{eq:forest-rows-trace}
+\begin{equation}\label{markov:eq:forest-rows-trace}
  F_k\one=\sigma_k\one,\qquad
  \tr F_k=(n-k)\sigma_k,\qquad F_0=I,\quad\sigma_0=1.
 \end{equation}
 
-\begin{proposition}[Classical matrix-forest identity]\label{prop:forest}
-For the convention \eqref{eq:laplacian},
+\begin{proposition}[Classical matrix-forest identity]\label{markov:prop:forest}
+For the convention \eqref{markov:eq:laplacian},
 \begin{align}
- \det(sI+L)&=sD(s),&D(s)&=\sum_{k=0}^d\sigma_k s^{d-k},\label{eq:forest-det}\\
- \adj(sI+L)&=N(s),&N(s)&=\sum_{k=0}^d F_k s^{d-k}.\label{eq:forest-adj}
+ \det(sI+L)&=sD(s),&D(s)&=\sum_{k=0}^d\sigma_k s^{d-k},\label{markov:eq:forest-det}\\
+ \adj(sI+L)&=N(s),&N(s)&=\sum_{k=0}^d F_k s^{d-k}.\label{markov:eq:forest-adj}
 \end{align}
 Consequently, for every positive $s\in F$,
-\begin{equation}\label{eq:forest-resolvent}
+\begin{equation}\label{markov:eq:forest-resolvent}
  R_L(s)=\frac{N(s)}{D(s)}.
 \end{equation}
 It is an entrywise positive row-stochastic matrix. In particular all its entries
@@ -367,7 +648,7 @@ cycle-cancellation proof with formal weights. There is no specialization or
 continuity assumption on Hahn series in this step.
 
 For $s>0$, all terms in $D(s)$ are positive, so $sI+L$ is invertible and cancellation
-of $s$ gives \eqref{eq:forest-resolvent}. Equation~\eqref{eq:forest-rows-trace}
+of $s$ gives \eqref{markov:eq:forest-resolvent}. Equation~\eqref{markov:eq:forest-rows-trace}
 gives row sum one. For every $i,j$, a spanning tree rooted at $j$ contributes to
 $N(s)_{ij}$, so that entry is strictly positive. It is at most one because the
 other entries in its row are nonnegative. This proves boundedness.
@@ -384,20 +665,20 @@ rational identity itself.
 \subsection{Leading forest profiles}
 
 For a forest define its valuation cost and amplitude by
-\begin{equation}\label{eq:forest-leading}
+\begin{equation}\label{markov:eq:forest-leading}
  w(f)=\sum_{e\in f}\gamma_e,
  \qquad A(f)=\prod_{e\in f}a_e.
 \end{equation}
 For each edge count define
 \begin{align}
- h_k&=\min_{f\in\F_k}w(f),\label{eq:profile-h}\\
- b_k&=\sum_{\substack{f\in\F_k\\w(f)=h_k}}A(f),\label{eq:profile-b}\\
+ h_k&=\min_{f\in\F_k}w(f),\label{markov:eq:profile-h}\\
+ b_k&=\sum_{\substack{f\in\F_k\\w(f)=h_k}}A(f),\label{markov:eq:profile-b}\\
  B_k(i,j)&=\sum_{\substack{f\in\F_k\\w(f)=h_k\\r_f(i)=j}}A(f).
- \label{eq:profile-B}
+ \label{markov:eq:profile-B}
 \end{align}
 There is no cancellation among leading terms because all amplitudes are positive.
 Thus
-\begin{equation}\label{eq:profile-properties}
+\begin{equation}\label{markov:eq:profile-properties}
  v(\sigma_k)=h_k,\quad
  \lc(\sigma_k)=b_k>0,\quad
  B_k\one=b_k\one,\quad
@@ -406,24 +687,32 @@ Thus
 Although $B_k=\res(t^{-h_k}F_k)$, its zero entries may conceal higher-valuation
 marked forests. They will be recovered separately rather than discarded.
 
-\section{Every scale and every marked entry}\label{sec:leading}
+\begin{remark}[The same mechanism in the spectral report]\label{markov:rem:gram}
+That positivity forbids leading cancellation is also the mechanism of the
+positive Cauchy--Binet identity (\path{thm:gram}) of the collection's spectral
+report~\cite{CollSpec}. There it is applied to squared minors of a Gram matrix,
+here to forest weights of a row Laplacian. Section~\ref{markov:sec:neighbours}
+compares the two.
+\end{remark}
+
+\section{Every scale and every marked entry}\label{markov:sec:leading}
 
 For $\alpha\in\Gamma$ define
 \begin{align}
- m_\alpha&=\min_{0\le k\le d}\{h_k+(d-k)\alpha\},\label{eq:m-alpha}\\
- I_\alpha&=\{k:h_k+(d-k)\alpha=m_\alpha\},\label{eq:active}\\
+ m_\alpha&=\min_{0\le k\le d}\{h_k+(d-k)\alpha\},\label{markov:eq:m-alpha}\\
+ I_\alpha&=\{k:h_k+(d-k)\alpha=m_\alpha\},\label{markov:eq:active}\\
  D_\alpha(c)&=\sum_{k\in I_\alpha}b_kc^{d-k},\qquad
  N_\alpha(c)=\sum_{k\in I_\alpha}B_kc^{d-k}.
- \label{eq:initial-polynomials}
+ \label{markov:eq:initial-polynomials}
 \end{align}
 The expression $m_\alpha$ is also the minimum of
 $w(f)+(d-|f|)\alpha$ over all forests. Its definition uses only ordered-group
 addition and comparison; drawing a Newton polygon in a real plane is neither
 necessary nor, at arbitrary rank, a literal interpretation.
 
-\begin{theorem}[The complete leading-forest formula]\label{thm:leading}
+\begin{theorem}[The complete leading-forest formula]\label{markov:thm:leading}
 For every $\alpha\in\Gamma$ and real $c>0$,
-\begin{equation}\label{eq:shadow-formula}
+\begin{equation}\label{markov:eq:shadow-formula}
  K_\alpha(c):=\res R_L(c t^\alpha)
  =\frac{N_\alpha(c)}{D_\alpha(c)}.
 \end{equation}
@@ -436,18 +725,18 @@ For a fixed entry define
 \begin{align}
  m_{ij,\alpha}
  &=\min_{\substack{f\in\bigcup_k\F_k\\r_f(i)=j}}
-       \{w(f)+(d-|f|)\alpha\},\label{eq:marked-min}\\
+       \{w(f)+(d-|f|)\alpha\},\label{markov:eq:marked-min}\\
  A_{ij,\alpha}(c)
  &=\sum_{\substack{r_f(i)=j\\w(f)+(d-|f|)\alpha=m_{ij,\alpha}}}
-       A(f)c^{d-|f|}.\label{eq:marked-amplitude}
+       A(f)c^{d-|f|}.\label{markov:eq:marked-amplitude}
 \end{align}
 Then
 \begin{align}
  v\bigl(R_L(c t^\alpha)_{ij}\bigr)
-   &=m_{ij,\alpha}-m_\alpha,\label{eq:marked-valuation}\\
+   &=m_{ij,\alpha}-m_\alpha,\label{markov:eq:marked-valuation}\\
  \res\!\left(t^{-(m_{ij,\alpha}-m_\alpha)}R_L(c t^\alpha)_{ij}\right)
    &=\frac{A_{ij,\alpha}(c)}{D_\alpha(c)}>0.
-   \label{eq:marked-leading-coeff}
+   \label{markov:eq:marked-leading-coeff}
 \end{align}
 In particular the data $(a_e,\gamma_e)$ determine the leading term of every
 entry, including entries whose unnormalized residue is zero.
@@ -465,18 +754,18 @@ minimum. Therefore
  \res(t^{-m_\alpha}N(c t^\alpha))=N_\alpha(c).
 \]
 The normalized denominator is a unit of $\Ocal$. Taking its inverse and then
-residue proves \eqref{eq:shadow-formula}. The row-stochastic assertion follows
-either from Proposition~\ref{prop:forest} or from
+residue proves \eqref{markov:eq:shadow-formula}. The row-stochastic assertion follows
+either from Proposition~\ref{markov:prop:forest} or from
 $N_\alpha(c)\one=D_\alpha(c)\one$.
 
 The numerator for a marked entry is another nonempty finite positive forest
 sum. Normalizing it at its own minimum gives
-\eqref{eq:marked-valuation}--\eqref{eq:marked-leading-coeff}. Finally,
+\eqref{markov:eq:marked-valuation}--\eqref{markov:eq:marked-leading-coeff}. Finally,
 $(1+\eta)^{d-|f|}$ has residue one for every forest. Replacing $c t^\alpha$ by
 $c t^\alpha(1+\eta)$ therefore changes none of the leading computations.
 \end{proof}
 
-\begin{proposition}[A valuation remainder certificate]\label{prop:remainder}
+\begin{proposition}[A valuation remainder certificate]\label{markov:prop:remainder}
 Let
 \[
  \delta=\min_{e\in E}v(\varepsilon_e),
@@ -488,7 +777,7 @@ where $\delta=+\infty$ if all corrections vanish. At a fixed $\alpha$, let
                  w(f)+(d-|f|)\alpha>m_\alpha\},
 \]
 with minimum $+\infty$ for the empty set. Then, for every real $c>0$,
-\begin{equation}\label{eq:remainder}
+\begin{equation}\label{markov:eq:remainder}
  R_L(c t^\alpha)-K_\alpha(c)
    =\bigO{\min(\delta,\Delta_\alpha)}.
 \end{equation}
@@ -510,47 +799,47 @@ This certificate distinguishes two sources of uncertainty: subleading terms
 inside an edge rate, and nonminimal forests. Neither a metric on the whole
 surreal class nor a convergence rate in an ordinary norm appears in it.
 
-\section{The finite flag of stochastic projections}\label{sec:flag}
+\section{The finite flag of stochastic projections}\label{markov:sec:flag}
 
 Call $\alpha$ \emph{critical} if $I_\alpha$ contains at least two indices. There
 are only finitely many critical values: every possible one belongs to
-\begin{equation}\label{eq:candidate-scales}
+\begin{equation}\label{markov:eq:candidate-scales}
  \left\{\frac{h_\ell-h_k}{\ell-k}:0\le k<\ell\le d\right\}.
 \end{equation}
 Division by a positive integer is available because $\Gamma$ is divisible.
 Away from these values the active index is unique and
 $K_\alpha(c)=B_k/b_k$ is independent of $c$.
 
-\begin{lemma}[Resolvent compatibility]\label{lem:resolvent}
+\begin{lemma}[Resolvent compatibility]\label{markov:lem:resolvent}
 For positive $s\ne u$,
-\begin{equation}\label{eq:resolvent-identity}
+\begin{equation}\label{markov:eq:resolvent-identity}
  R_L(s)R_L(u)=\frac{uR_L(s)-sR_L(u)}{u-s}.
 \end{equation}
 Consequently
 \begin{align}
  K_\alpha(c)K_\alpha(e)
    &=\frac{eK_\alpha(c)-cK_\alpha(e)}{e-c}
-       &&(c,e>0,\ c\ne e),\label{eq:same-scale}\\
+       &&(c,e>0,\ c\ne e),\label{markov:eq:same-scale}\\
  K_\alpha(c)K_\beta(e)
    &=K_\beta(e)K_\alpha(c)=K_\beta(e)
-       &&(\alpha<\beta).\label{eq:cross-scale}
+       &&(\alpha<\beta).\label{markov:eq:cross-scale}
 \end{align}
 \end{lemma}
 
 \begin{proof}
 The two resolvents commute since they are rational functions of $L$.
 Subtracting $(sI+L)^{-1}$ and $(uI+L)^{-1}$ proves
-\eqref{eq:resolvent-identity}. Substituting $s=ct^\alpha$, $u=et^\alpha$ and
-taking residues gives \eqref{eq:same-scale}. If $\alpha<\beta$, divide numerator
-and denominator on the right of \eqref{eq:resolvent-identity} by $s$. The ratio
+\eqref{markov:eq:resolvent-identity}. Substituting $s=ct^\alpha$, $u=et^\alpha$ and
+taking residues gives \eqref{markov:eq:same-scale}. If $\alpha<\beta$, divide numerator
+and denominator on the right of \eqref{markov:eq:resolvent-identity} by $s$. The ratio
 $u/s$ has positive valuation; all resolvent entries are bounded. The residue of
 $((u/s)R_L(s)-R_L(u))/((u/s)-1)$ is therefore $K_\beta(e)$.
 \end{proof}
 
-\begin{theorem}[Projection hierarchy]\label{thm:flag}
+\begin{theorem}[Projection hierarchy]\label{markov:thm:flag}
 There are critical scales $\alpha_1<\cdots<\alpha_m$, with $1\le m\le n-1$,
 and distinct stochastic idempotents
-\begin{equation}\label{eq:flag}
+\begin{equation}\label{markov:eq:flag}
  P_0=I,\ P_1,\ldots,P_m=\one\pi_0,
  \qquad P_iP_j=P_jP_i=P_{\max(i,j)},
 \end{equation}
@@ -566,11 +855,11 @@ At a critical scale $\alpha$, write
 \]
 The preceding and following plateaux satisfy
 \begin{align}
- P&=\lim_{c\to\infty}K_\alpha(c)=B_{k_-}/b_{k_-},\label{eq:fast-endpoint}\\
- Q&=\lim_{c\downarrow0}K_\alpha(c)=B_{k_+}/b_{k_+},\label{eq:slow-endpoint}
+ P&=\lim_{c\to\infty}K_\alpha(c)=B_{k_-}/b_{k_-},\label{markov:eq:fast-endpoint}\\
+ Q&=\lim_{c\downarrow0}K_\alpha(c)=B_{k_+}/b_{k_+},\label{markov:eq:slow-endpoint}
 \end{align}
 with $\rank P=p$, $\rank Q=q$, and
-\begin{equation}\label{eq:endpoint-relations}
+\begin{equation}\label{markov:eq:endpoint-relations}
  PK_\alpha(c)=K_\alpha(c)P=K_\alpha(c),\qquad
  K_\alpha(c)Q=QK_\alpha(c)=Q.
 \end{equation}
@@ -579,13 +868,13 @@ Both displayed limits are limits of real rational matrices.
 
 \begin{proof}
 At a noncritical scale $K_\alpha(c)=P$ for every $c$. Taking two different real
-values in \eqref{eq:same-scale} gives $P^2=P$. If $k$ is the active index,
-\eqref{eq:profile-properties} gives
+values in \eqref{markov:eq:same-scale} gives $P^2=P$. If $k$ is the active index,
+\eqref{markov:eq:profile-properties} gives
 \[
  \rank P=\tr P=n-k,
 \]
 since the eigenvalues of an idempotent are zero and one. Cross-scale
-compatibility proves all products in \eqref{eq:flag}.
+compatibility proves all products in \eqref{markov:eq:flag}.
 
 As $\alpha$ increases, a lower envelope of lines with slopes $d-k$ can only move
 to larger $k$. More explicitly, if $k$ is active at $\alpha$ and $\ell$ is active
@@ -601,8 +890,8 @@ from $k_-$ and the lowest comes from $k_+$. This proves the endpoint limits.
 Immediately before and after that value, the corresponding unique minimizers
 are $k_-$ and $k_+$. Since $k_-<k_+$, the rank drops by a positive integer at
 each critical value. The total rank loss is $n-1$, proving $m\le n-1$.
-Finally, apply \eqref{eq:cross-scale} using any scale in the adjacent plateau
-intervals to obtain \eqref{eq:endpoint-relations}.
+Finally, apply \eqref{markov:eq:cross-scale} using any scale in the adjacent plateau
+intervals to obtain \eqref{markov:eq:endpoint-relations}.
 \end{proof}
 
 \begin{remark}[What the last row vector means]
@@ -613,11 +902,11 @@ $\res\pi_j$ to be positive. Infinitesimally occupied states explain the zero
 columns and transient mixing that can occur in intermediate projections.
 \end{remark}
 
-\section{Every crossover is a real effective Markov chain}\label{sec:effective}
+\section{Every crossover is a real effective Markov chain}\label{markov:sec:effective}
 
 \subsection{Stochastic retracts, including transient states}
 
-\begin{lemma}[Classical splitting of a stochastic idempotent]\label{lem:splitting}
+\begin{lemma}[Classical splitting of a stochastic idempotent]\label{markov:lem:splitting}
 If $P$ is an $n\times n$ real row-stochastic idempotent of rank $p$, there exist
 nonnegative row-stochastic matrices
 \[
@@ -665,20 +954,20 @@ make the next theorem false in its intended generality.
 
 \subsection{Reconstructing the effective generator}
 
-\begin{theorem}[Effective-generator reconstruction]\label{thm:effective}
+\begin{theorem}[Effective-generator reconstruction]\label{markov:thm:effective}
 Fix a critical $\alpha$, with endpoints $P,Q$ of ranks $p>q$, and take the
-canonical splitting $P=UV$ from Lemma~\ref{lem:splitting}. Set
+canonical splitting $P=UV$ from Lemma~\ref{markov:lem:splitting}. Set
 \[
  H(c)=VK_\alpha(c)U.
 \]
 There is a unique real $p\times p$ row Laplacian $G_\alpha$ such that
-\begin{equation}\label{eq:effective-resolvent}
+\begin{equation}\label{markov:eq:effective-resolvent}
  H(c)=c(cI_p+G_\alpha)^{-1},\qquad
  K_\alpha(c)=U\,c(cI_p+G_\alpha)^{-1}V
  \quad(c>0).
 \end{equation}
 It is given explicitly by
-\begin{equation}\label{eq:effective-one}
+\begin{equation}\label{markov:eq:effective-one}
  G_\alpha=H(1)^{-1}-I_p.
 \end{equation}
 Its zero eigenvalue is semisimple, its kernel has dimension $q$, and its
@@ -689,20 +978,20 @@ $G_\alpha$.
 
 \begin{proof}
 Because $U,V,K_\alpha(c)$ are stochastic, so is $H(c)$. Equations
-\eqref{eq:endpoint-relations} give $K_\alpha(c)=UH(c)V$, while
-\eqref{eq:same-scale} gives
-\begin{equation}\label{eq:compressed-identity}
+\eqref{markov:eq:endpoint-relations} give $K_\alpha(c)=UH(c)V$, while
+\eqref{markov:eq:same-scale} gives
+\begin{equation}\label{markov:eq:compressed-identity}
  H(c)H(e)=\frac{eH(c)-cH(e)}{e-c}.
 \end{equation}
 Also $H(c)\to VPU=I_p$ as $c\to\infty$. Choose a sufficiently large real $e$
-so that $H(e)$ is invertible. Rearranging \eqref{eq:compressed-identity} yields
+so that $H(e)$ is invertible. Rearranging \eqref{markov:eq:compressed-identity} yields
 \[
  H(c)\bigl[cI_p+e(H(e)^{-1}-I_p)\bigr]=cI_p
 \]
 for $c\ne e$, and the identity extends to $c=e$. Define
 $G_\alpha=e(H(e)^{-1}-I_p)$. A square matrix with a right inverse is invertible,
-so the first identity of \eqref{eq:effective-resolvent} holds for every $c>0$.
-It then gives \eqref{eq:effective-one} and uniqueness.
+so the first identity of \eqref{markov:eq:effective-resolvent} holds for every $c>0$.
+It then gives \eqref{markov:eq:effective-one} and uniqueness.
 
 Since $H(c)\one=\one$, its inverse also fixes $\one$, and $G_\alpha\one=0$.
 For large real $c$,
@@ -728,7 +1017,7 @@ matrix $H(c)$. A longer nontrivial Jordan chain contains one of length two.
 This proves semisimplicity and all remaining claims.
 \end{proof}
 
-\begin{corollary}[A real semigroup on each retract]\label{cor:effective-semigroup}
+\begin{corollary}[A real semigroup on each retract]\label{markov:cor:effective-semigroup}
 For real $u\ge0$ define
 \[
  S_\alpha(u)=Ue^{-uG_\alpha}V.
@@ -758,13 +1047,13 @@ the finite-dimensional real resolvent, or directly by differentiating
 $e^{-cu}e^{-uG_\alpha}$ and evaluating its endpoints.
 \end{proof}
 
-\begin{remark}
+\begin{remark}\label{markov:rem:realsemigroup}
 This is a theorem about a \emph{real} effective semigroup. It is not a claim that
 $S_\alpha(u)$ is the residue of a previously defined global surreal exponential
 $\exp(-u t^{-\alpha}L)$. No such global analytic construction is required.
 \end{remark}
 
-\section{The converse: realizing a prescribed hierarchy}\label{sec:inverse}
+\section{The converse: realizing a prescribed hierarchy}\label{markov:sec:inverse}
 
 This section is the principal inverse result. It first realizes arbitrary
 projection flags explicitly, then realizes prescribed effective generators at
@@ -773,27 +1062,27 @@ entrywise positivity, not spectral decomposition.
 
 \subsection{Every stochastic projection flag occurs}
 
-\begin{theorem}[Projection-flag realization]\label{thm:flag-realization}
+\begin{theorem}[Projection-flag realization]\label{markov:thm:flag-realization}
 Let $P_0=I,P_1,\ldots,P_m$ be distinct real stochastic idempotents satisfying
 \[
  P_iP_j=P_jP_i=P_{\max(i,j)},\qquad \rank P_m=1.
 \]
 Choose any $\alpha_1<\cdots<\alpha_m$ in $\Gamma$, and write
 $\tau_j=t^{\alpha_j}$. Then
-\begin{equation}\label{eq:simple-inverse}
+\begin{equation}\label{markov:eq:simple-inverse}
  H=\sum_{j=1}^m\tau_j(P_{j-1}-P_j)
 \end{equation}
 is a Hahn row Laplacian. Its normalized resolvent is exactly
-\begin{equation}\label{eq:simple-inverse-resolvent}
+\begin{equation}\label{markov:eq:simple-inverse-resolvent}
  R_H(s)=P_m+\sum_{j=1}^m\frac{s}{s+\tau_j}(P_{j-1}-P_j).
 \end{equation}
 Its plateaux are precisely the prescribed $P_j$, and its crossover at $\alpha_j$
 is
-\begin{equation}\label{eq:simple-inverse-shadow}
+\begin{equation}\label{markov:eq:simple-inverse-shadow}
  K_{\alpha_j}(c)=P_j+\frac{c}{c+1}(P_{j-1}-P_j).
 \end{equation}
 An irreducible row Laplacian with the same shadows at \emph{every} scale is
-obtained by the completion in Lemma~\ref{lem:completion} below.
+obtained by the completion in Lemma~\ref{markov:lem:completion} below.
 \end{theorem}
 
 \begin{proof}
@@ -801,30 +1090,30 @@ Put $E_j=P_{j-1}-P_j$. These are algebraic idempotents with
 $E_iE_j=0$ for $i\ne j$, $E_jP_m=P_mE_j=0$, and
 $P_m+\sum_jE_j=I$. Each $E_j$ has positive rank. They need not be nonnegative.
 The alternative expression
-\begin{equation}\label{eq:inverse-signs}
+\begin{equation}\label{markov:eq:inverse-signs}
  H=\tau_1I+\sum_{j=1}^{m-1}(\tau_{j+1}-\tau_j)P_j-\tau_mP_m
 \end{equation}
 shows that every off-diagonal entry is nonpositive, because
 $0<\tau_{j+1}<\tau_j$. Also $H\one=0$. Multiplying
-\eqref{eq:simple-inverse-resolvent} by $sI+H$ proves the exact identity.
+\eqref{markov:eq:simple-inverse-resolvent} by $sI+H$ proves the exact identity.
 
 At scale $s=ct^{\alpha_j}$, the residue of $s/(s+\tau_i)$ is zero for $i<j$,
 $c/(c+1)$ for $i=j$, and one for $i>j$. Telescoping the last terms gives
-\eqref{eq:simple-inverse-shadow}. At a scale strictly between successive
+\eqref{markov:eq:simple-inverse-shadow}. At a scale strictly between successive
 $\alpha_j$, the same calculation gives $P_j$. Since $E_j\ne0$, no stated
 crossover disappears and there are no others.
 \end{proof}
 
-\begin{lemma}[Irreducible completion invisible to the hierarchy]\label{lem:completion}
+\begin{lemma}[Irreducible completion invisible to the hierarchy]\label{markov:lem:completion}
 Suppose a Hahn row Laplacian $H$ has final shadow $P_m=\one\pi_0$ at all scales
 strictly above $\alpha_m$. Choose $\beta>\alpha_m$, let $\epsilon=t^\beta$, and
 let $J=\one\nu$ for any strictly positive real probability row $\nu$. Then
-\begin{equation}\label{eq:completion}
+\begin{equation}\label{markov:eq:completion}
  L=H+\epsilon(I-J)
 \end{equation}
 has strictly negative off-diagonal entries. If $H$ has the hierarchy of
-Theorem~\ref{thm:flag-realization}, or of
-Theorem~\ref{thm:general-realization} below, $L$ has the same shadow at every
+Theorem~\ref{markov:thm:flag-realization}, or of
+Theorem~\ref{markov:thm:general-realization} below, $L$ has the same shadow at every
 $\alpha$ and every $c>0$.
 \end{lemma}
 
@@ -833,19 +1122,19 @@ Strict negativity follows from the added rate $\epsilon\nu_j>0$ on every edge.
 For every positive $s$, a direct rank-one inverse computation gives
 \begin{align}
  R_L(s)
-  &=(sI+\epsilon J)((s+\epsilon)I+H)^{-1}\label{eq:completion-exact}\\
+  &=(sI+\epsilon J)((s+\epsilon)I+H)^{-1}\label{markov:eq:completion-exact}\\
   &=\left(\frac{s}{s+\epsilon}I+
            \frac{\epsilon}{s+\epsilon}J\right)R_H(s+\epsilon).
-           \label{eq:completion-convex}
+           \label{markov:eq:completion-convex}
 \end{align}
 For completeness, if $M=(s+\epsilon)I+H$, then $M^{-1}J=J/(s+\epsilon)$ because
 $H\one=0$. Thus
 $(M-\epsilon J)^{-1}=(I+\epsilon J/s)M^{-1}$, proving
-\eqref{eq:completion-exact}. The order of these factors matters; no commutation
+\eqref{markov:eq:completion-exact}. The order of these factors matters; no commutation
 of $J$ and $H$ is assumed.
 
 If $s=ct^\alpha$ and $\alpha<\beta$, the first factor in
-\eqref{eq:completion-convex} has residue $I$, and $s+\epsilon$ has the same
+\eqref{markov:eq:completion-convex} has residue $I$, and $s+\epsilon$ has the same
 leading term as $s$. The leading-forest argument, valid also for reducible
 $H$, shows that the shadow is unchanged. If $\alpha\ge\beta$, the parameter
 $s+\epsilon$ has valuation $\beta$, so its $H$-shadow is $P_m$.
@@ -863,15 +1152,15 @@ splitting
  p_j=\rank P_j,
 \]
 and set
-\begin{equation}\label{eq:macro-next}
+\begin{equation}\label{markov:eq:macro-next}
  Q_j=V_jP_jU_j.
 \end{equation}
 It is a stochastic idempotent of rank $p_j$, and $U_jQ_jV_j=P_j$.
 
-\begin{definition}[Compatible effective generators]\label{def:compatible}
+\begin{definition}[Compatible effective generators]\label{markov:def:compatible}
 A family of real row Laplacians $G_j$ of sizes $p_{j-1}$ is compatible with the
 flag if
-\begin{equation}\label{eq:compatible}
+\begin{equation}\label{markov:eq:compatible}
  \lim_{c\downarrow0}c(cI+G_j)^{-1}=Q_j.
 \end{equation}
 Equivalently, $Q_j$ is the zero-eigenvalue projection of $G_j$.
@@ -882,14 +1171,14 @@ next theorem allows any compatible $G_j$, including nonreversible generators,
 complex eigenvalues, unequal eigenvalues within a single scale, and nontrivial
 Jordan blocks at nonzero eigenvalues.
 
-\begin{theorem}[Prescribed-crossover realization]\label{thm:general-realization}
+\begin{theorem}[Prescribed-crossover realization]\label{markov:thm:general-realization}
 Fix any flag $P_0=I,P_1,\ldots,P_m$ of distinct stochastic idempotents ending
 in rank one, any compatible real generators $G_j$, and any prescribed scales
 $\alpha_1<\cdots<\alpha_m$ in a nonzero divisible ordered group $\Gamma$.
 There exists an irreducible Hahn row Laplacian $L$ whose only leading resolvent
 crossovers are those scales, whose plateaux are the $P_j$, and whose shadows at
 them are exactly
-\begin{equation}\label{eq:prescribed-shadow}
+\begin{equation}\label{markov:eq:prescribed-shadow}
  K_{\alpha_j}(c)=U_j\,c(cI_{p_{j-1}}+G_j)^{-1}V_j
  \qquad(c>0).
 \end{equation}
@@ -905,7 +1194,7 @@ Set
  E_j=P_{j-1}-P_j,\qquad A_j=U_jG_jV_j.
 \]
 Compatibility implies $G_jQ_j=Q_jG_j=0$, and hence
-\begin{equation}\label{eq:lifted-blocks}
+\begin{equation}\label{markov:eq:lifted-blocks}
  A_j=E_jA_jE_j,\qquad A_j\one=0.
 \end{equation}
 On the real subspace $\im E_j$, the operator $A_j$ is invertible. Indeed the
@@ -922,7 +1211,7 @@ crossover.
 \emph{Step 2: insert positivity corrections between scales.}
 For $2\le j\le m$ choose
 $\alpha_{j-1}<\beta_j<\alpha_j$, possible by divisibility. Put
-\begin{equation}\label{eq:general-construction}
+\begin{equation}\label{markov:eq:general-construction}
  H=\sum_{j=1}^m t^{\alpha_j}A_j
        +\sum_{j=2}^m t^{\beta_j}(I-P_{j-1}).
 \end{equation}
@@ -931,7 +1220,7 @@ If $(P_{j-1})_{ab}=0$, nonnegativity of $U_j,V_j$ implies
 $(U_j)_{ar}(V_j)_{rb}=0$ for each $r$. Thus all diagonal contributions to
 $(U_jG_jV_j)_{ab}$ vanish, and its remaining contributions are nonpositive.
 Consequently
-\begin{equation}\label{eq:sign-cover}
+\begin{equation}\label{markov:eq:sign-cover}
  (A_j)_{ab}>0\quad\Longrightarrow\quad (P_{j-1})_{ab}>0
  \qquad(a\ne b).
 \end{equation}
@@ -951,7 +1240,7 @@ zero. This proves that $H$ is a row Laplacian. It is a finite sum of monomials.
 \emph{Step 3: show that the inserted scales are invisible.}
 On $\im E_i$, the operator $I-P_{j-1}$ is the identity if $i<j$ and zero if
 $i\ge j$. Thus the block of $H$ on $\im E_i$ is
-\begin{equation}\label{eq:realization-block}
+\begin{equation}\label{markov:eq:realization-block}
  t^{\alpha_i}A_i+r_i I_{\im E_i},\qquad
  r_i=\sum_{j>i}t^{\beta_j}.
 \end{equation}
@@ -971,19 +1260,19 @@ $\alpha_i$, and between them the shadows telescope to the prescribed $P_i$.
 At $\alpha_j$ the later blocks together with $P_m$ sum to $P_j$. Under
 $U_j,V_j$, this is the zero block $Q_j$ of $G_j$, while $\im E_j$ is its
 complement. Consequently the full shadow is exactly
-\eqref{eq:prescribed-shadow}. Since $p_{j-1}>p_j$, that function has different
+\eqref{markov:eq:prescribed-shadow}. Since $p_{j-1}>p_j$, that function has different
 endpoints and the crossover is nontrivial.
 
 \emph{Step 4: impose irreducibility and then monomial rates.}
-Apply Lemma~\ref{lem:completion} at a scale above $\alpha_m$. The resulting
+Apply Lemma~\ref{markov:lem:completion} at a scale above $\alpha_m$. The resulting
 $L$ has a positive rate on every ordered pair and still has finite support.
 Each rate is its positive leading monomial times $1+\varepsilon_e$ with
-$v(\varepsilon_e)>0$. Theorem~\ref{thm:leading} already proves that replacing
+$v(\varepsilon_e)>0$. Theorem~\ref{markov:thm:leading} already proves that replacing
 it by that leading monomial changes none of the shadows. The stronger relative
-statement will be established in Theorem~\ref{thm:stability}.
+statement will be established in Theorem~\ref{markov:thm:stability}.
 \end{proof}
 
-\begin{corollary}[A necessary and sufficient criterion]\label{cor:classification}
+\begin{corollary}[A necessary and sufficient criterion]\label{markov:cor:classification}
 A finite collection of plateau projections and real crossover kernels is the
 leading resolvent hierarchy of an irreducible finite surreal rate matrix if and
 only if its plateaux form a strict nested stochastic-idempotent flag from $I$ to
@@ -994,14 +1283,14 @@ crossovers can be used.
 \end{corollary}
 
 \begin{proof}
-Necessity is Theorems~\ref{thm:flag} and~\ref{thm:effective}. Sufficiency is
-Theorem~\ref{thm:general-realization}, transported into $\No$ by
-\eqref{eq:surreal-embedding} whenever the chosen scales are surreal exponents.
+Necessity is Theorems~\ref{markov:thm:flag} and~\ref{markov:thm:effective}. Sufficiency is
+Theorem~\ref{markov:thm:general-realization}, transported into $\No$ by
+\eqref{markov:eq:surreal-embedding} whenever the chosen scales are surreal exponents.
 \end{proof}
 
 \subsection{The reversible boundary}
 
-\begin{proposition}[Full-support reversible flags]\label{prop:reversible}
+\begin{proposition}[Full-support reversible flags]\label{markov:prop:reversible}
 Suppose a surreal rate matrix is reversible with stationary probability $\pi$
 and every entry of $\pi_0=\res\pi$ is strictly positive. Then every plateau is
 the conditional-expectation matrix of a partition, weighted by $\pi_0$, and the
@@ -1022,32 +1311,32 @@ $\nu_a(j)=\pi_0(j)/\pi_0(C_a)$ on its class. This is precisely weighted
 conditional expectation onto that partition. The range consists of observables
 constant on each block; nested ranges give coarsening partitions.
 
-Conversely use \eqref{eq:simple-inverse} for the weighted partition projections.
+Conversely use \eqref{markov:eq:simple-inverse} for the weighted partition projections.
 Every summand is self-adjoint for $\pi_0$, so detailed balance holds. The last
 projection is $\one\pi_0$ with strictly positive entries. Expression
-\eqref{eq:inverse-signs} then makes every off-diagonal entry strictly negative.
+\eqref{markov:eq:inverse-signs} then makes every off-diagonal entry strictly negative.
 \end{proof}
 
-The full-support condition cannot be removed. Example~\ref{ex:fuzzy} gives an
+The full-support condition cannot be removed. Example~\ref{markov:ex:fuzzy} gives an
 exactly reversible system whose limiting projection has a genuinely mixed
 transient row. The broader stochastic-retract theorem is not just a reformulation
 of the reversible partition case.
 
-\section{Uniform relative stability at every scale}\label{sec:stability}
+\section{Uniform relative stability at every scale}\label{markov:sec:stability}
 
 Resolvent perturbation estimates based on a norm of $(sI+L)^{-1}$ can lose
 precision near a small spectral gap. Positivity allows a different statement:
 control relative edge errors by relative \emph{entry} errors, simultaneously for
 all positive $s$.
 
-\begin{theorem}[All-parameter, entrywise relative stability]\label{thm:stability}
+\begin{theorem}[All-parameter, entrywise relative stability]\label{markov:thm:stability}
 Let $L,L'$ have the same strongly connected allowed graph. Suppose
 \[
  q'_e=q_e(1+\eta_e),\qquad v(\eta_e)\ge\delta>0
  \quad(e\in E).
 \]
 For every positive $s\in F$, and every $i,j$,
-\begin{equation}\label{eq:relative-stability}
+\begin{equation}\label{markov:eq:relative-stability}
  v\!\left(\frac{R_{L'}(s)_{ij}}{R_L(s)_{ij}}-1\right)\ge\delta.
 \end{equation}
 More generally the same bound holds with $R_{L'}(s')$ in the numerator if
@@ -1068,11 +1357,11 @@ positive. If their minimum valuation is $\zeta$, then $v(Z)=\zeta$ without
 cancellation, whereas $v(Z'-Z)\ge\zeta+\delta$. Hence
 $Z'/Z=1+\bigO{\delta}$. Both numerator and denominator are nonzero, because the
 graph is strongly connected. Dividing the two relative identities gives
-\eqref{eq:relative-stability}; the inverse of $1+\bigO{\delta}$ is again
+\eqref{markov:eq:relative-stability}; the inverse of $1+\bigO{\delta}$ is again
 $1+\bigO{\delta}$.
 \end{proof}
 
-\begin{corollary}[Leading data suffice simultaneously]\label{cor:leading-equivalence}
+\begin{corollary}[Leading data suffice simultaneously]\label{markov:cor:leading-equivalence}
 Two positive rate systems with the same graph, edge valuations, and edge leading
 coefficients have identical plateau projections, crossover kernels, effective
 generators, and leading terms of all marked entries at every scale. The assertion
@@ -1082,11 +1371,11 @@ finitely many critical scales.
 
 \begin{proof}
 For finitely many edges, the relative discrepancies have a common positive
-valuation lower bound. Apply Theorem~\ref{thm:stability}. The effective generators
-are determined by the compressed kernels in \eqref{eq:effective-one}.
+valuation lower bound. Apply Theorem~\ref{markov:thm:stability}. The effective generators
+are determined by the compressed kernels in \eqref{markov:eq:effective-one}.
 \end{proof}
 
-\begin{example}[Sharpness of the valuation bound]\label{ex:sharp}
+\begin{example}[Sharpness of the valuation bound]\label{markov:ex:sharp}
 Take two states, $q_{12}=q_{21}=1$, and $s=1$. Then $R_L(1)_{12}=1/3$.
 Change only $q_{12}$ to $1+\eta$, with $v(\eta)=\delta>0$. The new entry is
 $(1+\eta)/(3+\eta)$, and its relative error is exactly
@@ -1094,18 +1383,18 @@ $(1+\eta)/(3+\eta)$, and its relative error is exactly
  \frac{(1+\eta)/(3+\eta)}{1/3}-1=\frac{2\eta}{3+\eta}.
 \]
 Its valuation is $\delta$. Thus the exponent in
-\eqref{eq:relative-stability} cannot be increased in general.
+\eqref{markov:eq:relative-stability} cannot be increased in general.
 \end{example}
 
-\begin{remark}[Why the hypotheses matter]
+\begin{remark}[Why the hypotheses matter]\label{markov:rem:hypotheses}
 A new edge is not a relative perturbation of a zero edge. It may change the
-hierarchy, unless an additional argument such as Lemma~\ref{lem:completion}
+hierarchy, unless an additional argument such as Lemma~\ref{markov:lem:completion}
 shows otherwise. Likewise, positive leading forest sums are essential: for a
 signed sum, near cancellation can amplify relative errors. The theorem is not
 an arbitrary-matrix resolvent condition-number bound.
 \end{remark}
 
-\section{A complete finite diagram has a rank-one realization}\label{sec:specialization}
+\section{A complete finite diagram has a rank-one realization}\label{markov:sec:specialization}
 
 Higher rank is genuine, but the finite nature of a forest calculation creates a
 precise limitation on what it can detect. This section preserves not merely the
@@ -1113,7 +1402,7 @@ critical eigenvalue scales, but every marked entry's leading forest choices.
 
 \subsection{Finite sign separation}
 
-\begin{lemma}[Finite positive signs can be represented rationally]\label{lem:separation}
+\begin{lemma}[Finite positive signs can be represented rationally]\label{markov:lem:separation}
 Let $W$ be a finite-dimensional rational vector space with an ordered-abelian-group
 order, and let $x_1,\ldots,x_r$ be a finite family of strictly positive elements.
 There exists a $\Q$-linear map $\ell:W\to\Q$ such that $\ell(x_i)>0$ for every
@@ -1151,8 +1440,10 @@ For every forest $f$ define an affine function on the ordered group,
 \]
 All coefficient data belong to the finite-dimensional space
 \[
- W=\Span_\Q\{\gamma_e:e\in E\}\subseteq\Gamma.
+ W=\Span_\Q\{\gamma_e:e\in E\}\subseteq\Gamma,
 \]
+a rational subspace of $\Gamma$ because $\Gamma$ is divisible
+(item~\ref{markov:item:div-span} of Section~\ref{markov:sec:divisible}).
 If two forest functions have different slopes, their intersection is a point of
 $W$. Let $T$ be the finite set of all such intersection points. We retain
 intersections that are not active for the denominator, since some of them may
@@ -1160,10 +1451,10 @@ matter to a marked numerator. Forest functions with the same slope are ordered
 by their constant terms, or coincide identically.
 
 \begin{theorem}[Simultaneous rank-one realization of the leading diagram]
-\label{thm:rank-one}
+\label{markov:thm:rank-one}
 For any fixed finite strongly connected Hahn rate system there is a
 $\Q$-linear map $\ell:W\to\Q$ such that the ordinary positive rates
-\begin{equation}\label{eq:real-specialization}
+\begin{equation}\label{markov:eq:real-specialization}
  q_e(x)=a_e x^{\ell(\gamma_e)},\qquad x>0,
 \end{equation}
 reproduce its entire finite marked-forest leading diagram as $x\downarrow0$.
@@ -1186,7 +1477,7 @@ Form a finite list of positive elements of $W$ consisting of all positive
 differences between distinct points of $T$, and all positive differences
 $w(f)-w(g)$ between equal-slope forest functions. Optional finitely many positive
 edge-valuation differences or other prescribed comparisons may be added.
-Apply Lemma~\ref{lem:separation}. It preserves the strict order of the crossing
+Apply Lemma~\ref{markov:lem:separation}. It preserves the strict order of the crossing
 points and the signs of equal-slope differences. Equalities are automatically
 preserved by linearity.
 
@@ -1198,12 +1489,12 @@ shows that the total comparison pattern of all forest functions is preserved
 in each cell and at each crossing. Restricting the family to any set
 $r_f(i)=j$ preserves its minimizers as well.
 
-For the rates \eqref{eq:real-specialization}, a forest term at the numerical
+For the rates \eqref{markov:eq:real-specialization}, a forest term at the numerical
 observation scale $s=cx^a$ has exponent
 $\ell(w(f))+(d-|f|)a$ and coefficient $A(f)c^{d-|f|}$. Finite sums of positive
 monomials are asymptotic to the sum of the terms with smallest exponent. Since
 the minimizing forests and their coefficients agree, all amplitude formulas in
-Theorem~\ref{thm:leading} agree. In particular their matrix residues, plateau
+Theorem~\ref{markov:thm:leading} agree. In particular their matrix residues, plateau
 splittings, and the reconstructed real generators agree.
 
 There are finitely many rational edge exponents. A common positive denominator
@@ -1212,7 +1503,7 @@ by the same power of $y$ makes them nonnegative, at the cost of translating ever
 observation-scale exponent by that same amount.
 \end{proof}
 
-\begin{remark}[Precisely what is and is not preserved]
+\begin{remark}[Precisely what is and is not preserved]\label{markov:rem:preserved}
 An arbitrary $\alpha\in\Gamma$ need not belong to $W$, so an expression
 $\ell(\alpha)$ is not used for every possible scale. The finite arrangement
 provides the correspondence: select a real scale in the matching open cell, or
@@ -1224,7 +1515,7 @@ in the domain of $\ell$. The theorem preserves leading data, not complete Hahn
 series, all possible inequalities, or the entire ordered group.
 \end{remark}
 
-\begin{example}[Why the finite qualification is sharp]\label{ex:rank-obstruction}
+\begin{example}[Why the finite qualification is sharp]\label{markov:ex:rank-obstruction}
 In $\Gamma=\Q^2$ with lexicographic order put
 $\delta=(0,1)$ and $\beta=(1,0)$. Then
 \[
@@ -1234,28 +1525,29 @@ No real linear functional can preserve all these inequalities while sending
 $\delta$ to a positive number: it would require the finite real number
 $\ell(\beta)$ to exceed $N\ell(\delta)$ for every $N$. A finite family of
 inequalities can be preserved, for example by sending $\delta$ to $1$ and
-$\beta$ to a sufficiently large integer. Theorem~\ref{thm:rank-one} uses exactly
+$\beta$ to a sufficiently large integer. Theorem~\ref{markov:thm:rank-one} uses exactly
 such a finite list, not its infinite continuation.
 \end{example}
 
-\section{The surcomplex spectrum and the forest convexity law}\label{sec:spectrum}
+\section{The surcomplex spectrum and the forest convexity law}\label{markov:sec:spectrum}
 
-Because $K=\C((t^\Gamma))$ is algebraically closed, the eigenvalues of $L$ lie
+Because $K=\C((t^\Gamma))$ is algebraically closed, which uses the divisibility
+of $\Gamma$, the eigenvalues of $L$ lie
 in a surcomplex Hahn workspace. The tree coefficient $\sigma_d>0$ in
-\eqref{eq:forest-det} shows that zero has algebraic multiplicity one. Denote the
+\eqref{markov:eq:forest-det} shows that zero has algebraic multiplicity one. Denote the
 other eigenvalues, with algebraic multiplicity, by
 $\lambda_1,\ldots,\lambda_d$, and put $\zeta_r=v(\lambda_r)$.
 
 \subsection{Initial polynomials without a real Newton polygon}
 
-\begin{lemma}[Valuations and initial eigenvalue factors]\label{lem:initial-spectrum}
+\begin{lemma}[Valuations and initial eigenvalue factors]\label{markov:lem:initial-spectrum}
 For every $\alpha\in\Gamma$,
-\begin{equation}\label{eq:sum-min}
+\begin{equation}\label{markov:eq:sum-min}
  m_\alpha=\sum_{r=1}^d\min(\alpha,\zeta_r).
 \end{equation}
 If $\rho_r=\res(t^{-\alpha}\lambda_r)$ for the indices with
 $\zeta_r=\alpha$, then
-\begin{equation}\label{eq:initial-factorization}
+\begin{equation}\label{markov:eq:initial-factorization}
  D_\alpha(c)=C_\alpha\,
  c^{\#\{r:\zeta_r>\alpha\}}
  \prod_{\zeta_r=\alpha}(c+\rho_r),
@@ -1279,16 +1571,19 @@ $\zeta_r=\alpha$, or $\zeta_r>\alpha$. This proves both formulas. If no
 $\zeta_r$ equals $\alpha$, the initial polynomial is a monomial. If at least
 one does, its largest and smallest nonzero powers differ, since all those
 $\rho_r$ are nonzero. Hence it is not a monomial. By
-\eqref{eq:initial-polynomials}, being nonmonomial is exactly criticality.
+\eqref{markov:eq:initial-polynomials}, being nonmonomial is exactly criticality.
 \end{proof}
+
+Remark~\ref{markov:rem:newton} below compares this lemma with Newton's
+root-valuation rule in the collection's polynomial-algebra report.
 
 \subsection{A characteristic polynomial for each effective chain}
 
-\begin{theorem}[Effective characteristic and amplitude identity]\label{thm:char}
+\begin{theorem}[Effective characteristic and amplitude identity]\label{markov:thm:char}
 At a critical scale $\alpha$, let $k_-,k_+,p,q$ be as in
-Theorem~\ref{thm:flag}. The effective generator satisfies the exact real polynomial
+Theorem~\ref{markov:thm:flag}. The effective generator satisfies the exact real polynomial
 identity
-\begin{equation}\label{eq:effective-char}
+\begin{equation}\label{markov:eq:effective-char}
  \det(cI_p+G_\alpha)=\frac{cD_\alpha(c)}{b_{k_-}}.
 \end{equation}
 Exactly $p-q$ nonzero eigenvalues of $L$ have valuation $\alpha$, counting
@@ -1296,14 +1591,14 @@ algebraic multiplicity. Their normalized leading coefficients are exactly the
 nonzero eigenvalues of $G_\alpha$, again counting multiplicity. In particular
 these coefficients have strictly positive real parts, and every nonzero
 surcomplex eigenvalue satisfies
-\begin{equation}\label{eq:realpart-scale}
+\begin{equation}\label{markov:eq:realpart-scale}
  v(\Rea\lambda)=v(\lambda).
 \end{equation}
 \end{theorem}
 
 \begin{proof}
-The trace relation in \eqref{eq:profile-properties} gives
-\begin{equation}\label{eq:trace-log}
+The trace relation in \eqref{markov:eq:profile-properties} gives
+\begin{equation}\label{markov:eq:trace-log}
  \tr K_\alpha(c)
  =\frac{\sum_{k\in I_\alpha}(n-k)b_kc^{d-k}}{D_\alpha(c)}
  =1+c\frac{D_\alpha'(c)}{D_\alpha(c)}.
@@ -1317,27 +1612,27 @@ Therefore the logarithmic derivatives of
 $\det(cI_p+G_\alpha)$ and $cD_\alpha(c)$ agree for positive $c$. Their ratio is
 a constant rational function. The former is monic of degree $p$; the latter
 has degree $1+d-k_-=p$ and leading coefficient $b_{k_-}$. This proves
-\eqref{eq:effective-char} as a polynomial identity.
+\eqref{markov:eq:effective-char} as a polynomial identity.
 
 The smallest power of $D_\alpha$ is $d-k_+=q-1$, and the largest is $p-1$.
-Comparing with \eqref{eq:initial-factorization}, there are $q-1$ slower
+Comparing with \eqref{markov:eq:initial-factorization}, there are $q-1$ slower
 nonzero eigenvalues and $p-q$ at the current scale. Cancelling the $q$ zero
-factors in \eqref{eq:effective-char} identifies the other eigenvalues with the
+factors in \eqref{markov:eq:effective-char} identifies the other eigenvalues with the
 $\rho_r$ of that factorization. Nonzero eigenvalues of a real row Laplacian have
-strictly positive real parts, as proved in Corollary~\ref{cor:effective-semigroup}.
+strictly positive real parts, as proved in Corollary~\ref{markov:cor:effective-semigroup}.
 Thus the leading real part of every normalized $\lambda_r$ is nonzero and
-positive, proving \eqref{eq:realpart-scale}.
+positive, proving \eqref{markov:eq:realpart-scale}.
 \end{proof}
 
 There is no assertion here that a nonreversible spectrum is real. The leading
 amplitudes can occur in nonreal conjugate pairs, as in
-Example~\ref{ex:prescribed}. Nor is diagonalizability at nonzero eigenvalues
+Example~\ref{markov:ex:prescribed}. Nor is diagonalizability at nonzero eigenvalues
 needed for the determinant argument.
 
 \begin{theorem}[Discrete convexity and all eigenvalue valuations]
-\label{thm:convexity}
+\label{markov:thm:convexity}
 The forest profile satisfies
-\begin{equation}\label{eq:convexity}
+\begin{equation}\label{markov:eq:convexity}
  h_1-h_0\ \le\ h_2-h_1\ \le\ \cdots\ \le\ h_d-h_{d-1}.
 \end{equation}
 These $d$ increments are precisely the nonzero eigenvalue valuations of $L$ in
@@ -1353,7 +1648,7 @@ number of edges in one of its in-forests is $p-q$. Every smaller edge count
 occurs by deleting edges of such a forest. All associated coefficients of
 $\det(cI_p+G_\alpha)$ are positive. Thus this polynomial has strictly positive
 coefficients at all degrees from $q$ to $p$, inclusive. Equation
-\eqref{eq:effective-char} implies that $D_\alpha$ has a positive coefficient
+\eqref{markov:eq:effective-char} implies that $D_\alpha$ has a positive coefficient
 at every degree from $q-1$ to $p-1$. Its definition forces every integer from
 $k_-$ to $k_+$ to belong to $I_\alpha$.
 
@@ -1364,7 +1659,7 @@ points on the same supporting line, and
  h_k-h_{k-1}=\alpha\qquad(k_-<k\le k_+).
 \]
 Successive jumps occur at strictly increasing scales. This proves
-\eqref{eq:convexity}. The multiplicity statement in Theorem~\ref{thm:char}
+\eqref{markov:eq:convexity}. The multiplicity statement in Theorem~\ref{markov:thm:char}
 then identifies the increments with the eigenvalue valuation list.
 \end{proof}
 
@@ -1377,12 +1672,32 @@ real effective characteristic polynomial. It does not claim that the underlying
 rank-one optimal-forest idea is new.
 \end{remark}
 
-\section{Worked examples}\label{sec:examples}
+\begin{remark}[Newton's rule in the polynomial-algebra report]\label{markov:rem:newton}
+The expression $m_\alpha$ is the Newton profile at center zero of the monic
+polynomial $D(s)$, whose roots are the $-\lambda_r$. So
+Lemma~\ref{markov:lem:initial-spectrum} is also the case $P=D$ of Newton's
+root-valuation rule (\path{polynomial:thm:newton}) and of the initial-polynomial
+root count with its profile formula (\path{polynomial:thm:initialroots},
+\path{polynomial:eq:profileproduct}) in the collection's polynomial-algebra
+report~\cite{CollPoly}. That report works in the same kind of workspace, with
+$\Gamma$ set-sized and divisible. The direct proof of
+Lemma~\ref{markov:lem:initial-spectrum} given above is kept.
+
+Theorem~\ref{markov:thm:convexity} says more than Newton's rule gives for a
+general polynomial. There, root valuations are read from the lower boundary of
+the coefficient points, and some points may lie strictly above that boundary.
+For the forest polynomial of a positive rate matrix this does not happen: every
+point $(k,h_k)$ lies on the lower boundary, and every index from $k_-$ to $k_+$
+is active at a critical scale. The input that rules out the general behaviour is
+the positivity of the forest coefficients of the real effective generator.
+\end{remark}
+
+\section{Worked examples}\label{markov:sec:examples}
 
 \subsection{A nonreversible three-state system}
 
 Let $\delta>0$, write $\tau=t^\delta$, and consider
-\begin{equation}\label{eq:example-three}
+\begin{equation}\label{markov:eq:example-three}
  L=\begin{pmatrix}
  2&-2&0\\
  -1&1+3\tau&-3\tau\\
@@ -1400,14 +1715,14 @@ The forest profile is
 \]
 Thus the nonzero eigenvalue scales are $0$ and $\delta$. Between them and after
 them, respectively, the plateau projections are
-\begin{equation}\label{eq:three-projections}
+\begin{equation}\label{markov:eq:three-projections}
  P=\begin{pmatrix}
  1/3&2/3&0\\1/3&2/3&0\\0&0&1
  \end{pmatrix},\qquad
  Q=\one\begin{pmatrix}1/9&2/9&2/3\end{pmatrix}.
 \end{equation}
 At the slower scale,
-\begin{equation}\label{eq:three-crossover}
+\begin{equation}\label{markov:eq:three-crossover}
  K_\delta(c)=\frac{cP+3Q}{c+3}.
 \end{equation}
 Use
@@ -1435,7 +1750,7 @@ $6\tau$, whereas the denominator has leading term $3ct^\alpha$. Therefore
 The vanishing shadow does not mean the transition is absent; it has a definite
 smaller leading scale and amplitude.
 
-\subsection{A rank-two hierarchy with a tied fast scale}\label{subsec:rank-two}
+\subsection{A rank-two hierarchy with a tied fast scale}\label{markov:subsec:rank-two}
 
 In lexicographically ordered $\Q^2$, let $\delta=(0,1)$, $\beta=(1,0)$,
 $\tau=t^\delta$, and $\zeta=t^\beta$. Then $\zeta\ll\tau^N$ for every positive
@@ -1464,11 +1779,11 @@ The fast transition loses two dimensions at once. Tied scales cause no
 ambiguity and require no arbitrary tie breaking. A numerical monomial
 specialization can reproduce this entire finite diagram, but cannot preserve
 $\zeta\ll\tau^N$ for every $N$; this is the distinction in
-Theorem~\ref{thm:rank-one}.
+Theorem~\ref{markov:thm:rank-one}.
 
 \subsection{Reversibility does not eliminate transient mixtures}
 
-\begin{example}[A fuzzy plateau in a reversible system]\label{ex:fuzzy}
+\begin{example}[A fuzzy plateau in a reversible system]\label{markov:ex:fuzzy}
 Let $p,q>0$ be real with $p+q=1$, and let $\tau=t^\delta$, $\delta>0$. Put
 \[
  L=\begin{pmatrix}
@@ -1495,13 +1810,13 @@ two columns of $P$ for $U$. Its slow effective generator is
 \]
 The residue stationary law $(p,q,0)$ is not strictly positive. Thus this example
 satisfies exact reversibility while lying outside the full-support conclusion
-of Proposition~\ref{prop:reversible}.
+of Proposition~\ref{markov:prop:reversible}.
 \end{example}
 
 \subsection{Prescribed nonreal dynamics and an invisible positivity correction}
 
 \begin{example}[Why the general inverse theorem needs its correction]
-\label{ex:prescribed}
+\label{markov:ex:prescribed}
 For clarity take a rank-one parameter $t$ with $v(t)>0$, measuring exponents in
 units of $v(t)$. Prescribe a fast generator that cycles through the first three
 states and leaves the fourth fixed:
@@ -1522,14 +1837,14 @@ Prescribe the slow effective generator
 \]
 and place it at scale $2$. The naive sum $A_1+t^2A_2$ is not a row Laplacian:
 its $(1,3)$ entry is $2t^2/3>0$. The intermediate correction gives
-\begin{equation}\label{eq:corrected-four}
+\begin{equation}\label{markov:eq:corrected-four}
  H=A_1+t(I-P)+t^2A_2.
 \end{equation}
 Now the offending entry is $-t/3+2t^2/3<0$, and all the other off-diagonal signs
-are correct by the proof of Theorem~\ref{thm:general-realization}.
+are correct by the proof of Theorem~\ref{markov:thm:general-realization}.
 
 The exact nonzero characteristic factor is
-\begin{equation}\label{eq:corrected-four-char}
+\begin{equation}\label{markov:eq:corrected-four-char}
  D(s)=(s+3t^2)\bigl((s+t)^2+3(s+t)+3\bigr).
 \end{equation}
 Thus the eigenvalues are
@@ -1540,7 +1855,7 @@ Thus the eigenvalues are
 \]
 This supplies a genuine surcomplex pair at the fast scale. The complete
 resolvent can be written
-\begin{equation}\label{eq:corrected-four-resolvent}
+\begin{equation}\label{markov:eq:corrected-four-resolvent}
  R_H(s)=s((s+t)I+A_1)^{-1}(I-P)
        +U\,s(sI_2+t^2G_2)^{-1}V.
 \end{equation}
@@ -1551,13 +1866,13 @@ without becoming a new leading \emph{resolvent} scale.
 
 The final projection is
 $\one(1/9,1/9,1/9,2/3)$, and this particular corrected matrix is already
-irreducible. Multiplication of \eqref{eq:corrected-four-resolvent} by $sI+H$
+irreducible. Multiplication of \eqref{markov:eq:corrected-four-resolvent} by $sI+H$
 provides a direct exact check independent of the asymptotic argument.
 \end{example}
 
-\section{Computation, verification, and limitations}\label{sec:computation}
+\section{Computation, verification, and limitations}\label{markov:sec:computation}
 
-\subsection{A finite exact procedure}
+\subsection{A finite exact procedure}\label{markov:sec:procedure}
 
 The theory gives a direct algorithm once the leading edge data are available.
 Enumerate in-forests by assigning to each vertex either no outgoing edge or one
@@ -1567,7 +1882,7 @@ Grouping by edge count gives $h_k,b_k,B_k$; grouping additionally by the mark
 $r_f(i)=j$ gives the rare-entry data.
 
 The increments $h_k-h_{k-1}$ already give the critical scales with multiplicity,
-by Theorem~\ref{thm:convexity}. At a critical scale form
+by Theorem~\ref{markov:thm:convexity}. At a critical scale form
 $N_\alpha(c)/D_\alpha(c)$ and the preceding projection $P$. Find its closed
 classes to construct $U,V$, then use
 \[
@@ -1586,7 +1901,7 @@ names need not supply decidable equality; arbitrary surreal names need not expos
 the leading exponent. A mathematical finiteness theorem is not a uniform
 algorithm on every possible representation of a surreal number.
 
-\subsection{Reproducible checks included in the archive}
+\subsection{Reproducible checks included in this directory}\label{markov:sec:checks}
 
 The accompanying \texttt{code/verify.py} uses Python's exact rational numbers and
 SymPy, with no floating-point tolerances and no external data. The recorded run
@@ -1595,22 +1910,33 @@ five vertices, with positive rational leading coefficients and valuations in
 lexicographically ordered $\Q^2$. Across these instances it enumerated 17,280
 forests and checked 105 critical kernels.
 
-The checks include convexity of the optimal forest profile; equality of its
-increments with the critical scale multiset; stochasticity, idempotence and
+The checks include convexity of the optimal forest profile; equality of the set
+of its distinct increments with the set of critical scales; stochasticity,
+idempotence and
 nesting of all plateaux; the canonical stochastic retract identities; the signs
 and ranks of the reconstructed effective generators; and equality with their
 resolvents at the exact rational parameters $c=1,2,3$. These checks use forests
-with tied costs as well as distinct costs.
+with tied costs as well as distinct costs. The program does not compare
+multiplicities of increments with multiplicities of eigenvalue valuations
+directly. It checks the rank of every plateau and of every reconstructed
+generator, and the rank drop at a scale is the multiplicity asserted by
+Theorem~\ref{markov:thm:char}.
 
 Separate symbolic checks verify the three-state determinant and crossover,
 the exact projection-flag inverse, the rank-one irreducible-completion identity,
 a four-state matrix-forest identity, the sharp relative-error example, and the
-prescribed-crossover construction in Example~\ref{ex:prescribed}, including the
+prescribed-crossover construction in Example~\ref{markov:ex:prescribed}, including the
 absence of an extra crossover at its positivity-correction scale. The resulting
 \texttt{data/verification.json} records \texttt{PASS} and the individual instance
 sizes. These checks do not establish the general theorems: in particular they do
 not replace the arbitrary-rank separation proof or the positivity argument for
 all compatible effective generators. No Lean verification is claimed.
+
+The program writes its output over \texttt{data/verification.json} next to it,
+so it should be run on a copy of this directory. Such a rerun at placement,
+under Python 3.14.4 and SymPy 1.14.0, reproduced the recorded file exactly
+except for operating-system line endings. The manuscript's own build record,
+\texttt{data/build\_validation.json}, names Python 3.13.5 and SymPy 1.14.0.
 
 \subsection{What has actually been settled here}
 
@@ -1635,14 +1961,16 @@ comparisons, for complete series rather than leading terms, and for data whose
 size is not fixed in advance. The finite theorem must not be extrapolated to
 those settings.
 
-\subsection{Remaining directions, not results claimed in this paper}
+\subsection{Remaining directions, not results claimed in this paper}\label{markov:sec:directions}
 
 The normalized resolvent does not determine a theory of surreal-valued sample
 paths, stochastic integration, or a globally defined surreal heat semigroup.
 Constructing such objects requires additional choices of convergence and
 summability structures. Likewise, no result here covers countably infinite state
 spaces, time-inhomogeneous rates, uniform estimates as $n\to\infty$, or a full
-hierarchy of large-deviation transition events.
+hierarchy of large-deviation transition events. The collection's report on
+measures and probability (Section~\ref{markov:sec:neighbours}) is not used to
+supply any of these objects.
 
 There are natural further questions. One is to develop efficient exact algorithms
 for the marked-forest diagram without exhaustive enumeration. Another is to
@@ -1683,10 +2011,10 @@ arguments are then finite algebra.
 \toprule
 Conclusion & Main dependencies\\
 \midrule
-Leading and marked shadows & Positive finite forest sums; Proposition~\ref{prop:forest}.\\
+Leading and marked shadows & Positive finite forest sums; Proposition~\ref{markov:prop:forest}.\\
 Nested stochastic flag & Resolvent identity; trace of a forest matrix.\\
 Effective real generator & Stochastic retract; compressed resolvent identity.\\
-Prescribed-crossover realization & Block support of compatible generators; sign-cover implication \eqref{eq:sign-cover}; intermediate corrections.\\
+Prescribed-crossover realization & Block support of compatible generators; sign-cover implication \eqref{markov:eq:sign-cover}; intermediate corrections.\\
 Irreducible completion & Exact rank-one inverse identity; rank-one final projection.\\
 Relative stability & No cancellation in positive forest sums.\\
 Rank-one specialization & Finite affine forest arrangement; finite rational sign separation.\\
@@ -1785,6 +2113,34 @@ Targeted comparison: \texttt{docs/README.md},
 \texttt{docs/surcomplex/spectral-theory/README.md},
 the \texttt{docs/new} inventory, and indexed source search.
 See the audit accompanying this manuscript for the unexpanded-archive limitation.
+
+\bibitem{CollPoly}
+\emph{Surcomplex Polynomial Algebra: Root Geometry, Newton Profiles,
+Multiscale Stability, and Residue Duality}, report of this collection,
+\path{docs/surcomplex/polynomial-algebra/}.
+Cited statements: \path{polynomial:thm:initialroots},
+\path{polynomial:eq:profileproduct}, \path{polynomial:thm:newton},
+\path{polynomial:thm:stability}.
+
+\bibitem{CollSpec}
+\emph{Surcomplex Spectral Theory}, report of this collection,
+\path{docs/surcomplex/spectral-theory/}.
+Cited statements: \path{thm:gram}, \path{thm:HW} and the section
+\path{spec:sec:spectrumword}.
+
+\bibitem{CollMeas}
+The collection's report on Hahn-valued measures and probability,
+\path{docs/surreal/hahn-valued-measures-and-probability/}.
+No statement of it is used here.
+
+\bibitem{CollTate}
+\emph{Hahn--Tate Uniformization at Arbitrary Valuation Rank}, report of this
+collection, \path{docs/surcomplex/hahn-tate-uniformization/}, including its
+multiscale theta-series material. Cited only for a difference in terminology.
+
+\bibitem{CollNotation}
+The collection's notation guide, \texttt{docs/NOTATION.md}, sections on scalar
+standard part and on topologies.
 
 \end{thebibliography}
 \end{document}

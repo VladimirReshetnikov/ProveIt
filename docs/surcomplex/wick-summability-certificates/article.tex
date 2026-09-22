@@ -121,7 +121,10 @@ Hahn-unit tails. They specialize to surreal and surcomplex numbers through
 Conway normal forms. Full mathematical proofs, an exact rational and
 lexicographic certificate solver, and 7,684 reproducible finite checks are
 provided. Classical Wick calculus and support lemmas are explicitly separated
-from the proposed new finite-certificate theorem package.
+from the proposed new finite-certificate theorem package. Everything here is
+mathematics about finite-dimensional formal Gaussian expansions over a Hahn
+field; a Hahn value is not an integral, a measure or a physical amplitude,
+and no claim about physics is made.
 \end{abstract}
 \end{minipage}
 \vfill
@@ -131,8 +134,11 @@ proof-assistant verified. This manuscript develops candidate-new theorems,
 not a claimed solution of a named longstanding conjecture. The precise
 statements were not located in the materials inspected. The repository audit
 is pinned to \Commit; compressed archive contents were not exhaustively
-accessible. \Cref{sec:provenance} gives the exact novelty and verification
+accessible. \Cref{wick:sec:provenance} gives the exact novelty and verification
 boundaries. Finite computations are checks, not substitutes for the proofs.
+This single-source report keeps the manuscript's repository statements at
+that pin; corrections for the present tree and the relation to the physics
+report are in \Cref{wick:sub:reposcope,wick:sub:physics,wick:sub:collection}.
 \end{minipage}
 \end{titlepage}
 \hypersetup{pageanchor=true}
@@ -144,7 +150,7 @@ boundaries. Finite computations are checks, not substitutes for the proofs.
 \pagenumbering{arabic}
 
 \section{The question and the main answer}
-\label{sec:intro}
+\label{wick:sec:intro}
 
 Gaussian perturbation theory is a useful test of whether surreal scalars can
 do something mathematically substantive beyond renaming a formal parameter.
@@ -173,8 +179,8 @@ $\alpha^a$ are nonzero vectors of nonnegative integers. Let $\Gamma$ be a
 nontrivial divisible ordered abelian group. Then the diagram family is
 strongly Hahn summable if and only if there are $p_1,\ldots,p_d\in\Gamma$ with
 \begin{align}
- \lambda_a+\sum_i\alpha_i^a p_i&>0 &&(1\le a\le s),\label{eq:introvertex}\\
- c_{ij}-p_i-p_j&>0 &&(C_{ij}\ne0).\label{eq:introedge}
+ \lambda_a+\sum_i\alpha_i^a p_i&>0 &&(1\le a\le s),\label{wick:eq:introvertex}\\
+ c_{ij}-p_i-p_j&>0 &&(C_{ij}\ne0).\label{wick:eq:introedge}
 \end{align}
 For a loop, the second expression is $c_{ii}-2p_i$. Thus the answer is a
 \emph{finite strict feasibility problem}, even though the family being
@@ -241,12 +247,70 @@ classical tools rather than priority claims.
 
 There is an essential restriction: \emph{diagramwise} summability means that
 the individual diagram terms may be summed without cancellation-dependent
-infinite regrouping. An isotropic example in \Cref{sec:cancellation} has a
+infinite regrouping. An isotropic example in \Cref{wick:sec:cancellation} has a
 perfectly finite order-grouped answer while its diagram family is not
 summable. Any theorem omitting that distinction would be false.
 
+\subsection{Words and letters with one meaning in this report}
+\label{wick:sub:conventions}
+
+Several words used here carry other meanings in other reports of the
+collection to which this report belongs. Within this report each has exactly
+the following meaning.
+\begin{itemize}
+\item \emph{Gaussian} refers to the finite formal Gaussian expectation
+$\EE_C$ of \Cref{wick:sec:wick} and to the perturbation expansions and
+models built from it. No measure or integral is meant; the two places that
+mention a Gaussian integral or function (\Cref{wick:sec:positive,wick:sec:examples})
+do so only to say that none is constructed. The word has nothing to do with
+Gaussian rationals, Gaussian elimination, Gaussian quadrature, or the
+Gaussian regulator of the physics report, all of which occur elsewhere in the
+collection.
+\item A \emph{moment} is a Wick moment $\EE_C[x^M]$, a finite sum over
+pairings (\Cref{wick:lem:wickcount}). Power moments of measures, Fourier
+moments and Prony input data are not meant.
+\item \emph{Positive}, for an element of $\KR$, is ordered-field positivity:
+a positive leading coefficient. \emph{Coefficientwise nonnegative}, the
+condition of \Cref{wick:sec:cancellation}, asks every coefficient to be a
+nonnegative real number. For a nonzero element it implies positivity but not
+conversely, and the two are never interchanged.
+\item A \emph{Hilbert basis} is the finite indecomposable generating set of
+the integer semigroup $S$ (\Cref{wick:prop:hilbert}); no Hilbert space occurs.
+\item The \emph{Wick valuation cone} is the finite list of strict
+inequalities described after \Cref{wick:cor:robustness}. A datum is
+\emph{admissible} when it satisfies the equivalent conditions of
+\Cref{wick:thm:main}, that is, when its Wick diagram family is diagramwise
+strongly summable. Other reports use ``cone'' and ``admissible'' in other
+senses.
+\item A \emph{phase} is the argument of a nonzero complex coefficient, and
+\emph{stationary phase} is the name of the formal expansion treated in
+\Cref{wick:sec:positive}. Neither refers to the phase symbols fixed in the
+differential-equations report and adopted by the physics report.
+\item $D$ is the incidence matrix of \Cref{wick:sec:wick}, never a derivation.
+The symbol $\partial_j$ in \Cref{wick:sec:observables} is formal
+differentiation in the polynomial variable $x_j$, as stated after
+\Cref{wick:thm:SD}.
+\end{itemize}
+A few letters are reused locally, each time inside one delimited passage.
+The reuses most likely to mislead are these. The letter $h$ denotes an element of $S$ (usually of the Hilbert
+basis), except that in \Cref{wick:cor:stationary} and
+\eqref{wick:eq:quarticthreshold} it is $\val(\hbar)$ and in
+\Cref{wick:sec:cubic} and the higher-rank example of
+\Cref{wick:sub:rankboundary} it is a coupling of the cross-cubic model. The
+letter $a$ indexes interaction types, except for the exposed slots $a_r,b_r$
+in \Cref{wick:lem:rewire} and for $a_i=\val(q_i)$ in
+\Cref{wick:cor:stationary}. The letter $s$ counts interaction monomials,
+except for the cross-edge parameter of the mixed quartic model in
+\Cref{wick:sec:mixed}. The letter $u$ denotes positive-valuation substitution
+inputs in \Cref{wick:cor:substitution} and the scaled couplings of
+\eqref{wick:eq:scaleddata}, but the action coefficients in
+\eqref{wick:eq:action}. The letter $q$ denotes an integer count vector,
+except for the rational coordinates in the embedding examples after
+\Cref{wick:prop:embedding} and the quadratic coefficients $q_i$ in
+\eqref{wick:eq:action}.
+
 \section{Hahn fields, strong sums, and surcomplex realization}
-\label{sec:hahn}
+\label{wick:sec:hahn}
 
 \subsection{The fixed workspace}
 
@@ -278,7 +342,7 @@ real constant. This use of ``infinitesimal'' concerns the chosen Hahn valuation;
 we do not use an unspecified topology on a proper class.
 
 \begin{definition}[Strong summability]
-\label[definition]{def:strong}
+\label[definition]{wick:def:strong}
 A set-indexed family $(f_j)_{j\in J}$ in $\K$ is \emph{strongly summable} if
 $\bigcup_j\supp(f_j)$ is well ordered and, for each $\gamma\in\Gamma$, only
 finitely many $j$ satisfy $\gamma\in\supp(f_j)$. Its sum is obtained by adding
@@ -296,7 +360,7 @@ than assume it away.
 \subsection{The support lemma and substitution}
 
 \begin{lemma}[Neumann's positive-support lemma, classical]
-\label[lemma]{lem:neumann}
+\label[lemma]{wick:lem:neumann}
 If $B\subseteq\Gamma_{>0}$ is well ordered, the additive monoid generated by
 $B$ is well ordered. Each exponent has only finitely many representations as
 a finite multiset of members of $B$.
@@ -308,7 +372,7 @@ for a positive $\eta$. We use it in the following standard form, whose
 precise summability assertion is worth recording.
 
 \begin{corollary}[Finite infinitesimal substitution]
-\label[corollary]{cor:substitution}
+\label[corollary]{wick:cor:substitution}
 Let $u_1,\ldots,u_r\in\K$ have positive valuations. For every family of
 complex numbers $(a_n)_{n\in\N^r}$, the family
 \[
@@ -322,7 +386,7 @@ coefficientwise formal identities involved in addition and multiplication.
 The union $B=\bigcup_j\supp(u_j)$ is a finite union of well-ordered sets and
 is contained in $\Gamma_{>0}$, so it is well ordered. Every exponent occurring
 in one of the displayed terms is a sum of members of $B$. By
-\Cref{lem:neumann}, the union of these supports is well ordered. A fixed
+\Cref{wick:lem:neumann}, the union of these supports is well ordered. A fixed
 exponent has finitely many multiset decompositions in $B$. Each such finite
 multiset has only finitely many ways to label its entries by the $r$ series
 from which they came. Thus only finitely many multiindices $n$ can contribute
@@ -344,7 +408,7 @@ series, not a holomorphic function on a sector.
 \subsection{Embedding the answer into the surcomplex field}
 
 \begin{proposition}[Surcomplex realization]
-\label[proposition]{prop:embedding}
+\label[proposition]{wick:prop:embedding}
 Suppose an order-preserving additive embedding
 $\iota:\Gamma\hookrightarrow(\No,+)$ has been fixed. Then
 \begin{align*}
@@ -380,7 +444,7 @@ All families used below are set-indexed, and all their values live in one
 fixed set-sized Hahn workspace before this embedding is applied.
 
 \section{The Wick family as an integer incidence problem}
-\label{sec:wick}
+\label{wick:sec:wick}
 
 \subsection{Data and conventions}
 
@@ -389,14 +453,14 @@ Fix $d,s\ge1$ and a polynomial
  P(x)=\sum_{a=1}^s g_a x^{\alpha^a},\qquad
  g_a\in\K^\times,\quad
  \alpha^a\in\N^d\setminus\{0\}.
- \label{eq:interaction}
+ \label{wick:eq:interaction}
 \end{equation}
 Combine duplicate monomials and remove zero coefficients before applying
 the results. Let $C=(C_{ij})$ be a symmetric matrix over $\K$, and let
 \[
  E=\{(i,j):1\le i\le j\le d,\ C_{ij}\ne0\}.
 \]
-The matrix can be singular. Except in \Cref{sec:positive}, it need not be real
+The matrix can be singular. Except in \Cref{wick:sec:positive}, it need not be real
 or positive. It is a \emph{symmetric bilinear} covariance, not a Hermitian
 covariance: no complex conjugation appears in a Wick contraction.
 
@@ -415,7 +479,7 @@ with zero covariance are not included.
 For an external monomial $x^\beta$, where $\beta\in\N^d$, define
 \begin{equation}
  Q_\beta=\{(m,k)\in\N^s\times\N^E:Am+\beta=Dk\},\qquad S=Q_0.
- \label{eq:incidence}
+ \label{wick:eq:incidence}
 \end{equation}
 An observable is called \emph{pairable} when $Q_\beta\ne\varnothing$.
 The empty vacuum diagram corresponds to $(m,k)=(0,0)\in S$.
@@ -429,14 +493,14 @@ odd moments vanish. This defines a linear map from $\K[x_1,\ldots,x_d]$ to
 $\K$. No integration or measure is needed.
 
 \begin{lemma}[Colored matching multiplicity]
-\label[lemma]{lem:wickcount}
+\label[lemma]{wick:lem:wickcount}
 If $Dk=M$, the number of pairings with edge counts $k$ is
 \begin{equation}
  W(M,k)=
  \frac{\prod_i M_i!}
  {\displaystyle\prod_{(i,i)\in E}2^{k_{ii}}k_{ii}!
   \prod_{\substack{(i,j)\in E\\i<j}}k_{ij}!}.
- \label{eq:W}
+ \label{wick:eq:W}
 \end{equation}
 In particular, this is a positive integer. The moment is the finite sum
 $\EE_C[x^M]=\sum_{Dk=M}W(M,k)C^k$.
@@ -450,7 +514,7 @@ for loops and $k_{ij}$ slots for every neighboring color $j$. This contributes
 Pair the loop slots in $(2k_{ii})!/(2^{k_{ii}}k_{ii}!)$ ways. For $i<j$,
 match the two sets of $k_{ij}$ slots by a bijection in $k_{ij}!$ ways.
 Multiplication cancels one of the two cross-edge factorials and gives
-\eqref{eq:W}. When a loop is not allowed, its count is zero and its factor is
+\eqref{wick:eq:W}. When a loop is not allowed, its count is zero and its factor is
 $1$. There are only finitely many feasible $k$ because the total number of
 slots is fixed.
 \end{proof}
@@ -463,7 +527,7 @@ For $(m,k)\in Q_\beta$, put
 \begin{equation}
  T_\beta(m,k)=
  \frac{W(Am+\beta,k)}{\prod_a m_a!}\,g^m C^k.
- \label{eq:atom}
+ \label{wick:eq:atom}
 \end{equation}
 The \emph{diagramwise Wick sum} $\cZ_\beta$ exists when this family is strongly
 summable; in that case $\cZ_\beta=\sum_{Q_\beta}T_\beta(m,k)$. Write
@@ -474,31 +538,31 @@ Each atom collects only finitely many pairings, all with the same monomial
 $g^mC^k$ and positive rational multipliers. Thus the atom family is strongly
 summable exactly when the individually indexed pairing family is strongly
 summable. Their supports agree within every such finite block; there is no
-cancellation in passing from pairings to \eqref{eq:atom}.
+cancellation in passing from pairings to \eqref{wick:eq:atom}.
 
 Set
 \begin{equation}
  \lambda_a=\val(g_a),\qquad c_e=\val(C_e),\qquad
  L(m,k)=\sum_a m_a\lambda_a+\sum_e k_e c_e.
- \label{eq:weight}
+ \label{wick:eq:weight}
 \end{equation}
-The coefficient in \eqref{eq:atom} is nonzero in characteristic zero, so
+The coefficient in \eqref{wick:eq:atom} is nonzero in characteristic zero, so
 \begin{equation}
  \val(T_\beta(m,k))=L(m,k).
- \label{eq:leading}
+ \label{wick:eq:leading}
 \end{equation}
 This equality is exact, even when the couplings and covariances have arbitrary
 higher Hahn terms. It is the source of the sharp necessity statements.
 
 \section{Finite semigroups and observable sectors}
-\label{sec:semigroup}
+\label{wick:sec:semigroup}
 
 The infinite diagram problem already contains finite combinatorics. We give
 the elementary arguments to avoid relying on a black-box finite-generation
 claim.
 
 \begin{lemma}[Dickson's finiteness lemma, classical]
-\label[lemma]{lem:dickson}
+\label[lemma]{wick:lem:dickson}
 Every subset of $\N^r$ has finitely many minimal elements for the
 coordinatewise order. Every element lies above one of these minimal elements.
 \end{lemma}
@@ -515,7 +579,7 @@ must terminate at a minimal element of the given subset.
 \end{proof}
 
 \begin{proposition}[A finite Hilbert basis]
-\label[proposition]{prop:hilbert}
+\label[proposition]{wick:prop:hilbert}
 The coordinatewise minimal elements of $S\setminus\{0\}$ form a finite set
 $\cH$. They are exactly the nonzero elements that cannot be written as a sum
 of two nonzero elements of $S$. Every element of $S$ is a nonnegative integer
@@ -526,7 +590,7 @@ If $0\ne h'\le h$ lie in $S$, then $h-h'\in S$ because $Am=Dk$ is a
 homogeneous linear equation. Unless $h=h'$, this is a nontrivial
 decomposition. Conversely, a decomposition $h=h'+h''$ with both terms
 nonzero produces a strictly smaller nonzero element $h'\le h$. This proves
-the characterization. Finiteness follows from \Cref{lem:dickson}. If an
+the characterization. Finiteness follows from \Cref{wick:lem:dickson}. If an
 element is not minimal, subtract a smaller nonzero element and continue;
 induction on the sum of all coordinates terminates in elements of $\cH$.
 \end{proof}
@@ -536,12 +600,12 @@ nonnegative integer kernel. It is a structural finite object; no efficient
 algorithm for finding it is assumed.
 
 \begin{proposition}[Finite generation of every observable sector]
-\label[proposition]{prop:module}
+\label[proposition]{wick:prop:module}
 If $Q_\beta\ne\varnothing$, let $\cP_\beta$ be its finite set of
 coordinatewise minimal elements. Then
 \begin{equation}
  Q_\beta=\bigcup_{q\in\cP_\beta}(q+S).
- \label{eq:module}
+ \label{wick:eq:module}
 \end{equation}
 The union need not be disjoint.
 \end{proposition}
@@ -553,19 +617,19 @@ to an element of $Q_\beta$ preserves its defining equation.
 \end{proof}
 
 The same vacuum semigroup therefore controls every external polynomial
-sector. \Cref{prop:module} alone does not establish summability, because
+sector. \Cref{wick:prop:module} alone does not establish summability, because
 translated monomial families can still have bad supports; it identifies the
 finite repetition mechanism that the valuation criterion will control.
 
 \section{A strict alternative over arbitrary ordered value groups}
-\label{sec:alternative}
+\label{wick:sec:alternative}
 
 We require a strict linear-inequality theorem over $\Gamma$, not merely over
 $\R$. It is a version of the classical theorem of alternatives, with a short
 elimination proof that records exactly what divisibility supplies.
 
 \begin{theorem}[Strict rational alternative]
-\label[theorem]{thm:alternative}
+\label[theorem]{wick:thm:alternative}
 Let $M\in\Q^{N\times d}$ and $b\in\Gamma^N$. Exactly one of the following
 possibilities occurs:
 \begin{enumerate}[label=\textup{(\roman*)}]
@@ -577,7 +641,7 @@ In particular,
  \exists p\ (Mp+b>0)
  \quad\Longleftrightarrow\quad
  r\cdot b>0\text{ for every }0\ne r\in\Q_{\ge0}^N\text{ with }r^TM=0.
- \label{eq:alternative}
+ \label{wick:eq:alternative}
 \end{equation}
 \end{theorem}
 \begin{proof}
@@ -599,12 +663,12 @@ conditions for a last coordinate to exist are the retained rows together
 with
 \begin{equation}
  u+w>0
- \label{eq:fm}
+ \label{wick:eq:fm}
 \end{equation}
 for every lower-bound/upper-bound pair. Necessity is addition. For
 sufficiency, after fixing the first $d-1$ coordinates, the finitely many
 lower bounds $-u$ have a maximum and the finitely many upper bounds $w$ have
-a minimum. All pairwise inequalities \eqref{eq:fm} say that the former is
+a minimum. All pairwise inequalities \eqref{wick:eq:fm} say that the former is
 strictly below the latter. Their midpoint is available by divisibility.
 If there is only a lower bound, add any positive element of $\Gamma$ to its
 maximum; if there is only an upper bound, subtract one from its minimum.
@@ -631,11 +695,11 @@ For the Wick problem, take the rows of $M$ to be
 \begin{equation}
  M=\begin{pmatrix}A^T\\-D^T\end{pmatrix},\qquad
  b=(\lambda,c).
- \label{eq:wickM}
+ \label{wick:eq:wickM}
 \end{equation}
 A nonnegative rational kernel vector $r=(m,k)$ satisfies $Am=Dk$.
 Multiplication by a common positive denominator makes it an element of $S$.
-Consequently \Cref{thm:alternative} gives the exact bridge between valuation
+Consequently \Cref{wick:thm:alternative} gives the exact bridge between valuation
 balancing and positivity on all realizable diagram counts.
 
 \begin{remark}[Finite certificate, not a complexity claim]
@@ -650,11 +714,11 @@ mathematical obstruction.
 \end{remark}
 
 \section{The finite-certificate summability theorem}
-\label{sec:main}
+\label{wick:sec:main}
 
 \begin{theorem}[Exact diagramwise Hahn domain]
-\label[theorem]{thm:main}
-For the finite interaction and covariance data of \Cref{sec:wick}, the
+\label[theorem]{wick:thm:main}
+For the finite interaction and covariance data of \Cref{wick:sec:wick}, the
 following are equivalent:
 \begin{enumerate}[label=\textup{(\roman*)}]
 \item The vacuum Wick atom family is strongly summable.
@@ -664,7 +728,7 @@ following are equivalent:
 \begin{equation}
  \lambda_a+\alpha^a\cdot p>0\quad(1\le a\le s),\qquad
  c_{ij}-p_i-p_j>0\quad((i,j)\in E).
- \label{eq:balance}
+ \label{wick:eq:balance}
 \end{equation}
 \item For every $\beta\in\N^d$, the Wick atom family in $Q_\beta$ is
 strongly summable.
@@ -677,17 +741,17 @@ sizes or phases of the nonzero leading complex coefficients.
 \begin{proof}
 \emph{(i) implies (ii).} Suppose $q\ne0$ belongs to $S$ and $L(q)\le0$.
 For every $n\ge1$, the vector $nq$ is a distinct member of $S$. By
-\eqref{eq:leading}, its atom has leading exponent $nL(q)$. If $L(q)<0$,
+\eqref{wick:eq:leading}, its atom has leading exponent $nL(q)$. If $L(q)<0$,
 these exponents form a strictly descending sequence in the union of supports.
 If $L(q)=0$, exponent zero belongs to the supports of infinitely many atoms.
-Each case violates \Cref{def:strong}.
+Each case violates \Cref{wick:def:strong}.
 
 \emph{(ii) is equivalent to (iii).} Necessity is immediate. Conversely, every
 nonzero element of $S$ is a sum of at least one element of $\cH$ by
-\Cref{prop:hilbert}. Its weight is a sum of strictly positive elements.
+\Cref{wick:prop:hilbert}. Its weight is a sum of strictly positive elements.
 
-\emph{(ii) is equivalent to (iv).} Apply \Cref{thm:alternative} to
-\eqref{eq:wickM}. Clearing denominators identifies every possible
+\emph{(ii) is equivalent to (iv).} Apply \Cref{wick:thm:alternative} to
+\eqref{wick:eq:wickM}. Clearing denominators identifies every possible
 nonnegative rational obstruction with a nonzero element of $S$ of
 nonpositive weight. Conversely, an integer element of $S$ is already an
 allowed rational obstruction. This proves the equivalence.
@@ -696,7 +760,7 @@ allowed rational obstruction. This proves the equivalence.
 \begin{equation}
  u_a=g_a t^{\alpha^a\cdot p},\qquad
  w_{ij}=C_{ij}t^{-p_i-p_j}.
- \label{eq:scaleddata}
+ \label{wick:eq:scaleddata}
 \end{equation}
 All these finitely many Hahn elements have positive valuation. For
 $(m,k)\in Q_\beta$, the incidence equation gives
@@ -707,10 +771,10 @@ $(m,k)\in Q_\beta$, the incidence equation gives
  T_\beta(m,k)
  &=t^{p\cdot\beta}
  \frac{W(Am+\beta,k)}{\prod_a m_a!}\,u^m w^k.
- \label{eq:scaledatom}
+ \label{wick:eq:scaledatom}
 \end{align}
 Fill the missing indices in $\N^{s+\abs E}$ with coefficient zero. Then
-\Cref{cor:substitution} applies to the entire family in the last expression.
+\Cref{wick:cor:substitution} applies to the entire family in the last expression.
 Multiplication by the fixed monomial $t^{p\cdot\beta}$ preserves both
 summability conditions. This proves (v), including the empty sectors.
 
@@ -724,7 +788,7 @@ this sector was already established in (iv)$\Rightarrow$(v).
 \end{proof}
 
 \begin{corollary}[A computable obstruction pattern]
-\label[corollary]{cor:obstruction}
+\label[corollary]{wick:cor:obstruction}
 If the balancing system fails, there is a finite integer vector
 $q\in S\setminus\{0\}$ with $L(q)\le0$. At least one indecomposable
 $h\in\cH$ occurring in a decomposition of $q$ has $L(h)\le0$. Its multiples
@@ -736,11 +800,11 @@ positive weight, their sum would have positive weight, contrary to $L(q)\le0$.
 \end{proof}
 
 \begin{corollary}[Valuation robustness and diagonal invariance]
-\label[corollary]{cor:robustness}
+\label[corollary]{wick:cor:robustness}
 Keeping the nonzero incidence pattern fixed, replace any coupling or
 covariance entry by another nonzero Hahn element with the same valuation.
 Diagramwise summability is unchanged. It is also unchanged by every diagonal
-monomial transformation \eqref{eq:scaleddata}, without requiring that the
+monomial transformation \eqref{wick:eq:scaleddata}, without requiring that the
 transformed entries have positive valuation.
 \end{corollary}
 \begin{proof}
@@ -762,7 +826,7 @@ is $1$, although nonempty observable sectors may contain nontrivial finite
 or infinite sums.
 
 \section{Connected diagrams cannot hide the obstruction}
-\label{sec:connected}
+\label{wick:sec:connected}
 
 The logarithm of a formal Gaussian partition function is classically given
 by connected diagrams \cite[Section 3.5]{Etingof}. It is tempting to expect
@@ -779,7 +843,7 @@ we mean the subfamily consisting of the connected pairings, not an
 unspecified analytic logarithm.
 
 \begin{lemma}[Indecomposable counts force connectedness]
-\label[lemma]{lem:indecompconnected}
+\label[lemma]{wick:lem:indecompconnected}
 Every Wick realization of an element $h\in\cH$ is connected.
 \end{lemma}
 \begin{proof}
@@ -791,7 +855,7 @@ free-standing edges in a pairing of vertex slots.
 \end{proof}
 
 \begin{lemma}[Cyclic connected amplification]
-\label[lemma]{lem:rewire}
+\label[lemma]{wick:lem:rewire}
 Let $G$ be a connected colored Wick graph in which every vertex has valence
 at least two. If its count vector is $h$, then for every $n\ge1$ there is a
 connected colored Wick graph with count vector $nh$.
@@ -831,15 +895,15 @@ $nh$.
 one non-bridge edge is removed. Reconnecting the exposed slots preserves
 every color count. Arrows indicate the re-pairing prescription, not an
 orientation on Wick edges.}
-\label{fig:rewire}
+\label{wick:fig:rewire}
 \end{figure}
 
 \begin{theorem}[Equality of connected and full diagramwise domains]
-\label[theorem]{thm:connected}
+\label[theorem]{wick:thm:connected}
 Assume $\abs{\alpha^a}\ge2$ for every interaction type. The connected vacuum
 Wick family is strongly summable if and only if the full vacuum family is
 strongly summable. Equivalently, its exact domain is the finite cone of
-\Cref{thm:main}.
+\Cref{wick:thm:main}.
 
 If the criterion fails, there is an indecomposable vector $h$ of nonpositive
 weight and, for every $n\ge1$, a connected diagram with leading exponent
@@ -849,10 +913,10 @@ arbitrarily large size.
 \begin{proof}
 The connected family is a subfamily of the full family, so full summability
 implies connected summability. For the converse, if the full criterion
-fails, \Cref{cor:obstruction} gives an $h\in\cH$ with $L(h)\le0$. The
+fails, \Cref{wick:cor:obstruction} gives an $h\in\cH$ with $L(h)\le0$. The
 integer incidence equation guarantees that at least one pairing realizes
-$h$, by \Cref{lem:wickcount}. It is connected by
-\Cref{lem:indecompconnected}. Apply \Cref{lem:rewire}. The amplitudes of the
+$h$, by \Cref{wick:lem:wickcount}. It is connected by
+\Cref{wick:lem:indecompconnected}. Apply \Cref{wick:lem:rewire}. The amplitudes of the
 resulting connected graphs are nonzero rational multiples of
 $g^{nm}C^{nk}$, so they have leading exponents $nL(h)$. A negative weight
 produces a descending support sequence; a zero weight produces infinitely
@@ -863,12 +927,12 @@ connected family.
 \subsection{The connected logarithm on the admissible domain}
 
 \begin{proposition}[Specialization of the connected identity]
-\label[proposition]{prop:connectedlog}
-Under the equivalent conditions of \Cref{thm:main}, write $Z=1+z$. Then
+\label[proposition]{wick:prop:connectedlog}
+Under the equivalent conditions of \Cref{wick:thm:main}, write $Z=1+z$. Then
 either $z=0$ or $\val(z)>0$. The Hahn series
 \begin{equation}
  \log Z=\sum_{n\ge1}\frac{(-1)^{n+1}}{n}z^n
- \label{eq:log}
+ \label{wick:eq:log}
 \end{equation}
 is defined and equals the strongly summed connected vacuum Wick family.
 \end{proposition}
@@ -877,7 +941,7 @@ Every nonempty atom has positive valuation by the criterion. Their family
 is strongly summable; its support union, when nonempty, is a well-ordered
 subset of $\Gamma_{>0}$ and therefore has a positive minimum. Cancellation
 can only raise the valuation of their sum. This proves the assertion about
-$z$ and makes \eqref{eq:log} valid by \Cref{cor:substitution}.
+$z$ and makes \eqref{wick:eq:log} valid by \Cref{wick:cor:substitution}.
 
 For completeness, the classical combinatorial identity can be expressed
 without graph symmetry conventions. Give the vertices of each interaction
@@ -892,13 +956,13 @@ finitely many objects contributing to each coefficient. It is the usual
 connected-diagram identity \cite[Section 3.5]{Etingof}.
 
 Use the balancing vector to substitute the positive-valuation entries
-$u_a,w_e$ of \eqref{eq:scaleddata}. \Cref{cor:substitution} respects the
+$u_a,w_e$ of \eqref{wick:eq:scaleddata}. \Cref{wick:cor:substitution} respects the
 formal identity, and the vacuum scaling factors cancel. Taking the formal
-logarithm, evaluated by \eqref{eq:log}, gives the claimed equality.
+logarithm, evaluated by \eqref{wick:eq:log}, gives the claimed equality.
 \end{proof}
 
 \begin{example}[Why linear vertices are different]
-\label[example]{ex:linear}
+\label[example]{wick:ex:linear}
 For one variable, $P=gx$ and covariance $C=c\ne0$, the full vacuum family is
 \[
  Z=\sum_{n\ge0}\frac{(g^2c/2)^n}{n!}.
@@ -907,13 +971,13 @@ It is strongly summable exactly when $\val(g^2c)>0$. But the connected
 vacuum family has only the single two-vertex graph and sums to $g^2c/2$
 for every $g,c$. A graph with all vertices of valence one is a disjoint
 union of isolated edges, so it has no non-bridge edge to amplify. This shows
-that the valence hypothesis in \Cref{thm:connected} cannot simply be deleted.
+that the valence hypothesis in \Cref{wick:thm:connected} cannot simply be deleted.
 Outside the full domain, the finite connected sum is not being asserted to
 be the Hahn logarithm of a nonexistent vacuum sum.
 \end{example}
 
 \section{Positive covariance and sharp stationary-phase scaling}
-\label{sec:positive}
+\label{wick:sec:positive}
 
 \subsection{A collapse to one inequality per monomial}
 
@@ -922,12 +986,12 @@ $x^TCx>0$ for every nonzero $x\in\KR^d$. This is an ordered-field condition.
 It is not the statement that every coefficient of every entry is positive.
 
 \begin{lemma}[Valuation Cauchy--Schwarz]
-\label[lemma]{lem:valCS}
+\label[lemma]{wick:lem:valCS}
 If $C$ is positive definite, then $C_{ii}>0$ and, for every nonzero
 $C_{ij}$,
 \begin{equation}
  c_{ij}\ge\frac{c_{ii}+c_{jj}}2.
- \label{eq:valCS}
+ \label{wick:eq:valCS}
 \end{equation}
 \end{lemma}
 \begin{proof}
@@ -941,16 +1005,16 @@ that difference negative. This is impossible. The diagonal case is equality.
 \end{proof}
 
 \begin{theorem}[Positive-covariance criterion]
-\label[theorem]{thm:positive}
+\label[theorem]{wick:thm:positive}
 For positive-definite $C$ over $\KR$, define
 \begin{equation}
  \delta_a=\lambda_a+\frac12\sum_i\alpha_i^a c_{ii}.
- \label{eq:delta}
+ \label{wick:eq:delta}
 \end{equation}
 The full Wick family is strongly summable if and only if
 \begin{equation}
  \delta_a>0\qquad(1\le a\le s).
- \label{eq:deltacriterion}
+ \label{wick:eq:deltacriterion}
 \end{equation}
 The same equivalence holds for an arbitrary diagonal covariance matrix over
 $\K$ with all diagonal entries nonzero, without a positivity assumption.
@@ -958,17 +1022,17 @@ For positive-definite $C$, an explicit balancing vector is
 \begin{equation}
  p_i=\frac{c_{ii}}2-\varepsilon,
  \quad 0<\varepsilon<\min_a\frac{\delta_a}{\abs{\alpha^a}},
- \label{eq:explicitpositivebalance}
+ \label{wick:eq:explicitpositivebalance}
 \end{equation}
-whenever \eqref{eq:deltacriterion} holds.
+whenever \eqref{wick:eq:deltacriterion} holds.
 \end{theorem}
 \begin{proof}
 For necessity, fix $a$ and take $m=2\ve_a$. Pair all slots using diagonal
 edges: set $k_{ii}=\alpha_i^a$ and every cross-edge count to zero. This is a
-nonzero member of $S$ with weight $2\delta_a$. \Cref{thm:main} requires that
+nonzero member of $S$ with weight $2\delta_a$. \Cref{wick:thm:main} requires that
 weight to be positive.
 
-For sufficiency, take any $(m,k)\in S$. By \Cref{lem:valCS},
+For sufficiency, take any $(m,k)\in S$. By \Cref{wick:lem:valCS},
 \begin{align*}
  \sum_{i\le j}k_{ij}c_{ij}
  &\ge\frac12\sum_i c_{ii}(Dk)_i
@@ -977,28 +1041,28 @@ For sufficiency, take any $(m,k)\in S$. By \Cref{lem:valCS},
 \end{align*}
 A nonzero element of $S$ has $m\ne0$, because $Dk=0$ with $k\ge0$ forces
 $k=0$. The last expression is therefore strictly positive if all $\delta_a$
-are positive. Apply \Cref{thm:main}.
+are positive. Apply \Cref{wick:thm:main}.
 
 For diagonal covariance, the first inequality is an equality. The same
 necessity and sufficiency arguments thus apply without ordering its entries.
-Finally, \eqref{eq:explicitpositivebalance} gives
+Finally, \eqref{wick:eq:explicitpositivebalance} gives
 \[
  \lambda_a+\alpha^a\cdot p
  =\delta_a-\abs{\alpha^a}\varepsilon>0,
 \]
-and, by \eqref{eq:valCS},
+and, by \eqref{wick:eq:valCS},
 \[
  c_{ij}-p_i-p_j
  =c_{ij}-\frac{c_{ii}+c_{jj}}2+2\varepsilon\ge2\varepsilon>0.
 \]
 A suitable $\varepsilon$ exists by taking half the finite positive minimum
-in \eqref{eq:explicitpositivebalance}.
+in \eqref{wick:eq:explicitpositivebalance}.
 \end{proof}
 
 The theorem concerns a real positive covariance but permits complex
 couplings. Its diagramwise criterion is insensitive to their phases.
 Complex phases can nevertheless cause cancellations after grouping; the
-example in \Cref{sec:cancellation} uses $C=I$ and does not contradict this
+example in \Cref{wick:sec:cancellation} uses $C=I$ and does not contradict this
 theorem because it asks for a different kind of sum.
 
 \subsection{An algebraic stationary-phase domain}
@@ -1009,7 +1073,7 @@ Consider the polynomial action
                  +\sum_{a=1}^s u_a x^{\alpha^a},
  \qquad q_i,u_a,\hbar\in\K^\times,
  \quad\abs{\alpha^a}\ge3.
- \label{eq:action}
+ \label{wick:eq:action}
 \end{equation}
 Its normalized perturbative Gaussian expression has diagonal covariance
 $C_{ii}=\hbar/q_i$ and couplings $g_a=-u_a/\hbar$. This is a definition by
@@ -1018,25 +1082,25 @@ has been constructed. It isolates the perturbative part, without an
 additional Gaussian determinant prefactor.
 
 \begin{corollary}[Sharp multiscale power counting]
-\label[corollary]{cor:stationary}
+\label[corollary]{wick:cor:stationary}
 Set $h=\val(\hbar)$, $a_i=\val(q_i)$, and $b_a=\val(u_a)$. The normalized
-Wick expansion for \eqref{eq:action} is diagramwise strongly summable
+Wick expansion for \eqref{wick:eq:action} is diagramwise strongly summable
 exactly when
 \begin{equation}
  \Delta_a=b_a+
  \left(\frac{\abs{\alpha^a}}2-1\right)h
  -\frac12\sum_i\alpha_i^a a_i>0
  \qquad\text{for every }a.
- \label{eq:stationarycone}
+ \label{wick:eq:stationarycone}
 \end{equation}
 The same criterion governs every pairable polynomial insertion and the
 connected vacuum expansion.
 \end{corollary}
 \begin{proof}
 Substitute $\lambda_a=b_a-h$ and $c_{ii}=h-a_i$ into
-\eqref{eq:delta}. This gives $\delta_a=\Delta_a$. The diagonal part of
-\Cref{thm:positive} proves the exact criterion, \Cref{thm:main} gives the
-observable statement, and \Cref{thm:connected} applies because all valences
+\eqref{wick:eq:delta}. This gives $\delta_a=\Delta_a$. The diagonal part of
+\Cref{wick:thm:positive} proves the exact criterion, \Cref{wick:thm:main} gives the
+observable statement, and \Cref{wick:thm:connected} applies because all valences
 are at least three.
 \end{proof}
 
@@ -1044,14 +1108,14 @@ When the Hessian and interaction coefficients have valuation zero and
 $h>0$, the inequalities are automatic for degrees at least three. This is
 the familiar degree counting behind a formal stationary-phase expansion,
 not a new discovery; compare \cite[Chapters 2--3]{Etingof}. The extra content
-of \eqref{eq:stationarycone} is its exact necessity and sufficiency when the
+of \eqref{wick:eq:stationarycone} is its exact necessity and sufficiency when the
 Hessian and couplings themselves occupy different, possibly non-Archimedean,
 scales.
 
 For one quartic term, the condition becomes
 \begin{equation}
  b+h-2a>0.
- \label{eq:quarticthreshold}
+ \label{wick:eq:quarticthreshold}
 \end{equation}
 At equality, infinitely many nonzero diagram atoms have the same leading
 exponent. Below it, those exponents descend. Thus the strict boundary cannot
@@ -1060,7 +1124,7 @@ degenerating quadratic coefficient can move an otherwise admissible
 perturbative model across this boundary.
 
 \section{Observables, exact identities, and truncation}
-\label{sec:observables}
+\label{wick:sec:observables}
 
 \subsection{Normalized polynomial expectations}
 
@@ -1077,11 +1141,11 @@ admissible domain. The construction is linear in $f$ and normalized by
 $\langle1\rangle_P=1$.
 
 \begin{lemma}[Algebraic Gaussian integration by parts]
-\label[lemma]{lem:ibp}
+\label[lemma]{wick:lem:ibp}
 For every polynomial $f$,
 \begin{equation}
  \EE_C[x_i f]=\sum_j C_{ij}\EE_C[\partial_j f].
- \label{eq:ibp}
+ \label{wick:eq:ibp}
 \end{equation}
 \end{lemma}
 \begin{proof}
@@ -1094,31 +1158,31 @@ $\sum_j\beta_j C_{ij}\EE_C[x^{\beta-\ve_j}]$, which is the right-hand side.
 \end{proof}
 
 \begin{theorem}[Exact perturbative Schwinger--Dyson identities]
-\label[theorem]{thm:SD}
+\label[theorem]{wick:thm:SD}
 For every polynomial $f$ and every $i$,
 \begin{equation}
  \boxed{\quad
  \langle x_i f\rangle_P
  =\sum_j C_{ij}\bigl\langle\partial_j f+f\,\partial_j P\bigr\rangle_P.
  \quad}
- \label{eq:SD}
+ \label{wick:eq:SD}
 \end{equation}
 No invertibility assumption on $C$ is needed.
 \end{theorem}
 \begin{proof}
 First treat the coefficients of $P$ as independent formal coupling
-variables. Apply \eqref{eq:ibp} to each polynomial coefficient of
+variables. Apply \eqref{wick:eq:ibp} to each polynomial coefficient of
 $f\exp(P)$ in those variables. Formal differentiation gives
 \[
  \partial_j(f\exp(P))=(\partial_j f+f\partial_jP)\exp(P).
 \]
-This yields the unnormalized version of \eqref{eq:SD} coefficientwise.
+This yields the unnormalized version of \eqref{wick:eq:SD} coefficientwise.
 Every fixed coefficient involves a polynomial and finitely many pairings.
 
 To justify the specialization, use a balancing vector. Each observable
 family is the evaluation of a formal power series in the finitely many
 positive-valuation entries $u_a,w_e$, multiplied by one fixed monomial as
-in \eqref{eq:scaledatom}. The extra polynomial derivatives introduce only
+in \eqref{wick:eq:scaledatom}. The extra polynomial derivatives introduce only
 finitely many observable families and fixed Hahn factors. Thus all formal
 reindexings in the identity are legitimate strong sums. Evaluation gives
 the unnormalized equality in $\K$. Multiply by $Z^{-1}$.
@@ -1148,33 +1212,33 @@ Although each individual atom may have infinite Hahn support, this is a
 finite algebraic expression in the input entries.
 
 \begin{proposition}[A valuation error estimate]
-\label[proposition]{prop:tail}
+\label[proposition]{wick:prop:tail}
 Choose a balancing vector $p$ and a positive $\eta\in\Gamma$ no greater
 than the valuations of all scaled entries $u_a,w_e$. Then
 \begin{equation}
  \val\bigl(\cZ_\beta-\cZ_{\beta,\le N}\bigr)
  \ge p\cdot\beta+(N+1)\eta.
- \label{eq:tail}
+ \label{wick:eq:tail}
 \end{equation}
 The convention is that a zero tail has valuation $+\infty$.
 \end{proposition}
 \begin{proof}
 An atom in the tail has $\abs m\ge N+1$. In the scaled expression
-\eqref{eq:scaledatom}, its valuation is at least
+\eqref{wick:eq:scaledatom}, its valuation is at least
 $p\cdot\beta+(\abs m+\abs k)\eta$, hence at least the right-hand side of
-\eqref{eq:tail}. Every exponent of the atom is at least its leading exponent.
+\eqref{wick:eq:tail}. Every exponent of the atom is at least its leading exponent.
 The entire tail is a subfamily of a strongly summable family, and adding its
 coefficients cannot create an exponent below this common bound.
 \end{proof}
 
 The estimate is useful but must not be overinterpreted. In a higher-rank
 group, the sequence $n\eta$ may be bounded above by a much larger positive
-element. Thus \eqref{eq:tail} does not generally imply convergence of the
+element. Thus \eqref{wick:eq:tail} does not generally imply convergence of the
 partial sums in the intrinsic valuation topology. Strong summability and
 topological convergence are separate statements.
 
 \begin{example}[An exact sum with nonconvergent truncations]
-\label[example]{ex:ranktwo}
+\label[example]{wick:ex:ranktwo}
 Take $\Gamma=\Q^2$ with lexicographic order, one variable, $C=1$, and
 $P=t^{(0,1)}x^4$. The vacuum sum is
 \[
@@ -1186,14 +1250,14 @@ $(0,N+1)$, which is always less than $(1,0)$. It never enters the valuation
 neighborhood requiring error valuation greater than $(1,0)$. The
 truncations therefore do not converge to $Z$ in that topology.
 
-Under the explicit embedding in \Cref{prop:embedding}, these scales become
+Under the explicit embedding in \Cref{wick:prop:embedding}, these scales become
 $\omega^{-n}$ and $\omega^{-\omega}$, respectively. The sum is exact as a
 surreal normal form even though finite truncation does not approximate it
 at the latter scale.
 \end{example}
 
 \section{Explicit models and sharp boundaries}
-\label{sec:examples}
+\label{wick:sec:examples}
 
 \subsection{A divergent complex series with an exact surreal value}
 
@@ -1201,7 +1265,7 @@ Let $C=1$ and $P=-g x^4$. There is one atom per interaction order, and
 \begin{equation}
  Z(g)=\sum_{n\ge0}(-1)^n\frac{(4n-1)!!}{n!}g^n
  =1-3g+\frac{105}{2}g^2-\frac{3465}{2}g^3+\cdots.
- \label{eq:quartic}
+ \label{wick:eq:quartic}
 \end{equation}
 The convention is $(-1)!!=1$. If $a_n$ denotes the coefficient of $g^n$,
 then
@@ -1210,8 +1274,8 @@ then
  =-\frac{(4n+1)(4n+3)}{n+1}.
 \]
 Its absolute value tends to infinity, so the ordinary complex power series
-has radius of convergence zero. Nevertheless, \Cref{thm:positive} says that
-\eqref{eq:quartic} has a strong Hahn value for every $g$ with $\val(g)>0$.
+has radius of convergence zero. Nevertheless, \Cref{wick:thm:positive} says that
+\eqref{wick:eq:quartic} has a strong Hahn value for every $g$ with $\val(g)>0$.
 For $g=t$ and $t\mapsto\omega^{-1}$ this gives the explicit surreal number
 \[
  1-3\omega^{-1}+\frac{105}{2}\omega^{-2}
@@ -1223,7 +1287,7 @@ integral of a Gaussian function over a surreal line.
 The connected logarithm begins
 \begin{equation}
  \log Z(g)=-3g+48g^2-1584g^3+\cdots.
- \label{eq:quarticlog}
+ \label{wick:eq:quarticlog}
 \end{equation}
 The accompanying program obtains $3$, $48$, and $1584$ independently by
 enumerating the connected labeled pairings at orders one, two, and three,
@@ -1232,7 +1296,7 @@ combinatorial coefficients are classical; their exact specialization domain
 is the point of the example.
 
 \subsection{An infinite coupling can be admissible}
-\label{sec:cubic}
+\label{wick:sec:cubic}
 
 Take two variables and the purely cross covariance
 \[
@@ -1246,17 +1310,17 @@ A vacuum pairing requires $3m_1=k_{12}=3m_2$, so
 There is just one Hilbert generator, and the criterion is
 \begin{equation}
  \val(g)+\val(h)+3\val(c)>0.
- \label{eq:cubiccriterion}
+ \label{wick:eq:cubiccriterion}
 \end{equation}
 The exact sum is
 \begin{equation}
  Z=\sum_{n\ge0}\frac{(3n)!}{(n!)^2}(ghc^3)^n.
- \label{eq:cubicZ}
+ \label{wick:eq:cubicZ}
 \end{equation}
 The coefficient counts all bijections between the $3n$ slots of each color.
 
 For $g=t^{-100}$, $h=t^{101}$, and $c=1$, condition
-\eqref{eq:cubiccriterion} is satisfied. One coupling is infinite, yet each
+\eqref{wick:eq:cubiccriterion} is satisfied. One coupling is infinite, yet each
 realizable vacuum product has increasing valuation. The exact solver
 returns, for instance,
 \[
@@ -1273,7 +1337,7 @@ with the vacuous Hilbert-basis test. Adding $hy^3$ creates a genuine new
 cycle condition; checking each interaction in isolation would miss it.
 
 \subsection{A mixed quartic instability with a four-element Hilbert basis}
-\label{sec:mixed}
+\label{wick:sec:mixed}
 
 Let
 \[
@@ -1294,7 +1358,7 @@ They imply $k_{12}=2s$ and
 \]
 
 \begin{proposition}[Exact quartic Hilbert basis and irredundant tests]
-\label[proposition]{prop:quarticH}
+\label[proposition]{wick:prop:quarticH}
 The Hilbert basis consists of
 \begin{align*}
  h_1&=(1,0;2,0,0),& h_2&=(0,1;0,0,2),\\
@@ -1303,7 +1367,7 @@ The Hilbert basis consists of
 The summability criterion reduces to the three inequalities
 \begin{align}
  w_1&=\lambda_1+2c_{11}>0,\nonumber\\
- w_2&=\lambda_2+2c_{22}>0,\label{eq:quartictests}\\
+ w_2&=\lambda_2+2c_{22}>0,\label{wick:eq:quartictests}\\
  w_4&=\lambda_1+\lambda_2+4c_{12}>0.\nonumber
 \end{align}
 \end{proposition}
@@ -1334,28 +1398,29 @@ Now choose the monomial data
 \begin{equation}
  C=\begin{pmatrix}t^2&1\\1&t^2\end{pmatrix},
  \qquad g_1=g_2=t^{-1}.
- \label{eq:mixedmodel}
+ \label{wick:eq:mixedmodel}
 \end{equation}
 Then $w_1=w_2=3>0$ and $w_3=2>0$, but $w_4=-2$. Each quartic interaction
 by itself is admissible, while their combination is not. The offending
 family with $m_1=m_2=n$ and all edges cross-colored has atoms
 \begin{equation}
  \frac{(4n)!}{(n!)^2}\,t^{-2n}.
- \label{eq:mixedbad}
+ \label{wick:eq:mixedbad}
 \end{equation}
 Their leading exponents descend without bound. The solver returns precisely
 $h_4=(1,1;0,4,0)$ as its primitive obstruction certificate. The two-vertex
 four-edge realization is connected, and cyclic amplification gives
 connected obstructing diagrams at every multiple size.
 
-The matrix in \eqref{eq:mixedmodel} is invertible, since its determinant is
+The matrix in \eqref{wick:eq:mixedmodel} is invertible, since its determinant is
 $t^4-1\ne0$, but it is not positive definite. Thus this is a legitimate
 surcomplex bilinear Gaussian model, and it cannot occur under the hypotheses
-of \Cref{thm:positive}. All its displayed coefficients are positive, so the
+of \Cref{wick:thm:positive}. All its displayed coefficients are positive, so the
 obstruction is not merely an artifact of a cancellation-sensitive
 presentation: grouping by interaction order cannot erase it.
 
 \subsection{A genuinely higher-rank boundary}
+\label{wick:sub:rankboundary}
 
 In the cross-cubic model, choose $\Gamma=\Q^2$ lexicographically. The entire
 criterion is the sign of
@@ -1378,7 +1443,7 @@ $(1,1;3)$. The same finite incidence problem detects the second-scale
 transition exactly.
 
 \section{Cancellation, grouping, and the precise boundary of the theorem}
-\label{sec:cancellation}
+\label{wick:sec:cancellation}
 
 \subsection{An isotropic counterexample to a stronger claim}
 
@@ -1392,12 +1457,12 @@ form $\ell=x+iy$. Its bilinear Wick covariance is
 By multilinearity of Wick pairings, for every $r\ge1$,
 \begin{equation}
  \EE_C[\ell^{2r}]=(2r-1)!!\bigl(\EE_C[\ell^2]\bigr)^r=0.
- \label{eq:isotropicmoments}
+ \label{wick:eq:isotropicmoments}
 \end{equation}
 Let
 \begin{equation}
  P=t^{-1}(x+iy)^4.
- \label{eq:isotropicP}
+ \label{wick:eq:isotropicP}
 \end{equation}
 After expanding into distinct monomials, every nonzero coupling has valuation
 $-1$, while the diagonal covariance valuations are zero. The exact
@@ -1410,9 +1475,9 @@ $n$ gives
 \begin{equation}
  \frac1{n!}\EE_C[P^n]=0\quad(n\ge1),\qquad
  Z_{\mathrm{grouped}}=1.
- \label{eq:groupedone}
+ \label{wick:eq:groupedone}
 \end{equation}
-Each cancellation in \eqref{eq:groupedone} is finite, but there are
+Each cancellation in \eqref{wick:eq:groupedone} is finite, but there are
 infinitely many such blocks. The raw family is illegal as a Hahn sum while
 the block family is legal. Finite regrouping preserves an already strong
 sum; it does not imply the reverse statement when cancellations remove
@@ -1431,7 +1496,7 @@ a nonnegative real number. This is stronger than being positive in the
 ordered field, which requires only a positive leading coefficient.
 
 \begin{proposition}[Sign-coherent equivalence]
-\label[proposition]{prop:signcoherent}
+\label[proposition]{wick:prop:signcoherent}
 Suppose every nonzero covariance entry is coefficientwise nonnegative, and
 $g_a=\sigma u_a$ for a common $\sigma\in\{1,-1\}$, where each $u_a$ is a
 nonzero coefficientwise nonnegative Hahn series. Then the following are
@@ -1441,11 +1506,11 @@ equivalent:
 \item the family obtained by grouping all atoms with the same total
 interaction order $\abs m=n$ is strongly summable.
 \end{enumerate}
-For a pairable sector, both are equivalent to \Cref{thm:main}.
+For a pairable sector, both are equivalent to \Cref{wick:thm:main}.
 \end{proposition}
 \begin{proof}
 At order $n$, every atom is $\sigma^n$ times a nonzero coefficientwise
-nonnegative Hahn series. Its coefficient multiplier in \eqref{eq:atom} is
+nonnegative Hahn series. Its coefficient multiplier in \eqref{wick:eq:atom} is
 positive rational. Therefore no coefficient cancels within an order block,
 and the support of the block is exactly the union of the supports of its
 atoms. Each block contains finitely many atoms.
@@ -1455,31 +1520,34 @@ and any fixed exponent occurs in only finitely many blocks. Since every
 block is finite and no support is erased, the exponent occurs in only
 finitely many raw atoms. This proves raw strong summability. The other
 implication is the ordinary regrouping property of strong sums. The last
-claim follows from \Cref{thm:main}.
+claim follows from \Cref{wick:thm:main}.
 \end{proof}
 
-The quartic model \eqref{eq:quartic} and the mixed obstruction
-\eqref{eq:mixedmodel} satisfy this sign-coherent hypothesis. Their domains
+The quartic model \eqref{wick:eq:quartic} and the mixed obstruction
+\eqref{wick:eq:mixedmodel} satisfy this sign-coherent hypothesis. Their domains
 are therefore also exact for the familiar expansion grouped by total
 interaction order. The isotropic example fails the common-phase hypothesis
 and demonstrates why a general cancellation-free theorem needs it.
 
 \section{Exact certificate computation and reproducible checks}
-\label{sec:code}
+\label{wick:sec:code}
 
 \subsection{What the implementation does}
+\label{wick:sub:implementation}
 
-The archive contains a standard-library Python implementation in
-\texttt{code/wick\_certificates.py}. Its implemented value groups are
-$\Q^r$ with lexicographic order, for any specified finite $r\ge1$.
+A Python implementation using only the standard library is included in
+this report's directory as \texttt{code/wick\_certificates.py}. Its
+implemented value groups are $\Q^r$ with lexicographic order, for any
+specified finite $r\ge1$.
 A value is represented by a tuple of exact \texttt{Fraction} objects.
 The routine forms the rows $A^T$ and $-D^T$, applies the strict elimination
-algorithm of \Cref{thm:alternative}, and returns one of two certificates:
+algorithm of \Cref{wick:thm:alternative}, and returns one of two certificates:
 a balancing vector $p$, or a primitive nonnegative integer obstruction
 $(m,k)$. Every returned certificate is rechecked against the original
 system using exact arithmetic.
 
-For example, the mixed-quartic obstruction can be reproduced by
+For example, with the directory \texttt{code} on the Python import path,
+the mixed-quartic obstruction can be reproduced by
 \begin{lstlisting}[language=Python]
 from wick_certificates import value, wick_certificate
 
@@ -1508,7 +1576,7 @@ executable tests use exact finite-rank representations.
 
 There is a finite, though potentially expensive, way to refine an arbitrary
 integer obstruction $q$ into the indecomposable obstruction used in
-\Cref{thm:connected}. Search the finite box $0\le q'\le q$ for a nonzero
+\Cref{wick:thm:connected}. Search the finite box $0\le q'\le q$ for a nonzero
 proper solution of the same homogeneous incidence equations. If no such
 $q'$ exists, $q$ is indecomposable. Otherwise
 $q=q'+(q-q')$, and at least one summand has nonpositive weight. Replace $q$
@@ -1517,7 +1585,7 @@ so this terminates.
 
 A pairing with the resulting counts can be built by allocating slots
 according to the integer edge counts, as in the proof of
-\Cref{lem:wickcount}. It is connected automatically. Select a non-bridge
+\Cref{wick:lem:wickcount}. It is connected automatically. Select a non-bridge
 edge by checking connectivity after edge removal, and apply the cyclic
 construction. Thus the obstruction theorem supplies an actual finite recipe
 for connected counterexamples, not just an existence argument involving a
@@ -1526,8 +1594,9 @@ the cyclic construction on three types of base multigraph; it does not
 implement this whole refinement pipeline for arbitrary inputs.
 
 \subsection{The recorded test run}
+\label{wick:sub:testrun}
 
-Run the checks from the package root with
+Run the checks from the root of a \emph{copy} of this report's directory with
 \begin{lstlisting}
 python3 code/verify.py
 \end{lstlisting}
@@ -1537,6 +1606,18 @@ checks. The only floating-point quantity in the report is elapsed wall-clock
 time. One counted case is one call to the script's explicit test-case
 checker; additional internal assertions verifying every returned
 certificate are not included in the count.
+
+The output path is fixed relative to the script, not to the working
+directory, and the file records the elapsed time. Every run therefore
+rewrites the delivered record, which is why the command above is meant for a
+copy. The internal certificate rechecks are \texttt{assert} statements, so
+the script must not be run under Python's \texttt{-O} flag. The file
+\texttt{code/Makefile} holds optional targets whose paths are relative to the
+report root; from the root of a copy, \texttt{make -f code/Makefile check}
+runs the suite and \texttt{make -f code/Makefile pdf} builds the article.
+When this report was placed in the collection, the suite was rerun on a copy
+under Python~3.14.4. It passed all 7,684 cases, and the rewritten record
+agreed with the delivered one in every entry except the elapsed time.
 
 \begin{table}[ht]
 \centering\small
@@ -1561,7 +1642,7 @@ Exact isotropic cancellation identities & 12\\
 \caption{The recorded finite checks. They test formulas and implementation
 behavior; the infinite and arbitrary-rank statements are established by
 the mathematical proofs, not by this table.}
-\label{tab:checks}
+\label{wick:tab:checks}
 \end{table}
 
 The feasibility checks include ranks one, two, and three. The moment check
@@ -1573,12 +1654,17 @@ and powers of $i$, simplified exactly; it is not a numerical near-zero test.
 
 A failed resource guard is reported as an exception. It is not reported as
 infeasibility, and it does not constitute a mathematical counterexample.
-This distinction is part of the solver's contract.
+This distinction is part of the solver's contract. Concretely, the guard is
+the \texttt{max\_rows} argument of the solver, by default $200{,}000$
+generated rows, and exceeding it raises \texttt{RuntimeError}. Fourier--Motzkin
+elimination can need exponentially many rows, so on large inputs the guard,
+not the mathematics, may decide whether an answer is returned at all.
 
 \section{Novelty audit, sources, and limitations}
-\label{sec:provenance}
+\label{wick:sec:provenance}
 
 \subsection{Repository scope}
+\label{wick:sub:reposcope}
 
 The repository inspection was pinned to the main-tree commit
 \begin{center}\small\Commit\end{center}
@@ -1595,7 +1681,10 @@ concern the scope of replacing real and complex scalars in physics,
 including singular spacetime calculations and distinctions between symbolic
 and physical conclusions. The present work instead fixes a finite algebraic
 Gaussian model and determines its exact support domain. This is a different
-question, not a proposed resolution of a spacetime singularity.
+question, not a proposed resolution of a spacetime singularity. The source
+read no further into that report; its passages on perturbative families
+bear directly on the present subject, and the relation is stated in
+\Cref{wick:sub:physics}.
 
 The recursive metadata for \texttt{docs/new} listed 18 ZIP archives,
 including recent work on theta series, Tate uniformization, interpolation,
@@ -1603,16 +1692,38 @@ spectral theory, regular singular equations, holonomic rigidity, and
 dynamics. Their filenames were inspected, but their internal texts were
 \emph{not} exhaustively read. The repository connector rejected a binary
 archive fetch, and attempted binary download and snapshot retrieval did not
-succeed. Targeted repository searches for \texttt{Wick} and
-\texttt{Gaussian} returned no matches. These are useful negative search
-observations, but they do not prove absence from compressed archives or
+succeed. The source manuscript reported that targeted repository searches
+for \texttt{Wick} and \texttt{Gaussian}, made through the connector's code
+search, returned no matches, and it treated these as negative search
+observations that do not prove absence from compressed archives or
 unindexed content.
+
+\emph{Correction made when this report was placed in the collection.} For
+\texttt{Gaussian} the reported result is not true of the tree at the pin. A
+plain text search of the tree at that commit finds the word, in either
+case, in twenty files; four of them are \texttt{article.tex} sources of reports. In the physics report it names
+a Gaussian regulator: Computation~17.5 there, labelled
+\texttt{phys:comp:gaussian}, whose two ordinary integrals show that an
+unlimited value defines no product of distributions. Everywhere else it
+means Gaussian-rational arithmetic (in the computer-algebra,
+differential-equations, dynamics-and-normal-forms, spectral-theory and
+infinite-dimensional spectral reports, mostly in their programs and data)
+or Gaussian elimination (once, in the computer-algebra report). None of
+these occurrences concerns a Gaussian perturbation expansion, a Wick
+contraction or a diagram family, so the gap the source identified is real
+even though its search result was not. For \texttt{Wick} the reported result
+stands: the tree at the pin has no case-sensitive match, and its only
+case-insensitive match is inside the German word \emph{Entwicklung}, in a
+bibliography entry of the nonabelian-support report.
 
 Accordingly, the accurate repository claim is: \emph{the theorem package was
 not found in the repository materials successfully inspected}. A stronger
 claim that every file and archive in the repository has been checked would
 be unsupported. The accompanying \texttt{RESEARCH\_AUDIT.md} records paths,
-searches, the snapshot identifier, and this access boundary.
+searches, the snapshot identifier, and this access boundary. That file is
+kept as delivered, so its sentence that both searches returned no matches
+carries the correction above. The archives have since been opened; see
+\Cref{wick:sub:collection}.
 
 \subsection{Literature scope and what is not being claimed as new}
 
@@ -1632,18 +1743,18 @@ Gaussian combinatorics; compare \cite[Chapter 3]{Etingof}.\\
 Dickson finiteness and strict elimination & Classical finite-dimensional
 tools, reproved here; no priority claim.\\
 Exact finite Hahn specialization cone & Proposed contribution in
-\Cref{thm:main}, with its observable and robustness conclusions.\\
+\Cref{wick:thm:main}, with its observable and robustness conclusions.\\
 Connected obstruction amplification & Proposed contribution in
-\Cref{thm:connected}; the valence boundary is explicit.\\
+\Cref{wick:thm:connected}; the valence boundary is explicit.\\
 Positive-covariance collapse and multiscale thresholds & Consequences proved
-in \Cref{thm:positive,cor:stationary}, presented as part of the theorem package.\\
+in \Cref{wick:thm:positive,wick:cor:stationary}, presented as part of the theorem package.\\
 Cancellation and sign-coherent boundary & Explicit limitations and exact
-comparison results in \Cref{sec:cancellation}.\\
+comparison results in \Cref{wick:sec:cancellation}.\\
 \bottomrule
 \end{tabularx}
 \caption{Provenance of the mathematics. ``Proposed contribution'' means a
 candidate novelty claim, not certified historical priority.}
-\label{tab:novelty}
+\label{wick:tab:novelty}
 \end{table}
 
 Etingof's current author-hosted preliminary book was checked in addition to
@@ -1667,6 +1778,7 @@ stated proofs assert: their hypotheses, deductions, and counterexamples are
 all explicit and available for review.
 
 \subsection{Mathematical boundaries}
+\label{wick:sub:boundaries}
 
 The model is finite-dimensional and has finitely many interaction monomials.
 Its infinite aspect is the unbounded number of vertices and contractions,
@@ -1688,8 +1800,138 @@ The exact verification program checks finite algebraic claims. It does not
 verify the paper in Lean or another proof assistant. No preexisting Lean
 coverage in \Repo\ should be read as coverage of this manuscript.
 
+\subsection{Relation to the physics report}
+\label{wick:sub:physics}
+
+The collection's physics report, \emph{Surreal Scalars in Theoretical
+Physics} \cite{PhysReport}, sorts its own statements into exact symbolic
+identities, conditional theorems proved in its text, and assessments, and it
+does not let one kind be read as another. Nothing in the present report
+belongs to that ledger. Its results are theorems about formal Gaussian
+coefficient data over a Hahn field. They are not claims about physics, they
+turn none of that report's assessments into a theorem, and none of that
+report's statements is used here as a premise.
+
+Three passages of that report touch the subject of this one. Section and
+item numbers below are those of its build when this report was placed; at
+that time it had not changed since the pin of \Cref{wick:sub:reposcope}.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item Its Section~17.2 (\texttt{phys:sub:formalpert}) is an assessment. It
+displays a schematic triple-indexed transseries with algebraic, logarithmic
+and exponentially small sectors, cautions that an arbitrary such family is
+not automatically admissible, and adds that a Hahn or surreal realization
+does not make an arbitrary formal expansion into a unique actual state or
+scattering amplitude. Its non-claim N21 (Appendix~D.3) repeats the caution.
+\item Its Computation~17.1 (\texttt{phys:comp:factorial}) is an exact
+identity. The factorial series is a well-defined Hahn element at every
+positive-valuation parameter, although the ordinary power series has zero
+radius of convergence, and exact denotation does not give a real-valued sum.
+\item Its Section~13.5 (\texttt{phys:sub:actions}) is an assessment. A
+proper-class sum over surreal-valued histories is not licensed by Hahn
+summability, and formal sums, finite-dimensional integrals and functional
+measures are to be kept apart. Its non-claim N18 repeats the first part.
+\end{enumerate}
+The relation is the following, and no more.
+
+The physics report poses no open problem on this subject, and this report
+answers none of its questions. Passage~(a) says that admissibility is not
+automatic. For one precisely delimited class of families, this report
+decides it exactly. The class consists of the Wick diagram families of a
+finite polynomial interaction with a symmetric bilinear covariance over
+$\C((t^\Gamma))$, for divisible $\Gamma$: the vacuum family, every pairable
+observable sector, and, when every valence is at least two, the connected
+vacuum family. For these, \Cref{wick:thm:main,wick:thm:connected} reduce
+strong summability to finitely many strict valuation inequalities. The
+mixed quartic model of \Cref{wick:sec:mixed} is a family of this kind for
+which strong summability fails although each of its two interactions alone
+is admissible. This agrees with passage~(a) and gives it an exact form for
+that class. It says nothing about the transseries display of passage~(a),
+whose logarithmic and exponential sectors are not of Wick type, or about any
+other family.
+
+The quartic series \eqref{wick:eq:quartic} is the Wick counterpart of
+passage~(b): an ordinary series of zero radius of convergence has an exact
+Hahn value at every coupling of positive valuation. The physics report says
+that exact denotation does not give a real-valued sum. This report says that
+its value is a normal-form value, not the integral of a Gaussian function
+over a surreal line (\Cref{wick:sec:examples}), and that it asserts no
+solution to physical divergences (\Cref{wick:sec:conclusion}). The two
+statements are consistent. Passage~(c) is respected throughout: every family
+summed here is set-indexed in one set-sized Hahn workspace
+(\Cref{wick:sec:hahn}), a Gaussian expectation is a finite sum over
+pairings, and no path measure, functional integral or proper-class sum
+occurs (\Cref{wick:sub:boundaries}). Finally, the isotropic example of
+\Cref{wick:sec:cancellation} shows that even inside this class a grouped sum
+can exist where the diagram family is not summable. Admissibility here is a
+property of one prescribed family of terms, not of every way of assigning a
+value to a formal expansion.
+
+\subsection{This report in the collection}
+\label{wick:sub:collection}
+
+\emph{Provenance.} This report is built from a single manuscript,
+\emph{Finite Certificates for Surcomplex Wick Summability}, dated 22 September
+2026 and received as the archive \texttt{surcomplex\_wick\_certificates},
+manuscript~12 of the eighteenth batch of external reports placed in the
+collection. It is not a merge: there was no second source, and nothing was
+selected out of a larger body of work. Every theorem, proof, example,
+table and limitation above is that manuscript's. Its repository audit is
+pinned to \Commit. The delivered programs, recorded run and audit notes are
+kept byte-identical: \texttt{code/wick\_certificates.py},
+\texttt{code/verify.py}, \texttt{data/verification.json},
+\texttt{VERIFICATION.md} and \texttt{RESEARCH\_AUDIT.md}, together with the
+delivered \texttt{Makefile}, which was moved from the package root into
+\texttt{code/}. The delivered README and PDF are not shipped. The PDF is
+rebuilt from this source.
+
+\emph{What changed on placement.} Every label now carries the prefix
+\texttt{wick:}, and five subsections received labels they did not have. The
+title page gained a status note and the abstract a sentence of scope.
+\Cref{wick:sub:conventions}, \Cref{wick:sub:physics} and this subsection are
+new, and the bibliography gained its entry for the physics report.
+\Cref{wick:sub:implementation} now names this report's directory instead of
+the delivered archive and says that \texttt{code} must be on the import
+path. \Cref{wick:sub:testrun} gained the note on running the suite on a copy,
+the location of the \texttt{Makefile}, the \texttt{-O} caveat (stated in the
+delivered README and in \texttt{VERIFICATION.md}), the size of the resource guard and the record of
+the rerun. \Cref{wick:sub:reposcope} gained the correction of the
+\texttt{Gaussian} search result and pointers to the two new subsections.
+No mathematical statement, proof, example or stated limitation was altered,
+strengthened or removed.
+
+\emph{Statements that were true at the pin and are now out of date.} At the
+pin the catalogue \texttt{docs/README.md} listed 26 reports in five
+families; the collection has grown since, and this report is one of the
+additions. At the pin the 18 archives in \texttt{docs/new} could not be
+opened by the source. They have since been unpacked and their manuscripts
+placed in the collection's reports, and the directory \texttt{docs/new} no
+longer exists. When this report was placed, their texts were searched: none
+contains the word \texttt{Wick}, and \texttt{Gaussian} occurs in them only
+as ``Gaussian rationals''. In the manuscripts placed with this one, the word
+means Gaussian rationals, Gaussian elimination or Gaussian quadrature. When
+this report was placed, no other report in the tree contained \texttt{Wick}
+as a word or any of the terms Feynman, Schwinger, Hilbert basis or
+Fourier--Motzkin. The source's provisional conclusion, that the theorem
+package was not found in the repository materials inspected, therefore
+extends to a text search of the whole tree at placement. It remains a text search, not a comparison of proofs, and
+it says nothing about the published literature, where priority is still
+unchecked (\Cref{wick:tab:novelty}).
+
+\emph{Neighbouring reports.} The several-variable multiscale theta series
+placed in the same batch in the report on Hahn--Tate uniformization is the
+closest relative. Both characterize strong summability of a monomial family
+indexed by an integer lattice or semigroup by a finite certificate, both
+allow Hahn-unit tails and show that such tails cannot repair a failure, and
+both assume divisible $\Gamma$. The mathematics differs: there a quadratic
+energy on a lattice and its radical flags; here a linear weight on the
+nonnegative integer kernel $S$, its Hilbert basis and the strict alternative
+of \Cref{wick:thm:alternative}. Neither report uses a theorem of the other.
+The distinction between strong summability and convergence of finite
+subsums, illustrated here by \Cref{wick:ex:ranktwo}, is drawn throughout the
+collection, beginning with its foundations report.
+
 \section{Conclusions and further questions}
-\label{sec:conclusion}
+\label{wick:sec:conclusion}
 
 The principal result is a complete support criterion for a large but
 precisely bounded class of surcomplex expressions: finite polynomial
@@ -1708,7 +1950,7 @@ cone to one inequality per interaction. These refinements explain both a
 usable simplification and an explicit mechanism of failure.
 
 The resulting values deserve to be called surcomplex when interpreted
-through \Cref{prop:embedding}: they are actual normal-form numbers, not
+through \Cref{wick:prop:embedding}: they are actual normal-form numbers, not
 merely names for unperformed sums. Their interpretation is deliberately
 algebraic. The quartic example becomes an exact surreal number despite
 zero complex convergence radius; this says something definite about Hahn
@@ -1728,7 +1970,7 @@ where each extension would need new input.
 
 \appendix
 \section{Certificate verification without trusting the solver}
-\label{app:certificate}
+\label{wick:app:certificate}
 
 A user of the algorithm can ignore its elimination trace and verify the
 output directly. For a proposed balancing vector $p$, evaluate the finitely
@@ -1737,7 +1979,7 @@ many quantities
  \lambda_a+\alpha^a\cdot p,\qquad c_{ij}-p_i-p_j.
 \]
 Every one must be strictly positive in the specified value-group order.
-This proves summability by \Cref{thm:main}.
+This proves summability by \Cref{wick:thm:main}.
 
 For a proposed obstruction $(m,k)$, verify that its coordinates are
 nonnegative integers, that it is not the zero vector, and that
@@ -1762,7 +2004,7 @@ each equality is evaluated componentwise and positivity is tested
 lexicographically, using the first nonzero coordinate.
 
 \section{A dependency map for the proofs}
-\label{app:dependencies}
+\label{wick:app:dependencies}
 
 The logical structure can be read without the examples or code. The
 classical support lemma yields infinitesimal substitution. Integer color
@@ -1771,7 +2013,7 @@ valuation of every atom. Dickson's lemma supplies a finite Hilbert basis.
 The strict alternative equates positivity on its integer semigroup with
 valuation balancing. Necessity follows by repeating one bad pattern;
 sufficiency follows by balancing and infinitesimal substitution. These are
-the two directions of \Cref{thm:main}.
+the two directions of \Cref{wick:thm:main}.
 
 Connected-domain equality additionally uses only the finite-graph facts
 that an indecomposable count vector has connected realizations and that a
@@ -1847,7 +2089,16 @@ Primary inspected text:
 {\texttt{docs/README.md}}.
 Also inspected: the metadata tree for \texttt{docs/new}, and the beginning of
 \texttt{docs/physics/surreal-scalars-and-spacetime/article.tex}.
-Scope and access limitations are specified in \Cref{sec:provenance}.
+Scope and access limitations are specified in \Cref{wick:sec:provenance}.
+
+\bibitem{PhysReport}
+\emph{Surreal Scalars in Theoretical Physics: Black-Hole Singularities,
+Asymptotic Structure, and the Limits of Replacing the Scalar Field}.
+Merged research report in the collection, directory
+\nolinkurl{docs/physics/surreal-scalars-and-spacetime/}. Unchanged between the
+snapshot of \cite{Repo} and the placement of this report. Only its
+Sections~13.5 and~17.2--17.3 and its Appendix~D are referred to here, in
+\Cref{wick:sub:physics}; none of its statements is used as a premise.
 
 \end{thebibliography}
 \end{document}

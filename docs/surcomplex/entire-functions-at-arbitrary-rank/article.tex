@@ -96,7 +96,11 @@
 \newcommand{\abs}[1]{\lvert#1\rvert}
 \newcommand{\norm}[1]{\lVert#1\rVert}
 \newcommand{\res}{\operatorname{res}}
+\newcommand{\kk}{\mathbf k}\newcommand{\PP}{\mathbb P}
+\DeclareMathOperator{\Pdir}{Pdir}\DeclareMathOperator{\Adm}{Adm}
+\newcommand{\inner}[2]{\langle#1,#2\rangle}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 
 \title{\textbf{Cofinality, Factorization and Scalar Extension\\
 for Entire Hahn Functions at Arbitrary Rank}\\[5pt]
@@ -145,8 +149,17 @@ restricted product of finite shell algebras. This gives a
 necessary-and-sufficient B\'ezout criterion, a close-pair obstruction
 invisible to the sizes of the individual prescribed values, and explicit
 non-evaluation maximal ideals whose residue fields are ultraproducts of
-lower-rank Hahn fields. These results use no algebraic closedness and hold
-with real Hahn coefficients. The third classification is analytic. For every
+lower-rank Hahn fields. For one node per shell, with arbitrary
+multiplicities, these ideals and the evaluation ideals are all the maximal
+ideals containing the canonical product; the maximal spectrum of the
+quotient is the Stone--\v{C}ech space $\beta\N$ of the shell indices, and
+its boundary residue fields are algebraically closed. A unit-ideal
+criterion for finitely many generators and an exact separation threshold
+for paired zeros complete the ideal-theoretic picture. Apart from the
+statement that those residue fields are algebraically closed, these results
+use no algebraic closedness, and all of them hold with real Hahn
+coefficients, the boundary residue fields then being real closed. The third
+classification is analytic. For every
 ordered-group extension $\Gamma\subseteq\Delta$, all nonpolynomial entire
 series over $\K$ share one exact strong evaluation domain in $\KD$: the
 valuation ring of $v_\Delta$ coarsened by the convex hull of $\Gamma$, whose
@@ -155,17 +168,31 @@ for cofinal extensions, no new zeros appear anywhere in the surviving
 domain, and on a noncofinal extension no alternative entire series agrees
 with the old one even on all ordinary complex constants. The scale boundary
 is intrinsic: the value group, the coefficient slopes and the negated zero
-valuations generate the same convex subgroup.
+valuations generate the same convex subgroup. In finitely many ordinary
+variables the uniform domain has an exact replacement, proved without
+divisibility and over any trivially valued coefficient field: the monomial
+family of an entire series is strongly summable at a point of the larger
+field exactly when the image of its ordinary support under the quotient
+weights of the point is well ordered. For the separate convention of
+homogeneous-block summation, the ordinary complex directions along which a
+new dominating scale can be crossed are exactly the proper countable unions
+of projective algebraic sets.
 
-This report is the union of two independently written manuscripts that
-proved the same engine, together with a third written later against their
-merge and answering the question about the interpolation image that the merge
-had left open. The arbitrary-rank classifications, the explicit non-B\'ezout
-construction, the exact shellwise image and the universal extension domain
-are proposed original contributions, not a claimed solution of any named
-published conjecture. Classical Hahn-field inputs and rank-one antecedents are
-identified and credited. Complete proofs are supplied; they have not been
-independently refereed or verified in a proof assistant.
+This report is the union of five manuscripts. Two were written
+independently and proved the same engine; a third, written against their
+merge, answered the question about the interpolation image that the merge
+had left open; a fourth, written in parallel against a snapshot in which
+that question was still open, proved the same image theorem independently by
+a different construction and
+added the ideal-theoretic refinements above; a fifth answered the
+scalar-extension clause of the several-variable question. The arbitrary-rank
+classifications, the explicit non-B\'ezout construction, the exact shellwise
+image and its ideal theory, the universal extension domain and its
+several-variable replacement are proposed original contributions, not a
+claimed solution of any named published conjecture. Classical Hahn-field
+inputs and rank-one antecedents are identified and credited. Complete proofs
+are supplied; they have not been independently refereed or verified in a
+proof assistant.
 \end{abstract}
 \newpage
 \tableofcontents
@@ -202,8 +229,9 @@ problem remains solvable by a polynomial. It is the simultaneous infinite
 problem that fails.
 
 \subsection{The analytic category}
-Throughout, $\Gamma$ is a \emph{set-sized divisible ordered abelian group},
-written additively, and
+Throughout, except in \cref{ent:sec:multivariable}, which states its own
+weaker hypotheses, $\Gamma$ is a \emph{set-sized divisible ordered abelian
+group}, written additively, and
 \[
  \K=\C((t^\Gamma)),\qquad
  v\left(\sum_\eta c_\eta t^\eta\right)=\min\{\eta:c_\eta\ne0\}.
@@ -283,7 +311,7 @@ is never the cofinality of an ordinal index, of a diagram, or of the image of
 some displacement or spectral map; other reports in this collection use the
 word for such other invariants, and nothing here transfers to them.
 \item \emph{Order unit} is the condition of
-\cref{ent:def:order-unit}. The two source manuscripts merged here named it
+\cref{ent:def:order-unit}. The first two source manuscripts merged here named it
 twice: one called $\delta$ an order unit, the other called it a
 \emph{cofinal-cyclic element}, meaning exactly that the cyclic subgroup it
 generates is cofinal. These are the same condition, stated twice; we keep
@@ -297,7 +325,10 @@ An order unit forces $\cf(\Gamma)=\aleph_0$, but not conversely: the group
 $\Gamma_\infty$ of \cref{ent:sec:examples} has countable cofinality and no
 order unit. That gap is exactly the third case of the trichotomy below, and
 also the difference between the two existence questions of
-\cref{ent:thm:main,ent:thm:units}.
+\cref{ent:thm:main,ent:thm:units}. The report
+\path{docs/surcomplex/expanding-polynomial-dynamics/} uses the same order unit
+and renamed its delivered phrase ``cofinal scale'' accordingly
+(\texttt{epd:rem:one-name}).
 \end{remark}
 
 \Needspace{18\baselineskip}
@@ -330,7 +361,10 @@ of that third branch: it measures exactly how far interpolation fails, for
 every radially finite divisor and every group, and it specializes to the other
 two branches. It was proved after the first two source manuscripts, against
 the gap their merged report itself recorded as open
-(\cref{ent:q:image}), and is merged in here.
+(\cref{ent:q:image}), and is merged in here. A fourth manuscript, written in
+parallel against a snapshot in which the gap was still open, proved it
+independently by a different construction; its proof is kept as a marked
+second route (\cref{ent:sm:subsec:cardinal}).
 
 \Needspace{16\baselineskip}
 \begin{theorem}[Exact image of the infinite jet map]\label{ent:thm:main-image}
@@ -373,6 +407,17 @@ union, not a topological or adelic object; no norm, no local compactness and
 no completion is asserted. Case (ii) of \cref{ent:thm:main} is the
 degenerate case $V_n=\K$, and case (i) is the case where no infinite radially
 finite divisor exists at all.
+
+The fourth source adds to parts (c) and (d). It decides when finitely many
+entire functions generate the unit ideal together with $P_D$
+(\cref{ent:sm:thm:finite-generators}), gives the exact threshold at which a
+pair of canonical products with paired simple zeros stops generating the
+unit ideal (\cref{ent:sm:thm:paired}), and shows that for one node per shell,
+with arbitrary multiplicities, the ideals of part (d) and the evaluation
+ideals are \emph{all} the maximal ideals containing $P_D$, forming a copy of
+the Stone--\v{C}ech space $\beta\N$
+(\cref{ent:sm:thm:maximal-all,ent:sm:thm:beta}). None of these classifies
+the whole maximal spectrum of $\E$; see \cref{ent:q:spectrum}.
 
 \Needspace{14\baselineskip}
 \begin{theorem}[Universal scalar-extension package]\label{ent:thm:main-extension}
@@ -428,6 +473,24 @@ which is what makes case (ii) sharp rather than merely sufficient, is in
 \Cref{ent:thm:main-image} is proved in \cref{ent:sec:obstruction}, whose
 shell notation is fixed in \cref{ent:subsec:notation,ent:subsec:shells}.
 
+\paragraph{Several ordinary variables.}
+Part (a) of \cref{ent:thm:main-extension} has no uniform analogue in
+several variables: a series independent of one coordinate imposes no
+constraint in that coordinate. \Cref{ent:sec:multivariable}, the fifth
+source's contribution, gives the exact replacement. For a whole-family
+entire series $F=\sum_\alpha a_\alpha X^\alpha$ in finitely many variables
+and a point $z$ of the larger field with nonzero coordinates, the family
+$(a_\alpha z^\alpha)_\alpha$ is strongly summable if and only if
+\[
+ \Bigl\{\textstyle\sum_j\alpha_j\bigl(v(z_j)+H\bigr):a_\alpha\ne0\Bigr\}
+ \ \text{is well ordered in }\Delta/H
+\]
+(\cref{ent:mv:thm:domain}). That section works under weaker hypotheses than
+the rest of the report --- no divisibility, any trivially valued coefficient
+field --- and keeps two summation conventions apart; only the whole-family
+one is called entire. It answers the ``In particular'' clause of
+\cref{ent:q:several} and no other part of that question.
+
 \subsection{Relationship to the repository and the literature}
 \label{ent:subsec:repo}
 A note on how this report grew. Its first two source manuscripts were
@@ -450,10 +513,33 @@ $a_{n,j}$ were the exact inverses of this report's, and the single
 renormalizing pass that fixed that is recorded in
 \cref{ent:subsec:notation}.
 
+Two further manuscripts were merged later. The \emph{fourth} was written
+against a snapshot of the merged report taken after the third source's pin
+but before the third source was merged in, and it too set out to identify
+the missing image of the infinite jet map. It did so independently and at the same
+generality, with a different sufficiency construction, so the image,
+quotient and B\'ezout theorems of \cref{ent:sec:obstruction} now have two
+independent sources; they are printed once, and its construction is kept as
+a marked second route (\cref{ent:sm:subsec:cardinal}). Its framing as
+\emph{the} resolution of that gap is accurate for its snapshot and stale for
+this tree, where the third source answered the question first; the ledger in
+\cref{ent:app:sources} records this. Its genuinely additional results are
+the explicit truncation bound of the second route, the finite-generator and
+membership criteria, the exact threshold for paired zeros, and the
+classification of all maximal ideals above a one-node-per-shell product with
+their topology, residue-field type and boundary coordinate
+(\cref{ent:sm:subsec:all-maximal}). Its letters collide with this report's
+more seriously than the third source's did --- two of them are swapped with
+each other --- and \cref{ent:subsec:notation} records the translation. The
+\emph{fifth} was written against a later snapshot, after the third source
+had been merged, and answers the scalar-extension clause of
+\cref{ent:q:several}; it is \cref{ent:sec:multivariable}, which absorbs the
+finite-variable criteria that earlier versions kept in an appendix.
+
 The repository supplied with the question already contains a rank-one report
 over $\C((t^\R))$, including preparation, zero counting, zero-free rigidity
-and a partial-theta canonical product \cite{RepoRankOne}. Neither source
-manuscript claims to originate those points, and neither do we; the present
+and a partial-theta canonical product \cite{RepoRankOne}. None of the source
+manuscripts claims to originate those points, and neither do we; the present
 report is their arbitrary-rank generalization, and the rank-one report
 itself proves the obstruction that makes rank one non-generic. The
 repository also contains a global-divisor report in a different ring,
@@ -492,14 +578,35 @@ there is the analytic surjection onto the restricted product and the
 consequent identification of the residue fields. The support-controlled
 preparation and product arguments provide a self-contained route to those
 results; their rank-one specializations are not new. The literature checks
-performed for the two source manuscripts did not locate the stated
+performed for the first two source manuscripts did not locate the stated
 arbitrary-rank classifications or the explicit obstruction in the primary
 sources consulted. This is a bounded literature statement, not a
 certification of priority. The repository review was targeted at the
 catalogue, relevant READMEs and stated scope, not a line-by-line audit of
 every manuscript. No named published open problem is claimed solved.
+
+The fourth source proposes as new the exact block restricted-product
+quotient, its cardinal construction with cofinal truncation bounds
+independent of block dimension and multiplicity, the unit-ideal criterion and
+paired-root threshold, and the scale-dependent boundary residue fields with
+the full ultrafilter locus of the paired example. The first and third of
+these were already in this tree from the third source when it was merged, so
+here they count as an independent second derivation. It credits as
+antecedents Henriksen's free maximal ideals and transcendental boundary
+coordinate for the classical entire ring \cite{Henriksen}, Bruno's
+non-Archimedean maximal-ideal classifications under a real value group
+\cite{Bruno}, Helmer's divisibility theory \cite{Helmer}, and Cherry; it does
+not present the existence of ultrafilter maximal ideals, or of a
+transcendental boundary coordinate, as new. The fifth source proposes
+\cref{ent:mv:thm:domain} with its repeated-weight proof, and the combination
+of the extension geometry with the exceptional-direction classification and
+realization. It credits the Ma--Neelon realization of countable algebraic
+unions as convergence sets of divergent power series \cite{MaNeelon}, and
+does not reclaim the finite-variable growth criterion, the one-variable
+extension domain or the whole-class rigidity.
 \Cref{ent:sec:scope,ent:app:sources} state the limits in full; every
-limitation recorded by either source manuscript is preserved there.
+limitation recorded by any of the five source manuscripts is preserved
+there.
 
 \section{Hahn supports, the surreal interpretation, and the algebra chain}
 \label{ent:sec:support}
@@ -613,7 +720,7 @@ summability. With $X$ and $Z$ identified under that map,
  \K[Z]\ \subseteq\ \E\ \subseteq\ \TT\ \subseteq\ \A\ \subseteq\ \K[[Z]].
 \end{equation}
 The first two inclusions need not be strict; the last two record genuinely
-different summation requirements. The two source manuscripts named the ring
+different summation requirements. The first two source manuscripts named the ring
 \eqref{ent:eq:Halg} differently --- one as the auxiliary algebra $\A$ in the
 variable $X$, the other as the strong disk algebra $\mathcal H_\Gamma$ in the
 variable $Z$ --- but it is one ring, and we use the single symbol $\A$. That
@@ -634,18 +741,19 @@ engine of \cref{ent:sec:units}.
 \subsection{Notation: radii live in \texorpdfstring{$\Gamma$}{Gamma}, nodes
 live in \texorpdfstring{$\K$}{K}}
 \label{ent:subsec:notation}
-Three manuscripts are merged here, and the third arrived with the opposite
+Five manuscripts are merged here, and three of them arrived with letters
+that collide with this report's. The third arrived with the opposite
 convention for the two letters that matter most. Its $\rho_n$ was a positive
 element of the \emph{value group} and its $a_{n,j}$ was a point of the
 \emph{field}. This report keeps the convention of the first two throughout,
 in which $\rho$ always names a point of $\K$ and $\gamma$ always names an
-element of $\Gamma$. Every statement taken from the third manuscript has been
-rewritten in the convention below; the table is recorded so that a reader
-comparing the two texts is not misled by a symbol that typesets identically
-and means the reciprocal thing.
+element of $\Gamma$. Every statement taken from the third, fourth or fifth
+manuscript has been rewritten in the convention below; the tables are
+recorded so that a reader comparing the texts is not misled by a symbol that
+typesets identically and means something else.
 
 \begin{center}\small
-\begin{tabularx}{\textwidth}{@{}p{0.155\textwidth}p{0.255\textwidth}YY@{}}
+\begin{tabularx}{\textwidth}{@{}P{0.155\textwidth}P{0.255\textwidth}YY@{}}
 \toprule
 Symbol here & Meaning & In the third manuscript & Note\\\midrule
 $\gamma_n$ & shell radius, an element of $\Gamma$; $0<\gamma_1<\gamma_2
@@ -669,16 +777,114 @@ $\min_n\{v(a_n)+n\gamma\}$ & $w_\beta(F)=\min_k\{v(f_k)-k\beta\}$
 \end{tabularx}
 \end{center}
 
-Two consequences of the last row are used repeatedly and are recorded here
-once. First, $m_\gamma(F)$ is nondecreasing in $\gamma$, because each term
+The fourth manuscript, like the third, writes $a_{n,j}$ for the nodes, and
+it writes $\lambda_n$ for the radii. More seriously, two of its letters are
+\emph{swapped} with two of ours: its $C_n$ is our convex subgroup $H_n$ and
+its $H_n$ is a correction, our $C_n$. Several other letters shift. Every statement taken from it has been
+rewritten as follows, and ``shell'' is used for its ``block''.
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}P{0.2\textwidth}P{0.3\textwidth}P{0.17\textwidth}Y@{}}
+\toprule
+Symbol here & Meaning & In the fourth manuscript & Note\\\midrule
+$H_n$ & convex subgroup generated by $\gamma_n$ & $C_n$ &
+\emph{swapped} with the next row\\[0.3em]
+$C_{n,d}$, $\widehat C_{n,d}$ & sequential correction \eqref{ent:eq:correction};
+cardinal correction of \cref{ent:sm:subsec:cardinal} & ---, $H_{n,N}$ &
+\emph{swapped}: its $H_n$ is our cardinal $\widehat C_n$\\[0.3em]
+$\gamma_n$ & shell radius & $\lambda_n$ & our $\lambda_n$ is the valuation
+\eqref{ent:eq:lambda}\\[0.3em]
+$\rho_{n,j}$, $\xi_{n,j}$, $\tau_n$ & node, normalized node, normalizer &
+$a_{n,j}$, $u_{n,j}$, $s_n$ & our $\xi_{n,j}$ never denotes a boundary
+coordinate\\[0.3em]
+$q_n$, $M_n$ & number of nodes and total degree of shell $n$ & $r_n$, $d_n$
+& its $M_n$ is our $c_n$\\[0.3em]
+$c_n$ & integer with $v\ge-c_n\gamma_n$, as in \eqref{ent:eq:maincondition}
+& $M_n$ & its ``scale-moderate'' means eventually in $V_n$\\[0.3em]
+$d$ & damping or suppression exponent & $N$ & \\[0.3em]
+$P_n$, $\Pi_n$, $P_D$, $\widehat P_n$ & monic shell polynomial, shell factor,
+canonical product, cofactor $P_D/\Pi_n$ & $W_n$, $p_n$, $P$, $Q_n$ & our
+$Q_n$ is the product \eqref{ent:eq:Qn} over already treated nodes\\[0.3em]
+$\Lambda_n$, $\Lambda_n^\circ$, $\RD$ & shell algebras, restricted product
+& $A_n$, $B_n$, $\prod_n'(A_n,B_n)$ & our $\RD$ carries the finite factor
+$\Lambda_0$\\[0.3em]
+$R_n$, $\remp_n$, $\ev_D$ & normalized shell Hermite polynomial, shell class,
+jet map & $J_n$, $\mathcal J_n$, $\mathcal J_D$ & our $J_{n,j}$ are the
+prescribed jets\\[0.3em]
+$\nu$, $\varpi_n$, $\varkappa_n$, $\Xi_{n,d}$ & least coefficient valuation,
+cofactor class, inverse-shell gain, cardinal remainder & $\nu_n$, $q_n$,
+$\beta_n$, $R_{n,N}$ & our $q_n$ counts nodes; our $\beta_i$ are reciprocal
+node valuations\\[0.3em]
+$m_\gamma(F)$ & weighted Gauss valuation & $w_r(F)$ & \emph{sign-inverted}:
+$w_r=m_{-r}$; its $r\le\lambda_n/2$ is our $\gamma\ge-\gamma_n/2$\\[0.3em]
+$\vartheta_n$ & displacement $\sigma_n-\rho_n=t^{\vartheta_n}$ & $\theta_n$
+& our $\theta_n$ is a real radius in the second proof of
+\cref{ent:thm:interpolation}\\[0.3em]
+$\mathfrak q_{\gamma_n}$, $\kappa_n$ & coarsened maximal ideal and residue
+field & $\mathfrak p_n$, $\kappa_n$ & \\[0.3em]
+$\Phi_\Ucal$, $\iota_\Ucal$, $L_\Ucal$ & ultrafilter character, its
+restriction to $\K$, its target field & $\chi_\Ucal$, $j_\Ucal$,
+$\prod_\Ucal\kappa_n$ & its boundary coordinate $\xi_\Ucal$ is our
+$\Phi_\Ucal(Z)$\\[0.3em]
+nonprincipal; non-evaluation maximal ideal & & free; boundary ideal & not
+the ``free ideals'' or disk boundaries of the analytic-geometry
+report\\[0.3em]
+$\Gamma_\infty=\bigoplus_{j\ge0}\Q e_j$ & $H_n$ has rank $n+1$ &
+$\Gamma_*=\bigoplus_{j\ge1}\Q e_j$ & index shift: its group omits $e_0$, and
+its $C_n$ has rank $n$\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The fifth manuscript's letters are used only in \cref{ent:sec:multivariable}.
+Its $H_n$, a homogeneous block, would have been a third meaning of that
+letter, after our convex subgroup and the fourth source's correction; it is
+renamed.
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}P{0.2\textwidth}P{0.3\textwidth}P{0.17\textwidth}Y@{}}
+\toprule
+Symbol here & Meaning & In the fifth manuscript & Note\\\midrule
+$F_{(n)}$ & homogeneous component of degree $n$ & $H_n$ & $H_n$ is the
+convex subgroup here\\[0.3em]
+$\kk$ & trivially valued coefficient field & $k$ & our $k$ is an
+index\\[0.3em]
+$\Sigma(F)$, $\Sigma_J$ & ordinary monomial support, its faces & $E(F)$,
+$E_J$ & our $\E$ is the entire ring\\[0.3em]
+$\Delta/H$, $\pi_H$, $\bar\delta$ & ordered quotient, quotient map,
+quotient weights $\pi_H(v(z_j))$ & $Q$, $\pi$, $q$ & our $Q_n$, the $\pi$ of
+\cref{ent:lem:coarsening}, and our $q_n$ are unrelated\\[0.3em]
+$\inner\Sigma{\bar\delta}$, $\Adm_\Sigma(G)$ & weight set, admissible weight
+set & $W_E(q)$, $\mathcal A_E(Q)$ & our $\A$ is the Hahn algebra\\[0.3em]
+$\Dom$ & coarsened valuation ring & $\mathcal O_H$ & the same
+object\\[0.3em]
+$e_*$ & a new scale above $H$ & $\tau$ & our $\tau_n$ are
+normalizers\\[0.3em]
+$\Pdir(F)$ & polynomial-direction locus & $\operatorname{Pol}(F)$ & avoids
+the nonabelian-support report's $\operatorname{Pol}$\\[0.3em]
+$\mathcal Z_N$, $Y_m$, $\mathcal L$, $\varphi_n$ & vanishing loci,
+prescribed algebraic sets, relation lattice, damping sequence & $Z_N$, $V_m$,
+$L$, $\beta_n$ & our $Z$ is the variable, $V_n$ the coarsened rings\\[0.3em]
+$\mathcal D^{\mathrm{hom}}(F)$, $\omega^x$ & homogeneous-block domain,
+Conway omega-map & $\operatorname{Dom}_{\mathrm{hom}}(F)$, $\Omega(x)$ & \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Two consequences of the last row of the first table are used repeatedly and
+are recorded here once. First, $m_\gamma(F)$ is nondecreasing in $\gamma$, because each term
 $v(a_n)+n\gamma$ is. Second, on polynomials and on entire series
 \[
  m_\gamma(F+G)\ge\min\{m_\gamma(F),m_\gamma(G)\},\qquad
  m_\gamma(FG)\ge m_\gamma(F)+m_\gamma(G),
 \]
 with $m_\gamma(0)=+\infty$; the second is the Cauchy-product estimate, and
-equality holds by \eqref{ent:eq:gauss-mult} but is never needed. Only these
-inequalities are used, never a maximum-modulus principle.
+equality holds by \eqref{ent:eq:gauss-mult}, applied to the rescalings
+$F(t^\gamma X),G(t^\gamma X)\in\A$ of \cref{ent:thm:criterion}(2). The first
+proof of the image theorem never needs the equality; the cardinal second
+route of \cref{ent:sm:subsec:cardinal} does, in the one form
+$m_\gamma(\widehat P_n)=m_\gamma(P_D)$. Only these relations are used, never
+a maximum-modulus principle.
 
 Finally, we write $F^{[k]}(b)=[Z^k]F(Z+b)$ for the $k$th Hasse jet
 coefficient at $b$, which is $F^{(k)}(b)/k!$ by \eqref{ent:eq:taylor}. For
@@ -1271,7 +1477,7 @@ The sum means a finite total multiplicity, not a Hahn sum. Let
 $\Div^+_{\mathrm{rad}}(\K)$ denote the monoid of these divisors.
 \end{definition}
 
-The two source manuscripts used the two displayed adjectives for this one
+The first two source manuscripts used the two displayed adjectives for this one
 condition; we keep \emph{radially finite} and record \emph{ball-finite} as
 the synonym. This is a restriction on valuation balls, not on discrete
 subsets for the fine surreal topology, and the distinction is necessary:
@@ -2108,6 +2314,253 @@ At the other extreme, if $\cf(\Gamma)>\aleph_0$ then \cref{ent:lem:shells}
 leaves no infinite radially finite divisor at all and every interpolation
 problem here is finite. The new content lies in the intervening groups.
 
+\begin{corollary}[Without an order unit the restriction never disappears]
+\label{ent:sm:cor:no-order-unit}
+Conversely, if $\Gamma$ has no order unit, then every $H_n$ is a proper
+subgroup of $\Gamma$. In particular, for a divisor with one simple node
+$\rho_n$ on each shell and empty finite part, the image of the value map
+$F\mapsto(F(\rho_n))_n$ is a proper subring of $\K^{\N_{>0}}$.
+\end{corollary}
+\begin{proof}
+If $H_n=\Gamma$, every element of $\Gamma$ is bounded in absolute value by a
+finite multiple of $\gamma_n$, so $\gamma_n$ is an order unit. If every $H_n$
+is proper, choose $\eta_n>0$ outside $H_n$. It exceeds every finite multiple
+of $\gamma_n$, so $t^{-\eta_n}\notin V_n$ for every $n$, and
+\cref{ent:cor:single-node} shows that the values $F(\rho_n)=t^{-\eta_n}$ are
+realized by no entire $F$.
+\end{proof}
+
+This converse is the fourth source's; \cref{ent:cor:no-interpolation}(a) is
+its instance $\eta_n=\gamma_{n+1}$ for the escaping sequence of
+\cref{ent:lem:escaping-classes}.
+
+\subsection{A second proof of sufficiency: cardinal corrections}
+\label{ent:sm:subsec:cardinal}
+The fourth source proved \cref{ent:thm:image} independently. Its necessity
+argument is the one above, an attained Gauss minimum. Its sufficiency
+construction is different, and is recorded here as a second route. The
+first route corrects shell by shell with \emph{polynomials} that vanish at
+every earlier node, and needs the finite initialization over $V_L$. The
+second builds, for each shell separately, an \emph{entire} correction that
+vanishes to the prescribed orders on every other shell: the canonical product
+with that shell removed, times a finite polynomial. One integral estimate for
+the inverse of that cofactor on its own shell replaces the sequential
+bookkeeping, and the construction comes with an explicit truncation bound.
+Neither route is offered as a correction of the other, and like the first,
+the second uses neither preparation nor algebraic closedness.
+
+Throughout this subsection $D$ is an infinite radially finite divisor with
+the shell data of \cref{ent:lem:shells}, and $D_0=0$ until the last step. Put
+\begin{equation}\label{ent:sm:eq:cofactor}
+ \Pi_n(Z)=\frac{P_n(Z/\tau_n)}{P_n(0)}
+ =\prod_{j=1}^{q_n}\Bigl(1-\frac Z{\rho_{n,j}}\Bigr)^{m_{n,j}},
+ \qquad
+ P_D=\prod_{n\ge1}\Pi_n,
+ \qquad
+ \widehat P_n=\prod_{h\ne n}\Pi_h .
+\end{equation}
+The cofactor $\widehat P_n$ is the canonical product of the radially finite
+divisor $D-D_n$, entire by \cref{ent:thm:product}; it is obtained by
+removing finitely many factors, not by an entire division theorem. For a
+class $r\in\Lambda_n$ write $\nu(r)$ for the least valuation of the
+coefficients of its representative of degree below $M_n$, with
+$\nu(0)=+\infty$. Monic division never lowers that minimum
+(\cref{ent:lem:integral}(a)), so $\nu(rs)\ge\nu(r)+\nu(s)$. For $F\in\E$ let
+$\remp_n(F)\in\Lambda_n$ be the shell class \eqref{ent:eq:analyticremainder}.
+It is the $n$th component of $\ev_D$, hence a $\K$-algebra homomorphism, and
+the necessity proof above shows
+\begin{equation}\label{ent:sm:eq:class-bound}
+ \nu\bigl(\remp_n(F)\bigr)\ \ge\ m_{-\gamma_n}(F).
+\end{equation}
+Finally put
+\begin{equation}\label{ent:sm:eq:gain}
+ \varpi_n=\remp_n(\widehat P_n)\in\Lambda_n,
+ \qquad
+ \varkappa_n=\sum_{h<n}M_h(\gamma_n-\gamma_h)\ \ge\ 0 .
+\end{equation}
+
+\begin{lemma}[Summing entire corrections]\label{ent:sm:lem:entire-sum}
+Let $F_n\in\E$ and suppose that $m_\gamma(F_n)\to+\infty$ cofinally for every
+$\gamma\in\Gamma$. Then the coefficientwise sum $F=\sum_nF_n$ is defined and
+belongs to $\E$, $m_\gamma\bigl(F-\sum_{n\le N}F_n\bigr)\to+\infty$ for every
+$\gamma$, and $\remp_m(F)=\sum_n\remp_m(F_n)$ for every shell $m$, the right
+side being a coefficientwise strong sum.
+\end{lemma}
+\begin{proof}
+At $\gamma=0$ the hypothesis makes the valuations in each coefficient family
+$([Z^k]F_n)_n$ tend cofinally to $+\infty$, so \cref{ent:lem:cofinal-tails}
+defines its sum. Fix $\gamma$ and $B$. All sufficiently late $F_n$ have every
+weighted coefficient above $B$, hence so does the sum of those late terms,
+and the finitely many earlier $F_n$ are entire, so they have this property in
+all sufficiently large degrees. Thus the weighted coefficients of $F$ tend
+cofinally to $+\infty$, which is \cref{ent:thm:criterion}(4); the same
+argument applied to the late terms alone gives the tail assertion. For the
+last assertion, \eqref{ent:sm:eq:class-bound} makes the coefficient families
+of $(\remp_m(F_n))_n$ cofinally small, and
+$\nu\bigl(\remp_m(F)-\sum_{n\le N}\remp_m(F_n)\bigr)\ge
+m_{-\gamma_m}\bigl(F-\sum_{n\le N}F_n\bigr)\to+\infty$; a class whose $\nu$
+exceeds every element of $\Gamma$ is zero.
+\end{proof}
+
+Compare \cref{ent:lem:assembly}: there the corrections are polynomials
+divisible by $Z^n$; here they are entire functions, and only their weighted
+Gauss valuations are controlled.
+
+\begin{lemma}[Integral inverse of the cofactor]\label{ent:sm:lem:inverse-shell}
+The class $\varpi_n$ is a unit of $\Lambda_n$, and
+\begin{equation}\label{ent:sm:eq:inverse-bound}
+ \nu\bigl(\varpi_n^{-1}\bigr)\ \ge\ \varkappa_n .
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write $A_n^{\OO}=\OO[T]/(P_n)$, a finite free $\OO$-algebra inside
+$\Lambda_n$ in which $T$ is a unit, by \cref{ent:lem:integral}(b). Every
+element of $1+\mm A_n^{\OO}$ is a unit of $A_n^{\OO}$: the determinant of
+its multiplication matrix in the basis $1,T,\ldots,T^{M_n-1}$ is $1$ modulo
+$\mm$, hence a unit of $\OO$, and the adjugate gives an integral inverse. No
+geometric series is used.
+
+Split $\widehat P_n=P_{<n}P_{>n}$ into the finite product over earlier shells
+and the canonical product of the later ones. For a node $\rho=\rho_{h,j}$ of
+an earlier shell, the class of its factor is
+\[
+ 1-\frac{\tau_n}{\rho}T
+ =-\frac{\tau_n}{\rho}\,T\,\Bigl(1-\frac{\rho}{\tau_n}T^{-1}\Bigr),
+ \qquad v(\rho/\tau_n)=\gamma_n-\gamma_h>0,
+\]
+so the last factor lies in $1+\mm A_n^{\OO}$. For a node $\rho$ of a later
+shell $h$ the class $1-(\tau_n/\rho)T$ itself lies in $1+\mm A_n^{\OO}$,
+since $v(\tau_n/\rho)=\gamma_h-\gamma_n>0$; so do the classes $u_N$ of the
+finite partial products of $P_{>n}$. Those partial products converge to
+$P_{>n}$ in every $m_\gamma$ (\cref{ent:thm:product}), so by
+\eqref{ent:sm:eq:class-bound} some $u_N$ satisfies
+$\nu\bigl(\remp_n(P_{>n})-u_N\bigr)>0$, and then $\remp_n(P_{>n})$ lies in
+$1+\mm A_n^{\OO}$ as well. Hence, with
+\[
+ c_n=\prod_{h<n}\prod_{j=1}^{q_h}\bigl(-\tau_n/\rho_{h,j}\bigr)^{m_{h,j}},
+ \qquad v(c_n)=-\varkappa_n,
+\]
+the class $\varpi_n/c_n$ is a power of the integral unit $T$ times an element
+of $1+\mm A_n^{\OO}$. Its inverse is integral, and multiplying by
+$c_n^{-1}$ gives \eqref{ent:sm:eq:inverse-bound}.
+\end{proof}
+
+The argument never inverts a difference of two nodes of the \emph{same}
+shell. Those may be arbitrarily close, and whatever they cost is already
+measured by $R_n$. Only the strict radial separation of distinct shells
+enters, exactly as in \cref{ent:lem:integral}(b).
+
+\begin{lemma}[Cardinal corrections]\label{ent:sm:lem:cardinal}
+Let $r\in\Lambda_n$ with representative $R$ of degree below $M_n$, let
+$d\ge0$ be an integer, and put
+\begin{align}
+ \Xi_{n,d}(T)&=\remp\bigl(T^{-d}\varpi_n^{-1}R,\ P_n\bigr),
+ \label{ent:sm:eq:Xi}\\
+ \widehat C_{n,d}(Z)&=\widehat P_n(Z)\,(Z/\tau_n)^d\,
+   \Xi_{n,d}(Z/\tau_n),\label{ent:sm:eq:cardinal}
+\end{align}
+the inverses being taken in $\Lambda_n$. Then $\widehat C_{n,d}\in\E$,
+$\remp_n(\widehat C_{n,d})=r$, every prescribed jet of $D$ at a node outside
+shell $n$ vanishes on $\widehat C_{n,d}$, and for every $\gamma\ge-\gamma_n/2$
+\begin{equation}\label{ent:sm:eq:suppression}
+ m_\gamma\bigl(\widehat C_{n,d}\bigr)\ \ge\
+ m_\gamma(P_D)+\nu(r)+\varkappa_n+d(\gamma_n+\gamma).
+\end{equation}
+\end{lemma}
+\begin{proof}
+It is an entire function times a polynomial. Its class on shell $n$ is
+$\varpi_n\cdot T^d\cdot\Xi_{n,d}=r$, and on any other shell $h$ it vanishes
+to the prescribed orders because $\widehat P_n$ contains the factor $\Pi_h$.
+By \cref{ent:sm:lem:inverse-shell} and integral multiplication,
+$\nu(\Xi_{n,d})\ge\nu(r)+\varkappa_n$. Under $T=Z/\tau_n=t^{\gamma_n}Z$ the
+coefficient of $Z^k$ acquires the factor $t^{k\gamma_n}$, so its weighted
+value at $\gamma$ exceeds the valuation of the original coefficient by
+$k(\gamma_n+\gamma)\ge0$. Hence
+$m_\gamma(\Xi_{n,d}(Z/\tau_n))\ge\nu(\Xi_{n,d})$, and
+$m_\gamma\bigl((Z/\tau_n)^d\bigr)=d(\gamma_n+\gamma)$. Next,
+$m_\gamma(\Pi_n)=0$ for $\gamma>-\gamma_n$: the constant term is $1$, and the
+coefficient of $Z^k$, $k\ge1$, is a sum of products of $k$ reciprocals of
+nodes of valuation $\gamma_n$, so its weighted value is at least
+$k(\gamma_n+\gamma)>0$. The equality case of Gauss multiplicativity
+(\cref{ent:subsec:notation}) applied to $P_D=\Pi_n\widehat P_n$ gives
+$m_\gamma(\widehat P_n)=m_\gamma(P_D)$. The product estimate now gives
+\eqref{ent:sm:eq:suppression}.
+\end{proof}
+
+\begin{proof}[Second proof of sufficiency in \cref{ent:thm:image}, for $D_0=0$]
+Suppose $R_n\in V_n[T]$ for all $n>N_0$. For such $n$ with $R_n\ne0$ choose an
+integer $c_n\ge0$ with $\nu(R_n)\ge-c_n\gamma_n$ and put
+\begin{equation}\label{ent:sm:eq:d-choice}
+ d_n=2c_n+2;
+\end{equation}
+for $n\le N_0$ put $d_n=0$. Let $\widehat C_n=\widehat C_{n,d_n}$ be the
+cardinal correction of the class of $R_n$, and $\widehat C_n=0$ if $R_n=0$.
+For $n>N_0$ and $\gamma\ge-\gamma_n/2$, \cref{ent:sm:lem:cardinal} and
+$\varkappa_n\ge0$ give
+\[
+ m_\gamma(\widehat C_n)\ \ge\ m_\gamma(P_D)-c_n\gamma_n
+   +(2c_n+2)\frac{\gamma_n}{2}
+ \ =\ m_\gamma(P_D)+\gamma_n .
+\]
+For fixed $\gamma$ the condition $\gamma\ge-\gamma_n/2$ holds for all large
+$n$, and $m_\gamma(P_D)+\gamma_n\to+\infty$ cofinally. By
+\cref{ent:sm:lem:entire-sum}, $F=\sum_n\widehat C_n$ lies in $\E$ and
+$\remp_m(F)=\sum_n\remp_m(\widehat C_n)=R_m$ for every $m$, since exactly one
+summand has a nonzero class on shell $m$. By the identification in the
+necessity proof, $F$ realizes every prescribed jet.
+\end{proof}
+
+\begin{corollary}[An explicit truncation certificate]\label{ent:sm:cor:error}
+In that construction, if $L\ge N_0$ and $\gamma\ge-\gamma_{L+1}/2$, then
+\[
+ m_\gamma\Bigl(F-\sum_{n\le L}\widehat C_n\Bigr)\ \ge\
+ m_\gamma(P_D)+\gamma_{L+1}.
+\]
+Arbitrarily large shell degrees $M_n$ and integers $c_n$ do not weaken it.
+\end{corollary}
+\begin{proof}
+Every remaining summand satisfies the bound of the preceding proof with
+$\gamma_n\ge\gamma_{L+1}$, and a strong sum has weighted valuation at least
+the least weighted valuation of its terms.
+\end{proof}
+
+\begin{proof}[Completion of the second route: a nonzero finite part]
+Let $P_0=Z^{D(0)}\prod_x(Z-x)^{D(x)}$, the product over the nonzero points of
+$\supp D_0$, and let $F_0$ be a polynomial with the prescribed jets on $D_0$.
+A solution has the form $F=F_0+P_0G$, where $G$ must carry the shell data
+$\bigl(R_n-\remp_n(F_0)\bigr)\remp_n(P_0)^{-1}$. Each class $\remp_n(P_0)$ is
+a unit of $\Lambda_n^\circ$: it is $\tau_n^{\deg P_0}$ times $T^{\deg P_0}$
+times the classes of the factors $1-(x/\tau_n)T^{-1}$, where
+$v(x/\tau_n)=v(x)+\gamma_n>0$ because $v(x)\ge0$, and $\tau_n$ is a unit of
+$V_n$. Since $\remp_n(F_0)\in\Lambda_n^\circ$ for large $n$ by the necessity
+half, the new data lie in $\RD$ exactly when the original data do. Apply the
+case $D_0=0$ to $D-D_0$ to obtain $G$. The kernel half of
+\cref{ent:thm:quotient} is \cref{ent:prop:kernel-direct}, which the fourth
+source proved in the same way, by coefficient division without preparation.
+\end{proof}
+
+\begin{remark}[One simple node per shell]\label{ent:sm:rem:simple-cardinal}
+If shell $n$ carries one simple node $\rho_n$ and the data are values $b_n$,
+then $\Lambda_n=\K$, $\remp_n(G)=G(\rho_n)$, and the cardinal correction is
+\[
+ \widehat C_{n,d}(Z)=b_n\,\frac{\widehat P_n(Z)}{\widehat P_n(\rho_n)}
+ \Bigl(\frac Z{\rho_n}\Bigr)^{d}.
+\]
+For instance, in the group $\Gamma_\infty$ of \cref{ent:sec:examples}, with
+$\rho_n=t^{-e_n}$, the admissible values $b_n=t^{-n!e_n}$ of
+\cref{ent:cor:no-interpolation}(b) are interpolated explicitly by
+\[
+ F(Z)=\sum_{n\ge1}t^{-n!e_n}\,
+ \frac{\widehat P_n(Z)}{\widehat P_n(t^{-e_n})}\,
+ \bigl(t^{e_n}Z\bigr)^{2\,n!+2},
+\]
+whereas the values $t^{-e_{n+1}}$ are admissible at no shell. For a single
+shell, $d_n$ is an ordinary finite exponent: it absorbs a negative coefficient
+valuation bounded by a finite multiple of $\gamma_n$, but not one below every
+such multiple. That is why coarsening by $H_n$ is both necessary and
+sufficient, rather than a convenient growth condition.
+\end{remark}
+
 \subsection{A universal bound on values at escaping monomials}
 The next lemma was the original core obstruction, and its necessity half is
 still what the negative results use. It is short, but it uses both halves of
@@ -2297,6 +2750,82 @@ an already entire function}. Arbitrary Hermite data require the full
 coefficient criterion of \cref{ent:thm:image}; replacing it by a pointwise
 condition would lose \cref{ent:thm:close-pair}.
 
+The fourth source proved \cref{ent:thm:bezout-criterion} independently, as a
+consequence of its own proof of \cref{ent:thm:quotient}, and extended it to
+finitely many generators and to membership of arbitrary elements.
+
+\begin{theorem}[Finitely many generators]\label{ent:sm:thm:finite-generators}
+Let $D$ be an infinite radially finite divisor with $D_0=0$ and canonical
+product $P_D$, and let $G_1,\ldots,G_s\in\E$, $s\ge1$. Then
+$(P_D,G_1,\ldots,G_s)=\E$ if and only if
+\begin{enumerate}[label=\textnormal{(\arabic*)},leftmargin=2em]
+\item at every node of $D$ at least one $G_\ell$ is nonzero, and
+\item for every node $\rho_{n,j}$ of every sufficiently large shell, at least
+one $G_\ell$ satisfies $G_\ell(\rho_{n,j})\ne0$ and
+$v\bigl(G_\ell(\rho_{n,j})\bigr)\le c\gamma_n$ for some integer $c\ge0$;
+equivalently, $v\bigl(G_\ell(\rho_{n,j})\bigr)\in H_n$.
+\end{enumerate}
+On a sufficiently large shell, the condition in (2) is equivalent to
+\[
+ \gcd\bigl(\overline{P_n},\overline{\remp_n(G_1)},\ldots,
+   \overline{\remp_n(G_s)}\bigr)=1\quad\text{in }\kappa_n[T],
+\]
+the bars denoting reduction modulo $\mathfrak q_{\gamma_n}$; this holds even
+when distinct normalized nodes have the same reduction.
+\end{theorem}
+\begin{proof}
+By \cref{ent:thm:quotient} the ideal is the unit ideal exactly when the images
+$g_\ell=\ev_D(G_\ell)$ generate the unit ideal of $\RD$, that is, when there
+are $a_{\ell,n}\in\Lambda_n$ with $\sum_\ell a_{\ell,n}g_{\ell,n}=1$ for every
+$n$ and $a_{\ell,n}\in\Lambda_n^\circ$ for all large $n$. In $\Lambda_n$,
+which is a finite product of local jet rings over $\K$, the $g_{\ell,n}$
+generate the unit ideal exactly when at each node one of them has a nonzero
+constant term; this is (1).
+
+For large $n$ every $g_{\ell,n}$ lies in $\Lambda_n^\circ$, by the necessity
+half of \cref{ent:thm:image}. The reduction of $\Lambda_n^\circ$ modulo
+$\mathfrak q_{\gamma_n}$ is $\kappa_n[T]/(\overline{P_n})$, and
+$\overline{P_n}$ splits at the reductions of the $\xi_{n,j}$. The reduced
+classes generate the unit ideal exactly when they have no common root among
+those reductions, which is the gcd condition. The value of $g_{\ell,n}$ at
+$\xi_{n,j}$ is $G_\ell(\rho_{n,j})\in V_n$, whose coarsened residue is nonzero
+exactly when its valuation lies in $H_n$; so the gcd condition is (2) at
+shell $n$, repeated residues included. A residue identity lifts
+coefficientwise to $\sum_\ell a_\ell g_{\ell,n}=1+e$ with
+$e\in\mathfrak q_{\gamma_n}\Lambda_n^\circ$. The multiplication determinant of
+$1+e$ is $1$ modulo $\mathfrak q_{\gamma_n}$, so $1+e$ is a unit of
+$\Lambda_n^\circ$ and the identity can be divided by it. Hence the
+$g_{\ell,n}$ generate the unit ideal of $\Lambda_n^\circ$ exactly when (2)
+holds at shell $n$.
+
+If (1) and (2) hold, choose the $a_{\ell,n}$ in $\Lambda_n$ for the finitely
+many exceptional shells and in $\Lambda_n^\circ$ afterwards, and realize each
+tuple $(a_{\ell,n})_n$ by some $B_\ell\in\E$ (\cref{ent:thm:image}). Then
+$1-\sum_\ell B_\ell G_\ell$ has zero image, so it lies in $P_D\E$.
+Conversely, a global identity reduces to identities in every $\Lambda_n$ and,
+for large $n$, in $\Lambda_n^\circ$.
+\end{proof}
+
+For $s=1$ this is \cref{ent:thm:bezout-criterion} in the case $D_0=0$. As
+there, finite nilpotent directions do not enter: a unit of a local jet ring
+is detected by its constant term, so only values matter, even for unbounded
+multiplicities.
+
+\begin{corollary}[Membership, one simple node per shell]
+\label{ent:sm:cor:membership}
+Suppose $D$ has one simple node $\rho_n$ on each shell and $D_0=0$, and let
+$F,G\in\E$. Then $F\in(P_D,G)$ if and only if $F(\rho_n)=0$ whenever
+$G(\rho_n)=0$, and the ratios $F(\rho_n)/G(\rho_n)$ at the remaining nodes lie
+in $V_n$ for all sufficiently large $n$.
+\end{corollary}
+\begin{proof}
+If $F=AP_D+BG$, then $F(\rho_n)=B(\rho_n)G(\rho_n)$, and $B(\rho_n)\in V_n$
+for all large $n$ by the necessity half of \cref{ent:cor:single-node}.
+Conversely, prescribe $B(\rho_n)$ to be the ratio where $G(\rho_n)\ne0$ and
+$0$ elsewhere; \cref{ent:cor:single-node} realizes $B$, and $F-BG$ vanishes
+at every node, so it lies in $P_D\E$ by \cref{ent:thm:quotient}.
+\end{proof}
+
 \begin{theorem}[An explicit pointwise B\'ezout failure]
 \label{ent:thm:no-bezout}
 Assume the hypotheses of \cref{ent:lem:escaping-classes} and choose its
@@ -2369,6 +2898,46 @@ assertion that nearby zeros force a small value is used: the contribution of
 each earlier root is retained, and the infinite tail is proved to be a unit.
 The earlier-root terms can lower the valuation by finite multiples of
 $\gamma_n$, but cannot offset the new Archimedean scale $\gamma_{n+1}$.
+
+The fourth source turned this single instance into an exact threshold.
+
+\begin{theorem}[The exact threshold for paired zeros]\label{ent:sm:thm:paired}
+Let $0<\gamma_1<\gamma_2<\cdots$ be cofinal in $\Gamma$, with no domination
+assumed, let $\vartheta_n>0$ in $\Gamma$, and put
+\[
+ \rho_n=t^{-\gamma_n},\qquad
+ \sigma_n=\rho_n+t^{\vartheta_n},\qquad
+ f=\prod_{n\ge1}(1-Z/\rho_n),\qquad
+ g_\vartheta=\prod_{n\ge1}(1-Z/\sigma_n).
+\]
+Then $f,g_\vartheta\in\E$ have simple and disjoint zero sets,
+\begin{equation}\label{ent:sm:eq:paired-value}
+ v\bigl(g_\vartheta(\rho_n)\bigr)
+ =\vartheta_n+(2-n)\gamma_n+\sum_{h<n}\gamma_h,
+\end{equation}
+and $(f,g_\vartheta)=\E$ if and only if $\vartheta_n\in H_n$ for all
+sufficiently large $n$.
+\end{theorem}
+\begin{proof}
+Both root sequences have valuation $-\gamma_n$ at index $n$, distinct indices
+give distinct valuations, and $\sigma_n-\rho_n\ne0$; \cref{ent:thm:product}
+gives the zero assertions. The computation of \eqref{ent:eq:lambda} applies
+verbatim with $\gamma_{n+1}$ replaced by $\vartheta_n$: the factor of index
+$h<n$ has valuation $\gamma_h-\gamma_n$, the factor of index $n$ has
+valuation $\vartheta_n+\gamma_n$, and the tail is a unit of valuation zero.
+The terms of \eqref{ent:sm:eq:paired-value} other than $\vartheta_n$ lie in
+$H_n$, so $v(g_\vartheta(\rho_n))\in H_n$ exactly when $\vartheta_n\in H_n$.
+Apply \cref{ent:thm:bezout-criterion} to $D=\sum_n[\rho_n]$, for which
+$f=P_D$ and condition~(1) holds.
+\end{proof}
+
+Under the hypotheses of \cref{ent:lem:escaping-classes} the displacement
+$\vartheta_n=\gamma_{n+1}$ lies in no $H_n$, and this is
+\cref{ent:thm:no-bezout}. At the other extreme a displacement
+$\vartheta_n=n!\,\gamma_n$ causes no obstruction. The dividing line is not
+the size of an ordinary numerical coefficient but whether the displacement
+leaves the convex subgroup of the current radius, and infinitely many such
+shells suffice to make the ideal proper.
 
 \begin{theorem}[A close pair with individually harmless values]
 \label{ent:thm:close-pair}
@@ -2547,11 +3116,204 @@ coarsening happens inside $\Gamma$ at a shell radius, the other across an
 ordered-group extension.
 
 This construction gives a specified family of maximal ideals together with a
-field presentation of each. It does \emph{not} classify all maximal ideals of
-$\E$, and it does not assert that every non-evaluation maximal ideal arises
-this way. The ultrafilter mechanism itself is standard algebra; what is new
-is the analytic surjection onto $\RD$ that feeds it. No model-theoretic
-transfer principle is used.
+field presentation of each. By itself it does \emph{not} classify all maximal
+ideals of $\E$, and it does not assert that every non-evaluation maximal
+ideal arises this way. The fourth source's
+\cref{ent:sm:thm:maximal-all} below shows that nothing else occurs
+\emph{above} $P_D$; the maximal ideals of $\E$ that contain no such product
+remain undescribed. The ultrafilter mechanism itself is standard algebra;
+what is new is the analytic surjection onto $\RD$ that feeds it. No
+model-theoretic transfer principle is used.
+
+\subsection{All maximal ideals above a one-node-per-shell product}
+\label{ent:sm:subsec:all-maximal}
+This subsection is the fourth source's. It keeps the one-node-per-shell
+hypothesis of \cref{ent:subsec:invisible} and the empty finite part, but
+allows each node $\rho_n$ an arbitrary multiplicity $m_n\ge1$, so that
+$P_D=\prod_n(1-Z/\rho_n)^{m_n}$. In the coordinate
+$U=(Z-\rho_n)/\rho_n=(T-\xi_n)/\xi_n$, where $\xi_n$ is a unit of $V_n$,
+triangular changes of basis over $V_n$, as in the proof of
+\cref{ent:cor:single-node}, identify $\Lambda_n$ with $\K[U]/(U^{m_n})$ and
+$\Lambda_n^\circ$ with $V_n[U]/(U^{m_n})$. By \cref{ent:thm:quotient},
+\begin{equation}\label{ent:sm:eq:local-product}
+ \E/(P_D)\ \cong\ \RD=\Bigl\{(r_n)\in\prod_n\K[U]/(U^{m_n}):
+   r_n\in V_n[U]/(U^{m_n})\text{ eventually}\Bigr\},
+\end{equation}
+and each $V_n[U]/(U^{m_n})$ is a local ring with maximal ideal
+$(\mathfrak q_{\gamma_n},U)$ and residue field $\kappa_n$. Formula
+\eqref{ent:eq:Phi} still defines $\Phi_\Ucal$, since $F(\rho_n)\in V_n$
+eventually by \cref{ent:cor:single-node}.
+
+\begin{theorem}[Every maximal ideal above $P_D$]\label{ent:sm:thm:maximal-all}
+The maximal ideals of $\E$ containing $P_D$ are exactly
+\begin{enumerate}[label=\textnormal{(\alph*)},leftmargin=2em]
+\item the evaluation ideals $(Z-\rho_n)\E$, $n\ge1$, with residue field
+$\K$; and
+\item the kernels $\mathfrak M_\Ucal$ of $\Phi_\Ucal$, one for each
+nonprincipal ultrafilter $\Ucal$ on $\N_{>0}$, with
+$\E/\mathfrak M_\Ucal\cong L_\Ucal=\bigl(\prod_n\C((t^{H_n}))\bigr)/\Ucal$.
+\end{enumerate}
+Distinct ultrafilters give distinct ideals, and inserting arbitrary elements
+of $\kappa_n$ at finitely many coordinates of \eqref{ent:eq:Phi} does not
+change $\Phi_\Ucal$.
+\end{theorem}
+\begin{proof}
+For simple nodes, (b) is \cref{ent:thm:maximal}, and its proof works verbatim
+with multiplicities: \cref{ent:cor:single-node} realizes arbitrary values in
+$V_n$ with zero higher jets, which gives surjectivity, and the kernel and
+distinctness arguments use values only. The evaluation ideals contain $P_D$
+and are maximal by \cref{ent:cor:evaluation}.
+
+For exhaustiveness it suffices to find the maximal ideals $M$ of $\RD$. For
+$S\subseteq\N_{>0}$ let $e_S\in\RD$ be the idempotent equal to $1$ on $S$ and
+$0$ elsewhere; its coordinates lie in every $V_n[U]/(U^{m_n})$. In the field
+$\RD/M$ each $e_S$ maps to $0$ or $1$, and $e_S+e_{\N_{>0}\setminus S}=1$,
+$e_Se_T=e_{S\cap T}$; hence $\Ucal_M=\{S:e_S\notin M\}$ is an ultrafilter. If
+$\Ucal_M$ is principal at $n$, then $1-e_{\{n\}}\in M$, the quotient factors
+through $\K[U]/(U^{m_n})$, whose unique maximal ideal is $(U)$, and $M$
+corresponds to $(Z-\rho_n)\E$.
+
+Suppose $\Ucal_M$ is nonprincipal. If $re_S=0$ with $S\in\Ucal_M$, the image
+of $e_S$ is $1$ and so the image of $r$ is $0$; thus $M$ contains every tuple
+vanishing on a member of $\Ucal_M$. Modulo those tuples, $\RD$ becomes the
+ultraproduct $\bigl(\prod_nV_n[U]/(U^{m_n})\bigr)/\Ucal_M$, because changing
+finitely many coordinates makes any element of $\RD$ integral without
+changing its class. An ultraproduct of local rings is local: a tuple is a
+unit exactly when its coordinates are units on a member of $\Ucal_M$, the
+nonunits are the tuples whose constant coefficients lie in
+$\mathfrak q_{\gamma_n}$ on a member of $\Ucal_M$, and they form an ideal
+with quotient $\bigl(\prod_n\kappa_n\bigr)/\Ucal_M$. So $M$ is the kernel of
+$\Phi_{\Ucal_M}$. The idempotents recover $\Ucal_M$ from $M$, which gives
+distinctness again.
+\end{proof}
+
+Write $\beta\N_{>0}$ for the set of all ultrafilters on $\N_{>0}$ with the
+basic clopen sets $\widehat S=\{\Ucal:S\in\Ucal\}$: the Stone--\v{C}ech space
+of the discrete set $\N_{>0}$, whose principal ultrafilters form a copy of
+$\N_{>0}$.
+
+\begin{theorem}[The maximal spectrum of the quotient]\label{ent:sm:thm:beta}
+With the Zariski topology on the left, the bijection of
+\cref{ent:sm:thm:maximal-all} is a homeomorphism
+\[
+ \operatorname{Max}\bigl(\E/(P_D)\bigr)\ \cong\ \beta\N_{>0},
+\]
+sending $(Z-\rho_n)\E$ to the principal ultrafilter at $n$. The evaluation
+ideals form a discrete dense subset.
+\end{theorem}
+\begin{proof}
+Work in \eqref{ent:sm:eq:local-product}. For $r=(r_n)$ let $c_n$ be the
+constant coefficient of $r_n$ and put
+$Z_r=\{n:c_n=0\}\subseteq T_r=\{n:c_n\in\mathfrak q_{\gamma_n}\}$. At the
+principal ultrafilter at $n$, $r$ lies outside the maximal ideal exactly when
+$n\notin Z_r$; at a nonprincipal $\Ucal$, exactly when
+$\N_{>0}\setminus T_r\in\Ucal$, finitely many nonintegral coordinates being
+irrelevant. So the basic open set $D(r)$ corresponds to
+\[
+ \widehat{\N_{>0}\setminus T_r}\ \cup\
+ \{\text{principal ultrafilter at }n:\ n\in T_r\setminus Z_r\},
+\]
+which is open in $\beta\N_{>0}$ because principal points are open.
+Conversely $D(e_S)$ corresponds exactly to $\widehat S$. Every nonempty
+$\widehat S$ contains the principal ultrafilter at some $n\in S$, which gives
+density.
+\end{proof}
+
+The ultrafilter topology is familiar. The new information is the varying
+residue fields, which a topological description of the spectrum does not
+see.
+
+\begin{corollary}[The whole maximal-ideal locus of a paired example]
+\label{ent:sm:cor:boundary-pair}
+In \cref{ent:sm:thm:paired} let $S=\{n:\vartheta_n\notin H_n\}$. The maximal
+ideals of $\E$ containing both $f$ and $g_\vartheta$ are exactly the
+$\mathfrak M_\Ucal$ with $\Ucal$ nonprincipal and $S\in\Ucal$. For finite $S$
+there are none and $(f,g_\vartheta)=\E$; for infinite $S$ they exist. In the
+situation of \cref{ent:thm:no-bezout}, $S=\N_{>0}$, and the locus is all of
+$\beta\N_{>0}\setminus\N_{>0}$.
+\end{corollary}
+\begin{proof}
+No evaluation ideal contains both functions, since they have no common zero.
+By \eqref{ent:sm:eq:paired-value}, $v(g_\vartheta(\rho_n))$ is $\vartheta_n$
+plus an element of $H_n$. Since $\vartheta_n>0$, its class modulo $H_n$ is
+positive exactly when $n\in S$, so $\Phi_\Ucal(g_\vartheta)=0$ exactly when
+$S\in\Ucal$. Apply \cref{ent:sm:thm:maximal-all}. A nonprincipal ultrafilter
+contains no finite set, and the ultrafilter lemma extends an infinite $S$ to
+a nonprincipal ultrafilter.
+\end{proof}
+
+In particular every maximal ideal that \cref{ent:cor:invisible-ideal}
+obtains from Zorn's lemma is one of the explicit ideals of
+\cref{ent:thm:maximal}, and \cref{ent:cor:residue-fields} lists all of them.
+The description still uses ultrafilters and choice; it computes no
+particular nonprincipal ultrafilter.
+
+\begin{corollary}[Algebraic type of the residue fields]
+\label{ent:sm:cor:boundary-fields}
+Every field $L_\Ucal$ is algebraically closed. Over the real Hahn field
+(\cref{ent:sm:rem:real}) the corresponding field
+$\bigl(\prod_n\R((t^{H_n}))\bigr)/\Ucal$ is real closed for its ultraproduct
+order.
+\end{corollary}
+\begin{proof}
+Each $H_n$ is divisible, so $\C((t^{H_n}))$ is algebraically closed by the
+Hahn-field theorem \cite[Corollary~4]{Poonen}; $\R((t^{H_n}))$ is ordered and
+its complexification is that field, so it is real closed. A monic polynomial
+of fixed degree over an ultraproduct has monic coordinates of that degree on
+a member of the ultrafilter, and roots can be chosen coordinatewise; the same
+argument with square roots of positive elements and roots of odd-degree
+polynomials gives real closedness.
+\end{proof}
+
+\begin{proposition}[A transcendental boundary coordinate]
+\label{ent:sm:prop:transcendental}
+Let $\Ucal$ be nonprincipal and let $\iota_\Ucal:\K\to L_\Ucal$ be the
+restriction of $\Phi_\Ucal$, injective by \cref{ent:rem:coeff-action}. Then
+$\Phi_\Ucal(Z)$ is transcendental over $\iota_\Ucal(\K)$. Over the real Hahn
+field with the monomial nodes $\rho_n=t^{-\gamma_n}$, $\Phi_\Ucal(Z)$ exceeds
+every element of $\iota_\Ucal\bigl(\R((t^\Gamma))\bigr)$ in the ultraproduct
+order.
+\end{proposition}
+\begin{proof}
+Let $h=\sum_{j\le e}c_jZ^j\in\K[Z]$ with $c_e\ne0$. Once $\gamma_n$ exceeds
+the finitely many differences $v(c_j)-v(c_e)$, the term $c_e\rho_n^e$ is the
+unique one of least valuation, so $v(h(\rho_n))=v(c_e)-e\gamma_n$, which lies
+in $H_n$ for large $n$. Its coarsened residue is then nonzero, so
+$\Phi_\Ucal(h)\ne0$. Since $\Phi_\Ucal$ restricted to $\K[Z]$ is the
+$\K$-algebra map sending $Z$ to $\Phi_\Ucal(Z)$, no nonzero polynomial over
+$\iota_\Ucal(\K)$ vanishes there. In the real monomial case, for fixed $c$
+and large $n$ the element $\rho_n-c$ has leading exponent $-\gamma_n\in H_n$
+with coefficient $1$, so its coarsened residue is positive, and the
+ultraproduct inequality gives $\Phi_\Ucal(Z)>\iota_\Ucal(c)$.
+\end{proof}
+
+The transcendence has a classical analogue in Henriksen's Theorem~5 for the
+ring of complex entire functions \cite{Henriksen}, and it is not claimed as a
+new phenomenon. What is specific here is that the coefficient embedding and
+the residue fields are computed through the varying coarsenings.
+
+\begin{remark}[Not an illicit infinite substitution]
+\label{ent:sm:rem:no-substitution}
+The equation $\Phi_\Ucal(P_D)=0$ is consistent with the transcendence of
+$\Phi_\Ucal(Z)$. The character is a ring homomorphism and respects finite
+algebra; it has not been shown to preserve strong Hahn sums, and
+$\Phi_\Ucal(P_D)$ must not be computed by substituting $\Phi_\Ucal(Z)$
+termwise into the infinite product or its power series. These maximal ideals
+form an algebraic spectrum. No additional zero reachable by strong
+evaluation in some field extension is claimed, and the characters are not
+asserted to be evaluation maps on any larger surreal domain.
+\end{remark}
+
+\paragraph{What this subsection does not do.}
+The classification is stated for one node per shell. With several nodes on a
+shell the finite residue algebra $\kappa_n[T]/(\overline{P_n})$ can have
+several maximal ideals, and a description of the spectrum must track that
+varying residue-direction structure together with the ultrafilter; this is
+not done. Prime ideals below these maximal ideals are not classified,
+especially for unbounded multiplicities. Maximal ideals of $\E$ that contain
+no product of this form are not described. The unit-ideal criteria of
+\cref{ent:subsec:no-bezout} are not a corona theorem: no bounded function
+algebra and no norm lower bound is involved. See \cref{ent:q:spectrum}.
 
 \subsection{Real Hahn coefficients}
 \begin{proposition}[Real form]\label{ent:prop:real-form}
@@ -2588,6 +3350,26 @@ makes the problem solvable. These remain statements about a fixed set-sized
 workspace embedded in $\No$ and $\No[i]$; nothing here asserts a nonpolynomial
 series summable at every point of the whole proper class, and the
 distinction is the one already drawn in \cref{ent:subsec:three-meanings}.
+
+\begin{remark}[The fourth source over the real field]\label{ent:sm:rem:real}
+The fourth source proved all of its results for the real and the complex
+Hahn field simultaneously. Accordingly the second route of
+\cref{ent:sm:subsec:cardinal}, \cref{ent:sm:cor:no-order-unit},
+\cref{ent:sm:thm:finite-generators,ent:sm:cor:membership,ent:sm:thm:paired},
+\cref{ent:thm:maximal} and all of \cref{ent:sm:subsec:all-maximal} hold over
+$\R((t^\Gamma))$, with nodes and data in that field and residue fields
+$\R((t^{H_n}))$ and their ultraproducts, which are real closed by
+\cref{ent:sm:cor:boundary-fields}. Their proofs use only the ingredients
+listed in the proof of \cref{ent:prop:real-form}, Gauss multiplicativity over
+$\R[X]$, and, for the type of the residue fields alone, algebraic closedness
+of the complexified Hahn fields $\C((t^{H_n}))$. The fourth source also
+proves, without root counts, that distinct strongly entire series define
+distinct functions, so this part of \cref{ent:cor:units} holds over
+$\R((t^\Gamma))$ as well: for $F\ne0$ and a scale $\gamma$, choose a real
+$c\ne0$ at which the initial polynomial $I_\gamma(F)$ of
+\eqref{ent:eq:initial} does not vanish; then $F(t^\gamma c)$ has valuation
+$m_\gamma(F)$ and is nonzero.
+\end{remark}
 
 
 \section{The positive case: an order unit restores interpolation}
@@ -3119,9 +3901,10 @@ not as an independent contribution. The same conclusion is already in this
 collection twice over: the \emph{Analysis} report proves all-scale polynomial
 rigidity directly, and the \emph{Foundations} report records the exact
 boundary of the phenomenon with a pair of series over $\C((t^\Q))$ differing
-only in the sign of an exponent. Both source manuscripts merged here credit
-the repository's pre-existing all-scale theme rather than claiming the
-corollary. The step that makes the reduction legitimate is the localization
+only in the sign of an exponent. The first two source manuscripts merged
+here credit the repository's pre-existing all-scale theme rather than
+claiming the corollary, and the fifth does the same for the whole-family half
+of its several-variable version, \cref{ent:mv:prop:allscale}. The step that makes the reduction legitimate is the localization
 principle recorded in the foundations report --- every \emph{set} of
 surcomplex numbers lies in one divisible set-sized workspace --- and the
 reduction consumes exactly that principle plus the cut $\delta$.
@@ -3131,6 +3914,898 @@ for a specified pair of set-sized workspaces
 the B\'ezout obstruction under every cofinal extension
 (\cref{ent:cor:no-repair}). See \cref{ent:sec:collection}.
 \end{remark}
+
+\section{Several ordinary variables: exact extension domains and
+exceptional directions}
+\label{ent:sec:multivariable}
+
+This section is the fifth source's contribution, together with the
+finite-variable criteria that earlier versions of this report kept in an
+appendix, now \cref{ent:app:multivariate}. It answers the scalar-extension
+clause of \cref{ent:q:several}, the clause beginning ``In particular'', and
+nothing else of that question: preparation, interpolation, divisor and ideal
+theory in several variables remain open (\cref{ent:mv:subsec:limits}).
+Three warnings govern the whole section.
+
+\begin{enumerate}[label=(\arabic*),leftmargin=2em]
+\item \emph{Weaker hypotheses.} The fifth source assumes neither
+divisibility of the value group nor anything about the coefficient field
+beyond its trivial valuation. Nothing in this section uses divisibility,
+algebraic closedness, preparation or root counts, except where a statement
+says otherwise. Conversely, nothing proved elsewhere in the report under its
+standing hypotheses is transferred here. In particular zero conservation
+(\cref{ent:thm:zero-conservation}), which needs preparation and algebraic
+closedness, and the inclusion $f(\Dom)\subseteq\Dom$ of
+\cref{ent:thm:extension} are not asserted in this setting.
+\item \emph{Two summation conventions.} ``Entire'' means summability of the
+\emph{whole} monomial family, as in \cref{ent:def:entire}.
+\Cref{ent:mv:subsec:blocks} studies a second, explicitly different
+convention, homogeneous-block evaluation. It is never called entire, and a
+statement about one convention is not a statement about the other.
+\item \emph{Notation.} The fifth source's letters are translated by the last
+table of \cref{ent:subsec:notation}. In particular its homogeneous block
+$H_n$ is written $F_{(n)}$ here, because $H_n$ is the convex subgroup of
+\cref{ent:def:coarse}.
+\end{enumerate}
+
+\subsection{Setting}
+\label{ent:mv:subsec:setting}
+In this section only, $\kk$ is an arbitrary field with the trivial valuation,
+$\Gamma$ is a nonzero set-sized ordered abelian group, not assumed divisible,
+of finite rank, or to have an order unit, and $\K=\kk((t^\Gamma))$; for
+$\kk=\C$ and divisible $\Gamma$ this is the field of the rest of the report.
+The number $d\ge1$ of ordinary variables is finite; for $\alpha\in\N^d$ write
+$|\alpha|=\alpha_1+\cdots+\alpha_d$ and $X^\alpha=\prod_jX_j^{\alpha_j}$. For
+$F=\sum_\alpha a_\alpha X^\alpha\in\K[[X_1,\ldots,X_d]]$ the \emph{ordinary
+monomial support} is $\Sigma(F)=\{\alpha:a_\alpha\ne0\}$; each nonzero
+$a_\alpha$ also has its own Hahn exponent support in $\Gamma$, and the two
+kinds of support play different roles.
+
+\begin{definition}[Whole-family entireness]\label{ent:mv:def:entire}
+$\mathcal E_{\Gamma,d}$ is the set of $F\in\K[[X_1,\ldots,X_d]]$ for which the
+\emph{whole} family $(a_\alpha x^\alpha)_{\alpha\in\N^d}$ is strongly
+summable for every $x\in\K^d$. Summing first along one coordinate and then
+another, or first within each total degree, is not the definition. For
+$x_j=0$ the convention $x_j^0=1$ applies, so only the face $\alpha_j=0$ of
+the support survives.
+\end{definition}
+
+Fix an ordered-group inclusion $\Gamma\subseteq\Delta$ and the canonical
+inclusion $\K\subseteq\KD=\kk((t^\Delta))$. The convex hull
+$H=\conv_\Delta(\Gamma)$ is defined by \eqref{ent:eq:convex-hull}; it is a
+convex subgroup, with no divisibility needed, and $\Gamma$ is cofinal in it.
+Write $\pi_H:\Delta\to\Delta/H$ for the quotient map of ordered groups and
+\[
+ \Dom=\{0\}\cup\{z\in\KD^\times:\pi_H(v(z))\ge0\},
+\]
+the coarsened valuation ring of \eqref{ent:eq:D}; it equals $\KD$ exactly
+when $\Gamma$ is cofinal in $\Delta$. No splitting of $H\subseteq\Delta$ is
+assumed. A convenient model of a new scale is $\Gamma=\Q$ and
+$\Delta=\R e_*\oplus\Q$, ordered lexicographically with the $e_*$ coordinate
+dominant: then $H=\Q$, $\Delta/H\cong\R$, and $t^{-e_*}$ is larger in
+magnitude than every old monomial $t^{-\gamma}$.
+
+The support calculus of \cref{ent:lem:neumann} is stated for arbitrary
+ordered abelian groups and is used unchanged. Two further elementary facts
+are used, for families indexed by arbitrary sets.
+
+\begin{lemma}[Tail certificate and regrouping]\label{ent:mv:lem:tails}
+Let $(f_i)_{i\in I}$ be a family of Hahn series over an ordered abelian
+group $G$.
+\begin{enumerate}[label=\textnormal{(\alph*)},leftmargin=2em]
+\item If for each $b\in G$ only finitely many nonzero $f_i$ satisfy
+$v(f_i)\le b$, the family is strongly summable.
+\item A strongly summable family may be partitioned into arbitrary
+subfamilies, summed within each part and then summed over the parts, with the
+original sum as result. The product of two strongly summable families is
+jointly strongly summable on the product index set, and its sum is the
+product of the two sums.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) Only the finitely many terms of valuation at most $b$ can contain the
+exponent $b$, which gives finite incidence. A descending sequence
+$b_1>b_2>\cdots$ in the support union would lie in the finitely many supports
+of terms of valuation at most $b_1$, and a finite union of well-ordered sets
+is well ordered by \cref{ent:lem:neumann}(a). (b) Regrouped supports lie in
+the original well-ordered union, and at each exponent only finitely many
+original indices, hence finitely many parts, contribute. Product supports lie
+in the sumset of the two support unions, which is well ordered with finitely
+many decompositions of each exponent by \cref{ent:lem:neumann}(a), and each
+decomposition has finitely many contributing indices.
+\end{proof}
+
+The converse of (b) is false, and \cref{ent:mv:ex:cancel} exhibits the
+failure that matters here.
+
+\subsection{Finite-variable coefficient and unit criteria}
+\label{ent:app:multivariate}
+The two numbered statements of this subsection were Appendix~B of earlier
+versions of this report, proved there under the report's standing
+hypotheses, with the coefficient criterion in ratio form; their labels are
+kept. The fifth source reproved the coefficient criterion in a
+division-free form under the weaker hypotheses of this section, and that
+form is printed here as the statement. The proof of the earlier appendix was
+the same descending-leading-exponent argument and is not printed twice.
+
+\begin{theorem}[Finite-variable coefficient criterion]
+\label{ent:thm:multi-criterion}
+For $F=\sum_\alpha a_\alpha X^\alpha\in\K[[X_1,\ldots,X_d]]$ the following are
+equivalent:
+\begin{enumerate}[label=\textnormal{(\roman*)},leftmargin=2em]
+\item $F\in\mathcal E_{\Gamma,d}$;
+\item the family is strongly summable at every diagonal monomial point
+$(t^\gamma,\ldots,t^\gamma)$, $\gamma\in\Gamma$;
+\item for all $\gamma,b\in\Gamma$ the set
+\begin{equation}\label{ent:mv:eq:growth}
+ \{\alpha\in\Sigma(F):v(a_\alpha)+|\alpha|\gamma\le b\}
+ \quad\text{is finite.}
+\end{equation}
+\end{enumerate}
+If $\Gamma$ is divisible, they are also equivalent to
+$v(a_\alpha)/|\alpha|\to+\infty$ cofinally as $|\alpha|\to\infty$ through
+nonzero coefficients of positive degree. Nonpolynomial members of
+$\mathcal E_{\Gamma,d}$ exist exactly when $\cf(\Gamma)=\aleph_0$.
+\end{theorem}
+\begin{proof}
+(i)$\Rightarrow$(ii) is immediate. Assume (ii), fix $\gamma$, and put
+$b_\alpha=v(a_\alpha)+|\alpha|\gamma$. Strong summability at the diagonal
+point gives a common lower bound $L\in\Gamma$ for these leading exponents.
+Suppose infinitely many $\alpha\in\Sigma(F)$ satisfy $b_\alpha\le b$. Only
+finitely many multi-indices have bounded total degree, so there are such
+$\alpha_1,\alpha_2,\ldots$ with strictly increasing degrees $n_r=|\alpha_r|$.
+Choose $\delta>0$ in $\Gamma$ with $\delta>b-L$. Then
+\[
+ (b_{\alpha_{r+1}}-n_{r+1}\delta)-(b_{\alpha_r}-n_r\delta)\ \le\ b-L-\delta<0,
+\]
+and these are actual leading exponents at the diagonal point of valuation
+$\gamma-\delta$. Their strict descent contradicts (ii); so (iii) holds.
+
+For (iii)$\Rightarrow$(i), take a point with nonzero coordinates and let
+$\gamma=\min_jv(x_j)$. Then $v(a_\alpha x^\alpha)\ge v(a_\alpha)+|\alpha|\gamma$,
+and \eqref{ent:mv:eq:growth} with \cref{ent:mv:lem:tails}(a) gives strong
+summability. Zero coordinates discard terms and cause no further difficulty.
+
+If $\Gamma$ is divisible, the ratio condition implies \eqref{ent:mv:eq:growth}
+by testing a ratio bound above $-\gamma$ and a positive element dominating
+$|b|$; conversely, for $c\in\Gamma$, \eqref{ent:mv:eq:growth} with
+$\gamma=-c$ and $b=0$ gives $v(a_\alpha)>|\alpha|c$ for all but finitely many
+$\alpha$. Finally, a nonpolynomial $F$ has infinitely many nonzero
+coefficients, and \eqref{ent:mv:eq:growth} at $\gamma=0$ makes their
+valuations a countable cofinal subset of $\Gamma$; a nonzero ordered group
+has no finite cofinal subset. The converse is
+\cref{ent:mv:prop:realize-support}.
+\end{proof}
+
+\begin{proposition}[Every ordinary support occurs]
+\label{ent:mv:prop:realize-support}
+Suppose $\cf(\Gamma)=\aleph_0$. There is a sequence $(\varphi_n)_{n\ge0}$ in
+$\Gamma$ such that for every $\Sigma\subseteq\N^d$ and every choice of
+$c_\alpha\in\kk^\times$, $\alpha\in\Sigma$, the series
+\[
+ F_\Sigma(X)=\sum_{\alpha\in\Sigma}c_\alpha t^{\varphi_{|\alpha|}}X^\alpha
+\]
+is entire and has ordinary support exactly $\Sigma$.
+\end{proposition}
+\begin{proof}
+Choose a nondecreasing positive cofinal sequence $u_n\in\Gamma$ and put
+$\varphi_0=0$, $\varphi_n=n^2u_n$ for $n\ge1$. For fixed $\gamma,b$ we
+eventually have $u_n>|\gamma|+|b|$, and then for $n\ge2$
+\[
+ \varphi_n+n\gamma\ \ge\ n^2u_n-n|\gamma|\ >\ n(n-1)u_n\ >\ b .
+\]
+Nonzero elements of $\kk$ have valuation zero, whatever their size in any
+other sense, so \eqref{ent:mv:eq:growth} holds.
+\end{proof}
+
+Over $\Q$ the choice $\varphi_n=n^2$ works. The arbitrary-rank construction
+matters because $n^2\eta$ need not be cofinal when $\eta$ is not an order
+unit. For $\Gamma=0$ strong summability at $(1,\ldots,1)$ already forces a
+finite ordinary support, and every extension question below is trivial.
+
+For the unit criterion put
+\[
+ \mathcal T_{\Gamma,d}
+ =\Bigl\{\sum_\alpha a_\alpha X^\alpha:
+              v(a_\alpha)\to+\infty\text{ as }|\alpha|\to\infty\Bigr\}.
+\]
+The following theorem is stated, as in the earlier appendix, under the
+report's standing hypotheses, $\Gamma$ divisible and $\kk=\C$; the fifth
+source does not treat it.
+
+\begin{theorem}\label{ent:thm:multi-unit}
+A nonconstant $F\in\mathcal T_{\Gamma,d}$ is a unit of that algebra if and
+only if $a_0\ne0$ and
+$\min_{\alpha\ne0,\ a_\alpha\ne0}v(a_\alpha/a_0)$ is a positive order unit of
+$\Gamma$.
+\end{theorem}
+\begin{proof}
+Regrouping into $\C[X_1,\ldots,X_d]((t^\Gamma))$ gives multiplicativity of
+the Gauss valuation. If $FG=1$, normalize both constant coefficients to $1$;
+their Gauss values are nonpositive and sum to zero, so their initial
+polynomials multiply to $1$ and are constant, and all nonconstant coefficient
+values are positive. If their minimum $\delta$ is not an order unit, coarsen
+by the proper convex subgroup \eqref{ent:eq:Hdelta} it generates:
+restrictedness reduces both series to finite polynomials over the coarsened
+residue field, and at least one nonconstant coefficient of $F$ survives,
+contradicting invertibility of its reduction. Conversely an order-unit gap
+makes the geometric inverse restricted, with precisely the tail estimates of
+\cref{ent:thm:units}; finite-variable convolution has finitely many terms at
+each multi-index, so those estimates are unchanged.
+\end{proof}
+
+Finite-dimensionality is used in the finiteness of bounded-degree index sets.
+These statements assert nothing for infinitely many variables, and they do
+not extend the one-variable divisor classification to higher-dimensional zero
+sets. The single-variable uniform extension domain of \cref{ent:thm:extension}
+is \emph{false} in several variables, since a series independent of one
+coordinate imposes no constraint in that coordinate; its exact replacement is
+\cref{ent:mv:thm:domain}.
+
+\subsection{The exact whole-family extension domain}
+\label{ent:mv:subsec:domain}
+
+\begin{lemma}[Uniform unit twisting]\label{ent:mv:lem:twist}
+Let $(b_i)_{i\in I}$ be a family in $\KD$, let $\alpha(i)\in\N^d$, and let
+$u_1,\ldots,u_d\in1+\mathfrak m_\Delta$, where
+$\mathfrak m_\Delta=\{x\in\KD:v(x)>0\}$. Then $(b_i)_i$ is strongly summable
+if and only if $\bigl(b_i\prod_ju_j^{\alpha(i)_j}\bigr)_i$ is. Multiplying
+each term by a nonzero element of $\kk$ also preserves and reflects strong
+summability.
+\end{lemma}
+\begin{proof}
+Let $B$ be the support union of the first family and put
+$S=\bigcup_j\supp(u_j-1)\subseteq\Delta_{>0}$, a finite union of
+well-ordered sets. Every finite product $\prod_ju_j^{\alpha(i)_j}$ has
+support in the one monoid $S^*$, regardless of $i$, so the twisted support
+union lies in the well-ordered set $B+S^*$ (\cref{ent:lem:neumann}). A fixed
+exponent has finitely many decompositions $b+s$ with $b\in B$, $s\in S^*$,
+and each $b$ lies in finitely many of the original supports; this gives
+finite incidence. For the converse apply the same argument with
+$u_j^{-1}\in1+\mathfrak m_\Delta$. Nonzero scalars from $\kk$ do not change
+supports.
+\end{proof}
+
+Every nonzero $z_j\in\KD$ has a unique leading-term decomposition
+$z_j=c_jt^{\delta_j}u_j$ with $c_j\in\kk^\times$, $\delta_j=v(z_j)$ and
+$u_j\in1+\mathfrak m_\Delta$. Consequently $(a_\alpha z^\alpha)_\alpha$ is
+strongly summable if and only if $(a_\alpha t^{\inner\alpha\delta})_\alpha$
+is, for arbitrary coefficient families. This removes the tails of the
+arguments, not those of the coefficients.
+
+\begin{lemma}[The finite lattice estimate]\label{ent:mv:lem:lattice}
+Let $\delta_1,\ldots,\delta_d\in\Delta$, put $\bar\delta_j=\pi_H(\delta_j)$,
+and let $\mathcal L=\{m\in\Z^d:\sum_jm_j\bar\delta_j=0\}$. There are a
+positive integer $c_{\mathcal L}$ and $\eta\in\Gamma_{>0}$ with
+\begin{equation}\label{ent:mv:eq:lattice}
+ \Bigl|\sum_jm_j\delta_j\Bigr|\ \le\ c_{\mathcal L}\,\|m\|_1\,\eta
+ \qquad(m\in\mathcal L),\qquad \|m\|_1=\sum_j|m_j|.
+\end{equation}
+\end{lemma}
+\begin{proof}
+A subgroup of $\Z^d$ is free of finite rank, by induction on $d$ through the
+projection to the last coordinate. Choose a basis $\ell_1,\ldots,\ell_r$ of
+$\mathcal L$. Each $h_s=\sum_j(\ell_s)_j\delta_j$ lies in $H$, so one
+$\eta\in\Gamma_{>0}$ bounds all $|h_s|$. The matrix with columns $\ell_s$ has
+a rational left inverse, and clearing its denominators shows that the
+integer coordinates of $m=\sum_sk_s\ell_s$ satisfy
+$\sum_s|k_s|\le c_{\mathcal L}\|m\|_1$ for a positive integer
+$c_{\mathcal L}$ independent of $m$. Only this numerical estimate uses
+rational linear algebra; no division in $\Gamma$ or $\Delta$ occurs. Hence
+$|\sum_jm_j\delta_j|=|\sum_sk_sh_s|\le c_{\mathcal L}\|m\|_1\eta$. If
+$\mathcal L=0$, take $c_{\mathcal L}=1$ and any $\eta$.
+\end{proof}
+
+\begin{theorem}[Exact multivariate extension domain]\label{ent:mv:thm:domain}
+Let $F=\sum_\alpha a_\alpha X^\alpha\in\mathcal E_{\Gamma,d}$ and
+$z\in(\KD^\times)^d$. Put $\bar\delta_j=\pi_H(v(z_j))$ and
+\[
+ \inner{\Sigma(F)}{\bar\delta}=\{\inner\alpha{\bar\delta}:\alpha\in\Sigma(F)\}
+ \subseteq\Delta/H .
+\]
+Then
+\begin{equation}\label{ent:mv:eq:main}
+ (a_\alpha z^\alpha)_\alpha\text{ is strongly summable}
+ \quad\Longleftrightarrow\quad
+ \inner{\Sigma(F)}{\bar\delta}\text{ is well ordered.}
+\end{equation}
+Here $\inner{\Sigma(F)}{\bar\delta}$ is a set of distinct weights, not an
+indexed family: infinitely many multi-indices may have the same weight. If
+some coordinates of $z$ vanish, restrict to the face of $\Sigma(F)$ on which
+those coordinates have exponent zero, delete them, and apply the same
+criterion; if no variable remains, evaluation is the constant coefficient.
+\end{theorem}
+\begin{proof}
+Write $\delta_j=v(z_j)$. By \cref{ent:mv:lem:twist} we may replace $z_j$ by
+$t^{\delta_j}$, so the $\alpha$th term becomes
+$b_\alpha=a_\alpha t^{\inner\alpha\delta}$, whose exponents all lie in
+$\inner\alpha\delta+\Gamma$ and map under $\pi_H$ to $\inner\alpha{\bar\delta}$.
+
+\emph{Necessity.} A strongly summable family has a well-ordered support
+union, and its image under the order-preserving map $\pi_H$ is well ordered,
+because a strictly descending sequence of images lifts to a strictly
+descending sequence of chosen preimages. That image is
+$\inner{\Sigma(F)}{\bar\delta}$, since every term with $\alpha\in\Sigma(F)$ is
+nonzero.
+
+\emph{Sufficiency within one fibre.} Assume the weight set is well ordered,
+fix a weight $w$ in it and some $\alpha^0\in\Sigma(F)$ of weight $w$. For every
+$\alpha$ of the same weight, $m=\alpha-\alpha^0$ lies in the lattice
+$\mathcal L$ of \cref{ent:mv:lem:lattice}. After multiplying the whole fibre
+by $t^{-\inner{\alpha^0}\delta}$, its terms have all their exponents in $H$
+and valuations at least
+\begin{equation}\label{ent:mv:eq:fiberbound}
+ v(a_\alpha)+\inner{\alpha-\alpha^0}\delta
+ \ \ge\ \bigl(v(a_\alpha)-c_{\mathcal L}|\alpha|\eta\bigr)
+        -c_{\mathcal L}|\alpha^0|\eta .
+\end{equation}
+Condition \eqref{ent:mv:eq:growth} with $\gamma=-c_{\mathcal L}\eta$ says
+that the bracket exceeds any given bound in $\Gamma$ except at finitely many
+indices, and since $\Gamma$ is cofinal in $H$ the same holds for bounds in
+$H$: for $b\in H$ choose $B\in\Gamma$ with $B\ge b+c_{\mathcal L}|\alpha^0|\eta$.
+\Cref{ent:mv:lem:tails}(a), applied in the ordered group $H$, makes the fibre
+strongly summable.
+
+\emph{Assembly of the fibres.} Different fibres lie in different cosets of
+$H$. A nonempty subset of the full support union has a least coset because
+the weight set is well ordered, and within that coset a least exponent by the
+fibre result; that exponent is least in the whole subset. Each exponent
+belongs to one fibre, where finite incidence is already known. Finally, a
+zero coordinate removes every term with a positive exponent in it, the
+surviving coefficients still satisfy \eqref{ent:mv:eq:growth}, and the same
+proof applies to the remaining variables.
+\end{proof}
+
+Finiteness of $d$ is used twice, for the finiteness of bounded-degree index
+sets and for the finite basis of $\mathcal L$. Entireness is used in
+\eqref{ent:mv:eq:fiberbound}, not merely to obtain a lower bound at one
+point. Full Hahn fields license the support-controlled unit inverses and
+sums, and convexity licenses the ordered quotient. No root extraction,
+algebraic closedness, spherical completeness, real-valued norm or
+divisibility enters.
+
+\begin{corollary}[Independence of tails within the entire category]
+\label{ent:mv:cor:tails}
+Two members of $\mathcal E_{\Gamma,d}$ with the same ordinary support have the
+same whole-family strong evaluation domain in every $\KD^d$, and for either
+of them the domain depends only on the coarsened coordinate valuations, with
+zero coordinates treated by faces as above.
+\end{corollary}
+\begin{proof}
+The right side of \eqref{ent:mv:eq:main} and its face variants contain no
+other data.
+\end{proof}
+
+This corrects the guess recorded in \cref{ent:q:several}. Within the entire
+category, higher Hahn tails do \emph{not} create an additional boundary
+obstruction; without entireness they can, by \cref{ent:mv:ex:hidden} below,
+which is a rank-one analogue of the pair of \cref{ent:subsec:hidden-tails}.
+
+\subsection{Consequences: one variable, cones and semilinear supports}
+\label{ent:mv:subsec:cones}
+
+\begin{corollary}[The one-variable domain, recovered]\label{ent:mv:cor:onevar}
+For a nonpolynomial $f\in\mathcal E_{\Gamma,1}$ the strong evaluation domain in
+$\KD$ is exactly $\Dom$; a polynomial is strongly evaluable everywhere. Hence
+a cofinal enlargement preserves every entire series in any finite number of
+variables.
+\end{corollary}
+\begin{proof}
+For an infinite $\Sigma\subseteq\N$ the set $\{n\bar\delta:n\in\Sigma\}$ is a
+singleton for $\bar\delta=0$, lies in a well-ordered positive cyclic monoid
+for $\bar\delta>0$, and has a strictly descending sequence for $\bar\delta<0$.
+Apply \cref{ent:mv:thm:domain}. A cofinal enlargement has $H=\Delta$, so every
+weight set is empty or a singleton.
+\end{proof}
+
+This is the domain half of \cref{ent:thm:extension}, now without
+divisibility and over any trivially valued coefficient field. The value
+inclusion of \cref{ent:thm:extension}, zero conservation and the continuation
+theorems of \cref{ent:sec:extension} are not part of it.
+
+\begin{definition}[Admissible weights]\label{ent:mv:def:adm}
+For $\Sigma\subseteq\N^d$ and an ordered abelian group $G$ put
+$\Adm_\Sigma(G)=\{\bar\delta\in G^d:\inner\Sigma{\bar\delta}\text{ is well
+ordered}\}$. It depends on the whole support, not on an enumeration.
+\end{definition}
+
+\begin{proposition}[Cone and monotonicity properties]\label{ent:mv:prop:cone}
+$\Adm_\Sigma(G)$ contains $G_{\ge0}^d$, is closed under addition and under
+multiplication by nonnegative integers, and is upward closed in the
+coordinatewise order. If $G$ is divisible it is closed under nonnegative
+rational scaling, and for $G=\R$ it is a convex cone, not necessarily closed.
+If $\Sigma_1\subseteq\Sigma_2$ then $\Adm_{\Sigma_2}(G)\subseteq
+\Adm_{\Sigma_1}(G)$, and a finite change of $\Sigma$ does not change
+$\Adm_\Sigma(G)$.
+\end{proposition}
+\begin{proof}
+For nonnegative weights every element of $\inner\Sigma{\bar\delta}$ lies in the
+monoid generated by the positive $\bar\delta_j$, which is well ordered by
+\cref{ent:lem:neumann}(b). Addition uses
+$\inner\Sigma{\bar\delta+\bar\epsilon}\subseteq\inner\Sigma{\bar\delta}+
+\inner\Sigma{\bar\epsilon}$ and \cref{ent:lem:neumann}(a). Positive integer,
+rational or real scaling is an order isomorphism of the weight set where it
+is defined, and zero scaling gives at most a singleton. Upward closure is
+addition of a nonnegative vector. The remaining assertions are immediate,
+since adding finitely many weights preserves well-ordering.
+\end{proof}
+
+On the torus $(\KD^\times)^d$ the strong domain of a fixed entire series is
+therefore a multiplicative monoid, stable under coordinatewise
+multiplication by nonzero elements of $\Dom$. Its values need not lie in
+$\Dom$: a finite monomial prefactor can have negative quotient weight.
+
+\begin{proposition}[Evaluation algebras at a fixed point]
+\label{ent:mv:prop:algebra}
+Fix $z\in\KD^d$. The $F\in\mathcal E_{\Gamma,d}$ whose whole-family evaluation
+at $z$ exists form a $\K$-subalgebra, and evaluation is a $\K$-algebra
+homomorphism from it to $\KD$.
+\end{proposition}
+\begin{proof}
+By \cref{ent:mv:lem:tails}(b), the sum and the double product of two
+evaluation families at $z$ are strongly summable. Regroup the product by the
+multi-index sum; each formal coefficient has finitely many decompositions in
+$\N^d$.
+\end{proof}
+
+\begin{definition}[Semilinear support]\label{ent:mv:def:semilinear}
+$\Sigma\subseteq\N^d$ is semilinear if
+$\Sigma=\bigcup_{\ell=1}^s\bigl(b_\ell+\N p_{\ell1}+\cdots+\N p_{\ell
+r_\ell}\bigr)$ with $b_\ell,p_{\ell j}\in\N^d$; empty unions and components
+without periods are allowed.
+\end{definition}
+
+\begin{theorem}[The period-inequality criterion]\label{ent:mv:thm:semilinear}
+For a support presented as in \cref{ent:mv:def:semilinear},
+$\bar\delta\in\Adm_\Sigma(G)$ if and only if $\inner{p_{\ell j}}{\bar\delta}
+\ge0$ for every period vector. The offsets impose no inequalities, so the
+extension domain of an entire series with semilinear support is decided by
+finitely many ordered-group inequalities.
+\end{theorem}
+\begin{proof}
+A period of negative weight gives the strictly descending weights of
+$b_\ell+np_{\ell j}$. If every period weight is nonnegative, each component
+has as its weight set a translate of a monoid generated by finitely many
+nonnegative elements, well ordered by \cref{ent:lem:neumann}(b), and a finite
+union of translates is well ordered.
+\end{proof}
+
+The inequalities are weak. An infinite support ray of quotient weight zero is
+not an obstruction, because old coefficient growth controls the whole
+collapsed fibre; replacing $\ge0$ by $>0$ would give a false boundary.
+
+\begin{example}[A coupled domain]\label{ent:mv:ex:product}
+Over $\C((t^\Q))$ the series $F_\times(X,Y)=\sum_{n\ge0}t^{n^2}(XY)^n$ is
+entire, has the single period $(1,1)$, and at a point with nonzero
+coordinates in any extension is strongly evaluable exactly when
+$\bar\delta_X+\bar\delta_Y\ge0$. In particular $X=t^{-e_*}$, $Y=t^{e_*}$ is
+admissible although $X\notin\Dom$: every quotient weight is zero and the
+family is $(t^{n^2})_n$. The domain is not a coordinatewise copy of the
+one-variable ring. By contrast
+$G_+(X,Y)=1+\sum_{n\ge1}t^{n^2}X^n+\sum_{n\ge1}t^{n^2}Y^n$ has torus domain
+$\bar\delta_X\ge0$, $\bar\delta_Y\ge0$, so two nonpolynomial series involving
+both coordinates can have different domain geometries.
+\end{example}
+
+\begin{theorem}[A nonclosed domain in two variables]\label{ent:mv:thm:nonclosed}
+Let $\Gamma=\Q$, $\Delta=\R e_*\oplus\Q$ as above, and
+$F_{\mathrm{par}}(X,Y)=\sum_{n\ge1}t^{n^4}X^nY^{n^2}$. This series is entire
+over $\C((t^\Q))$, and with $\Delta/H$ identified with $\R$,
+\[
+ \Adm_{\Sigma(F_{\mathrm{par}})}(\R)=\{(u,w):w>0\}\cup\{(u,0):u\ge0\}.
+\]
+This set is convex but not closed, and it is not a finite intersection of
+weak linear half-spaces.
+\end{theorem}
+\begin{proof}
+The total degree is $n+n^2$, and $n^4+(n+n^2)\gamma\to+\infty$ for every
+rational $\gamma$. The weight set is $\{nu+n^2w:n\ge1\}$. For $w>0$ the
+successive differences $u+(2n+1)w$ are eventually positive, so the set is
+well ordered; for $w<0$ they are eventually negative; for $w=0$ the set is
+well ordered exactly when $u\ge0$. Apply \cref{ent:mv:thm:domain}. The
+admissible points $(-1,1/m)$ tend in the real plane to $(-1,0)$, which is not
+admissible, and a finite intersection of weak half-spaces is closed.
+\end{proof}
+
+This concerns the Euclidean topology of the real weight parameter, not any
+surreal fine topology.
+
+\begin{example}[Bounded positive weights are not enough]\label{ent:mv:ex:dense}
+Fix an irrational real $\theta>0$, put $\ell_n=\lceil n\theta\rceil$, and let
+$F_\theta(X,Y)=\sum_{n\ge1}t^{(n+\ell_n)^2}X^nY^{\ell_n}$ over $\C((t^\Q))$,
+entire by the degree-squared damping. At the quotient weights $(-\theta,1)$
+its weights are $\ell_n-n\theta\in(0,1)$, never $0$, with infimum $0$: for any
+$N$, two of the fractional parts of $0,\theta,\ldots,N\theta$ lie within
+$1/N$, so some positive integer $q$ has $q\theta$ within $1/N$ of an integer;
+if its fractional part exceeds $1-1/N$ this is a small positive gap, and if
+it is $\epsilon\in(0,1/N)$ then, with $k=\lfloor1/\epsilon\rfloor$,
+irrationality gives $0<1-k\epsilon<\epsilon$ and $kq$ has a gap below $1/N$.
+So the weights have no least element and the point is not in the strong
+domain, although every weight is positive. Well-ordering, not positivity or
+boundedness, is the criterion.
+\end{example}
+
+\begin{example}[What fails without entireness]\label{ent:mv:ex:hidden}
+In $\C((t^\Q))[[X]]$ let $\tilde a_n=t^{1-1/(n+1)}$ and
+$\tilde b_n=t^{1-1/(n+1)}+t^{2+1/(n+1)}$. The series $A_\flat=\sum\tilde
+a_nX^n$ and $B_\flat=\sum\tilde b_nX^n$ have the same ordinary support and the
+same coefficient valuations. At $X=1$ the family of $A_\flat$ is strongly
+summable, its exponents strictly increasing and each occurring once, while
+that of $B_\flat$ is not, its second exponents strictly decreasing. Neither
+series is entire: at $X=t^{-1}$ even the leading exponents strictly
+decrease. So \cref{ent:mv:cor:tails} is not a general principle that leading
+data decide Hahn summability; entireness is doing real work.
+\end{example}
+
+\subsection{Homogeneous blocks: a second, explicitly different convention}
+\label{ent:mv:subsec:blocks}
+For a formal series $F$ write $F_{(n)}(X)=\sum_{|\alpha|=n}a_\alpha X^\alpha$,
+a finite homogeneous polynomial over $\K$, so that $F=\sum_nF_{(n)}$.
+
+\begin{definition}[Homogeneous-block evaluation]\label{ent:mv:def:block}
+At $z\in\KD^d$ the homogeneous-block evaluation of $F$ exists if
+$(F_{(n)}(z))_{n\ge0}$ is strongly summable; its value is written
+$F^{\mathrm{hom}}(z)$ and its domain $\mathcal D^{\mathrm{hom}}(F)$.
+\end{definition}
+
+Whole-family evaluation implies homogeneous-block evaluation with the same
+value, by \cref{ent:mv:lem:tails}(b). The reverse implication is not part of
+the definition and is false. Block evaluation is never called entire in this
+report.
+
+\begin{proposition}[Linear covariance]\label{ent:mv:prop:linear}
+For a matrix $M$ over $\K$ defining the substitution $X=MY$, an entire $F$
+gives an entire formal series $F\circ M$ whose degree-$n$ block is
+$F_{(n)}\circ M$. Consequently $y\in\mathcal D^{\mathrm{hom}}(F\circ M)$ if and
+only if $My\in\mathcal D^{\mathrm{hom}}(F)$, with equal values; this is a
+covariance law under $\mathrm{GL}_d(\K)$, and the same argument applies to
+non-square $M$, in particular to line restrictions.
+\end{proposition}
+\begin{proof}
+For $M\ne0$ choose $\mu\in\Gamma$ not exceeding $0$ or the valuation of any
+nonzero entry. Every new degree-$n$ coefficient is a finite sum of old
+degree-$n$ coefficients times products of $n$ entries and integers, so its
+valuation is at least $b_n+n\mu$, where $b_n$ is the least valuation of the
+nonzero coefficients of $F_{(n)}$; cancellation only raises it. Condition
+\eqref{ent:mv:eq:growth} at $\gamma+\mu$ gives the same condition for the new
+coefficients at $\gamma$. By homogeneity the degree-$n$ block of $F\circ M$
+at $y$ is exactly $F_{(n)}(My)$, so the two block families coincide.
+\end{proof}
+
+\begin{example}[Cancellation changes the domain]\label{ent:mv:ex:cancel}
+Over $\C((t^\Q))$ let $F_{\mathrm{can}}(X,Y)=\sum_{n\ge0}t^{n^2}(X-Y)^n$. At
+$(t^{-e_*},t^{-e_*})$, with $e_*$ above all old scales, every block of
+positive degree is zero, so the block evaluation exists and equals $1$. The
+whole monomial family is not strongly summable: for every $n$ it contains the
+term $t^{n^2}X^n$ of quotient weight $-n\pi_H(e_*)$, and these weights
+strictly decrease. In the coordinates $U=X-Y$, $V=Y$ the same series is
+$\sum t^{n^2}U^n$, whose whole family is summable at $(0,t^{-e_*})$. So
+whole-family domains depend on the chosen coordinate expansion, while block
+domains obey \cref{ent:mv:prop:linear}; the value $1$ is a value of the block
+convention, not a sum assigned to the nonsummable expanded family.
+\end{example}
+
+\begin{theorem}[Polynomial rays and new scales]\label{ent:mv:thm:rays}
+Let $F\in\mathcal E_{\Gamma,d}$ and $c\in\K^d$, and let
+$F_c(T)=F(Tc)=\sum_nF_{(n)}(c)T^n$, an entire one-variable series over $\K$.
+For every ordered-group enlargement,
+\[
+ \{\lambda\in\KD:\lambda c\in\mathcal D^{\mathrm{hom}}(F)\}
+ =\begin{cases}\KD,&F_c\text{ is a polynomial},\\
+               \Dom,&F_c\text{ is not a polynomial}.\end{cases}
+\]
+In particular, if $e_*>H$ then $t^{-e_*}c\in\mathcal D^{\mathrm{hom}}(F)$ if
+and only if $F_{(n)}(c)=0$ for all sufficiently large $n$.
+\end{theorem}
+\begin{proof}
+\Cref{ent:mv:prop:linear} gives entireness of $F_c$. The block family at
+$\lambda c$ is exactly $(F_{(n)}(c)\lambda^n)_n$; apply
+\cref{ent:mv:cor:onevar}. Directly: if infinitely many $F_{(n)}(c)$ are
+nonzero, the corresponding terms at $t^{-e_*}c$ have quotient valuations
+$-n\pi_H(e_*)$, strictly descending, and otherwise the evaluation is a finite
+sum; this needs no factorization or zero theorem.
+\end{proof}
+
+The one-variable theorem is an input here, not a new priority claim. Directions
+not defined over $\K$ need a different analysis, and
+\cref{ent:mv:thm:rays} does not classify block values at all points of
+$\KD^d$.
+
+For nonempty $J\subseteq\{1,\ldots,d\}$ put
+$\Sigma_J=\{\alpha\in\Sigma(F):\alpha_j=0\text{ for }j\notin J\}$ and
+$\PP_J=\{[c]\in\PP^{d-1}(\C):c_j=0\text{ for }j\notin J\}$.
+
+\begin{proposition}[Directions for the whole family]\label{ent:mv:prop:coordinate}
+Let $\kk=\C$, $F\in\mathcal E_{\Gamma,d}$ and $e_*>H$. The ordinary complex
+directions $[c]$ at which the whole monomial family is strongly summable at
+$t^{-e_*}c$ are exactly $\bigcup\{\PP_J:J\ne\varnothing,\ \Sigma_J\text{
+finite}\}$, a finite union of coordinate projective subspaces. For
+nonpolynomial $F$ it is a proper algebraic subset, and it is contained in the
+block-exceptional locus $\Pdir(F)$ of \cref{ent:mv:subsec:exceptional}.
+\end{proposition}
+\begin{proof}
+Let $J$ be the set of nonzero coordinates of $c$. Every surviving term has
+quotient weight $-|\alpha|\pi_H(e_*)$, and these are well ordered exactly
+when the degrees in $\Sigma_J$ are bounded, that is, when $\Sigma_J$ is finite.
+The family of such $J$ is downward closed, so the admissible directions are
+the union of the $\PP_J$. For nonpolynomial $F$ the full coordinate set is not
+admissible, so a direction with all coordinates nonzero lies outside.
+Inclusion in the block locus is regrouping.
+\end{proof}
+
+\begin{proposition}[Realizing the coordinate pattern]
+\label{ent:mv:prop:coordinate-realize}
+Suppose $\cf(\Gamma)=\aleph_0$. Every downward-closed family $\mathcal J$ of
+subsets of $\{1,\ldots,d\}$ containing $\varnothing$ is the family of $J$
+with $\Sigma_J$ finite, for some entire series; if the full set is not in
+$\mathcal J$, the series may be chosen nonpolynomial.
+\end{proposition}
+\begin{proof}
+If every subset lies in $\mathcal J$, take a polynomial. Otherwise let $p_B$
+be the indicator vector of each inclusion-minimal $B\notin\mathcal J$, and put
+$\Sigma=\bigcup_B\{np_B:n\ge1\}$. Its face $\Sigma_J$ is infinite exactly when
+some such $B$ is contained in $J$, that is, exactly when $J\notin\mathcal J$,
+and otherwise it is empty. \Cref{ent:mv:prop:realize-support} realizes
+$\Sigma$.
+\end{proof}
+
+This finite coordinate classification contrasts with the much larger family
+of block-exceptional loci below, and it detects when a claimed multivariate
+extension theorem has silently changed its summation convention.
+
+\subsection{Exceptional projective directions}
+\label{ent:mv:subsec:exceptional}
+In this subsection $\kk=\C$, and projective space means the ordinary set
+$\PP^{d-1}(\C)$.
+
+\begin{definition}[Polynomial-direction locus]\label{ent:mv:def:pdir}
+For $F=\sum_nF_{(n)}$ over $\K$ put
+$\Pdir(F)=\{[c]\in\PP^{d-1}(\C):F(Tc)\in\K[T]\}$, which does not depend on
+the representative of $[c]$. For entire $F$, \cref{ent:mv:thm:rays}
+identifies it with the ordinary directions admitting homogeneous-block
+evaluation at a new dominating scale.
+\end{definition}
+
+The algebraic statements below hold for arbitrary formal $F$ over $\K$;
+entireness is needed only for the radial domain formula and the analytic
+interpretation.
+
+\begin{theorem}[Necessary form and generic obstruction]
+\label{ent:mv:thm:exceptional}
+For every $F\in\K[[X_1,\ldots,X_d]]$ there are ascending projective algebraic
+sets $\mathcal Z_N\subseteq\PP^{d-1}(\C)$ with
+\[
+ \Pdir(F)=\bigcup_{N\ge0}\mathcal Z_N,\qquad
+ \mathcal Z_N=\{[c]:F_{(n)}(c)=0\text{ for all }n>N\}.
+\]
+If $F$ is not a polynomial, every $\mathcal Z_N$ is proper, $\Pdir(F)$ is not
+all of projective space, and its complement is dense in the ordinary complex
+topology. For $d=2$ the set $\Pdir(F)$ is at most countable.
+\end{theorem}
+\begin{proof}
+Coefficientwise, $F_{(n)}(X)=\sum_{\eta\in S_n}t^\eta P_{n,\eta}(X)$ with
+ordinary complex homogeneous polynomials $P_{n,\eta}$ of degree $n$, $S_n$
+being the finite union of the Hahn supports of the finitely many coefficients
+of $F_{(n)}$. For a complex vector $c$, $F_{(n)}(c)=0$ exactly when every
+$P_{n,\eta}(c)=0$. So $\mathcal Z_N$ is the common zero set of a family of
+homogeneous complex polynomials; the ideal they generate is finitely
+generated by the Hilbert basis theorem \cite{Stacks}, so $\mathcal Z_N$ is
+projective algebraic. The sets ascend, and their union is eventual vanishing.
+
+If $F$ is nonpolynomial, each $N$ is followed by a nonzero block containing
+some nonzero $P_{n,\eta}$, which vanishes on $\mathcal Z_N$ and not
+identically; so $\mathcal Z_N$ is proper. Choose one nonzero homogeneous
+$p_N$ vanishing on each $\mathcal Z_N$. Their coefficients generate a
+countable subfield $L\subseteq\C$. In the chart $c_1=1$ the polynomials
+$p_N(1,Y_2,\ldots,Y_d)$ are nonzero; choosing $d-1$ complex numbers
+algebraically independent over $L$, successively outside the algebraic
+closure of a countable field, gives a point outside every $\mathcal Z_N$. The
+same choices can be made inside any product of nonempty open disks, since only
+countably many values are forbidden at each step, which gives density. For
+$d=1$ the locus of a nonpolynomial series is empty. Finally, in $\PP^1(\C)$ a
+proper algebraic set is finite, and a countable union of finite sets is at
+most countable.
+\end{proof}
+
+The covering argument is the countable-field device of Lemma
+\texttt{hol:lem:generic} in the report
+\texttt{docs/surcomplex/holonomic-rigidity-for-entire-hahn-functions}
+\cite{RepoHolonomic}, which chooses $c\in\C^d$ avoiding countably many
+nonzero polynomials over $\K$; here it is applied to complex polynomials and
+refined to disks for density. The device is elementary, and neither report
+claims it as new. No countability of Hahn supports is hidden: an individual
+coefficient may have uncountable support, the proof never enumerates
+exponents, and Noetherianity reduces each $\mathcal Z_N$ to finitely many
+equations while there are only countably many $N$.
+
+\begin{theorem}[Exact realization of the exceptional locus]
+\label{ent:mv:thm:realization}
+Suppose $\cf(\Gamma)=\aleph_0$. For every countable union
+$A=\bigcup_{m\ge1}Y_m\subseteq\PP^{d-1}(\C)$ of projective algebraic sets
+there is $F\in\mathcal E_{\Gamma,d}$ with $\Pdir(F)=A$. If $A$ is proper, $F$
+can be chosen nonpolynomial; if $A$ is all of projective space, no
+nonpolynomial formal series has that locus, and a polynomial realizes it.
+\end{theorem}
+\begin{proof}
+The last case is $F=0$ together with \cref{ent:mv:thm:exceptional}. Let $A$ be
+proper and replace $Y_m$ by $Y_1\cup\cdots\cup Y_m$, so that the sets ascend
+and are proper. For each $m$ choose nonzero homogeneous polynomials
+$p_{m,1},\ldots,p_{m,r_m}$ with common projective zero set $Y_m$ (the single
+polynomial $1$ if $Y_m$ is empty). To each triple $(m,k,j)$, $1\le k\le r_m$,
+$1\le j\le d$, assign a distinct integer $D_{m,k,j}>\deg p_{m,k}$, in
+increasing order block by block in $m$, and put
+$Q_{D_{m,k,j}}=X_j^{D_{m,k,j}-\deg p_{m,k}}p_{m,k}$, with $Q_n=0$ at unassigned
+degrees. The block of index $m$ has common projective zero set exactly $Y_m$:
+off $Y_m$ some $p_{m,k}$ and some coordinate $c_j$ are nonzero, and using every
+coordinate prevents a spurious exceptional hyperplane. Set
+$F=\sum_nt^{\varphi_n}Q_n$ with the damping of
+\cref{ent:mv:prop:realize-support}; each nonzero monomial coefficient of
+degree $n$ has valuation $\varphi_n$, so $F$ is entire, and it is
+nonpolynomial. If $[c]\in A$ it lies in some $Y_M$ and all later blocks, so
+$F(Tc)$ is a polynomial. If $[c]\notin A$, every block has a polynomial not
+vanishing at $c$, and the assigned degrees are unbounded.
+\end{proof}
+
+\begin{corollary}[Sharp two-variable classification]\label{ent:mv:cor:countable}
+If $\cf(\Gamma)=\aleph_0$, the ordinary projective directions admitting
+new-scale homogeneous-block evaluation of a nonpolynomial entire series in two
+variables are exactly the at most countable subsets of $\PP^1(\C)$.
+\end{corollary}
+\begin{proof}
+Necessity is \cref{ent:mv:thm:exceptional}; a countable set is a countable
+union of points, so \cref{ent:mv:thm:realization} gives sufficiency; the
+identification with new-scale evaluation is \cref{ent:mv:thm:rays}.
+\end{proof}
+
+For pairwise distinct $c_1,c_2,\ldots\in\C$ the series
+\[
+ F_{\mathrm{dir}}(X,Y)=1+\sum_{n\ge1}t^{n^2}\prod_{j=1}^n(Y-c_jX)
+\]
+over $\C((t^\Q))$ is entire, and its restriction to $[1:c_m]$ is the
+polynomial $1+\sum_{n<m}t^{n^2}\prod_{j\le n}(c_m-c_j)T^n$ of degree $m-1$,
+while every other slope and the direction $[0:1]$ give nonpolynomial
+restrictions. So $\Pdir(F_{\mathrm{dir}})=\{[1:c_m]:m\ge1\}$; a projective
+linear change and \cref{ent:mv:prop:linear} place a prescribed point at
+infinity. Enumerating $\Q+i\Q$ gives a countable dense exceptional locus:
+polynomial behaviour on a dense set of complex lines does not force a Hahn
+series to be polynomial, while polynomial behaviour on \emph{every} complex
+line does, by \cref{ent:mv:thm:exceptional}.
+
+The exceptional set is neither an ordinary convergence set nor a zero set of
+$F$: it asks for eventually vanishing coefficients on a line, which the
+enlargement turns into a summability condition because a negative new
+quotient valuation overwhelms every old coefficient. Ma and Neelon already
+realize countable unions of projective algebraic sets as convergence sets of
+divergent complex power series \cite[Corollary~4.19]{MaNeelon}. That
+realization idea is not claimed as new, their stronger analytic theorems are
+not reproved here, and convergence sets must not be conflated with
+polynomial-direction loci. What is proposed is the exact Hahn extension
+interpretation with the complete classification and an entire realization
+over every countably cofinal value group.
+
+\subsection{Transfer to surreal and surcomplex numbers}
+\label{ent:mv:subsec:surreal}
+Conway's omega-map $x\mapsto\omega^x$ and his normal-form theorem identify
+surreal numbers with real generalized series with set-sized reverse
+well-ordered supports \cite[Theorem~10.2]{Berarducci}; this is the map
+\eqref{ent:eq:embedding}, $t^\gamma\mapsto\omega^{-\gamma}$, and it must not
+be confused with an exponential defined from Gonshor's $\exp$. For a
+set-sized ordered subgroup $\Gamma\subseteq\No$ it embeds $\R((t^\Gamma))$ in
+$\No$ and $\C((t^\Gamma))$ in $\No[i]$, preserving and reflecting the support
+conditions that define strong sums.
+
+\begin{lemma}[Localization of the data]\label{ent:mv:lem:localize}
+Every set of surreal or surcomplex numbers lies in such an embedded workspace
+for a nonzero divisible set-sized ordered subgroup $\Gamma\subseteq\No$, and
+adjoining a finite tuple of arguments needs at most a set-sized enlargement
+$\Gamma\subseteq\Delta$.
+\end{lemma}
+\begin{proof}
+Take the union of the exponent supports of the real and imaginary parts of
+all given numbers, adjoin $1$, and take the rational linear span in $\No$;
+this is a divisible set, unchanged by negating exponents. Repeat after
+adjoining the arguments.
+\end{proof}
+
+This is the localization principle of the foundations report \cite{RepoFoundations},
+already consumed by \cref{ent:cor:all-no}; the fifth source gives the short
+proof above. Localization says nothing about entireness, which remains a
+hypothesis on a specified old workspace.
+
+\begin{corollary}[Surcomplex support-domain theorem]\label{ent:mv:cor:surcomplex}
+Let $\Gamma\subseteq\No$ be a set-sized ordered subgroup and $F$ whole-family
+entire over the embedded field $\C((t^\Gamma))$. For $z\in\No[i]^d$ choose a
+set-sized $\Delta$ containing $\Gamma$ and the exponent supports of $z$, and
+put $H=\conv_\Delta\Gamma$. After discarding the terms killed by zero
+coordinates, the family defining $F(z)$ is strongly summable exactly when
+$\{\sum_j\alpha_j(v(z_j)+H):a_\alpha\ne0\}$ is well ordered in $\Delta/H$.
+The answer does not depend on the choice of $\Delta$.
+\end{corollary}
+\begin{proof}
+Transport \cref{ent:mv:thm:domain}. For $\Delta\subseteq\Delta'$ the hull
+$H'$ satisfies $H'\cap\Delta=H$, so $\Delta/H$ order-embeds in $\Delta'/H'$
+and well-ordering of the same weight set is unchanged.
+\end{proof}
+
+The real version follows with $\R$ in place of $\C$. Neither needs algebraic
+closedness of $\No[i]$, a derivation or a square root. The classification
+of \cref{ent:mv:subsec:exceptional} uses ordinary complex directions and is
+not asserted over an arbitrary residue field.
+
+Two phenomena are explicit. With $\Gamma=\Q$ and $t=\omega^{-1}$, the series
+$\sum_{n\ge0}\omega^{-n^2}(XY)^n$ is entire in that workspace; after
+enlarging by the dominant exponent $e_*=\omega$ it is strongly evaluable at
+$X=\omega^{\omega}$, $Y=\omega^{-\omega}$, both outside the old field and the
+first outside its one-variable extension domain, because the family is
+exactly $(\omega^{-n^2})_n$ and every weight is zero. Infinite fibres are
+therefore necessary in \cref{ent:mv:thm:domain}. And with pairwise distinct
+$c_j\in\C$, the series
+$1+\sum_{n\ge1}\omega^{-n^2}\prod_{j\le n}(Y-c_jX)$ admits block evaluation
+at $\omega^{\omega}(1,c_m)$, where it is the finite polynomial above at
+$T=\omega^\omega$, while at every other ordinary slope and at the direction
+at infinity its nonzero blocks have strictly descending leading exponents: a
+prescribed countable set of directions crosses a genuinely surreal scale and
+every other direction fails.
+
+\begin{proposition}[Whole-class rigidity in both conventions]
+\label{ent:mv:prop:allscale}
+Let $F\in\No[i][[X_1,\ldots,X_d]]$ be one formal series in finitely many
+variables. If its whole monomial family is strongly summable at every
+surcomplex tuple, $F$ is a polynomial. The same holds if instead its
+sequence of homogeneous blocks is strongly summable at every surcomplex
+tuple.
+\end{proposition}
+\begin{proof}
+Localize the coefficients in some $\K$ (\cref{ent:mv:lem:localize}) and choose
+a positive surreal $e_*$ above the set $\Gamma$. For a nonpolynomial whole
+family at the diagonal point $(\omega^{e_*},\ldots,\omega^{e_*})$, the leading
+exponents $v(a_\alpha)-|\alpha|e_*$ along strictly increasing degrees
+strictly decrease. For blocks, \cref{ent:mv:thm:exceptional}, which does not
+need entireness, gives a complex direction $c$ with nonpolynomial restriction,
+and evaluating that restriction at $\omega^{e_*}$ again gives strictly
+descending leading exponents.
+\end{proof}
+
+The whole-family half is already in this collection, in \cref{ent:cor:all-no}
+for one variable and in the analysis report, and is not reclaimed; the block
+half shows that cancellation on exceptional lines does not evade global
+rigidity. Neither forbids a different analytic category of local germs,
+non-power-series functions or another specified summation, and no strong sum
+is identified with a limit in the fine surreal topology.
+
+\subsection{What this section does not settle}
+\label{ent:mv:subsec:limits}
+The following limitations are the fifth source's and are retained without
+weakening.
+\begin{itemize}[leftmargin=1.4em]
+\item Only the scalar-extension clause of \cref{ent:q:several} is answered,
+for the whole-family convention. The preparation, interpolation, divisor
+and ideal-theoretic clauses are not settled; no several-variable GCD or
+B\'ezout classification is asserted, and a positive-dimensional zero set
+cannot be replaced by the one-variable finite root divisor of
+\cref{ent:sec:products}.
+\item The full homogeneous-block domain at an arbitrary tuple of new-field
+coordinates is not classified. \Cref{ent:mv:thm:rays} covers rays whose
+direction is defined over the old field, and new-field direction ratios can
+contain new scales, so that the block coefficients leave the old field after
+substitution (\cref{ent:mv:q:block-domain}).
+\item The number of variables is finite, and this is used; all fields are
+full Hahn fields, and nothing is claimed for support-restricted or incomplete
+subfields, where an ambient strong sum need not lie in the smaller field.
+\item The semilinear test is a finite decision procedure only relative to a
+supplied semilinear presentation and exact ordered-group operations on
+$\Delta/H$. It does not discover supports, recognize semilinearity, build the
+convex-hull quotient from a black-box exponent oracle or decide general
+well-ordering, and no finite sampling can certify the general criterion:
+every finite support has a well-ordered weight set at every point
+(\cref{ent:mv:q:effective}).
+\item \Cref{ent:mv:subsec:exceptional} depends on $\kk=\C$ and ordinary
+complex directions.
+\item The finite-word well-quasi-order theorem behind
+\cref{ent:lem:neumann}(b) and the Hilbert basis theorem are imported, and
+choice is used for lattice bases, coefficient bounds and algebraically
+independent coordinates.
+\end{itemize}
 
 \section{Assembly of the classifications}
 \label{ent:sec:classification}
@@ -3222,7 +4897,17 @@ of $\No[i]$. They have real Hahn coefficients and all the displayed roots are
 real surreal numbers; by \cref{ent:cor:conjugation} this is visible from the
 conjugation-invariance of their divisors. The failure of a B\'ezout identity
 remains true even when complex Hahn coefficients are allowed in $A,B$, and
-consequently also when $A,B$ are restricted to real Hahn coefficients.
+consequently also when $A,B$ are restricted to real Hahn coefficients. By
+\cref{ent:sm:cor:boundary-pair}, the maximal ideals of
+$\mathcal E_{\Gamma_\infty}$ containing $f$ and $g$ are exactly the
+$\mathfrak M_\Ucal$ for nonprincipal $\Ucal$, with the residue fields of
+\cref{ent:cor:residue-fields}. The fourth source records the same instance
+in its group $\Gamma_*=\bigoplus_{j\ge1}\Q e_j$, which omits $e_0$; there
+the residue fields are built on $\bigoplus_{1\le j\le n}\Q e_j$, of rank $n$.
+The values $t^{-n!e_n}=\omega^{n!\,\omega^n}$ at the nodes $\omega^{\omega^n}$
+are interpolated by the explicit series of
+\cref{ent:sm:rem:simple-cardinal}, and the values
+$t^{-e_{n+1}}=\omega^{\omega^{n+1}}$ are not interpolable.
 
 The valuation formula \eqref{ent:eq:lambda} becomes
 \[
@@ -3452,10 +5137,10 @@ invariant at work.
 \section{Relation to other reports in this collection}
 \label{ent:sec:collection}
 
-This report is a merge of two independently written manuscripts. Both were
-prepared against pinned snapshots of the same repository, and both state
-explicitly which of their neighbours' results they do \emph{not} claim. Those
-statements are preserved here, and the cross-references are reciprocal.
+This report is a merge of five manuscripts, each prepared against a pinned
+snapshot of the same repository, and each states explicitly which of its
+neighbours' results it does \emph{not} claim. Those statements are preserved
+here, and the cross-references are reciprocal.
 
 \paragraph{Rank-one Berkovich geometry --- this report extends it.}
 The report \emph{From Surcomplex Hahn Fields to Berkovich Geometry}
@@ -3464,7 +5149,8 @@ is spherically complete, and $|a|_v=\exp(-v(a))$ is a genuine real-valued
 absolute value. It is, in its own words, the one place in the collection
 where convergence is real convergence. Its entire-function section proves
 zero-free entire rigidity and a convergent canonical product \emph{there},
-and neither source manuscript merged here claims to originate either point.
+and none of the source manuscripts merged here claims to originate either
+point.
 The present report is the arbitrary-rank generalization. Three specific
 relations should be recorded.
 \begin{itemize}[leftmargin=1.4em]
@@ -3566,7 +5252,39 @@ its obstruction survives there, because it is not our obstruction.
 Both reports therefore say ``the image of an infinite Chinese remainder map
 is a proper restricted subproduct, and the restriction is forced, not
 chosen''. They compute different restrictions, for different reasons, in
-different rings.
+different rings. The fourth source's restricted product
+$\prod_n'(A_n,B_n)$ is this report's $\RD$, and the distinction applies to
+it verbatim; that source, too, disclaims every ring other than the strongly
+entire one.
+
+A related collision of words concerns the analytic-geometry report. There an
+ideal is called \emph{free} when its elements have no common geometric zero,
+and \texttt{analytic:thm:fixed-structure} produces, in $\mathcal
+O(D)((t^\R))$ on a fixed disk, maximal ideals containing no evaluation kernel
+and two-generated ideals with empty zero set; ``boundary'' there refers to a
+fixed disk. The fourth source calls a nonprincipal ultrafilter \emph{free}
+and calls the non-evaluation maximal ideals of
+\cref{ent:sm:subsec:all-maximal} \emph{boundary ideals}. This report writes
+``nonprincipal'' and ``non-evaluation'' throughout. The objects live in
+different rings and no statement transfers, although the moral --- a proper
+finitely generated ideal with no common zero --- is shared, and both reports
+credit Henriksen \cite{Henriksen}.
+
+\paragraph{Holonomic rigidity and several variables --- one device, two
+uses.}
+The report \emph{Holonomic Rigidity for Entire Hahn Functions}
+\cite{RepoHolonomic} works with the same whole-family entire functions of
+several variables. Its Lemma \texttt{hol:lem:generic} chooses a complex point
+avoiding countably many nonzero polynomials over $\K$ by picking coordinates
+algebraically independent over a countable field; the covering step of
+\cref{ent:mv:thm:exceptional} is the same device, applied to complex
+polynomials and refined to open disks. Its several-variable theorem uses the
+whole-family convention of \cref{ent:mv:def:entire} and groups a family into
+total-degree blocks only as a step inside a proof, which is consistent with
+the separation of conventions in \cref{ent:mv:subsec:blocks}. No theorem is
+shared: that report proves D-finite rigidity, not an extension domain. The
+locus $\Pdir(F)$ is written so to avoid the nonabelian-support report's
+$\operatorname{Pol}$, which denotes a normalized polar factor.
 
 \section{What the results do and do not establish}
 \label{ent:sec:scope}
@@ -3630,13 +5348,20 @@ support-restricted Hahn subfield, may lose the roots needed to split the
 prepared polynomial, so the factorization theorem cannot simply be copied
 there. The Hahn--Neumann support lemmas
 (\cref{ent:lem:neumann}) and algebraic closedness \cite{Poonen} are imported
-inputs, not proved here.
+inputs, not proved here. \Cref{ent:sec:multivariable} alone works without
+divisibility and over an arbitrary trivially valued coefficient field, under
+its own statement of hypotheses, and none of the divisible-group results of
+the other sections is transferred to it.
 
 \paragraph{Categories excluded.}
-The ring is one-variable and strong-summation entire. It is \emph{not} the
-ring of ordinary-holomorphic-coefficient Hahn families on one common complex
-domain, not a ring of arbitrary fine-local surcomplex germs, and not a
-several-variable analytic algebra. The arbitrary-rank preparation theorem is
+Outside \cref{ent:sec:multivariable} the ring is one-variable and
+strong-summation entire. It is \emph{not} the ring of
+ordinary-holomorphic-coefficient Hahn families on one common complex domain,
+not a ring of arbitrary fine-local surcomplex germs, and not a
+several-variable analytic algebra; \cref{ent:sec:multivariable} treats
+finitely many variables only for coefficient and unit criteria, extension
+domains and exceptional directions, with no preparation, divisor or ideal
+theory. The arbitrary-rank preparation theorem is
 proved in $\C[X]((t^\Gamma))$, not asserted in a larger power-series
 coefficient ring. There is no contour integral here, no global surcomplex
 exponential at unrestricted imaginary arguments, and nothing about the
@@ -3663,8 +5388,11 @@ residue fields, or about analytic sheaves. The hidden-tail table
 \eqref{ent:eq:hidden-profile} is stated for monomial arguments and does not
 classify arbitrary nonmonomial arguments of $B$. The single-variable
 uniform-domain statement is \emph{false} in several variables --- a series
-independent of one coordinate imposes no constraint in that coordinate ---
-and the correct multivariable replacement is posed below as an open question.
+independent of one coordinate imposes no constraint in that coordinate. Its
+exact replacement for whole-family summation is now
+\cref{ent:mv:thm:domain}, whose limits are recorded in
+\cref{ent:mv:subsec:limits}; what remains open is recorded in
+\cref{ent:q:several,ent:mv:q:block-domain,ent:mv:q:effective}.
 No density of $\C$ in any fine surreal topology is asserted, and strong Hahn
 summability, intrinsic valuation convergence and the fine surreal topology
 are deliberately never identified.
@@ -3686,7 +5414,33 @@ norm. \Cref{ent:thm:maximal} constructs a specified family of maximal ideals
 with a field presentation for each; it does \emph{not} classify all maximal
 ideals of $\E$ and does not assert that every non-evaluation maximal ideal
 arises this way, and its nonprincipal ultrafilter is an ordinary
-set-theoretic choice, not an algorithmically computed object.
+set-theoretic choice, not an algorithmically computed object. The fourth
+source's \cref{ent:sm:thm:maximal-all} shows that, for one node per shell,
+these and the evaluation ideals are all the maximal ideals containing $P_D$;
+it too does not classify the maximal ideals of $\E$ that contain no such
+product, does not treat shells with several nodes, and does not classify
+prime ideals.
+
+\paragraph{Limits recorded by the fourth source.}
+Its unit-ideal criteria are not a corona theorem: no bounded function algebra
+and no norm lower bound is specified. Its ultrafilter characters are ring
+homomorphisms and are not asserted to preserve strong Hahn sums, so
+$\Phi_\Ucal(P_D)$ must not be computed termwise
+(\cref{ent:sm:rem:no-substitution}); they are not evaluation maps on a larger
+surreal domain. Its word ``entire'' has fixed-field scope, and its
+nonpolynomial interpolants make no claim against all-scale polynomial
+rigidity. Its restricted product is algebraic, with no adelic or locally
+compact topology. Its jets are formal derivatives in $Z$, not the
+Berarducci--Mantova derivation. Its construction is a finite-step procedure
+relative to exact field operations and to bounds $c_n$, cofactor classes and
+remainders supplied as certificates; it does not make arbitrary Hahn
+coefficients computable and does not decide membership in $H_n$ from an
+unspecified representation of $\Gamma$. It claims nothing about surreal
+exponential automorphisms, birthdays, integration or the proper-class
+analytic theory. It reproved the support, product and division ingredients
+it needed so that its interpolation theorem would not depend on this
+report's unrefereed preparation and factorization arguments;
+\cref{ent:app:audit} records that the second route indeed uses neither.
 
 The construction behind \cref{ent:thm:image} is constructive only in a
 limited and stated sense. Given explicit finite representations of a shell's
@@ -3713,8 +5467,8 @@ the algebraic-closedness hypothesis of the factorization theory.
 
 \paragraph{What is and is not claimed about priority and verification.}
 The results of this report are self-declared proposed original contributions,
-not a solution of any named published conjecture. Both source manuscripts
-state that priority is \emph{not} certified and that the literature checks
+not a solution of any named published conjecture. The first two source
+manuscripts state that priority is \emph{not} certified and that the literature checks
 were targeted rather than exhaustive; in one of them several general web
 searches returned irrelevant results and were explicitly not treated as
 evidence of absence, and in the other a connector keyword search returning
@@ -3728,8 +5482,9 @@ credited to the repository, as recorded in \cref{ent:rem:rigidity-credit}.
 One source's audit further notes that Lazard was checked bibliographically
 only and that Conway and Gonshor were not re-audited in full; its repository
 review was a targeted read of four files, not a line-by-line proof audit or
-an independent build. None of the three manuscripts was independently refereed and none was
-machine-checked: one records \texttt{formal\_verification false},
+an independent build. None of the five manuscripts was independently
+refereed and none was machine-checked: one records
+\texttt{formal\_verification false},
 \texttt{independent\_peer\_review false} and \texttt{priority\_certified
 false} in its build record, the second states flatly that no Lean
 verification is claimed, and the third states that it has not been
@@ -3740,7 +5495,21 @@ a successful clone, a line-by-line audit of every report, or a Lean build.
 The third also states that its main image theorem is proved independently of
 this repository's unrefereed general factorization and preparation claims,
 and \cref{ent:app:audit} records where that independence does and does not
-hold in the merged text. No theorem below depends for its validity on the
+hold in the merged text. The fourth states that its proofs have not been
+independently refereed or checked in a proof assistant, that its targeted
+literature search is not an exhaustive priority determination, that
+irrelevant search results were not used as evidence, that its repository
+review was a targeted read through a connector at its pinned commit and not
+an audit of every theorem, that no changes were made to the repository, and
+that it credits the general ultrafilter method and the finite algebra as
+classical; its package manifest records \texttt{independent\_peer\_review}
+and \texttt{proof\_assistant\_verification} as false. The fifth records
+\texttt{priority\_certified}, \texttt{formal\_verification} and
+\texttt{independent\_peer\_review} as false; states that its comparison was
+targeted, that no search returning nothing was treated as proof of novelty,
+and that binary repository archives, retired historical manuscripts and the
+Lean modules were not audited; and states that a successful build shows only
+that its source typesets. No theorem below depends for its validity on the
 correctness of an unrefereed repository report. The repository's Lean modules
 on finite algebra and Hahn supports are plausible \emph{prerequisites} for a
 future formalization, not a certificate that these proofs have been
@@ -3749,12 +5518,12 @@ mathematical problem. No repository files under \texttt{code/} or
 \texttt{data/} have been modified.
 
 \paragraph{What the finite checks do not do.}
-See \cref{ent:app:checks} for the full statement. In summary: the three
-delivered suites verify $831$, $664$ and $1958$ finite exact assertions
-respectively, and they prove \emph{no} infinite theorem. All three articles
-and their READMEs state that the finite truncations of the counterexample
-pair \emph{are} coprime polynomials and \emph{do} satisfy polynomial
-B\'ezout identities, so no finite computation can witness
+See \cref{ent:app:checks} for the full statement. In summary: the five
+delivered suites verify $831$, $664$, $1958$, $1876$ and $1072$ finite exact
+assertions respectively, and they prove \emph{no} infinite theorem. The first
+three articles and their READMEs state that the finite truncations of the
+counterexample pair \emph{are} coprime polynomials and \emph{do} satisfy
+polynomial B\'ezout identities, so no finite computation can witness
 \cref{ent:thm:no-bezout}. The preparation checks run modulo $t^9$ in an
 integer exponent subgroup, not an arbitrary-rank group, and the finite
 dominance samples test only $k\in\{1,2,10,100,10000\}$, not all integer
@@ -3765,7 +5534,15 @@ infinite strong summability, the existence or nonexistence of an infinite
 entire interpolant, the restricted-product quotient, or the ultrafilter
 construction; its rational polynomial specializations verify algebraic
 identities only and are not offered as examples of positive fine valuation in
-$\C$.
+$\C$. The fourth suite likewise uses rational proxies for the finite shell
+algebras and finite rational vectors for the valuation inequalities; it
+verifies neither infinite summability nor cofinality nor the theorems, and
+is not evidence of priority. The fifth verifies finite identities and
+example certificates; it cannot prove that an infinite support is well
+ordered, that a series is entire, that a general quotient fibre has finite
+incidence, or that every countable union of algebraic sets is realized, and
+it does not test the irrational example of \cref{ent:mv:ex:dense} through a
+rational approximation.
 
 \subsection{Questions opened by the classification}
 \label{ent:subsec:questions}
@@ -3807,7 +5584,9 @@ data? Does the membership condition \eqref{ent:eq:maincondition} admit a
 decision procedure for any natural class of finitely encoded inputs?
 \end{question}
 The first two are genuinely open here; \cref{ent:lem:shells} is what fails in
-each case. The third is discussed in \cref{ent:subsec:scope-limits}: the
+each case. The several-variable results of \cref{ent:sec:multivariable}
+concern extension domains, not interpolation, and do not bear on the second.
+The third is discussed in \cref{ent:subsec:scope-limits}: the
 construction behind \cref{ent:thm:image} is finite-step relative to exact
 field operations and valuation-bound certificates, and is not by itself an
 algorithm for arbitrary Hahn input.
@@ -3827,21 +5606,44 @@ image, while \cref{ent:lem:shellunits,ent:lem:restrictedunits} turn it into
 the pointwise test \eqref{ent:eq:valueupper}. \Cref{ent:thm:no-bezout} still
 proves that a zero-divisor description alone is insufficient; the criterion
 says what must be added, namely an upper valuation bound on the values of the
-second function along the shells. Two parts of the question are not settled.
-The criterion decides membership of $1$ in $(P_D,F)$, not the structure of
-$(f,g)$ as an ideal for arbitrary $f$. And
+second function along the shells. Two parts of the question were left
+unsettled by the criterion: it decides membership of $1$ in $(P_D,F)$, not
+the structure of $(f,g)$ as an ideal for arbitrary $f$; and
 \cref{ent:thm:maximal} constructs many maximal ideals containing such a
 proper ideal without classifying the maximal spectrum of $\E$, or the
-relations between restricted products attached to different divisors; see
-\cref{ent:q:spectrum}.
+relations between restricted products attached to different divisors.
+
+\emph{Partly answered further by the fourth source.}
+\Cref{ent:sm:thm:finite-generators} decides membership of $1$ in
+$(P_D,G_1,\ldots,G_s)$ for any finite number of generators, and
+\cref{ent:sm:cor:membership} decides membership of an \emph{arbitrary}
+element in $(P_D,G)$ when $D$ has one simple node per shell; since every
+nonzero entire function is a scalar multiple of the canonical product of its
+divisor (\cref{ent:thm:factorization}), so that $(f,g)=(P_{\Div f},g)$, this
+decides membership in $(f,g)$ whenever the zeros of $f$ are simple, of
+negative valuation, and one on each shell.
+\Cref{ent:sm:thm:maximal-all} lists every maximal ideal containing such an
+ideal. Still open: membership in $(P_D,G)$ when shells carry several nodes or
+multiplicities, and a description of $(f,g)$ as an ideal beyond membership
+tests. See also \cref{ent:q:spectrum}.
 
 \begin{question}[The maximal spectrum]\label{ent:q:spectrum}
 Do all non-evaluation maximal ideals of $\E$ arise as $\mathfrak M_\Ucal$ of
 \cref{ent:thm:maximal} for some divisor and some nonprincipal ultrafilter,
 and how do the restricted products attached to different divisors relate?
 \end{question}
-Neither exhaustion nor those relations is proved here, and neither is a
-hidden part of \cref{ent:thm:maximal}.
+\emph{Partly answered by the fourth source.} Above a canonical product with
+one node per shell, with arbitrary multiplicities and empty finite part, the
+answer is yes, exactly: the maximal ideals containing $P_D$ are the
+evaluation ideals and the $\mathfrak M_\Ucal$
+(\cref{ent:sm:thm:maximal-all}), and they form a copy of $\beta\N_{>0}$
+(\cref{ent:sm:thm:beta}). Still open, and not a hidden part of
+\cref{ent:thm:maximal} or \cref{ent:sm:thm:maximal-all}: maximal ideals
+containing only canonical products whose shells carry several nodes, where the
+finite residue algebras have several maximal ideals; whether every
+non-evaluation maximal ideal of $\E$ contains a product of the treated kind;
+the prime ideals; and the relations between the restricted products of
+different divisors.
 
 \begin{question}[Several variables]\label{ent:q:several}
 Which parts of the cofinality criterion and of the B\'ezout obstruction
@@ -3859,6 +5661,41 @@ GCD theorem is established here.
 \Cref{ent:app:multivariate} proves only the finite-variable convergence and
 unit criteria, and it does not extend the one-variable divisor
 classification to higher-dimensional zero sets.
+
+\emph{The ``In particular'' clause is answered by the fifth source,}
+for whole-family summation: \cref{ent:mv:thm:domain} is the exact
+replacement. It depends only on the ordinary support, through its weight
+image in $\Delta/H$, and for semilinear supports only the period vectors,
+the unbounded degree directions, enter (\cref{ent:mv:thm:semilinear}), in
+line with the question's guess. The guess about the boundary was wrong in one
+respect: within the entire category, higher Hahn tails do
+\emph{not} matter (\cref{ent:mv:cor:tails}); they matter only for non-entire
+series (\cref{ent:mv:ex:hidden}, and in rank two
+\cref{ent:subsec:hidden-tails}). The other clauses remain open: whether the
+B\'ezout obstruction and the ideal theory extend, and which local
+preparation statements retain support certificates, in several variables.
+The cofinality criterion does extend (\cref{ent:thm:multi-criterion}).
+
+The fifth source adds two questions, suggested by its results; like the
+others, they are not claims that any publication lists them as open.
+
+\begin{question}[The full block domain]\label{ent:mv:q:block-domain}
+Can the homogeneous-block domain $\mathcal D^{\mathrm{hom}}(F)$ at arbitrary
+tuples of new-field coordinates be described by a finite hierarchy of
+quotient valuations and initial homogeneous forms, with a precise condition
+for indefinite cancellation? Such a description should be invariant under
+linear changes of coordinates and recover \cref{ent:mv:thm:rays} on old-field
+rays.
+\end{question}
+
+\begin{question}[Effective support classes]\label{ent:mv:q:effective}
+For which finitely encoded supports does the well-ordering test of
+\cref{ent:mv:thm:domain} admit an effective exact procedure over specified
+finite-rank ordered groups? Polynomially parametrized supports already give
+nonclosed domains (\cref{ent:mv:thm:nonclosed}), and \cref{ent:mv:ex:dense}
+shows that lower bounds on the weights are not enough for arbitrary
+supports.
+\end{question}
 
 \begin{question}[Restricted and incomplete subfields]\label{ent:q:subfields}
 How much of the divisor theory survives for incomplete surreal subfields or
@@ -3905,6 +5742,19 @@ fixed-workspace functions and polynomial rigidity on the whole surcomplex
 class, without confusing Hahn identities with convergence in the fine surreal
 topology.
 
+Between these thresholds the obstruction is measured exactly. An infinite
+Hermite prescription is realizable precisely when its shell data are
+eventually integral for the coarsening that kills the Archimedean scale of
+each shell, and two independent constructions, sequential and cardinal,
+realize it. Above a product with one node per shell, the maximal ideals are
+the evaluations and one ideal for each nonprincipal ultrafilter on the shells,
+with algebraically closed residue fields assembled from lower-rank Hahn
+fields. In finitely many variables the uniform extension domain gives way to
+a well-ordering condition on the quotient weights of the ordinary support,
+while for nonpolynomial series homogeneous-block summation along complex
+directions sees exactly the proper countable unions of projective algebraic
+sets, all of which occur when the value group has countable cofinality.
+
 \appendix
 \section{Proof-dependency and hypothesis audit}
 \label{ent:app:audit}
@@ -3950,6 +5800,30 @@ series is restricted-invertible --- by
 \cref{ent:ex:ranktwo-unit} that is exactly the assertion that can fail in
 higher rank.
 
+The fourth source's cardinal route to the image theorem
+(\cref{ent:sm:subsec:cardinal}) uses the canonical product
+(\cref{ent:thm:product}), Gauss multiplicativity including its equality
+case, the integral inverse of the cofactor class and the summation lemma
+\cref{ent:sm:lem:entire-sum}. Like the first route it uses neither
+preparation nor algebraic closedness, and it does not use the first route.
+The fourth source's ideal-theoretic results
+(\cref{ent:sm:thm:finite-generators,ent:sm:cor:membership,ent:sm:thm:paired}
+and \cref{ent:sm:subsec:all-maximal}) use the quotient isomorphism, and hence
+either route together with \cref{ent:prop:kernel-direct}; algebraic
+closedness enters only the statement about the type of the residue fields,
+\cref{ent:sm:cor:boundary-fields}, through the Hahn-field theorem for
+$\C((t^{H_n}))$.
+
+\Cref{ent:sec:multivariable} sits on a third separate branch. It uses the
+Hahn--Neumann support calculus, the finite lattice estimate, unit twisting,
+the Hilbert basis theorem and countable-field avoidance. It uses no
+divisibility, preparation, root count, factorization or algebraic closedness.
+Of the other sections it uses only \cref{ent:lem:neumann}, the definitions
+\eqref{ent:eq:convex-hull} and \eqref{ent:eq:D} and the normal-form map
+\eqref{ent:eq:embedding}, none of which needs them;
+\cref{ent:thm:multi-unit} alone keeps the report's standing hypotheses and
+cites \cref{ent:thm:units}.
+
 \subsection{Where an attained minimum is load-bearing}
 \paragraph{Attained minima.}
 The proof of \cref{ent:thm:criterion} uses a minimum attained at an ordinary
@@ -3989,92 +5863,20 @@ whose convergence had been asserted in $\K$ would have to have that
 convergence re-established in $\KD$, and \cref{ent:ex:ranktwo-unit} shows it
 can genuinely fail.
 
-\section{Finite-variable convergence and unit criteria}
-\label{ent:app:multivariate}
-Let $d\ge1$ be finite, write $\alpha=(\alpha_1,\ldots,\alpha_d)\in\N^d$ and
-$|\alpha|=\alpha_1+\cdots+\alpha_d$. Define
-\[
- \mathcal T_{\Gamma,d}
- =\left\{\sum_\alpha a_\alpha X^\alpha:
-              v(a_\alpha)\to+\infty\text{ as }|\alpha|\to\infty\right\},
-\]
-and define $\mathcal E_{\Gamma,d}$ by strong summability of the \emph{whole}
-family $(a_\alpha x^\alpha)_{\alpha\in\N^d}$ for every $x\in\K^d$. Summing
-first along one coordinate and then another is not the definition.
-
-\begin{theorem}\label{ent:thm:multi-criterion}
-For a finite-variable formal series $F=\sum_\alpha a_\alpha X^\alpha$,
-\[
- F\in\mathcal E_{\Gamma,d}
- \quad\Longleftrightarrow\quad
- \frac{v(a_\alpha)}{|\alpha|}\to+\infty
- \quad(|\alpha|\to\infty,\ |\alpha|>0).
-\]
-It suffices to test strong summability at the diagonal monomial points
-$(t^s,\ldots,t^s)$ for all $s\in\Gamma$. Nonpolynomial members exist exactly
-when $\cf(\Gamma)=\aleph_0$.
-\end{theorem}
-\begin{proof}
-At a diagonal monomial point the summand values are
-$v(a_\alpha)+|\alpha|s$, and there are only finitely many multi-indices of
-any bounded total degree. If these values do not tend cofinally to infinity,
-strong summability gives a common lower bound and an infinite bounded-above
-subfamily with strictly increasing total degrees. Subtracting
-$|\alpha|\delta$, for a positive $\delta$ larger than the length of the
-bounding interval, produces the same strictly descending leading-exponent
-sequence as in \cref{ent:thm:criterion}. Thus diagonal strong summability
-implies the slope criterion.
-
-Conversely, for a point with all coordinates nonzero set
-$s=\min_i v(x_i)$; then
-$v(a_\alpha x^\alpha)\ge v(a_\alpha)+|\alpha|s\to+\infty$, and because
-bounded total degrees contain finitely many indices,
-\cref{ent:lem:cofinal-tails} applies after any enumeration respecting total
-degree. If some coordinates vanish, discard the vanishing terms and apply the
-same argument to the remaining coordinates. The cofinality assertion follows
-exactly as in one variable; for existence use an entire nonpolynomial in
-$X_1$ alone.
-\end{proof}
-
-\begin{theorem}\label{ent:thm:multi-unit}
-A nonconstant $F\in\mathcal T_{\Gamma,d}$ is a unit of that algebra if and
-only if $a_0\ne0$ and
-$\min_{\alpha\ne0,\ a_\alpha\ne0}v(a_\alpha/a_0)$ is a positive order unit of
-$\Gamma$.
-\end{theorem}
-\begin{proof}
-Regrouping into $\C[X_1,\ldots,X_d]((t^\Gamma))$ gives multiplicativity of
-the Gauss valuation. If $FG=1$, normalize both constant coefficients to $1$;
-their Gauss values are nonpositive and sum to zero, so their initial
-polynomials multiply to $1$ and are constant, and all nonconstant coefficient
-values are positive. If their minimum $\delta$ is not an order unit, coarsen
-by the proper convex subgroup \eqref{ent:eq:Hdelta} it generates:
-restrictedness reduces both series to finite polynomials over the coarsened
-residue field, and at least one nonconstant coefficient of $F$ survives,
-contradicting invertibility of its reduction. Conversely an order-unit gap
-makes the geometric inverse restricted, with precisely the tail estimates of
-\cref{ent:thm:units}; finite-variable convolution has finitely many terms at
-each multi-index, so those estimates are unchanged.
-\end{proof}
-
-Finite-dimensionality is used in the finiteness of bounded-degree index sets.
-These statements assert nothing for infinitely many variables, and they do
-not extend the one-variable divisor classification to higher-dimensional zero
-sets. As noted in \cref{ent:subsec:scope-limits}, the single-variable uniform
-extension domain of \cref{ent:thm:extension} is \emph{false} in several
-variables.
-
 \section{Reproducible finite checks}
 \label{ent:app:checks}
-Three independent exact-arithmetic suites accompany this report, one from
+Five independent exact-arithmetic suites accompany this report, one from
 each source manuscript, preserved unmodified in \texttt{code/} and
-\texttt{data/}. All three use only the Python standard library, with exact
-\texttt{fractions.Fraction} arithmetic and no floating point, and all three
-represent group elements as tuples of rational coordinates ordered by the
-largest nonzero coordinate.
+\texttt{data/} under the file names given below. All five use only the
+Python standard library, with exact integer and \texttt{fractions.Fraction}
+arithmetic and no floating point. The first four represent group elements as
+tuples of rational coordinates ordered by the largest nonzero coordinate;
+the fifth needs no ordered-group tuples beyond integer relation vectors.
 
 \paragraph{Suite A (831 checks).}
-\texttt{verify\_examples.py} checks finite instances of the
+The first source's script
+\texttt{code/06-cofinality-\allowbreak bezout-trichotomy-\allowbreak
+verify-examples.py} checks finite instances of the
 reverse-lexicographic exponent inequalities, the valuation formula
 \eqref{ent:eq:lambda} in the first nine coordinates of $\Gamma_\infty$,
 leading exponents of finite canonical products, a finite-truncation
@@ -4083,14 +5885,16 @@ implementation of the preparation recursion
 identity underlying \eqref{ent:eq:interpolation-r}. The delivered run passed
 all \textbf{831} checks, with category counts $72$ paired-root checks, $40$
 finite dominance samples, $88$ product-coefficient checks, $456$ preparation
-checks and $175$ inverse-jet checks; the record is the delivered
-verification JSON. The script takes a \emph{required} output path argument
+checks and $175$ inverse-jet checks; the record is
+\texttt{data/06-cofinality-\allowbreak bezout-trichotomy-verification.json}. The script
+takes a \emph{required} output path argument
 and exits nonzero without one; this is a usage requirement designed so that a
 re-run cannot overwrite the delivered record, not a defect. Run correctly it
 reproduces $831$ of $831$.
 
 \paragraph{Suite B (664 checks).}
-\texttt{verify.py} checks finite truncations of
+\texttt{code/03-cofinality-and-scalar-extension-verify.py} checks finite
+truncations of
 \eqref{ent:eq:infinite-product} for $N=1,\ldots,8$ --- each coefficient's
 leading exponent, its binomial subset count and its signs --- exactness and
 simplicity of each root $t^{-e_j}$ and the simple-root derivative
@@ -4100,7 +5904,12 @@ after adjoining the dominant scale $e_9$, the rank-two hidden-tail comparison
 of \cref{ent:subsec:hidden-tails} for $n=1,\ldots,100$ and
 $\lambda\in\{-7,-\tfrac12,0,\tfrac32,10\}$, and the preparation recursion for
 \eqref{ent:eq:cubic} through perturbation order eight. The delivered run
-reports \textbf{664} passing checks.
+reports \textbf{664} passing checks, recorded in
+\texttt{data/03-cofinality-and-scalar-extension-verification.json} and
+\texttt{.txt}. The script takes no arguments and writes
+\texttt{verification.json} and \texttt{verification.txt} into the
+\texttt{data/} directory next to its own folder, so it should be run on a
+copy of the directory.
 
 \paragraph{Suite C (1958 checks).}
 \texttt{code/01-exact-jet-image-verify.py} accompanies the third source and
@@ -4120,11 +5929,71 @@ cofinality, the existence or nonexistence of an infinite entire interpolant,
 the infinite quotient and ultrafilter theorems, and independent refereeing or
 Lean verification.
 
+\paragraph{Suite D (1876 checks).}
+\texttt{code/07-scale-moderate-interpolation-verify.py} accompanies the fourth
+source, chiefly \cref{ent:sm:subsec:cardinal} and the paired threshold. Over
+$18$ random cases with three shells each, at the rational scales $2$, $17$
+and $103$ and with near-coincident rational roots $1$ and $\tfrac{102}{101}$
+of multiplicity one or two, it checks exact division of the product by each
+shell factor ($54$), the cofactor inverse and the inverse of $T$ in the finite
+algebra ($54$ each), the cardinal shell jets --- the prescribed class on its
+own shell and zero on the others ($162$) --- the multiplication-determinant
+formula \eqref{ent:eq:detnorm} ($54$), and simultaneous interpolation by the
+sum of the cardinal corrections ($54$), together with the two values of the
+close-pair polynomial ($2$). In nine-dimensional rational vectors ordered by
+the largest coordinate it checks the scale condition $\gamma\ge-\gamma_n/2$ and
+the suppression inequality behind \eqref{ent:sm:eq:d-choice} ($700$ each),
+that the paired value \eqref{ent:sm:eq:paired-value} lies in $H_n$ exactly
+when the displacement does ($21$) and is positive when it does not ($14$),
+and that the gain $\varkappa_n$ is nonnegative ($7$). Its random seeds are
+$22092026$ and $20260922$. The delivered record
+\texttt{data/07-scale-moderate-interpolation-verification.json} reports
+\textbf{1876} passing assertions; it lists as not verified infinite Hahn
+summability, the full theorems, novelty and Lean formalization. The file
+\texttt{data/07-scale-moderate-interpolation-package\_manifest.json} records
+the source package's pin, page count, assertion count, the two verification
+flags, and SHA-256 hashes of the six files of that package; of those, the
+script, the record and the source audit (shipped as
+\texttt{07-scale-moderate-interpolation-SOURCE\_AUDIT.md}) are in this
+directory and match their hashes, while the manuscript's own
+\texttt{article.tex}, \texttt{article.pdf} and \texttt{README.md} are not
+shipped. The \texttt{--output} argument is optional; without it the script
+only prints. Its documented command writes to \texttt{data/verification.json},
+so a re-run should name a scratch path instead.
+
+\paragraph{Suite E (1072 checks).}
+\texttt{code/08-multivariate-extension-verify\_examples.py} accompanies the
+fifth source and \cref{ent:sec:multivariable}. With bivariate polynomials over
+$\Q$ it checks the homogeneous products of the explicit direction example and
+their value at infinity ($20$), the prescribed polynomial directions and the
+nonvanishing products off them ($210$), binomial block cancellation in
+$(X-Y)^n$ ($80$), the quadratic weight-difference identity and eventual-sign
+certificates of \cref{ent:mv:thm:nonclosed} ($100$ and $25$), samples
+approaching its nonclosed boundary ($60$), semilinear period-weight identities
+($225$), a two-generator relation lattice and its residual bound ($243$),
+coordinate-face realization from minimal excluded faces ($57$), and
+degree-separated projective block zero loci ($52$). The delivered record
+\texttt{data/08-multivariate-extension-verification.json} reports
+\textbf{1072} passing assertions and sets \texttt{formal\_verification},
+\texttt{independent\_peer\_review} and \texttt{priority\_certified} to false.
+\texttt{data/08-multivariate-extension-research-audit.json} records the pin,
+the blob of this article at that pin, the answered clause, the items not
+claimed solved and the audit scope, and
+\texttt{data/08-multivariate-extension-build.json} records the source's own
+build, including SHA-256 hashes of its \texttt{article.tex} and
+\texttt{article.pdf}, which are not shipped here. The \texttt{--output}
+argument is optional; the documented command replaces
+\texttt{data/verification.json}, so a re-run should name a scratch path.
+
+For this merge both new suites were re-run with \texttt{--output} pointing
+outside the repository; each reproduced its delivered record exactly, up to
+platform line endings.
+
 \paragraph{What the checks cannot do.}
-All three suites print their own scope disclaimers, and all three are correct
+All five suites print their own scope disclaimers, and all five are correct
 to do so.
 The counts are counts of finite assertions, not confidence scores for any
-infinite theorem. Neither suite can prove cofinality statements, Hahn support
+infinite theorem. No suite can prove cofinality statements, Hahn support
 well-ordering for every permitted group, any infinite product identity, the
 necessity direction of \cref{ent:thm:units}, or the nonexistence of a global
 B\'ezout solution. In the preparation checks the $t$-adic truncation is
@@ -4141,10 +6010,10 @@ coefficient. Everything else rests on the proofs in the body.
 
 \section{Source and novelty ledger}
 \label{ent:app:sources}
-The first two of this report's three source manuscripts are both dated
+The first two of this report's five source manuscripts are both dated
 21 September 2026, and each pinned the repository at its own snapshot: one at commit
-\texttt{4896a2808ce30e01b1c86ae3ba2295a64762d246} and the other at
-\texttt{aa846271b4dcae2c055b216126a87210292ec19b}. The first re-read four
+\texttt{4896a2808ce30e01b1c8\allowbreak 6ae3ba2295a64762d246} and the other at
+\texttt{aa846271b4dcae2c055b\allowbreak 216126a87210292ec19b}. The first re-read four
 files at its pinned commit --- the root README, the documentation catalogue,
 and the READMEs of the rank-one and global-divisor reports --- after its
 working branch changed during preparation; the second cited the documentation
@@ -4167,7 +6036,7 @@ evidence that a theorem is absent from the literature.
 
 A third manuscript, dated 22 September 2026, was written later against the
 merged report itself, at the snapshot
-\texttt{a3124af79f66b8b9c196d76b4cbc5ac3938907c4}. Its decisive comparison
+\texttt{a3124af79f66b8b9c196\allowbreak d76b4cbc5ac3938907c4}. Its decisive comparison
 was that snapshot's subsection recording the missing image of the infinite
 jet map, now answered by \cref{ent:thm:main-image}. It was a targeted source
 inspection through repository file reads, not a local clone, a line-by-line
@@ -4180,6 +6049,78 @@ explicitly identified residue fields. It credits the coefficient criterion,
 the canonical product, the order-unit interpolation theorem and the explicit
 non-B\'ezout pair to the first two sources and reproves them only for
 dependency control.
+
+A fourth manuscript, \emph{Scale-Moderate Interpolation and Boundary Ideals
+in Surcomplex Hahn Fields}, dated 22 September 2026, pinned the repository
+at \texttt{0097304c7ae9d5de46d2\allowbreak ea342e2494f8fc126303}. At that snapshot the
+merged report still contained the subsection ``The missing image of the
+infinite jet map'' and recorded \cref{ent:q:image} as open, so the
+manuscript's statement that it resolves ``the repository's explicitly
+unidentified infinite jet image'' was accurate for its pin. It is stale for
+this tree: the third source, pinned earlier at \texttt{a3124af}, was merged
+at commit \texttt{de84d8b} about an hour after \texttt{0097304} and had
+already answered the question. The fourth source is therefore recorded as an
+independent, near-simultaneous second proof of \cref{ent:thm:image},
+\cref{ent:thm:quotient} and \cref{ent:thm:bezout-criterion}, under the same
+hypotheses ($\Gamma$ divisible and set-sized, coefficients $\C$ or $\R$), and
+not as their source. Its review read the documentation index, the
+formalization ledger and the relevant parts of this report through a
+connector at the pin; it was targeted, not an audit of every theorem. Its
+literature comparison covered Poonen, both Cherry references, Helmer
+(metadata only, a historical antecedent and not a proof input), Bruno's
+dissertation (whose value group is explicitly a subgroup of $\R$), Henriksen
+and Gonshor. Where the two texts prove the same statement it is printed once:
+its coefficient criterion and Gauss estimates, canonical product, kernel
+theorem, exact sequence, one-node criterion, close-pair example, factorial
+example, order-unit check and unit test for shell algebras are
+\cref{ent:thm:criterion}, \cref{ent:prop:operations} with
+\eqref{ent:eq:gauss-mult}, \cref{ent:thm:product} with
+\eqref{ent:eq:productcoef}, \cref{ent:prop:kernel-direct},
+\cref{ent:thm:quotient}, \cref{ent:cor:single-node},
+\cref{ent:thm:close-pair}, \cref{ent:cor:no-interpolation},
+\cref{ent:cor:order-unit-image} and \cref{ent:lem:shellunits}. Its
+sufficiency construction is genuinely different and is kept as the second
+route of \cref{ent:sm:subsec:cardinal}; its finite-prefix corollary is the
+completion step there. Its new material is
+\cref{ent:sm:cor:no-order-unit,ent:sm:lem:entire-sum,ent:sm:lem:inverse-shell,ent:sm:lem:cardinal,ent:sm:cor:error},
+\cref{ent:sm:rem:simple-cardinal},
+\cref{ent:sm:thm:finite-generators,ent:sm:cor:membership,ent:sm:thm:paired},
+all of \cref{ent:sm:subsec:all-maximal}, and \cref{ent:sm:rem:real}. Where
+the merge had to choose: its letters were translated into this report's
+(\cref{ent:subsec:notation}); its surreal instance was restated in
+$\Gamma_\infty$, which contains $e_0$, instead of its $\Gamma_*$; and its
+finite-generator and membership results are stated, as in the source, for
+divisors with empty finite part.
+
+A fifth manuscript, \emph{Multivariate Entire Hahn Series across New Surreal
+Scales}, dated 22 September 2026, pinned the repository at
+\texttt{4cf691c7d951e037739d\allowbreak 32d9f5c387dcce724f3c}, after the third source
+had been merged, and recorded the blob \texttt{f034bdb} of this article at
+that pin; the body it read is unchanged in the present base, which differs
+only in the ledger and checks appendices. It read this report's
+introduction, extension section, questions, scope discussion and
+finite-variable appendix, together with the documentation inventory and some
+neighbouring summaries; binary archives, retired manuscripts and the Lean
+modules were not audited. Its claims about this report --- that
+\cref{ent:q:several} asks for the several-variable replacement, that a
+series independent of one variable cannot constrain it, and that the appendix
+already proved the finite-variable coefficient criterion and cofinality
+dichotomy --- were checked and hold; that appendix is now
+\cref{ent:app:multivariate}. Its literature comparison covered van der
+Hoeven's operators, Achinger's notes on rank-one non-Archimedean geometry
+\cite{Achinger}, Joswig and Smith on convergent Hahn series and higher-rank
+tropical geometry \cite{JoswigSmith}, Ma and Neelon, the Stacks Project for
+the Hilbert basis theorem, and Berarducci for Conway normal forms. Its growth
+criterion replaces the earlier appendix's ratio-form proof as the statement
+of \cref{ent:thm:multi-criterion}, under weaker hypotheses; the earlier
+\cref{ent:thm:multi-unit} is kept with its original hypotheses; everything
+else in \cref{ent:sec:multivariable} is its new material. Where the merge had
+to choose: its homogeneous block, admissible set, support, quotient, scale
+and polynomial-direction symbols were renamed (\cref{ent:subsec:notation});
+its standalone localization proposition is printed as
+\cref{ent:mv:lem:localize} with credit to the foundations report; and none
+of this report's divisible-group or algebraically closed results was
+attached to its weaker hypotheses.
 
 The strongest proposed original statements of the first two sources are
 \cref{ent:thm:no-bezout} and its use in \cref{ent:thm:main}, together with
@@ -4262,6 +6203,50 @@ O. Bournez and Q. Guilmant, \emph{Surreal fields stable under exponential and
 logarithmic functions}, 2022, arXiv:2201.08199.
 \url{https://arxiv.org/abs/2201.08199}.
 
+\bibitem{Helmer}
+O. Helmer, Divisibility properties of integral functions, \emph{Duke
+Mathematical Journal} \textbf{6} (1940), no.~2, 345--356.
+\href{https://doi.org/10.1215/S0012-7094-40-00626-3}{doi:10.1215/S0012-7094-40-00626-3}.
+Cited by the fourth source as a historical antecedent, not a proof input.
+
+\bibitem{Henriksen}
+M. Henriksen, On the ideal structure of the ring of entire functions,
+\emph{Pacific Journal of Mathematics} \textbf{2} (1952), no.~2, 179--184.
+\href{https://doi.org/10.2140/pjm.1952.2.179}{doi:10.2140/pjm.1952.2.179}.
+Free maximal ideals, their residue fields, and the transcendental coordinate
+of Theorem~5.
+
+\bibitem{Bruno}
+N. Bruno, \emph{Ideal Structure of Rings of Analytic Functions with
+non-Archimedean Metrics}, Ph.D. dissertation, The Ohio State University,
+2021. Definition~2.3 assumes a value group inside $\R$.
+
+\bibitem{MaNeelon}
+D. Ma and T. S. Neelon, On convergence sets of formal power series,
+\emph{Complex Analysis and its Synergies} \textbf{1} (2015), article~4.
+\href{https://doi.org/10.1186/s40627-015-0004-4}{doi:10.1186/s40627-015-0004-4}.
+In particular Corollary~4.19.
+
+\bibitem{Stacks}
+The Stacks Project Authors, \emph{The Stacks Project}, Section~10.31,
+Noetherian rings, accessed 22 September 2026.
+\url{https://stacks.math.columbia.edu/tag/00FM}.
+
+\bibitem{Berarducci}
+A. Berarducci, \emph{Surreal numbers, exponentiation and derivations}, 2020,
+arXiv:2008.06878. In particular Theorem~10.2 and Definition~10.3.
+\url{https://arxiv.org/abs/2008.06878}.
+
+\bibitem{Achinger}
+P. Achinger, \emph{Introduction to non-Archimedean Geometry}, course notes,
+version of 28 January 2021. \url{https://achinger.impan.pl/rigid/notes.pdf}.
+
+\bibitem{JoswigSmith}
+M. Joswig and B. Smith, Convergent Hahn series and tropical geometry of
+higher rank, \emph{Journal of the London Mathematical Society} (2)
+\textbf{107} (2023), no.~4, 1450--1481.
+\href{https://doi.org/10.1112/jlms.12716}{doi:10.1112/jlms.12716}.
+
 \bibitem{RepoRoot}
 V. Reshetnikov, \emph{Surreal}: repository README and reported
 formalization scope, inspected 21 September 2026.
@@ -4305,6 +6290,13 @@ polynomial rigidity theorem discussed in \cref{ent:rem:rigidity-credit}.
 localization principle and of the sign-flipped pair
 $\sum t^{\pm n^2}z^n$ discussed in
 \cref{ent:rem:criterion-strength,ent:sec:collection}.
+
+\bibitem{RepoHolonomic}
+\emph{Holonomic Rigidity for Entire Hahn Functions}, research report in the
+\emph{Surreal} repository,
+\texttt{docs/surcomplex/holonomic-rigidity-for-entire-hahn-functions/}. Its
+Lemma \texttt{hol:lem:generic} is the countable-field device used in
+\cref{ent:mv:thm:exceptional}.
 \end{thebibliography}
 \endgroup
 \end{document}

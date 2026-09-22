@@ -149,7 +149,9 @@ still applies.
    `xi_{A u B} + xi_{A n B} = xi_A + xi_B` and is not independent.
 
 6. `code/build.py` was corrected to resolve `article.tex` in the package root,
-   since the script now lives in `code/`.
+   since the script now lives in `code/`. That edit was later undone: delivered
+   code is kept byte-identical in this collection, so the script again looks
+   for `article.tex` beside itself, and the README says how to use it.
 
 The headline claim of `tail:thm:surreal` was re-derived during this pass and
 holds as stated. `data/layout_audit.json` describes the originally delivered

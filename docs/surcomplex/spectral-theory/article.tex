@@ -78,6 +78,8 @@
 \newcommand{\Hom}{\operatorname{Hom}}
 \newcommand{\Gal}{\operatorname{Gal}}
 \newcommand{\Res}{\operatorname{Res}}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\Disc}{\operatorname{Disc}}
 \newcommand{\lcm}{\operatorname{lcm}}
 \newcommand{\op}{\mathrm{op}}
 \newcommand{\Fr}{\mathrm F}
@@ -137,19 +139,32 @@ $q\Gamma$. At $q=2$ this is also the exact criterion for a Gram factorization
 $A=C^*C$ over the base field. The single scalar $\tr(A^{1/q})$ is always a
 primitive generator of that whole extension, by a positivity mechanism
 rather than by genericity.
+
+The same question for a polynomial is answered by its Newton-sum Hankel
+matrix. For a monic squarefree real-rooted $p$ over $F_\Gamma=\R((t^\Gamma))$,
+with leading principal Hankel minors $h_1,\ldots,h_n$ and $h_0=1$, the
+splitting field is $F_\Gamma(\sqrt{h_1},\ldots,\sqrt{h_n})
+=F_{\Gamma+\sum_k\Z v(h_k)/2}$, and the number of irreducible factors is
+$\#\{k:v(h_k)-v(h_{k-1})\in2\Gamma\}$. The full multiplicity profile of these
+classes is the character multiplicity of the root permutation
+representation and is stable under a stated precision. Applied to definite
+Hermitian pencils, it gives the exact field of the generalized eigenvalues,
+and size-optimal pencils hide half-scales behind eigenvalues of valuation
+zero.
 \end{abstract}
 \end{minipage}
 \vfill
 \begin{minipage}{.94\textwidth}\small
 \textbf{Status and scope.} A self-contained research exposition relative to
-standard surreal normal-form and Hahn-field foundations, assembled from two
-separately delivered manuscripts (see \cref{sec:gap}). Classical results
-are identified as such; no priority claim or solution of a named open problem
-is made. Older power-series spectral theorems, Hahn support lemmas and
-Kummer theory are acknowledged as predecessors, and the arbitrary-rank
-determinantal and primitive-trace package of
-\cref{spec:sec:ramification,spec:sec:trace} is offered as a candidate
-original contribution whose priority is not certified. All matrix dimensions
+standard surreal normal-form and Hahn-field foundations, assembled from three
+separately delivered manuscripts (see \cref{spec:sec:provenance}). Classical
+results are identified as such; no priority claim or solution of a named open
+problem is made. Older power-series spectral theorems, Hahn support lemmas,
+Kummer theory, trace forms and subdiscriminants are acknowledged as
+predecessors. The arbitrary-rank determinantal and primitive-trace package of
+\cref{spec:sec:ramification,spec:sec:trace} and the Hankel square-class
+package of \cref{spec:hank:sec:profiles} are offered as candidate original
+contributions whose priority is not certified. All matrix dimensions
 are ordinary finite integers. General proofs are not proof-assistant
 verified as a complete package. The repository's separate formalization ledger
 records current checked prerequisites and source-claim coverage.
@@ -248,14 +263,18 @@ first occur here. Readers already comfortable with real-closed-field linear
 algebra can start at \cref{sec:valuation}; readers interested primarily in
 computation can proceed from there to \cref{sec:algorithm,sec:conditioning}.
 
-\subsection{Provenance and the second half of the article}
+\subsection{Provenance: three manuscripts}
 \label{spec:sec:provenance}
-This article is assembled from two separately delivered manuscripts, both
+This article is assembled from three separately delivered manuscripts. The
+manuscripts themselves are not shipped with the report; their delivered code
+and data are, under \texttt{code/} and \texttt{data/}. The first two are both
 dated 21 September 2026. Every section except
-\cref{spec:sec:descent,spec:sec:ramification,spec:sec:trace} comes from
+\cref{spec:sec:descent,spec:sec:ramification,spec:sec:trace,spec:hank:sec:profiles}
+comes from the first, delivered as
 \nolinkurl{01-determinantal-singular-value-scales.tex}, which worked over a real
 closed field and, for the scale-sensitive results, in a \emph{divisible} Hahn
-workspace. Those three sections come from
+workspace. \Cref{spec:sec:descent,spec:sec:ramification,spec:sec:trace} come
+from the second, delivered as
 \nolinkurl{02-determinantal-ramification-descent.tex}, which removes that
 divisibility hypothesis and measures exactly what it was buying.
 
@@ -268,17 +287,55 @@ and degree calculation for positive matrix roots, in which the very invariant
 $\Delta_k$ that measures singular scales turns out to control a finite
 radical extension.
 
-The two manuscripts audited the repository at different pinned revisions,
+The third manuscript, ``Hankel Square-Class Profiles over Surreal Hahn
+Fields: Exact Factor Counts, Splitting Fields, and Definite Pencils''
+(archive \texttt{surreal\_hankel\_ramification}, dated 22 September 2026),
+supplies \cref{spec:hank:sec:profiles}. It cites this report and does not
+reclaim its descent, ramification or primitive-trace theorems. Its reproved
+inputs --- positive square classes, the Pythagorean property of Hahn fields,
+finite monomial extensions and orthogonal diagonalization of real symmetric
+matrices over $F_\Gamma$ --- are already
+\cref{spec:lem:scalarroot,spec:lem:normroot,spec:lem:finiteindex,spec:thm:hermitian},
+and are cited there rather than reprinted. What it adds is the
+classification of intermediate half-scale fields, the Hankel splitting-field
+and factor-count package, its application to definite pencils, and a
+contour-free proof of real principal axes by coprime Hensel lifting, kept as a
+marked second route (\cref{spec:hank:rem:hensel}). The merge had to choose in
+four places. The material is placed here rather than in the
+polynomial-algebra report, because that report works in divisible
+workspaces, where $\Gamma/2\Gamma=0$ and every invariant of
+\cref{spec:hank:sec:profiles} vanishes. The source's notation $\alpha_k$,
+$\beta_k$, $d_k$, and its letter $q$ for a quadratic form and for a second
+polynomial, are renamed to avoid this report's $\gamma_k$, $\Delta_k$ and root
+order $q$
+(\cref{spec:hank:rem:conventions}). Two short observations linking the new
+section to the older ones are added and marked as such (the paragraph after
+\cref{spec:hank:cor:primitive}, and \cref{spec:hank:rem:twoinvariants}). And the
+source's theorem numbers change: its Theorems~5.1 and~6.2 are
+\cref{spec:hank:thm:field,spec:hank:thm:profile} here.
+
+The three manuscripts audited the repository at different pinned revisions,
 \begin{center}\small
 \texttt{\repocommit}\\
-\nolinkurl{aa846271b4dcae2c055b216126a87210292ec19b}
+\nolinkurl{aa846271b4dcae2c055b216126a87210292ec19b}\\
+\nolinkurl{4cf691c7d951e037739d32d9f5c387dcce724f3c}
 \end{center}
-the first and the second respectively. Both declared their audits targeted
-rather than line-by-line, with absence from a search result never used as
-proof of absence from the collection.
+the first, the second and the third respectively. All three declared their
+audits targeted rather than line-by-line, with absence from a search result
+never used as proof of absence from the collection. At its pin the third
+found the spectral descent, ramification and primitive-trace results of this
+report and the Hermite signature criterion of the polynomial-algebra report,
+and no matching statement of its central package; at that pin the words
+``Hankel'' and ``subdiscriminant'' occurred nowhere under \texttt{docs/}. The
+collection now also contains
+\path{docs/surcomplex/prony-reconstruction-at-surreal-scales/}, placed in the
+same batch, which uses Hankel moment matrices for a different question and
+shares no theorem with \cref{spec:hank:sec:profiles}.
 
-That second half has genuine predecessors, which it concedes rather than
-displaces. Adkins proved a spectral theorem for normal matrices over
+The second manuscript's half has genuine predecessors, which it concedes
+rather than displaces. (Those of the third manuscript, including Keller and
+Ochsenius's 2008 multiquadratic constructions and the classical theory of
+subdiscriminants, are conceded in \cref{spec:hank:sub:scope}.) Adkins proved a spectral theorem for normal matrices over
 hermitian discrete valuation rings, including one-variable formal and
 convergent power series~\cite{Adkins}; Keller and Ochsenius proved orthogonal
 diagonalization over iterated real Laurent-series fields and a particular
@@ -382,12 +439,17 @@ Divisibility is nevertheless needed only where a root of an
 used: the Schur triangularization of a non-normal matrix in
 \cref{prop:normal}, the positive semidefinite square root of an arbitrary
 positive semidefinite matrix and the Cholesky factorization in
-\cref{prop:positive} with the generalized Hermitian eigenproblem built on
-it --- all of which
-can be carried out in the divisible hull $\Gamma\otimes_\Z\Q$.
+\cref{prop:positive}, and the reduction of the generalized Hermitian
+eigenproblem built on them, with its $G$-orthonormal eigenbasis --- all of
+which can be carried out in the divisible hull $\Gamma\otimes_\Z\Q$.
 \Cref{spec:thm:ramification} computes the exact extension for principal roots
-of positive semidefinite matrices; it does not compute a Schur splitting field
-for an arbitrary matrix. The pseudospectrum below is a set of scalars
+of positive semidefinite matrices. \Cref{spec:hank:thm:pencil} computes the
+exact field of the generalized \emph{eigenvalues} of a definite pencil over an
+arbitrary $\Gamma$, from the Hankel subdiscriminants of its characteristic
+polynomial, so the eigenvalues no longer need the divisible hull; a
+normalized eigenbasis can still need further square roots
+(\cref{spec:hank:warn:normalization}). Neither computes a Schur splitting
+field for an arbitrary matrix. The pseudospectrum below is a set of scalars
 $z\in K_\Gamma$; its perturbation characterization uses the SVD of $zI-A$
 and remains valid without requiring every eigenvalue of $A$ in the base field.
 Everything else in this article, including
@@ -397,7 +459,9 @@ scales of \cref{thm:scales}, the positive Cauchy--Binet identity of
 \cref{thm:gram}, the rank filtration, the scale algorithm, the perturbation
 certificates, and the matrix series of \cref{thm:series}, holds over an
 arbitrary set-sized ordered abelian $\Gamma$, by the support-certified
-constructions of \cref{spec:sec:descent}.
+constructions of \cref{spec:sec:descent}. The Hankel results of
+\cref{spec:hank:sec:profiles} are stated over an arbitrary $\Gamma$ from the
+start.
 \end{remark}
 
 \begin{proposition}[Finite-data localization]\label{prop:localization}
@@ -666,7 +730,13 @@ $x_j$ with $x_j^*Gx_k=\delta_{jk}$. This is useful when the metric itself
 contains infinitesimal weights. It does not require a uniform ordinary-real
 lower bound on $G$. It does, however, use a square root of an arbitrary
 positive definite matrix, and so is one of the statements listed in
-\cref{spec:rem:divisibility} as needing a divisible workspace.
+\cref{spec:rem:divisibility} as needing a divisible workspace. Over a
+nondivisible Hahn workspace the generalized eigenvalues themselves are handled
+exactly by \cref{spec:hank:thm:pencil}: they generate the Hahn field on
+$\Gamma+\sum_k\Z v(h_k)/2$, where the $h_k$ are the Hankel subdiscriminants of
+the squarefree part of $\det(XG-H)/\det G$. Only the $G$-orthonormal
+normalization can need further square roots
+(\cref{spec:hank:warn:normalization}).
 
 Every proof in this section used real closedness of $F$, either through the
 splitting of a characteristic polynomial or through a square root of an
@@ -1124,7 +1194,11 @@ Thus the Gram determinant polynomial provides all the singular scales
 without finding an eigenvector. Its nonzero coefficient valuations are
 $2\Delta_k$, with successive differences $2\gamma_k$. This statement works
 in any ordered group $\Gamma$; it does not require drawing a polygon in an
-ordinary real plane.
+ordinary real plane. The same positivity mechanism, applied to forest weights
+of a row Laplacian, gives the eigenvalue valuations of positive rate matrices
+in the companion report held in
+\path{docs/surreal/markov-generators-at-every-scale/}
+(\texttt{markov:rem:gram}).
 
 \subsection{Resolving singular values at a common scale}
 Define
@@ -1570,7 +1644,9 @@ This gives the Hahn version of \cref{thm:spectral} without divisibility and
 with control of the exponent group. The earlier proof is shorter and applies
 to any real closed field; the present version
 survives when $K_\Gamma$ is not algebraically closed, and it alone says
-where the exponents can be.
+where the exponents can be. For real symmetric input a third proof, by coprime
+Hensel lifting and polynomial idempotents with no contour argument, is
+recorded in \cref{spec:hank:rem:hensel}.
 
 \begin{corollary}[The splitting tree is finite]\label{spec:cor:tree}
 The construction in \cref{spec:thm:hermitian} has at most $n-1$ nontrivial
@@ -2274,6 +2350,1190 @@ cost} over the smallest Hahn workspace containing the data --- a cost that
 becomes invisible the moment one replaces $H$ by its divisible hull, which
 is precisely what \cref{prop:localization} does.
 
+\section{Hankel square-class profiles: exact splitting fields of real-rooted polynomials and definite pencils}
+\label{spec:hank:sec:profiles}
+
+\Cref{spec:sec:ramification,spec:sec:trace} measured the exact cost of a
+positive \emph{matrix} root from the minima $\Delta_k$ of all minors. This
+section, which comes from the third source manuscript
+(\cref{spec:sec:provenance}), asks the corresponding question for a
+real-rooted \emph{polynomial}:
+\begin{quote}
+for a real-rooted polynomial in a fixed Hahn workspace, which finite data
+recover the exact splitting field and the number of irreducible factors,
+without first constructing the roots?
+\end{quote}
+The answer uses \emph{all} leading principal minors of the Newton-sum Hankel
+matrix, and for the factor count it uses their consecutive valuation
+differences, not just their span. The same computation gives the exact field
+of the generalized eigenvalues of a definite Hermitian pencil. For the
+eigenvalues, that removes the divisible workspace which the generalized
+eigenproblem of \cref{sec:spectral} used; \cref{spec:rem:divisibility} records
+what still needs it.
+
+Throughout this section $\Gamma$ is an arbitrary set-sized ordered abelian
+group, of arbitrary rank and \emph{not} assumed divisible, with
+$F_\Gamma=\R((t^\Gamma))$, $K_\Gamma=\C((t^\Gamma))=F_\Gamma(i)$ and divisible
+hull $\Gamma_\Q$. Write $\OO_F=\OO\cap F_\Gamma$ for the real valuation ring.
+The Hahn field $F_{\Gamma_\Q}$ is real closed (\cref{sec:fields}), so it is a
+convenient ambient field for roots. It need not be an algebraic extension of
+$F_\Gamma$ as a whole, and only the explicitly displayed finite subextensions
+are called finite or algebraic. The constant field $\R$ is essential; see
+\cref{spec:hank:warn:hypotheses}.
+
+Three examples show what the answer has to see. Over $\R((t^\Z))$ the
+polynomial $X^2-t$ needs $t^{1/2}$, whereas $X^2-(1+t)$ already splits.
+More subtly, $(X-1)^2-t$ has two roots of valuation zero but still needs
+$t^{1/2}$, so the valuations of the roots do not determine the splitting
+field. A full discriminant is not enough either:
+\cref{spec:hank:ex:quartic} has a square discriminant and nevertheless
+generates a biquadratic field.
+
+\begin{remark}[Conventions for this section]\label{spec:hank:rem:conventions}
+\begin{enumerate}[label=(\alph*)]
+\item In this section $h_k=h_k(p)$ always denotes the $k$th leading
+principal minor of the Newton-sum Hankel matrix of a polynomial $p$
+(\cref{spec:hank:def:profile}), a \emph{Hankel subdiscriminant}. It is not
+the coset $h_j$ used in the proof of \cref{spec:lem:positivetrace} and in
+\eqref{spec:eq:orbitpoly}, nor the infinitesimal $h$ of
+\cref{spec:lem:scalarroot}. Other reports of the collection use the letter
+$h_k$ for unrelated quantities (the Markov-generator and Prony reports among
+them); none of those meanings is intended here. The source manuscript's
+names $\alpha_k=v(h_k)$, $\beta_k=v(h_k)-v(h_{k-1})$ and $d_k=h_k/h_{k-1}$
+are not used. We write $\pi_k$ for the pivot $h_k/h_{k-1}$ and $\xi_k$ for its
+class modulo $2\Gamma$, keeping these apart from the singular scales
+$\gamma_k$ and the determinantal minima $\Delta_k$ of \cref{thm:scales}.
+\item The \emph{Hankel square-class profile} $m_p$ is a multiplicity
+function on $\Gamma/2\Gamma$. It is not the determinantal profile
+$(\Delta_k)$ of \cref{thm:scales}, and not the Newton profile of the
+polynomial-algebra report.
+\item The span $D_p\subseteq\Gamma/2\Gamma$ below is built from the
+\emph{leading principal} minors of one Hankel matrix, whereas $\Delta_k$ is a
+minimum over \emph{all} $k\times k$ minors. So $D_p$ is an analogue, for
+$q=2$, of the group $R_2(A)$ of \eqref{spec:eq:rootgroup}, but for a different
+kind of minor, and the two must not be conflated;
+\cref{spec:hank:rem:twoinvariants} records the only relation stated here.
+\end{enumerate}
+\end{remark}
+
+\subsection{Inputs already proved, and one new ingredient}
+\label{spec:hank:sub:inputs}
+
+The source manuscript reproves its spectral and Kummer-theoretic inputs, to
+isolate exactly the field properties on which its equalities depend. Those
+already in this report are cited rather than reprinted.
+\begin{itemize}
+\item \emph{Positive square classes.} For $a>0$ in $F_\Gamma$, $a$ is a
+square in $F_\Gamma$ if and only if $v(a)\in2\Gamma$. More precisely
+$\sqrt a=t^{v(a)/2}u$ with $u\in F_\Gamma$ positive, so its support lies in
+the single coset $v(a)/2+\Gamma$. This is \cref{spec:lem:scalarroot} at
+$q=2$.
+\item \emph{The Pythagorean property.} Every nonzero finite sum of squares
+in $F_\Gamma$ is positive and is a square in $F_\Gamma$. This is
+\cref{spec:lem:normroot} for real vectors. It holds for every Hahn field
+$F_\Lambda$, and it is used below for intermediate fields. It does
+\emph{not} say that every positive element is a square: $t^\gamma$ is a
+counterexample whenever $\gamma\notin2\Gamma$.
+\item \emph{Finite monomial extensions.} Degrees and coset bases are
+\cref{spec:lem:finiteindex}.
+\item \emph{Hahn principal axes.} Every real symmetric matrix over $F_\Gamma$
+is diagonalized by an orthogonal matrix over $F_\Gamma$, so its eigenvalues
+lie in $F_\Gamma$ with no enlargement of the exponent group. This is the real
+case of \cref{spec:thm:hermitian}. The source's own proof is different, and
+it is kept below as a second route (\cref{spec:hank:rem:hensel}).
+\end{itemize}
+What is new in this subsection is the real Galois group of a half-scale
+extension and the classification of its intermediate fields.
+
+\begin{lemma}[Intermediate fields of half-scale extensions]
+\label{spec:hank:lem:intermediate}
+Let $\Gamma\subseteq\Lambda\subseteq\Gamma_\Q$ with $\Lambda/\Gamma$ finite and
+$2\Lambda\subseteq\Gamma$. Then $F_\Lambda/F_\Gamma$ is Galois, with group
+$\Hom(\Lambda/\Gamma,\{\pm1\})$; a character $\chi$ acts on every series by
+multiplying its coefficient at the exponent $\lambda$ by $\chi(\lambda+\Gamma)$.
+Every intermediate field of $F_\Lambda/F_\Gamma$ is $F_{\Lambda'}$ for a group
+$\Gamma\subseteq\Lambda'\subseteq\Lambda$. The same assertions hold with $F$
+replaced by $K$.
+\end{lemma}
+\begin{proof}
+The degree $|\Lambda/\Gamma|$ and the coset basis are
+\cref{spec:lem:finiteindex}. With $q=2$ the characters of that lemma take
+values in $\mu_2=\{\pm1\}\subset\R$, so they preserve real series. Its
+argument applies verbatim. Multiplicativity follows from the character law
+and the finite convolution defining each product coefficient. The finite
+elementary abelian group $\Lambda/\Gamma$ has exactly $|\Lambda/\Gamma|$ such
+characters, and they separate its elements. So we have as many automorphisms
+of $F_\Lambda$ over $F_\Gamma$ as the degree, and the extension is Galois.
+
+For a subgroup $J$ of the Galois group, an invariant series can have support
+only in
+\[
+ \Lambda'=\{\lambda\in\Lambda:
+       \chi(\lambda+\Gamma)=1\text{ for every }\chi\in J\},
+\]
+because a nonzero coefficient in any other coset is changed by some
+character. Conversely every series supported in $\Lambda'$ is fixed. So the
+fixed field of $J$ is $F_{\Lambda'}$, and $\Lambda'$ is a group between
+$\Gamma$ and $\Lambda$. The fundamental theorem of finite Galois theory now
+gives all intermediate fields. Complex coefficients do not change the
+argument.
+\end{proof}
+
+The sign-changing automorphisms are generally not order preserving: they may
+send the positive $t^{\gamma/2}$ to its negative. There is no conflict with
+the uniqueness of a positive square root in a \emph{fixed} ordered field.
+Field automorphisms need not preserve that chosen order when the base field
+is not real closed.
+
+\begin{corollary}[Adjoining finitely many positive square roots]
+\label{spec:hank:cor:adjoin}
+For $a_1,\ldots,a_m>0$ in $F_\Gamma$, set $\Lambda=\Gamma+\sum_j\Z\,v(a_j)/2$.
+Then
+\[
+ F_\Gamma(\sqrt{a_1},\ldots,\sqrt{a_m})=F_\Lambda.
+\]
+Its degree is $2^r$, where $r$ is the dimension over $\mathbf F_2$ of the span
+of the classes $v(a_j)+2\Gamma$ in $\Gamma/2\Gamma$.
+\end{corollary}
+\begin{proof}
+By \cref{spec:lem:scalarroot}, each $\sqrt{a_j}$ is $t^{v(a_j)/2}$ times a
+nonzero element of $F_\Gamma$. So the same field is generated by these
+monomials. They generate all the coset summands of
+\cref{spec:lem:finiteindex}, and so the field is $F_\Lambda$. Multiplication
+by $2$ identifies $\Lambda/\Gamma$ with the stated span in $\Gamma/2\Gamma$.
+\end{proof}
+
+Over $K_\Gamma$ the same equality is the case $A=\diag(a_1,\ldots,a_m)$,
+$q=2$ of \cref{spec:thm:ramification}.
+
+\begin{lemma}[Coprime Hensel lifting over $F_\Gamma$]\label{spec:hank:lem:hensel}
+Let $f\in\OO_F[X]$ be monic. If its reduction factors as
+$\overline f=\overline g\,\overline h$ with monic coprime polynomials
+$\overline g,\overline h\in\R[X]$, then $f=gh$ with monic $g,h\in\OO_F[X]$
+lifting those factors. The lifts are coprime over $F_\Gamma$.
+\end{lemma}
+\begin{proof}
+Choose the real-coefficient lifts of $\overline g,\overline h$, and regard
+the finitely many coefficients of $f-\overline g\,\overline h$ as formal
+parameters. The linearized multiplication map on corrections is
+\[
+ (u,w)\longmapsto \overline h\,u+\overline g\,w,
+ \qquad \deg u<\deg\overline g,
+ \quad \deg w<\deg\overline h.
+\]
+It is invertible over $\R$. A vector in its kernel would give
+$\overline g\mid u$ and hence $u=w=0$, and source and target have the same
+dimension. Solving successively by total parameter degree gives formal power
+series, without constant term, for all corrections of the factor
+coefficients. Evaluation at the actual positive-valuation errors is licensed
+by \cref{spec:lem:evaluate}, so the formal multiplication identity becomes
+$f=gh$ in $\OO_F[X]$. The resultant of $g$ and $h$ reduces to the nonzero
+real resultant of the two residue factors. So it is nonzero, and the lifts are
+coprime.
+\end{proof}
+
+The polynomial-algebra report proves a support-controlled version of this
+lemma over $K_\Gamma$, with several factors, by recursion on a well-ordered
+support monoid rather than by universal formal series
+(\texttt{polynomial:thm:hensel} there); it too needs no divisibility.
+
+\begin{remark}[A contour-free second route to real Hahn principal axes]
+\label{spec:hank:rem:hensel}
+The source proves the real case of \cref{spec:thm:hermitian} without the
+contour argument used in \cref{spec:thm:split}. Induct on the size $n$.
+Scalar matrices cause no difficulty. Otherwise, for a real symmetric $A$, set
+\[
+ A_0=A-\frac{\tr A}{n}I\ne0,
+ \qquad \gamma=v(A_0),
+ \qquad T=t^{-\gamma}A_0.
+\]
+The residue $\overline T$ is a nonzero traceless real symmetric matrix. So it
+has at least two distinct real eigenvalues, exactly as in the proof of
+\cref{spec:thm:hermitian}. Partition them into two nonempty groups. The
+characteristic polynomial of $T$ then has a coprime residue factorization,
+and \cref{spec:hank:lem:hensel} lifts it. The polynomial Chinese remainder
+theorem supplies complementary idempotents $e_1,e_2$ modulo that
+characteristic polynomial; their coefficients are integral, because the
+resultant of the lifted factors is a unit. Substitution gives $E_j=e_j(T)$
+with
+\[
+ E_j^2=E_j,
+ \quad E_1+E_2=I,
+ \quad E_1E_2=0,
+ \quad E_j^{\mathsf T}=E_j.
+\]
+Both are nonzero, since their residue projectors are nonzero. Their images
+are invariant under $T$, hence under $A$, and orthogonal, because
+$\langle E_1x,E_2y\rangle=x^{\mathsf T}E_1E_2y=0$. Any basis of either image can
+be orthonormalized over $F_\Gamma$: at each Gram--Schmidt step the squared norm
+is a nonzero finite sum of squares, whose positive square root lies in
+$F_\Gamma$ by \cref{spec:lem:normroot}. In the combined orthonormal basis $A$
+has two smaller symmetric diagonal blocks, and induction finishes the proof.
+
+This proof uses at most $n-1$ nontrivial block splittings, as in
+\cref{spec:cor:tree}. It does not depend on the order type of a support, on
+the rank of $\Gamma$, or on the false assertion that the multiples of one
+positive valuation must be cofinal in $\Gamma$. The finite splitting count is
+not an algorithmic complexity bound for arbitrary representations of the
+input Hahn series. For real symmetric input, this is the ``formal Hensel
+block-lifting'' route that \cref{sec:scope} names for a formalization. It
+treats only real symmetric input, and it does not reproduce the support
+certificate $\langle S\rangle_\N$ of \cref{spec:thm:split}. The statement
+cited below is \cref{spec:thm:hermitian}.
+\end{remark}
+
+\subsection{Newton sums, the Hankel trace form and the profile}
+\label{spec:hank:sub:hankel}
+
+Write
+\[
+ p(X)=X^n+c_1X^{n-1}+\cdots+c_n\in F_\Gamma[X].
+\]
+Its Newton sums are computed by the finite recurrences
+\begin{align}
+ s_0&=n,\\
+ s_j+c_1s_{j-1}+\cdots+c_{j-1}s_1+jc_j&=0
+       &&(1\le j\le n),\label{spec:hank:eq:newton1}\\
+ s_j+c_1s_{j-1}+\cdots+c_ns_{j-n}&=0
+       &&(j>n).\label{spec:hank:eq:newton2}
+\end{align}
+Equivalently, if $M$ is the matrix of multiplication by $X$ in the basis
+$1,X,\ldots,X^{n-1}$ of $F_\Gamma[X]/(p)$, then
+$s_j=\tr(M^j)=\Tr_{F_\Gamma[X]/(p)\,/\,F_\Gamma}(X^j)$. Only
+$s_0,\ldots,s_{2n-2}$ are needed below. Every one of these sums, and every
+determinant built from them, is a polynomial with integer coefficients in
+$c_1,\ldots,c_n$.
+
+\begin{definition}[Hankel subdiscriminants and the square-class profile]
+\label{spec:hank:def:profile}
+Set
+\[
+ H_p=(s_{i+j})_{0\le i,j<n},\qquad
+ h_k=h_k(p)=\det(s_{i+j})_{0\le i,j<k},\qquad h_0=1.
+\]
+When $H_p$ is positive definite, put, for $1\le k\le n$,
+\[
+ \pi_k=\frac{h_k}{h_{k-1}},\qquad
+ \xi_k=v(\pi_k)+2\Gamma=v(h_k)-v(h_{k-1})+2\Gamma\in\Gamma/2\Gamma,
+\]
+and for $\xi\in\Gamma/2\Gamma$
+\[
+ m_p(\xi)=\#\{k:\xi_k=\xi\}.
+\]
+The function $m_p:\Gamma/2\Gamma\to\Z_{\ge0}$ is the \emph{Hankel
+square-class profile} of $p$. It has finite support and total mass $n$. Its
+span is
+\[
+ D_p=\Span_{\mathbf F_2}\{\xi_1,\ldots,\xi_n\}
+    =\Span_{\mathbf F_2}\{v(h_k)+2\Gamma:1\le k\le n\},
+ \qquad r_p=\dim_{\mathbf F_2}D_p,
+\]
+and we put
+\[
+ \Lambda_p=\Gamma+\sum_{k=1}^n\Z\,\frac{v(h_k)}2\subseteq\Gamma_\Q.
+\]
+\end{definition}
+
+The two descriptions of $D_p$ agree, by taking consecutive differences or
+cumulative sums. That does not identify their multiplicities: for the
+profile, the differences $\xi_k$, not the cumulative classes, are essential.
+Since $h_1=s_0=n$, always $\xi_1=0$.
+
+\begin{proposition}[Classical trace-form and subdiscriminant identities]
+\label{spec:hank:prop:hermite}
+For monic $p$ of degree $n$, $H_p$ represents the bilinear trace form
+\[
+ (u,w)\longmapsto\Tr_{F_\Gamma[X]/(p)\,/\,F_\Gamma}(uw).
+\]
+If $\lambda_1,\ldots,\lambda_n$ are its roots in an algebraic closure,
+listed with multiplicity, then
+\begin{equation}\label{spec:hank:eq:subdisc}
+ h_k=\sum_{\substack{I\subseteq\{1,\ldots,n\}\\ |I|=k}}
+       \prod_{\substack{i<j\\i,j\in I}}(\lambda_j-\lambda_i)^2.
+\end{equation}
+In particular $h_n=\Disc(p)$. Furthermore the following are equivalent:
+$p$ is squarefree with all roots real in $F_{\Gamma_\Q}$; $H_p$ is positive
+definite; and $h_k>0$ for $1\le k\le n$.
+\end{proposition}
+\begin{proof}
+The monomial entries of the trace form are $s_{i+j}$ by definition. Let $V$
+be the Vandermonde matrix with entries $V_{\ell,j}=\lambda_\ell^j$ for
+$0\le j<n$. The Newton identities give $H_p=V^{\mathsf T}V$. Cauchy--Binet
+applied to the first $k$ columns of $V$ gives \eqref{spec:hank:eq:subdisc};
+the determinants of its row submatrices are the Vandermonde products shown
+there. This is the standard subdiscriminant identity~\cite{Roy}. With Roy's
+descending index convention our $h_k$ is $\operatorname{SubDisc}_{n-k}(p)$.
+
+For distinct real roots $V$ is invertible, and $V^{\mathsf T}V$ is positive
+definite. Conversely, positive definiteness implies $h_n\ne0$, so $p$ is
+squarefree. Over the real closed field $F_{\Gamma_\Q}$ its quotient algebra
+is a product of real one-dimensional factors and conjugate-pair factors. A
+conjugate-pair factor has the real trace quadratic form
+$\Tr((u+iv)^2)=2u^2-2v^2$, which is indefinite. So positivity excludes every
+nonreal pair. (This is also the case of the form $T_1$ in the Hermite
+signature criterion of the polynomial-algebra report,
+\texttt{polynomial:thm:hermite}, applied over $F_{\Gamma_\Q}$.)
+
+Finally, elimination of the first variable in a positive quadratic form,
+repeated inductively, gives the usual no-pivot $LDL^{\mathsf T}$
+factorization, with diagonal entries $h_k/h_{k-1}$. This proves the
+equivalence with positivity of all leading determinants. It also shows that
+positivity over $F_\Gamma$ persists over the real closure. These are the
+classical Hermite and Sylvester criteria in this finite algebraic setting.
+\end{proof}
+
+This is the nondegenerate trace form of a squarefree algebra. It is not the
+discriminant-free residue pairing used elsewhere in the collection, in the
+finite-deformations and polynomial-algebra reports. At a repeated root the
+present trace form degenerates, so squarefree reduction is a substantive
+step, not a typographical choice. In the notation of the polynomial-algebra
+report, $H_p$ is the matrix of the Hermite form $T_1$ in the monomial basis
+(\texttt{polynomial:thm:hermite} there). That theorem works over a real
+closed field, where $\Gamma/2\Gamma=0$ and every invariant of this section is
+trivial.
+
+Read as a Hankel matrix of unit-weight power moments, the identity
+$H_p=V^{\mathsf T}V$ is also the classical moment identity behind Prony's
+method. The report \path{docs/surcomplex/prony-reconstruction-at-surreal-scales/}
+is built on weighted versions of it. It shares only this classical
+Hankel/moment identity with the present section, and no theorem: it studies
+the metric stability of perturbed weighted moments and uses neither square
+classes nor leading principal minors.
+
+\subsection{The exact splitting field}
+\label{spec:hank:sub:field}
+
+\begin{theorem}[Subdiscriminants give the entire splitting field]
+\label{spec:hank:thm:field}
+Let $p\in F_\Gamma[X]$ be monic, squarefree, real-rooted, and of degree
+$n\ge1$, and let $L_p$ be its splitting field inside $F_{\Gamma_\Q}$. Then
+\begin{equation}\label{spec:hank:eq:exactfield}
+ L_p=F_\Gamma\bigl(\sqrt{h_1},\ldots,\sqrt{h_n}\bigr)
+    =F_{\Gamma+\sum_k\Z\,v(h_k)/2}=F_{\Lambda_p}.
+\end{equation}
+It has degree $2^{r_p}$ and Galois group $\Hom(D_p,\{\pm1\})$. The splitting
+field over $K_\Gamma$ is exactly $K_{\Lambda_p}$, with the same degree and
+Galois group.
+\end{theorem}
+\begin{proof}
+\emph{The upper field.} The trace matrix has a no-pivot factorization
+\[
+ H_p=L\diag(\pi_1,\ldots,\pi_n)L^{\mathsf T},
+ \qquad \pi_k=h_k/h_{k-1}>0,
+\]
+with $L$ lower unitriangular over $F_\Gamma$. Adjoining all $\sqrt{\pi_k}$
+and adjoining all $\sqrt{h_k}$ give the same field, since
+$h_k=\prod_{j\le k}\pi_j$. By \cref{spec:hank:cor:adjoin} this field is
+$E=F_{\Lambda_p}$.
+
+Over $E$ set $C=\diag(\sqrt{\pi_1},\ldots,\sqrt{\pi_n})L^{\mathsf T}$, so
+$H_p=C^{\mathsf T}C$. Multiplication by $X$ is self-adjoint for the trace form:
+\[
+ M^{\mathsf T}H_p=H_pM,
+\]
+since the two sides express the equality of $\Tr((Xu)w)$ and $\Tr(u(Xw))$.
+Hence $N=CMC^{-1}$ is symmetric. The real case of \cref{spec:thm:hermitian},
+applied over the Hahn field $E$, places all eigenvalues of $N$ in $E$. Its
+characteristic polynomial is $p$. So $p$ splits over $E$, and its splitting
+field satisfies $L_p\subseteq E$.
+
+\emph{Exactness of the upper field.} The extension $E/F_\Gamma$ is finite
+elementary abelian. By \cref{spec:hank:lem:intermediate} its intermediate
+field $L_p$ is itself a full Hahn field $F_{\Lambda'}$, and so it is
+Pythagorean (\cref{spec:lem:normroot}). The roots of $p$ belong to $L_p$, and
+\eqref{spec:hank:eq:subdisc} writes each $h_k$ as a finite sum of squares of
+elements of $L_p$. Each $h_k$ is nonzero, so its positive square root lies in
+$L_p$. Thus
+\[
+ E=F_\Gamma(\sqrt{h_1},\ldots,\sqrt{h_n})\subseteq L_p.
+\]
+This proves equality, not merely a ramification bound. The degree and Galois
+group follow from \cref{spec:hank:cor:adjoin,spec:hank:lem:intermediate}.
+
+\emph{Complexification.} The polynomial already has all its roots in the
+real field $L_p$, and $L_p(i)=K_{\Lambda_p}$. Since $L_p$ is ordered, it
+does not contain $i$, and its intersection with the quadratic extension
+$F_\Gamma(i)$ is $F_\Gamma$. The finite Galois extensions are therefore
+linearly disjoint, and adjoining $i$ preserves the degree and the Galois
+action on the roots. This proves the complex statement.
+\end{proof}
+
+\begin{corollary}[A root-free splitting criterion]\label{spec:hank:cor:split}
+Under the hypotheses of \cref{spec:hank:thm:field}, $p$ splits over $F_\Gamma$
+if and only if every $v(h_k)$ lies in $2\Gamma$. This is also equivalent to
+splitting over $K_\Gamma$.
+\end{corollary}
+
+\begin{corollary}[A coefficient-defined primitive element]\label{spec:hank:cor:primitive}
+Choose indices $k_1,\ldots,k_r$ such that the classes $v(h_{k_j})+2\Gamma$
+form a basis of $D_p$. If $r>0$, then
+\[
+ \theta_p=\sqrt{h_{k_1}}+\cdots+\sqrt{h_{k_r}}
+\]
+is a primitive element of the entire splitting field, over either $F_\Gamma$
+or $K_\Gamma$. For $r=0$ the field is the base field.
+\end{corollary}
+\begin{proof}
+Each summand is supported in the distinct coset $v(h_{k_j})/2+\Gamma$. A sign
+character fixing the sum must fix each summand, since different cosets
+cannot cancel. It therefore fixes a basis of the character-dual group of the
+extension, and it is the identity. The stabilizer is trivial, so the degree
+of $\theta_p$ equals that of the whole extension.
+\end{proof}
+
+The argument is the positive-coset argument of \cref{spec:lem:positivetrace}.
+That lemma needs no choice of basis: applied with $a_k=h_k$, $q=2$ and all
+weights $1$, and combined with the tower argument of
+\cref{spec:cor:realtrace}, it gives the same conclusion for
+$\sum_{k=1}^n\sqrt{h_k}$. (This observation is made in the present merge; it
+is not a statement of the source manuscript.) The radical generators are
+chosen from the \emph{coefficients} of $p$, through its subdiscriminants. They
+need not themselves be roots of $p$. So this construction must be
+distinguished from the primitive trace of \cref{spec:thm:primitivetrace} for
+principal matrix roots: it is not a spectral functional, and it does not
+answer the question on spectral functionals raised in \cref{sec:scope}.
+
+\begin{remark}[The Hankel span and the determinantal root group]
+\label{spec:hank:rem:twoinvariants}
+The two invariants are related only through the Gram structure. Over the
+splitting field, $H_p=V^{\mathsf T}V$ is a Gram factorization with $V$ real
+over $L_p=F_{\Lambda_p}$. So \cref{spec:cor:gramcriterion}, applied with base
+group $\Lambda_p$, gives $\Delta_k(H_p)\in2\Lambda_p$ for every $k$; that is,
+every class $\Delta_k(H_p)+2\Gamma$ lies in $D_p$, and
+$R_2(H_p)\subseteq D_p$. (This consistency check is made in the present merge
+and is not a statement of the source manuscript.) Only this inclusion is
+asserted. The profile $m_p$, which counts factors, is read from the leading
+principal minors, and nothing here relates it to the $\Delta_k$.
+\end{remark}
+
+\subsection{The pivot profile counts irreducible factors}
+\label{spec:hank:sub:profile}
+
+\Cref{spec:hank:thm:field} uses the span of the valuation classes. The next
+theorem keeps their multiplicities. Its proof needs a small
+valuation-theoretic fact about positive quadratic forms, which is proved
+rather than assumed.
+
+\begin{lemma}[Square-class multiplicities are invariant under congruence]
+\label{spec:hank:lem:graded}
+Let $\phi$ be a positive definite quadratic form on a finite-dimensional
+$F_\Gamma$-space $V$. In any diagonal expression
+\[
+ \phi(x)=a_1x_1^2+\cdots+a_nx_n^2,\qquad a_j>0,
+\]
+the number of indices with $v(a_j)+2\Gamma=\xi$ depends only on $\phi$ and
+$\xi$, not on the diagonalization.
+\end{lemma}
+\begin{proof}
+For $x\ne0$ define $w_\phi(x)=\tfrac12v(\phi(x))\in\tfrac12\Gamma$, and put
+$w_\phi(0)=\infty$. In the displayed diagonal basis, positivity of every
+summand yields
+\begin{equation}\label{spec:hank:eq:formval}
+ w_\phi(x)=\min_{x_j\ne0}\bigl(v(x_j)+\tfrac12v(a_j)\bigr).
+\end{equation}
+In particular $w_\phi(x+y)\ge\min(w_\phi(x),w_\phi(y))$. For
+$\eta\in\tfrac12\Gamma$ let
+\[
+ V_{\ge\eta}=\{x:w_\phi(x)\ge\eta\},\quad
+ V_{>\eta}=\{x:w_\phi(x)>\eta\},\quad
+ \operatorname{gr}_\eta(V,\phi)=V_{\ge\eta}/V_{>\eta}.
+\]
+This is a vector space over the constant field $\R$.
+
+Put $\nu_j=v(a_j)/2$. By \eqref{spec:hank:eq:formval} a coordinate can
+contribute to the quotient at level $\eta$ precisely when
+$\eta-\nu_j\in\Gamma$. For each such coordinate take the coefficient of
+$t^{\eta-\nu_j}$ in $x_j$. These coefficients define a surjective map
+\[
+ V_{\ge\eta}\longrightarrow
+ \R^{\{j:\eta-\nu_j\in\Gamma\}}
+\]
+whose kernel is exactly $V_{>\eta}$. For coordinates not indexed on the
+right, equality with level $\eta$ is impossible, so their whole contribution
+is already strictly above that level. Hence
+\[
+ \dim_\R\operatorname{gr}_\eta(V,\phi)
+   =\#\{j:v(a_j)+2\Gamma=2\eta+2\Gamma\}.
+\]
+The left side is defined from $\phi$ alone. Taking any representative $\eta$
+of the desired half-coset proves the lemma. The proof makes no assumption
+about the existence of a next valuation above $\eta$.
+\end{proof}
+
+For the trace form $\tau_p(u)=\Tr(u^2)$ of $F_\Gamma[X]/(p)$, the
+$LDL^{\mathsf T}$ diagonalization has entries $\pi_k=h_k/h_{k-1}$. So
+\cref{spec:hank:lem:graded} makes $m_p$ an invariant of the positive trace
+form itself.
+
+\begin{theorem}[Factor-count and character-profile theorem]
+\label{spec:hank:thm:profile}
+Let $p$ satisfy the hypotheses of \cref{spec:hank:thm:field}, and factor it
+over $F_\Gamma$ as $p=p_1\cdots p_b$ into distinct monic irreducibles. For a
+root of $p_j$, let its field be $F_{\Lambda_j}$, and identify
+\[
+ D_j=2\Lambda_j/2\Gamma\subseteq\Gamma/2\Gamma.
+\]
+Then, for every class $\xi$,
+\begin{equation}\label{spec:hank:eq:profile}
+ m_p(\xi)=\sum_{j=1}^b\mathbf 1_{D_j}(\xi).
+\end{equation}
+In particular
+\begin{equation}\label{spec:hank:eq:factorcount}
+ b=m_p(0)
+   =\#\{k:v(h_k)-v(h_{k-1})\in2\Gamma\}.
+\end{equation}
+The factor degrees are $\deg p_j=2^{\dim D_j}$, and $D_p=D_1+\cdots+D_b$.
+\end{theorem}
+\begin{proof}
+The splitting field $F_{\Lambda_p}/F_\Gamma$ has abelian Galois group, so every
+intermediate root field is Galois over the base. By
+\cref{spec:hank:lem:intermediate} it is a Hahn field $F_{\Lambda_j}$, with
+$2\Lambda_j\subseteq\Gamma$. Being normal, the root field already contains all
+roots of the irreducible polynomial $p_j$. Its degree is
+$|D_j|=2^{\dim D_j}$.
+
+The Chinese remainder isomorphism
+\[
+ F_\Gamma[X]/(p)\simeq\prod_{j=1}^b F_{\Lambda_j}
+\]
+identifies $\tau_p$ with the orthogonal sum of the field trace forms
+$\tau_j(z)=\Tr_{F_{\Lambda_j}/F_\Gamma}(z^2)$. For the $j$th field choose one
+monomial $t^{\eta_x}$ for each coset $x\in\Lambda_j/\Gamma$. The trace of a
+monomial with exponent outside $\Gamma$ is zero, since summing its sign
+characters cancels; the trace of $t^\gamma$ with $\gamma\in\Gamma$ is
+$|D_j|t^\gamma$. Distinct cosets $x\ne x'$ have $\eta_x+\eta_{x'}\notin\Gamma$,
+since the quotient has exponent $2$. So the monomial basis is orthogonal, and
+\begin{equation}\label{spec:hank:eq:fieldtrace}
+ \tau_j\simeq
+ \bigoplus_{x\in\Lambda_j/\Gamma}\bigl\langle |D_j|\,t^{2\eta_x}\bigr\rangle.
+\end{equation}
+All diagonal coefficients are positive, and their valuation classes are
+exactly the elements of $D_j$, each occurring once.
+
+Now compare \eqref{spec:hank:eq:fieldtrace}, summed over $j$, with the Hankel
+$LDL^{\mathsf T}$ diagonalization of the same form.
+\Cref{spec:hank:lem:graded} gives \eqref{spec:hank:eq:profile}. Every subspace
+$D_j$ contains zero, so the zero class has multiplicity $b$. The compositum of
+the root fields is the full splitting field, which also proves the asserted
+sum of subspaces.
+\end{proof}
+
+\begin{corollary}[Irreducibility without factorization]\label{spec:hank:cor:irreducible}
+A monic squarefree real-rooted $p$ is irreducible over $F_\Gamma$ if and only
+if exactly one of its pivot valuations $v(h_k/h_{k-1})$ lies in $2\Gamma$. The
+same test decides irreducibility over $K_\Gamma$. If $p$ is irreducible, then
+$m_p$ is the indicator function of $D_p$, and $n=2^{\dim D_p}$.
+\end{corollary}
+\begin{proof}
+The real assertion is \cref{spec:hank:thm:profile}. By
+\cref{spec:hank:thm:field}, adjoining $i$ does not change the Galois action on
+the roots. So the irreducible factors over the complexified base have the
+same degrees and the same number. For a single factor,
+\eqref{spec:hank:eq:profile} is exactly the indicator function of its
+subspace.
+\end{proof}
+
+The power-of-two phenomenon has older finite-rank precedents~\cite{KO08}.
+What the formula adds is a direct count from Hankel pivots in an
+arbitrary-rank workspace.
+
+\begin{corollary}[The root permutation character]\label{spec:hank:cor:character}
+Let $\mathcal G_p=\Gal(L_p/F_\Gamma)$, identified with $\Hom(D_p,\{\pm1\})$
+by \cref{spec:hank:thm:field}. In the permutation representation of
+$\mathcal G_p$ on the distinct roots, the
+character indexed by $\xi\in D_p$ occurs with multiplicity $m_p(\xi)$.
+Consequently, for each $g\in\mathcal G_p$,
+\[
+ \#\{\lambda:p(\lambda)=0,\ g\lambda=\lambda\}
+     =\sum_{\xi\in D_p}m_p(\xi)\,g(\xi).
+\]
+\end{corollary}
+\begin{proof}
+The roots of $p_j$ form one orbit, isomorphic to the quotient of $\mathcal
+G_p$ by the subgroup fixing $F_{\Lambda_j}$. Its permutation representation is
+the regular representation of that quotient, whose linear characters are
+exactly those indexed by $D_j$, each once. Summing over the orbits and using
+\eqref{spec:hank:eq:profile} gives the result. The trace of a permutation
+matrix is its number of fixed points.
+\end{proof}
+
+\begin{warning}[Factors are not base-field roots]\label{spec:hank:warn:factors}
+The quantity $m_p(0)$ counts irreducible \emph{factors}, not linear factors.
+An irreducible quartic has $m_p(0)=1$ but no root in the base field. In fact
+the whole profile need not determine the number of base-field roots;
+\cref{spec:hank:ex:ambiguity} gives an explicit example.
+\end{warning}
+
+\begin{theorem}[Realizability of the complete profile]\label{spec:hank:thm:realizable}
+A nonzero finitely supported function $m:\Gamma/2\Gamma\to\Z_{\ge0}$ is the
+Hankel square-class profile of a monic squarefree real-rooted polynomial over
+$F_\Gamma$ if and only if it can be written
+\[
+ m=\mathbf 1_{D_1}+\cdots+\mathbf 1_{D_b}
+\]
+for finitely many finite-dimensional subspaces $D_j\subseteq\Gamma/2\Gamma$,
+repetitions allowed. Whenever it can occur, it can occur with \emph{all roots
+positive and of valuation zero}. The degree is
+$\sum_\xi m(\xi)=\sum_j2^{\dim D_j}$.
+\end{theorem}
+\begin{proof}
+Necessity is \cref{spec:hank:thm:profile}. For sufficiency, choose for each
+$D_j$ a basis represented by positive elements
+$\gamma_{j1},\ldots,\gamma_{je_j}\in\Gamma$, and in its monomial extension set
+\[
+ \theta_j=t^{\gamma_{j1}/2}+\cdots+t^{\gamma_{je_j}/2}.
+\]
+Distinct sign choices give distinct conjugates, because the summands occupy
+distinct independent support cosets. So $\theta_j$ generates the whole
+extension of degree $2^{e_j}$. For $D_j=0$ put $\theta_j=0$. Choose pairwise
+distinct positive ordinary real numbers $\varrho_j$, and let $p_j$ be the
+minimal polynomial of $\varrho_j+\theta_j$. Its conjugates are all positive
+units of standard part $\varrho_j$. So different $p_j$ are coprime, each is
+real-rooted and squarefree, and its root field has subspace $D_j$. The product
+of the $p_j$ has the desired profile by \cref{spec:hank:thm:profile}.
+\end{proof}
+
+Consequently the irreducible factor-degree lists compatible with a profile
+are exactly the lists $(2^{\dim D_1},\ldots,2^{\dim D_b})$ coming from such
+indicator decompositions. This is a finite combinatorial classification, not
+a promise of an efficient search through subspaces. In particular
+$m(\xi)\le m(0)$ for all $\xi$, and $m(0)=1$ forces $m$ to be the indicator of
+one subspace. The decomposition need not be unique.
+
+\subsection{Base change, invariance and precision}
+\label{spec:hank:sub:functorial}
+
+\begin{theorem}[Exact base-change formulas]\label{spec:hank:thm:basechange}
+Let $\Gamma\subseteq\Gamma'$ be an inclusion of ordered abelian groups, let
+$j:\Gamma/2\Gamma\to\Gamma'/2\Gamma'$ be the induced map, and regard $p$ as a
+polynomial over $F_{\Gamma'}$. Its profile is the pushforward
+\[
+ m_{p,\Gamma'}(\xi')=\sum_{j(\xi)=\xi'}m_{p,\Gamma}(\xi).
+\]
+Its splitting group has rank $\dim j(D_p)$, and its number of irreducible
+factors is
+\begin{equation}\label{spec:hank:eq:basecount}
+ N_{\Gamma'}(p)=\sum_{\xi\in\ker j}m_p(\xi)
+       =\#\{k:v(h_k/h_{k-1})\in2\Gamma'\}.
+\end{equation}
+These statements also hold over $K_{\Gamma'}$.
+\end{theorem}
+\begin{proof}
+The Newton sums, the determinants and the positive pivot elements are
+unchanged by scalar extension (\cref{spec:prop:transport}), and their
+valuations are the images of the original valuations in $\Gamma'$. The
+displayed profile formula follows directly from the definition. The
+polynomial remains squarefree and real-rooted in the larger real closed
+ambient field. Apply \cref{spec:hank:thm:field,spec:hank:thm:profile} there.
+\end{proof}
+
+For a finite intermediate field $F_{\Lambda_T}$ of $L_p$, corresponding to
+$T\subseteq D_p$, the kernel on $D_p$ is exactly $T$. Thus
+$N_{\Lambda_T}(p)=\sum_{\xi\in T}m_p(\xi)$. At $T=0$ this is the factor count
+over the base; at $T=D_p$ it is $\sum_\xi m_p(\xi)=n$, as a splitting field
+requires. For a divisible $\Gamma'$ every class vanishes, which explains both
+why $p$ splits there and why using that enlarged group from the outset loses
+the original arithmetic. This is the polynomial form of
+\cref{spec:warn:degreedrop}: degrees can drop under enlargement of the base
+group, and \eqref{spec:hank:eq:basecount} says exactly how.
+
+\begin{proposition}[Additivity and affine invariance]\label{spec:hank:prop:invariance}
+For monic coprime squarefree real-rooted $p$ and $\tilde p$,
+\[
+ m_{p\tilde p}=m_p+m_{\tilde p},\qquad D_{p\tilde p}=D_p+D_{\tilde p}.
+\]
+For $a\in F_\Gamma^\times$, $c\in F_\Gamma$ and
+$p_{a,c}(X)=a^n p((X-c)/a)$, one has
+\[
+ h_k(p_{a,c})=a^{k(k-1)}h_k(p),\qquad
+ m_{p_{a,c}}=m_p,\qquad D_{p_{a,c}}=D_p.
+\]
+Indeed every individual pivot class, in its original index order, is
+unchanged by the affine substitution.
+\end{proposition}
+\begin{proof}
+For products, the trace algebra is a product and its trace form is an
+orthogonal sum; apply \cref{spec:hank:lem:graded}, or equivalently
+\cref{spec:hank:thm:profile}. For the affine assertion, the roots change from
+$\lambda_i$ to $a\lambda_i+c$. Each summand in \eqref{spec:hank:eq:subdisc}
+has $\binom{k}{2}$ squared differences, so it is multiplied by $a^{k(k-1)}$.
+Consecutive determinant valuations therefore change by $2(k-1)v(a)$, which is
+zero modulo $2\Gamma$.
+\end{proof}
+
+Affine invariance is useful for examples: any bounded real root configuration
+may be translated into a positive finite monad without changing its
+square-class arithmetic.
+
+\begin{theorem}[Stability of the complete profile]\label{spec:hank:thm:precision}
+Let $p$ be monic, squarefree and real-rooted of degree $n$, and let $\tilde p$
+be any monic polynomial of the same degree over $F_\Gamma$. If
+\begin{equation}\label{spec:hank:eq:precision}
+ v\bigl(h_k(\tilde p)-h_k(p)\bigr)>v(h_k(p))
+       \qquad(1\le k\le n),
+\end{equation}
+then $\tilde p$ is also squarefree and real-rooted, and
+\[
+ m_{\tilde p}=m_p,\qquad D_{\tilde p}=D_p,\qquad L_{\tilde p}=L_p
+\]
+as Hahn subfields of the fixed ambient field. The irreducible factor counts
+remain identical after every ordered Hahn base enlargement.
+\end{theorem}
+\begin{proof}
+A perturbation of strictly larger valuation preserves both the valuation and
+the leading coefficient of a nonzero Hahn element. So every $h_k(\tilde p)$
+has the same valuation as $h_k(p)$ and is positive, and
+\cref{spec:hank:prop:hermite} shows that $\tilde p$ is squarefree and
+real-rooted. Equality of all determinant valuations gives equality of all
+pivot classes, hence of the profiles and their spans. The exact splitting
+fields are the Hahn fields specified by the same span. Finally apply
+\cref{spec:hank:thm:basechange}.
+\end{proof}
+
+\begin{corollary}[A sufficient coefficient precision for integral inputs]
+\label{spec:hank:cor:coeffprecision}
+Assume that the coefficients of $p$ lie in $\OO_F$, and set
+$\eta=\max_{1\le k\le n}v(h_k(p))$. If every coefficient difference between
+the monic degree-$n$ polynomials $p$ and $\tilde p$ has valuation strictly
+greater than $\eta$, the conclusions of \cref{spec:hank:thm:precision} hold.
+\end{corollary}
+\begin{proof}
+The determinants $h_k$ are integer polynomials in the coefficients, so
+$h_k(p)\in\OO_F$ and $\eta\ge0$. The assumed differences make the coefficients
+of $\tilde p$ integral as well. Expand a difference of polynomial values by
+telescoping products. Each term contains at least one coefficient difference
+of valuation greater than $\eta$ and otherwise only integral factors, so its
+valuation exceeds $\eta$. There are finitely many terms, so the same holds for
+$h_k(\tilde p)-h_k(p)$, which proves \eqref{spec:hank:eq:precision}.
+\end{proof}
+
+The certificate is sufficient, not optimal. It certifies field and
+factor-count invariants, not equality of roots or of all their series
+coefficients, and there is no topological convergence argument hidden in it.
+One must actually know the required precision in the ordered group;
+repeatedly increasing a smaller Archimedean scale may never reach $\eta$.
+Precision certificates in the collection sit at different levels and
+should be cross-referenced, not merged: this one on the Hankel determinants,
+\cref{thm:precision} on singular scales, the polynomial-algebra report's
+stability theorem on coefficients (\texttt{polynomial:thm:stability}), and
+the Prony report's on moments.
+
+\subsection{Definite pencils and sharp dimension bounds}
+\label{spec:hank:sub:pencils}
+
+Let $A=A^*$ and $B=B^*\succ0$ be $n\times n$ matrices over $K_\Gamma$.
+Positivity means $z^*Bz>0$ for every nonzero vector, and conjugation acts
+coefficientwise, fixing every $t^\gamma$. (This is the generalized
+eigenproblem of \cref{sec:spectral}, with its pair $(H,G)$ renamed $(A,B)$.)
+The generalized characteristic polynomial
+\begin{equation}\label{spec:hank:eq:pencilpoly}
+ p_{A,B}(X)=\frac{\det(XB-A)}{\det B}
+\end{equation}
+is monic of degree $n$ and has real coefficients, since conjugating each
+determinant gives the determinant of its transpose. In the real closed
+ambient field, $B$ has a positive square root and $B^{-1/2}AB^{-1/2}$ is
+Hermitian; its eigenvalues are real by the finite-dimensional
+real-closed-field spectral argument of \cref{thm:spectral}. So
+\eqref{spec:hank:eq:pencilpoly} is real-rooted. These standard reductions are
+not new. The point below is the \emph{minimal} field, not the existence of an
+ambient one.
+
+\begin{theorem}[Exact eigenvalue fields of definite pencils]\label{spec:hank:thm:pencil}
+Let $p$ be the monic squarefree part of \eqref{spec:hank:eq:pencilpoly}, of
+degree $d$. The field generated over $K_\Gamma$ by the generalized
+eigenvalues is $K_{\Lambda_p}$, where $\Lambda_p$ is computed from the $d$
+Hankel subdiscriminants of $p$. Its degree is $2^{r_p}$, and
+\[
+ r_p\le\min\bigl(\lfloor d/2\rfloor,\ d-m_p(0)\bigr).
+\]
+The number of irreducible factors of the generalized eigenvalue polynomial
+$p$ is $m_p(0)$.
+\end{theorem}
+\begin{proof}
+After \cref{spec:hank:thm:field,spec:hank:thm:profile,spec:hank:cor:irreducible}
+only the rank bounds remain. More generally, let a squarefree real-rooted
+polynomial of degree $d$ have irreducible factor fields described by the
+subspaces $D_1,\ldots,D_b$, with $e_j=\dim D_j$. Then
+\[
+ r_p=\dim(D_1+\cdots+D_b)\le\sum_je_j,
+ \qquad d=\sum_j2^{e_j},\qquad b=m_p(0).
+\]
+For $e\ge1$ we have $2e\le2^e$, and for all $e\ge0$ we have $e\le2^e-1$.
+Summing proves $2r_p\le d$ and $r_p\le d-b$. Equivalently, the first bound is
+the elementary bound on the minimal faithful permutation degree of an
+elementary abelian $2$-group.
+\end{proof}
+
+\begin{warning}[Eigenvalues versus normalized eigenvectors]\label{spec:hank:warn:normalization}
+\Cref{spec:hank:thm:pencil} identifies the eigenvalue field, not the least
+field containing a $B$-orthonormal eigenbasis. Even the one-dimensional
+pencil $A=B=t^\gamma$ has eigenvalue $1$ in the base field, while a vector of
+$B$-norm $1$ requires $t^{-\gamma/2}$ when $\gamma\notin2\Gamma$. A
+non-normalized eigenbasis is available over the eigenvalue splitting field,
+because the split generalized operator is semisimple; normalizing that basis
+may require additional positive square roots.
+\end{warning}
+
+\begin{theorem}[A positive definite realization in dimension $2r$]
+\label{spec:hank:thm:realization}
+Let $D\subseteq\Gamma/2\Gamma$ have finite dimension $r\ge1$. There is a real
+symmetric positive definite pencil of size $2r$ over $F_\Gamma$ whose
+eigenvalue splitting field has ramification space exactly $D$. Every
+eigenvalue is positive, finite and of valuation zero. No definite pencil of
+smaller size can have this ramification space.
+\end{theorem}
+\begin{proof}
+Choose positive representatives $\gamma_1,\ldots,\gamma_r\in\Gamma$ of a basis
+of $D$; replacing a nonzero representative by its negative does not change
+its class modulo $2\Gamma$. Put $a_j=t^{\gamma_j}$, so $0<a_j<1$. For each $j$
+take
+\begin{equation}\label{spec:hank:eq:block}
+ B_j=\begin{pmatrix}1&0\\0&a_j\end{pmatrix},\qquad
+ A_j=\begin{pmatrix}1&a_j\\a_j&a_j\end{pmatrix}.
+\end{equation}
+The leading principal minors of $A_j$ are $1$ and $a_j(1-a_j)$, which are
+positive, and $B_j$ is plainly positive definite. Direct calculation gives
+\[
+ \frac{\det(XB_j-A_j)}{\det B_j}=(X-1)^2-a_j.
+\]
+The eigenvalues are $1\pm t^{\gamma_j/2}$, which are positive units. They are
+distinct within each pair and across different pairs, since the $a_j$ have
+distinct nonzero square classes. Their collective field is
+$F_\Gamma(t^{\gamma_1/2},\ldots,t^{\gamma_r/2})$. Take the block direct sums of
+all $A_j$ and all $B_j$.
+
+Conversely, a smaller pencil has fewer than $2r$ distinct eigenvalues,
+contradicting the rank bound of \cref{spec:hank:thm:pencil}.
+\end{proof}
+
+This realizes arbitrary independent half-scales while ordinary leading
+magnitudes see only the repeated value $1$. It also separates two notions of
+minimal dimension: the field generated \emph{collectively} by the spectrum
+needs only $2r$ dimensions, while one primitive eigenvalue needs $2^r$.
+
+\begin{proposition}[One primitive eigenvalue costs $2^r$ dimensions]
+\label{spec:hank:prop:single}
+For the field of \cref{spec:hank:thm:realization}, an eigenvalue generating
+the entire extension of degree $2^r$ requires a pencil of size at least
+$2^r$. There is a positive definite pencil of that size with all eigenvalues
+positive units and every eigenvalue primitive.
+\end{proposition}
+\begin{proof}
+An eigenvalue of an $n\times n$ pencil has minimal polynomial of degree at
+most $n$, which proves the lower bound. For existence, write
+$E=F_\Gamma(t^{\gamma_1/2},\ldots,t^{\gamma_r/2})$ and set
+\[
+ \lambda=1+t^{\gamma_1/2}+\cdots+t^{\gamma_r/2}.
+\]
+Its $2^r$ sign conjugates are distinct, because the summands lie in
+independent, distinct support cosets. All are positive units, since a finite
+sum of positive infinitesimals is infinitesimal. So $\lambda$ is primitive.
+
+Choose a monomial basis $e_1,\ldots,e_{2^r}$ of $E/F_\Gamma$ and define
+\[
+ B_{ij}=\Tr_{E/F_\Gamma}(e_ie_j),\qquad
+ A_{ij}=\Tr_{E/F_\Gamma}(\lambda e_ie_j).
+\]
+These are real symmetric matrices over the base field. For $u\ne0$ in $E$ all
+conjugates of $u$ are nonzero, so
+\[
+ \Tr(u^2)=\sum_g g(u)^2>0,\qquad
+ \Tr(\lambda u^2)=\sum_g g(\lambda)g(u)^2>0.
+\]
+Hence $A$ and $B$ are positive definite. If $M_\lambda$ is multiplication by
+$\lambda$, then $A=BM_\lambda$. The generalized characteristic polynomial is
+therefore the minimal polynomial of $\lambda$, and the eigenvalues are exactly
+the sign conjugates described above.
+\end{proof}
+
+The sum-of-independent-radicals construction has a direct antecedent in
+Keller--Ochsenius~\cite{KO08}. Its role here is to calibrate the collective
+$2r$ bound against the single-root $2^r$ bound, not to claim that such
+primitive radicals are new.
+
+\subsection{Examples and limitations}
+\label{spec:hank:sub:examples}
+
+\begin{example}[A quadratic whose roots hide their ramification]\label{spec:hank:ex:quadratic}
+For $p(X)=(X-1)^2-t^\gamma$,
+\[
+ H_p=\begin{pmatrix}2&2\\2&2+2t^\gamma\end{pmatrix},
+ \qquad h_1=2,\qquad h_2=4t^\gamma.
+\]
+The pivot classes are $0$ and $\gamma+2\Gamma$. If $\gamma\notin2\Gamma$, the
+polynomial is irreducible and its splitting field has degree $2$, although
+both roots have valuation zero. This is also the single block
+\eqref{spec:hank:eq:block}. For comparison, $X^2-(1+t^\gamma)$ has
+$h_2=4(1+t^\gamma)$, of valuation zero, so both pivot classes vanish and it
+has two factors over $F_\Gamma$: the positive binomial square root stays in
+the original group.
+\end{example}
+
+In the next three examples fix $\delta,\Omega\in\Gamma$ with
+$0<\delta<\Omega$ whose classes $\bar\delta,\bar\Omega$ modulo $2\Gamma$ are
+independent, and put $a=t^\delta$, $b=t^\Omega$; bars denote classes modulo
+$2\Gamma$. The group $\Z\delta\oplus\Z\Omega$ of \cref{spec:ex:biquadratic}
+is one instance.
+
+\begin{example}[Two quadratic factors and two independent scales]\label{spec:hank:ex:pair}
+For $p_{\mathrm{pair}}(X)=(X^2-a)(X^2-b)$,
+\begin{align*}
+ h_1&=4,&h_2&=8(a+b),\\
+ h_3&=8(a-b)^2(a+b),&h_4&=16ab(a-b)^4.
+\end{align*}
+Since $v(a+b)=v(a-b)=\delta$, the determinant valuations are
+\[
+ \bigl(v(h_1),v(h_2),v(h_3),v(h_4)\bigr)=(0,\delta,3\delta,5\delta+\Omega),
+\]
+and the consecutive pivot classes are $(0,\bar\delta,0,\bar\Omega)$. The coefficient formula gives
+two irreducible factors and splitting degree $4$, in agreement with the
+displayed factorization. The full discriminant alone sees only the class
+$\bar\delta+\bar\Omega$; it cannot specify the whole two-dimensional
+extension space.
+\end{example}
+
+\begin{example}[An irreducible quartic with a square discriminant]\label{spec:hank:ex:quartic}
+Consider
+\[
+ p_{\mathrm{prim}}(X)=X^4-2(a+b)X^2+(a-b)^2,
+\]
+with roots $\pm\sqrt a\pm\sqrt b$. With $a,b$ renamed $t,u$ it is the
+minimal polynomial \eqref{spec:eq:biquadratic} of the primitive trace in
+\cref{spec:ex:biquadratic}. Its Hankel determinants are
+\begin{align*}
+ h_1&=4,&h_2&=16(a+b),\\
+ h_3&=256ab(a+b),&h_4&=4096a^2b^2(a-b)^2.
+\end{align*}
+The last is the square $[64ab(a-b)]^2$ in the base field. Nevertheless the
+determinant valuations are $0,\delta,2\delta+\Omega,4\delta+2\Omega$, and the
+pivot classes are $(0,\bar\delta,\bar\delta+\bar\Omega,\bar\Omega)$. Exactly one
+pivot class is zero, so the polynomial is irreducible and its splitting field
+is the full biquadratic extension. This can be checked independently: the
+four sign conjugates of $\sqrt a+\sqrt b$ are distinct, so its minimal
+polynomial has degree $4$, which is how \cref{spec:ex:biquadratic} certifies
+the degree. The determinant calculation is a root-free certificate of the
+same fact.
+
+For an explicit surreal interpretation take $\Gamma=\Z+\Z\omega\subset\No$,
+$\delta=1$, $\Omega=\omega$, so $a=\omega^{-1}$ and $b=\omega^{-\omega}$. The
+new exponent classes needed are $1/2$ and $\omega/2$. Translating $X$ by $1$
+makes all four roots positive units and leaves the whole profile unchanged
+(\cref{spec:hank:prop:invariance}).
+\end{example}
+
+\begin{example}[The profile does not recover all factor degrees]\label{spec:hank:ex:ambiguity}
+Define two polynomials of degree six,
+\[
+ P(X)=p_{\mathrm{prim}}(X)(X-2)(X-3),\qquad
+ Q(X)=(X^2-a)(X^2-b)(X^2-ab).
+\]
+Their roots are distinct: all radical roots are infinitesimal, the constants
+$2,3$ are different, and $a,b,ab$ have different nonzero square classes. The
+factor degrees are $4,1,1$ for $P$ and $2,2,2$ for $Q$. By
+\cref{spec:hank:thm:profile} both have the same profile,
+\[
+ m(0)=3,\qquad
+ m(\bar\delta)=m(\bar\Omega)=m(\bar\delta+\bar\Omega)=1.
+\]
+Both have three irreducible factors and the same splitting field of degree
+four, and they have the same number of irreducible factors after every
+ordered Hahn base enlargement (\cref{spec:hank:thm:basechange}). But $P$ has
+two base-field roots and $Q$ has none. So the profile must not be advertised
+as a complete reconstruction of the Galois set of roots or of the list of
+factor degrees. The underlying representation identity is elementary: for
+the group $(\Z/2)^2$, one regular orbit together with two fixed points has
+the same permutation character as the union of its three distinct orbits of
+index two. The profile detects that representation, not the finer
+orbit-by-orbit structure.
+\end{example}
+
+\begin{example}[Shared scales need not give independent extensions]\label{spec:hank:ex:shared}
+Over $\Gamma=\Z$ the polynomial $(X^2-t)(X^2-t^3)$ has two irreducible
+quadratic factors, but its splitting field is only $F_{\frac12\Z}$, since
+$\sqrt{t^3}=t\sqrt t$. Its profile has two occurrences of $0$ and two of the
+unique nonzero class. So the factor count is $2$ and the splitting rank is
+$1$. Counting visible radical expressions instead of independent square
+classes would wrongly predict degree $4$.
+\end{example}
+
+\begin{warning}[The hypotheses are needed]\label{spec:hank:warn:hypotheses}
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Real roots.} The polynomial $X^3-t$ over $F_\Z$ is not
+real-rooted: it has one real root and a nonreal conjugate pair. Its Hankel
+matrix is not positive definite (already $h_2=0$), and its complex splitting
+field requires $t^{1/3}$. So no ``only half-scales'' principle for all
+polynomials follows from this section.
+\item \emph{Squarefreeness.} A polynomial with repeated roots must first be
+replaced by its monic squarefree part. For $(X^2-t)^3$ the unreduced trace
+matrix of size six is singular; treating its zero determinants as ordinary
+valuations, or dividing by them, is invalid. The correct squarefree
+polynomial of degree two has the quadratic profile computed above.
+\item \emph{Real closed constants.} Over $\Q((t^\Gamma))$ positive constants
+need not be squares, and irreducible residue polynomials can create
+extensions not described by $\Gamma/2\Gamma$. The hypothesis of real closed
+constant coefficients cannot be silently omitted.
+\item \emph{A field, not a multivariable ring.} A multivariable formal
+power-series ring is not a totally ordered Hahn field: the crossing matrix
+\eqref{spec:eq:crossing} of \cref{spec:warn:crossing} has eigenvalues
+$\pm\sqrt{x^2+y^2}$, which do not belong to $\C[[x,y]]$. The multiparameter
+results of~\cite{PR,DLLZ} have different hypotheses and are not consequences
+of the workspace formulas here.
+\end{enumerate}
+\end{warning}
+
+\subsection{The exact-operation contract}
+\label{spec:hank:sub:contract}
+
+The formulas are finite, but arbitrary Hahn numbers do not automatically come
+with effective representations. The following procedure is an algorithm
+relative to explicit scalar and value-group operations.
+
+Given a nonconstant polynomial over $F_\Gamma$, first make it monic and compute
+its monic squarefree part using $\gcd(p,p')$. For the reduced degree $n$,
+compute the Newton sums through $s_{2n-2}$, form $H_p$, and perform exact
+symmetric elimination. If the leading determinants are not all positive, the
+input does not satisfy the real-rooted squarefree hypothesis, and the
+factor-count formulas are not applied. For a successful input the pivots are
+all nonzero and positive, and the rest is small:
+\begin{equation}\label{spec:hank:eq:algorithm}
+ \begin{gathered}
+ \pi_k=h_k/h_{k-1},\qquad
+ \xi_k=v(\pi_k)+2\Gamma,\\
+ m(\xi)=\#\{k:\xi_k=\xi\},\qquad
+ b=m(0),\qquad
+ r=\dim_{\mathbf F_2}\Span\{\xi_1,\ldots,\xi_n\}.
+ \end{gathered}
+\end{equation}
+Return $b$, the profile, a basis of the span and the splitting degree $2^r$.
+A basis chosen instead from the cumulative classes $v(h_k)+2\Gamma$ gives the
+primitive-element certificate of \cref{spec:hank:cor:primitive}. No root
+extraction is needed to compute the invariants themselves.
+
+The required scalar operations are exact field arithmetic, equality,
+order or sign, and the valuation of a nonzero element. The group
+representation must in addition decide the relevant linear relations modulo
+$2\Gamma$. A valuation oracle alone does not decide membership in $2\Gamma$;
+this is \cref{spec:warn:qgamma} at $q=2$. When $\Gamma\cong\Z^m$ is given with
+an explicit basis and an explicit compatible order, classes are coordinate
+vectors modulo $2$, and ordinary binary Gaussian elimination suffices (compare
+\eqref{spec:eq:latticedegree}). For more general groups this is a separate
+representation requirement.
+
+Constructing the Newton sums uses $O(n^2)$ field operations with the standard
+recurrences, and one $LDL^{\mathsf T}$ factorization uses $O(n^3)$; the
+determinants can be accumulated from its pivots rather than computed
+separately. These are arithmetic-operation counts. They are not bit-complexity
+bounds, and not bounds on the cost of an arbitrary Hahn-series oracle.
+Squarefree reduction, coefficient expression swell, valuation extraction and
+the cost of the quotient-group operations must be accounted for separately.
+
+A finite prefix is not a universal exact certificate. A truncated input can
+conceal a term at a previously unseen scale: a name known only to have
+initial part $(X-1)^2$ is compatible both with that repeated-root polynomial
+and with $(X-1)^2-t^\gamma$ beyond the inspected support, and the latter can
+have irreducible quadratic splitting at an odd class. Exact factorization
+information cannot be inferred from an uncertified finite prefix alone.
+\Cref{spec:hank:thm:precision} is the positive replacement: once the leading
+terms of the relevant nonzero Hankel determinants are certified, the profile
+and all the stated field data are certified as well. This matches the
+representation distinctions of the computer-algebra report~\cite{RepoCAS}
+and of \cref{spec:sec:contracts}.
+
+\subsection{Back inside the surreal numbers}
+\label{spec:hank:sub:transport}
+
+Let $\Gamma$ be a set-sized additive subgroup of $\No$. The normal-form map
+$\sum_\gamma a_\gamma t^\gamma\mapsto\sum_\gamma a_\gamma\omega^{-\gamma}$ embeds
+$F_\Gamma$ into $\No$, and coefficientwise complexification embeds $K_\Gamma$
+into $\SC$, as in \eqref{eq:workspace} and
+\cref{spec:prop:exactlocalization}. The reversed sign in the exponent is
+essential: increasing support for $t$ becomes decreasing support in the
+surreal normal-form convention, and the transported valuation of
+$\omega^{-\gamma}$ is $\gamma$. For finitely many surreal or surcomplex
+coefficients the union of their normal-form exponent supports is a set, and
+the subgroup it generates, after the sign conversion, is a legitimate choice
+of $\Gamma$; there is no need to replace it by its divisible hull.
+\Cref{spec:hank:thm:field,spec:hank:thm:profile} then determine exactly which
+half-cosets a real-rooted polynomial needs, and count its irreducible factors
+over that workspace. The same applies to the real generalized characteristic
+polynomial of a definite surcomplex pencil.
+
+\begin{warning}[Relative fields, not an extension of the whole surreal field]
+\label{spec:hank:warn:relative}
+The full surreal field is real closed, and it acquires no new real algebraic
+numbers from this construction. The extension being measured is
+$F_\Gamma\subseteq F_{\Lambda_p}$, both already embedded in $\No$. Similarly,
+$\SC$ already contains all the relevant complex algebraic roots. The theorems
+are about the exact exponent workspace required by finite data, not about a
+failure of algebraic closure of $\SC$; compare the remark after
+\cref{spec:cor:surcomplex}.
+\end{warning}
+
+Also, $F_\Gamma$ is not in general the smallest ordinary field generated by
+the finitely many coefficients: it contains \emph{all} real Hahn series on
+$\Gamma$. The splitting-field equality is relative to that explicitly stated
+base, not to a smaller rational-function or finitely generated coefficient
+field.
+
+Arbitrary rank is a genuine part of the statements. The example
+$\Gamma=\Z+\Z\omega$ already contains an exponent larger than every integer
+multiple of the smaller positive scale, and a general $\Gamma$ can have much
+larger rank, non-finitely generated subgroups and supports of long order
+type. Nevertheless every object in the coefficient certificate is finite: $n$
+determinants, $n$ pivot classes, and a finite-dimensional binary span. The
+proofs never turn a Hahn sum into an ordinary convergent sequence, or assume
+that one infinitesimal parameter controls all smaller scales. Divisibility is
+not assumed even locally. An equation such as $2\eta=\gamma$ is solved in the
+divisible ambient group only to specify the precise finite extension; whether
+its solution already belongs to $\Gamma$ remains visible throughout.
+
+\subsection{What this section claims, and what it does not}
+\label{spec:hank:sub:scope}
+
+This section is not a new spectral theorem. Hahn spectral descent is
+\cref{spec:sec:descent}, with the predecessors conceded in
+\cref{spec:sec:provenance}; spectral descent over suitable power-series
+fields is already in Adkins and Keller--Ochsenius~\cite{Adkins,KO}. Trace
+forms and the Hermite and Sylvester criteria are classical. The Hankel and
+Vandermonde-square descriptions of subdiscriminants are Roy's~\cite{Roy}, and
+their invariant-theoretic and sums-of-squares aspects are developed by
+Domokos~\cite{Domokos}. Keller and Ochsenius's 2008 paper treats positive
+inner-product spaces over finite-rank iterated Laurent fields, gives a
+multiquadratic upper field, obtains power-of-two irreducible degrees for
+self-adjoint operators, and exhibits irreducible operators built from sums of
+independent square roots~\cite{KO08}. No priority is claimed for those
+mechanisms or examples. The Parusi\'nski--Rond and Dai--Liang--Lu--Zhi
+results on several power-series parameters are relevant boundaries, not
+interchangeable versions of the field results here~\cite{PR,DLLZ}.
+
+The proposed addition is narrower: the \emph{exact} field
+\eqref{spec:hank:eq:exactfield}, the whole pivot multiplicity profile with its
+factor-count interpretation \eqref{spec:hank:eq:factorcount}, and their
+arbitrary-rank, base-change and precision consequences. The size bounds and
+pencil examples make the package concrete; their elementary group theory and
+classical radical constructions are not advertised as independent
+discoveries. The source's targeted search combined ``subdiscriminants'' with
+``splitting field'' and ``square classes'', and ``Hankel'' or ``trace form''
+with ``irreducible factors'' and ``valuation''. It did not locate
+\eqref{spec:hank:eq:exactfield} or \eqref{spec:hank:eq:factorcount}, or their
+full arbitrary-rank profile package. That is evidence about this search, not
+a proof of absence from the literature. The formulas may have equivalents in
+the language of quadratic trace forms, ordered valued fields or permutation
+characters. The package is a candidate original contribution with proofs,
+pending independent mathematical review and a broader priority check; no
+named published conjecture is claimed solved.
+
+The logical inputs are finite field theory, finite real spectral theory, and
+the standard Hahn support and real-closedness facts of
+\cref{sec:fields,spec:sec:descent}. The arguments are mathematical proofs, but
+they have not been independently refereed or checked by a proof assistant.
+The finite checks of \cref{app:checks} do not establish the general Hahn
+support theorem, the classification of intermediate fields
+(\cref{spec:hank:lem:intermediate}) or the graded-form invariant
+(\cref{spec:hank:lem:graded}), and the repository's existing formalizations
+are not asserted to verify this section. Its continuation questions are
+recorded in \cref{sec:scope}; they are directions, not theorems.
+
 \section{Rank at a chosen scale}\label{sec:rank}
 
 \subsection{Exact rank and standard-part rank}
@@ -2449,7 +3709,10 @@ The determinantal ramification computation of \cref{spec:sec:ramification}
 needs much less: exact valuations of finitely many minors, and a way to
 compute the finite subgroup generated by specified classes modulo
 $q\Gamma$. In a finite integer lattice \eqref{spec:eq:latticedegree} makes
-this a Smith normal form, hence a concrete algorithm.
+this a Smith normal form, hence a concrete algorithm. The Hankel certificates
+of \cref{spec:hank:sec:profiles} need the same kind of group data at $q=2$,
+together with exact sign tests for the positivity of the Hankel minors; their
+contract is spelled out in \cref{spec:hank:sub:contract}.
 
 \begin{warning}[Membership in $q\Gamma$ is extra data]\label{spec:warn:qgamma}
 For an abstract ordered group $\Gamma$ presented only through a black-box
@@ -3118,9 +4381,27 @@ generator of the whole extension. That the same $\Delta_k$ answers both the
 scale question and the arithmetic one is the point at which the two halves
 of this article meet.
 
+\Cref{spec:hank:sec:profiles} is the polynomial counterpart. For a monic
+squarefree real-rooted polynomial the leading principal minors of the
+Newton-sum Hankel matrix play the part of the $\Delta_k$: their square roots
+generate the exact splitting field, and their consecutive valuation classes,
+counted with multiplicity, give the number of irreducible factors over the
+base and over every ordered Hahn enlargement of it, with a finite precision
+certificate. The same computation gives the exact field of the generalized
+eigenvalues of a definite pencil, one of the items
+\cref{spec:rem:divisibility} used to list as needing divisibility. A
+normalized eigenbasis of the pencil can still need further roots, and the
+profile does not determine the list of factor degrees
+(\cref{spec:hank:warn:normalization,spec:hank:ex:ambiguity}).
+
 Several nearby subjects remain distinct. There is no theorem here about
 infinite-dimensional Hilbert spaces over $\SC$, bounded-operator spectra,
-compact or trace-class operators, or spectral measures. A support-controlled
+compact or trace-class operators, or spectral measures. A separate report
+now treats the first two of these, and operators that are compact on an
+ordinary Hilbert space, under its own hypotheses. No theorem of it is used
+here, and neither report treats trace-class operators or spectral measures.
+That report is
+\path{docs/surcomplex/infinite-dimensional-hahn-spectral-theory/}. A support-controlled
 Hahn expansion of an eigenbasis \emph{is} now available for a single matrix,
 over an arbitrary set-sized value group
 (\cref{spec:thm:hermitian,spec:cor:normal,spec:thm:svd}). There is still no
@@ -3150,9 +4431,22 @@ useful transseries subclasses. Another is to characterize smaller non-Hahn
 subfields closed under the separated-block construction, so that the full
 Hahn field can be replaced by a more economical domain. A third is to ask
 which other positive spectral functionals, beyond rational powers and their
-strictly positive sums, furnish similarly exact primitive generators. These
-are questions suggested by the results, not advertised as previously
-published open problems.
+strictly positive sums, furnish similarly exact primitive generators. The
+coefficient-defined primitive element of \cref{spec:hank:cor:primitive} is
+related, but it is not a spectral functional and does not answer this
+question. These are questions suggested by the results, not advertised as
+previously published open problems.
+
+The third manuscript adds three continuation questions of the same status,
+directions for further work rather than theorems. The subspace-indicator
+classification of profiles (\cref{spec:hank:thm:realizable}) suggests
+studying the complexity of recovering all compatible factor-degree lists,
+rather than only their number. Extracting the pivot parity information
+efficiently, without a full Hankel elimination, is an algorithmic question.
+And extending the field formula to residue fields that are not real closed
+would require keeping residue-field extensions and residue quadratic-form
+data, which the valuation-only certificate of \cref{spec:hank:sec:profiles}
+deliberately avoids.
 
 A formalization would have a natural order, which is worth recording
 because it is \emph{not} a report of code that has been compiled: positive
@@ -3166,7 +4460,15 @@ infinitesimals, with the universal separated-block projectors and their
 polar intertwiner, where the ordinary complex contour justification in
 \cref{spec:thm:split} could be replaced by formal resolvent identities or a
 formal Hensel block-lifting theorem; then dimension induction for the
-splitting tree; and finally the normal-form embeddings. This is a dependency
+splitting tree; and finally the normal-form embeddings. For real symmetric
+input, such a block-lifting route is now written out:
+\cref{spec:hank:lem:hensel,spec:hank:rem:hensel} replace the contour argument
+by coprime Hensel lifting through universal formal series and polynomial
+idempotents. That route does not reproduce the support certificate of
+\cref{spec:thm:split} or treat complex Hermitian input. The Hankel package of
+\cref{spec:hank:sec:profiles} would then need only finite field theory, the
+intermediate-field lemma \cref{spec:hank:lem:intermediate} and the graded-form
+invariant \cref{spec:hank:lem:graded}. This is a dependency
 proposal, not a claim that the full package has been formalized. Current
 checked prerequisites and source-claim mappings are recorded separately in
 \path{docs/FORMALIZATION.md}.
@@ -3176,9 +4478,11 @@ For the repository, this report sits at
 conventions of the foundations and polynomial-algebra reports and can be
 read independently of the analytic coefficient-ring machinery. The most
 useful cross-reference from polynomial algebra is the bridge from its Newton
-profiles to \cref{thm:gram,thm:residual}; the most useful cross-references
+profiles to \cref{thm:gram,thm:residual}, and its Hermite trace form $T_1$,
+which in the monomial basis is the Hankel matrix $H_p$ of
+\cref{spec:hank:sec:profiles}; the most useful cross-references
 to computer algebra are the exact-operation contract in \cref{sec:algorithm}
-and its two extensions in \cref{spec:sec:contracts}, where
+and its extensions in \cref{spec:sec:contracts,spec:hank:sub:contract}, where
 \cref{spec:warn:qgamma} names a decision that needs a capability tier the
 black-box order interface does not provide~\cite{RepoCAS}.
 
@@ -3232,6 +4536,25 @@ Primitive trace & Principal positive roots; strictly positive weights in
 $F_\Gamma$ & Nonzero coset sums and trivial character stabilizer\\
 Surcomplex interpretation & Set-supported normal forms; finite matrices
 & Exact input subgroup and the normal-form embedding\\
+\addlinespace
+Real principal axes, second route & Real symmetric input over $F_\Gamma$;
+arbitrary $\Gamma$ & Coprime Hensel lifting by universal formal series,
+polynomial idempotents, norm roots\\
+Intermediate half-scale fields & $\Gamma\subseteq\Lambda$, $\Lambda/\Gamma$ finite,
+$2\Lambda\subseteq\Gamma$ & Sign characters on support cosets and finite
+Galois theory\\
+Hankel trace form & Monic $p$ over $F_\Gamma$ & Newton sums,
+$H_p=V^{\mathsf T}V$, Cauchy--Binet, no-pivot $LDL^{\mathsf T}$\\
+Exact splitting field & Monic squarefree real-rooted $p$; constant field $\R$;
+arbitrary $\Gamma$ & Pivot roots make multiplication by $X$ symmetric;
+descent; intermediate Hahn fields are Pythagorean\\
+Factor count and profile & Same & Congruence invariance of square-class
+multiplicities; monomial trace forms of the root fields\\
+Base change and precision & An ordered inclusion $\Gamma\subseteq\Gamma'$;
+strict precision on every $h_k$ & Pushforward of classes; leading-term
+preservation\\
+Definite pencils & $A=A^*$, $B=B^*\succ0$ over $K_\Gamma$ & Squarefree part of
+$\det(XB-A)/\det B$; elementary $2$-group bounds\\
 \bottomrule
 \end{longtable}
 
@@ -3315,6 +4638,46 @@ the scripts. Both programs default their output directory to the shipped
 \texttt{data/}, so both must be run on a copy or with an explicit output
 path; the repository \textsc{readme} records the safe invocations.
 
+\subsection*{The third check suite}
+The material of \cref{spec:hank:sec:profiles} arrived with
+\path{code/03-hankel-ramification-check_examples.py}, an exact SymPy
+program. The file
+\path{data/03-hankel-ramification-requirements.txt} pins SymPy~1.14.0. The
+program uses Python
+\texttt{assert} statements, so it must not be run with \texttt{-O}. For six
+polynomials --- $X^2-a$, $(X-1)^2-a$, $p_{\mathrm{pair}}$, $p_{\mathrm{prim}}$,
+and the two polynomials $P$ and $Q$ of degree six of
+\cref{spec:hank:ex:ambiguity} --- it builds the companion matrix, the Newton
+sums as traces of its powers, the Hankel matrix and its leading minors, and
+asserts $M^{\mathsf T}H_p=H_pM$ and $h_n=\Disc(p)$. It then computes
+valuations, pivot classes, the profile, the factor count and the splitting
+degree. Valuations are exponent pairs in the explicit group $\Z+\Z\omega$,
+with $v(a)=1$ and $v(b)=\omega$, compared with the $\omega$-coordinate first;
+it is not an unspecified black-box ordered group. The program asserts the
+factor counts and splitting degrees of the displayed examples, the equality
+of the two degree-six profiles, the characteristic polynomial and leading
+minor of the $2\times2$ pencil block \eqref{spec:hank:eq:block}, the
+sign-product identity for the primitive quartic, the affine covariance
+$h_k\mapsto2^{k(k-1)}h_k$ on $p_{\mathrm{pair}}$, the squarefree reduction of
+$(X^2-a)^3$, and the discriminant $4096a^2b^2(a-b)^2$ of the primitive
+quartic. The factor counts and degrees it asserts are those the formulas of
+\cref{spec:hank:sec:profiles} predict from the computed valuations; they are
+not independent factorizations.
+
+The delivered run under SymPy~1.14.0 ended with ``ALL EXACT SYMBOLIC CHECKS
+PASSED''; its output is recorded in
+\path{data/03-hankel-ramification-verification_results.json} and
+\path{data/03-hankel-ramification-verification_output.txt}. The program
+records no assertion count. It was rerun for this collection on a copy,
+under Python~3.14.4 and SymPy~1.14.0, and reproduced both files exactly,
+apart from line endings. It writes \texttt{verification\_results.json} into
+its own directory, so in this layout it must also be run on a copy. It does
+not implement general infinite Hahn arithmetic, prove strong summability,
+certify the literature search or verify the theorems. In particular it does
+not check the general Hahn support theorem, the classification of
+intermediate fields (\cref{spec:hank:lem:intermediate}) or the graded-form
+invariant (\cref{spec:hank:lem:graded}).
+
 \section{Notation at a glance}
 \begin{longtable}{@{}P{.27\textwidth}P{.67\textwidth}@{}}
 \toprule Symbol & Meaning\\\midrule\endfirsthead
@@ -3343,6 +4706,14 @@ $R_q(A)$ & The subgroup of $\Gamma/q\Gamma$ generated by $\Delta_k(A)+q\Gamma$, 
 $\mu_q$ & The group of $q$th roots of unity in $\C^\times$\\
 $K(B)$ & The field obtained from $K$ by adjoining every entry of a finite matrix $B$\\
 $O_{\mathrm{formal}}(E^k)$ & A support-certified sum of monomials of formal degree at least $k$\\
+\addlinespace
+$\OO_F$ & The real valuation ring $\OO\cap F_\Gamma$\\
+$s_j$, $H_p$ & Newton sums of a monic polynomial $p$, and its Hankel matrix $(s_{i+j})_{0\le i,j<n}$\\
+$h_k=h_k(p)$ & The $k$th leading principal minor of $H_p$ (a Hankel subdiscriminant), $h_0=1$; not the coset $h_j$ of \cref{spec:lem:positivetrace}\\
+$\pi_k$, $\xi_k$ & The pivot $h_k/h_{k-1}$ and its class $v(\pi_k)+2\Gamma$\\
+$m_p$, $D_p$, $r_p$ & The Hankel square-class profile on $\Gamma/2\Gamma$, its span, and $\dim_{\mathbf F_2}D_p$; $D_p$ is not $R_2(A)$\\
+$\Lambda_p$, $L_p$ & $\Gamma+\sum_k\Z v(h_k)/2$, and the splitting field $F_{\Lambda_p}$ of $p$\\
+$p_{A,B}$ & $\det(XB-A)/\det B$ for a definite pencil\\
 \bottomrule
 \end{longtable}
 
@@ -3448,6 +4819,30 @@ matrices over fields of power series}, Annales math\'ematiques Blaise Pascal
 \href{https://ambp.centre-mersenne.org/item/AMBP_1995__2_1_169_0/}{Journal record}.
 Orthogonal diagonalization over iterated real Laurent-series fields and one
 infinite-rank Hahn field, by recursive block splitting.
+
+\bibitem{KO08}
+Hans A. Keller and Herminia Ochsenius A., \emph{Self-adjoint operators on
+inner product spaces over fields of power series}, Mathematica Slovaca
+\textbf{58}, no.~4 (2008), 455--482, especially Sections~2--4.
+\href{https://doi.org/10.2478/s12175-008-0087-y}{doi:10.2478/s12175-008-0087-y}.
+Multiquadratic upper fields, power-of-two irreducible degrees and sums of
+independent square roots for self-adjoint operators over finite-rank
+iterated Laurent fields; conceded as the antecedent of those features of
+\cref{spec:hank:sec:profiles}.
+
+\bibitem{Roy}
+Marie-Fran\c{c}oise Roy, \emph{Subdiscriminant of symmetric matrices are sums
+of squares}, in Mathematics, Algorithms, Proofs, Dagstuhl Seminar Proceedings
+\textbf{05021} (published 2006), 1--4; manuscript dated February 6, 2005.
+\href{https://doi.org/10.4230/DagSemProc.05021.20}{doi:10.4230/DagSemProc.05021.20}.
+The Hankel and Vandermonde-square descriptions of subdiscriminants.
+
+\bibitem{Domokos}
+M\'aty\'as Domokos, \emph{Invariant theoretic characterization of
+subdiscriminants of matrices}, Linear and Multilinear Algebra \textbf{62},
+no.~1 (2014), 63--73.
+\href{https://doi.org/10.1080/03081087.2012.762714}{doi:10.1080/03081087.2012.762714};
+\href{https://arxiv.org/abs/1206.2358}{arXiv:1206.2358}.
 
 \bibitem{PR}
 Adam Parusi\'nski and Guillaume Rond, Multiparameter perturbation theory of

@@ -3,7 +3,7 @@
 **Black-Hole Singularities, Asymptotic Structure, and the Limits of Replacing
 the Scalar Field**
 
-A merged research report, 79 pages. The three source manuscripts it merges are not
+A merged research report, 80 pages. The three source manuscripts it merges are not
 reproduced here; `code/` and `data/` hold their verification material, preserved as
 delivered.
 
@@ -365,7 +365,7 @@ If `latexmk` is unavailable, run `pdflatex -interaction=nonstopmode` three
 times so the table of contents, the cross-references and the `cleveref` labels
 settle. The delivered build has **zero LaTeX errors, zero warnings, zero
 undefined references or citations, zero multiply-defined labels, zero duplicate
-destinations, and zero overfull or underfull boxes**, at 79 pages. (The title
+destinations, and zero overfull or underfull boxes**, at 80 pages. (The title
 page sets `pageanchor=false` and the front matter is roman-numbered, which is
 what keeps the page-anchor destinations unique.)
 

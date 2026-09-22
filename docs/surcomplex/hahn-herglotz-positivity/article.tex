@@ -43,7 +43,7 @@
 \newcommand{\Q}{\mathbb Q}\newcommand{\T}{\mathbb T}
 \newcommand{\D}{\mathbb D}\newcommand{\No}{\mathbf{No}}
 \newcommand{\FG}{F_\Gamma}\newcommand{\KG}{K_\Gamma}
-\newcommand{\AH}{\mathscr A_\Gamma}
+\newcommand{\OU}[1]{\mathcal O(#1)((t^\Gamma))}
 \newcommand{\CH}{\mathscr C_\Gamma}
 \newcommand{\supp}{\operatorname{supp}}
 \newcommand{\st}{\operatorname{st}}
@@ -54,7 +54,13 @@
 \newcommand{\trig}{\operatorname{Trig}}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\dd}{\,d}
-\newcommand{\halo}[1]{#1^{\mathrm h}}
+\newcommand{\halo}[1]{#1^{\#}}
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\l@section}{1.0em}{.55em}{}{}% keep the contents on one page
+\makeatother
+\newcommand{\repo}[1]{\nolinkurl{#1}}% a path in the collection, relative to docs/
+\newcommand{\lbl}[1]{\nolinkurl{#1}}% a label of another report, cited by name
 \newcommand{\positive}{\succeq 0}
 \newcommand{\strictpositive}{\succ 0}
 \numberwithin{equation}{section}
@@ -62,28 +68,31 @@
  left=3mm,right=3mm,top=2mm,bottom=2mm}
 
 \begin{document}
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \setlength{\parindent}{0pt}
-\vspace*{.15cm}
+\vspace*{-.4cm}
 \noindent{\color{accent}\rule{\textwidth}{1.4pt}}\par
-\vspace{.4cm}
-{\Huge\bfseries\color{ink} Positivity without\par a Positive Measure\par}
-\vspace{.35cm}
-{\LARGE Hahn--Herglotz normalization and\par strict moment hierarchies in\par surcomplex analysis\par}
-\vspace{.4cm}
-{\large Research manuscript\par 22 September 2026\par}
 \vspace{.3cm}
+{\Huge\bfseries\color{ink} Positivity without\par a Positive Measure\par}
+\vspace{.3cm}
+{\LARGE Hahn--Herglotz normalization and\par strict moment hierarchies in\par surcomplex analysis\par}
+\vspace{.3cm}
+{\large Single-source research report, 22 September 2026\par}
+{\normalsize Prepared for Vladimir Reshetnikov\par}
+\vspace{.2cm}
 \begin{abstract}
 \noindent
-Over a real or complex Hahn field, three classical manifestations of positivity cease to be equivalent: positivity of every finite Toeplitz matrix, positivity of a holomorphic real part, and representation by a positive measure on the ordinary circle. We establish a constant-congruence normalization theorem for matrix-valued coherent Hahn-holomorphic functions over arbitrary-rank divisible value groups. The normalized function has a strictly positive ordinary leading part and otherwise unrestricted infinitesimal holomorphic coefficients. A Harnack comparison survives with any strictly enlarged classical constant, but the sharp classical constant need not survive.
+Over a real or complex Hahn field, three classical manifestations of positivity cease to be equivalent: positivity of every finite Toeplitz matrix, positivity of a holomorphic real part, and representation by a positive measure on the ordinary circle. We establish a constant-congruence normalization theorem for matrix-valued coherent Hahn-holomorphic functions over arbitrary-rank divisible value groups; divisibility is used there and nowhere else. The normalized function has a strictly positive ordinary leading part and otherwise unrestricted infinitesimal holomorphic coefficients. A Harnack comparison survives with any strictly enlarged classical constant, but the sharp classical constant need not survive.
 
-We then characterize positive coefficientwise Hahn measures by a transfinite null-ideal criterion. At two scales the criterion is exactly absolute continuity of the negative part of the second coefficient with respect to the first. It yields a family of positive, unital Hahn-linear functionals, completely positive in the pointwise matrix order, that have no positive coefficientwise Hahn-measure representation. The explicit moments $c_0=1$ and $c_n=-\eps$ for $n\ne0$ have strictly positive Toeplitz matrices of every ordinary finite size, yet their unique signed representing measure is $(1+\eps)m-\eps\delta_1$. Positive finite quadratures converge coefficientwise weak-* to that nonpositive measure. Exact Schur iterates locate the missing obstruction inside an infinitesimal boundary layer. Finally, explicit examples separate positive measures, signed measures, distributions, analytic moment series, and halo-Herglotz functions. All constructions transport to set-sized subfields of $\No[i]$.
+The measures are \emph{real-valued coefficientwise} Hahn measures: an ordinary finite signed measure at each exponent, countable additivity exponent by exponent, and no strong Hahn summability. Positivity of such a measure is characterized by a transfinite null-ideal criterion, also proved in the collection's report on Hahn-valued measures. At two scales it is exactly absolute continuity of the negative part of the second coefficient with respect to the first. It yields strictly positive, unital Hahn-linear functionals, completely positive in the pointwise matrix order, that have no positive coefficientwise Hahn-measure representation. The explicit Fourier moments $c_0=1$ and $c_n=-\eps$ for $n\ne0$ have strictly positive Toeplitz matrices of every ordinary finite size, yet their unique signed representing measure is $(1+\eps)m-\eps\delta_1$. Positive finite quadratures converge coefficientwise weak-* to that nonpositive measure. Exact Schur iterates locate the missing obstruction inside an infinitesimal boundary layer. Finally, explicit examples separate positive measures, signed measures, distributions, analytic moment series, and halo-Herglotz functions. All constructions transport to set-sized subfields of $\No[i]$.
 \end{abstract}
 \vfill
 \begin{tcolorbox}
-\small\textbf{Status and scope.} The article takes the \emph{new-theorems} alternative of the research request. It does not claim to settle a named published open conjecture. The Hahn-level normalization, null-ideal, representation-obstruction, and strict-hierarchy package is offered as a candidate original contribution, with complete arguments below. Classical ingredients are identified. The literature and repository comparison is targeted, not exhaustive; priority and absence from every repository archive are not certified. No Lean verification or independent refereeing is claimed.
+\small\textbf{Status and scope.} Built from one manuscript (batch 18 of the collection, pinned to repository commit \texttt{4cf691c}); Appendix~\ref{herg:app:audit} records its provenance and the editorial changes made here. The source took the \emph{new-theorems} alternative of its research request. It does not claim to settle a named published open conjecture. The Hahn-level normalization, null-ideal, representation-obstruction, and strict-hierarchy package is offered as a candidate original contribution, with complete arguments below, except that the transfinite null-ideal criterion is proved once, in the measures report, and cited here. Classical ingredients are identified. The literature and repository comparison is targeted, not exhaustive; priority and absence from every repository archive are not certified. No Lean verification or independent refereeing is claimed.
 \end{tcolorbox}
 \end{titlepage}
+\hypersetup{pageanchor=true}
 \pagenumbering{roman}
 \begingroup\small\setlength{\parskip}{0pt}
 \tableofcontents
@@ -92,17 +101,17 @@ We then characterize positive coefficientwise Hahn measures by a transfinite nul
 \pagenumbering{arabic}
 
 \section{The question and the results}
-\label{sec:intro}
+\label{herg:sec:intro}
 
 In ordinary complex analysis, a normalized holomorphic function $h$ on the disk with nonnegative real part has a unique representation
-\begin{equation}\label{eq:classical}
+\begin{equation}\label{herg:eq:classical}
  h(z)=\int_\T\frac{\zeta+z}{\zeta-z}\dd\mu(\zeta),
  \qquad \mu\ge0,\quad \mu(\T)=1.
 \end{equation}
 Writing $h(z)=1+2\sum_{n\ge1}c_nz^n$, this is equivalent to positivity of the finite Toeplitz matrices $(c_{j-k})$, with $c_{-n}=\overline{c_n}$. These are classical Herglotz and trigonometric moment facts; a modern primary account of the analytic representation and its relation to approximation is \cite{BBK}. Our question is what remains true when coefficients take values in a surcomplex Hahn workspace, rather than in $\C$.
 
 The difficulty is not a failure of finite linear algebra. It is a failure of a passage from arbitrarily many finite tests to a positive boundary object in a specified infinite-dimensional category. If $\eps$ is smaller than every positive real number, the inequalities
-\begin{equation}\label{eq:basicpositivity}
+\begin{equation}\label{herg:eq:basicpositivity}
  1-N\eps>0\qquad(N\in\N)
 \end{equation}
 hold simultaneously. They can conceal a negative infinitesimal atom from every finite trigonometric moment test. At the same time, normalization can make a positive ordinary leading harmonic function dominate \emph{every} infinitesimal holomorphic perturbation on an ordinary-domain halo. Neither phenomenon has a counterpart obtained by substituting a fixed small positive real number for $\eps$.
@@ -113,36 +122,65 @@ The main results form two complementary parts. The positive part is an exact str
 
 \begin{enumerate}[label=\textbf{\arabic*.}]
 \item \textbf{Matrix normalization and Harnack comparison.}
-Theorem~\ref{thm:normalization} reduces any coherent Hahn-holomorphic matrix with positive real part to a constant zero block and a normalized block whose ordinary coefficient has strictly positive real part. All higher coefficients are unrestricted apart from normalization. Positivity on ordinary points is equivalent to positivity on their infinitesimal halos. Theorem~\ref{thm:harnack} proves uniform matrix Harnack inequalities with strict slack and gives a counterexample to the unmodified sharp constant.
-\item \textbf{An exact criterion for positive Hahn measures.}
-Theorem~\ref{thm:nullideal} characterizes positivity by the vanishing of each negative coefficient measure on the common null ideal of all earlier coefficient measures. Countable predecessor sets admit a control measure; genuinely uncountable supports need the null ideal itself. Theorem~\ref{thm:functional} applies the criterion to positive Hahn-linear functionals and proves that even pointwise complete positivity does not force a positive measure representation.
+For divisible $\Gamma$, Theorem~\ref{herg:thm:normalization} reduces any coherent Hahn-holomorphic matrix with positive real part to a constant zero block and a normalized block whose ordinary coefficient has strictly positive real part. All higher coefficients are unrestricted apart from normalization. Positivity on ordinary points is equivalent to positivity on their infinitesimal halos. Theorem~\ref{herg:thm:harnack} proves uniform matrix Harnack inequalities with strict slack and gives a counterexample to the unmodified sharp constant.
+\item \textbf{An exact criterion for positive coefficientwise Hahn measures.}
+Theorem~\ref{herg:thm:nullideal} characterizes positivity by the vanishing of each negative coefficient measure on the common null ideal of all earlier coefficient measures. Countable predecessor sets admit a control measure; genuinely uncountable supports need the null ideal itself (Example~\ref{herg:ex:uncountable}). The criterion is the same theorem as \texttt{meas:thm:nullideal} of the collection's measures report, where it is proved (Section~\ref{herg:sec:position}). Theorem~\ref{herg:thm:functional} applies the criterion to strictly positive Hahn-linear functionals and proves that even pointwise complete positivity does not force a positive measure representation.
 \item \textbf{A fully explicit moment obstruction.}
-Theorems~\ref{thm:negativeatom}--\ref{thm:schur} give positive Toeplitz matrices at every size, positive finite quadratures, nonpositive coefficientwise weak-* limits even with fixed Haar leading coefficient, and exact Schur parameters. Theorem~\ref{thm:hierarchy} assembles four proper inclusions, separating measure positivity, signed-measure regularity, distributional regularity, analytic regularity, and halo positivity.
+Theorems~\ref{herg:thm:negativeatom}--\ref{herg:thm:schur} give positive Toeplitz matrices at every size, positive finite quadratures, nonpositive coefficientwise weak-* limits even with fixed Haar leading coefficient, and exact Schur parameters. Theorem~\ref{herg:thm:hierarchy} assembles four proper inclusions, separating measure positivity, signed-measure regularity, distributional regularity, analytic regularity, and halo positivity.
 \end{enumerate}
 
 These statements are substantive also for the concrete choice $\eps=\omega^{-1}$. Arbitrary-rank groups become essential for the transfinite support criterion and its uncountable example, not for the simplest counterexample.
 
 \subsection{What is not being claimed}
 
-The measure space in this paper is the \emph{ordinary} compact circle, or more generally an ordinary compact Hausdorff space. A Hahn measure means a well-ordered family of ordinary finite signed regular Borel measures. Countable additivity is coefficientwise. We do not assert the impossibility of a measure on an enlarged non-Archimedean circle, a finitely additive representation, an internal nonstandard representation, or a representation after changing the integration theory.
+The measure space in this paper is the \emph{ordinary} compact circle, or more generally an ordinary compact Hausdorff space. A coefficientwise Hahn measure means a well-ordered family of ordinary finite signed regular Borel measures; its values lie in the real field $\FG$, although the rest of the paper is surcomplex. Countable additivity is coefficientwise, and no strong Hahn summability is asserted; strongly additive Hahn measures are a different class, treated in the report described in Section~\ref{herg:sec:position}. We do not assert the impossibility of a measure on an enlarged non-Archimedean circle, a finitely additive representation, an internal nonstandard representation, or a representation after changing the integration theory.
 
 This distinction matters. Nonstandard and lexicographic probability already have a developed theory: Halpern compares their expressive power and the role of finite versus infinite state spaces in \cite{Halpern}. Other non-Archimedean measure theories use real-valued measures on enlarged fields \cite{Bottazzi}, or different field-valued integration constructions \cite{Restrepo}. None is ruled out by the counterexamples here. Our obstruction is to a \emph{particular natural coefficientwise Hahn extension} of the classical circle representation.
 
-Classical constancy of the nullspace of the imaginary part of a matrix Herglotz function is already explicit in Gesztesy--Tsekanovskii, Lemma~5.3 \cite{GT}. We do not claim it as new. The contribution in Section~\ref{sec:normalization} is the arbitrary-rank Hahn normalization, the unrestricted-tail classification, and their halo and sharp-constant consequences. Similarly, ordinary Riesz representation, Fourier uniqueness, the distribution growth criterion, and finite real-closed-field congruence are established ingredients, not new discoveries.
+Classical constancy of the nullspace of the imaginary part of a matrix Herglotz function is already explicit in Gesztesy--Tsekanovskii, Lemma~5.3 \cite{GT}. We do not claim it as new. The contribution in Section~\ref{herg:sec:normalization} is the arbitrary-rank Hahn normalization, the unrestricted-tail classification, and their halo and sharp-constant consequences. Similarly, ordinary Riesz representation, Fourier uniqueness, the distribution growth criterion, and finite real-closed-field congruence are established ingredients, not new discoveries.
+
+\subsection{Relation to other reports of the collection}
+\label{herg:sec:position}
+
+The source manuscript compared itself with the repository through a targeted audit at its pinned commit (Appendix~\ref{herg:app:audit}). The relations below were not recorded there; they are added in this report. Reports are named by their directory under \repo{docs/}, and their statements by label name.
+
+\paragraph{Surcomplex analysis (\repo{surcomplex/analysis}).}
+The coherent functions of Section~\ref{herg:sec:framework} are the coherent Hahn sections of that report (\lbl{c:p4:def-HU}), with support in one fixed set-sized group $\Gamma$. The halo $\halo U$ used here is the trace on $\KG$ of that report's halo (\lbl{c:p4:def-halo}), and its notation $\halo U$ is adopted here. Remark~\ref{herg:rem:disk}, that the halo of the unit disk misses the whole boundary monad of $1$ and in particular the point $1-\eps$, is that report's \lbl{c:p4:rk-notball}; it is kept because the rational examples of Section~\ref{herg:sec:counterexample} live exactly in that monad. Two results of that report are direct predecessors of results here.
+\begin{itemize}
+\item \lbl{c:p5:positivity} (positivity of the coefficientwise integral): a Hahn family $A(s)$ with one well-ordered support and continuous real coefficient functions on a compact interval, nonnegative at every ordinary $s$, has nonnegative coefficientwise integral. Its proof takes the least nonzero coefficient function, shows that it is nonnegative and not identically zero, and concludes that its ordinary integral, which is the leading coefficient of the Hahn integral, is strictly positive when $A\not\equiv0$. Part~(b) of Theorem~\ref{herg:thm:functional} is the same argument, with Lebesgue measure on an interval replaced by a full-support probability measure $\mu_0$ on a compact Hausdorff space, and with the additional term $\eps\int F\dd\nu$ entering only at higher exponents. Part~(b) is therefore not new in mechanism; what the theorem adds is parts (c) and (d), complete positivity and the failure of a positive representing measure.
+\item \lbl{e:thm-poisson} (Poisson's formula and a coherent Dirichlet problem): a coherent harmonic datum whose coefficients are harmonic near a closed ordinary disk equals the coefficientwise Poisson integral of its boundary values on the halo of the disk, and a well-ordered Hahn family of ordinary continuous real boundary functions has a unique coherent harmonic extension. That report closes the theorem by saying that it ``says nothing about boundary data that are not presented as a common-support Hahn family of ordinary continuous functions''. The present report works past that scope sentence and in the opposite direction. It starts from a halo-positive coherent holomorphic function, or from Toeplitz-positive moments, and asks for a boundary object: a positive or signed coefficientwise measure, or a coefficientwise distribution. Theorem~\ref{herg:thm:hierarchy} shows that these boundary classes differ and are strictly smaller than halo positivity. The scope sentence is a non-claim of that report, not a posed problem, and nothing here is presented as the answer to a question asked there.
+\end{itemize}
+
+\paragraph{Hahn-valued measures (\repo{surreal/hahn-valued-measures-and-probability}).}
+That report, assembled from three manuscripts of the same batch, is the measure-theoretic companion of Sections~\ref{herg:sec:measures} and~\ref{herg:sec:representation}. Its central theory concerns \emph{strong} Hahn measures, for which the masses of every disjoint sequence of events are strongly Hahn summable; it also treats the coefficientwise class used here. The measures of this report are coefficientwise and are \emph{not} strongly additive: their leading coefficient is typically Haar measure, which is diffuse, whereas by the atomicity theorem of that report every coefficient of a strong Hahn measure is a finite combination of point masses. Three consequences should be kept in view.
+\begin{enumerate}[label=(\roman*)]
+\item Theorem~\ref{herg:thm:nullideal} is the same theorem as \lbl{meas:thm:nullideal} of that report. The manuscript behind this report and one of the manuscripts behind that report proved it independently, by the same transfinite induction. The proof is printed once, there. This report states the theorem, proves the control-measure reformulation, and keeps its source's uncountable Example~\ref{herg:ex:uncountable}, which shows that the reformulation cannot replace the null ideal.
+\item In the strong class of that report, positivity of all cylinder or polynomial-square tests implies positivity whenever the common support has order type at most $\omega$, and $\omega+1$ is the least support order type of a counterexample. Here, in the coefficientwise class, the two-element support $\{0,\eta\}$ already carries strictly positive Toeplitz tests at every finite size together with a negative singleton (Theorem~\ref{herg:thm:negativeatom}). The two statements concern different classes of measures and different tests. They do not conflict, and neither should be quoted without its class.
+\item The power-moment part of that report contains, in the strong class on the interval $[0,1]$, a positive unital functional without a positive strong representing measure, and a positive-definite Hermitian moment form whose multiplication operator has no positive strong spectral measure. These are the counterparts of Theorem~\ref{herg:thm:functional} and Corollary~\ref{herg:cor:unitary}, with a different class (strong, not coefficientwise), a different sample space ($[0,1]$, not $\T$) and different moments (power moments, not Fourier moments).
+\end{enumerate}
+
+\paragraph{Spectral theory.}
+The README of \repo{surcomplex/spectral-theory} lists ``no \dots\ spectral measures'' among its non-claims, and \repo{surcomplex/infinite-dimensional-hahn-spectral-theory} states that spectral measures ``remain untouched'' there. Corollary~\ref{herg:cor:unitary} adds only negative information: for one cyclic algebraic unitary, the natural positive coefficientwise spectral measure on the ordinary circle does not exist. It supplies no spectral measure and no spectral theorem.
+
+\paragraph{Trigonometry and foundations.}
+The Fourier coefficients of the root-of-unity measures $\sigma_M$ in Theorem~\ref{herg:thm:quadrature} are the finite orthogonality relation \lbl{trigonometry:eq:orthogonalityfinite} of \repo{surcomplex/trigonometry}. The Neumann support lemma behind halo evaluation is \lbl{found:sub:positivesupport} of \repo{foundations-and-computation/foundations}, where strong Hahn summability is \lbl{found:eq:summability}, Conway normal forms are \lbl{found:eq:normalform}, and workspace localization is \lbl{found:thm:workspace}. The monomial convention $t^\gamma\mapsto\omega^{-\gamma}$ of Section~\ref{herg:sec:transport} is the collection's common convention, recorded in \repo{NOTATION.md}.
 
 \section{Workspaces, halos, and the meaning of summation}
-\label{sec:framework}
+\label{herg:sec:framework}
 
 \subsection{The scalar fields}
 
-Fix a nonzero, divisible, set-sized ordered abelian group $\Gamma$. Put
-\begin{equation}\label{eq:fields}
+Fix a nonzero set-sized ordered abelian group $\Gamma$. Put
+\begin{equation}\label{herg:eq:fields}
  \FG=\R((t^\Gamma)),\qquad
  \KG=\C((t^\Gamma))=\FG[i].
 \end{equation}
 An element is a formal series $x=\sum_{\gamma\in S}x_\gamma t^\gamma$, where $S\subset\Gamma$ is well ordered in the \emph{increasing} order. Its valuation is $v(x)=\min\supp x$ for $x\ne0$, and $v(0)=+\infty$. Conjugation acts on coefficients. A nonzero real series is positive precisely when its first nonzero coefficient is positive. Thus $t^\eta$ is a positive infinitesimal whenever $\eta>0$.
 
-We use the standard facts that $\FG$ is real closed and $\KG$ is algebraically closed, and the standard Hahn support arithmetic. The corresponding surreal normal-form background is described in \cite{Gonshor}. Divisibility is used for finite Hermitian congruence and the modulus. The moment, measure, and explicit counterexample arguments themselves work over an arbitrary ordered value group containing a positive element.
+We use the standard Hahn support arithmetic throughout. The corresponding surreal normal-form background is described in \cite{Gonshor}.
+
+\paragraph{Where divisibility is used.}
+The source manuscript made divisibility of $\Gamma$ a standing hypothesis. It is not one here. Divisibility is assumed exactly in Theorem~\ref{herg:thm:normalization} and in Theorem~\ref{herg:thm:harnack}, which is stated under the hypotheses of Theorem~\ref{herg:thm:normalization} and uses its common kernel on the halo; the matrix halo conclusions transported in Proposition~\ref{herg:prop:transport} carry the same hypothesis. There it supplies the standard facts that $\FG$ is real closed and $\KG$ algebraically closed, and with them the finite Hermitian congruence $L^*PL=I_r\oplus0$, which needs square roots of positive elements of $\FG$. The source names one further use, the modulus $\sqrt{z\overline z}$ of a complex Hahn number; no statement below takes the modulus of a non-ordinary element, since the internal disk is written with $z\overline z<1$ and Toeplitz tests with $u^*u$. The source states that the moment, measure, and explicit counterexample arguments work over an arbitrary ordered value group containing a positive element; accordingly Lemma~\ref{herg:lem:scalar}, Corollary~\ref{herg:cor:scalarnormal}, and Sections~\ref{herg:sec:measures}--\ref{herg:sec:transport} (apart from the matrix halo conclusions just named) assume only that $\Gamma$ is nonzero.
 
 Write
 \[
@@ -151,7 +189,7 @@ Write
 \]
 Coefficient extraction at exponent zero defines $\st:\mathcal O_\Gamma\to\C$. A matrix is finite or infinitesimal when its entries are. For a Hermitian matrix $A$, the notation $A\succeq0$ means $u^*Au\ge0$ for every $u\in\KG^n$, not just for ordinary complex vectors.
 
-\begin{lemma}[Leading-vector test]\label{lem:leadingvector}
+\begin{lemma}[Leading-vector test]\label{herg:lem:leadingvector}
 If $A\in M_n(\mathcal O_\Gamma)$ is Hermitian and $\st A\succ0$ over $\C$, then $A\succ0$ over $\KG$.
 \end{lemma}
 \begin{proof}
@@ -160,49 +198,80 @@ For $u\ne0$, let $\beta$ be the minimum of the valuations of its nonzero coordin
 
 \subsection{Coherent functions on an ordinary domain}
 
-Let $U\subset\C$ be a connected nonempty ordinary open set. Define
-\begin{equation}\label{eq:analyticring}
- \AH(U)=\mathcal O(U)((t^\Gamma)).
+Let $U\subset\C$ be a connected nonempty ordinary open set, and let $\mathcal O(U)$ be the ordinary ring of holomorphic functions on $U$. Define
+\begin{equation}\label{herg:eq:analyticring}
+ \OU{U}=\Bigl\{f=\sum_{\gamma\in S}f_\gamma t^\gamma:\ S\subset\Gamma\text{ well ordered},\ f_\gamma\in\mathcal O(U)\Bigr\}.
 \end{equation}
-Thus $f=\sum_\gamma f_\gamma t^\gamma$ has a single well-ordered support and each $f_\gamma$ is holomorphic on the \emph{same} domain $U$. There is no requirement of uniform analytic bounds as $\gamma$ varies. Multiplication uses finite coefficient convolutions. Evaluation at an ordinary $a\in U$ is coefficientwise.
+Thus $f$ has a single well-ordered support and each $f_\gamma$ is holomorphic on the \emph{same} domain $U$. These are the coherent Hahn sections of the analysis report (Section~\ref{herg:sec:position}), and the notation is the one recommended by the collection's notation guide; the source manuscript wrote $\mathscr A_\Gamma(U)$ for this ring. There is no requirement of uniform analytic bounds as $\gamma$ varies. Multiplication uses finite coefficient convolutions. Evaluation at an ordinary $a\in U$ is coefficientwise.
 
 The halo is
-\begin{equation}\label{eq:halo}
- \halo U=\{a+\eta:a\in U,\ \eta\in\mathfrak m_\Gamma\}.
+\begin{equation}\label{herg:eq:halo}
+ \halo U=\{a+\eta:a\in U,\ \eta\in\mathfrak m_\Gamma\},
 \end{equation}
+the trace on $\KG$ of the halo \lbl{c:p4:def-halo} of the analysis report, whose notation $\halo U$ is used here (the source wrote $U^{\mathrm h}$).
 For $a+\eta\in\halo U$, define
-\begin{equation}\label{eq:tayloreval}
+\begin{equation}\label{herg:eq:tayloreval}
  f(a+\eta)=\sum_{\gamma}\sum_{k\ge0}
  \frac{f_\gamma^{(k)}(a)}{k!}\,t^\gamma\eta^k.
 \end{equation}
-Here the sum is a strong Hahn sum. The well-ordered support of $f$, together with the positive support of $\eta$, guarantees a well-ordered union and only finitely many contributions to each exponent, by the standard Neumann support lemma. Formula~\eqref{eq:tayloreval} is therefore valid without a common lower bound for the ordinary radii of convergence of the individual coefficients.
+Here the sum is a strong Hahn sum. The well-ordered support of $f$, together with the positive support of $\eta$, guarantees a well-ordered union and only finitely many contributions to each exponent, by the standard Neumann support lemma (\lbl{found:sub:positivesupport} in the foundations report). Formula~\eqref{herg:eq:tayloreval} is therefore valid without a common lower bound for the ordinary radii of convergence of the individual coefficients.
 
 Three distinctions will be maintained throughout:
 \begin{enumerate}[label=(\roman*)]
 \item A Taylor series in an \emph{ordinary} variable is summed by ordinary analytic convergence separately at each Hahn exponent. It need not be a strong Hahn sum across Taylor degrees.
-\item A Taylor series in an \emph{infinitesimal} increment, as in \eqref{eq:tayloreval}, is a strong Hahn sum. It need not be the limit of finite subsums in every topology one could put on the field.
+\item A Taylor series in an \emph{infinitesimal} increment, as in \eqref{herg:eq:tayloreval}, is a strong Hahn sum. It need not be the limit of finite subsums in every topology one could put on the field.
 \item Coefficientwise countable additivity of measures uses ordinary sums in each coefficient measure. It does not mean that a countable family of measure values is strongly Hahn summable.
 \end{enumerate}
 
 The distinction between Hahn topology and alternative weak topologies is also important in existing work on Hahn power series \cite{Flynn}. We use neither an unspecified topology on the full surreal class nor an interchange of those convergence notions.
 
-\begin{remark}[The halo is not the full internal disk]\label{rem:disk}
+\begin{remark}[The halo is not the full internal disk]\label{herg:rem:disk}
 Let $\D=\{a\in\C:|a|<1\}$ and
 \[
  \D_\Gamma=\{z\in\KG:z\overline z<1\}.
 \]
 Then $\halo\D\subsetneq\D_\Gamma$. For example, $1-\eps\in\D_\Gamma$ but $\st(1-\eps)=1\notin\D$. A coherent function on $\D$ has a canonical evaluation on $\halo\D$; it need not have one on all of $\D_\Gamma$. Our rational examples do have a natural rational evaluation there, and it is precisely there that an additional obstruction appears.
+
+The inclusion and the example $1-\eps$ are already in the analysis report, as \lbl{c:p4:rk-notball}, stated for the surcomplex unit ball; the remark is kept here for the use made of it in Section~\ref{herg:sec:counterexample}.
 \end{remark}
 
+\subsection{Words used in more than one sense}
+\label{herg:sec:conventions}
+
+Several words of this report have other meanings elsewhere in the collection. Each is used here in one sense only.
+
+\paragraph{Moment.}
+A \emph{moment} is always a Fourier (trigonometric) moment of a measure or distribution on the ordinary circle,
+\[
+ c_n=\int_\T\zeta^{-n}\dd\mu(\zeta)\qquad(n\in\Z),
+\]
+with the negative-exponent convention, so that $c_{-n}=\overline{c_n}$ for a real measure. The values $c_n$ lie in $\KG$ even though $\mu$ is real. This is not the power moment $\int x^n\dd\mu$ of a measure on a real interval, used in the measures report, and not the finite power sum $\sum_iw_ia_i^k$ with Hahn-valued nodes $a_i$ that is the input of \repo{surcomplex/prony-reconstruction-at-surreal-scales}. The contour, residue, and inverse moments of other reports are not meant either.
+
+\paragraph{Positive.}
+Five notions are kept apart.
+\begin{enumerate}[label=(\alph*)]
+\item A \emph{positive} element of $\FG$ is nonzero with positive leading coefficient. An element of positive valuation is called \emph{infinitesimal}, and $\gamma>0$ is a \emph{positive exponent}. The term \emph{positive-order}, used in a source of the measures report for a family whose nonzero members all have positive valuation, is not used here.
+\item A coefficientwise Hahn measure is \emph{positive} when $\mu(E)\ge0$ for every Borel set $E$ (Definition~\ref{herg:def:measure}). For measures, ``positive'' is used in this sense only.
+\item A functional $\Lambda$ is \emph{strictly positive} when $\Lambda(F)>0$ for every nonzero pointwise nonnegative $F$ (Theorem~\ref{herg:thm:functional}(b)); the source called such functionals ``positive''.
+\item For Hermitian matrices, $A\succeq0$ (positive semidefinite) and $A\succ0$ (positive definite) are tested against all vectors of $\KG^n$, not only ordinary ones. ``Strictly positive Toeplitz matrices'' means $T_N\succ0$.
+\item A holomorphic function has \emph{positive real part} at the points stated, $\Rea H\ge0$ or $\Rea H\succeq0$.
+\end{enumerate}
+
+\paragraph{Strong, coefficientwise, regular.}
+``Strong'' refers only to strong Hahn summability (\lbl{found:eq:summability}) and to the strongly additive measures of the measures report; the ``strong minimum principle'' in the proof of Lemma~\ref{herg:lem:scalar} is the classical principle for harmonic functions. Every measure in this report is \emph{coefficientwise}; the source's bare phrase ``Hahn measure'' has been replaced by ``coefficientwise Hahn measure''. ``Regular'' means only regularity of Borel measures on a compact Hausdorff space.
+
+\paragraph{Quadrature.}
+A \emph{quadrature} is one of the root-of-unity measures $\sigma_M$ of Theorem~\ref{herg:thm:quadrature}. It is not the Gaussian quadrature of the measures report, whose nodes are Hahn numbers, nor a Riemann sum along a contour.
+
 \section{Hahn--Herglotz normalization at arbitrary rank}
-\label{sec:normalization}
+\label{herg:sec:normalization}
 
 \subsection{The scalar mechanism}
 
 For matrices, $\Rea H=(H+H^*)/2$ and $\Ima H=(H-H^*)/(2i)$. The star at a point includes conjugation of the value, not holomorphic reflection of the variable.
 
-\begin{lemma}[First nonzero real part]\label{lem:scalar}
-Let $f\in\AH(U)$ and suppose $\Rea f(a)\ge0$ for every ordinary $a\in U$.
+\begin{lemma}[First nonzero real part]\label{herg:lem:scalar}
+Let $f\in\OU{U}$ and suppose $\Rea f(a)\ge0$ for every ordinary $a\in U$.
 \begin{enumerate}[label=(\alph*)]
 \item Either $f$ is a constant in $i\FG$, or the least exponent $\gamma$ for which $\Rea f_\gamma$ is not identically zero satisfies $\Rea f_\gamma(a)>0$ for every $a\in U$.
 \item If $\Rea f(a_0)=0$ at one ordinary point, then $f$ is a constant in $i\FG$.
@@ -218,29 +287,31 @@ For (c), suppose first that a negative coefficient with nonzero real part occurs
 For the converse, Taylor evaluation at $a+\eta$ produces a finite series whose standard part is $f_0(a)$. Its real part is positive because $\Rea f_0(a)>0$. Notice that no size condition on the higher holomorphic coefficients was needed.
 \end{proof}
 
-\begin{corollary}[Scalar normalization]\label{cor:scalarnormal}
+\begin{corollary}[Scalar normalization]\label{herg:cor:scalarnormal}
 If $\rho=\Rea f(a_0)>0$, then
 \[
  g(z)=\frac{f(z)-i\Ima f(a_0)}{\rho}
 \]
-has exactly the form described in Lemma~\ref{lem:scalar}(c). Thus every nonconstant positive-real-part function becomes finite, with strictly positive ordinary real part, after subtracting one imaginary constant and dividing by one positive Hahn constant.
+has exactly the form described in Lemma~\ref{herg:lem:scalar}(c). Thus every nonconstant positive-real-part function becomes finite, with strictly positive ordinary real part, after subtracting one imaginary constant and dividing by one positive Hahn constant.
 \end{corollary}
 
 \subsection{Constant congruence and the common kernel}
 
-\begin{theorem}[Hahn--Herglotz normalization]\label{thm:normalization}
-Let $H\in M_n(\AH(U))$ satisfy $\Rea H(a)\succeq0$ at every ordinary $a\in U$. Fix $a_0\in U$ and set
+This subsection and the next are the only places where $\Gamma$ is assumed divisible (see Section~\ref{herg:sec:framework}). Lemma~\ref{herg:lem:scalar} and Corollary~\ref{herg:cor:scalarnormal} above hold for every nonzero $\Gamma$.
+
+\begin{theorem}[Hahn--Herglotz normalization]\label{herg:thm:normalization}
+Assume that $\Gamma$ is divisible. Let $H\in M_n(\OU{U})$ satisfy $\Rea H(a)\succeq0$ at every ordinary $a\in U$. Fix $a_0\in U$ and set
 \[
  P=\Rea H(a_0),\qquad B=\Ima H(a_0),\qquad r=\rank P.
 \]
 There exists a constant matrix $L\in\mathrm{GL}_n(\KG)$ for which
-\begin{equation}\label{eq:normalform}
+\begin{equation}\label{herg:eq:normalform}
  L^*(H(z)-iB)L=
  \begin{pmatrix}G(z)&0\\0&0\end{pmatrix},
  \qquad L^*PL=\begin{pmatrix}I_r&0\\0&0\end{pmatrix},
 \end{equation}
 where
-\begin{equation}\label{eq:normalizedG}
+\begin{equation}\label{herg:eq:normalizedG}
  G=G_0+\sum_{\gamma>0}G_\gamma t^\gamma,
  \quad G(a_0)=I_r,
  \quad \Rea G_0(a)\succ0\quad(a\in U).
@@ -248,15 +319,15 @@ where
 The sum has well-ordered support. Apart from holomorphy on $U$, support admissibility, and $G_\gamma(a_0)=0$, its positive-exponent coefficients are unrestricted.
 
 In particular, positivity at ordinary points is equivalent to positivity throughout $\halo U$, and
-\begin{equation}\label{eq:commonkernel}
+\begin{equation}\label{herg:eq:commonkernel}
  \ker\Rea H(z)=\ker P\qquad(z\in\halo U).
 \end{equation}
-Conversely, every expression of the form \eqref{eq:normalform}--\eqref{eq:normalizedG}, with constant invertible $L$ and constant Hermitian $B$, defines a function with nonnegative real part on $\halo U$.
+Conversely, every expression of the form \eqref{herg:eq:normalform}--\eqref{herg:eq:normalizedG}, with constant invertible $L$ and constant Hermitian $B$, defines a function with nonnegative real part on $\halo U$.
 \end{theorem}
 \begin{proof}
-First recall a finite algebraic fact: over $\KG$, if $A\succeq0$ and $v^*Av=0$, then $Av=0$. One can prove it by diagonalizing a finite Hermitian matrix over the real closed base, or by applying positivity to $v+\lambda w$ and varying $\lambda$. This is not a compactness assertion.
+First recall a finite algebraic fact: over $\KG$, if $A\succeq0$ and $v^*Av=0$, then $Av=0$. One can prove it by diagonalizing a finite Hermitian matrix over the real closed base, or by applying positivity to $v+\lambda w$ and varying $\lambda$; the second argument uses only the order of $\FG$. This is not a compactness assertion.
 
-Let $W=\ker P$. For a constant vector $v\in W$, the scalar function $v^*H(z)v$ belongs to $\AH(U)$, has nonnegative real part, and has zero real part at $a_0$. Lemma~\ref{lem:scalar}(b) gives
+Let $W=\ker P$. For a constant vector $v\in W$, the scalar function $v^*H(z)v$ belongs to $\OU{U}$, has nonnegative real part, and has zero real part at $a_0$. Lemma~\ref{herg:lem:scalar}(b) gives
 \[
  v^*\Rea H(a)v=0\qquad(a\in U).
 \]
@@ -268,11 +339,11 @@ Put $H'=H-iB$, so $H'(a_0)=P$. For $v\in W$,
 \]
 The left side is coefficientwise holomorphic; the right side is coefficientwise antiholomorphic. Each coefficient of this vector is constant on connected $U$. Evaluation at $a_0$ gives $H'v=Pv=0$. The displayed identity also gives $v^*H'=0$. Thus $H'$ has zero rows and columns in the directions of $W$.
 
-Finite Hermitian congruence supplies a constant $L$ with $L^*PL=I_r\oplus0$ and with its last columns spanning $W$. The preceding paragraph gives the block form \eqref{eq:normalform}. The surviving block satisfies $G(a_0)=I_r$ and $\Rea G(a)\succeq0$.
+Finite Hermitian congruence over the real closed field $\FG$ (this is where divisibility enters) supplies a constant $L$ with $L^*PL=I_r\oplus0$ and with its last columns spanning $W$. The preceding paragraph gives the block form \eqref{herg:eq:normalform}. The surviving block satisfies $G(a_0)=I_r$ and $\Rea G(a)\succeq0$.
 
-For every nonzero ordinary $u\in\C^r$, apply Lemma~\ref{lem:scalar}(c) to $u^*G(z)u/(u^*u)$. Its negative coefficients vanish. Since this holds for every ordinary $u$, polarization gives $G_\gamma=0$ for every $\gamma<0$. The same scalar argument gives $u^*\Rea G_0(a)u>0$ for every nonzero ordinary $u$, proving $\Rea G_0(a)\succ0$.
+For every nonzero ordinary $u\in\C^r$, apply Lemma~\ref{herg:lem:scalar}(c) to $u^*G(z)u/(u^*u)$. Its negative coefficients vanish. Since this holds for every ordinary $u$, polarization gives $G_\gamma=0$ for every $\gamma<0$. The same scalar argument gives $u^*\Rea G_0(a)u>0$ for every nonzero ordinary $u$, proving $\Rea G_0(a)\succ0$.
 
-For $z=a+\eta\in\halo U$, $G(z)$ is finite and $\st G(z)=G_0(a)$. Lemma~\ref{lem:leadingvector} gives $\Rea G(z)\succ0$. Congruence proves positivity and the exact common kernel on the whole halo. The converse follows by the identical leading-vector test and congruence. No constraint on the higher coefficients enters that test.
+For $z=a+\eta\in\halo U$, $G(z)$ is finite and $\st G(z)=G_0(a)$. Lemma~\ref{herg:lem:leadingvector} gives $\Rea G(z)\succ0$. Congruence proves positivity and the exact common kernel on the whole halo. The converse follows by the identical leading-vector test and congruence. No constraint on the higher coefficients enters that test.
 \end{proof}
 
 \begin{remark}[What normalization removes]
@@ -281,9 +352,9 @@ The rank $r$ includes directions whose positive values at $a_0$ are infinitesima
 
 \subsection{Harnack inequalities: strict slack is essential}
 
-\begin{theorem}[Uniform matrix Harnack comparison]\label{thm:harnack}
-Under the hypotheses of Theorem~\ref{thm:normalization}, let $E\subset U$ be ordinary compact. There is an ordinary $C>1$ such that
-\begin{equation}\label{eq:harnack}
+\begin{theorem}[Uniform matrix Harnack comparison]\label{herg:thm:harnack}
+Under the hypotheses of Theorem~\ref{herg:thm:normalization}, including divisibility of $\Gamma$, let $E\subset U$ be ordinary compact. There is an ordinary $C>1$ such that
+\begin{equation}\label{herg:eq:harnack}
  C^{-1}P\preceq\Rea H(a+\eta)\preceq CP
  \qquad(a\in E,\ v(\eta)>0).
 \end{equation}
@@ -294,12 +365,12 @@ More precisely, if $C_0$ is any classical two-sided Harnack constant comparing p
 The strict inequality cannot in general be replaced by equality.
 \end{theorem}
 \begin{proof}
-Fix $v\in\KG^n$. If $v^*Pv=0$, the common-kernel conclusion gives $v^*\Rea H(z)v=0$, so the scalar inequalities are equalities. Otherwise put $\rho=v^*Pv>0$ and normalize $v^*Hv$ by Corollary~\ref{cor:scalarnormal}. The resulting $g$ has $g(a_0)=1$ and ordinary positive harmonic real part $u_0=\Rea g_0$. Classical Harnack gives $C_0^{-1}\le u_0(a)\le C_0$ on $E$.
+Fix $v\in\KG^n$. If $v^*Pv=0$, the common-kernel conclusion gives $v^*\Rea H(z)v=0$, so the scalar inequalities are equalities. Otherwise put $\rho=v^*Pv>0$ and normalize $v^*Hv$ by Corollary~\ref{herg:cor:scalarnormal}. The resulting $g$ has $g(a_0)=1$ and ordinary positive harmonic real part $u_0=\Rea g_0$. Classical Harnack gives $C_0^{-1}\le u_0(a)\le C_0$ on $E$.
 
 For $C>C_0$, both $C-u_0(a)$ and $u_0(a)-C^{-1}$ are strictly positive real numbers, uniformly bounded below on $E$. The corresponding Hahn differences at $a+\eta$ have these standard parts and are positive, whatever their infinitesimal tails. Multiplying by $\rho$ gives the required inequalities for every $v$, hence the Loewner inequalities.
 
 For failure of equality, take
-\begin{equation}\label{eq:harnackfailure}
+\begin{equation}\label{herg:eq:harnackfailure}
  f(z)=\frac{1+z}{1-z}+\eps z,\qquad f(0)=1.
 \end{equation}
 Its ordinary coefficient has positive real part on $\D$, so it is positive on $\halo\D$. At the ordinary real point $r$, however,
@@ -313,15 +384,15 @@ Thus the sharp ordinary upper constant is not valid without slack.
 The same example will later show that halo positivity need not imply even the first nontrivial Toeplitz inequality. This is a useful warning: the normalization theorem classifies halo positivity, not a positive boundary measure.
 
 \section{Positive coefficientwise Hahn measures}
-\label{sec:measures}
+\label{herg:sec:measures}
 
 \subsection{The category and its order}
 
 Let $X$ be a compact Hausdorff space with its Borel sets. In applications $X=\T$. Let $\mathcal M(X)$ denote the real vector space of finite signed regular Borel measures on $X$.
 
-\begin{definition}[Coefficientwise Hahn measure]\label{def:measure}
+\begin{definition}[Coefficientwise Hahn measure]\label{herg:def:measure}
 A coefficientwise Hahn measure is a series
-\begin{equation}\label{eq:measuredef}
+\begin{equation}\label{herg:eq:measuredef}
  \mu=\sum_{\gamma\in S}\nu_\gamma t^\gamma,
  \qquad \nu_\gamma\in\mathcal M(X),
 \end{equation}
@@ -332,7 +403,10 @@ where $S\subset\Gamma$ is well ordered. It defines an $\FG$-valued set function 
 It is \emph{positive} if $\mu(E)\ge0$ for every Borel $E\subset X$, and is a probability measure if additionally $\mu(X)=1$.
 \end{definition}
 
-For disjoint $E_j$, the identity $\mu(\bigcup_jE_j)=\sum_j\mu(E_j)$ means that its $\gamma$-coefficient is the ordinary identity $\nu_\gamma(\bigcup_jE_j)=\sum_j\nu_\gamma(E_j)$. The scalar sum is absolutely convergent because $\nu_\gamma$ has finite total variation. There is no assertion of strong Hahn summability in the index $j$. This is a definition of a coefficientwise category, not a hidden appeal to fine-topological countable additivity.
+\paragraph{Real values.}
+The values $\mu(E)$ lie in the real field $\FG$, not in $\KG$: every measure in this report is real, although the report is surcomplex. The complex structure enters elsewhere, through Toeplitz and Hermitian positivity tested against vectors in $\KG^n$, through coherent holomorphic functions, through the $\KG$-valued Fourier moments of Section~\ref{herg:sec:conventions}, and through $\KG$-linear functionals on $C(X,\C)((t^\Gamma))$ in Section~\ref{herg:sec:representation}.
+
+For disjoint $E_j$, the identity $\mu(\bigcup_jE_j)=\sum_j\mu(E_j)$ means that its $\gamma$-coefficient is the ordinary identity $\nu_\gamma(\bigcup_jE_j)=\sum_j\nu_\gamma(E_j)$. The scalar sum is absolutely convergent because $\nu_\gamma$ has finite total variation. There is no assertion of strong Hahn summability in the index $j$. This is a definition of a coefficientwise category, not a hidden appeal to fine-topological countable additivity. Strongly additive Hahn measures form a different class, treated in the measures report (Section~\ref{herg:sec:position}); the measures used below, whose leading coefficient is typically Haar measure, do not belong to it.
 
 For an ordinary bounded Borel function $f$ the integral is
 \[
@@ -343,49 +417,45 @@ For a coherent Hahn family of bounded functions, multiplication and integration 
 \subsection{The transfinite null-ideal criterion}
 
 Write $\nu^+,\nu^-$ for the Jordan parts and $|\nu|=\nu^++\nu^-$ for total variation. For $\gamma\in S$, put
-\begin{equation}\label{eq:nullideal}
+\begin{equation}\label{herg:eq:nullideal}
  \mathcal J_{<\gamma}
  =\{E\subset X\text{ Borel}: |\nu_\beta|(E)=0
        \text{ for every }\beta\in S,\ \beta<\gamma\}.
 \end{equation}
 This is a sigma-ideal of Borel sets.
 
-\begin{theorem}[Exact null-ideal criterion]\label{thm:nullideal}
-The Hahn measure \eqref{eq:measuredef} is positive if and only if
-\begin{equation}\label{eq:nullcriterion}
+The criterion below is the same theorem as \lbl{meas:thm:nullideal} of \repo{surreal/hahn-valued-measures-and-probability}, where it is proved. The manuscript behind this report and a manuscript behind that report found it independently in the same batch, with the same proof. It is stated here in the form used below, with the control-measure reformulation for countable predecessor sets, which is proved here.
+
+\begin{theorem}[Exact null-ideal criterion; also \lbl{meas:thm:nullideal}]\label{herg:thm:nullideal}
+The coefficientwise Hahn measure \eqref{herg:eq:measuredef} is positive if and only if
+\begin{equation}\label{herg:eq:nullcriterion}
  \nu_\gamma^-(E)=0
  \quad\text{for every }\gamma\in S
  \text{ and every }E\in\mathcal J_{<\gamma}.
 \end{equation}
 If $S\cap(-\infty,\gamma)$ is countable, enumerate its elements as $\beta_j$ and define the ordinary finite positive measure
-\begin{equation}\label{eq:control}
+\begin{equation}\label{herg:eq:control}
  \lambda_{<\gamma}
  =\sum_j 2^{-j}\frac{|\nu_{\beta_j}|}
  {1+\|\nu_{\beta_j}\|_{\TV}}.
 \end{equation}
 For a finite predecessor set use a finite enumeration; for an empty set take $\lambda_{<\gamma}=0$. Then the condition at $\gamma$ is equivalently
-\begin{equation}\label{eq:ACcriterion}
+\begin{equation}\label{herg:eq:ACcriterion}
  \nu_\gamma^-\ll\lambda_{<\gamma}.
 \end{equation}
 No bound on a Radon--Nikodym derivative is required.
 \end{theorem}
-\begin{proof}
-Assume first that $\mu$ is positive. If \eqref{eq:nullcriterion} fails, choose $E\in\mathcal J_{<\gamma}$ with $\nu_\gamma^-(E)>0$. Let $N_\gamma$ be a negative set in a Hahn decomposition of the signed measure $\nu_\gamma$, and set $A=E\cap N_\gamma$. Then every earlier coefficient vanishes on $A$, while
-\[
- \nu_\gamma(A)=-\nu_\gamma^-(E)<0.
-\]
-Consequently $\mu(A)<0$, a contradiction.
+\begin{proof}[Proof and attribution]
+The equivalence of positivity with \eqref{herg:eq:nullcriterion} is \lbl{meas:thm:nullideal}, and its proof is not repeated here. The source of this report proved it by the same route: necessity by restricting a putative counterexample set in $\mathcal J_{<\gamma}$ to the negative set of a Hahn decomposition of $\nu_\gamma$; sufficiency by well-founded induction over the exponents below the least $\gamma$ with $\nu_\gamma(E)\ne0$, showing $|\nu_\beta|(E)=0$ for each such $\beta$, so that $E\in\mathcal J_{<\gamma}$ and $\nu_\gamma(E)>0$. The argument uses only countable additivity of each coefficient measure and the Hahn--Jordan decomposition, not the topology of $X$ or regularity, so it applies to the regular Borel measures of Definition~\ref{herg:def:measure}.
 
-Conversely, assume \eqref{eq:nullcriterion}. Fix a Borel set $E$. If every coefficient $\nu_\gamma(E)$ is zero, then $\mu(E)=0$. Otherwise let $\gamma$ be the least exponent with $\nu_\gamma(E)\ne0$. We claim that $|\nu_\beta|(E)=0$ for every $\beta<\gamma$.
+In the source manuscript of that report that found the theorem (on infinite products of surreal probabilities), the condition at $\gamma$ reads: $|\nu_\beta|(A)=0$ for every $\beta<\gamma$ implies $\nu_\gamma(A)\ge0$. This is equivalent to the condition at $\gamma$ in \eqref{herg:eq:nullcriterion}. Indeed $\mathcal J_{<\gamma}$ is closed under Borel subsets. If $N_\gamma$ is a negative set of a Hahn decomposition of $\nu_\gamma$ and $E\in\mathcal J_{<\gamma}$, then $E\cap N_\gamma\in\mathcal J_{<\gamma}$, so that form gives $\nu_\gamma^-(E)=-\nu_\gamma(E\cap N_\gamma)\le0$, hence $\nu_\gamma^-(E)=0$. Conversely, under \eqref{herg:eq:nullcriterion}, $\nu_\gamma(A)=\nu_\gamma^+(A)\ge0$ for every $A\in\mathcal J_{<\gamma}$.
 
-Prove this claim by well-founded induction through the predecessor set. If all earlier total variations vanish on $E$, then $E\in\mathcal J_{<\beta}$, so $\nu_\beta^-(E)=0$. Since $\nu_\beta(E)=0$ by choice of $\gamma$, its positive part vanishes as well. Thus $|\nu_\beta|(E)=0$, completing the induction. Now $E\in\mathcal J_{<\gamma}$, so $\nu_\gamma^-(E)=0$. As $\nu_\gamma(E)\ne0$, it is strictly positive. The first nonzero coefficient of $\mu(E)$ is therefore positive.
-
-The measure in \eqref{eq:control} has total mass at most $\sum_j2^{-j}$. Its null sets are exactly the common null sets of all $|\nu_{\beta_j}|$, since each weight is strictly positive. This proves the equivalence with \eqref{eq:ACcriterion}.
+For the control measure: the measure in \eqref{herg:eq:control} has total mass at most $\sum_j2^{-j}$. Its null sets are exactly the common null sets of all $|\nu_{\beta_j}|$, since each weight is strictly positive. Thus $\mathcal J_{<\gamma}$ is the null ideal of $\lambda_{<\gamma}$, and the condition at $\gamma$ is \eqref{herg:eq:ACcriterion}.
 \end{proof}
 
-\begin{corollary}[Two-scale criterion]\label{cor:twoscale}
+\begin{corollary}[Two-scale criterion]\label{herg:cor:twoscale}
 Let $\eta>0$ and $\eps=t^\eta$. For ordinary finite signed measures $\nu_0,\nu_1$,
-\begin{equation}\label{eq:twoscale}
+\begin{equation}\label{herg:eq:twoscale}
  \nu_0+\eps\nu_1\ge0
  \quad\Longleftrightarrow\quad
  \nu_0\ge0\ \text{and}\ \nu_1^-\ll\nu_0.
@@ -399,31 +469,33 @@ In particular, for normalized Haar measure $m$ on $\T$,
 At the first level the null ideal consists of all Borel sets, so the negative part must vanish. At the second level it consists of the $\nu_0$-null sets. This is exactly absolute continuity of $\nu_1^-$ with respect to $\nu_0$.
 \end{proof}
 
-The criterion permits negative coefficient measures. For example $m+\eps g m$ is positive for every real $g\in L^1(m)$, even if $g$ is negative or unbounded. What it excludes is a negative component concentrated on a set invisible to all previous coefficients. It is this exclusion, not a finite matrix inequality, that detects the negative atom in Section~\ref{sec:counterexample}.
+The criterion permits negative coefficient measures. For example $m+\eps g m$ is positive for every real $g\in L^1(m)$, even if $g$ is negative or unbounded. What it excludes is a negative component concentrated on a set invisible to all previous coefficients. It is this exclusion, not a finite matrix inequality, that detects the negative atom in Section~\ref{herg:sec:counterexample}.
 
 \subsection{Why the uncountable version is stronger}
 
-\begin{example}[A positive measure requiring the full null ideal]\label{ex:uncountable}
+The following example is this report's own; it is not part of the proof of Theorem~\ref{herg:thm:nullideal}, but it shows that the control-measure form of that theorem cannot replace the null ideal when the predecessor set is uncountable.
+
+\begin{example}[A positive coefficientwise measure requiring the full null ideal]\label{herg:ex:uncountable}
 Well order the ordinary circle as $\{x_\alpha:\alpha<\kappa\}$, where $\kappa$ is an uncountable ordinal. Let
 \[
  \Gamma=\bigoplus_{\alpha\le\kappa}\Q e_\alpha
 \]
 be ordered by the sign of the coefficient with greatest index in a nonzero finite sum. In particular $0<e_\alpha<e_\beta$ for $\alpha<\beta$. Consider
-\begin{equation}\label{eq:uncountable}
+\begin{equation}\label{herg:eq:uncountable}
  \mu=\sum_{\alpha<\kappa}t^{e_\alpha}\delta_{x_\alpha}
        -t^{e_\kappa}m.
 \end{equation}
 This is a coefficientwise Hahn measure with well-ordered support. It is strictly positive on every nonempty Borel set: the least index $\alpha$ with $x_\alpha\in E$ contributes its leading coefficient $1$. The final negative diffuse coefficient is harmless because the only Borel set null for \emph{all} earlier point masses is the empty set.
 
-No countable collection of earlier point masses controls $m$. Indeed, a countable sum of them is supported on a countable set $A$, whereas $m(\T\setminus A)=1$. Thus replacing the common null ideal by a countable control measure would wrongly reject \eqref{eq:uncountable}. This proves a genuine distinction between the countable and arbitrary-support formulations.
+No countable collection of earlier point masses controls $m$. Indeed, a countable sum of them is supported on a countable set $A$, whereas $m(\T\setminus A)=1$. Thus replacing the common null ideal by a countable control measure would wrongly reject \eqref{herg:eq:uncountable}. This proves a genuine distinction between the countable and arbitrary-support formulations.
 
 There is an explicit surreal exponent realization: send $e_\alpha$ to $\omega^\alpha$. A finite rational linear combination is ordered by its greatest ordinal exponent, so this is an ordered additive embedding. Under the resulting Hahn embedding, $t^{e_\alpha}$ becomes $\omega^{-\omega^\alpha}$. The example is therefore not restricted to a merely abstract ordered group.
 \end{example}
 
 \section{Continuous functionals and exact moment representation}
-\label{sec:representation}
+\label{herg:sec:representation}
 
-\subsection{Positive functionals without positive measures}
+\subsection{Strictly positive functionals without positive measures}
 
 For a compact Hausdorff space $X$, write
 \[
@@ -431,28 +503,28 @@ For a compact Hausdorff space $X$, write
 \]
 This is a $\KG$-algebra with coefficientwise conjugation. Its \emph{pointwise positive cone} consists of self-adjoint $F$ satisfying $F(x)\ge0$ for every ordinary $x\in X$. It is not being asserted to be a complex $C^*$-algebra. The order and the scalar field have changed.
 
-\begin{theorem}[Infinitesimal saturation of positive functionals]\label{thm:functional}
+\begin{theorem}[Infinitesimal saturation of strictly positive functionals]\label{herg:thm:functional}
 Let $\mu_0$ be an ordinary regular Borel probability measure of full support on $X$, and let $\nu$ be a finite real signed regular Borel measure with $\nu(X)=0$. For $\eps=t^\eta$, $\eta>0$, define
-\begin{equation}\label{eq:functional}
+\begin{equation}\label{herg:eq:functional}
  \Lambda(F)=\int_X F\dd\mu_0+\eps\int_X F\dd\nu,
  \qquad F\in\CH(X),
 \end{equation}
 using coefficientwise integration. Then:
 \begin{enumerate}[label=(\alph*)]
 \item $\Lambda$ is $\KG$-linear, preserves conjugation, and $\Lambda(1)=1$.
-\item $\Lambda(F)>0$ for every nonzero pointwise nonnegative $F\in\CH(X)$.
+\item $\Lambda$ is strictly positive: $\Lambda(F)>0$ for every nonzero pointwise nonnegative $F\in\CH(X)$.
 \item For every ordinary finite $n$, entrywise application of $\Lambda$ sends every pointwise positive semidefinite matrix in $M_n(\CH(X))$ to a positive semidefinite matrix over $\KG$. Thus $\Lambda$ is completely positive in this specified pointwise algebraic sense.
 \item There exists a positive coefficientwise Hahn measure representing $\Lambda$ if and only if $\nu^-\ll\mu_0$. Its signed coefficientwise representing measure, positive or not, is uniquely $\mu_0+\eps\nu$.
 \end{enumerate}
 For an ordinary real $f\in C(X)$, the functional additionally satisfies the exact order bound
-\begin{equation}\label{eq:ordinarybound}
+\begin{equation}\label{herg:eq:ordinarybound}
  |\Lambda(f)|\le\|f\|_\infty.
 \end{equation}
 \end{theorem}
 \begin{proof}
 The finite-convolution rules for Hahn multiplication prove linearity, and the conditions on total masses prove normalization. Let $F\ne0$ be pointwise nonnegative, and let $\gamma$ be its first nonzero coefficient \emph{as a continuous function}. At any $x$ where $F_\gamma(x)<0$, this coefficient would be the first nonzero coefficient of $F(x)$, contradicting positivity. Hence $F_\gamma\ge0$ everywhere and is not identically zero.
 
-A nonzero continuous nonnegative function is bounded below by a positive real number on some nonempty open set. Full support of $\mu_0$ therefore implies $\int F_\gamma\dd\mu_0>0$. All contributions from the second term in \eqref{eq:functional} have exponent at least $\gamma+\eta>\gamma$. Thus the leading coefficient of $\Lambda(F)$ is strictly positive. This proves (b).
+A nonzero continuous nonnegative function is bounded below by a positive real number on some nonempty open set. Full support of $\mu_0$ therefore implies $\int F_\gamma\dd\mu_0>0$. All contributions from the second term in \eqref{herg:eq:functional} have exponent at least $\gamma+\eta>\gamma$. Thus the leading coefficient of $\Lambda(F)$ is strictly positive. This proves (b). The argument is that of \lbl{c:p5:positivity} in the analysis report, which treats Lebesgue measure on a compact interval (Section~\ref{herg:sec:position}).
 
 For a pointwise positive matrix $A$ and any constant vector $u\in\KG^n$, the function $u^*Au$ belongs to the pointwise positive cone. By linearity,
 \[
@@ -460,37 +532,37 @@ For a pointwise positive matrix $A$ and any constant vector $u\in\KG^n$, the fun
 \]
 This proves (c).
 
-The signed measure $\mu_0+\eps\nu$ represents the functional by definition. If another coefficientwise Hahn measure did so, testing all ordinary continuous functions and comparing each exponent would give the same ordinary signed measure at that exponent, by uniqueness in ordinary Riesz representation. Any additional coefficients would represent the zero functional and hence vanish. Corollary~\ref{cor:twoscale} now proves (d).
+The signed measure $\mu_0+\eps\nu$ represents the functional by definition. If another coefficientwise Hahn measure did so, testing all ordinary continuous functions and comparing each exponent would give the same ordinary signed measure at that exponent, by uniqueness in ordinary Riesz representation. Any additional coefficients would represent the zero functional and hence vanish. Corollary~\ref{herg:cor:twoscale} now proves (d).
 
-Finally, $\|f\|_\infty\pm f$ are ordinary continuous nonnegative functions. Positivity and normalization give \eqref{eq:ordinarybound}.
+Finally, $\|f\|_\infty\pm f$ are ordinary continuous nonnegative functions. Positivity and normalization give \eqref{herg:eq:ordinarybound}.
 \end{proof}
 
-\begin{corollary}[A Riesz-type representation obstruction]\label{cor:rieszfailure}
+\begin{corollary}[A Riesz-type representation obstruction]\label{herg:cor:rieszfailure}
 Take $X=\T$, $\mu_0=m$, and $\nu=m-\delta_1$. Then
-\begin{equation}\label{eq:Rieszfailure}
+\begin{equation}\label{herg:eq:Rieszfailure}
  \Lambda_\eps(F)=(1+\eps)\int_\T F\dd m-\eps F(1)
 \end{equation}
-is positive, unital, and pointwise completely positive on $\CH(\T)$, but it has no positive coefficientwise Hahn-measure representation on the ordinary circle. Its two ordinary coefficient functionals are bounded in the usual supremum norm, with bounds $1$ and $2$.
+is strictly positive, unital, and pointwise completely positive on $\CH(\T)$, but it has no positive coefficientwise Hahn-measure representation on the ordinary circle. Its two ordinary coefficient functionals are bounded in the usual supremum norm, with bounds $1$ and $2$.
 \end{corollary}
 \begin{proof}
-Here $\nu^-=\delta_1$, which is singular with respect to $m$. Apply Theorem~\ref{thm:functional}. The norm estimates follow from $|\int f\dd m|\le\|f\|_\infty$ and $|\int f\dd m-f(1)|\le2\|f\|_\infty$.
+Here $\nu^-=\delta_1$, which is singular with respect to $m$. Apply Theorem~\ref{herg:thm:functional}. The norm estimates follow from $|\int f\dd m|\le\|f\|_\infty$ and $|\int f\dd m-f(1)|\le2\|f\|_\infty$.
 \end{proof}
 
-This obstruction is stronger than a failure to represent one formal moment sequence. The functional is already defined on all coherent continuous Hahn functions and is positive there. An ordinary continuous nonnegative function cannot isolate a point of Haar measure zero while keeping zero integral. The first nonzero continuous coefficient of a positive Hahn function has the same limitation. The Borel indicator of $\{1\}$, by contrast, immediately detects the negative atom.
+This obstruction is stronger than a failure to represent one formal moment sequence. The functional is already defined on all coherent continuous Hahn functions and is strictly positive there. An ordinary continuous nonnegative function cannot isolate a point of Haar measure zero while keeping zero integral. The first nonzero continuous coefficient of a positive Hahn function has the same limitation. The Borel indicator of $\{1\}$, by contrast, immediately detects the negative atom.
 
-The bound \eqref{eq:ordinarybound} is an order bound, not continuity from the ordinary supremum norm into the fine topology of the surreal field. An ordinary sequence of positive real numbers tending to zero does not tend to zero against every positive surreal radius. No such continuity is used or claimed.
+The bound \eqref{herg:eq:ordinarybound} is an order bound, not continuity from the ordinary supremum norm into the fine topology of the surreal field. An ordinary sequence of positive real numbers tending to zero does not tend to zero against every positive surreal radius. No such continuity is used or claimed.
 
 \subsection{Finite Toeplitz positivity is insensitive to arbitrary tails}
 
 For a bilateral sequence $(c_n)_{n\in\Z}$ with $c_{-n}=\overline{c_n}$, write
-\begin{equation}\label{eq:toeplitz}
+\begin{equation}\label{herg:eq:toeplitz}
  T_N(c)=(c_{j-k})_{0\le j,k\le N}.
 \end{equation}
 Every $N$ in this paper is an ordinary finite integer.
 
-\begin{theorem}[Toeplitz saturation and finite completions]\label{thm:saturation}
+\begin{theorem}[Toeplitz saturation and finite completions]\label{herg:thm:saturation}
 Let $b_0=0$ and let $(b_n)_{n\in\Z}$ be any ordinary complex sequence with $b_{-n}=\overline{b_n}$. There is no growth assumption. Set
-\begin{equation}\label{eq:saturatedmoments}
+\begin{equation}\label{herg:eq:saturatedmoments}
  c_n=\delta_{n0}+\eps b_n.
 \end{equation}
 Then $T_N(c)\succ0$ for every $N$. Moreover, every finite prefix of these moments is represented by a positive coefficientwise Hahn probability measure on $\T$.
@@ -502,14 +574,14 @@ For the first statement,
 \[
  T_N(c)=I_{N+1}+\eps B_N,
 \]
-where $B_N$ is an ordinary finite Hermitian matrix. Its standard part is the identity, so Lemma~\ref{lem:leadingvector} proves positivity against every Hahn vector, independently of how large the finitely many entries of $B_N$ are.
+where $B_N$ is an ordinary finite Hermitian matrix. Its standard part is the identity, so Lemma~\ref{herg:lem:leadingvector} proves positivity against every Hahn vector, independently of how large the finitely many entries of $B_N$ are.
 
 For the finite representation, put
 \[
  q_N(\zeta)=\sum_{0<|k|\le N}b_k\zeta^k,
  \qquad \mu_N=(1+\eps q_N)m.
 \]
-The trigonometric polynomial $q_N$ is real valued and has integral zero. If $m(E)>0$, the leading coefficient of $\mu_N(E)$ is $m(E)>0$; if $m(E)=0$, both coefficients vanish. Thus $\mu_N$ is a positive Hahn probability measure. Orthogonality of the ordinary characters gives
+The trigonometric polynomial $q_N$ is real valued and has integral zero. If $m(E)>0$, the leading coefficient of $\mu_N(E)$ is $m(E)>0$; if $m(E)=0$, both coefficients vanish. Thus $\mu_N$ is a positive coefficientwise Hahn probability measure. Orthogonality of the ordinary characters gives
 \[
  \int_\T\zeta^{-k}\dd\mu_N=c_k\qquad(|k|\le N).
 \]
@@ -517,38 +589,38 @@ The trigonometric polynomial $q_N$ is real valued and has integral zero. If $m(E
 For the general statement, the ordinary quadratic form associated with a finite Toeplitz matrix is the integral of the squared modulus of a nonzero polynomial. Such a polynomial has only finitely many zeros on $\T$. A positive measure with infinite support cannot be concentrated on those zeros, so the integral is strictly positive. The perturbed finite matrix has this strictly positive matrix as its standard part, and the leading-vector test applies again.
 \end{proof}
 
-The full-support hypothesis in Theorem~\ref{thm:functional} and the infinite-support hypothesis here have different purposes. Continuous nonnegative functions can vanish on an infinite closed set, whereas a nonzero polynomial has only finitely many zeros.
+The full-support hypothesis in Theorem~\ref{herg:thm:functional} and the infinite-support hypothesis here have different purposes. Continuous nonnegative functions can vanish on an infinite closed set, whereas a nonzero polynomial has only finitely many zeros.
 
 \subsection{Exact signed-measure and distribution criteria}
 
 Suppose now that the bilateral moments have one common well-ordered exponent support:
-\begin{equation}\label{eq:commonmoments}
+\begin{equation}\label{herg:eq:commonmoments}
  c_n=\sum_{\gamma\in S}a_{\gamma,n}t^\gamma,
  \qquad a_{\gamma,-n}=\overline{a_{\gamma,n}}.
 \end{equation}
 For an ordinary trigonometric polynomial $p(\zeta)=\sum_kp_k\zeta^k$, define
-\begin{equation}\label{eq:coefficientfunctional}
+\begin{equation}\label{herg:eq:coefficientfunctional}
  L_\gamma(p)=\sum_kp_k a_{\gamma,-k}.
 \end{equation}
 
-\begin{theorem}[Exact coefficientwise representation test]\label{thm:representation}
-The moments \eqref{eq:commonmoments} have a signed coefficientwise Hahn-measure representation on $\T$ if and only if, for every $\gamma\in S$,
-\begin{equation}\label{eq:variationtest}
+\begin{theorem}[Exact coefficientwise representation test]\label{herg:thm:representation}
+The moments \eqref{herg:eq:commonmoments} have a signed coefficientwise Hahn-measure representation on $\T$ if and only if, for every $\gamma\in S$,
+\begin{equation}\label{herg:eq:variationtest}
  M_\gamma=
  \sup_{\substack{p\in\trig(\T)\\\|p\|_\infty\le1}}
  |L_\gamma(p)|<\infty.
 \end{equation}
-The representing coefficient measure $\nu_\gamma$ is unique and satisfies $\|\nu_\gamma\|_{\TV}=M_\gamma$. The resulting Hahn measure is positive if and only if its coefficients satisfy Theorem~\ref{thm:nullideal}.
+The representing coefficient measure $\nu_\gamma$ is unique and satisfies $\|\nu_\gamma\|_{\TV}=M_\gamma$. The resulting coefficientwise Hahn measure is positive if and only if its coefficients satisfy Theorem~\ref{herg:thm:nullideal}.
 
 There is a coefficientwise periodic-distribution representation if and only if, for every $\gamma$, there exist ordinary constants $A_\gamma<\infty$ and an integer $m_\gamma\ge0$ with
-\begin{equation}\label{eq:distributiontest}
+\begin{equation}\label{herg:eq:distributiontest}
  |a_{\gamma,n}|\le A_\gamma(1+|n|)^{m_\gamma}
  \qquad(n\in\Z).
 \end{equation}
 The distribution is again unique. No uniform bound in $\gamma$ is required in either assertion.
 \end{theorem}
 \begin{proof}
-A finite signed measure gives \eqref{eq:variationtest} by the total-variation inequality. Conversely, that inequality makes $L_\gamma$ a bounded linear functional on the trigonometric polynomials with their supremum norm. Trigonometric polynomials are uniformly dense in $C(\T)$, so the functional has a unique continuous extension. Ordinary Riesz representation supplies a unique finite regular complex measure with the same norm. The conjugate symmetry in \eqref{eq:commonmoments} makes the functional real on real functions, so this measure is real signed. Assembling these measures over the prescribed well-ordered $S$ gives the Hahn measure. Positivity is exactly the already proved null-ideal condition. This is a coefficientwise use of the classical Riesz theorem \cite{Rudin}, not a new version of that theorem over $\R$.
+A finite signed measure gives \eqref{herg:eq:variationtest} by the total-variation inequality. Conversely, that inequality makes $L_\gamma$ a bounded linear functional on the trigonometric polynomials with their supremum norm. Trigonometric polynomials are uniformly dense in $C(\T)$, so the functional has a unique continuous extension. Ordinary Riesz representation supplies a unique finite regular complex measure with the same norm. The conjugate symmetry in \eqref{herg:eq:commonmoments} makes the functional real on real functions, so this measure is real signed. Assembling these measures over the prescribed well-ordered $S$ gives the coefficientwise Hahn measure. Positivity is exactly the already proved null-ideal condition. This is a coefficientwise use of the classical Riesz theorem \cite{Rudin}, not a new version of that theorem over $\R$.
 
 For completeness, the distribution criterion follows directly from Fourier series. A distribution $D$ on the compact circle satisfies a finite seminorm estimate
 \[
@@ -563,11 +635,11 @@ Conversely, given a sequence $a_n$ satisfying $|a_n|\le A(1+|n|)^m$, write the o
 Integrating by parts $m+2$ times bounds $|\widehat\varphi(k)|$ by a constant times $(1+|k|)^{-m-2}\max_{j\le m+2}\|\varphi^{(j)}\|_\infty$. The displayed sum is absolutely convergent and satisfies a finite seminorm bound. It defines a distribution with the required Fourier coefficients. Fourier partial sums converge in the smooth topology, proving uniqueness. Applying this construction separately at every $\gamma$ completes the proof.
 \end{proof}
 
-Bounded Fourier coefficients are necessary for a finite measure, but are not asserted to be sufficient. The exact measure condition is the norm bound on \emph{all trigonometric polynomials} in \eqref{eq:variationtest}. Polynomial Fourier growth is sufficient for a distribution because smooth test functions have rapidly decaying Fourier coefficients.
+Bounded Fourier coefficients are necessary for a finite measure, but are not asserted to be sufficient. The exact measure condition is the norm bound on \emph{all trigonometric polynomials} in \eqref{herg:eq:variationtest}. Polynomial Fourier growth is sufficient for a distribution because smooth test functions have rapidly decaying Fourier coefficients.
 
 \subsection{Why positive measures really give positive Toeplitz matrices}
 
-\begin{proposition}\label{prop:measuretoeplitz}
+\begin{proposition}\label{herg:prop:measuretoeplitz}
 If $\mu$ is a positive coefficientwise Hahn measure on $\T$ and $c_n=\int\zeta^{-n}\dd\mu$, then $T_N(c)\succeq0$ for every finite $N$, with positivity tested against all Hahn vectors.
 \end{proposition}
 \begin{proof}
@@ -575,7 +647,7 @@ Let $p(\zeta)=\sum_{k=0}^N u_k\zeta^k$ with $u_k\in\KG$. Expanding the finite po
 \[
  u^*T_N(c)u=\int_\T|p(\zeta)|^2\dd\mu.
 \]
-If $p=0$, there is nothing to prove. Otherwise write $p=\sum_\gamma p_\gamma t^\gamma$ and choose its first nonzero ordinary polynomial $p_\beta$. Its zero set $Z\subset\T$ is finite. On $V=\T\setminus Z$, the restricted Hahn measure is positive. If it is zero, the contribution from $V$ is zero. Otherwise its first nonzero coefficient measure $\nu_\alpha|_V$ is ordinary positive: evaluation on every Borel subset of $V$ proves this from the Hahn sign rule.
+If $p=0$, there is nothing to prove. Otherwise write $p=\sum_\gamma p_\gamma t^\gamma$ and choose its first nonzero ordinary polynomial $p_\beta$. Its zero set $Z\subset\T$ is finite. On $V=\T\setminus Z$, the restricted coefficientwise Hahn measure is positive. If it is zero, the contribution from $V$ is zero. Otherwise its first nonzero coefficient measure $\nu_\alpha|_V$ is ordinary positive: evaluation on every Borel subset of $V$ proves this from the Hahn sign rule.
 
 Since $p_\beta$ has no zeros on $V$,
 \[
@@ -589,37 +661,37 @@ Adding the two contributions proves the claim. All products and integrals used h
 \end{proof}
 
 \section{An explicit obstruction at every finite size}
-\label{sec:counterexample}
+\label{herg:sec:counterexample}
 
 Fix a positive infinitesimal $\eps=t^\eta$. Let $m$ be normalized ordinary Haar measure on $\T$.
 
 \subsection{The negative infinitesimal atom}
 
-\begin{theorem}[All Toeplitz tests pass, but no positive measure exists]\label{thm:negativeatom}
+\begin{theorem}[All Toeplitz tests pass, but no positive measure exists]\label{herg:thm:negativeatom}
 Define
-\begin{equation}\label{eq:mainmoments}
+\begin{equation}\label{herg:eq:mainmoments}
  c_0=1,\qquad c_n=-\eps\quad(n\in\Z\setminus\{0\}).
 \end{equation}
 Then, for every ordinary $N\ge0$,
-\begin{equation}\label{eq:mainmatrix}
+\begin{equation}\label{herg:eq:mainmatrix}
  T_N(c)=(1+\eps)I_{N+1}-\eps J_{N+1}\succ0,
 \end{equation}
 where $J_{N+1}$ is the all-ones matrix. Its eigenvalues and determinant are
 \begin{align}
  &1+\eps\quad\text{with multiplicity }N,
- \qquad 1-N\eps\quad\text{with multiplicity }1,\label{eq:eigen}\\
- &\det T_N(c)=(1+\eps)^N(1-N\eps)>0.\label{eq:det}
+ \qquad 1-N\eps\quad\text{with multiplicity }1,\label{herg:eq:eigen}\\
+ &\det T_N(c)=(1+\eps)^N(1-N\eps)>0.\label{herg:eq:det}
 \end{align}
 The unique signed coefficientwise Hahn measure having these moments is
-\begin{equation}\label{eq:badmeasure}
+\begin{equation}\label{herg:eq:badmeasure}
  \mu=(1+\eps)m-\eps\delta_1.
 \end{equation}
 It is not positive, because $\mu(\{1\})=-\eps$. Consequently the moments have no positive coefficientwise Hahn-measure representation on the ordinary circle.
 \end{theorem}
 \begin{proof}
-The diagonal entries in \eqref{eq:mainmatrix} are $1$, and the off-diagonal entries are $-\eps$, so the matrix formula is exact. The vector of ones has $J_{N+1}$-eigenvalue $N+1$, while its orthogonal complement has eigenvalue zero. This gives \eqref{eq:eigen} and \eqref{eq:det}. Both eigenvalues are positive by infinitesimality and ordinary finiteness of $N$.
+The diagonal entries in \eqref{herg:eq:mainmatrix} are $1$, and the off-diagonal entries are $-\eps$, so the matrix formula is exact. The vector of ones has $J_{N+1}$-eigenvalue $N+1$, while its orthogonal complement has eigenvalue zero. This gives \eqref{herg:eq:eigen} and \eqref{herg:eq:det}. Both eigenvalues are positive by infinitesimality and ordinary finiteness of $N$.
 
-The Fourier coefficients of $m$ are $\delta_{n0}$, and those of $\delta_1$ are all $1$. Therefore \eqref{eq:badmeasure} has precisely the moments \eqref{eq:mainmoments}. If another coefficientwise measure had these moments, every coefficient measure of the difference would have all Fourier coefficients zero. Trigonometric density and uniqueness of ordinary finite measures force every such coefficient to be zero. Finally $m(\{1\})=0$, giving the negative value on the singleton.
+The Fourier coefficients of $m$ are $\delta_{n0}$, and those of $\delta_1$ are all $1$. Therefore \eqref{herg:eq:badmeasure} has precisely the moments \eqref{herg:eq:mainmoments}. If another coefficientwise measure had these moments, every coefficient measure of the difference would have all Fourier coefficients zero. Trigonometric density and uniqueness of ordinary finite measures force every such coefficient to be zero. Finally $m(\{1\})=0$, giving the negative value on the singleton.
 \end{proof}
 
 The obstruction persists under any enlargement of the value group that preserves the coefficientwise model: new coefficient measures would have every Fourier coefficient zero and hence would vanish. Enlarging the exponent workspace alone cannot produce the missing positive measure.
@@ -628,14 +700,14 @@ This example also gives a sharp diagnosis of why ``all finite matrices are posit
 
 \subsection{Positive quadratures with a nonpositive weak-* limit}
 
-\begin{theorem}[Nonclosedness of the positive-measure cone]\label{thm:quadrature}
+\begin{theorem}[Nonclosedness of the positive-measure cone]\label{herg:thm:quadrature}
 For every ordinary $M\ge2$, let $\sigma_M$ be the uniform probability measure on the $M$th roots of unity, and put
-\begin{equation}\label{eq:quadrature}
+\begin{equation}\label{herg:eq:quadrature}
  \mu_M=(1+\eps)\sigma_M-\eps\delta_1.
 \end{equation}
-Then $\mu_M$ is a positive coefficientwise Hahn probability measure and represents \eqref{eq:mainmoments} for $|n|<M$. As $M\to\infty$, it converges coefficientwise weak-* to \eqref{eq:badmeasure}. Its two coefficient measures have total variations bounded uniformly by $1$ and $2$.
+Then $\mu_M$ is a positive coefficientwise Hahn probability measure and represents \eqref{herg:eq:mainmoments} for $|n|<M$. As $M\to\infty$, it converges coefficientwise weak-* to \eqref{herg:eq:badmeasure}. Its two coefficient measures have total variations bounded uniformly by $1$ and $2$.
 
-Thus the positive Hahn-probability cone is not closed in coefficientwise weak-* topology, even with one fixed two-element exponent support and uniformly bounded coefficient total variations.
+Thus the positive coefficientwise Hahn-probability cone is not closed in coefficientwise weak-* topology, even with one fixed two-element exponent support and uniformly bounded coefficient total variations.
 \end{theorem}
 \begin{proof}
 Every root of unity except $1$ has weight $(1+\eps)/M>0$. The weight at $1$ is
@@ -645,15 +717,15 @@ Every root of unity except $1$ has weight $(1+\eps)/M>0$. The weight at $1$ is
 \]
 The sum of the weights is $1$. Positivity on every Borel set follows because the measure has finitely many positive atomic weights.
 
-The Fourier coefficient of $\sigma_M$ at $n$ is $1$ when $M$ divides $n$ and $0$ otherwise. For $0<|n|<M$, the moment of \eqref{eq:quadrature} is therefore $-\eps$, and the zeroth moment is $1$.
+The Fourier coefficient of $\sigma_M$ at $n$ is $1$ when $M$ divides $n$ and $0$ otherwise; this is the finite orthogonality relation \lbl{trigonometry:eq:orthogonalityfinite} of the trigonometry report. For $0<|n|<M$, the moment of \eqref{herg:eq:quadrature} is therefore $-\eps$, and the zeroth moment is $1$.
 
-For an ordinary trigonometric polynomial $p$, $\int p\dd\sigma_M=\int p\dd m$ once $M$ exceeds its degree in both directions. Uniform approximation of a continuous $f$ by such a $p$, together with unit total masses, shows $\sigma_M\to m$ weak-*. Hence the exponent-zero coefficient of $\mu_M$ tends to $m$, while its exponent-$\eta$ coefficient $\sigma_M-\delta_1$ tends to $m-\delta_1$. Their variations are at most $1$ and $2$. The limit is not positive by Theorem~\ref{thm:negativeatom}.
+For an ordinary trigonometric polynomial $p$, $\int p\dd\sigma_M=\int p\dd m$ once $M$ exceeds its degree in both directions. Uniform approximation of a continuous $f$ by such a $p$, together with unit total masses, shows $\sigma_M\to m$ weak-*. Hence the exponent-zero coefficient of $\mu_M$ tends to $m$, while its exponent-$\eta$ coefficient $\sigma_M-\delta_1$ tends to $m-\delta_1$. Their variations are at most $1$ and $2$. The limit is not positive by Theorem~\ref{herg:thm:negativeatom}.
 \end{proof}
 
 A coefficientwise compactness argument can therefore produce a limit while losing precisely the positivity needed for Herglotz representation. This is an explicit failure of closure, not merely an observation that a familiar compactness proof has not been justified. The coefficientwise limit is not a fine-topological limit in $\No$; changing that topology would change the assertion.
 
-\begin{theorem}[Nonclosure with a fixed Haar leading coefficient]\label{thm:fejer}
-The nonclosedness in Theorem~\ref{thm:quadrature} persists even when the leading coefficient is exactly $m$ throughout and every approximating coefficient measure is absolutely continuous with respect to $m$.
+\begin{theorem}[Nonclosure with a fixed Haar leading coefficient]\label{herg:thm:fejer}
+The nonclosedness in Theorem~\ref{herg:thm:quadrature} persists even when the leading coefficient is exactly $m$ throughout and every approximating coefficient measure is absolutely continuous with respect to $m$.
 \end{theorem}
 \begin{proof}
 Use the ordinary Fej\'er kernel
@@ -678,44 +750,44 @@ This construction also follows the classical Fej\'er reconstruction of a Toeplit
 \subsection{Where the rational function fails}
 
 The coherent analytic function determined by the moments is
-\begin{equation}\label{eq:badH}
+\begin{equation}\label{herg:eq:badH}
  H_\eps(z)=1+2\sum_{n\ge1}c_nz^n
  =1-\frac{2\eps z}{1-z}.
 \end{equation}
 The series notation here means ordinary analytic summation at each Hahn exponent. Its ordinary coefficient is $1$, so $\Rea H_\eps>0$ throughout $\halo\D$. The rational expression has no pole in $\D_\Gamma$, but at the internal point $x=1-\eps$ it gives
-\begin{equation}\label{eq:boundarynegative}
+\begin{equation}\label{herg:eq:boundarynegative}
  H_\eps(1-\eps)=-1+2\eps<0.
 \end{equation}
 Thus positivity on the halo, all finite moment inequalities, and rational regularity inside the full internal disk still do not force positivity there. The missing condition lives in a boundary monad with ordinary standard part $1$.
 
-\begin{theorem}[Exact Schur iteration and its internal poles]\label{thm:schur}
+\begin{theorem}[Exact Schur iteration and its internal poles]\label{herg:thm:schur}
 Define the normalized Cayley quotient
 \[
  s_0(z)=\frac{H_\eps(z)-1}{z(H_\eps(z)+1)}
        =-\frac{\eps}{1-(1+\eps)z}.
 \]
 For the formal Schur recursion
-\begin{equation}\label{eq:schurrec}
+\begin{equation}\label{herg:eq:schurrec}
  \alpha_n=s_n(0),\qquad
  s_{n+1}(z)=\frac{s_n(z)-\alpha_n}
  {z\bigl(1-\overline{\alpha_n}s_n(z)\bigr)},
 \end{equation}
 the exact expressions are
-\begin{equation}\label{eq:schurformula}
+\begin{equation}\label{herg:eq:schurformula}
  s_n(z)=-\frac{\eps}
  {1-n\eps-\bigl(1-(n-1)\eps\bigr)z},
  \qquad
  \alpha_n=-\frac{\eps}{1-n\eps}.
 \end{equation}
 Every ordinary finite parameter satisfies $|\alpha_n|<1$. Nevertheless, every rational $s_n$ has a pole at
-\begin{equation}\label{eq:schurpole}
+\begin{equation}\label{herg:eq:schurpole}
  r_n=\frac{1-n\eps}{1-(n-1)\eps}\in(0,1)\subset\FG,
  \qquad \st(r_n)=1.
 \end{equation}
 Hence these rational Schur iterates are not functions holomorphic and contractive on the full internal disk, although they are defined and infinitesimal on its ordinary-domain halo.
 \end{theorem}
 \begin{proof}
-Put $A=1-n\eps$ and $B=A+\eps$. If $s_n=-\eps/(A-Bz)$, then $\alpha_n=-\eps/A$, and direct substitution into \eqref{eq:schurrec} gives
+Put $A=1-n\eps$ and $B=A+\eps$. If $s_n=-\eps/(A-Bz)$, then $\alpha_n=-\eps/A$, and direct substitution into \eqref{herg:eq:schurrec} gives
 \[
  \frac{s_n-\alpha_n}{z(1-\alpha_ns_n)}
  =-\frac{\eps B}{A^2-\eps^2-ABz}
@@ -730,31 +802,33 @@ The conclusion concerns the exact rational continuation and the specified coeffi
 
 \subsection{An algebraic unitary system without this spectral measure}
 
-\begin{corollary}\label{cor:unitary}
-There is a cyclic algebraic unitary system over $\KG$ whose vacuum moments are \eqref{eq:mainmoments}, but which has no positive coefficientwise Hahn spectral measure on the ordinary circle reproducing those moments.
+\begin{corollary}\label{herg:cor:unitary}
+There is a cyclic algebraic unitary system over $\KG$ whose vacuum moments are \eqref{herg:eq:mainmoments}, but which has no positive coefficientwise Hahn spectral measure on the ordinary circle reproducing those moments.
 \end{corollary}
 \begin{proof}
 Take the $\KG$-vector space $V=\KG[\zeta,\zeta^{-1}]$ and define
 \[
  \langle p,q\rangle=\Lambda_\eps(\overline p q),
 \]
-with $\Lambda_\eps$ from \eqref{eq:Rieszfailure}. For $p\ne0$, the coherent function $|p|^2$ is nonzero and pointwise nonnegative on $\T$. Theorem~\ref{thm:functional} gives $\langle p,p\rangle>0$. Thus this is a positive definite Hermitian inner product.
+with $\Lambda_\eps$ from \eqref{herg:eq:Rieszfailure}. For $p\ne0$, the coherent function $|p|^2$ is nonzero and pointwise nonnegative on $\T$. Theorem~\ref{herg:thm:functional} gives $\langle p,p\rangle>0$. Thus this is a positive definite Hermitian inner product.
 
 Multiplication $Up=\zeta p$ is invertible and preserves the inner product because $|\zeta|=1$ on $\T$. The vector $1$ is cyclic under all integer powers of $U$. Finally,
 \[
  \langle U^n1,1\rangle=\Lambda_\eps(\zeta^{-n})=c_n.
 \]
-A spectral measure in the specified category would in particular be a positive Hahn measure with these moments, contradicting Theorem~\ref{thm:negativeatom}.
+A spectral measure in the specified category would in particular be a positive coefficientwise Hahn measure with these moments, contradicting Theorem~\ref{herg:thm:negativeatom}.
 \end{proof}
 
 No Hilbert completion, operator-norm topology, or general spectral theorem over $\No[i]$ is asserted. The corollary identifies the obstruction already at the algebraic cyclic-unitary level. It distinguishes existence of a positive inner-product realization from existence of the ordinary-circle boundary measure.
 
+Its counterpart in the measures report is a positive-definite Hermitian power-moment form on $[0,1]$ whose multiplication operator has no positive \emph{strong} spectral measure (Section~\ref{herg:sec:position}); the two statements differ in class, sample space and kind of moment. Neither the spectral-theory report nor \repo{surcomplex/infinite-dimensional-hahn-spectral-theory} supplies spectral measures, so the corollary contradicts nothing there; it records a reason why the natural positive candidate can fail to exist.
+
 \section{A strict hierarchy and the limits of finite information}
-\label{sec:hierarchy}
+\label{herg:sec:hierarchy}
 
 \subsection{Five different classes}
 
-Work in the universe of normalized coherent functions $H\in\AH(\D)$ with $H(0)=1$. Define their moments by
+Work in the universe of normalized coherent functions $H\in\OU{\D}$ with $H(0)=1$. Define their moments by
 \[
  H(z)=1+2\sum_{n\ge1}c_nz^n,\qquad c_0=1,
  \quad c_{-n}=\overline{c_n},
@@ -773,18 +847,18 @@ $\mathsf H$ & $\Rea H(z)\ge0$ on $\halo\D$.\\
 \bottomrule
 \end{tabularx}
 \end{center}
-The letters $\mathsf D$ and $\mathsf A$ here denote classes, not the disk or the ring $\AH$.
+The sans-serif letters denote classes of this section only. In particular $\mathsf D$ is not the disk $\D$, and $\mathsf A$ is not a coefficient ring (the collection's notation guide warns against using $A$ as a ring name, and the source's $\mathscr A_\Gamma$ has been renamed $\OU{U}$ for that reason).
 
-\begin{theorem}[Strict Hahn--Herglotz hierarchy]\label{thm:hierarchy}
+\begin{theorem}[Strict Hahn--Herglotz hierarchy]\label{herg:thm:hierarchy}
 All four inclusions
-\begin{equation}\label{eq:hierarchy}
+\begin{equation}\label{herg:eq:hierarchy}
  \mathsf P\subsetneq\mathsf M\subsetneq\mathsf D
  \subsetneq\mathsf A\subsetneq\mathsf H
 \end{equation}
 are proper. Every strictness witness can be chosen with only the two Hahn exponents $0$ and $\eta>0$. For the first three witnesses, all finite Toeplitz matrices are strictly positive, not merely semidefinite.
 \end{theorem}
 \begin{proof}
-Proposition~\ref{prop:measuretoeplitz} gives $\mathsf P\subset\mathsf M$. A finite signed measure defines a distribution of order zero, so $\mathsf M\subset\mathsf D$. Polynomial growth gives ordinary analytic convergence of every coefficient series for $|z|<1$, consistently with the ambient coherent category, and the inclusion $\mathsf D\subset\mathsf A$ follows.
+Proposition~\ref{herg:prop:measuretoeplitz} gives $\mathsf P\subset\mathsf M$. A finite signed measure defines a distribution of order zero, so $\mathsf M\subset\mathsf D$. Polynomial growth gives ordinary analytic convergence of every coefficient series for $|z|<1$, consistently with the ambient coherent category, and the inclusion $\mathsf D\subset\mathsf A$ follows.
 
 To prove $\mathsf A\subset\mathsf H$, first use the $2\times2$ principal submatrix with indices $0,n$ in $T_n(c)$. Positivity implies
 \[
@@ -792,21 +866,21 @@ To prove $\mathsf A\subset\mathsf H$, first use the $2\times2$ principal submatr
 \]
 so every $c_n$ is finite. Consequently all negative-exponent Taylor coefficients of $H$ vanish. Each negative-exponent holomorphic coefficient function has identically zero Taylor series at zero, and therefore vanishes on connected $\D$.
 
-Taking standard parts of the finite Toeplitz matrices gives positive ordinary Toeplitz matrices for the coefficient function $H_0$, with $H_0(0)=1$. The classical trigonometric moment theorem and Herglotz representation give $\Rea H_0\ge0$, and the ordinary minimum principle makes it strictly positive. Lemma~\ref{lem:scalar} then gives positivity of $H$ on the halo.
+Taking standard parts of the finite Toeplitz matrices gives positive ordinary Toeplitz matrices for the coefficient function $H_0$, with $H_0(0)=1$. The classical trigonometric moment theorem and Herglotz representation give $\Rea H_0\ge0$, and the ordinary minimum principle makes it strictly positive. Lemma~\ref{herg:lem:scalar} then gives positivity of $H$ on the halo.
 
-It remains to prove strictness. The four examples below do so in order. Their claims about finite Toeplitz positivity follow from Theorem~\ref{thm:saturation} whenever the leading coefficient function is $1$.
+It remains to prove strictness. The four examples below do so in order. Their claims about finite Toeplitz positivity follow from Theorem~\ref{herg:thm:saturation} whenever the leading coefficient function is $1$.
 \end{proof}
 
 \paragraph{A signed measure that is not positive: $\mathsf M\setminus\mathsf P$.}
-The moments $c_n=-\eps$ for $n\ne0$ give Theorem~\ref{thm:negativeatom}. The signed coefficient measures are $m$ and $m-\delta_1$, but the second has a negative atom on a first-level null set.
+The moments $c_n=-\eps$ for $n\ne0$ give Theorem~\ref{herg:thm:negativeatom}. The signed coefficient measures are $m$ and $m-\delta_1$, but the second has a negative atom on a first-level null set.
 
 \paragraph{A distribution that is not a measure: $\mathsf D\setminus\mathsf M$.}
 Set
-\begin{equation}\label{eq:n2moments}
+\begin{equation}\label{herg:eq:n2moments}
  c_0=1,\qquad c_n=\eps n^2\quad(n\ne0).
 \end{equation}
 The corresponding rational coherent function is
-\begin{equation}\label{eq:n2function}
+\begin{equation}\label{herg:eq:n2function}
  H_2(z)=1+2\eps\frac{z(1+z)}{(1-z)^3}.
 \end{equation}
 At exponent $\eta$, the coefficient distribution is $-\delta_0''$, with the derivative taken in the angle coordinate $\theta$ at $\zeta=e^{i\theta}=1$. Indeed,
@@ -820,40 +894,40 @@ This example also has an explicit complex boundary-layer failure. At
  z_\eps=1-(1+i)\eps,
 \]
 one has $z_\eps\overline{z_\eps}=1-2\eps+2\eps^2<1$, but exact algebra gives
-\begin{equation}\label{eq:n2boundary}
+\begin{equation}\label{herg:eq:n2boundary}
  \Rea H_2(z_\eps)=2-\eps^{-2}<0.
 \end{equation}
 There is no appeal to an asymptotic remainder in this identity. More generally, replacing $n^2$ by $n^{2m}$ realizes the distribution $(-1)^m\delta_0^{(2m)}$ and produces a positive Toeplitz moment sequence of exact distribution order $2m$ for every ordinary $m\ge1$.
 
 \paragraph{An analytic function with no distributional coefficient boundary: $\mathsf A\setminus\mathsf D$.}
 Set
-\begin{equation}\label{eq:superpolynomial}
+\begin{equation}\label{herg:eq:superpolynomial}
  c_0=1,\qquad c_n=\eps e^{\sqrt{|n|}}\quad(n\ne0).
 \end{equation}
-The ordinary series $\sum_{n\ge1}e^{\sqrt n}z^n$ has radius of convergence exactly one, since $(e^{\sqrt n})^{1/n}\to1$. Its coefficients grow faster than every polynomial, so Theorem~\ref{thm:representation} rules out a periodic distribution at exponent $\eta$. Finite Toeplitz positivity is unaffected by this superpolynomial growth.
+The ordinary series $\sum_{n\ge1}e^{\sqrt n}z^n$ has radius of convergence exactly one, since $(e^{\sqrt n})^{1/n}\to1$. Its coefficients grow faster than every polynomial, so Theorem~\ref{herg:thm:representation} rules out a periodic distribution at exponent $\eta$. Finite Toeplitz positivity is unaffected by this superpolynomial growth.
 
 \paragraph{A halo-Herglotz function with a negative Toeplitz determinant: $\mathsf H\setminus\mathsf A$.}
-Use \eqref{eq:harnackfailure}:
+Use \eqref{herg:eq:harnackfailure}:
 \[
  H(z)=\frac{1+z}{1-z}+\eps z.
 \]
 Its ordinary real part is strictly positive on the disk, so $H\in\mathsf H$. But its first moment is $c_1=1+\eps/2$, and
-\begin{equation}\label{eq:negativeT1}
+\begin{equation}\label{herg:eq:negativeT1}
  \det T_1=1-(1+\eps/2)^2=-\eps-\eps^2/4<0.
 \end{equation}
 The standard part of this Toeplitz matrix is degenerate, so an infinitesimal perturbation can destroy positivity. This contrasts with the strictly positive Haar leading matrices in the other three examples.
 
 \subsection{Positive formal moments need not be analytic at all}
 
-\begin{example}[Zero analytic radius despite all finite tests]\label{ex:factorial}
-Set $c_0=1$ and $c_n=\eps |n|!$ for $n\ne0$. Every $T_N(c)$ is strictly positive. Nevertheless the exponent-$\eta$ coefficient of the putative normalized analytic function is $2\sum_{n\ge1}n!z^n$, which has radius of convergence zero. There is no coherent analytic germ with these Taylor coefficients. Every finite prefix still has a positive measure completion by Theorem~\ref{thm:saturation}.
+\begin{example}[Zero analytic radius despite all finite tests]\label{herg:ex:factorial}
+Set $c_0=1$ and $c_n=\eps |n|!$ for $n\ne0$. Every $T_N(c)$ is strictly positive. Nevertheless the exponent-$\eta$ coefficient of the putative normalized analytic function is $2\sum_{n\ge1}n!z^n$, which has radius of convergence zero. There is no coherent analytic germ with these Taylor coefficients. Every finite prefix still has a positive coefficientwise measure completion by Theorem~\ref{herg:thm:saturation}.
 \end{example}
 
-This last example lies outside the universe of \eqref{eq:hierarchy}. It demonstrates an additional distinction between a positive formal moment problem and an analytic Herglotz problem. It must not be called an analytic counterexample on a positive-radius disk.
+This last example lies outside the universe of \eqref{herg:eq:hierarchy}. It demonstrates an additional distinction between a positive formal moment problem and an analytic Herglotz problem. It must not be called an analytic counterexample on a positive-radius disk.
 
 \subsection{A constructive finite-information barrier}
 
-\begin{theorem}[One finite prefix admits every boundary behavior]\label{thm:prefix}
+\begin{theorem}[One finite prefix admits every boundary behavior]\label{herg:thm:prefix}
 Fix $N\ge0$ and arbitrary ordinary conjugate-symmetric data $b_k$ for $0<|k|\le N$. The prefix
 \[
  c_0=1,\qquad c_k=\eps b_k\quad(0<|k|\le N)
@@ -869,35 +943,35 @@ has extensions of each of the following five kinds:
 Every extension can be chosen to have strictly positive Toeplitz matrices of all finite sizes and only the two exponents $0,\eta$.
 \end{theorem}
 \begin{proof}
-For (i), use $m+\eps q_Nm$ from Theorem~\ref{thm:saturation}, and take its complete Fourier sequence.
+For (i), use $m+\eps q_Nm$ from Theorem~\ref{herg:thm:saturation}, and take its complete Fourier sequence.
 
 For (ii), begin with the coefficient measure $m-\delta_1$. Add the real trigonometric density
 \[
  q(\zeta)=\sum_{0<|k|\le N}(b_k+1)\zeta^k
 \]
-against $m$. This changes its low nonzero Fourier coefficients from $-1$ to $b_k$ and leaves total mass zero. Its mass at $\{1\}$ remains $-1$, so the resulting Hahn measure is not positive and no other coefficientwise measure can represent the same full sequence.
+against $m$. This changes its low nonzero Fourier coefficients from $-1$ to $b_k$ and leaves total mass zero. Its mass at $\{1\}$ remains $-1$, so the resulting coefficientwise Hahn measure is not positive and no other coefficientwise measure can represent the same full sequence.
 
 For (iii), begin with the distribution $-\delta_0''$ and change its finitely many coefficients $k^2$ with $0<|k|\le N$ to $b_k$ by adding a real trigonometric density. The remaining coefficients $n^2$ are unbounded, so the result is not a finite measure.
 
 For (iv), use the tail $e^{\sqrt{|n|}}$ for $|n|>N$. Altering finitely many Taylor coefficients preserves radius one and superpolynomial growth. For (v), use the tail $|n|!$ instead; altering finitely many coefficients does not change radius zero.
 
-In each case the exponent-zero sequence is the Haar sequence, and all remaining moments are $\eps$ times ordinary numbers with conjugate symmetry. Theorem~\ref{thm:saturation} gives strict Toeplitz positivity at every finite size.
+In each case the exponent-zero sequence is the Haar sequence, and all remaining moments are $\eps$ times ordinary numbers with conjugate symmetry. Theorem~\ref{herg:thm:saturation} gives strict Toeplitz positivity at every finite size.
 \end{proof}
 
 Thus no method that inspects only finitely many moments can distinguish these five possibilities within this family. This is a finite-information statement proved by explicit extensions, not a general undecidability claim about arbitrary representations of surreal numbers.
 
 \section{Transport to surreal numbers and consequences}
-\label{sec:transport}
+\label{herg:sec:transport}
 
 \subsection{The concrete surreal statements}
 
-\begin{proposition}[Normal-form transport]\label{prop:transport}
+\begin{proposition}[Normal-form transport]\label{herg:prop:transport}
 Let $j:\Gamma\hookrightarrow(\No,+)$ be an ordered additive embedding. The maps
-\begin{equation}\label{eq:transport}
+\begin{equation}\label{herg:eq:transport}
  \sum_\gamma a_\gamma t^\gamma\longmapsto
  \sum_\gamma a_\gamma\omega^{-j(\gamma)}
 \end{equation}
-embed $\FG$ as an ordered subfield of $\No$, and $\KG$ as its complexification inside $\No[i]$. They preserve conjugation, positivity, finite matrix inequalities, and all the coefficientwise identities proved above. The scalar and matrix halo conclusions transport under the same map.
+embed $\FG$ as an ordered subfield of $\No$, and $\KG$ as its complexification inside $\No[i]$. They preserve conjugation, positivity, finite matrix inequalities, and all the coefficientwise identities proved above. The scalar and matrix halo conclusions transport under the same map, the matrix ones under the divisibility hypothesis of Theorem~\ref{herg:thm:normalization}.
 \end{proposition}
 \begin{proof}
 An increasing well-ordered support in $\Gamma$ becomes a reverse-well-ordered support of surreal exponents $-j(\gamma)$. Thus the right side is a Conway normal form. Uniqueness of normal forms gives injectivity. The normal-form sum and product rules, together with additivity of $j$, give preservation of the field operations. The first-coefficient order rule gives order preservation. Extending real and imaginary parts separately gives the complexified embedding and preservation of conjugation.
@@ -905,7 +979,7 @@ An increasing well-ordered support in $\Gamma$ becomes a reverse-well-ordered su
 Finite matrix inequalities are statements about field operations, conjugation, and the ordered base, so they are preserved on the embedded workspace. The positive-exponent Taylor sums defining halo evaluation are transported as the same admissible normal-form sums. Measures and functionals are transported value by value; their Borel domains remain the original ordinary sets.
 \end{proof}
 
-For the central examples take $\Gamma=\Q$, $j$ the usual rational embedding, and $\eta=1$. Then $\eps=\omega^{-1}$, and Theorem~\ref{thm:negativeatom} becomes the entirely explicit surreal assertion
+For the central examples take $\Gamma=\Q$, $j$ the usual rational embedding, and $\eta=1$. Then $\eps=\omega^{-1}$, and Theorem~\ref{herg:thm:negativeatom} becomes the entirely explicit surreal assertion
 \[
  c_0=1,\qquad c_n=-\omega^{-1}\ (n\ne0),\qquad
  \det T_N=(1+\omega^{-1})^N(1-N\omega^{-1})>0.
@@ -914,22 +988,22 @@ The nonpositive representing set function is
 \[
  E\longmapsto m(E)+\omega^{-1}\bigl(m(E)-\mathbf1_E(1)\bigr).
 \]
-The positive unital functional is
+The strictly positive unital functional is
 \[
  F\longmapsto\int_\T F\dd m+
  \omega^{-1}\left(\int_\T F\dd m-F(1)\right).
 \]
 The distinction between the last two displays is a distinction between positive tests on coherent continuous functions and positive tests on all Borel sets. It is not a difference in arithmetic.
 
-No proper-class support, proper-class integral, or proper-class matrix is used. Every workspace, measure coefficient family, and vector-space construction in the article is set sized. The uncountable example in Section~\ref{sec:measures} still has set-sized support and admits the explicit exponent embedding already given there.
+No proper-class support, proper-class integral, or proper-class matrix is used. Every workspace, measure coefficient family, and vector-space construction in the article is set sized. The uncountable example in Section~\ref{herg:sec:measures} still has set-sized support and admits the explicit exponent embedding already given there.
 
 \subsection{A replacement for an unqualified Herglotz theorem}
 
-Within the coefficientwise category, the correct replacement has two independent layers. First, each exponent must satisfy the ordinary bounded-functional criterion \eqref{eq:variationtest}; this is the boundary \emph{regularity} requirement. Second, the unique coefficient measures must satisfy the null-ideal criterion \eqref{eq:nullcriterion}; this is the boundary \emph{positivity} requirement. These conditions are jointly necessary and sufficient. Neither all finite Toeplitz inequalities nor halo positivity substitutes for them.
+Within the coefficientwise category, the correct replacement has two independent layers. First, each exponent must satisfy the ordinary bounded-functional criterion \eqref{herg:eq:variationtest}; this is the boundary \emph{regularity} requirement. Second, the unique coefficient measures must satisfy the null-ideal criterion \eqref{herg:eq:nullcriterion}; this is the boundary \emph{positivity} requirement. These conditions are jointly necessary and sufficient. Neither all finite Toeplitz inequalities nor halo positivity substitutes for them.
 
 For normalized coherent functions, matrix normalization has a different role. It says that halo positivity is governed by a positive ordinary leading function after an appropriate constant rescaling. It gives a usable local theory, including common kernels and Harnack comparisons, while the counterexamples show exactly why this local theory must not be advertised as a global boundary representation theorem.
 
-The distinction has practical consequences for symbolic surcomplex computation. A system can certify every finite Toeplitz determinant symbolically and still have no justification for constructing a positive boundary measure. It should record separately the moment-positivity certificate, the coefficient regularity certificate, and the null-ideal certificate. Theorem~\ref{thm:prefix} shows that inspecting more but still finitely many moments cannot eliminate that separation in general.
+The distinction has practical consequences for symbolic surcomplex computation. A system can certify every finite Toeplitz determinant symbolically and still have no justification for constructing a positive boundary measure. It should record separately the moment-positivity certificate, the coefficient regularity certificate, and the null-ideal certificate. Theorem~\ref{herg:thm:prefix} shows that inspecting more but still finitely many moments cannot eliminate that separation in general.
 
 \subsection{Remaining scope boundaries}
 
@@ -939,32 +1013,89 @@ Likewise, positivity on the full internal disk is stronger than the halo conditi
 
 Finally, changing the boundary space, allowing different forms of additivity, or changing the function class can change the representation problem. Those alternatives should be investigated with their own definitions rather than dismissed by a counterexample in a different category. The exact conclusions established here do not depend on settling those alternatives.
 
+\subsection{Consolidated non-claims}
+\label{herg:sec:nonclaims}
+
+Every limitation stated by the source manuscript is kept where it was made. For reference, they are collected here; items 1--23 are the source's, items 24--26 were added when the report joined the collection.
+\begin{enumerate}[label=\arabic*.,leftmargin=2.2em]
+\item No named published open conjecture is claimed settled. The package is a candidate original contribution; priority, and absence from every repository file or archive, are not certified. The proofs are not refereed and not checked in Lean.
+\item The boundary is the ordinary circle, or an ordinary compact Hausdorff space, with coefficientwise additivity. Nothing is asserted about a measure on an enlarged non-Archimedean circle, a finitely additive or internal nonstandard representation, or a representation after changing the integration theory. The programs of Halpern, Bottazzi, and Restrepo Borrero--Shamseddine are neither ruled out nor contradicted. The obstruction is to one natural coefficientwise Hahn extension of the classical circle representation.
+\item Classical ingredients are not claimed: the Gesztesy--Tsekanovskii constant-kernel lemma, Riesz representation, Fourier uniqueness, the distribution growth criterion, finite real-closed-field congruence, the Herglotz and trigonometric moment theorems, and the Harnack and minimum principles. Theorem~\ref{herg:thm:representation} is a coefficientwise use of the Riesz theorem, not a new Riesz theorem. That successive infinitesimal scales encode lexicographic priority is not claimed as original.
+\item A Taylor series in an ordinary variable is not claimed to be a strong Hahn sum across degrees; a Taylor series in an infinitesimal increment is a strong sum, not a limit in every topology; coefficientwise countable additivity is not strong summability. No unspecified topology on the full surreal class is used.
+\item The halo is not the full internal disk, and a coherent function need not have an evaluation on $\D_\Gamma$ (Remark~\ref{herg:rem:disk}).
+\item Normalization is not a small-perturbation statement about positive ordinary matrices. It classifies halo positivity, not a positive boundary measure, and must not be advertised as a global boundary representation theorem.
+\item The Harnack comparison holds with every ordinary $C>C_0$; the sharp classical constant need not survive (Theorem~\ref{herg:thm:harnack}).
+\item $\CH(X)$ is not asserted to be a complex $C^*$-algebra.
+\item The bound \eqref{herg:eq:ordinarybound} is an order bound, not continuity from the supremum norm into the fine topology; no such continuity is used or claimed.
+\item Bounded Fourier coefficients are necessary for a finite measure but are not asserted to be sufficient.
+\item Positivity of $\int|p|^2\dd\mu$ is proved, not assumed from a general integration theorem; no infinite positivity-preserving limit is assumed (Proposition~\ref{herg:prop:measuretoeplitz}).
+\item The explicit moments $c_0=1$, $c_n=-\eps$ show that every finite Toeplitz test can pass while the unique signed coefficientwise representing measure is negative on $\{1\}$. They show this because $\eps$ is infinitesimal: for a fixed positive real number in place of $\eps$ the constant-vector test $1-N\eps$ eventually fails, so the example has no counterpart over $\R$. Enlarging the exponent group within the coefficientwise model cannot produce the missing positive measure.
+\item The weak-* limits of Theorems~\ref{herg:thm:quadrature} and~\ref{herg:thm:fejer} are coefficientwise, not fine-topological; changing the topology would change the assertion.
+\item The Schur result concerns the exact rational continuation; it does not prohibit a different notion of function on additional fine-topological components.
+\item No Hilbert completion, operator-norm topology, or general spectral theorem over $\No[i]$ is asserted (Corollary~\ref{herg:cor:unitary}).
+\item Example~\ref{herg:ex:factorial} lies outside the universe of the hierarchy and must not be called an analytic counterexample on a positive-radius disk.
+\item Theorem~\ref{herg:thm:prefix} is a finite-information statement within its family, not a general undecidability claim.
+\item No matrix-valued null-ideal criterion is supplied.
+\item No equivalence between full-disk positivity and a measure on the ordinary circle is asserted; the rational examples prove failures of implications, not a classification of full-disk theories.
+\item Other boundary spaces, forms of additivity, or function classes may change the representation problem; they are neither settled nor dismissed here.
+\item No proper-class support, integral, or matrix is used.
+\item The finite checks do not prove any statement quantified over all finite sizes, all Borel sets, all holomorphic functions, or arbitrary well-ordered supports. They do not check arbitrary support, Borel measure uniqueness, Hahn summability, the analytic minimum principles, or transfinite induction. No computer-algebra simplification is treated as a proof of a transfinite support assertion.
+\item The repository and literature audit was targeted. Negative code searches are not certificates of absence; the archive interiors were not read; the standard books were not inspected line by line; two of the non-Archimedean integration papers were compared by abstract and scope only.
+\item Divisibility of $\Gamma$ is assumed exactly where Section~\ref{herg:sec:framework} says. Nothing is claimed about Theorem~\ref{herg:thm:normalization} or Theorem~\ref{herg:thm:harnack} for nondivisible $\Gamma$.
+\item Part~(b) of Theorem~\ref{herg:thm:functional} is not new in mechanism (\lbl{c:p5:positivity}); Remark~\ref{herg:rem:disk} is \lbl{c:p4:rk-notball}; Theorem~\ref{herg:thm:nullideal} is proved in the measures report, and this report claims no priority for it over that report's source, found independently in the same batch.
+\item Every measure here is coefficientwise. Nothing in this report is a statement about strongly additive Hahn measures, and the two-exponent support of Theorem~\ref{herg:thm:negativeatom} does not conflict with the order type $\omega+1$ that is the threshold in the strong class.
+\end{enumerate}
+
 \appendix
 \section{Provenance, novelty assessment, and repository comparison}
-\label{app:audit}
+\label{herg:app:audit}
+
+\subsection{Provenance of this report}
+\label{herg:app:provenance}
+
+This report is built from \emph{one} manuscript: the archive \texttt{surcomplex\_hahn\_positivity} of batch~18 of the collection, dated 22 September 2026 and pinned to repository commit \nolinkurl{4cf691c7d951e037739d32d9f5c387dcce724f3c}. There was no second source. Nothing was merged, and nothing was selected away: every result and every proof of the manuscript is printed here, except the proof of the main equivalence in Theorem~\ref{herg:thm:nullideal}, which the collection prints once, in \repo{surreal/hahn-valued-measures-and-probability} as \lbl{meas:thm:nullideal}.
+
+The delivered verification program \repo{code/verify.py}, build script \repo{code/build.sh}, recorded output \repo{data/verification.txt}, dependency pin \repo{data/requirements.txt}, and audit note \repo{research_audit.md} are kept byte-identical. The audit note records the source's own audit at its pin; the corrections below are made here, not in that file. The delivered article and README were rewritten, and the delivered PDF was replaced by a build of this text.
+
+The editorial changes are these.
+\begin{enumerate}[label=(\arabic*)]
+\item Every label carries the prefix \texttt{herg:}.
+\item Divisibility of $\Gamma$, a standing hypothesis of the source, is now assumed only where it is used (Section~\ref{herg:sec:framework}, ``Where divisibility is used'').
+\item The source's bare ``Hahn measure'' is ``coefficientwise Hahn measure'' throughout; the source's ``positive functional'' in the strict sense is ``strictly positive functional''; the real-valuedness of every measure is stated (Section~\ref{herg:sec:measures}); the senses of ``moment'' and of ``positive'' are fixed once (Section~\ref{herg:sec:conventions}).
+\item The halo is written $\halo U$, as in the analysis report (the source wrote $U^{\mathrm h}$), and the coefficient ring $\OU{U}$, as recommended by the notation guide (the source wrote $\mathscr A_\Gamma(U)$).
+\item The proof of Theorem~\ref{herg:thm:nullideal} is replaced by a citation; the translation between the two forms of the criterion and the control-measure argument are kept, and so is Example~\ref{herg:ex:uncountable}.
+\item The relations to other reports in Section~\ref{herg:sec:position} are new, with the credits they carry: \lbl{c:p4:def-halo}, \lbl{c:p4:rk-notball}, \lbl{c:p5:positivity} and \lbl{e:thm-poisson} of the analysis report, \lbl{trigonometry:eq:orthogonalityfinite}, \lbl{found:sub:positivesupport}, and the measures report.
+\item Repository statements that were true at the pin but are no longer current are corrected in Appendix~\ref{herg:app:pinned}, keeping the pin as provenance.
+\item The non-claims are collected in Section~\ref{herg:sec:nonclaims}, with three added.
+\end{enumerate}
+
+Where the edit had to choose: which copy of the null-ideal proof to print (the collection keeps one canonical copy, in the measures report, which is the home of its measure theory; the two proofs are the same); whether to keep Remark~\ref{herg:rem:disk}, which duplicates \lbl{c:p4:rk-notball} (kept, with credit, because Section~\ref{herg:sec:counterexample} uses it); and how to resolve the clash of the source's ring name $\mathscr A_\Gamma(U)$ with the class letter $\mathsf A$ and with the notation guide (the ring was renamed; the class letter was kept, with a warning). The manuscript's title is kept.
 
 \subsection{Pinned comparison and its limitations}
+\label{herg:app:pinned}
 
-The repository comparison was made on 22 September 2026 against
+The source's repository comparison was made on 22 September 2026 against
 \begin{center}
 \texttt{VladimirReshetnikov/Surreal}\par
 \texttt{4cf691c7d951e037739d32d9f5c387dcce724f3c}.
 \end{center}
-The materials inspected through the GitHub connector were the root README, the maintained documentation reader map, the documentation directory listing, the detailed spectral-theory README, and the tree of the \texttt{docs/new} archive directory \cite{Repo}. The reader map describes 26 maintained reports. The archive directory additionally contained 18 ZIP files.
+The materials inspected through the GitHub connector were the root README, the maintained documentation reader map, the documentation directory listing, the detailed spectral-theory README, and the tree of the \texttt{docs/new} archive directory \cite{Repo}. At the pin the reader map described 26 maintained reports, and the archive directory contained 18 ZIP files. \emph{Since the pin}, those archives have been unpacked into reports of the collection and \texttt{docs/new} has been emptied; the collection has also gained further reports, this one among them.
 
-The maintained material already includes substantial Hahn support arithmetic, local and global surcomplex analysis, polynomial geometry, finite spectral theory, dynamics, and differential equations. We do not present those foundations or finite Hermitian congruence as new. The spectral-theory README distinguishes its finite matrix scope from spectral measures. The archive filenames also show existing infinite-spectral and Hahn-Hilbert work; Corollary~\ref{cor:unitary} is therefore framed narrowly as a moment-measure obstruction, not as the invention of infinite-dimensional surcomplex linear algebra.
+The maintained material already includes substantial Hahn support arithmetic, local and global surcomplex analysis, polynomial geometry, finite spectral theory, dynamics, and differential equations. We do not present those foundations or finite Hermitian congruence as new. The spectral-theory README distinguishes its finite matrix scope from spectral measures. The archive filenames also show existing infinite-spectral and Hahn-Hilbert work; Corollary~\ref{herg:cor:unitary} is therefore framed narrowly as a moment-measure obstruction, not as the invention of infinite-dimensional surcomplex linear algebra. \emph{Since the pin}, those two archives have become the two parts of \repo{surcomplex/infinite-dimensional-hahn-spectral-theory}, which leaves spectral measures untouched (Section~\ref{herg:sec:position}).
 
-Two repository code searches, for \texttt{Herglotz} and \texttt{Toeplitz}, returned no entries but explicitly reported \texttt{incomplete\_results: true}. These are \emph{not} reliable certificates of absence. The ZIP interiors were not available for a complete content audit in this run. No statement in this article should be read as certifying that every source file or archive in the repository lacks a related result.
+Two repository code searches, for \texttt{Herglotz} and \texttt{Toeplitz}, returned no entries but explicitly reported \texttt{incomplete\_results: true}. These are \emph{not} reliable certificates of absence. The ZIP interiors were not available for a complete content audit in this run. No statement in this article should be read as certifying that every source file or archive in the repository lacks a related result. \emph{For the record}, a search of the tracked text files under \texttt{docs/} finds neither word at the pin, and at the placement commit \texttt{e9a9650} finds them only in the files of this report.
 
-The precise provenance claim is consequently limited: no matching statement for the combined Hahn normalization, null-ideal representation criterion, explicit negative-atom/Schur package, and five-way finite-prefix extension theorem was located in the inspected repository material or the targeted primary literature. This is evidence for a candidate new contribution, not a priority certificate. A later full-text audit or referee may identify earlier formulations or stronger antecedents.
+The source's comparison missed collection material that bears directly on it: the halo, its failure to be the internal disk, the positivity lemma for coefficientwise integrals, and the Poisson formula of the analysis report; the finite orthogonality relation of the trigonometry report; and, written in the same batch and therefore invisible to it, the measures report with its proof of the null-ideal criterion. Section~\ref{herg:sec:position} states each relation.
+
+The precise provenance claim is consequently limited: no matching statement for the combined Hahn normalization, null-ideal representation criterion, explicit negative-atom/Schur package, and five-way finite-prefix extension theorem was located in the inspected repository material or the targeted primary literature. This is evidence for a candidate new contribution, not a priority certificate. A later full-text audit or referee may identify earlier formulations or stronger antecedents. The null-ideal criterion is now known to have been found independently, in the same batch, by a manuscript of the measures report.
 
 \subsection{The literature comparison}
 
-The classical comparison used the disk representation discussion in \cite{BBK} and the constant-kernel lemma and matrix-measure background in \cite{GT}. The latter was inspected in its actual PDF, including the relevant proof pages. Our subtraction of the constant $iB$ in \eqref{eq:normalform} is essential: a function with zero real part can be a nonzero imaginary constant. A zero-block assertion without accounting for that constant would be false.
+The classical comparison used the disk representation discussion in \cite{BBK} and the constant-kernel lemma and matrix-measure background in \cite{GT}. The latter was inspected in its actual PDF, including the relevant proof pages. Our subtraction of the constant $iB$ in \eqref{herg:eq:normalform} is essential: a function with zero real part can be a nonzero imaginary constant. A zero-block assertion without accounting for that constant would be false.
 
 Halpern's lexicographic/nonstandard comparison \cite{Halpern}, including its discussion of arbitrary lengths and countable additivity, is a conceptual antecedent. The present article permits signed coefficient measures and asks for an exact Fourier representation of prescribed moments, not equivalence of preference orderings or conditional probability systems. The elementary phenomenon that successive infinitesimal scales encode lexicographic priority is not claimed as original.
 
-Bottazzi \cite{Bottazzi} and Restrepo Borrero--Shamseddine \cite{Restrepo} were consulted to delimit the measure-theoretic category. Their alternative non-Archimedean integration programs are not contradicted here. Flynn--Shamseddine \cite{Flynn} provides a relevant precedent for distinguishing Hahn topologies. Ordinary Riesz representation and the harmonic minimum and Harnack principles are used in their classical forms \cite{Rudin}; the periodic-distribution growth criterion is proved directly in Theorem~\ref{thm:representation}.
+Bottazzi \cite{Bottazzi} and Restrepo Borrero--Shamseddine \cite{Restrepo} were consulted to delimit the measure-theoretic category. Their alternative non-Archimedean integration programs are not contradicted here. Flynn--Shamseddine \cite{Flynn} provides a relevant precedent for distinguishing Hahn topologies. Ordinary Riesz representation and the harmonic minimum and Harnack principles are used in their classical forms \cite{Rudin}; the periodic-distribution growth criterion is proved directly in Theorem~\ref{herg:thm:representation}.
 
 \subsection{Contribution ledger}
 
@@ -975,56 +1106,64 @@ Result or ingredient & Assessment\\
 \endhead
 Hahn arithmetic, normal forms, real-closed finite algebra & Standard background; not claimed as new.\\[4pt]
 Classical Herglotz representation and constant matrix kernels & Established antecedents; explicitly cited.\\[4pt]
-Theorem~\ref{thm:normalization} and Theorem~\ref{thm:harnack} & Proved Hahn-level extension and unrestricted-tail classification, with a strict-slack obstruction. Candidate contribution in this precise form.\\[4pt]
-Theorem~\ref{thm:nullideal} and Example~\ref{ex:uncountable} & Exact signed-coefficient positivity criterion at arbitrary support length; countable control measures are a corollary, not a substitute. Candidate contribution in this formulation.\\[4pt]
-Theorem~\ref{thm:functional} and Corollary~\ref{cor:rieszfailure} & Positive unital, pointwise completely positive Hahn functionals; exact criterion for a positive coefficientwise measure. Candidate representation-obstruction package.\\[4pt]
-Theorem~\ref{thm:representation} & Coefficientwise assembly of standard bounded-functional and distribution criteria, with an explicit proof and the new positivity criterion appended. Not a new ordinary Riesz theorem.\\[4pt]
-Theorems~\ref{thm:negativeatom}--\ref{thm:schur} & Explicit all-size determinant, negative-atom, quadrature nonclosure, and Schur-boundary package. Candidate contribution; finite algebra is elementary but the infinite compatibility distinction is essential.\\[4pt]
-Theorems~\ref{thm:hierarchy} and \ref{thm:prefix} & Strict hierarchy and constructive indistinguishability of finite prefixes. Candidate synthesis and extension theorem.\\
+Theorem~\ref{herg:thm:normalization} and Theorem~\ref{herg:thm:harnack} & Proved Hahn-level extension and unrestricted-tail classification, with a strict-slack obstruction, for divisible $\Gamma$. Candidate contribution in this precise form.\\[4pt]
+Remark~\ref{herg:rem:disk} & Already \lbl{c:p4:rk-notball} of the analysis report; kept with credit.\\[4pt]
+Theorem~\ref{herg:thm:nullideal} and Example~\ref{herg:ex:uncountable} & Exact signed-coefficient positivity criterion at arbitrary support length; countable control measures are a corollary, not a substitute. Candidate contribution in this formulation (source's assessment). The criterion was found independently in the same batch and is proved in the measures report as \lbl{meas:thm:nullideal}; no priority between the two is claimed. The uncountable example is this source's.\\[4pt]
+Theorem~\ref{herg:thm:functional} and Corollary~\ref{herg:cor:rieszfailure} & Strictly positive unital, pointwise completely positive Hahn functionals; exact criterion for a positive coefficientwise measure. Candidate representation-obstruction package. Part~(b) has the mechanism of \lbl{c:p5:positivity} of the analysis report.\\[4pt]
+Theorem~\ref{herg:thm:representation} & Coefficientwise assembly of standard bounded-functional and distribution criteria, with an explicit proof and the new positivity criterion appended. Not a new ordinary Riesz theorem.\\[4pt]
+Theorems~\ref{herg:thm:negativeatom}--\ref{herg:thm:schur} & Explicit all-size determinant, negative-atom, quadrature nonclosure, and Schur-boundary package. Candidate contribution; finite algebra is elementary but the infinite compatibility distinction is essential.\\[4pt]
+Theorems~\ref{herg:thm:hierarchy} and \ref{herg:thm:prefix} & Strict hierarchy and constructive indistinguishability of finite prefixes. Candidate synthesis and extension theorem.\\
 \bottomrule
 \end{longtable}
 
 \section{Proof dependencies and reproducibility}
-\label{app:verification}
+\label{herg:app:verification}
 
 The proofs divide into three largely independent chains.
 
 \paragraph{Analytic chain.}
-Hahn support arithmetic and the ordinary minimum principle give scalar normalization. Finite congruence then gives matrix normalization, and the ordinary Harnack principle gives the strict-slack comparison.
+Hahn support arithmetic and the ordinary minimum principle give scalar normalization. Finite congruence, for divisible $\Gamma$, then gives matrix normalization, and the ordinary Harnack principle gives the strict-slack comparison.
 
 \paragraph{Measure chain.}
-Jordan decomposition and well-founded induction give the null-ideal criterion. Combined with full support of an ordinary measure, this yields the exact positive-functional representation test.
+Jordan decomposition and well-founded induction give the null-ideal criterion (proved in the measures report). Combined with full support of an ordinary measure, this yields the exact positive-functional representation test.
 
 \paragraph{Moment chain.}
 Finite Toeplitz algebra and ordinary Fourier uniqueness give the negative-atom obstruction, positive quadratures, and the Schur formulas. The coefficient regularity tests then yield the strict hierarchy and the finite-prefix extension theorem.
 
-The only transfinite induction specific to the new measure argument occurs in the sufficiency proof of Theorem~\ref{thm:nullideal}. The uncountable example uses the axiom of choice to well order the ordinary circle. All other explicit counterexamples use a two-element Hahn support.
+The only transfinite induction specific to the new measure argument occurs in the sufficiency half of Theorem~\ref{herg:thm:nullideal}, whose proof is in the measures report. The uncountable example uses the axiom of choice to well order the ordinary circle. All other explicit counterexamples use a two-element Hahn support.
 
-The accompanying \texttt{verify.py} performs exact symbolic checks of the finite determinant formula, the rational Schur recurrence, both internal boundary evaluations, the negative $2\times2$ determinant, and the algebraic quadrature moments. It also exhaustively compares the null-ideal test with direct positivity on every subset of a finite three-point space for three coefficient levels with entries in $\{-1,0,1\}$. The captured results are in \texttt{verification.txt}.
+\paragraph{Finite checks.}
+The accompanying \texttt{code/verify.py} performs exact symbolic checks of the finite determinant formula, the rational Schur recurrence, both internal boundary evaluations, the negative $2\times2$ determinant, and the algebraic quadrature moments. It also exhaustively compares the null-ideal test with direct positivity on every subset of a finite three-point space for three coefficient levels with entries in $\{-1,0,1\}$: all $3^9=19{,}683$ arrays agree, and exactly $2{,}744=14^3$ of them are positive on every subset. A successful run prints nine \texttt{PASS} lines. The source's captured run (Python 3.13.5, SymPy 1.14.0) is \texttt{data/verification.txt}. The program prints to standard output only and never rewrites that file. Rerun for this report on a copy of the directory under Python 3.14.4 with SymPy 1.14.0, it reproduced the recorded output line for line except the Python version string.
 
 These computations do not prove a statement quantified over all finite sizes, all Borel sets, all holomorphic functions, or arbitrary well-ordered supports. Those statements rest on the proofs in the article. The code uses a formal symbol for $\eps$ and never substitutes a floating-point number for an infinitesimal. No computer algebra simplification is treated as a proof of a transfinite support assertion.
 
-The source is self-contained LaTeX with an inline bibliography. Run \texttt{build.sh} from the archive directory, or run \texttt{pdflatex} repeatedly on \texttt{article.tex} until references stabilize. The verification code requires Python~3 and SymPy. No font files, external datasets, or copies of the cited papers are included.
+\paragraph{Building.}
+The source is self-contained LaTeX with an inline bibliography; no font files, external datasets, or copies of the cited papers are included. From the report directory, run
+\begin{center}
+\texttt{latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex}
+\end{center}
+or run \texttt{pdflatex} repeatedly until references stabilize. The delivered \texttt{code/build.sh} expects to sit next to \texttt{article.tex}: it changes to its own directory, runs \texttt{pdflatex} three times, writes \texttt{build-pass-1.log} to \texttt{build-pass-3.log}, and overwrites \texttt{article.pdf}. As placed under \texttt{code/} it does not find the article; to use it, copy the directory and put the script beside \texttt{article.tex} in the copy. The verification code requires Python~3.10 or later and SymPy (\texttt{data/requirements.txt} pins 1.14.0).
 
 \section{Notation at a glance}
+\label{herg:app:notation}
 \begin{center}
 \begin{tabularx}{\textwidth}{@{}lX@{}}
 \toprule
 Symbol & Meaning\\
 \midrule
-$\Gamma$ & A set-sized ordered abelian exponent group; divisible for the standing field convention.\\
-$\FG,\KG$ & Real and complex Hahn fields with increasing well-ordered support.\\
+$\Gamma$ & A nonzero set-sized ordered abelian exponent group; divisible only in Theorems~\ref{herg:thm:normalization} and~\ref{herg:thm:harnack}.\\
+$\FG,\KG$ & Real and complex Hahn fields with increasing well-ordered support; measures take values in $\FG$.\\
 $v,\st$ & Least-exponent valuation and exponent-zero standard part on finite elements.\\
 $\eps=t^\eta$ & A positive infinitesimal, with $\eta>0$.\\
-$\AH(U)$ & Hahn series of holomorphic functions on one fixed ordinary domain $U$.\\
-$\halo U$ & Ordinary points of $U$ with arbitrary infinitesimal increments.\\
+$\OU{U}$ & Hahn series of holomorphic functions on one fixed ordinary domain $U$ (source: $\mathscr A_\Gamma(U)$).\\
+$\halo U$ & Ordinary points of $U$ with arbitrary infinitesimal increments (source: $U^{\mathrm h}$).\\
 $\D_\Gamma$ & Full internal algebraic disk $\{z:z\bar z<1\}$, larger than $\halo\D$.\\
 $\CH(X)$ & Coherent continuous-function Hahn algebra on an ordinary compact space.\\
 $\mu=\sum\nu_\gamma t^\gamma$ & A coefficientwise Hahn measure; each $\nu_\gamma$ is ordinary finite signed regular Borel.\\
 $\mathcal J_{<\gamma}$ & Common Borel null ideal of the total variations of earlier coefficients.\\
-$c_n=\int\zeta^{-n}\dd\mu$ & Fourier moment convention used throughout.\\
+$c_n=\int\zeta^{-n}\dd\mu$ & Fourier moment convention used throughout; not a power moment.\\
 $T_N=(c_{j-k})_{0\le j,k\le N}$ & Toeplitz matrix of ordinary finite size $N+1$.\\
-$\mathsf P,\mathsf M,\mathsf D,\mathsf A,\mathsf H$ & The five classes in Theorem~\ref{thm:hierarchy}.\\
+$\mathsf P,\mathsf M,\mathsf D,\mathsf A,\mathsf H$ & The five classes in Theorem~\ref{herg:thm:hierarchy}.\\
 \bottomrule
 \end{tabularx}
 \end{center}
@@ -1086,7 +1225,7 @@ V. Reshetnikov, \emph{Surreal}, GitHub repository, pinned revision
 inspected 22 September 2026.
 \url{https://github.com/VladimirReshetnikov/Surreal/tree/4cf691c7d951e037739d32d9f5c387dcce724f3c}.
 The targeted comparison used \texttt{README.md}, \texttt{docs/README.md},
-\texttt{docs/surcomplex/spectral-theory/README.md}, and the \texttt{docs/new} directory tree; see Appendix~\ref{app:audit} for limitations.
+\texttt{docs/surcomplex/spectral-theory/README.md}, and the \texttt{docs/new} directory tree; see Appendix~\ref{herg:app:audit} for limitations.
 
 \end{thebibliography}
 \end{document}

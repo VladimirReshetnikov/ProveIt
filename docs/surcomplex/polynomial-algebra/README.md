@@ -3,7 +3,7 @@
 **Root Geometry, Newton Profiles, Multiscale Stability, and Residue Duality**
 
 - `article.tex` — the merged, standalone LaTeX source (internal bibliography, no external `.bib`, no images).
-- `article.pdf` — the typeset article, 61 pages.
+- `article.pdf` — the typeset article, 62 pages.
 
 This report was merged from three archived manuscripts; the manuscripts themselves are not shipped here, and what each one contributed is recorded below.
 
@@ -14,7 +14,7 @@ latexmk -pdf -interaction=nonstopmode article.tex
 latexmk -c
 ```
 
-Last build: 61 pages, 0 errors, 0 undefined references, 0 duplicate hyperref destinations, 0 overfull boxes.
+Last build: 62 pages, 0 errors, 0 undefined references, 0 duplicate hyperref destinations, 0 overfull boxes.
 
 ## What the report is
 

@@ -80,6 +80,21 @@
 \newcommand{\EU}{\mathcal E}
 \newcommand{\coeff}[1]{[t^{#1}]}
 \newcommand{\angles}[1]{\langle #1\rangle_{\N}}
+% Part III (localization manuscript); names chosen to avoid \PP, \EU above
+\newcommand{\MM}{\mathscr M_\Gamma}
+\newcommand{\BB}{\mathscr B}
+\newcommand{\Aglob}{A_{\BB}}
+\newcommand{\Mer}{\operatorname{Mer}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\Aut}{\operatorname{Aut}}
+\newcommand{\Pic}{\operatorname{Pic}}
+\newcommand{\lc}{\operatorname{lc}}
+\newcommand{\Nil}{\mathbf{Nil}}
+\newcommand{\profile}{\boldsymbol\alpha}
+\newcommand{\betaprofile}{\boldsymbol\beta}
+\newcommand{\NN}[1]{\mathcal N_{\profile,#1}}
+\newcommand{\NNb}[1]{\mathcal N_{\betaprofile,#1}}
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 \numberwithin{equation}{section}
 
@@ -94,7 +109,7 @@
 \vspace{0.5cm}
 {\LARGE A Matrix Cousin Criterion\par and the Surcomplex\par Riemann--Hilbert Problem\par}
 \vspace{0.7cm}
-{\large September 21, 2026\par}
+{\large September 21, 2026; Part~III added September 22, 2026\par}
 \vspace{0.55cm}
 \begin{minipage}{0.94\textwidth}
 \begin{abstract}
@@ -132,6 +147,18 @@ examples on both sides of the criterion, an explicit mixed commutator
 correction in the value group $\Q+\Q\omega$, and the impossibility of a
 continuous linear period right inverse for infinitely many punctures.
 
+Part~III, from a third source, asks what survives when integrality is given
+up. Placing a strictly decreasing sequence of positive exponents in front of
+ordinary essential singularities, it constructs determinant-one unipotent
+bundles on the plane, trivial on every bounded domain, that stay
+indecomposable and not stably trivial after all Hahn monomials are inverted
+and even over the coefficientwise meromorphic sheaf $\Mer((t^\Gamma))$. It
+computes all their sections and morphisms, classifies them exactly, and proves
+a localization-stable cyclic-versus-noncyclic dichotomy, continuum many
+classes, a tensor rule, and the failure of semidecidability of isomorphism. It
+does not settle whether Part~I's pole-only examples survive monomial
+localization; over $\Mer((t^\Gamma))$ they become trivial.
+
 \medskip
 \noindent\textbf{The two headline criteria are different criteria on
 different objects.} Part~I tests the supports of normalized polar factors, not
@@ -143,7 +170,7 @@ distinction unavoidable.
 \end{minipage}
 \vfill
 \begin{minipage}{0.94\textwidth}\small
-\textbf{Status and scope.} This report merges two independently written
+\textbf{Status and scope.} This report merges three independently written
 manuscripts; see \cref{nab:app:repro}. The exact global criteria and the
 explicit obstruction families are proposed new results in the specified
 Hahn-coherent categories. The local factorization mechanisms, the Neumann
@@ -155,7 +182,8 @@ the \emph{integral} coefficient sheaf only, and Part~II assumes positive
 support and near-identity monodromy throughout: neither theorem is restated
 over a coefficient field in which negative-valuation changes of frame are
 admitted, and neither is the unrestricted classical Cousin or
-Riemann--Hilbert theorem. All infinite algebra is by well-ordered supports and
+Riemann--Hilbert theorem. Part~III proves nontriviality after localization
+for a different, essential-singularity family only. All infinite algebra is by well-ordered supports and
 finite coefficient multiplicity, never by convergence in the fine surreal
 topology.
 \end{minipage}
@@ -290,6 +318,24 @@ correction with its $\Q+\Q\omega$ specialization; and the proof that an
 unrestricted infinite-puncture linear period right inverse cannot also be
 continuous.
 
+Part~III, built from a third manuscript, leaves the integral category on
+purpose. Part~I's bundles are proved nontrivial over $\II$ only, and
+\cref{nab:sec:open} asked whether its examples survive monomial localization.
+Part~III does not answer that question for those examples. It answers the
+broader existence question with a different family: descending positive
+exponents placed in front of ordinary \emph{essential} singularities give
+determinant-one unipotent bundles on the plane that remain indecomposable and
+not stably trivial over $\HH$ and over the coefficientwise meromorphic sheaf
+$\MM=\Mer((t^\Gamma))$, while being integral-trivial on every bounded domain.
+Its own content is the zero-annihilator obstruction behind this, the complete
+calculation of global sections and morphisms, the exact classification of the
+family (eventual equality of exponent profiles over $\II$, eventual equality up
+to one translation over $\HH$ and $\MM$), the extension of the cyclic dichotomy
+to $\HH$ and $\MM$, continuum many classes, a tensor rule, and the failure of
+semidecidability of isomorphism (\cref{nab:loc:thm:undecidable}). It also
+records that Part~I's pole-data examples, and the global-divisor report's plane
+Picard classes, become trivial over $\MM$ (\cref{nab:loc:cor:polestrivial}).
+
 \subsection{Relation to reports already in the collection}
 
 This report is a continuation of the repository
@@ -332,6 +378,20 @@ continuation is coefficientwise, and the result is a matrix of Hahn
 constants.'' \Cref{nab:thm:RH} is the converse of that map for near-identity
 representations, together with the exact condition on which ones arise.
 
+Part~III was written against a later commit,
+\texttt{0097304c7ae9d5de46d2ea342e2494f8fc126303}, at which this report and the
+global-divisor report already had their present text. It inherits the
+global-divisor report's scalar Picard dichotomy as the rank-one antecedent of
+its localization-stable dichotomy (\cref{nab:loc:thm:dichotomy}), and the merge
+records one consequence for that report: the explicit plane Picard classes there,
+nontrivial over $\II$ and $\HH$, become trivial over the coefficientwise
+meromorphic sheaf $\MM$ (\cref{nab:loc:cor:polestrivial}). This is not a
+contradiction, since that report's dichotomy concerns $\II$ and $\HH$ only. The
+sheaf $\MM$ is not one of the four coefficient constructions tabulated in the
+collection's index; the global-divisor report uses the same recipe over a
+compact base, and the analysis report \cite{RepoAnalysis} uses its rings for a
+coefficientwise residue (\cref{nab:loc:sec:coefficients}).
+
 \subsection{What is and is not claimed as new}
 
 The Hahn support calculus is classical \cite{Neumann,Poonen}. The analytic
@@ -350,7 +410,8 @@ factorization principle and no new ordinary analytic theorem.
 We do not classify bundles or connections beyond the stated questions. Part~I
 decides triviality on a puncture-and-disk cover for arbitrary finite rank and
 proves a sufficient theorem for arbitrary Stein covers; Part~II inverts
-holonomy for near-identity representations on a punctured plane. The
+holonomy for near-identity representations on a punctured plane; Part~III
+classifies one explicit family of bundles and nothing beyond it. The
 boundaries in \cref{nab:sec:scope} are part of the theorem statements, not
 qualifications added afterwards.
 
@@ -435,6 +496,9 @@ particular, if a section on $X\setminus A$ extends separately across each
 point of a discrete $A$, it extends \emph{with its existing global support}:
 no new exponent can appear only at an isolated ordinary point. This
 observation is used whenever a matrix quotient is extended across a puncture.
+Part~III follows Part~I's convention: it proves and uses the same sheaf
+property, for $\HH$, $\II$, $\JJ$ and for the meromorphic sheaf $\MM$
+(\cref{nab:loc:lem:sheaf}).
 
 Part~II deliberately does \emph{not} assume that the global-support assignment
 is a sheaf for arbitrary covers, and none of its proofs uses that. All its
@@ -452,7 +516,8 @@ report.
 The following table fixes one vocabulary. Where the two source manuscripts
 used different names for the same object, the merged name is given first;
 where they used the same word for genuinely different objects, the objects are
-separated.
+separated. The renamings made for Part~III are listed separately, in
+\cref{nab:loc:sub:names}.
 
 \begin{center}\small
 \begin{tabular}{@{}L{0.26\textwidth}L{0.33\textwidth}L{0.33\textwidth}@{}}
@@ -487,7 +552,8 @@ valuation-topology convergence\\
 
 \begin{remark}[Resonance does not occur in this report]
 \label{nab:rem:resonance}
-Neither part imposes, or needs, any arithmetic or small-divisor hypothesis,
+No part of this report imposes, or needs, any arithmetic or small-divisor
+hypothesis,
 and the word \emph{resonance} appears here only as an absence: in
 \cref{nab:thm:frobenius} no spectral resonance operator is inverted, because
 positivity forces the exponent-zero part of the residue to vanish. Other
@@ -1184,7 +1250,8 @@ surreal exponents in the same integral positive-matrix problem. This is not a
 claim about passing to another analytic category, and in particular not a
 claim about admitting negative-valuation gauges; see
 \cref{nab:sec:bundles} and item~\ref{nab:nc:localization} of
-\cref{nab:sec:scope}.
+\cref{nab:sec:scope}. For a different family of bundles, Part~III proves the
+localized statement (\cref{nab:loc:cor:enlarge}).
 
 \begin{proposition}[Recovery of the rank-one singular-support test]
 \label{nab:prop:rankone}
@@ -1562,7 +1629,7 @@ necessarily miss these examples. This is an explicit limit on what any
 implementation can decide, and it is recorded again as
 item~\ref{nab:nc:blackbox} of \cref{nab:sec:scope}.
 
-\subsection{The localization boundary}
+\subsection{The localization boundary}\label{nab:loc:sub:boundary}
 
 Let $\HH=\OO((t^\Gamma))$ be the sheaf in which arbitrary monomial shifts are
 allowed; the natural map $\II\to\HH$ extends scalars from $\mathcal E_G$ to a
@@ -1579,6 +1646,15 @@ frame can trivialize particular higher-rank examples is a separate question.
 The scalar report proves more in rank one by a special leading-unit
 normalization \cite{RepoGlobal}; no matrix analogue of that argument is
 assumed here.
+
+Part~III, added from a third source, sharpens this boundary without crossing
+it for these examples. It constructs \emph{different} bundles, with ordinary
+essential rather than polar singularities in their transitions, that remain
+nontrivial over $\HH$ and even over the coefficientwise meromorphic sheaf
+$\MM=\Mer((t^\Gamma))$ (\cref{nab:loc:cor:stable}), and it shows that the
+examples of \cref{nab:cor:nontrivialbundles} become trivial over $\MM$
+(\cref{nab:loc:cor:polestrivial}). Whether they remain nontrivial over $\HH$ is
+still not proved in this report, and the claim declined above stays declined.
 
 This distinction matters for the surcomplex interpretation. Integral models
 describe holomorphic matrices with a defined ordinary reduction and
@@ -1745,7 +1821,9 @@ $\{\delta,2\delta,\ldots\}$, and we cite rather than reprove it. The
 higher-rank conclusion here is stated for integral positive deformations, and
 the diagonal family \eqref{nab:eq:SLcounter} by itself supplies no nonabelian
 information: that is what \cref{nab:thm:hidden} and \cref{nab:thm:depth} are
-for.
+for. Part~III extends the dichotomy to $\HH$ and to the meromorphic sheaf $\MM$
+(\cref{nab:loc:thm:dichotomy}); the diagonal family cannot serve there, since
+it becomes trivial over $\MM$ (\cref{nab:loc:cor:polestrivial}).
 \section{The two well-ordered-support criteria are not the same criterion}
 \label{nab:sec:twocriteria}
 
@@ -2486,8 +2564,1515 @@ $t^{3\omega}$ has much larger valuation. A finite bivariate degree truncation
 is therefore \emph{not} an approximation uniformly valid below a single Hahn
 valuation threshold. The accompanying computation checks a finite coefficient
 identity, not a truncation of all coefficients below $1+\omega$.
-\part*{Part III. Effectivity, verification, and boundaries}
-\addcontentsline{toc}{section}{\textbf{Part III. Effectivity, verification, and boundaries}}
+\part*{Part III. Beyond the localization boundary: essential-singularity bundles over \texorpdfstring{$\HH$}{H} and \texorpdfstring{$\Mer((t^\Gamma))$}{Mer((t\textasciicircum Gamma))}}
+\addcontentsline{toc}{section}{\textbf{Part III. Beyond the localization boundary: essential-singularity bundles over \texorpdfstring{$\HH$}{H} and \texorpdfstring{$\Mer((t^\Gamma))$}{Mer((t\textasciicircum Gamma))}}}
+
+\section{What survives monomial localization}\label{nab:loc:sec:intro}
+
+\subsection{The question inherited from Part~I}
+
+Part~I proves nontriviality of its bundles over the integral sheaf $\II$ only.
+\Cref{nab:loc:sub:boundary} explains why its argument stops there: positive
+monomials are units in $\HH$, there is no reduction homomorphism $\HH\to\OO$,
+and the framing normalization of \cref{nab:prop:integraltrivial} cannot be
+repeated. Item~\ref{nab:nc:localization} of \cref{nab:sec:scope} declines the
+stronger claim, and \cref{nab:sec:open} asks two questions: whether the hidden
+and deep examples of \cref{nab:thm:hidden,nab:thm:depth} remain nontrivial
+after monomial localization, and how isomorphism classes, not merely
+triviality, could be classified.
+
+This part is built from a third, independently written manuscript, called
+\emph{the localization manuscript} below (\cref{nab:app:repro}). It answers
+two \emph{broader} questions and leaves the printed one open.
+\begin{enumerate}
+\item \emph{Existence.} There are finite-rank bundles on the ordinary plane,
+with trivial ordinary reduction and trivial determinant, that remain
+nontrivial --- indeed indecomposable and not stably trivial --- after every
+Hahn monomial is inverted, and even after holomorphic coefficients are
+replaced by meromorphic ones. Every bounded restriction of these bundles is
+already trivial over $\II$.
+\item \emph{Classification.} Within the resulting family the isomorphism
+classes are determined exactly, over $\II$, over $\HH$, and over the
+coefficientwise meromorphic sheaf $\MM=\Mer((t^\Gamma))$ of
+\cref{nab:loc:def:sheaves}.
+\end{enumerate}
+The examples are \emph{not} those of Part~I. Part~I's hidden and deep examples
+use ordinary poles; the new ones put descending exponents in front of ordinary
+\emph{essential} singularities. The localization manuscript states that it
+does not settle the fate of Part~I's pole-only examples, and nothing in this
+part settles it. What this part does add about those examples is narrow: they
+become trivial over $\MM$ (\cref{nab:loc:cor:polestrivial}), so no argument
+that survives meromorphic extension can prove them nontrivial over $\HH$. Their
+status over $\HH$ remains open, and \cref{nab:sec:open} records the question in
+its re-scoped form.
+
+The mechanism fits in one sentence. A nonzero meromorphic coefficient cannot
+cancel an essential singularity, so a gluing equation that attaches an
+essential singularity to each member of a strictly decreasing sequence of
+exponents forces that sequence into the support of one global Hahn section,
+which is impossible. Neither a determinant, nor a positive normalization, nor a
+bound on the valuation of a hypothetical gauge enters the argument; this is
+why it works after localization, where Part~I's integral argument does not.
+
+\subsection{An explicit model, and the results at a glance}
+
+Let $\Gamma=\Q$, let $A=\{1,2,3,\ldots\}$, and put
+\begin{equation}\label{nab:loc:eq:headline-cocycle}
+ c_n(z)=t^{1/n}\exp\Bigl(\frac{1}{z-n}\Bigr).
+\end{equation}
+Use the cover of $\C$ by $U_0=\C\setminus A$ and pairwise disjoint small disks
+$D_n$ centred at $n$. If $J_r$ denotes the nilpotent Jordan matrix with ones
+immediately above the diagonal, glue rank-$r$ free modules by
+\begin{equation}\label{nab:loc:eq:headline-transition}
+ G_n=\exp(c_nJ_r)
+     =I_r+c_nJ_r+\frac{c_n^2J_r^2}{2!}
+       +\cdots+\frac{c_n^{r-1}J_r^{r-1}}{(r-1)!}.
+\end{equation}
+The exponential is a finite expression. Each $G_n$ and $G_n^{-1}$ is an
+integral Hahn matrix, even though the union $\{1/n:n\geq1\}$ of the first
+nonconstant exponents is not well ordered. Write $\BB$ for any one of the
+integral holomorphic, full holomorphic, or full coefficientwise meromorphic
+Hahn sheaves $\II$, $\HH$, $\MM$ of \cref{nab:loc:def:sheaves}, and
+$\Aglob=\BB(\C)$. For the resulting bundle $\NN r^{\BB}$ we prove
+\begin{equation}\label{nab:loc:eq:headline-sections}
+ H^0(\C,\NN r^{\BB})=\Aglob e_1,
+ \qquad
+ \End_{\BB}(\NN r^{\BB})\cong\Aglob[T]/(T^r).
+\end{equation}
+For $r\geq2$ the bundle is indecomposable, is not stably trivial, and has no
+coefficientwise meromorphic frame even over $\MM$. Yet every bounded
+restriction is already trivial over the integral sheaf. This is not a rank-one
+Picard-group phenomenon placed on a diagonal, as in \eqref{nab:eq:SLcounter}:
+the determinant is trivial, all successive flag quotients are trivial lines,
+and the bundle itself is indecomposable.
+
+The profile $1/n$ in \eqref{nab:loc:eq:headline-cocycle} can be replaced by any
+strictly decreasing sequence $\alpha_1>\alpha_2>\cdots>0$ in any set-sized
+ordered abelian group.
+
+\begin{theorem}[Summary of Part~III]\label{nab:loc:thm:summary}
+Let $\profile=(\alpha_n)$ be such a profile and let $r\geq2$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The bundle $\NN r$ has trivial ordinary reduction and trivial
+determinant. Every bounded restriction is trivial over $\II$, but the global
+bundle is indecomposable and not stably trivial over $\II$, $\HH$ or $\MM$.
+\item For nilpotent complex matrices $N$ and $M$ the corresponding bundles
+satisfy
+\[
+ \Hom_{\BB}\bigl(\mathcal N_{\profile}(N),\mathcal N_{\profile}(M)\bigr)
+ =\Aglob\otimes_\C\{B:MB=BN\}.
+\]
+Thus the construction realizes the scalar-extended category of finite
+nilpotent representations, including its direct sums, duals and tensors.
+\item For another strictly decreasing positive profile
+$\betaprofile=(\beta_n)$,
+\[
+ \NN r^{\II}\cong\NNb r^{\II}
+ \quad\Longleftrightarrow\quad
+ \alpha_n=\beta_n\text{ for all sufficiently large }n,
+\]
+whereas for $\BB=\HH$ or $\BB=\MM$,
+\[
+ \NN r^{\BB}\cong\NNb r^{\BB}
+ \quad\Longleftrightarrow\quad
+ \beta_n-\alpha_n=\delta\text{ eventually, for one }\delta\in\Gamma.
+\]
+All isomorphisms here cover the identity of the ordinary base $\C$.
+\item Every noncyclic nonzero ordered abelian group admits such profiles and,
+for each $r\geq2$, continuum many pairwise nonisomorphic bundles of this kind
+even over $\MM$. Ordered group enlargement cannot identify two previously
+distinct classes in this family.
+\end{enumerate}
+\end{theorem}
+
+The proof is assembled from \cref{nab:loc:thm:bounded,nab:loc:cor:stable,%
+nab:loc:thm:indecomposable} for~(i), \cref{nab:loc:thm:hom,nab:loc:cor:category}
+for~(ii), \cref{nab:loc:thm:classification} for~(iii), and
+\cref{nab:lem:groups}, \cref{nab:loc:thm:continuum,nab:loc:cor:class-enlarge}
+for~(iv). The effective version, \cref{nab:loc:thm:undecidable} in Part~IV,
+shows that neither isomorphism nor nonisomorphism is semidecidable for a simple
+class of computably presented rational profiles. The distinction is between a
+complete mathematical criterion and an algorithm for unrestricted infinite
+input.
+
+\subsection{What is new here, what is inherited, and what overlaps with Part~I}
+\label{nab:loc:sub:status}
+
+The localization manuscript inspected the repository at commit
+\begin{center}\small\ttfamily
+0097304c7ae9d5de46d2ea342e2494f8fc126303.
+\end{center}
+At that commit this report
+and the global-divisor report \cite{RepoGlobal} were textually identical to
+the versions into which this part is merged, so its quotations of both are
+current. By its own assessment, the scalar full-Hahn Picard dichotomy of the
+global-divisor report and the integral cyclic rigidity theorem of Part~I
+(\cref{nab:thm:dichotomy}) are antecedents, not new results. Its proposed new
+contributions are the zero-annihilator essential-singularity obstruction, its
+meromorphic-resistant finite-rank realization, the complete morphism
+calculation in that realization, and the tail-translation classification;
+the localization-stable dichotomy and the computability consequences follow
+from those.
+
+There are classical precedents. The Hahn support calculus is classical
+\cite{Neumann}. Atiyah's bundles on an ordinary elliptic curve are a familiar
+indecomposable unipotent family with related section and tensor patterns
+\cite{Atiyah}. Here the base is instead the ordinary plane, the coefficient
+sheaf is different, and the profile and localization invariants are
+essential. The Jordan-matrix tensor identity of \cref{nab:loc:lem:tensor} is
+classical linear algebra, not a new result; a proof is included so that the
+application does not depend on a comparison with elliptic curves.
+M\"uller--Strohmaier's Hahn-meromorphic function theory \cite{Muller} uses
+generalized series with a convergence condition near a distinguished point on
+a logarithmic covering; the common-domain, coefficientwise-meromorphic sheaf
+used here is defined differently, and the word ``meromorphic'' must not be
+used to identify the two categories (compare item~\ref{nab:nc:mueller} of
+\cref{nab:sec:scope}). Within the repository material and primary sources it
+inspected, the localization manuscript located no statement matching the
+combined construction and exact classification. That is a bounded novelty
+assessment, not a proof of historical priority.
+
+The following overlaps with Part~I and with the global-divisor report are
+recorded by the merge; the localization manuscript does not state them.
+\begin{itemize}
+\item Over $\II$, nontriviality (though not stable nontriviality,
+indecomposability or classification) of the new bundles is already an
+instance of Criterion~P; see \cref{nab:loc:rem:criterionP}.
+\item The ordered-group lemma used in \cref{nab:loc:sec:groups} is
+\cref{nab:lem:groups}; the global-divisor report proves it again as its
+\texttt{global:lem:descending}, and the localization manuscript proves it a
+third time. It is cited here, not reprinted.
+\item The equivalence (i)$\Leftrightarrow$(ii) of \cref{nab:loc:thm:dichotomy}
+is \cref{nab:thm:dichotomy} on the plane.
+\item \Cref{nab:loc:thm:bounded} parallels \cref{nab:cor:bounded}; its
+explicit gauges are kept because the sufficiency half of
+\cref{nab:loc:thm:classification} reuses them.
+\item For $\HH$ and $\II$, \cref{nab:loc:lem:units} is the unit criterion of
+the global-divisor report (its \texttt{global:prop:units}).
+\end{itemize}
+What is new relative to the collection is everything over $\HH$ and $\MM$: the
+zero-annihilator class, the global sections, the morphisms, the
+classification, the tensor rule, the continuum count and the undecidability
+statement.
+
+\section{The meromorphic coefficient sheaf}\label{nab:loc:sec:coefficients}
+
+\subsection{Three coefficient categories on the ordinary plane}
+
+Throughout this part $\Gamma$ is a set-sized totally ordered abelian group. No
+rank, divisibility, Archimedean, or countable-cofinality assumption is imposed
+(compare \cref{nab:rem:nonarch}).
+
+\begin{definition}[Common-domain Hahn sections]\label{nab:loc:def:sheaves}
+For a nonempty connected ordinary open set $U\subseteq\C$, let $\HH(U)$,
+$\II(U)$ and $\JJ(U)$ be as in \eqref{nab:eq:H}--\eqref{nab:eq:J}, and put
+\begin{equation}\label{nab:loc:eq:M}
+ \MM(U)=\Mer(U)((t^\Gamma)).
+\end{equation}
+An element of $\MM(U)$ is a formal sum $f=\sum_{\gamma\in S}f_\gamma t^\gamma$
+with a single well-ordered support $S$ and every coefficient $f_\gamma$ an
+ordinary meromorphic function on the same $U$. Zero coefficients are omitted
+from the support. For a disconnected open set use the product over its
+connected components, with no common support requirement between different
+components.
+\end{definition}
+
+The field $\Mer(U)$ consists of ordinary meromorphic functions: poles are
+allowed, essential singularities at points of $U$ are not. On a punctured disk
+$\exp(1/z)$ is holomorphic and hence meromorphic there; it does not extend as a
+meromorphic function across the missing centre.
+
+The distinction between common-domain and coefficientwise-germ constructions
+is load-bearing. A section on $U$ has all its coefficients on that same $U$;
+the domain may not shrink as the exponent varies, and a global section cannot
+be assembled from a family whose total support is not well ordered.
+
+\paragraph{Where these sheaves sit in the collection.}
+$\HH$ is the row $\OO(D)((t^\Gamma))$ of the four-ring table in the
+collection's index \cite{RepoMap}, all coefficients holomorphic on one fixed
+ordinary domain, sheafified over the plane. It is the same sheaf
+as in Parts~I and~II and in the global-divisor report \cite{RepoGlobal}; its
+stalk at an ordinary point is the common-domain germ ring of that table, and it
+is neither the radius-free ring $\C\{z\}((t^\Gamma))$ nor the formal ring
+$\C[[z]]((t^\Gamma))$. The sheaf $\MM$ is \emph{not} one of the four tabulated
+constructions: its coefficients are meromorphic, not holomorphic, on the
+specified domain, and its sections on a connected domain form a field. It is
+not new to the collection, however. The global-divisor report defines the same
+recipe over a compact ordinary Riemann surface, under the same name
+$\mathscr M_\Gamma$ (its \texttt{global:def:compactsheaf}), and uses it for
+coherent meromorphic sections and Cartier data there; and on a connected
+domain the ring $\MM(U)$ is the class $\mathcal M(U)$ of Hahn series with
+meromorphic coefficients on which the analysis report \cite{RepoAnalysis}
+defines its coefficientwise cluster residue (its \texttt{d:def:clusterres}).
+What this part adds is its use on the plane as a coefficient sheaf for vector
+bundles.
+
+\begin{lemma}[Sheaf property and preservation of support]\label{nab:loc:lem:sheaf}
+The assignments $\HH$, $\II$, $\JJ$ and $\MM$ are sheaves on the ordinary
+complex plane, of commutative rings except for $\JJ$, which is a sheaf of
+rings without unit. If $V\subseteq U$ are nonempty connected open sets,
+restriction preserves the support of every section.
+\end{lemma}
+
+\begin{proof}
+For $\HH$, $\II$, $\JJ$ this is the observation of
+\cref{nab:sub:conventions}. For $\MM$ the argument is the same: a nonzero
+meromorphic function on a connected domain cannot vanish identically on a
+nonempty open subdomain, so every nonzero coefficient survives restriction and
+no support exponent is lost. For gluing, first refine an open cover to
+connected sets. On two overlapping sets, equal restrictions have equal
+supports. On a connected union, any two members can be joined by a finite chain
+of intersecting members, since otherwise the unions of the two components of
+the intersection graph would disconnect the union. All local supports are
+consequently one and the same well-ordered set. At each exponent the ordinary
+coefficient functions glue, producing a section with support contained in that
+set; uniqueness is coefficientwise. The positive and nonnegative conditions are
+preserved. Disconnected unions are handled component by component.
+\end{proof}
+
+\subsection{Leading terms and units}
+
+We use the Neumann support calculus of \cref{nab:lem:neumann}; it justifies
+convolution and the positive-support geometric inverse, and these are
+algebraic support statements, not convergence of partial sums. For nonzero
+$f$ write
+\[
+ \val(f)=\min\supp f,\qquad \lc(f)=f_{\val(f)}.
+\]
+On a connected domain the coefficient rings $\OO(U)$ and $\Mer(U)$ are
+domains, so
+\begin{equation}\label{nab:loc:eq:valuation-product}
+ \val(fg)=\val(f)+\val(g),\qquad
+ \lc(fg)=\lc(f)\lc(g).
+\end{equation}
+The three global section rings $\II(\C)$, $\HH(\C)$ and $\MM(\C)$ are
+therefore integral domains, and $\MM(\C)=\Mer(\C)((t^\Gamma))$ is a field.
+
+\begin{lemma}[Scalar units]\label{nab:loc:lem:units}
+On a connected domain $U$, a nonzero $f\in\HH(U)$ is a unit exactly when its
+leading coefficient is a nowhere-zero holomorphic function. Every nonzero
+$f\in\MM(U)$ is a unit. A section of $\II(U)$ is a unit exactly when
+$\val(f)=0$ and its coefficient at zero is nowhere zero.
+\end{lemma}
+
+\begin{proof}
+If $fg=1$, \eqref{nab:loc:eq:valuation-product} makes the leading coefficient of
+$f$ a unit of the ordinary coefficient ring. Conversely write
+$f=t^\gamma a(1+h)$ with $\supp h\subseteq\Gamma_{>0}$ and $a$ the invertible
+leading coefficient. The inverse is $t^{-\gamma}a^{-1}\sum_{k\geq0}(-h)^k$,
+a legitimate section on the original domain by the positive-support Hahn lemma
+(\cref{nab:lem:inverse}). For $\MM$, every nonzero meromorphic $a$ has a
+meromorphic inverse. In the integral ring both the unit and its inverse have
+nonnegative valuation, forcing $\gamma=0$; the converse follows by the same
+formula.
+\end{proof}
+
+For $\HH$ and $\II$ this is the global-divisor report's exact unit criterion,
+and the global-divisor report records the same invertibility for its compact
+$\mathscr M_\Gamma$. Every full holomorphic Hahn section becomes integral after
+multiplication by a suitable monomial, so $\HH$ is the monomial localization of
+$\II$. Only $\II$ carries the ordinary reduction map \eqref{nab:eq:reduction},
+with kernel $\JJ$; there is no such homomorphism on $\HH$, since
+$t^\gamma t^{-\gamma}=1$.
+
+\subsection{Bundles and base change}
+
+For $\BB$ one of $\II$, $\HH$, $\MM$, a rank-$r$ $\BB$-bundle is a sheaf of
+$\BB$-modules locally isomorphic to $\BB^r$ on the ordinary base. This is a
+definition in a ringed-space category; no assumption that the stalks are local
+rings is needed. Put
+\[
+ A_{\II}=\II(\C),\qquad A_{\HH}=\HH(\C),\qquad A_{\MM}=\MM(\C).
+\]
+When a statement holds in all three cases, $\BB$ denotes the chosen sheaf and
+$\Aglob$ its global section ring. Tensor extension along
+$\II\to\HH\to\MM$ takes a bundle given by transition matrices to the bundle
+given by the same matrices over the larger sheaf. No claim that global sections
+commute with tensor extension is assumed: global sections are computed
+independently in each category.
+
+\subsection{The surcomplex reading}
+
+When $\Gamma$ is an ordered additive subgroup of $\No$, the substitution
+$t^\gamma=\omega^{-\gamma}$ of \eqref{nab:eq:surrealembedding} identifies, at
+each ordinary point where the coefficients are defined, a complex Hahn series
+with a Conway normal-form expression in $\SC=\No[i]$; the support is a set and
+Hahn addition and multiplication agree with the normal-form operations
+\cite{Ehrlich}. The domain of every coefficient is still an \emph{ordinary}
+complex domain. In particular $\exp(1/(z-n))$ is an ordinary complex function,
+not a proposed value of an exponential at an infinite imaginary surreal. For
+$\Gamma=\Q$, the model \eqref{nab:loc:eq:headline-cocycle} reads
+$c_n(z)=\omega^{-1/n}\exp(1/(z-n))$. The theorems of this part thus describe
+global geometry with surcomplex-valued Hahn coefficients. They are not
+assertions about a sheaf on the whole proper class $\No[i]$ with its fine
+topology, and this separation also avoids any use of set-indexed
+fine-topological limits.
+
+\subsection{Names in this part}\label{nab:loc:sub:names}
+
+The localization manuscript was written independently, and several of its
+symbols collide with symbols of Parts~I and~II. They are renamed here, in the
+new material only; the conventions below hold throughout Part~III and in the
+passages of Part~IV that refer to it.
+
+\begin{center}\small
+\begin{tabular}{@{}L{0.25\textwidth}L{0.2\textwidth}L{0.45\textwidth}@{}}
+\toprule
+This report & Localization manuscript & Reason\\
+\midrule
+$\MM=\Mer((t^\Gamma))$ & $\mathscr P_\Gamma$ &
+$\PP$ is Part~I's algebra of negative Laurent parts (\cref{nab:lem:laurent})
+and $\mathscr P_{r,\Gamma}$ its polar group; $\mathscr M_\Gamma$ is the
+global-divisor report's name for the same recipe\\[0.3em]
+$\mathcal N_{\profile}(N)$, $\NN r$ & $\mathcal E_{\profile}(N)$,
+$\mathcal E_{\profile,r}$ &
+$\EU(G)$ is Part~I's polar support union and $\mathcal E_G$ its integral
+bundles\\[0.3em]
+$A=\{1,2,\ldots\}$, $D_n$, $W_n=D_n\setminus\{n\}$ & $D$, $U_n$,
+$U_n\setminus\{n\}$ & Part~I's names for punctures, disks and overlaps\\[0.3em]
+$\Lambda_\delta$ & $D_\delta$ & the diagonal monomial matrix of
+\eqref{nab:loc:eq:diagonal-shift}\\[0.3em]
+$\Nil_{\Aglob}$ & $\mathcal N_{\Aglob}$ & category of nilpotent
+representations, \cref{nab:loc:sub:category}\\[0.3em]
+$\val$, $\lc$ & $v$, $\operatorname{lc}$ & $\val$ is Part~I's valuation symbol\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Four further points are conventions of meaning. The profile letters
+$\alpha_n,\beta_n$ play the role of the $\gamma_n$ in \cref{nab:thm:dichotomy}
+and in the global-divisor report. The function $h_n=\exp(1/(z-n))$ has an
+\emph{ordinary} essential singularity at an ordinary point; it is the same
+device as the analysis report's family $t\,e^{1/Z}$, and it is \emph{not} a
+surreal-scale essential singularity, which the global-divisor report
+disclaims and the analysis report limits to one specified function. The only
+property of $h_n$ used is that its singularity at $n$ is not a pole or a
+removable point (\cref{nab:loc:lem:essential}); no theorem of Picard type is
+used, and ``Picard'' in this report always means the Picard group of line
+bundles. The letter $A$ alone always denotes the puncture set; the global
+section rings $A_{\II}$, $A_{\HH}$, $A_{\MM}$, $\Aglob$ always carry their
+subscript. Finally, the gluing convention of this part differs from Part~I's;
+see \cref{nab:loc:sub:finite-exp}.
+
+\section{An essential singularity protects a descending support}
+\label{nab:loc:sec:obstruction}
+
+\subsection{The fixed cover and the local data}
+
+Throughout this part set
+\[
+ A=\{1,2,3,\ldots\},\qquad U_0=\C\setminus A,\qquad
+ D_n=\{z:|z-n|<1/4\},\qquad W_n=D_n\setminus\{n\}\quad(n\geq1).
+\]
+The disks are pairwise disjoint, and the only nonempty overlaps between
+unequal members of the cover are $U_0\cap D_n=W_n$. This is a
+puncture-and-disk cover of $X=\C$ in the sense of \cref{nab:sec:cousin}. Choose
+a strictly decreasing positive profile
+\begin{equation}\label{nab:loc:eq:profile}
+ \alpha_1>\alpha_2>\cdots>0,\qquad \alpha_n\in\Gamma,
+\end{equation}
+and define
+\begin{equation}\label{nab:loc:eq:cocycle}
+ h_n(z)=\exp\Bigl(\frac1{z-n}\Bigr),\qquad c_n=t^{\alpha_n}h_n.
+\end{equation}
+Each $c_n$ is a positive Hahn section on $W_n$; since $h_n$ is holomorphic on
+$\C\setminus\{n\}$, it is even a positive section on $\C\setminus\{n\}$. The
+family $(c_n)$ need not be, and is not asserted to be, a summable Hahn family
+over all $n$.
+
+\begin{lemma}[Essential protection]\label{nab:loc:lem:essential}
+Let $g$ be a nonzero meromorphic germ at $n$. The germ $h_ng$ on the punctured
+neighbourhood of $n$ does not extend meromorphically across $n$.
+\end{lemma}
+
+\begin{proof}
+If $h_ng$ extended meromorphically, division by the nonzero meromorphic germ
+$g$ would extend $h_n$ meromorphically. But its Laurent expansion
+\[
+ h_n(z)=\sum_{k=0}^{\infty}\frac{(z-n)^{-k}}{k!}
+\]
+has infinitely many nonzero negative coefficients, so the singularity is
+essential. The expansion here is the ordinary complex Laurent expansion, not a
+Hahn sum over $\Gamma$.
+\end{proof}
+
+Zeros of $g$ at $n$ do not invalidate the argument: a nonzero meromorphic germ
+can have a zero or a pole only of finite order. This is exactly what makes the
+construction survive the passage from holomorphic to meromorphic coefficients.
+
+\begin{theorem}[Zero-annihilator descent obstruction]\label{nab:loc:thm:obstruction}
+Let $\BB\in\{\II,\HH,\MM\}$ and let $f\in\Aglob$ be nonzero. There do not exist
+$b_0\in\BB(U_0)$ and $b_n\in\BB(D_n)$ satisfying
+\begin{equation}\label{nab:loc:eq:descent}
+ b_n=b_0+c_nf\quad\text{on }W_n,\qquad n\geq1.
+\end{equation}
+The same assertion holds after every order-preserving group embedding
+$\Gamma\hookrightarrow\Gamma'$.
+\end{theorem}
+
+\begin{proof}
+Put $\beta=\val(f)$ and $g=f_\beta$. The function $g$ is a nonzero global
+holomorphic or meromorphic coefficient, and its germ at every $n$ is nonzero,
+since otherwise the identity theorem would make it zero everywhere.
+
+At the exponent $\beta+\alpha_n$ the product $c_nf$ has exactly the
+coefficient $h_ng$, because $c_n$ has a single Hahn exponent and $\beta$ is
+the least exponent of $f$. By \cref{nab:loc:lem:essential} that coefficient is
+not meromorphic at $n$. The coefficient of $b_n$ at the same exponent is
+meromorphic at $n$ (holomorphic, in the two holomorphic categories). Therefore
+\eqref{nab:loc:eq:descent} forces the coefficient of $b_0$ at $\beta+\alpha_n$
+to be nonzero, and consequently
+\[
+ \{\beta+\alpha_n:n\geq1\}\subseteq\supp b_0.
+\]
+The set on the left is strictly decreasing and cannot be a subset of a
+well-ordered support. This contradiction proves the assertion.
+
+An order embedding preserves the strict inequalities in
+\eqref{nab:loc:eq:profile}. A hypothetical solution in the enlarged group still
+has a least exponent $\beta$, now possibly outside $\Gamma$, and the same
+translated decreasing set gives the same contradiction.
+\end{proof}
+
+\begin{remark}[The missing normalization is unnecessary]\label{nab:loc:rem:nonegative}
+For $\HH$ and $\MM$ the number $\beta$ in the proof can be negative, and there
+is no bound on the negative valuation of a prospective gauge. Translation by
+any $\beta$ preserves strict decrease. Thus the proof does not smuggle the
+integral reduction normalization of \cref{nab:prop:integraltrivial} into the
+localized category.
+\end{remark}
+
+\subsection{A cohomological formulation without a cohomology assumption}
+
+For the displayed cover form the additive quotient
+\[
+ Q_{\BB}=
+ \frac{\displaystyle\prod_{n\geq1}\BB(W_n)}
+ {\displaystyle\{(b_n-b_0)_n:b_0\in\BB(U_0),\ b_n\in\BB(D_n)\}}.
+\]
+It is an $\Aglob$-module. Since there are no nonempty triple overlaps of
+distinct members, these are precisely the additive \v{C}ech cocycles and
+coboundaries on this cover.
+
+\begin{corollary}[A free cyclic obstruction submodule]\label{nab:loc:cor:annihilator}
+The map
+\[
+ \Aglob\longrightarrow Q_{\BB},\qquad f\longmapsto f\,[(c_n)_n]
+\]
+is injective. In particular the obstruction class has zero annihilator over
+$\Aglob$; it is not merely a nonzero torsion class that a global scalar might
+remove.
+\end{corollary}
+
+\begin{proof}
+Its kernel is exactly the set of $f$ for which \eqref{nab:loc:eq:descent} has a
+solution. Apply \cref{nab:loc:thm:obstruction}.
+\end{proof}
+
+No identification of $Q_{\BB}$ with derived sheaf cohomology is needed in any
+proof below, and none is claimed. It is notation for the exact obstruction
+that actually occurs in the gluing equations.
+
+\section{Nilpotent bundles and localization-resistant nontriviality}
+\label{nab:loc:sec:bundles}
+
+\subsection{Finite exponentials and the gluing convention}
+\label{nab:loc:sub:finite-exp}
+
+Let $V$ be a finite-dimensional complex vector space and let
+$N\in\End_\C(V)$ be nilpotent, say $N^m=0$. Define
+\begin{equation}\label{nab:loc:eq:general-transition}
+ G_n(N)=\exp(c_nN)=\sum_{k=0}^{m-1}\frac{c_n^kN^k}{k!}.
+\end{equation}
+Its inverse is $\exp(-c_nN)$. After an ordinary constant change of basis, $N$
+is strictly upper triangular, so $G_n(N)$ has determinant one. These
+statements hold over each of our coefficient sheaves. The finite support of
+$G_n(N)-I$ is contained in $\{\alpha_n,2\alpha_n,\ldots,(m-1)\alpha_n\}$.
+
+\begin{definition}[The nilpotent bundle]\label{nab:loc:def:bundle}
+The bundle $\mathcal N_{\profile}(N)^{\BB}$ is defined by the free modules
+$\BB|_{U_0}\otimes_\C V$ and $\BB|_{D_n}\otimes_\C V$ and the transition
+convention
+\begin{equation}\label{nab:loc:eq:section-convention}
+ s_n=G_n(N)s_0\quad\text{on }W_n.
+\end{equation}
+For the standard $r\times r$ Jordan block $J_r$ write
+$\NN r^{\BB}=\mathcal N_{\profile}(J_r)^{\BB}$. Superscripts are omitted when
+the coefficient category is fixed or the statement holds in all three
+categories.
+\end{definition}
+
+There is no triple-overlap condition to check beyond inverse transitions, so
+these data are a genuine bundle, not merely a formal list of local matrices.
+The bundle is already defined over $\II$, its ordinary reduction is the
+trivial bundle $\OO\otimes_\C V$, and its determinant is canonically trivial.
+
+\paragraph{The convention, once.} In \eqref{nab:loc:eq:section-convention} a
+section is a family of coordinate vectors $s_0,s_n$ related by $G_n(N)$, and a
+trivialization is a family of invertible matrices with $B_n=G_n(N)B_0$ on
+$W_n$, whose columns are a global frame. Part~I writes its gluing problem as
+$G_a=B_0B_a^{-1}$ (\cref{nab:thm:criterion}). The two conventions differ by
+inverting the transitions: $B_n=G_n(N)B_0$ is the same as
+$G_n(N)^{-1}=B_0B_n^{-1}$, so $\mathcal N_{\profile}(N)^{\II}$ is Part~I's
+bundle $\mathcal E_{G'}$ for $G'_n=G_n(N)^{-1}=\exp(-c_nN)$. Since
+$\exp(-c_nN)$ is of the same form with $h_n$ replaced by $-h_n$, no statement
+below depends on the choice.
+
+\begin{remark}[Over $\II$ this is an instance of Criterion~P]
+\label{nab:loc:rem:criterionP}
+This remark is a merge observation, not a statement of the localization
+manuscript. Let $N\neq0$. In Part~I's convention the cocycle is
+$G'_n=\exp(-c_nN)\in\GG(W_n)$. The Laurent decomposition of $h_n$ at $n$ is
+$h_n=(h_n-1)+1$, where $h_n-1=\sum_{k\geq1}(z-n)^{-k}/k!$ is a negative
+Laurent part in the sense of \cref{nab:lem:laurent} and $1$ is holomorphic on
+$D_n$. Scalar multiples of the one matrix $N$ commute, so
+\[
+ \exp(-c_nN)=\exp\bigl(-t^{\alpha_n}(h_n-1)N\bigr)\,
+             \exp\bigl(-t^{\alpha_n}N\bigr).
+\]
+The first factor lies in the polar group $\mathscr P_{r,\Gamma}$ of
+\cref{nab:sec:local}, its nonconstant coefficients being finite sums of
+products of negative Laurent parts, and the second lies in $\GG(D_n)$. By
+uniqueness in \cref{nab:thm:local},
+$\Pol(G'_n)=\exp(-t^{\alpha_n}(h_n-1)N)$, whose coefficient at $t^{\alpha_n}$
+is $-(h_n-1)N\neq0$. Hence $\EU(G')\supseteq\{\alpha_n:n\geq1\}$ is not well
+ordered, \cref{nab:thm:criterion} excludes a positive splitting, and
+\cref{nab:prop:integraltrivial} shows that $\mathcal N_{\profile}(N)^{\II}$ is
+nontrivial. The same computation with $h_n$ replaced by a pole datum such as
+$1/(z-n)$ also gives integral nontriviality; the two kinds of data are
+separated only after passage to $\MM$ (\cref{nab:loc:prop:poles}), and
+nothing in this report separates them over $\HH$. What Part~I does not give, and
+this part does, is nontriviality over $\HH$ and $\MM$, stable nontriviality,
+indecomposability, and the classification.
+\end{remark}
+
+\subsection{Every bounded restriction is trivial}
+
+\begin{theorem}[Finite-puncture trivialization]\label{nab:loc:thm:bounded}
+If an ordinary open set $Y\subseteq\C$ meets only finitely many points of $A$,
+then $\mathcal N_{\profile}(N)|_Y$ is trivial over $\II$. In particular every
+bounded restriction is integral-trivial.
+\end{theorem}
+
+\begin{proof}
+Let $F=A\cap Y$, a finite set, and on $Y\setminus F$ set
+\[
+ p=\sum_{n\in F}c_n.
+\]
+This is a finite Hahn sum whose ordinary coefficient functions are holomorphic
+away from $F$. Choose the matrices
+\begin{equation}\label{nab:loc:eq:bounded-gauges}
+ B_0=\exp(-pN),\qquad B_n=\exp\bigl((c_n-p)N\bigr)\quad(n\in F).
+\end{equation}
+The function $c_n-p$ is a finite sum of $-c_j$ with $j\neq n$, hence is
+holomorphic on the disk $D_n$. Each matrix and its inverse is an integral Hahn
+matrix. Since all factors are polynomials in the same matrix $N$, they commute
+and
+\[
+ B_n=\exp(c_nN)\exp(-pN)=G_n(N)B_0.
+\]
+Their columns therefore define a global frame on the induced cover of $Y$.
+Disks whose centres lie outside $Y$ are unnecessary, because $Y\setminus F$
+already covers their intersection with $Y$.
+\end{proof}
+
+For bounded $Y$ the integral statement is also the argument of
+\cref{nab:cor:bounded}: finitely many transition supports have a well-ordered
+union and \cref{nab:thm:Stein} applies. The explicit gauges
+\eqref{nab:loc:eq:bounded-gauges} are recorded because the sufficiency proof of
+\cref{nab:loc:thm:classification} reuses them. The finite formula cannot simply
+be sent to an infinite limit: the first exponents $\alpha_n$ strictly decrease,
+so the putative infinite $p=\sum_nc_n$ is not a Hahn section. The theorem gives
+local trivializations, not one compatible exhaustion-limit frame.
+
+\subsection{Exact sequences and the standard flag}
+
+The standard coordinate subspaces
+$0\subset\C e_1\subset\C e_1+\C e_2\subset\cdots\subset\C^r$ are invariant
+under $J_r$. They yield a flag of subbundles
+\begin{equation}\label{nab:loc:eq:standard-flag}
+ 0=F_0\subset F_1\subset\cdots\subset F_r=\NN r,
+ \qquad F_k\cong\NN k,
+ \qquad F_k/F_{k-1}\cong\BB,
+\end{equation}
+and in particular an exact sequence
+\begin{equation}\label{nab:loc:eq:standard-extension}
+ 0\longrightarrow\BB\longrightarrow\NN r\longrightarrow\NN{r-1}
+ \longrightarrow0.
+\end{equation}
+These sequences are locally split, being sequences of free modules in each
+chart. They need not split globally. The global obstruction is computed next,
+and it will also show that the flag is intrinsic rather than an arbitrary
+choice of coordinates.
+
+\subsection{All global sections, and nontriviality after localization}
+
+\begin{theorem}[All global sections]\label{nab:loc:thm:sections}
+For $\BB\in\{\II,\HH,\MM\}$ and every $r\geq1$,
+\begin{equation}\label{nab:loc:eq:all-sections}
+ H^0(\C,\NN r^{\BB})=\Aglob e_1.
+\end{equation}
+More generally, for every finite-dimensional complex nilpotent $N$,
+\begin{equation}\label{nab:loc:eq:sections-N}
+ H^0\bigl(\C,\mathcal N_{\profile}(N)^{\BB}\bigr)=\Aglob\otimes_\C\ker N.
+\end{equation}
+The equalities identify a section with its common coordinate vector in the
+fixed kernel of $N$.
+\end{theorem}
+
+\begin{proof}
+First take $N=J_r$ and write a section in local coordinates as
+$s_i=(s_{i,1},\ldots,s_{i,r})^T$. The bottom row of $G_n$ is the last row of the
+identity, so $s_{n,r}=s_{0,r}$ on overlaps, and the sheaf property glues these
+entries to a global $f_r\in\Aglob$.
+
+For $r\geq2$ the next row of the transition equation is
+\[
+ s_{n,r-1}=s_{0,r-1}+c_nf_r.
+\]
+If $f_r\neq0$, this contradicts \cref{nab:loc:thm:obstruction}; therefore
+$f_r=0$. The entries in row $r-1$ now agree on overlaps and define a global
+$f_{r-1}$. The equation one row higher has reduced to
+$s_{n,r-2}=s_{0,r-2}+c_nf_{r-1}$, because all terms involving $f_r$ have
+vanished, and the same argument forces $f_{r-1}=0$. Continuing upward kills
+every coordinate except the first, which glues to an arbitrary element of
+$\Aglob$.
+
+Conversely $J_re_1=0$ implies $G_ne_1=e_1$, so every common vector $fe_1$ with
+$f\in\Aglob$ defines a section. This proves \eqref{nab:loc:eq:all-sections},
+including $r=1$. A constant complex change of basis expresses any nilpotent $N$
+as a finite direct sum of Jordan blocks; the construction respects that change
+of basis and finite direct sums. Applying the proved assertion to each block,
+the resulting invariant lines are precisely $\ker N$.
+\end{proof}
+
+The proof never assumes that a global section has nonzero ordinary reduction.
+Its first nonzero coefficient can occur at any exponent allowed in the chosen
+coefficient category, which is why the argument remains valid after
+localization.
+
+\begin{corollary}[No stable trivialization]\label{nab:loc:cor:stable}
+If $r\geq2$, then for every $m\geq0$
+\[
+ \NN r^{\BB}\oplus\BB^m\not\cong\BB^{r+m}.
+\]
+In particular $\NN r^{\BB}$ is nontrivial in all three coefficient
+categories.
+\end{corollary}
+
+\begin{proof}
+An isomorphism of bundles would induce an isomorphism of global
+$\Aglob$-modules. By \cref{nab:loc:thm:sections} these are $\Aglob^{m+1}$ and
+$\Aglob^{m+r}$. The ring $\Aglob$ is a domain, so tensoring with its fraction
+field would equate vector spaces of different finite dimensions.
+\end{proof}
+
+\begin{corollary}[No coefficientwise meromorphic frame]\label{nab:loc:cor:meromorphic}
+For $r\geq2$, the space of global $\MM$-sections of $\NN r^{\MM}$ has
+dimension one over the field $A_{\MM}=\Mer(\C)((t^\Gamma))$. The bundle admits
+no coefficientwise meromorphic frame, and not even two globally independent
+coefficientwise meromorphic sections.
+\end{corollary}
+
+\begin{proof}
+This is \cref{nab:loc:thm:sections} for $\MM$: any two sections are multiples
+of $e_1$ over the indicated field.
+\end{proof}
+
+\subsection{Which further localizations are covered}
+
+A nonzero $f\in\HH(U)$ on a connected $U$ has an inverse in $\MM(U)$: its
+leading holomorphic coefficient may have zeros, but its reciprocal is
+meromorphic, and the positive-support geometric inverse still exists.
+Therefore the fraction field of $\HH(U)$ embeds in $\MM(U)$. At the sheaf level
+the local fraction sheaf of $\HH$ embeds in $\MM$ as well: represent a nonzero
+germ by a section on a connected neighbourhood and apply the same inversion.
+
+\begin{corollary}[Intermediate coefficient categories]\label{nab:loc:cor:intermediate}
+Let $\mathscr C$ be a sheaf of rings with compatible inclusions
+$\HH\subseteq\mathscr C\subseteq\MM$. No bundle $\NN r$ with $r\geq2$ becomes
+stably trivial over $\mathscr C$. This includes every such localization
+obtained by inverting nonzero holomorphic Hahn sections.
+\end{corollary}
+
+\begin{proof}
+A stable trivialization over $\mathscr C$ would remain a stable trivialization
+after tensor extension to $\MM$, contrary to \cref{nab:loc:cor:stable}.
+\end{proof}
+
+The statement is deliberately about one specified inclusion of sheaves. It
+does not identify $\MM$ with every possible definition of a surreal or Hahn
+meromorphic function, and it does not concern a coefficient category that
+allows essential singularities at every point of the ordinary base.
+
+\begin{corollary}[Absolute resistance under ordered enlargement]\label{nab:loc:cor:enlarge}
+If $\Gamma\hookrightarrow\Gamma'$ is an order-preserving group embedding, the
+base-changed bundle $\NN r$ with $r\geq2$ remains nontrivial and not stably
+trivial over each of the three $\Gamma'$-coefficient sheaves. Its global section
+formula is still \eqref{nab:loc:eq:all-sections}, with the enlarged global
+ring.
+\end{corollary}
+
+\begin{proof}
+The image profile is still strictly decreasing and positive. Apply
+\cref{nab:loc:thm:obstruction,nab:loc:thm:sections,nab:loc:cor:stable} in
+$\Gamma'$.
+\end{proof}
+
+Thus enlarging a set-sized surreal workspace cannot repair this obstruction. The
+claim follows from the order of an explicit sequence, not from an assumption
+that the original coefficient group was maximal. This is the localized
+counterpart of \cref{nab:cor:extension}, which is a statement about positive
+integral splittings only.
+
+\section{Every morphism and the intrinsic flag}\label{nab:loc:sec:morphisms}
+
+\subsection{The internal Hom is another nilpotent bundle}
+
+\begin{theorem}[Complete morphism formula]\label{nab:loc:thm:hom}
+Let $N\in\End_\C(V)$ and $M\in\End_\C(V')$ be nilpotent, and use the same
+profile $\profile$ for both bundles. Then
+\begin{align}
+ &\Hom_{\BB}\bigl(\mathcal N_{\profile}(N)^{\BB},\mathcal N_{\profile}(M)^{\BB}\bigr)\notag\\
+ &\hspace{1em}=\{B\in\Aglob\otimes_\C\Hom_\C(V,V'):MB=BN\}\notag\\
+ &\hspace{1em}=\Aglob\otimes_\C\Hom_{\C[T]}\bigl((V,N),(V',M)\bigr).
+ \label{nab:loc:eq:hom-formula}
+\end{align}
+Every such morphism is represented by the same global Hahn matrix in all
+charts, and there are no other morphisms.
+\end{theorem}
+
+\begin{proof}
+In local coordinates a bundle morphism is a family of matrices $B_i$ with
+compatibility
+\begin{equation}\label{nab:loc:eq:hom-transition}
+ B_n=\exp(c_nM)\,B_0\,\exp(-c_nN).
+\end{equation}
+On the finite-dimensional complex space $\Hom_\C(V,V')$ set
+\[
+ L_M(B)=MB,\qquad R_N(B)=BN,\qquad T=L_M-R_N.
+\]
+The operators $L_M$ and $R_N$ commute. If $M^a=N^b=0$, the binomial formula
+gives $T^{a+b-1}=0$, since each term contains $L_M^a$ or $R_N^b$. Their finite
+exponentials consequently satisfy
+\[
+ \exp(c_nT)(B)=\exp(c_nM)\,B\,\exp(-c_nN).
+\]
+Thus the internal Hom bundle is exactly $\mathcal N_{\profile}(T)$, and its
+global sections are $\Aglob\otimes_\C\ker T$ by \cref{nab:loc:thm:sections}.
+The condition $T(B)=0$ is $MB=BN$, proving the formula. A matrix in this kernel
+is fixed by all transitions, which explains the common global representative.
+Since the defining linear equations have complex coefficients and finite
+dimension, extending their solution space from $\C$ to the complex algebra
+$\Aglob$ commutes with taking the kernel.
+\end{proof}
+
+\begin{corollary}[Hom spaces, endomorphisms and automorphisms]
+\label{nab:loc:cor:endomorphisms}
+For $r,s\geq1$ the module $\Hom_{\BB}(\NN r,\NN s)$ is free of rank $\min(r,s)$
+over $\Aglob$. Moreover
+\begin{align}
+ \End_{\BB}(\NN r)&\cong\Aglob[T]/(T^r),\label{nab:loc:eq:end-ring}\\
+ \Aut_{\BB}(\NN r)&=
+ \Bigl\{\sum_{k=0}^{r-1}a_kJ_r^k:a_k\in\Aglob,\ a_0\in\Aglob^\times\Bigr\}.
+ \label{nab:loc:eq:aut-group}
+\end{align}
+\end{corollary}
+
+\begin{proof}
+An intertwiner $B$ from $J_r$ to $J_s$ is determined by $x=Be_r$, since $e_r$
+is cyclic and $Be_{r-k}=J_s^kx$ for $0\leq k<r$. The sole constraint is
+$J_s^rx=0$, whose solution module is free of rank $\min(r,s)$. For $r=s$, the
+image of $e_r$ can be written uniquely as $\sum_{k=0}^{r-1}a_kJ_r^ke_r$, so
+every commuting matrix is the corresponding polynomial in $J_r$; this proves
+\eqref{nab:loc:eq:end-ring}. A polynomial in $J_r$ is upper triangular with
+diagonal $a_0$, and it is invertible exactly when $a_0$ is a unit; then its
+inverse is a finite geometric polynomial in its nilpotent nonconstant part.
+\end{proof}
+
+\begin{theorem}[Indecomposability]\label{nab:loc:thm:indecomposable}
+Every $\NN r^{\BB}$ is indecomposable, including after all the coefficient and
+ordered-group extensions above.
+\end{theorem}
+
+\begin{proof}
+A nontrivial direct-sum decomposition would provide an idempotent in the
+endomorphism ring different from zero and one. In $\Aglob[T]/(T^r)$, reduction
+modulo $T$ maps an idempotent to an idempotent of the domain $\Aglob$, hence to
+zero or one. An idempotent in the nilpotent ideal $(T)$ is zero: if $e^2=e$ and
+$e^r=0$, then $e=e^r=0$. If the reduction is one, apply this to $1-e$. There
+are no nontrivial idempotents. The same reasoning applies over the enlarged
+coefficient rings, which are still domains.
+\end{proof}
+
+This distinguishes the construction from a mere nontrivial extension class
+whose middle bundle might nevertheless be decomposable: the full endomorphism
+calculation controls the middle bundle itself.
+
+\subsection{A representation category on the ordinary plane}
+\label{nab:loc:sub:category}
+
+Let $\Nil_{\Aglob}$ be the category whose objects are finite-dimensional
+complex vector spaces equipped with a nilpotent endomorphism, and whose
+morphism modules are
+\[
+ \Hom_{\Nil_{\Aglob}}\bigl((V,N),(V',M)\bigr)
+ =\Aglob\otimes_\C\Hom_{\C[T]}\bigl((V,N),(V',M)\bigr).
+\]
+Composition is the scalar extension of ordinary matrix composition.
+
+\begin{corollary}[Fully faithful realization]\label{nab:loc:cor:category}
+The construction $N\mapsto\mathcal N_{\profile}(N)^{\BB}$ is an
+$\Aglob$-linear fully faithful functor from $\Nil_{\Aglob}$ to $\BB$-bundles on
+$\C$. It preserves finite direct sums and duals, and it is compatible with
+\[
+ (V,N)\otimes(V',M)=(V\otimes V',\,N\otimes I+I\otimes M).
+\]
+A short exact sequence of finite-dimensional complex nilpotent representations
+is sent to a short exact sequence of bundles.
+\end{corollary}
+
+\begin{proof}
+Full faithfulness is \cref{nab:loc:thm:hom}. Direct sums are immediate from the
+block-diagonal exponential. The dual transition is $\exp(-c_nN^T)$, and the
+tensor transition is
+\[
+ \exp(c_nN)\otimes\exp(c_nM)=\exp\bigl(c_n(N\otimes I+I\otimes M)\bigr),
+\]
+by the finite binomial formula for commuting nilpotent matrices. An exact
+sequence of the original complex vector spaces is split as a sequence of vector
+spaces, so it stays exact after tensoring with each local coefficient ring. The
+representation maps commute with transitions, and the local exact sequences
+glue.
+\end{proof}
+
+The scalar extension in the definition of $\Nil_{\Aglob}$ matters: the functor
+from the original $\C$-linear category alone would not be full, because
+nonconstant global Hahn scalars produce additional morphisms.
+
+\begin{corollary}[Classification within one profile]\label{nab:loc:cor:jordan-class}
+For a fixed profile, $\mathcal N_{\profile}(N)$ and $\mathcal N_{\profile}(M)$
+are isomorphic if and only if $N$ and $M$ have the same Jordan block sizes, with
+multiplicities. Hence every object in this image is a finite direct sum of the
+indecomposables $\NN r$, and the multiset of summands is unique.
+\end{corollary}
+
+\begin{proof}
+Identical Jordan types give an ordinary constant conjugacy and hence an
+isomorphism. Conversely an isomorphism is an invertible global intertwiner by
+\cref{nab:loc:thm:hom}. Extend the coefficient domain $\Aglob$ to its fraction
+field. The matrices become similar there, so the ranks of all powers agree;
+those ranks determine the nilpotent Jordan partition and have the same values
+before and after this field extension.
+\end{proof}
+
+No Krull--Schmidt theorem for the entire category of Hahn bundles is invoked;
+the classification is for the fully specified image of this functor.
+
+\subsection{Recovering the flag intrinsically}
+
+\begin{proposition}[The canonical global-section flag]\label{nab:loc:prop:flag}
+For $\NN r$, the subsheaf generated by all global sections is precisely $F_1$
+in \eqref{nab:loc:eq:standard-flag}. Repeating this operation in the quotient
+and taking inverse images recovers each $F_k$. Thus every isomorphism between
+two Jordan-profile bundles of the same rank preserves the indicated flags, even
+if the two profiles differ.
+\end{proposition}
+
+\begin{proof}
+By \cref{nab:loc:thm:sections} all global sections lie in $\Aglob e_1$, and the
+global section $e_1$ generates $\BB e_1=F_1$ as a sheaf. The quotient is the
+Jordan bundle of rank $r-1$ for the same profile, so the same reasoning
+identifies its first flag step, and induction recovers all steps. The
+construction uses only global sections, quotient sheaves and inverse images,
+and is therefore preserved by an isomorphism.
+\end{proof}
+
+An arbitrary localized gauge need not preserve a flag given in advance. The
+proposition is what permits triangular form in the next proof: the flag is
+recovered from the bundle, not imposed as extra structure on its isomorphisms.
+
+\section{Exact classification of exponent profiles}
+\label{nab:loc:sec:classification}
+
+Keep the same punctures, disks and functions $h_n$. Let $\profile=(\alpha_n)$
+and $\betaprofile=(\beta_n)$ be two strictly decreasing positive profiles. All
+bundle isomorphisms in this section are over the identity map of $\C$; base
+reparametrizations and permutations of punctures are not included.
+
+\begin{theorem}[Integral equality versus localized translation]
+\label{nab:loc:thm:classification}
+For every fixed $r\geq2$,
+\begin{align}
+ \NN r^{\II}\cong\NNb r^{\II}
+ &\quad\Longleftrightarrow\quad
+ \beta_n=\alpha_n\text{ eventually},\label{nab:loc:eq:integral-class}\\
+ \NN r^{\HH}\cong\NNb r^{\HH}
+ &\quad\Longleftrightarrow\quad
+ \beta_n-\alpha_n=\delta\text{ eventually, for some }\delta\in\Gamma,
+ \label{nab:loc:eq:full-class}\\
+ \NN r^{\MM}\cong\NNb r^{\MM}
+ &\quad\Longleftrightarrow\quad
+ \beta_n-\alpha_n=\delta\text{ eventually, for some }\delta\in\Gamma.
+ \label{nab:loc:eq:mer-class}
+\end{align}
+Whenever the relevant condition holds, an isomorphism is obtained from one
+constant diagonal monomial matrix and finite-exponential gauges supported at
+finitely many exceptional punctures.
+\end{theorem}
+
+\subsection{Necessity: the rank-two calculation}
+
+\begin{proof}[Proof of necessity]
+First take $r=2$. The intrinsic flag of \cref{nab:loc:prop:flag} forces every
+local isomorphism matrix to be upper triangular. Write its central
+representative as
+\[
+ B_0=\begin{pmatrix}a&b_0\\0&d\end{pmatrix}.
+\]
+The diagonal entries are unchanged by the unipotent transition equation, so
+they glue to global scalars $a,d$; the inverse matrices glue their inverses,
+hence $a,d\in\Aglob^\times$. Let $b_n$ denote the upper-right entry of the
+matrix on $D_n$. With $c_{\alpha,n}=t^{\alpha_n}h_n$ and
+$c_{\beta,n}=t^{\beta_n}h_n$, the compatibility
+$B_n=\exp(c_{\beta,n}J_2)B_0\exp(-c_{\alpha,n}J_2)$, which is the two-profile
+form of \eqref{nab:loc:eq:hom-transition}, gives by direct multiplication
+\begin{equation}\label{nab:loc:eq:rank2-gauge}
+ b_n=b_0+d\,c_{\beta,n}-a\,c_{\alpha,n}.
+\end{equation}
+Divide by the global unit $d$ and put
+\[
+ q=a/d\in\Aglob^\times,\qquad \gamma=\val(q),\qquad q_\gamma=\lc(q).
+\]
+The coefficient of $q\,c_{\alpha,n}$ at $\lambda_n=\gamma+\alpha_n$ is
+$q_\gamma h_n$. If $\lambda_n\neq\beta_n$, the term $c_{\beta,n}$ has zero
+coefficient at $\lambda_n$. As $b_n/d$ is meromorphic at $n$,
+\cref{nab:loc:lem:essential} forces
+\[
+ \lambda_n\in\supp(b_0/d)
+ \quad\text{for every }n\text{ with }\beta_n\neq\gamma+\alpha_n.
+\]
+If infinitely many such exceptional indices existed, their $\lambda_n$ would
+form a strictly decreasing subset of a well-ordered support. Thus only finitely
+many are exceptional, and
+\[
+ \beta_n-\alpha_n=\gamma\qquad\text{eventually}.
+\]
+In the integral category a global unit has valuation zero by
+\cref{nab:loc:lem:units}, so $\gamma=0$. In the full holomorphic and
+meromorphic categories any $\gamma\in\Gamma$ is allowed.
+
+For $r>2$, \cref{nab:loc:prop:flag} makes an isomorphism restrict to an
+isomorphism between the intrinsic rank-two subbundles $F_2$. These are the
+rank-two bundles for the two profiles, and the proved necessity applies to that
+restriction. This reduction does not assume that the original isomorphism was
+a polynomial in $J_r$.
+\end{proof}
+
+\subsection{Sufficiency: explicit finite gauges}
+
+\begin{proof}[Proof of sufficiency]
+Suppose $\beta_n=\alpha_n+\delta$ except at a finite set $F$ of indices. In
+$\HH$ or $\MM$ the invertible constant diagonal matrix
+\begin{equation}\label{nab:loc:eq:diagonal-shift}
+ \Lambda_\delta=\operatorname{diag}\bigl(t^{(r-1)\delta},t^{(r-2)\delta},
+ \ldots,t^\delta,1\bigr)
+\end{equation}
+satisfies $\Lambda_\delta J_r\Lambda_\delta^{-1}=t^\delta J_r$. It therefore
+identifies the $\profile$ bundle with the bundle whose transition matrices are
+$\exp(t^{\alpha_n+\delta}h_nJ_r)$. The shifted exponents at the finitely many
+exceptional indices need not be positive; finite exponentials remain valid full
+Hahn matrices regardless.
+
+Put
+\[
+ d_n=\bigl(t^{\beta_n}-t^{\alpha_n+\delta}\bigr)h_n,\qquad
+ p=\sum_{n\in F}d_n.
+\]
+Then $d_n=0$ outside $F$. On $U_0$ take $B_0=\exp(-pJ_r)$, and on $D_n$ take
+$B_n=\exp((d_n-p)J_r)$. The function $d_n-p$ is holomorphic on $D_n$, because
+the only possible singularity there, from the $n$th term, has cancelled. Since
+these are polynomials in $J_r$,
+\[
+ B_n=\exp\bigl(t^{\beta_n}h_nJ_r\bigr)\,B_0\,
+       \exp\bigl(-t^{\alpha_n+\delta}h_nJ_r\bigr).
+\]
+Thus they give the desired isomorphism from the shifted bundle to the
+$\betaprofile$ bundle. Compose with $\Lambda_\delta$.
+
+For the integral statement, eventual equality means $\delta=0$ and no diagonal
+localization is needed. Every exponent in the finite differences $d_n$ is
+positive, so all the gauges just constructed and their inverses lie in $\II$.
+This proves sufficiency in all three categories.
+\end{proof}
+
+\begin{corollary}[Group enlargement creates no new profile identifications]
+\label{nab:loc:cor:class-enlarge}
+An order-preserving embedding $\Gamma\hookrightarrow\Gamma'$ neither identifies
+nor separates isomorphism classes of this profile family in any of the three
+coefficient categories.
+\end{corollary}
+
+\begin{proof}
+Existing isomorphisms extend. Conversely, the classification over $\Gamma'$
+forces eventual equality or an eventual translation $\delta'$. In the latter
+case choose one index in the eventual tail; then $\delta'=\beta_n-\alpha_n$ lies
+in the image of $\Gamma$, so the classification over $\Gamma$ already gives an
+isomorphism.
+\end{proof}
+
+\begin{corollary}[No additional identifications from meromorphic coefficients]
+\label{nab:loc:cor:no-extra}
+For this family, extension from $\HH$ to $\MM$ reflects isomorphism. The same
+exact classification holds in every intermediate sheaf
+$\HH\subseteq\mathscr C\subseteq\MM$.
+\end{corollary}
+
+\begin{proof}
+An isomorphism over $\mathscr C$ extends to $\MM$, where necessity is known. The
+necessary eventual-translation condition already gives an isomorphism over
+$\HH$, hence over $\mathscr C$.
+\end{proof}
+
+\subsection{Examples that separate the categories}
+
+\begin{example}[Localization forgets a constant shift]\label{nab:loc:ex:shift}
+Over $\Gamma=\Q$ take $\alpha_n=1+1/n$ and $\beta_n=2+1/n$. The corresponding
+bundles are not integral-isomorphic, but they are full-Hahn-isomorphic by
+$\Lambda_1$. Both remain indecomposable and nontrivial over $\MM$. Thus
+localization has nontrivial fibres on integral isomorphism classes without
+making the individual bundles trivial.
+\end{example}
+
+\begin{example}[A nonconstant perturbation survives localization]
+\label{nab:loc:ex:nonconstant}
+Take $\alpha_n=1/n$ and $\beta_n=1/n+1/(10n(n+1))$. Both profiles decrease
+strictly to zero, and their difference is never zero and not eventually
+constant. The associated rank-$r$ bundles are nonisomorphic even over $\MM$,
+for every $r\geq2$.
+\end{example}
+
+\begin{example}[Arbitrary finite changes are invisible]\label{nab:loc:ex:finite-change}
+Modify finitely many values of a decreasing profile while retaining strict
+positive decrease. The resulting bundle is already integral-isomorphic to the
+original one, by the finite gauge of the sufficiency proof; there is no need to
+solve an infinite interpolation problem.
+\end{example}
+
+These examples exhibit the invariant explicitly. It is not the set of
+exponents, their infimum, a total support cardinality, or the determinant. It
+is the indexed eventual profile, modulo one global translation in the localized
+categories.
+
+\section{Value groups: a localization-stable dichotomy and continuum many classes}
+\label{nab:loc:sec:groups}
+
+\subsection{Which groups admit a descending positive profile}
+
+By \cref{nab:lem:groups}, a set-sized ordered abelian group has no infinite
+strictly decreasing sequence in $\Gamma_{>0}$ exactly when $\Gamma=\{0\}$ or
+$\Gamma=\Z\delta$ for a least positive element $\delta$. That lemma is printed
+once, in Part~I; the global-divisor report and the localization manuscript
+each prove it again, by essentially the same argument, and the localization manuscript
+notes that the recursive choice of a decreasing sequence uses only ordinary
+countable choice. Having a least positive element is not enough to prevent the
+obstruction: a non-Archimedean ordered group may have a least positive element
+and still contain elements larger than every integer multiple of it
+(\cref{nab:loc:ex:omega-profile}).
+
+\subsection{The localization-stable rigidity dichotomy}
+
+\begin{theorem}[Universal rigidity versus resistant examples]
+\label{nab:loc:thm:dichotomy}
+For a set-sized ordered abelian group $\Gamma$ the following are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\Gamma=\{0\}$ or $\Gamma$ is ordered cyclic;
+\item every finite-rank $\II$-bundle on $\C$ with trivial ordinary reduction is
+already trivial over $\II$;
+\item every such bundle becomes trivial over $\HH$;
+\item every such bundle becomes trivial over $\MM$.
+\end{enumerate}
+When these conditions fail, for every $r\geq2$ there is a determinant-one
+rank-$r$ counterexample that is indecomposable and not stably trivial over
+$\MM$, but integral-trivial on every bounded domain.
+\end{theorem}
+
+\begin{proof}
+(i)$\Rightarrow$(ii). For $\Gamma=\{0\}$ the integral sheaf is $\OO$ and the
+assertion is the hypothesis. Let $\Gamma=\Z\delta$ with $\delta>0$. Choose
+local frames of the bundle on an open cover $(U_i)$ of $\C$ with transition
+matrices $G_{ij}\in\GL_r(\II(U_i\cap U_j))$. Their reductions are transition
+matrices of the trivial ordinary bundle, so $\red G_{ij}=g_ig_j^{-1}$ with
+$g_i\in\GL_r(\OO(U_i))$, and after the ordinary changes of frame $g_i$ the
+transitions $g_i^{-1}G_{ij}g_j$ reduce to $I_r$, that is,
+they form a positive cocycle. Its supports lie in the universal well-ordered
+set $\{\delta,2\delta,\ldots\}$, so it is globally support-admissible, and
+\cref{nab:thm:Stein} splits it on the same cover: this is the cyclic half of
+\cref{nab:thm:dichotomy}. The localization manuscript proves this implication
+directly by the $q$-adic form of the same coefficientwise recursion: with
+$q=t^\delta$ one has $\II(U)=\OO(U)[[q]]$ on connected domains; on a fixed
+locally finite disk cover, frames congruent to the identity modulo $q^m$ are
+corrected by matrices $I+q^mB_i$ solving an ordinary additive matrix cocycle,
+which is a coboundary by $H^1(\C,\OO)=0$ (equivalently, the ordinary additive
+Cousin theorem); the coefficient at each $q^k$ is unchanged by all steps with
+$m>k$, the final frames are defined by these stabilized coefficients, and no
+analytic convergence is used. The two routes use the same analytic input, and
+the recursion is not printed twice. Neither is claimed as a new Stein theorem.
+
+(ii)$\Rightarrow$(iii)$\Rightarrow$(iv) follow by tensor extension. If (i)
+fails, \cref{nab:lem:groups} gives a strictly decreasing positive profile. The
+bundles of \cref{nab:loc:def:bundle} have trivial reduction, but
+\cref{nab:loc:cor:meromorphic} refutes (iv) already in rank two. The stronger
+claims follow from
+\cref{nab:loc:thm:bounded,nab:loc:cor:stable,nab:loc:thm:indecomposable}.
+\end{proof}
+
+As the localization manuscript says, the new part of this theorem is that the
+noncyclic side continues to fail under the negative-valuation and meromorphic
+extensions, with determinant-one, indecomposable, not stably trivial
+witnesses. Failure of (iii) is already visible in rank one, for noncyclic
+$\Gamma\subseteq\No$, from the global-divisor report's Picard dichotomy. But
+(iv) cannot be refuted by any of the earlier pole-data examples --- neither by the scalar Picard classes of
+the global-divisor report nor by \eqref{nab:eq:SLcounter} and the examples of
+Part~I --- because all of them become trivial over $\MM$
+(\cref{nab:loc:cor:polestrivial}). The essential-singularity bundles are what
+make the equivalence with (iv) true.
+
+\subsection{Continuum many localized classes}
+
+\begin{theorem}[Cardinality lower bound in every noncyclic group]
+\label{nab:loc:thm:continuum}
+If $\Gamma$ is nonzero and noncyclic, then for every $r\geq2$ there exist
+$2^{\aleph_0}$ pairwise nonisomorphic rank-$r$ bundles of this construction
+over $\MM$, and hence over $\HH$ and $\II$. All have trivial determinant and
+reduction, and all their bounded restrictions are trivial.
+\end{theorem}
+
+\begin{proof}
+Choose a strictly decreasing positive sequence $(\theta_k)_{k\geq1}$. For each
+binary sequence $\varepsilon\in\{0,1\}^{\N_{>0}}$ define
+$\alpha_n^{\varepsilon}=\theta_{2n+\varepsilon_n}$. These profiles are strictly
+decreasing, since $2n+\varepsilon_n<2(n+1)+\varepsilon_{n+1}$, and they are
+distinct for distinct binary sequences.
+
+Fix one profile. If a second is eventually a constant translation of it, the
+translation belongs to the countable difference set
+$\{\theta_j-\theta_k:j,k\geq1\}$. For one fixed translation and one fixed
+starting index of the eventual tail, each value of the second tail is uniquely
+determined, since the $\theta_k$ are distinct, and there are only finitely many
+choices for the preceding binary prefix. Thus each translation-equivalence class
+among these profiles is countable.
+
+There are $2^{\aleph_0}$ binary sequences. A partition of a set of that
+cardinality into countable classes has $2^{\aleph_0}$ classes, by standard
+cardinal arithmetic with choice. By \cref{nab:loc:thm:classification},
+distinct classes give pairwise nonisomorphic $\MM$-bundles. The other
+properties have already been proved.
+\end{proof}
+
+\begin{example}[A rational binary family]\label{nab:loc:ex:binary}
+Over $\Gamma=\Q$ a transparent family is
+\begin{equation}\label{nab:loc:eq:binary-profile}
+ \alpha_n^{\varepsilon}=\frac1n+\frac{\varepsilon_n}{10n(n+1)},
+ \qquad \varepsilon_n\in\{0,1\}.
+\end{equation}
+For every choice of bits
+\[
+ \alpha_n^{\varepsilon}-\alpha_{n+1}^{\varepsilon}
+ \geq\frac1{n(n+1)}-\frac1{10(n+1)(n+2)}>0.
+\]
+All these profiles tend to zero as ordinary rational sequences, so an eventual
+constant translation between two of them must be zero. Hence, in each of the
+three coefficient categories,
+\begin{equation}\label{nab:loc:eq:binary-class}
+ \mathcal N_{\boldsymbol\alpha^{\varepsilon},r}
+ \cong\mathcal N_{\boldsymbol\alpha^{\eta},r}
+ \quad\Longleftrightarrow\quad
+ \varepsilon_n=\eta_n\text{ eventually}.
+\end{equation}
+The ordinary limit is used only to rule out a nonzero constant rational
+translation. It is not a convergence assertion about Hahn sections or
+surcomplex-valued functions.
+\end{example}
+
+\begin{example}[A genuinely non-Archimedean profile]\label{nab:loc:ex:omega-profile}
+In the ordered group $\Gamma=\Z\omega+\Z\subseteq\No$, ordered
+lexicographically by the coefficient of $\omega$, take $\alpha_n=\omega-n$.
+Every exponent is positive, and they strictly decrease while remaining larger
+than every ordinary integer. The least positive group element is $1$, but the
+group is not cyclic. The same bundle theorems apply without replacing this
+order by any real-valued valuation. The global-divisor report uses the same
+profile for its scalar Picard classes.
+\end{example}
+
+\section{Tensor products and duality}\label{nab:loc:sec:tensors}
+
+The morphism theorem turns ordinary nilpotent linear algebra into explicit
+bundle structure. This section records the resulting tensor rule, with its
+classical algebraic proof separated from the realization.
+
+\begin{theorem}[Tensor decomposition]\label{nab:loc:thm:tensor}
+For a fixed profile and all $r,s\geq1$,
+\begin{equation}\label{nab:loc:eq:tensor-law}
+ \NN r\otimes_{\BB}\NN s
+ \cong\bigoplus_{j=0}^{\min(r,s)-1}\NN{r+s-1-2j}.
+\end{equation}
+Moreover $(\NN r)^\vee\cong\NN r$.
+\end{theorem}
+
+\begin{proof}
+By \cref{nab:loc:cor:category} the tensor bundle is attached to the nilpotent
+matrix $J_r\otimes I+I\otimes J_s$. Its Jordan block sizes are
+$r+s-1,\ r+s-3,\ \ldots,\ |r-s|+1$, by the finite-dimensional identity
+\cref{nab:loc:lem:tensor} below, and a constant change of basis gives
+\eqref{nab:loc:eq:tensor-law}. The dual is attached to $-J_r^T$, which has the
+same single Jordan block as $J_r$ and is conjugate to it by an invertible
+complex matrix.
+\end{proof}
+
+For example $\NN2\otimes\NN2\cong\NN3\oplus\NN1$ and
+$\NN2\otimes\NN3\cong\NN4\oplus\NN2$. Consequently a tensor product of two
+indecomposable objects need not be indecomposable. The rank of its global
+section module is the number of summands, $\min(r,s)$, in agreement with
+self-duality and the Hom formula.
+
+\begin{lemma}[The Jordan tensor rule]\label{nab:loc:lem:tensor}
+Over a field of characteristic zero, the matrix $J_r\otimes I_s+I_r\otimes J_s$
+has Jordan block sizes $r+s-1-2j$ for $0\leq j<\min(r,s)$.
+\end{lemma}
+
+\begin{proof}
+It is enough to work over $\C$, since the Jordan chains constructed below use
+rational coefficients and the resulting rank identities are
+characteristic-zero identities. Put $a=r-1$ and $b=s-1$. Let $P_{a,b}$ be the
+space of polynomials separately homogeneous of degrees $a$ and $b$ in the pairs
+$(X_1,Y_1)$ and $(X_2,Y_2)$; its dimension is $(a+1)(b+1)$. Define
+\begin{align*}
+ E&=X_1\partial_{Y_1}+X_2\partial_{Y_2},\\
+ F&=Y_1\partial_{X_1}+Y_2\partial_{X_2},\\
+ H&=X_1\partial_{X_1}-Y_1\partial_{Y_1}+X_2\partial_{X_2}-Y_2\partial_{Y_2}.
+\end{align*}
+Direct calculation gives $[E,F]=H$, $[H,E]=2E$ and $[H,F]=-2F$. On the
+degree-$a$ polynomials in one pair of variables, the first summand of $E$ has
+one Jordan block of size $a+1$: it sends $X^{a-k}Y^k$ to $kX^{a-k+1}Y^{k-1}$,
+and rescaling that basis gives $J_{a+1}$. Thus the operator $E$ on $P_{a,b}$
+represents the tensor-sum matrix of the statement, up to a constant basis
+change.
+
+For $0\leq j\leq\min(a,b)$ set
+\[
+ w_j=(X_1Y_2-Y_1X_2)^jX_1^{a-j}X_2^{b-j},\qquad m_j=a+b-2j.
+\]
+The determinant factor is killed by both $E$ and $F$ and has $H$-weight zero,
+so $Ew_j=0$ and $Hw_j=m_jw_j$. Commuting $E$ past successive factors $F$ shows
+inductively that
+\begin{equation}\label{nab:loc:eq:sl2-chain}
+ EF^kw_j=k(m_j-k+1)F^{k-1}w_j.
+\end{equation}
+Since the $X$-degree of $w_j$ remaining after the determinant factor is $m_j$,
+one has $F^{m_j+1}w_j=0$. Formula \eqref{nab:loc:eq:sl2-chain} implies that none
+of $F^kw_j$ for $0\leq k\leq m_j$ is zero: apply $E^k$ and obtain a nonzero
+multiple of $w_j$. These vectors have distinct $H$-weights and are linearly
+independent; their span $W_j$ is invariant and carries a single $E$-Jordan block
+of size $m_j+1$.
+
+To see that the different $W_j$ form a direct sum without invoking a
+semisimplicity theorem, use the operator $C=H^2+2H+4FE$. The three commutator
+relations give $[C,E]=[C,F]=[C,H]=0$ by direct expansion. Since $Ew_j=0$, one
+has $Cw_j=m_j(m_j+2)w_j$, so $C$ is that scalar on $W_j$. These scalars are
+distinct as $j$ varies, and eigenspaces for distinct scalars are independent,
+so the sum of the $W_j$ is direct. Finally, assuming $a\leq b$ only to evaluate
+the sum, $\sum_{j=0}^{a}(m_j+1)=\sum_{j=0}^{a}(a+b-2j+1)=(a+1)(b+1)$. The
+independent subspaces fill $P_{a,b}$, and their block sizes are exactly
+$r+s-1-2j$.
+\end{proof}
+
+Atiyah's ordinary elliptic-curve theory is a notable precedent for unipotent
+indecomposables with this tensor pattern \cite{Atiyah}. What is proved here is
+a realization of the same finite nilpotent algebra in a localized Hahn category
+on the ordinary plane, together with the profile classification. The tensor
+pattern by itself is not evidence of novelty.
+
+\section{Poles versus essential singularities}\label{nab:loc:sec:sharpness}
+
+\subsection{Pole data are removable in the meromorphic category}
+
+\begin{proposition}[Pole data are removable in the meromorphic category]
+\label{nab:loc:prop:poles}
+Replace $h_n$ in \eqref{nab:loc:eq:cocycle} by any function $p_n$ that is
+meromorphic on the entire disk $D_n$, and keep any positive profile, without a
+global well-ordering assumption on that profile. Then the bundle with
+transitions $\exp(t^{\alpha_n}p_nN)$ is trivial over $\MM$. More generally,
+any star-cover transition matrix $G_n$ for which both $G_n$ and $G_n^{-1}$
+extend as $\MM$-matrices to $D_n$ defines a trivial $\MM$-bundle.
+\end{proposition}
+
+\begin{proof}
+Set $B_0=I$ on $U_0$ and $B_n=G_n$ on each $D_n$. These matrices are invertible
+over the stated local sheaves and satisfy $B_n=G_nB_0$; their columns are a
+global frame. For the nilpotent matrices of the first assertion, $G_n$ and its
+inverse are finite sums of powers of the meromorphic coefficient $p_n$, so they
+do extend over $D_n$.
+\end{proof}
+
+There is no requirement that the matrices on different disks have one common
+support: they are different local coordinate descriptions of a bundle frame,
+not restrictions of one scalar Hahn function. The common-support constraint
+enters only when a particular coordinate is shown to glue as a scalar, as in the
+proof of \cref{nab:loc:thm:sections}.
+
+This also explains why essential protection is a substantial hypothesis. With
+$p_n=(z-n)^{-1}$, multiplication by a global holomorphic function vanishing at
+all $n$ can cancel the coefficient poles, and the zero-annihilator proof fails.
+In the essential case no nonzero meromorphic coefficient can perform that
+cancellation.
+
+The proof of \cref{nab:loc:prop:poles} uses nothing about the cover beyond
+the disjointness of the disks, so it applies verbatim to every
+puncture-and-disk cover of the plane, in either gluing convention (in Part~I's
+convention take $B_0=I$ and $B_a=G_a^{-1}$). The localization manuscript
+observes that Part~I's hidden and deep examples use pole data, and says that
+their meromorphic extension is not a model for its resistance mechanism
+\emph{when} their transitions and inverses extend as in
+\cref{nab:loc:prop:poles}. The following merge observation checks that they
+do, and adds the global-divisor report's plane Picard classes, for which the
+same check applies.
+
+\begin{corollary}[Pole-data bundles die over $\MM$]\label{nab:loc:cor:polestrivial}
+After extension of scalars to $\MM$ the following bundles on $\C$ become
+trivial.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item The integral bundles of \cref{nab:cor:nontrivialbundles}: the hidden
+rank-three cocycle \eqref{nab:eq:badG} and the deep cocycles of
+\cref{nab:thm:depth}.
+\item The scalar cocycles $\exp(t^{\gamma_n}/(z-n))$ and the determinant-one
+diagonal cocycles \eqref{nab:eq:SLcounter} in the proof of
+\cref{nab:thm:dichotomy}.
+\item In the global-divisor report, every line bundle $\mathcal L(a)$ glued by
+$\operatorname{Exp}_H(a_j/(z-j))$ with $a$ a sequence of positive Hahn
+constants (its \texttt{global:eq:transitions} and
+\texttt{global:thm:obstruction}), in particular every explicit plane Picard
+class $\operatorname{Exp}_H(a_nt^{\gamma_n}/(z-n))$, $a_n\in\C$, of its
+Picard dichotomy (\texttt{global:eq:explicitbundles},
+\texttt{global:thm:dichotomy}); and the line bundles attached to root-cluster
+data in its \texttt{global:prop:divPic}.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+In each case the transitions live on a puncture-and-disk cover of $\C$, and it
+suffices, by \cref{nab:loc:prop:poles} and the remark preceding this corollary,
+that each transition and its inverse extend across the centre with meromorphic
+coefficients.
+
+(a) The hidden matrices $I_3+tE_{12}/(z-n)+t^{1/n}E_{23}$ and the deep
+matrices $I_r+C_n+a_nE_{12}$ of \cref{nab:lem:chain}, with
+$a_n=t/(z-n)$ and Hahn-constant $C_n$, are finite unitriangular matrices
+whose entries are Hahn constants or constant multiples of $t/(z-n)$. Their
+inverses are finite geometric sums of the nilpotent part, whose entries are
+polynomials in those entries. All coefficients are rational functions with
+poles only at $n$.
+
+(b) $\exp(\pm t^{\gamma_n}/(z-n))=\sum_{k\geq0}(\pm1)^kt^{k\gamma_n}/(k!(z-n)^k)$
+has, at each exponent, a single pole of finite order at $n$; the diagonal
+matrices are built from these.
+
+(c) For a positive Hahn constant $a_j$, the coefficient of
+$\operatorname{Exp}_H(\pm a_j/(z-j))=\sum_k(\pm a_j)^k/(k!(z-j)^k)$ at a fixed
+exponent receives contributions from only finitely many $k$
+(\cref{nab:lem:neumann}), each a complex constant times $(z-j)^{-k}$; so every
+coefficient is rational with a pole only at $j$. The explicit Picard classes are
+the special case of the Hahn constants $a_nt^{\gamma_n}$ with $a_n\in\C$. For
+root-cluster data the
+transition is $P_c(z-c)/(z-c)^{m_c}=1+\sum_{i<m_c}a_{c,i}(z-c)^{i-m_c}$ with
+positive Hahn constants $a_{c,i}$, a nonzero element of $\MM$ on the disk with
+meromorphic coefficients; it is a unit of $\MM$ there by
+\cref{nab:loc:lem:units}.
+\end{proof}
+
+\paragraph{What this does and does not say.}
+First, it contradicts nothing. The global-divisor report's Picard dichotomy is
+a statement about $\II$ and $\HH$ only, and there the classes in~(c) are
+nontrivial for every noncyclic $\Gamma\subseteq\No$, that report's standing
+hypothesis. Together with~(c) this shows that extension of scalars from $\HH$
+to $\MM$ sends nonzero classes of the plane Picard group to the trivial bundle
+whenever $\Gamma\subseteq\No$ is noncyclic: in rank one, pole-data classes survive monomial localization
+and die under meromorphic extension. Second, the corollary concerns the
+displayed families. It does not assert that every class of $\Pic(\C,\HH)$ dies
+over $\MM$, and no statement about the Picard group of $\MM$, or about rank-one
+$\MM$-bundles in general, is made anywhere in this report. Third, for Part~I's
+examples it settles nothing over $\HH$: whether they survive monomial
+localization remains open (\cref{nab:sec:open}), and a proof that they do would
+have to use the holomorphy of gauge coefficients at the punctures, which the
+argument of \cref{nab:loc:thm:obstruction} never uses. Over a compact base the
+global-divisor report identifies exactly which Hahn line bundles become trivial
+over its $\mathscr M_\Gamma$ (those with vanishing valuation class, by its
+\texttt{global:thm:meromorphic}); no plane analogue is claimed.
+
+\subsection{Why this does not contradict ordinary analytic bundle theorems}
+
+Ordinary holomorphic bundle theory over the plane has very strong triviality
+results, within the setting of the Oka--Grauert principle \cite{Grauert}. Those
+theorems concern finite-rank locally free modules over $\OO$, not sheaves built
+from infinitely many ordinary coefficient functions with a joint Hahn-support
+constraint. Our ordinary reductions are trivial. The obstruction is not an
+ordinary holomorphic obstruction remaining in the reduction; it is the
+impossibility of fitting infinitely many forced exponents into one well-ordered
+support. Applying a theorem for coherent $\OO$-modules directly to $\HH$ would
+change the coefficient category and discard exactly the constraint used in
+\cref{nab:loc:thm:obstruction}.
+
+Similarly, $\MM$ is not a constant field sheaf merely because its sections on
+each connected domain form a field. Restriction maps are injective but in
+general not surjective: an essential singularity at an omitted point prevents
+extension. A global frame requires compatibility across all these restriction
+maps together with admissible supports. The one-dimensional global section
+formula over the field $A_{\MM}$ is therefore not paradoxical.
+
+\subsection{Why determinant and finite tests miss the obstruction}
+
+The transition determinants are identically one, and their ordinary reductions
+are identically the identity. On every finite-puncture subproblem there is the
+explicit integral frame \eqref{nab:loc:eq:bounded-gauges}. None of these tests
+detects the global nontriviality. For any positive integer $K$, the
+restrictions over a bounded region containing the first $K$ punctures are
+indistinguishable, at the level of bundle isomorphism, from a trivial bundle. A
+proof of global nontriviality must use infinite information; here it uses a
+quantified statement about the whole decreasing profile, not a numerical
+experiment on a long prefix. This is the localized counterpart of
+item~\ref{nab:nc:blackbox} of \cref{nab:sec:scope}.
+
+\subsection{Other essential singularities}
+
+\begin{proposition}[Replacing the ordinary exponential]\label{nab:loc:prop:essential-family}
+The global section, morphism and indecomposability theorems, and the necessity
+direction of the profile classification, remain valid if each $h_n$ is replaced
+by a holomorphic function on $W_n$ with an essential singularity at $n$,
+provided the same $h_n$ is used for both profiles being compared. If each $h_n$
+additionally extends holomorphically to $\C\setminus\{n\}$, then the full
+profile classification and the explicit finite-puncture trivialization theorem
+remain valid as well.
+\end{proposition}
+
+\begin{proof}
+Essential protection follows by the same quotient argument for every
+nonmeromorphic germ. No other property of $h_n$ is used in
+\cref{nab:loc:thm:obstruction,nab:loc:thm:sections,nab:loc:thm:hom} or in the
+necessity part of \cref{nab:loc:thm:classification}. The sufficiency gauges
+require the finite sums of the $h_n$ to be holomorphic away from their
+indicated centres; the stated global extension hypothesis guarantees exactly
+this property, and it also proves bounded triviality as before.
+\end{proof}
+
+The assertion about classification in the proposition includes its sufficiency
+under the stated global extension hypothesis. Without that extra hypothesis,
+the necessity argument and the section and morphism theorems still hold on the
+fixed cover, but a finite global correction needs a separate additive Cousin
+construction. We do not silently assume such an extension of arbitrary locally
+specified functions.
+
+\part*{Part IV. Effectivity, verification, and boundaries}
+\addcontentsline{toc}{section}{\textbf{Part IV. Effectivity, verification, and boundaries}}
 
 \section{How to compute the invariants, and what computation cannot decide}
 \label{nab:sec:effectivity}
@@ -2629,13 +4214,80 @@ linear choices on smaller weighted sequence spaces; those are different
 problems. For finite $D$ the explicit section \eqref{nab:eq:finitesection} is
 continuous and the obstruction disappears.
 
+\subsection{Part~III: a complete criterion that is not semidecidable}
+\label{nab:loc:sub:effectivity}
+
+\Cref{nab:loc:thm:classification} is a complete mathematical criterion for
+isomorphism in its family. It is not an algorithm, and for unrestricted
+infinite input no algorithm exists.
+
+\paragraph{The input model.}
+An \emph{effective profile} is a program that, on input $n\geq1$, outputs an
+exact positive rational $\alpha_n$, with the promise that the program halts on
+every input and that $\alpha_n>\alpha_{n+1}$. Fix the ordinary punctures, disks,
+essential functions $h_n$ of \cref{nab:loc:sec:obstruction}, and a rank
+$r\geq2$ once and for all. The only input is thus the exponent profile; there is
+no hidden oracle for ordinary analytic continuation or for coefficient
+functions. A semidecision procedure for isomorphism halts with a positive
+answer exactly on isomorphic pairs of valid inputs and may run forever on
+nonisomorphic pairs; a semidecision procedure for nonisomorphism reverses the
+two cases. Correctness is required only on inputs satisfying the promise.
+
+\begin{theorem}[Neither side is semidecidable]\label{nab:loc:thm:undecidable}
+For the rational binary family \eqref{nab:loc:eq:binary-profile}, neither
+isomorphism nor nonisomorphism of the corresponding rank-$r$ bundles is
+semidecidable, in any of the three coefficient categories $\II$, $\HH$, $\MM$.
+In particular there is no decision algorithm for isomorphism on this promised
+computable input class.
+\end{theorem}
+
+\begin{proof}
+Fix the zero-bit profile $\alpha_n^0=1/n$. By \eqref{nab:loc:eq:binary-class},
+the bundle for a bit sequence $\varepsilon$ is isomorphic to this fixed bundle
+exactly when $\varepsilon_n=0$ eventually. For a Turing machine $e$ on a fixed
+input, define a uniformly computable bit sequence
+\[
+ u_n(e)=
+ \begin{cases}
+ 1,&e\text{ halts within its first }n\text{ steps},\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\]
+Computing one bit requires only a bounded simulation, so the resulting profile
+is always a total computable valid input. If $e$ never halts, $u(e)$ is all
+zero and the two bundles are isomorphic; if $e$ halts, $u(e)$ is eventually one
+and they are not. A semidecision procedure for isomorphism would therefore
+semidecide the set of machines that never halt. For the other direction put
+$v_n(e)=1-u_n(e)$: if $e$ halts, this sequence is eventually zero and gives an
+isomorphic bundle, and if it never halts, it is all one and gives a
+nonisomorphic bundle. A semidecision procedure for nonisomorphism would again
+semidecide nonhalting.
+
+The halting set is semidecidable by simulation, whereas its complement is not:
+if both were semidecidable, dovetailing the two procedures would decide halting,
+contradicting the classical diagonal argument \cite{Turing}. Both proposed
+semidecision procedures are therefore impossible. Every profile produced in the
+reductions satisfies the promise, by the inequality in \cref{nab:loc:ex:binary};
+no undecidable validity check is hidden in the input encoding.
+\end{proof}
+
+This is a reduction to a classical undecidability phenomenon, not a new theorem
+about Turing machines. Its content here is that the exact geometric isomorphism
+relation already carries that obstruction, in a family with rational exponents
+and fixed elementary coefficient functions. For restricted finite or eventually
+periodic presentations the tail criterion can of course be evaluated by
+ordinary finite methods. The theorem is the Part~III counterpart of
+item~\ref{nab:nc:blackbox} of \cref{nab:sec:scope}: there, finite-puncture
+computation cannot detect triviality; here, even a complete criterion for
+isomorphism is not semidecidable on a computable input class.
+
 \section{The accompanying exact and numerical checks}
 \label{nab:sec:verification}
 
-Two independent check suites were delivered with the two source manuscripts and
-are preserved unchanged in \texttt{code/} and \texttt{data/} of this report
-directory. Neither suite verifies a theorem; both audit finite identities, and
-both print their own scope disclaimer. The facts recorded in this section were
+Three independent check suites were delivered with the three source
+manuscripts and are preserved unchanged in \texttt{code/} and \texttt{data/} of
+this report directory. No suite verifies a theorem; each audits finite
+identities, and each prints its own scope disclaimer. The facts recorded in this section were
 confirmed by an independent run of the code, described in
 \cref{nab:app:repro}.
 
@@ -2686,6 +4338,46 @@ $2\cdot10^{-9}$ so as not to depend on platform-specific last digits. The
 recorded environment is Python 3.13.5 on Linux with NumPy 2.3.5, SciPy 1.17.0
 and SymPy 1.14.0.
 
+\paragraph{Part~III: exact finite algebra and exponent samples.}
+The script \nolinkurl{10-localization-bundles-verify.py} checks the finite
+algebra used in Part~III with exact SymPy arithmetic and exact Python
+fractions. Its dependency pin is
+\nolinkurl{data/10-localization-bundles-requirements.txt} (SymPy 1.14.0). The
+recorded run used maximum rank six under Python 3.13.5 and SymPy 1.14.0 and is
+stored twice, byte-identically, as
+\nolinkurl{data/10-localization-bundles-verification.json} and
+\nolinkurl{data/10-localization-bundles-verification.txt}.
+\begin{center}\small
+\begin{tabular}{@{}L{0.71\textwidth}r@{}}
+\toprule
+Check family & Count\\
+\midrule
+Nilpotent exponential addition, inverse and determinant & 18\\
+Monomial diagonal conjugation & 12\\
+Finite-puncture gauge identities & 6\\
+Centralizer basis identities & 21\\
+Intertwiner-space dimensions for ranks one through six & 36\\
+Internal-Hom finite exponential identities & 9\\
+Tensor-sum Jordan rank profiles & 252\\
+The upper-triangular rank-two gauge equation \eqref{nab:loc:eq:rank2-gauge} & 1\\
+Exact rational binary-profile inequalities \eqref{nab:loc:eq:binary-profile} & 8{,}000\\
+Lexicographic non-Archimedean profile samples & 4{,}000\\
+\midrule
+Total exact checks & 12{,}355\\
+\bottomrule
+\end{tabular}
+\end{center}
+All recorded checks passed. The rational inequalities use exact fractions for
+$n\leq2000$ and all four bit patterns of consecutive indices; the
+non-Archimedean samples use exact lexicographic pairs of rationals, a model of
+$\Q\omega+\Q$, for the profile $\omega-n$ and one translate of it, not
+floating-point stand-ins for $\omega$. The matrix tests use symbolic identities
+or exact ranks, not approximate eigenvalues. The script writes nothing unless
+an output path is given with \texttt{-{}-output}, so running it in place does
+not overwrite the recorded evidence. An independent rerun on a copy, under
+Python 3.14.4 with SymPy 1.14.0, reproduced the recorded JSON exactly except
+for its \texttt{python\_version} field, with the same count of 12{,}355.
+
 \paragraph{A warning about rerunning the Part~II script.}
 That script \emph{writes its own evidence}: it emits
 \texttt{verification\_results.json} beside itself, via
@@ -2706,24 +4398,39 @@ rigorous enclosures, and test only a finite bivariate degree-two identity; the
 exact checks are algebraic identities in two formal variables. Neither suite
 tests an arbitrary Hahn field, justifies a transfinite recursion, proves any
 support set well ordered, verifies anything in a proof assistant, or
-establishes that the results are unpublished. No implication in this report
-depends on the outcome of either script: the general proofs are the arguments
-in the body.
+establishes that the results are unpublished. The Part~III checks likewise
+cannot establish the well-ordering contradiction for all indices, prove the
+identity theorem for meromorphic functions, certify the sheaf construction,
+the essential-singularity theorem, descent or the classification, verify the
+undecidability statement, or establish historical novelty; they are a
+reproducible algebraic audit of finite steps. No implication in this report
+depends on the outcome of any script: the general proofs are the arguments in
+the body.
 
 \section{Exactly what is not claimed}\label{nab:sec:scope}
 
-The following list merges the honest limitations stated by both source
+The following list merges the honest limitations stated by all three source
 manuscripts. Every one of them survives this merge, and none is weakened.
 Items \ref{nab:nc:refereed} through \ref{nab:nc:formal} come from Part~I's
 scope, items \ref{nab:nc:positivity} through \ref{nab:nc:mueller} from
-Part~II's, and the boundary note at the end records the one place where the two
-parts make different standing assumptions.
+Part~II's, and items \ref{nab:loc:nc:family} through
+\ref{nab:loc:nc:essential} from Part~III's. The localization manuscript's
+generic limitations (refereeing, priority, credits, code, formalization, and
+the M\"uller--Strohmaier distinction) are added to items \ref{nab:nc:refereed},
+\ref{nab:nc:credits}, \ref{nab:nc:priority}, \ref{nab:nc:code},
+\ref{nab:nc:formal} and \ref{nab:nc:mueller} rather than repeated, and items
+\ref{nab:nc:localization} and \ref{nab:nc:classification} are re-scoped to
+Part~III's results. Item~\ref{nab:loc:nc:picard} is a caution added by the
+merge. The boundary note at the end records the one place where the parts make
+different standing assumptions.
 
 \begin{enumerate}
 \item\label{nab:nc:refereed}
-Nothing here is refereed or proof-assistant verified. Both source manuscripts
-are self-described AI-assisted research drafts and say so on their title pages
-and in their READMEs.
+Nothing here is refereed or proof-assistant verified. All three source
+manuscripts are self-described AI-assisted research drafts and say so on their
+title pages and in their READMEs; the localization manuscript's provenance
+record (\nolinkurl{data/10-localization-bundles-PROVENANCE.json}) also lists
+peer review and proof-assistant verification as false.
 
 \item\label{nab:nc:localization}
 Nontriviality in Part~I is proved \emph{only} over the integral sheaf $\II$.
@@ -2731,9 +4438,13 @@ We explicitly do not claim that the examples survive after all monomials are
 inverted, that is over $\HH$, because positive monomials become units there,
 no reduction homomorphism $\HH\to\OO$ exists, and the framing-normalization
 argument of \cref{nab:prop:integraltrivial} cannot be repeated. This is listed
-as an open question, not as a believed consequence. In particular neither
-criterion of this report is restated over a coefficient field in which
-negative-valuation changes of frame are admitted.
+as an open question, not as a believed consequence. Part~III does not change
+this for Part~I's examples: it proves nontriviality over $\HH$ and over $\MM$
+for a different, essential-singularity family (\cref{nab:loc:cor:stable}), and
+it shows that Part~I's examples become trivial over $\MM$
+(\cref{nab:loc:cor:polestrivial}), which decides nothing over $\HH$. In
+particular neither criterion of this report is restated over a coefficient
+field in which negative-valuation changes of frame are admitted.
 
 \item\label{nab:nc:starcover}
 The exact criterion of \cref{nab:thm:criterion} is only for the
@@ -2757,9 +4468,10 @@ rational exponent monoids. For a general higher-rank ordered group a bounded
 exponent interval can be infinite.
 
 \item\label{nab:nc:classification}
-No classification of isomorphism classes is offered; only triviality is
-decided. \Cref{nab:prop:torsor} describes all solutions once a splitting
-exists, not the nonsplit objects.
+Parts~I and~II offer no classification of isomorphism classes; only triviality
+is decided, and \cref{nab:prop:torsor} describes all solutions once a
+splitting exists, not the nonsplit objects. Part~III classifies one explicit
+family and nothing beyond it; see item~\ref{nab:loc:nc:classification}.
 
 \item\label{nab:nc:higherdim}
 The sharp star-cover invariant does not generalize to positive-dimensional
@@ -2777,25 +4489,49 @@ corrections; nothing in this report imports, endorses or reinterprets any
 application of that algebra, and no assertion here is physical, empirical or
 applied in any way. Likewise ``positive'' never means Hermitian positivity,
 and the normalized polar factorization is \emph{not} the Hilbert-space polar
-decomposition.
+decomposition. For Part~III: the Jordan tensor identity
+(\cref{nab:loc:lem:tensor}) is classical linear algebra, Atiyah's
+elliptic-curve bundles \cite{Atiyah} are a precedent for its pattern, and the
+tensor pattern is not evidence of novelty; the undecidability statement is a
+reduction to the classical halting theorem \cite{Turing}; the cyclic integral
+direction of \cref{nab:loc:thm:dichotomy} is recalled and proved, not claimed
+as a new Stein theorem; and the global-divisor report's scalar Picard
+dichotomy and Part~I's integral cyclic rigidity are antecedents, not Part~III
+results.
 
 \item\label{nab:nc:priority}
 The literature checks were targeted and are explicitly not certifications of
 priority. Broad searches that returned irrelevant material were not treated as
 evidence of absence, a repository code-search response marked incomplete was
 not used as evidence of absence, and no named published conjecture is claimed
-solved.
+solved. The localization manuscript's novelty assessment is likewise bounded
+by what it inspected --- for this report, its README and two line ranges of its
+article; for the global-divisor report, a truncated README --- and is not a
+proof of historical priority.
 
 \item\label{nab:nc:code}
-The companion code checks exact finite algebra and one finite numerical
-example only; see the final paragraph of \cref{nab:sec:verification}.
+The companion code checks exact finite algebra, finitely many exponent
+samples, and one finite numerical example only; see the final paragraph of
+\cref{nab:sec:verification}.
 
 \item\label{nab:nc:formal}
 Formal verification is future work. The local support recursion, the chain
 identity and the necessity directions appear well suited to formalization
 with Hahn series and finite matrix algebra, but the global sufficiency proofs
 additionally need a formal ordinary Mittag--Leffler theorem or a suitable
-sheaf-cohomology interface. Neither script is a substitute for such a
+sheaf-cohomology interface. For Part~III the localization manuscript proposes
+a formalization boundary: first an abstract kernel with restriction maps,
+distinguished local extensions, and a predicate saying that multiplication of
+$h_n$ by a nonzero global leading coefficient cannot extend at $n$, to be
+instantiated later with holomorphic and meromorphic germs; then three
+milestones --- the descending-support contradiction and its preservation under
+ordered group embeddings; finite nilpotent exponentials, the Jordan induction
+and $B\mapsto MB-BN$; and bundle descent with the intrinsic global-section flag,
+so that arbitrary isomorphisms, not only flag-preserving gauges, satisfy the
+classification. Omitting the last milestone would weaken the classification to
+a framed statement that is not what is proved. No Lean implementation is
+included or claimed, and the repository's build status is not evidence that
+any of these theorems has been checked. No script is a substitute for such a
 formalization.
 
 \item\label{nab:nc:positivity}
@@ -2861,13 +4597,89 @@ enclosures, and test only a finite bivariate degree-two identity.
 The Hahn-meromorphic category of M\"uller--Strohmaier \cite{Muller} is
 explicitly \emph{not} identified with ours: there the parameter is tied to an
 expansion near zero on a logarithmic cover, whereas here $t$ is an independent
-Hahn parameter and $z$ the ordinary analytic variable.
+Hahn parameter and $z$ the ordinary analytic variable. The localization
+manuscript refuses the same identification for the meromorphic sheaf $\MM$ of
+Part~III.
 
 \item\label{nab:nc:common}
 No theorem of either part is claimed to be an instance of a common
 generalization proved here. The two criteria are two theorems with two proofs
 (\cref{nab:sec:twocriteria}); they share only
 \cref{nab:lem:neumann,nab:lem:inverse} and an ordinary Mittag--Leffler input.
+
+\item\label{nab:loc:nc:family}
+The localization-resistant bundles of Part~III form one explicit
+essential-singularity family. Nothing in Part~III settles whether Part~I's
+pole-only hidden and deep examples survive monomial localization; that stays
+open (\cref{nab:sec:open}). The family shows that allowing all negative
+exponents, all ordinary meromorphic coefficients, or all exponents of a larger
+ordered workspace need not remove the obstruction. It does not say that these
+extensions never remove other obstructions: \cref{nab:loc:ex:shift} and
+\cref{nab:loc:prop:poles} show that they can identify classes or trivialize
+other families.
+
+\item\label{nab:loc:nc:category}
+The theorems of Part~III concern a specified category: the ordinary plane as
+base, a set-sized exponent group, coefficient functions on a common ordinary
+domain, and finite-dimensional complex nilpotent matrices. These restrictions
+are part of the statements, not technicalities to be removed without proof.
+$\MM$ is one specified inclusion of sheaves; it is not identified with every
+notion of surreal or Hahn meromorphic function, and it is not a category
+allowing essential singularities at every point of the base. Nothing is
+claimed about arbitrary fine-topological bundles on the surcomplex class, or
+about a sheaf on the proper class $\No[i]$ with its fine topology; the
+functions $\exp(1/(z-n))$ are ordinary complex functions. Ordinary
+Oka--Grauert triviality theorems do not apply, since the coefficient ring is
+changed, and nothing here contradicts them. The existence of a decreasing
+profile in a noncyclic group uses ordinary countable choice, and the continuum
+count of \cref{nab:loc:thm:continuum} uses cardinal arithmetic with choice.
+
+\item\label{nab:loc:nc:finite}
+The matrix exponentials $\exp(c_nN)$ and all gauges of Part~III are finite
+polynomials, because $N$ is nilpotent; they are not limits, and no convergence
+or infinite matrix-exponential assertion occurs. The local family $(c_n)$ is
+not a global Hahn sum, the finite-puncture trivializations of
+\cref{nab:loc:thm:bounded} are not a compatible exhaustion-limit frame, and the
+additive quotient $Q_{\BB}$ of \cref{nab:loc:cor:annihilator} is not identified
+with derived sheaf cohomology. No norm on the surcomplex class, no real-valued
+valuation for an arbitrary-rank group, and no limit of bounded-domain
+trivializations is used.
+
+\item\label{nab:loc:nc:classification}
+The classification of Part~III is for the profile family and for the image of
+the nilpotent-representation functor only. It compares bundles with the same
+fixed punctures and the same fixed functions $h_n$, by isomorphisms covering
+the identity of the base; reparametrizations of the base and permutations of
+punctures are excluded. No Krull--Schmidt theorem for the category of all Hahn
+bundles is invoked. There is no classification of all finite-rank Hahn bundles,
+no assertion that every unipotent bundle is one of these, no calculation of the
+whole nonabelian first cohomology set, no general theorem that global sections
+commute with scalar extension, no computation of extension groups between these
+bundles, no description of their connections, and no claim about differential
+equations driven by the Berarducci--Mantova derivation.
+
+\item\label{nab:loc:nc:undecidable}
+\Cref{nab:loc:thm:undecidable} is a reduction to the classical halting problem,
+not a new theorem about Turing machines. It concerns the promised computable
+input class of rational binary profiles, with fixed punctures, fixed $h_n$ and
+fixed rank; for restricted finite or eventually periodic presentations the tail
+criterion is decidable by ordinary finite methods. It separates a complete
+mathematical criterion from an algorithm for unrestricted infinite input.
+
+\item\label{nab:loc:nc:essential}
+In \cref{nab:loc:prop:essential-family} the sufficiency half of the
+classification and the finite-puncture trivialization need each $h_n$ to
+extend holomorphically to $\C\setminus\{n\}$. Without that hypothesis only the
+necessity direction and the section, morphism and indecomposability theorems
+are claimed, and no extension of arbitrary locally specified functions is
+assumed.
+
+\item\label{nab:loc:nc:picard}
+\Cref{nab:loc:cor:polestrivial} is about the displayed pole-data families only.
+It does not assert that every class of $\Pic(\C,\HH)$ becomes trivial over
+$\MM$, it makes no statement about the Picard group of $\MM$ or about rank-one
+$\MM$-bundles in general, and it decides nothing about Part~I's examples over
+$\HH$.
 \end{enumerate}
 
 \paragraph{Boundary note on the sheaf convention.}
@@ -2876,14 +4688,34 @@ property of the integral common-domain assignment on the ordinary base, while
 Part~II deliberately assumes nothing of the kind. Both are correct as stated,
 the difference is one of standing hypotheses rather than of fact, and no
 theorem of Part~II is strengthened here by importing Part~I's convention.
+Part~III follows Part~I's convention, for $\MM$ as well
+(\cref{nab:loc:lem:sheaf}).
 
 \section{Questions exposed by the results}\label{nab:sec:open}
 
-\paragraph{Monomial localization.}
+\paragraph{Monomial localization (open, re-scoped).}
 Does $\mathcal E_G\otimes_{\II}\HH$ remain nontrivial for the explicit hidden
 and deep examples? A proof would need control of general Hahn matrix gauges,
 not just positive ones, and the ordinary reduction normalization is unavailable
-after localization. This question is intentionally not answered.
+after localization. This question is intentionally not answered, and it is
+still open after Part~III. What Part~III, from the localization manuscript,
+has settled around it is the following. (a) The broader existence question has
+a positive answer: there are determinant-one bundles with trivial ordinary
+reduction that remain nontrivial, indecomposable and not stably trivial over
+$\HH$, and even over $\MM=\Mer((t^\Gamma))$
+(\cref{nab:loc:cor:stable,nab:loc:thm:indecomposable}); they use essential
+singularities, not the pole data of the printed examples. (b) The printed
+examples themselves, and the diagonal counterexamples of
+\cref{nab:thm:dichotomy}, become trivial over $\MM$
+(\cref{nab:loc:cor:polestrivial}); so a proof of their nontriviality over $\HH$
+must use the holomorphy of the gauge coefficients at the punctures, which the
+essential-singularity argument never uses. (c) In rank one the gap between
+$\HH$ and $\MM$ is real: for noncyclic $\Gamma\subseteq\No$ the global-divisor
+report's pole-data line bundles are nontrivial over $\HH$ and trivial over
+$\MM$. As the localization manuscript
+puts it, a complete answer for the printed examples must account for
+holomorphic zeros, possible negative-valuation gauges, and the lack of an
+ordinary reduction map after localization.
 
 \paragraph{Arbitrary-cover normal forms.}
 The polar support is exact on the puncture-and-disk cover because every overlap
@@ -2891,11 +4723,41 @@ has a distinguished isolated Laurent singularity. An equally explicit invariant
 for general covers would require a substitute for that canonical local negative
 factor; \cref{nab:thm:Stein} does not provide one.
 
-\paragraph{Classification beyond triviality.}
+\paragraph{Classification beyond triviality (partly answered).}
 Deciding whether a positive star-cover cocycle represents the trivial integral
 bundle is not classifying all isomorphism classes, which would require
 understanding the action of global and local gauges on \emph{pairs} of polar
-families.
+families. Part~III answers this for one explicit family only: for the
+essential-singularity profile bundles, integral isomorphism is eventual
+equality of profiles and localized isomorphism is eventual equality up to one
+translation (\cref{nab:loc:thm:classification}), and within one profile the
+isomorphism type is the Jordan type (\cref{nab:loc:cor:jordan-class}). The
+general question, including the classification of Part~I's examples, remains
+open.
+
+\paragraph{The full extension category.}
+The morphisms between the nilpotent bundles of Part~III are known exactly, but
+the extension groups between them are not computed. Do extensions inside the
+common-domain Hahn category admit a useful decomposition into ordinary analytic
+data, support-tail data and finite nilpotent representation data? The
+zero-annihilator class of \cref{nab:loc:cor:annihilator} supplies an explicit
+submodule of an additive obstruction group, not a classification of that
+group.
+
+\paragraph{Several independent descending profiles.}
+One can use different profiles at different superdiagonal entries. The
+resulting transitions need not be exponentials of one fixed nilpotent matrix.
+Do their morphism equations realize representations of several noncommuting
+operators? No such realization, and no claim of a wild classification problem,
+is proved here.
+
+\paragraph{Other ordinary bases and growth restrictions.}
+An open Riemann surface may support analogous escaping puncture families,
+whereas a compact surface cannot contain an infinite closed discrete subset.
+Behaviour under coefficient growth bounds at infinity may also change, because
+the finite and infinite correction spaces would be different. Any extension of
+Part~III should state both the ordinary analytic domain and its allowed
+coefficient class before asserting a Hahn gluing theorem.
 
 \paragraph{A common generalization of the two criteria.}
 Both criteria say that a union of supports must be well ordered, over different
@@ -2961,7 +4823,23 @@ extends across every puncture. The order of the value group may have several
 ranks, the singularity set may be infinite, and the monodromy may be
 noncommutative; none of this requires a false topological limiting argument.
 
-What both halves separate cleanly is ordinary analytic solvability,
+Past the integral boundary, an essential singularity does what a pole cannot.
+Placed behind a strictly decreasing sequence of positive exponents, it forces a
+descending support that no nonzero meromorphic multiplier can cancel. The
+resulting determinant-one bundles exist in every finite rank, are
+indecomposable and not stably trivial even over coefficientwise meromorphic
+Hahn coefficients, and are nevertheless trivial over every bounded ordinary
+region. Their isomorphism invariant is exactly the eventual exponent profile in
+the integral category, and that profile modulo one eventual translation after
+localization; it is independent of valuation rank and survives every ordered
+exponent enlargement. Pole data, by contrast, die over the meromorphic sheaf,
+so this argument cannot reach Part~I's own examples, whose fate under monomial
+localization is still open.
+Here finite-dimensional linear algebra and ordinary local analytic solvability
+both behave perfectly, while the single global well-ordered support required by
+a Hahn section still does not exist.
+
+What Parts~I and~II separate cleanly is ordinary analytic solvability,
 noncommutative compatibility, and generalized-series admissibility. The
 analytic work is done coefficientwise on the ordinary base; the Hahn support
 calculus is exactly what makes those ordinary constructions coexist in one
@@ -3074,13 +4952,59 @@ Finitely many rooted trees and ordinary operations per exponent.\\
 \end{tabular}
 \end{center}
 
+\medskip\noindent\textbf{Part~III constructions.}
+\begin{center}\small
+\begin{tabular}{@{}L{0.26\textwidth}L{0.35\textwidth}L{0.29\textwidth}@{}}
+\toprule
+Construction & Support control & Ordinary analytic requirement\\
+\midrule
+A section $\sum f_\gamma t^\gamma$ of $\HH$, $\II$ or $\MM$ &
+One well-ordered support and one ordinary coefficient domain, by definition &
+Identity theorem for holomorphic and meromorphic functions
+(\cref{nab:loc:lem:sheaf}).\\ \addlinespace[0.35em]
+Products; scalar inverse near one &
+Hahn support addition; the positive-support Neumann lemma
+(\cref{nab:lem:neumann,nab:lem:inverse}) &
+None beyond the fixed domain.\\ \addlinespace[0.35em]
+$\exp(c_nN)$ and every matrix gauge &
+Finite polynomials, $N$ being nilpotent; supports in
+$\{k\alpha_n\}$ or finite sums of such &
+None; no convergence and no infinite matrix exponential.\\ \addlinespace[0.35em]
+The local family $(c_n)_n$ &
+Not a global Hahn sum; each member is a separate overlap section &
+$h_n$ is holomorphic on $\C\setminus\{n\}$.\\ \addlinespace[0.35em]
+Zero-annihilator obstruction and classification necessity &
+An infinite decreasing set $\{\beta+\alpha_n\}$ or $\{\gamma+\alpha_n\}$ forced
+into one putatively well-ordered support; no summation is performed &
+$h_ng$ is not meromorphic at $n$ for a nonzero meromorphic germ $g$
+(\cref{nab:loc:lem:essential}).\\ \addlinespace[0.35em]
+Finite-puncture and sufficiency gauges &
+Finite sums of $c_n$ or $d_n$ &
+Finite sums of the $h_j$ are holomorphic away from their centres.\\ \addlinespace[0.35em]
+Cyclic coefficientwise frame corrections &
+For each degree, later corrections leave its coefficient fixed; all supports
+in $\N\delta$, domains fixed &
+Ordinary $H^1(\C,\OO)=0$ on a fixed cover.\\ \addlinespace[0.35em]
+Triviality of pole data over $\MM$ &
+None needed: $B_0=I$, $B_n=G_n$ &
+Meromorphic extension of $G_n^{\pm1}$ over $D_n$.\\
+\bottomrule
+\end{tabular}
+\end{center}
+The Part~III proofs never use a norm on the full surcomplex class, a
+real-valued valuation for an arbitrary-rank group, or a limit of
+bounded-domain trivializations.
+
 The indispensable hypotheses are these. The value group is a set and is
 totally ordered. Supports are well ordered, not merely bounded below. Matrix
 rank is finite. The puncture set is ordinary closed and discrete. Coefficient
 functions share their stated ordinary domains. In Part~I the gluing matrices
 reduce to the identity, or to a specified ordinary bundle in
 \cref{nab:thm:deformation}; in Part~II the representation is near-identity with
-positive support. None of these hypotheses is replaced anywhere by a
+positive support; in Part~III the transitions are finite exponentials of one
+constant nilpotent matrix on a fixed puncture-and-disk cover of the plane, the
+punctures and the functions $h_n$ are fixed, and isomorphisms cover the
+identity of the base. None of these hypotheses is replaced anywhere by a
 fine-topological convergence assumption.
 
 \section{A dependency map}\label{nab:app:dep}
@@ -3131,14 +5055,44 @@ The two chains meet only at \cref{nab:lem:neumann,nab:lem:inverse} and at the
 shared observation that the ordinary analytic input is applied one exponent at
 a time. Neither criterion is derived from the other.
 
+The Part~III chain is
+\[
+\begin{gathered}
+\text{an essential singularity cannot be cancelled by a meromorphic germ}\\
+\Downarrow\\
+\text{a nonzero global coefficient forces a decreasing Hahn support}\\
+\Downarrow\\
+\text{the global sections of a Jordan bundle form one invariant line}\\
+\Downarrow\\
+\text{all morphisms are constant-in-chart nilpotent intertwiners}\\
+\Downarrow\\
+\text{indecomposability and an intrinsic flag}\\
+\Downarrow\\
+\text{the rank-two gauge equation gives exact tail translation.}
+\end{gathered}
+\]
+Here ``constant-in-chart'' means the same global Hahn matrix in every local
+frame, not constant as an ordinary function of $z$; its coefficients can be
+arbitrary global holomorphic or meromorphic functions. The only general
+analytic input for the resistant examples is ordinary uniqueness of
+holomorphic and meromorphic continuation and the existence of the displayed
+essential singularities; the cyclic rigidity direction separately uses the
+ordinary additive Cousin theorem, through \cref{nab:thm:Stein}. The tensor and
+undecidability consequences add finite linear algebra and the classical halting
+theorem, respectively. The Part~III chain uses
+\cref{nab:lem:neumann,nab:lem:inverse} and \cref{nab:lem:groups}; it does not
+use Criterion~P or Criterion~M, and \cref{nab:loc:rem:criterionP} is an
+independent cross-check over $\II$ only.
+
 \section{Provenance, reproduction, and the merge record}\label{nab:app:repro}
 
 \subsection{Sources of this report}
 
-This report merges two independently written manuscripts, both dated
-September 21, 2026, both delivered with their own code and recorded output, the
-latter preserved unchanged in \texttt{code/} and \texttt{data/} of this
-directory:
+This report merges three independently written manuscripts. The first two are
+dated September 21, 2026, the third September 22, 2026; each was delivered with
+its own code and recorded output, preserved unchanged in \texttt{code/} and
+\texttt{data/} of this directory. The manuscripts themselves are not shipped
+with this report.
 
 \begin{itemize}
 \item \emph{Nonabelian Support Obstructions in Surcomplex Analysis: A Sharp
@@ -3168,6 +5122,29 @@ the finite Fuchsian specialization and the $\SL_r$ refinement, the three
 calibrating examples, the mixed commutator correction with its $\Q+\Q\omega$
 specialization, the finite-dependence and base-change propositions, and the
 impossibility of a continuous linear period right inverse.
+
+\item \emph{Localization-resistant bundles in Hahn-coherent surcomplex
+analysis: Essential singularities, nilpotent representations, and exact
+isomorphism classification}, from the archive
+\texttt{surreal\_localization\_bundles}; despite the archive name its objects
+are surcomplex, complex-valued Hahn coefficients read in $\No[i]$. Called
+\emph{the localization manuscript} in the text, it is a 28-page article
+delivered with a README, a provenance record, a SHA-256 manifest, a
+verification script with its requirement pin, and three data files, placed
+here as \nolinkurl{code/10-localization-bundles-verify.py} and
+\nolinkurl{data/10-localization-bundles-*}. It contributes Part~III entire: the
+meromorphic sheaf and its unit and sheaf lemmas, the zero-annihilator
+obstruction, the nilpotent bundles with their sections, stable nontriviality,
+bounded triviality and resistance to group enlargement, the morphism formula,
+indecomposability, the fully faithful realization and the intrinsic flag, the
+profile classification with its corollaries and examples, the
+localization-stable dichotomy, the continuum count, the tensor rule, the pole
+proposition and the essential-singularity generalization. It also contributes
+the undecidability theorem of \cref{nab:loc:sub:effectivity}, the Part~III
+check suite of \cref{nab:sec:verification}, the Part~III rows of
+\cref{nab:app:audit,nab:app:dep}, items \ref{nab:loc:nc:family}--%
+\ref{nab:loc:nc:essential} of \cref{nab:sec:scope} with its additions to the
+generic items there, and the last three questions of \cref{nab:sec:open}.
 \end{itemize}
 
 Where the two manuscripts proved the same fact --- the Neumann support calculus
@@ -3186,6 +5163,39 @@ group is proved twice, for two different objects, in
 factorizations of \cref{nab:thm:local} and \cref{nab:thm:frobenius} are
 likewise two different normalizations of two different objects, and neither is
 derived from the other here.
+
+For Part~III the merge prints once what the localization manuscript shares with
+the rest of the collection: the Neumann calculus and positive inverse
+(\cref{nab:lem:neumann,nab:lem:inverse}); the ordered-group lemma, which is
+\cref{nab:lem:groups} and also the global-divisor report's
+\texttt{global:lem:descending}, the localization manuscript's proof being a
+third copy of the same argument; the sheaf property, extended to $\MM$ in
+\cref{nab:loc:lem:sheaf}; and the unit lemma, whose holomorphic cases are the
+global-divisor report's unit criterion. Two genuinely different routes are
+kept and marked. Bounded integral triviality is proved by explicit finite gauges
+in \cref{nab:loc:thm:bounded} and by the Stein theorem in \cref{nab:cor:bounded}.
+Integral nontriviality of the new bundles follows both from the
+zero-annihilator argument and from Criterion~P (\cref{nab:loc:rem:criterionP},
+a merge observation). The cyclic direction of \cref{nab:loc:thm:dichotomy} is
+printed through \cref{nab:thm:Stein}; the localization manuscript's $q$-adic
+version of the same recursion is described in that proof and not printed a
+second time.
+
+The merge made these choices. Part~III is placed after Part~II and before the
+effectivity part, which is renumbered as Part~IV. The undecidability theorem is
+moved into the effectivity section, the manuscript's check table into
+\cref{nab:sec:verification}, its table of infinite expressions into
+\cref{nab:app:audit}, its dependency chain into \cref{nab:app:dep}, and its
+scope statements and open questions into \cref{nab:sec:scope,nab:sec:open}. Its
+summary theorem is kept as \cref{nab:loc:thm:summary}. Colliding symbols are
+renamed in the new material only, as listed in \cref{nab:loc:sub:names}; in
+particular the meromorphic sheaf is written $\MM$, the global-divisor report's
+name for the same recipe. The merge adds four observations that the
+localization manuscript does not state:
+\cref{nab:loc:rem:criterionP}, \cref{nab:loc:cor:polestrivial} with the
+discussion after it, the relation of $\MM$ to the other reports in
+\cref{nab:loc:sec:coefficients}, and item~\ref{nab:loc:nc:picard} of
+\cref{nab:sec:scope}.
 
 \subsection{Repository provenance}
 
@@ -3210,6 +5220,21 @@ manuscript in the repository, and one repository code-search response was
 marked incomplete; its empty result is not evidence of absence. The comparison
 above is with the documented contents actually reviewed.
 
+The localization manuscript reviewed the same repository at commit
+\begin{center}\small\ttfamily
+0097304c7ae9d5de46d2ea342e2494f8fc126303,
+\end{center}
+inspected September 22, 2026, and records that it changed nothing there. By its provenance record it inspected
+lines 1--220 of the documentation index, this report's README, lines
+1900--2150 and 2880--3070 of this report's article as it then stood, and a
+truncated README of the global-divisor report. Between that commit and the
+tree into which Part~III was merged (commit
+\texttt{e9a9650}), the article texts of this report, of the global-divisor
+report and of the analysis report did not change; the documentation index did
+change, but its four-ring table was present throughout. The comparisons with
+the global-divisor and analysis reports made in Part~III were made by the
+merge against that tree.
+
 \subsection{Building this report}
 
 The source is standalone, with an internal bibliography, no external
@@ -3221,17 +5246,25 @@ latexmk -pdf -interaction=nonstopmode article.tex
 
 \subsection{Rerunning the delivered checks}
 
-The two scripts are preserved under \texttt{code/} with their original
+The three scripts are preserved under \texttt{code/} with their original
 contents and their recorded outputs under \texttt{data/}. The Part~I script
 needs Python 3.10 or later with SymPy; the Part~II script needs NumPy, SciPy
-and SymPy. From a working copy:
+and SymPy; the Part~III script needs Python 3.9 or later and SymPy, pinned at
+1.14.0 in \nolinkurl{data/10-localization-bundles-requirements.txt}. From a
+working copy:
 \begin{verbatim}
 python code/08-polar-support-matrix-cousin-verify.py
 python code/09-support-monodromy-realization-verify-examples.py
+python -m pip install -r data/10-localization-bundles-requirements.txt
+python code/10-localization-bundles-verify.py --max-rank 6 \
+       --output fresh-verification.json
 \end{verbatim}
+The Part~III script writes only to the path given with \texttt{-{}-output}; the
+recorded files are therefore preserved by an in-place run, and the command above
+writes a fresh file for comparison. It makes no network calls.
 
-Two operational cautions, both verified directly rather than taken from a
-README.
+Two operational cautions about the Part~II suite, both verified directly rather
+than taken from a README.
 
 First, the Part~II script writes \texttt{verification\_results.json} beside
 itself and therefore overwrites its own delivered record when run in place. Run
@@ -3257,6 +5290,20 @@ document, and a Poppler render review of all pages, and records
 \texttt{peer\_reviewed: false}. Those three flags remain false for this merged
 report.
 
+For Part~III: the localization manuscript's SHA-256 manifest, which is not
+shipped, verified all nine of its entries at merge time, and the six files
+placed here from that archive match it byte for byte. An independent rerun of
+its script on a copy, under Python 3.14.4 with SymPy 1.14.0, exited zero and
+reproduced the recorded JSON exactly except for the Python version field, with
+12{,}355 exact checks passed. The file
+\nolinkurl{data/10-localization-bundles-build_qa.json} describes the build of
+that manuscript's own 28-page PDF, which is not shipped; it is layout quality
+assurance, not theorem verification, and says nothing about this merged
+document. The provenance record
+\nolinkurl{data/10-localization-bundles-PROVENANCE.json} lists 12{,}355 finite
+exact checks with result PASS, peer review false, proof-assistant verification
+false, and no redistribution of external source files.
+
 \begin{thebibliography}{99}
 \small\raggedright
 \setlength{\itemsep}{0.3em}
@@ -3275,7 +5322,10 @@ Picard Dichotomy}, AI-assisted merged research draft in V.~Reshetnikov's
 \emph{Surreal} repository, \texttt{docs/surcomplex/global-divisors/}. Pinned
 commit as above; see especially the exact Cousin criterion (Theorem~13.1), the
 Picard-group vanishing dichotomy, and the subsection ``Further precise
-directions''.
+directions''. Part~III refers to its text at commit
+\texttt{0097304c7ae9d5de46d2ea342e2494f8fc126303}, identical to the current
+tree, where its compact-base part is present; its labels are quoted there
+verbatim.
 \url{https://github.com/VladimirReshetnikov/Surreal/blob/39f2be6667ade51bca2b45daa47e289d69c09764/docs/surcomplex/global-divisors/article.tex}.
 
 \bibitem{RepoDiff}
@@ -3289,7 +5339,9 @@ $\GL_d(K_\Gamma)$'' and the ordinary-path remark following it.
 \bibitem{RepoAnalysis}
 \emph{Surcomplex analysis: holomorphic functions on $\No[i]$},
 \texttt{docs/surcomplex/analysis/README.md}, same repository and commit.
-AI-assisted, unrefereed research documentation.
+AI-assisted, unrefereed research documentation. The class $\mathcal M(U)$
+cited in Part~III is defined in its \texttt{article.tex} (label
+\texttt{d:def:clusterres}) at that commit and in the current tree.
 
 \bibitem{RepoGeometry}
 \emph{Infinitesimal analytic geometry over the surcomplex numbers:
@@ -3388,6 +5440,30 @@ Y.~Ilyashenko and S.~Yakovenko, \emph{Lectures on Analytic Differential
 Equations}, Graduate Studies in Mathematics, vol.~86, American Mathematical
 Society, 2008.
 DOI: \url{https://doi.org/10.1090/gsm/086}.
+
+\bibitem{Ehrlich}
+P.~Ehrlich, The absolute arithmetic continuum and the unification of all
+numbers great and small, \emph{Bulletin of Symbolic Logic} \textbf{18} (2012),
+1--45.
+DOI: \url{https://doi.org/10.2178/bsl/1327328438}.
+
+\bibitem{Atiyah}
+M.~F.~Atiyah, Vector bundles over an elliptic curve, \emph{Proceedings of the
+London Mathematical Society} (3) \textbf{7} (1957), 414--452. Cited in
+Part~III as a precedent for indecomposable unipotent bundles with a related
+tensor pattern, on a different base.
+DOI: \url{https://doi.org/10.1112/plms/s3-7.1.414}.
+
+\bibitem{Grauert}
+H.~Grauert, Analytische Faserungen \"uber holomorph-vollst\"andigen R\"aumen,
+\emph{Mathematische Annalen} \textbf{135} (1958), 263--273.
+DOI: \url{https://doi.org/10.1007/BF01351803}.
+
+\bibitem{Turing}
+A.~M.~Turing, On computable numbers, with an application to the
+Entscheidungsproblem, \emph{Proceedings of the London Mathematical Society} (2)
+\textbf{42} (1937), 230--265; received and read in 1936.
+DOI: \url{https://doi.org/10.1112/plms/s2-42.1.230}.
 
 \bibitem{Muller}
 J.~M\"uller and A.~Strohmaier, \emph{The theory of Hahn-meromorphic functions,
