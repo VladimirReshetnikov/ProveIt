@@ -88,6 +88,46 @@ def product_cover(x: FiniteName, y: FiniteName, bound: Q) -> set[Q]:
             for s in y.cover(bound-x.lower_bound) if lower <= r+s < bound}
 
 
+def geometric_cover(h: FiniteName, delta: Q, bound: Q) -> set[Q]:
+    """Finite model of lem:geom, retaining raw power-name zero candidates."""
+    candidates: set[Q] = set()
+    power: Series = {Q(0): Q(1)}
+    for n in range(max(0, ceil(bound/delta))):
+        # A raw multiplication name has lower bound n*lower_bound, even when
+        # the actual support starts at n*delta; no zero oracle normalizes it.
+        candidates.update(FiniteName(power, n*h.lower_bound).cover(bound))
+        power = multiply(power, h.coefficients)
+    return {q for q in candidates if 0 <= q < bound}
+
+
+def test_geometric_cover_contract() -> None:
+    fixtures = [
+        FiniteName({}, Q(-1)),
+        FiniteName({Q(1, 3): Q(2), Q(5, 3): Q(-1, 2)}, Q(-2)),
+        FiniteName({Q(2): Q(1), Q(7, 3): Q(-1)}, Q(-3)),
+    ]
+    for case, h in enumerate(fixtures):
+        delta = min({Q(1)} | {q for q in h.cover(Q(1)) if q > 0})
+        # Independently form a generous exact partial sum. For all cutoffs
+        # below, 33*delta > 8, so later powers cannot contribute.
+        expected: Series = {}
+        power: Series = {Q(0): Q(1)}
+        for _ in range(33):
+            expected = add(expected, power)
+            power = multiply(power, h.coefficients)
+        check("geometric_negative_zero_candidates",
+              h.lower_bound < 0 and h.lower_bound in h.cover(Q(2))
+              and h.coefficient(h.lower_bound) == 0,
+              f"raw first-power cover would violate output lower bound, case {case}")
+        for bound in [Q(-1), Q(0), Q(1, 7), Q(1), Q(2), Q(5, 2), Q(8)]:
+            cover = geometric_cover(h, delta, bound)
+            check("geometric_cover_ranges", all(0 <= q < bound for q in cover),
+                  f"case {case}, cutoff {bound}")
+            check("geometric_cover_completeness",
+                  {q for q in expected if q < bound} <= cover,
+                  f"case {case}, cutoff {bound}")
+
+
 def dense_common_grid_product(d1: int, n1: int, a: list[Q],
                               d2: int, n2: int, b: list[Q]) -> Series:
     """Independent common-denominator dense convolution, including zero slots."""
@@ -214,6 +254,7 @@ def run() -> dict[str, object]:
     seed = 20260921
     rng = Random(seed)
     test_models(rng)
+    test_geometric_cover_contract()
     test_residues(rng)
     test_finite_jet()
     test_unbounded_denominators()

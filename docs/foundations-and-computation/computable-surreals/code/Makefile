@@ -1,12 +1,14 @@
+REPORT_DIR := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/..)
+
 .PHONY: all test clean
 
-all: report.pdf
+all: $(REPORT_DIR)/article.pdf
 
-report.pdf: report.tex
-	latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+$(REPORT_DIR)/article.pdf: $(REPORT_DIR)/article.tex
+	cd "$(REPORT_DIR)" && latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 
 test:
-	python3 code/run_all.py
+	cd "$(REPORT_DIR)" && python3 code/run_all.py
 
 clean:
-	latexmk -c report.tex
+	cd "$(REPORT_DIR)" && latexmk -c article.tex
