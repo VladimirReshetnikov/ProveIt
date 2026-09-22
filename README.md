@@ -54,19 +54,29 @@ after taking its polynomial remainder.
 Viète's formula and both Newton recurrences use finite root multisets.
 Resultants have their Sylvester determinant and root-product formulas,
 with common-root and finite Bézout-kernel criteria.
+The native discriminant has its signed-resultant and squared-root-difference
+formulas, with squarefree and repeated-root criteria. Strict upper and lower
+Cauchy bounds and the radial coefficient bound use the base-field modulus,
+including non-Archimedean scales and zero-radius cases.
 
 The Hahn layer uses mathlib's `SummableFamily` and proves the full Neumann
 support lemma, including finiteness across all word lengths. It distinguishes
 Hahn summation from ordinary summation of constant coefficients and exposes
 univariate evaluation only with a positive-order proof. Geometric-series
 identities and exact finite remainders are formal Hahn identities.
+Evaluation commutes with univariate formal composition when the inner series
+has zero constant coefficient.
 Admissible binomial expansions satisfy exponent addition and give the unique
 natural-degree root near one over a characteristic-zero coefficient field.
+Over ordered coefficients, the half-power is the unique nonnegative square
+root of a positive-order perturbation of one.
 Arbitrary regrouping and double-sum interchange preserve jointly summable
 families. Coefficient-zero extraction gives standard part on the nonnegative-order
 subring, with residue field and a unique constant-plus-infinitesimal decomposition.
 Roots of monic polynomials over this subring stay in it; for split polynomials,
 standard part preserves the root multiset with multiplicities.
+Resultant and nodal-derivative valuations are finite sums of root-separation
+valuations, with infinity retained when a product vanishes.
 Coefficientwise real and imaginary parts identify Hahn series over `R[i]`
 with the quadratic extension of Hahn series over `R`. This identification
 also uses Mathlib's native real and complex coefficients; conjugation fixes
