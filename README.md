@@ -102,11 +102,19 @@ nonzero for nonzero input, is multiplicative, and equals coefficientwise
 standard part after monomial normalization.
 Its support consists exactly of the active indices attaining the weighted
 minimum, with degree and trailing degree giving their extrema.
+For explicitly split polynomials, the initial factorization counts roots in
+closed balls, open balls, shells and individual residue directions, preserving
+multiplicities even when their residues coincide.
 Coefficientwise real and imaginary parts identify Hahn series over `R[i]`
 with the quadratic extension of Hahn series over `R`. This identification
 also uses Mathlib's native real and complex coefficients; conjugation fixes
 exactly the embedded real Hahn series and preserves support and valuation.
 
-These generic prerequisites do not yet construct the surreal field or establish
-the normal-form bridge to Hahn series. A successful build proves only the
-imported Lean statements, not coverage of all the source documents.
+The independent foundational track now constructs ordinal-length sign
+sequences with the numerical first-disagreement order, well-founded prefix
+simplicity and an ordinal order embedding. Birthday-bounded fragments are
+small, while the full carrier is not small at the same universe level.
+Canonical truncation options reconstruct a sequence as their simplest
+separator. General small-cut filling, field arithmetic and the normal-form
+bridge to Hahn series remain open. A successful build proves only the imported
+Lean statements, not coverage of all the source documents.
