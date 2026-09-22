@@ -166,11 +166,15 @@ multiplication and inverse then makes the sign carrier an ordered field,
 retaining its original additive structure and numerical order.
 This product satisfies Conway's four-family simplest-cut equation, with
 small option indices and proved separation.
+The equation also holds for arbitrary small presentations of both factors.
 The empty and one-plus sequences map literally to the raw games zero and one.
 The numeric-game quotient also satisfies the indexed small-cut interface and
 its comparison rule, including reconstruction from a numeric game's moves.
 The canonical raw-game birthday equals sign length and is minimal among
 all numeric games representing the same number.
+The birthday of a sum is bounded by the Hessenberg natural sum of the input
+birthdays, with the corresponding finite-sum bound. This natural sum also
+strictly decreases under either canonical option replacement.
 Finite birthdays characterize exactly the embedded dyadic rationals. They form
 a subring, but the reciprocal of three has birthday omega, so this fragment
 is not a subfield. Every embedded ordinary real has birthday at most omega;
@@ -185,6 +189,10 @@ give the neighborhood and entourage bases without requiring square roots.
 Small subsets are closed and discrete; convergent small-index nets are
 eventually equal to their limits, and small-index Cauchy nets are eventually
 constant. The full surcomplex carrier has no isolated points.
+Multiplication is jointly continuous, inversion is continuous away from zero,
+and conjugation is a uniform equivalence. The real-axis positive-radius net
+converges to zero and is Cauchy without becoming constant; both its index
+type and range are proved not small at the permitted universe level.
 The surreal field is not algebraically closed, and no linear order is
 compatible with surcomplex multiplication.
 Real closedness and the normal-form bridge to Hahn series remain open.
