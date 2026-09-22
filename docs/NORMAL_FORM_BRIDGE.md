@@ -255,6 +255,14 @@ the actual standard part is exactly that coefficient.
 [`Surcomplex/HahnValuation.lean`](../Surreal/Surcomplex/HahnValuation.lean)
 uses the minimum of the two coordinate orders to prove the corresponding
 complex valuation, finiteness, infinitesimality and standard-part formulas.
+[`Surcomplex/HahnLeading.lean`](../Surreal/Surcomplex/HahnLeading.lean)
+also identifies every embedded complex monomial, leading coefficient and
+leading term. Scaling by the least exponent gives an order-zero series,
+so standard part recovers its native leading coefficient, including the
+separate zero case. The actual modulus has that coefficient's ordinary norm.
+[`Surcomplex/Workspace.lean`](../Surreal/Surcomplex/Workspace.lean)
+extends localization to every small complex family, with exact preimages
+and an isomorphism onto the resulting small actual subfield.
 
 ## Strong sums and exponent-workspace coherence
 
@@ -266,6 +274,23 @@ coefficientwise sum. Evaluation defines its actual strong sum; extracting
 the normal form recovers exactly the formal sum, coefficient by coefficient.
 Native Hahn workspace summable families remain strongly summable after
 actual evaluation, and evaluation commutes with their small strong sums.
+[`Surcomplex/StrongSummation.lean`](../Surreal/Surcomplex/StrongSummation.lean)
+combines the two canonical real normal forms. Complex joint support and
+finite coefficient incidence are equivalent to the respective coordinate
+conditions. Coordinatewise actual summation then agrees exactly with the
+native complex Hahn sum and commutes with workspace evaluation.
+
+The real and complex `StrongAlgebra` modules package canonical extraction
+as ring maps and reuse native summable-family addition, negation, product,
+and scalar multiplication. Their sum identities retain index smallness.
+[`SignSequenceStrongRegroup.lean`](../Surreal/Foundations/SignSequenceStrongRegroup.lean)
+restricts, reindexes and regroups a jointly summable family along arbitrary
+index maps. Every fiber sum is formed under a proved smallness bound.
+[`Surcomplex/StrongConstants.lean`](../Surreal/Surcomplex/StrongConstants.lean)
+proves that ordinary real and complex constant families are strongly
+summable exactly when finitely many entries are nonzero, and computes their
+finite coefficient sum. Thus ordinary convergence of `2⁻ⁿ` does not supply
+a Hahn sum of those constants.
 
 [`SignSequenceHahnCoherence.lean`](../Surreal/Foundations/SignSequenceHahnCoherence.lean)
 and [`Surcomplex/HahnCoherence.lean`](../Surreal/Surcomplex/HahnCoherence.lean)
@@ -273,14 +298,28 @@ prove that embedding exponents into a larger small workspace and then
 evaluating agrees with evaluation along the composite exponent map.
 The identities hold for complete ring maps and arbitrary Hahn supports.
 
+## Actual univariate formal evaluation
+
+[`SignSequencePowerSeries.lean`](../Surreal/Foundations/SignSequencePowerSeries.lean)
+and [`Surcomplex/PowerSeries.lean`](../Surreal/Surcomplex/PowerSeries.lean)
+localize an actual infinitesimal argument in a small workspace and compose
+native admissible Hahn evaluation with its actual embedding. The resulting
+ring maps evaluate the variable and constants exactly; the displayed
+coefficient-times-power families are strongly summable and give their values.
+This intrinsic description proves agreement with every small workspace
+representation. Outputs are finite with the prescribed constant standard
+part, and formal composition is valid for inner series with zero constant
+term. Zero arguments are included. These are the univariate formal clauses
+of `a:cor:complexsub`; they do not prove holomorphic fixed-domain lifting.
+
 ## Remaining dependency order
 
-1. Extend strong summation to complex families and construct admissible
-   univariate and multivariate Taylor evaluation on actual numbers.
-2. Prove compatibility under universe lifts and the remaining complex
-   leading-data and analytic-operation correspondences.
+1. Construct finite-variable formal evaluation and its composition and
+   differentiation laws, then recentered analytic Taylor lifting.
+2. Prove compatibility under universe lifts and the remaining
+   analytic-operation correspondences.
 
 Existence, inverse extraction, real monomials, finite evaluation and field
-arithmetic are now proved. Small real strong sums and exponent-workspace
-coherence are also proved. The remaining clauses above require their own
+arithmetic are now proved. Small real and complex strong sums, univariate
+formal evaluation and exponent-workspace coherence are also proved. The remaining clauses above require their own
 constructions before the entire workspace theorem is covered.
