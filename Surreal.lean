@@ -1,4 +1,5 @@
 import Surreal.Algebra.Complexify
+import Surreal.Algebra.ComplexNumbers
 import Surreal.Algebra.Circle
 import Surreal.Algebra.Geometry
 import Surreal.Algebra.Modulus
@@ -6,10 +7,15 @@ import Surreal.Algebra.Polynomial
 import Surreal.Algebra.PolynomialCRT
 import Surreal.Algebra.PolynomialDivision
 import Surreal.Algebra.PolynomialInterpolation
+import Surreal.Algebra.PolynomialInverseJet
+import Surreal.Algebra.PolynomialLagrange
 import Surreal.Algebra.PolynomialMultiplicity
+import Surreal.Algebra.PolynomialRationalJets
 import Surreal.Foundations.SizeObstructions
 import Surreal.HahnSeries.Constants
 import Surreal.HahnSeries.Complexify
+import Surreal.HahnSeries.ComplexNumbers
+import Surreal.HahnSeries.Conjugation
 import Surreal.HahnSeries.Evaluation
 import Surreal.HahnSeries.Neumann
 import Surreal.HahnSeries.Regroup

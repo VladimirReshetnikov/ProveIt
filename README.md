@@ -43,7 +43,10 @@ Bézout gcds, principal ideals, and the exact gcd-with-derivative formula.
 Finite Hermite interpolation realizes prescribed derivative jets at distinct
 nodes by a unique polynomial below the total multiplicity degree bound.
 The polynomial CRT identifies the quotient with the product of local jet
-rings and provides orthogonal idempotents summing to one.
+rings and provides orthogonal idempotents summing to one. Explicit truncated
+inverse jets construct their polynomial representatives, with coefficients
+computed by repeated formal differentiation of the reciprocal. The simple-root
+case gives the Lagrange formula, with nonzero derivative denominators.
 
 The Hahn layer uses mathlib's `SummableFamily` and proves the full Neumann
 support lemma, including finiteness across all word lengths. It distinguishes
@@ -54,7 +57,9 @@ Arbitrary regrouping and double-sum interchange preserve jointly summable
 families. Coefficient-zero extraction gives standard part on the nonnegative-order
 subring, with residue field and a unique constant-plus-infinitesimal decomposition.
 Coefficientwise real and imaginary parts identify Hahn series over `R[i]`
-with the quadratic extension of Hahn series over `R`.
+with the quadratic extension of Hahn series over `R`. This identification
+also uses Mathlib's native real and complex coefficients; conjugation fixes
+exactly the embedded real Hahn series and preserves support and valuation.
 
 These generic prerequisites do not yet construct the surreal field or establish
 the normal-form bridge to Hahn series. A successful build proves only the
