@@ -131,7 +131,7 @@
 %  Written for the merged document; sections only, labels prefixed a:.
 % =====================================================================
 
-\section{Foundations: the field $\K=\No[i]$}\label{a:sec:field}
+\section{Foundations: the field \texorpdfstring{$\K=\No[i]$}{K = No[i]}}\label{a:sec:field}
 
 All nine source manuscripts begin by fixing the same field, the same
 monomial scale, the same valuation and the same class-size discipline.
@@ -141,10 +141,12 @@ entitled to use it without further comment.
 
 \subsection{Class-size discipline}\label{a:sec:size}
 
-We work in a conservative class theory such as \textsf{NBG} with global
-choice, or, equivalently for every argument below, inside a sufficiently
-large set-sized fragment.  The symbols $\No$ and $\K$ denote proper
-classes.  The following standing rule is a hypothesis of the whole
+We work in \textsf{NBG} with global choice. The symbols $\No$ and
+$\K$ denote proper classes. Any specified set of coefficient data can
+be placed in a set-sized Hahn field, but assertions quantifying over
+\emph{all} surreal radii or scales retain their ambient class meaning;
+replacing that ambient field by a fixed working field changes those
+assertions.  The following standing rule is a hypothesis of the whole
 theory and is never relaxed.
 
 \begin{remark}\label{a:rule:size}
@@ -302,7 +304,7 @@ The factor $\omega$ is deliberately generous: it makes the bound
 independent of any ordinary real size of a leading coefficient, which is
 exactly what is needed when the leading coefficient function is only
 known to be holomorphic.  The bound is used again in the Liouville
-hierarchy of Part~8, where it is the reason a single surreal bound on
+hierarchy of Section~\ref{e:p8}, where it is the reason a single surreal bound on
 the finite halo is vacuous.
 
 \begin{definition}[Halo over an ordinary domain]\label{a:def:halo}
@@ -323,7 +325,7 @@ Writing $\mathbb D$ for the ordinary open unit disk, $\halo{\mathbb D}$
 is \emph{not} the surcomplex ball $\{z\in\K:\abs z<1\}$.  The ball
 contains $1-\tm$, whose standard part $1$ lies on the ordinary boundary;
 the halo omits the entire infinitesimal layer sitting just inside every
-standard boundary point.  Every Schwarz-type statement in Part~8 is a
+standard boundary point.  Every Schwarz-type statement in Section~\ref{e:p8} is a
 statement about $\halo{\mathbb D}$ and not about the ball, and the
 counterexample $(1+\tm)z$ there turns on precisely the omitted layer.
 \end{remark}
@@ -331,12 +333,12 @@ counterexample $(1+\tm)z$ there turns on precisely the omitted layer.
 \begin{remark}[Puncturing removes a monad]\label{a:rem:puncture}
 $\halo{(U\setminus\{0\})}=\halo U\setminus(0+\mm)$ deletes a whole
 monad, not a point.  The class $\halo U\setminus\{0\}$ is a different
-object.  Removable-singularity statements in Part~8 concern the former;
+object.  Removable-singularity statements in Section~\ref{e:p8} concern the former;
 keeping the two puncturing operations distinct is what prevents a false
 analogy with the classical punctured disk.
 \end{remark}
 
-\subsection{Set-sized working fields $\K_\Gamma$}\label{a:sec:KGamma}
+\subsection{Set-sized working fields \texorpdfstring{$\K_\Gamma$}{K Gamma}}\label{a:sec:KGamma}
 
 Occasionally a statement must locate objects inside a set-sized
 subfield --- for instance to say that the roots produced by preparation
@@ -351,8 +353,10 @@ For a set-sized divisible ordered subgroup $\Gamma\subseteq\No$ put
 \]
 the Hahn fields of set-supported series with exponents in $\Gamma$.  The
 normal-form embeddings place them inside $\K$ and $\No$.  By the
-standard Hahn-field theorem, $R_\Gamma$ is real closed and $\K_\Gamma$ is
-algebraically closed; in particular every root of a polynomial over
+Hahn-field theorem, $\K_\Gamma$ is algebraically closed
+\cite[Corollary~4, p.~10 of the author PDF]{Poonen}. Since
+$\K_\Gamma=R_\Gamma[i]$ and $R_\Gamma$ is ordered, $R_\Gamma$ is
+real closed; in particular every root of a polynomial over
 $\K_\Gamma$ already lies in $\K_\Gamma$.
 
 \begin{proposition}[Containment of set-sized data]\label{a:prop:fragment}
@@ -367,12 +371,12 @@ that is again a set, being a countable union of sets.  Every original
 normal form has support inside it.
 \end{proof}
 
-By Rule~\ref{a:rule:size} every construction in this article touches
-only a set of surcomplex numbers, so Proposition~\ref{a:prop:fragment}
-applies to all of them.  The device is therefore interchangeable with
-the plain well-ordered-set-support formulation: it changes no theorem's
-truth value, and is introduced solely because two conclusions in Part~6
-cannot even be \emph{stated} without it.
+Proposition~\ref{a:prop:fragment} contains each specified set of data
+and the set of algebraic outputs generated from it. It does not replace
+the full ambient class in statements about every fine radius or every
+scale. In particular the topology induced from $\K$ on $\K_\Gamma$
+must be distinguished from the intrinsic valuation topology of
+$\K_\Gamma$ (Remark~\ref{a:rem:notvaluation}).
 
 \section{Conventions: one symbol per concept}\label{a:sec:conventions}
 
@@ -383,7 +387,9 @@ one is \emph{false} for another and the sources exhibit the
 counterexamples.  The present section fixes one symbol per concept and,
 more importantly, records which concepts must be kept apart.  It proves
 nothing; each pointer names the part where the corresponding theory is
-developed.
+developed. The historical reconciliation in \texttt{MERGE\_NOTES.md}
+predates the corrections recorded in the maintained \texttt{README.md};
+use the statements below for their present mathematical scope.
 
 \subsection{The notation table}\label{a:sec:table}
 
@@ -422,7 +428,7 @@ Evaluation of a coherent section; canonical lift & $\ev F$; $\ev f$ &
  $0$.\\
 Coherent algebra; positive-support part; meromorphic coefficients &
  $\Hc(U)$; $\Hc_{>0}(U)$; $\Mc(U)$ &
- Part~4 and Part~7.\\
+ Section~\ref{c:p4} and Section~\ref{d:sec:residues}.\\
 Family valuation; leading coefficient \emph{function} &
  $\vH(F)$; $f_{\vH(F)}$ &
  Not the pointwise valuation or leading coefficient of a \emph{value}.\\
@@ -432,29 +438,29 @@ Neumann monoid of a positive well-ordered set & $\Neu S$ &
  Definition~\ref{a:def:neumannmonoid}.\\
 Coefficientwise contour integral & $\intH$, $\ointH$ &
  Superscript permanent: not a limit of Riemann sums.\\
-Formal residue & $\Res_{X=0}$ & In $\K((X))$; Part~3 and Part~7.\\
+Formal residue & $\Res_{X=0}$ & In $\K((X))$; Section~\ref{b:part3} and Section~\ref{d:sec:residues}.\\
 Cluster residue at an \emph{ordinary} centre $a$ & $\ResH a$ &
- Part~7.\\
+ Section~\ref{d:sec:residues}.\\
 Actual local residue at a surcomplex point $b$ & $\Resat b$ &
- Part~7.  Never conflate with $\ResH a$.\\
+ Section~\ref{d:sec:residues}.  Never conflate with $\ResH a$.\\
 Standard part; finite decomposition & $\st$; $z=a+\varepsilon$ &
  $a=\st(z)\in\CC$, $\varepsilon\in\mm$.\\
 Canonical exponential; twisted family & $\Exp$; $E_\lambda$, $E_0=\Exp$ &
- $\lambda$ an ordinary real parameter; Part~9.\\
+ $\lambda$ an ordinary real parameter; Section~\ref{e:p9}.\\
 Omnific integers; purely infinite surreals & $\Oz=\Jpi+\ZZ$; $\Jpi$ &
- $\Jpi$ is a real vector space; Part~9.\\
+ $\Jpi$ is a real vector space; Section~\ref{e:p9}.\\
 Ordinary unit disk; bounded Jordan domain; its boundary; a neighborhood
  of its closure & $\mathbb D$; $\Omega$; $\Gamma=\partial\Omega$; $V$ &
  Fixing $\mathbb D$ and $\Omega$ separately removes the clash with the
  derivative operator $D_z$.\\
 Hermite division data & $P_0$, $u_0=f_0/P_0$, $T$, $Q_0$, $d=\deg P_0$ &
- Part~6.\\
+ Section~\ref{d:sec:preparation}.\\
 The topology & fine topology &
  Definition~\ref{a:def:fine}.\\
 \end{longtable}
 \endgroup
 
-\subsection{Three inequivalent classes of function}\label{a:def:classes}
+\subsection{Four function classes and their proved inclusions}\label{a:def:classes}
 
 \begin{definition}[Names of the classes]\label{a:def:classnames}
 The following four adjectives are fixed, and are not synonyms.
@@ -464,7 +470,7 @@ is, near each point, the Hahn sum of a power series
 $\sum_{n\ge0}a_n h^{n}$ with \emph{arbitrary} coefficients
 $a_n\in\K$, the family $(a_nh^{n})_n$ being required to be Hahn
 summable: no ordinary domain, no growth condition, no radius of
-convergence.  Developed in Part~3, where the germ algebra at any point
+convergence.  Developed in Section~\ref{b:part3}, where the germ algebra at any point
 is shown to be exactly $\K[[X]]$.  The sources give this class six
 names --- microholomorphic, surcomplex analytic germ, Hahn-analytic
 germ, germ-analytic, fine-analytic, microanalytic --- all with the same
@@ -473,22 +479,23 @@ meaning; \emph{germ-analytic} is the one adopted here.
 $F=\sum_{\gamma\in S}f_\gamma \tm^{\gamma}$ with well-ordered set
 support $S$ and every $f_\gamma\in\Hol(U)$ for \emph{one common
 connected ordinary domain} $U$, realized as a function $\ev F$ on the
-halo $\halo U$.  Developed in Part~4.
+halo $\halo U$.  Developed in Section~\ref{c:p4}.
 \item \textbf{Canonical lift} $\ev f$ of an ordinary $f\in\Hol(U)$: the
 sub-class of $\Hc(U)$ supported at exponent $0$ alone.
 \item \textbf{Differentiable}, reserved for the bare $\varepsilon$--$\delta$
 difference-quotient condition over all positive surreal radii, with
-\emph{no} power-series requirement.  Part~2 and Part~3.
+\emph{no} power-series requirement.  Section~\ref{b:part2} and Section~\ref{b:part3}.
 \end{enumerate}
 The superscript $\#$ is used for (b) and (c) alike, because a lift
 \emph{is} a section supported at exponent zero; the local class (a)
 carries no superscript.  The inclusions are
 \[
  \{\ev f\}\ \subsetneq\ \Hc(U)\ \subsetneq\
- \bigl\{\text{germ-analytic on }\halo U\bigr\}\ \subsetneq\
- \bigl\{\text{differentiable on }\halo U\bigr\},
+ \bigl\{\text{germ-analytic on }\halo U\bigr\}\ \subseteq\
+ \bigl\{\text{differentiable on }\halo U\bigr\}.
 \]
-all three strict.
+The first two inclusions are strict. Strictness of the last inclusion is
+not established here; see Remark~\ref{b:no-goursat}.
 \end{definition}
 
 \begin{remark}[The non-transfer rule]\label{a:rem:classtransfer}
@@ -496,27 +503,29 @@ all three strict.
 and no theorem is imported across classes.}  Concretely:
 \begin{enumerate}[label=\textup{(\roman*)},leftmargin=2.4em]
 \item The identity theorem, the maximum principle in global form,
-Liouville's theorem, uniqueness of primitives and the open mapping
-theorem hold in (b) and \emph{fail} in (a).  The witnesses are the
-locally constant $L$ of Part~2 and its sharper variant
+uniqueness of primitives and the open mapping theorem hold in (b)
+under the domain hypotheses stated below, and their unrestricted global
+forms fail in (a). The coefficientwise Liouville theorem additionally
+requires bounded entire coefficient functions.  The witnesses are the
+locally constant $L$ of Section~\ref{b:part2} and its sharper variant
 $b(z)=1$ exactly when $v(z)$ is an ordinal.
 \item The sharp Schwarz and Schwarz--Pick inequalities hold in (c) and
 \emph{fail} for general coherent self-maps of the halo, i.e.\ in (b).
 The witness is $F=(1+\tm)z$, which fixes $0$, maps $\halo{\mathbb D}$
-into itself, and has $\abs{F'(0)}=1+\tm>1$ (Part~8).
+into itself, and has $\abs{F'(0)}=1+\tm>1$ (Section~\ref{e:p8}).
 \item Results in (a) do not descend to (b): $\sum_{n\ge0}n!\,
 \varepsilon^{n}$ is a legitimate germ on $\mm$ but is not the
 restriction of any element of $\Hc(U)$ on an ordinary neighborhood of
 $0$ having those derivatives, since its exponent-zero coefficient
-function would need Taylor coefficients $n!$ (Part~4).
+function would need Taylor coefficients $n!$ (Section~\ref{c:p4}).
 \item Class (d) supports \emph{only} the calculus rules --- uniqueness
 of the derivative and the sum, product and chain rules --- together with
-the counterexamples.  No positive theorem about (d) is proved anywhere
-in this article, and none may be imported into it.
+the counterexamples. No theorem deriving a power-series representation
+from bare differentiability is proved here.
 \end{enumerate}
 The one bridge that \emph{is} proved, and that must be cited whenever a
 statement about one derivative is used for the other, is the theorem of
-Part~4 that for a coherent section the coefficientwise derivative
+Section~\ref{c:p4} that for a coherent section the coefficientwise derivative
 $F'=\sum f_\gamma'\tm^{\gamma}$ equals the fine
 $\varepsilon$--$\delta$ derivative of $\ev F$.
 \end{remark}
@@ -545,23 +554,23 @@ local residue of $A$ at the exact point $0$ is $0$ --- $A$ has no pole
 at $0$ at all, its pole sitting at $\varepsilon$.  Writing a single
 symbol $\Res_a$ for both would convert a correct statement into a false
 one.  The two bridge theorems that connect them, and the standing
-example worked out in full, are in Part~7.
+example worked out in full, are in Section~\ref{d:sec:residues}.
 \end{remark}
 
 \subsection{Three inequivalent Liouville hypotheses}\label{a:rem:liouvillehyp}
 
 Three different boundedness hypotheses circulate under the name
 ``bounded entire function'', and they give three different theorems.
-They are stated as a hierarchy in Part~8; the discipline imposed here is
+They are stated as a hierarchy in Section~\ref{e:p8}; the discipline imposed here is
 that no conclusion drawn under one may be restated under another.
 \begin{enumerate}[label=\textup{(L\arabic*)},leftmargin=2.8em]
 \item A single \emph{surreal} bound on the finite halo.  This hypothesis
-is \textbf{vacuous}: as Part~8 proves from
+is \textbf{vacuous}: as Section~\ref{e:p8} proves from
 Lemma~\ref{a:lem:valbound}, every nonzero $F\in\Hc(\CC)$ already
 satisfies $\abs{\ev F}<\tm^{\vH(F)-1}$ there, so the hypothesis holds
 for every such $F$ and selects nothing.
 \item A single \emph{ordinary real} bound.  This does \textbf{not} give
-constancy; it gives an exact characterization (Part~8).  The standing
+constancy; it gives an exact characterization (Section~\ref{e:p8}).  The standing
 counterexample is $F=\tm z$, which is bounded by $1$ in ordinary real
 terms on the whole finite plane and is not constant.
 \item \emph{Coefficientwise} bounds, one ordinary real constant per
@@ -590,18 +599,18 @@ $F=w(1+i\tm)$ on the unit circle one has the pointwise bound
 $M=1+\tm^{2}$, while the coefficientwise majorant is $1+\tm>M$.  That
 warning forbids a statement about \emph{coefficients}; it does not
 forbid the estimate above, which is about the surreal \emph{modulus},
-and it must not be used to suppress it.  Both live in Part~5.
+and it must not be used to suppress it.  Both live in Section~\ref{c:p5}.
 
 \subsection{Two logarithms}\label{a:rem:twologs}
 
 Two distinct functions are called ``the'' logarithm in the sources, and
 they differ by exactly $2\pi i$ on an explicit class of points.  Both
-are kept, with distinct names, in Part~9:
+are kept, with distinct names, in Section~\ref{e:p9}:
 \begin{itemize}[leftmargin=1.4em]
 \item the \textbf{global} fine-analytic logarithm $\mathcal L$ on all of
 $\K^{\times}$, whose branch is chosen from the fine-locally constant
 standard part of the unit direction --- this is the primary object, and
-it is the one consumed by the contour no-go theorem of Part~2;
+it is the one consumed by the contour no-go theorem of Section~\ref{b:part2};
 \item the \textbf{principal} logarithm $\Log$ on the cut plane
 $\K\setminus\No_{\le0}$, defined by
 $\Log z=\log_{\No}\abs z+i\Arg z$ with $-\pi<\Arg z<\pi$.
@@ -617,20 +626,22 @@ $D_z$ differentiates a \emph{function of a variable} and holds every
 surcomplex coefficient fixed.  In particular $D_z(\omega)=0$, $\omega$
 being a constant function.  It is \emph{not} the Berarducci~\cite{BMder}--Mantova~\cite{Mantova2026b}
 field derivation on surreals viewed as transseries, whose normalization
-has $\partial\omega=1$.  Part~3 upgrades this notational warning into a
+has $\partial\omega=1$.  Section~\ref{b:part3} upgrades this notational warning into a
 theorem: no field derivation on $\K$ fixing $\CC$ with
 $\partial\omega=1$ can satisfy $\partial(\Exp z)=\Exp(z)\,\partial z$.
 A reader importing surreal differential algebra or transseries results
 would silently change the meaning of every derivative in this article.
 \end{remark}
 
-\section{Hahn summability: the sole infinite operation}\label{a:sec:summability}
+\section{Hahn summability over the monomial scales}\label{a:sec:summability}
 
 This is the one load-bearing notion on which all nine sources agree
 exactly, clause for clause.  Every infinite operation in the article ---
 every power series, every geometric series, every preparation
-recursion, every reversion tree, every contour integral --- is an
-instance of it, and nothing else is ever summed.
+recursion and every reversion tree --- uses this operation over Hahn
+exponents. Ordinary Taylor expansions and contour integrals of the
+complex coefficient functions are performed in $\CC$ first; their
+values then enter the Hahn sum. These are distinct operations.
 
 \subsection{The definition}\label{a:sec:sumdef}
 
@@ -700,9 +711,13 @@ sequence in $B$ and contradicts well-ordering.  For (b), the
 combinatorial mechanism is the well-quasi-ordering of finite words over
 a well-ordered positive alphabet: a subsequence embedding of one word
 into another cannot decrease the sum, since the alphabet is positive.
-Infinitely many distinct words with a fixed sum would therefore contain
-an infinite antichain or produce a strictly descending sequence of sums,
-both excluded.  This is the classical lemma of Neumann; we import it as
+A decreasing sequence of sums would give a sequence of words with
+no earlier word embedding coefficientwise into a later one, contrary
+to that well-quasi-ordering. For distinct nondecreasing words, such an
+embedding strictly increases the sum unless the words are equal:
+either a letter strictly increases or an extra positive letter is
+inserted. Thus infinitely many distinct words with a fixed sum are
+also impossible.  This is the classical lemma of Neumann; we import it as
 a foundational input.  All its applications below take place inside the
 set-sized ordered group generated by the displayed supports, even though
 the ambient value class is $\No$.
@@ -711,8 +726,8 @@ the ambient value class is $\No$.
 \begin{remark}[The all-lengths clause is the load-bearing one]\label{a:rule:wordlength}
 Part~(a) alone licenses only the product of \emph{two} Hahn series.
 What licenses a geometric series $\sum_n(-H)^n$, the homogeneous
-preparation recursion of Part~6, Hahn reversion, and the implicit-function
-tree of Part~8 is the all-lengths clause of part~(b): the number of
+preparation recursion of Section~\ref{d:sec:preparation}, Hahn reversion, and the implicit-function
+tree of Section~\ref{e:p8} is the all-lengths clause of part~(b): the number of
 words of \emph{every} length summing to a given exponent is finite in
 total.  Dropping the clause silently invalidates those four arguments
 and no others replace it.
@@ -758,8 +773,8 @@ coefficients.  For arbitrary surcomplex coefficients $a_n\in\K$ the
 family $(a_n\varepsilon^{n})_n$ need \emph{not} be summable: the union
 $\bigcup_n\supp(a_n)$ need not even be well ordered.  What is true is
 that after a single monomial rescaling the family becomes summable, by
-the separated-degree-block lemma of Part~3.  The rescaling is not
-cosmetic; it changes the chart, and Part~4 states the resulting
+the separated-degree-block lemma of Section~\ref{b:part3}.  The rescaling is not
+cosmetic; it changes the chart, and Section~\ref{c:p4} states the resulting
 obstruction beside the positive result.
 \end{remark}
 
@@ -908,7 +923,7 @@ singleton.
 An ordinary parametrized complex circle, viewed inside $\K$, is
 therefore \emph{not} a nonconstant continuous path for the fine
 topology.  The coefficientwise contour functional $\intH$ introduced in
-Part~5 is consequently not a limit of Riemann sums along a fine-continuous
+Section~\ref{c:p5} is consequently not a limit of Riemann sums along a fine-continuous
 path, and its parameterization is nowhere asserted to be fine-continuous.
 The superscript $\mathrm H$ is permanent for exactly this reason.
 \end{remark}
@@ -934,12 +949,18 @@ own valuation topology.  The valuation topology of $\K_\Gamma$ has balls
 of radii indexed by $\Gamma$; the fine topology supplies, in addition,
 radii smaller than $\tm^{\gamma}$ for every $\gamma\in\Gamma$, by
 Proposition~\ref{a:prop:fragment} and the cut property.  The induced
-topology is therefore strictly finer, and is discrete on every set.
+topology is discrete; it is strictly finer when $\Gamma\ne\{0\}$.
+For $\Gamma=\{0\}$ the intrinsic valuation is trivial and its topology
+is discrete as well.
 Example~\ref{a:ex:geometric} exhibits the difference concretely: the
 partial sums of $\sum_n\tm^{n}$ converge to $(1-\tm)^{-1}$ in the
 valuation topology of $\K_{\mathbb Q}$ and do not converge to it in the fine
-topology.  Existence of a Hahn sum therefore never implies convergence,
-in either topology, and the article never uses it that way.
+topology.  A Hahn sum need not give convergence even in an intrinsic valuation
+topology: in $\K_{\mathbb Q}$ the summable family
+$(\tm^{1-1/(n+1)})_{n\ge1}$ has all its exponents below $1$, so its
+partial-sum remainders never enter the valuation ball $\{v>1\}$.
+Thus the topology and a separate convergence argument must always be
+specified; the existence of a Hahn sum alone does not supply one.
 \end{remark}
 
 \subsection{What the fine topology is used for}\label{a:rem:fineuse}
@@ -962,12 +983,12 @@ follows from Proposition~\ref{a:prop:triangle} alone.
 Theorem~\ref{a:thm:discrete} says nothing against this definition: it
 forbids nontrivial set-indexed limits, and this quantifier is not one.
 \item \textbf{Open classes.}  The open mapping theorem and the strong
-maximum modulus principle of Part~8 are statements about actual
+maximum modulus principle of Section~\ref{e:p8} are statements about actual
 fine-open classes, at arbitrary surcomplex points; they are not
 statements about standard parts, and they would be false if weakened to
 such.
 \item \textbf{Fine-open hypotheses in the identity theorem.}  One of the
-four equivalent hypotheses of the identity theorem in Part~4 is
+four equivalent hypotheses of the identity theorem in Section~\ref{c:p4} is
 vanishing on a nonempty fine-open subclass.  That this is a strong
 hypothesis, and not a vacuous one, is exactly
 Remark~\ref{a:rem:notdiscrete}: a fine neighborhood of a point contains
@@ -977,7 +998,7 @@ a proper class of points.
 \begin{remark}[The accumulation hypothesis lives in
 $\CC$]\label{a:rule:accumulation}
 Wherever an accumulation hypothesis appears later --- in the identity
-theorem of Part~4, in the zero geometry of Part~6 --- it is an
+theorem of Section~\ref{c:p4}, in the zero geometry of Section~\ref{d:sec:preparation} --- it is an
 accumulation hypothesis on \emph{standard parts, in the ordinary complex
 topology of $\CC$}.  By Theorem~\ref{a:thm:discrete} no nontrivial
 set-sized sequence accumulates in the fine topology, so no theorem in
@@ -997,7 +1018,7 @@ this article asserts, or may assert, the existence of one.
 \section{What fails, and the contour no-go theorem}
 \label{b:part2}
 
-The constructions of Parts \ref{b:part3} and following carry hypotheses
+The constructions of Sections \ref{b:part3} and following carry hypotheses
 that look, on a first reading, like caution: one common ordinary domain
 for all coefficient functions, a contour integral defined coefficientwise
 rather than as a limit, a fundamental theorem restricted to coherent
@@ -1023,7 +1044,7 @@ on some fine ball about $a$ it is the Hahn sum of a formal series
 $\sum_{n\ge0}a_n(z-a)^n$ with \emph{arbitrary} coefficients $a_n\in\K$.
 There is no growth condition on the coefficients, no ordinary domain, and
 no relation between the expansions chosen at different points. The theory
-of this class is Part \ref{b:part3}.
+of this class is Section \ref{b:part3}.
 \item $\Hc(U)$, the \emph{coherent} algebra, consists of the Hahn series
 $F=\sum_{\gamma\in S}f_\gamma\tm^{\gamma}$ with $S\subseteq\No$ a
 well-ordered \emph{set} and every $f_\gamma\in\Hol(U)$ an ordinary
@@ -1049,13 +1070,19 @@ triangle inequality.
 \label{b:inclusions}
 Restricted to a halo $\halo U$,
 \[
- \{\,f^{\#}:f\in\Hol(U)\,\}\ \subsetneq\ \Hc(U)
- \ \subsetneq\ \{\text{germ-analytic functions on }\halo U\}
- \ \subseteq\ \{\text{differentiable functions on }\halo U\}.
+ \begin{aligned}
+ \{f^{\#}:f\in\Hol(U)\}&\subsetneq\Hc(U)\\
+ &\subsetneq\{\text{germ-analytic functions on }\halo U\}\\
+ &\subseteq\{\text{differentiable functions on }\halo U\}.
+ \end{aligned}
 \]
-The first inclusion is strict: $\tm Z\in\Hc(\CC)$ is not a lift, since a
-lift is supported at exponent $0$. The second is strict in the strong
-sense that a germ-analytic function need not extend to any coherent
+The first inclusion is strict: the constant section $\tm\in\Hc(U)$
+is not a lift, since its support is $\{1\}$. For the second, choose
+$a\in U$ and set $q_a(z)=0$ on $a+\mm$ and $q_a(z)=1$ on the other
+monads of $\halo U$. This is locally constant, hence germ-analytic.
+If it were coherent, its values at ordinary points would force its
+exponent-zero coefficient to be $0$ at $a$ and $1$ everywhere else in
+$U$, which is not holomorphic. There is also the stronger local obstruction that a germ-analytic function need not extend to any coherent
 section at all: $\sum_{n\ge0}n!\,\varepsilon^{n}$ is a legitimate
 germ-analytic function on $\mm$ by
 Theorem~\ref{b:realization}, but it is not the restriction of any element
@@ -1086,7 +1113,7 @@ opposite.
 \begin{remark}[The chart changes the function]
 \label{b:chart-changes}
 Proposition~\ref{b:inclusions} must be read beside the scale-embedding
-theorem of Part \ref{c:p4} (Theorem~\ref{f:sec-allscale}), which says
+theorem of Section \ref{c:p4} (Theorem~\ref{c:p4:bridge}), which says
 that \emph{every} formal series over $\K$, including
 $\sum n!\,X^{n}$, becomes a coherent family on all of $\CC$ with
 polynomial coefficient functions after a single monomial rescaling
@@ -1096,7 +1123,7 @@ result concerns a rescaled chart. The rescaling changes which function is
 being represented. A germ has \emph{some} sufficiently small coherent
 chart; it does not follow, and it is false, that it has a chart of every
 larger radius. That is the content of the all-scale rigidity theorem of
-Part \ref{f:sec-allscale}.
+Section \ref{f:sec-allscale}.
 \end{remark}
 
 \subsection{The locally constant witness}
@@ -1130,12 +1157,13 @@ vanishing);
 about its derivative);
 \item the open mapping theorem.
 \end{enumerate}
-Each of these five \emph{is} a theorem for the coherent class $\Hc(U)$
-over a connected ordinary $U$ --- the identity theorem is
-Theorem~\ref{c:p4:identity}, the maximum and open mapping principles
-and the Liouville hierarchy are in Part \ref{e:p8}, and coherent
-primitives are in Part \ref{c:p5}. None of those theorems may be quoted
-for a germ-analytic function.
+Coherent analogues hold with their stated hypotheses: the identity
+theorem is Theorem~\ref{c:p4:identity}; maximum and open mapping
+principles use a connected ordinary base; the coefficientwise Liouville
+theorem requires $U=\CC$ and bounded coefficient functions; and
+coherent primitive uniqueness is in Section~\ref{c:p5}. In particular,
+ordinary-real or surreal boundedness alone does not imply constancy
+even for coherent sections (Section~\ref{e:p8}).
 \end{proposition}
 
 \begin{proof}
@@ -1155,8 +1183,7 @@ On $\halo{D}$, the halo of the ordinary unit disk, put $q(z)=0$ for
 $z\in\mm$ and $q(z)=1$ otherwise. The cosets of $\mm$ are fine-clopen, so
 $q$ is locally constant, germ-analytic, bounded, and nonconstant on
 $\halo D$ --- although its ordinary base $D$ is connected. Thus coherence,
-not connectedness of the base, is what the identity theorem of Part
-\ref{c:p4} consumes. Moreover no $\K$-linear functional $\int$ on a
+not connectedness of the base, is what the identity theorem of Section~\ref{c:p4} consumes. Moreover no $\K$-linear functional $\int$ on a
 class of germ-analytic functions can satisfy
 $\int_a^b H'(z)\,\dd z=H(b)-H(a)$ for all fine-locally analytic $H$ and
 arbitrary endpoints: apply it to $q$ with $a$ and $b$ in different cosets
@@ -1200,7 +1227,7 @@ that point. The witness is Example~\ref{b:ordinalindicator}.
 The correct removability statements are coefficientwise and belong to the
 coherent class: a coherent section extends across an ordinary puncture
 exactly when each ordinary coefficient function is bounded near it
-(Part \ref{e:p8}), and a scalar surreal bound on $\ev F$ is not
+(Section \ref{e:p8}), and a scalar surreal bound on $\ev F$ is not
 sufficient there either. Two further points must not be lost. First,
 the punctured halo $\halo{(U\setminus\{c\})}$ deletes the \emph{whole
 monad} $c+\mm$, not the single point $c$; the two puncturing operations
@@ -1222,7 +1249,7 @@ quotient of two everywhere-germ-analytic exponential homomorphisms.
 \begin{proposition}[The twisted-exponential witness]
 \label{b:twistwitness}
 Let $\Exp=E_0$ be the canonical surcomplex exponential and $E_\lambda$
-($\lambda\in\RR$) the twisted family of Part \ref{e:p9}
+($\lambda\in\RR$) the twisted family of Section \ref{e:p9}
 (Theorem~\ref{e:thm-exp}). For $\lambda\notin2\pi\ZZ$ the quotient
 \[
  \Theta_\lambda:=E_\lambda/E_0:\K\longrightarrow\K^{\times}
@@ -1254,12 +1281,12 @@ parts of $\K$ that are infinitely far apart.
 
 \subsection{The contour no-go theorem}
 
-Part \ref{c:p5} defines the contour functional coefficientwise,
+Section \ref{c:p5} defines the contour functional coefficientwise,
 $\intH_\Gamma F\,\dd z:=\sum_\gamma\tm^{\gamma}\int_\Gamma f_\gamma\,\dd z$
 along an \emph{ordinary} piecewise-$C^1$ path $\Gamma$, and restricts its
 fundamental theorem to \emph{coherent} primitives. The following theorem
 is the reason both decisions are forced. Its input is the global
-fine-analytic logarithm $\mathcal L$ of Part \ref{e:p9}
+fine-analytic logarithm $\mathcal L$ of Section \ref{e:p9}
 (Theorem~\ref{e:thm-globallog}): a function defined on \emph{all} of
 $\K^{\times}$, germ-analytic at every point, with
 $\mathcal L'(z)=1/z$, whose branch is chosen from the fine-locally
@@ -1298,7 +1325,7 @@ Three consequences fix the architecture of the rest of the article.
 \begin{corollary}[The fundamental theorem cannot be widened]
 \label{b:nogo-fundamental}
 The identity $\intH_\Gamma F'\,\dd z=\ev F(\Gamma(1))-\ev F(\Gamma(0))$ of
-Part \ref{c:p5} holds for $F\in\Hc(U)$ and cannot be extended to
+Section \ref{c:p5} holds for $F\in\Hc(U)$ and cannot be extended to
 germ-analytic primitives, even ones that are germ-analytic on all of
 $\K^{\times}$. The restriction of the fundamental theorem to the coherent
 category is therefore forced.
@@ -1342,20 +1369,19 @@ germ-analytic at every nonzero point but is \emph{not} a
 finite-meromorphic germ at zero, so it is not a counterexample to the
 formal statement that a Laurent differential has a primitive in
 $\K((X))$ iff its residue vanishes. And the coefficientwise definition of
-$\intH$ is independently forced by Part \ref{a:sec:summability}: an ordinary
+$\intH$ is independently forced by Section~\ref{a:sec:fine}: an ordinary
 parametrized circle is not a fine-continuous path, since every
 fine-continuous map $[0,1]\to\K$ is constant, so no Riemann-sum reading of
 the symbol is available in the first place.
 \end{remark}
 
-\subsection{Summary of what Part \ref{b:part2} forbids}
+\subsection{Summary of what Section \ref{b:part2} forbids}
 
 \begin{enumerate}[label=\textup{(\arabic*)},leftmargin=2.4em]
 \item No unrestricted identity theorem, strong maximum principle,
 Liouville theorem, primitive-uniqueness theorem or open mapping theorem
 for the germ-analytic class (Proposition~\ref{b:fivefailures}); each
-requires coherence, and each is restated with that hypothesis in Parts
-\ref{c:p4} and \ref{e:p8}.
+requires coherence, and each is restated with that hypothesis in Sections~\ref{c:p4} and \ref{e:p8}.
 \item No unrestricted removability theorem for germ-analytic functions
 bounded near a point (Proposition~\ref{b:noremoval}).
 \item No determination of a global exponential, or of a global function on
@@ -1368,18 +1394,18 @@ classical value for $1/z$ and an unrestricted fundamental theorem
 \section{The local theory: germs over \texorpdfstring{$\K$}{K}}
 \label{b:part3}
 
-We now develop the widest of the four classes: arbitrary surcomplex
+We now develop the local power-series class: arbitrary surcomplex
 coefficients, no growth condition, no ordinary domain. Everything in this
 part is a statement about germ-analytic functions in the sense of
 Definition~\ref{b:def-classes}(a). No result of this part is used for
 $\Hc(U)$ or for canonical lifts except through the evaluation theorem of
-Part \ref{c:p4}, which is proved there; conversely, nothing proved for
-$\Hc(U)$ is available here, as Part \ref{b:part2} has just shown.
+Section \ref{c:p4}, which is proved there; conversely, nothing proved for
+$\Hc(U)$ is available here, as Section \ref{b:part2} has just shown.
 
 The one surprise of the local theory is how large it is: the germ algebra
 at any point is exactly $\K[[X]]$, with no radius-of-convergence condition
 whatsoever. Classical growth restrictions disappear because the sole
-infinite operation in use is Hahn summability (Part \ref{a:sec:summability}) --- a
+infinite operation in use is Hahn summability (Section \ref{a:sec:summability}) --- a
 support condition, not a limit.
 
 \subsection{Separated degree blocks}
@@ -1421,7 +1447,7 @@ For (iii) write $u_j=c_j+\eta_j$ with $c_j\in\CC$ and $\eta_j\in\mm$, let
 $B$ be the union of the supports of the $\eta_j$ --- a well-ordered subset
 of $\No^{>0}$ --- and expand each finite product $u^{\nu}$ by the binomial
 theorem. All resulting supports lie in $A+\Neu B$, where $A$ is the
-well-ordered union from (ii). By Neumann~\cite{Neumann}'s lemma (Part \ref{a:sec:summability})
+well-ordered union from (ii). By Neumann~\cite{Neumann}'s lemma (Section \ref{a:sec:summability})
 $A+\Neu B$ is well ordered, and a fixed exponent admits only finitely many
 decompositions into a member of $A$ and a member of $\Neu B$, only
 finitely many finite nondecreasing words from $B$ for the second factor,
@@ -1463,17 +1489,21 @@ Lemma~\ref{b:blocks} uses all of it.
 Every $P\in\K[[X_1,\ldots,X_d]]$ has a Hahn-summed evaluation on a fine
 neighbourhood of zero: with $\rho$ as in Lemma~\ref{b:blocks}, the family
 defining $P(\rho u_1,\ldots,\rho u_d)$ is summable for every
-$u\in\Ov^{d}$. On that closed polydisk the values are bounded in
+$u\in\Ov^{d}$. On that scaled finite polydisk $\rho\Ov^d$ the values are bounded in
 surcomplex modulus by one fixed surreal, namely
 $\abs{P(\rho u)}<\tm^{-\Delta-1}$. Formal sums, products, derivatives and
 compositions with zero constant inner term agree with the corresponding
 operations on evaluations, after shrinking the neighbourhood if necessary.
-For fixed $h\ne0$ small enough, evaluation
-$\K[[X]]\to\K$ is injective.
+For each nonzero one-variable series $P$, its value $P(h)$ is nonzero
+for every sufficiently small $h\ne0$, with the scale allowed to depend
+on $P$. In any finite number of variables, evaluation as a
+\emph{function germ} is injective. There is no injective evaluation of
+all of $\K[[X]]$ at a fixed point $h$: the polynomial $X-h$ already
+precludes that claim, and no one radius realizes every series.
 \end{theorem}
 
 \begin{proof}
-Summability and the bounded polydisk are Lemma~\ref{b:blocks}: every
+Summability on the scaled finite polydisk is Lemma~\ref{b:blocks}: every
 exponent occurring is at least $-\Delta$, so the modulus of the value is
 below $\tm^{-\Delta-1}$, a factor of $\omega$ dominating every real
 leading coefficient; cancellation only raises the valuation.
@@ -1488,7 +1518,7 @@ many algebraic terms at each fixed total degree, and grouping by total
 degree reproduces the formal composite exactly. A further shrinking puts
 the inner values inside a realization neighbourhood of the outer series.
 
-For injectivity in one variable, let $m$ be the least index with
+For one-variable nonvanishing, let $m$ be the least index with
 $a_m\ne0$ and write $\alpha_n=v(a_n)$, $\beta=v(h)\ge\lambda$. For $n>m$,
 \[
  (\alpha_n+n\beta)-(\alpha_m+m\beta)
@@ -1496,6 +1526,21 @@ $a_m\ne0$ and write $\alpha_n=v(a_n)$, $\beta=v(h)\ge\lambda$. For $n>m$,
 \]
 because $\abs{\alpha_n-\alpha_m}<2\Delta<\lambda\le\beta$. So
 $a_mh^{m}$ contributes the unique least exponent and the value is nonzero.
+
+For injectivity on multivariable germs, let $P_m$ be the first nonzero
+homogeneous part of a nonzero formal series. A nonzero polynomial over
+$\K$ cannot vanish on all of $\mathbb Q^d$: induction on the number of
+variables reduces this to the finite root bound in one variable. Choose
+$u\in\mathbb Q^d$ with $P_m(u)\ne0$. The one-variable series $P(uX)$
+is nonzero, so its evaluations are nonzero at all sufficiently small
+nonzero $X$. These points lie in any prescribed fine neighborhood of
+zero. Thus $P$ cannot represent the zero germ, even when evaluation is
+restricted to surreal-real coordinate tuples.
+
+Derivative compatibility is proved in Theorem~\ref{b:germalgebra} using
+Proposition~\ref{b:remainder}. Those proofs use only the summability,
+algebra and faithfulness clauses established here, not that compatibility
+as an input.
 \end{proof}
 
 \begin{proposition}[Uniform Taylor remainder]
@@ -1510,19 +1555,34 @@ $\abs h\le r$,
 \end{proposition}
 
 \begin{proof}
-Take $r=\rho$ and $M=\tm^{-\Delta/2}$, which exceeds every $\abs{a_n}$.
-The families $\abs{a_n}\abs h^{n}$ and $M\abs h^{n}$ are summable, their
-termwise differences are summable and nonnegative, and a Hahn sum of a
-summable family of nonnegative surreals is nonnegative --- at the least
-exponent of the union of supports only finitely many summands contribute
-and each contributing leading coefficient is positive. Combining this with
-the triangle bound $\abs{\sum_jz_j}\le\sum_j\abs{z_j}$ for summable
-families, and with the geometric identity, gives the estimate; $r$ is
-infinitesimal so $1/(1-\abs h)<2$.
+Choose $\Delta>0$ bounding the absolute values of all exponents in
+\emph{both} families $(a_n)$ and $(\abs{a_n})$, and choose
+$\lambda>2\Delta$ as in Lemma~\ref{b:blocks}. Set
+$r=\tm^\lambda$ and $M=\tm^{-\Delta-1}$.
+Lemma~\ref{a:lem:valbound} gives $\abs{a_n}<M$ for every $n$.
+The separated-block lemma applied to $(\abs{a_n})$ makes
+$(\abs{a_n}\abs h^n)_n$ summable for $\abs h\le r$; the family
+$(M\abs h^n)_n$ is summable by the positive-support geometric series.
+Their termwise differences are therefore summable and nonnegative.
+A Hahn sum of a summable family of nonnegative surreals is nonnegative:
+at the least exponent in the union of nonempty supports, every
+contributing leading coefficient is positive.
+
+For completeness, the triangle inequality for this tail follows without
+any limiting argument. Put $T=\sum_{n\ge N}a_nh^n$. If $T\ne0$, multiply
+by $\theta=\bar T/\abs T$ and sum
+$\operatorname{Re}(\theta a_nh^n)\le\abs{a_n}\abs h^n$; multiplication
+by the fixed $\theta$ preserves Hahn summability. The preceding positivity
+argument gives $\abs T\le\sum_{n\ge N}\abs{a_n}\abs h^n$; for $T=0$
+this is immediate. Summing the bounds by $M\abs h^n$ and using the
+geometric identity gives the first estimate. Since $r$ is infinitesimal,
+$1/(1-\abs h)<2$, giving the second. Here $\abs h^0=1$, including at
+$h=0$.
 \end{proof}
 
-Two consequences of realization are worth recording separately because
-they are used constantly and are false in the coherent class.
+The next two results separate infinitesimal realization with ordinary
+coefficients from the much stronger requirement of one series being
+summable at every surcomplex argument.
 
 \begin{corollary}[No growth condition]
 \label{b:nogrowth}
@@ -1549,18 +1609,20 @@ a polynomial.
 
 \begin{proof}
 Suppose infinitely many $a_n$ are nonzero, and choose $\Delta$ bounding
-all $\abs{\supp a_n}$ as in Lemma~\ref{b:blocks}. At $X=\tm^{-\Delta}$
-the exponents $v(a_n)-n\Delta$ strictly decrease along the nonzero
-indices, and all lie in the union of the term supports, which is therefore
+all $\abs{\supp a_n}$ as in Lemma~\ref{b:blocks}, and take
+$\lambda>2\Delta$. At $X=\tm^{-\lambda}$ the exponents
+$v(a_n)-n\lambda$ strictly decrease along the nonzero indices: for
+$m>n$ their difference is
+$v(a_m)-v(a_n)-(m-n)\lambda<2\Delta-\lambda<0$.
+They all lie in the union of the term supports, which is therefore
 not well ordered.
 \end{proof}
 
 Proposition~\ref{b:globalseries} is a statement about one formal series,
 not about functions: it emphatically does not say that a globally
-germ-analytic function on $\K$ is a polynomial, and Part \ref{b:part2}
+germ-analytic function on $\K$ is a polynomial, and Section \ref{b:part2}
 supplies the counterexamples. The classification of the functions that are
-\emph{coherent at every scale} is the rigidity theorem of Part
-\ref{f:sec-allscale}.
+\emph{coherent at every scale} is the rigidity theorem of Section~\ref{f:sec-allscale}.
 
 \subsection{The germ algebra}
 
@@ -1599,9 +1661,9 @@ up to an additive constant \emph{as a germ}.
 
 \begin{proof}
 Surjectivity is Definition~\ref{b:def-germ} together with
-Theorem~\ref{b:realization}; injectivity is the injectivity clause of that
+Theorem~\ref{b:realization}; injectivity is the series-dependent nonvanishing clause of that
 theorem, since two series representing the same germ have a difference
-vanishing at some sufficiently small nonzero $h$.
+vanishing at every sufficiently small nonzero $h$.
 
 For the derivative at the centre write $A(h)=a_0+a_1h+h^{2}B(h)$; by
 Proposition~\ref{b:remainder} with $N=2$ the difference quotient differs
@@ -1611,7 +1673,7 @@ is the full $\varepsilon$--$\delta$ derivative of
 Definition~\ref{b:def-classes}(d), with both radii ranging over all
 positive surreals and in particular over infinitesimal tolerances; the
 quantification is over a proper class of increments, so the discreteness
-theorem of Part \ref{a:sec:summability} does not make it vacuous.
+theorem of Section~\ref{a:sec:fine} does not make it vacuous.
 
 The recentring formula follows by expanding $a_n(h_0+k)^{n}$ with the
 finite binomial theorem --- $n+1$ terms at degree $n$ --- and regrouping,
@@ -1639,7 +1701,8 @@ constant function without changing its derivative anywhere.
 \label{b:isolated}
 A nonzero germ at $a$ has a unique finite order $m\ge0$, factors as
 $A(h)=a_mh^{m}U(h)$ with $U(0)=1$, and after shrinking the ball
-$U(h)-1$ is infinitesimal, so the centre is its only zero there.
+$U(h)-1$ is infinitesimal, so there are no zeros there if $m=0$, and otherwise the centre is
+the only zero there.
 Consequently, if a germ-analytic function has zeros meeting every
 sufficiently small punctured fine ball about $a$, its germ at $a$ is zero.
 \end{corollary}
@@ -1653,10 +1716,10 @@ nonzero values at all sufficiently small nonzero increments.
 
 The last sentence of Corollary~\ref{b:isolated} permits a proper class of
 zeros. It is \emph{not} a sequential accumulation statement: by the
-discreteness theorem of Part \ref{a:sec:summability}, no nontrivial \emph{set} of
+discreteness theorem of Section~\ref{a:sec:fine}, no nontrivial \emph{set} of
 distinct points accumulates in the fine topology, so no argument in this
 article may be phrased as ``the zeros have an accumulation point''. The
-global identity theorem of Part \ref{c:p4} instead uses accumulation of
+global identity theorem of Section \ref{c:p4} instead uses accumulation of
 \emph{standard parts} in $\CC$, which is a statement about the ordinary
 plane.
 
@@ -1683,7 +1746,7 @@ operators cannot be reconciled through the exponential.
 Let $\partial$ be any field derivation on $\K$ fixing $\CC$ pointwise with
 $\partial\omega=1$; the complexification of the normalized
 Berarducci--Mantova derivation is one. Then the canonical surcomplex
-exponential $\Exp$ of Part \ref{e:p9} cannot satisfy
+exponential $\Exp$ of Section \ref{e:p9} cannot satisfy
 \begin{equation}
 \label{b:eq-derivobstruction}
  \partial\,\Exp(z)=\Exp(z)\,\partial z\qquad\text{for all }z\in\K .
@@ -1707,8 +1770,7 @@ $\Exp(i\omega)\,\partial(i\omega)=i\ne0$.
 
 \begin{remark}
 \label{b:no-conflict-Dz}
-There is no conflict with $D_z\Exp(z)=\Exp(z)$, which is proved in Part
-\ref{e:p9}. That identity differentiates a variable while holding every
+There is no conflict with $D_z\Exp(z)=\Exp(z)$, which is proved in Section~\ref{e:p9}. That identity differentiates a variable while holding every
 surcomplex coefficient fixed; \eqref{b:eq-derivobstruction} differentiates
 the field's own elements as transseries. The two are different
 mathematical tasks, and Theorem~\ref{b:derivation-obstruction} says
@@ -1757,7 +1819,7 @@ For the germ statement introduce the formal coordinates $Z=X+iY$ and
 $W=X-iY$, invertible over $\K$ because $2i\ne0$. Equations
 \eqref{b:eq-CR} say $\partial_WF=\tfrac12(\partial_X+i\partial_Y)F=0$. If
 they hold as functions on a neighbourhood, injectivity of multivariable
-evaluation (Theorem~\ref{b:realization}) makes this a formal identity, and
+evaluation as a function germ (Theorem~\ref{b:realization}) makes this a formal identity, and
 in characteristic zero it forces every term of positive $W$-degree to
 vanish; the remaining formal series depends on $Z$ alone and realizes a
 germ-analytic function. Conversely $\partial_W$ annihilates a series in
@@ -1768,8 +1830,8 @@ commuting, gives the two Laplace equations.
 \begin{theorem}[Harmonic conjugate germs]
 \label{b:harmonicgerm}
 Every real germ-analytic harmonic germ $u(x,y)$ over $\No$ is the real part
-of a germ-analytic germ. Its harmonic conjugate is unique up to a real
-constant as a germ.
+of a germ-analytic germ. Its harmonic conjugate is unique up to a constant in $\No$ as a germ
+(the constant need not belong to the ordinary real field $\RR$).
 \end{theorem}
 
 \begin{proof}
@@ -1797,7 +1859,7 @@ load-bearing (Remark~\ref{b:no-goursat}). Theorem~\ref{b:harmonicgerm} is
 a differential identity at the level of germs; it asserts nothing about a
 global Dirichlet problem. The coefficientwise harmonic-conjugate theorem
 for $\Hc(U)$ on simply connected ordinary domains, the Poisson formula and
-the coherent Dirichlet problem are in Part \ref{e:p8} and have
+the coherent Dirichlet problem are in Section \ref{e:p8} and have
 different hypotheses --- ordinary coefficientwise boundary data on an
 ordinary disk.
 \end{remark}
@@ -1899,16 +1961,17 @@ principle. Note also that ``nonconstant germ'' cannot be relaxed to
 nonconstant and is not an open map.
 \end{remark}
 
-\begin{remark}[The coherent implicit function theorem is a different theorem]
+\begin{remark}[Scope of the coherent inverse theorem]
 \label{b:coherent-implicit-elsewhere}
 Theorem~\ref{b:inverse} is a statement about germs; it produces no section
-over a common ordinary base and says nothing about supports. The
-multivariable \emph{coherent} Hahn implicit-function theorem, with
-positive-support corrections, a section-level uniqueness proved by a
-Neumann-summable tree expansion, and a pointwise-in-the-monad uniqueness
-from invertibility of the standard-part Jacobian, has different hypotheses
-and a strictly stronger conclusion; it is Theorem~\ref{b:coherent-implicit-elsewhere}
-of Part \ref{e:p8}. Neither theorem may be quoted for the other's class.
+over a common ordinary base and says nothing about supports. The coherent result proved in Section~\ref{e:p8} is the
+\emph{one-variable} local inverse theorem
+(Theorem~\ref{e:thm-localinverse}), using positive-support Hahn reversion
+after a scale change. The multivariable germ theorem above does not by
+itself produce a coherent section on a common ordinary parameter domain.
+An earlier version of this remark incorrectly referred to itself as a
+proved multivariable coherent implicit-function theorem; no such theorem
+is established in this article.
 \end{remark}
 
 \subsection{Local identity and maximum modulus, as germ statements}
@@ -1931,12 +1994,12 @@ These are germ statements and nothing more. Three things must travel with
 them. They do not propagate to a whole fine-open class: $L$ and $q$
 (Examples~\ref{b:L}, \ref{b:q}) have constant germs at every point and are
 globally nonconstant. They are not sequential accumulation theorems, since
-by Part \ref{a:sec:summability} no nontrivial set of distinct points accumulates in
+by Section~\ref{a:sec:fine} no nontrivial set of distinct points accumulates in
 the fine topology; in particular no proof in this article may construct a
 convergent sequence of zeros. And the passage from ``constant germ'' to
 ``one global constant'' is exactly what coherence buys, in
 Theorem~\ref{c:p4:identity} and the global maximum principle of
-Part \ref{e:p8}, and it is available for no other reason.
+Section \ref{e:p8}, and it is available for no other reason.
 
 \subsection{Formal residues in \texorpdfstring{$\K((X))$}{K((X))}}
 
@@ -1954,15 +2017,16 @@ evaluates on a sufficiently small punctured fine ball. We call these
 $\Res$ is the \emph{formal} residue, the coefficient of $X^{-1}$ in
 $\K((X))$, taken at any surcomplex centre in an analytic local coordinate
 $X$; the letter $X$ is a local coordinate and never the Hahn monomial
-parameter $\tm^{\gamma}$. It is not the cluster residue $\ResH a$ at an
-ordinary centre and not the actual local residue $\Resat b$ at a
-surcomplex point $b$, both of which are defined in Part \ref{d:sec:residues}. The
-three are genuinely different: for $1/(\zeta-\varepsilon)$ with
-$\varepsilon\in\mm\setminus\{0\}$ one has $\ResH0=1$ while the local
-residue at the exact point $0$ is zero, the actual pole being at
-$\varepsilon$. Nothing in this part uses $\ResH{\cdot}$ or
-$\Resat{\cdot}$, and nothing proved here about $\Res$ may be transferred
-to them except through the two bridge theorems of Part \ref{d:sec:residues}.
+parameter $\tm^{\gamma}$. The actual residue $\Resat b$ of Section~\ref{d:sec:residues} is this same coefficient operation on the Laurent
+germ at $b$, with $X=z-b$; the formal laws apply after that identification.
+The different operation is the cluster residue $\ResH a$ at an ordinary
+centre. For $1/(\zeta-\varepsilon)$ with
+$\varepsilon\in\mm\setminus\{0\}$ one has $\ResH0=1$ while the actual
+local residue at the exact point $0$ is zero, the pole being at
+$\varepsilon$. The two bridge theorems of Section~\ref{d:sec:residues}
+relate this cluster operation to actual local residues; no bridge is
+needed between a Laurent germ's formal residue and its actual residue.
+
 \end{remark}
 
 \begin{proposition}[The only local primitive obstruction]
@@ -2054,8 +2118,10 @@ Let $F(X)=a_1X+a_2X^{2}+\cdots$ with $a_1\ne0$ and let $G$ be its
 compositional inverse germ. For $n\ge1$ and every $H\in\K[[X]]$,
 \[
  [Y^{n}]\,H(G(Y))
- =\frac1n\,[X^{n-1}]\,H'(X)\left(\frac{X}{F(X)}\right)^{n},
- \qquad\text{in particular}\qquad
+ =\frac1n\,[X^{n-1}]\,H'(X)\left(\frac{X}{F(X)}\right)^{n}.
+\]
+In particular,
+\[
  [Y^{n}]\,G(Y)=\frac1n\,[X^{n-1}]\left(\frac{X}{F(X)}\right)^{n}.
 \]
 These are identities of realized germ-analytic germs as well as of formal
@@ -2081,7 +2147,7 @@ The germ algebra is $\K[[X]]$ exactly: arbitrary coefficients, no growth
 condition, no radius of ordinary convergence, and the full
 characteristic-zero formal calculus with actual function values and actual
 fine derivatives. What it does not give is any global statement whatever.
-Specifically, and to be read together with Part \ref{b:part2}:
+Specifically, and to be read together with Section \ref{b:part2}:
 
 \begin{enumerate}[label=\textup{(\arabic*)},leftmargin=2.4em]
 \item No radius-of-convergence formula is claimed from the ordinary
@@ -2101,13 +2167,12 @@ with the identity at every ordinary point, and differs at infinitesimal
 ones.
 \item The local identity, maximum modulus and open mapping statements are
 germ statements. Their global forms require coherence and are proved in
-Parts \ref{c:p4} and \ref{e:p8}, for $\Hc(U)$ only.
+Sections \ref{c:p4} and \ref{e:p8}, for $\Hc(U)$ only.
 \item No classification of all functions on a punctured fine neighbourhood
 is offered: finite-meromorphic germs and coherent quotients are specified
 subclasses, not an exhaustive list, and no general theory of essential
 singularities is developed here. The one value-distribution theorem in
-this article concerns a single specified function and is in Part
-\ref{e:p9}.
+this article concerns a single specified function and is in Section~\ref{e:p9}.
 \end{enumerate}
 
 %% ==================== p45.tex ====================
@@ -2124,21 +2189,23 @@ this article concerns a single specified function and is in Part
 \section{The coherent theory: \texorpdfstring{$\Hc(U)$}{H(U)}}
 \label{c:p4}
 
-Part~\ref{b:part3} developed the widest layer: germ-analytic functions,
+Section~\ref{b:part3} developed the local power-series layer: germ-analytic functions,
 with arbitrary surcomplex coefficients, no ordinary domain and no growth
 condition. That layer is too wide to carry a global theorem. The
-locally constant witness $L$ of Part~\ref{b:part2}
-(the locally constant germ-analytic witness of Part~2) and its germ-analytic refinement
-$b$ (the germ-analytic witness of Part~2) are germ-analytic on all of $\K$ and
+locally constant witness $L$ of Section~\ref{b:part2}
+(the locally constant germ-analytic witness of Section~\ref{b:part2}) and its germ-analytic refinement
+$b$ (the germ-analytic witness of Section~\ref{b:part2}) are germ-analytic on $\K$ and
+$\K^\times$, respectively, and
 destroy, at one stroke, the identity theorem, the global maximum
 principle, Liouville's theorem, uniqueness of primitives and the open
 mapping theorem.
 
-This part installs the narrow layer on which those theorems are true.
-Its single hypothesis is that one \emph{ordinary} connected complex
-domain carries all the coefficient functions at once. That hypothesis is
-what ties different monads to one another, and every global theorem in
-Parts~\ref{c:p5}--\ref{e:p8} is a theorem about this class and not about
+This part introduces the coherent layer: one \emph{ordinary} connected
+complex domain carries all coefficient functions at once. This common-domain
+condition ties different monads to one another; additional hypotheses
+for each global principle, such as entire coefficientwise boundedness
+for Liouville, are stated with that theorem, and every global theorem in
+Sections~\ref{c:p5}--\ref{e:p8} is a theorem about this class and not about
 the germ class.
 
 \subsection{The halo}
@@ -2164,7 +2231,7 @@ point $1-\varepsilon$ lies in the surcomplex unit ball but not in
 $\halo{\mathbb D}$, because its standard part lies on the unit circle.
 The whole boundary monad is missing. No statement below about
 $\halo{\mathbb D}$ is a statement about the surcomplex unit ball; in
-particular the Schwarz--Pick theorem of Part~\ref{e:p8} is not, and
+particular the Schwarz--Pick theorem of Section~\ref{e:p8} is not, and
 the failure witness $(1+\tm)z$ there turns on exactly the omitted
 infinitesimal boundary layer.
 \end{remark}
@@ -2173,7 +2240,7 @@ infinitesimal boundary layer.
 $\halo{(\mathbb D\setminus\{0\})}$ is the halo of the punctured ordinary
 disk, and it omits the \emph{entire} monad $\mm$, not the single point
 $0$. It is therefore different from $\halo{\mathbb D}\setminus\{0\}$.
-The removable-singularity statements of Part~\ref{e:p8} concern the
+The removable-singularity statements of Section~\ref{e:p8} concern the
 former. Keeping the two puncturing operations apart is what prevents a
 false analogy with the classical punctured disk.
 \end{remark}
@@ -2193,7 +2260,7 @@ Let $U\subseteq\CC$ be a nonempty connected ordinary open set. A
 The class of these is written $\Hc(U)$; it is a $\K$-algebra under
 coefficientwise addition and Hahn multiplication, the latter being
 well defined because at each exponent only finitely many products
-contribute (Part~\ref{a:sec:summability}, \ref{a:sec:neumann}). Put
+contribute (Section~\ref{a:sec:summability}, \ref{a:sec:neumann}). Put
 \[
  \Hc_{>0}(U)=\{F\in\Hc(U): \vH(F)>0\}\cup\{0\},
  \qquad
@@ -2205,6 +2272,7 @@ is the subject. For $F\ne0$ define the \emph{family valuation} and the
 \[
  \vH(F)=\min S,\qquad f_{\vH(F)}\in\Hol(U).
 \]
+As for the scalar valuation, put $\vH(0)=\infty$, an added symbol.
 \end{definition}
 
 \begin{remark}[What ``coherent'' means, and what it does not]
@@ -2223,7 +2291,7 @@ to zero, is not an element of $\Hc(U)$ for any ordinary neighborhood
 $U$. It is precisely this hypothesis that links monads with different
 standard parts, and it is why the identity theorem
 (\ref{c:p4:identity}), the global maximum principle
-(Part~\ref{e:p8}) and the zero-cluster theorem (Part~\ref{d:sec:preparation}) hold at
+(Section~\ref{e:p8}) and the zero-cluster theorem (Section~\ref{d:sec:preparation}) hold at
 all.
 \item Coherence is a genuine restriction on functions, not a
 reparameterization. The function $z\mapsto\st(z)$ on $\halo U$ is not
@@ -2290,7 +2358,7 @@ each of its elements admits only finitely many decompositions
 $\gamma+\mu$ with $\mu$ a finite nondecreasing word in $E$; the word
 length is exactly the Taylor order $n$, so only finitely many pairs
 $(\gamma,n)$ contribute at a fixed exponent. That is precisely the
-two-clause summability criterion of Part~\ref{a:sec:summability}, and it also
+two-clause summability criterion of Section~\ref{a:sec:summability}, and it also
 licenses the regroupings used below.
 
 Sums and products: apply the same argument to two families and use the
@@ -2305,8 +2373,10 @@ If $\ev F\equiv0$ then uniqueness of normal forms gives $f_\gamma(a)=0$
 for every $\gamma$ and every $a\in U$, so every coefficient function
 vanishes identically.
 
-Differentiation is coefficientwise on both sides; restriction and
-conjugation likewise. For (iii), factor $\tm^{\lambda}$ out of
+The identification with the fine derivative is proved below in
+Theorem~\ref{c:p4:derivbridge}, using the jointly summable Taylor
+expansion; no derivative identity is needed for the present algebraic
+arguments. Restriction and conjugation are coefficientwise. For (iii), factor $\tm^{\lambda}$ out of
 \eqref{c:p4:eq-eval}. Every remaining term except the $n=0$, $\gamma=
 \lambda$ term has strictly positive valuation: either $\gamma>\lambda$,
 or $n>0$ and the factor $\varepsilon^n$ has positive support. Hence the
@@ -2351,7 +2421,7 @@ monad.
 
 The next theorem is the bridge without which nothing proved with one
 derivative transfers to the other. It is used silently throughout
-Parts~\ref{c:p5}--\ref{e:p8}.
+Sections~\ref{c:p5}--\ref{e:p8}.
 
 \begin{theorem}[The section derivative is the fine derivative]
 \label{c:p4:derivbridge}
@@ -2378,7 +2448,7 @@ over a chosen sequence.
 Apply Theorem~\ref{c:p4:monadtaylor} at $z_0=b$ and factor $h^{N+1}$
 out of the tail. Every exponent remaining in $Q_N$ is at least
 $\lambda$, so $v(Q_N)\ge\lambda$, and the valuation bound of
-Part~\ref{a:sec:field} (\ref{a:lem:valbound}) gives
+Section~\ref{a:sec:field} (\ref{a:lem:valbound}) gives
 $\abs{Q_N}<\tm^{\lambda-1}$; the deliberately generous factor
 $\omega=\tm^{-1}$ makes the bound independent of the ordinary real size
 of any leading coefficient. For the derivative take $N=1$ and
@@ -2395,7 +2465,7 @@ surreal coefficient fixed; in particular $D_z(\omega)=0$. It is not a
 field derivation on $\K$ in the sense of surreal differential algebra,
 whose normalization has $d(\omega)=1$, and the two are not merely
 differently normalized but genuinely incompatible --- see
-Part~\ref{b:part3}, \ref{b:derivation-obstruction}. A reader importing
+Section~\ref{b:part3}, \ref{b:derivation-obstruction}. A reader importing
 transseries results under the same symbol would silently change the
 meaning of every derivative in this article.
 \end{remark}
@@ -2404,10 +2474,10 @@ meaning of every derivative in this article.
 \label{c:p4:units}
 
 \begin{proposition}[Units]\label{c:p4:prop-units}
-\emph{(Class (b).)} Let $F\in\Hc(U)$ be nonzero, written
-$F=\tm^{\lambda}f_\lambda(1+E)$ with $\lambda=\vH(F)$ and
-$E\in\Hc_{>0}(U)$. Then $F$ is a unit of $\Hc(U)$ if and only if
-$f_\lambda$ is nowhere zero on $U$, in which case
+\emph{(Class (b).)} Let $F\in\Hc(U)$ be nonzero and put $\lambda=\vH(F)$.
+Then $F$ is a unit of $\Hc(U)$ if and only if
+$f_\lambda$ is nowhere zero on $U$, in which case $E=\tm^{-\lambda}F/f_\lambda-1$ belongs to
+$\Hc_{>0}(U)$ and
 \begin{equation}\label{c:p4:eq-unit}
  F^{-1}=\tm^{-\lambda}f_\lambda^{-1}\sum_{n\ge0}(-E)^n
 \end{equation}
@@ -2529,12 +2599,13 @@ is still summable for the same reason.
 An \emph{infinite} normalized coefficient $\beta$ does not satisfy the
 criterion: the decomposition $\beta=\beta_0+\delta_\beta$ with
 $\beta_0\in\CC$ and $\delta_\beta\in\mm$ does not exist, and the powers
-$\beta^n$ supply exponents that march downwards without bound instead of
-sitting inside a well-ordered monoid. This is the exact mechanism by
+$\beta^n$ have decreasing valuations. Thus substitution into a general
+infinite Taylor series is not justified by this criterion; finite
+polynomial substitution remains valid. This is the exact mechanism by
 which a function can be coherent in every finite translated chart and
 still fail to be coherent at all scales, and it is why the canonical
 exponential $\Exp$ is excluded from the all-scale class of
-Part~\ref{f:sec-allscale} (\ref{f:thm-rigidity}) although it is locally coherent.
+Section~\ref{f:sec-allscale} (\ref{f:thm-rigidity}) although it is locally coherent.
 The rigidity theorem states the exclusion; the failure of
 \eqref{c:p4:eq-chartchange} for infinite $\beta$ explains it.
 \end{remark}
@@ -2579,16 +2650,10 @@ connected $U$.
 positive surreal radius; repeated differentiation of the zero function
 there gives (ii) at that point.
 
-(iv) Let the zero germ be at $z_0$ and $c=\st z_0$. If
-$f_\lambda(c)\ne0$ then \eqref{c:p4:eq-reduction} already forbids
-$\ev F(z_0)=0$. Otherwise choose a small ordinary disk $\Omega$ about
-$c$ on whose boundary $f_\lambda$ does not vanish; its zero count there
-is finite. Global preparation (Part~\ref{d:sec:preparation},
-\ref{d:thm:preparation}) applied to $\tm^{-\lambda}F$ shows that
-$\ev F$ has only \emph{finitely many} zeros in $\halo\Omega$, counted
-with multiplicity. But a fine neighborhood of $z_0$ contains infinitely
-many distinct points of the monad of $c$, all of which would be zeros.
-Hence $F=0$. Apply the result to $F-G$ for the last assertion.
+(iv) The zero-germ hypothesis at $z_0$ supplies a fine neighborhood
+on which $\ev F$ vanishes. Thus (iv) is the same hypothesis
+as (iii) with a specified point, and (iii) already gives $F=0$.
+No preparation theorem is needed for this implication. Apply the result to $F-G$ for the last assertion.
 \end{proof}
 
 \begin{remark}[Two things the identity theorem does not say]
@@ -2596,16 +2661,16 @@ Hence $F=0$. Apply the result to $F-G$ for the last assertion.
 The accumulation in (i) is accumulation of \emph{standard parts in
 $\CC$}. Nothing here asserts, and nothing in this article may assert,
 the existence of a nontrivial set-sized convergent sequence in the fine
-topology: by the discreteness theorem of Part~\ref{a:sec:summability}
+topology: by the discreteness theorem of Section~\ref{a:sec:fine}
 (\ref{a:thm:discrete}) every set is closed and discrete and every
 set-indexed convergent net is eventually equal to its limit.
 
 Second, the theorem is false in the germ class (a). The function $L$ of
-the locally constant germ-analytic witness of Part~2 is germ-analytic on all of $\K$ and vanishes on a
+the locally constant germ-analytic witness of Section~\ref{b:part2} is germ-analytic on all of $\K$ and vanishes on a
 nonempty fine-open class without being zero. Conditions (ii)--(iv) above
-are exactly the hypotheses that fail to transfer, and the step that
-repairs them is the appeal to preparation, which is a theorem about
-$\Hc(U)$ and has no germ-class analogue.
+do not force global vanishing in the germ class. In the coherent class,
+monad-wide Taylor expansion and the ordinary identity theorem for each
+coefficient function supply that propagation.
 \end{remark}
 
 \begin{theorem}[Gluing over the ordinary base]\label{c:p4:gluing}
@@ -2635,7 +2700,7 @@ ordinary identity theorem applied to each coefficient.
 
 This is a sheaf over the \emph{ordinary} base. It is not an assertion
 that arbitrary fine-local analytic data glue to a coherent section; that
-assertion is false, and the locally constant germ-analytic witness of Part~2 is the counterexample.
+assertion is false, and the locally constant germ-analytic witness of Section~\ref{b:part2} is the counterexample.
 Requiring one well-ordered support across arbitrarily many components of
 a disconnected base is a strictly stronger and unmotivated condition,
 and it is not imposed.
@@ -2660,10 +2725,12 @@ sections.
 \emph{(Class (c).)} $f\mapsto\ev f$ is an injective
 $\CC$-algebra homomorphism $\Hol(U)\to\{\halo U\to\K\}$, and
 \[
- \st(\ev f(z))=f(\st z),\qquad
- (\ev f)'=\ev{(f')},\qquad
+ \st(\ev f(z))=f(\st z),\qquad (\ev f)'=\ev{(f')},
+\]
+and
+\[
  \ev{(g\circ f)}=\ev g\circ\ev f
- \quad\text{whenever }f(U)\subseteq V,\ g\in\Hol(V),
+ \quad\text{if }f(U)\subseteq V,\ g\in\Hol(V),
 \]
 together with the reflection identity
 $\ev{(f^{*})}(z)=\overline{\ev f(\bar z)}$ for
@@ -2693,8 +2760,8 @@ zeros over a non-zero of $f$.
 \end{proposition}
 
 \begin{proof}
-Write $f(a+T)=T^{m}u(T)$ with $u$ ordinary holomorphic and
-$u(a)\ne0$ on a small disk. Then
+Write $f(Z)=(Z-a)^m u(Z)$ with $u$ ordinary holomorphic and
+$u(a)\ne0$ on a small disk about $a$. Then
 $\ev f(a+\varepsilon)=\varepsilon^{m}\,\ev u(a+\varepsilon)$, and
 $\st(\ev u(a+\varepsilon))=u(a)\ne0$, so the second factor is a unit;
 hence $\varepsilon=0$ is the only solution in the monad. The second
@@ -2705,21 +2772,24 @@ assertion is Corollary~\ref{c:p4:shadow} for the support $\{0\}$.
 \label{c:p4:rk-liftzeros}
 A canonical lift cannot split an ordinary multiple zero into
 infinitesimally separated roots. The splitting phenomenon of
-Part~\ref{d:sec:preparation} therefore requires genuinely surcomplex coefficients at
+Section~\ref{d:sec:preparation} therefore requires genuinely surcomplex coefficients at
 positive exponents: class (b) strictly contains class (c), and the
 containment is visible already in the zero geometry. The three classes
 satisfy
 \[
- \text{(c) lifts}\ \subsetneq\ \text{(b) }\Hc(U)\ \subsetneq\
- \text{(a) germ-analytic functions restricted to }\halo U
- \ \subsetneq\ \text{01's bare differentiable class},
+ \begin{aligned}
+ \text{(c) lifts}&\subsetneq\text{(b) }\Hc(U)\\
+ &\subsetneq\{\text{(a) germ-analytic functions on }\halo U\}\\
+ &\subseteq\{\text{bare differentiable functions on }\halo U\}.
+ \end{aligned}
 \]
-each inclusion being proper. Proper-ness of the last two is witnessed by
-$\sum_{n}n!\,\varepsilon^{n}$ (Proposition~\ref{c:p4:obstruction}) and
-by $L$ (the locally constant germ-analytic witness of Part~2) respectively. No positive theorem about the
-bare differentiable class is proved anywhere in this article --- it
-supports only the calculus rules of Part~\ref{b:part3} and the
-counterexamples of Part~\ref{b:part2} --- and none may be imported into it.
+The first two inclusions are proper; the factorial series gives the
+second obstruction (Proposition~\ref{c:p4:obstruction}), while a
+locally constant nonconstant function on the halo gives a direct global
+witness. Strictness of the last inclusion is not proved here
+(Remark~\ref{b:no-goursat}). In particular $L$ cannot witness it, since
+$L$ is itself germ-analytic. Beyond the calculus rules, no regularity theorem for the
+bare differentiable class is proved here.
 \end{remark}
 
 \subsection{The scale-embedding bridge, and its limit}
@@ -2744,7 +2814,7 @@ complex constant times a single power $Z^{n}$.
 \end{theorem}
 
 \begin{proof}
-Choose $\lambda$ by the separated-block lemma of Part~\ref{b:part3}
+Choose $\lambda$ by the separated-block lemma of Section~\ref{b:part3}
 (\ref{b:blocks}): a single $\Delta$ bounds the --- possibly not well
 ordered --- union $\bigcup_n\supp(a_n)$, by the surreal cut property,
 and $\lambda>2\Delta$ places the support of $a_n\rho^{n}$ inside the
@@ -2767,7 +2837,7 @@ obstruction, which concerns a \emph{different chart}.
 \label{c:p4:obstruction}
 \emph{(Classes (a) and (b), contrasted.)} The series
 $\sum_{n\ge0}n!\,\varepsilon^{n}$ is a legitimate germ-analytic function
-on $\mm$, by the substitution corollary of Part~\ref{a:sec:summability}
+on $\mm$, by the substitution corollary of Section~\ref{a:sec:summability}
 (\ref{a:sec:substitution}). It is \emph{not} the restriction to a monad
 of any $F\in\Hc(U)$, for any ordinary neighborhood $U$ of $0$, having
 those same derivatives at $0$.
@@ -2800,7 +2870,7 @@ The positive result has an exact limit, which must travel with it:
 every germ has \emph{some} sufficiently small coherent chart, but there
 is no implication that it has a chart of every larger radius. That
 distinction is the content of the all-scale rigidity theorem of
-Part~\ref{f:sec-allscale} (\ref{f:thm-rigidity}), and the mechanism of failure is
+Section~\ref{f:sec-allscale} (\ref{f:thm-rigidity}), and the mechanism of failure is
 Remark~\ref{c:p4:rk-infinitecoeff}.
 \end{remark}
 
@@ -2809,11 +2879,11 @@ Remark~\ref{c:p4:rk-infinitecoeff}.
 \section{Contours, and the order-valued estimate}
 \label{c:p5}
 
-Part~\ref{a:sec:summability} showed that an ordinary circle is not a path in $\K$:
+Section~\ref{a:sec:fine} showed that an ordinary circle is not a path in $\K$:
 every fine-continuous map from a real interval into $\K$ is constant
 (\ref{a:sec:nopath}). A contour integral over $\K$ therefore cannot be a
 limit of Riemann sums along a fine-continuous parameterization. It must
-be defined some other way, and Part~\ref{b:part2} showed that there is
+be defined some other way, and Section~\ref{b:part2} showed that there is
 essentially no choice: the contour no-go theorem (\ref{b:nogo})
 proves that no functional on the ordinary unit circle can simultaneously
 give the classical value $2\pi i$ for $1/z$ and satisfy the fundamental
@@ -2912,8 +2982,8 @@ If $A(s)\ge0$ in $\No$ for every ordinary $s\in[\alpha,\beta]$, then
 
 \begin{proof}
 If $A\equiv0$ or the interval is degenerate there is nothing to prove.
-Otherwise let $\lambda_0=\min S$ and let $a_{\lambda_0}$ be the least
-nonzero coefficient function. For each fixed $s$, the sign of the
+Otherwise discard identically zero coefficient functions and let
+$\lambda_0$ be the least remaining exponent. For each fixed $s$, the sign of the
 surreal number $A(s)$ is the sign of its leading nonzero coefficient;
 since $A(s)\ge0$ for all $s$, we get $a_{\lambda_0}(s)\ge0$ for every
 $s$ --- were it negative at some $s$, the value $A(s)$ would be negative
@@ -2951,7 +3021,7 @@ because $\abs{\operatorname{Re}(\alpha F\gamma')}\le
 \abs{F}\abs{\gamma'}\le M\abs{\gamma'}$ in the ordered field $\No$.
 The left-hand side is a Hahn family of continuous real coefficient
 functions on the parameter interval, with one common support (the
-support of $F$ together with that of $M$ and $\alpha$). Apply
+union of $\supp M$ and $\supp\alpha+\supp F$). Apply
 Lemma~\ref{c:p5:positivity} and then $\K$-linearity of $\intH$
 (Proposition~\ref{c:p5:calculus}) to obtain $LM-\abs I\ge0$.
 \end{proof}
@@ -2979,7 +3049,7 @@ modulus of the integral, and hence of the derivatives; that is
 weaker than the false one and is proved above.
 \end{itemize}
 The two are consistent on the standard test case: for $F=\varepsilon Z$
-with $\varepsilon\in\mm$, the bound on $\abs z=R$ is $M=\varepsilon R$,
+with $\varepsilon\in\mm\cap\No_{>0}$, the bound on $\abs z=R$ is $M=\varepsilon R$,
 and Corollary~\ref{c:p5:cauchyest} gives
 $\abs{\ev{(F')}(0)}\le\varepsilon$, which is exact. Reading the
 coefficientwise caution as a prohibition would delete the strongest
@@ -3090,7 +3160,7 @@ affine scaling of a simple-pole residue.
 The qualification ``coherent chart'' is essential and is not decorative:
 a germ-analytic function has \emph{some} sufficiently small coherent
 chart (Theorem~\ref{c:p4:bridge}), but there is no implication that it
-has a chart of every larger radius. See Part~\ref{f:sec-allscale}.
+has a chart of every larger radius. See Section~\ref{f:sec-allscale}.
 
 \subsection{The coefficientwise majorant}
 \label{c:p5:majorantsec}
@@ -3146,13 +3216,20 @@ surreal circle; its coefficientwise definition is part of the statement
 of \eqref{c:p5:eq-majorant}. It is not claimed to be a norm. The
 coefficientwise order used here is much stronger than the surreal order,
 and the two estimates \eqref{c:p5:eq-cauchyest} and
-\eqref{c:p5:eq-majorant} are genuinely incomparable: for
+\eqref{c:p5:eq-majorant} use different input data. They are not
+logically incomparable as modulus bounds: the majorant lemma gives
+$\abs{\ev F(\zeta)}\le B_r(F)$ at every ordinary point of the circle,
+so the ML estimate with $M=B_r(F)$ implies
+\eqref{c:p5:eq-majorant}. For
 $F(w)=w(1+i\tm)$ on $r=1$ we have $B_1(F)=1+\tm$ while the pointwise
 bound is $M=1+\tm^{2}<B_1(F)$, so the ML estimate is the sharper one
-there; but the coefficientwise estimate is scale-resolved and survives
-in situations, such as the coefficientwise Liouville and growth theorems
-of Part~\ref{e:p8} (\ref{e:thm-coeffliouville}), where no single
-pointwise bound is available. Both are kept.
+there. The coefficientwise bounds still retain information that a
+single surreal inequality loses: the Liouville and growth theorem
+\ref{e:thm-coeffliouville} applies ordinary estimates to each coefficient
+separately. A pointwise surreal bound always exists on a fixed circle
+and, by Proposition~\ref{e:prop-autobounded}, even on the finite halo
+for macroscopically entire sections; such a bound alone does not recover
+those coefficientwise growth hypotheses.
 \end{remark}
 
 \subsection{Morera's criterion}
@@ -3257,7 +3334,7 @@ The uniqueness clause in Theorem~\ref{c:p5:primitive}(i) is a statement
 about class (b) and is false outside it. An arbitrary differentially
 holomorphic primitive may still be modified by a locally constant
 function: $P+L$ has the same derivative as $P$ everywhere, with $L$ as in
-the locally constant germ-analytic witness of Part~2. The restriction cannot be lifted, and the theorem
+the locally constant germ-analytic witness of Section~\ref{b:part2}. The restriction cannot be lifted, and the theorem
 that shows it cannot is the contour no-go theorem
 (\ref{b:nogo}).
 \end{remark}
@@ -3271,15 +3348,17 @@ primitive of $1/z$} on $\halo{(\CC^{\times})}$ --- no coherent global
 logarithm there.
 
 This is consistent with, and is the exact complement of, the global
-fine-analytic logarithm $\mathcal L$ constructed in Part~\ref{e:p9}
+fine-analytic logarithm $\mathcal L$ constructed in Section~\ref{e:p9}
 (\ref{e:thm-globallog}) on all of $\K^{\times}$, which satisfies
 $\mathcal L'(z)=1/z$ everywhere. That function is germ-analytic, class
-(a); it is not an element of any $\Hc(U)$, and the computation above is
-the proof. If it were coherent, the fundamental theorem
+(a); its restriction to $\halo{(\CC^\times)}$ is not the evaluation
+of an element of $\Hc(\CC^\times)$, as the computation above proves.
+On an ordinary domain avoiding the argument cut, it does agree with
+the canonical lift of an ordinary logarithm branch. If it were coherent, the fundamental theorem
 (Theorem~\ref{c:p5:primitive}(i)) would force the unit-circle integral to
 be $0$ rather than $2\pi i$. The monodromy obstruction survives in the
 coherent category and disappears in the more permissive local one; that
-is the whole content of the no-go theorem of Part~\ref{b:part2}, and it is
+is the whole content of the no-go theorem of Section~\ref{b:part2}, and it is
 why the fundamental theorem above is stated only for coherent
 primitives.
 \end{remark}
@@ -3300,10 +3379,10 @@ primitives.
 \label{d:sec:preparation}
 
 Everything in this part is a statement about the \emph{coherent} class
-$\Hc(U)$ of Part~4: one common connected ordinary domain $U$, one
+$\Hc(U)$ of Section~\ref{c:p4}: one common connected ordinary domain $U$, one
 ordinary holomorphic coefficient function per exponent, well-ordered
 set support.  Nothing here is claimed for the germ-analytic class of
-Part~3, and nothing here is a statement about canonical lifts.  The
+Section~\ref{b:part3}, and nothing here is a statement about canonical lifts.  The
 reason is structural rather than cautious: the whole mechanism below is
 ordinary Hermite division applied to the coefficient functions
 \emph{simultaneously on one domain}, and it is exactly that common
@@ -3443,7 +3522,7 @@ supports) and the fact that a product adds supports,
  :=\{\sigma_1+\dots+\sigma_n:\sigma_i\in S\}.
 \]
 Since $S$ is a well-ordered set of positive surreals, Neumann's lemma
-in its finite-word form (Part~1) says that
+in its finite-word form (Sections~\ref{a:sec:summability}--\ref{a:sec:fine}) says that
 $\Neu{S}=\bigcup_{n\ge0}S^{(n)}$ is well ordered and that each of its
 elements is $S^{(n)}$-representable for only finitely many $n$, with
 finitely many words in each case.  Hence $(p_n)_{n\ge1}$ and
@@ -3463,7 +3542,7 @@ sum of a summable family, evaluated at the bookkeeping value $s=1$, and
 not a claim that the partial sums converge for any topology --- gives
 \eqref{d:eq:factoreq}, hence \eqref{d:eq:preparation}.  The leading
 coefficient function of $u_0(1+q)$ is $u_0$, nowhere zero on $V$, so
-that factor is a unit of $\Hc(V)$ by the unit criterion of Part~4.
+that factor is a unit of $\Hc(V)$ by the unit criterion of Section~\ref{c:p4}.
 
 Uniqueness.  Suppose $(p,q)$ and $(\widetilde p,\widetilde q)$ both
 solve \eqref{d:eq:factoreq} with the stated support conditions, and let
@@ -3592,11 +3671,12 @@ $d=0$ the statement is the identity $A=1\cdot A+0$.
 \subsection{Roots of a monic polynomial with infinitesimal corrections}
 \label{d:sub:roots}
 
-\begin{lemma}[All corrections are infinitesimal]
+\begin{lemma}[Finite roots and infinitesimal corrections]
 \label{d:lem:smallroots}
-Let $W(Z)=Z^{d}+\sum_{j<d}b_jZ^{j}$ with every $b_j\in\mm$ and $d\ge1$.
+Let $W(Z)=Z^{d}+\sum_{j<d}b_jZ^{j}$ with every $b_j\in\Ov$ and $d\ge1$.
 Then $W$ has exactly $d$ roots in $\K$ counted with algebraic
-multiplicity, and every root lies in $\mm$.  Moreover, if all the $b_j$
+multiplicity, and every root is finite. If all the $b_j$ are
+infinitesimal, every root lies in $\mm$.  Moreover, if all the $b_j$
 lie in a set-sized subfield $\K_G=\CC((\tm^{G}))$ for a divisible
 set-sized ordered subgroup $G\subset\No$, then all the roots lie in
 $\K_G$.
@@ -3609,9 +3689,10 @@ $v(b_j\xi^{j})-v(\xi^{d})=v(b_j)+(j-d)v(\xi)>0$ for $j<d$, so the monic
 term $\xi^{d}$ is the unique term of least valuation and cannot be
 cancelled --- this is the exact place where a root of negative
 valuation is excluded, and it uses only the ordered-field valuation, no
-analysis.  If $v(\xi)=0$ then reducing $W(\xi)=0$ modulo $\mm$ gives
-$\st(\xi)^{d}=0$, impossible for $\st(\xi)\ne0$.  Hence $v(\xi)>0$ or
-$\xi=0$, i.e.\ $\xi\in\mm$.  For the last clause, $\K_G$ is itself
+analysis. Thus every root is finite. If all the $b_j$ are
+infinitesimal and $v(\xi)=0$, reducing $W(\xi)=0$ modulo $\mm$ gives
+$\st(\xi)^d=0$, impossible for $\st(\xi)\ne0$. In this special case
+every root is infinitesimal (including the possible root $0$).  For the last clause, $\K_G$ is itself
 algebraically closed (Poonen), so it already splits $W$; passing to the
 full class field adds no further roots.
 \end{proof}
@@ -3653,7 +3734,8 @@ roots of $W$ with their polynomial multiplicities: multiplying by a
 germ-invertible factor changes neither the location nor the least
 nonzero Taylor degree at a root.
 
-By Lemma~\ref{d:lem:smallroots} every root of $W$ is finite, so it has
+The lower coefficients of $W=P_0+p$ are finite, so by
+Lemma~\ref{d:lem:smallroots} every root of $W$ is finite, so it has
 a standard part.  Applying the standard-part ring homomorphism to the
 factorization $W=\prod_{k=1}^{d}(Z-\xi_k)$ gives
 \[
@@ -3663,7 +3745,7 @@ so the $\st\xi_k$ are exactly the zeros $c_1,\dots,c_r$ of $f_0$ in
 $\Omega$, each occurring $m_j$ times.  This proves (ii) and
 \eqref{d:eq:divisor}, and also proves that all $d$ roots lie in
 $\halo\Omega$.  Over a point where $f_0(a)\ne0$ the faithful-evaluation
-estimate of Part~4, $\st\bigl(\tm^{-\beta}\ev F(a+\epsilon)\bigr)=f_0(a)$,
+estimate of Section~\ref{c:p4}, $\st\bigl(\tm^{-\beta}\ev F(a+\epsilon)\bigr)=f_0(a)$,
 already excludes a zero; so does the standard-part identity just
 derived.
 
@@ -3690,7 +3772,7 @@ absent from the halo, so a root sitting in the monad of a boundary
 point is counted by neither side.  Third, neither this theorem nor the
 Rouch\'e statements below count zeros whose standard-scale coordinate
 is infinite; those live outside every halo of a bounded ordinary domain
-and require a different affine scale chart (Part~10).
+and require a different affine scale chart (Section~\ref{f:sec-allscale}).
 \end{remark}
 
 \begin{corollary}[Simple-root lifting and its displacement]
@@ -3793,9 +3875,11 @@ function at all.
 
 \begin{corollary}[Real-margin Rouch\'e: a surcomplex-valued hypothesis]
 \label{d:cor:rouchereal}
-Let $\tm^{-\beta}F$ and $\tm^{-\beta}G$ have nonnegative support with
-leading coefficient functions $f_0$ and $g_0$, and suppose $f_0$ has no
-zero on $\Gamma$.  If for \emph{one ordinary real} $q$ with
+Write $\tm^{-\beta}F=f_0+E_F$ and
+$\tm^{-\beta}G=g_0+E_G$ with $f_0,g_0\in\Hol(U)$ and
+$E_F,E_G\in\Hc_{>0}(U)$. Thus $f_0,g_0$ are the exponent-zero
+coefficient functions (a zero coefficient is allowed). Suppose $f_0$
+has no zero on $\Gamma$.  If for \emph{one ordinary real} $q$ with
 $0\le q<1$
 \begin{equation}\label{d:eq:realmargin}
  \bigl\lvert\ev G(z)-\ev F(z)\bigr\rvert\le q\,\bigl\lvert\ev F(z)\bigr\rvert
@@ -3830,8 +3914,17 @@ is $1\le\abs{z-2}$, which is not strict at $z=1$; and indeed
 $G=z-1-\tm$ has leading coefficient function $z-1$, which vanishes at
 the boundary point $1$.  So $G$ does not satisfy the hypothesis of the
 zero-cluster theorem at all, and its unique zero $1+\tm$ sits in the
-monad of a boundary point --- inside neither $\halo\Omega$ nor its
-complement's interior.  No manuscript in the collection asserts the
+monad of a boundary point, outside $\halo\Omega$. Since the halo is fine-clopen, this
+point does lie in the fine interior of its complement. This example
+exhibits loss of the boundary-reduction hypothesis, but both halo zero
+counts happen to be zero.
+
+For an actual failure of the zero-count conclusion, instead take
+$F(Z)=Z$ and $G(Z)=Z-1+\tm$ on the same unit circle. Then
+$\abs{\ev G-\ev F}=1-\tm<1=\abs{\ev F}$ everywhere on the circle.
+Yet $F$ has one zero in $\halo\Omega$ and $G$ has none: its unique
+zero $1-\tm$ has standard part $1$ and is excluded from that halo.
+No manuscript in the collection asserts the
 version of Rouch\'e with a bare surreal inequality, and this merged
 document does not either: the ordinary real margin $q<1$ of
 Corollary~\ref{d:cor:rouchereal}, or the ordinary boundary inequality of
@@ -3845,7 +3938,7 @@ use.
 The prepared polynomial $W$ has a second, completely independent
 constructive description: it is determined by finitely many Hahn-valued
 contour integrals.  The proof consumes the exact weighted argument
-principle, Theorem~\ref{d:thm:weightedarg} of Part~7, which is proved
+principle, Theorem~\ref{d:thm:weightedarg} of Section~\ref{d:sec:residues}, which is proved
 there from Theorem~\ref{d:thm:preparation} and is independent of this
 subsection.
 
@@ -3902,9 +3995,11 @@ they are attached to different classes of function, and two of them
 take \emph{different numerical values at the same point}.  They are
 kept apart here by symbol:
 \[
- \Res \quad(\text{formal, in }\K((X))),\qquad
- \ResH{a}\quad(\text{cluster, at an ORDINARY centre }a),\qquad
- \Resat{b}\quad(\text{actual, at a surcomplex point }b).
+ \begin{aligned}
+ \Res&\quad\text{formal, in }\K((X)),\\
+ \ResH a&\quad\text{cluster, at an ordinary centre }a,\\
+ \Resat b&\quad\text{actual, at a surcomplex point }b.
+ \end{aligned}
 \]
 Using one symbol for the first two turns a correct statement into a
 false one; the standing example of
@@ -3929,7 +4024,7 @@ $\Resat{b}$ for the resulting coefficient; this is the notion R3 of
 \end{definition}
 
 This is a purely algebraic notion, valid at \emph{any} surcomplex
-centre, and it belongs to the germ layer of Part~3, not to the coherent
+centre, and it belongs to the germ layer of Section~\ref{b:part3}, not to the coherent
 class.  Its two basic laws are proved there and are used freely below:
 the change-of-variable law
 $\Res_{Y=0}A(\psi(Y))\psi'(Y)\dd Y=m\,\Res_{X=0}A(X)\dd X$ for
@@ -3961,7 +4056,7 @@ surcomplex number.
 
 The coefficient ring of $\Mc(U)$ is a field, so a nonzero element of
 $\Mc(U)$ is invertible by leading-term factorization together with the
-infinitesimal functional calculus of Part~4.  The adjective ``cluster''
+infinitesimal functional calculus of Section~\ref{c:p4}.  The adjective ``cluster''
 is the whole point: $\ResH{a}$ is attached to an ordinary centre and
 records a whole infinitesimal cluster sitting above it.  It is
 \emph{not} the residue of a meromorphic germ at the exact point $a$.
@@ -3977,7 +4072,8 @@ principal part,
 \[
  \frac{A(b+h)}{B(b+h)}=\sum_{n\ge-N}C_nh^{n}\in\K((h)),
 \]
-which is the case whenever $b$ is not a common zero of infinite order.
+which holds at every $b\in\halo U$: the coherent identity theorem
+excludes the zero germ of $B$, so its order there is finite.
 Its \emph{actual local residue} is
 $\Resat{b}\bigl((A/B)(z)\dd z\bigr)=C_{-1}$.  It is centred at $b$, not
 at $\st b$.
@@ -4012,10 +4108,13 @@ The first value is read off \eqref{d:eq:movingpole}: only the $n=0$
 coefficient $\zeta^{-1}$ contributes a residue at $0$, with value $1$.
 The second is immediate, the actual pole being the simple pole at
 $\epsilon$.  The third is also immediate and is not a competing
-computation: on the ball $\abs{\zeta}<\abs{\epsilon}$ the function
-expands as $-\epsilon^{-1}\sum_{n\ge0}(\zeta/\epsilon)^{n}$, a power
+computation: on the fine neighborhood $\epsilon\mm$, equivalently when
+$\zeta/\epsilon$ is infinitesimal, the function expands as $-\epsilon^{-1}\sum_{n\ge0}(\zeta/\epsilon)^{n}$, a power
 series with no negative powers, so the meromorphic germ at the exact
-point $0$ is regular there.  The cluster residue at the ordinary centre
+point $0$ is regular there. The weaker inequality
+$\abs\zeta<\abs\epsilon$ does not ensure Hahn summability: at
+$\zeta=\epsilon/2$ all nonzero geometric terms have valuation zero
+before multiplication by $-\epsilon^{-1}$.  The cluster residue at the ordinary centre
 $0$ correctly accounts for the actual pole at $\epsilon$; the local
 residue at $0$ correctly reports that there is no pole at $0$.
 
@@ -4023,10 +4122,13 @@ Two scope statements travel with the example.  The expansion
 \eqref{d:eq:movingpole} is \emph{not} asserted to evaluate throughout
 the monad containing the pole; it is a coefficientwise identity valid
 away from that monad.  And the term $\epsilon^{n}\zeta^{-n-1}$
-contributes, at the exponents carried by $\epsilon^{n}$, a pole of order
-$n+1$ at $0$: the pole orders are unbounded in the Hahn exponent, which
-is exactly the configuration ruled out by the hypothesis of
-Theorem~\ref{d:thm:bridge2}.
+has a pole of order $n+1$ in its ordinary coefficient. To check that
+these orders survive Hahn regrouping, put $\alpha=v(\epsilon)>0$ and
+$c=\operatorname{lc}(\epsilon)$. At exponent $n\alpha$, the $n$th term
+contributes $c^n\zeta^{-n-1}$; terms with larger index have valuation
+$>n\alpha$, and smaller indices have pole order at most $n$. Hence the
+coefficient at $n\alpha$ has pole order exactly $n+1$. These unbounded
+orders are excluded by the hypothesis of Theorem~\ref{d:thm:bridge2}.
 \end{example}
 
 \subsection{The coefficientwise residue theorem, in maximal generality}
@@ -4155,7 +4257,7 @@ $C=WQ+R$ with $Q\in\Hc(V)$ and $R\in\K[Z]$, $\deg R<m$, so
  \frac AB=Q+\frac RW .
 \end{equation}
 The first summand is coherent holomorphic on $V$, so its coefficientwise
-contour integral vanishes by Cauchy's theorem (Part~5).  Over the
+contour integral vanishes by Cauchy's theorem (Section~\ref{c:p5}).  Over the
 algebraically closed field $\K$, the proper fraction $R/W$ has a finite
 partial-fraction expansion
 \[
@@ -4176,9 +4278,10 @@ positive real and $b_j$ is infinitesimal,
  \frac1{(z-b_j)^{k}}
  =\sum_{n\ge0}\binom{k+n-1}{n}\frac{b_j^{n}}{z^{k+n}} ,
 \end{equation}
-a Hahn summable family (the exponents $n\,v(b_j)$ are positive and
-increase, and at each Hahn exponent only finitely many $n$ contribute),
-including the degenerate case $b_j=0$.  Its coefficientwise circle
+a Hahn summable family by the all-lengths clause of Neumann's lemma
+applied to the positive support of $b_j$. Increasing leading valuations
+alone would not justify the finiteness clause in higher rank. The case
+$b_j=0$ leaves only the $n=0$ term.  Its coefficientwise circle
 integral divided by $2\pi i$ is the ordinary residue of each displayed
 monomial at $0$: only the term with $k+n=1$, that is $k=1$ and $n=0$,
 survives, giving $1$; all terms with $k\ge2$ give $0$.  Multiplying by
@@ -4241,8 +4344,10 @@ there is \emph{one} finite integer $d\ge1$ such that
  \quad\text{for every }s\in S .
 \]
 Then $G:=(z-a)^{d}F$ is a coherent section in $\Hc\bigl(D_\varrho(a)\bigr)$
-with the same support, $\ev F=\ev G/(z-a)^{d}$ is meromorphic on
-$\halo{D_\varrho(a)}\setminus\{a\}$ with a pole of order at most $d$ at
+with the same support. The quotient $\ev G/(z-a)^d$ extends the
+original evaluation from $\halo{(D_\varrho(a)\setminus\{a\})}$ to
+$\halo{D_\varrho(a)}\setminus\{a\}$ and has at most a pole of
+order $d$ at
 the \emph{exact} point $a$, and
 \begin{equation}\label{d:eq:bridge2}
  \ResH{a}\bigl(F(z)\dd z\bigr)
@@ -4268,7 +4373,7 @@ $g_s^{(d-1)}(a)/(d-1)!$ with $g_s=(z-a)^{d}f_s$, so by
   =\frac{G^{(d-1)}(a)}{(d-1)!},
 \]
 the last step because differentiation of a coherent section and
-evaluation at an ordinary point are both coefficientwise (Part~4).
+evaluation at an ordinary point are both coefficientwise (Section~\ref{c:p4}).
 \end{proof}
 
 \begin{remark}[Exactly what the hypothesis excludes, and what is not claimed]
@@ -4285,8 +4390,9 @@ sufficient criterion, and the example shows it cannot simply be dropped.
 Note also that R2 and R3 may both be defined and still differ in
 location: Theorem~\ref{d:thm:bridge1} equates $\ResH{a}$ with a sum over
 the whole cluster $a+\mm$, while \eqref{d:eq:bridge2} equates it with the
-single value at the centre; these agree precisely when the cluster has
-collapsed onto its centre in the sense above.
+single value at the centre. The uniform pole-order hypothesis makes
+all possible poles lie at that centre and thus ensures agreement;
+numerical equality by cancellation can also occur without that hypothesis.
 \end{remark}
 
 \begin{remark}[Two meanings of a Laurent expansion]
@@ -4338,10 +4444,10 @@ Then
 \]
 The first summand lies in $\Hc(V)$, so $A\,\mathcal U'/\mathcal U$ is
 coherent holomorphic and its coefficientwise integral around the closed
-contour $\Gamma$ vanishes by Cauchy's theorem (Part~5).  Algebraically
+contour $\Gamma$ vanishes by Cauchy's theorem (Section~\ref{c:p5}).  Algebraically
 $W'/W=\sum_{j=1}^{d}(w-\xi_j)^{-1}$ in $\K(w)$.  Cauchy's integral
 formula at the genuinely surcomplex point $\xi_j\in\halo\Omega$
-(Part~5) evaluates
+(Section~\ref{c:p5}) evaluates
 $\frac1{2\pi i}\ointH_\Gamma A(w)(w-\xi_j)^{-1}\dd w=\ev A(\xi_j)$, the
 kernel being handled there by its uniform Hahn expansion near the
 ordinary contour.  Adding the finitely many terms gives
@@ -4396,7 +4502,7 @@ zeros, the derivatives and the residues used to compute it live in
 $\K$.  It is an analytic index for the specified contour pairing.  It is
 \emph{not} identified with the winding number of a continuous loop in
 the fine topology: every continuous map $[0,1]\to\K$ is constant
-(Part~1), so no such nonconstant loop exists.
+(Sections~\ref{a:sec:summability}--\ref{a:sec:fine}), so no such nonconstant loop exists.
 \end{remark}
 
 \subsection{Deformation of the contour}
@@ -4541,13 +4647,13 @@ This part collects the classical global theorems that survive on a halo
 $\halo U$, each with the exact hypothesis that makes it true and, where
 one exists, with the counterexample that shows the hypothesis cannot be
 weakened.  Every statement below is a statement about the \emph{coherent}
-class $\Hc(U)$ of Part~4, with the sole exception of
+class $\Hc(U)$ of Section~\ref{c:p4}, with the sole exception of
 \S\ref{e:sec-schwarz}, whose sharp inequalities hold only for canonical
 classical lifts $\ev f$ and are \emph{false} for general coherent
 self-maps of the halo.  Nothing in this part is asserted for the
-germ-analytic class of Part~3: the identity theorem, the global maximum
+germ-analytic class of Section~\ref{b:part3}: the identity theorem, the global maximum
 principle, Liouville, uniqueness of primitives and the open mapping
-theorem all fail there, as the locally constant witnesses of Part~2 show.
+theorem all fail there, as the locally constant witnesses of Section~\ref{b:part2} show.
 
 \subsection{The normalization lemma and local finite degree}
 \label{e:sec-openmapping}
@@ -4584,21 +4690,23 @@ fine-open neighbourhood of $b$.
 \end{lemma}
 
 \begin{proof}
-That some $m$ exists is the identity theorem of Part~4 applied to
+That some $m$ exists is the identity theorem of Section~\ref{c:p4} applied to
 $F-\ev F(b)$: were every positive-order derivative to vanish at $b$, that
 section would vanish identically.  Concretely, its first nonzero leading
 coefficient function has finite vanishing order at $a$, so some
 positive-order derivative is nonzero at $b$.
 
-The exact Taylor expansion of Part~4, valid throughout the monad and here
+The exact Taylor expansion of Section~\ref{c:p4}, valid throughout the monad and here
 applied with the infinitesimal increment $rw$ for finite $w$, gives
 \[
  G(w)\;=\;w^m+\sum_{n>m}\frac{a_n}{a_m}\,r^{\,n-m}w^n .
 \]
 The support of the tail lies in
-$\bigl(\supp(F)+\Neu{\supp(\varepsilon)}-v(a_m)\bigr)+\{\rho,2\rho,3\rho,\dots\}$.
-This is a sum of a fixed well-ordered set with the monoid generated by the
-single positive exponent $\rho$, so it is well ordered, and each exponent
+$\bigl(\supp(F)+\Neu{\supp(\varepsilon)}+\supp(a_m^{-1})\bigr)
+ +\{\rho,2\rho,3\rho,\dots\}$.
+The reciprocal support must be included in full; its minimum is
+$-v(a_m)$, but it need not be a singleton. The displayed set is a sum
+of a fixed well-ordered set with the positive multiples of $\rho$, so it is well ordered, and each exponent
 receives a contribution from only finitely many $n$; hence the coefficient
 of each exponent is an ordinary \emph{polynomial} in $w$, in particular an
 entire function of $w$.  By \eqref{e:eq-rho} the least exponent occurring
@@ -4627,7 +4735,7 @@ to fine-open subclasses.
 \begin{proof}
 For $\eta\in\mm$ the section $G-\eta$ of $\Hc(\CC)$ has leading
 coefficient function $w^m$, whose only zero in $\CC$ is a zero of order
-$m$ at the origin.  The zero-cluster theorem of Part~6 therefore produces
+$m$ at the origin.  The zero-cluster theorem of Section~\ref{d:sec:preparation} therefore produces
 exactly $m$ solutions of $G(w)=\eta$ in $\mm$, counted with multiplicity,
 and no solutions in any other monad.  Conversely $G(w)\in\mm$ for $w\in\mm$,
 because $G-w^m$ has positive support and $w^m\in\mm$.  Undoing the two
@@ -4657,9 +4765,9 @@ $\eta>0$ a sufficiently small surreal if $c=\ev F(b)\ne0$, and any
 sufficiently small nonzero value if $c=0$.  This contradicts a local
 maximum.  For the second formulation, a local maximum forces the germ of
 $\ev F$ at $b$ to be constant; subtracting that constant, which is itself
-an element of $\Hc(U)$ supported at exponent zero, and applying the
-identity theorem of Part~4 in its vanishing-germ form, gives $F$ constant
-on the whole connected halo.
+an element of $\Hc(U)$ with constant coefficient functions, and applying the
+identity theorem of Section~\ref{c:p4} in its vanishing-germ form, gives $F$ constant
+on the whole halo over the connected ordinary base.
 \end{proof}
 
 \begin{remark}[Exactly what the maximum principle does and does not say]
@@ -4698,7 +4806,7 @@ section $K$, the equation $K=-H(y+K)$ determines the part of $K$ of degree
 $n$ in occurrences of $H$ from the parts of smaller degree.  Derivatives
 of entire coefficient functions are entire, so every term lies in
 $\Hc_{>0}(\CC)$, and the support of a degree-$n$ term is a sum of $n$
-elements of $\supp(H)$.  Neumann~\cite{Neumann}'s lemma in its finite-word form (Part~1)
+elements of $\supp(H)$.  Neumann~\cite{Neumann}'s lemma in its finite-word form (Sections~\ref{a:sec:summability}--\ref{a:sec:fine})
 makes the family summable, since each exponent of
 $\Neu{\supp(H)}$ admits only finitely many representations as a word.
 Uniqueness follows by comparing least exponents: altering $K$ on the right
@@ -4742,8 +4850,8 @@ Call $F\in\Hc(\CC)$ \emph{macroscopically entire}; its evaluation lives on
 $\halo{\CC}=\Ov$, the finite elements, not on all of $\K$.  Three
 different boundedness hypotheses are in circulation for such $F$, and they
 give three genuinely different theorems.  They are stated here together,
-in increasing strength, so that no conclusion is imported under the wrong
-one.
+with their separate conclusions. The ordinary-real and coefficientwise
+bounds are incomparable; neither should be substituted for the other.
 
 \paragraph{(a) A single surreal bound is vacuous.}
 
@@ -4770,7 +4878,7 @@ of modulus less than $1$, yet $F'=\tm\ne0$.
 Thus ``bounded by some surreal constant on the finite plane'' is a
 property of \emph{every} macroscopically entire function and cannot be the
 hypothesis of any Liouville theorem.  Note also why the order-valued
-Cauchy estimate of Part~5 does not rescue the argument: for $F=\tm Z$ and
+Cauchy estimate of Section~\ref{c:p5} does not rescue the argument: for $F=\tm Z$ and
 the real bound $M=1$ on the ordinary circle $\abs z=R$, that estimate
 gives $\tm\le1/R$ for every ordinary real $R>0$, which is true for every
 infinitesimal $\tm$.  The classical step is an archimedean limit in $R$,
@@ -4858,8 +4966,12 @@ $f_\gamma$.
 
 \begin{remark}[The hierarchy, and the two counterexamples]
 \label{e:rem-liouvillehierarchy}
-Hypothesis (c) implies (b) implies (a), and none of the implications
-reverses.  Importing the conclusion of
+For the boundedness case $d=0$, hypotheses (b) and (c) both imply (a),
+but are incomparable. The constant section $F=\omega$ has bounded
+ordinary coefficient functions and no ordinary-real bound on its values,
+so (c) does not imply (b). Conversely $F=\tm Z$ satisfies (b) and
+violates (c). The earlier assertion of a linear hierarchy
+(c)$\Rightarrow$(b)$\Rightarrow$(a) was therefore false.  Importing the conclusion of
 Theorem~\ref{e:thm-coeffliouville} under hypothesis (b) is false:
 $F=\tm Z$ is real-bounded by $1$ on the whole finite plane and is not
 constant.  Importing it under hypothesis (a) is worse, since (a) holds for
@@ -4871,10 +4983,11 @@ nonzero scalar multiples of $Z$ and are therefore unbounded, so that (c)
 is genuinely violated.
 
 These are a \emph{different} obstruction from the locally constant
-function $L$ of Part~2.  The functions $\tm Z$ and $\varepsilon Z$ are
+function $L$ of Section~\ref{b:part2}.  The functions $\tm Z$ and $\varepsilon Z$ are
 coherent, and their domain is $\halo{\CC}$, the halo of the ordinary
-plane; $L$ is defined on all of $\K$, is germ-analytic and is not coherent
-on any ordinary domain.  Different analytic class, different domain; the
+plane; $L$ is defined on all of $\K$ and is germ-analytic. Its restriction
+to every finite halo is the coherent constant $1$; it is its global
+behavior on $\K$ that gives the different counterexample.  Different analytic class, different domain; the
 two must not be presented as instances of one phenomenon.
 \end{remark}
 
@@ -4921,7 +5034,7 @@ prevents a false analogy with the ordinary punctured disk.
 
 \subsection{Schwarz--Pick for canonical classical lifts}\label{e:sec-schwarz}
 
-This subsection, alone in Part~8, is about the class of canonical
+This subsection, alone in Section~\ref{e:p8}, is about the class of canonical
 classical lifts $\ev f$ of ordinary holomorphic $f$.  The sharp
 inequalities below are \emph{false} for general coherent self-maps of
 $\halo{\mathbb D}$; see Example~\ref{e:ex-schwarzfail}.  Let
@@ -5068,14 +5181,14 @@ $H$, and by Neumann's lemma each such equation has finitely many terms.
 Since $f_0'(g_0)$ is nowhere zero on $V$, the equation determines a single
 ordinary holomorphic $j_\gamma$ on $V$.  Well-ordered recursion over
 $M_{>0}$ constructs $J$, and the support-controlled composition law of
-Part~4 (inner ordinary holomorphic map plus positive-support perturbation)
+Section~\ref{c:p4} (inner ordinary holomorphic map plus positive-support perturbation)
 justifies the composition identities.
 
 For the evaluated statement: $\st(\ev F(a+\eta))=f_0(a)$, so the image lies
 in $\halo V$, and the evaluated identity $\ev F\circ\ev G=\mathrm{id}$
 gives surjectivity.  For injectivity take $w=b+\varepsilon\in\halo V$; the
 section $F-w$ has leading coefficient function $f_0-b$, which has a unique
-and simple zero at $a=g_0(b)$, so the zero-cluster theorem of Part~6 gives
+and simple zero at $a=g_0(b)$, so the zero-cluster theorem of Section~\ref{d:sec:preparation} gives
 exactly one solution of $\ev F(z)=w$ in $a+\mm$ and none in any other
 monad.  Faithfulness of evaluation gives the remaining composition
 identity, and
@@ -5150,7 +5263,7 @@ the statement about $D_z^k$.
 Definition~\ref{e:def-coefconv} describes a topology on \emph{coefficient
 data}.  It is not, and must not be read as, pointwise convergence of
 evaluated values in the fine topology: by the discreteness theorem of
-Part~1 every set-indexed convergent net in $\K$ is eventually equal to its
+Sections~\ref{a:sec:summability}--\ref{a:sec:fine} every set-indexed convergent net in $\K$ is eventually equal to its
 limit, so a sequential Montel theorem in the fine topology would be the
 wrong statement.  Countability of $S$ is also not cosmetic.  The diagonal
 argument extracts one subsequence controlling countably many independent
@@ -5164,13 +5277,13 @@ coefficient topology and not the topology of values.
 \label{e:sec-harmonic}
 
 If $F\in\Hc(U)$ and $\ev F=u+iv$ with $z=x+iy$, then the Cauchy--Riemann
-equations of Part~3, together with the equality of mixed second
+equations of Section~\ref{b:part3}, together with the equality of mixed second
 derivatives, give
 \[
  u_{xx}+u_{yy}=0,\qquad v_{xx}+v_{yy}=0,
 \]
 where the derivatives are genuine fine partial derivatives, by the bridge
-theorem of Part~4 identifying the coefficientwise derivative with the fine
+theorem of Section~\ref{c:p4} identifying the coefficientwise derivative with the fine
 difference-quotient derivative.  These are differential identities; no
 global Dirichlet problem is asserted by them.  Theorem~\ref{e:thm-poisson}
 is what fills that gap, and only on ordinary disks with coefficientwise
@@ -5235,7 +5348,7 @@ bound on the circle before perturbation; expand its inverse in the
 infinitesimal coordinates of $\varepsilon$.  The resulting support lies in
 the sum of the original support with a positive-support Neumann monoid, so
 the family is Hahn summable and each coefficient is an ordinary continuous
-function of $\theta$, integrable in the coefficientwise sense of Part~5.
+function of $\theta$, integrable in the coefficientwise sense of Section~\ref{c:p5}.
 Ordinary differentiation under the compact integral identifies each Taylor
 coefficient of the right-hand side with the corresponding Taylor
 coefficient of $u$ at $a$, proving \eqref{e:eq-poisson}.  For general
@@ -5270,7 +5383,7 @@ extension is unique.
 Ordinary Schwarz reflection applies to each $f_\gamma$.  The support is
 unchanged, so the reflected family is coherent, and evaluation commutes
 with conjugation of coefficients and of the variable.  Uniqueness is the
-coherent identity theorem of Part~4.
+coherent identity theorem of Section~\ref{c:p4}.
 \end{proof}
 
 The reality hypothesis in Theorem~\ref{e:thm-reflection} concerns
@@ -5295,13 +5408,13 @@ components.
 \label{e:p9}
 
 Every function constructed in this part is germ-analytic in the sense of
-Part~3 --- it has a Hahn-summable power-series expansion on a fine
-neighbourhood of every point of its domain --- and \emph{none} of them is a
-coherent section on the domain where it is interesting.  The global
-principles of Part~8 are therefore unavailable here, and are not invoked.
-That is not a defect of the constructions: \S\ref{e:sec-globallog} shows
-that the failure of coherence is forced, and it is exactly what the
-contour no-go theorem of Part~2 consumes.
+Section~\ref{b:part3} --- it has a Hahn-summable power-series expansion on a fine
+neighbourhood of every point of its domain. Their coherent restrictions
+and their class-wide domains must be distinguished: the exponential
+and its twists are coherent on finite translated charts, while the
+global logarithm is not coherent on the halo of the whole punctured
+ordinary plane. That specific obstruction, proved in
+\S\ref{e:sec-globallog}, is what the contour no-go theorem consumes.
 
 \subsection{The infinitesimal and finite exponentials, and polar form}
 \label{e:sec-infexp}
@@ -5448,7 +5561,8 @@ $\abs{\Exp(b)}\,\omega\,\abs h$, which is fine-small, so $\Exp'=\Exp$.
 \end{proof}
 
 The existence of a canonical surcomplex exponential with kernel
-$2\pi i\Oz$ is established literature, due to Ehrlich~\cite{CEb} and Kaplan; what is
+$2\pi i\Oz$ is established in Ehrlich and Kaplan~\cite[Proposition~11.2 and
+Theorem~11.1, pp.~33--34 of arXiv:2002.07739v3]{EK}; what is
 proved here is its local analytic calculus.  Note also that $\Exp$ does
 \emph{not} have a Hahn-summable Maclaurin series at every argument: at an
 infinite positive real argument it is defined by $\exp_{\No}$, not by
@@ -5465,8 +5579,8 @@ are equal, and the identity that makes them equal must be stated, because
 the first form invites a false reading.  Indeed
 $2\pi(\Jpi+\ZZ)=2\pi\Jpi+2\pi\ZZ$, and $\Jpi$ is a real vector space, so
 $2\pi\Jpi=\Jpi$.  Written as $2\pi i\Oz$ the kernel looks like a uniform
-scaling of a discrete group, suggesting that the purely infinite part also
-scales by $2\pi$; it does not.
+scaling of a discrete group, suggesting that multiplication by $2\pi$ changes the purely infinite subgroup.
+It changes individual elements but preserves that subgroup as a whole.
 \end{remark}
 
 \begin{remark}[$\Exp(i\omega)=1$, and how it is \emph{not} obtained]
@@ -5562,9 +5676,9 @@ Theorem~\ref{e:thm-twisted}(d).
 \end{proof}
 
 This is a more structured version of the locally constant counterexample of
-Part~2: local analytic Taylor data alone impose no continuation between
+Section~\ref{b:part2}: local analytic Taylor data alone impose no continuation between
 infinitely separated regions of $\K$.  In particular
-Corollary~\ref{e:cor-twistwitness} is exactly why no theorem of Part~8 may
+Corollary~\ref{e:cor-twistwitness} is exactly why no theorem of Section~\ref{e:p8} may
 be applied to a function that is merely germ-analytic on $\K$.
 
 \begin{theorem}[The period obstruction]\label{e:thm-periodobstruction}
@@ -5616,7 +5730,8 @@ $\abs{u_0}=1$ and $u/u_0\in1+\mm$.  Define
 \end{definition}
 
 The branch is chosen by $u_0=\st(z/\abs z)$, the standard part of the unit
-direction --- a quantity that is constant on each fine-neighbourhood, since
+direction --- a quantity that is constant on a sufficiently small
+fine-neighbourhood of each nonzero point, since
 an infinitesimal relative perturbation does not move a standard part.  That
 is what makes \eqref{e:eq-globallog} analytic rather than merely defined.
 
@@ -5654,12 +5769,12 @@ laws for $\log_{\No}$ and $\log_{\mm}$,
 which is \eqref{e:eq-loglocal}; the displayed series is Hahn summable and
 has linear coefficient $1/z$, giving germ-analyticity and the derivative.
 The last term of \eqref{e:eq-globallog} is purely imaginary (by
-Proposition~\ref{e:prop-infexp}, since $\abs{u/u_0}$ differs from $1$ only
-infinitesimally) and infinitesimal, and $\Arg(u_0)$ is an ordinary real, so
+Proposition~\ref{e:prop-infexp}, since $\abs{u/u_0}=1$ exactly) and infinitesimal, and $\Arg(u_0)$ is an ordinary real, so
 the imaginary part of $\mathcal L(z)$ is finite.  The right-inverse
 identity is then the surjectivity computation of
 Theorem~\ref{e:thm-twisted}, because $\mathcal L(z)$ has finite imaginary
-part and every $E_\lambda$ agrees with $\Exp$ on finite arguments.  At an
+part and every $E_\lambda$ agrees with $\Exp$ whenever the imaginary part
+is finite, even when the real part is infinite.  At an
 ordinary nonzero complex $z$ one has $u=u_0$ and $r$ ordinary, so
 \eqref{e:eq-globallog} reduces to $\log\abs z+i\Arg(z/\abs z)$.
 \end{proof}
@@ -5672,7 +5787,7 @@ $\Hc(\CC^{\times})$ on $\halo{(\CC^{\times})}$.
 
 \begin{proof}
 If it were, then $\mathcal L$ would be a coherent primitive of $1/z$ on
-$\halo{(\CC^{\times})}$, and the coherent fundamental theorem of Part~5
+$\halo{(\CC^{\times})}$, and the coherent fundamental theorem of Section~\ref{c:p5}
 would force
 $\ointH_{\abs z=1}\dd z/z=0$.  But that coefficientwise integral is
 $2\pi i$.  Equivalently, the ordinary coefficient data of $\mathcal L$
@@ -5681,9 +5796,9 @@ holomorphically around the circle.
 \end{proof}
 
 This is the property that must travel with $\mathcal L$ wherever it goes.
-It is also what makes the architecture of Parts~5 and~6 forced rather than
+It is also what makes the architecture of Sections~\ref{c:p5} and~\ref{d:sec:preparation} forced rather than
 merely cautious: $\mathcal L$ is a globally germ-analytic $G$ on
-$\K^{\times}$ with $G'=1/z$, so by the contour no-go theorem of Part~2 no
+$\K^{\times}$ with $G'=1/z$, so by the contour no-go theorem of Section~\ref{b:part2} no
 integral along the ordinary unit circle can simultaneously return the
 classical value $2\pi i$ for $1/z$ and annihilate $G'$ for every such $G$.
 The coefficientwise definition of the contour, and the restriction of the
@@ -5698,7 +5813,7 @@ perturbation of a fixed negative real point leaves the standard unit
 direction $u_0=-1$ unchanged, so it does not cross the chosen
 standard-part cut; the branch is fine-locally constant.  Ordinary points
 approaching the axis from below do \emph{not} form a fine-convergent
-family --- by the discreteness theorem of Part~1 no nontrivial set-indexed
+family --- by the discreteness theorem of Sections~\ref{a:sec:summability}--\ref{a:sec:fine} no nontrivial set-indexed
 family converges in the fine topology at all --- so no fine-continuity
 requirement is violated.  The classical topological obstruction to a
 global logarithm and the fine-local differential calculation concern
@@ -5743,7 +5858,7 @@ endpoint of the strip, since a smaller fine radius is always available.
 \label{e:prop-logdiscrepancy}
 $\mathcal L$ and $\Log$ agree wherever
 $\Arg_{\mathrm c}(z)$ and $\Arg(\st(z/\abs z))$ agree, and differ by
-exactly $2\pi i$ on the lower half of the monad of every negative real.
+exactly $2\pi i$ on the lower half of the monad of every negative ordinary real.
 Concretely, let $\varepsilon>0$ be a real infinitesimal and
 $z=-1-i\varepsilon$.  Then
 \[
@@ -5775,10 +5890,12 @@ functions and must not be identified.  This document adopts $\mathcal L$
 as the primary logarithm, for three reasons.  Its domain is all of
 $\K^{\times}$, not $\K$ minus a class-sized ray.  It is germ-analytic
 everywhere, because its branch is selected by the fine-locally constant
-quantity $\st(z/\abs z)$, whereas $\Arg_{\mathrm c}$ is not fine-continuous
-on the monad of a negative real, by
-Proposition~\ref{e:prop-logdiscrepancy}.  And the contour no-go theorem of
-Part~2 requires a global primitive of $1/z$ on all of $\K^{\times}$, which
+quantity $\st(z/\abs z)$, and $\Log$ is likewise fine-analytic at every point of its cut-plane
+domain. The discontinuity concerns extending the chosen principal
+values across a deleted negative-axis point: the values from its two
+sides differ by $2\pi i$. Proposition~\ref{e:prop-logdiscrepancy}
+does not show a discontinuity at any point where $\Log$ is defined.  And the contour no-go theorem of
+Section~\ref{b:part2} requires a global primitive of $1/z$ on all of $\K^{\times}$, which
 $\Log$ does not supply.
 
 \subsection{Local logarithm charts}\label{e:sec-logcharts}
@@ -5806,10 +5923,12 @@ rule.  The last assertion is the kernel computation of
 Theorem~\ref{e:thm-exp}.
 \end{proof}
 
-These charts describe the branch choices without positing a global
-principal argument and without a path-connected covering-space structure ---
-neither of which exists here, since by Part~1 there are no nonconstant
-fine-continuous paths at all.  Note that the ambiguity is by an element of
+These charts describe branch choices without requiring a
+fine-continuous principal argument on all of $\K^\times$ or a
+path-connected covering-space structure. A principal argument can be
+chosen as a function, but its conventional values do not extend
+continuously across the negative real axis; independently, Sections~\ref{a:sec:summability}--\ref{a:sec:fine}
+excludes nonconstant ordinary-parameter fine-continuous paths.  Note that the ambiguity is by an element of
 $2\pi i\Oz$, not merely by an ordinary integer multiple of $2\pi i$.
 
 \subsection{A value-distribution theorem at an explicit essential
@@ -5856,23 +5975,33 @@ Theorem~\ref{e:thm-picard} is an exact value-distribution theorem for one
 specified function.  It is not a general Picard theorem for germ-analytic
 functions, and no such theorem is proved or claimed anywhere in this
 article: a general statement of that breadth would be incompatible with
-the locally constant witnesses of Part~2 and with
+the locally constant witnesses of Section~\ref{b:part2} and with
 Corollary~\ref{e:cor-twistwitness}.  Nor does the phrase ``essential
 singularity'' here assert a global Laurent classification; it records
 exactly the two proved failures, of removability and of a pole.
 
-The restriction to the canonical $\Exp$ is necessary rather than
-incidental.  The proof places the solutions at
-$z_q=1/(\lambda+2\pi iq)$ for omnific $q$, which requires
-$2\pi i\Oz\subseteq\ker$.  For $E_\lambda$ with $\lambda\notin2\pi\ZZ$ the
-kernel is strictly smaller: by
-Theorem~\ref{e:thm-twisted}(d), $E_\lambda(iy)\ne1$ for a purely infinite
-$y$ with nonzero $\omega$-coefficient.  More concretely, the values of the
-twisted variants $E_\lambda(1/z)$ depend on the phase convention at
-suitable infinitesimal arguments: at $z=-i/\omega$ one has $1/z=i\omega$,
-and $E_0(i\omega)=1$ while $E_\pi(i\omega)=-1$.  Restriction to ordinary
-nonzero complex points and the ordinary Laurent series do not remove this
-ambiguity.
+The value-distribution conclusion also holds for every twist
+$E_\lambda$. The canonical periods $2\pi i\Oz$ need not remain
+periods of a twist, but a cofinal family of periods does remain:
+\[
+ E_\lambda(i\omega^\alpha)=1\qquad(\alpha\ge2\text{ an ordinal}),
+\]
+because $\omega^\alpha$ is purely infinite and has zero coefficient at
+$\omega$. These positive monomials are cofinal in $\No$, and every tail
+is a proper class. Given $w\ne0$, choose $\ell$ with $E_\lambda(\ell)=w$.
+The distinct points $z_\alpha=(\ell+i\omega^\alpha)^{-1}$ then have
+$E_\lambda(1/z_\alpha)=w$, and all sufficiently large $\alpha$ give
+$0<\abs{z_\alpha}<\delta$, by the same triangle estimate as above.
+Thus the earlier claim that the canonical phase was necessary for this
+conclusion was incorrect.
+
+The kernels are not generally nested. For example $i\omega$ belongs to
+$\ker\Exp$ but not to $\ker E_\pi$, while $i(\omega-\pi)$ belongs to
+$\ker E_\pi$ but not to $\ker\Exp$. The functions still differ at
+specified points: at $z=-i/\omega$ their values are respectively $1$ and
+$-1$. Agreement on ordinary arguments and the ordinary Laurent series
+does not fix those values, even though all the twists share the stated
+value-distribution property.
 
 Finally, a summability boundary that belongs beside the theorem.  The
 canonical lift $\ev{(e^{1/Z})}$ is a coherent section on
@@ -5913,7 +6042,7 @@ functions.  Every statement in this part is a statement about the
 \emph{coherent} class $\Hc(U)$ and about class functions assembled from
 coherent charts; none of it is asserted for germ-analytic functions,
 whose class contains the locally constant counterexample of
-the locally constant witness of Part~2 and therefore admits no identity theorem to
+the locally constant witness of Section~\ref{b:part2} and therefore admits no identity theorem to
 run the argument with.
 
 \subsection{Coherent affine charts at an arbitrary centre and scale}
@@ -6073,8 +6202,11 @@ Proposition~\ref{f:prop-chartchange} requires $\alpha$ and $\beta$
 \emph{finite}.  If the normalized scale coefficient $\beta$ is infinite
 there is no standard part $\beta_{0}\in\CC$ to serve as the ordinary
 inner map, the remainder $\delta_{\beta}$ is not infinitesimal, and the
-binomial expansion in \eqref{f:eq-chartchange} is no longer a Hahn
-summable family: its exponents decrease without bound.  This is the
+substitution is no longer justified by \eqref{f:eq-chartchange}.
+For example, substituting an infinite $\beta$ into the exponential
+Taylor series gives decreasing valuations $n v(\beta)$. Polynomial
+coefficient functions can still be substituted at infinite scales;
+failure of the criterion is not a claim that every such substitution fails.  This is the
 precise mechanism by which a function can be coherent in every finite
 translated chart and yet fail to be coherent at all scales.  It is the
 structural reason behind Theorem~\ref{f:thm-rigidity}, and it is why the
@@ -6126,7 +6258,7 @@ quantities and both are retained.
 \begin{remark}[Some small chart, but not every large one]
 \label{f:rem-somechart}
 Every germ-analytic germ admits \emph{at least one} coherent affine
-chart, by the scale-embedding bridge \ref{f:sec-allscale}: after a
+chart, by the scale-embedding bridge \ref{c:p4:bridge}: after a
 single monomial rescaling $\rho=t^{\lambda}$ chosen by block separation,
 each Hahn coefficient of the rescaled series is a finite sum and hence an
 ordinary polynomial, so the rescaled datum is coherent on all of $\CC$.
@@ -6403,8 +6535,9 @@ Let $\eta\in\mm$ and put
 \]
 The family $\bigl((n!)^{2}\eta^{n}\bigr)_{n\ge0}$ is Hahn summable: the
 supports lie in $\Neu{\supp\eta}$, which is well ordered, and
-$v\bigl((n!)^{2}\eta^{n}\bigr)=n\,v(\eta)$ is strictly increasing, so
-each exponent receives only finitely many contributions.  Hence $A$ is a
+Neumann's all-lengths clause gives only finitely many contributing
+word lengths at each exponent. This is stronger than merely observing
+that the leading valuations increase. The case $\eta=0$ is immediate.  Hence $A$ is a
 \emph{germ-analytic} function on $\mm$, and its formally differentiated
 series is its actual fine $\varepsilon$--$\delta$ derivative, by the
 germ-algebra isomorphism \ref{b:germalgebra}.  At every nonzero
@@ -6438,7 +6571,7 @@ series $\sum n!\,X^{n}$, of radius zero.  No such function exists.
 \begin{remark}[The two statements are about different
 charts]\label{f:rem-chartreconciliation}
 Example~\ref{f:ex-euler} and the scale-embedding bridge
-\ref{f:sec-allscale} look contradictory and are not.  The bridge
+\ref{c:p4:bridge} look contradictory and are not.  The bridge
 asserts that after \emph{one} monomial rescaling every formal series
 over $\K$ becomes a coherent family on all of $\CC$; concretely,
 \[
@@ -6537,9 +6670,10 @@ zero-cluster theorem \ref{d:thm:zerocluster} is exactly $2$.
 homogeneous pieces, all obtainable by polynomial division by $Z^{2}$
 alone, are
 \[
- p_{1}=-t,\quad q_{1}=tZ,\quad p_{2}=t^{2}Z,\quad q_{3}=-t^{3},\quad
- p_{4}=-t^{4},\quad p_{5}=2t^{5}Z,\quad q_{6}=-2t^{6},\quad
- p_{7}=-3t^{7},
+ \begin{gathered}
+ p_1=-t,\quad q_1=tZ,\quad p_2=t^2Z,\quad q_3=-t^3,\\
+ p_4=-t^4,\quad p_5=2t^5Z,\quad q_6=-2t^6,\quad p_7=-3t^7,
+ \end{gathered}
 \]
 the unlisted earlier pieces being zero.  Assembling them,
 \begin{align}
@@ -6690,16 +6824,16 @@ But the \emph{local} residue at the exact point $0$ is
 \[
  \Resat{0}\bigl(H(z)\,\dd z\bigr)=0,
 \]
-because on the ball $\abs\zeta<\abs\varepsilon$ one has the expansion
+because on the fine neighborhood $\varepsilon\mm$ one has the expansion
 $H(\zeta)=-\varepsilon^{-1}\sum_{n\ge0}(\zeta/\varepsilon)^{n}$, with no
 pole at $\zeta=0$ at all.  So
 $\ResH{0}H=1=\Resat{\varepsilon}H$ while $\Resat{0}H=0$: the cluster
 residue at an ordinary centre and the local residue at that same point
 are numerically different.  This is the simplest instance of Bridge~1,
-\ref{d:thm:Hresidue} --- the cluster residue equals the finite sum of
+\ref{d:thm:bridge1} --- the cluster residue equals the finite sum of
 actual residues in the monad --- and it is the standing reason the three
 residue symbols may never be merged.  Note also that the criterion of
-Bridge~2, \ref{d:thm:Hresidue}, fails here exactly as it must: the
+Bridge~2, \ref{d:thm:bridge2}, fails here exactly as it must: the
 coefficient attached to $\varepsilon^{n}$ has a pole of order $n+1$ at
 $0$, so pole orders are not uniformly bounded in the Hahn exponent, and
 $\ResH{0}$ is under no obligation to agree with $\Resat{0}$.
@@ -6831,8 +6965,8 @@ coefficient.
 \subsection{What the verification script checks, and what it does not}
 \label{f:sub-verify}
 
-A single companion script performs all the finite verifications cited
-above, in exact rational and symbolic arithmetic, with no floating
+The nine preserved companion scripts together perform the finite
+verifications cited above, in exact rational and symbolic arithmetic, with no floating
 point.  It checks: the Lambert-type series \eqref{f:eq-lambert} and its
 substitution into the defining equation through degree $40$; the
 preparation identity of Example~\ref{f:ex-prep} in a finite bivariate
@@ -6921,16 +7055,16 @@ Germ-analytic &
 The equations on a fine neighbourhood.  Existence of two partial
 derivatives at a point does not imply complex differentiability.\\[3pt]
 Inverse, implicit and ramification theorems &
-Germ-analytic; separately, coherent &
-Invertible linear part, or invertible standard-part Jacobian block.
-The germ version produces no section over an ordinary base; the coherent
-version does.\\[3pt]
+Germ-analytic; coherent local inverse in one variable &
+Invertible Jacobian for the germ inverse/implicit theorem; finite order
+for ramification. The coherent one-variable inverse is obtained after
+a scale change. No multivariable coherent implicit theorem is proved here.\\[3pt]
 Open mapping and local maximum modulus &
 Germ-analytic locally; coherent globally &
 Valid at arbitrary surcomplex points, via the monomial normalization
 radius $r=t^{\rho}$.  In global form both fail for merely
 germ-analytic functions, witnessed by $L$ of
-the locally constant witness of Part~2.\\[3pt]
+the locally constant witness of Section~\ref{b:part2}.\\[3pt]
 Identity theorem &
 Coherent, $U$ connected &
 Fails in the germ-analytic class: $L$ vanishes on a nonempty fine-open
@@ -7014,16 +7148,15 @@ Differentiable &
 A bare $\varepsilon$--$\delta$ complex difference quotient over all
 positive surreal radii; \emph{no} power-series requirement &
 Uniqueness of the derivative and the sum, product and chain rules, and
-the counterexamples.  \emph{No positive theorem about this class is
-proved anywhere in this article, and none may be imported into
-it.}\\[3pt]
+the counterexamples. No regularity theorem asserting a power-series
+representation from bare differentiability is proved here.\\[3pt]
 Germ-analytic &
 A Hahn summable power series at one point with arbitrary surcomplex
-coefficients; no domain, no growth condition &
+coefficients, realized near the centre; no coefficient growth condition &
 The full formal Taylor calculus, including classically divergent
 series; the germ algebra at any point is $\K[[X]]$ as a differential
-$\K$-algebra.  No relation between distinct monads, hence no identity,
-Liouville, open-mapping or primitive-uniqueness theorem.\\[3pt]
+$\K$-algebra. Local identity, openness at nonconstant germs and primitive
+uniqueness hold; the corresponding unrestricted global propagation fails.\\[3pt]
 Canonical lift $\ev f$ &
 Taylor extension of one ordinary holomorphic $f$; a coherent section
 supported at exponent $0$ &
@@ -7058,12 +7191,15 @@ Remark~\ref{f:rem-infinitebeta}.\\
 The inclusions are
 \[
  \{\ev f\}\;\subsetneq\;\Hc(U)\;\subsetneq\;
- \{\text{germ-analytic}\}\big|_{\halo U}\;\subsetneq\;
- \{\text{differentiable}\},
+ \{\text{germ-analytic}\}\big|_{\halo U}\;\subseteq\;
+ \{\text{differentiable}\}.
 \]
-each strict, and each strictness witnessed in the body: by a coherent
-section with nonzero positive support; by Example~\ref{f:ex-euler}; and
-by $L$ of the locally constant witness of Part~2.  The restriction of an all-scale
+Only the first two strict inclusions are established here: positive
+support gives a section that is not a lift, and Example~\ref{f:ex-euler}
+gives the obstruction to coherence. The locally constant witness $q$
+of Example~\ref{b:q} gives a function on a whole halo. Strictness of
+the last inclusion is not proved; $L$ is germ-analytic and cannot
+witness it.  The restriction of an all-scale
 Hahn-entire function to any bounded halo is coherent there, and that
 containment is strict as well, since $\Exp$ restricted to a finite halo
 is coherent while $\Exp$ is not all-scale coherent.
@@ -7073,8 +7209,10 @@ is coherent while $\Exp$ is not all-scale coherent.
 
 \paragraph{Three function classes.}
 The identity theorem, the global maximum principle, Liouville's theorem,
-uniqueness of primitives and the open mapping theorem hold in $\Hc(U)$
-and \emph{fail} in the germ-analytic class.  The sharp Schwarz and
+uniqueness of primitives and the open mapping theorem have coherent
+versions under the stated domain hypotheses; Liouville in particular
+requires bounded entire coefficient functions. Their unrestricted global
+forms fail in the germ-analytic class.  The sharp Schwarz and
 Schwarz--Pick inequalities hold for lifts $\ev f$ and \emph{fail} in
 $\Hc(\mathbb D)$.  Results in the germ-analytic class do not descend to
 $\Hc(U)$: $\sum n!\,\varepsilon^{n}$ is a legitimate germ
@@ -7095,8 +7233,9 @@ Example~\ref{f:ex-movingpole} gives $\ResH 0=1$ and $\Resat 0=0$ for the
 same function at the same point.  Bridge~1 identifies $\ResH a$ with the
 finite sum of the $\Resat{\cdot}$ over the actual poles in $a+\mm$, for
 quotients of coherent families only; Bridge~2 identifies $\ResH a$ with
-$\Res$ at the exact point $a$ precisely when pole orders are uniformly
-bounded in the Hahn exponent.  On the larger class $\Mc(U)$ there need
+$\Res$ at the exact point $a$ when pole orders are uniformly
+bounded in the Hahn exponent. This is a sufficient condition, not a
+necessary condition for numerical equality.  On the larger class $\Mc(U)$ there need
 be no actual pole at all, so $\Resat{\cdot}$ has no meaning there and
 the finite-sum conclusion must not be imported.
 
@@ -7113,10 +7252,13 @@ the whole finite plane and is not constant; it is $0+tz$, exactly as
 that characterization predicts.  (c) \emph{Coefficientwise} bounds give
 constancy, and coefficientwise polynomial growth of degree $d$ gives a
 polynomial of degree at most $d$.  Importing (c)'s conclusion under
-hypothesis (b) or (a) is false.  Note finally that the counterexamples
+hypothesis (b) or (a) is false. Conversely the constant $F=\omega$
+satisfies coefficientwise boundedness and has no ordinary-real bound;
+(b) and the boundedness case of (c) are incomparable. Note finally that the counterexamples
 $tz$ and $\varepsilon Z$ are a different obstruction from the locally
 constant $L$: they are coherent, on the halo of the ordinary plane,
-whereas $L$ is merely differentiable, on all of $\K$.
+whereas $L$ is germ-analytic on all of $\K$ and restricts to the
+coherent constant $1$ on each finite halo.
 
 \paragraph{Two Cauchy estimates, and two logarithms.}
 One must not read the warning that a single coarse surreal bound does
@@ -7128,7 +7270,7 @@ are about different quantities and both are retained; see
 Remark~\ref{f:rem-whichestimate}.  Similarly, the global fine-analytic
 logarithm on $\K^{\times}$ and the principal logarithm on the cut plane
 $\K\setminus\No_{\le0}$ are \emph{different functions}, differing by
-exactly $2\pi i$ on the lower half of the monad of every negative real;
+exactly $2\pi i$ on the lower half of the monad of every negative ordinary real;
 both are legitimate branches and both are named separately.
 
 \subsection{A practical proof checklist}\label{f:sub-checklist}
@@ -7159,8 +7301,8 @@ A proposed surcomplex analytic argument should identify, explicitly:
 
 \subsection{Assertions deliberately not made}\label{f:sub-notmade}
 
-The following are \emph{not} claimed anywhere in this article, and
-nothing above should be read as tacitly assuming them.
+The following distinctions delimit the proved statements; none of the
+stronger assertions they exclude is being assumed.
 
 \begin{itemize}[leftmargin=1.4em]
 \item There is no radius-of-convergence formula based on ordinary
@@ -7175,8 +7317,8 @@ nothing above should be read as tacitly assuming them.
 \item A bound in the ordered field does not bound every coefficient
  function.  (This does not forbid the $\mathrm{ML}$ inequality; see
  \S\ref{f:sub-threehierarchies}.)
-\item No canonical single-valued exponential on all of $\K$ is
- constructed: $E'=E$, $E(0)=1$, agreement with $\exp_{\No}$ and
+\item The canonical single-valued exponential on all of $\K$ is
+ constructed using a specified infinite-phase convention, but $E'=E$, $E(0)=1$, agreement with $\exp_{\No}$ and
  $\exp_{\CC}$, and the modulus law do not determine the infinite
  imaginary phase.
 \item No unrestricted global contour integral for arbitrary class
@@ -7185,9 +7327,11 @@ nothing above should be read as tacitly assuming them.
 \item No universal analytic continuation across scales is claimed, and
  no unrestricted gluing or chart-independence theorem across surreal
  centres and scales is asserted (Remark~\ref{f:rem-nogluing}).
-\item No general theory of essential singularities and no Picard theorem
- is proved beyond the specific function $\Exp(1/z)$ of
- \ref{e:thm-picard}, whose statement is tied to one phase convention.
+\item No general theory of essential singularities or Picard theorem
+ is proved for arbitrary germ-analytic functions. The specific
+ value-distribution result for $\Exp(1/z)$ in \ref{e:thm-picard}
+ also holds for the twists $E_\lambda(1/z)$, as proved in
+ Remark~\ref{e:rem-picardscope}.
 \item No composition law compatible with the Berarducci~\cite{BMder}--Mantova~\cite{Mantova2026b} field
  derivation is claimed on $\No$; and the variable derivative $D_{z}$,
  which fixes every surreal coefficient, is provably incompatible with a
@@ -7202,8 +7346,9 @@ nothing above should be read as tacitly assuming them.
  about $\K$, not about an arbitrary fixed set-sized Hahn subfield with
  only its internal radii: their proofs use positive surreal bounds that
  need not belong to such a subfield.  Nor does the fine topology induced
- on a set-sized Hahn subfield coincide with that subfield's own
- valuation topology.
+ on a nontrivially valued set-sized Hahn subfield coincide with that
+ subfield's own valuation topology (the trivially valued case is
+ discrete for both).
 \item No uniformization of arbitrary surcomplex open classes is claimed;
  the Riemann mapping corollary takes the ordinary theorem as input.
 \end{itemize}
@@ -7239,8 +7384,8 @@ essential singularities on all surreal scales.  A Casorati--Weierstrass
 or Picard statement must specify its domain, its topology and its
 extension operator before it is even a well-posed target.  The
 value-distribution theorem \ref{e:thm-picard} is an exact statement
-about one specified function under one specified phase convention, and
-is not a general Picard theorem.
+about a specified exponential and, by Remark~\ref{e:rem-picardscope},
+its explicit twists. It is not a general Picard theorem.
 
 \subsection{Research directions, with their prerequisites}
 \label{f:sub-directions}
@@ -7259,13 +7404,17 @@ permits the locally constant counterexamples and is too weak.  The
 difficult point is not local differentiation, which already works, but
 compatibility between different summation descriptions over a common
 ordinary base.  Theorem~\ref{f:thm-rigidity} shows the direction is
-forced: a global transcendental theory must weaken all-scale uniform
-support, because retaining it admits only polynomials.
+forced: a global transcendental theory must weaken all-scale coherence,
+because retaining it admits only polynomials even when the support
+is allowed to vary with the scale.
 
 \paragraph{Relative preparation in several variables.}
 The local realization, Cauchy--Riemann, inverse and implicit arguments
-already work in finitely many variables, and a coherent multivariable
-implicit-function theorem is available.  A relative preparation theorem,
+already work in finitely many variables. The coherent inverse theorem
+proved here is one-dimensional; a multivariable coherent
+implicit-function theorem requires an additional statement and proof
+over a specified common ordinary parameter domain
+(Remark~\ref{b:coherent-implicit-elsewhere}).  A relative preparation theorem,
 with one distinguished polynomial variable and coherent parameter
 domains, requires a coefficientwise division operator that preserves the
 chosen parameter domain, together with one common parameter domain for
@@ -7319,9 +7468,9 @@ claimed: the surreal cut property and the normal-form theorem; real
 closedness of $\No$ and the algebraic closedness of $\K$ together with
 the Hahn-field results that supply it; Neumann's support lemma; Alling~\cite{Alling}'s
 foundations of analysis over surreal number fields and the restricted
-analytic structure of van den Dries and Ehrlich~\cite{CEb}; the existence, group
+analytic structure of van den Dries and Ehrlich~\cite{vdDE}; the existence, group
 law and kernel of the canonical surcomplex exponential, due to Ehrlich
-and Kaplan; and ordinary complex analysis on the ordinary domains, which
+and Kaplan~\cite[Theorem~11.1]{EK}; and ordinary complex analysis on the ordinary domains, which
 enters only through the coefficient functions and the canonical lifts,
 never through an unstated transfer principle to all of $\K$.
 
@@ -7352,8 +7501,9 @@ reproduced in full so that the merged document does not lose the
 literature those manuscripts consulted, and the comment on each entry
 records which of the nine cited it.
 Only some are cited in the text above; the others were consulted by one or
-more of the sources for background, or for the priority audits reported in
-Part~X.
+more of the sources for background. The historical provenance record
+is \texttt{MERGE\_NOTES.md}; it is not a current certification of every
+bibliographic or mathematical comparison made by those sources.
 
 \begin{thebibliography}{99}
 

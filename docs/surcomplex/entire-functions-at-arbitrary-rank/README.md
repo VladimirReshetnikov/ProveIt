@@ -78,14 +78,17 @@ Write `cf(Gamma)` for the cofinality of the value group as an ordered set,
 and call `delta > 0` an **order unit** when its positive integer multiples
 are cofinal in `Gamma`.
 
-**1. The trichotomy (Theorem 1.5).** The entire ring `E_Gamma` is always a
-GCD domain with units exactly `K_Gamma^times`, and exactly one of:
+**1. The trichotomy (Theorem 1.5).** For `Gamma != 0`, the entire ring
+`E_Gamma` is a GCD domain with units exactly `K_Gamma^times`, and exactly one
+of:
 
 | Value group | Entire series | Ideal structure |
 |---|---|---|
 | `cf(Gamma) > aleph_0` | only polynomials | PID |
 | an order unit exists | nonpolynomial series exist | Bézout, non-Noetherian, full Hermite interpolation |
 | `cf(Gamma) = aleph_0`, no order unit | nonpolynomial series exist | GCD but **not** Bézout |
+
+For `Gamma = 0`, strong Hahn summability gives `E_0 = C[Z]`.
 
 In the third case, with `gamma_(n+1)` exceeding every finite multiple of
 `gamma_n` and cofinal, the canonical products with roots
@@ -139,13 +142,14 @@ object.
   Remark 8.43).
 
 **4. The scalar-extension package (Theorem 1.7).** For any ordered-group
-extension `Gamma` inside `Delta`, *every* nonpolynomial entire series over
+extension of nonzero divisible groups `Gamma` inside `Delta`, *every* nonpolynomial entire series over
 `K_Gamma` has the **same** exact strong evaluation domain in `K_Delta`: the
 valuation ring `D_(Gamma,Delta)` of `v_Delta` coarsened by the convex hull
 `H` of `Gamma`, with residue field `C((t^H))`. Entireness survives exactly
 for cofinal extensions; no new zeros appear; on a noncofinal extension no
 alternative entire series agrees with the old one even on `C`; and `Gamma`,
-the slopes `v(a_n)/n` and the negated zero valuations generate the same
+the slopes `v(a_n)/n` for `n >= 1` with `a_n != 0` and the negated
+valuations of nonzero zeros generate the same
 convex subgroup.
 
 **5. Several ordinary variables (Section 11, fifth source).** Here **no
@@ -374,3 +378,25 @@ python /tmp/ent/code/08-multivariate-extension-verify_examples.py --output /tmp/
 `code/06-cofinality-bezout-trichotomy-build.sh` build their source manuscripts
 in their original layouts and do not build this report; they are kept only as
 delivered.
+
+## Maintained review scope
+
+The maintained proof review read the first two manuscripts and their former
+finite-variable appendix before the three later manuscripts were incorporated.
+The expanded portions have not received that review. It clarified the fixed-element order-unit
+equivalence, the nonzero-group convention and the nonzero indices in the
+extension summary; strengthened the growth barrier to require a sequence
+that tends cofinally to infinity (with a counterexample to mere cofinality
+of its range); supplied direct linear-division and multivariable
+coefficient-criterion arguments; and separated the preparation-based finite
+zero bound from algebraic closedness. The conclusion now states the
+universal Bézout property separately from identities for individual pairs.
+The imported Hahn-field scope was checked against Poonen, Section 3 and
+Corollary 4; the positive-valuation versus topological-nilpotence distinction
+against Conrad, Section 6.2; and the complete real-valued setting of the
+classical entire-function results against Cherry's lectures. These checks
+do not establish priority or independent peer review.
+
+The review reran the first two unmodified programs on temporary copies:
+**831/831** and **664/664** checks passed. This does not verify the later suites
+or the infinite mathematical statements.

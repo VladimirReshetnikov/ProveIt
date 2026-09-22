@@ -81,7 +81,9 @@ guarantee for every starting configuration. We also give an arbitrary-rank
 precision-lattice theorem, quantify cancellation in the inverse Hermite
 matrix, and derive a directed-path certificate for nonuniform moment
 precisions. The arguments use finite algebra and strong Hahn summability,
-not an Archimedean contraction argument. Classical Prony reconstruction,
+not an Archimedean contraction argument. The directed-path certificate also
+holds for nondivisible value groups: fractional scaling exponents are
+auxiliary, and the reconstruction stays in the original Hahn field. Classical Prony reconstruction,
 Hermite interpolation, and differential precision tracking are explicitly
 separated from the proposed refinements. Priority is not certified; the
 article supplies proofs rather than claiming a solution to a named
@@ -100,7 +102,7 @@ polynomial-algebra report.
 \section{The problem, the contribution, and its scope}
 \label{prony:sec:intro}
 
-A finite atomic configuration is specified by distinct nodes $a_1,\ldots,a_n$
+Fix an integer $n\ge1$. A finite atomic configuration is specified by distinct nodes $a_1,\ldots,a_n$
 and nonzero weights $w_1,\ldots,w_n$. Its moments are
 \begin{equation}\label{prony:eq:moments}
  m_k=\sum_{i=1}^n w_i a_i^k,\qquad 0\le k<2n.
@@ -269,8 +271,9 @@ repository that were true only at the pin are now marked as such
 (Sections~\ref{prony:subsec:repository} and~\ref{prony:sec:verification}
 and Appendix~\ref{prony:app:audit}). The only choices were editorial: the
 manuscript's title is kept, the directory is named after Prony, and the
-notation follows the polynomial-algebra report. Otherwise the statements,
-proofs, limitations and priority caveats are those of the manuscript, and
+notation follows the polynomial-algebra report. Subsequent proof corrections
+are recorded in the maintained README. The limitations and priority caveats
+are retained, and
 the program \lbl{code/verify.py} and the files in \lbl{data/} are
 unchanged from the delivery.
 \begin{center}
@@ -328,26 +331,27 @@ the matching step of that theorem.
 With unit weights, the matrix $H$ of Proposition~\ref{prony:prop:prony} is
 the Hankel matrix of the Newton power sums of $P$, that is, the matrix
 $VV^{\mathsf T}$ of the trace form of $K[X]/(P)$, and $\det H=\Disc P$. This
-classical identity is the only thing this report shares with the section on
+classical identity is a common input to this report and the section on
 Hankel square-class profiles in \lbl{surcomplex/spectral-theory}
 \cite{RepoSpec}, which comes from another manuscript of the same batch and
 states the identity as its \lbl{spec:hank:prop:hermite}. That
 section reads square classes, modulo $2\Gamma$, of the leading principal
 minors of such matrices over nondivisible value groups. This report
 estimates valuation thresholds for perturbed weighted moments and uses
-neither square classes nor leading principal minors. The two share no
-theorem, neither uses the other, and they are cross-referenced, not merged.
+neither square classes nor leading principal minors. Their further theorems
+concern different questions, and neither proof depends on the other report.
 
 \paragraph{The measures report.}
 \lbl{surreal/hahn-valued-measures-and-probability} \cite{RepoMeas}
 contains, from another manuscript of the same batch, a Prony-type lemma on
 finite signed exponential sums (a real sequence is a finite sum
-$\sum_jc_jx_j^n$ with distinct $x_j$ exactly when a monic polynomial with
-distinct roots annihilates it under the shift) and a finite Gaussian
+$\sum_jc_jx_j^n$ with distinct real $x_j$ exactly when a monic polynomial
+with distinct real roots annihilates it under the shift) and a finite Gaussian
 quadrature theorem over real closed fields (a suitably positive linear
 functional agrees up to degree $2N-1$ with $N$ positive weights at $N$
 distinct nodes). Those results concern existence and exact representation of
-moment data, under positivity. This report starts from an $n$-node
+moment data: the signed-sequence lemma requires no positivity, while
+Gaussian quadrature does. This report starts from an $n$-node
 configuration and studies the stability of its reconstruction, with exact
 thresholds, and involves no measure. The results are cross-referenced, not
 merged.
@@ -491,8 +495,9 @@ Let $H=(m_{r+s})_{0\le r,s<n}$. Then
 \end{equation}
 where $V_{ri}=a_i^r$. A regular $n$-node moment vector determines $P$
 uniquely by its $n$ orthogonality equations, then the nodes up to permutation,
-and then the weights. It cannot have a realization with fewer than $n$
-nodes.
+and then the weights. Any $n$-node representation of these moments is
+automatically regular. There is no representation with fewer than $n$ nodes,
+even if only $m_0,\ldots,m_{2n-2}$ are prescribed.
 \end{proposition}
 \begin{proof}
 The displayed matrix factorization follows entry by entry. The determinant
@@ -503,15 +508,18 @@ is the linear system
  H(P_0,\ldots,P_{n-1})^{\mathsf T}
  =-(m_n,\ldots,m_{2n-1})^{\mathsf T}.
 \]
-Any other regular $n$-node representation must give the same monic
-annihilator and hence the same nodes. The first $n$ moments then determine
+For any $n$-node representation, the same factorization of the invertible
+$H$ forces its Vandermonde matrix and weight diagonal to be invertible.
+Thus its nodes are distinct and its weights nonzero. It must give the
+same monic annihilator and hence the same nodes. The first $n$ moments then determine
 the weights through $V$. A configuration with fewer than $n$ nodes would
-factor $H$ through a vector space of smaller dimension.
+factor $H$ through a vector space of smaller dimension. This contradiction
+uses only the moments through $m_{2n-2}$, which already determine $H$.
 \end{proof}
 Since $P$ is monic, \eqref{prony:eq:hankel} reads
 $\det H=\bigl(\prod_iw_i\bigr)\Disc P$. With unit weights $H$ is the Hankel
-matrix of the Newton power sums of $P$; this classical identity is the only
-point of contact with the Hankel section of the collection's spectral-theory
+matrix of the Newton power sums of $P$; this classical identity is a
+common input shared with the Hankel section of the collection's spectral-theory
 report (Section~\ref{prony:subsec:collection}).
 
 \subsection{The structured correction system}
@@ -961,7 +969,7 @@ The inequality follows from the ultrametric inequality for the sum defining
 $\chi_i$.
 
 \begin{proposition}[Exact row losses]\label{prony:prop:rows}
-For finite nodes,
+For the integral nodes fixed above,
 \begin{equation}\label{prony:eq:gaussrows}
  \vg(G_i)=-2d_i,\qquad \vg(H_i)=-2d_i-q_i.
 \end{equation}
@@ -1087,9 +1095,9 @@ which requires only $\kappa>\Theta$ and was proved independently.
 \section{Nonuniform moment precision and a directed-path certificate}
 \label{prony:sec:graph}
 
-Uniform measurement precision is convenient but sometimes wasteful. For
-this section assume $\Gamma$ is divisible, as it may always be chosen for
-actual surreal data. Suppose
+Uniform measurement precision is convenient but sometimes wasteful.
+Keep the original nontrivial ordered abelian group $\Gamma$; divisibility
+is not required. Suppose
 \[
  v(\epsilon_k)\ge\kappa_k\in\Gamma,\qquad 0\le k<2n.
 \]
@@ -1128,9 +1136,18 @@ claimed for these graph conditions.
 \end{theorem}
 
 \begin{proof}
-Choose $\eta>0$ less than every simple cycle's mean edge weight. There are
-only finitely many simple cycles, and divisibility of $\Gamma$ permits
-this choice. Replace each edge weight by $g_{ij}-\eta$. Every directed
+Use the ordered divisible hull $\Gamma_{\Q}$ of $\Gamma$ temporarily.
+It consists of fractions $\gamma/m$ with $\gamma\in\Gamma$ and positive
+integers $m$; equality and order are defined by cross multiplication.
+Since an ordered abelian group is torsion-free, $\Gamma$ embeds by
+$\gamma\mapsto\gamma/1$. Keeping the same coefficients and supports gives
+a valuation-preserving field embedding
+\[
+ K\subset K^{\mathrm{aux}}=\Bbbk((t^{\Gamma_{\Q}})).
+\]
+Choose $\eta\in\Gamma_{\Q}$ positive and smaller than every simple cycle's
+mean edge weight, for instance half the minimum of the finitely many
+positive means. Replace each edge weight by $g_{ij}-\eta$. Every directed
 cycle now has positive weight, because a closed walk decomposes into simple
 cycles. Add a source with a zero-weight edge to every vertex, and let
 $\zeta_i$ be its shortest-path cost to $i$. Shortest costs are attained
@@ -1141,11 +1158,14 @@ by simple paths, since deleting cycles decreases cost. They satisfy
 \]
 Let $T=\diag(t^{\zeta_i})$. The matrix
 $B'=T^{-1}BT$ has every entry of positive valuation, by
-\eqref{prony:eq:Bsystem} and \eqref{prony:eq:graphedges}. Hence $\Id+B'$ and $\Id+B$
-are invertible. Moreover the Neumann expansion is strongly summable,
+\eqref{prony:eq:Bsystem} and \eqref{prony:eq:graphedges}. Hence $\Id+B'$ and $\Id+B$ are invertible in the auxiliary field.
+But $\det(\Id+B)\in K$ is now known to be nonzero, so the adjugate formula
+places $(\Id+B)^{-1}$ in $K$ itself. Moreover the Neumann expansion is strongly summable,
 by Lemma~\ref{prony:lem:support} applied to the finitely many entries of $B'$.
 Multiplying by a fixed finite vector of Hahn series preserves this strong
-summability.
+summability. Since $B^\ell=T(B')^\ell T^{-1}$, the unscaled walk terms
+have the same property: for each pair of endpoints their supports differ
+by one fixed translation, and there are only finitely many endpoints.
 
 In
 \[
@@ -1156,10 +1176,14 @@ output vertex. Its valuation is at least the initial $\lambda$ plus its
 edge weights. Deleting repeated-vertex cycles only decreases this lower
 bound. Thus every such term has valuation at least $\rho_i$, and so
 $v(u_i)\ge\rho_i$. Strong summability legitimizes the expansion and
-regrouping even if no multiple of $\eta$ is cofinal in $\Gamma$.
-It follows that $v(b_i)\ge\rho_i-E_i>\delta_i$.
+regrouping without requiring the multiples of $\eta$ to be cofinal.
+Every term of the unscaled expansion has support in $\Gamma$, so its
+sum also belongs to $K$: well-ordering and finite multiplicity in the
+auxiliary ordered group restrict to the original subgroup. The finite
+simple-path costs $\rho_i$ lie in $\Gamma$ too. It follows that the solution
+in $K$ satisfies $v(b_i)\ge\rho_i-E_i>\delta_i$.
 
-Construct the $n$ roots by Lemma~\ref{prony:lem:localroots} and the weights by
+Construct the $n$ roots in the original field $K$ by Lemma~\ref{prony:lem:localroots} and the weights by
 Lemma~\ref{prony:lem:pade}. These weights are nonzero even when the coarse weight
 bound is inconclusive: the perturbed Hankel matrix is invertible because
 its matrix in the $Q_i$ basis is $(\Id+B)\diag(c_i)$, whereas its
@@ -1168,6 +1192,14 @@ if any weight vanished. Classical Prony uniqueness completes the
 reconstruction assertion. The root valuation follows from the same lemma;
 Lemma~\ref{prony:lem:weight} with $\kappa_*$ gives the last bound.
 \end{proof}
+
+Fractional potentials can be needed even when all edge weights are
+integers. For two vertices with off-diagonal edge weights $-1$ and $2$
+and loops of weight $1$, all simple cycles are positive. Integer
+potentials cannot make both off-diagonal weights positive: they would
+then each be at least $1$, whereas their sum is invariant and equals $1$.
+The auxiliary divisible hull supplies the scaling without changing the
+field of the input or reconstructed output.
 
 \subsection{How to compute the certificate}
 The certificate requires finite polynomial multiplication, finitely many
@@ -1469,11 +1501,16 @@ that version line. The program keeps the manuscript's letters
 (Section~\ref{prony:subsec:collection}), and
 \lbl{data/requirements.txt} pins the tested SymPy version.
 
-\subsection{A possible Lean development}
-A formalization can be separated into finite algebra and valuation lemmas.
-The first layer is the Prony moment functional, the cofactor basis, its
-orthogonality matrix, and the finite Pad\'e identity. These are field-level
-statements. The second layer adds a valuation, proves integral-polynomial
+\subsection{Current Lean coverage and remaining development}
+The ledger \lbl{docs/FORMALIZATION.md} records the finite algebra already
+proved in \lbl{Surreal/Algebra/PronyHankel.lean}: classical Prony uniqueness,
+the Hankel determinant, cofactor orthogonality, the exact last-moment
+annihilator, and the algebraic local-root identities.
+Valuation localization and the remaining precision estimates are pending.
+
+The dependency order separates finite algebra from valuation lemmas.
+The first layer completes the field-level algebra above with the finite
+Pad\'e identity. The second layer adds a valuation, proves integral-polynomial
 and divided-difference estimates, and packages residue-simple lifting as an
 explicit assumption. It then proves the sharp uniform theorem without any
 reference to a proper class.
@@ -1489,9 +1526,9 @@ certificate is finite ordered-group combinatorics plus matrix scaling.
 The exact lattice theorem needs the multivariable residue-simple lifting
 lemma, not an ordinary normed-space inverse-function theorem.
 
-No Lean proof of this article is included or claimed. The repository's
-existing build and axiom audit concern its own imported declarations, not
-the new statements here. A complete mechanization would need to match each
+The build and axiom audit cover the imported declarations recorded in the
+ledger; they do not establish the unformalized precision theorems.
+Completing the mechanization requires matching each
 hypothesis, particularly the exact model order, strict inequalities, and
 universe sizes.
 
@@ -1519,8 +1556,9 @@ cofactor correction matrix, rather than just their valuations. A sharp
 criterion for when the entire inverse image is its Hermite lattice may be
 weaker than \eqref{prony:eq:latticecriterion}. Confluent configurations, where
 several atoms merge and derivative evaluations replace simple evaluations,
-require a different local model; they are not covered by declaring a zero
-separation valuation to be finite. Finally, infinite configurations need a
+require a different local model. Coincident nodes have a zero difference
+and hence separation valuation $+\infty$; valuation zero instead describes
+distinct residue classes and is already allowed here. Finally, infinite configurations need a
 separate summability hypothesis on the moment data and are outside this
 finite theorem.
 
@@ -1652,8 +1690,11 @@ X.~Caruso, D.~Roe, and T.~Vaccon,
 \emph{Tracking $p$-adic precision},
 LMS Journal of Computation and Mathematics \textbf{17}, special issue A
 (2014), 274--294.
-Author manuscript: \href{https://arxiv.org/abs/1402.7142}{arXiv:1402.7142}.
-See in particular Lemma 3.4 and Proposition 3.12.
+Author manuscript: \href{https://arxiv.org/abs/1402.7142v1}{arXiv:1402.7142v1},
+28 February 2014. See Lemma~3.4 and Proposition~3.12: these concern
+complete fields with real-valued non-Archimedean norms and Banach spaces.
+The arbitrary-rank result here is proved separately by Hahn support
+evaluation, rather than an application of that normed-space theorem.
 
 \bibitem{BG}
 O.~Bournez and Q.~Guilmant,

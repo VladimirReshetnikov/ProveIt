@@ -184,7 +184,7 @@ dichotomy, an exact Hahn expansion for the oscillatory Airy equation, and the
 phase-lattice Picard--Vessiot torus of an arbitrary finite system. A
 deliberate counterexample --- a nonnormal coefficient with instantaneous
 eigenvalues $\pm i$ and a fundamental matrix already in the base field ---
-marks the boundary: the non-Hermitian case is not classified. That part also
+marks the boundary of the eigenvalue formula, not of the finite-system classification. That part also
 invokes a separately imported linear-splitting and first-order surjectivity
 theorem, which is not a consequence of the scalar criterion and is flagged
 wherever it is used.
@@ -197,7 +197,7 @@ coefficients, for \emph{every} normalized surreal derivation, together with the
 logarithmic-derivative image of a constant abelian variety.
 
 A deliberately separate half treats \emph{coordinate} differential equations
-in fixed-common-domain Hahn rings $\Ofin(U)((t^{\Gamma}))$: existence,
+in fixed-common-domain Hahn rings $\Hol(U)((t^{\Gamma}))$: existence,
 uniqueness, support certificates, variation of constants, a Liouville
 determinant identity, monodromy valued in $\GL_{d}(K_{\Gamma})$, and a
 polynomially nonlinear initial-value theorem, all built on strong summability
@@ -553,10 +553,10 @@ coefficient sums.
 
 \begin{warning}[What summability is not]
 \label{diff:warn:summability}
-Strong summability is a statement about supports, not about convergence. It is
-strictly stronger than ``valuations increase''. It licenses coefficientwise
-rearrangement of a summable family, and nothing else: it does not authorize
-exchanging two infinite sums, and \emph{writing} a formal geometric or
+Strong summability is a statement about supports. Increasing valuations alone
+do not establish it. It licenses coefficientwise rearrangement of a summable
+family; exchanging two infinite sums requires strong summability of the joint
+family, not merely of each row. And \emph{writing} a formal geometric or
 exponential series is not by itself a summability proof. None of the Hahn
 identities below is asserted to be a limit of partial sums in the fine surreal
 topology, in which set-indexed convergence is degenerate. Conversely, a
@@ -858,8 +858,8 @@ one-line proof, used by three of the seven, applies
 \ref{diff:BM:positivity} to $\omega\pm nf$ for $f\in\Ofin$, obtaining
 $1\pm n\der f>0$ directly; a fourth applies it to $\omega/n\pm f$. All are the
 same argument, and none uses a mean-value theorem, a topological limit, or an
-estimate about numerical rounding. Smallness is a structural hypothesis about
-this derivation.
+estimate about numerical rounding. Smallness is a structural consequence of the displayed positivity axiom
+for this derivation.
 \end{remark}
 
 \begin{warning}[The containment is strict, and that gap is the whole subject]
@@ -902,19 +902,19 @@ $\der$. It does \emph{not} yet classify infinitesimal rates: the exact image
 is strictly smaller than $\No+i\mm$, and identifying it needs the finite-angle
 structure of \cref{diff:sec:phasegeometry}.
 
-\section{One derivation, and six other operators}
+\section{One derivation, and seven other operators}
 \label{diff:sec:taxonomy}
 
 Almost every apparent paradox in this subject is a type error. The seven
-manuscripts between them separate seven operators; the merged report keeps all
-seven distinct, with the symbols of \cref{diff:tab:derivatives}. A formula can
+manuscripts between them separate eight operators; the merged report keeps all
+eight distinct, with the symbols of \cref{diff:tab:derivatives}. A formula can
 be correct for one and false for another with no contradiction, and several
 theorems below are true for one and false for another \emph{on the same printed
 equation}.
 
 \begin{table}[htbp]
 \centering\small
-\caption{The seven operators. Only the first is ``the derivation''.}
+\caption{The eight operators. Only the first is ``the derivation''.}
 \label{diff:tab:derivatives}
 \begin{tabularx}{\textwidth}{@{}L{0.14\textwidth}YL{0.20\textwidth}L{0.19\textwidth}@{}}
 \toprule
@@ -1261,7 +1261,7 @@ introduces sense (e) and, with it, a fourth letter for the primitive
 obstruction. One of them prints
 (a) and (b) twenty lines apart, both called the phase. Sense (c) is the one
 that carries the obstruction, and it is the one that is \emph{not} an angle:
-$\Obs(i)=\omega$ and $\Obs(i/\omega)=\log\omega$ are purely infinite surreals,
+$\Phi(i)=\omega$ and $\Phi(i/\omega)=\log\omega$ are purely infinite surreals,
 not arguments of anything. A merged sentence such as ``the phase of the
 solution is $\log\omega$'' is meaningless; the correct sentence is ``the
 accumulated phase of the coefficient $i/\omega$ is $\log\omega$, which is
@@ -1295,8 +1295,9 @@ different classes, and the difference is one application of $\der$.
 $\Acl=\der\mm$ is a \emph{strict} subclass of $\mm$
 (\cref{diff:warn:strict}), and $\mm$ is a strict subclass of $\Ofin$. If a
 merge collapses $\der\Ofin$ to $\Ofin$, the rank-one criterion becomes ``$b$
-infinitesimal'', which would make $\der y=i\omega^{-1}y$ solvable. Every one of
-the seven manuscripts explicitly refutes exactly that, and the counterexample
+finite''. Even the stronger replacement ``$b$ infinitesimal'', obtained by
+replacing $\Acl$ with $\mm$, would make $\der y=i\omega^{-1}y$ solvable.
+Every one of the seven manuscripts refutes that conclusion, and the counterexample
 pair of \cref{diff:ex:logseparator} --- $i/(\omega\log\omega)$ insoluble against
 $i/(\omega(\log\omega)^{2})$ soluble --- exists precisely to block it. The
 strip $\Strip=\No+i\Ofin$ is $\der$-stable \emph{because}
@@ -1334,8 +1335,10 @@ This report uses no symbol $J$ for any operator or class.  The letter
 occurs only as a neutral index set for set-indexed families
 (\cref{diff:def:summable} and \cref{diff:thm:BM}), where no confusion with
 the objects below is possible.  The normalized intrinsic primitive is
-$\Izero$ (\cref{diff:prop:normprimitive}); its target class of purely infinite
-surreals is $\Pcl$; the inverse of $\der|_{\mm}$ is written
+$\Izero$ (\cref{diff:prop:normprimitive}), with values in
+$\Pcl\oplus\mm$, the zero-constant-term surreals. The purely infinite
+class $\Pcl$ is the target of the obstruction map, not of $\Izero$.
+The inverse of $\der|_{\mm}$ is written
 $\Izero|_{\Acl}$ and named the \emph{unique infinitesimal primitive}. The
 obstruction on $\No$ is $\Obs$ and its surcomplex companion is $\Phi$
 (\cref{diff:def:obs}). Cross-references to companion reports name the operator
@@ -1370,8 +1373,7 @@ For $h\in\mm_{\C}$ define the Hahn sums
  \Lmm(1+h)=\sum_{n\geq1}\frac{(-1)^{n+1}}{n}h^{n}.
 \end{equation}
 \Cref{diff:lem:neumann} makes both families summable, because the support of a
-nonzero infinitesimal is positive and well ordered. These are Hahn sums, not
-limits of their partial sums in any topology. Their domain is
+nonzero infinitesimal is positive and well ordered. These are defined by strong Hahn summation, without a topological limit. Their domain is
 \emph{infinitesimal arguments only}: no attempt is made to sum the ordinary
 exponential Taylor series at a nonzero ordinary constant, still less at an
 infinite argument.
@@ -1710,8 +1712,8 @@ antiderivative choice. Sample values:
  \Obs(\omega^{-2})=0 .
 \end{equation}
 The obstruction measures accumulated phase, not the instantaneous size of a
-coefficient: a real coefficient has zero obstruction however large it is, and
-an infinitesimal coefficient may have a nonzero one.
+coefficient: $\Phi(a)=0$ for every real coefficient $a\in\No$, however
+large, whereas $\Phi(ib)=\Obs(b)$ may be nonzero even for infinitesimal $b$.
 
 \begin{theorem}[Structure of the bounded-primitive ideal]
 \label{diff:thm:idealstructure}
@@ -1874,7 +1876,7 @@ all of $\SC$.
 \label{diff:warn:notClinear}
 $\No+i\Acl$ is closed under addition and under multiplication by real
 constants, but not under multiplication by $i$: every real coefficient has
-zero obstruction, while multiplying one by $i$ may not. An implementation must
+zero $\Phi$-obstruction, while multiplying one by $i$ may not. An implementation must
 not model this image as a complex vector subspace.
 \end{warning}
 
@@ -2156,8 +2158,9 @@ $\dagger$ and additive after it:
  \xrightarrow{\ \dagger\ }(\SC,+)
  \xrightarrow{\ \Phi\ }(\Pcl,+)\longrightarrow 0 .
 \end{equation}
-Restricted to $\No$ it reads
-$0\to\Acl\to\No\xrightarrow{\Obs}\Pcl\to 0$.
+The corresponding real obstruction sequence is
+$0\to\Acl\to\No\xrightarrow{\Obs}\Pcl\to 0$; it uses
+$\Phi(ib)=\Obs(b)$, not the restriction $\Phi|_{\No}=0$.
 \end{corollary}
 \begin{proof}
 $\Ker(\dagger)=\C^{\times}$ and $\operatorname{im}(\dagger)=\No+i\Acl$ by
@@ -2734,9 +2737,10 @@ existence verified by differentiation and uniqueness by
 \cref{diff:cor:oscillator}. An integrating-factor expression using an
 undefined value $e^{i\omega}$ is unnecessary and would obscure the correct
 reasoning; the integrating factor simply does not exist in $\SC$, so variation
-of constants yields no existence conclusion there. No general inhomogeneous
-existence theorem is claimed outside the admissible locus $\Phi(q)=0$; see
-\cref{diff:sec:nonclaims}. Note also that having a trivial kernel is not the
+of constants yields no existence conclusion there. This argument alone gives
+no general inhomogeneous existence theorem outside $\Phi(q)=0$. The additional
+import in \cref{diff:thm:matsurjectivity} will supply existence for every
+forcing in \cref{diff:part:matrix}. Note also that having a trivial kernel is not the
 same as failing to be surjective: \cref{diff:thm:resolvent} exhibits an
 operator that is bijective on a workspace although its homogeneous equation
 has no nonzero solution anywhere in $\SC$.
@@ -2755,7 +2759,7 @@ particular, with $\lambda=i$,
 \begin{equation}\label{diff:eq:polyinverse}
  (\der-i)^{-1}f=i\sum_{k=0}^{N}(-i)^{k}\der^{k}f .
 \end{equation}
-More generally, for real $\mu$ and $P\in\C[X]$,
+More generally, for real $\mu$ and nonzero $P\in\C[X]$,
 $P(\der)\bigl(e^{\mu\omega}q(\omega)\bigr)=e^{\mu\omega}P(\mu+D)q(\omega)$
 where $D$ is ordinary polynomial differentiation; writing
 $P(\mu+X)=X^{r}Q(X)$ with $Q(0)\neq0$, the operator $Q(D)^{-1}$ is a finite
@@ -3000,8 +3004,8 @@ class of $\der y=iHy$ unchanged, with \emph{no} spectral-gap hypothesis --- a
 statement the trace invariant cannot see at all, and one that
 \cref{diff:prop:sharpperturb} shows is sharp. For non-Hermitian coefficients no
 such spectral formula holds, and \cref{diff:ex:matnonnormal} is the
-counterexample that marks the line; \cref{diff:sub:nc:scalarscope} records what
-remains unclassified.
+counterexample that marks the line; \cref{diff:sub:nc:scalarscope} separates
+this limitation from the complete finite-system classification.
 \part{Finite matrix systems over \texorpdfstring{$\SC$}{No[i]}}
 \label{diff:part:matrix}
 
@@ -3016,7 +3020,7 @@ invariant, $\Phi(\tr A)$, and with a proof that it is not enough:
 $\operatorname{diag}(i,-i)$ has vanishing trace obstruction and no nonzero
 solution. The missing information is a \emph{multiset}, not a sum. This part
 supplies it for every finite system, and computes it from ordinary algebraic
-eigenvalues when the coefficient is Hermitian.
+eigenvalues when the coefficient is $iH$ with $H$ Hermitian.
 
 The eighth source manuscript is the origin of this part
 (\cref{diff:app:provenance}). Its own audit names the gap in this report's
@@ -3337,8 +3341,8 @@ Direct sums unite phase multisets, tensor products add phases pairwise, and
 duals negate them.
 \end{proposition}
 \begin{proof}
-By \cref{diff:eq:matintertwine} any change between normalizing gauges is a
-constant block-diagonal matrix, so it commutes with every $E_{P}$; the
+After aligning the ordered phase blocks, \cref{diff:eq:matintertwine} makes
+any change between normalizing gauges a constant block-diagonal matrix, so it commutes with every $E_{P}$; the
 displayed identities follow by multiplying and differentiating
 $\Pi_{P}=GE_{P}G^{-1}$ and using $\der G=AG-GD_{P}$. The same entrywise
 calculation, applied to $\der X=AX-XB$ in normal-form coordinates, identifies
@@ -3703,18 +3707,20 @@ gauges needed for a general nonnormal matrix need not be entrywise finite, so
 their connection term need not lie in $\Mat_{n}(\Acl_{\C})$ and can carry a
 nonzero phase of its own. Here $G$ has the infinite entry $1-\omega^{2}$.
 
-The example also agrees with, rather than contradicts, the hedge already
-recorded in \cref{diff:sub:nc:open}: a classification of nontriangular systems
-by module-theoretic data cannot be replaced by the eigenvalues of an
-instantaneous coefficient matrix. \Cref{diff:thm:matspectral} does not do that
-either; it replaces them by the eigenvalues \emph{after} applying $\Obs$, and
-only under Hermitian symmetry. The non-Hermitian case remains open, and
-\cref{diff:ex:matnonnormal} is what marks the line. (Added with member~12: one
-non-Hermitian sector is now computed. For the power-Hahn regular-singular
-systems of \cref{diff:rs:part}, $\Ph(-tA)=\{(\Imm\lambda_{j})\log t\}$ with
-$\lambda_{j}$ the eigenvalues of the ordinary residual matrix
-(\cref{diff:rs:prop:phasespectrum}); \cref{diff:ex:matnonnormal} lies outside that
-class, and the general non-Hermitian case stays open.)
+The complete classification of \cref{diff:thm:matnormal} still applies to
+this non-Hermitian system: its phase multiset is $\{0,0\}$. What fails is
+computing that multiset from the instantaneous eigenvalues by the Hermitian
+formula. \Cref{diff:thm:matspectral} applies $\Obs$ to the algebraic
+eigenvalues of $H$ when $A=iH$; the general normal form instead uses
+differential factorization and gauges. Effective construction of those data
+on specified input languages remains a separate question
+(\cref{diff:sub:nc:open}).
+
+For the power-Hahn regular-singular systems of \cref{diff:rs:part},
+$\Ph(-tA)=\{(\Imm\lambda_j)\log t\}$, with $\lambda_j$ the eigenvalues
+of the ordinary residual matrix (\cref{diff:rs:prop:phasespectrum}). This
+provides another explicitly computable non-Hermitian class;
+\cref{diff:ex:matnonnormal} lies outside it.
 \end{warning}
 
 \begin{example}[A genuinely coupled unitary system with two independent phases]
@@ -3825,7 +3831,8 @@ unique solution $W_{A}$ the ordinary product rule gives
 \end{equation}
 whose right-hand side again lies in $\mathfrak u_{n}(\Acl_{\C})$. So the
 bijection transports the group law to $A\star B=A+W_{A}BW_{A}^{*}$, which is
-\emph{not} addition unless the matrices commute.
+equal to $A+B$ exactly when $W_{A}B=BW_{A}$. Commutation of $A$ and $B$
+alone is not sufficient, as the following example also shows.
 \end{warning}
 
 \begin{example}[An exact noncommuting Hahn solution]
@@ -3858,6 +3865,17 @@ exactly; $(\der(W^{*}W))=0$ with standard part $I$ makes it unitary, so it is
 the unique solution. This is a computation in a restricted Hahn workspace and
 is not a claim that such a recurrence is effectively available for a general
 coefficient matrix.
+
+For the product law take $B=A$, so $[A,B]=0$ automatically. The displayed
+coefficients of $W=W_A$ give
+\[
+ [t^{4}]\bigl(W_A A W_A^{*}-A\bigr)=-[X,Z]\neq0.
+\]
+Indeed the two contributions at this order are
+$[tX,-2t^{3}Z]=-2t^{4}[X,Z]$ and
+$[t^{2}Z,-t^{2}X]=t^{4}[X,Z]$; the terms involving only $X$ cancel.
+Thus $A\star A\neq2A$, even though the coefficient matrices $A$ and $B$
+commute.
 \end{example}
 
 \Cref{diff:ex:matnoncommuting} is the same phenomenon as the two-scale
@@ -4130,7 +4148,7 @@ ordinary coefficients grow, and its termwise differentiation is justified by
 \ref{diff:BM:additive}. This is the same phenomenon as the factorially
 divergent solutions of \cref{diff:thm:factorial}, and it carries the same
 disclaimer (\cref{diff:warn:antitopological}): a strictly descending support is
-a summability certificate, not convergence in any topology on $\SC$.
+a summability certificate, not convergence in the fine topology on $\SC$.
 
 Put $b=\der a+ix^{1/2}a$ and $G=\left(\begin{smallmatrix}a&\bar a\\
 b&\bar b\end{smallmatrix}\right)$. The two columns satisfy
@@ -4249,11 +4267,16 @@ $\Lambda$; the reverse inclusion is immediate.
 For finite generation, call $0\neq u\in\Lambda^{+}$ indecomposable when it is
 not a sum of two nonzero members of $\Lambda^{+}$. Two distinct
 indecomposables are incomparable in the coordinatewise order on $\N^{n}$,
-since $u<v$ would give $v-u\in\Lambda^{+}\setminus\{0\}$; Dickson's
-finite-antichain lemma for $\N^{n}$ --- the special case of
-\cref{diff:app:support} in which the alphabet is $\{1,\dots,n\}$ and words are
-unordered --- therefore makes the indecomposables finite, and induction on
-total degree writes every member of $\Lambda^{+}$ as a sum of them. Finally a
+since $u<v$ would give $v-u\in\Lambda^{+}\setminus\{0\}$. To see that
+such an antichain is finite, take any infinite sequence of distinct members
+of $\N^{n}$. Its first coordinates admit an infinite nondecreasing
+subsequence: either one value occurs infinitely often, or every tail is
+unbounded and an increasing subsequence can be chosen recursively. Repeat
+this selection for each of the remaining finitely many coordinates. The
+result contains two coordinatewise comparable members, a contradiction. This
+is Dickson's finite-antichain lemma. Hence there are finitely many
+indecomposables, and induction on total degree writes every member of
+$\Lambda^{+}$ as a sum of them. Finally a
 $\Z$-basis of $\Lambda$ gives $n-r$ Laurent monomials generating the rational
 field, algebraically independent because distinct integer combinations of
 basis exponents give distinct monomials. No analytic finiteness principle is
@@ -4417,8 +4440,9 @@ does not supply an algorithm for the phase map or the normalizing gauge, and
 does not settle which nontriangular differential modules admit a filtration
 whose rank-one factors carry computable obstructions, which needs genuine
 module-theoretic information rather than the eigenvalues of an instantaneous
-coefficient matrix. Higher-rank differential modules remain outside the
-classification. All statements are for the one fixed $\der$ of
+coefficient matrix. Every ordinary finite rank over $\SC$ is covered;
+classifications over smaller prescribed bases and in infinite dimension are
+outside this theorem. All statements are for the one fixed $\der$ of
 \cref{diff:thm:BM} and for no other derivation, no class-function derivative
 and none of the coordinate operators of \cref{diff:tab:derivatives}. The
 consolidated list is \cref{diff:sub:nc:matrixscope}. (Added with member~12: for
@@ -4441,9 +4465,14 @@ of \cref{diff:thm:localize}: starting from a set of given coefficients together
 with $\R\cup\{\omega\}$, form a countable chain of set-sized subfields of
 $\No$, adjoining at each stage the real algebraic roots, derivatives, real
 exponentials, purely infinite parts, primitives and finite angles needed by the
-previous stage, together with witnesses for the finitely many
-factorizations and first-order inhomogeneous equations of
-\cref{diff:thm:matsurjectivity} whose coefficients appear there. The union is a
+previous stage, together with witnesses for all finite factorizations and
+first-order inhomogeneous equations of \cref{diff:thm:matsurjectivity}
+with coefficients at that stage. These are a \emph{set} of requests, each
+specified by a finite tuple; there need not be only finitely many requests.
+Witnesses can be chosen set-theoretically: for each request take the least
+ordinal birthday bound at which a witness tuple exists, then choose from the
+nonempty set of witness tuples at that bound. Replacement and set choice
+therefore produce a set of witnesses. The union is a
 real closed differential subfield $\No_{0}$ inheriting the $H$-field rule and
 the designated witnesses, whose complexification has constant field exactly
 $\C$; every finite tuple appears at some stage and its witnesses at a later
@@ -4781,7 +4810,7 @@ $(-1)^{N}(2N)!\,\omega^{-(2N+1)}$, so
 and the errors never enter that fixed infinitesimal neighbourhood of zero. The
 residual identities are exact algebraic identities and scale certificates;
 they certify a formal remainder at a stated order, not convergence of the
-sequence $(y_{N})$ in any surreal topology. A numerical substitution such as
+sequence $(y_{N})$ in the fine surreal topology. A numerical substitution such as
 $t=10^{-6}$ would not verify a Hahn identity and is not used anywhere in this
 report. A closed formula for a coefficient stream is not a finite list of every
 coefficient.
@@ -5137,7 +5166,7 @@ series.
 \begin{proof}
 Let $F_{0}$ be the real closure inside $\No$ of the field generated by $\R$,
 $\omega$ and the real and imaginary parts of the members of $S$. Given
-$F_{n}$, adjoin the images of all of its elements under the listed unary class
+$F_{n}$, adjoin the images of all eligible finite tuples under the listed class
 functions --- with their declared domains: positive arguments for $\log$,
 finite arguments for the phase components, infinitesimal arguments for
 $\Emm,\Lmm$ and for the optional formal-series values --- take the field
@@ -5225,7 +5254,7 @@ changes the differential field itself rather than its set-sized container.
 We use Picard--Vessiot terminology in the standard sense of
 \cite{PS,Singer}: a solution-generated differential extension with \emph{no
 new constants}. Five explicit constructions occur across the source
-manuscripts, over five different base fields and by four different proofs.
+manuscripts, over four base fields (with two constructions over $\SC$).
 They are genuinely different theorems and all are recorded; none of them
 appeals to an unqualified existence theorem for differential extensions of a
 proper-class field.
@@ -5314,7 +5343,7 @@ differentiating to zero, contradicting minimality. So the chosen element is $1$
 and $\mathfrak{q}$ is the whole ring.
 \end{proof}
 
-\subsection{Four set-sized bases, and a non-embedding}
+\subsection{Set-sized bases, and a non-embedding}
 \label{diff:sub:PVsetsized}
 
 The proper-class base can be avoided entirely. Each of the following is a
@@ -5447,10 +5476,11 @@ exists, and $\mathsf T$ cannot be algebraic over $\SC$.
 
 So a field can be algebraically closed, contain the required base
 coefficients, and possess additive primitives, and still fail to contain this
-simplest oscillatory differential extension. The role of $\mathsf T$ or $\mathsf T$ is not
-that of an algebraic root missing from $\No[i]$; it is a new differential
-transcendental, and no change of normal-form encoding inside the same field can
-make it exist. A symbolic constructor for such an extension is mathematically
+simplest oscillatory differential extension. The generator $\mathsf T$ is
+transcendental as a field element, but \emph{differentially algebraic}, since
+it satisfies $\der\mathsf T=i\mathsf T$. It is not an algebraic root
+missing from $\No[i]$, and no change of normal-form encoding inside the same
+field can make it exist. A symbolic constructor for such an extension is mathematically
 reasonable, but it must announce a change of ambient differential field:
 calling its new element a surcomplex number would be a mathematical error, not
 a harmless choice of representation.
@@ -5564,7 +5594,9 @@ field, which admits orderings extending the order of $F$.
 
 \begin{theorem}[Oscillation cannot retain the $H$-field ordering rule]
 \label{diff:thm:orderobstruction}
-No ordering of $F(\mathsf v)$ extending the given order of $F$ can satisfy
+Let $F\subseteq\No$ be an ordered differential subfield containing
+$\R\cup\{\omega\}$, as for the real bases above. No ordering of
+$F(\mathsf v)$ extending the given order of $F$ can satisfy
 \[
  h>\R\quad\Longrightarrow\quad \der h>0
 \]
@@ -5691,7 +5723,7 @@ missing phases.
 The theorem treats diagonal systems completely and supplies useful information
 for triangular extensions. Taken by itself it is \emph{not} a classification of
 Picard--Vessiot groups for arbitrary nontriangular matrices over $\SC$. It
-becomes one only in combination with the matrix normal form proved later:
+becomes one in combination with the matrix normal form of \cref{diff:part:matrix}:
 \cref{diff:thm:matnormal} reduces an arbitrary finite system to a diagonal one
 over $\SC$, and \cref{diff:cor:mattorus} then reads off its torus, identifying
 the count $d$ of \cref{diff:lem:saturated} with the rational rank $r$ of the
@@ -5821,8 +5853,10 @@ eigenvalues of $A_{0}$ (\cref{diff:rs:prop:phasespectrum}). It does so by an
 elementary route that uses neither the import of
 \cref{diff:thm:matsurjectivity} nor the surjectivity clause
 \ref{diff:BM:surj}. It therefore answers item~N24 and the corresponding open
-continuation \emph{for this class only}; the general non-Hermitian case stays
-open (\cref{diff:sub:nc:open}).
+continuation \emph{for this class only}: an explicit phase formula is available
+here without the matrix import. The abstract classification already covers all
+finite systems over $\SC$; computable formulas for broader non-Hermitian
+classes remain open (\cref{diff:sub:nc:open}).
 \item It supplies, for this class, an explicit splitting whose rank-one factors
 carry obstructions read off from $A_{0}$ alone, together with a finite exact
 procedure for finite rational supports (\cref{diff:rs:sub:procedure}). That is
@@ -6597,8 +6631,8 @@ imported \cref{diff:thm:matsurjectivity}; for this class it is replaced by the
 explicit $G_{\tau}$. The coefficient $-tA$ is in general neither Hermitian nor
 normal, so \cref{diff:rs:prop:phasespectrum} is a genuinely non-Hermitian sector
 in which the phase spectrum is computed from finite data: the residual
-eigenvalues. It answers item~N24 and the open continuation ``extend the phase
-spectrum to non-Hermitian coefficients'' for this class and for no other.
+eigenvalues. It answers item~N24 and the open continuation ``compute the phase
+spectrum for broader non-Hermitian classes'' for this class and for no other.
 Member~12 states the comparison in the same terms: \cref{diff:part:matrix}
 gives an abstract phase-multiset normal form and a constructive Hermitian
 sector, and this part computes one concrete non-Hermitian sector by a
@@ -6621,8 +6655,9 @@ real Hahn series of valuation greater than $1$, hence in $\Acl$ by
 \cref{diff:cor:valphase}. So $\Obs(\Imm(-t\mu_{j}))=\Obs(-b_{j}t)=b_{j}\tau$.
 \Cref{diff:ex:matnonnormal} lies outside this class: the $\derT$-coefficient
 $-\omega A$ of its system has infinite entries. The observation does not
-extend the recipe beyond the class, and the general non-Hermitian case remains
-open.
+extend the recipe beyond the class. Finding other classes with computable phase
+formulas remains open; existence and completeness of the abstract normal form
+are already supplied by \cref{diff:thm:matnormal}.
 \end{remark}
 
 \section{Hahn solutions, the logarithm, and forced equations}
@@ -8283,7 +8318,7 @@ interpret $t^{\gamma}=\omega^{-\gamma}$ as in \cref{diff:eq:tmonomial}, and put
 with valuation $v$ the least exponent and $v(0)=+\infty$; so $v(t^{\gamma})>0$
 means the monomial is infinitesimal. Here $\Gamma$ may have higher rank than
 $\R$, and \emph{no divisibility assumption on $\Gamma$ is needed} for any
-construction in this part. Let $U\subseteq\C$ be an ordinary \emph{connected}
+construction in this part. Let $U\subseteq\C$ be an ordinary \emph{nonempty connected}
 open set, let $\Hol(U)$ denote the ordinary holomorphic functions on $U$, and
 define
 \begin{equation}\label{diff:eq:coherentring}
@@ -8469,7 +8504,7 @@ stated ring.
 
 \begin{example}[Positive support is not necessary for matrix systems]
 \label{diff:ex:nilpotent}
-If $N^{2}=0$ then
+If $N\in\Mat_d(\C)$ satisfies $N^{2}=0$ and $1\in\Gamma$, then
 \[
  \Dz X=t^{-1}NX,\qquad X(0)=I_{d},
  \qquad X=I_{d}+z\,t^{-1}N
@@ -8586,7 +8621,7 @@ uniqueness there is among all Hahn-coherent matrices.
 \begin{proof}
 Put $A(z)=D_{Y}F_{0}(z,y_{0}(z))$, the Jacobian along the background solution.
 Ordinary complex linear theory gives an invertible holomorphic fundamental
-matrix $\Upsilon$ on $U$ with $\Phi'=A\Phi$, $\Phi(z_{0})=I_{d}$; simple
+matrix $\Upsilon$ on $U$ with $\Upsilon'=A\Upsilon$, $\Upsilon(z_{0})=I_{d}$; simple
 connectedness removes monodromy \cite[Ch.\ 3--4]{Teschl}.
 
 $M$ is well ordered by \cref{diff:lem:neumann}. Perform recursion along
@@ -8744,8 +8779,11 @@ cover, and the support calculation is unchanged.
 
 \begin{theorem}[Monodromy valued in $\GL_{d}(K_{\Gamma})$]
 \label{diff:thm:monodromy}
-Analytic continuation of the normalized fundamental matrix around an ordinary
-based loop $\ell$ yields another fundamental matrix $X_{\ell}$, and their ratio
+Let $U$ be a nonempty connected ordinary domain with base point $z_0$, and
+let $A=A_0+E$ satisfy the holomorphic and positive-support hypotheses of
+\cref{diff:thm:coherentlinear}, with perturbation support $S$, without
+assuming that $U$ is simply connected. Analytic continuation of the normalized
+fundamental matrix around an ordinary based loop $\ell$ yields another fundamental matrix $X_{\ell}$, and their ratio
 has zero coordinate derivative, so
 \begin{equation}\label{diff:eq:monodromy}
  X_{\ell}=X\,M_{\ell},\qquad M_{\ell}\in\GL_{d}(K_{\Gamma}).
@@ -8948,7 +8986,8 @@ The rule
  \qquad\Bigl(\text{equivalently }
  \dercoef F=\sum_{\gamma\in S}f_{\gamma}(z)\,\der t^{\gamma}\Bigr)
 \end{equation}
-defines a $\C$-linear derivation of the common-domain Hahn algebra. Every
+defines a $\C$-linear derivation with values in the common-domain Hahn
+algebra over the differential hull of $\Gamma$. Every
 inner sum is finite; each new coefficient is holomorphic on the \emph{same}
 ordinary domain $U$, so differentiating the scalar coefficients neither
 shrinks nor destroys the common domain; and
@@ -9087,10 +9126,11 @@ The contour in \cref{diff:cor:naturality} is fixed and ordinary. A moving
 contour, moving endpoints, or a residue with a different centre convention
 requires additional terms or a different statement; none is hidden in the
 corollary. At an \emph{actual moving pole} the coefficient term cannot be
-dropped: for $a\in\SC$ and $F(Z)=1/(Z-a)$,
+dropped. Use the formal rational operators $\dertil$ and $\derZ$ of
+\cref{diff:prop:totalchain}: for $a\in\SC$ and $F(Z)=1/(Z-a)$,
 \begin{equation}\label{diff:eq:movingpole}
- \dercoef F=\frac{\der a}{(Z-a)^{2}},\qquad
- \Dz F=-\frac{1}{(Z-a)^{2}},\qquad
+ \dertil F=\frac{\der a}{(Z-a)^{2}},\qquad
+ \derZ F=-\frac{1}{(Z-a)^{2}},\qquad
  \der\frac{1}{z-a}=-\frac{\der z-\der a}{(z-a)^{2}},
 \end{equation}
 these rational identities holding whenever the denominators are nonzero and
@@ -9120,6 +9160,7 @@ the repository remain distinct after $\der$ is added.
 \subsection{Formal power series need their own admissibility condition}
 \label{diff:sub:formaladmissibility}
 
+Let $K$ be a differential subfield of $\SC$ (or take $K=\SC$).
 On $K[[Z]]$ the formal coefficient and variable derivatives commute:
 \[
  \dertil F=\sum_{n}(\der c_{n})Z^{n},
@@ -9241,13 +9282,14 @@ once a workspace is declared.
 Result & Certificate required & Mathematical conclusion \\
 \midrule
 Workspace solution &
-Rational exponent $r$, a finite $k$ with positive support and
+Rational exponent $r$, an element $k\in\Hring$ with positive support and
 $-rt+\der k=q$ &
 A certified nonzero solution $t^{r}\Emm(k)$ lies in the declared Hahn field
 (\cref{diff:thm:Hahnlogder}) \\[0.4em]
 Ambient-only solution &
 A verified primitive $A$ of $a$, a \emph{finite} accumulated phase $B$ of $b$
-with verified $\pp(B)=0$, and an admissible infinitesimal-residue expression &
+with verified $\pp(B)=0$, an admissible infinitesimal-residue expression,
+and certified failure of the declared workspace solvability test &
 A nonzero solution $\exp(A)\Emm(i\eta)$ exists in $\SC$, but the workspace
 obstruction is nonzero (\cref{diff:thm:phasecriterion}) \\[0.4em]
 Ambient phase obstruction &
@@ -9443,14 +9485,16 @@ construction can remain an explicit imported interface until separately
 formalized; it is a much larger dependency and is not needed to check the
 logical consequences of a stated interface.
 
-\begin{warning}[No formalization is delivered]
+\begin{warning}[Formalization plan and present scope]
 \label{diff:warn:noformalization}
-No Lean source and no machine-checked formalization is included or asserted to
-exist, here or in the repository or in a library. The preceding paragraphs
-specify proof obligations and a possible order of development, nothing more.
-This report also does not claim that the concrete surreal carrier has already
-been connected to every required Hahn, real-closed-field, exponential or
-derivation interface.
+The report-specific differential theorems remain pending in the repository
+ledger \path{docs/FORMALIZATION.md}. Existing checked prerequisites there
+must be distinguished from a formalization of the Berarducci--Mantova
+derivation, its phase obstruction, the finite-matrix classification or the
+coherent differential-equation package. The preceding paragraphs specify
+further proof obligations and a possible order of development; they do not
+assert that the concrete surreal carrier has already been connected to every
+required Hahn, real-closed-field, exponential or derivation interface.
 \end{warning}
 
 \section{Relation to the literature and to the companion reports}
@@ -9567,14 +9611,14 @@ stated in a source and missing here.  They are restored, since each limits a
 claim the report otherwise appears to make.
 
 \begin{enumerate}[label=\textup{R\arabic*.},leftmargin=3.0em,itemsep=0.35em]
-\item \textbf{The interface table describes nothing that exists.}  One source
-introduces its certificate and interface contract with the explicit disclaimer
-that these are \emph{proposed} interfaces, not claims about functions already
-implemented in this repository's symbolic packages.  That applies verbatim to
-\cref{diff:tab:interface}: nothing in it is implemented anywhere in the
-collection, and its prescriptive voice is a proposal throughout.  The
-companion computer-algebra report holds the existing capability taxonomy, and
-it implements none of this either.
+\item \textbf{The interface table proposes contracts.} One source explicitly
+distinguishes its certificate and interface specifications from implemented
+functions. Accordingly, \cref{diff:tab:interface} is a proposed contract, not
+evidence that a complete differential solver exists. The companion
+computer-algebra report supplies the capability taxonomy; current checked
+prerequisites and pending obligations are tracked separately in
+\path{docs/FORMALIZATION.md}. This historical source disclaimer is not an
+audit asserting that no related implementation exists anywhere in the repository.
 \item \textbf{A recorded run is not a reproduction promise.}  One source notes
 that a local environment's Python version and elapsed time need not match its
 bundled run.  \Cref{diff:app:verification} reproduces the delivered records
@@ -9774,7 +9818,8 @@ additional differential-field structure that a general inhomogeneous existence
 theorem would need is not invoked there. Nor is it claimed that such broader
 solvability questions are open in the literature. \Cref{diff:thm:variation}
 proves surjectivity of $\der-q$ only in the admissible case, and no claim is
-made about surjectivity of all linear differential operators on $\SC$: a
+made \emph{by that scalar argument} about surjectivity of all linear
+differential operators on $\SC$: a
 trivial kernel is explicitly distinguished from a failure of surjectivity, and
 $\der-i$ on $\C((t))$ is the witness (\cref{diff:rem:parentselection}).
 \Cref{diff:part:matrix} does prove first-order inhomogeneous existence
@@ -9801,12 +9846,11 @@ class of \cref{diff:rs:part} is a different statement, for the Euler derivation
 $\derT$ and power-Hahn coefficients $A_{0}+A_{+}$, and it does not extend the
 constant-coefficient theorem to arbitrary surcomplex coefficients; its own
 limits are items N65--N79.
-\item The Hermitian case of the nontriangular matrix problem is settled; the
-non-Hermitian case is not. \Cref{diff:thm:matnormal} gives a complete phase
-normal form for every finite system, and \cref{diff:thm:matspectral} computes
+\item \Cref{diff:thm:matnormal} gives a complete phase normal form for every
+ordinary finite system, including non-Hermitian ones, and \cref{diff:thm:matspectral} computes
 its invariant from ordinary algebraic eigenvalues \emph{when the coefficient is
-$iH$ with $H$ Hermitian}. Outside that hypothesis no spectral formula is
-claimed, and \cref{diff:ex:matnonnormal} refutes the obvious candidate: a
+$iH$ with $H$ Hermitian}. This formula does not extend to arbitrary
+coefficients: \cref{diff:ex:matnonnormal} gives a
 nonnormal coefficient with instantaneous eigenvalues $\pm i$ whose system
 nevertheless has a fundamental matrix in $\GL_{2}(\SC)$, so that integrating
 imaginary parts of eigenvalues would predict $\{\omega,-\omega\}$ instead of
@@ -9817,21 +9861,19 @@ first invariant (\cref{diff:prop:trace}), the torus theorem treats
 settled while arbitrary matrices with surreal entries are not, and no general
 matrix normal form follows from the scalar result --- the normal form of
 \cref{diff:part:matrix} needs the separate import of
-\cref{diff:thm:matsurjectivity}. Higher-rank differential modules remain
-unclassified, and so does the question of which nontriangular differential
-modules admit a filtration whose rank-one factors carry computable
-obstructions, which needs genuine module-theoretic information rather than the
-eigenvalues of an instantaneous coefficient matrix
-(\cref{diff:warn:matnonnormal,diff:warn:matlimits}). \emph{Amended with
-member~12:} one non-Hermitian sector is computed. For power-Hahn
-regular-singular systems, $\Ph(-tA)=\{(\Imm\lambda_{j})\log t\}$ with the
-$\lambda_{j}$ the eigenvalues of the ordinary residual matrix, the normalizing
-gauge is explicit and lies in $\GL_{n}(\KR[\log t])$, and no import is used
-(\cref{diff:rs:prop:phasespectrum}); within that class the module splits into
-rank-one factors with obstructions read off from the residual matrix
+\cref{diff:thm:matsurjectivity}. The normal form covers every finite rank over
+$\SC$, but does not compute the normalizing gauges or phase obstructions
+on arbitrary input descriptions. Effective procedures on specified input
+languages require additional information beyond instantaneous eigenvalues
+(\cref{diff:warn:matnonnormal,diff:warn:matlimits}).
+
+For power-Hahn regular-singular systems, $\Ph(-tA)=\{(\Imm\lambda_j)\log t\}$,
+with the $\lambda_j$ the eigenvalues of the ordinary residual matrix. The
+normalizing gauge is explicit and lies in $\GL_n(\KR[\log t])$
+(\cref{diff:rs:prop:phasespectrum}); within this class the module splits into
+rank-one factors with obstructions read off from that matrix
 (\cref{diff:rs:rem:effective}). \Cref{diff:ex:matnonnormal} lies outside the
-class. Outside it the item stands: the general non-Hermitian case is not
-classified, and the general filtration question is open.
+class. Explicit computation for broader input languages remains open.
 \item No differential closedness, no universal Picard--Vessiot closure, no
 classification of all differential extensions, and no decision procedure for
 arbitrary nonlinear differential equations is claimed. The Picard--Vessiot
@@ -9880,7 +9922,7 @@ to arbitrary $\SC$-coefficient streams without a joint support certificate
 fine-topological convergence (\cref{diff:warn:summability}). No cofinal growth
 of $n\sigma$ in a higher-rank value group is established, and no argument uses
 one. The truncation residual identities certify a formal remainder at a stated
-order, not convergence of the truncation sequence in any surreal topology, and
+order, not convergence of the truncation sequence in the fine surreal topology, and
 the factorial Hahn series is not an ordinary analytic function germ and not a
 fine-topology limit of its truncations
 (\cref{diff:warn:antitopological}). Numerical substitution is declined as a
@@ -9927,8 +9969,10 @@ and no analytic continuation rule
 Hahn residue reading of \cref{diff:warn:diffnotint} is not an identification
 with a cluster residue or an actual-point contour residue from the
 repository's analytic reports.
-\item Higher rank is open here. The obstruction interacts with invariant
-subspaces and changes of basis in ways this report does not determine.
+\item The finite-rank classification over $\SC$ does not automatically
+descend to a prescribed smaller workspace: a phase-normalizing gauge or a
+required inhomogeneous solution can leave that workspace. A classification
+over such restricted bases is not supplied here.
 \end{enumerate}
 
 \subsection{Scope of the coordinate theory}
@@ -10104,7 +10148,7 @@ global surcomplex exponential are all outside its assertions
 \item All dimensions in \cref{diff:part:matrix} are ordinary finite integers,
 and every displayed Hahn sum there --- \cref{diff:eq:matnoncommrec},
 \cref{diff:eq:matairyamp}, \cref{diff:eq:matairyjet} --- is a
-support-certified formal sum, not a limit in any topology on $\SC$. This is
+support-certified formal sum, not a limit in the fine topology on $\SC$. This is
 item~N32 applied to the matrix part.
 \item The metric theorems make no Lyapunov and no uniform-equivalence claim.
 \Cref{diff:warn:matlyapunov} exhibits a positive horizontal metric of scale
@@ -10141,8 +10185,9 @@ regeneration. \Cref{diff:app:verification} therefore reproduces the record
 the instruction to run any source suite on a copy. A byte-identity check made
 after such a run compares two equally modified copies and establishes nothing.
 This is an artifact-level hazard, like the two in item~N52; it affects no
-mathematical statement, but it is the reason no count in this report is
-presented as independently reproduced.
+mathematical statement. The delivered records remain historical; the later
+review rerun on isolated copies is recorded separately at the end of
+\cref{diff:app:verification}.
 \end{enumerate}
 
 \subsection{Scope of the regular-singular theory}
@@ -10375,15 +10420,18 @@ terms of ordinary algebraic eigenvalues: the dimension is the number of
 eigenvalues lying in $\Acl$. The distinction the item asked for --- genuine
 phase obstruction against workspace obstruction --- is exactly the distinction
 between $\Ph(A)\neq\{0,\dots,0\}$ and the workspace phenomena of
-\cref{diff:part:workspaces}, and \cref{diff:cor:matperturbation} shows that the
-former is stable under every entrywise perturbation by $\Acl_{\C}$.
+\cref{diff:part:workspaces}. For $A=iH$ with $H$ Hermitian,
+\cref{diff:cor:matperturbation} shows that the entire phase multiset is
+unchanged by Hermitian entrywise perturbations of $H$ in $\Acl_{\C}$.
 
 What the item also asked --- which nontriangular differential modules admit a
 filtration whose rank-one factors have \emph{computable} obstructions ---
 remains open, and for the reason the item gave: that needs genuine
 module-theoretic information, not the eigenvalues of an instantaneous
 coefficient matrix. \Cref{diff:ex:matnonnormal} confirms the reason rather than
-removing it. Higher-rank differential modules likewise remain unclassified.
+removing it. The remaining question here is effective computation on a
+specified input language; finite-rank classification over $\SC$ itself is
+already supplied by \cref{diff:thm:matnormal}.
 \item \emph{Connecting the phase invariant with the strongest available
 linear-solvability theorems for this $H$-field.} This is done in
 \cref{diff:thm:matsurjectivity,diff:cor:matinhom,diff:cor:matkernel}, and it
@@ -10400,13 +10448,13 @@ Three of the remaining continuations are touched by the two latest parts: two
 are answered \emph{in part}, and one only has an adjacent result. They are
 re-scoped here rather than deleted.
 \begin{itemize}[leftmargin=1.6em]
-\item \emph{Extend the phase spectrum to non-Hermitian coefficients, or show that
-no spectral formula can exist there,} the obstruction being that a nonnormal
+\item \emph{Find explicit formulas for the already defined phase spectrum of further
+classes of non-Hermitian coefficients,} the obstruction being that a nonnormal
 similarity gauge need not be entrywise finite (\cref{diff:warn:matnonnormal}).
 Answered for one class: for power-Hahn regular-singular systems
 $\Ph(-tA)=\{(\Imm\lambda_{j})\log t\}$, with an explicit gauge and no import
-(\cref{diff:rs:prop:phasespectrum}, member~12). Open for every coefficient outside
-that class, and \cref{diff:ex:matnonnormal} still marks the general line.
+(\cref{diff:rs:prop:phasespectrum}, member~12). A general explicit formula outside the currently computed classes remains
+open; \cref{diff:ex:matnonnormal} rules out the instantaneous-eigenvalue formula.
 \item \emph{Identify restricted, support-certified input languages on which the
 phase map, the purely infinite parts of eigenvalue primitives and a normalizing
 unitary gauge become effectively computable.} Answered in part for one class:
@@ -10501,9 +10549,9 @@ diagonalization is neither ignored nor approximated: by
 term lands in $\Mat_{n}(\Acl_{\C})$, which is exactly the kernel the invariant
 annihilates. That is why the perturbation theorem needs no spectral gap. What
 the argument needs instead is the strictness $\Acl\subsetneq\mm$ that
-\cref{diff:warn:collapse} insists on, and an additional imported input; and it
-needs Hermitian symmetry, which \cref{diff:ex:matnonnormal} shows cannot be
-dropped.
+\cref{diff:warn:collapse} insists on, and an additional imported input.
+The eigenvalue computation needs Hermitian symmetry, which
+\cref{diff:ex:matnonnormal} shows cannot be dropped from that formula.
 
 Two further strata show the same obstruction from other sides. For
 regular-singular systems $\der y=-t\,Ay$ with an ordinary residual matrix and a
@@ -11209,9 +11257,10 @@ the classical parametrization \cref{diff:eq:matpinneyclassical}. Where it
 strengthened a statement this report had deliberately hedged, the hedge was
 amended rather than removed and the new hypothesis was named: item~N22 now
 records that first-order inhomogeneous existence holds but only by the import
-of \cref{diff:thm:matsurjectivity}, and item~N24 now records the Hermitian case
-settled and the non-Hermitian case open, keeping the counterexample that marks
-the line. Nothing is strengthened beyond what a source proves.
+of \cref{diff:thm:matsurjectivity}. Item~N24 distinguishes the complete
+finite-system phase classification from the Hermitian eigenvalue formula; the
+non-Hermitian counterexample limits the latter. The maintained review corrects
+earlier summaries that had conflated those two scopes.
 \end{remark}
 
 \section{Verification record, exactly as delivered}
@@ -11392,6 +11441,18 @@ member~11's build script and README redirect the program's output onto the
 delivered text record; neither of the last two packages carries a checksum
 manifest; and member~12's record labels the mixed-frequency ambient dimension
 $1$ without computing it.
+
+\paragraph{Maintained review rerun.}
+The eight earlier programs (members 01, 02 and 05--10), unmodified, were
+subsequently run on separate temporary copies under Python 3.13.14 and SymPy 1.14.0 (member 01 uses only the standard
+library). All exited successfully and reproduced the respective check totals
+$1{,}395$, $115$, $149$, $258$, $291$, $150$, $259$ and $62$, with zero
+failures. Their generated outputs stayed outside the repository; the delivered
+\path{code/} and \path{data/} files were preserved. A separate exact
+matrix-coefficient check confirmed the added $[t^4]$ cocycle counterexample
+in \cref{diff:ex:matnoncommuting}; it is not included in those historical
+suite counts. The later programs of members 11 and 12 were not rerun in this
+review. These finite checks do not prove the general theorems.
 
 \section{Building this report}
 \label{diff:app:build}

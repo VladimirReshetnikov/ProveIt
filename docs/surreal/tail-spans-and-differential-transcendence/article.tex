@@ -108,9 +108,12 @@ to standard Hahn-field and surreal normal-form foundations. The tail-span
 classification and the explicit differential-independence constructions are
 proposed contributions; a targeted literature search did not identify these
 formulations, but priority is not certified. No named historical conjecture
-is claimed solved. The article is not independently refereed or
-proof-assistant verified. Accompanying exact computations test finite
-identities and examples, not the infinite theorems.
+is claimed solved. The article is not independently refereed. The Lean
+ledger records proofs of cofinite-span stabilization and multilinear
+detection (Lemmas~\ref{tail:lem:stabilization} and~\ref{tail:lem:multilinear});
+the classification and differential-independence theorems remain pending.
+Accompanying exact computations test finite identities and examples,
+not the infinite theorems.
 \end{minipage}
 \end{titlepage}
 \hypersetup{pageanchor=true}
@@ -328,7 +331,8 @@ $L=M(r_i:i\in I)$.
 \end{definition}
 
 \begin{lemma}[Independent sign changes]\label{tail:lem:signs}
-For finite $J\subseteq I$, the extension $M(r_i:i\in J)/M$ has degree
+Assume $\operatorname{char}M\ne2$. For finite $J\subseteq I$, the extension
+$M(r_i:i\in J)/M$ has degree
 $2^{|J|}$ and basis $\{\prod_{i\in U}r_i:U\subseteq J\}$.
 Every assignment $r_i\mapsto\varepsilon_i r_i$, $\varepsilon_i\in\{1,-1\}$,
 extends to an $M$-automorphism of $L$. It extends coefficientwise to an
@@ -352,6 +356,12 @@ subextensions and define an automorphism of their union. Coefficientwise
 extension to Hahn series preserves zero coefficients, support,
 addition, and the finite convolution sums, proving the last assertion.
 \end{proof}
+
+The characteristic restriction is necessary. In $M=\mathbb F_2(u,v)$,
+the classes of $u,v,u+v$ are independent: each nonempty product has odd
+order at one of these distinct prime divisors. But
+$\sqrt{u+v}=\sqrt u+\sqrt v$, so adjoining the three roots gives degree
+at most $4$, not $2^3$.
 
 \begin{remark}[No order-preserving automorphism is asserted]\label{tail:rem:noorder}
 When $M=\Q$ and the $r_i$ are positive real square roots, a sign change
@@ -391,8 +401,10 @@ $\overline M((t^\Gamma))$ is
 Assume first that $F/M$ is finite. Lemma~\ref{tail:lem:basechange} gives
 $[B(f):B]\leq[F:M]$. Every $M$-embedding of $F$ into $\overline M$ extends
 to an automorphism of $\overline M$; this is the standard extension
-property for algebraic closures in separable characteristic zero
-\cite{StacksGalois}. Distinct embeddings differ on a coefficient of $f$,
+property for normal algebraic extensions
+\cite[Lemma~9.15.7(2)]{StacksNormal}, applied to $\overline M/M$.
+Characteristic zero makes $F/M$ separable, so there are exactly $[F:M]$
+such embeddings. Distinct embeddings differ on a coefficient of $f$,
 since those coefficients generate $F$. Their coefficientwise extensions
 therefore give $[F:M]$ distinct conjugates of $f$ over $B$. The reverse
 degree inequality follows. Since $B(f)\subseteq F((t^\Gamma))$ and both
@@ -486,8 +498,9 @@ proof.
 \end{proof}
 
 \begin{lemma}[Top-degree mixed difference]\label{tail:lem:difference}
-Let $P\in K[X_1,\ldots,X_d]$ have total degree $D$, with homogeneous
-part $P_D$. For vectors $u_1,\ldots,u_D\in K^d$, define
+Let $K$ have characteristic zero and let the nonzero polynomial
+$P\in K[X_1,\ldots,X_d]$ have total degree $D$, with homogeneous part $P_D$.
+For vectors $u_1,\ldots,u_D\in K^d$, define
 $\Delta_uP(X)=P(X+u)-P(X)$. Then
 \begin{equation}\label{tail:eq:diffidentity}
  \Delta_{u_1}\cdots\Delta_{u_D}P(X)
@@ -496,14 +509,21 @@ $\Delta_uP(X)=P(X+u)-P(X)$. Then
 \end{equation}
 where $D_u$ is directional differentiation and $T$ is the symmetric
 polarization satisfying $P_D(X)=T(X,\ldots,X)$. The result is independent
-of $X$.
+of $X$. For $D=0$, the empty operator products are the identity and
+$T=P_0$ is a scalar.
 \end{lemma}
 \begin{proof}
-Taking one difference lowers total degree by at least one. Its highest
-remaining homogeneous part is the directional derivative of the previous
-highest part. After $D$ differences, terms of degree below $D$ have
-vanished, and only the $D$ successive directional derivatives of $P_D$
-remain. This proves the first equality. Expanding
+The case $D=0$ is immediate. For $D\ge1$, the finite polynomial Taylor
+identity gives, on polynomials of degree at most $D$,
+\[
+ \Delta_u=\sum_{m=1}^D\frac{D_u^m}{m!}.
+\]
+In a product of $D$ such differences, every term has total differential
+order at least $D$. A term of order greater than $D$ annihilates $P$.
+The only term of order exactly $D$ chooses the first derivative in every
+factor; it annihilates every homogeneous part below degree $D$.
+This proves the first equality, even if some directions are zero or a
+directional derivative of $P_D$ vanishes. Expanding
 $P_D(\lambda_1u_1+\cdots+\lambda_Du_D)$ and extracting the coefficient of
 $\lambda_1\cdots\lambda_D$ gives the second. Characteristic zero allows
 division by $D!$, and identifies a homogeneous polynomial uniquely with
@@ -512,8 +532,9 @@ its symmetric polarization.
 
 \subsection{Why coefficient sign changes defeat polynomial relations}
 \begin{proposition}[Sign-orbit independence]\label{tail:prop:orbit}
-Let $B=M((t^\Gamma))$, let $(a_i)_{i\in I}$ have independent square
-classes, and let $F\subset I$ be finite. Set
+Let $M$ have characteristic zero, let $B=M((t^\Gamma))$, let
+$(a_i)_{i\in I}$ have independent square classes, and let $F\subset I$
+be finite. Set
 $B_F=M(r_i:i\in F)((t^\Gamma))$. Suppose $w_i\in M^d$ for $i\notin F$
 and every cofinite subfamily of these vectors spans $M^d$. If the
 $\gamma_i$ are distinct with well-ordered image, then the coordinates of
@@ -597,7 +618,12 @@ to the quotient $M^r/W$. Each $v_i$ with $i\in E$ has nonzero image.
 There is an $M$-linear functional $\ell:M^r\to M$ vanishing on $W$ and
 nonzero on every such $v_i$. Indeed, a finite union of proper hyperplanes
 cannot exhaust the dual of a finite-dimensional vector space over the
-infinite field $M$. Thus
+infinite field $M$. To see this directly, choose coordinates on the quotient
+dual. Each nonzero image of $v_i$ defines a nonzero linear polynomial
+there, and their product is nonzero. A nonzero polynomial over an
+infinite field cannot vanish at every point, by induction on its number
+of variables. A point where this product is nonzero supplies $\ell$.
+Thus
 \begin{equation}\label{tail:eq:primitiveeta}
  \eta=\ell(Y)=\sum_{i\in E}\ell(v_i)t^{\gamma_i}r_i
              \in B[Y_1,\ldots,Y_r]\cap B_E.
@@ -612,8 +638,10 @@ conjugates, and $B(\eta)=B_E$.
 Because $\eta$ is algebraic over the field $B$, its polynomial algebra
 $B[\eta]$ is already the field $B(\eta)$. Consequently
 $B_E\subseteq B[Y_1,\ldots,Y_r]$. All coordinates of $p$ therefore
-belong to this generated algebra, and the $s_j$, being $M$-linear
-coordinates of $Y-p$, do as well. This proves the inclusion from right
+belong to this generated algebra. Extend the chosen basis of $W$ to a
+basis of $M^r$; its dual coordinate forms recover the $s_j$ from $Y-p$.
+Thus these coordinates also belong to the generated algebra. This proves the
+inclusion from right
 to left in~\eqref{tail:eq:algebraclassification}. The reverse inclusion follows
 from $Y=p+Us$, where the columns of the matrix $U$ are the chosen basis
 vectors of $W$. The field and degree assertions follow.
@@ -660,6 +688,11 @@ $B_E[s_1,\ldots,s_d]$. Finite Galois base change gives
        \prod_{\sigma\in\Gal(B_E/B)}B_E,
  \qquad a\otimes b\longmapsto(a\sigma(b))_\sigma.
 \]
+For $E\ne\varnothing$, this splitting follows directly from the primitive
+element $\eta$ in \eqref{tail:eq:primitiveeta}: its minimal polynomial over
+$B$ splits over $B_E$ into distinct factors $T-\sigma(\eta)$, and the
+Chinese remainder theorem identifies $B_E[T]/(m_\eta)$ with the displayed
+product. For $E=\varnothing$, the identity is simply $B\otimes_B B\cong B$.
 Adjoining the independent $s_j$ and using $Y=p+Us$, the component indexed
 by $\sigma$ sends $Z$ to $\sigma(p)+Us$. Its kernel is precisely
 $(q(Z)-q(\sigma(p)))$. The sign assignments index all $\sigma$,
@@ -1441,15 +1474,18 @@ criterion: below any rational cutoff there are only finitely many of its
 positive integer exponents. It is therefore a valuation limit of its
 finite algebraic truncations, despite its differential transcendence.
 
-For a contrasting example, take $\Gamma=\Z^2$ in lexicographic order and
+For an enlargement, take $\Gamma=\Q^2$ in lexicographic order,
+embedding the old value group by $q\mapsto(0,q)$, and put
 \[
  f=\sum_{n\geq1}\sqrt{p_n}\,t^{(0,n)}.
 \]
 Its support is still well ordered and has order type $\omega$. However,
 every one of its exponents lies below $(1,0)$. At that cutoff the
 coefficient field is the infinite multiquadratic extension, so the
-criterion fails. No algebraic element approximates $f$ with error
-valuation greater than $(1,0)$.
+criterion fails. No element algebraic over the enlarged base
+$M((t^{\Q^2}))$, here with $M=\Q$, approximates $f$ with error valuation
+greater than $(1,0)$. In particular this is an obstruction to approximation
+by \emph{any} algebraic element, not just by finite truncations.
 
 Under the embedding $(a,b)\mapsto a\omega+b$ of value groups, the
 second series has the same displayed surreal expansion
@@ -1502,7 +1538,7 @@ stream; numerical or symbolic inspection of a long prefix is not a
 substitute for such information.
 
 \subsection{What the accompanying checks do}
-The supplied \texttt{verify.py} uses exact arithmetic and symbolic
+The supplied \path{code/verify.py} uses exact arithmetic and symbolic
 identities. It checks the top-degree finite-difference formula, small
 multiquadratic sign products, the quadratic exceptional relation,
 Vandermonde and mixed-jet ranks, the derivative formulas, the finite
@@ -1510,7 +1546,7 @@ boundary term in the dilation identity, Taylor coefficient identities,
 and the finite behavior of the binary-prefix construction.
 All 404 recorded checks passed with Python 3.13.5 and SymPy 1.14.0;
 the exact environment is also recorded in
-\texttt{verification\_results.json}.
+\path{data/verification_results.json}.
 
 These checks are deliberately subordinate to the proofs. A finite rank
 calculation does not prove the hereditary full-span lemma for all orders
@@ -1518,7 +1554,10 @@ and all infinite subsets; that lemma is proved by the pole argument and
 Lemma~\ref{tail:lem:expgraph}. Finite sign-orbit examples do not prove the
 classification for arbitrary well-ordered supports; that theorem is
 proved by exact Galois actions, finite differences, and cofinite spanning.
-No Lean file is included, and no machine-checked theorem is claimed.
+The existing module \path{Surreal/Algebra/TailSpan.lean} proves
+Lemmas~\ref{tail:lem:stabilization} and~\ref{tail:lem:multilinear}.
+The precise scope is recorded in \path{docs/FORMALIZATION.md}; the other
+theorems in this report are not thereby formalized.
 
 \subsection{Proof dependencies and falsifiable checkpoints}
 The core proof has a short dependency structure. Finite multiquadratic
@@ -1652,9 +1691,14 @@ solutions and is not contradicted here; see
 Remark~\ref{tail:rem:dynupgrade}.
 
 \bibitem{StacksGalois}
-The Stacks Project Authors, \emph{Fields, Section 9.21: Galois theory},
+The Stacks Project Authors, \emph{Fields, Theorem 9.21.7: Fundamental theorem of Galois theory},
 Tag 09DW, consulted September 22, 2026.
 \url{https://stacks.math.columbia.edu/tag/09DW}.
+
+\bibitem{StacksNormal}
+The Stacks Project Authors, \emph{Fields, Lemma 9.15.7(2): extension of
+embeddings in a normal algebraic extension}, Tag 0BME.
+\url{https://stacks.math.columbia.edu/tag/0BME}.
 
 \bibitem{StacksKummer}
 The Stacks Project Authors, \emph{Fields, Section 9.24: Kummer extensions},

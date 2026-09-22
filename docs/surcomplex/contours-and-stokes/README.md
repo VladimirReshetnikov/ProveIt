@@ -190,13 +190,14 @@ effectivity.
 
 **Whether roots-of-unity quadrature recovers the Hahn contour integral.** 02
 treats it as a negative result only; 03 devotes a section to the positive side.
-They are compatible, and the hypothesis is doing all the work. The article
-states the positive theorem **with** its decay condition — for every `γ`, the
-set of `k` with `v(A_k) ≤ γ` is finite — and keeps 02's example
-(`Q_N = 1/(1−b^N)`, valuation `0` for every `N`) immediately alongside as the
-demonstration that the hypothesis cannot be dropped. It also records that the
-condition cannot be met by a nontrivial sequence of finite valuations when no
-countable subset is cofinal in the positive value group.
+They concern different notions of convergence. Common-support continuous
+coefficient functions give **coefficientwise recovery** without a valuation
+decay assumption. Separately, the condition that for every `γ` the set of `k`
+with `v(A_k) ≤ γ` is finite guarantees a **valuation limit**. In 02's example
+`Q_N = 1/(1−b^N)` with ordinary `0 < b < 1`, the error `Q_N−1` has valuation
+`0` for every `N`, although its ordinary coefficient tends to zero. The decay
+condition is sufficient, and cannot hold for infinitely many nonzero terms
+when no countable subset is cofinal in the positive value group.
 
 ## Notation reconciled
 
@@ -412,3 +413,27 @@ Its matrix route is deliberately **independent** of the contour derivation: with
 monomial residue on a 15×15 grid, which tests the determinant factor and all six
 sheets at once. `rem 13.13` in the article states plainly that this proves
 nothing general.
+
+## Maintained proof review
+
+The maintained review checked the changed support, pullback, topology,
+microscopic-cycle and sampling arguments against their local definitions.
+It distinguishes coefficientwise quadrature from valuation convergence,
+uses finite positive words rather than a cofinality assumption in smooth
+pullback, and records standard-part continuity of positive-support cycles.
+The ramified Leray proof now explains why removable extensions remain inside
+the finite-map domain and why an identity on all small positive radii gives
+the Laurent coefficient identity. The target-composition proof expands about
+its ordinary map before substituting the positive perturbation. The rational
+comparison names the same parameterized loop in both theories and requires
+both kinds of admissibility for its homotopy.
+
+The general Hahn-map substitution contains the diagonal rescaling construction;
+injectivity is a separate property of the latter. A word-embedding comparison
+in the alternate support proof now states its inequality in the correct
+direction. These corrections do not certify all imported results or all source
+claims in the report.
+
+The four unchanged verification scripts passed on temporary copies: 317,
+244, 167 and 632 exact checks respectively. These finite checks support the
+examples, not the infinite theorems; historical programs and data are preserved.

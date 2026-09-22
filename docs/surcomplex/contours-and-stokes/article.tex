@@ -110,9 +110,9 @@ and an extension to formal coefficient germs.
 
 A rational contour pairing built from semialgebraic winding numbers is
 characterized by a uniqueness property and compared with Hahn integration on
-explicitly verified overlaps. Root-of-unity sampling is analyzed on both sides: a
-coefficientwise recovery theorem under an explicit decay hypothesis, and an exact
-example showing that the hypothesis cannot be dropped. Berkovich, tropical,
+explicitly verified overlaps. Root-of-unity sampling recovers the integral
+coefficientwise for common-support continuous data; a separate decay hypothesis
+gives valuation convergence, which need not hold without it. Berkovich, tropical,
 perfectoid, definable, tame, and resurgent integration theories are compared
 without identifying their distinct targets.
 \end{abstract}
@@ -495,9 +495,9 @@ Radius-free germs & $\A_n=\C\{z_1,\ldots,z_n\}((t^\Gamma))$
   & Every coefficient is an ordinary convergent germ at $0$, but their convergence
     radii may tend to zero, so \emph{no common polydisk is required}.\\[0.5em]
 Formal & $K[[z]]$, and $\C[[z]]((t^\Gamma))$
-  & No convergence of any coefficient is required. Used only for injectivity
-    statements and for the formal residue class
-    \eqref{contours:eq:formalresclass}.\\
+  & No convergence of any coefficient is required. Used for injectivity, the formal
+    residue class \eqref{contours:eq:formalresclass}, and the formal-coefficient
+    contour extension \cref{contours:thm:formalcontour}.\\
 \bottomrule
 \end{longtable}
 \end{center}
@@ -1346,9 +1346,9 @@ $M$, and the differential:
   d(\Phi^*\omega)=\Phi^*(d\omega).
 \end{equation}
 It also respects composition whenever the intervening ordinary coefficient maps are
-analytic and the same positive-support substitution hypotheses hold, and it agrees
-with canonical real-analytic infinitesimal evaluation of the coefficients at every
-ordinary parameter point.
+analytic and the same positive-support substitution hypotheses hold. When the
+coefficients are real analytic, it agrees with their canonical infinitesimal
+evaluation at every ordinary parameter point.
 \end{lemma}
 \begin{proof}
 Every term is indexed by one source exponent in $S$ together with a finite word of
@@ -1373,7 +1373,10 @@ rule completes it. Equivalently, one may fix a target exponent, retain the finit
 many coefficient functions and Taylor degrees that can contribute, and verify the
 identity as an ordinary finite Taylor-jet identity; no discarded higher degree can
 affect that exponent. Boundary restriction and ordinary reparameterization commute
-with ordinary derivatives and products, hence coefficientwise. Equality at every
+with ordinary derivatives and products, hence coefficientwise. The same finite-jet
+argument, using the ordinary Taylor composition identity, proves the stated
+composition compatibility. For analytic coefficients the defining Taylor jets
+are exactly those of canonical infinitesimal evaluation. Equality at every
 exponent proves the Hahn identities.
 \end{proof}
 
@@ -1429,10 +1432,12 @@ Two of the three merged manuscripts state this theorem for real-analytic
 coefficient forms. Smoothness is enough, and the reason is the one that runs
 through the whole subject: the Taylor-jet pullback
 \eqref{contours:eq:formpullback} is not summed by any convergence argument.
-Because $\Phi$ moves the chain by an infinitesimal of strictly positive
-support, $\eta^\alpha$ has support bounded below by $|\alpha|\cdot\inf E$, so at
-each Hahn exponent only finitely many multi-indices $\alpha$ contribute, and
-only finitely many ordinary derivatives $\partial^\alpha a$ are ever read.
+For each output exponent, \cref{contours:lem:support} gives only finitely many
+words in the positive support $E$ together with the source support $S$.
+Their lengths bound the Taylor degrees $|\alpha|$ that can contribute, so only
+finitely many ordinary derivatives $\partial^\alpha a$ are ever read.
+A bound by $|\alpha|\min E$ alone would not prove this in a higher-rank
+ordered group, where the multiples of $\min E$ need not be cofinal.
 Those exist for a smooth $a$. Requiring the ordinary Taylor series to converge
 would be importing exactly the kind of limit this calculus does without.
 \end{remark}
@@ -2180,8 +2185,8 @@ $R/P=\sum_a\sum_{j=1}^{m_a}c_{a,j}(z-a)^{-j}$. The $J$ integral is zero. For eac
 $a$ the normalized position $a/r$ is infinitesimal, so expansion on $z=rw$,
 $|w|=1$, is strongly summable, with normalized integral $1$ for $(z-a)^{-1}\dd z$
 and $0$ for every $(z-a)^{-j}\dd z$ with $j>1$. Hence the integral is
-$\sum_ac_{a,1}$. That no other infinitesimal zero exists is
-\cref{contours:lem:protect}; agreement with
+$\sum_ac_{a,1}$. Preparation accounts for all infinitesimal zeros, and
+\cref{contours:lem:protect} places them inside the circle; agreement with
 \eqref{contours:eq:residueone} is \cref{contours:thm:microcircle}, and the same
 finite set of local residues proves independence of $\rho$.
 \end{proof}
@@ -2777,10 +2782,12 @@ is an admissible deformation of the constant map to the origin in the sense of
 \cref{contours:def:deformation}. What is \emph{not} required is that
 $Z[\mathsf T]$ be a connected coordinate product torus in the original
 variables $z$; the counterexample of \cref{contours:ex:wrongtorus} shows that
-requiring that much would make the problem unsolvable. Nor is
-$Z:\mathsf T\to K^n$ asserted to be continuous for any of the three topologies
-of \cref{contours:rem:threetopologies}; by \cref{contours:prop:fullfine} a
-nonconstant such map cannot be.
+requiring that much would make the problem unsolvable. A map
+$Z:\mathsf T\to K^n$ that varies on a connected component cannot be continuous
+for the full fine or the intrinsic workspace topology, by
+\cref{contours:prop:fullfine,contours:prop:intrinsic}. In contrast, its positive
+support makes $\st Z=0$, so it is automatically continuous for the standard-part
+topology. That coarse continuity carries no information about the cycle's shape.
 
 One point of care is that \cref{contours:lem:pullback} cannot supply the
 pullback certificate here. That lemma pulls back a form whose coefficients are
@@ -2861,8 +2868,8 @@ recorded after \cref{contours:ex:rank} --- finitely many dependencies at an
 step. The source proves \cref{contours:lem:support} by a second route, through
 Higman's lemma on words over a well-quasi-ordered alphabet \cite{Higman}: a
 well-order is a well-quasi-order, an embedding of words with each matched letter
-no larger than its partner cannot increase the sum, equality of sums forces
-identical words because every letter is strictly positive, and both a descending
+no larger than its partner makes the source sum at most the target sum;
+equality forces identical words because every letter is strictly positive, and both a descending
 sequence of word sums and an infinite family of distinct words with one fixed sum
 therefore contradict Higman's lemma. That is an independent proof of the same
 classical statement \cite{Neumann,Higman}; the statement itself is not restated
@@ -2924,9 +2931,10 @@ all the germs $h_\lambda$ simultaneously.
 \begin{proof}
 The exponents of the substituted family are the positive integer multiples of
 $\rho$, a well-ordered positive set, and $W(q,0)=0$ removes the exponent $0$.
-Apply \cref{contours:lem:radiusfreesub} with $P_W=\{\rho\}$; at a fixed output
-exponent only finitely many radial degrees $\ell$ occur, by
-\cref{contours:lem:support}.
+Apply \cref{contours:lem:radiusfreesub} with the actual coordinate support
+$P_W\subset\N_{>0}\rho$, whose generated monoid is contained in $\N\rho$.
+At a fixed output exponent only finitely many radial degrees $\ell$ occur,
+by \cref{contours:lem:support}.
 \end{proof}
 
 \emph{This is where the direction of the argument differs from
@@ -2934,8 +2942,13 @@ exponent only finitely many radial degrees $\ell$ occur, by
 polynomial-coefficient ring by substituting a monomial for each coordinate.
 \Cref{contours:lem:radiusfreesub} instead substitutes an entire Hahn family of
 holomorphic maps on a fixed ordinary manifold, and lands in the coherent ring of
-that manifold. Neither statement implies the other, and neither produces a
-common ordinary radius for the original coefficient germs.
+that manifold. Its construction includes diagonal rescaling by taking
+$\mathsf X=\C^n$ and $W_j=t^{\rho_j}w_j$: finite incidence at each exponent
+then gives polynomial coefficients. The injectivity in
+\cref{contours:thm:rescaling} uses the additional fact that this diagonal
+formal substitution is invertible; a general $W$ need not give an injective
+map. Neither construction produces a common ordinary radius for the
+original coefficient germs.
 
 The second lemma solves the implicit equation that will produce the
 equation-adapted lift of \cref{contours:sec:adapted}. Its coefficient ring is
@@ -3107,8 +3120,10 @@ $s\ne0$, with $\kappa_j=Nq_j$. It is bounded, because $U_f$ was chosen bounded, 
 the removable-singularity theorem with holomorphic parameters extends it across
 $s=0$: in a local chart, the Cauchy integral formula in $s$ kills every negative
 Laurent coefficient, the remaining coefficients are holomorphic in $q$, and
-extensions agree on overlaps. Continuity gives $f(Z(q,0))=0$, whence
-$Z(q,0)=0$ because $f^{-1}(0)=\{0\}$.
+extensions agree on overlaps. Properness of $f:U_f\to V_f$ keeps the inverse
+images of a sufficiently small compact target neighborhood inside a compact
+subset of $U_f$, so the extended values still lie in $U_f$. Continuity gives
+$f(Z(q,0))=0$, whence $Z(q,0)=0$ because $f^{-1}(0)=\{0\}$.
 
 For fixed $s\ne0$ every inverse image of the scaled target torus occurs exactly
 once in this covering, and the source-coordinate map is injective on
@@ -3154,8 +3169,9 @@ Laurent expansion term by term. For small positive real $s$ the cycle
 $Z(\mathsf T,s)$ is an ordinary regular Leray cycle for $f$ with target radii
 $|s|^{\kappa_j}$, so its normalized integral is the ordinary local Grothendieck
 residue of $h\dd z/\prod_jf_j^{k_j+1}$ \cite{GriffithsHarris,TajimaNabeshima}.
-Holomorphy in the punctured $s$ disk and uniqueness of the Laurent expansion
-upgrade that single value to the coefficient statement.
+The period has this same value for every sufficiently small positive real $s$.
+The identity theorem makes it constant on the punctured $s$ disk, and uniqueness
+of the Laurent expansion gives the coefficient statement.
 \end{proof}
 
 \subsection{The universal protecting cycle}
@@ -3171,8 +3187,8 @@ and choose $\rho\in\Gamma_{>0}$ with
 divisibility of $\Gamma$ supplies one, for example $\rho=\delta/(\kappa_*+1)$.
 The direction of \eqref{contours:eq:protectingrho} is the one already recorded
 in \cref{contours:lem:protect}: a \emph{smaller} positive exponent is a
-\emph{larger} infinitesimal, so the cycle must be large in valuation in order to
-protect the perturbation. Expanding the ordinary family of
+\emph{larger} infinitesimal, so the target radii must be large in modulus
+relative to the perturbation, with strictly smaller valuations. Expanding the ordinary family of
 \cref{contours:thm:ramifiedleray} as $Z(q,s)=\sum_{\ell\ge1}s^\ell Z_\ell(q)$,
 put
 \begin{equation}\label{contours:eq:Zzero}
@@ -3636,9 +3652,18 @@ Work on the adapted cycle, using
 \]
 whose normalized integral over the degree-$\mu$ covering $\mathsf T$ is $\mu$.
 This proves \eqref{contours:eq:jacobiannorm} \emph{without} importing a Hahn
-flatness theorem or a Nullstellensatz. For the second identity, $f(0)=0$ makes
-each ordinary composition with $f$ a convergent germ and the expansion in $E$ is
-support-controlled by \cref{contours:lem:radiusfreesub}; on the adapted cycle
+flatness theorem or a Nullstellensatz. For the second identity, write
+$G=\sum_{\lambda\in S_G}t^\lambda g_\lambda$. The required composition is
+\[
+  G(F)=\sum_{\lambda,\alpha}
+  t^\lambda\frac{(\partial^\alpha g_\lambda)\circ f}{\alpha!}\,E^\alpha.
+\]
+Since $f(0)=0$, every ordinary coefficient composition is a convergent germ.
+\Cref{contours:lem:support} gives containing support $S_G+S_E^*$ and finitely
+many source exponents and Taylor terms at every output exponent. Thus $G(F)$
+belongs to $\A_n$, even though $F$ itself has an exponent-zero part and is not
+a positive-support input to \cref{contours:lem:radiusfreesub}. On the adapted cycle,
+that lemma and the finite Taylor composition identity give
 $G(F\circ\Phi)=G\bigl(t^{\kappa_1\rho}p_1,\ldots,t^{\kappa_n\rho}p_n\bigr)$,
 whose nonconstant target Taylor monomials integrate to zero against
 $\bigwedge_j\dd p_j/p_j$ on the torus, while its constant monomial is $G(0)$.
@@ -4320,21 +4345,23 @@ finite algebraic input.
 \label{contours:subsec:notconflated}
 \begin{proposition}[Comparison on separated charts]
 \label{contours:prop:comparison}
-Suppose a semialgebraic loop $\gamma$ has an affine normalized description
-$C=a+r\gamma_R$, where $\gamma$ is an ordinary piecewise-polynomial closed loop and
-$\gamma_R$ its semialgebraic extension to field-valued parameters, whose restriction
-to ordinary parameters is an admissible Hahn-deformed contour $\gamma_0+\eta$.
-Assume that the same description on the full field interval is uniformly
-infinitesimally close to its ordinary real-coefficient leading loop. Suppose each
+Work in the Hahn workspace $K=R_\Gamma[i]$ of \eqref{contours:eq:fields}.
+Let $a\in K$, $r\in R_\Gamma$ with $r>0$, and let $C=a+r\psi_R$ be a
+semialgebraic loop, where $\psi_R$ is piecewise polynomial over the workspace
+on a finite partition with ordinary endpoints. Suppose its
+restriction to ordinary parameters is an admissible Hahn-deformed closed contour
+$\gamma_0+\eta$, and on the full field interval $\psi_R$ is uniformly
+infinitesimally close to the semialgebraic extension of its ordinary
+real-coefficient leading loop $\gamma_0$. Suppose each
 pole $b$ of $\omega=Q\dd z$, $Q\in K(z)$, has either finite normalized position
 $(b-a)/r$ with standard part off the ordinary trace of $\gamma_0$, or infinite
 normalized position. Then, whenever the rational pulled-back differential is a
 coherent family on a common ordinary collar,
 \[
-  I_{\mathrm{alg}}(\gamma,\omega)=\HInt_\gamma\omega .
+  I_{\mathrm{alg}}(C,\omega)=\HInt_{a+r(\gamma_0+\eta)}\omega .
 \]
-The same holds after a polynomial infinitesimal deformation for which a definable
-pole-avoiding homotopy to this loop is verified.
+The same holds after a polynomial infinitesimal deformation when the homotopy is
+both definably pole-avoiding and admissible for Hahn pullback.
 \end{proposition}
 \begin{proof}
 Use finite partial fractions after the affine substitution. Polynomial terms have
@@ -4344,8 +4371,9 @@ pole $b$ with normalized position $c+\varepsilon$, ordinary compactness gives a
 positive ordinary separation between $\gamma_0$ and $c$; the real-coefficient
 semialgebraic description has the same lower bound on the field interval, and
 uniform infinitesimal closeness makes the straight definable homotopy from
-$(\gamma,b)$ to $(\gamma_0,c)$ avoid zero differences throughout, so
-$\wind_{\mathrm{sa}}(\gamma,b)=\wind(\gamma_0,c)$. \Cref{contours:thm:winding} then
+$(\psi_R,c+\varepsilon)$ to $(\gamma_{0,R},c)$ avoid zero differences throughout,
+where $\gamma_{0,R}$ is the semialgebraic extension of $\gamma_0$. Thus
+$\wind_{\mathrm{sa}}(C,b)=\wind(\gamma_0,c)$. \Cref{contours:thm:winding} then
 gives equality of the two pairings on $\dd z/(z-b)$. If the normalized pole is
 infinite, its inverse is infinitesimal, the reciprocal has a coherent expansion in
 nonnegative powers of the finite chart variable with zero period, and the
@@ -4395,16 +4423,15 @@ constructions, not by pretending that the rational formula already covers them. 
 functional also does not by itself extend to a general Hahn-holomorphic function
 with an infinite collection of coefficient singularities.
 
-\section{Root-of-unity sampling: a positive theorem and its indispensable
-hypothesis}
+\section{Root-of-unity sampling: coefficientwise and valuation limits}
 \label{contours:sec:sampling}
 
 Two of the merged manuscripts leave opposite impressions about root-of-unity
 quadrature: one presents it as a negative result, the other devotes a section to its
-positive side. They are compatible, and the hypothesis is doing all the work. This
-section therefore states the positive theorem \emph{with} that hypothesis and keeps
-the negative example immediately alongside as the demonstration that the hypothesis
-cannot be dropped.
+positive side. These conclusions use different notions of convergence.
+Common-support continuous coefficient functions suffice for coefficientwise
+recovery. A separate decay condition guarantees a valuation limit; the examples
+below show that ordinary coefficient convergence alone does not guarantee it.
 
 \subsection{What the classical construction assumes}
 For a complete algebraically closed field with a real-valued non-Archimedean
@@ -4412,12 +4439,13 @@ absolute value, a useful circle integral is a limit of the weighted samples
 \begin{equation}\label{contours:eq:samples}
   S_N(f;a,r)=\frac rN\sum_{\xi^N=1}f(a+r\xi)\,\xi ,
 \end{equation}
-the $\xi$ being the ordinary complex roots of unity. Cherry's presentation of the
+the $\xi$ being the roots of unity in that field. Cherry's presentation of the
 Schnirelman integral uses this normalization, takes $N\to\infty$ with $|N|=1$, and
 defines the integral only when the field-valued limit exists \cite[\S1.3]{Cherry};
 its residue normalization is $1$, not $2\pi i$, and the chosen $r$ is part of the
-datum for arbitrary functions, not just its absolute value. In a Hahn field with
-coefficient field $\C$ the natural valuation has residue characteristic zero and
+datum for arbitrary functions, not just its absolute value. In our Hahn field with
+coefficient field $\C$, these are exactly the ordinary complex roots of unity.
+The natural valuation has residue characteristic zero and
 $v(N)=0$ for every positive integer. Related averages appear in $p$-adic line
 integral theories \cite{Diamond,Ettayb}.
 
@@ -4508,7 +4536,7 @@ limit, and in general it does not make it a valuation limit either.} Taking ordi
 coefficient limits is a legitimate alternative description of the Hahn contour
 functional; it is not a limit in the internal valuation topology.
 
-\subsection{Why the hypothesis cannot be dropped}
+\subsection{Why coefficientwise recovery need not give a valuation limit}
 \begin{example}[A failed valuation-limit contour definition]
 \label{contours:ex:quadrature}
 For $a=0$, $r=1$ and $f(z)=1/(z-b)$ with ordinary real $b=1/2$, logarithmic

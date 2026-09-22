@@ -1,11 +1,14 @@
 # Tail-spans and differential transcendence in surreal and surcomplex Hahn fields
 
-`article.pdf` (25 pages) — source `article.tex`, checks in `code/`, recorded
+`article.pdf` (26 pages) — source `article.tex`, checks in `code/`, recorded
 output in `data/`, scope limits in `AUDIT.md`.
 
-An unrefereed AI-assisted draft, prepared 22 September 2026. Not refereed, not
-machine-checked. There is no Lean formalization of anything here, and none is
-claimed. The proofs are complete *relative to* standard Hahn-field, Galois,
+An unrefereed AI-assisted draft, prepared 22 September 2026. The
+[Lean ledger](../../FORMALIZATION.md) records proofs of cofinite-span
+stabilization and multilinear detection in
+[TailSpan.lean](../../../Surreal/Algebra/TailSpan.lean). The classification
+and differential-independence theorems remain pending. The proofs are complete
+*relative to* standard Hahn-field, Galois,
 Conway-normal-form and Berarducci–Mantova foundations, which are cited rather
 than rebuilt.
 
@@ -69,8 +72,8 @@ objects awaiting an interpretation.
 
 `tail:thm:closure` gives an exact valuation-approximation criterion, and shows
 that `Σ √p_n t^n` is a valuation limit of algebraic truncations when `Γ = Q` but
-not after `Γ` is enlarged to lexicographic `Z²` — the same displayed surreal
-expansion, a different answer, because the available precision scales changed.
+not after `Γ` is enlarged to lexicographic `Q²` via `q ↦ (0,q)` — the same
+surreal expansion, a different answer, because the available precision scales changed.
 `tail:prop:undecidable` shows algebraicity and differential algebraicity are
 undecidable for unrestricted total computable coefficient streams, while
 `tail:cor:finitewitness` gives the bounded-degree finite certificate that does
@@ -146,8 +149,9 @@ there.
   search did not identify these formulations. No exhaustive MathSciNet or
   Zentralblatt audit, and no full citation-network audit, was performed. No
   named historical open problem is claimed solved.
-- **Not refereed, not proof-assistant verified.** No Lean file is included and
-  no machine-checked theorem is claimed.
+- **Not refereed; partial Lean coverage.** The two cofinite-span lemmas are
+  formalized as recorded above; this does not verify the main classification
+  or the infinite differential-independence constructions.
 - **The coefficient sign changes are not order-preserving.** They act on a
   multiquadratic intermediate field and its Hahn field only. They are *not*
   asserted to extend to all real-algebraic numbers, or to an automorphism of
@@ -205,7 +209,7 @@ pdflatex -interaction=nonstopmode -halt-on-error article.tex   # three times
 
 from the report directory. The delivered `code/build.py` does the same, but it
 looks for `article.tex` beside itself, as in the delivered package; to use it,
-copy the directory and move `build.py` next to `article.tex` in the copy. Last verified build: exit 0, **25 pages**, no
+copy the directory and move `build.py` next to `article.tex` in the copy. Last verified build: exit 0, **26 pages**, no
 LaTeX warnings, no undefined references, zero overfull or underfull boxes.
 
 `code/build.py` is kept byte-identical to the delivery. An earlier edit that
@@ -218,8 +222,10 @@ Python 3.10 or later; the recorded run used Python 3.13.5 with SymPy 1.14.0.
 
 ```sh
 python -m pip install -r data/requirements.txt
-python code/verify.py --output data/verification_results.json
+python code/verify.py --output /tmp/tail-review-results.json
 ```
+
+Use a scratch output path to preserve the delivered record.
 
 Deterministic seed `20260922`. The checks use exact integers, rationals,
 polynomial identities and exact symbolic differentiation; they do **not**
@@ -237,7 +243,7 @@ and cofinite-spanning argument respectively.
 
 `data/layout_audit.json` records page-boundary measurements of the **originally
 delivered** 23-page PDF, before the editorial changes described above. It does
-not describe the 25-page `article.pdf` in this directory.
+not describe the 26-page `article.pdf` in this directory.
 
 ## Provenance
 
@@ -256,3 +262,33 @@ still build with no new LaTeX warnings.
 `AUDIT.md` carries the full mathematical, bibliographic and verification
 limitations, including the proof-checkpoint reading order and the per-category
 check inventory.
+
+## Subsequent proof review
+
+The sign-change lemma now states its characteristic-not-two hypothesis, and
+the polarization and orbit arguments state characteristic zero explicitly.
+A counterexample in `F₂(u,v)` shows why the sign lemma needs its restriction.
+The mixed-difference proof uses the finite polynomial Taylor identity, so it
+also covers zero directions and a vanishing top directional derivative.
+The exceptional-field proof constructs a separating functional explicitly and
+explains coordinate recovery; the affine-plane proof derives its Galois
+splitting from the primitive element and the Chinese remainder theorem.
+
+The approximation example now uses lexicographic `Q²`, with `q ↦ (0,q)`,
+so it really enlarges the original rational value group. The former `Z²`
+example was a valid comparison of two workspaces, but did not contain the
+original `Q`-workspace. The same surreal series fails approximation by
+**any** algebraic element in the enlarged workspace at threshold `(1,0)`.
+
+The extension-of-embeddings citation was checked against
+[Stacks, Lemma 9.15.7(2)](https://stacks.math.columbia.edu/tag/0BME);
+the former tag pointed to the finite fundamental theorem instead.
+The BM restriction was checked against the cited companion proposition.
+Other foundational imports, literature comparisons and original-source
+reconciliation remain outside this review.
+
+The unchanged verification program passed all 404 checks on a temporary copy
+under Python 3.13.14 and SymPy 1.14.0. Every check record matches the delivered
+output; only the Python version and elapsed time differ. The article and
+catalogue were rebuilt in three passes, with no warnings or box issues.
+Historical code, data and the delivered audit were preserved.

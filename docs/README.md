@@ -69,7 +69,7 @@ those powers but uses the integer exponent lattice. Their common part includes
 | [Analytic geometry](surcomplex/analytic-geometry/) | Coefficient rings, preparation, finite zero geometry and fixed-domain obstructions |
 | [Finite deformations](surcomplex/finite-deformations/) | Support-controlled division, multiplicity and residue duality |
 | [Contours and Stokes](surcomplex/contours-and-stokes/) | Standard-part Jordan separation, coefficientwise integration and contours representing residue series |
-| [Global divisors](surcomplex/global-divisors/) | Symmetric-support criteria, Cousin problems and the Picard dichotomy |
+| [Global divisors](surcomplex/global-divisors/) | Plane support obstructions; compact Picard classification, cohomology and Abel criteria |
 | [Polynomial algebra](surcomplex/polynomial-algebra/) | Finite-degree factorization and root geometry in modulus and valuation balls |
 | [Trigonometry](surcomplex/trigonometry/) | Finite-angle polar representation and geometry at arbitrary surreal scale |
 | [Differential equations](surcomplex/differential-equations/) | Berarducci–Mantova differential algebra and finite primitives; matrix, regular-singular and autonomous equations; coherent coordinate equations; its Section 5 on "phase" is a prerequisite |

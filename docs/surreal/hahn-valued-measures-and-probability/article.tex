@@ -117,8 +117,9 @@ laws are random and the individual rare-outcome probabilities are strongly
 summable, their aggregates not sufficing. The strong moment problem on an
 ordinary real sample set has an exact criterion. Positivity is separate: one
 weight pattern with support of order type $\omega+1$ gives a normalized strong
-signed measure whose cylinder masses on Cantor space, or whose integrals of
-nonzero nonnegative polynomials on $[0,1]$, are all positive, yet whose mass
+signed measure whose cylinder masses on Cantor space are nonnegative, or whose
+integrals of nonzero nonnegative polynomials on $[0,1]$ are strictly positive,
+yet whose mass
 at one point is $-t$; in the strong class $\omega+1$ is the least order type
 allowing this. The interval example has explicit Hankel determinant valuations
 and positive Gaussian quadratures at non-Archimedean nodes.
@@ -145,7 +146,9 @@ contributions, not as certified priority. This is \emph{not} a first
 non-Archimedean Kolmogorov extension theorem (Ludkovsky and Khrennikov proved
 one under different axioms) and not a first non-Archimedean probability
 theory. No named published conjecture is claimed solved; the proofs have not
-been independently refereed and nothing here is checked in Lean.
+been independently refereed. Current Lean coverage is recorded separately in
+\path{docs/FORMALIZATION.md}; it includes the strong atomicity core, not all
+results of this report.
 \end{minipage}
 \end{titlepage}
 \hypersetup{pageanchor=true}
@@ -550,8 +553,9 @@ supports} of the members appears in the definition, not merely the support of
 the sum after cancellation.
 
 \begin{lemma}[Regrouping, products, and positivity]\label{meas:lem:sumalgebra}
-Subfamilies and regroupings of strongly summable families are strongly
-summable, with the same sum. If $(f_i)$ and $(g_j)$ are strongly summable,
+Every subfamily of a strongly summable family is strongly summable.
+Regrouping the entire family along a partition preserves its sum and is
+strongly summable. If $(f_i)$ and $(g_j)$ are strongly summable,
 then $(f_ig_j)_{(i,j)}$ is strongly summable and
 \[
  \Bigl(\hsum_i f_i\Bigr)\Bigl(\hsum_jg_j\Bigr)=\hsum_{i,j}f_ig_j;
@@ -585,6 +589,34 @@ summand contributing at $\alpha$ has its leading term there, with positive
 coefficient. There are finitely many of them and their sum is positive, and no
 smaller exponent occurs. This also gives the valuation formula.
 \end{proof}
+
+\begin{lemma}[Positivity of coefficientwise sums]\label{meas:lem:coefpositive}
+Let $(f_n)_{n\ge1}$ be nonnegative real Hahn series whose supports lie in
+one well-ordered set $W$, and assume
+$\sum_n\abs{\coef{\gamma}{f_n}}<\infty$ for every $\gamma\in W$.
+The series
+\[
+ f=\sum_{\gamma\in W}\Bigl(\sum_n\coef{\gamma}{f_n}\Bigr)t^\gamma
+\]
+is nonnegative. If some $f_n$ is nonzero, then $f>0$ and
+$v(f)=\min_{f_n\ne0}v(f_n)$. The assertion also holds for finite families.
+\end{lemma}
+\begin{proof}
+The coefficient sums exist absolutely, and their support is a subset of $W$,
+so they define a Hahn series. If all members vanish, so does $f$. Otherwise
+let $\alpha$ be the least leading exponent of a nonzero member; it exists
+because these exponents form a nonempty subset of $W$. Every coefficient
+below $\alpha$ is zero. At $\alpha$, a member contributes either zero or
+its positive leading coefficient, and at least one contributes positively.
+The ordinary absolutely convergent sum at $\alpha$ is therefore positive,
+which proves both assertions.
+\end{proof}
+
+This lemma permits infinitely many contributions to one coefficient.
+It does not assert strong summability; for example, the constant family
+$(2^{-n})_{n\ge1}$ has coefficientwise sum $1$ but is not strongly summable.
+The common well order and the absolute coefficient sums are separate
+hypotheses, both used below for coefficientwise product probabilities.
 
 \begin{example}[Three distinct summation phenomena]\label{meas:ex:sums}
 For $\Gamma=\Q$, the family $(t^n)_{n\ge1}$ is strongly summable. So is
@@ -1113,7 +1145,8 @@ $x_\ast$ and which has $\kappa$ further positive infinitesimal atoms. For a
 countably separated instance with uncountably many atoms, apply this to a well
 ordering of $\R$ and restrict to the Borel sets. More generally, for any
 well-ordered family of distinct positive exponents $(\gamma_\alpha)$, distinct
-points $x_\alpha$ and an anchor $a$, the weights $w_{x_\alpha}=t^{\gamma_\alpha}$,
+points $x_\alpha$ and an anchor $a\notin\{x_\alpha\}$, the weights
+$w_{x_\alpha}=t^{\gamma_\alpha}$,
 $w_a=1-\hsum_\alpha t^{\gamma_\alpha}$ work, even for an uncountable index set.
 The classification says ``strongly atomic'', not ``countably atomic'', and it is
 not a classification of all non-Archimedean measures under every possible
@@ -1174,7 +1207,7 @@ supports can destroy strong summability.
 
 \begin{example}[Failure for Hahn-valued integrands; source 10]
 \label{meas:ex:hahn-integrand}
-On $X=\{0,1,2,\ldots\}$ put $w_n=t^n$ for $n\ge1$ and
+Take $\Gamma=\Z$. On $X=\{0,1,2,\ldots\}$ put $w_n=t^n$ for $n\ge1$ and
 $w_0=1-\hsum_{n\ge1}t^n$, a positive strong probability. The Hahn-valued
 function $g(n)=t^{-n}$ for $n\ge1$, $g(0)=0$, has $g(n)w_n=1$ for every $n\ge1$,
 so the family in \eqref{meas:eq:integral} is not strongly summable. Formula
@@ -1549,9 +1582,15 @@ $U\in1+\mathfrak m$. The geometric series $(1-q_n)^{-1}=\hsum_{m\ge0}q_n^m$ is
 valid by the same lemma. Expanding $a_{n,j}\sum_mq_n^m$ gives labelled
 infinitesimal words whose first letter carries the distinguished index
 $(n,j)$; at a fixed exponent there are finitely many such words and labels,
-which proves \eqref{meas:eq:ratios}. Every product identity can be checked at a
-fixed exponent, where the relevant words and labels form a finite set, and it
-reduces to the identity for finitely many factors.
+which proves \eqref{meas:eq:ratios}. To justify a finite-factor product
+identity at an exponent $\rho$, collect
+all labels in the finitely many coefficient words that can contribute to
+$\rho$. Only finitely many factors are then relevant. Inverse factors are
+expanded by their geometric series, so they obey the same word bound.
+Apply the ordinary finite product identity to these factors; all omitted
+terms have zero coefficient at $\rho$. Doing this separately for every
+$\rho$ proves the Hahn identity, without a common finite cutoff or a
+topological limit.
 \end{proof}
 
 \begin{lemma}[Recovering rare entries from first-error masses]
@@ -1737,7 +1776,8 @@ $p\in\{0,1\}$ (compare Corollary~\ref{meas:cor:exchangeable}).
 
 \begin{example}[Successes and failures of strong extension; source 10]
 \label{meas:ex:bernoulli}
-The probabilities $p_n=t^n$ admit a strong product law; its all-zero atom is
+In $\R((t^\Q))$, the probabilities $p_n=t^n$ admit a strong product law;
+its all-zero atom is
 $\hprod_{n\ge1}(1-t^n)$. So do $p_n=t^{n/(n+1)}$, although the associated
 partial sums need not converge in the valuation topology. Neither
 $p_n=2^{-n}t$ nor $p_n=t$ admits one: infinitely many rare entries contribute at
@@ -1863,7 +1903,8 @@ The classical moment problem asks when a sequence $(m_n)$ is represented by a
 positive measure through $m_n=\int x^n\,d\mu$. On $[0,1]$, positivity of the
 quadratic forms of squares and of $X(1-X)$ times squares suffices, and
 equivalent conditions are nonnegative finite differences of the
-moments~\cite{Schmudgen}. Replacing real values by Hahn values changes two
+moments~\cite[Theorems 1.16 and 1.18]{Schmudgen}. Replacing real values by Hahn
+values changes two
 separate things: one must say what an infinite sum means, and positivity
 becomes lexicographic across infinitesimal scales. An ordinary polynomial has
 finite degree even when its coefficients are surreal, so it may be unable to
@@ -2070,7 +2111,8 @@ Theorem~\ref{meas:thm:atomic} every coefficient of every weight of $\tau$ then
 occurs at an exponent at least $\gamma$.
 
 \begin{theorem}[Polynomial positivity barrier; source 11]\label{meas:thm:barrier}
-Let $\Omega\subseteq\R$, let $\nu$ be positive with $E_\gamma(\nu)$ infinite, let
+Let $\Omega\subseteq\R$, let $\nu$ be a positive strong measure with
+$E_\gamma(\nu)$ infinite, let
 $\tau$ be any signed strong measure starting at scale $\gamma$, and put
 $L(P)=\int P\,d\nu+\int P\,d\tau$ for $P\in\KR[X]$. For every nonzero polynomial
 $P$ with $P(x)\ge0$ at every \emph{ordinary sample point} $x\in\Omega$,
@@ -2659,9 +2701,12 @@ eigenbasis $u_1,\ldots,u_N$ with eigenvalues $z_j$ and put $\lambda_j=(u_j)_0^2>
 orthonormality gives $\sum_j\lambda_j=1$. Expanding the characteristic
 determinants of the leading principal submatrices gives the monic recurrence
 \eqref{meas:eq:three} with the same initial data $1$ and $X-\alpha_0$, so
-$\det(XI-J)=\pi_N(X)$ and the eigenvalues are the roots of $\pi_N$. For $0\le k<N$,
-$J^ke_0$ is the coefficient vector of $X^k$, so $L(r)=e_0^{\mathsf T}r(J)e_0=\sum_j
-\lambda_jr(z_j)$ for $\deg r<N$. For $\deg f\le2N-1$ write $f=\pi_Nq+r$ with $\deg
+$\det(XI-J)=\pi_N(X)$ and the eigenvalues are the roots of $\pi_N$. Write $\mathbf e_0$ for the first standard coordinate vector (the
+coefficient vector of the polynomial $e_0=1$). For $0\le k<N$,
+$J^k\mathbf e_0$ is the coefficient vector of $X^k$: every intermediate
+power still has degree less than $N$, so compression loses no term.
+Consequently $L(r)=\mathbf e_0^{\mathsf T}r(J)\mathbf e_0
+=\sum_j\lambda_jr(z_j)$ for $\deg r<N$. For $\deg f\le2N-1$ write $f=\pi_Nq+r$ with $\deg
 q,\deg r<N$; orthogonality gives $L(\pi_Nq)=0$ and $\pi_N(z_j)=0$ gives
 $f(z_j)=r(z_j)$.
 \end{proof}
@@ -2745,8 +2790,9 @@ finite Cauchy--Schwarz calculation holds,
 \begin{equation}\label{meas:eq:CS}
  \abs{\inner PQ}^2\le\inner PP\inner QQ,
 \end{equation}
-by nonnegativity of the squared norm of $Q-P\inner PQ/\inner PP$, with equality
-exactly for linearly dependent $P,Q$; no completion or Hilbert-space
+by nonnegativity of the squared norm of $Q-P\inner PQ/\inner PP$ when
+$P\ne0$; the case $P=0$ is immediate. Equality holds exactly for linearly
+dependent $P,Q$; no completion or Hilbert-space
 representation is needed. Multiplication by $X$ is symmetric and satisfies
 $\inner{XP}P>0$ and $\inner{(a-X)P}P>0$ for $P\ne0$; all its finite cyclic
 compressions have positive spectral weights and eigenvalues in the real closed
@@ -2869,9 +2915,15 @@ Hahn measure.
 
 \subsection{The transfinite null-ideal positivity criterion}
 
-Theorem~\ref{meas:thm:extension} is a signed statement: positivity of the
-leading coefficient on cylinders does not pass to arbitrary Borel sets. The
-following criterion decides positivity. It is stated on an arbitrary measurable
+Theorem~\ref{meas:thm:extension} is a signed statement: nonnegativity of
+the full Hahn-valued cylinder masses need not pass to arbitrary Borel sets.
+The leading scalar coefficient is different. If it is nonnegative on
+cylinders, then it is nonnegative on finite unions of cylinders, and
+approximation in its finite total variation makes it a positive Borel
+measure. Later coefficients may still place negative mass on its null sets,
+as in Example~\ref{meas:ex:negative}. The following criterion decides
+positivity of the full Hahn-valued measure. It is stated on an arbitrary
+measurable
 space; its proof uses no topology, no countability of $W$ and no divisibility of
 $\Gamma$. For a finite signed measure $\nu$ write $\nu^+,\nu^-$ for its Jordan
 parts and $\abs\nu=\nu^++\nu^-$.
@@ -3252,14 +3304,12 @@ and consequently, for every Borel $B$,
 \begin{equation}\label{meas:eq:atomic-coef-sum}
  \mu(B)=\csum_{I\in B\cap D}w_I ,
 \end{equation}
-which is in general \emph{not} a strong Hahn sum. To prove positivity, discard the
-zero $w_I$. If no nonzero weight remains in $B$, $\mu(B)=0$. Otherwise the leading
-exponents of the remaining weights form a nonempty subset of the well-ordered
-$S^*$, with a least member $\rho$; all coefficients before $\rho$ vanish, and at
-$\rho$ every contributing atomic coefficient is nonnegative and at least one is
-positive. The absolute convergence in \eqref{meas:eq:atomic-coefs} makes their sum
-strictly positive, so $\mu(B)>0$. This proves positivity on every Borel set,
-including arbitrary unions of finite-success paths and sets disjoint from $D$.
+which is in general \emph{not} a strong Hahn sum. The weights in this
+countable family are nonnegative, their supports lie in $S^*$, and
+\eqref{meas:eq:atomic-coefs} proves absolute summability at every exponent.
+Lemma~\ref{meas:lem:coefpositive} therefore proves positivity on every Borel
+set. More precisely, $\mu(B)>0$ exactly when $B\cap D$ contains a path
+with nonzero weight; otherwise all coefficient masses of $B$ vanish.
 
 \subsection{Necessity at the least non-absolutely-summable row}
 
@@ -3365,7 +3415,7 @@ absolutely convergent at every exponent (use the finite sum over
 $\alpha+\delta=\rho$, $\abs{\tau_\alpha(A_I)}\le\norm{\tau_\alpha}_\TV$ and
 $\sum_I\abs{\coef\delta{w_I}}\le\norm{\beta_\delta}_\TV$). Each summand
 $w_I\tau(A_I)$ is nonnegative with exponents in $S^*$, and the
-least-leading-exponent argument used for \eqref{meas:eq:atomic-coef-sum} gives
+coefficientwise positivity lemma (Lemma~\ref{meas:lem:coefpositive}) gives
 $\mu(A)\ge0$. Flipping back preserves positivity.
 \end{proof}
 
@@ -3621,8 +3671,10 @@ convention for surreal probability.
 
 \subsection{Non-claims, source by source}\label{meas:sub:nonclaims}
 
-Every limitation stated by a source is kept. The table lists them, with the place
-where the report keeps each.
+The table records the limitations stated by the sources and where they
+are retained. Statements about the absence of Lean verification describe the
+source deliveries; the current repository coverage is summarized in the
+formalization subsection below and tracked in \path{docs/FORMALIZATION.md}.
 
 \begingroup\small
 \begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.07\linewidth}
@@ -3848,7 +3900,8 @@ sufficient condition only. Open.
 
 \begin{question}[Near-boundary baselines; source 15]\label{meas:q:nearboundary}
 When $p_j^0$ approaches $0$ or $1$ without reaching it, Theorem~\ref{meas:thm:extension}
-remains the exact abstract answer, but no weighted-$\ell^2$ condition is necessary
+remains the exact abstract answer, but the weighted-$\ell^2$ condition of
+Theorem~\ref{meas:thm:interior} is no longer necessary
 (Example~\ref{meas:ex:near-boundary}). Find an intrinsic sequence-space description
 distinguishing rare large scores from uniformly nondegenerate ones and controlling
 all nonlinear coefficient terms. Open.
@@ -3936,6 +3989,13 @@ and writes a file only with \path{--output}. The delivered build scripts
 own layouts and do not build this report. The file
 \path{15-infinite-products-of-probabilities-build_summary.json} is source~15's
 hand-recorded note on its own 23-page build; no program generates it.
+
+\paragraph{Maintained review rerun.}
+The three unchanged programs were run on temporary copies under Python
+3.13.14 during the documentation review. They passed 5,135, 682 and 1,009
+assertions respectively. The copied program hashes match the preserved
+originals; generated outputs stayed outside the repository. This run has
+the finite scope listed above, including the tautological singleton check.
 
 \section{Provenance, audit, and attribution}\label{meas:sec:audit}
 
@@ -4033,19 +4093,27 @@ Candidate contributions of 15; the $\ell^2$ phenomenon for real products is
 Kakutani's~\cite{Kakutani}.\\[3pt]
 Two-axiom equivalence, one-exponent remark, interval example in the coefficientwise
 class & Added in the merge; elementary.\\[3pt]
-Named open conjecture; priority; refereeing; Lean & None claimed.\\
+Named open conjecture; priority; refereeing & None claimed.\\
 \bottomrule
 \end{longtable}
 \endgroup
 
 \subsection{A formalization path}
 
-Nothing here is formalized. Source~10 suggests: the scalar lemma via the
-$\sigma$-ideal of hereditarily null sets and its Boolean quotient, or by reusing
-finite atomic scalar measure results; the coefficient tree lemma from finite
-branching, monotone natural-number widths and stabilization of bounded monotone
-sequences; the Hahn stages against an interface providing coefficient maps,
-strong-family regrouping, positive-support word finiteness and geometric inversion.
+The repository ledger \path{docs/FORMALIZATION.md} records checked
+versions of the disjoint-finite scalar lemma, finite coefficient atomicity,
+automatic common support, the forward atomic representation and coefficient
+criterion, and the construction, integration and positivity of strong atomic
+measures. It also records positive-support product prerequisites. These
+declarations have their own precise scope; they do not formalize every
+extension, moment, quadrature or coefficientwise theorem here.
+
+The source's proposed order remains useful for the pending steps: the
+coefficient tree lemma from finite branching, monotone natural-number widths
+and stabilization of bounded monotone sequences; then cylinder extension,
+rare-entry recovery and the independent-coordinate criterion. Track their
+dependencies on coefficient maps, strong-family regrouping, positive-support
+word finiteness and geometric inversion explicitly.
 Source~15's dependency order for the coefficientwise class is: scalar signed-measure
 extension; finite-product coefficient identities; the multilinear norm bounds;
 common-support Hahn assembly; and the separate positivity arguments.
@@ -4114,7 +4182,7 @@ Annals of Mathematics (2) \textbf{49} (1948), 214--224.
 \bibitem{Schmudgen}
 K. Schm\"udgen,
 \emph{Ten lectures on the moment problem}, preprint (2020),
-\href{https://arxiv.org/abs/2008.12698}{arXiv:2008.12698}; Lecture 1,
+\href{https://arxiv.org/abs/2008.12698v1}{arXiv:2008.12698v1}; Lecture 1,
 Theorems 1.9, 1.16 and 1.18.
 
 \bibitem{Neumann}

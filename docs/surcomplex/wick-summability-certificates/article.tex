@@ -107,7 +107,7 @@ that makes every coupling and every nonzero covariance entry infinitesimal.
 If this change of variables does not exist, a finite nonnegative integer
 certificate generates an explicit infinite obstruction to summability.
 
-The same criterion controls every pairable polynomial observable. When all
+The same criterion controls every pairable monomial observable. When all
 interaction vertices have valence at least two, it also controls the family
 of connected vacuum diagrams: passing to connected diagrams cannot remove
 a diagramwise Hahn obstruction. For positive-definite real covariance, the
@@ -129,16 +129,15 @@ and no claim about physics is made.
 \end{minipage}
 \vfill
 \begin{minipage}{0.94\textwidth}\small
-\textbf{Research status.} Prepared with AI assistance; not refereed and not
-proof-assistant verified. This manuscript develops candidate-new theorems,
-not a claimed solution of a named longstanding conjecture. The precise
-statements were not located in the materials inspected. The repository audit
-is pinned to \Commit; compressed archive contents were not exhaustively
-accessible. \Cref{wick:sec:provenance} gives the exact novelty and verification
-boundaries. Finite computations are checks, not substitutes for the proofs.
-This single-source report keeps the manuscript's repository statements at
-that pin; corrections for the present tree and the relation to the physics
-report are in \Cref{wick:sub:reposcope,wick:sub:physics,wick:sub:collection}.
+\textbf{Research status.} Prepared with AI assistance; not refereed.
+The Lean ledger covers the support, finite-semigroup and valuation
+Cauchy--Schwarz lemmas; the main summability and connected-domain theorems
+remain pending. Proposed novelty is not certified, and no solution of a
+named longstanding conjecture is claimed. The source's repository audit is
+pinned to \Commit; its archive access was incomplete.
+\Cref{wick:sec:provenance} records the source, novelty and verification
+boundaries, with current-tree corrections and the physics-report comparison.
+Finite computations are checks, not substitutes for proofs.
 \end{minipage}
 \end{titlepage}
 \hypersetup{pageanchor=true}
@@ -422,7 +421,7 @@ is an injective field homomorphism. It carries strongly summable families
 to their normal-form sums.
 \end{proposition}
 \begin{proof}
-An increasing well-ordered set of $\gamma$ becomes a decreasing well-ordered
+An increasing well-ordered set of $\gamma$ becomes a reverse well-ordered
 set of exponents $-\iota(\gamma)$ in the normal-form convention. Both real
 series therefore define surreal numbers. Uniqueness of normal form gives
 injectivity. Additivity and the convolution product follow from the
@@ -432,7 +431,12 @@ map on exponents. These are precisely the normal-form operations described
 in \cite[Sections 2.3--2.6]{BM}.
 \end{proof}
 
-For $\Gamma=\Q$, take $\iota(q)=q$. Then $t$ becomes $\omega^{-1}$.
+Unless another group is specified, examples with scalar rational exponents
+are taken in $\Gamma=\Q$, with
+$t=t^1$ and $\iota(q)=q$. Then $t$ becomes $\omega^{-1}$.
+They also embed in any nontrivial divisible ordered group after choosing
+a positive $\gamma_0$ and replacing each exponent $q$ by $q\gamma_0$;
+there is no canonical unit exponent in an arbitrary $\Gamma$.
 For $\Gamma=\Q^r$ in lexicographic order, an explicit choice is
 \[
  \iota(q_1,\ldots,q_r)=\sum_{j=1}^{r}q_j\omega^{r-j}.
@@ -615,6 +619,13 @@ inhomogeneous equations gives $A(m-m')=D(k-k')$, with all differences
 nonnegative. Hence $q-q'\in S$. Conversely, addition of any element of $S$
 to an element of $Q_\beta$ preserves its defining equation.
 \end{proof}
+
+In particular, a nonempty sector $Q_\beta$ is finite if and only if
+$S=\{0\}$. If $S=\{0\}$, \eqref{wick:eq:module} says
+$Q_\beta=\cP_\beta$, which is finite. Conversely, if $q_0\in Q_\beta$
+and $0\ne h\in S$, then the distinct vectors $q_0+nh$, $n\in\N$,
+all belong to the sector. This is a statement about the number of atoms,
+not about the possibly infinite support of an individual Hahn atom.
 
 The same vacuum semigroup therefore controls every external polynomial
 sector. \Cref{wick:prop:module} alone does not establish summability, because
@@ -822,8 +833,17 @@ and a minimal list of inequalities are different objects.
 
 The case $S=\{0\}$ is not excluded. Its Hilbert basis is empty, the tests are
 vacuous, and the theorem still produces a balancing vector. The vacuum sum
-is $1$, although nonempty observable sectors may contain nontrivial finite
-or infinite sums.
+is $1$, and every observable sector has finitely many atoms by
+\Cref{wick:prop:module}. An individual atom can still have infinite Hahn
+support.
+
+Divisibility matters for balancing in the original value group. For example,
+over $\C((t^\Z))$ take $P=x^2$ and $C=t$. The vacuum atoms are
+$(2n-1)!!\,t^n/n!$, so they are strongly summable. Balancing would require
+$2p>0$ and $1-2p>0$, impossible for $p\in\Z$. Passing to rational exponents
+allows $p=1/4$, but changes the group in which the certificate is expressed.
+This example lies outside the standing divisible-group hypothesis and
+explains why it cannot simply be omitted from condition~(iv).
 
 \section{Connected diagrams cannot hide the obstruction}
 \label{wick:sec:connected}
@@ -856,7 +876,7 @@ free-standing edges in a pairing of vertex slots.
 
 \begin{lemma}[Cyclic connected amplification]
 \label[lemma]{wick:lem:rewire}
-Let $G$ be a connected colored Wick graph in which every vertex has valence
+Let $G$ be a nonempty connected colored Wick graph in which every vertex has valence
 at least two. If its count vector is $h$, then for every $n\ge1$ there is a
 connected colored Wick graph with count vector $nh$.
 \end{lemma}
@@ -1093,8 +1113,10 @@ exactly when
  \qquad\text{for every }a.
  \label{wick:eq:stationarycone}
 \end{equation}
-The same criterion governs every pairable polynomial insertion and the
-connected vacuum expansion.
+The same criterion governs every pairable monomial insertion and the
+connected vacuum expansion. Every polynomial insertion is then defined by
+the finite linear combination of its monomial sectors; cancellation between
+those sectors is not needed for the criterion.
 \end{corollary}
 \begin{proof}
 Substitute $\lambda_a=b_a-h$ and $c_{ii}=h-a_i$ into
@@ -1154,7 +1176,9 @@ $x_i x^\beta$, the distinguished additional $i$-slot is paired with one of
 the $\beta_j$ slots of color $j$. Removing that pair leaves a pairing of the
 slots of $x^{\beta-\ve_j}$ and contributes the factor $C_{ij}$. Summing over
 its possible partners gives
-$\sum_j\beta_j C_{ij}\EE_C[x^{\beta-\ve_j}]$, which is the right-hand side.
+$\sum_{j:\beta_j>0}\beta_j C_{ij}\EE_C[x^{\beta-\ve_j}]$, which is the
+right-hand side. Restricting to $\beta_j>0$ avoids negative monomial
+exponents; the omitted polynomial derivatives are zero.
 \end{proof}
 
 \begin{theorem}[Exact perturbative Schwinger--Dyson identities]
@@ -1407,7 +1431,7 @@ family with $m_1=m_2=n$ and all edges cross-colored has atoms
  \frac{(4n)!}{(n!)^2}\,t^{-2n}.
  \label{wick:eq:mixedbad}
 \end{equation}
-Their leading exponents descend without bound. The solver returns precisely
+Their leading exponents form a strictly descending sequence. The solver returns precisely
 $h_4=(1,1;0,4,0)$ as its primitive obstruction certificate. The two-vertex
 four-edge realization is connected, and cyclic amplification gives
 connected obstructing diagrams at every multiple size.
@@ -1498,7 +1522,7 @@ ordered field, which requires only a positive leading coefficient.
 \begin{proposition}[Sign-coherent equivalence]
 \label[proposition]{wick:prop:signcoherent}
 Suppose every nonzero covariance entry is coefficientwise nonnegative, and
-$g_a=\sigma u_a$ for a common $\sigma\in\{1,-1\}$, where each $u_a$ is a
+$g_a=\sigma u_a$ for a common $\sigma\in\C^\times$, where each $u_a$ is a
 nonzero coefficientwise nonnegative Hahn series. Then the following are
 equivalent:
 \begin{enumerate}[label=\textup{(\roman*)}]
@@ -1511,7 +1535,8 @@ For a pairable sector, both are equivalent to \Cref{wick:thm:main}.
 \begin{proof}
 At order $n$, every atom is $\sigma^n$ times a nonzero coefficientwise
 nonnegative Hahn series. Its coefficient multiplier in \eqref{wick:eq:atom} is
-positive rational. Therefore no coefficient cancels within an order block,
+positive rational. After factoring out the same nonzero complex number
+$\sigma^n$, no coefficient cancels within an order block,
 and the support of the block is exactly the union of the supports of its
 atoms. Each block contains finitely many atoms.
 
@@ -1523,11 +1548,19 @@ implication is the ordinary regrouping property of strong sums. The last
 claim follows from \Cref{wick:thm:main}.
 \end{proof}
 
-The quartic model \eqref{wick:eq:quartic} and the mixed obstruction
-\eqref{wick:eq:mixedmodel} satisfy this sign-coherent hypothesis. Their domains
-are therefore also exact for the familiar expansion grouped by total
-interaction order. The isotropic example fails the common-phase hypothesis
-and demonstrates why a general cancellation-free theorem needs it.
+The proposition includes the common-sign choices $\sigma=\pm1$ and permits
+any common nonzero complex factor. It is a sufficient support-preservation
+hypothesis, not a necessary classification of cancellation-free data.
+
+The mixed obstruction \eqref{wick:eq:mixedmodel} satisfies this hypothesis.
+For the quartic model \eqref{wick:eq:quartic}, there is already exactly one
+atom at each interaction order, so raw and order-grouped summability agree
+for every nonzero Hahn coupling $g$, even when its coefficients have mixed
+signs or phases. For example, $g=t-t^2$ has positive valuation but does not
+become coefficientwise nonnegative after multiplication by any fixed
+nonzero complex constant. The quartic domain is still exactly $\val(g)>0$.
+The isotropic example, by contrast, erases supports within its order blocks
+and shows why the reverse regrouping implication needs a hypothesis.
 
 \section{Exact certificate computation and reproducible checks}
 \label{wick:sec:code}
@@ -1797,8 +1830,16 @@ embedding, with set-sized supports; no unrestricted proper-class integral
 or sum is introduced.
 
 The exact verification program checks finite algebraic claims. It does not
-verify the paper in Lean or another proof assistant. No preexisting Lean
-coverage in \Repo\ should be read as coverage of this manuscript.
+verify the paper in Lean or another proof assistant. Current Lean coverage
+is recorded separately in \texttt{docs/FORMALIZATION.md}:
+\texttt{Surreal/Algebra/WickSemigroup.lean} proves Dickson finiteness,
+the Hilbert-basis and observable-sector statements, and valuation
+Cauchy--Schwarz; \texttt{Surreal/HahnSeries/NeumannWords.lean} proves
+the positive-support lemma, including finite word multiplicity.
+The strict alternative, full Wick summability equivalence, connected-domain
+theorem and further specialization results are not yet formalized.
+The build and axiom audit concern the imported declarations listed in that
+ledger; finite test counts do not extend their proved scope.
 
 \subsection{Relation to the physics report}
 \label{wick:sub:physics}
@@ -1875,7 +1916,8 @@ value to a formal expansion.
 manuscript~12 of the eighteenth batch of external reports placed in the
 collection. It is not a merge: there was no second source, and nothing was
 selected out of a larger body of work. Every theorem, proof, example,
-table and limitation above is that manuscript's. Its repository audit is
+table and limitation originated in that manuscript; subsequent proof
+corrections are recorded in the maintained README. Its repository audit is
 pinned to \Commit. The delivered programs, recorded run and audit notes are
 kept byte-identical: \texttt{code/wick\_certificates.py},
 \texttt{code/verify.py}, \texttt{data/verification.json},
@@ -1896,8 +1938,8 @@ the location of the \texttt{Makefile}, the \texttt{-O} caveat (stated in the
 delivered README and in \texttt{VERIFICATION.md}), the size of the resource guard and the record of
 the rerun. \Cref{wick:sub:reposcope} gained the correction of the
 \texttt{Gaussian} search result and pointers to the two new subsections.
-No mathematical statement, proof, example or stated limitation was altered,
-strengthened or removed.
+Those placement changes did not alter mathematical statements or proofs.
+The subsequent review recorded in the README is separate from placement.
 
 \emph{Statements that were true at the pin and are now out of date.} At the
 pin the catalogue \texttt{docs/README.md} listed 26 reports in five
@@ -2047,9 +2089,10 @@ A. Berarducci and V. Mantova,
 \emph{Surreal numbers, derivations and transseries},
 Journal of the European Mathematical Society \textbf{20} (2018), 339--390.
 \href{https://doi.org/10.4171/JEMS/769}{doi:10.4171/JEMS/769}.
-Preprint: \href{https://arxiv.org/abs/1503.00315}{arXiv:1503.00315}.
-The normal-form and summability material used here is in Sections 2.3--2.6
-of the arXiv text.
+Preprint: \href{https://arxiv.org/abs/1503.00315v3}{arXiv:1503.00315v3},
+30 July 2015. See Section~2.3 for the Hahn-field identification,
+Definition~2.9 and Remark~2.11 for summability, and Fact~2.17 for the
+ordered-group omega-map used in the normal-form embedding.
 
 \bibitem{Etingof}
 P. Etingof,
@@ -2062,7 +2105,9 @@ Related course notes:
 \href{https://arxiv.org/abs/2409.03117v2}{arXiv:2409.03117v2},
 revised August 28, 2026.
 In the author-hosted book, see Sections 3.1--3.5, especially Theorems 3.8
-and 3.11. The book's printed page numbers and PDF page indices differ.
+and 3.11 (printed pages 37 and 41). The latter takes the logarithm of
+the normalized partition function $Z/Z_0$; the present report's $Z$ is
+already normalized. The book's printed page numbers and PDF page indices differ.
 
 \bibitem{JoswigSmith}
 M. Joswig and B. Smith,

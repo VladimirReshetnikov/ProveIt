@@ -25,6 +25,9 @@ data/         08-polar-support-matrix-cousin-requirements.txt,
               10-localization-bundles-build_qa.json             (Part III source)
 ```
 
+Without `latexmk`, run `pdflatex -interaction=nonstopmode -halt-on-error
+article.tex` three times to settle references and the contents.
+
 The article has 98 numbered environments: 84 numbered results (24 theorems,
 16 lemmas, 15 propositions, 19 corollaries, 10 examples; there were 50 before
 Part III was added) plus 6 definitions and 8 remarks. The delivered build has
@@ -39,6 +42,18 @@ new, all `nab:loc:`), and all 169 original labels are still present.
 `docs/FORMALIZATION.md` cites `nab:` labels by name with line numbers; the
 names are unchanged, but every cited line number has moved (the preamble gained
 15 macro lines, and Part III sits between Parts II and IV).
+
+The September 22, 2026 review corrects the full-raw-support sufficiency claim
+and distinguishes it from the failure of raw singular support in both
+directions. It adds an explicit left-gauge counterexample, clarifies the
+matrix exponential/logarithm domains and support-condition invariance, and
+separates the Part I bundle question from the Part II framed classification.
+That review covered Parts I and II before Part III was added. The merged
+83-page PDF builds in three `pdflatex` passes without warnings or box errors;
+Part III has not received this maintained mathematical review. Temporary-copy reruns passed all 2,899 Part I exact checks and
+the eight exact plus four numerical Part II checks under Python 3.13.14,
+SymPy 1.14.0, NumPy 2.3.5 and SciPy 1.17.0; the largest numerical error was
+`1.472e-13`, below `2e-9`. Historical code and data remain unchanged.
 
 ## What this report is
 
@@ -74,14 +89,16 @@ box on page 2.
 * **Criterion P** (Theorem 6.2, Part I): gluing is solvable iff the union over
   punctures of the supports of the **normalized polar factors**
   `Pol(G_a) - I_r` is well ordered, where each transition matrix is factored
-  **independently and first** as `G_a = Pol(G_a) Reg(G_a)`. It is **false** with
-  the raw transition support `union_a supp(G_a - I_r)` in place of it, in
-  **both** directions.
+  **independently and first** as `G_a = Pol(G_a) Reg(G_a)`. Well-ordering of
+  the **full raw transition support** `union_a supp(G_a - I_r)` is sufficient
+  but not necessary: every polar support lies in its generated positive monoid.
+  Well-ordering of **raw singular-coefficient support** fails both directions.
 * **Criterion M** (Theorem 14.2, Part II): a representation is realizable iff
   the union over punctures of the supports of `rho(ell_d) - I_r` is well
   ordered, for a compatible based-meridian basis — the **raw monodromy
-  matrices**, with no factorization applied first. Here the raw support *is* the
-  invariant, and it is basis- and basepoint-independent (Proposition 14.4).
+  matrices**, with no factorization applied first. **Well-ordering of that
+  union** is basis- and basepoint-independent (Proposition 14.4); the support
+  set itself need not stay the same.
 
 The trap is printed where a reader would otherwise generalize. Section 8 gives a
 rank-three family over `Gamma = Q` whose determinant is one, whose only raw
@@ -348,14 +365,17 @@ The load-bearing ones:
   Corollary 10.3 shows finite-puncture computation provably cannot detect the
   Part I examples. Finite cutoffs are justified only for finitely generated
   positive rational exponent monoids.
-* Parts I and II decide triviality only; Part III classifies one explicit
-  family and nothing beyond it.
+* Part I decides bundle triviality without classifying all isomorphism classes.
+  Part II classifies framed positive gauge classes by admissible monodromy;
+  Part III classifies one explicit family and nothing beyond it.
 * **Neither Criterion P nor Criterion M is the unrestricted classical Cousin or
   Riemann–Hilbert theorem.** The base, universal cover and path category are
   *ordinary* complex by design.
 * The infinite-puncture period section uses the axiom of choice and is not
   continuous (proved impossible). The continuum count of Part III uses
-  cardinal arithmetic with choice.
+  cardinal arithmetic with choice. No norm estimate or effective procedure for
+  the period section is supplied; no computability claim is made for a
+  specified representation of its infinite input data.
 * Part II assumes no sheaf property, uses no Hahn sheaf cohomology, and relies
   on no companion claim about Hahn Noetherianity or a Nullstellensatz.
 * Credited, not new: the Neumann calculus; ordinary Laurent, Mittag–Leffler,
@@ -417,10 +437,12 @@ unchanged. No suite verifies a theorem; each audits finite identities and
 prints its own scope disclaimer. Section 29 describes exactly what each checks.
 
 ```sh
-python code/08-polar-support-matrix-cousin-verify.py            # exact, SymPy
-python code/09-support-monodromy-realization-verify-examples.py # + NumPy/SciPy; RUN ON A COPY
-python -m pip install -r data/10-localization-bundles-requirements.txt
-python code/10-localization-bundles-verify.py --max-rank 6 --output fresh-verification.json
+check_dir=$(mktemp -d)
+cp code/*-verify*.py "$check_dir/"
+python "$check_dir/08-polar-support-matrix-cousin-verify.py"
+python "$check_dir/09-support-monodromy-realization-verify-examples.py"
+python "$check_dir/10-localization-bundles-verify.py" --max-rank 6 \
+  --output "$check_dir/localization-verification.json"
 ```
 
 * Part I: 2,899 exact rational-arithmetic checks. Recorded run Python 3.13.5 /
@@ -442,8 +464,10 @@ python code/10-localization-bundles-verify.py --max-rank 6 --output fresh-verifi
 **Operational cautions, verified directly rather than read from a README.**
 
 1. The Part II script **writes its own evidence**: it emits
-   `verification_results.json` beside itself, so running it in place
-   overwrites the delivered record. **Run it on a copy.**
+   `verification_results.json` beside itself. In this maintained layout an
+   in-place run writes under `code/`; the separately named historical record
+   under `data/` is unchanged. In the original archive layout it could
+   overwrite the record beside the script. **Run it on a copy**, as above.
 2. The Part III script writes **only** to the path given with `--output`, so an
    in-place run does not overwrite `data/10-localization-bundles-verification.*`.
 3. The Part II README as delivered lists `SHA256SUMS.txt`; that file was not

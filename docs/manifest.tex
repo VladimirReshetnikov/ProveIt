@@ -375,7 +375,9 @@ warning that its $H_\varepsilon$, with
 $H_\varepsilon'=\Omega_\varepsilon H_\varepsilon$, is not differentially
 transcendental; Theorem~9.3 concerns different functions.  Its 404 exact
 finite checks prove no infinite statement; priority not certified, not
-refereed, no Lean verification.}
+refereed. The Lean ledger records proofs of cofinite-span stabilization
+and multilinear detection; the classification and differential-independence
+theorems remain pending.}
 
 \entry{Hahn-valued measures and probability: strong atomicity, coefficientwise extension, and hidden negative mass}
 {surreal/hahn-valued-measures-and-probability}
@@ -410,7 +412,9 @@ and polynomial tests respectively; each is printed once, 10 as base; source 15's
 classification on compact metric spaces, with a common support
 \emph{assumed}, is recorded as a special case.  Not a first non-Archimedean
 Kolmogorov theorem (Ludkovsky--Khrennikov proved one under other axioms);
-priority not certified, not refereed, nothing Lean-checked.
+priority not certified and not refereed.  The Lean ledger records checked
+strong atomicity and product prerequisites; the complete report is not
+formalized.
 \nolinkurl{physics/surreal-scalars-and-spacetime} asked for a summation theory,
 and this report works out two; it shows that the object refused by non-claim N75 of
 \nolinkurl{surcomplex/dynamics-and-normal-forms} cannot exist in the strong class
@@ -453,8 +457,10 @@ nonreal eigenvalues, while the forest profile is convex (Theorems~10.2--10.3).
 theorem number.  Not treated: a global surreal exponential, path measures,
 infinite state spaces, nondivisible $\Gamma$.  Classical forest,
 stochastic-idempotent and rank-one metastability inputs are credited; priority
-is not certified; not refereed or checked in Lean; the finite exact checks are
-not proofs.  Lemma~10.1 is the forest-polynomial case of the Newton rule of
+is not certified; not refereed.  The Lean ledger records checked algebraic
+clauses of the resolvent identity, projection-flag construction and irreducible
+completion; residues and the remaining hierarchy theorems are pending.  The
+finite exact checks are not proofs.  Lemma~10.1 is the forest-polynomial case of the Newton rule of
 \nolinkurl{surcomplex/polynomial-algebra}; the positivity mechanism parallels
 the Cauchy--Binet identity of \nolinkurl{surcomplex/spectral-theory} for another
 matrix class; neither this report nor
@@ -503,31 +509,33 @@ proofs require shrinking. The remaining five reports can be read in any order.
 \entry{Surcomplex analysis: holomorphic functions on $\SC$}
 {surcomplex/analysis}
 {article.pdf}{surcomplex\_analysis.zip and eight companion archives}
-{One article assembled from nine manuscripts, all delivered under the same
-name on 21 September 2026 as independent attempts at one subject: a theory of
-holomorphic functions over $\mathbf{K}=\SC$ built on Hahn-supported
-series.  On the convergence-free base described above the article develops
-germs, the coherent algebra $\mathcal H(U)$ over an ordinary domain,
-Weierstrass preparation and infinitesimal zero clusters, a residue calculus,
-the global principles, exponentials and logarithms, and an all-scale rigidity
-theorem.  \textbf{Nine independent runs at a foundation do not agree the way
-nine runs at a theorem would, and the merge turned on that.}  Of seventeen
-load-bearing notions, six are genuinely inequivalent across the sources, and a
-theorem proved under one is false under another: there are three inequivalent
-function classes (the identity theorem, the global maximum principle,
-Liouville and the open mapping theorem hold for coherent sections and fail for
-germs; sharp Schwarz and Schwarz--Pick hold for lifts and fail for coherent
-sections), and three inequivalent residues, two of which disagree numerically
---- for $1/(\zeta-\varepsilon)$ with $\varepsilon$ infinitesimal the cluster
-residue at the ordinary centre $0$ is $1$ while the local residue at $0$ is
-$0$, the actual pole sitting at $\varepsilon$.  A single ordinary bound in
-Liouville gives a characterization and not constancy: $t z$ is real-bounded by
-$1$ on the whole finite plane and is not constant.  Eleven further conflicts
-are resolved and recorded, including two functions both called ``the''
-logarithm that differ by exactly $2\pi i$.  All nine verification programs are
-kept, and the disposition of every source result is recorded; the
-deduplication is in the article.  Its \nolinkurl{MERGE_NOTES.md} is worth
-reading before the article.}
+{One article assembled from nine manuscripts delivered on 21 September 2026.
+It develops Hahn-summed local germs, coherent sections over connected ordinary
+complex domains, preparation and finite zero clusters, contour residues,
+exponentials and logarithms, and polynomial or rational rigidity under coherence
+at every positive surreal scale. Each formal series has a sufficiently small
+realization, depending on the series; evaluation is faithful as a function germ,
+not at one fixed point. The uniform Taylor-remainder bound gives the full fine
+derivative. Canonical lifts, coherent sections and germ-analytic functions form
+strictly increasing classes; germ analyticity implies fine differentiability,
+with no converse or strictness theorem for that last inclusion here.
+Coherence supplies global identity, maximum and open-mapping principles over
+the ordinary base. Sharp Schwarz--Pick bounds require canonical lifts.
+An ordinary-real value bound and coefficientwise boundedness are incomparable:
+$tZ$ satisfies the first but not the second, while the constant $\omega$
+satisfies the second but not the first. Only the coefficientwise Liouville
+hypothesis forces constancy; one arbitrary surreal bound is always available.
+For $1/(\zeta-\varepsilon)$ with nonzero infinitesimal $\varepsilon$, the cluster
+residue at the ordinary centre $0$ is $1$, while the actual local residue at
+$0$ is $0$. Rouch\'e's halo theorem requires an ordinary margin; a bare strict
+surreal boundary inequality can miss a zero in a boundary monad.
+The global and cut-plane logarithms differ by $2\pi i$ on specified points.
+Every explicit exponential twist retains enough cofinal periods to give the
+proved value distribution of $E_\lambda(1/z)$, although their kernels need not
+be nested; this is not a general Picard theorem. Full fine topology and the
+intrinsic topology of a fixed Hahn workspace remain distinct. The nine finite
+verification programs and historical \nolinkurl{MERGE_NOTES.md} are preserved;
+the maintained README identifies corrected comparisons in that older record.}
 
 \entry{Infinitesimal analytic geometry over the surcomplex numbers}
 {surcomplex/analytic-geometry}
@@ -607,7 +615,7 @@ became 59, by duplicate elimination only.}}
 
 \entry{Global support obstructions: moving divisors, Mittag--Leffler, and a Picard dichotomy}
 {surcomplex/global-divisors}
-{article.pdf}{surcomplex\_global\_support.zip + surcomplex\_global\_theorems.zip}
+{article.pdf}{surcomplex\_global\_support, \_global\_theorems, \_compact\_curves}
 {The local-to-global theory: when do infinitely many individually legitimate
 infinitesimal prescriptions admit one coherent global realization over the
 ordinary complex plane?  The sharp answer for divisors is a
@@ -623,10 +631,25 @@ globally principal effective divisor with a nonprincipal effective
 sub-divisor.  Also Mittag--Leffler at fixed centres and for moving poles, a
 support-restricted Chinese remainder theory with an explicit Neumann right
 inverse, an exact Cousin criterion in terms of singular support, and the
-Picard dichotomy: every ordinary-base stalk is a nonlocal principal ideal
-domain, $\mathrm{Pic}(\C,\mathcal{H}_\Gamma)=0$ iff $\Gamma=\{0\}$ or
+Picard dichotomy: every ordinary-base stalk is a principal ideal domain,
+nonlocal when $\Gamma\ne0$; $\mathrm{Pic}(\C,\mathscr{H}_\Gamma)=0$ iff $\Gamma=\{0\}$ or
 $\Gamma=\mathbb{Z}\delta$, and otherwise $\dim_\C\mathrm{Pic}\ge2^{\aleph_0}$,
-with equality for countable noncyclic $\Gamma$.}
+with equality for countable noncyclic $\Gamma$.
+A third manuscript studies a compact connected ordinary Riemann surface $X$
+of genus $g$. Its Picard group splits into
+$H^1(X,\underline\Gamma)\oplus\mathrm{Pic}(X)\oplus
+(H^1(X,\mathcal O_X)\otimes_\C\mathfrak m_\Gamma)$.
+The valuation class is exactly the obstruction to a nonzero coherent
+meromorphic section, even in arbitrarily high degree. In the zero-valuation
+sector a finite matrix with positive-support entries computes cohomology and
+gives Riemann--Roch. A root-free Newton-sum Abel functional decides principality
+of finite signed clusters. The one-scale comparison has kernel
+$H^1(X,\mathcal O_X)\otimes_\C\bigcap_n t^{n\delta}\mathcal O_\Gamma$;
+it is injective exactly when $g=0$ or $\delta$ is cofinal in $\Gamma$.
+Any prescribed set of surreal cutoffs can be defeated after enlarging the
+workspace; all positive cutoffs detect classes in a fixed nonzero workspace.
+Coordinate charts transfer the local PID argument to $X$, but the global plane
+and compact classification theorems retain their different base hypotheses.}
 
 \entry{Surcomplex polynomial algebra: root geometry, Newton profiles, residue duality}
 {surcomplex/polynomial-algebra}
@@ -703,9 +726,10 @@ every $\der y=Ay$, $A\in\mathrm{Mat}_n(\SC)$, is gauge equivalent to
 $i\,\mathrm{diag}(\der P_j)$, the multiset $\mathrm{Ph}(A)=\{P_j\}$ of purely
 infinite surreals being a complete invariant (Theorem~15.9), computed for
 Hermitian coefficients from the algebraic eigenvalues with no commutation or
-gap assumed (Theorem~16.5); the non-Hermitian case is \emph{not} classified
-(Example~16.10), and the existence statements rest on an imported
-splitting/surjectivity theorem.  Part~V (member~12): $\der y=-tAy$,
+gap assumed (Theorem~16.5). Example~16.10 refutes extending that eigenvalue
+formula to arbitrary non-Hermitian coefficients; the abstract classification
+still covers them. The normal form and inhomogeneous existence rest on an
+imported splitting/surjectivity theorem.  Part~V (member~12): $\der y=-tAy$,
 $t=\omega^{-1}$, with ordinary complex residual matrix $A_0$ and
 positive-order power-Hahn perturbation, classified over $\C((t^\R))$ and over
 $\SC$; the solution space has dimension the algebraic multiplicity of the real
@@ -876,9 +900,10 @@ set, conversely to the forward map of
 read ``the union of the supports is well ordered'' and are \emph{not} the same
 criterion}: gluing (Theorem~6.2) tests the \emph{normalized polar factors}
 $\mathrm{Pol}(G_a)-I_r$, each transition factored independently and first, and
-fails in \emph{both} directions for raw transition supports; realizability
+well-ordering of full raw transition support is sufficient but not necessary,
+whereas raw singular-coefficient support fails in \emph{both} directions. Realizability
 (Theorem~14.2) tests the \emph{raw} monodromy matrices $\rho(\ell_d)-I_r$,
-whose support is basis- and basepoint-independent.  The trap is printed: a
+whose support has basis- and basepoint-independent well-ordering.  The trap is printed: a
 determinant-one rank-three family over $\Gamma=\Q$ with one raw singular
 exponent and a \emph{splitting} abelianized cocycle admits no splitting; one
 added term putting the forced descending set among the raw poles
@@ -914,7 +939,7 @@ refereed, no Lean code, no priority certified.}
 {Ordinary power series $\sum a_nZ^n$ over a \emph{fixed} Hahn field
 $K_\Gamma=\C((t^\Gamma))$, $\Gamma$ nonzero, set-sized, divisible and of
 arbitrary valuation rank; \emph{entire} means strongly Hahn-summable at every
-point of that one field.  The first two sources, which disclaim all of $\SC$,
+point of that one field; for $\Gamma=0$ the ring is $\C[Z]$. The first two sources, which disclaim all of $\SC$,
 proved the same engine, printed once; both payloads are kept.  \textbf{The
 trichotomy} (Theorem~1.5): $E_\Gamma$ is always a GCD domain with units
 $K_\Gamma^\times$; a polynomial PID when $\mathrm{cf}(\Gamma)>\aleph_0$;
@@ -1201,7 +1226,8 @@ nonlinear set only under the extra finite criterion (not claimed optimal) of
 Proposition~7.2, an arbitrary-rank form of the Caruso--Roe--Vaccon
 precision-lattice principle, with Proposition~9.1 showing that the improvement
 can fail nonlinearly; a \emph{sufficient} directed-path certificate for nonuniform
-precisions, which, unlike Theorem~1.1, assumes $\Gamma$ divisible; and
+precisions, valid also for nondivisible $\Gamma$ by auxiliary scaling in
+its divisible hull and descent to the original field; and
 transfer to finite configurations in $\No$ and $\SC$.  One manuscript, not a
 merge; the only choices were editorial (title kept, labels prefixed
 \texttt{prony:}, notation aligned with
@@ -1215,8 +1241,10 @@ not merged.  Classical Prony, Hermite and precision-tracking material is
 credited, as are the $w_iP'(a_i)^2$ denominator and the last-moment direction.
 Not an unconditional algorithm on surreal inputs; confluent and infinite
 configurations are out of scope; the $10{,}052$ exact SymPy assertions check
-finite instances only.  Priority is not certified; not refereed; no Lean
-proof.}
+finite instances only. Priority is not certified; not refereed. The Lean
+ledger records classical uniqueness, cofactor orthogonality, the exact
+last-moment annihilator and algebraic local-root identities; valuation
+localization and the remaining precision estimates are pending.}
 
 \entry{Finite certificates for surcomplex Wick summability: valuation balancing, connected obstructions, and multiscale Gaussian perturbations}
 {surcomplex/wick-summability-certificates}
@@ -1258,7 +1286,9 @@ class, and answers none of that report's questions; the closest relative is
 the multiscale theta series of \nolinkurl{surcomplex/hahn-tate-uniformization},
 also decided by a finite certificate but by different mathematics;
 neither uses the other.  Classical inputs
-credited; priority provisional; not refereed; no Lean verification.}
+credited; priority provisional; not refereed. The Lean ledger covers the
+positive-support, finite-semigroup and valuation Cauchy--Schwarz lemmas;
+the main summability and connected-domain theorems remain pending.}
 
 
 \section{Surquaternions}

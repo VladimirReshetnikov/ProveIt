@@ -29,6 +29,17 @@ No row below certifies every claim in an entire report.
 | [Finite deformations](surcomplex/finite-deformations/) | Read the main support, division, finite-algebra, residue and stability chain. Constructed the inverse in the uniform-support formal ring before establishing fine analyticity, with a second independent check. Corrected quotient-ring and residue/trace summaries, common-domain germ warnings, coordinate-power scope and the effectivity contract. Added the missing positive control-set hypothesis and Jacobian precision reasoning. |
 | [Spectral theory](surcomplex/spectral-theory/) | Read the main finite geometry, variational, scale, splitting, root-field and stability proofs. Corrected the summary's Gram criterion to `2Γ`, bounded root-field sums by rank, and made Hermitian, orthogonal, zero-case and valuation-access requirements explicit. Separated principal-root extension costs from arbitrary-matrix splitting fields and exponent permission from root representation. Repaired the hypothesis ledger and trivial-group precision exception. The corrections received a second independent review. |
 | [Rank-one Berkovich geometry](surcomplex/rank-one-berkovich/) | Read the main convergence, division, preparation, root-count, seminorm, annulus and entire-function arguments. Added the nonzero norm-profile hypothesis and reduction domain; expanded division uniqueness, seminorm normalization, canonical-product cancellation and the local Laurent remainder in the theta-root calculation. Checked the precise imported field, point-classification and annulus-retraction statements against primary sources. |
+| [Entire functions at arbitrary rank](surcomplex/entire-functions-at-arbitrary-rank/) | Read the original two-manuscript main text and finite-variable appendix before the later expansion. Strengthened the growth barrier to eventual cofinal growth, with an oscillating-range counterexample; expanded linear division, the multivariate attained-minimum argument and the preparation-only finite-zero bound. Corrected the fixed-element order-unit equivalence, nonzero-group convention and universal Bézout scope. Revised arguments received a second independent review. |
+| [Global divisors](surcomplex/global-divisors/) | Read the main plane and compact proof chains through the cutoff comparison. Corrected complementary divisor support, fixed-field root-splitting scope and trivial-group reduction. Proved the coordinate-chart transfer of PID stalks and `Pic = Pic_lf`, with a second independent check. Made the genus-zero exception and workspace quantifiers explicit, proving detection by all positive cutoffs in a fixed nonzero workspace; corrected analytic-operation and source-comparison summaries. |
+| [Nonabelian support](surcomplex/nonabelian-support/) | Read the full main matrix Cousin and monodromy chains. Proved that well-ordering of full raw transition support is sufficient but not necessary, while raw singular support fails both directions. Added a left-gauge counterexample; corrected matrix exp/log domains, support-condition invariance, classification scope and unsupported computation claims. The main support correction received a second review. |
+| [Contours and Stokes](surcomplex/contours-and-stokes/) | Checked the revised support, smooth pullback, topology, microscopic-cycle, rational-comparison and sampling arguments. Replaced the false cofinality shortcut by finite-word incidence; corrected the word-embedding inequality and diagonal-substitution comparison. Supplied the properness and identity-theorem steps in the ramified Leray construction and expanded target composition about the ordinary map. Distinguished coefficientwise recovery from valuation limits and standard-part continuity from fine continuity. |
+| [Surcomplex analysis](surcomplex/analysis/) | Read the main local-to-global arguments. Corrected fixed-point evaluation to faithfulness of function germs, proved the uniform Taylor bound with summable absolute values, and separated fine class statements from fixed-workspace assertions. Repaired root and reciprocal-support hypotheses, boundedness and function-class comparisons, and the bare-inequality Rouché counterexample. Extended the stated reciprocal-exponential value distribution to every explicit twist using a surviving cofinal family of periods; corrected kernel and branch comparisons. |
+| [Differential equations](surcomplex/differential-equations/) | Reviewed the earlier scalar, finite-matrix, workspace and coherent-coordinate chains and reconciled their scope statements with the later regular-singular comparison. Corrected the domains of `Obs`, `Φ` and the normalized primitive; separated finite-system classification from Hermitian eigenvalue computation. Added the exact cocycle counterexample, expanded Dickson's lemma and the set-sized witness construction, and supplied missing coefficient, nonzero and differential-hull hypotheses. Corrected differential algebraicity, monodromy assumptions, derivative notation and stale implementation claims. The new regular-singular and autonomous proof chains have not received a full review. |
+| [Hahn-valued measures](surreal/hahn-valued-measures-and-probability/) | Read the main scalar, common-support, cylinder, product, moment, quadrature, null-ideal and coefficientwise extension proofs through conditioning. Corrected subfamily versus regrouping sums, nonnegative versus strictly positive cylinder tests, and the false leading-scalar-positivity comparison. Added an elementary coefficientwise positivity lemma and used it in boundary and mixed product constructions; expanded finite-factor reduction and the quadrature compression argument. Supplied example group and zero-case hypotheses, narrowed the near-boundary non-necessity claim, and aligned current Lean scope with the ledger. Checked the compact-interval moment citations against Schmüdgen v1 and the finite spectral references against the local report; other imported results and original-source reconciliation remain outside this review. |
+| [Markov generators](surreal/markov-generators-at-every-scale/) | Read the main forest, leading-entry, remainder, stochastic-retract, realization, stability, finite-specialization and spectral proof chains and their worked examples. Corrected the nonzero workspace construction for purely real inputs and the false finite-support inference; defined the exact infinite valuation-error bound. Expanded transient-block decay, effective inversion, the real-part argument and crossover invertibility. Clarified valuations of nonzero eigenvalues, the rational-linear obstruction and the current algebraic Lean scope. Checked the determinant and adjugate imports against Chebotarev–Agaev v2 with the same row orientation; other literature comparisons, priority and original-source reconciliation remain outside this review. |
+| [Tail spans and differential transcendence](surreal/tail-spans-and-differential-transcendence/) | Read the coefficient-field, cofinite-span, polarization, exceptional-field, affine-plane, actual-surreal, mixed-jet, halo, approximation and undecidability proofs. Made characteristic hypotheses explicit and supplied a characteristic-two counterexample; replaced the abbreviated mixed-difference argument by finite Taylor operators, including degenerate directions. Expanded separating-functional construction, coordinate recovery and Galois splitting. Corrected the purported value-group enlargement from lexicographic integers to rationals, with the embedding specified. Aligned the partial Lean scope and rerun instructions, checked the extension-of-embeddings citation and local BM restriction, and distinguished cofinite tails from valuation prefixes. Other foundational imports, literature comparisons and original-source reconciliation remain outside this review. |
+| [Prony reconstruction](surcomplex/prony-reconstruction-at-surreal-scales/) | Read the main support, reconstruction, sharpness, Hermite-precision and graph proofs and examples. Removed the graph theorem's divisibility assumption by auxiliary scaling and descent to the original Hahn field. Strengthened the classical uniqueness statement to arbitrary competing representations and the first-`2n−1`-moment rank obstruction, already covered in Lean. Corrected collision terminology, the measure-report comparison and stale formalization claims; checked the cited Caruso–Roe–Vaccon v1 hypotheses. |
+| [Wick summability](surcomplex/wick-summability-certificates/) | Read the main support, semigroup, strict-alternative, diagram, connected-graph, covariance, identity and cancellation proofs and examples. Corrected the zero-semigroup boundary and proved the exact finite-sector criterion; added an integer-group counterexample explaining original-group divisibility. Extended the grouping proposition to a common nonzero complex factor and repaired the quartic comparison for signed Hahn tails. Specified monomial-insertion, zero-derivative and unit-exponent conventions and current partial Lean coverage. Checked the BM normal-form references and Etingof's normalized connected identity; other imports, literature comparisons and original-source reconciliation remain outside this review. |
 
 Each correction was reviewed against its local definitions and downstream uses
 within the stated scope. Changed PDFs were rebuilt and affected pages inspected.
@@ -63,10 +74,76 @@ second review. The catalogue rebuilt without warnings. An independent parser
 checked all 1,229 indexed theorem, lemma, proposition and corollary entries
 against the 26 report sources; line hints were refreshed after the edits.
 
+The entire-function, global-divisor and nonabelian PDFs rebuilt without warnings
+or box issues; the global-divisor build removes its baseline overfull and
+underfull boxes. The two entire-function suites passed 831/831 and 664/664;
+the three global-divisor suites passed six check groups, 38 checks and 53/53;
+the nonabelian suites passed 2,899 exact checks plus eight exact and four
+numerical monodromy comparisons (maximum error `1.472e-13`, below `2e-9`).
+All were run on temporary copies, preserving historical programs and data.
+
+The contour PDF rebuilt in three passes without warnings or box issues. Its
+four unchanged finite suites passed 317, 244, 167 and 632 exact checks on
+temporary copies; the copied programs match the maintained historical files.
+The revised passages were inspected in the 87-page PDF.
+
+The analysis PDF rebuilt in three passes with no errors, unresolved references,
+package warnings or overfull boxes. Eight underfull-box notices remain; the
+baseline had six overfull boxes and six PDF-string warnings, now removed.
+All nine unchanged finite programs passed on temporary copies, whose source
+hashes match the maintained programs. The revised theorem passages and
+catalogue entry were inspected.
+
+The differential-equations PDF rebuilt in three passes to 165 pages, with no
+warnings, unresolved references or box issues, matching the clean baseline.
+Eight earlier suites (members 01, 02 and 05–10) passed on temporary copies
+at 1,395, 115, 149, 258, 291, 150, 259 and 62 checks; their program hashes
+match the preserved originals. An independent exact calculation confirmed
+the nonzero fourth-order coefficient in the cocycle counterexample.
+Members 11 and 12 were not rerun in this review.
+
+The Hahn-measure article and catalogue rebuilt in three passes without warnings
+or box issues, at 64 and 21 pages, and the revised pages were inspected.
+All three unchanged programs passed on temporary copies at 5,135, 682 and
+1,009 assertions. All six copied program/build files match the preserved
+originals; the historical source-15 total still includes its explicitly
+identified tautological check. The new elementary positivity lemma brings
+the canonical index to 1,753 standard entries; an independent parser checks
+all 36 reports.
+
+The Markov article and catalogue rebuilt without warnings or box issues, at
+32 and 21 pages. The unchanged exact program passed on a temporary copy:
+48 graph instances, 17,280 forests, 105 critical kernels and seven symbolic
+checks. The resulting JSON matches the delivered record; historical programs,
+data and source audit were preserved. The standard-statement count remains
+1,753 across 36 reports.
+
+The tail-span article and catalogue rebuilt without warnings or box issues,
+at 26 and 21 pages. The unchanged verifier passed 404 checks on a temporary
+copy; all check records match the delivered output, apart from Python version
+and elapsed-time metadata. Historical code, data and audit files were
+preserved. The index remains at 1,753 standard statements across 36 reports.
+
+The Prony article and catalogue rebuilt without warnings or box issues, at
+27 and 21 pages. The unchanged program passed 10,052 exact assertions on a
+temporary copy; all output lines match the delivered record except the Python
+version. Copied verification inputs are byte-identical, and historical code
+and data were preserved. Statement numbering is unchanged; the independently
+checked index still contains 1,753 standard statements across 36 reports.
+
+The Wick article and catalogue rebuilt without warnings or box issues, at
+32 and 21 pages, with unchanged label numbers. The unchanged verifier passed
+all 7,684 cases on a temporary copy; its JSON matches the historical record
+apart from elapsed time. All three copied program/build files match the
+originals, and the historical data and two source audits were preserved.
+The independent index still checks 1,753 standard statements in 36 reports.
+
 ## Collection-wide work
 
-The [reader map](README.md), [catalogue](manifest.tex) and
-[notation guide](NOTATION.md) cover all 26 canonical reports. The guide records
+The [reader map](README.md), [catalogue](manifest.tex) and statement index
+now cover all 36 canonical reports. The [notation guide](NOTATION.md) was
+checked across the earlier 26-report collection; checking every convention in
+the ten additions and six expanded reports remains pending. The guide records
 meaningful differences rather than treating shared names as definitions:
 coefficient domains, support orientation, scalar standard part versus function
 reduction, topologies, strong sums, derivatives, phases and computational names.
@@ -75,16 +152,30 @@ was checked separately from deliberately historical paths in verification record
 Original manuscript archives are accessed through Git history; their removal
 from the current tree does not discharge source-claim reconciliation.
 
+The merge of `66dd6bc` refreshed the inventory to 1,752 standard entries
+across all 36 reports. An independent parser checked labels, optional titles,
+counts and line hints against the merged sources. The catalogue and the three
+reports with overlapping PDF changes were rebuilt from their merged LaTeX;
+this checks the integration, not the new mathematical claims.
+
 ## Remaining scope
+
+Of the ten reports added on September 22, Hahn-valued measures, Markov
+generators, tail spans, Prony reconstruction and Wick summability have received
+the main-text reviews recorded above. The other five additions and the new sections in differential equations,
+dynamics, entire functions,
+nonabelian support, spectral theory and exponential automorphism rigidity
+remain outside the earlier review scopes, apart from explicitly recorded
+integration corrections.
+Their delivered proof and source audits are inputs to review, not evidence
+that this pass has checked them. Earlier validation counts above refer to
+the report versions and suites then reviewed.
 
 The reports above have received targeted corrections or a main-text reading,
 as recorded in each row. Uninspected portions, imported results, source-claim
-reconciliation and any formalization remain separate obligations. The other
-six main reports have been mapped for notation and navigation but have not
-received a full mathematical review in this pass:
-
-- Surcomplex analysis; contours and Stokes; differential equations; entire
-  functions at arbitrary rank; global divisors; nonabelian support.
+reconciliation and any formalization remain separate obligations. The
+differential-equations row covers the earlier proof chains and targeted scope
+corrections in the expanded report; it does not certify the two new parts.
 
 Continue with elementary statements and their dependencies before broad
 classification theorems. For each portion, check definitions and size/domain

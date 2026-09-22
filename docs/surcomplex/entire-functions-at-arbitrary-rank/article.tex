@@ -231,7 +231,8 @@ problem that fails.
 \subsection{The analytic category}
 Throughout, except in \cref{ent:sec:multivariable}, which states its own
 weaker hypotheses, $\Gamma$ is a \emph{set-sized divisible ordered abelian
-group}, written additively, and
+group}, written additively. Except where the degenerate case $\Gamma=0$ is
+explicitly discussed, assume $\Gamma\ne0$. Put
 \[
  \K=\C((t^\Gamma)),\qquad
  v\left(\sum_\eta c_\eta t^\eta\right)=\min\{\eta:c_\eta\ne0\}.
@@ -316,10 +317,13 @@ twice: one called $\delta$ an order unit, the other called it a
 \emph{cofinal-cyclic element}, meaning exactly that the cyclic subgroup it
 generates is cofinal. These are the same condition, stated twice; we keep
 the single name \emph{order unit} and record the synonym here once.
-It is equivalent to each of the following: the positive Archimedean classes
-of $\Gamma$ have a greatest member; $m\delta\to+\infty$; the monomial
+For a fixed $\delta>0$, it is equivalent to each of the following:
+$\delta$ represents the greatest positive Archimedean class of $\Gamma$;
+$m\delta\to+\infty$; the monomial
 $t^\delta$ is topologically nilpotent in the intrinsic valuation topology of
-$\K$.
+$\K$. Thus an order unit exists exactly when the positive Archimedean
+classes have a greatest member; a positive element in a smaller class is
+not an order unit.
 \end{itemize}
 An order unit forces $\cf(\Gamma)=\aleph_0$, but not conversely: the group
 $\Gamma_\infty$ of \cref{ent:sec:examples} has countable cofinality and no
@@ -434,8 +438,9 @@ $\Gamma$ is cofinal in $\Delta$;
 with unchanged multiplicity, even when $f$ has infinitely many zeros;
 \item if $\Gamma$ is not cofinal in $\Delta$, there is no
 $g\in\mathcal E_\Delta$ agreeing with $f$ on $\C$, let alone on $\K$;
-\item $\Gamma$, the slope set $\{v(a_n)/n\}$ and the negated zero valuations
-$\{-v(r)\}$ generate the same convex subgroup of any larger ordered group,
+\item $\Gamma$, the slope set $\{v(a_n)/n:n\ge1,\ a_n\ne0\}$ and the
+negated zero valuations $\{-v(r):r\ne0,\ f(r)=0\}$ generate the same convex
+subgroup of any larger ordered group,
 so $\Dom$ is recoverable from the coefficients alone or from the zeros alone.
 \end{enumerate}
 The residue field of $\Dom$ is canonically $\C((t^H))$, not $\C$.
@@ -1201,7 +1206,7 @@ Recall $\A=\C[X]((t^\Gamma))$ from \eqref{ent:eq:Halg}. The support facts in
 coefficient map $\A\hookrightarrow\K[[X]]$ respects it.
 
 \begin{lemma}[Units and integral substitution]\label{ent:lem:A-units}
-An element of $\A$ is a unit if and only if its initial polynomial is a
+A nonzero element of $\A$ is a unit if and only if its initial polynomial is a
 nonzero constant. Every $A\in\A$ can be evaluated at any $x\in\OO$, and this
 evaluation is a ring homomorphism; if $A\ne0$ the value has valuation at
 least $w(A)$. For $x\in\OO$, substitution $X\mapsto X+x$ is an automorphism
@@ -1213,7 +1218,7 @@ $A=ct^\eta(1+u)$ with $w(u)>0$ and invert $1+u$ using
 \cref{ent:lem:neumann}(c). Conversely, if $AB=1$, the product of the two
 initial polynomials is $1$, so both are nonzero constants.
 
-For substitution, write $x=c+\varepsilon$ with $c\in\C$ and
+For substitution, put $S=\supp_t A$ and write $x=c+\varepsilon$ with $c\in\C$ and
 $v(\varepsilon)>0$, treating $\varepsilon=0$ separately. For each $\eta$,
 expand the finite polynomial $P_\eta(X+c+\varepsilon)$ in powers of
 $\varepsilon$. All supports lie in $S+(\supp\varepsilon)^*$, which is well
@@ -1222,8 +1227,10 @@ $S+(\supp\varepsilon)^*$, finitely many words in $\supp\varepsilon$ for each
 such decomposition, and finitely many terms from each $P_\eta$. Thus
 substitution is a legitimate element of $\A$. Finite polynomial identities
 and strong regrouping prove multiplicativity, and its inverse is substitution
-by $-x$. Evaluation follows by setting $X=0$ after this substitution, and the
-valuation bound is \cref{ent:lem:cofinal-tails}.
+by $-x$. Evaluation follows by setting $X=0$ after this substitution. If
+$A\ne0$, every contribution has exponent at least $\min S=w(A)$, because
+$v(\varepsilon)>0$; cancellation can only raise the valuation. This gives
+the claimed bound without any assertion of cofinal tail convergence.
 \end{proof}
 
 \subsection{Preparation without an Archimedean contraction}
@@ -1419,11 +1426,17 @@ $b\in\K$ a nonconstant $F-b$ cannot be zero-free, so $F$ takes the value $b$.
 If $F\in\E$ and $F(r)=0$, then $F=(Z-r)G$ with $G\in\E$.
 \end{lemma}
 \begin{proof}
-Translate to $r=0$ by \cref{ent:prop:operations}, divide the formal series by
-$Z$, and translate back. Each rescaled copy $F(t^\gamma X)$ lies in $\A$, and
-dividing by a monomial or by a monic linear factor with integral root
-preserves $\A$ by \cref{ent:lem:A-units}; conclude by
-\cref{ent:thm:criterion}(2).
+Set $H(Z)=F(r+Z)$, which is entire by \cref{ent:prop:operations}, and note
+that $H(0)=0$. For each $\gamma$, write
+$H(t^\gamma X)=\sum_\eta P_\eta(X)t^\eta\in\A$.
+Its constant coefficient is zero, so every $P_\eta$ is divisible by $X$.
+Dividing these finite polynomials by $X$ preserves the well-ordered Hahn
+support and gives an element of $\A$. Consequently
+\[
+ (H/Z)(t^\gamma X)=t^{-\gamma}\,H(t^\gamma X)/X\in\A.
+\]
+By \cref{ent:thm:criterion}(2), $H/Z$ is entire. Translating back gives
+$G(Z)=(H/Z)(Z-r)\in\E$ and $F=(Z-r)G$.
 \end{proof}
 
 \subsection{Stability of the counts}
@@ -2620,6 +2633,16 @@ supply; every application in this report --- \cref{ent:lem:escaping-classes}
 and \cref{ent:lem:shells} --- produces a strictly increasing sequence. No
 conclusion has been weakened by making the hypothesis explicit.
 
+The eventual condition on $\gamma_n$ cannot be replaced by cofinality of
+its range. In the reverse-lexicographic group
+$\bigoplus_{j\ge0}\Q e_j$, set
+$\gamma_{2n}=e_{n+2}$, $\gamma_{2n+1}=e_0$ and
+$\lambda_{2n}=e_{n+3}$, $\lambda_{2n+1}=e_1$ for $n\ge0$.
+The range of $(\gamma_n)$ is cofinal and $\lambda_n\ggA\gamma_n$ always,
+but the constant entire function $H=t^{-e_2}$ violates the conclusion at
+every odd index. The strictly increasing sequences used here avoid this failure.
+
+
 \begin{corollary}[Explicit failure of value interpolation, and its exact
 boundary]
 \label{ent:cor:no-interpolation}
@@ -3799,9 +3822,14 @@ infinitely many distinct points of $\mathcal O_\Delta$ are equal as formal
 series. In particular agreement at all ordinary complex constants suffices.
 \end{proposition}
 \begin{proof}
-Their difference lies in $\mathcal A_\Delta$. If it were nonzero,
-\cref{ent:cor:integral-zeros} would give it only finitely many zeros in the
-integral disk.
+Their difference $A$ lies in $\mathcal A_\Delta$. If it were nonzero,
+multiplication by a nonzero scalar would normalize its Gauss value to zero
+and its initial polynomial to monic. By \cref{ent:thm:prep}, the normalized
+series is $WU$ with $W$ a nonzero finite-degree polynomial and $U$ a unit.
+Evaluation on $\mathcal O_\Delta$ is a ring homomorphism by
+\cref{ent:lem:A-units}, so $U$ never vanishes there. Thus $A$ has at most
+$\deg W$ distinct integral zeros, a contradiction. This finite upper bound
+uses no splitting of $W$ and hence no algebraic-closedness hypothesis.
 \end{proof}
 
 \begin{theorem}[Obstruction to any entire-series continuation]
@@ -5146,8 +5174,8 @@ here, and the cross-references are reciprocal.
 The report \emph{From Surcomplex Hahn Fields to Berkovich Geometry}
 \cite{RepoRankOne} fixes $K=\C((t^\R))$: the value group is $\R$, the field
 is spherically complete, and $|a|_v=\exp(-v(a))$ is a genuine real-valued
-absolute value. It is, in its own words, the one place in the collection
-where convergence is real convergence. Its entire-function section proves
+non-Archimedean absolute value. It defines intrinsic convergence using that
+real-valued absolute value. Its entire-function section proves
 zero-free entire rigidity and a convergent canonical product \emph{there},
 and none of the source manuscripts merged here claims to originate either
 point.
@@ -5716,17 +5744,23 @@ summability; the next is the coarsened polynomial argument for
 \cref{ent:thm:units}. Support preparation should be formalized only after the
 finite-word Neumann lemma and arbitrary regrouping are available. The
 explicit obstruction then requires only ordered-group inequalities, finite
-product valuations and evaluation homomorphisms. This is a dependency plan.
-It is not a claim that any of the proofs has been checked in Lean, and no
-Lean code or kernel-check claim is included in this package.
+product valuations and evaluation homomorphisms. This is a dependency plan,
+not a formal-verification claim. The current repository ledger
+\texttt{docs/FORMALIZATION.md} distinguishes checked Hahn support,
+summability and algebraic-closure prerequisites from the still-pending
+statements of this report. No Lean code is included in this report package.
 
 \section{Conclusion}
 \label{ent:sec:conclusion}
 The threshold for nonpolynomial entire behaviour in a Hahn--surcomplex
-workspace is countable cofinality, not rank one. The threshold for a
-B\'ezout identity between coprime entire functions, and equally for a
-nonconstant restricted inverse, is strictly stronger: a positive coefficient
-gap must generate a cofinal sequence of multiples. These two conditions
+workspace is countable cofinality, not rank one. Among workspaces admitting
+nonpolynomial entire series, the universal B\'ezout property and full
+radially finite Hermite interpolation require the stronger condition that an
+order unit exist. This is also the threshold for existence of a nonconstant
+restricted unit; for a particular restricted series, its least nonconstant
+coefficient gap relative to the constant term must itself be a positive
+order unit. Individual coprime pairs may admit a B\'ezout identity even
+when the universal property fails. The two existence conditions
 separate in an explicit infinite-rank subgroup of the surreal numbers, and
 the separation is witnessed by two entire functions with disjoint simple zero
 sets whose ideal is proper.
@@ -5874,9 +5908,11 @@ tuples of rational coordinates ordered by the largest nonzero coordinate;
 the fifth needs no ordered-group tuples beyond integer relation vectors.
 
 \paragraph{Suite A (831 checks).}
-The first source's script
-\texttt{code/06-cofinality-\allowbreak bezout-trichotomy-\allowbreak
-verify-examples.py} checks finite instances of the
+The source program \texttt{verify\_examples.py} is shipped as
+\begin{quote}\small
+\path{code/06-cofinality-bezout-trichotomy-verify-examples.py}
+\end{quote}
+It checks finite instances of the
 reverse-lexicographic exponent inequalities, the valuation formula
 \eqref{ent:eq:lambda} in the first nine coordinates of $\Gamma_\infty$,
 leading exponents of finite canonical products, a finite-truncation
@@ -5885,16 +5921,17 @@ implementation of the preparation recursion
 identity underlying \eqref{ent:eq:interpolation-r}. The delivered run passed
 all \textbf{831} checks, with category counts $72$ paired-root checks, $40$
 finite dominance samples, $88$ product-coefficient checks, $456$ preparation
-checks and $175$ inverse-jet checks; the record is
-\texttt{data/06-cofinality-\allowbreak bezout-trichotomy-verification.json}. The script
-takes a \emph{required} output path argument
-and exits nonzero without one; this is a usage requirement designed so that a
-re-run cannot overwrite the delivered record, not a defect. Run correctly it
-reproduces $831$ of $831$.
+checks and $175$ inverse-jet checks; the record is the delivered
+verification JSON. The script takes a \emph{required} output path argument
+and exits nonzero without one; a fresh output path preserves the historical
+record. A review run on a temporary copy passed $831$ of $831$ again.
 
 \paragraph{Suite B (664 checks).}
-\texttt{code/03-cofinality-and-scalar-extension-verify.py} checks finite
-truncations of
+The source program \texttt{verify.py} is shipped as
+\begin{quote}\small
+\path{code/03-cofinality-and-scalar-extension-verify.py}
+\end{quote}
+It checks finite truncations of
 \eqref{ent:eq:infinite-product} for $N=1,\ldots,8$ --- each coefficient's
 leading exponent, its binomial subset count and its signs --- exactness and
 simplicity of each root $t^{-e_j}$ and the simple-root derivative
@@ -5904,7 +5941,9 @@ after adjoining the dominant scale $e_9$, the rank-two hidden-tail comparison
 of \cref{ent:subsec:hidden-tails} for $n=1,\ldots,100$ and
 $\lambda\in\{-7,-\tfrac12,0,\tfrac32,10\}$, and the preparation recursion for
 \eqref{ent:eq:cubic} through perturbation order eight. The delivered run
-reports \textbf{664} passing checks, recorded in
+reports \textbf{664} passing checks. A maintained review on a temporary copy
+passed all $664$ checks, leaving historical records unchanged. The delivered
+results are recorded in
 \texttt{data/03-cofinality-and-scalar-extension-verification.json} and
 \texttt{.txt}. The script takes no arguments and writes
 \texttt{verification.json} and \texttt{verification.txt} into the
