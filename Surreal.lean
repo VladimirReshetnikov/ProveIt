@@ -118,6 +118,10 @@ import Surreal.Foundations.SmallNormalFormMultiplication
 import Surreal.Foundations.SmallNormalFormFieldEquiv
 import Surreal.Foundations.SmallNormalFormHahnEmbedding
 import Surreal.Foundations.SignSequenceHahnEmbedding
+import Surreal.Foundations.SignSequenceHahnValuation
+import Surreal.Foundations.SignSequenceHahnCoherence
+import Surreal.Foundations.SignSequenceStrongSummation
+import Surreal.Foundations.SignSequenceWorkspace
 import Surreal.Foundations.SmallNormalFormWorkspace
 import Surreal.Foundations.SmallNormalFormRealClosed
 import Surreal.Foundations.SignSequenceRealClosed
@@ -131,6 +135,9 @@ import Surreal.Foundations.SignSequenceDyadicBirthday
 import Surreal.Foundations.DyadicBirthdayProduct
 import Surreal.Foundations.SignSequenceRealProductBirthday
 import Surreal.Surcomplex.Basic
+import Surreal.Surcomplex.AlgebraicallyClosed
+import Surreal.Surcomplex.HahnCoherence
+import Surreal.Surcomplex.HahnValuation
 import Surreal.Surcomplex.OrderObstructions
 import Surreal.Surcomplex.FineTopology
 import Surreal.Surcomplex.TopologicalField

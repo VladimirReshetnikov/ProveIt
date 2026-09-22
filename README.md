@@ -314,8 +314,8 @@ finite coefficients is finite. For explicitly split monic polynomials,
 standard part preserves the linear factorization and root multiplicities.
 The surreal field is not algebraically closed, and no linear order is
 compatible with surcomplex multiplication.
-Real closedness of the actual sign field is now proved. Compatibility with
-strong sums remains open.
+Real closedness of the actual sign field is now proved, and small strong
+real sums are constructed through canonical normal forms.
 The bridge now has an explicit formal carrier of small reverse-well-ordered
 supports, reusing the pinned upstream ordinal truncation APIs. Recursion on
 support length constructs a canonical actual surreal candidate: the simplest
@@ -341,9 +341,21 @@ in one small divisible workspace. In particular, polynomial coefficients
 descend to such a workspace, whose odd-degree root theorem transfers back
 through the injective embedding. Together with the independently constructed
 nonnegative square roots this proves real closedness of both fields.
+Normal-form extraction puts every small family of actual surreals inside
+one small Hahn subfield and preserves degree when descending polynomials.
+Localizing both coordinates of a surcomplex polynomial's coefficients in
+one complex Hahn workspace proves actual algebraic closedness, linear
+factorization, and equality of root multiplicity count with degree.
+The real Hahn embedding preserves valuation and leading coefficient for
+arbitrary supports. Finite values have nonnegative Hahn order, infinitesimal
+values have positive order, and standard part extracts the zero coefficient.
+The complex embedding also preserves valuation, finiteness, infinitesimality,
+and standard part. Both embeddings commute with exponent-workspace enlargement.
+Actual strong real sums use the two native Hahn summability conditions:
+well-ordered joint support and finite coefficient fibers. Small index types
+give small sum support, and workspace evaluation commutes with these sums.
 The approximation inequalities alone never give uniqueness: a sufficiently
-small positive monomial produces another solution. Compatibility with strong
-sums and admissible Taylor evaluation, surcomplex algebraic closedness,
-and universe coherence remain separate obligations.
+small positive monomial produces another solution. Complex strong sums,
+admissible Taylor evaluation, and universe coherence remain separate obligations.
 A successful build proves only the imported Lean
 statements, not coverage of all the source documents.

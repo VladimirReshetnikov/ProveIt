@@ -7,7 +7,9 @@ candidate for every small formal normal form, with recursive residual bounds,
 leading data and negation. Comparison and bounded extraction now make it an
 ordered field isomorphism with the actual surreal carrier. Small-family
 localization now transfers odd-degree roots from divisible Hahn workspaces,
-proving real closedness. Compatibility with strong sums remains open.
+proving real closedness. Actual surcomplex algebraic closedness, valuation
+and standard-part preservation, exponent-workspace coherence, and small
+strong real sums are now constructed as well.
 The obligations are those in `found:eq:normalform`, `found:sub:bridge`, and
 `found:thm:workspace` of the [foundations report](foundations-and-computation/foundations/article.tex).
 
@@ -234,16 +236,51 @@ nonnegative square roots transport in the other direction. This proves
 transfers odd-degree roots through the field equivalence and combines them
 with the existing genetic square roots to prove `IsRealClosed SignSequence`.
 
+[`SignSequenceWorkspace.lean`](../Surreal/Foundations/SignSequenceWorkspace.lean)
+packages exact simultaneous preimages for any small actual family. The image
+is a small subfield, and polynomial descent preserves degree.
+[`Surcomplex/AlgebraicallyClosed.lean`](../Surreal/Surcomplex/AlgebraicallyClosed.lean)
+extends the actual real Hahn embedding coordinatewise through the native
+quadratic/Hahn equivalence. Both coordinates of all polynomial coefficients
+lie in one small divisible workspace. Its complex Hahn field supplies roots
+of positive-degree polynomials, proving `IsAlgClosed Surcomplex` and the
+linear factorization and root-multiplicity formulas.
+
+[`SignSequenceHahnValuation.lean`](../Surreal/Foundations/SignSequenceHahnValuation.lean)
+identifies actual valuation with the embedded least Hahn exponent, retaining
+infinity at zero, and preserves the leading real coefficient. Finiteness
+and infinitesimality agree with nonnegative and positive Hahn order. On the
+finite domain, subtracting the zero coefficient leaves positive order, so
+the actual standard part is exactly that coefficient.
+[`Surcomplex/HahnValuation.lean`](../Surreal/Surcomplex/HahnValuation.lean)
+uses the minimum of the two coordinate orders to prove the corresponding
+complex valuation, finiteness, infinitesimality and standard-part formulas.
+
+## Strong sums and exponent-workspace coherence
+
+[`SignSequenceStrongSummation.lean`](../Surreal/Foundations/SignSequenceStrongSummation.lean)
+defines strong summability on canonical normal forms by the native Hahn
+conditions: a partially well-ordered support union and finite coefficient
+fibers. A small index type gives a small support union and hence a small
+coefficientwise sum. Evaluation defines its actual strong sum; extracting
+the normal form recovers exactly the formal sum, coefficient by coefficient.
+Native Hahn workspace summable families remain strongly summable after
+actual evaluation, and evaluation commutes with their small strong sums.
+
+[`SignSequenceHahnCoherence.lean`](../Surreal/Foundations/SignSequenceHahnCoherence.lean)
+and [`Surcomplex/HahnCoherence.lean`](../Surreal/Surcomplex/HahnCoherence.lean)
+prove that embedding exponents into a larger small workspace and then
+evaluating agrees with evaluation along the composite exponent map.
+The identities hold for complete ring maps and arbitrary Hahn supports.
+
 ## Remaining dependency order
 
-1. Package small actual data localization through extraction and the proved
-   workspace embeddings. Transfer surcomplex algebraic closedness from
-   actual real closedness through the existing coordinate field construction.
-2. Prove preservation of strong sums, standard part, and admissible Taylor
-   evaluation, with coherence under exponent enlargement and universe lifts.
-   Extend the real bridge to surcomplex numbers through the coordinate field
-   construction.
+1. Extend strong summation to complex families and construct admissible
+   univariate and multivariate Taylor evaluation on actual numbers.
+2. Prove compatibility under universe lifts and the remaining complex
+   leading-data and analytic-operation correspondences.
 
 Existence, inverse extraction, real monomials, finite evaluation and field
-arithmetic are now proved. The strong-sum and coherence obligations remain
-separate; the arithmetic bridge alone does not establish all of them.
+arithmetic are now proved. Small real strong sums and exponent-workspace
+coherence are also proved. The remaining clauses above require their own
+constructions before the entire workspace theorem is covered.
