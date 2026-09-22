@@ -15,20 +15,18 @@ that the current Lean target compiles or imports them.
 
 ## Scope and how to read this ledger
 
-The [document map](README.md) identifies eighteen main reports. The index
-below records every literal `theorem`, `lemma`, `proposition`, and `corollary`
-environment in those reports, except for the three noted immediately below.
-
-Three reports arrived after this ledger was written and are **not yet
-indexed or mapped**: `surcomplex/differential-equations` (a merge of seven
+The [document map](README.md) identifies **18 main reports**. The index
+below records all **718** literal `theorem`, `lemma`, `proposition`, and
+`corollary` environments in those reports. This includes the 136 statements
+in the newly added `surcomplex/differential-equations` (a merge of seven
 manuscripts), `surcomplex/rank-one-berkovich` and
-`surcomplex/spectral-theory`. Their 136 result environments are outside every
-count on this page. Nothing else here is affected: all 416 report labels this
-ledger cites still resolve, so the merges did not rename anything it points
-at. Counts are a navigation aid, **not a completeness
-certificate**: examples, equations, prose assertions, short proofs, and archived
-manuscripts also contain mathematical claims. The foundations README's count of
-30 theorem-environment results includes six examples and a design principle;
+`surcomplex/spectral-theory` reports; all their proof obligations remain
+**pending**.
+
+Counts are a navigation aid, **not a completeness certificate**: examples,
+equations, prose assertions, short proofs, and archived manuscripts also
+contain mathematical claims. The foundations README's count of 30
+theorem-environment results includes six examples and a design principle;
 the narrower inventory here counts its 23 theorem/lemma/proposition/corollary
 statements.
 
@@ -112,7 +110,7 @@ remaining clauses of a partially mapped statement.
 | `found:sub:recursionmeasure`; nested canonical option prerequisite for `found:eq:addcut` | `Surreal.Foundations.SignSequence.PairSimpler`, `pairSimpler_wellFounded`, the four canonical option decrease lemmas, `numerical_not_wellFounded`, `maximum_birthday_not_decreasing`, `ordinal_sum_birthday_not_decreasing` in [SignSequenceRecursion.lean](../Surreal/Foundations/SignSequenceRecursion.lean); `truncate_truncate`, `IsPrefix.truncate_eq`, `left_right_option_nested` in [SignSequenceTruncation.lean](../Surreal/Foundations/SignSequenceTruncation.lean) | Mathlib's game-addition relation supplies a checked well-founded relation for decreasing one input at a time. Canonical opposite options are nested truncations. Explicit sign sequences show that numerical order is not well founded and that maximum birthday and ordinary ordinal addition fail to decrease in the proposed cases. This covers the relation-based recursion route; the explicit Hessenberg natural-sum identity and two-coordinate multiplication termination remain separate obligations. **Proved**; build and axiom audit pass. |
 | `found:eq:addcut`, additive ordered-group obligations following it, and additive portion of `found:sub:package` | `Surreal.Foundations.SignSequence.add`, `add_options_separated`, `addCut`, `add_eq_cut`, `addCut_realizes_iff`, `add_comm`, `add_zero`, `zero_add`, `add_right_strictMono`, `add_left_strictMono`, cancellation laws in [SignSequenceAddition.lean](../Surreal/Foundations/SignSequenceAddition.lean); `sumCut`, `cut_sumCut`, `add_assoc` in [SignSequenceAddAssociative.lean](../Surreal/Foundations/SignSequenceAddAssociative.lean); `add_neg_cancel`, `neg_add_cancel` in [SignSequenceAddInverse.lean](../Surreal/Foundations/SignSequenceAddInverse.lean); native group/order instances in [SignSequenceAddGroup.lean](../Surreal/Foundations/SignSequenceAddGroup.lean) | Actual Conway addition is defined by native well-founded pair recursion. The internal fallback is proved unreachable: all recursive option families are small and separated, using nested canonical options and earlier recursive bounds. The operation obeys the simplest-cut equation, including arbitrary small presentations of both summands. Commutativity, zero, strict translation, cancellation, associativity and inverses are independently proved before assembling `AddCommGroup` and `IsOrderedAddMonoid`; the inverse is the existing sign reversal and the order is the existing numerical order. Multiplication and field inverses are transported through the proved arithmetic equivalence below. Real closedness and the normal-form bridge remain pending. **Proved** for the concrete additive sign carrier; build and axiom audit pass. |
 | Integer embedding in `found:sub:package`; native natural-number and subtraction clauses of `found:prop:incomplete` | `Surreal.Foundations.SignSequence.natCast_eq_ofOrdinal`, `intCast_negSucc_eq_neg_ofOrdinal`, `birthday_natCast`, `integerAddHom`, `integerOrderEmbedding`, `range_natCast_eq_finite_ordinals`, `natCast_lt_omega0`, `sub_one_mem_upperBounds_natCast`, `natCast_range_no_isLUB`, `natural_numbers_bounded_without_supremum` in [SignSequenceIntegers.lean](../Surreal/Foundations/SignSequenceIntegers.lean) | The one-plus sequence and actual Conway additive group give native `AddCommGroupWithOne` and `CharZero` instances. Cut induction proves that natural casts are precisely finite all-plus sequences; negative integers are the corresponding sign reversals. Integer casts preserve addition and strictly preserve order. The all-plus sequence of length omega strictly bounds the natural range, and subtracting one from any upper bound gives a smaller upper bound, proving there is no supremum. No multiplication, rational embedding or Archimedean property is assumed. The source's alternative halving argument is proved below in the ordered field. **Proved** for the concrete additive sign carrier; build and axiom audit pass. |
-| Closed/discrete-subset and convergent-net clauses of `found:thm:discrete`; no-isolated-points sharpness | `Surreal.Foundations.SignSequence.exists_Ioo_inter_subset_singleton`, `isClosed_of_small`, `isDiscrete_of_small`, `discreteTopology_of_small`, `tendsto_nhds_iff_eventually_eq_of_small_range`, `tendsto_nhds_iff_eventually_eq`, `punctured_nhds_neBot`, `not_discreteTopology` in [SignSequenceTopology.lean](../Surreal/Foundations/SignSequenceTopology.lean) | Native order topology on the concrete carrier has closed/discrete lower-universe-small subsets. Small range suffices for convergence along any filter to be equivalent to eventual equality; small index types are a corollary. The whole carrier is not discrete and has no isolated points. Smallness is retained on the subset/range/index type, never assumed for unrestricted predicates. The self-valued absolute-ball interpretation is proved below. The surcomplex modulus/product topology identification remains pending. **Proved** for the real sign carrier; build and axiom audit pass. |
+| Closed/discrete-subset and convergent-net clauses of `found:thm:discrete`; no-isolated-points sharpness | `Surreal.Foundations.SignSequence.exists_Ioo_inter_subset_singleton`, `isClosed_of_small`, `isDiscrete_of_small`, `discreteTopology_of_small`, `tendsto_nhds_iff_eventually_eq_of_small_range`, `tendsto_nhds_iff_eventually_eq`, `punctured_nhds_neBot`, `not_discreteTopology` in [SignSequenceTopology.lean](../Surreal/Foundations/SignSequenceTopology.lean) | Native order topology on the concrete carrier has closed/discrete lower-universe-small subsets. Small range suffices for convergence along any filter to be equivalent to eventual equality; small index types are a corollary. The whole carrier is not discrete and has no isolated points. Smallness is retained on the subset/range/index type, never assumed for unrestricted predicates. The self-valued absolute-ball interpretation is proved below. The surcomplex product topology and squared-radius bases are constructed below; identification with a square-root modulus remains pending. **Proved** for the real sign carrier; build and axiom audit pass. |
 | Cauchy-net clause of `found:thm:discrete`, additive uniformity and real-carrier specialization | `Surreal.Foundations.HasSmallCutFillers.exists_pos_lt_abs_sub`, `exists_entourage_eq_on_small_set`, `eventually_constant_of_cauchy_small_range`, `eventually_constant_of_cauchy`, `cauchy_map_iff_eventually_constant` in [SmallCauchy.lean](../Surreal/Foundations/SmallCauchy.lean); concrete uniformity and specializations in [SignSequenceUniformity.lean](../Surreal/Foundations/SignSequenceUniformity.lean) | For ordered additive groups with compatible order topology and native group uniformity, small cut filling gives one positive bound below all nonzero pairwise absolute differences of a small range. An actual entourage therefore forces equality, and native `Cauchy (map f l)` implies eventual constancy along an arbitrary filter; the iff includes `NeBot l`. The constructed sign group's native uniformity preserves its order topology definitionally and has self-valued absolute-difference neighborhood/entourage bases, so the Cauchy conclusion is instantiated on the concrete carrier. No real-valued metric or completeness assumption is used. The corresponding surcomplex modulus bridge remains pending. **Proved** for the real additive sign carrier; build and axiom audit pass. |
 | `found:ex:largerindex` | `Surreal.Foundations.SignSequence.PositiveNetIndex`, `positiveNet`, `positiveNet_tendsto_zero`, `positiveNet_cauchy`, `positiveNet_not_eventually_zero`, `positiveNet_not_eventually_constant`, `positiveNetIndex_not_small` in [SignSequenceLargeNet.lean](../Surreal/Foundations/SignSequenceLargeNet.lean) | All positive sign sequences, with reverse numerical order, index a nontrivial directed net which converges to zero in the native order topology and is Cauchy in the additive uniformity. Every term is positive and the net is never eventually constant. Its index type is explicitly proved not `Small.{u}`, demonstrating that the small-index hypotheses cannot be removed. Density supplies a smaller positive radius without requiring division by two. The surcomplex inclusion remains pending. **Proved** for the concrete real sign carrier; build and axiom audit pass. |
 | Comparison and canonical-option part of the sign/game bridge in `found:sub:signs` and `found:sub:twotracks` | `Surreal.Foundations.SignSequence.canonicalGameGraph`, `canonicalGameGraph_move_simpler`, `toIGame`, `leftMoves_toIGame`, `rightMoves_toIGame`, `toIGame_eq`, `toIGame_le_iff`, `toIGame_lt_iff`, `toIGame_equiv_iff`, `numeric_toIGame`, `toSurrealOrderEmbedding` in [SignSequenceGames.lean](../Surreal/Foundations/SignSequenceGames.lean) | Canonical sign options are small move sets decreasing prefix simplicity, so upstream `GameGraph.toIGame` constructs their raw game. Paired well-founded induction proves both comparison orientations before numericity is established. Game equivalence identifies exactly equal sign sequences, and the numeric-game quotient receives an explicit order embedding. This preserves the actual canonical options and numerical order. Arbitrary-cut preservation, surjectivity and arithmetic preservation are proved below before transferring field operations. **Prerequisites proved**; build and axiom audit pass. |
@@ -129,7 +127,8 @@ remaining clauses of a partially mapped statement.
 | Finite-birthday cutoff in `found:sub:cutoffs` | `Surreal.Foundations.SignSequence.short_toIGame_iff`, `birthday_dyadicCast_lt_omega0`, `birthday_lt_omega0_iff_dyadic`, `dyadicRingHom`, `finiteBirthdaySubring`, `mem_finiteBirthdaySubring`, `birthday_add_lt_omega0`, `birthday_mul_lt_omega0`, `three_finite_birthday_inverse_not`, `not_exists_subfield_finite_birthday` in [SignSequenceDyadics.lean](../Surreal/Foundations/SignSequenceDyadics.lean) | A sign sequence has birthday below omega exactly when it is the embedded value of a dyadic rational. This uses the proved canonical birthday bridge and the upstream short numeric-game classification. These elements form a subring under the actual field operations. Three has finite birthday, while its reciprocal does not, so no ambient subfield has exactly this carrier. The exact finite dyadic birthday formula remains pending. **Proved** for the finite-cutoff classification and closure obstruction; build and axiom audit pass. |
 | Non-dyadic real birthday assertions preceding `eq:realbirth` and `eq:dyadic-birthday`; prerequisite for `lem:realproduct` | `Surreal.Foundations.SignSequence.real_toIGame_birthday_le_omega0`, `birthday_ofReal_le_omega0`, `birthday_ofReal_lt_omega0_iff`, `birthday_ofReal_eq_omega0_of_not_dyadic`, `birthday_ofReal_eq_omega0_iff`, `birthday_one_third_eq_omega0` in [SignSequenceRealBirthday.lean](../Surreal/Foundations/SignSequenceRealBirthday.lean) | Every ordinary real has sign birthday at most omega: its raw dyadic Dedekind cut has short options, and canonicalization never increases birthday. It has finite birthday exactly when it is dyadic, and birthday exactly omega otherwise, including the explicit one-third example. These are concrete assertions about the constructed real embedding. The formula for the finite birthday of a reduced dyadic and the full real-product birthday inequality remain pending. **Proved** for the stated bounds and characterizations; build and axiom audit pass. |
 | `found:eq:pairmul`, `found:eq:conj`, `found:eq:pairinv`; part of `found:prop:complex` | `Surreal.Complexify`, `Complexify.mul_re`, `mul_im`, `I_sq`, `conj_conj`, `conj_mul`, `noRootNegOne`, `inv_eq`, `inv_re`, `inv_im` in [Complexify.lean](../Surreal/Algebra/Complexify.lean) | Mathlib quadratic algebra and its field instance over an arbitrary ordered field. The concrete sign-field specialization is proved below; algebraic closedness remains pending. **Prerequisites proved**; build and axiom audit pass. |
-| Concrete pair field in `found:sub:pairs`; `found:eq:pairadd`, `found:eq:pairmul`, `found:eq:conj`, `found:eq:pairinv`; field and carrier clauses of `found:prop:complex` | `Surreal.Surcomplex`, `Surcomplex.ofReal`, `ofReal_injective`, `I_sq`, `add_eq`, `mul_eq`, `conj`, `conj_eq`, `conj_conj`, `re_add_im_mul_I`, `normSq_pos`, `normSq_mul`, `mul_conj`, `inv_eq`, `finrank_eq_two`, `not_small` in [Surcomplex/Basic.lean](../Surreal/Surcomplex/Basic.lean) | The concrete surcomplex carrier is the existing quadratic algebra over the constructed sign field, inheriting its proved field instance. Its coordinate addition, multiplication, conjugation and inverse formulas are instantiated without additional premises; the inverse denominator is positive for every nonzero pair. Norm squares take values in the sign field, and every pair decomposes as real plus imaginary parts. The extension has dimension two and is not lower-universe-small because its injective real axis already contains the entire sign carrier. Algebraic closedness, square roots/modulus and the fine-topology bridge remain pending. **Proved** for these concrete field, coordinate and size clauses; build and axiom audit pass. |
+| Concrete pair field in `found:sub:pairs`; `found:eq:pairadd`, `found:eq:pairmul`, `found:eq:conj`, `found:eq:pairinv`; field and carrier clauses of `found:prop:complex` | `Surreal.Surcomplex`, `Surcomplex.ofReal`, `ofReal_injective`, `I_sq`, `add_eq`, `mul_eq`, `conj`, `conj_eq`, `conj_conj`, `re_add_im_mul_I`, `normSq_pos`, `normSq_mul`, `mul_conj`, `inv_eq`, `finrank_eq_two`, `not_small` in [Surcomplex/Basic.lean](../Surreal/Surcomplex/Basic.lean) | The concrete surcomplex carrier is the existing quadratic algebra over the constructed sign field, inheriting its proved field instance. Its coordinate addition, multiplication, conjugation and inverse formulas are instantiated without additional premises; the inverse denominator is positive for every nonzero pair. Norm squares take values in the sign field, and every pair decomposes as real plus imaginary parts. The extension has dimension two and is not lower-universe-small because its injective real axis already contains the entire sign carrier. Its squared-radius fine topology is constructed below; algebraic closedness and square roots/modulus remain pending. **Proved** for these concrete field, coordinate and size clauses; build and axiom audit pass. |
+| Surcomplex clauses of `found:thm:discrete`, fine-ball topology and no-isolated-points sharpness in `found:sub:discrete` | `Surreal.Surcomplex.coordinateUniformEquiv`, `surcomplexIsUniformAddGroup`, `fineBall`, `isOpen_fineBall`, `nhds_hasBasis_fineBall`, `uniformity_hasBasis_normSq_sub`, `isClosed_of_small`, `isDiscrete_of_small`, `tendsto_nhds_iff_eventually_eq_of_small_range`, `eventually_constant_of_cauchy_small_range`, `cauchy_map_iff_eventually_constant`, `punctured_nhds_neBot`, `not_discreteTopology` in [Surcomplex/FineTopology.lean](../Surreal/Surcomplex/FineTopology.lean) | The actual pair field carries the product of the native sign uniformities, compatible with its existing addition. Positive surreal squared-radius balls `normSq (z-a) < r²` give exactly its neighborhood and entourage bases. Every lower-universe-small subset is closed and discrete. Small-range convergent nets are eventually their limits, and small-range Cauchy nets are eventually an attained value; small index types imply these hypotheses. The Cauchy iff retains nontriviality of the filter. Every ball contains the distinct point `a + r/2` along the real axis, so the full carrier has no isolated points. No real-valued metric, square-root or real-closedness premise is used. **Proved** in squared-radius form; identification with a separately constructed modulus remains pending. Build and axiom audit pass. |
 | Order and algebraic-closedness obstructions in `found:sub:realclosed` | `Surreal.eval_X_sq_add_one_pos`, `not_isRoot_X_sq_add_one`, `orderedField_not_isAlgClosed`, `Foundations.SignSequence.not_isAlgClosed`, `Surcomplex.no_compatible_linearOrder` in [Surcomplex/OrderObstructions.lean](../Surreal/Surcomplex/OrderObstructions.lean) | Over every ordered field, the polynomial `X² + 1` is positive everywhere and has no root, excluding algebraic closedness. This applies to the actual sign field. Every proposed linear order on the existing surcomplex field fails ordered-ring compatibility because its imaginary unit squares to minus one. Neither argument assumes or proves real closedness of the sign field or algebraic closedness of the surcomplex field. **Proved**; build and axiom audit pass. |
 | `found:eq:gram`, `found:eq:cauchyschwarz`, `trigonometry:eq:gram` | `Surreal.Complexify.gram_identity`, `cauchy_schwarz_sq`, `normSq_mul`, `mul_conj` | Generic algebraic identities and their ordered-field consequence. The scalar formula is proved independently of any surreal representation. **Prerequisites proved**; build and axiom audit pass. |
 | `a:prop:triangle` | `Surreal.Complexify.modulus_mul`, `modulus_add_le`, `abs_re_le_modulus`, `abs_im_le_modulus`, `inv_eq_modulus` in [Modulus.lean](../Surreal/Algebra/Modulus.lean) | The stated identities over an arbitrary real closed ordered field, with modulus valued in that field. The concrete surcomplex interpretation remains pending. **Prerequisites proved**; build and axiom audit pass. |
@@ -293,9 +292,12 @@ source is not named `article.tex`.
 | [surcomplex/analysis/article.tex](surcomplex/analysis/article.tex) | 57 | 10 | 24 | 26 | 117 |
 | [surcomplex/analytic-geometry/article.tex](surcomplex/analytic-geometry/article.tex) | 27 | 9 | 9 | 8 | 53 |
 | [surcomplex/contours-and-stokes/article.tex](surcomplex/contours-and-stokes/article.tex) | 20 | 4 | 10 | 1 | 35 |
+| [surcomplex/differential-equations/article.tex](surcomplex/differential-equations/article.tex) | 33 | 11 | 20 | 15 | 79 |
 | [surcomplex/finite-deformations/article.tex](surcomplex/finite-deformations/article.tex) | 23 | 10 | 6 | 13 | 52 |
 | [surcomplex/global-divisors/article.tex](surcomplex/global-divisors/article.tex) | 11 | 7 | 11 | 8 | 37 |
 | [surcomplex/polynomial-algebra/article.tex](surcomplex/polynomial-algebra/article.tex) | 28 | 6 | 9 | 14 | 57 |
+| [surcomplex/rank-one-berkovich/article.tex](surcomplex/rank-one-berkovich/article.tex) | 9 | 2 | 11 | 6 | 28 |
+| [surcomplex/spectral-theory/article.tex](surcomplex/spectral-theory/article.tex) | 16 | 4 | 7 | 2 | 29 |
 | [surcomplex/trigonometry/article.tex](surcomplex/trigonometry/article.tex) | 39 | 4 | 11 | 10 | 64 |
 | [surreal/broadcast-sum-of-surreal-sequences/article.tex](surreal/broadcast-sum-of-surreal-sequences/article.tex) | 7 | 8 | 1 | 5 | 21 |
 | [surreal/canonical-forms-need-not-be-subgraphs/surreal_graphs.tex](surreal/canonical-forms-need-not-be-subgraphs/surreal_graphs.tex) | 15 | 13 | 7 | 4 | 39 |
@@ -303,7 +305,7 @@ source is not named `article.tex`.
 | [surreal/gonshor-laurent-birthdays/article.tex](surreal/gonshor-laurent-birthdays/article.tex) | 5 | 8 | 0 | 5 | 18 |
 | [surreal/gonshor-product-birthdays/surreal_product_birthdays.tex](surreal/gonshor-product-birthdays/surreal_product_birthdays.tex) | 3 | 4 | 5 | 2 | 14 |
 | [surreal/hahn-evaluation-at-omega/article.tex](surreal/hahn-evaluation-at-omega/article.tex) | 7 | 9 | 5 | 2 | 23 |
-| **Total** | 256 | 97 | 126 | 103 | **582** |
+| **Total** | 314 | 114 | 164 | 126 | **718** |
 
 ## Main-report statement index
 
@@ -592,6 +594,102 @@ Source: [surcomplex/contours-and-stokes/article.tex](surcomplex/contours-and-sto
 | Proposition | `contours:prop:samplingcriterion` (line 2847) | A precise sampling criterion |
 | Theorem | `contours:thm:sampling` (line 2892) | Coefficientwise recovery of a Hahn contour |
 
+### differential-equations
+
+Source: [surcomplex/differential-equations/article.tex](surcomplex/differential-equations/article.tex).
+
+All statements in this newly indexed report remain **pending**.
+
+**Needs correction:** the prose warning `diff:warn:collapse` and the two
+README summaries say that replacing `∂O` by `O` makes the criterion
+"`b` infinitesimal." Since `O` is defined as the finite surreals, that
+replacement instead makes the criterion "`b` finite." The displayed
+infinitesimal counterexample refutes either weakened criterion. This
+wording issue does not establish or refute the pending logarithmic-derivative
+image theorem; the source manuscripts and generated PDF are unchanged.
+
+| Kind | Source label or line | Heading |
+|---|---|---|
+| Lemma | `diff:lem:neumann` (line 456) | Positive-support calculus |
+| Theorem | `diff:thm:BM` (line 498) | Berarducci--Mantova: imported input |
+| Proposition | `diff:prop:algdiff` (line 587) | Algebraic implicit differentiation |
+| Proposition | `diff:prop:complexification` (line 608) | Unique extension to $\SC$ |
+| Proposition | `diff:prop:realexp` (line 657) | Real exponential integration |
+| Lemma | `diff:lem:smallnegative` (line 681) | Order reversal on infinitesimals, and smallness |
+| Proposition | `diff:prop:coarse` (line 738) | A preliminary obstruction |
+| Proposition | `diff:prop:rescale` (line 886) | Change of independent scale changes the solvability data |
+| Proposition | `diff:prop:totalchain` (line 904) | The two formal derivations commute; the valid polynomial chain rule |
+| Proposition | `diff:prop:chain` (line 939) | Two-derivative chain rule for series, with derived summability |
+| Lemma | `diff:lem:smallchain` (line 1186) | Formal identities survive infinitesimal evaluation |
+| Theorem | `diff:thm:unitphase` (line 1263) | Unique infinitesimal phase residue |
+| Theorem | `diff:thm:cisgroup` (line 1311) | Finite-angle phase group, with its differential identity |
+| Corollary | `diff:cor:polar` (line 1361) | Branch-free polar form |
+| Proposition | `diff:prop:normprimitive` (line 1417) | Normalized primitive |
+| Proposition | `diff:prop:RB` (line 1459) | Integration by parts, and a Rota--Baxter correction |
+| Theorem | `diff:thm:idealstructure` (line 1523) | Structure of the bounded-primitive ideal |
+| Theorem | `diff:thm:logimage` (line 1635) | Exact logarithmic-derivative image |
+| Theorem | `diff:thm:phasecriterion` (line 1691) | Finite-primitive criterion for rank-one equations |
+| Corollary | `diff:cor:oscillator` (line 1769) | The missing oscillator |
+| Corollary | `diff:cor:rotation` (line 1833) | The unit-circle version |
+| Corollary | `diff:cor:riccati` (line 1853) | A Riccati transfer |
+| Theorem | `diff:thm:gauge` (line 1906) | Purely infinite phase normal form, with uniqueness |
+| Corollary | `diff:cor:exact` (line 1950) | Obstruction exact sequence |
+| Corollary | `diff:cor:tensor` (line 1980) | Tensor, dual, and no finite-order obstruction |
+| Theorem | `diff:thm:power` (line 2027) | Sharp support threshold |
+| Corollary | `diff:cor:power` (line 2070) | Power threshold |
+| Corollary | `diff:cor:logscales` (line 2086) | Iterated-logarithm thresholds at every finite depth |
+| Theorem | `diff:thm:rational` (line 2178) | Rational phase criterion |
+| Theorem | `diff:thm:strip` (line 2299) | The strip exponential |
+| Theorem | `diff:thm:maximalstrip` (line 2336) | Exact domain of the exponential differential equation |
+| Theorem | `diff:thm:maximalstripalt` (line 2348) | Maximality restated |
+| Corollary | `diff:cor:noglobalPsi` (line 2381) | Phase-independent nonexistence |
+| Proposition | `diff:prop:defect` (line 2411) | Character-independent invariant defect |
+| Theorem | `diff:thm:variation` (line 2495) | Variation of constants |
+| Proposition | `diff:prop:polyforcing` (line 2545) | Polynomial forcing, and a terminating inverse |
+| Lemma | `diff:lem:kernels` (line 2586) | Kernels of powers and real shifts |
+| Theorem | `diff:thm:constant` (line 2617) | Constant-coefficient solution classification |
+| Corollary | `diff:cor:matrix` (line 2691) | Constant matrix systems |
+| Theorem | `diff:thm:triangular` (line 2732) | Triangular fundamental-matrix criterion |
+| Proposition | `diff:prop:trace` (line 2768) | The trace test is necessary and not sufficient |
+| Proposition | `diff:prop:hahnderiv` (line 2807) | The derivation on a real-exponent workspace |
+| Corollary | `diff:cor:valphase` (line 2877) | A valuation test, on real exponents only |
+| Theorem | `diff:thm:resolvent` (line 2910) | First-order resolvent on a real-exponent workspace |
+| Proposition | `diff:prop:polyresolvent` (line 2952) | Polynomial Laurent inverse |
+| Proposition | `diff:prop:factorialambiguity` (line 3036) | Uniqueness depends on the ambient field |
+| Theorem | `diff:thm:factorial` (line 3064) | An exact factorially divergent forced oscillator |
+| Theorem | `diff:thm:Hahnintegral` (line 3149) | Exact derivative image: one resonant coefficient |
+| Theorem | `diff:thm:Hahnlogder` (line 3171) | Exact logarithmic-derivative image in $\Hring$ |
+| Proposition | `diff:prop:Hahnambient` (line 3204) | Workspace versus ambient |
+| Lemma | `diff:lem:monomialcriterion` (line 3290) | Monomial criterion |
+| Theorem | `diff:thm:hull` (line 3310) | Differential Hahn hull |
+| Proposition | `diff:prop:realgroup` (line 3370) | The real-exponent case, exactly |
+| Theorem | `diff:thm:localize` (line 3410) | Closure localization |
+| Theorem | `diff:thm:PVone` (line 3539) | Adjoining one missing rank-one solution |
+| Theorem | `diff:thm:extension` (line 3583) | The same extension, with differential simplicity |
+| Theorem | `diff:thm:PVlocal` (line 3627) | Over a localized workspace |
+| Theorem | `diff:thm:PVhahn` (line 3652) | Over the rational Hahn field |
+| Theorem | `diff:thm:PVrational` (line 3698) | Over the rational function field $\C(X)$ |
+| Lemma | `diff:lem:rationallogder` (line 3708) | Untitled |
+| Corollary | `diff:cor:nonembedding` (line 3737) | No differential embedding |
+| Proposition | `diff:prop:oscillatorExtension` (line 3806) | A genuine oscillator |
+| Theorem | `diff:thm:orderobstruction` (line 3868) | Oscillation cannot retain the $H$-field ordering rule |
+| Lemma | `diff:lem:saturated` (line 3915) | The lattice is saturated |
+| Theorem | `diff:thm:torus` (line 3928) | The diagonal phase torus |
+| Theorem | `diff:thm:coherentlinear` (line 4194) | Positive-perturbation fundamental matrix |
+| Corollary | `diff:cor:coherentinhom` (line 4259) | Inhomogeneous coherent systems |
+| Corollary | `diff:cor:determinant` (line 4277) | Liouville determinant identity |
+| Proposition | `diff:prop:negativecoherent` (line 4294) | A negative leading exponent forbids a coherent scalar exponential |
+| Lemma | `diff:lem:nonlinear` (line 4361) | Admissibility of nonlinear evaluation |
+| Theorem | `diff:thm:ivp` (line 4391) | Support-certified positive-support initial-value problem |
+| Theorem | `diff:thm:monodromy` (line 4586) | Monodromy valued in $\GL_{d}(K_{\Gamma})$ |
+| Proposition | `diff:prop:formalrecursion` (line 4715) | Formal existence over any characteristic-zero field |
+| Lemma | `diff:lem:finiteincoming` (line 4768) | Finite incoming contributions |
+| Theorem | `diff:thm:coefderivation` (line 4782) | Differentiation preserves common-domain coherence |
+| Theorem | `diff:thm:totalchainhalo` (line 4830) | Total intrinsic derivative of an evaluation |
+| Corollary | `diff:cor:naturality` (line 4895) | Coefficientwise linear naturality |
+| Lemma | `diff:lem:twosupports` (line 5864) | Sum of two supports |
+| Lemma | `diff:lem:higman` (line 5893) | Finite-word lemma |
+
 ### finite-deformations
 
 Source: [surcomplex/finite-deformations/article.tex](surcomplex/finite-deformations/article.tex).
@@ -758,6 +856,81 @@ Source: [surcomplex/polynomial-algebra/article.tex](surcomplex/polynomial-algebr
 | Corollary | `polynomial:cor:eulerjacobi` (line 3133) | Simple-root weights and Euler--Jacobi vanishing |
 | Theorem | `polynomial:thm:polyparameters` (line 3177) | Global polynomial families on one ordinary parameter domain |
 | Theorem | `polynomial:thm:analyticcomparison` (line 3219) | Polynomial identification of the Jacobian trace element |
+
+### rank-one-berkovich
+
+Source: [surcomplex/rank-one-berkovich/article.tex](surcomplex/rank-one-berkovich/article.tex).
+
+All statements in this newly indexed report remain **pending**.
+
+| Kind | Source label or line | Heading |
+|---|---|---|
+| Proposition | `prop:spherical` (line 266) | Untitled |
+| Proposition | `prop:topologies` (line 312) | Untitled |
+| Theorem | `thm:series` (line 340) | Untitled |
+| Proposition | `prop:rankobstruction` (line 375) | Untitled |
+| Proposition | `prop:banach` (line 439) | Untitled |
+| Proposition | `prop:supnorm` (line 461) | Untitled |
+| Theorem | `thm:chain` (line 529) | Untitled |
+| Corollary | `cor:rescale` (line 609) | Untitled |
+| Lemma | `lem:polydivision` (line 652) | Untitled |
+| Theorem | `thm:preparation` (line 672) | One-variable Weierstrass division and preparation |
+| Corollary | `cor:units` (line 722) | Untitled |
+| Corollary | `cor:finitequotient` (line 738) | Untitled |
+| Theorem | `thm:rootcounts` (line 794) | Untitled |
+| Corollary | `cor:rouche` (line 825) | Valuation Rouch\'e theorem |
+| Lemma | `lem:hensel` (line 841) | Unit-derivative Hensel lifting |
+| Proposition | `prop:compact` (line 879) | Untitled |
+| Corollary | `cor:types` (line 920) | Untitled |
+| Proposition | `prop:slopes` (line 1027) | Untitled |
+| Theorem | `thm:jensen` (line 1063) | Valuation Jensen formula |
+| Proposition | `prop:primitive` (line 1099) | Untitled |
+| Proposition | `prop:ode` (line 1139) | Untitled |
+| Theorem | `thm:annulusderham` (line 1206) | Untitled |
+| Proposition | `prop:residuepullback` (line 1235) | Untitled |
+| Proposition | `prop:annuluscontract` (line 1269) | Untitled |
+| Theorem | `thm:liouville` (line 1372) | Growth and zero-free rigidity |
+| Theorem | `thm:canonicalproduct` (line 1400) | Untitled |
+| Theorem | `thm:thetazeros` (line 1519) | All zeros and their first terms |
+| Corollary | `cor:thetaresidue` (line 1606) | Untitled |
+
+### spectral-theory
+
+Source: [surcomplex/spectral-theory/article.tex](surcomplex/spectral-theory/article.tex).
+
+All statements in this newly indexed report remain **pending**.
+
+| Kind | Source label or line | Heading |
+|---|---|---|
+| Proposition | `prop:localization` (line 275) | Finite-data localization |
+| Lemma | `lem:CS` (line 322) | Cauchy--Schwarz and orthogonal decomposition |
+| Theorem | `thm:spectral` (line 372) | Hermitian spectral theorem |
+| Proposition | `prop:normal` (line 395) | Schur form and normal matrices |
+| Proposition | `prop:positive` (line 431) | Positive square root and inertia |
+| Theorem | `thm:svd` (line 464) | Singular value decomposition |
+| Theorem | `thm:minmax` (line 554) | Variational principles |
+| Theorem | `thm:weyl` (line 608) | Ordered Lipschitz bounds |
+| Theorem | `thm:HW` (line 628) | A Frobenius eigenvalue bound |
+| Theorem | `thm:leastsquares` (line 680) | Least squares with an attained minimum |
+| Theorem | `thm:EY` (line 713) | Eckart--Young bounds over $F$ |
+| Lemma | `lem:valnorm` (line 766) | Valuation of a Euclidean norm |
+| Lemma | `lem:unitaryintegral` (line 790) | Unitary matrices preserve the integral lattice |
+| Lemma | `lem:DeltaInvariant` (line 823) | Integral row and column invariance |
+| Theorem | `thm:scales` (line 837) | Singular scales are determinantal scales |
+| Theorem | `thm:gram` (line 912) | Positive Cauchy--Binet identity |
+| Theorem | `thm:residual` (line 964) | Residual polynomial for a singular-scale block |
+| Corollary | `cor:stRank` (line 1017) | Rank after reduction |
+| Theorem | `thm:filtration` (line 1050) | Filtration dimensions |
+| Proposition | `prop:elimination` (line 1108) | Exact scale elimination |
+| Theorem | `thm:distance` (line 1188) | Distance to singularity |
+| Theorem | `thm:inversepert` (line 1222) | Inverse and linear-system perturbation |
+| Theorem | `thm:precision` (line 1265) | Preserving visible singular data |
+| Proposition | `prop:pseudo` (line 1321) | Exact perturbation interpretation |
+| Theorem | `thm:subspace` (line 1374) | A separated-subspace bound |
+| Corollary | `cor:clustergap` (line 1420) | Using an unperturbed cluster gap |
+| Proposition | `prop:effective` (line 1488) | Exact effective matrix |
+| Theorem | `thm:series` (line 1613) | Matrix inverse and square-root series |
+| Proposition | Line 1714 (unlabeled) | Ordinary data and infinitesimal regularization |
 
 ### trigonometry
 

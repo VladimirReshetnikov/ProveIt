@@ -179,6 +179,12 @@ The concrete surcomplex field is now the quadratic extension of that sign
 field. It has the coordinate product, conjugation and inverse formulas, a
 positive surreal-valued norm square away from zero, and dimension two over
 its real subfield. Its carrier is also not small at the birthday universe.
+Its native topology and uniformity are the product of those on the two surreal
+coordinates. Balls defined by `normSq (z - a) < r²`, for positive surreal `r`,
+give the neighborhood and entourage bases without requiring square roots.
+Small subsets are closed and discrete; convergent small-index nets are
+eventually equal to their limits, and small-index Cauchy nets are eventually
+constant. The full surcomplex carrier has no isolated points.
 The surreal field is not algebraically closed, and no linear order is
 compatible with surcomplex multiplication.
 Real closedness and the normal-form bridge to Hahn series remain open.

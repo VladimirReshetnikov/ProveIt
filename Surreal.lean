@@ -63,6 +63,7 @@ import Surreal.Foundations.SignSequenceDyadics
 import Surreal.Foundations.SignSequenceRealBirthday
 import Surreal.Surcomplex.Basic
 import Surreal.Surcomplex.OrderObstructions
+import Surreal.Surcomplex.FineTopology
 import Surreal.HahnSeries.Binomial
 import Surreal.HahnSeries.BinomialOrder
 import Surreal.HahnSeries.BinomialRoots
