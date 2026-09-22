@@ -1,0 +1,13 @@
+.PHONY: pdf verify clean
+
+pdf:
+	pdflatex -interaction=nonstopmode -halt-on-error single_loss_linearization.tex
+	pdflatex -interaction=nonstopmode -halt-on-error single_loss_linearization.tex
+	pdflatex -interaction=nonstopmode -halt-on-error single_loss_linearization.tex
+
+verify:
+	python3 verify.py
+
+clean:
+	rm -f single_loss_linearization.aux single_loss_linearization.log \
+	      single_loss_linearization.out single_loss_linearization.toc

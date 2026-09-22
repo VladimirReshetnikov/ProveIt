@@ -1,0 +1,1540 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem,booktabs,longtable,array}
+\usepackage{xcolor,hyperref,bookmark,fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,
+ pdftitle={Strong Hahn Measures on Surreal Workspaces},
+ pdfauthor={Research manuscript prepared for Vladimir Reshetnikov}}
+\usepackage{aliascnt}
+\usepackage[capitalise,noabbrev]{cleveref}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Strong Hahn measures}
+\fancyhead[R]{\small Atomicity and extension}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\crefname{lemma}{Lemma}{Lemmas}
+\Crefname{lemma}{Lemma}{Lemmas}
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\crefname{proposition}{Proposition}{Propositions}
+\Crefname{proposition}{Proposition}{Propositions}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\crefname{corollary}{Corollary}{Corollaries}
+\Crefname{corollary}{Corollary}{Corollaries}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\crefname{definition}{Definition}{Definitions}
+\Crefname{definition}{Definition}{Definitions}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\crefname{example}{Example}{Examples}
+\Crefname{example}{Example}{Examples}
+\newaliascnt{question}{theorem}
+\newtheorem{question}[question]{Question}
+\aliascntresetthe{question}
+\crefname{question}{Question}{Questions}
+\Crefname{question}{Question}{Questions}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\crefname{remark}{Remark}{Remarks}
+\Crefname{remark}{Remark}{Remarks}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\K}{\mathbb K}
+\newcommand{\B}{\mathcal B}
+\newcommand{\Pset}{\mathcal P}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\st}{\operatorname{st}}
+\newcommand{\val}{\operatorname{v}}
+\newcommand{\Fin}{\operatorname{Fin}}
+\newcommand{\coef}[2]{[t^{#1}]#2}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\sha}{\texttt{4cf691c7d951e037739d32d9f5c387dcce724f3c}}
+\newcommand{\sums}{\mathop{\sum}\nolimits^{\mathrm{H}}}
+\newcommand{\prods}{\mathop{\prod}\nolimits^{\mathrm{H}}}
+\title{\LARGE\bfseries Strong Hahn Measures on Surreal Workspaces\\[5pt]
+\Large Atomicity, exact extension criteria,\\and hidden positivity obstructions}
+\author{Research manuscript prepared for Vladimir Reshetnikov}
+\date{22 September 2026}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+We study a precise choice of infinite additivity for real and complex Hahn
+series, and hence for surreal and surcomplex normal forms: the masses of
+every disjoint countable family must be strongly Hahn summable. On every
+countably separated measurable space, this requirement forces an unexpectedly
+rigid representation. Every coefficient measure has finitely many point
+atoms, the union of the supports of \emph{all} event masses is automatically
+well ordered, and the measure is a strong sum of its singleton masses. No
+common-support hypothesis is assumed.
+
+For coherent cylinder data on a countable product of finite sets, we obtain
+an exact extension criterion: the combined coefficient support must be well
+ordered, and the number of nonzero cylinders at each fixed exponent must
+remain bounded with depth. Positivity is a separate issue. We construct
+normalized positive cylinder laws whose unique strong signed extension has
+a negative singleton mass, and characterize exactly which orders of allowed
+supports rule out this phenomenon. For independent finite-state coordinates,
+we prove a second exact criterion: only finitely many residue distributions
+may be nondeterministic, and the \emph{individual} rare-outcome probabilities
+must form a strongly summable family. The resulting law is supported on
+finite deviations from a deterministic tail. A three-state example shows
+that summability of the total rare-event probabilities is insufficient.
+
+These results are proposed as new statements within the specified summation
+framework, not as a first non-Archimedean probability theory or a solution to
+a previously named conjecture. Full proofs, limitations, a source audit,
+and reproducible finite checks are supplied. Priority remains provisional;
+in particular, the interiors of the repository's newly added ZIP archives
+were not available for a complete comparison.
+\end{abstract}
+\vfill
+\noindent\textbf{Keywords.} Surreal numbers; surcomplex numbers; Hahn series;
+strong summability; vector measures; cylinder measures; Kolmogorov extension;
+non-Archimedean probability.
+\newpage
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section{The problem and the scope of the claims}\label{sec:intro}
+
+\subsection{Why infinite addition is the real issue}
+Replacing real probabilities by nonnegative surreal numbers does not specify
+how probabilities of countably many disjoint events should be added.
+Surreal normal forms provide one particularly exact addition rule: a family
+is summable when its monomials have a common admissible support and only
+finitely many summands contribute to each monomial. This rule is useful in
+formal algebra, but it is much more restrictive than ordinary convergence
+of a real series. In particular, even a summable ordinary real series such
+as $\sum_{n\ge1}2^{-n}$ is not a strong Hahn sum when its terms are regarded
+as constant series.
+
+The repository already emphasizes this distinction and its physical
+consequences \cite{Repo,RepoPhysics}. The purpose here is not to repeat the
+equal-infinitesimal-weight obstruction. We determine the entire structure
+of measures subject to this rule, and then solve the associated extension
+problem for arbitrary coherent finite-state cylinder data and for independent
+coordinates.
+
+All negative results in this article refer to \emph{strong Hahn
+$\sigma$-additivity}, defined in \cref{def:measure}. They do not rule out
+finitely additive surreal probabilities, generalized-limit constructions,
+coefficientwise real-summed measures, or ultrametrically continuous measures
+on other event rings.
+
+\subsection{The questions answered}
+The following questions are formulated here as a research problem; they are
+not attributed to a named open-problem list.
+\begin{question}
+Does strong countable additivity itself supply a common well-ordered support
+for all event masses, and what atomicity does it impose?
+\end{question}
+\begin{question}
+Which coherent finite-dimensional Hahn-valued laws extend to a strong
+measure on the whole Borel $\sigma$-algebra? Is positivity of all finite laws
+sufficient for positivity of the extension?
+\end{question}
+\begin{question}
+For independent finite-state coordinates, which infinitesimal probabilities
+permit an infinite product law? Can one test only the total probability of
+leaving the most likely state?
+\end{question}
+The answers are, respectively: automatic common support and coefficientwise
+finite atomicity; a support-and-width criterion with a genuine additional
+positivity obstruction; and an exact individual-rare-entry criterion for
+which aggregation is insufficient.
+
+\subsection{Main results and dependencies}
+The logical order is
+\[
+\begin{gathered}
+\text{scalar disjoint-finiteness + a support-selection lemma}\\
+\Downarrow\\
+\text{atomic representation with automatic common support}\\
+\Downarrow\\
+\text{exact cylinder extension + positivity-order dichotomy},
+\end{gathered}
+\]
+followed by the independent-product criterion, which additionally uses the
+classical Neumann support lemma. The atomicity proof does not require
+bounded variation, compactness of the sample space, a norm on the Hahn
+field, or a preassigned common support.
+
+The principal new-candidate statements are \cref{thm:atomic,thm:cylinder,thm:positivity-order,thm:independent} and the coarse-graining counterexample
+in \cref{sec:coarse}. The scalar Boolean-algebra argument, ordinary binary
+randomization, Neumann's lemma, and the surreal normal-form representation
+are background tools, not novelty claims.
+
+\subsection{Literature and repository comparison}\label{subsec:comparison}
+Gonshor's monograph supplies standard surreal normal-form background
+\cite{Gonshor}; Neumann's work supplies the ordered-series support machinery
+\cite{Neumann}. Neither the existence of Hahn fields nor their usual
+summability calculus is claimed here as new.
+
+Benci, Horsten, and Wenmackers develop non-Archimedean probability using,
+among other axioms, a homomorphism from functions on finite subsets to a
+non-Archimedean field. Their non-Archimedean continuity axiom is different
+from requiring finite contribution at every Hahn exponent in every disjoint
+countable family \cite[Section 3.1]{BHW}. Consequently, the present atomicity
+theorem does not apply to their theory merely because its values are
+non-Archimedean.
+
+Ludkovsky and Khrennikov already prove a non-Archimedean analogue of the
+Kolmogorov theorem. Their measure definition uses a covering ring,
+ultrametric boundedness, and continuity along shrinking families; their
+extension theorem concerns a measure-dependent completion of a cylinder
+ring \cite[Definitions 2.1--2.4 and Theorem 2.15.2]{LK}. Those are not the
+coefficient-local-finiteness axioms on the full Borel $\sigma$-algebra used
+here. Thus the phrase ``a first non-Archimedean Kolmogorov theorem'' would be
+incorrect for this article.
+
+The repository comparison is pinned to \sha. Its catalog describes
+26 maintained reports, while \texttt{docs/new} contains 18 additional ZIP
+archives \cite{Repo}. The catalog, repository overview, directory listings,
+and a relevant prior physics discussion were inspected. A code search did
+not return a Kolmogorov match, but an API search also reported incomplete
+indexing, so a negative search is not evidence of exhaustive absence.
+The archive interiors, notably \texttt{surreal\_symbolic\_dynamics.zip}, were
+not fully retrievable in this session. No theorem in an unread archive is
+being declared absent. \Cref{sec:audit} records this boundary explicitly.
+
+\section{Hahn series and the chosen additivity axiom}\label{sec:setup}
+
+\subsection{Conventions}
+Throughout, $\N=\{1,2,\ldots\}$; nonnegative word lengths are indicated
+explicitly. Let $\Gamma$ be a set-sized linearly ordered abelian group,
+written additively, and let $k$ be $\R$ or $\C$. Write
+\[
+ K=k((t^\Gamma))
+ =\left\{\sum_{\gamma\in S}a_\gamma t^\gamma:
+       S\subseteq\Gamma\text{ is well ordered},\ a_\gamma\in k\right\}.
+\]
+Supports are ordered increasingly. For nonzero $f$, put
+$\val(f)=\min\supp(f)$ and let $\val(0)=+\infty$. A real Hahn series is
+positive exactly when its leading coefficient is positive.
+
+The coefficient field $k$ is embedded as the constant series. When $k=\R$,
+the valuation ring of finite elements is
+\[
+ \mathcal O=\{f:\val(f)\ge0\},\qquad
+ \mathfrak m=\{f:\val(f)>0\},\qquad
+ \st(f)=\coef{0}{f}\quad(f\in\mathcal O).
+\]
+Here ``finite'' means bounded in absolute value by an ordinary real number.
+No divisibility assumption on $\Gamma$ is needed for the results below.
+
+\begin{definition}[Strong Hahn summability]\label{def:summability}
+A set-indexed family $(f_i)_{i\in I}$ in $K$ is \emph{strongly summable} if
+\[
+ S_I=\bigcup_{i\in I}\supp(f_i)\text{ is well ordered}
+ \quad\text{and}\quad
+ \#\{i:\coef{\gamma}{f_i}\ne0\}<\infty\quad(\gamma\in\Gamma).
+\]
+Its sum $\sums_{i\in I}f_i$ is obtained by the finite coefficient sums.
+Zero members are permitted, with no restriction on their number.
+\end{definition}
+Subfamilies and arbitrary regroupings of a strongly summable family remain
+strongly summable. For regrouping, the support can only shrink and at a
+fixed exponent at most finitely many groups receive a nonzero contribution.
+These observations justify all regroupings below once the ungrouped family
+has been shown summable.
+
+\begin{lemma}[Positivity of a strong sum]\label{lem:positive-sum}
+A strong sum of nonnegative real Hahn series is nonnegative. It is positive
+if at least one summand is positive.
+\end{lemma}
+\begin{proof}
+If the nonzero summands are nonempty, their leading exponents have a least
+member $\gamma$, because they lie in a well-ordered common support. At
+$\gamma$, the only nonzero contributions are leading coefficients of
+positive summands. There are finitely many, and their sum is positive.
+No smaller exponent occurs.
+\end{proof}
+
+\subsection{Measurable spaces}
+\begin{definition}
+A measurable space $(X,\Sigma)$ is \emph{countably separated} if there are
+$E_1,E_2,\ldots\in\Sigma$ such that distinct points of $X$ have different
+membership sequences in the $E_n$.
+\end{definition}
+Every singleton in such a space is measurable: intersect the chosen side
+of each $E_n$ containing that point. Every countable subset is consequently
+measurable. Standard Borel spaces, including countable products of finite
+discrete spaces, have this property. Countable separation does not mean
+that $X$ itself is countable.
+
+\begin{definition}[Strong Hahn measure]\label{def:measure}
+A \emph{strong Hahn measure} is a map $\mu:\Sigma\to K$ with
+$\mu(\varnothing)=0$ such that every pairwise disjoint sequence
+$(A_n)_{n\ge1}$ in $\Sigma$ satisfies
+\[
+ (\mu(A_n))_{n\ge1}\text{ is strongly summable},\qquad
+ \mu\left(\bigcup_{n\ge1}A_n\right)=\sums_{n\ge1}\mu(A_n).
+ \tag{SH}\label{eq:SH}
+\]
+For real coefficients it is \emph{positive} if $\mu(A)\ge0$ for all $A$, and
+it is a \emph{strong Hahn probability} if also $\mu(X)=1$.
+With complex coefficients no order or probability interpretation is imposed.
+\end{definition}
+Finite additivity follows by adjoining empty sets. We impose neither a
+common support for $\mu(\Sigma)$ nor a continuity condition for the intrinsic
+valuation topology.
+
+\begin{example}[Three distinct summation phenomena]\label{ex:sums}
+For $\Gamma=\Q$, the family $(t^n)_{n\ge1}$ is strong. So is
+$(t^{n/(n+1)})_{n\ge1}$, although its finite partial sums do not approach its
+Hahn sum in the valuation topology: the remainder always has valuation
+less than $1$. In contrast, $(2^{-n}t)_{n\ge1}$ is not strong, because
+infinitely many members contribute at exponent $1$. Finally,
+$(t^{1/n})_{n\ge1}$ fails the common-support condition.
+\end{example}
+
+\section{The coefficient-atomicity mechanism}\label{sec:scalar}
+
+We first isolate an elementary fact about scalar measures. A detailed proof
+is useful because no positivity of coefficient measures can be assumed:
+a positive Hahn series may have many negative later coefficients.
+
+\begin{lemma}[Infinite Boolean algebras contain disjoint sequences]
+\label{lem:boolean}
+An infinite Boolean algebra contains a countably infinite family of
+pairwise disjoint nonzero elements.
+\end{lemma}
+\begin{proof}
+If it has infinitely many atoms, choose countably many distinct atoms.
+Otherwise it has finitely many atoms. If their join is the unit, every
+element is a join of a subfamily of these atoms, making the algebra finite.
+Thus their complement is nonzero and has no atoms below it. Split this
+complement into two nonzero parts, retain one and set the other aside.
+The retained part still has no atom below it. Repetition yields the desired
+pairwise disjoint nonzero parts. The case with no atoms is the same argument
+starting from the unit.
+\end{proof}
+
+\begin{lemma}[Disjoint-finite scalar measures are finitely point-atomic]
+\label{lem:scalar}
+Let $(X,\Sigma)$ be countably separated and let $\lambda:\Sigma\to k$ be
+countably additive. Suppose that for every disjoint sequence $(A_n)$,
+only finitely many $\lambda(A_n)$ are nonzero. Then
+\[
+ \lambda(A)=\sum_{x\in F\cap A}c_x\qquad(A\in\Sigma)
+ \label{eq:scalar-atomic}\tag{1}
+\]
+for a finite set $F\subseteq X$ and nonzero $c_x\in k$. The set and
+coefficients are uniquely determined after zero coefficients are omitted.
+\end{lemma}
+\begin{proof}
+Call $A\in\Sigma$ \emph{hereditarily null} if $\lambda(B)=0$ for every
+measurable $B\subseteq A$. The family $\mathcal N$ of hereditarily null
+sets is a $\sigma$-ideal. Indeed, for $B\subseteq\bigcup_n A_n$ with each
+$A_n\in\mathcal N$, the disjoint pieces
+\[
+ B\cap\left(A_n\setminus\bigcup_{j<n}A_j\right)
+\]
+have measure zero, and countable additivity gives $\lambda(B)=0$.
+
+Consider the quotient Boolean algebra $\Sigma/\mathcal N$. If it were
+infinite, \cref{lem:boolean} would supply disjoint nonzero classes.
+Choose representatives $C_n$ and replace each by
+$C_n\setminus\bigcup_{j<n}C_j$. Their classes remain nonzero, because the
+removed intersections are in $\mathcal N$. The resulting representatives
+are genuinely disjoint. In each choose a measurable subset $B_n$ with
+$\lambda(B_n)\ne0$, contradicting the hypothesis. Therefore the quotient
+Boolean algebra is finite.
+
+If the quotient is zero, $\lambda=0$. Otherwise choose disjoint
+representatives $A_1,\ldots,A_r$ of its atoms so that their complement is
+hereditarily null. For a measurable subset $B\subseteq A_j$, either $B$
+or $A_j\setminus B$ is hereditarily null. It follows that
+$\lambda(B)$ is either $0$ or $c_j:=\lambda(A_j)$. Moreover $c_j\ne0$,
+for otherwise $A_j$ would be hereditarily null.
+
+Let $E_n$ be a countable separating family. For each $j,n$, choose the side
+$D_{j,n}$ of $E_n$ for which $A_j\setminus D_{j,n}$ is hereditarily null.
+The intersection
+\[
+ A_j\cap\bigcap_{n\ge1}D_{j,n}
+\]
+has hereditarily null complement in $A_j$. It cannot be empty because
+$c_j\ne0$, and it contains at most one point because the $E_n$ separate
+points. Write it as $\{x_j\}$. Thus $\lambda(\{x_j\})=c_j$ and
+$A_j\setminus\{x_j\}$ is hereditarily null. This proves (1). Evaluating
+singletons proves uniqueness.
+\end{proof}
+
+\begin{remark}
+This proof uses only a Boolean-algebra observation, countable additivity,
+and countable separation. In particular, it does not hide a bounded
+variation assumption for a signed or complex coefficient measure.
+\end{remark}
+
+\begin{proposition}[Finite coefficient measures]\label{prop:coefficients}
+If $\mu$ is a strong Hahn measure on a countably separated space, then for
+every $\gamma\in\Gamma$ the scalar set function
+\[
+ \lambda_\gamma(A)=\coef{\gamma}{\mu(A)}
+\]
+is a finite linear combination of Dirac measures.
+\end{proposition}
+\begin{proof}
+For a disjoint sequence, (SH) says that the coefficient values are nonzero
+at only finitely many indices and that the coefficient of the union is
+their finite sum. Thus $\lambda_\gamma$ is countably additive as an ordinary
+scalar measure and satisfies \cref{lem:scalar}.
+\end{proof}
+
+\section{Automatic common support and complete atomic representation}
+\label{sec:atomic}
+
+Finite atomicity at each exponent does not by itself make the union over
+all exponents well ordered. The next selection lemma is the missing step.
+
+\begin{lemma}[Simultaneous nonvanishing selection]\label{lem:selection}
+Let $D$ be a countable set. For each $n\ge1$, let
+\[
+ L_n(A)=\sum_{x\in F_n\cap A}c_{n,x}\qquad(A\subseteq D)
+\]
+where $F_n$ is finite and at least one $c_{n,x}$ is nonzero. There exists
+$A\subseteq D$ for which $L_n(A)\ne0$ for infinitely many $n$.
+\end{lemma}
+\begin{proof}
+Choose the membership bits of $A$ independently with ordinary probability
+$1/2$. This is only an auxiliary classical randomization: it may be realized
+by the binary digits of a uniform number in $[0,1)$ after enumerating $D$.
+For each $n$, condition on all bits in $F_n$ except one whose coefficient is
+nonzero. The two possible values of $L_n(A)$ differ by that coefficient,
+so at least one is nonzero. Therefore
+\[
+ \mathbb P(L_n(A)\ne0)\ge\tfrac12.
+\]
+For every $m$, the event $\bigcup_{n\ge m}\{L_n(A)\ne0\}$ has probability
+at least $1/2$. Continuity from above of the ordinary real probability
+gives
+\[
+ \mathbb P\bigl(L_n(A)\ne0\text{ infinitely often}\bigr)\ge\tfrac12.
+\]
+In particular, such an $A$ exists. No Hahn-valued product probability is
+used in this argument.
+\end{proof}
+
+\begin{theorem}[Atomicity with automatic common support]\label{thm:atomic}
+Let $(X,\Sigma)$ be countably separated and let $\mu:\Sigma\to K$ be a
+strong Hahn measure. Set $w_x=\mu(\{x\})$. Then:
+\begin{enumerate}[label=(\roman*)]
+\item The family $(w_x)_{x\in X}$ is strongly summable.
+\item For every $A\in\Sigma$,
+\[
+ \mu(A)=\sums_{x\in A}w_x.
+ \label{eq:atomic}\tag{2}
+\]
+\item The global support
+\[
+ S(\mu):=\bigcup_{A\in\Sigma}\supp\mu(A)
+       =\bigcup_{x\in X}\supp w_x
+ \label{eq:global-support}\tag{3}
+\]
+is well ordered. At every exponent only finitely many $w_x$ have a
+nonzero coefficient.
+\end{enumerate}
+Conversely, every strongly summable family $(w_x)_{x\in X}$ defines by
+(2) a strong Hahn measure on \emph{all} subsets of $X$. For real
+coefficients this measure is positive if and only if every $w_x\ge0$.
+\end{theorem}
+\begin{proof}
+By \cref{prop:coefficients}, for each $\gamma$ there is a finite set
+$F_\gamma$ such that
+\[
+ \lambda_\gamma(A)=\sum_{x\in A\cap F_\gamma}c_{\gamma,x},
+ \qquad c_{\gamma,x}=\coef{\gamma}{w_x}.
+ \label{eq:coord-atomic}\tag{4}
+\]
+Let $S=\{\gamma:\lambda_\gamma\ne0\}$. Suppose $S$ were not well ordered.
+In ZFC a linear order which is not well founded contains a strictly
+decreasing sequence; choose
+$\gamma_1>\gamma_2>\cdots$ in $S$.
+The set $D=\bigcup_n F_{\gamma_n}$ is countable. By
+\cref{lem:selection}, it has a subset $A$ for which
+$\lambda_{\gamma_n}(A)\ne0$ for infinitely many $n$. Since every subset of
+$D$ is measurable, $\mu(A)$ is a Hahn series. But its support contains an
+infinite strictly decreasing subsequence of the $\gamma_n$, a contradiction.
+Thus $S$ is well ordered.
+
+Equation (4) also shows that the nonzero coefficients at any fixed exponent
+occur at only finitely many singleton masses. Hence $(w_x)$ is strongly
+summable, with common support $S$. Equation (4) now proves (2)
+coefficientwise. The two equalities in (3) follow because any nonzero
+coefficient measure has a nonzero singleton coefficient.
+
+Conversely, given a strongly summable family, every subfamily is summable.
+For a disjoint sequence of subsets, group the terms according to the subset
+containing their index. The regrouped family is strong and has the same
+sum, proving (SH). Positivity follows from \cref{lem:positive-sum}, and
+its necessity follows by evaluating singletons.
+\end{proof}
+
+\begin{corollary}[Coefficientwise criterion without a support hypothesis]
+\label{cor:coefficient-test}
+For an arbitrary map $\mu:\Sigma\to K$ on a countably separated space,
+the following are equivalent: $\mu$ is a strong Hahn measure; and each
+coefficient function $A\mapsto\coef{\gamma}{\mu(A)}$ is a finite linear
+combination of point masses. In the second condition no common support and
+no strong additivity are assumed in advance.
+\end{corollary}
+\begin{proof}
+Necessity is \cref{prop:coefficients}. For sufficiency, the proof of
+\cref{thm:atomic} from equation (4) onward uses only finite coefficient
+atomicity and the existence of the Hahn value $\mu(A)$ for every measurable
+$A$. The selection lemma therefore supplies common support without using
+(SH). It gives representation (2), whose converse clause proves (SH).
+\end{proof}
+
+For an already strong measure, the support of its singleton masses can
+also be checked more directly: a descending support sequence would be
+witnessed by countably many singleton masses, whose family is strong by
+(SH). The selection argument proves the stronger coefficientwise criterion
+above, where that shortcut is not available.
+
+\begin{corollary}[Canonical extension and arbitrary disjoint additivity]
+\label{cor:all-subsets}
+A strong Hahn measure on a countably separated measurable space has a
+unique strong extension to $\Pset(X)$. On that extension it is additive
+for every set-indexed disjoint family, with the sum interpreted strongly.
+\end{corollary}
+\begin{proof}
+Existence and arbitrary regrouping follow from (2). Any other strong
+extension has the same singleton masses, and \cref{thm:atomic}, applied
+to $\Pset(X)$, forces the same formula.
+\end{proof}
+The assertion is stronger than countable additivity, but depends on the
+very restrictive summability axiom. It is not an extension theorem for
+ordinary Lebesgue measure.
+
+\begin{corollary}[Finite real shadow]\label{cor:shadow}
+For a positive strong Hahn probability, every event mass is finite and
+$\st\circ\mu$ is an ordinary real probability with finite point support.
+\end{corollary}
+\begin{proof}
+Finite additivity and positivity imply $0\le\mu(A)\le1$. Thus no event
+mass has a negative exponent. Its constant coefficient is nonnegative,
+and taking constant coefficients gives a scalar probability. By
+\cref{prop:coefficients}, that scalar probability has finite point support.
+\end{proof}
+
+\begin{corollary}[Cardinality of the atomic set]\label{cor:cardinality}
+If $W=\{x:w_x\ne0\}$, then
+\[
+ W=\bigcup_{\gamma\in S(\mu)}\{x:\coef{\gamma}{w_x}\ne0\}.
+\]
+Each set in this union is finite. Consequently $W$ is at most countable
+when $S(\mu)$ is at most countable, and has cardinal at most
+$\max(\aleph_0,|S(\mu)|)$ in general.
+\end{corollary}
+This does not assert that every strong surreal measure has countably many
+atoms: a surreal support can have uncountable order type.
+
+\begin{example}[Countable separation cannot be dropped]\label{ex:cocountable}
+Let $X$ be uncountable and let $\Sigma$ be its countable--cocountable
+$\sigma$-algebra. Put $\lambda(A)=0$ for countable $A$ and $\lambda(A)=1$
+for cocountable $A$. In a disjoint countable family there is at most one
+cocountable member; if none occurs the union is countable. Thus $\lambda$
+is a strong measure, even with values in the constant real series.
+Yet $\lambda(\{x\})=0$ for every $x$, while $\lambda(X)=1$.
+This space is not countably separated: the union of the countable exceptional
+sides of a countable family of its measurable sets is countable, leaving
+uncountably many points with the same membership pattern.
+\end{example}
+
+\section{An exact extension theorem for cylinder data}\label{sec:cylinder}
+
+Let $E_n$ be nonempty finite sets and let
+\[
+ \Omega=\prod_{n\ge1}E_n,\qquad
+ T_n=\prod_{j=1}^{n}E_j,\qquad T_0=\{\varnothing\}.
+\]
+For a word $s\in T_n$, $[s]$ denotes its cylinder. The product Borel
+$\sigma$-algebra is countably separated and generated by these cylinders.
+Suppose $m_s\in K$ are coherent:
+\[
+ m_s=\sum_{a\in E_{n+1}}m_{sa}\qquad(s\in T_n).
+ \label{eq:coherence}\tag{5}
+\]
+This condition gives a finitely additive law on the cylinder algebra.
+It does not yet define masses of arbitrary Borel events.
+
+For each exponent define its \emph{active width} at depth $n$ by
+\[
+ r_\gamma(n)=\#\{s\in T_n:\coef{\gamma}{m_s}\ne0\},
+ \qquad
+ S_T=\bigcup_{n\ge0}\bigcup_{s\in T_n}\supp(m_s).
+ \label{eq:width}\tag{6}
+\]
+
+\begin{lemma}[Bounded-width coherent scalar trees]\label{lem:tree}
+Let $c_s\in k$ satisfy (5). If the number of nonzero $c_s$ at each level
+is bounded independently of the level, then there are finitely many distinct
+paths $x_1,\ldots,x_r\in\Omega$ and nonzero constants $d_1,\ldots,d_r$
+such that
+\[
+ c_s=\sum_{j:x_j\in[s]}d_j\qquad\text{for every word }s.
+ \label{eq:tree-atoms}\tag{7}
+\]
+This representation is unique.
+\end{lemma}
+\begin{proof}
+Each nonzero parent has at least one nonzero child. Children of different
+parents are distinct, so the widths form a nondecreasing sequence of
+integers. A bounded such sequence is eventually constant, say from level
+$N$ onward. At every subsequent level, each nonzero parent has exactly one
+nonzero child, and every zero parent has only zero children. Indeed, either
+an extra nonzero child or nonzero children under a zero parent would increase
+the width.
+
+The nonzero nodes at level $N$ therefore continue along finitely many
+unique paths. Coherence makes the coefficient constant along each path.
+These paths and coefficients represent all levels $n\ge N$; summing
+descendants gives the earlier levels. For uniqueness, a sufficiently deep
+level separates any finite collection of distinct paths, so its cylinder
+values recover their individual coefficients.
+\end{proof}
+
+\begin{theorem}[Exact strong cylinder-extension criterion]\label{thm:cylinder}
+The coherent family $(m_s)$ has a strong Hahn measure extension to
+$\B(\Omega)$ if and only if
+\begin{align}
+ &S_T\text{ is well ordered},\label{eq:C1}\tag{C1}\\
+ &\sup_{n\ge0}r_\gamma(n)<\infty\quad\text{for every }\gamma\in\Gamma.
+ \label{eq:C2}\tag{C2}
+\end{align}
+When it exists, the extension is unique, its global support is $S_T$, and
+it extends uniquely to all subsets of $\Omega$.
+\end{theorem}
+\begin{proof}
+Suppose first that $\mu$ is an extension. By \cref{thm:atomic}, its global
+support is well ordered and each coefficient measure has finitely many
+point atoms. At a fixed level, each nonzero coefficient cylinder contains
+at least one of those atoms. The cylinders at that level are disjoint, so
+their number is bounded by the number of coefficient atoms. This proves
+(C1) and (C2). A nonzero finite atomic coefficient measure is nonzero on
+some cylinder, by separating its finitely many atoms. Hence the global
+support is exactly $S_T$.
+
+Conversely, for each $\gamma\in S_T$, apply \cref{lem:tree} to
+$c_s=\coef{\gamma}{m_s}$ and obtain a finite atomic scalar measure
+$\lambda_\gamma$ on $\Omega$. Define, for any subset $A\subseteq\Omega$,
+\[
+ \mu(A)=\sum_{\gamma\in S_T}\lambda_\gamma(A)t^\gamma.
+ \label{eq:construct-extension}\tag{8}
+\]
+Its support is a subset of the well-ordered set $S_T$, so it is a Hahn
+series. For a disjoint sequence of subsets, at any fixed $\gamma$ only
+finitely many members can meet the finite atomic support of
+$\lambda_\gamma$. Thus the family of event masses is strong, and finite
+coefficient additivity proves (SH). Formula (7) gives the required cylinder
+values.
+
+For uniqueness, any strong extension has finite atomic coefficient
+measures by \cref{thm:atomic}. Each is determined by its cylinder values
+by the last argument in \cref{lem:tree}. This also excludes additional
+exponents not in $S_T$. The all-subsets assertion follows from
+\cref{cor:all-subsets}.
+\end{proof}
+
+\begin{remark}[What the criterion does and does not bound]
+The width bound is allowed to depend on $\gamma$. No uniform bound on the
+number of all atoms is required. Likewise the stabilization level in
+\cref{lem:tree} may depend on $\gamma$. These two nonuniformities are
+essential: they permit infinitely many infinitesimal scales, and are also
+responsible for the positivity obstruction below.
+\end{remark}
+
+\begin{corollary}[Exact positivity test]\label{cor:positive-test}
+Assume (C1)--(C2), $k=\R$, and $m_\varnothing=1$. Reconstruct the coefficient
+measures as above and put
+\[
+ w_x=\sum_{\gamma\in S_T}\lambda_\gamma(\{x\})t^\gamma.
+ \label{eq:reconstructed-atoms}\tag{9}
+\]
+There is a positive strong probability extension if and only if $w_x\ge0$
+for every $x\in\Omega$.
+\end{corollary}
+\begin{proof}
+This is the positivity clause of \cref{thm:atomic}, together with uniqueness
+in \cref{thm:cylinder}.
+\end{proof}
+
+\section{Positive cylinders can force a negative point mass}
+\label{sec:positivity}
+
+\subsection{A rank-one example with complete formulas}
+Work in $\R((t^\Q))$ and put
+\[
+ a_n=\frac{n}{n+1},\qquad
+ x=(0,0,0,\ldots),\qquad z=(1,1,1,\ldots),
+\]
+\[
+ y_n=(\underbrace{0,\ldots,0}_{n-1},1,0,0,\ldots)
+ \quad(n\ge1).
+\]
+All these paths are distinct. Assign the weights
+\begin{align}
+ w_{y_n}&=t^{a_n},\nonumber\\
+ w_x&=-t,\label{eq:hidden-weights}\tag{10}\\
+ w_z&=1-\sums_{n\ge1}t^{a_n}+t,\nonumber
+\end{align}
+and give all other paths weight zero. The combined support is
+\[
+ \{0\}\cup\{a_n:n\ge1\}\cup\{1\},
+\]
+a well-ordered set of order type $\omega+1$. At each $a_n$ there are two
+nonzero point coefficients, at exponent $1$ there are two, and at exponent
+$0$ there is one. Thus the weights are strongly summable, and their sum
+is $1$. They define a normalized strong signed measure $\nu$.
+
+\begin{proposition}[Every finite-dimensional law is positive]
+\label{prop:hidden-positive}
+For every cylinder $[s]$, $\nu([s])\ge0$. Nevertheless no positive strong
+measure has these cylinder values.
+\end{proposition}
+\begin{proof}
+For $N\ge1$, the all-zero cylinder contains $x$ and exactly the $y_n$ with
+$n>N$, but not $z$. Hence
+\[
+ \nu([0^N])=\sums_{n>N}t^{a_n}-t>0,
+ \label{eq:zero-cylinder}\tag{11}
+\]
+because its leading exponent is $a_{N+1}<1$ with coefficient $1$.
+A cylinder not containing $x$ contains at most one $y_n$. If it also
+contains $z$, its mass has constant coefficient $1$ and is positive.
+Otherwise its mass is either one $t^{a_n}$ or zero. The empty-word cylinder
+has mass $1$. Therefore all cylinders are nonnegative, and so are all
+finite unions of cylinders.
+
+The unique strong signed extension is $\nu$ by
+\cref{thm:cylinder}. Since $\nu(\{x\})=-t<0$, a positive strong extension
+is impossible.
+\end{proof}
+Notice that the widths are at most two at every exponent. The failure is
+not unbounded width, lack of a common support, or negative finite laws.
+Each finite neighborhood of $x$ contains a positive contribution at an
+exponent below $1$, but these contributions escape to later and later
+paths. The singleton has none of them.
+
+\subsection{An exact order-type criterion for positivity transfer}
+The example has the smallest possible infinite support order type which
+can exhibit the phenomenon: an increasing sequence followed by a later
+exponent. This observation gives a sharp general statement.
+
+\begin{definition}
+A well-ordered set $S$ has \emph{finite initial segments} if
+$\{\delta\in S:\delta\le\gamma\}$ is finite for every $\gamma\in S$.
+For a well-ordered set, this is equivalent to its order type being at most
+$\omega$.
+\end{definition}
+This is an internal condition on the active support. It does not require
+$S$ to be unbounded in $\Gamma$. For instance, $\{n/(n+1):n\ge1\}$ has
+finite initial segments even though it is bounded in $\Q$.
+
+\begin{theorem}[Exact support-order dichotomy for positivity]
+\label{thm:positivity-order}
+Let $S\subseteq\Gamma_{\ge0}$ be well ordered with $0\in S$. The following
+are equivalent.
+\begin{enumerate}[label=(\roman*)]
+\item $S$ has finite initial segments.
+\item On binary Cantor space, every normalized strong real signed measure
+with global support contained in $S$ and nonnegative cylinder masses is
+positive on every Borel set.
+\item Every normalized nonnegative coherent binary cylinder family with
+combined support contained in $S$ satisfying (C2) has a positive strong
+extension.
+\end{enumerate}
+For (i)$\Rightarrow$(ii), binary alphabets may be replaced by arbitrary
+finite alphabets.
+\end{theorem}
+\begin{proof}
+Assume (i) and let a strong signed measure $\mu$ have nonnegative cylinder
+masses. Suppose some point weight $w_x$ were negative, and let
+$\gamma=\val(w_x)$. There are finitely many active exponents $\delta\le\gamma$
+and at each there are finitely many coefficient atoms. Their union is a
+finite set $F$. Choose a cylinder containing $x$ and none of the other
+points of $F$. Its coefficients at all exponents at most $\gamma$ agree
+with those of $w_x$. There are no exponents outside $S$. Thus its leading
+coefficient is the negative coefficient of $w_x$ at $\gamma$, contradicting
+cylinder positivity. Every point weight is nonnegative, and
+\cref{thm:atomic} gives (ii).
+
+The equivalence between (ii) and (iii) follows from
+\cref{thm:cylinder}: (C1) is automatic for a subset of $S$, and the strong
+extension is unique.
+
+Finally suppose (i) fails. Choose $\gamma\in S$ with infinitely many
+predecessors. Since $S$ is well ordered, there is a strictly increasing
+sequence $0<\delta_1<\delta_2<\cdots<\gamma$ in $S$. Repeat (10) with
+$w_{y_n}=t^{\delta_n}$, $w_x=-t^\gamma$, and
+\[
+ w_z=1-\sums_{n\ge1}t^{\delta_n}+t^\gamma.
+\]
+Its support lies in $S$, it is normalized and strong, and the proof of
+\cref{prop:hidden-positive} applies verbatim because
+$\delta_{N+1}<\gamma$. Thus (ii) fails. This proves the equivalence.
+\end{proof}
+
+\begin{remark}[Not an order-completeness argument]
+We have not passed to an infimum of positive cylinder values. The proof of
+positivity in the finite-initial-segment case isolates finitely many
+\emph{coefficient atoms}; the counterexample shows exactly why this finite
+isolation can fail when an active exponent has infinitely many predecessors.
+\end{remark}
+
+\section{Labeled support calculus for infinite products}\label{sec:neumann}
+
+The independent-product theorem needs more than a scalar valuation bound.
+It must control both the support and the number of labeled contributions
+at a fixed exponent. We state the classical support result in the form
+needed here.
+
+\begin{lemma}[Neumann support lemma, classical]\label{lem:neumann}
+Let $S\subseteq\Gamma_{>0}$ be well ordered. The additive monoid
+\[
+ S^*=\{s_1+\cdots+s_m:m\ge0,\ s_j\in S\}
+\]
+is well ordered. For each $\gamma\in\Gamma$, only finitely many ordered
+finite words $(s_1,\ldots,s_m)$ in $S$ have sum $\gamma$.
+\end{lemma}
+This is the standard positive-support form of Neumann's lemma
+\cite{Neumann}. It holds at arbitrary ordered-group rank; the lengths of
+words are not bounded by an Archimedean comparison with a least positive
+scale. It is also part of the repository's existing Hahn support machinery
+\cite{Repo}. We use it as an imported theorem.
+
+\begin{lemma}[Labeled words and subproducts]\label{lem:labeled}
+Let $(a_i)_{i\in I}$ be strongly summable, with every nonzero $a_i$ of
+positive valuation. Then the family
+\[
+ \left(a_{i_1}\cdots a_{i_m}\right)_{
+         m\ge0,\ (i_1,\ldots,i_m)\in I^m}
+ \label{eq:word-family}\tag{12}
+\]
+is strongly summable, except that zero products may be discarded and the
+empty word occurs just once. Any subfamily of these labeled products is
+therefore strongly summable, including the products indexed by finite
+subsets of $I$.
+\end{lemma}
+\begin{proof}
+Let $S$ be the union of the positive supports of the $a_i$. The support of
+every product lies in $S^*$. At a fixed exponent $\gamma$, Neumann's lemma
+gives finitely many exponent words $(s_1,\ldots,s_m)$ summing to $\gamma$.
+For each letter $s_j$, only finitely many labels $i_j$ can contribute a
+nonzero coefficient, by strong summability of $(a_i)$. Thus only finitely
+many labeled coefficient words occur at $\gamma$, and in particular only
+finitely many nonzero product terms contribute there. This proves both
+requirements of strong summability.
+\end{proof}
+
+\begin{remark}[Zero labels]
+Infinitely many zero members cause no problem in (12): every nonempty
+product containing such a label is the zero series, and zero series
+contribute at no exponent. The single empty product is $1$.
+\end{remark}
+
+\begin{proposition}[Infinite positive-order products]\label{prop:products}
+For a strongly summable positive-order family $(q_n)_{n\ge1}$, define
+\[
+ U=\prods_{n\ge1}(1-q_n)
+   :=\sums_{F\in\Fin(\N_{>0})}(-1)^{|F|}\prod_{n\in F}q_n.
+ \label{eq:U}\tag{13}
+\]
+Then $U=1+\mathfrak m$ and is a unit. The families
+\[
+ \left(\frac{q_n}{1-q_n}\right)_n
+ \quad\text{and more generally}\quad
+ \left(\frac{a_{n,j}}{1-q_n}\right)_{n,j}
+ \label{eq:ratios}\tag{14}
+\]
+are strongly summable whenever the positive-order family $(a_{n,j})_{n,j}$
+is strong and $q_n=\sum_j a_{n,j}$ with finitely many $j$ at each $n$.
+All the finite-factor product identities used with (13) remain valid
+coefficientwise.
+\end{proposition}
+\begin{proof}
+Equation (13) is a subfamily of the labeled words of
+\cref{lem:labeled}, with signs. Its nonconstant support is positive, hence
+$U=1+\mathfrak m$. The geometric series
+$(1-q_n)^{-1}=\sums_{m\ge0}q_n^m$ is valid by the same lemma. Expanding
+$a_{n,j}\sum_mq_n^m$ gives labeled positive-order words, with the first
+letter carrying the distinguished index $(n,j)$. At a fixed exponent
+there are only finitely many such words and such distinguished labels.
+This proves (14). Every claimed product identity can now be checked at a
+fixed exponent, where the relevant words and labels form a finite set;
+the identity reduces to the corresponding identity for finitely many
+factors.
+\end{proof}
+
+\begin{lemma}[Recovering rare entries from first-error masses]
+\label{lem:recover}
+Suppose $p_{n,j}$ are positive-order real Hahn series, with finitely many
+indices $j$ at each $n$, and put
+\[
+ q_n=\sum_jp_{n,j},\quad u_n=1-q_n,\quad
+ h_{n,j}=p_{n,j}\prod_{k<n}u_k.
+ \label{eq:first-error}\tag{15}
+\]
+Assume $q_n\in\mathfrak m$ for all $n$. Then the family $(p_{n,j})_{n,j}$
+is strongly summable if and only if $(h_{n,j})_{n,j}$ is strongly summable.
+Zero entries are allowed.
+\end{lemma}
+\begin{proof}
+If $(p_{n,j})$ is strong, expansion of the finite products in (15) gives
+labeled words whose first letter has the distinguished label $(n,j)$.
+\Cref{lem:labeled} shows that the whole family $(h_{n,j})$ is strong.
+
+For the converse, finite telescoping yields
+\[
+ \prod_{k<n}u_k=1-H_{<n},\qquad
+ H_{<n}=\sum_{k<n}\sum_jh_{k,j}.
+ \label{eq:survival}\tag{16}
+\]
+Each nonzero $h_{n,j}$ has positive valuation. Therefore
+\[
+ p_{n,j}=h_{n,j}(1-H_{<n})^{-1}
+        =\sums_{m\ge0}h_{n,j}H_{<n}^{\,m}.
+ \label{eq:recover}\tag{17}
+\]
+Expand $H_{<n}^{\,m}$ into its labeled words. The first label $(n,j)$ is
+again distinguished; all subsequent coordinate labels are smaller than
+$n$. At each exponent, \cref{lem:labeled} leaves only finitely many
+possible full words, hence only finitely many distinguished indices.
+Thus (17), simultaneously for all $(n,j)$, is strongly summable. This
+proves the converse without imposing a uniform bound on $n$ or on $m$.
+\end{proof}
+
+\section{Independent coordinates: a sharp extension criterion}
+\label{sec:independent}
+
+Let $p_{n,a}\in\R((t^\Gamma))$ satisfy
+\[
+ p_{n,a}\ge0,\qquad \sum_{a\in E_n}p_{n,a}=1.
+ \label{eq:prob-rows}\tag{18}
+\]
+In particular, every entry is finite. The independent cylinder law is
+\[
+ m_s=\prod_{n=1}^{|s|}p_{n,s_n}.
+ \label{eq:independent-cylinder}\tag{19}
+\]
+Write $\overline p_{n,a}=\st(p_{n,a})$. This is an ordinary finite-state
+probability vector. Call coordinate $n$ \emph{residually nondeterministic}
+if at least two entries of this vector are positive. Let $J$ be the set
+of such coordinates. If $n\notin J$, there is a unique $b_n\in E_n$ with
+$\overline p_{n,b_n}=1$. Every other entry is zero or a positive
+infinitesimal; call these the \emph{rare entries}.
+
+\begin{theorem}[Exact independent finite-state criterion]
+\label{thm:independent}
+The independent cylinder law (19) has a positive strong Hahn probability
+extension if and only if
+\begin{enumerate}[label=(\roman*)]
+\item $J$ is finite;
+\item the indexed family
+\[
+ \bigl(p_{n,a}\bigr)_{n\notin J,\ a\ne b_n}
+ \label{eq:rare-family}\tag{20}
+\]
+is strongly summable.
+\end{enumerate}
+When these conditions hold, the extension is unique and is supported on
+paths with only finitely many deviations from $b_n$ outside $J$.
+\end{theorem}
+
+\subsection{Necessity: finite residue branching}
+\begin{proof}[Proof of necessity in \cref{thm:independent}]
+Assume a positive strong extension $\mu$ exists. By \cref{cor:shadow},
+$\st\circ\mu$ is a real probability with a finite set of point atoms, say
+at most $M$. If there were $r$ residually nondeterministic coordinates,
+choose two positive-residue states at each of them. The corresponding
+$2^r$ disjoint finite-coordinate cylinder events all have positive
+constant coefficients by (19). Each must contain a distinct residue atom.
+Thus $2^r\le M$. It follows that $J$ is finite.
+
+Project away the coordinates in $J$ and relabel the remaining coordinates
+in increasing order. Pushforward preserves (SH), so we may assume $J$ is
+empty. Put
+\[
+ q_n=\sum_{a\ne b_n}p_{n,a},\qquad u_n=p_{n,b_n}=1-q_n.
+\]
+Each $q_n$ is zero or a positive infinitesimal. For $a\ne b_n$, let
+$B_{n,a}$ be the event that coordinates $1,\ldots,n-1$ equal their base
+states and coordinate $n$ equals $a$. These events are pairwise disjoint
+as $(n,a)$ varies, and their prescribed masses are
+\[
+ \mu(B_{n,a})=p_{n,a}\prod_{k<n}u_k=h_{n,a}.
+\]
+The family is countable because every alphabet is finite. Strong
+countable additivity makes $(h_{n,a})$ strongly summable.
+\Cref{lem:recover} therefore makes the individual rare-entry family
+$(p_{n,a})_{a\ne b_n}$ strongly summable, proving (ii).
+\end{proof}
+
+\subsection{Sufficiency: the finite-deviation formula}
+For the construction, reorder the complement of the finite set $J$ as
+$1,2,\ldots$ temporarily; the notation below continues to use its original
+indices. Define
+\[
+ q_n=\sum_{a\ne b_n}p_{n,a},\quad
+ u_n=1-q_n,\quad r_{n,a}=\frac{p_{n,a}}{u_n}
+ \quad(n\notin J,\ a\ne b_n),
+\]
+and
+\[
+ U=\prods_{n\notin J}u_n.
+ \label{eq:baseproduct}\tag{21}
+\]
+The $q_n$ form a strong family by grouping (20), and
+\cref{prop:products} applies. Let $\Omega_{\mathrm{fin}}$ be the paths
+$x$ for which
+\[
+ F(x):=\{n\notin J:x_n\ne b_n\}
+\]
+is finite. Put
+\[
+ W_x=
+ \left(\prod_{j\in J}p_{j,x_j}\right)
+ U\prod_{n\in F(x)}r_{n,x_n}
+ \quad(x\in\Omega_{\mathrm{fin}}),
+ \qquad W_x=0\quad(x\notin\Omega_{\mathrm{fin}}).
+ \label{eq:product-weights}\tag{22}
+\]
+The product over $J$ is ordinary and finite. Thus residue randomness is
+retained exactly at the finitely many exceptional coordinates; it is not
+replaced by a chosen state there.
+
+\begin{proof}[Proof of sufficiency and uniqueness in \cref{thm:independent}]
+The family $(r_{n,a})$ is strong and positive-order by
+\cref{prop:products}. Its products indexed by finite coordinate subsets
+with one rare-state label per chosen coordinate are a subfamily of the
+labeled word family. They are strongly summable. Multiplication by the
+fixed series $U$ preserves strong summability: the sum of its support with
+the common support is well ordered and has finite coefficient
+contributions, by the usual Hahn multiplication rule. Taking the finite
+union corresponding to the choices at coordinates in $J$ and multiplying
+by their fixed finite products preserves this property. Consequently
+$(W_x)$ is strong.
+
+Every $u_n$ has leading coefficient $1$, so $U$ also has leading
+coefficient $1$ and is positive. Each other factor in (22) is nonnegative.
+Thus every $W_x\ge0$.
+
+For $n\notin J$,
+\[
+ 1+\sum_{a\ne b_n}r_{n,a}
+ =1+\frac{q_n}{u_n}=u_n^{-1}.
+ \label{eq:one-plus-r}\tag{23}
+\]
+Summing the finite-deviation products and applying the justified
+coefficientwise finite-factor identities gives
+\[
+ \sums_{\substack{F\subseteq\N\setminus J\text{ finite}\\
+                         a_n\ne b_n\ (n\in F)}}
+       \prod_{n\in F}r_{n,a_n}
+ =\prods_{n\notin J}\left(1+\sum_{a\ne b_n}r_{n,a}\right)=U^{-1}.
+ \label{eq:normalization-product}\tag{24}
+\]
+The finite sum over the coordinates in $J$ of
+$\prod_{j\in J}p_{j,x_j}$ is $1$. Equations (22)--(24) show
+$\sums_x W_x=1$.
+
+By \cref{thm:atomic}, these weights define a positive strong probability
+on all subsets. To check a finite-coordinate cylinder, separate the
+specified coordinates from the unspecified ones in (24). At a specified
+base coordinate the factor is $u_n$; at a specified rare coordinate it is
+$u_nr_{n,a}=p_{n,a}$. At an unspecified coordinate the summed contribution
+is $u_n(1+\sum_a r_{n,a})=1$. The finite exceptional coordinates satisfy
+the same marginal identity by (18). The resulting cylinder mass is
+exactly (19).
+
+Uniqueness follows from \cref{thm:cylinder}, or directly from uniqueness
+of the finite atomic coefficient measures determined by cylinders. Formula
+(22) proves concentration on $\Omega_{\mathrm{fin}}$.
+\end{proof}
+
+\begin{remark}[A precise meaning of concentration]
+The set $\Omega_{\mathrm{fin}}$ is countable, because the alphabets and $J$
+are finite and only a finite set of other coordinates may vary. It is
+Borel. Formula (22) gives
+$\mu(\Omega\setminus\Omega_{\mathrm{fin}})=0$ and
+$\mu(\Omega_{\mathrm{fin}})=1$. An infinite-deviation path can still lie
+in every one of its positive-mass finite cylinders. Such a path need not
+be a point atom.
+\end{remark}
+
+\subsection{Bernoulli variables}
+\begin{corollary}[One-line Bernoulli criterion]\label{cor:bernoulli}
+Let $0\le p_n\le1$ be real Hahn series, prescribing independent Bernoulli
+coordinates with success probabilities $p_n$. Set
+\[
+ q_n=\min(p_n,1-p_n).
+\]
+There is a positive strong Borel product law if and only if the family
+$(q_n)_{n\ge1}$ is strongly summable.
+\end{corollary}
+\begin{proof}
+A residue Bernoulli distribution is nondeterministic exactly when
+$\st(q_n)>0$. Since every $q_n\ge0$, coefficient-local finiteness at
+exponent $0$ implies that this occurs at only finitely many $n$ whenever
+$(q_n)$ is strong. Outside those indices, $q_n$ is exactly the rare-entry
+probability. Conversely, a strong rare-entry tail together with finitely
+many exceptional $q_n$ is a strong family. Apply
+\cref{thm:independent}.
+\end{proof}
+Choose at every coordinate a state of probability $1-q_n$ as the base
+state, resolving ties arbitrarily. With the finite noninfinitesimal factors
+separated before forming an infinite product, the probability of the path
+whose deviations occur exactly at a finite set $F$ is
+\[
+ \left(\prods_{n\ge1}(1-q_n)\right)
+       \prod_{n\in F}\frac{q_n}{1-q_n}.
+ \label{eq:Bernoulli-atom}\tag{25}
+\]
+The denominator never vanishes since $q_n\le1/2$.
+
+\begin{example}[Successes and failures of extension]\label{ex:bernoulli}
+The probabilities $p_n=t^n$ admit a strong product law; its all-zero
+atom is $\prods_{n\ge1}(1-t^n)$. The probabilities
+$p_n=t^{n/(n+1)}$ also admit one, even though the associated partial sums
+need not converge in the valuation topology.
+
+Neither $p_n=2^{-n}t$ nor $p_n=t$ admits a strong product law: infinitely
+many rare entries contribute at exponent $1$. The failure persists despite
+ordinary summability of the real coefficients in the first example.
+The probabilities $p_n=t^{1/n}$ fail because their supports descend.
+Finally $p_n=1/2$ at infinitely many coordinates fails already at the
+residue level. Finitely many ordinary nontrivial probabilities together
+with a strong infinitesimal rare tail do admit an extension.
+\end{example}
+
+\section{Coarse-graining can hide a genuine obstruction}\label{sec:coarse}
+
+The finite-state theorem tests the individual rare entries, not merely
+their positive sum at each coordinate. This distinction is necessary
+because positive Hahn series can have negative higher coefficients.
+
+Take
+\[
+ \Gamma=\Q\oplus_{\mathrm{lex}}\Q,\qquad
+ \alpha=(0,1),\quad\beta=(1,0),\quad
+ \gamma_n=\beta+\frac1n\alpha.
+\]
+Thus $\gamma_1>\gamma_2>\cdots$, but every $n\alpha<\gamma_n$.
+For $E_n=\{0,1,2\}$ put
+\begin{align}
+ p_{n,0}&=1-t^{n\alpha},\nonumber\\
+ p_{n,1}&=\tfrac12\bigl(t^{n\alpha}+t^{\gamma_n}\bigr),
+ \label{eq:three-state}\tag{26}\\
+ p_{n,2}&=\tfrac12\bigl(t^{n\alpha}-t^{\gamma_n}\bigr).\nonumber
+\end{align}
+All three entries are positive and their sum is $1$. The residue state is
+$0$ with probability $1$.
+
+\begin{theorem}[Extension may fail after refining a valid binary law]
+\label{thm:coarse}
+The independent three-state cylinder laws (26) have no positive strong
+Borel extension. Their binary coarse-graining which merges states $1$ and
+$2$ does have a positive strong Borel extension.
+\end{theorem}
+\begin{proof}
+The coarse-grained rare probability is
+\[
+ p_{n,1}+p_{n,2}=t^{n\alpha}.
+\]
+Its family is strongly summable, so \cref{cor:bernoulli} supplies a binary
+strong product law. The individual rare-entry supports, however, contain
+the strictly decreasing sequence $(\gamma_n)$. Thus (20) is not strongly
+summable, and \cref{thm:independent} rules out a three-state extension.
+
+There is also a direct witness. Let $B_n$ be the event that the first
+$n-1$ coordinates are $0$ and the $n$th coordinate is $1$. These events
+are pairwise disjoint and have prescribed masses
+\[
+ h_n=\tfrac12\bigl(t^{n\alpha}+t^{\gamma_n}\bigr)
+                 \prod_{k<n}(1-t^{k\alpha}).
+ \label{eq:direct-coarse}\tag{27}
+\]
+The coefficient of $t^{\gamma_n}$ in $h_n$ is $1/2$. Contributions from
+$t^{n\alpha}$ have first coordinate $0$, and the terms from
+$t^{\gamma_n}$ multiplied by a nonempty subproduct have exponent strictly
+larger than $\gamma_n$. Therefore the combined support of the $h_n$
+contains the descending sequence $(\gamma_n)$, so this disjoint family
+cannot satisfy (SH).
+\end{proof}
+
+\begin{remark}[Why positivity does not protect support]
+The negative coefficient of $t^{\gamma_n}$ in $p_{n,2}$ does not make that
+probability negative: the smaller exponent $n\alpha$ has positive leading
+coefficient. Upon aggregation, the two higher coefficients cancel. This
+is exactly the information lost by testing only total rare probabilities.
+The example does not contradict preservation of strong measures by
+pushforward. It shows that a valid coarse law need not admit a prescribed
+strong refinement.
+\end{remark}
+
+\section{Transfer to actual surreal and surcomplex numbers}\label{sec:surreal}
+
+\subsection{The normal-form embedding and its sign convention}
+Assume an order-preserving additive embedding $\iota:\Gamma\to\No$ is
+fixed. The normal-form map is
+\[
+ \sum_{\gamma\in S}a_\gamma t^\gamma
+       \longmapsto
+ \sum_{\gamma\in S}a_\gamma\omega^{-\iota(\gamma)}.
+ \label{eq:surreal-map}\tag{28}
+\]
+The minus sign is essential: increasing well-ordered Hahn exponents become
+decreasing well-based surreal exponents. The standard normal-form theorem
+identifies (28) with a field embedding for real coefficients; applying it
+to real and imaginary parts gives a map into $\No[i]$
+\cite{Gonshor}. It preserves the designated strong sums, not an arbitrary
+notion of topological convergence.
+
+For $\Gamma=\Q$, take $\iota(\gamma)=\gamma$. Thus the hidden-negative-atom
+example is literally a surreal example with $t=\omega^{-1}$.
+For the rank-two example, use
+\[
+ \iota(a,b)=a\omega+b.
+\]
+This is additive and strictly order preserving. Its monomials are
+\[
+ t^{n\alpha}\mapsto\omega^{-n},\qquad
+ t^{\gamma_n}\mapsto\omega^{-\omega-1/n}.
+ \label{eq:surreal-coarse}\tag{29}
+\]
+Consequently (26) is an explicit system of positive surreal probabilities,
+not merely a formal example in an unrelated coefficient field.
+
+\subsection{Localization of a set-sized family of surreal values}
+Let $X$ and $\Sigma$ be sets, and let $\mu:\Sigma\to\No$ or $\No[i]$ be
+a class function restricted to that set domain. Work in a class theory
+with the usual replacement principle, or equivalently in a sufficiently
+large universe for the set-sized data. The range is set-sized. Each of
+its normal forms has set-sized support, so the union of the supports of
+all values is a set, whether or not it is well based.
+
+Take the additive subgroup of $\No$ generated by the negatives of all
+these exponents. It is a set-sized ordered abelian group $\Gamma$. Every
+value of $\mu$ is then represented in $\R((t^\Gamma))$, or in
+$\C((t^\Gamma))$ after combining the two coordinate supports. The
+strong-additivity axiom is unchanged. Thus \cref{thm:atomic} applies and
+proves a \emph{common well-ordered support} as a theorem, rather than
+assuming it during localization.
+
+\begin{corollary}[Actual surreal atomicity]\label{cor:actual}
+On a countably separated set-sized measurable space, every surreal-valued
+or surcomplex-valued measure satisfying countable additivity by canonical
+strong normal-form sums is a strong sum of its singleton masses. Every
+normal-form coefficient is carried by finitely many points, and all event
+masses have a common admissible support. A positive normalized surreal
+measure of this kind has a finitely supported ordinary real standard part.
+\end{corollary}
+No topology on the proper class $\No$ is required here. The sample space
+is a set; the theorem makes no unqualified assertion about a measure on
+the full power class of $\No$.
+
+\subsection{Enlarging the workspace cannot repair these obstructions}
+\begin{proposition}[Absoluteness under Hahn exponent enlargement]
+\label{prop:enlarge}
+Let $j:\Gamma\to\Delta$ be an order-preserving additive embedding, and
+transport coherent cylinder values from $k((t^\Gamma))$ to
+$k((u^\Delta))$ by $t^\gamma\mapsto u^{j(\gamma)}$. A strong extension
+exists in the larger field if and only if it exists in the original field.
+For real coefficients, the same is true for positive strong extensions.
+\end{proposition}
+\begin{proof}
+The combined support is carried order-isomorphically to its image, so
+(C1) is unchanged. The widths at image exponents are unchanged, and the
+widths at all other exponents are zero. Therefore (C2) is unchanged.
+\Cref{thm:cylinder} proves the equivalence for signed or complex
+extensions. Its uniqueness proof shows that an extension in the larger
+field cannot acquire extra exponents: a finite atomic coefficient measure
+which vanishes on every cylinder is zero. The reconstructed singleton
+weights are exactly the transported original weights. Their signs are
+preserved by the ordered embedding, proving the positive assertion.
+\end{proof}
+In particular, allowing more surreal exponents does not rescue any of the
+failed cylinder extensions above. A proposed surreal extension has
+set-sized range and can be localized together with the original data in
+a common larger exponent group; the same argument then applies.
+
+\subsection{Uncountably many infinitesimal atoms are possible}
+Atomicity is not finiteness of the entire surreal probability law. To see
+this, let $X=\{x_\ast\}\cup\{x_\xi:\xi<\kappa\}$ for any set ordinal
+$\kappa$, with all the points distinct. Choose the increasing positive
+surreal exponents $\xi+1$ and set
+\[
+ w_{x_\xi}=\omega^{-(\xi+1)},\qquad
+ w_{x_\ast}=1-\sum_{\xi<\kappa}\omega^{-(\xi+1)}.
+ \label{eq:many-atoms}\tag{30}
+\]
+The latter sum is a legitimate infinitesimal normal form. The whole family
+is strong, every weight is positive, and the weights sum to $1$.
+It therefore defines a positive strong measure on all subsets of $X$.
+Its real shadow is the single atom at $x_\ast$, while it has $\kappa$ further
+positive infinitesimal atoms. For a countably separated instance with
+uncountably many atoms, apply this construction to a well ordering of the
+underlying set $\R$ and restrict the resulting measure to its Borel sets. This illustrates the distinction between
+finite coefficient atomicity and global finite atomicity.
+
+\section{Integration, functoriality, and boundaries of the theory}
+\label{sec:integration}
+
+\begin{proposition}[Pushforward and scalar-valued integration]
+\label{prop:integration}
+Let $\mu$ have the representation (2).
+\begin{enumerate}[label=(\roman*)]
+\item Any measurable map $f:X\to Y$ has a strong pushforward measure
+$f_*\mu(B)=\mu(f^{-1}(B))$.
+\item For every function $g:X\to k$, with no boundedness or measurability
+assumption needed after extension to all subsets, the expression
+\[
+ I_\mu(g)=\sums_{x\in X}g(x)w_x
+ \label{eq:integral}\tag{31}
+\]
+is a well-defined Hahn series. It is $k$-linear, agrees with $\mu$ on
+indicators, and satisfies
+\[
+ \coef{\gamma}{I_\mu(g)}
+   =\sum_{x\in F_\gamma}g(x)\coef{\gamma}{w_x}.
+\]
+\item If $k=\R$, $\mu$ is positive, and $g\ge0$, then $I_\mu(g)\ge0$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+Inverse images preserve disjoint unions, proving (i) directly from (SH).
+Alternatively, group the atomic weights over the fibers of $f$.
+Multiplication by $g(x)\in k$ introduces no new exponent. At any exponent
+only the finitely many original coefficient atoms can contribute, so the
+family in (31) is strong. Its coefficient formula proves linearity and the
+indicator identity. Positivity follows from \cref{lem:positive-sum}.
+\end{proof}
+
+This is a useful integration operation, but it is not classical Lebesgue
+integration with coefficients silently promoted to surreal scalars. Its
+apparent integrability of every ordinary scalar function is a consequence
+of finite evaluation at each exponent.
+
+\begin{example}[Failure for Hahn-valued integrands]
+On $X=\{0,1,2,\ldots\}$ put $w_n=t^n$ for $n\ge1$ and
+$w_0=1-\sums_{n\ge1}t^n$. This is a positive strong probability.
+The Hahn-valued function $g(n)=t^{-n}$ for $n\ge1$, with $g(0)=0$,
+has $g(n)w_n=1$ for every $n\ge1$. The integral family is not strongly
+summable. Thus (31) deliberately assumes that $g$ takes values in the
+ordinary coefficient field, not arbitrary values in $K$.
+\end{example}
+
+\begin{example}[An ordinary measure that is not strong]
+Lebesgue probability on $[0,1]$, embedded as constant Hahn series, fails
+(SH): choose disjoint intervals of positive lengths $2^{-n}$, with harmless
+endpoint conventions. Every mass contributes to exponent $0$.
+The ordinary series of lengths converges to $1$, but it is not a strong
+Hahn family. Hence the finite-shadow conclusion does not exclude an
+ordinary real probability theory embedded by a different addition rule;
+it excludes treating its usual infinite sums as strong sums.
+\end{example}
+
+A more permissive theory could allow absolutely convergent real coefficient
+sums at each exponent, or use topological or generalized-limit
+additivity. Such theories have different extension and positivity problems.
+Theorems in this article should not be transferred to them without checking
+the changed hypotheses. Conversely, replacing (SH) by a weaker rule to
+recover diffuse probability would abandon the exact finite-contribution
+property proved here to cause the rigidity.
+
+\section{Verification, novelty audit, and further questions}\label{sec:audit}
+
+\subsection{What has been proved and what has been checked}
+The manuscript supplies mathematical proofs of the atomic representation,
+the cylinder criterion, the positivity-order dichotomy, the independent
+criterion, and the coarse-graining obstruction. It imports the standard
+Neumann lemma and the standard surreal normal-form field representation.
+These imports are separately identified in the text. None of the proofs
+is claimed to be formally checked in Lean.
+
+The accompanying \path{code/verify.py} uses exact rational arithmetic and
+finite-support series. It checks finite tree coherence and width
+monotonicity, the finite independent normalization and marginal identities,
+finite versions of the hidden-negative-atom construction, and the exact
+coefficient witness (27) in a lexicographic rank-two group. Its recorded
+output is in \path{data/verification.txt}; the supplied run passed
+5,135 exact assertions. The script is not a proof of
+an infinite theorem, cannot establish that a support is well ordered from
+a finite prefix, and cannot certify eventual boundedness of infinitely
+many widths. These limitations matter especially here.
+
+\subsection{Scope of the novelty search}
+The public literature comparison was performed on 22 September 2026.
+Primary sources examined include the Benci--Horsten--Wenmackers axioms and
+the Ludkovsky--Khrennikov definition and extension theorem, with page images
+checked for the relevant definitions. Searches targeted Hahn-valued
+probability, strong Hahn additivity, and non-Archimedean Kolmogorov
+extension. Some broad searches returned irrelevant results; they provide
+no evidence of absence.
+
+The repository audit is a snapshot audit, not an assertion about future
+commits. The inspected catalog covers the maintained reports and explicitly
+distinguishes strong summability from convergence. A prior physics text
+already observes the failure of countably many equal infinitesimal weights.
+That observation is not one of the new claims. The 18 files in
+\texttt{docs/new} were inventoried by name, but their ZIP interiors were
+not all accessible. In particular, titles alone cannot exclude overlap
+with \texttt{surreal\_symbolic\_dynamics.zip}, either infinite-spectral
+archive, or another newly added manuscript.
+
+\begin{center}
+\begin{tabular}{p{0.29\linewidth}p{0.63\linewidth}}
+\toprule
+Status & Meaning in this manuscript\\
+\midrule
+Proved here & A complete mathematical argument is included, subject to the
+explicit imported background theorems.\\
+New candidate & The exact statement was not located in the inspected
+sources; no claim of established priority or exhaustive archive exclusion
+is made.\\
+Classical background & Neumann support calculus, scalar and Boolean
+arguments, and surreal normal forms are not claimed as inventions.\\
+Finite check & Reproducible exact calculations support formulas and detect
+some mistakes, but do not prove the infinite statements.\\
+Not claimed & A solution of a famous named open conjecture, complete
+repository coverage, a replacement for all probability theories, or a Lean
+formalization.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The strongest priority candidates are the combination of automatic common
+support with atomicity, the exact finite-width extension criterion, the
+support-order characterization of positivity transfer, and the individual
+rare-entry criterion with the refinement counterexample. An independent
+literature review and complete archive comparison could change the novelty
+assessment without changing the validity of the proofs.
+
+\subsection{A possible formalization path}
+The elementary scalar lemma can be formalized using the $\sigma$-ideal of
+hereditarily null sets and its Boolean quotient, or by reusing finite atomic
+scalar measure results. The simultaneous-selection lemma can use the
+ordinary binary product probability space; it must not be instantiated with
+the Hahn measure under construction. The coefficient tree lemma needs only
+finite branching, monotonicity of natural-number widths, and stabilization
+of a bounded monotone sequence.
+
+The Hahn stages fit an interface providing coefficient maps, strong-family
+regrouping, positive-support word finiteness, and geometric inversion.
+A suitable Lean development should keep the following data separate:
+coherence of cylinders, well ordering of their combined support, boundedness
+of each coefficient width, and signs of reconstructed point weights.
+Collapsing the last property into cylinder positivity would encode the
+false assertion refuted by (10).
+
+\subsection{Further questions, not used in any proof}
+One natural continuation is to replace finite alphabets by standard Borel
+coordinate spaces. Atomicity still holds, but a finite-width cylinder tree
+no longer directly describes the extension problem; a coefficientwise
+finite atomic compatibility criterion would need to address how point
+locations are recovered from the chosen cylinder family.
+
+A second continuation is a weaker addition rule that permits convergent
+ordinary real coefficient sums. It would retain diffuse real shadows but
+lose the finite Boolean quotient used in \cref{lem:scalar}. The correct
+uniform support and variation conditions for an exact extension theorem
+in that framework are not established here.
+
+A third question is an effective version. The present criteria are
+necessary and sufficient mathematical conditions, not decision procedures
+on arbitrary coefficient oracles. Finite-prefix verification cannot decide
+all support well-ordering or eventual-width properties. A useful algorithm
+would require a restricted representation with certificates for these
+infinite conditions.
+
+\section{Conclusion}
+Strong Hahn summation is not merely a convenient way to write an infinite
+probability sum. When imposed on all disjoint countable event families, it
+forces a complete atomic description: finitely many point coefficients at
+each exponent, and an automatically well-ordered common support. This
+rigidity leads to an exact cylinder extension theorem and an explicit
+infinite product formula, but also to two boundaries invisible at a fixed
+finite stage. Positive cylinders need not give a positive strong extension,
+and summable aggregate rare probabilities need not give summable individual
+rare entries.
+
+The results apply to actual surreal and surcomplex values through their
+normal forms. Their force comes from the summation axiom, not from any
+claim that non-Archimedean probability in general is impossible. They offer
+a precise answer to what can, and what cannot, be built when strong
+normal-form summation is the intended infinite addition.
+
+{\small
+\begin{thebibliography}{9}
+\setlength{\itemsep}{3pt}
+\bibitem{Gonshor}
+H. Gonshor,
+\emph{An Introduction to the Theory of Surreal Numbers},
+London Mathematical Society Lecture Note Series 110,
+Cambridge University Press, 1986.
+\href{https://www.cambridge.org/core/books/an-introduction-to-the-theory-of-surreal-numbers/312AE504A3E88E804054BFB390446374}{Publisher record}.
+
+\bibitem{Neumann}
+B. H. Neumann,
+On ordered division rings,
+\emph{Transactions of the American Mathematical Society} \textbf{66}
+(1949), 202--252.
+\href{https://doi.org/10.1090/S0002-9947-1949-0032593-5}{doi:10.1090/S0002-9947-1949-0032593-5}.
+
+\bibitem{BHW}
+V. Benci, L. Horsten, and S. Wenmackers,
+Non-Archimedean probability,
+\emph{Milan Journal of Mathematics} \textbf{81} (2013), 121--151.
+\href{https://doi.org/10.1007/s00032-012-0191-x}{doi:10.1007/s00032-012-0191-x}.
+Preprint \href{https://arxiv.org/abs/1106.1524}{arXiv:1106.1524};
+preprint Section 3.1 was used for the axiom comparison.
+
+\bibitem{LK}
+S. Ludkovsky and A. Khrennikov,
+\emph{Stochastic processes on non-Archimedean spaces with values in
+non-Archimedean fields}, 2001.
+\href{https://arxiv.org/abs/math/0110305}{arXiv:math/0110305}.
+Definition 2.2 and Theorem 2.15.2 in the retrieved version.
+
+\bibitem{Repo}
+V. Reshetnikov, \emph{Surreal}, GitHub repository,
+snapshot \texttt{4cf691c7d951}, accessed 22 September 2026.
+\href{https://github.com/VladimirReshetnikov/Surreal/tree/4cf691c7d951e037739d32d9f5c387dcce724f3c}{Full pinned snapshot}.
+See \cref{subsec:comparison,sec:audit} for the audit scope.
+
+\bibitem{RepoPhysics}
+\emph{Surreal scalars and spacetime}, repository research report,
+\href{https://github.com/VladimirReshetnikov/Surreal/tree/4cf691c7d951e037739d32d9f5c387dcce724f3c/docs/physics/surreal-scalars-and-spacetime}{cataloged directory};
+compared with the available prior text \texttt{surreal\_physics.pdf},
+Section 13.3. The equal-infinitesimal-weight observation is prior background,
+not a novelty claim of this manuscript.
+\end{thebibliography}
+}
+
+\end{document}
