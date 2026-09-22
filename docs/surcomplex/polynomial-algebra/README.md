@@ -64,7 +64,7 @@ of the three (2423 lines, 47 environments) and the source of the backbone:
 - Newton's root-valuation rule over an arbitrary ordered exponent group;
 - exact image balls with the two distinct mapping degrees d₋ ≠ d₊;
 - the *r*-th derivative critical count (a ball with *k* ≥ 1 roots contains
-  exactly *k − r* roots of P^(r));
+  exactly *k − r* roots of P^(r), for 1 ≤ *r* ≤ *k*);
 - the residual critical polynomial and the tree-allocation accounting;
 - the **optimal ε/n valuation-Hölder matching** of perturbed root multisets,
   with the exponent proved optimal uniformly, plus the ε/(n−r) derivative
@@ -152,12 +152,41 @@ perturbation and its precision.
 §1.4 fixes the coefficient rings and every theorem names its own. The report
 uses exactly three: `K` (and `O_K`) for all univariate root/ball/precision
 statements; the **fixed ordinary domain** ring `H_Γ(U) = O(U)((t^Γ))`, with its
-nonnegative- and positive-support subrings, for the three parameter theorems
+nonnegative-support subring and its positive-support ideal, for the three parameter theorems
 and the coherent-families discussion; and an arbitrary commutative ring for
 the universal duality theorems. `C[z]((t^Γ))` appears only as a counterexample
 ring. **No theorem here is stated over a radius-free ring `C{z}((t^Γ))` or a
 formal-coefficient ring `C[[z]]((t^Γ))`**, and no theorem was moved between
 rings.
+
+## Proof review: 22 September 2026
+
+The main-text review made the following corrections and proof details explicit:
+
+- Jensen's disk theorem requires a nonconstant polynomial: `P = 1` has
+  derivative zero and no root pair defining a Jensen disk. Affine root
+  normalization likewise excludes the zero polynomial, and branch-direction
+  counts require an occupied ball. The derivative count retains `1 ≤ r ≤ k`.
+- Mapping degree one is equivalent to absence of critical points and implies
+  bijectivity on either kind of valuation ball. The reverse implication for
+  open balls additionally requires a nontrivial value group. With `Γ = {0}`,
+  `K = ℂ`, the restriction of `z²` to the open valuation ball `{0}` is
+  bijective despite mapping degree two. The proof now supplies infinitely
+  many target points under the precise hypotheses it uses.
+- The binomial-root example has support in `1/4 + S*`, including its monomial
+  shift. Strong-summability bookkeeping specifies the exponent contributed
+  by each indexed word. Coherent Taylor evaluation states `c ∈ U` and an
+  infinitesimal displacement; positive-support series form an ideal of the
+  nonnegative-support ring.
+- Simple-root lifting treats zero error without inventing a least error
+  exponent. The Nullstellensatz proof explains why a certificate uses only
+  finitely many members of an arbitrary ideal. The two quartic examples keep
+  their different critical directions, and a discriminant precision formula
+  is distinguished from an effective algorithm on arbitrary Hahn inputs.
+
+These are corrections to the maintained mathematical exposition. Historical
+verification programs and outputs remain unchanged; the coverage ledger
+separately records the scope of existing Lean proofs.
 
 ## What is not proved
 
@@ -168,7 +197,9 @@ The consolidated status statement and the full per-theorem non-claim list are in
   literature, certifies no priority, and resolves no named published
   conjecture. Several central statements are classical over real-closed
   fields, valued fields, or arbitrary commutative rings and are identified as
-  such. Nothing has been refereed or machine-checked; the symbolic checks in
+  such. The article has not been independently refereed. The repository's
+  [formalization ledger](../../FORMALIZATION.md) records partial Lean coverage;
+  it does not certify the whole report. The symbolic checks in
   the source archives validate displayed finite examples, not the general
   proofs, and certify nothing about arbitrary Hahn supports, arbitrary-rank
   groups, transfinite summability, class-set foundations, or quantifier

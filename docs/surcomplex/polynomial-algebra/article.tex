@@ -101,7 +101,7 @@ counts roots in every closed ball, open ball, shell and residue direction,
 proves Newton's root-valuation rule over an arbitrary ordered exponent group,
 gives exact polynomial image balls and fiber degrees, and --- after
 differentiation --- shows that a ball containing $k\ge1$ roots contains
-exactly $k-r$ roots of the $r$th derivative. A finite root-cluster tree, an
+exactly $k-r$ roots of the $r$th derivative for $1\le r\le k$. A finite root-cluster tree, an
 explicit branch polynomial, two discriminant layer formulas and a nearest
 neighbour identity locate the intervening critical directions.
 
@@ -111,8 +111,8 @@ root separation at all; a rootwise threshold $T(P)=\max_i(d_i+\delta_i)$ that
 preserves the entire matrix of pairwise distance valuations together with
 their leading coefficients, the derivative valuations and the discriminant
 valuation, with an exact displacement valuation and a second-order Newton
-error term; and the coarser but computable discriminant certificate, shown to
-be strictly weaker on an explicit quartic and sharp at equality on an
+error term; and the coarser discriminant certificate, shown to
+demand strictly more precision on an explicit quartic and to be sharp at equality on an
 explicit quadratic.
 
 Support-controlled coprime factor lifting is proved with the certificate
@@ -136,8 +136,9 @@ in the literature, and it does not claim to resolve a named open conjecture.
 Several central statements are classical over real-closed, valued or
 arbitrary commutative-ring settings, and are identified as such. The
 literature search behind the attributions was targeted rather than
-exhaustive. Nothing here has been independently refereed or verified in a
-proof assistant; the symbolic checks recorded in the source archives validate
+exhaustive. The article has not been independently refereed. The repository's
+formalization ledger records partial Lean coverage; no complete formalization
+of this article is claimed. The symbolic checks recorded in the source archives validate
 displayed finite examples and are not machine verification of the general
 proofs. Per-theorem non-claims are kept where they were made and are
 collected in \cref{polynomial:sec:scope}.
@@ -309,8 +310,8 @@ univariate polynomial theorem below, and its valuation ring. Everything in
 \crefrange{polynomial:sec:foundations}{polynomial:sec:multivariate} that
 mentions roots, balls, valuations or precision is stated over $K$ or
 $\OO_K$.\\[0.5em]
-$\HH(U)=\OO(U)((t^\Gamma))$, with the subrings $\HHn(U)$ and $\HHp(U)$ of
-nonnegative and strictly positive support &
+$\HH(U)=\OO(U)((t^\Gamma))$, its nonnegative-support subring $\HHn(U)$,
+and the positive-support ideal $\HHp(U)\subseteq\HHn(U)$ &
 The \emph{fixed ordinary domain} parameter ring: $U\subseteq\C^d$ is one
 ordinary connected domain, fixed once and never shrunk. Exactly three
 theorems are stated over it:
@@ -477,9 +478,10 @@ If $S,T$ are well-ordered subsets of an ordered abelian group, then $S+T$ is
 well ordered and each element has finitely many representations $s+t$. If
 $S$ is well ordered and positive, then $S^*$ is well ordered and each exponent
 has finitely many representations by nondecreasing finite words in $S$.
-Consequently an expression indexed by one exponent of a well-ordered set and
-one finite word in $S$ is strongly summable whenever each word contributes
-finitely many terms.
+Consequently, if $T$ is well ordered, a family of monomial terms indexed by
+$b\in T$ and finite words $(e_1,\ldots,e_k)$ in $S$, each supported at
+$b+e_1+\cdots+e_k$, is strongly summable provided each such pair indexes
+only finitely many terms.
 \end{lemma}
 \begin{proof}
 The first two assertions are the classical support facts
@@ -528,9 +530,10 @@ For an ordinary connected domain $U\subseteq\C^d$, the supplied category is
  \HH(U)=\OO(U)((t^\Gamma)),
 \]
 Hahn families of \emph{ordinary holomorphic} functions on \emph{one common,
-fixed} ordinary domain $U$, with $\HHn(U)$ and $\HHp(U)$ its subrings of
-nonnegative and of strictly positive support. A datum $F=\sum f_\gamma
-t^\gamma$ is evaluated at a finite displaced point $c+\varepsilon$ by Taylor
+fixed} ordinary domain $U$. The nonnegative-support series form the subring
+$\HHn(U)$; those of strictly positive support form its ideal $\HHp(U)$,
+which does not contain $1$. A datum $F=\sum f_\gamma t^\gamma$ is evaluated
+at $c+\varepsilon$ with $c\in U$ and $\varepsilon\in\mm_K^d$ by Taylor
 expanding each ordinary coefficient,
 \begin{equation}\label{polynomial:eq:coherentevaluation}
  F\sh(c+\varepsilon)=\sum_\gamma\sum_{\alpha\in\N^d}
@@ -607,8 +610,9 @@ Use \cref{polynomial:prop:workspace}, choose one root and divide by its linear
 factor; induction on the finite degree gives the factorization, and canceling
 a vanishing factor gives multiset uniqueness. Leading-term division lowers a
 nonnegative integer degree at each step, so it terminates and gives $Q,R$; the
-Euclidean algorithm then produces $D$ and the B\'ezout coefficients, and a
-nonzero member of least degree generates any ideal. The multiplicity
+Euclidean algorithm then produces $D$ and the B\'ezout coefficients. A
+nonzero member of least degree generates any nonzero ideal; the zero ideal
+is generated by zero. The multiplicity
 characterization is the finite Taylor identity
 $P(\alpha+Y)=\sum_{j\le n}(P^{(j)}(\alpha)/j!)Y^j$ together with
 characteristic zero. The product rule gives the first identity in
@@ -815,7 +819,7 @@ root-cluster tree is a weighted incomplete polynomial of exactly this kind.
 
 \subsection{Jensen disks for real-surreal coefficients}
 \begin{theorem}[Surcomplex Jensen disk theorem]\label{polynomial:thm:jensen}
-Suppose $P\in F[z]$. Every nonreal critical point belongs to at least one
+Suppose $P\in F[z]$ is nonconstant. Every nonreal critical point belongs to at least one
 closed order disk having a pair of conjugate nonreal roots as endpoints of a
 diameter; equivalently, for some root pair $a\pm ib$ with $b\ne0$ the critical
 point $w$ satisfies $|w-a|\le|b|$.
@@ -834,7 +838,9 @@ $y^{-1}\operatorname{Im}(P'/P)(w)$, with its positive multiplicity, would be
 negative, and their finite sum could not vanish. This contradicts $P'(w)=0$.
 \end{proof}
 
-In particular a real-rooted polynomial has only real critical points. The
+The nonconstant hypothesis is necessary: for $P=1$ the derivative is zero,
+so every nonreal point is a zero of $P'$ while there is no root pair to define
+a disk. In particular a nonconstant real-rooted polynomial has only real critical points. The
 assertion concerns $F$-valued disks; it is not a statement about ordinary
 pictures obtained by discarding infinitesimals. Neither of the other two
 merged manuscripts proves a Jensen disk theorem; one of them proves
@@ -940,7 +946,7 @@ completeness of an infinite-dimensional surcomplex Hilbert space.
 signatures}\label{polynomial:sec:transfer}
 
 \subsection{Exactly what transfer permits}\label{polynomial:subsec:transferscope}
-Tarski's theorem gives quantifier elimination for ordered fields, so a
+Tarski's theorem gives quantifier elimination for real closed ordered fields, so a
 first-order sentence in the ordered-field language true in $\R$ is true in
 every real closed field \cite{polynomial:TarskiSurvey,polynomial:Swan}. For
 any \emph{fixed} degree bound a complex-coefficient polynomial is finitely
@@ -1182,8 +1188,8 @@ coefficients inside the parentheses have nonnegative valuation and at least
 one is a unit, so the \emph{initial polynomial} $I_{a,\rho}(P)$ is nonzero. It
 need not be monic and may have degree smaller than $n$: terms of strictly
 larger weighted valuation disappear under reduction. This definition uses no
-limiting process and is meaningful for negative, positive, finite, infinite
-and nonreal surreal exponents alike. Put
+limiting process and is meaningful for every $\rho\in\Gamma$, including
+negative thresholds and non-Archimedean surreal exponents. Put
 \begin{equation}\label{polynomial:eq:active}
  J_{a,\rho}(P)=\{j:v(b_j)+j\rho=\lambda\},\quad
  j_-=\min J_{a,\rho}(P),\quad j_+=\max J_{a,\rho}(P),
@@ -1315,7 +1321,8 @@ definition works even when $\Gamma$ cannot be embedded in $\R$; we do not
 require a literal Euclidean drawing of its vertical axis.
 
 \begin{theorem}[Newton's root-valuation rule]\label{polynomial:thm:newton}
-Over $K$, at a finite exponent $\rho$, the number of nonzero roots of
+Over $K$, at a threshold $\rho\in\Gamma$ (rather than the added value
+$+\infty$), the number of nonzero roots of
 valuation $\rho$ is the difference between the largest and smallest indices
 attaining $\phi_P(\rho)$, and every valuation of a nonzero root is such a
 breakpoint. Equivalently, a lower face joining indices $j<k$ with slope
@@ -1395,10 +1402,12 @@ reduction is $X^2-1$, so the residues are $1$ and $-1$. Writing
 $A=t^{1/2}(1+B)$ with $B=\sum_{k\ge1}t^{\gamma_k-1/2}$ of positive well-ordered
 support, the two exact roots are
 \begin{equation}\label{polynomial:eq:binomialhahn}
- \alpha_\pm=\pm t^{1/4}\sum_{j\ge0}\binom{1/2}{j}B^j ,
+ \alpha_\pm=\pm t^{1/4}\sum_{j\ge0}\binom{1/2}{j}B^j .
 \end{equation}
-strongly summable by \cref{polynomial:lem:support} with support in
-$\{\gamma_k-1/2\}^*$. Its use does not require that the original coefficient
+The binomial series is strongly summable by \cref{polynomial:lem:support}
+for the positive support $S=\{\gamma_k-1/2:k\ge1\}$. Thus each root has
+support in $1/4+S^*$; the shift comes from the displayed factor $t^{1/4}$.
+Its use does not require that the original coefficient
 series converge after replacing $t$ by a positive real number $q\in(0,1)$; in
 fact $q^{\gamma_k}\to q$, not $0$, so the summands would fail to tend to zero.
 No such substitution is used in the Hahn construction, and the support is not
@@ -1460,11 +1469,11 @@ fiber cardinality with multiplicity on a ball, not topological properness.
 
 \begin{corollary}[Affine normalization of a finite polynomial problem]
 \label{polynomial:cor:normalization}
-For finitely many polynomials of bounded finite degree one can choose one
+For finitely many nonzero polynomials of bounded finite degree one can choose one
 affine change of coordinates over $K$ so that all their roots are finite in
 the rescaled coordinate; each nonzero polynomial can then be made monic with
 finite coefficients by a scalar normalization. Concretely, for
-$P=z^n+\sum_{j<n}a_jz^j$ choose $\rho\in\Gamma$ with
+$P=z^n+\sum_{j<n}a_jz^j$, $n\ge1$, choose $\rho\in\Gamma$ with
 $\rho\le\min_{a_j\ne0}v(a_j)/(n-j)$; then $t^{-n\rho}P(t^\rho X)$ is monic with
 integral coefficients, and every root of a monic integral polynomial is
 integral.
@@ -1478,7 +1487,10 @@ criterion, the substitution multiplies the coefficient of $z^j$ by
 $t^{(j-n)\rho}$, so integrality is exactly $v(a_j)+(j-n)\rho\ge0$. Integrality
 of the roots is the argument after
 \cref{polynomial:thm:fta}. Only a minimum among finitely many exponents is
-used.
+used. Constant nonzero polynomials have no roots to constrain the scale;
+if all relevant coefficients vanish, any scale works. The zero polynomial
+is excluded: its zero set is the whole field, which has elements of unbounded
+magnitude when $\Gamma\ne\{0\}$.
 \end{proof}
 
 The normalization changes the numerical valuation precision of the
@@ -1622,8 +1634,8 @@ gives an initial polynomial $I^{(r)}$ of degree $k-r$ for $P^{(r)}$, and
 For the open ball, $\ord_0I=k$ by \eqref{polynomial:eq:opencount}, so
 $\deg I\ge k$ and the lemma still applies; in characteristic zero
 $\ord_0I^{(r)}=k-r$ in that range, which is the open-ball count. For the last
-assertion apply \cref{polynomial:thm:initialroots} to $I'$, which is the
-initial polynomial of $P'$ up to the nonzero scalar $t^{\rho-\lambda}$.
+assertion apply \cref{polynomial:thm:initialroots} to $P'$, whose initial
+polynomial is exactly $I'$ by \cref{polynomial:lem:initialderivative}.
 \end{proof}
 
 \begin{remark}[A root-free ball is a different case]\label{polynomial:rem:rollehyp}
@@ -1640,22 +1652,29 @@ its expected degree or vanish identically.
 \label{polynomial:cor:ramificationball}
 With the notation of \cref{polynomial:thm:imageballs}, the closed source ball
 contains exactly $d_+-1$ critical multiplicities of $P$ and the open source
-ball exactly $d_--1$. The indicated restriction of $P$ is bijective exactly
-when its mapping degree is one, equivalently when the ball contains no
-critical point.
+ball exactly $d_--1$. In either case, mapping degree one is equivalent to
+the absence of a critical point and implies bijectivity onto the image ball.
+The converse from bijectivity holds for closed balls, and for open balls
+provided $\Gamma\ne\{0\}$.
 \end{corollary}
 \begin{proof}
 Apply \cref{polynomial:thm:criticalballs} to $P-P(a)$, whose closed and open
 root counts are $d_+$ and $d_-$ by \cref{polynomial:thm:imageballs}, and whose
 derivative is $P'$. Degree one supplies one simple preimage for every target.
 Conversely, if the degree exceeds one, choose a target that is not one of the
-finitely many critical values; such a target exists in the infinite image
-ball, and its degree-many preimages are simple and distinct, so the map is not
-injective.
+finitely many critical values. The closed image ball contains
+$P(a)+c t^\lambda$ for all $c\in\C$, so is infinite. For an open image ball
+and $0<\eta\in\Gamma$, the points $P(a)+t^{\lambda+n\eta}$, $n\ge1$, are
+distinct points of that ball. In the asserted cases a noncritical target
+therefore exists; its degree-many preimages are simple and distinct, so the
+map is not injective.
 \end{proof}
 
-The last qualification prevents confusing multiplicity-counted one-to-one
-counting with set-theoretic injectivity at a single exceptional fiber.
+The nontriviality condition cannot be dropped from the open-ball converse.
+For $\Gamma=\{0\}$, one has $K=\C$ and $\Bgt00=\{0\}$. The restriction of
+$P(z)=z^2$ to this singleton is bijective onto its singleton image, although
+$d_-=2$ and zero is a critical point. All the multiplicity counts above remain
+valid. Bijectivity of one exceptional fiber does not determine mapping degree.
 
 \begin{corollary}[Valuative Gauss--Lucas and nearest neighbours]
 \label{polynomial:cor:nearest}
@@ -1685,7 +1704,7 @@ arbitrary-rank polynomial argument and uses no Berkovich space.
 \subsection{The branch polynomial between child clusters}
 \begin{theorem}[Critical residue directions inside a cluster]
 \label{polynomial:thm:branch}
-Suppose the closed ball $\Bge a\rho$ over $K$ contains $k$ roots and its
+Suppose the closed ball $\Bge a\rho$ over $K$ contains $k\ge1$ roots and its
 nonempty root residue directions are the distinct $c_1,\ldots,c_s\in\C$ with
 multiplicities $m_1,\ldots,m_s$, $\sum_jm_j=k$, so that
 \begin{equation}\label{polynomial:eq:clusterinitial}
@@ -1739,7 +1758,7 @@ Recursion strictly reduces the number of distinct roots in a child, so the
 tree is finite even when the valuations have arbitrarily high ordered-group
 rank. Its depths belong to $\Gamma$, not necessarily to $\R$.
 
-Every node $C$ is exactly the set of roots in $\Bge a{\delta_C}$ for
+Every internal node $C$ is exactly the set of roots in $\Bge a{\delta_C}$ for
 $a\in C$: a child lies in one residue subball of its parent and has strictly
 larger internal depth, while all roots outside it are separated at the
 parent's depth or earlier. Each internal node therefore has an actual scale
@@ -1942,19 +1961,21 @@ article.
 \begin{corollary}[Simple-root lifting and the first correction]
 \label{polynomial:cor:simpleroot}
 Every simple root $c$ of $P_0$ lifts to a unique root $c+\eta$ of $P$ with
-$\eta\in\mm_K$ and $\supp\eta\subseteq S^*\setminus\{0\}$. At the least
-positive error exponent $e=\min S$ the coefficient is
+$\eta\in\mm_K$ and $\supp\eta\subseteq S^*\setminus\{0\}$. If $S$ is
+nonempty, at the least positive error exponent $e=\min S$ the coefficient is
 \begin{equation}\label{polynomial:eq:firstrootcorrection}
  \eta_e=-\frac{E_e(c)}{P_0'(c)} .
 \end{equation}
 There may be cancellation making this coefficient zero; no nonvanishing of the
-first correction is assumed.
+first correction is assumed. If $E=0$, then $S=\varnothing$ and $\eta=0$;
+there is no first error exponent.
 \end{corollary}
 \begin{proof}
 Apply \cref{polynomial:thm:hensel} to the coprime pair $z-c$ and
-$P_0/(z-c)$; the lifted first factor is $z-c-\eta$, and for any root reducing
+$P_0/(z-c)$, omitting the latter if it is $1$; the lifted first factor is
+$z-c-\eta$, and for any root reducing
 to $c$, uniqueness of this linear factor identifies it with $c+\eta$.
-Expanding $P(c+\eta)=0$ at the least positive input exponent gives
+When $S\ne\varnothing$, expanding $P(c+\eta)=0$ at its least exponent gives
 $P_0'(c)\eta_e+E_e(c)=0$.
 \end{proof}
 
@@ -2057,7 +2078,7 @@ displacement valuations, a second-order Newton error, $v(Q'(\beta_i))=d_i$ and
 $v(\Disc Q)=v(\Disc P)$\\[0.5em]
 \cref{polynomial:cor:discprecision} & distinct finite roots and
 $\varepsilon>v(\Disc P)$ & everything in \cref{polynomial:thm:stability}, from
-a single computable number; strictly weaker in general\\
+a single discriminant valuation; it can require strictly more precision\\
 \bottomrule
 \end{tabularx}
 \end{center}
@@ -2299,7 +2320,7 @@ preservation of the complete finite cluster geometry. It does \emph{not}
 assert equality of the roots, of their ordinary moduli, or of every Hahn
 coefficient of the pairwise differences.
 
-The right side of \eqref{polynomial:eq:newtonerror} is strictly greater than
+When $E\ne0$, the right side of \eqref{polynomial:eq:newtonerror} is strictly greater than
 $\varepsilon-d_i$ under \eqref{polynomial:eq:stabilitythreshold}, so
 $-E(\alpha_i)/P'(\alpha_i)$ is a genuine first-order correction with a
 strictly smaller error, not merely a formal suggestion to apply Newton's
@@ -2379,10 +2400,11 @@ distance valuation, with
 \end{align*}
 all $\epsilon_i\in\mm_K$, directly from $-t^8/P'(\alpha_i)$. For
 $Q=P+t^8(1+z)$ the four matched displacement valuations are exactly
-$4,4,6,8$ by \eqref{polynomial:eq:leadingdisplacement}. All three original
-cluster scales, and the residual critical directions $3/4$, $2/3$, $1/2$ of
-the closely related nested quartic of \cref{polynomial:ex:nested}, survive
-such a perturbation.
+$4,4,6,8$ by \eqref{polynomial:eq:leadingdisplacement}. The original cluster
+scales $0,1,3$ and this quartic's residual critical directions
+$3/4,-1/3,1/2$ survive such a perturbation. The analogous statement for
+the different quartic of \cref{polynomial:ex:nested} preserves its own
+directions $3/4,2/3,1/2$.
 \end{example}
 
 \begin{corollary}[Preservation of the tree and of its critical directions]
@@ -2799,9 +2821,12 @@ A proper ideal lies in such a maximal ideal and so has a common zero.
 Conversely, evaluation at a common zero is a homomorphism annihilating $I$, so
 $1\notin I$.
 
-If $H$ vanishes at all common zeros, then in $K[x,y]$ the polynomials
-$F_1,\ldots,F_s,1-yH$ have no common zero, so by the weak form there is an
-identity $1=\sum_iA_i(x,y)F_i(x)+B(x,y)(1-yH(x))$. If $H=0$ the certificate is
+If $H$ vanishes at all common zeros, the ideal
+$J=I K[x,y]+(1-yH)$ has no common zero, so the weak form gives $1\in J$.
+Membership in this generated ideal uses only finitely many $F_i\in I$ and
+therefore gives an identity
+$1=\sum_iA_i(x,y)F_i(x)+B(x,y)(1-yH(x))$; no finite generating list for $I$
+has been assumed. If $H=0$ the certificate is
 immediate; otherwise substitute $y=H^{-1}$ in the localization and multiply by
 a sufficiently high power $H^N$ to clear denominators. This is the usual
 Rabinowitsch argument, the underlying classical theorem being recorded for
@@ -3465,8 +3490,10 @@ not claim to resolve a named published conjecture. Several central statements
 are classical over real-closed fields, valued fields, or arbitrary commutative
 rings, and are identified as such. The literature search behind these
 attributions was conducted on 21 September 2026 and was targeted rather than
-exhaustive. Nothing here has been independently refereed or verified in a
-proof assistant. The symbolic checks recorded in the source archives use exact
+exhaustive. The article has not been independently refereed. The original
+manuscript packages were not proof-assistant formalizations; the repository's
+separate coverage ledger now records partial Lean results, without asserting
+a complete formalization of this article. The symbolic checks recorded in the source archives use exact
 rational, polynomial and finitely truncated formal-series inputs to validate
 \emph{displayed finite examples and identities}; they are not machine
 verification of the general proofs, and in particular they certify nothing
@@ -3665,7 +3692,7 @@ Finite flat maps and Riemann--Hurwitz & Constant fiber length, branch-value
 polynomial, ramification sum $2n-2$ & Monic division and resultants over $K$;
 \cref{polynomial:thm:finitemap,polynomial:thm:branchvalues,polynomial:prop:ramification}.\\[0.4em]
 Rolle at a scale & Exactly $k-r$ roots of $P^{(r)}$ in an occupied $k$-root
-ball; branch directions; nearest-neighbour identity &
+ball ($1\le r\le k$); branch directions; nearest-neighbour identity &
 Characteristic-zero differentiation of initial polynomials, over $K$;
 \cref{polynomial:thm:criticalballs,polynomial:thm:branch,polynomial:cor:nearest}.\\[0.4em]
 Hensel factorization & Unique coprime factors with support in $S^*$; parameter
@@ -3808,7 +3835,8 @@ $\Lambda_F$ & The supplied coherent contour residue
 \eqref{polynomial:eq:sourceLambda}, used only in
 \cref{polynomial:thm:analyticcomparison}.\\[0.3em]
 $\HH(U)$, $\HHn(U)$, $\HHp(U)$ & $\OO(U)((t^\Gamma))$ on \emph{one fixed}
-ordinary domain $U$, and its nonnegative- and positive-support subrings.\\
+ordinary domain $U$, its nonnegative-support subring, and the positive-support
+ideal of that subring.\\
 \bottomrule
 \end{longtable}
 
