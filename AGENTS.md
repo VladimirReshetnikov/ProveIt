@@ -98,6 +98,21 @@ es.exe -n 40 -regex '\\\.lake$'                 # locate Lake directories
 Use it to locate other Lean checkouts or caches; confirm versions from their
 `lean-toolchain` and `lake-manifest.json` before reuse.
 
+## Searching Mathlib for lemma names
+
+Recursive `grep -r` over Mathlib is very slow on this machine (often over two
+minutes). The Mathlib package is a Git checkout, so use `git grep`, which
+returns in seconds:
+
+```bash
+cd .lake/packages/mathlib && git grep -n "theorem det_vandermonde" -- 'Mathlib/*.lean'
+```
+
+Deprecated aliases are common at this Mathlib version (for example
+`Finset.addAntidiagonal` is now `Finset.antidiagonal`, `push_neg` is now
+`push Not`); with `warningAsError` a deprecation warning fails the build, so
+check the alias line that `git grep` shows.
+
 ## Conventions for new Lean modules
 
 - Follow the style of neighbouring modules: a module docstring `/-! # Title`
