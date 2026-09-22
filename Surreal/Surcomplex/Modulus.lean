@@ -67,6 +67,19 @@ theorem modulus_pos {z : Surcomplex.{u}} (hz : z ≠ 0) : 0 < modulus z :=
 theorem modulus_mul (z w : Surcomplex.{u}) : modulus (z * w) = modulus z * modulus w :=
   Complexify.modulus_mul z w
 
+/-- The modulus preserves the multiplicative structure, including zero. -/
+def modulusMonoidWithZeroHom : Surcomplex.{u} →*₀ SignSequence.{u} where
+  toFun := modulus
+  map_zero' := modulus_zero
+  map_one' := modulus_one
+  map_mul' := modulus_mul
+
+@[simp] theorem modulus_inv (z : Surcomplex.{u}) : modulus z⁻¹ = (modulus z)⁻¹ :=
+  map_inv₀ modulusMonoidWithZeroHom z
+
+theorem modulus_div (z w : Surcomplex.{u}) : modulus (z / w) = modulus z / modulus w :=
+  map_div₀ modulusMonoidWithZeroHom z w
+
 theorem modulus_add_le (z w : Surcomplex.{u}) : modulus (z + w) ≤ modulus z + modulus w :=
   Complexify.modulus_add_le z w
 

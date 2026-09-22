@@ -214,6 +214,16 @@ in particular, ordinary real intervals admit no nonconstant fine-continuous path
 Gauss–Lucas and its multiplicity-weighted barycentric formula are instantiated
 with explicit splitting hypotheses; higher derivatives retain the required
 splitting of each preceding derivative.
+The actual finite surreal and surcomplex valuation rings have standard-part
+homomorphisms onto ordinary real and complex numbers. Their kernels are
+exactly the infinitesimals, their residue quotients are the ordinary fields,
+and each finite element has a unique constant-plus-infinitesimal decomposition.
+These predicates agree with natural-number absolute-value and modulus bounds.
+On the sign field, finite and infinitesimal sets and their nonzero affine
+images are clopen; scaled monads separate points in the native order topology.
+The coprime binary product linearization is an isomorphism on bounded-degree
+polynomials over any commutative ring, providing unique finite corrections
+for the later support-controlled factor lift.
 The surreal field is not algebraically closed, and no linear order is
 compatible with surcomplex multiplication.
 Real closedness and the normal-form bridge to Hahn series remain open.
