@@ -585,13 +585,6 @@ written.
   the single-cluster formulas `d_i = (n-1)s` and `Θ = (2n-1)s` need `n ≥ 2`.
   For `n = 1` the report's own empty-sum convention (line 141) gives `Θ = 0`,
   not `s`.
-- **Needs correction** (`tail:lem:signs`,
-  [tail spans](surreal/tail-spans-and-differential-transcendence/article.tex)):
-  the lemma and the preceding definition fix no characteristic, but in
-  characteristic `2` the conclusion fails. For `M = 𝔽₂(a)`, `a_1 = a`,
-  `a_2 = a + 1` have independent square classes, yet `√(a+1) = √a + 1`, so
-  `M(r_1, r_2) = M(r_1)` has degree `2`. The fix is `char M ≠ 2` (every
-  application has characteristic zero).
 - **Needs correction** (`tate:thm:coordinates`, and the same sentence in
   `tate:thm:main` and `tate:node:thm:main`, in
   [Hahn–Tate uniformization](surcomplex/hahn-tate-uniformization/article.tex)):
@@ -620,6 +613,10 @@ written.
   whose positive square root `‖x_δ‖ t^δ (1+u)^{1/2}` exists by the near-one
   binomial root (`ihs:cor:binomial`) for every `Γ`; for `Γ = ℤ`, `x = t e` has
   `‖x‖ = t`. The theorems themselves remain true.
+
+A sixth confirmed report, that `tail:lem:signs` needs `char M ≠ 2` (in
+characteristic `2`, `√(a+1) = √a + 1` over `𝔽₂(a)`), was already corrected in the
+source by `506cd11`.
 
 Two further reports were refuted by both reviewers and need no correction:
 `meas:lem:prony`, where "a monic polynomial with distinct roots, all in `Ω`"
