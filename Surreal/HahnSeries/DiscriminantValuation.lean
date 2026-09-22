@@ -1,3 +1,4 @@
+import Surreal.HahnSeries.Characteristic
 import Surreal.Algebra.PolynomialDiscriminant
 import Surreal.HahnSeries.PolynomialValuation
 
@@ -26,12 +27,6 @@ noncomputable section
 
 variable {Γ K : Type*} [AddCommGroup Γ] [LinearOrder Γ]
   [IsOrderedAddMonoid Γ] [Field K] [CharZero K]
-
-local instance hahnCharZero : CharZero K⟦Γ⟧ where
-  cast_injective m n h := by
-    apply Nat.cast_injective (R := K)
-    apply _root_.HahnSeries.C_injective (Γ := Γ)
-    simpa only [map_natCast] using h
 
 /-- The pairwise formula in `polynomial:eq:discval`, retaining infinity
 for collisions. The enumeration contains every root occurrence, with its

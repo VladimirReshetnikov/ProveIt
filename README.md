@@ -243,6 +243,14 @@ at the residue root, divided by the residue derivative; cancellation is allowed.
 The distinct complex residue roots also index unique cluster factors, with
 the prescribed multiplicities and a characterization of every existing Hahn
 root by its standard part.
+For divisible ordered exponent groups, weighted monomial scaling and the
+Hensel lift now support induction on polynomial degree. Hahn fields over
+algebraically closed characteristic-zero coefficients are proved algebraically
+closed. Hahn fields over ordered real closed coefficients are proved real
+closed: nonnegative square roots are constructed from the leading monomial
+and the binomial series, and odd-degree roots follow by degree induction.
+Thus complex Hahn polynomials split in their original workspace, with unchanged
+root multiplicities in every field extension.
 Conway monomials and leading exponents now act on the actual sign field.
 A maximum of finitely many weighted exponents gives a positive scale making
 all coefficients finite while preserving at least one nonzero real residue.
@@ -270,6 +278,7 @@ finite coefficients is finite. For explicitly split monic polynomials,
 standard part preserves the linear factorization and root multiplicities.
 The surreal field is not algebraically closed, and no linear order is
 compatible with surcomplex multiplication.
-Real closedness and the normal-form bridge to Hahn series remain open.
+Real closedness of the actual sign field and the normal-form bridge to Hahn
+series remain open.
 A successful build proves only the imported Lean
 statements, not coverage of all the source documents.

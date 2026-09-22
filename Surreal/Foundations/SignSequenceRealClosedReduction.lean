@@ -31,8 +31,7 @@ open Polynomial Surreal.FinitePolynomial
 theorem scalePolynomial_depress_eq (P : Polynomial SignSequence.{u}) (t : SignSequence.{u}) :
     scalePolynomial (depress P) t =
       C ((t ^ P.natDegree)⁻¹) * P.comp (C t * X - C (depressionShift P)) := by
-  rw [scalePolynomial, natDegree_depress, depress_eq_comp, comp_assoc,
-    sub_comp, X_comp, C_comp]
+  exact FinitePolynomial.scalePolynomial_depress_eq P t
 
 /-- A root of the scaled depressed polynomial pulls back by the specified affine map. -/
 theorem isRoot_scalePolynomial_depress_iff (P : Polynomial SignSequence.{u})

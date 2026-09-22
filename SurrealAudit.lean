@@ -31,3 +31,11 @@ run_cmd do
 -- The field instance is supplied by mathlib after proving that -1 is not a square.
 example {F : Type*} [Field F] [LinearOrder F] [IsStrictOrderedRing F] :
     Field (Surreal.Complexify F) := inferInstance
+
+-- The constructed closure instances apply to the ordinary real and complex
+-- Hahn workspaces, without assuming closedness of either Hahn field.
+example {Γ : Type*} [AddCommGroup Γ] [LinearOrder Γ] [IsOrderedAddMonoid Γ]
+    [DivisibleBy Γ ℕ] : IsRealClosed (Lex (HahnSeries Γ ℝ)) := inferInstance
+
+example {Γ : Type*} [AddCommGroup Γ] [LinearOrder Γ] [IsOrderedAddMonoid Γ]
+    [DivisibleBy Γ ℕ] : IsAlgClosed (HahnSeries Γ ℂ) := inferInstance

@@ -33,12 +33,15 @@ import Surreal.Algebra.PolynomialResultant
 import Surreal.Algebra.PolynomialRootBounds
 import Surreal.Algebra.PolynomialTraceGram
 import Surreal.Algebra.PolynomialUniversalPerturbation
+import Surreal.Algebra.PolynomialScaling
 import Surreal.Algebra.ProjectiveCircle
 import Surreal.Algebra.PowerSeriesFactorLifting
 import Surreal.Algebra.PowerSeriesPolynomialFactorLifting
 import Surreal.Algebra.MvPowerSeriesFactorLifting
 import Surreal.Algebra.MvPowerSeriesPolynomialFactorLifting
 import Surreal.Algebra.RealPolynomialFactors
+import Surreal.Algebra.RealClosedPolynomialFactors
+import Surreal.Algebra.RealClosedReal
 import Surreal.Foundations.SizeObstructions
 import Surreal.Foundations.SmallCutData
 import Surreal.Foundations.SignSequence
@@ -104,10 +107,12 @@ import Surreal.Surcomplex.PolynomialGeometry
 import Surreal.Surcomplex.PolynomialReduction
 import Surreal.Surcomplex.PolynomialFactorUniqueness
 import Surreal.HahnSeries.Ancestry
+import Surreal.HahnSeries.AlgebraicallyClosed
 import Surreal.HahnSeries.Binomial
 import Surreal.HahnSeries.BinomialOrder
 import Surreal.HahnSeries.BinomialRoots
 import Surreal.HahnSeries.Constants
+import Surreal.HahnSeries.Characteristic
 import Surreal.HahnSeries.Complexify
 import Surreal.HahnSeries.ComplexNumbers
 import Surreal.HahnSeries.Conjugation
@@ -125,6 +130,8 @@ import Surreal.HahnSeries.PolynomialSimpleRootLifting
 import Surreal.HahnSeries.PolynomialFirstRootCorrection
 import Surreal.HahnSeries.PolynomialSimpleRootCorrection
 import Surreal.HahnSeries.PolynomialClusterFactors
+import Surreal.HahnSeries.PolynomialNormalization
+import Surreal.HahnSeries.PolynomialWorkspace
 import Surreal.HahnSeries.PolynomialGaussValuation
 import Surreal.HahnSeries.PolynomialInitialRoots
 import Surreal.HahnSeries.PolynomialInitialDerivative
@@ -134,4 +141,6 @@ import Surreal.HahnSeries.PolynomialNewtonProfile
 import Surreal.HahnSeries.PolynomialRouche
 import Surreal.HahnSeries.PolynomialValuation
 import Surreal.HahnSeries.Regroup
+import Surreal.HahnSeries.RealClosed
+import Surreal.HahnSeries.SquareRoots
 import Surreal.HahnSeries.StandardPart
