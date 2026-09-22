@@ -90,9 +90,10 @@ and discrete in the fine topology.
   different use of spectra — over `C`, not over `K` — and nothing here is
   needed to read it.
 - [`computer-algebra`](../../foundations-and-computation/computer-algebra/) is
-  where the exact-operation contract of §11 belongs: which operations a
-  symbolic scalar representation must supply for the scale algorithm to run,
-  and why finite truncation cannot certify every exact rank.
+  where the exact-operation contract of §10 belongs — §10.2, which operations
+  a symbolic scalar representation must supply for the scale algorithm to run,
+  and §10.3, why finite truncation cannot certify every exact rank. (§11 is
+  condition numbers, and carries neither.)
 
 ## The gap claim, checked
 
@@ -210,7 +211,17 @@ interpretation. The **least** polynomial monomial, not SymPy's default
 leading monomial, determines the Hahn valuation. The two-by-two spectral
 examples are checked separately with exact square-root expressions.
 
-Two notes on the shipped layout. The script writes underscore filenames
+Note also that the renaming on ingest is not disclosed only here: the
+article's Appendix B and the shipped `repository-audit.md` both name
+`code/verify_examples.py` and `data/verification_report.json`, their delivery
+names, because they ship verbatim and were not edited. The files are
+`code/verify-examples.py` and `data/verification-report.json`.
+
+Three notes on the shipped layout. `data/build-report.json` ships as
+delivered and records `pdf_bytes: 492771`, which no longer matches the
+`article.pdf` beside it: the PDF was rebuilt on ingest, as every PDF in this
+collection is. Its `article_source_bytes: 88965` does still match `article.tex`
+byte for byte, so the source is verbatim and only the build product moved. The script writes underscore filenames
 (`verification_report.json`, `verification_report.txt`), while the delivered
 evidence was renamed to hyphens on ingest to match the rest of the
 collection — so a rerun in place would add files beside the recorded ones

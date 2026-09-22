@@ -213,8 +213,14 @@ characteristic roots contribute, with its constant-matrix corollary;
 \item an oscillatory Picard--Vessiot extension with no new constants.
 \end{enumerate}
 
-Every one of the seven proves items (i)--(x); at least five prove (xi) and
-(xii). Keeping them apart would mean printing one theory seven times,
+Every one of the seven proves items (i)--(vi) and (viii)--(ix).  The
+remaining four are proved by most but not all: the gauge normal form of (vii)
+is absent from three members, its exact sequence from a fourth; the
+constant-coefficient classification (x) is absent from one member, which
+explicitly declines it, and its constant-matrix corollary from two others; and
+at least five prove each of (xi) and (xii).  \Cref{diff:app:provenance} gives
+the member-by-member record, and no claim below rests on a member that does not
+prove what it is cited for. Keeping them apart would mean printing one theory seven times,
 including seven proofs of $\der i=0$ and seven proofs that $\der y=iy$ has no
 nonzero solution. Each is nevertheless the unique source of some genuinely
 distinct payload, and those payloads are all built on the shared spine and
@@ -534,7 +540,7 @@ as $\der y=iy$: every named-equation statement below is a statement about this
 derivation with this normalization, and none of them is derivation-agnostic.
 
 What is deliberately \emph{not} in the list is \emph{smallness}, the assertion
-$\der\mm\subseteq\mm$. Two of the seven source manuscripts import it as a
+$\der\mm\subseteq\mm$. Three of the seven source manuscripts import it as a
 clause of the Berarducci--Mantova package, and one of those flags it as
 specific to the chosen derivation rather than a general fact. The other four
 derive it from \ref{diff:BM:positivity}. \Cref{diff:sub:smallness} derives it,
@@ -699,8 +705,9 @@ $\der\Ofin=\der\mm$.
 
 \begin{remark}[An independent route to smallness, and a second route to the containment]
 \label{diff:rem:sqrtsmallness}
-Two source manuscripts instead \emph{import} $\der\mm\subseteq\mm$ and
-strengthen it to $\der\Ofin=\der\mm\subseteq\mm$ by a square-root trick: a
+One source manuscript instead \emph{imports} the finite form
+$\der\Ofin\subseteq\Ofin$ --- which is what the argument needs --- and
+strengthens it to $\der\Ofin=\der\mm\subseteq\mm$ by a square-root trick: a
 positive $\varepsilon\in\mm$ is $q^{2}$ with $q=\sqrt\varepsilon\in\mm$, so
 $\der q\in\Ofin$ by the imported smallness and
 $\der\varepsilon=2q\,\der q\in\mm$. That argument is correct and is recorded
@@ -1019,8 +1026,22 @@ It need not be finite, it is not the angle of any surcomplex number, and when
 it is infinite it lies outside $\Ofin$ entirely, with its purely infinite part
 $\pp(B)\in\Pcl$ --- the \emph{obstruction} --- nonzero. The whole theory of
 \cref{diff:part:scalar} is the statement that $\der y=(a+ib)y$ is solvable
-exactly when the accumulated phase of $b$ happens to be a finite angle, in
-which case $\eta=B-\st(B)$ is its infinitesimal residue.
+exactly when the accumulated phase of $b$ is finite, that is $B\in\Ofin$.
+Only then does $B$ acquire an angular reading at all: a finite $B$ is the
+argument of $\cis B$ in sense~(a), with $\eta=B-\st(B)$ its infinitesimal
+residue in sense~(b).  An infinite $B$ is the argument of nothing.  So (c) is
+not a third kind of angle; it is the object whose \emph{finiteness} is what
+sense~(a) requires, and the criterion is exactly the assertion that it can
+fail.
+\item \textbf{A missing oscillatory generator.}  In
+\cref{diff:sub:torus} and in the Picard--Vessiot sections the phrase
+\emph{independent phases} counts something else again: the number of
+transcendental generators $\mathsf T$ that must be adjoined \emph{outside}
+$\SC$ before a diagonal system has a full solution basis.  That count is
+$d=m-\operatorname{rank}\Lambda$, a rank of a lattice of obstructions, and it
+is not a count of angles, residues or accumulated phases.  Wherever this report
+writes ``independent phases'' or ``phase generators'', that fourth sense is
+meant, and it is never any of (a)--(c).
 \end{enumerate}
 \end{convention}
 
@@ -1116,7 +1137,10 @@ here. Two further manuscripts write $J$ for the inverse of $\der|_{\mm}$.
 
 \begin{convention}[No letter $J$; one symbol per object]
 \label{diff:conv:noJ}
-This report uses no symbol $J$. The normalized intrinsic primitive is
+This report uses no symbol $J$ for any operator or class.  The letter
+occurs only as a neutral index set for set-indexed families
+(\cref{diff:def:summable} and \cref{diff:thm:BM}), where no confusion with
+the objects below is possible.  The normalized intrinsic primitive is
 $\Izero$ (\cref{diff:prop:normprimitive}); its target class of purely infinite
 surreals is $\Pcl$; the inverse of $\der|_{\mm}$ is written
 $\Izero|_{\Acl}$ and named the \emph{unique infinitesimal primitive}. The
@@ -2235,7 +2259,7 @@ required phase, and its full expansion is optional. The coefficient domain here
 is Gaussian rationals in $t$.
 \end{example}
 
-\begin{example}[A genuinely infinite Hahn phase]
+\begin{example}[A solvable coefficient with an infinite Hahn expansion]
 \label{diff:ex:hahnphase}
 For $q=i/\omega^{2}=it^{2}$ the normalized solution is
 \[
@@ -2311,10 +2335,10 @@ when no choice of logarithm branch is.
 
 \begin{theorem}[Exact domain of the exponential differential equation]
 \label{diff:thm:maximalstrip}
-For $w=x+i\theta\in\SC$ with $x,\theta\in\No$, the following are equivalent.
+For $w=x+iB\in\SC$ with $x,B\in\No$, the following are equivalent.
 \begin{enumerate}[label=\textup{(\arabic*)},leftmargin=2.4em]
 \item There exists $y\in\SC^{\times}$ with $y^{\dagger}=\der w$.
-\item $\theta$ is finite.
+\item $B$ is finite.
 \item $w\in\Strip$.
 \end{enumerate}
 Consequently no map taking nonzero surcomplex values and satisfying
@@ -2324,15 +2348,15 @@ even \emph{one} exponent outside $\Strip$.
 \begin{theorem}[Maximality restated]
 \label{diff:thm:maximalstripalt}
 Equivalently, $\der^{-1}(\Acl)=\Ofin$: the condition in
-\cref{diff:thm:maximalstrip}(1) is $\der\theta\in\Acl$, and
+\cref{diff:thm:maximalstrip}(1) is $\der B\in\Acl$, and
 \cref{diff:thm:idealstructure}(viii) identifies its solution class as
 $\Ofin$.
 \end{theorem}
 \begin{proof}[Proof of \cref{diff:thm:maximalstrip,diff:thm:maximalstripalt}]
 By \cref{diff:thm:logimage}, condition (1) is equivalent to
-$\Imm(\der w)=\der\theta\in\Acl$. Every accumulated phase of $\der\theta$ is
-$\theta+r$ with $r\in\R$, so by \cref{diff:thm:phasecriterion} such a phase is
-finite exactly when $\theta$ is finite; equivalently
+$\Imm(\der w)=\der B\in\Acl$. Every accumulated phase of $\der B$ is
+$B+r$ with $r\in\R$, so by \cref{diff:thm:phasecriterion} such a phase is
+finite exactly when $B$ is finite; equivalently
 $\der^{-1}(\Acl)=\Ofin$ by \cref{diff:thm:idealstructure}(viii). The
 remaining equivalence is the definition of $\Strip$, and
 \cref{diff:thm:strip} supplies a value at every point of $\Strip$. The
@@ -3852,8 +3876,10 @@ with the inherited derivation and $\der\omega=1$.
 \begin{proof}
 In any such ordering the identity $\mathsf C^{2}+\mathsf S^{2}=1$ bounds
 $\mathsf C$ and $\mathsf S$ in absolute value by $1$. The proof of
-\cref{diff:lem:smallnegative} uses only the displayed positivity rule and
-$\der\omega=1$, so it applies in this ordered extension and forces
+\cref{diff:lem:smallnegative} uses the displayed positivity rule,
+$\der\omega=1$, the inverse rule \eqref{diff:eq:basicder} and
+$\ker\der\supseteq\R$, and nothing else; all four hold in this ordered
+extension, so the lemma applies there and forces
 $\der\mathsf C$ and $\der\mathsf S$ to be infinitesimal relative to $\R$.
 Since $\der\mathsf C=-\mathsf S$ and $\der\mathsf S=\mathsf C$, both
 $\mathsf C$ and $\mathsf S$ are then infinitesimal, so
@@ -3874,11 +3900,11 @@ surreal $H$-field. This says precisely what must be surrendered.
 \label{diff:sub:torus}
 
 Let $a_{1},\dots,a_{m}\in\SC$ and consider the diagonal system
-$\der y_{j}=a_{j}y_{j}$. Write $B_{j}=\Phi(a_{j})\in\Pcl$ and define the
+$\der y_{j}=a_{j}y_{j}$. Write $\Phi_{j}=\Phi(a_{j})\in\Pcl$ and define the
 \emph{phase-relation lattice}
 \begin{equation}\label{diff:eq:lattice}
  \Lambda=\Bigl\{n=(n_{1},\dots,n_{m})\in\Z^{m}:
- \textstyle\sum_{j}n_{j}B_{j}=0\Bigr\}.
+ \textstyle\sum_{j}n_{j}\Phi_{j}=0\Bigr\}.
 \end{equation}
 If $n\in\Lambda$ then $\sum_{j}n_{j}a_{j}$ is a logarithmic derivative in
 $\SC$, so a product of integer powers of solutions can be normalized to an
@@ -3893,8 +3919,8 @@ $k$ then $n\in\Lambda$. Hence $\Z^{m}/\Lambda$ is free abelian of rank
 $d=m-\operatorname{rank}\Lambda$.
 \end{lemma}
 \begin{proof}
-If $k\sum_{j}n_{j}B_{j}=0$, torsion-freeness of the real vector class $\Pcl$
-gives $\sum_{j}n_{j}B_{j}=0$. So the quotient is finitely generated and
+If $k\sum_{j}n_{j}\Phi_{j}=0$, torsion-freeness of the real vector class $\Pcl$
+gives $\sum_{j}n_{j}\Phi_{j}=0$. So the quotient is finitely generated and
 torsion-free, hence free; equivalently the elementary integer normal-form
 theorem extends a basis of the saturated subgroup to a basis of $\Z^{m}$.
 \end{proof}
@@ -3919,7 +3945,7 @@ $\ell=\operatorname{rank}\Lambda$ vectors form a basis of $\Lambda$
 diagonal coefficients to integer linear combinations $a_{1}',\dots,a_{m}'$.
 The first $\ell$ have zero obstruction, hence nonzero solutions
 $g_{j}\in\SC$ by \cref{diff:thm:phasecriterion}. The remaining obstructions
-$B'_{\ell+1},\dots,B'_{m}$ are $\Z$-independent, since any relation among them
+$\Phi'_{\ell+1},\dots,\Phi'_{m}$ are $\Z$-independent, since any relation among them
 would be an element of $\Lambda$ with nonzero complementary coordinates.
 
 For those $d$ coefficients introduce algebraically independent symbols
@@ -4179,31 +4205,31 @@ Then there is a \emph{unique} Hahn-coherent matrix $X$ with
 \end{equation}
 It is invertible in $\Mat_{d}\Hring_{\Gamma}(U)$, its support is contained in
 $S^{*}$, and its coefficient at exponent $0$ is the ordinary normalized
-fundamental matrix $\Phi_{0}$ of $\Dz\Phi_{0}=A_{0}\Phi_{0}$,
-$\Phi_{0}(z_{0})=I_{d}$. Uniqueness holds among \emph{all} Hahn-coherent
+fundamental matrix $\Upsilon_{0}$ of $\Dz\Upsilon_{0}=A_{0}\Upsilon_{0}$,
+$\Upsilon_{0}(z_{0})=I_{d}$. Uniqueness holds among \emph{all} Hahn-coherent
 matrices, not only those whose support was prescribed in advance.
 \end{theorem}
 \begin{proof}
-Ordinary holomorphic linear theory gives $\Phi_{0}$ on $U$, normalized at
+Ordinary holomorphic linear theory gives $\Upsilon_{0}$ on $U$, normalized at
 $z_{0}$, with everywhere nonzero determinant: local existence and uniqueness,
 analytic continuation along ordinary paths, and simple connectedness
-\cite[Ch.\ 4]{Teschl}. Put $B=\Phi_{0}^{-1}E\Phi_{0}$, whose support lies in
-$S$, and $T H=I_{z_{0}}(BH)$. For each $n$ the support of $T^{n}I_{d}$ lies in
+\cite[Ch.\ 4]{Teschl}. Put $G=\Upsilon_{0}^{-1}E\Upsilon_{0}$, whose support lies in
+$S$, and $T H=I_{z_{0}}(GH)$. For each $n$ the support of $T^{n}I_{d}$ lies in
 the set of sums of $n$ members of $S$, and at a fixed exponent only finitely
 many ordered words in $S$ contribute, by \cref{diff:lem:neumann}. Hence
 \begin{equation}\label{diff:eq:peano}
  V=\sum_{n\geq0}T^{n}I_{d}
 \end{equation}
 is strongly summable with support in $S^{*}$ and satisfies $V=I_{d}+TV$, so
-$\Dz V=BV$ and $V(z_{0})=I_{d}$; then $X=\Phi_{0}V$ solves
+$\Dz V=GV$ and $V(z_{0})=I_{d}$; then $X=\Upsilon_{0}V$ solves
 \cref{diff:eq:fundamental}. Writing $V=I_{d}+W$ with $W$ of positive support,
 the geometric matrix series $\sum_{n\geq0}(-W)^{n}$ is strongly summable by the
 same lemma and is a two-sided inverse, so $X$ is invertible with the claimed
 exponent-$0$ coefficient.
 
 For uniqueness let $Z$ be the difference of two coherent solutions and put
-$H=\Phi_{0}^{-1}Z$. If $H\neq0$, take the least exponent $\gamma$ of its global
-support. The equation $\Dz H=BH$ forces $H'_{\gamma}=0$: any contribution on
+$H=\Upsilon_{0}^{-1}Z$. If $H\neq0$, take the least exponent $\gamma$ of its global
+support. The equation $\Dz H=GH$ forces $H'_{\gamma}=0$: any contribution on
 the right would need a coefficient of $H$ at $\gamma-s<\gamma$ for some
 $s\in S$, $s>0$. The initial condition gives $H_{\gamma}(z_{0})=0$, so
 $H_{\gamma}=0$ --- a contradiction. Note that this argument never used a
@@ -4214,7 +4240,7 @@ The proof yields an explicit recursion, which is a \emph{support certificate}
 as well as an existence proof: with $V_{0}=I_{d}$ and all unlisted
 coefficients zero,
 \begin{equation}\label{diff:eq:linearrecursion}
- V'_{\gamma}=\sum_{s+\delta=\gamma}B_{s}V_{\delta},
+ V'_{\gamma}=\sum_{s+\delta=\gamma}G_{s}V_{\delta},
  \qquad V_{\gamma}(z_{0})=0 \qquad(\gamma>0),
 \end{equation}
 where every dependency satisfies $\delta<\gamma$ and every displayed sum is
@@ -4252,7 +4278,7 @@ from \cref{diff:thm:coherentlinear} applied to differences.
 \label{diff:cor:determinant}
 With the same normalization,
 \[
- \det X=\det\Phi_{0}\cdot\Emm\bigl(I_{z_{0}}(\tr E)\bigr).
+ \det X=\det\Upsilon_{0}\cdot\Emm\bigl(I_{z_{0}}(\tr E)\bigr).
 \]
 Here $\Emm$ is the formal exponential of a \emph{positive-support coherent
 section}, not an unrestricted scalar complex exponential.
@@ -4365,10 +4391,10 @@ functions, and \cref{diff:lem:neumann} supplies the summation permission.
 \begin{theorem}[Support-certified positive-support initial-value problem]
 \label{diff:thm:ivp}
 In the setting of \cref{diff:lem:nonlinear}, assume $U$ is simply connected,
-$z_{0}\in U$, and $y_{0}'(z)=F_{0}(z,y_{0}(z))$. Let $\eta\in K_{\Gamma}^{d}$
+$z_{0}\in U$, and $y_{0}'(z)=F_{0}(z,y_{0}(z))$. Let $\mathbf{v}\in K_{\Gamma}^{d}$
 have positive support, and put
 \[
- E=S\cup\supp\eta,\qquad M=E^{*}.
+ E=S\cup\supp\mathbf{v},\qquad M=E^{*}.
 \]
 Then there exists a solution of the form
 \begin{equation}\label{diff:eq:coherentivp}
@@ -4376,7 +4402,7 @@ Then there exists a solution of the form
 \end{equation}
 to
 \begin{equation}\label{diff:eq:ivp}
- \Dz Y=F(z,Y),\qquad Y(z_{0})=y_{0}(z_{0})+\eta,
+ \Dz Y=F(z,Y),\qquad Y(z_{0})=y_{0}(z_{0})+\mathbf{v},
 \end{equation}
 and it is unique. Its support satisfies the explicit certificate
 \begin{equation}\label{diff:eq:ivpsupport}
@@ -4401,7 +4427,7 @@ uniqueness there is among all Hahn-coherent matrices.
 \begin{proof}
 Put $A(z)=D_{Y}F_{0}(z,y_{0}(z))$, the Jacobian along the background solution.
 Ordinary complex linear theory gives an invertible holomorphic fundamental
-matrix $\Phi$ on $U$ with $\Phi'=A\Phi$, $\Phi(z_{0})=I_{d}$; simple
+matrix $\Upsilon$ on $U$ with $\Phi'=A\Phi$, $\Phi(z_{0})=I_{d}$; simple
 connectedness removes monodromy \cite[Ch.\ 3--4]{Teschl}.
 
 $M$ is well ordered by \cref{diff:lem:neumann}. Perform recursion along
@@ -4412,7 +4438,7 @@ $t^{s}F_{s}(z,y_{0}+u)$ carries the additional positive exponent $s$. Hence at
 a fixed exponent $\gamma$ the equation reads
 \begin{equation}\label{diff:eq:coefode}
  u'_{\gamma}=A(z)u_{\gamma}+R_{\gamma}(z),
- \qquad u_{\gamma}(z_{0})=\eta_{\gamma},
+ \qquad u_{\gamma}(z_{0})=\mathbf{v}_{\gamma},
 \end{equation}
 where $R_{\gamma}$ depends only on coefficients $u_{\beta}$ with
 $0<\beta<\gamma$: a contribution from $R_{0}$ has at least two positive
@@ -4436,8 +4462,8 @@ By induction $R_{\gamma}$ is an ordinary holomorphic vector on $U$, and the
 ordinary linear inhomogeneous problem \cref{diff:eq:coefode} has the unique
 holomorphic solution
 \begin{equation}\label{diff:eq:coefsolution}
- u_{\gamma}(z)=\Phi(z)
- \left(\eta_{\gamma}+\int_{z_{0}}^{z}\Phi(\zeta)^{-1}R_{\gamma}(\zeta)\,
+ u_{\gamma}(z)=\Upsilon(z)
+ \left(\mathbf{v}_{\gamma}+\int_{z_{0}}^{z}\Upsilon(\zeta)^{-1}R_{\gamma}(\zeta)\,
  d\zeta\right)
 \end{equation}
 on $U$: the integral is an \emph{ordinary} complex integral of a holomorphic
@@ -4487,7 +4513,7 @@ argument through a single fundamental matrix, and the uniqueness clause of
 \label{diff:rem:linearrule}
 For $F_{0}(z,Y)=A_{0}(z)Y+b_{0}(z)$ with perturbations affine in $Y$, the
 nonlinear terms vanish and every higher coefficient needs one linear
-inhomogeneous solve with the \emph{same} fundamental matrix $\Phi$: the
+inhomogeneous solve with the \emph{same} fundamental matrix $\Upsilon$: the
 expensive ordinary homogeneous problem is solved once, not once per Hahn
 exponent. An effective implementation still needs a way to enumerate the
 finitely many decompositions of a requested exponent. A well-ordered support is
@@ -4503,7 +4529,7 @@ high-rank support no general terminating enumeration algorithm is claimed.
 \begin{example}[A coherent entire solution with a pole at an infinite coordinate]
 \label{diff:ex:riccatipole}
 Take $d=1$, $F_{0}(Y)=Y^{2}$, $y_{0}=0$, no coefficient perturbation, and
-initial value $\eta=t$. Then
+initial value $\mathbf{v}=t$. Then
 \begin{equation}\label{diff:eq:riccatipole}
  y=\frac{t}{1-tz}=\sum_{n\geq0}t^{n+1}z^{n}
 \end{equation}
@@ -5332,6 +5358,29 @@ This section is part of the result. Each item below was stated explicitly by
 at least one of the seven source manuscripts; all of them survive the merge.
 Several are also stated in place above, and the cross-references say where.
 
+\subsection{Recovered on audit}
+\label{diff:sub:nc:recovered}
+An audit of this merge against its seven sources found two scope disclaimers
+stated in a source and missing here.  They are restored, since each limits a
+claim the report otherwise appears to make.
+
+\begin{enumerate}[label=\textup{R\arabic*.},leftmargin=3.0em,itemsep=0.35em]
+\item \textbf{The interface table describes nothing that exists.}  One source
+introduces its certificate and interface contract with the explicit disclaimer
+that these are \emph{proposed} interfaces, not claims about functions already
+implemented in this repository's symbolic packages.  That applies verbatim to
+\cref{diff:tab:interface}: nothing in it is implemented anywhere in the
+collection, and its prescriptive voice is a proposal throughout.  The
+companion computer-algebra report holds the existing capability taxonomy, and
+it implements none of this either.
+\item \textbf{A recorded run is not a reproduction promise.}  One source notes
+that a local environment's Python version and elapsed time need not match its
+bundled run.  \Cref{diff:app:verification} reproduces the delivered records
+and states the versions they were recorded under; it does not assert that a
+rerun elsewhere will reproduce those versions or timings, and a mismatch in
+either is not evidence of a failed check.
+\end{enumerate}
+
 \subsection{Provenance of the mathematics}
 \label{diff:sub:nc:provenance}
 
@@ -5989,8 +6038,10 @@ Across the source manuscripts the derivation is written $\der$, $\partial$,
 $D$, $\delta$, $\mathrm{der}$, $\partial_{\mathrm{BM}}$ and with a prime; two
 of them write $\partial$ for the intrinsic derivation and $D_{z}$ for the
 coordinate one, and one writes $D$ for a Picard--Vessiot derivation on a
-wholly different field. This report fixes $\der$ for the intrinsic derivation,
-uses $D$ for no operator at all, and keeps
+wholly different field. This report fixes $\der$ for the intrinsic derivation and uses $D$ for no
+operator on $\No$ or $\SC$ --- its only appearance is as ordinary polynomial
+differentiation on $\C[x]$ in the constant-coefficient discussion after
+\cref{diff:thm:variation}, where nothing surreal is differentiated --- and keeps
 \cref{diff:tab:derivatives} as the reference.
 
 The letter $J$ is not used in this report
@@ -6003,8 +6054,10 @@ a convergent power series, whose ``complete primitive obstruction'' is an
 annular Laurent residue and is unrelated to the phase obstruction. Any
 cross-link between the two reports must name the operator, not the letter.
 
-The letter $U$ is used in this report only for an ordinary complex domain
-(\cref{diff:part:coordinate}). One source manuscript flagged its own collision
+The letter $U$ is used in this report for an ordinary complex domain
+(\cref{diff:part:coordinate}), and once more, with $V$, as a pair of formal
+placeholders in the statement of the exponential and logarithm identities
+(\cref{diff:lem:smallchain}), where they stand for nothing at all. One source manuscript flagged its own collision
 between $U$ as a transcendental differential generator and $U$ as an ordinary
 domain; the generator is $\mathsf T$ here, and neither use ever denotes a
 surreal number.
@@ -6263,7 +6316,7 @@ Python with SymPy. Exposes a restricted rational-phase classifier as an
 importable API that type-checks its arguments, rejects nan, complex infinity
 and infinities, rejects free symbols other than the declared variable,
 coerces to polynomials over $\Q$, and \emph{raises} outside
-$\Q(\text{variable})$. Check families include the real power rule over $30$
+$\Q(\text{variable})$. Check families include the real power rule over $22$
 rationals; power and logarithmic primitives to depth $3$; twelve hand-listed
 rational-phase examples; a $6\times6$ degree sweep; eight rejection tests;
 the algebraic unit $(1+i\omega)/\sqrt{1+\omega^{2}}$; truncated

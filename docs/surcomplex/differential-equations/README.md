@@ -108,12 +108,21 @@ recorded here because it is not recoverable from the filenames.
 | 09 | `surreal_intrinsic_differential_calculus` | `09-bm-bridge-and-derived-smallness.tex` |
 
 All seven are pinned to `VladimirReshetnikov/Surreal` at commit
-`e260237db9b71da8b74a0c13c8e6355119091100`, and all seven independently prove
-the same twelve-item spine (unique complexification, smallness, infinitesimal
-exp/log, polar decomposition, normalized primitive, the rank-one criterion, the
+`e260237db9b71da8b74a0c13c8e6355119091100`, and they share a twelve-item
+spine: unique complexification, smallness, infinitesimal exp/log, polar
+decomposition, the normalized primitive, the rank-one criterion, the
 obstruction sequence and gauge form, no oscillator, no global exponential, the
 constant-coefficient classification, set-sized localization, an oscillatory
-Picard–Vessiot extension). Those results are printed **once**.
+Picard–Vessiot extension.
+
+All seven prove the first six and the eighth and ninth. The rest are proved by
+most but not all: the gauge normal form is absent from three members and the
+exact sequence from a fourth; the constant-coefficient classification is absent
+from one, which explicitly declines it, and its matrix corollary from two
+others; and at least five prove each of the last two. Whatever is shared is
+printed **once**, and nothing in the article rests on a member that does not
+prove what it is cited for — the provenance appendix records this member by
+member.
 
 ### What each contributed uniquely
 

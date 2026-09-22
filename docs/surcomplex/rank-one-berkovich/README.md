@@ -220,6 +220,7 @@ mathematics:
 
 The README as shipped referred to these files by their delivery names
 (`verify_examples.py`, `REPOSITORY_AUDIT.md`, `BUILD_REPORT.md`, and the
-data files at the directory root). They were renamed and moved into `code/`
+data files at the directory root), and so do the article's §13.3 and
+`build-report.md`, both of which ship verbatim and were not edited. They were renamed and moved into `code/`
 and `data/` on ingest to match the rest of the collection; the paths above
 are the ones that exist.
