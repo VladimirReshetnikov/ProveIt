@@ -927,48 +927,48 @@ earlier transformed coordinate-torus formulas or assert fine-continuous cycles.
 | Proposition | `contours:prop:poincare` (line 1166) | Support-preserving Poincar\'e lemma |
 | Theorem | `contours:thm:cohomology` (line 1188) | Cohomology of the globally supported Hahn complex |
 | Lemma | `contours:lem:pullback` (line 1335) | Pullback and differential with a support certificate |
-| Theorem | `contours:thm:deformedstokes` (line 1396) | Stokes for Hahn-deformed chains |
-| Theorem | `contours:thm:homotopy` (line 1491) | Hahn homotopy formula |
-| Proposition | `contours:prop:ml` (line 1538) | An order-valued parameter estimate |
-| Theorem | `contours:thm:cauchy` (line 1599) | Coherent Cauchy theorem |
-| Theorem | `contours:thm:endpoints` (line 1637) | Exact endpoint-transport formula |
-| Theorem | `contours:thm:winding` (line 1714) | Winding stability at one scale |
-| Theorem | `contours:thm:cauchyformula` (line 1747) | Cauchy formula at displaced points and on deformed contours |
-| Corollary | `contours:cor:deformedres` (line 1817) | Residues on a deformed protecting contour |
-| Proposition | `contours:prop:overlap` (line 1892) | Agreement on admissible overlaps |
-| Theorem | `contours:thm:rescaling` (line 1983) | Positive rescaling gives polynomial coefficient families |
-| Theorem | `contours:thm:localcauchy` (line 2050) | Cauchy formula for a radius-free germ |
-| Lemma | `contours:lem:protect` (line 2083) | A radius protecting an entire one-variable cluster |
-| Theorem | `contours:thm:microcircle` (line 2107) | Microscopic circle realization of the one-variable perturbation residue |
-| Theorem | `contours:thm:localresidue` (line 2155) | Radius-free moving-pole residue theorem |
-| Theorem | `contours:thm:microtorus` (line 2264) | Coordinate-power torus realization |
-| Lemma | `contours:lem:residuetransform` (line 2352) | Transformation of the Hahn perturbation residue |
-| Theorem | `contours:thm:generalrepresentation` (line 2390) | Microscopic contour representation of a general residue |
-| Theorem | `contours:thm:septorus` (line 2540) | Separating-torus realization; conditional on \cite{Geometry} |
-| Lemma | `contours:lem:radiusfreesub` (line 2876) | Radius-free substitution into a Hahn map |
-| Corollary | `contours:cor:radialeval` (line 2914) | Radial evaluation of an ordinary family |
-| Lemma | `contours:lem:positiveimplicit` (line 2945) | Positive implicit equation |
-| Lemma | `contours:lem:targetmonomial` (line 3021) | A discriminant-avoiding monomial direction in the \emph{target} |
-| Theorem | `contours:thm:ramifiedleray` (line 3059) | Ramified Leray family; ordinary analysis |
-| Lemma | `contours:lem:constantperiod` (line 3125) | Coefficientwise constant-period identity |
-| Proposition | `contours:prop:admissiblepullback` (line 3197) | Admissibility of the untransformed pullback |
-| Theorem | `contours:thm:untransformed` (line 3244) | Universal untransformed contour |
-| Corollary | `contours:cor:scalecancel` (line 3300) | Cancellation of the auxiliary scales |
-| Lemma | `contours:lem:radialbounds` (line 3371) | Finite radial bounds |
-| Theorem | `contours:thm:adaptedlift` (line 3441) | Equation-adapted lift on the same cover |
-| Corollary | `contours:cor:protectedsheets` (line 3497) | Regular protected sheets |
-| Lemma | `contours:lem:straighthomotopy` (line 3543) | Admissible straight homotopy |
-| Theorem | `contours:thm:untransformedhomotopy` (line 3570) | Untransformed homotopy invariance |
-| Theorem | `contours:thm:degreenormalization` (line 3615) | Degree normalization on the adapted cycle |
-| Corollary | `contours:cor:protectedtrace` (line 3657) | Protected trace representation |
-| Proposition | `contours:prop:idealannihilation` (line 3689) | Annihilation of the equation ideal, and descent |
-| Lemma | `contours:lem:finitejet` (line 3732) | Finite-jet extension of an ordinary local residue |
-| Theorem | `contours:thm:formalcontour` (line 3757) | Formal-coefficient contour theorem |
-| Theorem | `contours:thm:algpairing` (line 4223) | Characterization and algebraic Cauchy theory |
-| Proposition | `contours:prop:rationalcohomology` (line 4276) | Rational de Rham quotient |
-| Proposition | `contours:prop:comparison` (line 4321) | Comparison on separated charts |
-| Proposition | `contours:prop:samplingcriterion` (line 4438) | A precise sampling criterion |
-| Theorem | `contours:thm:sampling` (line 4483) | Coefficientwise recovery of a Hahn contour |
+| Theorem | `contours:thm:deformedstokes` (line 1399) | Stokes for Hahn-deformed chains |
+| Theorem | `contours:thm:homotopy` (line 1496) | Hahn homotopy formula |
+| Proposition | `contours:prop:ml` (line 1543) | An order-valued parameter estimate |
+| Theorem | `contours:thm:cauchy` (line 1604) | Coherent Cauchy theorem |
+| Theorem | `contours:thm:endpoints` (line 1642) | Exact endpoint-transport formula |
+| Theorem | `contours:thm:winding` (line 1719) | Winding stability at one scale |
+| Theorem | `contours:thm:cauchyformula` (line 1752) | Cauchy formula at displaced points and on deformed contours |
+| Corollary | `contours:cor:deformedres` (line 1822) | Residues on a deformed protecting contour |
+| Proposition | `contours:prop:overlap` (line 1897) | Agreement on admissible overlaps |
+| Theorem | `contours:thm:rescaling` (line 1988) | Positive rescaling gives polynomial coefficient families |
+| Theorem | `contours:thm:localcauchy` (line 2055) | Cauchy formula for a radius-free germ |
+| Lemma | `contours:lem:protect` (line 2088) | A radius protecting an entire one-variable cluster |
+| Theorem | `contours:thm:microcircle` (line 2112) | Microscopic circle realization of the one-variable perturbation residue |
+| Theorem | `contours:thm:localresidue` (line 2160) | Radius-free moving-pole residue theorem |
+| Theorem | `contours:thm:microtorus` (line 2269) | Coordinate-power torus realization |
+| Lemma | `contours:lem:residuetransform` (line 2357) | Transformation of the Hahn perturbation residue |
+| Theorem | `contours:thm:generalrepresentation` (line 2395) | Microscopic contour representation of a general residue |
+| Theorem | `contours:thm:septorus` (line 2545) | Separating-torus realization; conditional on \cite{Geometry} |
+| Lemma | `contours:lem:radiusfreesub` (line 2883) | Radius-free substitution into a Hahn map |
+| Corollary | `contours:cor:radialeval` (line 2921) | Radial evaluation of an ordinary family |
+| Lemma | `contours:lem:positiveimplicit` (line 2958) | Positive implicit equation |
+| Lemma | `contours:lem:targetmonomial` (line 3034) | A discriminant-avoiding monomial direction in the \emph{target} |
+| Theorem | `contours:thm:ramifiedleray` (line 3072) | Ramified Leray family; ordinary analysis |
+| Lemma | `contours:lem:constantperiod` (line 3140) | Coefficientwise constant-period identity |
+| Proposition | `contours:prop:admissiblepullback` (line 3213) | Admissibility of the untransformed pullback |
+| Theorem | `contours:thm:untransformed` (line 3260) | Universal untransformed contour |
+| Corollary | `contours:cor:scalecancel` (line 3316) | Cancellation of the auxiliary scales |
+| Lemma | `contours:lem:radialbounds` (line 3387) | Finite radial bounds |
+| Theorem | `contours:thm:adaptedlift` (line 3457) | Equation-adapted lift on the same cover |
+| Corollary | `contours:cor:protectedsheets` (line 3513) | Regular protected sheets |
+| Lemma | `contours:lem:straighthomotopy` (line 3559) | Admissible straight homotopy |
+| Theorem | `contours:thm:untransformedhomotopy` (line 3586) | Untransformed homotopy invariance |
+| Theorem | `contours:thm:degreenormalization` (line 3631) | Degree normalization on the adapted cycle |
+| Corollary | `contours:cor:protectedtrace` (line 3682) | Protected trace representation |
+| Proposition | `contours:prop:idealannihilation` (line 3714) | Annihilation of the equation ideal, and descent |
+| Lemma | `contours:lem:finitejet` (line 3757) | Finite-jet extension of an ordinary local residue |
+| Theorem | `contours:thm:formalcontour` (line 3782) | Formal-coefficient contour theorem |
+| Theorem | `contours:thm:algpairing` (line 4248) | Characterization and algebraic Cauchy theory |
+| Proposition | `contours:prop:rationalcohomology` (line 4301) | Rational de Rham quotient |
+| Proposition | `contours:prop:comparison` (line 4346) | Comparison on separated charts |
+| Proposition | `contours:prop:samplingcriterion` (line 4466) | A precise sampling criterion |
+| Theorem | `contours:thm:sampling` (line 4511) | Coefficientwise recovery of a Hahn contour |
 
 ### differential-equations
 

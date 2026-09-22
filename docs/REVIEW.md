@@ -32,6 +32,7 @@ No row below certifies every claim in an entire report.
 | [Entire functions at arbitrary rank](surcomplex/entire-functions-at-arbitrary-rank/) | Read the original two-manuscript main text and finite-variable appendix before the later expansion. Strengthened the growth barrier to eventual cofinal growth, with an oscillating-range counterexample; expanded linear division, the multivariate attained-minimum argument and the preparation-only finite-zero bound. Corrected the fixed-element order-unit equivalence, nonzero-group convention and universal Bézout scope. Revised arguments received a second independent review. |
 | [Global divisors](surcomplex/global-divisors/) | Read the main plane and compact proof chains through the cutoff comparison. Corrected complementary divisor support, fixed-field root-splitting scope and trivial-group reduction. Proved the coordinate-chart transfer of PID stalks and `Pic = Pic_lf`, with a second independent check. Made the genus-zero exception and workspace quantifiers explicit, proving detection by all positive cutoffs in a fixed nonzero workspace; corrected analytic-operation and source-comparison summaries. |
 | [Nonabelian support](surcomplex/nonabelian-support/) | Read the full main matrix Cousin and monodromy chains. Proved that well-ordering of full raw transition support is sufficient but not necessary, while raw singular support fails both directions. Added a left-gauge counterexample; corrected matrix exp/log domains, support-condition invariance, classification scope and unsupported computation claims. The main support correction received a second review. |
+| [Contours and Stokes](surcomplex/contours-and-stokes/) | Checked the revised support, smooth pullback, topology, microscopic-cycle, rational-comparison and sampling arguments. Replaced the false cofinality shortcut by finite-word incidence; corrected the word-embedding inequality and diagonal-substitution comparison. Supplied the properness and identity-theorem steps in the ramified Leray construction and expanded target composition about the ordinary map. Distinguished coefficientwise recovery from valuation limits and standard-part continuity from fine continuity. |
 
 Each correction was reviewed against its local definitions and downstream uses
 within the stated scope. Changed PDFs were rebuilt and affected pages inspected.
@@ -74,6 +75,11 @@ the nonabelian suites passed 2,899 exact checks plus eight exact and four
 numerical monodromy comparisons (maximum error `1.472e-13`, below `2e-9`).
 All were run on temporary copies, preserving historical programs and data.
 
+The contour PDF rebuilt in three passes without warnings or box issues. Its
+four unchanged finite suites passed 317, 244, 167 and 632 exact checks on
+temporary copies; the copied programs match the maintained historical files.
+The revised passages were inspected in the 87-page PDF.
+
 ## Collection-wide work
 
 The [reader map](README.md), [catalogue](manifest.tex) and statement index
@@ -106,12 +112,12 @@ the report versions and suites then reviewed.
 The reports above have received targeted corrections or a main-text reading,
 as recorded in each row. Uninspected portions, imported results, source-claim
 reconciliation and any formalization remain separate obligations. The other
-three main reports have been mapped for notation and navigation but have not
+two main reports have been mapped for notation and navigation but have not
 received a full mathematical review in this pass:
 
-- Surcomplex analysis; contours and Stokes; differential equations.
+- Surcomplex analysis; differential equations.
 
-These three reviews are now in progress. Their unfinished edits are not
+These two reviews are now in progress. Their unfinished edits are not
 covered by the completed-review rows above.
 
 Continue with elementary statements and their dependencies before broad
