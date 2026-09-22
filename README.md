@@ -34,6 +34,10 @@ in the ordered base field. Polynomial results reuse mathlib's splitting,
 algebraic-closedness, and integrality theorems.
 The rational circle chart is an equivalence from the ordered base field to
 the norm-square-one points other than `-1`, with inverse `im / (1 + re)`.
+Finite geometry includes Heron's area identity, Ptolemy's inequality and the
+positive-quotient criterion for equality in the triangle inequality. Formal
+polynomial derivatives give multiplicity, finite Taylor expansion and the
+divisibility criterion for equal jets.
 
 These generic prerequisites do not yet construct the surreal field or establish
 the normal-form bridge to Hahn series. A successful build proves only the
