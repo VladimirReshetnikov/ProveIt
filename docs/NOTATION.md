@@ -146,6 +146,15 @@ divisibility because their squared values have even leading exponents;
 arbitrary positive Hahn scalars have a square root exactly when their
 leading exponent lies in `2Γ`.
 
+The projection calculus in Part II is additive on disjoint label sets
+after applying each projection to a vector and taking a **strong Hahn sum**.
+This is distinct from the classical **strong operator topology**, which
+tests topological convergence on each vector. Even for `Γ = ℚ`, the vector
+`Σₙ t^{1−1/(n+1)} eₙ` is a valid Hahn sum whose coordinate partial sums do
+not converge in valuation. The failure of an operator-valued Hahn sum alone
+does not decide whether a projection-valued set function is a spectral
+measure; specify the intended additivity and topology.
+
 ## Finite elements, standard part, and reduction
 
 Use `O_F = {v ≥ 0}` and `m_F = {v > 0}` for the finite valuation ring and

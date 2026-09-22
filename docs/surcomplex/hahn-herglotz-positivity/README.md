@@ -169,7 +169,10 @@ class, sample space and moment type.
 
 **[spectral-theory](../spectral-theory/)** and
 **[infinite-dimensional-hahn-spectral-theory](../infinite-dimensional-hahn-spectral-theory/)**
-supply no spectral measures. Corollary 6.5 adds only negative information and
+do not supply the positive coefficientwise circle measure ruled out here.
+The infinite-dimensional report provides a vectorwise Hahn-additive
+projection calculus, with a different additivity notion. Corollary 6.5 adds
+only negative information and
 supplies none. **[trigonometry](../trigonometry/)** has the root-of-unity
 orthogonality `trigonometry:eq:orthogonalityfinite` behind Theorem 6.2, and
 **[foundations](../../foundations-and-computation/foundations/)** the Neumann

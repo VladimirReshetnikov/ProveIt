@@ -42,7 +42,7 @@ No row below certifies every claim in an entire report.
 | [Wick summability](surcomplex/wick-summability-certificates/) | Read the main support, semigroup, strict-alternative, diagram, connected-graph, covariance, identity and cancellation proofs and examples. Corrected the zero-semigroup boundary and proved the exact finite-sector criterion; added an integer-group counterexample explaining original-group divisibility. Extended the grouping proposition to a common nonzero complex factor and repaired the quartic comparison for signed Hahn tails. Specified monomial-insertion, zero-derivative and unit-exponent conventions and current partial Lean coverage. Checked the BM normal-form references and Etingof's normalized connected identity; other imports, literature comparisons and original-source reconciliation remain outside this review. |
 | [Holonomic rigidity](surcomplex/holonomic-rigidity-for-entire-hahn-functions/) | Read the main support, escape, orbit, recurrence, differential, generic-line, dilation, theta, torsion and mixed-operator proofs and examples. Added inward stability of strong evaluation and used it to remove divisibility from the torsion equivalence. Repaired empty refined maxima, periodic starting indices and the unit-residue period choice. Replaced the false coefficientwise coarsening picture by a valuation on the same field, with a collapsing-support example; extended the explicit witness's short cofinal proof to arbitrary tails. Checked Stanley's recurrence correspondence and the local coarsening statement; other imports, priority and original-source reconciliation remain outside this review. |
 | [Hahn–Tate uniformization](surcomplex/hahn-tate-uniformization/) | Targeted correction only: restricted the coordinate-family exact-domain clauses in all three main statements to nonzero inputs, explained the zero-input exception and aligned the README and catalogue. The rest of the main proof chains remain unreviewed in this pass. |
-| [Infinite-dimensional Hahn spectral theory](surcomplex/infinite-dimensional-hahn-spectral-theory/) | Read the shared support tools and Part I inner-product, automatic-adjoint, defect, normal-spectrum, inverse-smooth, coercivity, completeness, duality and norm-attainment proofs. Reconstructed the norm over arbitrary value groups, then removed the unused Part I divisibility restriction after tracing every root operation. Proved closedness of the coercive range at every rank using the continuous defect projection, retaining the original metric argument under its rank-one hypothesis. Added the positive-scale guard to the backward-shift example, distinguished valuation zero from metric distance one, and aligned the two inner-product conventions, summaries and hypothesis ledger. Part II main proof chains, imported classical results, literature claims and source-claim reconciliation remain unreviewed in this pass. |
+| [Infinite-dimensional Hahn spectral theory](surcomplex/infinite-dimensional-hahn-spectral-theory/) | Read the shared support tools and Part I inner-product, automatic-adjoint, defect, normal-spectrum, inverse-smooth, coercivity, completeness, duality and norm-attainment proofs. Reconstructed the norm over arbitrary value groups, then removed the unused Part I divisibility restriction after tracing every root operation. Proved closedness of the coercive range at every rank using the continuous defect projection, retaining the original metric argument under its rank-one hypothesis. Added the positive-scale guard to the backward-shift example, distinguished valuation zero from metric distance one, and aligned the two inner-product conventions, summaries and hypothesis ledger. A subsequent Part II pass read the algebra, homogeneous diagonalization, normalization, synthesis, commutant, resolvent, walk, stability, finite-section, example and transport proofs. Corrected strict diagonal-coherence claims at finite index sets and trivial groups; supplied a coherent diagonal with incoherent inverse. Distinguished vectorwise Hahn projection additivity from classical strong-operator additivity, checked against Williams Definition 5.1, and gave a rank-one counterexample to pointwise valuation convergence. Expanded the sharp boundary coefficient’s formal root-comparison step and supplied its positive-length guard. Other imported classical results, priority and source-claim reconciliation remain outside this review. |
 | [Hahn–Herglotz positivity](surcomplex/hahn-herglotz-positivity/) | Read the main support, scalar and matrix normalization, Harnack, null-ideal, functional, Fourier, quadrature, Schur, hierarchy and finite-prefix proof chains. Proved the Harnack, halo-positivity and common-kernel conclusions without divisibility by scalar normalization of quadratic forms. Expanded the zero-form and matrix-coefficient arguments; supplied the scalar-normalization positivity hypothesis and the integer-group obstruction to identity-block congruence. Corrected finite-valued versus finite-support terminology and the false disjointness of the strong and coefficientwise measure classes. Aligned partial Lean coverage and Fourier notation. Checked the classical disk representation against Bhattacharyya–Bhowmik–Kumar v3 and only the constant-kernel clause of Gesztesy–Tsekanovskii Lemma 5.3 against its preprint; other imports, priority and source-claim reconciliation remain outside this review. |
 | [Expanding polynomial dynamics](surcomplex/expanding-polynomial-dynamics/) | Read the main scale-ideal, inverse-branch, universal-center, fiber, periodicity, topology, extension, deformation, bounded-orbit and surreal-specialization proofs. Made degree preservation explicit in summaries and supplied a higher-degree two-cycle counterexample; clarified universal formal substitution and coefficient stabilization, and supplied the missing noncompactness argument. Distinguished an order unit from rank one, spelled out the proper-class specialization using set-sized compactness, and corrected the README’s ambiguous finite-orbit wording. Aligned partial Lean coverage and the notation guide. Checked the classical quadratic Cantor comparison and spherical Fatou/Julia definitions against Benedetto’s notes; other imports, priority and source-claim reconciliation remain separate. |
 
@@ -203,6 +203,21 @@ and audited 5,371 declarations. The 1,754 statement-index entries and all
 maintained Markdown links were checked. This source review does not formalize
 the strengthened results or validate Part II's proof chains.
 
+The infinite-dimensional report's Part II review rebuilt the article at
+54 pages, its Hahn–Herglotz companion at 33 pages and the catalogue at
+22 pages. The spectral article retains its baseline novelty-table underfull
+box; the companion and catalogue are clean. The revised coherence,
+projection-additivity, resolvent, root-comparison, citation and companion
+pages were inspected. The unchanged Part II verifier passed all 218 exact
+checks on a temporary copy with SymPy 1.14.0; its JSON matches the historical
+record except for the Python version. All fifteen historical code, data
+and provenance files across the two reports remain byte-identical.
+The statement index still checks all 1,754 entries in 36 reports, and
+maintained Markdown links were checked. No Lean sources changed; the
+preceding full build and axiom audit cover the unchanged library.
+The Williams citation was checked only for Definition 5.1 and its
+strong-operator topology footnote, not for the other imported results.
+
 ## Collection-wide work
 
 The [reader map](README.md), [catalogue](manifest.tex) and statement index
@@ -227,10 +242,10 @@ this checks the integration, not the new mathematical claims.
 
 Of the ten reports added on September 22, Hahn-valued measures, Markov
 generators, tail spans, Prony reconstruction, Wick summability, holonomic
-rigidity, Hahn–Herglotz positivity and expanding polynomial dynamics have
-received the main-text reviews recorded above. The other two additions
-(Hahn–Tate uniformization and Part II of infinite-dimensional spectral theory) and the
-new sections in differential equations,
+rigidity, Hahn–Herglotz positivity, expanding polynomial dynamics and both
+parts of infinite-dimensional spectral theory have received the main-text
+reviews recorded above. The remaining addition, Hahn–Tate uniformization,
+and the new sections in differential equations,
 dynamics, entire functions,
 nonabelian support, spectral theory and exponential automorphism rigidity
 remain outside the earlier review scopes, apart from explicitly recorded

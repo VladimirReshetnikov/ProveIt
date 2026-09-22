@@ -199,8 +199,9 @@ $\No[i]$, bounded-operator spectra, compact or trace-class operators,
 or spectral measures.''
 \end{quote}
 The two manuscripts assembled here supply the first two of those items and
-the compact half of the third. Trace-class operators and spectral measures
-are left alone.
+the compact half of the third. Trace-class theory and a classical
+Hilbert-space spectral-measure theory are not developed; Part II supplies
+an algebraic projection calculus with vectorwise Hahn additivity.
 
 \begin{itemize}
 \item \emph{Infinite-dimensional Hilbert spaces over the surcomplex
@@ -215,12 +216,12 @@ are left alone.
  ``compact'' there describes the original operator on the ordinary Hilbert
  space and asserts nothing about compactness or compactoidness in the Hahn
  valuation topology.
-\item \emph{Trace-class operators and spectral measures} remain untouched.
+\item \emph{Trace-class operators and spectral measures.}
  Nothing below is a trace-class theory. \Cref{ihs:rf:thm:commutant} gives a
- complete Boolean algebra of spectral projections, but
- \cref{ihs:rf:rem:notopsum} shows that the family of rank-one projections
- is not strongly Hahn summable as a family of \emph{operators}, so that
- calculus is not a spectral measure and is not offered as one.
+ complete Boolean algebra of spectral projections with vectorwise strong
+ Hahn additivity. This does not assert topological countable additivity:
+ \cref{ihs:rf:rem:notopsum} distinguishes the two and supplies a
+ counterexample even for a rank-one value group.
 \end{itemize}
 
 The finite-dimensional report is already a long treatise on determinantal
@@ -1931,7 +1932,7 @@ $\Arf$:
  0,&i=j.
  \end{cases}
 \end{equation}
-They preserve support, and they preserve the row- and column-finiteness of
+They do not enlarge Hahn support, and they preserve the row- and column-finiteness of
 every coefficient. On off-diagonal matrices, $\mathcal R_D$ is the inverse
 of $X\mapsto[D,X]$.
 
@@ -2207,9 +2208,17 @@ $\bigcup_i\supp a_i$ is well ordered. There is no finite-incidence condition
 on the indices $i$ here: an arbitrary diagonal matrix of complex numbers is
 one legitimate coefficient in $R_I$.
 
-This is strictly more restrictive than allowing all of $\K^I$, and less
-restrictive than demanding bounded ordinary diagonal coefficients. Both
-facts matter for the spectrum calculation.
+For finite $I$, every family is coherent, so $\Dg=\K^I$; the same equality
+holds for the trivial value group. If $I$ is infinite and $\Gamma\ne0$,
+the inclusion is strict. Choose distinct indices $i_n$ and $\eta>0$, and
+set $a_{i_n}=t^{-n\eta}$ for $n\ge1$, with all other entries zero. Their
+support union contains the decreasing sequence $-\eta,-2\eta,\ldots$,
+so this family does not belong to $\Dg$.
+
+Coherence places no ordinary bound on a fixed diagonal coefficient:
+the constant matrix with entries $n$ at $i_n$ and zero elsewhere belongs
+to $\Dg$ when $I$ is infinite. These are separate conditions, and the
+resolvent proof below uses precisely global support coherence.
 
 \begin{theorem}[The complete commutant]\label{ihs:rf:thm:commutant}
 Within the specified Hahn operator algebra,
@@ -2257,20 +2266,41 @@ can be nonzero. Apply \cref{ihs:rf:lem:strongaction} to transport the sums
 by $U$.
 \end{proof}
 
-\begin{remark}[A necessary distinction, and why this is not a spectral measure]\label{ihs:rf:rem:notopsum}
+\begin{remark}[Operator sums and vectorwise additivity]\label{ihs:rf:rem:notopsum}
 For infinite $I$, the operator family $(P_{\{i\}})_{i\in I}$ is \emph{not}
-strongly Hahn summable as a family in $\Arf$: its coefficient at exponent
-zero is $E_{\{i\}}\ne0$ for every $i$. Thus
+strongly Hahn summable in $\Arf$: its coefficient at exponent zero is
+$E_{\{i\}}\ne0$ for every $i$. Thus $\sH_iP_{\{i\}}$ is undefined in that
+algebra, whereas $\sH_iP_{\{i\}}x=x$ holds for each $x\in\Hrf$.
+This distinction already occurs for $B=0$.
+
+It does not by itself exclude a spectral-measure interpretation.
+Classical projection-valued measures require countable additivity in
+the strong operator topology, which tests convergence on each Hilbert
+vector, rather than an operator-norm sum; see
+\cite[Definition~5.1 and footnote~18]{Williams}.
+Here $J\mapsto P_J$ on the power set of $I$ is a projection-valued set
+function with vectorwise \emph{Hahn} additivity by
+\cref{ihs:rf:cor:projsums}. Such additivity does not imply convergence
+in the intrinsic valuation topology.
+
+For an explicit failure, take $\Gamma=\Q$, $I=\N_{>0}$, $D=\diag(n)$,
+and $B=0$, so $U=\Id$ and $P_{\{n\}}=E_{\{n\}}$. Put
 \[
- \Id=\sH_i P_{\{i\}}
+ \gamma_n=1-\frac1{n+1},\qquad
+ x=\sH_{n\ge1}t^{\gamma_n}e_n.
 \]
-is false under the operator-valued summability definition of
-\cref{ihs:sec:supportconv}. The correct assertion is
-$\Id x=\sH_i P_{\{i\}}x$ for each $x\in\Hrf$. The distinction persists even
-for $B=0$ and is not a technical artifact of the proof. It is also the
-reason \cref{ihs:rf:thm:commutant} is not offered as a spectral measure, one
-of the objects the collection's finite-dimensional report listed as absent
-and which remains absent here.
+The exponents increase strictly, hence form a well-ordered set, and
+each coefficient has one coordinate. Thus $x\in\Hrf$, but
+\[
+ v\!\left(x-\sum_{n=1}^N P_{\{n\}}x\right)
+ =\gamma_{N+1}<1
+\]
+for every $N$. The partial sums never enter the neighborhood of $x$
+with error valuation greater than $1$. Consequently even this rank-one
+example lacks countable additivity in the topology of pointwise
+valuation convergence. The established object is the Hahn-additive
+projection calculus; no general topologically countably additive
+spectral-measure or Borel integration theorem is asserted.
 \end{remark}
 
 \subsection{An unrestricted ordinary label calculus}\label{ihs:rf:sec:labels}
@@ -2301,7 +2331,15 @@ assumption. It is the second of the two senses recorded in
 Diagonalization alone does not automatically identify this spectrum.
 Entrywise invertibility of infinitely many diagonal entries does not, in
 general, guarantee that their inverses have globally well-ordered support.
-The simple-residue hypothesis gives the additional coherence.
+The simple-residue hypothesis gives the additional coherence. For example,
+on $I=\N_0$ and with $\eta>0$, the diagonal
+$Q=\diag(t^{n\eta})$ belongs to $\Dg$, but its entrywise inverse has
+support $\{-n\eta:n\ge0\}$ and is not coherent. Any matrix inverse would
+have to have exactly those diagonal entries and zero off-diagonal entries,
+by multiplying entrywise against $Q$. Thus $Q$ is not invertible in $\Arf$.
+It is not onto $\Hrf$ either: the Hahn vector
+$\sum_{n\ge0}t^{n\eta}e_n$ would require the preimage $(1,1,\ldots)$,
+which has an inadmissible infinite-support coefficient at zero.
 
 \begin{theorem}[Coherent resolvents at every noneigenvalue]\label{ihs:rf:thm:resolvent}
 Under the hypotheses of \cref{ihs:rf:thm:unitary},
@@ -2573,7 +2611,8 @@ has length at least their graph distance. Apply
 \subsection{The threshold is sharp}\label{ihs:rf:sec:sharp}
 
 \begin{theorem}[A nonzero first boundary coefficient]\label{ihs:rf:thm:sharp}
-Let $A_L(t)$ be the tridiagonal matrix on vertices $0,\ldots,L$ with
+Let $L\ge1$ and let $A_L(t)$ be the tridiagonal matrix on vertices
+$0,\ldots,L$ with
 pairwise distinct real diagonal entries $d_0,\ldots,d_L$ and off-diagonal
 entries $t b_k$ and $t\overline{b_k}$ between $k$ and $k+1$, where
 $b_k\in\C\setminus\{0\}$. Let $\lambda_0^{[L]}$ be its branch with residue
@@ -2617,11 +2656,23 @@ Thus
  =\frac{\prod_{k=0}^{L-1}c_k}
  {(x-d_L)\prod_{k=1}^{L-1}(x-d_k)^2}\,q^L+\bigo(q^{L+1}).
 \]
-The two root equations have derivative $1+\bigo(q)$ with respect to $x$ at
-their solutions near $d_0$. Subtracting the equations therefore gives the
-same first root difference, evaluated at $x=d_0$. For $L=1$ the truncated
-branch is exactly $d_0$, and the original Schur equation gives the same
-formula directly. This proves \eqref{ihs:rf:eq:sharp}. The nonzero
+To justify passage from the tail difference to the root difference, let
+\[
+ G_L(x,q)=x-d_0-qc_0H_1^{[L]}(x,q),\qquad
+ x_L=\lambda_0^{[L]},\quad x_{L-1}=\lambda_0^{[L-1]}.
+\]
+Both roots are $d_0+\bigo(q)$. The formal divided difference of $G_L$
+between these two roots is a unit $1+\bigo(q)$, since
+$G_L(x,0)=x-d_0$. If $C(x)$ denotes the displayed coefficient of $q^L$,
+then
+\[
+ G_L(x_{L-1},q)=-C(d_0)q^L+\bigo(q^{L+1}),\qquad
+ G_L(x_L,q)=0.
+\]
+Subtracting and dividing by that unit gives
+$x_L-x_{L-1}=C(d_0)q^L+\bigo(q^{L+1})$, as claimed.
+For $L=1$ the truncated branch is exactly $d_0$, and the original Schur
+equation gives the same formula directly. This proves \eqref{ihs:rf:eq:sharp}. The nonzero
 denominator and the nonzero positive numerator prove sharpness.
 \end{proof}
 
@@ -3273,8 +3324,10 @@ is transferred between them. Both now allow nondivisible $\Gamma$ by
 their respective proofs; the row- and column-finiteness of Part~II is
 not available in Part~I. The two
 spectra of \cref{ihs:tab:senses} are not proved to agree, and no claim is
-made that either determines the other. Neither part is a trace-class theory
-and neither supplies a spectral measure.
+made that either determines the other. Neither part is a trace-class theory.
+Part II supplies a vectorwise Hahn-additive projection calculus, not a
+general topologically countably additive spectral-measure theorem; the
+counterexample in \cref{ihs:rf:rem:notopsum} states the precise limitation.
 
 \clearpage
 \phantomsection
@@ -3324,6 +3377,12 @@ G. Higman, Ordering by divisibility in abstract algebras,
 R. G. Douglas, \emph{Banach Algebra Techniques in Operator Theory},
 second edition, Graduate Texts in Mathematics 179, Springer, 1998.
 \url{https://doi.org/10.1007/978-1-4612-1656-8}.
+
+\bibitem{Williams}
+D. P. Williams, \emph{Lecture Notes on the Spectral Theorem},
+Definition~5.1 and footnote~18, pp.~15--16.
+Cited only for the classical strong-operator additivity convention.
+\url{https://www.math.dartmouth.edu/~dana/bookspapers/ln-spec-thm.pdf}.
 
 \bibitem{AN}
 J. Aguayo and M. Nova, Non-Archimedean Hilbert like spaces,

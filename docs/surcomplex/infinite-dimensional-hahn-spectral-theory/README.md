@@ -8,7 +8,7 @@ parts.
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 53 pages
+article.pdf   the compiled report, 54 pages
 README.md     this guide
 03-infinite-spectral-PROVENANCE.md   Part II's delivered provenance record
 code/         02-hahn-hilbert-spectral-{verify.py,build.sh}   (Part I)
@@ -28,11 +28,15 @@ Both manuscripts continue the same sentence of the finite-dimensional
 does not contain: "There is no theorem here about infinite-dimensional Hilbert
 spaces over No[i], bounded-operator spectra, compact or trace-class operators,
 or spectral measures." This report supplies the first two of those items and
-the compact half of the third. **Trace-class operators and spectral measures
-remain untouched.** Part II's spectral projections form a complete Boolean
-algebra, but the family of rank-one projections is not strongly Hahn summable
-as a family of operators, so that calculus is not a spectral measure and is not
-offered as one.
+the compact half of the third. **No trace-class theory or general
+topologically countably additive spectral-measure theorem is supplied.**
+Part II provides a complete Boolean algebra of projections with vectorwise
+strong Hahn additivity. Their failure to form an operator-valued Hahn sum
+does not itself exclude a spectral measure: the classical definition uses
+strong-operator additivity on each vector. Remark 19.4 instead gives an
+explicit failure of pointwise valuation convergence, even over rational
+exponents, distinguishing the established Hahn calculus from that
+topological requirement.
 
 The two parts are **not** one theory with one hypothesis paragraph. The word
 *spectrum* means different things on different vector spaces. Both now allow arbitrary nonzero set-sized ordered value groups:
@@ -102,7 +106,11 @@ globally well-ordered positive support:
 3. **The algebra-relative spectrum.** `σ_𝒜(A) = {λ_i}`, even when the real
    residues accumulate, with a coherent resolvent at every noneigenvalue.
    This is a spectrum relative to a specified unital `K`-algebra, not a
-   Banach-algebra spectrum.
+   Banach-algebra spectrum. The coherence proof is essential: the diagonal
+   `diag(tⁿ)` has coherent support but its scalar inverses do not form a
+   Hahn operator. For a finite index set the diagonal algebra is all `K^I`;
+   its strict inclusion in `K^I` requires an infinite index set and
+   nonzero value group.
 4. **Walks and finite sections.** Closed weighted walks control every
    eigenvalue coefficient; a change outside a finite section is first seen only
    through a walk that leaves the section and returns; the order `2r+2`
@@ -125,7 +133,8 @@ globally well-ordered positive support:
 - The Part I spectral formula concerns **constant normal** operators. It is
   not a classification of spectra of general Hahn operator series.
 - The Part II hypothesis of distinct real labels forces `|I| ≤ |R|`.
-- **No trace-class theory and no spectral measure** are provided.
+- **No trace-class theory or general topological spectral-measure theorem**
+  is provided; the vectorwise Hahn-additive projection calculus is explicit.
 - The proofs have not been independently refereed or checked by a proof
   assistant.
 - The two programs check finite algebraic identities only. They do not
@@ -159,9 +168,8 @@ It supplies no spectral-measure theory.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The reviewed build has 53 pages, zero errors, zero undefined references and
+The reviewed build has 54 pages, zero errors, zero undefined references and
 citations, and zero duplicate PDF destinations. It retains the baseline
-underfull box in the novelty table. The earlier 54-page build placed the
-status note alone on a second title page; adjusted spacing keeps it with
-the abstract. To rerun the checks, run the scripts in
+underfull box in the novelty table. The status note is printed with the
+abstract on one title page. To rerun the checks, run the scripts in
 `code/` on a copy of this directory; SymPy 1.14.0 is pinned in `data/`.
