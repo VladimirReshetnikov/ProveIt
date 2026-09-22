@@ -105,6 +105,9 @@ isomorphism from positive-order series to units differing from one by positive
 order. Coefficient maps preserve strong sums and evaluation; in particular,
 exp/log commute with complex conjugation. Near-one series satisfying
 `z * conj(z) = 1` have logarithms with purely imaginary coefficients.
+For divisible exponent groups, complex Hahn series have a modulus valued in
+the ordered real Hahn field. Its unit circle is exactly that algebraic locus,
+so the logarithm conclusion also holds under the literal modulus-one condition.
 Roots of monic polynomials over this subring stay in it; for split polynomials,
 standard part preserves the root multiset with multiplicities.
 Resultant and nodal-derivative valuations are finite sums of root-separation
@@ -264,6 +267,10 @@ Conway monomials and leading exponents now act on the actual sign field.
 Finite monomial expressions form an injective ring map into that field for
 every strictly increasing additive exponent map. Their valuation, leading
 coefficient and positivity agree with their finitely supported Hahn series.
+Full order comparison is decided by the first coefficient that differs,
+and evaluation gives an ordered ring isomorphism onto its actual range.
+Finite complex coefficient forms likewise embed in the actual surcomplex
+field, preserving valuation and the complex leading coefficient.
 The monoid algebra also embeds into Hahn series with image exactly the
 finite-support series, giving unique finite coefficient representations.
 A maximum of finitely many weighted exponents gives a positive scale making
