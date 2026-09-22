@@ -90,6 +90,12 @@ versions. Finiteness means bounded magnitude by an ordinary integer;
 infinitesimality means magnitude below every positive ordinary real number.
 Neither says anything about finite birthday or finite support.
 
+These identifications use ordinary real or complex coefficients. For a general
+coefficient field `k`, the Hahn ring `{v ≥ 0}` still has residue map to `k`,
+but its elements need not be bounded by ordinary integers. The
+[computer-algebra report](foundations-and-computation/computer-algebra/article.tex)
+(`cas:thm-core`) separates this general residue from ordinary standard part.
+
 Scalar standard part is the ring map `st : O_F → ℝ` or `ℂ`. For finite
 `z`, it is the coefficient at exponent zero, and `z − st(z)` is
 infinitesimal. Some reports call this map `red` or `res`; these names are
@@ -177,6 +183,12 @@ Hahn support is not well ordered, so it is not a formal-coefficient Hahn
 series in `ℂ[[Z]]((t^Γ))`. Conversely, analytic versus formal coefficient
 conditions are about ordinary coefficient functions, not about the valuation
 of a single scalar.
+
+For a Hahn ring `A((t^Γ))`, distinguish its nonnegative-support subring from
+the positive-support **ideal of that subring**. The latter lacks `1`; when
+`Γ` is nontrivial it is not an ideal of the full Hahn ring, where positive
+monomials are invertible. Taylor evaluation of holomorphic coefficients at `c + ε` requires
+`c` in their common ordinary domain and an infinitesimal displacement `ε`.
 
 Do not use the local symbol `A` as a category name: it denotes radius-free
 germs in analytic geometry, polynomial-coefficient Hahn series in the
@@ -287,6 +299,11 @@ ball. See [dynamics](surcomplex/dynamics-and-normal-forms/article.tex)
 (`dyn:subsec:radius`) and
 [polynomial algebra](surcomplex/polynomial-algebra/article.tex)
 (`polynomial:subsec:conventions`).
+
+The computer-algebra convention `O_v(β)` means an error with valuation at least
+the **exponent** `β`. Thus for `v(t) = 1`, write `O_v(7)`, not `O_v(t^7)`.
+Other reports may instead define an ordinary asymptotic `O(t^7)`; quote its
+local definition before translating the notation.
 
 The dynamics report's ordinary small-divisor growth rates measure complex
 coefficient sizes, even when every nonzero divisor has Hahn valuation zero

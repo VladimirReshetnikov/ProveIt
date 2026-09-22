@@ -20,7 +20,7 @@ support; the executable code handles finite support only.
 
 ## Files
 
-- `surreal_product_birthdays.pdf`: the full article with proofs and sources.
+- `surreal_product_birthdays.pdf`: the 20-page article with proofs and sources.
 - `surreal_product_birthdays.tex`: self-contained LaTeX source, with bibliography.
 - `references.bib`: reusable BibTeX records (not required to compile the article).
 - `code/ordinal_series.py`: exact ordinal arithmetic and finite-support series code.
@@ -41,9 +41,34 @@ a non-dyadic last coefficient, and a dyadic last coefficient with one of two
 possible endpoint corrections. Ordinary ordinal operations and natural ordinal
 operations are explicitly distinguished throughout the article.
 
-For finite supports, a product's birthday can be computed using only the top
-and immediate-predecessor coefficient of each input, after finding their
-maximum support indices. Constructing the complete product is unnecessary.
+For finite supports, a product's birthday is determined by the coefficient at
+each maximum support index and its immediate predecessor. Constructing the
+complete product is unnecessary. The executable rational case decides exact
+dyadic status from reduced denominators; for arbitrary real coefficients, the
+formula assumes those exact decisions and does not supply an algorithm for
+computable-real names.
+
+## September 22 proof review
+
+The proof review retains the stated theorem and equality classification. It
+expands the cofinal-support squeeze at limit stages, the leading-coefficient
+argument for strictness under dyadic scaling, and the finite endpoint proof.
+That proof now explains why the maximum product index has only one
+contribution, and why a first Cantor-coefficient difference restricts the
+predecessor to exactly two possible contributions. A new example contrasts
+their cancellation to zero with their sum being non-dyadic.
+
+The local-ring inverse proof now uses an explicit finite geometric identity at
+each prescribed index, with the Cantor weight supplying the cutoff, including
+at index zero. The notation distinguishes finite magnitude from finite birthday
+and records `t^alpha = omega^(-alpha)`, whose ordinal indices multiply by natural
+addition.
+
+The imported all-minus sign rule was rechecked against Bournez–Guilmant,
+arXiv:2201.08199v1, Definition 2.20 and Theorem 2.21 (printed page 13).
+The two added cancellation examples agree in all three existing birthday
+evaluators. The historical code and `verification.json` remain unchanged;
+the recorded exhaustive and random suites below were not rerun in this review.
 
 ## Run the exact checks
 
@@ -114,7 +139,10 @@ Alternatively use `make all`. Three passes ensure stable references and contents
 `make verify` runs the default checks and replaces `verification.json`.
 `make clean` removes intermediate TeX files without deleting the PDF.
 
-The PDF distributed here was rendered and visually inspected. The archive does
-not include third-party papers, books, font files, or a compiled proof-assistant
-artifact. Source provenance and the limits of the literature search are stated
-in the article.
+The September 22 revision and the original baseline were each built with three
+passes. Both final logs have no warnings, undefined references, or overfull or
+underfull boxes. The revised PDF has 20 pages (baseline: 19); physical pages 4,
+6–7, 9, 11–13, 15, and 19 were rendered and visually inspected around the changes.
+The archive does not include third-party papers, books, font files, or a compiled
+proof-assistant artifact. Source provenance and the limits of the literature
+search are stated in the article.

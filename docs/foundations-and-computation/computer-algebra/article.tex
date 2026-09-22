@@ -160,10 +160,12 @@ supplied research manuscripts stand behind it, one of them in two different
 revisions; they are treated as sources, not as independently refereed or
 machine-verified publications. Established theorems, deductions proved in the
 sources, results imported from the supplied manuscripts, proposed interfaces,
-and executed example tests are distinguished throughout. Nothing here is
-machine-verified: no Lean file, formalization blueprint or formalization audit
-exists in any of the three source packages, and no git commit, Lean toolchain or
-mathlib revision is pinned anywhere. No universal surreal simplifier, complete
+and executed example tests are distinguished throughout. The three original
+source packages supplied finite checks, with no Lean files, formalization
+blueprints, proof-assistant audits, or pinned Lean dependencies. Current
+repository formalization coverage is recorded separately in
+\path{docs/FORMALIZATION.md}; it is not supplied by these prototype tests.
+No universal surreal simplifier, complete
 surcomplex analytic system, or complete surreal CAS is claimed.
 \end{minipage}
 \end{titlepage}
@@ -275,10 +277,11 @@ would silently drop two capabilities.
 Consider three outputs:
 \[
  A=\frac1{1-t},\qquad
- B=1+t+\cdots+t^9+\Ov{t^{10}},\qquad
+ B=1+t+\cdots+t^9+\Ov{10},\qquad
  C=\operatorname{StrongSum}(n\mapsto t^n).
 \]
-Here $A$ names one exact element; it is a finite exact field expression whose
+Here $v(t)=1$ and $\Ov{10}$ means an error of valuation at least $10$, as in
+\cref{cas:sub-ovconvention}. $A$ names one exact element; it is a finite exact field expression whose
 Hahn normal form has infinitely many terms. $B$ names a \emph{precision class}
 unless it carries an additional exact-tail specification; the displayed
 polynomial $1+t+\cdots+t^9$ is not the same exact number as $A$. And $C$ names
@@ -322,8 +325,8 @@ algorithm is narrower than ``all transseries''.\\[0.4em]
 Analytic germs and Hahn families & Local functions, finite jets, coherent
 periods & Domain, support, branch and ordinary coefficient algorithms must all
 be supplied.\\[0.4em]
-General oracular or program-described Hahn data & A broad countable collection
-of exact values & No universal equality, support validation or finite cutoff
+Finitely described Hahn data, possibly relative to a fixed oracle & A countable
+collection of exact values for each fixed oracle & No universal equality, support validation or finite cutoff
 materialization.\\
 \bottomrule
 \end{longtable}
@@ -388,11 +391,12 @@ fourth, global-divisor manuscript cited \emph{inside} PA is not among the three
 files supplied to that article and is not used here as an independently
 inspected source.
 
-Finally, and once for the whole report: nothing here is machine-verified. None
-of the three source packages contains a Lean file, a formalization blueprint, or
-a formalization audit of any kind, and no git commit hash, Lean toolchain or
-mathlib revision is pinned anywhere in any of them. The finite symbolic checks
-recorded in \cref{cas:sec-executed} are exactly that.
+None of the three original source packages supplied a Lean formalization or
+pinned proof-assistant dependencies. Their finite symbolic checks, recorded in
+\cref{cas:sec-executed}, do not establish general theorems in Lean. The containing
+repository now maintains a separate implementation and coverage ledger in
+\path{docs/FORMALIZATION.md}; that ledger, rather than the historical package
+inventory, determines which source claims have checked counterparts.
 
 \section{Objects the software must distinguish}
 \label{cas:sec-objects}
@@ -805,8 +809,9 @@ among elementary constants.
 \subsection{Cuts, sign expansions, and the simplest-number semantics}
 \label{cas:sub-cuts}
 The original cut presentation and the sign-sequence presentation retain
-simplicity and birthday information. Hereditarily finite legal cut trees,
-equivalently finite sign expansions, represent exactly the dyadic rationals.
+simplicity and birthday information. Hereditarily finite legal cut trees
+represent exactly the numbers with finite sign expansions, namely the dyadic
+rationals. Different cut trees can represent the same dyadic value.
 They are excellent for teaching the recursive construction and for checking
 small identities, but a poor universal arithmetic storage format: $1/3$ has a
 short rational expression and is not a finite-birthday surreal, so division
@@ -874,8 +879,9 @@ prototypes implement, in three different specializations.
 \subsection{Algebraic specifications and branch selectors}
 \label{cas:sub-algebraic}
 An algebraic object should contain a polynomial over the declared coefficient
-field together with enough data to select one root. A bare equation $P(z)=0$
-denotes a finite set or a relation, not one number. Valid selectors include an
+field together with enough data to select one root. For nonzero $P$, a bare
+equation $P(z)=0$ denotes a finite root set, not one selected number; the zero
+polynomial imposes no condition. Valid selectors include an
 ordered real root index, a Thom encoding, a certified simple residual root after
 a scale change, a certified infinitesimal expansion distinguishing a branch, or
 a tower of ordered algebraic extensions. A valuation ball containing a multiple
@@ -1074,7 +1080,8 @@ then print the three specializations.
 Let $k$ be an effective field, with an effective order when real comparisons are
 requested. Let $\Gamma$ be an effectively ordered additive group and let
 $X_1,\dots,X_d$ be monomials whose exponents $\beta_1,\dots,\beta_d\in\Gamma$ are
-$\Q$-linearly independent. Then $k(X_1,\dots,X_d)$ embeds in $k((t^{\Gamma}))$,
+independent over $\Z$ (no nonzero integer exponent vector sums to zero).
+Then $k(X_1,\dots,X_d)$ embeds in $k((t^{\Gamma}))$,
 and finite rational-function descriptions give an \emph{effective field}:
 arithmetic terminates, and equality of $P/Q$ and $P'/Q'$ is decided by the zero
 test on the single polynomial $PQ'-P'Q$. For nonzero $f=P/Q$, writing $\alpha(P)$
@@ -1085,14 +1092,18 @@ coefficient,
  \lc(f)=\frac{c(P)}{c(Q)},\qquad
  \sgn(f)=\sgn\bigl(c(P)c(Q)\bigr),
 \end{equation}
-the last for real inputs, where $\sgn$ is the sign in $k$. If $v(f)>0$ then
-$\st(f)=0$; if $v(f)=0$ then $\st(f)=\lc(f)$; if $v(f)<0$ then $f$ is infinite
-and the finite standard-part operation is inapplicable. The zero case is handled
-separately, with $v(0)=+\infty$ as a distinguished marker.
+the last when $k$ is ordered, where $\sgn$ is the sign in $k$. On the Hahn
+valuation ring $v(f)\ge0$, the residue in $k$ is $0$ if $v(f)>0$ and
+$\lc(f)$ if $v(f)=0$. If, in addition, $k$ is embedded in the ordinary reals
+or complexes and the exponent group is interpreted by Conway monomials, this
+residue is the ordinary standard part: $v(f)<0$ then means $f$ is infinite
+and has no finite standard part. For arbitrary $k$ the residue assertion makes
+no claim about ordinary finiteness. The zero case has residue and standard
+part $0$ when applicable, with $v(0)=+\infty$ as a distinguished marker.
 \end{theorem}
 \begin{proof}
 Distinct integer exponent vectors give distinct values of $\sum n_j\beta_j$ by
-$\Q$-linear independence, so a nonzero polynomial in the $X_j$ maps to a
+integer independence, so a nonzero polynomial in the $X_j$ maps to a
 nonempty finite normal form and cannot vanish; the generators are algebraically
 independent over $k$ and the embedding extends to fractions. Concretely, write a
 nonzero denominator as $Q=c\,t^\beta(1+\epsilon)$ with all exponents of the
@@ -1104,8 +1115,12 @@ Polynomial arithmetic over $k$ is effective because coefficient arithmetic and
 equality are. Equality of fractions reduces to the zero test on $PQ'-P'Q$, a
 finite coefficient computation. The leading term of a product cannot cancel
 because the least exponent of each factor is unique, which gives
-\eqref{cas:eq-leadingrational}; the Hahn ordering gives the sign statement. No
-infinite expansion is required by any of these algorithms.
+\eqref{cas:eq-leadingrational}; the Hahn ordering gives the sign statement.
+For $v(f)\ge0$, extracting the zero-exponent coefficient is the residue map:
+it vanishes at positive valuation and is the leading coefficient at valuation
+zero. With ordinary coefficients the positive-valuation tail is infinitesimal,
+which gives the stated standard-part interpretation. No infinite expansion is
+required by any of these algorithms.
 \end{proof}
 
 Polynomial gcd reduction, when supplied by the coefficient backend, yields
@@ -1185,7 +1200,9 @@ $\{1,1\}$ (\cref{cas:sec-executed}).
 \subsection{Effective real closure and complexification}
 \label{cas:sub-realclosure}
 Let $E$ denote an effective ordered rational-monomial field as in
-\cref{cas:thm-core} over a real coefficient field, let $F$ be its relative real
+\cref{cas:thm-core}, with an effective coefficient subfield of the ordinary
+reals and an ordered additive embedding of its exponent group in $\No$.
+Interpret its monomials by that embedding. Let $F$ be its relative real
 closure realized inside $\No$ --- the elements of $\No$ algebraic over $E$,
 which is a real closure because $\No$ is real closed --- and put $C=F[i]$.
 
@@ -1193,8 +1210,8 @@ which is a real closure because $\No$ is real closed --- and put $C=F[i]$.
 \label{cas:thm-realclosure}
 $F$ admits finite effective algebraic descriptions with decidable real order and
 equality, and $C$ admits finite effective descriptions with decidable equality
-and field operations. Every finite-degree univariate polynomial over $C$ has all
-its roots in $C$. Semialgebraic sentences over these effective coefficient
+and field operations. Every nonconstant univariate polynomial over $C$ splits
+into linear factors in $C$. Semialgebraic sentences over these effective coefficient
 fields can be decided, and finite polynomial systems can be treated by effective
 algebraic methods with the output representation appropriate to their dimension.
 No Hahn expansion of each algebraic element is required for these guarantees.
@@ -1218,10 +1235,12 @@ foundation for this step \cite{cas:PerrucciRoy}.
 
 Pairs of real elements represent $C$, with complex equality the equality of both
 coordinates. Since $F$ is real closed, $F[i]$ is algebraically closed;
-consequently a polynomial over it factors there and no additional roots appear
-in a larger extension. Root specifications can also be obtained by writing the
-polynomial equation in real and imaginary coordinates and selecting among its
-finitely many solutions. For a polynomial system the same real-algebraic
+consequently every nonzero polynomial over it factors there and no additional
+roots appear in a larger field extension. For a nonzero polynomial, root
+specifications can also be obtained by writing its equation in real and
+imaginary coordinates and selecting among its finitely many solutions. A
+nonzero constant has no roots; the zero polynomial vanishes on all of $C$ and
+is represented by that whole solution set, not a finite root list. For a polynomial system the same real-algebraic
 encoding decides existential solvability and supplies descriptions of its
 solution conditions; a positive-dimensional solution set is represented by
 equations or a suitable parametric or semialgebraic description, not by a finite
@@ -1642,7 +1661,8 @@ The support $\{n\lambda:n\ge0\}\cup\{\mu\}$ is well ordered and lies in the grid
 generated by $\lambda$ and $\mu$, and every first summand has exponent below
 $\mu$. Hence the truncation below $\mu$ has infinitely many nonzero terms, and a
 finite list cannot represent that support completely. Moreover, after $N$
-geometric terms the remainder has valuation $(N+1)\lambda$ and \emph{never}
+geometric terms, indexed $0,\dots,N-1$, the remainder has valuation $N\lambda$
+and \emph{never}
 reaches $\mu$: a refinement loop that counts terms runs forever, even though
 every finite step is mathematically correct.
 
@@ -1928,9 +1948,9 @@ whose nonzero residual roots select the leading terms $t$, $-t$, $-t^3$. After
 these simple residual branches have been selected, ordinary coefficient
 recursion gives
 \begin{align*}
- \alpha_+&=t+\tfrac12t^3-\tfrac38t^5+\Ov{t^7},\\
- \alpha_-&=-t+\tfrac12t^3+\tfrac38t^5+\Ov{t^7},\\
- \alpha_0&=-t^3-t^7+\Ov{t^{11}} .
+ \alpha_+&=t+\tfrac12t^3-\tfrac38t^5+\Ov{7},\\
+ \alpha_-&=-t+\tfrac12t^3+\tfrac38t^5+\Ov{7},\\
+ \alpha_0&=-t^3-t^7+\Ov{11} .
 \end{align*}
 These finite displays do not replace the exact root descriptors; they are
 certified expansions attached to them.
@@ -3269,7 +3289,7 @@ so an exact finite-angle value is available without defining circular sine at
 $x$ itself. Concretely,
 \[
  \arctan\omega=\frac\pi2-\arctan t
- =\frac\pi2-t+\frac{t^3}{3}-\frac{t^5}{5}+\frac{t^7}{7}+\Ov{t^9},
+ =\frac\pi2-t+\frac{t^3}{3}-\frac{t^5}{5}+\frac{t^7}{7}+\Ov{9},
 \]
 with $t=\omega^{-1}$: \emph{an infinite argument causes no infinite phase
 choice}, unlike a request for $\sin\omega$. Endpoint branches must be explicitly
@@ -4224,9 +4244,15 @@ leading exponent is $(1,1)$, not $(0,1)$.
 
 \begin{remark}[The $10000$-power comparison is one instance]
 \label{cas:rem-10000}
-The suite's check \texttt{RHCompare[s, t\^{}10000] === -1} together with
-\texttt{RHSign[t\^{}10000 - s] === 1} is a single successful higher-rank order
-calculation. \emph{It is not the proof for every $n$}; the universal statement
+The suite constructs both inputs explicitly:
+\begin{lstlisting}
+RHCompare[RHMake[s,1,{t,s}],
+          RHMake[t^10000,1,{t,s}]] === -1
+RHSign[RHMake[t^10000-s,1,{t,s}]] === 1
+\end{lstlisting}
+These are finite higher-rank order checks. Bare symbolic expressions are not
+arguments of \texttt{RHCompare} or \texttt{RHSign}; the kernel has no automatic
+coercion from them. \emph{The checks are not the proof for every $n$}; the universal statement
 follows from the exponent-group definition and \cref{cas:thm-core}.
 \end{remark}
 
@@ -4589,8 +4615,10 @@ element and has the greatest valuation.} Checked by hand: $v(u)=\{1,0\}$,
 $v(t^n)=\{0,n\}$, and lexicographically $\{1,0\}>\{0,n\}$, hence $u<t^n$.
 \end{itemize}
 HahnRational's own README warns that \emph{a reversed variable list is a
-different parent}. \textbf{A reader who carries one convention into the other
-gets every inequality backwards.} SurrealCASCore agrees with HahnRational on
+different parent}. \textbf{Confusing the conventions can reverse comparisons
+between scales.} For example, $(1,0)$ and $(0,1)$ exchange order when coordinate
+significance is reversed, whereas $(1,1)>(0,0)$ holds in both orders.
+SurrealCASCore agrees with HahnRational on
 coordinate significance, and the two agree on the interpretation
 $(q_1,\dots,q_r)\mapsto q_1\omega^{r-1}+\cdots+q_r$; they differ only on whether
 the $q$ are rational or integral.
@@ -4601,12 +4629,13 @@ $\omega^{-\omega}<\omega^{-n}$ for every ordinary $n$, under two different
 coordinate layouts and --- in SurrealCASCore's case --- with reversed argument
 order in the comparison call. The three displayed comparisons are:
 \begin{itemize}
-\item \textbf{RationalHahn}: \texttt{RHCompare[s, t\^{}10000] === -1}, together
-with \texttt{RHSign[t\^{}10000 - s] === 1}.
+\item \textbf{RationalHahn}: the fully constructed calls in
+\cref{cas:rem-10000} give comparison $-1$ and difference sign $1$.
 \item \textbf{SurrealCASCore}: \texttt{HCompareReal[HPower[s,100], u] === 1},
 meaning $s^{100}>u$ --- note the reversed argument order relative to the other
 two.
-\item \textbf{HahnRational}: \texttt{HCompare[h[u], h[t\^{}100]] === -1}.
+\item \textbf{HahnRational}: \texttt{HCompare[h[u], h[t\^{}100]] === -1},
+where the suite defines \texttt{h[e\_] := HCreate[\{u,t\},e]}.
 \end{itemize}
 \textbf{None of these has been rewritten into a common form}, and this report
 states no single global coordinate convention that these quoted outputs would
@@ -4771,14 +4800,15 @@ The same kernel --- \textbf{Wolfram Language 15.0.1 for Linux x86 (64-bit),
 July 2, 2026} --- reached through a \emph{connected evaluator}, on the same date
 (September 21, 2026), with \textbf{no local installation exercised by any of the
 three}. Two of the three additionally used Python 3.13.5 and SymPy 1.14.0.
-\textbf{None of the three contains any Lean file, formalization blueprint or
-formalization audit, and no git SHA, Lean toolchain or mathlib revision is
-pinned anywhere.}
+\textbf{None of the three original packages supplied a Lean file, formalization
+blueprint, formalization audit, or pinned proof-assistant dependencies.}
 
 \subsection{What was independently reproduced for this report}
 \label{cas:sub-reproduced}
-The following was run directly on this machine on September 21, 2026, and is
-\emph{not} carried across from the archives.
+The following is the merged report's record of a separate Windows run on
+September 21, 2026, distinct from the three archives' recorded runs. It is
+preserved as historical verification evidence, not a claim about the current
+review environment.
 
 \textbf{Environment.} Wolfram Engine at
 \path{C:\Program Files\Wolfram Research\Wolfram\15.0\wolframscript.exe},
@@ -4807,7 +4837,7 @@ one-character fix &
 \end{longtable}
 \endgroup
 
-Every recorded \emph{numeric} claim reproduces, once
+The Windows record reports matching check counts once
 \texttt{RationalHahn} is repaired; as delivered that package loads in no
 kernel at all, so the 22 rational-kernel checks its archive records cannot be
 run from the shipped file (\S18.3). The quoted sessions of
@@ -4840,7 +4870,7 @@ inserted before the \texttt{;}. \textbf{The fix is one character}:
 \textbf{Consequence.} \texttt{Get["code/RationalHahn.wl"]}, the driver
 \path{RunChecks.wl}, and the README's
 \texttt{wolframscript -file code/RunChecks.wl} instruction cannot load the
-package as delivered. Running the driver unrepaired on this machine returned
+package as delivered. The recorded Windows run of the unrepaired driver returned
 \texttt{Checks -> 34, Passed -> 12}, the twelve passing checks being precisely
 the ordinary \texttt{Series}/\texttt{Together}/\texttt{Simplify} identities that
 never call the kernel; all 22 kernel checks failed. After the one-character
@@ -4864,13 +4894,20 @@ checks, which were all harness-level. Its README also lists
 archive did ship one, and this repository does not carry it, because the
 collection ships no checksum manifests.
 
-\textbf{SurrealCASCore and HahnRational both \texttt{Get}-load cleanly} (both
-bracket-balanced at depth zero), and their reported numbers are the numbers one
-gets from running their own harnesses.
+\textbf{SurrealCASCore and HahnRational were recorded as loading cleanly}, with
+their harness counts matching the archives. Their source files are also
+bracket-balanced, though that syntax check alone does not establish a successful
+Wolfram run.
 \end{remark}
 
 \subsection{What the executed checks do and do not establish}
 \label{cas:sub-checkscope}
+During the maintained documentation review, fresh temporary copies of the two
+unchanged Python scripts passed their separate suites under Python~3.13.14 and
+SymPy~1.14.0: $69/69$ for SurrealCASCore and $323/323$ for HahnRational. The
+Wolfram sources were inspected for their public contracts and the documented
+packaging defect; no new Wolfram execution is claimed by this review.
+
 The executed checks are exact finite algebra and formal-series checks. They are
 \textbf{not} a formal verification of: Hahn summability; the surreal
 foundations; the effective real-closure construction or real-closed-field
@@ -4883,9 +4920,10 @@ calculations into proofs of the infinite constructions. None of the three
 prototypes executes real-closed-field quantifier elimination, constructs all
 algebraic roots, solves arbitrary support-recursive equations, or certifies the
 supplied manuscripts' analytic results. \textbf{Compatibility with Wolfram
-versions other than 15.0.1, and with Mathics, was not tested.} And, once more:
-no Lean file, formalization blueprint or formalization audit exists in any of
-the three packages, and nothing here is machine-verified.
+versions other than 15.0.1, and with Mathics, was not tested in those runs.}
+The original packages supplied no proof-assistant verification. Consult
+\path{docs/FORMALIZATION.md} for the containing repository's current Lean
+coverage, which must be matched to each statement and its hypotheses.
 
 \section{Implementation priorities, costs, and regression boundaries}
 \label{cas:sec-roadmap}
@@ -5562,12 +5600,14 @@ already loaded. Expect $88/88$ and $323$ exact Python checks. The short demo
 \subsection{Combined statement}
 \label{cas:app-combined}
 One kernel release (15.0.1 of July 2, 2026, recorded on Linux x86-64 by the
-archives and reproduced on Windows x86-64 here); one date (September 21, 2026);
+archives and reported separately on Windows x86-64 at merge time); one date
+(September 21, 2026);
 \textbf{no local installation exercised by any of the three original runs};
 \textbf{counts not additive}, either within an article or across articles; no
-formal verification of any general theorem; and \textbf{no formalization
-anywhere} --- no Lean file, no blueprint, no formalization audit, no pinned git
-commit, Lean toolchain or mathlib revision in any of the three packages. The
+formal verification of general theorems by these tests; and no Lean files,
+blueprints, proof-assistant audits or pinned Lean dependencies in the three
+original packages. These are historical package claims, not a description of
+the containing repository's current formalization work. The
 executed checks are exact finite algebra and formal-series checks, and a
 successful driver run does not upgrade them into proofs of the infinite
 constructions.

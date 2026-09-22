@@ -81,7 +81,7 @@ of this inequality on the canonically embedded Laurent-series field
 $\R((\omega^{-1}))$. The argument first derives an exact birthday formula for
 finite Laurent polynomials. The only information required from their bounded
 part is the lowest exponent, its coefficient's birthday, and one dyadic versus
-nondyadic boundary condition. A positive-polynomial/bounded-tail decomposition
+nondyadic boundary condition. A positive-power polynomial/bounded-tail decomposition
 then proves the product estimate for finite Laurent polynomials. A finite-jet
 stabilization argument transfers this estimate to arbitrary Laurent series,
 without assuming continuity of natural ordinal multiplication. We also prove
@@ -154,8 +154,8 @@ where the sum is interpreted as a surreal normal form. Then
 \end{theorem}
 
 The notation includes finite Laurent polynomials and series with infinitely
-many nonzero terms. These are formal Hahn series, not sums taken in the
-ordinary real topology. Integer exponents are bounded above, so every interval
+many nonzero terms. The sums are defined by normal forms; no topological limit
+is used. Integer exponents are bounded above, so every interval
 of exponents bounded on both sides contains only finitely many possible terms.
 This discreteness is crucial to the passage from finite to infinite products.
 
@@ -183,6 +183,13 @@ failed generalizations, and reproducible checks.
 \label{sec:conventions}
 The same objects occur both as surreal numbers and as ordinal lengths. We keep
 the associated operations separate.
+
+Throughout, $\bd(x)$ is the length of the canonical sign sequence of the
+\emph{value} $x$. It is not the recursively computed rank of an arbitrary
+cut expression representing that value. For example, the form
+$\{-1\mid1\}$, with canonical options, has construction rank $2$ but
+represents $0$, whose birthday is $0$. The bounds below concern canonical
+birthdays after evaluation, including any cancellations in a product.
 
 \subsection{Ordinary and natural ordinal arithmetic}
 Unadorned $+$ between birthdays denotes \emph{ordinary ordinal addition}, the
@@ -265,7 +272,9 @@ sequence. Induct on $\bd(x)\oplus\bd(y)$. Every option in the defining cut for
 $x+y$ has the form $x'+y$ or $x+y'$, where the replaced factor has smaller
 birthday. By induction and strict monotonicity of natural addition, every such
 option has birthday strictly below $\bd(x)\oplus\bd(y)$. A number defined by a
-cut has birthday at most $\sup\{\bd(z)+1:z\text{ is an option}\}$.
+cut has birthday at most $\sup\{\bd(z)+1:z\text{ is an option}\}$:
+represent the options canonically and apply the simplicity rule to their cut.
+This is an upper bound, not an equality for every displayed cut form.
 Taking this supremum proves the claimed weak inequality. The finite version
 follows by induction on $n$.
 \end{proof}
@@ -311,10 +320,10 @@ Natural multiplication of finite ordinals is ordinary integer multiplication.
 \subsection{The sign-expansion input}
 We use Gonshor's sign-expansion theorem in the formulation restated by Ehrlich
 \cite[Propositions~3.7--3.8]{Ehrlich2011}; see also
-\cite[Definition~2.6 and Theorem~2.7]{BG2022}. Here is the version needed for our
+\cite[Definition~2.20 and Theorem~2.21, p.~13]{BG2022}. Here is the version needed for our
 calculations.
 
-If $a$ has a sign sequence and $p_\delta$ denotes the number of plus signs
+If $a$ has a sign sequence and $p_\delta$ denotes the ordinal order type of the plus signs
 strictly before its $\delta$th sign, the sequence for $\omega^a$ starts with a
 plus. For each successive sign of $a$, append a block of that sign of length
 $\omega^{p_\delta+1}$. For $r>0$, append the signs of $r$ after its first plus,
@@ -323,8 +332,10 @@ in $a$. Negative $r$ reverses the resulting signs.
 
 For a normal form $\sum_i r_i\omega^{a_i}$, first \emph{reduce} each exponent's
 sign sequence. A minus is deleted if its entire prefix, including that minus,
-already occurs in an earlier exponent. There is a second rule: if the current
-exponent starts with the immediately preceding exponent followed by a minus,
+already occurs in an earlier exponent. These comparisons use the original
+exponent sequences, before any deletions. There is a second rule at successor
+term indices: if the current exponent starts with the immediately preceding
+exponent followed by a minus,
 and the preceding coefficient is nondyadic, delete that additional minus.
 Compute a term block from each reduced exponent by the preceding rule, then
 concatenate the blocks. No plus signs are deleted.
@@ -631,7 +642,8 @@ term at Cantor exponent $n+1$, arising only from a nondyadic coefficient at
 exponent $n$. That term has coefficient one. All remaining positive-power
 contributions have Cantor exponent at most $n$, and the bounded contribution
 is below $\omega^2$. Since $n\geq1$, their finite natural sum is below
-$\omega^{n+1}$.
+$\omega^{n+1}$. Here the coefficient at $n$ is the collected coefficient
+of $z$; if it vanishes after cancellation, the dyadic case applies.
 \end{proof}
 
 \begin{lemma}[Positive monomial times bounded part]\label{lem:crossmono}
@@ -772,6 +784,14 @@ $N_y$, the coefficient at exponent $k$ in their product is
 This sum is finite: the possible $i$ satisfy $k-N_y\leq i\leq N_x$.
 The argument uses formal coefficients only, not analytic convergence.
 
+At the highest possible exponent $N_x+N_y$, only the pair $(N_x,N_y)$
+contributes. Its coefficient is $c_{N_x}d_{N_y}\ne0$, so the highest exponent
+of $xy$ is exactly $N_x+N_y$. If both factors have finite support, with
+lowest exponents $m_x,m_y$, the same argument at the other end gives lowest
+exponent $m_x+m_y$ and nonzero coefficient $c_{m_x}d_{m_y}$. Thus interior
+coefficients may cancel, but the extreme coefficients cannot. In particular,
+widths of nonzero finite Laurent polynomials add under multiplication.
+
 \subsection{Exact birthdays of infinite tails}
 \begin{theorem}[Infinite Laurent birthday formula]\label{thm:infinite}
 Suppose $x\in\Lau$ has infinitely many nonzero terms. Let
@@ -791,8 +811,14 @@ Theorem~\ref{thm:finiteformula} gives
 \[
  \bd(x_j)=H+\omega\cdot M_j+\tau_j,
 \]
-where $M_j$ equals $m_j$ or $m_j+1$, and $\tau_j$ is finite. Consequently these
-lengths are cofinal in $H+\omega^2$. The sign sequences are nested prefixes by
+where $M_j$ equals $m_j$ or $m_j+1$, and $\tau_j$ is finite. In particular,
+\[
+ H+\omega\cdot m_j\ \leq\ \bd(x_j)
+       \ <\ H+\omega\cdot(m_j+2).
+\]
+Since $m_j$ is unbounded in $\N$, these lengths are cofinal in
+$H+\omega^2$, by continuity of ordinary ordinal addition in its right
+argument. The sign sequences are nested prefixes by
 Lemma~\ref{lem:prefix}, and their union is the sign sequence of $x$.
 Taking their supremum proves \eqref{eq:infinite}.
 \end{proof}
@@ -823,6 +849,7 @@ Fix $K\in\Z$ and choose any integer $T$ such that
 \begin{equation}\label{eq:T}
  T\leq K-N_y,\qquad T\leq K-N_x.
 \end{equation}
+For instance, $T=\min\{K-N_y,K-N_x\}$ works.
 Then
 \begin{equation}\label{eq:jet}
  (x_{\geq T}y_{\geq T})_{\geq K}=(xy)_{\geq K}.
@@ -834,7 +861,9 @@ it has exponent $i+j<T+N_y\leq K$. Likewise, a discarded term of $y$ cannot
 contribute to exponent $K$ or above. Therefore the complete products have the
 same coefficients at every exponent at least $K$. These coefficients are
 finite sums, so there is no exchange of infinite summation operations hidden
-in the argument.
+in the argument. Coefficient equality includes zeros caused by cancellation;
+the conclusion is about the collected normal forms, not only about possible
+support exponents.
 \end{proof}
 
 \begin{proof}[Proof of Theorem~\ref{thm:main}]
@@ -869,7 +898,7 @@ It only keeps one fixed upper bound throughout. Even natural addition need
 not preserve a supremum in a variable: $\sup_{n<\omega}(n\oplus1)=\omega$,
 whereas $(\sup_{n<\omega}n)\oplus1=\omega+1$.
 
-\Needspace{11\baselineskip}
+\Needspace{26\baselineskip}
 \section{Examples and exact consequences}
 \label{sec:examples}
 \subsection{A table of birthdays}
@@ -929,11 +958,11 @@ exponent $N\geq0$. Then
 \end{corollary}
 \begin{proof}
 The only units in the finite Laurent polynomial ring over a field are the
-nonzero monomials. Indeed, for a nonzero finite Laurent polynomial define its
-width as highest exponent minus lowest exponent. The extreme coefficients of
-a product are nonzero products of extreme coefficients, so widths add under
-multiplication. A product equal to $1$ has width zero, forcing both factors to
-have width zero.
+nonzero monomials. Indeed, define the width as highest exponent minus lowest
+exponent. The extreme-coefficient calculation in Section~\ref{sec:infinite}
+shows that widths add under multiplication. A product equal to $1$ has width
+zero, forcing both factors to have width zero; conversely, a nonzero monomial
+has a monomial inverse.
 
 Thus $f^{-1}$ is not finite; it has infinitely many terms in $\Lau$. Its
 highest exponent is $-N\leq0$, so it is bounded. Apply
@@ -951,7 +980,12 @@ birthday is $\omega^2$. Likewise, $(1+\omega^{-1})^{-1}$ and
 $(\omega^2+\omega)^{-1}$ have birthday $\omega^2$.
 The assumption $N\geq0$ cannot be silently omitted: a reciprocal with positive
 leading exponent can have a positive polynomial part that survives in
-$H+\omega^2$.
+$H+\omega^2$. For example,
+\[
+ f=\omega^{-2}-\omega^{-3},\qquad
+ f^{-1}=\sum_{k\leq2}\omega^k,\qquad
+ \bd(f^{-1})=(\omega^2+\omega)+\omega^2=\omega^2\cdot2.
+\]
 
 \subsection{The complete birthday spectrum of this field}
 \begin{corollary}\label{cor:spectrum}
@@ -1236,7 +1270,7 @@ O.~Bournez and Q.~Guilmant,
 Surreal fields stable under exponential and logarithmic functions,
 arXiv:2201.08199v1, 20 January 2022.
 \url{https://arxiv.org/abs/2201.08199v1}.
-In particular, Definition~2.6 and Theorem~2.7.
+In particular, Definition~2.20 and Theorem~2.21, p.~13.
 
 \bibitem{Ehrlich2024}
 P.~Ehrlich,
