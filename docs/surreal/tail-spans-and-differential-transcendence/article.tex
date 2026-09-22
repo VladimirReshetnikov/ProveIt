@@ -1,0 +1,1574 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{newpxtext,newpxmath}
+\usepackage{microtype,booktabs,tabularx,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,fancyhdr,titlesec,needspace}
+\usepackage{url}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,breaklinks=true]{hyperref}
+\definecolor{Ink}{HTML}{243747}
+\definecolor{Accent}{HTML}{566348}
+\titleformat{\section}{\Large\bfseries\color{Ink}}{\thesection}{.65em}{}
+\titleformat{\subsection}{\large\bfseries\color{Accent}}{\thesubsection}{.65em}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Tail-spans and differential transcendence}
+\fancyhead[R]{\small Surreal and surcomplex fields}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{.23em}
+\setlength{\parindent}{1.05em}
+\setlist{itemsep=.12em,topsep=.3em,leftmargin=2em}
+\setcounter{tocdepth}{2}
+\emergencystretch=2em
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\SC}{\mathbf{No}[i]}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\AR}{\mathbb A_{\R}}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\trdeg}{\operatorname{trdeg}}
+\newcommand{\dtrdeg}{\operatorname{dtrdeg}}
+\newcommand{\Gal}{\operatorname{Gal}}
+\newcommand{\Frac}{\operatorname{Frac}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\BM}{D_{\mathrm{BM}}}
+\newcommand{\EDer}{\delta}
+\newcommand{\base}{B}
+\newcommand{\cf}{\mathfrak c}
+\newcommand{\ff}[2]{(#1)_{\underline{#2}}}
+\newcommand{\rf}[2]{(#1)^{\overline{#2}}}
+\newcommand{\repocommit}{608dd23c0539fce73723843949ee627641c27b30}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\hypersetup{pdftitle={Tail-Spans and Differential Transcendence in Surreal and Surcomplex Hahn Fields},pdfauthor={Research article prepared for Vladimir Reshetnikov},pdfsubject={Algebraic relations, coefficient Galois actions, and explicit differential independence}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{8mm}
+{\large\scshape Research article for the Surreal project\par}
+\vspace{11mm}
+{\Huge\bfseries\color{Ink} Tail-Spans and\par Differential Transcendence\par}
+\vspace{5mm}
+{\LARGE in Surreal and Surcomplex\par Hahn Fields\par}
+\vspace{8mm}
+{\large September 22, 2026\par}
+\vspace{8mm}
+\begin{minipage}{.95\textwidth}
+\begin{abstract}
+We give an exact algebraic classification of finite tuples of Hahn series
+whose coefficients use independent square roots. The decisive invariant is
+not the full span of the coefficient vectors but their \emph{cofinite span}:
+the subspace that remains after every finite deletion. If its dimension is
+$d$ and $E$ is the finite set of exceptional vectors, the generated algebra
+is exactly a polynomial algebra in $d$ variables over the multiquadratic
+extension belonging to $E$. Consequently, both the transcendence degree and
+all geometric components of the relation ideal are explicit.
+
+A finite-difference argument converts independent coefficient sign changes
+into vanishing conditions on the highest homogeneous part of a hypothetical
+polynomial relation. This yields a continuum-sized, explicitly indexed
+family of differentially algebraically independent \emph{actual surreal
+numbers}, all with real-algebraic coefficients and positive integer
+valuation support. In particular, the Berarducci--Mantova differential
+transcendence degree of $\mathbb A_{\R}((t^{\Q}))$ over $\Q((t^{\Q}))$ is
+$2^{\aleph_0}$, with $t=\omega^{-1}$.
+
+For surcomplex analysis, the same mechanism proves that every mixed jet of
+$\sum_{n\in A}t^n\sqrt{1-z/2^n}$ is algebraically independent over
+$\C(z)((t^{\Q}))$, for every infinite $A\subseteq\N_{>0}$, with respect to
+$d/dz$ and $t\,d/dt$. A continuum-sized family enjoys joint mixed-jet
+independence on one common disk. We also give exact algebraic-approximation
+criteria, finite witnesses, and limitations on coefficient-stream decision
+procedures.
+\end{abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{.95\textwidth}\small
+\textbf{Research status.} Complete mathematical proofs are supplied relative
+to standard Hahn-field and surreal normal-form foundations. The tail-span
+classification and the explicit differential-independence constructions are
+proposed contributions; a targeted literature search did not identify these
+formulations, but priority is not certified. No named historical conjecture
+is claimed solved. The article is not independently refereed or
+proof-assistant verified. Accompanying exact computations test finite
+identities and examples, not the infinite theorems.
+\end{minipage}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{The research question and the contributions}\label{sec:intro}
+
+An infinite Hahn sum can be far more algebraically complicated than any of
+its coefficients. This is especially relevant to surreal mathematics:
+a Conway normal form may use only real-algebraic coefficients and very
+simple exponents, while the resulting number is not controlled by any
+finite algebraic or differential equation over a substantial Hahn subfield.
+For analytic coefficient functions the discrepancy is stronger still:
+every coefficient may satisfy a quadratic equation on the same disk, while
+the whole function and all of its mixed derivatives satisfy no polynomial
+relation over a large rational-coefficient Hahn field.
+
+The aim here is an exact structural result, not merely the production of
+one transcendental series. We ask how all polynomial relations in a finite
+family of such series can be read from the coefficient vectors. The answer
+is a finite-dimensional invariant with a finite algebraic exceptional part.
+This produces explicit differential independence, including inside the
+actual surreal differential field.
+
+\subsection{The main statements in compact form}
+Let $M$ be a field of characteristic zero, let $\Gamma$ be an ordered
+abelian group, and let $a_i\in M^\times$ have independent square classes.
+Choose $r_i^2=a_i$ and distinct exponents $\gamma_i$ whose set is well
+ordered. For $v_i\in M^r$, put
+\begin{equation}\label{eq:introY}
+ Y=\sum_{i\in I} t^{\gamma_i}r_i v_i,
+ \qquad B=M((t^\Gamma)),
+ \qquad W=\bigcap_{F\subseteq I\text{ finite}}
+       \Span_M\{v_i:i\notin F\}.
+\end{equation}
+Theorem~\ref{thm:tail} proves that $E=\{i:v_i\notin W\}$ is finite and
+\begin{equation}\label{eq:intromain}
+ B[Y_1,\ldots,Y_r]
+   =M(r_i:i\in E)((t^\Gamma))[s_1,\ldots,s_d],
+ \qquad d=\dim_M W,
+\end{equation}
+where the $s_j$ are algebraically independent over the displayed
+coefficient field. The equality is an equality of subrings in a specified
+ambient Hahn field, not merely an abstract comparison of dimensions.
+Theorem~\ref{thm:planes} then identifies the full relation ideal after its
+finite splitting extension.
+
+For actual surreal numbers, write
+\[
+ B_0=\Q((t^\Q)),\qquad H_0=\AR((t^\Q)),\qquad t=\omega^{-1},
+\]
+where $\AR$ is the field of real-algebraic numbers. We construct a family
+$(\xi_\alpha)_{\alpha\in\{0,1\}^{\N}}\subset H_0$ such that
+\begin{equation}\label{eq:introBM}
+ \bigl\{\BM^k\xi_\alpha:
+        \alpha\in\{0,1\}^{\N},\ k\geq0\bigr\}
+ \quad\text{is algebraically independent over }B_0.
+\end{equation}
+Thus $\dtrdeg_{B_0}H_0=\cf$, where $\cf=2^{\aleph_0}$
+(Theorem~\ref{thm:surreal}). This is a differential result about specified
+set-sized subfields of $\No$, not an appeal to the size of the whole
+proper class.
+
+The analytic counterpart starts with the single explicit function
+\begin{equation}\label{eq:introF}
+ F(z,t)=\sum_{n\geq1}t^n\sqrt{1-z/2^n}.
+\end{equation}
+Every square root is the branch equal to $1$ at $z=0$. On one common disk,
+all mixed jets $\partial_z^j\EDer^kF$, with $\EDer=t\,d/dt$, are
+algebraically independent over $\C(z)((t^\Q))$
+(Theorem~\ref{thm:mixed}). Theorem~\ref{thm:continuumanalytic} supplies
+continuum many jointly independent such functions.
+
+\subsection{What was checked in the repository}
+The repository was read at revision
+\begin{center}\small\texttt{\repocommit}.\end{center}
+The main README and documentation catalogue were inspected, together with
+the opening spectral-theory article and the Laurent-birthday report
+inventory~\cite{Repo,RepoMap}. The catalogue distinguishes common-domain
+analytic Hahn functions from coefficientwise germs and separates
+coefficientwise summation from the fine topology of $\No[i]$. Those
+conventions are retained here.
+
+The inspected catalogue already organizes substantial material on
+polynomial algebra, analytic geometry, residues, differential equations,
+rank-one geometry, and finite spectral theory. The present article instead
+centers on \emph{algebraic relations among infinitely many algebraic
+coefficients}, and on the differential transcendence they generate. This
+is a targeted coverage audit, not a claim to have read every archived
+manuscript or every Lean declaration. In particular, an unfinished Lean
+bridge is not treated as an open mathematical theorem.
+
+\subsection{Attribution and novelty boundaries}
+Hahn support calculus, finite separable base change, and multiquadratic
+Galois theory are background, not claimed innovations. We give proofs of
+the algebraic ingredients to make the new argument independently auditable;
+standard Galois and Kummer references are the Stacks Project
+\cite{StacksGalois,StacksKummer}. Generalized-series operator methods have
+an extensive literature, including van der Hoeven~\cite{vdH}. Conway
+normal forms and their use as Hahn fields are reviewed, for example, by
+Kaplan--Krapp--Serra~\cite{KKS}. The existence, strong additivity, real
+constant field, and normalization $\BM\omega=1$ of the derivation used
+here are due to Berarducci--Mantova~\cite{BM}.
+
+The proposed contribution is the \emph{combined exact classification} in
+\eqref{eq:intromain}, its elementary polarization proof, and the explicit
+ordinary and mixed differential-independence constructions. Differential
+transcendence itself is a classical subject; methods based on differential
+fields and functional equations, for example, appear in
+Mijajlovi\'c--Male\v sevi\'c~\cite{MM}. No claim is made that the general
+idea of producing transcendence from growing coefficient extensions is
+new. The searches were targeted rather than exhaustive, and neither a
+priority theorem nor a resolution of a previously named open problem is
+asserted.
+
+\section{Hahn fields, coefficient extensions, and summation}\label{sec:hahn}
+
+\subsection{Set-sized conventions}
+All fields, groups, index families, and vector spaces in the algebraic
+proofs are sets. A Hahn series over a field $M$ with value group $\Gamma$
+is a formal expression
+\[
+ f=\sum_{\gamma\in S}c_\gamma t^\gamma,
+ \qquad c_\gamma\in M,\quad S\subseteq\Gamma\text{ well ordered}.
+\]
+Its support consists of the exponents with nonzero coefficient. Addition
+is coefficientwise, multiplication is convolution, and
+$v(f)=\min\supp(f)$ for $f\ne0$, with $v(0)=+\infty$.
+The resulting field is denoted $M((t^\Gamma))$.
+
+A family is \emph{Hahn summable} when its supports have well-ordered union
+and only finitely many family members contribute at each exponent. This
+is a support condition. It does not mean convergence of a sequence of
+partial sums in the fine topology of the entire surreal field.
+We use the standard Hahn support facts: finite sums of well-ordered
+subsets are well ordered, each fixed exponent has only finitely many
+representations from a pair of such supports, and the monoid generated
+by a well-ordered positive set has the corresponding finite-word
+property. These are the usual Neumann support lemmas; their operator
+uses are treated in~\cite{vdH}.
+
+For $\Gamma=\Q$, the map
+\begin{equation}\label{eq:embedding}
+ \sum_q c_qt^q\longmapsto\sum_q c_q\omega^{-q}
+\end{equation}
+embeds $\R((t^\Q))$ into $\No$ and, coefficientwise in real and imaginary
+parts, $\C((t^\Q))$ into $\No[i]$. This is an instance of the standard
+Conway normal-form correspondence~\cite{KKS}. No construction of the
+entire surreal field, or of its real closedness, is part of this paper.
+
+\subsection{Finite coefficient extensions commute with Hahn series}
+\begin{lemma}[Finite base change]\label{lem:basechange}
+Let $F/M$ be a finite field extension of degree $e$, with basis
+$u_1,\ldots,u_e$. Inside a common coefficient extension,
+\[
+ F((t^\Gamma))=M((t^\Gamma))F,
+ \qquad [F((t^\Gamma)):M((t^\Gamma))]=e.
+\]
+The same $u_1,\ldots,u_e$ form a basis after Hahn base change. If $F/M$
+is finite Galois, its automorphisms act coefficientwise and give the full
+Galois group of the base-changed extension.
+\end{lemma}
+\begin{proof}
+Expand each coefficient of $f\in F((t^\Gamma))$ in the $M$-basis:
+$c_\gamma=\sum_j m_{j,\gamma}u_j$. For each $j$, the support of
+$\sum_\gamma m_{j,\gamma}t^\gamma$ is contained in $\supp(f)$.
+Thus $f=\sum_j u_j f_j$ with $f_j\in M((t^\Gamma))$.
+Conversely, a finite sum of this kind is an $F$-coefficient Hahn series.
+If $\sum_j u_j f_j=0$, coefficient comparison and the original basis
+independence imply that every $f_j$ is zero. This proves the degree and
+basis assertions. Each coefficient automorphism preserves supports and
+convolution, and the $e$ distinct coefficient automorphisms exhaust the
+Galois group when $F/M$ is Galois.
+\end{proof}
+
+\begin{warning}\label{warn:infinitebase}
+For an infinite algebraic extension $L/M$, the analogous equality
+$L((t^\Gamma))=M((t^\Gamma))L$ generally fails. The field on the right is
+the union of the finite constant extensions from Lemma~\ref{lem:basechange};
+a Hahn series on the left can involve coefficients generating an infinite
+extension. Section~\ref{sec:coefficient} makes the obstruction exact, and
+Section~\ref{sec:surreal} shows that the failure can have maximal
+differential transcendence degree in a countable-coefficient workspace.
+\end{warning}
+
+\subsection{Independent square classes and independent sign changes}
+\begin{definition}
+A family $(a_i)_{i\in I}\subset M^\times$ has \emph{independent square
+classes} if, for every nonempty finite $J\subseteq I$,
+$\prod_{i\in J}a_i$ is not a square in $M$.
+Fix square roots $r_i$ in an algebraic closure and put
+$L=M(r_i:i\in I)$.
+\end{definition}
+
+\begin{lemma}[Independent sign changes]\label{lem:signs}
+For finite $J\subseteq I$, the extension $M(r_i:i\in J)/M$ has degree
+$2^{|J|}$ and basis $\{\prod_{i\in U}r_i:U\subseteq J\}$.
+Every assignment $r_i\mapsto\varepsilon_i r_i$, $\varepsilon_i\in\{1,-1\}$,
+extends to an $M$-automorphism of $L$. It extends coefficientwise to an
+automorphism of $L((t^\Gamma))$ fixing $M((t^\Gamma))$.
+\end{lemma}
+\begin{proof}
+We give the usual elementary multiquadratic argument. Suppose the claim
+holds for $r_1,\ldots,r_m$, and write $E_m=M(r_1,\ldots,r_m)$.
+If $u^2=a_{m+1}$ for some $u\in E_m$, each sign automorphism $\sigma$
+satisfies $\sigma(u)=\pm u$. Hence $u$ is a simultaneous eigenvector for
+the sign group. The basis monomials $r_U$ have distinct sign characters,
+so their simultaneous eigenspaces are exactly the one-dimensional spaces
+$Mr_U$. Thus $u=cr_U$, contradicting independence of the square classes.
+Adjoining $r_{m+1}$ therefore doubles the degree. The old sign changes
+extend by fixing $r_{m+1}$, and the new sign change fixes $E_m$.
+This proves the finite assertion by induction, starting with $m=0$.
+
+Every element of $L$ belongs to a finite subextension. The automorphisms
+given by one fixed sign assignment are compatible on all such
+subextensions and define an automorphism of their union. Coefficientwise
+extension to Hahn series preserves zero coefficients, support,
+addition, and the finite convolution sums, proving the last assertion.
+\end{proof}
+
+\begin{remark}[No order-preserving automorphism is asserted]\label{rem:noorder}
+When $M=\Q$ and the $r_i$ are positive real square roots, a sign change
+need not preserve the order of the multiquadratic subfield. We use it
+only as a field automorphism of that subfield and its Hahn field. We do
+\emph{not} claim that it extends to an automorphism of the ordered field
+of all real-algebraic numbers, or to an automorphism of $\No$. The proofs
+below need neither extension.
+\end{remark}
+
+\section{The exact coefficient-field criterion}\label{sec:coefficient}
+
+The following preliminary is a useful classical Galois-orbit argument. It
+isolates the scalar algebraicity issue before the genuinely multivariable
+classification.
+
+\begin{theorem}[Coefficient-field criterion]\label{thm:coefficient}
+Let $M$ have characteristic zero, let $\overline M$ be an algebraic
+closure, and let
+\[
+ f=\sum_\gamma c_\gamma t^\gamma\in\overline M((t^\Gamma)),
+ \qquad F=M(c_\gamma:\gamma\in\supp(f)),
+ \qquad B=M((t^\Gamma)).
+\]
+Then $f$ is algebraic over $B$ if and only if $F/M$ is finite. In that case
+\begin{equation}\label{eq:coeffdegree}
+ B(f)=F((t^\Gamma)),\qquad [B(f):B]=[F:M].
+\end{equation}
+Consequently, the relative algebraic closure of $B$ inside
+$\overline M((t^\Gamma))$ is
+\begin{equation}\label{eq:relativeunion}
+ \mathcal A=\bigcup_{F/M\text{ finite},\ F\subseteq\overline M}
+                  F((t^\Gamma)).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Assume first that $F/M$ is finite. Lemma~\ref{lem:basechange} gives
+$[B(f):B]\leq[F:M]$. Every $M$-embedding of $F$ into $\overline M$ extends
+to an automorphism of $\overline M$; this is the standard extension
+property for algebraic closures in separable characteristic zero
+\cite{StacksGalois}. Distinct embeddings differ on a coefficient of $f$,
+since those coefficients generate $F$. Their coefficientwise extensions
+therefore give $[F:M]$ distinct conjugates of $f$ over $B$. The reverse
+degree inequality follows. Since $B(f)\subseteq F((t^\Gamma))$ and both
+extensions have the same finite degree, equality holds.
+
+Conversely, suppose $f$ has degree $D$ over $B$. Choose any finite
+subextension $F_0/M$ generated by finitely many coefficients of $f$.
+Its distinct embeddings into $\overline M$ extend as above and produce
+at least $[F_0:M]$ distinct conjugates of $f$. Hence $[F_0:M]\leq D$.
+The degrees of all such $F_0$ form a bounded nonempty set of positive
+integers. Choose one, $F_*$, of maximal degree. Adjoining any coefficient
+$c_\gamma$ gives another finite coefficient-generated field and cannot
+increase that degree. Therefore $c_\gamma\in F_*$ for every $\gamma$,
+so $F=F_*$ is finite. Formula~\eqref{eq:relativeunion} follows immediately.
+\end{proof}
+
+\begin{example}
+Let $p_n$ be the $n$th prime and choose the positive roots. Then
+\[
+ x=\sum_{n\geq1}\sqrt{p_n}\,t^n
+\]
+is transcendental over $\Q((t^\Q))$: its coefficients generate an
+infinite multiquadratic extension. Every finite truncation is algebraic,
+and its first $N$ terms generate a degree-$2^N$ constant extension after
+Hahn base change. Section~\ref{sec:surreal} proves the substantially
+stronger assertion that $x$ is differentially transcendental and belongs
+to large explicit families of differentially independent surreals.
+\end{example}
+
+\section{Cofinite spans and the polarization mechanism}\label{sec:mechanism}
+
+\subsection{The span that survives every finite deletion}
+Let $(v_i)_{i\in I}$ be any family in a finite-dimensional $M$-space $V$.
+No finite alphabet, boundedness, periodicity, or computability hypothesis
+is imposed on the $v_i$.
+
+\begin{definition}[Cofinite span]
+The \emph{cofinite span} of the family is
+\[
+ W=\bigcap_{F\subseteq I\text{ finite}}
+             \Span_M\{v_i:i\notin F\}.
+\]
+The term ``tail-span'' will also be used. Here ``tail'' means cofinite:
+for an arbitrary ordered support it does not mean deletion of an arbitrary
+transfinite initial segment.
+\end{definition}
+
+\begin{lemma}[Stabilization and exceptions]\label{lem:stabilization}
+There is a finite $F_0\subseteq I$ such that
+$W=\Span_M\{v_i:i\notin F_0\}$. The set
+\[
+ E=\{i\in I:v_i\notin W\}
+\]
+is finite. Moreover, every cofinite subfamily of $(v_i)_{i\in I\setminus E}$
+spans $W$.
+\end{lemma}
+\begin{proof}
+Among the dimensions of spans obtained by finite deletion, choose a
+minimum, attained by $F_0$. Deleting any additional finite set from that
+family gives a subspace of the same dimension, hence the same subspace.
+For any finite $F$, the span obtained by deleting $F\cup F_0$ is therefore
+the $F_0$-span and is contained in the $F$-span. This proves that the
+intersection equals the $F_0$-span. In particular every $i\notin F_0$ has
+$v_i\in W$, so $E\subseteq F_0$. Finally, deleting $E$ and any other finite
+set leaves a family contained in $W$ whose span contains the defining
+intersection $W$. Its span is exactly $W$.
+\end{proof}
+
+\subsection{Multilinear forms detected by distinct indices}
+\begin{lemma}[Cofinite spanning detects multilinear forms]\label{lem:multilinear}
+Suppose every cofinite subfamily of $(w_i)_{i\in J}$ spans a finite-dimensional
+space $W$. Let $K/M$ be a field extension, and let $T$ be a $D$-linear form
+on $W\otimes_M K$, with $D\geq1$. If
+\[
+ T(w_{i_1},\ldots,w_{i_D})=0
+ \quad\text{whenever }i_1,\ldots,i_D\text{ are pairwise distinct},
+\]
+then $T=0$.
+\end{lemma}
+\begin{proof}
+If $W=0$, there is nothing to prove. Otherwise $J$ is infinite, since a
+finite family would leave the zero span after a finite deletion.
+Fix distinct $i_1,\ldots,i_{D-1}$. The remaining vectors span $W$, and
+therefore span its scalar extension over $K$. Linearity frees the last
+argument: the expression vanishes for any value of that argument.
+Now fix only $D-2$ distinct indices and an arbitrary last argument.
+The possible next-to-last indexed vectors outside these indices still
+span $W$, so that argument is also free. Repeating this procedure frees
+all $D$ arguments. For $D=1$ the first spanning step already finishes the
+proof.
+\end{proof}
+
+\begin{lemma}[Top-degree mixed difference]\label{lem:difference}
+Let $P\in K[X_1,\ldots,X_d]$ have total degree $D$, with homogeneous
+part $P_D$. For vectors $u_1,\ldots,u_D\in K^d$, define
+$\Delta_uP(X)=P(X+u)-P(X)$. Then
+\begin{equation}\label{eq:diffidentity}
+ \Delta_{u_1}\cdots\Delta_{u_D}P(X)
+  =D_{u_1}\cdots D_{u_D}P_D
+  =D!\,T(u_1,\ldots,u_D),
+\end{equation}
+where $D_u$ is directional differentiation and $T$ is the symmetric
+polarization satisfying $P_D(X)=T(X,\ldots,X)$. The result is independent
+of $X$.
+\end{lemma}
+\begin{proof}
+Taking one difference lowers total degree by at least one. Its highest
+remaining homogeneous part is the directional derivative of the previous
+highest part. After $D$ differences, terms of degree below $D$ have
+vanished, and only the $D$ successive directional derivatives of $P_D$
+remain. This proves the first equality. Expanding
+$P_D(\lambda_1u_1+\cdots+\lambda_Du_D)$ and extracting the coefficient of
+$\lambda_1\cdots\lambda_D$ gives the second. Characteristic zero allows
+division by $D!$, and identifies a homogeneous polynomial uniquely with
+its symmetric polarization.
+\end{proof}
+
+\subsection{Why coefficient sign changes defeat polynomial relations}
+\begin{proposition}[Sign-orbit independence]\label{prop:orbit}
+Let $B=M((t^\Gamma))$, let $(a_i)_{i\in I}$ have independent square
+classes, and let $F\subset I$ be finite. Set
+$B_F=M(r_i:i\in F)((t^\Gamma))$. Suppose $w_i\in M^d$ for $i\notin F$
+and every cofinite subfamily of these vectors spans $M^d$. If the
+$\gamma_i$ are distinct with well-ordered image, then the coordinates of
+\[
+ s=\sum_{i\notin F}t^{\gamma_i}r_iw_i
+\]
+are algebraically independent over $B_F$.
+\end{proposition}
+\begin{proof}
+For $d=0$ the assertion is the empty independence assertion. Otherwise,
+suppose $P(s)=0$ for a nonzero polynomial $P\in B_F[X_1,\ldots,X_d]$ of
+positive degree $D$. A nonzero constant cannot vanish, so all possible
+relations have this form. Put $b_i=t^{\gamma_i}r_i$.
+
+For each $i\notin F$, the coefficient sign change $\sigma_i$ fixes $B_F$
+and sends $s$ to $s-2b_iw_i$. Distinct such sign changes commute and
+leave one another's $b_i$ unchanged. Applying their products to $P(s)=0$
+shows that
+\[
+ P\left(s-2\sum_{j\in J}b_{i_j}w_{i_j}\right)=0
+ \quad\text{for every }J\subseteq\{1,\ldots,D\},
+\]
+whenever $i_1,\ldots,i_D$ are distinct and outside $F$.
+Take the alternating sum of these $2^D$ identities. By
+Lemma~\ref{lem:difference}, it is
+\begin{equation}\label{eq:polarzero}
+ 0=(-2)^D D!\left(\prod_{j=1}^D b_{i_j}\right)
+                  T(w_{i_1},\ldots,w_{i_D}),
+\end{equation}
+where $T$ is the polarization of $P_D$, over the coefficient field $B_F$.
+All the scalar factors preceding $T$ are nonzero. Thus $T$ vanishes on
+all distinct indexed tuples. Lemma~\ref{lem:multilinear} gives $T=0$,
+contradicting $P_D\ne0$. No infinite sequence of Galois operations, and
+no limiting argument, is used: a relation of degree $D$ is destroyed by
+finitely many sign changes.
+\end{proof}
+
+\section{The tail-span classification}\label{sec:classification}
+
+\subsection{The generated algebra and its algebraic part}
+\begin{theorem}[Exact tail-span classification]\label{thm:tail}
+Let $M$ have characteristic zero and let $\Gamma$ be a set-sized ordered
+abelian group. Let $(a_i)_{i\in I}\subset M^\times$ have independent square
+classes, choose $r_i^2=a_i$, and put $L=M(r_i:i\in I)$.
+Let $\gamma_i\in\Gamma$ be distinct with well-ordered image and let
+$v_i\in M^r$. In $H=L((t^\Gamma))$, define
+\[
+ Y=\sum_i t^{\gamma_i}r_iv_i,\qquad B=M((t^\Gamma)),
+ \qquad W=\bigcap_{F\subseteq I\text{ finite}}
+                     \Span_M\{v_i:i\notin F\}.
+\]
+Set $d=\dim_M W$, $E=\{i:v_i\notin W\}$, and
+\[
+ p=\sum_{i\in E}t^{\gamma_i}r_iv_i,
+ \qquad B_E=M(r_i:i\in E)((t^\Gamma)).
+\]
+Then $E$ is finite. For any $M$-basis of $W$, let $s_1,\ldots,s_d$ be
+the coordinates of $Y-p$. These coordinates satisfy
+\begin{equation}\label{eq:algebraclassification}
+ B[Y_1,\ldots,Y_r]=B_E[s_1,\ldots,s_d],
+\end{equation}
+and are algebraically independent over $B_E$. In particular,
+\begin{align}
+ B(Y_1,\ldots,Y_r)&=B_E(s_1,\ldots,s_d),\label{eq:fieldclassification}\\
+ \trdeg_B B(Y_1,\ldots,Y_r)&=d,\label{eq:trdegree}\\
+ [B_E:B]&=2^{|E|}.\label{eq:exceptiondegree}
+\end{align}
+The relative algebraic closure of $B$ in $B(Y_1,\ldots,Y_r)$ is exactly
+$B_E$.
+\end{theorem}
+\begin{proof}
+By Lemma~\ref{lem:stabilization}, $E$ is finite and the vectors outside
+$E$ lie in $W$, with every cofinite subfamily spanning $W$. In coordinates
+on $W$, Proposition~\ref{prop:orbit} proves algebraic independence of
+$s_1,\ldots,s_d$ over $B_E$. It remains to show that all of $B_E$ is
+already present in $B[Y_1,\ldots,Y_r]$; this is stronger than the
+transcendence-degree assertion alone.
+
+If $E$ is empty, $B_E=B$ and the assertion is immediate. Otherwise pass
+to the quotient $M^r/W$. Each $v_i$ with $i\in E$ has nonzero image.
+There is an $M$-linear functional $\ell:M^r\to M$ vanishing on $W$ and
+nonzero on every such $v_i$. Indeed, a finite union of proper hyperplanes
+cannot exhaust the dual of a finite-dimensional vector space over the
+infinite field $M$. Thus
+\begin{equation}\label{eq:primitiveeta}
+ \eta=\ell(Y)=\sum_{i\in E}\ell(v_i)t^{\gamma_i}r_i
+             \in B[Y_1,\ldots,Y_r]\cap B_E.
+\end{equation}
+The extension $B_E/B$ is multiquadratic of degree $2^{|E|}$ by
+Lemmas~\ref{lem:basechange} and~\ref{lem:signs}. Every sign assignment
+on $E$ gives a different conjugate of $\eta$: at an index where two
+assignments differ, the coefficient of its distinct exponent $\gamma_i$
+is nonzero and changes sign. Hence $\eta$ has $2^{|E|}$ distinct
+conjugates, and $B(\eta)=B_E$.
+
+Because $\eta$ is algebraic over the field $B$, its polynomial algebra
+$B[\eta]$ is already the field $B(\eta)$. Consequently
+$B_E\subseteq B[Y_1,\ldots,Y_r]$. All coordinates of $p$ therefore
+belong to this generated algebra, and the $s_j$, being $M$-linear
+coordinates of $Y-p$, do as well. This proves the inclusion from right
+to left in~\eqref{eq:algebraclassification}. The reverse inclusion follows
+from $Y=p+Us$, where the columns of the matrix $U$ are the chosen basis
+vectors of $W$. The field and degree assertions follow.
+
+Finally, a purely transcendental extension $K(s_1,\ldots,s_d)$ contains
+no elements algebraic over $K$ except $K$ itself. For completeness, if a
+nonconstant rational function depends on some $s_j$, regard it as a
+nonconstant rational function in that variable over the field of the
+others; the variable is then algebraic over that rational function,
+which proves the rational function is transcendental over that field.
+An element algebraic over $B$ is also algebraic over $B_E$, so it must
+belong to $B_E$. Conversely every element of $B_E$ is algebraic over $B$.
+\end{proof}
+
+\subsection{All geometric components of the relation ideal}
+\begin{theorem}[Relation ideal as disjoint affine planes]\label{thm:planes}
+In Theorem~\ref{thm:tail}, let
+\[
+ I_Y=\ker\bigl(B[Z_1,\ldots,Z_r]\longrightarrow H,
+                     \ Z_j\longmapsto Y_j\bigr).
+\]
+Choose an $M$-linear surjection $q:M^r\to M^{r-d}$ with kernel $W$.
+For $\varepsilon\in\{1,-1\}^E$, put
+\[
+ p_\varepsilon=\sum_{i\in E}
+                 \varepsilon_i t^{\gamma_i}r_iv_i.
+\]
+Then
+\begin{equation}\label{eq:planes}
+ I_YB_E[Z_1,\ldots,Z_r]
+   =\bigcap_{\varepsilon\in\{1,-1\}^E}
+                 \bigl(q(Z)-q(p_\varepsilon)\bigr).
+\end{equation}
+Each ideal on the right is generated by $r-d$ independent affine linear
+forms. The $2^{|E|}$ ideals are pairwise comaximal. Thus the base-changed
+coordinate algebra is the product of $2^{|E|}$ polynomial algebras in
+$d$ variables over $B_E$.
+\end{theorem}
+\begin{proof}
+Theorem~\ref{thm:tail} identifies the coordinate algebra over $B$ with
+$B_E[s_1,\ldots,s_d]$. Finite Galois base change gives
+\[
+ B_E\otimes_B B_E\cong
+       \prod_{\sigma\in\Gal(B_E/B)}B_E,
+ \qquad a\otimes b\longmapsto(a\sigma(b))_\sigma.
+\]
+Adjoining the independent $s_j$ and using $Y=p+Us$, the component indexed
+by $\sigma$ sends $Z$ to $\sigma(p)+Us$. Its kernel is precisely
+$(q(Z)-q(\sigma(p)))$. The sign assignments index all $\sigma$,
+proving~\eqref{eq:planes}.
+
+If $\varepsilon\ne\varepsilon'$, then
+$q(p_\varepsilon)-q(p_{\varepsilon'})\ne0$. To see this, choose an index
+where the signs differ. At its distinct exponent the coefficient vector
+is a nonzero multiple of $q(v_i)$, and $q(v_i)\ne0$ by the definition of
+$E$. At least one quotient coordinate therefore gives two distinct
+constants. Subtracting the corresponding affine generators gives a
+nonzero element of the coefficient field $B_E$, hence a unit. The ideals
+are comaximal. The Chinese remainder theorem gives the stated product;
+in particular the components are disjoint and reduced.
+\end{proof}
+
+\begin{remark}
+Over $B$, the ideal $I_Y$ is prime, because it is the kernel of a map to
+a field. Its decomposition after $B_E$-base change is not a contradiction:
+the finite algebraic constant field splits into its conjugate factors.
+The cofinite span determines the affine dimension, while the exceptional
+vectors determine the entire finite splitting degree.
+\end{remark}
+
+\section{Examples, exact relations, and finite witnesses}\label{sec:examples}
+
+\subsection{One exceptional coefficient produces a quadratic relation}
+Take $I=\N_{>0}$, $\gamma_n=n$, $v_1=(1,0)$, and $v_n=(1,1)$ for
+$n\geq2$. Put $b_n=t^nr_n$ and $S=\sum_{n\geq2}b_n$. Then
+\[
+ Y_1=b_1+S,\qquad Y_2=S,\qquad
+ W=M(1,1),\quad E=\{1\}.
+\]
+The classification becomes
+\[
+ B[Y_1,Y_2]=B(r_1)[S],\qquad \trdeg_B B(Y_1,Y_2)=1.
+\]
+The complete relation ideal is
+\begin{equation}\label{eq:quadraticexample}
+ I_Y=\bigl((Z_1-Z_2)^2-t^2a_1\bigr).
+\end{equation}
+Indeed, using $U=Z_1-Z_2$ and $V=Z_2$, the quotient is
+$B[U]/(U^2-t^2a_1)[V]$, and the quadratic is irreducible because $r_1$
+remains quadratic after finite base change. Over $B(r_1)$ it splits into
+the two parallel lines $Z_1-Z_2=\pm tr_1$.
+
+This example explains why simply declaring the tuple ``independent up to
+finitely many terms'' would lose important information. The finite term
+is precisely what creates the nontrivial algebraic constant field.
+
+\subsection{Indicator families and recurrence patterns}
+For subsets $A_1,\ldots,A_r\subseteq\N_{>0}$, let
+\[
+ Y_j=\sum_{n\in A_j}t^nr_n,\qquad
+ v_n=(\mathbf1_{A_1}(n),\ldots,\mathbf1_{A_r}(n)).
+\]
+Only finitely many vector patterns are possible. The cofinite span is
+exactly the span over $M$ of the patterns occurring infinitely often.
+Patterns occurring only finitely often can all be removed, whereas an
+infinitely recurrent pattern survives every finite deletion. Thus
+\[
+ \trdeg_B B(Y_1,\ldots,Y_r)
+   =\dim_M\Span\{\text{infinitely recurrent patterns}\}.
+\]
+Equivalently, this is the rank of the indicator sequences modulo the
+subspace of finitely supported sequences. For example, pairwise almost
+disjoint infinite sets give full rank, because each coordinate unit vector
+occurs infinitely often outside the finite overlaps.
+
+\subsection{Vandermonde vectors need no recurring finite alphabet}
+For $v_n=(1,n,\ldots,n^{r-1})$ and distinct positive integers $n$, every
+$r$ such vectors are independent. Their determinant is the nonzero
+Vandermonde product $\prod_{u<v}(n_v-n_u)$. Therefore every infinite
+subfamily has cofinite span $M^r$. Theorem~\ref{thm:tail} gives
+\[
+ \sum_n t^nr_n,\quad
+ \sum_n nt^nr_n,\quad\ldots,\quad
+ \sum_n n^{r-1}t^nr_n
+\]
+as an algebraically independent tuple over $M((t^\Gamma))$ whenever the
+positive integer exponents are available and the chosen index set is
+infinite. These are exactly the successive Euler derivatives used below.
+
+\subsection{Finite witnesses against a bounded-degree relation}
+\begin{corollary}\label{cor:finitewitness}
+In Proposition~\ref{prop:orbit}, suppose $d>0$. For any degree $D\geq1$,
+choose $D$ pairwise disjoint finite index sets, each supplying a basis of
+$M^d$. Then a nonzero polynomial of degree $D$ cannot vanish at every
+point in the sign orbit of $s$ generated by these indices. Some choice
+of one index from each basis yields a nonzero $D$-fold mixed difference.
+Thus at most $dD$ sign-change indices suffice for such a witness.
+\end{corollary}
+\begin{proof}
+If the highest polarization vanished on every choice of one basis vector
+from each of the $D$ bases, multilinearity would make it vanish on all of
+$(M^d)^D$. Choose a tuple where it does not vanish. The indices are
+pairwise distinct because the bases have disjoint index sets.
+Equation~\eqref{eq:diffidentity} then gives a nonzero alternating sum of
+$2^D$ orbit evaluations. Such disjoint bases exist because every cofinite
+subfamily spans $M^d$.
+\end{proof}
+
+This is a degree-sensitive finite certificate inside the proof. It is not
+an algorithm deciding arbitrary infinite coefficient streams: locating
+tail-spanning bases or certifying that they persist forever is additional
+information. Section~\ref{sec:effective} makes that distinction explicit.
+
+\section{Actual surreal numbers of maximal differential independence}\label{sec:surreal}
+
+\subsection{A specified differential Hahn workspace}
+Let $\AR=\overline\Q\cap\R$ be the countable field of real-algebraic
+numbers. Via~\eqref{eq:embedding}, regard
+\begin{equation}\label{eq:realworkspaces}
+ B_0=\Q((t^\Q))\subset H_0=\AR((t^\Q))\subset\No,
+ \qquad t=\omega^{-1},
+\end{equation}
+as concrete subfields of the surreal field. The Euler derivation is
+\begin{equation}\label{eq:euler}
+ \EDer\left(\sum_q c_qt^q\right)=\sum_q q c_qt^q.
+\end{equation}
+It preserves supports up to deletion, so it is well defined and strongly
+additive. The identity $q_1+q_2=q$ in each convolution coefficient proves
+the Leibniz rule.
+
+The normalized Berarducci--Mantova derivation has real constant field,
+is strongly additive, and satisfies $\BM\omega=1$~\cite{BM}.
+These imported facts determine its restriction to the rational-monomial
+workspace. Differentiating integer powers and then the equation defining
+a rational power gives
+\begin{equation}\label{eq:BMrestriction}
+ \BM(t^q)=-q t^{q+1},\qquad
+ \BM\big|_{H_0}=-t\EDer.
+\end{equation}
+Thus both $B_0$ and $H_0$ are differential subfields. Their constant
+fields are respectively $\Q$ and $\AR$: coefficient comparison in
+$\EDer f=0$ leaves only exponent zero. The large differential
+transcendence degree below is therefore not caused by adjoining
+transcendental constants. This restriction
+uses only rational powers; no unproved formula for the derivative of an
+arbitrary Conway monomial is needed.
+
+Induction, or evaluation on every monomial followed by strong additivity,
+gives the useful triangular identity
+\begin{equation}\label{eq:BMtriangular}
+ \BM^k=(-1)^k t^k\EDer(\EDer+1)\cdots(\EDer+k-1),
+ \qquad k\geq0.
+\end{equation}
+At $k=0$, the product is the identity. The leading coefficient in terms
+of $\EDer^k$ is the nonzero base-field element $(-1)^kt^k$.
+For every finite collection of elements and every finite jet order,
+their $\BM$-jets and Euler jets are related by invertible triangular
+linear transformations over $B_0$.
+
+\subsection{One number and every infinite subsequence}
+Let $p_n$ be the $n$th prime and $r_n=\sqrt{p_n}>0$.
+Unique factorization in $\Z$ shows that the square classes of the $p_n$
+are independent in $\Q^\times/\Q^{\times2}$: a nonempty finite product
+has an odd exponent at every selected prime. For $A\subseteq\N_{>0}$,
+define the actual surreal number
+\begin{equation}\label{eq:xiA}
+ \xi_A=\sum_{n\in A}\sqrt{p_n}\,\omega^{-n}
+      =\sum_{n\in A}r_nt^n.
+\end{equation}
+It is positive and infinitesimal when $A$ is nonempty.
+
+\begin{theorem}[Every infinite subseries is differentially transcendental]
+\label{thm:onesurreal}
+For every infinite $A\subseteq\N_{>0}$, the family
+$\{\EDer^k\xi_A:k\geq0\}$ is algebraically independent over $B_0$.
+The same is true of $\{\BM^k\xi_A:k\geq0\}$.
+\end{theorem}
+\begin{proof}
+For any $K\geq0$,
+\[
+ (\xi_A,\EDer\xi_A,\ldots,\EDer^K\xi_A)
+   =\sum_{n\in A}t^nr_n(1,n,\ldots,n^K).
+\]
+Every $K+1$ distinct coefficient vectors are a Vandermonde basis over
+$\Q$. Consequently every cofinite subfamily spans $\Q^{K+1}$.
+Apply Theorem~\ref{thm:tail} with $W=\Q^{K+1}$ and $E=\varnothing$.
+It gives independence of the finite jet tuple. Every polynomial in the
+infinite jet family uses only finitely many jets, proving independence
+of the whole family. Formula~\eqref{eq:BMtriangular} transfers this
+independence to the $\BM$-jets.
+\end{proof}
+
+\begin{remark}
+The proof took place in the intermediate multiquadratic Hahn field
+$\Q(\sqrt{p_n}:n\geq1)((t^\Q))$. Its coefficient sign automorphisms need
+not extend to $H_0$ or $\No$; Remark~\ref{rem:noorder} applies. Polynomial
+independence proved in this intermediate field remains true for the same
+elements in $H_0$ and $\No$, over the same base $B_0$.
+\end{remark}
+
+\subsection{An explicit continuum-sized almost disjoint family}
+For a nonempty binary string $s=(s_1,\ldots,s_m)$, define
+\begin{equation}\label{eq:binarycode}
+ N(s)=2^m+\sum_{j=1}^m s_j2^{m-j}.
+\end{equation}
+Strings of length $m$ use the integers from $2^m$ through $2^{m+1}-1$,
+so this is an injective coding of all nonempty finite binary strings.
+For an infinite binary sequence $\alpha=(\alpha_1,\alpha_2,\ldots)$, set
+\begin{equation}\label{eq:Aalpha}
+ A_\alpha=\{N(\alpha_1,\ldots,\alpha_m):m\geq1\}.
+\end{equation}
+Each $A_\alpha$ is infinite. Two different sequences share only the
+codes of their common initial prefixes, hence have finite intersection.
+In a finite collection of distinct sequences, each corresponding set
+therefore has infinitely many indices belonging to no other set in the
+collection. We call these its private indices.
+
+\begin{theorem}[Explicit maximal differential transcendence]\label{thm:surreal}
+Put $\xi_\alpha=\xi_{A_\alpha}$ using~\eqref{eq:xiA} and~\eqref{eq:Aalpha}.
+Then
+\begin{equation}\label{eq:allrealjets}
+ \{\BM^k\xi_\alpha:
+       \alpha\in\{0,1\}^{\N},\ k\geq0\}
+\end{equation}
+is algebraically independent over $B_0=\Q((t^\Q))$.
+In particular, with the induced Berarducci--Mantova derivation,
+\begin{equation}\label{eq:maxdtrdeg}
+ \dtrdeg_{B_0}H_0=\trdeg_{B_0}H_0=\cf.
+\end{equation}
+The map sending free ordinary differential indeterminates $X_\alpha$
+to $\xi_\alpha$ embeds the differential polynomial algebra
+$B_0\{X_\alpha:\alpha\in\{0,1\}^{\N}\}$ into $H_0$.
+\end{theorem}
+\begin{proof}
+It suffices first to prove independence of the Euler jets belonging to
+finitely many distinct sequences $\alpha_1,\ldots,\alpha_r$, up to order
+$K$. Their combined coefficient vector at $n$ is
+\[
+ v_n=\bigl(\mathbf1_{A_{\alpha_a}}(n)n^k
+                  \bigr)_{1\leq a\leq r,\ 0\leq k\leq K}
+       \in\Q^{r(K+1)}.
+\]
+On the infinitely many private indices of $A_{\alpha_a}$, all blocks
+except block $a$ are zero. Within that block the vectors are Vandermonde
+vectors. Every cofinite subfamily of these private indices spans the
+whole $a$th block. Doing this for all $a$ shows that the cofinite span
+of the full combined family is $\Q^{r(K+1)}$. Theorem~\ref{thm:tail}
+therefore proves independence of the combined finite jet tuple.
+The triangular change~\eqref{eq:BMtriangular} gives the same result for
+$\BM$-jets. Since any polynomial involves only finitely many sequences
+and jet orders,~\eqref{eq:allrealjets} follows.
+
+There are $\cf$ binary sequences, so this gives differential
+transcendence degree at least $\cf$. On the other hand, $\AR$ and $\Q$
+are countable. A Hahn series in $H_0$ is in particular a function from
+$\Q$ to the countable set $\AR$, so $|H_0|\leq\aleph_0^{\aleph_0}=\cf$.
+The independent family proves the reverse cardinal bound and the upper
+bound on both transcendence degrees. Finally, a differential polynomial
+is an ordinary polynomial in finitely many formal jets. Its evaluation
+is injective precisely by the proved jet independence.
+\end{proof}
+
+\subsection{Why the base field and the derivation matter}
+The theorem is not merely independence over $\Q(\omega)$. The base
+$B_0$ contains \emph{every} rational-coefficient Hahn series with rational
+valuation support, including supports with infinitely many exponents
+below a finite rational bound. Nevertheless the displayed numbers escape
+all finite algebraic differential equations over that entire field.
+Conversely, independence over $B_0$ does not mean independence over the
+whole $H_0$, which already contains them.
+
+Let $\mathcal A_0$ be the relative algebraic closure of $B_0$ in $H_0$.
+By Theorem~\ref{thm:coefficient}, it is the union of
+$F((t^\Q))$ over real number fields $F\subseteq\AR$. It is stable under
+$\BM$. The same jet family is independent even over $\mathcal A_0$.
+Indeed, adjoining an algebraic base extension does not change the
+transcendence degree of a finite tuple: the compositum is algebraic over
+the field of that tuple. Thus
+\[
+ \dtrdeg_{\mathcal A_0}H_0=\cf.
+\]
+In particular, every individual coefficient $\sqrt{p_n}$ is already in
+the algebraic base, but the infinite sum is not differentially algebraic
+there. Algebraic closure and unrestricted Hahn formation are decisively
+different operations.
+
+\section{Analytic coefficient fields and two commuting derivations}\label{sec:analyticsetup}
+
+\subsection{A common disk and independent quadratic functions}
+Let $M=\C(z)$ and, for $n\geq1$, define
+\begin{equation}\label{eq:hn}
+ a_n(z)=1-\frac z{2^n},\qquad
+ h_n(z)=\sqrt{1-z/2^n},\qquad h_n(0)=1.
+\end{equation}
+Each branch is holomorphic on the disk $D_2=\{|z|<2\}$; the first
+possible branch point is at $2$. We usually work on the smaller common
+disk $D=\{|z|<1\}$, which also accommodates the dilation identity below.
+The field
+\[
+ L=\C(z)(h_n:n\geq1)
+\]
+is realized inside the field $\mathscr M_0$ of meromorphic germs at $0$.
+The common ambient Hahn field $\mathscr M_0((t^\Q))$ contains both
+$L((t^\Q))$ and the ring $\OO(D)((t^\Q))$; neither latter object is
+asserted to contain the other. This choice of germs fixes compatible square-root choices; finite rational
+combinations are meromorphic germs even when they do not have a common
+global domain.
+
+\begin{lemma}[Independent analytic square classes]\label{lem:analyticclasses}
+The $a_n$ have independent square classes in $\C(z)^\times/\C(z)^{\times2}$.
+\end{lemma}
+\begin{proof}
+For any nonempty finite $J$, the product $\prod_{n\in J}(1-z/2^n)$ has
+a simple zero at each $2^n$ with $n\in J$. A square rational function has
+even order at every point, since zeros and poles of its square have twice
+the original integer orders. The product is therefore not a square.
+\end{proof}
+
+Our ambient and base fields are
+\begin{equation}\label{eq:analyticfields}
+ H=L((t^\Q)),\qquad B=\C(z)((t^\Q)),\qquad K_\Q=\C((t^\Q)).
+\end{equation}
+The smaller rational function field $K_\Q(z)$ embeds in $B$. Indeed,
+the map from $K_\Q[z]$ is injective by comparing Hahn coefficients:
+a polynomial relation in $z$ would make every ordinary complex polynomial
+coefficient vanish. It therefore extends to the fraction field.
+
+\begin{warning}[A large relation field is not a common-domain ring]
+An arbitrary element of $B=\C(z)((t^\Q))$ can have coefficient poles
+approaching $0$. Hence $B$ is not being identified with a ring of
+functions on one common disk. Algebraic relations over $B$ are interpreted
+in the formal Hahn field $H$ with meromorphic-germ coefficients. The
+specific functions constructed here \emph{do} lie in
+$\OO(D)((t^\Q))$. A passage to actual common-domain or halo functions is
+made only where justified in Section~\ref{sec:halos}. This distinction
+agrees with the ring distinctions in the repository catalogue
+\cite{RepoMap}.
+\end{warning}
+
+\subsection{The derivations and their exact coefficient formula}
+The ordinary derivation $\partial=\partial_z$ of $\C(z)$ extends to $L$:
+by implicit differentiation of $h_n^2=a_n$,
+\[
+ \partial h_n=\frac{h_n}{2(z-2^n)}\in L.
+\]
+Define on $H$
+\begin{equation}\label{eq:twoderivations}
+ \partial\left(\sum_q f_qt^q\right)=\sum_q f_q't^q,
+ \qquad
+ \EDer\left(\sum_q f_qt^q\right)=\sum_q qf_qt^q.
+\end{equation}
+Both maps preserve supports up to deletion. Coefficientwise finite
+convolution proves the Leibniz rule, and coefficient comparison proves
+that they commute. They preserve $B$ as well. The same formulas also define commuting derivations on
+$\mathscr M_0((t^\Q))$ and preserve its common-domain holomorphic
+coefficient subring $\OO(D)((t^\Q))$.
+
+Let
+\[
+ c_j=\ff{1/2}{j}=\frac12\left(\frac12-1\right)\cdots
+                         \left(\frac12-j+1\right),\qquad c_0=1.
+\]
+Every $c_j$ is nonzero. Repeated differentiation gives
+\begin{equation}\label{eq:hnjet}
+ \partial^jh_n(z)=c_j(z-2^n)^{-j}h_n(z).
+\end{equation}
+For example, differentiating the right side at order $j$ multiplies it
+by $(1/2-j)/(z-2^n)$, giving the next falling factorial.
+
+For every subset $A\subseteq\N_{>0}$, set
+\begin{equation}\label{eq:FA}
+ F_A(z,t)=\sum_{n\in A}t^nh_n(z)\in H\cap\OO(D)((t^\Q)).
+\end{equation}
+The support is a subset of the positive integers, so this is a Hahn
+series without any coefficient growth condition. Its mixed jets have the
+particularly useful form
+\begin{equation}\label{eq:mixedcoefficients}
+ \partial^j\EDer^kF_A
+   =\sum_{n\in A}t^nh_n(z)\,
+             c_j\frac{n^k}{(z-2^n)^j}.
+\end{equation}
+
+\section{Every mixed jet is algebraically independent}\label{sec:mixed}
+
+\subsection{An elementary exponential-graph lemma}
+\begin{lemma}\label{lem:expgraph}
+If $R(X,Y)\in\C[X,Y]$ is nonzero, then $R(n,2^n)=0$ for only finitely
+many positive integers $n$.
+\end{lemma}
+\begin{proof}
+Write $R(X,Y)=\sum_{m=0}^M p_m(X)Y^m$, with $p_M\ne0$.
+If $M=0$, this is the fact that a nonzero polynomial has finitely many
+roots. In general, for sufficiently large real $n$, $p_M(n)\ne0$ and
+\[
+ \frac{R(n,2^n)}{p_M(n)2^{Mn}}
+   =1+\sum_{m<M}\frac{p_m(n)}{p_M(n)}\,2^{-(M-m)n}.
+\]
+Each rational function of $n$ in the sum has at most polynomial growth,
+while its exponential factor tends to zero. The displayed ratio tends
+to $1$, so it is nonzero for all sufficiently large $n$. Only finitely
+many positive integers remain.
+\end{proof}
+
+The lemma is an asymptotic statement about an ordinary finite polynomial;
+it invokes no transcendence conjecture and no assertion about the
+arithmetic nature of individual values $2^n$.
+
+\subsection{Every infinite subfamily spans every finite jet space}
+\begin{lemma}[Hereditary full jet span]\label{lem:jetspan}
+Fix $J,K\geq0$. For $n\geq1$, form the vector
+\[
+ v_n(z)=\left(c_j\frac{n^k}{(z-2^n)^j}
+          \right)_{0\leq j\leq J,\ 0\leq k\leq K}
+       \in M^{(J+1)(K+1)},\qquad M=\C(z).
+\]
+Every infinite subfamily of these vectors spans the entire displayed
+space over $M$. In particular, every cofinite subfamily of every infinite
+subfamily has full span.
+\end{lemma}
+\begin{proof}
+Suppose an infinite index set $A$ failed to span. A nonzero $M$-linear
+functional would annihilate all its vectors. Absorb the nonzero $c_j$
+into its coefficients and clear their common rational denominator. There
+would exist polynomials $C_{jk}(z)\in\C[z]$, not all zero, such that
+\begin{equation}\label{eq:jetlinearrelation}
+ \sum_{j,k} C_{jk}(z)\frac{n^k}{(z-2^n)^j}=0
+ \quad\text{in }\C(z),\quad n\in A.
+\end{equation}
+Choose the largest $j_*$ for which some $C_{j_*k}$ is nonzero. Multiply
+by $(z-2^n)^{j_*}$ and evaluate the resulting polynomial identity at
+$z=2^n$. This evaluates a cleared polynomial identity, not the analytic series at
+a branch point. All lower-$j$ terms vanish, giving
+\[
+ \sum_{k=0}^K C_{j_*k}(2^n)n^k=0\qquad(n\in A).
+\]
+The polynomial
+$R(X,Y)=\sum_{k=0}^K C_{j_*k}(Y)X^k$ is nonzero. This contradicts
+Lemma~\ref{lem:expgraph}, because $A$ is infinite. The same proof covers
+$j_*=0$: the polynomial identity itself may simply be evaluated.
+\end{proof}
+
+\subsection{The mixed-jet theorem}
+\begin{theorem}[Hereditary mixed differential independence]\label{thm:mixed}
+For every infinite $A\subseteq\N_{>0}$, the family
+\begin{equation}\label{eq:mixedindependence}
+ \{\partial^j\EDer^kF_A:j,k\geq0\}
+\end{equation}
+is algebraically independent over $B=\C(z)((t^\Q))$.
+Equivalently, the homomorphism from the free differential polynomial
+algebra in one indeterminate with two commuting derivations to $H$,
+sending that indeterminate to $F_A$, is injective.
+\end{theorem}
+\begin{proof}
+Any finite collection of mixed jets is contained in a rectangle
+$0\leq j\leq J$, $0\leq k\leq K$. By~\eqref{eq:mixedcoefficients}, the
+vector of all jets in the rectangle has the form of
+Theorem~\ref{thm:tail}, with $r_n=h_n$, $\gamma_n=n$, and coefficient
+vectors from Lemma~\ref{lem:jetspan}. Lemma~\ref{lem:analyticclasses}
+supplies square-class independence, and Lemma~\ref{lem:jetspan} supplies
+full cofinite span. Thus $E=\varnothing$ and the entire finite rectangle
+is algebraically independent over $B$. This proves the infinite family
+assertion. The formal mixed jets in a differential polynomial algebra
+with commuting derivations are indexed by pairs $(j,k)$; their evaluation
+is injective exactly when the family~\eqref{eq:mixedindependence} is
+algebraically independent.
+\end{proof}
+
+This excludes every finite-order algebraic partial differential equation
+with coefficients in $B$, not just linear equations, autonomous equations,
+or equations of some bounded order. Setting $k=0$ proves ordinary
+differential transcendence in $z$; setting $j=0$ proves differential
+transcendence for the scale derivation. Because $K_\Q(z)\subseteq B$,
+the result is stronger than independence over the rational function field
+with surcomplex coefficients from $K_\Q$.
+
+As in the actual-surreal application, the same finite jet families remain
+independent after any algebraic base extension of $B$ in the ambient
+field. This follows from invariance of transcendence degree under
+algebraic base extension, not from a claim that the original sign
+changes fix that enlarged base.
+
+\subsection{A functional equation does not supply a differential equation}
+Take $F=F_{\N_{>0}}$. Reindexing a Hahn-summable family gives the exact
+identity
+\begin{equation}\label{eq:dilation}
+ F(2z,t)-tF(z,t)=t\sqrt{1-z},\qquad |z|<1.
+\end{equation}
+Indeed, the $n=1$ term of $F(2z,t)$ is $t\sqrt{1-z}$, and its remaining
+terms are $tF(z,t)$. The expression $F(2z,t)$ is legitimate here because
+the coefficients of $F$ are holomorphic on $D_2$.
+
+Thus a simple dilation relation and quadratic coefficient functions
+coexist with complete mixed-jet algebraic independence. Dilation is an
+additional operator; replacing it by a finite collection of derivatives
+would be an invalid inference. The result does not exclude functional
+equations involving shifted or dilated arguments.
+
+\subsection{Rational Taylor data and a summation warning}
+From~\eqref{eq:hnjet}, coefficientwise Taylor extraction yields
+\begin{equation}\label{eq:taylorrational}
+ \partial^jF(0,t)=(-1)^jc_j\sum_{n\geq1}2^{-nj}t^n
+          =(-1)^jc_j\frac{t}{2^j-t}\in\C(t).
+\end{equation}
+Every specialized mixed jet $\partial^j\EDer^kF(0,t)$ is therefore
+rational in $t$ as well. In the ordinary formal power-series ring
+$K_\Q[[z]]$, the Taylor image of $F$ is
+\begin{equation}\label{eq:formaltaylor}
+ \sum_{j\geq0}(-1)^j\binom{1/2}{j}
+                       \frac{t}{2^j-t}\,z^j.
+\end{equation}
+To verify this equality, fix $j$, extract the ordinary complex Taylor
+coefficient of each $h_n$, and then sum the Hahn family indexed by $n$.
+This is a coefficient-by-coefficient construction of a formal $z$-series.
+
+\begin{warning}\label{warn:taylor}
+For an ordinary nonzero complex value of $z$, expression
+\eqref{eq:formaltaylor} is \emph{not} a Hahn sum indexed by $j$:
+infinitely many of its terms contribute to exponent $t^1$. Its meaning
+is as a formal Taylor series in $z$, or as a jointly summable expression
+when $z$ is a suitable infinitesimal. One must not interchange the two
+infinite summation notions without a support certificate.
+\end{warning}
+
+There is also no contradiction between~\eqref{eq:taylorrational} and
+Theorem~\ref{thm:mixed}. The theorem is about functions in $z$ over the
+specified function field. Evaluation at a point need not preserve
+algebraic independence. In fact, evaluation at any ordinary $z_0\in D$
+places these values inside $K_\Q$ itself. Unlike the actual numbers of
+Section~\ref{sec:surreal}, their point values are not being asserted
+transcendental over that field.
+
+\section{A continuum of jointly free surcomplex analytic jets}\label{sec:analyticcontinuum}
+
+Use the almost disjoint sets $A_\alpha$ from~\eqref{eq:Aalpha} and define
+\[
+ G_\alpha(z,t)=F_{A_\alpha}(z,t)
+       =\sum_{n\in A_\alpha}t^n\sqrt{1-z/2^n}.
+\]
+Every $G_\alpha$ has the same common holomorphic coefficient disk $D$.
+No shrinking of the domain is required as $\alpha$ varies.
+
+\begin{theorem}[Continuum many jointly independent mixed jets]
+\label{thm:continuumanalytic}
+The family
+\begin{equation}\label{eq:allanalyticjets}
+ \{\partial^j\EDer^kG_\alpha:
+       \alpha\in\{0,1\}^{\N},\ j,k\geq0\}
+\end{equation}
+is algebraically independent over $B=\C(z)((t^\Q))$.
+It embeds the free differential polynomial algebra on $\cf$ generators,
+with two commuting derivations, into $H=L((t^\Q))$.
+Moreover $\trdeg_B H=\cf$; the constructed family has the largest
+possible cardinality for algebraic independence in this workspace.
+\end{theorem}
+\begin{proof}
+Choose finitely many distinct $\alpha_1,\ldots,\alpha_r$ and a finite
+rectangle of jet orders. At each coefficient index $n$, concatenate the
+jet coefficient vector of Lemma~\ref{lem:jetspan} in block $a$ if
+$n\in A_{\alpha_a}$, and use a zero vector in that block otherwise.
+For each $a$, its infinite private index set contributes only to block
+$a$. After any finite deletion, Lemma~\ref{lem:jetspan} shows that these
+vectors span the entire block. The cofinite span of the combined vectors
+is consequently the full combined jet space. Theorem~\ref{thm:tail}
+proves algebraic independence of the chosen finite tuple, and hence of
+all of~\eqref{eq:allanalyticjets}.
+
+A differential polynomial uses only finitely many generators and mixed
+jets, giving the claimed differential-algebra embedding. Finally,
+$|\C(z)|=\cf$, the algebraic extension $L$ has cardinality $\cf$, and
+$\Q$ is countable. Thus $|H|\leq\cf^{\aleph_0}=\cf$. The exhibited
+independent family has cardinality $\cf$, proving the exact
+transcendence degree and the maximality assertion.
+\end{proof}
+
+\begin{remark}[No assertion of a transcendence basis]
+The cardinal equality does not say that the displayed jet family is a
+transcendence \emph{basis}, or that $H$ is algebraic over the field it
+generates. It says that the family is independent and has maximal possible
+cardinality. Proper subsets of an infinite basis can have the same
+cardinality as the basis, so cardinal maximality must not be confused
+with maximality under inclusion.
+\end{remark}
+
+\Needspace{7\baselineskip}
+\section{From coefficient functions to surcomplex halos}\label{sec:halos}
+
+\subsection{Support-certified infinitesimal substitution}
+An actual surcomplex halo value may involve scales beyond $\Q$. Let
+$\Gamma$ be a set-sized ordered subgroup of the surreal exponent group
+containing $\Q$, and put $K_\Gamma=\C((t^\Gamma))\subseteq\No[i]$ via
+$t^\gamma=\omega^{-\gamma}$. Let $z_0\in D$ be an ordinary complex
+number and let $\varepsilon\in K_\Gamma$ be infinitesimal, meaning either
+$\varepsilon=0$ or $\supp(\varepsilon)\subset\Gamma_{>0}$.
+Define
+\begin{equation}\label{eq:halovalue}
+ F_A(z_0+\varepsilon,t)
+  =\sum_{n\in A}\sum_{\ell\geq0}
+       t^n\frac{h_n^{(\ell)}(z_0)}{\ell!}\varepsilon^\ell.
+\end{equation}
+
+\begin{proposition}[Joint summability of the halo formula]\label{prop:halo}
+Formula~\eqref{eq:halovalue} is a Hahn-summable double family and gives
+an element of $K_\Gamma$. The same holds for every mixed jet and every
+finite polynomial combination of the functions considered above.
+\end{proposition}
+\begin{proof}
+The case $\varepsilon=0$ reduces to the original sum. Otherwise write
+$T=\supp(\varepsilon)\subset\Gamma_{>0}$ and $S=A\subset\N_{>0}$.
+By the positive-support Neumann lemma, the monoid $T^*$ generated by
+$T$, including zero, is well ordered. For each exponent it has only
+finitely many representations as a word in $T$, counting all possible
+word lengths. Therefore the family $(\varepsilon^\ell)_{\ell\geq0}$
+is Hahn summable. The set $S+T^*$ is well ordered, with finitely many
+pairs contributing at any fixed exponent. These two finiteness
+statements together give joint summability of the $(n,\ell)$ family.
+The complex Taylor coefficients do not enlarge any support. Derivatives
+of $h_n$ are holomorphic at the same $z_0$, and finite products use the
+same support lemmas, proving the remaining assertions.
+\end{proof}
+
+This is a direct certificate in an explicitly chosen set-sized Hahn
+workspace. It is not a convergence assertion for partial sums in the
+fine topology of the entire class $\No[i]$, and it makes no claim that
+$F_A$ is defined at every infinite surcomplex argument.
+
+\subsection{Functional independence is visible on ordinary points}
+Although the largest coefficient field $B$ is a formal meromorphic-germ
+Hahn field, the independence conclusion has an ordinary-point functional
+meaning over $K_\Q(z)$.
+
+\begin{proposition}\label{prop:functionalmeaning}
+No nonzero polynomial over $K_\Q(z)$ in finitely many of the mixed jets
+of Theorem~\ref{thm:continuumanalytic} vanishes identically on their
+common ordinary disk of definition. The same polynomial cannot vanish
+identically on all the corresponding halo values.
+\end{proposition}
+\begin{proof}
+Clear the finitely many rational-function denominators, obtaining a
+nonzero polynomial with coefficients in $K_\Q[z]$. Its evaluation on the
+chosen jets is a nonzero element of $H$ by
+Theorem~\ref{thm:continuumanalytic}. In fact it lies in
+$\OO(D)((t^\Q))$: only finite products and sums of common-domain
+coefficient functions have been used. At least one of its Hahn
+coefficients is therefore a nonzero holomorphic function on $D$.
+It is nonzero at some ordinary point, and indeed outside its discrete
+zero set.
+
+For each denominator in $K_\Q[z]$, the coefficient of its lowest
+valuation is a nonzero ordinary complex polynomial. Away from the finite
+union of their zeros, the denominator does not specialize to zero.
+Choose a point where the numerator coefficient is nonzero and these
+finitely many denominator coefficients are nonzero. The original
+polynomial expression is nonzero there. Ordinary points are halo points
+with $\varepsilon=0$, proving the last assertion.
+\end{proof}
+
+\subsection{Three differentiations that must not be conflated}
+In Section~\ref{sec:surreal}, $\BM$ acts on actual surreal numbers and
+satisfies $\BM=-t\EDer$ on the stated rational-monomial fields. In the
+analytic coefficient field, $\partial_z$ differentiates the independent
+complex parameter, while $\EDer$ acts on the Hahn scale and fixes the
+coefficient functions. These are two explicitly defined commuting
+operators on a function field.
+
+Specializing $z$ to a nonconstant surreal expression can introduce a
+chain-rule term under $\BM$. It is therefore incorrect to identify
+$\partial_z$ with $\BM$, or to assert without qualification that the
+function-field derivations remain those same operators after every
+surreal substitution. The algebraic independence theorem is formulated
+before such substitutions; Section~\ref{sec:surreal} separately supplies
+a direct, normalized Berarducci--Mantova result for actual numbers.
+
+\section{Algebraic approximation depends on the value group}\label{sec:approx}
+
+Theorem~\ref{thm:coefficient} also gives a sharp approximation criterion.
+It explains how a transcendental series can be approximated arbitrarily
+closely by algebraic ones in one workspace, but not after the value group
+is enlarged.
+
+\begin{theorem}[Closure of the algebraic coefficient part]\label{thm:closure}
+Let $B=M((t^\Gamma))$, let $\overline M$ be an algebraic closure in
+characteristic zero, and let $\mathcal A$ be the relative algebraic
+closure~\eqref{eq:relativeunion}. A series
+$f=\sum_\eta c_\eta t^\eta\in\overline M((t^\Gamma))$ lies in the
+valuation-topological closure of $\mathcal A$ if and only if
+\begin{equation}\label{eq:prefixcriterion}
+ [M(c_\eta:\eta\leq\gamma):M]<\infty
+                    \qquad\text{for every }\gamma\in\Gamma.
+\end{equation}
+Zero coefficients may be omitted from the generated field.
+\end{theorem}
+\begin{proof}
+The valuation neighborhoods of $f$ are the sets
+$\{g:v(f-g)>\gamma\}$ for $\gamma\in\Gamma$.
+If $g\in\mathcal A$ belongs to this neighborhood, its coefficients
+through exponent $\gamma$ agree with those of $f$. All coefficients of
+$g$ lie in one finite extension of $M$ by
+Theorem~\ref{thm:coefficient}, proving necessity.
+
+Conversely, suppose~\eqref{eq:prefixcriterion}. The truncation
+$f_{\leq\gamma}=\sum_{\eta\leq\gamma}c_\eta t^\eta$ has well-ordered
+support and coefficients in the finite extension from that condition.
+It lies in $\mathcal A$, and either equals $f$ or its difference from $f$
+has least exponent strictly greater than $\gamma$. It approximates $f$
+in the required neighborhood, proving sufficiency.
+\end{proof}
+
+For $\Gamma=\Q$, the series $\sum_{n\geq1}\sqrt{p_n}t^n$ satisfies the
+criterion: below any rational cutoff there are only finitely many of its
+positive integer exponents. It is therefore a valuation limit of its
+finite algebraic truncations, despite its differential transcendence.
+
+For a contrasting example, take $\Gamma=\Z^2$ in lexicographic order and
+\[
+ f=\sum_{n\geq1}\sqrt{p_n}\,t^{(0,n)}.
+\]
+Its support is still well ordered and has order type $\omega$. However,
+every one of its exponents lies below $(1,0)$. At that cutoff the
+coefficient field is the infinite multiquadratic extension, so the
+criterion fails. No algebraic element approximates $f$ with error
+valuation greater than $(1,0)$.
+
+Under the embedding $(a,b)\mapsto a\omega+b$ of value groups, the
+second series has the same displayed surreal expansion
+$\sum_n\sqrt{p_n}\omega^{-n}$. The enlarged workspace has an additional
+precision scale $\omega^{-\omega}$ which no finite truncation reaches.
+Thus the topology and the available precision scales must be specified;
+Hahn summability alone is not valuation convergence of finite truncations
+in an arbitrary-rank field.
+
+\section{Effective limitations and exact verification}\label{sec:effective}
+
+\subsection{Algebraicity is undecidable for unrestricted computable streams}
+Consider the representation
+\[
+ x_\beta=\sum_{n\geq1}\beta_n\sqrt{p_n}\,t^n,
+ \qquad \beta_n\in\{0,1\},
+\]
+where a program is promised to compute the total sequence $(\beta_n)$.
+Every coefficient has a finite exact description; the support is
+contained in the positive integers. Hence no support-validity problem
+is hidden in this representation.
+
+\begin{proposition}\label{prop:undecidable}
+There is no algorithm that, for every such total computable coefficient
+stream, decides whether $x_\beta$ is algebraic over $B_0$.
+There is also no algorithm deciding whether it is differentially
+algebraic over $B_0$ for $\BM$.
+\end{proposition}
+\begin{proof}
+Given a program $e$ on a fixed input, define $\beta_n$ by simulating $e$
+for $n$ steps: return $1$ if it has not yet halted and $0$ otherwise.
+This coefficient program is total regardless of whether $e$ halts.
+If $e$ halts, only finitely many $\beta_n$ are nonzero, so $x_\beta$ is
+algebraic and therefore differentially algebraic. If $e$ never halts,
+$x_\beta=\xi_{\N_{>0}}$, which is differentially transcendental by
+Theorem~\ref{thm:onesurreal}, and in particular transcendental.
+Either proposed decision procedure would decide whether arbitrary
+programs halt. Such a procedure is impossible by the standard diagonal
+argument: a program that halts exactly when the purported halting test
+says it does not halt contradicts the test applied to its own code.
+\end{proof}
+
+Every finite set of coefficient observations is also compatible with
+both a finite-support algebraic continuation and an infinite-support
+differentially transcendental continuation. The latter assertion uses
+the fact that \emph{every} infinite subset works, not just the full set
+of positive integers. Thus the finite certificates of
+Corollary~\ref{cor:finitewitness} require structural information about the
+stream; numerical or symbolic inspection of a long prefix is not a
+substitute for such information.
+
+\subsection{What the accompanying checks do}
+The supplied \texttt{verify.py} uses exact arithmetic and symbolic
+identities. It checks the top-degree finite-difference formula, small
+multiquadratic sign products, the quadratic exceptional relation,
+Vandermonde and mixed-jet ranks, the derivative formulas, the finite
+boundary term in the dilation identity, Taylor coefficient identities,
+and the finite behavior of the binary-prefix construction.
+All 404 recorded checks passed with Python 3.13.5 and SymPy 1.14.0;
+the exact environment is also recorded in
+\texttt{verification\_results.json}.
+
+These checks are deliberately subordinate to the proofs. A finite rank
+calculation does not prove the hereditary full-span lemma for all orders
+and all infinite subsets; that lemma is proved by the pole argument and
+Lemma~\ref{lem:expgraph}. Finite sign-orbit examples do not prove the
+classification for arbitrary well-ordered supports; that theorem is
+proved by exact Galois actions, finite differences, and cofinite spanning.
+No Lean file is included, and no machine-checked theorem is claimed.
+
+\subsection{Proof dependencies and falsifiable checkpoints}
+The core proof has a short dependency structure. Finite multiquadratic
+Galois theory gives independently available sign changes. A degree-$D$
+polynomial relation then forces its highest polarization to vanish on
+every distinct-index $D$-tuple. Cofinite spanning forces that polarization
+to vanish identically. Finally, one transverse linear functional recovers
+exactly the finite exceptional multiquadratic extension. Each of these
+steps is isolated in a separately stated lemma or theorem.
+
+The two applications add different spanning arguments. Actual surreal
+Euler jets use the Vandermonde determinant. Analytic mixed jets use the
+largest pole order and the impossibility of a nonzero polynomial vanishing
+on infinitely many points $(n,2^n)$. The continuum constructions add only
+the finite-overlap property of binary-prefix sets.
+
+The assumptions have specific roles. Distinct support exponents ensure
+that sign-conjugate primitive elements are distinguishable coefficientwise.
+Independent square classes license independent sign changes. Characteristic
+zero ensures that the top polarization is detected by $D!$ and that
+separability causes no coefficient-orbit pathology. Finite-dimensional
+vector spaces make the cofinite span stabilize after finitely many
+deletions. Dropping any of these hypotheses requires a new argument,
+not a notational adjustment.
+
+\section{Further questions and final assessment}\label{sec:questions}
+
+The article establishes an exact relation theory for one substantial
+class of Hahn constructions. It does not classify arbitrary algebraic
+coefficient families. When the available coefficient Galois actions are
+correlated rather than independent sign changes, their orbits need not
+supply the independent translation directions used in the proof.
+A natural next problem is to replace the square-root hypotheses with a
+usable condition on finite Galois representations, and to determine which
+parts of the affine-plane classification survive.
+
+A second problem is effectivity under certificates. For a stream supplied
+with a finite-state recurrence, a certified pole pattern, or an explicit
+cofinite-spanning proof, one can ask for algorithms that compute its
+transcendence dimension and exceptional field. The unrestricted decision
+problem of Proposition~\ref{prop:undecidable} does not rule out such
+structured subclasses. Corollary~\ref{cor:finitewitness} suggests a
+bounded-degree certificate format based on disjoint spanning sets and a
+nonzero mixed difference.
+
+A third problem concerns the interaction with richer surreal derivations
+and larger monomial groups. The actual-number theorem here deliberately
+uses rational exponents, where the normalized Berarducci--Mantova
+restriction is explicit. Extending its transparent jet-spanning proof to
+supports involving general surreal exponents would require control of
+their derivatives, not just their order. Likewise, the analytic theorem
+does not automatically survive substitutions in which the parameter
+itself carries a nontrivial surreal derivative.
+
+The established conclusions are already stronger than a collection of
+isolated transcendence examples. The cofinite span determines the whole
+generated finite-type algebra, the finite exceptional field, and the
+geometric splitting of every relation. The same mechanism constructs a
+continuum of positive infinitesimal surreal numbers with all derivatives
+independent over a full rational-coefficient Hahn field, and a continuum
+of common-domain surcomplex analytic functions with all mixed jets
+independent. These are precise, nontrivial research results offered with
+complete proofs and explicit limitations, while their bibliographic
+novelty remains a matter for independent review.
+
+\clearpage
+\appendix
+\section{Notation and scope at a glance}
+\small
+\begin{longtable}{@{}p{.23\textwidth}p{.71\textwidth}@{}}
+\toprule
+Symbol & Meaning and scope\\
+\midrule
+\endfirsthead
+\toprule Symbol & Meaning and scope\\\midrule
+\endhead
+$M((t^\Gamma))$ & Hahn field: coefficients in $M$, well-ordered support in the set-sized ordered abelian group $\Gamma$.\\
+$W$ & Cofinite span of coefficient vectors; intersection over finite deletions, not arbitrary ordinal tails.\\
+$E$ & Finite set of vectors outside $W$; precisely the exceptional coefficient indices in the classification.\\
+$B_E$ & $M(r_i:i\in E)((t^\Gamma))$; the exact algebraic part of $B(Y)$, of degree $2^{|E|}$ over $B$.\\
+$\AR$ & Real-algebraic numbers, a countable subfield of $\R$.\\
+$B_0\subset H_0$ & $\Q((t^\Q))\subset\AR((t^\Q))$, concretely embedded in $\No$ by $t=\omega^{-1}$.\\
+$\BM$ & Normalized Berarducci--Mantova derivation on actual surreals; its restriction to $H_0$ is $-t\EDer$.\\
+$\EDer$ & Euler derivation; $\EDer(t^q)=qt^q$ and coefficient-field elements are fixed.\\
+$\partial$ & In analytic sections, ordinary differentiation in the independent parameter $z$ on coefficient germs.\\
+$B$ in analytic sections & $\C(z)((t^\Q))$, a formal relation field, not a common-domain holomorphic ring.\\
+$K_\Q$ & $\C((t^\Q))\subset\No[i]$; $K_\Q(z)$ is a smaller relation field contained in $B$.\\
+$D$ & The ordinary complex disk $|z|<1$, shared by every analytic coefficient in every constructed function.\\
+$\cf$ & The cardinal $2^{\aleph_0}$, not the proper-class size of all surreals.\\
+\bottomrule
+\end{longtable}
+\normalsize
+
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{99}
+\small\raggedright
+\setlength{\itemsep}{3pt}
+\bibitem{Repo}
+Vladimir Reshetnikov, \emph{Surreal}, project README, revision
+\texttt{\repocommit}, inspected September 22, 2026.
+\href{https://github.com/VladimirReshetnikov/Surreal/blob/608dd23c0539fce73723843949ee627641c27b30/README.md}{Pinned project README}.
+
+\bibitem{RepoMap}
+Vladimir Reshetnikov, \emph{The surreal and surcomplex reports},
+documentation catalogue, same revision and access date.
+\href{https://github.com/VladimirReshetnikov/Surreal/blob/608dd23c0539fce73723843949ee627641c27b30/docs/README.md}{Pinned documentation catalogue}.
+
+\bibitem{StacksGalois}
+The Stacks Project Authors, \emph{Fields, Section 9.21: Galois theory},
+Tag 09DW, consulted September 22, 2026.
+\url{https://stacks.math.columbia.edu/tag/09DW}.
+
+\bibitem{StacksKummer}
+The Stacks Project Authors, \emph{Fields, Section 9.24: Kummer extensions},
+Tag 09I6, consulted September 22, 2026.
+\url{https://stacks.math.columbia.edu/tag/09I6}.
+Only the basic Kummer background is used; the multiquadratic statement
+needed here is proved in Lemma~\ref{lem:signs}.
+
+\bibitem{vdH}
+Joris van der Hoeven, \emph{Operators on generalized power series},
+Illinois Journal of Mathematics \textbf{45} (2001), no.~4.
+\url{https://doi.org/10.1215/ijm/1258138061}.
+
+\bibitem{KKS}
+Elliot Kaplan, Lothar Sebastian Krapp, and Michele Serra,
+\emph{Decomposing the Automorphism group of the surreal numbers},
+arXiv:2509.22374, consulted September 22, 2026; especially the
+normal-form and Hahn-field preliminaries.
+\url{https://arxiv.org/abs/2509.22374}.
+
+\bibitem{BM}
+Alessandro Berarducci and Vincenzo Mantova,
+\emph{Surreal numbers, derivations and transseries},
+Journal of the European Mathematical Society \textbf{20} (2018),
+339--390. DOI: 10.4171/JEMS/769. Preprint arXiv:1503.00315.
+\url{https://arxiv.org/abs/1503.00315}.
+
+\bibitem{MM}
+\v Zarko Mijajlovi\'c and Branko Male\v sevi\'c,
+\emph{Differentially Transcendental Functions},
+Bulletin of the Belgian Mathematical Society--Simon Stevin
+\textbf{15} (2008), no.~2. Preprint arXiv:math/0412354.
+\url{https://arxiv.org/abs/math/0412354}.
+\end{thebibliography}
+\end{document}

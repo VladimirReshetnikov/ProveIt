@@ -1,0 +1,1475 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs,aliascnt}
+\usepackage{microtype,booktabs,tabularx,array,enumitem}
+\usepackage{xcolor,fancyhdr,titlesec,needspace}
+\definecolor{Ink}{HTML}{243747}
+\definecolor{Accent}{HTML}{566348}
+\usepackage[colorlinks=true,linkcolor=Ink,citecolor=Accent,urlcolor=Accent]{hyperref}
+\usepackage{xurl}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\titleformat{\section}{\Large\bfseries\color{Ink}}{\thesection}{.65em}{}
+\titleformat{\subsection}{\large\bfseries\color{Accent}}{\thesubsection}{.65em}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Hahn--Hilbert spectral theory}
+\fancyhead[R]{\small Infinitesimal shifts and range defects}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{.26em}
+\setlength{\parindent}{1.1em}
+\setlength{\emergencystretch}{3em}
+\widowpenalty=10000\clubpenalty=10000
+\setlist{itemsep=.15em,topsep=.3em,leftmargin=2em}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\newaliascnt{warning}{theorem}
+\newtheorem{warning}[warning]{Warning}
+\aliascntresetthe{warning}
+\crefname{theorem}{theorem}{theorems}
+\Crefname{theorem}{Theorem}{Theorems}
+\crefname{proposition}{proposition}{propositions}
+\Crefname{proposition}{Proposition}{Propositions}
+\crefname{lemma}{lemma}{lemmas}
+\Crefname{lemma}{Lemma}{Lemmas}
+\crefname{corollary}{corollary}{corollaries}
+\Crefname{corollary}{Corollary}{Corollaries}
+\crefname{definition}{definition}{definitions}
+\Crefname{definition}{Definition}{Definitions}
+\crefname{example}{example}{examples}
+\Crefname{example}{Example}{Examples}
+\crefname{remark}{remark}{remarks}
+\Crefname{remark}{Remark}{Remarks}
+\crefname{warning}{warning}{warnings}
+\Crefname{warning}{Warning}{Warnings}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\K}{{K_\Gamma}}
+\newcommand{\KR}{{R_\Gamma}}
+\newcommand{\HH}{\mathcal H_\Gamma}
+\newcommand{\m}{\mathfrak m_\Gamma}
+\newcommand{\Ocal}{\mathcal O_\Gamma}
+\newcommand{\B}{\mathcal B(H)}
+\newcommand{\Acal}{\mathcal A_\Gamma(H)}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\st}{\operatorname{st}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\coker}{\operatorname{coker}}
+\newcommand{\spec}{\sigma}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\norm}[1]{\lVert#1\rVert}
+\newcommand{\ip}[2]{\langle#1,#2\rangle}
+\newcommand{\commit}{608dd23c0539fce73723843949ee627641c27b30}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\hypersetup{pdftitle={Infinitesimal Spectral Thickening and Closed-Range Defects in Hahn--Hilbert Spaces},pdfauthor={Research manuscript prepared for Vladimir Reshetnikov},pdfsubject={Surcomplex Hahn workspaces, automatic adjoint structure, normal spectra and coercive operators}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{9mm}
+{\large\scshape A research manuscript for the Surreal project\par}
+\vspace{13mm}
+{\Huge\bfseries\color{Ink} Infinitesimal Spectral\\[.15em] Thickening\par}
+\vspace{5mm}
+{\LARGE and Closed-Range Defects\\[.15em] in Hahn--Hilbert Spaces\par}
+\vspace{8mm}
+{\large Automatic adjoint structure, exact normal spectra,\\
+and the obstruction to coercive inversion\par}
+\vspace{9mm}
+{\large September 22, 2026\par}
+\vspace{8mm}
+\begin{minipage}{.95\textwidth}
+\begin{abstract}
+\noindent
+Let $H$ be an ordinary complex Hilbert space and let $\Gamma$ be a nonzero
+set-sized divisible ordered abelian group. We study the vector-valued Hahn
+space $H((t^\Gamma))$ over $\C((t^\Gamma))$, with its coefficientwise-convolution
+inner product. An automatic-structure theorem identifies every everywhere-defined
+adjointable operator, without an assumed continuity or support condition, with
+a Hahn series of bounded operators on $H$. For an ordinary bounded normal
+operator $T$, its scalar-extended algebraic spectrum is exactly
+\[
+ \spec_\Gamma(T)=\spec_\C(T)\ \cup\
+       \bigl(\spec_\C(T)' + \mathfrak m_\Gamma\bigr),
+\]
+where the prime denotes accumulation points and $\mathfrak m_\Gamma$ the
+infinitesimals. Isolated spectral points do not thicken; accumulation points
+acquire whole complex infinitesimal monads, while no new eigenvalues appear.
+A general noncommutative perturbation theorem shows that an injective leading
+operator retains its entire algebraic range defect under every positive-order
+Hahn perturbation.
+
+For $D e_n=n^{-1}e_n$ on $\ell^2$, the positive operator
+$D^2+t^{2\eta}I$ is coercive but not onto, and has a cokernel of dimension at
+least the continuum over the Hahn field. In a complete rank-one valuation
+topology its range is closed and proper with zero orthogonal complement.
+We also characterize precisely which constant data admit infinitesimal
+resolvents and when the extension of an ordinary bounded operator has a
+least field-valued norm bound. All results are proved in a specified
+set-sized model, which embeds its scalars into surcomplex numbers through
+Conway normal forms.
+\end{abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{.95\textwidth}\small
+\textbf{Status.} Candidate original theorem package, with explicit proofs and
+a documented literature comparison. No named published open problem is claimed
+solved. Priority is not certified; the general proofs have not been
+independently refereed or checked by a proof assistant. The accompanying
+program checks finite algebraic identities, not the infinite-dimensional
+theorems. The classical Hilbert, Hahn-support, and surreal normal-form inputs
+are identified rather than presented as new.
+\end{minipage}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{The problem, the model, and the contribution}\label{sec:intro}
+
+\subsection{Why infinite dimension is the next substantial question}
+The repository \texttt{VladimirReshetnikov/Surreal} already contains a substantial
+finite-dimensional spectral report: Hermitian diagonalization, singular values,
+conditioning, determinantal scales, and ramification of positive matrix roots.
+Its scope explicitly restricts matrix dimensions to ordinary finite integers
+\cite{RepoSpectral}. Its documentation also distinguishes strong Hahn summation
+from convergence in the fine topology of the full surreal class
+\cite{RepoMap}. Those are important constraints on what a genuinely additional
+chapter should do.
+
+This manuscript asks what happens when an ordinary infinite-dimensional
+Hilbert space is retained as the coefficient space, rather than replacing a
+finite matrix by a larger finite matrix. Over $\C$, positivity, completeness,
+and adjoints support a familiar chain of implications: self-adjoint spectra
+are real, coercive operators are invertible, and closed subspaces admit
+orthogonal projections. The construction below retains a positive-definite
+inner product, all ordinary Hilbert vectors as constants, and a large
+adjointable operator algebra. In rank one it is complete. Nevertheless,
+several of those implications fail, for an exactly identifiable reason:
+\emph{a leading coefficient must itself be an ordinary Hilbert vector}.
+
+The central results are not a list of isolated anomalies. An automatic
+operator-structure theorem makes the admissible algebra intrinsic. An
+injective-leading-term theorem explains the persistence of range defects.
+Together with ordinary normal spectral theory, these give an exact spectral
+classification and quantitative counterexamples to coercive inversion.
+
+\subsection{Main statements at a glance}
+Throughout, $H\ne0$ is a complex Hilbert space, $\Gamma$ is nonzero, divisible,
+ordered, abelian and set-sized, and
+\[
+ \K=\C((t^\Gamma)),\qquad \HH=H((t^\Gamma)).
+\]
+The valuation is the least support exponent. A prime on an ordinary compact
+set denotes its accumulation set, not a derivative and not an essential
+spectrum.
+
+\begin{theorem}[Main theorem package]\label{thm:package}
+The following assertions hold in this model.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Every everywhere-defined adjointable $\K$-linear operator on $\HH$
+has a unique expansion in $\B((t^\Gamma))$. Its coefficient operators are
+ordinary bounded operators and have one common well-ordered support.
+\item For an ordinary bounded normal $T$, its coefficientwise extension has
+\begin{equation}\label{eq:main-spectrum}
+ \spec_\Gamma(T)=\spec_\C(T)\cup
+       \bigl(\spec_\C(T)'+\m\bigr),
+ \qquad \spec_{p,\Gamma}(T)=\spec_{p,\C}(T).
+\end{equation}
+Here $\spec_\Gamma$ is the failure-of-bijectivity spectrum; it also equals
+the spectrum in the adjointable algebra.
+\item If $S:V\to V$ is injective and $E$ is an endomorphism-valued Hahn
+series of strictly positive order, then
+\[
+ \coker(S+E)\cong W((t^\Gamma)),\qquad
+ V=\Ran S\oplus W,
+\]
+noncanonically. No commutation hypothesis is required.
+\item For $D e_n=n^{-1}e_n$ and $s=t^\eta$, $\eta>0$, the operator
+$C=D^2+s^2I$ on $\ell^2((t^\Gamma))$ is bounded, positive, self-adjoint and
+coercive, but not surjective. Its cokernel has $\K$-dimension at least
+$2^{\aleph_0}$. In rank one its range is closed and proper, with zero
+orthogonal complement.
+\item The extension of an ordinary bounded $T$ has a least
+$\KR$-valued norm bound if and only if $T$ attains its ordinary Hilbert
+operator norm. When the least bound exists, it is the ordinary norm itself.
+\end{enumerate}
+\end{theorem}
+
+Each assertion is proved below. The result about the least norm bound is
+not a claim that these operators are unbounded: all operators in (i) have
+field-valued bounds. The failure is the absence of a \emph{least} such bound.
+Likewise, a spectral point in (ii) need not be an eigenvalue.
+
+\subsection{What is and is not claimed as new}
+The ordinary spectral theorem, Baire category, the closed graph theorem,
+Hilbert norm estimates and Hahn support lemmas are classical inputs
+\cite{Douglas,Neumann}. The non-Archimedean failure of orthogonal decomposition
+is also known in other models, including work of Aguayo and Nova
+\cite{AN} and Aguayo, Nova and Shamseddine \cite{ANS}. We do not claim to
+have discovered that failure in general.
+
+The proposed contribution is the particular combination of automatic
+adjoint structure, the exact accumulation-monad spectrum, the arbitrary
+positive-support range-defect formula, and the explicit coercive example
+with a continuum-dimensional defect in $H((t^\Gamma))$. In the repository
+sections and primary literature inspected, we did not find these statements
+in this form. This is a qualified report of the search, not a proof of
+priority. A theorem may have predecessors under terminology not located by
+that search.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}p{.25\textwidth}YY@{}}
+\toprule
+Strand & Established input or predecessor & Contribution here\\
+\midrule
+Finite surcomplex matrices & Repository spectral chapter & Infinite coefficient Hilbert spaces\\
+Hahn formal calculus & Neumann support lemma & Automatic global support for adjoints\\
+Ordinary normal spectra & Hilbert spectral theorem & Exact infinitesimal thickening formula\\
+Formal perturbation & Neumann inversion near the identity & Persistence of arbitrary injective range defects\\
+Non-Archimedean orthogonality & Known nonorthomodular examples & A closed coercive range with continuum defect\\
+Operator norm bounds & Ordinary norm and attainment & Exact least-bound criterion over the Hahn field\\
+\bottomrule
+\end{tabularx}
+\caption{The novelty boundary: classical tools are not renamed as new theorems.}
+\end{table}
+
+\subsection{Relation to the existing non-Archimedean literature}
+Aguayo--Nova--Shamseddine work with free Banach spaces of countable type over
+the complex Levi--Civita field, represented by weighted $c_0$-type spaces
+\cite{ANS}. Ishizuka proves spectral results for self-adjoint compactoid
+operators over valued fields with formally real residue field
+\cite{Ishizuka}. These are nearby but different settings. The constant copy
+of $H$ in our space retains every ordinary square-summable vector, while its
+valuation topology is discrete. Our extension of an ordinary compact
+operator is not thereby compactoid in the new topology.
+
+The June 2026 preprint of Miabey treats diagonal operators and finite-rank
+perturbations in a non-Archimedean Hilbert-space setting \cite{Miabey}.
+We use it only to delimit related contemporary work; none of its theorems
+is an input to the proofs here. Formal resolvent expansions also have a
+classical relationship with pole and Drazin-spectrum questions; see
+Boasso \cite{Boasso}. Our normal-operator formula is proved directly, so
+no Drazin-theoretic equivalence is needed as an unproved bridge.
+
+\section{Hahn scalar and vector spaces}\label{sec:construction}
+
+\subsection{Support conventions and the finite-convolution principle}
+A Hahn series with coefficients in a complex vector space $V$ is a family
+\[
+ x=\sum_{\gamma\in\Gamma}x_\gamma t^\gamma
+\]
+whose support $\{\gamma:x_\gamma\ne0\}$ is well ordered in the given order
+of $\Gamma$. Write $V((t^\Gamma))$ for the resulting set. For $x\ne0$ put
+$v(x)=\min\supp x$, and put $v(0)=+\infty$.
+
+A family $(x_j)_{j\in J}$ is \emph{Hahn summable} when its union of supports
+is well ordered and only finitely many $j$ contribute at each exponent.
+All unqualified infinite formal sums in this manuscript mean this notion.
+It is not convergence of ordinary partial sums in the full surreal fine
+topology.
+
+\begin{lemma}[Classical support lemma]\label{lem:support}
+Let $A,B\subseteq\Gamma$ be well ordered. Then $A+B$ is well ordered and
+each $\gamma$ has only finitely many representations $\gamma=a+b$ with
+$a\in A$, $b\in B$. If $P\subseteq\Gamma_{>0}$ is well ordered, the monoid
+$P^*$ of all finite sums from $P$, including zero, is well ordered, and for
+each $\gamma$ only finitely many ordered words in $P$ have sum $\gamma$.
+\end{lemma}
+
+This is the standard Hahn--Neumann support lemma \cite{Neumann}.
+We use its full finite-word form, not only the assertion that each fixed
+power is meaningful. The latter alone would not justify a geometric series.
+For the first finiteness assertion, infinitely many distinct $a$ in a
+fixed-sum family yield an increasing subsequence in $A$ and hence a
+strictly decreasing subsequence $\gamma-a$ in $B$, a contradiction.
+The positive-word assertion is the usual Neumann lemma; it is a stated
+classical input here, rather than a new combinatorial claim.
+
+The first assertion licenses scalar multiplication on $V((t^\Gamma))$.
+It also licenses products of operator-valued Hahn series, even when the
+coefficient algebra is noncommutative. A finite number of supports can be
+combined by iteration of the lemma.
+
+\begin{lemma}[Support-certified Neumann inverse]\label{lem:neumann}
+Let $\mathscr R$ be a unital complex algebra and let
+$E\in\mathscr R((t^\Gamma))$ have $v(E)>0$. Then
+\begin{equation}\label{eq:neumann}
+ (I+E)^{-1}=\sum_{n\ge0}(-E)^n
+\end{equation}
+is a well-defined two-sided inverse in $\mathscr R((t^\Gamma))$.
+It has support in $(\supp E)^*$.
+\end{lemma}
+\begin{proof}
+Expand each coefficient of $E^n$ as a sum over ordered words in $\supp E$.
+\Cref{lem:support} makes the union well ordered and all coefficients finite,
+including the sum over $n$. The finite identity
+$(I+E)\sum_{n=0}^{N}(-E)^n=I+(-1)^N E^{N+1}$ then telescopes coefficientwise
+across all word lengths. Right multiplication telescopes as well. This
+argument uses associativity but not commutativity of $\mathscr R$.
+\end{proof}
+
+\subsection{The field and its surcomplex realization}
+Define
+\[
+ \KR=\R((t^\Gamma)),\qquad \K=\C((t^\Gamma))=\KR[i].
+\]
+Order $\KR$ by its first nonzero coefficient and conjugate $\K$
+coefficientwise. Let $\Ocal=\{z:v(z)\ge0\}$ and
+$\m=\{z:v(z)>0\}$, including zero in both sets. Coefficient extraction at
+zero gives $\st:\Ocal\to\C$. Every finite scalar has a unique expression
+$z=a+\varepsilon$ with $a\in\C$ and $\varepsilon\in\m$.
+
+Divisibility of $\Gamma$ guarantees positive square roots in $\KR$.
+For completeness, if $r=c t^\delta(1+u)>0$, where $c>0$ and $v(u)>0$,
+then
+\[
+ \sqrt r=\sqrt c\,t^{\delta/2}
+       \sum_{n\ge0}\binom{1/2}{n}u^n.
+\]
+The support lemma and the formal binomial identity prove its square is $r$;
+the positive root is unique in any ordered field. This elementary square-root
+construction is all the real-closed-field structure required here.
+
+If $\Gamma$ is a set-sized ordered subgroup of the surreal additive group,
+Conway normal forms give a scalar embedding
+\begin{equation}\label{eq:surreal-embedding}
+ \sum_\gamma c_\gamma t^\gamma
+ \longmapsto \sum_\gamma c_\gamma\omega^{-\gamma}\in\No[i].
+\end{equation}
+The reversed exponent support is reverse well ordered, exactly the normal-form
+condition \cite{Gonshor}. This explains the surcomplex interpretation without
+making the vector space a proper class. In particular, $\Gamma=\Q$ and
+$t=\omega^{-1}$ suffice for all explicit counterexamples.
+
+\begin{warning}[Three distinct completions]
+The construction $H((t^\Gamma))$ is neither the algebraic tensor product
+$H\otimes_\C\K$ nor a silently chosen sequence space $\ell^2(\K)$.
+Nor does its intrinsic valuation topology equal the topology induced by
+embedding its scalar field into the full surreal fine topology. All three
+distinctions matter to the results.
+\end{warning}
+
+\subsection{The Hahn--Hilbert inner product}
+We take ordinary and extended inner products to be linear in the first
+variable and conjugate-linear in the second. On $\HH$ define
+\begin{equation}\label{eq:inner}
+ \ip{x}{y}
+ =\sum_{\alpha,\beta}
+       \ip{x_\alpha}{y_\beta}_H t^{\alpha+\beta}.
+\end{equation}
+Each ordinary Hilbert inner product in the coefficient is evaluated
+\emph{before} the Hahn convolution. For example, a constant vector
+$(1/n)_{n\ge1}\in\ell^2$ has its ordinary finite real squared norm, even
+though the separate family of its constant-coordinate squared magnitudes
+is not Hahn summable. We are not using that inadmissible family as a Hahn
+sum.
+
+\begin{proposition}[Positive-definite scalar extension]\label{prop:inner}
+Formula \eqref{eq:inner} defines a positive-definite Hermitian form. Its norm
+$\norm{x}=\sqrt{\ip{x}{x}}$ satisfies the Cauchy--Schwarz and triangle
+inequalities, and
+\begin{equation}\label{eq:normvaluation}
+ v(\ip{x}{x})=2v(x),\qquad v(\norm{x})=v(x)\quad(x\ne0).
+\end{equation}
+If $x=t^\delta(u+\text{positive-order terms})$ with $u\ne0$, then
+$\norm{x}=t^\delta(\norm{u}_H+\text{positive-order terms})$.
+\end{proposition}
+\begin{proof}
+The finite-convolution lemma gives well-definedness and sesquilinearity.
+The coefficient at $2\delta$, where $\delta=v(x)$, is exactly
+$\norm{x_\delta}_H^2>0$; all other contributions have larger exponent.
+This proves positivity and the valuation statements. Completing a square,
+using $\ip{x-ay}{x-ay}\ge0$ with
+$a=\ip{x}{y}/\ip{y}{y}$, gives
+$\abs{\ip{x}{y}}^2\le\ip{x}{x}\ip{y}{y}$. The usual expansion of
+$\norm{x+y}^2$, followed by this inequality, gives the triangle inequality.
+These are finite algebraic arguments over the ordered field $\KR$.
+\end{proof}
+
+\section{Every adjoint has a global Hahn expansion}\label{sec:adjoints}
+
+\subsection{The apparently smaller coefficient algebra}
+Let
+\[
+ \Acal=\B((t^\Gamma)).
+\]
+Thus an element $A=\sum_\gamma A_\gamma t^\gamma$ has bounded ordinary
+operator coefficients and one well-ordered support. There is no uniform
+ordinary bound on the norms of all its coefficients.
+It acts by
+\begin{equation}\label{eq:operator-convolution}
+ (Ax)_\delta=\sum_{\gamma+\alpha=\delta}A_\gamma x_\alpha.
+\end{equation}
+The support lemma proves this action is defined on every $x\in\HH$.
+The series $A^*=\sum_\gamma A_\gamma^*t^\gamma$ satisfies
+$\ip{Ax}{y}=\ip{x}{A^*y}$, by finite coefficientwise rearrangement.
+
+One might suspect that $\Acal$ is only a convenient restricted operator
+class. The next theorem says that the existence of an everywhere-defined
+adjoint forces exactly this class, without any advance assumption that an
+operator preserves Hahn sums.
+
+\begin{theorem}[Automatic adjoint structure]\label{thm:adjoint}
+Let $A,B:\HH\to\HH$ be everywhere-defined $\K$-linear maps such that
+\begin{equation}\label{eq:adjoint-condition}
+ \ip{Ax}{y}=\ip{x}{By}\qquad(x,y\in\HH).
+\end{equation}
+There are unique bounded operators $A_\gamma\in\B$ with well-ordered
+nonzero support such that $A$ acts by \eqref{eq:operator-convolution}.
+Moreover, $B_\gamma=A_\gamma^*$. Consequently,
+\[
+ \End_{\mathrm{adj}}(\HH)\cong\B((t^\Gamma))
+\]
+as $*$-algebras. No separability of $H$ is assumed.
+\end{theorem}
+\begin{proof}
+\emph{Step 1: bounded coefficient operators.}
+For constant vectors $u,w\in H$, define
+$A_\gamma u=[t^\gamma]Au$ and $B_\gamma w=[t^\gamma]Bw$.
+Extracting the coefficient at $\gamma$ in \eqref{eq:adjoint-condition} gives
+\begin{equation}\label{eq:ordinaryadj}
+ \ip{A_\gamma u}{w}_H=\ip{u}{B_\gamma w}_H.
+\end{equation}
+Both maps are defined on all of $H$. To see that $A_\gamma$ has closed
+graph, let $u_n\to u$ and $A_\gamma u_n\to z$ in the ordinary Hilbert
+norm. Testing against any fixed $w$ in \eqref{eq:ordinaryadj} gives
+$\ip{z}{w}=\ip{u}{B_\gamma w}=\ip{A_\gamma u}{w}$.
+Hence $z=A_\gamma u$. The ordinary closed graph theorem makes $A_\gamma$
+bounded. The same argument applies to $B_\gamma$, and
+\eqref{eq:ordinaryadj} identifies the two as adjoints.
+
+\emph{Step 2: one well-ordered support.}
+Let $S=\{\gamma:A_\gamma\ne0\}$. If $S$ were not well ordered, ordinary
+choice permits a strictly decreasing sequence
+$\gamma_1>\gamma_2>\cdots$ in $S$. Each $\ker A_{\gamma_n}$ is a proper
+closed subspace of $H$, and hence nowhere dense. Baire's theorem gives
+$u\in H$ outside their countable union. Then the support of $Au$ contains
+every $\gamma_n$, contradicting its being a Hahn series. Thus $S$ is well
+ordered. Because an ordinary bounded operator is zero exactly when its
+adjoint is zero, the coefficient family of $B$ has the same support.
+
+\emph{Step 3: constants determine the full operator.}
+Let $\widetilde A,\widetilde B$ be the convolution operators built from
+these coefficient families. They are adjoints by the support lemma and agree
+with $A,B$ on constants. For arbitrary $x\in\HH$ and constant $w\in H$,
+\[
+ \ip{Ax}{w}=\ip{x}{Bw}
+ =\ip{x}{\widetilde B w}=\ip{\widetilde A x}{w}.
+\]
+If a Hahn vector pairs to zero with every constant $w$, then each of its
+ordinary coefficients pairs to zero with all of $H$, so every coefficient
+vanishes. Hence $Ax=\widetilde A x$. The analogous conclusion holds for $B$.
+Uniqueness follows by evaluating on constant vectors and extracting
+coefficients. Composition and the involution are the finite Hahn convolution
+operations, proving the algebra assertion.
+\end{proof}
+
+\begin{corollary}[Automatic summability and boundedness]\label{cor:autobounded}
+Every everywhere-defined adjointable operator preserves Hahn-summable
+families. It also admits a bound
+\begin{equation}\label{eq:orderbound}
+ \norm{Ax}\le M\norm{x}\qquad(x\in\HH)
+\end{equation}
+for some $M\in\KR_{\ge0}$. If $A\ne0$ and
+$\gamma_0=\min\supp A$, any ordinary real $c>\norm{A_{\gamma_0}}_H$
+gives the valid bound $M=c t^{\gamma_0}$.
+\end{corollary}
+\begin{proof}
+For a Hahn-summable family, finite-convolution finiteness with $\supp A$
+allows the two sums to be interchanged, and their union of supports remains
+well ordered. For the bound, write the leading term of $x$ as
+$t^\delta u$. At exponent $2(\gamma_0+\delta)$, the coefficient of
+$M^2\norm{x}^2-\norm{Ax}^2$ is
+$c^2\norm{u}_H^2-\norm{A_{\gamma_0}u}_H^2>0$.
+This remains true when $A_{\gamma_0}u=0$, since then the leading output
+moves to a higher exponent. Thus the difference is positive for nonzero $x$.
+\end{proof}
+
+\begin{remark}
+The Baire argument is a uniform-support theorem, not a uniform bound on
+$\norm{A_\gamma}_H$. The proof also explains why unrestricted ordinary
+algebraic endomorphisms used later for choosing range complements are not
+automatically adjointable.
+\end{remark}
+
+\section{An injective leading term preserves the whole range defect}\label{sec:defect}
+
+\subsection{A theorem independent of Hilbert structure}
+The next result applies to any complex vector space $V$. Write
+$V_\Gamma=V((t^\Gamma))$. An ordinary linear map on $V$ extends
+coefficientwise, even if $V$ also carries a topology and the map is
+discontinuous in that topology.
+
+\begin{theorem}[Positive-order defect rigidity]\label{thm:defect}
+Let $S:V\to V$ be injective. Let
+$E\in\End_\C(V)((t^\Gamma))$ have strictly positive order, or be zero,
+and put $A=S+E$. Choose an algebraic complement
+\begin{equation}\label{eq:complement}
+ V=\Ran S\oplus W.
+\end{equation}
+Then
+\begin{equation}\label{eq:defectdecomp}
+ V_\Gamma=A(V_\Gamma)\oplus W((t^\Gamma)).
+\end{equation}
+In particular, $A$ is injective, $v(Ax)=v(x)$ for $x\ne0$, and
+$\coker A\cong W((t^\Gamma))$ as $\K$-vector spaces. The isomorphism depends
+on the chosen complement, but the nonvanishing of the defect does not.
+\end{theorem}
+\begin{proof}
+At the least exponent $\delta$ of a nonzero $x$, the coefficient of $Ax$
+is $Sx_\delta\ne0$. All contributions from $E$ have greater exponent.
+This proves injectivity and the valuation assertion.
+
+Define $U:V\to V$ by
+$U(Sv+w)=v$ for $v\in V$, $w\in W$. Then $US=I$ and $\ker U=W$.
+Extend $U$ coefficientwise and use \cref{lem:neumann} to set
+\[
+ R=(I+UE)^{-1},\qquad L=RU,\qquad \Pi=I-AL.
+\]
+The coefficients of $U$ need not be bounded in any additional topology;
+all these formulas are legitimate in the ordinary algebraic endomorphism
+Hahn algebra. The identities
+\[
+ LA=R(US+UE)=R(I+UE)=I
+\]
+and
+\[
+ U\Pi=U-UA R U=U-(I+UE)R U=0
+\]
+show that $\Pi$ kills the range of $A$ and takes values in
+$\ker U=W((t^\Gamma))$. On that latter space $L$ vanishes, so $\Pi$ is the
+identity. Finally, every $x$ decomposes as $ALx+\Pi x$; the intersection
+of the two summands is zero because $LA=I$ and $L|_{W((t^\Gamma))}=0$.
+\end{proof}
+
+\begin{corollary}[No positive-order repair]\label{cor:norepair}
+An injective nonsurjective ordinary operator cannot become surjective on
+$V_\Gamma$ by adding any globally supported positive-order Hahn
+perturbation. This includes perturbations that do not commute with it and
+perturbations with infinitely many positive exponents.
+\end{corollary}
+
+\begin{corollary}[Explicit independent obstruction classes]\label{cor:independent}
+Suppose $(f_j)_{j\in J}\subset V$ have linearly independent classes in
+$V/\Ran S$ over $\C$. Their constant Hahn extensions have linearly
+independent classes in $V_\Gamma/(S+E)V_\Gamma$ over $\K$. Consequently,
+\[
+ \dim_\K\coker(S+E)\ge\dim_\C(V/\Ran S).
+\]
+\end{corollary}
+\begin{proof}
+In a nonzero finite sum $f=\sum_j c_j f_j$ with $c_j\in\K$, take the least
+exponent among the nonzero $c_j$. The coefficient at that exponent is a
+nonzero finite complex combination of the $f_j$, and is not in $\Ran S$.
+But the leading coefficient of $(S+E)x$ is always in $\Ran S$.
+\end{proof}
+
+\begin{warning}
+The theorem gives the actual vector-space quotient, not only a first-order
+approximation to it. It does \emph{not} assert
+$\dim_\K W((t^\Gamma))=\dim_\C W$ for arbitrary infinite-dimensional $W$.
+The safe dimension statement is the lower bound just proved.
+\end{warning}
+
+\subsection{Why the result is more informative than a determinant test}
+There is no finite determinant for an arbitrary infinite-dimensional $S$.
+An entrywise infinitesimal perturbation may even make every finite section
+invertible, while the leading ordinary coefficient of a proposed inverse
+vector is excluded from $H$. The exact splitting \eqref{eq:defectdecomp}
+shows that this is not an accidental choice of data: the full algebraic
+cokernel persists. On the other hand, if $S$ is an ordinary bijection,
+$S+E=S(I+S^{-1}E)$ is invertible by the same support-certified Neumann
+formula. Thus the injective case has a sharp dichotomy, not merely a
+negative example.
+
+\section{The exact spectrum of an ordinary normal operator}\label{sec:spectrum}
+
+\subsection{Two spectral definitions and one ordinary reduction}
+For a $\K$-linear endomorphism $A$ of $\HH$, define
+\[
+ \spec_\Gamma^{\mathrm{alg}}(A)
+ =\{\lambda\in\K:A-\lambda I\text{ is not bijective}\}.
+\]
+For $A\in\Acal$, define $\spec_\Gamma^{\mathrm{adj}}(A)$ by failure of
+invertibility in the unital algebra $\Acal$. These definitions need not be
+identified in advance. In the theorem below, explicit inverses and explicit
+range obstructions will prove their equality.
+
+An ordinary bounded operator $T$ is regarded as a constant member of
+$\Acal$. We often suppress the extension subscript on $T$.
+
+\begin{lemma}[Normal isolated-point decomposition]\label{lem:normalgap}
+Let $T\in\B$ be normal and $a\in\spec_\C(T)$. Put
+$N=\ker(T-aI)$, $M=N^\perp$, and $S=(T-aI)|_M$. Then $M,N$ reduce $T$
+and $S$ is injective. If $a$ is isolated in $\spec_\C(T)$, then $N\ne0$
+and $S$ is boundedly invertible on $M$. If $a$ is an accumulation point,
+then $S$ is not surjective.
+\end{lemma}
+\begin{proof}
+These facts follow from the ordinary normal spectral theorem
+\cite{Douglas}; here is the precise use of it. The spectral projection of
+$\{a\}$ is the orthogonal projection onto $N$. For isolated $a$, the
+function $(z-a)^{-1}$ on the rest of the compact spectrum is bounded, so
+spectral functional calculus gives an inverse on $M$. The projection cannot
+be zero, since otherwise $a$ would not belong to the spectrum.
+For accumulation $a$, if $S$ were onto, its injectivity and the bounded
+inverse theorem would give a bounded inverse. The spectrum of $T$ would
+then be contained in $\{a\}$ together with a compact set separated from
+$a$, contradicting accumulation. This also covers $N=0$.
+\end{proof}
+
+\subsection{Classification and all inverse formulas}
+\begin{theorem}[Accumulation-monad spectrum]\label{thm:spectrum}
+For every ordinary bounded normal $T\in\B$,
+\begin{equation}\label{eq:exactspectrum}
+ \spec_\Gamma^{\mathrm{alg}}(T)
+ =\spec_\Gamma^{\mathrm{adj}}(T)
+ =\spec_\C(T)\cup\bigl(\spec_\C(T)'+\m\bigr).
+\end{equation}
+No scalar of negative valuation is in this spectrum. A nonzero
+infinitesimal displacement of an isolated ordinary spectral point is in
+the resolvent, whereas every infinitesimal displacement of an accumulation
+point remains in the spectrum.
+\end{theorem}
+\begin{proof}
+We partition all scalars $\lambda\in\K$ into exhaustive cases.
+
+\emph{Infinite scalar.} If $v(\lambda)<0$, then
+\begin{equation}\label{eq:infiniteres}
+ (T-\lambda I)^{-1}
+ =-\sum_{n\ge0}\lambda^{-n-1}T^n.
+\end{equation}
+This is a support-certified Neumann inverse: the scalar $\lambda^{-1}$
+has positive valuation. It belongs to $\Acal$, irrespective of the
+ordinary growth of $\norm{T^n}$.
+
+\emph{Finite scalar with nonspectral residue.} Write
+$\lambda=a+\varepsilon$, where $a\in\C$, $\varepsilon\in\m$.
+If $a\notin\spec_\C(T)$, let $B=(T-aI)^{-1}\in\B$. Then
+\begin{equation}\label{eq:regularres}
+ (T-aI-\varepsilon I)^{-1}
+ =\sum_{n\ge0}\varepsilon^n B^{n+1}.
+\end{equation}
+The formula includes $\varepsilon=0$. For nonzero $\varepsilon$, use
+\cref{lem:neumann} on $\varepsilon B$; coefficients need not satisfy
+any ordinary norm-convergence estimate.
+
+\emph{Undisplaced ordinary spectral point.} If $\varepsilon=0$ and
+$a\in\spec_\C(T)$, then $T-aI$ is not an ordinary bijection, by the bounded
+inverse theorem. A nonzero ordinary kernel vector remains a Hahn kernel
+vector. If there is no kernel but surjectivity fails, choose a constant
+$f$ outside its ordinary range. The coefficient at zero in any putative
+solution would have to solve $(T-aI)y_0=f$, which is impossible. Thus the
+Hahn operator is not bijective.
+
+\emph{Displaced isolated point.} Suppose $a$ is isolated and
+$\varepsilon\ne0$. Use \cref{lem:normalgap}; let $P,Q$ project onto $N,M$.
+The inverse is
+\begin{equation}\label{eq:isolatedres}
+ (T-aI-\varepsilon I)^{-1}
+ =-\varepsilon^{-1}P+
+   \sum_{n\ge0}\varepsilon^n S^{-n-1}Q.
+\end{equation}
+The first term is a single scalar Hahn series times a bounded projection;
+the second is a positive-order Neumann series on $M$. Both have
+well-ordered operator support and lie in $\Acal$. The finite orthogonal
+splitting verifies the inverse on both summands. If $M=0$, the second
+summand is simply zero.
+
+\emph{Displaced accumulation point.} Suppose $a\in\spec_\C(T)'$ and
+$\varepsilon\ne0$. On $M$ in \cref{lem:normalgap}, the ordinary $S$ is
+injective and not onto. The perturbation $-\varepsilon I$ has strictly
+positive order. By \cref{thm:defect}, $S-\varepsilon I$ is not onto
+$M((t^\Gamma))$. The constant decomposition $H=N\oplus M$ extends to
+a decomposition of Hahn spaces, and the full operator is block diagonal.
+It is therefore not onto either. Explicitly, a constant
+$f\in M\setminus\Ran S$ cannot be its $M$-component output.
+
+These cases prove exactly the stated set formula. In every nonspectral
+case we constructed an inverse in $\Acal$; in every spectral case we
+proved failure of algebraic bijectivity. This proves equality of the two
+spectral definitions as well.
+\end{proof}
+
+\subsection{Point spectrum is rigid, despite spectral thickening}
+\begin{theorem}[No new normal eigenvalues]\label{thm:point}
+For ordinary bounded normal $T$,
+\[
+ \spec_{p,\Gamma}(T)=\spec_{p,\C}(T),\qquad
+ \ker(T-aI)=\ker_H(T-aI)((t^\Gamma))\quad(a\in\C).
+\]
+In particular, the new nonreal spectral points of a self-adjoint operator
+are not eigenvalues.
+\end{theorem}
+\begin{proof}
+Infinite scalars are in the resolvent by \cref{thm:spectrum}. Suppose
+$(T-aI-\varepsilon I)x=0$ with $x\ne0$, $\varepsilon\in\m$.
+At its leading exponent $\delta$, one obtains
+$(T-aI)x_\delta=0$. Thus $a$ is an ordinary eigenvalue and
+$x_\delta\in N=\ker_H(T-aI)$.
+If $\varepsilon\ne0$, apply the ordinary orthogonal projection $P$ onto
+$N$. Normality implies $P(T-aI)=0$, so the full equation gives
+$-\varepsilon Px=0$. Hence $Px=0$, contradicting
+$Px_\delta=x_\delta\ne0$. Therefore $\varepsilon=0$.
+For a constant $a$, the kernel equation is coefficientwise, yielding the
+claimed eigenspace identity.
+\end{proof}
+
+\begin{example}[Normality is indispensable]\label{ex:backshift}
+Let $B$ be the backward shift on $\ell^2(\N_0)$:
+$Be_0=0$, $Be_n=e_{n-1}$ for $n\ge1$. For $s=t^\eta$,
+\[
+ x=\sum_{n\ge0}s^n e_n\in\HH,\qquad Bx=sx.
+\]
+The support $\{n\eta:n\ge0\}$ is well ordered. This produces a new
+nonconstant eigenvalue for the nonnormal operator $B$, in direct contrast
+to \cref{thm:point}. No ordinary Hilbert convergence of the vector series
+is asserted or needed.
+\end{example}
+
+\section{Consequences that separate finite and infinite spectral geometry}\label{sec:consequences}
+
+\subsection{Self-adjoint spectra are real exactly in the finite-spectrum case}
+\begin{corollary}[A sharp spectral-reality criterion]\label{cor:reality}
+Let $T$ be ordinary bounded self-adjoint. The following are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\spec_\Gamma(T)\subseteq\KR$;
+\item $\spec_\C(T)$ is finite;
+\item $T$ has a finite ordinary orthogonal spectral resolution
+$T=\sum_{j=1}^{r}a_jP_j$ with $a_j\in\R$.
+\end{enumerate}
+There is no finite-rank hypothesis on the projections $P_j$.
+\end{corollary}
+\begin{proof}
+The usual self-adjoint spectrum is a nonempty compact subset of $\R$.
+A finite set has no accumulation points, so \cref{thm:spectrum} proves
+(ii)$\Rightarrow$(i). An infinite compact subset has an accumulation point
+$a$. For any $s=t^\eta$, $\eta>0$, the scalar $a+is$ belongs to
+$\spec_\Gamma(T)$ and does not belong to $\KR$, proving the converse.
+The equivalence with (iii) is the ordinary spectral theorem applied to a
+finite spectral set.
+\end{proof}
+
+The criterion is finite \emph{spectrum}, not finite dimension. For example,
+an infinite-rank orthogonal projection with infinite-dimensional kernel has
+spectrum exactly $\{0,1\}$ even after Hahn extension. Infinite multiplicity
+at an isolated point does not create a monad. The accumulation set in
+\eqref{eq:exactspectrum} therefore cannot be replaced by an essential
+spectrum that includes such points.
+
+\subsection{Ordinary compact operators and a continuous-spectrum example}
+\begin{corollary}[Ordinary compact normal extension]\label{cor:compact}
+If $T$ is an ordinary compact normal operator of infinite rank, then
+\[
+ \spec_\Gamma(T)=\m\ \cup\
+        \{\text{nonzero ordinary eigenvalues of }T\}.
+\]
+If its ordinary spectrum is finite, there is no thickening.
+\end{corollary}
+\begin{proof}
+The ordinary compact normal spectral theorem says that nonzero spectral
+points are isolated eigenvalues of finite multiplicity and zero is the
+only possible accumulation point. Infinite rank forces zero to be an
+accumulation point. Apply \cref{thm:spectrum}.
+\end{proof}
+
+Here ``compact'' describes the original operator on the ordinary Hilbert
+space. It makes no claim of compactness or compactoidness in the Hahn
+valuation topology. The sequence $(De_n)$ for $De_n=n^{-1}e_n$, for
+instance, has pairwise valuation distance one, despite $\norm{De_n}_H\to0$
+in the ordinary norm.
+
+For another concrete example, let $T$ be multiplication by the coordinate
+on $L^2([0,1],\C)$. Its ordinary spectrum is $[0,1]$, it has no eigenvalues,
+and every point of its spectrum is an accumulation point. Thus
+\[
+ \spec_\Gamma(T)=[0,1]+\m,\qquad \spec_{p,\Gamma}(T)=\varnothing.
+\]
+The usual facts here can be seen directly: away from $[0,1]$ the reciprocal
+multiplier is bounded; near any point of $[0,1]$, vectors supported in
+arbitrarily small intervals prevent a bounded inverse; a singleton has
+measure zero and cannot support a nonzero eigenvector. This gives full
+infinitesimal fibers above a continuous real interval, without adding a
+single eigenvector.
+
+\subsection{Enlarging the scalar workspace does not repair the defect}
+\begin{corollary}[Persistence under ordered-group extension]\label{cor:extension}
+Let $\Gamma\subseteq\Delta$ be ordered divisible groups and use the natural
+coefficient-preserving embedding $K_\Gamma\subseteq K_\Delta$. For constant
+normal $T$,
+\[
+ \spec_\Delta(T)\cap K_\Gamma=\spec_\Gamma(T).
+\]
+Moreover, the nonsurjectivity in \cref{cor:norepair} persists after such an
+extension for the same $S$ and $E$.
+\end{corollary}
+\begin{proof}
+An element of $K_\Gamma$ has the same leading valuation, residue and
+infinitesimal status in the larger group. Apply the exact spectral formula.
+For the second assertion use the same complement $W$ in
+\cref{thm:defect}, now forming $W((t^\Delta))$.
+\end{proof}
+
+This is a genuine surcomplex-workspace statement. Adding further surreal
+scales does not turn a prohibited leading ordinary Hilbert coefficient into
+an allowed one. It does not assert that an unspecified larger class-sized
+notion of vector could never behave differently.
+
+\section{Which constant data have an infinitesimal resolvent?}\label{sec:resolventdata}
+
+\subsection{The inverse-smooth domain}
+Even when $S-sI$ is not onto, some constant right-hand sides have a unique
+solution. The exact criterion is stronger than belonging merely to
+$\Ran S$.
+
+\begin{theorem}[All inverse moments are necessary and sufficient]\label{thm:smooth}
+Let $S:V\to V$ be injective and $s=t^\eta$ with $\eta>0$. For constant
+$f\in V$, the equation
+\begin{equation}\label{eq:constres}
+ (S-sI)y=f,\qquad y\in V((t^\Gamma)),
+\end{equation}
+has a solution if and only if
+\begin{equation}\label{eq:inversesmooth}
+ f\in\bigcap_{k\ge1}\Ran S^k.
+\end{equation}
+In that case the solution is unique and is
+\begin{equation}\label{eq:smoothsolution}
+ y=\sum_{n\ge0}s^n S^{-n-1}f.
+\end{equation}
+The inverse powers denote the unique preimages, not an everywhere-defined
+inverse operator on $V$.
+\end{theorem}
+\begin{proof}
+Sufficiency follows by coefficientwise telescoping of
+\eqref{eq:smoothsolution}; its support is contained in the well-ordered set
+$\{n\eta:n\ge0\}$. Injectivity follows from \cref{thm:defect}.
+
+For necessity, partition the support of a proposed solution according to
+cosets of $\Z\eta$ in $\Gamma$. Restricting a Hahn series to a coset preserves
+well-ordering, and both $S$ and multiplication by $s$ preserve that coset.
+On a coset other than $\Z\eta$, the restricted equation is homogeneous.
+Its least nonzero coefficient would be killed by $S$, which is impossible.
+Thus the support lies in $\Z\eta$.
+
+A well-ordered subset of $\Z\eta$ is bounded below in its integer index.
+For $f\ne0$, the valuation-preservation assertion of \cref{thm:defect}
+forces the least index to be zero. Write $y=\sum_{n\ge0}s^n y_n$, allowing
+zero coefficients. The equation gives
+\[
+ Sy_0=f,\qquad Sy_n=y_{n-1}\quad(n\ge1).
+\]
+Consequently $S^{n+1}y_n=f$ for every $n$, proving
+\eqref{eq:inversesmooth} and the formula. The zero-data case is immediate.
+\end{proof}
+
+\begin{example}[The diagonal inverse-smooth space]\label{ex:smoothD}
+For $De_n=n^{-1}e_n$ on $H=\ell^2(\N_{\ge1})$, the admissible constant data
+are exactly
+\begin{equation}\label{eq:rapidspace}
+ H_\infty=\left\{f=(f_n):
+       \sum_{n\ge1}n^{2k}|f_n|^2<\infty
+       \text{ for every integer }k\ge1\right\}.
+\end{equation}
+The formula follows because $D^{-k}f=(n^k f_n)$. Finitely supported vectors
+belong to $H_\infty$, so this subspace is dense in the \emph{ordinary}
+Hilbert topology. Yet $f_n=n^{-2}$ does not belong to it, although
+$f\in\Ran D$. Thus even some data with an ordinary first preimage lack an
+infinitesimal resolvent.
+\end{example}
+
+The same statement for $D-isI$ follows by replacing the recurrence with
+$Dy_n=i y_{n-1}$. Its solution, when it exists, is
+$\sum_{n\ge0}i^n s^nD^{-n-1}f$. No uniform bound on the ordinary norms of
+these coefficients is required, only that each one actually belongs to $H$.
+
+\subsection{Why individual scalar inverses are insufficient}
+Every diagonal scalar $n^{-1}-s$ is invertible in $\K$ and has expansion
+\[
+ (n^{-1}-s)^{-1}=\sum_{k\ge0}n^{k+1}s^k.
+\]
+But applying these inverses coordinatewise to $f$ requires the entire
+coefficient vector $(n^{k+1}f_n)_n$ to lie in $\ell^2$ at each $k$.
+The Hahn vector space imposes this condition before any comparison of
+higher scales. There is therefore no contradiction between invertibility
+of every diagonal entry and failure of surjectivity of the infinite
+operator. A putative coordinatewise inverse has left the chosen vector
+space, rather than found a missing scalar inverse.
+
+\section{Coercive operators with continuum-dimensional defects}\label{sec:coercive}
+
+\subsection{An explicit large ordinary cokernel}
+Continue with $H=\ell^2(\N_{\ge1})$ and $De_n=n^{-1}e_n$.
+The operator $D$ is bounded, positive, self-adjoint and injective. It is not
+onto because $(n^{-1})_n\in\ell^2$ has no preimage in $\ell^2$.
+
+\begin{lemma}[Continuum many independent defect vectors]\label{lem:continuum}
+For $r\in(1/2,3/2]$, let $f^{(r)}=(n^{-r})_{n\ge1}\in H$.
+Their classes in $H/\Ran D$ are linearly independent over $\C$.
+\end{lemma}
+\begin{proof}
+Take distinct $r_1<\cdots<r_k$ and complex coefficients with $c_1\ne0$.
+For $g=\sum_{j=1}^k c_j f^{(r_j)}$, one has
+\[
+ n g_n=c_1 n^{1-r_1}\bigl(1+o(1)\bigr).
+\]
+Its squared magnitude is bounded below by a positive real multiple of
+$n^{2-2r_1}$ for sufficiently large $n$. Since $r_1\le3/2$, the exponent is
+at least $-1$, and the series of those squared magnitudes diverges.
+Thus $(n g_n)\notin\ell^2$, which is exactly $g\notin\Ran D$.
+There are continuum many choices of $r$.
+\end{proof}
+
+\begin{theorem}[Every positive-order perturbation retains a large defect]\label{thm:continuum}
+For every $E\in\B((t^\Gamma))$ of positive order, including zero,
+\[
+ \dim_\K\coker(D+E)\ge2^{\aleph_0}.
+\]
+The same lower bound holds with leading operator $D^2$.
+\end{theorem}
+\begin{proof}
+Apply \cref{cor:independent} and \cref{lem:continuum}. Since
+$\Ran D^2\subseteq\Ran D$, the same vectors remain independent modulo
+$\Ran D^2$.
+\end{proof}
+
+\subsection{A nonreal spectral point with a strong lower bound}
+For $s=t^\eta$, $\eta>0$, set $A=D-isI$. Since $D=D^*$,
+\begin{equation}\label{eq:lowerA}
+ A^*A=D^2+s^2I,\qquad
+ \norm{Ax}^2=\norm{Dx}^2+s^2\norm{x}^2
+             \ge s^2\norm{x}^2.
+\end{equation}
+Nevertheless, $A$ is not onto by \cref{thm:defect}. Thus the usual lower-bound
+argument for excluding nonreal self-adjoint spectrum stops precisely at
+surjectivity, not at injectivity.
+
+The operator even has an attained upper norm bound:
+\begin{equation}\label{eq:normA}
+ \norm{Ax}\le\sqrt{1+s^2}\,\norm{x},\qquad
+ \norm{Ae_1}=\sqrt{1+s^2}.
+\end{equation}
+Indeed $D$ is an ordinary contraction and its extension remains a contraction;
+for this diagonal operator the inequality also follows by writing
+$I-D^2=R^*R$ with ordinary bounded diagonal
+$Re_n=\sqrt{1-n^{-2}}e_n$. Equations \eqref{eq:lowerA}--\eqref{eq:normA}
+show that neither lack of a bound nor lack of an attained norm explains the
+failure of inversion.
+
+\subsection{Positive coercivity does not imply surjectivity}
+\begin{theorem}[A coercive noninvertible self-adjoint operator]\label{thm:coercive}
+Let
+\begin{equation}\label{eq:C}
+ C=D^2+s^2I.
+\end{equation}
+Then $C$ is everywhere-defined, adjointable and self-adjoint, with
+\begin{align}
+ \ip{Cx}{x}&\ge s^2\ip{x}{x},\label{eq:coercive}\\
+ \norm{Cx}&\le(1+s^2)\norm{x}.\label{eq:Cbound}
+\end{align}
+The upper bound is attained at $e_1$. The operator is injective but not
+surjective, and its cokernel has dimension at least $2^{\aleph_0}$ over $\K$.
+Specifically, the constant vector $f=(n^{-2})_{n\ge1}$ is not in its range.
+\end{theorem}
+\begin{proof}
+Self-adjointness and \eqref{eq:coercive} follow from
+$\ip{D^2x}{x}=\ip{Dx}{Dx}\ge0$.
+The contraction property of $D^2$, the triangle inequality and
+$Ce_1=(1+s^2)e_1$ give \eqref{eq:Cbound} and its attainment.
+The leading coefficient operator $D^2$ is injective, so
+\cref{thm:defect} gives injectivity, and \cref{thm:continuum} gives the
+cokernel bound.
+
+For a direct witness, if $Cy=f$, valuation preservation forces $v(y)=0$.
+The coefficient at zero must solve $D^2y_0=f$, that is,
+$(y_0)_n=1$ for every $n$. This is not an $\ell^2$ vector. Thus no such
+$y$ exists.
+\end{proof}
+
+For clarity, coercivity is a bound by a strictly positive element $s^2$ of
+the ordered scalar field. It is not a bound by a positive \emph{ordinary
+real} independent of the infinitesimal scale. If instead
+$C\ge cI$ with ordinary $c>0$ and an ordinary bounded positive leading
+operator with this bound, the classical inverse and the positive-order
+Neumann construction would apply. The infinitesimal scale is exactly where
+the distinction becomes mathematically significant.
+
+\begin{corollary}[Failure of a specified Lax--Milgram analogue]\label{cor:lax}
+On this Hahn inner-product space, a bounded coercive sesquilinear form need
+not solve all variational problems, even when the right-hand side is
+represented by an actual vector. In particular,
+\[
+ b(u,v)=\ip{Cu}{v},\qquad \ell(v)=\ip{f}{v},
+ \qquad f=(n^{-2})_n,
+\]
+defines a bounded coercive form and a bounded conjugate-linear functional,
+but there is no $u$ satisfying $b(u,v)=\ell(v)$ for all $v\in\HH$.
+\end{corollary}
+\begin{proof}
+Cauchy--Schwarz and \eqref{eq:Cbound} bound the form; \eqref{eq:coercive}
+is coercivity, and $\abs{\ell(v)}\le\norm{f}\norm{v}$.
+If the identity held for all $v$, nondegeneracy of the inner product would
+give $Cu=f$, contradicting \cref{thm:coercive}.
+\end{proof}
+
+This does not contradict the ordinary complex Lax--Milgram theorem: the
+scalar field, the topology and the duality structure have changed. It is
+an explicit obstruction to transferring that theorem using only its
+familiar-looking algebraic inequalities.
+
+\section{Completeness does not restore orthogonal projection}\label{sec:topology}
+
+\subsection{The rank-one topology and its completeness}
+In this section only, assume $\Gamma$ is a nonzero divisible ordered subgroup
+of $\R$. For $x\ne0$ define
+\[
+ \rho(x)=e^{-v(x)},\qquad \rho(0)=0,\qquad d(x,y)=\rho(x-y).
+\]
+The scalar absolute value here is $|a|_v=e^{-v(a)}$, not the
+$\KR$-valued modulus. The metric is ultrametric. Its topology agrees with
+the topology of the field-valued norm balls on $\HH$: a sufficiently
+higher valuation makes a vector smaller than any prescribed positive
+radius, and choosing a still higher monomial radius gives the converse
+inclusion of neighborhood bases.
+
+It is not the ordinary Hilbert topology on the constant copy of $H$.
+Every nonzero constant vector has $\rho$-size one. Nor is it the fine
+subspace topology from the full surcomplex class, where the set-sized
+scalar workspace is discrete \cite{RepoMap}.
+
+\begin{proposition}[Rank-one valuation completeness]\label{prop:complete}
+For any complex vector space $V$, the metric space $V((t^\Gamma))$ with
+metric $d$ is complete. In particular, $\HH$ is complete in this topology.
+\end{proposition}
+\begin{proof}
+Let $(x_n)$ be Cauchy. For each real cutoff $R$, all sufficiently late
+$x_n$ have exactly the same coefficients at exponents $\gamma\le R$,
+since eventually $v(x_n-x_m)>R$. Define $x_\gamma$ to be the eventually
+stable coefficient.
+
+The support of this coefficient family is well ordered. Otherwise it would
+contain a strictly decreasing sequence $\gamma_1>\gamma_2>\cdots$.
+Choose a cutoff at least $\gamma_1$. Below that cutoff the entire stable
+family agrees with one sufficiently late Hahn vector $x_N$, whose
+well-ordered support cannot contain that sequence. This is a contradiction.
+Thus $x=\sum x_\gamma t^\gamma$ belongs to $V((t^\Gamma))$.
+By the same stabilization statement, $v(x_n-x)>R$ eventually for every
+real $R$, proving convergence. Notice that no coefficient-space topology
+was used: stabilization is exact, not approximate.
+\end{proof}
+
+\subsection{A proper closed subspace with zero orthogonal complement}
+\begin{theorem}[Closed-range orthogonality failure]\label{thm:closedrange}
+For the coercive $C=D^2+s^2I$, its range
+$M=C\HH$ is closed and proper in the complete rank-one space $\HH$, but
+\begin{equation}\label{eq:orthdefect}
+ M^\perp=\{0\},\qquad M^{\perp\perp}=\HH\ne M.
+\end{equation}
+In particular, $M$ is not the range of a self-adjoint idempotent.
+\end{theorem}
+\begin{proof}
+By \cref{thm:defect}, $v(Cx)=v(x)$; hence $C$ is an isometry for $\rho$.
+The image of a complete metric space under an isometry is complete and
+therefore closed in any metric ambient space. It is proper by
+\cref{thm:coercive}.
+
+If $z\in M^\perp$, then $\ip{Cx}{z}=0$ for every $x$. Since $C=C^*$,
+$\ip{x}{Cz}=0$ for every $x$, so $Cz=0$. Injectivity gives $z=0$.
+This proves \eqref{eq:orthdefect}. A self-adjoint idempotent $P$ has
+$\HH=\Ran P\oplus\ker P$ and
+$\ker P=(\Ran P)^\perp$, by the finite algebraic projection identities.
+If its range were $M$, the complement would be zero and the range all of
+$\HH$, a contradiction.
+\end{proof}
+
+The displayed range is not orthogonally closed, although it is metrically
+closed. Thus the usual Hilbert identification of these two closure notions
+fails. Known non-Archimedean failures of orthomodularity also warn against
+unconditional projection theorems \cite{AN,ANS}. The theorem above gives a
+particularly rigid witness: it is the closed range of a bounded, coercive,
+self-adjoint injection and retains a continuum-sized algebraic deficit.
+
+\subsection{A continuous functional outside inner-product duality}
+\begin{proposition}[Explicit failure of valuation Riesz representation]\label{prop:riesz}
+There is a nonzero $\K$-linear, valuation-continuous functional
+$F:\HH\to\K$ that vanishes on $M=C\HH$ but is not of the form
+$F(x)=\ip{x}{z}$ for any $z\in\HH$.
+\end{proposition}
+\begin{proof}
+Choose an algebraic complement $W$ of $\Ran D^2$ in $H$, and take the
+projection $\Pi$ in \cref{thm:defect} for $S=D^2$, $E=s^2I$.
+Its coefficients have nonnegative exponents: $U$ and $S$ are constant,
+$E$ has positive order, and $(I+UE)^{-1}$ has nonnegative order.
+Consequently $v(\Pi x)\ge v(x)$.
+Choose a nonzero complex linear functional $\psi:W\to\C$, and extend it
+coefficientwise to $\psi_\Gamma:W((t^\Gamma))\to\K$. Set
+$F=\psi_\Gamma\Pi$. Coefficient extraction gives
+$v(Fx)\ge v(x)$, so $F$ is valuation-continuous. It is nonzero because
+$\Pi$ is the identity on $W((t^\Gamma))$, and it kills $M$.
+If $F(x)=\ip{x}{z}$, then vanishing on $M$ implies $z\in M^\perp=0$,
+which would force $F=0$.
+\end{proof}
+
+The algebraic maps $U$ and $\psi$ need not be continuous for the ordinary
+Hilbert norm. That does not prevent the displayed Hahn maps from being
+valuation-continuous. Confusing those topologies would incorrectly apply
+an ordinary closed graph or Riesz argument. Conversely, this proposition
+does not contradict \cref{thm:adjoint}: the functional just constructed
+has no adjoint represented by a Hahn vector.
+
+\section{When does an operator have a least field-valued norm?}\label{sec:norm}
+
+\subsection{Bounds versus the existence of their least element}
+For $A\in\Acal$, let
+\[
+ \mathcal U(A)=\{M\in\KR_{\ge0}:
+             \norm{Ax}\le M\norm{x}\text{ for all }x\in\HH\}.
+\]
+\Cref{cor:autobounded} makes this set nonempty. By a field-valued
+\emph{operator norm} we mean a least element of this set, not an arbitrary
+chosen bound and not the valuation norm of the operator.
+
+\begin{lemma}[Ordinary contraction bounds survive]\label{lem:contract}
+If $T\in\B$ and $n=\norm{T}_H$, then
+$\norm{Tx}\le n\norm{x}$ for every $x\in\HH$.
+For nonzero $x$ with leading coefficient $u$, the finite scalar
+$\norm{Tx}/\norm{x}$ has standard part
+\[
+ \st\!\left(\frac{\norm{Tx}}{\norm{x}}\right)
+       =\frac{\norm{Tu}_H}{\norm{u}_H}.
+\]
+The right side is zero if $Tu=0$.
+\end{lemma}
+\begin{proof}
+The ordinary positive operator $n^2I-T^*T$ has a bounded positive square
+root $R$ by ordinary Hilbert spectral theory. The coefficientwise identity
+$R^*R=n^2I-T^*T$ implies
+$n^2\norm{x}^2-\norm{Tx}^2=\norm{Rx}^2\ge0$.
+For the standard part, use the leading norm formula in
+\cref{prop:inner}. If $Tu=0$, the output has strictly larger valuation
+or is zero, so the quotient has residue zero.
+\end{proof}
+
+\begin{theorem}[Norm-attainment criterion]\label{thm:norm}
+For an ordinary bounded operator $T$ on nonzero $H$, the set
+$\mathcal U(T)$ has a least element if and only if $T$ attains its ordinary
+operator norm on a unit vector. When it does, the least element is
+$\norm{T}_H$ and is attained by a constant unit vector in $\HH$.
+\end{theorem}
+\begin{proof}
+Put $n=\norm{T}_H$. If $T$ attains $n$, the constant maximizing vector
+forces every upper bound to be at least $n$, while \cref{lem:contract}
+proves that $n$ is a bound. This includes $T=0$, which attains its norm
+on every unit vector.
+
+Now suppose $T$ does not attain its norm; then $n>0$. For each nonzero
+$x\in\HH$, \cref{lem:contract} gives
+\[
+ \st\!\left(\frac{\norm{Tx}}{\norm{x}}\right)<n.
+\]
+Therefore every positive finite $M$ with $\st(M)=n$ is an upper bound,
+including $n-\varepsilon$ for every positive infinitesimal $\varepsilon$.
+Every finite $M$ with residue greater than $n$ and every positive infinite
+$M$ is a bound as well.
+
+No finite nonnegative $M$ with residue less than $n$ can be a bound:
+choose an ordinary unit vector $u$ with
+$\norm{Tu}_H>\st(M)$ using the definition of the ordinary supremum. Its
+constant extension violates that bound. We have thus described all upper
+bounds. A bound with residue greater than $n$, or an infinite bound, can
+be decreased to $n$. A bound with residue $n$ can be decreased by any
+fixed positive infinitesimal and remains positive with the same residue.
+There is no least upper bound.
+\end{proof}
+
+\begin{example}[A bounded self-adjoint operator without a field-valued norm]
+Let $Te_n=(1-1/(n+1))e_n$ on $\ell^2(\N_{\ge1})$. Its ordinary norm is
+one but is not attained. Indeed, for every nonzero $u$,
+\[
+ \norm{u}_H^2-\norm{Tu}_H^2
+ =\sum_{n\ge1}\left(1-\left(1-\frac1{n+1}\right)^2\right)|u_n|^2>0,
+\]
+where this is an ordinary convergent real sum. The diagonal values approach
+one, proving the supremum is one. Hence its Hahn extension has many
+field-valued bounds, including $1-s$ and $1-2s$, but no least one.
+\end{example}
+
+\subsection{The two mechanisms are independent}
+The operator $D^2+s^2I$ in \cref{thm:coercive} has an attained least upper
+norm bound $1+s^2$ but is not invertible. The operator in the preceding
+example fails norm attainment for a different reason: every individual
+Hahn vector has a strictly submaximal \emph{ordinary leading ratio}, so
+infinitesimally smaller bounds cannot be distinguished by any one vector.
+Neither phenomenon should be used as an explanation for the other.
+
+\section{Finite sections, exact checks, and reproducibility}\label{sec:checks}
+
+\subsection{Why finite invertibility is misleading}
+Let $D_N=\operatorname{diag}(1,1/2,\ldots,1/N)$ and
+$C_N=D_N^2+s^2I$. Every $C_N$ is invertible over $\K$. For the truncated
+right-hand side $f_N=(n^{-2})_{1\le n\le N}$,
+\begin{equation}\label{eq:finitesolution}
+ (C_N^{-1}f_N)_n
+ =\frac{1}{1+n^2s^2}
+ =\sum_{k\ge0}(-1)^k n^{2k}s^{2k}.
+\end{equation}
+The constant coefficient of this finite solution is the $N$-vector of
+ones, whose ordinary Hilbert norm is $\sqrt N$. No single ordinary
+$\ell^2$ vector can serve as the stable constant coefficient as
+$N\to\infty$. This directly identifies the obstruction missed by every
+finite matrix determinant.
+
+For $A_N=D_N-isI$, all diagonal resolvents likewise exist, with
+\[
+ (n^{-1}-is)^{-1}
+   =\sum_{k\ge0}i^k n^{k+1}s^k.
+\]
+The leading inverse coefficient has ordinary norm $N$. Infinite extension
+would require the unbounded ordinary operator
+$\operatorname{diag}(n)$ as a bounded coefficient, contradicting
+\cref{thm:adjoint}. More strongly, particular constant data fail the
+vector-space condition of \cref{thm:smooth}; thus the problem is actual
+nonsurjectivity, not just exclusion from a preferred inverse algebra.
+
+\subsection{The accompanying exact checks}
+The program \texttt{code/verify.py} uses exact rational and symbolic
+arithmetic. It checks finite-support convolution and adjoints, including a
+lexicographically ordered two-dimensional exponent group; truncated
+noncommutative Neumann identities; the isolated-point resolvent formula;
+the algebraic left-inverse and complement projection identities in a
+finite rectangular analogue; the finite-section formulas above; and the
+backward-shift residual. The recorded run passed 218 exact assertions in six groups; its output is
+included in \texttt{data/verification.txt}.
+
+The finite rectangular analogue is deliberately identified as such. An
+injective nonsurjective endomorphism cannot exist on a finite-dimensional
+space, so a finite square-matrix test cannot validate the infinite range
+defect. Nor can finite tests establish Baire category, arbitrary Hahn
+support well-ordering, an infinite cokernel dimension, or the spectral
+formula. Those assertions rest on the proofs, not on the program.
+
+The LaTeX source contains its bibliography and needs no external images,
+fonts, or bibliography database. A standard build is
+\begin{verbatim}
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+python code/verify.py
+\end{verbatim}
+The Python script needs SymPy. The source is not Lean code, and no
+proof-assistant certification is claimed.
+
+\section{Interpretation and remaining boundaries}\label{sec:boundaries}
+
+\subsection{What has been settled in this construction}
+The questions raised by this particular scalar-extension model now have
+sharp answers. Adjointability is not an opaque class condition: it is
+exactly global Hahn support with bounded ordinary coefficients. For
+constant normal operators, infinitesimal resolvent behavior is completely
+classified by the ordinary spectral accumulation set. Infinitesimal
+perturbations of injective leading operators cannot remove any ordinary
+range defect. The leading ordinary coefficient gives a direct and robust
+witness, even where every finite section is invertible.
+
+These statements distinguish spectral membership from eigenvalue
+existence, compactness in the original Hilbert topology from compactness in
+the valuation topology, upper norm bounds from a least such bound, and
+metric completeness from orthogonal completeness. None of those pairs can
+be silently identified after extending the scalars.
+
+\subsection{What would require a different theorem}
+The formula \eqref{eq:exactspectrum} concerns \emph{constant normal}
+operators. General Hahn operators with multiple coefficient scales can
+have more complicated spectra; \cref{ex:backshift} already shows why the
+point-spectrum rigidity fails without normality. The perturbation theorem
+handles injective leading coefficients and proves a large class of
+obstructions, but is not a classification of all spectra of all Hahn
+operator series.
+
+One could change the vector construction to allow coefficientwise objects
+outside $H$, choose a different sequence-space completion, or impose a
+stronger orthogonal-completeness axiom. Such changes must be specified and
+analyzed rather than treated as harmless notational variations. Enlarging
+only the exponent group is not enough, by \cref{cor:extension}.
+
+The full surreal class offers additional scales but is not a set-sized
+coefficient field in ZFC. Our proofs avoid class-indexed summations and
+class-sized choices by fixing the workspace at the outset. The surcomplex
+interpretation \eqref{eq:surreal-embedding} supplies genuine infinitesimal
+and infinite scalars while keeping every construction set-sized.
+
+\subsection{Why this matters beyond a counterexample}
+In finite dimension, replacing $\R/\C$ by a real-closed field and its
+complexification preserves much of spectral algebra. In infinite dimension,
+that replacement cannot by itself preserve the analytic role of Hilbert
+space. An infinitesimal imaginary displacement may fail to produce a
+resolvent, even when it gives a strict lower norm bound. An infinitesimal
+positive regularizer may leave a continuum of unsolved linear equations.
+These are precise obstructions to using the model as an automatic
+replacement for complex Hilbert space, not a rejection of surcomplex
+analysis in every possible formulation.
+
+The constructive side is equally useful. The automatic adjoint theorem
+gives a well-defined algebra for exact symbolic manipulation. The inverse
+formulas identify every ordinary normal resolvent that actually exists.
+The inverse-smooth criterion identifies exactly which constant data remain
+solvable at a monomial infinitesimal shift. The defect splitting gives
+explicit noncanonical projections and an exact algebraic quotient. Together
+these form a workable theory with both positive structure and sharp limits.
+
+\appendix
+\section{Repository and literature audit}\label{app:audit}
+
+\subsection{Repository snapshot}
+The coverage comparison is pinned to
+\begin{center}\small\texttt{\commit}.\end{center}
+We inspected the repository tree, the project \texttt{README.md}, the full
+\texttt{docs/README.md} catalogue, the opening 250 lines of
+\texttt{docs/surcomplex/spectral-theory/article.tex}, and the opening 230
+lines of the differential-equations article. This was a targeted scope
+audit, not a claim to have reread every archived source manuscript or
+verified every existing Lean file. The spectral opening explicitly states
+its finite-dimensional scope, while the catalogue maps the already-covered
+analytic, differential, Berkovich, foundational and computational strands.
+
+\subsection{Primary-source comparison and date boundary}
+The literature search was carried out through September 22, 2026. The
+publisher records and accessible abstracts for \cite{ANS,Ishizuka}, the
+author-provided text associated with \cite{AN}, and the arXiv records for
+\cite{Boasso,Miabey} were used to locate nearby topics. Ishizuka's paper
+appears in volume 39(2), labeled 2024, with the publisher recording online
+publication on January 3, 2025. Both dates are recorded in the bibliography
+to avoid silently conflating the issue year with the online date.
+
+The comparison supports the modest statement that the exact theorem
+package here was not identified in the inspected sources. It does not
+establish that no earlier work contains any equivalent result. In
+particular, formal support inversion, failure of non-Archimedean
+orthogonality, and ordinary resolvent expansions have substantial
+pre-existing literatures.
+
+\section{Dependency and proof-obligation ledger}\label{app:dependencies}
+\begin{table}[ht]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}p{.27\textwidth}YY@{}}
+\toprule
+Result & Inputs & Independent restriction\\
+\midrule
+Positive inner product & Finite Hahn convolution; positive square roots & Divisible value group\\
+Automatic adjoint structure & Ordinary closed graph; Baire; Hahn support & Everywhere-defined adjoints\\
+Defect splitting & Injective leading term; Neumann support lemma & No topology or commutation needed\\
+Normal spectral formula & Defect splitting; ordinary normal spectral theorem & Constant normal operator\\
+New eigenvalue exclusion & Orthogonal eigenspace projection & Normality is essential\\
+Continuum cokernel & Leading-coefficient obstruction; power-series divergence test & Ordinary $\ell^2$ coefficients\\
+Closed coercive range & Defect valuation equality; metric completeness & Rank-one value group\\
+Least norm-bound criterion & Ordinary positive square root; leading norm ratio & Constant bounded operator\\
+\bottomrule
+\end{tabularx}
+\caption{Where each hypothesis enters; ``complete'' does not replace ``orthogonally complete.''}
+\end{table}
+
+All general statements in the main theorem package have proofs in the text,
+relative to the named classical inputs. No computational observation is
+used as a premise of those proofs. The most consequential steps to audit
+independently are the Baire uniform-support argument, the complement
+projection in \cref{thm:defect}, and the accumulation-point case in
+\cref{thm:spectrum}; their details are given without an appeal to a
+numerical experiment.
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{RepoMap}
+V. Reshetnikov, \emph{Surreal repository: documentation catalogue},
+\texttt{docs/README.md}, revision \texttt{\commit}, inspected September 22, 2026.
+\url{https://github.com/VladimirReshetnikov/Surreal/blob/608dd23c0539fce73723843949ee627641c27b30/docs/README.md}.
+
+\bibitem{RepoSpectral}
+\emph{Surcomplex Spectral Theory: Singular Values, Infinitesimal Rank, and
+Multiscale Stability}, AI-assisted research exposition in the Surreal
+repository, \texttt{docs/surcomplex/spectral-theory/article.tex}, revision
+\texttt{\commit}, September 2026.
+\url{https://github.com/VladimirReshetnikov/Surreal/blob/608dd23c0539fce73723843949ee627641c27b30/docs/surcomplex/spectral-theory/article.tex}.
+
+\bibitem{Gonshor}
+H. Gonshor, \emph{An Introduction to the Theory of Surreal Numbers},
+London Mathematical Society Lecture Note Series 110, Cambridge University
+Press, 1986.
+\url{https://www.cambridge.org/core/books/an-introduction-to-the-theory-of-surreal-numbers/312AE504A3E88E804054BFB390446374}.
+
+\bibitem{Neumann}
+B. H. Neumann, On ordered division rings,
+\emph{Transactions of the American Mathematical Society} \textbf{66}
+(1949), 202--252.
+
+\bibitem{Douglas}
+R. G. Douglas, \emph{Banach Algebra Techniques in Operator Theory},
+second edition, Graduate Texts in Mathematics 179, Springer, 1998.
+\url{https://doi.org/10.1007/978-1-4612-1656-8}.
+
+\bibitem{AN}
+J. Aguayo and M. Nova, Non-Archimedean Hilbert like spaces,
+\emph{Bulletin of the Belgian Mathematical Society -- Simon Stevin}
+\textbf{14} (2007), no.~5, 787--797.
+\url{https://doi.org/10.36045/bbms/1197908895}.
+
+\bibitem{ANS}
+J. Aguayo, M. Nova and K. Shamseddine,
+Characterization of compact and self-adjoint operators on free Banach
+spaces of countable type over the complex Levi-Civita field,
+\emph{Journal of Mathematical Physics} \textbf{54} (2013), 023503.
+\url{https://doi.org/10.1063/1.4789541}.
+
+\bibitem{Ishizuka}
+K. Ishizuka, A spectral theorem for a non-Archimedean valued field whose
+residue field is formally real,
+\emph{Extracta Mathematicae} \textbf{39} (2024), no.~2, 235--254;
+publisher online date January 3, 2025.
+\url{https://doi.org/10.17398/2605-5686.39.2.235}.
+
+\bibitem{Boasso}
+E. Boasso, The Drazin spectrum in Banach algebras,
+in \emph{An Operator Theory Summer: Timisoara, June 29--July 4, 2010},
+International Book Series of Mathematical Texts, Theta Foundation,
+Bucharest, 2012, 21--28; arXiv:1309.5025, 2013.
+\url{https://arxiv.org/abs/1309.5025}.
+
+\bibitem{Miabey}
+T. Miabey, Spectral and Essential Spectral Analysis of Finite-Rank
+Perturbations of Unbounded Diagonal Operators on Non-Archimedean Hilbert
+Spaces, arXiv:2606.06783v1, June 5, 2026, preprint.
+\url{https://arxiv.org/abs/2606.06783}.
+\end{thebibliography}
+\end{document}

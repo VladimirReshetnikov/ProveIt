@@ -1,0 +1,1507 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage{microtype}
+\usepackage{booktabs,tabularx,array}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{needspace}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\definecolor{ink}{HTML}{394338}
+\definecolor{linkgreen}{HTML}{455D43}
+\hypersetup{colorlinks=true,linkcolor=linkgreen,citecolor=linkgreen,urlcolor=linkgreen,
+  pdftitle={Finite Recurrences versus Surreal Scale},
+  pdfauthor={Research manuscript prepared with OpenAI ChatGPT},
+  pdfsubject={Holonomic rigidity and a sharp dilation criterion for entire Hahn functions}}
+\urlstyle{same}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{Finite recurrences versus surreal scale}}
+\fancyhead[R]{\small September 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{3.5pt}
+\setlength{\parindent}{1.15em}
+\setlength{\emergencystretch}{1.5em}
+\setcounter{tocdepth}{1}
+\numberwithin{equation}{section}
+\newtheorem{maintheorem}{Theorem}
+\renewcommand{\themaintheorem}{\Alph{maintheorem}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\K}{K_\Gamma}
+\newcommand{\E}{\mathcal E_\Gamma}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\lc}{\operatorname{lc}}
+\newcommand{\st}{\operatorname{st}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\cf}{\operatorname{cf}}
+\newcommand{\fall}[2]{(#1)_{\underline{#2}}}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\sha}{a3124af79f66b8b9c196d76b4cbc5ac3938907c4}
+\newcommand{\repo}{\texttt{VladimirReshetnikov/Surreal}}
+\setlist[itemize]{leftmargin=1.5em,itemsep=2pt,topsep=4pt}
+\setlist[enumerate]{leftmargin=1.8em,itemsep=3pt,topsep=4pt}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{0.45in}
+{\color{ink}\Large\textsc{Surreal and surcomplex research}}\par
+\vspace{0.38in}
+{\color{ink}\huge\bfseries Finite Recurrences\\[5pt] versus Surreal Scale}\par
+\vspace{0.25in}
+{\Large Holonomic rigidity and a sharp dilation criterion\\[4pt]
+for entire Hahn functions}\par
+\vspace{0.35in}
+{\large Research manuscript\quad\textperiodcentered\quad 22 September 2026}\par
+\vspace{0.35in}
+\begin{minipage}{0.94\textwidth}
+\begin{abstract}
+Fix a set-sized ordered abelian group $\Gamma\ne0$ and the complex Hahn
+field $K_\Gamma=\C((t^\Gamma))$. Entireness will mean strong Hahn
+summability at every point of this one field. We prove that every entire
+D-finite power series is a polynomial, in one or finitely many variables.
+The one-variable result is stronger: a linear differential operator determines
+one exterior valuation region in which strong evaluation of any formal
+solution already forces the solution to be a polynomial of uniformly bounded
+degree.
+
+For dilation equations there is a precise alternative. If $q\in K_\Gamma^\times$
+has infinite multiplicative order, a nonpolynomial entire solution of a
+nonzero linear $q$-difference equation with polynomial coefficients exists
+if and only if $\abs{v(q)}$ is an order unit of $\Gamma$. Thus a nonzero
+valuation is not enough: its integer multiples must be cofinal among all
+scales. The proof includes units whose residues are roots of unity and
+coefficients with arbitrary well-ordered Hahn supports. A partial theta
+series proves sharpness. A mixed differential--dilation extension is also
+proved for nonzero, noncofinal dilation valuations.
+
+The common mechanism is an elementary finite-step escape lemma: bounded
+valuation costs in a coefficient recurrence create a strictly descending
+subsequence of evaluated leading exponents. This contradicts strong
+summability without replacing an arbitrary-rank valuation by a real-valued
+norm. In an explicit surreal workspace with countable cofinality but no
+order unit, the series $\sum_{n\ge0}\omega^{-\omega^n}z^n$ is entire but
+satisfies no such pure differential or infinite-order dilation equation.
+\end{abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{0.94\textwidth}
+\small
+\textbf{Status.} This is an AI-assisted research draft with detailed mathematical
+proofs and finite exact-arithmetic checks. The arbitrary-rank classification
+is presented as a proposed original contribution, not as a certified priority
+claim or the resolution of a named published conjecture. No independent
+refereeing or Lean verification is claimed. The variable derivative below
+is not the Berarducci--Mantova derivation on surreal coefficients.
+\end{minipage}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\tableofcontents
+\clearpage
+
+\section{The question and the principal results}
+
+A familiar way to specify a special function is to give a finite linear
+differential equation. Another is to give a finite relation between its values
+at $z,qz,q^2z,\ldots$. Over the complex numbers both descriptions can produce
+nonpolynomial entire functions. Over a surreal Hahn workspace, however,
+``entire'' asks for evaluation not only at ordinary complex constants but
+also at every infinite and infinitesimal scale available in that workspace.
+The main question of this article is what a finite equation can accommodate
+under this stronger global requirement.
+
+We work with a fixed nonzero, set-sized ordered abelian group $\Gamma$ and
+\[
+   \K=\C((t^\Gamma)).
+\]
+The coefficient valuation is trivial on $\C^\times$. A series
+$f(z)=\sum_{n\ge0}a_nz^n$ belongs to $\E$ when the family $(a_nx^n)_{n\ge0}$
+is strongly Hahn summable for every $x\in\K$; the exact definition is in
+Section~\ref{sec:support}. All differential and dilation equations below are
+formal identities in $\K[[z]]$, not assertions about limits of partial sums.
+
+A positive element $\mu\in\Gamma$ is an \emph{order unit} if
+\begin{equation}\label{eq:orderunit}
+  (\forall\gamma\in\Gamma)(\exists N\in\N)\quad \gamma<N\mu.
+\end{equation}
+Equivalently, the positive integer multiples of $\mu$ are cofinal in
+$\Gamma$. The notation $\abs{\lambda}$ means $\max(\lambda,-\lambda)$ in the
+ordered group. In particular, zero is not an order unit.
+
+\begin{maintheorem}[Differential rigidity, with a uniform exterior obstruction]
+\label{main:ode}
+Let $0\ne L\in\K[z]\langle D_z\rangle$ be a linear differential operator,
+where $D_z(a)=0$ for $a\in\K$. There are $\delta_L>0$ in $\Gamma$ and
+$N_L\in\N$ such that every formal solution $Lf=0$ that is strongly evaluable
+at even one $x$ with $v(x)\le-\delta_L$ has degree less than $N_L$.
+Consequently,
+\[
+ \{f\in\E:f\text{ is D-finite over }\K(z)\}=\K[z].
+\]
+\end{maintheorem}
+
+\begin{maintheorem}[Sharp dilation criterion]\label{main:q}
+Let $q\in\K^\times$ have infinite multiplicative order. The following are
+equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item There is a nonpolynomial $f\in\E$ satisfying
+\[
+  \sum_{\ell=0}^r p_\ell(z)f(q^\ell z)=0,
+  \qquad p_\ell\in\K[z],\qquad (p_0,\ldots,p_r)\ne0.
+\]
+\item $\abs{v(q)}$ is an order unit of $\Gamma$.
+\end{enumerate}
+When \textup{(ii)} fails, each fixed equation has a uniform exterior
+obstruction and a uniform polynomial degree bound, as in
+Theorem~\ref{main:ode}. When \textup{(ii)} holds, an explicit partial theta
+series supplies a nonpolynomial entire solution.
+\end{maintheorem}
+
+\begin{maintheorem}[Several-variable rigidity]\label{main:multi}
+Let $F\in\K[[z_1,\ldots,z_d]]$ be strongly Hahn summable at every point of
+$\K^d$. If its mixed partial derivatives span a finite-dimensional vector
+space over $\K(z_1,\ldots,z_d)$, then $F$ is a polynomial.
+\end{maintheorem}
+
+The hypotheses distinguish two separate obstructions. Differential equations
+have bounded valuation costs after passing to their coefficient recurrence.
+Dilation equations can have costs increasing linearly with the index,
+but only along the single scale $v(q)$. A scale which is not an order unit
+cannot reach all of $\Gamma$, even if its multiples are unbounded in their
+own Archimedean component. Strong entireness detects that failure.
+
+The most substantial proposed contribution is the exact all-rank criterion
+in Theorem~\ref{main:q}, together with its support-theoretic proof and the
+uniform obstruction. Theorem~\ref{main:ode} and its multivariate extension
+supply a complementary rigidity principle. We do not claim that every
+rank-one specialization, or the partial theta witness itself, is new.
+
+\subsection{Position relative to the repository and the literature}
+
+The repository snapshot used here is
+\begin{center}
+\small\texttt{\sha}.
+\end{center}
+Its documentation already distinguishes fixed Hahn workspaces from the full
+surcomplex class and contains a report on cofinality, factorization, and
+scalar extension for entire Hahn functions~\cite{repo,repoentire}. The present
+article does not claim those results anew. In particular, existence of
+nonpolynomial entire functions at countable cofinality and all-class
+polynomial rigidity are background, not the target of this work.
+
+Stanley's D-finite/P-recursive correspondence is the standard algebraic
+starting point~\cite{stanley}. We make the coefficient conversion explicit
+because the valuations of the resulting recurrence, rather than ordinary
+coefficient growth, drive the proof. Ramis's work treats growth of ordinary
+complex entire solutions of linear $q$-difference equations and also studies
+simultaneous differential and difference constraints~\cite{ramis}. The
+arbitrary-rank strong summability condition here is a different global
+condition; none of its order-unit conclusions is inferred from an ordinary
+complex growth estimate.
+
+Terminology also requires care. Hahn meromorphic functions in the analytic
+setting of M\"uller and Strohmaier involve a different convergence framework
+from the formal strong evaluation used here~\cite{mueller}. The
+Berarducci--Mantova derivation differentiates surreal coefficients themselves;
+it is not $D_z$~\cite{bm}. Work on operation-closed surreal subfields gives
+further context for using set-sized workspaces~\cite{bg}, but closure under
+that scalar derivation is not assumed in any theorem below.
+
+The inspection was targeted: the repository's root documentation, report
+catalogue, and entire-function report guide were read, together with the
+primary sources identified above. It was not a line-by-line audit of all
+repository manuscripts or an exhaustive bibliography search. The final
+section records exactly what is, and is not, claimed about originality.
+
+\section{Hahn support and what evaluation means}\label{sec:support}
+
+An element of $\K$ is a formal sum
+\[
+ a=\sum_{\gamma\in S}a_\gamma t^\gamma,
+ \qquad a_\gamma\in\C,
+\]
+where $S\subseteq\Gamma$ is well ordered and is a set. Its support consists
+of the exponents with nonzero coefficient. For $a\ne0$ put
+\[
+ v(a)=\min\supp(a),\qquad \lc(a)=a_{v(a)},
+\]
+and put $v(0)=+\infty$. Products and sums are the usual Hahn operations.
+Their valuation laws are
+\begin{equation}\label{eq:valuationlaws}
+ v(ab)=v(a)+v(b),\qquad
+ v(a+b)\ge\min\{v(a),v(b)\}.
+\end{equation}
+If two summands have distinct valuations, equality holds in the second law.
+Every nonzero ordinary complex number, and in particular every positive
+integer and factorial, has valuation zero.
+
+\begin{definition}[Strong summability]
+A set-indexed family $(b_i)_{i\in I}$ in $\K$ is \emph{strongly Hahn summable}
+if $\bigcup_i\supp(b_i)$ is well ordered and each exponent belongs to the
+supports of only finitely many members. Its sum is then defined
+coefficientwise, using finite sums in $\C$ at each exponent.
+\end{definition}
+
+This definition concerns the family before cancellation between different
+indices. One cannot first cancel a non-summable family and then declare it
+summable. Nor does the convergence of a complex numerical coefficient series
+justify infinitely many contributions at one Hahn exponent.
+
+\begin{lemma}[Three elementary support facts]\label{lem:support}
+The following hold.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item If the leading exponents of a subsequence of nonzero family members
+are strictly decreasing, the family is not strongly summable.
+\item If $v(b_n)$ tends cofinally to $+\infty$, meaning that for each
+$\beta\in\Gamma$ all but finitely many nonzero $b_n$ have valuation greater
+than $\beta$, then $(b_n)$ is strongly summable.
+\item Grouping a strongly summable family into finite blocks preserves
+strong summability and its sum.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+For (a), those leading exponents themselves form a descending sequence in
+the union of the supports. For (b), fix an upper bound $\beta$. Only finitely
+many supports can meet $(-\infty,\beta]$. A finite union of well-ordered
+subsets of a linear order is well ordered. Any proposed descending sequence
+in the full union would lie below its first member, so would already lie in
+such a finite union, a contradiction. The same finiteness shows that an
+exponent can occur in only finitely many members. For (c), each new support
+is contained in the union of the old supports, and its contributing blocks
+at any exponent form a finite set. Coefficientwise associativity is finite.
+\end{proof}
+
+\begin{remark}[Sufficiency is not necessity]\label{rem:positive}
+Let $0<\epsilon<H$ in $\Gamma$, with $n\epsilon<H$ for every ordinary
+integer $n$. The family $(t^{n\epsilon})_{n\ge0}$ is strongly summable:
+its support is an increasing sequence and each exponent occurs once. Yet
+its valuations do not tend cofinally to $+\infty$. In the rank-two group
+$\Q H\oplus\Q\epsilon$, this is the most elementary warning against
+identifying positive valuation with topological nilpotence.
+\end{remark}
+
+\begin{definition}[Entire power series]
+The strong entire class $\E$ consists of the series
+$f=\sum_{n\ge0}a_nz^n$ for which $(a_nx^n)_n$ is strongly summable for every
+$x\in\K$. In several variables, the family to be tested is
+$(a_\alpha x^\alpha)_{\alpha\in\N^d}$.
+\end{definition}
+
+Polynomial series are entire because all the evaluation families are finite.
+An ordinary complex entire Taylor series need not be entire under this
+definition. For example, at a monomial argument $x=t^\gamma$ the family
+\begin{equation}\label{eq:monomialexp}
+  \left(\frac{x^n}{n!}\right)_{n\ge0}
+\end{equation}
+is strongly summable exactly when $\gamma>0$: positive $\gamma$ gives distinct
+increasing exponents, $\gamma=0$ gives infinitely many contributions at zero,
+and negative $\gamma$ gives a descending sequence. Thus even the familiar
+formal exponential provides a useful local test, not an entire function on
+all of $\K$.
+
+Theorems below use only the valuation laws, the existence of every monomial
+$t^\gamma$, trivial valuation on the coefficient constants, and these support
+facts. They do not require algebraic closedness, spherical completeness,
+Weierstrass preparation, or an embedding of $\Gamma$ into $\R$.
+
+\section{The finite-step escape lemma}\label{sec:escape}
+
+The following statement isolates the mechanism used throughout the article.
+It does not require a formula for the recurrence coefficients.
+
+\begin{lemma}[Escape from bounded valuation costs]\label{lem:escape}
+Suppose a sequence $(a_n)$ in $\K$ satisfies, for every $n\ge N$,
+\begin{equation}\label{eq:generalrecurrence}
+ A_0(n)a_n+\sum_{j=1}^s A_j(n)a_{n+j}=0,
+ \qquad A_0(n)\ne0.
+\end{equation}
+Suppose $\delta>0$ has the property that, whenever $n\ge N$, $j\ge1$, and
+$A_j(n)\ne0$,
+\begin{equation}\label{eq:cost}
+ v(A_0(n))-v(A_j(n))<j\delta.
+\end{equation}
+If $a_{n_0}\ne0$ for some $n_0\ge N$, there is an infinite sequence
+$n_0<n_1<n_2<\cdots$, with $1\le n_{r+1}-n_r\le s$, such that
+\begin{equation}\label{eq:descent}
+ v(a_{n_{r+1}})-n_{r+1}\delta
+ <v(a_{n_r})-n_r\delta.
+\end{equation}
+Consequently, if $\sum a_nz^n$ is strongly evaluable at any $x$ with
+$v(x)\le-\delta$, then $a_n=0$ for every $n\ge N$.
+\end{lemma}
+
+\begin{proof}
+Assume $a_n\ne0$ with $n\ge N$. The leftmost term in
+\eqref{eq:generalrecurrence} is nonzero, so at least one later term is nonzero.
+By \eqref{eq:valuationlaws}, one can choose $j\in\{1,\ldots,s\}$ such that
+\[
+ v(A_j(n)a_{n+j})\le v(A_0(n)a_n).
+\]
+Hence
+\[
+ v(a_{n+j})-v(a_n)
+ \le v(A_0(n))-v(A_j(n))<j\delta.
+\]
+This gives the next index and \eqref{eq:descent}. Choosing, for instance,
+the smallest admissible $j$ makes the recursion definite. All chosen
+coefficients are nonzero, so the construction never stops.
+
+If $\alpha=v(x)\le-\delta$, the same estimate gives
+\[
+ v(a_{n+j}x^{n+j})-v(a_nx^n)
+ <j\delta+j\alpha\le0.
+\]
+The evaluated leading exponents therefore strictly decrease along the path.
+Lemma~\ref{lem:support}(a) rules out strong summability. This proves the
+contrapositive of the last assertion. If $s=0$, the recurrence itself gives
+$a_n=0$ for all $n\ge N$, so the final conclusion still holds.
+\end{proof}
+
+\begin{corollary}[A convenient uniform version]\label{cor:boundedcost}
+If all the differences $v(A_0(n))-v(A_j(n))$ in
+\eqref{eq:generalrecurrence} are bounded above by a single $B\in\Gamma$, then
+any $\delta>\max\{B,0\}$ gives the conclusion of Lemma~\ref{lem:escape}.
+\end{corollary}
+
+\begin{proof}
+For $j\ge1$, $B<\delta\le j\delta$.
+\end{proof}
+
+The choice of an exterior scale is possible in every nonzero ordered abelian
+group: take a finite maximum of the required bounds and then add any positive
+element. No cofinal cyclic subgroup is required. This is exactly why the
+lemma proves rigidity even in groups of very large rank.
+
+There is also no assumption that the sequence of valuations has an
+asymptotic slope or that cancellations are rare. Cancellations in the
+recurrence are allowed completely. They can increase the valuation of a
+sum, but they cannot make every term on its right have valuation larger than
+the nonzero term on its left. The infinite path records only that finite
+inequality, repeatedly.
+
+\section{Polynomial recurrence coefficients stabilize}\label{sec:stabilize}
+
+\begin{lemma}[Evaluation at ordinary integers]\label{lem:integer}
+Let $0\ne P(X)=\sum_k p_kX^k\in\K[X]$ and put
+$\beta(P)=\min_{p_k\ne0}v(p_k)$. Then
+\begin{equation}\label{eq:integerstable}
+ v(P(n))=\beta(P)
+\end{equation}
+for all but finitely many nonnegative ordinary integers $n$.
+\end{lemma}
+
+\begin{proof}
+The polynomial $t^{-\beta(P)}P$ has coefficients of nonnegative valuation,
+and at least one coefficient has valuation zero. Its coefficientwise
+reduction is the nonzero complex polynomial
+\[
+ \overline P(X)=
+ \sum_{v(p_k)=\beta(P)}\lc(p_k)X^k.
+\]
+At every integer $n$ for which $\overline P(n)\ne0$, the Hahn coefficient at
+exponent zero of $t^{-\beta(P)}P(n)$ is nonzero. There is no smaller exponent,
+so \eqref{eq:integerstable} follows. A nonzero polynomial over $\C$ has only
+finitely many roots.
+\end{proof}
+
+\begin{proposition}[Uniform obstruction for P-recursive coefficients]
+\label{prop:precursive}
+Suppose
+\begin{equation}\label{eq:precursive}
+ \sum_{j=0}^s P_j(n)a_{n+j}=0
+\end{equation}
+for every sufficiently large integer $n$, with $P_j\in\K[X]$ and $P_0\ne0$.
+There exist $N\in\N$ and $\delta>0$, determined by the recurrence, such that
+strong evaluation at any $x$ with $v(x)\le-\delta$ forces
+$a_n=0$ for all $n\ge N$.
+\end{proposition}
+
+\begin{proof}
+Discard the identically zero $P_j$ when taking minima. By
+Lemma~\ref{lem:integer}, for all $n\ge N$ one has
+$v(P_j(n))=\beta_j:=\beta(P_j)$, simultaneously for the finitely many
+nonzero polynomials. Choose
+\[
+ \delta>\max\bigl(\{0\}\cup\{\beta_0-\beta_j:j\ge1,\ P_j\ne0\}\bigr).
+\]
+The escape lemma applies. If no $j\ge1$ remains, the recurrence directly
+forces the same vanishing.
+\end{proof}
+
+When $\Gamma$ is divisible one can use the smaller sufficient threshold
+\begin{equation}\label{eq:refinedthreshold}
+ \delta>\max\left(\{0\}\cup
+ \left\{\frac{\beta_0-\beta_j}{j}:j\ge1,\ P_j\ne0\right\}\right).
+\end{equation}
+This is a certified exterior obstruction, not a claim to have computed the
+exact evaluation domain of each solution. The individual solutions can
+have stricter restrictions or can terminate much earlier.
+
+The residue polynomials in the proof also explain the degree bound. Choose
+$N$ beyond the original starting index and beyond every nonnegative integer
+root of the finitely many residue polynomials. Then any summable solution in
+the exterior region has degree less than $N$. A polynomial solution of degree
+at least $N$ would in any event contradict the recurrence at its last
+nonzero coefficient, since $P_0(n)$ no longer vanishes there.
+
+\section{Differential rigidity and its consequences}\label{sec:ode}
+
+A formal series is D-finite if its derivatives span a finite-dimensional
+space over $\K(z)$. Equivalently, it satisfies a nonzero homogeneous linear
+ordinary differential equation with coefficients in $\K[z]$. The usual
+D-finite/P-recursive equivalence is classical~\cite{stanley}; the following
+calculation specifies precisely the recurrence needed here.
+
+Write
+\begin{equation}\label{eq:operator}
+ L=\sum_{r=0}^R\sum_{k=0}^m c_{r,k}z^kD_z^r,
+ \qquad c_{r,k}\in\K,
+\end{equation}
+with at least one nonzero coefficient. Put $f=\sum_{n\ge0}a_nz^n$. For
+$n\ge m$, the coefficient of $z^n$ in $Lf$ is
+\begin{equation}\label{eq:odecoeff}
+ \sum_{s=-m}^R Q_s(n)a_{n+s},\qquad
+ Q_s(X)=\sum_{r-k=s}c_{r,k}\fall{X+s}{r},
+\end{equation}
+where $\fall{Y}{r}=Y(Y-1)\cdots(Y-r+1)$ and $\fall{Y}{0}=1$.
+Indeed, $z^kD_z^r$ takes the term of index $n+r-k$ to degree $n$ and
+multiplies it by that falling factorial.
+
+For a fixed shift $s$, the distinct derivative orders $r$ in
+\eqref{eq:odecoeff} give polynomials of distinct degrees. Thus a shift group
+containing a nonzero $c_{r,k}$ cannot cancel identically. At least one
+$Q_s$ is nonzero. Let $s_0$ be the least active shift and reindex by
+$u=n+s_0$. This gives
+\[
+ \sum_{j=0}^{R-s_0}P_j(u)a_{u+j}=0,
+ \qquad P_j(X)=Q_{s_0+j}(X-s_0),\qquad P_0\ne0,
+\]
+for all sufficiently large $u$.
+
+\begin{proof}[Proof of Theorem~\ref{main:ode}]
+Apply Proposition~\ref{prop:precursive} to this recurrence. An entire
+solution is strongly evaluable at the available monomial $t^{-\delta_L}$,
+so it is a polynomial. Conversely, a polynomial is entire and is annihilated
+by a sufficiently high derivative. This proves the displayed equality.
+\end{proof}
+
+\begin{corollary}[Algebraic entire series]\label{cor:algebraic}
+An element of $\E$ algebraic over $\K(z)$ belongs to $\K[z]$.
+\end{corollary}
+
+\begin{proof}
+Let $F=\K(z,f)$ be the finite extension generated by the algebraic series.
+In characteristic zero its minimal polynomial is separable. Differentiating
+that polynomial expresses $D_zf$ in $F$, because its derivative with respect
+to the algebraic variable is nonzero at $f$ and hence invertible in $F$.
+The derivation therefore preserves $F$. All derivatives of $f$ lie in the
+finite-dimensional $\K(z)$-space $F$, so $f$ is D-finite. Apply
+Theorem~\ref{main:ode}.
+\end{proof}
+
+\begin{corollary}[Rational differential systems]\label{cor:systems}
+If a finite vector $Y$ of strongly entire formal series satisfies
+$D_zY=A(z)Y$ with $A\in M_r(\K(z))$, every component of $Y$ is a polynomial.
+The same conclusion holds for an inhomogeneous system with a rational
+forcing vector, provided all its solution components are strongly entire.
+\end{corollary}
+
+\begin{proof}
+The $\K(z)$-span of the components is stable under differentiation, so the
+successive derivatives of each component span a finite-dimensional space.
+For $Y'=AY+b$, append the constant component $1$ and use the matrix
+$\left(\begin{smallmatrix}A&b\\0&0\end{smallmatrix}\right)$.
+\end{proof}
+
+\begin{example}[A sparse recurrence does not escape the obstruction]
+The formal Airy-type equation $f''-zf=0$ has the recurrence
+\[
+ a_{n+3}=\frac{a_n}{(n+3)(n+2)}\qquad(n\ge0),\qquad a_2=0.
+\]
+Taking $a_0=1$ and $a_1=0$ yields infinitely many nonzero coefficients at
+indices $3n$, all of valuation zero. At $x=t^{-\delta}$ their leading
+exponents are $-3n\delta$, strictly decreasing for every $\delta>0$.
+The gaps between nonzero coefficients do not help: the escape lemma follows
+only the surviving congruence class.
+\end{example}
+
+\begin{remark}[What transcendence has actually been proved]
+Every nonpolynomial member of $\E$ is transcendental over $\K(z)$ and
+satisfies no nonzero \emph{linear} differential equation over $\K(z)$.
+This does not imply differential transcendence in the nonlinear sense.
+An equation involving products of $f,f',f'',\ldots$ is outside the present
+proof unless it can separately be reduced to a finite linear system.
+\end{remark}
+
+Theorem~\ref{main:ode} is stronger than merely excluding a globally extended
+exponential. Its operator coefficients can themselves be arbitrary Hahn
+series and can include infinite surreal scales. Nevertheless, there are
+only finitely many such coefficients in the operator. Their leading
+valuations provide a finite obstruction that one additional exterior scale
+can defeat.
+
+\section{Dilation equations and their coefficient recurrences}\label{sec:qrec}
+
+For $q\in\K^\times$, write $\sigma_qf(z)=f(qz)$. Throughout the proof of
+Theorem~\ref{main:q}, $q$ has infinite multiplicative order. A
+\emph{linear $q$-difference equation} is an identity
+\begin{equation}\label{eq:qeq}
+ \sum_{\ell=0}^r p_\ell(z)\sigma_q^\ell f(z)=0,
+ \qquad p_\ell(z)\in\K[z],
+\end{equation}
+with not all $p_\ell$ zero. We call a series satisfying such an equation
+$q$-holonomic in this article; the definition includes the explicit
+polynomial-coefficient condition.
+
+Let $m=\max_\ell\deg p_\ell$ and write
+$p_\ell(z)=\sum_{k=0}^m p_{\ell,k}z^k$. The coefficient of $z^{n+m}$ in
+\eqref{eq:qeq}, for $n\ge0$, is
+\begin{equation}\label{eq:qrec}
+ \sum_{j=0}^m P_j(q^n)a_{n+j}=0,
+ \qquad
+ P_j(X)=\sum_{\ell=0}^r p_{\ell,m-j}q^{\ell j}X^\ell.
+\end{equation}
+At least one top-degree coefficient $p_{\ell,m}$ is nonzero, so $P_0\ne0$.
+Each remaining $P_j$ is either zero or a nonzero polynomial in one variable.
+
+An infinite-order $q$ makes the powers $q^n$ distinct. Consequently,
+$P_0(q^n)$ is zero for only finitely many $n$. This observation by itself is
+not sufficient for the escape lemma: the valuation differences between the
+$P_j(q^n)$ might still grow. The next two sections identify exactly how
+these valuations behave.
+
+If $m=0$, the equation already gives $P_0(q^n)a_n=0$ for every $n$. All
+solutions are therefore polynomials even without any entireness assumption.
+For the remaining cases we may assume $m\ge1$.
+
+\section{Unit dilations, including residues that are roots of unity}
+\label{sec:units}
+
+\begin{lemma}[Eventual periodic valuation for unit dilations]\label{lem:unit}
+Suppose $v(q)=0$ and $q$ has infinite multiplicative order. For every
+$0\ne P\in\K[X]$, the sequence $v(P(q^n))$ is eventually periodic with
+finite values. More precisely, if $\zeta=\lc(q)$ is not a root of unity,
+the sequence is eventually constant; if $\zeta$ has order $h$, its eventual
+period divides $h$.
+\end{lemma}
+
+\begin{proof}
+First suppose $\zeta$ is not a root of unity. Set
+$\beta=\min_kv(p_k)$ for $P(X)=\sum p_kX^k$. The coefficient at exponent
+$\beta$ of $P(q^n)$ is
+\[
+ \overline P(\zeta^n),\qquad
+ \overline P(X)=\sum_{v(p_k)=\beta}\lc(p_k)X^k.
+\]
+The polynomial $\overline P$ is nonzero, and the points $\zeta^n$ are
+distinct. Thus the displayed coefficient vanishes only finitely often.
+Since no exponent below $\beta$ can occur, $v(P(q^n))=\beta$ eventually.
+
+Now suppose $\zeta$ is a root of unity of exact order $h$. Write
+\[
+ q=\zeta(1+u),\qquad \eta=v(u)>0,\qquad d=\lc(u).
+\]
+Here $u\ne0$, since otherwise $q$ itself would have finite order. For every
+positive ordinary integer $n$, the finite binomial expansion gives
+\begin{equation}\label{eq:yn}
+ y_n:=(1+u)^n-1,
+ \qquad v(y_n)=\eta,\qquad \lc(y_n)=nd.
+\end{equation}
+There is no convergence assertion in this step: all powers used for each
+fixed $n$ are finite.
+
+Fix $r\in\{0,\ldots,h-1\}$. Expand the nonzero polynomial
+\[
+ P(\zeta^r(1+Y))=\sum_{k=0}^{\deg P}b_{r,k}Y^k
+\]
+and set
+\begin{equation}\label{eq:betar}
+ \beta_r=\min_{b_{r,k}\ne0}\bigl(v(b_{r,k})+k\eta\bigr).
+\end{equation}
+For $n\equiv r\pmod h$, one has $P(q^n)=\sum_k b_{r,k}y_n^k$.
+Its coefficient at exponent $\beta_r$ equals
+\begin{equation}\label{eq:residuepoly}
+ R_r(n),\qquad
+ R_r(T)=\sum_{v(b_{r,k})+k\eta=\beta_r}
+                 \lc(b_{r,k})d^kT^k.
+\end{equation}
+The polynomial $R_r$ is nonzero: the indices $k$ are distinct and all
+its indicated coefficients are nonzero. Outside the finitely many integer
+roots of $R_r$, the leading coefficient in \eqref{eq:residuepoly} survives.
+Therefore $v(P(q^n))=\beta_r$ eventually on this congruence class. There are
+only finitely many classes, which proves the assertion.
+\end{proof}
+
+\begin{corollary}[Every unit dilation is globally rigid]\label{cor:unitrigid}
+If $v(q)=0$ and $q$ has infinite order, every $q$-holonomic member of $\E$
+is a polynomial. Each fixed equation has a uniform exterior obstruction
+and a uniform degree bound.
+\end{corollary}
+
+\begin{proof}
+Apply Lemma~\ref{lem:unit} simultaneously to the nonzero polynomials in
+\eqref{eq:qrec}. Their valuations take only finitely many values after a
+common starting index. All differences
+$v(P_0(q^n))-v(P_j(q^n))$ are therefore bounded above by a single element
+of $\Gamma$. Corollary~\ref{cor:boundedcost} applies.
+\end{proof}
+
+\begin{example}[A residue root of unity does not make the dilation periodic]
+Let $q=-(1+t^\eta)$ with $\eta>0$. For $P(X)=X-1$ and $n\ge1$,
+\[
+ v(P(q^n))=
+ \begin{cases}
+ 0,&n\text{ odd},\\
+ \eta,&n\text{ even}.
+ \end{cases}
+\]
+The residue has order two, but $q$ has infinite order. The valuation sequence
+is periodic, not the dilation itself. The escape argument uses the bounded
+valuation costs; it does not replace $q$ by its residue.
+\end{example}
+
+\begin{example}[Finite exceptional indices really occur]
+For $q=1+t^\eta$ and $P(X)=X-1-7t^\eta$, the valuation of $P(q^n)$ is
+$\eta$ for positive $n\ne7$, but it is $2\eta$ at $n=7$. The leading
+coefficient polynomial at exponent $\eta$ is $n-7$. This explains why the
+stabilization lemma must allow finitely many exceptions, even when the
+residue of $q$ is $1$.
+\end{example}
+
+For an ordinary complex $q$ with $\abs{q}_{\C}\ne1$, its complex size does
+not alter this conclusion: as an element of the Hahn coefficient field,
+$q$ still has Hahn valuation zero. The usual complex modulus and the scale
+valuation answer different questions.
+
+\section{Nonunit dilations and the missing-scale obstruction}\label{sec:nonunits}
+
+\begin{lemma}[Eventual affine valuations]\label{lem:affine}
+Suppose $\lambda=v(q)\ne0$. For every $0\ne P\in\K[X]$, there are an
+index $k_P\in\N$, a value $\beta_P\in\Gamma$, and $N_P\in\N$ such that
+\begin{equation}\label{eq:affine}
+ v(P(q^n))=\beta_P+k_Pn\lambda\qquad(n\ge N_P).
+\end{equation}
+Here $\beta_P$ is the valuation of a coefficient of $P$, and $k_P$ is its
+index.
+\end{lemma}
+
+\begin{proof}
+For each nonzero term $p_kX^k$ the valuation after substitution is
+$\beta_k+kn\lambda$, where $\beta_k=v(p_k)$. For two distinct indices,
+the difference
+\[
+ \beta_k-\beta_l+(k-l)n\lambda
+\]
+is strictly monotone in $n$. Its sign is eventually constant and it can be
+zero for at most one integer. Since there are finitely many pairs, their
+relative order is fixed, with no ties, for all sufficiently large $n$.
+There is then a unique minimizing index $k_P$. Its term cannot cancel with
+terms of strictly larger valuation, so \eqref{eq:affine} follows.
+\end{proof}
+
+\begin{remark}[A rank-one shortcut that fails]
+The minimizing index in Lemma~\ref{lem:affine} need not be the smallest
+index when $v(q)>0$. In $\Gamma=\Q H\oplus\Q\epsilon$, with $H$ dominating
+all $n\epsilon$, take $q=t^\epsilon$ and
+\[
+ P(X)=X+t^{-H}.
+\]
+The constant term has smaller valuation than $q^n$ for every $n$, however
+large. Conversely, with $P(X)=1+t^{-H}X$, the nonconstant term remains the
+minimum for every $n$. The proof uses eventual ordering of finitely many
+affine functions, not the Archimedean assertion that $n\epsilon$ eventually
+exceeds $H$.
+\end{remark}
+
+\begin{proposition}[Noncofinal dilation scales force polynomiality]
+\label{prop:noncofinal}
+Suppose $\lambda=v(q)\ne0$ and $\abs{\lambda}$ is not an order unit. Every
+$q$-holonomic member of $\E$ is a polynomial, with a uniform exterior
+obstruction and degree bound for each fixed equation.
+\end{proposition}
+
+\begin{proof}
+By Lemma~\ref{lem:affine}, the nonzero coefficient polynomials in
+\eqref{eq:qrec} have, after a common starting index, valuations
+\[
+ v(P_j(q^n))=\beta_j+k_jn\lambda.
+\]
+For suitable $C>0$ in $\Gamma$ and $M\in\N$, every relevant difference is
+bounded above by
+\begin{equation}\label{eq:linearbound}
+ v(P_0(q^n))-v(P_j(q^n))\le C+Mn\abs{\lambda}.
+\end{equation}
+For example, choose $C$ at least the maximum of the finitely many
+$\abs{\beta_0-\beta_j}$ and choose
+$M\ge\max_j\abs{k_0-k_j}$.
+
+Since $\abs{\lambda}$ is not an order unit, there is $\eta>0$ such that
+\begin{equation}\label{eq:dominated}
+ n\abs{\lambda}<\eta\qquad\text{for every }n\in\N.
+\end{equation}
+The strict version follows from failure of cofinality: if the multiples
+are bounded by $\eta$, equality for one multiple would be contradicted by
+the next. In particular, $Mn\abs{\lambda}<\eta$ for every $n$ whenever
+$M>0$, and the same upper bound holds trivially when $M=0$.
+The right side of \eqref{eq:linearbound} is bounded by $C+\eta$.
+Choose $\delta>C+\eta$ and apply the escape lemma.
+\end{proof}
+
+The proof handles two different higher-rank situations. The group might
+have no order unit at all, so every possible nonzero dilation valuation is
+noncofinal. Alternatively, the group might have an order unit but the
+chosen $q$ might live on a smaller scale. Global $q$-holonomicity depends on
+the valuation of this particular dilation, not only on the group.
+
+\section{Sharpness: a cofinal partial theta function}\label{sec:theta}
+
+\begin{proposition}[The cofinal witness]\label{prop:theta}
+Let $Q\in\K^\times$ satisfy $\mu=v(Q)>0$. If $\mu$ is an order unit, then
+\begin{equation}\label{eq:theta}
+ \Theta_Q(z)=\sum_{n\ge0}Q^{n(n-1)/2}z^n
+\end{equation}
+is a nonpolynomial member of $\E$ and satisfies
+\begin{align}
+ \Theta_Q(z)&=1+z\Theta_Q(Qz),\label{eq:thetafirst}\\
+ Qz\Theta_Q(Q^2z)-(1+z)\Theta_Q(Qz)+\Theta_Q(z)&=0.
+ \label{eq:thetahom}
+\end{align}
+If $\mu$ is not an order unit, this same formal series is not entire.
+\end{proposition}
+
+\begin{proof}
+For $x\ne0$ with $\alpha=v(x)$, the $n$th evaluated term has valuation
+\begin{equation}\label{eq:thetaval}
+ \frac{n(n-1)}2\mu+n\alpha.
+\end{equation}
+Given a target $\beta\in\Gamma$, choose ordinary nonnegative integers
+$M,B$ such that $\alpha\ge-M\mu$ and $\beta\le B\mu$; this is possible
+because $\mu$ is an order unit. The expression in \eqref{eq:thetaval} is at
+least
+\[
+ \left(\frac{n(n-1)}2-Mn\right)\mu,
+\]
+which exceeds $B\mu$ for all sufficiently large ordinary $n$. Thus the
+term valuations tend cofinally to $+\infty$. Lemma~\ref{lem:support}(b)
+proves strong summability. At $x=0$ evaluation is finite. All coefficients
+in \eqref{eq:theta} are nonzero, so the series is not a polynomial.
+
+The coefficient identity
+\[
+ Q^{n(n-1)/2}=Q^{n-1}Q^{(n-1)(n-2)/2}\qquad(n\ge1)
+\]
+proves \eqref{eq:thetafirst}. Substitute $Qz$ for $z$ and subtract the two
+inhomogeneous identities to obtain \eqref{eq:thetahom}.
+
+Finally, when $\mu$ is not an order unit, choose $H>n\mu$ for every $n$.
+At $x=t^{-H}$ the successive differences of the valuations in
+\eqref{eq:thetaval} are
+\[
+ n\mu-H<0.
+\]
+They therefore form a strictly descending sequence. The family is not
+strongly summable, by Lemma~\ref{lem:support}(a).
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{main:q}]
+When $v(q)=0$, Corollary~\ref{cor:unitrigid} proves polynomiality. When
+$v(q)\ne0$ but its absolute value is not an order unit,
+Proposition~\ref{prop:noncofinal} proves polynomiality. This gives the
+necessity and the stated uniform obstruction.
+
+For sufficiency, first suppose $v(q)>0$ is an order unit and take $Q=q$ in
+Proposition~\ref{prop:theta}. If $v(q)<0$ and $-v(q)$ is an order unit, take
+$Q=q^{-1}$. The resulting series is still entire. Replacing $z$ by $q^2z$
+in \eqref{eq:thetahom} gives the positive-shift $q$-equation
+\begin{equation}\label{eq:inverseq}
+ qz\Theta_{q^{-1}}(z)
+ -(1+q^2z)\Theta_{q^{-1}}(qz)
+ +\Theta_{q^{-1}}(q^2z)=0.
+\end{equation}
+Its polynomial coefficients are not all zero. This proves the converse.
+\end{proof}
+
+The partial theta function is used as an established type of construction,
+not advertised as a newly discovered special function. Its role here is
+precise: it realizes the positive side of a necessary-and-sufficient
+criterion, including nonmonomial $q$ and arbitrary valuation rank.
+Only its leading term valuations are used to establish entireness, so
+unrestricted higher Hahn tails in $q$ do not invalidate the example.
+
+\subsection{Why finite-order dilations must be excluded}
+
+If $q$ has order $h$, the symbolic expression $\sigma_q^h-1$ acts as zero
+on every formal series. Merely requiring a nonzero expression would then
+place no restriction at all. The difficulty persists even after excluding
+operators with zero action. For $h>1$ and
+\[
+ f(z)=z^r g(z^h),
+\]
+one has $f(qz)=q^r f(z)$. Nonpolynomial entire $g$ produces a nonpolynomial
+entire $f$, since evaluation is just evaluation of $g$ at $x^h$, followed
+by multiplication by $x^r$. The operator $\sigma_q-q^r$ is not zero on all
+formal series when $h>1$.
+
+Consequently, finite-order dilations have a genuine periodic-support
+exception. They are not a limiting case of Theorem~\ref{main:q}. In
+particular, ``the residue is a root of unity'' and ``the dilation is a root
+of unity'' are fundamentally different hypotheses.
+
+\section{An extension to mixed differential--dilation equations}
+\label{sec:mixed}
+
+For a nonzero noncofinal dilation valuation, derivatives do not repair the
+missing-scale problem. The extension is useful when a symbolic system
+allows both differentiation and rescaling of the argument.
+
+\begin{lemma}[Polynomial dependence on the index as well as the dilation]
+\label{lem:bivariate}
+Let $v(q)=\lambda\ne0$ and let $0\ne P(U,X)\in\K[U,X]$. There are
+$\beta\in\Gamma$, $k\in\N$, and $N\in\N$ such that
+\[
+ v(P(n,q^n))=\beta+kn\lambda\qquad(n\ge N).
+\]
+\end{lemma}
+
+\begin{proof}
+Write $P(U,X)=\sum_k C_k(U)X^k$. By Lemma~\ref{lem:integer}, each nonzero
+$C_k(n)$ has a fixed finite valuation for sufficiently large $n$.
+The finitely many summands then have valuations $\beta_k+kn\lambda$.
+The pairwise-order argument in Lemma~\ref{lem:affine} gives a unique
+minimizing index eventually, which cannot cancel.
+\end{proof}
+
+\begin{theorem}[Mixed rigidity at a noncofinal nonzero scale]
+\label{thm:mixed}
+Suppose $v(q)\ne0$ and $\abs{v(q)}$ is not an order unit. If a strongly
+entire series $f$ satisfies a nonzero equation
+\begin{equation}\label{eq:mixed}
+ \sum_{r,\ell}p_{r,\ell}(z)D_z^r\sigma_q^\ell f(z)=0,
+ \qquad p_{r,\ell}\in\K[z],
+\end{equation}
+where the sum is finite and the coefficients are not all zero, then $f$
+is a polynomial. Each fixed equation again has a uniform exterior
+obstruction and a uniform degree bound.
+\end{theorem}
+
+\begin{proof}
+Expand $p_{r,\ell}(z)=\sum_k c_{r,\ell,k}z^k$. If $s=r-k$, the term of
+coefficient index $n+s$ contributes to degree $n$ the quantity
+\[
+ c_{r,\ell,k}\fall{n+s}{r}q^{\ell(n+s)}a_{n+s}.
+\]
+Thus the coefficient recurrence has shift polynomials
+\begin{equation}\label{eq:mixedshift}
+ P_s(U,X)=\sum_{r-k=s}\sum_\ell
+       c_{r,\ell,k}q^{\ell s}\fall{U+s}{r}X^\ell.
+\end{equation}
+For fixed $s$ and $\ell$, distinct $r$ have distinct degrees in $U$.
+It follows that a nonempty group of nonzero coefficients cannot cancel
+identically, and some $P_s$ is nonzero. Reindex from the smallest active
+shift. Replacing $U$ by $U-s_0$ and $X$ by $q^{-s_0}X$ preserves polynomiality
+and nonzeroness, so we obtain a recurrence with leftmost coefficient
+$A_0(n)=Q_0(n,q^n)$ for a nonzero bivariate polynomial $Q_0$.
+
+Lemma~\ref{lem:bivariate} gives eventual affine valuations for all its
+nonzero coefficients. Their differences have the bound
+$C+Mn\abs{v(q)}$. As in Proposition~\ref{prop:noncofinal}, this is bounded
+by one element of $\Gamma$. The escape lemma proves the result.
+\end{proof}
+
+The assumption $v(q)\ne0$ is essential to this proof of the mixed extension.
+For $v(q)=0$, the separate pure differential and pure dilation conclusions
+have already been proved, but they are not a proof of the mixed conclusion.
+No mixed unit-valuation classification is asserted here.
+
+\section{Generic lines and several-variable rigidity}\label{sec:multi}
+
+A single differential equation in several variables is not enough to force
+polynomiality: it could ignore most variables. The correct hypothesis is
+finite-dimensionality of the span of \emph{all} mixed partial derivatives.
+We now prove Theorem~\ref{main:multi} under precisely that hypothesis.
+
+\begin{lemma}[Avoiding countably many polynomial conditions]
+\label{lem:generic}
+For any countable family of nonzero polynomials in $\K[z_1,\ldots,z_d]$,
+there is $c\in\C^d$ at which none of them vanishes.
+\end{lemma}
+
+\begin{proof}
+For one polynomial $H$, take the least Hahn exponent among its finitely
+many nonzero coefficients. The coefficient at that exponent is a nonzero
+polynomial $\overline H\in\C[z_1,\ldots,z_d]$. If $\overline H(c)\ne0$,
+then $H(c)\ne0$.
+
+The coefficients of the countably many polynomials $\overline H$ form a
+countable subset of $\C$. The field they generate over $\Q$ is countable.
+Choose $c_1,\ldots,c_d$ algebraically independent over that field. This is
+possible by successively choosing outside the algebraic closure of a
+countable field, which remains countable, whereas $\C$ is uncountable.
+No nonzero polynomial from the family can vanish at this tuple.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{main:multi}]
+Suppose, for a contradiction, that $F$ is not a polynomial. Write it by total
+degree as
+\begin{equation}\label{eq:homogeneous}
+ F(z)=\sum_{n\ge0}F_n(z),
+ \qquad F_n\text{ homogeneous of degree }n.
+\end{equation}
+Infinitely many $F_n$ are nonzero.
+
+Let $g_1,\ldots,g_s$ be a basis for the finite-dimensional
+$\K(z_1,\ldots,z_d)$-span of all mixed derivatives of $F$. Take the $g_i$
+themselves to be mixed derivatives and, since $F\ne0$, choose $g_1=F$.
+Differentiating this span preserves it, so there are rational matrices
+$A_i(z)$ with
+\begin{equation}\label{eq:pfaffian}
+ \partial_i g=A_i(z)g\qquad(1\le i\le d).
+\end{equation}
+There are finitely many nonzero denominator polynomials in these matrices.
+For each such denominator choose one nonzero homogeneous component.
+
+Apply Lemma~\ref{lem:generic} to every nonzero $F_n$, the finitely many
+chosen denominator components, and the coordinate polynomials $z_i$.
+We obtain $c\in\C^d$ with $F_n(c)\ne0$ whenever $F_n\ne0$, and such that
+no denominator becomes the zero polynomial upon substitution $z=wc$.
+The series
+\[
+ h(w)=F(wc)=\sum_{n\ge0}F_n(c)w^n
+\]
+is therefore nonpolynomial.
+
+For each $x\in\K$, the family
+$(a_\alpha c^\alpha x^{\abs{\alpha}})_{\alpha\in\N^d}$ is strongly
+summable by entireness of $F$ at $(c_1x,\ldots,c_dx)$. Group it into the
+finite blocks of fixed total degree. Lemma~\ref{lem:support}(c) shows that
+$\sum_nF_n(c)x^n$ is strongly summable. Hence $h\in\E$.
+
+The formal chain rule applied after clearing the denominators in
+\eqref{eq:pfaffian} gives
+\begin{equation}\label{eq:restricted}
+ \frac{d}{dw}g(wc)=
+ \left(\sum_{i=1}^d c_iA_i(wc)\right)g(wc).
+\end{equation}
+Every denominator here is a nonzero element of $\K[w]$. It may vanish at
+$w=0$, which causes no difficulty: the identity is interpreted in the
+Laurent-series field $\K((w))$ and the matrices lie in $M_s(\K(w))$.
+The finite $\K(w)$-span of the components of $g(wc)$ is preserved by
+$d/dw$. Thus its first component $h$ is D-finite over $\K(w)$.
+Theorem~\ref{main:ode} forces $h$ to be a polynomial, contradicting its
+construction.
+\end{proof}
+
+\begin{corollary}[Multivariate algebraic rigidity]\label{cor:multialg}
+If a strongly entire $F\in\K[[z_1,\ldots,z_d]]$ is algebraic over
+$\K(z_1,\ldots,z_d)$, it is a polynomial.
+\end{corollary}
+
+\begin{proof}
+Each partial derivation extends to the finite separable extension generated
+by $F$, by differentiation of its minimal polynomial. Thus all mixed
+partial derivatives of $F$ lie in a fixed finite-dimensional space.
+Theorem~\ref{main:multi} applies.
+\end{proof}
+
+The generic line is an existence device, not a promised effective choice
+of ordinary complex constants. In particular, the proof does not say that
+one prescribed line detects every nonpolynomial multivariate series.
+The line is chosen after the countably many nonzero homogeneous parts and
+the finitely many rational connection matrices are known.
+
+\section{Surreal workspaces that separate the theories}\label{sec:surreal}
+
+The results so far are stated entirely in set-sized Hahn fields. This makes
+the foundations transparent and allows a literal surreal interpretation
+without quantifying over a proper class as though it were a set.
+
+If $\Gamma$ is an additive ordered subgroup of $\No$, the Conway normal-form
+interpretation sends
+\begin{equation}\label{eq:embedding}
+ \sum_\gamma a_\gamma t^\gamma
+ \longmapsto \sum_\gamma a_\gamma\omega^{-\gamma}.
+\end{equation}
+For real coefficients this is an ordered-field embedding into $\No$; with
+complex coefficients it gives the corresponding subfield of $\No[i]$.
+The normal-form viewpoint is part of the standard connection between
+surreals and Hahn fields~\cite{bg}. Here $t^\gamma$ is a formal monomial,
+and $\omega^{-\gamma}$ denotes a Conway monomial. The notation does not
+silently identify every formal power with a different choice of surreal
+exponentiation.
+
+\subsection{An explicit entire function with no differential or dilation equation}
+
+Take
+\begin{equation}\label{eq:gammainfty}
+ \Gamma_\infty=\bigoplus_{j\ge0}\Q e_j,
+ \qquad 0<e_0\ll e_1\ll e_2\ll\cdots,
+\end{equation}
+ordered so that the largest nonzero coordinate determines the sign. Each
+individual group element has only finitely many nonzero coordinates. One
+can identify $e_j$ with the surreal $\omega^j$.
+
+The group has no order unit. Indeed, if $\gamma>0$ has largest active index
+$j$, then $e_{j+1}>n\gamma$ for every ordinary $n$. Nevertheless, the sequence
+$(e_n)$ is cofinal in the whole group. This is a countable cofinality that
+cannot be generated by repeatedly adding a single positive element.
+
+\begin{theorem}[An explicit universally nonholonomic entire series]
+\label{thm:explicit}
+In $K_{\Gamma_\infty}$, the series
+\begin{equation}\label{eq:explicitF}
+ F(z)=\sum_{n\ge0}t^{e_n}z^n
+     =\sum_{n\ge0}\omega^{-\omega^n}z^n
+\end{equation}
+is strongly entire and nonpolynomial. It satisfies no nonzero linear
+differential equation over $K_{\Gamma_\infty}(z)$ and, for every infinite-order
+$q\in K_{\Gamma_\infty}^\times$, no nonzero polynomial-coefficient linear
+$q$-difference equation. For every $q$ of nonzero valuation, it also
+satisfies no nonzero mixed equation of the form \eqref{eq:mixed}.
+\end{theorem}
+
+\begin{proof}
+Fix $x\ne0$ and write $\alpha=v(x)\in\Gamma_\infty$. The $n$th term in
+\eqref{eq:explicitF} has valuation $e_n+n\alpha$. Given any
+$\beta\in\Gamma_\infty$, choose $j$ larger than the active coordinate
+indices of both $\alpha$ and $\beta$. For all $n>j$, the largest active
+coordinate of $e_n+n\alpha-\beta$ is $n$, with coefficient $1$. Therefore
+$e_n+n\alpha>\beta$. The valuations tend cofinally to $+\infty$, and
+Lemma~\ref{lem:support}(b) proves entireness. At zero only the constant term
+remains. All coefficients are nonzero, so $F$ is nonpolynomial.
+
+The differential conclusion follows from Theorem~\ref{main:ode}. For any
+infinite-order $q$, the group has no order unit, so Theorem~\ref{main:q}
+excludes a $q$-difference equation. If $v(q)\ne0$, the mixed exclusion follows
+from Theorem~\ref{thm:mixed}. Rational coefficient equations can be cleared
+of denominators to reduce them to the polynomial-coefficient setting.
+\end{proof}
+
+The universal quantifier over $q$ in this theorem is important. The series
+has a simple explicit rule for its coefficients, but no choice of one
+infinite-order dilation inside its own workspace converts it into a linear
+$q$-difference special function. This is a statement about finite linear
+annihilating equations, not a statement that the coefficient rule is
+uncomputable or lacks a finite description.
+
+\subsection{Why the same formula is not entire on all surcomplex numbers}
+
+Let $H=\omega^\omega$, which dominates every positive element of
+$\Gamma_\infty$, and enlarge the group to
+$\Delta=\Gamma_\infty+\Q H$. At the surcomplex point
+\[
+ x=\omega^H=t^{-H},
+\]
+the evaluated leading exponents in the Hahn convention are
+\[
+ e_n-nH.
+\]
+Their successive differences are $e_{n+1}-e_n-H<0$. Hence the defining
+family is not strongly summable. This explicit obstruction prevents the
+fixed-workspace theorem from being misread as an assertion of a
+nonpolynomial power series entire on all of $\No[i]$.
+
+The repository's scalar-extension report already studies this general type
+of boundary~\cite{repoentire}. The calculation here is included only to
+state the domain of the new example unambiguously; no new universal
+scalar-extension theorem is claimed.
+
+\subsection{Two dilations in one rank-two field}
+
+Let $\Gamma=\Q H\oplus\Q\epsilon$, with $H$ dominating every
+$n\epsilon$. Then $H$ is an order unit, but $\epsilon$ is not. This gives
+a particularly concrete contrast:
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}l l X@{}}
+\toprule
+Dilation $q$ & Its valuation & Nonpolynomial entire $q$-holonomic solution?\\
+\midrule
+$t^H$ & $H$ & Yes: $\Theta_{t^H}$.\\
+$t^{-H}$ & $-H$ & Yes: $\Theta_{t^H}$, using \eqref{eq:inverseq}.\\
+$t^\epsilon$ & $\epsilon$ & No: positive, but noncofinal.\\
+$1+t^H$ & $0$ & No: an infinite-order unit.\\
+$2$ & $0$ & No: complex size does not change Hahn valuation.\\
+$-1$ & $0$ & Outside the theorem: periodic-support exceptions exist.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Thus finite valuation rank alone is not the criterion. Even within one
+rank-two field, changing the scale of $q$ changes the existence question.
+The distinction persists for nonmonomial dilations, because the theorem
+uses the valuation rather than a requirement that $q$ itself be a monomial.
+
+\begin{corollary}[Detecting order units by functional equations]
+\label{cor:detect}
+For a nonzero ordered abelian group $\Gamma$, the following are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\Gamma$ has an order unit.
+\item Some infinite-order dilation $q\in\K^\times$ admits a nonpolynomial
+strongly entire solution of a nonzero linear polynomial-coefficient
+$q$-difference equation.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+Use Theorem~\ref{main:q}; for the forward implication take $q=t^\mu$ for an
+order unit $\mu$.
+\end{proof}
+
+This recovers a property of the ordered group from a global functional
+equation existence question. The field in \eqref{eq:gammainfty} shows why
+existence of nonpolynomial entire functions by itself is strictly weaker.
+
+\subsection{Real coefficients and degenerate value groups}
+
+The one-variable proofs work over any characteristic-zero coefficient field
+with trivial valuation. The root-of-unity argument uses only finitely many
+ordinary polynomial roots; it needs no algebraic closedness. All theorems
+also hold over $\R((t^\Gamma))$: the generic-line proof uses uncountability
+of $\R$ in place of uncountability of $\C$. Thus the results concern surreal
+as well as surcomplex workspaces.
+
+We assumed $\Gamma\ne0$ to speak of positive exterior scales. When
+$\Gamma=0$, strong evaluation at $x=1$ already permits only finitely many
+nonzero coefficients, because every nonzero term has support $\{0\}$.
+Entire series are then polynomials for the immediate support reason.
+
+\section{Consequences for symbolic representation and proof engineering}
+\label{sec:implementation}
+
+The classification has a direct representational consequence. A system
+whose nonpolynomial special functions are represented only by finite linear
+differential equations cannot cover the nonpolynomial strong entire
+functions of a Hahn workspace. Allowing linear dilation equations enlarges
+the class only when a cofinal dilation scale is available. In the
+no-order-unit example, an exact coefficient rule such as
+\eqref{eq:explicitF} lies outside both pure equation formats.
+
+This does not rule out exact symbolic computation with these functions.
+It specifies what a faithful representation needs to keep separate:
+the coefficient-generation rule, the exponent group, the strong evaluation
+domain, and the type of finite equation being asserted. A field-independent
+label such as ``entire theta function'' discards relevant information.
+For $\Theta_Q$, the proof certificate is not merely $v(Q)>0$; it includes
+that $v(Q)$ is an order unit of the selected group.
+
+\subsection{A finite obstruction certificate}
+
+For a differential operator the mathematical reduction yields a concrete
+certificate structure. First compute the finite shift polynomials
+$Q_s$ in \eqref{eq:odecoeff}, and shift the least active index to zero.
+For each resulting $P_j$, record its least coefficient valuation $\beta_j$
+and the corresponding nonzero complex residue polynomial. Record an integer
+$N$ beyond their nonnegative integer roots and the recurrence's starting
+index. Finally, record a positive $\delta$ satisfying the finitely many
+cost inequalities. The escape lemma then certifies that every formal
+solution strongly evaluable at $v(x)\le-\delta$ has degree less than $N$.
+
+For a unit dilation, the same certificate uses the finite residue classes
+and polynomials $R_r$ in \eqref{eq:residuepoly}. For a nonunit dilation,
+it uses the eventual affine winners in Lemma~\ref{lem:affine} and a witness
+$\eta$ to noncofinality as in \eqref{eq:dominated}. These are mathematically
+finite certificate schemas; they are not a universal algorithm for arbitrary
+Hahn inputs. Comparing arbitrary surreal values, extracting arbitrary
+supports, or deciding cofinality has not been made computable by the proof.
+
+\subsection{What a Lean implementation would have to establish}
+
+The most reusable formalization target is Lemma~\ref{lem:escape}, separated
+from the rest of the analysis. It requires a discrete index sequence, a
+valuation into an ordered additive group, and a finite-successor selection.
+The contradiction then reduces to the impossibility of a strictly
+descending sequence in the support of a strongly summable family.
+
+The next targets are the two valuation stabilization lemmas. The integer
+case is finite polynomial reduction. The unit-dilation case is a finite
+binomial expansion plus a leading-coefficient polynomial on each residue
+class. Only after these are established does one need the elementary
+operator-to-recurrence conversions. The several-variable extension adds
+countable polynomial avoidance and generic restriction of a finite rational
+differential system; it need not be part of the first implementation stage.
+
+No repository files have been modified for this article, and the supplied
+Python checks are not a Lean formalization. The proposed decomposition is
+a dependency plan, not a claim that these new statements already occur in
+the repository's verified code.
+
+\section{Exact checks, proof dependencies, and limitations}
+\label{sec:verification}
+
+The accompanying program \texttt{code/verify.py} uses only Python's standard
+library, integers, and \texttt{fractions.Fraction}. It is reproducible with
+Python 3.9 or later. The delivered run passed \textbf{3,705 finite checks},
+with no failures:
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}X r@{}}
+\toprule
+Finite calculation & Checks\\
+\midrule
+Differential operator to coefficient recurrence & 648\\
+Dilation operator to coefficient recurrence & 336\\
+Mixed operator to coefficient recurrence & 276\\
+Unit residues, parity, and finite exceptional cancellation & 400\\
+Partial theta identities and finite quadratic estimates & 552\\
+Higher-rank lexicographic valuation examples & 1,292\\
+Sparse Airy recurrence and finite escape edges & 201\\
+\midrule
+Total & 3,705\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The operator tests compare the grouped recurrence formulas against direct
+finite polynomial differentiation, dilation, and multiplication. The theta
+tests compare Laurent monomial exponents exactly, including the
+$q^{-1}$-to-$q$ conversion. The unit tests retain the exceptional index
+$n=7$ instead of silently checking only generic values. The ordered-group
+checks use lexicographic integer tuples, not a real-valued surrogate norm.
+
+These checks do not prove any infinite theorem. In particular, no finite
+prefix can prove cofinality of $(e_n)$, noncofinality of $(n\epsilon)$, the
+existence of an infinite escape path, the absence of every possible
+annihilating equation, or the generic-line theorem. No infinite Hahn sum is
+evaluated by the program. Those claims depend on the written arguments.
+
+The mathematical dependency chain is short:
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}l X@{}}
+\toprule
+Conclusion & Load-bearing ingredients\\
+\midrule
+Differential rigidity & Integer evaluation lemma; finite shift conversion;
+escape lemma.\\
+Unit-dilation rigidity & Residue polynomial; finite binomial leading terms;
+escape lemma.\\
+Noncofinal nonunit rigidity & Eventual order of finitely many affine values;
+noncofinality witness; escape lemma.\\
+Positive dilation existence & Quadratic leading valuations along an order
+unit; sufficient strong-summability lemma.\\
+Several-variable rigidity & Countable polynomial avoidance; finite-block
+regrouping; rational differential system on a generic line.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+All supports are sets. All operators are finite sums. All integer indices
+are ordinary nonnegative integers. The coefficient valuation is trivial in
+characteristic zero. The equations use the external formal variable
+derivative. None of the proofs asserts convergence in the fine topology of
+$\No[i]$, substitutes a real-valued norm for an arbitrary-rank valuation,
+or transports a fixed-workspace evaluation to every surcomplex argument.
+
+\section{Originality assessment and questions left open}
+\label{sec:status}
+
+\subsection{What is established background and what is proposed here}
+
+The D-finite/P-recursive correspondence, ordinary properties of Hahn fields,
+finite polynomial root bounds, and partial theta-type series are established
+material. The repository's cofinality and scalar-extension work is also
+explicitly treated as prior project material. We do not claim to originate
+any of these ingredients or to have disproved a published theorem about a
+different analytic function class.
+
+The proposed research contribution is their combination into the sharp
+arbitrary-rank dilation classification, especially the necessity argument
+for all noncofinal scales, the unit case with root-of-unity residue, and the
+uniform exterior obstruction applying to every solution of a fixed equation.
+The mixed noncofinal extension, generic-line rigidity, and the explicit
+function excluded from every infinite-order pure dilation equation are
+further consequences proved in this manuscript.
+
+The targeted literature check located the standard D-finite framework and
+classical complex $q$-difference growth theory, but did not establish whether
+an identical arbitrary-rank strong-Hahn formulation appears elsewhere.
+Accordingly, this is a proposed original result with proofs, not a certified
+claim of bibliographic priority. The paper does not claim a solution of a
+named, previously published open conjecture. Independent mathematical review
+is still needed, and no machine-checked correctness is asserted.
+
+\subsection{Further mathematical questions}
+
+\begin{question}[Nonlinear differential equations]\label{q:nonlinear}
+Can a nonpolynomial $f\in\E$ satisfy a nonzero nonlinear algebraic
+differential equation over $\K(z)$? Under which hypotheses on $\Gamma$ can
+linear rigidity be strengthened to differential algebraic rigidity?
+\end{question}
+
+The escape proof does not answer this. A nonlinear differential relation
+produces convolution sums in the coefficients rather than a bounded-step
+linear recurrence. Treating it as though it had the form
+\eqref{eq:generalrecurrence} would be an invalid extension.
+
+\begin{question}[Mixed operators at unit valuation]\label{q:mixedunit}
+For an infinite-order $q$ with $v(q)=0$, must every strongly entire solution
+of a nonzero mixed equation \eqref{eq:mixed} be a polynomial?
+\end{question}
+
+The unresolved point in the present method is uniform control of
+$v(P(n,q^n))$ for general bivariate $P$ in the unit case. The pure
+$q$-difference proof controls $P(q^n)$, and the differential proof controls
+$P(n)$; neither statement by itself handles their combination. This is a
+question suggested by the argument, not asserted to be a previously
+catalogued open problem.
+
+\begin{question}[Optimal exterior regions]\label{q:optimal}
+For a fixed differential or rigid dilation operator, can one compute the
+largest common strong evaluation domain of its formal solution space from
+finite valued operator data, rather than only a sufficient exterior
+obstruction?
+\end{question}
+
+The thresholds supplied here are uniform and explicit once the valuation
+certificates are available, but need not be optimal. Distinct solutions may
+have cancellations or terminating tails that change their individual
+domains. A full answer should retain arbitrary Hahn tails rather than use
+only a numerical radius.
+
+\begin{question}[Several independent dilations]\label{q:severaldilations}
+What is the corresponding existence criterion for a nonpolynomial strongly
+entire solution constrained by equations using several multiplicatively
+independent dilations? Is an appropriate cofinality condition on their
+joint valuation data sufficient, or do compatibility relations impose
+additional obstructions?
+\end{question}
+
+The single-dilation theorem identifies the exact obstruction when only one
+scale is repeatedly added. With several dilation directions, distinct
+monomials can have equal valuation slopes, and their leading coefficients
+can themselves produce nontrivial recurrence phenomena. No unproved
+multidilation classification is implied by Theorem~\ref{main:q}.
+
+\subsection{Conclusion}
+
+Strong entireness over a surreal Hahn workspace imposes a global scale
+requirement that a finite linear differential equation cannot meet unless
+its solution terminates. A dilation equation can meet that requirement,
+but exactly when its valuation reaches every scale through integer
+multiples. The decisive distinction is therefore not simply between
+Archimedean and non-Archimedean fields, nor between rank one and higher rank.
+It is between \emph{a cofinal dilation scale} and \emph{a scale trapped below
+another one}. The descending-support proof makes this distinction without
+any hidden completeness or convergence assumption.
+
+\appendix
+\section{Notation and reproducibility}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}l X@{}}
+\toprule
+Symbol & Meaning\\
+\midrule
+$\Gamma$ & A fixed nonzero set-sized ordered abelian group.\\
+$\K$ & The complex Hahn field $\C((t^\Gamma))$.\\
+$v(a),\ \lc(a)$ & Least support exponent and its coefficient, for $a\ne0$.\\
+$\E$ & Power series strongly evaluable at every point of $\K$.\\
+$D_z$ & Formal derivative in $z$, zero on every element of $\K$.\\
+$\sigma_q$ & Argument dilation: $f(z)\mapsto f(qz)$.\\
+$\delta$ & A positive exterior scale used in the escape lemma.\\
+$\mu$ & Usually a positive dilation valuation; an order unit only when stated.\\
+$\fall{X}{r}$ & The ordinary falling factorial polynomial of degree $r$.\\
+$\Gamma_\infty$ & The increasing-rank direct sum in \eqref{eq:gammainfty}.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The archive contains the standalone source \texttt{article.tex}, the compiled
+\texttt{article.pdf}, the verification script, its recorded output, a source
+and scope log, and a build guide. The bibliography is embedded; no BibTeX
+run, external graphics, shell escape, or repository checkout is required.
+A conventional TeX Live or MiKTeX installation with the named packages is
+sufficient. From the archive directory, run
+\begin{verbatim}
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+python code/verify.py --output data/verification-rerun.txt
+\end{verbatim}
+The output argument is required so that a rerun need not overwrite the
+record distributed with the article. All symbolic checks are finite and
+use no third-party Python packages.
+
+\clearpage
+\begin{thebibliography}{9}
+\addcontentsline{toc}{section}{References}
+
+\bibitem{stanley}
+R. P. Stanley,
+\emph{Differentiably finite power series},
+European Journal of Combinatorics \textbf{1} (1980), no.~2, 175--188.
+Author-hosted copy:
+\url{https://math.mit.edu/~rstan/pubs/pubfiles/45.pdf}.
+In particular, Theorem~1.5 gives the D-finite/P-recursive equivalence.
+
+\bibitem{ramis}
+J.-P. Ramis,
+\emph{About the growth of entire functions solutions of linear algebraic
+$q$-difference equations},
+Annales de la Facult\'e des Sciences de Toulouse, Math\'ematiques,
+S\'erie~6, \textbf{1} (1992), no.~1, 53--94.
+\url{https://www.numdam.org/item/AFST_1992_6_1_1_53_0/}.
+
+\bibitem{mueller}
+J. M\"uller and A. Strohmaier,
+\emph{The theory of Hahn meromorphic functions, a holomorphic Fredholm
+theorem and its applications},
+Analysis \& PDE \textbf{7} (2014), no.~3, 745--770.
+\url{https://arxiv.org/abs/1205.0236}.
+\url{https://doi.org/10.2140/apde.2014.7.745}.
+
+\bibitem{bm}
+A. Berarducci and V. Mantova,
+\emph{Surreal numbers, derivations and transseries},
+Journal of the European Mathematical Society \textbf{20} (2018), 339--390.
+\url{https://arxiv.org/abs/1503.00315}.
+\url{https://doi.org/10.4171/JEMS/769}.
+
+\bibitem{bg}
+O. Bournez and Q. Guilmant,
+\emph{Surreal fields stable under exponential, logarithmic, derivative
+and anti-derivative functions},
+arXiv:2211.08396 (2022).
+\url{https://arxiv.org/abs/2211.08396}.
+
+\bibitem{repo}
+\repo\ project,
+\emph{Repository documentation and research-report catalogue},
+snapshot \texttt{a3124af79f66b8b9c196d76b4cbc5ac3938907c4},
+consulted 22 September 2026.
+\url{https://github.com/VladimirReshetnikov/Surreal}.
+The inspection used the root README and \texttt{docs/README.md} at this commit;
+these are project documentation, not independent published validation.
+
+\bibitem{repoentire}
+\repo\ project,
+\emph{Cofinality, Factorization and Scalar Extension for Entire Hahn
+Functions at Arbitrary Rank},
+research-report guide at the same snapshot (2026).
+\url{https://github.com/VladimirReshetnikov/Surreal/tree/a3124af79f66b8b9c196d76b4cbc5ac3938907c4/docs/surcomplex/entire-functions-at-arbitrary-rank}.
+The guide, not a newly verified proof of every report claim, supplies the
+prior-work comparison used here.
+
+\end{thebibliography}
+\end{document}
