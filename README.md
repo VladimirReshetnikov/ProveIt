@@ -100,6 +100,11 @@ Strictly increasing additive exponent embeddings preserve Hahn sums, formal
 evaluation in one or finitely many variables, valuations and standard part.
 Infinitesimal exponential and logarithm have explicit strongly summable
 families and are mutually inverse, by proved formal substitution identities.
+Jointly summable products prove the exponential addition law and give a group
+isomorphism from positive-order series to units differing from one by positive
+order. Coefficient maps preserve strong sums and evaluation; in particular,
+exp/log commute with complex conjugation. Near-one series satisfying
+`z * conj(z) = 1` have logarithms with purely imaginary coefficients.
 Roots of monic polynomials over this subring stay in it; for split polynomials,
 standard part preserves the root multiset with multiplicities.
 Resultant and nodal-derivative valuations are finite sums of root-separation

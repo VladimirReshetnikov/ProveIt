@@ -121,9 +121,12 @@ import Surreal.HahnSeries.Complexify
 import Surreal.HahnSeries.ComplexNumbers
 import Surreal.HahnSeries.Conjugation
 import Surreal.HahnSeries.Composition
+import Surreal.HahnSeries.CoefficientMapping
 import Surreal.HahnSeries.DiscriminantValuation
 import Surreal.HahnSeries.Evaluation
 import Surreal.HahnSeries.ExponentialLogarithm
+import Surreal.HahnSeries.ExponentialAddition
+import Surreal.HahnSeries.ExponentialConjugation
 import Surreal.HahnSeries.FiniteSupport
 import Surreal.HahnSeries.MvEvaluation
 import Surreal.HahnSeries.MvComposition
