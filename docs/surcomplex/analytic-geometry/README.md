@@ -408,3 +408,17 @@ preamble is sufficient. The bibliography is embedded; there is no BibTeX
 step and no external figure asset. Last build: 72 pages, 0 errors, 0 LaTeX
 warnings, 0 undefined references, 0 undefined citations, 0 multiply-defined
 labels, 0 duplicate destinations, 0 overfull boxes.
+
+## Notation review — 22 September 2026
+
+The notation convention now defines the standard-part topology on all finite
+tuples and explicitly identifies its restriction to the zero monad as
+indiscrete. The scalar reduction map and the algebraic results are unchanged;
+the pullback topology is distinguished from intrinsic valuation and full
+surreal fine topology.
+
+The fixed-disk corona example is also traced explicitly into the common-domain
+germ ring: its leading coefficient is nonzero at the origin, so one common
+shrinking makes `F` invertible and the formerly proper ideal becomes the
+whole germ ring. This illustrates why the fixed-disk obstruction does not
+transfer to germs.

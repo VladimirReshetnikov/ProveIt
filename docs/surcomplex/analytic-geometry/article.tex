@@ -469,12 +469,16 @@ fix the following and use nothing else.
 
 \begin{convention}[Notation]\label{analytic:conv:notation}
 \begin{enumerate}
-\item \emph{Reduction.} The map $K^\circ\to\C$ extracting the coefficient of
-$t^0$ is written $\red$, and the associated topology on $\m_K^n$ obtained by
-pulling back the ordinary topology of $\C^n$ along standard parts is called
-the \emph{reduction topology}. It is called the residue topology and the
-shadow topology elsewhere; those are synonyms for the same object and are
-not used again.
+\item \emph{Reduction and standard-part topology.} The scalar standard-part
+map $\red:K^\circ\to\C$ extracts the coefficient of $t^0$. Its coordinatewise
+extension $\red:(K^\circ)^n\to\C^n$ defines the \emph{standard-part topology}
+on $(K^\circ)^n$ by pulling back ordinary open sets. The names reduction,
+residue and shadow topology used in the sources refer to this same pullback.
+Its restriction to the zero monad $\m_K^n$ is indiscrete: every point has
+standard part zero, so the only open subsets are the empty set and the whole
+monad. For $n\ge1$ this differs from the intrinsic valuation topology and
+from the full surreal fine subspace topology. The algebraic arguments below use the
+map $\red$, not a separation property of its pullback topology.
 \item \emph{Evaluation.} The value of $F$ at an infinitesimal point $a$ is
 written $F(a)$. The notation $F^\sharp(a)$ occurs in the sources for the
 same operation and is not used again.
@@ -4341,7 +4345,14 @@ $a_n\to1$ approaching the boundary of $D$, a resource that disappears on
 localizing at a single ordinary centre; it therefore does not transfer to
 $\RR_n$, to $\A_n$ or to $\FF_n$, whose structure packages stand as proved
 in \cref{analytic:sec:structure-A,analytic:sec:structure-R} and
-\cref{analytic:thm:formal-comparison}. It also does not refute the
+\cref{analytic:thm:formal-comparison}. For the displayed pair this can be seen
+directly at the origin: $a_1=0$ and $e_1(0)=1$ by
+\cref{analytic:lem:fixed-cardinal}, while $\gamma_1=1$. Thus
+$F=t(e_1+E)$ with $\vH(E)>0$. After shrinking the common ordinary
+neighbourhood, $e_1$ is nowhere zero, and positive-support geometric
+inversion gives $F^{-1}\in\RR_1$. Hence the image of $(h,F)$ in the
+common-domain germ ring is the whole ring, even though it is proper on the
+fixed disk. The counterexample also does not refute the
 finite-isolated-zero deformation theorem of \cite{FiniteDeformations}: the
 divisor $h$ has infinitely many ordinary zeros, so that theorem's
 hypothesis is simply absent, and at each individual geometric point
