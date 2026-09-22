@@ -12,6 +12,7 @@ import Surreal.Algebra.PolynomialDiscriminant
 import Surreal.Algebra.PolynomialDivision
 import Surreal.Algebra.PolynomialDepression
 import Surreal.Algebra.PolynomialFactorLinearization
+import Surreal.Algebra.PolynomialFactorUniqueness
 import Surreal.Algebra.PolynomialFiniteFactorLinearization
 import Surreal.Algebra.PolynomialGaussLucas
 import Surreal.Algebra.PolynomialHermiteFormula
@@ -30,9 +31,12 @@ import Surreal.Algebra.PolynomialResiduePairing
 import Surreal.Algebra.PolynomialResultant
 import Surreal.Algebra.PolynomialRootBounds
 import Surreal.Algebra.PolynomialTraceGram
+import Surreal.Algebra.PolynomialUniversalPerturbation
 import Surreal.Algebra.ProjectiveCircle
 import Surreal.Algebra.PowerSeriesFactorLifting
 import Surreal.Algebra.PowerSeriesPolynomialFactorLifting
+import Surreal.Algebra.MvPowerSeriesFactorLifting
+import Surreal.Algebra.MvPowerSeriesPolynomialFactorLifting
 import Surreal.Algebra.RealPolynomialFactors
 import Surreal.Foundations.SizeObstructions
 import Surreal.Foundations.SmallCutData
@@ -97,6 +101,8 @@ import Surreal.Surcomplex.StandardPartTopology
 import Surreal.Surcomplex.Halos
 import Surreal.Surcomplex.PolynomialGeometry
 import Surreal.Surcomplex.PolynomialReduction
+import Surreal.Surcomplex.PolynomialFactorUniqueness
+import Surreal.HahnSeries.Ancestry
 import Surreal.HahnSeries.Binomial
 import Surreal.HahnSeries.BinomialOrder
 import Surreal.HahnSeries.BinomialRoots
@@ -107,8 +113,10 @@ import Surreal.HahnSeries.Conjugation
 import Surreal.HahnSeries.Composition
 import Surreal.HahnSeries.DiscriminantValuation
 import Surreal.HahnSeries.Evaluation
+import Surreal.HahnSeries.MvEvaluation
 import Surreal.HahnSeries.Neumann
 import Surreal.HahnSeries.PolynomialReduction
+import Surreal.HahnSeries.PolynomialFactorUniqueness
 import Surreal.HahnSeries.PolynomialGaussValuation
 import Surreal.HahnSeries.PolynomialInitialRoots
 import Surreal.HahnSeries.PolynomialInitialDerivative
