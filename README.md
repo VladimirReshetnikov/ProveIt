@@ -235,6 +235,14 @@ Halos are finite standard-part preimages; puncturing removes a whole monad.
 The explicit point `1 - omega⁻¹` distinguishes the halo of the ordinary disk
 from the full fine unit ball. No point has a countable neighborhood basis,
 so no ordinary real-valued metric or pseudometric induces the fine topology.
+Leading-coefficient normalization, translation to depressed form, and
+monomial change of variable now preserve polynomial degree and give explicit
+root pullbacks. Standard-part reduction preserves monicity and supplies
+a nontrivial depressed real polynomial; its coprime monic factorization
+has a proper positive odd-degree factor. The actual sign and surcomplex
+fields also carry additive valuations with surreal exponents and infinity
+at zero. Their finite rings agree with the existing modulus-bounded rings,
+and valuation lower bounds give the documented monomial modulus estimate.
 The surreal field is not algebraically closed, and no linear order is
 compatible with surcomplex multiplication.
 Real closedness and the normal-form bridge to Hahn series remain open.

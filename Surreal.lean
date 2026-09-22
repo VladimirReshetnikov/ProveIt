@@ -10,6 +10,7 @@ import Surreal.Algebra.PolynomialBezoutKernel
 import Surreal.Algebra.PolynomialCRT
 import Surreal.Algebra.PolynomialDiscriminant
 import Surreal.Algebra.PolynomialDivision
+import Surreal.Algebra.PolynomialDepression
 import Surreal.Algebra.PolynomialFactorLinearization
 import Surreal.Algebra.PolynomialFiniteFactorLinearization
 import Surreal.Algebra.PolynomialGaussLucas
@@ -30,6 +31,7 @@ import Surreal.Algebra.PolynomialResultant
 import Surreal.Algebra.PolynomialRootBounds
 import Surreal.Algebra.PolynomialTraceGram
 import Surreal.Algebra.ProjectiveCircle
+import Surreal.Algebra.RealPolynomialFactors
 import Surreal.Foundations.SizeObstructions
 import Surreal.Foundations.SmallCutData
 import Surreal.Foundations.SignSequence
@@ -66,6 +68,8 @@ import Surreal.Foundations.SignSequenceStandardPart
 import Surreal.Foundations.SignSequenceStandardPartTopology
 import Surreal.Foundations.SignSequenceMonomials
 import Surreal.Foundations.SignSequencePolynomialScaling
+import Surreal.Foundations.SignSequencePolynomialNormalization
+import Surreal.Foundations.SignSequenceValuation
 import Surreal.Foundations.SignSequenceDyadics
 import Surreal.Foundations.SignSequenceRealBirthday
 import Surreal.Foundations.SignSequenceBirthdayArithmetic
@@ -84,6 +88,7 @@ import Surreal.Surcomplex.ComplexEmbedding
 import Surreal.Surcomplex.NoPaths
 import Surreal.Surcomplex.NoMetric
 import Surreal.Surcomplex.StandardPart
+import Surreal.Surcomplex.Valuation
 import Surreal.Surcomplex.StandardPartTopology
 import Surreal.Surcomplex.Halos
 import Surreal.Surcomplex.PolynomialGeometry
