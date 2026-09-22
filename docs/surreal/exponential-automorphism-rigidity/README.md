@@ -49,12 +49,15 @@ Around that:
 - **Section 8.** Two *disjoint* obstruction mechanisms separating ordered-Hahn
   symmetry from exponential symmetry: bounded-layer reweightings `T_c` (bounded
   displacement) and positive rational dilations `T_r` (displacement image all
-  of `Γ`, killed instead by `Q`-linearity of `v∘exp` tested at `ω` and `ω²`).
-  Every one of them **does** lift as an ordered field automorphism (Prop 8.4),
+  of `Γ`, excluded by `Q`-linearity of `v∘exp` and a value comparison at `ω`,
+  with a second proof using multiplication at `ω` and `ω²`).
+  Every one of them **does** lift as an ordered field automorphism (Prop 8.3),
   so cofinal displacement is necessary but provably **not sufficient** for
   exponential lifting.
-- **Section 9.** On `K = F(i)`, the intrinsic everywhere-defined logarithmic
-  modulus `L(z) = log √(z z̄)` — real logarithm only, no complex-log branch, no
+- **Section 9.** Here **assume additionally that `F` is real closed**. On
+  `K = F(i)`, the intrinsic logarithmic modulus
+  `L: K^× → F`, `L(z) = log √(z z̄)` — defined for every nonzero input,
+  real logarithm only, no complex-log branch, no
   argument, no sin/cos at infinite arguments — gives
   `Aut_L(K) ≅ Aut_exp(F) × C₂`, with invisible value-group kernel exactly
   `{id, conjugation}`. Preservation of `F` and of conjugation is *derived*, not
@@ -68,7 +71,7 @@ Weakened hypotheses, each independent of the surreal application:
   and has an increasing inverse"), together with the `log` that convention
   supplies. Corollary 4.2's self-embedding version is recovered as the case
   where `E` is onto and `w` is nontrivial.
-- **Corollary 4.9, the detector.** The same mechanism with no ordering, no
+- **Corollary 4.5, the detector.** The same mechanism with no ordering, no
   convexity and no restriction on the characteristic: if `E(x)` being a
   valuation unit forces `v(x) ≥ β` for one fixed `β`, then commuting with `E`
   and fixing `v` pointwise forces the identity. For the surreal exponential
@@ -119,7 +122,7 @@ New consequences, rather than weaker hypotheses:
 The elementary engine has been checked independently of the author: the
 twisted identity holds exactly, the untwisted version (`a` in place of
 `σ(a)`) does not, and the two-probe amplification holds with margin
-`2B + B|σ(a)|`. **That validates the engine only.** The published conclusion
+`2B + B|σ(a)|`. **That validates the engine only.** The report's conclusion
 additionally rests on four things that the engine does not supply:
 
 1. **The valuation step.** From `σ∘exp = exp∘σ` and `v(σy) = v(y)` one gets
@@ -133,22 +136,22 @@ additionally rests on four things that the engine does not supply:
 3. **Imported surreal facts.** Gonshor's total increasing exponential on No
    extending real `exp`, with increasing inverse, and the natural valuation
    whose ring is the finite surreals. These are cited, not reproved.
-4. **The reading of Question 5.4.** Corollary 5.2 turns Theorem 5.1 into an
-   answer by way of a single implication: a 1-automorphism fixes every
-   *leading term*, hence every value `v(y)`. Leading coefficients play no role
-   in the proof. That reading **has now been checked against the named
-   version**, and `05-exponential-valuation-SOURCE_AUDIT.md` records what was
-   inspected: arXiv:2509.22374v3, submitted 23 April 2026, PDF dated
-   27 April 2026; Definitions 2.4–2.5 and Remark 2.6 on source page 4, which
-   identify 1-automorphisms by leading-term preservation; Proposition 5.2 and
-   Question 5.4 on source page 10. Both PDF pages were **visually inspected**,
-   and the inspected version still poses the question. **Keep the version
-   pinning prominent.** What remains unchecked is everything outside that one
-   version: no exhaustive search for a later resolution was made, several
-   search results were irrelevant, and no priority conclusion is drawn from
-   their unhelpfulness. The article also notes that KKS Proposition 5.2
-   already rules the case out under strong `R`-linearity, while Theorem 5.1
-   here needs neither strong additivity nor pointwise fixation of `R`.
+4. **The reading of Question 5.4, checked 22 September 2026.** Corollary 5.2
+   turns Theorem 5.1 into an answer by way of a single implication: a
+   1-automorphism fixes every *leading term*, hence every value `v(y)`.
+   Leading coefficients play no role in the proof. The pinned
+   [KKS v3 PDF](https://arxiv.org/pdf/2509.22374v3), Definitions 2.4–2.5 and
+   Remark 2.6 on page 4, confirms that implication. Proposition 5.2 on page 10
+   treats the strongly `R`-linear case; Question 5.4 there asks the
+   unrestricted question used by Corollary 5.2.
+   `05-exponential-valuation-SOURCE_AUDIT.md` records what was inspected, and
+   both PDF pages were **visually inspected**. The version remains **v3,
+   submitted 23 April 2026, PDF dated 27 April 2026**; **keep that version
+   pinning prominent.** This verifies the interpretation, not priority: no
+   exhaustive search for a later resolution was made, several search results
+   were irrelevant, and no priority conclusion is drawn from their
+   unhelpfulness. Theorem 5.1 needs neither strong additivity nor pointwise
+   fixation of `R`, which KKS Proposition 5.2 assumes.
 
 The article also concedes that the elementary displacement lemma may be
 familiar in other language, and that a specialist may recognize further
@@ -170,6 +173,9 @@ two earlier claims here have been withdrawn as false.
   statements about one shared object, not shared theorems.
 - [`gamma-functions`](../gamma-functions/) already links here from its own
   disambiguation note.
+- The [Hahn-evaluation report](../hahn-evaluation-at-omega/) gives related
+  coefficient-fixing maps obtained by changing exponents. The present report
+  asks which value-group actions can also preserve the exponential.
 - [`genetic-gaps-and-primitives`](../genetic-gaps-and-primitives/) treats
   *order* automorphisms of gap indicators — a different group acting on a
   different object, but enough to make "nothing else studies automorphisms"
@@ -179,7 +185,8 @@ two earlier claims here have been withdrawn as false.
   the exponential construction, and two bibliography entries to
   Kaplan–Krapp–Serra appear in the sources of
   `surcomplex/dynamics-and-normal-forms`, both used only for class-size
-  conventions.
+  conventions. Those reports use surreal exponential fields as background;
+  no result from them is needed in these proofs.
 
 Nothing here proves a theorem about the automorphism group of No that any
 other report also proves, and the rigidity theorems can still be read without
@@ -195,8 +202,8 @@ that is Hahn-entire at every scale is a polynomial. The *scalar rigidity* of
 Berarducci–Mantova derivation forces a gauge to vanish. What is proved here is
 neither — it is faithfulness of `ρ_w`. The growth scale in this report is
 nothing but the natural-valuation value read through `ν = w∘E`; it is not a
-Hardy-field or germ order, and not a scale of function growth. No shared
-theorem, no shared lemma, only the shared English word.
+Hardy-field or germ order, and not a scale of function growth. The three
+rigidity statements have different objects and hypotheses.
 
 ## What it does NOT claim
 
@@ -252,8 +259,9 @@ theorem, no shared lemma, only the shared English word.
 - Repository documentation was inspected at commit
   `aa846271b4dcae2c055b216126a87210292ec19b` of `VladimirReshetnikov/Surreal`
   and is cited as **research context only**, not as an external proof source.
-  No repository files were changed. Note that the named gap this report fills
-  is external (KKS Question 5.4), not one posed by any report here.
+  That snapshot records the original research context; this maintained copy
+  now belongs to the collection and includes later exposition revisions.
+  The named question is external (KKS Question 5.4).
 
 ## A correction carried in the staged audit
 

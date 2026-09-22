@@ -132,10 +132,11 @@ the verdict is negative.
 
 Surreal and surcomplex scalars make the hierarchy of quantities near a singular
 regime \emph{exactly representable}. They do not make the spacetime regular.
-For Schwarzschild the Kretschmann invariant is exactly $48m^{2}/r^{6}$; under a
-formal ramification $r=s^{q}w(s)$ with $w(0)\neq0$ the pole order becomes
-exactly $6q$ with the leading coefficient unchanged, so no radial
-reparametrization removes the blow-up; the proper time from rest at $R$ to
+For Schwarzschild with $m\ne0$, the Kretschmann invariant is exactly
+$48m^{2}/r^{6}$. Under a formal ramification $r=s^{q}w(s)$, where $q\ge1$
+is an integer and $w\in\R[[s]]$ has $w(0)\ne0$, the pole order becomes
+exactly $6q$ and the leading coefficient is $48m^{2}w(0)^{-6}$, so no
+radial reparametrization of this form removes the blow-up; the proper time from rest at $R$ to
 $r=0$ is $(\pi/2)\sqrt{R^{3}/2M}$, finite --- and infinitesimal, hence still
 finite, for infinitesimal $R$; the tidal component $2M(2M-r)/r^{4}$ diverges;
 and the exact identity $r^{6}\Kret=48m^{2}$ has no field-valued solution at
@@ -1474,8 +1475,14 @@ $\eps$ in a Hahn field, using strong summation. Then
 f(\eps)=c\,\eps^{-p}(1+\delta),\quad \delta\in\mm_{F},
 \]
 so $f(\eps)$ is unlimited. Moreover, under a formal change of radial variable
-$r=s^{q}w(s)$ with $q\ge1$ an integer and $w(0)\ne0$, the pole order becomes
-$pq$ and does not disappear.
+$r=s^{q}w(s)$ with $q\ge1$ an integer and $w\in\R[[s]]$ having
+$w_0=w(0)\ne0$, one has
+\[
+ f(s^{q}w(s))=s^{-pq}\widetilde u(s),\qquad
+ \widetilde u\in\R[[s]],\qquad \widetilde u(0)=c\,w_0^{-p}\ne0.
+\]
+Thus the pole order is exactly $pq$, and its leading Laurent coefficient
+is $c\,w_0^{-p}$. The pole persists although its coefficient can change.
 \end{proposition}
 \begin{proof}
 Strong summation of $u(\eps)$ is valid by the positive-valuation power-series
@@ -1483,10 +1490,14 @@ rule, and its constant term is $c$, so $u(\eps)=c(1+\delta)$ with
 $\val\delta>0$ unless $\delta=0$. Multiplying by $\eps^{-p}$ gives the stated
 leading term and valuation. For the change of variable,
 \[
-f(s^{q}w(s))=s^{-pq}\,w(s)^{-p}\,u(s^{q}w(s)),
+f(s^{q}w(s))=s^{-pq}\,w(s)^{-p}\,u(s^{q}w(s)).
 \]
-and the factor following $s^{-pq}$ is a unit with nonzero constant term
-$w(0)^{-p}c$, which cannot cancel the pole.
+The substitution into $u$ is defined as a formal power series because
+$s^q w(s)$ has positive order. Since $w_0\ne0$, the factor $w(s)^{-p}$
+is a power-series unit with constant term $w_0^{-p}$, while
+$u(s^q w(s))$ has constant term $c$. Their product is the required
+$\widetilde u(s)$, with nonzero constant term $c\,w_0^{-p}$. No term of
+higher $s$-order can cancel the resulting leading term at exponent $-pq$.
 \end{proof}
 
 \begin{proposition}[\TC\ Route 2, order-theoretic: a leading pole stays
@@ -1521,14 +1532,24 @@ claim.
 
 \begin{computation}[\TE\ Ramification invariance, checked]
 \label{phys:comp:ramification}
-\Cref{phys:prop:pole} applies to \eqref{phys:eq:Kschwarz} with $p=6$ and
-$c=48m^{2}$. Substituting $r=s^{q}(1+s)$ into $48m^{2}/r^{6}$ and expanding
-gives a pole of order exactly $6q$ with leading coefficient exactly $48m^{2}$,
-unchanged, for $q=1,2,3$. This was verified directly from the metric, by
-building the Christoffel symbols and the Riemann tensor and contracting: the
-Kretschmann scalar is exactly $48M^{2}/r^{6}$ and the substituted pole order
-and leading coefficient are as stated. \emph{No radial reparametrization of
-this form removes the blow-up.}
+For $m\ne0$, \cref{phys:prop:pole} applies to \eqref{phys:eq:Kschwarz}
+with $p=6$ and $c=48m^{2}$. In the checked special case $w(s)=1+s$,
+\[
+ \Kret(s^{q}(1+s))=48m^{2}s^{-6q}(1+s)^{-6}.
+\]
+Expansion for $q=1,2,3$ gives pole order exactly $6q$ and leading coefficient
+$48m^{2}$. Its preservation in these tests comes from the normalization
+$w(0)=1$. For a general unit $w$, the proposition instead gives
+$48m^{2}w(0)^{-6}$; for example, the constant unit $w=2$ gives
+$3m^{2}/4$. The pole remains in each case.
+
+The finite verification reconstructed the Christoffel symbols and the
+Riemann tensor from the metric and contracted them to obtain
+$\Kret=48M^{2}/r^{6}$ before making the normalized substitutions.
+Those three tests illustrate the general formal-series argument; they do
+not assert an unchanged coefficient for arbitrary $w(0)\ne0$.
+\emph{No formal radial reparametrization satisfying the proposition's
+hypotheses removes the pole.}
 \end{computation}
 
 \begin{corollary}[\TC\ The real-analytic geometric consequence]
@@ -3429,8 +3450,9 @@ precisely where the inference fails, in four places.
 \item At a nonzero infinitesimal radius the metric is evaluable, but by
 \cref{phys:comp:Keps} and \cref{phys:prop:unlimited} the invariant curvature is
 still unlimited in the real-boundedness sense, and by
-\cref{phys:prop:pole} the $r=0$ pole is unchanged under any radial
-reparametrization of the stated form.
+\cref{phys:prop:pole} the $r=0$ pole persists under every radial
+reparametrization of the stated form; its order is multiplied by $q$ and
+its leading coefficient is rescaled by $w(0)^{-6}$.
 \item The exact identity $r^{6}\Kret=48m^{2}$ still has \emph{no} field-valued
 solution at $r=0$, by \cref{phys:prop:noendpoint}, in \emph{any}
 characteristic-zero field and not merely in $\R$.
@@ -4023,10 +4045,13 @@ inconvenience.
 
 \paragraph{\TA\ As an automatic cure for black-hole singularities: no.}
 This is the report's conclusion and it is negative. The Schwarzschild invariant
-remains exactly $48m^{2}/r^{6}$; under a formal radial change $r=s^{q}w(s)$
-with $w(0)\ne0$ the pole order becomes exactly $6q$ with the leading
-coefficient unchanged, verified for $q=1,2,3$, so no radial reparametrization
-removes the blow-up. The proper-time invariant remains $64/(27u^{4})$; the
+remains exactly $48m^{2}/r^{6}$ for $m\ne0$. Under a formal radial change
+$r=s^{q}w(s)$ with integer $q\ge1$ and $w\in\R[[s]]$, $w(0)\ne0$, the pole
+order becomes exactly $6q$ and the leading coefficient becomes
+$48m^{2}w(0)^{-6}$. The finite checks used $w=1+s$ and $q=1,2,3$, so their
+leading coefficient remained $48m^{2}$. The general proof is
+\cref{phys:prop:pole}: no radial reparametrization of this stated form
+removes the pole. The proper-time invariant remains $64/(27u^{4})$; the
 proper time from rest at $R$ to $r=0$ is $(\pi/2)\sqrt{R^{3}/2M}$, finite ---
 and for infinitesimal $R$ it is infinitesimal, hence still finite, so the
 infall terminates either way. The tidal component $2M(2M-r)/r^{4}$ diverges,
@@ -4282,7 +4307,9 @@ rather than read from the sources. Specifically: the Christoffel symbols and
 the Riemann tensor of \eqref{phys:eq:schwarz} were built from scratch and
 contracted, giving $\Kret=48M^{2}/r^{6}$ exactly, hence $p=6$ in
 \cref{phys:prop:pole}; substituting $r=s^{q}(1+s)$ gives a pole of order
-exactly $6q$ with leading coefficient $48M^{2}$ unchanged, for $q=1,2,3$;
+exactly $6q$ with leading coefficient $48M^{2}$ for $q=1,2,3$ and $M\ne0$,
+the normalized case $w(0)=1$ of the general coefficient
+$48M^{2}w(0)^{-6}$;
 the proper-time quadrature \eqref{phys:eq:taufinite} evaluates in closed form
 to $(\pi/2)\sqrt{R^{3}/2M}$; and the tidal component
 $R^{r}{}_{trt}=2M(2M-r)/r^{4}$ diverges as $r\to0$. All four agree with the

@@ -42,6 +42,27 @@ means ordinary ordinal addition, while the circled plus and circled times
 mean natural ordinal operations. In particular, an infinite Laurent series
 has birthday `b(positive part) + omega^2`, with ORDINARY addition.
 
+Birthday always means canonical sign length of a surreal **value**. It is
+not the construction rank of a displayed cut: `{-1 | 1}` has rank 2 with
+canonical options but represents 0, whose birthday is 0. “Finite Laurent
+polynomial” means finite support, not finite birthday.
+
+The finite product proof allows equal exponents and coefficient cancellation.
+For nonzero Laurent series the highest product coefficient cannot cancel;
+for finite Laurent polynomials neither extreme coefficient can cancel, so
+their support widths add. The passage to infinite series preserves each
+finite product truncation coefficientwise, including coefficients that cancel
+to zero, and bounds every such truncation by the same birthday product.
+
+The reciprocal corollary requires highest exponent `N >= 0`. Without that
+hypothesis, `(omega^(-2)-omega^(-3))^(-1) = sum_{k <= 2} omega^k` has birthday
+`omega^2 * 2`, not `omega^2`.
+
+The 22 September 2026 review checked the sign rules against the cited primary
+sources. In the pinned Bournez–Guilmant v1, their correct locations are
+**Definition 2.20 and Theorem 2.21, page 13**; the former 2.6/2.7 references
+were incorrect. See [`AUDIT.md`](AUDIT.md) for the proof-review scope.
+
 ## Reproduce the verification
 
 Python 3.9 or later; standard library only:

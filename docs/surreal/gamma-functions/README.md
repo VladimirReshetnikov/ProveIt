@@ -24,20 +24,24 @@ Taylor–Stirling log-Gamma baseline `L_0`.
 Pointwise in `m`, no uniform real bound across monomials, both signs allowed.
 There are no merely-convex, non-strictly-convex members.
 
-And **every** member, convex or not, preserves the finite Taylor extension of
-real Gamma, `Γ_a(1) = 1`, the recurrence `Γ_a(x+1) = x·Γ_a(x)`, every finite
+And **every** member, convex or not, agrees with the baseline at every positive
+finite argument and preserves `Γ_a(1) = 1`, the recurrence
+`Γ_a(x+1) = x·Γ_a(x)`, every finite
 Gauss multiplication formula, every normalized finite-translation germ, and all
 positive-order fine derivatives of log-Gamma.
 
 Consequences worth naming:
 
-- **Bohr–Mollerup fails on No, in the strongest available sense.** Taking
+- **The literal surreal Bohr–Mollerup conditions do not give uniqueness.** Taking
   `a_λ(m) = λ·exp(−m)` for real `λ` gives pairwise distinct, strictly
-  log-convex Gamma extensions agreeing on all of the above, whose differences
-  are smaller than *every* ordinary inverse power at *every* infinite argument
-  — at `x = ω` the log-difference is exactly `λ·ω·exp(−ω)`. Adding all
+  log-convex Gamma extensions agreeing on all of the above. Their logarithmic
+  differences and relative differences `Γ_λ/Γ_μ − 1` are smaller in magnitude
+  than *every* ordinary inverse power at *every* infinite argument
+  — at `x = ω` the log-difference from the baseline is exactly `λ·ω·exp(−ω)`. Adding all
   ordinary-order signed first-omitted-term Stirling envelopes does not restore
-  uniqueness either (`thm:enveloping`).
+  uniqueness either (`thm:enveloping`). This does not bound absolute Gamma
+  differences: `Γ_1(ω) − Γ_0(ω) > ω^N` for every ordinary `N`, as proved in
+  `warn:absolute-difference`.
 - **A convexity proof with no second derivatives and no mean value theorem.**
   It works with the tangent gap `D_F(y,x) = F(y) − F(x) − F'(x)(y−x)` and
   proves strict positivity in four exhaustive relative-scale regimes for
@@ -47,8 +51,8 @@ Consequences worth naming:
   theorem, the *scale-margin gauge principle*, with `L_0` realizing it at
   `κ = 1/2`.
 - **A positive second derivative does not imply convexity in this calculus.** A
-  worked counterexample: a gauge supported on a single monomial `m₀` has all
-  fine derivatives equal to the baseline's, yet `x = m₀`, `y = m₀ − √m₀` has a
+  worked counterexample: take `a(m₀) = 1` and `a(m) = 0` elsewhere. All positive-order
+  fine derivatives of `L_0 + h_a` equal those of `L_0`, yet `x = m₀`, `y = m₀ − √m₀` has a
   *negative* tangent gap. Gauges of this shape are finely locally constant —
   constant on cosets mod the finite surreals — so global convexity simply
   cannot be decided locally.
@@ -70,18 +74,22 @@ Consequences worth naming:
 are a secondary tube computation. It is a **standalone** report and can be read
 on its own.
 
-There is **no Gamma-function, log-Gamma or Stirling material anywhere else in
-this collection**, so nothing here overlaps. The two points of contact are
-instrumental, and both are cross-references rather than shared results:
+The report's central subject is its Gamma gauge classification. The original
+targeted catalogue audit found no other Gamma-specific package; it did not
+establish absence of related material throughout the collection. Relevant
+points of contact include:
 
 - [`surcomplex/differential-equations`](../../surcomplex/differential-equations/)
   for the **Berarducci–Mantova scalar derivation**, imported here to eliminate
-  infinitesimal locally constant discrepancies; and for the **phase
-  convention**. The finite-phase domain computed here is a computation *in that
-  report's sense* — the same finite-primitive/finite-phase mechanism — not a
-  new notion of phase. That report carries a convention section precisely
-  because three different objects in its sources were called "phase"; read it
-  before reading Section 5 here.
+  infinitesimal locally constant discrepancies. Its different uses of phase
+  should not be conflated: this report uses **finite-angle**
+  `cis(b) = exp(i·st(b)) Σ_k (i(b−st(b)))^k/k!` for finite scalar `b`.
+  The criterion here concerns the scalar value `Im(log-Gamma(z))`; no primitive
+  is being chosen.
+- [`surcomplex/trigonometry`](../../surcomplex/trigonometry/) and the shared
+  [notation guide](../../NOTATION.md) distinguish this finite-angle
+  exponential from a global phase prescription. This article defines its
+  convention directly in “Surcomplex log-Gamma and an exact finite-phase tube.”
 - The word **"rigidity"** is used in this collection for at least three
   unrelated statements. The one here is *scalar* rigidity, in the exact sense
   above. It is not the all-scale polynomial rigidity of
@@ -89,12 +97,14 @@ instrumental, and both are cross-references rather than shared results:
   automorphism faithfulness of
   [`exponential-automorphism-rigidity`](../exponential-automorphism-rigidity/).
 
-The article's own audit inspected only `docs/README.md` and
+The article records an original targeted audit of `docs/README.md` and
 `docs/surcomplex/differential-equations/article.tex`, and describes the
 catalogue as holding *eighteen* research packages — fewer than are here now.
-Its picture of the collection is therefore stale, and the repository it names
-(`VladimirReshetnikov/Surreal`, tree `aa846271b4dcae2c055b216126a87210292ec19b`)
-may no longer be this one. All its repository operations were reads.
+The eighteen-package count describes that historical tree
+(`VladimirReshetnikov/Surreal`, `aa846271b4dcae2c055b216126a87210292ec19b`),
+not the current collection. Its original repository operations were reads.
+The maintained article now labels this scope explicitly; the historical
+`data/source-audit.json` is preserved unchanged.
 
 ## What it does NOT claim
 
@@ -139,6 +149,29 @@ may no longer be this one. All its repository operations were reads.
   inequalities, the class quantification, Neumann's support lemma, first-order
   transfer, or novelty; the normal-form tests use a toy sparse model.
 
+## Maintained proof review
+
+The 22 September 2026 review followed the proof dependencies from strong
+substitution and local calculus through the recurrence, Gauss identities,
+all-scale tangent gaps, convexity threshold, flatness, phase domain, and scalar
+rigidity. The main classification and its consequences remain intact.
+The maintained text now proves the absolute-difference counterexample above,
+labels monomial versus exponent support, states the distinct-point condition
+in the abstract tangent-gap theorem, and distinguishes surreal-valued Taylor
+coefficients from ordinary real constants. Finite-argument agreement includes
+the recurrence-based prescription at positive infinitesimals, where Gamma has
+no Taylor series centered at zero.
+
+The restricted-analytic transfer import was checked against
+[Costin–Ehrlich v5, Proposition 93](https://arxiv.org/html/2208.14331v5), which
+records the `No(ε)` result of van den Dries–Ehrlich, Proposition 4.7.
+The classical Binet and signed remainder inputs match
+[DLMF 5.9.10](https://dlmf.nist.gov/5.9.E10) and
+[DLMF 5.11(ii)](https://dlmf.nist.gov/5.11.ii).
+These source checks do not establish priority for the report's claims.
+Historical `code/` and `data/` files remain unchanged; build and rerun evidence
+below concerns the maintained article.
+
 ## Build
 
 A LaTeX distribution with `latexmk` and the packages named in the preamble. No
@@ -150,9 +183,11 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 
 Without `latexmk`, run `pdflatex -interaction=nonstopmode -halt-on-error
 article.tex` until cross-references stabilize — normally three passes. Last
-verified build: exit 0, **29 pages**, no LaTeX warnings, no undefined
-references, zero overfull or underfull boxes. That matches the 29 pages and
-empty warning list recorded in `data/build-quality.json`.
+verified build: three passes, exit 0, **29 pages**, no LaTeX warnings, no
+undefined references, zero overfull or underfull boxes. Baseline and revised
+builds were checked in temporary directories and changed pages were rendered
+and inspected. The preserved `data/build-quality.json` describes the original
+29-page build, not the current review.
 
 ## Rerun the checks — run them on a copy
 
@@ -178,12 +213,12 @@ python code/verify.py --output /tmp/verification-rerun.json
 
 The default is resolved relative to the *current working directory*, so
 running from elsewhere writes a stray `data/verification.json` there instead.
-Note also that the Makefile ships as `code/makefile-Makefile` and its paths
-assume the package root, so it cannot be used as-is without renaming and
-moving it. Nothing else in the package writes any file.
+The archived Makefile ships as `code/makefile-Makefile`; `make -f` can select
+it from the package root, but its `check` target still overwrites the original
+JSON. Use the explicit redirected command above to preserve that record.
 
 The script exits 0 only when every check passes and prints its count. Rerun
-here: `130/130 checks passed.`, exit 0, on Python 3.14.4 with SymPy 1.14.0,
+here: `130/130 checks passed.`, exit 0, on Python 3.13.14 with SymPy 1.14.0,
 reproducing the counts in `data/verification.json` (recorded on Python 3.13.5).
 
 The 130 checks cover the first six Stirling coefficients `b_j = B_2j/(2j(2j−1))`

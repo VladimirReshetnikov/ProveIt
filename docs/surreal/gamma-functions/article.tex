@@ -203,7 +203,7 @@ For the family \eqref{eq:gauge-intro}, the following statements hold.
 $m a(m)\in\Ocal$ for every positive infinite monomial $m$. Under this
 condition $L_a$ is strictly convex.
 \item For every $a$, independently of the convexity condition,
-$\Gamma_a$ agrees with the finite Taylor extension of the real Gamma function,
+$\Gamma_a$ agrees with $\Gamma_0$ at every positive finite argument,
 satisfies $\Gamma_a(1)=1$ and $\Gamma_a(x+1)=x\Gamma_a(x)$, and obeys
 \begin{equation}\label{eq:gauss-intro}
  \Gamma_a(nx)=(2\pi)^{(1-n)/2}n^{nx-1/2}
@@ -236,7 +236,8 @@ For each real $\lambda$, set
 \end{equation}
 The resulting functions $\Gamma_\lambda$ are pairwise distinct and satisfy
 all the properties of \cref{thm:main}, including strict log-convexity and
-flatness to every algebraic order. At $x=\omega$,
+flatness of their logarithmic and relative differences to every algebraic
+order. At $x=\omega$,
 \begin{equation}\label{eq:omega-value}
  \log\Gamma_\lambda(\omega)-\log\Gamma_0(\omega)
  =\lambda\omega e^{-\omega}.
@@ -295,7 +296,11 @@ operands and the countably many series used in it, can be carried out in a
 set-sized Hahn workspace. Such a workspace need not be invariant under every
 operation discussed in the paper. When restricted analytic transfer is used,
 one may instead choose an adequately large $\No(\varepsilon)$ with
-$\varepsilon$ an ordinal epsilon-number, as in \cite{vdDE}.
+$\varepsilon$ an ordinal epsilon-number. Here $\No(\varepsilon)$ consists
+of the numbers of birthday less than $\varepsilon$; equipped with the
+Taylor extensions of restricted analytic functions and the surreal
+exponential, it is an elementary extension of the corresponding real
+structure \cite[Prop.~4.7]{vdDE}; see also \cite[Prop.~93]{CE}.
 The proofs do not regard a proper class as an ordinary topological space in
 ZFC, and do not invoke a proper-class sum.
 
@@ -306,7 +311,12 @@ The standard normal-form background is due to Conway and Gonshor
  x=\sum_{\alpha\in S}r_\alpha\omega^\alpha,
  \qquad r_\alpha\in\R\setminus\{0\},
 \end{equation}
-where $S$ is a reverse well-ordered set of surreal exponents. We write
+where $S$ is a reverse well-ordered set of surreal exponents. We use
+$\supp(x)=\{\omega^\alpha:\alpha\in S\}$ for the \emph{monomial}
+support, with $\supp(0)=\varnothing$; $S$ itself is the exponent support.
+In increasing-exponent formal Hahn notation $t^\gamma:=\omega^{-\gamma}$,
+the term $\omega^\alpha$ has exponent $-\alpha$. This is monomial notation,
+not exponentiation by a varying surreal exponent. We write
 \[
  \Ocal=\{x:\abs{x}<n\text{ for some }n\in\N_{>0}\},\qquad
  \mi=\{x:\abs{x}<1/n\text{ for all }n\in\N_{>0}\}.
@@ -367,8 +377,10 @@ radius of convergence of the real coefficient sequence is required.
 In particular, factorially growing Bernoulli coefficients cause no obstacle
 to evaluating the Stirling series at $x^{-1}$ for positive infinite $x$.
 This fact does \emph{not} turn its ordinary partial sums into a convergent
-sequence in the fine surreal order topology. Throughout the paper a displayed
-infinite sum has the strong, coefficientwise meaning just specified.
+sequence in the fine surreal order topology. Series evaluated at surreal or
+surcomplex infinitesimals below have this strong, coefficientwise meaning.
+Ordinary real or complex analytic series and formal series in indeterminates
+are identified separately where they are used.
 
 \subsection{Fine coordinate derivatives versus a scalar derivation}
 A fine derivative is the usual epsilon--delta derivative with surreal
@@ -988,6 +1000,28 @@ Parts (i)--(iii) of \cref{thm:main} follow from
 \cref{thm:sufficiency,thm:necessity,prop:gauge-invariance}, and part (iv)
 follows from \cref{prop:flat-equivalence}. This completes its proof.
 
+\begin{warning}[Relative flatness does not bound an absolute Gamma difference]
+\label{warn:absolute-difference}
+The flat quantities are $L_a-L_0$ and $\Gamma_a/\Gamma_0-1$.
+Multiplication by $\Gamma_0$ need not preserve flatness. For example, with
+$a_1(m)=e^{-m}$, put $h=\omega e^{-\omega}$. Then
+\[
+ \Delta:=\Gamma_1(\omega)-\Gamma_0(\omega)
+ =\Gamma_0(\omega)(e^h-1)
+ \sim\Gamma_0(\omega)\omega e^{-\omega}>0.
+\]
+Since $(e^h-1)/h=1+\eta$ for an infinitesimal $\eta$, taking logarithms gives
+\[
+ \log\Delta
+ =\left(\omega+\frac12\right)\log\omega-2\omega+c+R(\omega)
+   +\log(1+\eta)
+ \sim\omega\log\omega.
+\]
+Thus $\log\Delta>N\log\omega$, and hence $\Delta>\omega^N$, for every
+ordinary $N\in\N$. The absolute difference can therefore be enormous
+despite agreement to every relative algebraic order.
+\end{warning}
+
 \subsection{Explicit families with arbitrarily many parameters}
 \begin{proof}[Proof of \cref{cor:headline}]
 For every positive infinite $m$ and ordinary $N$,
@@ -1276,7 +1310,8 @@ Finally set
 \begin{equation}\label{eq:complex-gauge}
  \Lt_a(x+iy)=\Lt_0(x+iy)+h_a(x).
 \end{equation}
-The gauge is real-valued even though the function's domain is surcomplex.
+The gauge takes values in $\No\subset\SC$, so its imaginary part is zero;
+its values need not lie in the ordinary real field $\R$.
 
 \begin{theorem}[Surcomplex logarithmic invariance]\label{thm:complex-log}
 For every assignment $a$, $\Lt_a$ is finely holomorphic on $\tube$ and
@@ -1311,7 +1346,7 @@ formula \eqref{eq:complex-small}.
 For infinite real part, the formal proofs of
 \cref{lem:formal-shift,prop:gauss0} evaluate at $z$ just as at $x$;
 \eqref{eq:log-infinite-complex} ensures consistent logarithmic branches,
-in particular $\Log(nz)=\log n+\Log z$. The real gauge cancels because
+in particular $\Log(nz)=\log n+\Log z$. The gauge cancels because
 $h_a(x+1)=h_a(x)$ and
 $\sum_{k=0}^{n-1}h_a(x+k/n)=h_a(nx)$.
 \end{proof}
@@ -1332,12 +1367,12 @@ More precisely, for $y\ne0$,
  =\log x-\frac1{2x}+O(x^{-2})+O(y^2x^{-2}).
 \end{equation}
 Consequently $\Imn\Lt_a(x+iy)$ is finite if and only if $y\log x$ is
-finite, for every real-valued gauge \eqref{eq:complex-gauge}.
+finite, for every $\No$-valued gauge \eqref{eq:complex-gauge}.
 \end{lemma}
 
 \begin{proof}
 Re-expand \eqref{eq:complex-infinite} around $x$ in the ratio $iy/x$.
-All coefficients at a real-surreal $x$ are real, and the imaginary part
+All Taylor coefficients at $x\in\No_{>0}$ lie in $\No$, and the imaginary part
 is the odd Taylor portion:
 \[
  \Imn\Lt_0(x+iy)
@@ -1383,7 +1418,8 @@ It extends $\Gamma_a$ and satisfies
 At finite $z$ with nonzero standard part, the imaginary part of $\Lt_0(z)$
 is a real constant plus an infinitesimal. At infinitesimal $z$, formula
 \eqref{eq:complex-small} has finite imaginary part because $\operatorname{Arg}z$
-is finite. The real gauge changes none of this. At infinite real part,
+is finite. The gauge has zero imaginary part and changes none of this.
+At infinite real part,
 \cref{lem:phase} gives exactly the condition defining $\Omega$.
 
 To see openness at an infinite $x+iy\in\Omega$, restrict a perturbation
@@ -1569,7 +1605,7 @@ positive tangent gaps at distinct arguments. Suppose further that:
 \item $D_F(y,x)$ is positive infinite whenever exactly one argument is
 infinite, or when both are infinite and $y/x\not\sim1$ (including
 infinite or infinitesimal ratios);
-\item if $x,y$ are positive infinite and $y/x\sim1$, then
+\item if $x\ne y$ are positive infinite and $y/x\sim1$, then
 \[
  D_F(y,x)\sim\kappa\frac{(y-x)^2}{x}
 \]
@@ -1602,9 +1638,9 @@ surreal calculus. The abstract theorem states precisely what must be checked.
 \section{Provenance, limitations, and further questions}\label{sec:provenance}
 
 \subsection{Repository overlap audit}
-The repository inspection used the tree with observed commit
+The original repository inspection used the tree with observed commit
 \begin{center}\small\commit\end{center}
-and the documentation catalogue \cite{Repo}. The catalogue lists eighteen
+and the documentation catalogue \cite{Repo}. That catalogue listed eighteen
 research packages, including surreal construction and birthday questions,
 surcomplex local and global analysis, polynomial algebra, trigonometry,
 differential equations, rank-one analytic geometry, and spectral theory.
@@ -1613,7 +1649,11 @@ its scalar-derivation and finite-phase results. This was a targeted catalogue
 and relevant-source inspection, not a line-by-line audit of every archived
 manuscript.
 
-No Gamma-specific research package was identified in that catalogue.
+No other Gamma-specific research package was identified in that catalogue.
+This is a historical account of that targeted inspection, not a current
+exhaustive non-overlap claim. The maintained collection has since grown;
+the original machine-readable audit in \texttt{data/source-audit.json}
+is retained as a record of the earlier inspection.
 The present contribution is therefore organized around Gamma uniqueness and
 its sharp global convexity margin, rather than reproducing the repository's
 existing general local-constancy, trigonometry, or differential-equation
@@ -1741,15 +1781,24 @@ $\pp$ and $M$. They also check the displayed derivative mismatch
 \eqref{eq:BM-defect}. The normal-form tests are finite algebraic examples,
 not a general implementation of the surreal field or its exponential.
 
-The following commands rebuild the article and reproduce the checks from the
-package directory:
+The following commands reproduce the checks and build in temporary output
+directories from the package directory, preserving the recorded evidence:
 \begin{verbatim}
-python -m pip install sympy
-python code/verify.py --output data/verification.json
-latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+python -m pip install -r data/requirements.txt
+python code/verify.py --output /tmp/gamma-verification-rerun.json
+mkdir -p /tmp/gamma-article-build
+latexmk -pdf -interaction=nonstopmode -halt-on-error \
+  -outdir=/tmp/gamma-article-build article.tex
 \end{verbatim}
-The supplied \texttt{Makefile} runs the same operations. The LaTeX source has
-an internal bibliography and no external graphics or custom font files.
+Without \texttt{latexmk}, run \texttt{pdflatex} three times with
+\texttt{-interaction=nonstopmode}, \texttt{-halt-on-error}, and
+\path|-output-directory=/tmp/gamma-article-build|.
+
+\Needspace{4\baselineskip}
+The archived build helper is \texttt{code/makefile-Makefile}; its check target overwrites the historical
+JSON record, so use the explicit temporary output path above for reruns.
+The LaTeX source has an internal bibliography and no external graphics or
+custom font files.
 
 \subsection{A transparent recurrence calculation}
 With $t=X^{-1}$ and $R_J(t)=\sum_{j=1}^Jb_jt^{2j-1}$, the formal recurrence

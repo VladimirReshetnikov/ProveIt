@@ -25,8 +25,8 @@ Apache license are included in the repository.
 
 ## Formalization
 
-The [source inventory](docs/FORMALIZATION.md) covers twenty-five research reports
-and their preserved source manuscripts. The
+The [source inventory](docs/FORMALIZATION.md) covers twenty-six research reports
+and the source manuscripts preserved in Git history. The
 [coverage and dependency ledger](docs/FORMALIZATION.md) records their statements,
 the proposed Layer A–E implementation order, and the exact scope of each
 implemented result.
@@ -315,7 +315,7 @@ standard part preserves the linear factorization and root multiplicities.
 The surreal field is not algebraically closed, and no linear order is
 compatible with surcomplex multiplication.
 Real closedness of the actual sign field is now proved, and small strong
-real sums are constructed through canonical normal forms.
+real and complex sums are constructed through canonical normal forms.
 The bridge now has an explicit formal carrier of small reverse-well-ordered
 supports, reusing the pinned upstream ordinal truncation APIs. Recursion on
 support length constructs a canonical actual surreal candidate: the simplest
@@ -349,13 +349,49 @@ factorization, and equality of root multiplicity count with degree.
 The real Hahn embedding preserves valuation and leading coefficient for
 arbitrary supports. Finite values have nonnegative Hahn order, infinitesimal
 values have positive order, and standard part extracts the zero coefficient.
-The complex embedding also preserves valuation, finiteness, infinitesimality,
-and standard part. Both embeddings commute with exponent-workspace enlargement.
-Actual strong real sums use the two native Hahn summability conditions:
+The complex embedding also preserves valuation, leading coefficient,
+finiteness, infinitesimality, and standard part. Its leading-term and modulus
+decompositions retain the native coefficient and exponent. Every small actual
+complex family lies in a common small complex Hahn subfield. Both embeddings
+commute with exponent-workspace enlargement.
+Actual strong real and complex sums use the two native Hahn summability conditions:
 well-ordered joint support and finite coefficient fibers. Small index types
 give small sum support, and workspace evaluation commutes with these sums.
+Strong sums respect addition, negation, jointly summable products, and arbitrary
+fixed scalars. Small real and complex families can be reindexed and regrouped
+along any index map, with Fubini for jointly summable double families. Strong
+sums agree with finite field sums. Constant families are strongly summable exactly when finitely many
+are nonzero, so the ordinary geometric constant family is not a strong sum.
+Every real or complex formal power series evaluates at actual infinitesimals,
+including zero, with no coefficient-growth restriction. Evaluation is a ring
+homomorphism, equals the displayed strong sum, preserves the constant standard
+part, and commutes with formal composition with zero inner constant term.
+These results also hold for arbitrary formal series in finitely many actual
+infinitesimal variables, including zero inputs and an empty variable type.
+Infinitesimal geometric strong sums equal `(1 - x)⁻¹`, with exact finite
+remainders and valuations. For nonzero inputs their partial sums have no
+limit in the fine topology. At `x = t`, the remainder exceeds the named
+radius `t^ω` for every finite partial sum.
+Actual infinitesimal exponentials and logarithms are mutually inverse,
+respect their group laws, and commute with conjugation. The logarithm of
+a modulus-one element near one has zero real part. Ordinary real and complex
+binomial exponents give unique roots near one; the real half-power agrees
+with the constructed square root.
+Formal-variable images under homomorphisms into ordered fields must be
+infinitesimal. Every actual surreal infinitesimal occurs as such an image,
+and actual real or complex evaluation is injective exactly at nonzero inputs.
+Its valuation is the first nonzero formal degree times the input valuation,
+with explicit leading coefficient and growth exponent. Evaluation preserves
+source-summable families and their small strong sums; coefficient fixing,
+strong additivity and the variable image uniquely determine it.
+The actual finite exponential maps onto the finite units with exact kernel
+`2πiℤ`. Every nonzero surcomplex has a finite-angle polar representation,
+and two finite angles give the same phase exactly modulo ordinary `2πℤ`.
+Each has a unique principal angle in `(-π, π]`, with angle `π` for every
+negative real input, including infinite and infinitesimal scales.
 The approximation inequalities alone never give uniqueness: a sufficiently
-small positive monomial produces another solution. Complex strong sums,
-admissible Taylor evaluation, and universe coherence remain separate obligations.
+small positive monomial produces another solution. Differentiation,
+recentered analytic Taylor lifting, and universe coherence
+remain separate obligations.
 A successful build proves only the imported Lean
 statements, not coverage of all the source documents.

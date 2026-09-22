@@ -109,8 +109,9 @@ value- and side-preserving spanning subgraph; and the canonical form is the
 unique edge-minimizer. On the sparse side, every finite-birthday surreal value
 has representations of arbitrarily large girth, obtained here by two independent
 constructions: a spaced-spine construction with exact size, rank, and cycle-rank
-formulas, and a tree-and-spine construction whose output is additionally planar
-with maximum degree at most three. For the single value $1/2$ the exact
+formulas, and a tree-and-spine construction with integer-valued markers. Both
+can be made planar with maximum degree at most three. For the single value
+$1/2$ the exact
 girth--size tradeoff is determined: the minimum number of vertices at girth at
 least $g$ is $3$, $5$, and $g$ for $g=3$, $g=4$, and $g\geq5$, and every cycle
 length except four is realized exactly. Consequently the values whose canonical
@@ -613,10 +614,10 @@ values:
  \bigl(\forall Y^{R}:\ \neg(Y^{R}\leq X)\bigr).
 \end{equation}
 The accompanying checker implements \eqref{eq:comparison} using only option
-identifiers, never cached rationals. Applied to the witnesses and to
-$\can(1/2)$ it verifies both $F\leq\can(1/2)$ and $\can(1/2)\leq F$, both
-$G\leq\can(1/2)$ and $\can(1/2)\leq G$, and the full comparison table of the six
-forms involved against exact rational ordering. This is a structurally
+identifiers, never cached rationals. The bundled \code{verify\_sparse.py} suite
+applies it to $G$ and $\can(1/2)$: it verifies both $G\leq\can(1/2)$ and
+$\can(1/2)\leq G$, and checks all $36$ ordered comparisons among their six
+distinct subforms against exact rational ordering. This is a structurally
 different check from the second cut evaluator of \cref{sec:verification}, which
 re-derives values but still works with numbers; \eqref{eq:comparison} never
 computes a value at all. We use \eqref{eq:comparison} again as a proof tool in
@@ -702,7 +703,7 @@ return to the transfinite case in \cref{sec:transfinite}.
 
 \subsection{Finite prefixes and the canonical dependency graph}
 
-For a finite value $x$, list its sign-prefix values by length:
+For a finite-birthday value $x$, list its sign-prefix values by length:
 \begin{equation}
 \label{eq:prefix-list}
  p_0=0,p_1,\ldots,p_b=x,\qquad b=b(x).
@@ -755,7 +756,9 @@ for negative values. Zero is immediate.
 The identity \eqref{eq:birthday} alone, without the prefix-chain structure, also
 follows by induction on $k$ directly from \eqref{eq:dali}, and the second route
 is worth recording because it is what one needs when only the height of the
-canonical form matters. Let $x\in(n,n+1)$ with $\kappa(x)=k$. For $k=1$ the two
+canonical form matters. Integer values follow directly from their unary chains;
+negation preserves rank, so it remains to consider $x\in(n,n+1)$ with $n\geq0$
+and $\kappa(x)=k\geq1$. For $k=1$ the two
 canonical options are $\can(n)$ and $\can(n+1)$, of ranks $n$ and $n+1$, giving
 $\rk(\can(x))=n+2$. For $k>1$, exactly one of the two neighbouring grid points
 $(m\pm1)/2^k$ has reduced denominator exponent $k-1$, since exactly one of
@@ -1152,9 +1155,11 @@ this investigation had left open: must every form whose rank equals the intrinsi
 birthday of its value contain the canonical option graph of that value? The
 pentagons of \cref{sec:pentagon} do not settle it, because $\rk(F)=3$ and
 $\rk(G)=4$ while $b(1/2)=2$, so neither is rank-minimal. The form $Q$ is
-rank-minimal and still fails containment, under the unlabelled convention. The
-question remains genuinely open for other containment conventions, and the
-transfinite example of \cref{prop:omega-highgirth} shows that at a limit
+rank-minimal and still fails containment even under the unlabelled convention,
+so it also rules out any stronger subgraph requirement preserving roots,
+directions, option sides, or values. Questions about minors or restricted
+arithmetic presentations are different problems; see \cref{q:minors,q:arithmetic}.
+The transfinite example of \cref{prop:omega-highgirth} shows that at a limit
 birthday the analogous unrestricted statement can fail for a different reason.
 \end{remark}
 
@@ -1351,7 +1356,7 @@ itself.)
 
 \begin{theorem}[Exact extremal function for $1/2$]
 \label{thm:extremal}
-For $g\geq3$ let
+For an integer $g\geq3$ let
 \begin{equation}
  m_{1/2}(g)=\min\bigl\{\sizeV(A):\val(A)=\tfrac12,\ \gir(U(A))\geq g\bigr\}.
 \end{equation}
@@ -1390,7 +1395,7 @@ option graph need not represent an integer. The obstruction in
 \cref{lem:forest} is the absence of \emph{all} cycles, not of odd cycles.
 \end{remark}
 
-\section{Arbitrarily large girth for every finite value}
+\section{Arbitrarily large girth for every finite-birthday value}
 \label{sec:high-girth}
 
 The preceding construction treats one value. A uniform construction requires
@@ -1401,8 +1406,8 @@ unwanted identifications.
 
 \subsection{The occurrence tree and its zero leaves}
 
-Assume $x>0$. Recursively unfold $D(\can(x))$ by giving every occurrence of an
-option its own tree vertex, even when that form occurs elsewhere. This produces
+Let $x>0$ be dyadic. Recursively unfold $D(\can(x))$ by giving every occurrence
+of an option its own tree vertex, even when that form occurs elsewhere. This produces
 a finite rooted occurrence tree $T_x$. It is an auxiliary tree, not yet a form
 graph. Every leaf is an occurrence of $O$, and every internal vertex has
 positive numerical value. Write
@@ -1412,7 +1417,8 @@ positive numerical value. Write
 \end{equation}
 Every root-to-leaf path has length at most $b=b(x)$.
 
-Enumerate the leaves as $0,1,\ldots,L-1$ in any fixed order. Choose a positive
+Enumerate the leaves as $0,1,\ldots,L-1$ in any fixed order; a left-before-right
+traversal will also give planarity. Choose a positive
 integer $M$ satisfying
 \begin{equation}
 \label{eq:spacing}
@@ -1424,7 +1430,8 @@ left/right choices. Denote the resulting root form by $A_{x,M}$.
 
 \begin{theorem}[Spaced-spine construction]
 \label{thm:high-girth}
-For $x>0$ and $M$ satisfying \eqref{eq:spacing}, the form $A_{x,M}$ has value
+For a positive dyadic $x$ and a positive integer $M$ satisfying
+\eqref{eq:spacing}, the form $A_{x,M}$ has value
 $x$. Its dependency graph is exactly the occurrence tree with its distinct
 leaves attached to the corresponding distinct vertices of the zero spine.
 If $d_*$ is the depth in $T_x$ of the last leaf, then
@@ -1439,6 +1446,8 @@ The graph is acyclic if $L=1$; otherwise
 \label{eq:high-girth}
  \gir(U(A_{x,M}))\geq2M+2.
 \end{equation}
+In every leaf order the maximum degree is at most three. If the leaves are
+enumerated by a left-before-right traversal, the graph is also planar.
 \end{theorem}
 
 \begin{proof}
@@ -1486,6 +1495,16 @@ the spine. Two attachment points are at spine distance at least $2M$. The
 complementary part of the cycle has length at least two, since distinct leaves
 of the occurrence tree are not joined by a tree edge. This proves the girth
 bound. If there is only one leaf, there is only one attachment and no cycle.
+
+Every internal tree vertex has at most two children and one parent. Each
+attachment has one tree parent and at most two spine neighbours; all other
+spine vertices have degree at most two. Thus the maximum degree is at most
+three. For planarity, draw the ordered occurrence tree above a horizontal
+line with its leaves on the line in their traversal order. Such a drawing is
+obtained recursively by placing child subtrees in disjoint horizontal
+intervals; unary vertices cause no difficulty. Draw the spine between
+consecutive leaves below the line, inserting its intermediate vertices along
+each segment. The chosen leaf order prevents crossings.
 \end{proof}
 
 The rank-separation argument is the central technical precaution. It replaces
@@ -1614,23 +1633,23 @@ larger. Leaves are enumerated by a left-before-right recursive traversal.}
 \section{A planar, degree-three construction: tree and spine}
 \label{sec:sparse}
 
-\cref{thm:high-girth} already gives arbitrarily large girth at every finite
-value, with exact vertex, edge, cycle-rank, and rank formulas. This section
-gives a second, independent route to large girth. It is not a variant of the
-first: it unfolds a different tree, attaches it to a different spine, and proves
-non-collapse by a different argument. What it buys is two graph properties the
-spaced-spine construction cannot deliver --- its output is \emph{planar} and has
-\emph{maximum degree at most three} --- at the price of losing the exact rank
-formula \eqref{eq:high-rank} and of a size bound in different parameters, neither
-bound implying the other.
+\cref{thm:high-girth} already gives arbitrarily large girth at every
+finite-birthday value, with exact vertex, edge, cycle-rank, and rank formulas.
+Its ordered-leaf version is planar and has maximum degree at most three. This
+section gives a second construction with those graph properties: it stops the
+canonical tree at integer leaves, attaches them to an integer-valued spine,
+and uses a different proof of non-collapse. Its spacing requirement depends
+only on the requested girth, whereas the first construction requires $2M>b(x)$.
+The resulting size and rank bounds are expressed in the integer leaf labels
+and the denominator exponent.
 
 The contrast between the two non-collapse proofs is the heart of the matter.
 \cref{thm:high-girth} separates rebuilt vertices by \emph{rank arithmetic}: the
 spacing condition $2M>b$ makes $\rk(v)=2Mt(v)+d(v,t(v))$ single out a dominant
-leaf. The construction below separates them by \emph{value parity} --- internal
+leaf. The construction below separates them by \emph{integrality} --- internal
 vertices are nonintegers, spine vertices are integers --- followed by a descent
-through a singleton-option template. Neither argument can be substituted for the
-other, and each is indispensable to its own construction: without it, the graph
+through a singleton-option template. Each proof must establish that distinct
+occurrences remain distinct forms: without that step, the graph
 argument would describe allocated objects rather than mathematical forms.
 
 \subsection{Unfolding the canonical cut down to integers}
@@ -1661,7 +1680,8 @@ by \cref{prop:fibonacci} or \cref{prop:fibonacci-alt}.
 
 \begin{lemma}[Separated integer markers]
 \label[lemma]{lem:markers}
-Given integers $n_1,\ldots,n_\ell$ and an integer $d\geq1$, there is a unary
+Given a nonempty finite list of integers $n_1,\ldots,n_\ell$ and an integer
+$d\geq1$, there is a unary
 chain of pairwise distinct forms
 \begin{equation}
  S_0=O,\quad S_1,\ldots,S_N,
@@ -1733,7 +1753,10 @@ markers are distinct by \cref{lem:markers}.
 
 Suppose two different internal occurrences became the same form. They would then
 have the same value, say $r$, and the unfolded canonical template below an
-occurrence labelled $r$ is determined by $r$ alone. Since each rebuilt left and
+occurrence labelled $r$ is determined by $r$ alone. These occurrences cannot
+be ancestors of one another, since the denominator exponent strictly decreases
+along internal edges. Their descendant subtrees are therefore disjoint.
+Since each rebuilt left and
 each rebuilt right option set is a singleton, equality of the two forms forces
 equality of their left children, then of their right children, and inductively of
 their corresponding descendants along every fixed left/right path in that
@@ -1818,9 +1841,9 @@ number of independent cycles. For a fixed $x$ both bounds are linear in the
 requested girth.
 
 These bounds are stated in $\ell$, $\mu$, and $d$, whereas \eqref{eq:high-V} and
-\eqref{eq:output-bound} are stated in $I$, $L$, $b(x)$, and $M$; neither implies
-the other, and the cycle rank $\ell-1$ here is the same quantity as $L-1$ there
-only because the two trees have the same leaf count. Neither construction is
+\eqref{eq:output-bound} are stated in $I$, $L$, $b(x)$, and $M$. The cycle rank
+$\ell-1$ here equals $L-1$ there: extending each integer leaf by its canonical
+unary chain to zero does not change the leaf count. Neither construction is
 claimed to be minimal. For the single value $1/2$ the cycle constructions of
 \cref{sec:odd} are far smaller, and \cref{thm:extremal} shows they are optimal.
 
@@ -2122,11 +2145,11 @@ belong in the record because they fail differently.
  $3{,}860$ forms encountered in the exhaustive closure.
 \item \emph{A recursive comparison oracle.} A separate implementation of
  \eqref{eq:comparison} decides the order relation using only option
- identifiers, with no cached rationals at all. It verifies $F\leq\can(1/2)$,
- $\can(1/2)\leq F$, $G\leq\can(1/2)$, $\can(1/2)\leq G$ and the complete
- comparison table of the six forms involved against exact rational ordering.
+ identifiers, with no cached rationals at all. The bundled suite verifies
+ $G\leq\can(1/2)$ and $\can(1/2)\leq G$, and checks all $36$ ordered
+ comparisons among their six distinct subforms against exact rational ordering.
  Unlike (i) it never computes a value, so it tests the order-theoretic content
- of the witnesses rather than the arithmetic kernel.
+ of this witness rather than the arithmetic kernel.
 \item \emph{A graph oracle.} Girth is computed by breadth-first search from
  every vertex of the undirected adjacency structure built from option
  identifiers, and subgraph containment by the exact injective backtracking
@@ -2192,11 +2215,11 @@ triangles sharing an edge. The eight triangle-free noninteger forms are the
 outcome of the narrower test, which asks only for the absence of a triangle.
 Filtering the sixteen certificates to those of noninteger value and girth at
 least four returns exactly those eight, and four of the eight have value $1/2$
-(the other four have value $-1/2$). So neither statistic implies the other:
-the first is about failure of containment, the second about a specific local
-pattern. Every noninteger canonical graph has a triangle by
-\cref{lem:canonical-triangle}, which is why each of the eight is also one of the
-sixteen.
+(the other four have value $-1/2$). Every triangle-free noninteger form fails
+canonical-subgraph containment, since every noninteger canonical graph has a
+triangle by \cref{lem:canonical-triangle}. The converse fails, as witnessed by
+the girth-three counterexamples above. Thus the eight forms satisfying the
+triangle-free condition form a proper subset of the sixteen containment failures.
 
 The absence of a triangle-free noninteger form at four vertices is an
 independent numerical confirmation of \cref{lem:quadrilateral}, and the four
@@ -2399,8 +2422,8 @@ two extremely small numerical forms, not by a transfinite pathology or a
 non-number game, and the exhaustive search shows those two are among exactly
 sixteen five-vertex witnesses. The stronger large-girth theorems show that no
 fixed finite cyclic graph can be forced inside every representation of a fixed
-finite surreal value, and that the sparse representations can additionally be
-taken planar of maximum degree three. For the single value $1/2$ the cost of
+finite-birthday surreal value, and that the sparse representations can be
+taken planar with maximum degree at most three. For the single value $1/2$ the cost of
 girth is known exactly. At the same time, the prefix theorem and the exact
 minima reveal substantial rigidity that ordinary subgraph containment fails to
 capture.
@@ -2487,9 +2510,10 @@ this negatively at $x=1/4$, under the unlabelled convention, by a rank-minimal
 form whose graph has one triangle where the canonical diamond needs two. See
 \cref{rem:cross-height}. Second, the optimal girth cost at a fixed value:
 \cref{thm:extremal} determines it exactly for $x=1/2$, where the answer is $g$
-vertices for every $g\geq5$. See \cref{rem:cross-girth}. Both questions remain
-open in the generality in which they were originally posed --- for other
-containment conventions in the first case, and for other values in the second.
+vertices for every integer $g\geq5$. See \cref{rem:cross-girth}. The
+counterexample also defeats stronger subgraph conventions; minor containment
+and restricted presentations require separate analysis. The optimal girth
+cost remains open here for general dyadics.
 
 \subsection{Five questions left by this analysis}
 
@@ -2555,9 +2579,10 @@ forms in \eqref{eq:main-five} instead form a pentagon, and so, differently, do
 the five forms in \eqref{eq:second-five}. This gives a direct, fully finite
 negative answer to the selected published question, twice over. The answer can
 be strengthened in two complementary directions. On the flexible side,
-representations of every finite value can avoid all cycles below an arbitrary
-length, and can be taken planar with maximum degree three; at $1/2$ the exact
-price of girth $g$ is $g$ vertices. On the rigid side, canonical prefix values
+representations of every finite-birthday value can avoid all cycles below an
+arbitrary length, and can be taken planar with maximum degree at most three;
+at $1/2$ the exact price of girth at least $g$ is $g$ vertices for integers
+$g\geq5$. On the rigid side, canonical prefix values
 cannot disappear, and the least vertex count, edge count, and cycle rank are
 exactly calculable from the birthday and denominator.
 

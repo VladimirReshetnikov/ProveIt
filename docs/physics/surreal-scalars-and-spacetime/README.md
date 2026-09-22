@@ -27,20 +27,22 @@ spacetime regular.
 numbers resolve the black-hole singularity.** Four independent facts, each
 re-derived from the metric for this merge rather than copied from a source:
 
-* The Kretschmann scalar of Schwarzschild is exactly `K = 48 M²/r⁶`.
-* Under a formal radial change `r = s^q·w(s)` with `w(0) ≠ 0` the pole order
-  becomes exactly `6q` with leading coefficient `48 M²` **unchanged** —
-  checked for `q = 1, 2, 3`. *No radial reparametrization removes the
-  blow-up.*
+* The Kretschmann scalar of Schwarzschild is exactly `K = 48 m²/r⁶`.
+* For `m ≠ 0`, under a formal radial change `r = s^q·w(s)` with integer
+  `q ≥ 1` and `w ∈ R[[s]]`, `w(0) ≠ 0`, the pole order becomes exactly
+  `6q` and the leading coefficient becomes `48 m²·w(0)^(-6)`.
+  The recorded tests use `w(s) = 1+s` and `q = 1, 2, 3`; their coefficient
+  stays `48 m²` because `w(0) = 1`. The general unit rescales the coefficient
+  but never removes the pole. For example, `w = 2` gives `3 m²/4`.
 * The proper time from rest at `R` to `r = 0` is `(π/2)·√(R³/2M)`, finite for
   finite `R, M`; and for **infinitesimal** `R` it is *infinitesimal*, hence
   still finite (`v(τ) = (3/2)·v(R) > 0`). **The infall terminates either way.**
 * The tidal component `R^r_trt = 2M(2M − r)/r⁴` diverges as `r → 0` and is
   unlimited at infinitesimal `r`.
 
-And the exact identity `r⁶K = 48m²` has **no** field-valued solution at `r = 0`
-in *any* characteristic-zero field, not merely in `R`. Evaluating at a nonzero
-infinitesimal radius names another point of a punctured domain. It supplies no
+For `m ≠ 0`, the exact identity `r⁶K = 48m²` has **no** field-valued solution
+at `r = 0` in *any* characteristic-zero field, not merely in `R`. Evaluating
+at a nonzero infinitesimal radius names another point of a punctured domain. It supplies no
 missing endpoint, no continuation law and no observable rule.
 
 What *is* true, and is worth a 79-page report: the surreal/Hahn language

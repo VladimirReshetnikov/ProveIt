@@ -27,9 +27,24 @@ Chapter 8, Conjecture 3 of Berenbeim (2022). The original paper ALREADY prints
 the piecewise primitive x-B(x). The additional observation here is its
 explicit genetic realization and the deductions from that realization.
 
+## Exposition update: 22 September 2026
+
+The general construction now proves a uniform neighborhood bound. For a fixed
+nonempty set `A` with no maximum, form the set of positive differences
+`Δ_A = {b-a : a,b ∈ A, a<b}` and choose `δ_A = {0 | Δ_A}`. Then the same
+`δ_A > 0` makes both indicators invariant under every translation of magnitude
+less than `δ_A`, at every input. The proof uses the size restriction on `A`
+and needs no simultaneous choice of larger elements.
+
+The topology discussion also explicitly distinguishes local order-field
+openness from the original paper's restricted set-union convention. Local
+constancy makes `B` continuous in the former; its positive-infinite preimage
+is not open in the latter. These conventions must not be identified with one
+another when comparing reports. See the [shared notation guide](../../NOTATION.md).
+
 ## Contents
 
-- `article.pdf`, `article.tex`: 16-page article, complete proofs, general
+- `article.pdf`, `article.tex`: 17-page article, complete proofs, general
   set-generated gap indicators, order automorphisms, ordinal-indexed
   independent families, topology and hyperreal distinctions, definition audit.
 - `short_proof.pdf`, `short_proof.tex`: two-page proof of the core results.

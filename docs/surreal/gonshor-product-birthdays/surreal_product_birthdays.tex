@@ -209,6 +209,11 @@ historical priority is made.
 \section{Conventions and elementary ordinal facts}
 
 \subsection{Two different kinds of ordinal arithmetic}
+We use \(\N=\{0,1,2,\ldots\}\). A finite birthday means a finite
+ordinal sign length, not merely a surreal value bounded by an integer.
+Every element of \(\A\) has finite magnitude; finite birthday
+characterizes its dyadic real constants.
+
 Ordinary ordinal addition and multiplication are written \(\alpha+\beta\)
 and \(\alpha\cdot\beta\). They describe ordered concatenation and its
 iteration. The operations \(\ns\) and \(\np\) are natural sum and
@@ -328,6 +333,10 @@ is automatically well ordered. Its increasing enumeration makes
 \(-\alpha\) a decreasing sequence, so every sum in
 \eqref{eq:ring-intro} is a legitimate normal form. No analytic convergence
 condition or boundedness condition on the real coefficients is imposed.
+In the common Hahn notation one can write \(t^\alpha=\omega^{-\alpha}\).
+Here the index addition in \(t^\alpha t^\beta=t^{\alpha\ns\beta}\)
+is natural sum: the ordinal indices form a monoid, rather than the whole
+additive exponent group of a Hahn field.
 
 \begin{proposition}\label[proposition]{prop:closure}
 The class \(\A\) is a commutative subring of \(\No\). If
@@ -433,7 +442,10 @@ is \([\delta_i,\alpha_i)\). Let its order type be \(\eta_i\).
 
 When \(i\) is a successor and \(c_{i-1}\notin\D\), delete the first
 point of this interval and call the resulting order type \(\eta_i'\).
-The interval is nonempty in that case. In all other cases put
+The interval is nonempty in that case: \(\delta_i=\alpha_{i-1}<\alpha_i\),
+and the extra deleted position is exactly \(\alpha_{i-1}\). There is
+no preceding coefficient at a nonzero limit position, so only shared
+minus signs are deleted there. In all other cases put
 \(\eta_i'=\eta_i\). The specialized sign rule gives
 \begin{equation}\label{eq:block-formula}
  B_i=1+\omega\cdot\eta_i'+\tau(c_i),
@@ -555,7 +567,11 @@ has length \(\sup_{j<i}P_j\). The bounds
  \sup_{j<i}P_j=\omega\cdot\delta.
 \end{equation}
 Indeed the preceding indices have no maximum and are cofinal in
-\(\delta\), so both bounding suprema are \(\omega\cdot\delta\).
+\(\delta\). For each \(j<i\), also \(j+1<i\), and strict increase gives
+\(\alpha_j+1\leq\alpha_{j+1}\leq\delta\). Hence
+\(\sup_{j<i}(\alpha_j+1)=\sup_{j<i}\alpha_j=\delta\), and both
+bounding suprema are \(\omega\cdot\delta\). This argument uses the
+whole cofinal support and does not require it to be countable.
 
 There is no additional successor deletion at a limit position. If
 \(\delta<\alpha_i\), the retained interval is nonempty. The same
@@ -608,7 +624,8 @@ Every surviving product index is \(a\ns b\) with \(a\leq\alpha\)
 and \(b\leq\beta\). Monotonicity gives
 \(a\ns b\leq\alpha\ns\beta\), so
 \(\sup S(xy)\leq\alpha\ns\beta\). Now apply
-\eqref{eq:support-sandwich}. Coefficient cancellation only removes
+\eqref{eq:support-sandwich}, which applies because the nonzero factors
+have nonzero product in \(\No\). Coefficient cancellation only removes
 indices and cannot spoil this upper bound.
 
 For sharpness choose
@@ -722,7 +739,9 @@ Finally \(m=\bd(q)\) is a positive integer, and \(m\geq2\) unless
 \(q=\pm1\). Natural multiplication by \(m\) preserves the leading
 exponent of \(\bd(x)\) and multiplies its leading coefficient by \(m\).
 The preceding leading-data comparison makes \eqref{eq:scalar-strict}
-strict.
+strict: a smaller leading exponent already gives a smaller ordinal; at
+equal leading exponent, the new leading coefficient is at most the old
+one and therefore strictly below its multiple by \(m\geq2\).
 \end{proof}
 
 \begin{remark}
@@ -786,7 +805,8 @@ needed. This explains why equality is so rare within the ring.
 \section{A four-coefficient formula for finite supports}\label{sec:four}
 
 Suppose \(x,y\in\A\setminus\{0\}\) have finite index supports, with
-maxima \(\alpha,\beta\). Put
+maxima \(\alpha,\beta\). These maxima pick out the last normal-form
+terms. Put
 \[
  \gamma=\alpha\ns\beta,\qquad p=c_\alpha d_\beta.
 \]
@@ -820,19 +840,31 @@ coefficient of each factor is needed: four coefficient lookups in total. The ful
 Strict monotonicity of natural sum shows that any pair of indices other
 than \((\alpha,\beta)\) has sum strictly less than \(\gamma\).
 Thus the product has maximum index exactly \(\gamma\), with nonzero
-coefficient \(p\).
+coefficient \(p\): there is only one contribution there, so no
+cancellation can remove that endpoint.
 
 If \(\gamma\) is a successor, a decomposition
 \(a\ns b=\gamma^-\), with \(a\leq\alpha\), \(b\leq\beta\), can
 only be \((\alpha^-,\beta)\) or \((\alpha,\beta^-)\), when defined.
-To see this, compare the aligned Cantor coefficients. The target differs
-from \(\gamma\) only by subtracting one from the constant coefficient.
-A first decrease at a positive Cantor exponent in either input cannot
-be offset by the other input, which is also bounded by its corresponding
-maximum. Thus all positive-exponent coefficients must be unchanged, and
-exactly one constant coefficient decreases by one. The coefficient at
+To see this, align the Cantor forms of \(a,b,\alpha,\beta\), inserting
+zero coefficients as necessary. The target \(\gamma^-\) differs from
+\(\gamma\) only by subtracting one from the constant coefficient.
+Suppose some positive-exponent coefficient of an input differs from that
+of its corresponding maximum, and choose the greatest exponent \(\xi>0\)
+where either input differs. Above \(\xi\) each input agrees with its
+maximum. The ordinal bounds \(a\leq\alpha\) and \(b\leq\beta\)
+therefore force both coefficients at \(\xi\) to be no larger, with at
+least one strictly smaller. Their sum cannot equal the coefficient of
+\(\gamma^-\) at \(\xi\), a contradiction. This first-difference
+argument is needed because ordinal order is lexicographic on Cantor
+coefficients.
+
+Thus all positive-exponent coefficients are unchanged. Each constant
+coefficient can only decrease, and their total decreases by exactly one.
+Exactly one input is its maximum's immediate predecessor and the other
+is unchanged. The coefficient at
 \(\gamma^-\) is consequently \(q\), including the possibility that
-it cancels to zero.
+it cancels to zero; zero is dyadic and gives no successor correction.
 
 The product support is finite, so it cannot accumulate at a positive
 last index. Its endpoint correction is therefore precisely the one in
@@ -844,10 +876,26 @@ The word ``four'' counts coefficient lookups, not bit operations.
 Ordinal-index arithmetic and exact coefficient multiplication still have
 costs, and locating a maximum in an unsorted input requires a scan.
 The claim is that a quadratic-size convolution can be avoided when only
-the birthday is requested. For infinite supports with a last limit index,
+the birthday is requested. For arbitrary real coefficients, the formula
+requires exact decisions about \(p\in\D\) and \(q\in\D\); it does not
+supply such decisions from computable-real names. The executable rational
+case decides dyadic status by inspecting reduced denominators. For infinite
+supports with a last limit index,
 the cofinal endpoint correction must also be considered; the proposition
 is deliberately restricted to finite supports.
 \end{remark}
+
+For example, with \(t=\omega^{-1}\), take
+\(x=\tfrac13+t\) and \(y=-\tfrac13+t\). Their top indices are both
+\(1\), their top coefficient product is \(p=1\), and their predecessor
+coefficient is \(q=\tfrac13-\tfrac13=0\). Thus
+\[
+ xy=-\tfrac19+t^2,\qquad \bd(xy)=\omega\cdot2.
+\]
+The non-dyadic constant of the product is not adjacent to its top index,
+so it creates no correction there. Replacing \(y\) by \(x\) instead
+gives \(q=2/3\) and \(\bd(x^2)=\omega\cdot2+1\). Only the sum of
+the predecessor contributions decides the correction.
 
 \section{Examples, cancellations, and transfinite endpoints}
 
@@ -1003,9 +1051,19 @@ ordered decompositions. Hence each coefficient of the geometric inverse
 is a finite sum over finitely many values of \(n\).
 
 All indices remain below \(\kappa\), by natural-sum closure.
-Coefficientwise multiplication is therefore legitimate, and the finite
-geometric cancellation at each coefficient shows
-\((1+v)\sum_{n\geq0}(-v)^n=1\). Thus the series is an inverse in
+Their union is a set of ordinals and hence well ordered, so the finite
+occurrence just proved makes this a strong Hahn sum. To verify the
+inverse identity at a fixed index \(\gamma\), take \(N=\wt(\gamma)\)
+and use the finite polynomial identity
+\[
+ (1+v)\sum_{n=0}^{N}(-v)^n=1-(-v)^{N+1}.
+\]
+The coefficient at \(\gamma\) of every power with exponent greater
+than \(N\) is zero. Consequently the infinite sum on the left has the
+same \(\gamma\)-coefficient as this finite calculation, and the
+remainder has zero coefficient there. This holds also at \(\gamma=0\),
+where \(N=0\) and \(v\) has zero constant coefficient. Thus
+\((1+v)\sum_{n\geq0}(-v)^n=1\), and the series is an inverse in
 \(\A_\kappa\). The constant-coefficient map onto \(\R\) has as kernel
 the stated ideal, and every element outside it is a unit. This proves
 that the ideal is maximal and unique.
@@ -1203,6 +1261,13 @@ Every support is a set. The natural-sum fiber count
 \eqref{eq:fiber-count} makes each convolution coefficient finite.
 For the geometric inverse, the finite Cantor weight bounds the number
 of factors that can contribute at a prescribed index.
+
+\paragraph{Finite endpoint cancellation.}
+With finite nonempty supports, the maximum product index has a unique
+contributing pair and cannot cancel. At its predecessor there can be two
+contributions; their actual sum determines dyadic status. The
+four-coefficient formula is a mathematical dependence statement for real
+inputs and an executable algorithm for the exact rational inputs in the code.
 
 \paragraph{Equality.}
 The cases ``both finite'', ``one finite'', and ``both infinite'' are

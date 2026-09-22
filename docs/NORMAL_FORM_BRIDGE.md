@@ -255,6 +255,14 @@ the actual standard part is exactly that coefficient.
 [`Surcomplex/HahnValuation.lean`](../Surreal/Surcomplex/HahnValuation.lean)
 uses the minimum of the two coordinate orders to prove the corresponding
 complex valuation, finiteness, infinitesimality and standard-part formulas.
+[`Surcomplex/HahnLeading.lean`](../Surreal/Surcomplex/HahnLeading.lean)
+also identifies every embedded complex monomial, leading coefficient and
+leading term. Scaling by the least exponent gives an order-zero series,
+so standard part recovers its native leading coefficient, including the
+separate zero case. The actual modulus has that coefficient's ordinary norm.
+[`Surcomplex/Workspace.lean`](../Surreal/Surcomplex/Workspace.lean)
+extends localization to every small complex family, with exact preimages
+and an isomorphism onto the resulting small actual subfield.
 
 ## Strong sums and exponent-workspace coherence
 
@@ -266,6 +274,30 @@ coefficientwise sum. Evaluation defines its actual strong sum; extracting
 the normal form recovers exactly the formal sum, coefficient by coefficient.
 Native Hahn workspace summable families remain strongly summable after
 actual evaluation, and evaluation commutes with their small strong sums.
+[`Surcomplex/StrongSummation.lean`](../Surreal/Surcomplex/StrongSummation.lean)
+combines the two canonical real normal forms. Complex joint support and
+finite coefficient incidence are equivalent to the respective coordinate
+conditions. Coordinatewise actual summation then agrees exactly with the
+native complex Hahn sum and commutes with workspace evaluation.
+
+The real and complex `StrongAlgebra` modules package canonical extraction
+as ring maps and reuse native summable-family addition, negation, product,
+and scalar multiplication. Their sum identities retain index smallness.
+[`SignSequenceStrongRegroup.lean`](../Surreal/Foundations/SignSequenceStrongRegroup.lean)
+restricts, reindexes and regroups a jointly summable family along arbitrary
+index maps. Every fiber sum is formed under a proved smallness bound.
+[`Surcomplex/StrongRegroup.lean`](../Surreal/Surcomplex/StrongRegroup.lean)
+supplies the corresponding complex statements and equality of the two
+projection-fiber sums of a jointly summable double family.
+[`Surcomplex/StrongFinite.lean`](../Surreal/Surcomplex/StrongFinite.lean)
+proves that every finite real or complex family is strongly summable and
+that its strong sum equals the existing finite field sum, including the
+empty family.
+[`Surcomplex/StrongConstants.lean`](../Surreal/Surcomplex/StrongConstants.lean)
+proves that ordinary real and complex constant families are strongly
+summable exactly when finitely many entries are nonzero, and computes their
+finite coefficient sum. Thus ordinary convergence of `2⁻ⁿ` does not supply
+a Hahn sum of those constants.
 
 [`SignSequenceHahnCoherence.lean`](../Surreal/Foundations/SignSequenceHahnCoherence.lean)
 and [`Surcomplex/HahnCoherence.lean`](../Surreal/Surcomplex/HahnCoherence.lean)
@@ -273,14 +305,108 @@ prove that embedding exponents into a larger small workspace and then
 evaluating agrees with evaluation along the composite exponent map.
 The identities hold for complete ring maps and arbitrary Hahn supports.
 
+## Actual univariate formal evaluation
+
+[`SignSequencePowerSeries.lean`](../Surreal/Foundations/SignSequencePowerSeries.lean)
+and [`Surcomplex/PowerSeries.lean`](../Surreal/Surcomplex/PowerSeries.lean)
+localize an actual infinitesimal argument in a small workspace and compose
+native admissible Hahn evaluation with its actual embedding. The resulting
+ring maps evaluate the variable and constants exactly; the displayed
+coefficient-times-power families are strongly summable and give their values.
+This intrinsic description proves agreement with every small workspace
+representation. Outputs are finite with the prescribed constant standard
+part, and formal composition is valid for inner series with zero constant
+term. Zero arguments are included. These are the univariate formal clauses
+of `a:cor:complexsub`; they do not prove holomorphic fixed-domain lifting.
+
+[`SignSequenceMvPowerSeries.lean`](../Surreal/Foundations/SignSequenceMvPowerSeries.lean)
+and [`Surcomplex/MvPowerSeries.lean`](../Surreal/Surcomplex/MvPowerSeries.lean)
+localize finitely many infinitesimals in a common workspace. Arbitrary
+formal coefficients give jointly strongly summable substituted monomials,
+whose strong sum is the resulting ring homomorphism. Constant standard
+parts and zero-constant multivariate composition are preserved. The
+construction includes empty variable types and zero arguments; formal
+differentiation and recentered analytic lifting remain separate.
+
+[`Surcomplex/GeometricSeries.lean`](../Surreal/Surcomplex/GeometricSeries.lean)
+specializes actual evaluation to the formal geometric series in both fields.
+Its strong sum is `(1 - x)⁻¹`; subtracting the first `N + 1` terms gives
+`x^(N + 1)/(1 - x)`, of valuation `(N + 1) • valuation x`. Zero is included
+in these identities. For any nonzero input the partial sums have no limit
+in the fine topology: small-sequence convergence would force eventual
+equality, contradicting their nonzero consecutive differences.
+
+[`Surcomplex/GeometricScale.lean`](../Surreal/Surcomplex/GeometricScale.lean)
+proves the named radius bound: at `x = tMonomial 1`, the error has valuation
+`N + 1` and its absolute value or modulus exceeds `tMonomial omega`.
+Thus the source’s explicit fine ball excludes every finite partial sum.
+
+[`SignSequenceExpLog.lean`](../Surreal/Foundations/SignSequenceExpLog.lean)
+and [`Surcomplex/ExpLog.lean`](../Surreal/Surcomplex/ExpLog.lean) evaluate
+ordinary formal exp/log as actual strong sums. Their inverse, addition,
+negation and logarithm-product identities include zero. In
+[`StrongConjugation.lean`](../Surreal/Surcomplex/StrongConjugation.lean),
+conjugation preserves all small actual strong sums and formal evaluation.
+[`ExpLogConjugation.lean`](../Surreal/Surcomplex/ExpLogConjugation.lean)
+then proves conjugation of exp/log and the purely imaginary logarithm of a
+modulus-one element near one.
+[`ExpLogEquiv.lean`](../Surreal/Surcomplex/ExpLogEquiv.lean) bundles these maps
+as actual group equivalences, completing `e:prop-infexp`.
+These constructions stay on the infinitesimal
+domain; they do not supply global exponentials or logarithms.
+
+[`SignSequenceBinomial.lean`](../Surreal/Foundations/SignSequenceBinomial.lean)
+and [`Surcomplex/Binomial.lean`](../Surreal/Surcomplex/Binomial.lean)
+supply actual ordinary-coefficient binomial strong sums, exponent addition,
+natural powers and reciprocal-integer roots. The root near one is unique
+among all actual candidates, by placing a pair in a common small workspace.
+Every real binomial value is positive, and the half-power agrees with the
+existing genetic nonnegative square root.
+
+[`Algebra/PowerSeriesHom.lean`](../Surreal/Algebra/PowerSeriesHom.lean)
+proves the kernel dichotomy and the necessary infinitesimal bound for formal
+variable images in ordered fields. Formal square roots of units provide
+the bound without continuity or strong additivity assumptions.
+[`PowerSeriesUnitRoots.lean`](../Surreal/Algebra/PowerSeriesUnitRoots.lean)
+also gives unique normalized square roots and unique two-sided inverses.
+[`Surcomplex/PowerSeriesHom.lean`](../Surreal/Surcomplex/PowerSeriesHom.lean)
+proves the actual rational and real-coefficient existence criteria,
+injectivity at nonzero infinitesimals, and the precise formal-order valuation
+formula. [PowerSeriesLeading.lean](../Surreal/Surcomplex/PowerSeriesLeading.lean)
+adds the explicit leading coefficient and growth exponent.
+
+[HahnSeries/StrongEvaluation.lean](../Surreal/HahnSeries/StrongEvaluation.lean)
+constructs a joint family indexed by source member and formal degree.
+[PowerSeriesSummation.lean](../Surreal/HahnSeries/PowerSeriesSummation.lean)
+identifies the source predicate and sum with native Hahn summation over natural
+exponents, including monomial reconstruction and equivalence reindexing.
+[Surcomplex/StrongEvaluation.lean](../Surreal/Surcomplex/StrongEvaluation.lean)
+transports preservation of these sums to both actual fields, with the small
+index bound on actual sums. [PowerSeriesStrongHom.lean](../Surreal/Surcomplex/PowerSeriesStrongHom.lean)
+proves uniqueness of a coefficient-fixing strongly additive map at its given
+infinitesimal argument. [SignSequencePowerSeriesAlgebra.lean](../Surreal/Foundations/SignSequencePowerSeriesAlgebra.lean)
+supplies the native real-algebra homomorphism alternative, completing all four
+clauses of the evaluation-at-omega theorem in this universe-indexed setting.
+
+[Surcomplex/FiniteExponential.lean](../Surreal/Surcomplex/FiniteExponential.lean)
+constructs the actual finite exponential from ordinary and infinitesimal
+parts. It maps onto the finite units and has exactly the ordinary `2πiℤ`
+kernel. [Surcomplex/Polar.lean](../Surreal/Surcomplex/Polar.lean) proves
+finite-angle polar existence for every actual nonzero surcomplex and exact
+ordinary-period ambiguity.
+[Surcomplex/PolarNormalization.lean](../Surreal/Surcomplex/PolarNormalization.lean)
+proves unique principal angles in the actual interval `(-π, π]`, including
+infinitesimal endpoint corrections, and identifies the angle of every negative
+real input as `π`. No exponential at infinite imaginary arguments is required.
+
 ## Remaining dependency order
 
-1. Extend strong summation to complex families and construct admissible
-   univariate and multivariate Taylor evaluation on actual numbers.
-2. Prove compatibility under universe lifts and the remaining complex
-   leading-data and analytic-operation correspondences.
+1. Prove the differentiation laws for actual formal evaluation, then
+   construct recentered analytic Taylor lifting.
+2. Prove compatibility under universe lifts and the remaining
+   analytic-operation correspondences.
 
 Existence, inverse extraction, real monomials, finite evaluation and field
-arithmetic are now proved. Small real strong sums and exponent-workspace
-coherence are also proved. The remaining clauses above require their own
+arithmetic are now proved. Small real and complex strong sums, finite-variable
+formal evaluation and exponent-workspace coherence are also proved. The remaining clauses above require their own
 constructions before the entire workspace theorem is covered.

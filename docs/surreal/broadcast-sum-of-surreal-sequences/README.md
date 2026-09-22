@@ -38,9 +38,28 @@ proofs, not proof-assistant-certified results. The finite tests are not proofs
 of the infinite statements. No claim of established priority is made, and no
 alternative weakly monotone summation theory is constructed or ruled out.
 
+## Proof review corrections
+
+The September 22, 2026 repository review makes the index-set hypotheses
+explicit. The finite-short-perturbation corollary compares a family with the
+constant family on the **same index set**. The constant-dyadic theorem applies
+to every infinite index set, and the cofinite leading-scale corollary requires
+that infinitude hypothesis. Without it, even the singleton `(1)` would
+incorrectly be assigned a value within a finite distance of omega.
+
+The rule now includes a limit-ordinal threshold example and a proof of the
+no-moves criterion. A position has no options for either player exactly when
+all coordinates are zero; normal play can end earlier when the current player
+has no move. Ordinal thresholds do not introduce turns at limit times. The
+termination discussion also gives actual alternating plays of unbounded
+finite length from `(omega, -omega)`.
+
+The code and recorded finite-test data are preserved. This proof review and PDF
+rebuild do not constitute a new run of those tests or a Lean formalization.
+
 ## Files
 
-- `article.pdf`: the 19-page article, including title page and contents.
+- `article.pdf`: the 20-page article, including title page and contents.
 - `article.tex`: complete editable LaTeX source.
 - `references.bib`: bibliography with source identifiers.
 - `article.bbl`: generated bibliography, retained for easy LaTeX-only viewing.
@@ -51,7 +70,8 @@ alternative weakly monotone summation theory is constructed or ruled out.
 - `verification/partial_sums.csv`: exact finite partial sums; infinite-value
   columns are explicitly labeled as theorem-derived.
 - `verification/proof_audit.md`: mathematical scope and proof-dependency audit.
-- `verification/document_check.json`: PDF build and page-layout checks.
+- `verification/document_check.json`: preserved original PDF build and layout
+  record; see the proof audit for validation of the revised PDF.
 
 No source papers or font files are redistributed.
 

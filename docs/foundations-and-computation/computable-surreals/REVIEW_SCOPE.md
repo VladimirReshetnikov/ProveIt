@@ -49,13 +49,19 @@ GitHub connector:
 
 The root README states that real closedness and the normal-form bridge to Hahn
 series remain formalization tasks. That is not an assertion that the classical
-mathematical theorems are open problems. No local Lean build, CI audit, or
-repository write is part of this package.
+mathematical theorems are open problems. That historical source review included
+no local Lean build, CI audit, or repository write.
 
 ## Tests and presentation
 
 The three original standard-library Python programs were preserved unchanged and
-rerun, together with the new reconciliation suite. Results are in `data/`.
-These are finite exact-rational tests only. The PDF was built with LaTeX and
-checked by rendering its pages; this is presentation verification, not a
-machine-checked mathematical proof.
+rerun, together with the new reconciliation suite. The September 22 rerun results are in `data/` relative to this report, with
+the runtime and UTC timestamp in `data/summary.json`. The geometric-cover
+regression was added for the revised candidate-range proof; the three original
+verification programs remain unchanged.
+These are finite exact-rational tests only. The revised PDF was rebuilt with
+LaTeX, its log checked after references stabilized, and selected pages around
+the changed proofs and reproduction instructions rendered for inspection. The
+current details are in `data/document_check.json`; they supersede the original
+merge's presentation record for this revision. These are presentation checks,
+not a machine-checked mathematical proof.

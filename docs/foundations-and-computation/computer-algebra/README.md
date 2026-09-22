@@ -4,11 +4,17 @@
 Contour Layers, Branch and Phase Conventions, and Three Delivered Wolfram
 Prototypes**
 
-A single merged research report, 95 pages, built from three independently
+A single merged research report, 96 pages, built from three independently
 written source articles that answer the same question: *which surreals and
 surcomplexes admit exact finite representation in a computer algebra system,
 which operations on them terminate, and how should Wolfram Language be
 extended?*
+
+The maintained proof review separates general Hahn residue from ordinary
+standard part, states the coefficient and polynomial hypotheses explicitly,
+and uses valuation exponents consistently in `O_v` error bounds. Shared
+conventions are recorded in [NOTATION.md](../../NOTATION.md); current Lean
+coverage is tracked in [FORMALIZATION.md](../../FORMALIZATION.md).
 
 ---
 
@@ -44,7 +50,7 @@ The merge rule was **union, not selection**:
 | Path | What it is |
 |---|---|
 | `article.tex` | The merged report. Standalone LaTeX, internal `thebibliography` (40 entries), no external `.bib`, no graphics. Every `\label` carries the prefix `cas:`. |
-| `article.pdf` | Built output (95 pages). |
+| `article.pdf` | Built output (96 pages). |
 | `code/` | The executable files of all three delivered prototypes. **Ships verbatim, including the defective one.** |
 | `data/` | The recorded verification reports of the prototypes. **Ships verbatim.** |
 
@@ -53,7 +59,7 @@ The merge rule was **union, not selection**:
 | Member | Archive | What it contributed to the merge |
 |---|---|---|
 | **04** | `layered-exact-representations-and-wolfram-adapter` | **The spine, plus the obstruction, polynomial-root and host-audit half.** Section order and table apparatus; all three negative results (zero test, support admissibility, the high-rank leading-term/sign obstruction with its rank-one contrast); the effective core with both closures and the rational-exponent refinement inside one theorem; the grid lemma in the construction that is actually exercised in code; the initial polynomial, Newton profiles, Hensel clusters and sharp univariate root-error thresholds; the four incompatible "infinitesimals"; the Conway-monomial vs generic-power collision; the residue-vs-trace pairing distinction; the blind-substitution failure; the 14-citation Wolfram documentation audit with its self-correction on `Root`'s scope; the notation and reproducibility appendices. |
-| **05** | `gaussian-rational-monomial-wolfram-prototype` | **An entire analytic-geometry, residue and contour half** that 04 lacks, plus the only positive decidability result in the group. The six promises (refining the others' four); the ISSAC 2026 D-algebraic transseries zero-test with its hypotheses intact; the radius-free Hahn-germ algebra with `H(z)` and the `A_1` non-membership example; evaluation, translation and finite jets; Weierstrass preparation/division as operator algorithms with three executability caveats; normal forms, multiplication matrices, the perturbed residue and the trace identity; the two-scale coupled system and the separating determinant; algebraic periods, microscopic rescaling, the separating torus, Stokes as a certificate rewrite, the three-circles example; the multivariate root-separation certificate; the Archimedean impossibility proof and the three numerical request kinds; the serialization code-execution risk; the simplest-number cut semantics; the finite-union grid definition. |
+| **05** | `gaussian-rational-monomial-wolfram-prototype` | **An entire analytic-geometry, residue and contour half** that 04 lacks, plus a positive decidability result beyond the algebraic core. The six promises (refining the others' four); the ISSAC 2026 D-algebraic transseries zero-test with its hypotheses intact; the radius-free Hahn-germ algebra with `H(z)` and the `A_1` non-membership example; evaluation, translation and finite jets; Weierstrass preparation/division as operator algorithms with three executability caveats; normal forms, multiplication matrices, the perturbed residue and the trace identity; the two-scale coupled system and the separating determinant; algebraic periods, microscopic rescaling, the separating torus, Stokes as a certificate rewrite, the three-circles example; the multivariate root-separation certificate; the Archimedean impossibility proof and the three numerical request kinds; the serialization code-execution risk; the simplest-number cut semantics; the finite-union grid definition. |
 | **02** | `capability-tiers-and-rational-hahn-kernel` | **An entire trigonometry, branch and phase half** that neither 04 nor 05 has, plus the capability-contract framing. The finite-angle circle and the exact cut-free phase; the Cayley coordinate, used twice; the canonical strips with `Sin(iω)` canonical while `sin(ω)` is not; `arctan(ω)` needing no infinite phase; the strip algebraization with the 2n root bound; the positivity-unsoundness example with the Cayley and Fejér–Riesz remedies; near-tangency valuation loss; the **complete classification of circular group-law extensions by characters**, with its converse and the infinite-period proposition; the two-logarithm branch analysis with its policy tokens; the Π⊕Z floor construction; Lambert W as an exact implicit constructor; the exp/log splits and why the naive series fails at a purely infinite part; `st` vs `fin` non-multiplicativity; the three-kinds-of-power constructor list; the five-valued result protocol with named standing obligations; the "10⁻⁶ specialization is a simulation" framing. |
 
 Six distinct supplied research manuscripts stand behind the three articles, one
@@ -101,8 +107,9 @@ artifact**.
 **most**-significant first, and 05's own README warns that a reversed variable
 list is a different parent. The report flags this wherever both conventions
 appear (§17.4.4, Appendix C), quotes each kernel's comparison in that kernel's
-own convention, and never rewrites them into a common form. **A reader who
-carries one convention into the other gets every inequality backwards.**
+own convention, and never rewrites them into a common form. **Confusing the
+conventions can reverse comparisons between scales.** For example, `(1,0)`
+and `(0,1)` exchange order, while `(1,1) > (0,0)` holds in both orders.
 
 ### Proposed architecture is kept apart from delivered code
 
@@ -160,10 +167,12 @@ lists. In summary:
   forged internal heads are outside contract.
 * **Test counts are not additive** — not 34+110+88 for Wolfram, not 69+323 for
   Python. Different suites check different things.
-* **Nothing here is machine-verified.** No Lean file, formalization blueprint or
-  formalization audit exists in any of the three packages, and no git commit,
-  Lean toolchain or mathlib revision is pinned anywhere. The executed checks are
-  exact finite algebra and formal-series checks only.
+* **The original packages supplied finite checks, not Lean formalizations.**
+  They contained no Lean files, formalization blueprints, proof-assistant audits,
+  or pinned Lean dependencies. The containing repository's current
+  [coverage ledger](../../FORMALIZATION.md) records checked declarations
+  separately; the prototype tests remain exact finite algebra and formal-series
+  checks only.
 * Compatibility with Wolfram versions other than 15.0.1, and with Mathics, was
   not tested.
 
@@ -179,7 +188,8 @@ Each record keeps its own disclosed imperfection: 02's 31/34-then-corrected run
 plus an uncounted unevaluated identity plus its warning disclosure; 04's
 105-checks-with-warning exploratory run; 05's message-emitting preliminary run.
 
-**Independently reproduced for this merge**, on this machine, on
+**Historical merge-time reproduction record**, reported separately in the
+article for a Windows run on September 21, 2026, using
 *Wolfram 15.0.1 for **Microsoft Windows** (64-bit) (July 2, 2026)* — the same
 release and build date on a different platform — with **Python 3.14.4 / SymPy
 1.14.0**, so the Python results reproduce across a minor Python version too:
@@ -190,7 +200,15 @@ release and build date on a different platform — with **Python 3.14.4 / SymPy
 | **SurrealCASCore** | 110/110 | **110/110** | 69/69 | **69/69** |
 | **HahnRational** | 88/88 | **88/88** | 323/323 | **323/323** |
 
-Every recorded claim reproduces.
+The recorded Windows run reproduced the listed counts after the RationalHahn
+repair. This records the earlier run, not a new Wolfram execution in the current
+review environment.
+
+The maintained documentation review reran unchanged copies of the two Python
+scripts in temporary directories under **Python 3.13.14 / SymPy 1.14.0**:
+SurrealCASCore passed **69/69** checks and HahnRational passed **323/323**.
+The Wolfram sources were inspected against their documented contracts;
+the earlier Wolfram execution records remain separate.
 
 ### The one real defect
 
@@ -215,8 +233,9 @@ only together with that repair.
 which did ship one. This repository carries no checksum manifests, so it was
 removed on unpacking.
 
-04's and 05's packages both `Get`-load cleanly and their reported numbers are
-the numbers you get from running their own harnesses.
+04's and 05's packages were recorded as loading cleanly and returning the
+listed harness counts. Their source files are bracket-balanced; this syntax
+check alone does not establish a successful Wolfram run.
 
 ## How to build
 
@@ -227,10 +246,11 @@ latexmk -c
 ```
 
 Standard TeX Live or MiKTeX with the packages listed in the preamble. No
-bibliography processor, no external graphics, no data files. The final build is
-clean: **0 errors, 0 warnings, 0 undefined references, 0 undefined citations, 0
-multiply-defined labels, 0 duplicate PDF destinations, 0 overfull boxes**,
-95 pages.
+bibliography processor, no external graphics, no data files. Three successive
+`pdflatex -interaction=nonstopmode -halt-on-error article.tex` passes also build
+the report. The current 96-page build has **no errors, unresolved references or
+citations, multiply-defined labels, duplicate PDF destinations, or overfull
+boxes**. Eight underfull-box notices also occur in the unchanged baseline build.
 
 ## How to re-run the prototypes
 

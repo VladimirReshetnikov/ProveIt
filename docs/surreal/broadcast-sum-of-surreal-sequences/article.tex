@@ -306,6 +306,33 @@ separates the globally defined truncation map from the requirement that a move
 have a witness at its exact threshold. That distinction will prevent a subtle
 mistake in the proof of number-valuedness.
 
+The threshold may be a limit ordinal. For example, in the singleton all-plus
+string of length $\omega+1$, the choice $\gamma=\omega$ is legal and leaves
+the prefix of length $\omega$. In the string of length $\omega$, the same
+choice is not legal: there is no sign at position $\omega$. In either case,
+an ordinal labels a sign position, not the time at which a move is played.
+No limiting state is taken after infinitely many turns.
+
+\begin{lemma}[Positions with no moves]\label{lem:terminal}
+Left has no legal move exactly when every coordinate has only minus signs;
+Right has no legal move exactly when every coordinate has only plus signs.
+The empty string is allowed in both statements. Consequently a position has
+no move for either player exactly when all its coordinates are zero.
+\end{lemma}
+\begin{proof}
+A plus sign in any coordinate at position $\gamma$ supplies a Left witness
+with exemption set $F=\varnothing$. Conversely, every Left move requires such
+a sign. The Right assertion is the same argument with minus signs. A string
+containing neither sign is empty, proving the last assertion.
+\end{proof}
+
+Under the usual normal-play convention the players alternate, and the first
+player with no move loses. Thus a play can end at a nonzero position: for
+example, Right to move at the singleton $(1)$ has already lost. This differs
+from a position with no options for either player. Termination below means
+that even an option sequence without the alternation requirement cannot
+continue indefinitely.
+
 For a fixed input, all reachable coordinates are prefixes of its original
 coordinates. The set of reachable states is consequently contained in a
 set-sized product of prefix sets, and the options at every state form sets.
@@ -398,8 +425,12 @@ $\Rk(\bt)<\Omega^2$.
 \begin{remark}
 There need not be a uniform finite bound on the length of runs. Termination
 means that each individual run is finite, not that the game tree has finite
-height. The rank bound is deliberately generous and is not asserted to be
-optimal.
+height. For example, from $(\omega,-\omega)$, Left and then Right can move to
+$(n,-n)$, for any chosen $n\in\NN$, by exempting the other coordinate and
+cutting at position $n$. Alternating unit reductions then give $2n$ further
+moves. The rank argument rules out infinite descending paths without imposing
+a common finite bound on these choices. Its birthday bound is deliberately
+generous and is not asserted to be optimal.
 \end{remark}
 
 \section{Commuting truncations force number-valuedness}\label{sec:number}
@@ -622,10 +653,16 @@ families proves the reverse bound.
 \end{proof}
 
 \begin{corollary}\label{cor:cofinite}
-If a family of short numbers agrees outside a finite set with a constant short
-number $r$, then its broadcast value differs from $\BB(r,r,\ldots)$ by a finite
-surreal number.
+Let $(s_i)_{i\in I}$ be a family of short numbers, and let $r$ be short. If
+$s_i=r$ outside a finite set $E\subseteq I$, then
+$\BB((s_i)_{i\in I})-\BB((r)_{i\in I})$ is a finite surreal number.
+Both broadcast values use the same index set, which need not be infinite.
 \end{corollary}
+\begin{proof}
+Apply Theorem~\ref{thm:perturbation} to the two families on $I$, with budget
+$\sum_{i\in E}(\len(s_i)+\len(r))$. For a sequence indexed by $\NN$, the
+comparison value is the countably infinite constant $\BB(r,r,\ldots)$.
+\end{proof}
 
 The corollary is not an infinitesimal estimate, an integer-error formula, or an
 $\ell^1$-continuity theorem. It only says that the error is bounded in absolute
@@ -670,20 +707,24 @@ additional right options.
 \end{proof}
 
 \begin{theorem}[Constant dyadic values and finite defects]\label{thm:constants}
-For every $m\in\NN$,
+For every infinite set $I$ and every $m\in\NN$,
 \begin{equation}\label{eq:constant-value}
-                              \BB(r_m,r_m,\ldots)=X_m.
+                              \BB((r_m)_{i\in I})=X_m.
 \end{equation}
-For $m\geq1$, the family with infinitely many $r_{m-1}$ and exactly $k$ entries
-equal to $r_m$ has value
+For $m\geq1$ and $k\in\NN$, a family on $I$ with exactly $k$ entries equal to
+$r_m$ and all remaining entries equal to $r_{m-1}$ has value
 \begin{equation}\label{eq:defect-value}
                               H_{m,k}=X_{m-1}-k.
 \end{equation}
-The positions of the finitely many exceptional entries do not matter.
+Neither the positions of the finitely many exceptional entries nor the
+cardinality of the infinite set $I$ affect these formulas.
 \end{theorem}
 \begin{proof}
-We use induction on $m$. The constant sequence of ones has only Left moves,
-which give arbitrary finite collections of ones. Its cut is
+Fix an infinite set $I$ and use induction on $m$ throughout on this same index
+set. Removing or protecting a finite subset always leaves infinitely many
+coordinates, and $I$ has finite subsets of every natural-number size. These
+are the only size properties used in the proof. The constant family of ones
+has only Left moves, which give arbitrary finite collections of ones. Its cut is
 $\cut{\NN}{}=\omega$, proving \eqref{eq:constant-value} for $m=0$.
 
 Assume the constant formula for all smaller indices. For this fixed $m\geq1$,
@@ -727,8 +768,8 @@ This completes the outer induction.
 \end{proof}
 
 \begin{corollary}[Cofinite dyadic leading scale]\label{cor:dyadic-tail}
-If $\bt$ is constantly $r_m$ outside finitely many short exceptions, then there
-is an $N\in\NN$ such that
+Let $\bt=(t_i)_{i\in I}$ have an infinite index set $I$. If it is constantly
+$r_m$ outside finitely many short exceptions, then there is an $N\in\NN$ such that
 \begin{equation}\label{eq:tail-bound}
                               X_m-N\leq\BB(\bt)\leq X_m+N.
 \end{equation}
@@ -738,6 +779,11 @@ In particular $\BB(\bt)$ exceeds every real number.
 Combine Theorems~\ref{thm:perturbation} and \ref{thm:constants}. A positive real
 multiple of $\omega$, minus a finite number, is still larger than every real.
 \end{proof}
+
+The infinitude hypothesis is necessary. On a finite index set, the condition
+``outside finitely many exceptions'' imposes no restriction; even the singleton
+$(1)$ has value $1$, not $\omega$ up to a finite error. This is why
+Corollary~\ref{cor:cofinite} compares constants on the same index set.
 
 \section{An exact classification of convergent dyadic series}\label{sec:classification}
 

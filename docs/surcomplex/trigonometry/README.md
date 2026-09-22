@@ -181,3 +181,10 @@ xcolor. The bibliography is embedded in a `thebibliography` environment; no BibT
 or Biber run is needed. The current build produces 58 pages with 0 errors, 0
 undefined references, 0 undefined citations, 0 duplicate PDF destinations and 0
 overfull or underfull boxes.
+
+## Notation review — 22 September 2026
+
+The asymptotic conventions now use the defined complex infinitesimal ideal
+`m_C`, require a nonzero denominator, and explicitly apply to both surreal
+and surcomplex arguments. These are algebraic size relations, with no
+sequential-limit interpretation.

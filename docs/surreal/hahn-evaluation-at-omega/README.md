@@ -26,9 +26,9 @@ quadratic recursion for B, the identical coefficient check of B^2 = 1-x, and
 the identical application of the hypothetical map to that one finite identity.
 That shared core theorem is proved exactly once in the merged article. The
 supporting material diverged, so this report is the union of the two toolkits
-rather than a deduplication: the semiring strengthening, the general
+rather than a deduplication: the semiring certificate, the general
 unit-square-root lemma, the elementary two-support lemma and several scope
-remarks come from the second report; the three-way evaluation criterion, the
+remarks come from the second report; the infinitesimal evaluation criterion, the
 order-forcing theorem, the monomial classification over an arbitrary exponent
 group and the Higman appendix come from the first. Where the two reports
 worded an attribution or a priority caveat differently, the more cautious
@@ -55,9 +55,12 @@ wording was kept.
    image x -> omega is impossible on Q[[x]].
 2. The same obstruction holds over the semiring Q_{>=0}[[x]] of
    nonnegative-coefficient series, with no additive inverses in the source, and
-   there it excludes every value u >= 1 rather than only u > 1. This neither
-   implies nor is implied by result 1: the hypotheses are weaker on two axes
-   but the domain is smaller. Both are proved.
+   there it excludes every value u >= 1 rather than only u > 1. This implies
+   result 1 by restricting any proposed ring map. Conversely, every semiring
+   map to a ring extends uniquely to Q[[x]] by writing each rational series
+   as a difference of two nonnegative-coefficient series. The article proves
+   this correspondence and retains the positive witness as a separate
+   elementary proof.
 3. The possible images of x under unital homomorphisms Q[[x]] -> No are
    exactly the surreal infinitesimals, including zero. Each such value has a
    coefficient-fixing strongly additive evaluation on R[[x]].
@@ -71,6 +74,45 @@ wording was kept.
 The normal-form results, Hahn-field background, formal binomial series,
 Higman's lemma, and exponent-reversing embedding are classical. The paper
 identifies those ingredients rather than claiming them as new.
+
+## Correction to the comparison of the proofs
+
+The earlier article and audit called the ring and semiring obstructions
+“incomparable.” That was incorrect: the target of the semiring map is the
+whole ordered field, so restricting a ring map automatically has the
+required codomain. The revised comparison also proves the converse extension
+explicitly. If `a-b = a'-b'`, then `a+b' = a'+b`; applying the semiring map
+makes `ψ(a)-ψ(b)` independent of the chosen representation. Addition and
+multiplication then give a unique ring homomorphism.
+
+The two witness proofs themselves are unchanged. The positive pair `H, G`
+provides a direct semiring certificate, while `B² = 1-x` gives the shorter
+ring argument. The standalone short proof remains valid and makes no claim
+of logical incomparability. The correction is also recorded in
+[`proof-audit.md`](proof-audit.md).
+
+## Substitution, topology, and extension criteria
+
+The infinitesimal criterion permits a general surreal series as the value
+of `x`. Its finite-word proof controls every coefficient of every power and
+justifies their regrouping. Only the pure monomial case `x -> omega^a`,
+`a < 0`, reduces to an exponent change. The earlier description of the whole
+construction as a change of value group was too narrow.
+
+The geometric partial sums of `sum omega^(-n)` fail to converge in the full
+surreal order topology, because every tail exceeds `omega^(-omega)`. They
+do converge in the intrinsic order topology of `R((omega^(-1)))`: each
+positive radius there has an integer leading exponent, eventually exceeded
+in smallness by the tail. The earlier phrase “in any order-theoretic sense”
+was therefore too broad. Hahn summability itself requires neither topology.
+
+The pure monomial criterion applies to arbitrary ordered abelian exponent
+groups, without a divisibility assumption. Its constructed map preserves
+the leading coefficient and hence the canonical order. For a simple
+algebraic extension of `R(x)`, extending embeddings correspond exactly to
+the surreal roots of the evaluated minimal polynomial; the image of its
+generator determines the extension. These are separate existence criteria,
+not a classification of all abstract Hahn-field embeddings.
 
 ## Run the exact checks
 

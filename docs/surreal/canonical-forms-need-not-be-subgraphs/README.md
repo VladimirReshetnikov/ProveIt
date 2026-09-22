@@ -9,6 +9,10 @@ verification, and reconstructible graph certificates.
 
 Prepared 20 September 2026. The PDF contains 36 pages.
 
+The proof review clarifies that both ordered constructions are planar with
+maximum degree at most three, supplies the missing sign reduction in the
+birthday argument, and aligns the computational claims with the bundled checks.
+
 ## Provenance
 
 This archive merges two independently prepared research packages on the same
@@ -71,8 +75,10 @@ Every finite-birthday value admits forms of arbitrarily large girth, proved by
 two independent constructions with two different non-collapse arguments: a
 spaced-spine construction (exact vertex, edge, cycle-rank and rank formulas,
 non-collapse by rank arithmetic) and a tree-and-spine construction (output
-additionally **planar** with **maximum degree at most three**, non-collapse by
-value parity and a template descent). For the single value 1/2 the tradeoff is
+using integer-valued markers, non-collapse by integrality and a template
+descent). Both constructions give **planar** graphs with **maximum degree at
+most three** when their leaves are attached in traversal order. For the single
+value 1/2 the tradeoff is
 exact: the minimum number of vertices at girth at least g is 3 for g=3, 5 for
 g=4, and g for every g>=5, and every cycle length 3 or >=5 is realized exactly
 as a whole option graph (C_4 at no noninteger value).
@@ -148,7 +154,7 @@ python3 code/verify.py --bound 5 --output fresh_results
 
 The complete enumeration by number of distinct subforms is:
 
-| Vertices | Forms | Noninteger | Triangle-free noninteger | Of value 1/2 | Canonical-subgraph failures |
+| Vertices | Forms | Noninteger | Triangle-free noninteger | Triangle-free of value 1/2 | Canonical-subgraph failures |
 | ---: | ---: | ---: | ---: | ---: | ---: |
 | 1 | 1 | 0 | 0 | 0 | 0 |
 | 2 | 2 | 0 | 0 | 0 | 0 |
@@ -156,8 +162,9 @@ The complete enumeration by number of distinct subforms is:
 | 4 | 123 | 32 | 0 | 0 | 0 |
 | 5 | 3724 | 1200 | 8 | 4 | 16 |
 
-Both statistics are real and neither implies the other. The 16 failures are the
-broader test and include girth-3 forms of ±1/4 and ±3/4, whose canonical diamond
+Every triangle-free noninteger form fails canonical-subgraph containment,
+since its canonical graph has a triangle. The converse fails: the 16 failures
+include girth-3 forms of ±1/4 and ±3/4, whose canonical diamond
 needs two triangles; filtering the 16 to noninteger values of girth at least 4
 returns exactly the 8 triangle-free forms, of which 4 have value 1/2 and 4 have
 value −1/2. The 3860 distinct forms were obtained from 4651 retained topological

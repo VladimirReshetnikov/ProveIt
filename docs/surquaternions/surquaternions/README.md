@@ -2,17 +2,16 @@
 
 ## Algebra, Infinitesimal Geometry, and Support-Controlled Analysis
 
-`article.pdf` (61 pages) and `article.tex` are one **merged** research report on Hamilton's
+`article.pdf` (63 pages) and `article.tex` are one **merged** research report on Hamilton's
 quaternion division algebra over the surreal numbers,
 
     H_No = No + No i + No j + No k,     i^2 = j^2 = k^2 = ijk = -1,
 
-with central surreal coefficients. The algebra is **noncommutative**, and that is the whole
-difficulty of the subject: conjugation, multiplicativity of the modulus, valuation and
+with central surreal coefficients. The algebra is **noncommutative**, so conjugation, multiplicativity of the modulus, valuation and
 leading coefficients, polynomial evaluation, matrix adjoints, exponential laws and every
-chain rule all need separate treatment from the commutative surcomplex case. No commutative
-argument is reused anywhere in the report; every commutative result quoted from a companion
-report is cited for orientation and reproved over `H`.
+chain rule all need separate treatment from the commutative surcomplex case. Commutative
+results are used within identified central fields or complex slices; the report proves
+the additional quaternionic assertions with factor order retained.
 
 Every `\label` in `article.tex` carries the prefix `squat:`.
 
@@ -23,7 +22,7 @@ A three-level development, with the levels never silently mixed:
 1. **Finite algebra over an arbitrary real closed field `F`** — division, conjugation, the
    `F`-valued modulus, complex slices and centralizers, conjugacy spheres, explicit square
    roots, the algebraic spin/rotation description with two independent surjectivity proofs,
-   two rational charts on the unit group, quaternionic Möbius maps, one-sided polynomials
+   Cayley and stereographic presentations of one rational chart on the unit group, quaternionic Möbius maps, one-sided polynomials
    with a constructive fundamental theorem and a complete zero-class algorithm, and
    finite-dimensional Hermitian spectral theory with SVD and polar decomposition.
 2. **Set-sized Hahn workspaces** `D_Gamma = H(R((t^Gamma)))` — quaternion-valued normal
@@ -122,8 +121,47 @@ odd-degree-characteristic-polynomial argument with its `-1`-eigenvalue refinemen
 sphere-remainder lemma (via the norm of the remainder, and via conjugating the remainder);
 and the classification of derivations (via `u^2 = -N(u)`, and via the anticommutation
 relations). Two different Cauchy formulas, two different formalizations of a common-domain
-coefficient family, two rational charts on the unit group, two counterexamples to a root
+coefficient family, Cayley and stereographic presentations of one rational chart on the unit group, two counterexamples to a root
 theorem for interspersed coefficients and two proposed Lean layerings are likewise all kept.
+
+## Mathematical review of the maintained report
+
+The maintained TeX and PDF correct and expand the merged text; the historical `code/`
+and `data/` files remain unchanged. This review checked the proofs in dependency order
+and made these substantive corrections:
+
+- The commutator bound is stated using norm squares over an ordered field; its modulus
+  form follows after real closedness supplies positive square roots. The norm proof
+  handles its zero denominator case explicitly, and the `Spin(4)` kernel argument is supplied.
+- The Cayley conjugate is `(1+x)^(-1)(1-x)`, the inverse of the Cayley value. The proof
+  now verifies the imaginary inverse and shows that the stereographic formula is the
+  same parametrization, rather than an independent chart.
+- The polynomial sphere classification explicitly assumes that the sphere's quadratic
+  divides the normal polynomial. Without that condition, `P=X^2+2` modulo `X^2+1`
+  has `A=0, B=1`, so the formerly unqualified assertion `A=0 => B=0` fails.
+- Rotation factorization explicitly means modulus-one quaternions. The topology discussion
+  distinguishes the degenerate workspace `Gamma=0`, where standard part is the identity
+  and the ordinary Euclidean topology is Hausdorff, while the trivial valuation is discrete.
+- Differentiation of a Hahn exponential is explicitly for the strongly additive
+  Berarducci–Mantova derivation. Its Theorems A and B were checked in the primary
+  [preprint](https://arxiv.org/pdf/1503.00315), printed page 2. A leading-commutator argument
+  now justifies precisely when the local commuting chain rule holds.
+- The integral-coefficient summability warning now has a valid example: in lexicographic
+  `Q x Q`, `a_n=t^(1,-n^2)` is integral but at `x=t^(0,1)` the evaluated exponents
+  `(1,n-n^2)` decrease. The original nonintegral example remains for workspace dependence.
+- Commutation guarantees the global exponential addition law but is not necessary for
+  an individual pair: `6 pi i` and `8 pi j` and their sum all exponentiate to 1. The tube
+  Taylor warning now uses the in-domain witness `omega` as well as the external `omega i`.
+- Claims about determinant methods are scoped to the commutative proofs actually being
+  compared. The real workspace notation `K_Gamma` is identified with the notation guide's
+  `F_Gamma`; Hahn sums are defined independently of any additional convergence theorem.
+
+The source manuscripts' repository snapshot and proposed Lean layers remain historical
+provenance. The current [formalization ledger](../../FORMALIZATION.md#surquaternions)
+marks all 48 indexed statements in this report pending; this review does not claim Lean
+verification. A separate temporary exact rational calculation checked the new
+noncommutative differentiated-exponential identity through seven homogeneous degrees.
+This review did not rerun the historical symbolic suites or alter their records.
 
 ## What is NOT claimed
 
@@ -148,14 +186,14 @@ The headline ones:
   "angular velocity" identity is a derivation identity, not a time evolution; "condition
   number" is an exact valuation statement, not a numerical heuristic.
 * The `S^3(F) -> SO(3,F)` double cover is a statement about algebraic group points, **not** a
-  covering-space theorem; neither rational chart claims `Sp(1,F)` is topologically a
+  covering-space theorem; neither chart presentation claims `Sp(1,F)` is topologically a
   3-sphere; polar decomposition asserts no compactness.
 * The root theorem covers **only** one-sided polynomials with a central indeterminate;
   interspersed-coefficient expressions can have no root at all.
 * All spectral theory is finite-dimensional. The companion spectral-theory report's
-  **determinantal singular-scale theorem and its positive Cauchy–Binet argument are
-  determinant arguments and are not available over the quaternions**; nothing here reuses
-  them. For matrices only `w(AB) >= w(A) + w(B)` holds.
+  **determinantal singular-scale theorem and its positive Cauchy–Binet argument use
+  commutative minors** and cannot be transferred unchanged. This report proves no
+  quaternionic determinant version. For matrices only `w(AB) >= w(A) + w(B)` holds.
 * The cluster/block multiscale spectral calculus is a *direction*: one rank-one instance is
   proved, with no optimal block constant.
 * `Exp_rad` depends on a **chosen** normalization, is not an everywhere Hahn-summed power
@@ -197,7 +235,7 @@ Six research directions are left explicitly open (Section 18).
 | `data/11-...-verification-results.json` | 31 of 31 passed, `all_passed: true` |
 | `data/*-requirements.txt` | `sympy==1.14.0` (both) |
 
-Both recorded runs used Python 3.13.5 with SymPy 1.14.0. Both suites were **re-run
+Both recorded runs used Python 3.13.5 with SymPy 1.14.0. The original merged report records that both suites were **re-run
 independently on copies of the trees** under Python 3.14.4 with SymPy 1.14.0; both exited
 zero, reporting 252 identities in 69 groups and 31 checks respectively. Running on copies
 is not a formality — each script writes its result file beside itself, so an in-place re-run
@@ -222,23 +260,23 @@ installation with `amsmath`/`amssymb`/`amsthm`/`mathtools`/`mathrsfs`, `geometry
 `fancyhdr`, `hyperref`, `aliascnt` and `cleveref` suffices.
 
 ```sh
-latexmk -pdf -interaction=nonstopmode article.tex
-latexmk -c
+latexmk -pdf -halt-on-error -interaction=nonstopmode article.tex
 ```
 
-Then read `article.log`. The accepted build is clean: **no errors, no LaTeX warnings, no
+Inspect `article.log` before running `latexmk -c article.tex`, which removes
+auxiliary files. The revised PDF was built in a temporary directory with three `pdflatex` passes.
+Both the 61-page baseline and the revised build are clean: **no errors, no LaTeX warnings, no
 undefined references or citations, no multiply-defined labels, no duplicate PDF
-destinations, and no overfull or underfull boxes**, giving a 61-page PDF. The front matter
+destinations, and no overfull or underfull boxes**, giving a 63-page PDF. The front matter
 uses roman page numbers with `pageanchor=false` across the title page, which is what keeps
-the title page from producing a duplicate `page.1` destination; a single benign TeX note,
-`Infinite glue shrinkage found in box being split`, remains where the notation longtable
-breaks across a page.
+the title page from producing a duplicate `page.1` destination. The earlier merged
+build mentioned an infinite-glue note; it did not occur in either build for this review.
 
 ## Directory contents
 
 ```
 article.tex   the merged report (all labels prefixed squat:)
-article.pdf   61 pages
+article.pdf   63 pages
 README.md     this guide
 code/         the two source verification suites, unchanged
 data/         their recorded outputs and build metadata, unchanged

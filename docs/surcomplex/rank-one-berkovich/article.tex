@@ -122,7 +122,7 @@ program checks 542 finite exact identities and coefficient assertions.
 \label{sec:gap}
 
 \subsection{What the repository already contains}
-The audit behind this article used the repository snapshot
+The original audit behind this article used the repository snapshot
 \begin{center}\small\texttt{\repocommit}\end{center}
 from the default branch, inspected on September 21, 2026. It was a targeted
 review of the catalogue, the relevant report READMEs, and the introductory and
@@ -138,8 +138,9 @@ geometry. Finally, \emph{contours-and-stokes} explicitly compares its integratio
 categories with Berkovich and tropical approaches
 \cite{RepoMap,RepoAnalysis,RepoGeometry,RepoPolynomial,RepoContours}.
 
-The gap is therefore \emph{an undeveloped bridge}, rather than the absence of the
-word ``Berkovich''. The reports do not provide a sustained construction of a
+At that snapshot the identified gap was \emph{an undeveloped bridge}, rather
+than the absence of the word ``Berkovich''. The inspected reports did not
+provide a sustained construction of a
 rank-one Tate algebra, identify its exact position among their coefficient rings,
 and then work through the associated Berkovich disks, analytic annuli and a
 nonpolynomial entire function in that category. Those are the tasks undertaken
@@ -477,7 +478,8 @@ For every $f\in A_R$,
 \]
 \end{proposition}
 \begin{proof}
-Normalize and scale as in the preceding proof. Choose $c\in\C$ which is not a
+For $f=0$ the assertion is immediate. Otherwise normalize and scale as in the
+preceding proof. Choose $c\in\C$ which is not a
 root of the nonzero reduction polynomial. Evaluation at $U=c$ then has norm
 one. Such a $c$ exists because $\C$ is infinite. Rescaling proves the result.
 \end{proof}
@@ -677,7 +679,10 @@ whose other coefficients have norm at most one never increases the largest
 coefficient norm. Thus its quotient and remainder are bounded by the norm of
 the dividend. Both operators extend continuously from the dense polynomials.
 The target of $R_p$ is finite-dimensional and complete; the division identity
-passes to the limit. For $d=0$, $p=1$, the quotient is $g$ and the remainder
+passes to the limit. The same continuity argument gives
+$Q_p(pq+r)=q$ and $R_p(pq+r)=r$ for $q\in\TT$ and
+$r\in K[U]_{<d}$, first on polynomials and then by density.
+For $d=0$, $p=1$, the quotient is $g$ and the remainder
 zero.
 \end{proof}
 
@@ -808,7 +813,7 @@ With multiplicities counted, $f$ has exactly $d_R$ zeros in $D_R(K)$, exactly
 $m_R$ zeros in $\{\vabs z<R\}$, and exactly $d_R-m_R$ zeros on the shell
 $\{\vabs z=R\}$. For each $c\in\C^*$ the number in
 \[
- \left\{z:\red(t^{-\beta}z)=c\right\}
+ \left\{z\in D_R(K):\red(t^{-\beta}z)=c\right\}
 \]
 is the multiplicity of $c$ as a root of $I_R$.
 \end{theorem}
@@ -882,7 +887,11 @@ which extend $\vabs{\cdot}$ on $K$ and obey $p(f)\le\Gauss fR$.
 The topology is the weakest one in which every real-valued map $p\mapsto p(f)$
 is continuous. This is the Berkovich closed disk, with the usual bounded
 multiplicative-seminorm definition specialized to our algebra
-\cite[Section 2.2]{Temkin}.
+\cite[Definition 2.2.2.1]{Temkin}.
+Using the bound with constant one loses no seminorms: if
+$p(f)\le C\Gauss fR$ for some fixed $C$, then multiplicativity gives
+$p(f)^n=p(f^n)\le C(\Gauss fR)^n$ for every positive integer $n$.
+Taking $n$th roots and letting $n\to\infty$ gives $p(f)\le\Gauss fR$.
 
 A classical point $z\in D_R(K)$ gives $p_z(f)=\vabs{f(z)}$. These are not all
 points. The Gauss norm itself is a multiplicative seminorm by
@@ -927,7 +936,8 @@ The standard classification over an algebraically closed complete valued field
 has four types: classical points; disk points whose positive radius belongs to
 the value group; disk points with radius outside it; and points arising from
 nested disks with empty intersection. This classification is imported, not
-proved merely by drawing a tree \cite[Section I.2]{PT}.
+proved merely by drawing a tree
+\cite[Lemma I.2.11, Proposition I.2.12 and Remark I.2.13]{PT}.
 
 \begin{corollary}\label{cor:types}
 Over $K=\C((t^\R))$ the Berkovich affine line has only types 1 and 2.
@@ -1027,7 +1037,7 @@ circle parametrized by an ordinary angle.
 \label{sec:slopes}
 
 \subsection{The Newton profile as a function on a radial segment}
-Suppose $f=\sum a_nZ^n$ is analytic on all disks in a nonempty interval of
+Suppose $0\ne f=\sum a_nZ^n$ is analytic on all disks in a nonempty interval of
 radii. For $x=\log R$ put
 \begin{equation}\label{eq:profile}
  L_f(x)=\log\Gauss f{e^x}
@@ -1273,8 +1283,9 @@ Its skeleton is the interval of disk points
 \begin{equation}\label{eq:skeleton}
  \Sigma[r,R]=\{\zeta_{0,\rho}:r\le\rho\le R\}.
 \end{equation}
-The general deformation-retraction theorem is standard
-\cite[Section I.7, especially Lemma I.7.9 and Proposition I.7.11]{PT}.
+The general deformation-retraction theorem is standard: the open-annulus
+construction in \cite[Lemma I.7.9 and Proposition I.7.11]{PT} restricts to
+the inverse image of a closed skeleton interval, giving a closed annulus.
 For our spherically complete algebraically closed field it has an explicit
 proof worth recording.
 
@@ -1405,8 +1416,9 @@ $\vabs{a_n}R^n>\vabs{a_0}$ at some sufficiently large radius, a contradiction.
 
 Zero-free entire rigidity is stronger than bounded-entire rigidity here. It is
 not a claim about ordinary complex entire functions: the usual exponential is
-excluded from \eqref{eq:entire}. A nonpolynomial valuation-entire function must
-have infinitely many zeros escaping to infinity in valuation norm.
+excluded from \eqref{eq:entire}. The following product theorem also shows that
+a nonpolynomial valuation-entire function must have infinitely many zeros
+escaping to infinity in valuation norm.
 
 \subsection{An infinite product without exponential correction factors}
 \begin{theorem}\label{thm:canonicalproduct}
@@ -1435,19 +1447,28 @@ the ultrametric inequality give
  \le\max_{p\le j\le q}\norm{u_j}.
 \]
 Apply this in $A_R$ with $u_j=-Z/\alpha_j$. The tails converge to units;
-the finite initial product causes no difficulty. The same estimate shows that
-reordering changes no limit: after removing any fixed finite set, the remaining
-factors are uniformly as close to one as desired. The limits on different
-disks agree as formal power series and define an entire function $G$ with
-exactly the stated zeros and multiplicities.
+indeed a sufficiently far tail differs from one by norm less than one, so
+Corollary~\ref{cor:units}, after rescaling, gives its inverse.
+The finite initial product causes no difficulty. For each positive tolerance
+there are only finitely many factors whose errors are at least that large. The tail estimate
+therefore shows that every enumeration has the same limit, once the finitely
+many exceptional factors for the required precision have been included.
+The limits on different disks agree as formal power series. Denote this product by $P$ and set
+$G=Z^mP$. On a fixed disk, split $P$ into the finitely many factors whose
+zeros lie in that disk and the product of the remaining factors. The latter
+is a unit: its factor errors have norms strictly less than one and tend to
+zero, so their supremum is strictly less than one. Thus $G$ has exactly
+the zeros of $f$, with the same multiplicities, including order $m$ at zero.
 
-After removing $Z^m$, both $f$ and $G$ have nonzero constant term, so their
-formal quotient exists near zero. On each closed disk preparation cancels the
-same finite polynomial zero factors, leaving a quotient of analytic units.
-Thus this formal quotient belongs to every $A_R$: it is an entire zero-free
-function. By Theorem~\ref{thm:liouville} it is constant. Comparing the first
-nonzero coefficient gives \eqref{eq:canonicalproduct}. A finite product is a
-polynomial.
+Both $f/Z^m$ and $G/Z^m=P$ have nonzero constant term, so
+$Q=(f/Z^m)/P$ is defined in $K[[Z]]$. On each disk, prepare the rescaled
+functions $f$ and $G$. Their monic prepared polynomials agree because they
+have the same roots with multiplicity; cancelling them leaves a quotient
+of analytic units. Its Taylor series is $Q$, by uniqueness of formal
+division after cancelling $Z^m$. Hence $Q\in A_R$ and is zero-free there
+for every $R$. Theorem~\ref{thm:liouville} makes $Q$ constant.
+Since $P(0)=1$, its value is $[Z^m]f$, proving
+\eqref{eq:canonicalproduct}. A finite product is a polynomial.
 \end{proof}
 
 The product theorem needs no analog of the complex Weierstrass exponential
@@ -1586,11 +1607,22 @@ All indices from $1-m$ through $m$ cancel, leaving
         =(-1)^{m+1}t^{m(m+1)}
           +O\!\left(t^{m(m+1)+2}\right).
 \]
-Taylor expansion with unit linear coefficient, or one Newton step and its
-quadratic error estimate, now gives \eqref{eq:unormexp}. Indeed the reciprocal
-of $H_m'(-1)$ differs from one by $O(t^2)$, while the quadratic correction has
-valuation at least $2m(m+1)\ge m(m+1)+2$. Multiplication by
-$t^{-(2m-1)}$ gives \eqref{eq:zexp}.
+The use of the Laurent function $H_m$ is local to $\vabs{U+1}<1$:
+each negative power of $U=-1+V$ has a binomial expansion with integral
+coefficients converging for $\vabs V<1$. The Taylor coefficients of
+$F_m(-1+V)$ are in $\OO_K$, so the same holds for those of $H_m(-1+V)$.
+Thus its Taylor remainder after the linear term is bounded by $\vabs V^2$.
+Writing $\delta=u_m+1\in\mm_K$ and $A=m(m+1)$, the equation
+$H_m(-1+\delta)=0$ has a unit linear coefficient and a quadratic remainder
+of strictly smaller norm than $\delta$. Hence
+$v(\delta)=v(H_m(-1))=A$, and then
+\[
+ \delta=-H_m(-1)/H_m'(-1)+O(t^{2A}).
+\]
+The reciprocal of $H_m'(-1)=1+O(t^2)$ differs from one by $O(t^2)$,
+and $2A\ge A+2$. This proves \eqref{eq:unormexp}; multiplying by
+$t^{-(2m-1)}$ gives \eqref{eq:zexp}. No value of $U^{-1}$ at zero,
+or analyticity of $H_m$ on the entire closed unit disk, was used.
 
 Finally use $q=t^2$ in \eqref{eq:normalizedtheta}. Every exponent
 $(n-m)(n-m+1)/2$ is a nonnegative integer, and at any fixed $q$-degree only
@@ -1610,8 +1642,8 @@ $q=t^2$:
  u_3={}&-1-q^6-3q^7-9q^8+O(q^9),\\
  u_4={}&-1+q^{10}+3q^{11}+9q^{12}+O(q^{13}).
 \end{align*}
-The first row agrees with the leading-root partial-theta coefficients in
-Sokal's work \cite{Sokal}; the agreement is a check of normalization, not
+The first row agrees with the negative of the series $\xi_0(q)$ in
+Sokal's Eq.~(1.7) \cite{Sokal}; the agreement is a check of normalization, not
 independent evidence for novelty. The growing first-correction exponent
 $m(m+1)$ is the important scale-separation fact here.
 
@@ -1734,10 +1766,10 @@ Theorem~\ref{thm:thetazeros}. Additional terms are needed for additional root
 coefficients, not to establish those counts.
 
 \subsection{What was actually run}
-The archive includes \texttt{verify\_examples.py}, using only Python's standard
+The archive includes \texttt{code/verify-examples.py}, using only Python's standard
 library and exact \texttt{fractions.Fraction} arithmetic. It was executed under
-Python 3.13.5. The report \texttt{verification.json} records every individual
-assertion and the computed root expansions; \texttt{verification-summary.txt}
+Python 3.13.5. The preserved report \texttt{data/verification.json} records every individual
+assertion and the computed root expansions; \texttt{data/verification-summary.txt}
 contains the human-readable run summary.
 
 For each $1\le m\le8$, the program forms
@@ -1870,16 +1902,19 @@ needed. Build it with
 \begin{quote}\ttfamily\small
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 \end{quote}
-Run the finite checks with
+\begin{samepage}
+Run the finite checks from the package directory with a separate output path:
 \begin{quote}\ttfamily\small
-python verify\_examples.py --output verification.json
+python code/verify-examples.py --output /tmp/berkovich-verification.json
 \end{quote}
-A natural destination would be a new documentation package:
+\end{samepage}
+The maintained article is now placed in
 \begin{center}\small\texttt{docs/surcomplex/rank-one-berkovich/}\end{center}
-It could be linked from the analytic-geometry,
-contour, polynomial and foundations reports. This is a suggested placement only;
-no repository file was written or modified. The accompanying
-\texttt{REPOSITORY\_AUDIT.md} records the inspected paths and the exact snapshot.
+The accompanying \texttt{repository-audit.md} records the original inspected
+paths and snapshot; \texttt{build-report.md} records the delivered build.
+Those historical records and the original \texttt{code/} and \texttt{data/}
+files are preserved. The current \texttt{README.md} records the maintained
+proof review and rebuilt PDF.
 
 \begin{thebibliography}{99}
 
@@ -1893,21 +1928,22 @@ Hahn-field construction and Corollary 4.
 M. Temkin, \emph{Introduction to Berkovich analytic spaces},
 arXiv:1010.2235, version 2 (2011).
 Sections 2--3 on seminorm spectra and affinoid algebras.
-\href{https://arxiv.org/abs/1010.2235}{arXiv record};
-\href{https://arxiv.org/pdf/1010.2235}{full text}.
+\href{https://arxiv.org/abs/1010.2235v2}{pinned arXiv record};
+\href{https://arxiv.org/pdf/1010.2235v2}{version 2 full text}.
 
 \bibitem{PT}
 J. Poineau and D. Turchetti, \emph{Berkovich curves and Schottky uniformization},
-arXiv:2010.09043 (2020).
+arXiv:2010.09043, version 1 (2020).
 Part I, especially Sections I.2--I.4 and I.6--I.9.
-\href{https://arxiv.org/abs/2010.09043}{arXiv record};
-\href{https://arxiv.org/pdf/2010.09043}{full text}.
+\href{https://arxiv.org/abs/2010.09043v1}{pinned arXiv record};
+\href{https://arxiv.org/pdf/2010.09043v1}{version 1 full text}.
 
 \bibitem{Sokal}
 A. D. Sokal, \emph{The leading root of the partial theta function},
 Advances in Mathematics \textbf{229} (2012), 2603--2621.
 \href{https://doi.org/10.1016/j.aim.2012.01.012}{doi:10.1016/j.aim.2012.01.012};
-\href{https://arxiv.org/abs/1106.1003}{arXiv:1106.1003}.
+Preprint version 1 (2011), especially Eq.~(1.7):
+\href{https://arxiv.org/abs/1106.1003v1}{arXiv:1106.1003v1}.
 
 \bibitem{RepoMap}
 V. Reshetnikov, \emph{Surreal repository: The surreal and surcomplex reports},
