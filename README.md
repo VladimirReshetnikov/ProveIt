@@ -358,16 +358,22 @@ Actual strong real and complex sums use the two native Hahn summability conditio
 well-ordered joint support and finite coefficient fibers. Small index types
 give small sum support, and workspace evaluation commutes with these sums.
 Strong sums respect addition, negation, jointly summable products, and arbitrary
-fixed scalars. Small real families can be reindexed and regrouped along any
-index map. Constant families are strongly summable exactly when finitely many
+fixed scalars. Small real and complex families can be reindexed and regrouped
+along any index map, with Fubini for jointly summable double families. Strong
+sums agree with finite field sums. Constant families are strongly summable exactly when finitely many
 are nonzero, so the ordinary geometric constant family is not a strong sum.
 Every real or complex formal power series evaluates at actual infinitesimals,
 including zero, with no coefficient-growth restriction. Evaluation is a ring
 homomorphism, equals the displayed strong sum, preserves the constant standard
 part, and commutes with formal composition with zero inner constant term.
+These results also hold for arbitrary formal series in finitely many actual
+infinitesimal variables, including zero inputs and an empty variable type.
+Infinitesimal geometric strong sums equal `(1 - x)⁻¹`, with exact finite
+remainders and valuations. For nonzero inputs their partial sums have no
+limit in the fine topology.
 The approximation inequalities alone never give uniqueness: a sufficiently
-small positive monomial produces another solution. Finite-variable evaluation,
-differentiation, recentered analytic Taylor lifting, and universe coherence
+small positive monomial produces another solution. Differentiation,
+recentered analytic Taylor lifting, and universe coherence
 remain separate obligations.
 A successful build proves only the imported Lean
 statements, not coverage of all the source documents.

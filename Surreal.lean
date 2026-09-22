@@ -124,6 +124,7 @@ import Surreal.Foundations.SignSequenceStrongSummation
 import Surreal.Foundations.SignSequenceStrongAlgebra
 import Surreal.Foundations.SignSequenceStrongRegroup
 import Surreal.Foundations.SignSequencePowerSeries
+import Surreal.Foundations.SignSequenceMvPowerSeries
 import Surreal.Foundations.SignSequenceWorkspace
 import Surreal.Foundations.SmallNormalFormWorkspace
 import Surreal.Foundations.SmallNormalFormRealClosed
@@ -144,9 +145,13 @@ import Surreal.Surcomplex.HahnValuation
 import Surreal.Surcomplex.HahnLeading
 import Surreal.Surcomplex.StrongSummation
 import Surreal.Surcomplex.StrongAlgebra
+import Surreal.Surcomplex.StrongRegroup
+import Surreal.Surcomplex.StrongFinite
 import Surreal.Surcomplex.StrongConstants
 import Surreal.Surcomplex.Workspace
 import Surreal.Surcomplex.PowerSeries
+import Surreal.Surcomplex.MvPowerSeries
+import Surreal.Surcomplex.GeometricSeries
 import Surreal.Surcomplex.OrderObstructions
 import Surreal.Surcomplex.FineTopology
 import Surreal.Surcomplex.TopologicalField

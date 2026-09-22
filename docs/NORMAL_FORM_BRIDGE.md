@@ -286,6 +286,13 @@ and scalar multiplication. Their sum identities retain index smallness.
 [`SignSequenceStrongRegroup.lean`](../Surreal/Foundations/SignSequenceStrongRegroup.lean)
 restricts, reindexes and regroups a jointly summable family along arbitrary
 index maps. Every fiber sum is formed under a proved smallness bound.
+[`Surcomplex/StrongRegroup.lean`](../Surreal/Surcomplex/StrongRegroup.lean)
+supplies the corresponding complex statements and equality of the two
+projection-fiber sums of a jointly summable double family.
+[`Surcomplex/StrongFinite.lean`](../Surreal/Surcomplex/StrongFinite.lean)
+proves that every finite real or complex family is strongly summable and
+that its strong sum equals the existing finite field sum, including the
+empty family.
 [`Surcomplex/StrongConstants.lean`](../Surreal/Surcomplex/StrongConstants.lean)
 proves that ordinary real and complex constant families are strongly
 summable exactly when finitely many entries are nonzero, and computes their
@@ -312,14 +319,31 @@ part, and formal composition is valid for inner series with zero constant
 term. Zero arguments are included. These are the univariate formal clauses
 of `a:cor:complexsub`; they do not prove holomorphic fixed-domain lifting.
 
+[`SignSequenceMvPowerSeries.lean`](../Surreal/Foundations/SignSequenceMvPowerSeries.lean)
+and [`Surcomplex/MvPowerSeries.lean`](../Surreal/Surcomplex/MvPowerSeries.lean)
+localize finitely many infinitesimals in a common workspace. Arbitrary
+formal coefficients give jointly strongly summable substituted monomials,
+whose strong sum is the resulting ring homomorphism. Constant standard
+parts and zero-constant multivariate composition are preserved. The
+construction includes empty variable types and zero arguments; formal
+differentiation and recentered analytic lifting remain separate.
+
+[`Surcomplex/GeometricSeries.lean`](../Surreal/Surcomplex/GeometricSeries.lean)
+specializes actual evaluation to the formal geometric series in both fields.
+Its strong sum is `(1 - x)⁻¹`; subtracting the first `N + 1` terms gives
+`x^(N + 1)/(1 - x)`, of valuation `(N + 1) • valuation x`. Zero is included
+in these identities. For any nonzero input the partial sums have no limit
+in the fine topology: small-sequence convergence would force eventual
+equality, contradicting their nonzero consecutive differences.
+
 ## Remaining dependency order
 
-1. Construct finite-variable formal evaluation and its composition and
-   differentiation laws, then recentered analytic Taylor lifting.
+1. Prove the differentiation laws for actual formal evaluation, then
+   construct recentered analytic Taylor lifting.
 2. Prove compatibility under universe lifts and the remaining
    analytic-operation correspondences.
 
 Existence, inverse extraction, real monomials, finite evaluation and field
-arithmetic are now proved. Small real and complex strong sums, univariate
+arithmetic are now proved. Small real and complex strong sums, finite-variable
 formal evaluation and exponent-workspace coherence are also proved. The remaining clauses above require their own
 constructions before the entire workspace theorem is covered.
