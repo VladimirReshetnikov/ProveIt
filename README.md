@@ -108,6 +108,11 @@ exp/log commute with complex conjugation. Near-one series satisfying
 For divisible exponent groups, complex Hahn series have a modulus valued in
 the ordered real Hahn field. Its unit circle is exactly that algebraic locus,
 so the logarithm conclusion also holds under the literal modulus-one condition.
+The modulus preserves Hahn order and takes the standard part of a finite
+series to the ordinary norm of its standard part. Finite exponentiation
+combines ordinary complex exponentiation with the infinitesimal exponential:
+it maps onto all units of the nonnegative-order ring and has exactly the
+ordinary integral multiples of `2πi` as its kernel.
 Roots of monic polynomials over this subring stay in it; for split polynomials,
 standard part preserves the root multiset with multiplicities.
 Resultant and nodal-derivative valuations are finite sums of root-separation
@@ -263,6 +268,11 @@ closed: nonnegative square roots are constructed from the leading monomial
 and the binomial series, and odd-degree roots follow by degree induction.
 Thus complex Hahn polynomials split in their original workspace, with unchanged
 root multiplicities in every field extension.
+The rational span of a small set of actual surreal exponents together with
+one supplies a small, nonzero divisible exponent group. Its real and complex
+Hahn fields are small and inherit those closedness results. Small families
+of exponent sets admit a common such enlargement, while no single small
+exponent workspace contains all actual surreal exponents.
 Conway monomials and leading exponents now act on the actual sign field.
 Finite monomial expressions form an injective ring map into that field for
 every strictly increasing additive exponent map. Their valuation, leading

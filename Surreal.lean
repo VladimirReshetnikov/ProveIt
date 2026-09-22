@@ -86,6 +86,7 @@ import Surreal.Foundations.SignSequenceFiniteLeading
 import Surreal.Foundations.SignSequenceMonomialAlgebra
 import Surreal.Foundations.SignSequenceFiniteNormalForm
 import Surreal.Foundations.SignSequenceFiniteOrder
+import Surreal.Foundations.SignSequenceWorkspaceExponents
 import Surreal.Foundations.SignSequenceDyadics
 import Surreal.Foundations.SignSequenceRealBirthday
 import Surreal.Foundations.SignSequenceBirthdayArithmetic
@@ -131,9 +132,11 @@ import Surreal.HahnSeries.ExponentialLogarithm
 import Surreal.HahnSeries.ExponentialAddition
 import Surreal.HahnSeries.ExponentialConjugation
 import Surreal.HahnSeries.FiniteSupport
+import Surreal.HahnSeries.FiniteExponential
 import Surreal.HahnSeries.MvEvaluation
 import Surreal.HahnSeries.MvComposition
 import Surreal.HahnSeries.Modulus
+import Surreal.HahnSeries.ModulusStandardPart
 import Surreal.HahnSeries.Neumann
 import Surreal.HahnSeries.PolynomialReduction
 import Surreal.HahnSeries.PolynomialFactorUniqueness
