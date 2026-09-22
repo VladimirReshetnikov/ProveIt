@@ -24,6 +24,11 @@ No row below certifies every claim in an entire report.
 | [Laurent birthdays](surreal/gonshor-laurent-birthdays/) | Read the full mathematical dependency chain from real birthdays through finite products, infinite transfer, reciprocals and the spectrum. Corrected the pinned sign-rule citations, distinguished value birthdays from cut ranks, and specified original-prefix comparisons and successor deletion. Expanded extreme-term noncancellation, ordinal cofinal bounds and cancellation-aware finite jets; added the counterexample explaining the reciprocal's leading-exponent hypothesis. |
 | [Polynomial algebra](surcomplex/polynomial-algebra/) | Read the main proofs through the multivariate residue comparison. Added nonconstant/nonzero and occupied-ball hypotheses where needed; qualified the converse from open-ball bijectivity by a nontrivial value group and supplied its singleton counterexample. Corrected the binomial support shift and quartic directions. Expanded summability indexing, zero-error lifting and the finite Nullstellensatz certificate for an arbitrary ideal; distinguished the positive-support ideal and effective-input requirements. The corrections received a second independent review. |
 | [Computer algebra](foundations-and-computation/computer-algebra/) | Reviewed the main mathematical and representation contracts and compared prototype claims with their sources. Separated general Hahn residue from ordinary standard part, supplied coefficient/embedding and nonzero-polynomial hypotheses, and corrected valuation-error exponents, a geometric-tail index and constructor calls. Distinguished coordinate-significance changes from reversal of every inequality, and historical execution/package claims from current checks and Lean coverage. |
+| [Gamma functions](surreal/gamma-functions/) | Read the main chain from strong substitution through tangent gaps, convexity, flatness, phase and scalar rigidity. Corrected the summary to logarithmic and relative flatness, and proved that the absolute difference at `ω` can exceed every ordinary power. Clarified positive finite arguments, monomial support, surreal-valued coefficients and finite-angle phase; added the distinct-point guard and checked the restricted-analytic transfer, Binet and remainder imports. |
+| [Surquaternions](surquaternions/surquaternions/) | Read the algebra, root, support, exponential, differential and finite spectral proofs. Corrected Cayley conjugation and identified its stereographic presentation as the same chart. Supplied missing norm, sphere-divisibility and modulus-one hypotheses, the Spin(4) kernel, trivial-group topology distinctions and an integral-coefficient summability counterexample. Scoped exponential differentiation to the strongly additive BM derivation and proved the leading-commutator criterion; corrected global exponential and determinant-method claims. |
+| [Finite deformations](surcomplex/finite-deformations/) | Read the main support, division, finite-algebra, residue and stability chain. Constructed the inverse in the uniform-support formal ring before establishing fine analyticity, with a second independent check. Corrected quotient-ring and residue/trace summaries, common-domain germ warnings, coordinate-power scope and the effectivity contract. Added the missing positive control-set hypothesis and Jacobian precision reasoning. |
+| [Spectral theory](surcomplex/spectral-theory/) | Read the main finite geometry, variational, scale, splitting, root-field and stability proofs. Corrected the summary's Gram criterion to `2Γ`, bounded root-field sums by rank, and made Hermitian, orthogonal, zero-case and valuation-access requirements explicit. Separated principal-root extension costs from arbitrary-matrix splitting fields and exponent permission from root representation. Repaired the hypothesis ledger and trivial-group precision exception. The corrections received a second independent review. |
+| [Rank-one Berkovich geometry](surcomplex/rank-one-berkovich/) | Read the main convergence, division, preparation, root-count, seminorm, annulus and entire-function arguments. Added the nonzero norm-profile hypothesis and reduction domain; expanded division uniqueness, seminorm normalization, canonical-product cancellation and the local Laurent remainder in the theta-root calculation. Checked the precise imported field, point-classification and annulus-retraction statements against primary sources. |
 
 Each correction was reviewed against its local definitions and downstream uses
 within the stated scope. Changed PDFs were rebuilt and affected pages inspected.
@@ -45,6 +50,19 @@ the Laurent quick suite passes its 12 examples, 405 dyadic-length checks,
 suites pass separately at 69/69 and 323/323. No new Wolfram run is claimed.
 Historical programs and recorded outputs for these four reports were preserved.
 
+The Gamma, quaternion, finite-deformation and spectral PDFs also rebuilt cleanly;
+the latter two remove baseline layout warnings. Gamma's 130 checks and all five
+finite-deformation scripts passed on temporary copies. A separate exact
+noncommutative calculation checked the quaternion differential identity through
+seven homogeneous degrees. The historical quaternion and spectral suites were
+not rerun for this review. Their original code and recorded outputs remain intact.
+
+The rank-one Berkovich PDF also rebuilt without warnings, and all 542 existing
+finite checks passed. Its expanded product and Laurent arguments received a
+second review. The catalogue rebuilt without warnings. An independent parser
+checked all 1,229 indexed theorem, lemma, proposition and corollary entries
+against the 26 report sources; line hints were refreshed after the edits.
+
 ## Collection-wide work
 
 The [reader map](README.md), [catalogue](manifest.tex) and
@@ -62,14 +80,11 @@ from the current tree does not discharge source-claim reconciliation.
 The reports above have received targeted corrections or a main-text reading,
 as recorded in each row. Uninspected portions, imported results, source-claim
 reconciliation and any formalization remain separate obligations. The other
-eleven main reports have been mapped for notation and navigation but have not
+six main reports have been mapped for notation and navigation but have not
 received a full mathematical review in this pass:
 
-- Gamma functions.
 - Surcomplex analysis; contours and Stokes; differential equations; entire
-  functions at arbitrary rank; finite deformations; global divisors; nonabelian
-  support; rank-one Berkovich geometry; spectral theory.
-- Surquaternions.
+  functions at arbitrary rank; global divisors; nonabelian support.
 
 Continue with elementary statements and their dependencies before broad
 classification theorems. For each portion, check definitions and size/domain

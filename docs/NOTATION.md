@@ -171,7 +171,7 @@ conventions of [analytic geometry](surcomplex/analytic-geometry/article.tex)
 | Ring | Required coefficient data |
 |---|---|
 | `O(U)((t^Γ))` | One well-ordered Hahn support; all coefficient functions holomorphic on the **fixed** ordinary domain `U`. |
-| Common-domain germs `R_n` | Germs represented by such a family on **some one common** ordinary neighborhood of the center. |
+| Common-domain Hahn germs `𝓡_n` | Germs represented by such a family on **some one common** ordinary neighborhood of the center. |
 | Radius-free germs `A_n = ℂ{z₁,…,zₙ}((t^Γ))` | Each coefficient is a convergent germ; no common neighborhood is required. |
 | Formal-coefficient ring `ℂ[[z₁,…,zₙ]]((t^Γ))` | Formal coefficient power series with one well-ordered Hahn support. |
 | `K_Γ[[Z]]` | Formal power series in an ordinary integer-indexed variable with Hahn coefficients; no common support bound is implicit. |
@@ -183,6 +183,10 @@ Hahn support is not well ordered, so it is not a formal-coefficient Hahn
 series in `ℂ[[Z]]((t^Γ))`. Conversely, analytic versus formal coefficient
 conditions are about ordinary coefficient functions, not about the valuation
 of a single scalar.
+
+Keep the script letter in `𝓡_n`: analytic geometry reserves `R_n` for the
+ordinary convergent-germ ring `ℂ{z₁,…,zₙ}` (`analytic:def:ringA`), while
+`𝓡_n` is the common-domain Hahn germ ring (`analytic:def:ringR`).
 
 For a Hahn ring `A((t^Γ))`, distinguish its nonnegative-support subring from
 the positive-support **ideal of that subring**. The latter lacks `1`; when

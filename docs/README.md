@@ -87,7 +87,7 @@ conditions; the table is not a chain of interchangeable rings.
 |---|---|
 | `ℂ{z}((t^Γ))` | Each coefficient is a convergent germ; no common radius is required |
 | `O(D)((t^Γ))` | Every coefficient is holomorphic on the specified ordinary domain `D` |
-| Common-domain germ ring `Rₙ` | One neighborhood represents all coefficients, with shrinking allowed |
+| Common-domain Hahn germ ring `𝓡ₙ` | One neighborhood represents all coefficients, with shrinking allowed |
 | `ℂ[[z]]((t^Γ))` | Each coefficient is formal |
 
 For `η > 0`, the family `Σ_{r≥1} t^(rη)/(1−rz)` lies in the radius-free germ
