@@ -3,13 +3,13 @@
 **The finite-primitive criterion, the phase obstruction, and support-certified
 coordinate systems**
 
-A merged research report, 164 pages, built from ten manuscripts. Everything in
+A merged research report, 165 pages, built from ten manuscripts. Everything in
 this directory other than `article.tex`, `article.pdf` and this README is
 preserved source material.
 
 ```
 article.tex                        the merged report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled 164-page report
+article.pdf                        the compiled 165-page report
 README.md                          this guide
 11-autonomous-dynamics-sources.md  member 11's literature and repository-review log, unmodified
 code/                              the verification programs and build scripts of the ten
@@ -115,16 +115,18 @@ integrals from phase resonance; and the phase-lattice Picard–Vessiot torus of
 an arbitrary finite system, which is the diagonal Theorem 21.12 applied through
 the normal form rather than new Galois theory.
 
-**Two things are deliberately not claimed.** The non-Hermitian case is *not*
-classified in general — Part V computes one explicit non-Hermitian sector, see
-below — and Example 16.10 is the counterexample that marks the line: a
-nonnormal `A` with instantaneous eigenvalues `±i` whose system nevertheless
-has a fundamental matrix already in the base field, so that integrating
-imaginary parts of eigenvalues would predict `{ω, −ω}` instead of the correct
-`{0, 0}`. And Part III rests on a **new imported input** — the splitting of
-monic scalar operators into first-order factors and the surjectivity of
-nonzero scalar operators, transferred from the transseries field — which the
-first seven manuscripts never use. Every inhomogeneous existence statement in
+**Classification and explicit computation have different scopes.** The phase
+multiset classifies every finite system over `SC`, including non-Hermitian
+ones. The formula from instantaneous algebraic eigenvalues is proved for
+coefficients `iH` with `H` Hermitian; Example 16.10 refutes its unrestricted
+extension. Its nonnormal `A` has eigenvalues `±i` but a fundamental matrix
+already in the base field, hence phase multiset `{0, 0}` rather than the
+incorrect `{ω, −ω}`. Part V supplies another explicit formula for the
+power-Hahn regular-singular class. Part III's general normal form and
+inhomogeneous existence use an **additional imported input**: splitting monic
+scalar operators into first-order factors and surjectivity of nonzero scalar
+operators, transferred from the transseries field. The first seven manuscripts
+do not use this import. Every inhomogeneous existence statement in
 Part III comes from that import and not from the rank-one criterion; the
 register of non-claims says so at items N22, N24 and N53.
 
@@ -210,7 +212,7 @@ and the remark after Corollary 8.11 that it "is not a general nonlinear
 solvability theorem"; the old wording is kept, amended in place.
 
 A **deliberately separate** half treats *coordinate* differential equations in
-fixed-common-domain Hahn rings `O(U)((t^Γ))`: existence, uniqueness, support
+fixed-common-domain Hahn rings `Hol(U)((t^Γ))`: existence, uniqueness, support
 certificates, variation of constants, a Liouville determinant identity,
 monodromy valued in `GL_d(K_Γ)`, and a polynomially nonlinear initial-value
 theorem, all on strong summability and an **ordered**-word support lemma that
@@ -233,10 +235,15 @@ exception (Convention 5.1, Table 2):
 | accumulated phase | `B` | `No` | a primitive of the imaginary coefficient; **not** an angle; obstructed exactly when its purely infinite part is nonzero |
 | differential phase spectrum | `Ph(A)` | multisets in `P` | the `n` accumulated obstructions of a finite matrix system, as a multiset; the complete gauge invariant |
 
-`Obs(i) = ω` and `Obs(i/ω) = log ω` are purely infinite surreals, not arguments
+`Φ(i) = ω` and `Φ(i/ω) = log ω` are purely infinite surreals, not arguments
 of anything. "The phase of the solution is `log ω`" is meaningless; "the
 accumulated phase of the coefficient `i/ω` is `log ω`, which is infinite, so
 there is no solution" is the theorem.
+
+Here `Obs` acts on real surreal coefficients, and `Φ(a+ib) = Obs(b)`.
+In particular `Φ` vanishes on `No`, whereas `Obs(1) = ω`. The normalized
+primitive `I₀` has zero ordinary constant term and takes values in `P ⊕ m`;
+only its purely infinite part is the obstruction.
 
 The eighth manuscript writes `Ψ` for the map `b ↦ pp(B)` with `∂B = b`. That is
 **exactly** the report's `Obs`, so no fourth symbol was introduced; what is new
@@ -472,9 +479,10 @@ statement twice.
   splitting/surjectivity theorem and not through the rank-one criterion — the
   "at most one, not none" witnesses are untouched, and what changed is that
   their uniqueness is now known to be accompanied by existence. Item N24 now
-  records the Hermitian case settled and the non-Hermitian case open, keeping
-  the counterexample that marks the line. Nothing is strengthened beyond what a
-  source proves.
+  separates the general finite-system normal form from the explicit Hermitian
+  eigenvalue formula, keeping the counterexample to extending that formula to
+  arbitrary coefficients. Part V adds a computable regular-singular class.
+  These statements concern different scopes.
 * **Members 11 and 12 were integrated by the same rules.** Their reproofs of
   results already here — smallness, the missing oscillator, the ordered-word
   lemma, strip logarithms, the logarithmic separator, the missing logarithmic
@@ -553,18 +561,18 @@ member 11. In outline:
   `∂`; they do not deny ordinary oscillatory functions or algebraically defined
   global surcomplex phases, and the Ehrlich–Kaplan constructions should not be
   described as nonexistent.
-* **Matrix scope.** Part III settles the Hermitian case and *not* the
-  non-Hermitian one, and Example 16.10 refutes the obvious candidate
-  extension; Part V computes one non-Hermitian sector (the power-Hahn
-  regular-singular class) and nothing outside it. Its inhomogeneous existence rests entirely on an **imported**
-  splitting/surjectivity theorem, which is not a consequence of the scalar
-  criterion and is flagged at every use. Still open: which nontriangular
-  differential modules admit a filtration whose rank-one factors carry
-  *computable* obstructions — that needs genuine module-theoretic information,
-  not the eigenvalues of an instantaneous coefficient matrix — and higher-rank
-  differential modules. `Obs` and the normalizing gauges are exact *semantic*
-  operations, not algorithms; certified effective computation on
-  support-certified input languages is posed as an open problem, not solved.
+* **Matrix scope.** Part III classifies every ordinary finite system over `SC`.
+  The Hermitian hypothesis belongs to its eigenvalue formula; Example 16.10
+  shows why that formula does not apply to arbitrary coefficients. Part V
+  computes phases for the power-Hahn regular-singular class by an explicit
+  route without the matrix import. General inhomogeneous existence and the
+  abstract normal form rest on the imported splitting/surjectivity theorem,
+  which is not a consequence of the scalar criterion. Effective computation
+  of phases and normalizing gauges on specified input languages remains a
+  separate question. The general classification over `SC` also does not settle
+  gauge equivalence over a prescribed smaller field or systems of infinite
+  dimension. `Obs` and the normalizing gauges are exact semantic operations;
+  their existence alone gives no algorithm on arbitrary input descriptions.
   The spectral theorem does **not** remove the connection term `W*∂W`; that
   term is present and merely invisible in the quotient by `A`. The metric
   theorems make no Lyapunov or uniform-equivalence claim. Member 10's novelty
@@ -696,7 +704,7 @@ latexmk -pdf -interaction=nonstopmode article.tex
 
 If `latexmk` is unavailable, run `pdflatex -interaction=nonstopmode` three
 times so that the table of contents, the cross-references and the `cleveref`
-labels settle. The delivered build (164 pages) has zero LaTeX errors, zero
+labels settle. The delivered build (165 pages) has zero LaTeX errors, zero
 warnings, zero undefined references or citations, zero multiply-defined
 labels, zero duplicate destinations, and zero overfull or underfull boxes.
 

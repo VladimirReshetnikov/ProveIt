@@ -293,6 +293,15 @@ The [automorphism-rigidity report](surreal/exponential-automorphism-rigidity/art
 uses `log √(z z̄)` for `z ≠ 0`; this logarithmic modulus takes values in
 `No`, not a choice of complex logarithm.
 
+In the differential-equations report, `Obs(b)` is the purely infinite part
+of a primitive of the real surreal coefficient `b`, and `Φ(a+ib) = Obs(b)`.
+Thus `Obs(1) = Φ(i) = ω` but `Φ(1) = 0`. The normalized primitive `I₀`
+has zero ordinary constant term; it may retain an infinitesimal part and is
+not in general purely infinite. The phase multiset `Ph(A)` classifies finite
+systems over `SC` up to differential gauge equivalence. Computing it from
+instantaneous eigenvalues needs additional hypotheses; its existence alone
+does not provide that formula or an algorithm.
+
 Use “residue” with its definition: formal Laurent coefficient, actual local
 residue at a surcomplex point, residue of an ordinary-centered cluster, or
 the multivariable series/contour functional. In analytic geometry the

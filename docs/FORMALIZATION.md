@@ -1001,150 +1001,150 @@ Hermitian matrix theory; formal Hahn scalar calculus is not a substitute.
 | Proposition | `diff:prop:rescale` (line 1027) | Change of independent scale changes the solvability data |
 | Proposition | `diff:prop:totalchain` (line 1048) | The two formal derivations commute; the valid polynomial chain rule |
 | Proposition | `diff:prop:chain` (line 1083) | Two-derivative chain rule for series, with derived summability |
-| Lemma | `diff:lem:smallchain` (line 1379) | Formal identities survive infinitesimal evaluation |
-| Theorem | `diff:thm:unitphase` (line 1456) | Unique infinitesimal phase residue |
-| Theorem | `diff:thm:cisgroup` (line 1504) | Finite-angle phase group, with its differential identity |
-| Corollary | `diff:cor:polar` (line 1554) | Branch-free polar form |
-| Proposition | `diff:prop:normprimitive` (line 1610) | Normalized primitive |
-| Proposition | `diff:prop:RB` (line 1652) | Integration by parts, and a Rota--Baxter correction |
-| Theorem | `diff:thm:idealstructure` (line 1716) | Structure of the bounded-primitive ideal |
-| Theorem | `diff:thm:logimage` (line 1828) | Exact logarithmic-derivative image |
-| Theorem | `diff:thm:phasecriterion` (line 1884) | Finite-primitive criterion for rank-one equations |
-| Corollary | `diff:cor:oscillator` (line 1962) | The missing oscillator |
-| Corollary | `diff:cor:rotation` (line 2026) | The unit-circle version |
-| Corollary | `diff:cor:riccati` (line 2046) | A Riccati transfer |
-| Theorem | `diff:thm:gauge` (line 2106) | Purely infinite phase normal form, with uniqueness |
-| Corollary | `diff:cor:exact` (line 2150) | Obstruction exact sequence |
-| Corollary | `diff:cor:tensor` (line 2180) | Tensor, dual, and no finite-order obstruction |
-| Theorem | `diff:thm:power` (line 2227) | Sharp support threshold |
-| Corollary | `diff:cor:power` (line 2270) | Power threshold |
-| Corollary | `diff:cor:logscales` (line 2286) | Iterated-logarithm thresholds at every finite depth |
-| Theorem | `diff:thm:rational` (line 2378) | Rational phase criterion |
-| Theorem | `diff:thm:strip` (line 2499) | The strip exponential |
-| Theorem | `diff:thm:maximalstrip` (line 2536) | Exact domain of the exponential differential equation |
-| Theorem | `diff:thm:maximalstripalt` (line 2548) | Maximality restated |
-| Corollary | `diff:cor:noglobalPsi` (line 2581) | Phase-independent nonexistence |
-| Proposition | `diff:prop:defect` (line 2611) | Character-independent invariant defect |
-| Theorem | `diff:thm:variation` (line 2695) | Variation of constants |
-| Proposition | `diff:prop:polyforcing` (line 2745) | Polynomial forcing, and a terminating inverse |
-| Lemma | `diff:lem:kernels` (line 2786) | Kernels of powers and real shifts |
-| Theorem | `diff:thm:constant` (line 2817) | Constant-coefficient solution classification |
-| Corollary | `diff:cor:matrix` (line 2891) | Constant matrix systems |
-| Theorem | `diff:thm:triangular` (line 2932) | Triangular fundamental-matrix criterion |
-| Proposition | `diff:prop:trace` (line 2968) | The trace test is necessary and not sufficient |
-| Lemma | `diff:lem:matseparation` (line 3059) | The rank-one separation test |
-| Corollary | `diff:cor:obsorder` (line 3074) | The obstruction preserves order |
-| Theorem | `diff:thm:matsurjectivity` (line 3148) | Imported: splitting and first-order surjectivity, transferred |
-| Lemma | `diff:lem:matcyclic` (line 3193) | Cyclic vector, and a rank-one filtration |
-| Theorem | `diff:thm:matnormal` (line 3223) | Complete phase normal form for finite systems |
-| Corollary | `diff:cor:matinhom` (line 3286) | Existence for every forcing, and the exact kernel dimension |
-| Proposition | `diff:prop:matprojectors` (line 3320) | Canonical phase projectors |
-| Corollary | `diff:cor:mattrace` (line 3351) | The determinant sees only the phase sum |
-| Theorem | `diff:thm:matmetric` (line 3392) | The complete metric cone |
-| Theorem | `diff:thm:matunitary` (line 3440) | Unitary phase normal form |
-| Lemma | `diff:lem:matminmax` (line 3477) | Finite spectral theorem with attained min--max |
-| Lemma | `diff:lem:matweyl` (line 3501) | An entrywise Weyl bound, and its ideal form |
-| Lemma | `diff:lem:matboundedgauge` (line 3526) | Bounded-gauge estimate |
-| Theorem | `diff:thm:matspectral` (line 3555) | Spectral--integral classification of Hermitian systems |
-| Corollary | `diff:cor:matperturbation` (line 3618) | Finite-primitive perturbation invariance, with no gap hypothesis |
-| Corollary | `diff:cor:matkernel` (line 3629) | Exact kernel count |
-| Proposition | `diff:prop:sharpperturb` (line 3652) | Sharpness of the perturbation class |
-| Theorem | `diff:thm:matnonabelian` (line 3776) | Normalized compact integration |
-| Theorem | `diff:thm:matreal` (line 3877) | Real rotation-block classification |
-| Theorem | `diff:thm:matrealmetric` (line 3916) | The real metric cone and its parity |
-| Theorem | `diff:thm:matpinney` (line 3970) | Positive Pinney existence and uniqueness |
-| Theorem | `diff:thm:matamplitude` (line 4054) | Canonical amplitude--phase reduction |
-| Theorem | `diff:thm:matresonance` (line 4216) | The resonance algebra |
-| Corollary | `diff:cor:mattorus` (line 4311) | Every finite system has a phase torus |
-| Proposition | `diff:prop:matPValgebra` (line 4334) | The group algebra of the phase lattice, and its real form |
-| Proposition | `diff:prop:hahnderiv` (line 4483) | The derivation on a real-exponent workspace |
-| Corollary | `diff:cor:valphase` (line 4552) | A valuation test, on real exponents only |
-| Theorem | `diff:thm:resolvent` (line 4585) | First-order resolvent on a real-exponent workspace |
-| Proposition | `diff:prop:polyresolvent` (line 4627) | Polynomial Laurent inverse |
-| Proposition | `diff:prop:factorialambiguity` (line 4711) | Uniqueness depends on the ambient field |
-| Theorem | `diff:thm:factorial` (line 4739) | An exact factorially divergent forced oscillator |
-| Theorem | `diff:thm:Hahnintegral` (line 4846) | Exact derivative image: one resonant coefficient |
-| Theorem | `diff:thm:Hahnlogder` (line 4868) | Exact logarithmic-derivative image in $\Hring$ |
-| Proposition | `diff:prop:Hahnambient` (line 4901) | Workspace versus ambient |
-| Lemma | `diff:lem:monomialcriterion` (line 4987) | Monomial criterion |
-| Theorem | `diff:thm:hull` (line 5007) | Differential Hahn hull |
-| Proposition | `diff:prop:realgroup` (line 5067) | The real-exponent case, exactly |
-| Theorem | `diff:thm:localize` (line 5107) | Closure localization |
-| Theorem | `diff:thm:PVone` (line 5236) | Adjoining one missing rank-one solution |
-| Theorem | `diff:thm:extension` (line 5280) | The same extension, with differential simplicity |
-| Theorem | `diff:thm:PVlocal` (line 5324) | Over a localized workspace |
-| Theorem | `diff:thm:PVhahn` (line 5349) | Over the rational Hahn field |
-| Theorem | `diff:thm:PVrational` (line 5395) | Over the rational function field $\C(X)$ |
-| Lemma | `diff:lem:rationallogder` (line 5405) | Untitled |
-| Corollary | `diff:cor:nonembedding` (line 5434) | No differential embedding |
-| Proposition | `diff:prop:oscillatorExtension` (line 5503) | A genuine oscillator |
-| Theorem | `diff:thm:orderobstruction` (line 5565) | Oscillation cannot retain the $H$-field ordering rule |
-| Lemma | `diff:lem:saturated` (line 5612) | The lattice is saturated |
-| Theorem | `diff:thm:torus` (line 5625) | The diagonal phase torus |
-| Lemma | `diff:rs:lem:euler` (line 5853) | The Euler derivation on real-exponent Hahn fields |
-| Lemma | `diff:rs:lem:words` (line 6067) | Finite words at a fixed weight, with a length bound |
-| Corollary | `diff:rs:cor:support` (line 6090) | Products, geometric inverses, and well-founded recursion |
-| Lemma | `diff:rs:lem:critical` (line 6116) | Finite dependence at finitely many weights |
-| Theorem | `diff:rs:thm:normal` (line 6165) | Normalized resonant form |
-| Theorem | `diff:rs:thm:finite` (line 6229) | Finite resonance theorem |
-| Corollary | `diff:rs:cor:replacement` (line 6262) | Gauge-equivalent finite coefficient replacement |
-| Corollary | `diff:rs:cor:cutoff` (line 6277) | A useful but weaker cutoff statement |
-| Theorem | `diff:rs:thm:constantform` (line 6309) | Constant frequency-and-nilpotent form |
-| Lemma | `diff:rs:lem:eulermode` (line 6353) | Euler modes |
-| Theorem | `diff:rs:thm:selection` (line 6390) | Spectral selection and explicit solution envelope |
-| Corollary | `diff:rs:cor:invariance` (line 6427) | Perturbation invariance in the specified sector |
-| Corollary | `diff:rs:cor:real` (line 6439) | Real systems |
-| Theorem | `diff:rs:thm:Kclass` (line 6469) | Classification over the power-Hahn field |
-| Corollary | `diff:rs:cor:HomK` (line 6499) | Exact morphism dimensions over $\KR$ |
-| Theorem | `diff:rs:thm:SCclass` (line 6515) | Classification over the whole surcomplex field |
-| Corollary | `diff:rs:cor:tensor` (line 6550) | Solution dimensions of tensor products |
-| Proposition | `diff:rs:prop:phasespectrum` (line 6572) | An explicit non-Hermitian sector of the phase spectrum |
-| Theorem | `diff:rs:thm:Hahnsol` (line 6634) | The Hahn solution space |
-| Lemma | `diff:rs:lem:tautrans` (line 6652) | The logarithm is transcendental over $\KR$ |
-| Theorem | `diff:rs:thm:minlog` (line 6669) | Minimal logarithmic repair |
-| Theorem | `diff:rs:thm:forced` (line 6724) | Exact Hahn obstruction sequence |
-| Theorem | `diff:rs:thm:workspace` (line 6887) | Finite-monomial and one-logarithm envelope |
-| Proposition | `diff:rs:prop:boundary` (line 6956) | Infinitesimal coefficient, zero residue, no solution |
-| Lemma | `diff:aut:lem:small` (line 7187) | Finite coordinates have infinitesimal derivatives |
-| Lemma | `diff:aut:lem:evaluation` (line 7205) | Formal evaluation and the chain rule |
-| Lemma | `diff:aut:lem:implicit` (line 7237) | Formal implicit uniqueness in a monad |
-| Lemma | `diff:aut:lem:log` (line 7258) | Strip logarithms, for every normalized derivation |
-| Theorem | `diff:aut:thm:main` (line 7326) | Autonomous realization classification |
-| Lemma | `diff:aut:lem:projective` (line 7362) | Reduction of projective points |
-| Lemma | `diff:aut:lem:zero` (line 7394) | A nonconstant trajectory reduces to a zero |
-| Lemma | `diff:aut:lem:eigen` (line 7415) | Constant-coefficient eigenvectors |
-| Proposition | `diff:aut:prop:simple` (line 7438) | Linearization and all simple-zero solutions |
-| Lemma | `diff:aut:lem:leading` (line 7487) | The leading scale is forced |
-| Proposition | `diff:aut:prop:multiple` (line 7514) | Existence, uniqueness and completeness at a multiple zero |
-| Theorem | `diff:aut:thm:scales` (line 7597) | Uniform finite-scale localization |
-| Corollary | `diff:aut:cor:independent` (line 7646) | A continuum of independent solutions inside two scales |
-| Theorem | `diff:aut:thm:independence` (line 7675) | Derivation-independent autonomous sector |
-| Corollary | `diff:aut:cor:scalarbound` (line 7712) | Uniform scalar bound |
-| Corollary | `diff:aut:cor:realindep` (line 7730) | Real autonomous equations |
-| Corollary | `diff:aut:cor:earlier` (line 7741) | Two earlier corollaries hold for every normalized derivation |
-| Corollary | `diff:aut:cor:realbranches` (line 7780) | Exact real branch count |
-| Proposition | `diff:aut:prop:contraction` (line 7858) | Infinitesimal contraction |
-| Corollary | `diff:aut:cor:dual` (line 7873) | Holomorphic dual obstruction |
-| Theorem | `diff:aut:thm:hyperelliptic` (line 7887) | Squarefree hyperelliptic obstruction |
-| Lemma | `diff:aut:lem:formallog` (line 7944) | Normalized formal-group logarithm |
-| Proposition | `diff:aut:prop:abeliansplit` (line 7975) | Global splitting through the identity monad |
-| Theorem | `diff:aut:thm:abelianimage` (line 8014) | Abelian logarithmic-derivative image |
-| Corollary | `diff:aut:cor:abeliancriterion` (line 8071) | Finite-primitive criterion for abelian motion; surjective $\Dn$ |
-| Corollary | `diff:aut:cor:speeds` (line 8096) | Sharp one-power speed threshold; $\Dn=\der$ |
-| Theorem | `diff:thm:coherentlinear` (line 8353) | Positive-perturbation fundamental matrix |
-| Corollary | `diff:cor:coherentinhom` (line 8418) | Inhomogeneous coherent systems |
-| Corollary | `diff:cor:determinant` (line 8436) | Liouville determinant identity |
-| Proposition | `diff:prop:negativecoherent` (line 8453) | A negative leading exponent forbids a coherent scalar exponential |
-| Lemma | `diff:lem:nonlinear` (line 8520) | Admissibility of nonlinear evaluation |
-| Theorem | `diff:thm:ivp` (line 8550) | Support-certified positive-support initial-value problem |
-| Theorem | `diff:thm:monodromy` (line 8745) | Monodromy valued in $\GL_{d}(K_{\Gamma})$ |
-| Proposition | `diff:prop:formalrecursion` (line 8874) | Formal existence over any characteristic-zero field |
-| Lemma | `diff:lem:finiteincoming` (line 8927) | Finite incoming contributions |
-| Theorem | `diff:thm:coefderivation` (line 8941) | Differentiation preserves common-domain coherence |
-| Theorem | `diff:thm:totalchainhalo` (line 8989) | Total intrinsic derivative of an evaluation |
-| Corollary | `diff:cor:naturality` (line 9054) | Coefficientwise linear naturality |
-| Lemma | `diff:lem:twosupports` (line 10573) | Sum of two supports |
-| Lemma | `diff:lem:higman` (line 10602) | Finite-word lemma |
+| Lemma | `diff:lem:smallchain` (line 1381) | Formal identities survive infinitesimal evaluation |
+| Theorem | `diff:thm:unitphase` (line 1458) | Unique infinitesimal phase residue |
+| Theorem | `diff:thm:cisgroup` (line 1506) | Finite-angle phase group, with its differential identity |
+| Corollary | `diff:cor:polar` (line 1556) | Branch-free polar form |
+| Proposition | `diff:prop:normprimitive` (line 1612) | Normalized primitive |
+| Proposition | `diff:prop:RB` (line 1654) | Integration by parts, and a Rota--Baxter correction |
+| Theorem | `diff:thm:idealstructure` (line 1718) | Structure of the bounded-primitive ideal |
+| Theorem | `diff:thm:logimage` (line 1830) | Exact logarithmic-derivative image |
+| Theorem | `diff:thm:phasecriterion` (line 1886) | Finite-primitive criterion for rank-one equations |
+| Corollary | `diff:cor:oscillator` (line 1964) | The missing oscillator |
+| Corollary | `diff:cor:rotation` (line 2028) | The unit-circle version |
+| Corollary | `diff:cor:riccati` (line 2048) | A Riccati transfer |
+| Theorem | `diff:thm:gauge` (line 2108) | Purely infinite phase normal form, with uniqueness |
+| Corollary | `diff:cor:exact` (line 2152) | Obstruction exact sequence |
+| Corollary | `diff:cor:tensor` (line 2183) | Tensor, dual, and no finite-order obstruction |
+| Theorem | `diff:thm:power` (line 2230) | Sharp support threshold |
+| Corollary | `diff:cor:power` (line 2273) | Power threshold |
+| Corollary | `diff:cor:logscales` (line 2289) | Iterated-logarithm thresholds at every finite depth |
+| Theorem | `diff:thm:rational` (line 2381) | Rational phase criterion |
+| Theorem | `diff:thm:strip` (line 2502) | The strip exponential |
+| Theorem | `diff:thm:maximalstrip` (line 2539) | Exact domain of the exponential differential equation |
+| Theorem | `diff:thm:maximalstripalt` (line 2551) | Maximality restated |
+| Corollary | `diff:cor:noglobalPsi` (line 2584) | Phase-independent nonexistence |
+| Proposition | `diff:prop:defect` (line 2614) | Character-independent invariant defect |
+| Theorem | `diff:thm:variation` (line 2698) | Variation of constants |
+| Proposition | `diff:prop:polyforcing` (line 2749) | Polynomial forcing, and a terminating inverse |
+| Lemma | `diff:lem:kernels` (line 2790) | Kernels of powers and real shifts |
+| Theorem | `diff:thm:constant` (line 2821) | Constant-coefficient solution classification |
+| Corollary | `diff:cor:matrix` (line 2895) | Constant matrix systems |
+| Theorem | `diff:thm:triangular` (line 2936) | Triangular fundamental-matrix criterion |
+| Proposition | `diff:prop:trace` (line 2972) | The trace test is necessary and not sufficient |
+| Lemma | `diff:lem:matseparation` (line 3063) | The rank-one separation test |
+| Corollary | `diff:cor:obsorder` (line 3078) | The obstruction preserves order |
+| Theorem | `diff:thm:matsurjectivity` (line 3152) | Imported: splitting and first-order surjectivity, transferred |
+| Lemma | `diff:lem:matcyclic` (line 3197) | Cyclic vector, and a rank-one filtration |
+| Theorem | `diff:thm:matnormal` (line 3227) | Complete phase normal form for finite systems |
+| Corollary | `diff:cor:matinhom` (line 3290) | Existence for every forcing, and the exact kernel dimension |
+| Proposition | `diff:prop:matprojectors` (line 3324) | Canonical phase projectors |
+| Corollary | `diff:cor:mattrace` (line 3355) | The determinant sees only the phase sum |
+| Theorem | `diff:thm:matmetric` (line 3396) | The complete metric cone |
+| Theorem | `diff:thm:matunitary` (line 3444) | Unitary phase normal form |
+| Lemma | `diff:lem:matminmax` (line 3481) | Finite spectral theorem with attained min--max |
+| Lemma | `diff:lem:matweyl` (line 3505) | An entrywise Weyl bound, and its ideal form |
+| Lemma | `diff:lem:matboundedgauge` (line 3530) | Bounded-gauge estimate |
+| Theorem | `diff:thm:matspectral` (line 3559) | Spectral--integral classification of Hermitian systems |
+| Corollary | `diff:cor:matperturbation` (line 3622) | Finite-primitive perturbation invariance, with no gap hypothesis |
+| Corollary | `diff:cor:matkernel` (line 3633) | Exact kernel count |
+| Proposition | `diff:prop:sharpperturb` (line 3656) | Sharpness of the perturbation class |
+| Theorem | `diff:thm:matnonabelian` (line 3782) | Normalized compact integration |
+| Theorem | `diff:thm:matreal` (line 3895) | Real rotation-block classification |
+| Theorem | `diff:thm:matrealmetric` (line 3934) | The real metric cone and its parity |
+| Theorem | `diff:thm:matpinney` (line 3988) | Positive Pinney existence and uniqueness |
+| Theorem | `diff:thm:matamplitude` (line 4072) | Canonical amplitude--phase reduction |
+| Theorem | `diff:thm:matresonance` (line 4234) | The resonance algebra |
+| Corollary | `diff:cor:mattorus` (line 4334) | Every finite system has a phase torus |
+| Proposition | `diff:prop:matPValgebra` (line 4357) | The group algebra of the phase lattice, and its real form |
+| Proposition | `diff:prop:hahnderiv` (line 4512) | The derivation on a real-exponent workspace |
+| Corollary | `diff:cor:valphase` (line 4581) | A valuation test, on real exponents only |
+| Theorem | `diff:thm:resolvent` (line 4614) | First-order resolvent on a real-exponent workspace |
+| Proposition | `diff:prop:polyresolvent` (line 4656) | Polynomial Laurent inverse |
+| Proposition | `diff:prop:factorialambiguity` (line 4740) | Uniqueness depends on the ambient field |
+| Theorem | `diff:thm:factorial` (line 4768) | An exact factorially divergent forced oscillator |
+| Theorem | `diff:thm:Hahnintegral` (line 4875) | Exact derivative image: one resonant coefficient |
+| Theorem | `diff:thm:Hahnlogder` (line 4897) | Exact logarithmic-derivative image in $\Hring$ |
+| Proposition | `diff:prop:Hahnambient` (line 4930) | Workspace versus ambient |
+| Lemma | `diff:lem:monomialcriterion` (line 5016) | Monomial criterion |
+| Theorem | `diff:thm:hull` (line 5036) | Differential Hahn hull |
+| Proposition | `diff:prop:realgroup` (line 5096) | The real-exponent case, exactly |
+| Theorem | `diff:thm:localize` (line 5136) | Closure localization |
+| Theorem | `diff:thm:PVone` (line 5265) | Adjoining one missing rank-one solution |
+| Theorem | `diff:thm:extension` (line 5309) | The same extension, with differential simplicity |
+| Theorem | `diff:thm:PVlocal` (line 5353) | Over a localized workspace |
+| Theorem | `diff:thm:PVhahn` (line 5378) | Over the rational Hahn field |
+| Theorem | `diff:thm:PVrational` (line 5424) | Over the rational function field $\C(X)$ |
+| Lemma | `diff:lem:rationallogder` (line 5434) | Untitled |
+| Corollary | `diff:cor:nonembedding` (line 5463) | No differential embedding |
+| Proposition | `diff:prop:oscillatorExtension` (line 5533) | A genuine oscillator |
+| Theorem | `diff:thm:orderobstruction` (line 5595) | Oscillation cannot retain the $H$-field ordering rule |
+| Lemma | `diff:lem:saturated` (line 5644) | The lattice is saturated |
+| Theorem | `diff:thm:torus` (line 5657) | The diagonal phase torus |
+| Lemma | `diff:rs:lem:euler` (line 5887) | The Euler derivation on real-exponent Hahn fields |
+| Lemma | `diff:rs:lem:words` (line 6101) | Finite words at a fixed weight, with a length bound |
+| Corollary | `diff:rs:cor:support` (line 6124) | Products, geometric inverses, and well-founded recursion |
+| Lemma | `diff:rs:lem:critical` (line 6150) | Finite dependence at finitely many weights |
+| Theorem | `diff:rs:thm:normal` (line 6199) | Normalized resonant form |
+| Theorem | `diff:rs:thm:finite` (line 6263) | Finite resonance theorem |
+| Corollary | `diff:rs:cor:replacement` (line 6296) | Gauge-equivalent finite coefficient replacement |
+| Corollary | `diff:rs:cor:cutoff` (line 6311) | A useful but weaker cutoff statement |
+| Theorem | `diff:rs:thm:constantform` (line 6343) | Constant frequency-and-nilpotent form |
+| Lemma | `diff:rs:lem:eulermode` (line 6387) | Euler modes |
+| Theorem | `diff:rs:thm:selection` (line 6424) | Spectral selection and explicit solution envelope |
+| Corollary | `diff:rs:cor:invariance` (line 6461) | Perturbation invariance in the specified sector |
+| Corollary | `diff:rs:cor:real` (line 6473) | Real systems |
+| Theorem | `diff:rs:thm:Kclass` (line 6503) | Classification over the power-Hahn field |
+| Corollary | `diff:rs:cor:HomK` (line 6533) | Exact morphism dimensions over $\KR$ |
+| Theorem | `diff:rs:thm:SCclass` (line 6549) | Classification over the whole surcomplex field |
+| Corollary | `diff:rs:cor:tensor` (line 6584) | Solution dimensions of tensor products |
+| Proposition | `diff:rs:prop:phasespectrum` (line 6606) | An explicit non-Hermitian sector of the phase spectrum |
+| Theorem | `diff:rs:thm:Hahnsol` (line 6669) | The Hahn solution space |
+| Lemma | `diff:rs:lem:tautrans` (line 6687) | The logarithm is transcendental over $\KR$ |
+| Theorem | `diff:rs:thm:minlog` (line 6704) | Minimal logarithmic repair |
+| Theorem | `diff:rs:thm:forced` (line 6759) | Exact Hahn obstruction sequence |
+| Theorem | `diff:rs:thm:workspace` (line 6922) | Finite-monomial and one-logarithm envelope |
+| Proposition | `diff:rs:prop:boundary` (line 6991) | Infinitesimal coefficient, zero residue, no solution |
+| Lemma | `diff:aut:lem:small` (line 7222) | Finite coordinates have infinitesimal derivatives |
+| Lemma | `diff:aut:lem:evaluation` (line 7240) | Formal evaluation and the chain rule |
+| Lemma | `diff:aut:lem:implicit` (line 7272) | Formal implicit uniqueness in a monad |
+| Lemma | `diff:aut:lem:log` (line 7293) | Strip logarithms, for every normalized derivation |
+| Theorem | `diff:aut:thm:main` (line 7361) | Autonomous realization classification |
+| Lemma | `diff:aut:lem:projective` (line 7397) | Reduction of projective points |
+| Lemma | `diff:aut:lem:zero` (line 7429) | A nonconstant trajectory reduces to a zero |
+| Lemma | `diff:aut:lem:eigen` (line 7450) | Constant-coefficient eigenvectors |
+| Proposition | `diff:aut:prop:simple` (line 7473) | Linearization and all simple-zero solutions |
+| Lemma | `diff:aut:lem:leading` (line 7522) | The leading scale is forced |
+| Proposition | `diff:aut:prop:multiple` (line 7549) | Existence, uniqueness and completeness at a multiple zero |
+| Theorem | `diff:aut:thm:scales` (line 7632) | Uniform finite-scale localization |
+| Corollary | `diff:aut:cor:independent` (line 7681) | A continuum of independent solutions inside two scales |
+| Theorem | `diff:aut:thm:independence` (line 7710) | Derivation-independent autonomous sector |
+| Corollary | `diff:aut:cor:scalarbound` (line 7747) | Uniform scalar bound |
+| Corollary | `diff:aut:cor:realindep` (line 7765) | Real autonomous equations |
+| Corollary | `diff:aut:cor:earlier` (line 7776) | Two earlier corollaries hold for every normalized derivation |
+| Corollary | `diff:aut:cor:realbranches` (line 7815) | Exact real branch count |
+| Proposition | `diff:aut:prop:contraction` (line 7893) | Infinitesimal contraction |
+| Corollary | `diff:aut:cor:dual` (line 7908) | Holomorphic dual obstruction |
+| Theorem | `diff:aut:thm:hyperelliptic` (line 7922) | Squarefree hyperelliptic obstruction |
+| Lemma | `diff:aut:lem:formallog` (line 7979) | Normalized formal-group logarithm |
+| Proposition | `diff:aut:prop:abeliansplit` (line 8010) | Global splitting through the identity monad |
+| Theorem | `diff:aut:thm:abelianimage` (line 8049) | Abelian logarithmic-derivative image |
+| Corollary | `diff:aut:cor:abeliancriterion` (line 8106) | Finite-primitive criterion for abelian motion; surjective $\Dn$ |
+| Corollary | `diff:aut:cor:speeds` (line 8131) | Sharp one-power speed threshold; $\Dn=\der$ |
+| Theorem | `diff:thm:coherentlinear` (line 8388) | Positive-perturbation fundamental matrix |
+| Corollary | `diff:cor:coherentinhom` (line 8453) | Inhomogeneous coherent systems |
+| Corollary | `diff:cor:determinant` (line 8471) | Liouville determinant identity |
+| Proposition | `diff:prop:negativecoherent` (line 8488) | A negative leading exponent forbids a coherent scalar exponential |
+| Lemma | `diff:lem:nonlinear` (line 8555) | Admissibility of nonlinear evaluation |
+| Theorem | `diff:thm:ivp` (line 8585) | Support-certified positive-support initial-value problem |
+| Theorem | `diff:thm:monodromy` (line 8780) | Monodromy valued in $\GL_{d}(K_{\Gamma})$ |
+| Proposition | `diff:prop:formalrecursion` (line 8912) | Formal existence over any characteristic-zero field |
+| Lemma | `diff:lem:finiteincoming` (line 8965) | Finite incoming contributions |
+| Theorem | `diff:thm:coefderivation` (line 8979) | Differentiation preserves common-domain coherence |
+| Theorem | `diff:thm:totalchainhalo` (line 9028) | Total intrinsic derivative of an evaluation |
+| Corollary | `diff:cor:naturality` (line 9093) | Coefficientwise linear naturality |
+| Lemma | `diff:lem:twosupports` (line 10621) | Sum of two supports |
+| Lemma | `diff:lem:higman` (line 10650) | Finite-word lemma |
 
 ### dynamics-and-normal-forms
 

@@ -34,6 +34,7 @@ No row below certifies every claim in an entire report.
 | [Nonabelian support](surcomplex/nonabelian-support/) | Read the full main matrix Cousin and monodromy chains. Proved that well-ordering of full raw transition support is sufficient but not necessary, while raw singular support fails both directions. Added a left-gauge counterexample; corrected matrix exp/log domains, support-condition invariance, classification scope and unsupported computation claims. The main support correction received a second review. |
 | [Contours and Stokes](surcomplex/contours-and-stokes/) | Checked the revised support, smooth pullback, topology, microscopic-cycle, rational-comparison and sampling arguments. Replaced the false cofinality shortcut by finite-word incidence; corrected the word-embedding inequality and diagonal-substitution comparison. Supplied the properness and identity-theorem steps in the ramified Leray construction and expanded target composition about the ordinary map. Distinguished coefficientwise recovery from valuation limits and standard-part continuity from fine continuity. |
 | [Surcomplex analysis](surcomplex/analysis/) | Read the main local-to-global arguments. Corrected fixed-point evaluation to faithfulness of function germs, proved the uniform Taylor bound with summable absolute values, and separated fine class statements from fixed-workspace assertions. Repaired root and reciprocal-support hypotheses, boundedness and function-class comparisons, and the bare-inequality Rouché counterexample. Extended the stated reciprocal-exponential value distribution to every explicit twist using a surviving cofinal family of periods; corrected kernel and branch comparisons. |
+| [Differential equations](surcomplex/differential-equations/) | Reviewed the earlier scalar, finite-matrix, workspace and coherent-coordinate chains and reconciled their scope statements with the later regular-singular comparison. Corrected the domains of `Obs`, `Φ` and the normalized primitive; separated finite-system classification from Hermitian eigenvalue computation. Added the exact cocycle counterexample, expanded Dickson's lemma and the set-sized witness construction, and supplied missing coefficient, nonzero and differential-hull hypotheses. Corrected differential algebraicity, monodromy assumptions, derivative notation and stale implementation claims. The new regular-singular and autonomous proof chains have not received a full review. |
 
 Each correction was reviewed against its local definitions and downstream uses
 within the stated scope. Changed PDFs were rebuilt and affected pages inspected.
@@ -88,6 +89,14 @@ All nine unchanged finite programs passed on temporary copies, whose source
 hashes match the maintained programs. The revised theorem passages and
 catalogue entry were inspected.
 
+The differential-equations PDF rebuilt in three passes to 165 pages, with no
+warnings, unresolved references or box issues, matching the clean baseline.
+Eight earlier suites (members 01, 02 and 05–10) passed on temporary copies
+at 1,395, 115, 149, 258, 291, 150, 259 and 62 checks; their program hashes
+match the preserved originals. An independent exact calculation confirmed
+the nonzero fourth-order coefficient in the cocycle counterexample.
+Members 11 and 12 were not rerun in this review.
+
 ## Collection-wide work
 
 The [reader map](README.md), [catalogue](manifest.tex) and statement index
@@ -120,8 +129,8 @@ the report versions and suites then reviewed.
 The reports above have received targeted corrections or a main-text reading,
 as recorded in each row. Uninspected portions, imported results, source-claim
 reconciliation and any formalization remain separate obligations. The
-differential-equations report has unfinished edits from its review. These are
-not covered by the completed-review rows above.
+differential-equations row covers the earlier proof chains and targeted scope
+corrections in the expanded report; it does not certify the two new parts.
 
 Continue with elementary statements and their dependencies before broad
 classification theorems. For each portion, check definitions and size/domain
