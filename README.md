@@ -154,11 +154,13 @@ Canonical sign options also define a small, well-founded game graph. Its
 recursive game construction preserves and reflects comparison, proves the
 image games numeric, and gives an explicit order isomorphism with the reused
 numeric-game surreal field. Every small cut is preserved, and induction on
-numeric-game options proves surjectivity. Arithmetic compatibility remains
-to be proved before transferring that field to the sign carrier.
+numeric-game options proves surjectivity. The bridge preserves the original
+Conway addition, sign reversal, zero and one. Transporting the proved game
+multiplication and inverse then makes the sign carrier an ordered field,
+retaining its original additive structure and numerical order.
 The empty and one-plus sequences map literally to the raw games zero and one.
 The numeric-game quotient also satisfies the indexed small-cut interface and
 its comparison rule, including reconstruction from a numeric game's moves.
-Multiplication, field inverses, real closedness and the normal-form bridge to
-Hahn series remain open. A successful build proves only the imported Lean
+Real closedness and the normal-form bridge to Hahn series remain open.
+A successful build proves only the imported Lean
 statements, not coverage of all the source documents.
