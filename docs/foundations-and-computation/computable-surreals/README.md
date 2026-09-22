@@ -11,9 +11,10 @@ mathematical existence from uniform algorithms.
 - `article.tex`: complete editable LaTeX source; no external bibliography or graphics.
 - `MERGE_NOTES.md`: a short account of the principal reconciliation decisions.
 - `code/run_all.py`: runs all four verification suites and writes their logs.
-- `code/original_A-verify.py`, `original_B-verify.py`, `original_C-verify_examples.py`:
+- `code/original_A-verify.py`, `code/original_B-verify.py`, `code/original_C-verify_examples.py`:
   the unchanged original verification programs.
 - `code/verify_reconciliation.py`: additional independent finite cross-model checks.
+- `code/Makefile`: PDF build, finite-check, and LaTeX cleanup targets.
 - `data/`: rerun logs, individual JSON results where available, and a summary.
 - `data/provenance-manifest.json`: exact input archive identities, file hashes and
   line counts.
@@ -48,6 +49,8 @@ Alternatively run `pdflatex -interaction=nonstopmode -halt-on-error article.tex`
 three times so that contents and cross-references settle. The bibliography is
 embedded; BibTeX/Biber is not required. The source uses Latin Modern and standard
 mathematical fonts supplied by the TeX installation. No font files are distributed.
+From the package root, `make -f code/Makefile` runs the same `latexmk` command;
+`make -C code` also works because the Makefile resolves the package directory.
 
 ## Reproduce the finite checks
 
@@ -59,7 +62,8 @@ python code/run_all.py
 
 `python3 code/run_all.py` works where Python is named `python3`; on Windows,
 `py code/run_all.py` is another option. The runner uses the same interpreter for
-all subprocesses, records logs under `data/`, and exits nonzero if a suite fails.
+all subprocesses, records logs and JSON results under `data/`, and exits nonzero
+if a suite fails. `make -f code/Makefile test` runs the same checks.
 No network access is used. Original source programs have not been modified.
 
 Observed September 22, 2026 rerun results (the runtime and UTC timestamp are

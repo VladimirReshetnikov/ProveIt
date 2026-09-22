@@ -68,8 +68,10 @@ to concern support classes beyond this already established case.
 ## Provenance and limitations
 
 Appendix B provides original source-line locations and a topic crosswalk. The
-original TeX files and unchanged verification programs are preserved, with input
-hashes. Bibliographic status and repository scope are documented explicitly.
+original TeX manuscripts are not redistributed; `data/provenance-manifest.json`
+records their input hashes and line counts. The three original verification
+programs are retained unchanged under `code/`. Bibliographic status and
+repository scope are documented explicitly.
 The three original suites and a new cross-model suite pass, but no finite check
 is presented as a proof of the infinite theory. No new Lean verification or
 literature-wide novelty claim is made.

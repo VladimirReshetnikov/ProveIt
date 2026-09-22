@@ -314,8 +314,8 @@ finite coefficients is finite. For explicitly split monic polynomials,
 standard part preserves the linear factorization and root multiplicities.
 The surreal field is not algebraically closed, and no linear order is
 compatible with surcomplex multiplication.
-Real closedness of the actual sign field and the arithmetic part of the
-infinite normal-form bridge to Hahn series remain open.
+Real closedness of the actual sign field is now proved, and small strong
+real and complex sums are constructed through canonical normal forms.
 The bridge now has an explicit formal carrier of small reverse-well-ordered
 supports, reusing the pinned upstream ordinal truncation APIs. Recursion on
 support length constructs a canonical actual surreal candidate: the simplest
@@ -328,9 +328,46 @@ Conway monomials evaluate exactly. Birthday bounds make all partial approximatio
 small. Unions of their initial-segment chains and a residual-extension lemma
 then give surjectivity by Zorn's lemma. Evaluation and canonical extraction
 therefore form an order isomorphism with proved inverse laws.
+Every real multiple of a Conway monomial evaluates exactly. Mutual prefix
+comparisons prove addition by support-length induction and multiplication by
+actual-birthday induction. The latter uses the formal product's support and
+the leading term of each remaining product of tails. Evaluation is now an
+ordered field isomorphism, including inverses, quotients, powers and rational
+casts, and agrees with the independently constructed finite evaluation.
+Every small real Hahn workspace embeds into the formal field and the actual
+sign field through its strictly increasing additive exponent map, preserving
+coefficients and lexicographic order. Any small family of formal forms lies
+in one small divisible workspace. In particular, polynomial coefficients
+descend to such a workspace, whose odd-degree root theorem transfers back
+through the injective embedding. Together with the independently constructed
+nonnegative square roots this proves real closedness of both fields.
+Normal-form extraction puts every small family of actual surreals inside
+one small Hahn subfield and preserves degree when descending polynomials.
+Localizing both coordinates of a surcomplex polynomial's coefficients in
+one complex Hahn workspace proves actual algebraic closedness, linear
+factorization, and equality of root multiplicity count with degree.
+The real Hahn embedding preserves valuation and leading coefficient for
+arbitrary supports. Finite values have nonnegative Hahn order, infinitesimal
+values have positive order, and standard part extracts the zero coefficient.
+The complex embedding also preserves valuation, leading coefficient,
+finiteness, infinitesimality, and standard part. Its leading-term and modulus
+decompositions retain the native coefficient and exponent. Every small actual
+complex family lies in a common small complex Hahn subfield. Both embeddings
+commute with exponent-workspace enlargement.
+Actual strong real and complex sums use the two native Hahn summability conditions:
+well-ordered joint support and finite coefficient fibers. Small index types
+give small sum support, and workspace evaluation commutes with these sums.
+Strong sums respect addition, negation, jointly summable products, and arbitrary
+fixed scalars. Small real families can be reindexed and regrouped along any
+index map. Constant families are strongly summable exactly when finitely many
+are nonzero, so the ordinary geometric constant family is not a strong sum.
+Every real or complex formal power series evaluates at actual infinitesimals,
+including zero, with no coefficient-growth restriction. Evaluation is a ring
+homomorphism, equals the displayed strong sum, preserves the constant standard
+part, and commutes with formal composition with zero inner constant term.
 The approximation inequalities alone never give uniqueness: a sufficiently
-small positive monomial produces another solution. Agreement with arbitrary
-finite monomial evaluation, preservation of addition and multiplication,
-and compatibility with strong sums remain separate obligations.
+small positive monomial produces another solution. Finite-variable evaluation,
+differentiation, recentered analytic Taylor lifting, and universe coherence
+remain separate obligations.
 A successful build proves only the imported Lean
 statements, not coverage of all the source documents.

@@ -5,8 +5,11 @@ repository proves evaluation, arithmetic, valuation, leading coefficients,
 and real order for **finite** normal forms. It now constructs a canonical cut
 candidate for every small formal normal form, with recursive residual bounds,
 leading data and negation. Comparison and bounded extraction now make it an
-order isomorphism with the actual surreal carrier. Arithmetic preservation
-and compatibility with strong sums remain open.
+ordered field isomorphism with the actual surreal carrier. Small-family
+localization now transfers odd-degree roots from divisible Hahn workspaces,
+proving real closedness. Actual surcomplex algebraic closedness, valuation
+and standard-part preservation, exponent-workspace coherence, and small
+strong real sums are now constructed as well.
 The obligations are those in `found:eq:normalform`, `found:sub:bridge`, and
 `found:thm:workspace` of the [foundations report](foundations-and-computation/foundations/article.tex).
 
@@ -135,8 +138,7 @@ is dyadic, which gives the rigidity needed at exponent zero.
 [`SmallNormalFormMonomials.lean`](../Surreal/Foundations/SmallNormalFormMonomials.lean)
 also proves exact evaluation of `single a 1` as `omegaPower a`: the native
 omega cut is a prefix of every positive representative of its valuation
-class, providing the reverse simplicity relation. General real coefficients
-at arbitrary exponents remain to be handled.
+class, providing the reverse simplicity relation. The general real-coefficient case is now proved below.
 
 [`SmallNormalFormBirthday.lean`](../Surreal/Foundations/SmallNormalFormBirthday.lean)
 bounds support length by the candidate's birthday. A partial form is required
@@ -165,25 +167,159 @@ cannot have nonzero residual, because the proved extension would contradict
 maximality. Thus `cutEvaluation_surjective` and `cutEvaluation_injective`
 give `cutEvaluationOrderIso`, with inverse `normalForm`. Both inverse laws
 and the zero, negation, ordinary-real, and Conway-monomial formulas are proved. This is an
-order isomorphism; no field isomorphism or strong-sum law is inferred from it.
+order isomorphism; arithmetic requires the separate proofs below.
+
+## Arithmetic compatibility
+
+[`SmallNormalFormRealMonomials.lean`](../Surreal/Foundations/SmallNormalFormRealMonomials.lean)
+proves evaluation of `single a r` as `ofReal r * omegaPower a` for every real
+coefficient, including zero and both signs. A product presentation of the
+real coefficient and omega power has option gaps whose valuations are at
+most the monomial's threshold. A higher-valuation error preserves all of
+these bounds, giving the reverse prefix needed for equality.
+
+[`SignSequenceSumCutSimplicity.lean`](../Surreal/Foundations/SignSequenceSumCutSimplicity.lean)
+and [`SmallNormalFormSumSimplicity.lean`](../Surreal/Foundations/SmallNormalFormSumSimplicity.lean)
+express realization of the Conway sum cut by two translated approximation
+invariants. Nested induction on the support lengths in
+[`SmallNormalFormAddition.lean`](../Surreal/Foundations/SmallNormalFormAddition.lean)
+shows both that the actual sum approximates the formal sum and that the
+formal sum's value realizes this Conway cut. Mutual prefix simplicity gives
+`cutEvaluation_add`, without needing extraction or approximation uniqueness.
+
+For multiplication,
+[`SmallNormalFormProductFrontier.lean`](../Surreal/Foundations/SmallNormalFormProductFrontier.lean)
+selects supported factor exponents `a,b` for every supported product exponent
+`a+b`. Products involving the earlier truncations determine the product
+strictly above `a+b`, and the remaining product of tails has leading
+coefficient `coeff F a * coeff G b` there. In
+[`SmallNormalFormMultiplication.lean`](../Surreal/Foundations/SmallNormalFormMultiplication.lean),
+induction on the two actual birthdays identifies those earlier products.
+Leading-term arithmetic controls the remaining tail product and proves all
+center constraints. Canonical Conway product options, pulled back by
+extraction, supply the opposite prefix comparison. Thus `cutEvaluation_mul`
+holds for arbitrary small supports.
+
+[`SmallNormalFormAddEquiv.lean`](../Surreal/Foundations/SmallNormalFormAddEquiv.lean)
+and [`SmallNormalFormFieldEquiv.lean`](../Surreal/Foundations/SmallNormalFormFieldEquiv.lean)
+package the resulting ordered additive and field isomorphisms. Inversion,
+division, powers and rational casts are consequences of the native field
+homomorphism API, with the fields' totalized zero conventions.
+[`SmallNormalFormFiniteEvaluation.lean`](../Surreal/Foundations/SmallNormalFormFiniteEvaluation.lean)
+proves agreement with the independent finite monoid-algebra evaluation.
+
+[`SmallNormalFormHahnEmbedding.lean`](../Surreal/Foundations/SmallNormalFormHahnEmbedding.lean)
+embeds an entire small real Hahn workspace into the formal field. Negating
+the exponent map converts increasing valuation exponents to decreasing
+growth exponents. Coefficients and support are preserved exactly, and the
+map is an injective ring homomorphism.
+[`SignSequenceHahnEmbedding.lean`](../Surreal/Foundations/SignSequenceHahnEmbedding.lean)
+composes it with the field equivalence to embed the whole workspace into
+actual surreals, preserving the native lexicographic order and sending
+each singleton to its real coefficient times the corresponding t-monomial.
+
+## Small workspaces and real closedness
+
+[`SmallNormalFormWorkspace.lean`](../Surreal/Foundations/SmallNormalFormWorkspace.lean)
+pulls coefficients back along the negative exponent map. The pullback recovers
+a form whenever its support lies in that image. The rational span of the
+union of a small family's supports therefore supplies one small divisible
+workspace and exact preimages for the entire family. Mathlib's polynomial
+lifts API then descends every polynomial to this common workspace.
+
+[`SmallNormalFormRealClosed.lean`](../Surreal/Foundations/SmallNormalFormRealClosed.lean)
+uses injectivity to preserve polynomial degree and transfers the proved Hahn
+odd-degree root theorem. The actual sign field's independently constructed
+nonnegative square roots transport in the other direction. This proves
+`IsRealClosed SmallNormalForm` without assuming closedness of either field.
+[`SignSequenceRealClosed.lean`](../Surreal/Foundations/SignSequenceRealClosed.lean)
+transfers odd-degree roots through the field equivalence and combines them
+with the existing genetic square roots to prove `IsRealClosed SignSequence`.
+
+[`SignSequenceWorkspace.lean`](../Surreal/Foundations/SignSequenceWorkspace.lean)
+packages exact simultaneous preimages for any small actual family. The image
+is a small subfield, and polynomial descent preserves degree.
+[`Surcomplex/AlgebraicallyClosed.lean`](../Surreal/Surcomplex/AlgebraicallyClosed.lean)
+extends the actual real Hahn embedding coordinatewise through the native
+quadratic/Hahn equivalence. Both coordinates of all polynomial coefficients
+lie in one small divisible workspace. Its complex Hahn field supplies roots
+of positive-degree polynomials, proving `IsAlgClosed Surcomplex` and the
+linear factorization and root-multiplicity formulas.
+
+[`SignSequenceHahnValuation.lean`](../Surreal/Foundations/SignSequenceHahnValuation.lean)
+identifies actual valuation with the embedded least Hahn exponent, retaining
+infinity at zero, and preserves the leading real coefficient. Finiteness
+and infinitesimality agree with nonnegative and positive Hahn order. On the
+finite domain, subtracting the zero coefficient leaves positive order, so
+the actual standard part is exactly that coefficient.
+[`Surcomplex/HahnValuation.lean`](../Surreal/Surcomplex/HahnValuation.lean)
+uses the minimum of the two coordinate orders to prove the corresponding
+complex valuation, finiteness, infinitesimality and standard-part formulas.
+[`Surcomplex/HahnLeading.lean`](../Surreal/Surcomplex/HahnLeading.lean)
+also identifies every embedded complex monomial, leading coefficient and
+leading term. Scaling by the least exponent gives an order-zero series,
+so standard part recovers its native leading coefficient, including the
+separate zero case. The actual modulus has that coefficient's ordinary norm.
+[`Surcomplex/Workspace.lean`](../Surreal/Surcomplex/Workspace.lean)
+extends localization to every small complex family, with exact preimages
+and an isomorphism onto the resulting small actual subfield.
+
+## Strong sums and exponent-workspace coherence
+
+[`SignSequenceStrongSummation.lean`](../Surreal/Foundations/SignSequenceStrongSummation.lean)
+defines strong summability on canonical normal forms by the native Hahn
+conditions: a partially well-ordered support union and finite coefficient
+fibers. A small index type gives a small support union and hence a small
+coefficientwise sum. Evaluation defines its actual strong sum; extracting
+the normal form recovers exactly the formal sum, coefficient by coefficient.
+Native Hahn workspace summable families remain strongly summable after
+actual evaluation, and evaluation commutes with their small strong sums.
+[`Surcomplex/StrongSummation.lean`](../Surreal/Surcomplex/StrongSummation.lean)
+combines the two canonical real normal forms. Complex joint support and
+finite coefficient incidence are equivalent to the respective coordinate
+conditions. Coordinatewise actual summation then agrees exactly with the
+native complex Hahn sum and commutes with workspace evaluation.
+
+The real and complex `StrongAlgebra` modules package canonical extraction
+as ring maps and reuse native summable-family addition, negation, product,
+and scalar multiplication. Their sum identities retain index smallness.
+[`SignSequenceStrongRegroup.lean`](../Surreal/Foundations/SignSequenceStrongRegroup.lean)
+restricts, reindexes and regroups a jointly summable family along arbitrary
+index maps. Every fiber sum is formed under a proved smallness bound.
+[`Surcomplex/StrongConstants.lean`](../Surreal/Surcomplex/StrongConstants.lean)
+proves that ordinary real and complex constant families are strongly
+summable exactly when finitely many entries are nonzero, and computes their
+finite coefficient sum. Thus ordinary convergence of `2⁻ⁿ` does not supply
+a Hahn sum of those constants.
+
+[`SignSequenceHahnCoherence.lean`](../Surreal/Foundations/SignSequenceHahnCoherence.lean)
+and [`Surcomplex/HahnCoherence.lean`](../Surreal/Surcomplex/HahnCoherence.lean)
+prove that embedding exponents into a larger small workspace and then
+evaluating agrees with evaluation along the composite exponent map.
+The identities hold for complete ring maps and arbitrary Hahn supports.
+
+## Actual univariate formal evaluation
+
+[`SignSequencePowerSeries.lean`](../Surreal/Foundations/SignSequencePowerSeries.lean)
+and [`Surcomplex/PowerSeries.lean`](../Surreal/Surcomplex/PowerSeries.lean)
+localize an actual infinitesimal argument in a small workspace and compose
+native admissible Hahn evaluation with its actual embedding. The resulting
+ring maps evaluate the variable and constants exactly; the displayed
+coefficient-times-power families are strongly summable and give their values.
+This intrinsic description proves agreement with every small workspace
+representation. Outputs are finite with the prescribed constant standard
+part, and formal composition is valid for inner series with zero constant
+term. Zero arguments are included. These are the univariate formal clauses
+of `a:cor:complexsub`; they do not prove holomorphic fixed-domain lifting.
 
 ## Remaining dependency order
 
-1. Prove exact evaluation of singleton monomials with arbitrary real
-   coefficients and agreement with the existing finite ring evaluation.
-   Real constants and unit-coefficient Conway monomials are already proved.
-2. Prove the substantive simplicity and truncation compatibility results
-   needed for canonical choices to preserve addition and multiplication.
-   Merely showing both sides satisfy approximation bounds is insufficient.
-3. Package the resulting ordered field isomorphism, then transport the
-   fixed-Hahn closedness and localization theorems to actual surreal data.
-4. Prove preservation of strong sums, standard part, and admissible Taylor
-   evaluation, with coherence under exponent enlargement and universe lifts.
-   Extend the real bridge to surcomplex numbers through the coordinate field
-   construction.
+1. Construct finite-variable formal evaluation and its composition and
+   differentiation laws, then recentered analytic Taylor lifting.
+2. Prove compatibility under universe lifts and the remaining
+   analytic-operation correspondences.
 
-The order isomorphism and inverse extraction remove the previous existence
-and termination obligations. They do not remove the arithmetic obligations.
-The existing Hahn closure and Hensel theorems can be transferred only after
-the requisite field bridge is proved; they were not assumptions in the
-construction of the canonical order isomorphism.
+Existence, inverse extraction, real monomials, finite evaluation and field
+arithmetic are now proved. Small real and complex strong sums, univariate
+formal evaluation and exponent-workspace coherence are also proved. The remaining clauses above require their own
+constructions before the entire workspace theorem is covered.

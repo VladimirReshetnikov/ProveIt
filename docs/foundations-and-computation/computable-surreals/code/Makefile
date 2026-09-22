@@ -1,14 +1,16 @@
-REPORT_DIR := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/..)
-
 .PHONY: all test clean
 
-all: $(REPORT_DIR)/article.pdf
+PACKAGE_ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))/..)
+PYTHON ?= python3
+LATEXMK ?= latexmk
 
-$(REPORT_DIR)/article.pdf: $(REPORT_DIR)/article.tex
-	cd "$(REPORT_DIR)" && latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+all: $(PACKAGE_ROOT)/article.pdf
+
+$(PACKAGE_ROOT)/article.pdf: $(PACKAGE_ROOT)/article.tex
+	cd "$(PACKAGE_ROOT)" && $(LATEXMK) -pdf -interaction=nonstopmode -halt-on-error article.tex
 
 test:
-	cd "$(REPORT_DIR)" && python3 code/run_all.py
+	$(PYTHON) "$(PACKAGE_ROOT)/code/run_all.py"
 
 clean:
-	cd "$(REPORT_DIR)" && latexmk -c article.tex
+	cd "$(PACKAGE_ROOT)" && $(LATEXMK) -c article.tex
