@@ -25,8 +25,8 @@ Apache license are included in the repository.
 
 ## Formalization
 
-The [source inventory](docs/FORMALIZATION.md) covers twenty-five research reports
-and their preserved source manuscripts. The
+The [source inventory](docs/FORMALIZATION.md) covers twenty-six research reports
+and the source manuscripts preserved in Git history. The
 [coverage and dependency ledger](docs/FORMALIZATION.md) records their statements,
 the proposed Layer A–E implementation order, and the exact scope of each
 implemented result.
@@ -370,7 +370,17 @@ These results also hold for arbitrary formal series in finitely many actual
 infinitesimal variables, including zero inputs and an empty variable type.
 Infinitesimal geometric strong sums equal `(1 - x)⁻¹`, with exact finite
 remainders and valuations. For nonzero inputs their partial sums have no
-limit in the fine topology.
+limit in the fine topology. At `x = t`, the remainder exceeds the named
+radius `t^ω` for every finite partial sum.
+Actual infinitesimal exponentials and logarithms are mutually inverse,
+respect their group laws, and commute with conjugation. The logarithm of
+a modulus-one element near one has zero real part. Ordinary real and complex
+binomial exponents give unique roots near one; the real half-power agrees
+with the constructed square root.
+Formal-variable images under homomorphisms into ordered fields must be
+infinitesimal. Every actual surreal infinitesimal occurs as such an image,
+and actual real or complex evaluation is injective exactly at nonzero inputs.
+Its valuation is the first nonzero formal degree times the input valuation.
 The approximation inequalities alone never give uniqueness: a sufficiently
 small positive monomial produces another solution. Differentiation,
 recentered analytic Taylor lifting, and universe coherence
