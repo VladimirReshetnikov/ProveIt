@@ -16,7 +16,7 @@ or countability assumption on the exponents is used.
 `IsStrongHahnMeasure` is `meas:def:strong`: the empty set has mass zero, and every
 pairwise disjoint measurable sequence has a strongly summable family of masses
 whose Hahn sum is the mass of the union. A strongly summable family `w`
-defines the set function `A ↦ ∑ˢ_{x ∈ A} w x` of equation (2) on all subsets.
+defines the set function `A ↦ ∑ˢ_{x ∈ A} w x` of `meas:eq:atomic` on all subsets.
 It is a strong Hahn measure for every measurable structure. It is additive on
 arbitrary set-indexed disjoint families (`meas:thm:atomic`(iv)), with the family of
 masses constructed as a regrouping of `w`. Over ordered coefficients it is
@@ -122,7 +122,7 @@ structure IsStrongHahnMeasure [MeasurableSpace X] (μ : Set X → R⟦Γ⟧) : P
   iUnion : ∀ A : ℕ → Set X, (∀ n, MeasurableSet (A n)) → Pairwise (Function.onFun Disjoint A) →
     ∃ s : SummableFamily Γ R ℕ, (∀ n, s n = μ (A n)) ∧ μ (⋃ n, A n) = s.hsum
 
-/-- Equation (2) of `meas:thm:atomic`: the strong sum of the singleton weights over
+/-- `meas:eq:atomic` of `meas:thm:atomic`: the strong sum of the singleton weights over
 an arbitrary subset. -/
 def atomicMeasure (w : SummableFamily Γ R X) (A : Set X) : R⟦Γ⟧ :=
   (restrict w A).hsum

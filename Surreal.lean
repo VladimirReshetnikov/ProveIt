@@ -53,6 +53,8 @@ import Surreal.Algebra.HerglotzNegativeAtom
 import Surreal.Algebra.MarkovResolvent
 import Surreal.Algebra.NonvanishingSelection
 import Surreal.Algebra.PronyHankel
+import Surreal.Algebra.StochasticIdempotent
+import Surreal.Algebra.StrictAlternative
 import Surreal.Algebra.TailSpan
 import Surreal.Algebra.WickSemigroup
 import Surreal.Foundations.SizeObstructions
@@ -204,6 +206,7 @@ import Surreal.Surcomplex.Halos
 import Surreal.Surcomplex.PolynomialGeometry
 import Surreal.Surcomplex.PolynomialReduction
 import Surreal.Surcomplex.PolynomialFactorUniqueness
+import Surreal.Surcomplex.FiniteFourier
 import Surreal.HahnSeries.Ancestry
 import Surreal.HahnSeries.AlgebraicallyClosed
 import Surreal.HahnSeries.Binomial
@@ -260,3 +263,7 @@ import Surreal.HahnSeries.NeumannWords
 import Surreal.HahnSeries.InfiniteProducts
 import Surreal.HahnSeries.ScalarAtomicity
 import Surreal.HahnSeries.MeasureAtomicity
+import Surreal.HahnSeries.StrongMeasureShadow
+import Surreal.HahnSeries.NullIdealPositivity
+import Surreal.HahnSeries.ScaleIdeal
+import Surreal.HahnSeries.EscapeChain
