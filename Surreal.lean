@@ -37,6 +37,8 @@ import Surreal.Algebra.PolynomialScaling
 import Surreal.Algebra.ProjectiveCircle
 import Surreal.Algebra.PowerSeriesFactorLifting
 import Surreal.Algebra.PowerSeriesExpLog
+import Surreal.Algebra.PowerSeriesHom
+import Surreal.Algebra.PowerSeriesUnitRoots
 import Surreal.Algebra.PowerSeriesPolynomialFactorLifting
 import Surreal.Algebra.MvPowerSeriesFactorLifting
 import Surreal.Algebra.MvPowerSeriesPolynomialFactorLifting
@@ -124,6 +126,8 @@ import Surreal.Foundations.SignSequenceStrongSummation
 import Surreal.Foundations.SignSequenceStrongAlgebra
 import Surreal.Foundations.SignSequenceStrongRegroup
 import Surreal.Foundations.SignSequencePowerSeries
+import Surreal.Foundations.SignSequenceBinomial
+import Surreal.Foundations.SignSequenceExpLog
 import Surreal.Foundations.SignSequenceMvPowerSeries
 import Surreal.Foundations.SignSequenceWorkspace
 import Surreal.Foundations.SmallNormalFormWorkspace
@@ -150,8 +154,15 @@ import Surreal.Surcomplex.StrongFinite
 import Surreal.Surcomplex.StrongConstants
 import Surreal.Surcomplex.Workspace
 import Surreal.Surcomplex.PowerSeries
+import Surreal.Surcomplex.PowerSeriesHom
+import Surreal.Surcomplex.Binomial
+import Surreal.Surcomplex.ExpLog
+import Surreal.Surcomplex.ExpLogEquiv
+import Surreal.Surcomplex.StrongConjugation
+import Surreal.Surcomplex.ExpLogConjugation
 import Surreal.Surcomplex.MvPowerSeries
 import Surreal.Surcomplex.GeometricSeries
+import Surreal.Surcomplex.GeometricScale
 import Surreal.Surcomplex.OrderObstructions
 import Surreal.Surcomplex.FineTopology
 import Surreal.Surcomplex.TopologicalField

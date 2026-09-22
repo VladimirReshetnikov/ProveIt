@@ -336,6 +336,45 @@ in these identities. For any nonzero input the partial sums have no limit
 in the fine topology: small-sequence convergence would force eventual
 equality, contradicting their nonzero consecutive differences.
 
+[`Surcomplex/GeometricScale.lean`](../Surreal/Surcomplex/GeometricScale.lean)
+proves the named radius bound: at `x = tMonomial 1`, the error has valuation
+`N + 1` and its absolute value or modulus exceeds `tMonomial omega`.
+Thus the source’s explicit fine ball excludes every finite partial sum.
+
+[`SignSequenceExpLog.lean`](../Surreal/Foundations/SignSequenceExpLog.lean)
+and [`Surcomplex/ExpLog.lean`](../Surreal/Surcomplex/ExpLog.lean) evaluate
+ordinary formal exp/log as actual strong sums. Their inverse, addition,
+negation and logarithm-product identities include zero. In
+[`StrongConjugation.lean`](../Surreal/Surcomplex/StrongConjugation.lean),
+conjugation preserves all small actual strong sums and formal evaluation.
+[`ExpLogConjugation.lean`](../Surreal/Surcomplex/ExpLogConjugation.lean)
+then proves conjugation of exp/log and the purely imaginary logarithm of a
+modulus-one element near one.
+[`ExpLogEquiv.lean`](../Surreal/Surcomplex/ExpLogEquiv.lean) bundles these maps
+as actual group equivalences, completing `e:prop-infexp`.
+These constructions stay on the infinitesimal
+domain; they do not supply global exponentials or logarithms.
+
+[`SignSequenceBinomial.lean`](../Surreal/Foundations/SignSequenceBinomial.lean)
+and [`Surcomplex/Binomial.lean`](../Surreal/Surcomplex/Binomial.lean)
+supply actual ordinary-coefficient binomial strong sums, exponent addition,
+natural powers and reciprocal-integer roots. The root near one is unique
+among all actual candidates, by placing a pair in a common small workspace.
+Every real binomial value is positive, and the half-power agrees with the
+existing genetic nonnegative square root.
+
+[`Algebra/PowerSeriesHom.lean`](../Surreal/Algebra/PowerSeriesHom.lean)
+proves the kernel dichotomy and the necessary infinitesimal bound for formal
+variable images in ordered fields. Formal square roots of units provide
+the bound without continuity or strong additivity assumptions.
+[`PowerSeriesUnitRoots.lean`](../Surreal/Algebra/PowerSeriesUnitRoots.lean)
+also gives unique normalized square roots and unique two-sided inverses.
+[`Surcomplex/PowerSeriesHom.lean`](../Surreal/Surcomplex/PowerSeriesHom.lean)
+proves the actual rational and real-coefficient existence criteria,
+injectivity at nonzero infinitesimals, and the precise formal-order valuation
+formula. Preservation of arbitrary source-summable families and uniqueness
+among strongly additive maps remain separate obligations.
+
 ## Remaining dependency order
 
 1. Prove the differentiation laws for actual formal evaluation, then
