@@ -389,9 +389,32 @@ The actual finite exponential maps onto the finite units with exact kernel
 and two finite angles give the same phase exactly modulo ordinary `2πℤ`.
 Each has a unique principal angle in `(-π, π]`, with angle `π` for every
 negative real input, including infinite and infinitesimal scales.
+Finite phase coordinates give sine and cosine with ordinary-constant agreement,
+addition identities, parity, periodicity and integer de Moivre.
+Recentered ordinary complex analytic germs evaluate by their actual Taylor
+strong sums, preserving sums, products and standard parts. Fine derivatives
+use every positive surreal tolerance: polynomials have their formal derivatives,
+formal evaluation at zero has derivative equal to its linear coefficient, and
+Taylor lifts have the ordinary derivative at their ordinary centers.
+A nonconstant infinitesimal-coset indicator has zero fine derivative everywhere.
 The approximation inequalities alone never give uniqueness: a sufficiently
-small positive monomial produces another solution. Differentiation,
-recentered analytic Taylor lifting, and universe coherence
-remain separate obligations.
+small positive monomial produces another solution. Differentiation at arbitrary
+infinitesimal displacements, multivariable analytic lifting, analytic composition,
+the separate trigonometric Taylor formulas, and universe coherence remain
+separate obligations.
+The reports placed after the canonical inventory are formalized clause by
+clause. Strong sums of nonnegative Hahn series are nonnegative, and strongly
+summable weights define strong Hahn measures on all subsets, additive on every
+set-indexed disjoint family, with pushforwards and coefficientwise integrals.
+Neumann's lemma bounds the words with a given sum without an Archimedean
+hypothesis, and labeled word products, finite-subset products and the infinite
+product `∏(1 - q_n)` are strongly summable. Prony's Hankel factorization,
+determinant, uniqueness up to permutation and exact last-moment annihilator hold
+over any field. The negative-atom Toeplitz matrices are positive definite for
+every ordinary size at a positive infinitesimal, with exact Schur iterates.
+Resolvent identities, projection-flag generators and rank-one completions are
+exact, cofinite spans stabilize after one finite deletion, the Wick diagram
+kernel has a finite indecomposable Hilbert basis, and valuations of
+positive-definite Hahn matrices obey Cauchy–Schwarz.
 A successful build proves only the imported Lean
 statements, not coverage of all the source documents.

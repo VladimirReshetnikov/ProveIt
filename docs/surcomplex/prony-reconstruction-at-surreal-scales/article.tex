@@ -1,0 +1,1711 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,
+ pdftitle={Sharp Moment Reconstruction at Surreal Scales},
+ pdfauthor={Research manuscript prepared with ChatGPT}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Moment reconstruction at surreal scales}
+\fancyhead[R]{\small Research manuscript}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlist{nosep,leftmargin=*}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\SC}{\mathbf{No}[i]}
+\newcommand{\Ocal}{\mathcal O}
+\newcommand{\mfr}{\mathfrak m}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\lc}{\operatorname{lc}}
+\newcommand{\st}{\operatorname{st}}
+\newcommand{\vg}{v_{\mathrm G}}
+\newcommand{\Ph}{\widehat P}
+\newcommand{\Ah}{\widehat A}
+\newcommand{\ah}{\widehat a}
+\newcommand{\wh}{\widehat w}
+\newcommand{\mh}{\widehat m}
+\newcommand{\Lh}{\widehat L}
+\newcommand{\Id}{\mathrm I}
+\newcommand{\mom}{\mathcal M}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\lbl}[1]{\nolinkurl{#1}}% label names and paths of the collection, breakable at : and /
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\Disc}{Disc}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\rank}{rank}
+\title{\textbf{Sharp Moment Reconstruction\\at Surreal Scales}\\[5pt]
+\large Collision geometry, optimal precision, and Hahn-supported inversion}
+\author{Research manuscript prepared with ChatGPT}
+\date{22 September 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We study recovery of a finite weighted configuration from its first $2n$ power
+moments over real and complex Hahn fields, and hence over the surreal and
+surcomplex numbers. For distinct finite nodes $a_i$ and nonzero weights $w_i$,
+put $d_i=\sum_{j\ne i}v(a_i-a_j)$ and
+$\delta_i=\max_{j\ne i}v(a_i-a_j)$. We prove that
+\[
+ \Theta=\max_i\bigl(v(w_i)+2d_i+\delta_i\bigr)
+\]
+is the exact uniform valuation threshold for guaranteeing reconstruction
+inside all strict nearest-neighbour balls. Errors of valuation at least
+$\kappa>\Theta$ admit a unique regular $n$-node realization, with node error
+at least $\kappa-v(w_i)-2d_i$ and weight error at least
+$\kappa-2d_i-\delta_i$. Perturbing only the last moment attains every node bound
+simultaneously; at valuation $\Theta$ it defeats the full strict-ball
+guarantee for every starting configuration. We also give an arbitrary-rank
+precision-lattice theorem, quantify cancellation in the inverse Hermite
+matrix, and derive a directed-path certificate for nonuniform moment
+precisions. The arguments use finite algebra and strong Hahn summability,
+not an Archimedean contraction argument. Classical Prony reconstruction,
+Hermite interpolation, and differential precision tracking are explicitly
+separated from the proposed refinements. Priority is not certified; the
+article supplies proofs rather than claiming a solution to a named
+published conjecture.
+
+In this collection the report is built from a single manuscript and filed
+under Prony's name, because ``moment'' has other meanings in neighbouring
+reports. Section~\ref{prony:subsec:collection} records its provenance, fixes
+the meaning of ``moment'' used here, and compares $\Theta$ with the
+coefficient threshold $T(P)=\max_i(d_i+\delta_i)$ of the collection's
+polynomial-algebra report.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{The problem, the contribution, and its scope}
+\label{prony:sec:intro}
+
+A finite atomic configuration is specified by distinct nodes $a_1,\ldots,a_n$
+and nonzero weights $w_1,\ldots,w_n$. Its moments are
+\begin{equation}\label{prony:eq:moments}
+ m_k=\sum_{i=1}^n w_i a_i^k,\qquad 0\le k<2n.
+\end{equation}
+Section~\ref{prony:subsec:collection} fixes this meaning of ``moment'' for the
+whole report and compares it with other uses of the word in the collection.
+For ordinary complex data this is the classical Prony problem. When two
+nodes are extremely close, inversion magnifies measurement errors. Over
+surreal scalars, closeness can occur at several incomparable Archimedean
+orders: one cluster may be separated at scale $\omega^{-1}$, another at
+$\omega^{-\omega}$, and nested clusters may combine both. A single real
+condition number cannot retain that ordered-group information.
+
+The question addressed here is precise: \emph{how much moment precision
+forces the reconstructed nodes to retain their individual labels and their
+entire finite separation geometry?} We do not merely seek continuity or a
+first-order condition number. We seek a sufficient threshold, exact node
+losses above it, and a counterexample at the threshold itself.
+
+Throughout, ``regular $n$-node realization'' means exactly $n$ distinct nodes
+with nonzero weights. Uniqueness is in this fixed-order model; $2n$ moments
+do not determine arbitrary configurations with more than $n$ nodes.
+
+\subsection{Statement of the main result}
+Let $K=\Bbbk((t^\Gamma))$, where $\Bbbk=\R$ or $\C$ and $\Gamma$ is a
+nontrivial ordered abelian group. The support of a Hahn series is
+well-ordered, and $v(t^\gamma)=\gamma$. Write
+$\Ocal=\{x:v(x)\ge0\}$ and $\mfr=\{x:v(x)>0\}$, with $v(0)=+\infty$.
+Assume $a_i\in\Ocal$, and define
+\begin{equation}\label{prony:eq:geometry}
+\begin{aligned}
+ d_{ij}&=v(a_i-a_j),&
+ d_i&=\sum_{j\ne i}d_{ij},& \delta_i&=\max_{j\ne i}d_{ij},\\
+ \varpi_i&=v(w_i),& E_i&=\varpi_i+2d_i,&
+ \Theta&=\max_i(E_i+\delta_i).
+\end{aligned}
+\end{equation}
+For $n=1$ the empty sum and the empty maximum in this notation are both
+assigned the value zero. The convention fixes the residue ball in that case.
+The letters $d_{ij}$, $d_i$ and $\delta_i$ have exactly the meaning they have
+in the collection's polynomial-algebra report; the weight valuations are
+written $\varpi_i$, because $\alpha_i$ denotes roots there
+(Section~\ref{prony:subsec:collection}).
+
+\begin{theorem}[Optimal uniform reconstruction]\label{prony:thm:main}
+Suppose $\mh_k=m_k+\epsilon_k$, with $v(\epsilon_k)\ge\kappa>\Theta$ for
+$0\le k<2n$. There is a unique regular $n$-node realization of the perturbed
+moments, up to permutation. It has a unique labelling satisfying
+\begin{equation}\label{prony:eq:strictballs}
+ v(\ah_i-a_i)>\delta_i.
+\end{equation}
+With this labelling,
+\begin{align}
+ v(\ah_i-a_i)&\ge\kappa-E_i,\label{prony:eq:nodebound}\\
+ v(\wh_i-w_i)&\ge\kappa-2d_i-\delta_i>\varpi_i.\label{prony:eq:weightbound}
+\end{align}
+Consequently the leading terms of the weights and of every nonzero
+pairwise node difference are preserved.
+
+If only $m_{2n-1}$ is perturbed, by a nonzero $e$ of valuation
+$\kappa>\Theta$, equality holds in \eqref{prony:eq:nodebound} for every $i$.
+If instead $v(e)=\Theta$, no regular $n$-node realization of those moments
+can satisfy \eqref{prony:eq:strictballs} for all $i$.
+\end{theorem}
+
+The final assertion means that the open precision condition is genuinely
+optimal for \emph{this} labelling guarantee. It does not assert that every
+boundary perturbation causes a multiple root, or that reconstruction is
+impossible below the threshold. Some perturbations have much more
+cancellation than the worst case.
+
+\subsection{Relation to the literature}
+Prony reconstruction by a Hankel system, polynomial roots, and a Vandermonde
+system is classical. Batenkov and Yomdin study local accuracy of confluent
+Prony systems \cite{BY}. Katz, Diab, and Batenkov obtain sharp clustered
+complex reconstruction estimates and analyze correlations between the
+successive errors \cite{KDB}. In particular, their first-order node formula
+already has a denominator consisting of the weight times squared pairwise
+separations. Thus the occurrence of $w_iP'(a_i)^2$ below is not presented as
+a previously unknown conditioning mechanism. For a single cluster of $n$
+unit-weight nodes with all separation valuations equal to $s$, our formulas
+give the familiar node loss $(2n-2)s$ and threshold $(2n-1)s$.
+
+The refinement proposed here is the \emph{exact ordered-group statement}
+for arbitrary finite nested separation patterns, weights at arbitrary
+valuations, and an optimality witness valid at every configuration. The
+threshold is pointwise rather than a cluster-size asymptotic. It applies
+without embedding the value group into $\R$ and without restricting nodes
+to an ordinary unit circle. The proof isolates the correlations by changing
+to the cofactor basis before making any estimates.
+
+
+There is also a classical geometric antecedent to the sharpness direction:
+Akinshin--Goldman--Yomdin study Prony varieties obtained by fixing initial
+moments, including the curve on which the first $2n-1$ moments stay fixed
+\cite{AGY}. Thus varying only the last measured moment is not claimed as
+a newly discovered direction. The proposed refinement is its exact
+valuation consequence for every arbitrary-rank configuration, together
+with the uniform converse.
+
+Exact propagation of precision lattices by a differential is an established
+non-Archimedean method, notably in Caruso--Roe--Vaccon \cite{CRV}. Our
+Section~\ref{prony:sec:lattice} is a finite-polynomial, arbitrary-rank version
+proved by Hahn support evaluation. Neither its general philosophy nor
+Hermite interpolation is claimed as new. Its use here provides exact
+nonlinear uncertainty sets and exposes a cancellation invariant not
+recorded by the separation tree alone. The nonuniform certificate of
+Section~\ref{prony:sec:graph} combines the cofactor system with directed-path
+bounds; it is a sufficient certificate, not an exact characterization.
+
+\subsection{Relation to the supplied repository}
+\label{prony:subsec:repository}
+The comparison uses the repository snapshot
+\begin{center}
+\texttt{4cf691c7d951e037739d32d9f5c387dcce724f3c}.
+\end{center}
+The documentation catalogue, formalization-ledger excerpts, and the
+polynomial-algebra report's detailed README were inspected \cite{Repo}.
+That report already contains finite Hermite jets, Hahn factor lifting,
+root-cluster geometry, and a \emph{coefficient-perturbation} threshold of
+the form $\max_i(d_i+\delta_i)$. (In that report's current labels these are
+\lbl{polynomial:thm:crt}, the section \lbl{polynomial:sec:hensel}, the
+cluster tree of \lbl{polynomial:subsec:tree}, and
+\lbl{polynomial:thm:stability} \cite{RepoPoly}.) Those are antecedents, not
+contributions of this
+article. The present input is a vector of \emph{moments}, whose structured
+inversion changes the threshold to
+$\max_i(\varpi_i+2d_i+\delta_i)$ and requires control of the recovered weights.
+Remark~\ref{prony:rem:coefficient} states the relation between the two
+thresholds precisely.
+
+At the pinned snapshot, repository searches for ``Prony'' and ``Hankel''
+returned no indexed matches, and the separate \lbl{docs/new} tree listed
+eighteen ZIP archives; their
+binary contents and all historical revisions were not exhaustively read.
+Accordingly, ``not found in the inspected repository material'' is the
+scope of the nonduplication check. Both observations are provenance, not
+current descriptions. The first remained true of the collection's reports
+until this batch was placed, but the collection now also contains the
+Hankel and Prony-type material compared in
+Section~\ref{prony:subsec:collection}. The archives that were then in
+\lbl{docs/new}, and the later ones including the archive that delivered this
+manuscript, have since been placed into reports and removed from that
+directory. The literature comparison is likewise
+not a proof of priority. The strongest candidate contribution is
+Theorem~\ref{prony:thm:main} together with its universal last-moment sharpness
+mechanism; the other statements are useful supporting refinements.
+
+\subsection{This report in the collection}
+\label{prony:subsec:collection}
+
+\paragraph{Provenance.}
+This report is built from one manuscript: the article ``Sharp Moment
+Reconstruction at Surreal Scales'', dated 22 September 2026, with its
+verification program and records. It was manuscript~13 of the eighteen placed
+in the collection's eighteenth batch, delivered as the archive
+\texttt{surcomplex\_moment\_reconstruction}, and its repository comparison is
+pinned to commit \texttt{4cf691c} (the snapshot above). It is not a merge: no
+other manuscript proves its main results, and the nearest material in the
+collection, including a classical Prony-type lemma, is compared below. On placement the prefix \lbl{prony:} was
+added to every label, and the four symbols in the table below were renamed.
+This subsection, Section~\ref{prony:subsec:coefficient}, a note after
+Proposition~\ref{prony:prop:prony}, pointers to other reports and two ledger
+rows in Appendix~\ref{prony:app:ledger} were added. Statements about the
+repository that were true only at the pin are now marked as such
+(Sections~\ref{prony:subsec:repository} and~\ref{prony:sec:verification}
+and Appendix~\ref{prony:app:audit}). The only choices were editorial: the
+manuscript's title is kept, the directory is named after Prony, and the
+notation follows the polynomial-algebra report. Otherwise the statements,
+proofs, limitations and priority caveats are those of the manuscript, and
+the program \lbl{code/verify.py} and the files in \lbl{data/} are
+unchanged from the delivery.
+\begin{center}
+\begin{tabular}{@{}llll@{}}
+\toprule
+Here & Manuscript & Meaning & In polynomial-algebra\\
+\midrule
+$d_{ij}$ & $s_{ij}$ & $v(a_i-a_j)$ & $d_{ij}$, the same\\
+$\delta_i$ & $r_i$ & $\max_{j\ne i}d_{ij}$ & $\delta_i$, the same\\
+$\varpi_i$ & $\alpha_i$ & $v(w_i)$ & not used; $\alpha_i$ are roots there\\
+$\chi_i$ & $h_i$ & $\ell_i'(a_i)=\sum_{j\ne i}(a_i-a_j)^{-1}$ & not used\\
+\bottomrule
+\end{tabular}
+\end{center}
+The sum $d_i$ has the same meaning in both reports. The letter $\chi_i$ also
+keeps the Hermite coefficient apart from $h=t^s$ in
+Section~\ref{prony:sec:examples}. The program keeps the manuscript's letters
+\texttt{alpha}, \texttt{r} and \texttt{hi}. Throughout, $\Theta$ is the
+threshold \eqref{prony:eq:geometry}, an element of $\Gamma$; it has nothing to
+do with the theta series of the collection's hahn-tate-uniformization
+report. $T(P)$ always denotes the polynomial-algebra threshold; the letter $T$
+inside the proofs of Proposition~\ref{prony:prop:lattice} and
+Theorem~\ref{prony:thm:graph} is local.
+
+\paragraph{What ``moment'' means here.}
+In this report a moment is always one of the $2n$ power moments
+\eqref{prony:eq:moments} of a finite weighted configuration, and the input
+of reconstruction is that finite vector. The weights are arbitrary nonzero
+elements of $K$; no measure and no positivity is involved, and
+Corollary~\ref{prony:cor:positive} only records that positivity is preserved
+when it is present. Two neighbouring reports use the word for other objects:
+\lbl{surreal/hahn-valued-measures-and-probability} \cite{RepoMeas} for power
+moments of Hahn-valued measures and moment functionals, including infinite
+moment sequences and their representation problem, and
+\lbl{surcomplex/hahn-herglotz-positivity} \cite{RepoHerg} for Fourier
+(trigonometric) moments on the circle, tested by Toeplitz matrices. Power sums
+of roots, that is, unit-weight moments with repeated roots allowed, are the
+``contour moments'' of \lbl{d:thm:moments} in \lbl{surcomplex/analysis}
+\cite{RepoAna} and the Newton sums of the Hankel section discussed below.
+This is why the directory carries Prony's name rather than the word
+``moment''.
+
+\paragraph{The coefficient threshold.}
+Theorem~\ref{prony:thm:main} is the moment-input analogue of
+\lbl{polynomial:thm:stability} \cite{RepoPoly}, whose input is a
+coefficient perturbation of a monic polynomial with distinct finite roots and
+whose threshold is $T(P)=\max_i(d_i+\delta_i)$.
+Remark~\ref{prony:rem:coefficient} shows that
+$\Theta=\max_i\bigl((\varpi_i+d_i)+(d_i+\delta_i)\bigr)$, where
+$\varpi_i+d_i=v(w_iP'(a_i))$ is the cost of passing from moments to the
+annihilator, and that Lemma~\ref{prony:lem:localroots} is a nodewise form of
+the matching step of that theorem.
+
+\paragraph{Hankel matrices.}
+With unit weights, the matrix $H$ of Proposition~\ref{prony:prop:prony} is
+the Hankel matrix of the Newton power sums of $P$, that is, the matrix
+$VV^{\mathsf T}$ of the trace form of $K[X]/(P)$, and $\det H=\Disc P$. This
+classical identity is the only thing this report shares with the section on
+Hankel square-class profiles in \lbl{surcomplex/spectral-theory}
+\cite{RepoSpec}, which comes from another manuscript of the same batch and
+states the identity as its \lbl{spec:hank:prop:hermite}. That
+section reads square classes, modulo $2\Gamma$, of the leading principal
+minors of such matrices over nondivisible value groups. This report
+estimates valuation thresholds for perturbed weighted moments and uses
+neither square classes nor leading principal minors. The two share no
+theorem, neither uses the other, and they are cross-referenced, not merged.
+
+\paragraph{The measures report.}
+\lbl{surreal/hahn-valued-measures-and-probability} \cite{RepoMeas}
+contains, from another manuscript of the same batch, a Prony-type lemma on
+finite signed exponential sums (a real sequence is a finite sum
+$\sum_jc_jx_j^n$ with distinct $x_j$ exactly when a monic polynomial with
+distinct roots annihilates it under the shift) and a finite Gaussian
+quadrature theorem over real closed fields (a suitably positive linear
+functional agrees up to degree $2N-1$ with $N$ positive weights at $N$
+distinct nodes). Those results concern existence and exact representation of
+moment data, under positivity. This report starts from an $n$-node
+configuration and studies the stability of its reconstruction, with exact
+thresholds, and involves no measure. The results are cross-referenced, not
+merged.
+
+\section{Hahn fields, support, and surreal interpretation}
+\label{prony:sec:hahn}
+
+\subsection{Conventions and two different notions of smallness}
+An element of $K$ is a formal sum
+\[
+ x=\sum_{\gamma\in S}x_\gamma t^\gamma,
+ \qquad x_\gamma\in\Bbbk,
+\]
+with $S\subset\Gamma$ well-ordered. The valuation of a nonzero series is
+its least exponent. Coefficient-zero extraction is a homomorphism
+$\st:\Ocal\to\Bbbk$ with kernel $\mfr$. Every $x\in\Ocal$ has a unique
+expression $x=x_0+x_+$ with $x_0\in\Bbbk$ and $x_+\in\mfr$.
+For vectors, $v_{\min}(x)=\min_jv(x_j)$.
+
+A family is \emph{strongly summable} when the union of its supports is
+well-ordered and every exponent belongs to only finitely many supports.
+The Hahn sum is then defined coefficientwise. This is not a claim that
+finite partial sums converge in the full surreal fine topology. Nor does
+$\eta>0$ imply that $N\eta$ eventually exceeds every element of $\Gamma$.
+For example, in $\Q^2$ with lexicographic order, $N(0,1)<(1,0)$ for every
+integer $N$. All infinite constructions used below are justified by support,
+not by such a false cofinality assertion.
+
+\begin{lemma}[Positive-support evaluation]\label{prony:lem:support}
+If $z_1,\ldots,z_q\in\mfr$ and
+$F\in\Bbbk[[Z_1,\ldots,Z_q]]$, its monomial expansion can be evaluated
+strongly at $(z_1,\ldots,z_q)$. Evaluation preserves addition, multiplication,
+and formal substitution when the substituted series have zero constant
+term. The resulting support is contained in the additive monoid generated
+by $\bigcup_j\supp(z_j)$.
+\end{lemma}
+\begin{proof}
+Let $S$ be the finite union of the positive well-ordered supports, omitting
+zero inputs. The word form of Higman's well-quasi-ordering theorem
+\cite{Higman} implies the usual positive-support lemma: $S^*$, the monoid
+of finite sums from $S$, is well-ordered, and a fixed exponent is the sum
+of only finitely many finite words in $S$.
+Here is the deduction. Order words by subsequence embedding with each letter
+allowed to increase. An embedding never decreases the sum, and increases
+it strictly unless the words are identical. An infinite decreasing sequence
+of sums, or an infinite collection of distinct words with the same sum,
+would therefore be a bad sequence for the word order. Higman's theorem
+excludes both. The empty word supplies the sole sum of length zero.
+
+For each input monomial, expand its product of Hahn series into words.
+There are only finitely many choices of input labels for a fixed word.
+The preceding finiteness is therefore exactly the local finiteness needed
+to evaluate $F$. It also justifies the double-family regroupings in products
+and zero-constant substitutions. No bound on the ordinary magnitudes of
+the coefficients of $F$ is needed, because their valuations are zero.
+\end{proof}
+
+\begin{lemma}[Residue-simple lifting]\label{prony:lem:hensel}
+If $f\in\Ocal[Y]$, $c\in\Bbbk$, and
+$\overline f(c)=0$, $\overline f'(c)\ne0$, there is a unique
+$y\in c+\mfr$ with $f(y)=0$. The same conclusion holds for a finite
+polynomial system whose residue Jacobian at $c\in\Bbbk^N$ is invertible.
+\end{lemma}
+\begin{proof}
+Write every coefficient as its residue plus an infinitesimal, and temporarily
+replace the finitely many infinitesimal coefficients by independent formal
+parameters $Z$. In the ring $\Bbbk[[Z]]$, solve for $y=c+u(Z)$ with $u(0)=0$
+by total degree. At each positive degree the only contribution containing
+the as-yet-unknown homogeneous part of $u$ is the invertible constant
+Jacobian times that part. All other terms have already been determined.
+This gives a unique formal solution. Evaluate it by
+Lemma~\ref{prony:lem:support}.
+
+For uniqueness in $c+\mfr^N$, subtract two equations. Polynomial divided
+differences give a matrix multiplying their difference; its residue is the
+invertible residue Jacobian. Its determinant is a unit of $\Ocal$, so the
+difference is zero. This also proves uniqueness without an iterative-limit
+argument.
+\end{proof}
+
+\subsection{Finite families in the full surreal field}
+We use the standard Conway normal-form interpretation
+\[
+ \sum_\gamma c_\gamma t^\gamma
+ \longmapsto \sum_\gamma c_\gamma\omega^{-\gamma}.
+\]
+For any set-sized ordered subgroup $\Gamma\subset\No$, real Hahn series
+with exponents in $\Gamma$ identify with the corresponding normal forms;
+complexification gives a subfield of $\SC$. The generalized-series
+interpretation of surreal numbers is part of the standard background
+reviewed in \cite{BG} and in the supplied repository.
+
+Given finitely many actual surreal or surcomplex inputs, take the union of
+their normal-form supports and the rational span of those exponents,
+enlarging by $1$ when necessary. This is a set-sized divisible ordered
+subgroup of $\No$. The associated Hahn field contains every input. Finite
+field operations and the support evaluations above remain in that field.
+If another workspace contains the same data, uniqueness of the constructed
+solutions makes the two answers agree in a common enlargement.
+
+\begin{corollary}[Actual surreal and surcomplex data]\label{prony:cor:actual}
+Theorem~\ref{prony:thm:main}, the sharpness assertions, and all subsequent finite
+precision statements apply to finite configurations in $\No$ or $\SC$,
+using $v(\omega^{-\gamma})=\gamma$. Every construction is carried out in a
+set-sized workspace. No quantification over a proper-class coefficient
+space or use of a proper-class compactness theorem is required.
+\end{corollary}
+The assertion concerns natural-valuation precision of finite algebraic
+data, not integration, a global surreal exponential, or ordinary paths in
+the fine topology.
+
+\section{Finite moment algebra and the cofactor coordinates}
+\label{prony:sec:algebra}
+
+Define
+\begin{equation}\label{prony:eq:cofactor}
+ P(X)=\prod_{i=1}^n(X-a_i),\quad
+ Q_i(X)=\frac{P(X)}{X-a_i},\quad
+ p_i=Q_i(a_i)=P'(a_i),\quad c_i=w_i p_i^2.
+\end{equation}
+Then $v(p_i)=d_i$ and $v(c_i)=E_i$. Both $P$ and every $Q_i$ are monic
+integral polynomials. The $Q_i$ form a basis of $K[X]_{<n}$, since
+evaluation at $a_j$ gives $Q_i(a_j)=\delta_{ij}p_i$.
+
+Let $L:K[X]_{<2n}\to K$ be the linear functional with $L(X^k)=m_k$.
+The moment representation is equivalent to
+\[
+ L(f)=\sum_i w_i f(a_i),\qquad \deg f<2n.
+\]
+In particular,
+\begin{equation}\label{prony:eq:orthog}
+ L(Pq)=0\quad(\deg q<n),\qquad
+ L(Q_iQ_j)=\delta_{ij}c_i.
+\end{equation}
+
+\begin{proposition}[Classical Prony uniqueness]\label{prony:prop:prony}
+Let $H=(m_{r+s})_{0\le r,s<n}$. Then
+\begin{equation}\label{prony:eq:hankel}
+ H=V\diag(w_i)V^{\mathsf T},\qquad
+ \det H=\left(\prod_iw_i\right)\prod_{i<j}(a_j-a_i)^2\ne0,
+\end{equation}
+where $V_{ri}=a_i^r$. A regular $n$-node moment vector determines $P$
+uniquely by its $n$ orthogonality equations, then the nodes up to permutation,
+and then the weights. It cannot have a realization with fewer than $n$
+nodes.
+\end{proposition}
+\begin{proof}
+The displayed matrix factorization follows entry by entry. The determinant
+uses the Vandermonde determinant. Writing
+$P=X^n+\sum_{j<n}P_jX^j$, orthogonality against $1,X,\ldots,X^{n-1}$
+is the linear system
+\[
+ H(P_0,\ldots,P_{n-1})^{\mathsf T}
+ =-(m_n,\ldots,m_{2n-1})^{\mathsf T}.
+\]
+Any other regular $n$-node representation must give the same monic
+annihilator and hence the same nodes. The first $n$ moments then determine
+the weights through $V$. A configuration with fewer than $n$ nodes would
+factor $H$ through a vector space of smaller dimension.
+\end{proof}
+Since $P$ is monic, \eqref{prony:eq:hankel} reads
+$\det H=\bigl(\prod_iw_i\bigr)\Disc P$. With unit weights $H$ is the Hankel
+matrix of the Newton power sums of $P$; this classical identity is the only
+point of contact with the Hankel section of the collection's spectral-theory
+report (Section~\ref{prony:subsec:collection}).
+
+\subsection{The structured correction system}
+Let $\Delta L(X^k)=\epsilon_k$, and $\Lh=L+\Delta L$. Seek a monic
+annihilator in the cofactor coordinates
+\begin{equation}\label{prony:eq:Ph}
+ \Ph=P+\sum_j b_jQ_j.
+\end{equation}
+Testing $\Lh(\Ph q)=0$ on $q=Q_i$ yields
+\[
+ c_i b_i+\sum_j\Delta L(Q_iQ_j)b_j=-\Delta L(PQ_i).
+\]
+Set
+\begin{equation}\label{prony:eq:Bsystem}
+ u_i=c_i b_i,\qquad
+ B_{ij}=\frac{\Delta L(Q_iQ_j)}{c_j},\qquad
+ g_i=\Delta L(PQ_i).
+ \qquad (\Id+B)u=-g.
+\end{equation}
+This identity is exact, not a first-order approximation. In the $Q_i$
+basis the perturbed Hankel bilinear form is
+$(\Id+B)\diag(c_i)$. Thus invertibility of $\Id+B$ also proves invertibility
+of the perturbed Hankel matrix.
+
+\begin{lemma}[Uniform estimate in cofactor coordinates]\label{prony:lem:cofactorbound}
+If $v(\epsilon_k)\ge\kappa$ and $\kappa>E_j$ for every $j$, system
+\eqref{prony:eq:Bsystem} has a unique solution and
+\begin{equation}\label{prony:eq:bprecision}
+ v(u_i)\ge\kappa,\qquad v(b_i)\ge\kappa-E_i.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Integrality of $Q_iQ_j$ and $PQ_i$ gives
+$v(B_{ij})\ge\kappa-E_j>0$ and $v(g_i)\ge\kappa$.
+The matrix $\Id+B$ has residue identity, so its inverse has entries in
+$\Ocal$, by the adjugate formula. Multiplication by that inverse proves the
+bounds. Alternatively its Neumann series is strongly summable by
+Lemma~\ref{prony:lem:support}; either proof is valid at arbitrary rank.
+\end{proof}
+
+\section{A root-localization lemma adapted to the moment problem}
+\label{prony:sec:roots}
+
+\begin{lemma}[Cofactor localization]\label{prony:lem:localroots}
+Suppose $v(b_i)>\delta_i$ for every $i$, and define $\Ph$ by
+\eqref{prony:eq:Ph}. Then $\Ph$ has one and only one root $\ah_i$ in
+$B_i=\{x:v(x-a_i)>\delta_i\}$, for every $i$. These are all its roots, and they
+are simple. Writing $z_i=\ah_i-a_i$, one has
+\begin{equation}\label{prony:eq:rootexact}
+ z_i=-b_i\left(1+\sum_{j\ne i}
+          \frac{b_j}{a_i-a_j+z_i}\right)^{-1}.
+\end{equation}
+Thus $z_i=0$ precisely when $b_i=0$, and otherwise
+$v(z_i)=v(b_i)$ and $z_i/b_i\in-1+\mfr$.
+\end{lemma}
+\begin{proof}
+For $X=a_i+z$ in $B_i$, none of the factors of $Q_i(X)$ vanishes. Dividing
+$\Ph(X)$ by $Q_i(X)$ gives
+\begin{equation}\label{prony:eq:localeq}
+ z+b_i+\sum_{j\ne i}b_j\frac{z}{a_i-a_j+z}=0.
+\end{equation}
+Put $\tau=t^{\delta_i}$, $z=\tau y$, $D_{ij}=a_i-a_j$. The quantities
+$\tau/D_{ij}$ are integral and $b_j/D_{ij}$ are infinitesimal, since
+$\delta_j\ge d_{ij}$. Multiplying the scaled equation by
+$\prod_{j\ne i}(1+(\tau/D_{ij})y)$ gives an integral polynomial whose
+residue has value zero and derivative one at $y=0$. By
+Lemma~\ref{prony:lem:hensel} it has exactly one root in $\mfr$. Its denominators
+are units there, so it solves \eqref{prony:eq:localeq}.
+
+The balls $B_i$ are disjoint: if a point belonged to $B_i$ and $B_j$, the
+ultrametric inequality would give
+$d_{ij}>\min(\delta_i,\delta_j)\ge d_{ij}$. Consequently the $n$ constructed roots
+are distinct. A monic polynomial of degree $n$ with $n$ distinct roots
+has precisely those roots, all simple. Every summand in the parentheses
+in \eqref{prony:eq:rootexact} has positive valuation. The remaining assertions
+follow from \eqref{prony:eq:localeq}.
+\end{proof}
+
+For later use, the lemma also gives
+\begin{equation}\label{prony:eq:separation}
+ \frac{\ah_i-\ah_j}{a_i-a_j}\in1+\mfr\qquad(i\ne j).
+\end{equation}
+Indeed both node displacements have valuation strictly greater than
+$d_{ij}$. In particular, both the valuation and the complex leading
+coefficient of each difference are unchanged.
+
+\section{Reconstruction and the weight estimate}
+\label{prony:sec:mainproof}
+
+The node estimate alone is not the entire inverse problem. Estimating the
+last Vandermonde solve as an unrelated operation generally loses the
+correlations between the polynomial and moment errors. A cross-numerator
+identity retains precisely those correlations.
+
+\subsection{Recovering the numerator and all measured moments}
+For a formal Laurent series in the independent variable $X^{-1}$, write
+$[\cdot]_+$ for its polynomial part. This operation involves only finitely
+many coefficients in the following formulas. Set
+\begin{equation}\label{prony:eq:numerators}
+ A=\sum_iw_iQ_i,
+ \qquad
+ \Ah=\left[\Ph(X)\sum_{k=0}^{2n-1}\mh_kX^{-k-1}\right]_+.
+\end{equation}
+Both numerators have degree less than $n$.
+
+\begin{lemma}[Finite Pad\'e identity]\label{prony:lem:pade}
+If $\Lh(\Ph q)=0$ for every $\deg q<n$, then
+\begin{equation}\label{prony:eq:pade}
+ \frac{\Ah(X)}{\Ph(X)}
+ =\sum_{k=0}^{2n-1}\mh_kX^{-k-1}+O_X(X^{-2n-1}).
+\end{equation}
+When $\Ph$ has distinct roots $\ah_i$, its residues
+$\wh_i=\Ah(\ah_i)/\Ph'(\ah_i)$ realize all $2n$ moments.
+Here $O_X$ refers only to formal degree in $X^{-1}$, not to a valuation limit.
+\end{lemma}
+\begin{proof}
+In the product used in \eqref{prony:eq:numerators}, the coefficient of $X^{-r-1}$,
+for $0\le r<n$, is
+$\sum_{j=0}^n\Ph_j\mh_{j+r}=\Lh(X^r\Ph)$, hence zero.
+After subtracting the polynomial part, the product therefore begins at
+$X^{-n-1}$. Division by the monic degree-$n$ polynomial produces
+\eqref{prony:eq:pade}. Partial fractions give
+$\Ah/\Ph=\sum_i\wh_i/(X-\ah_i)$, and expanding each fraction at infinity
+identifies its first $2n$ coefficients.
+\end{proof}
+
+\begin{lemma}[Cross-numerator control]\label{prony:lem:cross}
+Suppose $P,\Ph$ are monic integral degree-$n$ polynomials and their associated
+rational functions agree with the original and perturbed moment vectors
+through $X^{-2n}$. Then
+\begin{equation}\label{prony:eq:cross}
+ D=\Ah P-A\Ph,\qquad \deg D<2n,
+\end{equation}
+has every coefficient of valuation at least $\kappa$ whenever
+$v(\epsilon_k)\ge\kappa$. In the cofactor coordinates,
+\begin{equation}\label{prony:eq:Dvalues}
+ D(a_i)=-w_i p_i^2b_i=-u_i.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Multiply the Laurent expansion of $\Ah/\Ph-A/P$ by $P\Ph$ and take its
+polynomial part. The tail $O_X(X^{-2n-1})$ contributes no polynomial term.
+Every coefficient of $D$ is consequently a finite sum of moment errors
+multiplied by integral coefficients of $P\Ph$. This proves the bound.
+At $a_i$, use $A(a_i)=w_i p_i$ and $\Ph(a_i)=b_i p_i$.
+\end{proof}
+
+\subsection{A divided-difference estimate for the weights}
+\begin{lemma}[Weight errors without a second conditioning loss]
+\label{prony:lem:weight}
+Under the hypotheses of Lemma~\ref{prony:lem:cross}, suppose the roots are labelled
+by $v(\ah_i-a_i)>\delta_i$. Then
+\[
+ v(\wh_i-w_i)\ge\kappa-2d_i-\delta_i.
+\]
+\end{lemma}
+\begin{proof}
+Fix $i$, write $a=a_i$, $b=\ah_i$, and put
+\[
+ q(X)=Q_i(X)\frac{\Ph(X)}{X-\ah_i},\qquad F(X)=\frac{D(X)}{q(X)}.
+\]
+All factors of $q$ are nonzero at $a$ and $b$. Preservation of pairwise
+separation gives
+\begin{equation}\label{prony:eq:qval}
+ v(q(a))=v(q(b))=2d_i.
+\end{equation}
+If $a\ne b$, the residues at $a$ and $b$ in
+\[
+ \frac{\Ah}{\Ph}-\frac A P=\frac{F(X)}{(X-a)(X-b)}
+\]
+are $-w_i$ and $\wh_i$. Thus
+\begin{equation}\label{prony:eq:weightdd}
+ \wh_i-w_i=\frac{F(b)-F(a)}{b-a}.
+\end{equation}
+If $a=b$, the left side has at most a simple pole at $a$, so $D(a)=0$,
+and the residue gives $\wh_i-w_i=F'(a)$. This is the coincident-argument
+version of the same formula.
+
+For distinct arguments, denote a divided difference by $[a,b]f$.
+Because $a,b\in\Ocal$ and every coefficient of $D$ has valuation at least
+$\kappa$, expansion of $[a,b]X^k$ as a finite geometric sum gives
+$v([a,b]D)\ge\kappa$. The same holds for $D'(a)$.
+Each of the $2n-2$ linear factors of $q$ has value of valuation $d_{ij}$
+at both arguments, with each $j\ne i$ occurring twice. Telescoping the
+product difference, or differentiating in the coincident case, therefore
+shows
+\[
+ v([a,b]q)\ge 2d_i-\delta_i.
+\]
+For $n=1$, $q=1$ and this divided difference is zero, which also satisfies
+the bound. Finally the quotient identity
+\[
+ [a,b]F=\frac{[a,b]D}{q(b)}
+       -\frac{D(a)[a,b]q}{q(a)q(b)}
+\]
+shows that its valuation is at least
+$\min(\kappa-2d_i,\kappa-2d_i-\delta_i)=\kappa-2d_i-\delta_i$.
+The derivative quotient formula proves the same estimate when $a=b$.
+\end{proof}
+
+\subsection{Proof of the reconstruction assertions}
+\begin{proof}[Proof of Theorem~\ref{prony:thm:main}, except sharpness]
+Since $\delta_i\ge0$ and $\kappa>\Theta$, Lemma~\ref{prony:lem:cofactorbound}
+constructs the unique cofactor correction with
+$v(b_i)\ge\kappa-E_i>\delta_i$. Lemma~\ref{prony:lem:localroots} constructs the $n$
+simple roots, establishes the labelling, and proves \eqref{prony:eq:nodebound}.
+They are integral, so their product $\Ph$ is integral.
+
+Use Lemma~\ref{prony:lem:pade} to recover the weights and all measured moments.
+Lemmas~\ref{prony:lem:cross} and \ref{prony:lem:weight} give
+\eqref{prony:eq:weightbound}. Since this bound is strictly greater than
+$v(w_i)=\varpi_i$, the new weights are nonzero and
+$\wh_i/w_i\in1+\mfr$. Thus the constructed realization is regular.
+The perturbed Hankel matrix is invertible by \eqref{prony:eq:Bsystem}; alternatively,
+its factorization through these distinct nodes and nonzero weights proves
+the same fact. Proposition~\ref{prony:prop:prony} gives uniqueness among all
+regular $n$-node configurations. The balls are disjoint, so their labelling
+is unique. Formula~\eqref{prony:eq:separation} supplies the final leading-term
+assertion for the node differences.
+\end{proof}
+
+\begin{corollary}[Real and positive data]\label{prony:cor:positive}
+For real Hahn or actual surreal inputs, the recovered nodes and weights
+in Theorem~\ref{prony:thm:main} are real. Every initially positive weight remains
+positive. The ordering of the nodes is preserved.
+\end{corollary}
+\begin{proof}
+The construction takes place over the real coefficient field. Alternatively,
+complex conjugation fixes the data and the labelled balls, so uniqueness
+fixes every output. The ratios of corresponding weights and pairwise node
+differences lie in $1+\mfr$, which consists of positive real Hahn elements.
+\end{proof}
+
+\begin{remark}[What the theorem does not require]
+Weights need not be finite, positive, or have distinct leading coefficients.
+Their valuations may be negative. Nodes may have identical standard parts,
+and their mutual distances may have different Archimedean orders. No
+assumption on the discriminant being an ordinary nonzero number is made.
+The main proof uses only finite valued-field algebra and residue-simple
+lifting; the Hahn setting additionally supplies explicit support control.
+\end{remark}
+
+\section{An exact worst direction and sharpness at every configuration}
+\label{prony:sec:sharp}
+
+The same perturbation direction works for every configuration: change only
+the highest measured moment.
+It is the familiar last-coordinate Prony-curve direction \cite{AGY}; the
+point here is its exact threshold consequence.
+
+\begin{proposition}[The last-moment formula]\label{prony:prop:last}
+Let $\epsilon_{2n-1}=e$ and all other $\epsilon_k=0$. The original Hankel
+matrix is unchanged. The unique monic annihilator determined by the new
+moments is
+\begin{equation}\label{prony:eq:Pe}
+ P_e(X)=P(X)-e\sum_{i=1}^n\frac{Q_i(X)}{w_iP'(a_i)^2}.
+\end{equation}
+This formula is exact for every $e\in K$, regardless of its valuation.
+\end{proposition}
+\begin{proof}
+Every $Q_iQ_j$ has degree at most $2n-2$, so $B=0$ in
+\eqref{prony:eq:Bsystem}. Each $PQ_i$ is monic of degree $2n-1$, so $g_i=e$.
+Thus $u_i=-e$ and $b_i=-e/c_i$. The unchanged Hankel matrix is invertible,
+which proves uniqueness without any smallness hypothesis.
+\end{proof}
+
+\begin{proof}[Proof of the sharpness assertions in Theorem~\ref{prony:thm:main}]
+If $v(e)=\kappa>\Theta$, then $v(b_i)=\kappa-E_i>\delta_i$.
+Lemma~\ref{prony:lem:localroots} yields
+\begin{equation}\label{prony:eq:leadingnode}
+ v(\ah_i-a_i)=\kappa-E_i,\qquad
+ \frac{\ah_i-a_i}{e/(w_iP'(a_i)^2)}\in1+\mfr.
+\end{equation}
+This proves simultaneous attainment of all the node bounds.
+
+Now take $v(e)=\Theta$ and choose $i$ with $E_i+\delta_i=\Theta$.
+Any regular $n$-node realization must have annihilator $P_e$, by
+Proposition~\ref{prony:prop:prony}. Formula~\eqref{prony:eq:Pe} gives
+\[
+ v(P_e(a_i))=v(b_i p_i)=\Theta-E_i+d_i=\delta_i+d_i.
+\]
+If all its nodes admitted the strict-ball labelling, factorization at $a_i$
+would instead give
+\[
+ v(P_e(a_i))
+ =v(a_i-\ah_i)+\sum_{j\ne i}v(a_i-\ah_j)>\delta_i+d_i.
+\]
+The other factors have precisely their original separation valuations by
+the strict-ball assumption. This is a contradiction.
+\end{proof}
+
+Because this boundary perturbation is allowed in every error ball with
+precision $\kappa\le\Theta$, the universal strict-ball reconstruction
+guarantee holds \emph{if and only if} $\kappa>\Theta$.
+
+\subsection{Cluster interpretation and comparison with a determinant}
+When every weight has valuation zero and all $n$ nodes occupy one equally
+spaced valuation cluster, $d_{ij}=s>0$, one has
+\[
+ d_i=(n-1)s,\qquad \Theta=(2n-1)s.
+\]
+The pointwise geometry matters when this model is not uniform. A node deep
+inside a nested cluster has one separation contribution for each other
+node, not merely $n-1$ copies of the nearest separation.
+The determinant records only a sum:
+\begin{equation}\label{prony:eq:detval}
+ v(\det H)=\sum_i\varpi_i+2\sum_{i<j}d_{ij}
+           =\sum_i\varpi_i+\sum_i d_i.
+\end{equation}
+This single number does not specify the vector $(E_i+\delta_i)_i$ and does not
+replace the threshold or the individual error bounds.
+
+\subsection{Comparison with the coefficient threshold}
+\label{prony:subsec:coefficient}
+This subsection was added when the manuscript joined the collection. It
+compares Theorem~\ref{prony:thm:main} with the coefficient-perturbation
+theorem \lbl{polynomial:thm:stability} of the polynomial-algebra report
+\cite{RepoPoly}. It proves no new theorem; every step is an elementary
+consequence of results stated above or in that report.
+
+\begin{remark}[Moment input versus coefficient input]
+\label{prony:rem:coefficient}
+For $P=\prod_i(X-a_i)$, the root data of \lbl{polynomial:thm:stability}
+are the $d_{ij}$, $d_i$ and $\delta_i$ of \eqref{prony:eq:geometry}, and its
+threshold is $T(P)=\max_i(d_i+\delta_i)$. By \eqref{prony:eq:geometry},
+\[
+ \Theta=\max_i\bigl((\varpi_i+d_i)+(d_i+\delta_i)\bigr).
+\]
+The extra summand $\varpi_i+d_i=v(w_iP'(a_i))$ is the cost, at $a_i$, of
+passing from moments to the annihilator. Indeed, the perturbed annihilator
+\eqref{prony:eq:Ph} differs from $P$ by $\sum_jb_jQ_j$, a polynomial of
+degree less than $n$ whose value at $a_i$ is $b_ip_i$; every polynomial of
+degree less than $n$ has this form, with $b_i$ its value at $a_i$ divided by
+$p_i$. Lemma~\ref{prony:lem:cofactorbound} gives
+$v(b_ip_i)\ge\kappa-\varpi_i-d_i$, and Lemma~\ref{prony:lem:localroots} needs
+$v(b_ip_i)>d_i+\delta_i$, the $i$th summand of $T(P)$, at every node.
+Replacing the coefficient precision $\varepsilon$ of
+\lbl{polynomial:thm:stability} by the nodewise annihilator precision
+$\kappa-\varpi_i-d_i$ turns its displacement bound $\varepsilon-d_i$ into the
+node bound $\kappa-E_i$ of \eqref{prony:eq:nodebound}. If every $\varpi_i\ge0$,
+then $\Theta\ge T(P)$. Weights of negative valuation can make $\Theta$
+smaller: two nodes at separation valuation $s>0$ with both weights $t^{-2s}$
+give $\Theta=s<2s=T(P)$.
+
+Three further points make the comparison precise.
+\begin{enumerate}[label=(\alph*)]
+\item Lemma~\ref{prony:lem:localroots} is a nodewise form of the matching step
+of \lbl{polynomial:thm:stability}. If every coefficient of $\Ph-P$ has
+valuation greater than $T(P)$, then its values at the integral nodes satisfy
+$v(b_ip_i)>d_i+\delta_i$, which is the hypothesis of the lemma. The converse
+fails. For the nodes $0,t^s,1$ with $s>0$ one has $T(P)=2s$ and
+$\delta_3=0$, so $\Ph=P+t^sQ_3$ satisfies the hypothesis of the lemma, while
+$\Ph-P=t^sX^2-t^{2s}X$ has a coefficient of valuation $s<T(P)$. The lemma
+yields the matching, the uniqueness of the labelling, the preserved
+separations \eqref{prony:eq:separation} and the exact displacement valuation
+$v(\ah_i-a_i)=v(b_i)$. It does not restate the second-order Newton estimate
+or the discriminant statement of \lbl{polynomial:thm:stability}.
+\item Theorem~\ref{prony:thm:main} does not follow merely by composing
+Lemma~\ref{prony:lem:cofactorbound} with \lbl{polynomial:thm:stability},
+which needs every coefficient of $\Ph-P$ to have valuation above $T(P)$. For
+the two nodes $0,h=t^s$ with unit weights, the last-moment perturbation by
+$e$ with $v(e)=\kappa$, formula \eqref{prony:eq:twoP}, gives $\Ph-P=-(2e/h^2)X+e/h$, with a coefficient of
+valuation exactly $\kappa-2s$, while $T(P)=2s$. For $3s=\Theta<\kappa\le4s$
+this perturbation is outside the hypothesis of
+\lbl{polynomial:thm:stability}, whereas Theorem~\ref{prony:thm:main}
+applies.
+\item The sharpness statements differ in scope.
+\lbl{polynomial:ex:sharpdisc} shows, for one family, that the strict
+inequality in \lbl{polynomial:thm:stability} cannot be relaxed. Here the
+last-moment direction of Proposition~\ref{prony:prop:last} defeats the
+strict-ball guarantee at valuation $\Theta$ for every configuration. No
+coefficient-side analogue of this universal statement is claimed.
+\end{enumerate}
+Finally, $\det H=\bigl(\prod_iw_i\bigr)\Disc P$, so \eqref{prony:eq:detval}
+reads $v(\det H)=\sum_i\varpi_i+D$, where $D=v(\Disc P)=\sum_id_i$ is the
+discriminant valuation of \lbl{polynomial:cor:discprecision}.
+\end{remark}
+
+\subsection{Infinite scales and affine normalization}
+The integrality assumption on nodes is a normalization, not a restriction
+on finite configurations in $\SC$. Choose $c,\rho\in K$, $\rho\ne0$, with
+$x_i=(a_i-c)/\rho\in\Ocal$. The normalized moments are
+\begin{equation}\label{prony:eq:affine}
+ m^{\mathrm{norm}}_k
+ =\rho^{-k}\sum_{\ell=0}^k\binom{k}{\ell}(-c)^{k-\ell}m_\ell.
+\end{equation}
+The same linear transformation must be applied to the errors. For error
+bounds $v(\epsilon_\ell)\ge\kappa_\ell$, a valid normalized bound is
+\[
+ v(\epsilon^{\mathrm{norm}}_k)
+ \ge\min_{0\le\ell\le k}
+ \left(\kappa_\ell+(k-\ell)v(c)-k v(\rho)\right),
+\]
+with zero coefficients omitted; for $c=0$ only $\ell=k$ contributes.
+Apply the uniform theorem to a common lower bound, or the nonuniform
+certificate below to the individual normalized bounds. Translating back
+adds $v(\rho)$ to each node-error valuation and does not change the weights.
+One must not rescale the nodes while leaving the moment-error model
+unchanged.
+
+\section{Exact local precision and cancellation in the Hermite inverse}
+\label{prony:sec:lattice}
+
+\subsection{The differential and its classical dual basis}
+Order the coordinates of the parameter space as
+$(w_1,\ldots,w_n,a_1,\ldots,a_n)$, and write
+$\mom:K^{2n}\to K^{2n}$ for the moment map \eqref{prony:eq:moments}.
+At a regular configuration its differential is
+\begin{equation}\label{prony:eq:diff}
+ \dd m_k=\sum_i\left(a_i^k\dd w_i+w_i k a_i^{k-1}\dd a_i\right).
+\end{equation}
+The derivative term at $k=0$ is zero, including when $a_i=0$.
+Define
+\begin{equation}\label{prony:eq:hermite}
+\begin{aligned}
+ \ell_i(X)&=Q_i(X)/p_i,&
+ \chi_i&=\ell_i'(a_i)=\sum_{j\ne i}\frac1{a_i-a_j},\\
+ H_i(X)&=(1-2\chi_i(X-a_i))\ell_i(X)^2,&
+ G_i(X)&=(X-a_i)\ell_i(X)^2.
+\end{aligned}
+\end{equation}
+These are the usual degree-$<2n$ Hermite interpolation polynomials.
+They satisfy
+\[
+ H_i(a_j)=\delta_{ij},\quad H_i'(a_j)=0,\qquad
+ G_i(a_j)=0,\quad G_i'(a_j)=\delta_{ij}.
+\]
+Consequently the inverse differential is
+\begin{equation}\label{prony:eq:invdiff}
+ \dd w_i=(\dd L)(H_i),\qquad
+ \dd a_i=(\dd L)(G_i)/w_i.
+\end{equation}
+This proves that the Jacobian $J$ is invertible and identifies each row of
+$J^{-1}$. These interpolation identities are classical; the precision
+calculation below specifies exactly what they imply over Hahn coefficients.
+
+For a nonzero polynomial $f$, let
+$\vg(f)=\min_k v([X^k]f)$. This Gauss valuation is multiplicative: normalize
+each factor by a monomial to make its minimum zero and reduce modulo
+$\mfr$; the product of two nonzero residue polynomials is nonzero.
+Define the cancellation depth
+\begin{equation}\label{prony:eq:cancellation}
+ q_i=\begin{cases}\max(0,-v(\chi_i)),&\chi_i\ne0,\\0,&\chi_i=0.\end{cases}
+ \qquad 0\le q_i\le \delta_i.
+\end{equation}
+The inequality follows from the ultrametric inequality for the sum defining
+$\chi_i$.
+
+\begin{proposition}[Exact row losses]\label{prony:prop:rows}
+For finite nodes,
+\begin{equation}\label{prony:eq:gaussrows}
+ \vg(G_i)=-2d_i,\qquad \vg(H_i)=-2d_i-q_i.
+\end{equation}
+Thus the exact coordinate projections of the tangent precision lattice
+$J^{-1}t^\kappa\Ocal^{2n}$ are
+\begin{equation}\label{prony:eq:marginals}
+ \dd a_i\in t^{\kappa-E_i}\Ocal,
+ \qquad
+ \dd w_i\in t^{\kappa-2d_i-q_i}\Ocal.
+\end{equation}
+Each displayed projection is the whole indicated fractional ideal, not
+merely a containing ball.
+\end{proposition}
+\begin{proof}
+The monic integral polynomials $Q_i$ and $X-a_i$ have Gauss valuation zero,
+so $\vg(\ell_i^2)=-2d_i$ and the first formula follows.
+If $\chi_i=0$, the remaining linear factor in $H_i$ is one. If
+$v(\chi_i)<0$, its coefficient of $X$ has valuation $v(\chi_i)$ and its constant
+coefficient has at least that valuation. If $v(\chi_i)\ge0$, the factor is
+integral and evaluates to one at the integral point $a_i$, so its Gauss
+valuation is zero. Here $v(2)=0$ since the coefficient field is $\R$ or
+$\C$. Multiplicativity gives the second formula.
+
+The image of an $\Ocal$-linear row is the fractional ideal generated by its
+finitely many coefficients. Such an ideal is generated by a coefficient
+of minimum valuation. Equations~\eqref{prony:eq:invdiff} and
+\eqref{prony:eq:gaussrows} now prove \eqref{prony:eq:marginals}, including surjectivity
+onto each ideal separately.
+\end{proof}
+
+\subsection{A support-based exact inverse-lattice theorem}
+The following proposition is an arbitrary-rank polynomial implementation
+of the differential precision principle in \cite{CRV}. It is included with
+proof so that no Banach-space convergence hypothesis is silently imported.
+
+\begin{proposition}[Finite coefficient criterion]\label{prony:prop:lattice}
+Let $F:K^N\to K^N$ be polynomial, let $x\in K^N$, and suppose
+$J=\dd F_x$ is invertible. Expand, in independent variables $Z$,
+\begin{equation}\label{prony:eq:Cexpand}
+ F(x+J^{-1}Z)-F(x)
+ =Z+\left(\sum_{|\nu|\ge2} C_{j,\nu} Z^\nu\right)_{j=1}^N.
+\end{equation}
+The sums are finite. If $\kappa\in\Gamma$ satisfies
+\begin{equation}\label{prony:eq:latticecriterion}
+ v(C_{j,\nu})+(|\nu|-1)\kappa>0
+ \quad\hbox{for every nonzero }C_{j,\nu},
+\end{equation}
+then $F$ is a bijection from $x+J^{-1}t^\kappa\Ocal^N$ onto
+$F(x)+t^\kappa\Ocal^N$. In particular,
+\begin{equation}\label{prony:eq:latticeimage}
+ F(x+J^{-1}t^\kappa\Ocal^N)=F(x)+t^\kappa\Ocal^N.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Scale $Z=t^\kappa Y$ and divide the output increment by $t^\kappa$.
+The normalized map is
+$T(Y)=Y+R(Y)$, where every coefficient of $R$ belongs to $\mfr$ and every
+monomial has degree at least two.
+For $Y,Y'\in\Ocal^N$, polynomial divided differences give
+\[
+ R(Y)-R(Y')=A(Y,Y')(Y-Y')
+\]
+with every entry of $A(Y,Y')$ in $\mfr$. If $Y\ne Y'$, the minimum
+valuation of this correction is strictly greater than
+$v_{\min}(Y-Y')$. It follows that
+\[
+ v_{\min}(T(Y)-T(Y'))=v_{\min}(Y-Y'),
+\]
+which proves injectivity.
+
+For a prescribed $b\in\Ocal^N$, the polynomial system $T(Y)=b$ reduces
+to $Y=\overline b$ modulo $\mfr$, with residue Jacobian identity.
+Lemma~\ref{prony:lem:hensel} gives a solution in
+$\overline b+\mfr^N\subset\Ocal^N$. This proves surjectivity.
+The lemma's proof evaluates a formal series in finitely many positive-support
+coefficients and in $b-\overline b$; no assertion about an ordinary Cauchy
+sequence is involved. Undo the two linear changes of variables.
+\end{proof}
+
+\begin{corollary}[Exact nonlinear uncertainty set]\label{prony:cor:nonlinear}
+For the Prony map, assume $\kappa>\Theta$ and also
+\eqref{prony:eq:latticecriterion} for its finite expansion \eqref{prony:eq:Cexpand}.
+Then the set of all parameter increments with strict-ball labelling realizing moment errors
+in $t^\kappa\Ocal^{2n}$ is exactly
+\begin{equation}\label{prony:eq:exactinverse}
+ J^{-1}t^\kappa\Ocal^{2n}.
+\end{equation}
+In particular the exact coordinate ranges are
+\[
+ \ah_i-a_i\in t^{\kappa-E_i}\Ocal,
+ \qquad
+ \wh_i-w_i\in t^{\kappa-2d_i-q_i}\Ocal.
+\]
+\end{corollary}
+\begin{proof}
+By Proposition~\ref{prony:prop:rows}, every point of the proposed parameter
+lattice satisfies strict node matching and preserves nonzero weights:
+$q_i\le \delta_i$ and $\kappa>\Theta$ give the required inequalities.
+Proposition~\ref{prony:prop:lattice} proves exact surjectivity onto the error
+ball, and Theorem~\ref{prony:thm:main} gives uniqueness of its labelled
+realization. The coordinate projections were computed exactly in
+Proposition~\ref{prony:prop:rows}.
+\end{proof}
+
+The lattice in \eqref{prony:eq:exactinverse} is generally not the Cartesian
+product of its coordinate projections: errors in different recovered
+parameters are correlated. Since $\Bbbk$ is infinite, all finite row minima
+can nevertheless be attained simultaneously. Normalize each nonzero row
+of $J^{-1}$ by its least valuation and choose an ordinary vector avoiding
+the finitely many resulting residue hyperplanes. Its lattice image has
+the minimum valuation in every parameter coordinate, and its actual moment
+increment belongs to the prescribed error ball.
+
+There always exists a sufficiently large $\kappa$ satisfying the finite
+criterion: choose it positive and larger than every $-v(C_{j,\nu})$ and
+than $\Theta$. In a divisible group one may use the sharper sufficient
+inequalities
+$\kappa>-v(C_{j,\nu})/(|\nu|-1)$.
+This auxiliary criterion is \emph{not} claimed to be the optimal onset of
+exact lattice behavior. It does not weaken the sharp threshold theorem,
+which requires only $\kappa>\Theta$ and was proved independently.
+
+\section{Nonuniform moment precision and a directed-path certificate}
+\label{prony:sec:graph}
+
+Uniform measurement precision is convenient but sometimes wasteful. For
+this section assume $\Gamma$ is divisible, as it may always be chosen for
+actual surreal data. Suppose
+\[
+ v(\epsilon_k)\ge\kappa_k\in\Gamma,\qquad 0\le k<2n.
+\]
+For a nonzero polynomial of degree less than $2n$, define its noise gauge
+\begin{equation}\label{prony:eq:noisegauge}
+ \nu_{\boldsymbol\kappa}(f)
+ =\min_{[X^k]f\ne0}\bigl(\kappa_k+v([X^k]f)\bigr).
+\end{equation}
+This always bounds $v(\Delta L(f))$ from below, although cancellations may
+make the actual value higher. Put
+\begin{equation}\label{prony:eq:graphedges}
+ \lambda_i=\nu_{\boldsymbol\kappa}(PQ_i),\qquad
+ \mu_{ij}=\nu_{\boldsymbol\kappa}(Q_iQ_j),\qquad
+ g_{ij}=\mu_{ij}-E_j.
+\end{equation}
+Make a directed graph with vertices $1,\ldots,n$; the edge from $j$ to $i$
+has weight $g_{ij}$. Loops are included. A path starting at $j$ has initial
+cost $\lambda_j$, plus the sum of its edge weights.
+
+\begin{theorem}[Nonuniform reconstruction certificate]\label{prony:thm:graph}
+Suppose every directed simple cycle, including every loop, has strictly
+positive total edge weight. For each $i$, let $\rho_i$ be the minimum cost
+of a simple path ending at $i$, with length-zero paths allowed. If
+\begin{equation}\label{prony:eq:graphcondition}
+ \rho_i-E_i>\delta_i\quad\hbox{for every }i,
+\end{equation}
+then every allowed moment perturbation has a unique regular $n$-node
+realization. It admits strict-ball labelling and satisfies
+\begin{equation}\label{prony:eq:graphnode}
+ v(\ah_i-a_i)\ge\rho_i-E_i.
+\end{equation}
+If $\kappa_* =\min_k\kappa_k$, a further, possibly weak, weight bound is
+$v(\wh_i-w_i)\ge\kappa_*-2d_i-\delta_i$.
+The certificate is sufficient; no necessity or universal sharpness is
+claimed for these graph conditions.
+\end{theorem}
+
+\begin{proof}
+Choose $\eta>0$ less than every simple cycle's mean edge weight. There are
+only finitely many simple cycles, and divisibility of $\Gamma$ permits
+this choice. Replace each edge weight by $g_{ij}-\eta$. Every directed
+cycle now has positive weight, because a closed walk decomposes into simple
+cycles. Add a source with a zero-weight edge to every vertex, and let
+$\zeta_i$ be its shortest-path cost to $i$. Shortest costs are attained
+by simple paths, since deleting cycles decreases cost. They satisfy
+\[
+ \zeta_i\le\zeta_j+g_{ij}-\eta,
+ \qquad g_{ij}+\zeta_j-\zeta_i\ge\eta.
+\]
+Let $T=\diag(t^{\zeta_i})$. The matrix
+$B'=T^{-1}BT$ has every entry of positive valuation, by
+\eqref{prony:eq:Bsystem} and \eqref{prony:eq:graphedges}. Hence $\Id+B'$ and $\Id+B$
+are invertible. Moreover the Neumann expansion is strongly summable,
+by Lemma~\ref{prony:lem:support} applied to the finitely many entries of $B'$.
+Multiplying by a fixed finite vector of Hahn series preserves this strong
+summability.
+
+In
+\[
+ u=-\sum_{\ell\ge0}(-B)^\ell g,
+\]
+every matrix-product term is indexed by a directed walk ending at its
+output vertex. Its valuation is at least the initial $\lambda$ plus its
+edge weights. Deleting repeated-vertex cycles only decreases this lower
+bound. Thus every such term has valuation at least $\rho_i$, and so
+$v(u_i)\ge\rho_i$. Strong summability legitimizes the expansion and
+regrouping even if no multiple of $\eta$ is cofinal in $\Gamma$.
+It follows that $v(b_i)\ge\rho_i-E_i>\delta_i$.
+
+Construct the $n$ roots by Lemma~\ref{prony:lem:localroots} and the weights by
+Lemma~\ref{prony:lem:pade}. These weights are nonzero even when the coarse weight
+bound is inconclusive: the perturbed Hankel matrix is invertible because
+its matrix in the $Q_i$ basis is $(\Id+B)\diag(c_i)$, whereas its
+factorization through the constructed distinct nodes would be singular
+if any weight vanished. Classical Prony uniqueness completes the
+reconstruction assertion. The root valuation follows from the same lemma;
+Lemma~\ref{prony:lem:weight} with $\kappa_*$ gives the last bound.
+\end{proof}
+
+\subsection{How to compute the certificate}
+The certificate requires finite polynomial multiplication, finitely many
+coefficient valuations, and ordered-group arithmetic. One may enumerate
+simple cycles and paths for a small configuration. More efficiently,
+shortest-path relaxation supplies the potentials and the costs once a
+valid positive margin is chosen. The value group need not be represented
+by real numbers: rational tuples with lexicographic comparison work directly.
+The polynomial coefficients themselves must be known well enough to decide
+zero coefficients and their valuations.
+
+The gauge \eqref{prony:eq:noisegauge} discards some information: the quantities
+$\Delta L(PQ_i)$ and $\Delta L(Q_iQ_j)$ are built from the \emph{same}
+errors. Cancellations and cross-entry relations can make the graph
+certificate fail while reconstruction is still well behaved. It would be
+incorrect to advertise this sufficient method as the exact admissible
+precision region. In the uniform case, taking
+$\lambda_i\ge\kappa$ and $g_{ij}\ge\kappa-E_j>0$ immediately recovers the
+bounds used in Theorem~\ref{prony:thm:main}.
+
+\section{Worked examples}
+\label{prony:sec:examples}
+
+\subsection{One atom and the meaning of the empty maximum}
+For $n=1$, $m_0=w$ and $m_1=wa$. The exact perturbed parameters are
+\[
+ \wh=w+\epsilon_0,\qquad
+ \ah=\frac{wa+\epsilon_1}{w+\epsilon_0},\qquad
+ \ah-a=\frac{\epsilon_1-a\epsilon_0}{w+\epsilon_0}.
+\]
+Our convention gives $d=\delta=0$, $E=\Theta=\varpi=v(w)$.
+Errors of valuation at least $\kappa>\varpi$ preserve the weight's leading
+term and put $\ah$ in $a+\mfr$, with node valuation bound
+$\kappa-\varpi$ and weight bound $\kappa$. Taking
+$\epsilon_0=0$, $\epsilon_1=e$ attains the node bound; at
+$v(e)=\varpi$, the new node is not in $a+\mfr$.
+This example checks the degree-one endpoint conventions directly.
+
+\subsection{Two nodes: exact formulas and an actual boundary collision}
+Let $a_1=0$, $a_2=h=t^s$, $s>0$, and $w_1=w_2=1$. Then
+\[
+ (m_0,m_1,m_2,m_3)=(2,h,h^2,h^3),\quad
+ d_i=\delta_i=s,\quad E_i=2s,\quad\Theta=3s.
+\]
+Perturb only $m_3$ by $e$. Proposition~\ref{prony:prop:last} gives
+\begin{equation}\label{prony:eq:twoP}
+ P_e(X)=X^2-\left(h+\frac{2e}{h^2}\right)X+\frac eh,
+ \qquad \Disc(P_e)=h^2+\frac{4e^2}{h^4}.
+\end{equation}
+For $e=h^4$, put $S=\sqrt{1+4h^2}$, the root in $1+\mfr$.
+The strict-ball-labelled nodes and weights are
+\begin{align*}
+ \ah_1&=(h+2h^2-hS)/2,&\wh_1&=1+2h/S,\\
+ \ah_2&=(h+2h^2+hS)/2,&\wh_2&=1-2h/S.
+\end{align*}
+Their initial terms are
+\begin{align*}
+ \ah_1&=h^2-h^3+h^5-2h^7+O_h(h^9),\\
+ \ah_2&=h+h^2+h^3-h^5+2h^7+O_h(h^9),\\
+ \wh_1&=1+2h-4h^3+12h^5-40h^7+O_h(h^9),\\
+ \wh_2&=1-2h+4h^3-12h^5+40h^7+O_h(h^9).
+\end{align*}
+Here $O_h(h^9)$ denotes formal power-series order, hence Hahn valuation
+at least $9s$. Both node displacements have valuation $2s=4s-E_i$;
+both weight errors have valuation $s=4s-2d_i-\delta_i$.
+
+At the boundary take $e=c h^3$ with ordinary $c\ne0$. Formula
+\eqref{prony:eq:twoP} becomes
+\[
+ P_e(X)=X^2-h(1+2c)X+ch^2.
+\]
+For $c=i/2$, the discriminant is zero and the root is
+$h(1+i)/2$. The unchanged Hankel determinant is $h^2\ne0$, so no regular
+two-node realization exists. For nonzero real $c$, the roots instead are
+\[
+ \frac h2\left(1+2c\pm\sqrt{1+4c^2}\right),
+\]
+with positive weights
+$1\pm2c/\sqrt{1+4c^2}$ assigned in the reverse sign order.
+They give a regular positive real realization, but neither node retains
+its strict nearest-neighbour label. Thus failure at the threshold need
+not mean a collision or a loss of positivity.
+
+\subsection{The same tree, different weight precision}
+Let the three nodes be $-h,0,h$, with $h=t^s$, $s>0$, and all weights one.
+Every separation valuation is $s$, so
+\[
+ d_i=2s,\quad \delta_i=s,\quad E_i=4s,\quad\Theta=5s.
+\]
+At the middle node,
+\[
+ \chi_2=\frac1h+\frac1{-h}=0,
+\]
+whereas at the two endpoints $\chi_1=-3/(2h)$ and $\chi_3=3/(2h)$.
+Hence $q_2=0$ and $q_1=q_3=s$.
+The exact weight row losses are consequently $4s$ at the middle and $5s$
+at the endpoints. Under the explicit extra smallness criterion of
+Corollary~\ref{prony:cor:nonlinear}, the middle weight's full nonlinear uncertainty
+range is $t^{\kappa-4s}\Ocal$, a factor $t^s$ smaller than the endpoint
+ranges $t^{\kappa-5s}\Ocal$.
+
+For comparison take the nodes $0,h,3h$. They have exactly the same labelled
+separation valuations. Now
+\[
+ \chi_1=-\frac4{3h},\qquad \chi_2=\frac1{2h},\qquad \chi_3=\frac5{6h},
+\]
+so all three $q_i$ equal $s$. Thus the full separation matrix determines
+the uniform threshold and the node losses, but does \emph{not} determine
+the exact weight precision. Residue-level cancellation contains additional
+information. The extra nonlinear lattice criterion is essential to the
+stated nonlinear interpretation; the tangent calculation needs no such
+criterion.
+
+
+\begin{proposition}[A nonlinear obstruction to the cancellation gain]
+\label{prony:prop:nonlinearobstruction}
+For the symmetric configuration $(-h,0,h)$ with unit weights, perturb only
+$m_5$ by $e$, with $v(e)=\kappa>5s$. The recovered middle weight satisfies
+\begin{equation}\label{prony:eq:nonlinearweight}
+ v(\wh_2-1)=2\kappa-10s.
+\end{equation}
+Consequently, whenever $5s<\kappa<6s$, its nonlinear error violates the
+improved tangent bound $\kappa-4s$. The exact Hermite lattice cannot describe
+the whole inverse error set throughout the entire sharp-threshold region.
+\end{proposition}
+\begin{proof}
+Normalize the nodes by $X=hY$ and put $\lambda=e/h^5\in\mfr$.
+The original normalized moments are $(3,0,2,0,2,0)$ and the perturbed last
+moment is $\lambda$. The exact monic annihilator and numerator are
+\[
+ P_\lambda(Y)=Y^3-\frac32\lambda Y^2-Y+\lambda,
+ \qquad
+ A_\lambda(Y)=3Y^2-\frac92\lambda Y-1.
+\]
+These follow from \eqref{prony:eq:Pe} and \eqref{prony:eq:numerators}, or directly
+from the three orthogonality equations. The middle root $y\in\mfr$
+satisfies
+\[
+ y\left(1-y^2+\frac32\lambda y\right)=\lambda,
+\]
+so $v(y)=v(\lambda)=\kappa-5s$. Its recovered weight obeys
+\[
+ \wh_2-1
+ =\frac{A_\lambda(y)-P_\lambda'(y)}{P_\lambda'(y)}
+ =\frac{-\tfrac32\lambda y}{3y^2-3\lambda y-1}.
+\]
+The denominator is a unit of residue $-1$, giving
+\eqref{prony:eq:nonlinearweight}. For $\kappa<6s$,
+$2\kappa-10s<\kappa-4s$, as asserted. Values in this interval exist in
+the divisible workspaces used for actual surreal numbers.
+\end{proof}
+
+For the same symmetric example, the explicit choice $\kappa>9s$ is a
+simple sufficient condition for the full nonlinear lattice theorem.
+Indeed the inverse Hermite lattice gives weight increments of valuation
+at least $\kappa-5s$ and node increments of valuation at least
+$\kappa-4s$. In the $k$th moment, a nonlinear term with $j\ge2$ node
+increments and no weight increment has valuation at least
+$j\kappa+(k-5j)s$, with $k\ge j$. A term with one weight increment and
+$j\ge1$ node increments has valuation at least
+$(j+1)\kappa+(k-5j-5)s$, again with $k\ge j$.
+For $\kappa>9s$ both bounds are strictly greater than $\kappa$.
+The zeroth moment is linear. Applying these estimates coefficientwise in
+the independent normalized moment variables verifies
+\eqref{prony:eq:latticecriterion}. This is a sufficient hand-checkable bound,
+not an optimal one; the obstruction just proved occurs below $6s$.
+
+\subsection{A genuinely higher-rank configuration}
+Take $\Gamma=\Q e_1\oplus_{\mathrm{lex}}\Q e_2$, with
+$e_1>Ne_2>0$ for every positive integer $N$, and put
+\[
+ (a_1,a_2,a_3,a_4)=(0,t^{e_1},t^{e_2},1),\qquad
+ (w_1,w_2,w_3,w_4)=(1,t^{e_2},1,t^{2e_2}).
+\]
+The only positive separation valuations are
+$d_{12}=e_1$ and $d_{13}=d_{23}=e_2$.
+The following table records the full threshold data.
+\begin{center}
+\begin{tabular}{c c c c c}
+\toprule
+$i$ & $\varpi_i$ & $d_i$ & $\delta_i$ & $E_i+\delta_i$\\
+\midrule
+1 & $0$ & $e_1+e_2$ & $e_1$ & $3e_1+2e_2$\\
+2 & $e_2$ & $e_1+e_2$ & $e_1$ & $3e_1+3e_2$\\
+3 & $0$ & $2e_2$ & $e_2$ & $5e_2$\\
+4 & $2e_2$ & $0$ & $0$ & $2e_2$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Thus $\Theta=3e_1+3e_2$. For $\kappa=3e_1+4e_2$, the guaranteed node
+precisions are, respectively,
+\[
+ e_1+2e_2,\qquad e_1+e_2,\qquad 3e_1,\qquad 3e_1+2e_2.
+\]
+The weight-error bounds are
+\[
+ 2e_2,\qquad 2e_2,\qquad 3e_1-e_2,\qquad 3e_1+4e_2.
+\]
+Each weight-error bound is strictly above the original weight's valuation.
+Perturbing the seventh moment, $m_7$, by $t^\kappa$ attains all four node
+bounds exactly. All these assertions are ordered-pair arithmetic; no
+real-valued logarithm is involved.
+
+In actual surreals one may choose $e_1=\omega$, $e_2=1$. The nodes then
+are $0,\omega^{-\omega},\omega^{-1},1$, and the admissible test error is
+$\omega^{-(3\omega+4)}$. There is no ordered-group embedding of this entire
+$\Gamma$ into the additive reals: a positive image of $e_2$ cannot have
+all its integer multiples below a fixed image of $e_1$. This does not deny
+that a finite collection of these inequalities can sometimes be emulated
+by a sufficiently large real scale ratio; it explains why one such ratio
+cannot represent the whole group.
+
+\subsection{Nonuniform errors for two nodes}
+Return to $0,h$ with weights one. For $Q_1=X-h$, $Q_2=X$ and
+$P=X^2-hX$, the noise gauges are
+\begin{align*}
+ \lambda_1&=\min(\kappa_3,\kappa_2+s,\kappa_1+2s),\\
+ \lambda_2&=\min(\kappa_3,\kappa_2+s),\\
+ \mu_{11}&=\min(\kappa_2,\kappa_1+s,\kappa_0+2s),\\
+ \mu_{12}=\mu_{21}&=\min(\kappa_2,\kappa_1+s),\qquad
+ \mu_{22}=\kappa_2.
+\end{align*}
+Suppose
+\begin{equation}\label{prony:eq:hetero}
+ \kappa_0>0,\qquad\kappa_1>s,\qquad
+ \kappa_2>2s,\qquad\kappa_3>3s.
+\end{equation}
+Then all graph edges have positive weight, and all initial costs exceed
+$3s$. Every $\rho_i$ therefore exceeds $3s$, so the certificate applies.
+These errors need not have a common precision above $3s$.
+
+There is also a simple direct interpretation: normalize $X=hY$ and divide
+the $k$th moment by $h^k$. The normalized nodes are $0,1$, their threshold
+is zero, and all normalized errors in \eqref{prony:eq:hetero} are infinitesimal.
+The main theorem then also proves preservation of the leading weights.
+This example illustrates the certificate; it is not claimed as a new
+scaling principle.
+
+\section{Constructive content, symbolic checks, and formalization}
+\label{prony:sec:verification}
+
+\subsection{A finite-algebra reconstruction procedure}
+With exact input data and a certified precision hypothesis, the proof gives
+a specific procedure. Form $P,Q_i,p_i,c_i$, compute the finite quantities
+$\Delta L(Q_iQ_j)$ and $\Delta L(PQ_i)$, solve
+$(\Id+B)u=-g$, and form $\Ph=P+\sum_i(u_i/c_i)Q_i$.
+For each $i$, solve the residue-simple local equation
+\eqref{prony:eq:localeq} by the formal-parameter construction. Finally compute
+$\Ah$ by finite polynomial-part extraction and the weights by residues.
+All node corrections and their labels are certified before the last step.
+
+This is a mathematical construction, not an unconditional Turing algorithm
+on arbitrary surreal inputs. An effective implementation needs names
+supporting exact coefficient arithmetic, equality, leading valuations, and
+the required support operations. Finite algebra does not by itself supply
+those oracles. Over rational-function or bounded-denominator Puiseux inputs,
+finite truncations can be computed using familiar exact symbolic methods;
+those representations are narrower than the full Hahn field.
+
+The formal lifting proofs are support-controlled in a precise relative
+sense. After the finite normalizations, record every positive-support
+parameter used in the inverse and residue-simple equations. The corresponding
+formal solution supports lie in the monoid generated by those parameter
+supports. Monomial rescalings add their explicitly known shifts. This is
+\emph{not} an assertion that the output uses only the supports of the raw
+moment errors: inverse separations, normalized units, and starting
+coefficients contribute to the normalized parameters as well.
+
+\subsection{What the accompanying program checks}
+This directory contains \lbl{code/verify.py}, which uses exact SymPy
+arithmetic and writes a human-readable verification log. Its tests cover:
+\begin{enumerate}
+\item the Hermite cardinal conditions and the matrix identity
+      $J^{-1}J=\Id$ for several finite rational configurations;
+\item the exact cofactor correction system, moment annihilator,
+      cross-numerator identity, and recovered finite Laurent coefficients
+      for explicit rational perturbations;
+\item the two-node formula \eqref{prony:eq:twoP}, its discriminant and boundary
+      collision, and the displayed power-series coefficients;
+\item the three-node cancellation comparison, its nonlinear middle-weight
+      obstruction, and the rank-two threshold arithmetic;
+\item a directed graph with a negative edge but positive cycles, verifying
+      shortest-path potentials and the path lower bounds.
+\end{enumerate}
+There is no floating-point evidence in these checks. They detect sign,
+index, and algebraic mistakes in concrete instances. They do not prove
+arbitrary-rank summability, the general quantified theorems, or any novelty
+claim. Those rest on the mathematical arguments, with their stated
+classical prerequisites.
+
+The recorded run, \lbl{data/verification.txt}, passed $10{,}052$ exact
+assertions under Python~3.13.5 and SymPy~1.14.0; the count includes finite
+graph-walk enumeration and is not a count of independent results. The
+program first deletes that file and then rewrites it, recording the Python
+and SymPy versions on its second line, so it should be run on a copy of this
+directory. When the report joined the collection, a run on such a copy under
+Python~3.14.4 and SymPy~1.14.0 reproduced every line of the record except
+that version line. The program keeps the manuscript's letters
+(Section~\ref{prony:subsec:collection}), and
+\lbl{data/requirements.txt} pins the tested SymPy version.
+
+\subsection{A possible Lean development}
+A formalization can be separated into finite algebra and valuation lemmas.
+The first layer is the Prony moment functional, the cofactor basis, its
+orthogonality matrix, and the finite Pad\'e identity. These are field-level
+statements. The second layer adds a valuation, proves integral-polynomial
+and divided-difference estimates, and packages residue-simple lifting as an
+explicit assumption. It then proves the sharp uniform theorem without any
+reference to a proper class.
+
+The third layer instantiates the lifting assumption for Hahn fields via
+strong formal evaluation, and transfers finite families to the actual
+surreal carrier through the normal-form bridge. The Hermite inverse layer
+can reuse the repository's finite interpolation machinery: the collection's
+formalization ledger \lbl{docs/FORMALIZATION.md} maps the Hermite and
+Lagrange interpolation clauses of \lbl{polynomial:thm:crt} to checked Lean
+declarations over fields. The graph
+certificate is finite ordered-group combinatorics plus matrix scaling.
+The exact lattice theorem needs the multivariable residue-simple lifting
+lemma, not an ordinary normed-space inverse-function theorem.
+
+No Lean proof of this article is included or claimed. The repository's
+existing build and axiom audit concern its own imported declarations, not
+the new statements here. A complete mechanization would need to match each
+hypothesis, particularly the exact model order, strict inequalities, and
+universe sizes.
+
+\section{Boundaries of the results and further questions}
+\label{prony:sec:scope}
+
+The uniform theorem resolves the precise finite reconstruction question
+posed here, including optimality at each configuration. It is not presented
+as a solution to a named previously published open problem. The primary
+research claim is a proposed new exact refinement with complete proofs,
+subject to independent verification and a broader priority search.
+
+Three distinctions are particularly important. First, the threshold is
+optimal for retaining all strict nearest-neighbour labels, not for the
+bare existence of any atomic representation. Second, the weight bound
+$\kappa-2d_i-\delta_i$ is uniformly valid above the sharp threshold, whereas the
+improved cancellation bound with $q_i$ is proved for the tangent map and,
+under a separate finite coefficient criterion, for the whole nonlinear
+uncertainty set. Third, the directed-path theorem is a sufficient
+nonuniform certificate, not the exact geometry of all allowed error ideals.
+
+Several focused problems remain. An exact nonuniform precision region
+would have to retain algebraic correlations among the entries of the
+cofactor correction matrix, rather than just their valuations. A sharp
+criterion for when the entire inverse image is its Hermite lattice may be
+weaker than \eqref{prony:eq:latticecriterion}. Confluent configurations, where
+several atoms merge and derivative evaluations replace simple evaluations,
+require a different local model; they are not covered by declaring a zero
+separation valuation to be finite. Finally, infinite configurations need a
+separate summability hypothesis on the moment data and are outside this
+finite theorem.
+
+These questions are stated as research directions, not asserted to be
+known open problems in the published literature. The present finite
+results already supply a useful answer: the information needed to resolve
+surcomplex atoms is governed by a weighted, pointwise collision profile,
+and the exact worst moment direction can be written down without solving
+any nonlinear equation.
+
+\appendix
+\section{Dependency and novelty ledger}
+\label{prony:app:ledger}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.31\textwidth}>{\raggedright\arraybackslash}p{0.60\textwidth}}
+\toprule
+Statement or ingredient & Status and dependencies\\
+\midrule\endhead
+Hahn normal forms and finite workspace localization &
+Standard background. The interpretation in actual surreal numbers uses
+Conway normal forms, as discussed in \cite{BG,Repo}.\\[5pt]
+Positive-support evaluation &
+Classical support principle, deduced here from Higman's word theorem
+\cite{Higman}. It does not assert sequential convergence.\\[5pt]
+Prony uniqueness, Hankel factorization, Hermite duals &
+Classical finite algebra; proved here for completeness and credited to the
+Prony/interpolation background \cite{BY,KDB}.\\[5pt]
+Theorem~\ref{prony:thm:main} and Proposition~\ref{prony:prop:last} &
+Principal proposed refinement: exact arbitrary-rank, pointwise threshold,
+nonlinear weight control, and a universal highest-moment witness. Depends
+on cofactor linear algebra, simple lifting, and divided differences.\\[5pt]
+Proposition~\ref{prony:prop:rows} &
+Exact valuation consequence of the classical Hermite inverse, with explicit
+cancellation invariant. Not a claim to have invented the inverse matrix.\\[5pt]
+Proposition~\ref{prony:prop:lattice} &
+Support-based arbitrary-rank polynomial adaptation of the established
+differential precision principle \cite{CRV}.\\[5pt]
+Corollary~\ref{prony:cor:nonlinear} &
+Exact precision-set application, under its extra smallness criterion.
+Not asserted to hold throughout the entire sharp-threshold region.\\[5pt]
+Theorem~\ref{prony:thm:graph} &
+Proposed sufficient nonuniform certificate. It uses cycle potentials and
+strongly summable matrix inversion. Its conditions are not claimed
+necessary.\\[5pt]
+Verification program &
+Exact checks of finite examples only. Not a formal proof, a proof of
+infinite support assertions, or a priority certificate.\\[5pt]
+Section~\ref{prony:subsec:collection} &
+Added on placement in the collection: provenance, notation, the meaning of
+``moment'', and cross-references to neighbouring reports. No mathematical
+claim.\\[5pt]
+Remark~\ref{prony:rem:coefficient} &
+Added on placement: an elementary comparison of $\Theta$ with the threshold
+$T(P)$ of \lbl{polynomial:thm:stability} \cite{RepoPoly}, with two small
+examples. No new theorem, and no coefficient-side universal sharpness
+claimed.\\
+\bottomrule
+\end{longtable}
+
+\section{Reproducibility and source audit}
+\label{prony:app:audit}
+The repository was inspected through its connected GitHub interface. The
+pinned commit is recorded in Section~\ref{prony:subsec:repository}. At that
+commit the inspected
+\lbl{docs/README.md} listed twenty-six principal reports; the
+\lbl{docs/surcomplex/polynomial-algebra/README.md} described its
+sixty-one-page merged report, including its coefficient threshold,
+Hermite interpolation, and support results. The full main-report collection,
+the eighteen separate ZIPs then in \lbl{docs/new}, and removed historical
+sources were not exhaustively compared. Indexed no-match results are
+reported as observations, not as proof that the terms or results occur
+nowhere in the repository. These are statements about the pinned snapshot.
+The collection has since grown, this report being one of the additions, and
+the archives then in \lbl{docs/new} have been placed into reports
+(Section~\ref{prony:subsec:repository}).
+
+The primary literature comparison used the authors' arXiv manuscripts
+\cite{BY,KDB,AGY,CRV,BG} and publisher metadata for the journal references.
+The exact arbitrary-rank theorem stated here was not identified in that
+material. Keyword searches combining Prony with Hahn, surreal, or valued
+fields did not yield a matching primary theorem, but several search results
+were broad or irrelevant; they cannot establish comprehensive absence.
+The manuscript therefore does not certify priority. The manuscript modified
+no repository file; joining the collection added only this report's own
+directory.
+
+\begin{samepage}
+Compile from this directory with
+\begin{verbatim}
+latexmk -pdf -halt-on-error -interaction=nonstopmode article.tex
+python code/verify.py
+\end{verbatim}
+\end{samepage}
+Run the second command on a copy of the directory: it deletes and rewrites
+\lbl{data/verification.txt} (Section~\ref{prony:sec:verification}). The
+tested SymPy version is pinned in \lbl{data/requirements.txt}.
+The LaTeX bibliography is internal. No proprietary fonts, external images,
+or downloaded papers are required or bundled. The verification script uses
+SymPy; the PDF and its proofs do not require executing that script.
+
+\begin{thebibliography}{9}
+\bibitem{BY}
+D.~Batenkov and Y.~Yomdin,
+\emph{On the accuracy of solving confluent Prony systems},
+SIAM Journal on Applied Mathematics \textbf{73}(1) (2013), 134--154.
+\href{https://doi.org/10.1137/110836584}{doi:10.1137/110836584}.
+Author manuscript: \href{https://arxiv.org/abs/1106.1137}{arXiv:1106.1137}.
+
+\bibitem{KDB}
+R.~Katz, N.~Diab, and D.~Batenkov,
+\emph{On the accuracy of Prony's method for recovery of exponential sums
+with closely spaced exponents},
+Applied and Computational Harmonic Analysis \textbf{73} (2024), 101687.
+\href{https://doi.org/10.1016/j.acha.2024.101687}{doi:10.1016/j.acha.2024.101687}.
+Author manuscript: \href{https://arxiv.org/abs/2302.05883}{arXiv:2302.05883},
+version 2, 16 April 2024.
+
+
+\bibitem{AGY}
+A.~Akinshin, G.~Goldman, and Y.~Yomdin,
+\emph{Geometry of error amplification in solving Prony system with
+near-colliding nodes},
+\href{https://arxiv.org/abs/1701.04058}{arXiv:1701.04058}, version 5,
+17 December 2019. See Definition 1.3 and the discussion of the Prony curve
+$S_{2d-2}$.
+
+\bibitem{CRV}
+X.~Caruso, D.~Roe, and T.~Vaccon,
+\emph{Tracking $p$-adic precision},
+LMS Journal of Computation and Mathematics \textbf{17}, special issue A
+(2014), 274--294.
+Author manuscript: \href{https://arxiv.org/abs/1402.7142}{arXiv:1402.7142}.
+See in particular Lemma 3.4 and Proposition 3.12.
+
+\bibitem{BG}
+O.~Bournez and Q.~Guilmant,
+\emph{Surreal fields stable under exponential and logarithmic functions},
+2022 preprint, \href{https://arxiv.org/abs/2201.08199}{arXiv:2201.08199}.
+Used here for background on surreal normal forms and Hahn subfields,
+not for any Prony reconstruction assertion.
+
+\bibitem{Higman}
+G.~Higman,
+\emph{Ordering by divisibility in abstract algebras},
+Proceedings of the London Mathematical Society (3) \textbf{2}(1)
+(1952), 326--336.
+\href{https://doi.org/10.1112/plms/s3-2.1.326}{doi:10.1112/plms/s3-2.1.326}.
+
+\bibitem{Repo}
+V.~Reshetnikov and contributors,
+\emph{Surreal: Lean formalization and research reports}, GitHub repository,
+inspected 22 September 2026, commit
+\texttt{4cf691c7d951e037739d32d9f5c387dcce724f3c}.
+\href{https://github.com/VladimirReshetnikov/Surreal/tree/4cf691c7d951e037739d32d9f5c387dcce724f3c}{Pinned repository snapshot}.
+Specifically the documentation catalogue, formalization-ledger excerpts,
+and polynomial-algebra report README. Research reports are not treated
+as independently refereed literature.
+
+\bibitem{RepoPoly}
+\emph{Surcomplex Polynomial Algebra: Root Geometry, Newton Profiles,
+Multiscale Stability, and Residue Duality}, report
+\lbl{docs/surcomplex/polynomial-algebra} of this collection; in particular
+\lbl{polynomial:thm:stability}, \lbl{polynomial:ex:sharpdisc},
+\lbl{polynomial:cor:discprecision} and \lbl{polynomial:thm:crt}.
+Cited on placement; an AI-assisted research draft, not refereed literature.
+
+\bibitem{RepoSpec}
+\emph{Surcomplex Spectral Theory}, report
+\lbl{docs/surcomplex/spectral-theory} of this collection; its section on
+Hankel square-class profiles. Cited on placement; an AI-assisted research
+draft.
+
+\bibitem{RepoMeas}
+Report \lbl{docs/surreal/hahn-valued-measures-and-probability} of this
+collection, on Hahn-valued measures, moment representation and probability.
+Cited on placement; an AI-assisted research draft.
+
+\bibitem{RepoHerg}
+Report \lbl{docs/surcomplex/hahn-herglotz-positivity} of this collection,
+on Hahn--Herglotz normalization and trigonometric moments. Cited on
+placement; an AI-assisted research draft.
+
+\bibitem{RepoAna}
+\emph{Surcomplex Analysis}, report \lbl{docs/surcomplex/analysis} of this
+collection; in particular \lbl{d:thm:moments}. Cited on placement; an
+AI-assisted research draft.
+\end{thebibliography}
+\end{document}

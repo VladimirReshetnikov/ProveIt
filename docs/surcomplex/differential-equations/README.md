@@ -3,25 +3,47 @@
 **The finite-primitive criterion, the phase obstruction, and support-certified
 coordinate systems**
 
-A merged research report, 121 pages. Everything in this directory other than
-`article.tex` and `article.pdf` is preserved source material.
+A merged research report, 164 pages, built from ten manuscripts. Everything in
+this directory other than `article.tex`, `article.pdf` and this README is
+preserved source material.
 
 ```
-article.tex   the merged report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled 121-page report
-README.md     this guide
-code/         the eight source verification programs, unmodified
-data/         the eight recorded verification and build records, unmodified
+article.tex                        the merged report, standalone LaTeX with an internal bibliography
+article.pdf                        the compiled 164-page report
+README.md                          this guide
+11-autonomous-dynamics-sources.md  member 11's literature and repository-review log, unmodified
+code/                              the verification programs and build scripts of the ten
+                                   source packages (18 files), unmodified
+data/                              their recorded verification, build and requirement
+                                   records (29 files), unmodified
 ```
+
+Every label in `article.tex` carries the prefix `diff:`; the labels added with
+members 11 and 12 carry the sub-prefixes `diff:aut:` and `diff:rs:`. No
+pre-existing label was renamed or removed (506 before, 685 after).
 
 ## What the report is
 
-Eight independently written manuscripts developed the same theory of the
+Ten independently written manuscripts developed the theory of the
 Berarducci–Mantova derivation `∂` on the surreal class field `No`, normalized
 by `∂ω = 1`, and of its unique extension to the surcomplex field `No[i]`.
 This report is their **union**, not a selection from them. Seven of them share
 a twelve-item spine of scalar and workspace theory; the eighth joined later and
-carries the finite **matrix** stratum — Part III.
+carries the finite **matrix** stratum — Part III; the ninth and tenth joined
+last, together: member 12 carries the **regular-singular** stratum — Part V —
+and member 11 a **first-order autonomous** nonlinear stratum — Part VI.
+
+| Part | Content |
+|---|---|
+| I | Foundations: conventions, the imported derivation, smallness, the vocabulary discipline |
+| II | The scalar theory over `No[i]` |
+| III | Finite matrix systems and the differential phase spectrum |
+| IV | Workspaces: Laurent, rational, Hahn, set-sized |
+| V | Regular-singular systems over real-exponent Hahn workspaces (member 12) |
+| VI | Autonomous first-order equations: curves, derivation independence, abelian logarithmic derivatives (member 11) |
+| VII | Coordinate differential equations in common-domain Hahn rings |
+| VIII | Computation, formalization, and the register of non-claims |
+| App. A–E | Positive-support calculus, notation and concordance, provenance, verification records, build |
 
 The organizing identity is exact:
 
@@ -39,8 +61,8 @@ subject:
 * `A` is a **strict** subclass of `m`. The coefficient `ω⁻¹` is infinitesimal
   while its primitive `log ω` is infinite, so `∂y = i·ω⁻¹·y` has only the zero
   solution. Collapsing `∂O` to `O` would turn the criterion into "`b`
-  infinitesimal" and make that equation solvable; all eight sources refute
-  exactly that, and Proposition 16.9 shows the strictness is *sharp*: `A` is
+  infinitesimal" and make that equation solvable; the first eight sources all
+  refute exactly that, and Proposition 16.9 shows the strictness is *sharp*: `A` is
   exactly the class of scalar perturbations that preserve every phase.
 
 From the criterion the report derives: the purely infinite part of the
@@ -94,7 +116,8 @@ an arbitrary finite system, which is the diagonal Theorem 21.12 applied through
 the normal form rather than new Galois theory.
 
 **Two things are deliberately not claimed.** The non-Hermitian case is *not*
-classified, and Example 16.10 is the counterexample that marks the line: a
+classified in general — Part V computes one explicit non-Hermitian sector, see
+below — and Example 16.10 is the counterexample that marks the line: a
 nonnormal `A` with instantaneous eigenvalues `±i` whose system nevertheless
 has a fundamental matrix already in the base field, so that integrating
 imaginary parts of eigenvalues would predict `{ω, −ω}` instead of the correct
@@ -104,6 +127,87 @@ nonzero scalar operators, transferred from the transseries field — which the
 first seven manuscripts never use. Every inhomogeneous existence statement in
 Part III comes from that import and not from the rank-one criterion; the
 register of non-claims says so at items N22, N24 and N53.
+
+### The regular-singular stratum (Part V, member 12)
+
+Write `t = ω⁻¹`, `τ = log t = −log ω`, and `∂_τ = −ω∂` — the rescaled
+derivation `∂_s` at `s = τ`, which acts on real-exponent Hahn series by
+`t^a ↦ a t^a` and *reverses* the `H`-field sign rule (Warning 23.4). Part V
+treats `∂_τ y = A y`, that is `∂y = −tAy`, with `A = A₀ + A₊`, an ordinary
+complex residual matrix `A₀` and a perturbation `A₊` of positive order in
+`K_R = C((t^R))`, with arbitrary well-ordered real support (Definition 23.5).
+The unknown ranges over all of `No[i]ⁿ`.
+
+* **Normal form and finite resonance data** (Theorems 24.5, 24.7). A unique
+  support-controlled Hahn–Levelt gauge brings `A` to `A₀° + finitely many
+  resonant terms`, supported on the Levelt resonances `λ − μ ∈ R_{>0}`. Only
+  the finitely many coefficients lying on ordered words that sum to a
+  resonance matter — even when the support accumulates below a resonance —
+  and the resonant terms are polynomials of bounded degree in them.
+* **Spectral selection** (Theorem 25.3). There is an explicit
+  `G_τ ∈ GL_n(K_R[τ])` with `∂_τ G_τ = A G_τ − G_τ iD`, `D` the imaginary parts
+  of the eigenvalues of `A₀`. Every surcomplex solution is `G_τ c` with
+  `c ∈ ker D`, so the solution space has dimension equal to the algebraic
+  multiplicity of the **real** eigenvalues of `A₀`, and every solution already
+  lies in `K_R[log t]ⁿ`.
+* **Two classifications** (Theorems 25.7, 25.9). Over `K_R`: residual
+  frequencies plus nilpotent Jordan partitions. Over `No[i]`: the multiset of
+  residual frequencies alone; morphism and tensor dimensions exactly.
+* **The phase spectrum** (Proposition 25.12). `Ph(−tA) = {(Im λⱼ)·log t}` —
+  one explicit **non-Hermitian** sector of Part III's phase spectrum, with an
+  explicit gauge, reached **without** the imported splitting/surjectivity
+  theorem of Part III and without the surjectivity clause of the derivation.
+  Remark 25.13 records, as an observation of this merge that neither source
+  states, that in this class the naive eigenvalue recipe also gives the right
+  answer; Example 16.10 lies outside the class.
+* **Logarithms and forcing** (Theorems 26.1, 26.3, 26.5). The Hahn solution
+  space is `F ker N₀`; one actual logarithm repairs every nilpotent resonance,
+  with Galois group `(C,+)`; an exact finite-dimensional Hahn obstruction
+  sequence, and a solution in `K_R[log t]ⁿ` for every forcing in `K_Rⁿ`.
+* **Workspaces and the boundary** (Theorem 28.1, Proposition 28.4). Finitely
+  many real monomials and one logarithm suffice over any `K_Γ`, `Γ ⊆ R` (no
+  `1 ∈ Γ` needed, since `∂_τ` preserves every `K_Γ`); in rank one this is
+  exactly the resonant normal form of Theorem 19.3 (Remark 28.2). The
+  infinitesimal coefficient `i/log ω` has no solution, so the power-Hahn
+  hypothesis cannot be dropped.
+* **An exact finite procedure** for finite rational supports (§28.3), which is
+  explicitly *not* an oracle algorithm for indirectly described supports.
+
+### The autonomous stratum (Part VI, member 11)
+
+Part VI is the only part stated for a **class of derivations**: every
+*normalized* derivation `ð` — the Berarducci–Mantova clauses without
+surjectivity (Definition 29.1). Everything else in the report remains relative
+to the one fixed `∂`.
+
+* **Realization classification** (Theorem 30.1). For a constant meromorphic
+  vector field on a smooth projective complex curve, every nonconstant
+  surcomplex solution reduces to a zero of the field. A simple zero
+  contributes solutions exactly when its eigenvalue is a **negative real**
+  number — nonreal eigenvalues are excluded even with negative real part —
+  and a zero of order `m+1 ≥ 2` contributes exactly `m` one-parameter families,
+  explicit series in `ω^(−1/m)` and `(log ω)/ω`, with no hidden
+  beyond-all-orders parameter.
+* **One finite-scale field; derivation independence** (Theorems 31.1, 31.4).
+  All solutions lie in one set-sized Hahn field with a finitely generated
+  monomial group; for every `F ∈ C[Y,Z]` the solution set of `F(y, ðy) = 0` is
+  the same for every normalized derivation, and on it all of them agree. This
+  reproves the first-order parts of Corollaries 8.8 and 8.11 for every
+  normalized derivation (Corollary 31.7), and nothing more.
+* **Projective obstructions** (Theorem 33.3). `(ðy)² = Q(y)` with `Q`
+  squarefree of degree `≥ 3` has only the constant roots of `Q`; both
+  hypotheses are needed.
+* **Abelian varieties** (Proposition 33.7, Theorem 33.8, Corollaries 33.10,
+  33.11). For a constant abelian variety, the formal logarithm splits the
+  identity monad, and the logarithmic-derivative image is exactly
+  `Lie(A)(ð𝔪_C)` — for `ð = ∂`, the *whole* Lie coordinate must have finite
+  primitives, unlike the multiplicative group, where only the imaginary part
+  is constrained. With surjectivity: a finite-primitive criterion and the
+  speed threshold `p > 1`.
+
+These lift, for this class only, the report's former non-claims N21 and N25
+and the remark after Corollary 8.11 that it "is not a general nonlinear
+solvability theorem"; the old wording is kept, amended in place.
 
 A **deliberately separate** half treats *coordinate* differential equations in
 fixed-common-domain Hahn rings `O(U)((t^Γ))`: existence, uniqueness, support
@@ -145,16 +249,37 @@ multiset of purely infinite *surreals* — not the algebraic eigenvalue list tha
 not a prime spectrum of a ring. Warning 5.2 states all three separations.
 
 The report also uses **no symbol `J`** (the sources use that letter for three
-unrelated objects, and the eighth uses it for the rotation generator, written
-`R` here), and reserves `U` for an ordinary complex domain, writing `T` for a
-transcendental differential generator and `W` for a unitary matrix. Convention
-15.5 fixes the rest of Part III's alphabet: `H` Hermitian, `G` a gauge matrix,
-`M` a horizontal metric, `Π` the additive phase lattice in `P` (because `Λ` is
+unrelated objects, the eighth uses it for the rotation generator, written
+`R` here, and member 12 for a Jordan form, written `A₀°` here), and reserves
+`U` for an ordinary complex domain, writing `T` for a transcendental
+differential generator and `W` for a unitary matrix. Convention 15.5 fixes the
+rest of Part III's alphabet: `H` Hermitian, `G` a gauge matrix, `M` a
+horizontal metric, `Π` the additive phase lattice in `P` (because `Λ` is
 already the integer relation lattice).
+
+Members 11 and 12 brought three further hazards, each resolved by renaming in
+the new material (Conventions 23.6 and 29.3, Warnings 23.7, 23.8 and B.1):
+
+* member 12's **"phase labels"** `b = Im λ` are ordinary real numbers, none of
+  the phase senses above; they are called **residual frequencies**, and the
+  frequency `b` corresponds to the phase `b·log t`;
+* **"resonance"** now has three senses — Levelt resonance `λ − μ > 0`
+  (Part V only), phase resonance (integer relations among phases, Theorem
+  17.8), and the single resonant coefficient `[t¹]f` (Theorem 19.2) — and
+  every use is qualified;
+* member 11's derivation `D` ranges over a *class*; it is written `ð` so that
+  every `∂`-statement elsewhere stays visibly about the one fixed derivation,
+  and its curve parameter `t` is written `σ` so that `t` stays the number
+  `ω⁻¹`. Member 12's `δ = −ω∂` and `ℓ = log t` are written `∂_τ` and `τ`.
+
+The concordance (Warning B.1) previously said that `D` is used for no operator
+on `No` or `No[i]`; that was inaccurate — Proposition 18.1 abbreviates
+`∂|_{C((t))}` as `D` — and it now lists every use truthfully. No label or
+statement changed with that correction.
 
 ## Where it came from
 
-Eight source archives. Among the first seven, three pairs of archive filenames
+Ten source archives. Among the first seven, three pairs of archive filenames
 collided, differing only by a trailing marker, so the mapping from archive name
 to manuscript is recorded here because it is not recoverable from the
 filenames.
@@ -169,11 +294,18 @@ filenames.
 | 08 | `surreal_differential_equations` | `08-coherent-ivp-and-general-resolvent.tex` |
 | 09 | `surreal_intrinsic_differential_calculus` | `09-bm-bridge-and-derived-smallness.tex` |
 | 10 | `surcomplex_phase_spectrum` | `10-hermitian-phase-spectral-integral.tex` |
+| 11 | `surreal_autonomous_dynamics` | autonomous dynamics (Part VI) |
+| 12 | `surcomplex_regular_singular` | regular-singular spectral selection (Part V) |
 
 Members 01–09 are pinned to `VladimirReshetnikov/Surreal` at commit
 `e260237db9b71da8b74a0c13c8e6355119091100`; member 10 joined later and is
 pinned to the later revision
-`aa846271b4dcae2c055b216126a87210292ec19b`. The first seven share a
+`aa846271b4dcae2c055b216126a87210292ec19b`; members 11 and 12 joined last,
+together, and are pinned to `a3124af79f66b8b9c196d76b4cbc5ac3938907c4`. The
+archive name of member 11 is misleading on two counts: its field is `No[i]`
+(with real corollaries), and its "dynamics" are flows of autonomous
+differential equations, not iteration of maps — it is unrelated to
+`docs/surcomplex/dynamics-and-normal-forms/`. The first seven share a
 twelve-item
 spine: unique complexification, smallness, infinitesimal exp/log, polar
 decomposition, the normalized primitive, the rank-one criterion, the
@@ -287,6 +419,31 @@ statement twice.
   including the cut description; the resolvent support certificate and the
   whole-prefix coefficient recurrence; the `Σ ω^(n²) X^n` support
   counterexample; the derivation-aware representation interface.
+* **11 — autonomous dynamics.** The whole of Part VI: the class of normalized
+  derivations; multivariable formal evaluation, formal implicit uniqueness in
+  a monad and strip logarithms for every normalized derivation; projective
+  reduction; the realization classification on curves with its simple-zero and
+  power–logarithm families; the finite-scale Hahn field with the three-shift
+  formula; the continuum of algebraically independent solutions of
+  `ðu = u³ − u²` inside two scales (Rosenlicht's theorem imported); derivation
+  independence with its scalar, real and uniform-bound corollaries; the real
+  branch count and worked equations; the infinitesimal-contraction and
+  hyperelliptic obstructions with their counterexamples; the formal-group
+  logarithm, identity-monad splitting, abelian logarithmic-derivative image,
+  abelian finite-primitive criterion and speed threshold; the finite
+  geometric decision criterion; and the review log
+  `11-autonomous-dynamics-sources.md`.
+* **12 — regular-singular spectral selection.** The whole of Part V: the Euler
+  derivation on arbitrary real-exponent Hahn fields; the power-Hahn
+  regular-singular class; resonance-reaching supports and finite dependence;
+  the support-controlled Hahn–Levelt form and the finite resonance theorem with
+  its degree bound; the real-monomial shear; spectral selection, perturbation
+  invariance and real descent; the classifications over `K_R` and over `No[i]`
+  with morphism and tensor dimensions; the Hahn solution space, the
+  transcendence of `log t`, minimal logarithmic repair with group `(C,+)`, and
+  the exact Hahn obstruction sequence; six worked examples; the
+  finite-monomial, one-logarithm envelope; the power-Hahn boundary; and the
+  exact finite procedure with its limits.
 
 ### How conflicts were resolved
 
@@ -318,18 +475,53 @@ statement twice.
   records the Hermitian case settled and the non-Hermitian case open, keeping
   the counterexample that marks the line. Nothing is strengthened beyond what a
   source proves.
+* **Members 11 and 12 were integrated by the same rules.** Their reproofs of
+  results already here — smallness, the missing oscillator, the ordered-word
+  lemma, strip logarithms, the logarithmic separator, the missing logarithmic
+  primitive, and the `√2` monomial example (printed only as a row of Table 5)
+  — are recorded as agreements and cited; where a reproof holds under weaker
+  hypotheses (every normalized derivation; no surjectivity; no import) it is
+  kept, with that scope, in its new part, and no older statement is widened.
+  Part V keeps member 12's **import-free** proofs rather than routing its
+  `No[i]`-level results through Part III, which would silently add Part III's
+  imported theorem.
+* **The one-derivation rule was amended, not deleted.** Warnings 3.2 and 3.3
+  and items N2–N3 now say that every part except Part VI is relative to the
+  one fixed `∂`, and that Part VI proves one sector the same for all
+  normalized derivations without classifying them. Items N21, N22, N23, N24,
+  N25, N48 and N57, the remark after Corollary 8.11, Warnings 16.11 and 17.13,
+  and three open continuations are amended in place with the original wording
+  kept; items N24 and N57 and two continuations are answered **in part** and
+  stay open beyond the regular-singular class. Item N41 (coordinate irregular
+  singularities) is untouched: Part V is about the intrinsic derivation.
+* **Two things are recorded rather than claimed.** Remark 25.13 is an
+  observation of this merge, with its proof, that neither source states; and
+  the open continuations record, unaudited, that member 12's hypotheses are all
+  clauses of the normalized-derivation definition, without upgrading Part V.
+* **Two pre-existing rendering defects were repaired.** Every cross-reference
+  used to print "Theorem" whatever the environment (a shared-counter problem
+  with `cleveref` under the current LaTeX kernel); alias counters now make it
+  print "Corollary 11.4", "Warning 5.2" and so on, with unchanged numbering. A
+  stray `\label` without braces that printed the text "iff:placeholderX" in
+  Example 18.2 was removed; it defined no `diff:` label.
 
 ## What is NOT claimed
 
-Section 31 of the report is the consolidated register: 64 numbered items
-covering the 130 explicit non-claims that the eight manuscripts state between
-them (118 from the first seven, 12 from the eighth). It is part of the result.
-In outline:
+Section 43 of the report is the consolidated register: 94 numbered items
+covering the 160 explicit non-claims that the ten manuscripts state between
+them (118 from the first seven, 12 from the eighth, and 15 each from members
+11 and 12 by this merge's count), together with the audit findings on the
+source packages. It is part of the result. Items N1–N52 come from the first
+seven, N53–N64 from the eighth, N65–N79 from member 12 and N80–N94 from
+member 11. In outline:
 
 * **Provenance.** The Berarducci–Mantova derivation is imported, not
   constructed and not reproved; no uniqueness of it is claimed and no other
-  surreal derivation is classified; every intrinsic statement is relative to
-  this one `∂` with `∂ω = 1` and none is derivation-agnostic. The Neumann
+  surreal derivation is classified; every intrinsic statement outside Part VI
+  is relative to this one `∂` with `∂ω = 1` and none is derivation-agnostic.
+  Part VI is stated for the class of normalized derivations, proves one sector
+  the same for all of them, does not classify them and does not assert that
+  two of them agree on `No[i]`; Part V is stated for `∂` only. The Neumann
   support lemma, Gonshor's normal forms, the `ω`-series composition and
   incompatibility results, and the universal `H`-field results are separately
   imported with their hypotheses intact, and none is strengthened. One source
@@ -350,6 +542,10 @@ In outline:
   finite exact core; the rational classifier is restricted to `Q(X)` and
   *raises* on unsupported input rather than reporting nonexistence.
 * **Scalar scope.** Part II is scalar homogeneous first-order equations only.
+  (Part VI now classifies first-order *autonomous* equations with constant
+  coefficients; variable coefficients, higher order, systems and
+  higher-dimensional autonomous systems remain unclassified, and the finite
+  decision criterion there needs exact algebraic coefficients.)
   No differential closedness; no general inhomogeneous existence theorem there
   (outside the admissible locus its claim is *uniqueness* only); no higher-rank
   differential modules; and the constant-coefficient results concern ordinary
@@ -359,7 +555,8 @@ In outline:
   described as nonexistent.
 * **Matrix scope.** Part III settles the Hermitian case and *not* the
   non-Hermitian one, and Example 16.10 refutes the obvious candidate
-  extension. Its inhomogeneous existence rests entirely on an **imported**
+  extension; Part V computes one non-Hermitian sector (the power-Hahn
+  regular-singular class) and nothing outside it. Its inhomogeneous existence rests entirely on an **imported**
   splitting/surjectivity theorem, which is not a consequence of the scalar
   criterion and is flagged at every use. Still open: which nontriangular
   differential modules admit a filtration whose rank-one factors carry
@@ -375,6 +572,32 @@ In outline:
   targeted search; no named published open problem is claimed solved, and in
   particular no new solution of the Boshernitzan conjecture. All of Part III is
   relative to the one fixed `∂` with `∂ω = 1` and to no other derivation.
+* **Regular-singular scope (N65–N79).** Ordinary complex residual matrix and
+  power-Hahn real-exponent perturbation only (the `i/log ω` counterexample,
+  which does not refute a classification by richer logarithmic data); no
+  higher-rank exponent groups; no global exponential, trigonometry at infinite
+  arguments, fine-topological IVP or extension of ordinary local solutions;
+  existence only for forcing in `K_Rⁿ`, and "Fredholm" only in an algebraic
+  sense; the critical set is sufficient, not minimal, a finite certificate is
+  not a finite listing of the gauge, and finite dependence is not an oracle
+  algorithm; the `K_R`-classification must not be transferred to `K_Q`;
+  invariance is under positive Hahn order, not numerical smallness; `N`'s
+  entries are not canonical; `∂_τ` is not a coordinate derivative; classical
+  Levelt theory and the report's scalar obstruction are antecedents; no
+  refereeing, no Lean, provisional priority, a scoped repository comparison.
+* **Autonomous scope (N80–N94).** No equality of normalized derivations on
+  `No[i]` and no uniqueness claim; first-order equations on curves only —
+  variable coefficients, higher order, systems and higher-dimensional
+  autonomous systems are outside, and which higher-order sectors distinguish
+  derivations is open; differential-algebraic only; finite monomial generation
+  is not finite transcendence degree; the strip logarithm is pointwise; local
+  normal forms and Rosenlicht's theorem are imported (from Noordman–van der
+  Put–Top, numbered by its arXiv v1); parametrizations are not canonical;
+  constant commutative abelian varieties only, with no uniformization or
+  global exponential; surjectivity only in two flagged corollaries;
+  effectivity only with exact algebraic coefficients and decidable signs; no
+  trigonometric assertion; no refereeing, no Lean file, no priority
+  certificate.
 * **Workspace scope.** Neither localization gives closure under all summable
   families; no Hahn completeness, no birthday bound, no enumeration, no
   termination claim. The hull's minimality holds only among full Hahn fields
@@ -387,11 +610,14 @@ In outline:
   an ordinary-domain construction; monodromy for the nonlinear problem on
   non-simply-connected domains remains future work. No Stokes theory, no
   irregular-singularity classification, no Riemann–Hilbert correspondence.
-* **The checks.** The eight suites check finite exact symbolic identities and
+* **The checks.** The ten suites check finite exact symbolic identities and
   finite jets: 1,395 + 115 + 149 + 258 + 291 + 150 + 259 + 62 recorded passing
-  checks. The first seven ran under Python 3.13.5 (six of them with SymPy
-  1.14.0); the eighth records SymPy 1.14.0 and a status of PASS but no Python
-  version. They do not construct the surreal numbers, do not verify Hahn
+  checks for the first eight, and 10 (member 11, at the default truncation
+  degree 4) and 8 (member 12) for the last two. The first seven ran under
+  Python 3.13.5 (six of them with SymPy 1.14.0); the eighth records SymPy 1.14.0
+  and a status of PASS but no Python version; member 11 records Python 3.13.5
+  and SymPy 1.14.0; member 12 records SymPy 1.14.0, and its README says only
+  "Python 3". They do not construct the surreal numbers, do not verify Hahn
   summability, class-size arguments, Higman's lemma, transfinite recursion, or
   any general nonexistence theorem; the eighth adds that it verifies none of
   the arbitrary-support Hahn arguments, none of the published model-theoretic
@@ -400,7 +626,12 @@ In outline:
   that is explicitly **not** a valuation cutoff. The eighth suite's deliberate
   counterexamples are asserted **as** counterexamples, so a run that passed
   while those assertions failed would report the opposite of what it appears to
-  report. Appendix D reproduces each record.
+  report. Member 12's program handles finite rational supports only and is not
+  a parser or decision procedure; its record's `ambient_dimension: 1` is a
+  label written by the script, not a computed quantity, and its tail-invariance
+  check compares coefficients only through weight 4. Member 11's tests do not
+  establish the support lemma, the algebraic-geometric reduction or the
+  completeness of the solution list. Appendix D reproduces each record.
 
 ## Relation to the neighbouring reports
 
@@ -433,6 +664,26 @@ In outline:
   operator table, the result contracts, the certificate table and the tiering
   contract in this report answer both directly, and the separation chapter
   sharpens the derivative distinctions. **Cross-link both ways.**
+* **`docs/surcomplex/hahn-tate-uniformization/`** records among its
+  limitations that curves with nonnegative valuation of `j` need formal groups
+  around a good-reduction model, and it makes no assertion about the
+  Berarducci–Mantova derivation. Part VI's identity-monad splitting does this
+  for **constant** abelian varieties over `No[i]`, reducing by standard part —
+  a cross-link, not an answer to that report's question over Hahn fields with
+  a coarse valuation — and is the collection's first contact between surreal
+  derivations and abelian varieties. **Cross-link both ways.**
+* **`docs/surreal/tail-spans-and-differential-transcendence/`** uses the Euler
+  derivation that Part V writes `∂_τ`. Part VI's continuum of independent
+  solutions concerns algebraic independence of differentially *algebraic*
+  solutions, a different notion from that report's differential
+  transcendence; there is no conflict.
+* **`docs/surcomplex/dynamics-and-normal-forms/`**: its "autonomous flow" is the
+  embedding of near-identity maps into formal flows; Part VI's autonomous
+  equations are a different subject, and member 11's archive name
+  ("dynamics") should not suggest otherwise.
+* **`docs/surcomplex/nonabelian-support/`**: its Frobenius theory is for the
+  *coordinate* derivative `d/dz` with positive-support residue; Part V is for
+  the intrinsic Euler derivation, and the two are not merged.
 
 ## Build
 
@@ -445,9 +696,9 @@ latexmk -pdf -interaction=nonstopmode article.tex
 
 If `latexmk` is unavailable, run `pdflatex -interaction=nonstopmode` three
 times so that the table of contents, the cross-references and the `cleveref`
-labels settle. The delivered build has zero LaTeX errors, zero warnings, zero
-undefined references or citations, zero multiply-defined labels, zero duplicate
-destinations, and zero overfull or underfull boxes.
+labels settle. The delivered build (164 pages) has zero LaTeX errors, zero
+warnings, zero undefined references or citations, zero multiply-defined
+labels, zero duplicate destinations, and zero overfull or underfull boxes.
 
 ## Re-running the source verifiers
 
@@ -458,3 +709,22 @@ delivered `verification.json` — so a byte-identity check performed *after* a
 run compares two equally modified copies and tells you nothing. Their recorded outputs are already in `data/`, and Appendix D of the
 report reproduces them. Nothing in `code/` or `data/` was modified to
 produce this report.
+
+The two latest packages have hazards of their own, and their scripts still use
+the packages' original file names rather than the placed ones:
+
+* member 12: `code/12-regular-singular-verify.py` (Python ≥ 3.10, SymPy; see
+  `data/12-regular-singular-requirements.txt`) writes its `--output` file,
+  by default `verification.json` in the **current directory**, and prints the
+  same JSON; the `verify` target of `code/12-regular-singular-Makefile` runs
+  `python verify.py --output verification.json > verification.txt`,
+  overwriting both records. The delivered records are
+  `data/12-regular-singular-verification.json` and
+  `data/12-regular-singular-verification.txt` (identical JSON content).
+* member 11: `code/11-autonomous-dynamics-verify.py` (SymPy; `--degree N`,
+  `2 ≤ N ≤ 7`, default 4) writes only to standard output, but
+  `code/11-autonomous-dynamics-build.sh` and the package README redirect it
+  onto `verification.txt`; the delivered record is
+  `data/11-autonomous-dynamics-verification.txt`.
+
+Neither package has a checksum manifest.

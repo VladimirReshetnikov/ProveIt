@@ -1,0 +1,16 @@
+TEX = exponential_valuation_rigidity
+PYTHON ?= python3
+
+.PHONY: all pdf verify clean
+all: pdf verify
+
+pdf:
+	pdflatex -interaction=nonstopmode -halt-on-error $(TEX).tex
+	pdflatex -interaction=nonstopmode -halt-on-error $(TEX).tex
+	pdflatex -interaction=nonstopmode -halt-on-error $(TEX).tex
+
+verify:
+	$(PYTHON) code/verify.py --output verification.json
+
+clean:
+	rm -f $(TEX).aux $(TEX).log $(TEX).out $(TEX).toc $(TEX).fls $(TEX).fdb_latexmk

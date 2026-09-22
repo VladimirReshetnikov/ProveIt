@@ -1,0 +1,2189 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newpxtext,newpxmath}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,tabularx,array}
+\usepackage[table]{xcolor}
+\usepackage{enumitem}
+\usepackage{aliascnt}
+\usepackage{fancyhdr}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage[most]{tcolorbox}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{HTML}{213F59}
+\definecolor{soft}{HTML}{EFF4F7}
+\definecolor{muted}{HTML}{52616C}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink,
+ pdftitle={Expanding Polynomial Dynamics over Surreal and Surcomplex Fields},
+ pdfauthor={Research draft prepared with ChatGPT},
+ pdfsubject={Exact symbolic fibers, order-unit scales, Hahn fields, and polynomial iteration}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}Expanding polynomial dynamics}
+\fancyhead[R]{\small\color{muted}Hahn and surcomplex fields}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.1em}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\theoremstyle{plain}
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\crefname{proposition}{proposition}{propositions}
+\Crefname{proposition}{Proposition}{Propositions}
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\crefname{lemma}{lemma}{lemmas}
+\Crefname{lemma}{Lemma}{Lemmas}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\crefname{corollary}{corollary}{corollaries}
+\Crefname{corollary}{Corollary}{Corollaries}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\crefname{definition}{definition}{definitions}
+\Crefname{definition}{Definition}{Definitions}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\crefname{example}{example}{examples}
+\Crefname{example}{Example}{Examples}
+\newaliascnt{question}{theorem}
+\newtheorem{question}[question]{Question}
+\aliascntresetthe{question}
+\crefname{question}{question}{questions}
+\Crefname{question}{Question}{Questions}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\crefname{remark}{remark}{remarks}
+\Crefname{remark}{Remark}{Remarks}
+
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\SC}{\No[\mathrm i]}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\mm}{\mathfrak m}
+\newcommand{\Ik}{I_\kappa}
+\newcommand{\BI}{\mathcal B_{\mathrm{int}}}
+\newcommand{\BV}{\mathcal B_{\mathrm{val}}}
+\newcommand{\CS}{\mathcal C}
+\newcommand{\Sig}{\Sigma_d}
+\newcommand{\sh}{\sigma}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\st}{\operatorname{st}}
+\newcommand{\Fix}{\operatorname{Fix}}
+\newcommand{\Per}{\operatorname{Per}}
+\newcommand{\PrePer}{\operatorname{PrePer}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\ev}{\operatorname{ev}}
+\newcommand{\red}{\operatorname{red}}
+\newcommand{\coeff}[2]{[t^{#1}]#2}
+\newcommand{\smallbox}[2]{\begin{tcolorbox}[colback=soft,colframe=ink,
+ boxrule=0.4pt,arc=1mm,title={#1},fonttitle=\bfseries]#2\end{tcolorbox}}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
+ frame=single,rulecolor=\color{muted},showstringspaces=false}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{12mm}
+{\color{ink}\large RESEARCH REPORT\par}
+\vspace{8mm}
+{\color{ink}\huge\bfseries Expanding Polynomial Dynamics\par
+ over Surreal and Surcomplex Fields\par}
+\vspace{6mm}
+{\Large Exact symbolic fibers and the order-unit obstruction\par}
+\vspace{10mm}
+{\large Prepared for Vladimir Reshetnikov\par}
+\vspace{2mm}
+{\color{muted}22 September 2026\par}
+\vspace{2mm}
+{\small\color{muted}A single-source report of the collection,
+\texttt{docs/surcomplex/expanding-polynomial-dynamics}\par}
+\vspace{8mm}
+\begin{abstract}
+Let $K=k((t^\Gamma))$, with $k=\R$ or $\C$ and $\Gamma$ an arbitrary
+nonzero set-sized ordered abelian group. We study
+$F=q^{-1}P$, where $v(q)=\kappa>0$ and the degree-$d$ reduction of
+$P\in\OO[X]$ splits into distinct roots. We construct, by finite-parameter
+formal algebra and strong Hahn evaluation, a canonical point $x_s$ for
+every one-sided $d$-symbol itinerary. The entire integral nonescaping set
+is the disjoint union $\bigsqcup_s(x_s+I_\kappa)$, where
+$I_\kappa=\{h:v(h)>n\kappa\text{ for every }n\in\N\}$.
+Different itineraries first separating at time $m$ have distance valuation
+exactly $m\kappa$.
+
+This gives an exact distinction between a Cantor repeller and a system
+with open infinitesimal fibers. The distinction is whether the expansion
+scale $\kappa$ is an order unit of $\Gamma$, not valuation rank alone.
+When $\kappa$ is not an order unit the
+iterate family is uniformly equicontinuous on the integral nonescaping
+set, and every compact forward-invariant subset is finite, although the
+scale quotient is the full shift. Every preperiodic point is a canonical
+center, and all preperiodicity polynomials split simply in the original
+Hahn field. Scalar extension can therefore create entire itinerary
+fibers without creating any preperiodic points. We also prove uniform
+support-controlled deformation estimates, an exact formula for the
+valuation-bounded orbit locus, and a polynomial equicontinuity theorem
+when the value group has no order unit. The example
+$F(x)=\omega(x^2-1)$ makes all the phenomena explicit inside $\No$ and
+$\No[\mathrm i]$: its centers are real surreal numbers, and the fibers in
+$\No$ are obtained by restricting to real infinitesimal errors. At the
+level of the whole class $\No[\mathrm i]$, the discreteness and
+compactness clauses are special cases of the collection's theorem that
+every set is closed and discrete in the fine topology; the substance of
+those clauses lies in set-sized Hahn workspaces.
+\end{abstract}
+\vfill
+\smallbox{Status and scope}{This is an unrefereed, AI-assisted research
+draft with written proofs and exact finite regression tests, placed in the
+collection from one delivered manuscript (\cref{epd:subsec:provenance}).
+The fiber, compact-subsystem,
+and scalar-extension/deformation results are proposed as new results;
+historical priority is not certified. No named published open conjecture
+is claimed solved. No Lean formalization of this article is claimed.}
+\end{titlepage}
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+\pagenumbering{arabic}
+
+\section{The problem and the contribution}
+\label{epd:sec:intro}
+A familiar construction in non-Archimedean dynamics takes finitely many
+inverse branches, each contracting by a fixed scale, and labels the
+points that never escape by infinite words. Over a rank-one valued field,
+the contraction scales tend to zero, and a word determines a single
+point. Classical quadratic Cantor Julia sets are an established example;
+see Benedetto's lecture notes, Example~4.39 \cite{Benedetto}.
+
+The same conclusion need not survive in a larger Hahn field, and it does
+not survive unchanged in the full surreal or surcomplex field. If
+$\kappa>0$ is the valuation gained by one inverse branch, then the gains
+$n\kappa$ may remain below a larger valuation $\eta$ for every ordinary
+integer $n$. Successive choices resolve a point to every $q$-order, but
+may never resolve a perturbation of valuation $\eta$. There are two
+separate questions: whether every word is realized at all, and exactly
+how many points realize it. A topological contraction argument alone
+answers neither question at arbitrary rank.
+
+We answer both questions for a substantial polynomial family, including
+arbitrary infinitesimal coefficient perturbations of any polynomial with
+simple split reduction. The main formula is
+\begin{equation}\label{epd:eq:intro-fibers}
+ \BI(F)=\coprod_{s\in\Sig}(x_s+\Ik),
+ \qquad
+ \Ik=\bigcap_{n\geq0}\{h\in K:v(h)>n\kappa\}.
+\end{equation}
+The right-hand side describes actual points, not only formal labels or
+an unspecified intersection of disks. The centers $x_s$ are constructed
+with one support certificate valid for all itineraries. Their
+construction does not presume topological convergence of a sequence of
+Hahn elements.
+
+The result has several consequences which are useful precisely when the
+rank-one picture breaks down. The preperiodic points remain rigid while
+the fibers grow. The native topology can make all compact invariant
+subsystems finite while a coarser scale quotient has entropy $\log d$.
+Perturbations beyond every power of $q$ preserve the whole itinerary
+partition, yet move the actual periodic points. Finally, leaving the
+integral disk and having a valuation-unbounded orbit are different
+properties; we calculate exactly when they agree.
+
+\subsection{Relation to the repository at the pinned revision}
+\label{epd:subsec:repo-pin}
+The repository used is \texttt{VladimirReshetnikov/Surreal}, at revision
+\begin{center}
+\small\texttt{a3124af79f66b8b9c196d76b4cbc5ac3938907c4}.
+\end{center}
+Its root and documentation inventories
+were read, along with the description of
+\nolinkurl{docs/surcomplex/dynamics-and-normal-forms}. That report concerns
+local normal forms, return thresholds, small divisors, and associated
+formal/support questions. The present article studies a global integral
+nonescaping set and its infinite symbolic fibers instead \cite{Repo,RepoDynamics}.
+
+This was a targeted inventory audit, not a line-by-line review of every
+long manuscript or Lean file. The project already develops Hahn support
+machinery and distinctions among analytic categories. Those ideas are
+not presented here as discoveries. We use a classical Hahn-field
+workspace, state every support hypothesis, and give the polynomial and
+topological arguments in full.
+The relation to the reports of the collection as it now stands, including
+reports the manuscript did not consult, is recorded in
+\cref{epd:subsec:collection}.
+
+\subsection{What is, and is not, claimed to be new}
+The positive-support lemma, the formal implicit-function construction,
+valuation coarsening, and the one-sided full shift are standard tools.
+The rank-one Cantor construction and the elementary periodic-word counts
+are also standard. Our proposed new contribution is the combined
+arbitrary-rank theorem: exact affine itinerary fibers; the sharp
+order-unit/topology dichotomy; finiteness of compact forward-invariant
+subsets when the scale is not an order unit; and the scalar-extension and
+support-controlled deformation consequences. (Placement note: this claim
+concerns set-sized Hahn workspaces. For the whole class $\No[\mathrm i]$
+with its fine topology, the discreteness and compactness clauses are
+special cases of a theorem already in the collection; see
+\cref{epd:subsec:collection} and \cref{epd:rem:discrete-special}.)
+
+A targeted search through public sources on Hahn fields,
+non-Archimedean polynomial dynamics, higher-rank valuations, and surreal
+analysis did not locate these statements in this form. That is not a
+proof of historical originality. The article therefore supplies proofs,
+not a claim of independently certified priority. It does not purport to
+resolve the unrelated birthday, automorphism, or differential-equation
+questions in the repository.
+
+\smallbox{Three distinctions that cannot be suppressed}{
+An element of negative derivative valuation is called
+\emph{valuation-expanding} here; this does not automatically make its
+periodic point repelling for a real-valued absolute value. An
+\emph{integral nonescaping} orbit stays in $\OO$; a
+\emph{valuation-bounded} orbit merely has some lower valuation bound.
+Finally, strong Hahn summation is an algebraic support operation, not
+necessarily a limit in the full valuation topology.}
+
+\subsection{Provenance of this report}
+\label{epd:subsec:provenance}
+This report is built from \textbf{one} delivered manuscript, the fifth item
+of the eighteenth batch of manuscripts received by the collection (archive
+name \texttt{surreal\_symbolic\_dynamics}). It was delivered on
+22 September 2026 as a 24-page research draft; its PDF metadata describe it
+as a research draft prepared with ChatGPT. The delivered title was
+\emph{Expanding Polynomial Dynamics over Surreal and Surcomplex Fields:
+Exact symbolic fibers and the cofinality obstruction}. Its repository pin is
+the revision \texttt{a3124af} displayed in
+\cref{epd:subsec:repo-pin}. The cross-references added at placement were
+checked against the collection at commit \texttt{e9a9650}.
+
+This is not a merge. There was no second source, and nothing was selected
+out of a larger body of work: every theorem, proof, example, question, and
+limitation of the manuscript is kept. The placement changed the following,
+and nothing else.
+\begin{enumerate}[label=\textup{(\arabic*)},leftmargin=2em]
+\item Every label carries the prefix \texttt{epd:}.
+\item The manuscript called an order unit a \emph{cofinal scale} and spoke of
+the \emph{cofinal} and \emph{noncofinal} cases. That word is reserved in
+the collection for another invariant, so the property is called an order unit
+throughout. The subtitle and the name of \cref{epd:thm:topology} change
+accordingly. The dictionary is stated once, in \cref{epd:rem:one-name}.
+\item Cross-notes to neighbouring reports were added
+(\cref{epd:subsec:collection,epd:rem:discrete-special}), together with a
+pointer to the collection's Lean proof of the positive-support lemma
+(\cref{epd:subsec:formalization}).
+\item The reproduction instructions were adapted to the placed file layout.
+The verification program overwrites its own recorded output by default,
+and \cref{epd:subsec:reproduce} says how to avoid that.
+\item The non-claims scattered through the manuscript are collected in
+Appendix~\ref{epd:app:nonclaims}.
+\end{enumerate}
+No hypothesis, statement, or proof was altered beyond the change of word
+in~(2). The report is filed under \texttt{surcomplex} although the archive
+name says \emph{surreal}. Its theorems hold uniformly for $k=\R$ and
+$k=\C$, the explicit specialization (\cref{epd:thm:surreal}) is stated in
+$\No[\mathrm i]$, and its valuation-theoretic neighbours are surcomplex
+reports. The real case is kept explicit throughout. For $k=\R$ the
+hypothesis \eqref{epd:eq:polynomial} asks for real, distinct residue
+roots. The centers of the surreal example are real, and its fibers in
+$\No$ are obtained by restricting to real errors.
+
+\subsection{Relation to other reports in this collection}
+\label{epd:subsec:collection}
+The manuscript consulted only the repository inventories and the
+description of the dynamics report. The following notes place it among the
+reports the collection now contains. They were written at placement. No
+result is transferred into this report from any of them, and none of
+their results is strengthened here.
+
+\paragraph{\emph{Surcomplex Dynamics: Linearization Thresholds, Periods,
+and Normal Forms}} (\texttt{docs/\allowbreak surcomplex/\allowbreak
+dynamics-and-\allowbreak normal-forms/}). The two reports are about different
+problems. That report linearizes \emph{germs} at a fixed point whose
+multiplier is an ordinary complex number of modulus one, with small
+divisors, return thresholds, and coefficient-function categories. Its
+limitations section excludes ``global Julia or Fatou theory on the proper
+class $\No[\mathrm i]$'' and, from the scope of its exact finite-return
+linearization theorem (\texttt{dyn:thm:exact}), ``attracting or repelling
+multipliers'' (items N51 and N18 of its non-claims list when this note was
+written). This
+report answers \emph{neither} exclusion. It studies the global integral
+nonescaping set of a polynomial whose periodic points have
+valuation-expanding multipliers. It constructs no Julia or Fatou theory:
+$J_{\mathrm{aff},v}$ of \cref{epd:def:affine-julia} is a deliberately
+named affine equicontinuity set, and \cref{epd:cor:empty-affine} says
+nothing about spherical or Berkovich Julia sets. By \cref{epd:rem:expansion},
+``valuation-expanding'' is not ``repelling''. It linearizes nothing at any
+periodic point. Several letters and words mean different things in the
+two reports, and each keeps its own meaning:
+\begin{itemize}[leftmargin=1.4em]
+\item $\sigma$ is the one-sided shift here. There $\sigma(\lambda)$ is the
+drifted exponential small-divisor rate.
+\item $\kappa=v(q)>0$ is the valuation gained by an inverse branch here.
+There it is the generic divisor rate of \texttt{dyn:rem:oneinvariant}, and
+also appears as $\kappa_\Upsilon$.
+\item $q$ is a Hahn element of valuation $\kappa$ here. There it is the order
+in the resonance tag $\mathsf{RES}_q$, and $q_j$ are continued-fraction
+denominators.
+\item A \emph{multiplier} here is $(F^p)'(x)\in K$ at a periodic point, a Hahn
+element of valuation $-p\kappa<0$ (\cref{epd:prop:multiplier}). There
+it is an ordinary unit complex number.
+\item \emph{Julia} occurs here only in the subscripted affine set
+$J_{\mathrm{aff},v}$. There it refers to Julia's functional equation
+(\texttt{dyn:cor:julia}).
+\end{itemize}
+The quadratic critical scale of that report
+(\texttt{dyn:prop:quadratic-scale}) rescales $\lambda z+t^\eta z^2$ at a
+unit multiplier, as a boundary of a linearization domain. It is unrelated
+to the expanding scale $q^{-1}$ used here.
+
+\paragraph{\emph{Surcomplex Analysis}} (\texttt{docs/\allowbreak
+surcomplex/\allowbreak analysis/}). Its fine topology
+(\texttt{a:def:fine}) is the topology that the manuscript calls the full
+native, or order (fine), topology of $\No$ and $\No[\mathrm i]$ in
+\cref{epd:sec:surreal}. Its \texttt{a:thm:discrete} proves that every
+\emph{set} $A\subseteq\No[\mathrm i]$ is closed and discrete in that
+topology, with one separating radius for all pairs of points of~$A$. The
+surreal-level discreteness and compactness statements of this report are
+therefore special cases: see \cref{epd:rem:discrete-special}. The
+substance of \cref{epd:thm:topology,epd:thm:compact} lies in set-sized
+workspaces $k((t^\Gamma))$ with their intrinsic valuation topologies. There
+a set need not be discrete, and the finiteness of compact invariant
+subsets is not automatic. The manuscript's remark comparing the fine topology
+with a workspace topology (\cref{epd:rem:fine-vs-workspace}) is an instance
+of \texttt{a:rem:notvaluation}. The uniform equicontinuity statements over
+whole fine balls, which are proper classes, are not consequences of
+\texttt{a:thm:discrete}.
+
+\paragraph{\emph{Cofinality, Factorization and Scalar Extension for Entire
+Hahn Functions at Arbitrary Rank}} (\texttt{docs/\allowbreak
+surcomplex/\allowbreak entire-functions-\allowbreak at-arbitrary-rank/}). An order unit
+in \cref{epd:def:orderunit} is exactly an order unit in the sense of
+\texttt{ent:def:order-unit}. That report reserves the word
+\emph{cofinality} for $\operatorname{cf}(\Gamma)$
+(\texttt{ent:rem:one-name}), which is why this report does not call an order
+unit a cofinal scale. The maximal proper convex subgroup $H$ of
+\cref{epd:subsec:coarsened} is the kernel of the order-preserving
+homomorphism $\pi:\Gamma\to\R$ of \texttt{ent:lem:coarsening}. That lemma is
+stated under that report's standing divisibility hypothesis. The facts about
+$H$ used here are proved directly in \cref{epd:subsec:coarsened} and need no
+divisibility. The countable group without an order unit in
+\cref{epd:ex:no-order-unit} is, as an ordered group, that report's
+$\Gamma_\infty=\bigoplus_{j\geq0}\Q\,\omega^j$
+(\texttt{ent:subsec:gamma-infinity}). Its \texttt{ent:\allowbreak cor:cofinality} is a
+dichotomy in $\operatorname{cf}(\Gamma)$ for entire functions. It is not
+the order-unit dichotomy of \cref{epd:thm:topology}.
+
+\paragraph{\emph{Hahn--Tate Uniformization at Arbitrary Valuation Rank}}
+(\texttt{docs/\allowbreak surcomplex/\allowbreak hahn-tate-\allowbreak uniformization/}).
+The convex subgroup $H_\kappa$ of \cref{epd:def:orderunit} is the
+subgroup $H_\alpha$ of \texttt{tate:eq:H}, for $\alpha=\kappa$: the smallest
+convex subgroup containing the scale. There it bounds the domain of
+the Tate parametrization. Here it bounds the error ideal $\Ik$. No
+result is shared.
+
+\paragraph{\emph{Rank-One Non-Archimedean Analytic Geometry inside the
+Surcomplex Numbers}} (\texttt{docs/\allowbreak surcomplex/\allowbreak
+rank-one-\allowbreak berkovich/}). When $\kappa$ is an order unit,
+\cref{epd:thm:topology}(a) is the classical rank-one Cantor repeller, which
+the manuscript cites from Benedetto's notes \cite[Example~4.39]{Benedetto}.
+In the fixed field $\C((t^{\R}))$ of that report every positive element of
+the Archimedean group $\R$ is an order unit, so only that case can occur
+there. That report contains no polynomial dynamics. No statement about
+Berkovich spaces, Julia sets, or Tate algebras is proved or used here, and
+no transfer in either direction is claimed.
+
+\section{Workspaces, scales, and support}
+\label{epd:sec:workspace}
+\subsection{The valued field}
+Throughout Sections~\ref{epd:sec:workspace}--\ref{epd:sec:general}, let
+\[
+ k\in\{\R,\C\},\qquad K=k((t^\Gamma)),
+\]
+where $\Gamma\ne0$ is a set-sized ordered abelian group. An element is a
+series $a=\sum_{\gamma\in S}a_\gamma t^\gamma$ with $S\subseteq\Gamma$
+well ordered. All coefficients in $k$ are trivially valued. Set
+\[
+ v(a)=\min\supp(a)\quad(a\ne0),\qquad v(0)=+\infty,
+ \qquad \OO=\{a:v(a)\geq0\},\qquad \mm=\{a:v(a)>0\}.
+\]
+The residue map $\st:\OO\to k$ extracts the coefficient at $0$.
+The usual complex modulus of a coefficient is not the valuation used
+in this article. No divisibility assumption on $\Gamma$, and no
+algebraic closedness of $K$, is needed for the main theorem.
+
+We use $\N=\{0,1,2,\ldots\}$. The native valuation topology has balls
+$\{y:v(y-x)>\gamma\}$, for $\gamma\in\Gamma$, as a neighborhood basis.
+The associated additive uniformity has entourages
+$\{(x,y):v(x-y)>\gamma\}$. These definitions make sense without a
+real-valued metric.
+
+\subsection{An individual scale, not the rank}
+\begin{definition}\label{epd:def:orderunit}
+A positive $u\in\Gamma$ is an \emph{order unit} if for every
+$\gamma\in\Gamma$ there is an
+$n\in\N$ with $\gamma\leq nu$. For $\kappa>0$, define
+\[
+ H_\kappa=\{\gamma\in\Gamma:|\gamma|\leq n\kappa
+                    \text{ for some }n\in\N\},\qquad
+ \Ik=\{h\in K:v(h)>n\kappa\text{ for every }n\in\N\}.
+\]
+The convention $v(0)=+\infty$ includes zero in $\Ik$.
+When the scale $\kappa=v(q)$ of a map is an order unit we speak of the
+\emph{order-unit case}. Otherwise we speak of the \emph{non-order-unit
+case}.
+\end{definition}
+
+\begin{remark}[One name for one property]\label{epd:rem:one-name}
+The delivered manuscript called an order unit a \emph{cofinal scale}. It
+called the two cases the \emph{cofinal} and \emph{noncofinal} cases, and
+the distinction the \emph{cofinality} of the expansion scale. In this
+collection, the report \texttt{entire-functions-\allowbreak at-arbitrary-rank}
+(\texttt{ent:rem:one-name}) reserves \emph{cofinality} for
+$\operatorname{cf}(\Gamma)$, the least cardinality of a cofinal subset of
+$\Gamma$. Its \texttt{ent:def:order-unit} is the notion defined above.
+This report therefore uses the following dictionary, and only it.
+\begin{center}\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+Delivered manuscript & This report\\\midrule
+$\kappa$ is cofinal; a cofinal scale & $\kappa$ is an order unit; an order-unit scale\\
+$\kappa$ is noncofinal & $\kappa$ is not an order unit\\
+the cofinal / noncofinal case & the order-unit / non-order-unit case\\
+cofinality dichotomy (\cref{epd:thm:topology}) & order-unit dichotomy\\
+cofinality is lost (\cref{epd:thm:extension}) & the order-unit property is lost\\
+\bottomrule
+\end{tabular}
+\end{center}
+The word \emph{cofinal} survives only in its subset sense. A subset
+$S$ of $\Gamma$ (or of $\Gamma_{>0}$) is cofinal if every element is at
+most some member of $S$. Thus $u>0$ is an
+order unit exactly when $\{nu:n\in\N\}$ is cofinal in $\Gamma$, in agreement
+with \texttt{docs/NOTATION.md}. Apart from the quotations of the
+manuscript in this remark and in \cref{epd:subsec:provenance}, wherever
+\emph{cofinality} occurs in this report it means
+$\operatorname{cf}(\Gamma)$. It occurs in \cref{epd:ex:no-order-unit} and
+in names taken from the entire-functions report. The delivered file \texttt{RESEARCH\_STATUS.md}, kept unchanged, still uses
+the manuscript's words.
+\end{remark}
+
+\begin{lemma}\label{epd:lem:ideal}
+$H_\kappa$ is a convex subgroup of $\Gamma$. The set $\Ik$ is an ideal
+of $\OO$, and, for any $q$ with $v(q)=\kappa$, one has $q\Ik=\Ik$.
+Moreover
+\[
+ \Ik=\bigcap_{n\geq0}q^n\OO,
+ \qquad
+ \Ik=0\quad\Longleftrightarrow\quad \kappa\text{ is an order unit}.
+\]
+If $\kappa$ is not an order unit, $\Ik$ is a nonzero clopen additive
+subgroup of $K$. It is the maximal ideal of the valuation ring for the
+coarsened valuation $K^\times\to\Gamma/H_\kappa$.
+\end{lemma}
+\begin{proof}
+Closure and convexity of $H_\kappa$ follow by adding the finite bounds.
+The valuation inequality for a sum and the inequality
+$v(ah)\geq v(h)$ for $a\in\OO$ prove the ideal assertion. Adding or
+subtracting $\kappa$ preserves the condition of exceeding every
+$n\kappa$, proving $q\Ik=\Ik$. Requiring $v(h)\geq n\kappa$ for all
+$n$ is equivalent to requiring $v(h)>n\kappa$ for all $n$, by increasing
+$n$ by one. This proves the intersection formula.
+
+If $\kappa$ is an order unit, no finite valuation can exceed all $n\kappa$.
+Otherwise there exists $\eta\in\Gamma$ with $\eta>n\kappa$ for all
+$n$, and $t^\eta\in\Ik\setminus\{0\}$. The ball $\{v>\eta\}$ is
+contained in $\Ik$, so this subgroup is open, and every open subgroup
+of a topological group is closed. Finally,
+$v(h)+H_\kappa>0$ means precisely that $v(h)$ exceeds every element of
+$H_\kappa$, equivalently every $n\kappa$.
+\end{proof}
+
+The ideal is thus not an ad hoc error class. It is the exact error left
+unresolved by the convex subgroup generated by the dynamical scale.
+It is generally an ideal of a valuation ring, not an ideal of the field
+$K$.
+
+\begin{example}\label{epd:ex:ranktwo}
+In $\Gamma=\Q\oplus_{\mathrm{lex}}\Q$, the scale $(0,1)$ is not
+an order unit, since $(1,0)>n(0,1)$ for every $n$. In the very same group,
+$(1,0)$ is an order unit. Consequently ``rank greater than one'' cannot replace
+``the chosen scale is not an order unit'' in any theorem below.
+\end{example}
+
+\subsection{The summation tool and its exact role}
+A family $(a_j)_{j\in J}$ of Hahn series is \emph{strongly summable} if
+its support union is well ordered and every exponent occurs in only
+finitely many members of the family. Its sum is then defined
+coefficientwise.
+
+We use the classical positive-support lemma associated with Neumann's
+ordered-series construction \cite{Neumann}: if $S\subseteq\Gamma_{>0}$
+is well ordered, the additive monoid $\langle S\rangle$ is well ordered,
+and each fixed element of $\Gamma$ has only finitely many
+representations as a finite word in $S$, allowing all finite word
+lengths. Repetitions and ordering of letters are allowed in this
+finiteness assertion. The following useful form spells out the only
+infinite evaluation operation needed here.
+
+\begin{lemma}[Finite-parameter Hahn evaluation]\label{epd:lem:evaluation}
+Let $a_1,\ldots,a_r\in\mm$. Every formal series
+$A\in k[[Z_1,\ldots,Z_r]]$ has a well-defined strong evaluation
+$A(a_1,\ldots,a_r)\in\OO$. Evaluation is a $k$-algebra homomorphism.
+Every evaluated support is contained in
+\[
+ M=\left\langle\bigcup_{j=1}^r\supp(a_j)\right\rangle.
+\]
+Evaluation respects formal substitution by series with zero constant
+term. If a formal series belongs to an ideal $(Z_{j_1},\ldots,Z_{j_s})$,
+its evaluation belongs to the ideal $(a_{j_1},\ldots,a_{j_s})\OO$.
+\end{lemma}
+\begin{proof}
+The finite support union is well ordered and positive. Expand every
+parameter monomial into words in this union, marking a letter by the
+parameter from which it came. The positive-support lemma bounds both
+the possible words and their lengths at each output exponent. There
+are only finitely many choices of a parameter mark at every letter.
+Thus the expanded family has well-ordered support and finite
+coefficient fibers. Addition, multiplication, and zero-constant formal
+substitution may all be regrouped coefficientwise, because at each
+exponent only finitely many terms participate.
+
+For the ideal assertion, write the formal series as a finite sum
+$\sum_{\ell=1}^s Z_{j_\ell}B_\ell$. Each $B_\ell$ evaluates into
+$\OO$ by the first assertion. Apply multiplicativity.
+\end{proof}
+
+\begin{remark}\label{epd:rem:no-limits}
+The lemma does not assert that partial sums converge in the native
+topology. For instance, in the rank-two example with $q=t^{(0,1)}$,
+$\sum_{n\geq0}q^n=(1-q)^{-1}$ is a valid Hahn identity, while the
+remainders have valuations $(0,N)$ and never enter the neighborhood
+$\{v>(1,0)\}$. Algebraic identities must be established before
+parameter evaluation; an unproved continuity assertion cannot replace
+that step.
+\end{remark}
+
+\section{Simple reduction and universal inverse branches}
+\label{epd:sec:branches}
+Fix $q\in\mm\setminus\{0\}$, write $\kappa=v(q)$, and let
+\begin{equation}\label{epd:eq:polynomial}
+ P(X)=P_0(X)+\sum_{j=0}^d e_jX^j\in\OO[X],
+ \qquad e_j\in\mm,
+ \qquad P_0(X)=a_d\prod_{i=1}^d(X-c_i),
+\end{equation}
+where $d\geq2$, $a_d\in k^\times$, and the $c_i\in k$ are distinct.
+Zero perturbation coefficients are permitted. In particular $P$ has
+degree $d$ and unit leading coefficient. Primes below always denote
+formal differentiation with respect to $X$, holding coefficients fixed;
+no differential-field derivation on the surreal coefficients is used. Set
+\[
+ F(X)=q^{-1}P(X),\qquad
+ \BI(F)=\{x\in K:F^n(x)\in\OO\text{ for all }n\in\N\}.
+\]
+For $x\in\BI(F)$, the identity $P(F^n(x))=qF^{n+1}(x)$ implies
+$P_0(\st(F^n(x)))=0$. Thus there is a well-defined itinerary
+\[
+ \pi(x)=(s_0,s_1,\ldots)\in\Sig:=\{1,\ldots,d\}^{\N},
+ \qquad \st(F^n(x))=c_{s_n}.
+\]
+We write $\sh(s_0,s_1,\ldots)=(s_1,s_2,\ldots)$.
+
+\begin{lemma}[Universal implicit branch]\label{epd:lem:formalbranch}
+For each $i$, there exists a unique
+$\Psi_i\in k[[E_0,\ldots,E_d,V]]$ such that
+\begin{equation}\label{epd:eq:formalbranch}
+ \Psi_i(0,0)=c_i,
+ \qquad
+ P_0(\Psi_i)+\sum_{j=0}^dE_j\Psi_i^j=V.
+\end{equation}
+Moreover, for any complete formal power-series ring containing the
+parameters and any $U,W$ of positive total order,
+\begin{equation}\label{epd:eq:formal-difference}
+ \Psi_i(E,U)-\Psi_i(E,W)=(U-W)A_i(E,U,W),
+\end{equation}
+where $A_i$ is a unit with constant term $1/P_0'(c_i)$.
+\end{lemma}
+\begin{proof}
+Put $\Psi_i=c_i+Y$, with $Y$ of positive total degree. At total degree
+$r\geq1$, the only occurrence of the unknown degree-$r$ part of $Y$
+is its product with $P_0'(c_i)$. Every other term uses already determined
+lower-degree parts, or has a positive-degree parameter as an additional
+factor. Since $P_0'(c_i)\ne0$, this determines $Y$ recursively and proves
+existence and uniqueness.
+
+Subtract the two equations in \eqref{epd:eq:formalbranch}. The polynomial
+divided difference in the two branch values has constant term
+$P_0'(c_i)$, hence is a unit. Its inverse gives
+\eqref{epd:eq:formal-difference}.
+\end{proof}
+
+\begin{proposition}[Exact branch metric]\label{epd:prop:branches}
+For every $w\in\OO$ and every $i$, there is a unique $y\in\OO$ with
+$\st(y)=c_i$ and $P(y)=qw$. Denote it by $\Phi_i(w)$. For all
+$w,z\in\OO$,
+\begin{equation}\label{epd:eq:branch-metric}
+ v\bigl(\Phi_i(w)-\Phi_i(z)\bigr)=\kappa+v(w-z).
+\end{equation}
+If $x,y\in\OO$ have the same residue $c_i$, then
+\begin{equation}\label{epd:eq:forward-metric}
+ v(F(x)-F(y))=v(x-y)-\kappa.
+\end{equation}
+Equal inputs are interpreted using $+\infty$.
+\end{proposition}
+\begin{proof}
+Evaluate $\Psi_i(E,V)$ at $(e_0,\ldots,e_d,qw)$, all nonzero inputs
+having positive valuation. \Cref{epd:lem:evaluation} proves existence and
+the defining equation. The residue is $c_i$.
+
+For uniqueness and the exact metric, use the polynomial identity
+\[
+ P(Y)-P(Z)=(Y-Z)D_P(Y,Z).
+\]
+When both arguments have residue $c_i$, the residue of $D_P$ is
+$P_0'(c_i)\ne0$, so $v(D_P)=0$. Substituting $Y=\Phi_i(w)$ and
+$Z=\Phi_i(z)$ gives
+$v(Y-Z)=v(q(w-z))$. Substituting arbitrary $x,y$ in the same residue
+class gives \eqref{epd:eq:forward-metric}. It also proves that two lifts of
+the same $w$ coincide.
+\end{proof}
+
+In particular, $F$ maps each of its $d$ integral inverse-branch pieces
+bijectively onto $\OO$. Different pieces have points whose differences
+have valuation $0$. The branch calculation is algebraic; spherical
+completeness or a Banach fixed-point theorem has not been used.
+
+\section{Canonical realization of every itinerary}
+\label{epd:sec:centers}
+Introduce the finite-parameter ring
+\[
+ R=k[[Q,E_0,\ldots,E_d]],\qquad
+ \mathcal P(X)=P_0(X)+\sum_{j=0}^dE_jX^j.
+\]
+For $U\in R$, let
+$\boldsymbol\Phi_i(U)=\Psi_i(E,QU)$. Substitution is valid since $QU$
+has zero constant term. By \cref{epd:lem:formalbranch},
+\begin{equation}\label{epd:eq:q-contraction}
+ \boldsymbol\Phi_i(U)-\boldsymbol\Phi_i(W)\in Q(U-W)R.
+\end{equation}
+For $s\in\Sig$, form the depth-$N$ expression
+\[
+ X_s^{[N]}=
+ \boldsymbol\Phi_{s_0}\circ\cdots\circ
+ \boldsymbol\Phi_{s_{N-1}}(0),
+ \qquad X_s^{[0]}=0.
+\]
+
+\begin{theorem}[Universal centers and common support]\label{epd:thm:centers}
+There is a formal series $X_s\in R$ for every $s\in\Sig$ with
+\begin{equation}\label{epd:eq:formalcenter}
+ X_s-X_s^{[N]}\in Q^N R,
+ \qquad \mathcal P(X_s)=QX_{\sh s},
+ \qquad X_s(0)=c_{s_0}.
+\end{equation}
+After evaluation $Q=q$, $E_j=e_j$, set $x_s=\ev(X_s)$. Then
+\begin{equation}\label{epd:eq:shift-center}
+ F(x_s)=x_{\sh s},\qquad \pi(x_s)=s,
+\end{equation}
+and, simultaneously for all $s$,
+\begin{equation}\label{epd:eq:common-support}
+ \supp(x_s)\subseteq
+ M:=\left\langle\supp(q)\cup\bigcup_{j=0}^d\supp(e_j)\right\rangle.
+\end{equation}
+Every coefficient of total parameter degree $r$ in $X_s$ depends only
+on $s_0,\ldots,s_r$.
+\end{theorem}
+\begin{proof}
+Repeated use of \eqref{epd:eq:q-contraction} shows that for $L\geq N$,
+\[
+ X_s^{[L]}-X_s^{[N]}\in Q^N R.
+\]
+The ring $R$ is $Q$-adically complete: it may equally be written
+$k[[E_0,\ldots,E_d]][[Q]]$. Hence these expressions determine $X_s$.
+This completion takes place in an ordinary finite-variable formal
+ring, not in the valuation topology of $K$.
+
+The finite expressions satisfy
+$\mathcal P(X_s^{[N+1]})=QX_{\sh s}^{[N]}$. Passing to their formal
+$Q$-adic limits proves the middle identity in
+\eqref{epd:eq:formalcenter}. The other two assertions follow directly from
+the construction. If $N=r+1$, the difference is divisible by $Q^{r+1}$,
+so every coefficient of total degree at most $r$ has already stabilized
+and only the first $r+1$ symbols have been used.
+
+Evaluate the established formal polynomial identity by
+\cref{epd:lem:evaluation}. This proves \eqref{epd:eq:shift-center}. Reduction
+at each shifted word gives the itinerary. The same evaluation lemma
+gives \eqref{epd:eq:common-support}, with no dependence of $M$ on $s$.
+\end{proof}
+
+The formal section is distinguished by the fixed coefficient embedding
+$k\hookrightarrow K$, the polynomial reduction $P_0$, and the displayed
+universal construction. We do not assert an intrinsic uniqueness among
+all possible set-theoretic sections of $\pi$.
+
+\begin{corollary}[Constant coefficients]\label{epd:cor:constant-center}
+If $P=P_0$ and $q=t^\kappa$, then each $x_s$ has the form
+$\sum_{n\geq0}a_n(s)t^{n\kappa}$ with $a_n(s)\in k$. The coefficient
+$a_n(s)$ depends only on the first $n+1$ symbols. The map $s\mapsto x_s$
+is unchanged when the exponent group is enlarged.
+\end{corollary}
+\begin{proof}
+With all $E_j=0$, $X_s$ belongs to $k[[Q]]$. Evaluate coefficientwise.
+The same formal series is evaluated under every compatible Hahn-field
+embedding.
+\end{proof}
+
+\begin{remark}[A limit that is not taken]\label{epd:rem:nestedlimit}
+For $P=X^2-1$, label roots by signs $\pm1$. The depth-$N$ nested branch
+with terminal zero differs from $x_s$ by an element of valuation exactly
+$N\kappa$: apply \eqref{epd:eq:branch-metric} $N$ times to the tail $x_{\sh^N s}$
+and $0$, whose residues differ. When $\kappa$ is not an order unit, these
+approximants do not converge to $x_s$ in the native valuation topology.
+Nevertheless $x_s$ is a perfectly well-defined Hahn element by the
+preceding theorem.
+\end{remark}
+
+\section{The exact symbolic-fiber theorem}
+\label{epd:sec:fibers}
+\begin{theorem}[Exact fibers and exact separation]\label{epd:thm:fibers}
+Under \eqref{epd:eq:polynomial}, the itinerary map is onto and
+\begin{equation}\label{epd:eq:fiber-main}
+ \pi^{-1}(s)=x_s+\Ik,
+ \qquad
+ \BI(F)=\coprod_{s\in\Sig}(x_s+\Ik).
+\end{equation}
+For $h\in\Ik\setminus\{0\}$ and every $n\geq0$,
+\begin{equation}\label{epd:eq:fiber-growth}
+ v\bigl(F^n(x_s+h)-x_{\sh^n s}\bigr)=v(h)-n\kappa.
+\end{equation}
+If $s\ne r$ first differ at index $m$, then for every
+$x\in\pi^{-1}(s)$ and $y\in\pi^{-1}(r)$,
+\begin{equation}\label{epd:eq:first-mismatch}
+ v(x-y)=m\kappa.
+\end{equation}
+Thus a word determines a unique point if and only if $\kappa$ is an
+order unit in the ambient value group.
+\end{theorem}
+\begin{proof}
+Surjectivity is already supplied by the centers. Let $h\in\Ik$.
+Initially $x_s+h$ and $x_s$ have the same residue. If their $n$th
+iterates have difference valuation $v(h)-n\kappa$, that valuation is
+positive by the definition of $\Ik$. They therefore have the same
+residue at time $n$, and \eqref{epd:eq:forward-metric} proves the next
+instance of \eqref{epd:eq:fiber-growth}. Induction proves both that the
+perturbed point remains integral and that its itinerary is $s$.
+
+Conversely, let $x$ have itinerary $s$. For every $N$ we may recover
+$x$ and $x_s$ by applying the same first $N$ inverse branches to
+$F^N(x)$ and $x_{\sh^N s}$, respectively. These two terminal points are
+integral, so their difference has nonnegative valuation. Applying
+\eqref{epd:eq:branch-metric} $N$ times gives
+\[
+ v(x-x_s)\geq N\kappa.
+\]
+This holds for every $N$, and \cref{epd:lem:ideal} implies $x-x_s\in\Ik$.
+No limiting argument is involved.
+
+For two different itineraries, their $m$th iterates have distinct
+residues and hence difference valuation $0$. Pulling back along their
+common $m$ branches gives \eqref{epd:eq:first-mismatch}. In particular the
+cosets in \eqref{epd:eq:fiber-main} are disjoint. The last assertion follows
+from \cref{epd:lem:ideal}.
+\end{proof}
+
+\begin{corollary}[Exact finite cylinders]\label{epd:cor:cylinders}
+For $x,y\in\BI(F)$ and $N\geq0$, the first $N$ itinerary symbols agree
+if and only if $v(x-y)\geq N\kappa$.
+\end{corollary}
+\begin{proof}
+A first mismatch $m<N$ gives valuation $m\kappa<N\kappa$. If the first
+$N$ symbols agree, either the first mismatch is later, giving the
+required inequality, or the itineraries are equal and their difference
+belongs to $\Ik$.
+\end{proof}
+
+\begin{corollary}[The action on the fibers]\label{epd:cor:fiber-bijection}
+$F$ maps $x_s+\Ik$ bijectively onto $x_{\sh s}+\Ik$. Every point of
+$\BI(F)$ has exactly $d$ preimages in $\BI(F)$, one in each allowable
+preceding-symbol fiber.
+\end{corollary}
+\begin{proof}
+Forward inclusion is \eqref{epd:eq:fiber-growth}. Given a point in the
+target fiber, apply $\Phi_{s_0}$. Its itinerary is $s$, by uniqueness
+of the inverse branch, and it is the only preimage in that residue
+class. There are $d$ residue classes and $F$ has degree $d$.
+\end{proof}
+
+This theorem identifies the information content of a full infinite
+itinerary. It determines every finite $q$-scale but, in general, not a
+point. The unresolved ambiguity is exactly an affine ideal, not an
+unspecified smaller disk and not a choice of a formal completion.
+
+\section{Periodic and preperiodic rigidity}
+\label{epd:sec:periodic}
+\begin{theorem}[All preperiodicity equations split]\label{epd:thm:periodic}
+A point of $\BI(F)$ is preperiodic if and only if it is $x_s$ for an
+eventually periodic word $s$. For every $m\geq0$ and $p\geq1$, the
+polynomial
+\begin{equation}\label{epd:eq:preperiodic-polynomial}
+ F^{m+p}(X)-F^m(X)
+\end{equation}
+has exactly $d^{m+p}$ distinct roots, all in $K$ and all in $\BI(F)$.
+They are precisely the centers with $\sh^{m+p}s=\sh^m s$. In particular
+\[
+ \#\Fix(F^p)=d^p.
+\]
+There are no preperiodic points outside $\OO$.
+\end{theorem}
+\begin{proof}
+First consider a periodic word $s$ of period dividing $p$. Its center
+is fixed by $F^p$. If $x=x_s+h$ with $h\ne0$ in $\Ik$ were also fixed,
+then \eqref{epd:eq:fiber-growth} would imply simultaneously
+\[
+ v(F^p(x)-F^p(x_s))=v(h)-p\kappa
+ \quad\hbox{and}\quad
+ v(F^p(x)-F^p(x_s))=v(h),
+\]
+a contradiction. Hence the center is the unique periodic point in its
+fiber. An eventually periodic point maps to a periodic point after
+some $m$ iterations. Its difference from the corresponding center
+never becomes zero, by \eqref{epd:eq:fiber-growth}, unless it was zero
+initially. This proves the first assertion; the converse follows from
+\eqref{epd:eq:shift-center}.
+
+There are $d^{m+p}$ words satisfying $\sh^{m+p}s=\sh^m s$: prescribe
+the first $m+p$ symbols, and repeat the last $p$ thereafter. They give
+distinct roots of \eqref{epd:eq:preperiodic-polynomial}. That polynomial
+has degree $d^{m+p}$, since $d\geq2$ and $p\geq1$. Thus they are all
+its roots, and it splits with simple roots in $K$.
+
+For completeness, if $v(x)<0$, the leading term of $P(x)$ strictly
+dominates every lower-degree term. Consequently
+\begin{equation}\label{epd:eq:escape-step}
+ v(F(x))=d\,v(x)-\kappa<v(x)<0.
+\end{equation}
+Such a point never returns to $\OO$ and cannot be preperiodic, because
+its successive valuations strictly decrease.
+\end{proof}
+
+\begin{proposition}[Exact multipliers]\label{epd:prop:multiplier}
+For $x\in\BI(F)$ and $n\geq1$,
+\[
+ v\bigl((F^n)'(x)\bigr)=-n\kappa.
+\]
+At a root of \eqref{epd:eq:preperiodic-polynomial}, its derivative has
+valuation $-(m+p)\kappa$.
+\end{proposition}
+\begin{proof}
+At every integral orbit point, $P'$ has residue $P_0'(c_{s_j})\ne0$.
+Thus $v(F')=-\kappa$, and the chain rule gives the first formula.
+At a root $x$ of \eqref{epd:eq:preperiodic-polynomial}, factor its derivative
+as
+\[
+ (F^m)'(x)\left((F^p)'(F^m(x))-1\right).
+\]
+The second factor has valuation $-p\kappa$, since that is negative and
+$v(1)=0$. This proves the claimed valuation and directly confirms
+simplicity.
+\end{proof}
+
+\begin{corollary}[Periodic counts and zeta series]\label{epd:cor:zeta}
+The number of points of exact period $p$ is
+\[
+ N_p=\sum_{e\mid p}\mu(p/e)d^e,
+\]
+and the number of cycles of exact period $p$ is $N_p/p$. The formal
+Artin--Mazur zeta series is
+\[
+ \exp\!\left(\sum_{p\geq1}\frac{\#\Fix(F^p)}p z^p\right)
+ =\frac1{1-dz}.
+\]
+\end{corollary}
+\begin{proof}
+Every point fixed by $F^p$ has a unique exact period dividing $p$.
+M\"obius inversion of $d^p=\sum_{e\mid p}N_e$ gives the first formula.
+Each cycle has $p$ points. The last identity is the formal identity
+$\sum_{p\geq1}(dz)^p/p=-\log(1-dz)$.
+\end{proof}
+
+The formulas themselves are classical full-shift formulas. Their role
+here is to show what periodic data \emph{fails} to detect: the same
+counts and multipliers persist whether the nonescaping set consists
+of individual centers or of open infinitesimal fibers.
+
+\section{The native topology and the scale quotient}
+\label{epd:sec:topology}
+Give $\Sig$ the product topology of the finite discrete alphabet.
+Its cylinder of depth $N$ fixes the first $N$ symbols.
+
+\begin{theorem}[Order-unit dichotomy]\label{epd:thm:topology}
+The following conclusions hold.
+\begin{enumerate}[label=\textup{(\alph*)},leftmargin=2em]
+\item If $\kappa$ is an order unit, then $\Ik=0$ and
+$s\mapsto x_s$ is a homeomorphism $\Sig\to\BI(F)$, conjugating the
+one-sided shift to $F$. The set $\BI(F)$ is compact and perfect.
+Periodic points are dense in it. The family $(F^n)_{n\geq0}$ is not
+equicontinuous at any point of $\BI(F)$, even relative to that set.
+\item If $\kappa$ is not an order unit, then $\BI(F)$ is clopen and noncompact in
+$K$, every fiber $x_s+\Ik$ is open, and every subset of
+$\CS:=\{x_s:s\in\Sig\}$ is closed and discrete in $K$. The itinerary
+map $\pi:\BI(F)\to\Sig$ is continuous but is not a quotient map.
+The native topological quotient by the fibers is discrete.
+\item In the non-order-unit case the family $(F^n)_{n\geq0}$ is uniformly
+equicontinuous on $\BI(F)$ in the native valuation uniformity.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+When $\kappa$ is an order unit, \cref{epd:cor:cylinders} and the order-unit property identify
+the cylinder basis with a neighborhood basis on $\BI(F)$. The center
+map and its inverse are continuous. Compactness and perfectness follow
+from the elementary corresponding properties of the finite-alphabet
+product. A periodic word extending any finite prefix proves density.
+For failure of equicontinuity, fix any $x_s$ and any input neighborhood.
+Choose a word $r$ sharing a sufficiently long prefix with $s$ but first
+differing at a later index $m$. The input difference has valuation
+$m\kappa$, arbitrarily large because $\kappa$ is an order unit; the difference after $m$
+iterations has valuation $0$. The fixed output neighborhood $\{v>0\}$
+cannot be maintained.
+
+Now choose $\eta>n\kappa$ for every $n$. The fibers are open by
+\cref{epd:lem:ideal}, so their union is open. Also
+$\BI(F)=\bigcap_{n\geq0}(F^n)^{-1}(\OO)$ is closed, since $\OO$ is
+closed and polynomials are continuous. Distinct centers have difference
+valuation $m\kappa<\eta$. Thus a ball of threshold $\eta$ contains
+at most one point of any subset $A\subseteq\CS$, proving discreteness.
+To prove closedness, a point in the closure of $A$ has such a ball
+meeting $A$ in exactly one point $a$. Unless the original point equals
+$a$, a smaller ball excludes $a$, contradicting closure. Hence $A$ is
+closed.
+
+By \cref{epd:cor:cylinders}, every cylinder preimage is open, so $\pi$ is
+continuous. Each individual fiber is open, whereas a singleton in
+$\Sig$ is not open. Consequently $\pi$ is not a quotient map. The
+quotient topology by open fibers is discrete.
+
+Finally, fix an arbitrary desired output threshold $\gamma\in\Gamma$
+and set
+\[
+ \delta=\max(\gamma,0)+\eta.
+\]
+If $x,y\in\BI(F)$ have $v(x-y)>\delta$, their difference lies in
+$\Ik$, so they have the same itinerary by \cref{epd:thm:fibers}. Repeated
+use of the exact forward metric yields
+\[
+ v(F^n(x)-F^n(y))=v(x-y)-n\kappa
+ >\max(\gamma,0)+\eta-n\kappa>\gamma
+\]
+for every $n$. The same input threshold works for every pair and every
+iterate, which is uniform equicontinuity.
+\end{proof}
+
+\begin{remark}[Why this is not a contradiction]\label{epd:rem:expansion}
+The valuation of a nonzero difference within a fiber strictly decreases
+by $\kappa$ at every step. Uniform equicontinuity nevertheless holds
+because an input error can be placed beyond \emph{all} the scales that
+this countable iteration can spend. A negative multiplier valuation
+therefore does not by itself establish topological repulsion. This is
+why the article does not identify its expanding points with classical
+Julia points without naming a topology and a valuation scale.
+\end{remark}
+
+\subsection{The correct full-shift quotient}
+\begin{definition}\label{epd:def:scaletop}
+On $\BI(F)$, the \emph{$\kappa$-scale uniformity} is generated by
+\[
+ E_N=\{(x,y):v(x-y)\geq N\kappa\},\qquad N\in\N.
+\]
+Its indistinguishability relation is $x-y\in\Ik$.
+\end{definition}
+Each $E_N$ is an equivalence relation on $\BI(F)$, by the ultrametric
+inequality. The family defines a uniformity even when it is not
+Hausdorff.
+
+\begin{proposition}\label{epd:prop:scalequotient}
+The Hausdorff quotient of the $\kappa$-scale uniformity is uniformly
+isomorphic to $\Sig$ with its cylinder uniformity, and the induced map
+is the full shift. In particular its topological entropy is $\log d$.
+In the non-order-unit case this is not the native topological quotient.
+\end{proposition}
+\begin{proof}
+By \cref{epd:cor:cylinders}, $E_N$ is exactly equality of the first $N$
+symbols. By \cref{epd:thm:fibers}, the common equivalence relation of all
+$E_N$ is equality of the entire word, or equivalently difference in
+$\Ik$. The quotient therefore has precisely the cylinder uniformity.
+The shift identity follows from the definition of itinerary.
+
+For entropy, there are exactly $d^N$ orbit names of length $N$ at the
+resolution which distinguishes individual symbols. Refining to a
+fixed cylinder length $r$ changes this count to $d^{N+r-1}$, without
+changing the exponential rate. Hence the rate is $\log d$.
+\end{proof}
+
+\subsection{Compact invariant sets disappear at the finer scale}
+\begin{theorem}[Compact-subsystem rigidity]\label{epd:thm:compact}
+Suppose $\kappa$ is not an order unit. Every compact subset
+$A\subseteq\BI(F)$ satisfying $F(A)\subseteq A$ is finite. Every point
+of $A$ is a preperiodic center. Thus every compact forward-invariant
+subsystem has topological entropy zero, although the scale quotient
+in \cref{epd:prop:scalequotient} has entropy $\log d$.
+\end{theorem}
+\begin{proof}
+The open fiber partition covers $A$. Compactness implies that only
+finitely many fibers meet $A$. Since $F(A)\subseteq A$, the shift
+orbit of each itinerary occurring in $A$ lies in a finite set. Each
+such itinerary is therefore eventually periodic.
+
+Suppose $x=x_s+h\in A$ with $h\ne0$. Choose $m\geq0$ and $p\geq1$
+so that $\sh^{m+p}s=\sh^m s$, and put $c=x_{\sh^m s}$. For $j\geq0$
+let $y_j=F^{m+jp}(x)\in A$. The corresponding center is always $c$,
+and \cref{epd:thm:fibers} gives
+\[
+ v(y_j-c)=v(h)-(m+jp)\kappa.
+\]
+These valuations strictly decrease. For $j>i$, the two valuations
+are unequal, so
+\[
+ v(y_j-y_i)=v(h)-(m+jp)\kappa\leq v(h)-m\kappa.
+\]
+The infinite set $\{y_j:j\geq0\}$ is uniformly separated. The same
+ball argument used in \cref{epd:thm:topology} makes it closed and discrete
+in $K$. It would be a closed subset of compact $A$, hence compact,
+but an infinite discrete space is not compact. This contradiction
+proves $h=0$ for every $x\in A$.
+
+Thus $A\subseteq\CS$. Every subset of $\CS$ is discrete, so compactness
+again forces $A$ to be finite. Forward invariance of a finite set makes
+all its points preperiodic. A self-map of a finite space has entropy
+zero.
+\end{proof}
+
+One must allow finite preperiodic tails in this theorem: the hypothesis
+is $F(A)\subseteq A$, not $F(A)=A$. No conclusion that every point is
+periodic is intended. There is also no conflict with entropy monotonicity
+for compact factors: the native source space here is noncompact, and
+the full shift is the quotient of a specifically coarsened uniformity.
+
+\section{Scalar extension: new fibers, no new preperiodic points}
+\label{epd:sec:extension}
+Let $\Gamma\hookrightarrow\Delta$ be an order-preserving group
+embedding, and use the induced coefficient-preserving Hahn embedding
+\[
+ K=k((t^\Gamma))\hookrightarrow L=k((t^\Delta)).
+\]
+The parameters $P,q$ are unchanged. The distinction between the two
+ambient fields is real even if the polynomial coefficients occupy a
+very small common subfield.
+
+\begin{theorem}[Scalar-extension theorem]\label{epd:thm:extension}
+The universal centers over $K$ and over $L$ are the same elements of
+$K\subseteq L$. Moreover,
+\begin{align}
+ \BI(F;L)&=\coprod_{s\in\Sig}\bigl(x_s+\Ik(L)\bigr),\label{epd:eq:extension-fibers}\\
+ \BI(F;L)\cap K&=\BI(F;K),\qquad
+ \Ik(L)\cap K=\Ik(K).\label{epd:eq:intersection-extension}
+\end{align}
+Every periodic and preperiodic point over \emph{any field extension}
+of $K$ already belongs to $K$. If $\kappa$ is an order unit of $\Gamma$ but
+not of $\Delta$, the following additional conclusions hold:
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=2em]
+\item $\BI(F;K)$ is the compact center set in the intrinsic topology of
+$K$, but it is closed and discrete in the intrinsic topology of $L$.
+\item Every point of $\BI(F;L)\setminus\BI(F;K)$ is transcendental over
+$K$.
+\item The restriction of the topology of $L$ to $K$ is not the intrinsic
+valuation topology of $K$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+The two evaluations of each universal formal series agree
+coefficientwise. All supports and all finite coefficient sums are
+preserved by the ordered exponent embedding. Apply
+\cref{epd:thm:fibers} in $L$ to get \eqref{epd:eq:extension-fibers}.
+The value comparison with $n\kappa$ is unchanged on $K$, proving the
+ideal intersection. Integral membership and every polynomial iterate
+are also unchanged on $K$, which proves the nonescaping intersection.
+
+For any field extension $M/K$, a preperiodic element is a root of
+$F^{m+p}-F^m$ for some $m,p$. By \cref{epd:thm:periodic}, that polynomial
+already splits into distinct linear factors in $K[X]$. A root in $M$
+therefore equals one of those roots in $K$. This part does not require
+$M$ to be a Hahn field or even to carry a valuation.
+
+Assume now that the order-unit property is lost. The first conclusion is
+\cref{epd:thm:topology} in the two fields. For the second, write a new point
+as $x_s+h$ with $h\in\Ik(L)\setminus\{0\}$. Because $\kappa$ is
+an order unit of $\Gamma$, $v(h)$ exceeds every element of $\Gamma$.
+Suppose a nonzero polynomial $\sum_{j=0}^r b_jh^j=0$, with $b_j\in K$,
+existed. Let $j_0$ be its least index with $b_{j_0}\ne0$. For $j>j_0$
+with $b_j\ne0$,
+\[
+ v(b_jh^j)-v(b_{j_0}h^{j_0})
+ =v(b_j)-v(b_{j_0})+(j-j_0)v(h)>0.
+\]
+Thus the $j_0$ term is the unique term of least valuation and cannot
+cancel. This contradiction proves $h$, hence $x_s+h$, transcendental
+over $K$.
+
+Finally, on the center set the topology from $K$ is a non-discrete
+Cantor topology, whereas that from $L$ is discrete. They cannot agree
+on all of $K$.
+\end{proof}
+
+\begin{example}[A minimal extension that changes the dynamics]\label{epd:ex:minimal-extension}
+Take
+\[
+ K=\C((q)),\qquad
+ L=\C((t^{\Q\oplus_{\rm lex}\Q})),
+ \qquad q\longmapsto t^{(0,1)},\qquad F=q^{-1}(X^2-1).
+\]
+Here $K$ is identified with the Hahn subfield with exponent subgroup
+$\{0\}\oplus\Z$. The integral nonescaping set in $K$ is the binary
+center set. In $L$, each center acquires the fiber $x_s+I_{(0,1)}$;
+for example $x_s+t^{(1,0)}$ is a new nonescaping point. None of these
+new points is algebraic over $K$. Nevertheless every solution of every
+preperiodicity equation was already in $K$.
+\end{example}
+
+The theorem separates two operations that should not be conflated:
+extending the field and taking a symbolic or topological model of the
+nonescaping set. The algebraic equations for all finite preperiodic
+orbits are stable under extension, while the infinite itinerary
+realization problem is not pointwise stable.
+
+\section{Support-controlled deformations and invisible changes}
+\label{epd:sec:deformation}
+Keep $q$ fixed. Let $\widetilde P=P+D$, where
+\[
+ D(X)=\sum_{j=0}^d d_jX^j,\qquad d_j\in\mm,
+ \qquad \widetilde F=q^{-1}\widetilde P.
+\]
+Both polynomials have the same labeled simple reduction $P_0$.
+Write $x_s$ and $\widetilde x_s$ for their respective universal
+centers.
+
+\begin{theorem}[Uniform deformation estimate]\label{epd:thm:deformation}
+If $D\ne0$ and $\theta=\min_{d_j\ne0}v(d_j)>0$, then for every
+itinerary $s$,
+\begin{equation}\label{epd:eq:deformation-bound}
+ v(\widetilde x_s-x_s)\geq\theta.
+\end{equation}
+The supports of all differences belong to the monoid generated by
+\[
+ \supp(q)\cup\bigcup_j\supp(e_j)\cup\bigcup_j\supp(d_j).
+\]
+Let $D_\theta(X)=\sum_j(\coeff{\theta}{d_j})X^j\in k[X]$. The first
+possible correction is exactly
+\begin{equation}\label{epd:eq:leading-response}
+ \coeff{\theta}{(\widetilde x_s-x_s)}
+ =-\frac{D_\theta(c_{s_0})}{P_0'(c_{s_0})}.
+\end{equation}
+If the numerator is nonzero, equality holds in
+\eqref{epd:eq:deformation-bound}. If it vanishes, cancellation is allowed;
+no equality is asserted.
+\end{theorem}
+\begin{proof}
+Introduce further formal variables $D_0,\ldots,D_d$. In the
+finite-variable power-series ring in $Q,E,D$, the difference
+\[
+ X_s(Q,E+D)-X_s(Q,E)
+\]
+belongs to $(D_0,\ldots,D_d)$. Indeed its specialization at $D=0$ is
+zero, so each monomial has at least one $D$ factor. Apply
+\cref{epd:lem:evaluation} at $Q=q$, $E=e$, $D=d$. The two evaluations
+are exactly $\widetilde x_s$ and $x_s$, by compatibility with formal
+substitution. Each difference is a finite sum $\sum_jd_jB_{s,j}$ with
+$B_{s,j}\in\OO$. This proves the uniform valuation bound. The support
+statement is the same evaluation lemma.
+
+Put $\Delta_s=\widetilde x_s-x_s$. Subtract the two shift equations:
+\begin{equation}\label{epd:eq:variation-eq}
+ P(x_s+\Delta_s)-P(x_s)+D(x_s+\Delta_s)
+       =q\Delta_{\sh s}.
+\end{equation}
+The right side has valuation at least $\kappa+\theta>\theta$.
+Every term of degree at least two in $\Delta_s$ has valuation greater
+than $\theta$. At exponent $\theta$, the first difference on the left
+is therefore $P_0'(c_{s_0})\coeff{\theta}{\Delta_s}$. At the same
+exponent, the second term is $D_\theta(c_{s_0})$. Extracting this
+coefficient in \eqref{epd:eq:variation-eq} proves
+\eqref{epd:eq:leading-response}.
+\end{proof}
+
+\begin{remark}[Why a formal ideal argument is necessary]\label{epd:rem:formal-ideal}
+The threshold $\theta$ may exceed all $n\kappa$. Then estimates for
+finite nested approximants with error valuation $n\kappa$ do not
+justify a claim about the $\theta$ coefficient of an alleged limit.
+The proof instead establishes divisibility by the perturbation ideal
+\emph{before} evaluating. This is the same support-versus-topology
+issue that required the universal construction of the centers.
+\end{remark}
+
+\begin{corollary}[Deformations invisible at all dynamical orders]
+\label{epd:cor:flatdeform}
+If every coefficient $d_j$ belongs to $\Ik$, then
+\[
+ \BI(F)=\BI(\widetilde F),\qquad
+ \pi_F^{-1}(s)=\pi_{\widetilde F}^{-1}(s)\quad(s\in\Sig).
+\]
+The two maps induce the same full shift on the scale quotient. For
+any nonzero constant perturbation $D=\varepsilon\in\Ik$, however,
+$F$ and $\widetilde F$ have no common fixed point.
+\end{corollary}
+\begin{proof}
+There are finitely many coefficients. If $D\ne0$, their minimum
+nonzero valuation still exceeds every $n\kappa$.
+\Cref{epd:thm:deformation} therefore gives
+$\widetilde x_s-x_s\in\Ik$ for every $s$. The fiber formula makes
+the labeled cosets identical. Both quotient actions shift the labels.
+Alternatively, $D(x)/q\in\Ik$ for integral $x$ because $q\Ik=\Ik$.
+If a common fixed point existed for a nonzero constant $D$, it would
+satisfy both $P(x)=qx$ and $P(x)+\varepsilon=qx$, which is impossible.
+\end{proof}
+
+Thus even the entire infinite symbolic partition, together with all
+finite-scale data, does not determine the actual fixed points in a
+workspace in which $\kappa$ is not an order unit. The correction formula shows exactly where the
+missing information first appears.
+
+\section{Integral nonescape versus valuation-bounded orbits}
+\label{epd:sec:bounded}
+Define the other natural orbit locus by
+\[
+ \BV(F)=\{x\in K:\text{there exists }\beta\in\Gamma
+                \text{ with }v(F^n(x))\geq\beta\text{ for all }n\geq0\}.
+\]
+Always $\BI(F)\subseteq\BV(F)$. The opposite inclusion is often
+silently assumed in a rank-one argument. Here it has an exact
+order-unit criterion.
+
+For $x\ne0$, set $\alpha(x)=\max(0,-v(x))$, and put $\alpha(0)=0$.
+Thus $\alpha$ measures only how far the initial point lies outside
+the integral disk.
+
+\begin{theorem}[Exact bounded-orbit locus]\label{epd:thm:bounded}
+For $F=q^{-1}P$ as in \eqref{epd:eq:polynomial},
+\begin{equation}\label{epd:eq:bounded-formula}
+ \BV(F)=\BI(F)\ \cup\
+ \{x\in K:\kappa+\alpha(x)\text{ is not an order unit in }\Gamma\}.
+\end{equation}
+Consequently:
+\begin{enumerate}[label=\textup{(\alph*)},leftmargin=2em]
+\item If $\kappa$ is an order unit, $\BV(F)=\BI(F)$.
+\item If $\kappa$ is not an order unit, then
+$\BV(F)=\{x:\kappa+\alpha(x)\text{ is not an order unit}\}$.
+In this case the bounded-orbit locus is independent of $P$ within the
+specified family, and it contains all of $\OO$.
+\item If $\Gamma$ has no order unit, then $\BV(F)=K$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+If an orbit ever leaves $\OO$, write its first negative valuation as
+$-a$, with $a>0$. If the initial point was integral, then $0<a\leq\kappa$:
+the preceding point was integral, $P$ has integral coefficients, and
+$v(F(z))\geq-\kappa$ for integral $z$. If the initial point was not
+integral, we may start at time zero with $a=\alpha(x)$.
+
+Once negative, valuations obey \eqref{epd:eq:escape-step}. After a further
+$n$ steps they are
+\begin{equation}\label{epd:eq:outside-recurrence}
+ -d^n a-(1+d+\cdots+d^{n-1})\kappa.
+\end{equation}
+For $n\geq1$, the positive quantity whose negative occurs here lies
+between $d^{n-1}(a+\kappa)$ and $d^n(a+\kappa)$. Its values are
+cofinal in $\Gamma_{>0}$ exactly when $a+\kappa$ is an order unit.
+Indeed, if that element is an order unit, powers of $d$ dominate any finite
+multiple of it; otherwise a single $\eta$ exceeding all its integer
+multiples bounds the whole sequence. A finite initial orbit segment
+does not affect boundedness.
+
+When the initial point is integral and later exits, $a+\kappa$ lies
+between $\kappa$ and $2\kappa$, so it is an order unit exactly when $\kappa$
+is. Otherwise $a+\kappa=\alpha(x)+\kappa$. Points which never leave
+are already in $\BI(F)$. This proves \eqref{epd:eq:bounded-formula}.
+The three consequences follow directly; for (b), all points of
+$\BI(F)$ have $\alpha=0$, so the first set in the union is redundant.
+\end{proof}
+
+\subsection{A coarsened valuation-ring interpretation}
+\label{epd:subsec:coarsened}
+Suppose $\Gamma$ has an order unit $u$, and define
+\[
+ H=\{\gamma\in\Gamma:n|\gamma|<u\text{ for every integer }n\geq1\}.
+\]
+This is the maximal proper convex subgroup of $\Gamma$. In particular,
+a positive element belongs to $H$ exactly when it is not an order unit.
+For clarity, the relevant elementary argument is included. Closure
+under addition follows by applying the condition to $2n|\gamma|$ and
+$2n|\delta|$: their sum is less than $2u$, hence
+$n(|\gamma|+|\delta|)<u$. Convexity is immediate. If $\gamma>0$ is not
+an order unit, some $\eta$ exceeds all $n\gamma$, while $\eta\leq Nu$ for
+some $N$. Applying the bound to $Nn\gamma$ gives $n\gamma<u$.
+Conversely that last condition prevents $\gamma$ from being an order unit. Any convex subgroup
+containing an order unit is all of $\Gamma$, proving maximality.
+(Placement note: $H$ is the kernel of the order-preserving homomorphism
+$\Gamma\to\R$ of \texttt{ent:lem:coarsening} in
+\texttt{entire-functions-\allowbreak at-arbitrary-rank}, with $h=u$. That report
+states the lemma under its standing divisibility hypothesis. The argument
+just given does not use divisibility.)
+
+\begin{corollary}\label{epd:cor:coarsebounded}
+If $\Gamma$ has an order unit but $\kappa$ is not one, then
+\[
+ \BV(F)=\{x\in K:v(x)+H\geq0\text{ in }\Gamma/H\},
+\]
+the valuation ring of the coarsened valuation. Relative to this
+coarsening, $F$ has integral coefficients and unit leading coefficient.
+\end{corollary}
+\begin{proof}
+Here $\kappa\in H$, and for $\alpha\geq0$ the sum $\kappa+\alpha$
+is not an order unit exactly when $\alpha\in H$. The formula follows from
+\cref{epd:thm:bounded}. Also $v(q)\in H$, so $q$ is a unit for the
+coarsened valuation. The coefficients of $P$ are integral and its
+leading coefficient is a unit already for the original valuation.
+\end{proof}
+
+\begin{example}[Escaping the disk without an unbounded orbit]\label{epd:ex:escape}
+With $\Gamma=\Q\oplus_{\mathrm{lex}}\Q$ and $\kappa=(0,1)$,
+$H=\{0\}\oplus\Q$. Therefore $\BV(F)$ consists of those elements
+whose valuation has nonnegative first coordinate. For
+$x=t^{(0,-1)}$ the integral disk has already been left, and
+\eqref{epd:eq:outside-recurrence} gives increasingly negative second
+coordinates. All valuations remain greater than $(-1,0)$, so the
+orbit is still valuation-bounded. This is not a failure of the
+recurrence; it is the distinction between a direction that is not an order unit and
+a genuinely unbounded sequence in the full ordered group.
+\end{example}
+
+\section{A general polynomial theorem when there is no order unit}
+\label{epd:sec:general}
+The absence of an order unit has a consequence beyond the
+simple-reduction family. The following quantitative estimate explains
+why the native fine topology can conceal every finite-degree
+polynomial expansion.
+
+\begin{proposition}[An orbit and difference budget]\label{epd:prop:budget}
+Let $f(X)=\sum_{j=0}^d a_jX^j\in K[X]$ have degree $d\geq1$.
+Choose $A>0$ with $v(a_j)\geq-A$ for all nonzero coefficients, and put
+$D_A=\{z:v(z)\geq-A\}$. For $x,y\in D_A$ and $n\geq0$,
+\begin{align}
+ v(f^n(x))&\geq-(d+1)^n A,\label{epd:eq:orbitbudget}\\
+ v(f^n(x)-f^n(y))&\geq v(x-y)-\bigl((d+1)^n-1\bigr)A.
+ \label{epd:eq:differencebudget}
+\end{align}
+\end{proposition}
+\begin{proof}
+Set $M_n=(d+1)^nA$. If $v(z)\geq-M_n$, every polynomial term has
+valuation at least $-A-dM_n\geq-(d+1)M_n=-M_{n+1}$. This proves
+\eqref{epd:eq:orbitbudget} by induction.
+
+For $z,w$ with valuations at least $-M_n$, the divided difference
+\[
+ \frac{f(z)-f(w)}{z-w}
+ =\sum_{j=1}^d a_j\sum_{\ell=0}^{j-1}z^\ell w^{j-1-\ell}
+\]
+(where the right side also defines it when $z=w$) has valuation at
+least $-A-(d-1)M_n\geq-dM_n$. Apply this with
+$z=f^n(x)$ and $w=f^n(y)$. Accumulating the possible losses gives
+\[
+ d\sum_{j=0}^{n-1}M_j=((d+1)^n-1)A,
+\]
+which is \eqref{epd:eq:differencebudget}. Cancellation can only increase
+these valuations.
+\end{proof}
+
+\begin{theorem}[Universal native equicontinuity criterion]
+\label{epd:thm:general}
+The following statements are equivalent for $K=k((t^\Gamma))$:
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=2em]
+\item $\Gamma$ has no order unit.
+\item Every orbit of every polynomial in $K[X]$ is valuation-bounded.
+\item For every polynomial $f$, its family of iterates is locally
+equicontinuous at every point of $K$, in the native valuation uniformity.
+\end{enumerate}
+Under (i), the family is in fact uniformly equicontinuous on every
+$D_A$ for which the coefficient bounds in \cref{epd:prop:budget} hold.
+\end{theorem}
+\begin{proof}
+Assume (i). For the $A$ in \cref{epd:prop:budget}, choose
+$\eta>rA$ for every ordinary integer $r$. Then
+\eqref{epd:eq:orbitbudget} bounds every orbit starting in $D_A$ below by
+$-\eta$. Every individual starting point lies in some such $D_A$,
+proving (ii).
+
+For any requested output threshold $\gamma$, choose
+$\delta=\max(\gamma,0)+\eta$. If $x,y\in D_A$ and
+$v(x-y)>\delta$, then \eqref{epd:eq:differencebudget} gives
+$v(f^n(x)-f^n(y))>\gamma$ for every $n$. This proves uniform
+equicontinuity on $D_A$. Such a disk is a neighborhood of each of its
+points: the ball $\{y:v(y-x)>-A\}$ is contained in it. Thus (iii)
+follows. Constant polynomials need no estimate and satisfy the same
+conclusions.
+
+Conversely, suppose $u>0$ is an order unit. The linear polynomial
+$f(X)=t^{-u}X$ has the orbit $f^n(1)=t^{-nu}$, whose valuations have
+no lower bound. Hence (ii) fails. Its iterates are not locally
+equicontinuous at zero: given any input threshold $\delta$, choose
+$N$ with $Nu>\delta$ and take $h=t^{Nu}$. Then $h$ belongs to that
+input neighborhood, but $v(f^{N+1}(h))=-u<0$. Even the fixed output
+threshold $0$ cannot be maintained. Thus (iii) fails as well.
+\end{proof}
+
+\begin{definition}[A deliberately named affine notion]\label{epd:def:affine-julia}
+For a polynomial $f$, define $J_{\mathrm{aff},v}(f)$ to be the set of
+points of $K$ having no native open neighborhood on which all iterates
+of $f$ are equicontinuous as maps to the additive valued field $K$.
+\end{definition}
+
+\begin{corollary}\label{epd:cor:empty-affine}
+If $\Gamma$ has no order unit, then $J_{\mathrm{aff},v}(f)=\varnothing$
+for every polynomial $f$.
+\end{corollary}
+\begin{proof}
+This is exactly statement (iii) of \cref{epd:thm:general}.
+\end{proof}
+
+The subscript is essential. Classical non-Archimedean Fatou and Julia
+sets are ordinarily defined on a projective line using a spherical
+metric, or on a Berkovich space, not by this unspecified affine
+replacement; compare Definitions~4.15--4.16 of \cite{Benedetto}.
+We claim neither that every Berkovich Julia set is empty nor that a
+rank-one Julia set disappears in its own topology. The corollary is a
+precise obstruction to one naive transplantation of the definition.
+
+\begin{example}[No uncountable-cofinality hypothesis is needed]\label{epd:ex:no-order-unit}
+Let $\Gamma=\bigoplus_{j\geq0}\Q e_j$, ordered by the largest index
+having a nonzero coefficient, with its sign deciding the order.
+Then $e_{j+1}>ne_j$ for every positive integer $n$, and every group
+element has finite support. The group is countable and has no order
+unit. All conclusions of \cref{epd:thm:general} hold. This is a finite
+polynomial growth-budget phenomenon, not a consequence of assuming
+uncountable cofinality for the entire value group.
+(Placement note: here, as in \texttt{ent:rem:one-name}, cofinality means
+$\operatorname{cf}(\Gamma)$, which is $\aleph_0$ for this group. As an
+ordered group it is the group $\Gamma_\infty=\bigoplus_{j\geq0}\Q\,\omega^j$
+of \texttt{ent:subsec:gamma-infinity}, via $e_j=\omega^j$.)
+\end{example}
+
+\section{The surreal and surcomplex specialization}
+\label{epd:sec:surreal}
+\subsection{What is imported from surreal theory}
+Conway normal form identifies surreal numbers with set-supported
+well-based sums of real coefficients times monomials $\omega^a$.
+The monomial law $\omega^{a+b}=\omega^a\omega^b$ identifies a
+set-sized ordered additive subgroup $\Gamma\subseteq\No$ with a
+Hahn monomial group by $t^\gamma=\omega^{-\gamma}$. Thus
+$\R((t^\Gamma))$ embeds into $\No$, and coefficientwise
+complexification embeds $\C((t^\Gamma))$ into $\SC$.
+This is classical normal-form theory, not a theorem first proved here;
+see Gonshor \cite{Gonshor} and the explicit Hahn description in
+Berarducci--Mantova, Sections~2.3, 2.4, and 2.6 \cite{BM}.
+
+The valuation convention remains $v(\omega^{-\gamma})=\gamma$.
+For a surcomplex number written in normal form, coefficients are in
+$\C$ and supports are still sets. Every finite list of parameters is
+contained in a common set-sized Hahn workspace obtained by taking the
+additive group generated by its supports. All infinite sums used to
+construct the centers have the common set-sized support certificate
+\eqref{epd:eq:common-support}.
+
+There is consequently no need to posit a set containing all surreals,
+or to sum over a proper class of exponents. Statements about an
+arbitrary additional point are proved after enlarging the workspace to
+include that point's support. The same center is obtained after every
+such enlargement by \cref{epd:thm:extension}.
+
+\subsection{An explicit quadratic theorem inside the actual field}
+Set
+\begin{equation}\label{epd:eq:surreal-F}
+ q=\omega^{-1},\qquad F(x)=\omega(x^2-1),\qquad
+ I=\{h:v(h)>n\text{ for every }n\in\N\}.
+\end{equation}
+Here $h$ may be surreal or surcomplex. In the real case, $I$ consists
+of numbers smaller in magnitude than every positive ordinary power
+of $\omega^{-1}$; the valuation definition is the one used in the
+proofs. It contains $\omega^{-\omega}$.
+
+\begin{theorem}[A surcomplex full shift with infinitesimal fibers]
+\label{epd:thm:surreal}
+There is a canonical real surreal number
+\[
+ x_s=\sum_{n\geq0}a_n(s)\omega^{-n}
+ \qquad\bigl(s\in\{+1,-1\}^{\N}\bigr)
+\]
+for every binary itinerary. The locus whose every iterate is a finite surcomplex number is
+\begin{equation}\label{epd:eq:surreal-fibers}
+ \{x\in\SC:F^n(x)\text{ is finite for every }n\}
+   =\coprod_s(x_s+I).
+\end{equation}
+Its restriction to $\No$ is obtained by using real $h\in I$.
+Every actual surcomplex preperiodic point of $F$ is one of the real
+centers with eventually periodic itinerary. For $h=\omega^{-\omega}$,
+\begin{equation}\label{epd:eq:omega-error}
+ v\bigl(F^n(x_s+h)-x_{\sh^n s}\bigr)=\omega-n
+ \qquad(n\in\N).
+\end{equation}
+All conclusions of the non-order-unit case of \cref{epd:thm:topology} hold in
+the full native topology, with compactness assertions understood for
+set-sized subsets.
+\end{theorem}
+\begin{proof}
+Apply the constant-coefficient construction in the workspace with
+exponent group $\Z$. This produces every $x_s$ and its strong series.
+For any proposed point or perturbation, enlarge to a set-sized exponent
+group containing its support and $1$. The exact-fiber theorem gives
+the same formula there, and the center is unchanged. Finite surreal
+and surcomplex elements are exactly the elements of nonnegative
+natural valuation, so the left side of \eqref{epd:eq:surreal-fibers} is
+precisely the integral nonescaping condition.
+
+The set $I$ is nonzero because $\omega>n$ for all $n$. The fiber
+formula and \eqref{epd:eq:omega-error} follow from
+\cref{epd:thm:fibers}. All coefficients of the binary centers are real.
+Any preperiodic surcomplex point is a root of a polynomial which already
+splits into distinct real linear factors by \cref{epd:thm:periodic}, so it
+is one of those real centers. For topology, the proofs in
+\cref{epd:thm:topology,epd:thm:compact} only use balls, a fixed dominating
+valuation, and set-indexed compactness; they apply verbatim.
+\end{proof}
+
+\begin{remark}[Fine topology versus a workspace topology]\label{epd:rem:fine-vs-workspace}
+The natural valuation topology of the full surreal field is its order
+(fine) topology: every positive radius exceeds some monomial radius,
+and increasing a monomial valuation gives a radius strictly smaller
+than any prescribed positive element. In the surcomplex field the
+same statement holds with modulus balls, or equivalently with the
+product of the two real-coordinate topologies. These assertions also
+follow directly by comparing a leading monomial with its nonzero real
+or complex coefficient.
+
+The restriction of this full topology to $\R((\omega^{-1}))$ is not
+that field's intrinsic $\omega^{-1}$-adic topology. In the latter, the
+center set is a Cantor set. In the former, the same set is uniformly
+discrete, since a radius with valuation $\omega$ separates every pair
+of centers. These are two different topologies on the same algebraic
+objects, not two incompatible conclusions.
+\end{remark}
+
+\begin{remark}[Placement note: the set-level clauses are special cases]
+\label{epd:rem:discrete-special}
+The manuscript did not cite \emph{Surcomplex Analysis}
+(\texttt{docs/surcomplex/analysis}). That report's fine topology
+(\texttt{a:def:fine}) is the full topology used in
+\cref{epd:thm:surreal,epd:rem:fine-vs-workspace}. Its \texttt{a:thm:discrete}
+proves that every \emph{set} $A\subseteq\No[\mathrm i]$ is closed and
+discrete in that topology, and that one radius separates all pairs of
+distinct points of~$A$. The following consequences use nothing from this
+report except, in the second item, the identification of the preperiodic
+points.
+\begin{itemize}[leftmargin=1.4em]
+\item Every subset of the center set $\{x_s\}$ is closed and discrete,
+because that set is indexed by the set $\{+1,-1\}^{\N}$.
+\item Every compact set-sized subset is finite. In particular, every compact
+forward-invariant set-sized subset of the locus \eqref{epd:eq:surreal-fibers}
+is finite. Its points have finite orbits, so they are preperiodic, and by
+\cref{epd:thm:surreal} they are real centers.
+\item The uniform separating radius of \texttt{a:thm:discrete}(ii) is
+realized explicitly by the radius of valuation $\omega$ in
+\cref{epd:rem:fine-vs-workspace}. The
+comparison made in that remark is an instance of
+\texttt{a:rem:notvaluation}: the fine topology induced on a set-sized Hahn
+subfield is strictly finer than the subfield's own valuation topology.
+\end{itemize}
+The set-level discreteness and compactness clauses in the last sentence of
+\cref{epd:thm:surreal} are therefore special cases of
+\texttt{a:thm:discrete}. The substance of \cref{epd:thm:topology}(b) and
+\cref{epd:thm:compact} lies in a set-sized workspace $k((t^\Gamma))$ with
+its intrinsic valuation topology. That topology is not discrete, and in the
+order-unit case the center set is a Cantor set (\cref{epd:thm:topology}(a)). Some
+statements concern the fibers $x_s+I$, which are proper classes, or whole
+fine balls. These are the openness of the fibers, the failure of $\pi$ to
+be a quotient map, uniform equicontinuity on the locus
+\eqref{epd:eq:surreal-fibers}, and \cref{epd:cor:surreal-all}. None of them
+is a consequence of \texttt{a:thm:discrete}.
+\end{remark}
+
+\subsection{Exact coefficients and the first visible digits}
+For the quadratic family the inverse branches are
+\[
+ \Phi_{\varepsilon}(w)
+ =\varepsilon\sqrt{1+qw}
+ =\varepsilon\sum_{r\geq0}\binom{1/2}{r}q^rw^r,
+ \qquad \varepsilon\in\{+1,-1\}.
+\]
+The root is the formal root with constant coefficient $1$. Its Hahn
+evaluation is justified by the positive valuation of $qw$.
+Write $a_n(s)$ for the coefficient of $q^n$ in $x_s$. Comparing
+coefficients in $x_s^2-1=qx_{\sh s}$ gives
+\begin{equation}\label{epd:eq:binary-recursion}
+ a_0(s)=s_0,\qquad
+ a_n(s)=\frac{a_{n-1}(\sh s)-
+                 \sum_{j=1}^{n-1}a_j(s)a_{n-j}(s)}{2s_0}
+ \quad(n\geq1).
+\end{equation}
+In particular,
+\begin{equation}\label{epd:eq:first-coeffs}
+ x_s=s_0+\frac{s_0s_1}{2}q+
+       \left(\frac{s_0s_1s_2}{4}-\frac{s_0}{8}\right)q^2+\cdots.
+\end{equation}
+All coefficients are rational. The coefficient at order $n$ sees
+exactly a finite prefix, although the resulting Hahn point carries
+an arbitrary infinite word.
+
+For the constant positive itinerary, the fixed point is
+\begin{align}\label{epd:eq:fixed-plus}
+ x_+&=\frac q2+\sqrt{1+\frac{q^2}{4}}\\
+ &=1+\frac q2+\frac{q^2}{8}-\frac{q^4}{128}
+     +\frac{q^6}{1024}-\frac{5q^8}{32768}+\cdots.\nonumber
+\end{align}
+The other fixed point is $x_-=q/2-\sqrt{1+q^2/4}$.
+The point $x_++\omega^{-\omega}$ is not periodic, but every one of its
+iterates has residue $+1$. Formula \eqref{epd:eq:omega-error} records its
+exact deviation from the fixed point at every finite time.
+
+A deformation gives another explicit check. Replace $P=X^2-1$ by
+$\widetilde P=X^2-1+\varepsilon$, with
+$\varepsilon=\omega^{-\omega}$. Then
+\[
+ \widetilde x_+=\frac q2+
+       \sqrt{1-\varepsilon+\frac{q^2}{4}},
+ \qquad
+ [\omega^{-\omega}](\widetilde x_+-x_+)=-\frac12.
+\]
+The bracket denotes the normal-form coefficient of that monomial.
+The two maps have exactly the same labeled nonescaping fibers, but no
+common fixed point. This is the simplest instance of
+\cref{epd:cor:flatdeform}.
+
+\subsection{Polynomial iteration in the full fine topology}
+For every positive surreal $A$ there is a surreal $\eta$ exceeding all
+ordinary integer multiples of $A$, for example $\eta=\omega A$.
+The quantitative estimates in \cref{epd:prop:budget} therefore apply to
+any fixed polynomial with surreal or surcomplex coefficients and any
+set of inputs in the specified ball. All relevant parameters and
+$\eta$ can first be placed in a common set-sized workspace.
+
+\begin{corollary}\label{epd:cor:surreal-all}
+Every orbit of every finite-degree polynomial over $\No$ or $\SC$ is
+bounded by some surreal modulus bound. The family of iterates of each
+such polynomial is locally equicontinuous everywhere in the full fine
+uniformity. Its explicitly affine equicontinuity obstruction
+$J_{\mathrm{aff},v}$ is empty.
+\end{corollary}
+\begin{proof}
+For a fixed polynomial and an initial ball, choose the bound $A$ in
+\cref{epd:prop:budget} and then a larger scale $\eta$ dominating all $nA$.
+The proof of \cref{epd:thm:general} uses only this particular pair of
+scales. For each pair of inputs, enlarge the set-sized workspace to
+contain their supports as well. The same $A$, $\eta$, and input
+threshold work in every such enlargement, so the estimate is uniform
+on the entire fine ball, even though that ball is not itself set-sized.
+A lower valuation bound gives a modulus bound
+by taking a still larger monomial to absorb every possible finite
+leading coefficient. The same comparison of monomial balls
+and modulus balls transfers equicontinuity to the fine uniformity.
+\end{proof}
+
+For the explicit map $F(x)=\omega(x^2-1)$, the orbit of $0$ satisfies
+\[
+ v(F^n(0))=-(2^n-1)\qquad(n\geq1).
+\]
+It leaves the integral disk immediately, yet every iterate has modulus
+less than $\omega^\omega$. Thus $0\in\BV(F)\setminus\BI(F)$ in the
+full surreal field. More simply, the ordinary sequence $2^{2^n}$ is
+bounded by an infinite surreal number although it is unbounded over
+$\R$. The content needed
+for polynomial equicontinuity is stronger than mere existence of a
+bound for one sequence: \eqref{epd:eq:differencebudget} provides a single
+input precision that works for every iterate and every pair of inputs
+in a whole prescribed ball. The corollary still does not assert that
+classical or Berkovich Julia sets are empty in their own topologies.
+
+\section{Verification, reproducibility, and formalization}
+\label{epd:sec:verification}
+The accompanying program \texttt{code/verify.py} uses Python's standard
+library only, with exact rational coefficients and integer exponent
+pairs. It is a finite consistency test of the displayed algebra, not
+a substitute for the proofs of infinite support or compactness.
+
+The recorded run performed \textbf{38,139 exact checks}, all passing.
+The principal counts are shown in \cref{epd:tab:checks}. Every count is
+computed by the shipped program; the full record is in
+\texttt{data/verification.json}.
+
+\begin{table}[ht]
+\centering\small
+\caption{Exact finite checks in the included run.}\label{epd:tab:checks}
+\begin{tabularx}{\linewidth}{@{}Xr@{}}
+\toprule
+Check & Number\\\midrule
+Two independent center constructions, all binary words of length $8$ & 256\\
+Itinerary equation through the available truncation order & 256\\
+Displayed first three coefficients & 256\\
+Every unordered pair of length-$8$ words: exact first mismatch order & 32,640\\
+Periodic identities, all binary words of periods $1$ through $6$ & 126\\
+M\"obius exact-period counts & 6\\
+Two-parameter identity, ideal divisibility, and first response & 96\\
+Displayed positive fixed-point expansion & 1\\
+Rank-two error valuation and leading coefficient, times $0$ through $10$ & 22\\
+Exterior valuation recurrence versus its closed formula & 4,480\\\midrule
+Total & 38,139\\\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{The two coefficient algorithms}
+The first algorithm composes the inverse branches
+$\varepsilon\sqrt{1+qw}$ using a truncated binomial evaluator. The
+second uses \eqref{epd:eq:binary-recursion} directly, constructing the tail
+coefficients before the coefficients of the current word. These are
+different algorithms, though both implement the same defining
+polynomial equation; their agreement is not independent foundational
+verification.
+
+For a requested coefficient order $N$, only $N+1$ symbols are needed.
+The direct recursive implementation has polynomial arithmetic cost
+in $N$; with straightforward convolutions and all required suffixes,
+$O(N^3)$ rational arithmetic operations suffice. Coefficient bit growth
+is not included in this arithmetic-operation bound. Nothing in this
+finite computation decides membership in $I_\kappa$, which quantifies
+over all finite $q$-orders.
+
+The bivariate checks work in $\Q[q,\varepsilon]$ truncated by total
+degree. They verify $x_s^2-1+\varepsilon=qx_{\sh s}$, specialization
+at $\varepsilon=0$, and the coefficient
+$[q^0\varepsilon^1](\widetilde x_s-x_s)=-s_0/2$. The rank-two checks
+track the formal difference recurrence
+\[
+ h_{n+1}=q^{-1}(2x_+h_n+h_n^2)
+\]
+in powers of an additional symbol $h$, with lexicographically ordered
+exponents $(\deg_h,\deg_q)$. Their leading terms are
+$2^n hq^{-n}$, of valuation $(1,-n)$. Discarded higher $h$ degrees
+cannot affect the degree-$1$ leading term. These checks do not pretend
+to turn an approximate fixed-point truncation into an exact Hahn
+fixed point; the exact point was proved in \eqref{epd:eq:fixed-plus}.
+
+\subsection{How to reproduce the package}
+\label{epd:subsec:reproduce}
+The manuscript's instructions, for its delivered layout, were: from the
+package directory, run
+\begin{lstlisting}
+python code/verify.py --output data/verification-rerun.json
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The source has an internal bibliography and needs no BibTeX run.
+\texttt{make all} performs the verification and PDF build. Python
+3.10 or later is sufficient, with no network access or external Python
+packages required. Run without \texttt{-O}. Elapsed time and Python
+version in the JSON are environment-dependent; the exact check counts
+and rational outputs are deterministic.
+
+\emph{Placement notes.} The program and its record are kept byte-identical
+to the delivered files. Three facts about the placed layout matter.
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=2em]
+\item The program's only option is \texttt{-{}-output}. Its default is
+\texttt{data/verification.json} in the directory that contains
+\texttt{code/}, whatever the current directory. That file is the shipped
+record, and the program writes its output there without checking whether
+the file exists. The command in its docstring names the same path. A bare
+\texttt{python code/verify.py} therefore overwrites the recorded evidence.
+The elapsed-time field changes on every run, and the Python-version field
+changes on another interpreter. Run the program on a copy of this
+directory, or pass an explicit \texttt{-{}-output} path outside it.
+\item The delivered \texttt{Makefile} is placed at \texttt{code/Makefile}.
+Its recipes use paths relative to the report directory, so it is invoked
+from there as \texttt{make -f code/Makefile verify}. That target writes
+the new file \texttt{data/verification-rerun.json} and leaves the record
+untouched.
+\item The collection builds the article with
+\texttt{latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex}.
+\end{enumerate}
+At placement the program was rerun with Python~3.14.4, writing to a scratch
+path. It reported \texttt{PASS} with 38,139 checks. Its output agreed with
+\texttt{data/verification.json} in every field except the Python version
+and the elapsed time.
+
+\subsection{A proof-assistant route, not a formalization claim}
+\label{epd:subsec:formalization}
+A useful formalization boundary separates three layers. The first is
+finite algebra: the divided-difference identity, simple-residue
+uniqueness, exact valuation changes, and the orbit budget. The second
+constructs the universal formal centers and evaluates them using the
+finite-parameter Hahn map. The third proves the fiber decomposition,
+the cylinder equivalence, and the topological dichotomy.
+
+Once a general center-construction interface supplies
+$F(x_s)=x_{\sh s}$ and the correct residues, the exact-fiber,
+preperiodicity, and compact-subsystem proofs require no further
+infinite summation. This isolates the support-heavy part of a future
+Lean development. The repository inventory reports relevant Hahn and
+finite-algebra infrastructure \cite{Repo}; compatibility of concrete
+Lean interfaces has not been tested here. No Lean file is included,
+no repository build was run for this article, and the written proofs
+have not been checked by a proof assistant.
+
+(Placement note: the collection's Lean library proves the positive-support
+lemma imported here from \cite{Neumann}, over an arbitrary ordered abelian
+group, including finiteness of fixed-sum word fibers across all word
+lengths. These are the declarations \texttt{neumann\_positive} and
+\texttt{finite\_words\_of\_sum\_eq} in \texttt{Surreal/HahnSeries/Neumann.lean},
+recorded in \texttt{docs/FORMALIZATION.md}. No other statement of this
+report is formalized, and no Lean declaration is attached to any
+\texttt{epd:} label.)
+
+\section{Limitations and further research questions}
+\label{epd:sec:questions}
+The hypotheses in \eqref{epd:eq:polynomial} are doing real work. Simple
+residue roots make the divided difference a unit, provide unique
+branches, and make every derivative along the integral orbit have the
+same valuation loss. A repeated residue root can require fractional
+scales, ramification, or nonunique inverse branches. None of the
+present theorems silently covers that situation.
+
+The polynomial has finitely many coefficients and finitely many simple
+branches. The finite-parameter evaluation proof does not authorize an
+arbitrary countable family of independent perturbation parameters
+without a new joint support hypothesis. Likewise, the general orbit
+budget is for polynomials. Rational maps can repeatedly approach poles;
+one cannot apply the polynomial bound to their denominators without
+controlling those approaches.
+
+\begin{question}[Nonuniform branch scales]\label{epd:q:branch-scales}
+For a polynomial or rational map with finitely many inverse branches
+whose exact gains are different positive values $\kappa_i$, can one
+construct canonical itinerary centers and prove that the fiber of
+$s$ is precisely the set of errors whose valuations exceed all partial
+sums $\sum_{j<N}\kappa_{s_j}$? What finite-parameter support conditions
+are sufficient when the branch equations are not simultaneously
+normalized by one $q$?
+\end{question}
+The metric half of this proposed statement would follow from the same
+pullback calculation. The nontrivial remaining issue is realization
+of every admissible itinerary with a uniform support certificate.
+The present article does not assume this generalization.
+
+\begin{question}[A topology retaining both levels of information]\label{epd:q:enriched}
+Can one give a useful enriched dynamical space that retains the compact
+full-shift quotient and the nontrivial native infinitesimal fibers
+simultaneously, without declaring the quotient topology to be the
+wrong one? A precise comparison with higher-rank adic or other valued
+geometric spaces would be preferable to relabeling the quotient as a
+Berkovich space without a construction.
+\end{question}
+
+\begin{question}[Dynamics inside a single fiber]\label{epd:q:fiber}
+For a periodic itinerary, what canonical normal forms classify the
+restriction of the return map to $x_s+\Ik$? The valuation law is exact,
+but it records only the size of a deviation, not its coefficients at
+all finer scales. Which part of that finer structure survives the
+flat deformations of \cref{epd:cor:flatdeform}?
+\end{question}
+
+These are proposed continuation problems arising from the proved
+framework, not assertions that the same questions are established
+open problems in the published literature.
+
+\section{Conclusion}
+The infinite word in an inverse-branch construction determines a point
+only when the accumulated scales $n\kappa$ are cofinal in $\Gamma$, that is, when $\kappa$ is an order unit. Otherwise it determines
+an exact affine infinitesimal fiber. Strong Hahn evaluation supplies
+the canonical representative that topological convergence cannot
+supply, and the exact divided-difference metric identifies every other
+representative.
+
+For the polynomial family studied here, this produces a sharp and
+fully explicit separation between finite algebraic orbit data and
+infinite native topological behavior. All preperiodicity equations
+split in the original workspace. Enlarging the exponent group can
+leave those equations and their roots unchanged while thickening
+every itinerary fiber, destroying compact infinite invariant
+subsystems, and turning the same center set from a Cantor space into
+a discrete space. Infinitesimal coefficient changes beyond every
+power of the dynamical scale preserve the symbolic partition but move
+the actual fixed points.
+
+The surreal example $F(x)=\omega(x^2-1)$ is therefore not merely an
+ordinary real or complex dynamical system with a larger coefficient
+field. Its behavior depends on which scales the chosen topology can
+resolve. The correct conclusion is neither that ordinary chaos
+survives verbatim nor that all dynamics becomes trivial: the symbolic
+quotient, the exact fibers, the algebraic periodic locus, and the
+ambient topology retain different, explicitly calculable information.
+
+\appendix
+\section{Dependency and claim ledger}
+\label{epd:app:ledger}
+\begin{table}[ht]
+\centering\small
+\caption{Logical dependencies and status of the principal results.}
+\begin{tabularx}{\linewidth}{@{}p{0.30\linewidth}X@{}}
+\toprule
+Result & Dependencies and status\\\midrule
+Positive-support lemma & Classical imported result; cited to Neumann. (Placement: proved in the collection's Lean library, \cref{epd:subsec:formalization}.)\\
+Finite-parameter evaluation & Explicit consequence with coefficient-finiteness proof in \cref{epd:lem:evaluation}.\\
+Universal centers & Formal implicit recursion, formal $Q$-adic completeness, and strong evaluation; proved in \cref{epd:thm:centers}.\\
+Exact fibers & Centers plus the exact divided-difference metric; proposed new arbitrary-rank formulation, \cref{epd:thm:fibers}.\\
+Preperiodicity splitting & Exact fibers and finite polynomial degree; proved in \cref{epd:thm:periodic}. Counting formulas are classical consequences.\\
+Native topology and compact rigidity & Exact first mismatch, open error ideal, and elementary compactness; proposed new package, \cref{epd:thm:topology,epd:thm:compact}. (Placement: the proposal concerns set-sized workspaces; in $\No[\mathrm i]$ the set-level clauses are special cases of \texttt{a:thm:discrete}, \cref{epd:rem:discrete-special}.)\\
+Scalar extension and transcendence & Universal support, preperiodicity splitting, and one-term valuation dominance; \cref{epd:thm:extension}.\\
+Deformation and flat invisibility & Formal perturbation ideal before evaluation; \cref{epd:thm:deformation,epd:cor:flatdeform}.\\
+Bounded orbit locus & Exact exterior valuation recurrence and order-unit criterion; \cref{epd:thm:bounded}.\\
+General polynomial equicontinuity & Finite-degree growth budget; structural consequence of no order unit, \cref{epd:thm:general}.\\
+Surreal realization & Classical Conway normal form plus the set-sized workspace proofs; \cref{epd:thm:surreal,epd:cor:surreal-all}.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+All newly proved assertions are mathematical claims of this draft.
+None has an independent peer-review or machine-check certificate.
+Finite tests support only the finite identities and regression cases
+listed in \cref{epd:sec:verification}; they do not establish the general
+statements in this ledger.
+
+\section{A compact diagram of the topology change}
+\label{epd:app:diagram}
+\begin{center}
+\begin{tikzpicture}[
+ node distance=18mm and 17mm,
+ every node/.style={align=center,font=\small},
+ box/.style={draw=ink,rounded corners=2pt,fill=soft,
+             text width=52mm,minimum height=18mm},
+ >=Latex]
+\node[box] (ground) {$\BI(F;K)=\{x_s\}$\\
+$\kappa$ an order unit of $\Gamma$\\compact Cantor topology};
+\node[box,right=of ground] (large) {$\BI(F;L)=\coprod_s(x_s+\Ik)$\\
+$\kappa$ not an order unit of $\Delta$\\open fibers; centers discrete};
+\node[box,below=of large] (shift) {$\Sigma_d$ with cylinder topology\\
+full shift, entropy $\log d$};
+\draw[->,thick,color=ink] (ground) -- node[above,text width=15mm]{field\\extension} (large);
+\draw[->,thick,color=ink] (large) -- node[right,text width=37mm]{Hausdorff quotient\\of the scale uniformity} (shift);
+\draw[->,thick,color=ink] (ground) |- node[below,pos=.72]{itinerary homeomorphism} (shift);
+\end{tikzpicture}
+\end{center}
+The upper arrow is an algebraic inclusion of point sets; it is not
+claimed continuous for the two intrinsic native topologies. The
+right-hand arrow is continuous in the native topology but is not its
+quotient map. The label on that arrow specifies the coarser uniformity
+whose Hausdorff quotient actually is the full shift.
+
+\section{Limitations and non-claims, collected}
+\label{epd:app:nonclaims}
+This appendix was added at placement. It gathers the limitations,
+disclaimers, and non-claims that the manuscript states in several places
+(its article, its delivered README, the delivered
+\texttt{RESEARCH\_STATUS.md}, and the \texttt{limitations} field of
+\texttt{data/verification.json}). Items S1--S28 come from the source and
+are only regrouped here. Items P1--P3 were added at placement. Nothing in
+the body is weakened by this list, and nothing outside it is claimed.
+
+\subsection*{Status, priority, and provenance}
+\begin{enumerate}[label=\textbf{S\arabic*.},leftmargin=2.8em]
+\item The report is an unrefereed research draft. No result has an
+independent peer-review or machine-check certificate (title page,
+Appendix~\ref{epd:app:ledger}).
+\item Priority is not certified. The fiber, compact-subsystem, and
+extension/deformation package is \emph{proposed} as new after a targeted
+literature search whose results were incomplete and sometimes noisy.
+Failure to locate the statements is not proof that they have never
+appeared, and the claims need independent expert review before
+publication as new (\cref{epd:sec:intro}; \texttt{RESEARCH\_STATUS.md}).
+\item No named published open conjecture is claimed solved. The three
+questions of \cref{epd:sec:questions} are proposed continuations, not
+established open problems.
+\item Classical inputs are credited, not claimed. These are the
+positive-support lemma, formal implicit-function recursion, valuation
+coarsening, the one-sided full shift and its periodic counts and zeta
+series, the rank-one Cantor construction, and Conway normal form
+(\cref{epd:sec:intro,epd:sec:periodic,epd:sec:surreal}).
+\item There is no Lean formalization of the article. No Lean file is
+included, no repository build was run, and compatibility with concrete
+Lean interfaces was not tested (\cref{epd:subsec:formalization}).
+\item The repository audit was targeted: the inventories and the dynamics
+report's description only, with no line-by-line review. No assertion of
+complete absence of overlap across every file is made. The repository was
+neither rebuilt nor modified, and repository descriptions are provenance,
+not validation (\cref{epd:subsec:repo-pin}; \texttt{RESEARCH\_STATUS.md};
+bibliography).
+\item The repository's Hahn support machinery and its distinctions among
+analytic categories are not presented as discoveries
+(\cref{epd:subsec:repo-pin}).
+\item The article does not purport to resolve the repository's unrelated
+birthday, automorphism, or differential-equation questions.
+\end{enumerate}
+
+\subsection*{Hypotheses}
+\begin{enumerate}[label=\textbf{S\arabic*.},leftmargin=2.8em,resume]
+\item The theorems need a degree-preserving reduction whose roots are
+distinct and lie in $k$; for $k=\R$ they must be real. Repeated residue roots,
+with fractional scales, ramification, or nonunique branches, are not
+covered (\cref{epd:sec:questions}).
+\item Only finitely many coefficients and branches are allowed. An
+arbitrary countable family of independent perturbation parameters is not
+covered without a new joint support hypothesis.
+\item The orbit budget is for polynomials. Rational maps, which can
+repeatedly approach poles, are not covered.
+\item The nonuniform-branch-scale generalization of
+\cref{epd:q:branch-scales} is not assumed anywhere.
+\end{enumerate}
+
+\subsection*{What the conclusions mean}
+\begin{enumerate}[label=\textbf{S\arabic*.},leftmargin=2.8em,resume]
+\item \emph{Valuation-expanding} does not mean repelling for a real-valued
+absolute value. The expanding points are not identified with classical
+Julia points (\cref{epd:sec:intro}, \cref{epd:rem:expansion}).
+\item Integral nonescape and valuation-boundedness are different
+properties (\cref{epd:sec:bounded}).
+\item Strong Hahn summation is an algebraic support operation, not a
+topological limit. Partial sums need not converge in the native topology,
+and the nested approximants do not converge when $\kappa$ is not an order
+unit (\cref{epd:rem:no-limits,epd:rem:nestedlimit,epd:rem:formal-ideal}).
+\item The centers are canonical only relative to the fixed embedding
+$k\hookrightarrow K$, the reduction $P_0$, and the universal construction.
+No intrinsic uniqueness among set-theoretic sections of $\pi$ is asserted
+(\cref{epd:sec:centers}).
+\item In \cref{epd:thm:deformation}, no equality is asserted when the
+leading numerator $D_\theta(c_{s_0})$ vanishes.
+\item \Cref{epd:thm:compact} assumes $F(A)\subseteq A$, not $F(A)=A$, and
+does not assert that every point is periodic. There is no conflict with
+entropy monotonicity for compact factors, because the native space is
+noncompact.
+\item The full shift is the Hausdorff quotient of the coarsened
+$\kappa$-scale uniformity, not the native quotient
+(\cref{epd:prop:scalequotient}). In Appendix~\ref{epd:app:diagram} the extension
+arrow is not claimed continuous, and the right-hand arrow is continuous but
+not a quotient map.
+\item $J_{\mathrm{aff},v}=\varnothing$ is a statement about the stated
+affine native notion only. It is not claimed that Berkovich or spherical
+Julia sets are empty, or that a rank-one Julia set disappears in its own
+topology (\cref{epd:cor:empty-affine,epd:cor:surreal-all}).
+\item No set of all surreal numbers is formed and no proper-class sum is
+taken. Compactness in the surreal field refers to set-sized subsets. The
+fine and workspace topologies are two topologies, not two incompatible
+conclusions (\cref{epd:sec:surreal}).
+\item Primes are formal $X$-derivatives with the coefficients held fixed.
+No derivation on surreal coefficients is used, and no differential result
+of Berarducci--Mantova is used (\cref{epd:sec:branches}, \cite{BM}).
+\end{enumerate}
+
+\subsection*{Computations}
+\begin{enumerate}[label=\textbf{S\arabic*.},leftmargin=2.8em,resume]
+\item The finite checks prove no infinite statement. They do not prove
+infinite Hahn summability. The transfinite-support, topology,
+compactness, and proper-class results are proved in the text, not checked
+by the program. Nothing computed decides membership in $\Ik$
+(\cref{epd:sec:verification}; \texttt{data/verification.json}).
+\item The two center algorithms are different but share the defining
+equation. Their agreement is not independent foundational verification.
+\item The $O(N^3)$ operation count excludes coefficient bit growth.
+\item The rank-two checks do not turn an approximate fixed-point
+truncation into an exact Hahn fixed point.
+\item No general surreal canonicalizer, floating-point simulation, or
+proof-assistant certificate is used (\texttt{data/verification.json}).
+\item Packaging (delivered README): the delivered PDF was not an accessible
+tagged PDF, and no third-party books, research-paper PDFs, or
+proof-assistant binaries were included. The PDF in this directory is
+rebuilt from the source and is not tagged either.
+\end{enumerate}
+
+\subsection*{Added at placement}
+\begin{enumerate}[label=\textbf{P\arabic*.},leftmargin=2.8em]
+\item No result is transferred into or out of this report from
+\texttt{dynamics-and-\allowbreak normal-forms}, \texttt{analysis},
+\texttt{entire-functions-\allowbreak at-arbitrary-rank},
+\texttt{hahn-tate-\allowbreak uniformization}, or \texttt{rank-one-\allowbreak berkovich}. This report
+answers neither the Julia/Fatou exclusion nor the repelling-multiplier
+exclusion of \texttt{dynamics-and-\allowbreak normal-forms}
+(\cref{epd:subsec:collection}).
+\item For the class $\No[\mathrm i]$ with its fine topology, the set-level
+discreteness and compactness clauses are special cases of
+\texttt{a:thm:discrete}. The proposal of novelty for those clauses concerns
+set-sized workspaces (\cref{epd:rem:discrete-special}).
+\item The order-unit dichotomy of \cref{epd:thm:topology} is not the
+cofinality dichotomy \texttt{ent:\allowbreak cor:cofinality}. The convex
+subgroup $H_\kappa$ shares its definition with $H_\alpha$ of
+\texttt{hahn-tate-\allowbreak uniformization}. That identifies a
+subgroup, not a theorem.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+
+\bibitem{Neumann}
+B.~H. Neumann,
+\emph{On ordered division rings},
+Transactions of the American Mathematical Society \textbf{66} (1949),
+202--252.
+\href{https://doi.org/10.1090/S0002-9947-1949-0032593-5}{doi:10.1090/S0002-9947-1949-0032593-5}.
+Used for the positive-support lemma for ordered series.
+
+\bibitem{Gonshor}
+H.~Gonshor,
+\emph{An Introduction to the Theory of Surreal Numbers},
+London Mathematical Society Lecture Note Series, vol.~110,
+Cambridge University Press, 1986.
+\href{https://www.cambridge.org/core/books/an-introduction-to-the-theory-of-surreal-numbers/312AE504A3E88E804054BFB390446374}{Publisher record}.
+Classical background for Conway normal form and surreal arithmetic.
+
+\bibitem{BM}
+A.~Berarducci and V.~Mantova,
+\emph{Surreal numbers, derivations and transseries},
+Journal of the European Mathematical Society \textbf{20} (2018),
+339--390.
+\href{https://arxiv.org/abs/1503.00315}{arXiv:1503.00315}.
+The freely available version explicitly describes the Hahn normal-form
+structure; no differential result from that paper is used here.
+
+\bibitem{Benedetto}
+R.~L. Benedetto,
+\emph{Non-Archimedean dynamics in dimension one: lecture notes},
+Arizona Winter School, 2010, version of 9 March 2010.
+\href{https://swc-math.github.io/aws/2010/2010BenedettoNotes-09Mar.pdf}{Freely available lecture notes}.
+Definitions~4.15--4.16 and Example~4.39 provide the classical topological
+and quadratic comparison, not the arbitrary-rank conclusions proved here.
+
+\bibitem{Repo}
+V.~Reshetnikov,
+\emph{Surreal}, repository root and documentation inventories,
+snapshot \texttt{a3124af79f66b8b9c196d76b4cbc5ac3938907c4},
+consulted 22 September 2026.
+\href{https://github.com/VladimirReshetnikov/Surreal/tree/a3124af79f66b8b9c196d76b4cbc5ac3938907c4}{Pinned repository};
+\href{https://github.com/VladimirReshetnikov/Surreal/blob/a3124af79f66b8b9c196d76b4cbc5ac3938907c4/docs/README.md}{documentation inventory}.
+Repository descriptions are provenance, not independent validation of
+this article.
+
+\bibitem{RepoDynamics}
+\emph{Surcomplex Dynamics: Linearization Thresholds, Periods, and Normal Forms},
+README for \texttt{docs/surcomplex/dynamics-and-normal-forms},
+in the same pinned repository \cite{Repo}.
+\href{https://github.com/VladimirReshetnikov/Surreal/blob/a3124af79f66b8b9c196d76b4cbc5ac3938907c4/docs/surcomplex/dynamics-and-normal-forms/README.md}{Pinned report description}.
+Consulted for scope and overlap; the full merged manuscript was not
+exhaustively audited.
+
+\end{thebibliography}
+\end{document}

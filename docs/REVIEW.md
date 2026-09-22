@@ -29,7 +29,7 @@ No row below certifies every claim in an entire report.
 | [Finite deformations](surcomplex/finite-deformations/) | Read the main support, division, finite-algebra, residue and stability chain. Constructed the inverse in the uniform-support formal ring before establishing fine analyticity, with a second independent check. Corrected quotient-ring and residue/trace summaries, common-domain germ warnings, coordinate-power scope and the effectivity contract. Added the missing positive control-set hypothesis and Jacobian precision reasoning. |
 | [Spectral theory](surcomplex/spectral-theory/) | Read the main finite geometry, variational, scale, splitting, root-field and stability proofs. Corrected the summary's Gram criterion to `2Γ`, bounded root-field sums by rank, and made Hermitian, orthogonal, zero-case and valuation-access requirements explicit. Separated principal-root extension costs from arbitrary-matrix splitting fields and exponent permission from root representation. Repaired the hypothesis ledger and trivial-group precision exception. The corrections received a second independent review. |
 | [Rank-one Berkovich geometry](surcomplex/rank-one-berkovich/) | Read the main convergence, division, preparation, root-count, seminorm, annulus and entire-function arguments. Added the nonzero norm-profile hypothesis and reduction domain; expanded division uniqueness, seminorm normalization, canonical-product cancellation and the local Laurent remainder in the theta-root calculation. Checked the precise imported field, point-classification and annulus-retraction statements against primary sources. |
-| [Entire functions at arbitrary rank](surcomplex/entire-functions-at-arbitrary-rank/) | Read the full main text and finite-variable appendix. Strengthened the growth barrier to eventual cofinal growth, with an oscillating-range counterexample; expanded linear division, the multivariate attained-minimum argument and the preparation-only finite-zero bound. Corrected the fixed-element order-unit equivalence, nonzero-group convention and universal Bézout scope. Revised arguments received a second independent review. |
+| [Entire functions at arbitrary rank](surcomplex/entire-functions-at-arbitrary-rank/) | Read the original two-manuscript main text and finite-variable appendix before the later expansion. Strengthened the growth barrier to eventual cofinal growth, with an oscillating-range counterexample; expanded linear division, the multivariate attained-minimum argument and the preparation-only finite-zero bound. Corrected the fixed-element order-unit equivalence, nonzero-group convention and universal Bézout scope. Revised arguments received a second independent review. |
 | [Global divisors](surcomplex/global-divisors/) | Read the main plane and compact proof chains through the cutoff comparison. Corrected complementary divisor support, fixed-field root-splitting scope and trivial-group reduction. Proved the coordinate-chart transfer of PID stalks and `Pic = Pic_lf`, with a second independent check. Made the genus-zero exception and workspace quantifiers explicit, proving detection by all positive cutoffs in a fixed nonzero workspace; corrected analytic-operation and source-comparison summaries. |
 | [Nonabelian support](surcomplex/nonabelian-support/) | Read the full main matrix Cousin and monodromy chains. Proved that well-ordering of full raw transition support is sufficient but not necessary, while raw singular support fails both directions. Added a left-gauge counterexample; corrected matrix exp/log domains, support-condition invariance, classification scope and unsupported computation claims. The main support correction received a second review. |
 
@@ -76,8 +76,10 @@ All were run on temporary copies, preserving historical programs and data.
 
 ## Collection-wide work
 
-The [reader map](README.md), [catalogue](manifest.tex) and
-[notation guide](NOTATION.md) cover all 26 canonical reports. The guide records
+The [reader map](README.md), [catalogue](manifest.tex) and statement index
+now cover all 36 canonical reports. The [notation guide](NOTATION.md) was
+checked across the earlier 26-report collection; checking every convention in
+the ten additions and six expanded reports remains pending. The guide records
 meaningful differences rather than treating shared names as definitions:
 coefficient domains, support orientation, scalar standard part versus function
 reduction, topologies, strong sums, derivatives, phases and computational names.
@@ -86,7 +88,20 @@ was checked separately from deliberately historical paths in verification record
 Original manuscript archives are accessed through Git history; their removal
 from the current tree does not discharge source-claim reconciliation.
 
+The merge of `66dd6bc` refreshed the inventory to 1,752 standard entries
+across all 36 reports. An independent parser checked labels, optional titles,
+counts and line hints against the merged sources. The catalogue and the three
+reports with overlapping PDF changes were rebuilt from their merged LaTeX;
+this checks the integration, not the new mathematical claims.
+
 ## Remaining scope
+
+The ten reports added on September 22 and the new sections in differential
+equations, dynamics, entire functions, nonabelian support, spectral theory and
+exponential automorphism rigidity are outside the earlier review scopes.
+Their delivered proof and source audits are inputs to review, not evidence
+that this pass has checked them. Earlier validation counts above refer to
+the report versions and suites then reviewed.
 
 The reports above have received targeted corrections or a main-text reading,
 as recorded in each row. Uninspected portions, imported results, source-claim

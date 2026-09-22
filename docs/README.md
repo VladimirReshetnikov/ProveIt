@@ -1,6 +1,6 @@
 # The surreal and surcomplex reports
 
-This collection has **26 research reports in five families**. Start with the
+This collection has **36 research reports in five families**. Start with the
 reading routes below, use the [notation guide](NOTATION.md) when moving between
 reports, and consult the [typeset catalogue](manifest.pdf)
 ([source](manifest.tex)) for longer descriptions. The
@@ -28,10 +28,18 @@ hypotheses, limitations and provenance.
   for capability levels and prototypes, and
   [computable surreals](foundations-and-computation/computable-surreals/)
   for representations and uniform algorithms.
+- **For measures and probability:** read
+  [Hahn-valued measures and probability](surreal/hahn-valued-measures-and-probability/)
+  first. Its distinction between *strong* and *coefficientwise* countable
+  additivity is a prerequisite for
+  [Hahn–Herglotz positivity](surcomplex/hahn-herglotz-positivity/), whose
+  measures are coefficientwise only. "Moment" means power moments there,
+  Fourier moments in the Herglotz report, and finite Prony input in
+  [Prony reconstruction](surcomplex/prony-reconstruction-at-surreal-scales/).
 - **For a particular theorem:** use the report tables below. Read its local
   conventions before importing a definition from a companion report.
 
-## Surreal numbers: eight reports
+## Surreal numbers: eleven reports
 
 | Report | Question or main subject |
 |---|---|
@@ -41,8 +49,11 @@ hypotheses, limitations and provenance.
 | [Laurent birthdays](surreal/gonshor-laurent-birthdays/) | The same bound and sharper formulas over `ℝ((ω⁻¹))` |
 | [Canonical forms and option graphs](surreal/canonical-forms-need-not-be-subgraphs/) | Why a canonical representative need not occur as a subgraph of a given form |
 | [Genetic gaps and primitives](surreal/genetic-gaps-and-primitives/) | A nonconstant genetic indicator with derivative zero |
-| [Exponential automorphism rigidity](surreal/exponential-automorphism-rigidity/) | Finite displacement identities and faithful action on the value group |
+| [Exponential automorphism rigidity](surreal/exponential-automorphism-rigidity/) | Finite displacement identities, faithful action on the value group and a negative answer to Kaplan–Krapp–Serra Question 5.4 (arXiv v3); "rigidity" here means faithfulness, not triviality |
 | [Gamma functions](surreal/gamma-functions/) | Convexity of a family of surreal Gamma extensions and failure of uniqueness |
+| [Tail-spans and differential transcendence](surreal/tail-spans-and-differential-transcendence/) | Cofinite spans classify relations among Hahn sums with independent square-root coefficients; continuum many differentially independent surreals and analytic functions; its derivation formula is cited from the surcomplex differential-equations report |
+| [Hahn-valued measures and probability](surreal/hahn-valued-measures-and-probability/) | Strong and coefficientwise Hahn-valued measures: atomicity, extension and moment criteria, hidden negative mass; the `ω+1` threshold and the finitely supported standard part hold only in the strong class |
+| [Markov generators at every scale](surreal/markov-generators-at-every-scale/) | All-scale resolvent hierarchies of finite positive Hahn rate matrices and their converse realization; divisible value group, no path measures or infinite state spaces |
 
 The two birthday reports have different domains. The first allows its specified
 ordinal supports but excludes positive powers of `ω`; the Laurent report allows
@@ -50,7 +61,7 @@ those powers but uses the integer exponent lattice. Their common part includes
 `ℝ[[ω⁻¹]]`. Neither domain theorem subsumes the other. Here `⊗` denotes
 **natural ordinal multiplication**, as distinguished in the notation guide.
 
-## Surcomplex numbers: thirteen reports
+## Surcomplex numbers: twenty reports
 
 | Report | Main subject and useful prerequisite |
 |---|---|
@@ -61,12 +72,19 @@ those powers but uses the integer exponent lattice. Their common part includes
 | [Global divisors](surcomplex/global-divisors/) | Plane support obstructions; compact Picard classification, cohomology and Abel criteria |
 | [Polynomial algebra](surcomplex/polynomial-algebra/) | Finite-degree factorization and root geometry in modulus and valuation balls |
 | [Trigonometry](surcomplex/trigonometry/) | Finite-angle polar representation and geometry at arbitrary surreal scale |
-| [Differential equations](surcomplex/differential-equations/) | Berarducci–Mantova differential algebra, finite primitives and coherent equations |
+| [Differential equations](surcomplex/differential-equations/) | Berarducci–Mantova differential algebra and finite primitives; matrix, regular-singular and autonomous equations; coherent coordinate equations; its Section 5 on "phase" is a prerequisite |
 | [Rank-one Berkovich geometry](surcomplex/rank-one-berkovich/) | Tate algebras, disks and annuli in the fixed field `ℂ((t^ℝ))` |
-| [Spectral theory](surcomplex/spectral-theory/) | Finite matrices over real closed fields, singular values and valuation scales |
-| [Dynamics and normal forms](surcomplex/dynamics-and-normal-forms/) | Linearization, periods and quasi-periodic equations; its convention and threshold tables are prerequisites |
-| [Nonabelian support](surcomplex/nonabelian-support/) | Matrix Cousin problems and inverse monodromy; compare the scalar global-divisor report |
-| [Entire functions at arbitrary rank](surcomplex/entire-functions-at-arbitrary-rank/) | Cofinality, factorization and extension of entire series over one fixed Hahn field |
+| [Spectral theory](surcomplex/spectral-theory/) | Finite matrices over real closed fields, singular values and valuation scales; exact matrix-root fields and Hankel splitting fields of squarefree real-rooted polynomials over a nondivisible `Γ` |
+| [Dynamics and normal forms](surcomplex/dynamics-and-normal-forms/) | Linearization, periods and quasi-periodic equations; exact scalar and drifting multipliers answer the common-domain question oppositely; its convention and threshold tables are prerequisites |
+| [Nonabelian support](surcomplex/nonabelian-support/) | Matrix Cousin problems, inverse monodromy, and essential-singularity bundles that stay nontrivial over `Mer((t^Γ))`; its two support criteria test different objects; compare the scalar global-divisor report |
+| [Entire functions at arbitrary rank](surcomplex/entire-functions-at-arbitrary-rank/) | Cofinality, factorization, the exact jet image, ideals above canonical products and scalar extension of entire series over one fixed Hahn field; in several variables only the scalar-extension clause is answered |
+| [Holonomic rigidity](surcomplex/holonomic-rigidity-for-entire-hahn-functions/) | Entire D-finite series are polynomials, and an order-unit criterion decides which nontorsion dilations admit nonpolynomial entire solutions; this is not the order-unit dichotomy of entire functions at arbitrary rank |
+| [Hahn–Tate uniformization](surcomplex/hahn-tate-uniformization/) | Tate elliptic curves at arbitrary rank: exact Hahn domain `U_q` and `U_q/q^ℤ ≅ E_q(K)`, plus multiscale theta series; the bounded-period quotient itself has a Molcho–Wise precedent |
+| [Infinite-dimensional Hahn spectral theory](surcomplex/infinite-dimensional-hahn-spectral-theory/) | Two inequivalent spectra: ordinary normal operators extended to `H((t^Γ))`, and exact diagonalization of row- and column-finite Hahn matrices; Section 3 reconciles their apparently conflicting accumulation statements |
+| [Expanding polynomial dynamics](surcomplex/expanding-polynomial-dynamics/) | Exact itinerary fibers of expanding polynomials over Hahn fields, and the order-unit dichotomy; valuation-expanding is not repelling, and no Julia/Fatou theory is built |
+| [Hahn–Herglotz positivity](surcomplex/hahn-herglotz-positivity/) | Matrix Herglotz normalization on halos, a null-ideal positivity criterion, and Toeplitz-positive Fourier moments with no positive measure; its measures are coefficientwise, not strong |
+| [Prony reconstruction](surcomplex/prony-reconstruction-at-surreal-scales/) | Sharp valuation threshold for recovering `n` weighted nodes from `2n` power moments (no measures); compare polynomial algebra's coefficient threshold |
+| [Wick summability certificates](surcomplex/wick-summability-certificates/) | Finite strict valuation inequalities decide strong summability of polynomial Wick diagram families over `ℂ((t^Γ))`, `Γ` divisible; diagramwise only, and a Hahn value is not an integral |
 
 Three distinctions recur throughout these reports.
 
@@ -89,6 +107,11 @@ conditions; the table is not a chain of interchangeable rings.
 | `O(D)((t^Γ))` | Every coefficient is holomorphic on the specified ordinary domain `D` |
 | Common-domain Hahn germ ring `𝓡ₙ` | One neighborhood represents all coefficients, with shrinking allowed |
 | `ℂ[[z]]((t^Γ))` | Each coefficient is formal |
+
+A fifth construction, `Mer(D)((t^Γ))`, is not in the table: every coefficient
+is meromorphic on the specified domain. It appears in global divisors, in
+analysis, and in Part III of nonabelian support, which constructs bundles that
+stay nontrivial over it.
 
 For `η > 0`, the family `Σ_{r≥1} t^(rη)/(1−rz)` lies in the radius-free germ
 ring but not in the common-domain germ ring: its coefficient poles `1/r`

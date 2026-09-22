@@ -1,6 +1,6 @@
 # Notation and conventions across the reports
 
-Use this guide when moving between the 26 main reports listed in
+Use this guide when moving between the main reports listed in
 [the canonical inventory](FORMALIZATION.md#canonical-report-inventory).
 It translates their local notation and recommends common names for new text.
 It does not identify objects merely because they share a symbol, or transfer

@@ -41,6 +41,7 @@
 \crefname{proposition}{Proposition}{Propositions}
 \crefname{corollary}{Corollary}{Corollaries}
 \crefname{question}{Question}{Questions}
+\crefname{definition}{Definition}{Definitions}
 \newcommand{\No}{\mathbf{No}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\Q}{\mathbb{Q}}
@@ -89,6 +90,16 @@ that $F$ is real closed, for $K=F(i)$ equipped with
 $L:K^\times\to F$, $L(z)=\log\abs z$, we determine its automorphisms and show
 that the kernel of their action on any invariant nontrivial convex value
 quotient is exactly complex conjugation together with the identity.
+Along the way we record a common generalization of the displacement identity
+and the Leibniz rule: no nonzero twisted derivation of a nontrivially valued
+field has all of its output values bounded below by one group element, at any
+valuation rank and with no ordering. From it we obtain a form of the rigidity
+theorem needing only one visible exponential scale, and hence no surjectivity
+of $E$; a form whose hypotheses are imposed only on a final interval; and the
+cofinality of the multiplicative motion and of the exponential commutation
+defects. A differential counterpart forbids a global valuation-gain bound
+$v(\partial y)\ge v(y)+\gamma$ for every fixed $\gamma$, and explicit formal
+Laurent-series examples delimit the hypotheses.
 All rigidity proofs are algebraic and order-theoretic; none exchanges an
 automorphism with an infinite sum.
 \end{abstract}
@@ -181,6 +192,23 @@ all rescalings are trivial, however, \emph{no} lift can preserve the surreal
 exponential. Positive rational dilations of the whole value group also fail
 to lift exponentially, although their displacements are cofinal. Thus
 cofinal displacement is necessary but not sufficient for exponential lifting.
+
+Several refinements of the hypotheses are proved along the way and are
+independent of the surreal application. \Cref{thm:visible-scale} needs only
+one $H>0$ whose exponential is visible to the valuation, in the sense that
+$w(E(H))<0$; it therefore does not assume that $E$ is onto $F_{>0}$, and
+\cref{cor:detector} states the same mechanism with no ordering and in
+arbitrary characteristic. \Cref{thm:profile} replaces both hypotheses of
+\cref{thm:no} by equality of the exponential profiles
+$w(E(\sigma x))=w(E(x))$ on an additive generating set, and in particular on
+one final interval. \Cref{thm:sigma-derivation} isolates the algebra behind
+all of this: displacements and derivations are both twisted derivations, and
+no nonzero twisted derivation of a nontrivially valued field has its output
+values bounded below by a single group element. Beyond rigidity,
+\cref{thm:motion} shows that the multiplicative motion of a nonidentity
+exponential automorphism is cofinal and coinitial, and \cref{thm:defect}
+that the same holds for the valuations of the exponential commutation
+defects of a nonidentity automorphism fixing every value.
 
 For the surcomplex field $\No[i]$, define the everywhere-defined, nonzero-input
 operation
@@ -425,6 +453,99 @@ The proposition neither assumes nor concludes that $\sigma$ preserves the
 valuation. It concerns the size of the additive error, not the induced
 value-group action. Exponentiation connects those two different notions.
 
+\subsection{One identity for displacement and derivation}
+
+The twisted identity \eqref{eq:twisted} and the ordinary Leibniz rule are
+two instances of a single law, and both forms of the amplification argument
+use only that law. Recording the common generalization costs nothing, and it
+makes the same two probes serve the differential statements of
+\cref{sec:differential} as well as the displacement statements above.
+
+\begin{definition}[$\sigma$-derivation]\label[definition]{def:sigma-derivation}
+Let $\sigma:F\to F$ be a unital field endomorphism. An additive map
+$\delta:F\to F$ is a \emph{$\sigma$-derivation} if
+\begin{equation}\label{eq:sigma-leibniz}
+ \delta(ab)=\sigma(a)\delta(b)+b\delta(a)\qquad(a,b\in F).
+\end{equation}
+\end{definition}
+
+Taking $\delta=D_\sigma$ recovers \eqref{eq:twisted}; taking $\sigma=\id$
+recovers the Leibniz rule, so ordinary derivations are exactly the
+$\id$-derivations. The twist sits on the first factor only, and it is the
+same twist as in \eqref{eq:twisted}.
+
+\begin{theorem}[No globally valuation-bounded nonzero $\sigma$-derivation]
+\label[theorem]{thm:sigma-derivation}
+Let $F$ be a field of arbitrary characteristic carrying a nontrivial
+surjective valuation $v:F^\times\to\Gamma$, let $\sigma:F\to F$ be a unital
+field endomorphism, and let $\delta$ be a $\sigma$-derivation. If there is a
+single $\beta\in\Gamma$ with
+\begin{equation}\label{eq:uniform-output}
+ v(\delta(x))\ge\beta\qquad(x\in F),
+\end{equation}
+then $\delta=0$. Equivalently, if $\delta\ne0$, then for every
+$\beta\in\Gamma$ some $x$ satisfies $v(\delta(x))<\beta$.
+Neither an ordering nor convexity is assumed, no restriction is placed on
+the rank of $\Gamma$, and $\sigma$ is not assumed to preserve $v$.
+\end{theorem}
+\begin{proof}
+Assume \eqref{eq:uniform-output} and choose $a$ with $\delta(a)\ne0$.
+Additivity gives $\delta(0)=0$, so $a\ne0$; a unital field endomorphism is
+injective, so $\sigma(a)\ne0$. Put
+\[
+ M=\min\{\beta,\;v(\sigma(a))+\beta\}.
+\]
+For every $b$, rearranging \eqref{eq:sigma-leibniz} and applying the
+valuation inequality gives
+\[
+ v(b\delta(a))=v\bigl(\delta(ab)-\sigma(a)\delta(b)\bigr)
+ \ge\min\{v(\delta(ab)),\,v(\sigma(a))+v(\delta(b))\}\ge M.
+\]
+Choose $\eta>0$ in $\Gamma$, which is possible because $\Gamma\ne0$, and use
+surjectivity of $v$ to choose $b\ne0$ with $v(b)=M-v(\delta(a))-\eta$. Then
+$v(b\delta(a))=M-\eta<M$, a contradiction.
+\end{proof}
+
+The valuation inequality is used only in the safe direction, bounding the
+value of a difference below by the minimum. Nothing is assumed about
+whether that minimum is attained, so no cancellation hypothesis is hidden
+in the proof.
+
+\Cref{prop:valued-amplification} is the case $\delta=D_\sigma$ of
+\cref{thm:sigma-derivation}; the case $\sigma=\id$ is used in
+\cref{sec:differential} below. The ordered two-probe witness generalizes in
+the same way.
+
+\begin{proposition}[Ordered two-point witness]\label[proposition]{prop:sigma-witness}
+Let $F$ be an ordered field, $\sigma:F\to F$ a unital field endomorphism,
+and $\delta$ a $\sigma$-derivation with $\delta(a)\ne0$. For every $B>0$ put
+\[
+ b=\frac{2B(1+\abs{\sigma(a)})}{\abs{\delta(a)}}.
+\]
+Then $\max\{\abs{\delta(b)},\abs{\delta(ab)}\}>B$. Consequently a nonzero
+$\sigma$-derivation of an ordered field has cofinal and coinitial image.
+\end{proposition}
+\begin{proof}
+This is the computation proving \cref{lem:amplify}, with
+\eqref{eq:sigma-leibniz} in place of \eqref{eq:twisted}. If both absolute
+values were at most $B$, then
+\[
+ 2B(1+\abs{\sigma(a)})=\abs{b\delta(a)}
+  =\abs{\delta(ab)-\sigma(a)\delta(b)}
+  \le B+\abs{\sigma(a)}B,
+\]
+which is impossible in an ordered field. Since $\delta(-x)=-\delta(x)$,
+both signs occur at every attained magnitude, and for a given $c\in F$ one
+applies the result with $B>\abs c$.
+\end{proof}
+
+Thus \cref{lem:amplify} is the case $\delta=D_\sigma$ and
+\cref{lem:derivation-amplify} below is the case $\sigma=\id$. The
+unification is not needed for the surreal theorem; it is recorded because
+the same two probes settle the displacement and the differential statements
+at once.
+
+
 \section{Faithful action on every nontrivial convex value quotient}
 
 \subsection{Cofinal displacement on the value group}
@@ -495,6 +616,100 @@ This is a self-embedding statement. It does not claim that two embeddings
 into an arbitrary larger field coincide merely because they induce the
 same source value-group map: the bound and the amplification arguments
 must live in the same ambient field as the hypotheses.
+
+\subsection{Rigidity from a single visible exponential scale}
+
+The convention fixed in the introduction --- an ordered exponential is an
+increasing group isomorphism $E:(F,+)\to(F_{>0},\cdot)$, so that $E$ is onto
+and has an increasing inverse $\log$ --- has been used twice: surjectivity
+makes $\nu=w\circ E$ onto $\Gamma$, and the inverse $\log$ appears in
+\cref{lem:bridge} and in \cref{prop:probes}. Rigidity itself needs neither.
+The following theorem drops surjectivity of $E$, and with it the existence
+of $\log$, and replaces nontriviality of $w$ by the assumption that one
+positive element has a visible exponential scale.
+
+\begin{theorem}[Rigidity from one visible exponential scale]
+\label[theorem]{thm:visible-scale}
+Let $F$ be an ordered field, let $w$ be a convex valuation on $F$, and let
+\[
+ E:(F,+)\longrightarrow(F_{>0},\cdot)
+\]
+be an order-preserving group homomorphism, \emph{not assumed to be onto}.
+Suppose there is one $H>0$ with
+\begin{equation}\label{eq:visible-scale}
+ w(E(H))<0.
+\end{equation}
+If a unital field endomorphism $\sigma$ of $F$ satisfies $w(\sigma y)=w(y)$
+for every $y\ne0$ and $\sigma(E(x))=E(\sigma x)$ for every $x$, then
+$\sigma=\id$.
+\end{theorem}
+\begin{proof}
+Put $u=E(H)>0$. For every $x$, the two hypotheses give
+\[
+ w\bigl(E(D_\sigma x)\bigr)
+  =w\!\left(\frac{E(\sigma x)}{E(x)}\right)
+  =w\!\left(\frac{\sigma(E x)}{E x}\right)
+  =w(\sigma(Ex))-w(Ex)=0 ,
+\]
+so $E(D_\sigma x)$ and its inverse $E(-D_\sigma x)$ are positive elements of
+$\OO_w$. Suppose $D_\sigma x\ge H$ for some $x$. Then
+$0<u\le E(D_\sigma x)$ because $E$ is order-preserving, and convexity in the
+form \eqref{eq:convex-monotone} would give
+$w(u)\ge w(E(D_\sigma x))=0$, contradicting \eqref{eq:visible-scale}. The
+same argument applied to $-D_\sigma x$ rules out $-D_\sigma x\ge H$. Hence
+\[
+ \abs{D_\sigma x}<H\qquad(x\in F),
+\]
+and \cref{lem:amplify}, applied with $B=H$, forces $\sigma=\id$.
+\end{proof}
+
+The hypothesis removed is surjectivity of $E$. Under the standing
+convention the witness \eqref{eq:visible-scale} is automatic whenever $w$ is
+nontrivial: choose a positive $u\notin\OO_w$, note that $u>1$, since
+$0<u\le1$ would put $u$ in the convex ring, and set $H=\log u>0$, so that
+$w(E(H))=w(u)<0$. Consequently \cref{cor:embedding} is the special case of
+\cref{thm:visible-scale} in which $E$ is onto and $w$ is nontrivial, and the
+theorem is a genuine strengthening: it also covers order-preserving
+exponential homomorphisms
+whose image is a proper subgroup of $F_{>0}$, for which $\log$ is defined
+nowhere outside that image and $\nu$ need not be onto $\Gamma$.
+
+There is no need to identify the convex subgroup $E^{-1}(\OO_w^\times)$ with
+anything in particular. For the canonical surreal exponential and the
+natural valuation it is the finite surreals, by \cref{prop:finite-log}, but
+for a general $E$, or for a coarsening of $w$, it is some other convex
+additive subgroup and the proof does not use which one.
+
+\subsection{An order-free, characteristic-free detector}
+
+The same mechanism can be stated with no ordering at all, isolating the
+single property of $E$ that rigidity consumes.
+
+\begin{corollary}[Exponential detector]\label[corollary]{cor:detector}
+Let $F$ be a field of arbitrary characteristic with a nontrivial surjective
+valuation $v:F^\times\to\Gamma$, and let $E:(F,+)\to(F^\times,\cdot)$ be a
+group homomorphism. Suppose there is a $\beta\in\Gamma$ such that
+\begin{equation}\label{eq:detector}
+ E(x)\in\OO_v^\times\quad\Longrightarrow\quad v(x)\ge\beta .
+\end{equation}
+Then every unital field endomorphism $\sigma$ of $F$ that commutes with $E$
+and satisfies $v(\sigma y)=v(y)$ for every $y\ne0$ is the identity.
+\end{corollary}
+\begin{proof}
+For every $x$, the element $E(D_\sigma x)=\sigma(Ex)/Ex$ has value $0$ and
+is therefore a unit of $\OO_v$. By \eqref{eq:detector},
+$v(D_\sigma x)\ge\beta$ for every $x$. Apply \cref{thm:sigma-derivation}
+with $\delta=D_\sigma$, or equivalently \cref{prop:valued-amplification}.
+\end{proof}
+
+Neither an ordering, nor convexity of $v$, nor any hypothesis on the
+characteristic is used. For the surreal exponential, \cref{prop:finite-log}
+supplies \eqref{eq:detector} with $\beta=0$, so \cref{cor:detector} gives a
+second proof of \cref{thm:no}, one that never mentions the particular bound
+$\omega$. What \eqref{eq:detector} isolates is exactly the property the
+rigidity argument consumes: becoming a valuation unit after $E$ must bound
+the argument's value from below.
+
 
 \subsection{Coarsenings and uniqueness of lifts}
 
@@ -658,7 +873,193 @@ that the set of moved values is an interval. It is a statement about the
 cofinality of the displacement image. This distinction matters when
 constructing and rejecting candidate lifts.
 
+\section{Exponential profiles and hypotheses on a final interval}
+\label{sec:profiles}
+
+The hypotheses of \cref{cor:embedding} and \cref{thm:no} are global:
+$\sigma$ fixes every value, and $\sigma$ commutes with $E$ at every
+argument. The bridge map of \cref{lem:bridge} allows both to be weakened to
+a statement about a single final interval. Call
+\[
+ \nu(x)=w(E(x))
+\]
+the \emph{exponential profile} of $x$. It is additive with proper convex
+kernel $H_w$, and it is very far from injective on individual field
+elements. The ambiguity disappears as soon as field multiplication has to
+be respected as well.
+
+\begin{theorem}[Profile rigidity]\label[theorem]{thm:profile}
+Let $F$ be an ordered field with an ordered exponential $E$ and a nontrivial
+convex valuation $w$, and let $\nu=w\circ E$. Let $\sigma:F\to F$ be a
+unital field endomorphism. If $S\subseteq F$ generates $(F,+)$ as a group
+and
+\begin{equation}\label{eq:profile-S}
+ \nu(\sigma x)=\nu(x)\qquad(x\in S),
+\end{equation}
+then $\sigma=\id$. In particular it is enough that \eqref{eq:profile-S}
+hold for every $x>c$, where $c\in F$ is one fixed element.
+\end{theorem}
+\begin{proof}
+For $x\in S$, additivity of $\nu$ gives
+$\nu(D_\sigma x)=\nu(\sigma x)-\nu(x)=0$, so $D_\sigma x\in H_w$. The
+displacement $D_\sigma$ is additive and $H_w$ is an additive subgroup, so
+$D_\sigma y\in H_w$ for every $y$ in the subgroup generated by $S$, which is
+all of $F$. By \cref{lem:bridge} the subgroup $H_w$ is proper and convex, so
+\cref{cor:bounded-displacement} gives $\sigma=\id$.
+
+For the final assertion, take $S=\{x\in F:x>c\}$ and let $x\in F$ be
+arbitrary. Put
+\[
+ z=\abs c+\abs x+1,\qquad y=z+x .
+\]
+Then $z>c$ because $\abs c\ge c$, and $y\ge\abs c+1>c$ because
+$\abs x+x\ge0$. Since $x=y-z$, the final interval generates $(F,+)$.
+\end{proof}
+
+\Cref{thm:profile} assumes neither that $\sigma$ fixes the valuation of
+field elements nor that it commutes with $E$ anywhere; it compares only the
+two profile values in \eqref{eq:profile-S}. The hypotheses of \cref{thm:no}
+imply \eqref{eq:profile-S} for every $x$, which is how the general statement
+contains the surreal one.
+
+\begin{corollary}[Tail commutation suffices]\label[corollary]{cor:tail}
+Let $F$, $E$, $w$ be as in \cref{thm:profile} and let $\sigma$ be a unital
+field endomorphism with $w(\sigma y)=w(y)$ for every $y\ne0$. If there is
+one $c\in F$ with
+\[
+ \sigma(E x)=E(\sigma x)\qquad(x>c),
+\]
+then $\sigma=\id$. The same conclusion follows from the weaker tail
+condition $w(\sigma(E x))=w(E(\sigma x))$ for $x>c$.
+\end{corollary}
+\begin{proof}
+Pointwise fixation of $w$ gives $w(\sigma(Ex))=w(Ex)=\nu(x)$. Either tail
+condition then yields $\nu(\sigma x)=w(E(\sigma x))=\nu(x)$ for every
+$x>c$, so \cref{thm:profile} applies with $S=\{x:x>c\}$.
+\end{proof}
+
+\begin{corollary}[Comparing two automorphisms by profile]
+\label[corollary]{cor:two-profiles}
+Let $\sigma$ and $\tau$ be field automorphisms of $F$ with
+$\nu(\sigma x)=\nu(\tau x)$ for every $x\in F$. Then $\sigma=\tau$.
+\end{corollary}
+\begin{proof}
+Additivity of $\nu$ gives $\sigma x-\tau x\in H_w$ for every $x$. Writing
+$y=\tau x$ and using surjectivity of $\tau$, we get
+$(\sigma\tau^{-1})(y)-y\in H_w$ for every $y\in F$. Now apply
+\cref{cor:bounded-displacement}.
+\end{proof}
+
+These are global conclusions drawn from coarse measurements, and they must
+not be read as saying more. The profile does not reconstruct its argument:
+$\nu$ remains highly non-injective, and none of these statements is an
+approximation procedure for individual normal forms. Note also that
+\cref{cor:two-profiles} uses surjectivity of $\tau$, whereas
+\cref{thm:profile}, which compares one endomorphism with the identity,
+uses no surjectivity at all.
+
+
+\section{Multiplicative motion and exponential commutation defects}
+\label{sec:defects}
+
+Rigidity says that a nonidentity exponential automorphism cannot be
+invisible. The amplification lemma says more: its multiplicative motion,
+and its failure to commute with $E$, must appear at arbitrarily large and
+arbitrarily small scales.
+
+\subsection{Multiplicative motion}
+
+\begin{theorem}[Multiplicative motion is cofinal]\label[theorem]{thm:motion}
+Let $F$ be an ordered field with an ordered exponential $E$, and let
+$\sigma\ne\id$ be a unital field endomorphism commuting with $E$. Then
+\[
+ \left\{\frac{\sigma(y)}{y}:y\in F_{>0}\right\}
+\]
+is cofinal and coinitial in $F_{>0}$: for every $M>1$ there are positive
+$y,z$ with
+\[
+ \frac{\sigma(y)}{y}>M,\qquad 0<\frac{\sigma(z)}{z}<\frac1M .
+\]
+\end{theorem}
+\begin{proof}
+Every $y>0$ equals $E(x)$ for some $x$, because $E$ is onto $F_{>0}$, and
+\[
+ \frac{\sigma(Ex)}{Ex}=\frac{E(\sigma x)}{Ex}=E(D_\sigma x)>0 .
+\]
+By \cref{lem:amplify} there are $x$ with $D_\sigma x>\log M$ and $x'$ with
+$D_\sigma x'<-\log M$. Applying the increasing map $E$ and putting
+$y=E(x)$ and $z=E(x')$ gives the two inequalities.
+\end{proof}
+
+No valuation is used here. The statement is that a nonidentity exponential
+automorphism cannot be multiplicatively near the identity at every scale.
+Surjectivity of $E$ is used, both to represent an arbitrary positive $y$ and
+to form $\log M$.
+
+\subsection{The defect when values are fixed but exponentiation is not}
+
+Drop the commutation hypothesis and keep the valuation one. For a unital
+field endomorphism $\sigma$ of $F$, define the \emph{exponential commutation
+defect}
+\begin{equation}\label{eq:defect}
+ C_\sigma(x)=\frac{\sigma(E x)}{E(\sigma x)}\qquad(x\in F).
+\end{equation}
+Numerator and denominator are nonzero, so $w(C_\sigma(x))$ is defined, and
+$\sigma$ commutes with $E$ exactly when $C_\sigma$ is identically $1$.
+
+\begin{theorem}[Cofinal commutation defects]\label[theorem]{thm:defect}
+Let $F$ be an ordered field with an ordered exponential $E$ and a nontrivial
+convex valuation $w$, and let $\sigma\ne\id$ be a unital field endomorphism
+with $w(\sigma y)=w(y)$ for every $y\ne0$. Then
+\[
+ \{w(C_\sigma(x)):x\in F\}
+\]
+is cofinal and coinitial in $\Gamma$.
+\end{theorem}
+\begin{proof}
+Pointwise fixation of $w$ and additivity of $\nu$ give
+\begin{align}
+ w(C_\sigma(x))&=w(\sigma(Ex))-w(E(\sigma x))\notag\\
+ &=w(Ex)-w(E(\sigma x))
+ =\nu(x)-\nu(\sigma x)=-\nu(D_\sigma x).\label{eq:defect-value}
+\end{align}
+By \cref{lem:amplify} the image $D_\sigma(F)$ is cofinal and coinitial in
+$F$, and by \cref{lem:bridge} the map $\nu$ is a surjective order-reversing
+additive map. Fix a target $\gamma\in\Gamma$ and choose $\eta>0$ in
+$\Gamma$, which is possible since $\Gamma$ is nontrivial. Choose $r\in F$
+with $\nu(r)=-\gamma-\eta$ and then $x$ with $D_\sigma x>r$; order reversal
+gives $\nu(D_\sigma x)\le-\gamma-\eta$, hence
+$w(C_\sigma(x))\ge\gamma+\eta>\gamma$. Choose $s\in F$ with
+$\nu(s)=-\gamma+\eta$ and then $x'$ with $D_\sigma x'<s$; order reversal
+gives $\nu(D_\sigma x')\ge-\gamma+\eta$, hence
+$w(C_\sigma(x'))\le\gamma-\eta<\gamma$.
+\end{proof}
+
+\begin{corollary}[No uniformly bounded approximate commutation]
+\label[corollary]{cor:approx}
+Let $F$, $E$, $w$ be as in \cref{thm:defect} and let $\sigma$ be a unital
+field endomorphism with $w(\sigma y)=w(y)$ for every $y\ne0$. If the values
+$w(C_\sigma(x))$ are bounded above for all $x$, or bounded below for all
+$x$, then $\sigma=\id$.
+\end{corollary}
+\begin{proof}
+Either one-sided bound contradicts \cref{thm:defect}.
+\end{proof}
+
+For $F=\No$ this says that a nonidentity exact-value field automorphism
+fails to commute with the surreal exponential at unboundedly many
+\emph{scales}, in both valuation directions, rather than merely at some one
+argument. Two cautions. The word ``approximate'' in \cref{cor:approx}
+refers only to the stated valuation bounds; no topology and no numerical
+approximation procedure is involved. And \cref{thm:defect} is conditional:
+it does not assert that a nonidentity value-fixing field automorphism
+exists. By \cref{cor:embedding} no such automorphism commutes with $E$, so
+the theorem describes how badly commutation must fail for any that do
+exist, not a population known to be nonempty.
+
+
 \section{Explicit value-group automorphisms with no exponential lift}
+\label{sec:nonlifting}
 
 \subsection{Two different normal-form levels}
 
@@ -856,7 +1257,7 @@ lifts with the indicated value action, not just the canonical monomial
 substitution. It also supplies a multiplication-based obstruction
 independent of the bounded-displacement obstruction on the value group.
 
-\section{Surcomplex automorphisms and logarithmic modulus}
+\section{Surcomplex automorphisms and logarithmic modulus}\label{sec:surcomplex}
 
 \subsection{An intrinsic operation that does not choose a complex logarithm}
 
@@ -956,7 +1357,11 @@ which gives the direct rather than a merely semidirect product.
 The theorem recovers the real field from the operation itself. Thus its
 surcomplex conclusion is not just a classification obtained by
 \emph{assuming in advance} that every automorphism respects a chosen real
-axis. The range of $L$ supplies that axis intrinsically.
+axis. The range of $L$ supplies that axis intrinsically. There is a shorter
+route to \eqref{eq:Sigma-form} which assumes at the outset that the
+automorphism commutes with conjugation and preserves $E$ on the real axis;
+it proves strictly less, since \cref{lem:range} derives both of those
+properties from $L$ alone, and it is not used here.
 
 \subsection{Extension of the convex valuation}
 
@@ -1032,6 +1437,7 @@ field automorphism has the forbidden value action: restricting it to $\No$
 would contradict the corresponding non-lifting theorem.
 
 \section{A differential counterpart}
+\label{sec:differential}
 
 The displacement argument also has a useful infinitesimal analogue. This
 section is a consequence of the same algebraic mechanism, rather than an
@@ -1089,6 +1495,259 @@ merely because they have a small-derivation property on finite elements.
 The obstruction is the universal inequality for \emph{every} nonzero
 field element.
 
+\subsection{The same obstruction without an ordering}
+
+\Cref{thm:derivation} forbids the single case $\gamma=0$ of the bound below,
+and does so for an ordered field with a convex valuation. Neither the
+ordering nor the convexity is needed, and the bound is impossible for every
+fixed shift $\gamma$, not only for $\gamma=0$.
+
+\begin{theorem}[Unbounded valuation loss]\label[theorem]{thm:derivation-valued}
+Let $F$ be a field with a nontrivial surjective valuation
+$v:F^\times\to\Gamma$, let $E:F\to F^\times$ be any map, and let $\partial$
+be a derivation of $F$ satisfying
+\[
+ \partial(E(x))=E(x)\,\partial x\qquad(x\in F).
+\]
+If there is a single $\gamma\in\Gamma$ with
+\begin{equation}\label{eq:loss-bound}
+ v(\partial y)\ge v(y)+\gamma\qquad(y\ne0),
+\end{equation}
+then $\partial=0$. Equivalently, if $\partial\ne0$, then for every
+$\gamma\in\Gamma$ there is an $x$ for which $y=E(x)$ satisfies
+$v(\partial y)-v(y)<\gamma$.
+\end{theorem}
+\begin{proof}
+Substitute $y=E(x)$ in \eqref{eq:loss-bound} and use compatibility:
+\[
+ v(E(x))+v(\partial x)=v\bigl(\partial(E(x))\bigr)\ge v(E(x))+\gamma ,
+\]
+so $v(\partial x)\ge\gamma$ for every $x$, the case $\partial x=0$ being
+covered by the convention $v(0)=\infty$. An ordinary derivation is an
+$\id$-derivation, so \cref{thm:sigma-derivation} gives $\partial=0$.
+For the second form, let $\partial\ne0$; \cref{thm:sigma-derivation}
+supplies $x$ with $v(\partial x)<\gamma$, and then $y=E(x)$ satisfies
+$v(\partial y)-v(y)=v(\partial x)<\gamma$.
+\end{proof}
+
+\begin{corollary}[Rescaling does not help]\label[corollary]{cor:no-contraction}
+A nonzero derivation $\partial$ of $F$ satisfying
+$\partial(E(x))=E(x)\partial x$ for every $x$ cannot satisfy
+$v(\partial y)\ge v(y)$ for every $y\ne0$; in particular it cannot be
+globally contracting in the sense that $v(\partial y)>v(y)$ for every
+$y\ne0$. The same two statements hold for $c\partial$, for every nonzero
+$c\in F$.
+\end{corollary}
+\begin{proof}
+The first assertion is \cref{thm:derivation-valued} with $\gamma=0$. For
+$c\ne0$ the map $c\partial$ is again a derivation and satisfies
+$(c\partial)(E(x))=E(x)(c\partial)(x)$, so the first assertion applies to it
+as well; equivalently, a bound $v((c\partial)y)\ge v(y)$ for all $y\ne0$ is
+the bound \eqref{eq:loss-bound} for $\partial$ with $\gamma=-v(c)$.
+\end{proof}
+
+The gain in generality is in three places at once: any fixed $\gamma$ rather
+than $\gamma=0$, an arbitrary valued field rather than an ordered one with a
+convex valuation, and an arbitrary nowhere-vanishing $E$ rather than an
+ordered exponential. In particular $E$ is not required to be a group
+homomorphism: the proof uses only that $E$ takes nonzero values and
+satisfies the displayed compatibility law. What does not change is that the
+hypothesis is global. Condition \eqref{eq:loss-bound} compares
+$v(\partial y)$ with $v(y)$ at \emph{every} nonzero $y$, and the warning
+after \cref{thm:derivation} applies verbatim: a derivation that is merely
+small on the finite elements, or contracting on a subring, on a prescribed
+support class, or on a bounded domain, is not excluded.
+\Cref{sec:laurent} exhibits a nonzero contracting derivation that carries a
+compatible \emph{partial} exponential.
+
+\subsection{Application to the surreal derivation}
+
+Berarducci and Mantova construct a nonzero derivation on $\No$ compatible
+with the surreal exponential \cite{BM}. \Cref{thm:derivation-valued}
+therefore applies to it: for every $\gamma$ there are arguments at which its
+valuation gain is smaller than $\gamma$, and by \cref{cor:no-contraction} no
+fixed nonzero surreal scalar multiple of it is globally
+valuation-contracting. Nothing about the construction is used beyond the
+existence of such a derivation and the compatibility law, and neither the
+summability properties of that derivation nor its normal-form description is
+reproduced here.
+
+This does not contradict the formal operator exponentials of
+\cite{FormalSums}. The assertion is that a derivation satisfying both a
+total scalar-exponential compatibility law on the whole field and a global
+valuation-gain bound must vanish; a derivation used in an operator
+construction need not satisfy both of those on all of $\No$.
+
+
+\section{Sharpness: examples over the formal Laurent series}\label{sec:laurent}
+
+The rigidity mechanism is not a generic property of valued fields, and no
+one of its hypotheses can simply be dropped. The examples below are
+disjoint from those of \cref{sec:nonlifting}: there the value-group maps
+were legitimate and every exponential lift failed, whereas here the field
+maps are legitimate and one hypothesis of a rigidity theorem fails.
+
+Throughout this section $L=\R((t))$ is the field of formal Laurent series
+over $\R$, ordered so that $t>0$ is infinitesimal, with $t$-adic valuation
+$v_t$. The sign of a nonzero element is the sign of its lowest-exponent
+coefficient. All series manipulations are coefficientwise and involve only
+finitely many contributions at each exponent.
+
+\subsection{Leading-term preservation does not bound displacement}
+
+Define
+\begin{equation}\label{eq:substitution}
+ \sigma(f(t))=f(t+t^2).
+\end{equation}
+
+\begin{proposition}\label[proposition]{prop:substitution}
+The map \eqref{eq:substitution} is a nonidentity ordered field automorphism
+of $L$ that fixes $\R$ pointwise and fixes the leading term of every nonzero
+element, so that $v_t(\sigma f)=v_t(f)$ for all $f\ne0$. For every integer
+$m\ge1$,
+\begin{equation}\label{eq:laurent-displacement}
+ v_t\bigl(\sigma(t^{-m})-t^{-m}\bigr)=1-m .
+\end{equation}
+\end{proposition}
+\begin{proof}
+The substitution parameter $p(t)=t+t^2$ has valuation $1$ and leading
+coefficient $1$. For a series whose exponents are bounded below, the
+coefficient of any fixed power of $t$ in $f(p(t))$ receives contributions
+from only finitely many terms of $f$, so the substitution is well defined;
+the same finite-coefficient bookkeeping gives preservation of addition and
+of multiplication.
+
+For invertibility, put
+\[
+ h(t)=\frac{\sqrt{1+4t}-1}{2}
+ =t-t^2+2t^3-5t^4+14t^5-42t^6+\cdots\in t\R[[t]],
+\]
+the formal square root being the one with constant coefficient $1$. The
+identity $h+h^2=t$ gives $p\circ h=t$. A formal power series with zero
+constant coefficient and linear coefficient $1$ has a unique compositional
+inverse, its coefficients being determined successively with coefficient
+$1$ on the new unknown at each step; hence also $h\circ p=t$, and
+substitution by $h$ inverts \eqref{eq:substitution}.
+
+For every integer $n$, $p(t)^n=t^n(1+t)^n$ has leading term $t^n$.
+Therefore a leading term $a_nt^n$ of $f$ is carried to itself, which gives
+both exact preservation of $v_t$ and preservation of sign, hence of the
+order. The map is nonidentity because $\sigma(t)=t+t^2$. Finally,
+\[
+ \sigma(t^{-m})-t^{-m}=t^{-m}\bigl((1+t)^{-m}-1\bigr)
+ =-m\,t^{1-m}+\text{terms of higher valuation},
+\]
+and $-m\ne0$ in characteristic zero, which is \eqref{eq:laurent-displacement}.
+\end{proof}
+
+This automorphism satisfies the \emph{relative} smallness condition
+$v_t(\sigma f-f)>v_t(f)$ for every $f\ne0$, with the value $\infty$ allowed
+when the difference vanishes. By \eqref{eq:laurent-displacement} its
+\emph{absolute} displacement nevertheless has values unbounded below, as
+\cref{lem:amplify} and \cref{prop:valued-amplification} require. Relative
+leading-term agreement is a much weaker statement than a uniform absolute
+bound, and the two must not be exchanged.
+
+\subsection{Commuting with the exponential at every finite argument is not enough}
+
+On $\R[[t]]$ there is the canonical partial exponential
+\begin{equation}\label{eq:partial-exp}
+ E_0(r+\epsilon)=e^{r}\sum_{n\ge0}\frac{\epsilon^{n}}{n!},
+ \qquad r\in\R,\quad\epsilon\in t\R[[t]] .
+\end{equation}
+The sum is formal: only finitely many powers of $\epsilon$ contribute to
+each coefficient. Binomial expansion and finite regrouping in each
+coefficient give $E_0(x+y)=E_0(x)E_0(y)$.
+
+\begin{proposition}\label[proposition]{prop:partial-exp}
+The nonidentity automorphism \eqref{eq:substitution} commutes with $E_0$ at
+every argument in $\R[[t]]$.
+\end{proposition}
+\begin{proof}
+It fixes $r$ and $e^{r}$, and it maps $t\R[[t]]$ into itself, since
+$v_t(\epsilon(p(t)))=v_t(\epsilon)$. Each coefficient of either side of
+\[
+ \sigma\!\left(\sum_{n\ge0}\frac{\epsilon^{n}}{n!}\right)
+ =\sum_{n\ge0}\frac{\sigma(\epsilon)^{n}}{n!}
+\]
+is determined by finitely many indices, and substitution commutes with the
+corresponding finite algebra. Multiplying by $e^{r}$ gives the assertion.
+\end{proof}
+
+Every value of $E_0$ is a $v_t$-unit, so no visible exponential scale
+\eqref{eq:visible-scale} exists inside its domain and the hypothesis of
+\cref{thm:visible-scale} fails. This is exactly the local-to-global
+inference a rigidity proof must not make: exponential compatibility has to
+be applied to the possibly infinite displacement of the amplification
+witness, not merely at finite arguments. Under $t=\omega^{-1}$ this Laurent
+field is represented inside $\No$ by normal forms; we do not claim that its
+substitution automorphism extends to a nonidentity exact-value exponential
+automorphism of $\No$, and \cref{thm:no} says that it does not.
+
+\subsection{A purely additive analogue of the amplification lemma is false}
+
+Define an $\R$-linear operator on $L$ by
+\[
+ N(f)=[t^{1}]f\cdot t^{2},\qquad T=\id+N,
+\]
+where $[t^{1}]f$ denotes the coefficient of $t$ in $f$.
+
+\begin{proposition}\label[proposition]{prop:additive-bounded}
+The map $T$ is a nonidentity order-preserving additive automorphism of $L$
+that fixes $1$ and fixes the leading term of every nonzero element, and its
+displacement is uniformly bounded:
+\[
+ \abs{T(f)-f}<t\qquad(f\in L).
+\]
+It is not multiplicative.
+\end{proposition}
+\begin{proof}
+The coefficient of $t$ in $N(f)$ is zero, so $N^{2}=0$ and
+$(\id-N)(\id+N)=\id=(\id+N)(\id-N)$, which gives bijectivity. If
+$[t^{1}]f\ne0$, the lowest exponent of $f$ is at most $1$ whereas $N(f)$ has
+exponent $2$, so the leading term is unchanged; if $[t^{1}]f=0$, then $T$
+fixes $f$. Preservation of the leading term preserves sign, hence order.
+For a real coefficient $r$ we have $\abs r t^{2}<t$ because $t$ is
+infinitesimal, which is the uniform bound. Finally
+\[
+ T(t)=t+t^{2},\qquad T(t^{2})=t^{2}\ne(t+t^{2})^{2}=T(t)^{2},
+\]
+so $T$ is not multiplicative.
+\end{proof}
+
+A nonidentity additive automorphism of an ordered field can therefore have
+uniformly bounded displacement. \Cref{lem:amplify} and
+\cref{cor:bounded-displacement} genuinely consume multiplicativity: the
+twisted identity \eqref{eq:twisted} is precisely what $T$ fails to satisfy,
+and no additive argument can be substituted for it.
+
+\subsection{A contracting derivation with only a partial exponential}
+
+On the same field put
+\begin{equation}\label{eq:laurent-derivation}
+ \partial=t^{2}\frac{d}{dt},\qquad
+ \partial\Bigl(\sum_{n\ge N}a_nt^{n}\Bigr)=\sum_{n\ge N}n\,a_n t^{n+1}.
+\end{equation}
+This is a nonzero derivation, and every nonzero $f\in L$ satisfies
+\begin{equation}\label{eq:laurent-contraction}
+ v_t(\partial f)\ge v_t(f)+1 .
+\end{equation}
+If the lowest exponent of $f$ is nonzero, its term gives equality; if that
+exponent is zero, differentiation removes the term and the valuation
+increases further; the case $\partial f=0$ is covered by $v_t(0)=\infty$.
+For $x\in t\R[[t]]$, coefficientwise differentiation of \eqref{eq:partial-exp}
+gives $\partial(E_0(x))=E_0(x)\partial x$, and this extends to arguments
+$c+x$ with $c\in\R$ because $E_0(c+x)=e^{c}E_0(x)$ and $\partial c=0$.
+By \cref{thm:derivation-valued} there is nonetheless no map
+$E:L\to L^{\times}$ defined on \emph{all} of $L$ with
+$\partial(E(x))=E(x)\partial x$: such a map together with
+\eqref{eq:laurent-contraction} would force $\partial=0$. The example
+pinpoints the global quantifier in that theorem. Formal exponentials of
+infinitesimals coexist with contracting derivations; the obstruction
+appears only when scalar-exponential compatibility is demanded at every
+element of the field.
+
+
 \section{Foundational scope, assumptions, and proof audit}
 
 \subsection{Set-sized exponential fields}
@@ -1109,8 +1768,13 @@ whole value group. Convexity makes $\nu$ order-reversing. Nontriviality
 prevents the value group from collapsing to zero. Stabilization supplies a
 well-defined induced action. No completeness, saturation, differentiability,
 or infinite-sum preservation is part of these arguments. The logarithmic-modulus
-results of Section~7 additionally assume that $F$ is real closed, as stated
-there; the preceding value-action theorems need no such assumption.
+results of \cref{sec:surcomplex} additionally assume that $F$ is real closed,
+as stated there; the other value-action theorems need no such assumption.
+Two of these hypotheses can be traded away. \Cref{thm:visible-scale} replaces
+surjectivity of $E$ by a single element $H>0$ with $w(E(H))<0$, and
+\cref{cor:detector} drops the ordering and the convexity together, assuming
+instead that $E$ turns only arguments of value at least $\beta$ into
+valuation units.
 
 The comparison with \cite{KKS} was checked against the pinned version~3 PDF
 on 22 September 2026: Definitions~2.4--2.5 and Remark~2.6 on p.~4, and
@@ -1185,6 +1849,11 @@ Question 5.4 & $v(\exp x)=0$ exactly for finite $x$; bounded-displacement rigidi
 Bounded-layer obstruction & Normal forms; leading-exponent domination; cofinal displacement.\\
 Rational-dilation obstruction & Rational linearity of $v\circ\exp$; value comparison at $\omega$, or multiplicativity at $\omega$ and $\omega^2$.\\
 Surcomplex kernel & Range of $L$; real closedness; quadratic extension; real-field rigidity.\\
+Visible-scale rigidity & One $H>0$ with $w(E(H))<0$; convexity; amplification. No surjectivity of $E$.\\
+Twisted-derivation bound & Twisted Leibniz identity; surjectivity of a nontrivial valuation.\\
+Profile rigidity & Additivity of $w\circ E$ with proper convex kernel; generation by a final interval.\\
+Commutation defects & Amplification; order-reversing surjectivity of $w\circ E$; exact value preservation.\\
+Differential loss bound & Twisted-derivation bound at $\sigma=\id$; exponential compatibility of $\partial$.\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -1195,12 +1864,14 @@ automorphisms, or asserted that an arbitrary ordered additive value-group
 automorphism lifts exponentially. The non-lifting theorems specifically
 show the last assertion to be false.
 
-The accompanying executable check file tests finite algebraic identities
-and finite Hahn analogues using exact rational arithmetic. It provides
-reproducible protection against elementary formula and sign mistakes.
-It is not a model of the full surreal field and does not certify the
-theorems involving all elements or class-sized supports. No Lean proof is
-claimed for this manuscript.
+The accompanying executable check files test finite algebraic identities,
+finite Hahn analogues and truncated Laurent-series computations using exact
+arithmetic. They provide reproducible protection against elementary formula
+and sign mistakes. They are not a model of the full surreal field, they do
+not certify the theorems involving all elements or class-sized supports, and
+in particular nothing in them bears on the class-sized or transfinite
+content of any statement above. No Lean proof is claimed for this
+manuscript.
 
 \section{Further questions sharpened by the results}
 
@@ -1281,6 +1952,15 @@ L.~van den Dries and P.~Ehrlich,
 Fundamenta Mathematicae \textbf{167} (2001), 173--188.
 \href{https://doi.org/10.4064/fm167-2-3}{doi:10.4064/fm167-2-3}.
 Erratum, \textbf{168} (2001), 295--297.
+
+\bibitem{BM}
+A.~Berarducci and V.~Mantova,
+\emph{Surreal numbers, derivations and transseries},
+Journal of the European Mathematical Society \textbf{20} (2018), 339--390.
+\href{https://doi.org/10.4171/JEMS/769}{doi:10.4171/JEMS/769}.
+\url{https://arxiv.org/abs/1503.00315v3}.
+Cited only for the existence of a nonzero exponential-compatible surreal
+derivation.
 
 \bibitem{KuhlmannSerra}
 S.~Kuhlmann and M.~Serra,

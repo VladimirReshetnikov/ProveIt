@@ -2,7 +2,7 @@
 
 **Radius-Free Germs, a Nullstellensatz, and Finite Maps**
 
-One merged research article, `article.tex` (72 pages compiled), built from
+One merged research article, `article.tex` (73 pages compiled), built from
 three source manuscripts that prove the *ring* theory of infinitesimal
 surcomplex analytic geometry rather than only its deformation theory.
 
@@ -405,7 +405,7 @@ latexmk -c
 
 A standard TeX Live or MiKTeX installation with the packages named in the
 preamble is sufficient. The bibliography is embedded; there is no BibTeX
-step and no external figure asset. Last build: 72 pages, 0 errors, 0 LaTeX
+step and no external figure asset. Last build: 73 pages, 0 errors, 0 LaTeX
 warnings, 0 undefined references, 0 undefined citations, 0 multiply-defined
 labels, 0 duplicate destinations, 0 overfull boxes.
 

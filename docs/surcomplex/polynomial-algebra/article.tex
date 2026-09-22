@@ -1091,6 +1091,13 @@ three merged manuscripts proves this criterion; the one that proves
 \cref{polynomial:thm:jensen} proves no signature criterion, and neither
 subsumes the other.
 
+In the monomial basis $T_1$ is the Newton-sum Hankel matrix $(s_{i+j})$. Over
+$\R((t^\Gamma))$, with $\Gamma$ not assumed divisible, its leading principal
+minors give the exact splitting field and the number of irreducible factors of
+a squarefree real-rooted $P$: see \texttt{spec:hank:thm:field} and
+\texttt{spec:hank:thm:profile} in the companion report held in
+\path{docs/surcomplex/spectral-theory/}.
+
 \section{Exact root loci under coefficient uncertainty}
 \label{polynomial:sec:pseudozeros}
 The next theorem gives a \emph{sharp} description of the reachable root set
@@ -1355,6 +1362,11 @@ attained at least twice is thus sufficient as well as necessary for a nonzero
 root at that valuation --- a consequence of algebraic closedness together with
 the exact count, \emph{not} an additional convergence assertion about a Newton
 algorithm.
+
+For the forest polynomial of a positive rate matrix every coefficient point
+lies on the lower boundary of the Newton polygon; see
+\texttt{markov:thm:convexity} and \texttt{markov:rem:newton} in
+\path{docs/surreal/markov-generators-at-every-scale/}.
 
 \begin{example}[A cubic with two root scales]\label{polynomial:ex:newtoncubic}
 Let $t=\omega^{-1}$ and $P(z)=z^3-t^2z-t^5$. The nonzero coefficient points
@@ -2326,6 +2338,18 @@ $-E(\alpha_i)/P'(\alpha_i)$ is a genuine first-order correction with a
 strictly smaller error, not merely a formal suggestion to apply Newton's
 method. No infinite Newton iteration is required for the proof. For degree one
 the exact root displacement is simply the negative constant-coefficient error.
+
+For moment input instead of coefficient input see the companion report held in
+\path{docs/surcomplex/prony-reconstruction-at-surreal-scales/}, Theorem~1.1
+(\texttt{prony:thm:main}). For $n$ distinct integral nodes with weight
+valuations $\varpi_i$, and with $d_i$, $\delta_i$ as in
+\eqref{polynomial:eq:stabilitydata}, its exact threshold for the strict-ball
+labelling is $\Theta=\max_i\bigl((\varpi_i+d_i)+(d_i+\delta_i)\bigr)$, and
+perturbing the last moment attains it at every configuration. Its Remark~6.2
+(\texttt{prony:rem:coefficient}) compares $\Theta$ with $T(P)$, and its
+Lemma~4.1 (\texttt{prony:lem:localroots}) is a nodewise form of the matching
+step above: its hypothesis $v(E(\alpha_i))>d_i+\delta_i$ for every $i$ follows
+from $\varepsilon>T(P)$, but not conversely.
 
 \begin{corollary}[Discriminant precision protects all clusters]
 \label{polynomial:cor:discprecision}
