@@ -219,6 +219,16 @@ coefficient on a countably separated space. Positivity of the full Hahn value
 does not mean positivity of every coefficient measure: later signed
 coefficients may be negative while the leading nonzero coefficient is positive.
 
+The [Hahn–Herglotz report](surcomplex/hahn-herglotz-positivity/article.tex)
+uses real coefficientwise measures on the ordinary circle. Its moments are
+Fourier moments `c_n = ∫ ζ^(−n) dμ` and its Toeplitz convention is
+`T_N = (c_(j−k))_(0≤j,k≤N)`, a matrix of size `N+1`.
+These differ from interval power moments and Prony's finite power sums.
+Coefficientwise and strong measure classes overlap: the finite atomic
+quadratures satisfy both, while diffuse Haar leading coefficients exclude
+strong additivity. The distinction is in the summation axiom, not in whether
+the article calls its object a measure.
+
 ## Coefficient rings and functions
 
 State both the coefficient category and the ordinary base. The common

@@ -43,6 +43,7 @@ No row below certifies every claim in an entire report.
 | [Holonomic rigidity](surcomplex/holonomic-rigidity-for-entire-hahn-functions/) | Read the main support, escape, orbit, recurrence, differential, generic-line, dilation, theta, torsion and mixed-operator proofs and examples. Added inward stability of strong evaluation and used it to remove divisibility from the torsion equivalence. Repaired empty refined maxima, periodic starting indices and the unit-residue period choice. Replaced the false coefficientwise coarsening picture by a valuation on the same field, with a collapsing-support example; extended the explicit witness's short cofinal proof to arbitrary tails. Checked Stanley's recurrence correspondence and the local coarsening statement; other imports, priority and original-source reconciliation remain outside this review. |
 | [Hahn–Tate uniformization](surcomplex/hahn-tate-uniformization/) | Targeted correction only: restricted the coordinate-family exact-domain clauses in all three main statements to nonzero inputs, explained the zero-input exception and aligned the README and catalogue. The rest of the main proof chains remain unreviewed in this pass. |
 | [Infinite-dimensional Hahn spectral theory](surcomplex/infinite-dimensional-hahn-spectral-theory/) | Targeted correction only: reconstructed the positive-definite scalar-extension proof and proved that its norm and scalar modulus exist over every ordered value group, using the even leading exponent and binomial root. Removed the false necessity of divisibility from the comparison prose, standing-hypothesis explanation and dependency table; retained the other Part I hypotheses pending review. The remaining spectral and operator proof chains have not received a main-text review. |
+| [Hahn–Herglotz positivity](surcomplex/hahn-herglotz-positivity/) | Read the main support, scalar and matrix normalization, Harnack, null-ideal, functional, Fourier, quadrature, Schur, hierarchy and finite-prefix proof chains. Proved the Harnack, halo-positivity and common-kernel conclusions without divisibility by scalar normalization of quadratic forms. Expanded the zero-form and matrix-coefficient arguments; supplied the scalar-normalization positivity hypothesis and the integer-group obstruction to identity-block congruence. Corrected finite-valued versus finite-support terminology and the false disjointness of the strong and coefficientwise measure classes. Aligned partial Lean coverage and Fourier notation. Checked the classical disk representation against Bhattacharyya–Bhowmik–Kumar v3 and only the constant-kernel clause of Gesztesy–Tsekanovskii Lemma 5.3 against its preprint; other imports, priority and source-claim reconciliation remain outside this review. |
 
 Each correction was reviewed against its local definitions and downstream uses
 within the stated scope. Changed PDFs were rebuilt and affected pages inspected.
@@ -164,6 +165,18 @@ and proof corrections did not rerun the finite verification suites.
 The full Lean build passed 3,832 jobs, including the axiom audit for 5,371
 declarations. No new Lean coverage is claimed by these source corrections.
 
+The Hahn–Herglotz report rebuilt at 33 pages and the catalogue at 21 pages,
+both without warnings or box issues, after installing the missing TeX Gyre
+font metrics and enabling their scalable font map in the build environment.
+The revised theorem, proof, hypothesis, title and catalogue pages were
+inspected. On a temporary copy, its unchanged verifier passed all nine suites,
+including every one of the 19,683 finite null-ideal arrays (2,744 positive).
+Its output matches the delivered record except for the Python version.
+The five historical program, data and audit files remain byte-identical.
+The full Lean build passed 3,832 jobs and the axiom audit for 5,371 declarations.
+All 1,754 statement-index entries were checked after refreshing line hints.
+The mathematical review does not formalize the strengthened Harnack theorem.
+
 ## Collection-wide work
 
 The [reader map](README.md), [catalogue](manifest.tex) and statement index
@@ -187,8 +200,9 @@ this checks the integration, not the new mathematical claims.
 ## Remaining scope
 
 Of the ten reports added on September 22, Hahn-valued measures, Markov
-generators, tail spans, Prony reconstruction, Wick summability and holonomic
-rigidity have received the main-text reviews recorded above. The other four additions and the new sections in differential equations,
+generators, tail spans, Prony reconstruction, Wick summability, holonomic
+rigidity and Hahn–Herglotz positivity have received the main-text reviews recorded above. The other three additions (Hahn–Tate uniformization, infinite-dimensional
+spectral theory and expanding polynomial dynamics) and the new sections in differential equations,
 dynamics, entire functions,
 nonabelian support, spectral theory and exponential automorphism rigidity
 remain outside the earlier review scopes, apart from explicitly recorded

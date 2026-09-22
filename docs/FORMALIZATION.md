@@ -2453,26 +2453,26 @@ Mappings cover only the hypotheses and clauses they state.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `herg:lem:leadingvector` (line 192) | Leading-vector test |
-| Lemma | `herg:lem:scalar` (line 273) | First nonzero real part |
-| Corollary | `herg:cor:scalarnormal` (line 290) | Scalar normalization |
-| Theorem | `herg:thm:normalization` (line 302) | Hahn--Herglotz normalization |
-| Theorem | `herg:thm:harnack` (line 355) | Uniform matrix Harnack comparison |
-| Theorem | `herg:thm:nullideal` (line 429) | Exact null-ideal criterion; also \lbl{meas:thm:nullideal} |
-| Corollary | `herg:cor:twoscale` (line 456) | Two-scale criterion |
-| Theorem | `herg:thm:functional` (line 506) | Infinitesimal saturation of strictly positive functionals |
-| Corollary | `herg:cor:rieszfailure` (line 540) | A Riesz-type representation obstruction |
-| Theorem | `herg:thm:saturation` (line 563) | Toeplitz saturation and finite completions |
-| Theorem | `herg:thm:representation` (line 606) | Exact coefficientwise representation test |
-| Proposition | `herg:prop:measuretoeplitz` (line 642) | Untitled |
-| Theorem | `herg:thm:negativeatom` (line 670) | All Toeplitz tests pass, but no positive measure exists |
-| Theorem | `herg:thm:quadrature` (line 703) | Nonclosedness of the positive-measure cone |
-| Theorem | `herg:thm:fejer` (line 727) | Nonclosure with a fixed Haar leading coefficient |
-| Theorem | `herg:thm:schur` (line 763) | Exact Schur iteration and its internal poles |
-| Corollary | `herg:cor:unitary` (line 805) | Untitled |
-| Theorem | `herg:thm:hierarchy` (line 852) | Strict Hahn--Herglotz hierarchy |
-| Theorem | `herg:thm:prefix` (line 930) | One finite prefix admits every boundary behavior |
-| Proposition | `herg:prop:transport` (line 968) | Normal-form transport |
+| Lemma | `herg:lem:leadingvector` (line 208) | Leading-vector test |
+| Lemma | `herg:lem:scalar` (line 289) | First nonzero real part |
+| Corollary | `herg:cor:scalarnormal` (line 306) | Scalar normalization |
+| Theorem | `herg:thm:normalization` (line 319) | Hahn--Herglotz normalization |
+| Theorem | `herg:thm:harnack` (line 384) | Uniform matrix Harnack comparison |
+| Theorem | `herg:thm:nullideal` (line 476) | Exact null-ideal criterion; also \lbl{meas:thm:nullideal} |
+| Corollary | `herg:cor:twoscale` (line 503) | Two-scale criterion |
+| Theorem | `herg:thm:functional` (line 553) | Infinitesimal saturation of strictly positive functionals |
+| Corollary | `herg:cor:rieszfailure` (line 587) | A Riesz-type representation obstruction |
+| Theorem | `herg:thm:saturation` (line 610) | Toeplitz saturation and finite completions |
+| Theorem | `herg:thm:representation` (line 653) | Exact coefficientwise representation test |
+| Proposition | `herg:prop:measuretoeplitz` (line 689) | Untitled |
+| Theorem | `herg:thm:negativeatom` (line 717) | All Toeplitz tests pass, but no positive measure exists |
+| Theorem | `herg:thm:quadrature` (line 750) | Nonclosedness of the positive-measure cone |
+| Theorem | `herg:thm:fejer` (line 774) | Nonclosure with a fixed Haar leading coefficient |
+| Theorem | `herg:thm:schur` (line 810) | Exact Schur iteration and its internal poles |
+| Corollary | `herg:cor:unitary` (line 852) | Untitled |
+| Theorem | `herg:thm:hierarchy` (line 899) | Strict Hahn--Herglotz hierarchy |
+| Theorem | `herg:thm:prefix` (line 977) | One finite prefix admits every boundary behavior |
+| Proposition | `herg:prop:transport` (line 1015) | Normal-form transport |
 
 ### hahn-tate-uniformization
 

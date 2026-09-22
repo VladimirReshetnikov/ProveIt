@@ -83,13 +83,13 @@
 \vspace{.2cm}
 \begin{abstract}
 \noindent
-Over a real or complex Hahn field, three classical manifestations of positivity cease to be equivalent: positivity of every finite Toeplitz matrix, positivity of a holomorphic real part, and representation by a positive measure on the ordinary circle. We establish a constant-congruence normalization theorem for matrix-valued coherent Hahn-holomorphic functions over arbitrary-rank divisible value groups; divisibility is used there and nowhere else. The normalized function has a strictly positive ordinary leading part and otherwise unrestricted infinitesimal holomorphic coefficients. A Harnack comparison survives with any strictly enlarged classical constant, but the sharp classical constant need not survive.
+Over a real or complex Hahn field, three classical manifestations of positivity cease to be equivalent: positivity of every finite Toeplitz matrix, positivity of a holomorphic real part, and representation by a positive measure on the ordinary circle. We establish a constant-congruence normalization theorem for matrix-valued coherent Hahn-holomorphic functions over arbitrary-rank divisible value groups; divisibility is used there and nowhere else. The normalized function has a strictly positive ordinary leading part and otherwise unrestricted infinitesimal holomorphic coefficients. A Harnack comparison survives over every ordered value group with any strictly enlarged classical constant, but the sharp classical constant need not survive.
 
-The measures are \emph{real-valued coefficientwise} Hahn measures: an ordinary finite signed measure at each exponent, countable additivity exponent by exponent, and no strong Hahn summability. Positivity of such a measure is characterized by a transfinite null-ideal criterion, also proved in the collection's report on Hahn-valued measures. At two scales it is exactly absolute continuity of the negative part of the second coefficient with respect to the first. It yields strictly positive, unital Hahn-linear functionals, completely positive in the pointwise matrix order, that have no positive coefficientwise Hahn-measure representation. The explicit Fourier moments $c_0=1$ and $c_n=-\eps$ for $n\ne0$ have strictly positive Toeplitz matrices of every ordinary finite size, yet their unique signed representing measure is $(1+\eps)m-\eps\delta_1$. Positive finite quadratures converge coefficientwise weak-* to that nonpositive measure. Exact Schur iterates locate the missing obstruction inside an infinitesimal boundary layer. Finally, explicit examples separate positive measures, signed measures, distributions, analytic moment series, and halo-Herglotz functions. All constructions transport to set-sized subfields of $\No[i]$.
+The measures are \emph{real-valued coefficientwise} Hahn measures: an ordinary finite signed measure at each exponent, countable additivity exponent by exponent, without requiring strong Hahn summability. Positivity of such a measure is characterized by a transfinite null-ideal criterion, also proved in the collection's report on Hahn-valued measures. At two scales it is exactly absolute continuity of the negative part of the second coefficient with respect to the first. It yields strictly positive, unital Hahn-linear functionals, completely positive in the pointwise matrix order, that have no positive coefficientwise Hahn-measure representation. The explicit Fourier moments $c_0=1$ and $c_n=-\eps$ for $n\ne0$ have strictly positive Toeplitz matrices of every ordinary finite size, yet their unique signed representing measure is $(1+\eps)m-\eps\delta_1$. Positive finite quadratures converge coefficientwise weak-* to that nonpositive measure. Exact Schur iterates locate the missing obstruction inside an infinitesimal boundary layer. Finally, explicit examples separate positive measures, signed measures, distributions, analytic moment series, and halo-Herglotz functions. All constructions transport to set-sized subfields of $\No[i]$.
 \end{abstract}
 \vfill
 \begin{tcolorbox}
-\small\textbf{Status and scope.} Built from one manuscript (batch 18 of the collection, pinned to repository commit \texttt{4cf691c}); Appendix~\ref{herg:app:audit} records its provenance and the editorial changes made here. The source took the \emph{new-theorems} alternative of its research request. It does not claim to settle a named published open conjecture. The Hahn-level normalization, null-ideal, representation-obstruction, and strict-hierarchy package is offered as a candidate original contribution, with complete arguments below, except that the transfinite null-ideal criterion is proved once, in the measures report, and cited here. Classical ingredients are identified. The literature and repository comparison is targeted, not exhaustive; priority and absence from every repository archive are not certified. No Lean verification or independent refereeing is claimed.
+\small\textbf{Status and scope.} Built from one manuscript (batch 18 of the collection, pinned to repository commit \texttt{4cf691c}); Appendix~\ref{herg:app:audit} records its provenance and the editorial changes made here. The source took the \emph{new-theorems} alternative of its research request. It does not claim to settle a named published open conjecture. The Hahn-level normalization, null-ideal, representation-obstruction, and strict-hierarchy package is offered as a candidate original contribution, with complete arguments below, except that the transfinite null-ideal criterion is proved once, in the measures report, and cited here. Classical ingredients are identified. The literature and repository comparison is targeted, not exhaustive; priority and absence from every repository archive are not certified. The Lean ledger in \repo{docs/FORMALIZATION.md} records the null-ideal and two-scale criteria and finite algebraic clauses of the negative-atom, quadrature and Schur examples. The remaining analytic and representation claims are pending. No independent refereeing is claimed.
 \end{tcolorbox}
 \end{titlepage}
 \hypersetup{pageanchor=true}
@@ -103,7 +103,7 @@ The measures are \emph{real-valued coefficientwise} Hahn measures: an ordinary f
 \section{The question and the results}
 \label{herg:sec:intro}
 
-In ordinary complex analysis, a normalized holomorphic function $h$ on the disk with nonnegative real part has a unique representation
+In ordinary complex analysis, a holomorphic function $h$ on the disk with $h(0)=1$ and nonnegative real part has a unique representation
 \begin{equation}\label{herg:eq:classical}
  h(z)=\int_\T\frac{\zeta+z}{\zeta-z}\dd\mu(\zeta),
  \qquad \mu\ge0,\quad \mu(\T)=1.
@@ -122,7 +122,7 @@ The main results form two complementary parts. The positive part is an exact str
 
 \begin{enumerate}[label=\textbf{\arabic*.}]
 \item \textbf{Matrix normalization and Harnack comparison.}
-For divisible $\Gamma$, Theorem~\ref{herg:thm:normalization} reduces any coherent Hahn-holomorphic matrix with positive real part to a constant zero block and a normalized block whose ordinary coefficient has strictly positive real part. All higher coefficients are unrestricted apart from normalization. Positivity on ordinary points is equivalent to positivity on their infinitesimal halos. Theorem~\ref{herg:thm:harnack} proves uniform matrix Harnack inequalities with strict slack and gives a counterexample to the unmodified sharp constant.
+For divisible $\Gamma$, Theorem~\ref{herg:thm:normalization} reduces any coherent Hahn-holomorphic matrix with positive real part to a constant zero block and a normalized block whose ordinary coefficient has strictly positive real part. All higher coefficients are unrestricted apart from normalization. Positivity on ordinary points is equivalent to positivity on their infinitesimal halos. Theorem~\ref{herg:thm:harnack} proves uniform matrix Harnack inequalities, halo positivity and the common-kernel conclusion without divisibility, and gives a counterexample to the unmodified sharp constant.
 \item \textbf{An exact criterion for positive coefficientwise Hahn measures.}
 Theorem~\ref{herg:thm:nullideal} characterizes positivity by the vanishing of each negative coefficient measure on the common null ideal of all earlier coefficient measures. Countable predecessor sets admit a control measure; genuinely uncountable supports need the null ideal itself (Example~\ref{herg:ex:uncountable}). The criterion is the same theorem as \texttt{meas:thm:nullideal} of the collection's measures report, where it is proved (Section~\ref{herg:sec:position}). Theorem~\ref{herg:thm:functional} applies the criterion to strictly positive Hahn-linear functionals and proves that even pointwise complete positivity does not force a positive measure representation.
 \item \textbf{A fully explicit moment obstruction.}
@@ -152,7 +152,7 @@ The coherent functions of Section~\ref{herg:sec:framework} are the coherent Hahn
 \end{itemize}
 
 \paragraph{Hahn-valued measures (\repo{surreal/hahn-valued-measures-and-probability}).}
-That report, assembled from three manuscripts of the same batch, is the measure-theoretic companion of Sections~\ref{herg:sec:measures} and~\ref{herg:sec:representation}. Its central theory concerns \emph{strong} Hahn measures, for which the masses of every disjoint sequence of events are strongly Hahn summable; it also treats the coefficientwise class used here. The measures of this report are coefficientwise and are \emph{not} strongly additive: their leading coefficient is typically Haar measure, which is diffuse, whereas by the atomicity theorem of that report every coefficient of a strong Hahn measure is a finite combination of point masses. Three consequences should be kept in view.
+That report, assembled from three manuscripts of the same batch, is the measure-theoretic companion of Sections~\ref{herg:sec:measures} and~\ref{herg:sec:representation}. Its central theory concerns \emph{strong} Hahn measures, for which the masses of every disjoint sequence of events are strongly Hahn summable; it also treats the coefficientwise class used here. Coefficientwise measures need not be strongly additive: those used here with Haar leading coefficient are not, since Haar measure is diffuse, whereas every coefficient of a strong Hahn measure on the ordinary circle is a finite combination of point masses. The finite atomic quadratures of Theorem~\ref{herg:thm:quadrature}, however, belong to both classes. Thus the two classes overlap; coefficientwise additivity alone does not impose strong additivity. Three consequences should be kept in view.
 \begin{enumerate}[label=(\roman*)]
 \item Theorem~\ref{herg:thm:nullideal} is the same theorem as \lbl{meas:thm:nullideal} of that report. The manuscript behind this report and one of the manuscripts behind that report proved it independently, by the same transfinite induction. The proof is printed once, there. This report states the theorem, proves the control-measure reformulation, and keeps its source's uncountable Example~\ref{herg:ex:uncountable}, which shows that the reformulation cannot replace the null ideal.
 \item In the strong class of that report, positivity of all cylinder or polynomial-square tests implies positivity whenever the common support has order type at most $\omega$, and $\omega+1$ is the least support order type of a counterexample. Here, in the coefficientwise class, the two-element support $\{0,\eta\}$ already carries strictly positive Toeplitz tests at every finite size together with a negative singleton (Theorem~\ref{herg:thm:negativeatom}). The two statements concern different classes of measures and different tests. They do not conflict, and neither should be quoted without its class.
@@ -180,7 +180,23 @@ An element is a formal series $x=\sum_{\gamma\in S}x_\gamma t^\gamma$, where $S\
 We use the standard Hahn support arithmetic throughout. The corresponding surreal normal-form background is described in \cite{Gonshor}.
 
 \paragraph{Where divisibility is used.}
-The source manuscript made divisibility of $\Gamma$ a standing hypothesis. It is not one here. Divisibility is assumed exactly in Theorem~\ref{herg:thm:normalization} and in Theorem~\ref{herg:thm:harnack}, which is stated under the hypotheses of Theorem~\ref{herg:thm:normalization} and uses its common kernel on the halo; the matrix halo conclusions transported in Proposition~\ref{herg:prop:transport} carry the same hypothesis. There it supplies the standard facts that $\FG$ is real closed and $\KG$ algebraically closed, and with them the finite Hermitian congruence $L^*PL=I_r\oplus0$, which needs square roots of positive elements of $\FG$. The source names one further use, the modulus $\sqrt{z\overline z}$ of a complex Hahn number; no statement below takes the modulus of a non-ordinary element, since the internal disk is written with $z\overline z<1$ and Toeplitz tests with $u^*u$. The source states that the moment, measure, and explicit counterexample arguments work over an arbitrary ordered value group containing a positive element; accordingly Lemma~\ref{herg:lem:scalar}, Corollary~\ref{herg:cor:scalarnormal}, and Sections~\ref{herg:sec:measures}--\ref{herg:sec:transport} (apart from the matrix halo conclusions just named) assume only that $\Gamma$ is nonzero.
+The source manuscript made divisibility of $\Gamma$ a standing hypothesis.
+Here it is assumed only for the identity-block congruence in
+Theorem~\ref{herg:thm:normalization}. It guarantees square roots of all
+positive scalars in $\FG$, allowing finite Hermitian elimination to produce
+$L^*PL=I_r\oplus0$. Without it this conclusion can fail already for the
+scalar matrix $P=t$ over $\C((t^\Z))$: a congruence to $1$ would require
+$2v(L)+1=0$ in $\Z$.
+
+The scalar normalization, matrix Harnack comparison, halo positivity and
+common-kernel conclusions need no square roots. Theorem~\ref{herg:thm:harnack}
+proves the latter three directly by testing scalar quadratic forms.
+All moment, measure and explicit counterexample arguments also work for
+every nonzero $\Gamma$. Squared moduli below mean $|z|^2=z\bar z$; absolute
+values of real elements use the order. In fact the complex modulus itself
+exists without divisibility: $z\bar z$ has even leading exponent, so its
+positive square root is a monomial times a near-one binomial root, as in
+\lbl{ihs:hh:prop:inner} of the infinite-dimensional spectral report.
 
 Write
 \[
@@ -284,10 +300,11 @@ The subset of the support on which the real part is not identically zero has a l
 
 For (c), suppose first that a negative coefficient with nonzero real part occurs. By (a), the first such real part is strictly positive at $a_0$, contradicting $f(a_0)=1$. Thus every negative coefficient is a purely imaginary constant; evaluating at $a_0$ makes each of these constants zero. At exponent zero, $\Rea f_0$ is nonnegative and equals $1$ at $a_0$, so it is positive everywhere. The remaining assertions follow by coefficient extraction at $a_0$.
 
-For the converse, Taylor evaluation at $a+\eta$ produces a finite series whose standard part is $f_0(a)$. Its real part is positive because $\Rea f_0(a)>0$. Notice that no size condition on the higher holomorphic coefficients was needed.
+For the converse, Taylor evaluation at $a+\eta$ produces an element of $\mathcal O_\Gamma$ whose standard part is $f_0(a)$; its support need not be finite. Its real part is positive because $\Rea f_0(a)>0$. Notice that no size condition on the higher holomorphic coefficients was needed.
 \end{proof}
 
 \begin{corollary}[Scalar normalization]\label{herg:cor:scalarnormal}
+Suppose $f\in\OU{U}$ and $\Rea f(a)\ge0$ for every ordinary $a\in U$.
 If $\rho=\Rea f(a_0)>0$, then
 \[
  g(z)=\frac{f(z)-i\Ima f(a_0)}{\rho}
@@ -297,7 +314,7 @@ has exactly the form described in Lemma~\ref{herg:lem:scalar}(c). Thus every non
 
 \subsection{Constant congruence and the common kernel}
 
-This subsection and the next are the only places where $\Gamma$ is assumed divisible (see Section~\ref{herg:sec:framework}). Lemma~\ref{herg:lem:scalar} and Corollary~\ref{herg:cor:scalarnormal} above hold for every nonzero $\Gamma$.
+Only the identity-block normalization in this subsection assumes divisibility (see Section~\ref{herg:sec:framework}); the Harnack theorem in the next subsection does not. Lemma~\ref{herg:lem:scalar} and Corollary~\ref{herg:cor:scalarnormal} above hold for every nonzero $\Gamma$.
 
 \begin{theorem}[Hahn--Herglotz normalization]\label{herg:thm:normalization}
 Assume that $\Gamma$ is divisible. Let $H\in M_n(\OU{U})$ satisfy $\Rea H(a)\succeq0$ at every ordinary $a\in U$. Fix $a_0\in U$ and set
@@ -325,7 +342,16 @@ In particular, positivity at ordinary points is equivalent to positivity through
 Conversely, every expression of the form \eqref{herg:eq:normalform}--\eqref{herg:eq:normalizedG}, with constant invertible $L$ and constant Hermitian $B$, defines a function with nonnegative real part on $\halo U$.
 \end{theorem}
 \begin{proof}
-First recall a finite algebraic fact: over $\KG$, if $A\succeq0$ and $v^*Av=0$, then $Av=0$. One can prove it by diagonalizing a finite Hermitian matrix over the real closed base, or by applying positivity to $v+\lambda w$ and varying $\lambda$; the second argument uses only the order of $\FG$. This is not a compactness assertion.
+First recall a finite algebraic fact, valid without divisibility: if
+$A\succeq0$ and $v^*Av=0$, then $Av=0$. For any $w$, put
+$b=v^*Aw$ and $d=w^*Aw\ge0$. Positivity at $v+\lambda w$ says
+\[
+ 0\le 2\Rea(\lambda b)+\lambda\bar\lambda d.
+\]
+If $b\ne0$, take $\lambda=-\bar b/(d+1)$. The right side becomes
+$-b\bar b(d+2)/(d+1)^2<0$, a contradiction. Hence $v^*Aw=0$ for all
+$w$, so $Av=0$ by Hermitian symmetry. This uses only field arithmetic and
+the order of $\FG$, with no compactness or root extraction.
 
 Let $W=\ker P$. For a constant vector $v\in W$, the scalar function $v^*H(z)v$ belongs to $\OU{U}$, has nonnegative real part, and has zero real part at $a_0$. Lemma~\ref{herg:lem:scalar}(b) gives
 \[
@@ -341,7 +367,10 @@ The left side is coefficientwise holomorphic; the right side is coefficientwise 
 
 Finite Hermitian congruence over the real closed field $\FG$ (this is where divisibility enters) supplies a constant $L$ with $L^*PL=I_r\oplus0$ and with its last columns spanning $W$. The preceding paragraph gives the block form \eqref{herg:eq:normalform}. The surviving block satisfies $G(a_0)=I_r$ and $\Rea G(a)\succeq0$.
 
-For every nonzero ordinary $u\in\C^r$, apply Lemma~\ref{herg:lem:scalar}(c) to $u^*G(z)u/(u^*u)$. Its negative coefficients vanish. Since this holds for every ordinary $u$, polarization gives $G_\gamma=0$ for every $\gamma<0$. The same scalar argument gives $u^*\Rea G_0(a)u>0$ for every nonzero ordinary $u$, proving $\Rea G_0(a)\succ0$.
+For every nonzero ordinary $u\in\C^r$, apply Lemma~\ref{herg:lem:scalar}(c) to $u^*G(z)u/(u^*u)$. Its negative coefficients vanish. Since this holds for every ordinary $u$, each matrix coefficient vanishes:
+testing $u=e_j$ gives the diagonal entries, and testing $e_j+e_k$ and
+$e_j+i e_k$ gives both off-diagonal entries. Thus $G_\gamma=0$ for
+every $\gamma<0$, even though these coefficients need not be Hermitian. The same scalar argument gives $u^*\Rea G_0(a)u>0$ for every nonzero ordinary $u$, proving $\Rea G_0(a)\succ0$.
 
 For $z=a+\eta\in\halo U$, $G(z)$ is finite and $\st G(z)=G_0(a)$. Lemma~\ref{herg:lem:leadingvector} gives $\Rea G(z)\succ0$. Congruence proves positivity and the exact common kernel on the whole halo. The converse follows by the identical leading-vector test and congruence. No constraint on the higher coefficients enters that test.
 \end{proof}
@@ -353,7 +382,11 @@ The rank $r$ includes directions whose positive values at $a_0$ are infinitesima
 \subsection{Harnack inequalities: strict slack is essential}
 
 \begin{theorem}[Uniform matrix Harnack comparison]\label{herg:thm:harnack}
-Under the hypotheses of Theorem~\ref{herg:thm:normalization}, including divisibility of $\Gamma$, let $E\subset U$ be ordinary compact. There is an ordinary $C>1$ such that
+Let $\Gamma$ be any nonzero set-sized ordered abelian group.
+Suppose $H\in M_n(\OU{U})$ satisfies $\Rea H(a)\succeq0$ at every ordinary
+$a\in U$, fix $a_0\in U$, and put $P=\Rea H(a_0)$.
+Then $\Rea H(z)\succeq0$ and $\ker\Rea H(z)=\ker P$ throughout $\halo U$.
+For every ordinary compact $E\subset U$, there is an ordinary $C>1$ such that
 \begin{equation}\label{herg:eq:harnack}
  C^{-1}P\preceq\Rea H(a+\eta)\preceq CP
  \qquad(a\in E,\ v(\eta)>0).
@@ -365,7 +398,21 @@ More precisely, if $C_0$ is any classical two-sided Harnack constant comparing p
 The strict inequality cannot in general be replaced by equality.
 \end{theorem}
 \begin{proof}
-Fix $v\in\KG^n$. If $v^*Pv=0$, the common-kernel conclusion gives $v^*\Rea H(z)v=0$, so the scalar inequalities are equalities. Otherwise put $\rho=v^*Pv>0$ and normalize $v^*Hv$ by Corollary~\ref{herg:cor:scalarnormal}. The resulting $g$ has $g(a_0)=1$ and ordinary positive harmonic real part $u_0=\Rea g_0$. Classical Harnack gives $C_0^{-1}\le u_0(a)\le C_0$ on $E$.
+Fix $v\in\KG^n$. The scalar coherent function $f=v^*Hv$ has
+nonnegative real part at every ordinary point. If $v^*Pv=0$,
+Lemma~\ref{herg:lem:scalar}(b) makes $f$ a purely imaginary constant.
+Thus $v^*\Rea H(z)v=0$ on the whole halo without using matrix normalization.
+Otherwise $\rho=v^*Pv>0$, and Corollary~\ref{herg:cor:scalarnormal}
+normalizes $f$ to $g$ with $g(a_0)=1$ and $\Rea g>0$ on the halo.
+In particular every quadratic form of $\Rea H(z)$ is nonnegative.
+The algebraic zero-form criterion in the preceding proof then gives
+$\ker\Rea H(z)=\ker P$: its quadratic form vanishes exactly for vectors
+with $v^*Pv=0$.
+
+In the case $\rho>0$, the ordinary harmonic function $u_0=\Rea g_0$
+is positive. Classical Harnack gives
+$C_0^{-1}\le u_0(a)\le C_0$ on $E$, with the same $C_0$ for every
+choice of $v$.
 
 For $C>C_0$, both $C-u_0(a)$ and $u_0(a)-C^{-1}$ are strictly positive real numbers, uniformly bounded below on $E$. The corresponding Hahn differences at $a+\eta$ have these standard parts and are positive, whatever their infinitesimal tails. Multiplying by $\rho$ gives the required inequalities for every $v$, hence the Loewner inequalities.
 
@@ -406,7 +453,7 @@ It is \emph{positive} if $\mu(E)\ge0$ for every Borel $E\subset X$, and is a pro
 \paragraph{Real values.}
 The values $\mu(E)$ lie in the real field $\FG$, not in $\KG$: every measure in this report is real, although the report is surcomplex. The complex structure enters elsewhere, through Toeplitz and Hermitian positivity tested against vectors in $\KG^n$, through coherent holomorphic functions, through the $\KG$-valued Fourier moments of Section~\ref{herg:sec:conventions}, and through $\KG$-linear functionals on $C(X,\C)((t^\Gamma))$ in Section~\ref{herg:sec:representation}.
 
-For disjoint $E_j$, the identity $\mu(\bigcup_jE_j)=\sum_j\mu(E_j)$ means that its $\gamma$-coefficient is the ordinary identity $\nu_\gamma(\bigcup_jE_j)=\sum_j\nu_\gamma(E_j)$. The scalar sum is absolutely convergent because $\nu_\gamma$ has finite total variation. There is no assertion of strong Hahn summability in the index $j$. This is a definition of a coefficientwise category, not a hidden appeal to fine-topological countable additivity. Strongly additive Hahn measures form a different class, treated in the measures report (Section~\ref{herg:sec:position}); the measures used below, whose leading coefficient is typically Haar measure, do not belong to it.
+For disjoint $E_j$, the identity $\mu(\bigcup_jE_j)=\sum_j\mu(E_j)$ means that its $\gamma$-coefficient is the ordinary identity $\nu_\gamma(\bigcup_jE_j)=\sum_j\nu_\gamma(E_j)$. The scalar sum is absolutely convergent because $\nu_\gamma$ has finite total variation. There is no assertion of strong Hahn summability in the index $j$. This is a definition of a coefficientwise category, not a hidden appeal to fine-topological countable additivity. Strongly additive Hahn measures form a different class, treated in the measures report (Section~\ref{herg:sec:position}); the examples below with diffuse Haar leading coefficient do not belong to it, whereas the finite atomic quadratures do.
 
 For an ordinary bounded Borel function $f$ the integral is
 \[
@@ -971,7 +1018,10 @@ Let $j:\Gamma\hookrightarrow(\No,+)$ be an ordered additive embedding. The maps
  \sum_\gamma a_\gamma t^\gamma\longmapsto
  \sum_\gamma a_\gamma\omega^{-j(\gamma)}
 \end{equation}
-embed $\FG$ as an ordered subfield of $\No$, and $\KG$ as its complexification inside $\No[i]$. They preserve conjugation, positivity, finite matrix inequalities, and all the coefficientwise identities proved above. The scalar and matrix halo conclusions transport under the same map, the matrix ones under the divisibility hypothesis of Theorem~\ref{herg:thm:normalization}.
+embed $\FG$ as an ordered subfield of $\No$, and $\KG$ as its complexification inside $\No[i]$. They preserve conjugation, positivity, finite matrix inequalities, and all the coefficientwise identities proved above. The scalar and matrix halo conclusions of
+Theorem~\ref{herg:thm:harnack} transport without divisibility; the
+identity-block normalization retains the hypothesis of
+Theorem~\ref{herg:thm:normalization}.
 \end{proposition}
 \begin{proof}
 An increasing well-ordered support in $\Gamma$ becomes a reverse-well-ordered support of surreal exponents $-j(\gamma)$. Thus the right side is a Conway normal form. Uniqueness of normal forms gives injectivity. The normal-form sum and product rules, together with additivity of $j$, give preservation of the field operations. The first-coefficient order rule gives order preservation. Extending real and imaginary parts separately gives the complexified embedding and preservation of conjugation.
@@ -1018,7 +1068,7 @@ Finally, changing the boundary space, allowing different forms of additivity, or
 
 Every limitation stated by the source manuscript is kept where it was made. For reference, they are collected here; items 1--23 are the source's, items 24--26 were added when the report joined the collection.
 \begin{enumerate}[label=\arabic*.,leftmargin=2.2em]
-\item No named published open conjecture is claimed settled. The package is a candidate original contribution; priority, and absence from every repository file or archive, are not certified. The proofs are not refereed and not checked in Lean.
+\item No named published open conjecture is claimed settled. The package is a candidate original contribution; priority, and absence from every repository file or archive, are not certified. The proofs are not refereed. Lean coverage is partial, as specified in the status box and \repo{docs/FORMALIZATION.md}.
 \item The boundary is the ordinary circle, or an ordinary compact Hausdorff space, with coefficientwise additivity. Nothing is asserted about a measure on an enlarged non-Archimedean circle, a finitely additive or internal nonstandard representation, or a representation after changing the integration theory. The programs of Halpern, Bottazzi, and Restrepo Borrero--Shamseddine are neither ruled out nor contradicted. The obstruction is to one natural coefficientwise Hahn extension of the classical circle representation.
 \item Classical ingredients are not claimed: the Gesztesy--Tsekanovskii constant-kernel lemma, Riesz representation, Fourier uniqueness, the distribution growth criterion, finite real-closed-field congruence, the Herglotz and trigonometric moment theorems, and the Harnack and minimum principles. Theorem~\ref{herg:thm:representation} is a coefficientwise use of the Riesz theorem, not a new Riesz theorem. That successive infinitesimal scales encode lexicographic priority is not claimed as original.
 \item A Taylor series in an ordinary variable is not claimed to be a strong Hahn sum across degrees; a Taylor series in an infinitesimal increment is a strong sum, not a limit in every topology; coefficientwise countable additivity is not strong summability. No unspecified topology on the full surreal class is used.
@@ -1041,9 +1091,9 @@ Every limitation stated by the source manuscript is kept where it was made. For 
 \item No proper-class support, integral, or matrix is used.
 \item The finite checks do not prove any statement quantified over all finite sizes, all Borel sets, all holomorphic functions, or arbitrary well-ordered supports. They do not check arbitrary support, Borel measure uniqueness, Hahn summability, the analytic minimum principles, or transfinite induction. No computer-algebra simplification is treated as a proof of a transfinite support assertion.
 \item The repository and literature audit was targeted. Negative code searches are not certificates of absence; the archive interiors were not read; the standard books were not inspected line by line; two of the non-Archimedean integration papers were compared by abstract and scope only.
-\item Divisibility of $\Gamma$ is assumed exactly where Section~\ref{herg:sec:framework} says. Nothing is claimed about Theorem~\ref{herg:thm:normalization} or Theorem~\ref{herg:thm:harnack} for nondivisible $\Gamma$.
+\item Divisibility of $\Gamma$ is assumed exactly where Section~\ref{herg:sec:framework} says. The identity-block congruence of Theorem~\ref{herg:thm:normalization} is not asserted for arbitrary nondivisible $\Gamma$; Theorem~\ref{herg:thm:harnack} does hold there.
 \item Part~(b) of Theorem~\ref{herg:thm:functional} is not new in mechanism (\lbl{c:p5:positivity}); Remark~\ref{herg:rem:disk} is \lbl{c:p4:rk-notball}; Theorem~\ref{herg:thm:nullideal} is proved in the measures report, and this report claims no priority for it over that report's source, found independently in the same batch.
-\item Every measure here is coefficientwise. Nothing in this report is a statement about strongly additive Hahn measures, and the two-exponent support of Theorem~\ref{herg:thm:negativeatom} does not conflict with the order type $\omega+1$ that is the threshold in the strong class.
+\item Every measure here is coefficientwise. Strong additivity is not a standing requirement, although finite atomic examples satisfy it. The two-exponent support of Theorem~\ref{herg:thm:negativeatom} does not conflict with the order type $\omega+1$ that is the threshold in the strong class.
 \end{enumerate}
 
 \appendix
@@ -1069,7 +1119,10 @@ The editorial changes are these.
 \item The non-claims are collected in Section~\ref{herg:sec:nonclaims}, with three added.
 \end{enumerate}
 
-Where the edit had to choose: which copy of the null-ideal proof to print (the collection keeps one canonical copy, in the measures report, which is the home of its measure theory; the two proofs are the same); whether to keep Remark~\ref{herg:rem:disk}, which duplicates \lbl{c:p4:rk-notball} (kept, with credit, because Section~\ref{herg:sec:counterexample} uses it); and how to resolve the clash of the source's ring name $\mathscr A_\Gamma(U)$ with the class letter $\mathsf A$ and with the notation guide (the ring was renamed; the class letter was kept, with a warning). The manuscript's title is kept.
+Where the edit had to choose: which copy of the null-ideal proof to print (the collection keeps one canonical copy, in the measures report, which is the home of its measure theory; the two proofs are the same); whether to keep Remark~\ref{herg:rem:disk}, which duplicates \lbl{c:p4:rk-notball} (kept, with credit, because Section~\ref{herg:sec:counterexample} uses it); and how to resolve the clash of the source's ring name $\mathscr A_\Gamma(U)$ with the class letter $\mathsf A$ and with the notation guide (the ring was renamed; the class letter was kept, with a warning). The manuscript's title is kept. A later proof review removed divisibility
+from the Harnack and common-kernel argument, expanded the zero-form and
+matrix-coefficient arguments, and updated the partial Lean status. The
+delivered programs, recorded outputs and audit were left unchanged.
 
 \subsection{Pinned comparison and its limitations}
 \label{herg:app:pinned}
@@ -1091,7 +1144,10 @@ The precise provenance claim is consequently limited: no matching statement for 
 
 \subsection{The literature comparison}
 
-The classical comparison used the disk representation discussion in \cite{BBK} and the constant-kernel lemma and matrix-measure background in \cite{GT}. The latter was inspected in its actual PDF, including the relevant proof pages. Our subtraction of the constant $iB$ in \eqref{herg:eq:normalform} is essential: a function with zero real part can be a nonzero imaginary constant. A zero-block assertion without accounting for that constant would be false.
+The classical comparison used the disk representation discussion in \cite{BBK} and the constant-kernel lemma and matrix-measure background in \cite{GT}. The kernel clause of \cite[Lemma~5.3, preprint pp.~26--27]{GT} was
+checked against its proof. It concerns $\ker\Ima M$, not $\ker M$:
+a constant real scalar $M=1$ distinguishes the two. We import only the
+constant-kernel statement, not an unshifted zero-block assertion. Our subtraction of the constant $iB$ in \eqref{herg:eq:normalform} is essential: a function with zero real part can be a nonzero imaginary constant. A zero-block assertion without accounting for that constant would be false.
 
 Halpern's lexicographic/nonstandard comparison \cite{Halpern}, including its discussion of arbitrary lengths and countable additivity, is a conceptual antecedent. The present article permits signed coefficient measures and asks for an exact Fourier representation of prescribed moments, not equivalence of preference orderings or conditional probability systems. The elementary phenomenon that successive infinitesimal scales encode lexicographic priority is not claimed as original.
 
@@ -1106,7 +1162,7 @@ Result or ingredient & Assessment\\
 \endhead
 Hahn arithmetic, normal forms, real-closed finite algebra & Standard background; not claimed as new.\\[4pt]
 Classical Herglotz representation and constant matrix kernels & Established antecedents; explicitly cited.\\[4pt]
-Theorem~\ref{herg:thm:normalization} and Theorem~\ref{herg:thm:harnack} & Proved Hahn-level extension and unrestricted-tail classification, with a strict-slack obstruction, for divisible $\Gamma$. Candidate contribution in this precise form.\\[4pt]
+Theorem~\ref{herg:thm:normalization} and Theorem~\ref{herg:thm:harnack} & Identity-block normalization for divisible $\Gamma$; Harnack comparison and common kernels for every nonzero $\Gamma$, with a strict-slack obstruction. Candidate contribution in this precise form.\\[4pt]
 Remark~\ref{herg:rem:disk} & Already \lbl{c:p4:rk-notball} of the analysis report; kept with credit.\\[4pt]
 Theorem~\ref{herg:thm:nullideal} and Example~\ref{herg:ex:uncountable} & Exact signed-coefficient positivity criterion at arbitrary support length; countable control measures are a corollary, not a substitute. Candidate contribution in this formulation (source's assessment). The criterion was found independently in the same batch and is proved in the measures report as \lbl{meas:thm:nullideal}; no priority between the two is claimed. The uncountable example is this source's.\\[4pt]
 Theorem~\ref{herg:thm:functional} and Corollary~\ref{herg:cor:rieszfailure} & Strictly positive unital, pointwise completely positive Hahn functionals; exact criterion for a positive coefficientwise measure. Candidate representation-obstruction package. Part~(b) has the mechanism of \lbl{c:p5:positivity} of the analysis report.\\[4pt]
@@ -1122,7 +1178,7 @@ Theorems~\ref{herg:thm:hierarchy} and \ref{herg:thm:prefix} & Strict hierarchy a
 The proofs divide into three largely independent chains.
 
 \paragraph{Analytic chain.}
-Hahn support arithmetic and the ordinary minimum principle give scalar normalization. Finite congruence, for divisible $\Gamma$, then gives matrix normalization, and the ordinary Harnack principle gives the strict-slack comparison.
+Hahn support arithmetic and the ordinary minimum principle give scalar normalization. Finite congruence, for divisible $\Gamma$, gives matrix normalization. Separately, scalar normalization of each quadratic form and the ordinary Harnack principle give the common kernel and strict-slack comparison for every nonzero $\Gamma$.
 
 \paragraph{Measure chain.}
 Jordan decomposition and well-founded induction give the null-ideal criterion (proved in the measures report). Combined with full support of an ordinary measure, this yields the exact positive-functional representation test.
@@ -1151,7 +1207,7 @@ or run \texttt{pdflatex} repeatedly until references stabilize. The delivered \t
 \toprule
 Symbol & Meaning\\
 \midrule
-$\Gamma$ & A nonzero set-sized ordered abelian exponent group; divisible only in Theorems~\ref{herg:thm:normalization} and~\ref{herg:thm:harnack}.\\
+$\Gamma$ & A nonzero set-sized ordered abelian exponent group; divisible only for Theorem~\ref{herg:thm:normalization}.\\
 $\FG,\KG$ & Real and complex Hahn fields with increasing well-ordered support; measures take values in $\FG$.\\
 $v,\st$ & Least-exponent valuation and exponent-zero standard part on finite elements.\\
 $\eps=t^\eta$ & A positive infinitesimal, with $\eta>0$.\\

@@ -31,15 +31,19 @@ Let `Γ` be a nonzero set-sized ordered abelian group, `F_Γ = R((t^Γ))` and
 `K_Γ = C((t^Γ))`. Coherent functions on an ordinary connected domain `U` form
 `O(U)((t^Γ))`, and `U^#` is the halo of `U` (ordinary points plus arbitrary
 infinitesimals), as in the analysis report. **`Γ` is assumed divisible only in
-Theorems 3.3 and 3.5**; the source made divisibility a standing hypothesis,
-but it is used only there, for the Hermitian congruence `L*PL = I_r ⊕ 0`
-(Section 2.1, "Where divisibility is used").
+Theorem 3.3**, for the Hermitian congruence `L*PL = I_r ⊕ 0`. The Harnack,
+halo-positivity and common-kernel conclusions hold for every nonzero ordered
+value group by scalar normalization of each quadratic form (Theorem 3.5).
+The scalar matrix `P = t` over `C((t^Z))` explains why the identity-block
+congruence needs an extra hypothesis: `2v(L) + 1 = 0` is impossible in `Z`.
 
 A *moment* is always a Fourier moment `c_n = ∫ ζ^(−n) dμ` on the ordinary
 circle, with values in `K_Γ`. Every measure is a **real-valued coefficientwise
 Hahn measure** `μ = Σ ν_γ t^γ`: one well-ordered support, an ordinary finite
 signed regular Borel measure at each exponent, countable additivity exponent
-by exponent, and no strong Hahn summability (Definition 4.1).
+by exponent, with no strong Hahn summability requirement (Definition 4.1).
+The finite atomic quadratures satisfy both notions of additivity; examples
+with diffuse Haar leading coefficient do not satisfy strong additivity.
 
 - **Hahn–Herglotz normalization (Theorem 3.3, `Γ` divisible).** A matrix
   coherent function `H` with `Re H(a) ⪰ 0` at ordinary points is constant-congruent,
@@ -48,7 +52,9 @@ by exponent, and no strong Hahn summability (Definition 4.1).
   Positivity at ordinary points is equivalent to positivity on `U^#`, and
   `ker Re H(z) = ker P` on the whole halo. The scalar mechanism (Lemma 3.1,
   Corollary 3.2) needs no divisibility.
-- **Harnack comparison (Theorem 3.5).** Any ordinary `C > C₀` works; the sharp
+- **Harnack comparison (Theorem 3.5, arbitrary `Γ`).** Halo positivity and
+  the common kernel follow directly from the scalar argument, without the
+  identity-block congruence. Any ordinary `C > C₀` works; the sharp
   classical constant need not, witnessed by `(1+z)/(1−z) + εz`.
 - **Null-ideal criterion (Theorem 4.2).** A coefficientwise Hahn measure is
   positive iff each `ν_γ⁻` vanishes on the common null ideal of the earlier
@@ -58,8 +64,9 @@ by exponent, and no strong Hahn summability (Definition 4.1).
   same batch; the main equivalence is proved there, and this report proves the
   translation between the two forms and the control-measure reformulation.
   Corollary 4.3: `ν₀ + εν₁ ≥ 0` iff `ν₀ ≥ 0` and `ν₁⁻ ≪ ν₀`. Example 4.4
-  (this source's own): an uncountable, Dirac-led positive measure that every
-  countable control measure would wrongly reject.
+  (this source's own): an uncountable, Dirac-led positive measure that a
+  control measure formed from any countable collection of its earlier
+  coefficients would wrongly reject.
 - **Strictly positive functionals without positive measures (Theorem 5.1,
   Corollary 5.2).** `Λ_ε(F) = (1+ε)∫F dm − εF(1)` is strictly positive, unital
   and pointwise completely positive on `C(T,C)((t^Γ))`, but has no positive
@@ -82,7 +89,10 @@ by exponent, and no strong Hahn summability (Definition 4.1).
 - **Strict hierarchy (Theorem 7.1).** `P ⊊ M ⊊ D ⊊ A ⊊ H` (positive measure,
   signed measure, distribution, Toeplitz-only, halo-Herglotz), every witness
   using only the exponents `0, η`. Example 7.2 lies outside this universe;
-  Theorem 7.3 extends any finite infinitesimal prefix in all five ways.
+  Theorem 7.3 extends any finite infinitesimal prefix with positive-measure,
+  signed-only, distribution-only, analytic-only or nonanalytic formal tails.
+  This last list includes a sequence outside the coherent analytic universe,
+  rather than a witness in `H \ A`.
 - **Transport (Proposition 8.1)** to set-sized subfields of `No[i]`; with
   `ε = ω⁻¹` Theorem 6.1 becomes an explicit surreal statement.
 
@@ -93,7 +103,11 @@ source made them, and 3 added when the report joined the collection. In brief:
 
 - No named published conjecture is claimed settled. The package is a
   **candidate** original contribution; priority and absence from every
-  repository file are not certified. Not refereed; no Lean.
+  repository file are not certified. Not refereed. The
+  [Lean ledger](../../FORMALIZATION.md) records the proved null-ideal and
+  two-scale criteria, plus finite algebraic clauses of the negative-atom,
+  quadrature and Schur examples. Normalization, the analytic hierarchy,
+  signed-measure uniqueness and weak-* limits remain pending.
 - The boundary is the **ordinary** circle (or compact Hausdorff space) with
   coefficientwise additivity. Nothing is asserted about measures on an
   enlarged non-Archimedean circle, finitely additive or internal nonstandard
@@ -121,9 +135,10 @@ source made them, and 3 added when the report joined the collection. In brief:
 - **No matrix-valued null-ideal criterion**, no full-disk classification.
 - The finite checks prove nothing quantified over all sizes, all Borel sets,
   all holomorphic functions or arbitrary supports.
-- Added in the collection: nothing is claimed about Theorems 3.3 and 3.5 for
-  nondivisible `Γ`; Theorem 5.1(b), Remark 2.2 and Theorem 4.2 carry the
-  credits below; **nothing here concerns strongly additive Hahn measures**.
+- The identity-block congruence in Theorem 3.3 is not asserted for arbitrary
+  nondivisible `Γ`; Theorem 3.5 now covers that case. Theorem 5.1(b),
+  Remark 2.2 and Theorem 4.2 carry the credits below. Strong additivity is
+  not assumed; belonging to the coefficientwise class does not exclude it.
 
 ## Relation to the neighbouring reports
 
