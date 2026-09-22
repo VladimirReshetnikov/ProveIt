@@ -1,12 +1,12 @@
 # Cofinality, Factorization and Scalar Extension for Entire Hahn Functions at Arbitrary Rank
 
-**A merged research report, 44 pages.** Everything in this directory other
+**A merged research report, 45 pages.** Everything in this directory other
 than `article.tex`, `article.pdf` and this README is preserved source
 material.
 
 ```
 article.tex   the merged report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled 44-page report
+article.pdf   the compiled 45-page report
 README.md     this guide
 code/         the two source verification programs, unmodified
 data/         the two recorded verification records and the source build report
@@ -39,14 +39,17 @@ Write `cf(Gamma)` for the cofinality of the value group as an ordered set,
 and call `delta > 0` an **order unit** when its positive integer multiples
 are cofinal in `Gamma`.
 
-**1. The trichotomy (Theorem 1.5).** The entire ring `E_Gamma` is always a
-GCD domain with units exactly `K_Gamma^times`, and exactly one of:
+**1. The trichotomy (Theorem 1.5).** For `Gamma != 0`, the entire ring
+`E_Gamma` is a GCD domain with units exactly `K_Gamma^times`, and exactly one
+of:
 
 | Value group | Entire series | Ideal structure |
 |---|---|---|
 | `cf(Gamma) > aleph_0` | only polynomials | PID |
 | an order unit exists | nonpolynomial series exist | Bézout, non-Noetherian, full Hermite interpolation |
 | `cf(Gamma) = aleph_0`, no order unit | nonpolynomial series exist | GCD but **not** Bézout |
+
+For `Gamma = 0`, strong Hahn summability gives `E_0 = C[Z]`.
 
 The third case is the sharpest single result in either source. With
 `gamma_(n+1)` exceeding every finite multiple of `gamma_n` and cofinal, set
@@ -66,7 +69,8 @@ Necessity is proved by coarsening, not by observing that one geometric series
 fails.
 
 **2. The scalar-extension package (Theorem 1.6).** For any ordered-group
-extension `Gamma` inside `Delta`, *every* nonpolynomial entire series over
+extension of nonzero divisible groups `Gamma` inside `Delta`, *every*
+nonpolynomial entire series over
 `K_Gamma` has the **same** exact strong evaluation domain in `K_Delta`: the
 valuation ring `D_(Gamma,Delta)` of `v_Delta` coarsened by the convex hull of
 `Gamma`, whose residue field is `C((t^H))` rather than `C`. Entireness
@@ -74,7 +78,8 @@ survives exactly for cofinal extensions. No new zeros appear anywhere in the
 surviving domain, even for an infinite divisor. On a noncofinal extension
 there is no alternative entire series agreeing with the old one even on all
 ordinary complex constants. And the boundary is intrinsic: `Gamma`, the
-coefficient slopes `v(a_n)/n`, and the negated zero valuations `-v(r)`
+coefficient slopes `v(a_n)/n` for `n >= 1` and `a_n != 0`, and the negated
+zero valuations `-v(r)` for nonzero zeros `r`
 generate the same convex subgroup.
 
 ## Three things to read before using a theorem from here
@@ -93,7 +98,8 @@ Section 12.3 exhibits the concrete pair.
 **One name for the order invariant (Remark 1.4).** The sources named the same
 condition twice: *order unit* and *cofinal-cyclic element*. The report keeps
 **order unit** and records the synonym once, together with the equivalences
-(greatest positive Archimedean class; `m*delta -> +infinity`; `t^delta`
+(the class of `delta` is the greatest positive Archimedean class;
+`m*delta -> +infinity`; `t^delta`
 topologically nilpotent). This is **not** the same invariant as `cf(Gamma)`:
 an order unit forces countable cofinality but not conversely, and that gap is
 exactly the third case of the trichotomy. Nor is it the cofinality of an
@@ -104,17 +110,18 @@ reports in this collection use the same word.
 ring. The chain here is
 `K_Gamma[Z] ⊆ E_Gamma ⊆ T_Gamma ⊆ A_Gamma ⊆ K_Gamma[[Z]]`, all with **Hahn
 series over C** as coefficients. Nothing here is a theorem about
-`O(U)((t^Gamma))` or `C{z}((t^Gamma))`, whose coefficients are ordinary
-holomorphic functions on a common complex domain. The convention is the one
+`O(U)((t^Gamma))`, whose coefficients are ordinary holomorphic functions on
+one common complex domain, or `C{z}((t^Gamma))`, whose coefficients are
+convergent germs with no common radius required. The convention is the one
 stated by name in `surcomplex/analytic-geometry`, and it is invoked here so
 that no reader transports a result across that boundary.
 
 ## Relation to the rest of the collection
 
 - **`surcomplex/rank-one-berkovich` — this report extends it.** That report
-  fixes `K = C((t^R))`, where the valuation is a genuine real-valued absolute
-  value; it is the one place in the collection where convergence is real
-  convergence, and it already contains rank-one zero-free rigidity and a
+  fixes `K = C((t^R))`, whose valuation induces a real-valued non-Archimedean
+  absolute value defining intrinsic convergence. It already contains
+  rank-one zero-free rigidity and a
   canonical product. Neither source manuscript claims to originate either
   point. Rank one is `cf(R) = aleph_0` with `1` an order unit, so it lands in
   the **Bézout** case: the pathology of the third case is invisible there.
@@ -162,7 +169,11 @@ a claimed solution of any named published conjecture. Both source manuscripts
 state that priority is **not** certified and that their literature checks were
 targeted, not exhaustive; searches returning nothing were not treated as
 evidence of absence. Neither was independently refereed; neither was
-machine-checked, and **no Lean verification is claimed**. Classical rank-one
+machine-checked. The current [formalization ledger](../../FORMALIZATION.md#entire-functions-at-arbitrary-rank)
+records checked Hahn support, summability and algebraic-closure prerequisites,
+while all 47 standard theorem, lemma, proposition and corollary statements in
+this report remain pending. This report's proposed dependency plan is not a
+claim of completed formalization. Classical rank-one
 factorization, Newton polygons, canonical products, the Hahn–Neumann support
 lemmas, algebraic closedness of Hahn fields, and the rank-two distinction
 between positive valuation and topological nilpotence are all credited as
@@ -174,6 +185,21 @@ monomial arguments only; the uniform-domain statement is **false** in several
 variables; and strong summability, intrinsic valuation convergence and the
 fine surreal topology are deliberately never identified. No repository files
 under `code/` or `data/` have been modified.
+
+The maintained proof review read the full mathematical text, including the
+finite-variable appendix. It clarified the fixed-element order-unit
+equivalence, the nonzero-group convention and the nonzero indices in the
+extension summary; strengthened the growth barrier to require a sequence
+that tends cofinally to infinity (with a counterexample to mere cofinality
+of its range); supplied direct linear-division and multivariable
+coefficient-criterion arguments; and separated the preparation-based finite
+zero bound from algebraic closedness. The conclusion now states the
+universal Bézout property separately from identities for individual pairs.
+The imported Hahn-field scope was checked against Poonen, Section 3 and
+Corollary 4; the positive-valuation versus topological-nilpotence distinction
+against Conrad, Section 6.2; and the complete real-valued setting of the
+classical entire-function results against Cherry's lectures. These checks
+do not establish priority or independent peer review.
 
 ## The finite checks prove no infinite theorem
 
@@ -188,10 +214,20 @@ counterexample pair are coprime polynomials and do satisfy polynomial Bézout
 identities**, so no finite computation can witness the main negative result.
 Appendix C states this in full.
 
-One usage note: the 831-check script takes a **required** `--output` path and
-exits nonzero without one. That is deliberate — it prevents a re-run from
-overwriting the delivered record — and is not a broken suite. Run correctly
-it reproduces 831 of 831.
+The maintained review reran both unmodified programs on temporary copies:
+**831/831** and **664/664** checks passed. The 831-check script takes a
+required `--output` path; choose a fresh path. The 664-check script writes
+under `../data` relative to its own file, so run a temporary copy to preserve
+the historical records. From this report directory:
+
+```sh
+review_dir=$(mktemp -d)
+mkdir -p "$review_dir/code"
+cp code/*-verify*.py "$review_dir/code/"
+python "$review_dir/code/06-cofinality-bezout-trichotomy-verify-examples.py" \
+  --output "$review_dir/suite-a.json"
+python "$review_dir/code/03-cofinality-and-scalar-extension-verify.py"
+```
 
 ## Build
 
@@ -203,7 +239,7 @@ BibTeX file, external graphics, shell escape or repository checkout is needed.
 latexmk -pdf -interaction=nonstopmode article.tex
 ```
 
-The delivered build is clean: 44 pages, 0 errors, 0 undefined references or
+The maintained review build is clean: 45 pages, 0 errors, 0 undefined references or
 citations, 0 package warnings, 0 overfull or underfull boxes, 66 numbered
 statements (18 theorems, 9 lemmas, 4 propositions, 16 corollaries, 4
 definitions, 1 convention, 3 examples, 4 questions, 7 remarks).
