@@ -8,9 +8,23 @@ graphics. Build with
 latexmk -pdf -interaction=nonstopmode article.tex
 ```
 
+Without `latexmk`, run `pdflatex -interaction=nonstopmode -halt-on-error
+article.tex` three times to settle references and the contents.
+
 The delivered build has no errors, no warnings, no overfull or underfull boxes,
 no undefined references or citations, no multiply-defined labels and no
 duplicate PDF destinations. Every `\label` carries the prefix `nab:`.
+
+The September 22, 2026 review corrects the full-raw-support sufficiency claim
+and distinguishes it from the failure of raw singular support in both
+directions. It adds an explicit left-gauge counterexample, clarifies the
+matrix exponential/logarithm domains and support-condition invariance, and
+separates the Part I bundle question from the Part II framed classification.
+The revised 52-page PDF builds in three `pdflatex` passes without warnings or
+box errors. Temporary-copy reruns passed all 2,899 Part I exact checks and
+the eight exact plus four numerical Part II checks under Python 3.13.14,
+SymPy 1.14.0, NumPy 2.3.5 and SciPy 1.17.0; the largest numerical error was
+`1.472e-13`, below `2e-9`. Historical code and data remain unchanged.
 
 ## What this report is
 
@@ -40,14 +54,16 @@ solely to keep them apart, and section 1.2 states both in a box on page 2.
 * **Criterion P** (Theorem 6.2, Part I): gluing is solvable iff the union over
   punctures of the supports of the **normalized polar factors**
   `Pol(G_a) - I_r` is well ordered, where each transition matrix is factored
-  **independently and first** as `G_a = Pol(G_a) Reg(G_a)`. It is **false** with
-  the raw transition support `union_a supp(G_a - I_r)` in place of it, in
-  **both** directions.
+  **independently and first** as `G_a = Pol(G_a) Reg(G_a)`. Well-ordering of
+  the **full raw transition support** `union_a supp(G_a - I_r)` is sufficient
+  but not necessary: every polar support lies in its generated positive monoid.
+  Well-ordering of **raw singular-coefficient support** fails both directions.
 * **Criterion M** (Theorem 14.2, Part II): a representation is realizable iff
   the union over punctures of the supports of `rho(ell_d) - I_r` is well
   ordered, for a compatible based-meridian basis — the **raw monodromy
-  matrices**, with no factorization applied first. Here the raw support *is* the
-  invariant, and it is basis- and basepoint-independent (Proposition 14.4).
+  matrices**, with no factorization applied first. **Well-ordering of that
+  union** is basis- and basepoint-independent (Proposition 14.4); the support
+  set itself need not stay the same.
 
 The trap is printed where a reader would otherwise generalize. Section 8 gives a
 rank-three family over `Gamma = Q` whose determinant is one, whose only raw
@@ -167,10 +183,12 @@ none weakened. The load-bearing ones:
   Corollary 10.3 shows finite-puncture computation provably cannot detect the
   Part I examples. Finite cutoffs are justified only for finitely generated
   positive rational exponent monoids.
-* No classification of isomorphism classes; only triviality is decided.
+* Part I decides bundle triviality without classifying all isomorphism classes.
+  Part II does classify framed positive gauge classes by admissible monodromy.
 * The infinite-puncture period section uses the axiom of choice and is not
-  continuous (proved impossible), not normed, not effective, not computable.
-  For infinite `D` no growth condition at infinity is imposed.
+  continuous (proved impossible). No norm estimate or effective procedure is
+  supplied, and no computability claim is made for a specified representation
+  of infinite data. For infinite `D` no growth condition at infinity is imposed.
 * Part II assumes no sheaf property, uses no Hahn sheaf cohomology, and relies
   on no companion claim about Hahn Noetherianity or a Nullstellensatz.
 * Open: monomial localization; arbitrary-cover normal forms; classification;
@@ -215,8 +233,10 @@ unchanged. Neither verifies a theorem; both audit finite identities and both
 print their own scope disclaimer. Section 20 describes exactly what each checks.
 
 ```sh
-python code/08-polar-support-matrix-cousin-verify.py   # exact symbolic, SymPy
-python code/09-support-monodromy-realization-verify-examples.py  # + NumPy/SciPy
+check_dir=$(mktemp -d)
+cp code/*-verify*.py "$check_dir/"
+python "$check_dir/08-polar-support-matrix-cousin-verify.py"
+python "$check_dir/09-support-monodromy-realization-verify-examples.py"
 ```
 
 * Part I: 2,899 exact rational-arithmetic checks, no floating point in any
@@ -232,10 +252,11 @@ python code/09-support-monodromy-realization-verify-examples.py  # + NumPy/SciPy
 **Two operational cautions, verified directly rather than read from a README.**
 
 1. The Part II script **writes its own evidence**: it emits
-   `verification_results.json` beside itself via `Path(__file__).with_name`, so
-   running it in place overwrites the delivered record. **Run it on a copy.** A
-   byte-identity check performed after an in-place run compares two equally
-   modified copies and proves nothing.
+   `verification_results.json` beside itself via `Path(__file__).with_name`.
+   In this maintained layout an in-place run creates or overwrites that file
+   under `code/`; the separately named historical record under `data/` is
+   unchanged. In the original archive layout the output could overwrite the
+   record beside the script. **Run it on a copy**, as above.
 2. The Part II README as delivered lists `SHA256SUMS.txt`; that file is **not
    present** in the delivered directory and is not present here, so no checksum
    verification of the original archive is possible from what was shipped.

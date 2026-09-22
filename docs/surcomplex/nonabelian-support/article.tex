@@ -208,13 +208,13 @@ is $\rho$ the monodromy of a connection $dY=\Omega Y$ whose coefficients are
 ordinary holomorphic matrix one-forms on all of $U$ and whose Hahn support is
 a single well-ordered positive set?
 
-These are the same question asked multiplicatively and additively. Both need
-the local positive factorization at a puncture, both need an ordinary
-analytic input of Mittag--Leffler type applied one exponent at a time, both
-build their obstruction from a mixed term that the abelianization cannot see,
-and in both the answer is that a certain \emph{union of Hahn supports must be
-well ordered}. That last coincidence of wording is also the one real trap in
-reading this report, so we state it immediately.
+These are different questions sharing a coefficient category and an ordinary
+Mittag--Leffler input applied one exponent at a time. Part~I first normalizes
+each transition matrix; Part~II corrects the lower-weight monodromy prediction
+by ordinary periods. Mixed products matter in both constructions, but the
+support obstruction in Part~II can already occur for an abelian
+representation. In both problems a certain \emph{union of Hahn supports must
+be well ordered}. The objects in those unions must be distinguished.
 
 \subsection{The two criteria, and why they are two}
 
@@ -229,8 +229,10 @@ reading this report, so we state it immediately.
 where $\Pol(G_a)$ is the normalized polar factor produced by an
 \emph{independent local factorization} of each transition matrix
 $G_a=\Pol(G_a)\Reg(G_a)$. This is a criterion on the polar factors, not on
-the transition matrices. It is \emph{false} with
-$\bigcup_a\supp(G_a-I_r)$ in place of $\EU(G)$, in both directions.
+the transition matrices. Well-ordering of the full raw union
+$\bigcup_a\supp(G_a-I_r)$ is \emph{sufficient but not necessary}.
+Well-ordering of the raw \emph{singular-coefficient} support is neither
+necessary nor sufficient (\cref{nab:sec:rankthree}).
 
 \medskip
 \textbf{Criterion M} (Part~II, \cref{nab:thm:RH}). A near-identity
@@ -260,8 +262,8 @@ $\{1+1/n\}$; and it contains the opposite example, in which \emph{adding} a
 term that introduces exactly that descending set among the raw poles
 \emph{removes} the obstruction. So in Part~I the raw singular support is
 neither sufficient nor necessary, and the factorization must be performed
-first. In Part~II, by contrast, the raw monodromy support is exactly the
-invariant, and applying a factorization to $\rho(\ell_d)$ before testing
+first. In Part~II, by contrast, well-ordering of the raw monodromy support is
+the invariant condition, and applying a factorization to $\rho(\ell_d)$ before testing
 would be a mistake of the opposite kind.
 
 \subsection{What each part contributes}
@@ -367,9 +369,10 @@ occurs exactly when the corresponding coefficient matrix is not identically
 zero. The Hahn field of constants is
 \[
  \K=\C((t^\Gamma)),\qquad
- \mm=\{a\in\K:\val(a)>0\}\cup\{0\},
+ \mm=\{a\in\K:\val(a)>0\},
 \]
-where $\val$ of a nonzero series is its least exponent. Divisibility of
+where $\val$ of a nonzero series is its least exponent and $\val(0)=+\infty$.
+Divisibility of
 $\Gamma$ and algebraic closedness of $\K$ are never used: we extract no roots
 and take no algebraic closure.
 
@@ -464,15 +467,15 @@ sheaf property proved on the ordinary base &
 $\JJ(V)$ is the positive part of the common-domain family; no sheaf property
 assumed\\[0.35em]
 $\GG(V)=I_r+\Mat_r(\JJ(V))$ & the positive matrix group being split &
-the group of positive framed gauges, and the target of $\rho$ after
-restriction to one domain\\[0.35em]
+the group of positive gauges; framed gauges have value $I_r$ at the base
+point, and $\rho$ takes values in the constant subgroup\\[0.35em]
 $\mm$ & not used; positivity is imposed sheaf-wise &
 positive-valuation elements of $\K$; $\rho$ takes values in
 $I_r+\Mat_r(\mm)$\\[0.35em]
 Well-ordered union of supports & taken over normalized \emph{polar factors}
-$\Pol(G_a)$: the invariant $\EU(G)$ &
-taken over the \emph{monodromy matrices} $\rho(\ell_d)$: the invariant
-$E_\rho$\\[0.35em]
+$\Pol(G_a)-I_r$: well-ordering of $\EU(G)$ is invariant &
+taken over the \emph{monodromy matrices} $\rho(\ell_d)-I_r$: well-ordering of
+$E_\rho$ is invariant\\[0.35em]
 Local positive factorization & $G=\Pol(G)\Reg(G)$ on a punctured disk,
 normalized Birkhoff type &
 $Y=H\exp(R\Log z)$ on a punctured disk, positive Frobenius type\\[0.35em]
@@ -498,13 +501,14 @@ combined with one of those hypotheses by analogy.
 
 \begin{remark}[Which exponential and which logarithm]
 \label{nab:rem:explog}
-Every $\exp$ and $\log$ in this report is the formal one-variable
-substitution of \cref{nab:lem:inverse}, applied to a matrix with positive
-Hahn support and computed coefficientwise on a fixed ordinary domain. Its
-domain is $\Mat_r(\JJ(V))$, and the only law used is that $\exp$ and $\log$
-are mutually inverse as one-variable substitutions. In particular
-$\log(AB)\neq\log A+\log B$ for noncommuting arguments --- this failure is the
-entire difficulty in Part~I --- and no exponentiation here is the
+The matrix $\exp$ and $\log$ in this report are formal one-variable
+substitutions from \cref{nab:lem:inverse}, computed coefficientwise on a fixed
+ordinary domain. They are mutually inverse maps
+$\exp:\Mat_r(\JJ(V))\to\GG(V)$ and
+$\log:\GG(V)\to\Mat_r(\JJ(V))$. For commuting arguments the usual
+addition identities hold; they are not imposed on noncommuting arguments.
+Ordinary scalar logarithms such as $\log 2$ and the branch $\Log z$ retain
+their ordinary complex meanings. No matrix exponential here is the
 Ehrlich--Kaplan surcomplex exponential, or any radial or quaternionic
 extension of it, whose homomorphism properties are separate questions
 belonging to separate reports. The scalar identity
@@ -883,9 +887,15 @@ The analogous statement for multiplication on the left is generally false.
 
 \begin{proof}
 The factorization $GQ=\Pol(G)(\Reg(G)Q)$ has the defining properties of
-\cref{nab:thm:local}, and uniqueness gives the equality. Left multiplication
-can mix regular and polar terms in the opposite order; the examples of
-\cref{nab:sec:rankthree} show that the order matters.
+\cref{nab:thm:local}, and uniqueness gives the equality. For failure on the
+left, choose $\delta>0$, $s=t^\delta$, $G=I_3+(s/u)E_{23}$ and
+$Q=I_3+sE_{12}$. Direct multiplication gives
+\[
+ QG=\bigl(I_3+(s/u)E_{23}+(s^2/u)E_{13}\bigr)Q.
+\]
+Here $E_{ij}$ are matrix units. The first factor is polar and $Q$ is regular,
+so it is $\Pol(QG)$, which
+differs from $\Pol(G)=G$. This exhibits the multiplication order explicitly.
 \end{proof}
 
 \begin{corollary}[Unitriangular factors]\label{nab:cor:unitriangular}
@@ -915,14 +925,16 @@ exponents at different punctures, the exponents of such products can form a
 descending sequence absent from the raw singular data. That single mechanism is
 the whole content of \cref{nab:thm:hidden} and \cref{nab:thm:depth}.
 
-In rank one, and only there, the factorization has a closed form:
+In rank one the commuting logarithmic parts give the closed form
 \begin{equation}\label{nab:eq:scalarPol}
  \Pol(G)=\exp\bigl(\pi_-\log G\bigr),
  \qquad
  \Reg(G)=\exp\bigl(\pi_+\log G\bigr),
 \end{equation}
 with the projections acting coefficientwise and the scalar exponential
-addition law verifying the factorization. In a noncommutative matrix algebra,
+addition law verifying the factorization. The same argument applies to a
+matrix input if its two projected logarithmic parts commute. For general
+matrix inputs,
 replacing \cref{nab:thm:local} by \eqref{nab:eq:scalarPol} is invalid; the
 algebraic Birkhoff literature describes the associated
 Baker--Campbell--Hausdorff corrections in a filtered setting
@@ -1098,13 +1110,18 @@ uses normal convergence independent of the formal exponents. The failure occurs
 exactly when the \emph{necessary normalized polar information} cannot fit into
 a single well-ordered support.
 
-The test cannot be replaced by $\bigcup_a\supp(G_a-I_r)$. First, $G_a$ may
-itself be holomorphic on $D_a$, in which case $P_a=I_r$ and the solution
+Write $E_{\mathrm{raw}}=\bigcup_a\supp(G_a-I_r)$. If this set is well
+ordered, \cref{nab:thm:local} puts every $P_a-I_r$ in
+$\angles{E_{\mathrm{raw}}}\setminus\{0\}$, so Criterion~P gives a splitting.
+Thus well-ordering of the full raw union is a sufficient condition. It is
+not necessary: $G_a$ may itself be holomorphic on $D_a$, in which case
+$P_a=I_r$ and the solution
 $B_0=I_r$, $B_a=G_a^{-1}$ exists even if those raw supports have a descending
-union. Second, and less obviously, discarding all raw holomorphic coefficients
-is also not enough: noncommutative products between discarded and retained
-terms can create essential polar information. That is the content of
-\cref{nab:sec:rankthree}, and it is why \cref{nab:sec:twocriteria} exists.
+union. In contrast, the raw singular-coefficient union
+$\bigcup_a\supp\bigl(\pi_-(G_a-I_r)\bigr)$ fails both directions:
+discarding raw holomorphic coefficients can lose polar information created
+by their products with retained terms, and retained singular terms can cancel
+in the normalization. \Cref{nab:sec:rankthree} gives both examples.
 
 \subsection{The space of solutions}
 
@@ -1214,9 +1231,9 @@ terms of the singular support of the additive data on a puncture-and-disk
 cover \cite{RepoGlobal}. We cite that theorem as the case we recover; it is not
 reproved here, and no priority for the scalar statement is claimed. What is
 new is that the correct matrix replacement for $\pi_-\log$ is the normalized
-polar factor and not any entrywise logarithm: no analogous entrywise formula
-is substituted for $\Pol$ in rank $\geq2$, precisely because
-$\log(AB)\neq\log A+\log B$ (\cref{nab:rem:explog}), and
+polar factor and not the Laurent projection of a matrix logarithm: the scalar
+formula is not valid for general matrix inputs because logarithms need not
+turn products into sums (\cref{nab:rem:explog}), and
 \cref{nab:prop:logdiag} measures the error.
 
 \section{A rank-three obstruction invisible in the raw poles}
@@ -1347,7 +1364,7 @@ solvable. Raw singular support is therefore neither a sufficient nor a
 necessary test, in the strongest possible sense: the two directions fail on
 data that differ by one term.
 
-\subsection{Why an entrywise logarithm is not a repair}
+\subsection{Why a projected matrix logarithm is not a repair}
 
 \begin{proposition}[Logarithm diagnostic]\label{nab:prop:logdiag}
 The matrix logarithm of \eqref{nab:eq:badG} is finite, namely
@@ -1573,8 +1590,8 @@ there is no reduction ring homomorphism $\HH\to\OO$ killing positive
 monomials, because those monomials are units in $\HH$.
 
 Accordingly the precise conclusions of Part~I are nonexistence of a positive
-coherent matrix splitting and nontriviality of the corresponding
-\emph{integral} coherent vector bundle. Whether negative-valuation changes of
+matrix splitting with common-domain Hahn entries and nontriviality of the
+corresponding \emph{integral} locally free module. Whether negative-valuation changes of
 frame can trivialize particular higher-rank examples is a separate question.
 The scalar report proves more in rank one by a special leading-unit
 normalization \cite{RepoGlobal}; no matrix analogue of that argument is
@@ -1750,8 +1767,9 @@ for.
 \label{nab:sec:twocriteria}
 
 Both headline theorems of this report read ``the union of the supports is well
-ordered''. The two unions are taken over different objects, and each criterion
-is false for the other's object.
+ordered''. The unions concern different objects: full raw transition support
+gives only a sufficient gluing test, while raw meridian support gives the exact
+monodromy test.
 
 \begin{center}\small
 \begin{tabular}{@{}L{0.17\textwidth}L{0.38\textwidth}L{0.38\textwidth}@{}}
@@ -1767,14 +1785,15 @@ $\Pol(G_a)-I_r$, the normalized polar factor of an \emph{independent local
 factorization} of each transition matrix &
 $\rho(\ell_d)-I_r$, the prescribed monodromy matrices themselves, for a
 compatible based-meridian basis\\[0.3em]
-Invariant &
+Tested union &
 $\EU(G)=\bigcup_a\supp(\Pol(G_a)-I_r)$ &
 $E_\rho=\bigcup_{d}\supp(\rho(\ell_d)-I_r)$\\[0.3em]
 Raw data &
-raw transition support $\bigcup_a\supp(G_a-I_r)$ is \emph{neither necessary
-nor sufficient}: \cref{nab:thm:hidden} and \cref{nab:ex:repair} &
-the raw meridian support \emph{is} the invariant; it is basis- and
-basepoint-independent by \cref{nab:prop:intrinsic}\\[0.3em]
+well-ordering of full raw transition support is sufficient, not necessary;
+raw singular support fails both directions
+(\cref{nab:thm:hidden,nab:ex:repair}) &
+well-ordering of raw meridian support is the invariant condition, independent
+of basis and base point by \cref{nab:prop:intrinsic}\\[0.3em]
 Must one factor first? &
 Yes. Skipping the factorization tests an object that is provably inequivalent
 &
@@ -2066,8 +2085,9 @@ the presentation of the same representation and not this condition on all its
 values.
 \end{proof}
 
-This is the precise sense in which Criterion M tests an invariant of $\rho$
-itself. Contrast \cref{nab:sec:twocriteria}: Criterion P is \emph{not} a
+The support set $E_\rho$ itself can change with the meridian basis; its
+\emph{well-ordering} is the invariant proved here. Contrast
+\cref{nab:sec:twocriteria}: Criterion P is \emph{not} a
 condition on the raw transition data, and the analogue of
 \cref{nab:prop:intrinsic} for $\bigcup_a\supp(G_a-I_r)$ is false.
 
@@ -2466,9 +2486,10 @@ with determinant $1$ and leading mixed term $uvH\neq0$. So the realization
 theorem here is not an entrywise construction of independent scalar equations:
 the extra commutator in \eqref{nab:eq:mixedconnection} is exactly the
 interaction that a scalar period prescription would miss. This is the Part~II
-counterpart of the cross term $-a_-c_+$ of \cref{nab:prop:heisenberg}: in both
-parts the obstruction is manufactured by a mixed product that the
-abelianization cannot see.
+counterpart of the cross term $-a_-c_+$ of \cref{nab:prop:heisenberg}: both
+constructions require mixed products absent from the abelianized equations.
+Here the mixed term is a solvable correction; in Part~I such products can also
+create a globally inadmissible polar-support union.
 
 \subsection{Specialization to a genuinely higher-rank Hahn group}
 
@@ -2689,11 +2710,11 @@ and SymPy 1.14.0.
 \paragraph{A warning about rerunning the Part~II script.}
 That script \emph{writes its own evidence}: it emits
 \texttt{verification\_results.json} beside itself, via
-\texttt{Path(\_\_file\_\_).with\_name}, so rerunning it in place overwrites the
-delivered record. Any byte-identity check performed after an in-place rerun
-compares two equally modified copies and proves nothing. The independent rerun
-reported in \cref{nab:app:repro} was therefore performed on a copy outside this
-report directory, and the delivered
+\texttt{Path(\_\_file\_\_).with\_name}. In the original archive layout this
+could overwrite the recorded output beside the script. In the maintained
+layout it creates or overwrites an output under \texttt{code/}, while the
+separately named record under \texttt{data/} is unchanged. Reruns should use a
+copy outside the report directory, as in \cref{nab:app:repro}; the delivered
 \texttt{09-support-monodromy-realization-verification-results.json} in
 \texttt{data/} is the original record.
 
@@ -2757,9 +2778,11 @@ rational exponent monoids. For a general higher-rank ordered group a bounded
 exponent interval can be infinite.
 
 \item\label{nab:nc:classification}
-No classification of isomorphism classes is offered; only triviality is
-decided. \Cref{nab:prop:torsor} describes all solutions once a splitting
-exists, not the nonsplit objects.
+Part~I decides triviality rather than classifying all bundle isomorphism
+classes. \Cref{nab:prop:torsor} describes all solutions once a splitting
+exists, not the nonsplit objects. Part~II does classify framed positive gauge
+classes by their admissible monodromy representations
+(\cref{nab:thm:gauge}).
 
 \item\label{nab:nc:higherdim}
 The sharp star-cover invariant does not generalize to positive-dimensional
@@ -2822,9 +2845,10 @@ surcomplex manifold.
 \item\label{nab:nc:choice}
 The infinite-puncture period section is obtained by a vector-space splitting
 using the axiom of choice. It is not continuous ---
-\cref{nab:prop:discontinuous} proves that impossible --- not normed, not
-effective and not computable; only an ordinary complex-linear splitting is
-claimed.
+\cref{nab:prop:discontinuous} proves that impossible. No norm estimate or
+effective procedure is supplied; only an ordinary complex-linear splitting is
+claimed, with no computability assertion about a specified representation of
+the infinite input data.
 
 \item\label{nab:nc:infinity}
 For infinitely many punctures, no regularity or growth condition at infinity is
@@ -2952,8 +2976,9 @@ bounded plane domain. At the opposite boundary, one globally well-ordered
 support certificate restores Stein rigidity in every finite rank; cyclic value
 groups supply such a certificate automatically and noncyclic ones do not.
 
-For monodromy, the correct obstruction \emph{is} the raw support of the
-prescribed matrices, and it is an invariant of the representation. Realizers
+For monodromy, the correct obstruction is failure of well-ordering of the raw
+support union of the prescribed matrices. This condition is an invariant of
+the representation. Realizers
 can be taken coefficientwise logarithmic, a fixed linear period section
 selects a unique normalized one, framed positive gauges classify connections
 with equal monodromy, and within the logarithmic class the comparison gauge
@@ -3218,25 +3243,32 @@ TeX Live installation builds it with
 \begin{verbatim}
 latexmk -pdf -interaction=nonstopmode article.tex
 \end{verbatim}
+Alternatively, run \texttt{pdflatex} with
+\texttt{-interaction=nonstopmode -halt-on-error} three times to settle the
+cross-references and contents.
 
 \subsection{Rerunning the delivered checks}
 
 The two scripts are preserved under \texttt{code/} with their original
 contents and their recorded outputs under \texttt{data/}. The Part~I script
 needs Python 3.10 or later with SymPy; the Part~II script needs NumPy, SciPy
-and SymPy. From a working copy:
+and SymPy. From this report directory, run copies in a temporary directory:
 \begin{verbatim}
-python code/08-polar-support-matrix-cousin-verify.py
-python code/09-support-monodromy-realization-verify-examples.py
+check_dir=$(mktemp -d)
+cp code/*-verify*.py "$check_dir/"
+cd "$check_dir"
+python 08-polar-support-matrix-cousin-verify.py
+python 09-support-monodromy-realization-verify-examples.py
 \end{verbatim}
 
 Two operational cautions, both verified directly rather than taken from a
 README.
 
 First, the Part~II script writes \texttt{verification\_results.json} beside
-itself and therefore overwrites its own delivered record when run in place. Run
-it on a copy outside this directory. A byte-identity comparison performed after
-an in-place run compares two equally modified copies and proves nothing.
+itself. An in-place run in the maintained layout writes under \texttt{code/};
+in the original archive layout it could overwrite the historical record.
+Running a temporary copy keeps generated evidence separate from both the
+script and the delivered record.
 
 Second, the Part~II README as delivered lists a file
 \texttt{SHA256SUMS.txt} among the archive contents. That file is
