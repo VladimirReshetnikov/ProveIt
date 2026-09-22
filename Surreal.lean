@@ -82,11 +82,15 @@ import Surreal.Foundations.SignSequencePolynomialScaling
 import Surreal.Foundations.SignSequencePolynomialNormalization
 import Surreal.Foundations.SignSequenceRealClosedReduction
 import Surreal.Foundations.SignSequenceValuation
+import Surreal.Foundations.SignSequenceValuationBounds
+import Surreal.Foundations.SignSequenceValuationApproximation
+import Surreal.Foundations.SignSequenceValuationBalls
 import Surreal.Foundations.SignSequenceFiniteLeading
 import Surreal.Foundations.SignSequenceMonomialAlgebra
 import Surreal.Foundations.SignSequenceFiniteNormalForm
 import Surreal.Foundations.SignSequenceFiniteOrder
 import Surreal.Foundations.SignSequenceWorkspaceExponents
+import Surreal.Foundations.SmallNormalForm
 import Surreal.Foundations.SignSequenceDyadics
 import Surreal.Foundations.SignSequenceRealBirthday
 import Surreal.Foundations.SignSequenceBirthdayArithmetic
@@ -148,6 +152,7 @@ import Surreal.HahnSeries.PolynomialSimpleRootCorrection
 import Surreal.HahnSeries.PolynomialClusterFactors
 import Surreal.HahnSeries.PolynomialNormalization
 import Surreal.HahnSeries.PolynomialWorkspace
+import Surreal.HahnSeries.Polar
 import Surreal.HahnSeries.PolynomialGaussValuation
 import Surreal.HahnSeries.PolynomialInitialRoots
 import Surreal.HahnSeries.PolynomialInitialDerivative

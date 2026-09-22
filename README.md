@@ -113,6 +113,9 @@ series to the ordinary norm of its standard part. Finite exponentiation
 combines ordinary complex exponentiation with the infinitesimal exponential:
 it maps onto all units of the nonnegative-order ring and has exactly the
 ordinary integral multiples of `2πi` as its kernel.
+Every nonzero complex Hahn series is its positive modulus times the finite
+exponential of an imaginary finite real angle. These angles are unique modulo
+ordinary integral multiples of `2π`.
 Roots of monic polynomials over this subring stay in it; for split polynomials,
 standard part preserves the root multiset with multiplicities.
 Resultant and nodal-derivative valuations are finite sums of root-separation
@@ -311,5 +314,11 @@ The surreal field is not algebraically closed, and no linear order is
 compatible with surcomplex multiplication.
 Real closedness of the actual sign field and the infinite normal-form bridge to Hahn
 series remain open.
+The bridge now has an explicit formal carrier of small reverse-well-ordered
+supports, reusing the pinned upstream ordinal truncation APIs. Compatible
+small families of valuation balls have a proved unique simplest common point.
+Their approximation inequalities alone never give uniqueness: a sufficiently
+small positive monomial produces another solution. The next construction uses
+support-length recursion and must prove arithmetic and truncation compatibility.
 A successful build proves only the imported Lean
 statements, not coverage of all the source documents.

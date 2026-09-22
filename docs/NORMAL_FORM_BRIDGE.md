@@ -12,7 +12,8 @@ The obligations are those in `found:eq:normalform`, `found:sub:bridge`, and
 The existing vendored revision is
 `3c6dcdbc1ce9e4a16f9b6aa16ee485a744568404` of `vihdzp/combinatorial-games`.
 Its [Surreal/HahnSeries/Basic.lean](https://raw.githubusercontent.com/vihdzp/combinatorial-games/3c6dcdbc1ce9e4a16f9b6aa16ee485a744568404/CombinatorialGames/Surreal/HahnSeries/Basic.lean)
-exists upstream but is **not currently vendored or imported here**.
+is now vendored byte for byte and used by
+[`SmallNormalForm.lean`](../Surreal/Foundations/SmallNormalForm.lean).
 
 It provides `SurrealHahnSeries.{u} : Type (u + 1)`, an ordered field of real
 Hahn series with reverse well-ordered, `u`-small surreal support. Reusable
@@ -20,14 +21,16 @@ constants include `mk`, `small_support`, `length`, `exp`, `coeffIdx`, `trunc`,
 `truncIdx`, `length_truncIdx`, `length_trunc_lt`, and `term`. It contains no
 evaluation map or normal-form equivalence with actual surreal numbers.
 
-The unmodified pinned file compiled in a temporary directory with this
-repository's Lean/Mathlib 4.32 toolchain. A transitive audit of its 106
+The unmodified pinned file compiles with this repository's Lean/Mathlib 4.32
+toolchain. The initial independent transitive audit of its 106
 `SurrealHahnSeries` declarations accepted only `propext`, `Classical.choice`,
 and `Quot.sound`. Its sole combinatorial-games import, `Surreal.Pow`, is
 already vendored; its other imports are Mathlib modules. The file has an
-Apache-2.0 header and the existing upstream license applies. Reusing it would
-add one upstream module; no vendor or shared Mathlib files were changed in
-this assessment.
+Apache-2.0 header and the existing upstream license applies. Reuse adds one
+upstream module without a compatibility patch or a shared Mathlib change.
+The root audit now also checks the `SurrealHahnSeries` namespace. The local
+interface exposes small reverse-well-ordered support and ordinal truncations
+with actual sign-sequence growth exponents; it supplies no infinite evaluation.
 
 Upstream HEAD resolved to `02b4a908ea2ecfefffecb438f691951a814a5264` during
 inspection. Its Hahn directory still contained only `Basic.lean`; changes
@@ -52,7 +55,7 @@ bridge. This is a finding about those two inspected revisions.
   an additive-group embedding; it does not supply the required multiplicative,
   monomial-preserving normal-form bridge.
 
-## First construction to implement
+## Constructed compatible-ball intersection
 
 For `I : Type u` and `p a : I → SignSequence.{u}`, assume
 
@@ -60,13 +63,13 @@ For `I : Type u` and `p a : I → SignSequence.{u}`, assume
 ∀ i j, ↑(min (a i) (a j)) < valuation (p i - p j).
 ```
 
-Prove that there is a unique *simplest* `x` satisfying
+The checked theorem `existsUnique_simplest_valuationBall_point` now gives a unique *simplest* `x` satisfying
 `∀ i, ↑(a i) < valuation (x - p i)`: it satisfies these inequalities and is
-a sign prefix of every other solution. This is a proposed theorem, not an
-existing declaration.
+a sign prefix of every other solution. It is implemented in
+[`SignSequenceValuationBalls.lean`](../Surreal/Foundations/SignSequenceValuationBalls.lean).
 
-First prove the scaled absolute-bound characterization using all reciprocal
-positive natural numbers. Then form the small cut with options
+The proof uses the scaled absolute-bound characterization for all reciprocal
+positive natural numbers and forms the small cut with options
 `p i ± tMonomial (a i) / (n + 1)`, indexed by `I × ℕ`. Compatibility separates
 the options; `cut_realizes` gives the approximation bounds and `cut_isPrefix`
 gives simplicity. The empty index type is included. No Hensel or
@@ -75,12 +78,13 @@ real-closedness assumption enters this construction.
 **Approximation is not uniqueness.** Small strict upper bounds give an exponent
 `b` above every `a i`. If `x` satisfies the bounds, so does
 `x + tMonomial b`. Thus approximation inequalities alone cannot identify a
-sum, prove an arithmetic identity, or select a normal form. The simplicity
-condition is essential.
+sum, prove an arithmetic identity, or select a normal form. This nonuniqueness is proved in
+[`SignSequenceValuationApproximation.lean`](../Surreal/Foundations/SignSequenceValuationApproximation.lean).
+The simplicity condition is essential.
 
 ## Dependency order after that lemma
 
-1. Reuse the pinned small-support module and its ordinal truncation APIs.
+1. The pinned small-support module and its ordinal truncation APIs are now reused.
    Retain `Small.{u}` support explicitly; finite evaluation's independent
    universe parameters do not justify arbitrary infinite supports.
 2. Construct evaluation by ordinal-length recursion, with the prescribed
