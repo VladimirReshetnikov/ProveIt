@@ -72,16 +72,16 @@
 \hypersetup{pageanchor=false}
 \begin{titlepage}
 \centering
-\vspace*{0.45in}
+\vspace*{0.25in}
 {\color{olive}\large\sffamily SURREAL AND SURCOMPLEX RESEARCH}\par
-\vspace{0.40in}
+\vspace{0.25in}
 {\color{ink}\huge\bfseries Holonomic Rigidity\\[6pt] for Entire Hahn Functions}\par
 \vspace{0.28in}
 {\Large A sharp order-unit criterion for dilations,\\[4pt]
 with uniform exclusion bounds}\par
 \vspace{0.32in}
 {\large Merged research report\quad\textperiodcentered\quad 22 September 2026}\par
-\vspace{0.35in}
+\vspace{0.20in}
 \begin{minipage}{0.94\textwidth}
 \begin{abstract}
 Fix a nonzero set-sized ordered abelian group $\Gamma$ and the complex Hahn
@@ -124,14 +124,12 @@ hypothesis itself.
 \vfill
 \begin{minipage}{0.94\textwidth}
 \small
-\textbf{Status.} This is a merged AI-assisted research report with written
-mathematical proofs and two independent finite exact-arithmetic check suites.
-The arbitrary-rank classification is offered as a proposed original
-contribution, not as certified bibliographic priority and not as the
-resolution of a named published conjecture. The positive-support word lemma
-has Lean coverage; the main theorem package remains unformalized and has not
-been independently refereed. The variable derivative used throughout is not
-the Berarducci--Mantova derivation on surreal coefficients.
+\textbf{Status.} An AI-assisted research report; priority and independent
+refereeing are not certified. Lean covers the positive-support word lemma,
+escape mechanism, bounded-cost exclusion and formal exponential domain.
+The main differential and dilation classifications and the new torsion
+argument remain unformalized. The variable derivative is not the
+Berarducci--Mantova derivation on surreal coefficients.
 \end{minipage}
 \end{titlepage}
 \hypersetup{pageanchor=true}
@@ -2134,34 +2132,29 @@ gaps have different signs. This is a worked instance of item (1) of
 Section~\ref{hol:sub:divisibility}.
 \end{example}
 
-\subsection{What a Lean implementation would have to establish}
+\subsection{Current Lean coverage and remaining dependency order}
 
-Beyond the existing support lemma, the most reusable formalization target is Lemma~\ref{hol:lem:escape} together
-with Theorem~\ref{hol:thm:escapeexclusion}, separated from the rest of the
-analysis. They require a discrete index sequence, a valuation into an ordered
-additive group, and a finite-successor selection; the contradiction then
-reduces to Lemma~\ref{hol:lem:nonincreasing}, that is, to the impossibility of
-a nonincreasing sequence of leading exponents in a strongly summable family.
+The ledger \texttt{docs/FORMALIZATION.md} records the formalized escape
+mechanism in \path{Surreal/HahnSeries/EscapeChain.lean}:
+the nonincreasing-order obstruction, escape step and infinite chain,
+evaluation exclusion, and the uniform bounded-cost corollary. It also covers
+the univariate strong-domain definitions and the formal exponential
+identity with its exact domain and attained exclusion boundary.
+Part~(2) of Lemma~\ref{hol:lem:support} is mapped separately to
+\path{Surreal/HahnSeries/NeumannWords.lean}.
 
-The next targets are the two valuation stabilization results. The integer case
-(Lemma~\ref{hol:lem:integer}) is finite polynomial reduction. The unit-dilation
-case (Theorem~\ref{hol:thm:unitorbit}) is a finite binomial expansion plus a
-leading-coefficient polynomial on each residue class. Only after these does
-one need the operator-to-recurrence conversions
-(Lemmas~\ref{hol:lem:drec} and \ref{hol:lem:qrec}), which are elementary. The
-support monoid of Lemma~\ref{hol:lem:support}\,(2) is a separate and
-independently useful target, needed for
-Theorem~\ref{hol:thm:thetadomain}. The several-variable extension adds
-countable polynomial avoidance and generic restriction of a finite rational
-differential system; it need not be part of a first implementation stage.
+The next dependencies are integer valuation stabilization and the unit-orbit
+residue-polynomial argument, followed by the operator-to-recurrence
+conversions and the differential and dilation classifications.
+The refined periodic threshold, the complete support certificates, the
+new inward-stability lemma, the strengthened torsion equivalence and the
+generic-line extension remain unformalized. The several-variable proof also
+needs countable polynomial avoidance and restriction of a rational
+differential system.
 
-The ledger \texttt{docs/FORMALIZATION.md} now maps part~(2) of
-Lemma~\ref{hol:lem:support} to the existing positive-support and finite-word
-theorems in \texttt{Surreal/HahnSeries/NeumannWords.lean}.
-The other parts of that lemma and the main holonomic theorem package remain
-unformalized. In particular, the new inward-stability lemma and strengthened
-torsion equivalence are written proofs, not Lean results.
-The Python checks establish none of these infinite statements.
+The build and axiom audit cover only imported declarations recorded in the
+ledger. The Python checks are finite checks of formulas and examples; they
+do not establish any remaining infinite statement.
 
 \section{The two finite check suites}\label{hol:sec:verification}
 
@@ -2348,8 +2341,9 @@ Several-variable rigidity and multivariate algebraic rigidity & Proved here;
 the generic line is an existence device.\\[4pt]
 Named published open conjecture & None claimed solved.\\[4pt]
 Priority, peer review, formal verification & Priority and independent
-refereeing are not certified. Only the positive-support word lemma is mapped
-to Lean; the main theorem package remains unformalized.\\
+refereeing are not certified. The support word lemma, escape mechanism and
+formal exponential domain have Lean coverage; the main classifications
+remain unformalized.\\
 \bottomrule
 \end{longtable}
 
@@ -2363,7 +2357,8 @@ and were not treated as evidence of absence; a repository content search for
 anywhere in the repository can be reformulated into one of these results.
 Accordingly this is a proposed original result with proofs, not a certified
 claim of bibliographic priority. Independent mathematical review is still
-needed; machine-checked scope is limited to the support lemma recorded above.
+needed; machine-checked scope is the partial coverage recorded in
+Section~\ref{hol:sec:certificates} and the formalization ledger.
 
 \subsection{Further mathematical questions}
 
@@ -2555,7 +2550,8 @@ classified; no nonlinear differential algebraic rigidity is claimed; no
 complete algorithm for arbitrary surreal comparisons or cofinality decisions
 is claimed; the finite checks prove no infinite theorem. The main theorem
 package has no Lean verification or independent refereeing; the existing
-support-lemma coverage is recorded in the formalization ledger.
+support, escape and exponential-domain coverage is recorded in the
+formalization ledger.
 
 \section{Reproducing the document and the finite checks}
 \label{hol:app:reproduce}

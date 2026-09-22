@@ -6,7 +6,7 @@ independently on the same day.
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 40 pages
+article.pdf   the compiled report, 39 pages
 README.md     this guide
 08-finite-recurrences-PROOF_AUDIT.md          source 08: assumptions and critical proof steps
 08-finite-recurrences-SOURCES_AND_SCOPE.md    source 08: sources, repository pin, priority limits
@@ -81,9 +81,11 @@ surcomplex class.
   contribution**. Priority is not certified, no named published conjecture is
   claimed solved, and the proofs have not been independently refereed.
   The [Lean ledger](../../FORMALIZATION.md) maps the positive-support word
-  lemma to [NeumannWords.lean](../../../Surreal/HahnSeries/NeumannWords.lean);
-  the main theorem package and the new inward-stability result remain
-  unformalized.
+  lemma to [NeumannWords.lean](../../../Surreal/HahnSeries/NeumannWords.lean)
+  and the escape mechanism, bounded-cost exclusion and formal exponential
+  domain to [EscapeChain.lean](../../../Surreal/HahnSeries/EscapeChain.lean).
+  The main classifications and the new inward-stability and torsion results
+  remain unformalized.
 - Classical material is credited, not claimed: Stanley's D-finite/P-recursive
   correspondence, Hahn–Neumann support lemmas and Higman's lemma, partial
   theta series and their functional identity, and the Conway normal-form
@@ -171,3 +173,13 @@ Theorem 1.5 (printed page 176). The report supplies its own coefficient
 conversion over the stated Hahn field. The optional coarsening was checked
 against the local `ent:lem:coarsening`; the broader literature comparisons
 were not independently re-audited.
+
+During review, `origin/main` added the checked escape-chain and formal
+exponential-domain results. The coverage descriptions above include that
+merge; the new inward-stability proof has not been formalized.
+
+The reviewed article and catalogue rebuilt in three passes at 39 and 21 pages.
+The status note now fits on the title page; the baseline placed it on a
+separate page. Both unchanged finite suites reproduce the historical outputs
+exactly, with all six copied code/data files byte-identical to their sources.
+The three delivered source audits are also preserved.

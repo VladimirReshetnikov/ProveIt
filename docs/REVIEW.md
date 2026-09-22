@@ -139,6 +139,16 @@ apart from elapsed time. All three copied program/build files match the
 originals, and the historical data and two source audits were preserved.
 The independent index still checks 1,753 standard statements in 36 reports.
 
+The holonomic article and catalogue rebuilt at 39 and 21 pages. The two
+unchanged programs passed 3,705 and 2,043 checks on temporary copies, with
+outputs exactly matching the historical records; all copied inputs and the
+three source audits were preserved. The new inward-stability lemma brings
+the independent index to 1,754 standard statements in 36 reports.
+Remote formalization work merged during this review added the escape-chain
+and formal exponential-domain proofs. The merged Lean build passed 3,832
+jobs and audited 5,371 declarations; the new inward and torsion proofs remain
+unformalized.
+
 ## Collection-wide work
 
 The [reader map](README.md), [catalogue](manifest.tex) and statement index
