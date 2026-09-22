@@ -42,12 +42,19 @@ Polynomial algebra also includes unique division and factorization, monic
 Bézout gcds, principal ideals, and the exact gcd-with-derivative formula.
 Finite Hermite interpolation realizes prescribed derivative jets at distinct
 nodes by a unique polynomial below the total multiplicity degree bound.
+The polynomial CRT identifies the quotient with the product of local jet
+rings and provides orthogonal idempotents summing to one.
 
 The Hahn layer uses mathlib's `SummableFamily` and proves the full Neumann
 support lemma, including finiteness across all word lengths. It distinguishes
 Hahn summation from ordinary summation of constant coefficients and exposes
 univariate evaluation only with a positive-order proof. Geometric-series
 identities and exact finite remainders are formal Hahn identities.
+Arbitrary regrouping and double-sum interchange preserve jointly summable
+families. Coefficient-zero extraction gives standard part on the nonnegative-order
+subring, with residue field and a unique constant-plus-infinitesimal decomposition.
+Coefficientwise real and imaginary parts identify Hahn series over `R[i]`
+with the quadratic extension of Hahn series over `R`.
 
 These generic prerequisites do not yet construct the surreal field or establish
 the normal-form bridge to Hahn series. A successful build proves only the
