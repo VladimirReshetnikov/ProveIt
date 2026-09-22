@@ -54,6 +54,8 @@ import Surreal.Foundations.GameCuts
 import Surreal.Foundations.SignSequenceGameEquiv
 import Surreal.Foundations.SignSequenceGameAddition
 import Surreal.Foundations.SignSequenceField
+import Surreal.Foundations.SignSequenceMultiplication
+import Surreal.Surcomplex.Basic
 import Surreal.HahnSeries.Binomial
 import Surreal.HahnSeries.BinomialOrder
 import Surreal.HahnSeries.BinomialRoots

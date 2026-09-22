@@ -158,9 +158,15 @@ numeric-game options proves surjectivity. The bridge preserves the original
 Conway addition, sign reversal, zero and one. Transporting the proved game
 multiplication and inverse then makes the sign carrier an ordered field,
 retaining its original additive structure and numerical order.
+This product satisfies Conway's four-family simplest-cut equation, with
+small option indices and proved separation.
 The empty and one-plus sequences map literally to the raw games zero and one.
 The numeric-game quotient also satisfies the indexed small-cut interface and
 its comparison rule, including reconstruction from a numeric game's moves.
+The concrete surcomplex field is now the quadratic extension of that sign
+field. It has the coordinate product, conjugation and inverse formulas, a
+positive surreal-valued norm square away from zero, and dimension two over
+its real subfield. Its carrier is also not small at the birthday universe.
 Real closedness and the normal-form bridge to Hahn series remain open.
 A successful build proves only the imported Lean
 statements, not coverage of all the source documents.

@@ -10,8 +10,8 @@ proved upstream multiplication and division, retaining those existing
 operations and the numerical order. This completes the ordered-field
 structure in `found:sub:package` without postulating any field laws.
 
-The genetic product-cut equation, real closedness and the Hahn normal-form
-bridge are separate obligations.
+The genetic product-cut equation is proved in `SignSequenceMultiplication`.
+Real closedness and the Hahn normal-form bridge remain separate obligations.
 -/
 
 universe u
