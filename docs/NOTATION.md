@@ -403,6 +403,15 @@ entrywise for matrices.
 Other reports may instead define an ordinary asymptotic `O(t^7)`; quote its
 local definition before translating the notation.
 
+In [expanding polynomial dynamics](surcomplex/expanding-polynomial-dynamics/article.tex),
+`σ` is the one-sided symbolic shift and `κ = v(q) > 0` is the valuation
+gain of an inverse branch. Its error ideal `I_κ` consists of values with
+`v(h) > nκ` for every ordinary `n`. This contrasts with the small-divisor
+rate `σ(λ)` and the divisor thresholds in local normal-form dynamics.
+An order unit can exist in a group of rank greater than one; the Cantor
+description concerns the itinerary space and does not identify the ambient
+valuation as rank one.
+
 The dynamics report's ordinary small-divisor growth rates measure complex
 coefficient sizes, even when every nonzero divisor has Hahn valuation zero
 (`dyn:rem:invisible`). Its local letters `σ`, `τ`, and `log Θ` apply one rate

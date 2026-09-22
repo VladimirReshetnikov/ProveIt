@@ -2418,31 +2418,31 @@ Mappings cover only the hypotheses and clauses they state.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `epd:lem:ideal` (line 496) | Untitled |
-| Lemma | `epd:lem:evaluation` (line 554) | Finite-parameter Hahn evaluation |
-| Lemma | `epd:lem:formalbranch` (line 617) | Universal implicit branch |
-| Proposition | `epd:prop:branches` (line 646) | Exact branch metric |
-| Theorem | `epd:thm:centers` (line 702) | Universal centers and common support |
-| Corollary | `epd:cor:constant-center` (line 750) | Constant coefficients |
-| Theorem | `epd:thm:fibers` (line 774) | Exact fibers and exact separation |
-| Corollary | `epd:cor:cylinders` (line 820) | Exact finite cylinders |
-| Corollary | `epd:cor:fiber-bijection` (line 831) | The action on the fibers |
-| Theorem | `epd:thm:periodic` (line 850) | All preperiodicity equations split |
-| Proposition | `epd:prop:multiplier` (line 895) | Exact multipliers |
-| Corollary | `epd:cor:zeta` (line 916) | Periodic counts and zeta series |
-| Theorem | `epd:thm:topology` (line 945) | Order-unit dichotomy |
-| Proposition | `epd:prop:scalequotient` (line 1029) | Untitled |
-| Theorem | `epd:thm:compact` (line 1049) | Compact-subsystem rigidity |
-| Theorem | `epd:thm:extension` (line 1103) | Scalar-extension theorem |
-| Theorem | `epd:thm:deformation` (line 1190) | Uniform deformation estimate |
-| Corollary | `epd:cor:flatdeform` (line 1247) | Deformations invisible at all dynamical orders |
-| Theorem | `epd:thm:bounded` (line 1289) | Exact bounded-orbit locus |
-| Corollary | `epd:cor:coarsebounded` (line 1355) | Untitled |
-| Proposition | `epd:prop:budget` (line 1390) | An orbit and difference budget |
-| Theorem | `epd:thm:general` (line 1420) | Universal native equicontinuity criterion |
-| Corollary | `epd:cor:empty-affine` (line 1463) | Untitled |
-| Theorem | `epd:thm:surreal` (line 1532) | A surcomplex full shift with infinitesimal fibers |
-| Corollary | `epd:cor:surreal-all` (line 1691) | Untitled |
+| Lemma | `epd:lem:ideal` (line 506) | Untitled |
+| Lemma | `epd:lem:evaluation` (line 564) | Finite-parameter Hahn evaluation |
+| Lemma | `epd:lem:formalbranch` (line 638) | Universal implicit branch |
+| Proposition | `epd:prop:branches` (line 669) | Exact branch metric |
+| Theorem | `epd:thm:centers` (line 725) | Universal centers and common support |
+| Corollary | `epd:cor:constant-center` (line 777) | Constant coefficients |
+| Theorem | `epd:thm:fibers` (line 801) | Exact fibers and exact separation |
+| Corollary | `epd:cor:cylinders` (line 847) | Exact finite cylinders |
+| Corollary | `epd:cor:fiber-bijection` (line 858) | The action on the fibers |
+| Theorem | `epd:thm:periodic` (line 877) | All preperiodicity equations split |
+| Proposition | `epd:prop:multiplier` (line 922) | Exact multipliers |
+| Corollary | `epd:cor:zeta` (line 943) | Periodic counts and zeta series |
+| Theorem | `epd:thm:topology` (line 972) | Order-unit dichotomy |
+| Proposition | `epd:prop:scalequotient` (line 1058) | Untitled |
+| Theorem | `epd:thm:compact` (line 1078) | Compact-subsystem rigidity |
+| Theorem | `epd:thm:extension` (line 1132) | Scalar-extension theorem |
+| Theorem | `epd:thm:deformation` (line 1219) | Uniform deformation estimate |
+| Corollary | `epd:cor:flatdeform` (line 1276) | Deformations invisible at all dynamical orders |
+| Theorem | `epd:thm:bounded` (line 1318) | Exact bounded-orbit locus |
+| Corollary | `epd:cor:coarsebounded` (line 1384) | Untitled |
+| Proposition | `epd:prop:budget` (line 1419) | An orbit and difference budget |
+| Theorem | `epd:thm:general` (line 1449) | Universal native equicontinuity criterion |
+| Corollary | `epd:cor:empty-affine` (line 1492) | Untitled |
+| Theorem | `epd:thm:surreal` (line 1562) | A surcomplex full shift with infinitesimal fibers |
+| Corollary | `epd:cor:surreal-all` (line 1724) | Untitled |
 
 ### hahn-herglotz-positivity
 

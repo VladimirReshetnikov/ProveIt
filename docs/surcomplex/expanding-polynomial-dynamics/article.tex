@@ -107,14 +107,14 @@
 \begin{document}
 \hypersetup{pageanchor=false}
 \begin{titlepage}
-\vspace*{12mm}
+\vspace*{4mm}
 {\color{ink}\large RESEARCH REPORT\par}
-\vspace{8mm}
+\vspace{4mm}
 {\color{ink}\huge\bfseries Expanding Polynomial Dynamics\par
  over Surreal and Surcomplex Fields\par}
 \vspace{6mm}
 {\Large Exact symbolic fibers and the order-unit obstruction\par}
-\vspace{10mm}
+\vspace{6mm}
 {\large Prepared for Vladimir Reshetnikov\par}
 \vspace{2mm}
 {\color{muted}22 September 2026\par}
@@ -125,8 +125,9 @@
 \begin{abstract}
 Let $K=k((t^\Gamma))$, with $k=\R$ or $\C$ and $\Gamma$ an arbitrary
 nonzero set-sized ordered abelian group. We study
-$F=q^{-1}P$, where $v(q)=\kappa>0$ and the degree-$d$ reduction of
-$P\in\OO[X]$ splits into distinct roots. We construct, by finite-parameter
+$F=q^{-1}P$, where $v(q)=\kappa>0$,
+$\deg P=\deg\red P=d\ge2$, and the reduction of
+$P\in\OO[X]$ splits into distinct roots in $k$. We construct, by finite-parameter
 formal algebra and strong Hahn evaluation, a canonical point $x_s$ for
 every one-sided $d$-symbol itinerary. The entire integral nonescaping set
 is the disjoint union $\bigsqcup_s(x_s+I_\kappa)$, where
@@ -162,7 +163,8 @@ collection from one delivered manuscript (\cref{epd:subsec:provenance}).
 The fiber, compact-subsystem,
 and scalar-extension/deformation results are proposed as new results;
 historical priority is not certified. No named published open conjecture
-is claimed solved. No Lean formalization of this article is claimed.}
+is claimed solved. The scale subgroup and error-ideal lemma are formalized in Lean;
+the dynamical theorems remain pending. See \cref{epd:subsec:formalization}.}
 \end{titlepage}
 \pagenumbering{roman}
 \hypersetup{pageanchor=true}
@@ -194,8 +196,8 @@ how many points realize it. A topological contraction argument alone
 answers neither question at arbitrary rank.
 
 We answer both questions for a substantial polynomial family, including
-arbitrary infinitesimal coefficient perturbations of any polynomial with
-simple split reduction. The main formula is
+arbitrary infinitesimal coefficient perturbations of degree at most $d$
+of a degree-$d$ polynomial with simple split reduction. The main formula is
 \begin{equation}\label{epd:eq:intro-fibers}
  \BI(F)=\coprod_{s\in\Sig}(x_s+\Ik),
  \qquad
@@ -304,8 +306,12 @@ and \cref{epd:subsec:reproduce} says how to avoid that.
 \item The non-claims scattered through the manuscript are collected in
 Appendix~\ref{epd:app:nonclaims}.
 \end{enumerate}
-No hypothesis, statement, or proof was altered beyond the change of word
-in~(2). The report is filed under \texttt{surcomplex} although the archive
+At placement, no hypothesis, statement, or proof was altered beyond the
+change of word in~(2). A subsequent proof review made degree preservation
+explicit in the summaries, added its counterexample below
+\eqref{epd:eq:polynomial}, expanded the noncompactness and formal-substitution
+arguments, and updated Lean coverage. The delivered code and audit remain
+unchanged. The report is filed under \texttt{surcomplex} although the archive
 name says \emph{surreal}. Its theorems hold uniformly for $k=\R$ and
 $k=\C$, the explicit specialization (\cref{epd:thm:surreal}) is stated in
 $\No[\mathrm i]$, and its valuation-theoretic neighbours are surcomplex
@@ -411,8 +417,12 @@ result is shared.
 \paragraph{\emph{Rank-One Non-Archimedean Analytic Geometry inside the
 Surcomplex Numbers}} (\texttt{docs/\allowbreak surcomplex/\allowbreak
 rank-one-\allowbreak berkovich/}). When $\kappa$ is an order unit,
-\cref{epd:thm:topology}(a) is the classical rank-one Cantor repeller, which
-the manuscript cites from Benedetto's notes \cite[Example~4.39]{Benedetto}.
+\cref{epd:thm:topology}(a) has the same symbolic Cantor model as the
+classical rank-one construction cited in
+\cite[Example~4.39]{Benedetto}. An order unit does not make $\Gamma$
+rank one: $\Q\oplus_{\mathrm{lex}}\Q$ with $\kappa=(1,0)$ is already
+a counterexample. The citation provides the rank-one quadratic comparison;
+the proof here uses the exact cylinder valuations even at higher rank.
 In the fixed field $\C((t^{\R}))$ of that report every positive element of
 the Archimedean group $\R$ is an order unit, so only that case can occur
 there. That report contains no polynomial dynamics. No statement about
@@ -599,7 +609,18 @@ Fix $q\in\mm\setminus\{0\}$, write $\kappa=v(q)$, and let
 \end{equation}
 where $d\geq2$, $a_d\in k^\times$, and the $c_i\in k$ are distinct.
 Zero perturbation coefficients are permitted. In particular $P$ has
-degree $d$ and unit leading coefficient. Primes below always denote
+degree $d$ and unit leading coefficient. The equality
+$\deg P=\deg P_0$ is essential for the exterior-orbit and global
+preperiodicity claims. For example, over $\R((t^\Z))$ take
+\[
+ q=t,\qquad P(X)=(X^2-1)(1+tX).
+\]
+Its reduction still has the two simple roots $\pm1$, but $\deg P=3$.
+For $F=t^{-1}P$, one has $F(-t^{-1})=0$ and $F(0)=-t^{-1}$.
+This gives a two-cycle with a nonintegral point, so the claims below
+cannot be extended merely by allowing infinitesimal terms of higher degree.
+
+Primes below always denote
 formal differentiation with respect to $X$, holding coefficients fixed;
 no differential-field derivation on the surreal coefficients is used. Set
 \[
@@ -622,12 +643,14 @@ $\Psi_i\in k[[E_0,\ldots,E_d,V]]$ such that
  \qquad
  P_0(\Psi_i)+\sum_{j=0}^dE_j\Psi_i^j=V.
 \end{equation}
-Moreover, for any complete formal power-series ring containing the
-parameters and any $U,W$ of positive total order,
+Moreover, there is a universal
+$A_i\in k[[E_0,\ldots,E_d,U,W]]$ for which
 \begin{equation}\label{epd:eq:formal-difference}
  \Psi_i(E,U)-\Psi_i(E,W)=(U-W)A_i(E,U,W),
 \end{equation}
 where $A_i$ is a unit with constant term $1/P_0'(c_i)$.
+The identity may be substituted into another formal power-series ring
+whenever all substituted parameters have positive total order.
 \end{lemma}
 \begin{proof}
 Put $\Psi_i=c_i+Y$, with $Y$ of positive total degree. At total degree
@@ -723,8 +746,12 @@ Repeated use of \eqref{epd:eq:q-contraction} shows that for $L\geq N$,
 \[
  X_s^{[L]}-X_s^{[N]}\in Q^N R.
 \]
-The ring $R$ is $Q$-adically complete: it may equally be written
-$k[[E_0,\ldots,E_d]][[Q]]$. Hence these expressions determine $X_s$.
+The ring $R$ is $Q$-adically complete and separated: grouping a formal
+series by its $Q$-degree identifies it with
+$k[[E_0,\ldots,E_d]][[Q]]$. For each fixed $Q$-degree, the entire
+coefficient series in $E$ stabilizes once $N$ exceeds that degree.
+These stabilized coefficients define a unique $X_s$, with the displayed
+congruence for every $N$.
 This completion takes place in an ordinary finite-variable formal
 ring, not in the valuation topology of $K$.
 
@@ -981,7 +1008,9 @@ at most one point of any subset $A\subseteq\CS$, proving discreteness.
 To prove closedness, a point in the closure of $A$ has such a ball
 meeting $A$ in exactly one point $a$. Unless the original point equals
 $a$, a smaller ball excludes $a$, contradicting closure. Hence $A$ is
-closed.
+closed. In particular $\CS$ is an infinite closed discrete subset of
+$\BI(F)$. If $\BI(F)$ were compact, so would be $\CS$, contradicting
+the open cover of $\CS$ by its singletons. This proves noncompactness.
 
 By \cref{epd:cor:cylinders}, every cylinder preimage is open, so $\pi$ is
 continuous. Each individual fiber is open, whereas a singleton in
@@ -1470,7 +1499,7 @@ This is exactly statement (iii) of \cref{epd:thm:general}.
 
 The subscript is essential. Classical non-Archimedean Fatou and Julia
 sets are ordinarily defined on a projective line using a spherical
-metric, or on a Berkovich space, not by this unspecified affine
+metric, or on a Berkovich space, not by the specifically affine
 replacement; compare Definitions~4.15--4.16 of \cite{Benedetto}.
 We claim neither that every Berkovich Julia set is empty nor that a
 rank-one Julia set disappears in its own topology. The corollary is a
@@ -1508,7 +1537,8 @@ The valuation convention remains $v(\omega^{-\gamma})=\gamma$.
 For a surcomplex number written in normal form, coefficients are in
 $\C$ and supports are still sets. Every finite list of parameters is
 contained in a common set-sized Hahn workspace obtained by taking the
-additive group generated by its supports. All infinite sums used to
+additive group generated by its supports and $1$, so that the workspace
+value group is nonzero even for purely ordinary parameters. All infinite sums used to
 construct the centers have the common set-sized support certificate
 \eqref{epd:eq:common-support}.
 
@@ -1548,9 +1578,12 @@ centers with eventually periodic itinerary. For $h=\omega^{-\omega}$,
  v\bigl(F^n(x_s+h)-x_{\sh^n s}\bigr)=\omega-n
  \qquad(n\in\N).
 \end{equation}
-All conclusions of the non-order-unit case of \cref{epd:thm:topology} hold in
-the full native topology, with compactness assertions understood for
-set-sized subsets.
+In the full fine topology the fibers and their union are clopen.
+Every subset of the center set is closed and discrete. The itinerary map
+is continuous but not a quotient map to the product-topological full shift;
+its native quotient is discrete. The iterates are uniformly equicontinuous
+on the nonescaping locus. Every compact set-sized forward-invariant subset
+is finite and consists of preperiodic centers.
 \end{theorem}
 \begin{proof}
 Apply the constant-coefficient construction in the workspace with
@@ -1562,7 +1595,7 @@ and surcomplex elements are exactly the elements of nonnegative
 natural valuation, so the left side of \eqref{epd:eq:surreal-fibers} is
 precisely the integral nonescaping condition.
 
-The set $I$ is nonzero because $\omega>n$ for all $n$. The fiber
+The class $I$ is nonzero because $\omega>n$ for all $n$. The fiber
 formula and \eqref{epd:eq:omega-error} follow from
 \cref{epd:thm:fibers}. All coefficients of the binary centers are real.
 Any preperiodic surcomplex point is a root of a polynomial which already
@@ -1830,7 +1863,7 @@ path. It reported \texttt{PASS} with 38,139 checks. Its output agreed with
 \texttt{data/verification.json} in every field except the Python version
 and the elapsed time.
 
-\subsection{A proof-assistant route, not a formalization claim}
+\subsection{Current Lean coverage and the remaining route}
 \label{epd:subsec:formalization}
 A useful formalization boundary separates three layers. The first is
 finite algebra: the divided-difference identity, simple-residue
@@ -1842,21 +1875,25 @@ the cylinder equivalence, and the topological dichotomy.
 Once a general center-construction interface supplies
 $F(x_s)=x_{\sh s}$ and the correct residues, the exact-fiber,
 preperiodicity, and compact-subsystem proofs require no further
-infinite summation. This isolates the support-heavy part of a future
-Lean development. The repository inventory reports relevant Hahn and
-finite-algebra infrastructure \cite{Repo}; compatibility of concrete
-Lean interfaces has not been tested here. No Lean file is included,
-no repository build was run for this article, and the written proofs
-have not been checked by a proof assistant.
+infinite summation. This isolates the support-heavy part of the remaining
+Lean development.
 
-(Placement note: the collection's Lean library proves the positive-support
-lemma imported here from \cite{Neumann}, over an arbitrary ordered abelian
-group, including finiteness of fixed-sum word fibers across all word
-lengths. These are the declarations \texttt{neumann\_positive} and
-\texttt{finite\_words\_of\_sum\_eq} in \texttt{Surreal/HahnSeries/Neumann.lean},
-recorded in \texttt{docs/FORMALIZATION.md}. No other statement of this
-report is formalized, and no Lean declaration is attached to any
-\texttt{epd:} label.)
+The current mapping in \texttt{docs/FORMALIZATION.md} records
+\cref{epd:def:orderunit,epd:lem:ideal} in
+\nolinkurl{Surreal/HahnSeries/ScaleIdeal.lean}, over an arbitrary coefficient
+field and ordered abelian group. It proves the convex scale subgroup,
+the error ideal and its $q$-invariance, the intersection formula,
+the order-unit criterion, and the coarsened valuation-ring description.
+Clopenness is expressed by explicit valuation-ball conditions; no
+Mathlib topology on Hahn series is presumed. The coarsening is represented
+by a valuation subring, without an explicit ordered quotient isomorphism.
+
+The positive-support lemma is also proved in the collection's
+\nolinkurl{Surreal/HahnSeries/Neumann.lean}, including
+\texttt{neumann\_positive} and \texttt{finite\_words\_of\_sum\_eq}.
+The universal centers, exact fibers and later dynamical theorems are
+not formalized by these modules. The report's written proofs and finite
+regression checks are separate from this limited Lean coverage.
 
 \section{Limitations and further research questions}
 \label{epd:sec:questions}
@@ -1962,7 +1999,9 @@ Surreal realization & Classical Conway normal form plus the set-sized workspace 
 \end{table}
 
 All newly proved assertions are mathematical claims of this draft.
-None has an independent peer-review or machine-check certificate.
+No independent peer review is claimed. The precise partial Lean coverage
+is stated in \cref{epd:subsec:formalization}; it does not certify the
+remaining dynamical theorems.
 Finite tests support only the finite identities and regression cases
 listed in \cref{epd:sec:verification}; they do not establish the general
 statements in this ledger.
@@ -2000,14 +2039,16 @@ disclaimers, and non-claims that the manuscript states in several places
 (its article, its delivered README, the delivered
 \texttt{RESEARCH\_STATUS.md}, and the \texttt{limitations} field of
 \texttt{data/verification.json}). Items S1--S28 come from the source and
-are only regrouped here. Items P1--P3 were added at placement. Nothing in
+were regrouped here. Their historical no-formalization wording is updated
+to the current coverage in \cref{epd:subsec:formalization}.
+Items P1--P3 were added at placement. Nothing in
 the body is weakened by this list, and nothing outside it is claimed.
 
 \subsection*{Status, priority, and provenance}
 \begin{enumerate}[label=\textbf{S\arabic*.},leftmargin=2.8em]
-\item The report is an unrefereed research draft. No result has an
-independent peer-review or machine-check certificate (title page,
-Appendix~\ref{epd:app:ledger}).
+\item The report is an unrefereed research draft. Its partial machine-checked
+coverage is specified in \cref{epd:subsec:formalization}; the remaining
+dynamical claims have no such certificate.
 \item Priority is not certified. The fiber, compact-subsystem, and
 extension/deformation package is \emph{proposed} as new after a targeted
 literature search whose results were incomplete and sometimes noisy.
@@ -2022,13 +2063,14 @@ positive-support lemma, formal implicit-function recursion, valuation
 coarsening, the one-sided full shift and its periodic counts and zeta
 series, the rank-one Cantor construction, and Conway normal form
 (\cref{epd:sec:intro,epd:sec:periodic,epd:sec:surreal}).
-\item There is no Lean formalization of the article. No Lean file is
-included, no repository build was run, and compatibility with concrete
-Lean interfaces was not tested (\cref{epd:subsec:formalization}).
+\item The delivered manuscript included no Lean file and ran no repository
+build. The current collection does formalize the scale subgroup and
+error-ideal lemma, as recorded in \cref{epd:subsec:formalization};
+this is not a formalization of the entire article.
 \item The repository audit was targeted: the inventories and the dynamics
 report's description only, with no line-by-line review. No assertion of
-complete absence of overlap across every file is made. The repository was
-neither rebuilt nor modified, and repository descriptions are provenance,
+complete absence of overlap across every file is made. During that original survey the repository was
+neither rebuilt nor modified; its descriptions are provenance,
 not validation (\cref{epd:subsec:repo-pin}; \texttt{RESEARCH\_STATUS.md};
 bibliography).
 \item The repository's Hahn support machinery and its distinctions among
@@ -2104,8 +2146,8 @@ equation. Their agreement is not independent foundational verification.
 \item The $O(N^3)$ operation count excludes coefficient bit growth.
 \item The rank-two checks do not turn an approximate fixed-point
 truncation into an exact Hahn fixed point.
-\item No general surreal canonicalizer, floating-point simulation, or
-proof-assistant certificate is used (\texttt{data/verification.json}).
+\item The delivered finite verification uses no general surreal canonicalizer,
+floating-point simulation, or proof-assistant certificate (\texttt{data/verification.json}).
 \item Packaging (delivered README): the delivered PDF was not an accessible
 tagged PDF, and no third-party books, research-paper PDFs, or
 proof-assistant binaries were included. The PDF in this directory is

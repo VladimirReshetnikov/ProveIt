@@ -44,6 +44,7 @@ No row below certifies every claim in an entire report.
 | [Hahn–Tate uniformization](surcomplex/hahn-tate-uniformization/) | Targeted correction only: restricted the coordinate-family exact-domain clauses in all three main statements to nonzero inputs, explained the zero-input exception and aligned the README and catalogue. The rest of the main proof chains remain unreviewed in this pass. |
 | [Infinite-dimensional Hahn spectral theory](surcomplex/infinite-dimensional-hahn-spectral-theory/) | Targeted correction only: reconstructed the positive-definite scalar-extension proof and proved that its norm and scalar modulus exist over every ordered value group, using the even leading exponent and binomial root. Removed the false necessity of divisibility from the comparison prose, standing-hypothesis explanation and dependency table; retained the other Part I hypotheses pending review. The remaining spectral and operator proof chains have not received a main-text review. |
 | [Hahn–Herglotz positivity](surcomplex/hahn-herglotz-positivity/) | Read the main support, scalar and matrix normalization, Harnack, null-ideal, functional, Fourier, quadrature, Schur, hierarchy and finite-prefix proof chains. Proved the Harnack, halo-positivity and common-kernel conclusions without divisibility by scalar normalization of quadratic forms. Expanded the zero-form and matrix-coefficient arguments; supplied the scalar-normalization positivity hypothesis and the integer-group obstruction to identity-block congruence. Corrected finite-valued versus finite-support terminology and the false disjointness of the strong and coefficientwise measure classes. Aligned partial Lean coverage and Fourier notation. Checked the classical disk representation against Bhattacharyya–Bhowmik–Kumar v3 and only the constant-kernel clause of Gesztesy–Tsekanovskii Lemma 5.3 against its preprint; other imports, priority and source-claim reconciliation remain outside this review. |
+| [Expanding polynomial dynamics](surcomplex/expanding-polynomial-dynamics/) | Read the main scale-ideal, inverse-branch, universal-center, fiber, periodicity, topology, extension, deformation, bounded-orbit and surreal-specialization proofs. Made degree preservation explicit in summaries and supplied a higher-degree two-cycle counterexample; clarified universal formal substitution and coefficient stabilization, and supplied the missing noncompactness argument. Distinguished an order unit from rank one, spelled out the proper-class specialization using set-sized compactness, and corrected the README’s ambiguous finite-orbit wording. Aligned partial Lean coverage and the notation guide. Checked the classical quadratic Cantor comparison and spherical Fatou/Julia definitions against Benedetto’s notes; other imports, priority and source-claim reconciliation remain separate. |
 
 Each correction was reviewed against its local definitions and downstream uses
 within the stated scope. Changed PDFs were rebuilt and affected pages inspected.
@@ -177,6 +178,17 @@ The full Lean build passed 3,832 jobs and the axiom audit for 5,371 declarations
 All 1,754 statement-index entries were checked after refreshing line hints.
 The mathematical review does not formalize the strengthened Harnack theorem.
 
+The expanding-polynomial dynamics report rebuilt at 32 pages and the
+catalogue at 21 pages, both without warnings or box issues. The revised
+title, counterexample, topology, surreal-specialization and Lean-coverage
+pages were inspected. On a temporary copy, the unchanged verifier passed
+38,139 exact checks; its JSON matches the delivered record except for the
+Python version and elapsed time. All four historical program, build, data
+and audit files remain byte-identical. The full Lean build passed 3,832 jobs
+and audited 5,371 declarations. The independent statement index still
+contains 1,754 entries across 36 reports; maintained Markdown links were
+checked. This review adds no Lean proofs of the dynamical theorems.
+
 ## Collection-wide work
 
 The [reader map](README.md), [catalogue](manifest.tex) and statement index
@@ -201,8 +213,10 @@ this checks the integration, not the new mathematical claims.
 
 Of the ten reports added on September 22, Hahn-valued measures, Markov
 generators, tail spans, Prony reconstruction, Wick summability, holonomic
-rigidity and Hahn–Herglotz positivity have received the main-text reviews recorded above. The other three additions (Hahn–Tate uniformization, infinite-dimensional
-spectral theory and expanding polynomial dynamics) and the new sections in differential equations,
+rigidity, Hahn–Herglotz positivity and expanding polynomial dynamics have
+received the main-text reviews recorded above. The other two additions
+(Hahn–Tate uniformization and infinite-dimensional spectral theory) and the
+new sections in differential equations,
 dynamics, entire functions,
 nonabelian support, spectral theory and exponential automorphism rigidity
 remain outside the earlier review scopes, apart from explicitly recorded
