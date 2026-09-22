@@ -18,6 +18,10 @@ lake build
 Lean warnings are treated as errors, including warnings for incomplete proofs.
 The default build also checks `SurrealAudit.lean`, which rejects transitive
 axiom dependencies other than `propext`, `Quot.sound`, and `Classical.choice`.
+The numeric-game field and game-graph recursion reuse a pinned subset of
+[combinatorial-games](vendor/combinatorial-games/README.md), with three
+documented proof-script adjustments for this Lean version. Its source and
+Apache license are included in the repository.
 
 ## Formalization
 
@@ -114,6 +118,9 @@ value by the expected multiple of the scale and differentiates the initial
 polynomial exactly. Occupied open and closed valuation balls consequently
 contain exactly `k-r` roots of the `r`th derivative in the permitted range,
 with explicit splitting assumptions and multiplicities retained.
+For squarefree split polynomials of degree at least two whose derivatives
+split, each root has a critical point at exactly its nearest-neighbour
+valuation, and no critical point is closer in valuation.
 Coefficientwise real and imaginary parts identify Hahn series over `R[i]`
 with the quadratic extension of Hahn series over `R`. This identification
 also uses Mathlib's native real and complex coefficients; conjugation fixes
@@ -132,11 +139,28 @@ Conway addition is now constructed by well-founded recursion with proved
 option separation. Its zero, commutativity, associativity, inverse and order
 laws make the sign carrier an ordered additive commutative group. The addition
 cut equation also holds for arbitrary small presentations of the summands.
+Native natural-number casts agree with finite all-plus sequences, and integer
+casts form an additive order embedding. Subtracting one from any upper bound
+of the naturals proves directly that they have no supremum.
 In its native order topology and compatible additive uniformity, every small
 subset is closed and discrete, convergent small-index nets are eventually
 equal to their limits, and small-index Cauchy nets are eventually constant.
 The whole carrier has no isolated points. Neighborhoods and entourages use
 absolute differences valued in the sign carrier itself.
-Multiplication, field inverses, real closedness and the normal-form bridge to
-Hahn series remain open. A successful build proves only the imported Lean
+The net of all positive radii, directed by reverse order, converges to zero
+and is Cauchy but is never eventually constant. Its index type is proved
+not small at the lower universe level.
+Canonical sign options also define a small, well-founded game graph. Its
+recursive game construction preserves and reflects comparison, proves the
+image games numeric, and gives an explicit order isomorphism with the reused
+numeric-game surreal field. Every small cut is preserved, and induction on
+numeric-game options proves surjectivity. The bridge preserves the original
+Conway addition, sign reversal, zero and one. Transporting the proved game
+multiplication and inverse then makes the sign carrier an ordered field,
+retaining its original additive structure and numerical order.
+The empty and one-plus sequences map literally to the raw games zero and one.
+The numeric-game quotient also satisfies the indexed small-cut interface and
+its comparison rule, including reconstruction from a numeric game's moves.
+Real closedness and the normal-form bridge to Hahn series remain open.
+A successful build proves only the imported Lean
 statements, not coverage of all the source documents.

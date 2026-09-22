@@ -1,3 +1,4 @@
+import CombinatorialGames
 import Surreal.Algebra.Complexify
 import Surreal.Algebra.ComplexNumbers
 import Surreal.Algebra.Circle
@@ -42,9 +43,17 @@ import Surreal.Foundations.SignSequenceAddition
 import Surreal.Foundations.SignSequenceAddAssociative
 import Surreal.Foundations.SignSequenceAddInverse
 import Surreal.Foundations.SignSequenceAddGroup
+import Surreal.Foundations.SignSequenceIntegers
 import Surreal.Foundations.SignSequenceTopology
 import Surreal.Foundations.SmallCauchy
 import Surreal.Foundations.SignSequenceUniformity
+import Surreal.Foundations.SignSequenceLargeNet
+import Surreal.Foundations.SignSequenceGames
+import Surreal.Foundations.SignSequenceGameConstants
+import Surreal.Foundations.GameCuts
+import Surreal.Foundations.SignSequenceGameEquiv
+import Surreal.Foundations.SignSequenceGameAddition
+import Surreal.Foundations.SignSequenceField
 import Surreal.HahnSeries.Binomial
 import Surreal.HahnSeries.BinomialOrder
 import Surreal.HahnSeries.BinomialRoots
@@ -61,6 +70,7 @@ import Surreal.HahnSeries.PolynomialGaussValuation
 import Surreal.HahnSeries.PolynomialInitialRoots
 import Surreal.HahnSeries.PolynomialInitialDerivative
 import Surreal.HahnSeries.PolynomialCriticalBalls
+import Surreal.HahnSeries.PolynomialNearestCritical
 import Surreal.HahnSeries.PolynomialNewtonProfile
 import Surreal.HahnSeries.PolynomialRouche
 import Surreal.HahnSeries.PolynomialValuation
