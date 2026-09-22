@@ -67,11 +67,14 @@ import Surreal.Foundations.SignSequenceProductCuts
 import Surreal.Foundations.SignSequenceRoots
 import Surreal.Foundations.DyadicBirthdayArithmetic
 import Surreal.Foundations.SignSequenceDyadicBirthday
+import Surreal.Foundations.DyadicBirthdayProduct
+import Surreal.Foundations.SignSequenceRealProductBirthday
 import Surreal.Surcomplex.Basic
 import Surreal.Surcomplex.OrderObstructions
 import Surreal.Surcomplex.FineTopology
 import Surreal.Surcomplex.TopologicalField
 import Surreal.Surcomplex.Modulus
+import Surreal.Surcomplex.PolynomialGeometry
 import Surreal.HahnSeries.Binomial
 import Surreal.HahnSeries.BinomialOrder
 import Surreal.HahnSeries.BinomialRoots

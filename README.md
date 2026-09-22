@@ -182,6 +182,8 @@ the non-dyadic reals have birthday exactly omega.
 For a dyadic value with reduced denominator `2^k`, the exact birthday is
 the ceiling of its absolute value plus `k`. Its standard dyadic game attains
 this same minimum birthday.
+For all embedded ordinary reals, the product birthday is bounded by the
+Hessenberg natural product of the factor birthdays.
 Every nonnegative sign number now has a unique nonnegative square root,
 constructed by simplicity induction and a countable closure of small
 algebraic option families. The resulting `sqrt` takes zero on negative inputs.
@@ -204,6 +206,10 @@ its multiplicativity, triangle inequality, coordinate bounds and inverse
 formula. Its balls give exactly the existing fine topology and uniformity.
 Heron's area formula, Ptolemy's inequality and the positive-quotient
 triangle-equality criterion now apply to the concrete surcomplex field.
+Both strict Cauchy root bounds also apply to actual surcomplex polynomials.
+Gauss–Lucas and its multiplicity-weighted barycentric formula are instantiated
+with explicit splitting hypotheses; higher derivatives retain the required
+splitting of each preceding derivative.
 The surreal field is not algebraically closed, and no linear order is
 compatible with surcomplex multiplication.
 Real closedness and the normal-form bridge to Hahn series remain open.
