@@ -135,6 +135,15 @@ See [contours](surcomplex/contours-and-stokes/article.tex)
 and [rank-one Berkovich theory](surcomplex/rank-one-berkovich/article.tex)
 (`eq:mainfield`, `prop:topologies`).
 
+The [genetic-gap report](surreal/genetic-gaps-and-primitives/article.tex)
+also uses the original paper's **restricted set-union convention**: global
+open classes must be set-sized unions of intervals with surreal or end-gap
+endpoints. This is stricter than pointwise local order-field openness.
+Its gap indicator is locally constant and has zero local derivative, yet
+fails global continuity for that restricted convention. Its order-automorphism
+primitive is continuous in both senses. State this convention explicitly;
+“fine” or “continuous” alone does not identify the intended assertion.
+
 **Strong Hahn summability** is not another name for convergence in any of
 these topologies. It requires a well-ordered union of supports and finitely
 many contributions at every exponent; the sum is coefficientwise. Thus
@@ -183,7 +192,9 @@ differentiable** function are different classes. Their separation is the
 point of `a:def:classnames` in the analysis report. “Entire” in the
 arbitrary-rank report means its stated strong evaluation condition at every
 point of one fixed Hahn field; it does not mean coherence at every scale of
-the full surreal class. “Uniform support” should always state the ordinary
+the full surreal class. In the genetic-gap report, “entire” means a genetic
+function defined at every surreal input, without asserting analytic
+holomorphy. “Uniform support” should always state the ordinary
 domain or family over which one support is required.
 
 ## Computability and names
