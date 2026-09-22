@@ -58,6 +58,15 @@ The native discriminant has its signed-resultant and squared-root-difference
 formulas, with squarefree and repeated-root criteria. Strict upper and lower
 Cauchy bounds and the radial coefficient bound use the base-field modulus,
 including non-Archimedean scales and zero-radius cases.
+Gauss–Lucas uses positive convex weights in that same ordered base field;
+its barycentric formula retains root multiplicities. Higher-derivative
+inclusion keeps the required intermediate splitting hypotheses explicit.
+For monic quotients over any commutative coefficient ring, finite remainder
+coordinates give multiplication matrices, trace and norm. The top-remainder
+coefficient defines a perfect residue pairing with an explicit dual basis,
+and multiplication trace equals the residue of the derivative times the class.
+These identities also hold with zero divisors, repeated roots and positive
+characteristic.
 
 The Hahn layer uses mathlib's `SummableFamily` and proves the full Neumann
 support lemma, including finiteness across all word lengths. It distinguishes

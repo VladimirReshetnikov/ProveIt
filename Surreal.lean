@@ -7,13 +7,17 @@ import Surreal.Algebra.Polynomial
 import Surreal.Algebra.PolynomialCRT
 import Surreal.Algebra.PolynomialDiscriminant
 import Surreal.Algebra.PolynomialDivision
+import Surreal.Algebra.PolynomialGaussLucas
 import Surreal.Algebra.PolynomialHermiteFormula
 import Surreal.Algebra.PolynomialInterpolation
 import Surreal.Algebra.PolynomialInverseJet
 import Surreal.Algebra.PolynomialLagrange
 import Surreal.Algebra.PolynomialMultiplicity
 import Surreal.Algebra.PolynomialNewton
+import Surreal.Algebra.PolynomialQuotient
 import Surreal.Algebra.PolynomialRationalJets
+import Surreal.Algebra.PolynomialResidueDual
+import Surreal.Algebra.PolynomialResiduePairing
 import Surreal.Algebra.PolynomialResultant
 import Surreal.Algebra.PolynomialRootBounds
 import Surreal.Algebra.ProjectiveCircle
