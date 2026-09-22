@@ -15,15 +15,22 @@ No row below certifies every claim in an entire report.
 | [Analytic geometry](surcomplex/analytic-geometry/) | Corrected `analytic:conv:notation` to define standard-part topology on finite tuples and explain its indiscrete zero-monad restriction. In `analytic:rem:fixed-not-transferred`, showed explicitly why the fixed-disk corona pair generates the whole common-domain germ ring after shrinking. |
 | [Trigonometry](surcomplex/trigonometry/) | Corrected the infinitesimal-ideal notation and stated the nonzero-denominator condition in the asymptotic conventions. |
 | [Computable surreals](foundations-and-computation/computable-surreals/) | Reviewed numerical names, basic ring operations, gap extraction and inversion. Added the missing output-range filter in `lem:geom`, qualified `prop:topology` by index size, repaired the runner/build paths, and tested the candidate-cover contract with negative zero candidates. |
-| [Hahn evaluation at omega](surreal/hahn-evaluation-at-omega/) | Reviewed the elementary ring/semiring obstruction witnesses and formal square-root lemmas. Corrected the false logical-incomparability claim: restriction and a unique extension by differences identify the two kinds of maps into a commutative ring. The direct positive-coefficient witness remains a distinct proof. |
+| [Hahn evaluation at omega](surreal/hahn-evaluation-at-omega/) | Read the main proofs through the Higman/Neumann support appendix. Corrected the false ring/semiring incomparability claim by restriction and unique extension by differences. Distinguished general infinitesimal substitution from pure-monomial exponent change; proved intrinsic Laurent-field convergence of the geometric example while retaining full-surreal nonconvergence. Expanded zero evaluation, order preservation and the root/embedding correspondence. |
+| [Broadcast sums](surreal/broadcast-sum-of-surreal-sequences/) | Read the move/rank definitions, commuting truncations, number-valuedness, perturbation and nested classification proofs. Corrected `cor:cofinite` to compare families on the same index set and required an infinite index set in `cor:dyadic-tail`, with a singleton counterexample. Extended the stated constant-family theorem to arbitrary infinite index sets using its finite-exception argument. Proved the no-options criterion and clarified limit thresholds and finite normal play. |
+| [Canonical forms and option graphs](surreal/canonical-forms-need-not-be-subgraphs/) | Read the finite witnesses, prefix/minimum arguments, both girth constructions, classification and ordinal examples. Proved that the first spaced-spine construction already has maximum degree three and is planar in traversal leaf order. Supplied sign and template-disjointness steps; corrected the implications between triangle-free and containment failures, stronger-containment scope, and the recorded comparison-oracle claims. |
+| [Genetic gaps and primitives](surreal/genetic-gaps-and-primitives/) | Read the main article and short proof. Strengthened `thm:general` with one positive radius valid at every input, using the set of positive pairwise differences and no simultaneous choice of witnesses. Distinguished local order-field openness from the source's restricted set-union convention, and checked the cited option-construction and topology conventions against their primary texts. |
 
 Each correction was reviewed against its local definitions and downstream uses
 within the stated scope. Changed PDFs were rebuilt and affected pages inspected.
 The dynamics PDF retains its three pre-existing small overfull boxes; the
-evaluation-at-omega PDF retains its baseline font/layout warnings. Finite
+evaluation-at-omega and genetic-gap PDFs retain their baseline font/layout
+warnings. The revised broadcast and option-graph PDFs have no warnings. Finite
 symbolic checks support the physics examples; the corrected computability runner
 passes its four separately counted suites. Its new cover regression fails when
-the range filter is removed. These checks do not prove infinite statements.
+the range filter is removed. Both option-graph suites were rerun successfully,
+including all 3,860 exhaustive forms, 126 spaced-spine instances and 710
+sparse/cycle certificates. Original broadcast test data were preserved without
+a new run. These checks do not prove infinite statements.
 
 ## Collection-wide work
 
@@ -39,12 +46,13 @@ from the current tree does not discharge source-claim reconciliation.
 
 ## Remaining scope
 
-The remaining portions of the seven reports above still need systematic proof
-review. The other nineteen main reports have been mapped for notation and
-navigation but have not received a full mathematical review in this pass:
+The reports above have received targeted corrections or a main-text reading,
+as recorded in each row. Uninspected portions, imported results, source-claim
+reconciliation and any formalization remain separate obligations. The other
+sixteen main reports have been mapped for notation and navigation but have not
+received a full mathematical review in this pass:
 
-- Broadcast sums; canonical forms and option graphs; exponential automorphism
-  rigidity; Gamma functions; genetic gaps and primitives; both birthday reports.
+- Exponential automorphism rigidity; Gamma functions; both birthday reports.
 - Surcomplex analysis; contours and Stokes; differential equations; entire
   functions at arbitrary rank; finite deformations; global divisors; nonabelian
   support; polynomial algebra; rank-one Berkovich geometry; spectral theory.
