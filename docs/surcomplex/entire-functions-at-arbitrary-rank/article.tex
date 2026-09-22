@@ -89,6 +89,9 @@
 \DeclareMathOperator{\ord}{ord}\DeclareMathOperator{\cf}{cf}
 \DeclareMathOperator{\Div}{Div}\DeclareMathOperator{\inpol}{in}
 \DeclareMathOperator{\conv}{conv}
+\DeclareMathOperator{\remp}{rem}\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\ev}{ev}
+\newcommand{\RD}{\mathcal R_D}\newcommand{\Ucal}{\mathcal U}
 \newcommand{\ggA}{\mathrel{\gg_{\!A}}}
 \newcommand{\abs}[1]{\lvert#1\rvert}
 \newcommand{\norm}[1]{\lVert#1\rVert}
@@ -119,7 +122,7 @@ genus-zero canonical product for every ball-finite divisor with no
 exponential correction factors, and complete factorization by zeros at
 arbitrary rank.
 
-Two sharp classifications follow. The first is ideal-theoretic. The entire
+Three sharp classifications follow. The first is ideal-theoretic. The entire
 ring $\E$ is always a GCD domain with units $\K^\times$; it is the
 polynomial ring, hence a PID, when $\cf(\Gamma)>\aleph_0$; it is a
 non-Noetherian B\'ezout domain with unrestricted Hermite interpolation when
@@ -128,7 +131,22 @@ that is \emph{not} B\'ezout, witnessed by two explicit entire functions with
 disjoint simple zero sets generating a proper ideal. A separate order-unit
 criterion decides invertibility in the valuation-restricted algebra
 $\TT$, and shows that the positive case of the trichotomy is sharp rather
-than merely sufficient. The second classification is analytic. For every
+than merely sufficient.
+
+The second classification is the anatomy of that third case. Grouping the
+nodes of a radially finite divisor into valuation shells of radii
+$\gamma_1<\gamma_2<\cdots$ and normalizing each shell to valuation zero, a
+complete infinite Hermite prescription is realized by an entire function if
+and only if, on all sufficiently distant shells, the coefficients of that
+shell's finite Hermite interpolation polynomial lie in the valuation ring
+obtained by killing the Archimedean scale of the shell radius. The quotient
+of $\E$ by the divisor's canonical product is therefore an algebraic
+restricted product of finite shell algebras. This gives a
+necessary-and-sufficient B\'ezout criterion, a close-pair obstruction
+invisible to the sizes of the individual prescribed values, and explicit
+non-evaluation maximal ideals whose residue fields are ultraproducts of
+lower-rank Hahn fields. These results use no algebraic closedness and hold
+with real Hahn coefficients. The third classification is analytic. For every
 ordered-group extension $\Gamma\subseteq\Delta$, all nonpolynomial entire
 series over $\K$ share one exact strong evaluation domain in $\KD$: the
 valuation ring of $v_\Delta$ coarsened by the convex hull of $\Gamma$, whose
@@ -140,10 +158,12 @@ is intrinsic: the value group, the coefficient slopes and the negated zero
 valuations generate the same convex subgroup.
 
 This report is the union of two independently written manuscripts that
-proved the same engine. The arbitrary-rank classifications, the explicit
-non-B\'ezout construction and the universal extension domain are proposed
-original contributions, not a claimed solution of any named published
-conjecture. Classical Hahn-field inputs and rank-one antecedents are
+proved the same engine, together with a third written later against their
+merge and answering the question about the interpolation image that the merge
+had left open. The arbitrary-rank classifications, the explicit non-B\'ezout
+construction, the exact shellwise image and the universal extension domain
+are proposed original contributions, not a claimed solution of any named
+published conjecture. Classical Hahn-field inputs and rank-one antecedents are
 identified and credited. Complete proofs are supplied; they have not been
 independently refereed or verified in a proof assistant.
 \end{abstract}
@@ -305,6 +325,55 @@ properties that coincide for finite polynomial algebra. This is not a
 distinction about algebraic closedness: every $\K$ here is algebraically
 closed.
 
+The trichotomy says that case~(iii) occurs. The next theorem is the anatomy
+of that third branch: it measures exactly how far interpolation fails, for
+every radially finite divisor and every group, and it specializes to the other
+two branches. It was proved after the first two source manuscripts, against
+the gap their merged report itself recorded as open
+(\cref{ent:q:image}), and is merged in here.
+
+\Needspace{16\baselineskip}
+\begin{theorem}[Exact image of the infinite jet map]\label{ent:thm:main-image}
+Let $D$ be an infinite radially finite divisor. Group its nodes into
+valuation shells of radii $0<\gamma_1<\gamma_2<\cdots$, cofinal in $\Gamma$,
+normalize shell $n$ by $\tau_n=t^{-\gamma_n}$, and let $R_n$ be the unique
+finite Hermite interpolation polynomial of that shell's prescribed jets in
+the normalized coordinate. Let
+\[
+ V_n=\{x\in\K:v(x)\ge-m\gamma_n\text{ for some }m\in\N\}
+\]
+be the valuation ring obtained by killing the Archimedean scale of
+$\gamma_n$. Then:
+\begin{enumerate}[label=\textnormal{(\alph*)},leftmargin=2em]
+\item an entire function realizing all the prescribed jets exists if and only
+if $R_n\in V_n[T]$ for all sufficiently large $n$, with no condition on
+finitely many exceptional shells and no uniform bound on the number of nodes
+per shell, on the jet orders, or on the admitted scale exponents;
+\item consequently $\E/(P_D)$ is the algebraic restricted product
+$\Lambda_0\times\{(r_n):r_n\in\Lambda_n^\circ\text{ eventually}\}$ of the
+finite shell algebras $\Lambda_n=\K[T]/(P_n)$ and
+$\Lambda_n^\circ=V_n[T]/(P_n)$;
+\item a B\'ezout identity $AP_D+BF=1$ with $F\in\E$ exists if and only if $F$
+is nonzero at every node of $D$ \emph{and}, on all sufficiently large shells,
+$v(F(\rho_{n,j}))\le c_n\gamma_n$ for some finite integer $c_n$;
+\item for one simple node per shell, every nonprincipal ultrafilter on the
+positive integers yields an explicit maximal ideal of $\E$ that is not an
+evaluation ideal, with residue field the ultraproduct of the lower-rank Hahn
+fields $\C((t^{H_n}))$, $H_n$ the convex subgroup generated by $\gamma_n$.
+\end{enumerate}
+These statements also hold over the real Hahn field $\R((t^\Gamma))$, with no
+use of algebraic closedness.
+\end{theorem}
+
+Part (a) is \cref{ent:thm:image}, (b) is \cref{ent:thm:quotient}, (c) is
+\cref{ent:thm:bezout-criterion}, (d) is \cref{ent:thm:maximal}, and the real
+form is \cref{ent:prop:real-form}; all are proved in
+\cref{ent:sec:obstruction}. The restricted product here is an algebraic
+union, not a topological or adelic object; no norm, no local compactness and
+no completion is asserted. Case (ii) of \cref{ent:thm:main} is the
+degenerate case $V_n=\K$, and case (i) is the case where no infinite radially
+finite divisor exists at all.
+
 \Needspace{14\baselineskip}
 \begin{theorem}[Universal scalar-extension package]\label{ent:thm:main-extension}
 Let $\Gamma\subseteq\Delta$ be nonzero divisible ordered abelian groups and
@@ -356,9 +425,31 @@ which is what makes case (ii) sharp rather than merely sufficient, is in
 \cref{ent:sec:obstruction,ent:sec:positive}.
 \Cref{ent:sec:classification} assembles them.
 \Cref{ent:thm:main-extension} is proved in \cref{ent:sec:extension}.
+\Cref{ent:thm:main-image} is proved in \cref{ent:sec:obstruction}, whose
+shell notation is fixed in \cref{ent:subsec:notation,ent:subsec:shells}.
 
 \subsection{Relationship to the repository and the literature}
 \label{ent:subsec:repo}
+A note on how this report grew. Its first two source manuscripts were
+independently written against pinned snapshots of this repository, proved the
+same engine, and carried complementary payloads; their merge is described in
+\cref{ent:app:sources}. A third manuscript was written later, against the
+merged report itself at a pinned snapshot, and answers the question that the
+merged report had recorded as open in \cref{ent:q:image}. Its contribution is
+\cref{ent:thm:main-image} and the material of
+\cref{ent:subsec:shells,ent:subsec:jet-image,ent:subsec:image-proof,ent:subsec:no-bezout,ent:subsec:invisible};
+it credits, rather than claims, the coefficient criterion
+(\cref{ent:thm:criterion}), the canonical product
+(\cref{ent:thm:product}), the order-unit interpolation theorem
+(\cref{ent:thm:interpolation}) and the explicit non-B\'ezout pair
+(\cref{ent:thm:no-bezout}) as already present here. Where it re-proved one of
+those for dependency control, both proofs are printed and marked; see
+\cref{ent:prop:kernel-direct} and the two proofs of
+\cref{ent:thm:interpolation,ent:thm:bezout}. Its symbols $\rho_n$ and
+$a_{n,j}$ were the exact inverses of this report's, and the single
+renormalizing pass that fixed that is recorded in
+\cref{ent:subsec:notation}.
+
 The repository supplied with the question already contains a rank-one report
 over $\C((t^\R))$, including preparation, zero counting, zero-free rigidity
 and a partial-theta canonical product \cite{RepoRankOne}. Neither source
@@ -387,9 +478,18 @@ as new.
 
 \paragraph{Novelty statement.}
 The proposed contributions are the arbitrary-rank coefficient, unit and
-workspace criteria, the explicit non-B\'ezout construction, the universal
+workspace criteria, the explicit non-B\'ezout construction, the exact
+shellwise interpolation image with its restricted-product quotient, sharp
+B\'ezout criterion and explicit residue fields, the universal
 scalar-extension domain with zero conservation, and their combination into
-\cref{ent:thm:main,ent:thm:main-extension}. The support-controlled
+\cref{ent:thm:main,ent:thm:main-image,ent:thm:main-extension}. The literature
+comparison for the image theorem was targeted in the same bounded sense as
+the others and located no matching statement of the shellwise
+restricted-product theorem; that is a reason to present it as proposed new
+work, not a proof that no such statement occurs anywhere. The ultrafilter
+construction of \cref{ent:thm:maximal} is standard algebra; what is proposed
+there is the analytic surjection onto the restricted product and the
+consequent identification of the residue fields. The support-controlled
 preparation and product arguments provide a self-contained route to those
 results; their rank-one specializations are not new. The literature checks
 performed for the two source manuscripts did not locate the stated
@@ -530,6 +630,64 @@ and initial polynomials multiply. Equivalently, writing
 $\inpol_0(A)=\overline{t^{-w(A)}A}\in\C[X]\setminus\{0\}$ for the reduction,
 $\inpol_0(AB)=\inpol_0(A)\inpol_0(B)$. This Gauss multiplicativity is the
 engine of \cref{ent:sec:units}.
+
+\subsection{Notation: radii live in \texorpdfstring{$\Gamma$}{Gamma}, nodes
+live in \texorpdfstring{$\K$}{K}}
+\label{ent:subsec:notation}
+Three manuscripts are merged here, and the third arrived with the opposite
+convention for the two letters that matter most. Its $\rho_n$ was a positive
+element of the \emph{value group} and its $a_{n,j}$ was a point of the
+\emph{field}. This report keeps the convention of the first two throughout,
+in which $\rho$ always names a point of $\K$ and $\gamma$ always names an
+element of $\Gamma$. Every statement taken from the third manuscript has been
+rewritten in the convention below; the table is recorded so that a reader
+comparing the two texts is not misled by a symbol that typesets identically
+and means the reciprocal thing.
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}p{0.155\textwidth}p{0.255\textwidth}YY@{}}
+\toprule
+Symbol here & Meaning & In the third manuscript & Note\\\midrule
+$\gamma_n$ & shell radius, an element of $\Gamma$; $0<\gamma_1<\gamma_2
+<\cdots$, cofinal & $\rho_n$ & \emph{inverted}: its $\rho_n$ is our
+$\gamma_n$\\[0.35em]
+$\rho_{n,j}$ & a node, a point of $\K$ with $v(\rho_{n,j})=-\gamma_n$;
+written $\rho_n$ when the shell carries one node
+& $a_{n,j}$ & \emph{inverted}: its $a_{n,j}$ is our $\rho_{n,j}$\\[0.35em]
+$\tau_n=t^{-\gamma_n}$ & the shell normalizer, $v(\tau_n)=-\gamma_n$
+& $s_n$ & \\[0.35em]
+$\lambda_n$ & the valuation $v(g(\rho_n))$ of \eqref{ent:eq:lambda}
+& --- & its $\lambda_n$ is a shell \emph{parameter}, here always written
+$\gamma_{n+1}$\\[0.35em]
+$m_{n,j}$, $M_n$ & node multiplicity and shell total $\sum_jm_{n,j}$
+& $r_{n,j}$, $M_n$ & $r$ is reserved here for roots and for the jet
+polynomials of \eqref{ent:eq:interpolation-r}\\[0.35em]
+$m_\gamma(F)$ & weighted Gauss valuation \eqref{ent:eq:weighted},
+$\min_n\{v(a_n)+n\gamma\}$ & $w_\beta(F)=\min_k\{v(f_k)-k\beta\}$
+& \emph{sign-inverted}: $w_\beta=m_{-\gamma}$ with $\gamma=-\beta$\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Two consequences of the last row are used repeatedly and are recorded here
+once. First, $m_\gamma(F)$ is nondecreasing in $\gamma$, because each term
+$v(a_n)+n\gamma$ is. Second, on polynomials and on entire series
+\[
+ m_\gamma(F+G)\ge\min\{m_\gamma(F),m_\gamma(G)\},\qquad
+ m_\gamma(FG)\ge m_\gamma(F)+m_\gamma(G),
+\]
+with $m_\gamma(0)=+\infty$; the second is the Cauchy-product estimate, and
+equality holds by \eqref{ent:eq:gauss-mult} but is never needed. Only these
+inequalities are used, never a maximum-modulus principle.
+
+Finally, we write $F^{[k]}(b)=[Z^k]F(Z+b)$ for the $k$th Hasse jet
+coefficient at $b$, which is $F^{(k)}(b)/k!$ by \eqref{ent:eq:taylor}. For
+$v(b)\ge\gamma$ the same expansion gives the bound
+\begin{equation}\label{ent:eq:jet-bound}
+ v\bigl(F^{[k]}(b)\bigr)\ \ge\ m_\gamma(F)-k\gamma ,
+\end{equation}
+since every summand $\binom nk a_nb^{n-k}$ has valuation at least
+$v(a_n)+(n-k)\gamma=(v(a_n)+n\gamma)-k\gamma$.
 
 \section{An exact coefficient criterion and the cofinality dichotomy}
 \label{ent:sec:growth}
@@ -1350,7 +1508,7 @@ The canonical product theorem is therefore not a unique-factorization-domain
 theorem. Its product is infinite in a precisely controlled Hahn sense; an
 algebraic UFD requires finite irreducible factorizations.
 
-\section{The higher-rank obstruction to interpolation and B\'ezout}
+\section{The higher-rank obstruction and the exact image of the jet map}
 \label{ent:sec:obstruction}
 
 \subsection{A sequence of genuinely new Archimedean scales}
@@ -1369,65 +1527,776 @@ positive cofinal sequence $(\gamma_n)_{n\ge1}$ with
 $\gamma_{n+1}\ggA\gamma_n$ for every $n$.
 \end{lemma}
 \begin{proof}
-Choose a positive cofinal sequence $(q_n)$. After selecting $\gamma_n$, the
+Choose a positive cofinal sequence $(p_n)$. After selecting $\gamma_n$, the
 set $\{k\gamma_n:k\ge1\}$ is not cofinal, since $\gamma_n$ is not an order
 unit; hence it has a strict upper bound $b_n\in\Gamma$. Choose
-$\gamma_{n+1}>\max\{b_n,q_{n+1},\gamma_n\}$ and start with
-$\gamma_1\ge q_1>0$. The resulting sequence has the required domination and
-is cofinal because it dominates the $q_n$.
+$\gamma_{n+1}>\max\{b_n,p_{n+1},\gamma_n\}$ and start with
+$\gamma_1\ge p_1>0$. The resulting sequence has the required domination and
+is cofinal because it dominates the $p_n$.
 \end{proof}
 
-\subsection{A universal bound on values at escaping monomials}
-The next lemma is the core obstruction. It is short, but it uses both halves
-of \cref{ent:def:entire}: a common lower bound on the coefficient supports,
-and legitimate evaluation at the large argument.
+\subsection{Shells, normalized nodes, and the coarsened valuation rings}
+\label{ent:subsec:shells}
+The rest of this section identifies, exactly, the image of the full jet map
+of a radially finite divisor. The objects it needs are finite algebras
+attached to one valuation shell at a time, together with one coarsened
+valuation ring per shell. They are introduced here. Throughout this
+subsection $D$ is a radially finite effective divisor in the sense of
+\cref{ent:def:radial}, and $D$ is infinite unless the contrary is said;
+$\Gamma$ is arbitrary, and in particular the radii below are \emph{not}
+assumed to satisfy the Archimedean domination of
+\cref{ent:lem:escaping-classes}.
 
-\begin{lemma}[Archimedean growth barrier]\label{ent:lem:growth-barrier}
-Let $(\gamma_n)$ be positive and cofinal, and let $\lambda_n>0$ satisfy
-$\lambda_n\ggA\gamma_n$ for every sufficiently large $n$. For each
-$H\in\E$, eventually
-\begin{equation}\label{ent:eq:growth-barrier}
- v\bigl(H(t^{-\gamma_n})\bigr)>-\lambda_n.
-\end{equation}
-The value $+\infty$ is allowed when $H$ vanishes at the argument.
+\begin{lemma}[Shell decomposition]\label{ent:lem:shells}
+Let $D$ be an infinite radially finite divisor. There is a unique
+decomposition
+\[
+ D=D_0+\sum_{n\ge1}D_n,\qquad
+ D_n=\sum_{j=1}^{q_n}m_{n,j}\,[\rho_{n,j}],\qquad
+ v(\rho_{n,j})=-\gamma_n,
+\]
+in which $D_0$ is a finite divisor supported in $\OO$, the $q_n$ and
+$m_{n,j}$ are positive integers, the points $\rho_{n,1},\ldots,\rho_{n,q_n}$
+are distinct, and
+\[
+ 0<\gamma_1<\gamma_2<\cdots,\qquad(\gamma_n)\text{ cofinal in }\Gamma.
+\]
+Each shell total $M_n=\sum_{j\le q_n}m_{n,j}$ is finite. In particular an
+infinite radially finite divisor forces $\cf(\Gamma)=\aleph_0$.
 \end{lemma}
 \begin{proof}
-The assertion is immediate for $H=0$. Write $H=\sum_{k\ge0}h_kZ^k$ and let
-$m=\min_{h_k\ne0}v(h_k)$, which exists by strong summability at $Z=1$. For
-large $n$, $\gamma_n>|m|$. Then each nonzero term at $Z=t^{-\gamma_n}$
-satisfies
-\[
- v(h_kt^{-k\gamma_n})\ge m-k\gamma_n
-      >-(k+1)\gamma_n>-\lambda_n.
-\]
-The terms' valuations tend cofinally to infinity as $k\to\infty$ by
-\cref{ent:thm:criterion}, and their nonempty set has a minimum attained at a
-finite $k$. That minimum is strictly greater than $-\lambda_n$, and the
-valuation of their Hahn sum is at least the minimum, giving
-\eqref{ent:eq:growth-barrier}.
+Radial finiteness at $\gamma=0$ makes $D_0$, the restriction of $D$ to
+$\OO$, a finite divisor; it contains the occurrence at $0$, whose valuation
+is $+\infty$. The remaining support has negative valuations, and their
+negatives form the set of positive radii. Only finitely many radii lie below
+any fixed bound, by radial finiteness, so every nonempty set of radii has a
+least member: choose one member and minimize over the finitely many members
+at most it. Listing the radii by repeatedly taking the next least member
+exhausts them, because each has only finitely many predecessors. The list is
+infinite and cofinal, since otherwise one ball would carry the whole infinite
+divisor. Each shell lies in a ball and therefore has finite total
+multiplicity. Uniqueness is the uniqueness of the valuation of a point.
+Cofinality of $(\gamma_n)$ is the last assertion; it also follows from
+\cref{ent:lem:divisor-countable}, which this lemma refines by grouping the
+enumeration there into shells.
 \end{proof}
 
-\begin{corollary}[Explicit failure of value interpolation]
-\label{ent:cor:no-interpolation}
-For the sequence of \cref{ent:lem:escaping-classes}, the prescription
+Fix the normalizing monomials and the normalized shell data
+\begin{equation}\label{ent:eq:shellpoly}
+ \tau_n=t^{-\gamma_n},\qquad
+ \xi_{n,j}=\rho_{n,j}/\tau_n,\qquad
+ P_n(T)=\prod_{j=1}^{q_n}(T-\xi_{n,j})^{m_{n,j}} .
+\end{equation}
+Each $\xi_{n,j}$ is a unit of $\OO$, so $P_n$ is monic of degree $M_n$ with
+coefficients in $\OO$ and $P_n(0)$ a unit. Distinct normalized nodes need not
+have distinct residues in $\C$, and their differences may have arbitrarily
+large positive valuation; nothing below assumes otherwise.
+
+A prescribed jet at $\rho_{n,j}$ is a polynomial
+$J_{n,j}(U)=\sum_{\ell<m_{n,j}}b_{n,j,\ell}U^\ell$ over $\K$, the intended
+meaning being $F(\rho_{n,j}+U)\equiv J_{n,j}(U)\pmod{U^{m_{n,j}}}$. Finite
+Hermite interpolation over the field $\K$ supplies a unique
+\emph{normalized shell Hermite polynomial} $R_n$ with $\deg R_n<M_n$ and
+\begin{equation}\label{ent:eq:normalizedjets}
+ R_n(\xi_{n,j}+U)\equiv J_{n,j}(\tau_nU)\pmod{U^{m_{n,j}}}
+ \qquad(1\le j\le q_n).
+\end{equation}
+It exists for arbitrary data, with no integrality assumption: the question
+answered below is whether its coefficients lie in a particular subring. If
+$F\in\E$ realizes the jets then $R_n=\remp\bigl(F(\tau_nT),P_n\bigr)$, since
+$F(\tau_n(\xi_{n,j}+U))=F(\rho_{n,j}+\tau_nU)$.
+
+\begin{definition}[Killing one Archimedean scale]\label{ent:def:coarse}
+For $\gamma>0$ in $\Gamma$ put
+\begin{align}
+ H_\gamma&=\{\eta\in\Gamma:\abs{\eta}\le m\gamma\text{ for some }m\in\N\},
+ \label{ent:eq:Hgamma}\\
+ V_\gamma&=\{x\in\K:v(x)\ge-m\gamma\text{ for some }m\in\N\}.
+ \label{ent:eq:Vgamma}
+\end{align}
+Here $\N$ contains $0$, and $v(0)=+\infty$ puts $0$ in $V_\gamma$. Write
+$H_n=H_{\gamma_n}$ and $V_n=V_{\gamma_n}$ for the radii of a fixed divisor.
+\end{definition}
+
+$H_\gamma$ is the convex subgroup of $\Gamma$ generated by $\gamma$, and it is
+divisible because dividing by a positive integer does not increase absolute
+value. Both families increase with $n$, and
+$\bigcup_nH_n=\Gamma$, $\bigcup_nV_n=\K$, because $(\gamma_n)$ is cofinal.
+Membership in $V_n$ is a one-sided bound; arbitrarily small elements are
+admitted. The unit condition is two-sided:
+\begin{equation}\label{ent:eq:Vunits}
+ x\in V_n^\times
+ \quad\Longleftrightarrow\quad
+ x\ne0\text{ and }\abs{v(x)}\le m\gamma_n\text{ for some }m\in\N .
+\end{equation}
+
+\begin{lemma}[Coarsened residues]\label{ent:lem:coarse-residue}
+$V_\gamma$ is the valuation ring of the coarsening of $v$ by $H_\gamma$, with
+value group $\Gamma/H_\gamma$. Its maximal ideal and residue field are
 \[
- H(t^{-\gamma_n})=t^{-\gamma_{n+1}}\qquad(n\ge1)
+ \mathfrak q_\gamma=\{x:v(x)>m\gamma\text{ for every }m\in\N\},
+ \qquad
+ \kappa_\gamma=V_\gamma/\mathfrak q_\gamma\cong\C\bigl((t^{H_\gamma})\bigr),
 \]
-has no solution $H\in\E$. Each finite subcollection of these prescriptions
-has a polynomial solution.
+the residue map being restriction of the Hahn support to $H_\gamma$.
+\end{lemma}
+\begin{proof}
+An element of $V_\gamma$ has nonnegative class modulo $H_\gamma$, so all of
+its support exponents lie in nonnegative cosets. Restricting the support to
+the zero coset is additive, is surjective onto the full Hahn field on
+$H_\gamma$, and is multiplicative because two nonnegative cosets sum to zero
+only when both are zero. Its kernel consists of the series all of whose
+exponents exceed $H_\gamma$, which is the displayed $\mathfrak q_\gamma$.
+This also gives the valuation-ring and unit descriptions.
+\end{proof}
+
+This is the same computation as \cref{ent:lem:coarsened-ring}, performed
+inside $\Gamma$ by a convex subgroup rather than across an ordered-group
+extension; the two coarsenings are analogous, not the same object, and no
+statement is transferred between them. Both produce a residue field of the
+form $\C((t^H))$ rather than $\C$, and in both cases that is the point.
+
+Define the two finite algebras of shell $n$:
+\begin{equation}\label{ent:eq:shell-algebras}
+ \Lambda_n=\K[T]/(P_n),
+ \qquad
+ \Lambda_n^\circ=V_n[T]/(P_n)\ \subseteq\ \Lambda_n .
+\end{equation}
+The inclusion is injective because division by a monic polynomial gives a
+unique representative of degree below $M_n$ over either coefficient ring.
+A class in $\Lambda_n$ therefore lies in $\Lambda_n^\circ$ exactly when every
+coefficient of its degree-bounded representative lies in $V_n$. Over $\K$,
+finite Chinese remainders identify $\Lambda_n$ with the product of the local
+jet rings of the shell, the identification with the original jets including
+the rescaling in \eqref{ent:eq:normalizedjets}. Over $V_n$ the analogous
+decomposition may fail, because two normalized nodes can differ by a nonunit
+of $V_n$. That failure is the source of the close-node obstruction of
+\cref{ent:thm:close-pair}, not a technical inconvenience to be discarded.
+
+For the finite part set $\Lambda_0=\prod_{x\in\supp D_0}\K[U]/(U^{D(x)})$,
+omitting the factor when $D_0$ is empty; the same convention is used in every
+formula below that names $\Lambda_0$.
+
+\begin{definition}[The shellwise restricted product]\label{ent:def:restricted}
+\begin{equation}\label{ent:eq:restricted}
+ \RD=\Lambda_0\times
+ \left\{(r_n)\in\prod_{n\ge1}\Lambda_n:
+    r_n\in\Lambda_n^\circ\text{ for all sufficiently large }n\right\},
+\end{equation}
+equivalently the union over $N$ of
+$\Lambda_0\times\prod_{n<N}\Lambda_n\times\prod_{n\ge N}\Lambda_n^\circ$.
+\end{definition}
+
+This is a ring under componentwise operations, and a $\K$-algebra because a
+fixed scalar lies in $V_n$ for all large $n$. The phrase ``restricted
+product'' here asserts \emph{no} locally compact topology, no adelic
+structure and no Banach norm; it names the algebraic union just displayed and
+nothing else.
+
+\subsection{The exact image of the infinite jet map}
+\label{ent:subsec:jet-image}
+Every finite projection of the jet map of a radially finite divisor is
+surjective, by ordinary finite Hermite interpolation over the field $\K$.
+Neither a finite truncation nor a finite root calculation can therefore
+detect a global failure of surjectivity; see \cref{ent:app:checks}. What the
+finite projections cannot see is a condition on the \emph{tail} of the family
+of shells, and the following theorem states it.
+
+\begin{theorem}[Shellwise Hermite interpolation; the exact image]
+\label{ent:thm:image}
+Let $D$ be an infinite radially finite divisor, with the shell data of
+\cref{ent:lem:shells}, and prescribe arbitrary finite jets $J_{n,j}$ at all of
+its nodes together with an arbitrary element of $\Lambda_0$ at its finite
+part. Let $R_n$ be the normalized shell Hermite polynomials
+\eqref{ent:eq:normalizedjets}. There is an $F\in\E$ realizing every
+prescribed jet if and only if
+\begin{equation}\label{ent:eq:maincondition}
+ R_n\in V_n[T]\qquad\text{for all sufficiently large }n,
+\end{equation}
+that is, if and only if for all sufficiently large $n$ there is an integer
+$c_n\ge0$ with
+\[
+ v\bigl([T^j]R_n\bigr)\ge-c_n\gamma_n\qquad(0\le j<M_n).
+\]
+No condition is imposed on $D_0$ or on finitely many exceptional shells, and
+no uniform bound on $q_n$, on $m_{n,j}$, on $M_n$ or on $c_n$ is required.
+Consequently the image of the full jet map
+\[
+ \ev_D:\E\longrightarrow
+ \Lambda_0\times\prod_{n\ge1}\Lambda_n
+\]
+is exactly $\RD$.
+\end{theorem}
+
+The condition does not depend on the choice of normalizing monomial.
+Replacing $\tau_n$ by any $\tau_n'$ of the same valuation replaces $T$ by
+$uT$ for a unit $u$ of $\OO$, which multiplies each coefficient by a power of
+a valuation-zero unit and leaves membership in $V_n[T]$ unchanged.
+
+\begin{theorem}[The entire quotient is the restricted product]
+\label{ent:thm:quotient}
+For a radially finite divisor $D$ with canonical product $P_D$ of
+\cref{ent:thm:product}, the shellwise jet map induces an isomorphism of
+$\K$-algebras
+\[
+ \E/(P_D)\ \cong\ \RD,
+\]
+so that
+$0\to P_D\E\to\E\xrightarrow{\ \ev_D\ }\RD\to0$
+is exact. Every finite projection of $\ev_D$ is surjective; the full map into
+$\Lambda_0\times\prod_n\Lambda_n$ need not be.
+\end{theorem}
+\begin{proof}
+The image is \cref{ent:thm:image}. The kernel is $P_D\E$ by
+\cref{ent:cor:gcd,ent:cor:evaluation}: vanishing of all prescribed jets is
+exactly divisibility of the divisor. That $\ev_D$ is an algebra homomorphism
+is \cref{ent:prop:operations} together with the multiplicativity of the
+truncated jet map. Surjectivity of a finite projection is finite Hermite
+interpolation.
+\end{proof}
+
+The kernel statement invoked in that proof is the report's own
+\cref{ent:cor:gcd}, which is downstream of support-controlled preparation
+(\cref{ent:thm:prep}) and of algebraic closedness of $\K$
+(\cref{ent:thm:roots}). A second and genuinely different proof of the same
+statement, restricted to radially finite canonical products, is recorded next.
+Both are kept. The second uses neither preparation nor algebraic closedness,
+which is what makes \cref{ent:prop:real-form} available; the first proves far
+more, namely that \emph{every} nonzero entire function is such a product
+(\cref{ent:thm:factorization}), and that stronger statement does use
+algebraic closedness.
+
+\begin{proposition}[Principal vanishing ideal, second proof]
+\label{ent:prop:kernel-direct}
+Let $D$ be radially finite with canonical product $P_D$ of
+\cref{ent:thm:product}, and let $F\in\E$. If every jet prescribed by $D$
+vanishes on $F$, then $F\in P_D\E$. The converse is the jet homomorphism. Let
+$P$ denote the subproduct of $P_D$ over the nodes of \emph{negative}
+valuation, listed with multiplicity, and let $0<\beta_1\le\beta_2\le\cdots$ be
+the valuations $v(1/x)$ of the reciprocals of those nodes. The proof uses only
+the coefficient bound
+\begin{equation}\label{ent:eq:productcoef}
+ v\bigl([Z^k]P\bigr)\ \ge\ \beta_1+\cdots+\beta_k ,
+\end{equation}
+which also re-proves the entireness half of \cref{ent:thm:product} for $P$
+without preparation, since for $k\ge2$ the right-hand side divided by $k$ is
+at least $\beta_{\lfloor k/2\rfloor}/2$, and that tends cofinally to $+\infty$.
+\end{proposition}
+\begin{proof}
+Divide first by $Z^{D(0)}$ and by the finitely many factors at nonzero nodes
+of nonnegative valuation, using \cref{ent:lem:linear-division}; the quotient
+is entire and retains the required zeros at every remaining node. We may
+therefore replace $P_D$ by $P$, which has $P(0)=1$ and only negative-valuation
+nodes; note $\beta_i\to+\infty$ cofinally by
+\cref{ent:lem:divisor-countable}.
+
+Expanding $P$ over finite subsets of the reciprocals $1/x$ gives
+\eqref{ent:eq:productcoef}: every degree-$k$ term is a product of $k$ of the
+listed reciprocals with distinct labels, so its valuation is at least the sum
+of the $k$ smallest $\beta_i$, and the valuation of a Hahn sum is at least the
+minimum of its terms. Among $\beta_1,\ldots,\beta_k$ more than half are at
+least $\beta_{\lfloor k/2\rfloor}$ and the rest are positive, so the average
+is at least $\beta_{\lfloor k/2\rfloor}/2$;
+\cref{ent:thm:criterion} then gives entireness of $P$ directly.
+
+Since $P(0)=1$ there is a unique formal quotient $G=F/P\in\K[[Z]]$; we show
+$G\in\E$. Let $P_{\le N}$ be the finite product over the first $N$ shells and
+$F_N=F/P_{\le N}$, entire by finitely many applications of
+\cref{ent:lem:linear-division}. Every coefficient of the formal inverse
+$P_{\le N}^{-1}$ is integral, because each factor $(1-Z/x)^{-1}$ expands with
+$v(1/x)>0$; so if $A\ge0$ bounds $-v$ on the coefficients of $F$, then every
+coefficient of every $F_N$ has valuation at least $-A$, \emph{independently of
+$N$}. Write $T_N$ for the formal inverse of the tail $P_{>N}$. By
+\eqref{ent:eq:productcoef} applied to that tail, $v([Z^k]P_{>N})\ge
+k\gamma_{N+1}$, and the reciprocal recursion gives the same bound for
+$[Z^k]T_N$. In $\K[[Z]]$ we have $G=F_NT_N$.
+
+Fix a target $\gamma\in\Gamma$ and choose $\theta>\max\{\gamma,0\}$; choose
+$N$ with $\gamma_{N+1}>4\theta+2A$. As $F_N$ is entire, for all large $j$ its
+coefficient has valuation at least $4j\theta$. Split the convolution for
+$[Z^k]G$ at $j=k/2$: a summand with $j\ge k/2$ has valuation at least
+$4j\theta\ge2k\theta$, and a summand with $j<k/2$ has valuation at least
+\[
+ -A+(k-j)\gamma_{N+1}>-A+k\gamma_{N+1}/2
+ \ge k(\gamma_{N+1}/2-A)>2k\theta .
+\]
+Hence $v([Z^k]G)>k\gamma$ for all large $k$; cancellation only improves the
+bound. As $\gamma$ was arbitrary, \cref{ent:thm:criterion} gives $G\in\E$.
+\end{proof}
+
+The theorem identifies the missing object rather than a necessary inequality
+inside it. It also explains why solving each finite Chinese remainder problem
+and passing to an unspecified limit is not enough: the relevant restricted
+product is in general a proper subring of the full product. The element
+$g\bmod f$ of \cref{ent:thm:no-bezout} maps to an everywhere nonzero
+sequence, hence to a unit of the full product ring, but it is not a unit of
+$\E/(f)$: an inverse there would give representatives satisfying a B\'ezout
+identity. Thus the elementary implication ``invertible at each node implies
+invertible in the global quotient'' is exactly where unrestricted infinite
+Chinese remainder reasoning fails, and \cref{ent:thm:bezout-criterion} below
+says precisely how much more is needed.
+
+\subsection{Proof of the exact image theorem}
+\label{ent:subsec:image-proof}
+Two finite-algebra facts and one assembly lemma carry the proof.
+
+\begin{lemma}[Integral polynomial operations]\label{ent:lem:integral}
+Let $P\in\OO[T]$ be monic of degree $M$.
+\begin{enumerate}[label=\textnormal{(\alph*)},leftmargin=2em]
+\item If every coefficient of $G\in\K[T]$ has valuation at least $B$, then so
+does every coefficient of $\remp(G,P)$. In particular $\remp$ maps $\OO[T]$
+into $\OO[T]$.
+\item Suppose in addition $P=\prod_j(T-\xi_j)^{m_j}$ with $v(\xi_j)=0$, and
+let $Q(T)=\prod_h(T-\eta_h)^{m_h'}$ be a finite product with $v(\eta_h)>0$,
+where $\eta_h=0$ is permitted. Then $T$ and $Q$ are units of $\OO[T]/(P)$,
+and for every integer $d\ge0$ the inverse of $T^dQ$ has a representative in
+$\OO[T]$ of degree below $M$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) Monic division subtracts only integral multiples of $P$, so the bound $B$
+survives every step.
+
+(b) Consider multiplication on the free $\OO$-module $\OO[T]/(P)$ with basis
+$1,T,\ldots,T^{M-1}$; its matrices have entries in $\OO$. After extending
+scalars to $\K$, the determinant of multiplication by $L\in\K[T]$ is
+\begin{equation}\label{ent:eq:detnorm}
+ \det(m_L)=\prod_jL(\xi_j)^{m_j}=\Res(P,L),
+\end{equation}
+because in $\K[U]/(U^{m_j})$ multiplication by $L(\xi_j+U)$ is triangular
+with constant diagonal $L(\xi_j)$, and finite Chinese remainders over $\K$
+decompose $\Lambda_n$ accordingly. For $L=T$ each $\xi_j$ is a unit of $\OO$.
+For $L=Q$ each $\xi_j-\eta_h$ has valuation zero, since $v(\xi_j)=0<v(\eta_h)$.
+The determinants are therefore units of $\OO$, and the adjugate supplies
+inverses over $\OO$. Multiplying the two inverses gives the assertion for
+$T^dQ$.
+\end{proof}
+
+No lower bound on $v(\xi_j-\xi_k)$ for two nodes of the \emph{current} shell
+was used; they may be separated only at an arbitrarily higher scale. Only the
+already-treated nodes, of strictly smaller radius, enter $Q$, and they are
+uniformly separated from the current shell after normalization. This is the
+one place where the same finite algebra that creates the close-node
+obstruction also makes the construction possible.
+
+\begin{lemma}[Assembly]\label{ent:lem:assembly}
+Let $C_n\in\K[Z]$ be polynomials with $Z^n\mid C_n$, and suppose that for
+every $\gamma\in\Gamma$ the weighted Gauss valuations $m_\gamma(C_n)$ tend
+cofinally to $+\infty$. Then for any polynomial $S$ the series
+$F=S+\sum_nC_n$ is a well-defined element of $\E$, every coefficient of $F$
+being a finite sum, and evaluation and each fixed finite jet may be
+interchanged with the sum over $n$.
+\end{lemma}
+\begin{proof}
+Only $C_n$ with $n\le k$ contributes to the coefficient of $Z^k$, so each
+coefficient is a finite sum. Fix $\gamma$ and $B$. All but finitely many
+$C_n$ have $m_\gamma(C_n)>B$, and the finitely many exceptions have finite
+degree; beyond those degrees every weighted coefficient of $F$ exceeds $B$.
+This is \cref{ent:thm:criterion}(4), so $F\in\E$. For evaluation at $b$ and
+for a fixed jet order, choose $\gamma\le v(b)$; estimate
+\eqref{ent:eq:jet-bound} makes the family of jet coefficients cofinally
+summable, and the full family of evaluated monomials is strongly summable
+because below a fixed exponent only finitely many polynomials contribute,
+each with finitely many terms. \Cref{ent:lem:cofinal-tails} and regrouping
+give the interchange.
+\end{proof}
+
+\begin{proof}[Proof of necessity in \cref{ent:thm:image}]
+Let $F=\sum_ka_kZ^k\in\E$ be nonzero and fix $n$. Put
+$E_{n,k}(T)=\remp(T^k,P_n)$, whose coefficients lie in $\OO$ by
+\cref{ent:lem:integral}(a). By \cref{ent:thm:criterion} the valuations
+$v(a_k\tau_n^k)=v(a_k)-k\gamma_n$ tend cofinally to $+\infty$, so
+\begin{equation}\label{ent:eq:analyticremainder}
+ \remp_n(F)=\sum_{k\ge0}a_k\tau_n^kE_{n,k}(T)
+\end{equation}
+is a polynomial of degree below $M_n$ whose coefficients are strong Hahn sums
+(\cref{ent:lem:cofinal-tails}). At each normalized node its finite jets agree
+with those of $F(\tau_nT)$: the finite remainder identity holds term by term,
+and jet evaluation at the integral nodes preserves the cofinal estimates by
+\eqref{ent:eq:jet-bound}. Hence $\remp_n(F)$ is the normalized shell Hermite
+polynomial $R_n$ of the jets of $F$.
+
+By strong summability at $Z=1$ there is a fixed $A\ge0$ with $v(a_k)\ge-A$
+for every $k$. Every coefficient of \eqref{ent:eq:analyticremainder} has
+valuation at least
+\[
+ m_{-\gamma_n}(F)=\min_k\{v(a_k)-k\gamma_n\},
+\]
+a minimum attained at a finite index $k_n$, which may depend on $n$. For all
+$n$ with $\gamma_n>A$ this gives
+\[
+ m_{-\gamma_n}(F)\ \ge\ -A-k_n\gamma_n\ \ge\ -(k_n+1)\gamma_n ,
+\]
+so every coefficient of $R_n$ lies in $V_n$. The zero series is immediate,
+and $D_0$ imposes nothing.
+\end{proof}
+
+The attained minimum is load-bearing. An infimum of infinitely many estimates
+lying strictly above a cut need not itself lie above that cut in a
+non-Archimedean ordered group; here there is an actual minimizing index, not
+an appeal to an unproved compactness principle. This is the same point as in
+\cref{ent:lem:growth-barrier} and is recorded again in
+\cref{ent:app:audit}.
+
+For the converse, suppose a polynomial $S$ already fits every node of radius
+smaller than $\gamma_n$, together with $D_0$. Put
+\begin{align}
+ Q_n(T)&=\prod_{a\text{ already treated}}\bigl(T-a/\tau_n\bigr)^{D(a)},
+ \label{ent:eq:Qn}\\
+ \Theta_n(T)&=R_n(T)-\remp\bigl(S(\tau_nT),P_n\bigr).
+ \label{ent:eq:theta}
+\end{align}
+Every already-treated node has strictly smaller radius, so each $a/\tau_n$
+has positive valuation or is zero, and $Q_n$ satisfies the hypothesis of
+\cref{ent:lem:integral}(b). For an integer $d\ge0$ set
+\begin{align}
+ \Psi_{n,d}(T)&=\remp\Bigl(\Theta_n(T)\bigl(T^dQ_n(T)\bigr)^{-1},P_n\Bigr),
+ \label{ent:eq:psi}\\
+ C_{n,d}(Z)&=(Z/\tau_n)^d\,Q_n(Z/\tau_n)\,\Psi_{n,d}(Z/\tau_n),
+ \label{ent:eq:correction}
+\end{align}
+the inverse in \eqref{ent:eq:psi} being taken in $\Lambda_n$ with the
+integral representative supplied by \cref{ent:lem:integral}(b). Then every
+earlier prescribed jet of $C_{n,d}$ vanishes, the current-shell remainder of
+$C_{n,d}$ is exactly $\Theta_n$, so $S+C_{n,d}$ fits shell $n$ as well, and
+$Z^d$ divides $C_{n,d}$. The parameter $d$ changes none of these identities;
+it is free, and is used only for size.
+
+\begin{lemma}[Uniform damping estimate]\label{ent:lem:damping-shell}
+Suppose every coefficient of $\Theta_n$ has valuation at least $B$. Then the
+same holds for $\Psi_{n,d}$, independently of $d$, and
+\begin{equation}\label{ent:eq:damping-shell}
+ m_{-\gamma_n/2}(C_{n,d})\ \ge\ B+d\gamma_n/2 .
+\end{equation}
+If $\Theta_n\in V_n[T]$, so that $B=-c\gamma_n$ may be taken with an integer
+$c\ge0$, then every $d\ge\max\{n,2c+2\}$ gives
+\begin{equation}\label{ent:eq:damping-target}
+ m_{-\gamma_n/2}(C_{n,d})\ \ge\ \gamma_n .
+\end{equation}
+\end{lemma}
+\begin{proof}
+Multiplication by an integral inverse and integral remainder reduction
+preserve the lower bound $B$, by \cref{ent:lem:integral}. Under $T=Z/\tau_n
+=t^{\gamma_n}Z$ the monomial $T$ has weighted value
+$\gamma_n-\gamma_n/2=\gamma_n/2>0$ at $\gamma=-\gamma_n/2$; the substituted
+$Q_n$ has weighted value at least $0$ because its coefficients are integral;
+and the substituted $\Psi_{n,d}$ has weighted value at least $B$. Adding
+these, by the product estimate of \cref{ent:subsec:notation}, gives
+\eqref{ent:eq:damping-shell}. For the last assertion,
+$-c\gamma_n+d\gamma_n/2\ge\gamma_n$ holds as soon as $d\ge2c+2$.
+\end{proof}
+
+The estimate never uses $d\gamma_n\to+\infty$ in $\Gamma$ for fixed $n$; that
+assertion is false when $\gamma_n$ is not an order unit, and it is exactly
+the false step that \cref{ent:lem:escaping-classes} forbids. The finite
+damping needed at stage $n$ lives inside the convex subgroup $H_n$ generated
+by $\gamma_n$. It is the stages, not the powers at one stage, that traverse
+the cofinal hierarchy.
+
+\begin{proof}[Proof of sufficiency in \cref{ent:thm:image}]
+Suppose $R_n\in V_n[T]$ for every $n>N$. Fit $D_0$ and the first $N$ shells by
+a finite Hermite polynomial $S_N$ over $\K$. Since $S_N$ has finitely many
+coefficients and $\bigcup_nV_n=\K$, there is an $L>N$ with all coefficients of
+$S_N$ in $V_L$.
+
+Treat the finitely many shells $N<n\le L$ by
+\eqref{ent:eq:Qn}--\eqref{ent:eq:correction} with $d=0$. Throughout these
+steps the coefficients stay in $V_L$: for such $n$ we have
+$R_n\in V_n[T]\subseteq V_L[T]$, and both $\tau_n$ and $\tau_n^{-1}$ are units
+of $V_L$ because $\gamma_n\in H_L$, so normalizing, taking integral
+remainders and multiplying by the integral inverse of
+\cref{ent:lem:integral}(b) all preserve $V_L$-coefficients. This produces a
+polynomial $S_L$ fitting $D_0$ and the first $L$ shells, with coefficients in
+$V_L$. Choose $A\ge0$ in $H_L$ --- a sufficiently large finite multiple of
+$\gamma_L$ will do --- so that every coefficient of $S_L$ has valuation at
+least $-A$. This one bound is maintained for the rest of the construction.
+
+Let $n>L$ and suppose $S_{n-1}$ fits everything of radius below $\gamma_n$
+and has all coefficient valuations at least $-A$. Since $A\in H_L\subseteq
+H_n$, all coefficients of $S_{n-1}$ lie in $V_n$, and $\tau_n$ is a unit of
+$V_n$; hence $\Theta_n$ of \eqref{ent:eq:theta} lies in $V_n[T]$. Choose
+$d_n\ge n$ by \cref{ent:lem:damping-shell} so that $C_n=C_{n,d_n}$ satisfies
+$m_{-\gamma_n/2}(C_n)\ge\gamma_n$, and set $S_n=S_{n-1}+C_n$. Then every
+coefficient $c_{n,k}$ of $C_n$ obeys
+\begin{equation}\label{ent:eq:strongcoefbound}
+ v(c_{n,k})\ \ge\ \gamma_n+k\gamma_n/2\ \ge\ \gamma_n\ >\ 0,
+\end{equation}
+so the bound $-A$ is preserved and the induction continues. A zero residual
+is handled by $C_n=0$.
+
+Put $F=S_L+\sum_{n>L}C_n$. Since $Z^n$ divides $C_n$, each coefficient is a
+finite sum. For fixed $\gamma$ we eventually have $\gamma\ge-\gamma_n/2$, and
+$m_\gamma$ is nondecreasing, so
+\[
+ m_\gamma(C_n)\ \ge\ m_{-\gamma_n/2}(C_n)\ \ge\ \gamma_n
+ \longrightarrow+\infty\quad\text{cofinally}.
+\]
+\Cref{ent:lem:assembly} makes $F$ entire and lets every fixed finite jet pass
+through the sum. At any prescribed node the required jet is attained at a
+finite stage, and every later correction has zero jet there. Hence $F$
+realizes all the prescribed data.
+\end{proof}
+
+\begin{remark}[Why the finite initialization is not a formality]
+An exceptional early jet may carry a coefficient at a scale larger than many
+later radii. ``Absorb finitely many exceptions into a polynomial'' does not by
+itself justify the later damping estimates, which need one permanent lower
+bound. The intermediate finite run over $V_L$, followed by the single fixed
+bound $-A\in H_L$, is what prevents such a coefficient from propagating into
+an uncontrolled obstruction. This is the only initialization issue, and no
+uniform bound on the later jet orders is required.
+\end{remark}
+
+\begin{corollary}[Exact one-node interpolation]\label{ent:cor:single-node}
+Suppose each shell carries one node $\rho_n$, of multiplicity $m_n$, and
+prescribe jets $\sum_{\ell<m_n}b_{n,\ell}(Z-\rho_n)^\ell$. These are realized
+by an entire function if and only if, for all sufficiently large $n$,
+\[
+ b_{n,\ell}\in V_n\qquad\text{for every }\ell<m_n .
+\]
+For values alone ($m_n=1$ for all $n$) this reads: the prescription
+$F(\rho_n)=b_n$ is realizable if and only if $b_n\in V_n$ eventually, that is,
+if and only if for all large $n$ there is an integer $c_n\ge0$ with
+$v(b_n)\ge-c_n\gamma_n$.
 \end{corollary}
 \begin{proof}
-The valuations of the prescribed values are $-\gamma_{n+1}$, in conflict with
-\cref{ent:lem:growth-barrier}. The nodes are distinct, so ordinary finite
+The normalized Hermite polynomial is
+$R_n(T)=\sum_{\ell<m_n}b_{n,\ell}\tau_n^\ell(T-\xi_n)^\ell$. Both $\tau_n$ and
+$\xi_n$ are units of $V_n$, and the change between powers of $T$ and powers of
+$T-\xi_n$ is given by mutually inverse triangular matrices over $V_n$. Hence
+$R_n\in V_n[T]$ if and only if every $b_{n,\ell}$ lies in $V_n$. Apply
+\cref{ent:thm:image}.
+\end{proof}
+
+\begin{corollary}[Coarsely separated shells]\label{ent:cor:coarse-separated}
+Suppose that on every sufficiently large shell the differences
+$\xi_{n,j}-\xi_{n,k}$, $j\ne k$, are units of $V_n$. Then arbitrary
+prescribed jets are realizable exactly when all of their coefficients, in the
+original coordinate, lie in $V_n$ eventually.
+\end{corollary}
+\begin{proof}
+Under that hypothesis the ideals $(T-\xi_{n,j})^{m_{n,j}}$ are already
+pairwise comaximal in $V_n[T]$: two linear ideals are comaximal because the
+difference of their generators is a unit, and their powers are comaximal by
+expanding a sufficiently high power of an identity $u+w=1$. The finite
+Chinese remainder isomorphism therefore holds over $V_n$, and rescaling jets
+by powers of the $V_n$-unit $\tau_n$ does not change membership. Apply
+\cref{ent:thm:image}.
+\end{proof}
+
+The hypothesis is \emph{coarsened} separation, not separation in $v$.
+Normalized differences may have arbitrarily large positive fine valuation,
+provided that valuation still lies in $H_n$. Without it the conclusion is
+false, by \cref{ent:thm:close-pair}.
+
+\begin{corollary}[Order units and the disappearance of the restriction]
+\label{ent:cor:order-unit-image}
+If $\Gamma$ has an order unit $h$, then $H_\gamma=\Gamma$ and $V_\gamma=\K$
+for every $\gamma\ge h$, so $V_n=\K$ and $\Lambda_n^\circ=\Lambda_n$ for all
+large $n$. Condition \eqref{ent:eq:maincondition} is then vacuous, $\RD$ is
+the full product, and every radially finite Hermite prescription is realized.
+\end{corollary}
+\begin{proof}
+An order unit makes every element of $\Gamma$ bounded in absolute value by a
+finite multiple of $h$, hence of any $\gamma\ge h$; a cofinal $(\gamma_n)$
+eventually exceeds $h$. Apply \cref{ent:thm:image,ent:thm:quotient}.
+\end{proof}
+
+This recovers \cref{ent:thm:interpolation} and is discussed again in
+\cref{ent:sec:positive}, where the independent Gauss-norm proof is retained.
+At the other extreme, if $\cf(\Gamma)>\aleph_0$ then \cref{ent:lem:shells}
+leaves no infinite radially finite divisor at all and every interpolation
+problem here is finite. The new content lies in the intervening groups.
+
+\subsection{A universal bound on values at escaping monomials}
+The next lemma was the original core obstruction, and its necessity half is
+still what the negative results use. It is short, but it uses both halves of
+\cref{ent:def:entire}: a common lower bound on the coefficient supports, and
+legitimate evaluation at the large argument. \Cref{ent:thm:image} now
+supplies its converse, so the bound can be stated as an exact criterion.
+
+\begin{lemma}[Archimedean growth barrier, exact form]
+\label{ent:lem:growth-barrier}
+Let $(\gamma_n)_{n\ge1}$ be positive and strictly increasing with cofinal
+range, so that in particular $\gamma_n\to+\infty$ cofinally.
+\begin{enumerate}[label=\textnormal{(\alph*)},leftmargin=2em]
+\item \emph{(Necessity.)} For every $F\in\E$ there is an $n_0$ such that
+$F(t^{-\gamma_n})\in V_n$ for all $n\ge n_0$; that is, for each such $n$ some
+integer $c_n\ge0$ satisfies $v(F(t^{-\gamma_n}))\ge-c_n\gamma_n$. In
+particular, if $\lambda_n>0$ satisfies $\lambda_n\ggA\gamma_n$ for every
+sufficiently large $n$, then eventually
+\begin{equation}\label{ent:eq:growth-barrier}
+ v\bigl(F(t^{-\gamma_n})\bigr)>-\lambda_n .
+\end{equation}
+The value $+\infty$ is allowed when $F$ vanishes at the argument.
+\item \emph{(Sufficiency.)} Conversely, assume $(\gamma_n)$ is strictly
+increasing, and let $b_n\in\K$ satisfy $b_n\in V_n$ for all sufficiently
+large $n$. Then there is an $F\in\E$ with $F(t^{-\gamma_n})=b_n$ for every
+$n\ge1$, with no condition at all on the finitely many exceptional indices.
+\end{enumerate}
+Hence for a strictly increasing positive cofinal $(\gamma_n)$ the prescription
+$F(t^{-\gamma_n})=b_n$ is solvable in $\E$ if and only if $b_n\in V_n$
+eventually.
+\end{lemma}
+\begin{proof}
+(a) The assertion is immediate for $F=0$. Write $F=\sum_{k\ge0}a_kZ^k$ and let
+$m=\min_{a_k\ne0}v(a_k)$, which exists by strong summability at $Z=1$. The
+terms' valuations at $Z=t^{-\gamma_n}$ tend cofinally to infinity by
+\cref{ent:thm:criterion}, so their nonempty set has a minimum, attained at a
+finite index $k_n$, and the valuation of their Hahn sum is at least that
+minimum. For large $n$ we have $\gamma_n>\abs m$ and therefore
+\[
+ v\bigl(F(t^{-\gamma_n})\bigr)\ \ge\ m-k_n\gamma_n\ >\ -(k_n+1)\gamma_n ,
+\]
+which is the first assertion with $c_n=k_n+1$. If moreover
+$\lambda_n\ggA\gamma_n$, then $-(k_n+1)\gamma_n>-\lambda_n$, which is
+\eqref{ent:eq:growth-barrier}.
+
+(b) The points $t^{-\gamma_n}$ are distinct and their divisor is radially
+finite with one simple node per shell, so
+\cref{ent:cor:single-node} applies and supplies the interpolant.
+\end{proof}
+
+Part~(a) is the form used in \cref{ent:thm:no-bezout} and in
+\cref{ent:cor:no-interpolation}; it is elementary and independent of the
+constructive half of \cref{ent:thm:image}. Part~(b) is not elementary, and
+the dependency is recorded in \cref{ent:app:audit}. The monotonicity
+hypothesis is stated because the proof of (a) needs $\gamma_n$ to exceed a
+fixed bound \emph{eventually}, which a merely cofinal set of values does not
+supply; every application in this report --- \cref{ent:lem:escaping-classes}
+and \cref{ent:lem:shells} --- produces a strictly increasing sequence. No
+conclusion has been weakened by making the hypothesis explicit.
+
+\begin{corollary}[Explicit failure of value interpolation, and its exact
+boundary]
+\label{ent:cor:no-interpolation}
+Assume $\cf(\Gamma)=\aleph_0$ and $\Gamma$ has no order unit, and take the
+sequence $(\gamma_n)$ of \cref{ent:lem:escaping-classes}.
+\begin{enumerate}[label=\textnormal{(\alph*)},leftmargin=2em]
+\item \emph{(The negative half.)} The prescription
+\[
+ F(t^{-\gamma_n})=t^{-\gamma_{n+1}}\qquad(n\ge1)
+\]
+has no solution $F\in\E$, although each finite subcollection of these
+prescriptions has a polynomial solution.
+\item \emph{(The positive half.)} For \emph{every} sequence $(d_n)$ of
+nonnegative integers the prescription $F(t^{-\gamma_n})=t^{-d_n\gamma_n}$
+does have an entire solution. No rate restriction on $(d_n)$ is imposed. More
+generally one may prescribe, at each node, finitely many derivatives whose
+number grows arbitrarily with $n$, provided each shell's finitely many
+coefficients satisfy the same scale condition.
+\end{enumerate}
+Together, (a) and (b) are the two sides of the criterion of
+\cref{ent:lem:growth-barrier}: what an entire function may not do is jump
+repeatedly to a strictly larger Archimedean class, while arbitrarily high
+\emph{finite} powers of the current scale are always available.
+\end{corollary}
+\begin{proof}
+(a) The prescribed values have valuation $-\gamma_{n+1}$, and
+$\gamma_{n+1}\ggA\gamma_n$, so they lie in no $V_n$; this contradicts
+\cref{ent:lem:growth-barrier}(a). The nodes are distinct, so ordinary finite
 Lagrange interpolation over the field $\K$ realizes any finite subcollection.
+(b) Each $t^{-d_n\gamma_n}$ lies in $V_n$ by definition, so
+\cref{ent:lem:growth-barrier}(b) applies; the jet version is
+\cref{ent:cor:single-node}.
 \end{proof}
 
 This failure is not caused by nodes accumulating in a bounded ball: their
 divisor is radially finite and is therefore the divisor of an entire function
 by \cref{ent:thm:product}. Realizability of zeros is strictly weaker than
-realizability of values.
+realizability of values, and \cref{ent:thm:image} measures the difference
+exactly.
 
 \subsection{Two functions with no common zero and no B\'ezout identity}
+\label{ent:subsec:no-bezout}
+The quotient description now decides the B\'ezout question for a canonical
+product against an arbitrary entire second factor. Two finite unit
+computations are needed first.
+
+\begin{lemma}[Units of a shell algebra]\label{ent:lem:shellunits}
+For $R\in V_n[T]$ of degree below $M_n$ the following are equivalent:
+its class is a unit of $\Lambda_n^\circ$; $\Res(P_n,R)$ is a unit of $V_n$;
+every value $R(\xi_{n,j})$ is a unit of $V_n$.
+\end{lemma}
+\begin{proof}
+Multiplication by $R$ on the finite free $V_n$-module $\Lambda_n^\circ$ is
+invertible if and only if its determinant is a unit, by determinants in one
+direction and the adjugate in the other. Formula \eqref{ent:eq:detnorm} gives
+$\Res(P_n,R)=\prod_jR(\xi_{n,j})^{m_{n,j}}$. All the $\xi_{n,j}$ and all the
+coefficients lie in $V_n$, so every factor lies in that local ring, and a
+finite product in a local ring is a unit exactly when each factor is. The
+case of a vanishing factor is included.
+\end{proof}
+
+The statement keeps repeated roots and does not require the normalized nodes
+to have distinct residues. The determinant appears here as an exact
+finite-algebra unit test, not as an approximate stability threshold.
+
+\begin{lemma}[Units of the restricted product]\label{ent:lem:restrictedunits}
+An element $(r_0,r_1,r_2,\ldots)$ of $\RD$ is a unit if and only if $r_0$ is a
+unit of $\Lambda_0$, every $r_n$ is a unit of $\Lambda_n$, and
+$r_n\in(\Lambda_n^\circ)^\times$ for all sufficiently large $n$.
+\end{lemma}
+\begin{proof}
+A ring inverse must be the componentwise inverse. If both the element and its
+inverse lie in $\RD$, then both components lie in $\Lambda_n^\circ$ for all
+large $n$, making those components units there. Conversely those conditions
+put the componentwise inverse in $\RD$.
+\end{proof}
+
+\begin{theorem}[Sharp B\'ezout criterion]\label{ent:thm:bezout-criterion}
+Let $D$ be radially finite with canonical product $P_D$, and let $F\in\E$.
+There are $A,B\in\E$ with
+\begin{equation}\label{ent:eq:bezout-identity}
+ AP_D+BF=1
+\end{equation}
+if and only if both of the following hold:
+\begin{enumerate}[label=\textnormal{(\arabic*)},leftmargin=2em]
+\item $F(x)\ne0$ at every node $x$ of $D$;
+\item for all sufficiently large occupied shells $n$ there is a finite
+integer $c_n\ge0$ with
+\begin{equation}\label{ent:eq:valueupper}
+ v\bigl(F(\rho_{n,j})\bigr)\le c_n\gamma_n\qquad(1\le j\le q_n).
+\end{equation}
+\end{enumerate}
+For a finite divisor the second condition is vacuous, and for a $\Gamma$ with
+an order unit it is automatic. Moreover the criterion depends only on the
+support of $D$ and on the values of $F$ there: it is unchanged by any
+reassignment of positive finite multiplicities, even unbounded ones.
+\end{theorem}
+\begin{proof}
+For a finite divisor, finite Hermite interpolation supplies the inverse jets
+when all values are nonzero, and \cref{ent:cor:gcd} converts them into
+\eqref{ent:eq:bezout-identity}; necessity is evaluation. Assume $D$ infinite.
+An identity \eqref{ent:eq:bezout-identity} exists exactly when $F\bmod P_D$ is
+a unit of $\E/(P_D)$, so \cref{ent:thm:quotient,ent:lem:restrictedunits}
+apply. The unit condition in $\Lambda_0$ and in each $\Lambda_n$ is
+nonvanishing of the constant terms of all local jets, which is (1).
+
+For the tail condition, necessity in \cref{ent:thm:image} puts the normalized
+shell remainder $\remp_n(F)$ in $V_n[T]$ for all large $n$, and its values at
+the normalized nodes are $F(\rho_{n,j})$. By \cref{ent:lem:shellunits} its
+inverse lies in $\Lambda_n^\circ$ exactly when those values are units of
+$V_n$. The lower halves of the unit condition \eqref{ent:eq:Vunits} are
+automatic from membership in $V_n$; what remains is exactly the upper bound
+\eqref{ent:eq:valueupper}, and a maximum over the finitely many nodes of a
+shell produces one $c_n$ per shell.
+
+Conversely, under (1) and (2) the local inverse jets of $F$ have shell
+representatives in $V_n[T]$ for all large $n$, so \cref{ent:thm:image} yields
+a $B\in\E$ carrying them. Then $1-BF$ vanishes on $D$ to the required orders,
+and \cref{ent:cor:gcd} supplies $A$.
+
+Finally, both conditions refer only to $\supp D$ and to the values of $F$
+there, and any assignment of positive finite multiplicities to a radially
+finite set of nodes is again radially finite.
+\end{proof}
+
+The simplification to a pointwise test is special to the \emph{inverse jets of
+an already entire function}. Arbitrary Hermite data require the full
+coefficient criterion of \cref{ent:thm:image}; replacing it by a pointwise
+condition would lose \cref{ent:thm:close-pair}.
+
 \begin{theorem}[An explicit pointwise B\'ezout failure]
 \label{ent:thm:no-bezout}
 Assume the hypotheses of \cref{ent:lem:escaping-classes} and choose its
@@ -1443,7 +2312,14 @@ and disjoint, and
 \[
  \gcd(f,g)=1,\qquad (f,g)\ne\E.
 \]
-In particular there are no $A,B\in\E$ with $Af+Bg=1$.
+In particular there are no $A,B\in\E$ with $Af+Bg=1$. The failure is exactly
+a failure of condition~(2) of \cref{ent:thm:bezout-criterion}: condition~(1)
+holds, while
+\begin{equation}\label{ent:eq:lambda}
+ \lambda_n:=v(g(\rho_n))
+   =\gamma_{n+1}+(2-n)\gamma_n+\sum_{j<n}\gamma_j
+\end{equation}
+exceeds every finite multiple of $\gamma_n$.
 \end{theorem}
 \begin{proof}
 We have $v(\rho_n)=v(\sigma_n)=-\gamma_n$, so both root sequences escape
@@ -1464,12 +2340,8 @@ For $j=n$,
 \]
 For $j>n$ the ratio has positive valuation, and the infinite tail product has
 residue $1$ and valuation zero by the positive-support product argument used
-in \cref{ent:thm:product}. Therefore
-\begin{equation}\label{ent:eq:lambda}
- \lambda_n:=v(g(\rho_n))
-   =\gamma_{n+1}+(2-n)\gamma_n+\sum_{j<n}\gamma_j.
-\end{equation}
-The sum here is finite. Since $0<\gamma_j<\gamma_n$ for $j<n$, the part of
+in \cref{ent:thm:product}. This gives \eqref{ent:eq:lambda}.
+The sum there is finite. Since $0<\gamma_j<\gamma_n$ for $j<n$, the part of
 \eqref{ent:eq:lambda} other than $\gamma_{n+1}$ is bounded in absolute value
 by a finite multiple of $\gamma_n$. Hence $\lambda_n\ggA\gamma_n$.
 
@@ -1480,7 +2352,16 @@ evaluation is multiplicative, so
  v(B(\rho_n))=-\lambda_n.
 \]
 For all sufficiently large $n$ this contradicts
-\cref{ent:lem:growth-barrier}. Thus the ideal is proper.
+\cref{ent:lem:growth-barrier}(a). Thus the ideal is proper.
+
+This argument is self-contained and uses only part~(a) of
+\cref{ent:lem:growth-barrier}. Alternatively, and equivalently,
+$D=\sum_n[\rho_n]$ has one simple node per shell, $f=P_D$ exactly, since
+$D(0)=0$ in \eqref{ent:eq:product}; condition~(1) of
+\cref{ent:thm:bezout-criterion} holds because $g$ has no zero in common with
+$f$, and \eqref{ent:eq:lambda} with $\lambda_n\ggA\gamma_n$ is exactly the
+failure of \eqref{ent:eq:valueupper}. The criterion therefore both recovers
+this example and says what would have had to be true instead.
 \end{proof}
 
 The cancellation-sensitive step is \eqref{ent:eq:lambda}. No unproved
@@ -1488,6 +2369,48 @@ assertion that nearby zeros force a small value is used: the contribution of
 each earlier root is retained, and the infinite tail is proved to be a unit.
 The earlier-root terms can lower the valuation by finite multiples of
 $\gamma_n$, but cannot offset the new Archimedean scale $\gamma_{n+1}$.
+
+\begin{theorem}[A close pair with individually harmless values]
+\label{ent:thm:close-pair}
+Keep $\rho_n,\sigma_n$ of \eqref{ent:eq:paired-roots} and regard
+$\{\rho_n,\sigma_n\}$ as one shell of two simple nodes, with
+$\tau_n=t^{-\gamma_n}$, normalized nodes $1$ and $1+\varepsilon_n$, and
+\[
+ \varepsilon_n=t^{\gamma_{n+1}+\gamma_n}.
+\]
+The prescription $F(\rho_n)=0$, $F(\sigma_n)=c_n$ is realized by some
+$F\in\E$ if and only if
+\begin{equation}\label{ent:eq:closeexact}
+ c_n/\varepsilon_n\in V_n\qquad\text{for all sufficiently large }n .
+\end{equation}
+In particular there is \emph{no} $F\in\E$ with $F(\rho_n)=0$ and
+$F(\sigma_n)=1$ for all $n$, even though every prescribed value lies in every
+$V_n$ and every finite subproblem has a polynomial solution. By contrast
+$c_n=\varepsilon_n$ and $c_n=t^{\gamma_{n+1}}$ are both realizable.
+\end{theorem}
+\begin{proof}
+The unique shell interpolation polynomial of degree below two with
+$R_n(1)=0$ and $R_n(1+\varepsilon_n)=c_n$ is
+$R_n(T)=(c_n/\varepsilon_n)(T-1)$, and both of its coefficients are
+$\pm c_n/\varepsilon_n$. \Cref{ent:thm:image} gives
+\eqref{ent:eq:closeexact}. For $c_n=1$ both nonzero coefficients have
+valuation $-\gamma_{n+1}-\gamma_n$, which lies strictly below $-m\gamma_n$
+for every $m\in\N$ because $\gamma_{n+1}\ggA\gamma_n$; the criterion fails at
+every shell. Finite subproblems are ordinary Lagrange interpolation over
+$\K$. For $c_n=\varepsilon_n$ one gets $R_n=T-1$, and for
+$c_n=t^{\gamma_{n+1}}$ one gets $R_n=t^{-\gamma_n}(T-1)$; both lie in
+$V_n[T]$.
+\end{proof}
+
+This obstruction is genuinely joint. Neither the list of node radii nor the
+separate valuations of the prescribed values detects it: the divided
+difference carries an additional negative Archimedean scale. It is also the
+exact reason why \cref{ent:cor:coarse-separated} needs its hypothesis, and
+why applying \cref{ent:cor:single-node} node by node on a multi-node shell is
+wrong.
+
+\subsection{Maximal ideals that are not evaluations}
+\label{ent:subsec:invisible}
 
 \begin{corollary}[A finitely generated ideal invisible to point tests]
 \label{ent:cor:invisible-ideal}
@@ -1509,28 +2432,163 @@ specified. Nor do we claim that non-evaluation maximal ideals are absent in
 the rank-one entire ring; the statement concerns a \emph{two-generated} ideal
 already lacking a common zero.
 
-\subsection{The missing image of the infinite jet map}
-\label{ent:subsec:jet-image}
-Let $D$ be the simple divisor with nodes $\rho_n$. The evaluation map
-\[
- \operatorname{ev}_D:\E\longrightarrow\prod_{n\ge1}\K,
- \qquad H\longmapsto(H(\rho_n))_n
-\]
-has kernel $f\E$ by \cref{ent:cor:gcd}, and it is not surjective by
-\cref{ent:cor:no-interpolation}. In particular
-\[
- \E/(f)\hookrightarrow\prod_{n\ge1}\K
-\]
-is a proper subring. The element $g\bmod f$ maps to an everywhere nonzero
-sequence, hence to a unit of the product ring, but it is not a unit in
-$\E/(f)$: an inverse there would give representatives satisfying a B\'ezout
-identity.
+\Cref{ent:cor:invisible-ideal} produces its maximal ideals by Zorn's lemma
+and names none of them. It is kept because it is weaker and cheaper: it needs
+only \cref{ent:cor:evaluation} and \cref{ent:thm:no-bezout}, and in
+particular none of the image theorem. The next theorem constructs such
+maximal ideals explicitly, with their residue fields, at the cost of using
+\cref{ent:thm:image} and a nonprincipal ultrafilter.
 
-Thus the elementary implication ``invertible at each node implies invertible
-in the global quotient'' is exactly where unrestricted infinite Chinese
-remainder reasoning fails. Every finite projection of this map is surjective.
-Neither a finite truncation nor a finite root calculation can detect the
-global failure; see \cref{ent:app:checks}.
+For the rest of this subsection let $D$ have one simple node $\rho_n$ per
+occupied shell and empty finite part, so that
+\[
+ P_D=\prod_{n\ge1}(1-Z/\rho_n),
+ \qquad
+ \RD=\{(b_n)\in\K^{\N_{>0}}:b_n\in V_n\text{ eventually}\}
+\]
+by \cref{ent:thm:quotient,ent:cor:single-node}. Adjoining a finite part
+changes none of the constructions below. Fix a nonprincipal ultrafilter
+$\Ucal$ on the positive integers --- this is an ordinary ZFC choice, not an
+algorithmically computed object --- and set
+\begin{equation}\label{ent:eq:ultraproduct}
+ L_\Ucal=\Bigl(\prod_{n\ge1}\kappa_n\Bigr)\big/\Ucal,
+ \qquad
+ \kappa_n=\C\bigl((t^{H_n})\bigr),
+\end{equation}
+two sequences being identified when they agree on a member of $\Ucal$. This
+quotient is a field: a nonzero class has nonzero components on a member of
+$\Ucal$, and the reciprocals there give its inverse.
+
+\begin{theorem}[Explicit non-evaluation maximal ideals]\label{ent:thm:maximal}
+The formula
+\begin{equation}\label{ent:eq:Phi}
+ \Phi_\Ucal(F)=\bigl[\res_n\bigl(F(\rho_n)\bigr)\bigr]_\Ucal ,
+\end{equation}
+where $\res_n:V_n\to\kappa_n$ is the coarsened residue map of
+\cref{ent:lem:coarse-residue} and the residue is taken at all sufficiently
+large $n$, defines a surjective ring homomorphism $\E\to L_\Ucal$. Arbitrary
+values at the finitely many remaining indices do not affect the class. Its
+kernel is the maximal ideal
+\begin{equation}\label{ent:eq:Mexplicit}
+ \mathfrak M_\Ucal=
+ \bigl\{F\in\E:\{n:v(F(\rho_n))>m\gamma_n\text{ for every }m\in\N\}
+ \in\Ucal\bigr\},
+\end{equation}
+which contains $P_D$ and is not the kernel of evaluation at any point of
+$\K$. Distinct nonprincipal ultrafilters give distinct maximal ideals, and
+$\E/\mathfrak M_\Ucal\cong L_\Ucal$.
+\end{theorem}
+\begin{proof}
+Necessity in \cref{ent:thm:image}, in the form
+\cref{ent:lem:growth-barrier}(a), gives the eventual membership
+$F(\rho_n)\in V_n$ that \eqref{ent:eq:Phi} needs. Addition and multiplication
+are respected on a common cofinite set of indices, so $\Phi_\Ucal$ is a ring
+homomorphism, and changing finitely many components does not change the class
+at a nonprincipal ultrafilter. For surjectivity, given $c_n\in\kappa_n$ use
+the canonical inclusion $\kappa_n=\C((t^{H_n}))\subseteq\K$ to lift to
+$b_n\in V_n$ and apply \cref{ent:cor:single-node}.
+\Cref{ent:lem:coarse-residue} identifies the kernel with
+\eqref{ent:eq:Mexplicit}, and since $L_\Ucal$ is a field that kernel is
+maximal. It contains $P_D$, which vanishes at every node.
+
+Suppose the kernel were evaluation at a point $x$. Then $P_D(x)=0$, so
+$x=\rho_r$ for some $r$ by \cref{ent:thm:product}. The bounded prescription
+$b_r=1$ and $b_n=0$ for $n\ne r$ has an entire interpolant $F_r$ by
+\cref{ent:cor:single-node}; its residue class is zero at a nonprincipal
+ultrafilter, so $F_r\in\mathfrak M_\Ucal$, while $F_r(\rho_r)=1$. This
+excludes every evaluation point.
+
+For distinct nonprincipal ultrafilters $\Ucal$ and $\mathcal W$, choose
+$S\in\Ucal$ with $S\notin\mathcal W$ and interpolate the values $1$ on $S$
+and $0$ off $S$; the image is $1$ under $\Phi_\Ucal$ and $0$ under
+$\Phi_\mathcal W$, so the kernels differ. The residue-field identification is
+the first isomorphism theorem.
+\end{proof}
+
+\begin{remark}[How the coefficient field acts]\label{ent:rem:coeff-action}
+The copy of $\K$ inside $L_\Ucal$ is not a constant-coordinate embedding into
+each $\kappa_n$. A scalar $c\in\K$ maps to the class of its eventual support
+restrictions $[c|_{H_n}]_\Ucal$. For $c\ne0$ the leading exponent of $c$ lies
+in $H_n$ for all large $n$, so those residues are nonzero; the map is an
+embedding and supplies the $\K$-algebra structure on the target. It remains
+valid when $\supp c$ is contained in no single $H_n$.
+\end{remark}
+
+\begin{corollary}[Finite-rank residue fields in an infinite-rank example]
+\label{ent:cor:residue-fields}
+Take $\Gamma_\infty=\bigoplus_{j\ge0}\Q e_j$ of
+\cref{ent:subsec:gamma-infinity} with $\gamma_n=e_n$ for $n\ge1$. Then
+\[
+ H_n=\bigoplus_{j=0}^{n}\Q e_j,
+ \qquad
+ \E/\mathfrak M_\Ucal\ \cong\
+ \Bigl(\prod_{n\ge1}
+  \C\bigl(\bigl(t^{\oplus_{j=0}^{n}\Q e_j}\bigr)\bigr)\Bigr)\big/\Ucal .
+\]
+Every nonprincipal $\mathfrak M_\Ucal$ contains both of the functions $f,g$ of
+\eqref{ent:eq:paired-products}, although they have no common zero.
+\end{corollary}
+\begin{proof}
+In the largest-index order, every element supported in $e_0,\ldots,e_n$ is
+bounded in absolute value by a finite multiple of $e_n$, while an element
+with a nonzero coordinate of index above $n$ is not; this is $H_n$. Note that
+the index $0$ is included: $H_n$ has rank $n+1$, not $n$.
+\Cref{ent:thm:maximal} gives the residue field. Now $f(\rho_n)=0$ for every
+$n$, so $f\in\mathfrak M_\Ucal$; and \eqref{ent:eq:lambda} with
+$\lambda_n\ggA\gamma_n$ puts $g(\rho_n)$ in $\mathfrak q_{\gamma_n}$ for
+every $n$, so $g\in\mathfrak M_\Ucal$ as well.
+\end{proof}
+
+Each of these residue fields is a full Hahn field on a convex subgroup of
+$\Gamma$, exactly the shape produced by the coarsening of
+\cref{ent:lem:coarsened-ring} in an entirely different situation. The
+coincidence of shape is worth noticing and is not an identification: one
+coarsening happens inside $\Gamma$ at a shell radius, the other across an
+ordered-group extension.
+
+This construction gives a specified family of maximal ideals together with a
+field presentation of each. It does \emph{not} classify all maximal ideals of
+$\E$, and it does not assert that every non-evaluation maximal ideal arises
+this way. The ultrafilter mechanism itself is standard algebra; what is new
+is the analytic surjection onto $\RD$ that feeds it. No model-theoretic
+transfer principle is used.
+
+\subsection{Real Hahn coefficients}
+\begin{proposition}[Real form]\label{ent:prop:real-form}
+\Cref{ent:thm:image,ent:thm:quotient,ent:thm:bezout-criterion} and the
+interpolation corollaries
+\cref{ent:cor:single-node,ent:cor:coarse-separated,ent:cor:order-unit-image},
+together with \cref{ent:thm:close-pair}, remain true with $\K$ replaced by the
+real Hahn field $\R((t^\Gamma))$ and $\E$ by its ring of strongly entire
+series, provided all interpolation nodes and all prescribed data lie in that
+field.
+\end{proposition}
+\begin{proof}
+Every algebraic inverse used above concerns polynomials that are split by
+hypothesis at the given nodes, not arbitrary polynomials; finite Hermite
+interpolation uses only field arithmetic; and the coefficient, support and
+coarsening arguments are unchanged. For the kernel statement use the second
+proof recorded in \cref{ent:prop:kernel-direct}, which does not invoke
+\cref{ent:thm:prep} or \cref{ent:thm:roots}.
+\end{proof}
+
+No algebraic closedness of the coefficient field is used anywhere in this
+subsection's list. This is a genuine difference from the factorization theory
+of \cref{ent:sec:products}: \cref{ent:thm:roots,ent:thm:factorization} do use
+algebraic closedness essentially, as recorded in
+\cref{ent:subsec:scope-limits}, and \cref{ent:prop:real-form} makes no claim
+about them. Under the embedding \eqref{ent:eq:embedding}, the close pair of
+\cref{ent:thm:close-pair} in $\Gamma_\infty$ consists of the real surreal
+numbers $\rho_n=\omega^{\omega^n}$ and
+$\sigma_n=\omega^{\omega^n}+\omega^{-\omega^{n+1}}$ of
+\eqref{ent:eq:surreal-roots}. So: no entire power series in that fixed
+\emph{real} Hahn workspace takes the value $0$ at every $\rho_n$ and $1$ at
+every $\sigma_n$, while changing the second values to $\omega^{-\omega^{n+1}}$
+makes the problem solvable. These remain statements about a fixed set-sized
+workspace embedded in $\No$ and $\No[i]$; nothing here asserts a nonpolynomial
+series summable at every point of the whole proper class, and the
+distinction is the one already drawn in \cref{ent:subsec:three-meanings}.
+
 
 \section{The positive case: an order unit restores interpolation}
 \label{ent:sec:positive}
@@ -1604,9 +2662,17 @@ cofinality of the topology and the all-radius coefficient test that permit
 its use here.
 
 \subsection{A complete Hermite interpolation argument}
-The next proof records the damping mechanism that fails in
-\cref{ent:sec:obstruction}. It is included instead of importing an
-unqualified analytic interpolation theorem.
+This theorem is the order-unit special case of \cref{ent:thm:image}: an order
+unit makes every coarsened ring $V_n$ equal to $\K$ on all large shells, so
+the shellwise condition \eqref{ent:eq:maincondition} is vacuous. That is the
+first proof below, and it is short. The second proof, which is the one the
+source manuscripts wrote, is kept in full: it is a genuinely different
+argument, by a real-valued coarsening and Gauss norms rather than by
+valuation estimates inside $\Gamma$, it records the damping mechanism that
+fails in \cref{ent:subsec:no-bezout} in its own idiom, and it is
+self-contained --- in particular it does not depend on \cref{ent:thm:image},
+so the two routes to case~(ii) of \cref{ent:thm:main} remain independent.
+Neither proof is offered as a correction of the other.
 
 \begin{theorem}[Arbitrary radial Hermite interpolation]
 \label{ent:thm:interpolation}
@@ -1619,7 +2685,19 @@ $J_n\in\K[U]/(U^{m_n})$ there exists $F\in\E$ with
  \qquad\text{for every }n.
 \]
 \end{theorem}
-\begin{proof}
+\begin{proof}[First proof, from the exact image theorem]
+If the divisor is finite this is ordinary Hermite interpolation over the
+field $\K$ by a polynomial. Otherwise \cref{ent:lem:shells} supplies its
+shell decomposition and \cref{ent:cor:order-unit-image} says that
+\eqref{ent:eq:maincondition} holds automatically, because $V_n=\K$ for all
+$n$ with $\gamma_n\ge h$. Apply \cref{ent:thm:image}. Note the direction of
+the dependence: this uses the constructive half of \cref{ent:thm:image},
+whose damping estimate \eqref{ent:eq:damping-shell} is carried out inside the
+convex subgroup $H_n$ and never assumes that the multiples of one $\gamma_n$
+are cofinal --- the order unit is used only to make the shellwise condition
+empty, not to run the construction.
+\end{proof}
+\begin{proof}[Second proof, by a real-valued coarsening and Gauss norms]
 Use $|\cdot|=|\cdot|_\pi$ from \cref{ent:lem:coarsening}. A radially finite
 infinite set can be enumerated with $|x_n|\to\infty$: a ball of any fixed
 real absolute-value radius is contained in some original valuation ball, and
@@ -1651,28 +2729,32 @@ It vanishes to the required orders at all earlier nodes, and by
 \eqref{ent:eq:interpolation-r} its jet at $x_n$ is the required residual. The
 parameter $N$ can therefore be used purely to control its size.
 
-Set $R_n=|x_n|^{1/2}$, so $1<R_n<|x_n|$ and $R_n\to\infty$. For a polynomial
+Set $\theta_n=|x_n|^{1/2}$, so $1<\theta_n<|x_n|$ and $\theta_n\to\infty$.
+(The radius is written $\theta_n$, not $R_n$, because $R_n$ denotes the
+normalized shell Hermite polynomial of \eqref{ent:eq:normalizedjets}
+throughout this report.) For a polynomial
 $P=\sum p_kZ^k$ write $\|P\|_R=\max_k|p_k|R^k$. If
 $B_n(U)=\sum_{j<m_n}b_jU^j$, the coefficient of $U^\ell$ in
 \eqref{ent:eq:interpolation-r} has absolute value at most
 $\max_{j\le\ell}|b_j|\,|x_n|^{j-\ell}$. This bound is independent of $N$,
 because the binomial coefficients $\binom{-N}{k}$ are integers and so have
-absolute value at most $1$. Since $R_n<|x_n|$, substitution $U=Z-x_n$ gives
+absolute value at most $1$. Since $\theta_n<|x_n|$, substitution $U=Z-x_n$
+gives
 \[
- \|r_{n,N}(Z-x_n)\|_{R_n}
+ \|r_{n,N}(Z-x_n)\|_{\theta_n}
  \le\max_{j<m_n}|b_j|\,|x_n|^j=:C'_n,
 \]
 and consequently
 \begin{equation}\label{ent:eq:damping}
- \|p_{n,N}\|_{R_n}
- \le \|Q_{n-1}\|_{R_n} C'_n
-          \left(\frac{R_n}{|x_n|}\right)^N.
+ \|p_{n,N}\|_{\theta_n}
+ \le \|Q_{n-1}\|_{\theta_n} C'_n
+          \left(\frac{\theta_n}{|x_n|}\right)^N.
 \end{equation}
 The right side tends to zero as the ordinary integer $N$ tends to infinity.
 Choose $N_n$ so that this norm is at most $2^{-n}$ and put
 $S_n=S_{n-1}+p_{n,N_n}$.
 
-For every fixed real $R>0$, eventually $R\le R_n$, so
+For every fixed real $R>0$, eventually $R\le\theta_n$, so
 $\|p_{n,N_n}\|_R\le2^{-n}$. Hence $(S_n)$ is Cauchy in the Gauss norm at
 every radius. The space of series satisfying $|a_k|R^k\to0$ is complete for
 that norm: coefficientwise limits exist by completeness of $\K$, and uniform
@@ -1691,7 +2773,26 @@ so their limit does too.
 If $\Gamma$ has an order unit then $\E$ is a B\'ezout domain. In particular,
 if $f,g\in\E$ have no common zero there are $A,B\in\E$ with $Af+Bg=1$.
 \end{theorem}
-\begin{proof}
+
+This is the order-unit special case of \cref{ent:thm:bezout-criterion}: with
+an order unit, condition~(2) of that criterion is automatic, so only the
+common-zero condition~(1) remains. Both proofs are kept, for the reason given
+before \cref{ent:thm:interpolation}.
+
+\begin{proof}[First proof, from the sharp criterion]
+Let $f,g$ be nonzero with no common zero and let $D=\Div(f)$, which is
+radially finite by \cref{ent:thm:roots} and has $f=a_mP_D$ for a scalar
+$a_m\in\K^\times$ by \cref{ent:thm:factorization}. Condition~(1) of
+\cref{ent:thm:bezout-criterion} is the absence of a common zero. For
+condition~(2), an order unit $h$ makes $H_{\gamma_n}=\Gamma$ for every
+$\gamma_n\ge h$, so every nonzero $g(\rho_{n,j})$ has
+$\abs{v(g(\rho_{n,j}))}\le c_n\gamma_n$ for some integer $c_n\ge0$; a maximum
+over the finitely many nodes of a shell gives one $c_n$. The criterion
+supplies $A',B$ with $A'P_D+Bg=1$, hence $(A'/a_m)f+Bg=1$. The reduction of
+an arbitrary pair to this case, and the induction on the number of
+generators, are as in the second proof below.
+\end{proof}
+\begin{proof}[Second proof, from the order-unit interpolation theorem]
 First suppose $f,g$ are nonzero with no common zero. At each zero $x$ of $f$
 let $m_x$ be its multiplicity. Since $g(x)\ne0$, the formal inverse of
 $g(x+U)$ exists modulo $U^{m_x}$. By \cref{ent:thm:interpolation} choose
@@ -1712,9 +2813,13 @@ For a radially finite divisor $D$ the full jet map is therefore surjective:
  \ \cong\ \prod_{x\in\supp D}\K[U]/(U^{D(x)}).
 \]
 The kernel is again given by divisibility, and surjectivity is
-\cref{ent:thm:interpolation}. This exact unrestricted Chinese remainder
-statement contrasts sharply with the proper image of
-\cref{ent:subsec:jet-image}.
+\cref{ent:thm:interpolation}. Equivalently, in the language of
+\cref{ent:subsec:jet-image}, an order unit collapses the restricted product
+$\RD$ onto the full product, since $\Lambda_n^\circ=\Lambda_n$ for all large
+$n$ (\cref{ent:cor:order-unit-image}). This exact unrestricted Chinese
+remainder statement is the boundary case of \cref{ent:thm:quotient}, and it
+is exactly what fails, in a now completely measured way, when $\Gamma$ has
+countable cofinality and no order unit.
 
 \section{Change of workspace: the universal scalar-extension domain}
 \label{ent:sec:extension}
@@ -2409,7 +3514,8 @@ report's \emph{localization principle}: every set of surcomplex numbers lies
 in one divisible set-sized workspace. That principle is what makes the
 reduction legitimate, and it is cited here, not reproved.
 
-\paragraph{Global divisors and analytic geometry --- different rings.}
+\paragraph{Global divisors and analytic geometry --- different rings, and
+two restricted products that restrict different things.}
 The global-divisor report \cite{RepoDivisors} works in
 $\mathcal O(U)((t^\Gamma))$, with ordinary holomorphic coefficient functions
 on a common complex domain; its divisor, interpolation and Picard
@@ -2418,6 +3524,49 @@ studied here, and nothing in this report contradicts or restates them. The
 analytic-geometry report states the ring discipline that
 \cref{ent:conv:ring} invokes by name, for its own four coefficient rings.
 Neither the objects nor the theorems transfer.
+
+That report and \cref{ent:thm:main-image} nevertheless have the same moral,
+and the resemblance is close enough that the difference has to be stated
+rather than left to be inferred. Its \texttt{global:thm:interpolation} and
+\texttt{global:cor:CRT} prove a \emph{support-restricted} Chinese remainder
+theorem: the correct target of global interpolation is a restricted
+subalgebra $\mathcal B$ of the product of the local finite algebras, not the
+full product, and its \texttt{global:ex:selector} shows the failure already
+for prescribed values in $\{0,1\}$ --- a $0/1$ selector on clusters of
+growing size whose intrinsic quotient coordinates acquire an infinite
+strictly decreasing sequence of exponents. \Cref{ent:thm:quotient} has the
+same shape, and \cref{ent:thm:close-pair} is likewise a $0/1$ prescription
+that is not interpolable. The two restricted products are not the same
+construction and neither implies the other:
+\begin{itemize}[leftmargin=1.4em]
+\item \emph{What is restricted.} There, the condition is that the
+\emph{union of the coefficient supports} of the local remainders be
+\emph{well ordered}. Here, the condition is \emph{eventual membership} of the
+shell remainder's coefficients in a \emph{coarsened valuation ring} $V_n$.
+Well-ordering of a support is not a valuation bound, and a valuation bound is
+not a well-ordering condition.
+\item \emph{What the index set is.} There, the index set is a family of
+clusters of \emph{infinitesimally close moving points}, each cluster bounded
+by a polynomial $P_c$, and the obstruction comes from negative powers of the
+separations \emph{inside} one cluster. Here, the index set is the sequence of
+\emph{valuation shells escaping through the Archimedean hierarchy}, and the
+obstruction comes from how far out in that hierarchy the data reaches. A
+single shell may itself contain close nodes, and then
+\cref{ent:thm:close-pair} shows the same divided-difference mechanism acting
+inside the shell --- but the shellwise condition is a tail condition on
+$n$, which has no counterpart there.
+\item \emph{Which ring.} That theorem is stated in
+$\mathcal O(U)((t^\Gamma))$, which \cref{ent:conv:ring} and
+\cref{ent:subsec:scope-limits} explicitly disclaim for every statement in
+this report, and which the third source manuscript disclaims for its own. Its
+value group may be $\Q$, with an order unit, where
+\cref{ent:cor:order-unit-image} says our restriction disappears entirely;
+its obstruction survives there, because it is not our obstruction.
+\end{itemize}
+Both reports therefore say ``the image of an infinite Chinese remainder map
+is a proper restricted subproduct, and the restriction is forced, not
+chosen''. They compute different restrictions, for different reasons, in
+different rings.
 
 \section{What the results do and do not establish}
 \label{ent:sec:scope}
@@ -2520,6 +3669,48 @@ No density of $\C$ in any fine surreal topology is asserted, and strong Hahn
 summability, intrinsic valuation convergence and the fine surreal topology
 are deliberately never identified.
 
+\paragraph{Limits of the exact image theorem.}
+\Cref{ent:thm:main-image} concerns ordinary power series in \emph{one}
+coordinate and radially finite divisors in a full Hahn field. It is not a
+theorem about $\mathcal O(U)((t^\Gamma))$, about common-domain holomorphic
+coefficient germs, or about functions continuous for the fine surreal
+topology; the third source manuscript disclaims that ring by name, as
+\cref{ent:conv:ring} does. It does not extend automatically to several
+variables, where a shell need not carry one finite monic quotient controlling
+all the prescribed data, and it supplies no interpolation criterion for an
+infinite node set confined to a single valuation ball, where
+\cref{ent:lem:shells} gives no shell decomposition at all. The phrase
+``restricted product'' in \cref{ent:def:restricted} names an algebraic union
+and asserts no locally compact topology, no adelic structure and no Banach
+norm. \Cref{ent:thm:maximal} constructs a specified family of maximal ideals
+with a field presentation for each; it does \emph{not} classify all maximal
+ideals of $\E$ and does not assert that every non-evaluation maximal ideal
+arises this way, and its nonprincipal ultrafilter is an ordinary
+set-theoretic choice, not an algorithmically computed object.
+
+The construction behind \cref{ent:thm:image} is constructive only in a
+limited and stated sense. Given explicit finite representations of a shell's
+nodes and jets, \eqref{ent:eq:psi} is a finite computation in a quotient of
+$\K[T]$, and a certificate $v([T^j]\Theta_n)\ge-c\gamma_n$ yields the explicit
+damping exponent $d_n\ge\max\{n,2c+2\}$; each coefficient of the assembled
+$F$ receives only finitely many corrections. This is not a decision procedure
+for arbitrary input Hahn series: deciding their equality, computing a
+valuation, or deciding membership in $V_n$ may require information absent
+from a finite encoding. The theorem is an existence theorem with a
+finite-step construction \emph{relative to} exact field operations and
+valuation-bound certificates, and the maximal ideals of
+\cref{ent:thm:maximal} are not constructive even in that sense.
+
+Finally, \cref{ent:prop:real-form} states exactly which results survive over
+$\R((t^\Gamma))$, and no more. Algebraic closedness remains essential to
+\cref{ent:thm:roots,ent:thm:factorization} and hence to
+\cref{ent:cor:gcd,ent:thm:zero-conservation}, as stated above; the real form
+is available for the image, quotient and B\'ezout statements only because
+their proofs split the relevant polynomials at the given nodes by hypothesis
+and because \cref{ent:prop:kernel-direct} supplies the kernel without
+preparation. Nothing in \cref{ent:prop:real-form} should be read as weakening
+the algebraic-closedness hypothesis of the factorization theory.
+
 \paragraph{What is and is not claimed about priority and verification.}
 The results of this report are self-declared proposed original contributions,
 not a solution of any named published conjecture. Both source manuscripts
@@ -2537,11 +3728,19 @@ credited to the repository, as recorded in \cref{ent:rem:rigidity-credit}.
 One source's audit further notes that Lazard was checked bibliographically
 only and that Conway and Gonshor were not re-audited in full; its repository
 review was a targeted read of four files, not a line-by-line proof audit or
-an independent build. Neither manuscript was independently refereed and
-neither was machine-checked: one records \texttt{formal\_verification false},
+an independent build. None of the three manuscripts was independently refereed and none was
+machine-checked: one records \texttt{formal\_verification false},
 \texttt{independent\_peer\_review false} and \texttt{priority\_certified
-false} in its build record, and the other states flatly that no Lean
-verification is claimed. No theorem below depends for its validity on the
+false} in its build record, the second states flatly that no Lean
+verification is claimed, and the third states that it has not been
+independently refereed or verified in Lean, that its literature comparison
+was targeted and not a certification of priority, and that its repository
+review was a targeted read of repository files at a pinned commit rather than
+a successful clone, a line-by-line audit of every report, or a Lean build.
+The third also states that its main image theorem is proved independently of
+this repository's unrefereed general factorization and preparation claims,
+and \cref{ent:app:audit} records where that independence does and does not
+hold in the merged text. No theorem below depends for its validity on the
 correctness of an unrefereed repository report. The repository's Lean modules
 on finite algebra and Hahn supports are plausible \emph{prerequisites} for a
 future formalization, not a certificate that these proofs have been
@@ -2550,18 +3749,23 @@ mathematical problem. No repository files under \texttt{code/} or
 \texttt{data/} have been modified.
 
 \paragraph{What the finite checks do not do.}
-See \cref{ent:app:checks} for the full statement. In summary: the two
-delivered suites verify $831$ and $664$ finite exact assertions respectively,
-and they prove \emph{no} infinite theorem. Both articles and both READMEs
-state that the finite truncations of the counterexample pair \emph{are}
-coprime polynomials and \emph{do} satisfy polynomial B\'ezout identities, so
-no finite computation can witness \cref{ent:thm:no-bezout}. The preparation
-checks run modulo $t^9$ in an integer exponent subgroup, not an
-arbitrary-rank group, and the finite dominance samples test only
-$k\in\{1,2,10,100,10000\}$, not all integer multiples. The checks cannot
-verify arbitrary well-ordered supports, the cofinality dichotomy, the
-necessity direction of \cref{ent:thm:units}, or any infinite product
-identity.
+See \cref{ent:app:checks} for the full statement. In summary: the three
+delivered suites verify $831$, $664$ and $1958$ finite exact assertions
+respectively, and they prove \emph{no} infinite theorem. All three articles
+and their READMEs state that the finite truncations of the counterexample
+pair \emph{are} coprime polynomials and \emph{do} satisfy polynomial
+B\'ezout identities, so no finite computation can witness
+\cref{ent:thm:no-bezout}. The preparation checks run modulo $t^9$ in an
+integer exponent subgroup, not an arbitrary-rank group, and the finite
+dominance samples test only $k\in\{1,2,10,100,10000\}$, not all integer
+multiples. The checks cannot verify arbitrary well-ordered supports, the
+cofinality dichotomy, the necessity direction of \cref{ent:thm:units}, or any
+infinite product identity. The third suite additionally cannot verify
+infinite strong summability, the existence or nonexistence of an infinite
+entire interpolant, the restricted-product quotient, or the ultrafilter
+construction; its rational polynomial specializations verify algebraic
+identities only and are not offered as examples of positive fine valuation in
+$\C$.
 
 \subsection{Questions opened by the classification}
 \label{ent:subsec:questions}
@@ -2576,22 +3780,68 @@ image of
 \]
 for a prescribed radially finite divisor $D$.
 \end{question}
-This question is open on the article's own terms. The growth barrier gives
-explicit necessary inequalities and proves that the image can be proper, but
-sufficiency for arbitrary nodes and jets is not established. A satisfactory
-answer should encode the compatibility of divided differences across convex
-subgroups, rather than only the size of individual values.
+\emph{Answered, by \cref{ent:thm:image}.} The question is retained in the
+form in which the two earlier manuscripts posed it, together with the note
+they attached to it, because the note turned out to be the right guess and
+locating the answer against it is the clearest statement of what was added.
+That note read: the growth barrier gives explicit necessary inequalities and
+proves that the image can be proper, but sufficiency for arbitrary nodes and
+jets is not established, and a satisfactory answer should encode the
+compatibility of divided differences across convex subgroups rather than only
+the size of individual values. The shell Hermite polynomial $R_n$ of
+\eqref{ent:eq:normalizedjets} is exactly that record of divided differences,
+and $V_n$ is exactly the convex-subgroup datum;
+\cref{ent:thm:close-pair} is the instance in which individual values are
+harmless and the divided difference is not. What remains open after
+\cref{ent:thm:image} is narrower and is recorded in
+\cref{ent:q:image-remaining}.
+
+\begin{question}[What the image theorem does not decide]
+\label{ent:q:image-remaining}
+\Cref{ent:thm:image} concerns radially finite divisors in a full Hahn field
+and one ordinary variable. Is there a criterion for interpolation on an
+infinite node set confined to a single valuation ball, where no shell
+decomposition exists? Is there a several-variable replacement, where a shell
+need not carry a single finite monic quotient controlling all the prescribed
+data? Does the membership condition \eqref{ent:eq:maincondition} admit a
+decision procedure for any natural class of finitely encoded inputs?
+\end{question}
+The first two are genuinely open here; \cref{ent:lem:shells} is what fails in
+each case. The third is discussed in \cref{ent:subsec:scope-limits}: the
+construction behind \cref{ent:thm:image} is finite-step relative to exact
+field operations and valuation-bound certificates, and is not by itself an
+algorithm for arbitrary Hahn input.
 
 \begin{question}[Finitely generated ideals beyond their common divisor]
 \label{ent:q:ideals}
 Can one describe the ideal $(f,g)$ by its common zero divisor together with
 an explicit obstruction in an interpolation quotient?
 \end{question}
-There is already an exact reduction: after dividing out the GCD, the B\'ezout
-problem is whether the inverse jets of one function along the other's zero
-divisor lie in the interpolation image. What is missing is a usable intrinsic
-description of that image. \Cref{ent:thm:no-bezout} proves that a
-zero-divisor description alone is insufficient.
+\emph{Answered for the case in which one generator is a canonical product,
+by \cref{ent:thm:bezout-criterion}.} The exact reduction the earlier
+manuscripts recorded --- after dividing out the GCD, the B\'ezout problem is
+whether the inverse jets of one function along the other's zero divisor lie
+in the interpolation image --- is still the right reduction, and
+\cref{ent:thm:image} now supplies the missing intrinsic description of that
+image, while \cref{ent:lem:shellunits,ent:lem:restrictedunits} turn it into
+the pointwise test \eqref{ent:eq:valueupper}. \Cref{ent:thm:no-bezout} still
+proves that a zero-divisor description alone is insufficient; the criterion
+says what must be added, namely an upper valuation bound on the values of the
+second function along the shells. Two parts of the question are not settled.
+The criterion decides membership of $1$ in $(P_D,F)$, not the structure of
+$(f,g)$ as an ideal for arbitrary $f$. And
+\cref{ent:thm:maximal} constructs many maximal ideals containing such a
+proper ideal without classifying the maximal spectrum of $\E$, or the
+relations between restricted products attached to different divisors; see
+\cref{ent:q:spectrum}.
+
+\begin{question}[The maximal spectrum]\label{ent:q:spectrum}
+Do all non-evaluation maximal ideals of $\E$ arise as $\mathfrak M_\Ucal$ of
+\cref{ent:thm:maximal} for some divisor and some nonprincipal ultrafilter,
+and how do the restricted products attached to different divisors relate?
+\end{question}
+Neither exhaustion nor those relations is proved here, and neither is a
+hidden part of \cref{ent:thm:maximal}.
 
 \begin{question}[Several variables]\label{ent:q:several}
 Which parts of the cofinality criterion and of the B\'ezout obstruction

@@ -105,3 +105,56 @@ overfull/underfull boxes, or LaTeX warnings. Every PDF page was rendered with
 Poppler; a full-page montage and selected detailed pages were visually
 inspected. Programmatic page-boundary measurements are in layout_audit.json.
 No font files, build logs, third-party PDFs, or temporary renders are packaged.
+
+## Changes made when this package was fitted into the collection
+
+These edits are recorded here rather than folded silently into the text above.
+Nothing in the sections above is retracted; every scope restriction they state
+still applies.
+
+1. Every `\label` in `article.tex` was given the `tail:` prefix and every
+   reference updated. No label was deleted, and no label name outside this
+   package was changed. Three of the old names were substrings of labels
+   belonging to other reports (`polynomial:eq:eulerderivative`,
+   `thm:coefficient-limit`, `dyn:prop:halo`); the prefix removes that risk.
+
+2. The restriction of the Berarducci--Mantova derivation to a rational-exponent
+   Hahn workspace is no longer reproved here. It is cited from
+   `docs/surcomplex/differential-equations/`, whose `diff:eq:HahnQ` fixes the
+   workspace and whose `diff:prop:hahnderiv` (equation `diff:eq:hahnderiv`)
+   proves the formula. The only step still carried out here is the further
+   restriction from real to real-algebraic coefficients. The item-4 imports
+   listed above are therefore now imported by citation to a companion report as
+   well as to Berarducci--Mantova; they remain imports, not new claims.
+
+3. A cross-reference was installed in both directions with
+   `docs/surcomplex/dynamics-and-normal-forms/`. That report's warning
+   `dyn:warn:diffalg` declines to upgrade its own transcendence result to
+   differential transcendence, because its `H_eps` satisfies a first-order
+   linear equation over its base. That warning is true of `H_eps` and has not
+   been weakened: the paragraph added there says so explicitly before pointing
+   here, and `tail:rem:dynupgrade` here says the same from this side. The two
+   reports are about different functions. This report's analytic theorems say
+   nothing about `H_eps`.
+
+4. The closing sentence of the proof of `tail:thm:surreal` was rewritten. It
+   had attributed both the lower and the upper cardinal bound to the
+   independent family. The upper bound is an independent count
+   (`|H_0| <= aleph_0^aleph_0`, from countability of the coefficient field and
+   the value group) and is now attributed to it. No statement changed.
+
+5. `tail:rem:indexfamily` was added, recording that the continuum-sized theorem
+   is about the binary-prefix almost disjoint family and not about all subsets
+   of the positive integers: the family indexed by all subsets satisfies
+   `xi_{A u B} + xi_{A n B} = xi_A + xi_B` and is not independent.
+
+6. `code/build.py` was corrected to resolve `article.tex` in the package root,
+   since the script now lives in `code/`.
+
+The headline claim of `tail:thm:surreal` was re-derived during this pass and
+holds as stated. `data/layout_audit.json` describes the originally delivered
+23-page PDF and not the 25-page rebuild in this directory; the rebuild was
+compiled with three pdfLaTeX passes and its final log likewise has no undefined
+references, undefined citations, overfull or underfull boxes, or LaTeX
+warnings. The page-by-page visual inspection recorded above was performed on
+the original delivery and has not been repeated.
