@@ -48,6 +48,13 @@ import Surreal.Algebra.MvPowerSeriesPolynomialFactorLifting
 import Surreal.Algebra.RealPolynomialFactors
 import Surreal.Algebra.RealClosedPolynomialFactors
 import Surreal.Algebra.RealClosedReal
+import Surreal.Algebra.BooleanDisjoint
+import Surreal.Algebra.HerglotzNegativeAtom
+import Surreal.Algebra.MarkovResolvent
+import Surreal.Algebra.NonvanishingSelection
+import Surreal.Algebra.PronyHankel
+import Surreal.Algebra.TailSpan
+import Surreal.Algebra.WickSemigroup
 import Surreal.Foundations.SizeObstructions
 import Surreal.Foundations.SmallCutData
 import Surreal.Foundations.SignSequence
@@ -248,3 +255,8 @@ import Surreal.HahnSeries.RealClosed
 import Surreal.HahnSeries.SquareRoots
 import Surreal.HahnSeries.StandardPart
 import Surreal.HahnSeries.WorkspaceEmbedding
+import Surreal.HahnSeries.StrongMeasure
+import Surreal.HahnSeries.NeumannWords
+import Surreal.HahnSeries.InfiniteProducts
+import Surreal.HahnSeries.ScalarAtomicity
+import Surreal.HahnSeries.MeasureAtomicity
