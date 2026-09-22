@@ -2599,23 +2599,23 @@ Mappings cover only the hypotheses and clauses they state.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Theorem | `prony:thm:main` (line 148) | Optimal uniform reconstruction |
-| Lemma | `prony:lem:support` (line 379) | Positive-support evaluation |
-| Lemma | `prony:lem:hensel` (line 408) | Residue-simple lifting |
-| Corollary | `prony:cor:actual` (line 451) | Actual surreal and surcomplex data |
-| Proposition | `prony:prop:prony` (line 486) | Classical Prony uniqueness |
-| Lemma | `prony:lem:cofactorbound` (line 539) | Uniform estimate in cofactor coordinates |
-| Lemma | `prony:lem:localroots` (line 558) | Cofactor localization |
-| Lemma | `prony:lem:pade` (line 620) | Finite Pad\'e identity |
-| Lemma | `prony:lem:cross` (line 641) | Cross-numerator control |
-| Lemma | `prony:lem:weight` (line 663) | Weight errors without a second conditioning loss |
-| Corollary | `prony:cor:positive` (line 736) | Real and positive data |
-| Proposition | `prony:prop:last` (line 765) | The last-moment formula |
-| Proposition | `prony:prop:rows` (line 963) | Exact row losses |
-| Proposition | `prony:prop:lattice` (line 1000) | Finite coefficient criterion |
-| Corollary | `prony:cor:nonlinear` (line 1044) | Exact nonlinear uncertainty set |
-| Theorem | `prony:thm:graph` (line 1112) | Nonuniform reconstruction certificate |
-| Proposition | `prony:prop:nonlinearobstruction` (line 1285) | A nonlinear obstruction to the cancellation gain |
+| Theorem | `prony:thm:main` (line 150) | Optimal uniform reconstruction |
+| Lemma | `prony:lem:support` (line 383) | Positive-support evaluation |
+| Lemma | `prony:lem:hensel` (line 412) | Residue-simple lifting |
+| Corollary | `prony:cor:actual` (line 455) | Actual surreal and surcomplex data |
+| Proposition | `prony:prop:prony` (line 490) | Classical Prony uniqueness |
+| Lemma | `prony:lem:cofactorbound` (line 547) | Uniform estimate in cofactor coordinates |
+| Lemma | `prony:lem:localroots` (line 566) | Cofactor localization |
+| Lemma | `prony:lem:pade` (line 628) | Finite Pad\'e identity |
+| Lemma | `prony:lem:cross` (line 649) | Cross-numerator control |
+| Lemma | `prony:lem:weight` (line 671) | Weight errors without a second conditioning loss |
+| Corollary | `prony:cor:positive` (line 744) | Real and positive data |
+| Proposition | `prony:prop:last` (line 773) | The last-moment formula |
+| Proposition | `prony:prop:rows` (line 971) | Exact row losses |
+| Proposition | `prony:prop:lattice` (line 1008) | Finite coefficient criterion |
+| Corollary | `prony:cor:nonlinear` (line 1052) | Exact nonlinear uncertainty set |
+| Theorem | `prony:thm:graph` (line 1120) | Nonuniform reconstruction certificate |
+| Proposition | `prony:prop:nonlinearobstruction` (line 1317) | A nonlinear obstruction to the cancellation gain |
 
 ### wick-summability-certificates
 

@@ -3,8 +3,12 @@
 **Collision geometry, optimal precision, and Hahn-supported inversion**
 Single-source research report, 22 September 2026, built from one manuscript
 (number 13 of batch 18) whose repository comparison is pinned at `4cf691c`.
-An AI-assisted draft (the manuscript was prepared with ChatGPT); not refereed,
-and not checked in Lean.
+An AI-assisted draft (the manuscript was prepared with ChatGPT), not refereed.
+The [Lean ledger](../../FORMALIZATION.md) records proved Prony uniqueness,
+cofactor orthogonality, the exact last-moment annihilator and algebraic
+local-root identities in
+[PronyHankel.lean](../../../Surreal/Algebra/PronyHankel.lean).
+Valuation localization and the remaining precision estimates are pending.
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
@@ -114,8 +118,10 @@ integral, the weights `w_i` nonzero, of any valuation, possibly negative. Put
   shows that for `(−h, 0, h)` the improved weight bound fails nonlinearly when
   `5s < κ < 6s`.
 - **Theorem 8.1 (`prony:thm:graph`).** A directed-path sufficient certificate
-  for nonuniform moment precisions. **It assumes `Γ` divisible**, as does the
-  existence of the interval in Proposition 9.1; Theorem 1.1 does not.
+  for nonuniform moment precisions, now valid for **nondivisible `Γ`** as
+  well. The proof uses auxiliary fractional exponents and returns the
+  reconstruction in the original Hahn field. Divisibility still guarantees
+  the nonempty interval discussed in Proposition 9.1.
 - **Corollary 2.3.** Everything transfers to finite configurations in `No` and
   `No[i]` through set-sized Hahn workspaces.
 - Worked examples (Section 9): one atom; two nodes with an actual boundary
@@ -158,7 +164,8 @@ Sections 1, 2, 7, 8, 9, 10 and 11 and Appendices A–B:
    direction; precision lattices are Caruso–Roe–Vaccon's.
 2. **Priority is not certified.** No named published conjecture is claimed
    solved, and the further questions of Section 11 are research directions,
-   not known open problems. No referee, no Lean proof.
+   not known open problems. Partial Lean coverage is stated above; the full
+   precision theorems are not formalized.
 3. The threshold is optimal for the **strict-ball labelling guarantee**, not
    for the bare existence of some realization; failure at the threshold need
    not be a collision or a loss of positivity.
@@ -191,16 +198,18 @@ Sections 1, 2, 7, 8, 9, 10 and 11 and Appendices A–B:
   antecedents, not contributions of this report.
 - **[`surcomplex/spectral-theory`](../spectral-theory/)**, its section on
   Hankel square-class profiles (from another manuscript of batch 18). The
-  **only shared content is the classical identity** that the Hankel matrix
+  **common classical input is the identity** that the Hankel matrix
   `H = V diag(w) Vᵀ` of Proposition 3.1 is, with unit weights, the Hankel
   matrix of Newton power sums (the trace form), with `det H = Disc P`. That
   section studies square classes modulo `2Γ` of leading principal minors over
   nondivisible `Γ`; this report studies valuation thresholds for weighted
-  moments. They share no theorem and neither uses the other.
+  moments. Their further theorems address different questions, and neither
+  proof depends on the other report.
 - **[`surreal/hahn-valued-measures-and-probability`](../../surreal/hahn-valued-measures-and-probability/)**
   contains, from another manuscript of batch 18, a Prony-type lemma on finite
   signed exponential sums and finite Gaussian quadrature over real closed
-  fields: existence and exact representation under positivity. This report
+  fields: the signed-sequence lemma requires real roots but no positivity;
+  Gaussian quadrature requires positivity. This report
   studies stability of an `n`-node reconstruction and uses no measure.
   Cross-referenced, not merged.
 - **[`surcomplex/hahn-herglotz-positivity`](../hahn-herglotz-positivity/)** and
@@ -213,7 +222,7 @@ Sections 1, 2, 7, 8, 9, 10 and 11 and Appendices A–B:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The recorded build gives 26 pages with zero errors, zero LaTeX or package
+The reviewed build gives 27 pages with zero errors, zero LaTeX or package
 warnings, zero undefined references or citations, zero multiply defined
 labels and no overfull or underfull boxes. `data/build_summary.txt` is the
 source package's own record and reports 22 pages: that is the manuscript
@@ -242,3 +251,30 @@ identities, the two-node formulas and boundary collision, the three-node
 cancellation comparison and nonlinear obstruction, the rank-two threshold
 arithmetic, and a directed-graph certificate. Compiling the article does not
 run them.
+
+## Subsequent proof review
+
+The nonuniform graph theorem no longer requires a divisible value group.
+Its scaling potentials are chosen in the ordered divisible hull; the
+adjugate inverse and unscaled Hahn expansion descend to the original field,
+where residue-simple lifting produces the nodes. A two-vertex integer-weight
+example explains why auxiliary fractional potentials may be necessary.
+
+The classical uniqueness proposition now explicitly includes arbitrary
+`n`-node representations, which the invertible Hankel matrix forces to be
+regular, and rules out fewer nodes using only the first `2n−1` moments.
+These clauses are already covered by the Lean ledger. The report also
+specifies `n ≥ 1`, corrects the collision terminology, and restores the
+real-root and positivity distinctions in the measure-report comparison.
+
+The cited precision-lattice antecedent was checked against
+[Caruso–Roe–Vaccon v1](https://arxiv.org/abs/1402.7142v1), Lemma 3.4 and
+Proposition 3.12. Its normed-space hypotheses are now explicit; the Hahn
+proof remains independent of that theorem. Other literature comparisons,
+priority and original-source reconciliation remain outside this review.
+
+The reviewed article and catalogue rebuild without warnings or box issues at
+27 and 21 pages. The unchanged program was rerun on a temporary copy under
+Python 3.13.14 and SymPy 1.14.0: all 10,052 assertions pass, and every output
+line matches the delivered record except the version line. Historical code
+and data are unchanged.

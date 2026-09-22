@@ -81,6 +81,15 @@ The scalar rules are `v(xy) = v(x)+v(y)` and
 strict. A nonzero ordinary real or complex constant has valuation zero,
 regardless of its ordinary absolute value.
 
+The [Prony report](surcomplex/prony-reconstruction-at-surreal-scales/article.tex)
+uses separation valuations `v(a_i−a_j)`: a collision has value `∞`, while
+value zero means distinct residue classes for integral nodes. Its nonuniform
+certificate (`prony:thm:graph`) permits a nondivisible `Γ`. Fractional scaling
+potentials belong to the auxiliary ordered divisible hull `Γ_ℚ`; the input,
+inverse correction matrix and reconstructed nodes and weights remain in the
+original Hahn field. This temporary extension does not change the workspace
+named in the theorem.
+
 ## Finite elements, standard part, and reduction
 
 Use `O_F = {v ≥ 0}` and `m_F = {v > 0}` for the finite valuation ring and
