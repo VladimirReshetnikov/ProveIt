@@ -5,7 +5,8 @@ reading routes below, use the [notation guide](NOTATION.md) when moving between
 reports, and consult the [typeset catalogue](manifest.pdf)
 ([source](manifest.tex)) for longer descriptions. The
 [formalization ledger](FORMALIZATION.md) lists the main sources and maps exact
-claims to checked Lean declarations.
+claims to checked Lean declarations. The [exposition review record](REVIEW.md)
+identifies corrected portions and the scope still to review.
 
 These are AI-assisted research drafts. A report's mathematical argument,
 finite verification programs, and Lean coverage are separate forms of evidence.
