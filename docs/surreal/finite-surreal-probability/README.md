@@ -13,7 +13,7 @@ source, and nothing here was selected out of a larger body of work.
 ```
 article.tex        the report, standalone LaTeX with an internal bibliography
                    (delivered as surreal_probability.tex, renamed on placement)
-article.pdf        the compiled report, 50 pages
+article.pdf        the compiled report, 51 pages
 README.md          this guide
 RESEARCH_AUDIT.md  the manuscript's own repository, literature and evidence audit, as delivered
 code/verify.py     exact finite checks in Q(t) (Python 3.10+, standard library only)
@@ -36,12 +36,12 @@ contains no numbered statement or equation, so every theorem, equation and
 section number of the manuscript is unchanged. The numbers below are checked
 against the build of `article.tex` in this directory.
 
-The current proof review covers Sections 2–13: scalar workspaces, standard
+The current proof review covers Sections 2–14: scalar workspaces, standard
 part, finite probability, conditional shadows, Bayesian updates, logits,
 softmax, finite information theory, Gibbs laws, smoothing, logistic separation,
 finite stochastic processes, infinite-addition conventions, normalized
 hierarchies, integration, posterior kernels, coin obstructions and regular
-all-subsets extensions. It corrects the point-weight event-algebra hypothesis,
+all-subsets extensions, and the rare latent learning model. It corrects the point-weight event-algebra hypothesis,
 the joint-normalizer condition for successive updates, neutral evidence and
 the distinction between sufficient and necessary conditioning precision.
 It also separates the attained interior logarithmic-score minimum from the
@@ -51,7 +51,9 @@ and optional stopping states adaptation and stopping-time measurability.
 The hierarchy review makes common supports, uniform bounds and coefficientwise
 convergence explicit and gives a posterior with nonintegrable coefficients
 before density cancellation. The extension review expands coefficient variation,
-relative embeddings, ultrafilters and finite compactness models. Sections 14
+relative embeddings, ultrafilters and finite compactness models. The latent
+model now derives its martingale updates, proves the needed Bernoulli strong
+laws and separates coefficientwise, order and standard-part limits. Sections 15
 onward and the remaining imports still require review; see the
 collection's [review record](../../REVIEW.md).
 
@@ -690,3 +692,34 @@ The combined build passes 3,971 jobs and audits 7,074 declarations using only
 labels resolve; the independent index checks 2,298 entries in 48 sources,
 and all 967 local Markdown destinations in 108 files resolve. The probability
 review remains through Section 13, with its 50-page PDF unchanged.
+
+The seventh finite-probability pass reviews Section 14. Positive integer
+coordinate indices and the zero-observation case are explicit. Word
+likelihoods derive the posterior, and the predictive success probability
+`(1+M_n)/3` verifies its martingale identity directly. Component moments
+give the exact nonzero covariance. A fourth-moment bound, Markov's inequality
+and the summable real tail estimate prove both Bernoulli strong laws here.
+The tail event's measurability, invariance under removal of an initial segment
+and pullback to the joint space are explicit. The full-observation conditional
+expectation is verified on every observation event using finite-range integrals.
+
+The two exact consecutive-posterior differences have valuation one, so the
+single order tolerance `t²` disproves the Cauchy condition on every path.
+This includes paths where the real likelihood ratios tend to zero: on the
+common-regime typical event, each Hahn coefficient tends to zero, whereas
+on the rare tail event even the first coefficient tends to positive infinity.
+The text distinguishes these real coefficient limits, standard-part limits,
+order convergence and strong Hahn summation, without introducing surreal times.
+
+Validation: the baseline and revised PDFs build in three warning-free passes
+at 50 and 51 pages; the changed pages were visually inspected. All 114 label
+numbers and five historical audit/code/data files are preserved. The copied
+verifier reproduces 2,145 assertions with JSON unchanged except Python version.
+Another 3,232 exact or symbolic checks cover word likelihoods, posterior
+normalization and expectation, predictive updates, covariance, consecutive
+differences, leading coefficients, geometric coefficients and centered fourth
+moments. These checks do not compute infinite path events or prove convergence
+theorems. The independent index checks 2,298 entries in 48 sources; all 967
+local Markdown destinations in 108 files resolve. No Lean module changed in
+this pass and no new probability formalization is claimed. Sections 15 onward
+and remaining imports are pending.

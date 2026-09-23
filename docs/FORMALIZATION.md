@@ -30,7 +30,7 @@ expansions integrated through `66dd6bc`, plus batch 19: four new reports and
 further expansions of four existing reports, integrated from `7657737`.
 Batch 20 (placed in `5fe7f8d`, written in `fb182ea`) adds four reports and
 expands the measures and trigonometry reports; all are indexed in their
-written form. The finite-probability review now covers Sections 2–13; later
+written form. The finite-probability review now covers Sections 2–14; later
 sections, the other new reports and the expansions remain pending within the
 review scopes recorded separately. Batch 21 (placed in `d4e71b7`, written in
 `3a2d35d`) adds two reports merged from nine manuscripts, with 136 indexed
@@ -533,7 +533,7 @@ merge nine manuscripts and are indexed from their written sources; their
 review remains pending.
 The four reports placed in `5fe7f8d` were written in `fb182ea`, which prefixed
 their labels; they are indexed here. The finite-probability review covers
-Sections 2–13; its later sections and the other three reports await review.
+Sections 2–14; its later sections and the other three reports await review.
 The four reports and expanded sections from batch 19 are indexed here, but
 remain pending unless a precise implementation mapping states otherwise.
 
@@ -3359,12 +3359,12 @@ Statements are **pending unless explicitly mapped** in the implementation table.
 
 Source: [surreal/finite-surreal-probability/article.tex](surreal/finite-surreal-probability/article.tex).
 
-Written in `fb182ea`. The proof review now covers Sections 2–13: scalar
+Written in `fb182ea`. The proof review now covers Sections 2–14: scalar
 workspaces, residue algebra, finite probability, conditional shadows and
 Bayesian updates, logits, softmax, finite information theory, Gibbs laws,
 smoothing, logistic separation, finite stochastic processes, infinite addition,
 normalized hierarchies, integration, coin obstructions and all-subsets
-extensions; Sections 14 onward remain pending. The point-weight
+extensions and the rare latent learning model; Sections 15 onward remain pending. The point-weight
 representation in Section 3 now explicitly assumes
 the full event algebra. On a smaller finite algebra only its atom masses are
 uniquely determined. Standard-part division requires limited numerator and
@@ -3396,7 +3396,13 @@ expand the real coefficient-variation contradictions and keep the logit
 argument in the original Hahn coordinates. The relative field embedding,
 fine-ultrafilter order and equal-mass symmetry, and finite-fragment atom
 splitting are explicit. The all-subsets extension fixes the original field
-but does not promise coefficientwise countable additivity.
+but does not promise coefficientwise countable additivity. Section 14 now
+derives the predictive and posterior updates, gives an elementary fourth-moment
+proof of the component strong laws, verifies the full-observation conditional
+expectation identity and proves failure of the order-Cauchy criterion on every
+path. Typical common-regime paths nevertheless have coefficientwise posterior
+limit zero; on the rare tail event the first coefficient diverges. These
+ordinary-time limits remain distinct from strong Hahn summation.
 Statements are **pending unless explicitly mapped** in the implementation table.
 
 | Kind | Source label or line | Heading |
@@ -3424,8 +3430,8 @@ Statements are **pending unless explicitly mapped** in the implementation table.
 | Lemma | `fsp:lem:embedding` (line 2654) | Set-sized relative field embedding |
 | Theorem | `fsp:thm:extension` (line 2808) | All-subsets regular extension after field enlargement |
 | Corollary | `fsp:cor:coinextension` (line 2868) | The two coin models do have regular finite-additive laws |
-| Proposition | `fsp:prop:tailfailure` (line 2946) | Finite-update shadows need not recover rare tail conditioning |
-| Theorem | `fsp:thm:shadowcountable` (line 2994) | A continuity test for the shadow |
+| Proposition | `fsp:prop:tailfailure` (line 2992) | Finite-update shadows need not recover rare tail conditioning |
+| Theorem | `fsp:thm:shadowcountable` (line 3073) | A continuity test for the shadow |
 
 ### vector-and-tensor-fields
 
