@@ -1366,6 +1366,15 @@ all 2,719 cited source labels and 1,025 local Markdown destinations in 109
 files resolve. This adds navigation only, not mathematical or Lean coverage
 of the new report.
 
+The final sync also merged `7666865` through `ab48639`, completing the
+incoming triangle-law and circumcircle work. The overlapping Gamma/zeta
+inventory edits were reconciled into one source row and one provisional
+statement section; the entire incoming Implementation mappings section is
+preserved verbatim. No manuscript source or delivered artifact changed.
+The combined build passed 3,994 jobs and audited 7,413 declarations using
+the same three permitted axioms. The independent 49-source index remains
+clean, and all 2,720 cited labels and 1,030 local Markdown destinations resolve.
+
 ## Remaining scope
 
 Batch 22, placed in `7b5f934`, was assembled in `68e2960` and catalogued
