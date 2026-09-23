@@ -1,16 +1,18 @@
 # Omnific-Preserving Automorphisms
 
 **Convex-scale stabilizers, definable constants, nondefinable monomials, and algebraic-parameter rigidity**
-Merged research report from four manuscripts written independently and dated
-23 September 2026 (items 02, 04, 08 and 09 of batch 26, placed in `f4c9504`;
-they keep those numbers here). Prepared for Vladimir Reshetnikov.
+Merged research report from five manuscripts written independently and dated
+23 September 2026: items 02, 04, 08 and 09 of batch 26, placed in `f4c9504`
+(they keep those numbers here), and item 05 of batch 28, placed in `c6359e4`
+as an addition and numbered 10 here. Prepared for Vladimir Reshetnikov.
 
 ```
 article.tex                                 the report, standalone LaTeX with an internal bibliography
-article.pdf                                 the compiled report, 45 pages
+article.pdf                                 the compiled report, 56 pages
 README.md                                   this guide
 02-parameter-rigidity-source_audit.md       source 02's source and novelty audit, as delivered
 04-preserving-automorphisms-source_audit.md source 04's source and claim audit, as delivered
+10-support-cut-source_audit.md              source 10's source, proof and novelty audit, as delivered
 code/
   09-omnific-preserving-verify_finite_identities.py   source 09 checks (standard library; prints only)
   09-omnific-preserving-Makefile                      source 09's build/check targets (delivered
@@ -24,6 +26,10 @@ code/
                                                       verification.json beside itself by default)
   02-parameter-rigidity-Makefile                      source 02's build/check targets (delivered
                                                       file names; they do not build this report)
+  10-support-cut-verify.py                            source 10 checks (standard library; writes
+                                                      verification.json beside itself by default)
+  10-support-cut-Makefile                             source 10's build/check/clean targets (delivered
+                                                      file names; they do not build this report)
 data/
   09-omnific-preserving-verification_output.txt       source 09's recorded run
   04-preserving-automorphisms-verification_report.json  source 04's recorded run (7,062 assertions)
@@ -33,15 +39,22 @@ data/
   02-parameter-rigidity-verification.json             source 02's recorded run (7,041 assertions)
   02-parameter-rigidity-build_audit.json              source 02's build record, with SHA-256 hashes
                                                       of its delivered files
+  10-support-cut-verification.json                    source 10's recorded run (28,668 assertions)
+  10-support-cut-build_audit.json                     source 10's build record, with SHA-256 hashes
+                                                      of its delivered files
 ```
 
-Every label in `article.tex` carries the prefix `opa:` (146 labels). Source
-02's part carries the sub-prefix `opa:par:` (43 labels). These prefixed labels identify the assembled report; the earlier placed
-base used source-local labels. No implementation mapping in the [formalization ledger](../../FORMALIZATION.md)
+Every label in `article.tex` carries the prefix `opa:` (176 labels). Source
+02's part carries the sub-prefix `opa:par:` (43 labels), and the material
+added from source 10 carries `opa:sc:` (30 labels). These prefixed labels
+identify the assembled report; the earlier placed base used source-local
+labels. The batch-28 addition renamed and removed no label and changed no
+existing theorem, section or equation number: its material is appended at the
+ends of Sections 3, 4, 6, 7, 9, 10 and 11. No implementation mapping in the [formalization ledger](../../FORMALIZATION.md)
 cites an `opa:` label, and there is no Lean code about omnific integers in
 the repository.
 
-## Four sources, one report
+## Five sources, one report
 
 | | Manuscript | Repository pin | Contributes |
 |---|---|---|---|
@@ -49,6 +62,7 @@ the repository.
 | **04** | *Automorphisms Preserving the Omnific Integers: a convex-support criterion, fixed fields, and nondefinability of Conway monomials* | `fb5c4b5` | The import-free proof of the criterion through the logarithmic character, which is the proof of record for `No` (Theorem 3.3). Exact displacement (Theorem 4.2) and the common-shift exponential–logarithm correspondence (Theorems 4.7, 4.8). The bottom-subgroup fixed field (Theorem 4.15), separation, and the relative Hahn hull (Theorem 7.4, Corollary 7.5). The commutator formula (Theorem 6.8). The one-term class and the `RV` sort (Remark 9.5). The real axis inside the leading-term kernel (Theorem 10.2). Files prefixed `04-preserving-automorphisms-`. |
 | **08** | *What the Omnific Integer Part Remembers: coefficient reconstruction, convex-scale automorphisms, nondefinable monomials, and an explicit wreath product* | `befe739` | The divisibility-free threshold for single flows (Theorem 4.10) and phase shears (Theorem 4.17). The faithful `Z ≀ Z` with exact commutator leading terms (Theorems 6.8, 6.10). The order formula on `Oz` (Lemma 8.1) and the floor map (Theorem 8.2). The wild coefficient lift (Proposition 10.3) and the Gaussian fixed field `Q` (Corollary 10.4). Files prefixed `08-integer-part-symmetries-`. |
 | **02** | *Algebraic-Parameter Rigidity of the Omnific Integers: strong cancellation, finite-type embeddings, and nonalgebraizable formal flows* | `fb5c4b5` | All of Part II (Sections 12–19). Files prefixed `02-parameter-rigidity-`. |
+| **10** | *Omnific Integers Do Not Determine Surreal Monomials: exact support-cut stabilizers, fixed fields, and parameterwise nondefinability* (batch 28, item 05) | `58cd8e1` | A fifth proof of the criterion, in the support-cut form, with its least-forbidden-shift proof as a second route (Theorem 3.8); necessity without strongness (Remark 3.9); Archimedean blocks (Proposition 3.10). Twists with a general profile and their fixed fields, finite orbits and algebraic independence (Theorems 4.18, 4.20, Corollary 4.21, Proposition 4.22). The set-sized definable-closure bound (Proposition 7.8). The two-term witness (Theorem 9.8) and the nondefinability of simplicity and of the Gonshor exponential (Theorem 9.10). Question 11.7. Files prefixed `10-support-cut-`. |
 
 `fb5c4b5` is 12 commits before the placement `f4c9504` and `befe739` is 10
 commits before it. Both pins contain the batch-24 placement `be06fc8`. Neither
@@ -61,6 +75,18 @@ source audits of 02 and 04 are shipped. The hashes in
 names). Most of those files are not shipped. The theorem numbers in
 `04-preserving-automorphisms-source_audit.md` are those of manuscript 04: its
 Theorem 4.3 is Theorem 3.3 here, and its Theorem 8.1 is Theorem 7.4.
+
+Source 10 pins `58cd8e1`, a commit on a line that does not contain
+`f4c9504`, so its author never saw this report. Its code, recorded run, build
+record and source audit are shipped under the prefix `10-support-cut-`; its
+delivered `article.tex`, `article.pdf` and `README.md` are not. The SHA-256
+hashes in `data/10-support-cut-build_audit.json` cover seven delivered files:
+the four shipped ones match their prefixed copies here byte for byte, and the
+other three refer to the unshipped manuscript files. The section numbers in
+`10-support-cut-source_audit.md` are manuscript 10's: its Section 9.4
+(coefficient rigidity) corresponds to the closing paragraph of Section 9.2 here.
+That audit's statement that no inspected guide states the support-cut
+criterion was true at its pin and is stale now (see below).
 
 **Why one report.** 04, 08 and 09 prove one classification at three
 generalities, with the same consequences:
@@ -78,6 +104,16 @@ divisibility. 02 has a different subject: algebraic families of embeddings,
 not automorphisms. It is the shift-zero complement of Part I and forms Part
 II. None of the four contradicts another or any report in the collection.
 
+10, added in batch 28, is a fifth independent derivation of the Part I
+classification. Its hypotheses are exactly those of Theorem 3.3:
+characteristic-zero `k`, any unital `𝔬`, divisible `Γ`. Its condition "every
+shift `h` in `ε_g`, `g > 0`, has `nh < g` for all `n`" is Theorem 3.3's
+condition (v) read on the principal unit instead of its logarithm, so it is
+**the same theorem**, not a strengthening. It is printed once, as further
+equivalent conditions (vii)–(ix) in Theorem 3.8. Its genuinely new material is
+appended at the ends of the sections it belongs to. 10 contradicts neither
+this report nor any other.
+
 **Printed once.**
 
 - **The criterion** (04, 09; 08 for single flows): Theorem 3.3 with Theorem
@@ -92,6 +128,20 @@ II. None of the four contradicts another or any report in the collection.
 - **One group**: 04's `⟨A_s, B_u⟩` and 08's `⟨A_1, B_1⟩` are the same group at
   `s = u = −1` (Theorems 6.8, 6.10).
 - **Strong factorization** (Theorem 5.1).
+- **Source 10's duplicates**, printed once with 10 added to their sources:
+  - its criterion and logarithmic corollary (Theorems 3.3, 3.8);
+  - its rank theorem (Theorem 4.13);
+  - its stabilizer splitting (Theorem 5.1);
+  - the fixed field for `F = exp ξ` (Theorem 4.2);
+  - its parameter theorem (Theorem 9.1) and the monomial and omega-map parts
+    of its nondefinability theorem (Theorem 9.1, Corollary 9.2);
+  - its Gaussian theorem (Theorem 10.1);
+  - its one-shift lemma (Lemma 2.1);
+  - its floor, fraction-field and coefficient-rigidity statements (Corollary
+    5.2 and `odg:`, not reprinted).
+
+  Its three-scale nonabelian example is kept as Example 6.13 beside Theorems
+  6.8 and 6.10, which give more.
 
 **Cited, not reprinted.** 04, 08 and 09 each reprove parts of the omnific
 Diophantine report (`odg:`), which gained this material after their pins:
@@ -122,6 +172,11 @@ extras are printed:
 - 04's proved exponential–logarithm correspondence on common positive shifts
   (Theorem 4.8), beside the imported one.
 - 04's separation lemma, beside the explicit functional in Theorem 7.2.
+- 10's least-forbidden-shift proof of necessity (Theorem 3.8, second route),
+  beside 04's polynomial argument. 04 shows that a coefficient is a polynomial
+  in `q` with infinitely many zeros. 10 needs one rational `q`: at the least
+  forbidden shift no nonlinear binomial term contributes.
+- 10's direct proof of the inner-support bound (Corollary 9.11).
 
 **Added by the merge**, each tagged `[merge]` with a complete proof:
 
@@ -129,7 +184,10 @@ extras are printed:
   which removes 04's use of `⋂ n𝔬 = 0`);
 - Example 3.2;
 - Remark 6.11 (`⟨A_s, B_u⟩ ≅ Z ≀ Z` for all real `s, u ≠ 0`);
-- Question 11.6.
+- Question 11.6;
+- with 10: the converse in Theorem 4.18 (a twist preserves `ℛ_𝔬` only if its
+  profile vanishes on `C_δ`) and the outer bound `f ∈ R((t^{V_A}))` in
+  Corollary 9.11.
 
 **Notation.**
 
@@ -148,6 +206,15 @@ extras are printed:
 - `q_β` is the exponent-coefficient functional, for 09's `q_η`, 08's `c_a`
   and 02's `χ_b`.
 - 09's parameter monomial `H = ω^η` is `η = ω^β`.
+- 10 writes `X^g = ω^g = t^{−g}`; its statements are translated. Two traps:
+  - 10's `H_h` (principal convex subgroup) is `C_δ` here, and 10's `C_g`
+    (elements infinitesimal relative to `g`) is `H_g` here. **The letters are
+    swapped.**
+  - 10's `pr_+` (the purely infinite part) is `P_−` here, and its `pr_−` is
+    `P_+`. **The subscripts are reversed.**
+- 10's `𝓘`, `R_D`, `B`, `𝒰_D` are `Π`, `ℛ_𝔬`, `𝒜_k`, `U`. Its shift `h` is `δ`
+  and its `λ_b` is `q_b`. Its profile `P` and variable `T` are `Θ` and `ξ`. Its
+  twist `σ_{λ,F,h}` is `σ^F_{h,−λ}`, and its structure `𝒩†` is `𝔖†`.
 
 Section 1.5 and Appendix A.4 list every renaming.
 
@@ -159,8 +226,9 @@ unital):
 - **Theorem 3.3** (convex-support criterion). A strong `k`-linear
   1-automorphism `σ` preserves `ℛ_𝔬` if and only if
   `a_{σ,δ}(C_δ) = 0` for every `δ > 0`, if and only if `σ` commutes with
-  `P_−, P_0, P_+`. Four further equivalent conditions are listed. The
-  stabilizer does not depend on `𝔬`. The proof is elementwise, imports no
+  `P_−, P_0, P_+`. Four further equivalent conditions are listed, and
+  Theorem 3.8 (from 10) adds three more. The stabilizer does not depend on
+  `𝔬`. The proof is elementwise, imports no
   exponential–logarithm correspondence, and holds for `Γ = No`, that is for
   `Oz` and `Oz[i]`.
 - **Theorem 3.4 and Corollary 3.5.** A contracting strong derivation preserves
@@ -211,6 +279,55 @@ unital):
   - a wild coefficient lift that moves an ordinary real;
   - the common fixed field of all `Oz[i]`-preserving automorphisms is `Q`.
 
+Added to Part I from source 10:
+
+- **Lemma 3.7 and Theorem 3.8** (support-cut form). The inclusion
+  `σ(ℛ_𝔬) ⊆ ℛ_𝔬` already suffices. With `ε_σ(γ) = t^{−γ}σ(t^γ) − 1`, the
+  conditions of Theorem 3.3 are equivalent to `supp ε_σ(γ) ⊆ H_γ` for every
+  `γ < 0`, and to the same for every `γ ≠ 0`. There are two proofs: one via
+  Theorem 3.3, and 10's least-forbidden-shift proof.
+- **Remark 3.9.** The necessity half needs no strongness. Every `k`-fixing
+  1-automorphism with `σ(ℛ_𝔬) ⊆ ℛ_𝔬` satisfies the condition on monomials.
+  This is partial information on Question 11.1, not an answer.
+- **Proposition 3.10.** Every element of the stabilizer maps each monomial
+  into the signed Archimedean block of its exponent. It commutes with the
+  projection onto any union of blocks and preserves `k((t^Δ))` for every
+  convex `Δ`. Individual truncations are not preserved.
+- **Theorem 4.18.** Twists `t^γ ↦ t^γ exp(Θ(γ)(t^δ))` for additive
+  `Θ: Γ → ξk[[ξ]]` with `Θ(δ) = 0` are strong 1-automorphisms with
+  `σ_{δ,Θ}σ_{δ,Ψ} = σ_{δ,Θ+Ψ}`. They preserve `ℛ_𝔬` if and only if
+  `Θ(C_δ) = 0` (the "only if" is the merge's).
+  `Hom_Q(Γ/C_δ, ξk[[ξ]])` embeds in the stabilizer.
+- **Binomial twists** `t^γ ↦ t^γ F(t^δ)^{θ(γ)}` (equation 4.4). **Example
+  4.19** is a two-scale example.
+- **Theorem 4.20, Corollary 4.21 and Proposition 4.22.** For a general profile
+  `F`, the fixed field is `k((t^{ker θ}))`, with an exact first displacement.
+  `Fix σ^n = Fix σ`, there are no nontrivial finite orbits, and the fixed field
+  is relatively algebraically closed. Independent exponent cosets give
+  algebraically independent monomials.
+- **Remark 4.23.** 10's rank witness `t^{γ_0} ↦ t^{γ_0} + t^{γ_0+δ}`. Its
+  `Γ = Z` example is for `𝔬 = k` and agrees with Remark 4.11.
+- **Example 6.13.** Noncommuting binomial twists at the scales `ω`, `ω^ω`,
+  `ω^{ω²}`.
+- **Proposition 7.8.** Set-sized definable-closure bound:
+  `dcl(A) ⊆ ⋂_δ k((t^{span_Q(S_A) + C_δ}))` in `K` with `ℛ_𝔬`, all constants,
+  the projections and, when `k` is ordered, the order.
+- **Remark 9.7 and Theorem 9.8.** For every set of parameters there is `β`
+  such that `ω^{ω^β} ↦ ω^{ω^β} + ω^{ω^β−δ}` for every `0 < δ < 1`. This is a
+  two-term omnific integer. The images form a proper class. **Corollary
+  9.9**: every bounded birthday stage is fixed by a nonidentity
+  `Oz`-preserving automorphism.
+- **Theorem 9.10.** With any set of parameters, in `(No, +, ·, <, Oz)` with
+  every real and `P_−, P_0, P_+` named, the simplicity relation and the graph
+  of the Gonshor exponential are not definable. The monomial and omega-map
+  clauses are Theorem 9.1.
+- **Corollary 9.11.** Definable elements lie in `R((t^{V_A}))` (the merge's
+  outer bound, from Theorem 7.4). In particular they create no new positive
+  inner support position (10).
+- **Proposition 10.5.** Two-term Gaussian witnesses that preserve the real
+  axis, its order, conjugation and the projections. On the real axis the
+  omega-map, simplicity and exponential are not definable in that expansion.
+
 Part II (source 02):
 
 - **Theorem 13.1 and Corollary 13.3.** `ℛ_𝔬(k, Γ)` has every nonzero element
@@ -236,8 +353,8 @@ Part II (source 02):
 
 ## What the report does not claim
 
-Appendix B lists every source's non-claims: 13 from 09, 13 from 04, 12 from 08
-and 11 from 02. In brief:
+Appendix B lists every source's non-claims: 13 from 09, 13 from 04, 12 from
+08, 11 from 02 and 18 from 10. In brief:
 
 - No classification of nonstrong automorphisms of `(No, Oz)` or of `Oz`.
 - Strongness of `Oz`-preserving automorphisms is not shown.
@@ -256,6 +373,17 @@ and 11 from 02. In brief:
   - the formal flows are not convergent and not internal exponentials;
   - no classification of `Aut(Oz)` or of all derivations;
   - no Jacobian or general cancellation claim.
+- Source 10:
+  - its rank theorem concerns the leading-term-fixing factor only;
+  - only Archimedean blocks are preserved, not every truncation;
+  - the fixed fields are relatively, not absolutely, algebraically closed;
+  - the definable-closure statements are upper bounds, not descriptions or
+    quantifier elimination;
+  - the bounded-birthday automorphism does not preserve birthdays globally;
+  - the nonabelian example gives no presentation;
+  - `Frac Oz = No` and coefficient rigidity are prior results;
+  - the omega-map question of Kaplan–Krapp–Serra, factorization and the
+    holonomic order-unit question are not addressed.
 - No named conjecture is solved. The report is not refereed, has no Lean
   formalization and makes no priority claim. The finite checks test identities
   only.
@@ -277,13 +405,22 @@ depend on it.
 
 ## Open questions, re-scoped
 
-- **Questions 11.1–11.6.**
-  - 11.1: strongness of `Oz`-automorphisms (04 and 09).
+- **Questions 11.1–11.7.**
+  - 11.1: strongness of `Oz`-automorphisms (04, 09 and 10). It stays
+    **open**. 10 adds partial information: necessity holds without strongness
+    on monomials (Remark 3.9). The passage to arbitrary series is what
+    remains.
   - 11.2: admissible logarithmic characters (04).
-  - 11.3: full relative fixed fields (04).
-  - 11.4: generation and exhaustion (04 Q4 with 08 Q1).
-  - 11.5: normal-form data weaker than the omega-map (08).
-  - 11.6: the criterion for non-divisible `Γ` (merge).
+  - 11.3: full relative fixed fields (04). 10's definable-closure question is
+    recorded with it.
+  - 11.4: generation and exhaustion (04 Q4 with 08 Q1 and 10's generation
+    question).
+  - 11.5: normal-form data weaker than the omega-map (08). 10 adds that the
+    reals, projections and floor do not help, and that simplicity and the
+    exponential are not definable either.
+  - 11.6: the criterion for non-divisible `Γ` (merge). It stays **open**: 10
+    assumes divisibility, and its `Γ = Z` example is for `𝔬 = k`.
+  - 11.7: other integer parts (10), new.
 - **08's Question 2** asked whether `C` is first-order reconstructible from
   the pure ring `Oz[i]`. It is **answered** by `odg:def:cor:internal`, and
   independently by 09's Pell-divisibility route, so it is dropped.
@@ -303,6 +440,11 @@ other reports were not edited.
 - **The surcomplex report's "effective descriptions inside the leading-term
   kernel"** (`saut:sec:questions`): **not answered**. Its `Oz`-stabilizing part
   is described. No exhaustion theorem is proved.
+- **`dsn:q:languages`** of the definable-surreals report: **further
+  information**, not an answer (from 10). Simplicity and the Gonshor
+  exponential are not definable in `(No, +, ·, <, Oz)` with any set of
+  parameters, even with all reals and the projections named (Theorem 9.10).
+  Order plus simplicity already defines `ω` (`dsn:prop:simplicity-omega`).
 
 ## Stale statements corrected
 
@@ -324,6 +466,15 @@ Appendix A.3 records these.
     `osq:prop:classder` and `odg:thm:fractions`.
 - **The surcomplex report's `T_1(t) = t/(1−t)`** does not preserve `Oz`
   (Example 4.12).
+- **10's novelty statement.** 10 said that no inspected report guide states
+  the support-cut criterion. It proposed the criterion, the rank boundary, the
+  fixed fields and the parameter witnesses as new. That was true at its pin
+  `58cd8e1`. At the merge those results are Theorems 3.3, 4.13, 4.2 and 9.1,
+  so 10 is credited as an independent fifth source. Only the material listed
+  above is printed as its contribution (Section 11.1, Appendix A.3). 10's
+  other repository statements (`Frac Oz = No`, the multiplier and coefficient
+  results, the Gaussian phase twists) are accurate. No mathematical error was
+  found in 10.
 - **Checked true:**
   - "the catalogue lists 51 reports", at the pins;
   - the antecedents in `saut` and `odg` that the sources name;
@@ -357,11 +508,18 @@ Appendix A.3 records these.
   (`bst:`). Its field criterion underlies Theorem 13.1.
 - [`omnific-groups-and-lattices`](../omnific-groups-and-lattices/). It is a
   sibling report written concurrently from the same batch.
+- [`definable-surreals-and-omnific-integers`](../../foundations-and-computation/definable-surreals-and-omnific-integers/)
+  (`dsn:`). It uses `opa:thm:fixed` and `opa:thm:parameters`. Theorem 9.10
+  adds information on its `dsn:q:languages`.
+- [`holonomic-rigidity-for-entire-hahn-functions`](../../surcomplex/holonomic-rigidity-for-entire-hahn-functions/).
+  Its order-unit boundary is a different condition from the Archimedean rank
+  of Theorem 4.13. 10 does not address its question.
 
 ## What was run
 
-For this merge all four suites were rerun on copies, with Python 3.14.4 and
-SymPy 1.14.0. Each reproduced its recorded result:
+For the merges all five suites were rerun on copies, with Python 3.14.4 and
+SymPy 1.14.0 (10's for the batch-28 addition). Each reproduced its recorded
+result:
 
 | Suite | Result |
 |---|---|
@@ -369,6 +527,7 @@ SymPy 1.14.0. Each reproduced its recorded result:
 | 04 | 7,062 assertions in 17 groups, `all_checks_passed` |
 | 08 | 9,469 checks in 15 categories, `PASS`; the rewritten file is identical to the shipped record up to line endings |
 | 02 | 7,041 assertions in 13 families, `PASS`; identical up to line endings |
+| 10 | 28,668 assertions in 19 categories, `passed`; category counts identical to the shipped record, which differs only in the `python` and `generated_utc` fields |
 
 The placement dossiers ran further independent checks, which are not shipped:
 
@@ -386,7 +545,7 @@ The build uses standard packages only and gives no errors, warnings,
 overfull or underfull boxes, or undefined references. Build in a scratch
 directory; the auxiliary files are not kept here.
 
-Three of the shipped scripts write files, so rerun the checks on a copy:
+Four of the shipped scripts write files, so rerun the checks on a copy:
 
 ```
 mkdir opa-checks && cp code/*.py opa-checks/ && cd opa-checks
@@ -394,6 +553,7 @@ python 09-omnific-preserving-verify_finite_identities.py            # prints onl
 python 04-preserving-automorphisms-verification.py --output rerun-04.json   # needs sympy==1.14.0
 python 08-integer-part-symmetries-verify.py                         # writes verification.json here
 python 02-parameter-rigidity-verify.py --output rerun-02.json
+python 10-support-cut-verify.py --output rerun-10.json              # standard library
 ```
 
 The scripts write as follows:
@@ -401,9 +561,13 @@ The scripts write as follows:
 - Without `--output`, 04's script writes `verification_report.json` into the
   current directory.
 - 08's script always writes `verification.json` next to itself.
-- 02's script does the same unless `--output` is given.
+- 02's and 10's scripts do the same unless `--output` is given. Run in place,
+  10's script would create `code/verification.json`; it does not touch
+  `data/10-support-cut-verification.json`.
 
-The two Makefiles and `04-preserving-automorphisms-build.sh` are shipped as
+The three Makefiles and `04-preserving-automorphisms-build.sh` are shipped as
 delivered. They name the manuscripts' own files (`omnific_automorphisms.tex`,
 `article.tex`, `verify.py`, `verify_finite_identities.py`), which are not
-present here under those names, so they do not run as-is.
+present here under those names, so they do not run as-is. The `clean` target
+of `10-support-cut-Makefile` deletes `article.aux`, `article.log` and other
+auxiliary files named `article.*` in the working directory; do not use it here.
