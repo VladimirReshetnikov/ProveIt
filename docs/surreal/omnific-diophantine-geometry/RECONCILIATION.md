@@ -1,7 +1,10 @@
 # Reconciliation of the three Diophantine manuscripts
 
 This record covers the elementary source comparison in Sections 1–4 of the
-maintained [article](article.tex), followed by proof reviews of Sections 5–12.
+maintained [article](article.tex), followed by proof reviews of the original Sections 5–12.
+After the expansion, the reviewed original Sections 11–12 are Sections 14–15.
+The added material in Sections 6 and 10 and the new Sections 11–13 are
+outside this review; Sections 16–17 also await review.
 It does **not** certify integration of every result in the three manuscripts
 or review of all later proofs and imported classical results.
 
@@ -20,7 +23,7 @@ as the article, without merging the other two texts.
 The source-01 extraction was byte-identical to the installed base before
 the elementary review in `7784f7f`. That review retained all 41 base standard
 statements and added four. Concurrent commit `bbdd536` assembled sources
-01, 02 and 05 more broadly into a 67-statement article. The present merge
+01, 02 and 05 more broadly into a 67-statement article. The merge `1186c11`
 uses that expanded text and preserves the reviewed support, quotient and
 nilpotent-image clarifications. The notation is now `Oz = ℤ ⊕ Π`, agreeing
 with the foundations report; `J` below denotes the same ideal in the earlier
@@ -184,18 +187,25 @@ ordinary residue roots and no omnific lift; its discriminant proves this
 without reading the full series. The omnific constant-term map is explicitly
 distinguished from the finite-surreal valuation ring's standard-part map.
 
-Sections 13 onward still await independent proof review; the assembly's own
+The original Sections 13 onward (now Sections 16 onward) still await independent proof review; the assembly's own
 section map and corrections in Appendix A are inputs to that review.
 Imported foundations, classical results and historical priority are separate
 obligations. No broad preservation of the old statement wording or numbering
 is claimed after the expansion.
 
 Two additional Diophantine manuscripts, local 06 and 07, arrived in
-`cf350b1` and remain unintegrated. Their archives are recoverable at
+`cf350b1`. Commit `0240140`, concurrent with this review, integrated them as
+Sections 11–13, together with results of theirs and of the quotient report's
+manuscript 13 in Section 6 and source 07's quartic
+(`odg:def:rem:quarticvariant`) in Section 10. Merged with this review, the
+article has 88 pages, 104 standard statements and 228 labels; Sections 1–10
+keep their section numbers, while statement numbers in Sections 6 and 10
+shift. That material is outside this review. Their archives are recoverable at
 `de0acc6`; their code and data are present here. The
-[quotient report](../set-sized-quotients-of-omnific-integers/) now has thirteen
-assigned manuscripts (its base and twelve companions), and still needs its
-own assembly and source reconciliation.
+[quotient report](../set-sized-quotients-of-omnific-integers/) has thirteen
+assigned manuscripts (its base and twelve companions); its assembly is
+recorded in its own README, and its source reconciliation is not part of
+this record.
 
 The three original verification scripts are unchanged by synchronization.
 Their finite examples do not prove the new class-sized arguments or establish

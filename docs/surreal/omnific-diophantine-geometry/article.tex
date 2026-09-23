@@ -94,21 +94,26 @@
 \newcommand{\status}[1]{\par\smallskip\noindent\textit{Provenance.} #1\par\smallskip}
 \newcommand{\replabel}[1]{\nolinkurl{#1}}
 \newcommand{\fn}[1]{\nolinkurl{#1}}
+\newcommand{\Og}{\Oz[i]}
+\newcommand{\Aut}{\operatorname{Aut}}
+\newcommand{\st}{\operatorname{st}}
+\newcommand{\Th}{\operatorname{Th}}
+\newcommand{\Ofin}{\mathcal O_{\mathrm{fin}}}
 
 \begin{document}
 \hypersetup{pageanchor=false}
 \begin{titlepage}
 \centering
-\vspace*{10mm}
+\vspace*{0mm}
 {\Large Merged research report for the Surreal project\par}
-\vspace{10mm}
+\vspace{6mm}
 {\huge\bfseries Omnific Integers and\\[3mm] Omnific--Diophantine Geometry\par}
-\vspace{7mm}
+\vspace{5mm}
 {\Large Retractions, rigidity, definability,\\ and infinite families\par}
-\vspace{9mm}
-{\large Built from three manuscripts dated September 22, 2026\par}
-\vspace{7mm}
-\begin{minipage}{0.91\textwidth}
+\vspace{5mm}
+{\large Built from five manuscripts dated September 22 and 23, 2026\par}
+\vspace{4mm}
+\begin{minipage}{\textwidth}
 \begin{abstract}
 The omnific integers $\Oz=\Pi\oplus\Z$ form a discretely ordered subring of
 the surreal field whose arithmetic is neither ordinary integer arithmetic
@@ -122,11 +127,12 @@ The Diophantine results distinguish existence from the structure of
 solutions. At a nonzero constant level, the omnific fiber of a product of
 affine linear forms is described exactly by a real common kernel; in
 particular binary forms with at least two distinct projective linear factors,
-Pell equations and number-field norm forms have no new omnific points.
+Pell equations and norm forms of finite \'etale algebras have no new omnific
+or Gaussian omnific points.
 Support-preserving Euler derivations prove the same rigidity for every
-separated equation $ax^m+by^n=c$ with $abc\ne0$ and $m,n\ge2$, including
-$y^2=x^3+1$, and for nonzero Fermat triples of exponent at least three that
-generate the unit ideal. In contrast, every represented nonzero level of a
+separated equation $ax^m+by^n=c$ with complex $abc\ne0$ and $m,n\ge2$,
+including $y^2=x^3+1$, and for Fermat triples of exponent at least three with
+all coordinates nonzero that generate the unit ideal. In contrast, every represented nonzero level of a
 nondegenerate indefinite integral quadratic form in at least three variables
 carries explicit injective polynomial families through each integer point,
 and we prove an exhaustive quadratic-level dichotomy that includes degenerate
@@ -136,19 +142,28 @@ $\Oz$. Further results concern non-atomic factorization, full-class common
 divisors, bounded semialgebraic rigidity, primitive and projective points, a
 failed existential induction instance, and failures of residue lifting.
 
-This report merges three independently written manuscripts; it states which
+The splitting $\Oz=\Z\oplus\Pi$ is itself Diophantine: $x^2=2y^2$ defines
+$\Pi$ with one witness, one order-free system defines $\Z$ in $\Oz$ and $\Z[i]$
+in $\Oz[i]$, and $as=\Lambda(t)$, for a classical intersective sextic
+$\Lambda$, is solvable exactly when $\ct(a)\ne0$. So the graph of $\ct$ is
+Diophantine and homomorphisms preserve constant terms. The multiplier ring of
+$\Pi$ recovers $\R$; the pure ring $\Oz$ thus reconstructs the valued field
+$\No$, and its automorphisms fix $\R$ pointwise, while a phase twist shows that
+$\Oz[i]$ does not determine the real axis.
+
+This report merges five independently written manuscripts; it states which
 source proved each result, prints shared results once, and keeps every
 source's limitations. It is an AI-assisted draft: it has not been refereed,
 and nothing in it has been formalized in Lean.
 \end{abstract}
 \end{minipage}
 \vfill
-\begin{minipage}{0.91\textwidth}
-\small
-Sources: manuscripts 01 (\emph{Omnific Integers and Omnific--Diophantine
-Geometry}, the base text), 02 (\emph{Omnific Integers and Diophantine
-Geometry}) and 05 (\emph{Omnific Integers and Diophantine Rigidity}), all
-pinned to repository commit \texttt{2cb9c02}. The provenance of every
+\begin{minipage}{\textwidth}
+\footnotesize
+Sources: manuscripts 01 (the base text), 02 and 05, pinned to repository
+commit \texttt{2cb9c02}, and 06 and 07, pinned to \texttt{71e9606}; their
+titles are in \cref{odg:sub:provenance}. Fiber results of a manuscript
+printed in the sibling report appear here once. The provenance of every
 section is recorded in \cref{odg:app:provenance}; non-claims are collected in
 \cref{odg:app:nonclaims}. Finite checks accompany the report and check finite
 identities and examples only.
@@ -213,11 +228,16 @@ infinite vectors in the real common kernel of the linear parts
 factors over $\C$ at a level in $\C^\times$ have only constant points in the
 complex nonnegative-support ring (\cref{odg:thm:binary}); Pell equations with
 $D\ne0$ and number-field norm forms are rigid
-(\cref{odg:cor:pell,odg:thm:norm}).
-\item \textbf{Separated powers and unimodular Fermat} \src{05}. For real
+(\cref{odg:cor:pell,odg:thm:norm}). Source 13 of the sibling report adds the
+exact fibers over the Gaussian omnific integers $\Og$ and the converse of the
+kernel criterion (\cref{odg:dec:thm:gaussianfibers,odg:dec:cor:converse});
+with source 07, norm rigidity holds for finite \'etale algebras over any base
+field, in intermediate rings (\cref{odg:dec:thm:etale}).
+\item \textbf{Separated powers and unimodular Fermat} \src{05}. For complex
 $a,b,c\ne0$ and $m,n\ge2$, every nonnegative-support solution of
-$ax^m+by^n=c$ is constant (\cref{odg:thm:separated}). For $n\ge3$, a nonzero
-Fermat triple generating the unit ideal is constant
+$ax^m+by^n=c$ is constant (\cref{odg:thm:separated}; source 05 states the
+real case). For $n\ge3$, a Fermat triple with all three coordinates nonzero
+that generates the unit ideal is constant
 (\cref{odg:thm:unimodularfermat}); the threshold is sharp.
 \item \textbf{Quadratic-level dichotomy} \src{01, 02}. For $q\in\Z[X_1,\ldots,X_n]$
 quadratic homogeneous and $0\ne c\in\Z$, all solutions are ordinary in
@@ -233,9 +253,11 @@ $\SO(q,\Oz)\to\SO(q,\Z)$ (\cref{odg:cor:unipotent}).
 \]
 with five existentially quantified auxiliary variables defines exactly
 $\Z^n$ inside $\Oz^n$ (\cref{odg:thm:guard}); a variant with six auxiliary
-variables and four squares defines $\Z$ (\cref{odg:thm:standarddef}). The
-graph of $\ct$ and the ideal $\Pi$ are first-order definable, and an explicit
-existential induction instance fails (\cref{odg:thm:induction}).
+variables and four squares defines $\Z$ (\cref{odg:thm:standarddef}), and
+source 07 found the same variant independently. The graph of $\ct$ and the
+ideal $\Pi$ are first-order definable (\cref{odg:cor:definablect}) and, by
+item (8), Diophantine; an explicit existential induction instance fails
+(\cref{odg:thm:induction}).
 \item \textbf{Primitive and projective phenomena} \src{01, 02, 05}. There
 are infinite unimodular Pythagorean triples. A constant real projective
 direction has a primitive omnific representative precisely when it is
@@ -245,6 +267,26 @@ semialgebraic sets have only integer omnific points
 (\cref{odg:thm:bounded}); a homogeneous system has a nonzero omnific point
 exactly when it has a nonzero real point, and for integer coefficients this
 is decidable (\cref{odg:thm:cone}).
+\item \textbf{Diophantine definitions} \src{06, 07}. In $\Oz$ and $\Og$, and in
+the analogous rings over every ordered exponent group, $\exists y\,(x^2=2y^2)$
+defines the purely infinite ideal (\cref{odg:def:thm:ideal}); one order-free
+system of three equations with five witnesses defines $\Z$ in $\Oz$ and $\Z[i]$
+in $\Og$, also in intermediate rings (\cref{odg:def:thm:constants}); the
+equation $as=\Lambda(t)$ is solvable exactly when $\ct(a)\ne0$
+(\cref{odg:def:thm:detector}), and $\Pi$ is the largest ideal whose quotient
+has no root of $\Lambda$ (\cref{odg:def:thm:idealtest}). The graph of $\ct$ is
+Diophantine (\cref{odg:def:thm:ctgraph}), in $\Oz$ by one quartic with six
+witnesses (\cref{odg:def:cor:ctquartic}, added by the merge), and every unital
+homomorphism between such rings preserves $\ct$ (\cref{odg:def:thm:homct}). The
+constant definition extends to subrings of number fields
+(\cref{odg:def:thm:numberfield}).
+\item \textbf{Reconstruction and asymmetry} \src{06}. The multiplier ring of
+the ideal recovers the actual coefficient field (\cref{odg:def:thm:multiplier});
+from the pure ring $\Oz$ one reconstructs $\No$, its order, finite ring and
+standard part (\cref{odg:def:thm:realrecovery}), and every automorphism of
+$\Oz$ fixes $\R$ pointwise (\cref{odg:def:thm:autreal}). A phase twist
+preserving $\Og$ shows that neither $\No$ nor conjugation is definable from
+$\Og$ (\cref{odg:def:thm:norealaxis}).
 \end{enumerate}
 
 These statements are proved here, but proving a statement here is not a
@@ -262,9 +304,19 @@ special cases proved by source 01.
 
 \subsection{Provenance of this report}\label{odg:sub:provenance}
 
-This report is built from three manuscripts written independently on
-September 22, 2026, each pinned to repository commit \pin{} (107 commits
-before the placement commit \texttt{be06fc8}).
+This report is built from five manuscripts written independently. Sources
+01, 02 and 05, dated September 22, 2026, are items of the batch placed in
+commit \texttt{be06fc8} and pin repository commit \pin{} (107 commits before
+that placement). Sources 06 and 07, dated September 23, 2026, are items 01
+and 07 of the batch placed in commit \texttt{cf350b1}; they are numbered 06
+and 07 here to follow the earlier sources, as their shipped file prefixes
+are. Both pin \texttt{71e9606}, which precedes the placement \texttt{be06fc8},
+so neither saw this report or its sibling. The tag \src{13} refers to
+manuscript 13 of the sibling report
+\fn{docs/surreal/set-sized-quotients-of-omnific-integers} (item 03 of the
+batch placed in \texttt{cf350b1}, also pinned to \texttt{71e9606}); its
+Gaussian and \'etale fiber results are printed here once, and it is not
+counted among this report's sources.
 
 \begin{center}
 \renewcommand{\arraystretch}{1.2}
@@ -285,6 +337,18 @@ Binary rigidity over $\C$; Euler derivations; separated-power and
 unimodular Fermat rigidity; the four-square definition of $\Z$; failed
 existential induction; failed lifting; finite-support specialization; the
 universal set-sized quotient theorem (printed in the sibling report).\\
+06 & \emph{Definable Arithmetic and Coefficient Reconstruction in Omnific
+Integer Rings} &
+Base of \cref{odg:def:sec:arithmetic,odg:def:sec:ct,odg:def:sec:reconstruction};
+the one-witness definition of $\Pi$; the Diophantine graph of $\ct$;
+homomorphisms preserve $\ct$; the multiplier identity and the reconstruction
+of $\R$, $\No$, order and standard part; automorphisms fix $\R$; the phase
+twist and the real--Gaussian asymmetry; c.e.\ sets; the quintic.\\
+07 & \emph{Defining Arithmetic Inside Omnific Integers} &
+The order-free system in intermediate rings (with 06); the augmentation root
+detector and the ideal test; support bounds and certificates; number-field
+coefficient rings; norm rigidity over any base field; recursive saturation;
+the quartic variant.\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -296,13 +360,19 @@ merge carry the tag \mergetag{} and have complete proofs.
 where the merge had to choose, and every symbol renamed from a source.
 
 \paragraph{Current review and placement status.}
-Commit \texttt{bbdd536} assembled sources 01, 02 and 05. The subsequent
-proof review reaches \cref{odg:sec:coefficients}; its scope and source
-comparisons are recorded in \fn{RECONCILIATION.md}. Later proofs and remaining
-imported foundations still require review.
-Two further Diophantine manuscripts, locally numbered 06 and 07 and placed
-in \texttt{cf350b1}, are not yet integrated. Nine earlier labels renamed or
-combined during assembly remain as aliases, so existing references resolve.
+Commit \texttt{bbdd536} assembled sources 01, 02 and 05. The elementary
+algebra review, its preservation through that assembly, and later proof
+reviews of the original material in Sections 1--10 and
+\cref{odg:sec:primitive,odg:sec:coefficients} are recorded in \fn{RECONCILIATION.md};
+assembly is not a review of every later proof, and later proofs and remaining
+imported foundations still require review. Sources 06 and 07, placed in
+\texttt{cf350b1}, were integrated concurrently with those reviews, as
+\cref{odg:def:sec:arithmetic,odg:def:sec:ct,odg:def:sec:reconstruction},
+together with their material and that of source 13 in
+\cref{odg:sec:rigidity} and source 07's quartic
+(\cref{odg:def:rem:quarticvariant}); the reviews did not cover this material. Nine earlier
+labels renamed or combined during assembly remain as aliases, so existing
+references resolve.
 
 \subsection{Class size and foundations}\label{odg:sub:foundations}
 
@@ -313,7 +383,10 @@ with ``set-sized'' replaced by ``small in the specified lower universe''. Each
 individual surreal has a \emph{set-sized} support. Every polynomial, system,
 matrix, or tuple in this report has ordinary finite size. Quantifiers over
 $\Oz$ are class quantifiers expressed through their defining set-theoretic
-formulas, not an appeal to a set containing all surreals.
+formulas, not an appeal to a set containing all surreals. Sources 06 and 07
+state their results first for set-sized exponent groups, where they are
+ordinary first-order model theory, and read statements about $\Oz$ and $\Og$
+formula by formula (\cref{odg:def:sub:setting}).
 
 Quotients by class ideals are interpreted through their quotient maps and
 congruence relations. Thus $\Oz/\Pi\cong\Z$ uses the ordinary integer
@@ -366,13 +439,32 @@ Wronskian (\cref{odg:sec:derivations}).\\
 $B$, $q$, $G$ & Symmetric bilinear form, its quadratic form $q(x)=B(x,x)$,
 and the Lorentz Gram matrix $G=\diag(1,-1,-1)$.\\
 $R$, $S$ & A generic commutative ring; a set-sized target ring.\\
+$\Og=\Z[i]\oplus\Pi_{\C}$ & Gaussian omnific integers (\cref{odg:sec:rigidity}).\\
+$\Bbbk$, $\Gamma$, $\mathfrak o$ & A coefficient field of characteristic zero, an
+ordered abelian exponent group, a unital subring of $\Bbbk$
+(\cref{odg:def:sub:setting}).\\
+$\mathcal A_\Bbbk(\Gamma)$, $\Pi_\Bbbk(\Gamma)$, $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$ &
+Nonnegative-support series, its positive-support ideal, and
+$\mathfrak o+\Pi_\Bbbk(\Gamma)$; an \emph{intermediate ring} $A$ satisfies
+$\mathfrak o\subseteq A\subseteq\mathcal A_\Bbbk(\Gamma)$, $A\cap\Bbbk=\mathfrak o$.\\
+$\Lambda$, $\Xi$, $\Theta$, $\mathsf{Inf}$, $\mathsf{CT}$ & The intersective
+polynomial, the order-free definition of $\Z$ and $\Z[i]$, the detector of
+$\ct\ne0$, the definition of $\Pi$, the graph of $\ct$
+(\cref{odg:def:sec:arithmetic,odg:def:sec:ct}).\\
+$\st$, $\Ofin$, $\mathfrak m$ & Standard part, finite surreals, infinitesimals
+(\cref{odg:def:thm:realrecovery}).\\
 \bottomrule
 \end{tabular}
 \end{center}
 
 The calligraphic $\BR$, $\BC$ name rings; the italic $B$ is always a bilinear
 form. The capital Greek letter $\Pi$ always denotes the ideal; finite products
-are always written with the operator $\prod$ and its index range.
+are always written with the operator $\prod$ and its index range. In the
+material of sources 06 and 07 the coefficient ring is written $\mathfrak o$,
+not $D$, because $D$ is the Pell parameter; the coefficient field is written
+$\Bbbk$, because $k$ is an ordinary index; and the exponent group is $\Gamma$,
+because $G$ is the Lorentz Gram matrix. The sources' names are listed in
+\cref{odg:tab:renames}.
 
 \paragraph{Sign convention.}
 Exponents are those of Conway normal forms: supports are reverse well
@@ -418,15 +510,25 @@ the latter. At the pin there was no report devoted to $\Oz$ and no Lean
 declaration about it. The collection now contains this report and the sibling
 report \fn{docs/surreal/set-sized-quotients-of-omnific-integers}; there is
 still no Lean formalization of omnific integers
-(\cref{odg:sec:formal,odg:app:repo}).
+(\cref{odg:sec:formal,odg:app:repo}). Sources 06 and 07 inspected the
+repository at the later pin \texttt{71e9606}, which still preceded both
+omnific reports; their statements that no explicit Diophantine definition of
+$\Z$ in $\Oz$ was found are stale, since \cref{odg:thm:guard,odg:thm:standarddef}
+are in the collection (\cref{odg:app:provenance}). Source 06 correctly notes
+that the surcomplex automorphism report
+(\fn{docs/surcomplex/surcomplex-field-automorphisms}) already constructs phase
+twists that move the real axis while fixing complex coefficients.
 
 The main external sources are Conway and Gonshor for the construction and
 normal forms \cite{Conway,Gonshor}, L'Innocente--Mantova for modern
 factorization theory \cite{LM}, Ehrlich--Kaplan for the initial integer-part
 context \cite{EK}, and Je\v r\'abek for the residue theory of $\Z$-groups
 \cite{JerabekMLQ}. MRDP, Tarski's quantifier elimination, the three-square and
-four-square theorems, Shepherdson's theorem and the Fermat theorem of Wiles and
-Taylor--Wiles are imported with explicit attribution at their points of use.
+four-square theorems, Shepherdson's theorem, the Fermat theorem of Wiles and
+Taylor--Wiles, and Dirichlet's theorem with quadratic reciprocity are imported
+with explicit attribution at their points of use. The intersective polynomial
+of \cref{odg:def:sec:arithmetic} is classical
+\cite{BorevichShafarevich,LeSpencer,BerendBilu}.
 Relations to neighbouring reports are listed in \cref{odg:sub:neighbours}.
 
 \section{The normal-form rings and the integer part}\label{odg:sec:basic}
@@ -798,10 +900,11 @@ multiplicative. The finite-quotient and completion statements above are
 proved directly.}
 
 Source 05 proved a far-reaching generalization of
-\cref{odg:prop:canonicalct,odg:cor:charideals}. The sibling report gives a more general coefficient-ring theorem in its
-installed base manuscript; its companion-source integration remains pending.
-For that proof see the sibling report \fn{docs/surreal/set-sized-quotients-of-omnific-integers};
-we quote it without proof.
+\cref{odg:prop:canonicalct,odg:cor:charideals}. It is proved, in a more
+general coefficient-ring form and with the sharper theory of set-sized
+quotients assembled from several manuscripts, in the sibling report
+\fn{docs/surreal/set-sized-quotients-of-omnific-integers}, which also keeps
+source 05's route; we quote it without proof.
 
 \begin{fact}[Universal set-sized quotient; proved by source 05, printed in the sibling report]\label{odg:fact:settarget}
 Let $S$ be a set-sized unital ring, not necessarily commutative, and let
@@ -1357,9 +1460,107 @@ and the two-variable equation $X^d=1$ forces $X$ to be constant but says
 nothing about $Y$. The real kernel in (a) need not equal the complex kernel
 in (b): $L(X,Y)=X+iY$ has zero kernel on $\R^2$, so its level $1$ has the
 unique omnific point $(1,0)$. In $\BC^2$ the same level contains
-$(1-it,t)$ for every $t\in\BC$. On the zero level, even independent factors
+$(1-it,t)$ for every $t\in\BC$ (compare \cref{odg:dec:rem:kernels}). On the zero level, even independent factors
 permit infinite points, since the unit argument cannot be applied to a product
 equal to zero: $(\sqrt2\,\omega)^2-2\omega^2=0$.
+
+\paragraph{Gaussian variables, the converse, and the kernel criterion.}
+Manuscript 13 of the sibling report
+\fn{docs/surreal/set-sized-quotients-of-omnific-integers} (batch-25 item 03,
+written \src{13} here; see \cref{odg:sub:provenance}) proves the same fiber
+theorem, with repeated factors in place of the exponents $e_j$ (an
+equivalent formulation), for the pairs $(\Z,\R)$ and $(\Z[i],\C)$. Its real
+case is \cref{odg:thm:decomposable}(a), printed once above. Its Gaussian
+case, its converse and its remark on real kernels are printed here, once;
+source 13's other results are printed in the sibling report. Write
+\[
+ \Og=\Z[i]\oplus\Pi_{\C}=\{a+ib:a,b\in\Oz\}
+\]
+for the \emph{Gaussian omnific integers}. A finite union of reverse-well-ordered
+supports is reverse well ordered, so the two descriptions agree, and the
+constant coefficient of $a+ib$ is $\ct(a)+i\ct(b)\in\Z[i]$. The name refers to
+this explicitly specified ring, not to another integer part of the surcomplex
+field \src{07}.
+
+\begin{theorem}[Exact fibers over the Gaussian omnific integers \src{13}]\label{odg:dec:thm:gaussianfibers}
+Let $F=\prod_jL_j^{e_j}$, $L_j=\beta_j+\ell_j$ and $c\in\C^\times$ be as in
+\cref{odg:thm:decomposable}, and put
+\[
+ \mathcal K_{\C}=\{\mathbf v\in\C^n:\ell_j(\mathbf v)=0\text{ for every }j\}.
+\]
+The solutions of $F(\mathbf x)=c$ in $\Og^n$ are exactly
+\begin{equation}\label{odg:dec:eq:gaussianfiber}
+ \mathbf x=\mathbf a+\mathbf u,\qquad \mathbf a\in\Z[i]^n,
+ \quad F(\mathbf a)=c,
+ \quad \mathbf u\in\Pi_{\C}^n,
+ \quad \ell_j(\mathbf u)=0\ \text{for all }j .
+\end{equation}
+Equivalently, at each exponent the complex coefficient vector of $\mathbf u$
+lies in $\mathcal K_{\C}$; if $\mathbf v_1,\ldots,\mathbf v_e$ is a complex
+basis of $\mathcal K_{\C}$, the fiber above $\mathbf a$ is
+$\mathbf a+\{\sum_kt_k\mathbf v_k:t_k\in\Pi_{\C}\}$. Fibers above distinct
+$\mathbf a$ are disjoint. If $\mathcal K_{\C}=0$, that is, if the linear parts
+have rank $n$ over $\C$, every solution in $\Og^n$ lies in $\Z[i]^n$.
+\end{theorem}
+\begin{proof}
+Write $\mathbf x=\mathbf a+\mathbf u$ with $\mathbf a\in\Z[i]^n$ and
+$\mathbf u\in\Pi_{\C}^n$. If $F(\mathbf x)=c$, \cref{odg:lem:constantproduct}
+makes every $L_j(\mathbf x)=L_j(\mathbf a)+\ell_j(\mathbf u)$ a complex
+constant; since $\ell_j(\mathbf u)\in\Pi_{\C}$, uniqueness of normal forms gives
+$\ell_j(\mathbf u)=0$, and applying $\ct$ gives $F(\mathbf a)=c$. Conversely
+these conditions give $L_j(\mathbf x)=L_j(\mathbf a)$ for every $j$, hence
+$F(\mathbf x)=c$. The coefficient of $\omega^\gamma$ in $\ell_j(\mathbf u)$ is
+$\ell_j(\mathbf u_\gamma)$, where $\mathbf u_\gamma\in\C^n$ is the coefficient
+vector of $\mathbf u$ at $\gamma$; so $\ell_j(\mathbf u)=0$ for all $j$ says
+exactly that every $\mathbf u_\gamma$ lies in $\mathcal K_{\C}$, and expanding
+each $\mathbf u_\gamma$ in the basis gives series $t_k$ supported in the
+(set-sized, reverse-well-ordered) union of the coordinate supports.
+Disjointness holds because the constant coefficient of a normal form is
+unique. If $\mathcal K_{\C}=0$, then $\mathbf u=0$.
+\end{proof}
+
+\begin{corollary}[The kernel criterion is exact \src{13}]\label{odg:dec:cor:converse}
+Suppose the ordinary fiber $\{\mathbf a\in\Z^n:F(\mathbf a)=c\}$ is nonempty.
+Then $F(\mathbf x)=c$ has a solution in $\Oz^n$ outside $\Z^n$ if and only if
+the real kernel $\mathcal K$ of \cref{odg:thm:decomposable} is nonzero.
+Likewise, if $F(\mathbf a)=c$ for some $\mathbf a\in\Z[i]^n$, it has a
+solution in $\Og^n$ outside $\Z[i]^n$ if and only if $\mathcal K_{\C}\ne0$.
+\end{corollary}
+\begin{proof}
+If $\mathbf v\ne0$ lies in the relevant kernel and $\mathbf a$ is an ordinary
+point, then $\mathbf a+\mathbf v\omega$ is a point of the same fiber with an
+infinite coordinate. The other implications are
+\cref{odg:thm:decomposable}(a) and \cref{odg:dec:thm:gaussianfibers}.
+\end{proof}
+
+So, subject to one ordinary point, the linear-kernel criterion is not merely
+sufficient: it detects exactly whether a nonzero constant fiber acquires
+infinite directions \src{13}.
+
+\begin{remark}[Real and complex kernels \src{13}]\label{odg:dec:rem:kernels}
+For omnific variables the relevant kernel is
+$\mathcal K=\ker_{\C}\cap\R^n$, which can vanish although the complex rank of
+the linear parts is smaller than $n$; the rank condition of
+\cref{odg:thm:decomposable}(b) is sufficient, not necessary, for real
+variables. Source 13's example is the single form $X+iY$, which is injective
+on $\R^2$: every omnific solution of $x+iy=c$ is ordinary. For Gaussian
+variables the criterion is the complex kernel. For instance \mergetag,
+$\mathcal K_{\C}=\C(1,i)$ for $X+iY$, and $(1+\omega,\,i\omega)\in\Og^2$
+solves $X+iY=1$, since $(1+\omega)+i\cdot i\omega=1$.
+\end{remark}
+
+\begin{example}[A rank-deficient level \src{13}]\label{odg:dec:ex:rankdeficient}
+Let $F(X,Y,Z)=(X+Z+\sqrt2\,Y)(X+Z-\sqrt2\,Y)=(X+Z)^2-2Y^2$. The common real
+kernel of the two linear parts is $\mathcal K=\R(1,0,-1)$, so by
+\cref{odg:thm:decomposable}(a) the omnific solutions of $F=1$ are exactly
+\[
+ (x,y,z)=(a+u,\,b,\,c-u),\qquad u\in\Pi,\quad a,b,c\in\Z,
+ \quad (a+c)^2-2b^2=1 .
+\]
+For instance $(3-\omega,2,\omega)$ is a nonordinary solution. It is the
+common kernel of \emph{all} linear parts, not the nonzero level alone, that
+governs rigidity.
+\end{example}
 
 \subsection{Binary forms, Pell equations, and conics}
 
@@ -1421,7 +1622,10 @@ because $D\ne0$. Apply \cref{odg:thm:binary}.
 
 Source 02 states this corollary for $D>0$ only; its proof, like those of 01
 and 05, uses only $D\ne0$, and the conclusion holds whether or not $D$ is a
-square. ``Rigid'' means no new points, not a finite number of old points:
+square. Source 13 states the corollary for positive nonsquare $D$ (as
+$X^2-dY^2=m$ with $m\ne0$); its own fiber theorem, like
+\cref{odg:thm:decomposable}, covers every $D\ne0$, and the statement for
+$D\ne0$ stands here. ``Rigid'' means no new points, not a finite number of old points:
 the classical Pell equation has ordinary solutions of arbitrarily large
 finite size, but no single infinite omnific solution, and there is no ``Pell
 solution at index $\omega$'' obtained by substituting an omnific index into a
@@ -1441,14 +1645,17 @@ and reversing it gives the asserted powers.
 \end{example}
 
 In the full surreal field the contrast is visible without solving a
-recurrence \src{01}. For $D>0$, $c\ne0$ and $s\in\No^\times$, the pair
+recurrence \src{01; also 07, 13}. For $D>0$, $c\ne0$ and $s\in\No^\times$, the pair
 $x=(s+c/s)/2$, $y=(s-c/s)/(2\sqrt D)$ satisfies $x^2-Dy^2=c$. Taking
 $s=\omega$ produces negative-exponent terms, so neither coordinate is an
 omnific integer, and discarding those terms changes the norm from $c$ to
 zero. A surreal solution cannot be turned into an omnific solution by
-unverified truncation.
+unverified truncation. Source 07 makes the same point for any nonconstant
+monomial of a Hahn field, and source 13 notes that the negative-exponent terms
+supply exactly the inverses missing from $\BR$: the rigidity theorems concern
+the nonnegative-support rings, not non-Archimedean fields in general.
 
-\begin{proposition}[The zero Pell fiber \src{01}]\label{odg:prop:zeropell}
+\begin{proposition}[The zero Pell fiber \src{01; also 13}]\label{odg:prop:zeropell}
 If $D$ is a positive nonsquare ordinary integer, the solutions of
 $x^2-Dy^2=0$ in $\Oz^2$ are exactly $(\pm\sqrt D\,t,t)$ with $t\in\Pi$.
 \end{proposition}
@@ -1486,13 +1693,15 @@ this argument does not classify coprime cases such as $x^2-y^3=1$. All
 exponent pairs are covered by \cref{odg:thm:separated} of source 05.
 \end{remark}
 
-\subsection{Number-field norm equations}
+\subsection{Number-field and \'etale norm equations}
 
 Here a norm form is first constructed as a polynomial over $\Q$, then
 evaluated on omnific coordinates. We do not embed the number field $K$ into
 $\No$; such an embedding need not exist. Equivalently, form the determinant
 of the multiplication matrix in a $\Q$-basis, with indeterminate coordinates.
-Its complex factorization is used only after this polynomial is formed.
+Its complex factorization is used only after this polynomial is formed. The
+same applies to the algebra $E$ of \cref{odg:dec:thm:etale}, whose norm is
+factored over an algebraic closure of the coefficient field.
 
 \begin{theorem}[Norm-form rigidity \src{01, 02}]\label{odg:thm:norm}
 Let $K/\Q$ be a number field of degree $d$, let $e_1,\ldots,e_d$ be a
@@ -1530,7 +1739,81 @@ three-variable rigidity statement on an unbounded real surface, unlike the
 indefinite quadratic forms of \cref{odg:sec:quadratic}: dimension alone does
 not force infinite omnific points. The identity follows from the product over
 the three conjugates or from the determinant of multiplication by
-$X+Y\theta+Z\theta^2$; the suites of 01 and 02 check it exactly.
+$X+Y\theta+Z\theta^2$; the suites of 01 and 02 check it exactly. Source 13
+computes the same determinant (its suite checks it too) and records the
+Gaussian analogue: every Gaussian omnific solution is a Gaussian integer
+triple, by \cref{odg:dec:thm:etale}(b) below. No claim is made to enumerate or
+effectively bound the ordinary solutions of this cubic.
+
+Sources 07 and 13 prove norm rigidity in two further directions: source 07
+over an arbitrary base field and in intermediate rings, source 13 for finite
+\'etale algebras (finite products of number fields) and with Gaussian omnific
+variables. The mechanism is that of \cref{odg:thm:norm}; the two
+generalizations are combined here. The statement uses the general
+nonnegative-support rings $\mathcal A_\Bbbk(\Gamma)$ and the intermediate rings
+$A$ of \cref{odg:def:sub:setting}: for a unital subring $\mathfrak o$ of a field
+$\Bbbk$ of characteristic zero, $A$ is a ring with
+$\mathfrak o\subseteq A\subseteq\mathcal A_\Bbbk(\Gamma)$ and
+$A\cap\Bbbk=\mathfrak o$. Examples are $\Oz$ (with $\mathfrak o=\Z$,
+$\Bbbk=\R$) and $\Og$ (with $\mathfrak o=\Z[i]$, $\Bbbk=\C$).
+
+\begin{theorem}[\'Etale norm rigidity in intermediate rings \src{07, 13} \mergetag]\label{odg:dec:thm:etale}
+Let $\Bbbk$ be a field of characteristic zero, $K\subseteq\Bbbk$ a subfield,
+$E$ a finite \'etale $K$-algebra of dimension $r$, that is, a finite product
+of finite separable field extensions of $K$, and $e_1,\ldots,e_r$ a
+$K$-basis of $E$. Put
+$N(\mathbf X)=N_{E/K}\bigl(\sum_{j=1}^re_jX_j\bigr)\in K[X_1,\ldots,X_r]$.
+Let $\Gamma$ be an ordered abelian group and $A$ an intermediate ring for
+$\mathfrak o\subseteq\Bbbk$. If $\mathbf x\in A^r$ and $N(\mathbf x)=a\in
+K^\times$, then every $x_j$ lies in $\mathfrak o$. In particular:
+\begin{enumerate}[label=\textup{(\alph*)},leftmargin=*]
+\item for a finite \'etale $\Q$-algebra, every solution in $\Oz^r$ of
+$N(\mathbf x)=a\ne0$ lies in $\Z^r$;
+\item for a finite \'etale $\Q$- or $\Q(i)$-algebra, every solution in $\Og^r$
+of $N(\mathbf x)=a\ne0$ lies in $\Z[i]^r$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Let $\overline\Bbbk$ be an algebraic closure of $\Bbbk$. Since $E$ is \'etale,
+there are exactly $r$ homomorphisms of $K$-algebras
+$\sigma_1,\ldots,\sigma_r:E\to\overline\Bbbk$, and together they identify
+$E\otimes_K\overline\Bbbk$ with $\overline\Bbbk^r$. In these coordinates
+multiplication by $\sum_je_jX_j$ is diagonal, so taking its determinant gives
+the polynomial identity
+\[
+ N(\mathbf X)=\prod_{\ell=1}^{r}\Bigl(\sum_{j=1}^{r}\sigma_\ell(e_j)X_j\Bigr)
+ \quad\text{in }\overline\Bbbk[X_1,\ldots,X_r].
+\]
+The matrix $(\sigma_\ell(e_j))$ is invertible: the square of its determinant
+is the discriminant $\det(\operatorname{Tr}_{E/K}(e_ie_j))$ of the basis,
+which is nonzero because $E$ is \'etale. (Source 13 argues with power bases:
+for a field the matrix is a Vandermonde matrix of distinct conjugates, for a
+product it is block diagonal, and a change of basis over $K$ preserves
+invertibility.) Coefficient extension embeds $\mathcal A_\Bbbk(\Gamma)$ in
+$\mathcal A_{\overline\Bbbk}(\Gamma)$ without changing any support. Each factor
+$\sum_j\sigma_\ell(e_j)x_j$ lies in $\mathcal A_{\overline\Bbbk}(\Gamma)$, and
+their product is the nonzero constant $a$, so every factor is constant by
+\cref{odg:def:lem:units}. Inverting the matrix shows that every $x_j$ is a
+constant; as $x_j$ has its coefficients in $\Bbbk$, it lies in $\Bbbk$, hence
+in $A\cap\Bbbk=\mathfrak o$. For (a) and (b) note that $\Oz\cap\R=\Z$ and
+$\Og\cap\C=\Z[i]$.
+\end{proof}
+
+\Cref{odg:thm:norm} is the case $K=\Q$, $E$ a number field, $A=\Oz$. Source
+07 proved the theorem for a finite separable field extension of an arbitrary
+subfield $K\subseteq\Bbbk$ and intermediate rings; source 13 for finite
+\'etale $\Q$-algebras with $\mathfrak o=\Z$ and $\mathfrak o=\Z[i]$, and noted
+that the same proof applies to \'etale $\Q(i)$-algebras with Gaussian omnific
+variables. The combined statement, with its proof above, is the merge's; each
+ingredient is in one of the two sources. Two cautions from source 07 apply.
+When some coefficients of $N$ in $K$ do not lie in $A$, the equation is read
+in the ambient series ring; to use it literally as a formula with parameters
+in $\mathfrak o$, one assumes that its coefficients and right-hand side lie in
+$\mathfrak o$. The nonzero right-hand side and separability are essential;
+this is not a theorem that every algebraic variety has only constant points.
+The norm on the left is evaluation of a finite polynomial, not a newly
+postulated norm on a class-sized algebra \src{13}. Pell rigidity in
+intermediate rings (\cref{odg:def:cor:pell}) is the case $E=\Q(\sqrt2)$.
 
 \subsection{An algebraic-geometric formulation}
 
@@ -2296,7 +2579,10 @@ homogeneous consequence of the defining ideal.
 The retraction $\ct$ detects ordinary coefficients but is not a symbol
 of the ring language. Pell rigidity shows that the embedded copy of $\Z$ is
 nevertheless detected by a single polynomial equation with existential
-auxiliary variables. Two versions were found independently.
+auxiliary variables. Two versions were found independently by sources 01 and
+05; source 07 found the second again (\cref{odg:def:rem:quarticvariant}), and
+\cref{odg:def:sec:arithmetic} gives an order-free definition that also works
+in the Gaussian ring.
 
 \subsection{Pell coordinates as finite bounds}
 
@@ -2438,6 +2724,29 @@ $\sum_{i=1}^nt_i^2$ in \eqref{odg:eq:standardsystem} defines $\Z^n$ with six
 auxiliary variables by the same proof. Here ``standard'' refers precisely to
 the embedded $\Z$; it is not an extra predicate of the language.
 
+\begin{remark}[Source 07's quartic \src{07}]\label{odg:def:rem:quarticvariant}
+Source 07 found, independently, the quartic
+\begin{equation}\label{odg:def:eq:F4}
+ F_4(x,u,v,\mathbf a)=(u^2-2v^2-1)^2+
+ \Bigl(u^2-x^2-\sum_{j=1}^{4}a_j^2\Bigr)^2
+\end{equation}
+with the six existential variables $u,v,a_1,\ldots,a_4$, and proved that it
+defines $\Z$ in every ring $A$ with $\Z\subseteq A\subseteq\mathcal
+A_\R(\Gamma)$ and $A\cap\R=\Z$ (notation of \cref{odg:def:sub:setting}), every
+zero in $A^7$ having all seven coordinates in $\Z$. It differs from
+\eqref{odg:eq:standardquartic} only in comparing $x^2$ with the square $u^2$ of
+the Pell coordinate instead of $t^2$ with the coordinate itself, and is printed
+once, here. The proof is the same; source 07 phrases the bounding step as
+follows: if a finite sum of squares of elements of $\mathcal A_\R(\Gamma)$ is a
+real constant, every summand is constant, because at twice the largest
+occurring degree the coefficient is a sum of squares of real leading
+coefficients, hence positive. Source 07 cites Lagrange's theorem through
+\cite[Section 6]{Conrad}. Over $\Og$ the formula accepts every $x$ (take
+$u=1$, $v=0$, $a_1=ix$, $a_2=1$, $a_3=a_4=0$), so it is not asserted there;
+the order-free definition of $\Z[i]$ in $\Og$ is
+\cref{odg:def:thm:constants}.
+\end{remark}
+
 \begin{remark}[Comparison of the two guards]\label{odg:rem:guards}
 Source 01's guard is uniform in $n$ with five auxiliary variables and needs
 the three-square theorem; source 05's uses one more auxiliary variable and
@@ -2451,7 +2760,10 @@ theorem is present. Only source 05's definition therefore rests on a theorem
 in Mathlib; source 01's would need the three-square theorem imported or
 proved first. The four-square theorem is used only on an ordinary
 nonnegative integer; its analogue for positive omnific integers is false
-(\cref{odg:rem:foursquares}).
+(\cref{odg:rem:foursquares}). Source 07's quartic
+(\cref{odg:def:rem:quarticvariant}) has the same counts as source 05's, and
+source 06's quintic (\cref{odg:def:rem:quintic}), with degree five and seven
+witnesses, is dominated by both guards.
 \end{remark}
 
 \subsection{Definability consequences}
@@ -2491,8 +2803,13 @@ indexed externally by the ordinary integers. The symbol $\ct$ occurs only
 on the left to identify the graph that the ring-language formula defines.
 
 These definitions use a universal quantifier and an implication. Neither
-source claims an existential (Diophantine) definition of $\Pi$ or of the
-graph of $\ct$ (\cref{odg:q:existentialPi}).
+source 01 nor source 05 claims an existential (Diophantine) definition of $\Pi$
+or of the graph of $\ct$ (\cref{odg:q:existentialPi}). Source 06 gives both:
+$\Pi=\{x:\exists y\ x^2=2y^2\}$ (\cref{odg:def:thm:ideal}), and the graph of
+$\ct$ is Diophantine (\cref{odg:def:thm:ctgraph}); source 07 adds a
+Diophantine definition of the complement $\{\ct\ne0\}$
+(\cref{odg:def:thm:detector}). The corollary above remains as the first-order
+route.
 
 \begin{remark}[An abstract principle \src{01}]\label{odg:rem:abstractguard}
 The proof of \cref{odg:thm:guard} needs less than all surreal numbers. Let
@@ -2594,6 +2911,1124 @@ Separately, over the whole ring, the formula
 $\Std(t)$ also shows that $\Oz$ is not an elementary extension of $\Z$ in the
 ring language: the sentence $\forall t\,\Std(t)$ holds in $\Z$ and fails in
 $\Oz$.
+\end{remark}
+
+\section{Diophantine arithmetic in omnific rings}\label{odg:def:sec:arithmetic}
+
+This section and the next two are built from sources 06 and 07, written
+independently on September 23, 2026 (\cref{odg:sub:provenance}). The two are
+twins: they share the order-free Gaussian system, the intersective polynomial
+and the Pell divisibility argument, and each has decisive results the other
+lacks. Source 06 is the base. It gives the Diophantine definition of $\Pi$,
+the Diophantine graph of $\ct$, the homomorphism theorem and the
+reconstruction package; source 07 gives the constant-term detector, the ideal
+test, intermediate rings and number-field coefficients. Shared results are
+printed once with both sources named. Labels of this material carry the
+sub-prefix \fn{odg:def:}.
+
+\subsection{General nonnegative-support rings}\label{odg:def:sub:setting}
+
+Let $\Bbbk$ be a field of characteristic zero and $\Gamma$ an ordered abelian
+group. Consider formal series $f=\sum_\gamma a_\gamma\omega^\gamma$ with
+$a_\gamma\in\Bbbk$ and reverse-well-ordered support in $\Gamma$, added
+coefficientwise and multiplied by convolution: the Hahn field with the
+exponent order reversed, written in the $\omega$-convention of
+\cref{odg:sub:notation} \src{06, 07}. Put
+\begin{align*}
+ \mathcal A_\Bbbk(\Gamma)&=\{f:\supp(f)\subseteq\Gamma^{\ge0}\},\qquad
+ \Pi_\Bbbk(\Gamma)=\{f:\supp(f)\subseteq\Gamma^{>0}\},\\
+ \mathcal R_{\mathfrak o}(\Bbbk,\Gamma)&=\mathfrak o+\Pi_\Bbbk(\Gamma)
+ \qquad\text{for a unital subring }\mathfrak o\subseteq\Bbbk .
+\end{align*}
+As in \cref{odg:prop:ring}, the constant coefficient $\ct$ is a ring
+retraction of $\mathcal A_\Bbbk(\Gamma)$ onto $\Bbbk$ with kernel
+$\Pi_\Bbbk(\Gamma)$, restricting to a retraction of
+$\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$ onto $\mathfrak o$. Following source
+07, an \emph{intermediate ring} for $\mathfrak o\subseteq\Bbbk$ is a ring $A$
+with
+\begin{equation}\label{odg:def:eq:intermediate}
+ \mathfrak o\subseteq A\subseteq\mathcal A_\Bbbk(\Gamma),\qquad
+ A\cap\Bbbk=\mathfrak o ;
+\end{equation}
+no inclusion $\ct(A)\subseteq\mathfrak o$ is required. The instances used in
+this report are
+\begin{gather*}
+ \BR=\mathcal A_\R(\No),\qquad \BC=\mathcal A_\C(\No),\qquad
+ \Pi=\Pi_\R(\No),\qquad \Pi_{\C}=\Pi_\C(\No),\\
+ \Oz=\mathcal R_\Z(\R,\No),\qquad \Og=\mathcal R_{\Z[i]}(\C,\No),
+\end{gather*}
+and $\Oz_\Gamma=\mathcal R_\Z(\R,\Gamma)$ of \cref{odg:sec:formal}. For
+$\Gamma=\Z$ every reverse-well-ordered subset of $\Z^{\ge0}$ is finite, so
+$\mathcal A_\Bbbk(\Z)=\Bbbk[\omega]$ and
+$\mathcal R_{\mathfrak o}(\Bbbk,\Z)=\mathfrak o+\omega\Bbbk[\omega]$ \src{06}.
+For $\Gamma=\R$ supports such as $\{1,\frac12,\frac13,\ldots\}$ occur, and no
+proof below uses a least positive exponent.
+
+\begin{lemma}[Degree, units and algebraic elements \src{06, 07}]\label{odg:def:lem:units}
+For nonzero $f,g\in\mathcal A_\Bbbk(\Gamma)$,
+$\ddeg(fg)=\ddeg f+\ddeg g$, and $\mathcal A_\Bbbk(\Gamma)^\times=\Bbbk^\times$.
+If a finite product of elements of $\mathcal A_\Bbbk(\Gamma)$ is a nonzero
+constant, every factor is a nonzero constant. If $Q\in\Bbbk[T]$ has degree
+$n\ge1$ and $f\in\mathcal A_\Bbbk(\Gamma)$ is nonconstant, then
+$\ddeg Q(f)=n\ddeg f>0$. Consequently every element of
+$\mathcal A_\Bbbk(\Gamma)$ algebraic over $\Bbbk$ lies in $\Bbbk$, and a
+polynomial over $\Bbbk$ with no root in $\mathfrak o$ has no root in any
+intermediate ring for $\mathfrak o\subseteq\Bbbk$.
+\end{lemma}
+\begin{proof}
+The degree and unit statements are proved as \cref{odg:lem:degree} and
+\cref{odg:prop:units}: the coefficient at $\ddeg f+\ddeg g$ is the product of
+the leading coefficients, and nonnegative degrees adding to zero vanish. For
+the last statement, the term of $Q(f)$ of highest degree in $f$ has degree
+$n\ddeg f$, strictly larger than that of every other term, so it cannot
+cancel. A root of a polynomial in an intermediate ring $A$ is therefore
+constant, hence lies in $A\cap\Bbbk=\mathfrak o$.
+\end{proof}
+
+In particular $\Og^\times=\{\pm1,\pm i\}$, while the units of
+$\BC=\C\oplus\Pi_{\C}$ are all of $\C^\times$; the larger ring is the one in
+which the Pell factorization below takes place \src{06}.
+
+\paragraph{Conventions.} A subset of $A^n$ is \emph{Diophantine} if it is
+defined by a formula
+$\exists\mathbf y\ \bigwedge_{j=1}^mP_j(\mathbf x,\mathbf y)=0$ with
+$P_j\in\Z[\mathbf X,\mathbf Y]$ \src{06, 07}. This is the finite-system
+convention; single-polynomial presentations are stated explicitly, and
+negative atoms such as $y\ne0$ are not allowed. The numeral $2$ is the ring
+term $1+1$. No formula below names an order, a monomial, $\sqrt2$ or a
+coefficient map. For set-sized $\Gamma$ the statements are ordinary
+first-order model theory. For $\Oz$ and $\Og$ a formula is interpreted by
+relativizing its quantifiers to the class, formula by formula; no uniform
+satisfaction predicate for the class structure, no set of all surreals and no
+class of all class automorphisms is formed, and a statement about arbitrary
+automorphisms is a statement about each map individually \src{06, 07}.
+
+\subsection{The purely infinite ideal is Diophantine}
+
+\begin{theorem}[A quadratic definition of the ideal \src{06}]\label{odg:def:thm:ideal}
+Let $\mathfrak o\subseteq\Bbbk$ be a subring such that $\sqrt2\in\Bbbk$ but
+$2$ is not a square in $\Frac(\mathfrak o)$. For
+$x\in\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$,
+\begin{equation}\label{odg:def:eq:ideal}
+ x\in\Pi_\Bbbk(\Gamma)\quad\Longleftrightarrow\quad
+ \exists y\in\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)\quad x^2=2y^2 .
+\end{equation}
+In particular the parameter-free formula
+$\mathsf{Inf}(x):\Leftrightarrow\exists y\,(x^2=2y^2)$ defines $\Pi$ in $\Oz$
+and $\Pi_{\C}$ in $\Og$, and the same formula works for every $\Gamma$.
+\end{theorem}
+\begin{proof}
+If $x\in\Pi_\Bbbk(\Gamma)$, then $y=x/\sqrt2$ has the same support, so it lies
+in $\Pi_\Bbbk(\Gamma)$ and witnesses the equation. Conversely, apply $\ct$ to
+a solution: $a=\ct(x)$ and $b=\ct(y)$ lie in $\mathfrak o$ and $a^2=2b^2$. If
+$b\ne0$, then $(a/b)^2=2$ in $\Frac(\mathfrak o)$, which is excluded; so $b=0$
+and then $a=0$, that is, $x\in\Pi_\Bbbk(\Gamma)$. For $\mathfrak o=\Z$ the
+hypothesis is the irrationality of $\sqrt2$; for $\mathfrak o=\Z[i]$, a square
+root of $2$ in $\Q(i)$ would lie in $\Q(i)\cap\R=\Q$.
+\end{proof}
+
+For example $\pi\omega^3-\sqrt3\,\omega+7$ does not satisfy $\mathsf{Inf}$,
+because its constant term is $7$, while $\pi\omega^3-\sqrt3\,\omega$ and
+$\sum_{n\ge1}\omega^{1/n}$ do; ``purely infinite'' includes $0$ and negative
+elements such as $-\omega$ \src{06}. The formula is existential, has no
+parameters and one witness, so it answers the first part of
+\cref{odg:q:existentialPi} (\cref{odg:def:sub:settled}). It is compatible with
+\cref{odg:prop:notdiophantine}: $\Pi$ is stable under $\ct$, since
+$\ct(\Pi)=\{0\}\subseteq\Pi$, whereas the nonzero locus is not.
+
+First-order definability of $\Z$ in $\Oz$ is older. In a MathOverflow comment
+of 6 July 2018 the user \emph{nombre} recognized ordinary integers by the
+absence of nonzero solutions of $x^2=2y^2$ in a bounded interval, and observed
+the resulting failure of saturation \cite{Nombre}. Source 06 states that the
+equation of \cref{odg:def:thm:ideal} belongs to the same obstruction and is
+not an unrelated discovery; the new point is its positive-existential form.
+
+\begin{corollary}[Homomorphisms preserve the ideal \src{06}]\label{odg:def:cor:idealhom}
+Let $\Bbbk,\Bbbk'$ be fields of characteristic zero containing $\sqrt2$. Every
+unital ring homomorphism
+$\mathcal R_\Z(\Bbbk,\Gamma)\to\mathcal R_\Z(\Bbbk',\Gamma')$ maps
+$\Pi_\Bbbk(\Gamma)$ into $\Pi_{\Bbbk'}(\Gamma')$, and the same holds between
+two rings $\mathcal R_{\Z[i]}(\Bbbk,\Gamma)\to\mathcal R_{\Z[i]}(\Bbbk',\Gamma')$.
+No injectivity or size condition on the target is needed.
+\end{corollary}
+\begin{proof}
+For $x$ in the source ideal, $x^2=2(x/\sqrt2)^2$ with $x/\sqrt2$ in the source
+ring. Apply the homomorphism and \cref{odg:def:thm:ideal} in the target.
+\end{proof}
+
+\begin{remark}[Other radicands \src{06}]\label{odg:def:rem:delta}
+If a nonzero $\delta\in\mathfrak o$ has a square root in $\Bbbk$ but not in
+$\Frac(\mathfrak o)$, the same proof shows that $\exists y\,(x^2=\delta y^2)$
+defines $\Pi_\Bbbk(\Gamma)$ in $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$; the
+formula is parameter-free when $\delta$ is an integer numeral. The proof uses
+no ordering of $\Bbbk$, no divisibility of $\Gamma$ and no real closedness.
+\end{remark}
+
+\subsection{Pell rigidity and divisible Pell coordinates}
+
+\begin{corollary}[Pell rigidity in intermediate rings \src{06, 07}]\label{odg:def:cor:pell}
+Let $A$ be an intermediate ring for $\mathfrak o\subseteq\Bbbk$. If $u,v\in A$
+satisfy $u^2-2v^2=1$, then $u,v\in\mathfrak o$.
+\end{corollary}
+\begin{proof}
+Extend the coefficients to $\Bbbk(\sqrt2)$; this does not change supports. There
+$(u+\sqrt2\,v)(u-\sqrt2\,v)=1$, so both factors are constants by
+\cref{odg:def:lem:units}, and adding and subtracting them shows that $u,v$
+are constants. Their coefficients lie in $\Bbbk$, so $u,v\in A\cap\Bbbk=\mathfrak o$.
+Equivalently, apply \cref{odg:dec:thm:etale} to $E=\Q(\sqrt2)$ with basis
+$1,\sqrt2$.
+\end{proof}
+
+Source 06 proves this in $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$ with
+$\sqrt2\in\Bbbk$, source 07 in intermediate rings by coefficient extension; the
+argument is that of \cref{odg:cor:pell}. It does not estimate $u^2$ and $2v^2$
+separately, so cancellation between their leading terms is harmless, and
+$\sqrt2$ occurs in the proof only, not as a parameter. For $\mathfrak o=\Z[i]$
+the conclusion is Gaussian constancy, not reality: $(u,v)=(i,i)$ solves
+$u^2-2v^2=1$, and the Gaussian construction below uses only Gaussian
+constancy \src{06}.
+
+\begin{lemma}[Divisible Pell coordinates \src{06, 07}]\label{odg:def:lem:pelldiv}
+Let $(X_k,Y_k)$ be the Pell sequence \eqref{odg:eq:pellsequence}. For every
+ordinary $m\ge1$ there is $k$ with $1\le k\le m^2$ such that
+$X_k\equiv1$ and $Y_k\equiv0\pmod m$; then $Y_k>0$.
+\end{lemma}
+\begin{proof}
+The recurrence matrix $\bigl(\begin{smallmatrix}3&4\\2&3\end{smallmatrix}\bigr)$
+has determinant one, so it permutes the finite set $(\Z/m\Z)^2$; the orbit
+of $(1,0)$ is therefore a cycle and returns to $(1,0)$ within $m^2$ steps
+\src{07}. The returning index $k$ is positive, so $Y_k>0$ by
+\cref{odg:lem:pellsequence}. Source 06 argues instead that $3+2T$ is a unit
+of the ring $(\Z/m\Z)[T]/(T^2-2)$ of $m^2$ elements, so a positive power of it
+at most $m^2$ equals $1$; comparing coordinates gives the same congruences.
+\end{proof}
+
+No classification of Pell solutions, primitive-divisor theorem or
+distribution result is used \src{06}. Pell equations have a long history in
+Diophantine definability, from Davis's explicit work \cite{Davis} and Denef's
+on polynomial rings \cite{Denef} to Miller and Shlapentokh's on rings of
+functions \cite{MillerShlapentokh}. Sources 06 and 07 use only the elementary
+fact that, after adjoining $\sqrt2$, every unit of the nonnegative-support
+ring is constant; source 07 stresses that no theorem about arbitrary Hahn
+supports is inferred from theorems about polynomial rings.
+
+\begin{lemma}[Integers in principal ideals \src{07}]\label{odg:def:lem:intmultiple}
+Let $\mathfrak o$ be a unital subring of a number field. For every nonzero
+$a\in\mathfrak o$, the ideal $a\mathfrak o$ contains a nonzero ordinary
+integer; for a Gaussian integer $a$ one may take $a\overline a$.
+\end{lemma}
+\begin{proof}
+Take a relation $A_na^n+\cdots+A_1a+A_0=0$ of least degree with $A_j\in\Z$;
+minimality gives $A_0\ne0$, and
+$A_0=-a(A_1+A_2a+\cdots+A_na^{n-1})\in a\mathfrak o$.
+\end{proof}
+
+\subsection{An intersective polynomial}
+
+A polynomial in $\Z[T]$ is \emph{intersective} if it has a root modulo every
+positive integer. We use
+\begin{equation}\label{odg:def:eq:Lambda}
+ \Lambda(T)=(T^2-13)(T^2-17)(T^2-221)=T^6-251T^4+6851T^2-48841 .
+\end{equation}
+It is a classical example: L\^e and Spencer list it in \cite[Section 2,
+Example 4]{LeSpencer} and attribute it to Borevich and Shafarevich
+\cite[p.~3]{BorevichShafarevich}; Berend and Bilu study the general phenomenon
+of polynomials with roots modulo every integer \cite{BerendBilu}. Sources 06
+and 07 both reprove the properties they need, because the definitions below
+use roots modulo \emph{all} integers; the proofs are printed once.
+
+\begin{proposition}[The polynomial $\Lambda$ \src{06, 07}]\label{odg:def:prop:intersective}
+\leavevmode
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=*]
+\item For every ordinary $N\ge1$ there is $r\in\Z$ with
+$\Lambda(r)\equiv0\pmod N$.
+\item $\Lambda$ has no root in $\Q(i)$; hence none in $\Z$ or $\Z[i]$, and by
+\cref{odg:def:lem:units} none in any intermediate ring for $\Z\subseteq\Bbbk$
+or $\Z[i]\subseteq\Bbbk$.
+\item For every nonzero $v\in\Z[i]$ there are $s\in\Z[i]$ and $t\in\Z$ with
+$vs=\Lambda(t)$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(ii) A root in a field satisfies $T^2=d$ with $d\in\{13,17,221\}$. If
+$(a+bi)^2=d$ with $a,b\in\Q$, then $2ab=0$; $a=0$ gives $d=-b^2\le0$, and
+$b=0$ would make $d$ a rational square, which none of the three is.
+
+(i) It suffices to find a root modulo each prime power $p^a$ dividing $N$
+and to combine them by the Chinese remainder theorem; the chosen factor of
+$\Lambda$ may depend on $p$. Let $p$ be odd. If $p\notin\{13,17\}$, then $13$
+and $17$ are nonzero modulo $p$; if neither is a square, their product $221$
+is, by multiplicativity of the Legendre symbol. For $p=13$ use
+$17\equiv2^2$, and for $p=17$ use $13\equiv8^2$. In each case some factor
+$T^2-d$ has a root $r\not\equiv0\pmod p$, and it lifts to every $p^a$: if
+$r^2\equiv d\pmod{p^j}$, replacing $r$ by $r+hp^j$ changes $(r^2-d)/p^j$ by
+$2rh$ modulo $p$, and $2r$ is invertible modulo $p$. For $p=2$ use $17$: the
+root $1$ works modulo $2^a$ for $a\le3$, since $17\equiv1\pmod8$; if an odd
+$r$ satisfies $r^2\equiv17\pmod{2^a}$ with $a\ge3$, then
+$(r+2^{a-1})^2-r^2=2^ar+2^{2a-2}\equiv2^a\pmod{2^{a+1}}$, so exactly one of
+$r$ and $r+2^{a-1}$ is a root modulo $2^{a+1}$.
+
+(iii) Put $N=v\overline v\in\Z_{>0}$, choose $t$ by (i) with $\Lambda(t)=Nq$,
+and take $s=q\overline v$.
+\end{proof}
+
+The equation $vs=\Lambda(t)$ is a positive-existential certificate of
+$v\ne0$ only when $v$ is already known to be a Gaussian constant. It is not a
+definition of the nonzero elements: for $v\in\Pi_{\C}$ it has no solution,
+since applying $\ct$ would give a root of $\Lambda$ in $\Z[i]$ \src{06}.
+
+\subsection{One order-free system defining \texorpdfstring{$\Z$}{Z} and \texorpdfstring{$\Z[i]$}{Z[i]}}
+
+Let $\mathcal E(x;u,v,w,s,t)$ be the system
+\begin{equation}\label{odg:def:eq:system}
+ x(u^2-2v^2-1)=0,\qquad x(v-xw)=0,\qquad x\bigl(vs-\Lambda(t)\bigr)=0,
+\end{equation}
+and put $\Xi(x):\Leftrightarrow\exists u,v,w,s,t\ \mathcal E(x;u,v,w,s,t)$.
+
+\begin{theorem}[{One system for $\Z$ and $\Z[i]$} \src{06, 07}]\label{odg:def:thm:constants}
+Let $(\mathfrak o,\Bbbk)$ be $(\Z,\R)$ or $(\Z[i],\C)$, let $\Gamma$ be any
+ordered abelian group, and let $A$ be an intermediate ring. Then $\Xi$ defines
+$\mathfrak o$ in $A$. In particular $\Xi(\Oz)=\Z$ and $\Xi(\Og)=\Z[i]$: the same
+parameter-free system of three equations, of total degrees $3$, $3$ and $7$,
+with five witnesses, defines both.
+\end{theorem}
+\begin{proof}
+Suppose $\mathcal E(x;u,v,w,s,t)$ holds with $x\ne0$. Cancelling $x$ in the
+domain $A$ gives
+\[
+ u^2-2v^2=1,\qquad v=xw,\qquad vs=\Lambda(t).
+\]
+By \cref{odg:def:cor:pell}, $u,v\in\mathfrak o$. If $v=0$, then $\Lambda(t)=0$
+with $t\in A$, which \cref{odg:def:prop:intersective}(ii) excludes. So $v$ is a
+nonzero constant, and $xw=v$ forces $x$ and $w$ to be constants
+(\cref{odg:def:lem:units}); hence $x\in A\cap\Bbbk=\mathfrak o$. If $x=0$ there
+is nothing to prove.
+
+Conversely let $x\in\mathfrak o$. For $x=0$ take all witnesses zero. For
+$x\ne0$ let $m=|x|$, or $m=x\overline x$ in the Gaussian case, so that
+$m\in x\mathfrak o$. By \cref{odg:def:lem:pelldiv} choose a Pell pair
+$(u,v)=(X_k,Y_k)$ with $v>0$ and $m\mid v$; then $w=v/x\in\mathfrak o$. By
+intersectivity choose $t\in\Z$ with $v\mid\Lambda(t)$ and put
+$s=\Lambda(t)/v\in\Z$. These ordinary witnesses satisfy the system.
+\end{proof}
+
+Source 07 states the theorem in this form, for both pairs and all
+intermediate rings. Source 06 proves the identical system (with witnesses
+$h,r$ for $s,t$) in $\mathcal R_{\Z[i]}(\C,\Gamma)$ and $\Og$, noting that the
+root exclusion takes place after applying $\ct$, so that algebraic closedness
+of the coefficient field is not needed. The factor $x$ in each equation admits
+$x=0$ without a disjunction. For $x=1+i$ a witness is $u=3$, $v=2$, $w=1-i$,
+$t=1$, $s=-21120$, because $\Lambda(1)=-42240$; for $x=\omega+i$ there is none,
+since a nonzero Gaussian constant is not divisible by $\omega+i$ in $\BC$
+\src{06, 07}. The formula contains no occurrence of $i$ and no distinguished
+choice of it.
+
+\paragraph{Why the certificate is needed.} The relation $v=xw$ alone would
+allow $v=0$ and hence every $x$. Writing $v\ne0$ would give an existential
+formula with an inequation, not a Diophantine one, and replacing it by
+$vz=1$ would force $v$ to be a unit, which most Pell coordinates are not. The
+equation $vs=\Lambda(t)$ excludes $v=0$ because $\Lambda$ has no root in $A$,
+and accepts every nonzero ordinary $v$ because $\Lambda$ is intersective
+\src{06, 07}. Over a ring containing $i$ the three equations cannot be
+combined into one sum of squares ($1^2+i^2=0$), and no single-polynomial
+Gaussian definition is claimed. In the proof one may take the Pell index at
+most $m^2$ and $0\le t<v$; these are existence bounds, not claims of optimal
+or practical complexity \src{07}. The ring restriction is essential: in a
+field containing a root $r$ of $\Lambda$, $\Xi(x)$ holds for every $x$, with
+$u=1$, $v=w=s=0$ and $t=r$; so $\Xi$ defines nothing in $\No$ or $\No[i]$
+\src{07}.
+
+\subsection{Single real polynomials and the natural numbers}
+
+In the real case a conjunction of equations becomes one equation as a sum of
+squares. The report already prints the quartic guards of sources 01 and 05
+(\cref{odg:thm:guard,odg:thm:standarddef}), and source 07's quartic, which is
+source 05's up to the substitution described in
+\cref{odg:def:rem:quarticvariant}. Source 06 proposed a quintic as its
+principal real formula; it is recorded here with the comparison.
+
+\begin{remark}[Source 06's quintic, and a comparison \src{06}]\label{odg:def:rem:quintic}
+Let $\Bbbk$ be an ordered field containing $\sqrt2$. In
+$\mathcal R_\Z(\Bbbk,\Gamma)$, and in particular in $\Oz$,
+\begin{equation}\label{odg:def:eq:quintic}
+ x\in\Z\ \Longleftrightarrow\ \exists u,v,w,s_1,\ldots,s_4\quad
+ x\Bigl[(u^2-2v^2-1)^2+(v-xw)^2+\Bigl(u-2-\sum_{j=1}^4s_j^2\Bigr)^2\Bigr]=0 .
+\end{equation}
+Indeed, for $x\ne0$ the three squares vanish; Pell rigidity makes $u,v$
+integers, $u=2+\sum s_j^2\ge2$ excludes $v=0$, and then $xw=v\ne0$ forces
+$x\in\Z$. Conversely, for $0\ne x\in\Z$ take a Pell pair with $|x|\mid Y_k$
+(\cref{odg:def:lem:pelldiv}), $w=Y_k/x$, and four squares for $X_k-2\ge1$.
+The polynomial has total degree exactly five (the monomial $xu^4$) and seven
+witnesses. Source 06 tabulates complete ordinary witnesses for
+$x\in\{1,2,\pm3,5,7\}$, for instance $u=17$, $v=12$, $w=4$,
+$(s_1,\ldots,s_4)=(3,2,1,1)$ for $x=3$; for $x=\omega$ or $\omega+1$ there
+are none in $\Oz$. It is dominated by \cref{odg:thm:guard} (degree four, five
+witnesses, uniform in $n$) and by \cref{odg:thm:standarddef} and source 07's
+\eqref{odg:def:eq:F4} (degree four, six witnesses); source 06's question on
+the least degree is thereby partly answered (\cref{odg:def:sub:settled}). Its
+mechanism, divisibility $v=xw$ of a nonzero Pell coordinate, is the one that
+survives in the Gaussian system \cref{odg:def:thm:constants}. Source 06
+restricts the quintic to the real case, correctly: over $\Og$ it accepts
+$x=\omega$ \mergetag, with $u=1$, $v=0$, $w=1$, $s_1=i$,
+$s_2=e^{-i\pi/4}\omega^{1/2}$, $s_3=s_4=0$. Then $u^2-2v^2-1=0$,
+$v-xw=-\omega$ and $u-2-s_1^2-s_2^2=-1+1+i\omega=i\omega$, and
+$(-\omega)^2+(i\omega)^2=0$. Source 07 records the analogous collapse of its
+quartic (\cref{odg:def:rem:quarticvariant}).
+\end{remark}
+
+\begin{corollary}[The natural numbers \src{06, 07}]\label{odg:def:cor:naturals}
+Let $\Std$ be any of the Diophantine definitions of $\Z$ in $\Oz$
+(\cref{odg:thm:standarddef}, \cref{odg:def:thm:constants},
+\eqref{odg:def:eq:quintic}). Then
+$x\in\N\Leftrightarrow\Std(x)\wedge\exists r_1,\ldots,r_4\
+x=r_1^2+r_2^2+r_3^2+r_4^2$, where $0\in\N$.
+\end{corollary}
+\begin{proof}
+The forward implication is Lagrange's theorem. Conversely $\Std(x)$ makes $x$
+an ordinary integer, and a sum of squares in the ordered ring $\Oz$ is
+nonnegative (alternatively, apply $\ct$).
+\end{proof}
+
+Source 07 restricts the $r_j$ by its constant-definition formula as well; in
+$\Oz$ this is harmless and unnecessary. \Cref{odg:rem:ringinduction} gives a
+variant in the language $\{0,1,+,\cdot\}$ of the nonnegative semiring, with
+every witness in $\Oz_{\ge0}$, that defines $\N$ inside $\Oz_{\ge0}$.
+
+\section{The constant term: detector, ideal test and graph}\label{odg:def:sec:ct}
+
+\subsection{A root detector for augmentations}
+
+The following algebraic statement, due to source 07, isolates why a single
+polynomial can detect a nonzero constant term.
+
+\begin{theorem}[Augmentation root detector \src{07}]\label{odg:def:thm:augdetector}
+Let $\mathcal H$ be a commutative unital $\Bbbk$-algebra with a
+$\Bbbk$-algebra homomorphism $\varepsilon:\mathcal H\to\Bbbk$ that is the
+identity on $\Bbbk$. Let $\mathfrak o\subseteq\Bbbk$ be a unital subring and
+$A=\mathfrak o+\ker\varepsilon$. Let $f\in\mathfrak o[T]$ satisfy:
+\begin{enumerate}[label=\textup{(\alph*)},leftmargin=*]
+\item $f$ has no root in $\mathfrak o$;
+\item $f$ has a root $r\in\Bbbk$;
+\item for every nonzero $c\in\mathfrak o$ there is $b\in\mathfrak o$ with
+$f(b)\in c\mathfrak o$.
+\end{enumerate}
+Then for every $a\in A$,
+\begin{equation}\label{odg:def:eq:augdetector}
+ \varepsilon(a)\ne0\quad\Longleftrightarrow\quad\exists s,t\in A\quad as=f(t).
+\end{equation}
+No hypothesis that $\mathcal H$ is a domain, reduced, complete or Henselian is
+needed.
+\end{theorem}
+\begin{proof}
+If $as=f(t)$ and $\varepsilon(a)=0$, applying $\varepsilon$ gives
+$f(\varepsilon(t))=0$ with $\varepsilon(t)\in\mathfrak o$, contrary to (a).
+Conversely let $c=\varepsilon(a)\ne0$, choose $b$ by (c), and factor
+$f(T)=(T-r)Q(T)$ in $\Bbbk[T]$. Put
+\begin{equation}\label{odg:def:eq:witness}
+ \alpha=\frac{b-r}{c},\qquad t=r+\alpha a,\qquad s=\alpha Q(t).
+\end{equation}
+Since $t-r=\alpha a$, we get $as=(t-r)Q(t)=f(t)$. Moreover
+$\varepsilon(t)=r+\alpha c=b\in\mathfrak o$ and
+$c\,\varepsilon(s)=\varepsilon(as)=f(b)\in c\mathfrak o$, so
+$\varepsilon(s)\in\mathfrak o$; thus $s,t\in\mathfrak o+\ker\varepsilon=A$. Only
+the nonzero scalar $c$ is inverted, in the field $\Bbbk$.
+\end{proof}
+
+The augmentation need not be part of the ring language: the conclusion is a
+ring-language formula that detects its kernel \src{07}.
+
+\begin{theorem}[Detecting a nonzero constant term \src{07}]\label{odg:def:thm:detector}
+Let $(\mathfrak o,\Bbbk)$ be $(\Z,\R)$ or $(\Z[i],\C)$ and
+$A=\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$. For every $a\in A$,
+\begin{equation}\label{odg:def:eq:detector}
+ \Theta(a):\Longleftrightarrow\exists s,t\ \bigl(as=\Lambda(t)\bigr)
+ \quad\Longleftrightarrow\quad\ct(a)\ne0 .
+\end{equation}
+In particular this holds in $\Oz$ and $\Og$.
+\end{theorem}
+\begin{proof}
+Apply \cref{odg:def:thm:augdetector} with $\mathcal H=\mathcal A_\Bbbk(\Gamma)$,
+$\varepsilon=\ct$ and $f=\Lambda$. Hypothesis (a) is
+\cref{odg:def:prop:intersective}(ii); (b) holds with $r=\sqrt{13}$. For (c),
+given $c\ne0$ in $\mathfrak o$ choose a positive integer $m\in c\mathfrak o$
+($|c|$ or $c\overline c$) and $b\in\Z$ with $\Lambda(b)\in m\Z\subseteq
+c\mathfrak o$.
+\end{proof}
+
+With $r=\sqrt{13}$ the witnesses \eqref{odg:def:eq:witness} are explicit:
+$t=r+\alpha a$ and $s=\alpha(2r+\alpha a)(t^2-17)(t^2-221)$, with
+$\ct(t)=b$ and $\ct(s)=\Lambda(b)/c$. Neither $r$ nor $\alpha$ need lie in $A$;
+the witnesses do, because their constant coefficients are right \src{07}.
+
+\begin{proposition}[Support control of the witnesses \src{07}]\label{odg:def:prop:support}
+Let $S=\supp(a)$ and $S^\ast=S\cup\{0\}$. The witnesses above satisfy
+$\supp(t)\subseteq S^\ast$ and $\supp(s)\subseteq\bigcup_{j=0}^5jS^\ast$,
+where $jS^\ast$ is the $j$-fold sumset and $0S^\ast=\{0\}$. If $a$ is
+nonconstant, $\ddeg t=\ddeg a$ and $\ddeg s=5\ddeg a$.
+\end{proposition}
+\begin{proof}
+The witness $t$ is affine in $a$ and $s$ is a polynomial of degree five in
+$a$ with constant coefficients, so the support inclusions follow from finite
+convolution. Since $b\in\mathfrak o$ and $r\notin\mathfrak o$, $\alpha\ne0$; the
+leading coefficients of the two polynomials in $a$ are $\alpha$ and
+$\alpha^6$, and \cref{odg:def:lem:units} gives the degrees.
+\end{proof}
+
+The construction divides no series by $a$, expands no $(1+h)^{-1}$ and takes
+no limit; it applies unchanged to supports accumulating towards zero and to
+exponent groups of any rank \src{07}.
+
+\begin{example}[Certificates \src{07}]\label{odg:def:ex:certificates}
+For $a=\omega$ (or $a=\sum_{n\ge1}\omega^{1/n}$) there is no certificate: a
+solution of $as=\Lambda(t)$ would give $\Lambda(\ct(t))=0$ in $\Z$. For
+$a=1+\omega$ take $c=1$, $b=0$, so $\alpha=-\sqrt{13}$ and
+\[
+ t=-\sqrt{13}\,\omega,\qquad s=13(\omega-1)(13\omega^2-17)(13\omega^2-221),
+ \qquad (1+\omega)s=\Lambda(t);
+\]
+the constant coefficients are $\ct(t)=0$ and $\ct(s)=-48841=\Lambda(0)$, and
+the irrational coefficient $-\sqrt{13}$ of $t$ is allowed. For $a=2+\omega$ one
+may take $b=1$, since $\Lambda(1)=-42240$ is even: then
+$\alpha=(1-\sqrt{13})/2$, $t=1+\alpha\omega$, and $\ct(s)=-21120$.
+\end{example}
+
+\begin{remark}[A root in the coefficient field is needed \src{07}]\label{odg:def:rem:rootneeded}
+Let $A=\Z+\omega\Q[\omega]$, an intermediate ring for $\Z\subseteq\Q$ with
+$\Gamma=\Z$. The proof of \cref{odg:def:thm:constants} still shows that $\Xi$
+defines $\Z$ in $A$ (it needs only Pell rigidity and the absence of integer
+roots of $\Lambda$). The detector fails: evaluation at $\omega=-1$ is a
+surjective homomorphism $A\to\Q$ (the element $-q\omega$ maps to $q$) whose
+kernel is $(1+\omega)A$, because division by $1+\omega$ in $\Q[\omega]$ leaves
+a quotient with the same constant coefficient. So $A/(1+\omega)A\cong\Q$ has no
+root of $\Lambda$, and $(1+\omega)s=\Lambda(t)$ has no solution although
+$\ct(1+\omega)=1$. Here $\Q$ contains no root of $\Lambda$, so hypothesis (b)
+of \cref{odg:def:thm:augdetector} fails. The detector is not asserted for
+arbitrary intermediate rings, whose elements may not contain the polynomial
+witnesses.
+\end{remark}
+
+\subsection{The largest ideal without a root}
+
+\begin{theorem}[One polynomial tests every ideal \src{07}]\label{odg:def:thm:idealtest}
+Let $(\mathfrak o,\Bbbk)$ be $(\Z,\R)$ or $(\Z[i],\C)$,
+$A=\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$ and $I=\Pi_\Bbbk(\Gamma)$. For every
+ideal $J$ of $A$,
+\begin{equation}\label{odg:def:eq:idealtest}
+ \bigl(\exists t\in A\quad\Lambda(t)\in J\bigr)\quad\Longleftrightarrow\quad
+ J\not\subseteq I .
+\end{equation}
+Thus $\Lambda$ has no root in $A/J$ exactly when $J\subseteq I$, and $I$ is the
+unique largest ideal of $A$ whose quotient has no root of $\Lambda$.
+\end{theorem}
+\begin{proof}
+If $J\subseteq I$ and $\Lambda(t)\in J$, applying $\ct$ gives
+$\Lambda(\ct(t))=0$ in $\mathfrak o$, which is impossible. If $J\not\subseteq I$,
+choose $a\in J$ with $\ct(a)\ne0$; \cref{odg:def:thm:detector} gives
+$as=\Lambda(t)$, which lies in $J$. Since $A/I\cong\mathfrak o$ has no root,
+$I$ has the property and contains every ideal that has it.
+\end{proof}
+
+For a class ideal of a proper-class ring the displayed equivalence is the
+primary formulation; no set of quotient classes is formed. The case $J=A$ is
+allowed: the zero ring has roots of every polynomial \src{07}.
+
+\begin{corollary}[A universal definition of the ideal \src{07}]\label{odg:def:cor:universal}
+In the rings of \cref{odg:def:thm:idealtest},
+$I=\{a:\forall s,t\ (as\ne\Lambda(t))\}$, and $\ct(a)=\ct(b)$ if and only if
+$\forall s,t\ ((a-b)s\ne\Lambda(t))$.
+\end{corollary}
+\begin{proof}
+Negate \cref{odg:def:thm:detector}, and use additivity of $\ct$.
+\end{proof}
+
+As a definition of $I$ this universal formula is superseded by the
+existential one of \cref{odg:def:thm:ideal}; it is kept as the negation of the
+detector. Together, \cref{odg:def:thm:ideal,odg:def:thm:detector} make both $I$
+and its complement Diophantine. Source 07 also notes the external description
+$I=\bigcap_{n\ge1}nA$ for $\mathfrak o=\Z,\Z[i]$, of which
+\eqref{odg:eq:divkernel} is the case of $\Oz$; it must not be transferred to
+coefficient rings containing $\Q$, where division by ordinary integers
+detects nothing.
+
+\subsection{The graph of the constant term}
+
+\begin{theorem}[The graph of $\ct$ is Diophantine \src{06}]\label{odg:def:thm:ctgraph}
+Let $(\mathfrak o,\Bbbk)$ be $(\Z,\R)$ or $(\Z[i],\C)$ and
+$A=\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$. The formula
+\begin{equation}\label{odg:def:eq:ctgraph}
+ \mathsf{CT}(x,n):\Longleftrightarrow\Xi(n)\ \wedge\ \exists y\
+ \bigl((x-n)^2=2y^2\bigr)
+\end{equation}
+defines the graph of $\ct:A\to\mathfrak o$; for each $x$ there is exactly one
+such $n$. It is Diophantine, with six witnesses. In $\Oz$, $\Xi$ may be
+replaced by any Diophantine definition of $\Z$.
+\end{theorem}
+\begin{proof}
+The first clause says $n\in\mathfrak o$ (\cref{odg:def:thm:constants}); by
+\cref{odg:def:thm:ideal} the second says $x-n\in I$. In the decomposition
+$A=\mathfrak o\oplus I$ the two conditions together say exactly $n=\ct(x)$.
+\end{proof}
+
+Source 06 proves the theorem with its own predicates, the quintic in the real
+case and the Gaussian system in the Gaussian case; its single real polynomial
+$P(n,\ldots)^2+((x-n)^2-2y^2)^2$, with $P$ the quintic of
+\eqref{odg:def:eq:quintic}, has total degree ten and eight witnesses. Using the
+guard of \cref{odg:thm:guard} instead gives degree four:
+
+\begin{corollary}[A quartic for the graph of $\ct$ \mergetag]\label{odg:def:cor:ctquartic}
+Let $\Psi_1(X,U,V,W_1,W_2,W_3)$ be the guard polynomial
+\eqref{odg:eq:guardpoly} with $n=1$. For $x,m\in\Oz$,
+\[
+ m=\ct(x)\quad\Longleftrightarrow\quad
+ \exists u,v,w_1,w_2,w_3,y\in\Oz\quad
+ \Psi_1(m,u,v,w_1,w_2,w_3)+\bigl((x-m)^2-2y^2\bigr)^2=0 .
+\]
+The polynomial has integer coefficients, total degree four and six
+witnesses. With the six-witness quartics \eqref{odg:eq:standardquartic} or
+\eqref{odg:def:eq:F4} in place of $\Psi_1$ the same holds with seven
+witnesses.
+\end{corollary}
+\begin{proof}
+The polynomial is a sum of three squares of integer polynomials, since
+$\Psi_1$ is itself a sum of two. In the ordered ring $\Oz$ it vanishes exactly
+when the three squared polynomials vanish, that is, when
+$\Psi_1(m,u,v,w_1,w_2,w_3)=0$ and $(x-m)^2=2y^2$. By \cref{odg:thm:guard},
+witnesses for the first equation exist exactly when $m\in\Z$, and by
+\cref{odg:def:thm:ideal}, a witness $y$ for the second exists exactly when
+$x-m\in\Pi$. Both together say $m=\ct(x)$. Each of the three squared
+polynomials has degree two, and the degree-four part of the sum is a sum of
+squares of three nonzero real quadratic forms, which is nonzero; so the total
+degree is four. The witnesses are $u,v,w_1,w_2,w_3,y$. The variant follows in
+the same way from \cref{odg:thm:standarddef} or
+\cref{odg:def:rem:quarticvariant}.
+\end{proof}
+
+By \cref{odg:rem:abstractguard} and \cref{odg:def:cor:pell} the corollary
+holds verbatim in $\mathcal R_\Z(\R,\Gamma)$ for every $\Gamma$. No single
+polynomial is claimed in the Gaussian case.
+
+\begin{corollary}[The canonical splitting is definable \src{06}]\label{odg:def:cor:splitting}
+For the rings of \cref{odg:def:thm:ctgraph}, the exact sequence
+$0\to I\to A\xrightarrow{\ct}\mathfrak o\to0$ has a parameter-free definable
+retraction and a parameter-free definable section; its kernel and the graph of
+the retraction are Diophantine.
+\end{corollary}
+
+The existence of the sequence is elementary normal-form algebra; the content
+is the definability of the actual splitting, not merely an interpretation of
+$A/I$ \src{06}.
+
+\begin{remark}[Source 07's prenex definitions; a second route \src{07}]\label{odg:def:rem:sigma2}
+Source 07 defines the graph by $\mathsf{CT}^{\forall}(a,c):\Leftrightarrow
+\Xi(c)\wedge\forall s,t\,((a-c)s\ne\Lambda(t))$, with the two prenex forms
+\[
+ \exists\mathbf u\ \forall s,t\ \bigl[\mathcal E(c;\mathbf u)\wedge
+ (a-c)s\ne\Lambda(t)\bigr],\qquad
+ \forall s,t\ \exists\mathbf u\ \bigl[\mathcal E(c;\mathbf u)\wedge
+ (a-c)s\ne\Lambda(t)\bigr],
+\]
+where $\mathbf u$ is a quintuple of witnesses. In the first form the witnesses
+for $\Xi(c)$ do not occur in the universal inequality; in the second, a
+single pair $(s,t)$ already produces witnesses for $\Xi(c)$, and conversely a
+fixed witness works for all $(s,t)$. Both are correct by
+\cref{odg:def:thm:constants,odg:def:cor:universal}. Source 07 claimed neither
+minimality nor the impossibility of an existential definition; source 06's
+\cref{odg:def:thm:ctgraph} supplies one.
+\end{remark}
+
+\subsection{Homomorphisms preserve the constant term}
+
+\begin{theorem}[All homomorphisms respect the constant term \src{06}]\label{odg:def:thm:homct}
+Let $\Bbbk,\Bbbk'$ be fields of characteristic zero containing $\sqrt2$, and
+$\Gamma,\Gamma'$ ordered abelian groups. Every unital ring homomorphism
+$f:\mathcal R_\Z(\Bbbk,\Gamma)\to\mathcal R_\Z(\Bbbk',\Gamma')$ satisfies
+$\ct(f(x))=\ct(x)$. If $i\in\Bbbk\cap\Bbbk'$ and
+$f:\mathcal R_{\Z[i]}(\Bbbk,\Gamma)\to\mathcal R_{\Z[i]}(\Bbbk',\Gamma')$ is a
+unital ring homomorphism, then $\ct(f(x))=\sigma(\ct(x))$, where $\sigma$ is
+the identity or complex conjugation on $\Z[i]$, according as $f(i)=i$ or
+$f(i)=-i$. No size restriction on the target is imposed.
+\end{theorem}
+\begin{proof}
+Write $x=n+a$ with $n\in\mathfrak o$ and $a$ in the ideal. By
+\cref{odg:def:cor:idealhom}, $f(a)$ lies in the target ideal. A unital
+homomorphism fixes ordinary integers. In the Gaussian case $f(i)^2=-1$, and by
+\cref{odg:def:lem:units} a root of $T^2+1$ in the target ring is a constant,
+hence $\pm i$. Taking constant terms of $f(x)=f(n)+f(a)$ gives the claim.
+\end{proof}
+
+Source 06 states the theorem for the rings of its arithmetic sections; the
+proof uses only that both coefficient fields contain $\sqrt2$. It generalizes
+\cref{odg:prop:canonicalct} (endomorphisms of $\Oz$) and source 07's statement
+that ring automorphisms of $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$ preserve
+$\mathfrak o$, $I$ and $\ct$ up to $\sigma$, which source 07 derives from the
+parameter-free definitions. It does not say that homomorphisms kill the ideal:
+the identity does not. Preservation of the ideal, annihilation of the ideal and
+pointwise fixation of the real coefficients are three different assertions
+\src{06}. For set-sized $\Gamma'$ it is consistent with
+\cref{odg:fact:settarget}: every unital homomorphism
+$\Oz\to\mathcal R_\Z(\R,\Gamma')$ is then $x\mapsto\ct(x)1$. Source 07's
+version concerns ring automorphisms of the coefficient-restricted ring; it
+does not classify field automorphisms of $\No$ or $\No[i]$, nor claim that an
+arbitrary field automorphism preserves $\Oz$ or $\Og$.
+
+\subsection{Number-field coefficient rings}
+
+The polynomial $\Lambda$ cannot serve every number field, since a field
+containing $\sqrt{13}$ has a root of it. A tailored polynomial of the same
+shape exists for each fixed number field \src{07}.
+
+\begin{lemma}[A tailored intersective polynomial \src{07}]\label{odg:def:lem:tailored}
+For every number field $K$ there are distinct primes $p,q$ such that
+$\Lambda_K(T)=(T^2-p)(T^2-q)(T^2-pq)$ has no root in $K$ and has a root modulo
+every positive integer.
+\end{lemma}
+\begin{proof}
+A number field has only finitely many quadratic subfields: it lies in a finite
+Galois extension of $\Q$, whose Galois group has finitely many subgroups. By
+Dirichlet's theorem choose a prime $p\equiv1\pmod8$ with
+$\Q(\sqrt p)\not\subseteq K$, and then a prime $q\equiv1\pmod{8p}$ with
+$\Q(\sqrt q),\Q(\sqrt{pq})\not\subseteq K$; only finitely many $q$ are
+excluded, since distinct values give distinct squarefree radicands $q$ and
+$pq$. Then none of $p,q,pq$ is a square in $K$. For an odd prime
+$\ell\notin\{p,q\}$, one of $p,q,pq$ is a nonzero square modulo $\ell$, as in
+\cref{odg:def:prop:intersective}. At $\ell=p$ use $q\equiv1\pmod p$. At
+$\ell=q$, quadratic reciprocity and $p\equiv1\pmod4$ give
+$(p/q)=(q/p)=(1/p)=1$. The nonzero roots lift to all odd prime powers, and at
+$2$ the number $p\equiv1\pmod8$ has a root modulo every $2^a$ by the lifting
+step of \cref{odg:def:prop:intersective}. The Chinese remainder theorem
+finishes the proof. Dirichlet's theorem and reciprocity are classical inputs
+\cite{Apostol}.
+\end{proof}
+
+\begin{theorem}[Coefficient rings in number fields \src{07}]\label{odg:def:thm:numberfield}
+Let $\mathfrak o$ be a unital subring of a number field $K$, let $\Bbbk\supseteq
+K$ be a field of characteristic zero, and let $A$ be an intermediate ring for
+$\mathfrak o\subseteq\Bbbk$. Let $\Xi_K$ be $\Xi$ with $\Lambda$ replaced by
+$\Lambda_K$. Then $\Xi_K$ defines $\mathfrak o$ in $A$. If moreover
+$A=\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$ and $\Bbbk$ contains a root of
+$\Lambda_K$, then $\ct(a)\ne0\Leftrightarrow\exists s,t\ (as=\Lambda_K(t))$,
+and the ideal test, the universal definition of the ideal and both prenex
+definitions of the graph of $\ct$ hold with $\Lambda_K$.
+\end{theorem}
+\begin{proof}
+The proof of \cref{odg:def:thm:constants} used Pell rigidity
+(\cref{odg:def:cor:pell}), the absence of roots of the polynomial in
+$\mathfrak o$ (\cref{odg:def:lem:tailored,odg:def:lem:units}), a nonzero integer
+in every $x\mathfrak o$ (\cref{odg:def:lem:intmultiple}) and roots modulo all
+integers; it applies verbatim. For the detector, given $c\ne0$ in
+$\mathfrak o$ choose a positive integer $m\in c\mathfrak o$ and $b\in\Z$ with
+$\Lambda_K(b)\in m\Z$, and apply \cref{odg:def:thm:augdetector} with any root of
+$\Lambda_K$ in $\Bbbk$. The ideal test and the graph use only the detector and
+the constant definition.
+\end{proof}
+
+The theorem covers subrings of a number field that are not finitely
+generated. It does not give one polynomial uniform in all number fields, and
+does not apply as stated to algebraic extensions of $\Q$ of infinite degree:
+no polynomial of this kind is root-free in a field containing all algebraic
+numbers \src{07}.
+
+\begin{remark}[Existential definitions over number-field coefficients \mergetag]\label{odg:def:rem:numberfieldideal}
+The formula $\exists y\,(x^2=2y^2)$ of \cref{odg:def:thm:ideal} fails when
+$\sqrt2\in\Frac(\mathfrak o)$, for instance for $\mathfrak o=\Z[\sqrt2]$.
+In the setting of \cref{odg:def:thm:numberfield} choose a prime $\delta$ with
+$\Q(\sqrt\delta)\not\subseteq K$; it exists because $K$ has finitely many
+quadratic subfields and distinct primes give distinct fields
+$\Q(\sqrt\delta)$. Then $\delta$ is not a square in $K\supseteq\Frac(\mathfrak o)$,
+since $z^2=\delta$ with $z\in K$ would give $\Q(\sqrt\delta)=\Q(z)\subseteq K$.
+If $\sqrt\delta\in\Bbbk$, \cref{odg:def:rem:delta} shows that
+$\exists y\,(x^2=\delta y^2)$ defines $\Pi_\Bbbk(\Gamma)$ in
+$\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$, and
+$\Xi_K(n)\wedge\exists y\,((x-n)^2=\delta y^2)$ defines the graph of $\ct$:
+the first clause says $n\in\mathfrak o$, by \cref{odg:def:thm:numberfield}
+applied to the intermediate ring $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$, and
+the second says $x-n\in\Pi_\Bbbk(\Gamma)$. Both definitions are Diophantine;
+they improve source 07's universal and prenex formulas whenever
+$\sqrt\delta\in\Bbbk$, and need no root of $\Lambda_K$ in $\Bbbk$.
+\end{remark}
+
+\section{Coefficient reconstruction and logical consequences}\label{odg:def:sec:reconstruction}
+
+\subsection{The multiplier ring of the ideal}
+
+Throughout this subsection $\Gamma\ne0$, $\mathfrak o\subseteq\Bbbk$ is a
+unital subring, $\mathcal R=\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$,
+$I=\Pi_\Bbbk(\Gamma)$, $\mathcal A=\mathcal A_\Bbbk(\Gamma)$, and
+$\mathcal F=\Frac(\mathcal R)$, viewed inside the Hahn field of all series with
+reverse-well-ordered support in $\Gamma$ \src{06}. Put
+$(I:I)_{\mathcal F}=\{r\in\mathcal F:rI\subseteq I\}$.
+
+\begin{lemma}[\src{06}]\label{odg:def:lem:ainfrac}
+$\mathcal A\subseteq\mathcal F$.
+\end{lemma}
+\begin{proof}
+Choose $g\in\Gamma^{>0}$. For $a\in\mathcal A$ both $\omega^g$ and $a\omega^g$
+lie in $I\subseteq\mathcal R$, so $a=(a\omega^g)/\omega^g\in\mathcal F$.
+\end{proof}
+
+\begin{theorem}[The multiplier identity \src{06}]\label{odg:def:thm:multiplier}
+Inside $\mathcal F$,
+\begin{equation}\label{odg:def:eq:multiplier}
+ (I:I)_{\mathcal F}=\mathcal A,\qquad
+ \Bbbk=\{0\}\cup\bigl((I:I)_{\mathcal F}\bigr)^\times .
+\end{equation}
+\end{theorem}
+\begin{proof}
+A nonnegative and a strictly positive exponent add to a strictly positive
+exponent, so $\mathcal AI\subseteq I$. Conversely let
+$r\in\mathcal F\setminus\mathcal A$ and choose a negative exponent $h$ in
+$\supp(r)$; it need not be the least, and there need not be a least. Then
+$\omega^{-h}\in I$, and the coefficient of $r\omega^{-h}$ at exponent zero is
+the nonzero coefficient of $\omega^h$ in $r$, so $r\omega^{-h}\notin I$. The
+second identity follows from $\mathcal A^\times=\Bbbk^\times$
+(\cref{odg:def:lem:units}).
+\end{proof}
+
+An integral domain interprets its fraction field by pairs $(a,b)$ with
+$b\ne0$, modulo $ad=bc$, with the usual operations; for the proper classes
+``quotient'' means this definable presentation, with set-valued
+representatives supplied by the surreal quotient, and no proper class is used
+as an element of another \src{06}. With $\mathsf{Inf}$ from
+\cref{odg:def:thm:ideal}, put
+\begin{align*}
+ \mathsf{Mult}(a,b)&:\Longleftrightarrow b\ne0\wedge\forall x\bigl(\mathsf{Inf}(x)
+ \Rightarrow\exists y\,(\mathsf{Inf}(y)\wedge ax=by)\bigr),\\
+ \mathsf{Coeff}(a,b)&:\Longleftrightarrow b\ne0\wedge\bigl(a=0\vee(a\ne0\wedge
+ \mathsf{Mult}(a,b)\wedge\mathsf{Mult}(b,a))\bigr).
+\end{align*}
+The first says that the fraction $a/b$ multiplies $I$ into $I$, and is
+invariant under change of representative; the second, by
+\cref{odg:def:thm:multiplier}, says that $a/b\in\Bbbk$.
+
+\begin{corollary}[Internal reconstruction \src{06}]\label{odg:def:cor:internal}
+Under the hypotheses of \cref{odg:def:thm:ideal} (for instance in the real and
+Gaussian rings), $\mathcal A$ and the actual embedded coefficient field
+$\Bbbk$ are parameter-free first-order definable in the interpreted fraction
+field, and the coefficient map $\mathcal A\to\Bbbk$ has the definable graph
+$\{(a,c):a\in\mathcal A,\ c\in\Bbbk,\ a-c\in I\}$.
+\end{corollary}
+
+The formulas do not mention monomials; monomials are used only to prove that
+they define the right sets, and $\sqrt2$ is not a hidden parameter. The
+multiplier formula contains a universal quantifier, so the reconstruction is
+first order and is not claimed positive existential \src{06}. Two boundaries
+are necessary. If $\Gamma=0$, then $I=0$ and every fraction multiplies it, so
+the formula recovers $\Frac(\mathfrak o)$ rather than $\Bbbk$. And $\mathcal F$
+need not be the whole Hahn field: for $\Gamma=\Z$ it is the rational function
+field $\Bbbk(\omega)$; the multiplier identity holds in $\mathcal F$ without any
+such equality \src{06}. For example, in $\Z+\omega\R[\omega]$ the ideal
+$\omega\R[\omega]$ is defined by $\mathsf{Inf}$, the fraction field is
+$\R(\omega)$, the multiplier ring is $\R[\omega]$ and its units are $\R^\times$;
+the reconstruction phenomenon is not an artifact of proper-class size. With
+$\Gamma=\R$ and $f=\sum_{n\ge1}\omega^{1/n}$, the ideal formula is witnessed by
+$f/\sqrt2$, and the multiplier proof uses one negative exponent, not a least
+one \src{06}.
+
+\subsection{Reconstructing the surreal field}
+
+\Cref{odg:thm:fractions} gives $\Frac(\Oz)=\No$, with a common monomial
+denominator for every set of surreals; applied to the set of real and
+imaginary parts it gives $\Frac(\Og)=\No[i]$. Source 06 proves the same
+statement (its common-denominator lemma), printed once as
+\cref{odg:thm:fractions}; it uses bounds for sets of exponents only, and asserts
+no common denominator for a proper class of inputs.
+
+\begin{theorem}[Reconstruction of the real structure \src{06}]\label{odg:def:thm:realrecovery}
+From the pure ring $\Oz$ one can parameter-free interpret the field $\No$ and
+define in it the canonical subfield $\R$, the order, the ring
+$\Ofin$ of finite elements, the ideal $\mathfrak m$ of infinitesimals and the
+graph of the standard part $\st:\Ofin\to\R$.
+\end{theorem}
+\begin{proof}
+Interpret the fraction field, which is $\No$. By \cref{odg:def:cor:internal}
+the predicate $\mathsf{Coeff}$ defines its subfield $\R$. Since $\No$ is real
+closed \cite{Conway,Gonshor}, $x>0\Leftrightarrow x\ne0\wedge\exists z\,(z^2=x)$
+defines the order. Put
+$\Ofin(x):\Leftrightarrow\exists r\in\R\,(r>0\wedge-r\le x\le r)$ and
+$\mathfrak m(x):\Leftrightarrow\forall r\in\R\,(r>0\Rightarrow-r<x<r)$. A
+finite surreal has no positive exponents, and its coefficient at exponent zero
+is a real number differing from it by an infinitesimal, unique since a nonzero
+real is not infinitesimal. So
+$\mathsf{ST}(x,r):\Leftrightarrow\Ofin(x)\wedge r\in\R\wedge\mathfrak m(x-r)$
+defines the standard part.
+\end{proof}
+
+The two constant-term operations must not be confused
+(\cref{odg:rem:notvaluation}): $\ct$ reads the constant term of a number with
+nonnegative exponents, $\st$ that of a finite number, with nonpositive
+exponents. For example $\ct(\omega+7)=7$ and $\st(7+\omega^{-1})=7$, but
+$\omega+7$ is not finite \src{06}.
+
+\begin{corollary}[The value group \src{06}]\label{odg:def:cor:valuegroup}
+The natural ordered value group of $\No$ is interpretable from $\Oz$ as
+$\No^\times/\Ofin^\times$, ordered by $v(x)\ge v(y)\Leftrightarrow x/y\in\Ofin$.
+\end{corollary}
+
+This recovers the value group as an interpreted quotient, not a canonical
+cross-section of monomials, and does not show that the $\omega$-map, the
+simplicity order, birthdays or the surreal exponential are definable
+\src{06}. The fraction-field construction can be phrased as a canonical
+bi-interpretation between the pure ring $\Oz$ and the field $\No$ with a
+predicate for $\Oz$; the essential content is the reconstruction of the
+\emph{canonical} coefficient field.
+
+\subsection{Automorphisms of \texorpdfstring{$\Oz$}{Oz}}
+
+\begin{theorem}[Automorphisms fix the real coefficients \src{06}]\label{odg:def:thm:autreal}
+Every unital ring automorphism $f$ of $\Oz$ extends uniquely to a field
+automorphism $\tilde f(a/b)=f(a)/f(b)$ of $\No$. It preserves the order, $\R$,
+$\Ofin$ and $\mathfrak m$, fixes every real number, and commutes with $\st$.
+\end{theorem}
+\begin{proof}
+The extension is well defined by cross multiplication and unique because
+every element of $\No$ is a fraction. It preserves the parameter-free
+definable sets of \cref{odg:def:thm:realrecovery}, so it restricts to an
+order-preserving automorphism of $\R$ fixing $\Q$. If $\tilde f(r)\ne r$, a
+rational strictly between $r$ and $\tilde f(r)$ contradicts order
+preservation. The definable graph of $\st$, with its real coordinate fixed,
+gives $\st\circ\tilde f=\st$ on $\Ofin$.
+\end{proof}
+
+The statement concerns automorphisms. A universal multiplier formula need not
+be preserved by a nonsurjective embedding, so the argument does not apply
+unchanged to endomorphisms; \cref{odg:def:thm:homct} applies to all unital
+homomorphisms \src{06}.
+
+\begin{example}[Coefficient rigidity is not total rigidity \src{06}]\label{odg:def:ex:dilation}
+The map $\mathsf S_2(\sum_ga_g\omega^g)=\sum_ga_g\omega^{2g}$ is a field
+automorphism of $\No$ with inverse $\mathsf S_{1/2}$, since doubling exponents
+is an order automorphism of $(\No,+)$; it preserves supports and $\Oz$, fixes
+real coefficients and sends $\omega$ to $\omega^2$. So $\Aut(\Oz)$ is not
+trivial.
+\end{example}
+
+The dilations $\mathsf S_a$ are studied in the repository's surcomplex
+automorphism report (\fn{docs/surcomplex/surcomplex-field-automorphisms}), and
+the single-dilation report (\fn{docs/surcomplex/single-dilation-hahn-support})
+defines the coefficient field and the constant coefficient from one dilation of
+a field; \cref{odg:def:thm:realrecovery} starts instead from the pure ring $\Oz$
+and its Diophantine ideal. \Cref{odg:def:thm:autreal,odg:def:ex:dilation} are
+also relevant to the questions on automorphisms of $\Oz$ studied in the
+sibling report \fn{docs/surreal/set-sized-quotients-of-omnific-integers}.
+
+\subsection{The Gaussian ring does not determine the real axis}
+
+The Gaussian system and the multiplier theorem recover $\No[i]=\Frac(\Og)$ and
+its actual coefficient field $\C$, but not the real form $\No$ \src{06}.
+
+\begin{proposition}[All coefficient automorphisms occur \src{06}]\label{odg:def:prop:coeffaut}
+Every field automorphism $\sigma$ of $\C$ extends coefficientwise to a field
+automorphism $\hat\sigma(\sum_gc_g\omega^g)=\sum_g\sigma(c_g)\omega^g$ of
+$\No[i]$ preserving $\Og$. Every automorphism of $\Og$ extends to $\No[i]$ and
+preserves $\C$ setwise, so restriction to $\C$ is surjective and
+$\sigma\mapsto\hat\sigma$ is a composition-preserving section.
+\end{proposition}
+\begin{proof}
+A coefficient automorphism preserves supports and the finite sums and products
+defining Hahn convolution; its inverse is $\widehat{\sigma^{-1}}$. It fixes $\Z$
+and sends $i$ to $\pm i$, so it preserves $\Z[i]$ and hence $\Og$. An
+automorphism of $\Og$ extends to the fraction field and preserves the
+first-order coefficient predicate of \cref{odg:def:cor:internal}.
+\end{proof}
+
+For proper-class fields this is a statement about individual maps and their
+compositions, not a construction of a set of all class automorphisms.
+
+Let $\eta:\No\to\R$ send a surreal to the coefficient of $\omega^0$ in its
+normal form. It is additive on $\No$ but not multiplicative
+($\eta(\omega)=\eta(\omega^{-1})=0$, $\eta(1)=1$), and is used only as an
+additive map on the exponent group. Put
+$\chi(g)=\exp(i\pi\eta(g)/2)\in\C^\times$, the ordinary complex exponential of
+an ordinary real multiple of $i$; then $\chi(g+h)=\chi(g)\chi(h)$, $\chi(0)=1$
+and $\chi(1)=i$.
+
+\begin{lemma}[A phase twist preserving $\Og$ \src{06}]\label{odg:def:lem:twist}
+The map $\tau(\sum_gc_g\omega^g)=\sum_gc_g\chi(g)\omega^g$ is an automorphism of
+$\No[i]$ that fixes $\C$ pointwise, preserves every support and $\Og$, and
+satisfies $\tau(\omega)=i\omega$.
+\end{lemma}
+\begin{proof}
+All values of $\chi$ are nonzero, so supports are unchanged; additivity is
+clear. If $a+b=g$, the contribution of $(a,b)$ to the coefficient at $g$ is
+multiplied by $\chi(a)\chi(b)=\chi(g)$, so $\tau$ commutes with convolution;
+$\chi^{-1}$ gives the inverse. Constants sit at exponent zero and are fixed. A
+Gaussian omnific integer keeps its positive support and its Gaussian integer
+constant term.
+\end{proof}
+
+The character-twist construction and its use to move the real axis while
+fixing complex coefficients are already in the repository's surcomplex
+automorphism report (\fn{docs/surcomplex/surcomplex-field-automorphisms}); source
+06 credits it there. The additional fact needed here is that the twist
+preserves $\Og$.
+
+\begin{theorem}[No definable real axis or conjugation \src{06}]\label{odg:def:thm:norealaxis}
+The subfield $\No\subseteq\No[i]$ is not first-order definable in the structure
+$(\No[i],\Og)$, even with every complex number named by a constant, and
+neither is conjugation. The subring $\Oz\subseteq\Og$ is not definable in the
+pure ring $\Og$, even with parameters from $\Z[i]$.
+\end{theorem}
+\begin{proof}
+The automorphism $\tau$ preserves the field, the predicate $\Og$ and every
+complex constant, but sends $\omega\in\No$ to $i\omega\notin\No$; definable
+sets are invariant under automorphisms fixing the parameters. Conjugation
+does not commute with $\tau$: $\tau(\overline\omega)=i\omega$ while
+$\overline{\tau(\omega)}=-i\omega$. Finally the restriction of $\tau$ to $\Og$
+fixes $\Z[i]$ and moves $\omega\in\Oz$ outside $\Oz$.
+\end{proof}
+
+There is no conflict with the recovery of $\C$: the twist fixes $\C$
+pointwise. The coefficient field and a distinguished real form are different
+structure. Naming a suitable involution would suffice, since its fixed ring
+can be taken, but that gives the real structure explicitly instead of
+reconstructing it \src{06}.
+
+\subsection{Logical consequences}
+
+The equational transfer of \cref{odg:thm:transfer} is proved again by source 06
+(its retraction-transfer lemma), by source 07 (positive-existential
+conservation) and by source 13 (equation-only specialization and the
+Hilbert's-tenth-problem transfer), for all rings
+$\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$ with parameters in $\mathfrak o$ and,
+in the Gaussian case, with $\Z[i]$ in place of $\Z$. It is printed once, as
+\cref{odg:thm:transfer,odg:cor:H10}; the proof is the same for every
+$\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$. Transfer does not make solutions
+constant: $y=x$ has many nonconstant solutions \src{07}.
+
+\begin{theorem}[Diophantine subsets of $\Z^n$ \src{06}]\label{odg:def:thm:ce}
+Let $\Bbbk$ be an ordered field containing $\sqrt2$. A subset $S\subseteq\Z^n$,
+regarded as a subset of $\mathcal R_\Z(\Bbbk,\Gamma)^n$ (in particular of
+$\Oz^n$), is Diophantine there with integer coefficients if and only if it is
+computably enumerable.
+\end{theorem}
+\begin{proof}
+If $S$ is defined by equations in $\mathcal R_\Z(\Bbbk,\Gamma)$, its trace on
+$\Z^n$, which is $S$, is defined by the same equations over $\Z$, by
+transfer; enumerating integer witnesses shows that it is computably
+enumerable. Conversely, by the MRDP theorem \cite{Matiyasevich} (in its
+integer form, by sign coding and sums of squares) $S$ is defined over $\Z$ by
+an integer system $\Phi_S$. In $\mathcal R_\Z(\Bbbk,\Gamma)$ impose
+$\Std(x_1)\wedge\cdots\wedge\Std(x_n)\wedge\Phi_S(\mathbf x)$, with $\Std$ the
+quintic \eqref{odg:def:eq:quintic}; once the free tuple is standard, transfer
+makes the remaining condition equivalent to $\Phi_S$ over $\Z$. In the real
+ring the conjunction can be written as one sum of squares.
+\end{proof}
+
+Here $S$ is required to consist of standard tuples. No computability
+classification of arbitrary subsets of the ring is claimed, and arbitrary
+surreal parameters are not finite inputs to an algorithm \src{06}.
+
+\begin{corollary}[Standard arithmetic is definable \src{06, 07}]\label{odg:def:cor:arithmetic}
+The structures $(\Z,+,\cdot,0,1)$ and $(\N,+,\cdot,0,1)$ are parameter-free
+definable in the pure ring $\Oz$, and every arithmetic sentence has an
+effective translation obtained by relativizing its quantifiers to $\Std$ and
+to \cref{odg:def:cor:naturals}. For a set-sized intermediate ring $A$ for
+$\Z\subseteq\R$, true arithmetic therefore reduces many-one to $\Th(A)$; so
+$\Th(A)$ is undecidable and, being complete, is not recursively axiomatizable.
+\end{corollary}
+\begin{proof}
+The translation replaces $\exists x$ by $\exists x(\Std(x)\wedge\cdots)$ and
+$\forall x$ by $\forall x(\Std(x)\Rightarrow\cdots)$; induction on formulas
+proves it correct. For $A$ use $\Xi$ (\cref{odg:def:thm:constants}) in place
+of $\Std$, and the same four-square definition of $\N$, which is valid in $A$
+because sums of squares are nonnegative in the ordered ring
+$\mathcal A_\R(\Gamma)$. A recursive
+axiomatization of a complete theory would decide each sentence by searching for
+a proof of it or of its negation.
+\end{proof}
+
+For $\Oz$ the same holds sentence by sentence under the class convention.
+Source 07 credits the non-axiomatizability of omnific arithmetic to
+Je\v r\'abek's 2011 MathOverflow answer \cite{JerabekMO}, and source 06 cites
+the same answer for the logical limitations of $\Oz$; the undecidability of
+integer-coefficient solvability over $\Oz$ follows from transfer alone
+(\cref{odg:cor:H10}). None of these consequences is presented as new, and none
+is a new undecidability theorem about $\Q$ or about number fields.
+
+\begin{theorem}[What equations cannot define \src{06, 07}]\label{odg:def:thm:collapse}
+Let $\Gamma\ne0$, let $\mathfrak o\subseteq\Bbbk$ be a unital subring and
+$\mathcal R=\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$. No positive-existential
+formula with parameters in $\mathfrak o$ defines a subset of $\mathcal R$ that
+contains a nonzero element of $\Pi_\Bbbk(\Gamma)$ and excludes $0$. In
+particular $\mathcal R\setminus\{0\}$, $\mathcal R\setminus\mathfrak o$ and
+$\Pi_\Bbbk(\Gamma)\setminus\{0\}$ are not so definable, and in the real case
+neither is the positive cone.
+\end{theorem}
+\begin{proof}
+The composite $\mathcal R\xrightarrow{\ct}\mathfrak o\hookrightarrow
+\mathcal R$ is an endomorphism fixing $\mathfrak o$, and positive-existential
+formulas with parameters fixed by an endomorphism are preserved by it (as in
+\cref{odg:thm:transfer}). If such a formula held at a nonzero
+$a\in\Pi_\Bbbk(\Gamma)$, it would hold at the image $\ct(a)=0$. Each displayed set
+contains $\omega^g$ for $g\in\Gamma^{>0}$, which is positive in the real case,
+and excludes $0$.
+\end{proof}
+
+This generalizes \cref{odg:prop:notdiophantine}. It is consistent with the
+Diophantine definitions of $\Pi$ and of $\{\ct\ne0\}$: the first contains $0$,
+and the second contains no element of $\Pi$. The detector avoids the
+obstruction precisely because it defines $\ct(a)\ne0$, not $a\ne0$: $\omega$
+is nonzero but divides no value $\Lambda(t)$ \src{07}. The set
+$\mathcal R\setminus\{0\}$ has the quantifier-free definition $x\ne0$; what
+fails is a positive-existential definition. Source 07 left open whether $\Pi$
+itself has one; \cref{odg:def:thm:ideal} of source 06 shows that it has.
+
+\begin{proposition}[A quantifier-free lower bound \src{06}]\label{odg:def:prop:notqf}
+In $\mathcal R_\Z(\Bbbk,\Gamma)$ with $\Gamma\ne0$, neither $\Pi_\Bbbk(\Gamma)$ nor
+$\Z$ is definable by a quantifier-free ring formula in one variable, even with
+arbitrary parameters; the same holds for the ideal and $\Z[i]$ in
+$\mathcal R_{\Z[i]}(\Bbbk,\Gamma)$. Hence the complete theory of such a
+set-sized ring does not eliminate quantifiers in the ring language.
+\end{proposition}
+\begin{proof}
+In an infinite domain a nonzero one-variable polynomial has finitely many
+roots, so every quantifier-free one-variable definable set is finite or
+cofinite. The ideal and $\mathfrak o$ are infinite, and so are their
+complements: constants witness one, and the monomials $\omega^{kg}$, $k\ge1$,
+the other.
+\end{proof}
+
+This is a first lower bound on logical complexity only; it does not show that
+degree four, or five witnesses, is optimal \src{06}.
+
+\begin{theorem}[Omitted types \src{07; also 06}]\label{odg:def:thm:saturation}
+Let $A$ be a set-sized intermediate ring for $(\Z,\R)$ or $(\Z[i],\C)$, or a
+set-sized ring as in \cref{odg:def:thm:numberfield}, and let $\Xi_A$ be the
+corresponding constant-definition formula. The computable parameter-free type
+\[
+ \{\Xi_A(x)\}\cup\{Q(x)\ne0:0\ne Q\in\Z[X]\}
+\]
+is finitely satisfiable and omitted; so $A$ is not recursively saturated. For
+the full rings $\Oz$ and $\Og$ the same explicit type is finitely satisfiable
+and omitted.
+\end{theorem}
+\begin{proof}
+A finite part excludes the roots of finitely many nonzero polynomials, which
+are finitely many elements of the infinite ring $\mathfrak o$, so some element
+of $\mathfrak o$ satisfies it. A realization of the whole type would lie in
+$\mathfrak o$ and be algebraic over $\Q$, so some nonzero integer polynomial
+would vanish at it.
+\end{proof}
+
+For $\mathfrak o=\Z$ the simpler countable type $\{\Std(x)\}\cup\{x\ne n:n\in\Z\}$
+already shows that $\mathcal R_\Z(\Bbbk,\Gamma)$ is not countably saturated, and
+the Gaussian analogue holds with all Gaussian constants \src{06}. For the full
+classes this is the class-relative formulation: no set-sized model carrier is
+assumed. Nonsaturation of $\Oz$ has the 2018 precedent \cite{Nombre}. Even a
+very rich exponent order does not make these rings recursively saturated; the
+statement concerns the ring, not its order or a surrounding field \src{07}.
+
+\begin{remark}[Transfer without elementarity \src{06; also 13}]\label{odg:def:rem:notelementary}
+For $\Gamma\ne0$ the inclusion $\Z\hookrightarrow\mathcal R_\Z(\Bbbk,\Gamma)$ is
+not elementary, although it transfers positive-existential formulas: the
+sentence $\exists x,y\,(x^2=2y^2\wedge y\ne0)$ is false in $\Z$ and in $\Z[i]$
+and holds in the ring, with $y=\omega^g$ and $x=\sqrt2\,\omega^g$ for any
+$g>0$ (when $\sqrt2\in\Bbbk$). This is a second route to the non-elementarity
+recorded after \cref{odg:thm:induction} and in \cref{odg:rem:ringinduction}.
+A formula that defines the actual integers in this ring need not select the
+standard copy in an elementary extension, where it defines an elementary
+extension of the induced arithmetic; this is compatible with the omitted
+types above \src{06}.
 \end{remark}
 
 \section{Infinite families, primitivity, and projective points}\label{odg:sec:primitive}
@@ -2955,6 +4390,18 @@ Hahn expansion, not a claim of convergence in the surreal order topology. In
 contrast, $\omega^2+2\omega+1=(\omega+1)^2$ is an omnific square.
 \end{example}
 
+The sibling report \fn{docs/surreal/set-sized-quotients-of-omnific-integers}
+prints a later manuscript's image-gap theorem at a fresh scale (its files
+carry the prefix \fn{16-fresh-scale-}): if $f$ has degree at least two and
+coefficients in the Hahn field $K_G$ with exponents in a set-sized group $G$,
+and $t=\omega^b$ with $b>G$, then $f(\BR)\cap(f(t)+K_G)=\{f(t)\}$, and
+likewise over $\BC$; for ordinary $f$ one may take $G=\{0\}$ and any $b>0$.
+The unsolvability of $x^2=\omega^2+1$ in \cref{odg:ex:nonsquare} is the case
+$f=X^2$, $t=\omega$, and the two-term equations of \cref{odg:prop:binomial}
+are the cases $f=aY^n$, $t=\omega^{\gamma/n}$, after the substitution
+$X=a^{1/n}Y$ in $\BR$. The short proofs here are kept; the general statement
+is printed there.
+
 \subsection{Initial forms}
 
 \begin{proposition}[Initial forms of an omnific solution \src{01, 02}]\label{odg:prop:initial}
@@ -3108,7 +4555,13 @@ $\Gamma=0$ is $\Oz_\Gamma=\Z$. The Lorentz family uses only $t$, $t^2$ and
 real scalars, so one positive monomial already produces examples. If the
 coefficient field is restricted below $\R$, the general indefinite lifting
 additionally needs the chosen real vectors $e,u$ to be available, or an
-explicit scalar extension \src{02}.
+explicit scalar extension \src{02}. The definability results of sources 06
+and 07 (\cref{odg:def:sec:arithmetic,odg:def:sec:ct}) and the multiplier
+identity are proved for an arbitrary ordered exponent group, so they apply to
+$\Oz_\Gamma=\mathcal R_\Z(\R,\Gamma)$ as stated; the multiplier identity needs
+$\Gamma\ne0$. Only $\Frac(\Oz)=\No$ and the reconstruction of $\No$
+(\cref{odg:def:thm:realrecovery}) use the full class, and the fraction field
+of $\Oz_\Gamma$ need not be the whole Hahn field \src{06}.
 
 \paragraph{Full-class results.} The common-divisor theorem for an arbitrary
 set of purely infinite elements, the monomial clearing theorem, $\Pi^2=\Pi$,
@@ -3125,8 +4578,8 @@ workspace must be distinguished from proofs that enlarge it.
 \subsection{A formalization route}
 
 No part of this report has been formalized. At the placement commit the
-repository contains no Lean declaration about omnific integers. The three
-sources proposed overlapping routes; the following merges them. All module
+repository contains no Lean declaration about omnific integers. The sources
+proposed overlapping routes; the following merges them. All module
 names are suggestions, not claims that such files or declarations exist.
 
 \begin{center}
@@ -3154,6 +4607,14 @@ and the level classification.\\
 \fn{Omnific.IntegralityGuard} \src{01, 05} & Pell rigidity with
 \fn{Nat.sum_four_squares} (source 05's six-auxiliary form); source 01's
 five-auxiliary form needs a three-square theorem, which Mathlib lacks.\\
+\fn{Omnific.Definability} \src{06, 07} & Units of $\mathcal A_\Bbbk(\Gamma)$
+on the large-monomial side (a small-monomial Hahn implementation must reverse
+the exponent sign), Pell rigidity by coefficient extension, the finite
+Pell-divisibility argument, intersectivity of $\Lambda$ with every prime power
+including $2$, $13$ and $17$ (a finite modular computation is no substitute),
+the order-free system, the augmentation root detector (a statement about
+augmented commutative algebras, independent of surreals), the multiplier
+identity, and then the transport to $\Oz$ and $\Og$.\\
 \fn{Omnific.Global} \src{01, 02, 05} & The small-cut theorem for support
 bounds, common monomial divisibility and global clearing, kept separate and
 with explicit smallness (universe) hypotheses; the upper bound for clearing
@@ -3174,13 +4635,21 @@ elimination, MRDP) remain separate dependencies; formalizing the retraction
 does not formalize them. The transvection identity is finite bilinear
 algebra with no dependence on birthday recursion, and the only hard
 number-theoretic input to the guards is the three- or four-square theorem.
+The order-free system needs only elementary local arithmetic of $\Lambda$ and
+the finite Pell argument; the number-field extension also needs Dirichlet's
+theorem and quadratic reciprocity, and the reconstruction of $\No$ the real
+closedness of $\No$. Sources 06 and 07 propose the order followed in the row
+\fn{Omnific.Definability}, keeping the class-sized instantiation separate from
+the set-sized Hahn results; this is a proposal, not a report of completed
+formalization.
 
 \section{Questions and synthesis}\label{odg:sec:questions}
 
 The sources list continuation problems that their proofs do not decide. None
 of them claims that these problems are open in the literature, or that the
 list is exhaustive. Two were settled inside the batch of manuscripts from
-which this report was built.
+which sources 01, 02 and 05 come. In the merge of sources 06 and 07 one more
+was answered and two were answered in part.
 
 \subsection{Questions settled by source 05}\label{odg:sub:settled}
 
@@ -3203,6 +4672,31 @@ unimodular Fermat case: there are none. The primitive case (no common nonunit
 divisor) remains open as \cref{odg:q:primitivefermat}, and source 02's
 question for other homogeneous systems remains open as
 \cref{odg:q:homogeneous}.
+
+\subsection{Questions answered in the merge of sources 06 and 07}\label{odg:def:sub:settled}
+
+\paragraph{An existential definition of $\Pi$ (source 01; source 07).} Source
+01 asked for an existential definition of $\Pi$ over $\Oz$
+(\cref{odg:q:existentialPi}), and source 07 closed by asking whether the purely
+infinite ideal, or the graph of $\ct$, has a positive-existential definition.
+Source 06 answers both: $\exists y\,(x^2=2y^2)$ defines $\Pi$, with one witness
+and no parameters, in $\Oz$, in $\Og$ and in every ring
+$\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$ with $\sqrt2\in\Bbbk$ and
+$\sqrt2\notin\Frac(\mathfrak o)$ (\cref{odg:def:thm:ideal}), and the graph of
+$\ct$ is Diophantine (\cref{odg:def:thm:ctgraph}). Source 07's detector makes
+the complement $\{\ct\ne0\}$ Diophantine too (\cref{odg:def:thm:detector}). The
+second part of \cref{odg:q:existentialPi}, which fibers or subideals of $\Pi$
+are Diophantine, remains open.
+
+\paragraph{The least degree of a definition of $\Z$ (source 06).} Source 06
+asked for the least total degree, and the best trade-off between degree and
+witnesses, of a single integer polynomial defining $\Z$ in $\Oz$, offering a
+quintic with seven witnesses. The guards of sources 01 and 05
+(\cref{odg:thm:guard,odg:thm:standarddef}), which source 06 did not see, reach
+degree four with five and six witnesses. This answers the question in part;
+the least degree and the trade-off remain open and are merged into
+\cref{odg:q:guard}, together with source 06's question on a single Gaussian
+polynomial and source 07's on better quantifier and degree bounds.
 
 \subsection{Open questions}
 
@@ -3243,23 +4737,39 @@ projective variety?
 The real-solvability criterion \cref{odg:thm:cone} omits unimodularity, and
 \cref{odg:thm:realray} exhibits the gap. A gcd normalization cannot be
 assumed, by \cref{odg:thm:nogcd}. Fermat equations of exponent at least
-three have none (\cref{odg:cor:flt}); the exponent-two Pythagorean and
+three have none with all coordinates nonzero (\cref{odg:cor:flt}), although
+$(1,0,1)$ is a unimodular solution with a zero coordinate; the exponent-two Pythagorean and
 indefinite quadratic cases have many (\cref{odg:prop:pythagoras},
 \eqref{odg:eq:hyperunimodular}).
 
-\begin{question}[An existential definition of $\Pi$ \src{01}]\label{odg:q:existentialPi}
+\begin{question}[An existential definition of $\Pi$ \src{01}; first part answered by \src{06}]\label{odg:q:existentialPi}
 Is there an existential definition of $\Pi$ over $\Oz$ with ordinary integer
 parameters? More generally, which fibers or subideals of $\Pi$ are
 Diophantine? Retraction stability is necessary but far from sufficient.
 \end{question}
+The first question is answered: $\exists y\,(x^2=2y^2)$ defines $\Pi$
+(\cref{odg:def:thm:ideal}, \cref{odg:def:sub:settled}). The second remains
+open. Retraction stability is still necessary
+(\cref{odg:def:thm:collapse}): a Diophantine set containing a nonzero element
+of $\Pi$ contains $0$.
 
-\begin{question}[Complexity of the integrality guard \src{01}]\label{odg:q:guard}
+\begin{question}[Complexity of the integrality guard \src{01, 06, 07}]\label{odg:q:guard}
 Can the number of auxiliary variables be reduced below five, with a single
-quartic equation, or can a meaningful lower bound be proved? The present
-constructions give explicit upper bounds only (five in \cref{odg:thm:guard},
-six in \cref{odg:thm:standarddef}); other rigid arithmetic families might
-serve as finite bounds.
+quartic equation, or can a meaningful lower bound be proved? What is the least
+total degree of a single integer polynomial defining $\Z$ in $\Oz$, and what
+is the best trade-off between degree and witnesses \src{06}? Can the Gaussian
+three-equation system of \cref{odg:def:thm:constants} be replaced by a single
+polynomial of controlled degree \src{06}, and can its quantifier and degree
+bounds be improved without an order \src{07}? The present constructions give
+explicit upper bounds only (five in \cref{odg:thm:guard}, six in
+\cref{odg:thm:standarddef}, seven in the quintic
+\eqref{odg:def:eq:quintic}); other rigid arithmetic families might serve as
+finite bounds.
 \end{question}
+Any Gaussian sum-of-squares replacement must address isotropy
+($1^2+i^2=0$) rather than assume it away \src{06}. The quantifier-free
+obstruction \cref{odg:def:prop:notqf} is only a first lower bound on logical
+complexity; it does not make any of the present counts optimal.
 
 \begin{question}[Roots with omnific coefficients \src{01, 02, 05}]\label{odg:q:roots}
 For polynomials with finitely represented omnific coefficients, which root
@@ -3291,6 +4801,36 @@ it cannot become a complete decision procedure for integer-coefficient
 systems, by \cref{odg:cor:H10}.
 \end{question}
 
+\begin{question}[Coefficient recovery of lower complexity \src{06}]\label{odg:def:q:coeffpe}
+Can the canonical $\R$ or $\C$ in the interpreted fraction field be recovered
+with weaker quantifier complexity than the multiplier formula of
+\cref{odg:def:cor:internal}, keeping the integer-part ring as the only named
+structure?
+\end{question}
+The pure field and the field with its integer-part predicate must be
+distinguished in formulating this. The present formulas are first order in
+the interpreted ring structure; they give no Diophantine definition of $\Z$ in
+$\Q$ and no solution of Hilbert's tenth problem over $\Q$ \src{06}.
+
+\begin{question}[Which real structure must be added? \src{06}]\label{odg:def:q:realform}
+What additional natural structure on $\Og$ rules out the coefficient-fixing
+twists of \cref{odg:def:lem:twist} and determines the real omnific subring,
+without simply naming conjugation or $\Oz$?
+\end{question}
+Naming all complex constants does not suffice
+(\cref{odg:def:thm:norealaxis}); naming a suitable involution does, but
+gives the real structure explicitly rather than reconstructing it \src{06}.
+
+\begin{question}[Infinite algebraic extensions \src{07}]\label{odg:def:q:algebraic}
+Which coefficient subrings of algebraic extensions of $\Q$ of infinite degree
+admit a root-free intersective polynomial, or another positive-existential
+certificate of a nonzero constant, so that
+\cref{odg:def:thm:numberfield} extends to them?
+\end{question}
+No polynomial of the shape used in \cref{odg:def:lem:tailored} is root-free in
+a field containing all algebraic numbers, so a different certificate would be
+needed there \src{07}.
+
 \subsection{Synthesis}
 
 The arithmetic of $\Oz$ is governed by three simultaneous facts:
@@ -3319,6 +4859,16 @@ of ordinary quantified arithmetic than their discreteness suggests
 \src{05}. None of this requires unique factorization, a Euclidean termination
 principle, or Conway's refinement property.
 
+Sources 06 and 07 show that the decomposition itself is visible from inside
+the ring. The ideal $\Pi$ is the solution set of $x^2=2y^2$, its complement is
+the set of divisors of values of $\Lambda$, and $\Z$ is cut out by a Pell
+equation, a divisibility and an intersective certificate; so the retraction
+$\ct$, although not a symbol of the language, has a Diophantine graph. The
+multiplier ring of $\Pi$ then recovers the real coefficients, and with them the
+valued field $\No$, from the pure ring $\Oz$, while the Gaussian ring $\Og$
+recovers $\C$ but not its real form. Arithmetic recovery and recovery of a real
+form are different tasks \src{06}.
+
 \subsection{Relations to neighbouring reports}\label{odg:sub:neighbours}
 
 \begin{itemize}[leftmargin=*]
@@ -3342,10 +4892,26 @@ hypothesis \replabel{bst:hyp:gcd} that the bounded-support ring is a GCD
 domain concerns a different ring, whose units are the nonzero monomials;
 \cref{odg:thm:nogcd} concerns $\Oz$, whose units are $\pm1$. Neither statement
 bears on the other.
-\item \fn{docs/surreal/set-sized-quotients-of-omnific-integers}: contains a more general
-coefficient-ring version of the universal set-sized quotient theorem
-(\cref{odg:fact:settarget}); its companion-source integration remains pending; its preliminaries overlap
-\cref{odg:sec:basic,odg:sec:residues,odg:sec:class}.
+\item \fn{docs/surreal/set-sized-quotients-of-omnific-integers}: prints the
+universal set-sized quotient theorem (\cref{odg:fact:settarget}) with source
+05's proof and further threshold results; its preliminaries overlap
+\cref{odg:sec:basic,odg:sec:residues,odg:sec:class}. Its manuscript 13
+proves the Gaussian fiber theorem, the kernel converse and \'etale norm
+rigidity printed here once in \cref{odg:sec:rigidity}; its manuscript 16
+proves the fresh-scale image-gap theorem of which the equations of
+\cref{odg:ex:nonsquare,odg:prop:binomial} are special cases.
+\Cref{odg:def:thm:homct} concerns homomorphisms into class-sized Hahn rings as
+well and is consistent with the quotient theorem there.
+\item \fn{docs/surcomplex/surcomplex-field-automorphisms}: constructs the
+coefficient-fixing phase twists and the dilations $\mathsf S_a$; source 06
+credits it and adds that the twist of \cref{odg:def:lem:twist} preserves $\Og$,
+whence \cref{odg:def:thm:norealaxis}.
+\item \fn{docs/surcomplex/single-dilation-hahn-support}: shows that the single
+automorphism $S_2$ of a Hahn field defines its coefficient field, constant
+coefficient and valuation ring in the language of fields with one
+automorphism; \cref{odg:def:thm:multiplier,odg:def:thm:realrecovery} recover the
+coefficient field, order and valuation ring from the pure ring $\Oz$ and its
+Diophantine ideal instead.
 \item \fn{docs/surreal/euclidean-three-space}: its theorem that class
 homomorphisms from $\SO(3,\No)$ to set-sized groups factor through the
 standard part (\replabel{e3:cut:thm:smallquotient}) is an analogous size
@@ -3359,16 +4925,29 @@ $\SO(3,\Oz)$ is finite.
 
 \subsection{Sources}
 
-The report is built from three manuscripts of a batch of eleven placed in
-commit \texttt{be06fc8}; source numbers are the batch item numbers. All three
-are dated September 22, 2026 and pin repository commit \pin. None of the
-three was aware of the others. The manuscripts themselves are not shipped.
+The report is built from five manuscripts. Sources 01, 02 and 05 are three of
+a batch of eleven placed in commit \texttt{be06fc8}, and their numbers are the
+batch item numbers; they are dated September 22, 2026, and the repository
+commit they pin is \pin. Sources 06 and 07 are items 01 and 07 of a batch of
+eight placed in commit \texttt{cf350b1}, numbered here after the earlier
+sources, as their shipped file prefixes are; they are dated September 23,
+2026, and the commit they pin is
+\nolinkurl{71e9606d297c9b98c732070dc462682cc6948981} (``Prove Prony's main
+theorem, holonomic ODE rigidity and eight more results''), which precedes
+\texttt{be06fc8}. None of the five was aware of the others. Item 03 of the
+second batch is manuscript 13 of the sibling report; its Gaussian and \'etale
+fiber results (its Sections 8 and 9) are printed here, tagged \src{13}, and
+its remaining results there. The manuscripts themselves are not shipped.
 Their code and data are shipped under the prefixes
-\fn{01-diophantine-geometry-}, \fn{02-diophantine-} and
-\fn{05-diophantine-rigidity-}; source 02's provenance note and source 05's
-build note are shipped as \fn{02-diophantine-PROVENANCE.md} and
-\fn{05-diophantine-rigidity-BUILD.md}. Source 01 delivered a checksum
-manifest, which is not shipped because it describes the delivered file names.
+\fn{01-diophantine-geometry-}, \fn{02-diophantine-},
+\fn{05-diophantine-rigidity-}, \fn{06-definability-reconstruction-} and
+\fn{07-defining-arithmetic-}; source 02's provenance note, source 05's build
+note and source 06's source audit are shipped as
+\fn{02-diophantine-PROVENANCE.md}, \fn{05-diophantine-rigidity-BUILD.md} and
+\fn{06-definability-reconstruction-SOURCE_AUDIT.md}. Source 01 delivered a
+checksum manifest, which is not shipped because it describes the delivered
+file names; the delivered descriptions of sources 06 and 07 are not shipped
+either. Source 13's files are shipped with the sibling report.
 
 \subsection{Section map}
 
@@ -3381,7 +4960,7 @@ Section & Sources\\
 \ref{odg:sec:scope} Scope and conventions & 01 base; 02 and 05 results; new
 notation and provenance text\\
 \ref{odg:sec:basic} Rings and integer part & 01 base; 05 degree of sums,
-workspaces, univariate over $\R$; 02 examples\\
+workspaces, univariate roots; 02 examples\\
 \ref{odg:sec:residues} Residues and quotients & 01 base; 02 mixed gcds and
 completions; 05 $p$-adic orders, divisors of integers, CRT; 05's set-sized
 quotient theorem cited\\
@@ -3392,22 +4971,36 @@ examples\\
 examples; 05 rational-basis form\\
 \ref{odg:sec:rigidity} Constant products & 02 exact fibers; 05 binary form
 over $\C$, $D=2$ classification, conics; 01 zero Pell fiber, gcd$>1$ powers,
-norm forms with any $\Q$-basis\\
-\ref{odg:sec:derivations} Derivations & 05 entirely; merge remark
-\ref{odg:rem:separatedidentity}\\
+norm forms with any $\Q$-basis; 13 Gaussian fibers, converse, kernel remark,
+rank-deficient example, \'etale norms; 07 norms over any base field; merged
+\'etale theorem\\
+\ref{odg:sec:derivations} Derivations & 05, extended to $\C$ by the review;
+merge remark \ref{odg:rem:separatedidentity}\\
 \ref{odg:sec:quadratic} Quadratic dichotomy & 01 base; 02 skewness,
 determinant, Lorentz matrix, unipotent subgroup\\
 \ref{odg:sec:obstructions} Bounded geometry & 02 semialgebraic theorem; 01
 positive bounds, symmetric matrices, no real point at infinity; 05 even
 powers\\
 \ref{odg:sec:guard} Defining $\Z$ & 01 three-square guard; 05 four-square
-definition and induction; merge remark \ref{odg:rem:ringinduction}\\
+definition and induction; merge remark \ref{odg:rem:ringinduction}; 07
+quartic variant\\
+\ref{odg:def:sec:arithmetic} Diophantine arithmetic & 06 base: setting,
+ideal, Pell, $\Lambda$, quintic remark; 07 intermediate rings, integer
+multiples, the system in its general form (with 06)\\
+\ref{odg:def:sec:ct} Constant term & 07 detector, support bounds, ideal test,
+universal forms, number fields; 06 graph of $\ct$, splitting, homomorphisms;
+merge quartic graph and number-field remark\\
+\ref{odg:def:sec:reconstruction} Reconstruction and logic & 06 multiplier,
+reconstruction, automorphisms, twist, c.e.\ sets, QF bound; 07 recursive
+saturation and arithmetic; 06 and 07 collapse obstruction\\
 \ref{odg:sec:primitive} Families and primitivity & 01 base; 02 sign
 conditions and decidability; 05 witness and finite-support specialization\\
 \ref{odg:sec:coefficients} Omnific coefficients & 02 quadratic criterion and
 initial forms (also 01); 05 binomials and failed lifting\\
-\ref{odg:sec:formal}, \ref{odg:sec:questions} & All three; settled
-questions recorded in \cref{odg:sub:settled}\\
+\ref{odg:sec:coefficients} (continued) & pointer to the image-gap theorem of
+the sibling report\\
+\ref{odg:sec:formal}, \ref{odg:sec:questions} & All five; settled
+questions recorded in \cref{odg:sub:settled,odg:def:sub:settled}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -3442,7 +5035,50 @@ squares) and source 05's (six auxiliaries, four squares).
 \item \emph{Additions.} Two remarks carry the tag \mergetag:
 \cref{odg:rem:separatedidentity} (a direct identity giving the divisibility in
 the separated-power proof) and \cref{odg:rem:ringinduction} (existential
-induction fails in the pure ring language). Both have complete proofs.
+induction on the nonnegative cone fails in the pure ring language). Both have
+complete proofs.
+\item \emph{Definability base.} Source 06 is the base of
+\cref{odg:def:sec:arithmetic,odg:def:sec:ct,odg:def:sec:reconstruction}: its
+existential definitions of $\Pi$ and of the graph of $\ct$ supersede source
+07's universal and prenex ones, which are kept as
+\cref{odg:def:cor:universal,odg:def:rem:sigma2}, and its homomorphism theorem
+covers all unital homomorphisms, where source 07's covers automorphisms.
+\item \emph{The order-free system.} The two sources' systems are identical;
+source 07's statement (both pairs, intermediate rings) is printed, with source
+06 credited (\cref{odg:def:thm:constants}).
+\item \emph{Real single polynomials.} The quartics of sources 01 and 05 stay
+the printed versions. Source 07's quartic is source 05's up to the
+substitution of \cref{odg:def:rem:quarticvariant} and is printed there once;
+source 06's quintic, dominated by both, is a remark with the comparison
+(\cref{odg:def:rem:quintic}).
+\item \emph{Pell divisibility.} Source 07's permutation argument is printed
+with source 06's finite-ring argument as a second route
+(\cref{odg:def:lem:pelldiv}).
+\item \emph{Norms.} Source 07's theorem (any base field, intermediate rings)
+and source 13's (\'etale algebras, Gaussian variables) are combined in
+\cref{odg:dec:thm:etale}; \cref{odg:thm:norm} of sources 01 and 02 is its
+special case.
+\item \emph{Fibers.} Source 13's real fiber theorem is
+\cref{odg:thm:decomposable}(a), printed once with source 02 as base; its
+Gaussian case, converse, kernel remark and rank-deficient example are added.
+\item \emph{Transfer and obstructions.} Sources 06, 07 and 13 re-prove the
+transfer theorem, printed once (\cref{odg:thm:transfer}); the collapse
+obstructions of sources 06 and 07 generalize \cref{odg:prop:notdiophantine} and
+are printed as \cref{odg:def:thm:collapse}. Source 07's recursive-saturation
+statement is printed, with source 06's countable type as the simpler instance.
+\item \emph{Fraction fields.} Source 06's common-denominator lemma is
+\cref{odg:thm:fractions}, printed once; the Gaussian consequence is stated in
+\cref{odg:def:sec:reconstruction}. Source 06's remark distinguishing $\ct$ from
+$\st$ joins \cref{odg:rem:notvaluation}.
+\item \emph{Four squares.} Source 06's appendix proof of Lagrange's theorem is
+not reprinted; the theorem is cited (\cite{FourSquares} for Mathlib, source
+07's \cite{Conrad}).
+\item \emph{Further additions.} \Cref{odg:def:cor:ctquartic} (a quartic with six
+witnesses for the graph of $\ct$, improving source 06's degree-ten polynomial),
+\cref{odg:def:rem:numberfieldideal} (existential definitions over number-field
+coefficients), the Gaussian example in \cref{odg:dec:rem:kernels}, the collapse
+of the quintic over $\Og$ in \cref{odg:def:rem:quintic}, and the combined
+\cref{odg:dec:thm:etale} carry the tag \mergetag{} and have complete proofs.
 \end{enumerate}
 
 \paragraph{Printed once.} The floor formula, retraction, congruences, finite
@@ -3451,7 +5087,14 @@ criterion, units, the Euclid example, non-atomicity, the ACC chain,
 $\Pi^2=\Pi$ and non-generation, $\Frac(\Oz)=\No$, the Pythagorean family, the
 Fermat scaling, $x^2=\omega^2+1$, the orthogonal group, the nilpotent
 isometry, the torus remark, and the failure of four squares for $\omega-1$
-appear in two or three sources and are printed once, with all sources named.
+appear in two or three of sources 01, 02 and 05 and are printed once, with all
+sources named. From sources 06, 07 and 13: the units lemma, Pell rigidity
+(with the Gaussian solution $(i,i)$), the Pell divisibility lemma, the
+intersective polynomial and its proof, the order-free system and its
+Gaussian witness for $1+i$, the transfer theorem and Hilbert's tenth problem,
+the collapse obstruction, $\Frac(\Oz)=\No$, the zero Pell fiber, the cubic
+norm, the negative-exponent Pell solutions and the omitted types are each
+printed once, with every proving source named.
 
 \subsection{Renamed symbols}
 
@@ -3505,6 +5148,40 @@ Source & Source symbol & This report\\
 05 & $p$ (Fermat exponent) & $n$ ($p$ is reserved for primes)\\
 05 & $a,b$ (ratio constants in the Fermat proof) & $\mu,\nu$\\
 05 & $\deg_\omega$, $\lfloor\cdot\rfloor_{\Oz}$, $X_k,Y_k$, $\rho$, $\Std$, $\Phi$, $x_{>0}$ & unchanged\\
+06 & $G$, $k$, $D$ (exponent group, coefficient field and ring) & $\Gamma$,
+$\Bbbk$, $\mathfrak o$ ($G$ is the Gram matrix, $k$ an index, $D$ the Pell
+parameter)\\
+06 & $X^g$; $d(f)$; $\mathbf K=\No(i)$ & $\omega^g$; $\ddeg f$; $\No[i]$\\
+06 & $\mathcal A_k(G)$, $\mathcal I_k(G)$, $B_D(k,G)$; $\mathcal I_{\R}$, $\mathcal I_{\C}$ &
+$\mathcal A_\Bbbk(\Gamma)$, $\Pi_\Bbbk(\Gamma)$, $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$; $\Pi$, $\Pi_{\C}$\\
+06 & $H$ (intersective polynomial); witnesses $h,r$ & $\Lambda$ ($H$ is a
+workspace group); $s,t$\\
+06 & $P$ and its parts $A,B,C$ (quintic); $\Std_D$ & the display
+\eqref{odg:def:eq:quintic}; $\Xi$ or any definition of $\Z$\\
+06 & $(u_m,v_m)$; $F=\Frac B$; $\mathcal O$ & $(X_k,Y_k)$; $\mathcal F$; $\Ofin$\\
+06 & $T$, $T_2$ (twist, dilation); $\ell$ ($\omega^0$-coefficient on $\No$) &
+$\tau$, $\mathsf S_2$; $\eta$ ($\ell_j$ are linear forms)\\
+06 & $\mathsf{Inf}$, $\mathsf{CT}$, $\mathsf{Mult}$, $\mathsf{Coeff}$, $\mathsf{ST}$, $\chi$, $\st$, $\mathfrak m$ & unchanged\\
+07 & $\Gamma$, $k$, $D$, $\Omega$ (large monomial), $c_0$ & $\Gamma$, $\Bbbk$,
+$\mathfrak o$, $\omega$, $\ct$\\
+07 & $H_k^+(\Gamma)$, $I_k^+(\Gamma)$, $R_D(\Gamma)$ & $\mathcal A_\Bbbk(\Gamma)$,
+$\Pi_\Bbbk(\Gamma)$, $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$\\
+07 & $P$, $P_K$ (intersective polynomials) & $\Lambda$, $\Lambda_K$ ($P$ names
+polynomials in general)\\
+07 & $\Phi$, $\Phi_K$ (constant definitions); $\mathcal I$, $\mathcal C$ &
+$\Xi$, $\Xi_K$ ($\Phi$ is the induction formula of \cref{odg:thm:induction});
+the formula of \cref{odg:def:cor:universal}, $\mathsf{CT}^{\forall}$\\
+07 & $B$, $M$, $F$ (augmented algebra, kernel, polynomial) & $\mathcal H$,
+$\ker\varepsilon$, $f$\\
+07 & $(u_n,v_n)$; $L/K$ (norm) & $(X_k,Y_k)$; $E/K$\\
+07 & $\mathcal E$, $\Theta$, $F_4$, $\varepsilon$ & unchanged\\
+13 & $J_k$, $J_{\R}$, $J_{\C}$; $P_k$; $A_D$ & $\Pi_\Bbbk(\No)$, $\Pi$,
+$\Pi_{\C}$; $\mathcal A_\Bbbk(\No)$; $\mathcal R_{\mathfrak o}(\Bbbk,\No)$ (its
+$P_k$ is a ring)\\
+13 & $\ell_j$ (affine forms), $A$ (matrix of linear parts), $W$, $J(W)$ &
+$L_j$, the linear parts $\ell_j$, $\mathcal K$ or $\mathcal K_{\C}$, the
+coefficient-vector description\\
+13 & $d$, $m$ (Pell); $n$, $r$ (norm) & $D$, $c$; $r$, $a$\\
 \end{longtable}
 
 \subsection{Corrections to the sources}
@@ -3541,17 +5218,56 @@ questions.
 \item Source 02's attribution of the nonzero omnific Fermat failure to
 MathOverflow comments could not be verified; it is printed as source 02's
 attribution, marked unverified (\cref{odg:ex:fermatscaling}).
+\item Source 06 presents its quintic (degree five, seven witnesses) as its
+principal real Diophantine formula. The guards of sources 01 and 05, which it
+did not see, have degree four with five and six witnesses; the quintic is
+printed as a remark with that comparison (\cref{odg:def:rem:quintic}), and
+source 06's question on the least degree is recorded as answered in part
+(\cref{odg:def:sub:settled}).
+\item Source 06's single real polynomial for the graph of $\ct$ has degree ten
+and eight witnesses; \cref{odg:def:cor:ctquartic} gives degree four and six
+witnesses.
+\item Source 07's universal definition of $\Pi$ and its $\exists^5\forall^2$
+and $\forall^2\exists^5$ definitions of the graph of $\ct$ are superseded as
+definitions by source 06's existential ones; they are kept as the negation of
+the detector and as a second route (\cref{odg:def:cor:universal,odg:def:rem:sigma2}),
+and source 07's closing question on positive-existential definitions is
+recorded as answered (\cref{odg:def:sub:settled}).
+\item Source 13 states Pell rigidity for positive nonsquare $d$; its own fiber
+theorem covers every $D\ne0$, which \cref{odg:cor:pell} states.
+\item Sources 06 and 07 credit the intersective polynomial to L\^e--Spencer
+(and 07 also to Berend--Bilu). L\^e and Spencer attribute it to Borevich and
+Shafarevich \cite[p.~3]{BorevichShafarevich}, which is added as the classical
+source.
+\item Source 06 cites Matiyasevich's translation with pages 354--358, as source
+02 does; the range 354--357 is used here, as explained above.
+\item The formula $\exists y\,(x^2=2y^2)$ fails over number-field coefficient
+rings containing $\sqrt2$ in their fraction field; source 06's remark on other
+radicands supplies the replacement used in \cref{odg:def:rem:numberfieldideal}.
 \end{enumerate}
-The assembly reported no mathematical error in the main proofs of its three
-sources. The subsequent review corrects the coefficient-derivation hypothesis
-in the added \cref{odg:rem:separatedidentity}; the Euler derivations used in
-the proof satisfy it. The complex extensions of one-variable and
-separated-power rigidity are explained after their proofs.
+No mathematical error was found in any main proof of the five sources, or in
+the printed results of source 13. The later proof review of
+\cref{odg:sec:transfer,odg:sec:rigidity,odg:sec:derivations} (recorded in
+\fn{RECONCILIATION.md}) corrects the coefficient-derivation hypothesis in the
+merge's own \cref{odg:rem:separatedidentity}: the derivation must kill $a$
+and $b$, and its use at level $c$ needs $\partial c=0$; the Euler derivations
+used in the proof satisfy both. The complex extensions of one-variable and
+separated-power rigidity (\cref{odg:prop:univariate,odg:thm:separated}) are
+explained after their proofs. A further review of
+\cref{odg:sec:quadratic,odg:sec:obstructions,odg:sec:guard} expands the
+polarization argument and the transfer in \cref{odg:thm:bounded}, which now
+covers quantified ordered-ring formulas explicitly; it adds that the quadratic
+orbits preserve the coordinate ideal, and it makes the nonnegative induction
+domain and the order-free semiring formula of \cref{odg:rem:ringinduction}
+explicit. It did not cover \cref{odg:def:rem:quarticvariant}.
 
 \subsection{Stale repository statements}
 
-All three sources inspected the repository at \pin{} through the GitHub
-connector, without a checkout or build.
+Sources 01, 02 and 05 inspected the repository through the GitHub connector,
+without a checkout or build, at the commit \pin{} named above; sources 06 and
+07 inspected it at
+\texttt{71e9606} in the same way, and source 06 also read the opening of the
+surcomplex automorphism report.
 \begin{enumerate}[leftmargin=*]
 \item Source 01 says that the repository's trigonometry material already uses
 the omnific integer part. At the pin this was true but incomplete: the
@@ -3567,6 +5283,20 @@ commit.
 \item The status of Conway's refinement conjecture is recorded as of
 September 22, 2026 (\cref{odg:app:repo}); the transcendence-over-bounded-support
 report takes the same stance.
+\item Sources 06 and 07 say that the explicit Diophantine definitions of $\Z$
+in $\Oz$ they give were not found in the repository. At their pin
+\texttt{71e9606} this was true; since the placement \texttt{be06fc8} the
+collection contains the quartic guards of this report
+(\cref{odg:thm:guard,odg:thm:standarddef}). Source 13's statement that the
+exact fiber formulation was not found is stale in the same way
+(\cref{odg:thm:decomposable}). None of the three saw this report or its
+sibling.
+\item Source 06's descriptions of the surcomplex automorphism report (phase
+twists that move the real axis while fixing $\C$) and of the catalogue entry
+on coefficient recovery by a monomial dilation, and source 07's description of
+the formalization ledger as separating source claims from Lean declarations,
+are accurate at the placement commit \texttt{cf350b1}. There is still no Lean
+declaration about omnific integers.
 \end{enumerate}
 
 \section{Non-claims by source}\label{odg:app:nonclaims}
@@ -3575,7 +5305,7 @@ Every limitation, disclaimer and priority caveat stated by a source is kept.
 Most also appear at their point of use in the text; this appendix is the
 per-source record.
 
-\paragraph{Common to all three sources.} No independent peer review; no Lean
+\paragraph{Common to sources 01, 02 and 05.} No independent peer review; no Lean
 or other proof-assistant verification; the finite scripts check finite
 identities and examples, not the theorems; the repository was not checked out
 or built; the Conway refinement announcement of September 18, 2026 was not
@@ -3719,6 +5449,150 @@ constant terms is not a sufficient solvability criterion.
 the size-sensitive layer must not be generalized to fixed Hahn groups.
 \end{enumerate}
 
+\paragraph{Common to sources 06 and 07.} Unrefereed research drafts with
+written proofs; no Lean files and no Lean-verified result; the repository was
+not built; the finite checks are exact but do not certify quantified
+statements over Hahn supports or the class interpretation; the literature and
+repository comparisons were focused, not exhaustive, and a missing search hit
+is not evidence of absence; no named classical factorization conjecture, and
+no named longstanding conjecture, is claimed to be resolved; historical
+priority is not asserted. Their pin \texttt{71e9606} predates both omnific
+reports.
+
+\paragraph{Source 06 (25 items).}
+\begin{enumerate}[leftmargin=*,itemsep=1pt]
+\item First-order definability of $\Z$ in $\Oz$ and the nonsaturation of $\Oz$
+are not new (\emph{nombre}, 2018); the ideal equation belongs to the same
+obstruction and is not presented as an unrelated discovery.
+\item Undecidability of integer-coefficient solvability follows from the
+retraction and is not a new consequence; the logical limitations of $\Oz$
+were discussed by Je\v r\'abek in 2011.
+\item The intersective polynomial and its local-root property are classical;
+Pell methods in definability have a long history \cite{Davis,Denef}; phase twists
+are an existing repository construction, reproved with attribution.
+\item No optimality assertion for degree five, seven witnesses or the
+coefficient sizes of the quintic, nor for the Gaussian system.
+\item The Gaussian predicate is a system; no single-polynomial Gaussian claim
+is made, since a sum of squares does not preserve zero sets over a ring
+containing $i$.
+\item The certificate $vs=\Lambda(t)$ is not a global definition of
+nonzeroness.
+\item The multiplier and coefficient-field formulas are first order, not
+positive existential; the finite valuation ring is defined in the interpreted
+fraction field, not as a subset of $\Oz$.
+\item The value group is recovered as an interpreted quotient, not a monomial
+cross-section; no definability of the $\omega$-map, the simplicity order,
+birthdays or the exponential is claimed.
+\item Pointwise fixation of $\R$ is proved for automorphisms only, not for
+nonsurjective embeddings.
+\item The homomorphism theorem does not say that homomorphisms kill the ideal;
+preservation, annihilation and pointwise fixation are different assertions.
+\item $\Gamma\ne0$ is necessary for coefficient reconstruction, and the
+fraction field of a fixed Hahn ring need not be the whole Hahn field
+($\Gamma=\Z$ gives $\Bbbk(\omega)$).
+\item Full-field reconstruction uses surreal bounds for sets of exponents and
+the real closedness of $\No$; no common denominator for a proper class is
+asserted; pointwise fixation uses the density of $\Q$ in $\R$, and a general
+ordered coefficient field can have nontrivial automorphisms.
+\item The c.e.\ classification concerns standard-supported sets and integer
+coefficients; arbitrary surreal parameters are not finite inputs to an
+algorithm.
+\item The quantifier-free obstruction does not prove a lower bound on degree.
+\item A formula defining the standard integers in this ring need not select a
+standard copy in an elementary extension.
+\item No convergence, analytic continuation, canonical complex logarithm or
+infinite-height trigonometry is used; the only exponential is the ordinary
+complex exponential of a real multiple of $i$.
+\item Class statements are formula by formula: no uniform truth predicate, no
+set of all surreals, no class of all class automorphisms.
+\item Recovering $\C$ in the Gaussian case does not recover the real form or
+conjugation; naming an involution gives the real structure explicitly rather
+than reconstructing it.
+\item The coefficient-recovery formulas give no Diophantine definition of $\Z$
+in $\Q$ and no solution of Hilbert's tenth problem over $\Q$.
+\item No named classical factorization conjecture is addressed.
+\item No Lean files, no kernel-checked theorem, no repository rebuild; the
+checks guard against mistakes and do not certify quantified statements.
+\item Qualified novelty only; the comparison was focused, and a missing search
+hit was not used as evidence of mathematical nonexistence.
+\item Its formalization order is a proposal, not a report of completed work.
+\item Its questions are not claimed to be recognized open problems.
+\item Lagrange's four-square theorem is classical; its appendix proof is not a
+new theorem (and is not reprinted here).
+\end{enumerate}
+
+\paragraph{Source 07 (19 items).}
+\begin{enumerate}[leftmargin=*,itemsep=1pt]
+\item The normal-form machinery, the Pell method, the intersective polynomial,
+the four-square theorem and the undecidability background are established and
+credited; the literature check is targeted, not exhaustive.
+\item No prime-element or factorization theorem is rediscovered, and the
+historical conjecture list is not treated as a list of current open
+problems; the ideal characterization proves no factorization, unique
+factorization or normality property.
+\item No single-equation claim in the Gaussian case; the real quartic is not
+asserted over $\Og$, where it accepts every $x$.
+\item Two universal variables, five existential witnesses and degree four are
+upper bounds only.
+\item The $\exists^5\forall^2$ and $\forall^2\exists^5$ bounds are not claimed
+minimal, and no claim is made that the graph of $\ct$ has no existential
+definition.
+\item The detector needs a root of $\Lambda$ in the coefficient field; it fails
+for $\Z+\omega\Q[\omega]$ and is not asserted for all intermediate rings.
+\item The number-field theorem is not uniform in $K$ and does not apply as
+stated to infinite algebraic extensions.
+\item Its interpretation of $\Z[i]$ is not identified with a Diophantine
+definition of $\Z$ inside $\Z[i]$; no such result is needed.
+\item Undecidability and non-axiomatizability are consequences of established
+results (Je\v r\'abek 2011, DPRM), not new undecidability theorems about $\Q$ or
+number fields.
+\item It does not show that $\Pi$ lacks a positive-existential definition (and
+source 06 shows that it has one).
+\item Its automorphism corollary concerns ring automorphisms of the
+coefficient-restricted ring, not field automorphisms of $\No$ or $\No[i]$, and
+does not say that an arbitrary field automorphism preserves $\Oz$ or $\Og$.
+\item Norm rigidity needs a nonzero right side and separability; it does not
+say that every variety has only constant points; coefficients outside $A$ are
+read in the ambient ring.
+\item $I=\bigcap nA$ must not be transferred to coefficient rings containing
+$\Q$.
+\item The results are not claimed for the full surreal or surcomplex fields
+without the omnific restriction.
+\item No efficient algorithm; witness existence, decision complexity and
+computability of representations are different questions, and the witness
+recipe assumes access to coefficient data.
+\item Saturation and $\Th(A)$ are asserted for set-sized rings; class
+statements are formula by formula, without a global satisfaction predicate.
+\item The checks do not verify arbitrary Hahn supports, the all-moduli proof,
+prime existence for number fields, the model-theoretic claims or the class
+interpretation; the script must not be run with \texttt{python -O}.
+\item Its formalization route is a proposal; no Lean module is supplied.
+\item Its questions are not claimed to be previously catalogued open problems.
+\end{enumerate}
+
+\paragraph{Source 13, for the results printed here (7 items).} Its other
+non-claims are recorded in the sibling report.
+\begin{enumerate}[leftmargin=*,itemsep=1pt]
+\item The fiber theorem classifies the infinite points above ordinary points
+only; it gives no Thue or Baker finiteness and no enumeration or bound of the
+ordinary solutions, including those of the cubic norm equation.
+\item The zero level is excluded, and the exclusion is sharp.
+\item The fiber is a disjoint union of constant-coefficient fibers, with no
+assertion that the total solution class is a set.
+\item The norm is evaluation of a finite polynomial, not a new norm on a class;
+nonordinary surreal solutions with negative exponents exist, so the theorem is
+about the nonnegative-support ring.
+\item Equational transfer and the Hilbert's-tenth-problem statement transfer
+the classical theorem and do not reprove it; inputs are finite integer
+polynomials, no encoding of surreal parameters is postulated, and no
+complexity claim is made for Gaussian or number-field problems.
+\item The exact-fiber formulation is a proposed contribution, not a certified
+priority claim; the search was bounded.
+\item Unrefereed, not checked in Lean; the finite script does not verify
+arbitrary Hahn sums; no claim is made about the status of Conway's refinement
+conjecture.
+\end{enumerate}
+
 \section{Dependencies and verification}\label{odg:app:verification}\label{odg:app:dependencies}
 
 \subsection{Imported inputs}
@@ -3734,8 +5608,16 @@ induction); the Fermat theorem of Wiles and Taylor--Wiles
 (\cref{odg:cor:flt} only, after the rigidity theorem has reduced to ordinary
 integers); the algebraic closedness of $\C$ (to factor binary forms; the
 algebraic closedness of a class-sized surcomplex field is not used); and, as
-context only, the primes of \cite{LM} and \cite[Lemma 11.1]{EK}. All other
-deductions are proved here from these and finite algebra.
+context only, the primes of \cite{LM} and \cite[Lemma 11.1]{EK}. The material
+of sources 06 and 07 imports in addition MRDP (\cref{odg:def:thm:ce}),
+Lagrange's theorem (\cref{odg:def:cor:naturals,odg:def:rem:quintic,odg:def:rem:quarticvariant}),
+Dirichlet's theorem on primes in progressions and quadratic reciprocity
+(\cref{odg:def:lem:tailored} only), the existence of algebraic closures and
+the discriminant criterion for \'etale algebras (\cref{odg:dec:thm:etale}), and
+the real closedness of $\No$ (\cref{odg:def:thm:realrecovery}); the local
+arithmetic of $\Lambda$, Hensel lifting and the Chinese remainder theorem are
+proved in the text. All other deductions are proved here from these and
+finite algebra.
 
 The principal dependency chains are:
 \begin{align*}
@@ -3750,7 +5632,18 @@ The principal dependency chains are:
  &\text{real quadratic linear algebra}+\text{support-ring algebra}
  \ \Longrightarrow\ \text{quadratic-level dichotomy};\\
  &\text{normal forms}+\text{set-cut bounds}
- \ \Longrightarrow\ \text{common divisors and clearing}.
+ \ \Longrightarrow\ \text{common divisors and clearing};\\
+ &\text{Pell rigidity and divisibility}+\text{intersective }\Lambda
+ \ \Longrightarrow\ \text{order-free definition of }\Z,\ \Z[i];\\
+ &\ct+\sqrt2\notin\Frac(\mathfrak o)
+ \ \Longrightarrow\ \text{the Diophantine ideal}
+ \ \Longrightarrow\ \text{graph of }\ct\text{ and homomorphisms};\\
+ &\text{augmentation}+\text{root of }\Lambda\text{ in }\Bbbk
+ \ \Longrightarrow\ \text{detector and ideal test};\\
+ &\text{Diophantine ideal}+\text{one negative exponent}
+ \ \Longrightarrow\ \text{multiplier identity};\\
+ &\text{multiplier identity}+\text{real closedness of }\No
+ \ \Longrightarrow\ \text{reconstruction of }\R\text{ and }\No .
 \end{align*}
 The source-05 proofs that most deserve independent review are, by its own
 account, the separated-power theorem (divisibility in a quotient ring without
@@ -3761,9 +5654,11 @@ the sibling report).
 
 \subsection{Finite checks}
 
-Three scripts are shipped in \fn{code/}, each with its recorded output in
-\fn{data/}; they need Python~3.9 or later and SymPy (tested with SymPy
-1.14.0). They check finite identities and examples only.
+Five scripts are shipped in \fn{code/}, each with its recorded output in
+\fn{data/}. The first three need Python~3.9 or later and SymPy (tested with
+SymPy 1.14.0); source 06's needs Python~3.10 or later and SymPy, and source
+07's Python~3.10 or later and the standard library only. They check finite
+identities and examples only.
 
 \begin{itemize}[leftmargin=*]
 \item \fn{01-diophantine-geometry-verification.py}: scalar identities
@@ -3786,26 +5681,57 @@ telescoping identities, binomial root coefficients, quartic-definition
 certificates for $|t|\le40$ by default, and five points on $y^2=x^3+1$);
 output to the terminal, recorded in
 \fn{05-diophantine-rigidity-verification.txt}.
+\item \fn{06-definability-reconstruction-verify.py}: the degrees of the
+quintic (five, seven witnesses) and of source 06's degree-ten polynomial for
+the graph of $\ct$, the displayed real witnesses, six Gaussian examples of the
+three-equation system, the Pell unit order for moduli $1$ to $500$, roots of
+$\Lambda$ modulo $1$ to $2000$, the four-square product identity, and
+finite-support ideal and twist identities. It writes a JSON report only to
+the path given with \texttt{--output} and otherwise prints it; the shipped
+record is \fn{06-definability-reconstruction-verification.json}.
+\item \fn{07-defining-arithmetic-verify.py}: 13 groups (the expansion of
+$\Lambda$, the universal witness identity of \cref{odg:def:thm:augdetector}
+symbolically, the witness degrees, the certificate for $1+\omega$, roots of
+$\Lambda$ modulo $1$ to $4096$, the $2$-adic lifting step through $2^{33}$,
+Pell identities to index $300$, the modular return for moduli $1$ to $500$,
+witnesses of the system for $-6\le x\le6$ and six Gaussian samples, quartic
+witnesses for $-100\le x\le100$, the degree of $F_4$ and its Gaussian
+collapse); output to the terminal only, recorded in
+\fn{07-defining-arithmetic-verification.txt}. It uses assertions and must
+not be run with \texttt{python -O}.
 \end{itemize}
-When this report was assembled all three passed with Python 3.14.4 and
+When this report was assembled the first three passed with Python 3.14.4 and
 SymPy 1.14.0, and source 05's script also passed with
 \texttt{--standard-radius 200}. The outputs of sources 01 and 02 differ
 from the shipped records only in the recorded Python version (3.13.5 there);
-the output of source 05 is identical to its record.
+the output of source 05 is identical to its record. The scripts of sources 06
+and 07 also passed with Python 3.14.4 (and SymPy 1.14.0 for source 06), during
+placement on copies and again when this report was assembled, with source 06's
+report written outside this directory; that report differs from its shipped
+record only in the recorded Python version, and source 07's output is
+identical to its record. The degrees in \cref{odg:def:cor:ctquartic} and the collapse of
+the quintic over $\Og$ in \cref{odg:def:rem:quintic} were checked separately
+when this report was assembled; the shipped scripts are unchanged.
 
 \section{Repository and literature audit}\label{odg:app:repo}\label{odg:app:audit}
 
 \subsection{Repository snapshots}
 
-All three sources pin \pin{} (``Merge origin/main after the inverse-sine
+Sources 01, 02 and 05 pin \pin{} (``Merge origin/main after the inverse-sine
 series formalization''). Source 01 read the tree, the root README, the
 documentation index, the trigonometry listing and its period-arithmetic
 source audit; source 02 read the README, the documentation index and the
 opening of the normal-form bridge note; source 05 read the documentation
 index and the bridge note. Each source says that this was a focused
 inspection through the GitHub connector, not a checkout, build, or review of
-every manuscript and declaration. The checks of their repository statements
-against the placement commit are in \cref{odg:app:provenance}.
+every manuscript and declaration. Sources 06 and 07 pin \texttt{71e9606}.
+Source 06 read the root README, the documentation index, the opening of
+\fn{docs/FORMALIZATION.md} and the first 235 source lines of the surcomplex
+automorphism report; source 07 read the root README, the documentation index
+and the opening of \fn{docs/FORMALIZATION.md}. Both call this a focused
+comparison, not an exhaustive audit, and neither modified or built the
+repository. The checks of all these repository statements against the
+placement commits are in \cref{odg:app:provenance}.
 
 \subsection{Literature checks}
 
@@ -3826,6 +5752,21 @@ confirmed during placement.
 (\cref{odg:ex:fermatscaling}).
 \item Matiyasevich's page range is corrected as described in
 \cref{odg:app:provenance}.
+\item Source 06's attribution to \emph{nombre} was confirmed during placement
+through the Stack Exchange interface: a comment of 6 July 2018 on
+MathOverflow question 304290 defines the ordinary integers in $\Oz$ by
+excluding nonzero solutions of $x^2=2y^2$ between $-|n|$ and $|n|$, and
+observes that $\Oz$ is not saturated \cite{Nombre}.
+\item Je\v r\'abek's answer of 15 August 2011 to MathOverflow question 72691,
+cited by sources 06 and 07, was confirmed: it notes that the theory of $\Oz$ is
+a complete extension of Robinson's arithmetic and hence not recursively
+axiomatizable \cite{JerabekMO}.
+\item L\^e--Spencer, arXiv:1309.2259v1, Section 2, Example 4 lists $\Lambda$ and
+attributes it to Borevich--Shafarevich, page 3; Berend--Bilu is
+\emph{Proc.\ Amer.\ Math.\ Soc.}\ 124 (1996), 1663--1671. Miller--Shlapentokh,
+arXiv:1706.03302, cited by source 07 as related Pell-method precedent for
+function rings, has the stated title \cite{MillerShlapentokh}. These were
+confirmed during placement; Borevich--Shafarevich itself was not re-read.
 \end{itemize}
 
 \subsection{A dated factorization announcement}
@@ -3945,6 +5886,70 @@ Emil Je\v r\'abek, comment of 27 June 2018, and Timothy Chow, comment of
 ring of the ordinals?}, MathOverflow,
 \url{https://mathoverflow.net/a/303688}. Cited by source 02; not verified for
 this report.
+
+\bibitem{Nombre}
+\emph{nombre} (MathOverflow user), comment of 6 July 2018 on \emph{For which
+theories does ZFC without global choice prove the existence of a proper class
+monster model?}, MathOverflow question 304290,
+\url{https://mathoverflow.net/questions/304290}. Cited by source 06; confirmed
+for this report.
+
+\bibitem{JerabekMO}
+Emil Je\v r\'abek.
+Answer of 15 August 2011 to \emph{Can we axiomatize Omnific Integers without
+the Surreal Number system?}, MathOverflow question 72691,
+\url{https://mathoverflow.net/questions/72691}. Cited by sources 06 and 07.
+
+\bibitem{Davis}
+Martin Davis.
+An explicit Diophantine definition of the exponential function.
+\emph{Communications on Pure and Applied Mathematics} \textbf{24} (1971),
+137--145.
+\href{https://doi.org/10.1002/cpa.3160240205}{doi:10.1002/cpa.3160240205}.
+
+\bibitem{Denef}
+Jan Denef.
+The Diophantine problem for polynomial rings and fields of rational
+functions.
+\emph{Transactions of the American Mathematical Society} \textbf{242} (1978),
+391--399.
+
+\bibitem{BorevichShafarevich}
+Zenon I. Borevich and Igor R. Shafarevich.
+\emph{Number Theory}. Academic Press, 1966, p.~3. Cited as the source of the
+intersective polynomial by L\^e--Spencer \cite{LeSpencer}.
+
+\bibitem{LeSpencer}
+Thai Hoang L\^e and Craig V. Spencer.
+Intersective polynomials and Diophantine approximation, II.
+\href{https://arxiv.org/abs/1309.2259v1}{arXiv:1309.2259v1}, 2013, Section 2,
+Example 4.
+
+\bibitem{BerendBilu}
+Daniel Berend and Yuri Bilu.
+Polynomials with roots modulo every integer.
+\emph{Proceedings of the American Mathematical Society} \textbf{124}(6)
+(1996), 1663--1671.
+\href{https://doi.org/10.1090/S0002-9939-96-03210-8}{doi:10.1090/S0002-9939-96-03210-8}.
+
+\bibitem{MillerShlapentokh}
+Russell Miller and Alexandra Shlapentokh.
+On existential definitions of c.e.\ subsets of rings of functions of
+characteristic 0.
+\href{https://arxiv.org/abs/1706.03302}{arXiv:1706.03302}. Cited by source 07
+as precedent for Pell methods in polynomial and function rings.
+
+\bibitem{Apostol}
+Tom M. Apostol.
+\emph{Introduction to Analytic Number Theory}. Springer, 1976, Chapters 7
+and 9.
+\href{https://doi.org/10.1007/978-1-4757-5579-4}{doi:10.1007/978-1-4757-5579-4}.
+
+\bibitem{Conrad}
+Keith Conrad.
+\emph{Proofs by descent}, expository notes, Section 6.
+\url{https://kconrad.math.uconn.edu/blurbs/ugradnumthy/descent.pdf}. Cited by
+source 07 for Lagrange's theorem.
 
 \bibitem{Repo}
 Vladimir Reshetnikov and contributors.
