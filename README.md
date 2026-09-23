@@ -462,6 +462,12 @@ The least of the three side valuations is attained at least twice.
 Right triangles are characterized by Pythagoras. Each acute angle is the
 inverse tangent of its opposite-to-adjacent leg ratio, and explicit
 triangles realize every positive surreal slope, including infinite slopes.
+Positive side lengths determine a noncollinear triangle exactly when all
+three strict triangle inequalities hold. Its angles are recovered by
+inverse cosine, and equal side data gives an affine isometry preserving
+actual surreal distances. Positive finite angles summing to pi and any
+positive surreal scale also determine a triangle. Equal angles give an
+actual affine similarity; one specified positive side fixes the scale.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual

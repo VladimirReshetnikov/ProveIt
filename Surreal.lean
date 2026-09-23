@@ -244,6 +244,14 @@ import Surreal.Surcomplex.TriangleLaws
 import Surreal.Surcomplex.TriangleCircumcircle
 import Surreal.Surcomplex.TriangleSideValuation
 import Surreal.Surcomplex.RightTriangle
+import Surreal.Algebra.StrictTriangle
+import Surreal.Algebra.TriangleSideConstruction
+import Surreal.Surcomplex.PlaneIsometry
+import Surreal.Surcomplex.TriangleSideData
+import Surreal.Surcomplex.TriangleFromSides
+import Surreal.Surcomplex.TriangleCongruence
+import Surreal.Surcomplex.TriangleFromAngles
+import Surreal.Surcomplex.TriangleSimilarity
 import Surreal.Surcomplex.TrigonometricFineDerivative
 import Surreal.Surcomplex.TrigonometricOrder
 import Surreal.Surcomplex.TrigonometricLeading
