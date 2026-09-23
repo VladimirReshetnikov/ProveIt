@@ -2587,6 +2587,17 @@ No Lean source or coverage is added. Later proofs, imported foundations,
 source reconciliation and unintegrated companions remain pending.
 
 
+Synchronization merged through `173eb52`, including `2008172`'s actual
+surreal polynomial root stability, both valuation error bounds and uniqueness
+throughout the open neighborhood. The incoming ledger correctly keeps the
+trigonometric chart, angular transport and sharpness examples pending; no
+manuscript or PDF changed. The introductory coverage summary is reconciled
+to the current Section 11 review boundary. The combined
+`LEAN_NUM_THREADS=2 lake build` passes 4,299 jobs, and the axiom audit passes
+13,282 declarations with only the permitted three axioms. The merged source
+label audit resolves 3,127 references, and all 1,318 local Markdown
+destinations resolve; the 51-report inventory and `git diff --check` pass.
+
 ## Remaining scope
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

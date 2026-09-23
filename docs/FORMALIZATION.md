@@ -44,9 +44,9 @@ table retains the precise scope of the newly mapped Lean statements.
 
 The eleven omnific-integer manuscripts placed in `be06fc8` are assigned to
 two reports. Commit `bbdd536` assembled sources 01, 02 and 05 into the
-Diophantine article. Its proof review now extends through Section 10, as
+Diophantine article. Its proof review now extends through Section 11, as
 recorded in the [reconciliation](surreal/omnific-diophantine-geometry/RECONCILIATION.md);
-Sections 11 onward and remaining source reconciliation still need review. The quotient
+Sections 12 onward and remaining source reconciliation still need review. The quotient
 text remains base 06. The further placement `cf350b1` adds two Diophantine
 companions (local 06–07), five quotient companions (local 12–16), and a
 rectification manuscript for entire functions (local 10); these additions
