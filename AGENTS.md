@@ -148,6 +148,25 @@ check the alias line that `git grep` shows.
   UTF-8, LF, final newline and no trailing whitespace. Run
   `git diff --check` before committing.
 
+## Source labels and practical pitfalls
+
+- Report sources use cleveref's optional-argument form
+  `\label[theorem]{wick:thm:main}` as well as plain `\label{...}`. Search
+  with a pattern that allows both, for example
+  `grep -rn 'label\(\[[a-z]*\]\)\?{wick:thm:main}' docs --include=*.tex`.
+- Reports are revised upstream often (hypotheses corrected, labels added or
+  renamed). After every `git merge origin/main`, check that each backticked
+  source label cited in `docs/FORMALIZATION.md` and in Lean docstrings still
+  exists in the current `.tex` sources, and re-read any statement whose
+  report changed before claiming coverage of it.
+- Files written by Windows tools may arrive with CRLF line endings. The
+  checkout normalizes to LF, so after converting them `git status` can list
+  files as modified while `git diff` is empty; `git add` those files to
+  refresh the index.
+- In Git Bash, a heredoc containing an apostrophe inside `'...'` quoting
+  breaks the command; write Python or shell scripts to a scratch file with an
+  editor tool and run the file instead.
+
 ## Other tools
 
 - The Wolfram MCP server (`mcp__Wolfram__*`) can check symbolic identities

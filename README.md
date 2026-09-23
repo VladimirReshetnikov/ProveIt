@@ -467,5 +467,18 @@ Resolvent identities, projection-flag generators and rank-one completions are
 exact, cofinite spans stabilize after one finite deletion, the Wick diagram
 kernel has a finite indecomposable Hilbert basis, and valuations of
 positive-definite Hahn matrices obey Cauchy–Schwarz.
+The Wick atoms of every sector are strongly summable exactly when the
+valuations admit a strictly balancing vector; otherwise the multiples of a
+Hilbert-basis element give a non-summable family. The Hahn–Tate theta family
+is strongly summable exactly on `U_q` and satisfies `θ(qu) = -u⁻¹θ(u)` for
+every value group and coefficient field, and the partial theta series has its
+exact strong domain. Hahn extension keeps the point spectrum of a bounded
+normal operator, while the backward shift acquires the eigenvalue `t^η`.
+Invariant strong measures are averages over finite orbits, a negative atom
+with finitely many earlier atoms is detected by a polynomial square, the
+critical values of a polynomial are the roots of `Disc(P - Y)` with their
+multiplicities, Prony's cofactor corrections obey the valuation budget
+`κ - E_i`, and polynomial iterates are equicontinuous at every point exactly
+when the value group has no order unit.
 A successful build proves only the imported Lean
 statements, not coverage of all the source documents.
