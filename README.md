@@ -47,8 +47,12 @@ two diagonal equations in every commutative target algebra and has basis
 Jacobian and its discriminant locus. The algebra now decomposes into four
 field factors, two local dual-number factors, or one local rank-four factor
 on the respective collision strata. The local dimensions sum to four.
-Transport of these dimensions to angular intersection multiplicities remains
-pending.
+The verified centered sine series now induces a formal coordinate automorphism
+at every infinitesimal root. Together with linear diagonalization and removal
+of unit factors, it identifies each angular formal quotient with `(X^m,Y^n)`,
+where each exponent is one or two on the corresponding collision stratum.
+Identifying these truncated formal quotients with the finite local factors,
+and thus completing angular intersection multiplicities, remains pending.
 
 The first modules establish size obstructions and reusable finite algebra.
 Complexification uses mathlib's `QuadraticAlgebra`, with its cross-term
