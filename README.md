@@ -445,6 +445,11 @@ have the expected complex linear term with infinitesimal relative error.
 Rotation displacement obeys the exact half-angle chord formula at arbitrary
 radii. Rotating by `omega^-1` gives displacement equivalent to one at radius
 `omega`, and infinite displacement at radius `omega^2`.
+For every relatively infinitesimal perturbation of a nonzero surcomplex
+number, the geometric direction change is the imaginary local logarithm.
+Its quadratic expansion has a bounded cubic remainder, and its valuation
+is at least that of the relative perturbation, with equality when the
+leading coefficient has nonzero imaginary part.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual
