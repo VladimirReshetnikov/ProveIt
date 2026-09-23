@@ -1507,6 +1507,15 @@ The 49-source inventory remains at 2,465 standard statements. Its independent
 audit reports no count, heading, label or anchor issues; all 2,720 cited
 source labels and 1,040 local Markdown destinations in 109 files resolve.
 
+
+The sync merged triangle reconstruction and incircle work through `c74287c`.
+No incoming manuscript source changed. The combined
+`LEAN_NUM_THREADS=2 lake build` passed all 4,009 jobs; the default axiom audit
+accepted 7,688 declarations using only `propext`, `Classical.choice` and
+`Quot.sound`. The independent 49-source index remains unchanged, and all
+2,723 cited source labels plus 1,054 local Markdown destinations resolve.
+The incoming triangle mappings remain distinct from this documentation review.
+
 ## Batch 19 provenance correction
 
 The four new reports in batch 19 cited an unavailable placement hash,
