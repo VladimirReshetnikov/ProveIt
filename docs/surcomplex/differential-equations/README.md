@@ -3,13 +3,13 @@
 **The finite-primitive criterion, the phase obstruction, and support-certified
 coordinate systems**
 
-A merged research report, 189 pages, built from eleven manuscripts. Everything
+A merged research report, 190 pages, built from eleven manuscripts. Everything
 in this directory other than `article.tex`, `article.pdf` and this README is
 preserved source material.
 
 ```
 article.tex                        the merged report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled 189-page report
+article.pdf                        the compiled 190-page report
 README.md                          this guide
 11-autonomous-dynamics-sources.md  member 11's literature and repository-review log, unmodified
 code/                              the verification programs and build scripts of the eleven
@@ -32,14 +32,17 @@ The revisions expand the proof steps, distinguish the derivative frames
 and field extensions, illustrate the normalizations, and prove the forced
 degree bound sharp. The finite procedure now states its effective
 coefficient requirements; complex algebraic coefficients suffice.
-The autonomous review now covers Sections 29–30: normalized derivations,
-formal evaluation, projective reduction, simple and multiple zeros, and
-completeness of the curve-realization list. It expands the support,
-local uniqueness and forced-scale arguments, makes the properness
+The autonomous review now covers Sections 29–31: normalized derivations,
+formal evaluation, projective reduction, the complete curve-realization
+classification, finite-scale localization and derivation independence.
+It expands the support, local uniqueness and forced-scale arguments, makes the properness
 comparison set-sized, and gives explicit quadratic and pure monomial
 formulas. Branch choices and the time parameter's first differing scale
-are stated explicitly. Uniform localization, derivation independence,
-later autonomous proofs, remaining imports and source reconciliation
+are stated explicitly. The localization proof handles arbitrary Hahn supports
+and all local coordinates, and the scalar reduction explains its injectivity
+and nonzero denominator. The zero-polynomial exception is explicit, and a
+quadratic example separates constant scalar solutions from curve embeddings.
+Later autonomous proofs, remaining imports and source reconciliation
 are still pending; scope and validation are recorded in the collection's
 [review record](../../REVIEW.md).
 
@@ -223,9 +226,12 @@ to the one fixed `∂`.
   explicit series in `ω^(−1/m)` and `(log ω)/ω`, with no hidden
   beyond-all-orders parameter.
 * **One finite-scale field; derivation independence** (Theorems 31.1, 31.4).
-  All solutions lie in one set-sized Hahn field with a finitely generated
-  monomial group; for every `F ∈ C[Y,Z]` the solution set of `F(y, ðy) = 0` is
-  the same for every normalized derivation, and on it all of them agree. This
+  For each curve, all solutions lie in one set-sized Hahn field with a
+  finitely generated monomial group; for every `F ∈ C[Y,Z]` the solution set of `F(y, ðy) = 0` is
+  the same for every normalized derivation. For `F ≠ 0`, they also agree
+  pointwise on its solutions, and one finite-scale field contains all of them.
+  The zero polynomial has all of `No[i]` as its solution collection and gives
+  no such field bound or derivative-agreement conclusion. This
   reproves the first-order parts of Corollaries 8.8 and 8.11 for every
   normalized derivation (Corollary 31.7), and nothing more.
 * **Projective obstructions** (Theorem 33.3). `(ðy)² = Q(y)` with `Q`
@@ -937,6 +943,24 @@ All 51 historical code, data and source-log files match the upstream bytes;
 Part VII and subsequent source text are unchanged by this review. The full
 Lean build passes 3,872 jobs and its 5,880-declaration axiom audit. This merge
 validation does not extend the proof review to the critical-potential part.
+
+The third autonomous pass reviewed Section 31, including the finite-scale
+field, algebraic independence, scalar-to-curve reduction and derivation
+independence. The report rebuilt in three passes at 190 pages without warnings
+or box issues, against a clean 189-page baseline; the changed pages were
+inspected. The unchanged member-11 verifier passed all ten default-degree
+checks with Python 3.13.14 and SymPy 1.14.0, matching the delivered record
+apart from Python version. Separate exact checks differentiated five signed
+power–logarithm–exponential monomials, checked a redundant exponential
+generator, and verified the quadratic solution family and induced vector
+field. All 51 historical code, data and source-log files remain byte-identical.
+The full Lean build passed 3,872 jobs and its 5,880-declaration axiom audit.
+BM arXiv v3 §3.2, Definition 5.1 and Remark 5.18 support the monomial inputs;
+NPT arXiv v1 Lemma 7.2 and Proposition 7.3 supply the stated independence
+import in a set-sized field with constant field ℂ. The bibliography now links
+to those exact preprint versions. The finite checks do not prove the general
+Hahn-support or classification arguments. Review of Section 32 onward and
+remaining imports and source reconciliation is still pending.
 
 ## Re-running the source verifiers
 

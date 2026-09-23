@@ -8088,14 +8088,18 @@ $1$) and let
  e^{\lambda_{1}\omega},\dots,e^{\lambda_{s}\omega}\bigr\rangle
 \end{equation}
 be the multiplicative group they generate. These are positive Conway
-monomials --- $\omega$ is log-atomic and exponentials of purely infinite surreals
-are monomials \cite[\S\S3,5]{BM} --- so $\mathfrak G_{\xi}$ is a finitely
+monomials: $\omega$ is log-atomic, so $\log\omega$ is a monomial;
+positive rational powers of $\omega$ are monomials; and
+$\lambda_j\omega$ is purely infinite, whose exponential is a monomial
+\cite[\S3.2, Definition~5.1 and Remark~5.18]{BM}. Thus $\mathfrak G_{\xi}$ is a finitely
 generated ordered monomial group, relations among the generators being allowed.
 Let $K_{\xi}=\C((\mathfrak G_{\xi}))\subseteq\SC$ be the field of series with
 complex coefficients and reverse well-ordered support in $\mathfrak G_{\xi}$. In
 the additive notation of \cref{diff:sec:localization} it is $K_{\Gamma_{\xi}}$ for
 the finitely generated group $\Gamma_{\xi}$ of exponents of its monomials, a group
-not contained in $\R$.
+not contained in $\R$. Indeed, $\log\omega$ is positive infinite but
+$(\log\omega)^n\prec\omega$ for every positive integer $n$; the
+ordered group already has distinct logarithmic and power scales.
 
 \begin{theorem}[Uniform finite-scale localization]
 \label{diff:aut:thm:scales}
@@ -8111,26 +8115,60 @@ the families of \cref{diff:aut:thm:main}.
 \end{theorem}
 \begin{proof}
 A Hahn field over an ordered group is a field: after extracting a leading term,
-invert a unit $1+\varepsilon$ by its geometric series (\cref{diff:lem:neumann}).
-$\mathfrak G_{\xi}$ is countable, so there are at most $\abs\C^{\aleph_{0}}=2^{\aleph_{0}}$
-series, and the constants give the reverse inequality. For a monomial
-$\mathfrak g=\omega^{a/M}(\log\omega)^{b}\prod_{j}e^{n_{j}\lambda_{j}\omega}$ with
-$a,b,n_{j}\in\Z$, exponential compatibility, the product rule and $\Dn\omega=1$
-give the \emph{three-shift formula}
+invert a unit $1+\varepsilon$ by its geometric series
+(\cref{diff:lem:neumann}). Every monomial in that inverse remains in the
+same group. The finitely generated group $\mathfrak G_\xi$ is countable,
+so its series form a set of cardinality at most
+$|\C|^{\aleph_0}=2^{\aleph_0}$; this bound includes every permitted
+support and coefficient assignment. The constant series give the reverse
+inequality, and ordinary coefficients are constants of every $\Dn$.
+
+For a monomial
+$\mathfrak g=\omega^{a/M}(\log\omega)^b\prod_j e^{n_j\lambda_j\omega}$
+with $a,b,n_j\in\Z$, exponential compatibility, the product rule and
+$\Dn\omega=1$ give the \emph{three-shift formula}
 \begin{equation}\label{diff:aut:eq:threeshift}
  \frac{\Dn\mathfrak g}{\mathfrak g}=\frac{a}{M\omega}+\frac{b}{\omega\log\omega}
- +\sum_{j=1}^{s}n_{j}\lambda_{j},
+ +\sum_{j=1}^{s}n_{j}\lambda_{j}.
 \end{equation}
-which does not depend on the representation of $\mathfrak g$, being obtained by
-differentiating an identity in the field. The supports of the derivative terms
-lie in three fixed multiplicative translates of the original support, each
-output monomial receives finitely many contributions, and strong additivity
-gives $\Dn K_{\xi}\subseteq K_{\xi}$ with a restriction independent of $\Dn$. At a
-multiple zero $\omega^{-1/m_{j}}$ and $(\log\omega)/\omega$ lie in $\mathfrak G_{\xi}$
-and the support of \cref{diff:aut:eq:master} lies in the group they generate; at a
-stable simple zero the one-variable expression in $e^{\lambda_{j}\omega}$ does the
-same; and every local algebraic coordinate is an ordinary formal Laurent series
-in the parameter, so its evaluation stays in $K_{\xi}$.
+In particular $\Dn\log\omega=1/\omega$, and the same rules apply to
+negative integer powers by differentiating inverses. Relations among the
+generators cause no ambiguity: two product representations are equal in
+$\SC$, hence their differentiated values are equal for each $\Dn$.
+The displayed formula is independent of that derivation.
+
+For a reverse well-ordered support $S\subseteq\mathfrak G_\xi$, all
+resulting derivative supports lie in
+\[
+ S\ \cup\ \omega^{-1}S\ \cup\ (\omega\log\omega)^{-1}S.
+\]
+Each translate is reverse well-ordered, and a finite union has the same
+property. For a fixed output monomial, each translate has at most one
+preimage in $S$, so at most three input monomials contribute. Thus the
+termwise derivative family is Hahn-summable, including possible collisions
+or cancellations between translates. Strong additivity now gives
+$\Dn K_\xi\subseteq K_\xi$, and the coefficient formula proves that
+all normalized derivations have the same restriction to the whole Hahn
+field, not just to its finite sums.
+
+At a multiple zero, $m_j\mid M$, so
+$x_{m_j}=(\omega^{1/M})^{-M/m_j}$ and
+$y_\omega=(\log\omega)\omega^{-1}$ belong to $\mathfrak G_\xi$.
+Every evaluated term of \cref{diff:aut:eq:master} has its monomial
+in that group, and the evaluation lemma supplies summability.
+At a stable simple zero, the inverse linearizer is an ordinary
+zero-constant series in $c e^{\lambda_j\omega}$, so its value is also
+in $K_\xi$. Varying $c$, $C$ or $\beta$ changes only ordinary
+coefficients and does not enlarge the group.
+
+Finally choose an affine chart about the ordinary reduction point.
+Its coordinate functions have ordinary formal expansions in the local
+parameter. Evaluation uses only monomials from $\mathfrak G_\xi$,
+by the same support lemma, and remains in $K_\xi$; rational functions
+may also have a finite Laurent principal part, handled by inversion
+in the field. Hence the entire point lies in $\mathcal X(K_\xi)$.
+Constant solutions already have coordinates in $\C$. This proves all
+three assertions, including cases where either list of zeros is empty.
 \end{proof}
 
 \begin{remark}[An instance of the monomial criterion, and a multi-scale workspace]
@@ -8154,14 +8192,26 @@ over $\C$ as a family; the field they generate has transcendence degree
 $2^{\aleph_{0}}$ over $\C$.
 \end{corollary}
 \begin{proof}
-At $u=0$ the vector field has a double zero with leading coefficient $-1$, and
-\cref{diff:aut:prop:multiple} gives a distinct solution $u_{C}$ for every $C\in\C$
-using only the two stated monomials. A classical theorem originating with
-Rosenlicht states that distinct nonconstant solutions of this equation are
-algebraically independent over the constant field; it is imported from
-\cite[Lemma~7.2 and Proposition~7.3]{NPT} and applied to every finite
-subfamily, inside the set-sized differential field containing those solutions
-and $\omega$, so no proper-class version is needed.
+At $u=0$ the vector field has a double zero with leading coefficient
+$-1$. Thus $m=1$, $c_*=1$, and \cref{diff:aut:prop:multiple} gives
+a nonzero infinitesimal solution $u_C\sim\omega^{-1}$ for every
+$C\in\C$, in the two-scale field
+$K=\C((\langle\omega,\log\omega\rangle))$.
+Fixing the logarithm of $\beta=1$, distinct $C$ give distinct time
+values and therefore distinct solutions. They are nonconstant:
+a nonzero infinitesimal is not an ordinary complex number.
+
+The three-shift proof makes $K$ a set-sized differential field, and
+its constant field is exactly $\C$, since
+$\C\subseteq K\subseteq\SC$ and $\Ker\Dn=\C$ on $\SC$.
+Rosenlicht's algebraic-independence theorem, in the form of
+\cite[Lemma~7.2 and Proposition~7.3, arXiv v1]{NPT}, applies to
+any finite set of distinct nonconstant solutions in this differential
+field. Every polynomial relation uses finitely many variables, so the
+whole family $(u_C)_{C\in\C}$ is algebraically independent.
+It has cardinality $|\C|=2^{\aleph_0}$ and generates a field of
+exactly that transcendence degree. This uses the classical theorem
+as an import, entirely within a set-sized field.
 \end{proof}
 
 A finitely generated \emph{monomial group} allows arbitrary well-based infinite
@@ -8178,7 +8228,7 @@ and there is no conflict.
 \begin{theorem}[Derivation-independent autonomous sector]
 \label{diff:aut:thm:independence}
 Let $\Dn_{1},\Dn_{2}$ be normalized derivations. For every smooth connected
-projective $\mathcal X/\C$ and nonzero meromorphic $\xi$, the differential
+projective curve $\mathcal X/\C$ and nonzero meromorphic $\xi$, the differential
 embeddings $(\C(\mathcal X),\xi)\hookrightarrow(\SC,\Dn_{1})$ and
 $(\C(\mathcal X),\xi)\hookrightarrow(\SC,\Dn_{2})$ are the same embeddings of
 underlying fields. For every $F\in\C[Y,Z]$,
@@ -8189,28 +8239,68 @@ and if $F\neq0$ and $y$ lies in either set then $\Dn_{1}y=\Dn_{2}y$. No equality
 of the two derivations on all of $\SC$ is asserted.
 \end{theorem}
 \begin{proof}
-For curves, \cref{diff:aut:thm:main} gives formulas that do not involve the
-choice of derivation --- their ingredients are ordinary coefficients, $\omega$,
-$\log\omega$ and $e^{\lambda\omega}$ --- or alternatively
-\cref{diff:aut:thm:scales} places every solution in $K_{\xi}$, where the two
-derivations agree. For the scalar assertion the case $F=0$ is immediate, so let
-$F\neq0$; a nonzero constant has no solutions. Factor $F$ over $\C$; at a solution
-some irreducible factor $R$ vanishes. If $y\in\C$ both derivatives vanish. If $R$
-involves only $Y$ it forces $y\in\C$. If it involves only $Z$ then $R=Z-c$ up to
-a scalar, and $\Dn_{1}y=c$ gives $y=c\omega+d$ with $d\in\C$, on which $\Dn_{2}$
-agrees. Otherwise $y$ is nonconstant and $R$ involves both variables;
-$Y\mapsto y$, $Z\mapsto\Dn_{1}y$ embeds the function field of the affine curve
-$R=0$, since a larger kernel would give an image of transcendence degree zero,
-contrary to $y\notin\C$. On its smooth projective model put
+For curves, \cref{diff:aut:thm:scales} places every solution for
+either derivation in the same $K_\xi$, where the derivations agree.
+The corresponding field embedding is therefore differential for one
+exactly when it is differential for the other.
+
+For the scalar assertion, $F=0$ gives the whole class $\SC$ for
+both solution collections; no derivative equality is claimed in
+that case. Now let $F\neq0$. A nonzero constant has no solutions.
+Otherwise factor $F$ over $\C$ and consider a solution for $\Dn_1$;
+some irreducible factor $R$ vanishes at $(y,\Dn_1y)$.
+If $y\in\C$, both derivatives vanish and there is nothing to prove.
+A factor involving only $Y$ forces this case. A factor involving
+only $Z$ is $Z-c$ up to a nonzero scalar, and
+$\Dn_1y=c$ implies $\Dn_1(y-c\omega)=0$, hence
+$y=c\omega+d$ with $d\in\C$. Both derivations agree on that value.
+
+It remains to treat $y\notin\C$ with $R$ involving both variables.
+The evaluation map from the one-dimensional integral algebra
+$A=\C[Y,Z]/(R)$ to $\SC$ is injective. Indeed, a nonzero kernel
+would be a nonzero prime of this affine curve, hence maximal;
+its residue field would be $\C$ by the weak Nullstellensatz,
+forcing $y\in\C$. Thus evaluation extends to an embedding of
+$L=\operatorname{Frac}(A)$. Here $Y$ is transcendental and
+$L/\C(Y)$ is finite separable. Irreducibility in characteristic
+zero gives $R_Z\neq0$ in $L$: otherwise $R$ would divide its
+nonzero partial derivative of smaller $Z$-degree.
+
+On the smooth projective curve with function field $L$, define
 \begin{equation}\label{diff:aut:eq:inducedfield}
- \xi Y=Z,\qquad \xi Z=-\frac{R_{Y}}{R_{Z}}\,Z,
+ \xi Y=Z,\qquad \xi Z=-\frac{R_Y}{R_Z}\,Z.
 \end{equation}
-the unique derivation extending $\xi Y=Z$ (in characteristic zero $R_{Z}\neq0$ in
-the function field), nonzero because $Z=0$ would make $R$ a multiple of $Z$.
-Differentiating $R(y,\Dn_{1}y)=0$ shows that the embedding is differential for
-$\Dn_{1}$; the curve assertion makes it differential for $\Dn_{2}$, so
-$\Dn_{2}y=\Dn_{1}y$ and $F(y,\Dn_{2}y)=0$. Interchange the derivations.
+These values annihilate $R$ and define the unique derivation on
+$L$ with $\xi Y=Z$, by separability. It is nonzero, since $Z=0$
+in $A$ would force the irreducible $R$ to be associated to $Z$,
+contrary to its involving both variables.
+
+Write $z=\Dn_1y$. Differentiating the evaluated relation gives
+\[
+ R_Y(y,z)z+R_Z(y,z)\Dn_1z=0.
+\]
+The denominator $R_Z(y,z)$ is nonzero by injectivity, so this
+identity proves that evaluation intertwines the derivations on
+both generators, hence on all of $L$. The curve assertion then
+makes the same embedding differential for $\Dn_2$, giving
+$\Dn_2y=z=\Dn_1y$ and $F(y,\Dn_2y)=0$.
+Interchanging the derivations proves the equality of the two
+solution collections.
 \end{proof}
+
+For example, take $F(Y,Z)=Z^2-Y$. On its rational curve the induced
+vector field has $\xi Y=Z$ and $\xi Z=1/2$. If $y$ is a nonconstant
+solution, put $z=\Dn y\neq0$; differentiating $z^2=y$ gives
+$2z\Dn z=z$, hence $z=(\omega+C)/2$ and
+\[
+ y=\frac{(\omega+C)^2}{4},\qquad C\in\C.
+\]
+Every displayed value solves the equation. There is also the scalar
+constant solution $y=0$, but the point $(Y,Z)=(0,0)$ is not a
+constant solution of the induced vector field, since $\xi Z=1/2$
+there. This is why constant scalar solutions are separated before
+passing to an embedding of a curve's function field.
+
 
 \begin{corollary}[Uniform scalar bound]
 \label{diff:aut:cor:scalarbound}
@@ -8221,14 +8311,29 @@ every normalized derivation simultaneously. In particular that solution
 collection is a set.
 \end{corollary}
 \begin{proof}
-Use the field of \cref{diff:aut:thm:scales} for the curve and vector field of
-\cref{diff:aut:eq:inducedfield} attached to each of the finitely many irreducible
-factors
-involving both variables, and enlarge the monomial group to the group generated
-by these groups and by $\omega,\log\omega$; factors in $Y$ alone contribute
-constants and factors $Z-c$ contribute $c\omega+d$. The three-shift argument and
-the countability argument apply unchanged.
+For each irreducible factor $R$ involving both variables, form the
+curve and vector field of \cref{diff:aut:eq:inducedfield} and take
+its finitely generated group $\mathfrak G_R$ from
+\cref{diff:aut:thm:scales}. Let $\mathfrak G_F$ be generated by the
+union of these finitely many groups together with $\omega$ and
+$\log\omega$. It is finitely generated even if there are no such
+factors, and the construction depends only on $F$.
+
+The inclusion of each monomial group includes its entire Hahn field,
+so all nonconstant solutions belonging to a mixed factor are in
+$K_F$. Factors in $Y$ alone contribute constants, and factors
+$Z-c$ contribute $c\omega+d$; these too lie in $K_F$.
+This covers every factor and every normalized derivation at once.
+The three-shift and countability arguments apply to the union of
+generators, proving differential stability, a common derivative
+restriction and cardinality $2^{\aleph_0}$. A nonzero constant
+$F$ has no solutions and is covered by the same choice of the
+two base generators.
 \end{proof}
+
+The hypothesis $F\neq0$ is necessary for a set-sized bound: if
+$F=0$, its solution collection is all of $\SC$.
+
 
 \begin{corollary}[Real autonomous equations]
 \label{diff:aut:cor:realindep}
@@ -13373,7 +13478,7 @@ Alessandro Berarducci and Vincenzo Mantova,
 \emph{Surreal numbers, derivations and transseries},
 Journal of the European Mathematical Society \textbf{20} (2018), 339--390.
 \href{https://doi.org/10.4171/JEMS/769}{doi:10.4171/JEMS/769}.
-Preprint: \href{https://arxiv.org/abs/1503.00315}{arXiv:1503.00315v3}.
+Preprint: \href{https://arxiv.org/abs/1503.00315v3}{arXiv:1503.00315v3}.
 Theorems A and B of the introduction, with the normalization stated between
 them, and the underlying Theorems 6.30 and 7.7; normal forms and summability
 in Sections 2--3.
@@ -13524,7 +13629,7 @@ and not attributed as a new operator principle.
 Marc Paul Noordman, Marius van der Put and Jaap Top,
 \emph{Autonomous first order differential equations},
 Transactions of the American Mathematical Society \textbf{375} (2022).
-Preprint: \href{https://arxiv.org/abs/1904.08152}{arXiv:1904.08152}. The
+Preprint: \href{https://arxiv.org/abs/1904.08152v1}{arXiv:1904.08152v1}. The
 geometric formalism of \cref{diff:aut:part}, the local formal normal forms
 (Lemma~6.1) and Rosenlicht's algebraic-independence theorem (Lemma~7.2,
 Proposition~7.3); the numbered statements are those of the arXiv version~1
