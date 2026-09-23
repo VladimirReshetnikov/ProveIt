@@ -220,6 +220,8 @@ import Surreal.Surcomplex.InverseTrigonometry
 import Surreal.Surcomplex.InverseTrigonometricDerivative
 import Surreal.Algebra.InverseTrigonometricTaylor
 import Surreal.Surcomplex.InverseTrigonometricTaylor
+import Surreal.Algebra.ArcsinTaylor
+import Surreal.Surcomplex.ArcsinSeries
 import Surreal.Surcomplex.TrigonometricFineDerivative
 import Surreal.Surcomplex.TrigonometricOrder
 import Surreal.Surcomplex.TrigonometricLeading

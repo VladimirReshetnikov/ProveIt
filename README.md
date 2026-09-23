@@ -424,6 +424,10 @@ full alternating odd-power strong series at infinitesimals, with a finite
 seventh-order remainder after degree five. Substitution of the reciprocal
 gives the expansion at every positive infinite slope, including `omega`,
 and proves that its angle is strictly and infinitesimally below `pi/2`.
+Inverse sine has the full central-binomial strong series, with an exact finite
+ninth-order remainder after degree seven. Both inverse sine and inverse
+tangent preserve valuation at infinitesimals: each is its input times a
+finite factor of standard part one.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual
