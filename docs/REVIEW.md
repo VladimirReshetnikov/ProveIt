@@ -3041,6 +3041,15 @@ remaining review starts at Section 15.8; later fraction material,
 Sections 17–18, added material in Sections 6 and 10, new companions,
 imported foundations and source reconciliation remain outstanding.
 
+The final synchronization merged `64571c3` and `bcac55a` through `129a053`,
+adding nonnegative-polynomial norm factorization and affine Cayley-chart
+Fejér–Riesz construction. No manuscript changed. The combined
+`LEAN_NUM_THREADS=2 lake build` passes 4,340 jobs and audits 13,715
+declarations using only `propext`, `Classical.choice` and `Quot.sound`.
+All 3,799 cited source labels resolve and the 3,297-row inventory still
+passes; both reviewed PDFs match their validated builds byte for byte.
+The local Markdown check resolves 1,430 destinations in 153 files.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
