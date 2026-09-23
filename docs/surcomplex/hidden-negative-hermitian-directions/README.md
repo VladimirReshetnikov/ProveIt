@@ -3,7 +3,8 @@
 **Prime-denominator approximation barriers and a two-scale matrix-measure criterion**
 Single-source research report, 22 September 2026. It is built from one
 manuscript, manuscript 06 of batch 19 (archive `hidden_negative_directions`),
-pinned to repository commit `048b72c`, and placed in commit `52c7ab6`.
+pinned to repository commit `048b72c`, placed in commit `30dfb4f`, and
+assembled in `ed88b8f`.
 Prepared for Vladimir Reshetnikov.
 
 This directory holds one manuscript. It is not a merge: there was no second
@@ -212,16 +213,16 @@ see [the review record](../../REVIEW.md). No Lean mapping was added.
 
 The source audited the collection at `048b72c`; `source_audit.md` keeps that
 audit as delivered, and Appendix A.3 of the article corrects it. At the pin
-the reader map did describe 36 reports; commit `52c7ab6` has since added four,
-this one among them. The source's search for "finite-lattice" reported no
-matches, but at the pin the phrase already occurs in an unrelated sense
+the reader map did describe 36 reports; raw placement `30dfb4f` added four,
+this one among them, bringing the count then to 40. The source's search for
+"finite-lattice" reported no matches, but at the pin the phrase already occurs in an unrelated sense
 (`tate:cor:lattice`, "A finite-lattice degree formula", listed in
 `FORMALIZATION.md`), so its conclusion stands while the search was
 incomplete. The source did not mention the measures report's proof of the
 scalar criterion or its Lean proof, and cited the reader map generically for
 Hahn closedness and the tail-span constructions; the article now points to
 the specific results. The neighbouring reports compared here changed in no
-relevant way between the pin and the placement.
+relevant way between the pin and assembly at `ed88b8f`.
 
 ## Build and reproduce
 
