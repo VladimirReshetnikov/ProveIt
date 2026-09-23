@@ -492,3 +492,8 @@ import Surreal.Algebra.QuadraticSplit
 import Surreal.Algebra.CoupledQuadraticSplit
 import Surreal.Algebra.CoupledQuadraticLocal
 import Surreal.Surcomplex.CoupledAngularLocalAlgebra
+import Surreal.Algebra.FormalCoordinateChange
+import Surreal.Algebra.FormalCoupledDiagonal
+import Surreal.Surcomplex.LocalSineSeries
+import Surreal.Surcomplex.CoupledAngularFormalCoordinates
+import Surreal.Surcomplex.CoupledAngularFormalReduction
