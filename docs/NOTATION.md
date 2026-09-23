@@ -132,6 +132,22 @@ the exclusion scale `δ₀` is an element of `Γ`. Computing the former does
 not divide elements of `Γ`. The coordinate derivative `D_z` kills the Hahn
 coefficient field, including all monomials `t^γ`.
 
+For the coefficient-field argument, `cvr(f)` is the dimension of the
+rational span of the nonzero Taylor coefficient values in `Γ ⊗ ℚ`.
+It differs from the rational rank of the full coefficient field's value
+group and from the number of exponents in a coefficient's Hahn support.
+“Rank one” means Archimedean here; it does not mean rational rank one.
+“No order unit” means that no single positive scale has cofinal integer
+multiples, a stronger condition than being non-Archimedean.
+
+The linearization offset `θ = min(ord_z Π_ij − j)` is an integer and can
+be negative. Its multiplier `Ξ(n)` depends on the solution and differs
+from the equation's corner polynomials `χ_P` and `I_P`. Mixed jets use
+differentiation before dilation: `(D_z^j f)(λz)`; differentiating `f(λz)`
+instead multiplies this by `λ^j`. Coarsened residue is `red_Δ` in the field
+`k_Δ`; when it embeds a coefficient field `L`, rational identities descend
+through the embedded copy of `L`, without choosing a residue-field section.
+
 The [hidden-negative-directions report](surcomplex/hidden-negative-hermitian-directions/article.tex)
 uses `𝒫_Γ` for complex Hahn series supported in some finitely generated
 additive subgroup of `Γ`; “finite-lattice support” permits infinite supports

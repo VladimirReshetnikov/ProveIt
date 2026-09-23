@@ -424,8 +424,9 @@ field has differential transcendence degree $2^{\aleph_0}$
 $\sum_{n\ge0}\omega^{-\omega^n}z^n$ satisfies no algebraic differential
 equation of any order (Theorem~\ref{hol:cf:thm:Fomega}).
 
-The hypotheses separate two obstructions. Differential equations have bounded
-valuation costs after passing to their coefficient recurrence. Dilation
+For the linear theorems, the hypotheses separate two obstructions.
+Differential equations have bounded valuation costs after passing to their
+coefficient recurrence. Dilation
 equations can have costs increasing linearly with the index, but only along
 the single scale $v(q)$; a scale that is not an order unit cannot reach all of
 $\Gamma$, even if its multiples are unbounded within their own Archimedean
@@ -4025,6 +4026,10 @@ New consequence (sources~11 and~12); the series is prior material.\\[4pt]
 Several multiplicatively independent dilations
 (Corollary~\ref{hol:cf:cor:several}) & The merge's observation from
 source~12's theorem; not claimed by source~12.\\[4pt]
+Mixed jets in the fraction field
+(Corollary~\ref{hol:cf:cor:meromorphicmixed}) &
+Consequence added here from source~12's coefficient theorem and source~11's
+descent; neither source states it.\\[4pt]
 Named published open conjecture & None claimed solved; the nonlinear question,
 answered in order one and, without an order unit, in all orders, is a
 question of this report, not a historical conjecture.\\[4pt]
@@ -4392,7 +4397,8 @@ transcendental} otherwise. For $\lambda\in\KK^\times$ and $j\ge0$ put
  =\sum_{n\ge j}a_n\fall nj\lambda^{n-j}z^{n-j}
  \qquad\Bigl(f=\sum_na_nz^n\Bigr),
 \end{equation}
-differentiation \emph{before} dilation. Since
+differentiation \emph{before} dilation. The same notation is used for
+$u\in\KK((z))$, using formal Laurent substitution. Since
 $D_z^j\sigma_\lambda f=\lambda^j\sigma_\lambda D_z^jf$, the operator
 $D_z^r\sigma_q^\ell$ of \eqref{hol:eq:mixed}, which dilates first, differs from
 $\jet{q^\ell}r$ by the nonzero scalar $q^{\ell r}$. This changes no algebraic
@@ -4620,8 +4626,10 @@ satisfy $v(a_n)+n\gamma\le\beta$.
 and suppose that infinitely many nonzero coefficients have
 $A_n:=v(a_n)+n\gamma\le\beta$. Strong summability at $t^\gamma$ gives a common
 lower bound $\alpha$ for all $A_n$, the least element of the union of the
-supports. Choose $\epsilon>0$ in $\Gamma$ with $\epsilon>\beta-\alpha$, which
-is possible because $\Gamma\ne0$. For two selected indices $n'<n$,
+supports. Choose any $\eta>0$ in $\Gamma$ and set
+$\epsilon=\max(\beta-\alpha,0)+\eta$. Then $\epsilon>0$ and
+$\epsilon>\beta-\alpha$, without division or an order-unit assumption.
+For two selected indices $n'<n$,
 \[
  (A_n-n\epsilon)-(A_{n'}-n'\epsilon)\le\beta-\alpha-(n-n')\epsilon<0,
 \]
@@ -4682,10 +4690,16 @@ Through Proposition~\ref{hol:cf:prop:criterion} it can also be read off the
 weighted values: for a product, if $A_i=v(a_i)+i\gamma$ and
 $B_j=v(b_j)+j\gamma$ have lower bounds $m_A,m_B$, then $A_i+B_j\le\beta$
 forces $A_i\le\beta-m_B$ and $B_j\le\beta-m_A$, which only finitely many pairs
-satisfy; for $\jet\lambda jf$ the coefficient of $z^n$ is
+satisfy. If a nonzero product coefficient at degree $n$ has weighted value
+at most $\beta$, one of its finitely many nonzero terms $a_i b_j$, $i+j=n$,
+must have weighted value at most $\beta$. Thus only finitely many degrees
+can occur, even when some terms cancel. A zero factor is immediate.
+For $\jet\lambda jf$ the coefficient of $z^n$ is
 $a_{n+j}\fall{n+j}j\lambda^n$, whose weighted value at $\gamma$ is that of
-$a_{n+j}$ at $v(\lambda)+\gamma$ minus the constant $j(v(\lambda)+\gamma)$
-(source~12). The quotient rule extends $D_z$ to $\FE$, and every nonzero
+$a_{n+j}$ at $v(\lambda)+\gamma$ minus the constant $j(v(\lambda)+\gamma)$.
+Here the falling factorial is a nonzero element of the trivially valued
+prime field, so it contributes no valuation (source~12). The quotient rule
+extends $D_z$ to $\FE$, and every nonzero
 power series is invertible in $\KK((z))$, so $\FE$ embeds there.
 \end{proof}
 
@@ -4720,8 +4734,12 @@ $x^{\alpha'}$ have different values, since equality would be an integer
 relation among the $v(x_i)$. A nonzero coefficient from $k_0$ has value zero.
 So the finitely many nonzero terms of a nonzero polynomial evaluated at the
 $x_i$ have pairwise distinct values, and the unique term of least value
-cannot be cancelled. Apply this to every finite independent subset of
-$v(L^\times)$.
+cannot be cancelled. For the rank inequality, choose a rational basis of
+$v(L^\times)\otimes_\Z\Q$ from the images of elements of $v(L^\times)$,
+and lift those values to elements of $L^\times$. Every polynomial uses only
+finitely many of the lifts, so the preceding argument proves that the whole
+lifted family is algebraically independent. Its cardinality is the rational
+rank, giving the inequality also when either rank is infinite.
 \end{proof}
 
 Source~12 states the lemma for $k\subseteq L\subseteq\KK$, source~11 for
@@ -4770,7 +4788,8 @@ arbitrary Hahn elements.
 For a convex subgroup $\Delta\subseteq\Gamma$ the quotient $\Gamma/\Delta$ is
 an ordered abelian group, and
 \[
- v_\Delta(a)=v(a)+\Delta\in\Gamma/\Delta\qquad(a\in\KK^\times)
+ v_\Delta(a)=v(a)+\Delta\in\Gamma/\Delta\qquad(a\in\KK^\times),
+ \qquad v_\Delta(0)=+\infty,
 \]
 is a valuation on the same field $\KK$, a coarsening of $v$, as in
 Theorem~\ref{hol:thm:coarse}; it is not a coefficientwise map to a smaller
@@ -4821,9 +4840,10 @@ Proposition~\ref{hol:cf:prop:exterior} excludes a nonpolynomial $f$.
 
 For $f=\sum_na_nz^n$ define the \emph{coefficient-value rank}
 \begin{equation}\label{hol:cf:eq:cvr}
- \cvr(f)=\dim_\Q\operatorname{span}_\Q\{v(a_n):a_n\ne0\}\subseteq
- \Gamma\otimes_\Z\Q.
+ \cvr(f)=\dim_\Q\left(\operatorname{span}_\Q
+ \{v(a_n)\otimes1:a_n\ne0\}\right).
 \end{equation}
+The span is taken in $\Gamma\otimes_\Z\Q$, and $\cvr(f)$ is its dimension.
 It is the rational rank of the values of the Taylor coefficients, not the
 number of support exponents of any single coefficient.
 
@@ -4881,7 +4901,9 @@ is nonzero for all sufficiently large $n\in\N$.
 \begin{proof}
 Discard the zero $p_i$, and let $E$ be the shift $(Eu)(n)=u(n+1)$. The
 sequence $\lambda_i^np_i(n)$ is annihilated by $(E-\lambda_i)^{\deg p_i+1}$, so
-$\Xi$ satisfies a linear recurrence with constant coefficients in $K_0$, and
+the product of these annihilators kills $\Xi$: they commute because they
+are polynomials in the same shift $E$. Thus $\Xi$ satisfies a linear
+recurrence with constant coefficients in $K_0$, and
 by the imported theorem its zero set is a finite set together with finitely
 many infinite arithmetic progressions. No infinite progression can occur.
 If $\Xi(a+bu)=0$ for all $u\ge0$, with $b\ge1$, then
@@ -4902,8 +4924,8 @@ For $m=1$ the lemma is the finiteness of the roots of a nonzero polynomial,
 since $\lambda_1^n\ne0$. When only the $j=0$ jets occur and
 $\lambda_i=q^{m_i}$ with distinct integers $m_i$ and a nontorsion $q$, the
 multiplier is a nonzero Laurent polynomial evaluated at the distinct elements
-$q^n$, again without the imported theorem. It is needed for simultaneous
-derivatives and general dilations.
+$q^n$, again without the imported theorem. The general mixed-dilation
+argument uses the imported theorem.
 
 \begin{theorem}[Finite coefficient field; sources~11 and~12]
 \label{hol:cf:thm:coefficients}
@@ -4923,10 +4945,14 @@ polynomial relation, and finitely many $a_n$.
 \end{theorem}
 
 \begin{proof}
-Treat both parts at once. In case~(a) put $m=1$, $\lambda_1=1$ and
-$R=k_0[[z]]$; in case~(b) put $R=K_0[z]$. After multiplying by a power of $z$
-there is a nonzero polynomial over $R$ in variables $Y_{ij}$, $1\le i\le m$,
-$0\le j\le r$, vanishing at $Y_{ij}=\jet{\lambda_i}ju$; choose one, $P$, of
+Treat both parts at once, first choosing a relation involving derivative
+orders at most $r$. In case~(a) put $m=1$, $\lambda_1=1$ and
+$R=k_0[[z]]$, and multiply the relation by a sufficiently large power of $z$
+to remove the finitely many Laurent poles of its coefficients. In case~(b)
+put $R=K_0[z]$ and clear a common polynomial denominator of its finitely many
+rational-function coefficients. In either case there is a nonzero
+polynomial over $R$ in variables $Y_{ij}$, $1\le i\le m$, $0\le j\le r$,
+vanishing at $Y_{ij}=\jet{\lambda_i}ju$. Among these relations choose $P$ of
 least total degree in the $Y_{ij}$. Its degree is positive, since a nonzero
 element of $R$ does not vanish in $K_0[[z]]$. Put
 \[
@@ -4963,24 +4989,39 @@ at the jets of $u$ gives
 because every term of $R_n$ has at least two factors $\jet{\lambda_i}jg_n$
 and its other factors have nonnegative order; this holds even when the
 evaluated partials vanish to high order. For $n>\theta+2r$ one has
-$2(n-r)>n+\theta$, so $R_n$ contributes nothing in degree $n+\theta$. In
-$\Pi_{ij}\jet{\lambda_i}jg_n$ a coefficient $a_{m'}$ first appears in degree
-at least $\ordz\Pi_{ij}+m'-j\ge m'+\theta$, so only $m'=n$ and the leading
-terms of \eqref{hol:cf:eq:theta} contribute to degree $n+\theta$, with
-$\xi_{ij}\lambda_i^{n-j}\fall nja_n$. Hence
+$2(n-r)>n+\theta$, so $R_n$ contributes nothing in degree $n+\theta$.
+For each nonzero $\Pi_{ij}$ the coefficient contributed by $a_{m'}$ to
+degree $n+\theta$ is
+\[
+ a_{m'}\fall{m'}j\lambda_i^{m'-j}
+ [z^{n+\theta-m'+j}]\Pi_{ij},\qquad m'\ge n.
+\]
+If $m'>n$, the displayed exponent is below $\theta+j$ and hence below
+$\ordz\Pi_{ij}$, or is negative, so this coefficient is zero. At $m'=n$
+it is $a_n\fall nj\lambda_i^{n-j}\xi_{ij}$. Terms with $\Pi_{ij}=0$
+contribute nothing. Thus only the stated multiplier of $a_n$ remains:
 \begin{equation}\label{hol:cf:eq:recurrence}
  a_n\,\Xi(n)=-\coeffz{n+\theta}{P\bigl((\jet{\lambda_i}jT_n)_{i,j}\bigr)}.
 \end{equation}
-Each $\xi_{ij}$ is determined by the scalar coefficients of $P$, the
-$\lambda_i$, and the $a_{m'}$ with $m'\le\theta+2r$. Choose $N$ beyond $r$,
-beyond $\theta+2r$, and beyond every natural zero of $\Xi$, and let $L$ be the
-field generated over $k_0$ by the $\lambda_i$, the scalar coefficients of $P$
-and $a_0,\ldots,a_N$. For $n>N$ the right side of
-\eqref{hol:cf:eq:recurrence} lies in $L(a_0,\ldots,a_{n-1})$ and
-$\Xi(n)\in L^\times$; induction gives $a_n\in L$. In case~(a) every scalar
-coefficient of $P$ and $\lambda_1=1$ lie in $k_0$, so
-$L=k_0(a_0,\ldots,a_N)$. In case~(b) the finitely many scalar coefficients of
-$P$ lie in $K_0$, and $L$ is finitely generated.
+Put $N_0=\theta+2r\ge r$. Let $L_0=k_0$ in case~(a); in case~(b), let
+$L_0$ be generated over $k_0$ by the $\lambda_i$ and the finitely many
+scalar coefficients of $P$. Replacing $u$ by $T_{N_0+1}$ changes every jet
+of order at most $r$ only in degrees at least
+$N_0+1-r=\theta+r+1$. Polynomial substitution with coefficients in $R$
+preserves this congruence. Since $\xi_{ij}$ is a coefficient in degree
+$\theta+j\le\theta+r$, it is determined by that truncation; thus
+$\xi_{ij}\in L_0(a_0,\ldots,a_{N_0})$.
+
+Choose $N>N_0$ so that $\Xi(n)\ne0$ for every $n\ge N$, and put
+$L=L_0(a_0,\ldots,a_{N-1})$. Its generators contain the required prefix,
+so $\Xi(n)\in L^\times$ for $n\ge N$. If all $a_{m'}$ with $m'<n$
+already lie in $L$, then the right side of
+\eqref{hol:cf:eq:recurrence} lies in $L$: in case~(a) every coefficient
+of the finitely many power series occurring as coefficients of $P$ lies
+in $k_0$, and in case~(b) all scalar coefficients of $P$ lie in $L_0$.
+Division by $\Xi(n)$ gives $a_n\in L$, completing the induction.
+In case~(a), $L=k_0(a_0,\ldots,a_{N-1})$; in case~(b), $L$ is finitely
+generated over $k_0$.
 \end{proof}
 
 \begin{remark}[Second route: source~11's minimal relation]
@@ -5008,7 +5049,8 @@ theorem at an ordinary point is invoked.
 
 \begin{remark}[Existential, not an algorithm; source~12]
 \label{hol:cf:rem:existential}
-Skolem--Mahler--Lech supplies no computable last exceptional index, and no
+The invoked form of Skolem--Mahler--Lech supplies no effective bound on the
+last exceptional index, and no
 effective equality, leading-exponent access or computable representation of
 the coefficients of $P$ is assumed. Part~(b) is an existence statement. In
 part~(a) the multiplier is explicitly a polynomial, but computational claims
@@ -5049,6 +5091,7 @@ its length.
 
 \begin{corollary}[Finitely many scalar parameters; source~11]
 \label{hol:cf:cor:finitegen}
+Let $K_0$ be a field of characteristic zero.
 If $u\in K_0((z))$ is differentially algebraic over $K_0(z)$, all its Laurent
 coefficients lie in a subfield of $K_0$ finitely generated over $\Q$.
 \end{corollary}
@@ -5056,9 +5099,11 @@ coefficients lie in a subfield of $K_0$ finitely generated over $\Q$.
 \begin{proof}
 Clear denominators in a relation; its finitely many scalar coefficients
 $c_1,\ldots,c_q$ generate $k_0=\Q(c_1,\ldots,c_q)$. Write $u=z^{-m'}y$ with a
-power series $y$; every jet of $u$ is an invertible triangular
-$k_0(z)$-linear combination of jets of $y$, so $y$ is differentially algebraic
-over $k_0(z)\subseteq k_0((z))$. Theorem~\ref{hol:cf:thm:coefficients}\,(a)
+power series $y$, taking $m'\ge0$. Leibniz's formula expresses the jets of
+$u$ through order $r$ as a triangular $k_0(z)$-linear combination of the
+jets of $y$ through that order, with nonzero diagonal $z^{-m'}$.
+This invertible substitution preserves nonzero polynomial relations, so
+$y$ is differentially algebraic over $k_0(z)\subseteq k_0((z))$. Theorem~\ref{hol:cf:thm:coefficients}\,(a)
 puts the coefficients of $y$, hence of $u$, in $k_0$ with finitely many
 initial coefficients adjoined.
 \end{proof}
@@ -5080,7 +5125,8 @@ $\mathcal O_\Delta$ and nonzero reduction.
 \end{lemma}
 
 \begin{proof}
-Choose $\eta>\Delta$. By Proposition~\ref{hol:cf:prop:criterion} with
+Because $\Delta$ is proper, choose a positive element $\eta$ outside it;
+convexity gives $\eta>\Delta$. By Proposition~\ref{hol:cf:prop:criterion} with
 $\gamma=0$, eventually $v(g_n)>\eta$, so $v_\Delta(g_n)>0$ and
 $\red_\Delta(g_n)=0$. For the second assertion take $c=h_j$ as in
 Lemma~\ref{hol:cf:lem:min}: all coefficients of $h/c$ have nonnegative $v$,
@@ -5098,11 +5144,16 @@ After multiplying by a power of $z$, let $u=\sum_{n\ge0}u_nz^n\in L[[z]]$ lie
 in $L'(z)$. Being regular at zero, $u=p/q$ with $p,q\in L'[z]$ and $q(0)=1$;
 put $d=\deg q$ and take $N\ge\max(d,\deg p)$. Then
 $u_n+q_1u_{n-1}+\cdots+q_du_{n-d}=0$ for $n>N$. This is a linear system with
-coefficients in $L$ in the finitely many unknowns $q_1,\ldots,q_d$; it has a
-solution in $L'$, its augmented rows lie in $L^{d+1}$ and have a finite
-spanning subfamily, and Gaussian elimination over $L$ gives a solution in $L$.
-With it, $q_0=1+\sum_jq_jz^j\in L[z]$ makes $q_0u$ a polynomial, so
-$u\in L(z)$.
+coefficients in $L$ in the finitely many unknowns $q_1,\ldots,q_d$.
+The augmented rows lie in $L^{d+1}$, so finitely many of them span all the
+rows. Solving that finite subsystem is therefore equivalent to solving the
+whole system. Gaussian elimination uses coefficients in $L$, and cannot
+produce an inconsistent row because a solution exists in $L'$. Setting its
+free variables to zero gives a solution $b_1,\ldots,b_d\in L$.
+Then $\widetilde q=1+\sum_{j=1}^d b_jz^j\in L[z]$ satisfies
+$[z^n](\widetilde q u)=0$ for all $n>N$, so
+$\widetilde q u\in L[z]$ and $u\in L(z)$. This includes $d=0$, when there
+are no unknowns and $u$ is already a polynomial.
 \end{proof}
 
 \begin{theorem}[Coarsening descent; source~11]\label{hol:cf:thm:descent}
@@ -5121,7 +5172,8 @@ Proposition~\ref{hol:cf:prop:criterion} only finitely many $u_n$ are nonzero.
 Next let $u\in\FE\cap L[[z]]$, say $u=g/h$ with $g,h\in\EK$ and $h\ne0$.
 Normalize $h$ by $c$ as in Lemma~\ref{hol:cf:lem:reduction}. Since $v_\Delta$
 vanishes on $L^\times$, $\red_\Delta$ embeds $L$ as a subfield $\overline
-L\subseteq k_\Delta$. In the formal identity
+L\subseteq k_\Delta$: every nonzero element of $L$ is a unit of
+$\mathcal O_\Delta$, and so has nonzero residue. In the formal identity
 \begin{equation}\label{hol:cf:eq:reductionidentity}
  g/c=(h/c)\,u
 \end{equation}
@@ -5133,9 +5185,17 @@ reductions are polynomials, the second nonzero, and reducing
 $\overline{h/c}\;\overline u=\overline{g/c}$ in $k_\Delta[[z]]$. So
 $\overline u\in k_\Delta(z)\cap\overline L[[z]]$, and
 Lemma~\ref{hol:cf:lem:rationaldescent} gives $\overline u\in\overline L(z)$.
-The field isomorphism $L\to\overline L$ carries this rational identity back
-to $u\in L(z)$. Finally, for $u\in\FE\cap L((z))$ apply this to $z^{m'}u\in
-L[[z]]$, which lies in the field $\FE$. The inclusions $\supseteq$ are clear.
+Write $\overline u=\overline p/\overline q$ with
+$\overline p,\overline q\in\overline L[z]$ and $\overline q\ne0$.
+Lift their finitely many coefficients through the isomorphism
+$L\to\overline L$ to $p,q\in L[z]$, with $q\ne0$. Every coefficient of
+$qu-p$ belongs to $L$ and has zero residue; injectivity on $L$ therefore
+gives $qu=p$, hence $u\in L(z)$. This lifts a rational identity over the
+embedded field, not arbitrary residue coefficients from $k_\Delta$.
+Finally, for $u\in\FE\cap L((z))$ choose $m'\ge0$ so that
+$z^{m'}u\in L[[z]]$, apply the power-series case, and divide by $z^{m'}$.
+The inclusions $\supseteq$ hold because all polynomials over $L$ are strongly
+entire and their quotients belong to $\FE$.
 \end{proof}
 
 \begin{remark}[Numerator and denominator together; source~11]
@@ -5148,8 +5208,10 @@ would be unjustified.
 \begin{example}[The formal exponential; source~11]
 With $L=k$ and $\Delta=\{0\}$, Theorem~\ref{hol:cf:thm:descent} gives
 $\FE\cap k((z))=k(z)$ for every nonzero $\Gamma$. The formal series
-$\sum_nz^n/n!$ is not rational (a rational $r\ne0$ with $D_zr=r$ would have
-logarithmic derivative tending to $0$ at infinity, not $1$), so it is not a
+$\sum_nz^n/n!$ is not rational: if $r=p/q\ne0$ with $p,q\in k[z]$
+satisfied $D_zr=r$, then $p'q-pq'=pq$. The left side has degree at most
+$\deg p+\deg q-1$ (or is zero), while the right side has degree
+$\deg p+\deg q$. This is impossible, so the formal exponential is not a
 quotient of strongly entire series. This says nothing about the complex
 exponential, which belongs to a different analytic category.
 \end{example}
@@ -5232,8 +5294,10 @@ every strongly entire $u_i$ is a polynomial.
 \end{corollary}
 
 \begin{proof}
-The field $\KK(z)(u_1,\ldots,u_{m'})$ is stable under $D_z$ and has finite
-transcendence degree over $\KK(z)$, so the jets of each $u_i$ are
+The field $\KK(z)(u_1,\ldots,u_{m'})$ is stable under $D_z$: the equations
+put each $D_zu_i$ in the field, and the quotient rule handles every rational
+expression in the $u_i$. Its transcendence degree over $\KK(z)$ is at most
+$m'$, so the $m'+1$ elements $u_i,D_zu_i,\ldots,D_z^{m'}u_i$ are
 algebraically dependent. Apply Theorem~\ref{hol:cf:main:entire}\,(c), and (a)
 for the entire ones.
 \end{proof}
@@ -5403,8 +5467,8 @@ Theorem~\ref{hol:cf:main:entire}\,(a); by the remark on indexing in
 Section~\ref{hol:cf:sub:conventions} this is the same statement. The theorem
 upgrades the linear rigidity of Theorem~\ref{hol:thm:explicit} and the
 two-jet independence of Corollary~\ref{hol:nl:cor:infiniterank}; the series
-itself is not new. For example, all derivatives of $F$ at all integer powers
-of any one of $q=2$, $q=1+t^{e_0}$ or $q=t^{e_0}$ are jointly algebraically
+itself is not new. For example, all formal series $(D_z^jF)(q^iz)$, $i\in\Z$, $j\ge0$, for any one of
+$q=2$, $q=1+t^{e_0}$ or $q=t^{e_0}$ are jointly algebraically
 independent over $K_{\Gamma_\infty}(z)$: the first two parameters have
 valuation zero, and the third has a positive valuation that is not an order
 unit (source~12).
@@ -5471,7 +5535,8 @@ tail-span report~\cite{repotail}. For $\alpha\in\{0,1\}^{\N_{>0}}$ put
  \mathcal F_\alpha(z)=\sum_{n\ge1}t^{e_{\code(\alpha|n)}}z^n,\qquad
  \alpha|n=(\alpha_1,\ldots,\alpha_n).
 \end{equation}
-All coefficients are real, indeed rational, Hahn monomials.
+Each nonzero coefficient is a Hahn monomial with coefficient $1$ in the
+prime field.
 
 \begin{proposition}[Source~11]\label{hol:cf:prop:branchentire}
 Every $\mathcal F_\alpha$ is strongly entire over $k((t^{\Gamma_\infty}))$.
@@ -5491,13 +5556,17 @@ $K(z)$.
 \end{proposition}
 
 \begin{proof}
-Given finitely many distinct branches and one of them, beyond the largest
-common-prefix length every code of the chosen branch occurs on none of the
+Given finitely many distinct branches and one of them, take the largest
+common-prefix length with the other branches, or $0$ if there are none.
+Beyond that length every code of the chosen branch occurs on none of the
 others. So the chosen series has infinitely many coefficient monomials
 $t^{e_c}$ indexed by codes absent from all other coefficient fields, and by
 Lemma~\ref{hol:cf:lem:monomials} they are algebraically independent over the
-field generated by the other branches' monomials. Condition
-\eqref{hol:cf:eq:infcoeff} holds with $k_0=k$, and
+field generated by the other branches' monomials. Indeed, a putative
+polynomial relation uses only finitely many private monomials and rational
+functions of finitely many other monomials. Clearing denominators would
+contradict the algebraic independence of that finite combined family.
+Condition \eqref{hol:cf:eq:infcoeff} holds with $k_0=k$, and
 Theorem~\ref{hol:cf:thm:indcriterion} applies.
 \end{proof}
 
@@ -5638,6 +5707,29 @@ implications proved are
 \]
 not their converses.
 
+An explicit example, added here, is
+\[
+ f(z)=F(z)+\frac1{1-z}
+ =\sum_{n\ge0}(1+t^{e_n})z^n
+ \quad\text{over }K_{\Gamma_\infty}.
+\]
+Every coefficient has value zero, so $\cvr(f)=0$, while subtracting $1$
+recovers the algebraically independent monomials of
+Lemma~\ref{hol:cf:lem:monomials}; its coefficient field has infinite
+transcendence degree. This $f$ is not strongly entire, by
+Proposition~\ref{hol:cf:prop:criterion} with $\gamma=\beta=0$.
+Nevertheless
+\[
+ (D_z^jf)(\lambda z)=(D_z^jF)(\lambda z)
+       +\frac{j!}{(1-\lambda z)^{j+1}}.
+\]
+For every finite selection of jets the added terms belong to
+$K_{\Gamma_\infty}(z)$, so translation by them is a polynomial-algebra
+automorphism. The full mixed independence of
+Theorem~\ref{hol:cf:thm:Fomega} therefore holds for $f$ with the same
+restriction on the dilation quotients, despite its zero coefficient-value
+rank.
+
 \subsection{Consequences for the questions of Section~\ref{hol:sec:status}}
 \label{hol:cf:sub:questions}
 
@@ -5707,11 +5799,52 @@ unity. The existence criterion in groups with an order unit, and relations
 among parameters with a root-of-unity quotient, remain open; the question is
 re-scoped accordingly in Section~\ref{hol:sec:status}.
 
-\paragraph{A combination not made.}
-Theorem~\ref{hol:cf:thm:coefficients}\,(b) combined with the descent of
-Theorem~\ref{hol:cf:thm:descent} would suggest a meromorphic version of
-Theorem~\ref{hol:cf:main:entire}\,(b). Neither source claims it, and it is not
-stated here.
+\paragraph{Mixed jets in the fraction field.}
+The coefficient theorem of source~12 and the fraction-field descent of
+source~11 also give the following consequence. Neither source states it;
+it is added here by combining their results.
+
+\begin{corollary}[Mixed rigidity in the fraction field]
+\label{hol:cf:cor:meromorphicmixed}
+Suppose $\Gamma$ has no order unit, and let $u\in\FE\setminus\KK(z)$.
+If $\Lambda\subseteq\KK^\times$ has no root-of-unity quotient between
+distinct elements, the Laurent series
+$\{(D_z^ju)(\lambda z):\lambda\in\Lambda,\ j\ge0\}$ are algebraically
+independent over $\KK(z)$.
+\end{corollary}
+
+\begin{proof}
+Choose $m'\ge0$ so that $y=z^{m'}u\in\KK[[z]]$; also $y\in\FE$.
+If the stated family were dependent, a nonzero relation would involve
+finitely many parameters and derivative orders. Adjoin the lower orders
+through the largest order $r$ used, and for each parameter use Leibniz's
+formula, with differentiation before dilation:
+\[
+ (D_z^ju)(\lambda z)=
+ \sum_{\ell=0}^j\binom j\ell\fall{-m'}{j-\ell}
+ (\lambda z)^{-m'-j+\ell}(D_z^\ell y)(\lambda z).
+\]
+For each $\lambda$ this is a triangular change of jet variables over
+$\KK(z)$ with nonzero diagonal $(\lambda z)^{-m'}$. The combined change
+is therefore an automorphism of the finite polynomial algebra of jet
+variables, so it carries the relation to a nonzero relation among the jets
+of $y$. Clear its rational denominators and apply
+Theorem~\ref{hol:cf:thm:coefficients}\,(b), with $k_0=k$ and $K_0=\KK$.
+All coefficients of $y$ lie in a field $L\subseteq\KK$ finitely generated
+over $k$. Lemmas~\ref{hol:cf:lem:valuerank} and~\ref{hol:cf:lem:principal}
+put $v(L^\times)$ in a proper convex subgroup. Since
+$y\in\FE\cap L[[z]]$, the fraction-field part of
+Theorem~\ref{hol:cf:thm:descent} gives $y\in L(z)$. Thus
+$u=z^{-m'}y\in\KK(z)$, a contradiction.
+\end{proof}
+
+The excluded class is the rational functions: a nonpolynomial rational
+function still satisfies a polynomial relation over $\KK(z)$. Taking
+$\Lambda=\{1\}$ recovers the purely differential statement in
+Theorem~\ref{hol:cf:main:entire}\,(c). This consequence uses the same
+characteristic-zero and quotient hypotheses as the mixed coefficient
+theorem. The no-order-unit hypothesis supplies the proper convex subgroup
+needed for descent.
 
 \subsection{Predecessors, repository comparison and priority}
 \label{hol:cf:sub:predecessors}
@@ -5730,8 +5863,8 @@ Theorem~1.1~\cite{bell}, imports only that classical theorem and not Bell's
 affine-variety generalization, and checked Lech's paper~\cite{lech} through
 publisher metadata only, without reconstructing its proof. Both consulted
 Hu--Luan~\cite{huluan}, whose setting is an algebraically closed field
-complete for a nontrivial real-valued non-Archimedean absolute value; its
-hypotheses are not transferred to arbitrary-rank Hahn fields, its results are
+of characteristic zero, complete for a nontrivial real-valued non-Archimedean
+absolute value; its hypotheses are not transferred to arbitrary-rank Hahn fields, its results are
 neither inferred nor replaced, and no rank-one question is claimed resolved.
 For normal forms source~11 used Mantova--Matusinski, Section~2.2~\cite{mantovamatusinski},
 and source~12 Bournez--Guilmant, Corollary~2.7~\cite{bgexp}, with the same
@@ -5790,9 +5923,10 @@ or audit files, is kept. The tag says which source states it.
 settled, and no counterexample is given. Partial theta, $\Theta_p$ or $G$,
 is not a counterexample to purely differential rigidity: its equation
 contains a dilation, and no new all-order claim is made for it.
-\item \emph{[11, 12]} No Lean formalization, no Lean build of the repository
-by source~11, no computer-algebra certification of an infinite statement, and
-no independent refereeing.
+\item \emph{[11, 12]} The delivered sources supply no Lean formalization of
+this theorem package or independent referee report. Source~11 performed no
+Lean build of the repository. The finite checks provide no computer-algebra
+certification of an infinite statement.
 \item \emph{[11, 12]} Historical priority is not certified; the literature
 searches were targeted, with the access limits recorded in
 Section~\ref{hol:cf:sub:predecessors}, and a failed search is not evidence.
@@ -5852,11 +5986,15 @@ constants only, not new dilation parameters from the extension.
 differential problem over $\C((t^\Q))$.
 \item \emph{[12]} Dilations with a root-of-unity quotient are excluded
 (Question~\ref{hol:cf:q:torsion}).
-\item \emph{[12]} In groups of uncountable cofinality the statements are true
-but vacuous (Corollary~\ref{hol:cf:cor:cofinality}).
-\item \emph{[merge]} Corollary~\ref{hol:cf:cor:several} is the merge's
-observation, not a claim of source~12, and no meromorphic mixed statement is
-made.
+\item \emph{[12]} In groups of uncountable cofinality there is no
+nonpolynomial strongly entire series, so statements requiring one are
+vacuous (Corollary~\ref{hol:cf:cor:cofinality}). The coefficient-value-rank
+criterion for arbitrary formal series has no such restriction.
+\item \emph{[merge]} Corollary~\ref{hol:cf:cor:several} is a consequence
+assembled from source~12. Corollary~\ref{hol:cf:cor:meromorphicmixed} is an
+additional consequence of sources~11 and~12 together. Neither is attributed
+to the delivered sources as a stated result, and no historical priority is
+claimed for either deduction.
 \end{enumerate}
 
 \section{Conclusion}
@@ -6018,24 +6156,33 @@ several dilations use it.
 
 The potentially dangerous hypotheses, collected for review:
 \begin{itemize}
-\item Supports and the value group are sets; all operators are finite sums;
-all integer indices are ordinary nonnegative integers.
+\item Supports and the value group are sets; all operators are finite sums.
+Power-series degrees and derivative orders are ordinary nonnegative integers;
+dilation powers may be negative, as may the linearization offset $\theta$.
+Formal Laurent series have only finitely many negative powers.
 \item $\Gamma\ne0$, set-sized, ordered abelian. \emph{Divisibility is not
 assumed} except in Corollary~\ref{hol:cor:periodic}, the refined threshold
 \eqref{hol:eq:refinedthreshold}, Theorem~\ref{hol:thm:coarse}\,(b),
 and Example~\ref{hol:ex:sparse}, each of which states it.
-\item Series are ordinary $\N$-indexed power series in one variable, except in
-Section~\ref{hol:sec:multi}. Equation coefficients are rational functions of
-that variable, not arbitrary entire functions; their scalar coefficients may
-be arbitrary Hahn elements.
+\item Series are ordinary $\N$-indexed power series in one variable, except
+in the several-variable Sections~\ref{hol:sec:multi}
+and~\ref{hol:nl:sub:euler}, and in the formal Laurent fraction field
+$\FE$. The main workspace rigidity equations have rational-function
+coefficients in the variable, with arbitrary Hahn scalar coefficients.
+The relative coefficient-field theorem
+(Theorem~\ref{hol:cf:thm:coefficients}\,(a)) also allows coefficients in
+$k_0((z))$; that generality is used in the joint-independence criterion.
 \item The residue field is characteristic zero and trivially valued.
 Algebraic closedness is not used. It is $\C$ in
 Sections~\ref{hol:sec:intro}--\ref{hol:sec:certificates} and an arbitrary
 characteristic-zero field in the nonlinear part; the latter generality is not
 transferred to the linear theorems (Convention~\ref{hol:nl:conv:field}).
 Characteristic zero is essential (Example~\ref{hol:nl:ex:charp}).
-\item Dilation parameters are nonzero and nontorsion; nontorsion is
-essential, as Section~\ref{hol:sec:torsion} shows by counterexample.
+\item The single parameter $q$ in the main dilation classification is
+nonzero and nontorsion. In the mixed-jet statements every $\lambda$ is
+nonzero, and distinct parameters have non-root-of-unity quotients; an
+individual parameter may be $1$. Section~\ref{hol:sec:torsion} explains the
+failure when this quotient condition is dropped.
 \item The derivative is $d/dz$, not a scalar surreal derivation.
 \item Entireness is always relative to one fixed workspace, never to
 $\No[i]$. Strong summability requires both well-ordering and local finiteness.
@@ -6048,8 +6195,9 @@ Nonlinear differential transcendence in all orders, and algebraic
 independence of derivatives at dilations with pairwise quotients that are not
 roots of unity, are proved only when $\Gamma$ has no order unit, or for a
 single series with infinite coefficient-value rank (the coefficient-field
-part). Nothing is claimed for groups with an order unit beyond these, and
-nothing for dilations with a root-of-unity quotient.
+part). No universal all-order rigidity theorem is claimed for groups with an
+order unit, and no general mixed-jet independence theorem is claimed when
+a quotient is a root of unity.
 \end{itemize}
 
 Two boundary behaviours deserve separate emphasis because they point in
@@ -6065,10 +6213,12 @@ Section~\ref{hol:sub:coarseboundary} shows why.
 Deliberate exclusions, recorded so that no reader supplies them by analogy:
 finite-order $q$ is excluded from the main classification and has genuine
 periodic-support counterexamples; mixed operators at unit valuation are not
-classified when $\Gamma$ has an order unit; for such $\Gamma$ no nonlinear
-differential algebraic rigidity is claimed beyond order one, the
-nondegenerate higher-order class and positive-weight Euler relations, whose
-own non-claims are listed in Section~\ref{hol:nl:sub:nonclaims}, while the
+classified when $\Gamma$ has an order unit. For such $\Gamma$, the universal
+nonlinear rigidity results cover order one, the nondegenerate higher-order
+class and positive-weight Euler relations; the infinite-coefficient-value-rank
+criterion gives additional all-order results for individual series, including
+Theorem~\ref{hol:cf:thm:rankone}. The nonlinear part keeps the non-claims of
+Section~\ref{hol:nl:sub:nonclaims}, while the
 no-order-unit results keep the non-claims of
 Section~\ref{hol:cf:sub:nonclaims}; no complete algorithm for arbitrary
 surreal comparisons or cofinality decisions is claimed; the finite checks
