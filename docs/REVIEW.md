@@ -1342,6 +1342,30 @@ index checks 2,440 results in 48 sources; all 2,695 cited labels and 1,019 local
 Markdown destinations resolve. Remaining imported-result and source
 reconciliation work is separate from this completed main-text reading.
 
+Merged the triangle-angle formalization and gamma/zeta placement through
+`d2752d8`. The merge leaves the reviewed three-duals source and PDF unchanged
+and changes no previously mapped manuscript statement. The Lean build passed
+all 3,990 jobs; the default axiom audit accepted 7,287 declarations with only
+`propext`, `Classical.choice` and `Quot.sound`.
+
+An independent archive-member comparison verifies all 31 gamma/zeta files
+placed in `e4f8848`: two raw main files from manuscript 06 and 29 historical
+code/build/data artifacts from the six archives. The sole CRLF CSV retains
+all 738 bytes and 24 CRLF pairs, with its `-text` attribute. The current
+main source has 25 standard statements, 104 unprefixed labels and two
+unlabeled corollaries. Five labels collide with other reports, so index
+navigation includes the source path. The delivered guide still names old
+package paths and its 28-page source PDF; no assembled report PDF is present.
+Those write-phase tasks remain pending, and the other five source texts
+remain recoverable from the archives in Git history.
+
+The provisional source index now covers 2,465 statements in 49 current main
+sources, comprising 48 assembled reports and this placed base manuscript.
+The independent audit verifies the counts, headings, labels and line anchors;
+all 2,719 cited source labels and 1,025 local Markdown destinations in 109
+files resolve. This adds navigation only, not mathematical or Lean coverage
+of the new report.
+
 ## Remaining scope
 
 Batch 22, placed in `7b5f934`, was assembled in `68e2960` and catalogued
@@ -1351,10 +1375,13 @@ in `5d369a0`. Its two reports,
 new sections of entire functions, holonomic rigidity, trigonometry, Euclidean
 three-space and Hahn probability are now indexed from their written sources.
 Their mathematical proof review and source reconciliation remain pending.
-The collection has 48 assembled reports and 2,440 indexed standard results.
-Six gamma/zeta archives delivered in `cafe42f` remain in `docs/new/`; their
-placement, assembly and review are still pending and they are not included
-in the main-source count.
+The collection has 48 assembled reports and one placed report awaiting assembly.
+The six gamma/zeta archives delivered in `cafe42f` were placed in `e4f8848` as
+[gamma and zeta functions](surcomplex/gamma-and-zeta-functions/). Its base
+manuscript 06 is provisionally indexed with 25 standard results, bringing the
+49-source index to 2,465. That count excludes the additional claims of the other
+five manuscripts. Assembly, catalogue integration and mathematical review of
+the six-source report remain pending; the retired archives remain in Git history.
 
 The nine manuscripts placed in `d4e71b7` are grouped as
 [birthday cutoffs](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/)
