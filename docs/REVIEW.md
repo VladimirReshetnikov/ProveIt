@@ -2296,6 +2296,17 @@ catalogue's 51 main-document destinations exist; its three-pass build has
 28 pages and no diagnostics, and all pages were visually checked. The
 previous 4,264-job Lean build remains applicable after this docs-only merge.
 
+The first publish attempt encountered `220784a`, including the eight
+cosine-fold modules in `4accabc` and an independent omnific inventory update.
+The merge retains those mappings and the catalogue's 51-entry status,
+correcting the incoming description that all eleven manuscripts had already
+been merged into the two base texts. No manuscript source changed.
+The combined `LEAN_NUM_THREADS=2 lake build` passed all 4,272 jobs; its
+axiom audit passed 12,787 declarations with only `propext`,
+`Classical.choice` and `Quot.sound`. All 3,091 cited source labels and 1,271
+local Markdown destinations resolve, and the 51-source inventory audit
+passes. This is integration validation, not a proof review of the new reports.
+
 Batch 22, placed in `7b5f934`, was assembled in `68e2960` and catalogued
 in `5d369a0`. Its two reports,
 [first-kappa coefficients](surcomplex/first-kappa-coefficients/) and
