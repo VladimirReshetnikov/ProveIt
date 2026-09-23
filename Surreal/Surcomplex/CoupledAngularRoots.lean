@@ -10,7 +10,7 @@ For `trigonometry:eq:coupled`, `trigonometry:eq:coupleddiagonal` and
 infinitesimal angle solutions with a product of two unrestricted square-root
 sets. This gives all branches and the exact number of distinct complex
 solutions, including both collision strata. Local algebra multiplicities
-are a separate obligation.
+are proved in `CoupledAngularMultiplicity.lean`.
 -/
 
 universe u

@@ -2277,16 +2277,180 @@ The axiom audit passed for 12,648 declarations using only `propext`,
 local Markdown destinations resolve. The independent inventory remains
 2,535 standard statements in 49 reports, and `git diff --check` passes.
 
+## Omnific Diophantine geometry: elementary algebra and source integration
+
+The [Diophantine article](surreal/omnific-diophantine-geometry/article.tex)
+now has a Sections 1–4 main-text review and a
+[source reconciliation](surreal/omnific-diophantine-geometry/RECONCILIATION.md)
+for the elementary algebra in companion manuscripts 02 and 05, recovered
+from the archives in `f0b7f43`. This extends base 01 with four results:
+a common set-sized Hahn workspace, mixed gcds with an ordinary integer,
+a nilpotent-image test, and a common multiple of every ordinary power in
+a set-sized family. Their proofs use support localization, ordinary Bézout,
+idempotence of the infinite-part ideal, and monomial clearing respectively.
+
+The exposition distinguishes the constant-coefficient kernel in the real
+and complex rings, its failure to preserve order, its difference from
+standard part, and the reversal between growth degree and valuation.
+Quotients by class ideals are explained through congruence maps; completion
+systems use ordinary residue rings. The common-divisor and clearing arguments
+explicitly allow enlargement of the input exponent group. The shorter
+`√2` witness to failure of integral closure supplements the base witness.
+
+All 77 base labels are preserved with the prefix `odg:`; all 41 original
+standard statements are unchanged after this renaming. The four additions
+bring this article to 45 statements. Sections 5 onward are byte-identical
+apart from the prefix changes; their proof review and source comparison
+remain pending. The README now uses actual build and verifier paths,
+and historical delivery scripts and outputs remain unchanged.
+
+Validation: three pdfLaTeX passes produce a 31-page article with no final
+warnings or over/underfull boxes. The three preserved SymPy 1.14.0 verifiers
+pass; outputs match the delivery except for Python version metadata in
+sources 01 and 02. Those finite checks do not establish the new general
+support arguments. The independent inventory now has 2,614 standard
+statements in 51 sources (1,026 theorems, 519 lemmas, 561 propositions,
+508 corollaries). All 31 article pages and the eight changed catalogue pages
+were visually checked. The catalogue remains 28 pages with no diagnostics;
+its other pages have unchanged extracted text and pagination. All 1,287
+local Markdown destinations resolve. This update adds no Lean coverage.
+
+The synchronization through `6fbb985` imports the completed cosine-fold
+multiplicity proofs and coupled-angular roots, rank-four algebra and
+Jacobian/reality clauses. No manuscript source changed in that merge.
+`LEAN_NUM_THREADS=2 lake build` passes all 4,280 jobs; the axiom audit passes
+12,934 declarations with only `propext`, `Classical.choice` and `Quot.sound`.
+All 3,101 cited source labels and 1,295 local Markdown destinations resolve;
+the independent inventory remains 2,614 statements in 51 sources.
+Final inspection also made the nonzero ordinary-modulus hypothesis explicit
+in the introductory quotient notation and shared guide. The rebuilt article
+still has 31 pages and no diagnostics; only physical page 5 changed, and
+it was visually checked again. `git diff --check` passes.
+
+## Synchronizing the expanded omnific article
+
+The publish retry encountered the three-source assembly `bbdd536` and
+additional manuscript placement `cf350b1`, merged remotely in `ed2039f`.
+The expanded article is retained in full. Its 67 standard statements are
+unchanged by this synchronization apart from added label aliases. All 81
+labels of the preceding elementary review resolve among 159 unique labels;
+nine now identify combined or renamed statements, as the reconciliation
+explains. The independent review boundary is the shared elementary algebra
+and the added univariate, CRT, prime-adic and general no-gcd arguments in
+Sections 2–4. The expanded later proofs, the cited universal quotient and
+remaining foundational/source work are not certified by this merge.
+
+The incoming notation identified the nonnegative-growth support ring with
+“nonpositive valuation”. This is false: `ω + ω⁻¹` has negative valuation
+but a forbidden growth exponent. The corrected text requires the entire
+support condition. The merge also restores explicit class-quotient
+representatives, completion transition maps and the nilpotent proof via
+finite products, and specifies the integer constant coefficient in `Oz_H`.
+The claim excluding a universal common multiple now explicitly excludes
+zero. The guide adopts the expanded article's `Π` notation, and the README
+no longer claims that the previously indexed base was a new unreferenced
+report or that the sibling already contains an assembled source-05 proof.
+
+The newly placed local manuscripts 06–07 (Diophantine), 12–16 (quotients)
+and 10 (entire-function rectification) remain supplementary artifacts,
+not main-text integrations. The quotient source is still base 06, with
+twelve companions assigned. The reader map and catalogue now distinguish
+that placement from the assembled sources 01, 02 and 05. The current
+inventory is 2,636 standard statements in 51 sources (1,035 theorems,
+525 lemmas, 564 propositions, 512 corollaries), with separately styled
+claims still in scope. No extra Lean coverage is implied.
+
+Merge validation: three clean pdfLaTeX passes produce the 55-page article
+and 28-page catalogue. All article pages and the 23 catalogue pages whose
+text or pagination changed were visually checked; the final zero exclusion
+changed only article page 51, checked again. All 3,124 cited source labels,
+1,297 local Markdown destinations and the independent 51-source inventory
+pass. The original three verifiers are unchanged and their passing runs
+above remain applicable. This incoming merge changes only documentation,
+so the successful 4,280-job Lean build and 12,934-declaration axiom audit
+remain applicable. `git diff --check` passes.
+
+A second publish retry merged `9a385d3`, including the coupled local-algebra
+proofs in `04c93de` and an independent refresh of the same Diophantine index.
+The conflict resolution retains the expanded article's reviewed labels and
+placement boundaries while preserving all incoming Lean mappings. No
+manuscript or PDF changed in this second merge. The combined
+`LEAN_NUM_THREADS=2 lake build` passes all 4,285 jobs; the audit passes
+13,003 declarations using only the three permitted axioms. Source-label and
+inventory checks still pass, and all 1,301 local Markdown destinations
+resolve. The angular transport of algebraic multiplicities remains pending
+in the incoming coverage mapping.
+
+## Omnific transfer and rigidity review
+
+The next pass reads Sections 5–7 of the expanded
+[Diophantine article](surreal/omnific-diophantine-geometry/article.tex):
+equational and positive-existential transfer, the Smith and ordinary-right-hand-side
+criteria, constant products and decomposable fibers, binary/Pell/conic/norm
+rigidity, local Euler derivations, separated powers and unimodular Fermat.
+The Euler, separated-power and Fermat arguments were compared with the
+recoverable source-05 manuscript. Exhaustive source reconciliation for the
+other Sections 5–6 claims and verification of imported classical theorems
+remain separate obligations.
+
+The direct divisibility identity added during assembly omitted the hypothesis
+that the derivation kills its coefficients. The corrected statement requires
+`∂a = ∂b = 0`, displays the missing terms when this fails, and explains why
+`∂c = 0` holds for the chosen Euler derivation. The proof of separated-power
+rigidity therefore remains valid. Its leading-degree, quotient-ring and
+binary-factor arguments also prove the complex version over `B_C`; the
+one-variable prerequisite is extended likewise, with explicit attribution
+of the archived real statements. No new standard result is added.
+
+The proof explanations distinguish the real kernel from the complex kernel,
+include the zero case of Pell descent, define norm-polynomial evaluation
+without embedding a number field into `No`, and give a zero-row obstruction
+to replacing Smith compatibility by constant-term compatibility. A rational
+functional on `Q + Q√2` illustrates why one fixed Euler derivation need not
+detect every nonconstant. The notation guide and article both state the minus
+sign under `t = ω⁻¹` and distinguish this local construction from the normalized
+surreal derivation. The Fermat proof makes the workspace containing the
+unit-ideal witness explicit and explains why its divisibility quotients must
+have nonnegative support. Its integer-coordinate consequence now explicitly
+requires all three coordinates to be nonzero.
+
+Validation preserves all 67 standard results, all 159 unique source labels,
+and all label numbers. Four standard statement texts change: the two complex
+extensions, the scalar-prefactor wording for decomposable equations, and the
+Fermat nonzero-coordinate wording. Main Sections 8–14 remain byte-identical;
+the appendix records the coefficient correction and updates the scalar
+notation. The article has a clean three-pass 56-page PDF; the catalogue has
+a clean three-pass 28-page PDF. Changed pages were visually checked.
+The source-05 SymPy 1.14.0 verifier passes with output identical to its
+preserved delivery record. Separate finite symbolic checks pass for all 36
+pairs `2 ≤ m,n ≤ 7`, both with constant coefficients and with the full
+derivative error terms; these do not certify the arbitrary-support proofs.
+The statement-index and source-label audits pass, local Markdown destinations
+resolve, and `git diff --check` passes. This is a documentation-only change;
+it adds no Lean coverage. Sections 8 onward, remaining imported results,
+source reconciliation and the placed companions remain on the review queue.
+
+Synchronization merged `04a5b88`, adding the verified centered-sine formal
+coordinate automorphism and transport of the coupled angular defining ideal
+to a monomial formal quotient. Its numeric local dimensions and resulting
+angular total multiplicity remain pending, as the incoming ledger states.
+No manuscript or PDF changed in this merge. The combined
+`LEAN_NUM_THREADS=2 lake build` passes all 4,290 jobs, and the axiom audit
+passes 13,135 declarations with only `propext`, `Classical.choice` and
+`Quot.sound`. The source-label and 51-report inventory audits still pass,
+and all 1,308 local Markdown destinations resolve.
+
 ## Remaining scope
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
 `be06fc8`, which was merged after the field-automorphism build. This is a
 documentation-only merge: no existing mapped manuscript or Lean source
-changed. The two new reports currently contain only their base manuscripts,
-01 and 06. Their other nine manuscripts still need integration from Git
-history; their delivered READMEs and build commands retain old filenames,
-and no current PDFs are installed. The reader map, catalogue and ledger
-now identify this placement status. The two base texts contribute 75
+changed. At that placement, the two new reports contained only base
+manuscripts 01 and 06, with nine companions still to integrate, obsolete
+build filenames and no current PDFs. The elementary Diophantine update
+above now supplies a partial integration and maintained PDF; the quotient
+report and the later Diophantine comparison remain pending. At placement
+the reader map, catalogue and ledger recorded 75
 standard statements, bringing the inventory to 2,610 in 51 reports; the
 quotient base's three `maintheorem` statements are additional claims outside
 the standard-environment count. Proof review and formalization are pending.

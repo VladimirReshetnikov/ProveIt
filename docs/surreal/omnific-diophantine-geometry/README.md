@@ -11,6 +11,7 @@ Reshetnikov.
 article.tex                        the report, standalone LaTeX with an internal bibliography
 article.pdf                        the compiled report, 84 pages
 README.md                          this guide
+RECONCILIATION.md                  the elementary source review and the Sections 5–7 proof review
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
 05-diophantine-rigidity-BUILD.md   source 05's build and check instructions, as delivered
 06-definability-reconstruction-SOURCE_AUDIT.md   source 06's source and novelty audit, as delivered
@@ -36,15 +37,36 @@ data/
   01-, 02-, 05-, 06-...-requirements.txt             each pins sympy==1.14.0
 ```
 
-Every label in `article.tex` carries the prefix `odg:` (219 labels, counting
-both `\label{…}` and `\label[type]{…}`; 150 before the batch-25 merge, none
-renamed or removed). The material of sources 06 and 07 carries the sub-prefix
+Every label in `article.tex` carries the prefix `odg:` (228 labels, counting
+both `\label{…}` and `\label[type]{…}`): the 150 labels of the three-source
+assembly `bbdd536`, none renamed or removed; nine aliases kept by the
+elementary review merged from upstream; and 69 labels added by the batch-25
+integration. The material of sources 06 and 07 carries the sub-prefix
 `odg:def:` (63 labels) and the fiber and norm results printed from the sibling
 report's manuscript 13 carry `odg:dec:` (6 labels). Two older labels,
 `odg:def:rings` and `odg:def:primitive`, name Definitions 2.1 and 7.7 and
-predate the sub-prefix. No [formalization ledger](../../FORMALIZATION.md) row
-cites an `odg:` label yet, and no Lean code about omnific integers exists in
-the repository.
+predate the sub-prefix.
+
+The elementary review (`7784f7f`, `8f1527c`), written in parallel with the
+assembly and merged into it in `1186c11`, added four results, which the
+assembly also contains (common multiples combined with projective clearing),
+and support and size clarifications, which are retained. The assembly renamed
+or combined nine locations cited by that review; their old labels (`odg:cor:Jglobal`, `odg:cor:commonmultiples`,
+`odg:prop:nogcd`, `odg:cor:powers`, `odg:cor:Jdefinable`, `odg:eq:nA`,
+`odg:eq:pellmod8`, `odg:app:dependencies`, `odg:app:audit`) are kept as
+aliases on the new locations, so all 81 labels of the review resolve. A later
+proof review of Sections 5–7 (`f0bdcf3`) extended one-variable and
+separated-power rigidity to complex coefficients and corrected Remark 7.5; it
+did not cover the batch-25 material (Sections 11–13 and the Section 6 results
+of sources 07 and 13). See [RECONCILIATION.md](RECONCILIATION.md) for the
+elementary claim correspondence, that proof review and the remaining review
+boundary.
+
+The article has 104 standard results (40 theorems, 19 propositions, 19 lemmas,
+26 corollaries). The [ledger](../../FORMALIZATION.md) indexes the 67 standard
+results of the three-source assembly by `odg:` label, all **Pending**; no
+implementation mapping cites an `odg:` label, and no Lean code about omnific
+integers exists in the repository.
 
 ## Five sources, one report
 
@@ -114,7 +136,8 @@ next to source 06's existential ones.
 
 **Added in the merge**, each tagged `[merge]` with a complete proof: an
 explicit identity giving the divisibility step of the separated-power proof
-without the quotient ring (Remark 7.5; checked symbolically for general
+without the quotient ring (Remark 7.5, for derivations killing `a`, `b` and
+`c`, as corrected by the later review; checked symbolically for general
 `a, b` and `2 ≤ m, n ≤ 7`); the failure of existential induction in the pure
 ring language, via `Std` (Remark 10.11); a quartic with six witnesses for the
 graph of `ct` in `Oz` (Corollary 12.9, replacing source 06's degree-ten,
@@ -182,13 +205,15 @@ Numbers refer to the built `article.pdf`.
    for any `Q`-basis (Theorem 6.14), and nonzero norm equations of finite
    étale algebras over any subfield of the coefficient field in every
    intermediate ring, in particular over `Oz` and `Oz[i]` (Theorem 6.15).
-6. **Separated powers and Fermat (Section 7).** For real `a, b, c ≠ 0` and
-   `m, n ≥ 2`, every `B_R`-solution of `ax^m + by^n = c` is constant (Theorem
-   7.4), so `y² = x³ + k` (`k ≠ 0`) and `x^m − y^n = c ≠ 0` have only ordinary
-   omnific solutions (Corollary 7.6). For `n ≥ 3` a nonzero Fermat triple in
-   `B_C` generating the unit ideal is constant (Theorem 7.9); with Wiles and
-   Taylor–Wiles there is no nonzero unimodular omnific Fermat triple (Corollary
-   7.10). The threshold is sharp at `n = 2`.
+6. **Separated powers and Fermat (Section 7).** For complex `a, b, c ≠ 0` and
+   `m, n ≥ 2`, every `B_C`-solution of `ax^m + by^n = c` is constant (Theorem
+   7.4; extending source 05's real case), so `y² = x³ + k` (`k ≠ 0`) and
+   `x^m − y^n = c ≠ 0` have only ordinary omnific solutions (Corollary 7.6).
+   For `n ≥ 3` a Fermat triple in `B_C`, with all three coordinates nonzero
+   and generating the unit ideal, is constant (Theorem 7.9); with Wiles and
+   Taylor–Wiles there is no unimodular omnific Fermat triple with all
+   coordinates nonzero (Corollary 7.10), although `(1, 0, 1)` is unimodular.
+   The threshold is sharp at `n = 2`.
 7. **Quadratic levels (Section 8).** For integral `q` and `c ≠ 0`: ordinary
    points only in the nondegenerate definite case and in dimension at most
    two; injective linear families for degenerate `q`; injective quadratic
@@ -300,7 +325,14 @@ claims that these are open in the literature.
   Theory*, p. 3, which is added.
 - Source 06's `∃y (x² = 2y²)` fails for number-field coefficient rings with
   `√2` in their fraction field; Remark 12.15 uses another radicand.
-- No mathematical error was found in any main proof.
+- No mathematical error was found in any main proof of the five sources.
+- The later Sections 5–7 review corrected the merge's own divisibility
+  identity (Remark 7.5): it requires the derivation to kill `a` and `b`, and
+  its use at level `c` also requires `∂c = 0`. The Euler derivations satisfy
+  these hypotheses. The review also extends one-variable and separated-power
+  rigidity to complex coefficients (Proposition 2.8, Theorem 7.4), explains
+  the support-ring witnesses in Fermat rigidity, and distinguishes these local
+  Euler derivations from the normalized surreal derivation.
 
 **Stale repository statements.** Source 01 said the repository's
 trigonometry material used the omnific integer part; at the pin the
