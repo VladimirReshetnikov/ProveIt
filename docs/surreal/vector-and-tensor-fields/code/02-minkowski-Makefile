@@ -1,0 +1,10 @@
+.PHONY: pdf verify clean
+
+pdf:
+	cd article && latexmk -pdf -interaction=nonstopmode -halt-on-error surreal_minkowski.tex
+
+verify:
+	python3 verification/check_identities.py
+
+clean:
+	cd article && latexmk -c surreal_minkowski.tex

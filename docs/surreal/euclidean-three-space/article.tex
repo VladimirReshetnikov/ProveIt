@@ -1,0 +1,2224 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc}
+\usepackage{xcolor,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,citecolor=blue!35!black,urlcolor=blue!40!black]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{pdftitle={Analytic Geometry and Trigonometry in Surreal Three-Space},pdfauthor={A mathematical development for the Surreal project},pdfsubject={Surreal coordinates, finite angles, spherical trigonometry, rotations, curvature and multiscale geometry}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Analytic geometry in surreal three-space}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.25em}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=0.15em,topsep=0.3em}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\mm}{\mathfrak m}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\st}{\operatorname{st}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\cis}{\operatorname{cis}}
+\newcommand{\atan}{\operatorname{atan}}
+\newcommand{\atantwo}{\operatorname{atan2}}
+\newcommand{\acos}{\operatorname{acos}}
+\newcommand{\asin}{\operatorname{asin}}
+\newcommand{\hav}{\operatorname{hav}}
+\newcommand{\SO}{\operatorname{SO}}
+\newcommand{\Orth}{\operatorname{O}}
+\newcommand{\area}{\operatorname{Area}}
+\newcommand{\vol}{\operatorname{Vol}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\ip}[2]{\left\langle#1,#2\right\rangle}
+\newcommand{\vv}[1]{\bm{#1}}
+\newcommand{\transpose}{^{\mathsf T}}
+\newcommand{\ang}{\operatorname{ang}}
+\newcommand{\smallO}{\operatorname{O}}
+\newcommand{\crossmat}[1]{[#1]_{\times}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcommand{\repo}{\texttt{VladimirReshetnikov/Surreal}}
+
+\begin{document}
+\begin{titlepage}
+\centering
+\vspace*{0.4cm}
+{\large\scshape A theorem-driven mathematical development\par}
+\vspace{0.7cm}
+{\LARGE\bfseries Analytic Geometry and Trigonometry\\[0.25em]
+in Surreal Three-Space\par}
+\vspace{0.55cm}
+{\large Finite angles, arbitrary scales, spherical duality,\\[0.15em]
+solid angles, rotations, and curvature\par}
+\vspace{0.55cm}
+{\large September 22, 2026\par}
+\vspace{0.6cm}
+\begin{minipage}{0.94\textwidth}
+\begin{abstract}
+We develop coordinate geometry in $\No^3$, using set-sized real-closed Hahn
+fields to keep every construction within an ordinary mathematical universe.
+Distances, areas, volumes, and sphere radii may be infinite or infinitesimal;
+angles between directions always have canonical finite surreal representatives.
+This permits a full spatial trigonometry without first assigning an oscillatory
+meaning to an infinitely large angle.
+
+The development includes affine incidence, perpendicular projections, skew-line
+distance, sphere intersections, quadrics, rigid-motion classification, Rodrigues
+rotations, quaternions, screw motions, and spherical coordinates. On spheres we
+prove the sine and cosine laws, polar duality, sharp existence and congruence
+criteria, half-angle and right-triangle formulas, center constructions, and
+spherical Ceva. We give a branch-correct solid-angle formula, a finitely additive
+area for geodesic polygons, explicit parallel transport, and its quaternionic
+holonomy. A shape-independent relative planar-limit estimate remains valid for
+arbitrarily thin infinitesimal triangles. Valuation identities and examples
+exhibit scale-sensitive degenerations invisible to ordinary standard parts.
+
+Throughout, algebraic geometry, restricted-analytic calculus, and unrestricted
+topological or measure-theoretic assertions are kept distinct. In particular,
+we do not import real-valued metric completeness, ordinary Riemann integration,
+or a global oscillatory differential equation without additional hypotheses.
+\end{abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{0.94\textwidth}\small
+\textbf{Provenance and verification.} Prepared in relation to \repo,
+with repository snapshot \texttt{d22a5b35d5b3}. Established surreal analytic
+machinery and classical identities are cited; the proofs below provide the
+precise extensions used here. No priority claim or resolution of a named open
+problem is asserted. The accompanying exact symbolic checks verify selected
+polynomial identities and formal coefficients, not the whole article or its
+foundations. No Lean formalization is claimed.
+\end{minipage}
+\end{titlepage}
+\tableofcontents
+\clearpage
+
+\section{Scope, organizing principle, and relation to the repository}\label{sec:scope}
+
+An infinite coordinate is not a point at infinity, and an infinitesimal distance
+is not zero. Those two distinctions are enough to change many geometric
+interpretations, but they do not destroy Euclidean coordinate algebra. The
+appropriate starting point is an ordered field equipped with positive square
+roots, rather than the completeness of the real line.
+
+The central principle of this article is
+\[
+ \boxed{\text{Coordinates and lengths can have arbitrary scale; geometric
+ angles can always be finite.}}
+\]
+For example, the vectors $(\omega,1,0)$ and $(\omega,0,0)$ make the nonzero
+angle $\atan(\omega^{-1})$. The large coordinate does not require evaluation of
+$\sin\omega$. Likewise, a great-circle arc on a sphere of radius $R=\omega$
+can have an infinite length $R a$ while its central angle $a$ lies in $[0,\pi]$.
+The dimensionless quantity entering trigonometric functions is $a$, not $Ra$.
+
+\subsection{What is inherited and what is developed here}
+
+The repository's report \emph{Trigonometry on the Surcomplex Plane}
+already develops canonical finite phases, arbitrary-scale plane geometry, and
+spherical sine and cosine laws \cite{RepoTrig}. Its
+\texttt{Surreal/Algebra/Geometry.lean} develops two-dimensional dot products,
+determinants, Cauchy--Schwarz, a Ptolemy inequality, and the area form of Heron's
+identity over ordered fields with nonnegative square roots \cite{RepoGeometry}.
+The source explicitly distinguishes these field-valued lengths from the
+real-valued distances used by conventional metric-space interfaces.
+
+Here the main object is genuinely three-dimensional. We organize the
+construction around spatial linear algebra and the Gram matrix of three unit
+vectors. This leads to complete triangle reconstruction, polar duality,
+spatial rotations and quaternions, spherical centers, solid angle and polygon
+area, curvature, parallel transport, and multiscale conditioning. The finite
+phase construction is restated so that the article is readable independently
+of the repository. Repeated classical identities are not presented as new
+results merely because their arguments are surreal.
+
+\subsection{Three levels of assumptions}
+
+\begin{center}\small
+\begin{tabular}{L{0.18\textwidth}L{0.34\textwidth}L{0.38\textwidth}}
+\toprule
+Level & Scalar assumptions & What the assumptions support\\
+\midrule
+Algebraic & Ordered field with positive square roots; real closed when roots of
+ general polynomials are used & Incidence, norms, cross products, rigid motions,
+ Gram matrices, algebraic sine--cosine data\\
+Trigonometric & A real-closed Hahn workspace with its canonical restricted
+ analytic structure & Finite angle representatives, inverse trigonometric
+ functions, triangle identities, bounded analytic formulas\\
+Differential & Explicit restricted-analytic charts and differentiation in an
+ external parameter & Metric tensors, sphere curvature, finite-angle geodesics,
+ parallel transport\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The second and third levels do not imply an unrestricted integration theory.
+Our spherical polygon area is explicitly constructed and proved finitely
+additive. The distinction matters even for apparently harmless real arguments;
+\cref{sec:boundaries} gives concrete counterexamples to naive transfers of calculus.
+
+\subsection{Notation}
+
+$K$ denotes a scalar workspace inside $\No$; its precise choice is made below.
+Bold letters denote vectors in $K^3$. Points can be subtracted to give vectors,
+and an origin is chosen whenever coordinates are used. The physical radius of
+a sphere is $R>0$. For a spherical triangle with unit direction vectors
+$\vv u,\vv v,\vv w$, the opposite \emph{angular} side lengths are $a,b,c$,
+and the interior angles are $\alpha,\beta,\gamma$. Physical side lengths are
+$Ra,Rb,Rc$. We consistently use
+\begin{equation}\label{eq:xyzconvention}
+ x=\vv v\cdot\vv w=\cos a,\qquad
+ y=\vv w\cdot\vv u=\cos b,\qquad
+ z=\vv u\cdot\vv v=\cos c.
+\end{equation}
+The determinant $\tau=\det[\vv u\ \vv v\ \vv w]$ is oriented;
+$D=\tau^2$ is the Gram determinant; $d=\sqrt D=|\tau|$ is nonnegative.
+These symbols will not also denote area or a side length.
+
+\section{Scalar foundations and canonical finite trigonometry}\label{sec:scalars}
+
+\subsection{Set-sized workspaces inside the surreal numbers}
+
+The surreal numbers form a real-closed ordered \emph{class} field, not a set.
+We use their Conway normal forms but perform each construction in a set-sized
+field. Let $\Gamma\subset\No$ be a set-sized divisible ordered additive
+subgroup and put
+\begin{equation}\label{eq:hahn}
+ K=\R((t^\Gamma)),\qquad
+ \sum_{\gamma} a_\gamma t^\gamma\longmapsto
+ \sum_{\gamma} a_\gamma\omega^{-\gamma}\in\No.
+\end{equation}
+Supports in the left-hand expression are well ordered. This identifies $K$
+with a real-closed subfield of $\No$. Its canonical restricted-analytic
+structure is an elementary extension of $\R_{\mathrm{an}}$; these structures
+are compatible under enlargement of $\Gamma$ \cite[\S2]{vdDE}.
+
+Every finite configuration of surreal coordinates belongs to such a
+workspace: collect all exponents occurring in its finitely many normal forms
+and take their rational span. More generally the same argument works for any
+set of inputs. Neither the support set nor this span is a proper class.
+All operations used below stay in a workspace or in a specified larger one.
+Consequently the theorems apply to arbitrary individual surreal coordinates
+without treating $\No$ as a set or forming a proper-class power set.
+
+We write
+\[
+ \OO=\{a\in K: |a|<n\text{ for some }n\in\N\},\qquad
+ \mm=\{a\in K: |a|<1/n\text{ for every }n\ge1\}.
+\]
+These are respectively the finite elements and the infinitesimals. Every
+$a\in\OO$ has a unique decomposition
+\[
+ a=\st(a)+\eps,\qquad \st(a)\in\R,\quad\eps\in\mm.
+\]
+The standard-part map is an ordered ring homomorphism on $\OO$, with kernel
+$\mm$. In a Hahn workspace it is the coefficient of $t^0$ for finite series.
+
+For $a\ne0$, let $v(a)$ be the least exponent in its Hahn support, and set
+$v(0)=+\infty$. Thus $v(t^\gamma)=\gamma$, positive valuation means
+infinitesimal magnitude, and $v(ab)=v(a)+v(b)$. If $a,b\ne0$, the notation
+$a\sim b$ means $a/b=1+\eta$ with $\eta\in\mm$. Later,
+$F=\smallO(G)$ means $|F|\le C|G|$ for a positive \emph{real} constant $C$
+in the stated range; this is not an assertion about convergence of a sequence
+of ordinary partial sums.
+
+\subsection{What an infinite Taylor sum means}
+
+A family of Hahn series is \emph{strongly summable} when the union of its
+supports is well ordered and every exponent occurs in only finitely many
+members. The sum is then defined coefficientwise. The positive-support lemma
+of Hahn-series algebra says that if $S$ is a well-ordered subset of
+$\Gamma_{>0}$, its additive monoid is well ordered and every exponent has only
+finitely many decompositions as an unordered finite sum from $S$.
+This is the summability mechanism used below; one must not replace it by a
+claim that $n\delta$ is cofinal in $\Gamma$ for every $\delta>0$.
+The latter claim is false in higher-rank ordered groups. See
+\cite{Neumann,vdDEErr} for the relevant support theory.
+
+If $f$ is real analytic near a real number $r$ and $h\in\mm$, define
+\begin{equation}\label{eq:taylor}
+ f^K(r+h)=\sum_{n=0}^{\infty}\frac{f^{(n)}(r)}{n!}h^n.
+\end{equation}
+The positive-support lemma proves strong summability. It also justifies
+multiplication, substitution, and differentiation of these expressions when
+used in the corresponding analytic germs. This is consistent with the
+restricted-analytic structure in \cref{eq:hahn}.
+
+For a nonzero ordinary real argument, the usual Taylor series about zero
+need not be a strongly summable Hahn family: infinitely many nonzero real
+terms have exponent zero. One first evaluates the real analytic function at
+its real center, and only then evaluates its infinitesimal Taylor expansion.
+This convention is essential, not a stylistic choice.
+
+\subsection{Sine, cosine, and inverse tangent}
+
+For $a=r+h\in\OO$, define $\sin a$ and $\cos a$ by
+\cref{eq:taylor}. In particular,
+\begin{align}
+ \sin h&=h-\frac{h^3}{3!}+\frac{h^5}{5!}-\cdots,\label{eq:sininf}\\
+ \cos h&=1-\frac{h^2}{2!}+\frac{h^4}{4!}-\cdots.\label{eq:cosinf}
+\end{align}
+The formal addition identities, together with the ordinary real identities,
+give
+\begin{equation}\label{eq:trigaddition}
+ \sin(a+b)=\sin a\cos b+\cos a\sin b,\qquad
+ \cos(a+b)=\cos a\cos b-\sin a\sin b,
+\end{equation}
+and $\cos^2a+\sin^2a=1$. In particular $\sin h=h(1+\smallO(h^2))$.
+The real sign and monotonicity properties on any fixed real bounded interval
+hold with surreal inputs as well. They follow either from the local
+expansions and endpoint checks, or from restricted-analytic elementarity.
+
+Define $\atan a$ by real-centered Taylor evaluation for finite $a$, and for
+infinite $a$ by
+\begin{equation}\label{eq:ataninfinite}
+ \atan a=\sgn(a)\frac\pi2-\atan(1/a).
+\end{equation}
+It is the unique angle in $(-\pi/2,\pi/2)$ whose tangent is $a$.
+Thus inverse tangent accepts arbitrary surreal inputs and always returns a
+finite surreal angle. Tangent itself is used only where its cosine denominator
+is nonzero.
+
+\begin{theorem}[Every direction has a finite phase]\label{thm:phase}
+Let
+$U(K)=\{(c,s)\in K^2:c^2+s^2=1\}$, with multiplication
+$(c,s)(c',s')=(cc'-ss',sc'+cs')$. The map
+\[
+ \theta\longmapsto(\cos\theta,\sin\theta)
+\]
+induces an isomorphism $\OO/(2\pi\Z)\simeq U(K)$.
+Consequently every unit-circle direction has a unique representative in
+$[0,2\pi)$, and also a unique representative in $(-\pi,\pi]$.
+\end{theorem}
+\begin{proof}
+Both coordinates of a unit-circle point are finite. Its standard part is an
+ordinary real unit-circle point. Rotate this standard part to $(1,0)$ using
+an ordinary real phase. The resulting point $(C,S)$ has $C=1+\mm$, $S\in\mm$,
+and $C>0$. Put $h=\atan(S/C)\in\mm$. Since the unit point with positive first
+coordinate and slope $S/C$ is unique, $(C,S)=(\cos h,\sin h)$. This proves
+surjectivity. Addition follows from \cref{eq:trigaddition}.
+
+For the kernel, the real standard part of a phase must be $2\pi k$ for an
+ordinary integer $k$. Subtract it. An infinitesimal $h$ with $\sin h=0$
+must vanish because $\sin h=h(1+\smallO(h^2))$ and the second factor is a
+unit. Thus the kernel is exactly $2\pi\Z$, not an unspecified group of
+infinite periods. Finally a finite element can be reduced into either stated
+interval by an ordinary integer multiple of $2\pi$.
+\end{proof}
+
+For $(X,Y)\ne(0,0)$, define $\atantwo(Y,X)\in(-\pi,\pi]$ as the phase
+of $(X,Y)/\sqrt{X^2+Y^2}$. With $r=\sqrt{X^2+Y^2}$, an explicit formula is
+\begin{equation}\label{eq:atan2}
+ \atantwo(Y,X)=2\atan\frac{Y}{r+X}
+ \quad\text{when }r+X>0,
+\end{equation}
+with value $\pi$ on the negative $X$-axis. This definition works when either
+coordinate is infinite or infinitesimal.
+
+For $-1\le x\le1$, let
+\begin{equation}\label{eq:acos}
+ \acos x=\atantwo\bigl(\sqrt{1-x^2},x\bigr)\in[0,\pi],\qquad
+ \asin x=\frac\pi2-\acos x.
+\end{equation}
+Here the phase at $(1,0)$ is zero. These inverse functions include their
+endpoints. For $-1<x\le1$, another exact formula is
+$\acos x=2\atan\sqrt{(1-x)/(1+x)}$.
+
+\begin{remark}[Infinite input is a separate question]
+The present construction does not assert that no distinguished global sine
+or cosine exists. Ehrlich and Kaplan construct such functions using the
+initial integer part of $\No$ \cite[\S11]{EK}; their construction supplies
+additional structure and agrees with the finite theory used here. What is
+unnecessary for geometry is choosing a phase for every infinite input.
+The naive zero-centered sine series at $\omega$ is not a strongly summable
+Hahn series, regardless of whether a separate global definition is chosen.
+\end{remark}
+
+\section{Vectors, distances, orientation, and volume}\label{sec:vectors}
+
+For $\vv x=(x_1,x_2,x_3)$ and $\vv y=(y_1,y_2,y_3)$ set
+\[
+ \vv x\cdot\vv y=\sum_{j=1}^3x_jy_j,\qquad
+ \norm{\vv x}=\sqrt{\vv x\cdot\vv x},\qquad
+ d(P,Q)=\norm{Q-P}.
+\]
+The cross product is given by the usual determinant formula. We use the
+orientation for which $\vv e_1\times\vv e_2=\vv e_3$.
+
+\begin{theorem}[Euclidean vector identities over the scalar field]\label{thm:vector}
+For all vectors in $K^3$,
+\begin{align}
+ \norm{\vv x\times\vv y}^{2}
+ &=\norm{\vv x}^{2}\norm{\vv y}^{2}-(\vv x\cdot\vv y)^2,\label{eq:lagrange}\\
+ \vv x\times(\vv y\times\vv z)
+ &=\vv y(\vv x\cdot\vv z)-\vv z(\vv x\cdot\vv y),\label{eq:triple}\\
+ (\vv x\times\vv y)\cdot(\vv z\times\vv w)
+ &=(\vv x\cdot\vv z)(\vv y\cdot\vv w)
+ -(\vv x\cdot\vv w)(\vv y\cdot\vv z).\label{eq:crossdot}
+\end{align}
+Moreover $|\vv x\cdot\vv y|\le\norm{\vv x}\norm{\vv y}$ and
+$\norm{\vv x+\vv y}\le\norm{\vv x}+\norm{\vv y}$.
+For nonzero $\vv x,\vv y$, equality in the latter holds exactly when
+$\vv y=\lambda\vv x$ for some $\lambda>0$.
+\end{theorem}
+\begin{proof}
+The three displayed identities follow by expansion in coordinates over any
+commutative ring. Positivity of the left side of \cref{eq:lagrange} and
+nonnegative square roots give Cauchy--Schwarz. Squaring the proposed triangle
+inequality reduces it to Cauchy--Schwarz. Equality requires
+$\vv x\cdot\vv y=\norm{\vv x}\norm{\vv y}$, hence
+$\vv x\times\vv y=0$. The two vectors are then proportional, and the positive
+dot product makes the proportionality factor positive. The converse is direct.
+\end{proof}
+
+Thus $d$ is a positive-definite, symmetric, triangle-inequality distance with
+values in $K_{\ge0}$. It is a \emph{field-valued} distance, not an ordinary
+real-valued metric. The coordinate formulas do not implicitly make $K^3$ a
+Banach space over $\R$.
+
+For nonzero vectors define their unoriented angle by
+\begin{equation}\label{eq:vectorangle}
+ \ang(\vv x,\vv y)=
+ \atantwo\bigl(\norm{\vv x\times\vv y},\vv x\cdot\vv y\bigr)
+ \in[0,\pi].
+\end{equation}
+Lagrange's identity shows that its cosine is the normalized dot product and
+its sine is the normalized cross-product norm. If the vectors lie in a plane
+with specified unit normal $\vv n$, their oriented angle is instead
+$\atantwo(\vv n\cdot(\vv x\times\vv y),\vv x\cdot\vv y)$.
+
+\subsection{Areas and tetrahedra}
+
+The area of a flat triangle $PQR$ and the oriented volume of a tetrahedron
+$PQRS$ are
+\begin{equation}\label{eq:flatvol}
+ \area(PQR)=\frac12\norm{(Q-P)\times(R-P)},\qquad
+ V_{\mathrm{or}}(PQRS)=\frac16\det[Q-P\ R-P\ S-P].
+\end{equation}
+The unoriented volume is $|V_{\mathrm{or}}|$. These are algebraic definitions:
+finite dissection and linear change-of-variables identities follow from
+multilinearity. They preserve orientation and multiplicity information at
+infinitesimal scales.
+
+If $M$ is the matrix of the three edge vectors from $P$, then
+\[
+ \det(M\transpose M)=\det(M)^2=36\vol(PQRS)^2.
+\]
+In terms of the six pairwise distances $d_{ij}$, this becomes
+\begin{equation}\label{eq:cayleymenger}
+ 288\vol(PQRS)^2=
+ \det\begin{pmatrix}
+ 0&1&1&1&1\\
+ 1&0&d_{01}^2&d_{02}^2&d_{03}^2\\
+ 1&d_{01}^2&0&d_{12}^2&d_{13}^2\\
+ 1&d_{02}^2&d_{12}^2&0&d_{23}^2\\
+ 1&d_{03}^2&d_{13}^2&d_{23}^2&0
+ \end{pmatrix}.
+\end{equation}
+Indeed $2M_i\cdot M_j=d_{0i}^2+d_{0j}^2-d_{ij}^2$;
+subtracting the corresponding rows and columns in the displayed determinant
+reduces it to eight times $\det(M\transpose M)$.
+
+\subsection{Finite-dimensional minimization does not need completeness}
+
+Let $V\subset K^3$ have an orthonormal basis $\vv e_1,\ldots,\vv e_k$.
+Gram--Schmidt constructs one whenever a finite independent spanning family
+is given. The orthogonal projection
+\[
+ \operatorname{proj}_V(\vv x)=\sum_{j=1}^k(\vv x\cdot\vv e_j)\vv e_j
+\]
+satisfies, for $\vv y\in V$,
+\[
+ \norm{\vv x-\vv y}^2=
+ \norm{\vv x-\operatorname{proj}_V\vv x}^2+
+ \norm{\operatorname{proj}_V\vv x-\vv y}^2.
+\]
+It is therefore the unique nearest point. This proves a useful minimization
+theorem by a finite identity, without a compactness argument or an infimum
+construction. The same method gives least squares for full-column-rank
+matrices: the minimizer of $\norm{A\vv x-\vv b}^2$ is
+$(A\transpose A)^{-1}A\transpose\vv b$.
+
+\section{Affine analytic geometry}\label{sec:affine}
+
+\subsection{Lines, planes, and incidence}
+
+A line is $L=P+K\vv u$ with $\vv u\ne0$. A plane is
+$\Pi=\{X:\vv n\cdot X=h\}$ with $\vv n\ne0$.
+A line meets this plane uniquely when $\vv n\cdot\vv u\ne0$, at parameter
+\begin{equation}\label{eq:lineplane}
+ t=\frac{h-\vv n\cdot P}{\vv n\cdot\vv u}.
+\end{equation}
+A zero denominator means that the line lies in the plane if the numerator
+also vanishes, and is disjoint from it otherwise. An infinitesimal nonzero
+denominator is not a reason to declare parallelism: it can produce an
+infinitely distant intersection.
+
+Two nonparallel planes have line direction $\vv n_1\times\vv n_2$.
+Three planes meet uniquely exactly when their normal determinant is nonzero.
+All remaining cases are ordinary finite-rank alternatives. For two lines
+$P+K\vv u$ and $Q+K\vv v$ with $\vv u\times\vv v\ne0$, they intersect
+if and only if
+\[
+ (Q-P)\cdot(\vv u\times\vv v)=0.
+\]
+Otherwise they are skew.
+
+The perpendicular foot and distance from $P$ to $\Pi$ are
+\begin{equation}\label{eq:pointplane}
+ P_\Pi=P-\frac{\vv n\cdot P-h}{\norm{\vv n}^2}\vv n,
+ \qquad d(P,\Pi)=\frac{|\vv n\cdot P-h|}{\norm{\vv n}}.
+\end{equation}
+For a line $Q+K\vv u$, they are
+\[
+ P_L=Q+\frac{(P-Q)\cdot\vv u}{\norm{\vv u}^2}\vv u,
+ \qquad d(P,L)=\frac{\norm{(P-Q)\times\vv u}}{\norm{\vv u}}.
+\]
+Reflection in $\Pi$ sends $P$ to $2P_\Pi-P$. These formulas are valid at every
+surreal scale.
+
+\begin{theorem}[Distance and closest points of nonparallel lines]\label{thm:skew}
+Let $\vv r=Q-P$ and put
+\[
+ A=\vv u^2,\quad B=\vv u\cdot\vv v,\quad C=\vv v^2,
+ \quad D_L=AC-B^2>0,
+\]
+where $\vv u^2$ means $\vv u\cdot\vv u$. The unique closest parameters on
+$P+t\vv u$ and $Q+s\vv v$ are
+\begin{equation}\label{eq:skewparams}
+ t=\frac{C(\vv r\cdot\vv u)-B(\vv r\cdot\vv v)}{D_L},\qquad
+ s=\frac{B(\vv r\cdot\vv u)-A(\vv r\cdot\vv v)}{D_L}.
+\end{equation}
+Their distance is
+\begin{equation}\label{eq:skewdist}
+ d(L_1,L_2)=\frac{|\vv r\cdot(\vv u\times\vv v)|}
+ {\norm{\vv u\times\vv v}}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The difference $\vv r+s\vv v-t\vv u$ must be perpendicular to both direction
+vectors. Its two dot products give the linear system
+$At-Bs=\vv r\cdot\vv u$, $Bt-Cs=\vv r\cdot\vv v$, whose solution is
+\cref{eq:skewparams}. The remaining difference is parallel to
+$\vv u\times\vv v$, giving \cref{eq:skewdist}. Every other pair of points
+adds a vector in $\Span(\vv u,\vv v)$ to this perpendicular difference.
+Pythagoras proves minimality and uniqueness of the two parameters.
+\end{proof}
+
+For parallel lines use the point-to-line distance; the closest pair is then
+not unique. Angles between unoriented lines or planes are conventionally
+chosen acute, by taking an absolute value in the normalized dot product.
+Oriented normal vectors instead retain the supplementary-angle distinction.
+The acute line--plane angle $\theta$ for line direction $\vv u$ and
+plane normal $\vv n$ satisfies
+$\sin\theta=|\vv u\cdot\vv n|/(\norm{\vv u}\norm{\vv n})$.
+The line--normal angle is its complement.
+
+\subsection{Spheres, circles, and discriminants}
+
+The sphere with center $C$ and radius $R>0$ is
+$\{X:\norm{X-C}^2=R^2\}$. For the line $P+t\vv u$, let $t_0$ be the
+parameter of its perpendicular foot from $C$, and let $h=d(C,L)$.
+Completing the square gives
+\begin{equation}\label{eq:linesphere}
+ \norm{\vv u}^2(t-t_0)^2=R^2-h^2.
+\end{equation}
+There are two, one, or no intersections according as $R^2-h^2$ is positive,
+zero, or negative. The two parameters, when distinct, are
+$t_0\pm\sqrt{R^2-h^2}/\norm{\vv u}$.
+A plane at distance $h$ from the center cuts a circle of radius
+$\sqrt{R^2-h^2}$ when $h<R$, a point when $h=R$, and nothing when $h>R$.
+
+For two spheres with distinct centers $C_1,C_2$, let
+$d=\norm{C_2-C_1}>0$ and $\vv e=(C_2-C_1)/d$. Their intersection lies in
+the radical plane perpendicular to $\vv e$, at signed distance
+\[
+ q=\frac{R_1^2-R_2^2+d^2}{2d}
+\]
+from $C_1$. Its candidate circle has center $C_1+q\vv e$ and squared radius
+$R_1^2-q^2$. The sign of this expression gives the complete classification.
+Coincident centers must be handled separately. These formulas never compare
+an infinitesimal with zero by rounding it away.
+
+Four affinely independent points determine a unique sphere. Translate the
+first point to zero and write the other three as columns of $M$. Its center
+$\vv c$ solves
+\begin{equation}\label{eq:tetra-sphere}
+ M\transpose\vv c=\frac12
+ (\norm{M_1}^2,\norm{M_2}^2,\norm{M_3}^2)\transpose.
+\end{equation}
+The radius is $\norm{\vv c}$. Small nonzero $\det M$ can make this center
+infinite even when all four input points are finite.
+
+\subsection{Quadrics and principal axes}
+
+A quadric has an equation
+\[
+ \vv x\transpose A\vv x+2\vv b\transpose\vv x+c=0,
+ \qquad A=A\transpose.
+\]
+Over a real-closed field, a symmetric matrix has an orthonormal eigenbasis.
+Here is a proof that does not use compactness of a real unit sphere. A root
+$\lambda$ of its characteristic polynomial lies in $K[i]$, and there is a
+nonzero vector $z$ with $Az=\lambda z$. Since
+$\bar z\transpose A z=\lambda\bar z\transpose z$ is real and
+$\bar z\transpose z=\sum |z_j|^2>0$, $\lambda\in K$. Its eigenspace has a
+nonzero real vector. Normalize it, restrict to its invariant perpendicular
+complement, and continue by induction.
+
+After an orthogonal change of coordinates the quadric becomes
+$\sum\lambda_j y_j^2+2\sum b'_j y_j+c=0$.
+For $\lambda_j\ne0$, completing the square removes the corresponding linear
+term. If all $\lambda_j$ are nonzero this gives the familiar central forms,
+classified by coefficient signs and the remaining constant. Ellipsoids,
+hyperboloids, cones, empty loci, and point loci are distinguished exactly as
+over $\R$, with arbitrary surreal semiaxes. If a null direction retains a
+linear term, solving for that coordinate gives a paraboloid-type form.
+If all linear terms in the nullspace vanish, those directions are cylindrical.
+Thus the classification is algebraic, while the scales of the axes carry
+additional information.
+
+\subsection{Affine points are not projective ideal points}
+
+Homogeneous coordinates embed $K^3$ into $\mathbb P^3(K)$ by
+$\vv x\mapsto[x_1:x_2:x_3:1]$. An affine point such as $(\omega,0,0)$ is
+not $[1:0:0:0]$: the last homogeneous coordinate distinguishes them exactly.
+Projective completion is a separate incidence construction. It does not
+identify a very large finite-coordinate point with an ideal direction.
+
+\section{Rigid motions, rotations, quaternions, and screws}\label{sec:rotations}
+
+\begin{theorem}[Classification of field-distance isometries]\label{thm:isometries}
+Every map $F:K^3\to K^3$ preserving $d(P,Q)=\norm{P-Q}$ has the form
+\[
+ F(\vv x)=Q\vv x+\vv b,\qquad Q\transpose Q=I.
+\]
+In particular, it is automatically onto. No continuity or affine assumption
+is needed.
+\end{theorem}
+\begin{proof}
+Subtract $F(0)$ and put $\vv q_j=F(\vv e_j)-F(0)$. Distances between
+$0,\vv e_1,\vv e_2,\vv e_3$ and polarization show
+$\vv q_i\cdot\vv q_j=\delta_{ij}$. For arbitrary $\vv x$, the distance
+equalities to $0$ and $\vv e_j$ give
+$(F(\vv x)-F(0))\cdot\vv q_j=x_j$. The $\vv q_j$ form an orthonormal
+basis, so $F(\vv x)-F(0)=\sum x_j\vv q_j$. Its matrix is orthogonal and
+therefore invertible.
+\end{proof}
+
+\subsection{Axis--angle representation}
+
+Let $Q\in\SO(3,K)$, meaning $Q\transpose Q=I$ and $\det Q=1$.
+Then
+\[
+ \det(I-Q)=\det(-Q)\det(I-Q^{-1})=-\det(I-Q\transpose)
+          =-\det(I-Q),
+\]
+so $Q$ fixes a nonzero vector. Choose a unit fixed vector $\vv n$ and an
+oriented orthonormal basis of $\vv n^\perp$. The restriction of $Q$ to that
+plane is a matrix $\bigl(\begin{smallmatrix}c&-s\\s&c\end{smallmatrix}\bigr)$
+with $c^2+s^2=1$. By \cref{thm:phase}, it has a finite phase $\theta$.
+Thus every rotation, even one involving infinitely separated spatial points,
+has a finite axis--angle description.
+
+\begin{theorem}[Rodrigues formula]\label{thm:rodrigues}
+For a unit vector $\vv n$ and finite $\theta$, the rotation about $\vv n$ is
+\begin{equation}\label{eq:rodrigues}
+ Q_{\vv n,\theta}\vv x=
+ (\cos\theta)\vv x+(\sin\theta)(\vv n\times\vv x)
+ +(1-\cos\theta)(\vv n\cdot\vv x)\vv n.
+\end{equation}
+Every element of $\SO(3,K)$ has this form. A nonidentity rotation has a
+one-dimensional fixed space. For $0<\theta<\pi$ the axis is oriented by the
+choice of positive $\sin\theta$; at $\theta=\pi$ its sign is immaterial.
+\end{theorem}
+\begin{proof}
+Split $\vv x$ into its axial and perpendicular components. On the latter,
+$J\vv x=\vv n\times\vv x$ satisfies $J^2=-I$, so
+$cI+sJ$ is an orientation-preserving orthogonal map. On the axis it is the
+identity. This proves the formula and its orthogonality, and the preceding
+argument proves surjectivity. If two independent vectors were fixed, their
+cross product would also be fixed, forcing $Q=I$.
+\end{proof}
+
+For unit vectors $\vv u\ne-\vv v$, put $c=\vv u\cdot\vv v$ and
+$\vv k=\vv u\times\vv v$. The shortest-angle rotation taking $\vv u$ to
+$\vv v$ is
+\begin{equation}\label{eq:minimalrotation}
+ Q(\vv u,\vv v)=I+\crossmat{\vv k}+
+                   \frac{\crossmat{\vv k}^{\,2}}{1+c},
+ \qquad \crossmat{\vv k}\vv x=\vv k\times\vv x.
+\end{equation}
+The formula also gives the identity when $\vv u=\vv v$.
+Using $\vv k\times\vv u=\vv v-c\vv u$ and
+$\vv k\times(\vv k\times\vv u)=-(1-c^2)\vv u$ verifies the mapping.
+At an antipodal pair the formula is undefined for a genuine reason: there
+are many half-turns taking one vector to the other.
+
+\subsection{Quaternion representation}
+
+Write a quaternion as $(a,\vv b)\in K\oplus K^3$ with multiplication
+\begin{equation}\label{eq:quaternionmul}
+ (a,\vv b)(c,\vv d)=
+ (ac-\vv b\cdot\vv d,\ a\vv d+c\vv b+\vv b\times\vv d).
+\end{equation}
+Its conjugate is $(a,-\vv b)$, and its norm square is $a^2+\norm{\vv b}^2$.
+The vector identities prove multiplicativity of this norm and associativity
+of the product; equivalently one can use the usual basis relations
+$i^2=j^2=k^2=ijk=-1$ over $K$.
+
+Unit quaternions act on pure vectors by conjugation. The resulting rotation is
+\begin{equation}\label{eq:quatrotation}
+ Q_{(a,\vv b)}\vv x=(a^2-\norm{\vv b}^2)\vv x
+       +2(\vv b\cdot\vv x)\vv b+2a(\vv b\times\vv x).
+\end{equation}
+The map from unit quaternions to $\SO(3,K)$ is onto, with kernel
+$\{(1,0),(-1,0)\}$. Indeed the quaternion
+$(\cos(\theta/2),\sin(\theta/2)\vv n)$ gives \cref{eq:rodrigues}; a
+quaternion commuting with every pure vector must have zero vector part.
+The phrase ``double cover'' here denotes this two-to-one algebraic group
+homomorphism, not an unproved topological covering assertion in the fine
+topology.
+
+Away from half-turns put $\vv t=\tan(\theta/2)\vv n$. Then
+\begin{equation}\label{eq:cayley}
+ Q\vv x=\vv x+\frac{2}{1+\norm{\vv t}^2}
+   \bigl(\vv t\times\vv x+\vv t\times(\vv t\times\vv x)\bigr).
+\end{equation}
+This rational Cayley chart can have infinite coordinates near a half-turn,
+although every entry of the rotation matrix remains between $-1$ and $1$.
+
+\subsection{Screw motions}
+
+Let $F(\vv x)=Q\vv x+\vv b$ with $Q\in\SO(3,K)$ nonidentity. Take its
+unit axis $\vv n$, put $h=\vv b\cdot\vv n$, and
+$\vv b_\perp=\vv b-h\vv n$. On $\vv n^\perp$, $I-Q$ is invertible, so
+there is a unique $\vv a\perp\vv n$ satisfying
+$(I-Q)\vv a=\vv b_\perp$. Therefore
+\[
+ F(\vv a+t\vv n)=\vv a+(t+h)\vv n.
+\]
+The motion is rotation about the line $\vv a+K\vv n$, followed by translation
+$h$ along it. With $0<\theta\le\pi$,
+\begin{equation}\label{eq:screwaxis}
+ \vv a=\frac12\left(\vv b_\perp+
+       \cot(\theta/2)\,\vv n\times\vv b_\perp\right).
+\end{equation}
+This follows by inverting $(1-\cos\theta)I-\sin\theta J$ on the perpendicular
+plane. An infinitesimal rotation with appreciable transverse translation can
+have an infinitely distant screw axis. The identity rotation is treated
+separately as a pure translation.
+
+\section{Coordinates and ordinary triangle trigonometry in space}\label{sec:coordinates}
+
+\subsection{Cylindrical and spherical coordinates}
+
+For $\vv x=(x,y,z)$ put $r=\sqrt{x^2+y^2}$. When $r>0$, cylindrical
+coordinates are
+\[
+ x=r\cos\phi,\qquad y=r\sin\phi,\qquad z=z,
+ \qquad \phi=\atantwo(y,x)\pmod{2\pi}.
+\]
+At $r=0$, azimuth is undetermined. There is no restriction on the scale of
+$r$ or $z$.
+
+For $\rho=\norm{\vv x}>0$, define colatitude
+$\theta=\acos(z/\rho)\in[0,\pi]$. Away from the polar axis choose the same
+azimuth $\phi$. Then
+\begin{equation}\label{eq:sphericalcoords}
+ (x,y,z)=(\rho\sin\theta\cos\phi,
+          \rho\sin\theta\sin\phi,\rho\cos\theta).
+\end{equation}
+Every nonzero vector has this representation. At the poles the azimuth is
+free; at the origin both angles are free. The radial coordinate may be
+infinite, but both angular coordinates are finite. Choosing an azimuth branch
+introduces a coordinate seam, not a singularity of the sphere.
+
+Differentiate the coordinate map with respect to its external variables.
+Its three coordinate derivatives are mutually perpendicular and have squared
+norms $1,\rho^2,\rho^2\sin^2\theta$. Therefore
+\begin{equation}\label{eq:sphericalmetric}
+ ds^2=d\rho^2+\rho^2d\theta^2+
+                    \rho^2\sin^2\theta\,d\phi^2,
+ \qquad J=\rho^2\sin\theta.
+\end{equation}
+These are finite identities in restricted-analytic coordinate derivatives.
+They do not assert an integral transformation theorem for every function on
+$K^3$. On a sphere of radius $R$, the local area density is
+$R^2\sin\theta$ and the tangent metric is obtained by setting $d\rho=0$.
+
+\subsection{Flat triangles retain their usual formulas}
+
+Every noncollinear triple of points lies in a unique affine plane. An
+orthonormal basis of that plane reduces its geometry to $K^2$ without
+changing lengths. Let its opposite side lengths be $A,B,C>0$, its angles
+$\alpha,\beta,\gamma\in(0,\pi)$, and its area $\Delta>0$. Then
+\begin{align}
+ \alpha+\beta+\gamma&=\pi,\label{eq:planeangles}\\
+ A^2&=B^2+C^2-2BC\cos\alpha,\label{eq:planecos}\\
+ \frac{A}{\sin\alpha}
+ &=\frac{B}{\sin\beta}=\frac{C}{\sin\gamma}
+   =\frac{ABC}{2\Delta}=2R_c,\label{eq:planesine}\\
+ \Delta^2&=s(s-A)(s-B)(s-C),\qquad s=(A+B+C)/2.\label{eq:heron}
+\end{align}
+These are the usual classical identities \cite[\S4.42(ii)]{DLMF}, now with
+field-valued lengths.
+
+For completeness, put the first two vertices at $(0,0)$ and $(C,0)$, and the
+third in the upper half-plane. If the ray from the first vertex to the third
+has phase $\alpha$ and the ray from the second to the third has phase
+$\delta$, orientation gives $0<\alpha<\delta<\pi$. The remaining angles
+are $\pi-\delta$ and $\delta-\alpha$, proving \cref{eq:planeangles}.
+Expanding the squared difference proves \cref{eq:planecos}. Computing the
+same area from each pair of sides proves the first equalities in
+\cref{eq:planesine}. The circumcenter is the solution of two perpendicular
+bisector equations, and the chord relation gives $A=2R_c\sin\alpha$.
+Finally squaring $2\Delta=BC\sin\alpha$ and substituting the cosine law gives
+\[
+ 16\Delta^2=(A+B+C)(-A+B+C)(A-B+C)(A+B-C),
+\]
+which proves Heron's formula.
+
+The triangle inequalities are strict exactly in the noncollinear case.
+None of these statements requires the side lengths to be finite. For example,
+a triangle can have sides of scale $\omega$ and an altitude of scale
+$\omega^{-\omega}$; its nonzero area is the product scale, not automatically
+zero or infinite.
+
+\section{The surreal sphere and its intrinsic angular distance}\label{sec:sphere}
+
+Let
+\[
+ S_R^2(C)=\{C+R\vv u:\vv u\cdot\vv u=1\}.
+\]
+A great circle is its intersection with a plane through $C$. Translating and
+rescaling reduces all angular calculations to the unit sphere $S^2(K)$.
+
+\subsection{Minor arcs without a global sine function}
+
+For unit vectors $\vv u\ne-\vv v$, define the minor arc by the algebraic set
+\begin{equation}\label{eq:algebraicarc}
+ \left\{
+ \frac{(1-t)\vv u+t\vv v}{\norm{(1-t)\vv u+t\vv v}}:0\le t\le1
+ \right\}.
+\end{equation}
+The denominator is nonzero: vanishing would make the endpoints antipodal
+unless they coincide. If $a=\ang(\vv u,\vv v)\in(0,\pi)$ and
+\[
+ \vv e=\frac{\vv v-\cos a\,\vv u}{\sin a},
+\]
+the same arc has the trigonometric parametrization
+\begin{equation}\label{eq:arcparam}
+ \vv g(s)=\cos s\,\vv u+\sin s\,\vv e,
+ \qquad 0\le s\le a.
+\end{equation}
+To see equality, work in the oriented plane basis $(\vv u,\vv e)$.
+Normalized positive combinations of $(1,0)$ and $(\cos a,\sin a)$ have
+exactly the phases between $0$ and $a$, as is checked by the signs of their
+two oriented determinants with the endpoints. This also proves uniqueness
+of the minor arc. Antipodal points instead have a family of semicircles,
+indexed by unit directions perpendicular to either endpoint.
+
+Define the angular distance on the unit sphere and the physical distance on
+$S_R^2(C)$ by
+\begin{equation}\label{eq:angulardistance}
+ d_S(\vv u,\vv v)=\acos(\vv u\cdot\vv v),\qquad
+ d_R(C+R\vv u,C+R\vv v)=R\,d_S(\vv u,\vv v).
+\end{equation}
+The length assigned to a minor arc is $Ra$. Subarcs add because their finite
+phase differences add. One complete great circle has length $2\pi R$.
+
+\begin{theorem}[Angular triangle inequality]\label{thm:angularmetric}
+$d_S$ is a positive-definite $K$-valued distance on $S^2(K)$. For
+$a=d_S(\vv u,\vv v)$,
+\begin{equation}\label{eq:chordangle}
+ \norm{\vv u-\vv v}=2\sin(a/2),\qquad
+ \frac{2}{\pi}a\le\norm{\vv u-\vv v}\le a.
+\end{equation}
+A minor great-circle arc minimizes the sum of arc lengths among all finite
+chains of minor great-circle arcs with the same endpoints.
+\end{theorem}
+\begin{proof}
+Only the triangle inequality needs explanation. Set
+$a=d_S(\vv u,\vv v)$ and $b=d_S(\vv v,\vv w)$. If $a+b\ge\pi$ the
+claim follows from $d_S\le\pi$. Otherwise write
+\[
+ \vv u=\cos a\,\vv v+\sin a\,\vv e,\qquad
+ \vv w=\cos b\,\vv v+\sin b\,\vv f
+\]
+with unit perpendicular vectors, treating zero angles separately.
+Cauchy--Schwarz gives $\vv e\cdot\vv f\ge-1$, hence
+$\vv u\cdot\vv w\ge\cos(a+b)$. Cosine is decreasing on $[0,\pi]$, so
+$d_S(\vv u,\vv w)\le a+b$. The chord identity follows by squaring.
+The inequalities follow from $2t/\pi\le\sin t\le t$ for
+$0\le t\le\pi/2$, valid in the restricted-analytic field. Iterating the
+triangle inequality proves the finite-chain minimizing assertion.
+\end{proof}
+
+This is an intrinsic distance construction with an explicit minimizing class.
+No supremum over arbitrary partitions, no real-valued length metric, and no
+unrestricted class of nondefinable curves has been silently introduced.
+
+\subsection{Gnomonic and stereographic charts}\label{subsec:charts}
+
+The gnomonic chart on the northern open hemisphere is
+\begin{equation}\label{eq:gnomonic}
+ G(p,q)=\frac{(p,q,1)}{\sqrt{1+p^2+q^2}},\qquad
+ (p,q)=(u_1/u_3,u_2/u_3).
+\end{equation}
+Great circles become straight lines because $\vv n\cdot\vv u=0$ becomes
+$n_1p+n_2q+n_3=0$. Positive-cone spherical triangles become ordinary affine
+convex triangles. The chart is valid for arbitrary $p,q\in K$, including
+infinite values near the horizon. With $\vv p=(p,q)$ its metric on a sphere
+of radius $R$ is
+\begin{equation}\label{eq:gnomonicmetric}
+ ds^2=R^2\frac{(1+\norm{\vv p}^2)\norm{d\vv p}^2
+                 -(\vv p\cdot d\vv p)^2}
+                 {(1+\norm{\vv p}^2)^2},
+ \qquad J_G=\frac{R^2}{(1+\norm{\vv p}^2)^{3/2}}.
+\end{equation}
+Both follow by direct differentiation of \cref{eq:gnomonic}.
+
+Stereographic projection from the north pole has inverse
+\begin{equation}\label{eq:stereo}
+ H(p,q)=\frac{(2p,2q,p^2+q^2-1)}{1+p^2+q^2}.
+\end{equation}
+It covers the sphere minus that pole, with metric
+\[
+ ds^2=\frac{4R^2(dp^2+dq^2)}{(1+p^2+q^2)^2}.
+\]
+The scalar multiple of $dp^2+dq^2$ proves conformality, including at
+infinitesimal and infinite chart coordinates. A spherical circle cut out by
+$\vv n\cdot\vv u=h$ becomes
+\[
+ (n_3-h)(p^2+q^2)+2n_1p+2n_2q-(n_3+h)=0,
+\]
+a circle or line. Infinite chart coordinates are not the omitted pole;
+they describe genuine points infinitesimally near it.
+
+\section{Spherical triangles and the Gram-matrix calculus}\label{sec:spherical-laws}
+
+\begin{definition}[Proper spherical triangle]
+Three linearly independent unit vectors $\vv u,\vv v,\vv w$ determine the
+closed spherical triangle consisting of the normalized nonzero vectors in
+\[
+ \{\lambda\vv u+\mu\vv v+\nu\vv w:\lambda,\mu,\nu\ge0\}.
+\]
+Its edges are the minor great-circle arcs. Its interior angles are the angles
+between the inward-pointing edge tangents at each vertex.
+\end{definition}
+
+Such a triangle lies in an open hemisphere. Indeed, if
+$P=[\vv u\ \vv v\ \vv w]$, then
+$\vv h=P^{-\mathsf T}(1,1,1)\transpose$ has positive dot product with every
+nonzero vector in the positive cone. This algebraic observation fixes which
+region and which angles are intended, even when its real standard part is
+degenerate. All sides and angles of a proper triangle lie strictly between
+$0$ and $\pi$.
+
+Use \cref{eq:xyzconvention} and put
+\begin{equation}\label{eq:grammatrix}
+ \mathcal G=P\transpose P=
+ \begin{pmatrix}1&z&y\\z&1&x\\y&x&1\end{pmatrix},
+ \qquad D=\det\mathcal G=1+2xyz-x^2-y^2-z^2=\tau^2>0.
+\end{equation}
+Write $s_a=\sqrt{1-x^2}=\sin a$ and cyclically $s_b,s_c$.
+The unit tangents at $\vv u$ pointing toward $\vv v$ and $\vv w$ are
+\begin{equation}\label{eq:tangents}
+ T_{uv}=\frac{\vv v-z\vv u}{s_c},\qquad
+ T_{uw}=\frac{\vv w-y\vv u}{s_b}.
+\end{equation}
+Consequently
+\begin{equation}\label{eq:angledata}
+ \cos\alpha=\frac{x-yz}{s_bs_c},\qquad
+ \sin\alpha=\frac{d}{s_bs_c},\qquad
+ \alpha=\atantwo(d,x-yz),
+\end{equation}
+with cyclic formulas for $\beta,\gamma$. The common positive denominator
+in the first two formulas is irrelevant to \texttt{atan2}.
+
+\begin{theorem}[Spherical sine and cosine laws]\label{thm:spherical-laws}
+Every proper spherical triangle satisfies
+\begin{align}
+ \cos a&=\cos b\cos c+\sin b\sin c\cos\alpha,\label{eq:sphericalcos}\\
+ \frac{\sin\alpha}{\sin a}
+ &=\frac{\sin\beta}{\sin b}
+  =\frac{\sin\gamma}{\sin c}
+  =\frac{d}{\sin a\sin b\sin c}.\label{eq:sphericalsine}
+\end{align}
+Cyclic permutations give the other cosine laws. A useful additional identity
+is
+\begin{equation}\label{eq:sphericalfourpart}
+ \sin a\cos\beta=
+ \cos b\sin c-\sin b\cos c\cos\alpha.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The dot product of the two tangents in \cref{eq:tangents} is
+$(x-yz)/(s_bs_c)$. Their cross product is parallel to $\vv u$ and has norm
+$|\det[\vv u\ \vv v\ \vv w]|/(s_bs_c)$. This proves
+\cref{eq:angledata}, and hence both main laws. For
+\cref{eq:sphericalfourpart}, substitute the cosine law into the right-hand
+side and reduce it to $(y-xz)/s_c$, which is the left-hand side by its cyclic
+tangent formula.
+\end{proof}
+
+The sine and cosine laws are classical \cite[\S4.42(iii)]{DLMF}. Their
+proof here uses only finite vector identities plus the already constructed
+finite angle representatives. The same calculation over a field with square
+roots still gives the algebraic sine--cosine data even without naming angles.
+
+\subsection{Polar triangles and the cosine law for angles}\label{subsec:polar}
+
+Relabel the vertices so that $\tau>0$ and define inward unit side normals
+\begin{equation}\label{eq:polarnormals}
+ \vv n_a=\frac{\vv v\times\vv w}{s_a},\quad
+ \vv n_b=\frac{\vv w\times\vv u}{s_b},\quad
+ \vv n_c=\frac{\vv u\times\vv v}{s_c}.
+\end{equation}
+For example $\vv n_a\cdot\vv u=d/s_a>0$, and its dot products with the
+other two vertices vanish. These normals are independent and positively
+oriented: their determinant is $d^2/(s_as_bs_c)>0$.
+
+\begin{theorem}[Polar duality]\label{thm:polar}
+The triangle with vertices $\vv n_a,\vv n_b,\vv n_c$ has sides and angles
+\begin{equation}\label{eq:polarrelations}
+ a^*=\pi-\alpha,\quad b^*=\pi-\beta,\quad c^*=\pi-\gamma,
+ \qquad
+ \alpha^*=\pi-a,\quad\beta^*=\pi-b,\quad\gamma^*=\pi-c.
+\end{equation}
+Its polar is the original triangle. In particular,
+\begin{equation}\label{eq:anglecosine}
+ \cos\alpha=-\cos\beta\cos\gamma+
+                 \sin\beta\sin\gamma\cos a,
+\end{equation}
+and cyclically.
+\end{theorem}
+\begin{proof}
+By \cref{eq:crossdot},
+$\vv n_b\cdot\vv n_c=(yz-x)/(s_bs_c)=-\cos\alpha$.
+The side is in $(0,\pi)$, so it equals $\pi-\alpha$.
+Also
+$(\vv w\times\vv u)\times(\vv u\times\vv v)=\tau\vv u$;
+after normalization the corresponding inward polar normal is $\vv u$.
+This proves involutivity and the angle relations. Apply the side cosine law
+to the polar triangle and substitute \cref{eq:polarrelations}.
+\end{proof}
+
+\subsection{Half-angle, right-triangle, and haversine formulas}
+
+Let $s=(a+b+c)/2$. The identity
+\begin{equation}\label{eq:gramfactor}
+ D=4\sin s\sin(s-a)\sin(s-b)\sin(s-c)
+\end{equation}
+follows by factoring
+\[
+ D=\bigl(\cos(b-c)-\cos a\bigr)
+       \bigl(\cos a-\cos(b+c)\bigr).
+\]
+For a proper triangle $s<\pi$ and $s-a,s-b,s-c>0$, as proved in the next
+section. The half-angle formulas therefore have unambiguous positive roots:
+\begin{align}
+ \sin(\alpha/2)&=
+ \sqrt{\frac{\sin(s-b)\sin(s-c)}{\sin b\sin c}},\label{eq:halfsin}\\
+ \cos(\alpha/2)&=
+ \sqrt{\frac{\sin s\sin(s-a)}{\sin b\sin c}}.\label{eq:halfcos}
+\end{align}
+They follow by substituting the cosine law into
+$\sin^2(\alpha/2)=(1-\cos\alpha)/2$ and
+$\cos^2(\alpha/2)=(1+\cos\alpha)/2$.
+Their ratio gives the half-angle tangent formula. Applying the same formulas
+to the polar triangle gives half-side formulas in terms of the angles.
+
+For a right triangle with $\gamma=\pi/2$, the Napier relations can be written
+in the particularly safe form
+\begin{align}
+ \cos c&=\cos a\cos b,&
+ \sin a&=\sin c\sin\alpha,&
+ \sin b&=\sin c\sin\beta,\label{eq:napier1}\\
+ \cos\alpha&=\cos a\sin\beta,&
+ \cos\beta&=\cos b\sin\alpha,&
+ \cos c&=\cot\alpha\cot\beta.\label{eq:napier2}
+\end{align}
+They follow from the side and angle cosine laws and the sine law. The last
+expression is defined since $\sin\alpha,\sin\beta>0$. Formulas involving
+$\tan a$, $\tan b$, or $\tan c$ require additional nonzero-cosine checks.
+For instance a proper right spherical triangle can itself have a side of
+length $\pi/2$.
+
+Define $\hav t=\sin^2(t/2)$. Rearranging the cosine law gives
+\begin{equation}\label{eq:haversine}
+ \hav a=\hav(b-c)+\sin b\sin c\,\hav\alpha.
+\end{equation}
+This formulation separates small positive quantities rather than obtaining
+them by subtracting two almost equal cosines.
+
+\section{Existence, reconstruction, and ambiguous data}\label{sec:reconstruction}
+
+\begin{theorem}[Complete side-data criterion and reconstruction]\label{thm:SSS}
+For $a,b,c\in(0,\pi)$ the following are equivalent:
+\begin{enumerate}
+\item They are the angular sides of a proper spherical triangle.
+\item The matrix $\mathcal G$ in \cref{eq:grammatrix} is positive definite.
+\item $D>0$.
+\item $a<b+c$, $b<c+a$, $c<a+b$, and $a+b+c<2\pi$.
+\end{enumerate}
+When these conditions hold, a positively oriented realization is
+\begin{equation}\label{eq:SSSconstruction}
+ \vv u=(1,0,0),\quad
+ \vv v=(z,s_c,0),\quad
+ \vv w=\left(y,\frac{x-yz}{s_c},\frac{\sqrt D}{s_c}\right).
+\end{equation}
+It is unique up to an orthogonal transformation; the positively oriented
+realizations form one $\SO(3,K)$ orbit.
+\end{theorem}
+\begin{proof}
+A genuine triple has $\mathcal G=P\transpose P$ with $P$ invertible, hence
+positive definiteness. Conversely $1>0$ and $1-z^2>0$ are its first two
+leading principal minors, so $D>0$ is exactly the remaining condition in
+Sylvester's criterion. Alternatively \cref{eq:SSSconstruction} directly
+constructs a realization: the identity
+$D=(1-y^2)(1-z^2)-(x-yz)^2$ makes the last vector unit and its dot products
+are $y,x$. Its determinant is $\sqrt D>0$.
+
+To prove the inequality criterion, use \cref{eq:gramfactor}. Here
+$0<s<3\pi/2$ and each $s-a,s-b,s-c$ belongs to $(-\pi/2,\pi)$.
+At most one of these three numbers is nonpositive. If $s\ge\pi$, all three
+are positive because $a,b,c<\pi$, whereas $\sin s\le0$, giving $D\le0$.
+If $s<\pi$, positivity of $D$ is equivalent to all three differences being
+positive. This is exactly the stated set of inequalities.
+
+Finally, if $P$ and $P'$ are two realizations, then
+$Q=P'P^{-1}$ satisfies $Q\transpose Q=I$ because their Gram matrices agree.
+The sign of its determinant is the ratio of their orientation signs.
+\end{proof}
+
+The perimeter restriction is essential. The three inequalities alone are
+not sufficient: sides all equal to $3\pi/4$ satisfy the ordinary triangle
+inequalities but have perimeter exceeding $2\pi$.
+
+\subsection{SAS, AAA, and ASA}
+
+Any two sides $b,c\in(0,\pi)$ and included angle
+$\alpha\in(0,\pi)$ determine exactly one proper triangle up to isometry.
+An explicit realization is
+\[
+ \vv u=(1,0,0),\quad
+ \vv v=(\cos c,\sin c,0),\quad
+ \vv w=(\cos b,\sin b\cos\alpha,\sin b\sin\alpha).
+\]
+Its determinant is $\sin b\sin c\sin\alpha>0$. Compute $a$ from the dot
+product and the remaining angles from \cref{eq:angledata}. This avoids any
+ambiguous inverse sine.
+
+By polar duality, angles $\alpha,\beta,\gamma\in(0,\pi)$ occur exactly when
+\begin{equation}\label{eq:AAAcriterion}
+ \alpha+\beta+\gamma>\pi,\qquad
+ \beta+\gamma-\alpha<\pi,
+\end{equation}
+with the last inequality also imposed cyclically. They then determine the
+triangle up to isometry. In particular, \emph{three angles fix the shape and
+angular size} on a fixed sphere; there is no nontrivial similarity scaling of
+angular sides. The condition that the angle sum exceed $\pi$ alone is not
+sufficient. Two angles and their included side (ASA) reduce to SAS for the
+polar triangle and likewise determine a unique proper triangle for inputs
+in $(0,\pi)$.
+
+\subsection{The spherical SSA ambiguity has an exceptional family}\label{subsec:SSA}
+
+Suppose that $a,b,\alpha\in(0,\pi)$ are given, with $a$ opposite
+$\alpha$. Set
+\[
+ P=\cos b,\quad Q=\sin b\cos\alpha,\quad X=\cos a.
+\]
+The unknown side $c$ must solve
+\begin{equation}\label{eq:SSAlinecircle}
+ P C+Q S=X,\qquad C^2+S^2=1,\qquad S>0,
+ \quad (C,S)=(\cos c,\sin c).
+\end{equation}
+Every solution gives a proper triangle via the SAS construction, whose
+opposite side is the prescribed $a$.
+
+\begin{proposition}[Exact SSA alternatives]\label{prop:SSA}
+If $L=P^2+Q^2>0$, SSA data have zero, one, or two solutions up to isometry.
+The candidate unit-circle pairs are
+\begin{equation}\label{eq:SSAcandidates}
+ (C,S)=\frac{X}{L}(P,Q)
+ \ \pm\ \frac{\sqrt{L-X^2}}{L}(-Q,P),
+\end{equation}
+provided $L-X^2\ge0$; only candidates with $S>0$ are retained, and duplicate
+candidates are counted once.
+
+If $P=Q=0$, there are no solutions unless $a=\pi/2$. If $a=\pi/2$,
+then $b=\alpha=\pi/2$ as well, and \emph{every} $c\in(0,\pi)$ gives a
+solution, with $\beta=\pi/2$ and $\gamma=c$.
+\end{proposition}
+\begin{proof}
+For $L>0$, intersect the line with the unit circle by decomposing a point into
+components parallel and perpendicular to $(P,Q)$. This gives
+\cref{eq:SSAcandidates}; a line has at most two intersections. The upper-half
+condition is exactly $c\in(0,\pi)$.
+If $P=Q=0$, the original equation is $0=X$. Since $b\in(0,\pi)$ and
+$\sin b>0$, the vanishing of $P,Q$ means $b=\alpha=\pi/2$.
+When also $a=\pi/2$, take
+$\vv u=(1,0,0)$, $\vv v=(\cos c,\sin c,0)$, $\vv w=(0,0,1)$.
+Their determinant is $\sin c>0$. The angle formulas give the claimed
+remaining angles.
+\end{proof}
+
+Thus a blanket assertion that spherical SSA always has at most two solutions
+misses a genuine continuous exceptional family. The polar construction gives
+the corresponding AAS ambiguity. The effect is already present over $\R$;
+surreal coordinates add arbitrarily small perturbations of the exceptional
+data, for which branch-sensitive computation is especially important.
+
+\subsection{Latitude, longitude, and bearings}
+
+For latitude $\varphi\in[-\pi/2,\pi/2]$ and longitude $\lambda$ modulo
+$2\pi$, the unit direction is
+\[
+ (\cos\varphi\cos\lambda,\cos\varphi\sin\lambda,\sin\varphi).
+\]
+Two such points have separation $a$ given by
+\begin{align}
+ \cos a&=\sin\varphi_1\sin\varphi_2+
+          \cos\varphi_1\cos\varphi_2\cos(\lambda_2-\lambda_1),\label{eq:latcos}\\
+ \hav a&=\hav(\varphi_2-\varphi_1)+
+          \cos\varphi_1\cos\varphi_2\hav(\lambda_2-\lambda_1).\label{eq:lathav}
+\end{align}
+At a nonpolar starting point and for a distinct nonantipodal endpoint, the
+initial bearing measured from north toward east is
+\begin{equation}\label{eq:bearing}
+ \atantwo\left(
+ \cos\varphi_2\sin\Delta\lambda,
+ \cos\varphi_1\sin\varphi_2-
+ \sin\varphi_1\cos\varphi_2\cos\Delta\lambda\right).
+\end{equation}
+Indeed these are the east and north components of the projected tangent to
+the target. Undefined bearings at poles, coincident points, or antipodes are
+geometric ambiguities, not numerical failures. The physical great-circle
+distance remains $Ra$ for any positive surreal radius.
+
+\section{Spherical centers, medians, and Ceva}\label{sec:centers}
+
+Assume $\tau=d>0$ and retain the matrix $P$ and inward normals of
+\cref{eq:polarnormals}.
+
+\subsection{Circumcenter and incenter}
+
+Put $\vv h=P^{-\mathsf T}(1,1,1)\transpose$. Then
+\begin{equation}\label{eq:circumcenter}
+ \vv o=\frac{\vv h}{\norm{\vv h}},\qquad
+ \rho_c=\acos\frac1{\norm{\vv h}}
+\end{equation}
+is the center and angular radius of the circumcircle with radius less than
+$\pi/2$. All three dot products with $\vv o$ equal
+$1/\norm{\vv h}>0$. Cauchy--Schwarz makes this number at most one, and
+distinct vertices make it strictly less than one. Every equidistant unit
+center solves $P\transpose\vv o=k(1,1,1)\transpose$, so the two possibilities
+are exactly $\vv o$ and $-\vv o$, with radii $\rho_c$ and $\pi-\rho_c$.
+The chosen circumcenter need not lie inside the triangle.
+
+The incenter has the particularly simple weighted-vector expression
+\begin{equation}\label{eq:incenter}
+ \vv j=\frac{s_a\vv u+s_b\vv v+s_c\vv w}
+               {\norm{s_a\vv u+s_b\vv v+s_c\vv w}},\qquad
+ r_i=\asin\frac{d}{\norm{s_a\vv u+s_b\vv v+s_c\vv w}}.
+\end{equation}
+To prove this, take dot products of its numerator with the three inward
+normals. Each equals $d$. Hence $\vv j$ has equal positive signed distances
+from the three side great circles, and it lies inside the positive cone.
+Those signed angular distances are the inverse sines in
+\cref{eq:incenter}. Uniqueness follows by solving the nonsingular linear
+system $N\transpose\vv j=k(1,1,1)\transpose$ for the inward normal matrix
+$N$. Equivalently, the inside angle bisectors below concur at this point.
+The physical circumradius and inradius along the sphere are $R\rho_c$ and
+$Rr_i$, not $\rho_c$ and $r_i$ themselves.
+
+\subsection{Medians and angle bisectors}
+
+The midpoint of a minor edge from $\vv v$ to $\vv w$ is
+$(\vv v+\vv w)/\norm{\vv v+\vv w}$. The three vertex-to-opposite-midpoint
+great circles concur at
+\[
+ \frac{\vv u+\vv v+\vv w}{\norm{\vv u+\vv v+\vv w}}.
+\]
+This follows by writing the common numerator as a vertex plus the sum of
+the other two. It is a median center, not an assertion that it is the
+surface-area centroid.
+
+At $\vv u$, an internal angle bisector has tangent direction
+$T_{uv}+T_{uw}$. Its opposite-side intersection is proportional to
+$s_b\vv v+s_c\vv w$. If that point is $D_a$ on the edge $vw$, then
+\begin{equation}\label{eq:spherebisector}
+ \frac{\sin d_S(\vv v,D_a)}{\sin d_S(D_a,\vv w)}
+       =\frac{\sin c}{\sin b}.
+\end{equation}
+This is a ratio of sines of angular subarcs, not in general a ratio of their
+angular lengths.
+
+\begin{theorem}[Spherical Ceva]\label{thm:ceva}
+For interior points $D_a,D_b,D_c$ on the minor edges $vw,wu,uv$, the three
+cevians concur inside the triangle if and only if
+\begin{equation}\label{eq:sphericalceva}
+ \frac{\sin d_S(\vv v,D_a)}{\sin d_S(D_a,\vv w)}
+ \frac{\sin d_S(\vv w,D_b)}{\sin d_S(D_b,\vv u)}
+ \frac{\sin d_S(\vv u,D_c)}{\sin d_S(D_c,\vv v)}=1.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Write $D_a$ as the normalization of $\lambda\vv v+\mu\vv w$ with
+$\lambda,\mu>0$. Cross products with the endpoints show that its first sine
+ratio is $\mu/\lambda$. Do the same on the other two edges.
+A positive linear combination $A\vv u+B\vv v+C\vv w$ belongs to the
+first cevian exactly when $C/B=\mu/\lambda$. The cyclic conditions have a
+positive solution precisely when their product is one. Normalizing that
+solution gives the interior concurrence point. This is ordinary barycentric
+Ceva expressed in spherical sine ratios.
+\end{proof}
+
+\section{Spherical excess, solid angles, and polygon area}\label{sec:area}
+
+Define
+\begin{equation}\label{eq:Mdef}
+ M=1+x+y+z,\qquad B_0=\sqrt{M^2+D}.
+\end{equation}
+An important positive identity is
+\begin{equation}\label{eq:Midentity}
+ M^2+D=2(1+x)(1+y)(1+z)>0.
+\end{equation}
+The sign of $M$ must not be discarded. It determines whether the triangle's
+area is smaller or larger than a quarter of the full sphere.
+
+\begin{theorem}[Branch-correct spherical excess]\label{thm:excess}
+For a proper spherical triangle,
+\begin{equation}\label{eq:excess}
+ E:=\alpha+\beta+\gamma-\pi
+   =2\atantwo(d,M),\qquad 0<E<2\pi.
+\end{equation}
+In particular, $E<\pi$, $E=\pi$, or $E>\pi$ according as $M>0$, $M=0$, or
+$M<0$. The associated half-angle data are
+\begin{equation}\label{eq:excessphase}
+ \cos(E/2)=\frac{M}{B_0},\qquad
+ \sin(E/2)=\frac{d}{B_0}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The polar triangle has perimeter less than $2\pi$ by \cref{thm:SSS}, so
+$3\pi-(\alpha+\beta+\gamma)<2\pi$. Each interior angle is less than
+$\pi$. Hence $0<\alpha+\beta+\gamma-\pi<2\pi$.
+
+For an algebraic evaluation, work in $K[i]$, and put
+$A_1=x-yz$, $A_2=y-zx$, $A_3=z-xy$ and
+$T=(1-x)(1-y)(1-z)$. Direct multiplication, using
+$d^2=1+2xyz-x^2-y^2-z^2$, gives
+\begin{equation}\label{eq:excesspoly}
+ 2(A_1+id)(A_2+id)(A_3+id)+T(M+id)^2=0.
+\end{equation}
+This can be checked by separately comparing real and imaginary parts;
+they reduce respectively to
+\[
+ 2\bigl(A_1A_2A_3-D(A_1+A_2+A_3)\bigr)+T(M^2-D)=0
+\]
+and $A_1A_2+A_2A_3+A_3A_1-D+TM=0$.
+By \cref{eq:angledata}, the product of the three angle phases is the product
+of the first three factors in \cref{eq:excesspoly}, divided by
+$(1-x^2)(1-y^2)(1-z^2)$. Since that denominator equals
+$T(M^2+D)/2$, we obtain
+\[
+ \cis(\alpha+\beta+\gamma)=-\frac{(M+id)^2}{M^2+D}.
+\]
+It follows that $E$ and $2\atantwo(d,M)$ have the same phase. Both lie in
+$(0,2\pi)$, where phase is injective, so they are equal. The sign alternatives
+and \cref{eq:excessphase} follow immediately.
+\end{proof}
+
+When $M>0$, \cref{eq:excess} can be written $2\atan(d/M)$. When $M<0$,
+the same uncorrected one-argument arctangent would give a negative number
+instead of the correct value in $(\pi,2\pi)$. This is a geometric branch error,
+not merely a floating-point issue.
+
+\subsection{L'Huilier's formula}
+
+For $s=(a+b+c)/2$, all four half-arguments below lie in $(0,\pi/2)$.
+We have the exact formula
+\begin{equation}\label{eq:lhuilier}
+ \tan(E/4)=\sqrt{
+ \tan(s/2)\tan((s-a)/2)\tan((s-b)/2)\tan((s-c)/2)}.
+\end{equation}
+Here the root is positive, even for infinitesimal excess or for excess
+infinitesimally close to $2\pi$.
+
+To prove it, use $\tan(E/4)=d/(B_0+M)$ from
+\cref{eq:excessphase}. The product-to-sum identity
+\[
+ B_0+M=8\cos(s/2)\cos((s-a)/2)
+               \cos((s-b)/2)\cos((s-c)/2)
+\]
+follows by expansion, using
+$B_0=4\cos(a/2)\cos(b/2)\cos(c/2)>0$ from
+\cref{eq:Midentity}. Replace the four full-angle sines in
+\cref{eq:gramfactor} by twice the corresponding sine--cosine products.
+After division by $(B_0+M)^2$, one obtains the square of
+\cref{eq:lhuilier}. Positivity supplies the indicated root.
+
+\subsection{Area as a precise finite-polygon functional}
+
+\begin{definition}[Spherical polygon area]\label{def:area}
+For a proper triangle on $S_R^2(C)$ define its area to be $R^2E$.
+For a convex geodesic polygon contained in an open hemisphere, triangulate
+it by minor great-circle diagonals and add these triangle areas.
+\end{definition}
+
+\begin{theorem}[Consistency, positivity, and finite additivity]\label{thm:polygonarea}
+The definition is independent of triangulation. For a convex polygon with
+$n$ boundary vertices and interior angles $\alpha_1,\ldots,\alpha_n$,
+\begin{equation}\label{eq:polygonexcess}
+ \area(P)=R^2\left(\sum_{j=1}^n\alpha_j-(n-2)\pi\right).
+\end{equation}
+It is positive for a nonempty two-dimensional polygon, invariant under
+orthogonal transformations, and additive under finite geodesic polygonal
+dissections with disjoint interiors, with edges and vertices assigned area zero. It extends by such dissections to finite
+unions of spherical geodesic polygons.
+\end{theorem}
+\begin{proof}
+Use a gnomonic chart to make the polygon an ordinary convex polygon.
+In a triangulation with boundary vertices only, summing all the triangle
+angles gives precisely the sum of boundary angles, and there are $n-2$
+triangles. This proves \cref{eq:polygonexcess} and independence of the
+triangulation.
+
+A refinement can introduce interior vertices or subdivide boundary edges.
+At an interior vertex the angles sum to $2\pi$; at an inserted straight
+boundary vertex the angle is $\pi$. If a planar triangulation has $I$
+interior vertices, $B$ boundary vertices and $T_\triangle$ triangles, the
+finite Euler count is $T_\triangle=2I+B-2$. Thus the extra angles cancel
+exactly the extra triangle subtractions. A common finite refinement of two
+dissections proves additivity and consistency. Positivity follows by adding
+the positive triangle excesses. Orthogonal invariance follows from invariance
+of dot products and interior angles. For regions not contained in one open
+hemisphere, intersect with the eight closed coordinate octants, subdividing
+edges where necessary. Each octant lies in the open hemisphere whose normal
+has its three coordinate signs. Thus all the resulting pieces admit the
+preceding construction, and common refinement proves the same consistency.
+No topological compactness is needed for this explicit finite subdivision.
+\end{proof}
+
+An octant triangle has three right angles, hence excess $\pi/2$.
+Eight octants therefore give
+\begin{equation}\label{eq:spherearea}
+ \area(S_R^2)=4\pi R^2,\qquad
+ \area(\text{hemisphere})=2\pi R^2.
+\end{equation}
+A lune of angle $\lambda\in(0,\pi)$ splits along the equator into two
+triangles with angles $\lambda,\pi/2,\pi/2$. Its area is $2R^2\lambda$.
+These values reproduce the usual geometric normalization of area.
+
+For a circular cap of angular radius $\theta$, the usual elementary
+chartwise primitive of the area density gives the canonical expression
+\[
+ A_{\mathrm{cap}}(\theta)=2\pi R^2(1-\cos\theta),\qquad0\le\theta\le\pi.
+\]
+This is the extension of a specific classical analytic formula, obtained by
+evaluating the primitive $-\cos\theta$ of $\sin\theta$. It is not an
+assertion that arbitrary subsets have a surreal measure or that ordinary
+Darboux sums define this value. Our finite-additivity theorem concerns the
+geodesic polygonal class just constructed.
+
+\subsection{Solid angle of three arbitrary rays}
+
+Let $\vv A,\vv B,\vv C\in K^3$ be linearly independent vectors from an
+observation point, with lengths $A,B,C>0$. Their spherical triangle has
+solid angle
+\begin{equation}\label{eq:solidangle}
+ \Omega=2\atantwo\left(
+ |\det[\vv A\ \vv B\ \vv C]|,
+ ABC+C(\vv A\cdot\vv B)+A(\vv B\cdot\vv C)+B(\vv C\cdot\vv A)
+ \right).
+\end{equation}
+Normalize each ray to a unit vector in \cref{eq:excess}; multiplying both
+arguments by the positive number $ABC$ proves the formula. This is the
+branch-complete form of the classical plane-triangle solid-angle formula
+associated with van Oosterom and Strackee \cite{Oosterom}. The formula is
+independent of positive rescaling of any individual ray. Replacing the
+absolute determinant by its signed value gives the oriented angle, with
+sign set by the ray order.
+
+Solid angle is dimensionless and finite, whereas the corresponding area
+$R^2\Omega$ can have any surreal scale. A determinant that is infinitesimal
+relative to ray lengths does not by itself imply small solid angle: when the
+second argument is negative, the angle can instead be close to $2\pi$.
+
+\section{Differential geometry and parallel transport}\label{sec:differential}
+
+All derivatives in this section are with respect to explicit chart or curve
+parameters. Scalar parameters such as $R$ are held fixed. These derivatives
+are not an intrinsic derivation of the scalar field $\No$. The calculations
+are identities between restricted-analytic germs and rational operations;
+no existence theorem for arbitrary differential equations is being invoked.
+
+\subsection{Connection, geodesics, and curvature}
+
+For a sphere centered at zero, its tangent plane at $P$ is
+$T_PS_R^2=\{X:P\cdot X=0\}$. Orthogonally project ambient derivatives to
+obtain the connection
+\begin{equation}\label{eq:connection}
+ \nabla_XY=D_XY+\frac{X\cdot Y}{R^2}P.
+\end{equation}
+Indeed differentiating $P\cdot Y=0$ gives
+$P\cdot D_XY=-X\cdot Y$, so the displayed correction makes the result
+tangent. The product rule shows metric compatibility; symmetry of the
+ambient derivative gives zero torsion.
+
+For a unit tangent vector $V$ at $P$, a unit-speed great-circle geodesic is
+\begin{equation}\label{eq:geodesic}
+ \gamma(s)=\cos(s/R)P+R\sin(s/R)V,
+ \qquad s/R\in\OO.
+\end{equation}
+Direct differentiation gives $\norm{\gamma'}=1$ and
+$\gamma''=-\gamma/R^2$, hence $\nabla_{\gamma'}\gamma'=0$.
+All minor geodesic segments have $0\le s/R\le\pi$, so they are included.
+No oscillatory value at an infinitely large $s/R$ is required.
+
+With curvature convention
+$\mathcal R(X,Y)Z=\nabla_X\nabla_YZ-\nabla_Y\nabla_XZ-\nabla_{[X,Y]}Z$,
+substitution of \cref{eq:connection} and cancellation of commuting ambient
+derivatives gives
+\begin{equation}\label{eq:curvature}
+ \mathcal R(X,Y)Z=\frac1{R^2}
+       \bigl((Y\cdot Z)X-(X\cdot Z)Y\bigr).
+\end{equation}
+Thus the Gaussian curvature is exactly $1/R^2$. In particular a sphere of
+infinite radius has positive infinitesimal curvature, not zero curvature.
+An infinitesimal sphere has infinite curvature. Both statements are literal
+field identities.
+
+The exponential map at $P$, for $X\in T_PS_R^2$ with $r=\norm X$ and
+$r/R$ finite, is
+\[
+ \operatorname{Exp}_P(X)=\cos(r/R)P+R\sin(r/R)\frac{X}{r},
+\]
+with value $P$ at $r=0$. For $0\le r<\pi R$, it is bijective onto the sphere
+minus the antipode. Its inverse for $Q\ne-P$ is
+\begin{equation}\label{eq:logmap}
+ \operatorname{Log}_P(Q)=\frac{a}{\sin a}(Q-\cos a\,P),
+ \qquad a=\acos(P\cdot Q/R^2),
+\end{equation}
+with the removable value zero at $Q=P$. Taking norms and using the unique
+minor arc verifies both identities.
+
+\subsection{Explicit parallel transport}
+
+For unit directions $\vv u\ne-\vv v$ and $X\cdot\vv u=0$, define
+\begin{equation}\label{eq:transport}
+ \mathcal P_{uv}(X)=X-
+       \frac{X\cdot\vv v}{1+\vv u\cdot\vv v}(\vv u+\vv v).
+\end{equation}
+This is the parallel transport along the minor great-circle arc. To verify
+it, choose the tangent to the arc and its constant binormal as a basis of the
+initial tangent plane. The tangent rotates with the great circle and has
+zero covariant derivative; the binormal is ambient-constant and also has
+zero covariant derivative. The endpoint values of these two parallel fields
+are exactly \cref{eq:transport}. Alternatively, restricting
+\cref{eq:minimalrotation} to $\vv u^\perp$ reduces algebraically to the
+same formula. It follows that transport is an isometry between tangent planes.
+This specifies the canonical transport by explicit analytic continuation
+along the parametrized arc. It does not assert uniqueness among arbitrary
+fine-differentiable fields: the locally constant counterexample in
+\cref{sec:boundaries} explains that distinction. Within the definable
+restricted-analytic class, uniqueness follows because the two coefficients
+in the parallel frame have zero derivative and hence are constant.
+For a radius-$R$ sphere the unit directions are used but tangent vectors may
+retain their physical lengths.
+
+\subsection{A quaternion proof of spherical holonomy}
+
+Use the positive orientation $\tau=d>0$. The unit quaternion of the minimal
+rotation from $\vv u$ to $\vv v$ is
+\begin{equation}\label{eq:edgequaternion}
+ q_{uv}=\frac{(1+z,\vv u\times\vv v)}{\sqrt{2(1+z)}}.
+\end{equation}
+Define $q_{vw}$ and $q_{wu}$ cyclically. Quaternion multiplication gives the
+especially informative identity
+\begin{equation}\label{eq:holonomyquat}
+ q_{wu}q_{vw}q_{uv}=
+       \frac{(M,d\vv u)}{\sqrt{M^2+D}}.
+\end{equation}
+For a direct verification, multiply the three numerators using
+\cref{eq:quaternionmul}. The scalar component is $2M$ and the vector
+component is $2d\vv u$; the denominator is
+$\sqrt{8(1+x)(1+y)(1+z)}=2\sqrt{M^2+D}$.
+The simplifications use only unit norms and the vector triple-product
+identities.
+
+\begin{theorem}[Holonomy equals spherical excess]\label{thm:holonomy}
+Parallel transport around the positively oriented boundary
+$\vv u\to\vv v\to\vv w\to\vv u$ is rotation of the initial tangent
+plane through angle $E$ modulo $2\pi$. Equivalently,
+\[
+ \text{holonomy phase}=\cis E,
+ \qquad E=\frac{\area(\triangle)}{R^2}.
+\]
+\end{theorem}
+\begin{proof}
+Each edge transport is the restriction of the corresponding quaternion
+rotation. By \cref{eq:holonomyquat,eq:excessphase}, their product is the
+quaternion $(\cos(E/2),\sin(E/2)\vv u)$, which acts on
+$\vv u^\perp$ by rotation through $E$. The area equality is
+\cref{def:area}.
+\end{proof}
+
+This is a finite-triangle version of the curvature--area holonomy relation,
+proved without an unconstructed global integral. The observed tangent-plane
+rotation records $E$ modulo $2\pi$, while the area branch has already been
+fixed by $0<E<2\pi$. Reversing the boundary orientation changes the holonomy
+sign but not the unoriented area.
+
+\subsection{Curvature correction in normal coordinates}\label{subsec:normal-limit}
+
+Let $p,q$ be vectors in the tangent plane at $P$, with
+$r=\norm p$, $s=\norm q$, and $(r+s)/R$ infinitesimal. The squared intrinsic
+distance between their exponential images satisfies
+\begin{equation}\label{eq:normal-limit}
+ \begin{split}
+ d_R(\operatorname{Exp}_P p,\operatorname{Exp}_P q)^2
+  ={}&\norm{p-q}^2
+  -\frac{r^2s^2-(p\cdot q)^2}{3R^2}\\
+  &+\smallO\left(\frac{(r+s)^6}{R^4}\right).
+ \end{split}
+\end{equation}
+The error estimate is absolute and uniform over the relative directions;
+it does not claim a small \emph{relative} error when $p-q$ is exceptionally
+small.
+
+To derive it, for $r,s\ne0$ use the spherical cosine law with
+$\cos\alpha=(p\cdot q)/(rs)$. Expanding to degree four in $r/R,s/R$ gives
+\[
+ \cos(d_R/R)=1-\frac{\norm{p-q}^2}{2R^2}
+ +\frac{r^4+s^4+6r^2s^2-4(p\cdot q)(r^2+s^2)}{24R^4}
+ +\smallO\bigl((r+s)^6/R^6\bigr).
+\]
+The function $\acos(1-h)^2=2h+h^2/3+\smallO(h^3)$ has a real analytic
+extension through $h=0$. Substitution yields \cref{eq:normal-limit}. Expressions with
+$r=0$ or $s=0$ are obtained by their removable analytic values. Uniform
+real-germ remainder estimates transfer after rescaling by $R$.
+The coefficient $-1/(3R^2)$ explicitly records positive curvature.
+
+\section{Infinitesimal scales and geometric conditioning}\label{sec:scales}
+
+The extra information carried by surreal coordinates is not a new algebraic
+identity for an ordinary triangle. It is the ability to retain exact rank,
+orientation, angle, and size when several different infinitesimal scales
+occur in the same configuration.
+
+\subsection{A valuation dictionary}
+
+Write $v$ for the Hahn valuation, with $v(0)=+\infty$. For a nonzero
+vector $X\in K^3$,
+\begin{equation}\label{eq:norm-valuation}
+ v(\norm X)=\min_j v(X_j).
+\end{equation}
+Indeed, in $\sum_jX_j^2$ the summands of smallest valuation have positive
+leading coefficients, so their leading terms cannot cancel. Taking a
+positive square root halves the resulting valuation.
+
+For unit vectors $u,v$, put $a=d_S(u,v)$. The chord bounds and their
+antipodal versions give
+\begin{align}
+ v(\norm{u-v})&=v(a) &&(a>0),\label{eq:chord-val}\\
+ v(\norm{u+v})&=v(\pi-a) &&(a<\pi).
+\end{align}
+For $0<a<\pi$ one also has
+\begin{equation}\label{eq:sin-val}
+ v(\sin a)=v(a)+v(\pi-a).
+\end{equation}
+To check the last assertion, when both endpoints are separated from $a$
+by positive real amounts all three valuations are zero. When $a$ is
+infinitesimal, $\sin a/a=1+\smallO(a^2)$ and $\pi-a$ is a unit; the
+case $\pi-a$ infinitesimal is identical after reflection. These exhaust
+the possibilities by standard parts.
+
+Consequently a proper spherical triangle satisfies the exact scale laws
+\begin{equation}\label{eq:triangle-val}
+ \begin{split}
+ v(d)&=v(\sin b)+v(\sin c)+v(\sin\alpha)\\
+ &=v(\sin c)+v(\sin a)+v(\sin\beta)\\
+ &=v(\sin a)+v(\sin b)+v(\sin\gamma).
+ \end{split}
+\end{equation}
+A small determinant can therefore come from a small side, a nearly
+antipodal side, a small interior angle, or an angle close to $\pi$.
+Neither its standard part nor its valuation alone identifies which
+geometric mechanism is responsible.
+
+\subsection{A shape-independent local area estimate}\label{subsec:local-area}
+
+The following estimate does not assume that a shrinking triangle has
+angles bounded away from zero. This matters over the surreals: the area
+of a triangle can be smaller than every ordinary power of its diameter.
+
+\begin{theorem}[Uniform gnomonic area comparison]\label{thm:local-area}
+Let $p_0,p_1,p_2\in K^2$ be noncollinear, let
+$\rho=\max_i\norm{p_i}$, and suppose $0<\rho\le1/4$. On the unit
+sphere take the vertices $u_i=(p_i,1)/\sqrt{1+\norm{p_i}^2}$.
+Set
+\[
+ H=\det[p_1-p_0\ \ p_2-p_0],\qquad A_{\rm flat}=\frac{|H|}{2}.
+\]
+The spherical excess $E$ of their minor-arc triangle satisfies
+\begin{equation}\label{eq:local-area-bound}
+ \left|\frac{E}{A_{\rm flat}}-1\right|\le4\rho^2.
+\end{equation}
+In particular, for infinitesimal $\rho$,
+\[
+ E=\frac{|H|}{2}(1+\smallO(\rho^2)),\qquad
+ v(E)=v(H).
+\]
+On the sphere of radius $R>0$ the spherical area is $R^2E$, so
+$v(\area)=2v(R)+v(H)$, without any restriction on the size of $R$.
+\end{theorem}
+
+\begin{proof}
+Put $A_i=\sqrt{1+\norm{p_i}^2}$ and
+\[
+ B=A_0A_1A_2+(1+p_0\cdot p_1)A_2
+ +(1+p_1\cdot p_2)A_0+(1+p_2\cdot p_0)A_1.
+\]
+The determinant and denominator in the solid-angle formula are
+$d=|H|/(A_0A_1A_2)$ and $M=B/(A_0A_1A_2)$, respectively. Thus
+\begin{equation}\label{eq:gnomonic-exact-area}
+ E=2\atan(|H|/B).
+\end{equation}
+Here $B>0$; the triangle lies near the north pole, not near the
+hemispherical branch cut.
+
+The inequalities $1\le A_i\le1+\rho^2/2$ and
+$|p_i\cdot p_j|\le\rho^2$ imply
+\[
+ |B-4|\le8\rho^2,\qquad B\ge7/2,\qquad |H|\le4\rho^2.
+\]
+For example, the deviation of the product $A_0A_1A_2$ from $1$ is at
+most $2\rho^2$, and each of the other three terms deviates from $1$
+by at most $2\rho^2$. For the lower bound one may use the sharper
+$B\ge4-3\rho^2$.
+
+Set $\zeta=|H|/B$, so $0<\zeta\le2\rho^2$. The ordinary analytic
+inequality $1-\zeta^2/3\le\atan\zeta/\zeta\le1$ holds here by
+restricted-analytic transfer. Therefore
+\[
+ \begin{split}
+ \left|\frac{E}{A_{\rm flat}}-1\right|
+ &=\left|\frac4B\frac{\atan\zeta}{\zeta}-1\right|\\
+ &\le\frac{16}{7}\rho^2+\frac{32}{21}\rho^4
+ \le4\rho^2.
+ \end{split}
+\]
+Crucially, $H$ was divided out only after the exact factorization of
+$E$; no lower bound on $|H|/\rho^2$ was used. The valuation claims
+follow because the final multiplicative factor has standard part $1$.
+\end{proof}
+
+\begin{remark}
+For $p_0=0$, $p_1=(\eps,0)$, and
+$p_2=(\eps,\omega^{-\omega})$ with $\eps=\omega^{-1}$, the
+ratio $|H|/\rho^2$ is smaller than every ordinary positive power of
+$\eps$. The theorem still gives a relative, rather than merely
+absolute, estimate for the spherical area. A generic error bound
+$E=A_{\rm flat}+\smallO(\rho^4)$ would not give that information.
+\end{remark}
+
+\subsection{Stable vector data and unstable derived data}
+
+\begin{proposition}[Three conditioning estimates]\label{prop:conditioning}
+For unit vectors $u,v,u',v'$,
+\begin{equation}\label{eq:angle-Lipschitz}
+ |d_S(u,v)-d_S(u',v')|
+ \le\frac\pi2\bigl(\norm{u-u'}+\norm{v-v'}\bigr).
+\end{equation}
+For nonzero $X,Y$,
+\begin{equation}\label{eq:normalize-bound}
+ \left\|\frac X{\norm X}-\frac Y{\norm Y}\right\|
+ \le\frac{2\norm{X-Y}}{\norm X}.
+\end{equation}
+Finally, let $a=d_S(u,v)\in(0,\pi)$ and
+$\eta=\norm{u-u'}+\norm{v-v'}<\sin a$. Then $u'\times v'\ne0$ and
+\begin{equation}\label{eq:normal-bound}
+ \left\|\frac{u\times v}{\norm{u\times v}}
+       -\frac{u'\times v'}{\norm{u'\times v'}}\right\|
+ \le\frac{2\eta}{\sin a}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The angular triangle inequality bounds the left side of
+\cref{eq:angle-Lipschitz} by
+$d_S(u,u')+d_S(v,v')$. Apply the lower chord bound to each summand.
+For \cref{eq:normalize-bound}, write the difference as
+\[
+ \frac{X-Y}{\norm X}
+ +Y\left(\frac1{\norm X}-\frac1{\norm Y}\right)
+\]
+and use $|\norm X-\norm Y|\le\norm{X-Y}$. For the last estimate,
+\[
+ \norm{u\times v-u'\times v'}
+ \le\norm{(u-u')\times v}+\norm{u'\times(v-v')}
+ \le\eta.
+\]
+The strict inequality $\eta<\norm{u\times v}=\sin a$ prevents the
+new cross product from vanishing; normalization gives the claimed bound.
+\end{proof}
+
+Thus angular distance is uniformly stable under consistent perturbations
+of the unit vectors. The normal to their spanning plane is not uniformly
+stable near coincident or antipodal directions: the amplification factor
+$1/\sin a$ is then infinite. There is no contradiction between these
+statements; they concern different outputs.
+
+If one perturbs only the scalar cosine as though it were independent
+of all other data, inverse cosine is also ill-conditioned near an endpoint.
+Away from the endpoints its derivative is
+\[
+ \frac{d}{dc}\acos c=-\frac1{\sqrt{1-c^2}},
+\]
+whereas for $h>0$ infinitesimal,
+\begin{equation}\label{eq:acos-endpoint}
+ \acos(1-h)=\sqrt{2h}\left(1+\frac h{12}+\smallO(h^2)\right).
+\end{equation}
+The square-root law follows by inverting
+$1-\cos\theta=\theta^2/2-\theta^4/24+\cdots$ after extracting
+$\sqrt{2h}$. It is a genuinely different scale from an ordinary
+linear perturbation estimate.
+
+\section{Worked configurations at several surreal scales}\label{sec:examples}
+
+\subsection{Infinite lengths with infinitesimal directions}
+
+The vectors $X=(\omega,1,0)$ and $Y=(\omega,0,0)$ have infinite
+lengths and the finite infinitesimal angle
+\[
+ \ang(X,Y)=\atan(\omega^{-1})
+ =\omega^{-1}-\frac13\omega^{-3}+\frac15\omega^{-5}-\cdots.
+\]
+This displayed series is strongly summable because its parameter is
+infinitesimal. No evaluation of $\sin\omega$ occurs.
+
+For the flat triangle
+\[
+ P=0,\qquad Q=(\omega,0,0),\qquad
+ S=(\omega,\omega^{-\omega},0),
+\]
+the area is exactly $\tfrac12\omega^{1-\omega}$, while the angle at
+$P$ is $\atan(\omega^{-\omega-1})$. The base is infinite, the
+altitude is smaller than every ordinary negative power of $\omega$,
+and the area is nevertheless a well-defined positive surreal number.
+A real standard-part picture alone does not encode this configuration.
+
+\subsection{Nearly parallel lines meet their closest points infinitely far away}
+
+Let $\eps>0$ be infinitesimal and let $h=\eps^2$. Consider
+\[
+ L_1=\{(t,0,0):t\in K\},\qquad
+ L_2=\{(s,1+\eps s,h):s\in K\}.
+\]
+Their squared distance between parameter points is
+\[
+ (t-s)^2+(1+\eps s)^2+h^2.
+\]
+Its minimum is attained at $t=s=-1/\eps$ and is $h^2$. Hence the
+lines have distance $h$, although the standard parts of their
+\emph{finite-coordinate} points lie on the real lines $y=0,z=0$
+and $y=1,z=0$, whose distance is $1$.
+
+The discrepancy is not a failure of the distance formula. The minimizing
+points have infinite first coordinates and disappear from a finite-coordinate
+standard-part picture. Taking standard parts and minimizing over an entire
+affine line are different operations. With $h=0$, the same lines intersect
+at a genuine affine point infinitely far from the origin.
+
+\subsection{Tangency splits at a square-root scale}
+
+Intersect the unit sphere with the line $(t,1-\eps,0)$, where
+$0<\eps\in\mm$. The exact solutions are
+\[
+ t=\pm\sqrt{2\eps-\eps^2}
+ =\pm\sqrt{2\eps}\left(1-\frac\eps4+\smallO(\eps^2)\right).
+\]
+A displacement of valuation $v(\eps)$ splits a double tangency into
+points separated at valuation $v(\eps)/2$. Replacing $1-\eps$ by
+$1+\eps$ produces no intersection, while $\eps=0$ gives a single
+point. All three cases have the same ordinary standard-part tangency.
+
+\subsection{An almost planar tetrahedron with an infinite circumradius}
+
+Take vertices $0,e_1,e_2,(2,0,\eps)$ with $0<\eps\in\mm$.
+The tetrahedron has volume $\eps/6$. Its circumcenter is
+\[
+ C=\left(\frac12,\frac12,\frac1\eps+\frac\eps2\right),
+\]
+since $2C\cdot e_i=1$ for $i=1,2$ and
+$2C\cdot(2,0,\eps)=4+\eps^2$. The circumradius is
+\[
+ \norm C=\sqrt{\frac12+\left(\frac1\eps+\frac\eps2\right)^2},
+\]
+which is infinite. Nonzero volume, however small, is enough for uniqueness
+of the center; it is not enough for a finite conditioning constant.
+
+\subsection{A right spherical triangle and the flat limit of an infinite sphere}
+
+For positive infinitesimals $\eps,\eta$, set
+\[
+ u=e_3,\qquad
+ v=\frac{(\eps,0,1)}{A},\qquad
+ w=\frac{(0,\eta,1)}{B},\qquad
+ A=\sqrt{1+\eps^2},\quad B=\sqrt{1+\eta^2}.
+\]
+The angle at $u$ is exactly $\pi/2$, the adjacent side angles are
+$c=\atan\eps$ and $b=\atan\eta$, and
+\[
+ x=\frac1{AB},\qquad y=\frac1B,\qquad z=\frac1A,
+ \qquad d=\frac{\eps\eta}{AB}.
+\]
+The exact excess is therefore
+\begin{equation}\label{eq:right-small-excess}
+ E=2\atan\frac{\eps\eta}{(A+1)(B+1)}
+ =\frac{\eps\eta}{2}-\frac{\eps^3\eta+\eps\eta^3}{8}
+ +\smallO\bigl(\eps\eta(\eps^2+\eta^2)^2\bigr).
+\end{equation}
+This is a relative expansion with an explicit common area factor.
+In the symmetric case $\eps=\eta=h$ it becomes
+\begin{equation}\label{eq:symmetric-area}
+ E=\frac{h^2}{2}-\frac{h^4}{4}+\frac{7h^6}{48}+\smallO(h^8).
+\end{equation}
+
+Now choose $R=\omega$ and $h=\omega^{-1}$, and scale all vertices
+by $R$. The physical area is
+\[
+ R^2E=\frac12-\frac1{4\omega^2}
+       +\frac7{48\omega^4}+\smallO(\omega^{-6}),
+\]
+and the physical adjacent side lengths are
+$\omega\atan(\omega^{-1})=1-1/(3\omega^2)+\cdots$.
+The sphere has positive infinitesimal curvature $\omega^{-2}$.
+A bounded patch is asymptotically planar, but its curvature and area
+corrections remain exact surreal information rather than being discarded.
+
+\subsection{A tiny determinant with almost hemispherical area}
+
+Let $0<\eps\in\mm$ and consider
+\[
+ u=(1,0,0),\qquad v=(-1/2,\sqrt3/2,0),\qquad
+ w=\frac{(-1/2,-\sqrt3/2,\eps)}{\sqrt{1+\eps^2}}.
+\]
+Writing $A=\sqrt{1+\eps^2}$, one obtains
+\[
+ d=\frac{\sqrt3\,\eps}{2A},\qquad M=\frac12-\frac1A<0.
+\]
+Thus $D=d^2$ is infinitesimal, but the correct branch gives
+\begin{equation}\label{eq:hemisphere-example}
+ E=2\pi-2\atan\frac{d}{-M}
+   =2\pi-2\sqrt3\,\eps+\smallO(\eps^3).
+\end{equation}
+The triangle nearly fills a hemisphere rather than collapsing to zero
+area. Its polar triangle is small. Replacing $\atantwo(d,M)$ by the
+principal $\atan(d/M)$ would give the wrong branch and even the wrong
+sign for the area. This example and \cref{eq:right-small-excess}
+show why $d\to0$ is not a complete description of spherical degeneration.
+
+\section{Exact computation and a route to formalization}\label{sec:implementation}
+
+\subsection{A coordinate-to-invariants algorithm}
+
+For three proposed vertices $P_1,P_2,P_3$ on a sphere of center $O$
+and radius $R>0$, an exact workflow is as follows.
+\begin{enumerate}[label=\arabic*.,leftmargin=2em]
+\item Verify $\norm{P_i-O}^2=R^2$ and set $u_i=(P_i-O)/R$.
+Compute $x=u_2\cdot u_3$, $y=u_3\cdot u_1$, $z=u_1\cdot u_2$,
+and $\tau=u_1\cdot(u_2\times u_3)$.
+\item Check $\tau\ne0$ for a proper triangle. Retain its sign for
+orientation, and put $d=|\tau|$. Verify the redundant identity
+$d^2=1+2xyz-x^2-y^2-z^2$ as a useful certificate.
+\item Compute the side angles with
+$a=\atantwo(\norm{u_2\times u_3},x)$ and cyclic variants;
+compute $\alpha=\atantwo(d,x-yz)$ and cyclic variants.
+All these calls have strictly positive first argument.
+\item Compute $M=1+x+y+z$ and $E=2\atantwo(d,M)$.
+Return physical side lengths $Ra,Rb,Rc$ and area $R^2E$.
+Centers, polar vertices, and transport matrices are obtained from the
+explicit formulas above, with each denominator checked before division.
+\end{enumerate}
+
+This is a mathematical algorithm over a field with exact operations,
+order decisions, positive square roots, and finite-angle evaluation.
+It is not a claim that every surreal input has a finite machine
+representation. A general Conway normal form has set-sized support,
+and a generic element need not come with effective coefficient or
+support oracles. An actual computer algebra implementation must name
+its representable subclass and its supported comparison procedure.
+
+For exact finite descriptions, it is useful to separate an algebraic
+certificate from a displayed numerical approximation. For example,
+$\tau\ne0$ can be certified by a leading coefficient even when
+$\st(\tau)=0$. Near tangency, an exact discriminant sign should not
+be replaced by an ordinary floating-point tolerance. Truncated Hahn
+expansions must retain enough support to decide the leading nonzero
+term of the predicate being tested; an unresolved cancellation is an
+unknown sign, not a zero.
+
+\subsection{A layered Lean development, not a claim of completed verification}
+
+The inspected repository's \texttt{Surreal/Algebra/Geometry.lean}
+works with two-coordinate complexifications and field-valued moduli
+\cite{RepoGeometry}. Its approach suggests a clean separation for the
+three-dimensional extension. The following are proposed layers, not
+assertions that these modules already exist or have been compiled.
+
+\begin{center}\small
+\begin{tabular}{p{0.22\textwidth}p{0.30\textwidth}p{0.39\textwidth}}
+\toprule
+Layer & Assumptions & Principal obligations\\
+\midrule
+Vector algebra & Commutative ring & Dot/cross identities; determinants; Gram polynomials\\
+Ordered geometry & Ordered field; positive square roots & Norm inequalities; projections; affine incidence; intersections\\
+Orthogonal algebra & Real closed field when needed & Principal axes; axis--angle cosine/sine data; quaternion action\\
+Spherical algebra & Unit vectors; nonzero determinant & Tangent and normal formulas; cosine/sine laws; reconstruction\\
+Finite angles & Compatible restricted-analytic structure & Phase bijection; inverse branches; angle inequalities\\
+Area and transport & Proper minor-arc polygons & Excess branches; finite additivity; edge transport; holonomy\\
+Scale analysis & Valuation and standard part & Noncancellation; asymptotic bounds; degeneration certificates\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+An appropriate vector type is $\operatorname{Fin}(3)\to K$ or a
+three-coordinate structure. Length should initially be a $K$-valued
+function, not a real-valued \texttt{NormedSpace} norm. Theorems about
+matrices and finite sums can be proved before introducing any surreal
+construction. Angles should not enter the algebraic spherical-law layer
+until the circle-phase bridge is available. Proper-class statements are
+then obtained externally from compatible set-sized workspaces, rather
+than by pretending that all of $\No$ is a small type in one universe.
+
+The exceptional SSA family in \cref{subsec:SSA} is a useful specification
+test: a solver returning only a list of at most two triangles is
+mathematically incomplete unless it explicitly excludes the case
+$\cos b=\sin b\cos\alpha=0$. Its output type should distinguish no
+solution, finitely many solutions, and a parametrized family.
+
+\subsection{Reproducible checks accompanying this article}
+
+The accompanying \texttt{verify\_identities.py} uses exact symbolic
+algebra to check selected identities and expansions: the vector and
+Gram identities, the spherical-excess polynomial, the quaternion
+holonomy numerator, chart metrics, the local curvature coefficient,
+and worked examples. The file \texttt{verification.txt} records the
+actual run. These checks can detect a sign, coefficient, or transcription
+error in the displayed formulas. They do not prove the analytic transfer
+theorem, establish Hahn summability, discharge every branch condition,
+or formally verify the whole manuscript. Those distinctions are part
+of the mathematical specification, not merely software caveats.
+
+\section{What the development does not silently assume}\label{sec:boundaries}
+
+\subsection{Fine topology is not ordinary real topology}
+
+Suppose $K$ is non-Archimedean. Its infinitesimal ideal $\mm$ is both
+open and closed in the order topology: each infinitesimal has a
+sufficiently small infinitesimal neighborhood inside $\mm$, while for
+$x\notin\mm$ a neighborhood of radius $|x|/2$ stays outside $\mm$.
+Consequently the function
+\[
+ f(x)=\begin{cases}0,&x\in\mm,\\1,&x\notin\mm\end{cases}
+\]
+is locally constant and has derivative zero everywhere in the fine
+ordered-field sense, but $f(0)\ne f(1)$. Local differentiability alone
+therefore does not give the ordinary global mean value theorem or
+uniqueness of an antiderivative.
+
+There is no conflict with the use of restricted-analytic transfer.
+The externally specified set of all real infinitesimals is not a
+new definable predicate in the restricted-analytic language used
+here. Our formulas come from compatible real analytic germs or explicit
+algebraic definitions, not from arbitrary functions that happen to be
+locally constant on fine neighborhoods.
+
+\subsection{Ordinary finite partitions do not automatically define an integral}
+
+Even the function $f(x)=x$ on $[0,1]\subset K$ exposes a difficulty.
+For any partition with an ordinary finite number $N$ of subintervals,
+put $\Delta_i=x_i-x_{i-1}>0$. Its upper and lower Darboux sums satisfy
+\[
+ U-L=\sum_{i=1}^N\Delta_i^2\ge\frac1N,
+\]
+by Cauchy--Schwarz and $\sum_i\Delta_i=1$. Given any positive
+infinitesimal $\eps$, this difference is always greater than $\eps$,
+whatever ordinary finite $N$ is chosen. Hence the usual Darboux
+criterion requiring gaps smaller than \emph{every positive element
+of $K$} fails for these partitions. A mesh criterion without a
+requirement that the relevant partitions exist would instead become
+vacuous below infinitesimal mesh sizes.
+
+Nevertheless the polynomial antiderivative $x^2/2$ is perfectly
+well-defined, as are our polygon-area formula and the selected analytic
+cap primitive. A theory of generalized integration must say which
+functional, which functions, and which summation or partition notion it
+uses. This article does not infer a countably additive area measure
+from finite-polygon additivity. It also does not claim completeness,
+ordinary topological compactness, arbitrary smooth-ODE existence, or
+a supremum-based length for every curve in surreal space.
+
+\subsection{Finite dimension does not remove size or support conditions}
+
+The ambient coordinate count is three, but the class $\No^3$ remains
+a proper class. The set-field construction in \cref{sec:scalars}
+allows every finite configuration in the article to be treated in a
+single honest field and every needed analytic evaluation to be interpreted
+there. Passing to a larger workspace preserves the answers. Neither
+this compatibility nor the finite dimension permits unrestricted
+summation of arbitrary families of surreals.
+
+Likewise, ordinary-size angles do not imply ordinary-size arc lengths.
+For an infinite $R$ and a positive real $a$, the minor arc has infinite
+length $Ra$. Conversely, a bounded physical arc on an infinite sphere
+has infinitesimal angular length and is governed by the local expansions
+above. Choosing a global oscillatory phase at infinite scalar arguments
+would add another analytic convention; it would not change these
+coordinate-defined directions or finite geometric angles.
+
+\section{Conclusion}
+
+Three-dimensional surreal geometry has a large, rigorous core that is
+both familiar and genuinely more informative than its real standard-part
+picture. Affine incidence, orthogonality, quadrics, rotations, and finite
+volumes are ordered-field algebra. Canonical finite angles supply the
+usual trigonometric language for all directions, even when coordinates
+and physical lengths are infinite. Spherical geometry then admits exact
+sine and cosine laws, reconstruction criteria, centers, a finite-polygon
+area functional, and a curvature--holonomy identity.
+
+The indispensable extra care concerns branch choices, degeneracy, and
+the meaning of analysis. A zero standard part is not a zero determinant;
+a small determinant need not mean small spherical area; a locally
+constant fine-analytic function need not be globally constant; and a
+formal integral symbol is not a measure. With those distinctions made
+explicit, infinitesimal geometry becomes a calculus of exact scales
+rather than a collection of heuristic limiting pictures.
+
+\appendix
+\section{Source and verification ledger}\label{app:ledger}
+
+The repository comparison uses commit
+\begin{center}
+\texttt{d22a5b35d5b3040e870c3cfd6d1c8f7259e094b0}.
+\end{center}
+The two specifically inspected sources are the trigonometry report and
+the algebraic geometry Lean module cited below. The repository is a
+research source, not a substitute for published foundations. The source
+comparison is not an exhaustive audit of every file or of all published
+work on non-Archimedean geometry.
+
+For clarity, the main dependencies are these. Real closedness and the
+restricted-analytic Hahn-field model theorem are imported from
+\cite{vdDE}, with support-combinatorial cautions informed by its erratum
+\cite{vdDEErr}. The canonical global extension available from an initial
+integer part is attributed to \cite{EK}; this article needs only its
+finite restriction. The classical spherical identities are recorded in
+\cite{DLMF}; their algebraic proofs and sign conditions were provided
+here. The solid-angle expression is classical and attributed to
+\cite{Oosterom}. No priority claim is made for the remaining formulations,
+including the uniform gnomonic estimate, the exceptional-family
+classification, or their combination into a surreal development.
+
+The proofs in this article are mathematical proofs, not Lean proof terms.
+The included symbolic checks certify only the expressions they actually
+test. No assertion of completed repository integration, general-purpose
+surreal computer algebra, or formal verification is intended.
+
+\begin{thebibliography}{99}
+
+\bibitem{vdDE}
+L. van den Dries and P. Ehrlich,
+\emph{Fields of surreal numbers and exponentiation},
+Fundamenta Mathematicae \textbf{167} (2001), no.~2, 173--188.
+\href{https://doi.org/10.4064/fm167-2-3}{doi:10.4064/fm167-2-3}.
+
+\bibitem{vdDEErr}
+L. van den Dries and P. Ehrlich,
+\emph{Erratum to ``Fields of surreal numbers and exponentiation''},
+Fundamenta Mathematicae \textbf{168} (2001), no.~3, 295--297.
+\href{https://doi.org/10.4064/fm168-3-5}{doi:10.4064/fm168-3-5}.
+
+\bibitem{EK}
+P. Ehrlich and E. Kaplan,
+\emph{Surreal ordered exponential fields},
+Journal of Symbolic Logic \textbf{86} (2021), no.~3, 1066--1115,
+especially \S11.
+\href{https://doi.org/10.1017/jsl.2021.59}{doi:10.1017/jsl.2021.59}.
+See also the citation-correction erratum, \textbf{87} (2022), no.~2, 871,
+\href{https://doi.org/10.1017/jsl.2022.5}{doi:10.1017/jsl.2022.5}.
+
+\bibitem{Neumann}
+B. H. Neumann,
+\emph{On ordered division rings},
+Transactions of the American Mathematical Society \textbf{66} (1949),
+202--252.
+\href{https://www.jstor.org/stable/1990552}{Primary journal archive}.
+
+\bibitem{DLMF}
+F. W. J. Olver et al., eds.,
+\emph{NIST Digital Library of Mathematical Functions},
+\S4.42, ``Solution of Triangles,'' especially \S4.42(iii),
+``Spherical Triangles.''
+\href{https://dlmf.nist.gov/4.42}{Official online section},
+consulted September 22, 2026.
+
+\bibitem{Oosterom}
+A. van Oosterom and J. Strackee,
+\emph{The solid angle of a plane triangle},
+IEEE Transactions on Biomedical Engineering \textbf{BME-30} (1983),
+no.~2, 125--126.
+\href{https://doi.org/10.1109/TBME.1983.325207}{doi:10.1109/TBME.1983.325207}.
+
+\bibitem{RepoTrig}
+\repo,
+\emph{Trigonometry on the Surcomplex Plane: Canonical Phases,
+Arbitrary-Scale Geometry, and Infinitesimal Degeneration},
+repository research report dated September 21, 2026,
+\texttt{docs/surcomplex/trigonometry/article.tex}, at the commit listed
+in \cref{app:ledger}.
+\href{https://github.com/VladimirReshetnikov/Surreal/blob/d22a5b35d5b3040e870c3cfd6d1c8f7259e094b0/docs/surcomplex/trigonometry/article.tex}{Pinned source}.
+
+\bibitem{RepoGeometry}
+\repo,
+\emph{Finite geometry over an ordered base field},
+\texttt{Surreal/Algebra/Geometry.lean}, at the commit listed
+in \cref{app:ledger}.
+\href{https://github.com/VladimirReshetnikov/Surreal/blob/d22a5b35d5b3040e870c3cfd6d1c8f7259e094b0/Surreal/Algebra/Geometry.lean}{Pinned source}.
+
+\end{thebibliography}
+\end{document}

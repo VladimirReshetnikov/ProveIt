@@ -1,0 +1,14 @@
+.PHONY: all pdf check clean
+
+all: pdf
+
+pdf:
+	pdflatex -halt-on-error -interaction=nonstopmode article.tex
+	pdflatex -halt-on-error -interaction=nonstopmode article.tex
+	pdflatex -halt-on-error -interaction=nonstopmode article.tex
+
+check:
+	python3 code/verify.py
+
+clean:
+	rm -f article.aux article.log article.out article.toc
