@@ -22,6 +22,18 @@ and [birthday cutoffs and hereditary sets](foundations-and-computation/birthday-
 both set theory about the surreal field. Their proof review and formalization
 remain pending.
 
+Four reports placed in `5fe7f8d` and written in `fb182ea` are catalogued in the
+tables below:
+[vector and tensor fields](surreal/vector-and-tensor-fields/),
+[Euclidean three-space](surreal/euclidean-three-space/),
+[finite surreal probability](surreal/finite-surreal-probability/) and
+[surcomplex field automorphisms](surcomplex/surcomplex-field-automorphisms/).
+The finite-probability review now covers Sections 2–7; review of its later
+sections and the other three reports remains pending. Lean coverage is tracked
+separately in the ledger. The same batch added
+source material to the measures and trigonometry reports; those additions do
+not extend their earlier proof-review scope.
+
 ## Reading routes
 
 - **For foundations or formalization:** read

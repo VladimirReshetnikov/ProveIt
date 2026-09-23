@@ -13,7 +13,7 @@ source, and nothing here was selected out of a larger body of work.
 ```
 article.tex        the report, standalone LaTeX with an internal bibliography
                    (delivered as surreal_probability.tex, renamed on placement)
-article.pdf        the compiled report, 41 pages
+article.pdf        the compiled report, 46 pages
 README.md          this guide
 RESEARCH_AUDIT.md  the manuscript's own repository, literature and evidence audit, as delivered
 code/verify.py     exact finite checks in Q(t) (Python 3.10+, standard library only)
@@ -35,6 +35,16 @@ was dropped. No label of any other report was touched. The added material
 contains no numbered statement or equation, so every theorem, equation and
 section number of the manuscript is unchanged. The numbers below are checked
 against the build of `article.tex` in this directory.
+
+The current proof review covers Sections 2–7: scalar workspaces, standard
+part, finite probability, conditional shadows, Bayesian updates, logits,
+softmax and finite information theory. It corrects the point-weight event-algebra hypothesis,
+the joint-normalizer condition for successive updates, neutral evidence and
+the distinction between sufficient and necessary conditioning precision.
+It also separates the attained interior logarithmic-score minimum from the
+unattained boundary infimum over strictly positive predictions.
+Later sections and the remaining imports still require review; see the
+collection's [review record](../../REVIEW.md).
 
 ## What the report claims
 
@@ -61,7 +71,7 @@ sets; no law on the class `No` is constructed.
    breaking.
 3. **Bayes at every scale.** Minimum-plus valuation rule with coefficient tie
    breaking (Theorem 5.1; Example 5.2, rare evidence reversing the dominant
-   hypothesis); absolute and valuation-sensitive conditioning stability, a
+   hypothesis); absolute and valuation-sensitive conditioning stability, a sufficient
    precision contract `v(p_i − q_i) > β + λ` (Theorem 5.3); infinite prior
    logits survive finitely many bounded-real increments (Section 5.3).
 4. **Logits and softmax.** `σ` and `logit` are inverse increasing bijections
@@ -74,7 +84,9 @@ sets; no law on the class `No` is constructed.
    and `st H(p) = H(st p)` (Theorem 7.1); chain rule and data processing with
    its equality case (Theorem 7.2); equal shadows with positive infinite
    relative entropy, so standard part does not commute with `D` (Example 7.3);
-   strict propriety of logarithmic and Brier scores.
+   strict propriety of logarithmic loss for interior true laws and Brier loss
+   on the full simplex; boundary logarithmic loss has an unattained infimum
+   when predictions must remain strictly positive.
 6. **Gibbs and decisions.** An exact finite Gibbs variational identity valid
    for infinite energies or infinitesimal temperature, with no compactness
    (Theorem 8.1); rare events with large payoffs; infinitesimal smoothing;
@@ -296,7 +308,7 @@ the pin and the delivered 35-page PDF.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-This build gives 41 pages (a title page, two contents pages and 38 numbered
+This build gives 46 pages (a title page, two contents pages and 43 numbered
 pages), with no errors, no undefined or multiply-defined references or
 citations, no duplicate PDF destinations, and no LaTeX, package or box warnings.
 No bibliography database or external figure is needed.
@@ -332,7 +344,8 @@ The source is one manuscript, *Surreal Probability and Log-Odds: A multiscale
 theory of belief, information, and infinite sampling*, dated 22 September 2026.
 It arrived as `surreal_probability.zip`, number 05 of the nine archives
 committed as `2765c8f`, and was placed at `5fe7f8d`. With one source there were
-no merge decisions; every theorem, proof, example and disclaimer is kept. It
+no merge decisions; placement retained every theorem, proof, example and
+disclaimer. It
 continues the measures report but answers no question it names, so it is a
 report of its own.
 
@@ -341,5 +354,134 @@ added Sections 1.4–1.7, the "Since the pin" paragraph and pointer sentences in
 Sections 10 and 12, updated the title-page status, Section 16.3, Appendix B and
 the bibliography notes, and made the *strong* renames listed above. It left the
 mathematics unchanged. `RESEARCH_AUDIT.md` is the manuscript's own audit, not an
-independent review; no subsequent proof review has been recorded for this
-report.
+independent review. The subsequent review below concerns Sections 2–3 and
+records the correction to the finite point-weight representation. The later
+Sections 4–5 pass records the update and precision corrections.
+
+## Subsequent proof review
+
+The finite-probability review begins with Sections 2–3. The full event
+algebra is now an explicit hypothesis for point-weight models; the trivial
+two-point algebra demonstrates why point weights are otherwise not unique.
+The expanded scalar and finite proofs cover standard-part uniqueness and
+units, positive leading coefficients, common-partition expectation,
+Cauchy–Schwarz at zero second moment, tail bounds and Jensen, positive
+conditioning denominators, nested conditional expectations, total variance,
+and the ticket identities characterizing coherence. Regularity remains a
+separate condition, and null-atom versions do not affect scalar identities.
+The canonical Hahn embedding was checked against van den Dries–Ehrlich
+Section 2, p. 176, and the scalar exponential transfer against Corollary 2.2,
+p. 177; the erratum changes ordinal support estimates, not that result.
+
+Validation: three-pass baseline and revised PDFs are clean, with 41 and 43
+pages respectively; the changed scalar, probability, inequality and
+conditioning pages were visually inspected. All 114 source labels and their
+numbers are preserved. The copied delivered verifier passes 2,145 assertions
+and matches its recorded JSON apart from the Python version. A separate
+953-check exact `Q(t)` run covers all 15 partitions of four points and
+nested refinements, including zero masses, infinite payoffs, infinitesimal
+thresholds, limited-unit residues and the additivity sure-loss witness.
+These are finite examples, not proofs of the general or infinite statements.
+All five historical audit/code/data artifacts are unchanged. The independent
+index audit checks 2,114 entries in 44 reports; 890 local Markdown destinations
+in 93 files resolve. The full Lean build passes 3,906 jobs and its axiom audit
+checks 6,127 declarations using only `propext`, `Classical.choice` and
+`Quot.sound`. This source review adds no Lean coverage. Sections 4 onward,
+remaining imports and broader source reconciliation still require review.
+
+The final probability-core integration merged `e79b92a` through `2cda5fe`,
+including the finite-angle quotient and canonical polar-group splitting.
+Its source mapping retains the finite-angle domain and ordinary `2πℤ`
+periods while allowing a nonzero surcomplex modulus of arbitrary size.
+The combined build passes 3,912 jobs, and 6,214 declarations pass the axiom
+audit with only `propext`, `Classical.choice` and `Quot.sound`.
+The merge also brought in two packages placed in `d4e71b7`; their 67 base-source
+statements are indexed provisionally, with assembly and review explicitly
+pending. The independent index now checks 2,181 entries across 46 current
+main sources (44 assembled reports plus two base manuscripts). All 903 local
+Markdown destinations in 97 files resolve. The probability source and its
+43-page PDF are unchanged by the merge, and the 30 newly delivered files
+remain unchanged. This is integration validation, not a proof review of
+the new foundations packages or additional probability Lean coverage.
+
+The second finite-probability pass reviews Sections 4–5. It expands the
+conditional-shadow product law and leading-scale formula, including empty
+numerators, and shows how pairwise conditional shadows recover the ordered
+leading groups and their coefficient ratios. The signed-row proof now makes
+the well-ordered selection, dimension bound and coefficient argument explicit;
+a two-state example shows why surreal payoffs outside ordinary `ℝ` are not
+covered. The comparison with conditional probability spaces and real-payoff
+equivalence was checked against Halpern Definition 2.1 and Section 4.
+
+Three scope corrections matter for use: successive updates with zero
+likelihoods require a positive joint normalizer; a neutral likelihood ratio
+leaves the exact prior unchanged; and the strict valuation-error contract is
+sufficient, not necessary for an individual pair of laws. The precision
+clause now has its own positive-event hypothesis, and the exact difference
+numerator has the correct sign. A rescaling example gives identical
+conditionals despite larger input errors; a boundary example proves that
+replacing the strict valuation bound by a non-strict one loses the stated
+output precision. Infinite-logit persistence now includes the finite-sum
+bound and the exponential argument for its unchanged real shadow.
+
+Validation: clean three-pass PDFs at 43 pages in the baseline and 44 after
+revision; the changed proof pages were visually inspected. All 114 label
+numbers and all five historical audit/code/data artifacts are preserved.
+The copied source verifier reproduces its 2,145 assertions, with the JSON
+matching apart from the Python version. An additional 1,361 exact `Q(t)`
+checks cover conditional products, scale recovery, compatible and impossible
+joint updates, strict precision, cancellation, the payoff counterexample and
+neutral odds. These are finite examples, not a general proof or an
+implementation of surreal logarithms. The independent index audit checks
+2,181 entries across 46 main sources (including two provisional bases), and
+all 903 local Markdown destinations in 97 files resolve. The full build
+passes 3,912 jobs and its axiom audit checks 6,214 declarations using only
+`propext`, `Classical.choice` and `Quot.sound`. Sections 6 onward and the
+remaining imports still require review; probability Lean coverage is unchanged.
+
+The final Sections 4–5 integration merged `ab36649` through `6f55757`,
+including unique interval representatives, natural roots and the complete
+polar root formulas. The source mapping was checked against the actual
+interval endpoints, positive-degree hypothesis, nonzero input and positive
+radius restrictions; the polygon result here is its side-length clause.
+The combined build passes 3,916 jobs and 6,277 declarations pass the axiom
+audit using only `propext`, `Classical.choice` and `Quot.sound`.
+All 2,181 indexed statements across 46 main sources remain correctly
+catalogued, and all 907 local Markdown destinations in 97 files resolve.
+The merge leaves the reviewed probability source and 44-page PDF unchanged.
+This integration adds no probability formalization or review of later sections.
+
+The third finite-probability pass reviews Sections 6–7. Logit Bayes now
+states the interior-prior hypothesis and both positive likelihoods explicitly.
+The finite state and scale lists are nonempty. The proofs expand logistic
+inverses and the infinitesimal Taylor coefficient, softmax's exact common-shift
+ambiguity, multiplicative perturbation bounds and the normalizer's logarithmic
+bound, and the dominance argument for separated scales. The softmax “limit”
+is explicitly a standard-part formula at fixed surreal inputs.
+
+The information proofs now expose the nonnegative Gibbs slack terms, handle
+positive-residue and zero-residue entropy coordinates separately, and justify
+support inheritance in the chain rule and data processing. The data-processing
+gap is an exact sum of conditional divergences, including infinitesimal
+positive weights. The rare-entropy series and infinite-divergence example are
+expanded. For logarithmic loss over strictly positive predictions, an interior
+true law has its unique minimizer, while a boundary law has no minimizer.
+Explicit redistribution strictly improves any interior prediction for a
+boundary truth, and exponential smoothing attains arbitrarily small excess
+above entropy, proving the infimum inside the workspace. Brier's full-simplex
+identity and the logistic-loss identity are also expanded.
+
+Validation: baseline and revised PDFs rebuilt in three passes without warnings
+at 44 and 46 pages; changed proof pages were visually inspected. All 114 label
+numbers and five historical audit/code/data files are preserved. The copied
+source verifier reproduces 2,145 assertions with JSON unchanged apart from the
+Python version. Separate checks pass 813 exact `Q(t)` cases for softmax ratios,
+gauge invariance, infinitesimal errors, boundary redistribution, smoothing and
+Brier excess, plus 112 symbolic identities for logistic expansions, Gibbs slack,
+entropy chain rules and data-processing gaps with zero coordinates/columns.
+These finite checks do not implement arbitrary surreal exp/log or prove the
+multiscale theorem. The independent index audit checks 2,181 entries in 46
+current sources and all 907 local Markdown destinations in 97 files resolve.
+The full Lean build passes 3,916 jobs; its axiom audit checks 6,277 declarations
+using only `propext`, `Classical.choice` and `Quot.sound`. No new probability
+Lean coverage is claimed. Sections 8 onward and remaining imports are pending.

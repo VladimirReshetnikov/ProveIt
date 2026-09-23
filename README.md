@@ -389,6 +389,24 @@ The actual finite exponential maps onto the finite units with exact kernel
 and two finite angles give the same phase exactly modulo ordinary `2πℤ`.
 Each has a unique principal angle in `(-π, π]`, with angle `π` for every
 negative real input, including infinite and infinitesimal scales.
+The finite-angle quotient by ordinary full turns is isomorphic to the full
+actual unit circle. Each direction splits canonically into its ordinary
+standard-part direction and an additive infinitesimal angle, recovered by
+the strong logarithm. Positive moduli times these angle classes form the
+multiplicative group of all nonzero surcomplex numbers, without any bound
+on their size.
+Directions have unique representatives in both `[0, 2π)` and `(-π, π]`,
+with actual endpoint inequalities deciding infinitesimal corrections.
+Every positive surreal has a unique positive natural root. Every nonzero
+surcomplex has exactly `n` roots of positive degree `n`, with the explicit
+polar formula; roots of unity are exactly the embedded ordinary complex
+ones. The regular polygon side formula holds at every positive radius.
+The rational Cayley chart covers every actual direction except `-1`, with
+inverse half-angle tangent; its projective extension supplies that point and
+transports homogeneous addition to direction multiplication. Infinite surreal
+parameters give precisely the affine directions infinitesimally close to `-1`,
+while never equaling the projective point itself. This includes the explicit
+parameter `omega`.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual

@@ -595,8 +595,8 @@ and a build script. It was placed at commit \texttt{5fe7f8d}. Its repository
 comparison is pinned to \texttt{\pin} (Section~\ref{fsp:sub:repository}).
 
 There is no second source, so there was no merge and no choice between sources.
-Every theorem, proof, example and disclaimer of the manuscript is kept. The
-manuscript continues the measures report but answers no question it names, so
+Placement retained every theorem, proof, example and disclaimer of the
+manuscript. The manuscript continues the measures report but answers no question it names, so
 it was placed as a report of its own rather than as a part of that one.
 
 Placement changed the following and nothing else.
@@ -624,7 +624,21 @@ strong Hahn probability'', and the four mentions of classical strong laws
 and record a rerun of the checks; the bibliography entries of the repository
 reports carry a placement note, and an entry for the physics report was added.
 \end{enumerate}
-Placement left the mathematics unchanged.
+Placement left the mathematics unchanged. The subsequent proof review of
+Sections~\ref{fsp:sec:scalars}--\ref{fsp:sec:finite} expands the elementary
+arguments and supplies the full-event-algebra hypothesis for the point-weight
+representation. On a smaller finite algebra it is the measurable atoms, not
+necessarily the points, that carry the uniquely determined weights.
+It also makes the limited-input and conditional-version conventions explicit.
+The review of Sections~\ref{fsp:sec:shadows}--\ref{fsp:sec:bayes}
+subsequently adds the joint-normalizer hypothesis for commuting likelihood
+updates, corrects the neutral-likelihood wording, and separates sufficient
+conditioning precision from necessity. The live review record is
+\path{docs/REVIEW.md}. The Sections~\ref{fsp:sec:logits}--\ref{fsp:sec:information}
+review makes the finite nonempty domains and binary-prior hypotheses explicit,
+expands softmax and information inequalities, and separates an attained
+interior logarithmic-score minimum from the boundary infimum. The delivered
+audit, programs and data remain unchanged.
 
 \section{Scalars, size, and the two meanings of exponentiation}
 \label{fsp:sec:scalars}
@@ -653,6 +667,10 @@ $E_n\cup\exp(E_n)\cup\log((E_n)_{>0})$.
 Replacement and finite field expressions make each stage a set.
 The union $E=\bigcup_{n<\omega}E_n$ has the required properties because each
 input and each finite list of inputs already lies at one stage.
+More explicitly, the stages form an increasing chain, so two elements of
+$E$ lie together in some $E_n$. Their sum, product and any defined quotient
+lie in that field. For $x\in E_n$, its exponential and, when $x>0$, its
+logarithm lie in $E_{n+1}$. This proves each claimed closure separately.
 \end{proof}
 
 This lemma supplies closure, not an algorithm, a canonical smallest Hahn
@@ -666,13 +684,20 @@ An element $x$ is \emph{limited} if $|x|<n$ for some ordinary positive
 integer $n$, and \emph{infinitesimal} if $|x|<1/n$ for every such $n$.
 Write $x\simeq y$ when $x-y$ is infinitesimal. Every limited surreal has a
 unique real standard part, denoted $\st x$, with $x\simeq\st x$.
-One proof takes the supremum in $\R$ of the real numbers below $x$; the
-Dedekind completeness used here belongs to $\R$, not to $\No$.
+Indeed, if $|x|<n$, the set $\{a\in\R:a<x\}$ is nonempty and
+bounded above in $\R$. Let $r$ be its real supremum. For each real
+$\delta>0$, the supremum property gives $r-\delta<x$, while
+$r+\delta/2$ exceeds the supremum and hence cannot be strictly below $x$.
+Hence $r-\delta<x<r+\delta$. This proves $x\simeq r$.
+Two such real numbers differ by a real infinitesimal and therefore agree.
+The Dedekind completeness used here belongs to $\R$, not to $\No$.
+Here \emph{limited} means what the collection's notation guide calls a
+\emph{finite element}; it is unrelated to finite birthday or finite support.
 
 \begin{proposition}[Residue algebra]\label{fsp:prop:st}
 On limited elements, standard part is an order-preserving ring homomorphism.
-If $y$ is limited and $\st y\ne0$, then
-$\st(x/y)=\st x/\st y$. If $x>0$ is limited, it is infinitesimal exactly
+If $x,y$ are limited and $\st y\ne0$, then $x/y$ is limited and
+$\st(x/y)=\st x/\st y$. A limited $x$ is infinitesimal exactly
 when $\st x=0$.
 \end{proposition}
 \begin{proof}
@@ -680,7 +705,13 @@ Write $x=r+\eta$ and $y=s+\theta$ with $r,s\in\R$ and infinitesimal
 $\eta,\theta$. Sums and products of infinitesimals with limited factors
 are infinitesimal. If $s\ne0$, then $y$ is bounded away from zero by a
 positive real, and $y^{-1}-s^{-1}=-\theta/(sy)$ is infinitesimal.
-Order preservation and the last assertion follow from the definition.
+Thus $y^{-1}$ is limited with standard part $s^{-1}$, proving the
+quotient assertion. If $x\le y$ but $r>s$, the positive real gap $r-s$
+cannot be canceled by the infinitesimal $\theta-\eta$, a contradiction.
+Finally $x=r+\eta$ is infinitesimal if and only if $r=0$.
+The map fixes real constants, so it is onto $\R$; its kernel is precisely
+the infinitesimal ideal of the limited-element ring. It is not strictly
+order preserving: $0<t=\omega^{-1}$ but $\st t=\st0=0$.
 \end{proof}
 
 A field need not contain all limited surreals to have this residue map;
@@ -697,7 +728,8 @@ of $\No$, and put
  K_\Gamma=\R((t^\Gamma)),\qquad t^\gamma\longmapsto\omega^{-\gamma}.
 \end{equation}
 The exponent support is well ordered in increasing order. These normal
-forms identify $K_\Gamma$ with an ordered subfield of $\No$; the field need
+forms identify $K_\Gamma$ with an ordered subfield of $\No$
+\cite[Section~2, p.~176]{vdde}; the field need
 not be closed under the canonical exponential. An abstract ordered group
 can instead be used with a specified embedding into the additive surreals.
 For $x\ne0$ set
@@ -712,8 +744,15 @@ For positive $x,y$,
  v(xy)=v(x)+v(y),\qquad
  v(x+y)=\min\{v(x),v(y)\}.
 \end{equation}
-The second equality has no cancellation because leading coefficients are
-positive. For probabilities $0<p\le1$, $v(p)\ge0$.
+For products the least exponent is $v(x)+v(y)$, with coefficient
+$\lc(x)\lc(y)\ne0$. For sums with unequal valuations, the smaller
+exponent survives; with equal valuations its coefficient is
+$\lc(x)+\lc(y)>0$. This proves both identities without a cancellation
+assumption on any higher coefficient. If $v(p)<0$ and $p>0$, its leading
+monomial dominates every positive real constant, contradicting $p\le1$.
+Thus probabilities have $v(p)\ge0$. More generally a Hahn element is limited
+exactly when its valuation is nonnegative, and its standard part is then
+$[t^0]x$; zero has the assigned valuation $+\infty$.
 
 A family $(x_i)_{i\in I}$ is \emph{strongly Hahn summable} if its combined
 support is well ordered and, for each exponent, only finitely many members
@@ -753,10 +792,16 @@ We use the scalar inequalities
  \exp x\ge1+x,\qquad \log y\le y-1\quad(y>0),
 \end{equation}
 with equality only at $x=0$ and $y=1$, respectively. These follow from the
-established elementary equivalence with the real exponential field
-\cite{vdde,vddeerr}. For each fixed ordinary integer $n$, a universally
-quantified real-exponential inequality involving $n$ coordinates can be
-used this way. This does \emph{not} transfer a theorem quantifying over
+elementary-extension theorem \cite[Corollary~2.2, p.~177]{vdde}.
+The erratum \cite{vddeerr} corrects ordinal support bounds in Section~4
+and leaves this transfer statement unchanged. No such ordinal bound is
+used here. For each fixed ordinary integer $n$, a universally quantified
+real-exponential inequality involving $n$ coordinates can be used this way:
+first it holds in $\No$, then its quantifier-free instance at inputs in
+$E$ has the same meaning there, since $E$ inherits the order and field
+operations and is closed under the displayed exponential and logarithm.
+The workspace lemma alone does not make $E$ an elementary substructure. This does
+\emph{not} transfer a theorem quantifying over
 arbitrary sample spaces, countable sequences, measurable functions, or
 integration operations. The distinction will matter repeatedly.
 
@@ -775,23 +820,39 @@ It is \emph{regular} if $P(A)>0$ for every nonempty $A\in\A$.
 No countable-additivity assertion is implicit in this definition.
 \end{definition}
 
-Finite additivity implies $P(\varnothing)=0$, $P(A^c)=1-P(A)$,
-monotonicity, and $0\le P(A)\le1$. On a finite space
-$\Omega=\{1,\ldots,n\}$ it is equivalent to a vector
-$p\in K_{\ge0}^n$ with $\sum_i p_i=1$: necessarily
-$P(A)=\sum_{i\in A}p_i$. Regularity means exactly that all $p_i>0$.
-Thus no extra consistency problem arises merely from replacing real
-weights by infinitesimal ones.
+Taking the two disjoint events to be empty gives $P(\varnothing)=0$.
+The decompositions $\Omega=A\sqcup A^c$ and
+$B=A\sqcup(B\setminus A)$ when $A\subseteq B$ give complements and
+monotonicity, hence $0\le P(A)\le1$.
+
+On $\Omega=\{1,\ldots,n\}$ \emph{with the full event algebra
+$\A=2^\Omega$}, a law is equivalent to its point-weight vector
+$p_i=P(\{i\})\ge0$, with $\sum_i p_i=1$; finite additivity gives
+$P(A)=\sum_{i\in A}p_i$, and this formula conversely defines a law.
+Regularity means exactly that all $p_i>0$. For a smaller finite event
+algebra, use its nonempty minimal events (its \emph{atoms}) instead:
+these partition $\Omega$, every event is a union of them, and their masses
+uniquely determine the law. Individual point masses need not be defined.
+For example, on $\{1,2\}$ with algebra $\{\varnothing,\Omega\}$, the
+point-weight vectors $(1,0)$ and $(0,1)$ restrict to the same law.
+Throughout the finite vector models below, all subsets are measurable;
+this is an additional convention, not a consequence of finiteness alone.
 
 A finite-range $K$-valued random variable is a function constant on the
 members of a finite measurable partition. Its expectation is
 \begin{equation}\label{fsp:eq:expectation}
  \E_P X=\sum_j x_jP(A_j),\qquad X=\sum_jx_j\ind_{A_j}.
 \end{equation}
-Refining partitions proves that this definition is independent of the
-representation. It is $K$-linear, positive, and satisfies
-$\min X\le\E X\le\max X$. No convergence notion is needed, even if the
-finitely many values $x_j$ are infinite surreals.
+For two representations, pass to the common partition of nonempty
+intersections of their cells. On each such intersection the two assigned
+values agree, and finite additivity splits each original mass into the
+masses of these intersections. Thus the displayed sum is independent of
+the representation. A common partition also proves $K$-linearity and
+positivity. Applying positivity to $X-\min X$ and $\max X-X$, and using
+$\E1=1$, gives $\min X\le\E X\le\max X$.
+No convergence notion is needed, even if the finitely many values are
+infinite surreals. If $P(B)=0$, then $\E[X\ind_B]=0$: every cell inside
+$B$ has mass zero, whatever its assigned value.
 
 For two finite laws, the product weights $p_iq_j$ define independent
 coordinates. A finite map $f:\Omega\to S$ pushes the law forward by
@@ -807,28 +868,43 @@ to a missing infinite extension theorem.
 
 \begin{theorem}[Variance, Cauchy--Schwarz, and tail bounds]
 \label{fsp:thm:finitebounds}
-For finite-range variables over $K$,
+For finite-range measurable variables $X,Y$ on the same $K$-probability
+space, define $\Var(X)=\E[(X-\E X)^2]$. Then
 \begin{align}
- \Var(X)&=\E(X-\E X)^2\ge0,\\
- (\E XY)^2&\le\E X^2\,\E Y^2,\label{fsp:eq:cs}\\
- P(X\ge a)&\le\E X/a\quad(X\ge0,\ a>0),\label{fsp:eq:markov}\\
+ \Var(X)&=\E[(X-\E X)^2]\ge0,\\
+ (\E[XY])^2&\le\E[X^2]\,\E[Y^2],\label{fsp:eq:cs}\\
+ P(X\ge a)&\le\E[X]/a\quad(X\ge0,\ a>0),\label{fsp:eq:markov}\\
  P(|X-\E X|\ge a)&\le\Var(X)/a^2\quad(a>0).
 \end{align}
 The thresholds and variable values may be surreal.
 \end{theorem}
 \begin{proof}
-Positivity of squares gives the variance assertion. If $\E Y^2=0$,
-each positive-mass partition cell has $Y=0$, so $\E XY=0$.
-Otherwise substitute $c=\E XY/\E Y^2$ in
-$0\le\E(X-cY)^2$ and multiply by $\E Y^2>0$ to obtain
-\eqref{fsp:eq:cs}. The pointwise inequality
-$a\ind_{\{X\ge a\}}\le X$ proves \eqref{fsp:eq:markov}.
-Apply it to $(X-\E X)^2$ for the last claim.
+Work on a common finite measurable partition for $X$ and $Y$.
+Positivity of squares gives the variance assertion, and expansion gives
+$\Var(X)=\E[X^2]-(\E X)^2$. Put
+$A=\E[X^2]$, $B=\E[XY]$, and $C=\E[Y^2]$.
+If $C=0$, each nonnegative summand $p_jy_j^2$ is zero, so every
+positive-mass cell has $y_j=0$ and $B=0$.
+If $C>0$, expansion at $c=B/C$ gives
+\[
+ 0\le\E[(X-cY)^2]=A-2cB+c^2C=A-B^2/C.
+\]
+Multiplication by $C$ proves \eqref{fsp:eq:cs}.
+For Markov, $a\ind_{\{X\ge a\}}\le X$ pointwise; apply positivity
+of expectation and divide by $a>0$.
+For Chebyshev, apply Markov to $(X-\E X)^2$ at the positive threshold
+$a^2$. The events agree because $|z|\ge a$ if and only if $z^2\ge a^2$
+in an ordered field. No division by a possibly zero second moment or
+probability is used.
 \end{proof}
 
 If a function $f$ is convex on an interval of $K$ in the ordered-field
 sense, finite Jensen follows by induction on the number of positive
-weights. One cannot apply this assertion to an arbitrary function
+weights. With at least two such weights, separate one of weight $p\in(0,1)$,
+normalize the remaining weights by $1-p$, apply the inductive assertion,
+and then the defining two-point convexity inequality. One positive weight
+is the equality case; zero weights may be discarded. One cannot apply this
+assertion to an arbitrary function
 originally defined only on $\R$ without first specifying its extension to
 $K$. The result is algebraic convexity, not a general surreal integration
 theorem.
@@ -840,7 +916,14 @@ Whenever $P(B)>0$, define
  P(A\mid B)=\frac{P(A\cap B)}{P(B)}.
 \end{equation}
 An infinitesimal denominator is nonzero and poses no algebraic problem.
-Multiplication of denominators proves Bayes' rule and the chain rule.
+The map $A\mapsto P(A\mid B)$ is again a finitely additive law.
+For $P(A),P(B)>0$, cancellation gives
+$P(A\mid B)P(B)=P(B\mid A)P(A)$; division by $P(B)$ gives Bayes' rule.
+Likewise
+$P(A\cap B\mid C)=P(A\mid B\cap C)P(B\mid C)$ whenever
+$P(B\cap C)>0$ (which also ensures $P(C)>0$).
+Each iterated chain rule requires the displayed conditioning masses to be
+positive; an exact zero does not define a quotient.
 For a finite partition $(B_j)$ with positive masses,
 \begin{equation}
  P(A)=\sum_jP(A\mid B_j)P(B_j).
@@ -857,15 +940,34 @@ $\E[X\ind_B]/P(B)$. Direct finite summation gives
  \E\bigl[\E[X\mid\mathcal G]\mid\mathcal H\bigr]
  =\E[X\mid\mathcal H]\quad(\mathcal H\subseteq\mathcal G).
 \end{equation}
-The second identity follows because an atom of $\mathcal H$ is a finite
-union of atoms of $\mathcal G$. Multiplication by a $\mathcal G$-measurable
-variable can be taken outside conditional expectation. Expanding the square
-and using that property proves the finite law of total variance:
+For the first identity, summing over the atoms cancels their positive
+masses. For the second, let $C$ be an atom of $\mathcal H$ and sum over
+the atoms $B$ of $\mathcal G$ contained in $C$:
+\[
+ \sum_{B\subseteq C}\frac{\E[X\ind_B]}{P(B)}P(B)
+ =\E[X\ind_C].
+\]
+Dividing by $P(C)$ gives the equality on $C$.
+A $\mathcal G$-measurable variable $Z$ is constant on each atom, so
+$\E[ZX\mid\mathcal G]=Z\E[X\mid\mathcal G]$ there.
+
+Write $M=\E[X\mid\mathcal G]$ and define
+$\Var(X\mid\mathcal G)=\E[(X-M)^2\mid\mathcal G]$.
+On each atom the defining average gives
+$\E[(X-M)\ind_B]=0$, hence $\E[(X-M)Z]=0$ for every such $Z$.
+Taking $Z=M-\E X$ in the square expansion
+$X-\E X=(X-M)+(M-\E X)$ proves the finite total-variance identity
 \begin{equation}
  \Var(X)=\E\bigl[\Var(X\mid\mathcal G)\bigr]
        +\Var\bigl(\E[X\mid\mathcal G]\bigr).
 \end{equation}
-These statements hold on zero-mass atoms up to the usual freedom of versions.
+If some atoms have zero mass, assign arbitrary constant values on them.
+The conditional identities then hold outside a measurable null event;
+scalar expectation and variance identities remain exact and independent
+of those choices, since null cells contribute zero. Thus uniqueness is
+pointwise when every atom has positive mass, and otherwise only up to
+these versions. None of this requires bounded real payoffs: the values
+need only form a finite list in $K$.
 
 \subsection{A finite betting interpretation}
 
@@ -878,10 +980,18 @@ one cell has positive mass. This is a finite no-sure-loss statement with
 $K$-valued stakes and payoffs. It does not license infinitely many tickets
 or an infinite series of stakes.
 
-Conversely, inconsistent normalization or finite additivity supplies a
-constant nonzero gain by a finite combination of tickets, and a price
-outside $[0,1]$ supplies a sure loss in one trading direction. Thus the
-usual finite coherence argument is genuinely retained. Physical
+Conversely, write a quoted price as $q(A)$ and its centered ticket as
+$T_A=\ind_A-q(A)$. If $q(\Omega)\ne1$, then $T_\Omega$ is a
+nonzero constant. If disjoint events violate finite additivity, then
+\[
+ T_{A\cup B}-T_A-T_B=q(A)+q(B)-q(A\cup B)
+\]
+is a nonzero constant. Choosing its sign gives a strict sure loss.
+If $q(A)>1$, buying $T_A$ loses in every state; if $q(A)<0$, selling it
+does. Thus absence of a strict sure loss forces precisely normalization,
+nonnegativity and finite additivity. It does not force regularity:
+on a two-point full event space, the weights $(1,0)$ are coherent although
+one nonempty event has price zero. Physical
 interpretations of infinite stakes are a separate modeling issue; finite
 coherence alone does not require such stakes to be practically available.
 
@@ -890,7 +1000,9 @@ coherence alone does not require such stakes to be practically available.
 
 \subsection{The unconditional shadow is not enough}
 
-The function $P_0(A)=\st P(A)$ is a real finitely additive probability.
+Since every event mass lies in $[0,1]$, standard part is defined on it.
+Its positivity, additivity and value at $1$ show that
+$P_0(A)=\st P(A)$ is a real finitely additive probability.
 For $P_0(B)>0$, Proposition~\ref{fsp:prop:st} gives
 \begin{equation}\label{fsp:eq:stcondition}
  \st P(A\mid B)=P_0(A\mid B).
@@ -907,10 +1019,12 @@ On three states let
 \end{equation}
 Both shadows are $(1,0,0)$, whereas
 $P(\{2\}\mid B)=1/2$ and $Q(\{2\}\mid B)=1/4$.
-Their total variation distance is only $2t$.
+The coordinate differences are $(2t,0,-2t)$, so their total variation
+distance is $\tfrac12(2t+0+2t)=2t$.
 \end{example}
 
-For a regular probability there is a richer real object:
+For a regular probability on an event algebra $\A$ there is a richer
+real object, defined for $A,B\in\A$ with $B\ne\varnothing$:
 \begin{equation}\label{fsp:eq:conditionalshadow}
  C(A\mid B)=\st\frac{P(A\cap B)}{P(B)},\qquad B\ne\varnothing.
 \end{equation}
@@ -919,23 +1033,28 @@ on $B$. Whenever $D\ne\varnothing$ and $B\cap D\ne\varnothing$,
 \begin{equation}\label{fsp:eq:popperproduct}
  C(A\cap B\mid D)=C(A\mid B\cap D)C(B\mid D).
 \end{equation}
-Indeed the identity holds before taking standard part, and both factors
-are limited. This remains true if $C(B\mid D)=0$. Such conditional
-systems are closely related to the Popper-function literature
-\cite{halpern,brickhill}; no convention for conditioning on the empty
-set is needed here. Importantly, the existence of all ratios in
-\eqref{fsp:eq:conditionalshadow} is supplied by regularity, not by a
-purported universal rule for $0/0$.
+Regularity makes $P(D)$ and $P(B\cap D)$ positive, so the ordinary
+cancellation identity for these ratios applies before standard part.
+Each factor lies in $[0,1]$, and the ring law for standard part gives
+\eqref{fsp:eq:popperproduct}, even when $C(B\mid D)=0$.
+The conditioning domain is precisely $\A\setminus\{\varnothing\}$.
+This has the normalization, finite-additivity and product properties of
+conditional probability spaces in \cite[Definition~2.1]{halpern}; compare
+also \cite{brickhill}. No convention for the empty conditioning event is
+needed. The existence of the ratios comes from regularity of $P$, whereas
+the real conditional law itself can vanish on nonempty events.
 
 \subsection{Leading atoms determine every conditional real shadow}
 
 \begin{theorem}[Conditional leading-scale skeleton]\label{fsp:thm:skeleton}
-Let a finite regular Hahn probability have atom weights
+Let a finite regular Hahn probability have atoms indexed by
+$\{1,\ldots,n\}$ and weights
 \begin{equation}
  p_i=c_i t^{a_i}(1+\eta_i),\qquad c_i>0,\quad v(\eta_i)>0,
 \end{equation}
-where a zero error is allowed. For a nonempty $B$, put
-$a(B)=\min_{i\in B}a_i$. Then
+where $c_i\in\R_{>0}$, $a_i\in\Gamma$, and a zero error is allowed
+by $v(0)=+\infty$. Identify events with their sets of atom indices.
+For a nonempty event $B$, put $a(B)=\min_{i\in B}a_i$. Then
 \begin{equation}\label{fsp:eq:skeleton}
  \st P(A\mid B)
  =\frac{\sum_{i\in A\cap B,\ a_i=a(B)}c_i}
@@ -946,12 +1065,16 @@ partition of atoms into equal-$a_i$ groups and their positive leading
 coefficients, up to a common positive rescaling within each group.
 \end{theorem}
 \begin{proof}
-Divide numerator and denominator of \eqref{fsp:eq:condition} by $t^{a(B)}$.
-The denominator has positive real standard part
-$\sum_{i\in B,a_i=a(B)}c_i$. Terms with larger exponent are
-infinitesimal, and terms with minimal exponent have standard part $c_i$.
-Proposition~\ref{fsp:prop:st} now applies. Common rescaling of the coefficients
-of the first group meeting $B$ cancels in the quotient.
+Divide numerator and denominator of \eqref{fsp:eq:condition} by
+$t^{a(B)}$. Each resulting summand has the form
+$c_i t^{a_i-a(B)}(1+\eta_i)$. It is limited: its residue is $c_i$
+when $a_i=a(B)$, and zero when $a_i>a(B)$. Hence the normalized
+denominator has positive real residue
+$\sum_{i\in B,a_i=a(B)}c_i$, and the normalized numerator has the
+residue in the formula, possibly zero. The quotient rule of
+Proposition~\ref{fsp:prop:st} applies even if $A\cap B$ is empty.
+Rescaling all coefficients in the first group meeting $B$ multiplies
+both residues by the same positive real, which cancels.
 \end{proof}
 
 Equivalently, give each group the real probability proportional to its
@@ -962,7 +1085,13 @@ It does not reconstruct the full surreal probability or all expected
 utility comparisons. For example, $(1/2+t,1/2-t)$ has just the uniform
 leading group but prefers the first-state payoff to the second-state
 payoff. Higher coefficients can resolve ties even within one leading
-group.
+group. Conversely the conditional shadows recover the ordered groups
+and their coefficient ratios. For two distinct atoms $i,j$, the value of
+$C(\{i\}\mid\{i,j\})$ is $1$ when $a_i<a_j$, $0$ when $a_i>a_j$,
+and $c_i/(c_i+c_j)\in(0,1)$ when $a_i=a_j$. Within a tied group this
+last number recovers $c_i/c_j$. Thus the group order and the normalized
+coefficients are exactly the information retained, but the numerical gaps
+between exponents and the higher coefficients are lost.
 
 \subsection{A finite compression that retains real-act comparisons}
 
@@ -982,25 +1111,47 @@ increasing exponent order.
 The finite union $W$ of the supports of the $p_i$ is well ordered.
 For $\gamma\in W$ let
 $r_\gamma=([t^\gamma]p_1,\ldots,[t^\gamma]p_n)\in\R^n$.
-Choose the first nonzero row. Repeatedly choose the earliest row outside
-the span of the previously chosen rows, stopping when no such row
-remains. Each choice increases dimension, so there are at most $n$ choices.
-Every skipped row is in the span of chosen rows that precede it.
-If $u_j$ is the first chosen row with nonzero pairing with $d$, all rows
-before $u_j$ pair to zero, so its exponent is the first nonzero
-coefficient of $\sum_i p_i d_i$. Its sign is therefore the sign of that
-series. If all chosen rows annihilate $d$, all coefficient rows do.
+The row set is nonempty because $\sum_i p_i=1$. Choose its earliest
+nonzero row. If the chosen rows do not yet span every coefficient row,
+the set of exponents whose rows lie outside their span is a nonempty
+subset of $W$, so has a least member. Choose that row next.
+The chosen rows are linearly independent, so after at most $n$ choices
+they span every coefficient row. In particular, each skipped row lies
+in the span of chosen rows with strictly earlier exponents.
+
+For $d\in\R^n$, finite distributivity gives
+\[
+ [t^\gamma]\sum_i p_i d_i=r_\gamma\cdot d.
+\]
+If $u_j$ is the first chosen row pairing nontrivially with $d$, then
+every earlier coefficient row pairs to zero: the chosen earlier rows do,
+and each skipped one is their linear combination. The exponent of $u_j$
+is therefore exactly the leading exponent of the expectation, with
+coefficient $u_j\cdot d$. If all chosen rows annihilate $d$, so do all
+coefficient rows, and the expectation is zero. The converse follows by
+coefficient extraction.
 \end{proof}
 
 Applied to the difference of two real-valued acts, the theorem retains
 all their preference comparisons, including infinitesimal tie breaking.
-The rows need not be positive probabilities: normalization gives total
-coefficient zero at every nonzero exponent, so signed rows are natural.
-The theorem is not a claim that an arbitrary signed-row list is a
-positive lexicographic probability system. Nor does it compress comparisons
-of arbitrary surreal-valued acts: multiplying by such acts can introduce
-new exponents and cancellations. It is a finite-dimensional statement
-with an explicit domain of payoffs.
+All weights have nonnegative valuation. Normalization makes the
+exponent-zero row a real probability vector and the sum of every later
+row zero. Each nonzero later row therefore has both positive and negative
+entries. These selected coefficient rows need not themselves be a list of
+probability laws; this construction is distinct from the finite-state
+probability-system equivalence in \cite[Section~4]{halpern}.
+The selection argument establishes existence, not a finite search through
+an arbitrary infinite Hahn support.
+
+The real-payoff hypothesis is essential. Take
+$p=(1/2+t,1/2-t)$, whose selected rows are $(1/2,1/2)$ and $(1,-1)$.
+For the surreal payoff difference $d=(-1+t,1)$, the first row gives
+$t/2>0$, but the actual expectation is
+\[
+ (1/2+t)(-1+t)+(1/2-t)=-3t/2+t^2<0.
+\]
+Multiplication by surreal payoffs outside $\R$ shifts exponents, invalidating the
+coefficient-extraction step used in the theorem.
 
 \section{Bayesian inference at every scale}
 \label{fsp:sec:bayes}
@@ -1014,8 +1165,9 @@ likelihoods $\ell_i\ge0$, not all zero, define
 \end{equation}
 If the likelihood is an event probability then $\ell_i\le1$; if it is a
 density or an unnormalized score, this upper bound is unnecessary.
-Multiplying all likelihoods by one positive factor leaves the posterior
-unchanged. Bayes' formula is exact for either interpretation when the
+At least one product $p_i\ell_i$ is positive, so $Z>0$; thus every
+$q_i\ge0$ and $\sum_iq_i=1$. Multiplying all likelihoods by one positive
+factor multiplies $Z$ by that factor and leaves the posterior unchanged. Bayes' formula is exact for either interpretation when the
 likelihood is part of a specified model.
 
 \begin{theorem}[Minimum-plus Bayes with coefficient tie breaking]
@@ -1037,9 +1189,15 @@ Zero likelihoods may be omitted and yield zero posterior mass.
 \begin{proof}
 The product $p_i\ell_i$ has valuation $a_i+b_i$ and leading coefficient
 $c_id_i>0$. Equation~\eqref{fsp:eq:positiveval} shows that $Z$ has leading
-term $Dt^m$. Dividing each numerator by this leading term proves
-\eqref{fsp:eq:scalebayes}. Nonminimal terms then have positive valuation,
-while minimal terms have valuation zero and the displayed real residue.
+term $Dt^m$, where $D>0$. Write $Z=Dt^m(1+\zeta)$ with
+$v(\zeta)>0$. The factor $(1+\zeta)^{-1}$ is a unit with residue one,
+so division subtracts $m$ from every numerator valuation and divides
+its leading coefficient by $D$. This proves \eqref{fsp:eq:scalebayes}
+for every surviving index, not just the minimizers. Nonminimal terms
+have positive valuation and residue zero; the minimal ones have the
+stated positive residues, summing to one. An exactly zero likelihood
+has no leading coefficient and is excluded from the minimum; its
+posterior mass is exactly zero.
 \end{proof}
 
 The valuation rule is minimum-plus arithmetic: multiply probabilities by
@@ -1064,10 +1222,21 @@ this update; it has erased exactly the information that the observation
 selects.
 \end{example}
 
-Successive finite likelihood updates commute because their product
-commutes. Under conditional independence, posterior odds equal prior odds
-times the product of likelihood ratios. Neither the field algebra nor
-this statement licenses an unspecified infinite product of likelihoods.
+For finitely many nonnegative likelihood vectors $\ell^{(1)},\ldots,
+\ell^{(k)}$, successive updates commute provided their joint normalizer
+$Z_* = \sum_i p_i\prod_{j=1}^k\ell_i^{(j)}$ is positive.
+Some index then has positive prior and every likelihood factor positive,
+so every intermediate normalizer is positive in every update order.
+Canceling those normalizers gives
+$q_i=p_i\prod_j\ell_i^{(j)}/Z_*$, independent of the order.
+Individual updates being defined is not enough: with a positive two-state
+prior, likelihoods $(1,0)$ and $(0,1)$ each define an update, but their
+joint normalizer is zero and neither second update exists.
+Under conditional independence this product is the likelihood of the
+combined observations; without it, the factors must be the appropriate
+conditional likelihoods. For surviving hypotheses, posterior odds are
+prior odds times the product of likelihood ratios. No unspecified
+infinite product is defined by this finite identity.
 
 \subsection{How much precision does conditioning require?}
 
@@ -1076,8 +1245,12 @@ For finite laws $p,q$ define
  \delta=\TV(P,Q)=\max_A|P(A)-Q(A)|
  =\frac12\sum_i|p_i-q_i|.
 \end{equation}
-The equality follows by taking the subset of positive differences and
-using $\sum_i(p_i-q_i)=0$; it is valid over any ordered field.
+Put $h_i=p_i-q_i$ and $I_+=\{i:h_i>0\}$.
+Since $\sum_i h_i=0$, the positive and negative totals satisfy
+$\sum_{I_+}h_i=-\sum_{h_i<0}h_i=\tfrac12\sum_i|h_i|$.
+Every event sum lies between these two signed extremes; the event $I_+$
+attains the positive one. This proves the equality over any ordered field,
+including zero differences and nonregular laws.
 
 \begin{theorem}[Absolute and valuation-sensitive conditioning stability]
 \label{fsp:thm:stability}
@@ -1085,12 +1258,13 @@ Suppose $P(B)\ge b>\delta$. Then $Q(B)>0$ and for every $A$,
 \begin{equation}\label{fsp:eq:conditionalbound}
  |P(A\mid B)-Q(A\mid B)|\le\frac{2\delta}{b}.
 \end{equation}
-For Hahn probabilities, let $\beta=v(P(B))$ and $\lambda\ge0$.
+Separately, for Hahn probabilities assume $P(B)>0$ and put
+$\beta=v(P(B))\in\Gamma$ and $\lambda\in\Gamma_{\ge0}$.
 If
 \begin{equation}\label{fsp:eq:precision}
  v(p_i-q_i)>\beta+\lambda\quad\text{for every atom }i,
 \end{equation}
-then $Q(B)$ has the same leading term as $P(B)$ and
+then $Q(B)>0$, it has the same leading term as $P(B)$, and
 \begin{equation}
  v\bigl(P(A\mid B)-Q(A\mid B)\bigr)>\lambda.
 \end{equation}
@@ -1105,31 +1279,65 @@ Then
  \le\frac{2\delta}{d},
 \end{equation}
 since $0\le y\le e$. This implies \eqref{fsp:eq:conditionalbound}.
-For the valuation assertion write $e=d+\Delta_d$ and
-$y=x+\Delta_x$. Finite sums in \eqref{fsp:eq:precision} give
-$v(\Delta_d),v(\Delta_x)>\beta+\lambda$.
-Thus $v(e)=v(d)=\beta$ and $e$ has the same leading coefficient.
-Also $0\le x\le d$ implies $v(x)\ge\beta$ when $x\ne0$.
-The numerator $d\Delta_x-x\Delta_d$ of the difference has valuation
-strictly greater than $2\beta+\lambda$, while $de$ has valuation
-$2\beta$. Division proves the assertion, including a zero numerator.
+The valuation assertion does not require a separately chosen $b$.
+Write $e=d+\Delta_d$ and $y=x+\Delta_x$. Each difference is a finite
+sum of atom errors, so the valuation inequality for sums gives
+$v(\Delta_d),v(\Delta_x)>\beta+\lambda$. Because $\lambda\ge0$,
+the perturbation $\Delta_d$ cannot change the leading term of $d$.
+Thus $e>0$ and $v(e)=v(d)=\beta$.
+Also $0\le x\le d$ implies $v(x)\ge\beta$: a smaller valuation
+would make positive $x$ dominate $d$. The case $x=0$ uses $v(0)=+\infty$.
+The exact difference is
+\[
+ \frac{x}{d}-\frac{y}{e}
+ =\frac{x\Delta_d-d\Delta_x}{de}.
+\]
+Both numerator terms have valuation greater than $2\beta+\lambda$,
+so their difference does too; cancellation can only raise that valuation.
+The denominator has valuation $2\beta$. Division proves the strict
+bound, including the case of an identically zero numerator.
 \end{proof}
 
 Consequently an approximation suitable for unconditional probabilities
-may be unusable after rare conditioning. To preserve a conditional answer
-through scale $\lambda$, one needs input errors beyond the event scale
-$\beta+\lambda$. Example~\ref{fsp:ex:shadowloss} demonstrates the qualitative
-issue: an infinitesimal unconditional discrepancy can become a real
-conditional discrepancy.
+may be unusable after rare conditioning. Input errors beyond the event scale $\beta+\lambda$ are a
+\emph{sufficient} contract for preserving a conditional answer through
+scale $\lambda$. They are not necessary for a particular pair of laws:
+$(1-2t,t,t)$ and $(1-4t,2t,2t)$ have the same conditional law on
+$B=\{2,3\}$, although their atom errors already have valuation $1=v(P(B))$.
+
+The strict inequality in the uniform contract cannot simply be weakened.
+Choose $\beta>0$, $\lambda\ge0$ in $\Gamma$, set
+$\eps=\tfrac12t^{\beta+\lambda}$, and take
+\[
+ p=(1-2t^\beta,t^\beta,t^\beta),\qquad
+ q=(1-2t^\beta,t^\beta+\eps,t^\beta-\eps).
+\]
+Both are positive laws, and the nonzero atom errors have valuation
+$\beta+\lambda$. On $B=\{2,3\}$ their first conditional coordinates
+differ by $t^\lambda/4$, of valuation exactly $\lambda$, not greater.
+At $\lambda=0$ this is a real discrepancy. These examples isolate the
+precision loss without asserting necessity when numerator and denominator
+errors happen to cancel.
 
 \subsection{Infinite prior odds are not ordinary dogmatism}
 
-If $0<p<1$, a nonzero likelihood can always change its odds algebraically.
-Nevertheless, an infinite prior logit cannot be brought to a finite logit
-by an ordinary finite number of bounded-real log-likelihood increments.
+For $0<p<1$ and any positive likelihood ratio $R\in K$,
+the posterior odds are $R\,p/(1-p)$. They change if and only if $R\ne1$;
+a neutral ratio leaves the prior exactly unchanged. With strictly positive
+likelihoods both posterior coordinates remain nonzero. An exact prior
+endpoint, by contrast, cannot be revived by multiplying its zero weight.
+
+An infinite prior logit cannot be brought to a limited logit by an
+ordinary finite number of log-likelihood increments bounded by real numbers.
 If $L$ is positive infinite and $|b_j|\le C\in\R$ for $j\le n$ with
-ordinary finite $n$, then $L+\sum_{j=1}^n b_j$ remains positive infinite.
-Thus the posterior shadow remains one although the exact posterior changes.
+ordinary finite $n$, then $|\sum_{j=1}^n b_j|\le nC$ is limited.
+For every real $M$, the inequality $L>M+nC$ gives
+$L+\sum_jb_j>M$, so the updated logit remains positive infinite.
+For such a logit $L'$, $\exp(-L')$ is a positive infinitesimal:
+for every positive real $a$, $L'>-\log a$ implies $\exp(-L')<a$.
+Hence the logistic posterior $1/(1+\exp(-L'))$ has shadow one,
+even when the exact posterior changes. If the increments sum to zero,
+the exact posterior is unchanged as well.
 A countervailing infinite-scale likelihood can overturn it. A statement
 about learning from an infinite data stream requires a chosen probability
 law on streams and a chosen limiting operation; it does not follow from
@@ -1151,18 +1359,27 @@ In an exponential/logarithmic workspace $E$, define
 \begin{proposition}[Logit coordinates]
 The maps $\sigma:E\to(0,1)_E$ and $\logit:(0,1)_E\to E$ are inverse,
 strictly increasing bijections, and $\sigma(-z)=1-\sigma(z)$.
-For binary hypotheses and positive likelihoods,
+For binary hypotheses with $0<P(H)<1$ and both likelihoods
+$P(D\mid H),P(D\mid H^c)>0$, all belonging to $E$,
 \begin{equation}\label{fsp:eq:logitbayes}
  \logit P(H\mid D)=\logit P(H)
  +\log\frac{P(D\mid H)}{P(D\mid H^c)}.
 \end{equation}
 \end{proposition}
 \begin{proof}
-For every $z$, $\sigma(z)/(1-\sigma(z))=\exp z$.
-Conversely, substituting $p/(1-p)$ for $\exp z$ gives $\sigma(z)=p$.
-Monotonicity and the complement identity follow from positivity and
-monotonicity of $\exp$. Posterior odds are prior odds times the likelihood
-ratio, and $\log(xy)=\log x+\log y$ proves \eqref{fsp:eq:logitbayes}.
+For $z\in E$, positivity of $\exp(-z)$ gives $0<\sigma(z)<1$, and
+closure puts $\sigma(z)$ in $E$. Direct division gives
+$\sigma(z)/(1-\sigma(z))=\exp z$, hence $\logit(\sigma(z))=z$.
+For $0<p<1$, the odds $p/(1-p)$ are positive in $E$; substituting
+their logarithm into $\sigma$ gives $\sigma(\logit(p))=p$.
+If $z<w$, then $\exp(-z)>\exp(-w)>0$ and taking reciprocals of
+$1+\exp(-z)$ and $1+\exp(-w)$ proves $\sigma(z)<\sigma(w)$.
+Its inverse is therefore strictly increasing too. Multiplying by
+$\exp z$ gives $\sigma(-z)=1-\sigma(z)$.
+Both prior weights and likelihoods are positive, so the evidence mass
+and both posterior weights are positive. Canceling the common evidence
+mass in the posterior odds, then applying $\log(xy)=\log x+\log y$,
+proves \eqref{fsp:eq:logitbayes}.
 \end{proof}
 
 Every actual surreal $z$, including $\omega$ or $-\omega^2$, gives a
@@ -1185,8 +1402,15 @@ gives
 \begin{equation}
  \sigma(r+\eta)=\sigma(r)+\sigma(r)(1-\sigma(r))\eta+O(\eta^2).
 \end{equation}
-Here $O(\eta^2)$ means bounded by a real constant times $|\eta|^2$ in this
-local expansion. For $t=\omega^{-1}$,
+Here $O(\eta^2)$ means bounded by a real constant times $|\eta|^2$
+in this local expansion, including zero remainder at $\eta=0$.
+To see the coefficient directly, put $a=\exp(-r)>0$ and use
+$\exp(-\eta)=1-\eta+\eta^2R$ with limited $R$. Factoring $1+a$
+from $1+a\exp(-\eta)$ leaves a principal unit. Its geometric inverse
+has linear term $a\eta/(1+a)$ and a limited quadratic remainder.
+Multiplication by $(1+a)^{-1}$ gives $a/(1+a)^2=\sigma(r)(1-\sigma(r))$
+as the linear coefficient. These are strong infinitesimal series identities,
+not ordinary sequence limits. For $t=\omega^{-1}$,
 \begin{equation}\label{fsp:eq:logitt}
  \logit(t)=\log t-\log(1-t)
  =-\log\omega+t+\frac{t^2}{2}+\frac{t^3}{3}+\cdots.
@@ -1216,14 +1440,19 @@ not remove that requirement.
 
 \subsection{Softmax, gauge invariance, and stable normalization}
 
-For an ordinary finite number of scores $z_1,\ldots,z_n\in E$, define
+For an ordinary positive integer $n$ and scores $z_1,\ldots,z_n\in E$, define
 \begin{equation}\label{fsp:eq:softmax}
  \LSE(z)=\log\sum_{j=1}^n e^{z_j},\qquad
  p_i=e^{z_i-\LSE(z)}.
 \end{equation}
 All $p_i$ are positive and sum to one. Every strictly positive finite
 law occurs, by taking $z_i=\log p_i$. Adding the same $c\in E$ to all
-scores does not change $p$. For $n\ge2$, the one-against-the-rest logit is
+scores multiplies their normalizing sum by $e^c$ and does not change $p$.
+Conversely, equal softmax laws satisfy
+$z_i-w_i=\LSE(z)-\LSE(w)$ for every $i$, by taking logarithms of
+the equal probabilities. Thus a common additive constant is exactly the
+ambiguity of the score vector. For $n=1$ the law is $(1)$ and its logit
+is not an element of $E$. For $n\ge2$, the one-against-the-rest logit is
 \begin{equation}
  \logit(p_i)=z_i-\log\sum_{j\ne i}e^{z_j},
 \end{equation}
@@ -1236,21 +1465,34 @@ Let $M=\max_i z_i$. Then
  M\le\LSE(z)\le M+\log n.
 \end{equation}
 If $p$ and $q$ are the softmax laws of $z$ and $w$, and
-$|z_i-w_i|\le\delta$ for every $i$, where $\delta\ge0$, then
+$|z_i-w_i|\le\delta$ for every $i$, where $\delta\in E_{\ge0}$, then
 \begin{equation}\label{fsp:eq:softbound}
  e^{-2\delta}p_i\le q_i\le e^{2\delta}p_i.
 \end{equation}
 \end{proposition}
 \begin{proof}
-Factor $e^M$ from the normalizing sum. The remaining positive sum lies
-between $1$ and $n$. For the perturbation claim,
-$e^{-\delta}e^{z_i}\le e^{w_i}\le e^\delta e^{z_i}$, and summing gives
-the same bounds on the two normalizers. Dividing the bounds proves
-\eqref{fsp:eq:softbound}.
+The maximum exists because $n\ge1$ is finite. Factoring $e^M$ from
+the sum leaves $\sum_i e^{z_i-M}$, whose terms lie in $(0,1]$ and
+at least one of which is $1$. It therefore lies in $[1,n]$; apply the
+increasing logarithm and add $M$.
+For perturbations, write $Z=\sum_i e^{z_i}$ and $W=\sum_i e^{w_i}$.
+Termwise monotonicity and finite summation give
+\[
+ e^{-\delta}\le\frac{e^{w_i}}{e^{z_i}}\le e^\delta,
+ \qquad e^{-\delta}\le\frac WZ\le e^\delta.
+\]
+All quantities are positive. Invert the second pair of bounds and
+multiply it by the first to obtain
+$e^{-2\delta}\le q_i/p_i\le e^{2\delta}$.
+The same normalizer bounds also give
+$|\LSE(w)-\LSE(z)|\le\delta$ after taking logarithms.
 \end{proof}
 
-Infinitesimal score errors therefore produce infinitesimal relative errors
-even in extremely small probabilities. This is a different guarantee from
+For infinitesimal $\delta$, both $e^{2\delta}-1$ and
+$1-e^{-2\delta}$ are infinitesimal by the strong exponential expansion.
+Thus the displayed bounds imply $q_i/p_i-1\simeq0$, even when $p_i$
+is extremely small. A finite list of infinitesimal score errors admits
+such a common $\delta$ by taking their maximum. This is a different guarantee from
 an absolute error bound on probabilities, which can be destroyed by rare
 conditioning. Subtracting $M$ before exponentiating is exact algebra and
 avoids representing an unnecessarily large common exponential. It does
@@ -1260,13 +1502,14 @@ score.
 \subsection{Hierarchical scores and lexicographic concentration}
 
 \begin{theorem}[Finite multiscale softmax limit]\label{fsp:thm:multisoft}
-Let $\Omega_1,\ldots,\Omega_m$ be positive surreals with
+Let $m\ge1$ be an ordinary integer and
+$\Omega_1,\ldots,\Omega_m$ positive surreals in $E$ with
 $\Omega_m$ positive infinite and
-$\Omega_{r+1}/\Omega_r$ infinitesimal for $r<m$. For finitely many states
-suppose
+$\Omega_{r+1}/\Omega_r$ infinitesimal for $r<m$. For an ordinary
+positive number $n$ of states suppose
 \begin{equation}
  z_i=\sum_{r=1}^m\Omega_r a_{ir}+b_i+\eta_i,
- \quad a_{ir},b_i\in\R,\quad \eta_i\simeq0.
+ \quad a_{ir},b_i\in\R,\quad \eta_i\in E,\quad \eta_i\simeq0.
 \end{equation}
 Let $I_*$ be the states whose real tuple
 $(a_{i1},\ldots,a_{im})$ is lexicographically maximal. Then
@@ -1279,16 +1522,31 @@ $(a_{i1},\ldots,a_{im})$ is lexicographically maximal. Then
 \end{equation}
 \end{theorem}
 \begin{proof}
-Choose $j\in I_*$. If $i\notin I_*$, at the first differing coordinate
-$r$ the coefficient of $\Omega_r$ in $z_i-z_j$ is a negative nonzero
-real. All later contributions divided by $\Omega_r$ are infinitesimal,
-and the bounded terms have that property too. Hence $z_i-z_j$ is
-negative infinite and $e^{z_i-z_j}$ is infinitesimal. For $i,j\in I_*$,
-all hierarchical terms cancel and
-$\st e^{z_i-z_j}=e^{b_i-b_j}$. Divide the finite normalizing sum by
-$e^{z_j}$ and take standard parts.
+A finite nonempty set of real tuples has a lexicographic maximum,
+so choose $j\in I_*$. All $\Omega_r$ are positive infinite: each
+earlier scale exceeds the next. For $s>r$, the ratio
+$\Omega_s/\Omega_r$ is a finite product of positive infinitesimals
+and is infinitesimal.
+If $i\notin I_*$, at the first differing coordinate $r$ write
+$a_{ir}-a_{jr}=-c$ with real $c>0$. Dividing $z_i-z_j$ by $\Omega_r$
+gives $-c$ plus an infinitesimal. The later scale terms have that property
+by the ratio calculation; the real and infinitesimal offsets do as well
+because $\Omega_r$ is infinite. Hence
+$z_i-z_j<-c\Omega_r/2$ is negative infinite, making $e^{z_i-z_j}$
+infinitesimal by comparison with the exponential of every real constant.
+For $i,j\in I_*$, the hierarchical terms cancel and
+\[
+ e^{z_i-z_j}=e^{b_i-b_j}e^{\eta_i-\eta_j}
+ \simeq e^{b_i-b_j}.
+\]
+Every term in $\sum_i e^{z_i-z_j}$ is limited. Its residue is the
+positive real $\sum_{i\in I_*}e^{b_i-b_j}$, with the $j$th term equal
+to $1$. The standard-part quotient rule applied to this normalizer gives
+the asserted formula, after canceling the real factor $e^{-b_j}$.
 \end{proof}
 
+The word ``limit'' in the theorem's title refers to this standard-part
+formula for one fixed list of surreal scales; no sequence or net is taken.
 This supplies an exact scalar model of ordered priorities, with ordinary
 softmax resolving the final ties and smaller terms retaining further
 information. For example, $\omega^2 a_i+\omega b_i+c_i$ first maximizes
@@ -1303,7 +1561,8 @@ concentration; the exact law still gives positive mass to every state.
 \subsection{Entropy and relative entropy}
 
 All sums in this section have an ordinary finite number of terms and use
-canonical logarithms. For probability vectors $p,q$ define
+canonical logarithms in $E$. Let $n\ge1$ be an ordinary integer.
+For probability vectors $p,q\in E^n$ define
 \begin{equation}\label{fsp:eq:entropy}
  H(p)=-\sum_{i:p_i>0}p_i\log p_i,\qquad
  D(p\Vert q)=\sum_{i:p_i>0}p_i\log\frac{p_i}{q_i},
@@ -1334,21 +1593,34 @@ multiply by $p_i>0$. Summing gives
  D(p\Vert q)\ge\sum_{i\in S}(p_i-q_i)
  =1-\sum_{i\in S}q_i\ge0.
 \end{equation}
-The difference between the first two expressions is a finite sum of
-nonnegative terms, each zero only if $q_i=p_i$. Equality therefore
-forces those equalities on $S$ and zero mass outside $S$, and the
-converse is immediate. Each $-p_i\log p_i$ is nonnegative. Applying
+More explicitly, the exact decomposition is
+\[
+ D(p\Vert q)=\sum_{i\in S}p_i
+ \left(-\log\frac{q_i}{p_i}-1+\frac{q_i}{p_i}\right)
+ +\sum_{i\notin S}q_i.
+\]
+Every summand is nonnegative. A finite sum of nonnegative elements of
+an ordered field is zero exactly when each summand is zero; the strict
+scalar logarithm inequality then forces $q_i=p_i$ on $S$ and zero
+mass outside $S$. The converse follows by $\log1=0$. Each $-p_i\log p_i$ is nonnegative. Applying
 Gibbs inequality to the uniform law gives
 $D(p\Vert(1/n,\ldots,1/n))=\log n-H(p)\ge0$.
 
-For the standard-part identity, if $\st p_i=r_i>0$, then
-$\log p_i\simeq\log r_i$ by the infinitesimal logarithm expansion.
-If $p_i>0$ is infinitesimal, the real-exponential inequality
-$\log x\le\sqrt{x}$ for real $x\ge4$ holds for surreal $x\ge4$ too.
-Consequently
-$0\le p_i\log(1/p_i)\le\sqrt{p_i}\simeq0$.
-Taking standard parts of the finite sum proves the formula, including
-zero coordinates.
+For the standard-part identity, if $\st p_i=r_i>0$, write
+$p_i=r_i(1+\xi_i)$ with infinitesimal $\xi_i$. Then
+$\log p_i=\log r_i+\log(1+\xi_i)\simeq\log r_i$, so the ring
+law gives $\st(-p_i\log p_i)=-r_i\log r_i$.
+If $p_i>0$ is infinitesimal, apply the transferred real-exponential
+inequality $\log x\le\sqrt{x}$ for $x\ge4$ to $x=1/p_i$.
+Here the positive root belongs to $E$, since
+$\sqrt{x}=\exp(\tfrac12\log x)$. This gives
+\[
+ 0\le p_i\log(1/p_i)\le\sqrt{p_i}\simeq0.
+\]
+The last infinitesimality follows from $p_i<a^2$ for every positive
+real $a$. Zero coordinates contribute the specified zero term. Taking
+standard parts of the finite sum now proves the formula. This argument
+does not take the standard part of $\log p_i$ when that logarithm is infinite.
 \end{proof}
 
 An entropy on a fixed finite alphabet is always limited. It nevertheless
@@ -1357,6 +1629,10 @@ rare Bernoulli success of probability $t$,
 \begin{equation}\label{fsp:eq:rareentropy}
  H(t,1-t)=t\log(1/t)+t-\frac{t^2}{2}+O(t^3).
 \end{equation}
+Indeed $-\log(1-t)=\sum_{k\ge1}t^k/k$ strongly; multiplication by
+$1-t$ gives $t-\sum_{k\ge2}t^k/(k(k-1))$, whose tail after degree two
+is $t^3$ times a limited element. Here the remainder notation again means
+a real bound times $t^3$.
 The log factor is essential: entropy need not remain in the original
 pure Laurent field $\R((t))$. It belongs to the exponential/logarithmic
 workspace, where the displayed products are meaningful. This is one
@@ -1378,9 +1654,15 @@ joint laws satisfying the relative-entropy support condition gives
  +\sum_{j:p^Y_j>0}p^Y_j
        D(p_{X\mid j}\Vert q_{X\mid j}).
 \end{equation}
-To verify it, replace every logarithm of a joint ratio by the logarithm
-of the marginal ratio plus that of the conditional ratio. All terms
-are finite sums, so regrouping requires no additional hypothesis.
+If $p^Y_j>0$, some $p_{ij}>0$, so the joint support condition gives
+$q_{ij}>0$ and hence $q^Y_j>0$. Both conditional laws are therefore
+defined, and their support condition also holds. On a cell with
+$p_{ij}>0$, factor the joint ratio as
+$(p^Y_j/q^Y_j)(p^{X\mid j}_i/q^{X\mid j}_i)$ and split its
+logarithm. Summing the marginal term over $i$ contributes
+$p^Y_j\log(p^Y_j/q^Y_j)$, and the remaining terms give the conditional
+divergence. Columns with $p^Y_j=0$ contribute nothing; their conditional
+laws need not be specified. All regrouping is finite.
 
 \begin{theorem}[Finite data processing]\label{fsp:thm:dataprocessing}
 Let $T_{ij}\ge0$ be a finite stochastic matrix, $\sum_jT_{ij}=1$.
@@ -1393,11 +1675,21 @@ the two input conditional laws given $j$ coincide.
 \end{theorem}
 \begin{proof}
 Form the joint laws $P_{ij}=p_iT_{ij}$ and $Q_{ij}=q_iT_{ij}$.
-On each positive $P_{ij}$ their ratio is $p_i/q_i$; summing over $j$
-gives $D(P\Vert Q)=D(p\Vert q)$. Their output marginals are $pT,qT$.
-Equation~\eqref{fsp:eq:klchain} and Theorem~\ref{fsp:thm:kl} give the inequality.
-The difference is a finite sum with positive weights, so it vanishes
-exactly when every indicated conditional divergence vanishes.
+If $P_{ij}>0$, then $p_i>0$ and $T_{ij}>0$, so $q_i>0$ and
+$Q_{ij}>0$. Thus the joint support condition holds, and on this cell
+$P_{ij}/Q_{ij}=p_i/q_i$. Summing over $j$ and using
+$\sum_jT_{ij}=1$ gives $D(P\Vert Q)=D(p\Vert q)$.
+The output marginals are $pT,qT$, with the inherited support condition.
+The chain rule now gives the exact nonnegative difference
+\[
+ D(p\Vert q)-D(pT\Vert qT)
+ =\sum_{j:(pT)_j>0}(pT)_j D(P_{X\mid j}\Vert Q_{X\mid j}).
+\]
+Its weights are positive even when infinitesimal. A finite sum of such
+nonnegative terms vanishes precisely when each conditional divergence
+vanishes, which is equivalent to equality of the entire two conditional
+vectors by Theorem~\ref{fsp:thm:kl}. No condition is imposed at outputs
+with zero $pT$ mass; their terms are absent.
 \end{proof}
 
 Taking $q_{ij}=p^X_ip^Y_j$ gives the nonnegative mutual information
@@ -1415,6 +1707,8 @@ Let $t=\omega^{-1}$ and $u=\exp(-1/t^2)$. Consider
 \begin{equation}
  p=(t,1-t),\qquad q=(u,1-u).
 \end{equation}
+The inequality $\exp x\ge1+x$ at $x=1/t^2$ gives
+$0<u\le t^2/(1+t^2)$, so $u$ is positive infinitesimal.
 Both standard parts equal $(0,1)$, but
 \begin{align}
  D(p\Vert q)
@@ -1423,8 +1717,11 @@ Both standard parts equal $(0,1)$, but
  \st\bigl(tD(p\Vert q)\bigr)&=1.
 \end{align}
 Thus their relative entropy is positive infinite. In fact the final
-term in \eqref{fsp:eq:hugekl} is infinitesimal, and $t\log t$ is
-infinitesimal, while the first term is $1/t$.
+term in \eqref{fsp:eq:hugekl} is infinitesimal because both
+$\log(1-t)$ and $\log(1-u)$ are infinitesimal and $1-t$ is limited.
+The entropy estimate above gives $t\log t\simeq0$.
+Thus $D(p\Vert q)=1/t+\eps$ for an infinitesimal $\eps$, which
+proves both positive infinitude and the displayed normalized residue.
 \end{example}
 
 There is no conflict with \eqref{fsp:eq:entropybound}. Entropy uses each
@@ -1443,13 +1740,35 @@ is exactly
 \begin{equation}
  \E_p[-\log q_i]-H(p)=D(p\Vert q).
 \end{equation}
-On the strictly positive simplex it is therefore uniquely minimized by
-$q=p$, by Theorem~\ref{fsp:thm:kl}. The Brier loss
+If the true law $p$ is strictly positive, the loss over strictly
+positive predictions is therefore uniquely minimized by $q=p$.
+If $p$ has a zero coordinate, $p$ is outside that prediction domain
+and no minimizer in it exists. Indeed let $S=\{i:p_i>0\}$ and
+$a=\sum_{i\in S}q_i<1$. Choose $a<c<1$, multiply the predicted weights
+on $S$ by $c/a$ and those outside $S$ by $(1-c)/(1-a)$.
+The new prediction remains strictly positive and normalized, while its
+expected loss decreases by $\log(c/a)>0$.
+
+The lower bound $H(p)$ is still the infimum. For
+$q^{(\eps)}=(1-\eps)p+\eps(1/n,\ldots,1/n)$ with $0<\eps<1$,
+\[
+ 0\le D(p\Vert q^{(\eps)})\le-\log(1-\eps),
+\]
+since $q_i^{(\eps)}\ge(1-\eps)p_i$ on $S$. Given any $\delta>0$ in
+$E$, take $\eps=1-\exp(-\delta/2)$ to make the excess at most
+$\delta/2$. This is an order-infimum argument inside $E$, with no
+convergence convention or evaluation of $\log0$.
+The Brier loss
 $S(q,i)=\sum_j(q_j-\ind_{j=i})^2$ satisfies the entirely algebraic identity
 \begin{equation}
  \E_p S(q,i)-\E_p S(p,i)=\sum_j(q_j-p_j)^2.
 \end{equation}
-It is strictly proper on the whole finite simplex over any ordered field.
+For completeness,
+$\E_pS(q,i)=\sum_jq_j^2-2\sum_jp_jq_j+1$;
+subtracting the same expression at $q=p$ gives the displayed sum of
+squares. It is nonnegative, with equality only when every $q_j=p_j$.
+Thus Brier loss is strictly proper on the whole finite simplex over any
+ordered field, including boundary laws.
 These scores distinguish infinitesimal prediction errors, though their
 relative penalties can occur at different scales.
 
@@ -1458,8 +1777,11 @@ loss is
 \begin{equation}\label{fsp:eq:logisticloss}
  \Phi(z;p)=\log(1+e^z)-pz.
 \end{equation}
+Indeed $-\log\sigma(z)=\log(1+e^z)-z$ and
+$-\log(1-\sigma(z))=\log(1+e^z)$, giving the displayed expected loss.
 Since $q=\sigma(z)$ parametrizes the strictly positive binary simplex,
-its unique minimizer is $z=\logit(p)$. This conclusion uses an explicit
+$\Phi(z;p)-H(p,1-p)$ is exactly the corresponding relative entropy.
+Its unique minimizer is therefore $z=\logit(p)$. This conclusion uses an explicit
 identity and positivity, not an unproved extreme-value theorem on a
 surreal parameter space.
 

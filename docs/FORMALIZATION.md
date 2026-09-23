@@ -15,7 +15,7 @@ that the current Lean target compiles or imports them.
 
 ## Scope and how to read this ledger
 
-The canonical inventory below identifies **44 main texts** with **2114**
+The canonical inventory below identifies **46 main texts** with **2250**
 standard result environments. Counts cover
 literal `theorem`, `lemma`, `proposition`, and `corollary` environments;
 examples, equations, prose assertions and companion proofs contain further
@@ -29,8 +29,12 @@ expansions integrated through `66dd6bc`, plus batch 19: four new reports and
 further expansions of four existing reports, integrated from `7657737`.
 Batch 20 (placed in `5fe7f8d`, written in `fb182ea`) adds four reports and
 expands the measures and trigonometry reports; all are indexed in their
-written form, and their review remains pending. Inclusion supplies
-navigation, not mathematical review or formalization. The implementation
+written form. The finite-probability review now covers Sections 2–7; later
+sections, the other new reports and the expansions remain pending within the
+review scopes recorded separately. Batch 21 (placed in `d4e71b7`, written in
+`3a2d35d`) adds two reports merged from nine manuscripts, with 136 indexed
+statements; their review remains pending.
+Inclusion supplies navigation, not mathematical review or formalization. The implementation
 table retains the precise scope of the newly mapped Lean statements.
 
 Before archive retirement in `e5791a8`, the tree contained 63 source
@@ -150,6 +154,8 @@ remaining clauses of a partially mapped statement.
 | Algebraic existence and injectivity clauses of `thm:exact`; valuation part of `rem:leading-inj` in evaluation-at-omega | `isInfinitesimal_map_powerSeries_X`, `exists_rat_powerSeriesHom_iff`, `exists_real_powerSeriesHom_iff`, `powerSeriesEvaluation_injective`, `powerSeriesEvaluation_injective_iff`, `valuation_powerSeriesEvaluation` in [Surcomplex/PowerSeriesHom.lean](../Surreal/Surcomplex/PowerSeriesHom.lean) | An actual surreal occurs as the formal-variable image of a rational-series homomorphism exactly when infinitesimal; the same criterion gives a real-coefficient map fixing every ordinary real. Actual real and complex evaluation are injective exactly at nonzero infinitesimals. For nonzero formal series the value has valuation `order.toNat • valuation x`, including zero inputs. **Proved** for these clauses. Preservation of source-summable families, uniqueness among strongly additive maps, and explicit leading data are proved above. Build and axiom audit pass. |
 | Actual infinitesimal exp/log summability, inverse and group laws of `e:prop-infexp` | `infExp`, `infLog`, `stronglySummable_infExp`, `stronglySummable_infLog`, strong-sum and standard-part formulas, `infLog_infExp_sub_one`, `infExp_infLog`, `infExp_add`, `infExp_neg`, `infLog_mul`, `infExp_injective`, `existsUnique_infExp_eq` in [SignSequenceExpLog.lean](../Surreal/Foundations/SignSequenceExpLog.lean) and [ExpLog.lean](../Surreal/Surcomplex/ExpLog.lean) | Ordinary formal exp/log evaluate as their exact actual real and complex strong sums. They are mutually inverse between infinitesimals and numbers infinitesimally close to one, with the exponential addition and logarithm product laws. Zero is included; `infLog x hx` means `log(1+x)`. **Proved** for these actual infinitesimal clauses. Global exponentials and logarithms remain separate. Build and axiom audit pass. |
 | Actual group-isomorphism clause of `e:prop-infexp` | `infinitesimalAddSubgroup`, `infinitesimalUnitSubgroup`, `infExpEquiv`, `infExpEquiv_apply`, `infExpEquiv_symm_apply` in [ExpLogEquiv.lean](../Surreal/Surcomplex/ExpLogEquiv.lean) | Actual infinitesimal exp/log are bundled as inverse group equivalences from additive infinitesimals to multiplicative units infinitesimally close to one, in both fields. Subgroup inverse closure follows from the proved exp/log identities. Together with the actual summability, inverse and conjugation rows, **all clauses of `e:prop-infexp` are proved for actual surcomplex numbers**. This does not construct the report’s later global exponential or logarithm. Build and axiom audit pass. |
+| Full `trigonometry:thm:polar`, `trigonometry:eq:anglegroup` and `trigonometry:eq:circlesplit`; multiplicative polar clause of `trigonometry:prop:rotation` | `UnitCircle`, `mem_unitCircle_iff`, `finitePhaseHom`, its surjectivity, `anglePeriods`, `finitePhaseHom_ker_eq_anglePeriods`, `angleQuotientEquiv`, `circleStandardPart`, `circleOfComplex` in [AngleGroup.lean](../Surreal/Surcomplex/AngleGroup.lean); `circleInfinitesimalPhase`, `circleRecombine`, `circleSplit`, `circleSplit_fst`, `circleSplit_symm_apply`, `circleSplit_log`, `ofReal_circleSplit_snd` in [CircleSplitting.lean](../Surreal/Surcomplex/CircleSplitting.lean); `positiveUnitSubgroup`, `polarMultiply`, `polarGroupEquiv`, its inverse modulus/direction formulas, `polarAngleGroupEquiv`, `modulus_polarAngleGroupEquiv`, `existsUnique_polar_angleClass` in [PolarGroup.lean](../Surreal/Surcomplex/PolarGroup.lean) | The actual modulus-one circle is Mathlib's native unitary group, and every direction has finite coordinates. Finite phase is a surjective homomorphism with kernel literally the subgroup generated by the embedded ordinary full turn. Mathlib's first isomorphism theorem gives the quotient by ordinary `2πℤ`, using multiplicative notation for additive finite angles. The circle is canonically isomorphic to Mathlib's ordinary complex `Circle` times the additive actual real infinitesimals. The inverse is `u₀ * Ex(iδ)`; the forward first coordinate is standard part, and the embedded second coordinate is exactly `-i * Log(u/st(u))`. Injectivity of infinitesimal exponential proves uniqueness without an argument branch. Positive actual real units times unit directions, and hence times finite angle classes, are isomorphic to all actual surcomplex units. The positive factor is exactly the modulus and the direction is division by that modulus; each nonzero input has a unique such modulus/angle-class pair, with no finiteness restriction on its size. **Proved for every clause of the polar theorem**. The preceding rotation proposition's matrix, isometry and similarity classification clauses remain separate obligations. Build and axiom audit pass. |
+| Full `trigonometry:cor:representatives` | `IsNonnegativeAngle`, `existsUnique_nonnegativeAngle_period`, `existsUnique_nonnegative_phase`, `existsUnique_principal_phase`, `finiteSin_pos_iff_of_nonnegativeAngle`, `negative_infinitesimal_full_turn` in [AngleRepresentatives.lean](../Surreal/Surcomplex/AngleRepresentatives.lean); `exists_positive_monomial_factor`, `existsUnique_positive_nthRoot`, `positiveNthRoot` and its positive/power laws in [SignSequencePositiveRoots.lean](../Surreal/Foundations/SignSequencePositiveRoots.lean); `pow_eq_one_iff_exists_complex`, `eq_one_of_pow_eq_one_of_infinitesimal`, `finiteRootAngle`, `val_finiteRootAngle`, `finitePhase_rootAngle_pow`, `finitePhase_rootAngle_injective`, `pow_eq_finitePhase_iff`, `finitePhaseRootsEquiv`, `card_roots_finitePhase` in [AngleRoots.lean](../Surreal/Surcomplex/AngleRoots.lean); `pow_eq_polar_iff`, `polarRootsEquiv`, `card_roots_of_ne_zero`, `modulus_zeta_sub_one`, `regularPolygon_side_length` in [PolarRoots.lean](../Surreal/Surcomplex/PolarRoots.lean) | Every direction has exactly one representative in each actual interval `[0,2π)` and `(-π,π]`; the period statements identify the permitted translations. For positive infinitesimal `epsilon`, the angle `-epsilon` is represented by `2π - epsilon`, and positive sine on the full-turn interval is equivalent to membership in `(0,π)`. For every positive natural degree, the phases of `(theta + 2π*k)/n`, indexed by `Fin n`, are distinct and exhaust all roots in the actual surcomplex field; an explicit equivalence proves their cardinality is `n`. Mathlib's primitive-root theorem and the already proved ordinary sampling root show that all actual roots of unity are embedded ordinary complex roots, and any such root infinitesimally close to one is one. Every positive actual surreal, at any scale, has a unique positive nth root: divide by its leading monomial and positive real coefficient, root these two factors, and apply the binomial root to the principal unit. Scaling the phase roots by this radius root gives the complete polar root formula and an exact root count for every nonzero surcomplex. Consecutive vertices of translated and rotated regular `n`-gons, `n ≥ 3`, have length `2*rho*sin(pi/n)` for every positive actual radius. **Proved for every clause**, without assuming actual algebraic closedness or using an Archimedean interval theorem on the surreal field. Build and axiom audit pass. |
 | Actual conjugation and unit-circle clauses of `e:prop-infexp` | `infinitesimal_conj`, `StronglySummable.conj`, `strongSum_conj`, `powerSeriesEvaluation_conj` in [StrongConjugation.lean](../Surreal/Surcomplex/StrongConjugation.lean); `infExp_conj`, `infLog_conj`, `conj_infLog_eq_neg_of_mul_conj_eq_one`, `infLog_re_eq_zero_of_mul_conj_eq_one`, `infLog_re_eq_zero_of_modulus_eq_one` in [ExpLogConjugation.lean](../Surreal/Surcomplex/ExpLogConjugation.lean) | Conjugation preserves actual strong summability and small strong sums; formal evaluation conjugates both the argument and ordinary coefficients. Actual infinitesimal exp/log commute with conjugation. The logarithm of a literal modulus-one element near one has zero real coordinate. **Proved** for all remaining conjugation and unit-circle clauses on the actual field. Build and axiom audit pass. |
 | Actual binomial specialization of `a:cor:complexsub`; root branch used in `b:ramification` and local trigonometric expansions | `binomialPower`, `stronglySummable_binomialTerms`, `binomialPower_eq_strongSum`, finite/standard-part/near-one formulas, `binomialPower_add`, `_nat`, `_pow`, `_neg`, `_rat_root`, `_rat_root_unique`, `pow_injective_near_one`, `exists_unique_root_near_one`, workspace agreement; real `binomialPower_pos`, `binomialPower_half_eq_sqrt` in [SignSequenceBinomial.lean](../Surreal/Foundations/SignSequenceBinomial.lean) and [Binomial.lean](../Surreal/Surcomplex/Binomial.lean) | Actual binomial strong sums accept every ordinary real or complex exponent, with standard part one and exact exponent identities. For positive natural degree, the reciprocal-integer exponent gives the unique root near one among all actual candidates. Real binomial values are positive; the half-power is the existing genetic square root. Zero increments are included. **Proved** for these algebraic branch clauses; global powers, recentered analytic expansions and analytic ramification remain separate. Build and axiom audit pass. |
 | Named-radius clause of `a:ex:geometric`; actual instances of `found:ex:archimedean` | `valuation_geometric_tMonomial_one_remainder`, `tMonomial_omega0_lt_abs_geometric_remainder`, `geometric_partialSum_not_mem_omega0_ball`, and complex modulus/fine-ball counterparts in [GeometricScale.lean](../Surreal/Surcomplex/GeometricScale.lean) | At `t = tMonomial 1`, every finite remainder has valuation `N+1`, strictly below the actual ordinal omega. Its actual absolute value or modulus strictly exceeds `t^ω`, excluding every finite partial sum from the explicitly named ball. **Proved**, completing the named-scale obligation for the actual geometric example. Intrinsic topology in a specified Hahn workspace remains separate. Build and axiom audit pass. |
@@ -263,8 +269,9 @@ remaining clauses of a partially mapped statement.
 | Full `a:prop:clopen`; fine continuity of standard part | `Surreal.Surcomplex.isClopen_setOf_isFinite`, `isClopen_setOf_isInfinitesimal`, `isClopen_monad`, `isClopen_affine_finite`, `isClopen_affine_infinitesimal`, `surcomplexTotallySeparatedSpace`, `finite_standardPart_fiber_eq_monad`, `isClopen_standardPart_fiber`, `isLocallyConstant_standardPartHom`, `continuous_standardPartHom` in [StandardPartTopology.lean](../Surreal/Surcomplex/StandardPartTopology.lean) | Both coordinate preimages are clopen, giving the actual finite ring and infinitesimal ideal as clopen subsets of the full fine topology. Every monad and nonzero affine image is clopen, with arbitrary centers including infinite elements. Coordinate separators give total separatedness and therefore total disconnectedness. On the genuine finite domain, ordinary-complex standard part is locally constant and continuous. The existing topology and uniformity are retained. **Proved** for the full proposition and these standard-part consequences; build and axiom audit pass. |
 | `a:def:halo`, `a:rem:puncture`, `a:rem:halonotball` | `Surreal.Surcomplex.halo`, `halo_eq_iUnion_monads`, `mem_halo_iff_exists`, `affine_halo_eq`, `halo_punctured`, `halo_punctured_ne_remove_zero`, `isClopen_halo`, `isClopen_affine_halo`, `unitDiskBoundaryWitness`, `halo_unitDisk_ne_fineBall` in [Halos.lean](../Surreal/Surcomplex/Halos.lean) | A halo is exactly the finite-domain standard-part preimage, equivalently the union of the corresponding constant-plus-infinitesimal monads. Every halo and every nonzero affine chart is fine-clopen, even for arbitrary ordinary subsets. Deleting an ordinary point removes the whole monad; for domains containing zero this is proved different from deleting only zero, using a nonzero actual infinitesimal. The explicit point `1 - omega⁻¹` lies in the actual fine unit ball but has standard part one, so the halo of the ordinary unit disk is not that ball. **Proved** for these definitions and assertions; build and axiom audit pass. |
 | `found:lem:nometric` and the following real-metric obstruction | `Surreal.Foundations.SignSequence.exists_positive_lower_bound_of_small`, `exists_positive_lower_bound_of_countable`; `Surcomplex.exists_ball_not_refined_by_small_family`, `exists_ball_not_refined_by_countable_family`, `not_isCountablyGenerated_nhds`, `not_has_countable_nhds_basis`, `not_firstCountableTopology`, `not_pseudoMetrizableSpace`, `not_metrizableSpace` in [NoMetric.lean](../Surreal/Surcomplex/NoMetric.lean) | A positive bound below every half-radius defeats every proposed small family of fine balls; arbitrary-universe countable index types are included through their smallness. No neighborhood filter at any actual surcomplex point is countably generated: a sequence in the punctured neighborhoods would contradict eventual equality for small-index convergent nets. This rules out arbitrary countable local bases, first countability and compatible real pseudometrics or metrics. The previously proved no-isolated-point result supplies the nondiscreteness clause. **Proved**; build and axiom audit pass. |
-| `found:eq:rationalcircle`; affine clauses of `trigonometry:thm:cayley` | `Surreal.Complexify.normSq_circleParam`, `circleParam_ne_neg_one`, `circleCoord_circleParam`, `circleParam_circleCoord`, `circleParam_injective`, `circleEquiv` in [Circle.lean](../Surreal/Algebra/Circle.lean) | The rational affine chart and its inverse give an equivalence over any ordered field. The projective extension and direction multiplication are mapped below. The half-angle identity and surreal specialization remain pending. **Prerequisites proved**; build and axiom audit pass. |
-| Projective and algebraic multiplication clauses of `trigonometry:thm:cayley`, `trigonometry:eq:cayley`, `trigonometry:eq:projectiveaddition` | `Surreal.Complexify.projectiveCircleEquiv`, `projectiveCircleEquiv_mk`, `circleParam_eq_fraction`, `projective_add_pair_ne_zero`, `projectiveAdd_mk`, `circleParam_mul`, `circleParam_mul_eq_neg_one_iff`, `projectiveAdd_infty_infty` in [ProjectiveCircle.lean](../Surreal/Algebra/ProjectiveCircle.lean) | Mathlib's actual projectivization of `Fin 2 → F` is equivalent to the norm-square-one circle over any ordered field. The chart has the homogeneous quotient formula and transports direction multiplication to `[ps+qr:qs-pr]`, whose output pair is proved nonzero. The affine rule applies exactly off its zero denominator; zero denominator gives `-1`, and two points at infinity give affine zero. Associativity and commutativity are also proved. The tangent/half-angle relation, infinitesimal proximity claim and surreal specialization remain pending. **Prerequisites proved**; build and axiom audit pass. |
+| `found:eq:rationalcircle`; affine clauses of `trigonometry:thm:cayley` | `Surreal.Complexify.normSq_circleParam`, `circleParam_ne_neg_one`, `circleCoord_circleParam`, `circleParam_circleCoord`, `circleParam_injective`, `circleEquiv` in [Circle.lean](../Surreal/Algebra/Circle.lean) | The rational affine chart and its inverse give an equivalence over any ordered field. The projective extension and direction multiplication are mapped below. The actual surreal specialization and half-angle identity are proved in the full Cayley theorem mapped below. **Proved**; build and axiom audit pass. |
+| Projective and algebraic multiplication clauses of `trigonometry:thm:cayley`, `trigonometry:eq:cayley`, `trigonometry:eq:projectiveaddition` | `Surreal.Complexify.projectiveCircleEquiv`, `projectiveCircleEquiv_mk`, `circleParam_eq_fraction`, `projective_add_pair_ne_zero`, `projectiveAdd_mk`, `circleParam_mul`, `circleParam_mul_eq_neg_one_iff`, `projectiveAdd_infty_infty` in [ProjectiveCircle.lean](../Surreal/Algebra/ProjectiveCircle.lean) | Mathlib's actual projectivization of `Fin 2 → F` is equivalent to the norm-square-one circle over any ordered field. The chart has the homogeneous quotient formula and transports direction multiplication to `[ps+qr:qs-pr]`, whose output pair is proved nonzero. The affine rule applies exactly off its zero denominator; zero denominator gives `-1`, and two points at infinity give affine zero. Associativity and commutativity are also proved. The actual surreal specialization, tangent/half-angle relation and infinitesimal proximity claim are proved in the full Cayley theorem mapped below. **Proved**; build and axiom audit pass. |
+| Full `trigonometry:thm:cayley`, `trigonometry:eq:cayley`, `trigonometry:eq:projectiveaddition` | `cayley`, `cayleyCoord`, `cayley_eq_fraction`, `modulus_cayley`, `cayley_ne_neg_one`, `cayleyCoord_cayley`, `cayley_cayleyCoord`, `cayleyEquiv`, `projectiveCayleyEquiv`, `projectiveCayleyEquiv_mk`, `projectiveCayleyEquiv_infty`, `projectiveCayleyEquiv_coe`, `projectiveCayleyEquiv_add`, `cayley_mul`, `cayley_mul_eq_neg_one_iff`, `cayleyCoord_finitePhase`, `cayley_finiteTan_half` in [Cayley.lean](../Surreal/Surcomplex/Cayley.lean); `infinitesimal_inv_iff_not_finite` in [SignSequenceFiniteUnits.lean](../Surreal/Foundations/SignSequenceFiniteUnits.lean); `standardPart_cayley`, `cayley_inv`, `standardPart_cayley_of_not_finite`, `infinitesimal_cayley_add_one_iff`, `infinitesimal_cayley_omega_add_one` in [CayleyInfinitesimal.lean](../Surreal/Surcomplex/CayleyInfinitesimal.lean), together with the homogeneous addition formulas mapped above | The rational chart is a bijection from all actual surreal scalars onto the native unit circle punctured at `-1`, with the stated inverse. Mathlib's actual projective line maps bijectively onto the full native unit circle; its point at infinity maps to `-1`. The generic homogeneous rule `[ps+qr:qs-pr]`, including its nonzero output and infinity cases, specializes to this equivalence and gives multiplication of actual directions. The affine formula retains its denominator restriction; zero denominator gives exactly `-1`. Every finite phase has half-angle tangent as its chart coordinate, and the coordinate reconstructs the phase when the phase is not `-1`, in particular for the source's principal representative. Standard part commutes with the chart at finite scalar inputs. An actual scalar input is infinite if and only if its Cayley value differs infinitesimally from `-1`; the omega example is explicit. Such affine values never equal the projective half-turn. **Proved for every clause**; build and axiom audit pass. |
 | Factorization clauses of `polynomial:thm:fta`, `polynomial:eq:factorization`, `polynomial:eq:logderivative` | `Surreal.FinitePolynomial.exists_root`, `factorization`, `factorization_grouped`, `exists_unique_factorization`, `factorization_unique`, `sum_rootMultiplicities`, `logarithmic_derivative`, `logarithmic_derivative_grouped` in [Polynomial.lean](../Surreal/Algebra/Polynomial.lean) | Root existence, unique scalar/multiset factorization, grouped multiplicities and both logarithmic-derivative formulas. Existence assumes algebraic closedness; uniqueness holds over every field. The rational identities require a nonroot evaluation point. The fixed-Hahn closedness instance and explicit factorization specialization are now constructed below; transfer to the actual surcomplex field remains pending. **Prerequisites proved**; build and axiom audit pass. |
 | Division, gcd and ideal clauses of `polynomial:thm:fta`; gcd formula in `polynomial:eq:logderivative` | `Surreal.FinitePolynomial.exists_unique_division`, `exists_monic_gcd`, `gcd_bezout`, `ideal_principal`, `ideal_pair_eq_span_gcd`, `squarefree_iff_gcd_derivative_eq_one`, `gcd_derivative_rootMultiplicity`, `gcd_derivative_eq_prod` in [PolynomialDivision.lean](../Surreal/Algebra/PolynomialDivision.lean) | Unique division, normalized monic Bézout gcds and principal ideals over every field. The squarefree criterion assumes perfectness (supplied by characteristic zero); derivative multiplicities use characteristic zero. The grouped gcd product assumes a nonzero split polynomial and does not need monicity of the input. **Prerequisites proved**; build and axiom audit pass. |
 | Multiplicity and Taylor clauses of `polynomial:thm:fta` | `Surreal.FinitePolynomial.multiplicity_eq_iff_derivatives`, `multiplicity_isLeast_nonzero_derivative`, `derivative_rootMultiplicity`, `multiple_root_iff`, `taylor_coeff_eq_derivative`, `taylor_eq_sum_derivatives`, `eq_sum_derivatives`, `eval_add_eq_sum_derivatives` in [PolynomialMultiplicity.lean](../Surreal/Algebra/PolynomialMultiplicity.lean) | The least nonvanishing derivative, derivative multiplicity and finite Taylor formulas over characteristic-zero fields. The least-index characterization explicitly excludes the zero polynomial. **Prerequisites proved**; build and axiom audit pass. |
@@ -497,15 +504,19 @@ cannot replace strong Hahn summability.
 
 `T`, `L`, `P`, `C` mean literal `theorem`, `lemma`, `proposition` and
 `corollary` environments; examples, computations, assessments and other
-custom environments are not included. Paths below identify 44 of the 46 main texts
-present in the repository, including the two whose source is not named
-`article.tex`. The reader map and the typeset catalogue list all 46; the two
-reports of batch 21 (placed in `d4e71b7`, written in `3a2d35d`) are not yet
-indexed here. The
-four reports placed in `5fe7f8d` were written in `fb182ea`, which prefixed
-their labels; they are indexed here but not yet reviewed.
+custom environments are not included. The index covers all 46 main texts
+present in the repository; two are not named `article.tex`. The reader map
+and the typeset catalogue list all 46. The two reports placed in `d4e71b7`
+and written in `3a2d35d`,
+[birthday cutoffs](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/)
+and [fields across universes](foundations-and-computation/surreal-fields-across-universes/),
+merge nine manuscripts and are indexed from their written sources; their
+review remains pending.
+The four reports placed in `5fe7f8d` were written in `fb182ea`, which prefixed
+their labels; they are indexed here. The finite-probability review covers
+Sections 2–7; its later sections and the other three reports await review.
 The four reports and expanded sections from batch 19 are indexed here, but
-remain pending unless a precise implementation mapping below states otherwise.
+remain pending unless a precise implementation mapping states otherwise.
 
 | Main report source | T | L | P | C | Total |
 |---|---:|---:|---:|---:|---:|
@@ -553,7 +564,9 @@ remain pending unless a precise implementation mapping below states otherwise.
 | [surreal/euclidean-three-space/article.tex](surreal/euclidean-three-space/article.tex) | 28 | 3 | 8 | 1 | 40 |
 | [surreal/finite-surreal-probability/article.tex](surreal/finite-surreal-probability/article.tex) | 15 | 2 | 7 | 1 | 25 |
 | [surreal/vector-and-tensor-fields/article.tex](surreal/vector-and-tensor-fields/article.tex) | 23 | 1 | 15 | 4 | 43 |
-| **Total** | 844 | 401 | 460 | 409 | **2114** |
+| [foundations-and-computation/birthday-cutoffs-and-hereditary-sets/article.tex](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/article.tex) | 33 | 22 | 13 | 11 | 79 |
+| [foundations-and-computation/surreal-fields-across-universes/article.tex](foundations-and-computation/surreal-fields-across-universes/article.tex) | 23 | 16 | 8 | 10 | 57 |
+| **Total** | 900 | 439 | 481 | 430 | **2250** |
 
 The earlier refresh from `796f8d4` through `1f6d6b8` added four reports and
 expanded an existing one.
@@ -3325,36 +3338,55 @@ Statements are **pending unless explicitly mapped** in the implementation table.
 
 Source: [surreal/finite-surreal-probability/article.tex](surreal/finite-surreal-probability/article.tex).
 
-Written in `fb182ea`; proof review and formalization remain pending.
+Written in `fb182ea`. The proof review now covers Sections 2–7: scalar
+workspaces, residue algebra, finite probability, conditional shadows and
+Bayesian updates, logits, softmax and finite information theory; later
+sections remain pending. The point-weight
+representation in Section 3 now explicitly assumes
+the full event algebra. On a smaller finite algebra only its atom masses are
+uniquely determined. Standard-part division requires limited numerator and
+denominator with nonzero denominator residue; conditional identities on
+zero-mass atoms are interpreted up to versions. The Sections 4–5 review
+expands the conditional skeleton and signed coefficient-row proofs, restricts
+commuting likelihood updates to a positive joint normalizer, and corrects the
+neutral-likelihood wording. The valuation stability clause now stands on its
+own positive-event hypothesis; its strict error contract is sufficient, not
+necessary for an individual pair of laws. These are source corrections and
+clarifications, not new Lean coverage. Sections 6–7 now explicitly require
+a positive finite state count and an interior binary prior for logit Bayes.
+The logarithmic-score discussion separates its unique interior minimizer
+from the unattained boundary infimum over strictly positive predictions.
+Softmax stability and concentration, entropy shadows, support inheritance
+and equality in data processing have expanded proofs.
 Statements are **pending unless explicitly mapped** in the implementation table.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `fsp:lem:workspace` (line 645) | Local exponential workspace |
-| Proposition | `fsp:prop:st` (line 672) | Residue algebra |
-| Theorem | `fsp:thm:finitebounds` (line 808) | Variance, Cauchy--Schwarz, and tail bounds |
-| Theorem | `fsp:thm:skeleton` (line 932) | Conditional leading-scale skeleton |
-| Theorem | `fsp:thm:compression` (line 969) | Signed-row lexicographic compression |
-| Theorem | `fsp:thm:scalebayes` (line 1021) | Minimum-plus Bayes with coefficient tie breaking |
-| Theorem | `fsp:thm:stability` (line 1082) | Absolute and valuation-sensitive conditioning stability |
-| Proposition | Line 1151 (unlabeled) | Logit coordinates |
-| Proposition | `fsp:prop:softbound` (line 1232) | Normalization and perturbation bounds |
-| Theorem | `fsp:thm:multisoft` (line 1262) | Finite multiscale softmax limit |
-| Theorem | `fsp:thm:kl` (line 1317) | Finite Gibbs inequality and entropy bounds |
-| Theorem | `fsp:thm:dataprocessing` (line 1385) | Finite data processing |
-| Theorem | `fsp:thm:gibbs` (line 1471) | Surreal finite Gibbs principle |
-| Proposition | `fsp:prop:separation` (line 1545) | No attained logistic optimum under strict separation |
-| Proposition | Line 1602 (unlabeled) | Bounded finite-horizon optional stopping |
-| Proposition | `fsp:prop:fine` (line 1657) | Set-indexed fine convergence is eventually constant |
-| Theorem | `fsp:thm:hierarchy` (line 1756) | Normalized hierarchy of real probability laws |
-| Theorem | `fsp:thm:integrationfailure` (line 1873) | An uncountable-support positivity failure |
-| Theorem | `fsp:thm:rarecoin` (line 1989) | A repeated infinitesimal success probability |
-| Theorem | `fsp:thm:faircoin` (line 2015) | A repeated infinitesimal perturbation of a fair coin |
-| Lemma | `fsp:lem:embedding` (line 2069) | Set-sized relative field embedding |
-| Theorem | `fsp:thm:extension` (line 2174) | All-subsets regular extension after field enlargement |
-| Corollary | `fsp:cor:coinextension` (line 2218) | The two coin models do have regular finite-additive laws |
-| Proposition | `fsp:prop:tailfailure` (line 2291) | Finite-update shadows need not recover rare tail conditioning |
-| Theorem | `fsp:thm:shadowcountable` (line 2339) | A continuity test for the shadow |
+| Lemma | `fsp:lem:workspace` (line 659) | Local exponential workspace |
+| Proposition | `fsp:prop:st` (line 697) | Residue algebra |
+| Theorem | `fsp:thm:finitebounds` (line 869) | Variance, Cauchy--Schwarz, and tail bounds |
+| Theorem | `fsp:thm:skeleton` (line 1049) | Conditional leading-scale skeleton |
+| Theorem | `fsp:thm:compression` (line 1098) | Signed-row lexicographic compression |
+| Theorem | `fsp:thm:scalebayes` (line 1173) | Minimum-plus Bayes with coefficient tie breaking |
+| Theorem | `fsp:thm:stability` (line 1255) | Absolute and valuation-sensitive conditioning stability |
+| Proposition | Line 1359 (unlabeled) | Logit coordinates |
+| Proposition | `fsp:prop:softbound` (line 1461) | Normalization and perturbation bounds |
+| Theorem | `fsp:thm:multisoft` (line 1504) | Finite multiscale softmax limit |
+| Theorem | `fsp:thm:kl` (line 1576) | Finite Gibbs inequality and entropy bounds |
+| Theorem | `fsp:thm:dataprocessing` (line 1667) | Finite data processing |
+| Theorem | `fsp:thm:gibbs` (line 1793) | Surreal finite Gibbs principle |
+| Proposition | `fsp:prop:separation` (line 1867) | No attained logistic optimum under strict separation |
+| Proposition | Line 1924 (unlabeled) | Bounded finite-horizon optional stopping |
+| Proposition | `fsp:prop:fine` (line 1979) | Set-indexed fine convergence is eventually constant |
+| Theorem | `fsp:thm:hierarchy` (line 2078) | Normalized hierarchy of real probability laws |
+| Theorem | `fsp:thm:integrationfailure` (line 2195) | An uncountable-support positivity failure |
+| Theorem | `fsp:thm:rarecoin` (line 2311) | A repeated infinitesimal success probability |
+| Theorem | `fsp:thm:faircoin` (line 2337) | A repeated infinitesimal perturbation of a fair coin |
+| Lemma | `fsp:lem:embedding` (line 2391) | Set-sized relative field embedding |
+| Theorem | `fsp:thm:extension` (line 2496) | All-subsets regular extension after field enlargement |
+| Corollary | `fsp:cor:coinextension` (line 2540) | The two coin models do have regular finite-additive laws |
+| Proposition | `fsp:prop:tailfailure` (line 2613) | Finite-update shadows need not recover rare tail conditioning |
+| Theorem | `fsp:thm:shadowcountable` (line 2661) | A continuity test for the shadow |
 
 ### vector-and-tensor-fields
 
@@ -3408,3 +3440,163 @@ Statements are **pending unless explicitly mapped** in the implementation table.
 | Theorem | `vtf:mink:thm:Cauchy` (line 3899) | Support-preserving Cauchy lifting |
 | Theorem | `vtf:mink:thm:retardedperturb` (line 3941) | Exact causal inverse for a positive-order perturbation |
 | Theorem | `vtf:mink:thm:cubic` (line 4076) | Positive-order cubic-wave deformation |
+
+### birthday-cutoffs-and-hereditary-sets
+
+Source: [foundations-and-computation/birthday-cutoffs-and-hereditary-sets/article.tex](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/article.tex).
+
+Merged report placed in `d4e71b7` and written in `3a2d35d`; this index
+covers its written `article.tex`. The delivered proof and source audits
+do not establish review or Lean coverage. All statements are **Pending**
+unless explicitly mapped in the implementation table.
+
+| Kind | Source label or line | Heading |
+|---|---|---|
+| Theorem | `hset:thm:main-rounding` (line 244) | Cardinal rounding and cutoff recovery; \cref{hset:thm:biinterpretation} |
+| Theorem | `hset:thm:main-elementary` (line 278) | Elementary-inclusion spectrum; \cref{hset:thm:elementary} |
+| Theorem | `hset:thm:main-growth` (line 296) | Growth spectrum; \cref{hset:thm:worldly} |
+| Theorem | `hset:thm:main-extension` (line 318) | Extension rigidity at a strong-limit cutoff; \cref{hset:thm:extension-rigidity} |
+| Lemma | `hset:lem:birthday-language` (line 658) | Birthday order and birthday function |
+| Lemma | `hset:lem:card-estimates` (line 704) | Closure and cardinal estimates |
+| Lemma | `hset:lem:hereditary` (line 737) | Basic hereditary-size facts |
+| Lemma | `hset:lem:cut-test` (line 791) | Prefix test for a cut value |
+| Lemma | `hset:lem:graph-size` (line 818) | Small numeric graphs have small certificates |
+| Theorem | `hset:thm:certificates` (line 875) | Hereditary-size arithmetic certificates |
+| Lemma | `hset:lem:tables` (line 956) | Hereditary size of arithmetic tables |
+| Theorem | `hset:thm:tables` (line 980) | Table definitions of the operations; sources 05, 06, 07 |
+| Lemma | `hset:lem:prefix` (line 1041) | Definable prefix relation |
+| Lemma | `hset:lem:pairing` (line 1100) | Bounded pairing |
+| Lemma | `hset:lem:pairing06` (line 1147) | A one-polynomial pairing; source 06 |
+| Lemma | `hset:lem:radix` (line 1164) | Admissible radices; source 07 |
+| Lemma | `hset:lem:collapse` (line 1242) | Rooted collapse |
+| Lemma | `hset:lem:equal-member` (line 1300) | Correctness of equality and membership |
+| Theorem | `hset:thm:collapse-range` (line 1336) | Exact collapse range |
+| Corollary | `hset:cor:countable` (line 1398) | Countable cutoffs recover all countable sets; sources 02, 07, 09 |
+| Theorem | `hset:thm:collector` (line 1468) | The cutoff is a set exactly in the noncardinal case; sources 02, 09 |
+| Theorem | `hset:thm:biinterpretation` (line 1520) | Uniform local bi-interpretation |
+| Corollary | `hset:cor:epsilon0` (line 1556) | The first epsilon cutoff and hereditary countability |
+| Proposition | `hset:prop:coherence` (line 1593) | Coherence under cutoff inclusions |
+| Proposition | `hset:prop:bisim-range` (line 1652) | Exactly the hereditary sets; source 05 |
+| Theorem | `hset:thm:bisim` (line 1681) | Equality is bisimilarity; source 05 |
+| Proposition | `hset:prop:ring` (line 1751) | Ring version; source 02 |
+| Lemma | `hset:lem:lower-noncardinal` (line 1790) | Noncardinal lower cutoffs never include elementarily; sources 02, 09 |
+| Lemma | `hset:lem:upper-noncardinal` (line 1813) | A cardinal lower cutoff cannot include elementarily into a noncardinal cutoff |
+| Theorem | `hset:thm:elementary` (line 1824) | Classification of elementary initial inclusions |
+| Corollary | Line 1857 (unlabeled) | Two kinds of elementary extension |
+| Corollary | `hset:cor:equiv` (line 1888) | Transfer of elementary equivalence; source 06 |
+| Corollary | `hset:cor:fullclass` (line 1910) | Comparison with the full class |
+| Theorem | `hset:thm:embeddings` (line 1943) | Elementary-embedding correspondence; sources 05, 06 |
+| Corollary | `hset:cor:critical` (line 1984) | Critical ordinals and the identity case; source 05 |
+| Theorem | `hset:thm:eternity-noncardinal` (line 2029) | Eternity forces cardinality of an epsilon cutoff |
+| Lemma | `hset:lem:H-background` (line 2054) | The fixed background axioms |
+| Theorem | `hset:thm:eternity-replacement` (line 2087) | Eternity--Replacement equivalence |
+| Corollary | `hset:cor:regular-eternity` (line 2140) | Untitled |
+| Lemma | `hset:lem:Hpower` (line 2154) | Power Set in a hereditary-size universe; sources 02, 06, 09 |
+| Theorem | `hset:thm:power` (line 2179) | The translated Power Set sentence; sources 02, 06 |
+| Theorem | `hset:thm:packing` (line 2230) | Exact packing threshold |
+| Lemma | `hset:lem:worldly-HV` (line 2289) | When hereditary size becomes cumulative rank |
+| Theorem | `hset:thm:worldly` (line 2320) | Worldly-cutoff characterization |
+| Theorem | `hset:thm:beth` (line 2395) | A singular Replacement boundary; source 06 |
+| Proposition | `hset:prop:singular-worldly` (line 2437) | A conditional source of singular worldly cutoffs |
+| Proposition | `hset:prop:arithmetic` (line 2477) | The standard natural numbers and all their subsets; sources 06, 07, 09 |
+| Corollary | `hset:cor:undecidable` (line 2504) | Undecidability; sources 05, 06, 07, 09 |
+| Proposition | `hset:prop:ip` (line 2522) | Independence property and a countable omitted type; source 07 |
+| Proposition | `hset:prop:nondef` (line 2554) | Nondefinability of birthday; sources 05, 07 |
+| Corollary | `hset:cor:reduct` (line 2581) | Reconstruction from ordinal pairing; source 06 |
+| Theorem | `hset:thm:choice` (line 2616) | Choice-sensitive range; source 06 |
+| Proposition | `hset:prop:internal-choice` (line 2635) | Internal Choice is a different assertion; source 06 |
+| Lemma | `hset:lem:oldcuts` (line 2680) | An old simplest separator stays simplest; sources 02, 05, 07 |
+| Proposition | `hset:prop:absolute` (line 2702) | Absolute old field structure; sources 02, 05, 07 |
+| Proposition | `hset:prop:cross-model` (line 2727) | Cross-model coherence; source 09 |
+| Theorem | `hset:thm:preservation` (line 2776) | Exact preservation criterion; sources 02, 06, 07, 09 |
+| Corollary | `hset:cor:noreals` (line 2819) | Countable cutoffs detect exactly new reals; source 02 |
+| Lemma | `hset:lem:newsubset` (line 2830) | New sets imply a new ordinal subset; sources 05, 07 |
+| Theorem | `hset:thm:firstbirthday` (line 2843) | First new birthday; sources 02, 05, 07 |
+| Theorem | `hset:thm:detector` (line 2917) | Uniform detector for an added subset; source 09 |
+| Proposition | `hset:prop:detector-cost` (line 2950) | Sharpness of the detector's parameter cost; source 09 |
+| Theorem | `hset:thm:extension-rigidity` (line 2984) | Strong-limit extension rigidity; source 09 |
+| Theorem | `hset:thm:outer` (line 3022) | An outer universe is detectable; sources 05, 07 |
+| Theorem | `hset:thm:new` (line 3052) | An explicit new-subset detector; source 05 |
+| Theorem | `hset:thm:prikry` (line 3113) | Forcing invisibility, conditional; sources 02, 06 |
+| Corollary | `hset:cor:prikry` (line 3140) | No uniform regularity detector; sources 02, 06 |
+| Proposition | `hset:prop:onset` (line 3166) | Where the missing sequence lives; sources 02, 06 |
+| Theorem | `hset:thm:chy` (line 3203) | Chen--Hamkins--Yang, announced \cite{CHYKobe,CHYNotreDame,CHYCUNY} |
+| Lemma | `hset:lem:embedding-transfer` (line 3259) | Transferring an elementary embedding; source 07 |
+| Theorem | `hset:thm:kunen` (line 3286) | No nontrivial class elementary self-embedding; source 07 |
+| Lemma | `hset:lem:cb-orientation` (line 3328) | Independence of orientation; source 06 |
+| Proposition | `hset:prop:real-recovery` (line 3338) | Recovery of the real birthday structure; all five sources |
+| Lemma | `hset:lem:rigidity` (line 3378) | Rigidity of a standard birthday cutoff; sources 05, 06, 07, 09 |
+| Theorem | `hset:thm:orientation` (line 3402) | The orientation obstruction; sources 05, 06, 09, after Je\v{r}\'abek |
+| Theorem | `hset:thm:two-lifts` (line 3445) | Two lifts, and only two; source 06 |
+| Theorem | `hset:thm:threshold` (line 3485) | Orientation threshold; source 06 |
+| Theorem | `hset:thm:complex-rigid` (line 3524) | Surcomplex elementary self-embeddings; source 07 |
+| Theorem | `hset:thm:complex-forcing` (line 3548) | The surcomplex outer-model contrast; sources 05, 07 |
+
+### surreal-fields-across-universes
+
+Source: [foundations-and-computation/surreal-fields-across-universes/article.tex](foundations-and-computation/surreal-fields-across-universes/article.tex).
+
+Merged report placed in `d4e71b7` and written in `3a2d35d`; this index
+covers its written `article.tex`. The delivered proof and source audits
+do not establish review or Lean coverage. All statements are **Pending**
+unless explicitly mapped in the implementation table.
+
+| Kind | Source label or line | Heading |
+|---|---|---|
+| Theorem | `univ:thm:main-summary` (line 309) | Main spectrum theorem; sources 01, 03, 04, 08 |
+| Theorem | `univ:thm:package-summary` (line 331) | First loss and language sensitivity; sources 01, 03, 04, 08 |
+| Lemma | `univ:lem:convex` (line 633) | Cones are convex; the prefix characterization; sources 03, 04 |
+| Lemma | `univ:lem:signcone` (line 654) | The cone of a sign; source 01 |
+| Lemma | `univ:lem:RCFsat` (line 716) | Cuts versus saturation; sources 01, 03, 04, 08 |
+| Proposition | `univ:prop:absolute` (line 761) | Old arithmetic and elementary inclusions; sources 01, 03, 04, 08 |
+| Lemma | `univ:lem:groundbound` (line 817) | Every external set of old numbers is ground-bounded; sources 01, 04, 08 |
+| Lemma | `univ:lem:oldbounds` (line 849) | Old bounds for new sets; source 03 |
+| Lemma | `univ:lem:shortold` (line 864) | Coding short families; sources 01, 03, 04 |
+| Theorem | `univ:thm:oneside` (line 882) | One old side suffices; source 01 |
+| Corollary | `univ:cor:NSoneside` (line 895) | Source 01 |
+| Proposition | `univ:prop:deltaregular` (line 938) | Regularity of the first new length; sources 01, 03, 04, 08 |
+| Lemma | `univ:lem:tree` (line 986) | Arbitrarily branching interval tree |
+| Theorem | `univ:thm:decode` (line 1027) | Branch decoder and omitted cut |
+| Theorem | `univ:thm:intervalcode` (line 1083) | Absolute ordinal-branching interval code; source 04 |
+| Theorem | `univ:thm:freshcut` (line 1114) | Fresh-branch omitted cut; source 04 |
+| Proposition | `univ:prop:finiteformula` (line 1135) | Closed formulas along a finite branch; source 04 |
+| Lemma | `univ:lem:twobounds` (line 1163) | Two bounds force a prefix; source 08 |
+| Lemma | `univ:lem:blockdecode` (line 1187) | Decoding and nesting; source 08 |
+| Theorem | `univ:thm:freshcode` (line 1205) | Fresh-sequence cut and its separators; source 08 |
+| Theorem | `univ:thm:firstgap` (line 1299) | First gap theorem; sources 01, 03, 08 |
+| Corollary | `univ:cor:recover` (line 1325) | Recovering the threshold from the order; sources 01, 03, 08 |
+| Corollary | `univ:cor:spectrum` (line 1336) | The uncountable spectrum; sources 01, 03, 04, 08 |
+| Theorem | `univ:thm:omega` (line 1364) | Finite-parameter saturation; sources 01, 03, 04, 08 |
+| Corollary | `univ:cor:omegaone` (line 1410) | Source 01 |
+| Lemma | `univ:lem:signscofinal` (line 1455) | Both signs are cofinal |
+| Lemma | `univ:lem:canonicalpresentation` (line 1468) | Canonical cofinal presentations |
+| Theorem | `univ:thm:gapcorrespondence` (line 1496) | Gap--fresh-sign correspondence |
+| Theorem | `univ:thm:fillingcone` (line 1523) | The whole filling class |
+| Corollary | `univ:cor:gapspectrum` (line 1541) | Exact gap spectrum |
+| Proposition | `univ:prop:blockcodeplus` (line 1564) | Terminal-plus block code; source 03 |
+| Theorem | `univ:thm:leastgap` (line 1605) | Exact least-gap theorem; source 03 |
+| Proposition | `univ:prop:beta` (line 1647) | Birthday threshold; source 08 |
+| Lemma | `univ:lem:algebraicset` (line 1726) | Algebraic closure stays a set; source 03 |
+| Theorem | `univ:thm:purecomplex` (line 1739) | Set-saturation of the old pure surcomplex field; sources 01, 03, 04, 08 |
+| Lemma | `univ:lem:coordinates` (line 1785) | Real coordinates are interpretable; sources 01, 03, 04, 08 |
+| Theorem | `univ:thm:conjugation` (line 1809) | Conjugation spectrum; sources 01, 03, 04, 08 |
+| Corollary | `univ:cor:noniso` (line 1870) | Sources 01, 04, 08 |
+| Theorem | `univ:thm:fragments` (line 1906) | Bounded-birthday preservation |
+| Proposition | `univ:prop:setACF` (line 1952) | Pure complexification of a set fragment; source 01 |
+| Corollary | `univ:cor:distributivity` (line 1992) | Forcing characterization; sources 01, 03, 04, 08 |
+| Proposition | `univ:prop:add` (line 2046) | Any prescribed regular first gap; sources 01, 03, 04, 08 |
+| Corollary | `univ:cor:prikry` (line 2108) | Prikry separation; sources 01, 03, 04, 08 |
+| Proposition | `univ:prop:topology` (line 2178) | External discreteness and Cauchy rigidity; sources 01, 03, 04 |
+| Lemma | `univ:lem:coneopen` (line 2213) | Prefix cones are open; source 04 |
+| Theorem | `univ:thm:nowheredense` (line 2224) | Closed, nowhere dense, and still set-discrete; sources 03, 04 |
+| Theorem | `univ:thm:classbf` (line 2299) | Class back-and-forth; prior result |
+| Theorem | `univ:thm:pureiso` (line 2328) | Old and new pure surcomplex fields; sources 03, 04, 08 |
+| Lemma | `univ:lem:invariant` (line 2365) | Invariance; source 03 |
+| Theorem | `univ:thm:transport` (line 2380) | A forcing-sensitive real form without set-sized cofinal subsets; sources 03, 04, 08 |
+| Theorem | `univ:thm:involutions` (line 2407) | Elementarily equivalent, not conjugate; source 04 |
+| Corollary | `univ:cor:agreement` (line 2466) | Agreement on prescribed ordinary data; source 03 |
+| Theorem | `univ:thm:manygrounds` (line 2484) | Different thresholds separate real forms; sources 03, 04 |
+| Corollary | `univ:cor:finitetower` (line 2515) | Arbitrarily long finite lists; source 03 |
+| Theorem | `univ:thm:booleanyes` (line 2585) | Set-complete dense completion |
+| Lemma | `univ:lem:classdiag` (line 2626) | Diagonal obstruction |
+| Theorem | `univ:thm:booleanno` (line 2647) | No all-subclass completion |
