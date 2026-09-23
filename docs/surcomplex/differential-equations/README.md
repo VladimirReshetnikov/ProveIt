@@ -3,13 +3,13 @@
 **The finite-primitive criterion, the phase obstruction, and support-certified
 coordinate systems**
 
-A merged research report, 195 pages, built from eleven manuscripts. Everything
+A merged research report, 197 pages, built from eleven manuscripts. Everything
 in this directory other than `article.tex`, `article.pdf` and this README is
 preserved source material.
 
 ```
 article.tex                        the merged report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled 195-page report
+article.pdf                        the compiled 197-page report
 README.md                          this guide
 11-autonomous-dynamics-sources.md  member 11's literature and repository-review log, unmodified
 code/                              the verification programs and build scripts of the eleven
@@ -29,16 +29,16 @@ coordinate arguments, the complete regular-singular main text (Sections
 23–28), and the autonomous proofs through the abelian image and speed
 threshold, together with their scope comparisons (Sections 29–34).
 The critical-potential review now covers the tower, summability and
-fundamental-pair arguments, Euler threshold and transfinite classification
-in Sections 35–38.
+fundamental-pair arguments, Euler threshold, transfinite classification,
+and the scale and Hahn-field comparisons in Sections 35–40.
 
-The latest pass expands the Euler-kernel classification, the Liouville
-operator identity and Wronskian transport. It corrects the power-Hahn
-comparison's missing exception `Q_{1,0} = ¼ω⁻²` and makes the critical
-endpoint's smaller-perturbation example explicit. Sections 39–42,
-remaining imports and source reconciliation still require review.
-Detailed scope and validation are in the collection's
-[review record](../../REVIEW.md).
+The latest pass distinguishes exact Hahn sums from earlier-scale data,
+expands exponent support and field-membership arguments, and proves that
+the largest of the three limit-stage fields is not closed under logarithms.
+It separates this from logarithm closure in the first two fields and the
+solution dimensions zero, one and two. Sections 41–42, remaining imports
+and source reconciliation still require review. Detailed scope and
+validation are in the collection's [review record](../../REVIEW.md).
 
 ## What the report is
 
@@ -277,7 +277,8 @@ Q_α = ¼ Σ_{β<α} (ℓ_β†)² ,      Q_{α,c} = Q_α + c (ℓ_α†)² .
   nonzero limit ordinal `λ`, three nested, `∂`-stable, real closed Hahn fields
   `H_{Δ_0} ⊂ H_{Δ_1} ⊂ H_{Δ_2}` contain `Q_λ` and have solution dimensions
   0, 1, 2; the first two are closed under `log`, and what is missing is first an
-  exponential, then a primitive.
+  exponential, then a primitive. The largest field contains both solutions
+  but is not closed under logarithms: it contains `ℓ_λ` and omits `ℓ_{λ+1}`.
 * **Borel Galois group** (Theorem 41.2). Over `K_{Δ_0}` the solution field
   `K_{Δ_0}(u_λ, ℓ_λ)` has differential Galois group the upper triangular Borel
   subgroup of `SL_2(C)` — the only non-commutative differential Galois group in
@@ -752,9 +753,10 @@ N80–N94 from member 11 and N95–N106 from member 13. In outline:
   no proper-class sums, no all-ordinal potential; this family only — no
   classification of arbitrary potentials and no stability of the threshold
   under smaller perturbations; invisibility concerns the named hierarchy only
-  and is not a fine-topology discontinuity; finite spans of exponents, no
-  closure claims for the largest Hahn field and no minimality of the
-  intermediate ones; the classical Kneser–Weber–Hartman–Hille hierarchy, the
+  and is not a fine-topology discontinuity or ambiguity of an exact Hahn
+  sum; finite spans of exponents, logarithm closure only for the first two
+  real Hahn fields, with an explicit counterexample for the third, and no
+  minimality of the intermediate fields; the classical Kneser–Weber–Hartman–Hille hierarchy, the
   derivation, the tower, Hahn real closedness, the gauge and Schwarzian
   mechanisms are antecedents or imports; priority provisional, no refereeing,
   no Lean; a bounded repository comparison at its pin; 70 finite checks that
@@ -1133,6 +1135,40 @@ critical-potential source and PDF were unchanged by the merge. All 2,114
 statement-index entries still match, and all 879 local Markdown
 destinations in 93 files resolve. These incoming fine-derivative proofs
 do not formalize the intrinsic differential equations reviewed here.
+
+The third critical-potential pass reviewed Sections 39–40. It separates
+an exact Hahn sum from coefficients prescribed only at earlier scales,
+gives an explicit ordinal bound including the empty case, and defines the
+additive error class precisely. The field proofs now spell out set size,
+inner-support bounds and independence, real/complex Hahn identification,
+strong derivative closure, and the coefficient test excluding additional
+solutions. The logarithm proof includes the full positive-element
+factorization. The third field is now explicitly shown not to be closed
+under logarithms: it contains `ℓ_λ` but omits `ℓ_{λ+1}`. The first two
+fields' logarithm closure and the solution dimensions remain unchanged.
+
+The Hahn real-closedness input was checked in BM arXiv v3, Section 2.3,
+with a divisible ordered group. The PDF rebuilt in three passes at 197
+pages, against a clean 195-page baseline, with no warnings or box issues;
+the changed pages were inspected. Member 13's copied verifier passed all
+70 finite checks with Python 3.13.14 and SymPy 1.14.0, matching its delivered
+output apart from Python version. Those checks do not verify the new
+transfinite support or logarithm-closure arguments. All 51 historical
+artifacts remain byte-identical. The full Lean build passed 3,893 jobs
+and audited 6,070 declarations using only `propext`, `Classical.choice`
+and `Quot.sound`. The independent index verifies all 2,114 statements
+across 44 reports, and all 879 local Markdown destinations in 93 files
+resolve. Sections 41–42, remaining imports and source reconciliation are
+still pending.
+
+The final sync merged `84e51b5`'s finite trigonometric sign, monotonicity
+and inequality proofs. The combined Lean build passed 3,903 jobs and
+audited 6,092 declarations using only `propext`, `Classical.choice` and
+`Quot.sound`. The differential-equations source and PDF were unchanged
+by the merge. The independent index still checks all 2,114 statements,
+and all 882 local Markdown destinations in 93 files resolve. The incoming
+analytic results retain their stated scope and do not supply Lean proofs
+for the critical-potential field constructions.
 
 ## Re-running the source verifiers
 
