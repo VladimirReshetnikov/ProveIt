@@ -9,7 +9,9 @@ The algebra in `trigonometry:sec:coupled` is constructed as the tensor
 product of the two native monic quadratic quotients. Its universal property
 represents both equations in every commutative target algebra, retaining
 nilpotents. Its basis and dimension are independent of the parameters.
-This does not yet identify local factors or their angular multiplicities.
+The local factors are identified in `CoupledQuadraticSplit.lean` and
+`CoupledQuadraticLocal.lean`; analytic angular multiplicity transport is
+a separate obligation.
 -/
 
 namespace Surreal.FinitePolynomial

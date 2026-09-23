@@ -44,8 +44,11 @@ quadratic root sets, the exact arcsine branches, and the complete counts of
 distinct complex and real solutions. Its intersection algebra represents the
 two diagonal equations in every commutative target algebra and has basis
 `1, X, Y, XY` at every parameter. Actual fine partial derivatives verify the
-Jacobian and its discriminant locus. Decomposition into local algebras and
-transport of their multiplicities to the angular germs remain pending.
+Jacobian and its discriminant locus. The algebra now decomposes into four
+field factors, two local dual-number factors, or one local rank-four factor
+on the respective collision strata. The local dimensions sum to four.
+Transport of these dimensions to angular intersection multiplicities remains
+pending.
 
 The first modules establish size obstructions and reusable finite algebra.
 Complexification uses mathlib's `QuadraticAlgebra`, with its cross-term
