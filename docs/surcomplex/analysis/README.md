@@ -82,7 +82,7 @@ functions to be polynomials, or rational functions in the meromorphic version.
 Supports may vary with the scale; no one common support across scales is assumed.
 
 [gamma-and-zeta-functions](../gamma-and-zeta-functions/) applies the
-finite-lift zero theorem (`a:c:p4:liftzeros`) to Gamma, zeta and xi
+finite-lift zero theorem (`c:p4:liftzeros`) to Gamma, zeta and xi
 (`gz:thm:divisor`), and uses the twisted exponentials of `e:thm-twisted` for its
 left zeta prescription and movable zeros (`gz:prop:moving`).
 

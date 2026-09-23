@@ -501,6 +501,13 @@ endpoint of `(0, pi)`. The triangle laws then give exact valuation formulas
 for side ratios, area, semiperimeter factors, and both circle radii.
 For two infinitesimal interior angles, their ratio is algebraically
 equivalent to the opposite side ratio, even when those ratios are infinite.
+The triangle-inequality defect has its exact half-angle formula and a
+quadratic equivalent with effective length scale `ab/(a+b)`, without
+requiring comparable vector lengths. For a largest triangle side, the
+opposite angle is infinitesimally close to pi exactly when the side gap
+is infinitesimal relative to `bc/(b+c)`. Its full inverse-sine strong
+series gives square-root equivalents and exact valuation formulas for
+the angle supplement, area, and circumradius at arbitrary surreal scales.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual
