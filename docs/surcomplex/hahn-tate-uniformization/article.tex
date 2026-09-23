@@ -3489,8 +3489,14 @@ terms and changes complex coefficients; it cannot worsen the support. For a
 multiplicative perturbation $z_j\mapsto z_j(1+\eta_j)$ with $\eta_j\in\m_v$,
 enlarge $\Sigma$ by their finitely many supports. The same monoid argument
 justifies the binomial expansions and every interchange of the lattice
-indices with Taylor indices; every resulting coefficient at a fixed
-exponent receives only finitely many nonzero contributions.
+indices with Taylor indices. Explicitly, fix an output exponent $\gamma$.
+There are finitely many decompositions $\gamma=a+\mu$ with $a\in A$ and
+$\mu$ in the enlarged positive monoid, and finitely many lattice indices
+$n$ for each $a$. For each $\mu$, Neumann's lemma permits only finitely
+many multisets of positive input exponents. Each occurrence has only
+finitely many labels, one for each of the finitely many unit or Taylor
+inputs. Thus the fully expanded family, with lattice and Taylor indices
+kept separate, is strongly summable before regrouping.
 \end{proof}
 
 This is an exact domain for the displayed Hahn family. It does not prohibit
@@ -3541,8 +3547,8 @@ finite-representation support lemma gives summability.
 \end{proof}
 
 For the relation with \cref{tate:thm:theta} see
-\cref{tate:theta:sec:setting}. A one-dimensional theta family summable at
-all valuations in $\R\alpha$ need not be summable at a new valuation
+\cref{tate:theta:sec:setting}. A one-dimensional theta family summable on
+a rank-one value group need not remain summable at a new valuation
 $\beta$ dominating $N\alpha$ for every integer $N$: with the adverse sign,
 successive exponents have difference $(n+\tfrac12)\alpha-|\beta|<0$ for
 all $n\ge0$. The failure is structural, not a matter of an insufficient
@@ -3556,8 +3562,11 @@ Reindexing a summable family gives
  \vartheta_\Pi(t^{\Pi m}z)=t^{-\pi(m)}z^{-m}\vartheta_\Pi(z),
  \qquad \vartheta_\Pi(z^{-1})=\vartheta_\Pi(z).\label{tate:theta:eq:quasiperiod}
 \end{equation}
-These are the familiar theta symmetries, not novelty claims; here they are
-licensed by the exact support criterion. The domain is stable under
+For the first identity, use
+$\pi(n+m)=\pi(n)+n^{\mathsf T}\Pi m+\pi(m)$ and replace $n$ by $n+m$;
+for the second, replace $n$ by $-n$ and use $\pi(-n)=\pi(n)$.
+These are the familiar theta symmetries, licensed here by the exact
+support criterion. The domain is stable under
 $\beta\mapsto\beta+\Pi m$ and $\beta\mapsto-\beta$; the first statement
 follows also from global radical annihilation, the second from
 $n\mapsto-n$. For $g=1$ and $\Pi=(\alpha)$ the first identity is the
@@ -3664,10 +3673,21 @@ $c_{s'}\cB(s',s')=0$ in $\R^r$, so $c_{s'}=0$. There are at most $g$ of
 them, and the path of their partial sums has at most $g$ edges.
 \end{proof}
 
+Both bounds are sharp. With $L=\Z^g$,
+$\cB(x,y)=2\sum_jx_jy_j$, $b(n)=-\sum_jn_j$ and
+$S=\{\pm e_1,\ldots,\pm e_g\}$, one has
+\[
+ \cE(n)=\sum_{j=1}^g n_j(n_j-1),\qquad \cM=\{0,1\}^g.
+\]
+Each integer term $n_j(n_j-1)$ is nonnegative and vanishes exactly at
+$0,1$. The set $S$ positively generates $L$ by selecting the signed
+coordinate directions of a vector, which are pairwise orthogonal.
+The minimum graph is the $g$-cube: it has $2^g$ vertices and diameter
+$g$, attained between opposite corners.
+
 The parity estimate is the familiar midpoint mechanism of lattice Delaunay
-geometry, credited as such. The addition here is its combination with one
-constructive positively generating set, giving an explicit short zero-cost
-move certificate.
+geometry, credited as such. Its combination with one constructive
+positively generating set gives the short zero-cost move certificate.
 
 \begin{corollary}[Complete finite enumeration after one minimum]\label{tate:theta:cor:BFS}
 Starting from one certified minimum, breadth-first search through the
@@ -3676,8 +3696,14 @@ and requires at most $|S|2^g$ energy-difference tests.
 \end{corollary}
 
 \begin{proof}
-All discovered vertices are minimizers, and connectivity in
-\cref{tate:theta:thm:minimizers} prevents any minimizer from being missed.
+At each newly visited vertex $m$, test $m+s$ for every $s\in S$ and
+enqueue it only when $I_m(s)=0$ and it has not been visited. All
+discovered vertices are minimizers. The proof of
+\cref{tate:theta:thm:minimizers} reaches any target from $m$ using
+forward steps belonging to $S$, so symmetry of $S$ is unnecessary.
+Each of at most $2^g$ vertices is processed once, using $|S|$ tests.
+If $S$ is first replaced by $S\cup(-S)$, the bound uses the size of
+that enlarged set.
 \end{proof}
 
 \subsection{The finite initial theta polynomial}
@@ -3698,11 +3724,13 @@ Consequently $P_\beta(c)\ne0$ implies $v(\vartheta_\Pi(z))=\mu_\beta$. When
 $P_\beta(c)=0$, the valuation is strictly larger or the sum is zero; no
 equality of valuations is asserted in that case. This is the higher-rank
 version of the initial-form mechanism underlying tropical theta geometry
-\cite{FRSS}. The finite certificate identifies all its active lattice terms
+\cite[\S1.1 and Theorem~4.10]{FRSS}. That source uses a complete
+real-valued non-Archimedean field; the arbitrary-rank coefficient
+extraction here follows from strong Hahn summation. The finite certificate identifies all its active lattice terms
 without an unproved truncation radius. The quasi-periodicity identity gives
 $\mu_{\beta+\Pi m}=\mu_\beta-\pi(m)-\beta\cdot m$ and
-$\cM_{\beta+\Pi m}=\cM_\beta-m$, so the initial polynomial transforms by the
-corresponding Laurent monomial factor.
+$\cM_{\beta+\Pi m}=\cM_\beta-m$, so
+$P_{\beta+\Pi m}(Z)=Z^{-m}P_\beta(Z)$.
 
 \section{Lifting smooth initial zeros}\label{tate:theta:sec:zeros}
 
@@ -3739,18 +3767,26 @@ equation $R_0(U,W)+\sum_\rho Y_\rho R_\rho(U,W)=0$ has a unique formal
 solution $W=C(U,Y)$ with zero constant term: at each total degree the
 coefficient of the new unknown term is $a_0$, while all other contributions
 depend on lower-degree terms, and for each multiindex these are finite
-coefficient calculations. This is the usual coefficient proof of the formal
-implicit theorem, and it works unchanged for the infinite variable set.
+coefficient calculations. Indeed, for a fixed multiindex $\nu$, the
+summand $Y_\rho R_\rho(U,W)$ can contribute only if $Y_\rho$ occurs
+in $\nu$; there are finitely many such $\rho$. After substituting a
+zero-constant $W$, its relevant powers are bounded by the total degree
+of $\nu$, and each product coefficient has finitely many decompositions.
+This proves the needed local finiteness of the recursion despite the
+infinite variable set.
 
 Now substitute $Y_\rho=t^\rho$ and $U_j=u_j$. The union of all exponent
 supports used is the positive well-ordered set in
 \eqref{tate:theta:eq:implicitsupport}. Neumann's lemma makes its additive
 monoid well ordered and gives only finitely many representations of any
-exponent; since there are only finitely many $U_j$, distributing their
-support terms adds only finitely many labels. Therefore the formal
-substitution is strongly summable, including all sums used in the
-equation, and its value $w$ has positive valuation and satisfies the
-support certificate.
+exponent. An exponent occurring as a generator has at most one label
+$Y_\rho$, and at most $d$ labels from the supports of the $U_j$.
+Thus each finite multiset of generator exponents has only finitely many
+labelled realizations. This proves strong summability of the formal
+substitution, including all sums used in the equation. Its zero-constant
+value $w$ has positive valuation and satisfies the support certificate.
+The same argument shows that the displayed equation is strongly
+summable for every candidate $w\in\m_v$, before imposing that it vanish.
 
 For uniqueness even among infinitesimals not known to have this
 certificate, let $w,w'\in\m_v$ both satisfy \eqref{tate:theta:eq:implicit}.
@@ -3801,6 +3837,23 @@ unique lifting behaviour: at singular residue zeros, branching,
 ramification or additional obstructions require a separate analysis. The
 theorem does not construct an abelian variety or prove a higher-rank
 version of analytic uniformization.
+
+Here is a singular initial zero where uniqueness fails. Take $g=2$,
+$\alpha>0$, $\Pi=\operatorname{diag}(2\alpha,2\alpha)$ and
+$\beta=(-\alpha,-\alpha)$. The minimum set is $\{0,1\}^2$, so
+$P_\beta(Z)=(1+Z_1)(1+Z_2)$. At $c=(-1,-1)$ this polynomial and both
+logarithmic partial derivatives vanish. Strong Hahn multiplication gives
+\[
+ \vartheta_\Pi(z_1,z_2)=T(z_1)T(z_2),\qquad
+ T(z)=\sum_{n\in\Z}t^{\alpha n^2}z^n
+\]
+on the domain. At $z_1=-t^{-\alpha}$, the involution $n\mapsto1-n$
+pairs opposite terms of
+$T(z_1)=\sum_n(-1)^nt^{\alpha n(n-1)}$, with no fixed integer.
+Hence $T(z_1)=0$. Keeping this first argument fixed, every
+$z_2=-t^{-\alpha}(1+\varepsilon_2)$ with $\varepsilon_2\in\m_v$
+is a zero of $\vartheta_\Pi$. The smoothness hypothesis is therefore
+essential to the asserted uniqueness.
 
 \section{Surreal realization and explicit examples}\label{tate:theta:sec:examples}
 
@@ -3913,14 +3966,26 @@ residue-unit parameter as $\xi\in-2(1+\m_v)$. The theta equation is
  \sum_{m,n\in\Z}\tau_1^{m(m-1)}\tau_2^{n^2+(m-1)n-m^2+m}\xi^n=0,
  \label{tate:theta:eq:coupledtheta}
 \end{equation}
-and \cref{tate:theta:thm:zerolift} gives a unique such $\xi$. The
-first-coordinate-zero row of this equation is
+and \cref{tate:theta:thm:zerolift} gives a unique such $\xi$.
+Let $\xi_0$ be its reduction for the coarsening that retains only the
+first-coordinate-zero terms. The support certificate gives
+$\xi_0\in-2+\tau_2\C[[\tau_2]]$: every zero-first-coordinate generator
+has a positive integer second coordinate. Taking this reduction in the
+theta equation gives
 \begin{equation}
- \sum_{n\in\Z}\tau_2^{n(n-1)}\xi^n+\sum_{n\in\Z}\tau_2^{n^2}\xi^n=0;
+ \sum_{n\in\Z}\tau_2^{n(n-1)}\xi_0^n
+   +\sum_{n\in\Z}\tau_2^{n^2}\xi_0^n=0.
  \label{tate:theta:eq:zerorow}
 \end{equation}
-terms from other $m$ have first coordinate at least $2$ and cannot affect
-any coefficient in that row. Exact coefficient recursion gives
+Indeed, reduction commutes with products and inverses of units, and
+terms from other $m$ have first coordinate at least $2$. This equation
+is for $\xi_0$, not for the full $\xi$. Higher rows are essential:
+substituting $\xi_0$ into the full left-hand side of
+\eqref{tate:theta:eq:coupledtheta} leaves leading term
+$-2\tau_1^2\tau_2^{-3}$, from $(m,n)=(-1,1)$; the other terms with
+first coordinate $2$ have second coordinate at least $-2$.
+Exact recursion for $\xi_0$, and the fact that $\xi-\xi_0$ has positive
+first-coordinate valuation, give
 \begin{equation}
  \xi=-2+\tfrac52\tau_2-\tfrac{43}{8}\tau_2^2+\tfrac{247}{16}\tau_2^3
      -\tfrac{5955}{128}\tau_2^4+\tfrac{36493}{256}\tau_2^5+\rho_\xi,
@@ -3988,9 +4053,9 @@ a role in a proof or a counterexample above.
 Three independent programs accompany the report, one from each source.
 None uses floating point, and none proves an infinite identity, a
 summability statement, surjectivity, or novelty. All three were rerun on
-copies when the report was assembled, on Python~3.14.4; each reproduced its
-recorded output (the node-chart suite up to its informational runtime
-field). Each program writes its own evidence file, and two of them write to
+copies when the report was assembled, on Python~3.14.4. The numerical
+and symbolic results agreed with the delivered records; the source-01
+Python-version field and source-03 informational runtime differed. Each program writes its own evidence file, and two of them write to
 paths that collide inside this directory, so they must be run on a copy
 (\cref{tate:app:reproduction}).
 
@@ -3998,12 +4063,12 @@ paths that collide inside this directory, so they must be run on a copy
 This program uses only
 exact rational symbolic arithmetic. Its recorded output is in
 \file{data/verification.json} and \file{data/verification.log}.
-The source package recorded a run on Python~3.13.5 and SymPy~1.14.0; the
-run recorded in the included data files was made when this report was
-placed in the collection, on Python~3.14.4 and SymPy~1.14.0, and it
-reproduced every recorded value except the Python version string itself.
-The JSON records the actual
-runtime version and is authoritative if the script is rerun elsewhere.
+The included JSON and console record are the delivered run on
+Python~3.13.5 and SymPy~1.14.0. The assembly rerun on a copy used
+Python~3.14.4 and SymPy~1.14.0 and reproduced the values, with a
+different Python-version string. The delivered files are preserved here;
+subsequent review runs and their environments are recorded in
+\file{README.md}.
 The checks do not require a numerical value of $q$ or a realization of
 an arbitrary ordered group.
 
@@ -4460,8 +4525,9 @@ repository's unrefereed manuscripts as mathematical axioms. The negative
 result of a keyword search is treated as a navigation aid, not a formal
 proof that a topic occurs nowhere.
 
-The delivered files do not alter the repository or claim to be part of
-its checked Lean build.
+The report does not claim that its theorems are part of the checked Lean
+build. Their implementation status is recorded in the repository's
+formalization ledger; the supplied programs check finite examples.
 
 \subsection{Literature-search scope}
 

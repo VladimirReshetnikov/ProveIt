@@ -200,6 +200,11 @@ It is the actual support length at positive monomial arguments; it is
 not a surreal birthday. Well-ordering of that exponent set and finiteness
 of every exponent fibre are separate requirements for strong summability.
 
+In Hahn–Tate's coupled theta example, `ξ` is the full Hahn solution and
+`ξ₀` is its reduction retaining only first-coordinate-zero terms. The
+zero-row equation is an equation for `ξ₀`. Its coefficients determine the
+displayed expansion of `ξ` below higher first-coordinate rows.
+
 ## Finite elements, standard part, and reduction
 
 Use `O_F = {v ≥ 0}` and `m_F = {v > 0}` for the finite valuation ring and
@@ -428,6 +433,53 @@ distinction to explain nonconstant zero-derivative functions. The
 [physics report](physics/surreal-scalars-and-spacetime/article.tex)
 (`phys:tab:derivatives`) states explicitly which operation is used for its
 fields on ordinary spacetime.
+
+In the regular-singular part of the differential-equations report,
+`t = ω⁻¹` and `τ = log t = −log ω` denote actual surreal numbers.
+The Euler derivation `∂_τ = −ω∂` satisfies `∂_τ(t^γ) = γt^γ`
+for ordinary real `γ`. It preserves every `K_Γ` with `Γ ⊆ ℝ`,
+whereas `∂ = −t∂_τ` preserves that field exactly when `Γ = {0}`
+or `1 ∈ Γ`. Multiplying an Euler gauge identity by `−t` always gives
+an identity in `No[i]`; interpreting both systems over the same smaller
+field also requires that their coefficients and derivations stay there.
+
+The regular-singular residual matrix `A₀` is the exponent-zero coefficient
+of the Euler coefficient `A`; the corresponding `∂`-coefficient is `−tA`
+and its exponent-one coefficient is `−A₀`. A Levelt resonance is a
+positive real eigenvalue difference of `A₀`. Its block projection retains
+the entire space of maps between the corresponding generalized eigenspaces,
+not just the kernel of the homological operator. These resonances differ
+from integer relations among differential phases and from the scalar
+resonant coefficient at `t¹` discussed earlier in that report.
+
+For a regular-singular system, the gauge `F` gives the constant Euler
+coefficient `iD + N`, where `D` records residual frequencies and `N`
+is nilpotent and commutes with `D`. The gauge `G_τ = F exp(τN)`
+removes `N` after adjoining `τ`. Thus `K_ℝ`-classification retains
+the nilpotent Jordan partitions at each frequency, while classification
+over `No[i]` retains only frequency multiplicities. Constant intertwiners
+refer to the reduced frame; morphisms of the original systems are
+`F C (F′)⁻¹`. The tensor differential system of coefficients `A,A′`
+has coefficient `A ⊗ I + I ⊗ A′`, rather than the matrix product
+`A ⊗ A′` alone.
+
+For smaller Euler-stable workspaces, `K_Γ(t^{a₁}, …, t^{a_k})`
+means the field of rational expressions in the added monomials over
+`K_Γ`; it does not denote the full Hahn field on the enlarged exponent
+group. Two constant rank-one Euler coefficients `λ, μ ∈ ℂ` are
+gauge equivalent over `K_Γ` exactly when `λ − μ ∈ Γ`. In particular,
+their imaginary parts agree and their real parts agree modulo `Γ`.
+
+The autonomous part of the differential-equations report uses `ð` for
+an arbitrary normalized derivation with `ðω = 1`, not for the rescaled
+Euler derivation. A local parameter `σ` on an ordinary complex curve
+evaluates to an infinitesimal at any point reducing to its center. Formal
+maps acting within these infinitesimal tuples have zero constant term;
+their invertible ordinary linear part gives an inverse on the same
+monad. For a simple zero, `ξ(σ) = λσ + O(σ²)`, the coefficient `λ`
+is unchanged by a change of local parameter. The normalized linearizer
+has `h_p(σ) = σ + O(σ²)`; its formal derivative is distinct from `ð`,
+with the evaluation chain rule connecting them.
 
 Distinguish the ordered real surreal exponential, the strongly summed
 infinitesimal Hahn exponential, finite-angle `cis`, and a chosen global

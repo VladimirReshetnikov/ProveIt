@@ -4496,8 +4496,9 @@ consolidated list is \cref{diff:sub:nc:matrixscope}. (Added with member~12: for
 one class of coefficients the filtration question and the algorithm question are
 answered in part. \Cref{diff:rs:part} splits every power-Hahn regular-singular
 system over $\KR[\log t]$ into rank-one factors whose obstructions are read off
-from the residual matrix, and for finite rational supports computes its Hahn
-invariants by a finite procedure (\cref{diff:rs:rem:effective}). Everything in
+from the residual matrix, and for finite rational supports with algebraic
+coefficients computes its Hahn invariants by a finite procedure
+(\cref{diff:rs:rem:effective}). Everything in
 this warning stands outside that class.)
 \end{warning}
 
@@ -5911,7 +5912,8 @@ finite systems over $\SC$; computable formulas for broader non-Hermitian
 classes remain open (\cref{diff:sub:nc:open}).
 \item It supplies, for this class, an explicit splitting whose rank-one factors
 carry obstructions read off from $A_{0}$ alone, together with a finite exact
-procedure for finite rational supports (\cref{diff:rs:sub:procedure}). That is
+procedure for finite rational supports with algebraic coefficients
+(\cref{diff:rs:sub:procedure}). That is
 a partial answer to item~N57 and to the ``computable filtration'' question of
 \cref{diff:warn:matlimits}; it is \emph{not} an answer to item~N41, which
 concerns irregular singularities of \emph{coordinate} equations.
@@ -6019,9 +6021,9 @@ two frames without the translation $\derT=-\omega\der$.
 \label{diff:rs:sub:class}
 
 For $\Gamma\subseteq\R$ we keep the least-exponent valuation $v$ of
-\cref{diff:sec:laurent} and the two subrings $K_{\Gamma}^{\geq0}$ and
-$K_{\Gamma}^{>0}$ of \cref{diff:rs:lem:euler}; in the embedding into $\SC$,
-their elements are finite, respectively infinitesimal.
+\cref{diff:sec:laurent}, the valuation ring $K_{\Gamma}^{\geq0}$ and its
+maximal ideal $K_{\Gamma}^{>0}$ from \cref{diff:rs:lem:euler}. In the
+embedding into $\SC$, their elements are finite, respectively infinitesimal.
 
 \begin{definition}[Power-Hahn regular-singular system]
 \label{diff:rs:def:class}
@@ -6087,16 +6089,21 @@ or $\Phi$. The operator $y\mapsto\derT y-Ay$ is written out; the source's name
 $\mathcal D_{A}$ for it is the first-integral derivation of
 \cref{diff:sub:matresonance} here.
 \end{itemize}
-For a differential subfield $E\subseteq\SC$ and $G\in\GL_{n}(E)$, the
-substitution $y=Gz$ carries \cref{diff:rs:eq:system} to
+For a $\derT$-stable subfield $\C\subseteq E\subseteq\SC$ with
+$A\in\Mat_{n}(E)$ and $G\in\GL_{n}(E)$, the substitution $y=Gz$ carries \cref{diff:rs:eq:system} to
 \begin{equation}\label{diff:rs:eq:gauge}
  \derT z=A^{G}z,\qquad A^{G}=G^{-1}AG-G^{-1}\derT G .
 \end{equation}
-Multiplying by $-t$ shows that this is exactly \cref{diff:eq:matgauge} for the
-$\der$-coefficient $-tA$: $E$-gauge equivalence of $\derT$-systems is
-$E$-gauge equivalence of the corresponding $\der$-systems. A morphism from a
-system $B'$ to a system $A$, of possibly different sizes, is a rectangular $X$
-with $\derT X=AX-XB'$; all morphism spaces are $\C$-vector spaces.
+Multiplying by $-t$ gives \cref{diff:eq:matgauge} for the
+$\der$-coefficient $-tA$ as an identity in $\SC$. If $t\in E$, then $E$
+is stable under both derivations, and $E$-gauge equivalence of the two
+systems is the same in either frame. Without this hypothesis the
+$\derT$-system can be defined over $E$ while its $\der$-coefficient
+lies outside $E$: for $E=K_{\Z\sqrt2}$, the equation $\derT y=y$
+has coefficient $1\in E$ but its translated coefficient $-t$ is not in $E$.
+A morphism from a system $B'$ to a system $A$, of possibly different sizes,
+is a rectangular $X$ over the stated field with $\derT X=AX-XB'$.
+Because the field contains $\C$, these morphism spaces are $\C$-vector spaces.
 \end{convention}
 
 \begin{warning}[Residual frequencies are not phases]
@@ -6170,15 +6177,27 @@ The first two assertions are \cref{diff:lem:neumann}, proved in
 $s_{j}\geq\varepsilon$.
 \end{proof}
 
-Member~12 proves the first two assertions by a second, Higman-free route that
-is available only for real exponents: a sequence in $S^{k}$ has a
-componentwise nondecreasing subsequence, so infinitely many distinct words of
-one length $k$ with one sum would give a nondecreasing sequence of constant
-sum, hence a constant one; the length bound leaves finitely many $k$. The same
-extraction applied to bounded-length word representations of a strictly
-decreasing sequence in $S^{*}$ gives the well-ordering. The length bound uses
-the Archimedean property of $\R$ and has no analogue at higher rank
-(\cref{diff:warn:summability}).
+Here is member~12's second, Higman-free proof for real exponents. If
+$S=\varnothing$, only the empty word occurs and $S^{*}=\{0\}$. Otherwise
+put $\varepsilon=\min S>0$. Every sequence in $S$ has an infinite
+nondecreasing subsequence, as proved in \cref{diff:sub:app:twofacts}.
+Applying this extraction successively to the $k$ coordinates gives a
+componentwise nondecreasing subsequence of any sequence in $S^{k}$.
+If infinitely many distinct words of length $k$ had one sum, this
+subsequence would be constant: increasing any coordinate strictly would
+increase the sum. This contradicts distinctness. The length bound leaves
+only finitely many possible $k$, proving finiteness at each weight.
+
+For well-ordering, suppose $r_{1}>r_{2}>\cdots$ were word sums. They are
+nonnegative, and all chosen representing words have length at most
+$\lfloor r_{1}/\varepsilon\rfloor$. Some length occurs infinitely often;
+coordinatewise extraction at that length makes the corresponding sums
+nondecreasing, a contradiction. The argument uses the Archimedean
+property of $\R$. At higher rank, $k\varepsilon\leq r$ need not bound
+$k$: in $\Z\oplus_{\mathrm{lex}}\Z$, take $\varepsilon=(0,1)$ and
+$r=(1,0)$. The general finite-word lemma still gives finitely many
+representations of each weight; this numerical length estimate does not
+replace it (\cref{diff:warn:summability}).
 
 \begin{corollary}[Products, geometric inverses, and well-founded recursion]
 \label{diff:rs:cor:support}
@@ -6216,13 +6235,22 @@ expression is defined by the well-founded recursion of
 \cref{diff:rs:cor:support}.
 \end{lemma}
 \begin{proof}
-The union of the words with sums in the finite set $R$ is finite by
-\cref{diff:rs:lem:words}. Expanding a recursively defined coefficient into
-input matrices labels its terms by ordered words whose sums equal that
-coefficient's weight. The expansion terminates: along any branch the number of
-input letters is at most the total weight divided by $\min S$, and each step
-has only finitely many predecessors. Fixed linear operators change neither the
-weight nor the letters.
+If $S=\varnothing$, there are no positive-weight inputs and
+$S_{\crit}(R)=\varnothing$. Otherwise the union of the words with sums
+in the finite set $R$ is finite by \cref{diff:rs:lem:words}, so their
+letters form a finite set.
+
+To expand a coefficient of weight $r$, replace each recursively defined
+factor by its defining expression. Every product splits its weight into
+two positive members of $S^{*}$, each at least $\varepsilon=\min S$.
+Thus following either factor decreases the remaining weight by at least
+$\varepsilon$. A dependency branch has at most
+$\lfloor r/\varepsilon\rfloor$ such steps, and at each step there are
+only finitely many predecessor pairs. The entire dependency tree is
+therefore finite. Addition and fixed linear operators introduce no new
+input letters or weights. At its leaves, every term is labelled by an
+ordered word of input letters summing to $r$, so if $r\in R$ those
+letters all belong to $S_{\crit}(R)$.
 \end{proof}
 
 \subsection{The homological operator and the normalized resonant form}
@@ -6255,6 +6283,25 @@ $\Hom(V_{\mu},V_{\lambda})$ with $\gamma=\lambda-\mu\in\R_{>0}$. The whole
 block is retained, not only the kernel of $\mathcal H_{\gamma}$ on it; on the
 other blocks $\mathcal H_{\gamma}$ is invertible by \cref{diff:rs:eq:hinverse}.
 
+The distinction matters for a nonsemisimple residual matrix. Take
+\[
+ A_{0}^{\circ}=\begin{pmatrix}1&1&0\\0&1&0\\0&0&0\end{pmatrix},
+ \qquad A=A_{0}^{\circ}+tE_{23},
+\]
+where $E_{23}$ has its only nonzero entry, equal to $1$, in row $2$,
+column $3$. On the resonant block
+$\Hom(V_{0},V_{1})\cong\C^{2}$ at weight $1$, write a column as
+$u=(u_{1},u_{2})^{\mathsf T}$. Then
+$\mathcal H_{1}u=(-u_{2},0)^{\mathsf T}$ and
+$\Ker\mathcal H_{1}=\C(1,0)^{\mathsf T}$.
+If the retained coefficient $b$ were required to lie only in this kernel,
+the equation
+$\mathcal H_{1}u=(0,1)^{\mathsf T}-b$ would be impossible in its
+second coordinate. Retaining the whole block and setting $u=0$ gives
+$b=(0,1)^{\mathsf T}$. This normalization does not claim the smallest
+possible resonant representative; it specifies a unique one by fixing the
+whole resonant gauge block to zero.
+
 \begin{theorem}[Normalized resonant form]
 \label{diff:rs:thm:normal}
 There is a unique pair
@@ -6284,8 +6331,9 @@ coefficient of $t^{\gamma}$ in \cref{diff:rs:eq:normalidentity} is
  R_{\gamma}=A_{\gamma}+\sum_{\substack{\alpha+\beta=\gamma\\ \alpha,\beta>0}}
  \bigl(A_{\alpha}G_{\beta}-G_{\alpha}A^{\natural}_{\beta}\bigr),
 \end{equation}
-where the sum is finite and every coefficient on the right has smaller weight
-(\cref{diff:rs:cor:support}). On resonant blocks impose $G_{\gamma}=0$, which
+where $\alpha,\beta$ range over $S^{*}_{>0}$. The sum is finite,
+and every recursively constructed coefficient on the right has smaller
+weight (\cref{diff:rs:cor:support}); $A_{\gamma}$ is given input. On resonant blocks impose $G_{\gamma}=0$, which
 forces the corresponding part of $A^{\natural}_{\gamma}$ to equal $R_{\gamma}$;
 on the other blocks impose $A^{\natural}_{\gamma}=0$ and invert
 $\mathcal H_{\gamma}$:
@@ -6303,7 +6351,16 @@ the identity coefficient by coefficient and uniqueness under the stated
 normalization. Since $G_{\natural}-I$ has strictly positive support in $S^{*}$,
 the geometric series for its inverse is strongly summable and stays in $S^{*}$.
 Finally $\pr_{\gamma}=0$ unless $\gamma\in\Lev(A_{0})$, a finite set.
+If $S=\varnothing$, the construction is simply
+$G_{\natural}=I$ and $A^{\natural}=A_{0}^{\circ}$.
 \end{proof}
+
+Already at this stage, if $S\subseteq\Gamma$ for an additive subgroup
+$\Gamma\subseteq\R$, then $S^{*}\subseteq\Gamma$ and the gauge, its
+inverse and the normalized coefficient all lie over $K_{\Gamma}$.
+There is no need for $1\in\Gamma$ in the Euler frame. The later
+real-monomial shear can require additional exponents, as recorded in
+\cref{diff:rs:thm:workspace,diff:rs:rem:notbackwards}.
 
 \begin{remark}[Where the difficulty lies]
 \label{diff:rs:rem:difficulty}
@@ -6337,7 +6394,9 @@ $\lfloor r/\varepsilon\rfloor$. In particular, replacing $A$ by
 does not change $A^{\natural}$.
 \end{theorem}
 \begin{proof}
-Give $A_{s}$ the input weight $s$.
+When $S=\varnothing$, both systems in the assertion are
+$A_{0}^{\circ}$ and there is no positive coefficient to compute.
+Otherwise put $\varepsilon=\min S$ and give $A_{s}$ the input weight $s$.
 \Cref{diff:rs:eq:recursion,diff:rs:eq:explicit} build $G_{\gamma}$ and
 $A^{\natural}_{\gamma}$ by addition, weight-preserving fixed linear operators
 and weight-adding products, so each positive-weight coefficient is a
@@ -6362,9 +6421,18 @@ $\Lev(A_{0})\cap S^{*}=\varnothing$ then $A^{\natural}=A_{0}^{\circ}$.
 \end{corollary}
 \begin{proof}
 If $G_{\natural}$ and $G_{\natural}^{\crit}$ normalize the two systems to the
-same $A^{\natural}$, then $G_{\natural}(G_{\natural}^{\crit})^{-1}$ is a gauge
-from $A^{\crit}$ to $A$. The general assertion has the same proof, and if no
-Levelt resonance lies in $S^{*}$ every projection in the recursion vanishes.
+same $A^{\natural}$, put $X=G_{\natural}(G_{\natural}^{\crit})^{-1}$.
+Differentiating the inverse gives
+\[
+ \derT X=AX-XA^{\crit},
+\]
+since the two terms containing $A^{\natural}$ cancel. Thus $y=Xz$
+carries the $A^{\crit}$-system to the $A$-system. These matrices are in
+the common residual Jordan basis fixed above; conjugation by $G_{0}$
+returns the statement to the original basis. The general assertion has
+the same proof. The gauge also lies in $K_{\Gamma}$ whenever the
+common support container lies in $\Gamma$. If no Levelt resonance lies
+in $S^{*}$, every projection used in the recursion vanishes.
 \end{proof}
 
 \begin{corollary}[A useful but weaker cutoff statement]
@@ -6425,9 +6493,11 @@ monomial by $t^{-a_{\lambda}+a_{\mu}}$ and makes it constant. Every remaining
 coefficient is therefore constant and connects only spaces with the same
 frequency, which proves $[D,N]=0$. Within one frequency space, order the
 distinct values $a_{\lambda}$ increasingly; every off-diagonal block of $N$
-maps a smaller value to a larger one, so $N$ is block triangular with nilpotent
-diagonal blocks, hence nilpotent of index at most $n$. The gauge identity is
-the product rule.
+maps a smaller value to a larger one. Thus $N$ is block triangular
+with nilpotent diagonal blocks. Its characteristic polynomial is the
+product of their characteristic polynomials, hence is $X^{n}$;
+Cayley--Hamilton gives $N^{n}=0$. The gauge identity follows from the
+product rule.
 \end{proof}
 
 For a fixed residual Jordan basis, $N$ is determined polynomially by the
@@ -6463,9 +6533,12 @@ description \cref{diff:eq:Icut} with $f=r^{-1}\log\omega$.
 (ii) This is the second proof of \cref{diff:cor:oscillator} with $\derT$ in
 place of $\der$ and (i) in place of \cref{diff:lem:smallnegative}: since
 $\derT$ commutes with conjugation, $\derT(z\bar z)=0$, so $z\bar z$ is a
-nonnegative real constant; if it is positive, the real and imaginary parts
-$u,v$ are finite and $\derT u=-bv$, $\derT v=bu$ make them infinitesimal,
-which is impossible. Equivalently $\der z=i(-bt)z$, whose accumulated phase
+nonnegative ordinary real constant. If $z\neq0$, this constant is
+positive, so the real and imaginary parts $u,v$ are finite. By (i),
+$\derT u=-bv$ and $\derT v=bu$ are infinitesimal. Since $b$ is a
+nonzero ordinary real, both $u$ and $v$ are infinitesimal, making
+$u^{2}+v^{2}$ infinitesimal, contrary to its positive constant value.
+For $b=0$, the assertion is the constant-field statement for $\derT$. Equivalently $\der z=i(-bt)z$, whose accumulated phase
 $b\tau$ is infinite for $b\neq0$; this is the case $p=1$ of
 \cref{diff:cor:power} scaled by $-b$, but the route above needs no primitive
 and no \ref{diff:BM:surj}.
@@ -6579,14 +6652,21 @@ Coefficient comparison gives
 \begin{equation}\label{diff:rs:eq:morphismcoeff}
  \bigl(\gamma-i(b-c)\bigr)X_{\gamma}=N_{b}X_{\gamma}-X_{\gamma}N'_{c}.
 \end{equation}
-The operator on the right is nilpotent, so unless $\gamma-i(b-c)=0$ a finite
-geometric inverse forces $X_{\gamma}=0$; since $\gamma$ and $b-c$ are real this
-happens only for $\gamma=0$ and $b=c$, and the surviving coefficient satisfies
-\cref{diff:rs:eq:intertwine}. Conversely every such constant matrix is a
-morphism. An invertible morphism is invertible on each frequency space, where
-\cref{diff:rs:eq:intertwine} makes the nilpotent matrices similar; similarity of
-nilpotent complex matrices is determined by Jordan block sizes. Transport
-through the matrices $F$.
+The operator $X\mapsto N_bX-XN'_c$ has
+$(m_b+m'_c-1)$-st power zero: its two summands commute, and every
+term in that power contains either $N_b^{m_b}$ or $(N'_c)^{m'_c}$.
+If the scalar $\gamma-i(b-c)$ is nonzero, a finite geometric inverse
+therefore forces $X_{\gamma}=0$. This scalar vanishes exactly when
+$\gamma=0$ and $b=c$, because $\gamma,b,c$ are real. The surviving
+coefficient satisfies \cref{diff:rs:eq:intertwine}, and conversely
+every such constant matrix is a morphism.
+
+An invertible morphism is invertible on each frequency space, where
+\cref{diff:rs:eq:intertwine} makes the nilpotent matrices similar;
+similarity of nilpotent complex matrices is determined by Jordan block
+sizes. For the original systems, transport a constant intertwiner $C$
+to $FC(F')^{-1}$. Thus constancy is a statement in the reduced frames;
+the original morphism need not have constant entries.
 \end{proof}
 
 \begin{corollary}[Exact morphism dimensions over $\KR$]
@@ -6601,8 +6681,14 @@ for $A'$, then
 \end{corollary}
 \begin{proof}
 A map between nilpotent Jordan blocks of sizes $p,q$ is a $\C[X]$-linear map
-$\C[X]/(X^{q})\to\C[X]/(X^{p})$, determined by an image annihilated by $X^{q}$,
-a space of dimension $\min(p,q)$. Add over block pairs.
+$\C[X]/(X^{q})\to\C[X]/(X^{p})$, determined by the image of $1$.
+That image must be annihilated by $X^{q}$, and the permitted subspace
+has basis
+\[
+ X^{\max(p-q,0)},\,X^{\max(p-q,0)+1},\,\ldots,\,X^{p-1}.
+\]
+There are $\min(p,q)$ basis elements. Add over block pairs with the
+same frequency; distinct frequencies contribute zero.
 \end{proof}
 
 \begin{theorem}[Classification over the whole surcomplex field]
@@ -6619,8 +6705,14 @@ ambient morphism already has entries in $\KR[\tau]$.
 With $G_{\tau},G'_{\tau}$ from \cref{diff:rs:thm:selection}, a morphism is
 $X=G_{\tau}Z(G'_{\tau})^{-1}$ with $\derT Z=iDZ-ZiD'$, whose scalar entries solve
 $\derT z=i(b-c)z$. By \cref{diff:rs:lem:eulermode}(ii) unequal frequencies give
-zero and equal ones give arbitrary complex constants. Both $G_{\tau}$ and its
-inverse have entries in $\KR[\tau]$.
+zero and equal ones give arbitrary complex constants. Hence the
+morphism space is the direct sum of the matrix spaces
+$\Hom_{\C}(V'_b,V_b)$, of dimensions $m_bm'_b$.
+An invertible morphism exists exactly when $m_b=m'_b$ for every $b$,
+which is equality of the frequency multisets.
+Both $G_{\tau}=F\exp(\tau N)$ and its inverse
+$\exp(-\tau N)F^{-1}$ have entries in $\KR[\tau]$, so the same is
+true of every transported morphism.
 \end{proof}
 
 \begin{remark}[What the two classifications distinguish]
@@ -6633,7 +6725,27 @@ $\SC$ therefore erases exactly the nilpotent data in this class, and not the
 frequency multiplicities.
 \end{remark}
 
-The normal forms also make tensor constructions explicit. If $A$ and $A'$ have
+For a two-dimensional example, take the constant Euler coefficients
+\[
+ N=\begin{pmatrix}0&1\\0&0\end{pmatrix}
+ \quad\text{and}\quad 0_{2}.
+\]
+Both frequency multisets are $\{0,0\}$. Over $\KR$, their Jordan
+partitions are $(2)$ and $(1,1)$, so they are not gauge equivalent.
+Over $\SC$, the matrix $I+\tau N$, with inverse $I-\tau N$, satisfies
+$\derT(I+\tau N)=N(I+\tau N)$ and gives an equivalence.
+The endomorphisms of the first system over $\KR$ are precisely
+$\left(\begin{smallmatrix}a&b\\0&a\end{smallmatrix}\right)$ with
+$a,b\in\C$, a two-dimensional space. Over $\SC$ they are
+$(I+\tau N)C(I-\tau N)$ for arbitrary $C\in\Mat_{2}(\C)$, a
+four-dimensional space.
+
+The normal forms also make tensor constructions explicit.
+For systems of sizes $n,n'$, the tensor coefficient is
+$A\otimes I_{n'}+I_n\otimes A'$, as the product rule on $y\otimes y'$
+shows. The notation $A\otimes A'$ for a system in the next corollary
+means this differential tensor product, not the matrix $A\otimes A'$
+alone. If $A$ and $A'$ have
 frequency blocks $(b,N_{b})$ and $(c,N'_{c})$, their tensor product has blocks
 $(b+c,\ N_{b}\otimes I+I\otimes N'_{c})$, the nilpotent sum being nilpotent
 because its two terms commute; a dual has frequencies $-b$ and nilpotents
@@ -6650,6 +6762,14 @@ In particular two rank-one systems with no nonzero ambient solution, with
 frequencies $b\neq0$ and $-b$, have a tensor product with a fundamental
 solution.
 \end{corollary}
+\begin{proof}
+Use the tensor gauge $G_{\tau}\otimes G'_{\tau}$. It reduces the
+coefficient to $i(D\otimes I+I\otimes D')$, whose scalar frequencies
+are the pairwise sums $b+c$. The Euler-mode lemma leaves exactly the
+constant coordinates with $b+c=0$, of total dimension
+$\sum_bm_bm'_{-b}$. This proves the formula, including the stated
+rank-one case.
+\end{proof}
 
 This does not contradict the obstruction: a nonzero horizontal vector of a
 tensor product need not be a tensor product of horizontal vectors of its
@@ -6706,9 +6826,17 @@ recipe --- integrate the imaginary parts of the instantaneous eigenvalues of the
 $\der$-coefficient and keep purely infinite parts --- returns the correct
 spectrum. The characteristic polynomial of $A$ is monic with coefficients in
 the valuation ring $\KR^{\geq0}$ of the algebraically closed field $\KR$, and it
-reduces under $\st$ to the characteristic polynomial of $A_{0}$; so the
-eigenvalues $\mu_{j}$ of $A$ lie in $\KR^{\geq0}$ and, after renumbering,
-$\mu_{j}-\lambda_{j}\in\KR^{>0}$. The eigenvalues of $-tA$ are $-t\mu_{j}$, and
+reduces under $\st$ to the characteristic polynomial of $A_{0}$.
+To see that every root $\mu$ is finite, suppose $v(\mu)<0$.
+In a monic equation of degree $n$, the term $\mu^n$ then has
+strictly smaller valuation than every lower-degree term, whose
+coefficient has nonnegative valuation; a unique least term cannot
+cancel. Thus every eigenvalue $\mu_j$ belongs to $\KR^{\geq0}$.
+Reducing the factorization $\prod_j(X-\mu_j)$ coefficientwise gives
+$\prod_j(X-\st(\mu_j))$, the characteristic polynomial of $A_0$.
+Its root multiset is therefore the residual eigenvalue multiset,
+including multiplicities. After renumbering,
+$\mu_j-\lambda_j\in\KR^{>0}$. The eigenvalues of $-tA$ are $-t\mu_j$, and
 $\Imm(-t\mu_{j})=-t\,b_{j}-t\,\Imm(\mu_{j}-\lambda_{j})$, whose second term is a
 real Hahn series of valuation greater than $1$, hence in $\Acl$ by
 \cref{diff:cor:valphase}. So $\Obs(\Imm(-t\mu_{j}))=\Obs(-b_{j}t)=b_{j}\tau$.
@@ -6751,13 +6879,22 @@ over $\KR$.
 \begin{proof}
 $\derT f=1$ means $\der f=-t$, and $-t\notin\der\KR$ by
 \cref{diff:eq:hahnimage} (\cref{diff:ex:logmissing}); directly, the
-$t^{0}$-coefficient of $\derT f$ vanishes by \cref{diff:rs:eq:eulerhahn}. If
-$\tau$ were algebraic over $\KR$, the finite extension $L=\KR(\tau)$ would be
-separable, the derivation would extend uniquely to it, and differentiation
-would commute with the field trace (write the trace as a sum over the distinct
-$\KR$-embeddings into an algebraic closure and use uniqueness of the
-extension). Then $\derT\bigl(\operatorname{Tr}_{L/\KR}(\tau)/[L:\KR]\bigr)=1$ with
-the argument in $\KR$, a contradiction.
+$t^{0}$-coefficient of $\derT f$ vanishes by \cref{diff:rs:eq:eulerhahn}.
+
+If $\tau$ were algebraic, let
+$P(X)=X^d+a_{d-1}X^{d-1}+\cdots+a_0$ be its monic minimal
+polynomial over $\KR$, with $d\geq1$. Differentiating $P(\tau)=0$
+and using $\derT\tau=1$ gives
+\[
+ \bigl(P^{\derT}+P'\bigr)(\tau)=0,
+\]
+where $P^{\derT}$ differentiates the coefficients and $P'$ is the
+formal polynomial derivative. The polynomial in parentheses has
+degree at most $d-1$, so minimality forces it to vanish identically.
+Its $X^{d-1}$-coefficient is $\derT a_{d-1}+d$. Hence
+$\derT(-a_{d-1}/d)=1$ with $-a_{d-1}/d\in\KR$, a contradiction.
+This argument uses characteristic zero and the coefficient formula,
+without a trace or algebraic-closedness assertion.
 \end{proof}
 
 \begin{theorem}[Minimal logarithmic repair]
@@ -6783,8 +6920,10 @@ $\tau^{\nu-1}$ is $FN^{\nu-1}C_{0}/(\nu-1)!\neq0$, and transcendence
 (\cref{diff:rs:lem:tautrans}) makes polynomial degree unambiguous. (ii) The
 field generated contains $\exp(\tau N)=F^{-1}(\cdot)C_{0}^{-1}$; the finite
 logarithm identity $\sum_{j=1}^{n-1}(-1)^{j+1}(E-I)^{j}/j=\tau N$ for
-$E=\exp(\tau N)$ recovers $\tau$ from a nonzero entry of $N$; the reverse
-inclusion is the fundamental-matrix formula. (iii) As a differential subfield of
+$E=\exp(\tau N)$ recovers $\tau$ from a nonzero entry of $N$.
+The identity is the formal identity $\log(\exp X)=X$ modulo $X^n$,
+evaluated at the nilpotent matrix $\tau N$; every displayed sum is
+finite. The reverse inclusion is the fundamental-matrix formula. (iii) As a differential subfield of
 $\SC$, $\KR(\tau)$ has constants $\C$. A differential automorphism sends $\tau$
 to another primitive of $1$, that is to $\tau+c$ with $c\in\C$; conversely
 transcendence makes each translation a field automorphism, and
@@ -6829,7 +6968,13 @@ So $\derT-A$ has finite-dimensional kernel and cokernel of equal dimension, and
 a Hahn solution of $\derT y-Ay=f$ exists if and only if $g_{0,0}\in N_{0}V_{0}$.
 Every forcing $f\in\KR^{n}$ nevertheless has a solution in $\KR[\tau]^{n}$, of
 $\tau$-degree at most the nilpotence index $\nu_{0}$ of $N_{0}$ ($\nu_{0}=1$ when
-$N_{0}=0$). If $V_{0}=0$ there is a unique solution in $\KR^{n}$, and it is also
+$N_{0}=0$). If $y_p$ is the constructed particular solution, all ambient
+solutions are
+\[
+ y=y_p+G_\tau c,\qquad c\in\Ker D\subseteq\C^n.
+\]
+They all belong to $\KR[\tau]^n$ and have the same degree bound.
+If $V_{0}=0$ there is a unique solution in $\KR^{n}$, and it is also
 the unique solution in $\SC^{n}$.
 \end{theorem}
 \begin{proof}
@@ -6839,7 +6984,11 @@ $(\gamma,b)\neq(0,0)$ the coefficient equation has the unique solution
  z_{\gamma,b}=\bigl((\gamma-ib)I-N_{b}\bigr)^{-1}g_{\gamma,b}
  =\sum_{k=0}^{m_{b}-1}\frac{N_{b}^{k}g_{\gamma,b}}{(\gamma-ib)^{k+1}},
 \end{equation}
-with support inside $\supp g_{b}$, so these coefficients form a Hahn vector. At
+with support inside $\supp g_b$: at each exponent it applies a
+finite ordinary complex linear map to the coefficient vector and
+introduces no new exponent. Taking the finite union over the frequency
+blocks therefore gives a Hahn vector, even if the inverse coefficients
+are unbounded as ordinary complex numbers. At
 $(0,0)$ the equation is $-N_{0}z_{0,0}=g_{0,0}$, solvable exactly when
 $g_{0,0}\in N_{0}V_{0}$, with homogeneous freedom $\Ker N_{0}$. This proves
 exactness at the two copies of $\KR^{n}$ and on the left; surjectivity of
@@ -6847,14 +6996,38 @@ $\hob_{A}$ follows from $f=Fv$ with constant $v\in V_{0}$, and rank--nullity for
 $N_{0}$ gives equal dimensions. For an arbitrary resonant forcing, replace the
 missing coefficient solution by
 \begin{equation}\label{diff:rs:eq:particular}
- p(\tau)=\sum_{k=0}^{\nu_{0}-1}\frac{\tau^{k+1}}{(k+1)!}N_{0}^{k}g_{0,0},
+ p(\tau)=\sum_{k=0}^{\nu_{0}-1}\frac{\tau^{k+1}}{(k+1)!}N_{0}^{k}g_{0,0}.
 \end{equation}
-for which $(\derT-N_{0})p=g_{0,0}$ by cancellation; adding it to the nonresonant
-Hahn solution and multiplying by $F$ gives a particular solution in
-$\KR[\tau]^{n}$. If $V_{0}=0$ nothing is missing, and the difference of two
-ambient solutions is an ambient homogeneous solution, which is zero by
-\cref{diff:rs:thm:selection}.
+Indeed,
+\[
+ \derT p=\sum_{k=0}^{\nu_0-1}\frac{\tau^k}{k!}N_0^kg_{0,0},
+ \qquad
+ N_0p=\sum_{k=1}^{\nu_0}\frac{\tau^k}{k!}N_0^kg_{0,0}.
+\]
+The last term of the second sum vanishes and all positive-degree
+terms cancel, leaving $(\derT-N_0)p=g_{0,0}$. Add $p$ to the
+nonresonant Hahn solution and multiply by $F$ to obtain a particular
+solution in $\KR[\tau]^n$. The difference of any two ambient
+solutions is homogeneous, so \cref{diff:rs:thm:selection} gives exactly
+the stated affine family. Its homogeneous term uses only $N_0$ and
+has degree at most $\nu_0-1$, proving the common degree bound.
+If $V_0=0$, nothing is missing and the homogeneous solution space is
+zero, giving uniqueness even in $\SC^n$.
 \end{proof}
+
+The degree bound for forcing is sharp. Let $A=N$ be the nilpotent
+Jordan block of size $\nu$, with $Ne_j=e_{j-1}$ for $j>1$ and
+$Ne_1=0$, and force by the constant vector $e_\nu$. Formula
+\eqref{diff:rs:eq:particular} gives
+\[
+ p(\tau)=\tau e_\nu+\frac{\tau^2}{2!}e_{\nu-1}
+             +\cdots+\frac{\tau^\nu}{\nu!}e_1.
+\]
+Every ambient solution differs from $p$ by $\exp(\tau N)c$,
+$c\in\C^\nu$, which has degree at most $\nu-1$. The leading
+coefficient $e_1/\nu!$ cannot cancel, so every solution has degree
+exactly $\nu$ over $\KR$. This includes $\nu=1$, where the equation
+is simply $\derT y=1$.
 
 \begin{remark}[Algebraic, not topological, Fredholm terminology; relation to item~N22]
 \label{diff:rs:rem:fredholm}
@@ -6914,10 +7087,11 @@ $\bigl((1-\tfrac1j)-1\bigr)(-j)=1$ gives $(\derT-1)h=f$, and since $E_{12}^{2}=0
 $G_{\natural}=I+hE_{12}$ satisfies $\derT G_{\natural}=AG_{\natural}-G_{\natural}A_{0}$.
 So $A^{\natural}=A_{0}$, $N=0$, and $G_{\natural}\operatorname{diag}(t,1)$ is
 already a Hahn fundamental matrix. The divisors $(1-\frac1j)-1$ tend to zero and
-the coefficients of $h$ grow without bound; neither is an obstruction. The only
-word in $S$ reaching the resonance $1$ is $(\tfrac12,\tfrac12)$, whose matrix
-product $E_{12}^{2}$ vanishes, so $S_{\crit}=\{\tfrac12\}$ is a valid finite
-dependence set while the minimal one here is empty.
+the coefficients of $h$ grow without bound; neither is an obstruction. Every letter is at least $\tfrac12$, so a word summing to $1$ has
+length at most two. There is no letter $1$, and a length-two word must
+have both letters equal to $\tfrac12$. Its matrix product $E_{12}^{2}$
+vanishes, so $S_{\crit}=\{\tfrac12\}$ is a valid finite dependence set
+while the minimal one here is empty.
 \end{example}
 
 \begin{example}[A nonsemisimple residual matrix]
@@ -7003,12 +7177,22 @@ eigenspaces with real residual eigenvalues, whose shear entries are the
 monomials in \cref{diff:rs:eq:solworkspace}.
 \end{proof}
 
+These adjunctions are ordinary field generation inside $\SC$: an element
+of $K_\Gamma(t^{a_1},\ldots,t^{a_k})$ is a rational expression in
+finitely many added monomials with coefficients in $K_\Gamma$.
+The assertion does not replace this field by the entire Hahn field on
+$\Gamma+\Z a_1+\cdots+\Z a_k$, or claim closure under arbitrary Hahn
+sums there. The generated field is $\derT$-stable, since
+$\derT t^{a_j}=a_jt^{a_j}$ and the product and quotient rules preserve
+rational expressions; adjoining $\tau$, with $\derT\tau=1$, also
+preserves this stability.
+
 The monomial adjunction can be necessary. For $\Gamma=\Q$ the equation
 $\derT y=\sqrt2\,y$, that is $\der y=-\sqrt2\,t\,y$, has the nonzero ambient
 solutions $c\,t^{\sqrt2}$, none of which lies in $K_{\Q}$. This is the second
 row of \cref{diff:tab:workspaceambient} with $\sqrt2$ replaced by $-\sqrt2$ ---
-the same obstruction, an irrational exponent-$1$ coefficient in $\der$-form ---
-and it is printed only there. Together with \cref{diff:ex:sqrt2}, where $\der$
+the same obstruction, an irrational exponent-$1$ coefficient in $\der$-form.
+Together with \cref{diff:ex:sqrt2}, where $\der$
 fails to preserve $K_{\Q\sqrt2}$, it shows why this part lets $\Gamma$ be
 arbitrary: $\derT$ preserves every $K_{\Gamma}$, and the obstruction moves from
 stability of the workspace to membership of the monomial $t^{a}$.
@@ -7038,6 +7222,19 @@ the real exponent modulo $\Gamma$. The complete invariants of
 \cref{diff:rs:thm:Kclass} are for $\KR=K_{\R}$ only. Applied unchanged to $K_{\Q}$
 they would identify $\derT y=\sqrt2\,y$ with the trivial equation, which is false
 over $K_{\Q}$.
+
+More precisely, two constant rank-one Euler systems with coefficients
+$\lambda,\mu\in\C$ are $K_\Gamma$-gauge equivalent exactly when
+$\lambda-\mu\in\Gamma$. A gauge $x\neq0$ must solve
+$\derT x=(\lambda-\mu)x$. Writing
+$x=\sum_{\gamma\in\Gamma}c_\gamma t^\gamma$ gives
+$(\gamma-\lambda+\mu)c_\gamma=0$ at every exponent. Thus a nonzero
+gauge exists only when $\lambda-\mu=\gamma\in\Gamma$, and all such
+gauges are $c\,t^\gamma$ with $c\in\C^\times$. Conversely these
+monomials are gauges. The invariant is therefore the imaginary part
+together with the real part modulo $\Gamma$. Rank-one positive
+perturbations first normalize over $K_\Gamma$, so the same criterion
+applies to their residual coefficients.
 \end{remark}
 
 \subsection{The power-Hahn hypothesis cannot be dropped}
@@ -7068,9 +7265,12 @@ positive infinite $\log\log\omega\pm rx$, and the norm-square argument of
 \cref{diff:rs:lem:eulermode}(ii) applied to $\der_{1}y=iy$ excludes every nonzero
 solution. Finally $\log\omega<\omega^{a}$ for every real $a>0$, a property of the
 surreal exponential \cite{BM,ADH}, so $1/\log\omega$ exceeds every $t^{a}$ while
-being infinitesimal; a nonzero infinitesimal of $\KR$ has a least positive
-exponent $a_{0}$ and leading size a nonzero real multiple of $t^{a_{0}}$, so it
-cannot be $1/\log\omega$.
+being infinitesimal. If $1/\log\omega$ were in $\KR$, its least
+exponent would be some $a_0>0$. Dividing by $t^{a_0}$ would give a
+positive finite element with nonzero ordinary residue, hence
+$1/\log\omega<Ct^{a_0}$ for some ordinary $C>0$. But
+$Ct^{a_0}<t^{a_0/2}<1/\log\omega$, a contradiction. The use of
+$a_0/2$ makes the comparison independent of the leading coefficient.
 \end{proof}
 
 \begin{remark}[What the counterexample shows, and what it does not]
@@ -7091,25 +7291,66 @@ first-order obstruction at stage one of the log-atomic tower.)
 \subsection{An exact finite procedure, and what it does not compute}
 \label{diff:rs:sub:procedure}
 
-For finite rational support the proofs are directly executable. Fix $A_{0}^{\circ}$
-and a finite rational $S$; construct $\Lev(A_{0})$ and enumerate the monoid
-exponents up to $\max\Lev(A_{0})$ when there are positive resonances. There are
-finitely many such exponents, since after taking a common denominator they lie
-on a lattice in a bounded interval. Apply
-\cref{diff:rs:eq:recursion,diff:rs:eq:explicit} through that range, record the
-nonzero $A^{\natural}_{r}$, perform the shear and compute the Jordan forms of the
-$N_{b}$. This finite calculation determines all the $\KR$-gauge invariants; the
-ambient invariants need only the residual eigenvalues. The record shrinks if one
-first computes the words reaching $\Lev(A_{0})$ and keeps only their letters and
-partial sums: the certificate is then the critical input coefficients, the
-finite homological inverses at their partial weights, the resulting
-$A^{\natural}_{r}$, and the nilpotent Jordan data, each checked by a finite
-identity.
+A concrete effective input class consists of finite positive rational
+supports and complex algebraic matrix entries, represented exactly with
+their algebraic roots specified. In this class one can compute a residual
+Jordan basis and eigenvalues, decide equality and whether an eigenvalue
+difference is positive real, and perform exact field arithmetic and
+matrix rank calculations. These coefficient operations are part of the
+input contract: finite rational support alone does not supply them for
+arbitrary named complex constants. The same finite procedure applies to
+another coefficient presentation only when it supplies these operations.
+
+Fix the resulting $A_0^\circ$ and finite rational $S$. Write
+$R=\Lev(A_0)$. If $R\neq\varnothing$, let $r_{\max}=\max R$ and
+choose a common denominator $d$ with $S\subseteq d^{-1}\Z_{>0}$.
+Every monoid exponent at most $r_{\max}$ belongs to the finite grid
+\[
+ \{j/d:0\leq j\leq\lfloor dr_{\max}\rfloor\}.
+\]
+Starting at $0$ and adding letters of $S$ while staying in this grid
+enumerates the required exponents. Apply
+\cref{diff:rs:eq:recursion,diff:rs:eq:explicit} in increasing order,
+record the nonzero $A^\natural_r$, perform the shear and compute the
+Jordan forms of the $N_b$. If $R=\varnothing$, the normalized
+coefficient is already $A_0^\circ$; the nilpotent blocks of that
+residual matrix must still be retained. Empty support requires no
+recursion either. This determines all $\KR$-gauge invariants; the
+ambient invariants need only the residual eigenvalues.
+
+A smaller certificate keeps only the weights
+\[
+ W=\{\gamma\in S^*:\text{ there is }r\in R
+                         \text{ with }r-\gamma\in S^*\}.
+\]
+These are precisely the partial sums of all words reaching a resonance,
+including their empty and full prefixes. The finite-word lemma makes
+$W$ finite, even for an accumulating support when those words have
+been determined. If $\gamma\in W$ and
+$\alpha+\beta=\gamma$ with $\alpha,\beta\in S^*_{>0}$, then both
+$\alpha,\beta\in W$: for a witnessing $r$,
+$r-\alpha=(r-\gamma)+\beta$ and
+$r-\beta=(r-\gamma)+\alpha$ lie in $S^*$.
+Thus the recursion on these weights is closed under every predecessor
+pair. Moreover $S\cap W=S_{\crit}(R)$, since a letter is in $W$
+exactly when it can be completed to a word reaching $R$.
+The certificate consists of these critical input coefficients, the
+homological inverses at positive weights in $W$, the resulting
+$A^\natural_r$ and the nilpotent Jordan data, each verified by finite
+identities. At a resonant weight the inverse is restricted to the
+complementary block space, as in \cref{diff:rs:eq:explicit}.
+For example, if $S=\{\tfrac23,1,\tfrac32\}$ and $R=\{1,2\}$, then
+$W=\{0,\tfrac23,1,\tfrac43,2\}$ and
+$S_{\crit}(R)=\{\tfrac23,1\}$. The coefficient at $\tfrac32$ is below
+the largest resonance but cannot affect the normalized resonant data.
 
 Three limits travel with this procedure. The full gauge $G_{\natural}$ may still
 have infinite support; a finite certificate for the invariants is not a finite
 listing of that gauge, whose exact specification is the support theorem and the
-recursion. For an arbitrary well-ordered support supplied only indirectly the
+recursion. Already the scalar coefficient $A=t$ has no Levelt
+resonances and normalizes to $0$, but its normalized gauge is
+$\sum_{k\geq0}t^k/k!$, with infinite support.
+For an arbitrary well-ordered support supplied only indirectly the
 critical set is finite, but finding all exact word sums that hit a resonance
 need not be an effective task under an unspecified representation; finitely
 many black-box coefficient queries cannot certify that an unseen coefficient at
@@ -7131,7 +7372,8 @@ admit a filtration whose rank-one factors carry computable obstructions. For
 power-Hahn regular-singular systems this part answers both \emph{in part}: the
 gauge $G_{\tau}$ splits the module over $\KR[\tau]$ into rank-one factors whose
 obstructions $(\Imm\lambda_{j})\tau$ are read off from the residual matrix, and
-for finite rational supports with exact coefficients the procedure above
+for finite rational supports with the effective coefficient operations
+specified above (in particular, algebraic coefficients), the procedure
 computes the $\KR$-invariants by a finite calculation. The gauge $G_{\tau}$ is not
 unitary, $G_{\natural}$ is not finitely listed, and nothing is said about other
 input languages; the unitary-gauge question of item~N57 and the general
@@ -7166,8 +7408,8 @@ gauge; scalar mode exclusion & The abstract normal form
 \cref{diff:thm:matnormal} \\
 Forced equation (\cref{diff:rs:thm:forced}) & Finite coefficient resolvents;
 polynomial resonant primitive & An ambient forcing theorem \\
-Minimal logarithm (\cref{diff:rs:thm:minlog}) & Trace and derivation; finite
-matrix logarithm; constants & Algebraic closedness of the Hahn field \\
+Minimal logarithm (\cref{diff:rs:thm:minlog}) & Minimal-polynomial
+differentiation; finite matrix logarithm; constants & Algebraic closedness of the Hahn field \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -7308,21 +7550,47 @@ inner series have zero constant term, and satisfies
 \begin{equation}\label{diff:aut:eq:chain}
  \Dn f(\varepsilon)=\sum_{j=1}^{r}(\partial_{T_{j}}f)(\varepsilon)\,\Dn\varepsilon_{j}.
 \end{equation}
-Formal inverse maps with invertible linear part evaluate to mutually inverse
-maps on the corresponding infinitesimal tuples.
+Formal maps with zero constant term and invertible linear part have
+formal inverses, and the two maps evaluate to mutually inverse maps on
+infinitesimal tuples.
 \end{lemma}
 \begin{proof}
-Discard zero coordinates. The finite union of the supports of the
-$\varepsilon_{j}$ is a well-ordered set of positive exponents in the convention of
-\cref{diff:eq:tmonomial}, so \cref{diff:lem:neumann} makes the family
-$\varepsilon^{\nu}$, $\nu\in\N^{r}$, summable, with finitely many contributions to
-each monomial even after full expansion; ordinary complex coefficients do not
-change supports. The same finiteness proves multiplicativity and permits the
-regrouping in a zero-constant composition. Strong additivity and the Leibniz
-rule give $\Dn(\varepsilon^{\nu})=\sum_{j}\nu_{j}\varepsilon^{\nu-e_{j}}\Dn\varepsilon_{j}$;
-each derivative family is again a valid evaluation multiplied by one fixed
-element, and there are finitely many $j$. The last assertion follows by
-evaluating the two formal composition identities.
+Zero coordinates can first be set to zero in the formal series; if
+all coordinates vanish, evaluation is the constant coefficient and the
+claims are immediate. Otherwise the union $S$ of their supports is a
+well-ordered set of positive exponents in the convention of
+\cref{diff:eq:tmonomial}. For a fixed output exponent, the ordered-word
+lemma \cref{diff:lem:neumann} gives only finitely many contributing
+words in $S$. Each occurrence of a letter has at most $r$ labels,
+one for each input coordinate. Thus the fully expanded family of
+monomials $\varepsilon^\nu$ has finitely many contributions at each
+exponent and support in the well-ordered monoid $S^*$. Ordinary
+complex coefficients add no exponents. Every nonconstant monomial has
+positive exponent, proving the residue assertion.
+
+This finiteness licenses the Cauchy product and proves
+multiplicativity. For composition, let each inner series have zero
+constant term. In a fully expanded term, each inner factor then
+contributes at least one input letter. A fixed output exponent permits
+only finitely many input words, hence only finitely many partitions
+into nonempty inner factors and finitely many formal monomials at
+each resulting degree. The composed evaluation is therefore strongly
+summable before regrouping, and agrees with the formal composition.
+
+Strong additivity and Leibniz give
+\[
+ \Dn(\varepsilon^\nu)=
+ \sum_{\substack{1\leq j\leq r\\\nu_j>0}}
+       \nu_j\varepsilon^{\nu-e_j}\Dn\varepsilon_j.
+\]
+For fixed $j$, the resulting sum is the evaluation of
+$\partial_{T_j}f$ multiplied by the fixed element
+$\Dn\varepsilon_j$. There are only finitely many $j$, giving
+\cref{diff:aut:eq:chain}. Finally, formal inversion is constructed
+degree by degree: at each positive degree the unknown vector of
+coefficients is multiplied by the same invertible ordinary linear
+matrix. The two inverse identities then evaluate by the composition
+clause.
 \end{proof}
 
 For $r=1$ and $\Dn=\der$ this is \cref{diff:lem:smallchain}; the multivariable
@@ -7342,9 +7610,17 @@ $\Theta(\varepsilon,u)=0$.
 Solve by homogeneous degree: the unknown degree-$n$ term occurs with coefficient
 $a$, and all other terms of that degree are determined by lower degrees.
 Evaluation (\cref{diff:aut:lem:evaluation}) gives a solution. For
-$u,v\in\mm_{\C}$, formal subtraction and division by $W-W'$ give
-$\Theta(\varepsilon,u)-\Theta(\varepsilon,v)=(u-v)(a+\varepsilon')$ with
-$\varepsilon'\in\mm_{\C}$, and the second factor is a unit. The argument also
+$u,v\in\mm_{\C}$, use the formal divided difference
+\[
+ \Theta(X,W)-\Theta(X,W')=(W-W')Q(X,W,W'),
+ \qquad Q(0,0,0)=a.
+\]
+Indeed, each difference $W^k-(W')^k$ is divisible by $W-W'$;
+the quotient of the linear term contributes $a$, and every other
+term has positive total degree. Evaluation therefore gives
+$\Theta(\varepsilon,u)-\Theta(\varepsilon,v)
+ =(u-v)(a+\varepsilon')$ with $\varepsilon'\in\mm_{\C}$.
+The factor $a+\varepsilon'$ is a unit, so two roots must coincide. The argument also
 applies after translating the unknown to any ordinary constant value.
 \end{proof}
 
@@ -7385,7 +7661,9 @@ For $\Dn=\der$ the derivative statement is the remark after
 \cref{diff:thm:strip}: all strip logarithms of $z$ have the same intrinsic
 derivative $z^{\dagger}$. $\Log$ is used pointwise or on a specified
 leading-term class; it is not a global additive logarithm and it does not
-define a global surcomplex exponential.
+define a global surcomplex exponential. With the leading decomposition fixed,
+changing the ordinary choice of $\log a$ adds $2\pi i k$ for an ordinary
+integer $k$; it changes no derivative or growth estimate.
 
 \section{The realization classification on curves}
 \label{diff:aut:sec:curves}
@@ -7400,9 +7678,13 @@ embedding
  \qquad \Dn\iota(g)=\iota(\xi g)\quad(g\in\C(\mathcal X)),
 \end{equation}
 equivalently a nonconstant point $\mathbf y\in\mathcal X(\SC)$ with
-$\Dn\mathbf y=\xi(\mathbf y)$. A nonconstant point of a curve over the
-algebraically closed constant field is generic over it, so rational functions
-cause no evaluation ambiguity; constant points are treated separately. This
+$\Dn\mathbf y=\xi(\mathbf y)$. Here a nonconstant point means one not in $\mathcal X(\C)$.
+Its Zariski closure over $\C$ is the whole curve: a proper closed
+subset of a smooth connected curve consists of finitely many closed
+points, all ordinary because $\C$ is algebraically closed.
+Consequently no nonzero rational-function denominator vanishes there,
+and evaluation gives an embedding of $\C(\mathcal X)$.
+Constant points are treated separately. This
 curve-and-derivation formalism, with classical formal local normal forms, is
 that of Noordman, van der Put and Top \cite{NPT}, whose local discussion
 concerns a formal time parameter at zero; here the time is the fixed infinite
@@ -7416,8 +7698,11 @@ write
  \xi(\sigma)=f(\sigma)=c_{k}\sigma^{k}+c_{k+1}\sigma^{k+1}+\cdots,
  \qquad c_{k}\neq0,\quad k\in\Z .
 \end{equation}
-At a simple zero ($k=1$) the coefficient $\lambda=c_{1}$ does not depend on the
-local parameter.
+At a simple zero ($k=1$) the coefficient $\lambda=c_1$ does not
+depend on the local parameter. Indeed, another parameter has expansion
+$\widetilde\sigma=a\sigma+O(\sigma^2)$ with $a\in\C^\times$, and
+$\xi(\widetilde\sigma)=(a+O(\sigma))(\lambda\sigma+O(\sigma^2))
+=\lambda\widetilde\sigma+O(\widetilde\sigma^2)$.
 
 \begin{theorem}[Autonomous realization classification]
 \label{diff:aut:thm:main}
@@ -7471,20 +7756,42 @@ finite and their standard parts are not all zero, the $j$th being $1$; reducing
 the homogeneous equations gives a point of $\mathcal Y(\C)$. Another coordinate
 of maximal modulus differs by a finite unit, whose nonzero standard part
 rescales all reduced coordinates by one scalar, so the reduction is well
-defined, and morphisms commute with it by evaluating regular coordinate
-expressions in the finite ring. This is the usual valuative reading of
-properness \cite[Tag~0BX4]{Stacks}. At a smooth point of a curve, shrink to a
-standard smooth affine presentation with an invertible Jacobian minor and a
-coordinate $\sigma$ with nonzero differential; the completed local ring is
-$\C[[\sigma]]$, the other coordinates are formal implicit functions of $\sigma$
-with ordinary constant terms, and \cref{diff:aut:lem:evaluation} evaluates them at
-every $\varepsilon\in\mm_{\C}$, giving a point reducing to $p$. Conversely, if two
-coordinate tuples with the same $\sigma$ and the same reduction solve the affine
-equations, the linear system for their differences has as matrix the ordinary
-Jacobian minor plus an infinitesimal matrix, of determinant with nonzero
-residue, so the differences vanish; no completeness of an ambient valuation
-topology is used. A regular denominator nonvanishing at $p$ remains a unit after
-evaluation, so the point lies in the chosen chart.
+defined. A regular map near the reduction point can be written in
+affine coordinates using denominators nonzero at that ordinary point.
+Their evaluations are finite units, so taking standard parts commutes
+with these expressions. This proves compatibility with regular
+morphisms, and hence independence of the projective embedding.
+
+For the valuative interpretation, take the set-sized field $E$
+generated over $\C$ by the finitely many homogeneous coordinates and
+use its valuation ring $E\cap\Ofin_{\C}$, with residue field $\C$.
+The properness criterion \cite[Tag~0BX5]{Stacks} applies in that
+set-sized setting; no scheme with a proper-class coefficient field is
+needed for this interpretation.
+
+At a smooth point of a curve, choose an affine presentation, with
+denominators nonzero at $p$, in which the equations for the coordinates
+other than $\sigma$ have an invertible ordinary Jacobian minor.
+Translate their ordinary values to zero and write them as a tuple
+$Z$. The formal map consisting of $\sigma$ and these equations has
+invertible linear part. Its formal inverse gives the other coordinates
+as ordinary-coefficient series in $\sigma$. Evaluating at any
+$\varepsilon\in\mm_{\C}$ gives a point reducing to $p$; all defining
+identities are preserved by \cref{diff:aut:lem:evaluation}, and every
+chart denominator remains a unit.
+
+For uniqueness, suppose two tuples $Z,Z'$ have the same value of
+$\sigma$ and the same reduction. Subtract the polynomial equations,
+or first clear their unit denominators. Their difference factors as
+\[
+ 0=M(\varepsilon,Z,Z')(Z-Z'),
+ \qquad M(\varepsilon,Z,Z')=M_0+\Delta,
+\]
+where $M_0$ is the invertible ordinary Jacobian minor and every entry
+of $\Delta$ is infinitesimal. Thus
+$\st(\det M)=\det M_0\neq0$, so $M$ is invertible and $Z=Z'$.
+This proves the claimed bijection without completeness of an ambient
+valuation topology.
 \end{proof}
 
 \begin{lemma}[A nonconstant trajectory reduces to a zero]
@@ -7493,8 +7800,10 @@ If $\mathbf y$ is a nonconstant solution and $p=\st(\mathbf y)$, then $k\geq1$ i
 \cref{diff:aut:eq:localfield}.
 \end{lemma}
 \begin{proof}
-Put $u=\sigma(\mathbf y)$; since $\mathbf y$ is nonconstant $u\neq0$, and reduction
-gives $u\in\mm_{\C}$, so $\Dn u\in\mm_{\C}$ by \cref{diff:aut:lem:small}. The local
+Put $u=\sigma(\mathbf y)$. Reduction gives $u\in\mm_{\C}$.
+The parameter value $0$ corresponds to the ordinary point $p$ under
+\cref{diff:aut:lem:projective}; since $\mathbf y$ is nonconstant,
+$u\neq0$. Hence $\Dn u\in\mm_{\C}$ by \cref{diff:aut:lem:small}. The local
 expression gives $\Dn u=f(u)=c_{k}u^{k}(1+\varepsilon)$ with $\varepsilon\in\mm_{\C}$.
 For $k=0$ the right side has nonzero standard part, and for $k<0$ it is
 infinite; both contradict the infinitesimal left side.
@@ -7540,12 +7849,22 @@ solutions of $\Dn u=f(u)$ are exactly $u=h_{p}^{-1}(c\,e^{\lambda\omega})$ with
 $c\in\C^{\times}$ when $\lambda\in\R_{<0}$, and there are none otherwise.
 \end{proposition}
 \begin{proof}
-$\lambda/f(\sigma)-1/\sigma$ lies in $\C[[\sigma]]$; integrate it with zero
-constant term and put
-$h_{p}(\sigma)=\sigma\exp\bigl(\int_{0}^{\sigma}(\lambda/f(s)-1/s)\,ds\bigr)$, a
-formal exponential of a zero-constant series. Logarithmic differentiation proves
-the identity, and conversely the identity determines $h_{p}/\sigma$ from its
-logarithmic derivative and constant term $1$. Its formal inverse exists. For a
+Write $f(\sigma)=\lambda\sigma(1+\sigma q(\sigma))$. Then
+$\lambda/f(\sigma)-1/\sigma$ is in $\C[[\sigma]]$, because
+$(1+\sigma q)^{-1}-1$ is divisible by $\sigma$. Let $H(\sigma)$
+be its formal primitive with constant term zero and put
+\[
+ h_p(\sigma)=\sigma\exp H(\sigma),\qquad
+ H(\sigma)=\int_0^\sigma\bigl(\lambda/f(s)-1/s\bigr)\,ds .
+\]
+The integral divides the coefficient of $s^j$ by the nonzero integer
+$j+1$, and the exponential is a formal series in the zero-constant
+$H$. Thus $h_p=\sigma+O(\sigma^2)$. Its logarithmic derivative is
+$\lambda/f$, proving the required identity. Conversely, if
+$h_p=\sigma U$ with $U(0)=1$, the identity forces
+$U'/U=\lambda/f-1/\sigma=H'$. The derivative of $U\exp(-H)$
+vanishes, so this series equals its constant term $1$. This proves
+uniqueness; the linear coefficient $1$ gives the formal inverse. For a
 nonzero infinitesimal solution the chain rule gives $\Dn h_{p}(u)=\lambda h_{p}(u)$
 with $h_{p}(u)\sim u\neq0$, and \cref{diff:aut:lem:eigen} gives necessity and the
 form. Conversely each displayed input is infinitesimal when $\lambda<0$, all
@@ -7553,7 +7872,18 @@ evaluations exist, and differentiating the inverse identity gives $\Dn u=f(u)$;
 $c$ is unique by injectivity of the inverse formal map.
 \end{proof}
 
-The formal linearization is classical \cite[Lemma~6.1]{NPT}. The exclusion of
+For the quadratic local field $f(\sigma)=\lambda\sigma+a\sigma^2$,
+the normalized maps are explicitly
+\[
+ h_p(\sigma)=\frac{\sigma}{1+(a/\lambda)\sigma},
+ \qquad h_p^{-1}(v)=\frac{v}{1-(a/\lambda)v}.
+\]
+Their denominators are units on infinitesimal inputs, and
+$h'_pf=\lambda h_p$ follows directly. This includes the local
+linearization used in the logistic example
+(\cref{diff:aut:ex:logistic}).
+
+The formal linearization is classical \cite[Lemma~6.1(i), arXiv v1]{NPT}. The exclusion of
 every nonreal $\lambda$, including those with negative real part, is the
 specifically surcomplex restriction: a classical spiralling decay at
 $\lambda=-1+i$ does not become a nonzero element of $\SC$ satisfying that
@@ -11351,7 +11681,8 @@ as an open problem, not solved; the exact recurrences of
 \cref{diff:ex:matnoncommuting,diff:eq:matairyrec} are instances, not a
 solution. \emph{Amended with member~12:} one such language is now supplied for
 one class. For power-Hahn regular-singular systems with finite rational supports
-and exact coefficients, \cref{diff:rs:sub:procedure} computes the Hahn invariants
+and algebraic coefficients (or the effective coefficient operations of
+\cref{diff:rs:sub:procedure}), that procedure computes the Hahn invariants
 by a finite calculation, and the phase spectrum is read off from the residual
 eigenvalues (\cref{diff:rs:prop:phasespectrum}). Its gauge is not unitary and is
 not finitely listed, and for indirectly supplied supports it is not an oracle
@@ -11792,7 +12123,8 @@ open; \cref{diff:ex:matnonnormal} rules out the instantaneous-eigenvalue formula
 \item \emph{Identify restricted, support-certified input languages on which the
 phase map, the purely infinite parts of eigenvalue primitives and a normalizing
 unitary gauge become effectively computable.} Answered in part for one class:
-finite rational supports of power-Hahn regular-singular systems
+finite rational supports with algebraic coefficients for power-Hahn
+regular-singular systems
 (\cref{diff:rs:sub:procedure,diff:rs:rem:effective}). The gauge there is not
 unitary and not finitely listed, and the continuation stands for unitary gauges
 and for every other class.
@@ -13130,8 +13462,9 @@ logarithm argument of \cref{diff:aut:lem:formallog} is proved in full.
 
 \bibitem{Stacks}
 The Stacks Project Authors,
-\emph{The Stacks Project}, Section 29.43, Valuative criteria.
-\url{https://stacks.math.columbia.edu/tag/0BX4}.
+\emph{The Stacks Project}, Section 29.43, Valuative criteria,
+especially Lemma 29.43.1 (Tag~0BX5).
+\url{https://stacks.math.columbia.edu/tag/0BX5}.
 The valuative reading of the projective reduction of
 \cref{diff:aut:lem:projective}, which is proved there by elementary means.
 

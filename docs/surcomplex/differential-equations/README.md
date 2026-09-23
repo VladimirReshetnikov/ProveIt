@@ -3,13 +3,13 @@
 **The finite-primitive criterion, the phase obstruction, and support-certified
 coordinate systems**
 
-A merged research report, 184 pages, built from eleven manuscripts. Everything
+A merged research report, 188 pages, built from eleven manuscripts. Everything
 in this directory other than `article.tex`, `article.pdf` and this README is
 preserved source material.
 
 ```
 article.tex                        the merged report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled 184-page report
+article.pdf                        the compiled 188-page report
 README.md                          this guide
 11-autonomous-dynamics-sources.md  member 11's literature and repository-review log, unmodified
 code/                              the verification programs and build scripts of the eleven
@@ -22,6 +22,22 @@ Every label in `article.tex` carries the prefix `diff:`; the labels added with
 members 11, 12 and 13 carry the sub-prefixes `diff:aut:`, `diff:rs:` and
 `diff:cp:`. No pre-existing label was ever renamed or removed (506 labels before
 members 11 and 12, 685 after them, 764 after member 13).
+
+The current proof review covers the earlier scalar, matrix, workspace and
+coordinate chains and all of the regular-singular main text, Sections
+23–28: the Euler frame, support and resonance arguments, classification,
+logarithmic repair, forcing, examples, workspaces and finite procedure.
+The revisions expand the proof steps, distinguish the derivative frames
+and field extensions, illustrate the normalizations, and prove the forced
+degree bound sharp. The finite procedure now states its effective
+coefficient requirements; complex algebraic coefficients suffice.
+The autonomous review now covers normalized derivations, formal evaluation,
+projective reduction and simple zeros (Section 29 and Sections 30.1–30.3).
+It expands the support and local uniqueness arguments, makes the
+properness comparison set-sized, and gives an explicit quadratic
+linearizer. Multiple zeros, later autonomous proofs, remaining imports
+and source reconciliation are still pending; scope and validation are
+recorded in the collection's [review record](../../REVIEW.md).
 
 ## What the report is
 
@@ -181,8 +197,11 @@ The unknown ranges over all of `No[i]ⁿ`.
   exactly the resonant normal form of Theorem 19.3 (Remark 28.2). The
   infinitesimal coefficient `i/log ω` has no solution, so the power-Hahn
   hypothesis cannot be dropped.
-* **An exact finite procedure** for finite rational supports (§28.3), which is
-  explicitly *not* an oracle algorithm for indirectly described supports.
+* **An exact finite procedure** for finite rational supports and complex
+  algebraic matrix entries (§28.3), or another coefficient presentation
+  supplying the stated exact operations. Its reduced set of weights is
+  closed under the recursion's dependencies. This is not an oracle algorithm
+  for indirectly described supports or arbitrary named complex constants.
 
 ### The autonomous stratum (Part VI, member 11)
 
@@ -841,9 +860,57 @@ latexmk -pdf -interaction=nonstopmode article.tex
 
 If `latexmk` is unavailable, run `pdflatex -interaction=nonstopmode` three
 times so that the table of contents, the cross-references and the `cleveref`
-labels settle. The delivered build (184 pages) has zero LaTeX errors, zero
+labels settle. The delivered build (188 pages) has zero LaTeX errors, zero
 warnings, zero undefined references or citations, zero multiply-defined
 labels, zero duplicate destinations, and zero overfull or underfull boxes.
+
+The review of Sections 23–24 rebuilt the current report in three passes
+at 166 pages without warnings or box issues, and the changed pages were
+visually inspected. Member 12's unchanged verifier passed all eight suites
+on a temporary copy using Python 3.13.14 and SymPy 1.14.0; every JSON field
+matches the delivered record. A separate exact matrix calculation checked
+the new whole-block example. All 48 historical code, data and source-log
+files remain byte-identical. The full Lean build and its 5,371-declaration
+axiom audit also pass; these documentation changes add no Lean coverage.
+The later regular-singular and autonomous arguments remain for review.
+
+The subsequent review of Sections 25–26 rebuilt the report at 167 pages
+in three passes, again without warnings or box issues; the revised pages
+were inspected. All eight member-12 suites passed on a temporary copy and
+matched the historical JSON. Additional exact checks covered the new
+two-dimensional classification example and Jordan blocks of sizes one
+through six in the logarithmic-repair and sharp forced-degree formulas.
+The 48 historical files remain byte-identical, and the full Lean build
+and 5,371-declaration axiom audit pass. The review now includes spectral
+selection, both classifications, logarithmic repair and all solutions of
+the forced equation; later sections and formalization remain separate.
+
+The final regular-singular pass reviewed Sections 27–28 and rebuilt the
+report in three passes at 168 pages without warnings or box issues.
+The workspace, rank-one classification, logarithmic boundary, procedure
+and dependency-table pages were inspected. Member 12's unchanged verifier
+again passed all eight suites on a copy, matching every historical JSON
+field. A separate finite calculation checked the reduced-weight example:
+deleting the noncritical input at weight `3/2` changes the gauge but
+preserves the normalized resonant coefficients. All 48 historical files
+remain byte-identical. The full Lean build passed 3,872 jobs and the
+5,880-declaration axiom audit. The main-text review now covers all of
+Part V; the autonomous part and remaining imports and source reconciliation
+are still pending.
+
+The first autonomous pass reviewed Section 29 and Sections 30.1–30.3,
+through simple zeros, and rebuilt the report in three passes at 169 pages
+without warnings or box issues. The formal-evaluation, divided-difference,
+projective-reduction and linearization pages were inspected. Member 11's
+unchanged verifier passed its ten default-degree checks on a temporary
+copy with Python 3.13.14 and SymPy 1.14.0; its output matches the delivered
+record apart from the Python version. Separate exact calculations checked
+the quadratic linearizer, its inverse and the local divided-difference
+example. All 48 historical files remain byte-identical. The full Lean
+build passed 3,872 jobs and the 5,880-declaration axiom audit. The primary
+comparison checked NPT arXiv v1 Lemma 6.1(i) and Stacks Tag 0BX5;
+the multiple-zero classification and later autonomous arguments remain
+for review.
 
 ## Re-running the source verifiers
 
