@@ -1,8 +1,8 @@
 # Surreal
 
-Lean formalization of the theorems about surreal and surcomplex numbers in
-the project's source documents, following their proposed formalization plan
-and beginning with the simplest prerequisites.
+Lean formalization of the theorems about surreal numbers, surcomplex numbers
+and omnific integers in the project's source documents. Work proceeds from
+foundational lemmas to their dependent results, reusing mathlib constructions.
 
 ## Build
 
@@ -12,7 +12,7 @@ installed, run:
 
 ```sh
 lake exe cache get
-lake build
+LEAN_NUM_THREADS=2 lake build
 ```
 
 Lean warnings are treated as errors, including warnings for incomplete proofs.
@@ -25,11 +25,25 @@ Apache license are included in the repository.
 
 ## Formalization
 
-The [source inventory](docs/FORMALIZATION.md) covers 57 main texts
+The [source inventory](docs/FORMALIZATION.md) covers 58 maintained main texts
 and the source manuscripts preserved in Git history. The
 [coverage and dependency ledger](docs/FORMALIZATION.md) records their statements,
 the proposed Layer A–E implementation order, and the exact scope of each
 implemented result.
+
+The central foundation is a constructed ordered field of surreal sign
+sequences and its ordered-field identification with small Conway normal
+forms. Real closedness of this field and algebraic closedness of its
+surcomplexification are proved. This supports results on the actual fields,
+including strong summation, surreal-valued valuation and modulus, fine
+calculus, polynomial root stability and finite geometry.
+
+The source collection also includes omnific-integer
+[Diophantine geometry](docs/surreal/omnific-diophantine-geometry/README.md),
+[set-sized quotients](docs/surreal/set-sized-quotients-of-omnific-integers/README.md),
+groups, lattices and normalization. Their manuscript reviews and corrections
+are recorded in the ledger; the omnific Diophantine and quotient reports
+remain pending in Lean. Source review is distinct from checked formalization.
 
 The complex cosine fold now has its exact infinitesimal root classification,
 real and imaginary branch behavior, half-valuation law, and complete strong
@@ -95,9 +109,16 @@ Nonnegativity at every finite surreal angle is therefore equivalent to
 this squared-modulus factorization, including infinite coefficients and
 infinitesimal angles. Reflecting every interior root now constructs a factor
 with no zeros in the open unit disk, and multiplication by a unit scalar
-makes its value at zero positive real. Positive normalization removes
-unit-scalar ambiguity; proving that any two such factors differ by a unit
-scalar remains pending.
+makes its value at zero positive real. The normalized factor is now proved
+unique: equal boundary moduli give equal polynomial norm encodings, which
+recover every root multiplicity and hence determine the factor up to a unit
+scalar. Positivity at zero removes that scalar. This completes the
+Fejér–Riesz theorem on the actual fields, without a compactness or
+Hilbert-space assumption. The
+factor coefficients now give the exact Fourier autocorrelations: the constant
+coefficient is their squared energy, is positive for nonzero input, and bounds
+the modulus of every Fourier coefficient. At the highest positive frequency,
+twice the coefficient modulus is bounded by the same energy.
 
 The first modules establish size obstructions and reusable finite algebra.
 Complexification uses mathlib's `QuadraticAlgebra`, with its cross-term

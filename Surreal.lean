@@ -561,3 +561,10 @@ import Surreal.Surcomplex.FejerRieszExistence
 import Surreal.Surcomplex.PolynomialRootReflection
 import Surreal.Surcomplex.PolynomialPositiveNormalization
 import Surreal.Surcomplex.FejerRieszNormalization
+import Surreal.Algebra.PolynomialReflectionMultiplicity
+import Surreal.Surcomplex.CirclePolynomialNorm
+import Surreal.Surcomplex.OuterPolynomialUniqueness
+import Surreal.Surcomplex.FejerRiesz
+import Surreal.Algebra.FiniteAutocorrelation
+import Surreal.Surcomplex.FejerRieszCoefficients
+import Surreal.Surcomplex.FejerRieszCoefficientBounds
