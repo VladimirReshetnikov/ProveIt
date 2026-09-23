@@ -9307,11 +9307,11 @@ $\ell_{\alpha}^{r}=\exp(r\ell_{\alpha+1})=\omega^{r\omega^{-\alpha}}$ and
 $\ell_{<\alpha}^{r}=\omega^{r\varpi_{\alpha}}$.
 \end{proposition}
 
-These are imported, not proved here: \cite[Proposition~2.5, Lemmas~2.6--2.8
-and the pre-derivation formula on p.~10]{ADH}, where the notation is
+These are imported, not proved here: \cite[Lemma~2.3, Proposition~2.5,
+Lemmas~2.6--2.8 and the pre-derivation formula on p.~10]{ADH}, where the notation is
 $\lambda_{-\alpha}=\log_{\alpha}\omega$, and for the real powers the
 real-linear exponent formula in the proof of \cite[Lemma~2.3]{ADH}; the
-numbering is that of the arXiv version~3 consulted by member~13. For finite
+numbering is that of arXiv version~3, checked for this review. For finite
 $n$, $\ell_{n}$ is the $n$-fold logarithm of $\omega$ and
 $\ell_{<n}=\ell_{0}\cdots\ell_{n-1}$, so \cref{diff:cp:eq:tower} returns
 \cref{diff:eq:logtower}; $\ell_{0}=\omega$ and $\ell_{1}=\log\omega$. At an
@@ -9320,19 +9320,24 @@ surreal below every $\ell_{\beta}$ with $\beta<\lambda$. The monomial
 $\ell_{<\alpha}$ is the monomial product $\prod_{\beta<\alpha}\ell_{\beta}$, and
 its two readings --- sum the exponents $\omega^{-\beta}$ in normal form, or
 exponentiate the sum of the logarithms $\ell_{\beta+1}$ --- agree by the
-monomial-product logarithm identity of \cite[Section~2]{ADH}. At a limit
+monomial-product logarithm identity of \cite[Lemma~2.3]{ADH}. At a limit
 ordinal that identity is an imported fact; replacing it by ordinary
 convergence of finite products would be invalid (\cref{diff:warn:summability}).
 Likewise the limit-stage derivative formula is a fact about this derivation,
 not the result of formally differentiating a finite iterate, and the
 normalization $\der\omega=1$ alone does not determine it
-(\cref{diff:cp:rem:derivation}). Derivatives of monomials with non-real
-exponents are computed only through the logarithms of the specific monomials
-involved, as \cref{diff:warn:monomialmap} requires. The real powers rest on
-two facts recorded by member~13 from \cite[Section~2]{ADH}: the logarithm of a
+(\cref{diff:cp:rem:derivation}). The displayed real-power identities do
+not define $\omega^{z}$ for non-real $z$, or a complex power of a
+positive infinite scale; \cref{diff:cp:cor:nonreal} will give the
+relevant differential obstruction. The real powers rest on
+two facts from \cite[Section~2]{ADH}: the logarithm of a
 monomial is purely infinite, and the correspondence between the exponent of a
 monomial and its logarithm is real-linear. Since the monomial map is
 multiplicative, $u_{\alpha}^{2}=\ell_{<\alpha}$.
+The empty-index conventions are
+$\varpi_{0}=0$, $\ell_{<0}=u_{0}=1$ and $\der\ell_{0}=1$.
+Every displayed family is indexed by the set of ordinals below one
+fixed $\alpha$; none is summed over the class of all ordinals.
 
 \begin{remark}[What the notation does not assert]
 \label{diff:cp:rem:notation}
@@ -9360,14 +9365,22 @@ $\beta<\lambda$.
 \end{lemma}
 \begin{proof}
 The monomial map is strictly increasing and $-\zeta<-\beta$, which gives the
-first assertion. A nonempty interval of the positive family
-$(\omega^{-\beta})$ has a positive sum, so $\varpi$ increases. By
+first assertion, including the decrease of
+$\ell_{\beta+1}=\omega^{\omega^{-(\beta+1)}}$.
+For $\beta<\zeta$ the difference
+$\varpi_{\zeta}-\varpi_{\beta}=\sum_{\beta\leq\xi<\zeta}\omega^{-\xi}$
+has leading term $\omega^{-\beta}$ with coefficient $1$; hence it
+is positive and $\varpi$ increases. By
 \cref{diff:cp:eq:tower}, $\ell_{\beta}^{\dagger}=\ell_{<\beta}^{-1}\ell_{\beta}^{-1}
 =\omega^{-\varpi_{\beta}-\omega^{-\beta}}=\omega^{-\varpi_{\beta+1}}$, and
 $\der\ell_{\beta+1}=\der\log\ell_{\beta}=\ell_{\beta}^{\dagger}$. Distinct
 monomials are Archimedean separated, and
 $\varpi_{\beta+2}-\varpi_{\beta+1}=\omega^{-(\beta+1)}$ gives the ratio.
-Finally $\omega^{-\lambda}<\omega^{-\beta}$.
+Finally
+$\ell_{\lambda}/\ell_{\beta}
+=\omega^{\omega^{-\lambda}-\omega^{-\beta}}$ has strictly negative
+Conway exponent, so it is infinitesimal. The same argument works
+for any $\beta<\zeta$, not only at a limit.
 \end{proof}
 
 For finite $n$, $\ell_{n}^{\dagger}=1/(\ell_{0}\ell_{1}\cdots\ell_{n})$ is the
@@ -9399,10 +9412,31 @@ In the orientation of \cref{diff:eq:tmonomial},
 $\ell_{\beta}^{\dagger}=t^{\varpi_{\beta+1}}$ with exponents strictly increasing
 in $\beta$ (\cref{diff:cp:lem:scales}); an ordinal-indexed increasing family of
 exponents is well ordered and each exponent occurs once, so the first two
-families are summable (\cref{diff:def:summable}), and so is
-$(\ell_{\beta+1})_{\beta<\alpha}$. The double family is the product family of
-the first with itself, summable by the Hahn product theorem
-\cite[Section~2.4]{BM}. Since $\ell_{<\alpha}=\exp(\sum_{\beta<\alpha}\ell_{\beta+1})$,
+families are summable (\cref{diff:def:summable}); doubling the
+exponents preserves their strict increase. Summability of
+$(\ell_{\beta+1})_{\beta<\alpha}$ was supplied by
+\cref{diff:cp:prop:tower}.
+
+Here the double family's support and finite incidence can also be
+seen directly. For $\beta\leq\zeta$ its exponent is
+\[
+ \varpi_{\beta+1}+\varpi_{\zeta+1}
+ =2\sum_{\xi\leq\beta}\omega^{-\xi}
+   +\sum_{\beta<\xi\leq\zeta}\omega^{-\xi}.
+\]
+The first place where these coefficient strings differ shows that
+these exponents increase in the lexicographic order on
+$(\beta,\zeta)$ with $\beta\leq\zeta<\alpha$. This is a well-order:
+choose the least first coordinate and then the least second
+coordinate in any nonempty subset. The coefficient string also
+recovers the two indices uniquely. Thus each exponent receives
+one ordered pair on the diagonal and two off it. This proves both
+conditions for summability and licenses restrictions to either
+triangle, multiplication of the two sums and regrouping. It is
+the Hahn product theorem in this particular support
+\cite[Section~2.4]{BM}.
+
+Since $\ell_{<\alpha}=\exp(\sum_{\beta<\alpha}\ell_{\beta+1})$,
 clauses \ref{diff:BM:exp} and \ref{diff:BM:additive} give
 $\ell_{<\alpha}^{\dagger}=\sum_{\beta<\alpha}\der\ell_{\beta+1}
 =\sum_{\beta<\alpha}\ell_{\beta}^{\dagger}$, which is \cref{diff:cp:eq:Adef}.
@@ -9459,23 +9493,49 @@ $Q_{\alpha+1}=Q_{\alpha}+\frac14(\ell_{\alpha}^{\dagger})^{2}$. At a limit, the
 same identity for $\der^{2}u_{\alpha}$ comes from the single summable
 triangular calculation of \cref{diff:cp:lem:triangular}. No derivative of a
 nonconvergent net and no interchange of an uncontrolled double series occurs,
-and $Q_{\lambda}$ is the Hahn sum of its increments, not a sum or limit of the
-partial sums $Q_{\beta}$.
+and $Q_{\lambda}$ is defined by the Hahn sum of its increments,
+without assuming topological convergence of the partial sums
+$Q_{\beta}$. Summing those partial sums would be a different,
+invalid operation: at every nonzero limit $\lambda$, the family
+$(Q_{\beta})_{0<\beta<\lambda}$ has infinitely many contributions
+$\frac14\omega^{-2}$ at the same exponent and is not summable.
 \end{remark}
 
 \begin{lemma}[A fundamental pair spans every solution]
 \label{diff:cp:lem:span}
 Let $F$ be a differential field of characteristic zero with constants $C_{F}$,
-and let $y_{1},y_{2}\in F$ solve $\der^{2}y+Qy=0$ with
+let $Q\in F$, and let $y_{1},y_{2}\in F$ solve $\der^{2}y+Qy=0$ with
 $\mathrm{Wr}(y_{1},y_{2})\neq0$. Then $\mathrm{Wr}(y_{1},y_{2})\in C_{F}$, and
-every solution in $F$ lies in $C_{F}y_{1}+C_{F}y_{2}$.
+every solution in $F$ has a unique expression in
+$C_{F}y_{1}+C_{F}y_{2}$. Thus this solution space has dimension two
+over $C_{F}$.
 \end{lemma}
 \begin{proof}
-$\der\mathrm{Wr}=y_{1}\der^{2}y_{2}-y_{2}\der^{2}y_{1}=0$. For a third solution
-$y$ put $a=\mathrm{Wr}(y,y_{2})/\mathrm{Wr}(y_{1},y_{2})$ and
-$b=\mathrm{Wr}(y_{1},y)/\mathrm{Wr}(y_{1},y_{2})$; the same calculation gives
-$\der a=\der b=0$, and direct substitution gives $y=ay_{1}+by_{2}$.
+For any two solutions $v,w$,
+$\der\mathrm{Wr}(v,w)=v\der^{2}w-w\der^{2}v=-Qvw+Qwv=0$.
+In particular $\mathcal W=\mathrm{Wr}(y_{1},y_{2})$ is a nonzero constant.
+For a third solution $y$, solve the two linear equations
+\[
+ \begin{pmatrix}y_{1}&y_{2}\\ \der y_{1}&\der y_{2}\end{pmatrix}
+ \begin{pmatrix}a\\b\end{pmatrix}
+ =\begin{pmatrix}y\\\der y\end{pmatrix}.
+\]
+Their determinant is $\mathcal W$, so their unique coefficients are
+$a=\mathrm{Wr}(y,y_{2})/\mathcal W$ and $b=\mathrm{Wr}(y_{1},y)/\mathcal W$.
+The numerator and denominator in each quotient have derivative
+zero, hence $a,b\in C_{F}$. Conversely, constant linear
+combinations remain solutions. If such a combination is zero,
+its derivative is zero too, and the same invertible matrix makes
+both coefficients zero. This proves spanning and independence.
 \end{proof}
+
+Applied to \cref{diff:cp:thm:critical}, these formulas give exactly
+$y=u_{\alpha}(a+b\ell_{\alpha})$, with unique ordinary constants
+$a,b$ (real in $\No$, complex in $\SC$). The first two stages make
+the normalization concrete: for $\alpha=0$ the equation is
+$\der^{2}y=0$ and the pair is $(1,\omega)$; for $\alpha=1$ the
+potential is $\frac14\omega^{-2}$ and the pair is
+$(\sqrt\omega,\sqrt\omega\log\omega)$. Both Wronskians are $1$.
 
 With $F=\SC$ the solution collection is first a class; the spanning formulas
 of \cref{diff:cp:thm:main} show that it is a set, isomorphic to $\C^{2}$ or to
@@ -13802,7 +13862,7 @@ Matthias Aschenbrenner, Lou van den Dries and Joris van der Hoeven,
 \emph{The surreal numbers as a universal $H$-field},
 Journal of the European Mathematical Society \textbf{21} (2019), 1179--1199.
 \href{https://doi.org/10.4171/JEMS/858}{doi:10.4171/JEMS/858}.
-Preprint: \href{https://arxiv.org/abs/1512.02267}{arXiv:1512.02267v3}.
+Preprint: \href{https://arxiv.org/abs/1512.02267v3}{arXiv:1512.02267v3}.
 Theorem 1 concerns an elementary embedding in the ordered differential
 language. Section~2 --- Proposition~2.5, Lemmas~2.6--2.8, the pre-derivation
 formula on p.~10 and the real-linear exponent formula in the proof of
