@@ -400,7 +400,9 @@ formal evaluation differentiates at every infinitesimal point, and Taylor lifts
 have the lifted ordinary derivative throughout their infinitesimal monads.
 An exact bivariate quadratic remainder supplies a uniform ordinary bound.
 The chain, reciprocal and quotient rules hold, and finite sine and cosine
-agree with their separate even and odd strong Taylor sums.
+agree with their separate even and odd strong Taylor sums and analytic lifts.
+Their fine derivatives are cosine and negative sine at every finite input,
+and the real-parameter surcomplex phase derivative is `I * cis`.
 An analytic germ of finite ordinary zero order lifts to its leading monomial
 times one plus an infinitesimal, with the exact predicted valuation and leading
 coefficient. For real germs that monomial also determines the sign.
@@ -411,7 +413,7 @@ the interval hypotheses.
 A nonconstant infinitesimal-coset indicator has zero fine derivative everywhere.
 The approximation inequalities alone never give uniqueness: a sufficiently
 small positive monomial produces another solution. Multivariable analytic
-lifting, the trigonometric derivative and order identities, and universe
+lifting, the trigonometric signs, monotonicity and inequalities, and universe
 coherence remain separate obligations.
 The reports placed after the canonical inventory are formalized clause by
 clause. Strong sums of nonnegative Hahn series are nonnegative, and strongly

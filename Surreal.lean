@@ -46,6 +46,7 @@ import Surreal.Algebra.FineDerivative
 import Surreal.Algebra.FineDerivativeRules
 import Surreal.Algebra.AnalyticTaylor
 import Surreal.Algebra.AnalyticComposition
+import Surreal.Algebra.TrigonometricTaylor
 import Surreal.Algebra.AnalyticSign
 import Surreal.Algebra.PowerSeriesPolynomialFactorLifting
 import Surreal.Algebra.MvPowerSeriesFactorLifting
@@ -201,6 +202,7 @@ import Surreal.Surcomplex.Polar
 import Surreal.Surcomplex.PolarNormalization
 import Surreal.Surcomplex.FiniteTrigonometry
 import Surreal.Surcomplex.TrigonometricTaylor
+import Surreal.Surcomplex.TrigonometricFineDerivative
 import Surreal.Surcomplex.StrongConjugation
 import Surreal.Surcomplex.ExpLogConjugation
 import Surreal.Surcomplex.MvPowerSeries

@@ -60,6 +60,14 @@ theorem analyticLiftFunction_add (f g : ℝ → ℝ) (z : SignSequence.{u}) (hz 
     analyticLiftFunction_of_domain f z hz hf, analyticLiftFunction_of_domain g z hz hg,
     analyticLift_add]
 
+/-- Negation is preserved on the finite analytic domain. -/
+theorem analyticLiftFunction_neg (f : ℝ → ℝ) (z : SignSequence.{u}) (hz : IsFinite z)
+    (hf : AnalyticAt ℝ f (standardPart z)) :
+    analyticLiftFunction (-f) z = -analyticLiftFunction f z := by
+  rw [analyticLiftFunction_of_domain (-f) z hz hf.neg,
+    analyticLiftFunction_of_domain f z hz hf]
+  simp only [analyticLift, analyticTaylorEvaluation, Analytic.taylorSeries_neg, map_neg]
+
 /-- Products are preserved on the common finite analytic domain. -/
 theorem analyticLiftFunction_mul (f g : ℝ → ℝ) (z : SignSequence.{u}) (hz : IsFinite z)
     (hf : AnalyticAt ℝ f (standardPart z)) (hg : AnalyticAt ℝ g (standardPart z)) :
@@ -183,6 +191,14 @@ theorem analyticLiftFunction_add (f g : ℂ → ℂ) (z : Surcomplex.{u}) (hz : 
   rw [analyticLiftFunction_of_domain (f + g) z hz (hf.add hg),
     analyticLiftFunction_of_domain f z hz hf, analyticLiftFunction_of_domain g z hz hg,
     analyticLift_add]
+
+/-- Negation is preserved on the finite analytic domain. -/
+theorem analyticLiftFunction_neg (f : ℂ → ℂ) (z : Surcomplex.{u}) (hz : IsFinite z)
+    (hf : AnalyticAt ℂ f (standardPart z)) :
+    analyticLiftFunction (-f) z = -analyticLiftFunction f z := by
+  rw [analyticLiftFunction_of_domain (-f) z hz hf.neg,
+    analyticLiftFunction_of_domain f z hz hf]
+  simp only [analyticLift, analyticTaylorEvaluation, Analytic.taylorSeries_neg, map_neg]
 
 /-- Products are preserved on the common finite analytic domain. -/
 theorem analyticLiftFunction_mul (f g : ℂ → ℂ) (z : Surcomplex.{u}) (hz : IsFinite z)
