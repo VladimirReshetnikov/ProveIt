@@ -401,6 +401,12 @@ Every positive surreal has a unique positive natural root. Every nonzero
 surcomplex has exactly `n` roots of positive degree `n`, with the explicit
 polar formula; roots of unity are exactly the embedded ordinary complex
 ones. The regular polygon side formula holds at every positive radius.
+The rational Cayley chart covers every actual direction except `-1`, with
+inverse half-angle tangent; its projective extension supplies that point and
+transports homogeneous addition to direction multiplication. Infinite surreal
+parameters give precisely the affine directions infinitesimally close to `-1`,
+while never equaling the projective point itself. This includes the explicit
+parameter `omega`.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual

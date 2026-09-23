@@ -39,4 +39,10 @@ theorem finite_pow {x : SignSequence.{u}} (hx : IsFinite x) (n : ℕ) : IsFinite
   | zero => simpa only [pow_zero] using finite_one
   | succ n ih => simpa only [pow_succ] using finite_mul ih hx
 
+/-- A nonzero actual surreal has infinitesimal reciprocal exactly when it is infinite. -/
+theorem infinitesimal_inv_iff_not_finite {x : SignSequence.{u}} (hx : x ≠ 0) :
+    IsInfinitesimal x⁻¹ ↔ ¬ IsFinite x := by
+  rw [infinitesimal_iff_leadingExponent_neg (inv_ne_zero hx), leadingExponent_inv,
+    finite_iff_leadingExponent_nonpos hx, not_le, neg_lt_zero]
+
 end Surreal.Foundations.SignSequence
