@@ -812,3 +812,15 @@ source labels resolve, and all 972 local Markdown destinations in 108 files
 resolve. This completes the Sections 2–17 main-text review; remaining imports
 and source/provenance reconciliation still require work. No new probability
 Lean formalization is claimed.
+
+Synchronization through `b6c2493` incorporates `6437ec3`/`f16a616`.
+The inverse-sine endpoint module proves inward difference quotients exceed
+every fixed actual surreal bound, including infinite bounds, and excludes
+both one-sided endpoint derivatives and ambient fine derivatives. Its root
+import and the corresponding source scope were checked. No manuscript source
+changed in this merge. The combined default build passes 3,977 jobs and audits
+7,127 declarations using only `propext`, `Classical.choice` and `Quot.sound`.
+All 2,545 cited source labels resolve; the independent index still checks
+2,298 entries in 48 sources, and all 973 local Markdown destinations in 108
+files resolve. The reviewed probability source and 53-page PDF are preserved;
+this integration adds no Lean mapping for that report.
