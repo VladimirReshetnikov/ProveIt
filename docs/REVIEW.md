@@ -3340,6 +3340,50 @@ passes 4,388 jobs; its axiom audit accepts 14,747 declarations with only
 Euler proof review remains manuscript work; their unmapped results still
 await Lean proofs.
 
+## Omnific squarefree and Weierstrass proof review
+
+The maintained Section 16.4 now has a proof review through singular
+cubic families. The positive-support degree argument handles the
+quadratic endpoint without assuming a divisible or nonzero exponent
+group. Differential division now explicitly requires an ordinary
+integer `m ≥ 1`. The cubic certificate distinguishes the identity valid
+at all discriminants from the normalization requiring `Δ₀ ≠ 0`, and
+its proof establishes squarefreeness in both directions.
+
+A factor-of-two error in the contraction comparison is corrected:
+the assembled squarefree proof uses the contraction of `dx/y`, whereas
+the direct cubic proof uses that of `dx/(2y)`. The targeted comparison
+with source C13 confirms that its own normalization was consistent.
+The rewritten proof explains regularity on two covering affine opens,
+the projective coordinate change for general Weierstrass models, and
+the zero-parameter case of the singular family. General geometric
+foundations remain imported; the two-ring principle and later
+geometric proofs remain outside this review.
+
+Exactly three of 200 standard statement texts change: differential
+division, the cubic proposition and the short Weierstrass corollary,
+whose integer and Gaussian specializations now repeat the discriminant
+hypothesis explicitly; all 416 labels and existing
+result numbers are preserved. C13 and C14's finite verifiers pass
+12,874 and 3,440 assertions and reproduce their recorded results apart
+from the Python version. These checks do not establish arbitrary Hahn
+support or geometric claims. The reviewed squarefree and Weierstrass
+results remain **Pending** in Lean.
+
+Synchronization through `40a3990` adds the actual omnific ordinary
+residue rings and integer-divisor rigidity. Their source statements
+were checked against the new mappings; the report and catalogue now
+include that coverage. `LEAN_NUM_THREADS=2 lake build` passes 4,393
+jobs and audits 14,779 declarations with only `propext`, `Classical.choice`
+and `Quot.sound`.
+
+Clean three-pass builds produce a 177-page article and 32-page catalogue,
+with no warnings, unresolved references or box diagnostics. Article
+pages 99–102 and 128 and catalogue page 9 were visually inspected.
+The independent inventory validates 3,650 standard results in 60 reports;
+all 4,188 cited source references and 1,535 local Markdown destinations
+resolve. The root README and exact review boundaries are refreshed.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

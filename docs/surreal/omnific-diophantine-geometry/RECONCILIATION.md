@@ -9,15 +9,16 @@ Subsequent passes review the newly added Sections 11–13 from sources 06–07.
 Further passes review all of Section 15 from sources 08–09 and the
 Gaussian-fiber and étale-norm additions in Section 6 from sources 07 and 13.
 A further pass reviews source 07's quartic in Section 10 and the
-elementary ring and Euler subsections 16.2–16.3. The rest of Sections
-16–18, their pointers in Sections 6, 7 and 14, and Sections 20–21 remain
+elementary ring and Euler subsections 16.2–16.3. The subsequent pass
+reviews the squarefree certificate and Weierstrass applications in
+Section 16.4. The rest of Sections 16–18, their pointers in Sections 6, 7 and 14, and Sections 20–21 remain
 outside the completed proof review.
 It does **not** certify integration of every result in the thirteen manuscripts
 or review of all later proofs and imported classical results. Section numbers
 below are those current when each pass was made; the last section gives the
 present numbering. The geometric curve proofs and all of Sections 17–18
-remain outside these passes; only the elementary ring/Euler prerequisites
-in Section 16 are reviewed.
+remain outside these passes; the review of Section 16 extends through
+the squarefree and Weierstrass arguments, before the two-ring principle.
 
 ## Recoverable sources
 
@@ -701,3 +702,61 @@ are preserved. These elementary results and the new residue identity are
 curve pointers, full source comparison and remaining imported foundations
 still require review. The source-07 finite verifier reproduces its recorded
 output exactly; that does not prove the arbitrary-support statements.
+
+## Squarefree certificate and Weierstrass proof review
+
+The review now covers the maintained Section 16.4: Lemma 16.5,
+Theorem 16.6, Remark 16.7, Proposition 16.8, Corollaries 16.9–16.10
+and Proposition 16.11, with their examples and boundary discussion.
+The degree proof uses the positive-support ideal, including the corner
+`m = d = 2`, and works for every ordered abelian exponent group. The
+alternative unit proof and the singular polynomial families were checked
+as well. No nontriviality or divisibility of the exponent group is needed.
+
+Three standard statements needed clarification. Differential division now
+specifies an ordinary integer `m ≥ 1`, so the polynomial exponent `m−1`
+is defined. The cubic proposition now separates the polynomial identity
+valid at every discriminant from the normalized differential requiring
+`Δ₀ ≠ 0`, and states and proves the squarefreeness equivalence. The proof
+obtains the unnormalized derivative identity directly from the polynomial
+certificate, including at `Δ₀ = 0`. The short Weierstrass corollary now repeats
+the same nonvanishing condition for its integer and Gaussian integer
+specializations. The final proper-class consequence explicitly concerns
+the short integral models parametrized in the preceding proposition.
+
+The paragraph identifying the differential contraction had a factor-of-two
+error. In the assembled squarefree proof, `h = Uy∂x + 2W∂y` contracts
+`dx/y`, not half that form. The direct cubic proof now calls its element
+`g = h/2`, the contraction of `dx/(2y)`. This was compared with source
+C13's `eq:hcertificate`, `eq:elliptich` and its geometric explanation,
+recovered from `c6359e4^:docs/new/omnific_differential_rigidity.zip`, member
+`omnific_differential_rigidity/omnific_differential_rigidity.tex`.
+C13 consistently uses the half-form;
+the mismatch was in the assembly. This targeted comparison does not
+constitute a full reconciliation of sources C10–C15.
+
+The regular differential is now described on the covering opens `y ≠ 0`
+and `P′(x) ≠ 0`, with respective expressions `dx/y` and `2dy/P′(x)`.
+For general Weierstrass models the proof displays the invertible projective
+coordinate change and explains why a repeated root over the algebraic
+closure would be singular. The plane-curve derivative criterion was
+checked against [Stacks, Section 53.9](https://stacks.math.columbia.edu/tag/0BYA)
+and is cited; its general geometric foundations are imported. Constant
+descent is performed in the ambient field before intersecting with the
+integer or Gaussian integer ring. The singular-cubic proof now handles
+`a = b = 0` before dividing by `a`.
+
+All 200 standard results and 416 labels are retained. Exactly three standard
+statement texts change: `odg:cr:lem:division`, `odg:cr:prop:cubic` and
+`odg:cr:cor:weierstrass`; the other 197 are unchanged. Their Lean status remains **Pending**.
+The two-ring principle and later geometric proofs, curve pointers and
+remaining source reconciliation still require review.
+
+The delivered C13 and C14 verifiers were rerun with SymPy 1.14.0:
+12,874 and 3,440 finite assertions pass, respectively. Their reports
+match the delivered records except for the Python version. These checks
+cover finite identities and examples, not arbitrary Hahn supports or
+the geometric theorems. The combined Lean build after merging `40a3990`
+passes 4,393 jobs and audits 14,779 declarations using only `propext`,
+`Classical.choice` and `Quot.sound`; this validates the incoming residue
+and divisor formalizations, not the pending squarefree theorem.
