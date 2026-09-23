@@ -13,7 +13,7 @@ source, and nothing here was selected out of a larger body of work.
 ```
 article.tex        the report, standalone LaTeX with an internal bibliography
                    (delivered as surreal_probability.tex, renamed on placement)
-article.pdf        the compiled report, 47 pages
+article.pdf        the compiled report, 49 pages
 README.md          this guide
 RESEARCH_AUDIT.md  the manuscript's own repository, literature and evidence audit, as delivered
 code/verify.py     exact finite checks in Q(t) (Python 3.10+, standard library only)
@@ -36,17 +36,21 @@ contains no numbered statement or equation, so every theorem, equation and
 section number of the manuscript is unchanged. The numbers below are checked
 against the build of `article.tex` in this directory.
 
-The current proof review covers Sections 2–9: scalar workspaces, standard
+The current proof review covers Sections 2–11: scalar workspaces, standard
 part, finite probability, conditional shadows, Bayesian updates, logits,
-softmax, finite information theory, Gibbs laws, smoothing, logistic separation
-and finite stochastic processes. It corrects the point-weight event-algebra hypothesis,
+softmax, finite information theory, Gibbs laws, smoothing, logistic separation,
+finite stochastic processes, infinite-addition conventions, normalized
+hierarchies and their integration and posterior kernels. It corrects the point-weight event-algebra hypothesis,
 the joint-normalizer condition for successive updates, neutral evidence and
 the distinction between sufficient and necessary conditioning precision.
 It also separates the attained interior logarithmic-score minimum from the
 unattained boundary infimum over strictly positive predictions.
 Smoothing now distinguishes positive prior weights from posterior support,
 and optional stopping states adaptation and stopping-time measurability.
-Sections 10 onward and the remaining imports still require review; see the
+The hierarchy review makes common supports, uniform bounds and coefficientwise
+convergence explicit and gives a posterior with nonintegrable coefficients
+before density cancellation. Sections 12 onward and the remaining imports
+still require review; see the
 collection's [review record](../../REVIEW.md).
 
 ## What the report claims
@@ -311,7 +315,7 @@ the pin and the delivered 35-page PDF.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-This build gives 47 pages (a title page, two contents pages and 44 numbered
+This build gives 49 pages (a title page, two contents pages and 46 numbered
 pages), with no errors, no undefined or multiply-defined references or
 citations, no duplicate PDF destinations, and no LaTeX, package or box warnings.
 No bibliography database or external figure is needed.
@@ -545,3 +549,50 @@ index checks 2,250 entries across all 46 assembled reports, and all 930 local
 Markdown destinations in 97 files resolve. These integration checks do not
 constitute proof review of the new reports. The finite-probability source and
 47-page PDF remain unchanged; review of Sections 10 onward is still pending.
+
+The fifth finite-probability pass reviews Sections 10–11. Fine convergence
+retains its relative-smallness hypothesis and is distinguished from a discrete
+full carrier. The strong geometric law now has explicit event coefficients,
+local finiteness under disjoint regrouping and exact tail masses. The
+coefficientwise definition states finite total variation and one support for
+all events, matching the measure report. The normalized hierarchy proof
+expands the reciprocal, the common product support, the finite coefficient
+measure formula and its total-variation bound, including the single-component
+case. Conditional shadows explicitly handle a zero numerator residue.
+
+Real-observable expectation uses a uniform real bound; the leading component's
+essential bound alone fails on exceptional events, as an endpoint indicator
+shows. Dominated convergence permits component-dependent null sets and is
+coefficientwise only. The Fubini construction now covers any two set-sized
+hierarchies in one value group, since their supports automatically satisfy
+the Hahn product lemma. The uncountable-support positivity counterexample
+has its scalar group and measure construction explicit; the countable-support
+boundary has a transfinite first-nonzero-coefficient proof and the correct
+finite-measure upper bound.
+
+For finite-hierarchy posterior kernels, the density versions and their common
+full-measure set are explicit. A finite union of positive-gap monoids supplies
+a common support for all observations, and the coefficient formulas prove
+measurability. The example with densities `2y`, `2(1−y)` on `(0,1)` gives
+posterior `t(1−y)/(y+t(1−y))`: its first coefficient `(1−y)/y` is nonintegrable,
+whereas multiplying by the observation density reconstructs `t/(1+t)`.
+The ordinary disintegration input was checked against Kallenberg, third
+edition, Theorem 8.5 in [Conditioning and Disintegration](https://doi.org/10.1007/978-3-030-61871-1_9),
+with the observation as conditioning variable and the state as Borel-valued
+variable. This verifies the imported scope, not a new surreal disintegration
+theorem or a priority claim.
+
+Validation: three-pass baseline and revised builds have no warnings, at 47 and
+49 pages; changed proof pages were visually inspected. All 114 label numbers
+and the five historical audit/code/data files are preserved. The copied
+verifier reproduces 2,145 assertions with JSON unchanged apart from Python
+version. Separate checks pass 29,716 exact `Q(t)` examples for geometric
+coefficients/regrouping, hierarchy shadows, product exponent collisions and
+posterior cancellation, plus 12 symbolic coefficient and integral identities.
+These finite checks do not establish transfinite support lemmas, countable
+measure extension or the uncountable integration theorem. The independent
+index checks all 2,250 entries across 46 reports, and all 930 local Markdown
+destinations in 97 files resolve. The Lean build passes 3,919 jobs and audits
+6,371 declarations using only `propext`, `Classical.choice` and `Quot.sound`.
+No new probability Lean coverage is claimed. Sections 12 onward and remaining
+imports are pending.
