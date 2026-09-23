@@ -230,6 +230,9 @@ import Surreal.Surcomplex.AngularDistance
 import Surreal.Surcomplex.AngularMetric
 import Surreal.Surcomplex.LocalAngularDistance
 import Surreal.Surcomplex.AngularDistanceSeries
+import Surreal.Surcomplex.InfinitesimalExponentialLeading
+import Surreal.Surcomplex.PhaseIsometry
+import Surreal.Surcomplex.RotationDisplacement
 import Surreal.Surcomplex.TrigonometricFineDerivative
 import Surreal.Surcomplex.TrigonometricOrder
 import Surreal.Surcomplex.TrigonometricLeading
