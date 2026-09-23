@@ -214,6 +214,26 @@ proved for constant normal operators. Part II's `σ_𝒜` refers to inversion
 in the row- and column-finite Hahn algebra on a different vector space.
 A prime in `σ_ℂ(T)'` denotes ordinary spectral accumulation, not a derivative.
 
+Part III's `Σ^𝔄_Γ(T)` is the algebra-relative spectrum of a constant element
+of a named nonzero unital complex algebra. Its `σ_{D,𝔄}(T)` is the
+**finite-index Drazin spectrum**: it excludes precisely those shifts with
+an invertible corner and a finite-index nilpotent corner. Generalized Drazin
+invertibility, which allows a quasinilpotent corner, is a different notion.
+The idempotents `P_nil` and `P_inv` select corners and need not be central
+in the whole algebra; each corner uses its own idempotent as identity.
+The local resolvent here is `(S − u1)⁻¹`, whose constant Laurent coefficient
+is `S^D`; changing to `(u1 − S)⁻¹` changes that coefficient's sign.
+
+Keep the Drazin index `ν` separate from the polynomial ramification index
+`e_a = ord_{X=a}(p(X) − p(a))`. The former controls the shifted inverse's
+valuation `−ν v(ε)` for `ε ≠ 0` infinitesimal; the latter controls the centered image of a halo:
+zero together with nonzero infinitesimals of valuation in `e_a Γ`.
+That image is a scalar-root condition, not a change in invertibility of
+an old parameter when the exponent workspace grows. `v_𝔄` is the leading
+support exponent of an operator series, with `v_𝔄(0)=∞`; multiplication is
+only superadditive when the coefficient algebra has zero divisors, while
+multiplication by a nonzero scalar has exact additive valuation.
+
 Keep the three size notions distinct: `‖T‖_H` is an ordinary real operator
 norm, `‖x‖` is a positive Hahn scalar, and `ρ(x) = exp(−v(x))` is the real
 valuation size when `Γ ⊆ ℝ`. A field-valued operator bound need not have a
