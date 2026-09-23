@@ -164,6 +164,11 @@ The proved formula includes the negative-infinitesimal boundary correction;
 for example, the floor of a negative infinitesimal is `-1`. A nonzero
 ordinary integer polynomial has exactly its ordinary integer roots in the
 omnific ring; every infinite omnific integer is transcendental over `ℝ`.
+For every nonzero ordinary integer `n`, divisibility and residues modulo `n`
+depend only on the constant term: `Oz/nOz ≅ ℤ/nℤ`. The purely infinite ideal
+is exactly the intersection of all positive integer multiples, and also of
+all positive powers of any one ordinary prime. A divisor of a nonzero
+ordinary integer must itself be an ordinary integer divisor.
 Higher Diophantine and set-sized quotient results remain pending; source
 review is distinct from checked formalization.
 

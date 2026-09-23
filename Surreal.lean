@@ -571,12 +571,15 @@ import Surreal.Surcomplex.FejerRieszCoefficients
 import Surreal.Surcomplex.FejerRieszCoefficientBounds
 import Surreal.HahnSeries.NonpositiveSupport
 import Surreal.Algebra.CoefficientPullback
+import Surreal.Algebra.CoefficientPullbackDivisibility
 import Surreal.Foundations.OmnificIntegers
 import Surreal.Surcomplex.NonnegativeSupportRing
 import Surreal.Foundations.OmnificDegree
 import Surreal.Foundations.OmnificUnits
 import Surreal.Foundations.OmnificFloor
 import Surreal.Foundations.OmnificPolynomialRoots
+import Surreal.Foundations.OmnificResidues
+import Surreal.Foundations.OmnificIntegerDivisors
 import Surreal.Surcomplex.OmnificDegree
 import Surreal.Surcomplex.OmnificUnits
 import Surreal.Surcomplex.NormalFormDegree
