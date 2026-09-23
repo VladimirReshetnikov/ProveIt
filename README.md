@@ -395,6 +395,12 @@ standard-part direction and an additive infinitesimal angle, recovered by
 the strong logarithm. Positive moduli times these angle classes form the
 multiplicative group of all nonzero surcomplex numbers, without any bound
 on their size.
+Directions have unique representatives in both `[0, 2π)` and `(-π, π]`,
+with actual endpoint inequalities deciding infinitesimal corrections.
+Every positive surreal has a unique positive natural root. Every nonzero
+surcomplex has exactly `n` roots of positive degree `n`, with the explicit
+polar formula; roots of unity are exactly the embedded ordinary complex
+ones. The regular polygon side formula holds at every positive radius.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual
