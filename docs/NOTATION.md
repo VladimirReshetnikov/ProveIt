@@ -267,6 +267,16 @@ truthful minimum only for an interior true law; boundary truths have an
 unattained entropy infimum in that prediction domain. Brier loss permits
 the full simplex, including its boundary.
 
+For smoothing at an arbitrary positive infinitesimal scale `t`, an unseen
+category satisfies `st(p_i/t) = a_i/N`. In Hahn coordinates its leading
+coefficient is `(a_i/N) lc(t)`, which reduces to `a_i/N` for a monomial with
+unit coefficient. A regular prior need not give a regular posterior: zero
+likelihoods remove categories. Sample sizes and path horizons in the finite
+probability results are ordinary integers. A bounded stopping time takes
+values in one such finite horizon; martingale values may be infinite scalars.
+The stopping-time symbol `T` is local to that subsection and is distinct from
+the preceding transition matrix.
+
 The word **finite** has several other explicit uses: a finite-dimensional
 algebra, a finite map, finitely many terms, and finite birthday. The
 [graph report](surreal/canonical-forms-need-not-be-subgraphs/surreal_graphs.tex)

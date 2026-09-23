@@ -401,6 +401,19 @@ Every positive surreal has a unique positive natural root. Every nonzero
 surcomplex has exactly `n` roots of positive degree `n`, with the explicit
 polar formula; roots of unity are exactly the embedded ordinary complex
 ones. The regular polygon side formula holds at every positive radius.
+The rational Cayley chart covers every actual direction except `-1`, with
+inverse half-angle tangent; its projective extension supplies that point and
+transports homogeneous addition to direction multiplication. Infinite surreal
+parameters give precisely the affine directions infinitesimally close to `-1`,
+while never equaling the projective point itself. This includes the explicit
+parameter `omega`.
+Inverse sine and cosine are defined and uniquely invert their actual closed
+angle intervals, including inputs infinitesimally close to either endpoint.
+Inverse tangent is an increasing bijection from all surreal slopes onto its
+finite open angle interval, with the square-root coordinate formulas and
+positive-input reciprocal complement identity. The inverse-sine half-angle
+formula holds at both endpoints. Tangent has fine derivative `1+tan^2`;
+fine derivatives of the inverse functions remain pending.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual

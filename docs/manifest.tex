@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={The surreal and surcomplex reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of forty-four research packages on surreal and surcomplex numbers}}
+  pdfsubject={Catalogue of forty-six research packages on surreal and surcomplex numbers}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -59,7 +59,7 @@
 
 \begin{center}
  {\LARGE\bfseries\color{Ink} The surreal and surcomplex reports}\\[8pt]
- {\large Forty-four independent mathematical research packages,\\
+ {\large Forty-six independent mathematical research packages,\\
  on the surreal field, its algebraic closure, its quaternion algebra,\\
  their reach into physics, and the foundations and computation of all of them}\\[10pt]
  {\small September 2026}
@@ -70,7 +70,7 @@
 \section*{Scope}
 \addcontentsline{toc}{section}{Scope}
 
-This document catalogues the forty-four research packages stored under
+This document catalogues the forty-six research packages stored under
 \dir{docs}.  Each entry names the problem the report attacks, the result it
 claims, and the delivery it arrived in.
 
@@ -96,11 +96,13 @@ forms.  One, under \dir{docs/surquaternions}, leaves
 commutativity behind for Hamilton's division algebra $\mathbb{H}_{\No}$ over
 $\No$.  One, under \dir{docs/physics}, is the only report here whose subject is
 not mathematics: it asks what surreal scalars do and do not buy in general
-relativity, and answers negatively.  The last three, under
+relativity, and answers negatively.  The last five, under
 \dir{docs/foundations-and-computation}, stand outside all of these: they are
 about the subject rather than inside it, asking in what foundation this
-mathematics legally lives, how one computes with it exactly, and which surreal
-numbers are computable at all.
+mathematics legally lives, how one computes with it exactly, which surreal
+numbers are computable at all, how the surreal field of one set-theoretic
+universe looks from a larger one, and which universe of hereditary sets a
+birthday cutoff remembers.
 
 These reports were previously part of a larger collection, in a repository
 whose subject was elsewhere; they were moved here with their git history.
@@ -1642,11 +1644,15 @@ the metric alone.}  No priority claim; not refereed.}
 
 \section{Foundations and computation}
 
-Three reports that take the rest of the collection as their object.  None
-belongs under \dir{surreal} or \dir{surcomplex}, because all three range over
-the whole subject.  Each is a merge of three manuscripts delivered together,
-the first two on 21~September 2026, and in those two the hazard was not overlap
-but a collision of near-identical names.
+Five reports that take the rest of the collection, or the surreal field as a
+set-theoretic object, as their object.  None belongs under \dir{surreal} or
+\dir{surcomplex}: the first three range over the whole subject, and the last two
+are set theory about $\No$ rather than algebra or analysis inside it.  Each of
+the first three is a merge of three manuscripts delivered together, the first
+two on 21~September 2026, and in those two the hazard was not overlap but a
+collision of near-identical names.  The last two are merges of four and five
+manuscripts delivered on 22~September 2026, each proving one spine several
+times under different hypotheses.
 
 \entry{Foundations for surreal and surcomplex mathematics}
 {foundations-and-computation/foundations}
@@ -1735,6 +1741,63 @@ reduction; the synthetic halting fixtures in the original programs do not
 compute the halting set; the package implements neither arbitrary computable
 reals nor arbitrary infinite surreal arithmetic; and there is no Lean-checked
 formalization and no literature-wide priority claim.}
+
+\entry{Surreal fields across set-theoretic universes}
+{foundations-and-computation/surreal-fields-across-universes}
+{article.pdf}{four manuscripts, delivered 22~September 2026}
+{How does the surreal field of an inner model look from a larger universe with
+the same ordinals?  For transitive $M\subseteq N$, the old field $\No^M$ is an
+elementary subfield of $\No^N$, yet its saturation, counted in $N$, can fail:
+for every uncountable cardinal $\kappa$ of $N$ it is externally
+$\kappa$-saturated exactly when $N$ adds no ordinal-valued sequence of length
+below $\kappa$, and one small side of a cut already suffices; at $\omega$ the
+criterion is instead that no reals are added.  A shortest new sequence, of
+regular length $\delta$, yields an explicitly decoded omitted cut of character
+$(\delta,\delta)$, and every externally set-presented gap is the trace of a
+unique fresh sign sequence all of whose proper prefixes are old.  The first new
+birthday $\beta$ satisfies $\delta\le\operatorname{cf}\beta\le\beta$, and Cohen,
+closed and Prikry forcings are computed.  The pure field $\No^M[i]$ stays
+saturated over every set of parameters and, under Global Choice, is isomorphic
+to $\No^N[i]$; naming conjugation restores the real spectrum, which gives real
+forms of one algebraically closed class field that are not conjugate to the
+standard one and have no set-sized cofinal subset.  Outer sets of old numbers
+remain closed and uniformly discrete, and a set-complete class Boolean algebra
+in which reverse simplicity is dense answers a question from Berenbeim's 2020
+notes.  \emph{Merged from four manuscripts proving one spine; the interval-tree
+and sign-block-code constructions are kept as second routes, and results under
+plain ZFC are kept apart from those using Global Choice.}  The real-form results
+continue, but do not settle, the real-form question of
+\nolinkurl{surcomplex/surcomplex-field-automorphisms}.  Three finite suites
+check sign codes and interval codes; a finite check proves no infinite theorem.
+Not refereed, no Lean verification, priority not certified.}
+
+\entry{Birthday cutoffs and hereditary sets}
+{foundations-and-computation/birthday-cutoffs-and-hereditary-sets}
+{article.pdf}{five manuscripts, delivered 22~September 2026}
+{Which set universe does a bounded piece of surreal arithmetic remember?  The
+ordered field is real closed and sees nothing, but once birthday is named, the
+surreals born below an epsilon number $\lambda$ interpret the hereditary sets
+$H_{\kappa(\lambda)}$, with $\kappa(\lambda)$ the least cardinal not below
+$\lambda$, and are bi-interpretable with $(H_{\kappa(\lambda)},\in,\lambda)$;
+already $\No_{<\varepsilon_0}$ recovers every hereditarily countable set.  Sign
+bits are read from order and birthday, a bounded ordinal pairing packs
+relations, and small certificates for Conway arithmetic avoid assuming
+Replacement in $H_\kappa$.  Consequences: an exact classification of elementary
+inclusions between cutoffs, sentences for Power Set, Replacement and worldly
+cutoffs, the exact range of the coding without Choice, new-subset detectors and
+the first new birthday of an outer model, a Prikry extension that leaves a
+birthday-enriched field unchanged while singularizing its cutoff (from a
+measurable cardinal), and, for surcomplex cutoffs with conjugation and a
+coordinate birthday, the orientation obstruction and two lifts of every real
+elementary embedding.  The full-class bi-interpretation with the set universe
+is the theorem announced by Chen--Hamkins--Yang, recorded in
+\nolinkurl{foundations-and-computation/foundations}; it is printed with a
+written proof as that announced theorem, not as a new result.  \emph{Merged
+from five manuscripts proving one spine at different cutoff classes; the most
+general is the base, and two arithmetic certificates and two set codings are
+kept as different proofs.}  Five finite suites pass; a finite check proves no
+infinite theorem.  Not refereed, no Lean verification, priority not
+certified.}
 
 
 \end{document}
