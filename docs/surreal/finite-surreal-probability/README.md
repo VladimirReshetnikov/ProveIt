@@ -530,3 +530,18 @@ The independent index still checks 2,181 entries in 46 current sources;
 all 910 local Markdown destinations in 97 files resolve. The probability
 source and 47-page PDF are unchanged by the merge, which adds no probability
 formalization or review of its later sections.
+
+A second synchronization through `9189e9d` incorporates `061d8f2` and
+batch 21's assembly/catalogue/index commits. The actual inverse sine and
+cosine cover their closed surreal input intervals, inverse tangent covers
+all surreal slopes, and tangent's fine derivative is proved; inverse-function
+fine derivatives remain pending. The merged build passes 3,919 jobs and
+its axiom audit checks 6,371 declarations with only the three allowed axioms.
+
+The two new foundations reports are now assembled and catalogued, with
+61-page and 50-page PDFs and 136 indexed standard results. Their 26 delivered
+audit/code/data files remain byte-identical to placement. The independent
+index checks 2,250 entries across all 46 assembled reports, and all 930 local
+Markdown destinations in 97 files resolve. These integration checks do not
+constitute proof review of the new reports. The finite-probability source and
+47-page PDF remain unchanged; review of Sections 10 onward is still pending.
