@@ -572,3 +572,9 @@ import Surreal.HahnSeries.NonpositiveSupport
 import Surreal.Algebra.CoefficientPullback
 import Surreal.Foundations.OmnificIntegers
 import Surreal.Surcomplex.NonnegativeSupportRing
+import Surreal.Foundations.OmnificDegree
+import Surreal.Foundations.OmnificUnits
+import Surreal.Foundations.OmnificFloor
+import Surreal.Surcomplex.OmnificDegree
+import Surreal.Surcomplex.OmnificUnits
+import Surreal.Surcomplex.NormalFormDegree

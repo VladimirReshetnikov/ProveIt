@@ -3305,6 +3305,23 @@ been inspected. The independent inventory validates 3,650 statements in
 Markdown destinations pass. The previous 4,380-job Lean build and
 14,672-declaration axiom audit remain applicable to the unchanged library.
 
+## Combined validation with omnific units and floor
+
+After committing the quartic/Euler review as `6a2d12d`, synchronization
+through `de84022` adds actual omnific degree laws, unit and finite-element
+classifications, discrete ordering and the exact omnific floor. The source
+statements were compared with their new mappings; the manuscript bodies
+are unchanged by those incoming commits. Coverage notes now include
+these proved results while retaining the pending quartic and geometric
+claims. Clean three-pass builds retain the 176-page article and 32-page
+catalogue. The 3,650-statement inventory, 4,185 source references and
+1,527 local Markdown destinations pass.
+
+`LEAN_NUM_THREADS=2 lake build` passes 4,386 jobs, and the axiom audit
+accepts 14,739 declarations with only `propext`, `Classical.choice` and
+`Quot.sound`. This build verifies the merged library, not the remaining
+manuscript proofs.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
