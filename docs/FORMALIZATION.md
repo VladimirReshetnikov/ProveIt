@@ -3294,35 +3294,35 @@ Mappings cover only the hypotheses and clauses they state.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Theorem | `duals:thm:overview-completion` (line 196) | Completion and enlargement; proved in \cref{duals:sec:completion,duals:sec:enlargement} |
-| Theorem | `duals:thm:overview-duals` (line 218) | Strong maps and the continuous dual; proved in \cref{duals:sec:strong,duals:sec:continuous} |
-| Lemma | `duals:lem:support` (line 398) | Classical support facts |
-| Lemma | `duals:lem:continuous-shift` (line 473) | Continuity is a uniform valuation-shift bound |
-| Theorem | `duals:thm:strong` (line 528) | Global-support classification |
-| Corollary | `duals:cor:strong-calculus` (line 610) | Operator calculus and automatic continuity |
-| Proposition | `duals:prop:algebraic` (line 678) | Finite total coefficient rank |
-| Theorem | `duals:thm:completion` (line 703) | Finite rank below every cut |
-| Lemma | `duals:lem:group` (line 769) | An order-theoretic alternative |
-| Theorem | `duals:thm:cyclic` (line 799) | The cyclic-group boundary |
-| Theorem | `duals:thm:cofinality-completion` (line 828) | The cofinality boundary for nontrivial completion |
-| Proposition | `duals:prop:spherical` (line 905) | Spherical completeness of the full Hahn space |
-| Theorem | `duals:thm:HB` (line 969) | Contractive scalar extension |
-| Lemma | `duals:lem:E-extension` (line 1061) | Extension from constants to their algebraic span |
-| Theorem | `duals:thm:restriction` (line 1084) | Exact restriction sequence |
-| Theorem | `duals:thm:separation` (line 1122) | Separation of the completion defect |
-| Corollary | `duals:cor:ghost-boundary` (line 1174) | Exact existence boundary |
-| Theorem | `duals:thm:twofailures` (line 1195) | Two failures, for every noncyclic group |
-| Corollary | `duals:cor:second-quotient` (line 1241) | A second quotient obstruction |
-| Theorem | `duals:thm:continuous-strong` (line 1278) | When continuous and strong duals agree |
-| Proposition | `duals:prop:norm` (line 1357) | Norm and valuation; standard coefficient extension |
-| Proposition | `duals:prop:order-bound` (line 1423) | Order bounds for all continuous maps |
-| Theorem | `duals:thm:infinite-bounds` (line 1473) | An ordinary unbounded functional has precisely infinite bounds |
-| Theorem | `duals:thm:riesz` (line 1515) | Coefficientwise Riesz criterion and exact first gap |
-| Corollary | `duals:cor:three-duals` (line 1596) | The three-dual trichotomy |
-| Proposition | `duals:prop:dimension` (line 1623) | Untitled |
-| Theorem | `duals:thm:hyperplane` (line 1686) | A closed, strongly complemented hyperplane with zero orthogonal complement |
-| Theorem | `duals:thm:distance` (line 1759) | Exact lower-bound cut for the distance |
-| Theorem | `duals:thm:basechange` (line 1815) | Cofinal preservation and noncofinal collapse |
+| Theorem | `duals:thm:overview-completion` (line 195) | Completion and enlargement; proved in \cref{duals:sec:completion,duals:sec:enlargement} |
+| Theorem | `duals:thm:overview-duals` (line 217) | Strong maps and the continuous dual; proved in \cref{duals:sec:strong,duals:sec:continuous} |
+| Lemma | `duals:lem:support` (line 397) | Classical support facts |
+| Lemma | `duals:lem:continuous-shift` (line 472) | Continuity is a uniform valuation-shift bound |
+| Theorem | `duals:thm:strong` (line 527) | Global-support classification |
+| Corollary | `duals:cor:strong-calculus` (line 609) | Operator calculus and automatic continuity |
+| Proposition | `duals:prop:algebraic` (line 677) | Finite total coefficient rank |
+| Theorem | `duals:thm:completion` (line 702) | Finite rank below every cut |
+| Lemma | `duals:lem:group` (line 768) | An order-theoretic alternative |
+| Theorem | `duals:thm:cyclic` (line 798) | The cyclic-group boundary |
+| Theorem | `duals:thm:cofinality-completion` (line 827) | The cofinality boundary for nontrivial completion |
+| Proposition | `duals:prop:spherical` (line 904) | Spherical completeness of the full Hahn space |
+| Theorem | `duals:thm:HB` (line 968) | Contractive scalar extension |
+| Lemma | `duals:lem:E-extension` (line 1060) | Extension from constants to their algebraic span |
+| Theorem | `duals:thm:restriction` (line 1083) | Exact restriction sequence |
+| Theorem | `duals:thm:separation` (line 1121) | Separation of the completion defect |
+| Corollary | `duals:cor:ghost-boundary` (line 1173) | Exact existence boundary |
+| Theorem | `duals:thm:twofailures` (line 1194) | Two failures, for every noncyclic group |
+| Corollary | `duals:cor:second-quotient` (line 1240) | A second quotient obstruction |
+| Theorem | `duals:thm:continuous-strong` (line 1277) | When continuous and strong duals agree |
+| Proposition | `duals:prop:norm` (line 1356) | Norm and valuation; standard coefficient extension |
+| Proposition | `duals:prop:order-bound` (line 1422) | Order bounds for all continuous maps |
+| Theorem | `duals:thm:infinite-bounds` (line 1472) | An ordinary unbounded functional has precisely infinite bounds |
+| Theorem | `duals:thm:riesz` (line 1514) | Coefficientwise Riesz criterion and exact first gap |
+| Corollary | `duals:cor:three-duals` (line 1595) | The three-dual trichotomy |
+| Proposition | `duals:prop:dimension` (line 1622) | Untitled |
+| Theorem | `duals:thm:hyperplane` (line 1685) | A closed, strongly complemented hyperplane with zero orthogonal complement |
+| Theorem | `duals:thm:distance` (line 1758) | Exact lower-bound cut for the distance |
+| Theorem | `duals:thm:basechange` (line 1814) | Cofinal preservation and noncofinal collapse |
 
 ### hidden-negative-hermitian-directions
 
@@ -3377,38 +3377,48 @@ Source: [surreal/transcendence-over-bounded-support/article.tex](surreal/transce
 Statements remain **pending unless explicitly mapped** in the implementation table.
 Mappings cover only the hypotheses and clauses they state.
 
+The documentation review covers Sections 1–10 and the conditional implication
+in Appendix A. It expands the support, projection, coding, rank and normalized
+GCD arguments and uses a finite Vandermonde proof for the explicit factorial
+family. Convergence is stated for bounded initial truncations; at uncountable
+cofinality finite subsums fail to converge. The descent preview specifies the
+extended relation ideal, and the integer-grid lemma specifies a coefficient
+field. The cited Hahn and rank-one imports were compared with their primary
+source; the GCD premise remains conditional. This mathematical review adds
+no Lean coverage. See [the review record](REVIEW.md).
+
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Theorem | `bst:thm:mainintro` (line 147) | Optimal-support independence; proved in Section~\ref{bst:sec:independence} |
-| Theorem | `bst:thm:descentintro` (line 169) | Cofinal coefficient--exponent descent; proved in Section~\ref{bst:sec:descent} |
-| Lemma | `bst:lem:bounds` (line 309) | Elementary support bounds |
-| Proposition | `bst:prop:localdensity` (line 330) | Localization and density |
-| Lemma | `bst:lem:cofinality` (line 365) | Untitled |
-| Lemma | `bst:lem:projection` (line 443) | Projection identity |
-| Theorem | `bst:thm:descent` (line 475) | Simultaneous descent |
-| Corollary | `bst:cor:relations` (line 515) | Intersection, relations, and algebraic degree |
-| Corollary | `bst:cor:onescale` (line 553) | One cofinal scale |
-| Lemma | `bst:lem:skeleton` (line 628) | Existence at the exact cofinality |
-| Lemma | `bst:lem:detection` (line 681) | Support-band detection |
-| Corollary | `bst:cor:onegap` (line 741) | A one-series version |
-| Lemma | `bst:lem:coding` (line 771) | Cofinal finite-pattern realization |
-| Lemma | `bst:lem:grid` (line 807) | Integer grids detect polynomials |
-| Theorem | `bst:thm:independent` (line 825) | The sharp support theorem |
-| Corollary | `bst:cor:optimal` (line 864) | Optimal cardinality and order type |
-| Corollary | `bst:cor:perturb` (line 883) | Arbitrary bounded perturbations |
-| Corollary | `bst:cor:balls` (line 896) | Independent families in every valuation ball |
-| Corollary | `bst:cor:exactcard` (line 927) | Cardinality-matched groups |
-| Corollary | `bst:cor:realgroup` (line 944) | Every nonzero real-exponent subgroup |
-| Theorem | `bst:thm:explicit` (line 980) | Explicit multiplicative-parameter family |
-| Theorem | `bst:thm:fieldcriterion` (line 1086) | Absence of a highest scale |
-| Corollary | `bst:cor:closedbase` (line 1121) | Closed coefficient fields at unbounded rank |
-| Proposition | `bst:prop:toprank` (line 1157) | Top-rank presentation |
-| Proposition | `bst:prop:supimport` (line 1185) | Imported rank-one support theorem |
-| Corollary | `bst:cor:units` (line 1196) | Units see exactly the highest rank |
-| Theorem | `bst:thm:actualreal` (line 1265) | A continuum of independent actual infinitesimals |
-| Theorem | `bst:thm:kappa` (line 1319) | Arbitrarily large, explicit-support surreal families |
-| Theorem | `bst:thm:gcddescent` (line 1639) | Normalized GCD descent |
-| Lemma | `bst:lem:characters` (line 1649) | Untitled |
+| Theorem | `bst:thm:mainintro` (line 148) | Optimal-support independence; proved in Section~\ref{bst:sec:independence} |
+| Theorem | `bst:thm:descentintro` (line 170) | Cofinal coefficient--exponent descent; proved in Section~\ref{bst:sec:descent} |
+| Lemma | `bst:lem:bounds` (line 323) | Elementary support bounds |
+| Proposition | `bst:prop:localdensity` (line 344) | Localization and density |
+| Lemma | `bst:lem:cofinality` (line 383) | Untitled |
+| Lemma | `bst:lem:projection` (line 463) | Projection identity |
+| Theorem | `bst:thm:descent` (line 495) | Simultaneous descent |
+| Corollary | `bst:cor:relations` (line 535) | Intersection, relations, and algebraic degree |
+| Corollary | `bst:cor:onescale` (line 576) | One cofinal scale |
+| Lemma | `bst:lem:skeleton` (line 655) | Existence at the exact cofinality |
+| Lemma | `bst:lem:detection` (line 709) | Support-band detection |
+| Corollary | `bst:cor:onegap` (line 773) | A one-series version |
+| Lemma | `bst:lem:coding` (line 804) | Cofinal finite-pattern realization |
+| Lemma | `bst:lem:grid` (line 844) | Integer grids detect polynomials |
+| Theorem | `bst:thm:independent` (line 863) | The sharp support theorem |
+| Corollary | `bst:cor:optimal` (line 910) | Optimal cardinality and order type |
+| Corollary | `bst:cor:perturb` (line 929) | Arbitrary bounded perturbations |
+| Corollary | `bst:cor:balls` (line 942) | Independent families in every valuation ball |
+| Corollary | `bst:cor:exactcard` (line 973) | Cardinality-matched groups |
+| Corollary | `bst:cor:realgroup` (line 990) | Every nonzero real-exponent subgroup |
+| Theorem | `bst:thm:explicit` (line 1026) | Explicit multiplicative-parameter family |
+| Theorem | `bst:thm:fieldcriterion` (line 1133) | Absence of a highest scale |
+| Corollary | `bst:cor:closedbase` (line 1168) | Closed coefficient fields at unbounded rank |
+| Proposition | `bst:prop:toprank` (line 1214) | Top-rank presentation |
+| Proposition | `bst:prop:supimport` (line 1251) | Imported rank-one support theorem |
+| Corollary | `bst:cor:units` (line 1266) | Units see exactly the highest rank |
+| Theorem | `bst:thm:actualreal` (line 1338) | A continuum of independent actual infinitesimals |
+| Theorem | `bst:thm:kappa` (line 1393) | Arbitrarily large, explicit-support surreal families |
+| Theorem | `bst:thm:gcddescent` (line 1746) | Normalized GCD descent |
+| Lemma | `bst:lem:characters` (line 1756) | Untitled |
 
 ### matrix-scaling-at-surreal-scales
 
@@ -3419,22 +3429,22 @@ Mappings cover only the hypotheses and clauses they state.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `scale:lem:neumann` (line 696) | Positive-support word finiteness |
-| Lemma | `scale:lem:evaluation` (line 721) | Finite-generator evaluation |
-| Theorem | `scale:thm:tree` (line 830) | Weighted tree interpolation |
-| Theorem | `scale:thm:existence` (line 938) | Uniform infinitesimal normalization |
-| Corollary | `scale:cor:gauge` (line 1011) | Untitled |
-| Lemma | `scale:lem:secant` (line 1065) | Exact secant identity |
-| Theorem | `scale:thm:sharp` (line 1103) | Sharp nonlinear tree-gap law |
-| Theorem | `scale:thm:coeffgain` (line 1172) | Coefficientwise gain |
-| Corollary | `scale:cor:remainder` (line 1220) | Finite-degree precision certificate |
-| Theorem | `scale:thm:bottleneck` (line 1243) | Bottleneck replacement formula |
-| Theorem | `scale:thm:chain` (line 1326) | Additive attenuation along the chain |
-| Proposition | `scale:prop:global` (line 1486) | Positive scaling over real closed fields |
-| Proposition | `scale:prop:cutbound` (line 1539) | A finite cut bound |
-| Corollary | `scale:cor:positivebranch` (line 1576) | The positive normalization is the local branch |
-| Theorem | `scale:thm:linear` (line 1615) | Basis-gap normalization |
-| Corollary | `scale:cor:descent` (line 1678) | Exact local support-group descent |
+| Lemma | `scale:lem:neumann` (line 699) | Positive-support word finiteness |
+| Lemma | `scale:lem:evaluation` (line 724) | Finite-generator evaluation |
+| Theorem | `scale:thm:tree` (line 833) | Weighted tree interpolation |
+| Theorem | `scale:thm:existence` (line 941) | Uniform infinitesimal normalization |
+| Corollary | `scale:cor:gauge` (line 1014) | Untitled |
+| Lemma | `scale:lem:secant` (line 1068) | Exact secant identity |
+| Theorem | `scale:thm:sharp` (line 1106) | Sharp nonlinear tree-gap law |
+| Theorem | `scale:thm:coeffgain` (line 1175) | Coefficientwise gain |
+| Corollary | `scale:cor:remainder` (line 1223) | Finite-degree precision certificate |
+| Theorem | `scale:thm:bottleneck` (line 1246) | Bottleneck replacement formula |
+| Theorem | `scale:thm:chain` (line 1329) | Additive attenuation along the chain |
+| Proposition | `scale:prop:global` (line 1489) | Positive scaling over real closed fields |
+| Proposition | `scale:prop:cutbound` (line 1542) | A finite cut bound |
+| Corollary | `scale:cor:positivebranch` (line 1579) | The positive normalization is the local branch |
+| Theorem | `scale:thm:linear` (line 1618) | Basis-gap normalization |
+| Corollary | `scale:cor:descent` (line 1681) | Exact local support-group descent |
 
 ### surcomplex-field-automorphisms
 

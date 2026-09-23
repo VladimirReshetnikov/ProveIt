@@ -138,6 +138,22 @@ measure criterion uses the scalar Jordan parts `ν_u⁺`, `ν_u⁻` of
 The null conditions quantify over every ordinary `u` and every measurable
 null set; the resulting matrix positivity quantifies over all Hahn vectors.
 
+In [bounded-support transcendence](surreal/transcendence-over-bounded-support/article.tex),
+`𝓑_G(K)` is the ring of `K`-coefficient Hahn series whose support is bounded
+above **in G**, and `𝓕_G(K) = Frac(𝓑_G(K))`. These are distinct from the
+full real Hahn field `F_Γ` and the tail-span report's full coefficient fields
+`B`, `B₀`. An unbounded geometric series may already lie in `𝓕_G(K)`.
+When `G` has no order unit, `𝓑_G(K)` itself is a field. The rank-one width
+used in the unit criterion takes a supremum in `ℝ` after passing to the
+highest Archimedean quotient, not a supremum in the original arbitrary group.
+
+For an increasing cofinal support `(a_α)_{α<κ}`, its bounded initial Hahn
+truncations have error valuation `a_β` and converge in the named workspace.
+If `κ` is uncountable, these truncations are generally infinite series.
+In this uncountable case, the net of finite subsums does not reach the neighborhood beyond `a_ω`,
+because a finite set omits some earlier coefficient. Thus strong summability
+and cofinal support do not alone imply convergence of finite subsums.
+
 ## Inner products and operator spectra
 
 The [finite-dimensional spectral report](surcomplex/spectral-theory/article.tex)
