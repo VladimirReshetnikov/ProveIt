@@ -7,7 +7,8 @@ This completes `trigonometry:thm:stability`, `trigonometry:eq:stabilitythreshold
 `trigonometry:eq:stabilityfirst` and `trigonometry:eq:stabilitysecond`.
 The derivative hypothesis and simplicity conclusion use native fine derivatives;
 uniqueness ranges over every actual surreal displacement in the indicated
-valuation neighborhood. The separate sharpness proposition remains pending.
+valuation neighborhood. The separate sharpness proposition is proved in
+`TrigonometricStabilitySharpness`.
 -/
 
 universe u

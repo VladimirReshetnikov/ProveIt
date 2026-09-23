@@ -305,8 +305,11 @@ for the exact trigonometric pullback in `x=2 tan(h/2)`. The inverse chart
 preserves valuation and has a finite cubic remainder, transferring both bounds
 to the actual angle `h`. The formal Fourier derivative is the native fine
 derivative, and the perturbed angular root is simple and unique throughout
-`v(h)>κ`. This completes the angular stability theorem; its separate
-sharpness examples remain pending.
+`v(h)>κ`. The sine-square witnesses also prove sharpness: for every positive
+surreal `κ` and every `σ>2κ`, constant perturbations attain both error bounds
+exactly. At `σ=2κ`, cancelling the constant term leaves no root in the original
+neighborhood. These complete the angular stability theorem and its sharpness
+proposition.
 In the Hahn theorem, the first correction coefficient is the negative error coefficient evaluated
 at the residue root, divided by the residue derivative; cancellation is allowed.
 The distinct complex residue roots also index unique cluster factors, with
