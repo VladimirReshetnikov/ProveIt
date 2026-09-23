@@ -389,19 +389,52 @@ The actual finite exponential maps onto the finite units with exact kernel
 and two finite angles give the same phase exactly modulo ordinary `2πℤ`.
 Each has a unique principal angle in `(-π, π]`, with angle `π` for every
 negative real input, including infinite and infinitesimal scales.
+The finite-angle quotient by ordinary full turns is isomorphic to the full
+actual unit circle. Each direction splits canonically into its ordinary
+standard-part direction and an additive infinitesimal angle, recovered by
+the strong logarithm. Positive moduli times these angle classes form the
+multiplicative group of all nonzero surcomplex numbers, without any bound
+on their size.
+Directions have unique representatives in both `[0, 2π)` and `(-π, π]`,
+with actual endpoint inequalities deciding infinitesimal corrections.
+Every positive surreal has a unique positive natural root. Every nonzero
+surcomplex has exactly `n` roots of positive degree `n`, with the explicit
+polar formula; roots of unity are exactly the embedded ordinary complex
+ones. The regular polygon side formula holds at every positive radius.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
-Recentered ordinary complex analytic germs evaluate by their actual Taylor
-strong sums, preserving sums, products and standard parts. Fine derivatives
+Recentered ordinary real and complex analytic germs evaluate by their actual
+Taylor strong sums, preserving sums, products, correctly recentered composition
+and standard parts. This Taylor rule uniquely specifies the extension on its
+finite analytic domain. Fine derivatives
 use every positive surreal tolerance: polynomials have their formal derivatives,
-formal evaluation at zero has derivative equal to its linear coefficient, and
-Taylor lifts have the ordinary derivative at their ordinary centers.
+formal evaluation differentiates at every infinitesimal point, and Taylor lifts
+have the lifted ordinary derivative throughout their infinitesimal monads.
+An exact bivariate quadratic remainder supplies a uniform ordinary bound.
+The chain, reciprocal and quotient rules hold, and finite sine and cosine
+agree with their separate even and odd strong Taylor sums and analytic lifts.
+Their fine derivatives are cosine and negative sine at every finite input,
+and the real-parameter surcomplex phase derivative is `I * cis`.
+An analytic germ of finite ordinary zero order lifts to its leading monomial
+times one plus an infinitesimal, with the exact predicted valuation and leading
+coefficient. For real germs that monomial also determines the sign.
+Ordinary analytic nonnegativity on a closed interval lifts to every actual
+surreal point between its endpoints, including infinitesimal endpoint
+displacements. Finiteness and the permitted one-sided signs follow from
+the interval hypotheses. Strict positivity on an ordinary open interval also
+lifts to every actual interior point when the function is analytic on the
+closed interval. This proves the finite trigonometric signs, strict
+monotonicity on the principal intervals, Jordan's inequality, the absolute
+sine bound, and the strict sine/input/tangent comparison, including
+infinitesimal distances from the endpoints. The explicit sine and tangent
+expansions through degree five and cosine defect through degree four have
+finite normalized remainders. Their exact valuations and infinitesimal
+relative errors give the stated algebraic asymptotic equivalents. Prescribing
+the ordinary Taylor rules on every monad uniquely determines the finite pair.
 A nonconstant infinitesimal-coset indicator has zero fine derivative everywhere.
 The approximation inequalities alone never give uniqueness: a sufficiently
-small positive monomial produces another solution. Differentiation at arbitrary
-infinitesimal displacements, multivariable analytic lifting, analytic composition,
-the separate trigonometric Taylor formulas, and universe coherence remain
-separate obligations.
+small positive monomial produces another solution. Multivariable analytic
+lifting and universe coherence remain separate obligations.
 The reports placed after the canonical inventory are formalized clause by
 clause. Strong sums of nonnegative Hahn series are nonnegative, and strongly
 summable weights define strong Hahn measures on all subsets, additive on every

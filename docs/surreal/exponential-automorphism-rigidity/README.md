@@ -188,10 +188,13 @@ two earlier claims here have been withdrawn as false.
   conventions. Those reports use surreal exponential fields as background;
   no result from them is needed in these proofs.
 
-Nothing here proves a theorem about the automorphism group of No that any
-other report also proves, and the rigidity theorems can still be read without
-reading anything else. That is the accurate version of the two claims that
-were deleted.
+The rigidity theorems can still be read without reading anything else.
+[surcomplex-field-automorphisms](../../surcomplex/surcomplex-field-automorphisms/)
+reprints `lem:amplify`, the faithfulness of Corollary 4.2, Theorem 5.1 and
+Corollary 5.2, Theorem 8.4 (second proof) and Theorem 9.2 with its kernel
+clause for `F = No`, with attribution. It then studies plain field
+automorphisms of `No(i)`, where `Aut_L(No(i))` is a proper subgroup of the
+real-axis stabilizer `Aut(No) × C₂` (its (1.2)).
 
 **Disambiguation — three unrelated things in this collection are called
 "rigidity."** The *all-scale polynomial rigidity* of

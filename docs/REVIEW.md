@@ -34,7 +34,7 @@ No row below certifies every claim in an entire report.
 | [Nonabelian support](surcomplex/nonabelian-support/) | Read the full main matrix Cousin and monodromy chains. Proved that well-ordering of full raw transition support is sufficient but not necessary, while raw singular support fails both directions. Added a left-gauge counterexample; corrected matrix exp/log domains, support-condition invariance, classification scope and unsupported computation claims. The main support correction received a second review. |
 | [Contours and Stokes](surcomplex/contours-and-stokes/) | Checked the revised support, smooth pullback, topology, microscopic-cycle, rational-comparison and sampling arguments. Replaced the false cofinality shortcut by finite-word incidence; corrected the word-embedding inequality and diagonal-substitution comparison. Supplied the properness and identity-theorem steps in the ramified Leray construction and expanded target composition about the ordinary map. Distinguished coefficientwise recovery from valuation limits and standard-part continuity from fine continuity. |
 | [Surcomplex analysis](surcomplex/analysis/) | Read the main local-to-global arguments. Corrected fixed-point evaluation to faithfulness of function germs, proved the uniform Taylor bound with summable absolute values, and separated fine class statements from fixed-workspace assertions. Repaired root and reciprocal-support hypotheses, boundedness and function-class comparisons, and the bare-inequality Rouché counterexample. Extended the stated reciprocal-exponential value distribution to every explicit twist using a surviving cofinal family of periods; corrected kernel and branch comparisons. |
-| [Differential equations](surcomplex/differential-equations/) | Reviewed the earlier scalar, finite-matrix, workspace and coherent-coordinate chains and reconciled their scope statements with the later regular-singular comparison. Corrected the domains of `Obs`, `Φ` and the normalized primitive; separated finite-system classification from Hermitian eigenvalue computation. Added the exact cocycle counterexample, expanded Dickson's lemma and the set-sized witness construction, and supplied missing coefficient, nonzero and differential-hull hypotheses. Corrected differential algebraicity, monodromy assumptions, derivative notation and stale implementation claims. A targeted follow-up corrected the Euler-stability criterion at the zero value group and the claim of unchanged derivative support. The regular-singular foundations and normalized resonant form have now been read through the finite-resonance and replacement theorems (Sections 23–24). Clarified Euler versus intrinsic differential fields and the coefficient-field hypothesis for complex morphism spaces; expanded the real-exponent word proof, finite dependency trees, empty-support cases and gauge composition. Added a nonsemisimple example explaining why whole resonant blocks are retained, and made preservation of smaller Hahn workspaces explicit. The later regular-singular selection, classification and forced-equation chains and the autonomous part remain for review. |
+| [Differential equations](surcomplex/differential-equations/) | Reviewed the earlier scalar, finite-matrix, workspace and coherent-coordinate chains and reconciled their scope statements with the later regular-singular comparison. Corrected the domains of `Obs`, `Φ` and the normalized primitive; separated finite-system classification from Hermitian eigenvalue computation. Added the exact cocycle counterexample, expanded Dickson's lemma and the set-sized witness construction, and supplied missing coefficient, nonzero and differential-hull hypotheses. Corrected differential algebraicity, monodromy assumptions, derivative notation and stale implementation claims. A targeted follow-up corrected the Euler-stability criterion at the zero value group and the claim of unchanged derivative support. The regular-singular foundations and normalized resonant form have now been read through the finite-resonance and replacement theorems (Sections 23–24). Clarified Euler versus intrinsic differential fields and the coefficient-field hypothesis for complex morphism spaces; expanded the real-exponent word proof, finite dependency trees, empty-support cases and gauge composition. Added a nonsemisimple example explaining why whole resonant blocks are retained, and made preservation of smaller Hahn workspaces explicit. A subsequent pass read Sections 25–26: the real-monomial shear, Euler exclusion, spectral selection, real descent, both classifications, morphism and tensor dimensions, phase comparison, Hahn solutions, logarithm and forced equations. Expanded the nilpotent and residue-root arguments, distinguished morphisms in reduced and original frames, and added an explicit example of the change in classification after adjoining the logarithm. Gave a direct minimal-polynomial proof of logarithm transcendence, stated the full affine forced-solution family, and proved the degree bound sharp. The regular-singular main-text review now also covers Sections 27–28: all six examples, finite monomial adjunction, the smaller-field boundary, logarithmic counterexample and finite procedure. Expanded the rank-one equivalence proof and field-generation distinction, supplied a leading-coefficient-independent boundary comparison, and made the finite procedure require effective coefficient operations (algebraic entries suffice). Proved its reduced weight set closed under recursion, covered empty support and absent resonances, and updated the dependency table to the revised transcendence proof. The autonomous review has now begun with Section 29 and the curve setup, projective reduction and simple-zero arguments in Section 30. Expanded joint summability and composition, unit-factor uniqueness, projective chart reduction and the local Jacobian argument; made formal inverse maps zero-constant and the properness comparison set-sized. Explained genericity and parameter invariance, expanded the normalized linearizer, and supplied a quadratic formula. Checked NPT arXiv v1 Lemma 6.1(i) and Stacks Tag 0BX5 for their stated comparison roles. The multiple-zero and completeness proof in Section 30.4 has now also been read. Expanded the leading-scale argument, separated formal implicit uniqueness from uniqueness after evaluation, made logarithm-branch and coordinate changes explicit, and derived the leading difference between two values of the time parameter. Added the pure monomial family for every multiplicity and expanded the local Laurent injectivity check completing the curve classification. Section 31 has now been read: expanded the three-shift support proof, cardinality, parameter-uniform coordinate localization and scalar-to-curve reduction. Checked the BM v3 monomial inputs and NPT v1 algebraic-independence import, including its constant-field hypotheses. Corrected the README's missing nonzero-polynomial condition for derivative agreement; added the quadratic scalar example separating constant solutions from curve embeddings. Sections 32 and 33.1 have now been read. Expanded the real primitive and branch count, distinguished real and complex time constants, made the logistic family exhaustive, and corrected the logarithmic example to include its constant zero separately. Supplied the exponential family's normalized linearizer and checked the pole at infinity, giving the full solution list. Expanded contraction in an affine chart and regularity of the hyperelliptic differential at finite roots and both types of infinity; checked the constant-point distinction and both hypothesis counterexamples. The remainder of Section 33 has now been read: supplied the invariant matrix and coefficientwise integration formula for the formal logarithm, proved coordinate covariance and detailed evaluation on the entire identity monad. Expanded the global splitting, image, kernel, unique identity-monad section and basis-independent primitive criterion. Strengthened the speed threshold to every normalized derivation, since explicit primitives remove the surjectivity hypothesis, and updated all active scope notes. Checked Milne v2's algebraic-group setting, without importing analytic uniformization. Section 34 is now reviewed: strengthened the effective-input contract to include divisor and local-expansion algorithms; added the intrinsic-time example and a nonclosed invariant form on a noncommutative group. Reconciled the proposed interfaces and historical source-package claims with actual Lean finite-variable evaluation, keeping the intrinsic chain rule, inverse-map and geometric bridge obligations separate. Corrected the remaining two-surjectivity-corollary wording and checked the local Tate-report comparison. The critical-potential review now covers Sections 35–36: checked the imported ordinal tower formulas, expanded support and finite incidence, separated real powers from non-real Conway exponents, and supplied unique Wronskian coordinates and initial-stage examples. Sections 37–38 are now reviewed too: expanded the finite-primitive contradiction, generic gauge identity, Wronskian transport, Euler completeness and real descent, with an explicit critical perturbation. Corrected the power-Hahn exception at `(α,c)=(1,0)`, parameter notation and the Pinney dependency note. Sections 39–40 are now reviewed: distinguished exact normal forms from earlier-scale coefficient data, defined the additive error class including the empty case, expanded inner-support bounds, derivative stability and the field-membership proof of dimensions zero, one and two. Proved failure of logarithm closure in the third field and reconciled the scope notes. Sections 41–42 are also reviewed: expanded the Galois automorphism laws, Schwarzian reconstruction and Möbius orbit, and corrected the dependency table. Remaining imports and source reconciliation still require review. |
 | [Hahn-valued measures](surreal/hahn-valued-measures-and-probability/) | Read the main scalar, common-support, cylinder, product, moment, quadrature, null-ideal and coefficientwise extension proofs through conditioning. Corrected subfamily versus regrouping sums, nonnegative versus strictly positive cylinder tests, and the false leading-scalar-positivity comparison. Added an elementary coefficientwise positivity lemma and used it in boundary and mixed product constructions; expanded finite-factor reduction and the quadrature compression argument. Supplied example group and zero-case hypotheses, narrowed the near-boundary non-necessity claim, and aligned current Lean scope with the ledger. Checked the compact-interval moment citations against Schmüdgen v1 and the finite spectral references against the local report; other imported results and original-source reconciliation remain outside this review. |
 | [Markov generators](surreal/markov-generators-at-every-scale/) | Read the main forest, leading-entry, remainder, stochastic-retract, realization, stability, finite-specialization and spectral proof chains and their worked examples. Corrected the nonzero workspace construction for purely real inputs and the false finite-support inference; defined the exact infinite valuation-error bound. Expanded transient-block decay, effective inversion, the real-part argument and crossover invertibility. Clarified valuations of nonzero eigenvalues, the rational-linear obstruction and the current algebraic Lean scope. A targeted follow-up supplied the discrete and one-block endpoints, strict coarsening and positive weights in the reversible converse, with explicit projection matrices and the one-state case. Checked the determinant and adjugate imports against Chebotarev–Agaev v2 with the same row orientation; other literature comparisons, priority and original-source reconciliation remain outside this review. |
 | [Tail spans and differential transcendence](surreal/tail-spans-and-differential-transcendence/) | Read the coefficient-field, cofinite-span, polarization, exceptional-field, affine-plane, actual-surreal, mixed-jet, halo, approximation and undecidability proofs. Made characteristic hypotheses explicit and supplied a characteristic-two counterexample; replaced the abbreviated mixed-difference argument by finite Taylor operators, including degenerate directions. Expanded separating-functional construction, coordinate recovery and Galois splitting. Corrected the purported value-group enlargement from lexicographic integers to rationals, with the embedding specified. Aligned the partial Lean scope and rerun instructions, checked the extension-of-embeddings citation and local BM restriction, and distinguished cofinite tails from valuation prefixes. Other foundational imports, literature comparisons and original-source reconciliation remain outside this review. |
@@ -45,6 +45,7 @@ No row below certifies every claim in an entire report.
 | [Infinite-dimensional Hahn spectral theory](surcomplex/infinite-dimensional-hahn-spectral-theory/) | Read the shared support tools and Part I inner-product, automatic-adjoint, defect, normal-spectrum, inverse-smooth, coercivity, completeness, duality and norm-attainment proofs. Reconstructed the norm over arbitrary value groups, then removed the unused Part I divisibility restriction after tracing every root operation. Proved closedness of the coercive range at every rank using the continuous defect projection, retaining the original metric argument under its rank-one hypothesis. Added the positive-scale guard to the backward-shift example, distinguished valuation zero from metric distance one, and aligned the two inner-product conventions, summaries and hypothesis ledger. A subsequent Part II pass read the algebra, homogeneous diagonalization, normalization, synthesis, commutant, resolvent, walk, stability, finite-section, example and transport proofs. Corrected strict diagonal-coherence claims at finite index sets and trivial groups; supplied a coherent diagonal with incoherent inverse. Distinguished vectorwise Hahn projection additivity from classical strong-operator additivity, checked against Williams Definition 5.1, and gave a rank-one counterexample to pointwise valuation convergence. Expanded the sharp boundary coefficient’s formal root-comparison step and supplied its positive-length guard. Other imported classical results, priority and source-claim reconciliation remain outside this review. |
 | [Hahn–Herglotz positivity](surcomplex/hahn-herglotz-positivity/) | Read the main support, scalar and matrix normalization, Harnack, null-ideal, functional, Fourier, quadrature, Schur, hierarchy and finite-prefix proof chains. Proved the Harnack, halo-positivity and common-kernel conclusions without divisibility by scalar normalization of quadratic forms. Expanded the zero-form and matrix-coefficient arguments; supplied the scalar-normalization positivity hypothesis and the integer-group obstruction to identity-block congruence. Corrected finite-valued versus finite-support terminology and the false disjointness of the strong and coefficientwise measure classes. Aligned partial Lean coverage and Fourier notation. Checked the classical disk representation against Bhattacharyya–Bhowmik–Kumar v3 and only the constant-kernel clause of Gesztesy–Tsekanovskii Lemma 5.3 against its preprint; other imports, priority and source-claim reconciliation remain outside this review. |
 | [Expanding polynomial dynamics](surcomplex/expanding-polynomial-dynamics/) | Read the main scale-ideal, inverse-branch, universal-center, fiber, periodicity, topology, extension, deformation, bounded-orbit and surreal-specialization proofs. Made degree preservation explicit in summaries and supplied a higher-degree two-cycle counterexample; clarified universal formal substitution and coefficient stabilization, and supplied the missing noncompactness argument. Distinguished an order unit from rank one, spelled out the proper-class specialization using set-sized compactness, and corrected the README’s ambiguous finite-orbit wording. Aligned partial Lean coverage and the notation guide. Checked the classical quadratic Cantor comparison and spherical Fatou/Julia definitions against Benedetto’s notes; other imports, priority and source-claim reconciliation remain separate. |
+| [Finite surreal probability](surreal/finite-surreal-probability/) | Reviewed Sections 2–7. Expanded workspace closure and standard-part existence, uniqueness, quotient and kernel arguments. Corrected the finite point-weight representation to require all subsets measurable; smaller finite algebras have atom weights. Expanded common-partition expectation, zero-second-moment Cauchy–Schwarz, tail bounds, finite Jensen, positive-denominator Bayes and chain rules, conditional tower and total variance, and both directions of finite coherence. Distinguished arbitrary versions on null atoms from pointwise identities and coherent laws from regular laws. Checked the canonical Hahn embedding and exponential transfer against van den Dries–Ehrlich Section 2 and its erratum. Expanded the conditional skeleton, its pairwise recovery, signed-row selection and Bayes leading coefficients. Corrected the joint-normalizer hypothesis for successive updates, neutral-likelihood wording, the difference numerator sign and sufficient-versus-necessary precision claim. Added the surreal-payoff and exact-threshold counterexamples. Checked the conditional-space comparison and real-payoff domain against Halpern Definition 2.1 and Section 4. Expanded logit inverse and domain checks, softmax gauge and perturbation bounds, separated-scale concentration, entropy and KL equality, support inheritance in the chain rule and data processing, and scoring identities. Distinguished the boundary logarithmic-score infimum from an attained interior minimum. Sections 8 onward and remaining imports are pending. |
 
 Each correction was reviewed against its local definitions and downstream uses
 within the stated scope. Changed PDFs were rebuilt and affected pages inspected.
@@ -311,12 +312,182 @@ allowed axioms. This pass reviews Sections 23–24, not the later
 classification or autonomous claims, and adds no Lean coverage or
 primary-source certification.
 
+The differential-equations selection and logarithmic-repair review rebuilt
+the article in three passes at 167 pages, with no warnings or box issues,
+against a clean 166-page baseline. The Euler exclusion, classification,
+tensor, residual-root, transcendence and forced-solution pages were
+inspected. Member 12's unchanged program again passed all eight suites on
+a temporary copy with Python 3.13.14 and SymPy 1.14.0; all historical JSON
+fields agree. Separate exact calculations checked the two-dimensional
+gauge and its endomorphisms, and the forced residual, sharp leading
+coefficient and finite logarithm identity for Jordan blocks of sizes one
+through six. These checks supplement the general proofs; they do not
+establish the arbitrary-support statements. All 48 historical code, data
+and source-log files remain byte-identical. The independent index audit
+checks 1,754 entries across 36 reports; 744 local Markdown destinations
+in 73 files resolve. The full Lean build passed 3,832 jobs and the
+5,371-declaration audit with only the allowed axioms. This pass extends
+the main-text review through Section 26; the later examples, workspace
+and procedure sections, autonomous part and imported-source checks remain
+separate, and no Lean coverage is added.
+
+After this pass, synchronization merged `ebfa006` from `origin/main`,
+including ten new Lean modules and their ledger mappings. The combined
+state passed a fresh `LEAN_NUM_THREADS=2 lake build`: 3,872 jobs and the
+5,880-declaration axiom audit, using only `propext`, `Classical.choice`
+and `Quot.sound`. The independent source index still checks all 1,754
+entries, and all 764 local Markdown destinations in 73 files resolve.
+A wording fix in the incoming trigonometry row keeps derivative, order and
+Taylor-identification claims pending, separately from the newly mapped
+algebraic identities. This integration check does not widen the proof
+review of the articles or independently review the new Lean mathematics.
+
+The final regular-singular main-text pass covered differential-equations
+Sections 27–28 and rebuilt the PDF in three passes at 168 pages without
+warnings or box issues, against a clean 167-page baseline. The workspace,
+smaller-field classification, logarithmic boundary, finite procedure and
+dependency-table pages were inspected. All eight member-12 suites passed
+on a temporary copy using Python 3.13.14 and SymPy 1.14.0, with every JSON
+field identical to the historical result. A separate exact example used
+support `{2/3,1,3/2}` and resonances `{1,2}` to check closure of the reduced
+weight set and preservation of resonant data after deleting the
+noncritical coefficient at `3/2`, while the gauge changes. All 48
+historical code, data and source-log files remain byte-identical.
+The independent index audit checks 1,754 entries across 36 reports;
+765 local Markdown destinations in 73 files resolve. The full Lean build
+passed 3,872 jobs and its 5,880-declaration axiom audit using only the
+allowed axioms. The finite checks do not prove the infinite-support
+arguments, and completion of the Part V main-text review does not certify
+its remaining imported results or source reconciliation.
+
+The first differential-equations autonomous pass covered Section 29 and
+the setup, projective reduction and simple-zero arguments of Sections
+30.1–30.3. The PDF rebuilt in three passes at 169 pages, without warnings
+or box issues, against a clean 168-page baseline; the changed proof pages
+were inspected. Member 11's unchanged verifier passed ten checks at its
+default total degree four on a temporary copy with Python 3.13.14 and
+SymPy 1.14.0; its output matches the historical record except for the
+Python version. Separate exact calculations verified the quadratic
+linearizer and both inverse identities, the inverse differential identity,
+and the divided difference of `z+z²−x` with unit residue. All 48 historical
+code, data and source-log files remain byte-identical. The index checks
+1,754 entries across 36 reports; 766 local Markdown destinations in 73
+files resolve. The full Lean build passed 3,872 jobs and the
+5,880-declaration audit using only the allowed axioms. The primary-source
+comparison checked NPT arXiv v1 Lemma 6.1(i) for formal simple-zero
+linearization and Stacks Tag 0BX5 for the valuative properness criterion
+over a set-sized field. It does not certify the multiple-zero proof,
+later autonomous arguments, other imports or source reconciliation.
+
+The second autonomous pass reviewed the multiple-zero classification and
+completeness proof in Section 30.4. The report rebuilt in three passes at
+170 pages without warnings or box issues, against a clean 169-page
+baseline; the changed proof pages were inspected. The unchanged member-11
+verifier again passed ten checks and matched the historical record except
+for the Python version. Separate exact checks covered pure monomial zeros
+of orders two through six, their parameter-separation coefficients, and
+a triple-zero example with nonzero logarithmic residue. All 48 historical
+files remain byte-identical. The full Lean build passed 3,872 jobs and
+the 5,880-declaration axiom audit. These finite calculations support the
+examples; they do not prove the general classification or complete its
+Lean formalization. Sections 29–30 are now reviewed; later autonomous
+arguments, other imports and source reconciliation remain pending.
+
+The independent statement-index audit checks all 1,754 entries across
+36 reports, and all 766 local Markdown destinations in 73 files resolve.
+
+The third autonomous pass reviewed Section 31, including the finite-scale
+field, algebraic independence, scalar-to-curve reduction and derivation
+independence. The report rebuilt in three passes at 190 pages without warnings
+or box issues, against a clean 189-page baseline; the changed pages were
+inspected. The unchanged member-11 verifier passed all ten default-degree
+checks with Python 3.13.14 and SymPy 1.14.0, matching the delivered record
+apart from Python version. Separate exact checks differentiated five signed
+power–logarithm–exponential monomials, checked a redundant exponential
+generator, and verified the quadratic solution family and induced vector
+field. All 51 historical code, data and source-log files remain byte-identical.
+The full Lean build passed 3,872 jobs and its 5,880-declaration axiom audit.
+BM arXiv v3 §3.2, Definition 5.1 and Remark 5.18 support the monomial inputs;
+NPT arXiv v1 Lemma 7.2 and Proposition 7.3 supply the stated independence
+import in a set-sized field with constant field ℂ. The bibliography now links
+to those exact preprint versions. The finite checks do not prove the general
+Hahn-support or classification arguments. Review of Section 32 onward and
+remaining imports and source reconciliation is still pending.
+
+The independent statement-index audit checks all 1,946 entries across
+40 reports; all 804 local Markdown destinations in 87 files resolve.
+
+The fourth autonomous pass reviewed Section 32 and Section 33.1: real
+branches and all four worked equations, infinitesimal contraction, the
+holomorphic-dual and hyperelliptic obstructions, branch-point constants and
+both hypothesis counterexamples. The PDF rebuilt in three passes at 192
+pages without warnings or box issues, against a clean 190-page baseline;
+the changed pages were inspected. Member 11's unchanged verifier passed
+all ten default-degree checks with Python 3.13.14 and SymPy 1.14.0; the
+output matches its archive apart from Python version. Separate exact checks
+covered the logistic substitution and family, the logarithmic primitive,
+the normalized linearizer at −1, the pole at infinity and both obstruction
+counterexamples. Six squarefree examples of degrees three through eight
+verify the local infinity equations and the predicted orders of the regular
+differential, including both branches in even degree. All 51 historical
+code, data and source-log files remain byte-identical. The full Lean build
+passed 3,872 jobs and the 5,880-declaration axiom audit. These finite checks
+do not replace the general geometric and support proofs, and no new Lean
+coverage is claimed. Formal-group and abelian arguments from Section 33.2
+onward, the critical-potential part and remaining imports and source
+reconciliation still require review.
+
+The independent index audit checks 2,030 statement entries across all 44
+current report texts; all 820 local Markdown destinations in 93 files resolve.
+
+The final sync merged `70683e3`, including nine Lean modules from
+`8924f58` for Taylor differentiation and related calculus rules. The
+combined build passed 3,882 jobs and audited 5,965 declarations using only
+`propext`, `Classical.choice` and `Quot.sound`. The differential-equations
+source and PDF were unchanged by that merge. The source index still checks
+2,030 statements, and all 829 local Markdown destinations in 93 files
+resolve. The incoming formalization mappings retain their stated scope;
+they do not formalize this report's autonomous examples or obstruction.
+
+The fifth autonomous pass reviewed Sections 33.2–33.4: the formal-group
+logarithm, global splitting, abelian logarithmic-derivative image, primitive
+obstruction and power-speed threshold. The latter now holds for every
+normalized derivation; its explicit primitives remove the surjectivity
+assumption. The PDF rebuilt in three passes at 193 pages without warnings
+or box issues, against a clean 192-page baseline; the changed pages were
+inspected. Member 11's unchanged verifier passed ten default-degree checks
+with Python 3.13.14 and SymPy 1.14.0, matching the delivered record apart
+from Python version. Separate exact checks covered the multiplicative
+formal logarithm and inverse/group laws through degree six, a nonlinear
+two-dimensional formal group and its invariant matrix and coordinate
+covariance, homogeneous integration through degree six, and six explicit
+power/logarithmic primitives. All 51 historical code, data and source-log
+files remain byte-identical. Milne v2, Chapter I §1 and Theorem 6.4 were
+checked for the ordinary algebraic-group setting; the formal logarithm
+argument is supplied in the article and uses no analytic uniformization.
+The full Lean build passed 3,882 jobs and the 5,965-declaration axiom audit.
+The finite calculations support examples and formulas, not the entire
+formal-group or abelian proofs. Section 34, the critical-potential part,
+remaining imports and source reconciliation still require review.
+
+The independent statement-index audit checks 2,030 entries across 44 current
+texts; all 829 local Markdown destinations in 93 files resolve.
+
+The final sync merged `4590b2c`, including the leading-term formalizations
+from `6ae6fd5`. The combined Lean build passed 3,885 jobs and its
+5,990-declaration audit using only `propext`, `Classical.choice` and
+`Quot.sound`. The differential-equations source and PDF were unchanged by
+the merge. The independent index still checks 2,030 entries, and all 833
+local Markdown destinations in 93 files resolve. These incoming analytic
+mappings do not formalize the abelian results reviewed here.
+
 ## Collection-wide work
 
-The [reader map](README.md), [catalogue](manifest.tex) and statement index
-now cover all 36 canonical reports. The [notation guide](NOTATION.md) was
+The [reader map](README.md), statement index and [catalogue](manifest.tex)
+now cover all 44 assembled reports, including batch 20. Their new and
+expanded mathematical portions still require review. The [notation guide](NOTATION.md) was
 checked across the earlier 26-report collection; checking every convention in
-the ten additions and six expanded reports remains pending. The guide records
+the fourteen additions and all expanded reports remains pending. The guide records
 meaningful differences rather than treating shared names as definitions:
 coefficient domains, support orientation, scalar standard part versus function
 reduction, topologies, strong sums, derivatives, phases and computational names.
@@ -331,15 +502,383 @@ counts and line hints against the merged sources. The catalogue and the three
 reports with overlapping PDF changes were rebuilt from their merged LaTeX;
 this checks the integration, not the new mathematical claims.
 
+The merge from `7657737` adds batch 19 to the current index: 1,946 standard
+statements across all 40 reports, with labels, headings, counts and line hints
+checked independently. All 804 local Markdown destinations in 87 files resolve.
+The differential-equations merge preserves the expanded multiple-zero proofs
+and the upstream critical-potential part. Its PDF rebuilt in three passes at
+189 pages, with no warnings or box issues, against a clean 188-page upstream
+baseline; the changed proof pages were inspected. All 51 delivered code, data
+and source-log files in that report remain byte-identical to the upstream
+version, and the source from Part VII onward is unchanged. The combined Lean
+build passes 3,872 jobs and the 5,880-declaration axiom audit. These integration
+checks do not review the newly added mathematics.
+
+The placement of `5fe7f8d`, merged during the Section 31 review's final
+sync, adds four draft report sources. Their 84 standard statements are now
+indexed, bringing the total to 2,030 across 44 texts. The independent parser
+checks every heading, count, label and line hint; two results with only a
+nested equation label are correctly indexed as unlabeled statements.
+The combined Lean build again passes 3,872 jobs and the 5,880-declaration
+audit. These are navigation and integration checks, not a review of the
+new mathematics or completion of the incoming batch's assembly. All 820
+local Markdown destinations in 93 files resolve.
+
+The sixth autonomous pass reviewed Section 34's scope and implementation
+comparisons, completing the Part VI main-text pass. It corrected the
+remaining surjectivity wording, made the effective geometric input
+requirements explicit, and distinguished formal time from intrinsic time.
+The affine-group example explains precisely why invariant forms need not
+be closed without commutativity. The ledger now maps the existing actual
+finite-variable evaluation and composition prerequisites, with the
+intrinsic chain rule and geometric bridge still pending.
+
+The PDF rebuilt in three passes at 194 pages with no warnings or box issues,
+against a clean 193-page baseline; the changed Section 34 pages were
+inspected. Exact symbolic checks verified the translation solution, its
+reciprocal projective double zero, and the affine group's left-invariant
+forms and nonzero exterior derivative. These checks illustrate the scope
+boundaries; they do not prove the geometric bridge or intrinsic calculus.
+All 51 historical code, data and source-log files remain byte-identical.
+The independent index audit checks all 2,030 statements across 44 texts,
+and all 835 local Markdown destinations in 93 files resolve. The full Lean
+build passed 3,885 jobs and audited 5,990 declarations using only `propext`,
+`Classical.choice` and `Quot.sound`. The critical-potential part, remaining
+imports and source reconciliation remain outside this review.
+
+The final sync merged `5ff3266`, including `3b702c9`'s closed-interval
+nonnegativity proofs for actual analytic lifts. The combined Lean build
+passed 3,887 jobs and audited 5,998 declarations using only `propext`,
+`Classical.choice` and `Quot.sound`. The differential-equations source and
+PDF were unchanged by the merge. The independent statement audit still
+checks all 2,030 entries, and all 837 local Markdown destinations in 93
+files resolve. The incoming sign-lifting results retain their own scope;
+they do not supply the intrinsic derivative or geometric bridge.
+
+The first critical-potential pass reviewed Sections 35–36. It checked
+ADH arXiv v3, Lemma 2.3, Proposition 2.5, Lemmas 2.6–2.8 and the derivative
+formula on page 10, and pinned the bibliography link to that version.
+The proof now makes the double family's well-ordered support and its at-most-two
+coefficient incidence explicit, proves unique Wronskian coordinates, and
+includes the empty stage and the first two normalized solution pairs.
+It distinguishes sums of increments from the nonsummable family of
+partial potentials, and real powers from non-real Conway exponents.
+
+The PDF rebuilt in three passes at 195 pages without warnings or box issues,
+against a clean 194-page baseline; the changed pages were inspected.
+Member 13's copied verifier passed all 70 checks with Python 3.13.14 and
+SymPy 1.14.0, matching its delivered output apart from Python version.
+Separate exact checks covered the support order and coefficient incidence
+at lengths 1–12, both initial solution pairs and their Wronskians, and the
+two Cramer coordinate identities. These are finite checks, not verification
+of transfinite summability or the imported intrinsic derivation. All 51
+historical code, data and source-log files remain byte-identical. The full
+Lean build passed 3,887 jobs and the 5,998-declaration axiom audit. The
+independent source audit checks all 2,030 entries across 44 texts, and all
+837 local Markdown destinations in 93 files resolve. Sections 37–42 and
+the remaining imports and source reconciliation are still pending.
+
+The final sync for the Sections 35–36 review merged `1e74537`: batch 20's
+four assembled reports, measures and trigonometry expansions, catalogue
+updates, and `2b323f7`'s analytic-composition and Taylor-rule uniqueness
+proofs. The independent index audit checks 2,114 standard statements in
+44 reports. Three stale physics line references were refreshed. The audit
+also exposed five escaped-command control characters in the measures
+report's new probability cross-link: repaired `\texttt`, `\tfrac` and
+`\ref`, then rebuilt its 86-page PDF in three passes and inspected that
+paragraph. Both the upstream baseline and repaired build have no warnings
+or box issues. All other incoming article sources are unchanged by this
+integration check, including the reviewed differential-equations source
+and PDF. The combined Lean build passes 3,890 jobs and audits 6,044
+declarations using only `propext`, `Classical.choice` and `Quot.sound`.
+All 876 local Markdown destinations in 93 files resolve. These checks
+establish integration and navigation, not review of batch 20's new proofs
+or Lean coverage for the critical-potential results.
+
+The second critical-potential pass reviewed Sections 37–38. It expanded
+the finite-primitive contradiction, stated the Liouville identity over an
+arbitrary characteristic-zero differential field, and supplied its kernel
+bijection and exact Wronskian transport. The repeated-root Jordan chain,
+injective non-real factors and real descent now justify completeness
+explicitly. The classification gives unique solution coefficients, the
+Riccati reduction names its primitive, and an exact next-stage example
+shows why a smaller perturbation can change the critical answer.
+
+The power-Hahn comparison had an exception: `Q_{1,0} = ¼ω⁻²` belongs to
+`ℂ((t^ℝ))`. The corrected support argument excludes every other potential
+at stages `α ≥ 1` by a surviving exponent outside `ℝ`. Rescaled operators
+retain the scale notation, the oscillator's distinct-root parameter is
+explicitly positive, and the README now includes the Pinney comparison's
+surjectivity and Part III import among its exceptions.
+
+The PDF rebuilt in three passes at 195 pages, with no warnings or box
+issues in either the reviewed text or its 195-page baseline; the changed
+pages were inspected. The copied member-13 verifier passed all 70 checks
+with Python 3.13.14 and SymPy 1.14.0 and matched the delivered output except
+for Python version. Separate exact calculations checked gauge and
+Wronskian transport at three scales with a variable coefficient, the
+repeated-root chain, and the support exception at finite stages 1–6.
+These finite checks do not verify intrinsic nonexistence or transfinite
+classification. All 51 historical artifacts remain byte-identical. The
+Lean build passed 3,890 jobs and audited 6,044 declarations with only the
+three permitted axioms. The independent index checks 2,114 statements
+across 44 reports, and all 876 local Markdown destinations in 93 files
+resolve. Sections 39–42, remaining imports and source reconciliation are
+still pending.
+
+The final sync merged `63568cb`, including `49b102e`'s fine derivatives
+of finite sine, cosine and the real-parameter surcomplex phase. The
+combined build passed 3,893 jobs and audited 6,070 declarations using
+only `propext`, `Classical.choice` and `Quot.sound`. The reviewed
+critical-potential source and PDF were unchanged by the merge. All 2,114
+statement-index entries still match, and all 879 local Markdown
+destinations in 93 files resolve. These incoming fine-derivative proofs
+do not formalize the intrinsic differential equations reviewed here.
+
+The third critical-potential pass reviewed Sections 39–40. It separates
+an exact Hahn sum from coefficients prescribed only at earlier scales,
+gives an explicit ordinal bound including the empty case, and defines the
+additive error class precisely. The field proofs now spell out set size,
+inner-support bounds and independence, real/complex Hahn identification,
+strong derivative closure, and the coefficient test excluding additional
+solutions. The logarithm proof includes the full positive-element
+factorization. The third field is now explicitly shown not to be closed
+under logarithms: it contains `ℓ_λ` but omits `ℓ_{λ+1}`. The first two
+fields' logarithm closure and the solution dimensions remain unchanged.
+
+The Hahn real-closedness input was checked in BM arXiv v3, Section 2.3,
+with a divisible ordered group. The PDF rebuilt in three passes at 197
+pages, against a clean 195-page baseline, with no warnings or box issues;
+the changed pages were inspected. Member 13's copied verifier passed all
+70 finite checks with Python 3.13.14 and SymPy 1.14.0, matching its delivered
+output apart from Python version. Those checks do not verify the new
+transfinite support or logarithm-closure arguments. All 51 historical
+artifacts remain byte-identical. The full Lean build passed 3,893 jobs
+and audited 6,070 declarations using only `propext`, `Classical.choice`
+and `Quot.sound`. The independent index verifies all 2,114 statements
+across 44 reports, and all 879 local Markdown destinations in 93 files
+resolve. Sections 41–42, remaining imports and source reconciliation are
+still pending.
+
+The final sync merged `84e51b5`'s finite trigonometric sign, monotonicity
+and inequality proofs. The combined Lean build passed 3,903 jobs and
+audited 6,092 declarations using only `propext`, `Classical.choice` and
+`Quot.sound`. The differential-equations source and PDF were unchanged
+by the merge. The independent index still checks all 2,114 statements,
+and all 882 local Markdown destinations in 93 files resolve. The incoming
+analytic results retain their stated scope and do not supply Lean proofs
+for the critical-potential field constructions.
+
+The fourth critical-potential pass reviewed Sections 41–42, completing the
+Part VII main-text pass. It expands exponent-coset independence for arbitrary
+Hahn coefficients, verifies the Borel substitutions and their inverses as
+rational-field automorphisms, and records the composition convention,
+additive subgroup and explicit noncommutativity. Schwarzian reconstruction
+now states the algebraic square-root choice, invertible constant change of
+basis and nonzero-denominator argument. The subcritical quotient's sign and
+the first-limit finite-span calculation are explicit. The dependency table
+now includes the actual angular primitive and the Schwarzian hypotheses.
+The formalization route starts with finite differential-field algebra,
+then Hahn support, then the intrinsic surreal interface.
+
+The source comparisons check Krüger–Teschl's Section 2, equation (2.5) and
+Corollary 2.3 with the potential sign reversed; the first-limit primitive in
+Berarducci–Mantova's Theorem 8.4; and ADH's predicate with this report's
+normalization `Ω(4Q)`. Versioned preprint links now match the cited versions.
+This does not complete the other import or source-claim reconciliation.
+
+Validation: the PDF rebuilt in three passes at 198 pages, versus 197 in the
+baseline, with no warnings or overfull/underfull boxes in either final log;
+changed proof and dependency-table pages were visually inspected. The copied
+member-13 verifier reproduces all 70 delivered checks after removing only
+the Python-version line. Separate exact symbolic checks cover the Borel
+composition, inverse and conjugation, Möbius derivative and Schwarzian
+invariance, and finite geometric/prefix identities of lengths 1–8. These
+finite checks do not prove the transfinite or Picard–Vessiot assertions.
+All 51 historical code/data/source artifacts remain byte-for-byte unchanged.
+The independent index audit finds all 2,114 entries in 44 reports, and all
+882 local Markdown destinations in 93 files resolve. Before the incoming
+trigonometric-expansion merge, the full build passed 3,903 jobs and the axiom
+audit checked 6,092 declarations using only `propext`, `Classical.choice`
+and `Quot.sound`. The intrinsic Part VII results remain pending in Lean.
+
+The final integration merged `465a54b`, including the exact infinitesimal
+trigonometric expansions and normalization proof, through `ce1dcca`.
+The incoming source mappings distinguish finite normalized remainders,
+valuation identities and infinitesimal relative errors from sequence limits;
+the fine-derivative and intrinsic-derivation boundary remains unchanged.
+The combined build passed 3,906 jobs, and the axiom audit checked 6,127
+declarations using only `propext`, `Classical.choice` and `Quot.sound`.
+All 2,114 indexed statements in 44 reports remain correctly catalogued,
+and all 887 local Markdown destinations in 93 files resolve. The merge
+left the reviewed differential-equations source and 198-page PDF unchanged.
+This integration does not establish Lean coverage for its intrinsic
+Picard–Vessiot or Schwarzian results.
+
+The finite-probability review begins with Sections 2–3. The full event
+algebra is now an explicit hypothesis for point-weight models; the trivial
+two-point algebra demonstrates why point weights are otherwise not unique.
+The expanded scalar and finite proofs cover standard-part uniqueness and
+units, positive leading coefficients, common-partition expectation,
+Cauchy–Schwarz at zero second moment, tail bounds and Jensen, positive
+conditioning denominators, nested conditional expectations, total variance,
+and the ticket identities characterizing coherence. Regularity remains a
+separate condition, and null-atom versions do not affect scalar identities.
+The canonical Hahn embedding was checked against van den Dries–Ehrlich
+Section 2, p. 176, and the scalar exponential transfer against Corollary 2.2,
+p. 177; the erratum changes ordinal support estimates, not that result.
+
+Validation: three-pass baseline and revised PDFs are clean, with 41 and 43
+pages respectively; the changed scalar, probability, inequality and
+conditioning pages were visually inspected. All 114 source labels and their
+numbers are preserved. The copied delivered verifier passes 2,145 assertions
+and matches its recorded JSON apart from the Python version. A separate
+953-check exact `Q(t)` run covers all 15 partitions of four points and
+nested refinements, including zero masses, infinite payoffs, infinitesimal
+thresholds, limited-unit residues and the additivity sure-loss witness.
+These are finite examples, not proofs of the general or infinite statements.
+All five historical audit/code/data artifacts are unchanged. The independent
+index audit checks 2,114 entries in 44 reports; 890 local Markdown destinations
+in 93 files resolve. The full Lean build passes 3,906 jobs and its axiom audit
+checks 6,127 declarations using only `propext`, `Classical.choice` and
+`Quot.sound`. This source review adds no Lean coverage. Sections 4 onward,
+remaining imports and broader source reconciliation still require review.
+
+The final probability-core integration merged `e79b92a` through `2cda5fe`,
+including the finite-angle quotient and canonical polar-group splitting.
+Its source mapping retains the finite-angle domain and ordinary `2πℤ`
+periods while allowing a nonzero surcomplex modulus of arbitrary size.
+The combined build passes 3,912 jobs, and 6,214 declarations pass the axiom
+audit with only `propext`, `Classical.choice` and `Quot.sound`.
+The merge also brought in two packages placed in `d4e71b7`; their 67 base-source
+statements are indexed provisionally, with assembly and review explicitly
+pending. The independent index now checks 2,181 entries across 46 current
+main sources (44 assembled reports plus two base manuscripts). All 903 local
+Markdown destinations in 97 files resolve. The probability source and its
+43-page PDF are unchanged by the merge, and the 30 newly delivered files
+remain unchanged. This is integration validation, not a proof review of
+the new foundations packages or additional probability Lean coverage.
+
+The second finite-probability pass reviews Sections 4–5. It expands the
+conditional-shadow product law and leading-scale formula, including empty
+numerators, and shows how pairwise conditional shadows recover the ordered
+leading groups and their coefficient ratios. The signed-row proof now makes
+the well-ordered selection, dimension bound and coefficient argument explicit;
+a two-state example shows why surreal payoffs outside ordinary `ℝ` are not
+covered. The comparison with conditional probability spaces and real-payoff
+equivalence was checked against Halpern Definition 2.1 and Section 4.
+
+Three scope corrections matter for use: successive updates with zero
+likelihoods require a positive joint normalizer; a neutral likelihood ratio
+leaves the exact prior unchanged; and the strict valuation-error contract is
+sufficient, not necessary for an individual pair of laws. The precision
+clause now has its own positive-event hypothesis, and the exact difference
+numerator has the correct sign. A rescaling example gives identical
+conditionals despite larger input errors; a boundary example proves that
+replacing the strict valuation bound by a non-strict one loses the stated
+output precision. Infinite-logit persistence now includes the finite-sum
+bound and the exponential argument for its unchanged real shadow.
+
+Validation: clean three-pass PDFs at 43 pages in the baseline and 44 after
+revision; the changed proof pages were visually inspected. All 114 label
+numbers and all five historical audit/code/data artifacts are preserved.
+The copied source verifier reproduces its 2,145 assertions, with the JSON
+matching apart from the Python version. An additional 1,361 exact `Q(t)`
+checks cover conditional products, scale recovery, compatible and impossible
+joint updates, strict precision, cancellation, the payoff counterexample and
+neutral odds. These are finite examples, not a general proof or an
+implementation of surreal logarithms. The independent index audit checks
+2,181 entries across 46 main sources (including two provisional bases), and
+all 903 local Markdown destinations in 97 files resolve. The full build
+passes 3,912 jobs and its axiom audit checks 6,214 declarations using only
+`propext`, `Classical.choice` and `Quot.sound`. Sections 6 onward and the
+remaining imports still require review; probability Lean coverage is unchanged.
+
+The final Sections 4–5 integration merged `ab36649` through `6f55757`,
+including unique interval representatives, natural roots and the complete
+polar root formulas. The source mapping was checked against the actual
+interval endpoints, positive-degree hypothesis, nonzero input and positive
+radius restrictions; the polygon result here is its side-length clause.
+The combined build passes 3,916 jobs and 6,277 declarations pass the axiom
+audit using only `propext`, `Classical.choice` and `Quot.sound`.
+All 2,181 indexed statements across 46 main sources remain correctly
+catalogued, and all 907 local Markdown destinations in 97 files resolve.
+The merge leaves the reviewed probability source and 44-page PDF unchanged.
+This integration adds no probability formalization or review of later sections.
+
+The third finite-probability pass reviews Sections 6–7. Logit Bayes now
+states the interior-prior hypothesis and both positive likelihoods explicitly.
+The finite state and scale lists are nonempty. The proofs expand logistic
+inverses and the infinitesimal Taylor coefficient, softmax's exact common-shift
+ambiguity, multiplicative perturbation bounds and the normalizer's logarithmic
+bound, and the dominance argument for separated scales. The softmax “limit”
+is explicitly a standard-part formula at fixed surreal inputs.
+
+The information proofs now expose the nonnegative Gibbs slack terms, handle
+positive-residue and zero-residue entropy coordinates separately, and justify
+support inheritance in the chain rule and data processing. The data-processing
+gap is an exact sum of conditional divergences, including infinitesimal
+positive weights. The rare-entropy series and infinite-divergence example are
+expanded. For logarithmic loss over strictly positive predictions, an interior
+true law has its unique minimizer, while a boundary law has no minimizer.
+Explicit redistribution strictly improves any interior prediction for a
+boundary truth, and exponential smoothing attains arbitrarily small excess
+above entropy, proving the infimum inside the workspace. Brier's full-simplex
+identity and the logistic-loss identity are also expanded.
+
+Validation: baseline and revised PDFs rebuilt in three passes without warnings
+at 44 and 46 pages; changed proof pages were visually inspected. All 114 label
+numbers and five historical audit/code/data files are preserved. The copied
+source verifier reproduces 2,145 assertions with JSON unchanged apart from the
+Python version. Separate checks pass 813 exact `Q(t)` cases for softmax ratios,
+gauge invariance, infinitesimal errors, boundary redistribution, smoothing and
+Brier excess, plus 112 symbolic identities for logistic expansions, Gibbs slack,
+entropy chain rules and data-processing gaps with zero coordinates/columns.
+These finite checks do not implement arbitrary surreal exp/log or prove the
+multiscale theorem. The independent index audit checks 2,181 entries in 46
+current sources and all 907 local Markdown destinations in 97 files resolve.
+The full Lean build passes 3,916 jobs; its axiom audit checks 6,277 declarations
+using only `propext`, `Classical.choice` and `Quot.sound`. No new probability
+Lean coverage is claimed. Sections 8 onward and remaining imports are pending.
+
 ## Remaining scope
 
-All ten reports added on September 22 have received the main-text proof
+The nine manuscripts placed in `d4e71b7` are grouped as
+[birthday cutoffs](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/)
+and [fields across universes](foundations-and-computation/surreal-fields-across-universes/).
+Their current sources are the selected base manuscripts, now provisionally
+indexed. Assembly, catalogue integration, indexing the other seven manuscripts,
+proof review and source reconciliation remain pending; these two packages are
+additional to the 44 assembled reports counted above.
+
+The newly assembled [vector and tensor fields](surreal/vector-and-tensor-fields/),
+[three-space](surreal/euclidean-three-space/) and
+[field automorphisms](surcomplex/surcomplex-field-automorphisms/) reports
+are now written and catalogued, but await proof review.
+[Finite probability](surreal/finite-surreal-probability/) has received the
+Sections 2–7 review recorded above; its later proof chains remain pending. The measures and
+trigonometry expansions are also assembled; their new claims remain outside
+the earlier review scopes. Delivered verification and source-audit artifacts
+remain historical evidence, not a substitute for that review.
+
+Batch 19 adds four reports whose mathematical proofs have not yet received
+this review: [three duals](surcomplex/three-duals-of-hahn-vector-spaces/),
+[hidden negative Hermitian directions](surcomplex/hidden-negative-hermitian-directions/),
+[transcendence over bounded support](surreal/transcendence-over-bounded-support/)
+and [matrix scaling](surreal/matrix-scaling-at-surreal-scales/).
+Its nonscalar dynamics, nonlinear holonomic rigidity, Drazin/Fredholm spectral
+theory additions also remain pending. The critical-potential main-text review now
+covers Sections 35–42; remaining imports and source reconciliation are pending.
+Their inclusion in the statement index does not extend an earlier proof-review
+scope or establish Lean coverage.
+
+All ten reports from the earlier September 22 integration have received the main-text proof
 reviews recorded above, including both parts of infinite-dimensional
 spectral theory and Sections 2–21 of Hahn–Tate uniformization. This does not
 complete the imported-result and source-reconciliation work.
-The expanded differential-equations report has now also been reviewed
-through the regular-singular foundations and finite-resonance theorem in
-Sections 23–24. Its later regular-singular and autonomous arguments remain.
+The expanded differential-equations report has now also received a
+main-text review of the complete regular-singular part, Sections 23–28.
+The autonomous pass now covers the normalized-derivation foundations, curve-realization classification, finite-scale localization, derivation independence and worked equations (Sections 29–32), plus the holomorphic-differential and hyperelliptic obstructions (Section 33.1). The formal-group and abelian proofs of Sections 33.2–33.4 are now also reviewed, including the speed threshold for every normalized derivation. Section 34's scope, input contracts and formalization comparisons have now also been reviewed, completing the Part VI main-text pass. The critical-potential main-text review now covers Sections 35–42, including the tower, Euler classification, earlier-scale precision, three differential Hahn fields, Borel group and Schwarzian coordinates. Remaining imports and source reconciliation still require review.
 The new sections in dynamics, entire functions, nonabelian support,
 spectral theory and exponential automorphism rigidity remain outside the
 earlier review scopes, apart from explicitly recorded integration corrections.
@@ -351,8 +890,9 @@ The reports above have received targeted corrections or a main-text reading,
 as recorded in each row. Uninspected portions, imported results, source-claim
 reconciliation and any formalization remain separate obligations. The
 differential-equations row covers the earlier proof chains, targeted scope
-corrections and the stated initial portion of the regular-singular part;
-it does not certify either new part in full.
+corrections, and the regular-singular and autonomous main text; the
+critical-potential main text is also reviewed, while remaining imports and
+source reconciliation are still separate.
 
 Continue with elementary statements and their dependencies before broad
 classification theorems. For each portion, check definitions and size/domain

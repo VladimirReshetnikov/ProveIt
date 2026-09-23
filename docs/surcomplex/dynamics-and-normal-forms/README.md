@@ -1,31 +1,36 @@
 # Surcomplex Dynamics: Linearization Thresholds, Periods, and Normal Forms
 
-**A merged research report** built from nine manuscripts: sources 01–07, dated
-21 September 2026, and sources 08–09, dated 22 September 2026. Everything in
+**A merged research report** built from ten manuscripts: sources 01–07, dated
+21 September 2026, and sources 08–10, dated 22 September 2026. Everything in
 this directory other than `article.tex`, `article.pdf` and this README is
 preserved source material.
 
 ```
 article.tex   the merged report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 154 pages
+article.pdf   the compiled report, 171 pages
 README.md     this guide
 08-exact-and-drifting-multipliers-SOURCE_AUDIT.md
               source 08's own source-and-claim audit, as delivered
 09-single-loss-linearization-repository_scope.md
               source 09's own provenance and scope note, as delivered
-code/         the nine source verification programs, and the build helpers
+10-nonscalar-common-domain-SOURCES.md
+              source 10's own source and provenance ledger, as delivered
+code/         the ten source verification programs, and the build helpers
               of sources 01, 03, 04, 05, 06, 08 and 09, unmodified
 data/         the recorded verification, environment and build records of
-              the nine sources, unmodified
+              the ten sources, unmodified
 ```
 
 Every label in `article.tex` carries the prefix `dyn:`. Material added from
 sources 08 and 09 carries a sub-prefix: `dyn:esm:` (the exact scalar
 multiplier, §7), `dyn:tree:` (source 09's forward plane-tree route, §7.4)
-and `dyn:cyc:` (the single cyclic exponent, §8.6). **No existing label was
+and `dyn:cyc:` (the single cyclic exponent, §8.6). Material added from
+source 10 carries the sub-prefix `dyn:nsc:` (the nonscalar diagonal
+multiplier, §§7.7–7.13, and its non-claims, §26.10). **No existing label was
 renamed or removed.** The report had 540 labels before sources 08 and 09
-were added and has 610 now, and all 540 are still present.
-`docs/FORMALIZATION.md` cites existing `dyn:` labels only.
+were added, 610 before source 10 was added, and has 651 now; all 610 are
+still present. `docs/FORMALIZATION.md` cites existing `dyn:` labels only.
+Its statement index records source line numbers, which have moved.
 
 The two shipped notes of sources 08 and 09 describe this report as it stood
 at their pin `a3124af`. The labels they cite (`dyn:q:commongerm`,
@@ -40,27 +45,43 @@ which here are `code/08-exact-and-drifting-multipliers-verify.py`,
 `data/08-exact-and-drifting-multipliers-build_report.json`. The standalone
 source manuscripts and their PDFs are not shipped.
 
+Source 10's shipped `10-nonscalar-common-domain-SOURCES.md` describes this
+report at its pin `048b72c`. That commit is later than the merge of sources
+08 and 09 (`813ce54`), and at it `article.tex` was byte-identical to the
+version just before source 10 was added (blob `a95e062`). So its statement
+that the report leaves the nonscalar common-domain case open, and that the
+scalar theorem is already here and not claimed, is accurate for that
+version; the case is now settled except for the optimal radius (see below).
+The labels it cites (`dyn:thm:radius-depth`, `dyn:q:commongerm`,
+`dyn:esm:thm:treebound`, `dyn:esm:thm:main`, `dyn:prop:cf`) are unchanged.
+It names its files `verify.py` and `verification_results.txt`, which here
+are `code/10-nonscalar-common-domain-verify.py` and
+`data/10-nonscalar-common-domain-verification_results.txt`. Source 10's
+article, PDF, README and checksum manifest are not shipped; the manifest's
+six entries were checked against the delivered files before it was dropped.
+
 ## What the report is
 
-Nine independently written manuscripts developed local and global dynamics
+Ten independently written manuscripts developed local and global dynamics
 over complex Hahn fields `K = C((t^Gamma))` realized inside `No[i]`, with
 `Gamma` a set-sized ordered abelian group of **arbitrary valuation rank**.
 Sources 01–06 were written against the pinned repository snapshot
 `39f2be6667ade51bca2b45daa47e289d69c09764`, source 07 against
-`aa846271b4dcae2c055b216126a87210292ec19b`, and sources 08 and 09 against
-`a3124af79f66b8b9c196d76b4cbc5ac3938907c4`. This report is their **union**,
+`aa846271b4dcae2c055b216126a87210292ec19b`, sources 08 and 09 against
+`a3124af79f66b8b9c196d76b4cbc5ac3938907c4`, and source 10 against
+`048b72cf7cbfc8ab246e4f73788c10460cb3f6e0`. This report is their **union**,
 not a selection from them.
 
 They share one body of machinery: the set-sized workspace; strong
 summability by well-ordered support plus local finiteness; Neumann's
 positive-support lemma in finite-word form; halo evaluation by
 coefficientwise double Taylor sums; and Taylor substitution with its
-near-identity inverse. Each of the nine states that machinery from scratch.
+near-identity inverse. Each of the ten states that machinery from scratch.
 Between 45 and 55 per cent of the combined text of sources 01–06 was the
-same theory, and sources 07, 08 and 09 restate the same foundation again.
-The support lemma appears in all nine.
+same theory, and sources 07–10 restate the same foundation again.
+The support lemma appears in all ten.
 
-**Two halves, not nine treatments of one thing.** Sources 01–06 are
+**Two halves, not ten treatments of one thing.** Sources 01–06 are
 germ and fixed-point dynamics — multipliers, return iterates, periods, a
 Hamiltonian at the origin of a phase halo — and were merged first. Source
 07 is the **quasi-periodic** half: a cohomological equation on a real
@@ -75,11 +96,22 @@ both, and the coefficient-category architecture of Remark 2.2. That
 architecture is stated once and **instantiated exactly twice** (Remark 18.2).
 
 Sources 08 and 09 belong to the germ half and were integrated last, as §7
-and §8.6. Both answer the question the report had left open for an **exact**
-multiplier (Question 8.20, restated as Question 25.1), and source 08 also
+and §8.6. Both answer, for a scalar multiplier, the question the report had
+left open for an **exact** multiplier (Question 8.20, restated as Question 25.1), and source 08 also
 answers the fixed-cyclic-group question (Question 25.2). They prove the same
 sharp radius by different routes and contradict neither each other nor any
 earlier source; see "The one conflict" below.
+
+Source 10 also belongs to the germ half and was integrated after them, as
+§§7.7–7.13, at the end of §7. It answers the case that sources 08 and 09
+left open, a **nonscalar** exact diagonal unitary multiplier: every
+coefficient of the normalized conjugacy and its inverse is holomorphic on
+one polydisk of radius `R exp(-r_ang tau)`, where `r_ang` is the rational
+rank of the multiplier's angles (Theorem 7.23). This is sharp when
+`r_ang = 1`, which includes every scalar multiplier and many nonscalar ones;
+for `r_ang >= 2` only the optimal radius is left open (Theorem 7.34,
+Question 25.1). Source 10 read this report after sources 08 and 09 were
+merged and cites their scalar theorem rather than claiming it.
 
 ## Read Section 2 first: the notion table
 
@@ -91,15 +123,20 @@ notions would have produced statements that read correctly and are false.
 Section 2 therefore gives each variant its own name and symbol. Every
 threshold statement in the report names which variant its hypothesis uses
 and in which coefficient category it holds. Section 2.5 is a
-theorem-by-theorem tag ledger. Sources 08 and 09 introduce no new notion;
-their statements are tagged `NR`, `SD_ex` (§7) and `SD_dr` (§8.6).
+theorem-by-theorem tag ledger. Sources 08, 09 and 10 introduce no new
+notion; their statements are tagged `NR`, `SD_ex` (§7) and `SD_dr` (§8.6).
+Source 10 adds an arithmetic invariant of an exact multiplier, the rational
+angular rank `r_ang = dim_Q span_Q(1, theta_1, ..., theta_d) - 1`. It is
+written `r_ang`, not source 10's `r`, because `r` already names the
+finite-return threshold, an auxiliary radius, a chain length and the flag
+length; and it is **not** the valuation rank of `Gamma`.
 
 **The five resonances.**
 
 | Tag | Condition | Whose hypothesis it is |
 |---|---|---|
 | `RES_q` residue-resonant | `lambda` is **never** a root of unity, but its residue has exact finite order `q` | the exact finite-return ball, shell cycles, phase diagram, coherent lifting |
-| `MR` / `NR` multiplier-resonant | `lambda^alpha = lambda_j` for some `|alpha| >= 2` | the five-row classification, the exact-scalar and cyclic theorems of sources 08–09, and everything built on the homological operator |
+| `MR` / `NR` multiplier-resonant | `lambda^alpha = lambda_j` for some `|alpha| >= 2` | the five-row classification, the exact-scalar and cyclic theorems of sources 08–09, the nonscalar theorem of source 10, and everything built on the homological operator |
 | `FR` frequency-resonant | `omega . k = 0` for some nonzero integer vector | the Hamiltonian package |
 | `PAR` parabolic | leading multiplier exactly `1`, perturbed infinitesimally | the algebraicity/monodromy and the period/moduli sections — **with no divisor hypothesis anywhere** |
 | `QR` lattice-resonant | `k . Upsilon = 0` for some nonzero integer `k`, where `Upsilon` is a vector of **Hahn (surreal)** scalars | the flag and the linear theorem *permit* it; the torus normal form requires its negation |
@@ -116,7 +153,7 @@ uses.
 **The six small-divisor notions.** `SD_0` (support only, no arithmetic
 condition at all); `SD_dr` (the rate `sigma`, **requiring multiplier
 drift**; sources 02 and 08); `SD_ex` (the rate `tau`, multiplier **exact**;
-sources 03, 08 and 09); `SD_fr` (the frequency growth `Theta`); `SD_none`
+sources 03, 08, 09 and 10); `SD_fr` (the frequency growth `Theta`); `SD_none`
 (no condition, and no divisor family to impose one on); and `SD_ss` (the
 **stratified subexponential** condition of source 07: on each stratum of
 the resonance flag, the reciprocals of the finitely many **leading real
@@ -130,8 +167,10 @@ surreal size `v(k . Upsilon)` of the divisor itself (Warning 2.11).
 Remark 2.2 now also records the **sixth category**, common-domain germs,
 in two separate cells that must never be merged: for an exact scalar
 multiplier it holds iff `tau < infinity` (sources 08, 09); under drift it
-holds iff `sigma = 0` (sources 02, 08); for an exact nonscalar multiplier it
-is open.
+holds iff `sigma = 0` (sources 02, 08). For an exact nonscalar diagonal
+multiplier it also holds iff `tau < infinity`, with universal radius between
+`R exp(-r_ang tau)` and `R exp(-tau)`, equal to the latter when `r_ang = 1`
+(source 10); the optimal radius for `r_ang >= 2` is open.
 
 **The two radii.** Valuation balls `B_r = {v(z) > r}` and valuation
 polydisks `D_rho` **shrink** as the threshold grows; ordinary disks and
@@ -153,6 +192,7 @@ exponent and reverses its threshold inequality; ordinary estimates are unchanged
 | `07-small-divisor-resonance-flag` | **The whole quasi-periodic half (§§17–19).** The headline: a frequency vector with `d` surreal components has **at most `d`** arithmetically visible divisor valuations, identified by a canonical descending flag of saturated integer resonance lattices whose ranks strictly drop, together with one explicitly constructed well-ordered set `T_Upsilon` containing the support of *every* reciprocal nonzero divisor (Theorem 17.5); the exact arithmetic criterion `SD_ss`, necessary **and** sufficient for universal solvability of the cohomological equation in a Hahn algebra all of whose coefficients are holomorphic on **one fixed** torus strip (Theorem 18.3), with the valuation loss `kappa_Upsilon` shown attained; the arbitrary-order lifting obstruction — for every `N` an entire forcing whose first `N+1` solution coefficients are analytic while the next is not even a distribution, with robustness under enlarging the value group *argued* from uniqueness of the modewise Hahn inverse rather than assumed (Theorem 18.7); the unique normalized infinitesimal mean-zero conjugacy to a constant vector field with a frequency correction, proved by **marked support words** and exact coefficient stabilization rather than by sequential valuation convergence (Theorem 19.1); necessity of the arithmetic condition even for arbitrarily high-valuation perturbations (Theorem 19.4) and a boundary example at valuation exactly `kappa_Upsilon` with an everywhere-positive slow speed (Proposition 19.6); and the canonical invariant density with its uniqueness (Theorem 19.8). Plus the arithmetic-free valuation bound (Proposition 17.9), which needs no divisor estimate of any kind |
 | `08-exact-and-drifting-multipliers` | **Base of the 08+09 merge** (weaker hypotheses: every dimension `d`; it also carries the drifted theorem). *Exact and Drifting Multipliers in Surcomplex Dynamics*. The sharp common domain for an exact **scalar** multiplier `lambda I_d` in every dimension: all coefficients of the normalized conjugacy and its inverse are holomorphic on the one polydisk of radius `R exp(-tau)`, which is optimal (Theorem 7.13, with the strict degree chains of Lemma 7.9 and the depth-uniform estimate of Proposition 7.11); the unequal-radius rescaling `R_j exp(-tau)`; the sixth-category row (Corollary 7.14); the **single-cyclic-exponent collapse** over `Z`: for `(lambda+t)z + t z^2/(1-z/R)` the coefficient of `t^m` has radius exactly `R exp(-m sigma)` (Theorem 8.15), by the collision noncancellation at convergent denominators (Proposition 8.14) and the pole-multiplicity lemma (Lemma 8.11); the fixed-group criterion `CD iff sigma=0` over any fixed nonzero `Gamma` (Corollary 8.17); one positive Hahn coefficient suffices (Corollary 8.18); the `tau = log 2` comparison `R/2` against `R/2^m` (Example 8.19); the nonscalar-boundary analysis (§7.6); the SymPy suite with the cyclic fold test; `SOURCE_AUDIT.md` |
 | `09-single-loss-linearization` | *A Single-Loss Theorem for Exact-Multiplier Surcomplex Linearization*, one variable. The **tree product bound** `prod 1/|lambda^{s_v}-1| <= (C_a n)^m e^{a n}` for positively weighted forests, with the cluster threshold `1/(4n)` (Theorem 7.5). Source 08's strict-chain bound, whose polynomial factor is `n^{3r}`, becomes the chain case of this bound (Corollary 7.6(i)) and is credited there; the forward plane-tree route, **kept as route D** (§7.4: Proposition 7.17, Lemma 7.18, Proposition 7.19), which is a second proof of Theorem 7.13 for `d = 1`; several formal parameters (Corollary 7.20); the lex `Z^2` example (Example 7.21); the hypothesis-use audit (Table 5); its limitations; `repository_scope.md` |
+| `10-nonscalar-common-domain` | *Common-Domain Linearization over Surcomplex Hahn Fields: a rational-rank bound for nonscalar multipliers* (§§7.7–7.13, §26.10). The nonscalar common domain: for an exact diagonal unitary nonresonant `Lambda` with `tau < infinity`, all coefficients of the normalized conjugacy and its inverse are holomorphic on the polydisk of radius `R exp(-r_ang tau)`, over every nonzero `Gamma`, whatever the support (Theorem 7.23); the integer-minor lemma that at most `q` distinct positive exponential rates occur for a linear form in `q` variables along linearly growing integer vectors (Lemma 7.24, Corollary 7.25); marked-block contraction of colored trees, which keeps each block's divisor inside the nonlinear cone (Lemma 7.26); the product bound `limsup n^{-1} log A^Lambda_m(n) <= min(r_ang, m) tau` at fixed complexity (Theorem 7.27), with equality `tau` in rank one (Corollary 7.28); route D in several variables by colored trees, with a polynomial diagram count that has no factor `d^{n+1}` (Proposition 7.30, Lemma 7.31); the input-relative radius `R_gamma exp(-min(r_ang, ell_S(gamma)) tau)`, which improves Theorem 6.9 (Corollary 7.32); rectangular polydisks and joint holomorphy in ordinary parameters (Corollary 7.33); the exact criterion `tau < infinity` and `R exp(-r_ang tau) <= R_univ <= R exp(-tau)`, sharp for `r_ang = 1` (Theorem 7.34); the two-mode example `diag(lambda^2, lambda^3)` with `tau = 3 tau(lambda)` and any prescribed loss factor (Proposition 7.35); a rank-two zero-loss example (Example 7.36); the exact standard-library suite; `SOURCES.md` |
 
 Sources 08 and 09 are each written in their own convention, and the merge
 had to choose between them. Source 08 uses the report's convention
@@ -165,9 +205,10 @@ sharp first coefficient is `check h_eta = -h_eta` (Convention 7.1(iii)).
 
 Printed **once**:
 
-- The positive-support lemma. All nine sources state it. Sources 02, 03, 05
+- The positive-support lemma. All ten sources state it. Sources 02, 03, 05
   and 09 each prove the underlying word order by the same
-  minimal-bad-sequence argument, and one copy is in Appendix A. Source 07
+  minimal-bad-sequence argument, and one copy is in Appendix A. Source 10
+  derives it from Higman's lemma, cited. Source 07
   needs the *full* finiteness assertion across word lengths, plus a
   **labelled** refinement of it counting marked letters, and both are
   already contained in that one statement. Source 08's reduction to
@@ -205,6 +246,17 @@ Printed **once**:
   halo realization, workspace invariance and monad evaluation, which
   duplicate Propositions 4.1, 6.13, 4.14 and 6.14 and are cited; and source
   09's entire-row witness, which is Lemma 5.2.
+- From source 10: the first-weight identity (Proposition 6.6); the universal
+  upper radius `R exp(-tau)` and the infinite-rate entire witness (Lemma
+  5.2; source 10's remark that the finite witness needs no case distinction
+  at `tau = 0` is kept in the proof of Theorem 7.34); the positive inverse
+  on the same domain (Proposition 4.1); halo realization (Proposition 6.13);
+  workspace invariance (Proposition 4.14); the surcomplex embedding and
+  monad evaluation; the prescribed-rate continued fraction (Theorem 8.9(c),
+  with the formula of Proposition 8.8); the higher-rank support
+  `S = {1} u {2 - 1/n} u {Omega}` (Example 3.7); and the lexicographic `Z^2`
+  caution (Example 7.21). Source 10's appendix restating Theorem 7.27
+  without Hahn fields is the same statement and is not reprinted.
 
 Kept **twice or more, explicitly marked**, because the routes carry
 different resources:
@@ -221,7 +273,15 @@ different resources:
     the branching case of the tree bound. Routes A and D share the
     arithmetic lemmas and are **not** independent proofs of them, as source
     09 itself says. Source 09's own operator-chain appendix is route A and
-    is not reprinted.
+    is not reprinted. Source 10 extends route D to several variables and
+    nonscalar `Lambda` with colored trees (§7.10).
+- two arguments for the fixed-complexity rate `tau` of a **scalar**
+  multiplier: the explicit tree bound `(C_a n)^m e^{a n}` of sources 08 and
+  09 (one rational cluster plus divisible-subtree packing), and source 10's
+  rate count plus block budget, which gives only a limsup with a
+  non-explicit prefactor but is the one that works for nonscalar `Lambda`
+  (Remark 7.29). In the scalar case source 10 adds nothing new; the
+  explicit bound is strictly more information;
 - two routes to iteration invariance of fixed-point data — an explicit
   invertible matrix giving **ideal** equality, and unique `n`-th roots
   giving **torsion-freeness** of the group; neither statement follows from
@@ -273,12 +333,19 @@ keeps the two answers in separate rows (Remark 2.2, Table 7). The exact
 laws are never quoted without their drift hypothesis (Warnings 2.6 and
 8.21), and the two categories are not averaged into a single
 "intermediate case" claim. For a **nonscalar** exact multiplier the
-question is still open (Question 25.1).
+question was still open at the pins of sources 08 and 09. Source 10 has
+since answered it the same way as for a scalar one: every input has a
+common-domain linearizer, of radius at least `R exp(-r_ang tau)`, and
+exactly `R exp(-tau)` universally when `r_ang = 1` (Theorems 7.23 and
+7.34). Only the optimal radius for `r_ang >= 2` is open (Question 25.1).
 
 Sources 08 and 09 do not contradict each other. Source 09 says it settles
 only one variable and not the drifted or cyclic questions. Source 08
 settles the scalar case in every dimension and the cyclic question in one
-variable. Both agree that the nonscalar diagonal case is open.
+variable. Both agree that the nonscalar diagonal case is open, as it was
+when they wrote. Source 10 contradicts neither: it cites their scalar
+theorem, recovers its constant only in angular rank one, and leaves the
+drifted and cyclic questions alone.
 
 ## Correction to finite ancestry
 
@@ -300,7 +367,7 @@ and torus-substitution proofs now retain this dependence explicitly.
 The linearizer's stronger bound `k + 1 <= ell_S(gamma)` is unchanged:
 its initial input `L^(-1) f` already supplies a positive letter from `S`.
 The associated radius and degree bounds therefore keep their stated form.
-Sources 08 and 09 use only this linearizer bound, through the initial
+Sources 08, 09 and 10 use only this linearizer bound, through the initial
 letter of the linearizer, so the correction does not affect them.
 
 Source 03, retained in Git history, already distinguished arbitrary input support in
@@ -336,24 +403,51 @@ See the [formalization ledger](../../FORMALIZATION.md) for exact coverage.
   `0 < sigma < infinity`, and zero when `sigma` is infinite. Corollary
   8.17 then shows that, for any fixed nonzero `Gamma`, the universal
   common-domain property under drift holds iff `sigma = 0`.
+- **Theorem 7.23** (source 10). Let `Lambda = diag(e^{2 pi i theta_j})` be
+  nonresonant (`lambda^alpha != lambda_j` for `|alpha| >= 2`; repeated
+  eigenvalues allowed), `tau = tau(Lambda) < infinity`, and
+  `r_ang = dim_Q span_Q(1, theta_1, ..., theta_d) - 1`, so `1 <= r_ang <= d`.
+  For any nonzero set-sized `Gamma` and any exact input
+  `Lambda z + sum_s t^s f_s` with all `f_s` holomorphic on one polydisk of
+  radius `R` and `f_s(0) = 0`, `Df_s(0) = 0`, the normalized conjugacy and its
+  inverse have **all** coefficients holomorphic on the open polydisk of
+  radius `R exp(-r_ang tau)`, and evaluate to a bijective conjugacy of the
+  corresponding finite halo. Corollary 7.32 refines the radius at a given
+  exponent to `R_gamma exp(-min(r_ang, ell_S(gamma)) tau)`.
+- **Theorem 7.34** (source 10). Universal common-domain linearization holds
+  iff `tau < infinity`, and the largest universally guaranteed radius
+  satisfies `R exp(-r_ang tau) <= R_univ <= R exp(-tau)`, with equality on
+  the right when `r_ang = 1`. Proposition 7.35: for
+  `Lambda = diag(lambda^2, lambda^3)`, `r_ang = 1` and `tau = 3 tau(lambda)`,
+  so any loss factor `0 < kappa < 1` is attained exactly by a nonscalar
+  multiplier.
+- **Theorem 7.27** (source 10). At fixed tree complexity `m` the colored
+  divisor products grow at exponential rate at most `min(r_ang, m) tau`,
+  because at most `r_ang` distinct positive exponential rates can occur
+  (Corollary 7.25) and each distinct rate is charged at most `tau` in total.
+  The prefactor is finite but not explicit, and not uniform in `m`.
 
 ## What is NOT claimed
 
-Section 26 is the consolidated record: **108 numbered items covering the 106
-distinct limitations stated by the nine sources**, distributed
-11/9/10/14/12/12/10/16/12 across sources 01–09, each with its originating
+Section 26 is the consolidated record: **125 numbered items covering the 123
+distinct limitations stated by the ten sources**, distributed
+11/9/10/14/12/12/10/16/12/17 across sources 01–10, each with its originating
 source named. None was merged away or softened. The limitations of sources 08
-and 09 are N81–N108 (§26.9). Where the two overlap, both wordings are kept.
+and 09 are N81–N108 (§26.9), and those of source 10 are N109–N125 (§26.10).
+Where two overlap, both wordings are kept. Source 08's scalar-only
+limitation (N81) and source 09's nonscalar remark (N97) are kept as stated
+and annotated as re-scoped by source 10.
 Source 09's own scope limitation (one variable only) is kept as its own
 limitation and annotated after the merge rather than dropped. The load-bearing
 limitations:
 
-- **Status.** Nine AI-assisted, unrefereed research drafts; the full merged
+- **Status.** Ten AI-assisted, unrefereed research drafts; the full merged
   report is not proof-assistant verified. The repository now has checked
   Lean proofs of the finite-word support lemma, the corrected combinatorial
   ancestry bounds, and the counterexample above. This partial coverage
   does not certify the operator calculus or the analytic classification
-  theorems. Neither source 08 nor source 09 supplies Lean code. Priority is
+  theorems. None of sources 08, 09 and 10 supplies Lean code, and source
+  10's formalization outline is a plan, not an implementation. Priority is
   not certified for any statement, and no named published conjecture is
   claimed solved. Every repository and literature inspection was
   *targeted*, not exhaustive. For sources 08 and 09 in particular, the
@@ -361,14 +455,24 @@ limitations:
   small-divisor counting (Davie's estimates, discussed by Marmi) and as the
   Fauvet–Menous–Sauzin tree expansions. Source 08 inspected the 2018 tree
   paper at abstract level only, and both sources disclaim priority
-  (N94, N105).
-- **The exact-multiplier answer is scalar only.** Theorem 7.13 covers
-  `Lambda = lambda I_d`. The nonscalar diagonal case is **open**, and the
-  clustering argument does not apply to the divisors `lambda^beta - lambda_j`
-  (§7.6, N81, N97). The cyclic theorem is one-variable only; the
+  (N94, N105). Source 10 credits the same tree expansions (their 2026
+  revision, inspected in HTML) and Carletti's non-Archimedean tree formulas
+  (abstract level only), and disclaims priority too (N111).
+- **The exact-multiplier answer is sharp only in angular rank one.**
+  Theorem 7.13 covers `Lambda = lambda I_d`, and sources 08 and 09 left the
+  nonscalar case open because their clustering argument does not apply to
+  the divisors `lambda^beta - lambda_j` (§7.6, N81, N97). Source 10's
+  Theorem 7.23 covers every exact diagonal unitary nonresonant `Lambda`,
+  but its factor `r_ang` is a proved bound, not an optimality claim: for
+  `r_ang >= 2` and `0 < tau < infinity` the optimal universal radius is
+  undetermined between `R exp(-r_ang tau)` and `R exp(-tau)` (N114).
+  Drifting multipliers in several variables, resonant spectra, Jordan
+  blocks, nonunitary spectra and infinite coordinate dimension are not
+  covered (N120). The prefactor of Theorem 7.27 is not explicit and not
+  uniform in the tree complexity (N117). The cyclic theorem is one-variable only; the
   several-variable collapse over a fixed cyclic group is not addressed
-  (Question 25.2). `R exp(-tau)` is a universal guarantee, not a formula for
-  each input. Holomorphy is claimed on the *open* polydisk only, with no
+  (Question 25.2). `R exp(-tau)` and `R exp(-r_ang tau)` are universal
+  guarantees, not formulas for each input. Holomorphy is claimed on the *open* polydisk only, with no
   uniform norm bound and no natural-boundary claim.
 - **The exact ball is a valuation ball.** "Exact" means the maximal
   *centered valuation ball* only. It is not the full pointwise summability
@@ -433,17 +537,20 @@ limitations:
 - **The computations prove nothing infinite.** See below.
 
 Section 25 records the eleven open questions in the categories in which
-they are open. Two of them are re-scoped by sources 08 and 09. Question
-25.1 is now open only for a **nonscalar** exact multiplier, and Question
-25.2 is settled in one variable and stays open only for the several-variable
-collapse over a fixed cyclic group. The two sources add no new question.
-Their remaining directions are folded into Questions 25.1, 25.7 and 25.8.
+they are open. Two of them are re-scoped by sources 08 and 09, and one of
+those again by source 10. Question 25.1 (with its first statement,
+Question 8.20) is now settled for every exact diagonal unitary multiplier
+and stays open only for the **optimal radius** when `r_ang >= 2` and
+`0 < tau < infinity`; Question 25.2 is settled in one variable and stays
+open only for the several-variable collapse over a fixed cyclic group. The
+three sources add no new question. Their remaining directions are folded
+into Questions 25.1, 25.7 and 25.8.
 Appendix G is a per-theorem hypothesis audit, and Table 5 is source 09's
 own hypothesis-use audit for Theorem 7.13.
 
 ## The verification programs
 
-`code/` holds the nine programs unmodified and `data/` their recorded
+`code/` holds the ten programs unmodified and `data/` their recorded
 outputs. Totals where a script prints one: **54** (01), **1,109** (02),
 **21** (03), **2,764** (04), **245** (05), **119** (06). Source 07 prints
 no total. It checks the slow-circle conjugacy through degree ten, **117**
@@ -463,15 +570,26 @@ total because their units differ:
   nonempty. Its formal algebra makes 270 coefficient comparisons over 2,478
   tree terms and 36 identity groups, with multipliers `2`, `2/3` and `-2`,
   which are **not** on the unit circle.
+- Source 10 uses the standard library and exact `Q(i)`. It checks the
+  marked-block contraction of Lemma 7.26 on all **2,730** colored tree
+  configurations with at most three internal vertices (**18,466** marked
+  subsets) and on **1,000** seeded random configurations with four to nine
+  vertices, and it checks 8 conjugacy and inverse component identities for a
+  two-variable nonscalar example with multipliers `(3+4i)/5` and
+  `(5+12i)/13` through parameter degree 3 and spatial degree 6, with 21
+  nonzero divisors.
 
-All nine were re-run and all pass. When sources 08 and 09 were integrated,
+All ten were re-run and all pass. When sources 08 and 09 were integrated,
 they were re-run on a copy with Python 3.14.4 and SymPy 1.14.0. Source 08
 reproduced its record in every field except elapsed time and Python version,
-and source 09 reproduced its record field for field. Section 24.1 tabulates
+and source 09 reproduced its record field for field. Source 10 was re-run on
+a copy with Python 3.14.4 when it was integrated; its ten printed lines
+match `data/10-nonscalar-common-domain-verification_results.txt` line for
+line, apart from line endings. Section 24.1 tabulates
 exactly what each suite checks and each one's own scope disclaimer. Every
 suite prints one, which is a real and unusual discipline in this material.
 
-**Run every suite on a copy, never in this tree.** Four of the nine
+**Run every suite on a copy, never in this tree.** Four of the ten
 scripts rewrite their own evidence:
 
 - source 03's writes `data/verification.json`;
@@ -505,6 +623,11 @@ python code/08-exact-and-drifting-multipliers-verify.py --output /tmp/08-rerun.j
 python code/09-single-loss-linearization-verify.py --output /tmp/09-rerun.json
 ```
 
+Source 10 is overwrite-safe as well: its script takes no arguments, writes
+no file and prints ten lines, so `python
+code/10-nonscalar-common-domain-verify.py` can be compared directly with
+`data/10-nonscalar-common-domain-verification_results.txt`.
+
 **Independently checked, beyond running the suites.** The finiteness bound
 of Theorem 17.5 was verified without source 07. Writing the divisor as a
 sum of real linear forms against the frequency's Hahn coefficients makes
@@ -522,12 +645,15 @@ support finiteness, ordinary analytic domain preservation, any
 small-divisor limsup, the exact convergence radii, the universal
 quantifiers, the classification theorems, the algebraicity dichotomy, the
 centralizer theorems, the slow-time theorem, the Liouville construction,
-the common-radius theorem, the cyclic noncancellation along an infinite
-subsequence, or novelty. Source 07's checks in particular verify neither the
+the common-radius theorems, the rate-count lemma, the rational-rank product
+bound, the cyclic noncancellation along an infinite subsequence, or
+novelty. Source 07's checks in particular verify neither the
 irrationality of its Liouville constant, nor any infinite-mode
 subexponential estimate, nor the word lemma, nor the infinite-support
 conjugacy theorem. Source 09's tests do not test the unit-circle estimate at
-all. Sources 03 and 06 truncate by **total parameter or label degree**,
+all. Source 10's 1,000 larger tree configurations are seeded samples, not an
+enumeration, and its algebra test checks nonzero divisors only in the
+finite range it uses. Sources 03 and 06 truncate by **total parameter or label degree**,
 which is explicitly *not* a Hahn valuation cutoff in a higher-rank group.
 Fifty of source 05's 245 assertions are finite lexicographic illustrations
 for `n = 1..50`, an illustration and **not** the all-`n` proof, which is in
@@ -536,10 +662,13 @@ the text. Its verifier also loses one top coefficient on division by
 degree `N-1`. Sources 04 and 07 both list a `SHA256SUMS.txt` in their
 READMEs that does not exist in the delivered archive; this is recorded
 rather than repaired. Sources 08 and 09 neither ship nor promise one.
+Source 10's delivered manifest matched all six delivered files and is not
+shipped.
 
 Reproducing a suite requires Python 3.10 or later and, for five of them
 (01, 03, 05, 06, 08), SymPy; the pinned version recorded by the sources is
-`sympy==1.14.0`.
+`sympy==1.14.0`. Source 10 needs only the standard library (Python 3.9 or
+later, by its own statement).
 
 *Two later reports that share only words.* The formal-flow "autonomous flows"
 of this report (see `dyn:warn:embedding`) are unrelated to the autonomous
@@ -561,8 +690,9 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 A standard TeX Live or MiKTeX installation with the packages named in the
 preamble suffices. The recorded build is clean: 0 errors, 0 undefined
 references, 0 undefined citations, 0 multiply-defined labels, 0 duplicate
-PDF destinations, 0 LaTeX warnings and 0 package warnings, 154 pages. All
-610 labels carry the `dyn:` prefix.
+PDF destinations, 0 LaTeX warnings and 0 package warnings, 171 pages. The
+three small overfull boxes (at most 3.2pt) and one underfull box predate
+source 10. All 651 labels carry the `dyn:` prefix.
 
 ## Relation to the rest of the collection
 
@@ -574,14 +704,14 @@ PDF destinations, 0 LaTeX warnings and 0 package warnings, 154 pages. All
   classification of algebraic leading coordinates and the dichotomy, not
   the invisibility phenomenon itself. That report's cross-category warning
   is adopted verbatim, once, in place of re-deriving the
-  coordinate-versus-surreal-derivation distinction nine times. Source 07
+  coordinate-versus-surreal-derivation distinction ten times. Source 07
   separates itself from that report **by name**. Its torus derivatives are
   external derivations annihilating the Hahn scalar field, so the
   cohomological equation of §18 is not a surreal differential equation for
   the Berarducci–Mantova derivation, and no theorem of either report
   transfers to the other. It also records that a targeted repository code
   search for "cohomological" returned no match, while stating that this is
-  not an exhaustive audit. Sources 08 and 09 likewise use only external
+  not an exhaustive audit. Sources 08, 09 and 10 likewise use only external
   coordinate derivatives.
 - **Inherits from** `docs/surcomplex/analysis/`: the
   no-topological-convergence discipline and the Neumann support material.
@@ -592,7 +722,9 @@ PDF destinations, 0 LaTeX warnings and 0 package warnings, 154 pages. All
   Every theorem names its ring in that report's vocabulary, and exactly two
   rows are added (entire coefficients, polynomial coefficients) with the
   note that they are new **rows**, not new rings. Theorem 7.13 decides the
-  common-domain germ ring `R_n` of that table for a scalar exact multiplier.
+  common-domain germ ring `R_n` of that table for a scalar exact multiplier,
+  and Theorem 7.34 for every exact diagonal unitary one, up to the optimal
+  radius when `r_ang >= 2`.
 - **Adjacent to** `docs/surcomplex/contours-and-stokes/`. It is background
   for the period section and deliberately unused there: every integral is an
   ordinary complex line integral taken coefficient by coefficient over

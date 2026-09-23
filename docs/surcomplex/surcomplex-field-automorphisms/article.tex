@@ -1,0 +1,2500 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=0.95in,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{xcolor,booktabs,array,longtable,enumitem}
+\usepackage{ragged2e,tocloft}
+\setlength{\cftbeforesecskip}{1pt}
+\setlength{\cftbeforetoctitleskip}{0pt}
+\setlength{\cftaftertoctitleskip}{10pt}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{HTML}{263D36}
+\definecolor{link}{HTML}{385E54}
+\hypersetup{colorlinks=true,linkcolor=link,citecolor=link,urlcolor=link,
+ pdftitle={Automorphisms of the Surcomplex Numbers},
+ pdfauthor={Research article prepared with ChatGPT},
+ pdfsubject={Real forms, Hahn symmetries, valuation, topology, and exponential rigidity}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\scshape Automorphisms of the surcomplex numbers}
+\fancyhead[R]{\small Real forms and rigidity}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.15em}
+\setlist{itemsep=2pt,topsep=4pt,leftmargin=1.6em}
+\emergencystretch=1.5em
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{question}[theorem]{Question}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\On}{\mathbf{On}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\K}{\mathbb K}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\mm}{\mathfrak m}
+\newcommand{\U}{\mathcal U}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\Aut}{\operatorname{Aut}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\Fix}{\operatorname{Fix}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\lc}{\operatorname{lc}}
+\newcommand{\st}{\operatorname{st}}
+\newcommand{\re}{\operatorname{Re}}
+\newcommand{\im}{\operatorname{Im}}
+\newcommand{\rc}{\operatorname{rc}}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\angles}[1]{\langle#1\rangle}
+\newcommand{\Gh}{\operatorname{Aut}_{\mathrm{ord}}(\Gamma)}
+\newcommand{\Gexp}{\operatorname{Aut}_{\exp}(\No)}
+\newcommand{\AutL}{\operatorname{Aut}_{L}}
+\newcommand{\repoSHA}{\texttt{dcf86662\allowbreak b574988e\allowbreak 75d08d51\allowbreak 5d3a2a5b\allowbreak a7bbc0d7}}
+\newcommand{\repo}[1]{\nolinkurl{#1}}% a path in the collection, relative to docs/
+\newcommand{\lbl}[1]{\nolinkurl{#1}}% a label of another report, cited by name
+\numberwithin{equation}{section}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{0.1cm}
+{\large\scshape Single-source research report\par}
+\vspace{0.8cm}
+{\Huge\bfseries\color{ink} Automorphisms of the\\[0.2em] Surcomplex Numbers\par}
+\vspace{0.65cm}
+{\Large Real forms, Hahn symmetries,\\ valuation, and rigidity\par}
+\vspace{0.7cm}
+{\large Research article prepared with ChatGPT\par}
+\vspace{0.3cm}
+{22 September 2026\par}
+\vspace{0.1cm}
+{\small Built from one manuscript of batch~20 of the collection,
+pinned to repository commit \texttt{dcf8666}\par}
+\vspace{0.6cm}
+\begin{minipage}{0.93\textwidth}
+\begin{abstract}
+The phrase ``automorphism of the surcomplex numbers'' has several inequivalent
+meanings. For the algebraically closed field $\K=\No(i)$, the automorphisms
+fixing $\No$ pointwise are just identity and conjugation. Those preserving
+$\No$ setwise form $\Aut(\No)\times C_2$, but this is a proper subgroup of the
+unrestricted field automorphisms. We prove this distinction explicitly, using
+Hahn-series phase twists that fix every ordinary complex number and every
+valuation value while moving the surreal real axis.
+
+We develop the coefficient, character, value-group, and leading-term-kernel
+layers of the valued automorphism group; construct automorphisms moving
+ordinary real constants by infinitesimals; and separate strong summation from
+fine continuity. A further contrast is that nonidentity surcomplex field
+automorphisms can be everywhere fine-differentiable with derivative zero.
+We examine class-sized homogeneity, fixed fields, involutions, inequivalent
+real forms, norm and circle preservation, simplicity, the omega-map, and
+exponential structure. The repository's existing exponential faithfulness
+argument is incorporated as prior work, not presented as a new discovery.
+That repository report classifies the automorphisms preserving the
+logarithmic modulus,
+$\AutL(\K)\simeq\Gexp\times C_2$; the present report studies plain field
+automorphisms, of which those form a proper subgroup of the real-axis
+stabilizer.
+The final sections identify precise formalization targets and distinguish
+proved statements, imported theorems, and unresolved classification problems.
+\end{abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{0.93\textwidth}
+\small
+\textbf{Scope and status.} An AI-assisted research draft, not refereed.
+A mathematical research exposition, not a claim of
+complete classification or of historical priority. Written proofs are supplied
+for the main reductions and constructions. No new Lean verification or
+independent build of the repository is claimed, and no theorem of this report
+is Lean-verified. Repository comparison is
+pinned to the revision recorded in Section~\ref{saut:sec:repo}; the relations
+to the collection as it now stands are in
+Section~\ref{saut:sec:position} and Appendix~\ref{saut:app:provenance}.
+The word ``automorphism'' is always qualified by the structure it preserves
+(Section~\ref{saut:sec:conventions}). Every label carries the prefix
+\texttt{saut:}.
+\end{minipage}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+{\fontsize{9.5}{11}\selectfont\setlength{\parskip}{0pt}\tableofcontents}
+\clearpage
+\pagenumbering{arabic}
+
+\section{Which structure is being preserved?}\label{saut:sec:introduction}
+
+Let $\No$ be Conway's real closed ordered field of surreal numbers and put
+\[
+ \K=\No(i)=\{x+iy:x,y\in\No\},\qquad i^2=-1.
+\]
+This is the surcomplex field. Its algebraic closedness follows from real
+closedness of $\No$. Write
+\[
+ c(x+iy)=x-iy,
+ \qquad N(x+iy)=x^2+y^2,
+ \qquad |x+iy|=\sqrt{x^2+y^2}.
+\]
+The square root is the nonnegative surreal square root. In particular, the
+modulus is \emph{surreal-valued}, not an ordinary real-valued norm.
+The underlying surreal construction and its normal forms are classical
+\cite{Conway,Gonshor}.
+
+The elementary equation $\alpha(i)^2=-1$ forces any field automorphism
+$\alpha$ of $\K$ to send $i$ to $i$ or $-i$. It does \emph{not} force
+$\alpha(\No)=\No$. This is the first logical distinction on which the subject
+turns. Once $\No$ is preserved, order is automatic on that subfield; without
+the distinguished subfield, the pure algebraically closed field has no
+intrinsic real axis.
+
+Three groups should therefore never be conflated:
+\begin{equation}\label{saut:eq:three}
+ \Aut(\K/\No)\ \subsetneq\
+ G_{\No}:=\{\alpha:\alpha(\No)=\No\}\ \subsetneq\ \Aut(\K).
+\end{equation}
+The left-hand group fixes $\No$ \emph{pointwise}. The middle group preserves
+it \emph{setwise}. The right-hand group has no such condition. We will prove
+\[
+ \Aut(\K/\No)=\{\id,c\},\qquad
+ G_{\No}\simeq\Aut(\No)\times C_2,
+\]
+and exhibit witnesses to both strict inclusions.
+
+Other reasonable structures produce other answers. One may mark ordinary
+$\C$, the natural valuation ring, every individual valuation value, the
+Conway monomials, strong Hahn summation, conjugation, modulus, simplicity,
+a derivation, or a real exponential. Naming one does not silently name all
+the others. For example, preserving every ordinary complex number and every
+valuation value still permits a rotation of some real monomials into
+imaginary ones.
+
+\subsection{Literature and the repository}
+
+Kuhlmann--Serra developed decompositions of valued Hahn-field automorphisms
+\cite{KS}; their work on Hahn groups supplies a second layer of structure
+\cite{KSG}. Kaplan--Krapp--Serra apply these ideas to $\No$, including
+strong summation and additional exponential structure \cite{KKS}. We use
+these as the structural background, while proving the complex-coefficient
+reductions and explicit examples below directly.
+
+The supplied repository already contains a manuscript proving faithful
+value-group action for surreal exponential automorphisms, with a
+logarithmic-modulus application to $\No(i)$ \cite{RepoRigidity}. That argument
+is reproduced with attribution in Section~\ref{saut:sec:exponential}. Its result
+is important: one must not simply repeat the corresponding question in an
+earlier source as unanswered. Section~\ref{saut:sec:audit} separates that
+mathematical issue from publication status and priority.
+
+\subsection{Foundations: a collection of class maps}
+
+We work in a class theory such as NBG with global choice. An individual
+surreal number is a set, but $\No$, $\K$, and the graphs of their automorphisms
+are proper classes. The notation $\Aut(\K)$ denotes a \emph{definable
+collection of class maps}; it is not itself a class-object in NBG. A group
+isomorphism formula means a unique factorization statement about individual
+automorphisms, with the stated composition law. This convention avoids
+forming a nonexistent set or class of all class functions.
+
+Global choice is used for the nonconstructive extension arguments in
+Section~\ref{saut:sec:bare}. The explicit Hahn maps need no class-sized
+transcendence basis: their values are defined on the set-sized support of
+one input at a time. Every infinite sum in this article has a set-sized
+index family. No proper-class support is admitted.
+
+For a set-based treatment, most local algebra and all explicit formulas can
+instead be read in a Hahn field $\C((t^\Gamma))$ for a set-sized divisible
+ordered abelian group $\Gamma$. A self-map requires the chosen parameters to
+preserve that workspace. Global homogeneity and the topology of the full
+surreal field should not be transferred to an arbitrary fixed workspace.
+
+\subsection{Notation}
+
+Throughout the full-field discussion,
+\[
+ \Gamma=(\No,+,<),\qquad t^g:=\omega^{-g}.
+\]
+Thus $t=\omega^{-1}$ is positive infinitesimal. The sign in this convention
+is essential. In $t$-notation, supports increase and are well-ordered; in
+$\omega$-notation, normal-form exponents decrease.
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\RaggedRight\arraybackslash}p{0.22\textwidth}>{\RaggedRight\arraybackslash}p{0.70\textwidth}@{}}
+\toprule
+Symbol & Meaning\\
+\midrule
+$\Aut(\K/E)$ & Field automorphisms fixing the indicated subfield $E$ pointwise\\
+$G_{\No}$ & Setwise stabilizer of the distinguished surreal real axis\\
+$G_v$ & Automorphisms stabilizing the natural valuation ring\\
+$v$, $\lc$ & Minimum support exponent and its nonzero coefficient\\
+$\U$ & Automorphisms fixing the leading term of every nonzero input\\
+$\Gh$ & Ordered \emph{additive-group} automorphisms of $\Gamma$\\
+$\st$ & Residue/standard-part map on the finite subring\\
+$c$ & The chosen conjugation $x+iy\mapsto x-iy$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Conventions: one meaning per word}\label{saut:sec:conventions}
+
+This subsection and the next were written when the manuscript joined the
+collection (Appendix~\ref{saut:app:provenance}). They fix vocabulary and
+state relations. The only mathematics they add is the elementary observation
+\eqref{saut:eq:Lchain} below, which is marked as an observation of the edit.
+
+\paragraph{Kinds of automorphism.} An unqualified ``automorphism'' of $\K$
+or of $\No$, and the notation $\Aut(\K)$, $\Aut(\No)$, always mean a
+\emph{plain field automorphism}: a bijective ring map, with no further
+condition. Every other kind is named by the structure it preserves.
+\begin{itemize}
+\item A \emph{valued automorphism} is a field automorphism $\alpha$ with
+$\alpha(\OO)=\OO$, that is, an element of the group $G_v$ of
+Section~\ref{saut:sec:decomposition}. Equivalently
+$v(\alpha z)=\tau_\alpha(v z)$ for an ordered automorphism $\tau_\alpha$ of
+the value group. A valued automorphism need not fix any value. Every field
+automorphism of $\No$ is valued (Lemma~\ref{saut:lem:order} and
+Section~\ref{saut:sec:decomposition}); a field automorphism of $\K$ need not
+be (Proposition~\ref{saut:prop:nondefinability}).
+\item A valued automorphism is \emph{value-fixing} when $\tau_\alpha=\id$,
+that is, $v(\alpha z)=v(z)$ for every $z\ne0$. This is the meaning of
+``exactly value-preserving'' and of ``values fixed'' in
+Theorem~\ref{saut:thm:phase} and Appendix~\ref{saut:sec:examplesummary}.
+\item A \emph{$1$-automorphism} is an element of $\U$ in \eqref{saut:eq:U}
+(or of $\U_{\R}$ for $\No$): $v(\alpha z-z)>v(z)$ for every $z\ne0$, which
+is the same as fixing every leading term. It is value-fixing, and it fixes
+$i$. The phase twists $P_\theta$, $\theta\ne0$, are value-fixing but are not
+$1$-automorphisms. This leading-term notion is the one of
+Kaplan--Krapp--Serra \cite{KKS} that the collection's rigidity report
+checked against the pinned version (its Corollary~5.2 uses only that a
+$1$-automorphism fixes every value).
+\item An \emph{exponential automorphism} is a field automorphism $\sigma$ of
+$\No$ with $\sigma(\exp x)=\exp(\sigma x)$ for all $x\in\No$; they form
+$\Gexp$. The notion is defined for $\No$ only: no surcomplex exponential is
+used in this report. By \eqref{saut:eq:expfaithful}, the identity is the
+only exponential automorphism that is value-fixing, and a fortiori the only
+exponential $1$-automorphism.
+\item An \emph{$L$-automorphism} is a field automorphism $\alpha$ of $\K$
+with $\alpha(L(z))=L(\alpha z)$ for every $z\ne0$, where $L(z)=\log|z|$
+\eqref{saut:eq:L}. They form $\AutL(\K)$, the notation of the rigidity report;
+the source wrote $\Aut(\K,L)$.
+\item \emph{Strong} and \emph{strongly $\C$-linear} are the support
+conditions of Section~\ref{saut:sec:hahn}. They are not continuity
+conditions (Section~\ref{saut:sec:topology}).
+\end{itemize}
+The inclusions that hold are
+\[
+ \U\subseteq\{\text{value-fixing}\}\subseteq G_v\subseteq\Aut(\K),
+ \qquad
+ \{\id,c\}=\Aut(\K/\No)\subseteq\AutL(\K)\subseteq G_{\No}\subseteq G_v .
+\]
+The first chain is immediate from the definitions. In the second, the
+middle inclusion is the range argument of Theorem~\ref{saut:thm:L} and the
+last is Proposition~\ref{saut:prop:continuous}.
+\emph{Observation of the edit.} Combining Theorem~\ref{saut:thm:axis} with
+Theorem~\ref{saut:thm:L},
+\begin{equation}\label{saut:eq:Lchain}
+ \AutL(\K)=\{\alpha\in G_{\No}:\ \alpha|_{\No}\in\Gexp\}
+ \ \subsetneq\ G_{\No}.
+\end{equation}
+The equality is Theorem~\ref{saut:thm:L} read through the factorization
+\eqref{saut:eq:lift}. Strictness is witnessed by $S_q$ for any rational
+$q>0$, $q\ne1$: it lies in $G_{\No}$ (Section~\ref{saut:sec:explicit}), and
+its restriction to $\No$ induces the value-group dilation $g\mapsto qg$,
+which no exponential automorphism induces
+(Proposition~\ref{saut:prop:rationalnonlift}). Whether the first inclusion
+$\{\id,c\}\subseteq\AutL(\K)$ is strict is the question whether $\Gexp$ is
+nontrivial; neither this report nor the rigidity report decides it.
+
+\paragraph{Rigidity.} In this report the word labels three specific
+statements: exact norm rigidity (Theorem~\ref{saut:thm:norm}), the
+simplicity statement of Section~\ref{saut:sec:exponential}, and the
+faithful value-group action of exponential automorphisms
+(Theorem~\ref{saut:thm:expfaithful}); the last is faithfulness, not
+triviality, exactly as in the rigidity report. None of them is the
+all-scale polynomial rigidity \lbl{f:thm-rigidity} of
+\repo{surcomplex/analysis} or the scalar rigidity of
+\repo{surreal/gamma-functions}.
+
+\paragraph{Phase.} The phases of the twists $P_\theta$ are the coefficient
+multipliers $e^{i\theta\ell(g)}$ of \eqref{saut:eq:phase}. They are not an
+argument of $z$, not the finite-angle $\operatorname{cis}$ or the global
+phase of \repo{surcomplex/trigonometry}, and not the phase of the
+differential-equations report; \repo{NOTATION.md} lists those meanings.
+
+\paragraph{Real form.} A real form is a real closed subfield $F\subset\K$
+with $\K=F(i)$ (Section~\ref{saut:sec:realforms}). In
+\lbl{ent:prop:real-form} of \repo{surcomplex/entire-functions-at-arbitrary-rank}
+and in \lbl{analytic:subsec:fixed-real} of \repo{surcomplex/analytic-geometry}
+the phrase names the real-coefficient version of a theorem, an unrelated use.
+
+\paragraph{Symbols.} Here $\Gamma=(\No,+,<)$ is a proper class; this
+departs from the recommendation of \repo{NOTATION.md} that $\Gamma$ be a
+set-sized group, and the set-sized reading is the one described in the
+previous subsection. The conventions $t^g=\omega^{-g}$, $v=\min\supp$ and
+$v(0)=\infty$ are the collection's. $\K=\No(i)$ is the field that
+\repo{NOTATION.md} writes $\mathrm{SC}=\No[i]$ and the analysis report
+writes $\K$; $K_1$, $K_2$ and $F(i)$ in Sections~\ref{saut:sec:axis}
+and~\ref{saut:sec:bare} are generic. Six symbols of the source were
+renamed so that each has one meaning.
+\begin{itemize}
+\item The source wrote $E_{\rho,\tau}$ for the coefficient-and-exponent lift
+and $E_d$ for the Taylor motion of Theorem~\ref{saut:thm:coeffflow}. Here
+they are $M_{\rho,\tau}=M_{\rho,\tau,1}$ and $\Phi_d$, so that $E$ denotes
+only an ordered exponential (Theorem~\ref{saut:thm:expfaithful}), as in the
+rigidity report.
+\item The derivation of Theorem~\ref{saut:thm:shiftflow} is $\mathcal D$
+(source: $D$). A $D$ with a subscript is always a diagonal automorphism
+$D_\lambda$ or $D_\chi$; the unsubscripted $D(x)=\sigma(x)-x$ in
+Lemma~\ref{saut:lem:displacement} is the displacement, as in the rigidity
+report.
+\item The real Puiseux field of Section~\ref{saut:sec:topology} is
+$\mathcal P$ (source: $P$), leaving $P_\theta$ for the phase twists.
+\item The automorphism in the non-density argument at the end of
+Section~\ref{saut:sec:topology} is $\psi$ (source: $\tau$), since $\tau$
+always denotes an ordered automorphism of the value group.
+\item The sides of a cut are $(\mathcal L,\mathcal R)$ (source: $(L,R)$),
+since $L$ is the logarithmic modulus.
+\end{itemize}
+$T_s$ denotes the flows of Theorem~\ref{saut:thm:shiftflow}; the maps $T_r$
+and $T_{s_0,c}$ of the rigidity report are value-group maps, and for
+rational $q>0$ the dilation $S_q$ of \eqref{saut:eq:dilation}, restricted to
+$\No$, is that report's canonical field lift $\widehat{T_q}$
+(\lbl{prop:hahn-lift}). The coefficient $\ell(g)=[g]_0$ of
+\eqref{saut:eq:ell} is that report's layer coefficient $[\gamma]_{s_0}$ at
+$s_0=0$. The letter $H$ is local to three places: the kernel subgroup in
+the proof of Theorem~\ref{saut:thm:expfaithful}, the real closure in
+Theorem~\ref{saut:thm:inequivalentrealform}, and the half-plane $H_F$ of
+Section~\ref{saut:sec:axis}.
+
+\subsection{Relation to other reports of the collection}\label{saut:sec:position}
+
+The source compared itself with the collection at its pin; that comparison
+is kept in Section~\ref{saut:sec:repo}. The relations below were checked
+against the collection as it stands after this report was placed.
+
+\paragraph{Exponential automorphism rigidity.}
+\repo{surreal/exponential-automorphism-rigidity} studies exponential
+automorphisms of an ordered field with a total exponential and, in its
+Section~9, $L$-automorphisms of $F(i)$ for real closed $F$; this report
+studies plain field automorphisms of $\K$. The two meet in
+Section~\ref{saut:sec:exponential}, whose results are that report's and
+are printed here once, with its proofs.
+\begin{itemize}
+\item Lemma~\ref{saut:lem:displacement} is its \lbl{lem:amplify}
+(Lemma~3.1), with the same probe.
+\item Theorem~\ref{saut:thm:expfaithful} is the faithfulness of its
+\lbl{thm:cofinal} and \lbl{cor:faithful} (Theorem~4.1, Corollary~4.2), by
+the route of \lbl{lem:bridge} and \lbl{lem:bounded}; the identification of
+the kernel with the finite surreals after it is \lbl{prop:finite-log}.
+That report proves more: cofinal and coinitial
+displacement, coarsenings, a version needing one visible exponential scale,
+and an order-free detector.
+\item The display \eqref{saut:eq:expfaithful} and the sentence after it are
+its \lbl{eq:main-no}, \lbl{thm:no} and \lbl{cor:question54}
+(Theorem~5.1, Corollary~5.2): every
+exponential $1$-automorphism of $\No$ is the identity, the negative answer
+to Question~5.4 of \cite{KKS}, arXiv version~3. The answer is that report's,
+not this one's, and the reading of the question rests on its check of the
+pinned PDF.
+\item Proposition~\ref{saut:prop:rationalnonlift} is its \lbl{thm:dilation}
+(Theorem~8.4), by the second, multiplication-based of its two proofs, with
+an arbitrary positive infinite $X$ in place of $\omega$.
+\item Theorem~\ref{saut:thm:L} is its \lbl{thm:L-classification} with
+\lbl{lem:range} and the kernel clause of \lbl{thm:complex-kernel} and
+\lbl{cor:surcomplex} (Lemma~9.1, Theorems~9.2 and~9.4, Corollary~9.5),
+specialized to $F=\No$. That report proves it for every real closed $F$
+with an ordered exponential, and on every invariant nontrivial convex value
+quotient.
+\end{itemize}
+What this report adds on the surcomplex side is the plain-field picture
+around that classification. Theorem~\ref{saut:thm:axis} is the field-level
+counterpart: $G_{\No}\simeq\Aut(\No)\times C_2$, with $\Aut(\No)$ in place of
+$\Gexp$. That report remarks that a shorter route to its classification,
+assuming commutation with conjugation and preservation of the exponential on
+the real axis from the start, proves strictly less;
+Theorem~\ref{saut:thm:axis} is the exponential-free first step of that
+shorter route. By \eqref{saut:eq:Lchain}, $\AutL(\K)$ is a proper subgroup of
+$G_{\No}$, which in turn is a proper subgroup of $G_v$ and of $\Aut(\K)$
+\eqref{saut:eq:strictchain}. By the kernel clause of
+Theorem~\ref{saut:thm:L}, an $L$-automorphism that fixes every value is
+$\id$ or $c$. The explicit maps $D_\lambda$, $P_\theta$, $\Phi_d$ and $T_s$
+are value-fixing and fix $i$, so a nonidentity one is never an
+$L$-automorphism; nor is $S_q$ for rational $q\ne1$, by
+\eqref{saut:eq:Lchain}. For other $a$ this report does not decide whether
+$S_a|_{\No}$ is exponential. The open
+question on the image of exponential automorphisms in the value group
+(Section~\ref{saut:sec:questions}) is that report's
+\lbl{q:image} (Question~13.1).
+
+\paragraph{Foundations and analysis.} The pair construction of $\K$ and its
+algebraic closedness are \lbl{found:prop:complex} of
+\repo{foundations-and-computation/foundations}.
+Proposition~\ref{saut:prop:discrete} is \lbl{found:thm:discrete} there,
+items~(1)--(2), with the absence of isolated points; \repo{FORMALIZATION.md}
+records Lean proofs of those clauses for the actual surcomplex carrier, with
+lower-universe smallness. The fine derivative of
+Section~\ref{saut:sec:derivative} is \lbl{found:eq:derivative}.
+The collection's earlier zero-derivative witnesses are locally constant:
+the indicator of the finite ring in \lbl{found:rem:fourtypes} and in
+\lbl{b:L} of \repo{surcomplex/analysis}, with a Lean proof recorded for the
+former. The dilation $S_2$ of Theorem~\ref{saut:thm:zeroderiv} is a
+different kind of witness: it is injective, so it is constant on no open
+set with more than one point, and the full field has no isolated points.
+
+\paragraph{Diagonal character twists.} The automorphisms
+$D_\chi=M_{\id,\id,\chi}$ are the character twists that the collection
+already uses on set-sized Hahn fields as tools:
+\lbl{spec:lem:finiteindex} of \repo{surcomplex/spectral-theory}, whose
+Galois group $\Hom(\Lambda/\Gamma,\mu_q)$ acts by them;
+\lbl{hnd:lem:supportdegree} of
+\repo{surcomplex/hidden-negative-hermitian-directions}; and the twists
+built from \lbl{bst:lem:characters} in
+\repo{surreal/transcendence-over-bounded-support}. There the characters
+take roots of unity or other values on a set-sized group; here $\chi$ is
+an arbitrary homomorphism $\Gamma=\No\to\C^\times$, and the twists are
+placed in the decomposition of Theorem~\ref{saut:thm:decomp}.
+
+\paragraph{Unit circle and rotations.} The Cayley map in the proof of
+Theorem~\ref{saut:thm:circle}, $u=(x-i)/(x+i)$, is a reparametrization of
+\lbl{trigonometry:thm:cayley} of \repo{surcomplex/trigonometry}
+($u=C(-1/x)$ in its notation); that report identifies the unit circle with
+$\operatorname{SO}(2,\No)$ in Section~\lbl{trigonometry:sec:circle}.
+Rotations there, and in \repo{surreal/euclidean-three-space}, placed in the
+same batch, are $\No$-linear isometries, not field automorphisms. The
+contrast is exact: multiplication by a unit-circle element preserves every
+modulus, whereas by Theorem~\ref{saut:thm:norm} the only field
+automorphisms preserving every modulus are $\id$ and $c$.
+
+\paragraph{Lean interfaces.} Besides the two modules the source inspected
+(Section~\ref{saut:sec:repo}), the collection has
+\nolinkurl{Surreal/Surcomplex/Basic.lean}, whose \texttt{conj} is conjugation
+as a ring automorphism of the concrete surcomplex field, and
+\nolinkurl{Surreal/HahnSeries/ComplexNumbers.lean}, whose
+\texttt{coefficientEquiv} lifts a ring equivalence of coefficients to Hahn
+series over an ordered exponent monoid, keeping supports: the case
+$M_{\rho,\id,1}$ of \eqref{saut:eq:monomial} in a workspace. \nolinkurl{Surreal/Algebra/SigmaDerivation.lean}
+proves the valued-field forms of the rigidity report's displacement
+results; its ordered-field \lbl{lem:amplify}, used here, is recorded in
+\repo{FORMALIZATION.md} as pending. No statement of this report is covered
+by a Lean proof.
+
+\section{Conjugation and the real-axis stabilizer}\label{saut:sec:axis}
+
+The results of this section apply to any real closed ordered field $F$,
+with $K=F(i)$. No infinite summation or specifically surreal theorem is needed.
+
+\begin{lemma}\label{saut:lem:order}
+Every field automorphism of a real closed field is order preserving. It fixes
+its real algebraic numbers pointwise.
+\end{lemma}
+\begin{proof}
+In a real closed field, $x>0$ is equivalent to $x=y^2$ for some $y\ne0$.
+A field automorphism preserves this condition and hence preserves order.
+It fixes $\Q$. Each real algebraic number is isolated from the other real
+roots of its minimal polynomial by a rational interval, so it is fixed too.
+\end{proof}
+
+\begin{theorem}[Centralizer and stabilizer]\label{saut:thm:axis}
+For $K=F(i)$ with $F$ real closed,
+\begin{align}
+ \Aut(K/F)&=\{\id,c\},\label{saut:eq:overF}\\
+ \{\alpha\in\Aut(K):\alpha(F)=F\}
+ &=C_{\Aut(K)}(c)=N_{\Aut(K)}(\angles{c})\nonumber\\
+ &\simeq\Aut(F)\times C_2.\label{saut:eq:axis}
+\end{align}
+The pair $(\sigma,e)$, with $e\in\{0,1\}$, acts by
+\begin{equation}\label{saut:eq:lift}
+ (x+iy)\longmapsto\sigma(x)+(-1)^e i\sigma(y).
+\end{equation}
+\end{theorem}
+\begin{proof}
+The roots of $X^2+1$ in $K$ are exactly $i,-i$. Thus an automorphism fixing
+$F$ has precisely the two possibilities in \eqref{saut:eq:overF}. If $\alpha$
+preserves $F$, its restriction is a field automorphism $\sigma$ and its
+value on $i$ determines \eqref{saut:eq:lift}. Conversely, this formula respects
+addition and the multiplication rule
+\[
+ (x+iy)(u+iv)=(xu-yv)+i(xv+yu),
+\]
+and has an inverse of the same form. The lift $\widehat\sigma$ fixing $i$
+commutes with $c$, so the product is direct.
+
+If $\alpha$ commutes with $c$, it carries the fixed field $\Fix(c)=F$ onto
+itself. The converse follows from \eqref{saut:eq:lift}. Finally, normalizing the
+order-two subgroup $\{\id,c\}$ means fixing its unique nonidentity member
+under conjugation, which is the centralizer condition.
+\end{proof}
+
+For surcomplex numbers, $\Aut(\No)$ is very far from trivial. In
+Section~\ref{saut:sec:explicit}, exponent dilation will give a real-axis-preserving
+automorphism sending $\omega$ to $\omega^2$. Thus even retaining conjugation
+leaves much more than the two classical-looking maps.
+
+\subsection{Equivariance is not exact preservation}
+
+For $\alpha=\widehat\sigma c^e$ one has
+\begin{equation}\label{saut:eq:equivariantnorm}
+ N(\alpha z)=\sigma(Nz),\qquad |\alpha z|=\sigma(|z|).
+\end{equation}
+The second identity follows because $\sigma$ preserves nonnegativity and
+square roots. In particular, balls are taken to balls, but their radii may
+change. Calling every such map an isometry would be misleading: it is
+\emph{semilinearly} compatible with the surreal-valued modulus.
+
+\begin{theorem}[Exact norm rigidity]\label{saut:thm:norm}
+A field automorphism $\alpha$ of $F(i)$ satisfying
+$N(\alpha z)=N(z)$ for every $z$ is either $\id$ or $c$.
+The same conclusion holds under exact modulus preservation.
+No real-axis-preservation hypothesis is needed.
+\end{theorem}
+\begin{proof}
+The identity
+\[
+ N(z+1)-N(z)-1=2\re z
+\]
+and $\alpha(z+1)=\alpha z+1$ imply $\re(\alpha z)=\re z$.
+For $x\in F$, write $\alpha x=x+iy$. Exact norm preservation gives
+$x^2+y^2=x^2$, hence $y=0$. Thus $\alpha$ fixes $F$ pointwise and
+\cref{saut:thm:axis} applies. Exact modulus preservation implies exact norm
+preservation by squaring.
+\end{proof}
+
+\subsection{The unit circle remembers the real axis}
+
+Let $U_F=\{z\in F(i):N(z)=1\}$. Merely preserving this set, without preserving
+individual norms, already recovers the real-axis stabilizer.
+
+\begin{theorem}\label{saut:thm:circle}
+For a field automorphism $\alpha$ of $F(i)$,
+\[
+ \alpha(U_F)=U_F\quad\Longleftrightarrow\quad\alpha(F)=F.
+\]
+\end{theorem}
+\begin{proof}
+The reverse implication follows from \eqref{saut:eq:equivariantnorm}. For the
+forward implication use the Cayley parametrization
+\[
+ u=\frac{x-i}{x+i},\qquad
+ x=i\frac{1+u}{1-u}.
+\]
+For every $x\in F$, the first expression lies in $U_F\setminus\{1\}$.
+For every $u\in U_F\setminus\{1\}$, the second expression is real: conjugating
+it and using $\bar u=u^{-1}$ leaves it unchanged. Applying $\alpha$ to the
+inverse expression changes $i$ at most to $-i$, so $\alpha x\in F$.
+Apply the same reasoning to $\alpha^{-1}$ to obtain equality of the axes.
+\end{proof}
+
+Let $H_F=\{z:\im z>0\}$ be the chosen upper half-plane. If a field
+automorphism preserves $H_F$ setwise, it also preserves $-H_F$, so it
+preserves their complement $F$. Since $i\in H_F$, it must fix $i$.
+Conversely, a lift $\widehat\sigma$ preserves $H_F$ by order preservation.
+Thus its stabilizer consists exactly of the lifts $\widehat\sigma$. There is no compatible ordered-field structure on $F(i)$
+itself, since $i^2=-1$.
+
+\section{Normal forms, valuation, and summability}\label{saut:sec:hahn}
+
+Conway normal form identifies the ordered field $\No$ with real Hahn series
+having surreal exponents and set-sized well-ordered support. Taking real and
+imaginary parts coefficientwise gives
+\begin{equation}\label{saut:eq:hahn}
+ \No=\R((t^\Gamma)),\qquad
+ \K=\C((t^\Gamma)),\qquad \Gamma=(\No,+,<).
+\end{equation}
+The displayed equalities mean canonical identifications. A surcomplex normal
+form is
+\[
+ z=\sum_{g\in S}z_g t^g,
+ \qquad z_g\in\C,\quad S\subseteq\Gamma\text{ a well-ordered set}.
+\]
+For $z\ne0$, define
+\[
+ v(z)=\min\supp(z),\qquad \lc(z)=z_{v(z)},\qquad
+ \operatorname{lt}(z)=\lc(z)t^{v(z)},
+\]
+and set $v(0)=\infty$. Multiplication is convolution, with only finitely many
+contributions to any fixed exponent. Its basic laws are
+\[
+ v(zw)=v(z)+v(w),\qquad
+ v(z+w)\ge\min\{v(z),v(w)\}.
+\]
+Conjugation acts coefficientwise. Since
+$\lc(z\bar z)=|\lc(z)|_{\C}^{\,2}>0$,
+\begin{equation}\label{saut:eq:normvalue}
+ v(\bar z)=v(z),\qquad v(Nz)=2v(z),\qquad v(|z|)=v(z).
+\end{equation}
+
+The valuation ring and its maximal ideal are
+\[
+ \OO=\{z:v(z)\ge0\},\qquad \mm=\{z:v(z)>0\}.
+\]
+They are exactly the finite surcomplex numbers and the infinitesimals,
+respectively. Every $z\in\OO$ has a unique decomposition $z=a+\varepsilon$
+with $a\in\C$, $\varepsilon\in\mm$, and $\st(z)=a=z_0$. Thus
+$\OO/\mm\simeq\C$. The analogous real residue field is $\R$.
+
+\begin{definition}[Strong summation]
+A set-indexed family $(z_j)_{j\in J}$ is Hahn-summable if the union of its
+supports is well-ordered and every exponent occurs in only finitely many
+of the supports. Its sum is then defined coefficientwise by finite sums.
+We call an automorphism \emph{strong} here when it and its inverse carry
+summable families to summable families and commute with their sums.
+It is strongly $\C$-linear when it is strong and fixes $\C$ pointwise.
+\end{definition}
+
+This definition is a support condition, not a limit of finite partial sums.
+For example, $\sum_{n\ge0}t^n$ is a legitimate Hahn sum and equals
+$(1-t)^{-1}$ even in a setting where its partial sums do not converge in the
+full fine topology. Section~\ref{saut:sec:topology} explains that distinction.
+
+\begin{lemma}[Support control used below]\label{saut:lem:support}
+If $S$ is a well-ordered subset of an ordered abelian group and $\delta>0$,
+then $S+\N\delta$ is well-ordered, and each exponent has only finitely many
+representations $s+n\delta$ with $s\in S$ and $n\in\N$.
+More generally, the sum of two well-ordered subsets is well-ordered and has
+finitely many decompositions of any fixed element.
+\end{lemma}
+\begin{proof}
+Every infinite sequence in a well-order has an infinite nondecreasing
+subsequence. A strictly decreasing sequence of sums, by successively taking
+such subsequences for its two coordinates, would have a nondecreasing
+subsequence, a contradiction. Thus the sum is well-ordered. Infinitely many
+distinct representations of one value would give infinitely many distinct
+first coordinates. Choosing a strictly increasing subsequence of these
+forces a strictly decreasing sequence of second coordinates, again
+impossible. Apply this to $S$ and $\N\delta$.
+\end{proof}
+
+These finite-decomposition arguments justify the rearrangements in the
+constructions below. More general support-controlled formal exponentials
+and derivations are developed in \cite{BKKS}; we will need only explicit
+fixed-shift cases, which can be checked directly.
+
+\section{Explicit monomial automorphisms and phase twists}\label{saut:sec:explicit}
+
+Let $\rho\in\Aut(\C)$, let $\tau\in\Gh$, and let
+$\chi:(\Gamma,+)\to(\C^\times,\cdot)$ be a group homomorphism. Define
+\begin{equation}\label{saut:eq:monomial}
+ M_{\rho,\tau,\chi}\left(\sum_g z_g t^g\right)
+   =\sum_g\rho(z_g)\chi(g)t^{\tau(g)}.
+\end{equation}
+Here $\chi$ need not arise from an exponential of an additive complex-valued
+map. Arbitrary multiplicative characters are allowed.
+
+\begin{theorem}[Monomial construction]\label{saut:thm:monomial}
+Formula~\eqref{saut:eq:monomial} defines a strong field automorphism of $\K$, with
+\[
+ v(Mz)=\tau(vz),\qquad
+ \lc(Mz)=\rho(\lc z)\chi(vz).
+\]
+For composition in the order $M_1M_2$, the parameters are
+\begin{equation}\label{saut:eq:monomiallaw}
+ \rho=\rho_1\rho_2,\quad \tau=\tau_1\tau_2,\quad
+ \chi(g)=\rho_1(\chi_2(g))\chi_1(\tau_2(g)).
+\end{equation}
+The map preserves the real axis exactly when
+\begin{equation}\label{saut:eq:monomialreal}
+ \rho\in\{\id_{\C},c|_{\C}\},\qquad
+ \chi(g)\in\R_{>0}\quad\text{for every }g.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The order bijection $\tau$ takes a well-ordered support to a well-ordered
+support. All transformed coefficients on the support are nonzero.
+Additivity is coefficientwise. For multiplication, each coefficient is a
+finite sum, $\tau(g+h)=\tau(g)+\tau(h)$, and
+$\chi(g+h)=\chi(g)\chi(h)$, so convolution is preserved. The same formula
+with inverse parameters gives a two-sided inverse; explicitly one can use
+$\rho^{-1},\tau^{-1}$ and
+$g\mapsto\rho^{-1}(\chi(\tau^{-1}g)^{-1})$. Support unions and their finite
+incidence multiplicities are preserved, proving strongness in both
+directions. Substitution proves \eqref{saut:eq:monomiallaw}.
+
+If the real axis is preserved, the image of each real constant is a real
+constant, so $\rho(\R)=\R$. A field automorphism of $\R$ is the identity,
+because order and rational cuts determine each real number. Consequently
+$\rho$ is identity or conjugation on $\C$. Also $M(t^g)$ is real, so
+$\chi(g)\in\R^\times$. Divisibility of $\Gamma$ gives
+$\chi(g)=\chi(g/2)^2>0$. Conversely, \eqref{saut:eq:monomialreal} makes the image
+of every real-coefficient series real, and the same holds for the inverse.
+\end{proof}
+
+\subsection{Rescaling all valuation exponents}
+
+For every positive surreal $a$ let
+\begin{equation}\label{saut:eq:dilation}
+ S_a\left(\sum_g z_g t^g\right)=\sum_g z_g t^{ag}.
+\end{equation}
+Multiplication by $a$ is an ordered additive automorphism of $\Gamma$, so
+\cref{saut:thm:monomial} applies. We obtain
+\[
+ S_aS_b=S_{ab},\qquad S_a^{-1}=S_{1/a},\qquad
+ S_a(t)=t^a,\qquad S_a(\omega)=\omega^a.
+\]
+Every $S_a$ fixes ordinary $\C$ pointwise, commutes with $c$, and preserves
+order on $\No$. It fixes individual valuation values only for $a=1$.
+For instance,
+\[
+ S_2\left(3+2t^{-1}+(1+i)t^{1/2}\right)
+ =3+2t^{-2}+(1+i)t.
+\]
+This proves the first strict inclusion in \eqref{saut:eq:three}.
+
+Notice that $S_a$ generally does \emph{not} commute with the omega-map.
+Indeed, $S_a(1)=1$ whereas
+$S_a(\omega^1)=\omega^a\ne\omega^{S_a(1)}$ when $a\ne1$.
+The omega-map must not be mistaken for an exponent reindexing convention.
+
+\subsection{Positive real characters}
+
+For an additive map $\lambda:\Gamma\to\R$, define
+\[
+ D_\lambda\left(\sum_g z_g t^g\right)
+ =\sum_g z_g e^{\lambda(g)}t^g.
+\]
+These are strongly $\C$-linear real-axis-preserving automorphisms fixing
+all valuation values. Their group law is
+$D_\lambda D_\mu=D_{\lambda+\mu}$. They generally change leading
+coefficients, so they are not leading-term-fixing automorphisms.
+
+There are explicit nonzero $\lambda$. Regard an exponent $g$ itself as a
+surreal normal form and set
+\begin{equation}\label{saut:eq:ell}
+ \ell(g)=[g]_0,
+\end{equation}
+its real coefficient at exponent zero. This is an additive map defined on
+all of $\No$, and $\ell(r)=r$ for every real $r$. It is not a standard-part
+map on all surreals: for an infinite $g$, coefficient extraction still makes
+sense even though standard part does not.
+
+\subsection{Complex phases move the real axis}
+
+For $\theta\in\R$ use the same $\ell$ to define
+\begin{equation}\label{saut:eq:phase}
+ P_\theta\left(\sum_g z_g t^g\right)
+ =\sum_g z_g\exp(i\theta\ell(g))t^g.
+\end{equation}
+Only the ordinary complex exponential is used in the coefficient.
+
+\begin{theorem}[A faithful phase action]\label{saut:thm:phase}
+The maps $P_\theta$ form a faithful action of the additive group $\R$ by
+strongly $\C$-linear, exactly value-preserving automorphisms of $\K$.
+For $\theta\ne0$, $P_\theta$ does not preserve $\No$. Moreover,
+\begin{equation}\label{saut:eq:phaseconj}
+ P_\theta P_\phi=P_{\theta+\phi},\qquad
+ cP_\theta c=P_{-\theta}.
+\end{equation}
+In particular,
+\[
+ P_{\pi/2}(t)=it.
+\]
+\end{theorem}
+\begin{proof}
+The character identity follows from additivity of $\ell$, so the
+monomial theorem gives all field and summability assertions. If
+$P_\theta=\id$, then $e^{i\theta r}=1$ for every real $r$, because
+$\ell(r)=r$. For $\theta\ne0$, taking $r=\pi/\theta$ contradicts this.
+Thus the action is faithful. Its parameter is not an angle modulo $2\pi$:
+all real exponents occur, not just integer exponents.
+
+If $\theta\ne0$, the choice $r=\pi/(2\theta)$ yields
+$P_\theta(t^r)=it^r$, which is not real. Finally, conjugation reverses every
+coefficient phase, giving \eqref{saut:eq:phaseconj}.
+\end{proof}
+
+This provides the second strict inclusion in \eqref{saut:eq:three} without a
+choice of transcendence basis or a nonconstructive extension. It also proves
+that none of the following conditions by itself recovers the real axis:
+fixing ordinary $\C$, strong $\C$-linearity, exact valuation preservation,
+or even all three together.
+
+Valuation preservation is much weaker than exact modulus preservation.
+For example,
+\[
+ |1+t|=1+t,
+ \qquad |P_{\pi/2}(1+t)|=|1+it|=\sqrt{1+t^2}\ne1+t.
+\]
+Likewise, $P_{\pi/2}$ does not preserve the distinguished unit circle,
+by \cref{saut:thm:circle}. Algebraic multiplication survives while the chosen
+Euclidean geometry changes.
+
+\subsection{A continuum of explicit conjugations}
+
+Set
+\begin{equation}\label{saut:eq:twistedconj}
+ j_\theta=P_\theta cP_\theta^{-1}=P_{2\theta}c,
+ \qquad F_\theta=P_\theta(\No).
+\end{equation}
+Then $j_\theta^2=\id$, $\Fix(j_\theta)=F_\theta$, and
+$\K=F_\theta(i)$. Each $F_\theta$ is a real closed subfield isomorphic to
+$\No$, but the actual embedded real axes are pairwise distinct.
+Indeed, equality $F_\theta=F_\phi$ would make $P_{\theta-\phi}$ preserve
+$\No$, forcing $\theta=\phi$. The fixed-field condition is especially
+concrete:
+\begin{equation}\label{saut:eq:twistedcoeff}
+ z\in F_\theta\quad\Longleftrightarrow\quad
+ z_g e^{-i\theta\ell(g)}\in\R\quad\text{for all }g.
+\end{equation}
+These are different \emph{placements} of an isomorphic real form. We will
+also construct a real form not isomorphic to $\No$ in
+Section~\ref{saut:sec:realforms}.
+
+\section{Leading-term kernels and infinitesimal motion}\label{saut:sec:kernels}
+
+Define
+\begin{equation}\label{saut:eq:U}
+ \U=\{\alpha\in\Aut(\K):
+       v(\alpha z-z)>v(z)\text{ for all }z\ne0\}.
+\end{equation}
+Here $v(0)=\infty$, so fixed inputs satisfy the inequality. Equivalently,
+$\alpha$ fixes the complete leading term of every nonzero series.
+Such maps are often called $1$-automorphisms. They can still change very
+substantial lower-order data. Let $\U_{\R}$ denote the corresponding
+leading-term-fixing subgroup of $\Aut(\No)$.
+
+\subsection{A real automorphism need not fix ordinary reals}
+
+An order-preserving automorphism $\sigma$ of $\No$ fixes every rational.
+For $r\in\R$, rational comparisons imply only
+\[
+ \sigma(r)-r\in\mm\cap\No,
+\]
+not $\sigma(r)=r$. In a non-Archimedean extension, the rational cut of $r$
+is shared by every infinitesimal perturbation of $r$.
+The following construction makes the distinction explicit.
+
+\begin{theorem}[Taylor motion of coefficient constants]\label{saut:thm:coeffflow}
+Let $d:\C\to\C$ be a field derivation and let $\delta\in\Gamma$ be
+positive. Then
+\begin{equation}\label{saut:eq:coeffflow}
+ \Phi_d\left(\sum_g z_gt^g\right)
+ =\sum_{g,\,n\ge0}\frac{d^n(z_g)}{n!}t^{g+n\delta}
+\end{equation}
+defines a strong automorphism belonging to $\U$, with inverse $\Phi_{-d}$.
+It fixes all monomials $t^g$. If $d(\R)\subseteq\R$ and $d(i)=0$, it
+preserves $\No$ and commutes with conjugation.
+There exist choices for which a real transcendental $b$ satisfies
+\begin{equation}\label{saut:eq:realmove}
+ \Phi_d(b)=b+t^\delta.
+\end{equation}
+\end{theorem}
+\begin{proof}
+For an input with support $S$, all output exponents lie in $S+\N\delta$.
+Lemma~\ref{saut:lem:support} proves well-ordering and finite incidence at every
+exponent. The same argument works for a summable family of inputs and for
+all double sums needed in a composition.
+The iterated Leibniz rule
+\[
+ d^n(ab)=\sum_{k=0}^n\binom nk d^k(a)d^{n-k}(b)
+\]
+proves multiplicativity after division by $n!$. Additivity is immediate.
+In $\Phi_d\Phi_{-d}$, the coefficient multiplying the $k$th derivative at total
+shift $k\delta$ is
+\[
+ \sum_{n=0}^k\frac{(-1)^n}{n!(k-n)!},
+\]
+which is $1$ for $k=0$ and $0$ otherwise. This proves the inverse formula.
+Every term with $n>0$ has exponent strictly larger than the original
+minimum; the $n=0$ term retains its original leading coefficient. Hence
+$\Phi_d\in\U$. Since $d(1)=0$, each monomial is fixed.
+
+To obtain \eqref{saut:eq:realmove}, choose a transcendence basis $B$ of $\R/\Q$
+and an element $b\in B$. Define a derivation on $\Q(B)$ by $d(b)=1$ and
+$d(b')=0$ for $b'\ne b$. In characteristic zero it extends uniquely through
+an algebraic extension: for a minimal polynomial $p(X)$ and a root $a$,
+\[
+ d(a)=-\frac{p^d(a)}{p'(a)},
+\]
+where $p^d$ means differentiate the coefficients. Extend first to $\R$,
+then to $\C$ by $d(i)=0$. Now $d^2(b)=0$, giving \eqref{saut:eq:realmove}.
+All real coefficients stay real, and the construction commutes with $c$.
+\end{proof}
+
+Thus even a strongly additive, leading-term-fixing surreal automorphism
+can move an ordinary real constant. It is not strongly $\R$-linear.
+Confusing strong additivity with coefficient linearity would erase this
+entire type of automorphism.
+
+The construction uses choice only for a derivation on the \emph{set} $\R$;
+no class-sized basis is selected. Its action on a given normal form is then
+an explicit support-controlled formula. It is generally noncomputable from
+ordinary numerical names of the real coefficients, as should be expected
+from its use of a transcendence basis.
+
+\subsection{Strongly complex-linear flows}
+
+There are also abundant nontrivial members of $\U$ fixing all constants.
+Let $\lambda:\Gamma\to\C$ be additive, and fix $\delta>0$. Define
+\begin{equation}\label{saut:eq:shiftderiv}
+ \mathcal D\left(\sum_g z_gt^g\right)=\sum_g z_g\lambda(g)t^{g+\delta}.
+\end{equation}
+The positive shift is important: $g-\delta$ would generally lower valuation,
+not raise it.
+
+\begin{theorem}[A fixed-shift flow]\label{saut:thm:shiftflow}
+The map $\mathcal D$ is a strongly $\C$-linear derivation, and for every $s\in\C$,
+\begin{equation}\label{saut:eq:shiftflow}
+ T_s=\sum_{n\ge0}\frac{s^n\mathcal D^n}{n!}
+\end{equation}
+is a strongly $\C$-linear automorphism in $\U$. The group law is
+$T_sT_r=T_{s+r}$. If $\lambda$ is real-valued and $s\in\R$, then $T_s$
+commutes with $c$ and preserves $\No$.
+\end{theorem}
+\begin{proof}
+Additivity of $\lambda$ proves the Leibniz rule on monomials, and finite
+convolution proves it on all series. Iterating gives
+\[
+ \mathcal D^n(t^g)=
+ \left(\prod_{k=0}^{n-1}\lambda(g+k\delta)\right)t^{g+n\delta}.
+\]
+All supports in \eqref{saut:eq:shiftflow} lie in $S+\N\delta$. The support lemma
+justifies summation and the finite regroupings at each coefficient.
+The iterated Leibniz identity proves multiplicativity, and the binomial
+formula gives $T_sT_r=T_{s+r}$. Thus $T_{-s}$ is the inverse. Nonconstant
+terms of the operator exponential strictly increase every input's valuation,
+so the leading term is unchanged. Constants are killed by $\mathcal D$ because
+$\lambda(0)=0$. The real-coefficient assertion is immediate.
+\end{proof}
+
+For a particularly transparent example choose $\delta=1$ and $\lambda=\ell$
+from \eqref{saut:eq:ell}. Then
+\[
+ \mathcal D(t)=t^2,\qquad \mathcal D^n(t)=n!t^{n+1},\qquad
+ T_s(t)=\frac{t}{1-st}.
+\]
+Consequently $T_1$ is a nonidentity strongly $\C$-linear, real-axis-preserving
+$1$-automorphism. These explicit flows illustrate the automorphism--derivation
+connection without requiring a blanket assertion that every formally
+written operator exponential is summable.
+
+\subsection{What monomial prescriptions do not automatically give}
+
+For a strongly $\C$-linear element $\alpha\in\U$, the assignments
+\[
+ u_g=t^{-g}\alpha(t^g)\in1+\mm
+\]
+form a group homomorphism $\Gamma\to1+\mm$. Formally one would like to write
+\[
+ \alpha\left(\sum_g z_gt^g\right)=\sum_g z_gt^g u_g.
+\]
+This is valid for an existing strong automorphism. Conversely, an arbitrary
+homomorphism $g\mapsto u_g$ does not by itself certify that this formula is
+summable for \emph{every} well-ordered support or that it is onto.
+One must check the transformed support family and construct a compatible
+inverse. The fixed-shift proofs above supply exactly those missing checks.
+This is a genuine obstacle in turning a group decomposition into a complete
+explicit parametrization of its largest kernel.
+
+\section{Decomposing the valued automorphism group}\label{saut:sec:decomposition}
+
+Define
+\[
+ G_v=\{\alpha\in\Aut(\K):\alpha(\OO)=\OO\}.
+\]
+Preserving the valuation here means preserving its comparison structure,
+not necessarily each value. Such an $\alpha$ induces
+\[
+ \rho_\alpha\in\Aut(\C),\qquad
+ \tau_\alpha\in\Gh,
+ \qquad
+ v(\alpha z)=\tau_\alpha(vz).
+\]
+The residue action is $\rho_\alpha(\st z)=\st(\alpha z)$ for finite $z$.
+This does not assert $\alpha(\C)=\C$: the coefficient-motion examples have
+identity residue action while sending constants out of the constant field.
+
+\begin{theorem}[Four layers for surcomplex valued automorphisms]\label{saut:thm:decomp}
+With $\U$ as in \eqref{saut:eq:U}, every $\alpha\in G_v$ factors uniquely as
+\begin{equation}\label{saut:eq:factor}
+ \alpha=u\,D_\chi\,M_{\rho,\tau},
+\end{equation}
+where $u\in\U$, $\chi\in\Hom(\Gamma,\C^\times)$, and
+\[
+ D_\chi\left(\sum z_gt^g\right)=\sum z_g\chi(g)t^g,
+ \qquad
+ M_{\rho,\tau}\left(\sum z_gt^g\right)=\sum\rho(z_g)t^{\tau(g)}.
+\]
+(In the notation of \eqref{saut:eq:monomial}, $D_\chi=M_{\id,\id,\chi}$ and
+$M_{\rho,\tau}=M_{\rho,\tau,1}$; the maps $D_\lambda$ of
+Section~\ref{saut:sec:explicit} are the $D_\chi$ with $\chi=\exp\circ\lambda$.)
+In group notation,
+\begin{equation}\label{saut:eq:fourfactor}
+ G_v\simeq
+ \bigl(\U\rtimes\Hom(\Gamma,\C^\times)\bigr)
+ \rtimes\bigl(\Aut(\C)\times\Gh\bigr).
+\end{equation}
+The outer action on the character factor is
+\begin{equation}\label{saut:eq:charouter}
+ ((\rho,\tau)\cdot\chi)(g)=\rho\bigl(\chi(\tau^{-1}g)\bigr).
+\end{equation}
+The other actions are conjugation by the displayed lifts.
+\end{theorem}
+\begin{proof}
+Stabilizing $\OO$ also stabilizes its units and its maximal ideal, so it
+induces the residue automorphism $\rho_\alpha$. Define directly
+$\tau_\alpha(g)=v(\alpha(t^g))$. If $v(z)=g$, then $z/t^g$ is a unit,
+so $v(\alpha z)=\tau_\alpha(g)$. This proves independence from the chosen
+representative. Multiplication proves additivity; membership of quotients
+in $\OO$ proves order preservation; the same construction for
+$\alpha^{-1}$ supplies the inverse. Thus no quotient whose elements would
+be proper classes needs to be formed.
+The maps $M_{\rho,\tau}$ give a section of the induced-action homomorphism,
+by the monomial construction. Let $I$ be its kernel and put
+$\beta=\alpha M_{\rho,\tau}^{-1}\in I$.
+
+For $\beta\in I$, define
+\[
+ \chi_\beta(g)=\lc(\beta(t^g)).
+\]
+Since $\beta$ fixes values, multiplicativity of leading coefficients gives
+$\chi_\beta(g+h)=\chi_\beta(g)\chi_\beta(h)$. For an arbitrary nonzero $z$,
+write $z=a t^g(1+\varepsilon)$ with $a=\lc z$ and $v\varepsilon>0$.
+Identity residue action gives $\lc(\beta a)=a$, and
+$\beta(1+\varepsilon)$ still has leading coefficient $1$. Hence
+\begin{equation}\label{saut:eq:internalLC}
+ \lc(\beta z)=\lc(z)\chi_\beta(vz).
+\end{equation}
+It follows that $\beta\mapsto\chi_\beta$ is a group homomorphism on $I$,
+with kernel exactly $\U$. The maps $D_\chi$ split it. Thus
+$u=\beta D_{\chi_\beta}^{-1}$ gives \eqref{saut:eq:factor}, and all parameters
+are forced by the preceding operations. Evaluating
+$M_{\rho,\tau}D_\chi M_{\rho,\tau}^{-1}$ on a monomial gives
+\eqref{saut:eq:charouter}.
+\end{proof}
+
+This direct argument is the full-Hahn instance of the valued-field structure
+studied in \cite{KS}. It also clarifies its limits: \eqref{saut:eq:fourfactor}
+is not a decomposition of \emph{all} surcomplex field automorphisms. We will
+exhibit automorphisms outside $G_v$ in Section~\ref{saut:sec:bare}.
+
+The same proof works with the strong subgroup, replacing $\U$ by its strong
+part. All explicit sections are strong, so strength of an automorphism
+is concentrated in the residual kernel factor. The factor $\U$ itself is
+not replaced by a conveniently finite list of coefficients: its elements
+may act on full series in ways not determined by their action on individual
+monomials unless strongness is imposed.
+
+\subsection{The real reduction}
+
+Every field automorphism of $\No$ preserves order, hence preserves the
+natural valuation ring. Its residue action on $\R$ is an ordered-field
+automorphism and therefore identity. Applying the same proof over $\R$
+gives
+\begin{equation}\label{saut:eq:realdecomp}
+ \Aut(\No)\simeq
+ \bigl(\U_{\R}\rtimes\Hom(\Gamma,\R_{>0})\bigr)\rtimes\Gh.
+\end{equation}
+Every character into $\R^\times$ is positive because $\Gamma$ is divisible.
+Applying the ordinary logarithm pointwise identifies its group with
+$\Hom(\Gamma,\R)$ under addition.
+
+Combining \eqref{saut:eq:realdecomp} with the real-axis theorem gives a structural
+description of $G_{\No}$:
+\begin{equation}\label{saut:eq:realaxisdecomp}
+ G_{\No}\simeq
+ \left[\bigl(\U_{\R}\rtimes\Hom(\Gamma,\R_{>0})\bigr)\rtimes\Gh\right]
+ \times C_2.
+\end{equation}
+In particular, ``residue action is identity'' must not be shortened to
+``all embedded real constants are fixed.'' Theorem~\ref{saut:thm:coeffflow}
+is an explicit counterexample to that shortcut.
+
+\subsection{One level deeper: the ordered additive value group}
+
+Because $\Gamma=(\No,+,<)$ is itself the ordered additive group of real
+Hahn series, one can further analyze $\Gh$. Let $\U_{\mathrm{add}}$ consist
+of its additive automorphisms fixing each leading term. For an order
+bijection $\zeta:\Gamma\to\Gamma$ and positive real scalars
+$(a_g)_{g\in\Gamma}$, the formula
+\begin{equation}\label{saut:eq:skeleton}
+ A_{\zeta,a}\left(\sum_g r_gt^g\right)
+ =\sum_g a_g r_g t^{\zeta(g)}
+\end{equation}
+defines an ordered additive automorphism. Here $\zeta$ need not be additive:
+this is an additive-group construction, not a field construction.
+
+An ordered additive automorphism permutes the Archimedean classes in order.
+On the quotient at each class, it induces an ordered additive automorphism
+of $\R$, which is multiplication by a positive real number. Removing
+\eqref{saut:eq:skeleton} leaves exactly $\U_{\mathrm{add}}$. This gives an
+additional kernel--skeleton factorization, parallel to \cite{KSG}.
+
+It is important to retain the reindexing action in its group law. Direct
+calculation gives
+\begin{equation}\label{saut:eq:skeletonlaw}
+ A_{\zeta,a} A_{\eta,b}=A_{\zeta\eta,d},
+ \qquad d_g=a_{\eta(g)}b_g.
+\end{equation}
+Thus these parameters have a semidirect-product law, not componentwise
+multiplication of an unrelated permutation and weight family. The ordinary
+logarithm turns positive weights into additive real weights but does not
+remove their reindexing. Together with \eqref{saut:eq:realdecomp}, this identifies
+five structural layers on the real side: field leading-term motion,
+characters, additive leading-term motion, exponent-order permutations,
+and Archimedean coefficient weights.
+
+\section{Fine topology does not mean strong summation}\label{saut:sec:topology}
+
+The fine topology on $\K$ is generated by the balls
+\[
+ B(a,r)=\{z:|z-a|<r\},\qquad r\in\No_{>0}.
+\]
+By \eqref{saut:eq:normvalue}, it is the same topology as the valuation topology
+with neighborhoods
+\[
+ V_\gamma(a)=\{z:v(z-a)>\gamma\},\qquad\gamma\in\Gamma.
+\]
+For example, $V_{v(r)}(a)\subseteq B(a,r)$, while a ball of radius
+$t^{\gamma+1}$ is contained in $V_\gamma(a)$. These inclusions suffice to
+identify the neighborhood systems.
+
+\begin{proposition}\label{saut:prop:continuous}
+Every element of $G_v$ is a fine homeomorphism and a uniform equivalence.
+In particular, every real-axis-preserving surcomplex field automorphism is
+fine-continuous.
+\end{proposition}
+\begin{proof}
+If $\alpha$ induces $\tau$ on $\Gamma$, then
+\[
+ v(\alpha z-\alpha a)=\tau(v(z-a)).
+\]
+The order bijection $\tau$ takes the neighborhood basis to itself. Applying
+the same equation to pairs of points proves uniform continuity of both
+$\alpha$ and its inverse. The real-axis subgroup lies in $G_v$ by
+\cref{saut:lem:order} and \eqref{saut:eq:equivariantnorm}.
+\end{proof}
+
+This is an inclusion in the continuous automorphism group, not a
+classification of that whole group. In particular, we do not infer a
+converse merely from continuity. The chosen valuation ring contains
+additional information beyond the neighborhood calculation used here.
+
+The phase twists are therefore continuous even though they do not preserve
+the real axis. Lifting any ordinary field automorphism $\rho$ of $\C$
+coefficientwise gives further examples in $G_v$. There is no contradiction
+with the familiar classification of continuous automorphisms of ordinary
+$\C$: the topology induced on $\C\subset\K$ is \emph{discrete}, not its
+usual Archimedean topology. A ball of infinitesimal radius around a constant
+contains no other ordinary complex constant.
+
+\subsection{Why small nets cannot test the full topology}
+
+\begin{proposition}\label{saut:prop:discrete}
+Every set-sized subset of the full surcomplex field is closed and discrete.
+Every convergent set-indexed net is eventually equal to its limit.
+Nevertheless, the full field has no isolated points.
+\end{proposition}
+\begin{proof}
+For a set $S\subseteq\K$ and a point $a$, the values
+$\{v(s-a):s\in S,\ s\ne a\}$ form a set of surreal numbers. Every set of
+surreals has an upper bound, so choose $\gamma$ strictly above all of them.
+Then $V_\gamma(a)$ misses $S\setminus\{a\}$. This proves both closedness
+and discreteness. Apply the same argument to the range of a set-indexed
+net together with its limit to get eventual equality. Finally,
+$a+t^{\gamma+1}\ne a$ belongs to $V_\gamma(a)$, so no point of the full
+field is isolated.
+\end{proof}
+
+For example, $t^n$ does not tend to zero in the full surreal fine topology:
+none of these terms lies in $V_\omega(0)$. In the fixed field
+$\C((t^\Q))$, by contrast, the integers are cofinal in its value group
+and $t^n\to0$ in its intrinsic valuation topology.
+A set-sized Hahn workspace inside $\K$ acquires a discrete subspace
+topology from the full field, even when its intrinsic valuation topology
+is nondiscrete. The choice of topology is part of the theorem, not merely
+a presentational convention.
+
+\subsection{A continuous automorphism that fails to preserve a Hahn sum}
+
+We give an explicit support-correct witness. We will use the standard
+Newton--Puiseux fact that
+\[
+ \mathcal P=\bigcup_{m\ge1}\R((t^{1/m}))
+\]
+is real closed. Its complexification is the algebraically closed Puiseux
+field; this is a set-sized field, discussed among the special cases in
+\cite{KS}. Define
+\begin{equation}\label{saut:eq:nonstronga}
+ a=\sum_{n\ge2}t^{1-1/n},\qquad \varepsilon=t^\omega.
+\end{equation}
+The support $\{1/2,2/3,3/4,\ldots\}$ is a well-ordered increasing sequence.
+Its denominators are unbounded, so $a\notin \mathcal P$. Since $\mathcal P$ is real closed,
+$a$ is transcendental over $\mathcal P$.
+
+For each $p\in \mathcal P$, the nonzero difference $a-p$ has rational support and
+hence rational valuation. Thus $\varepsilon$ is smaller than $|a-p|$.
+It follows that $a$ and $a+\varepsilon$ have the same cut over $\mathcal P$.
+An ordered isomorphism $\mathcal P(a)\to \mathcal P(a+\varepsilon)$ fixing $\mathcal P$ and moving $a$
+therefore exists; real closedness of $\mathcal P$ ensures that signs of rational
+functions are determined by this cut. Extend it through real closures and
+then to an automorphism $\sigma$ of $\No$ by the ordered extension theorem
+proved in Section~\ref{saut:sec:bare}.
+
+Every summand in \eqref{saut:eq:nonstronga} belongs to $\mathcal P$ and is fixed. But
+\[
+ \sigma(a)=a+\varepsilon\ne a
+     =\sum_{n\ge2}\sigma(t^{1-1/n}).
+\]
+The lift of $\sigma$ to $\K$ fixes ordinary $\C$, commutes with conjugation,
+and is fine-continuous, but is not strong.
+We have not claimed that this particular extension fixes every value or
+every leading term; those stronger assertions are unnecessary here.
+
+There is also a finite-observation obstruction to approximation by strong
+maps. Any real surreal automorphism fixing $t$ fixes all its positive
+rational powers, by uniqueness of positive roots. If it is strong, it fixes
+$a$. Hence the neighborhood specified by
+\[
+ \psi(t)=t,\qquad \psi(a)=a+\varepsilon
+\]
+in the pointwise-equality topology on automorphisms contains $\sigma$ and
+contains no strong automorphism. This proves non-density in that particular
+automorphism-group topology, not in every possible topology on the group.
+
+\section{Differentiability: a surprising zero-derivative phenomenon}\label{saut:sec:derivative}
+
+For a function $f:\K\to\K$, its fine derivative at $z$ is the
+punctured-neighborhood limit
+\[
+ f'(z)=\lim_{h\to0,\ h\ne0}\frac{f(z+h)-f(z)}h,
+\]
+when this limit exists in the full fine topology. The limit quantifies over
+all small surcomplex increments; it is not tested only on an ordinary
+sequence. This is the same difference-quotient convention encoded in the
+repository's generic \texttt{FineHasDerivAt} interface \cite{RepoFine}.
+
+\begin{theorem}[Derivative dichotomy for field automorphisms]\label{saut:thm:derivative}
+If a field automorphism $\alpha$ of $\K$ has a fine derivative at one point,
+it has the same derivative at every point. If that derivative is nonzero,
+then $\alpha=\id$ and the derivative is $1$.
+Nonidentity differentiable automorphisms are nevertheless possible: they
+must have derivative $0$ everywhere.
+\end{theorem}
+\begin{proof}
+Additivity makes every difference quotient equal to
+$q(h)=\alpha(h)/h$, independently of the base point. For a fixed $b\ne0$,
+\[
+ q(bh)=\frac{\alpha(b)}bq(h).
+\]
+If $q(h)\to L$, multiplication by $b$ is a homeomorphism of the punctured
+neighborhood of zero, so the left-hand side also tends to $L$.
+Hausdorff uniqueness gives $L=\alpha(b)L/b$. When $L\ne0$, cancellation
+forces $\alpha(b)=b$ for every nonzero $b$. Thus $\alpha=\id$, whose
+quotient is constantly $1$.
+\end{proof}
+
+\begin{theorem}[Exponent dilations have derivative zero]\label{saut:thm:zeroderiv}
+For the maps $S_a$ of \eqref{saut:eq:dilation},
+\[
+ S_a'\equiv0\quad(a>1),\qquad S_1'\equiv1.
+\]
+For $0<a<1$, $S_a$ has no finite fine derivative at any point.
+In particular, $S_2$ is a nonidentity field automorphism and a fine
+homeomorphism with derivative zero everywhere.
+\end{theorem}
+\begin{proof}
+For every nonzero $h$,
+\begin{equation}\label{saut:eq:dilationquot}
+ v\left(\frac{S_a(h)}h\right)=(a-1)v(h).
+\end{equation}
+If $a>1$, given any $\eta\in\Gamma$, taking
+$v(h)>\eta/(a-1)$ forces the quotient into $V_\eta(0)$.
+Thus the quotient tends to zero. This argument works for positive
+infinitesimal $a-1$ as well as for ordinary positive $a-1$.
+If $0<a<1$, already along monomial increments $h=t^\gamma$ with $\gamma$
+arbitrarily large, the quotient has valuation $(a-1)\gamma$ arbitrarily
+negative. It eventually leaves any fixed bounded neighborhood of any
+proposed finite limit. Equivalently, by \cref{saut:thm:derivative} a limit
+would have to be zero, which \eqref{saut:eq:dilationquot} rules out.
+\end{proof}
+
+Conjugating the input does not change its valuation. Thus $S_a c$ also
+has zero derivative for $a>1$, even though $c$ by itself is not
+surcomplex-differentiable. For $c$, real and imaginary increments give
+quotients $1$ and $-1$ at arbitrarily small scales.
+
+\begin{corollary}\label{saut:cor:bidifferentiable}
+If a field automorphism and its inverse are both fine-differentiable, the
+automorphism is identity.
+\end{corollary}
+\begin{proof}
+Differentiability implies continuity by writing an increment of the
+function as its difference quotient times the input increment. If both
+maps were nonidentity and differentiable, both derivatives would be zero.
+Put $k=\alpha(h)$; continuity implies $k\to0$ as $h\to0$. The product
+\[
+ \frac{\alpha(h)}h\,
+ \frac{\alpha^{-1}(k)}k=1
+\]
+would then tend to zero, a contradiction. The identity satisfies both
+conditions.
+\end{proof}
+
+These results do not assert that $S_2$ is representable by a locally
+convergent power series with fixed coefficients. They concern the fine
+difference-quotient definition. In this setting, ``everywhere
+differentiable'' cannot be used as a synonym for ordinary complex analytic
+rigidity, and a zero derivative does not imply local constancy. The
+Berarducci--Mantova scalar derivation discussed later is a different
+operation again.
+
+\section{The unrestricted field: homogeneity and fixed fields}\label{saut:sec:bare}
+
+The preceding explicit formulas already disprove real-axis rigidity.
+The full pure-field picture is even less rigid. To discuss it without
+misusing a set-sized extension theorem on a proper class, we give the
+extension argument directly.
+
+\begin{theorem}[Class back-and-forth]\label{saut:thm:acfhomogeneity}
+Assume global choice. Let $K_1,K_2$ be proper-class algebraically closed
+fields of the same characteristic. Every isomorphism between set-sized
+subfields of $K_1$ and $K_2$ extends to an isomorphism $K_1\to K_2$.
+In particular, every isomorphism between set-sized subfields of $\K$
+extends to a field automorphism of $\K$.
+\end{theorem}
+\begin{proof}
+Choose set-like class enumerations of $K_1$ and $K_2$, indexed by $\On$.
+Recursively maintain an isomorphism $f_\alpha:A_\alpha\to B_\alpha$
+between \emph{set-sized} subfields. At a forth step, take the next element
+$x$ of $K_1$. If $x$ is algebraic over $A_\alpha$, send it to a root in
+$K_2$ of its transported irreducible polynomial, extending the field
+isomorphism. If $x$ is transcendental, choose a transcendental element over
+$B_\alpha$. This is possible because the elements of $K_2$ algebraic over
+a set-sized subfield form a set: there are set many polynomials and each
+has finitely many roots. A proper-class field cannot be exhausted by it.
+
+At a back step do the same for the next element of $K_2$, using the inverse
+partial map. At a limit ordinal take unions. There are only set many
+earlier stages at any given ordinal, so the partial domains and ranges
+remain sets. The class union of all partial maps is a field isomorphism;
+forth steps exhaust $K_1$ and back steps exhaust $K_2$.
+All choices and recursions concern sets at each ordinal stage, with the
+ambient fields as class parameters.
+\end{proof}
+
+\begin{theorem}[Ordered surreal extension]\label{saut:thm:orderedhomogeneity}
+Under the same foundational convention, every ordered-field isomorphism
+between set-sized subfields of $\No$ extends to an automorphism of $\No$.
+\end{theorem}
+\begin{proof}
+First extend the map to real closures inside $\No$; uniqueness of ordered
+real closures supplies the extension. Run a back-and-forth as above, now
+keeping the partial fields real closed. An element $x$ outside a partial
+real closed field $A$ is transcendental over it. Its comparisons with $A$
+form a set-sized cut $(\mathcal L,\mathcal R)$ with $\mathcal L\cup\mathcal R=A$.
+Transport this cut to the current range $B$. The surreal cut property
+supplies an element $y$ strictly between every element of its left and
+right sides. It cannot belong to $B$, since every element of $B$ occurs
+on one of those sides. Thus $y$ is transcendental over $B$.
+
+The substitution $x\mapsto y$ gives an ordered isomorphism of rational
+function fields. To see preservation of signs, factor polynomials over
+the real closed coefficient field into linear factors and quadratic
+factors without real roots; their signs are determined by the cut and
+leading coefficient. Extend again to real closures. At limits, unions of
+increasing real closed fields are real closed, since each polynomial has
+its finitely many coefficients in one stage. Forth and back exhaust $\No$.
+\end{proof}
+
+These proofs explain why field homogeneity is so strong and why it should
+not be confused with simplicity preservation. The selected separator $y$
+need not have the same birthday or sign-sequence complexity as $x$.
+
+\subsection{Orbits over ordinary complex constants}
+
+Every element of $\K\setminus\C$ is transcendental over $\C$, since $\C$
+is algebraically closed. Therefore, for $x,y\notin\C$, the substitution
+$x\mapsto y$ is an isomorphism $\C(x)\to\C(y)$ and extends by
+\cref{saut:thm:acfhomogeneity}. We obtain
+\begin{equation}\label{saut:eq:transitive}
+ \Aut(\K/\C)\text{ is transitive on }\K\setminus\C.
+\end{equation}
+The analogous statement for finite algebraically independent tuples follows
+by the same rational-function argument. Thus a pure-field automorphism
+fixing every ordinary complex number can send an infinite surreal to an
+infinitesimal, or to an element off the real axis.
+
+\begin{proposition}\label{saut:prop:nondefinability}
+For every set $A\subseteq\K$, there are automorphisms fixing $A\cup\C$
+pointwise which do not preserve $\No$. There are also such automorphisms
+which do not preserve $\OO$.
+Consequently, neither the distinguished real axis nor the natural valuation
+ring is invariant under all pure-field automorphisms over any prescribed
+set of parameters.
+\end{proposition}
+\begin{proof}
+Let $E$ be the algebraic closure inside $\K$ of the field generated by
+$A\cup\C$. It is a set. Choose a positive infinite $x\in\No\setminus E$;
+for instance choose $x$ larger than the moduli of all elements of $E$.
+Then $x$ is transcendental over $E$. Both maps
+\[
+ E(x)\longrightarrow E(ix),\quad x\mapsto ix,
+ \qquad
+ E(x)\longrightarrow E(x^{-1}),\quad x\mapsto x^{-1}
+\]
+are field isomorphisms fixing $E$. Extend each to $\K$. The first moves a
+real element off the real axis. The second sends an element outside $\OO$
+into its maximal ideal, so cannot stabilize $\OO$.
+\end{proof}
+
+In particular, these structures are not first-order definable in the pure
+field with parameters: definable sets are invariant under automorphisms
+fixing their parameters. This conclusion is stronger than merely saying
+that no preferred coordinate system has yet been chosen.
+Combining the proposition with the phase example gives the proper chain
+\begin{equation}\label{saut:eq:strictchain}
+ G_{\No}\ \subsetneq\ G_v\ \subsetneq\ \Aut(\K).
+\end{equation}
+The first strictness has an explicit strong, $\C$-linear, value-fixing witness;
+the second has a class back-and-forth witness.
+
+\subsection{Fixed fields of the main collections}
+
+Let $\Q^{\rc}\subset\R$ be the field of real algebraic numbers and let
+$\overline\Q=\Q^{\rc}(i)\subset\C$.
+
+\begin{proposition}\label{saut:prop:fixedfields}
+In the class-map interpretation,
+\begin{align*}
+ \Fix(\Aut(\K))&=\Q, &
+ \Fix(\Aut(\K/\C))&=\C,\\
+ \Fix(\Aut(\No))&=\Q^{\rc}, &
+ \Fix(G_{\No})&=\Q^{\rc}.
+\end{align*}
+The fixed field of the $i$-fixing lifts of all surreal automorphisms is
+$\overline\Q$.
+\end{proposition}
+\begin{proof}
+A nonrational algebraic element has a distinct conjugate in characteristic
+zero, and its conjugacy isomorphism extends by
+\cref{saut:thm:acfhomogeneity}. A transcendental element can similarly be moved
+by a rational-function isomorphism. This gives the first assertion.
+Transitivity \eqref{saut:eq:transitive} gives the second.
+
+Every surreal automorphism fixes $\Q^{\rc}$ by order. For
+$x\notin\Q^{\rc}$, $x$ is transcendental over this real closed field.
+Choose a positive $\varepsilon$ smaller than all nonzero distances
+$|x-a|$ for $a\in\Q^{\rc}$. This is possible for a set of distances by
+the surreal cut property. Then $x$ and $x+\varepsilon$ have the same cut,
+so the ordered extension theorem moves $x$. This proves the third
+assertion. For the last two assertions apply the coordinate formula
+\eqref{saut:eq:lift}; allowing $c$ kills the imaginary fixed coordinate,
+whereas forbidding $c$ leaves both coordinates in $\Q^{\rc}$.
+\end{proof}
+
+\subsection{Why a transcendence-basis slogan is not a classification}
+
+For a set-sized algebraically closed field, specifying a transcendence
+basis is useful for producing automorphisms: first choose compatible images
+of transcendental generators and then extend through algebraic elements.
+But an automorphism need not permute one fixed basis, and its action on
+algebraic elements is additional data. Even there, ``the automorphism group
+is the symmetric group on a transcendence basis'' is false.
+
+For the full surcomplex field, the corresponding basis would be a proper
+class and requires additional foundational care. The set-stage
+back-and-forth proof is sufficient for all existential statements here.
+It gives neither a computational procedure on arbitrary surcomplex inputs
+nor a canonical parametrization of all class automorphisms. The much more
+explicit decomposition in Section~\ref{saut:sec:decomposition} succeeds precisely
+because it retains a valuation and a normal-form presentation.
+
+\section{Involutions and genuinely different real forms}\label{saut:sec:realforms}
+
+An \emph{involution} in this section means an automorphism of order exactly
+two. A \emph{real form} of $\K$ means a real closed subfield $F\subset\K$
+such that $\K=F(i)$. Its conjugation is the involution fixing $F$ and sending
+$i$ to $-i$. The fields $F_\theta$ from \eqref{saut:eq:twistedconj} already give
+many examples, all isomorphic to the distinguished $\No$.
+
+We use the classical Artin--Schreier theorem: if an algebraically closed
+field is a proper finite extension of a subfield, that subfield is real
+closed, the characteristic is zero, and the extension has degree two.
+A proof and the finite-automorphism application are given in \cite{Conrad}.
+The finite-degree arguments apply to class fields as well: the degree,
+polynomials, and automorphism tuples involved are finite.
+
+\begin{theorem}[Finite subgroups and real forms]\label{saut:thm:torsion}
+Every nontrivial finite subgroup of $\Aut(\K)$ has order two.
+Every nonidentity finite-order automorphism is an involution $j$, its fixed
+field $F_j$ is real closed, and $\K=F_j(i)$. In particular, $j(i)=-i$.
+Consequently $\Aut(\K/\C)$ and the leading-term kernel $\U$ are torsion-free.
+Within $G_{\No}$, the only nonidentity torsion element is $c$.
+\end{theorem}
+\begin{proof}
+For a finite group $H$ of automorphisms, Artin's fixed-field theorem gives
+$[\K:\K^H]=|H|$. If $H$ is nontrivial, Artin--Schreier forces this degree
+to be two. Apply this first to finite cyclic groups and then to arbitrary
+finite $H$. The fixed field cannot contain $i$, and $j(i)=\pm i$, so the
+sign is negative. An automorphism fixing $\C$ cannot be such an involution.
+A member of $\U$ must fix $i$, since changing it to $-i$ changes its leading
+coefficient, and is therefore also torsion-free.
+Finally, an order-preserving bijection of a linear order has no nontrivial
+finite order: a moved point has a strictly monotone finite orbit segment.
+Use $G_{\No}\simeq\Aut(\No)\times C_2$.
+\end{proof}
+
+Two involutions are conjugate in $\Aut(\K)$ exactly when their fixed real
+fields are isomorphic. One direction follows by restricting a conjugating
+automorphism. Conversely an isomorphism $F_j\to F_k$ extends by
+$x+iy\mapsto f(x)+if(y)$, and this extension conjugates $j$ to $k$.
+Thus classifying involutions is a real-form classification problem, not
+merely the observation that $i$ has two possible images.
+
+\subsection{A real form not isomorphic to the surreal field}
+
+The following construction shows that not all involutions of $\K$ are
+conjugate to its distinguished conjugation.
+
+\begin{theorem}\label{saut:thm:inequivalentrealform}
+Assuming the class-theoretic framework above, $\K$ has a real form with a
+countable cofinal subset. It is not isomorphic as a field to $\No$.
+The associated involution is not conjugate to $c$.
+\end{theorem}
+\begin{proof}
+Form the rational function field $\No(T)$ with $T$ transcendental, ordered
+so that $T$ is larger than every surreal coefficient. The sign of a
+nonzero rational function is determined by the ratio of its leading
+coefficients. Let
+\[
+ H=\No(T)^{\rc}
+\]
+be an ordered real closure. To construct this in class foundations,
+choose a set-like enumeration of $\No(T)$ and take increasing set-sized subfields
+$A_\alpha$ exhausting it. Choose a real closure at each successor stage.
+Uniqueness of ordered real closures gives compatible ordered embeddings
+of the earlier closures into the later ones; identify their copies and
+take unions at limits. Every adjoined element is algebraic over some
+$A_\alpha$, and every polynomial over the union appears at a set stage.
+The resulting class field contains the original $\No(T)$, is algebraic
+over it, and is real closed. This is a coherent set-stage construction,
+not an application of a class Zorn lemma.
+
+The powers $T,T^2,T^3,\ldots$ are cofinal in $\No(T)$. Indeed, each rational
+function has finite degree and each nonzero coefficient and its reciprocal
+is bounded in absolute value by $T$. Increasing an integer power of $T$
+therefore dominates the function. The same powers remain cofinal in $H$:
+if $h$ is algebraic, a monic polynomial for $h$ has finitely many
+coefficients, and the usual algebraic root bound
+\[
+ |h|\le 1+\max_{k<n}|a_k|
+ \quad\text{when }h^n+a_{n-1}h^{n-1}+\cdots+a_0=0
+\]
+is valid in any ordered field. Its right-hand side is bounded by a power
+of $T$.
+
+The field $H$ is proper-class-sized because it contains $\No$. Its
+complexification $H(i)$ is algebraically closed of characteristic zero.
+By \cref{saut:thm:acfhomogeneity}, it is isomorphic as a pure field to $\K$.
+Transport $H$ and its conjugation across this isomorphism.
+The transported real form has a countable cofinal subset. By contrast,
+every set-sized subset of $\No$ is bounded above, so $\No$ has no countable
+cofinal subset. A field isomorphism between real closed fields preserves
+their unique orders; hence these real forms cannot be isomorphic.
+The conjugacy criterion for involutions proves the final assertion.
+\end{proof}
+
+This separates two phenomena. The phase family gives distinct embedded
+copies of the \emph{same} real form. Theorem~\ref{saut:thm:inequivalentrealform}
+gives a different isomorphism type of real form. Neither result supplies a
+classification of all real closed class fields whose complexification is
+$\K$.
+
+\section{Simplicity, the omega-map, and exponential structure}\label{saut:sec:exponential}
+
+The large automorphism groups above forget much of what makes a surreal
+number canonical. Adding back suitable structure can impose rigidity, but
+different added structures impose different conditions.
+
+\subsection{Simplicity restores the canonical surreal numbers}
+
+Let $<_{s}$ denote proper-prefix simplicity on ordinal-length surreal sign
+sequences. A bijection preserving both numerical order and simplicity is
+identity. For completeness, fix the empty sign sequence. At a successor
+stage, the two immediate simplicity extensions of a fixed sequence lie on
+opposite numerical sides, so both are fixed. At a limit stage, the unique
+sign sequence whose proper initial segments are the already fixed chain
+is fixed. Transfinite induction proves the assertion.
+
+Thus a member of $G_{\No}$ whose real restriction preserves simplicity is
+either identity or conjugation; marking $i$ eliminates conjugation. This
+is rigidity of an enriched structure, not rigidity of the real closed
+field reduct. A transformation such as $S_2$ is allowed to change birthdays
+and simplicity and therefore does not contradict it.
+
+\subsection{The omega-map detects exact value preservation}
+
+Suppose $\sigma\in\Aut(\No)$ commutes with $x\mapsto\omega^x$ and fixes
+valuation values pointwise. Since $v(\omega^x)=-x$,
+\[
+ -\sigma(x)=v(\omega^{\sigma(x)})
+ =v(\sigma(\omega^x))=v(\omega^x)=-x.
+\]
+Therefore $\sigma=\id$. The qualifier ``pointwise'' is indispensable:
+all surreal field automorphisms preserve the natural valuation \emph{up to}
+an ordered group automorphism, and that weaker fact does not give the last
+equality. Without pointwise fixation, the displayed computation instead
+says that the induced value-group action equals $\sigma$ itself on the
+underlying surreal elements. That is a compatibility condition, not a
+proof of triviality.
+
+\subsection{Exponential faithfulness: the existing repository result}
+
+The following finite argument is taken from the repository's
+\emph{Growth-Scale Rigidity} manuscript \cite{RepoRigidity}. We give the
+proof because it is short, powerful, and avoids exchanging an automorphism
+with an infinite sum.
+
+\begin{lemma}[Displacement cannot be globally bounded]\label{saut:lem:displacement}
+Let $F$ be an ordered field and $\sigma:F\to F$ a nonidentity unital field
+endomorphism. Then $\{\sigma(x)-x:x\in F\}$ is cofinal and coinitial in $F$.
+\end{lemma}
+\begin{proof}
+Write $D(x)=\sigma(x)-x$. The correct multiplication identity is
+\begin{equation}\label{saut:eq:displacement}
+ D(ab)=\sigma(a)D(b)+bD(a).
+\end{equation}
+Choose $a$ with $d=D(a)\ne0$. Given $B>0$, put
+\[
+ b=\frac{2B(1+|\sigma(a)|)}{|d|}.
+\]
+If both $|D(b)|$ and $|D(ab)|$ were at most $B$, then
+\[
+ 2B(1+|\sigma(a)|)=|bd|
+ \le |D(ab)|+|\sigma(a)||D(b)|
+ \le B(1+|\sigma(a)|),
+\]
+a contradiction. Thus absolute displacements have no upper bound.
+Since $D(-x)=-D(x)$, both signs occur with arbitrarily large magnitude.
+\end{proof}
+
+\begin{theorem}[Faithful value-group action]\label{saut:thm:expfaithful}
+Let $F$ be an ordered field with an increasing group isomorphism
+$E:(F,+)\to(F_{>0},\cdot)$, and let $w:F^\times\to\Lambda$ be a nontrivial
+convex valuation. If an automorphism $\sigma$ commutes with $E$ and fixes
+all $w$-values, then $\sigma=\id$.
+Hence the exponential automorphisms stabilizing the valuation ring act
+faithfully on its value group.
+\end{theorem}
+\begin{proof}
+The homomorphism
+\[
+ \nu:F\to\Lambda,\qquad \nu(x)=w(E(x))
+\]
+is additive and surjective. Its kernel $H$ is a proper convex additive
+subgroup: $E$ is increasing and a convex valuation reverses the order on
+positive elements. A proper convex additive subgroup is bounded above in
+$F$; if $b>0$ lies outside it, then every $h\in H$ satisfies $|h|<b$.
+
+Commutation and pointwise value fixation give, for every $x$,
+\[
+ \nu(\sigma x-x)
+ =w(E(\sigma x))-w(E(x))
+ =w(\sigma(E(x)))-w(E(x))=0.
+\]
+Thus all displacements lie in the bounded subgroup $H$.
+Lemma~\ref{saut:lem:displacement} forces $\sigma=\id$.
+Taking the kernel of the induced-action homomorphism proves faithfulness.
+\end{proof}
+
+For the usual surreal exponential, the kernel $H$ is exactly the finite
+real-surreal elements. Indeed, bounded $x$ gives bounded $\exp x$ and
+bounded reciprocal by comparison with $e^n$; conversely, if $\exp x$ and
+its reciprocal are bounded, comparison with integers and application of
+$\log$ bound $x$. Consequently,
+\begin{equation}\label{saut:eq:expfaithful}
+ \ker\bigl(\Gexp\longrightarrow\Gh\bigr)=\{\id\}.
+\end{equation}
+In particular, a nonidentity surreal $1$-automorphism cannot preserve the
+total real exponential. This settles the precise mathematical alternative
+posed in Question~5.4 of the inspected arXiv version of \cite{KKS}, by the
+repository proof above; it is not a new result of this article.
+Faithfulness does not say that the exponential automorphism group is
+trivial. It says that no nonidentity member can hide all its motion below
+the valuation scale.
+
+\subsection{A simple obstruction to exponential lifting}
+
+An ordered automorphism of the value group always has the Hahn lift
+$M_{\id,\tau}$. It need not have \emph{any} lift preserving the total
+surreal exponential. One elementary instance, also covered in
+\cite{RepoRigidity}, is worth spelling out.
+
+\begin{proposition}\label{saut:prop:rationalnonlift}
+For $q\in\Q_{>0}$ with $q\ne1$, the value-group dilation $g\mapsto qg$
+is not induced by any exponential automorphism of $\No$.
+\end{proposition}
+\begin{proof}
+If $\sigma$ were such an automorphism, the homomorphism
+$\nu(x)=v(\exp x)$ would satisfy
+$\nu(\sigma x)=q\nu(x)=\nu(qx)$. Thus
+$\sigma(x)-qx$ would be finite for every $x$.
+Choose a positive infinite $X$, and write
+\[
+ \sigma(X)=qX+e,\qquad \sigma(X^2)=qX^2+f
+\]
+with $e,f$ finite. Multiplicativity yields
+\[
+ q^2-q+\frac{2qe}{X}+\frac{e^2-f}{X^2}=0.
+\]
+The last two terms are infinitesimal. Taking standard part gives
+$q^2-q=0$, contradicting $q>0$, $q\ne1$.
+\end{proof}
+
+Thus even the very simple field automorphism $S_2$ cannot be repaired by
+composing with a value-fixing automorphism to obtain an exponential lift
+of its value action.
+
+\subsection{A global surcomplex operation that remembers real exponential}
+
+There is no need to postulate a total complex logarithm. The operation
+\begin{equation}\label{saut:eq:L}
+ L:\K^\times\to\No\subset\K,
+ \qquad L(z)=\log|z|
+\end{equation}
+is already globally defined, using only the usual real surreal logarithm.
+Say that $\alpha$ preserves $L$ when
+$\alpha(L(z))=L(\alpha(z))$ for every nonzero $z$.
+
+\begin{theorem}[Logarithmic-modulus automorphisms]\label{saut:thm:L}
+For $\K=\No(i)$,
+\begin{equation}\label{saut:eq:LAUT}
+ \AutL(\K)\simeq\Gexp\times C_2.
+\end{equation}
+Its action on the natural value group has kernel exactly $\{\id,c\}$.
+Marking $i$ makes that action faithful.
+\end{theorem}
+\begin{proof}
+The range of $L$ is all of $\No$, because $L(\exp x)=x$. A commuting
+automorphism and its inverse therefore preserve $\No$. Write it as
+$\widehat\sigma c^e$. For $r>0$ real-surreal,
+\[
+ \sigma(\log r)=\alpha(L(r))=L(\sigma r)=\log(\sigma r).
+\]
+Thus $\sigma$ commutes with logarithm and hence with exponential.
+Conversely, if $\sigma$ is exponential, the norm equivariance
+\eqref{saut:eq:equivariantnorm} proves that both lifts commute with $L$.
+The kernel statement follows from \cref{saut:thm:expfaithful} and the fact that
+conjugation fixes every valuation value.
+\end{proof}
+
+Theorem~\ref{saut:thm:L} is another result already present in
+\cite{RepoRigidity}. Notice that $L$ is required to transform
+\emph{equivariantly}: $L(\alpha z)=\alpha(Lz)$. Demanding instead
+$L(\alpha z)=Lz$ pointwise would impose a stronger condition.
+
+\subsection{Local exponentials and derivations are different structures}
+
+For $\varepsilon\in\mm$, the Hahn series
+\[
+ \operatorname{Exp}(\varepsilon)=\sum_{n\ge0}\frac{\varepsilon^n}{n!},
+ \qquad
+ \operatorname{Log}(1+\varepsilon)
+   =\sum_{n\ge1}\frac{(-1)^{n+1}\varepsilon^n}{n}
+\]
+are well-defined by positive-support summability. Any strongly
+$\C$-linear element of $G_v$ commutes with these operations, simply by
+applying strong summation and the field laws. This includes the phase
+twists, the exponent dilations, and the constant-fixing flows above.
+For finite $z=a+\varepsilon$, such an automorphism also respects the
+finite exponential $e^a\operatorname{Exp}(\varepsilon)$.
+None of this implies compatibility with the total real surreal exponential
+on infinite arguments, as $S_2$ and \cref{saut:prop:rationalnonlift} demonstrate.
+
+The Berarducci--Mantova construction equips $\No$ with a nonzero derivation
+compatible with substantial exponential and transseries structure
+\cite{BM}. Fix one such derivation $\partial$ and extend it to $\K$ by
+\[
+ \partial(x+iy)=\partial x+i\partial y.
+\]
+For real-axis-preserving automorphisms, a direct coordinate calculation gives
+\[
+ \{\alpha\in G_{\No}:\alpha\partial=\partial\alpha\}
+ \simeq\Aut(\No,\partial)\times C_2.
+\]
+This is a reduction, not a classification of the differential group or of
+all differential automorphisms without a marked real axis. In particular,
+the scalar derivation $\partial$, formal differentiation of a power series,
+and the fine derivative of a function are three distinct notions. The
+zero-derivative automorphism in \cref{saut:thm:zeroderiv} concerns the third.
+
+\section{Consequences for algebra, geometry, and symbolic computation}\label{saut:sec:applications}
+
+Automorphisms transport identities, but a transported identity must include
+all its coefficients and all its chosen structures. This elementary rule is
+especially useful when applying surcomplex theory.
+
+\subsection{Polynomial and finite-dimensional invariants}
+
+If $p(X)=\sum_{k=0}^n a_kX^k$ and $\alpha$ is a field automorphism, put
+$p^\alpha(X)=\sum_{k=0}^n\alpha(a_k)X^k$. Then
+\[
+ \alpha(p(z))=p^\alpha(\alpha z).
+\]
+Roots, root multiplicities, common-root relations, resultants,
+discriminants, and finite matrix determinants therefore transform
+algebraically. When all coefficients are fixed, the root multiset is
+permuted. Without coefficient fixation, it is the roots of the
+\emph{transformed} polynomial that are obtained.
+
+For $\alpha\in G_v$, root separations satisfy
+\[
+ v(\alpha r_j-\alpha r_k)=\tau_\alpha(v(r_j-r_k)).
+\]
+Thus finite valuation-cluster trees retain their combinatorial incidence,
+although the labels can be reindexed. For $\alpha\in\U$, every nonzero
+separation even retains its leading term. These statements follow from
+additivity and the valuation laws; they require no compactness or ordinary
+analytic convergence.
+
+For $\alpha\in G_{\No}$, Hermitian algebra is also transported, because
+$\alpha$ commutes with conjugation. The identity
+$A^*=\overline A^{\,T}$ transforms to $(\alpha A)^*=\alpha(A^*)$,
+and positive real scalars remain positive. Under a phase twist not
+preserving the axis, the same conclusion holds only after conjugation is
+also transported to $j_\theta$. Keeping the original conjugation while
+changing the scalars is not an invariant operation.
+
+\subsection{Automorphism tests as checks on a proposed canonical definition}
+
+Suppose a construction is claimed to depend only on the pure field
+$(\K,+,\cdot)$ and on a specified set of scalar parameters. It must commute
+with every automorphism fixing those parameters. Proposition~\ref{saut:prop:nondefinability}
+then immediately rules out pure-field definitions of the distinguished
+real axis and finite ring. A purported canonical modulus on the bare
+field would similarly determine extra real-form information and cannot
+be the chosen modulus without additional structure.
+
+This does not make those constructions invalid. It identifies which data
+must be declared: conjugation or a real form for Hermitian geometry,
+a valuation for scales, monomials and a summation structure for normal-form
+algorithms, and an exponential for logarithmic growth. An automorphism
+counterexample is often the quickest way to detect an omitted hypothesis.
+
+\subsection{What a symbolic implementation can realistically support}
+
+A symbolic system can implement \eqref{saut:eq:monomial} exactly on a declared
+Hahn workspace once it can evaluate the coefficient automorphism, exponent
+map, and character, and certify that the exponent map is an ordered
+additive bijection. For finite supports, the arithmetic checks reduce to
+finite convolution. For symbolic infinite families, well-order and
+finite-incidence certificates remain necessary.
+
+The maps $S_a$, $D_\lambda$, and $P_\theta$ are particularly transparent on
+normal-form expressions with accessible exponent coefficients. The
+fixed-shift flow can be represented by its operator formula or by closed
+expressions such as $t\mapsto t/(1-st)$. The coefficient-motion example
+requires an abstract derivation on real constants and should not be
+advertised as an algorithm on arbitrary numerical real inputs.
+Likewise, the back-and-forth existence theorems are not executable
+algorithms on unrestricted surcomplex names.
+
+\section{Relation to the Surreal repository and a formalization plan}\label{saut:sec:repo}
+
+This section is the source's comparison, as of its pin. It was checked for
+this report and is accurate at the pin; Section~\ref{saut:sec:position}
+adds the relations it did not draw, and
+Appendix~\ref{saut:app:pinned} records what has changed since.
+
+The inspection in this article uses the repository revision
+\begin{center}
+\repoSHA.
+\end{center}
+The root documentation, the report catalogue, the exponential-rigidity
+manuscript and its audit, the normal-form bridge note, and the two specific
+Lean modules below were read through the GitHub connector. This is a
+selected-source inspection, not a claim to have searched every file or to
+have rebuilt the project.
+
+The inspected documentation distinguishes research arguments from checked
+Lean coverage. In particular, the current bridge note reports an ordered
+field equivalence for small normal forms, transfer of real closedness,
+actual surcomplex algebraic closedness, and valuation/standard-part
+preservation \cite{RepoBridge}. These are \emph{repository-reported}
+implementation facts. This article supplies no independent build result
+for them.
+
+\subsection{Existing interfaces actually inspected}
+
+\texttt{Surreal/Algebra/Complexify.lean} defines the quadratic algebra
+$F[i]$, its imaginary unit, coordinate multiplication, conjugation,
+\texttt{normSq}, and the identity \texttt{mul\_conj}. Its field construction
+uses an ordered coefficient field and explicitly does not, by itself,
+assert algebraic closedness \cite{RepoComplexify}.
+These interfaces are sufficient foundations for a generic development of
+\cref{saut:thm:axis,saut:thm:norm,saut:thm:circle}.
+
+\texttt{Surreal/Algebra/FineDerivative.lean} defines
+\texttt{FineHasDerivAt} by punctured-neighborhood difference quotients and
+contains uniqueness, continuity, algebraic differentiation rules, and the
+polynomial derivative theorem \cite{RepoFine}. It is an appropriate
+interface for \cref{saut:thm:derivative}; the exponent-dilation example additionally
+requires a proved normal-form automorphism and its exact valuation formula.
+
+The documentation's statements about smallness must retain their universe
+indices. A theorem that every lower-universe subset is closed and discrete
+does not say that every subset available in a larger universe is discrete.
+The class theory in this article and a universe-relative Lean realization
+are compatible approaches, but they are not textually interchangeable.
+
+\subsection{Suggested implementation order}
+
+A useful order is to separate finite algebra from normal-form and global
+existence arguments.
+
+\begin{enumerate}
+\item \textbf{Generic real-form algebra.} Construct the lift of a base-field
+ring equivalence to $F[i]$. Prove uniqueness from its restriction and its
+value on $i$, and identify the conjugation centralizer. Add exact norm
+rigidity and the Cayley-circle criterion. These proofs need no Hahn theory.
+
+\item \textbf{Explicit Hahn automorphisms.} Package coefficient maps,
+ordered additive exponent equivalences, and characters in one construction.
+Prove the composition law \eqref{saut:eq:monomiallaw} and valuation formula before
+introducing the phase action. Keep the nested coefficient extraction
+$\ell$ on surreal \emph{exponents} distinct from coefficient extraction
+on a surcomplex input.
+
+\item \textbf{Support-certified flows.} Reuse a summable-family interface
+and prove the fixed-shift family is jointly summable. Establish inverse
+formulas for \cref{saut:thm:coeffflow,saut:thm:shiftflow} through coefficientwise finite
+identities. Merely entering a formal expression $\exp(D)$ is not a proof of
+an automorphism.
+
+\item \textbf{Topology and derivatives.} Prove the induced homeomorphism
+from a valuation reindexing, the nonzero-derivative rigidity theorem for a
+generic topological field, and finally $S_a'\equiv0$ for $a>1$ using
+\eqref{saut:eq:dilationquot}. No mean-value theorem is needed or available for
+that last conclusion.
+
+\item \textbf{Global foundations separately.} Treat class back-and-forth,
+real-form existence, and collection-level group factorizations in an
+explicit foundational layer or in bounded universes with the appropriate
+hypotheses. Do not silently replace a set-stage extension theorem by an
+unrestricted type-level statement about every model.
+\end{enumerate}
+
+The names in this implementation order describe proposed work; they are
+not assertions that corresponding new modules already exist. In particular,
+no new Lean code or Lean-checking claim is included in the present package.
+
+\section{What remains to be classified}\label{saut:sec:questions}
+
+The central stabilizer question has a clean answer, and the valued subgroup
+has an exact kernel--quotient decomposition. Neither result gives a fully
+explicit description of the unrestricted automorphism collection.
+The following are useful research targets, with their status kept distinct.
+
+\paragraph{The image of exponential automorphisms on the value group.}
+Faithfulness \eqref{saut:eq:expfaithful} determines the kernel, not the image.
+An intrinsic necessary-and-sufficient criterion on an ordered additive
+$\tau:\No\to\No$ for it to come from an exponential automorphism would
+be much stronger. Positive rational dilations already show that arbitrary
+Hahn lifting does not solve the problem. Any such criterion must use the
+interaction between the value group and real exponential growth, not just
+ordered-group structure. (This is Question~13.1, \lbl{q:image}, of the
+collection's rigidity report, where it is also open.)
+
+\paragraph{Omega-map compatibility.}
+The nontrivial automorphisms preserving the omega-map, and extensions of
+order automorphisms of its generalized epsilon fixed points, are posed in
+Questions~5.6 and~5.7 of the inspected version of \cite{KKS}. They are not
+resolved here. Exact value rigidity only describes one kernel and must not
+be mistaken for a solution of those broader extension problems.
+
+\paragraph{Effective descriptions inside the leading-term kernel.}
+The abstract support-and-invertibility conditions for strong Hahn
+substitutions are meaningful, but finite, compositional certificates for
+larger symbolic families would be useful for computation and formalization.
+The fixed-shift constructions are a tractable subclass, not an exhaustive
+normal form for $\U$ or its strong part. This is a proposed computational
+research direction, not a claim that the general Hahn literature lacks
+abstract descriptions.
+
+\paragraph{Real-form and continuity classifications.}
+The phase family and the cofinality example show that real forms have both
+embedding freedom and isomorphism-type freedom. A detailed classification
+with additional valuation, summation, or simplicity conditions is a separate
+problem. Similarly, this article proves that $G_v$ acts continuously but
+does not identify every fine-continuous pure-field automorphism. These are
+boundaries of the present account; they are not asserted to be newly
+formulated or historically unresolved in every related setting.
+
+\section{Source audit, proof status, and conclusions}\label{saut:sec:audit}
+
+\subsection{Version-sensitive points}
+
+The version-specific literature anchor is Kaplan--Krapp--Serra,
+arXiv:2509.22374v3, submitted 23 April 2026, whose PDF is dated 27 April
+2026. Its displayed formulas were checked against the PDF, not only the
+HTML rendering. Two local cautions affect example construction. The
+shift $g-1$ printed in Example~4.3 is not contracting for the convention
+$v=\min\supp$; our construction uses a positive shift. The series
+$\sum_n\omega^{-1/n}$ printed in Example~4.4 does not have decreasing
+Conway support; \eqref{saut:eq:nonstronga} uses a valid support instead.
+Our nonstrong example does not claim the stronger global leading-term
+property asserted for that source's construction.
+
+The semidirect actions in this article are specified by actual composition
+formulas, especially \eqref{saut:eq:monomiallaw} and \eqref{saut:eq:skeletonlaw}.
+A display listing factors should not be read as a componentwise direct
+product when exponent reindexing acts on coefficient weights.
+
+The repository's exponential-rigidity report is explicitly prior material
+at the pinned revision. Its appended source audit records an earlier
+catalogue/tree mismatch, illustrating why absence from a catalogue or
+failure of code search is not evidence of absence from the repository.
+The present article neither relies on that earlier absence claim nor
+makes an exhaustive nonduplication claim.
+
+\subsection{Evidence categories}
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\RaggedRight\arraybackslash}p{0.26\textwidth}>{\RaggedRight\arraybackslash}p{0.65\textwidth}@{}}
+\toprule
+Category & Treatment in this article\\
+\midrule
+Classical prerequisites & Real closedness and normal forms of $\No$;
+Newton--Puiseux; finite-group fixed-field theory and Artin--Schreier are
+imported with references.\\[3pt]
+Direct proofs & Real-axis, circle, and norm stabilizers; explicit Hahn maps
+and flows; valued factorization; topology and derivative results;
+class extension and real-form consequences.\\[3pt]
+Repository prior work & Exponential displacement faithfulness, rational
+non-lifting, and logarithmic-modulus reduction are attributed, with proofs
+included for their role here.\\[3pt]
+Implementation evidence & Selected source code and documentation were read;
+no independent repository build and no new Lean certification.\\[3pt]
+Historical novelty & Not certified. Derived statements and useful examples
+are not automatically claimed to be first discoveries.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Non-claims}\label{saut:sec:nonclaims}
+
+The source states its limitations where they arise, and each is kept in
+place. The list collects them, with the place where each stands.
+Items~1--28 are the source's; items~29--33 were added when the report
+joined the collection.
+\begin{enumerate}[label=\arabic*.,leftmargin=2.2em]
+\item No complete classification of the automorphisms of $\K$, and in
+particular none of the unrestricted ones, is claimed (title page, abstract,
+Section~\ref{saut:sec:questions}; the delivered README).
+\item Historical priority is not claimed or certified; derived statements
+and useful examples are not automatically claimed to be first discoveries,
+and no exhaustive nonduplication claim is made (title page,
+Section~\ref{saut:sec:audit}; the delivered README).
+\item No new Lean verification, no Lean code, and no independent build of
+the repository are claimed; the implementation order describes proposed
+work, not existing modules (title page, Section~\ref{saut:sec:repo},
+Section~\ref{saut:sec:audit}).
+\item The repository comparison is a selected-source inspection, not a
+search of every file; the bridge-note facts are repository-reported, not
+independently rebuilt (Section~\ref{saut:sec:repo}).
+\item Exponential faithfulness, the rational non-lifting proposition and
+the logarithmic-modulus reduction are prior work of the repository, not
+results of this report; the settlement of Question~5.4 of \cite{KKS} is by
+the repository's proof and ``is not a new result of this article''
+(abstract, Sections~\ref{saut:sec:introduction}
+and~\ref{saut:sec:exponential}, Section~\ref{saut:sec:audit}).
+\item Faithfulness does not say that the exponential automorphism group is
+trivial (Section~\ref{saut:sec:exponential}).
+\item The article does not rely on the earlier absence claim in the
+rigidity report's audit (Section~\ref{saut:sec:audit}).
+\item $\Aut(\K)$ and the other groups are definable collections of class
+maps, not class objects of NBG; a group isomorphism is a unique
+factorization statement about individual automorphisms
+(Section~\ref{saut:sec:introduction}).
+\item Global homogeneity and the topology of the full field are not to be
+transferred to an arbitrary fixed set-sized workspace
+(Section~\ref{saut:sec:introduction}).
+\item The four-layer decomposition \eqref{saut:eq:fourfactor} is not a
+decomposition of all field automorphisms of $\K$, and its factor $\U$ is not
+reduced to a finite list of coefficients (Section~\ref{saut:sec:decomposition}).
+\item An arbitrary homomorphism $g\mapsto u_g$ into $1+\mm$ does not by itself
+give a summable or surjective map; the fixed-shift flows illustrate the
+automorphism--derivation connection without asserting that every formal
+operator exponential is summable (Section~\ref{saut:sec:kernels}).
+\item The Taylor motions $\Phi_d$ are generally noncomputable from
+numerical names of real coefficients and are not to be advertised as
+algorithms; the back-and-forth existence theorems are not executable
+algorithms and give no canonical parametrization of the class
+automorphisms (Sections~\ref{saut:sec:kernels}, \ref{saut:sec:bare}
+and~\ref{saut:sec:applications}).
+\item The maps of $G_{\No}$ are semilinearly compatible with the modulus;
+calling them isometries would be misleading (Section~\ref{saut:sec:axis}).
+\item Proposition~\ref{saut:prop:continuous} is an inclusion in the group of
+fine-continuous automorphisms, not a classification of it, and no converse
+is inferred from continuity; not every fine-continuous pure-field
+automorphism is identified (Sections~\ref{saut:sec:topology}
+and~\ref{saut:sec:questions}).
+\item The non-strong witness of Section~\ref{saut:sec:topology} is not
+claimed to fix every value or every leading term, nor to have the global
+leading-term property asserted for the construction in \cite{KKS}; the
+non-density conclusion concerns the pointwise-equality topology on
+automorphisms only (Sections~\ref{saut:sec:topology}
+and~\ref{saut:sec:audit}).
+\item The choice of topology is part of each topological theorem; the
+discreteness of set-sized subsets in the full fine topology says nothing
+about the intrinsic valuation topology of a fixed Hahn workspace
+(Section~\ref{saut:sec:topology}).
+\item $S_2$ is not asserted to be representable by a locally convergent
+power series; ``everywhere differentiable'' is not a synonym for analytic
+rigidity, and a zero derivative does not imply local constancy
+(Section~\ref{saut:sec:derivative}).
+\item The scalar Berarducci--Mantova derivation, formal differentiation of a
+power series and the fine derivative are three distinct notions; the
+differential reduction is not a classification of the differential group
+or of differential automorphisms without a marked real axis
+(Section~\ref{saut:sec:exponential}).
+\item The transcendence-basis description is not a classification, even for
+a set-sized algebraically closed field (Section~\ref{saut:sec:bare}).
+\item Neither the phase family nor
+Theorem~\ref{saut:thm:inequivalentrealform} classifies the real closed
+class fields whose complexification is $\K$; the conjugacy criterion of
+Appendix~\ref{saut:app:conjugacy} is structural, not an effective decision
+procedure (Section~\ref{saut:sec:realforms},
+Appendix~\ref{saut:app:conjugacy}).
+\item Simplicity rigidity is rigidity of an enriched structure, not of the
+real closed field reduct (Section~\ref{saut:sec:exponential}).
+\item Exact value rigidity for the omega-map needs pointwise value
+fixation; it describes one kernel and is not a solution of the omega-map
+extension problems, Questions~5.6 and~5.7 of \cite{KKS}, which are not
+resolved (Sections~\ref{saut:sec:exponential}
+and~\ref{saut:sec:questions}).
+\item Compatibility with the local exponential and logarithm does not imply
+compatibility with the total real exponential on infinite arguments
+(Section~\ref{saut:sec:exponential}).
+\item The image of exponential automorphisms in the value group is not
+determined (Section~\ref{saut:sec:questions}).
+\item Automorphism tests do not make the constructions they constrain
+invalid; they identify data that must be declared
+(Section~\ref{saut:sec:applications}).
+\item Smallness statements keep their universe indices; the class theory
+here and a universe-relative Lean realization are compatible but not
+textually interchangeable (Section~\ref{saut:sec:repo}).
+\item The fixed-shift constructions are a tractable subclass, not an
+exhaustive normal form for $\U$; the research targets of
+Section~\ref{saut:sec:questions} are not asserted to be newly formulated or
+historically unresolved in every setting, nor is it claimed that the Hahn
+literature lacks abstract descriptions (Section~\ref{saut:sec:questions}).
+\item The delivered README reports symbolic finite checks of the norm
+product and polarization identities, the Cayley inverse, and the
+rational-flow composition and inverse identities, and says that such
+checks are not proofs of infinite summability or of the full surreal
+theory. No code or record of them was delivered, and nothing in this
+report rests on them. The delivery redistributes no third-party papers or
+font files.
+\item \emph{(Added.)} The answer to Question~5.4 of \cite{KKS} rests on the
+rigidity report's check of the pinned version of that paper. The source's
+readings of its Examples~4.3 and~4.4 and of its Questions~5.6 and~5.7 are
+the source's and were not rechecked for this report.
+\item \emph{(Added.)} Whether $\Gexp$ is nontrivial, equivalently whether
+$\{\id,c\}\subsetneq\AutL(\K)$, is not decided; nor is whether $S_a|_{\No}$
+is exponential when $a$ is not rational (Section~\ref{saut:sec:conventions}).
+\item \emph{(Added.)} No statement of this report is covered by a Lean
+proof. The Lean modules named in Section~\ref{saut:sec:position} are
+interfaces and neighbouring results only; the Lean proof of the
+discreteness clauses concerns lower-universe-small subsets of the Lean
+carrier.
+\item \emph{(Added.)} The relations of Section~\ref{saut:sec:position}
+identify results by their content; no theorem is transferred between the
+full fine topology and a workspace topology, or between the fine
+derivative and another derivative notion.
+\item \emph{(Added.)} Observation \eqref{saut:eq:Lchain} is an elementary
+consequence of results printed here; it is not claimed as a result of the
+source or of the rigidity report.
+\end{enumerate}
+
+\subsection{The main picture}
+
+The correct starting point is the strict separation
+\[
+ \{\id,c\}=\Aut(\K/\No)
+ \ \subsetneq\ G_{\No}
+ \ \subsetneq\ G_v
+ \ \subsetneq\ \Aut(\K).
+\]
+Preserving the real axis gives $\Aut(\No)\times C_2$; preserving the unit
+circle gives the same group. Exact preservation of every modulus reduces
+it to identity and conjugation. Pure-field automorphisms can move the
+real axis, the finite ring, and even the isomorphism type of a chosen real
+form under a change of conjugation.
+
+The valuation organizes a large explicit subgroup but does not enforce
+classical analytic behavior. Phase twists can move real monomials while
+fixing constants and values; leading-term automorphisms can move ordinary
+real constants by infinitesimals; fine-continuous maps need not preserve
+Hahn sums; and exponent dilation can be a differentiable field
+homeomorphism with derivative zero everywhere. Exponential structure
+imposes a different and genuinely strong constraint: its value-group
+action is faithful, even though the underlying valued-field kernel is
+large.
+
+An automorphism theorem for surcomplex numbers is therefore meaningful only
+after its preserved structure, support convention, topology, and size
+framework have been made explicit. With those choices in place, the theory
+has both exact structural reductions and a rich supply of concrete examples.
+
+\clearpage
+\appendix
+\section{A quick reference of explicit examples}\label{saut:sec:examplesummary}
+
+In the table, ``values fixed'' means $v(\alpha z)=v(z)$ for every nonzero
+$z$, not merely preservation up to a value-group automorphism.
+The term ``constants'' means the embedded ordinary complex field.
+
+\small
+\begin{longtable}{@{}>{\RaggedRight\arraybackslash}p{0.20\textwidth}>{\RaggedRight\arraybackslash}p{0.35\textwidth}>{\RaggedRight\arraybackslash}p{0.35\textwidth}@{}}
+\toprule
+Map & Preserved data & Nontrivial feature\\
+\midrule
+\endfirsthead
+\toprule
+Map & Preserved data & Nontrivial feature\\
+\midrule
+\endhead
+$c$ & Real axis pointwise; modulus; values; strong sums & $i\mapsto-i$;
+not complex fine-differentiable\\[5pt]
+$S_2$ & Constants; real axis; conjugation; strong sums & $v\mapsto2v$;
+$\omega\mapsto\omega^2$; derivative zero\\[5pt]
+$D_\lambda$, $\lambda\ne0$ & Constants; real axis; conjugation; values;
+strong sums & Rescales leading coefficients by $e^{\lambda(g)}$\\[5pt]
+$P_{\pi/2}$ & Constants; values; strong sums; fine topology & $t\mapsto it$;
+moves the real axis and changes modulus\\[5pt]
+$\Phi_d$, $d(b)=1$ & Monomials; leading terms; strong sums; real axis when
+$d$ is real & $b\mapsto b+t^\delta$; ordinary constants need not be fixed\\[5pt]
+$T_1$, $\lambda=\ell$, $\delta=1$ & Constants; real axis; conjugation;
+leading terms; strong sums & $t\mapsto t/(1-t)$; not a total-real-exponential
+automorphism\\[5pt]
+Ordered extension of Section~\ref{saut:sec:topology} & Constants; real axis;
+conjugation; fine topology & Fixes the summands of $a$ but sends
+$a\mapsto a+t^\omega$\\[5pt]
+Pure-field back-and-forth & Any prescribed set of parameters, with ordinary
+$\C$ also fixed & Can send a positive infinite $x$ to $x^{-1}$ or $ix$;
+no canonical normal-form action supplied\\
+\bottomrule
+\end{longtable}
+\normalsize
+
+\section{A conjugacy criterion for the standard real form}\label{saut:app:conjugacy}
+
+The cofinality obstruction in \cref{saut:thm:inequivalentrealform} has a useful
+positive counterpart. Say that an ordered class field has the
+\emph{set-cut interpolation property} if for every pair of sets
+$\mathcal L,\mathcal R$ with $\mathcal L<\mathcal R$, there exists $x$ with
+$\mathcal L<x<\mathcal R$. Empty sides are permitted.
+
+\begin{proposition}\label{saut:prop:conjugacycriterion}
+An involution $j$ of $\K$ is conjugate to $c$ if and only if its fixed real
+field has the set-cut interpolation property.
+\end{proposition}
+\begin{proof}
+The property holds in $\No$ by Conway cuts and is preserved by ordered
+isomorphisms. Conversely let $F=\Fix(j)$ have the property. It is a proper
+class, since $\K=F(i)$, and it is real closed by
+\cref{saut:thm:torsion}. Run the proof of \cref{saut:thm:orderedhomogeneity} between
+$F$ and $\No$ rather than within $\No$. At every stage, the only special
+existence condition used to extend the partial ordered-field isomorphism
+is interpolation of a set-sized cut. It holds on both sides, so
+back-and-forth gives $F\simeq\No$. The real-form conjugacy criterion in
+Section~\ref{saut:sec:realforms} then gives $j\sim c$.
+\end{proof}
+
+This is a structural characterization, not an effective decision procedure
+for a given class involution. It singles out precisely the conjugacy class
+of the usual surreal real form among all real forms of the pure field.
+
+\section{Provenance and the pinned comparison}\label{saut:app:provenance}
+\RaggedRight
+
+\subsection{Provenance of this report}
+
+This report is built from \emph{one} manuscript: the archive
+\texttt{surcomplex\_automorphisms}, manuscript~07 of batch~20 of the
+collection, dated 22 September 2026 and pinned to repository commit
+\repoSHA. It was placed in
+commit \texttt{5fe7f8d} as a new report rather than merged into
+\repo{surreal/exponential-automorphism-rigidity}: it continues that report's
+section on $\No(i)$, but with plain field automorphisms instead of
+exponential ones, and answers no question that report names. There was no
+second source; nothing was merged and nothing was selected away. Every
+result, proof, example, question and limitation of the manuscript is
+printed here.
+
+The delivery consisted of the article source, its PDF and a README; it
+contained no code and no data. The source was renamed \texttt{article.tex}
+and edited as listed below; the README was rewritten for the collection;
+the delivered PDF is not shipped and is replaced by a build of this text.
+
+The editorial changes are these.
+\begin{enumerate}[label=(\arabic*)]
+\item Every label carries the prefix \texttt{saut:}. The source's 79 labels
+are kept, unchanged after the prefix, and seven were added
+(\texttt{saut:sec:conventions}, \texttt{saut:sec:position},
+\texttt{saut:eq:Lchain}, \texttt{saut:sec:nonclaims},
+\texttt{saut:app:conjugacy}, \texttt{saut:app:provenance},
+\texttt{saut:app:pinned}).
+\item The title page gives the report's status and provenance, and the
+abstract gains one sentence placing $\AutL(\K)$.
+\item Sections~\ref{saut:sec:conventions} and~\ref{saut:sec:position} and
+the consolidated non-claims of Section~\ref{saut:sec:nonclaims} are new.
+Short pointers were added after Theorem~\ref{saut:thm:decomp}, at the start
+of Section~\ref{saut:sec:repo}, and in the first question of
+Section~\ref{saut:sec:questions}.
+\item Six symbols were renamed so that each has one meaning
+(Section~\ref{saut:sec:conventions}): $E_{\rho,\tau}\to M_{\rho,\tau}$,
+$E_d\to\Phi_d$, the derivation $D\to\mathcal D$, the Puiseux field
+$P\to\mathcal P$, the automorphism $\tau\to\psi$ of the non-density
+argument, and cut sides $(L,R)\to(\mathcal L,\mathcal R)$; the source's
+$\Aut(\K,L)$ is written $\AutL(\K)$.
+\end{enumerate}
+No mathematical statement of the source was changed. Where the edit had to
+choose: the results the source reproduces from the rigidity report (its
+Lemma~3.1, the faithfulness of Corollary~4.2, the content of
+Theorem~5.1 and Corollary~5.2, Theorem~8.4, and Theorem~9.2 with its
+kernel clause) are printed here once, with the
+source's proofs and attribution, rather than replaced by pointers, because
+they are part of one manuscript's argument; Section~\ref{saut:sec:position}
+names each counterpart. The letter $E$ was freed for the exponential,
+following the rigidity report, rather than renaming that report's symbol.
+The title is the source's; the directory is named
+\texttt{surcomplex-field-automorphisms} to say that the automorphisms are
+field automorphisms.
+
+\subsection{Pinned repository scope}\label{saut:app:pinned}
+
+Section~\ref{saut:sec:repo} is the source's comparison at its pin
+\texttt{dcf8666}, an ancestor of the placement commit \texttt{5fe7f8d}
+(sixteen commits earlier). Checked against the repository for this report:
+\begin{itemize}
+\item The descriptions of \nolinkurl{Surreal/Algebra/Complexify.lean},
+\nolinkurl{Surreal/Algebra/FineDerivative.lean}, the normal-form bridge note,
+and the rigidity report with its appended audit correction are accurate at
+the pin. None of these files, nor the root \texttt{README.md}, changed
+between the pin and the placement; the report catalogue
+\nolinkurl{docs/README.md} changed only by listing reports of another batch
+and extending other entries.
+\item The bibliography cites the rigidity report by its article title,
+\emph{Growth-Scale Rigidity for Surreal and Surcomplex Automorphisms}; the
+collection's README for the same directory is headed ``Cofinal displacement
+and the rigidity of exponential automorphisms''. Both name
+\repo{surreal/exponential-automorphism-rigidity}.
+\item The source did not relate its results to
+\lbl{found:thm:discrete} and its Lean proof, to the collection's
+zero-derivative witnesses, to the character twists of
+\lbl{spec:lem:finiteindex}, to the Cayley parametrization of the
+trigonometry report, or to the Lean modules
+\nolinkurl{Surreal/Surcomplex/Basic.lean} and
+\nolinkurl{Surreal/HahnSeries/ComplexNumbers.lean}, all present at the pin.
+The hidden-negative-directions and bounded-support reports and
+\nolinkurl{Surreal/Algebra/SigmaDerivation.lean} were added after the pin
+and could not have been seen. Section~\ref{saut:sec:position} supplies
+these relations.
+\item The README of the rigidity report states that nothing there
+proves a theorem about the automorphism group of $\No$ that any other
+report also proves. That was accurate before this report was placed; this report
+reprints several of its results (Section~\ref{saut:sec:position}).
+\end{itemize}
+
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{99}
+\small\RaggedRight
+\bibitem{Conway}
+J.~H.~Conway,
+\emph{On Numbers and Games}, Academic Press, 1976.
+
+\bibitem{Gonshor}
+H.~Gonshor,
+\emph{An Introduction to the Theory of Surreal Numbers},
+London Mathematical Society Lecture Note Series 110,
+Cambridge University Press, 1986.
+
+\bibitem{KS}
+S.~Kuhlmann and M.~Serra,
+\emph{The automorphism group of a valued field of generalised formal power series},
+Journal of Algebra \textbf{605} (2022), 339--376.
+\href{https://doi.org/10.1016/j.jalgebra.2022.04.023}{doi:10.1016/j.jalgebra.2022.04.023}.
+Preprint version inspected: \href{https://arxiv.org/abs/2107.03362v3}{arXiv:2107.03362v3},
+11 April 2022.
+
+\bibitem{KSG}
+S.~Kuhlmann and M.~Serra,
+\emph{Automorphisms of valued Hahn groups},
+\href{https://arxiv.org/abs/2302.06290}{arXiv:2302.06290}, 2023.
+
+\bibitem{KKS}
+E.~Kaplan, L.~S.~Krapp, and M.~Serra,
+\emph{Decomposing the automorphism group of the surreal numbers},
+\href{https://arxiv.org/abs/2509.22374v3}{arXiv:2509.22374v3},
+23 April 2026; PDF dated 27 April 2026.
+The version-specific PDF, including pp.~8--10, was inspected.
+
+\bibitem{BKKS}
+V.~Bagayoko, L.~S.~Krapp, S.~Kuhlmann, D.~Panazzolo, and M.~Serra,
+\emph{Automorphisms and derivations on algebras endowed with formal infinite sums},
+\href{https://arxiv.org/abs/2403.05827v2}{arXiv:2403.05827v2},
+22 September 2025.
+
+\bibitem{BM}
+A.~Berarducci and V.~Mantova,
+\emph{Surreal numbers, derivations and transseries},
+Journal of the European Mathematical Society \textbf{20} (2018), 339--390.
+\href{https://doi.org/10.4171/JEMS/769}{doi:10.4171/JEMS/769}.
+\href{https://arxiv.org/abs/1503.00315v3}{arXiv:1503.00315v3}.
+
+\bibitem{Conrad}
+K.~Conrad,
+\emph{The Artin--Schreier Theorem}, author expository notes,
+Sections 3--4, especially Theorem 3.1 and the finite-group application.
+\url{https://kconrad.math.uconn.edu/blurbs/galoistheory/artinschreier.pdf}.
+Accessed 22 September 2026.
+
+\bibitem{Repo}
+V.~Reshetnikov and contributors,
+\emph{Surreal}, GitHub repository, snapshot
+\repoSHA, inspected 22 September 2026.
+\url{https://github.com/VladimirReshetnikov/Surreal}.
+Root \texttt{README.md} and \texttt{docs/README.md} inspected.
+
+\bibitem{RepoRigidity}
+\emph{Growth-Scale Rigidity for Surreal and Surcomplex Automorphisms},
+AI-assisted repository research manuscript, dated 21 September 2026;
+\path{docs/surreal/exponential-automorphism-rigidity/article.tex},
+at the snapshot in \cite{Repo}.
+The accompanying \path{05-exponential-valuation-SOURCE_AUDIT.md}, including
+its appended correction, was also inspected.
+\href{https://github.com/VladimirReshetnikov/Surreal/blob/dcf86662b574988e75d08d515d3a2a5ba7bbc0d7/docs/surreal/exponential-automorphism-rigidity/article.tex}{Pinned manuscript source}.
+
+\bibitem{RepoBridge}
+\emph{Next steps for the infinite normal-form bridge},
+\texttt{docs/NORMAL\_FORM\_BRIDGE.md}, snapshot in \cite{Repo},
+opening assessment and implementation notes inspected.
+\href{https://github.com/VladimirReshetnikov/Surreal/blob/dcf86662b574988e75d08d515d3a2a5ba7bbc0d7/docs/NORMAL_FORM_BRIDGE.md}{Pinned bridge note}.
+
+\bibitem{RepoComplexify}
+\nolinkurl{Surreal/Algebra/Complexify.lean}, snapshot in \cite{Repo}.
+\href{https://github.com/VladimirReshetnikov/Surreal/blob/dcf86662b574988e75d08d515d3a2a5ba7bbc0d7/Surreal/Algebra/Complexify.lean}{Pinned source file}.
+
+\bibitem{RepoFine}
+\nolinkurl{Surreal/Algebra/FineDerivative.lean}, snapshot in \cite{Repo}.
+\href{https://github.com/VladimirReshetnikov/Surreal/blob/dcf86662b574988e75d08d515d3a2a5ba7bbc0d7/Surreal/Algebra/FineDerivative.lean}{Pinned source file}.
+\end{thebibliography}
+\end{document}

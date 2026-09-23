@@ -8,9 +8,9 @@ phase. They agree with ordinary sine and cosine on real constants and obey
 the algebraic identities in `trigonometry:thm:identities`, including integer
 de Moivre. The domain remains the finite real surreal subring.
 
-This file does not identify these coordinates with the separate even and odd
-Taylor sums in `trigonometry:eq:sinfinite` and `trigonometry:eq:cosfinite`,
-and makes no differentiability or infinite-angle assertion.
+The identification with the separate even and odd Taylor sums is proved in
+`TrigonometricTaylor.lean`; fine derivatives are proved in
+`TrigonometricFineDerivative.lean`. The present domain is finite angles.
 -/
 
 universe u

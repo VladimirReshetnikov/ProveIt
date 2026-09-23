@@ -133,6 +133,9 @@ source made them, and 3 added when the report joined the collection. In brief:
 - Example 7.2 is not an analytic counterexample on a positive-radius disk;
   Theorem 7.3 is not an undecidability claim.
 - **No matrix-valued null-ideal criterion**, no full-disk classification.
+  The two-exponent matrix case is now `hnd:thm:measure` of
+  [hidden-negative-hermitian-directions](../hidden-negative-hermitian-directions/);
+  more exponents remain open there (`hnd:q:morescales`).
 - The finite checks prove nothing quantified over all sizes, all Borel sets,
   all holomorphic functions or arbitrary supports.
 - The identity-block congruence in Theorem 3.3 is not asserted for arbitrary

@@ -1,0 +1,8 @@
+.PHONY: all clean
+all: article.pdf
+
+article.pdf: article.tex
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+
+clean:
+	latexmk -c article.tex

@@ -1,6 +1,7 @@
 import Mathlib.Analysis.Calculus.IteratedDeriv.Lemmas
 import Mathlib.Analysis.Analytic.Uniqueness
 import Mathlib.RingTheory.PowerSeries.Derivative
+import Mathlib.RingTheory.PowerSeries.Order
 
 /-!
 # Ordinary analytic germs as formal Taylor series
@@ -82,6 +83,20 @@ theorem taylorSeries_mul {f g : K → K} {c : K}
   linear_combination iteratedDeriv i f c * iteratedDeriv (n - i) g c * hc
 
 omit [CompleteSpace K] [CharZero K] in
+/-- The identity function has the expected affine Taylor series. -/
+@[simp] theorem taylorSeries_id (c : K) :
+    taylorSeries (id : K → K) c = PowerSeries.C c + PowerSeries.X := by
+  ext n
+  rcases n with _ | _ | n <;> simp [iteratedDeriv_id, PowerSeries.coeff_X]
+
+omit [CompleteSpace K] [CharZero K] in
+/-- Negation of ordinary functions negates every Taylor coefficient. -/
+theorem taylorSeries_neg (f : K → K) (c : K) :
+    taylorSeries (-f) c = -taylorSeries f c := by
+  ext n
+  simp only [coeff_taylorSeries, map_neg, iteratedDeriv_neg, neg_div]
+
+omit [CompleteSpace K] [CharZero K] in
 @[simp] theorem taylorSeries_const (r c : K) :
     taylorSeries (fun _ => r) c = PowerSeries.C r := by
   ext n
@@ -99,6 +114,28 @@ theorem taylorSeries_deriv (f : K → K) (c : K) :
   have hn : (n.factorial : K) ≠ 0 := Nat.cast_ne_zero.mpr n.factorial_ne_zero
   have hs : (n : K) + 1 ≠ 0 := by exact_mod_cast Nat.succ_ne_zero n
   field_simp
+
+omit [CompleteSpace K] in
+/-- A nonzero ordinary derivative gives a nonzero formal Taylor series. -/
+theorem taylorSeries_ne_zero_of_iteratedDeriv_ne_zero (f : K → K) (c : K) (m : ℕ)
+    (hm : iteratedDeriv m f c ≠ 0) : taylorSeries f c ≠ 0 := by
+  apply PowerSeries.exists_coeff_ne_zero_iff_ne_zero.mp
+  refine ⟨m, ?_⟩
+  rw [coeff_taylorSeries]
+  exact div_ne_zero hm (Nat.cast_ne_zero.mpr m.factorial_ne_zero)
+
+omit [CompleteSpace K] in
+/-- The first nonzero ordinary derivative is exactly the formal Taylor order. -/
+theorem order_taylorSeries_eq (f : K → K) (c : K) (m : ℕ)
+    (hm : iteratedDeriv m f c ≠ 0)
+    (hvan : ∀ n < m, iteratedDeriv n f c = 0) :
+    (taylorSeries f c).order = m := by
+  apply PowerSeries.order_eq_nat.mpr
+  constructor
+  · rw [coeff_taylorSeries]
+    exact div_ne_zero hm (Nat.cast_ne_zero.mpr m.factorial_ne_zero)
+  · intro n hn
+    simp only [coeff_taylorSeries, hvan n hn, zero_div]
 
 end
 

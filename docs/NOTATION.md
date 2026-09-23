@@ -236,6 +236,37 @@ This is distinct in type from scalar standard part. The
 (`global:sub:conventions`) intentionally reserves `red` and `st` for these
 two maps. Neither operation is a contour or local residue.
 
+The [finite-probability report](surreal/finite-surreal-probability/article.tex)
+uses **limited** for this same bounded-magnitude notion. Its finite-range
+random variables have finitely many values, which may themselves be infinite.
+Their expectations are finite sums in the scalar field. A point-weight vector
+presupposes the full event algebra; for a smaller finite algebra, use its
+measurable atoms. Regularity means positive mass on every nonempty measurable
+event. Conditional identities are pointwise on positive-mass atoms and hold
+up to arbitrary constant versions on null atoms; scalar expectations remain
+independent of those choices.
+
+Conditional shadows retain the order of leading atom scales and normalized
+leading coefficients, while real-payoff comparisons can also depend on signed
+higher coefficient rows. Neither representation determines arbitrary surreal
+payoff comparisons. For conditioning precision, `β` and `λ` belong to the
+ordered value group: `v(error) > β + λ` is a sufficient uniform contract,
+with `β` the event valuation and `λ ≥ 0` the requested output precision.
+It need not hold when particular numerator and denominator errors cancel.
+Finite likelihood updates require a positive joint normalizer to commute;
+a neutral likelihood ratio of one leaves a binary law unchanged.
+
+The probability report's softmax “limit” is a standard-part identity for
+one finite list of separated surreal scales. Its local `O(η²)` means an
+error bounded by a real constant times `|η|²`. No sequence convergence is
+asserted. Finite-alphabet entropy is limited and commutes with standard part;
+relative entropy may be positive infinite as an actual surreal. Its formal
+`+∞` value for a support mismatch, and formal endpoint logits, lie outside
+the field. Logarithmic loss over strictly positive predictions attains its
+truthful minimum only for an interior true law; boundary truths have an
+unattained entropy infimum in that prediction domain. Brier loss permits
+the full simplex, including its boundary.
+
 The word **finite** has several other explicit uses: a finite-dimensional
 algebra, a finite map, finitely many terms, and finite birthday. The
 [graph report](surreal/canonical-forms-need-not-be-subgraphs/surreal_graphs.tex)
@@ -451,6 +482,129 @@ the entire space of maps between the corresponding generalized eigenspaces,
 not just the kernel of the homological operator. These resonances differ
 from integer relations among differential phases and from the scalar
 resonant coefficient at `t¹` discussed earlier in that report.
+
+For a regular-singular system, the gauge `F` gives the constant Euler
+coefficient `iD + N`, where `D` records residual frequencies and `N`
+is nilpotent and commutes with `D`. The gauge `G_τ = F exp(τN)`
+removes `N` after adjoining `τ`. Thus `K_ℝ`-classification retains
+the nilpotent Jordan partitions at each frequency, while classification
+over `No[i]` retains only frequency multiplicities. Constant intertwiners
+refer to the reduced frame; morphisms of the original systems are
+`F C (F′)⁻¹`. The tensor differential system of coefficients `A,A′`
+has coefficient `A ⊗ I + I ⊗ A′`, rather than the matrix product
+`A ⊗ A′` alone.
+
+For smaller Euler-stable workspaces, `K_Γ(t^{a₁}, …, t^{a_k})`
+means the field of rational expressions in the added monomials over
+`K_Γ`; it does not denote the full Hahn field on the enlarged exponent
+group. Two constant rank-one Euler coefficients `λ, μ ∈ ℂ` are
+gauge equivalent over `K_Γ` exactly when `λ − μ ∈ Γ`. In particular,
+their imaginary parts agree and their real parts agree modulo `Γ`.
+
+The autonomous part of the differential-equations report uses `ð` for
+an arbitrary normalized derivation with `ðω = 1`, not for the rescaled
+Euler derivation. A local parameter `σ` on an ordinary complex curve
+evaluates to an infinitesimal at any point reducing to its center. Formal
+maps acting within these infinitesimal tuples have zero constant term;
+their invertible ordinary linear part gives an inverse on the same
+monad. For a simple zero, `ξ(σ) = λσ + O(σ²)`, the coefficient `λ`
+is unchanged by a change of local parameter. The normalized linearizer
+has `h_p(σ) = σ + O(σ²)`; its formal derivative is distinct from `ð`,
+with the evaluation chain rule connecting them.
+
+At a multiple zero of order `m+1`, `x_m = ω^(−1/m)` and
+`y_ω = (log ω)/ω` are actual infinitesimals; `X,Y` are formal
+variables before evaluation. The series `w_{β,C}(X,Y)` has constant
+term one, and `u_{β,C} = β x_m w_{β,C}(x_m,y_ω)` is the solution.
+Here `β^m = −1/(m c_{m+1})` and `C ∈ ℂ` is the ordinary constant
+in the time primitive `𝔱(u) = ω+C`, after choosing `log β`.
+Replacing `log β` by `log β + 2πik` relabels the same solution by
+`C + 2πik ϱ`, where `ϱ` is the coefficient of `σ⁻¹` in `1/f(σ)`.
+Changing the local parameter to `aσ + O(σ²)` rescales `β` to `aβ`.
+Neither constant is an invariant independent of these choices.
+
+For a real branch use the real primitive with `log |u|` and
+`log |β|`; its time constant is real. On a negative branch, choosing instead
+`log β = log |β| + iπ` in the complex primitive changes the constant to
+`C_ℂ = C_ℝ + iπϱ`. Thus “real solution” does not mean “real complex time
+constant” without fixing the logarithm convention. A simple-zero amplitude
+is the ordinary coefficient multiplying `exp(λω)` in the normalized
+linearizer, a different parameter from this additive time constant.
+
+In the autonomous localization theorem, `𝔊_ξ` is the multiplicative
+monomial group generated by finitely many specified scales, whereas
+`K_ξ = ℂ((𝔊_ξ))` contains every series with reverse well-ordered support
+in that group. Finite generation of `𝔊_ξ` does not assert finite generation
+or finite transcendence degree of the Hahn field over `ℂ`. The common
+normalized derivative on this field shifts each input monomial by one of
+`1`, `ω⁻¹`, `(ω log ω)⁻¹`; collisions may cancel coefficients.
+For every `F ∈ ℂ[Y,Z]`, normalized derivations have the same solution
+collection for `F(y,ðy)=0`. Pointwise equality of their derivatives on that
+collection and a uniform set-sized Hahn field bound require `F ≠ 0`.
+
+An ordinary formal time variable `s` with formal derivative `ds/ds=1`
+is not an arbitrary infinitesimal surcomplex input for the intrinsic
+normalized derivation `ð`: finite surcomplex elements have infinitesimal
+intrinsic derivatives. Thus formal flow identities, fine derivatives of
+evaluated series, and intrinsic differential equations require their
+respective compatibility statements. Current Lean formal evaluation and
+fine-differentiation results do not by themselves identify these operators.
+
+For a constant abelian variety `𝐀/ℂ`, the formal logarithm
+`log_𝓕` maps its identity monad to `Lie(𝐀)(𝔪_ℂ)`; its inverse
+`exp_𝓕` is evaluated only at infinitesimal Lie coordinates. It is distinct
+from the scalar exponential and from an analytic uniformization by a period
+lattice. The logarithmic derivative `dlog_ð` is a Lie-valued group
+homomorphism with image `Lie(𝐀)(ð𝔪_ℂ)` and kernel `𝐀(ℂ)`.
+The complex primitive obstruction `Obs^ℂ_ð` tests both real and imaginary
+coordinates, unlike the multiplicative phase obstruction `Φ`. Defining it
+on every input requires surjectivity of `ð`. The abelian image theorem and
+the explicit speed threshold for `ω^(−p)v`, `p > 1`, do not.
+
+In the critical-potential part, `ℓ_α = ω^(ω^(−α))` uses the Conway
+monomial map at both levels. Each ordinal-indexed sum stops below one
+fixed ordinal, so its index is a set. The monomial product `ℓ_{<α}` is
+defined by summing its exponents; its logarithm agrees with the sum of
+logarithms by the stated imported theorem, including limit stages.
+The real powers `ℓ_α^r` use the ordered real exponential. These formulas
+do not extend the Conway map to exponents in `ℂ \ ℝ`, or define complex
+powers of infinite scales. A surreal exponent outside `ℝ`, such as
+`−2−2ω⁻¹`, is still a valid Conway exponent; distinguish that case from
+a non-real complex exponent. A critical potential is the strong sum of its increments, not
+the generally nonsummable family of its partial potentials.
+
+An exact Hahn normal form specifies every coefficient, including zeros
+outside the displayed support. Prescribing coefficients only at an earlier
+hierarchy of scales allows smaller remainder terms. The critical-potential
+invisibility theorem concerns that latter data; it does not give two
+values for one exact strong sum.
+
+For the three limit-stage fields, distinguish inner support in the Conway
+normal form of an exponent from outer support in the Hahn series itself.
+`Δ₀` is a finite real span of prefix sums. Full Hahn summation allows
+well-ordered outer supports in `Δ₀`, but does not add new exponents to
+`Δ₀`. The first two real fields are closed under the ambient logarithm;
+the third contains `ℓ_λ` but omits its logarithm `ℓ_{λ+1}`. Algebraic
+closure, derivative stability, logarithm closure and solving a particular
+equation are separate properties.
+
+For the limit-stage Picard–Vessiot basis, use the right-matrix convention
+`ψ(Y) = Y M_ψ`. Composition applies the right-hand automorphism first and
+satisfies `M_{ψ∘φ} = M_ψ M_φ`. The action parameters `(a,b)` have law
+`(a,b)·(a′,b′) = (aa′,a′⁻²b+b′)`; the upper-right matrix entry is `ab`.
+In Schwarzian reconstruction, `v² ∂s = 1` is an algebraic square-root
+choice. Möbius matrices lie in `GL₂(ℂ)` and act on a nonconstant solution
+ratio, which ensures their denominators are nonzero. These constructions
+do not require a complex logarithm or a global composition operation.
+
+For a scale `s` with `∂s ≠ 0`, the field derivation
+`∂_s = (∂s)⁻¹∂` has the same constants as `∂`; writing `s∂_s = ∂_{log s}`
+when `s > 0` asserts an operator identity, not a global substitution map.
+The Liouville gauge formula is algebraic for arbitrary coefficients in the
+field. Its Euler kernel classification additionally requires an ordinary
+real coefficient. Membership of a potential in the power-Hahn field
+`ℂ((t^ℝ))` is determined by its surviving Conway exponents: the critical
+family's stage `α = 1, c = 0` is still in that field.
 
 Distinguish the ordered real surreal exponential, the strongly summed
 infinitesimal Hahn exponential, finite-angle `cis`, and a chosen global
