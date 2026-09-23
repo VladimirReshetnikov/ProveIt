@@ -1,0 +1,1226 @@
+\documentclass[11pt,oneside]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{microtype,booktabs,longtable,tabularx,array,enumitem}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\definecolor{ink}{HTML}{172D46}
+\definecolor{accent}{HTML}{285F78}
+\definecolor{muted}{HTML}{53616E}
+\hypersetup{colorlinks=true,linkcolor=accent,citecolor=accent,urlcolor=accent,
+ pdftitle={Surreal Scales in Quantum Theory and Gauge Models},
+ pdfauthor={Research manuscript prepared for Vladimir Reshetnikov},
+ pdfsubject={Hahn fields, rare quantum events, effective Hamiltonians, surquaternions, and lattice gauge theory}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}Surreal scales in quantum theory}
+\fancyhead[R]{\small\color{muted}Research manuscript}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{0.28em}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{construction}[theorem]{Construction}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\HH}{\mathbb H}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\mm}{\mathfrak m}
+\newcommand{\st}{\operatorname{st}}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\Rea}{\operatorname{Re}}
+\newcommand{\Ima}{\operatorname{Im}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\lc}{\operatorname{lc}}
+\newcommand{\ini}{\operatorname{in}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\SU}{\operatorname{SU}}
+\newcommand{\Sp}{\operatorname{Sp}}
+\newcommand{\Herm}{\operatorname{Herm}}
+\newcommand{\val}{v}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\ket}[1]{\lvert#1\rangle}
+\newcommand{\bra}[1]{\langle#1\rvert}
+\newcommand{\proj}[1]{\ket{#1}\!\bra{#1}}
+\newcommand{\repo}{\texttt{VladimirReshetnikov/Surreal}}
+\newcommand{\status}[1]{\par\noindent\textbf{Status.} #1\par}
+
+\begin{document}
+\begin{titlepage}
+\color{ink}
+\vspace*{14mm}
+{\small\sffamily RESEARCH ARTICLE\par}
+\vspace{10mm}
+{\Huge\bfseries Surreal Scales in\par Quantum Theory\par and Gauge Models\par}
+\vspace{9mm}
+{\Large Rare-event shadows, exact elimination,\par and quaternionic curvature\par}
+\vspace{13mm}
+\noindent\rule{\textwidth}{0.7pt}
+\vspace{5mm}
+{\large Prepared for Vladimir Reshetnikov\par}
+{\normalsize 23 September 2026\par}
+\vspace{12mm}
+\noindent\begin{minipage}{0.94\textwidth}
+\textbf{Central question.} Can surreal, surcomplex, or surquaternion scalars do something useful in theoretical physics without simply renaming infinities?
+
+\medskip
+\textbf{Answer developed here.} They provide an exact language for competing scales, including scales invisible to every power of a chosen perturbation parameter. In finite quantum and gauge models, this language supports precise theorems about rare conditioning, virtual transitions, and non-Abelian curvature. It also exposes operational and compositional obstructions that scalar extension cannot remove.
+
+\medskip
+\textbf{Scope.} Set-sized Hahn workspaces embedded in the surreals; fixed finite-dimensional quantum systems; finite lattice loops. No continuum quantum field theory, new experimental prediction, or resolution of a gravitational singularity is asserted.
+\end{minipage}
+\vfill
+{\small\color{muted}Unrefereed, AI-assisted mathematical research manuscript. Proofs are supplied in the text. Accompanying exact symbolic checks verify selected examples, not the general theorems. No new Lean verification is claimed.\par}
+\end{titlepage}
+
+\begin{abstract}
+We investigate a conservative role for surreal, surcomplex, and surquaternion numbers in theoretical physics: not a replacement for dynamics or measurement theory, but an exact coefficient language for separated scales. We work in a set-sized real-closed Hahn field $K=\R((t^G))$, its complexification $F=K(i)$, and the quaternion division algebra $\HH(K)$, with $G$ an arbitrary divisible ordered abelian group. Five results organize the investigation. First, an initial-form theorem computes the ordinary conditional state of any nonzero finite Kraus branch, even when its probability is infinitesimal. Second, a sharp success-weighted trace-distance inequality limits the operational amplification of such events, while an explicit rank-two example shows that all power-order data in one parameter can fail to determine a conditioned state. Third, an exact invariant-graph theorem eliminates a collection of unlimited-energy sectors with independently separated scales and gives a finite effective Hamiltonian, a uniform second-order correction, and a positive unlimited complementary spectrum. A three-level example proves that virtual transitions can dominate a direct bias smaller than every power of the coupling. Fourth, quaternionic complexification transports finite surquaternion instruments to ordinary complex shadows, while a dimension argument rules out a naive quaternionic composite with independent local preparations and measurements. Fifth, initial quaternionic curvature determines the valuation and leading coefficient of a positive Wilson-loop action, without cancellation. We also reprove the algebraic Bell bound in this setting. Established ingredients are explicitly distinguished from the proposed extensions; applications are mathematical model applications rather than claims of empirically new physics.
+\end{abstract}
+
+\noindent\textbf{Keywords:} surreal numbers; Hahn series; effective Hamiltonians; postselection; quantum instruments; non-Archimedean scales; quaternionic quantum mechanics; Wilson loops.
+
+\tableofcontents
+\newpage
+
+\section{Purpose, contributions, and limits}\label{sec:intro}
+
+\subsection{The useful question is not whether infinity becomes a number}
+A formula can acquire a value in a larger field without acquiring a physical interpretation. An unlimited curvature scalar is still not a regular spacetime point; an infinitesimal Born weight is still not an ordinary real frequency; an algebraic matrix exponential is not automatically available at an arbitrary infinite imaginary argument. The repository's existing physics report makes these distinctions particularly clearly \cite{repoPhysics}. This article does not repeat its black-hole calculations or present its negative conclusions as new results.
+
+Instead, we ask three more specific questions. Can one extract mathematically invariant information from a quantum process whose leading ordinary shadow vanishes? Can several independently small mixing scales be eliminated without replacing them by a single perturbation parameter? Can quaternionic noncommutativity retain useful scale information after the ordinary gauge field has become flat? These questions admit precise answers in finite algebra, where no infinite-dimensional functional analysis or noncanonical global oscillatory exponential is needed.
+
+The operative architecture is
+\begin{equation}\label{eq:architecture}
+\text{ordinary finite model}
+\ \longrightarrow\ \text{valued coefficient model}
+\ \longrightarrow\ \text{specified ordinary readout}.
+\end{equation}
+The first arrow introduces exact scale separation. The second is a modeling choice, usually standard part, sometimes standard part \emph{after} normalization or energy rescaling. The order of these operations matters. Most of the useful results below identify exactly when two orders of operation agree, and what survives when they do not.
+
+\subsection{Main results and their status}
+Table~\ref{tab:contributions} is a claim ledger. ``Proposed extension'' means that the stated combination and formulation were developed here and were not identified in the targeted repository and literature review. It is not a certification of priority. Each underlying ingredient is attributed where used, and the manuscript's proofs remain subject to independent checking.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}L{0.26\textwidth}YL{0.23\textwidth}@{}}
+\toprule
+Result & Content & Claim status\\
+\midrule
+Rare-branch initial state, Theorem~\ref{thm:rare}
+& Computes a conditional ordinary state from leading Kraus--purification products, including infinitesimal probabilities.
+& Proposed arbitrary-rank formulation.\\[3pt]
+Postselection cost, Theorem~\ref{thm:cost}
+& $\max(p,q)D(\rho',\sigma')\le D(\rho,\sigma)$; equality can occur.
+& Standard data-processing method, re-proved over $F$.\\[3pt]
+Invisible power data, Theorem~\ref{thm:alljets}
+& Identical data modulo every $\epsilon^N$ can give orthogonal conditional shadows.
+& Proposed explicit obstruction and interpretation.\\[3pt]
+Multiscale elimination, Theorem~\ref{thm:elimination}
+& Exact invariant graph, finite effective block, unrestricted ratios of small scales, positive unlimited complement.
+& Proposed theorem package; Schur and Schrieffer--Wolff mechanisms are established.\\[3pt]
+Virtual selection, Proposition~\ref{prop:virtual}
+& A virtual $\epsilon^2$ splitting defeats a bias below every power of $\epsilon$.
+& Worked counterexample, not a new perturbation mechanism.\\[3pt]
+Quaternionic reduction and composition, Section~\ref{sec:quaternions}
+& Complex simulation of finite instruments; obstruction to the naive $mn$-level composite.
+& Established structures, explicit scalar-extension consequences.\\[3pt]
+Wilson initial curvature, Theorem~\ref{thm:wilson}
+& Positive face weights turn leading loop curvature into an exact minimum-valuation action formula.
+& Proposed arbitrary-rank formulation of classical gauge algebra.\\
+\bottomrule
+\end{tabularx}
+\caption{What is proved, and what is not claimed to be new.}\label{tab:contributions}
+\end{table}
+
+\subsection{What would count as a physical application?}
+An application in this article means an exact mathematical statement about a specified Hamiltonian, instrument, or lattice model. A stronger claim of new physics would also require a derivation of that model, a readout rule, an accessible experimental regime, and a difference from existing real or complex predictions. None follows merely from writing a coefficient as a surreal number.
+
+All scale parameters below are dimensionless. A physical Hamiltonian is obtained by multiplying the displayed matrix by a fixed reference energy $E_\ast$; time may then be measured in $\hbar/E_\ast$. Similarly, a displayed Wilson action is dimensionless. This convention prevents comparisons between dimensionally incompatible quantities disguised as valuation comparisons.
+
+The most defensible benefits are exact asymptotic bookkeeping, certificates of scale dominance, detection of invalid truncations, and proofs that a proposed readout cannot reveal a hidden correction under stated resource constraints. These are useful mathematical tools even when every finite-scale prediction agrees with ordinary quantum mechanics.
+
+\section{Literature and the repository boundary}\label{sec:sources}
+
+\subsection{Mathematical and physical precedents}
+Gonshor's treatment of surreal numbers and the work of van den Dries and Ehrlich provide the background for real closure, normal forms, and ordered exponential structure \cite{Gonshor,vdDE}. Berarducci and Mantova construct derivations and transseries structure on the surreals \cite{BM}; related universality results concern differential fields \cite{ADH}. We do not need to choose such a derivation here. Our main operations are finite matrix algebra and strongly summable evaluation of formal series at infinitesimals.
+
+Proposals connecting surreal numbers to physics predate this article. Nieto discusses possible links with singularities, supersymmetry, qubits, twistors, and matroids \cite{Nieto2016,Nieto2018}. These motivate questions, but do not establish that extending the scalar field resolves a physical singularity or changes an experimentally observable probability. Non-Archimedean quantum formalisms also exist independently of surreal numbers: Benci's ultrafunction approach uses a different nonstandard construction and a different analytic infrastructure \cite{Benci}. We do not identify a Hahn field with a hyperreal enlargement or assume a transfer principle.
+
+The ordinary theory of effective Hamiltonians is extensive. Bravyi, DiVincenzo, and Loss discuss exact and perturbative Schrieffer--Wolff transformations and the relation between low-energy subspaces \cite{BDL}. Our elimination theorem is not a discovery of virtual transitions, invariant graphs, or the Schur complement. Its distinctive mathematical target is an arbitrary-rank valued coefficient field, independently separated scales, and an exact ordinary-shadow statement with controlled finite corrections.
+
+Graydon gives complex representations of quaternionic quantum dynamics and measurements \cite{Graydon}. Barnum and Wilce analyze how compositional and tomographic hypotheses constrain Jordan-algebraic quantum theories \cite{BarnumWilce}. Consequently, neither doubling a quaternionic Hilbert space into a complex one nor recognizing a quaternionic composition problem is a novelty claim here. Wilson's lattice formulation supplies the established gauge-theoretic setting for our final application \cite{Wilson}. Valuations, Newton polygons, and tropical geometry have also already entered quantum-model analysis, for example in the study of exceptional points \cite{BanerjeeEtAl}. ``Valuations in physics'' is therefore much too broad a phrase to serve as a claim of originality.
+
+\subsection{What is already in the Surreal repository}
+The reference snapshot is commit
+\begin{center}
+\small\texttt{c0a36eebe5cf30aa72abfe4ef8ff9e46f63c3c28}.
+\end{center}
+The inspected README documents actual surreal and surcomplex field constructions, standard-part homomorphisms, positive-order Hahn evaluation, the Neumann support lemma, and formal lifting machinery \cite{repo}. The physics report under \path{docs/physics/surreal-scalars-and-spacetime/} already contains a finite Hermitian spectral theorem and a finite quantum-shadow theorem. In particular, its conditioning statement explicitly requires a nonzero standard part of the probability \cite{repoPhysics}.
+
+That boundary is the starting point for Section~\ref{sec:rare}, not an error in the earlier result. If the success weight is infinitesimal, the unnormalized ordinary shadow is zero and must be replaced by an initial-form calculation. The existing report also discusses fine-topology obstructions, the danger of global infinite phases, and failure to commute long-time evolution with standard part. We retain those cautions without rebranding them as new discoveries.
+
+The review here was targeted, not a full audit of every repository file. The documentation and selected code-index searches were inspected, but the project was not built locally and its full Lean source was not audited. The repository reports a pinned Lean/mathlib version and an axiom audit; that report is not a substitute for a fresh build of this manuscript's results. The new statements below are ordinary mathematical proofs, not additions to the repository's verified theorem inventory.
+
+\section{Set-sized surreal workspaces and strong evaluation}\label{sec:workspace}
+
+\subsection{Fields, valuation, and residue}
+Let $G$ be a set-sized divisible totally ordered abelian group, written additively. Put
+\begin{equation}
+ K=\R((t^G)),\qquad F=\C((t^G))=K(i).
+\end{equation}
+An element is a Hahn series $x=\sum_{g\in S}x_g t^g$ with well-ordered support $S\subseteq G$. The order on $K$ is determined by the sign of the coefficient of the least exponent. Thus $t^g$ is positive infinitesimal when $g>0$. We use the classical facts that $K$ is real closed and $F$ is algebraically closed; these are foundational inputs, not new conclusions \cite{Gonshor,vdDE}.
+
+For nonzero $x$, set
+\begin{equation}
+ v(x)=\min\operatorname{supp}(x),\qquad
+ \lc(x)=x_{v(x)},\qquad v(0)=+\infty.
+\end{equation}
+Write $\OO_K=\{x:v(x)\ge0\}$ and $\mm_K=\{x:v(x)>0\}$, and similarly over $F$. Then $\OO_K$ is exactly the ring of elements bounded in absolute value by an ordinary real constant; $\mm_K$ consists exactly of the infinitesimals. The coefficient map
+\begin{equation}
+ \st:\OO_K\longrightarrow\R,\qquad \st(x)=x_0
+\end{equation}
+is an ordered ring homomorphism with kernel $\mm_K$, and extends coordinatewise to $\OO_F\to\C$. An element of $\OO_K$ is \emph{appreciable} if its standard part is nonzero. We write $x\ll y$ for $x/y\in\mm_K$ when $x,y>0$.
+
+For a finite matrix $M$ over $F$, define $v(M)=\min_{a,b}v(M_{ab})$, with $v(0)=+\infty$. Matrix standard part is entrywise. The inequalities
+\begin{equation}\label{eq:matrixval}
+ v(M+N)\ge\min(v(M),v(N)),\qquad v(MN)\ge v(M)+v(N)
+\end{equation}
+are immediate. If $D$ and $D^{-1}$ have finite entries, then $v(DM)=v(M)$. In particular, this applies to $D\in M_n(\OO_F)$ with invertible $\st D$.
+
+\begin{lemma}[No cancellation in a sum of squares]\label{lem:squares}
+If $x_1,\ldots,x_m\in F$ are not all zero and $r=\min_jv(x_j)$, then
+\[
+ v\!\left(\sum_j\overline{x_j}x_j\right)=2r,
+ \qquad
+ \st\!\left(t^{-2r}\sum_j\overline{x_j}x_j\right)
+ =\sum_j\abs{\st(t^{-r}x_j)}^2>0.
+\]
+The same formula holds for a finite sum of squared matrix entries.
+\end{lemma}
+\begin{proof}
+All $t^{-r}x_j$ are finite and at least one has nonzero residue. Standard part commutes with conjugation and finite sums and products. The resulting ordinary sum of nonnegative real squares is strictly positive, so no cancellation raises its valuation.
+\end{proof}
+
+\subsection{How the workspace becomes surreal}
+Choose an additive order embedding $\iota:G\hookrightarrow\No$. Conway normal forms then identify the Hahn expression with
+\begin{equation}\label{eq:embedding}
+ \sum_g a_g t^g\ \longmapsto\ \sum_g a_g\omega^{-\iota(g)}.
+\end{equation}
+The support on the right is reverse well ordered, as required for a surreal normal form. Addition, multiplication, order, and conjugation are respected. Thus the results below are about genuine surreal coefficients after this embedding has been chosen, not merely about a suggestive notation.
+
+A concrete and sufficient example is $G=\Q^2$ with lexicographic order and $\iota(a,b)=a\omega+b$. Set
+\begin{equation}\label{eq:ranktwo}
+ \epsilon=t^{(0,1)},\qquad \eta=t^{(1,0)}.
+\end{equation}
+Then $0<\eta\ll\epsilon^N$ for every ordinary $N\in\N$, while their surreal images are $\omega^{-1}$ and $\omega^{-\omega}$. This does \emph{not} identify $\eta$ with a particular surreal exponential. It records an order hierarchy. A physical tunnelling law or instanton action would have to justify a corresponding hierarchy independently.
+
+Conversely, finitely many surreal inputs have set-sized normal-form supports. The divisible additive subgroup of $\No$ generated by the exponents in those supports is set sized. They therefore fit into a workspace of this form. The proofs still concern fixed finite matrices over a set-sized field, not a proper-class Hilbert space.
+
+\subsection{Strong summability is not sequential convergence}
+A family of Hahn series is \emph{strongly summable} if the union of its supports is well ordered and only finitely many members contribute to each exponent. Positive-order substitution into a formal power series is justified by the Neumann support lemma: for finitely many infinitesimal inputs, the supports of all products form a summable family. This is also part of the repository's documented Hahn infrastructure \cite{repo}.
+
+The distinction matters when $G$ has higher rank. The series $\sum_{n\ge0}\epsilon^n$ exists strongly, but in the rank-two example $n\,v(\epsilon)<v(\eta)$ for every $n$. One must not justify its existence by saying that $n\,v(\epsilon)$ eventually exceeds every valuation threshold. It does not. All infinite series used below are justified by strong support conditions or by finite algebra, not by that incorrect cofinality argument.
+
+\begin{lemma}[Positive-order formal implicit evaluation]\label{lem:implicit}
+Let $P(Y,z)$ be a finite system of formal equations in $Y-Y_0$ and $z$ over $\R$ or $\C$, where the unknown $Y$ has finitely many coordinates, $P(Y_0,0)=0$, and the Jacobian $J=\partial_Y P(Y_0,0)$ is invertible. Then there is a unique formal solution $Y(z)$ with constant term $Y_0$. If the parameter tuple $z$ is evaluated at finitely many Hahn infinitesimals, this solution evaluates strongly and satisfies $P=0$, whenever the formal substitutions appearing in $P$ have the usual zero-constant inner parameters. In the polynomial case it is the unique finite solution with residue $Y_0$.
+\end{lemma}
+\begin{proof}
+Write $Y=Y_0+\sum_{n\ge1}Y_n$, where $Y_n$ is homogeneous of total degree $n$ in $z$. At degree $n$ the equation has the form $JY_n+R_n=0$, where $R_n$ depends only on lower-degree terms. Invertibility of $J$ gives existence and uniqueness recursively. Strong positive-order evaluation follows from the support lemma, and permits the finite algebra and formal compositions used to verify the identity.
+
+For uniqueness after polynomial evaluation, suppose $Y$ and $Y'$ are finite solutions with the same residue. Telescoping each monomial expresses
+\[
+ P(Y,z)-P(Y',z)=M(Y,Y',z)(Y-Y'),
+\]
+where $\st M=J$. Hence $M$ is invertible over the finite valuation ring and $Y=Y'$. The formal existence argument does not assert computability of arbitrary Hahn supports or convergence at non-infinitesimal parameters.
+\end{proof}
+
+\begin{remark}[Coefficients that are themselves finite Hahn elements]
+To apply Lemma~\ref{lem:implicit} with finite matrix coefficients, regard their real and imaginary coordinate differences from their residues as additional infinitesimal parameters. This gives a finite parameter list. Correlations among those parameters do not invalidate evaluation of the universal formal identity.
+\end{remark}
+
+\section{Finite quantum algebra and ordinary shadows}\label{sec:quantum}
+\status{Established finite-dimensional algebra, re-proved for the chosen field. The repository already contains the core spectral and quantum-shadow results.}
+
+\subsection{Spectral calculus without completeness}
+The adjoint of a matrix is its conjugate transpose. A Hermitian matrix $H=H^*$ is positive semidefinite, written $H\ge0$, if $x^*Hx\ge0$ for every column vector $x$.
+
+\begin{proposition}[Finite Hermitian spectral theorem]\label{prop:spectral}
+Every Hermitian matrix over $F$ has an orthonormal eigenbasis and eigenvalues in $K$. It is positive semidefinite exactly when all eigenvalues are nonnegative. Every positive semidefinite matrix has a unique positive semidefinite square root.
+\end{proposition}
+\begin{proof}
+Algebraic closure of $F$ gives an eigenvector $x\ne0$. Its squared norm $x^*x$ is strictly positive. Since $x^*Hx=\lambda x^*x$ is real, the eigenvalue $\lambda$ belongs to $K$. Divide $x$ by the positive square root of $x^*x$. The orthogonal complement is invariant because $x^*Hy=(Hx)^*y=0$ for $y\perp x$. Induction gives the orthonormal eigenbasis. Positivity is then equivalent to nonnegative diagonal entries. Taking their nonnegative square roots constructs the positive square root. For uniqueness, a positive square root commutes with its square and hence preserves each eigenspace of $H$; diagonalizing its restriction forces the nonnegative root on each such space.
+\end{proof}
+
+A state is $\rho\ge0$ with $\Tr\rho=1$. An effect satisfies $0\le E\le I$. A finite instrument consists of maps
+\begin{equation}\label{eq:kraus}
+ \Phi_a(X)=\sum_{j=1}^{m_a}K_{aj}XK_{aj}^*,
+ \qquad \sum_{a,j}K_{aj}^*K_{aj}=I.
+\end{equation}
+All index sets in this article are ordinary finite sets.
+
+\begin{lemma}[Finiteness of operational matrices]\label{lem:finitequantum}
+States, effects, and Kraus matrices in \eqref{eq:kraus} have finite entries. Standard part sends them to ordinary complex states, effects, and instruments.
+\end{lemma}
+\begin{proof}
+For a state, $0\le\rho_{aa}\le1$. Positivity on the span of two coordinate vectors gives $\abs{\rho_{ab}}^2\le\rho_{aa}\rho_{bb}$; equivalently this follows by writing $\rho=RR^*$ and applying finite Cauchy--Schwarz. Thus every entry is finite. The same argument applies to $E$ and $I-E$. For a Kraus matrix, each column's sum of squared moduli is at most one because $K_{aj}^*K_{aj}\le I$, so its entries are finite. Positivity of residues follows by applying the quadratic-form inequality to ordinary complex vectors and taking standard part; traces, adjoints, sums, and products are preserved.
+\end{proof}
+
+\begin{proposition}[Finite operational shadow]\label{prop:shadow}
+The unnormalized output and every joint outcome weight of a fixed finite instrument network reduce to those of the network obtained by taking standard part entrywise. If an outcome has probability $p$ with $\st p>0$, its normalized conditional output also reduces to the ordinary conditional output.
+\end{proposition}
+\begin{proof}
+Every unnormalized branch output is a finite sum of expressions $L\rho L^*$, where $L$ is a finite product of Kraus matrices. Standard part preserves the expression and its trace. If $\st p>0$, then $p^{-1}$ is finite and $\st(p^{-1})=(\st p)^{-1}$, so it also preserves normalization. Adaptive choices based on earlier outcomes change the finite products for each path but not the argument.
+\end{proof}
+
+This proposition deliberately says nothing about normalization when $\st p=0$. The next section supplies the missing leading-scale information.
+
+\subsection{Finite-time evolution, and the excluded operation}
+For finite $z\in F$, define
+\begin{equation}
+ \exp_f(z)=e^{\st z}\sum_{n\ge0}\frac{(z-\st z)^n}{n!}.
+\end{equation}
+The series is strongly summable. For a finite Hermitian $H$, diagonalization defines $\exp_f(-isH)$ at ordinary real time $s$, and gives
+\begin{equation}\label{eq:exp-shadow}
+ \st\bigl(\exp_f(-isH)\bigr)=e^{-is\st H}.
+\end{equation}
+Indeed, normalized eigenvectors have finite entries, their residues form a unitary matrix, finite eigenvalues reduce, and the scalar identity holds on each diagonal entry. This construction is sufficient for the finite effective Hamiltonians below. We do not use $\exp(i\Lambda)$ for an arbitrary unlimited $\Lambda$, and do not claim a global oscillatory calculus follows from real closure.
+
+\section{Rare quantum outcomes and their initial states}\label{sec:rare}
+
+\subsection{A normalization theorem below the ordinary shadow}
+A branch with infinitesimal probability is not a zero branch. Its normalized state can be appreciable, but taking standard part before normalizing discards all the relevant data. The correct operation is to remove the leading common monomial first.
+
+\begin{theorem}[Initial-form formula for a rare branch]\label{thm:rare}
+Let $\rho=RR^*$ be a state over $F$, where $R$ has finitely many columns. Let
+\[
+ A=\Phi(\rho)=\sum_{j=1}^{m}K_j\rho K_j^*,\qquad p=\Tr A>0,
+\]
+be a branch of a finite quantum instrument. Define
+\begin{equation}\label{eq:rare-initial}
+ r=\min_jv(K_jR),\qquad
+ L_j=\st(t^{-r}K_jR),\qquad
+ c=\sum_j\Tr(L_jL_j^*).
+\end{equation}
+Then $c>0$, and
+\begin{align}
+ v(p)&=2r, & \st(t^{-2r}p)&=c,\label{eq:rare-prob}\\
+ \st(A/p)&=\frac{\sum_jL_jL_j^*}{c}.\label{eq:rare-state}
+\end{align}
+In particular, the formula is valid whether $p$ is appreciable or infinitesimal. The right side is independent of the chosen finite purification $R$ and of the Kraus representation of the same branch map.
+\end{theorem}
+\begin{proof}
+Since $\Tr RR^*=1$, all entries of $R$ are finite. At least one product $K_jR$ is nonzero, or else $p=0$. Therefore $r$ is defined, all matrices $t^{-r}K_jR$ have finite entries, and at least one of their residues is nonzero. The ordinary matrix $\sum_jL_jL_j^*$ is positive and nonzero, so its trace $c$ is strictly positive.
+
+The identity
+\[
+ p=\sum_{j,a,b}\abs{(K_jR)_{ab}}^2
+\]
+and Lemma~\ref{lem:squares} give \eqref{eq:rare-prob}. Moreover,
+\[
+ t^{-2r}A=\sum_j(t^{-r}K_jR)(t^{-r}K_jR)^*
+\]
+has residue $\sum_jL_jL_j^*$. Its trace is appreciable after this rescaling. Dividing by $t^{-2r}p$ is now an operation inside the finite valuation ring, and taking standard part proves \eqref{eq:rare-state}. Finally, $r=\tfrac12v(p)$ and $A/p$ depend only on the branch output, so the result cannot depend on a representation used in the proof.
+\end{proof}
+
+\begin{corollary}[Stability of the initial conditional state]\label{cor:initialstability}
+Suppose every product $K_jR$ is changed by a matrix of valuation strictly greater than the common minimum $r$. Then the leading probability coefficient $c$ and the conditional shadow in \eqref{eq:rare-state} remain unchanged, provided the changed products define a valid branch. The same statements are preserved by an order-preserving additive embedding of the exponent group that leaves the coefficient field fixed.
+\end{corollary}
+\begin{proof}
+After multiplication by $t^{-r}$, the changes have zero residue, so the $L_j$ are unchanged. An exponent embedding preserves the least exponent, products, and coefficients at that exponent.
+\end{proof}
+
+\subsection{Adaptive protocols and state-dependent orders}
+For a path through a finite adaptive instrument, replace $K_j$ in Theorem~\ref{thm:rare} by the appropriate product of Kraus matrices along that path. For a coarse-grained collection of recorded paths, retain all those products in the sum. Positivity prevents cancellation \emph{between} distinct recorded alternatives. It does not prevent coherent cancellation \emph{inside} an individual product or sum of amplitudes.
+
+The order is determined by $K_jR$, not by $K_j$ alone. For example,
+\[
+ K=\begin{pmatrix}\eta&0\\0&\epsilon\end{pmatrix}
+\]
+is a valid contraction when $0<\eta\ll\epsilon\ll1$. On input $\ket{0}$ its success weight is $\eta^2$; on input $\ket{1}$ it is $\epsilon^2$. A state annihilated by the leading Kraus matrix can therefore expose a much deeper scale.
+
+More generally, if $M,N$ are nonzero finite matrices, equality in
+$v(MN)\ge v(M)+v(N)$ holds precisely when
+\[
+ \st(t^{-v(M)}M)\,\st(t^{-v(N)}N)\ne0.
+\]
+If this product vanishes, the product's order rises or the product is zero. Consequently, replacing a quantum circuit by a rule that merely adds the valuations of its gates loses essential information about kernels and interference. A useful scale calculation must propagate initial matrices, not only scalar orders.
+
+\begin{example}[A rare component that the ordinary state forgets]\label{ex:rare3}
+In the rank-two field of \eqref{eq:ranktwo}, let
+\[
+ \psi=\frac{\ket{0}+\epsilon\ket{1}+\eta\ket{2}}
+ {\sqrt{1+\epsilon^2+\eta^2}},\qquad
+ P=\proj{1}+\proj{2}.
+\]
+The ordinary shadow of $\proj{\psi}$ is $\proj{0}$, so the shadow state assigns zero probability to $P$. Nevertheless the valued model gives
+\[
+ p=\frac{\epsilon^2+\eta^2}{1+\epsilon^2+\eta^2}>0,
+ \qquad
+ \st\!\left(\frac{P\proj{\psi}P}{p}\right)=\proj{1}.
+\]
+A further projection onto $\ket{2}$ has a still rarer nonzero branch, with conditional state $\proj{2}$. There is no contradiction: each conditioning step divides by a quantity that the preceding ordinary reduction had sent to zero.
+\end{example}
+
+\subsection{All power-order data can be insufficient}
+The next obstruction is stronger than the failure of one finite truncation. In higher rank, there can be nonzero data invisible modulo \emph{every} power of one chosen parameter.
+
+\begin{theorem}[No conditional reconstruction from all one-scale power data]\label{thm:alljets}
+Let $\epsilon,\eta$ be as in \eqref{eq:ranktwo}, and let
+\begin{align*}
+ \rho_1&=(1-\eta^2)\proj{0}+\eta^2\proj{1},\\
+ \rho_2&=(1-\eta^2)\proj{0}+\eta^2\proj{2}.
+\end{align*}
+For every ordinary positive integer $N$, the two states are equal modulo
+$\epsilon^N M_3(\OO_F)$. They therefore determine identical compatible data in all quotients $M_3(\OO_F)/\epsilon^N M_3(\OO_F)$. For the same projection $P=\proj{1}+\proj{2}$, however, both success probabilities are exactly $\eta^2$, while the conditional ordinary states are the orthogonal states $\proj{1}$ and $\proj{2}$.
+
+Thus no rule using only those one-scale quotient data, the fixed projector, and even the exact common success probability can determine the conditional ordinary state for every input state.
+\end{theorem}
+\begin{proof}
+The only nonzero entries of $\rho_1-\rho_2$ are $\eta^2$ and $-\eta^2$. Since
+\[
+ v(\eta^2/\epsilon^N)=(2,-N)>0
+\]
+in lexicographic order, this difference belongs to $\epsilon^N M_3(\OO_F)$ for every $N$. On the other hand,
+\[
+ P\rho_1P=\eta^2\proj{1},\qquad
+ P\rho_2P=\eta^2\proj{2}.
+\]
+Their traces coincide and are nonzero. Normalization gives the claimed distinct outputs. A reconstruction rule would have identical inputs in the two cases but would have to return two different states.
+\end{proof}
+
+The algebra behind this example is the nonzero ideal
+\begin{equation}
+ I_\epsilon=\bigcap_{N\ge1}\epsilon^N\OO_F.
+\end{equation}
+The element $\eta^2$ belongs to it. This does not happen in the same way for an ordinary one-variable formal power series ring with its separated power filtration. The higher-rank workspace is retaining information that a chosen one-scale completion erases.
+
+A physically suggestive real family is $\epsilon=h$, $\eta=e^{-1/h}$ as $h\downarrow0$. Its exponentially small terms are invisible to every algebraic order in $h$. That analogy does not by itself produce a surreal embedding of all functions or a summation prescription for divergent expansions. What Theorem~\ref{thm:alljets} proves is the exact algebraic obstruction once the hierarchy has been specified.
+
+\section{Visibility, postselection cost, and finite resources}\label{sec:cost}
+
+\subsection{Trace distance over the coefficient field}
+For Hermitian $X$ with eigenvalues $\lambda_j\in K$, define
+\[
+ \norm{X}_1=\sum_j\abs{\lambda_j},\qquad
+ D(\rho,\sigma)=\tfrac12\norm{\rho-\sigma}_1.
+\]
+These are $K$-valued quantities. For states, $0\le D\le1$. The following elementary facts do not require analytic completeness.
+
+\begin{lemma}[Finite trace-norm inequalities]\label{lem:tracenorm}
+For Hermitian matrices $X,Y$, the trace norm satisfies the triangle inequality. A positive trace-preserving linear map contracts it on Hermitian inputs. Furthermore,
+\[
+ \norm{X\otimes Y}_1=\norm{X}_1\norm{Y}_1.
+\]
+For finite Hermitian $X$, $\st\norm{X}_1=\norm{\st X}_1$, with the norm on the right the ordinary complex trace norm.
+\end{lemma}
+\begin{proof}
+Diagonalization gives the variational formula
+\[
+ \norm{X}_1=\max_{-I\le T\le I}\Tr(TX),
+\]
+where $T$ ranges over Hermitian matrices. Indeed, in an eigenbasis of $X$, each diagonal entry of $T$ lies in $[-1,1]$, and the sign matrix of $X$ attains the sum of absolute eigenvalues. Applying this formula to a maximizing sign matrix for $X+Y$ proves the triangle inequality.
+
+Write $X=X_+-X_-$ with $X_\pm\ge0$ and $\norm{X}_1=\Tr X_++\Tr X_-$. Positivity and trace preservation, followed by the triangle inequality, give
+\[
+ \norm{\Psi(X)}_1\le\Tr\Psi(X_+)+\Tr\Psi(X_-)=\norm{X}_1.
+\]
+Tensoring eigenbases gives the product formula. Finally, finite Hermitian matrices have finite eigenvalues: a normalized eigenvector has coordinates bounded by one and its Rayleigh quotient is a finite sum of finite entries. Reducing a unitary diagonalization and using $\st|\lambda|=|\st\lambda|$ proves the last claim, including coincident or zero residue eigenvalues.
+\end{proof}
+
+\subsection{A sharp success-weighted inequality}
+\begin{theorem}[Postselection cannot amplify distinguishability for free]\label{thm:cost}
+Let $\rho,\sigma$ be states, and let $\Phi$ be the \emph{same} finite completely positive trace-nonincreasing map for both inputs. Suppose
+\[
+ p=\Tr\Phi(\rho)>0,\quad q=\Tr\Phi(\sigma)>0,
+ \quad \rho'=\frac{\Phi(\rho)}p,\quad \sigma'=\frac{\Phi(\sigma)}q.
+\]
+Then
+\begin{equation}\label{eq:postcost}
+ \boxed{\ \max(p,q)D(\rho',\sigma')\le D(\rho,\sigma).\ }
+\end{equation}
+The constant one is optimal, even for diagonal three-level states and a projective branch.
+\end{theorem}
+\begin{proof}
+Put $A=\Phi(\rho)$ and $B=\Phi(\sigma)$. Append a one-dimensional failure flag:
+\[
+ \widehat\Phi(X)=\Phi(X)\oplus\bigl(\Tr X-\Tr\Phi(X)\bigr).
+\]
+This map is positive and trace preserving. Its output difference is block diagonal, so Lemma~\ref{lem:tracenorm} gives
+\begin{equation}\label{eq:flagbound}
+ \norm{A-B}_1+|p-q|\le\norm{\rho-\sigma}_1.
+\end{equation}
+Now
+\[
+ p(\rho'-\sigma')=(A-B)+(1-p/q)B.
+\]
+Because $B\ge0$ and $\norm{B}_1=q$, the triangle inequality bounds the left side's trace norm by $\norm{A-B}_1+|q-p|$. Interchanging $p,A$ and $q,B$ proves the same inequality with the factor $q$. Dividing \eqref{eq:flagbound} by two proves \eqref{eq:postcost}.
+
+For sharpness, take the states of Theorem~\ref{thm:alljets} and the branch $\Phi(X)=PXP$. Their input trace distance is $\eta^2$, both success probabilities are $\eta^2$, and their conditional trace distance is one. Equality holds.
+\end{proof}
+
+\begin{corollary}[An operational valuation budget]\label{cor:budget}
+If $D(\rho,\sigma)$ is infinitesimal and either success probability is appreciable, the conditional outputs have the same ordinary shadow. More generally, if their conditional trace distance has positive standard part, then
+\[
+ \min\{v(p),v(q)\}\ge v\bigl(D(\rho,\sigma)\bigr).
+\]
+When the conditional distance is nonzero, one also has
+\[
+ v\bigl(D(\rho',\sigma')\bigr)
+ \ge v\bigl(D(\rho,\sigma)\bigr)-\min\{v(p),v(q)\}.
+\]
+\end{corollary}
+\begin{proof}
+The first statement follows directly from \eqref{eq:postcost} and Lemma~\ref{lem:tracenorm}. Taking valuations of that inequality gives the others; for positive elements, increasing magnitude can only decrease valuation, and $v(\max(p,q))=\min(v(p),v(q))$.
+\end{proof}
+
+This is a finite idealized discrimination statement. It is not a blanket claim that postselection can never help with a particular detector's saturation or technical noise. Those are different resource models, discussed for example in the weak-value literature \cite{FerrieCombes,JordanEtAl}. The theorem's assumptions are explicit: the same branch map, fixed finite matrices, positivity, and success-weighted comparison.
+
+\subsection{Ordinary finite repetitions do not expose infinitesimal differences}
+\begin{proposition}[Finite-copy invisibility]\label{prop:copies}
+For every ordinary positive integer $N$,
+\[
+ D(\rho^{\otimes N},\sigma^{\otimes N})\le N D(\rho,\sigma).
+\]
+Consequently, a fixed finite quantum protocol on a fixed finite number of copies cannot turn an infinitesimal input trace distance into an appreciable unconditioned trace distance.
+\end{proposition}
+\begin{proof}
+Expand the difference of tensor powers by telescoping. Each of its $N$ terms is a tensor product of states and one factor $\rho-\sigma$. Lemma~\ref{lem:tracenorm} bounds its trace norm by $\norm{\rho-\sigma}_1$. Sum the bounds and divide by two. Any subsequent trace-preserving positive protocol contracts the distance.
+\end{proof}
+
+For a branch of weight $p$, the probability of at least one success in $N$ independent trials is $1-(1-p)^N\le Np$, by the finite binomial or union-bound argument. Thus infinitesimal success weights remain invisible to ordinary finite repetition counts. Writing $p^{-1}$ in a larger field does not define a laboratory protocol consisting of an unlimited number of trials. One would have to specify an additional index structure, probability theory, and operational interpretation.
+
+Conversely, for a real family with small but nonzero probability $p(h)$, the inequality supplies an ordinary resource tradeoff at every finite $h$. This is the appropriate route from exact scale algebra back to quantitative physics: specialize a validated family, rather than interpret an infinite surreal directly as an experimental budget.
+
+\section{Exact elimination of independently separated virtual sectors}\label{sec:elimination}
+
+\subsection{The model and the critical scaling}
+Let $r,s$ be ordinary positive integers. Consider a low sector of dimension $r$ and a high sector of dimension $s$. Let
+\[
+ A=A^*\in M_r(\OO_F),\quad
+ D=D^*\in M_s(\OO_F),\quad
+ B\in M_{r\times s}(\OO_F),
+\]
+and assume $D_0=\st D$ is positive definite. Set
+\begin{equation}\label{eq:Delta}
+ \Delta=\diag(\delta_1,\ldots,\delta_s),
+ \qquad 0<\delta_j\in\mm_K,
+ \qquad \tau=\sum_{j=1}^s\delta_j^2.
+\end{equation}
+There is no comparison hypothesis on the ratios $\delta_j/\delta_k$. In particular, one may be smaller than every power of another.
+
+The Hamiltonian is
+\begin{equation}\label{eq:criticalH}
+ H=\begin{pmatrix}
+ A&B\Delta^{-1}\\
+ \Delta^{-1}B^*&\Delta^{-1}D\Delta^{-1}
+ \end{pmatrix}.
+\end{equation}
+Both the high block and some couplings may be unlimited. Nevertheless, coupling divided by the corresponding energy scale is infinitesimal. The leading Schur complement is the finite Hermitian matrix
+\begin{equation}\label{eq:Kzero}
+ L_0=A-BD^{-1}B^*.
+\end{equation}
+The adjective ``critical'' refers to the fact that the second-order virtual shift is finite rather than infinitesimal: formally, $(B\Delta^{-1})(\Delta D^{-1}\Delta)(\Delta^{-1}B^*)=BD^{-1}B^*$.
+
+For positive $a\in K$, the notation $M=O(a)$ means that $a^{-1}M$ has finite entries. In a fixed finite dimension this is equivalent to an operator-norm bound by an ordinary real constant times $a$. Remainders $O(\tau^2)$ below are statements in this precise sense, not unexplained analytic limits.
+
+\subsection{The invariant-graph theorem}
+\begin{theorem}[Exact arbitrary-rank virtual-sector elimination]\label{thm:elimination}
+Under the hypotheses above, the following conclusions hold.
+
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=2em,itemsep=3pt]
+\item There is a unique finite matrix $Y\in M_{s\times r}(\OO_F)$ satisfying
+\begin{equation}\label{eq:riccati}
+ B^*+DY=\Delta^2Y(A+BY).
+\end{equation}
+Its residue is $\st Y=-D_0^{-1}B_0^*$, where $B_0=\st B$.
+\item Set $X=\Delta Y$, $S=I+X^*X$, and
+\begin{equation}\label{eq:W}
+ W=\begin{pmatrix}I\\X\end{pmatrix}S^{-1/2}.
+\end{equation}
+Then $W^*W=I$ and $HW=WL$, where the finite matrix
+\begin{equation}\label{eq:Kexact}
+ L=S^{1/2}(A+BY)S^{-1/2}=W^*HW
+\end{equation}
+is Hermitian. Its ordinary shadow is
+\begin{equation}\label{eq:Kshadow}
+ \st L=A_0-B_0D_0^{-1}B_0^*.
+\end{equation}
+\item The complementary orthogonal subspace is invariant, and its spectrum is positive and unlimited. Thus $H$ has exactly $r$ finite eigenvalues, counted with multiplicity. Its low and high subspaces are related to the original coordinate sectors by a unitary matrix differing infinitesimally from the identity.
+\item Define
+\begin{equation}\label{eq:C}
+ C=BD^{-1}\Delta^2D^{-1}B^*.
+\end{equation}
+Then the finite effective Hamiltonian has the controlled expansion
+\begin{equation}\label{eq:Kcorrection}
+ \boxed{\quad L=L_0-\tfrac12(CL_0+L_0C)+O(\tau^2).\quad}
+\end{equation}
+All statements allow arbitrary rank of $G$ and arbitrary relative sizes of the $\delta_j$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\textit{Existence.}
+At $\Delta^2=0$, the equation is $B^*+DY=0$. Treat the entries of $\Delta^2$ and all finite coefficient deviations from their residues as finitely many formal infinitesimal parameters. The base solution is $-D_0^{-1}B_0^*$, and the derivative with respect to $Y$ is left multiplication by $D_0$, which is invertible. Lemma~\ref{lem:implicit} supplies a strongly evaluated finite solution. No assumption that powers of a valuation are cofinal is used.
+
+\textit{Uniqueness among all finite solutions.}
+Let $Y,Y'$ be finite solutions, put $Z=Y-Y'$, and write $T=A+BY$. Subtracting their equations gives
+\begin{equation}\label{eq:uniqueY}
+ DZ=\Delta^2\bigl(ZT+Y'BZ\bigr).
+\end{equation}
+Since $D$ and $D^{-1}$ are finite, $v(DZ)=v(Z)$. If $Z\ne0$, the right side of \eqref{eq:uniqueY} has valuation at least
+$v(\Delta^2)+v(Z)>v(Z)$, because all the other matrices are finite. This is impossible. Taking residues of \eqref{eq:riccati} gives the stated residue of $Y$.
+
+\textit{The exact graph.}
+The entries of $X=\Delta Y$ are infinitesimal. Direct block multiplication using \eqref{eq:riccati} gives
+\begin{equation}\label{eq:graphidentity}
+ H\begin{pmatrix}I\\X\end{pmatrix}
+ =\begin{pmatrix}I\\X\end{pmatrix}(A+BY).
+\end{equation}
+The positive matrices $S^{\pm1/2}$ exist either by the spectral theorem or by the strongly summable binomial series at $X^*X$. They differ infinitesimally from $I$. Hence $W^*W=I$, and \eqref{eq:graphidentity} gives $HW=WL$ with \eqref{eq:Kexact}. Multiplying by $W^*$ proves $L=W^*HW$, so $L$ is Hermitian despite the nonsymmetric appearance of its similarity formula. All its entries are finite. Reducing $S$, $Y$, and $A+BY$ proves \eqref{eq:Kshadow}.
+
+\textit{The complementary unitary frame.}
+Define
+\[
+ V=\begin{pmatrix}-X^*\\I\end{pmatrix}(I+XX^*)^{-1/2}.
+\]
+Then $V^*V=I$ and $W^*V=0$. Thus $U=[\,W\ V\,]$ is a square unitary matrix, $U-I$ has infinitesimal entries, and $U^*HU$ is block diagonal. The second subspace is invariant because $H$ is Hermitian and the first is invariant.
+
+\textit{Unlimited positivity of the complementary block.}
+There is an ordinary real $c>0$ with $D\ge cI$, because $D_0$ is positive definite and $D-D_0$ has infinitesimal entries. The exact completed-square identity is
+\begin{align}\label{eq:completesquare}
+ \begin{pmatrix}u\\z\end{pmatrix}^{\!*}
+ H\begin{pmatrix}u\\z\end{pmatrix}
+ &=u^*L_0u\\
+ &\quad+(\Delta^{-1}z+D^{-1}B^*u)^*
+ D(\Delta^{-1}z+D^{-1}B^*u).\nonumber
+\end{align}
+On the orthogonal complement of the graph one has $u=-X^*z$. Choose an ordinary real constant $M$ bounding the operator norms of $L_0$ and $D^{-1}B^*$. Let $\delta_{\max}=\max_j\delta_j$. The elementary inequality
+$\norm{a+b}^2\ge\tfrac12\norm a^2-\norm b^2$ gives
+\begin{align*}
+ \begin{pmatrix}u\\z\end{pmatrix}^{\!*}
+ H\begin{pmatrix}u\\z\end{pmatrix}
+ &\ge \frac c2\delta_{\max}^{-2}\norm z^2
+ -(M+cM^2)\norm u^2.
+\end{align*}
+Here $\norm u\le\norm X\norm z$, and $\norm X$ is infinitesimal. Since $\delta_{\max}^{-2}$ is positive unlimited, the right side is at least
+$\tfrac c4\delta_{\max}^{-2}\norm z^2$. Also
+$\norm{(u,z)}^2\le2\norm z^2$. Thus the restricted quadratic form is bounded below by
+\[
+ \frac c8\delta_{\max}^{-2}\norm{(u,z)}^2.
+\]
+Every eigenvalue of the complementary block is positive unlimited. Every eigenvalue of $L$ is finite by the finite-entry Rayleigh-quotient argument in Lemma~\ref{lem:tracenorm}. This proves the precise eigenvalue count.
+
+\textit{The correction.}
+Write $E=\Delta^2$ and $Y_0=-D^{-1}B^*$. Since $E=O(\tau)$, equation \eqref{eq:riccati} first gives $Y-Y_0=O(\tau)$, and substituting this once more gives
+\begin{equation}\label{eq:Yexpansion}
+ Y=-D^{-1}B^*-D^{-1}ED^{-1}B^*L_0+O(\tau^2).
+\end{equation}
+Consequently,
+\[
+ A+BY=L_0-CL_0+O(\tau^2),\qquad
+ S=I+Y^*EY=I+C+O(\tau^2).
+\]
+The binomial identities, with finite remainders after the quadratic term, give
+$S^{1/2}=I+\tfrac12C+O(\tau^2)$ and
+$S^{-1/2}=I-\tfrac12C+O(\tau^2)$. Inserting these into \eqref{eq:Kexact} yields
+\[
+ L=L_0-CL_0+\tfrac12CL_0-\tfrac12L_0C+O(\tau^2),
+\]
+which is \eqref{eq:Kcorrection}. All remainder estimates use products of finite matrices and the positive scalar $\tau$, so none assumes comparability of distinct scales.
+\end{proof}
+
+\begin{remark}[A uniform remainder is not a deep-scale certificate]
+The bound $O(\tau^2)$ is uniform but deliberately coarse. If $\delta_2$ is smaller than every power of $\delta_1$, a displayed $\delta_2^2$ contribution inside $C$ can be smaller than omitted $\delta_1^4$ terms. The truncated formula alone therefore does not certify that deeper contribution against its remainder. To resolve it, one must use the exact graph equation or a support-aware expansion retaining all relevant lower-valued terms. The strongly evaluated formal solution keeps this information; a single total-degree error bound does not.
+\end{remark}
+
+\subsection{Why an ordinary gap estimate is not the proof}
+If the $\delta_j$ are widely separated, the norm of the full coupling $B\Delta^{-1}$ can be much larger than the smallest high-sector energy gap. A sufficient perturbative hypothesis based only on ``coupling norm divided by the smallest gap'' may therefore be useless even though every high-sector mixing coordinate is small. The theorem instead rescales the invariant graph as $X=\Delta Y$ before solving its equation. This removes the negative powers from the implicit problem and keeps the full finite matrix $D$, including its off-diagonal couplings.
+
+The complementary spectral estimate is likewise not obtained by separately diagonalizing each original high coordinate. It comes from the completed square \eqref{eq:completesquare} on the \emph{exact} orthogonal complement of the graph. This is why the theorem allows arbitrary relative scales without assuming that $D$ commutes with $\Delta$.
+
+These points distinguish the actual hypotheses from a loose statement that the usual perturbation series ``must still converge.'' In arbitrary rank, that statement would leave both a support problem and a scale problem unresolved.
+
+\subsection{A real-parameter counterpart}
+The theorem has a direct interpretation for ordinary small real parameters. This is important: a useful valued calculation should point to an ordinary finite-scale statement, rather than require treating an infinitesimal as a literal laboratory knob.
+
+\begin{corollary}[Uniform ordinary realization]\label{cor:realrealization}
+Let $A(h),B(h),D(h)$ be ordinary real or complex matrices of the same fixed dimensions as above, with $A(h),D(h)$ Hermitian. Suppose $D(h)\ge cI$ for a fixed real $c>0$, and that $A,B,D^{-1}$ are uniformly bounded. Let $\delta_j(h)>0$ satisfy $\max_j\delta_j(h)\to0$. There is a bounded solution of \eqref{eq:riccati} for all sufficiently small $h$, unique among uniformly bounded solution branches near $h=0$. It gives an exact orthonormal invariant graph and effective Hamiltonian satisfying \eqref{eq:Kcorrection}, with a remainder bounded in operator norm by a constant times $\tau(h)^2$, independent of the ratios of the $\delta_j(h)$.
+
+If $A(h),B(h),D(h)$ have limits $A_0,B_0,D_0$ with $D_0>0$, then $L(h)\to A_0-B_0D_0^{-1}B_0^*$, while the complementary eigenvalues tend to $+\infty$.
+\end{corollary}
+\begin{proof}
+Choose $M\ge1$ uniformly bounding $\norm A$, $\norm B$, and $\norm{D^{-1}}$. Rewrite the equation as the fixed-point problem
+\[
+ Y=\mathcal T(Y):=-D^{-1}B^*+D^{-1}\Delta^2Y(A+BY).
+\]
+Put $R=2M^2+1$. On the closed ball $\norm Y\le R$, the first term has norm at most $M^2$ and the second at most
+$M^2\tau R(1+R)$. For sufficiently small $\tau$, this maps the ball into itself. For two matrices in the ball,
+\[
+ \norm{\mathcal T(Y)-\mathcal T(Y')}
+ \le M^2\tau(1+2R)\norm{Y-Y'}.
+\]
+The multiplier is less than $1/2$ for sufficiently small $h$. The ordinary contraction theorem therefore supplies a unique fixed point in that ball. Any uniformly bounded solution branch satisfies $Y+D^{-1}B^*=O(\tau)$ by its equation, so it eventually belongs to the same ball and is the same solution.
+
+The exact graph identities are finite algebra. The substitutions yielding \eqref{eq:Yexpansion} and \eqref{eq:Kcorrection} now have uniform ordinary remainder bounds because all displayed finite factors are uniformly bounded. The positive square-root expansion is uniform near the identity. The completed-square estimate applies with the same fixed lower bound $c$, so the high-sector eigenvalues diverge. Taking limits proves the final assertion.
+\end{proof}
+
+This corollary permits, for example, $\delta_1(h)=h$ and $\delta_2(h)=e^{-1/h}$ without treating the second as a finite power of the first. It does not prove that a given continuum theory produces those functions. It proves that the finite matrix reduction remains valid if a derivation of the model has supplied them.
+
+\subsection{Dynamics on the dressed low sector}
+At an ordinary real time $s$, a low-sector initial vector $\psi_0$ can be evolved by
+\begin{equation}\label{eq:lowdynamics}
+ \psi(s)=W\exp_f(-isL)\psi_0.
+\end{equation}
+This is an exact evolution inside the invariant graph and has the ordinary shadow
+\[
+ \st\psi(s)=
+ \begin{pmatrix}I\\0\end{pmatrix}
+ e^{-is(A_0-B_0D_0^{-1}B_0^*)}\st\psi_0.
+\]
+Equation~\eqref{eq:lowdynamics} uses only the finite $L$. It does not assign a global phase to every eigenvalue of the unlimited high block. Nor does it say that a generic initial state, including arbitrary high-sector components, admits such an evolution in the present formalism.
+
+Time-dependent $A,B,D,\Delta$ would introduce an additional problem: a moving invariant graph is not automatically invariant under time evolution. Derivatives of $W$ generate geometric and off-block terms. The theorem is a static spectral and exact fixed-subspace result; a time-dependent adiabatic theorem would require additional regularity and error bounds.
+
+\section{Virtual selection and the limits of direct truncation}\label{sec:virtual}
+
+\subsection{A scalar scale-balance law}
+The simplest matrix makes the different regimes explicit. Let $a,b\in G$ with $a>0$ and $a>b$, and let $d>0$ and $c\ne0$ be ordinary real constants. Consider
+\[
+ H_{a,b}=\begin{pmatrix}0&c t^{-b}\\c t^{-b}&d t^{-a}\end{pmatrix}.
+\]
+Its lower eigenvalue is
+\begin{equation}\label{eq:scalarlambda}
+ \lambda_-=
+ \frac{d t^{-a}-\sqrt{d^2t^{-2a}+4c^2t^{-2b}}}{2}
+ =-\frac{c^2}{d}t^{a-2b}
+ \left(1+O\bigl(t^{2(a-b)}\bigr)\right).
+\end{equation}
+The expansion follows by factoring $d^2t^{-2a}$ from the square root and evaluating the binomial series at the positive-order parameter $4c^2t^{2(a-b)}/d^2$.
+
+The high-component to low-component ratio of the low eigenvector is $O(t^{a-b})$, hence infinitesimal. Nevertheless the virtual energy shift is infinitesimal, appreciable, or unlimited according as $a-2b$ is positive, zero, or negative. Thus small mixing alone does not imply a negligible energy correction. The critical case $a=2b$ is exactly the scaling built into Theorem~\ref{thm:elimination}. This is ordinary second-order perturbative physics written as an exact ordered-group trichotomy.
+
+\subsection{An explicit beyond-all-orders selection counterexample}
+\begin{proposition}[Virtual splitting defeats a smaller direct bias]\label{prop:virtual}
+Let $\epsilon,\eta$ be as in \eqref{eq:ranktwo}, and define
+\begin{equation}\label{eq:threelevel}
+ H_{\epsilon,\eta}=
+ \begin{pmatrix}
+ 0&0&\epsilon\\
+ 0&\eta&\epsilon\\
+ \epsilon&\epsilon&1
+ \end{pmatrix}.
+\end{equation}
+Its ground eigenvalue $\lambda_{\min}$ is simple and satisfies
+\begin{equation}\label{eq:groundenergy}
+ \st(\lambda_{\min}/\epsilon^2)=-2.
+\end{equation}
+If $P_{\min}$ is its ground-state orthogonal projector, then
+\begin{equation}\label{eq:groundstate}
+ \st P_{\min}=\proj{+},\qquad
+ \ket{+}=\frac{\ket{0}+\ket{1}}{\sqrt2},
+\end{equation}
+with zero third component. In contrast, the direct compression of $H_{\epsilon,\eta}$ to $\Span\{\ket{0},\ket{1}\}$ has the unique ground state $\ket{0}$.
+\end{proposition}
+\begin{proof}
+Divide the Hamiltonian by the positive scalar $\epsilon^2$, which does not change its eigenvectors or the ordering of its eigenvalues. It takes the form of \eqref{eq:criticalH} with
+\[
+ A=\diag(0,\eta/\epsilon^2),\quad
+ B=\begin{pmatrix}1\\1\end{pmatrix},\quad D=1,\quad\Delta=\epsilon.
+\]
+The entry $\eta/\epsilon^2$ is infinitesimal. By Theorem~\ref{thm:elimination}, the finite effective matrix has residue
+\[
+ \st L=-\begin{pmatrix}1&1\\1&1\end{pmatrix}.
+\]
+This ordinary matrix has the distinct eigenvalues $-2$ and $0$, with the $-2$ eigenspace spanned by $\ket{+}$. Reducing a unitary diagonalization of $L$ shows that exactly one of its eigenvalues has residue $-2$ and the other has residue $0$. The first is therefore the simple smaller eigenvalue. The complementary eigenvalue is positive unlimited in the rescaled matrix, so cannot be the ground eigenvalue. This proves \eqref{eq:groundenergy}.
+
+A normalized ground eigenvector of $L$ has nonzero normalized residue in the $-2$ eigenspace. Its projector therefore reduces to $\proj{+}$, independently of its phase. Since the dressing matrix $W$ reduces to the coordinate inclusion, the same is true in three dimensions. Finally, direct compression yields $\diag(0,\eta)$, whose ground vector is $\ket{0}$ because $\eta>0$.
+\end{proof}
+
+At $\eta=0$ the exact eigenvalues are
+\[
+ 0,\qquad \frac{1+\sqrt{1+8\epsilon^2}}2,\qquad
+ \frac{1-\sqrt{1+8\epsilon^2}}2,
+\]
+and the ground energy begins
+\[
+ -2\epsilon^2+4\epsilon^4-16\epsilon^6+80\epsilon^8+O(\epsilon^{10}).
+\]
+The role of the tiny positive $\eta$ is not to generate this shift, but to expose a failure of naive scale-by-scale direct restriction. Eliminating the high level first produces a negative $\epsilon^2$ matrix on the low plane; ignoring that virtual contribution and inspecting the direct $\eta$ bias selects the wrong shadow state.
+
+This is a useful benchmark for symbolic effective-Hamiltonian algorithms. A method that retains only direct coefficients inside each degenerate subspace will fail it, even if it correctly orders $\eta$ below every power of $\epsilon$. The relevant data include the paths through the eliminated sector. The mechanism is well known in ordinary degenerate perturbation theory \cite{BDL}; the higher-rank example makes the truncation failure exact and impossible to repair by assigning a sufficiently large but finite power to $\eta$.
+
+\subsection{Potential model applications and what must be supplied}
+The same algebra can organize off-resonant virtual couplings, several detuned auxiliary levels, and nested low-energy manifolds. In those settings $\Delta^{-1}D\Delta^{-1}$ represents a high-energy block and $B\Delta^{-1}$ a critically scaled coupling. The theorem supplies the exact finite shift and its first normalization correction once those matrices have been derived.
+
+For tunnelling or metastability, an exponentially small matrix element is usually the output of a separate semiclassical calculation. The present framework can compare it with algebraic virtual shifts without erasing it; it does not derive an instanton action, a tunnelling prefactor, or a resummation prescription. A mathematically honest application must retain that division of labor.
+
+The ordinary counterpart in Corollary~\ref{cor:realrealization} also prevents an overly strong claim of uniquely surreal predictions. For finite matrices, the same limits can be established with real-parameter estimates. The gain is a compact exact language and reusable algebraic certificates, not a proof that real or complex mathematics is inadequate.
+
+\section{Surquaternions: useful representation and a composition obstruction}\label{sec:quaternions}
+
+\subsection{The division algebra and its complex representation}
+Define
+\[
+ \HH(K)=K\oplus K\mathbf i\oplus K\mathbf j\oplus K\mathbf k,
+ \qquad \mathbf i^2=\mathbf j^2=\mathbf k^2=-1,
+ \quad \mathbf i\mathbf j=\mathbf k=-\mathbf j\mathbf i.
+\]
+This is the surquaternion algebra after embedding $K$ in $\No$. Conjugation changes the sign of the three imaginary components, and
+\[
+ N(q)=\bar q q=q\bar q=a^2+b^2+c^2+d^2
+\]
+for $q=a+b\mathbf i+c\mathbf j+d\mathbf k$. If $q\ne0$, then $N(q)>0$ and $q^{-1}=\bar q/N(q)$. In particular, adding surreal infinitesimals does not introduce zero divisors into this quaternion algebra.
+
+Identify $F$ with $K+K\mathbf i$ and write $q=z+w\mathbf j$ with $z,w\in F$. Define
+\begin{equation}\label{eq:chi}
+ \chi(q)=\begin{pmatrix}z&w\\-\bar w&\bar z\end{pmatrix}.
+\end{equation}
+For a quaternion matrix $Q=A+B\mathbf j$, use the corresponding block matrix
+\[
+ \chi(Q)=\begin{pmatrix}A&B\\-\bar B&\bar A\end{pmatrix}.
+\]
+
+\begin{proposition}[Faithful ordered $*$-representation]\label{prop:chi}
+The map $\chi$ preserves products and adjoints and is injective. For a scalar quaternion,
+\[
+ \chi(q)^*\chi(q)=N(q)I_2,\qquad
+ \det\chi(q)=N(q).
+\]
+It identifies the norm-one quaternion group $\Sp(1,K)$ with $\SU(2,K)$. For a quaternion Hermitian matrix $Q$, positivity on quaternion columns is equivalent to complex positivity of $\chi(Q)$.
+\end{proposition}
+\begin{proof}
+Use $\mathbf j z=\bar z\mathbf j$. Multiplication gives
+\[
+ (z+w\mathbf j)(z'+w'\mathbf j)
+ =(zz'-w\bar w')+(zw'+w\bar z')\mathbf j,
+\]
+which agrees with block multiplication in \eqref{eq:chi}. The adjoint identity and injectivity follow from its entries. The scalar norm and determinant identities are direct calculations. Conversely, a two-by-two unitary matrix of determinant one has the displayed quaternionic form: comparison of its inverse computed by its adjoint and by its determinant gives the required entries.
+
+For positivity, write a quaternion column as $x=u+v\mathbf j$, and put $y=(u,-\bar v)^T$. Direct multiplication identifies the real quantity $x^*Qx$ with $y^*\chi(Q)y$ when $Q=Q^*$. Every $y\in F^{2n}$ arises in this way. Hence the two positivity conditions are equivalent.
+\end{proof}
+
+These algebraic facts are classical. Their use over $K$ makes the scale dependence exact but does not create a new gauge group or a new type of finite quaternionic measurement.
+
+\subsection{Finite quaternionic instruments have complex shadows}
+A quaternionic state is a positive Hermitian matrix $\rho$ with real quaternionic trace one. Probabilities are defined by
+\begin{equation}\label{eq:quatborn}
+ p(E)=\Rea\Tr_{\HH}(\rho E).
+\end{equation}
+The real part is essential: quaternionic matrix traces are not generally cyclic as quaternion-valued expressions. Their real parts are cyclic, and
+\begin{equation}\label{eq:quattrace}
+ \Tr_F\chi(Q)=2\Rea\Tr_{\HH}(Q).
+\end{equation}
+
+\begin{theorem}[Complex simulation of finite surquaternion instruments]\label{thm:quatsimulation}
+Let a fixed finite quaternionic protocol use states, effects, and Kraus maps
+$X\mapsto\sum_jK_jXK_j^*$ with the usual completeness condition. The assignment
+\begin{equation}\label{eq:quatsim}
+ \rho\longmapsto\frac{\chi(\rho)}2,
+ \qquad E\longmapsto\chi(E),
+ \qquad K_j\longmapsto\chi(K_j)
+\end{equation}
+is an exact probability-preserving simulation over $F$ on twice the dimension. All operational matrices are finite; standard part therefore yields an ordinary complex simulation of their unnormalized outcome statistics and all appreciably probable conditioned outcomes. Infinitesimally probable branches are handled by Theorem~\ref{thm:rare} applied to the complex simulation.
+\end{theorem}
+\begin{proof}
+Proposition~\ref{prop:chi} gives positivity and preserves Kraus completeness. Equation~\eqref{eq:quattrace} shows that $\chi(\rho)/2$ has trace one and that
+\[
+ \Tr_F\left(\frac{\chi(\rho)}2\chi(E)\right)
+ =\Rea\Tr_{\HH}(\rho E).
+\]
+The factor $1/2$ also makes every output of a Kraus branch exactly the image of its quaternionic output. Iterating proves equality for finite protocols. The complex states and Kraus operators are finite by Lemma~\ref{lem:finitequantum}; their blocks then show finiteness of the quaternionic coordinates. Standard part commutes with $\chi$, products, and adjoints. The ordinary and rare-conditioning conclusions follow from the preceding theorems.
+\end{proof}
+
+The ordinary complex-simulation phenomenon is already established in quaternionic quantum theory \cite{Graydon}. The point here is its compatibility with valuation and the rare-branch formula. The simulation embeds a restricted family of doubled complex states and transformations; it does not identify every doubled complex experiment with a quaternionic one, nor automatically solve the problem of combining independent quaternionic systems.
+
+\subsection{Why the naive tensor-dimension prescription fails}
+\begin{lemma}[Dimension of a quaternionic Hermitian space]\label{lem:quatdim}
+The $K$-dimension of $\Herm_n(\HH(K))$ is
+\[
+ d_n=n+4\binom n2=2n^2-n.
+\]
+Density matrices span this vector space, and effects span its dual through the nondegenerate pairing $\Rea\Tr(QE)$.
+\end{lemma}
+\begin{proof}
+Diagonal entries are real and contribute $n$ coordinates. Each strictly upper-triangular entry is an arbitrary quaternion and determines its lower-triangular conjugate, contributing four coordinates. For spanning, use the maximally mixed state together with sufficiently small real perturbations in a fixed ordinary Hermitian basis. They are positive and span the space. Likewise, small perturbations of $I/2$ in that basis are effects and span. The real trace pairing is nondegenerate because $\Rea\Tr(Q^2)>0$ for a nonzero Hermitian $Q$, as is also immediate from its coordinates or from $\chi$.
+\end{proof}
+
+\begin{theorem}[Obstruction to a naive quaternionic composite]\label{thm:quatcomposite}
+Let $m,n>1$. A theory cannot simultaneously satisfy all of the following:
+\begin{enumerate}[label=\textup{(\alph*)},leftmargin=2em,itemsep=2pt]
+\item each local system has the full states and effects of $\HH(K)^m$ and $\HH(K)^n$;
+\item every pair of local preparations and every pair of local effects has an independently implementable joint preparation or effect, with factorized product probabilities;
+\item the joint system's states and effects are represented in $\Herm_{mn}(\HH(K))$ with the usual real-trace probability pairing.
+\end{enumerate}
+This obstruction survives replacement of real scalars by surreal scalars.
+\end{theorem}
+\begin{proof}
+Choose $d_m$ linearly independent local states and $d_m$ local effects whose evaluation matrix on those states is invertible. Such choices exist by Lemma~\ref{lem:quatdim}; do the same for the second system. The joint evaluation matrix of the $d_md_n$ product preparations against the $d_md_n$ product effects is the Kronecker product of the two invertible local matrices. It is therefore invertible. Consequently, those joint preparations must be linearly independent in the joint Hermitian vector space, forcing
+\[
+ d_m d_n\le d_{mn}.
+\]
+But direct calculation gives
+\begin{equation}\label{eq:quatdimensiongap}
+ d_m d_n-d_{mn}=2mn(m-1)(n-1)>0,
+\end{equation}
+a contradiction.
+\end{proof}
+
+For two quaternionic two-level systems, the local dimensions require $6\cdot6=36$ independent product directions, whereas a quaternionic four-level Hermitian space has dimension $28$. The argument does not mistakenly infer a contradiction merely from a lack of local tomography: an injective map from a 28-dimensional space into 36 statistics would be possible. The contradiction instead comes from \emph{independent preparations with factorized product effects}, which force the 36-dimensional lower bound.
+
+Larger composite spaces, restrictions on local effects or preparations, or different probabilistic postulates are not excluded. The theorem only rejects the naive prescription under its explicit independence assumptions. It is consistent with the broader compositional issues studied in \cite{BarnumWilce}, and it explains why a successful single-system complex simulation should not be advertised as a complete local tensor-product theory.
+
+\section{Quaternionic curvature on a finite gauge lattice}\label{sec:gauge}
+
+\subsection{Loops and gauge transformations}
+Let a finite oriented graph, with a finite specified family of closed faces, carry edge variables $U_e\in\Sp(1,K)$, with $U_{e^{-1}}=U_e^{-1}$. A gauge transformation assigns $g_v\in\Sp(1,K)$ to each vertex and acts by
+\[
+ U_e\longmapsto g_{s(e)}U_e g_{t(e)}^{-1}.
+\]
+For a face $f$, let $Q_f$ be the ordered product around its boundary. It transforms by conjugation at its chosen base vertex. The normalized Wilson weight is
+\begin{equation}\label{eq:WilsonWeight}
+ w_f=1-\Rea Q_f
+ =1-\frac12\Tr_F\chi(Q_f)\ge0.
+\end{equation}
+The inequality follows from $N(Q_f)=1$, which implies $-1\le\Rea Q_f\le1$. These are the usual finite $\SU(2)$ loop variables, written quaternionically \cite{Wilson}; no integration over a gauge-field space is required for the statements below.
+
+\begin{lemma}[Small unit quaternions have quadratic Wilson weight]\label{lem:smallq}
+Let $q=s+u\in\Sp(1,K)$, where $s\in K$ is real and $u$ is purely imaginary. Assume $\st q=1$ and $q\ne1$. Then $u\ne0$. If $r=v(u)$ and $u_0=\st(t^{-r}u)$, then $r>0$ and
+\begin{equation}\label{eq:smallq}
+ v(1-s)=2r,\qquad
+ \st\bigl(t^{-2r}(1-s)\bigr)=\frac12 N(u_0).
+\end{equation}
+Here $v(u)$ is the minimum valuation of its three real coordinates.
+\end{lemma}
+\begin{proof}
+The norm condition is $s^2+N(u)=1$. Since $\st s=1$, the factor $1+s$ is appreciable with residue two, and
+\begin{equation}\label{eq:qnormid}
+ 1-s=\frac{N(u)}{1+s}.
+\end{equation}
+If $u=0$, then $s=\pm1$, and $\st s=1$ forces $s=1$, contrary to $q\ne1$. Therefore $r$ is defined and positive. Lemma~\ref{lem:squares} gives $v(N(u))=2r$ and leading coefficient $N(u_0)>0$. Equation~\eqref{eq:qnormid} proves the result.
+\end{proof}
+
+\subsection{An initial-curvature theorem for the action}
+\begin{theorem}[Gauge-invariant leading curvature and positive action]\label{thm:wilson}
+Assume every face holonomy satisfies $\st Q_f=1$. For each nonflat face $Q_f\ne1$, put
+\[
+ r_f=v(\Ima Q_f),\qquad
+ u_f=\st\bigl(t^{-r_f}\Ima Q_f\bigr).
+\]
+Let $\kappa_f>0$ be arbitrary Hahn weights, not necessarily finite, and define the finite-face action
+\[
+ \mathcal S=\sum_f\kappa_f(1-\Rea Q_f).
+\]
+If at least one face is nonflat, then
+\begin{equation}\label{eq:WilsonVal}
+ v(\mathcal S)=\min_{f:Q_f\ne1}\bigl(v(\kappa_f)+2r_f\bigr)=:\gamma,
+\end{equation}
+and
+\begin{equation}\label{eq:WilsonLC}
+ \lc(\mathcal S)=
+ \frac12\sum_{\substack{f:Q_f\ne1\\v(\kappa_f)+2r_f=\gamma}}
+ \lc(\kappa_f)N(u_f)>0.
+\end{equation}
+Each $r_f$ is gauge invariant. The initial vector $u_f$ transforms by the ordinary rotation induced by the residue of the gauge transformation at the base vertex; its squared norm is therefore invariant. If all faces are flat, $\mathcal S=0$.
+\end{theorem}
+\begin{proof}
+Every unit quaternion has finite coordinates, so a gauge transformation $g$ has an ordinary unit-quaternion residue $g_0$. Conjugation preserves real part and maps the imaginary part to $g(\Ima Q_f)g^{-1}$. It preserves its quaternion norm. Lemma~\ref{lem:squares} therefore implies invariance of $r_f$, and after division by $t^{r_f}$ its residue is $g_0u_fg_0^{-1}$. This is the ordinary orthogonal action on imaginary quaternions.
+
+Lemma~\ref{lem:smallq} gives the valuation and coefficient of each nonzero Wilson weight. Multiplication by $\kappa_f$ adds valuations and multiplies leading coefficients. All those coefficients are positive. Since there are finitely many faces, the coefficient at the least resulting exponent is exactly the positive sum in \eqref{eq:WilsonLC}; it cannot cancel. The flat case is immediate.
+\end{proof}
+
+The hypothesis of positive weights is substantive. With sign-changing or complex weights, leading contributions can cancel. Likewise, this is a theorem about a finite lattice action, not about a quantum path integral. It contains no claim of a Yang--Mills mass gap, confinement, or existence of a continuum measure.
+
+An interesting regime is $v(\kappa_f)=-2r_f$. Then a loop that is exactly flat in the ordinary shadow contributes an appreciable action after coupling rescaling. That is a finite algebraic analogue of retaining a leading curvature term while lattice holonomies approach the identity. It is a candidate tool for checking scale assignments, not a derivation of a continuum limit.
+
+\subsection{A two-scale commutator plaquette}
+For a purely imaginary ordinary quaternion $a$ and an infinitesimal $\epsilon$, the formal exponential
+\[
+ e^{\epsilon a}=\sum_{n\ge0}\frac{\epsilon^n a^n}{n!}
+\]
+is strongly summable and has norm one. If $a\ne0$, it equals
+$\cos(\epsilon|a|)+(a/|a|)\sin(\epsilon|a|)$, where sine and cosine are their positive-order formal series.
+
+\begin{proposition}[Non-Abelian curvature at a mixed scale]\label{prop:plaquette}
+Let $a,b$ be purely imaginary ordinary quaternions with $[a,b]\ne0$, and let $\epsilon=t^\alpha$, $\eta=t^\beta$ with $\alpha,\beta>0$. Define
+\[
+ Q=e^{\epsilon a}e^{\eta b}e^{-\epsilon a}e^{-\eta b}.
+\]
+Then
+\begin{align}
+ Q&=1+\epsilon\eta[a,b]+R,
+ &v(R)&>\alpha+\beta,\label{eq:commloop}\\
+ v(1-\Rea Q)&=2(\alpha+\beta),
+ &\lc(1-\Rea Q)&=\tfrac12 N([a,b]).\label{eq:commenergy}
+\end{align}
+Identifying imaginary quaternions with ordinary three-vectors, the leading Wilson weight is
+\[
+ 2\epsilon^2\eta^2\abs{a\times b}^{2}.
+\]
+If $a$ and $b$ commute, $Q=1$ exactly.
+\end{proposition}
+\begin{proof}
+Multiply the four formal series. Terms depending on only one of the two parameters cancel because the expression is one when either parameter is zero. The coefficient of $\epsilon\eta$ is $ab-ba$. Every remaining nonconstant monomial has positive powers of both parameters and total degree at least three, so its valuation exceeds $\alpha+\beta$. Strong evaluation justifies the multiplication at arbitrary rank. The bracket of imaginary quaternions is imaginary, so the initial imaginary part is $[a,b]$ at order $\alpha+\beta$. Lemma~\ref{lem:smallq} yields \eqref{eq:commenergy}. Finally, $[a,b]=2a\times b$ in vector notation. If the two generators commute, all exponentials commute and the product cancels exactly.
+\end{proof}
+
+For $a=\mathbf i$ and $b=\mathbf j$ there is also the exact identity
+\begin{equation}\label{eq:exactplaquette}
+ 1-\Rea\left(e^{\epsilon\mathbf i}e^{\eta\mathbf j}
+ e^{-\epsilon\mathbf i}e^{-\eta\mathbf j}\right)
+ =2\sin^2\epsilon\,\sin^2\eta.
+\end{equation}
+The verification script checks this as a polynomial identity in sine and cosine coordinates subject to the two unit-circle relations.
+
+In the rank-two hierarchy $\eta\ll\epsilon^N$, this mixed curvature lies below every pure algebraic order in $\epsilon$. Yet its initial bracket and its action coefficient remain exact. This is the non-Abelian counterpart of the information retained in Theorem~\ref{thm:alljets}: a chosen one-scale truncation can be perfectly accurate at every displayed algebraic order and still omit a mathematically meaningful sector.
+
+\section{Algebraic obstructions that scalar extension does not remove}\label{sec:nogo}
+
+\subsection{The Bell bound survives}
+\begin{theorem}[The finite algebraic Tsirelson bound]\label{thm:bell}
+Let $A_0,A_1,B_0,B_1$ be Hermitian involutions over $F$, or over $\HH(K)$, with $[A_j,B_k]=0$ for all $j,k$. Put
+\[
+ \mathcal B=A_0(B_0+B_1)+A_1(B_0-B_1).
+\]
+For every state in the corresponding finite theory,
+\[
+ \abs{\langle\mathcal B\rangle}\le2\sqrt2.
+\]
+\end{theorem}
+\begin{proof}
+Set
+\[
+ R_0=A_0-\frac{B_0+B_1}{\sqrt2},\qquad
+ R_1=A_1-\frac{B_0-B_1}{\sqrt2}.
+\]
+Using the cross-commutation relations and involution identities gives the exact sum of squares
+\begin{equation}\label{eq:BellSOS}
+ 2\sqrt2 I-\mathcal B=\frac1{\sqrt2}(R_0^2+R_1^2)\ge0.
+\end{equation}
+Changing both $A_j$ to $-A_j$ gives the other bound. Taking a positive normalized state expectation preserves these inequalities. For quaternionic matrices the same central real coefficients and algebraic identity apply, and positivity may equivalently be checked through $\chi$.
+\end{proof}
+
+The bound is classical \cite{Cirelson}; the proof shows why non-Archimedean coefficients cannot evade it while the same positivity and compatibility assumptions are retained. In a finite classical hidden-variable model with nonnegative $K$-valued weights summing to one, deterministic local $\pm1$ outcomes still give the CHSH bound two by the same elementary convexity argument. Setting-dependent postselection is not covered by that classical assertion: changing the sampled ensemble changes the hypotheses, not the scalar arithmetic.
+
+\subsection{Finite-dimensional canonical commutation remains impossible}
+\begin{proposition}[A complex finite-matrix obstruction]\label{prop:CCR}
+For $n>0$ and $0\ne\hbar\in K$, no matrices $Q,P\in M_n(F)$ satisfy
+\[
+ [Q,P]=i\hbar I_n.
+\]
+\end{proposition}
+\begin{proof}
+Over the commutative field $F$, matrix trace is cyclic, so the trace of the left side is zero. The trace of the right side is $ni\hbar\ne0$ in characteristic zero.
+\end{proof}
+
+This remains true even when $\hbar$ is infinitesimal. The proposition concerns the usual complex central right-hand side; it is not a claim that quaternion-valued traces have the same cyclic property. A continuum oscillator or quantum field cannot be replaced by a fixed finite matrix model satisfying exact canonical commutation relations merely by extending the scalars.
+
+\subsection{Where the present results stop}
+The finite protocol theorems do not construct an infinite-dimensional Hilbert space, a spectral measure, a countably additive probability theory, or a quantum field. The finite lattice theorem does not justify interchanging standard part with a continuum limit or with an infinite-volume limit. The implicit-series theorem does not supply a Borel summation prescription, and the finite-phase exponential does not define arbitrary infinitely rapid oscillations.
+
+There is also a topological issue specific to the full surreal field: its fine order topology is not the ordinary real topology enlarged by a harmless set of tiny distances. The repository documents strong restrictions on small continuous paths in that topology \cite{repo,repoPhysics}. Our use of a set-sized Hahn workspace and ordinary readouts does not assert those restrictions disappear; it avoids assuming the full fine topology is the appropriate topology for physical time.
+
+Finally, the present results do not change the earlier negative analysis of gravitational singularities. Replacing a divergent real expression by an unlimited surreal expression does not provide a regular endpoint, a continuation law, or a measurement rule \cite{repoPhysics}. The positive applications here concern controlled scale information in explicitly stated finite models, not a mechanism of singularity resolution.
+
+\section{Applications, research tests, and falsifiable mathematical claims}\label{sec:applications}
+
+\subsection{Four concrete uses of the framework}
+\paragraph{Rare-event asymptotic tomography.}
+Given symbolic Kraus matrices and a purification with known leading support, Theorem~\ref{thm:rare} computes the state in a rare recorded branch. It can expose dark-state leakage and distinguish competing small amplitudes that disappear from the unconditional density matrix. A successful implementation must carry initial matrices and re-evaluate the order after cancellations, rather than simply add gate valuations. Its physical output must be accompanied by the branch weight and the resource bound of Theorem~\ref{thm:cost}.
+
+\paragraph{Certified multiscale effective Hamiltonians.}
+Theorem~\ref{thm:elimination} supplies an exact target for eliminating several auxiliary sectors, including sectors separated beyond all powers. The first correction is Hermitian and includes the normalization anticommutator, which is lost by treating the nonorthonormal graph generator $A+BY$ as though it were already a physical Hermitian Hamiltonian. The real-parameter counterpart supplies uniform finite-scale error bounds under explicit boundedness hypotheses.
+
+\paragraph{Testing selection rules in degenerate subspaces.}
+The three-level model is a small but stringent benchmark. It distinguishes direct restriction from elimination through virtual paths. A generalized scale-ordering algorithm should reproduce the symmetric ground-state shadow before inspecting a smaller direct bias. More complicated models would require repeated block elimination, not an unproved universal rule that each next coefficient is simply compressed to the preceding ground eigenspace.
+
+\paragraph{Gauge-invariant scale diagnostics.}
+The Wilson theorem computes the exact leading face-energy scale from initial loop curvature and positive weights. Because the coefficient is a positive sum of squared norms, it detects the leading action without cancellations between faces. This offers a consistency check for anisotropic or nested lattice scale assignments. It does not establish the convergence of a family with an increasing number of faces; that would require uniform estimates absent from a fixed finite theorem.
+
+\subsection{Benchmarks that can fail}
+A research proposal becomes more useful when its failure conditions are specified. Table~\ref{tab:benchmarks} lists tests that separate a working implementation from a relabeling of formal series.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}L{0.25\textwidth}YL{0.26\textwidth}@{}}
+\toprule
+Benchmark & Required result & Failure to detect\\
+\midrule
+Rare rank-two branch
+& Compute $p$, its leading coefficient, and the conditional projector even when $\st p=0$.
+& Returning an undefined $0/0$ or replacing the branch by zero.\\[3pt]
+Indistinguishable power data
+& Distinguish the two conditional outputs of Theorem~\ref{thm:alljets} by retaining $\eta$-data.
+& Claiming all $\epsilon$-power data suffice.\\[3pt]
+Noncommuting high block
+& Verify the Riccati residual and the anticommutator correction when $D\Delta\ne\Delta D$.
+& Silently diagonalizing scales independently of $D$.\\[3pt]
+Virtual ground selection
+& Recover $\st(\lambda_{\min}/\epsilon^2)=-2$ and $\st P_{\min}=\proj{+}$.
+& Selecting $\ket0$ from the direct bias.\\[3pt]
+Two-scale plaquette
+& Recover mixed order $2(\alpha+\beta)$ and bracket norm coefficient.
+& Treating non-Abelian products as commuting scale factors.\\[3pt]
+Quaternionic composite
+& Respect the $36$ versus $28$ obstruction for two full two-level systems.
+& Declaring a single-system doubling map to be a tensor-product theory.\\
+\bottomrule
+\end{tabularx}
+\caption{Concrete mathematical tests, not forecasts of experimental advantage.}\label{tab:benchmarks}
+\end{table}
+
+\subsection{What would distinguish the surreal language from another valued field?}
+Most theorems in this article hold in any real-closed valued field with the stated residue and strong-evaluation properties. Their physical mechanisms are not exclusive to $\No$. The surreal field is attractive because a wide range of ordered exponent hierarchies can be represented in one normal-form language, while set-sized subfields isolate the resources needed by a calculation.
+
+That universality is a representational advantage. To turn it into a uniquely surreal physical claim one would need a principle selecting a particular embedding, a particular class of allowed coefficients, or a particular readout that could not be replaced by a smaller valued-field model. No such principle is derived here. The theorem statements are deliberately invariant under ordered exponent embeddings wherever possible, which makes their mathematical content more robust but their dependence on the full surreal class less essential.
+
+\subsection{Formalization targets and effective computation}
+The repository's documented standard-part, strong-summation, and finite-algebra layers are plausible prerequisites for formalizing these statements. The initial-state theorem primarily needs finite sums of squared moduli, positivity, and coefficient extraction. The postselection theorem needs a finite trace norm and a failure-flag construction. The elimination theorem needs matrix-valued formal implicit evaluation, invariant graphs, and positive square roots near the identity. The gauge theorem needs a quaternion $*$-algebra, finite loop products, and the leading-coefficient rule for positive sums.
+
+This is a dependency assessment, not a claim that these modules have been added or checked. An actual Lean implementation would need to reconcile all interfaces with the repository's current definitions and verify its imports and axioms. Similarly, arbitrary Hahn series are not automatically effective data structures. A computational application needs a computable exponent group, explicit support descriptions, and certified ways to determine initial terms after cancellation. The all-power-data obstruction shows why a universal finite truncation rule cannot substitute for those requirements.
+
+\section{Conclusions}
+The strongest positive conclusion is an exact method, not a new law of nature. A nonzero rare quantum branch has a well-defined leading normalized state; an independently scaled high-energy sector has an exact dressed finite Hamiltonian under explicit positivity assumptions; and a near-flat non-Abelian loop has a gauge-invariant initial curvature whose squared norm controls its positive Wilson weight.
+
+The strongest negative conclusions are equally informative. All perturbative power data in one chosen scale can fail to determine a rare conditioned state. Any appreciable amplification of initially infinitesimal distinguishability by the same postselection operation has a correspondingly small success weight. A naive quaternionic composite cannot accommodate independent local preparation and effect statistics at the prescribed dimension. Positivity and compatibility still enforce the ordinary Bell bound, and characteristic-zero trace algebra still forbids exact finite-dimensional complex canonical commutation relations.
+
+These results support a concrete research direction: use surreal or Hahn coefficients to preserve scale information, and use explicit reduction and resource theorems to decide which parts can influence an ordinary model. They do not support the inference that replacing scalars, by itself, repairs singularities, constructs quantum fields, or reveals empirically new degrees of freedom.
+
+\appendix
+\section{Exact verification and reproducibility}\label{app:verification}
+
+The accompanying \texttt{verify\_examples.py} performs exact symbolic calculations with SymPy. It is intentionally not an implementation of the whole surreal field. Its purpose is to catch algebraic errors in selected formulas and examples that enter the proofs. The recorded output is included as \texttt{verification\_results.txt}; the script stops with an assertion failure if a check fails. The supplied run passed 43 named checks using Python 3.13.5 and SymPy 1.14.0.
+
+The checks cover quaternion multiplication, conjugation, the norm identity, the complex representation, the unit-circle reduction of the commutator plaquette, the Bell sum-of-squares identity and a saturating state, the scalar effective-eigenvalue expansion, the three-level characteristic polynomial and symmetric eigenvalues, the sharp diagonal postselection example, and the quaternionic dimension gap. A noncommuting two-by-two matrix example also checks the Riccati coefficient recursion, metric self-adjointness of the graph generator, and the first effective-Hamiltonian correction.
+
+A successful run verifies those finite identities only. It does not establish real closure of a Hahn field, the Neumann support lemma, an arbitrary-rank implicit theorem, or a universally quantified spectral or operational theorem. Those require the mathematical arguments and foundational references in the text. No numerical approximation is used as evidence for an exact identity, and no computer-algebra output is represented as a Lean proof.
+
+To reproduce the PDF, run
+\begin{verbatim}
+latexmk -pdf -interaction=nonstopmode -halt-on-error \
+  surreal_scales_physics.tex
+\end{verbatim}
+To reproduce the example checks, run
+\begin{verbatim}
+python verify_examples.py
+\end{verbatim}
+The LaTeX source has an embedded bibliography and does not require a separate bibliography database. The README records the tested software versions and the precise scope of verification.
+
+\section{Source and novelty audit}\label{app:audit}
+The literature search and repository inspection were performed for this manuscript on 23 September 2026. Primary mathematical and physics sources were preferred. The repository snapshot is pinned in Section~\ref{sec:sources}; subsequent changes to the default branch are not part of the review.
+
+The following distinctions govern the novelty assessment. The existence of surreal normal forms, real closure, finite spectral theory, ordinary quantum channels, Schrieffer--Wolff reduction, quaternionic complex simulation, Wilson loops, and the Tsirelson bound are established background. The repository's finite quantum shadow and its nonzero-standard-probability conditioning restriction are prior project results. The new work proposed here is the explicit rare-branch initial-form package, the all-one-scale-power-data obstruction with its sharp operational cost example, the independently scaled invariant-graph and remainder theorem, and the corresponding positive initial-curvature formula in arbitrary rank.
+
+None of these labels rules out an earlier equivalent theorem under different terminology. In particular, the elimination theorem is closely related to matrix Riccati equations and Schur-complement methods, and the rare-event formula uses familiar positivity and leading-term ideas. A publication-level priority claim would require a more exhaustive comparison with valued linear algebra, nonstandard probability, and singular perturbation literature than this targeted review supplies.
+
+The paper nevertheless makes falsifiable mathematical assertions: each theorem has stated hypotheses and a proof, and its examples have exact outputs. Independent review can therefore strengthen, correct, or reject a specific claim without having to interpret an undefined claim of a ``surreal breakthrough.'' No major named open problem in physics is claimed to be solved.
+
+\clearpage
+\begin{thebibliography}{99}
+\small\raggedright
+
+\bibitem{repo}
+V. Reshetnikov, \emph{Surreal}, GitHub repository, README and repository tree, snapshot
+\texttt{c0a36eebe5cf30aa72abfe4ef8ff9e46f63c3c28}, inspected 23 September 2026.
+\href{https://github.com/VladimirReshetnikov/Surreal/tree/c0a36eebe5cf30aa72abfe4ef8ff9e46f63c3c28}{Repository snapshot}.
+
+\bibitem{repoPhysics}
+\emph{Surreal Scalars in Theoretical Physics: Black-Hole Singularities, Asymptotic Structure, and the Limits of Replacing the Scalar Field}, physics report and accompanying README in \repo, same snapshot as \cite{repo}.
+\href{https://github.com/VladimirReshetnikov/Surreal/tree/c0a36eebe5cf30aa72abfe4ef8ff9e46f63c3c28/docs/physics/surreal-scalars-and-spacetime}{Report directory and README}.
+
+\bibitem{Gonshor}
+H. Gonshor, \emph{An Introduction to the Theory of Surreal Numbers}, London Mathematical Society Lecture Note Series 110, Cambridge University Press, 1986.
+\href{https://www.cambridge.org/core/books/an-introduction-to-the-theory-of-surreal-numbers/312AE504A3E88E804054BFB390446374}{Cambridge University Press catalogue}.
+
+\bibitem{vdDE}
+L. van den Dries and P. Ehrlich, Fields of surreal numbers and exponentiation, \emph{Fundamenta Mathematicae} \textbf{167} (2001), 173--188.
+\url{https://doi.org/10.4064/fm167-2-3}.
+
+\bibitem{BM}
+A. Berarducci and V. Mantova, \emph{Surreal numbers, derivations and transseries}, arXiv:1503.00315, 2015.
+\url{https://arxiv.org/abs/1503.00315}.
+
+\bibitem{ADH}
+M. Aschenbrenner, L. van den Dries, and J. van der Hoeven,
+\emph{The surreal numbers as a universal $H$-field}, arXiv:1512.02267, 2015.
+\url{https://arxiv.org/abs/1512.02267}.
+
+\bibitem{Nieto2016}
+J. A. Nieto, \emph{Some Mathematical and Physical Remarks on Surreal Numbers}, arXiv:1611.09699, 2016.
+\url{https://arxiv.org/abs/1611.09699}.
+
+\bibitem{Nieto2018}
+J. A. Nieto, Duality, Matroids, Qubits, Twistors, and Surreal Numbers,
+\emph{Frontiers in Physics} \textbf{6} (2018), article 106.
+\url{https://doi.org/10.3389/fphy.2018.00106}.
+
+\bibitem{Benci}
+V. Benci, \emph{Non-Archimedean Mathematics and the formalism of Quantum Mechanics}, arXiv:1809.04446, 2018.
+\url{https://arxiv.org/abs/1809.04446}.
+
+\bibitem{BDL}
+S. Bravyi, D. P. DiVincenzo, and D. Loss,
+Schrieffer--Wolff transformation for quantum many-body systems,
+\emph{Annals of Physics} \textbf{326} (2011), 2793--2826.
+\url{https://doi.org/10.1016/j.aop.2011.06.004};
+\url{https://arxiv.org/abs/1105.0675}.
+
+\bibitem{Graydon}
+M. A. Graydon, \emph{Quaternionic Quantum Dynamics on Complex Hilbert Spaces}, arXiv:1103.3547, 2011.
+\url{https://arxiv.org/abs/1103.3547}.
+
+\bibitem{BarnumWilce}
+H. Barnum and A. Wilce, \emph{Local tomography and the Jordan structure of quantum theory}, arXiv:1202.4513, 2012.
+\url{https://arxiv.org/abs/1202.4513}.
+
+\bibitem{Wilson}
+K. G. Wilson, Confinement of quarks, \emph{Physical Review D} \textbf{10} (1974), 2445--2459.
+\url{https://doi.org/10.1103/PhysRevD.10.2445}.
+
+\bibitem{BanerjeeEtAl}
+A. Banerjee, R. Jaiswal, M. Manjunath, and A. Narayan,
+\emph{A Tropical Geometric Approach To Exceptional Points}, arXiv:2301.13485, 2023.
+\url{https://arxiv.org/abs/2301.13485}.
+
+\bibitem{FerrieCombes}
+C. Ferrie and J. Combes, Weak value amplification is suboptimal for estimation and detection,
+\emph{Physical Review Letters} \textbf{112} (2014), 040406.
+\url{https://doi.org/10.1103/PhysRevLett.112.040406};
+\url{https://arxiv.org/abs/1307.4016}.
+
+\bibitem{JordanEtAl}
+A. N. Jordan, J. Mart\'inez-Rinc\'on, and J. C. Howell,
+Technical Advantages for Weak-Value Amplification: When Less Is More,
+\emph{Physical Review X} \textbf{4} (2014), 011031.
+\url{https://doi.org/10.1103/PhysRevX.4.011031}.
+
+\bibitem{Cirelson}
+B. S. Cirel'son, Quantum generalizations of Bell's inequality,
+\emph{Letters in Mathematical Physics} \textbf{4} (1980), 93--100.
+\url{https://doi.org/10.1007/BF00417500}.
+
+\end{thebibliography}
+\end{document}

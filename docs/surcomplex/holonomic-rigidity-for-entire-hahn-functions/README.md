@@ -1,16 +1,18 @@
 # Holonomic Rigidity for Entire Hahn Functions
 
 **A sharp order-unit criterion for dilations, with uniform exclusion bounds,
-and nonlinear differential rigidity: first-order for every value group, all
-orders when the value group has no order unit**
-Merged research report, 22 September 2026, from five manuscripts: 08 and 09,
-written independently on the same day; 10, which adds the nonlinear part; and
-11 and 12, written independently and delivered together later, which add the
-coefficient-field part.
+and the exact boundary of nonlinear differential rigidity: first-order for
+every value group, all orders when the value group has no order unit, and an
+explicit series of minimal differential order three when it has one**
+Merged research report, 22–23 September 2026, from six manuscripts: 08 and 09,
+written independently on the same day; 10, which adds the nonlinear part; 11
+and 12, written independently and delivered together later, which add the
+coefficient-field part; and 13, delivered later still, which adds the
+theta-descent part.
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 91 pages
+article.pdf   the compiled report, 118 pages
 README.md     this guide
 08-finite-recurrences-PROOF_AUDIT.md          source 08: assumptions and critical proof steps
 08-finite-recurrences-SOURCES_AND_SCOPE.md    source 08: sources, repository pin, priority limits
@@ -20,6 +22,8 @@ README.md     this guide
 11-coarsening-differential-rigidity-PROOF_AUDIT.md        source 11: hypotheses, proof chain, pitfalls
 11-coarsening-differential-rigidity-SOURCES_AND_SCOPE.md  source 11: repository pin, literature, scope
 12-coefficient-field-rigidity-SOURCE_AUDIT.md             source 12: sources, novelty, dependency checks
+13-theta-descent-PROOF_AUDIT.md               source 13: assumptions, proof dependencies, non-claims
+13-theta-descent-SOURCES_AND_SCOPE.md         source 13: repository pin, literature, priority boundary
 code/
   08-finite-recurrences-verify.py             source 08 checks (3,705)
   09-entire-hahn-holonomic-verification.py    source 09 checks (2,043)
@@ -29,6 +33,8 @@ code/
   11-coarsening-differential-rigidity-build.py    source 11's build script (see "Build and reproduce")
   12-coefficient-field-rigidity-verify.py         source 12 checks (9,308)
   12-coefficient-field-rigidity-Makefile          source 12's Makefile (see "Build and reproduce")
+  13-theta-descent-verify.py                      source 13 checks (1,622; needs SymPy)
+  13-theta-descent-build.py                       source 13's build script (see "Build and reproduce")
 data/
   08-finite-recurrences-verification.txt, 08-finite-recurrences-build_report.txt
   09-entire-hahn-holonomic-verification_results.txt, 09-entire-hahn-holonomic-build_report.txt
@@ -40,16 +46,22 @@ data/
   11-coarsening-differential-rigidity-build_audit.json    build audit of the 20-page source 11 manuscript
   12-coefficient-field-rigidity-verification.json         recorded run of the source 12 checks
   12-coefficient-field-rigidity-build_report.json         build report of the 23-page source 12 manuscript
+  13-theta-descent-verification.json      recorded run of the source 13 checks (precision q^128)
+  13-theta-descent-requirements.txt       sympy>=1.12,<2
+  13-theta-descent-build_report.json      build and validation record of the 21-page source 13 manuscript
 ```
 
 Every label in `article.tex` carries the prefix `hol:`; the nonlinear part
-uses the sub-prefix `hol:nl:` and the coefficient-field part `hol:cf:`. The
-merge of sources 11 and 12 renamed or removed no label: the report had 199
-labels before it and had 274 after it, all 199 original labels still present.
-The later coefficient-field review adds `hol:cf:cor:meromorphicmixed`, giving
-275 labels while preserving every earlier label and number.
-The audit files and programs keep the source numbers `08` to `12` of the
-batches they arrived in, and the audit files keep their sources' own
+uses the sub-prefix `hol:nl:`, the coefficient-field part `hol:cf:` and the
+theta-descent part `hol:td:`. The merge of sources 11 and 12 renamed or
+removed no label: the report had 199 labels before it and had 274 after it,
+all 199 original labels still present. The later coefficient-field review
+adds `hol:cf:cor:meromorphicmixed`, giving 275 labels while preserving every
+earlier label and number. The merge of source 13 adds 85 labels, all with the
+prefix `hol:td:`, giving 360; all 275 earlier labels are present and keep
+their numbers (checked against the `.aux` files of the builds before and after
+the merge). The audit files and programs keep the source numbers `08` to `13`
+of the batches they arrived in, and the audit files keep their sources' own
 notation and theorem numbering. No source manuscript is shipped.
 
 ## Why one report
@@ -167,6 +179,76 @@ bound holds for every `k`, and its coefficient principle over a Laurent field
   statement for nonrational quotients of entire series (Corollary 22.9).
   Neither delivered source states that additional consequence.
 
+## Source 13: the theta-descent part
+
+| | Manuscript | Pin | Contributes |
+|---|---|---|---|
+| **13** | *Theta Descent and the Exact Boundary of Differential Rigidity* (21 pages, 23 September 2026) | `4cdeaec` | The exact boundary (Theorem H); the series `𝒯_p = 1 + Σ_{n≥1} p^(n²) C_n(z)`, its Taylor coefficients, exact strong domain, product, zeros and local valuations (Section 23); its cleared third-order equation and the elliptic identity behind it (Theorem 24.1); algebraic independence of `𝒯_p, 𝒯_p', 𝒯_p''`, the differential field and non-D-finiteness (Theorems 24.8, 24.10, Corollary 24.9, Proposition 24.11); surreal, omnific and example consequences (Sections 25.3–25.4); Question 19.10. Files `13-theta-descent-*`. |
+
+Source 13 answers Question 19.1 (`hol:q:nonlinear`) in the case sources 11
+and 12 left open, groups with an order unit. At its pin `4cdeaec` this report
+was exactly the five-source text (no commit touched the directory between the
+pin and the placement), so its references to Question 19.1, its statement and
+status passage, Theorem E and the coefficient-field part were accurate.
+
+- **Placement.** The part forms Sections 23–25, after Section 22, so that
+  Sections 1–22, Questions 19.1–19.9 and Theorems A–G keep their numbers; the
+  conclusion is now Section 26. Its principal theorem is Theorem H in the
+  introduction, and its one new question is Question 19.10.
+- **Coefficient field.** Any field `k` of characteristic zero, as for the two
+  previous parts (Convention 23.1); not transferred to Theorems A–C.
+- **Renamed symbols** (Section 23.1): the variable `x → z`; `h, q = t^h → μ,
+  p = t^μ`; `H_h, D_h → Δ_μ, O_{Δ_μ}`; `F_q → 𝒯_p` (`F` is the series of
+  Theorem 11.2); the bilateral `Θ_q → Ψ_p` (`Θ_p` is the partial theta series);
+  zeros `r_m → x_m`; `Q = q², s_r(Q), c → p², 𝒬_r(p²), 𝔠`; `A_f, H_f, J_f,
+  B_f → 𝒜[f], ℋ[f], 𝒦[f], ℬ[f]`; `δ = u d/du, s = u − u⁻¹ → ϑ_u, ž`;
+  `σ, τ → 𝖲, 𝖲_a`; the Laurent ring `𝒜 → 𝒰_μ`; `L, A, V (in u) → ψ_1, ψ_2,
+  ψ_3`; `ℓ, B = A', R(T) → 𝓛, 𝒜_1, Φ(T)`; the Newton profile `w_γ` is the
+  coefficient Gauss value `γ_δ`; `No(i) → No[i]`; source 13's Theorem 1.2 is
+  Theorem H. The shipped audit files keep the source's notation.
+- **Printed once:** the definitions of an order unit and of strong
+  summability, the cofinal-valuation lemma (Lemma 2.3(a)), the positive-support
+  lemma (Lemma 2.1(2)), the surreal embedding (2.4), the bilateral theta
+  domain (the Hahn–Tate report's `tate:thm:theta`, since `Ψ_p(u)` is that
+  report's theta series at the nome `p²` and argument `−pu`), and source 13's
+  Section 7, the no-order-unit direction, which is Theorem E(a) (its
+  Euler-derivative presentation is recorded in Remark 25.1). For `k = C`,
+  non-D-finiteness of `𝒯_p` is also a case of Theorem A; source 13's proof,
+  valid for every `k`, is kept.
+- **Two steps written out by the merge.** Lemma 24.5 states and proves that
+  substituting `z = u + u⁻¹` is a ring homomorphism from the strongly entire
+  series into the Laurent ring `𝒰_μ`, compatible with `ϑ_u = ž D_z`; source
+  13's minimal-order proof used this without stating it. Lemma 24.7 replaces
+  source 13's "formal meromorphic germs" argument for `ψ_3 = ϑ_u ψ_2 ≠ 0` by
+  the global identity `Ψ_p³ ψ_3 = p(u − u⁻¹) + O(p²)`, transferred to the Hahn
+  field by the injective map `p ↦ t^μ`. The passage from the complex elliptic
+  identity to `k((t^Γ))` is written as three ring maps (Section 24.3).
+- **Merge additions** (marked "merge"): the corner data of the cleared
+  equation (Proposition 24.2: `d_P = 6`, `w_P = 0`, `χ_P = 0`, and
+  `I_P = −(4𝔠³ − g₂𝔠 − g₃) = 4p² + 48p⁴ + …`, a nonzero constant, so
+  `I_P ≠ 0` alone does not force polynomiality; the weight-zero part of `ℋ` is
+  the vanishing-corner equation of Proposition 16.4); clause (iv) of Theorem G
+  ("some nonpolynomial `f ∈ E_Γ(k)` is differentially algebraic"), proved in
+  Section 25.1 from Theorem H; Corollary 25.2 (Theorem E(a) and (c) hold
+  exactly when there is no order unit, and with one `𝒯_p` gives the mixed
+  dependence of Theorem G(iii) for every nontorsion `q`, including
+  `v(q) = 0`); and the consistency statements of Section 25.2.
+- **Consistency.** Without an order unit `𝒯_p` is not entire, so Theorem E
+  is not contradicted; its domain equals the necessary region of Proposition
+  20.9. Theorem D (order one) and the corner criterion hold (`χ_P = 0`).
+  `cvr(𝒯_p) = 1`, so Theorem F does not apply. The coefficient values of `𝒯_p`
+  lie in `Zμ`, whose convex hull is all of `Γ`, so the descent theorem does not
+  apply. `Θ_p` and `G` are untouched; whether they are differentially
+  algebraic stays open. Question 19.4 (linear mixed equations at unit
+  valuation) stays open. Question 19.8 stays open; `𝒯_p` shows what any answer
+  must avoid.
+- **Verified for this merge.** The source 13 suite was rerun on a copy
+  (Python 3.14.4, SymPy 1.14.0) and reproduced its record apart from the
+  interpreter version and elapsed time. An independent SymPy script (not
+  shipped) checked the cleared equation and the product modulo `p^50`, the
+  expansions of `𝔠, g₂, g₃`, the rational forms, the identities behind Lemmas
+  24.5 and 24.7, and the corner data (19 corner monomials).
+
 ## What the report claims
 
 Let `K = C((t^Γ))` for a nonzero set-sized ordered abelian group `Γ`, **not
@@ -250,8 +332,10 @@ strongly entire series and `Frac E_Γ(k)` their fraction field in `𝕂((z))`:
 - **Theorem G** (12). `Γ` has an order unit ⇔ some nonpolynomial strongly
   entire series has coefficients in a field of finite transcendence degree
   over `k` ⇔ for some nonpolynomial strongly entire `f` and nontorsion `q` the
-  mixed jets `(D_z^j f)(q^i z)` are algebraically dependent. Witness: the
-  partial theta series `Θ_p`, `p = t^μ`.
+  mixed jets `(D_z^j f)(q^i z)` are algebraically dependent ⇔ (iv, added from
+  source 13) some nonpolynomial strongly entire series is differentially
+  algebraic. Witnesses: the partial theta series `Θ_p`, `p = t^μ`, for the
+  first three, and `𝒯_p` of Theorem H for all of them.
 - The engine: **one finitely generated coefficient field** for every finite
   differential relation (11 and 12) and every mixed relation with dilations
   whose quotients are not roots of unity (12, through the Skolem–Mahler–Lech
@@ -282,6 +366,50 @@ strongly entire series and `Frac E_Γ(k)` their fraction field in `𝕂((z))`:
   independent jets, and the fraction field has differential transcendence
   degree `2^ℵ0` over `K(z)`.
 
+The theta-descent part (source 13, Sections 23–25) also works over
+`𝕂 = k((t^Γ))` for any field `k` of characteristic zero. For `μ > 0` put
+`p = t^μ`, let `C_n` be the monic Chebyshev polynomials (`C_0 = 2`, `C_1 = z`,
+`C_(n+1) = z C_n − C_(n−1)`, so `C_n(u + u⁻¹) = u^n + u^(−n)`), and put
+`𝒯_p(z) = 1 + Σ_{n≥1} p^(n²) C_n(z)`.
+
+- **Theorem H, the exact boundary.** `Γ` has an order unit ⇔ some
+  nonpolynomial strongly entire series is differentially algebraic over `𝕂(z)`
+  ⇔ some nonpolynomial strongly entire `f` satisfies an algebraic differential
+  equation of order three while `f, f', f''` are algebraically independent
+  and `f'''` has degree two over `𝕂(z)(f, f', f'')`. For an order unit `μ`,
+  `𝒯_p` is such an `f`, and it is not D-finite. That the second condition
+  implies the first is Theorem E(a), which source 13 proves again.
+- **Exact domain** (Theorem 23.5): for every `μ > 0`, the strong domain of
+  `𝒯_p` is `{0} ∪ {x : v(x) ≥ −Nμ for some N}`, the valuation ring of the
+  coarsening by the convex subgroup generated by `μ`; so `𝒯_p` is entire
+  exactly when `μ` is an order unit. The Taylor coefficients are explicit, with
+  `v(a_m) = m²μ` (Proposition 23.3).
+- **Product and zeros** (Theorem 23.6): `𝒯_p(x) = Π(1 − p^(2m)) Π(1 +
+  p^(2m−1) x + p^(4m−2))` on the domain; the zeros are exactly
+  `x_m = −(p^(2m−1) + p^(−(2m−1)))`, all simple, with exact derivative
+  valuations and an exact linearization on the nearest-root ball
+  (Proposition 23.7).
+- **The equation** (Theorem 24.1): for `f = 𝒯_p`,
+  `(z² − 4)𝒦² − 4ℬ³ + g₂ℬf⁴ + g₃f⁶ = 0`, with
+  `ℋ = (z² − 4)(ff'' − f'²) + zff'`, `𝒦 = fℋ' − 2f'ℋ`, `ℬ = 𝔠f² − ℋ` and
+  Lambert constants `𝔠, g₂, g₃` in the nome `p²`; equivalently
+  `(z² − 4)(𝒜')² = 4(𝔠 − 𝒜)³ − g₂(𝔠 − 𝒜) − g₃` with `𝒜 = ℋ/f²`. It holds for
+  every `μ > 0`.
+- **Minimal order three** (Theorem 24.8, Corollary 24.9): through
+  `z = u + u⁻¹` the series becomes the bilateral theta series `Ψ_p`, and three
+  difference-field arguments for `u ↦ p²u` show that `Ψ_p, ϑ_uΨ_p, ϑ_u²Ψ_p`,
+  hence `𝒯_p, 𝒯_p', 𝒯_p''`, are algebraically independent. The differential
+  field is presented by a rational system of degree two over a rational
+  function field (Theorem 24.10); `𝒯_p` satisfies no linear differential
+  equation (Proposition 24.11).
+- **Surreal and omnific** (Section 25.3): with `Γ = R`, `p = ω⁻¹`, `𝒯_p` is
+  entire on `C((ω^(−R))) ⊆ No[i]` but not on `No[i]` (it fails at `ω^ω`); its
+  zeros `−ω^(2m−1) − ω^(−(2m−1))` are not omnific integers, with explicit
+  omnific floors and ceilings and exact rounding-error valuations
+  (Corollary 25.3).
+- Examples and the affine corollary (Section 25.4); the merge additions listed
+  under "Source 13" above.
+
 ## What the report does not claim
 
 - The arbitrary-rank classification is offered as a **proposed original
@@ -304,19 +432,25 @@ strongly entire series and `Frac E_Γ(k)` their fraction field in `𝕂((z))`:
   derivation is restated as D-finite rigidity.
 - Finite-order dilations are excluded from the main dilation theorem
   (Section 9). **No universal all-order rigidity theorem is claimed for
-  value groups with an order unit.** Theorem F still gives all-order
-  independence for individual series with infinite coefficient-value rank,
-  including the rank-one example of Theorem 21.20. Source 10 answers the
-  first-order case of the nonlinear question, plus the higher-order equations
-  with `χ_P ≠ 0` and positive-weight Euler relations, for every `Γ`; sources 11
-  and 12 answer all orders, including a vanishing residue corner, only when
-  `Γ` has no order unit. With an order unit, the universal assertion for order
-  two or more with a vanishing residue corner stays open (Question 19.1, re-scoped twice: from what was
-  Question 15.1, and now to groups with an order unit); the equation
-  `z²ff'' + zff' − z²f'² = 0` has polynomial solutions of every degree but is not
-  a nonpolynomial counterexample (Proposition 16.4), and partial theta is not a
-  counterexample either (it satisfies a dilation equation). The escape proof
-  does not extend to nonlinear equations in any order. Mixed equations at unit
+  value groups with an order unit**, and none can hold: Theorem H gives a
+  nonpolynomial strongly entire series with an algebraic differential
+  equation of order three for every such group. Theorem F still gives
+  all-order independence for individual series with infinite
+  coefficient-value rank, including the rank-one example of Theorem 21.20.
+  Source 10 answers the first-order case of the nonlinear question, plus the
+  higher-order equations with `χ_P ≠ 0` and positive-weight Euler relations,
+  for every `Γ`; sources 11 and 12 answer all orders, including a vanishing
+  residue corner, when `Γ` has no order unit; source 13 answers the case with
+  an order unit by the example of order three. Whether a nonpolynomial
+  strongly entire series can have minimal order exactly two, and a
+  classification of the differentially algebraic ones, stay open
+  (Question 19.1, re-scoped three times: from what was Question 15.1, to
+  groups with an order unit, and now to order two). The equation
+  `z²ff'' + zff' − z²f'² = 0` has polynomial solutions of every degree but is
+  not a nonpolynomial counterexample (Proposition 16.4); partial theta is not
+  a counterexample either (it satisfies a dilation equation), and whether
+  `Θ_p` or `Σ t^(n²) z^n` is differentially algebraic is not decided. The
+  escape proof does not extend to nonlinear equations in any order. Mixed equations at unit
   valuation are open when `Γ` has an order unit (Question 19.4, formerly 15.2,
   now re-scoped); several dilations are open with an order unit and for
   parameters with a root-of-unity quotient (Question 19.6, re-scoped).
@@ -336,7 +470,8 @@ strongly entire series and `Frac E_Γ(k)` their fraction field in `𝕂((z))`:
   Hu–Yang through metadata only, targeted repository comparison at `048b72c`).
 - The coefficient-field part keeps every limitation of sources 11 and 12,
   listed with source tags as C1–C26 in Section 22.7: among them, the
-  order-unit case is not settled and no counterexample is given; not claimed
+  order-unit case is not settled and no counterexample is given (source 13
+  has since settled it; the non-claim is kept as the sources' statement); not claimed
   new are classical coefficient recurrences (Hurwitz, Laohakosol–Kongsakorn–
   Ubolsri), finite generation, the valuation-rank inequality, the
   Skolem–Mahler–Lech theorem (imported through Bell's Theorem 1.1, Lech's
@@ -356,11 +491,33 @@ strongly entire series and `Frac E_Γ(k)` their fraction field in `𝕂((z))`:
   2026, targeted repository comparison at `465a54b`). The separately
   identified Corollaries 22.8 and 22.9 are consequences assembled here from
   those sources, without a historical priority claim.
+- The theta-descent part keeps every limitation of source 13, listed as
+  T1–T19 in Section 25.6: among them, no Lean formalization, referee report or
+  certified priority; the triple product, Chebyshev, theta–elliptic
+  identities are classical, with no novelty claim for third-order theta
+  relations; the no-order-unit direction (Theorem E(a)) and the bilateral
+  theta domain and Hahn–Tate uniformization are prior repository material;
+  `𝒯_p` is not entire on `No[i]` (it fails at `ω^ω`) and entireness is
+  relative to one field; `D_z` is not the Berarducci–Mantova derivation; the
+  finite checks prove no summability, transcendence, minimal order,
+  classification, zero-set completeness or novelty; no classification is
+  given and minimal order two is open; "no omnific zero" concerns the strong
+  domain only and is not a Diophantine statement; local valuation formulas
+  are not uniform across roots; no numerical theta-value transcendence is
+  used, and independence concerns formal functions; the minimal-order
+  arguments assume an order unit and `p` is the monomial `t^μ`; Sebbar and
+  Ohyama were not read in full, and broad searches are not evidence of
+  absence; the repository comparison at `4cdeaec` was targeted; the answered
+  question is this report's, not a named conjecture; the classification
+  quantifies over the scale; without an order unit only differentially
+  algebraic entire series are excluded; the poles at `z = ±2` of the rational
+  system are chart artefacts; and the merge's additions (T19) carry no
+  priority claim.
 - The finite checks validate coefficient conversions, identities, cancellation
   examples and finite ordered-group examples. They do not establish the
   infinite support arguments, the cofinality claims, the generic-line theorem,
   the nonexistence of annihilating operators, the coefficient-field theorem,
-  the descent, or any independence statement.
+  the descent, any independence statement, or the minimal order of `𝒯_p`.
 
 ## Relation to the neighbouring reports
 
@@ -372,8 +529,9 @@ takes from it the background facts about countable cofinality and the group
 `⊕_{j≥0} Q ω^j`. **The two order-unit dichotomies are not the same theorem.**
 There, the order unit decides Hermite interpolation and the Bézout property of
 the ring. Here, it decides which annihilating operators a nonpolynomial member
-can satisfy (Theorem B) and, without it, differential transcendence in all
-orders (Theorem E) and mixed-jet independence (Theorem G). Neither implies the
+can satisfy (Theorem B), whether a nonpolynomial member can be differentially
+algebraic (Theorem H; without it, differential transcendence in all orders by
+Theorem E), and mixed-jet independence (Theorem G). Neither implies the
 other. The polynomial half of the coarsening descent (Theorem 21.11) is a
 coefficient-field form of that report's intersection `E_Δ ∩ K_Γ[[Z]] = K_Γ[Z]`
 for noncofinal extensions.
@@ -400,6 +558,17 @@ continuum family of strongly entire series independent over the whole Hahn
 field (Theorem 22.6). Neither result weakens or rediscovers the other, and
 neither is transferred to the other's derivation.
 
+**[hahn-tate-uniformization](../hahn-tate-uniformization/)** studies the
+bilateral theta series `Σ (−1)^n q^(n(n−1)/2) u^n`, its strong domain and its
+product at arbitrary rank. The bilateral series `Ψ_p` of the theta-descent
+part is that series at the nome `p²` and the argument `−pu`; its domain and
+product are specialized here, not claimed anew, and the new material is the
+descent to the entire power series `𝒯_p` and its differential algebra.
+**[omnific-diophantine-geometry](../../surreal/omnific-diophantine-geometry/)**
+supplies the definition `Oz = Z ⊕ Π` (`odg:def:rings`) used for the omnific
+rounding of the zeros of `𝒯_{ω⁻¹}` (Corollary 25.3); that corollary concerns
+an infinite-series equation, not a Diophantine one.
+
 **[single-dilation-hahn-support](../single-dilation-hahn-support/)** also speaks
 of dilations, but there a dilation is an automorphism `t^g ↦ t^(qg)` of the
 scalar field; here it is always the argument dilation `f(z) ↦ f(λz)` with a
@@ -415,27 +584,37 @@ python code/10-nonlinear-rigidity-verify.py --output rerun-10.json
 pip install -r data/11-coarsening-differential-rigidity-requirements.txt
 python code/11-coarsening-differential-rigidity-verify.py --output rerun-11.json
 python code/12-coefficient-field-rigidity-verify.py --output rerun-12.json
+pip install -r data/13-theta-descent-requirements.txt
+python code/13-theta-descent-verify.py --precision 128 --output rerun-13.json
 ```
 
-The current build gives 90 pages with zero errors, zero warnings, zero overfull or
-underfull boxes, zero undefined references and zero duplicate PDF
-destinations, as did the 61-page build of the text before this merge. The
-programs of sources 08, 09, 10 and 12 use only the Python standard library
-with exact integer and rational arithmetic; source 11's uses exact SymPy and
-rational arithmetic (SymPy `>=1.12,<2`). Run them on a copy of this directory.
+The current build gives 118 pages with zero errors, zero warnings, zero
+overfull or underfull boxes, zero undefined references, zero multiply defined
+labels and zero duplicate PDF destinations; the build of the text before the
+merge of source 13 gave 91 pages, equally clean. The programs of sources 08,
+09, 10 and 12 use only the Python standard library with exact integer and
+rational arithmetic; those of sources 11 and 13 use exact SymPy and rational
+arithmetic (SymPy `>=1.12,<2`). Run them on a copy of this directory.
 `08-finite-recurrences-verify.py`, `10-nonlinear-rigidity-verify.py` and
 `12-coefficient-field-rigidity-verify.py` require an explicit `--output` path;
 the last two refuse an existing one (12 unless `--force`), so that a rerun
 cannot overwrite the delivered record. `11-coarsening-differential-rigidity-verify.py`
 without `--output` writes `verification.json` in the current directory, so
-always pass a new path. The recorded runs passed 3,705 checks (08), 2,043
+always pass a new path. `13-theta-descent-verify.py` requires `--output` but
+overwrites an existing file, and its default precision is `q^64`, while the
+record was made at `--precision 128`. The recorded runs passed 3,705 checks (08), 2,043
 checks (09), 2,113 checks (10, seed 20260922, six groups: 450 + 240 + 480 +
 500 + 360 + 83), 8,673 cases in eight groups (11; 8,136 of them binary-prefix
-comparisons) and 9,308 checks (12), with no failures. For this merge the
+comparisons), 9,308 checks (12) and 1,622 checks in eleven groups (13, at
+precision `q^128`: the product and the third-order equation have zero
+residual in every coefficient below `q^128`), with no failures. For this merge the
 source 11 and 12 suites were rerun on a copy (Python 3.14.4, SymPy 1.14.0) and
 reproduced their records exactly apart from the recorded interpreter version
 (recorded runs: Python 3.13.5, SymPy 1.14.0); an earlier rerun of the source 10
-suite reproduced its record exactly.
+suite reproduced its record exactly. For the merge of source 13 its suite
+was rerun on a copy (Python 3.14.4, SymPy 1.14.0) and reproduced its record
+apart from the interpreter version and the elapsed time (recorded run: Python
+3.13.5, SymPy 1.14.0).
 
 The build helpers were written for their sources' own manuscripts and are
 kept byte-identical; do not use them here, use `latexmk` on a copy.
@@ -453,6 +632,14 @@ the 20-page source 11 manuscript (its `pdf_sha256` and `tex_sha256` hash that
 manuscript's PDF and source, which are not in this directory), and
 `data/12-coefficient-field-rigidity-build_report.json` the 23-page source 12
 manuscript (it records a rendering-tool path of the delivery environment).
+`code/13-theta-descent-build.py` typesets an `article.tex` in its own
+directory `code/`, where there is none: run here it creates `code/build/`,
+writes a failed first-pass log there and exits with an error (its `--verify`
+option would call a `verify.py` that is not present under that name). In the
+delivery layout it wrote only into `build/`. `data/13-theta-descent-build_report.json`
+describes the 21-page source 13 manuscript; its `article_tex_sha256` and
+`article_pdf_sha256` hash that manuscript's source and PDF, which are not in
+this directory.
 
 
 ## Subsequent proof review
@@ -620,3 +807,23 @@ wording recorded in their status paragraphs. Source 11's Question 9.1 and
 source 12's Question 10.1 are the same question and were merged into the
 re-scoped Question 19.1; their other questions are 19.7–19.9. The coefficient-field
 part has not been independently refereed or formalized.
+
+## Merge of source 13
+
+The code, data and audit files of source 13 are byte-identical to the
+delivered package. Not shipped: its article source, PDF and delivery README,
+and its checksum list (all ten entries verified before it was dropped). Every
+result of source 13 is printed in Sections 23–25 or the introduction, with its
+proof, except the facts listed above as printed once; Section 23.1 maps each
+numbered result to its place here. The statements of this report that called
+the order-unit case open have been updated: the abstract, Sections 1
+(Theorem D remark, Theorem G and the remark after it), 5 (Remark 5.8), 11.3
+(the tables and Corollary 11.3), 13.3 (Lean coverage), 16.2, 17.1, 18 (now six
+suites), 19 (the attribution ledger, N1–N3, Questions 19.1, 19.4 and 19.8),
+21.4, 22.5, 22.7 (C1), the conclusion, the appendices and this README.
+Question 19.1 is re-scoped to order two, with its previous wording recorded
+in its status paragraph; source 13's Questions 11.1 and 11.2 were merged into
+it, and its Question 11.3 is Question 19.10. The reciprocal statements in
+`docs/README.md` and `docs/manifest.tex` are outside this directory. The
+theta-descent part has not been independently refereed or formalized, and it
+is outside the scope of the two earlier main-text reviews recorded above.
