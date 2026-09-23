@@ -6439,9 +6439,11 @@ monomial by $t^{-a_{\lambda}+a_{\mu}}$ and makes it constant. Every remaining
 coefficient is therefore constant and connects only spaces with the same
 frequency, which proves $[D,N]=0$. Within one frequency space, order the
 distinct values $a_{\lambda}$ increasingly; every off-diagonal block of $N$
-maps a smaller value to a larger one, so $N$ is block triangular with nilpotent
-diagonal blocks, hence nilpotent of index at most $n$. The gauge identity is
-the product rule.
+maps a smaller value to a larger one. Thus $N$ is block triangular
+with nilpotent diagonal blocks. Its characteristic polynomial is the
+product of their characteristic polynomials, hence is $X^{n}$;
+Cayley--Hamilton gives $N^{n}=0$. The gauge identity follows from the
+product rule.
 \end{proof}
 
 For a fixed residual Jordan basis, $N$ is determined polynomially by the
@@ -6477,9 +6479,12 @@ description \cref{diff:eq:Icut} with $f=r^{-1}\log\omega$.
 (ii) This is the second proof of \cref{diff:cor:oscillator} with $\derT$ in
 place of $\der$ and (i) in place of \cref{diff:lem:smallnegative}: since
 $\derT$ commutes with conjugation, $\derT(z\bar z)=0$, so $z\bar z$ is a
-nonnegative real constant; if it is positive, the real and imaginary parts
-$u,v$ are finite and $\derT u=-bv$, $\derT v=bu$ make them infinitesimal,
-which is impossible. Equivalently $\der z=i(-bt)z$, whose accumulated phase
+nonnegative ordinary real constant. If $z\neq0$, this constant is
+positive, so the real and imaginary parts $u,v$ are finite. By (i),
+$\derT u=-bv$ and $\derT v=bu$ are infinitesimal. Since $b$ is a
+nonzero ordinary real, both $u$ and $v$ are infinitesimal, making
+$u^{2}+v^{2}$ infinitesimal, contrary to its positive constant value.
+For $b=0$, the assertion is the constant-field statement for $\derT$. Equivalently $\der z=i(-bt)z$, whose accumulated phase
 $b\tau$ is infinite for $b\neq0$; this is the case $p=1$ of
 \cref{diff:cor:power} scaled by $-b$, but the route above needs no primitive
 and no \ref{diff:BM:surj}.
@@ -6593,14 +6598,21 @@ Coefficient comparison gives
 \begin{equation}\label{diff:rs:eq:morphismcoeff}
  \bigl(\gamma-i(b-c)\bigr)X_{\gamma}=N_{b}X_{\gamma}-X_{\gamma}N'_{c}.
 \end{equation}
-The operator on the right is nilpotent, so unless $\gamma-i(b-c)=0$ a finite
-geometric inverse forces $X_{\gamma}=0$; since $\gamma$ and $b-c$ are real this
-happens only for $\gamma=0$ and $b=c$, and the surviving coefficient satisfies
-\cref{diff:rs:eq:intertwine}. Conversely every such constant matrix is a
-morphism. An invertible morphism is invertible on each frequency space, where
-\cref{diff:rs:eq:intertwine} makes the nilpotent matrices similar; similarity of
-nilpotent complex matrices is determined by Jordan block sizes. Transport
-through the matrices $F$.
+The operator $X\mapsto N_bX-XN'_c$ has
+$(m_b+m'_c-1)$-st power zero: its two summands commute, and every
+term in that power contains either $N_b^{m_b}$ or $(N'_c)^{m'_c}$.
+If the scalar $\gamma-i(b-c)$ is nonzero, a finite geometric inverse
+therefore forces $X_{\gamma}=0$. This scalar vanishes exactly when
+$\gamma=0$ and $b=c$, because $\gamma,b,c$ are real. The surviving
+coefficient satisfies \cref{diff:rs:eq:intertwine}, and conversely
+every such constant matrix is a morphism.
+
+An invertible morphism is invertible on each frequency space, where
+\cref{diff:rs:eq:intertwine} makes the nilpotent matrices similar;
+similarity of nilpotent complex matrices is determined by Jordan block
+sizes. For the original systems, transport a constant intertwiner $C$
+to $FC(F')^{-1}$. Thus constancy is a statement in the reduced frames;
+the original morphism need not have constant entries.
 \end{proof}
 
 \begin{corollary}[Exact morphism dimensions over $\KR$]
@@ -6615,8 +6627,14 @@ for $A'$, then
 \end{corollary}
 \begin{proof}
 A map between nilpotent Jordan blocks of sizes $p,q$ is a $\C[X]$-linear map
-$\C[X]/(X^{q})\to\C[X]/(X^{p})$, determined by an image annihilated by $X^{q}$,
-a space of dimension $\min(p,q)$. Add over block pairs.
+$\C[X]/(X^{q})\to\C[X]/(X^{p})$, determined by the image of $1$.
+That image must be annihilated by $X^{q}$, and the permitted subspace
+has basis
+\[
+ X^{\max(p-q,0)},\,X^{\max(p-q,0)+1},\,\ldots,\,X^{p-1}.
+\]
+There are $\min(p,q)$ basis elements. Add over block pairs with the
+same frequency; distinct frequencies contribute zero.
 \end{proof}
 
 \begin{theorem}[Classification over the whole surcomplex field]
@@ -6633,8 +6651,14 @@ ambient morphism already has entries in $\KR[\tau]$.
 With $G_{\tau},G'_{\tau}$ from \cref{diff:rs:thm:selection}, a morphism is
 $X=G_{\tau}Z(G'_{\tau})^{-1}$ with $\derT Z=iDZ-ZiD'$, whose scalar entries solve
 $\derT z=i(b-c)z$. By \cref{diff:rs:lem:eulermode}(ii) unequal frequencies give
-zero and equal ones give arbitrary complex constants. Both $G_{\tau}$ and its
-inverse have entries in $\KR[\tau]$.
+zero and equal ones give arbitrary complex constants. Hence the
+morphism space is the direct sum of the matrix spaces
+$\Hom_{\C}(V'_b,V_b)$, of dimensions $m_bm'_b$.
+An invertible morphism exists exactly when $m_b=m'_b$ for every $b$,
+which is equality of the frequency multisets.
+Both $G_{\tau}=F\exp(\tau N)$ and its inverse
+$\exp(-\tau N)F^{-1}$ have entries in $\KR[\tau]$, so the same is
+true of every transported morphism.
 \end{proof}
 
 \begin{remark}[What the two classifications distinguish]
@@ -6647,7 +6671,27 @@ $\SC$ therefore erases exactly the nilpotent data in this class, and not the
 frequency multiplicities.
 \end{remark}
 
-The normal forms also make tensor constructions explicit. If $A$ and $A'$ have
+For a two-dimensional example, take the constant Euler coefficients
+\[
+ N=\begin{pmatrix}0&1\\0&0\end{pmatrix}
+ \quad\text{and}\quad 0_{2}.
+\]
+Both frequency multisets are $\{0,0\}$. Over $\KR$, their Jordan
+partitions are $(2)$ and $(1,1)$, so they are not gauge equivalent.
+Over $\SC$, the matrix $I+\tau N$, with inverse $I-\tau N$, satisfies
+$\derT(I+\tau N)=N(I+\tau N)$ and gives an equivalence.
+The endomorphisms of the first system over $\KR$ are precisely
+$\left(\begin{smallmatrix}a&b\\0&a\end{smallmatrix}\right)$ with
+$a,b\in\C$, a two-dimensional space. Over $\SC$ they are
+$(I+\tau N)C(I-\tau N)$ for arbitrary $C\in\Mat_{2}(\C)$, a
+four-dimensional space.
+
+The normal forms also make tensor constructions explicit.
+For systems of sizes $n,n'$, the tensor coefficient is
+$A\otimes I_{n'}+I_n\otimes A'$, as the product rule on $y\otimes y'$
+shows. The notation $A\otimes A'$ for a system in the next corollary
+means this differential tensor product, not the matrix $A\otimes A'$
+alone. If $A$ and $A'$ have
 frequency blocks $(b,N_{b})$ and $(c,N'_{c})$, their tensor product has blocks
 $(b+c,\ N_{b}\otimes I+I\otimes N'_{c})$, the nilpotent sum being nilpotent
 because its two terms commute; a dual has frequencies $-b$ and nilpotents
@@ -6664,6 +6708,14 @@ In particular two rank-one systems with no nonzero ambient solution, with
 frequencies $b\neq0$ and $-b$, have a tensor product with a fundamental
 solution.
 \end{corollary}
+\begin{proof}
+Use the tensor gauge $G_{\tau}\otimes G'_{\tau}$. It reduces the
+coefficient to $i(D\otimes I+I\otimes D')$, whose scalar frequencies
+are the pairwise sums $b+c$. The Euler-mode lemma leaves exactly the
+constant coordinates with $b+c=0$, of total dimension
+$\sum_bm_bm'_{-b}$. This proves the formula, including the stated
+rank-one case.
+\end{proof}
 
 This does not contradict the obstruction: a nonzero horizontal vector of a
 tensor product need not be a tensor product of horizontal vectors of its
@@ -6720,9 +6772,17 @@ recipe --- integrate the imaginary parts of the instantaneous eigenvalues of the
 $\der$-coefficient and keep purely infinite parts --- returns the correct
 spectrum. The characteristic polynomial of $A$ is monic with coefficients in
 the valuation ring $\KR^{\geq0}$ of the algebraically closed field $\KR$, and it
-reduces under $\st$ to the characteristic polynomial of $A_{0}$; so the
-eigenvalues $\mu_{j}$ of $A$ lie in $\KR^{\geq0}$ and, after renumbering,
-$\mu_{j}-\lambda_{j}\in\KR^{>0}$. The eigenvalues of $-tA$ are $-t\mu_{j}$, and
+reduces under $\st$ to the characteristic polynomial of $A_{0}$.
+To see that every root $\mu$ is finite, suppose $v(\mu)<0$.
+In a monic equation of degree $n$, the term $\mu^n$ then has
+strictly smaller valuation than every lower-degree term, whose
+coefficient has nonnegative valuation; a unique least term cannot
+cancel. Thus every eigenvalue $\mu_j$ belongs to $\KR^{\geq0}$.
+Reducing the factorization $\prod_j(X-\mu_j)$ coefficientwise gives
+$\prod_j(X-\st(\mu_j))$, the characteristic polynomial of $A_0$.
+Its root multiset is therefore the residual eigenvalue multiset,
+including multiplicities. After renumbering,
+$\mu_j-\lambda_j\in\KR^{>0}$. The eigenvalues of $-tA$ are $-t\mu_j$, and
 $\Imm(-t\mu_{j})=-t\,b_{j}-t\,\Imm(\mu_{j}-\lambda_{j})$, whose second term is a
 real Hahn series of valuation greater than $1$, hence in $\Acl$ by
 \cref{diff:cor:valphase}. So $\Obs(\Imm(-t\mu_{j}))=\Obs(-b_{j}t)=b_{j}\tau$.
@@ -6765,13 +6825,22 @@ over $\KR$.
 \begin{proof}
 $\derT f=1$ means $\der f=-t$, and $-t\notin\der\KR$ by
 \cref{diff:eq:hahnimage} (\cref{diff:ex:logmissing}); directly, the
-$t^{0}$-coefficient of $\derT f$ vanishes by \cref{diff:rs:eq:eulerhahn}. If
-$\tau$ were algebraic over $\KR$, the finite extension $L=\KR(\tau)$ would be
-separable, the derivation would extend uniquely to it, and differentiation
-would commute with the field trace (write the trace as a sum over the distinct
-$\KR$-embeddings into an algebraic closure and use uniqueness of the
-extension). Then $\derT\bigl(\operatorname{Tr}_{L/\KR}(\tau)/[L:\KR]\bigr)=1$ with
-the argument in $\KR$, a contradiction.
+$t^{0}$-coefficient of $\derT f$ vanishes by \cref{diff:rs:eq:eulerhahn}.
+
+If $\tau$ were algebraic, let
+$P(X)=X^d+a_{d-1}X^{d-1}+\cdots+a_0$ be its monic minimal
+polynomial over $\KR$, with $d\geq1$. Differentiating $P(\tau)=0$
+and using $\derT\tau=1$ gives
+\[
+ \bigl(P^{\derT}+P'\bigr)(\tau)=0,
+\]
+where $P^{\derT}$ differentiates the coefficients and $P'$ is the
+formal polynomial derivative. The polynomial in parentheses has
+degree at most $d-1$, so minimality forces it to vanish identically.
+Its $X^{d-1}$-coefficient is $\derT a_{d-1}+d$. Hence
+$\derT(-a_{d-1}/d)=1$ with $-a_{d-1}/d\in\KR$, a contradiction.
+This argument uses characteristic zero and the coefficient formula,
+without a trace or algebraic-closedness assertion.
 \end{proof}
 
 \begin{theorem}[Minimal logarithmic repair]
@@ -6797,8 +6866,10 @@ $\tau^{\nu-1}$ is $FN^{\nu-1}C_{0}/(\nu-1)!\neq0$, and transcendence
 (\cref{diff:rs:lem:tautrans}) makes polynomial degree unambiguous. (ii) The
 field generated contains $\exp(\tau N)=F^{-1}(\cdot)C_{0}^{-1}$; the finite
 logarithm identity $\sum_{j=1}^{n-1}(-1)^{j+1}(E-I)^{j}/j=\tau N$ for
-$E=\exp(\tau N)$ recovers $\tau$ from a nonzero entry of $N$; the reverse
-inclusion is the fundamental-matrix formula. (iii) As a differential subfield of
+$E=\exp(\tau N)$ recovers $\tau$ from a nonzero entry of $N$.
+The identity is the formal identity $\log(\exp X)=X$ modulo $X^n$,
+evaluated at the nilpotent matrix $\tau N$; every displayed sum is
+finite. The reverse inclusion is the fundamental-matrix formula. (iii) As a differential subfield of
 $\SC$, $\KR(\tau)$ has constants $\C$. A differential automorphism sends $\tau$
 to another primitive of $1$, that is to $\tau+c$ with $c\in\C$; conversely
 transcendence makes each translation a field automorphism, and
@@ -6843,7 +6914,13 @@ So $\derT-A$ has finite-dimensional kernel and cokernel of equal dimension, and
 a Hahn solution of $\derT y-Ay=f$ exists if and only if $g_{0,0}\in N_{0}V_{0}$.
 Every forcing $f\in\KR^{n}$ nevertheless has a solution in $\KR[\tau]^{n}$, of
 $\tau$-degree at most the nilpotence index $\nu_{0}$ of $N_{0}$ ($\nu_{0}=1$ when
-$N_{0}=0$). If $V_{0}=0$ there is a unique solution in $\KR^{n}$, and it is also
+$N_{0}=0$). If $y_p$ is the constructed particular solution, all ambient
+solutions are
+\[
+ y=y_p+G_\tau c,\qquad c\in\Ker D\subseteq\C^n.
+\]
+They all belong to $\KR[\tau]^n$ and have the same degree bound.
+If $V_{0}=0$ there is a unique solution in $\KR^{n}$, and it is also
 the unique solution in $\SC^{n}$.
 \end{theorem}
 \begin{proof}
@@ -6853,7 +6930,11 @@ $(\gamma,b)\neq(0,0)$ the coefficient equation has the unique solution
  z_{\gamma,b}=\bigl((\gamma-ib)I-N_{b}\bigr)^{-1}g_{\gamma,b}
  =\sum_{k=0}^{m_{b}-1}\frac{N_{b}^{k}g_{\gamma,b}}{(\gamma-ib)^{k+1}},
 \end{equation}
-with support inside $\supp g_{b}$, so these coefficients form a Hahn vector. At
+with support inside $\supp g_b$: at each exponent it applies a
+finite ordinary complex linear map to the coefficient vector and
+introduces no new exponent. Taking the finite union over the frequency
+blocks therefore gives a Hahn vector, even if the inverse coefficients
+are unbounded as ordinary complex numbers. At
 $(0,0)$ the equation is $-N_{0}z_{0,0}=g_{0,0}$, solvable exactly when
 $g_{0,0}\in N_{0}V_{0}$, with homogeneous freedom $\Ker N_{0}$. This proves
 exactness at the two copies of $\KR^{n}$ and on the left; surjectivity of
@@ -6861,14 +6942,38 @@ $\hob_{A}$ follows from $f=Fv$ with constant $v\in V_{0}$, and rank--nullity for
 $N_{0}$ gives equal dimensions. For an arbitrary resonant forcing, replace the
 missing coefficient solution by
 \begin{equation}\label{diff:rs:eq:particular}
- p(\tau)=\sum_{k=0}^{\nu_{0}-1}\frac{\tau^{k+1}}{(k+1)!}N_{0}^{k}g_{0,0},
+ p(\tau)=\sum_{k=0}^{\nu_{0}-1}\frac{\tau^{k+1}}{(k+1)!}N_{0}^{k}g_{0,0}.
 \end{equation}
-for which $(\derT-N_{0})p=g_{0,0}$ by cancellation; adding it to the nonresonant
-Hahn solution and multiplying by $F$ gives a particular solution in
-$\KR[\tau]^{n}$. If $V_{0}=0$ nothing is missing, and the difference of two
-ambient solutions is an ambient homogeneous solution, which is zero by
-\cref{diff:rs:thm:selection}.
+Indeed,
+\[
+ \derT p=\sum_{k=0}^{\nu_0-1}\frac{\tau^k}{k!}N_0^kg_{0,0},
+ \qquad
+ N_0p=\sum_{k=1}^{\nu_0}\frac{\tau^k}{k!}N_0^kg_{0,0}.
+\]
+The last term of the second sum vanishes and all positive-degree
+terms cancel, leaving $(\derT-N_0)p=g_{0,0}$. Add $p$ to the
+nonresonant Hahn solution and multiply by $F$ to obtain a particular
+solution in $\KR[\tau]^n$. The difference of any two ambient
+solutions is homogeneous, so \cref{diff:rs:thm:selection} gives exactly
+the stated affine family. Its homogeneous term uses only $N_0$ and
+has degree at most $\nu_0-1$, proving the common degree bound.
+If $V_0=0$, nothing is missing and the homogeneous solution space is
+zero, giving uniqueness even in $\SC^n$.
 \end{proof}
+
+The degree bound for forcing is sharp. Let $A=N$ be the nilpotent
+Jordan block of size $\nu$, with $Ne_j=e_{j-1}$ for $j>1$ and
+$Ne_1=0$, and force by the constant vector $e_\nu$. Formula
+\eqref{diff:rs:eq:particular} gives
+\[
+ p(\tau)=\tau e_\nu+\frac{\tau^2}{2!}e_{\nu-1}
+             +\cdots+\frac{\tau^\nu}{\nu!}e_1.
+\]
+Every ambient solution differs from $p$ by $\exp(\tau N)c$,
+$c\in\C^\nu$, which has degree at most $\nu-1$. The leading
+coefficient $e_1/\nu!$ cannot cancel, so every solution has degree
+exactly $\nu$ over $\KR$. This includes $\nu=1$, where the equation
+is simply $\derT y=1$.
 
 \begin{remark}[Algebraic, not topological, Fredholm terminology; relation to item~N22]
 \label{diff:rs:rem:fredholm}

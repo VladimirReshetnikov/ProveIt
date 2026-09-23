@@ -3,13 +3,13 @@
 **The finite-primitive criterion, the phase obstruction, and support-certified
 coordinate systems**
 
-A merged research report, 166 pages, built from ten manuscripts. Everything in
+A merged research report, 167 pages, built from ten manuscripts. Everything in
 this directory other than `article.tex`, `article.pdf` and this README is
 preserved source material.
 
 ```
 article.tex                        the merged report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled 166-page report
+article.pdf                        the compiled 167-page report
 README.md                          this guide
 11-autonomous-dynamics-sources.md  member 11's literature and repository-review log, unmodified
 code/                              the verification programs and build scripts of the ten
@@ -23,14 +23,16 @@ members 11 and 12 carry the sub-prefixes `diff:aut:` and `diff:rs:`. No
 pre-existing label was renamed or removed (506 before, 685 after).
 
 The current proof review covers the earlier scalar, matrix, workspace and
-coordinate chains, and now Sections 23–24 of the regular-singular part:
-the Euler frame, positive-support calculus, normalized resonant form and
-finite resonance dependence. The review expands the dependency-tree proof
-and illustrates why retaining only the homological kernel can fail.
-It also distinguishes Euler-stable smaller fields from fields stable under
-the original derivation. Later regular-singular and autonomous proofs,
-remaining imports and source reconciliation are still pending; the scope
-and validation are recorded in the collection's [review record](../../REVIEW.md).
+coordinate chains, and now Sections 23–26 of the regular-singular part:
+the Euler frame, support and resonance arguments, spectral selection, both
+classifications, logarithmic repair and forced equations. The revisions
+expand the dependency and classification proofs, distinguish the two
+derivative frames, illustrate whole-block resonance and the effect of
+adjoining the logarithm, and prove the forced-solution degree bound sharp.
+Remaining regular-singular examples, workspace and procedure arguments,
+autonomous proofs, imports and source reconciliation are still pending;
+scope and validation are recorded in the collection's
+[review record](../../REVIEW.md).
 
 ## What the report is
 
@@ -727,6 +729,17 @@ the new whole-block example. All 48 historical code, data and source-log
 files remain byte-identical. The full Lean build and its 5,371-declaration
 axiom audit also pass; these documentation changes add no Lean coverage.
 The later regular-singular and autonomous arguments remain for review.
+
+The subsequent review of Sections 25–26 rebuilt the report at 167 pages
+in three passes, again without warnings or box issues; the revised pages
+were inspected. All eight member-12 suites passed on a temporary copy and
+matched the historical JSON. Additional exact checks covered the new
+two-dimensional classification example and Jordan blocks of sizes one
+through six in the logarithmic-repair and sharp forced-degree formulas.
+The 48 historical files remain byte-identical, and the full Lean build
+and 5,371-declaration axiom audit pass. The review now includes spectral
+selection, both classifications, logarithmic repair and all solutions of
+the forced equation; later sections and formalization remain separate.
 
 ## Re-running the source verifiers
 

@@ -452,6 +452,17 @@ not just the kernel of the homological operator. These resonances differ
 from integer relations among differential phases and from the scalar
 resonant coefficient at `t¹` discussed earlier in that report.
 
+For a regular-singular system, the gauge `F` gives the constant Euler
+coefficient `iD + N`, where `D` records residual frequencies and `N`
+is nilpotent and commutes with `D`. The gauge `G_τ = F exp(τN)`
+removes `N` after adjoining `τ`. Thus `K_ℝ`-classification retains
+the nilpotent Jordan partitions at each frequency, while classification
+over `No[i]` retains only frequency multiplicities. Constant intertwiners
+refer to the reduced frame; morphisms of the original systems are
+`F C (F′)⁻¹`. The tensor differential system of coefficients `A,A′`
+has coefficient `A ⊗ I + I ⊗ A′`, rather than the matrix product
+`A ⊗ A′` alone.
+
 Distinguish the ordered real surreal exponential, the strongly summed
 infinitesimal Hahn exponential, finite-angle `cis`, and a chosen global
 surcomplex exponential or global phase. A finite angle has ordinary period
