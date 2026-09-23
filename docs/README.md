@@ -17,9 +17,9 @@ hypotheses, limitations and provenance.
 ## Newest reports
 
 The [omnific Diophantine article](surreal/omnific-diophantine-geometry/)
-now assembles twelve manuscripts, and the
+now assembles thirteen manuscripts, and the
 [set-sized quotient article](surreal/set-sized-quotients-of-omnific-integers/)
-seventeen. The Diophantine proof review covers the original material in
+eighteen. The Diophantine proof review covers the original material in
 Sections 1–10 and current Sections 14 and 19, plus the new elementary
 definability, constant-term and reconstruction Sections 11–13. The
 Gaussian-fiber and étale-norm additions in Section 6 are also reviewed,
@@ -51,7 +51,10 @@ and eight companions to five existing reports. Those assemblies are now
 written, including convex factors, support cuts, Boolean branching, theta
 descent and curve rigidity; their new claims await proof review.
 Placement `66d7e55` adds a [quantum and gauge report](physics/quantum-and-gauge-scale-reductions/)
-and companions to five existing reports; those companions await integration.
+and companions to five existing reports. Their batch-29 assemblies are now
+written: logarithmic rigidity, exact homological dimensions, elementary-group
+kernels, convex factors and profinite obstructions, compact groups, and
+quantum/gauge reductions. These additions await independent proof review.
 The archives subsequently added in `190d301` await placement and reconciliation.
 
 Batch 23 (placed in `e4f8848`, written in `7af7056`) adds
@@ -129,13 +132,13 @@ not extend their earlier proof-review scope.
 | [Transcendence over bounded support](surreal/transcendence-over-bounded-support/) | `2^cf(G)` algebraically independent Hahn series over the fraction field of bounded-support series, and linear-disjointness descent; transcendence from the support, not the coefficients |
 | [Matrix scaling at surreal scales](surreal/matrix-scaling-at-surreal-scales/) | Fixed-margin diagonal scaling of positive Hahn matrices; the spanning-tree deletion gap is the exact gain; no Sinkhorn convergence claim |
 | [Vector and tensor fields](surreal/vector-and-tensor-fields/) | Layered tensor calculus with surreal coefficients in every dimension: Hahn-supported smooth fields, Taylor prolongation, Hodge and Stokes; 3D calculus and Minkowski fields as parts; not a physics claim |
-| [Euclidean three-space](surreal/euclidean-three-space/) | Coordinate and spherical geometry of `No³` with finite angles, and the rotation group `SO(3,No)` as a split extension with a perfect infinitesimal kernel; normal subgroups by valuation cuts and the universal set-sized quotient of `SO(3,No)` |
+| [Euclidean three-space](surreal/euclidean-three-space/) | Coordinate and spherical geometry of `No³` with finite angles, and the rotation group `SO(3,No)` as a split extension with a perfect infinitesimal kernel; normal subgroups by valuation cuts and the universal set-sized quotient of `SO(3,No)`; compact-group extensions added, review pending |
 | [Finite surreal probability](surreal/finite-surreal-probability/) | Surreal-valued probability on finite algebras: conditioning on infinitesimal events, log-odds, entropy, scoring rules; compare the measures report for countable additivity |
-| [Omnific Diophantine geometry](surreal/omnific-diophantine-geometry/) | Arithmetic and Diophantine equations over the omnific integers; constant-term transfer, rigidity and definability; twelve-source assembly; reviewed original material in Sections 1–10, new Sections 11–13 and current Sections 14, 15 and 19; other added material and later review pending |
-| [Set-sized quotients of omnific integers](surreal/set-sized-quotients-of-omnific-integers/) | Constant-term factorization of maps to set-sized rings and cardinal/homological thresholds; seventeen-source assembly; Boolean branching, relation modules, ordinary-output loci and normalization fibres added; proof review pending |
+| [Omnific Diophantine geometry](surreal/omnific-diophantine-geometry/) | Arithmetic and Diophantine equations over the omnific integers; constant-term transfer, rigidity and definability; thirteen-source assembly; reviewed original material in Sections 1–10, new Sections 11–13 and current Sections 14, 15 and 19; other added material and later review pending |
+| [Set-sized quotients of omnific integers](surreal/set-sized-quotients-of-omnific-integers/) | Constant-term factorization of maps to set-sized rings and cardinal/homological thresholds; eighteen-source assembly; Boolean branching, exact homological dimensions, relation modules and normalization fibres added; proof review pending |
 | [Omnific-preserving automorphisms](surreal/omnific-preserving-automorphisms/) | Convex-scale stabilizers, definable constants, nondefinable monomials and algebraic-parameter rigidity; four-source assembly, review pending |
-| [Omnific groups and lattices](surreal/omnific-groups-and-lattices/) | Algebraic groups, elementary kernels and missing lattice minima over omnific integers; three-source assembly, review pending |
-| [Discrete initial subgroups and omnific normalization](surreal/discrete-initial-subgroups-and-omnific-normalization/) | Sign-tree normalization, image classification and removal of a bottom cyclic layer; placed source, independent proof review and formalization pending |
+| [Omnific groups and lattices](surreal/omnific-groups-and-lattices/) | Algebraic groups, elementary kernels and missing lattice minima over omnific integers; four-source assembly including elementary-kernel structure, review pending |
+| [Discrete initial subgroups and omnific normalization](surreal/discrete-initial-subgroups-and-omnific-normalization/) | Sign-tree normalization, image classification, convex factors and profinite obstructions; two-source assembly, independent proof review and formalization pending |
 
 The two birthday reports have different domains. The first allows its specified
 ordinal supports but excludes positive powers of `ω`; the Laurent report allows
@@ -238,10 +241,9 @@ in `48m²/r⁶` gives a pole of order `6q` and leading coefficient
 general substitutions need the factor `w(0)^(−6)`.
 
 [Quantum and gauge scale reductions](physics/quantum-and-gauge-scale-reductions/)
-adds a placed base on rare conditional states, success-weighted trace
-distance, exact elimination of separated virtual sectors, quaternionic
-simulation and finite gauge curvature. Its three companions remain to be
-integrated. Proof review, priority review and formalization are pending;
+now assembles four manuscripts on rare conditional states, success-weighted
+trace distance, exact elimination of separated virtual sectors, quaternionic
+simulation, finite gauge curvature and observable limits. Proof review, priority review and formalization are pending;
 the mathematical models do not establish new experimental predictions.
 
 ## Foundations and computation: seven reports

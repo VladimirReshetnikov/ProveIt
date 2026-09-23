@@ -12,7 +12,7 @@
 \hypersetup{%
   pdftitle={Euclidean Three-Space over the Surreal Numbers},%
   pdfauthor={Merged research report prepared for Vladimir Reshetnikov},%
-  pdfsubject={Coordinate geometry, spherical trigonometry, the rotation group SO(3,No), and its valuation cuts}}
+  pdfsubject={Coordinate geometry, spherical trigonometry, the rotation group SO(3,No), its valuation cuts, and surreal compact groups}}
 \pagestyle{fancy}\fancyhf{}
 \fancyhead[L]{\small Euclidean three-space over the surreal numbers}
 \fancyhead[R]{\small\thepage}
@@ -111,21 +111,25 @@
 \newcommand{\coef}{\operatorname{coef}}
 \newcommand{\nc}[1]{\langle\!\langle #1\rangle\!\rangle}
 \newcommand{\commset}[2]{\{\comm{x}{y}:x\in #1,\ y\in #2\}}
+\newcommand{\SL}{\operatorname{SL}}
+\newcommand{\Lie}{\operatorname{Lie}}
+\newcommand{\sG}{\mathsf G}
+\newcommand{\sS}{\mathsf S}
+\newcommand{\sZ}{\mathsf Z}
 
 \begin{document}
 \hypersetup{pageanchor=false}
 \begin{titlepage}
 \centering
-\vspace*{0.2cm}
 {\large\scshape Merged research report\par}
-\vspace{0.5cm}
+\vspace{0.3cm}
 {\LARGE\bfseries Euclidean Three-Space over the Surreal Numbers\par}
-\vspace{0.4cm}
+\vspace{0.3cm}
 {\large Coordinate geometry, spherical trigonometry,\\[0.15em]
-and the rotation group $\SO(3,\No)$\par}
-\vspace{0.4cm}
-{\large 22 September 2026\par}
-\vspace{0.5cm}
+the rotation group $\SO(3,\No)$, and surreal compact groups\par}
+\vspace{0.3cm}
+{\large 22--23 September 2026\par}
+\vspace{0.3cm}
 \begin{minipage}{0.94\textwidth}
 \begin{abstract}
 \noindent
@@ -164,6 +168,11 @@ $\No$, every class homomorphism from $\SO(3,\No)$, from $\SO(n,\No)$ with
 $n\ge3$, or from $\SU(n,\No[i])$ with $n\ge2$ to a set-sized group factors
 through standard part. For the circle this fails.
 
+Part~V treats every connected real linear algebraic group $\sG$ with compact
+connected real points. Exactly the derived infinitesimal subgroup of $\sG(\No)$ is
+invisible to set-sized groups, so a universal set-sized quotient exists exactly
+when $\sG$ is semisimple, and it is then standard part.
+
 The rotation algebra shared by Parts~I and~II is printed once in Part~I: axes,
 Rodrigues, quaternions, and the Cayley chart. The quaternion double cover is
 cited from the collection's surquaternion report.
@@ -171,10 +180,11 @@ cited from the collection's surquaternion report.
 \end{minipage}
 \vfill
 \begin{minipage}{0.94\textwidth}\small
-\textbf{Status and provenance.} An AI-assisted research report built from three
-manuscripts of 22 September 2026: sources~04 and~09, merged at
-\texttt{50cb709}, and source~10, added as Part~III at \texttt{7b5f934}; see
-\cref{e3:sub:provenance}. It has not been refereed, and no statement in it has a
+\textbf{Status and provenance.} An AI-assisted research report built from four
+manuscripts: sources~04 and~09 of 22 September 2026, merged at
+\texttt{50cb709}; source~10 of the same day, added as Part~III at
+\texttt{7b5f934}; and source~11 of 23 September 2026, added as Part~V at
+\texttt{66d7e55}; see \cref{e3:sub:provenance}. It has not been refereed, and no statement in it has a
 Lean formalization. Classical identities, the Bays--Peterzil perfectness
 precedent and imported analytic foundations are credited, not claimed. No
 priority claim or resolution of a named open problem is made. The accompanying
@@ -238,15 +248,24 @@ of normal subgroups and of perfect residuals is a statement about convex
 subgroups of the value group. For the full class $\No$, a further size argument
 shows that standard part is the universal set-sized quotient of $\SO(3,\No)$.
 
-\subsection{Three manuscripts, one report}\label{e3:sub:provenance}
+Part~V asks the same question for every connected real linear algebraic group
+with compact connected real points. Only the derived subgroup of the
+infinitesimal kernel is invisible to set-sized groups. The infinitesimals of the
+central torus remain visible, one normal-form coefficient at a time, so standard
+part is the universal set-sized quotient exactly for semisimple groups
+(\cref{e3:cpt:thm:main-intro}). Part~V is printed after Part~IV so that the
+numbering of Parts~I--IV is unchanged.
 
-This report is built from three manuscripts, all dated 22 September 2026 and
-written independently against different commits of the repository \repo.
-Sources~04 and~09 were merged into Parts~I and~II. Source~10 arrived later, as
-manuscript~03 of a later batch, and was added as Part~III. Sources~04 and~09
-carry their numbers in the batch in which they arrived; the addition is numbered
-10 here, after the highest existing file prefix, so that numbers do not
-collide.
+\subsection{Four manuscripts, one report}\label{e3:sub:provenance}
+
+This report is built from four manuscripts, written independently against
+different commits of the repository \repo. Sources~04, 09 and~10 are dated
+22 September 2026, and source~11 is dated 23 September 2026. Sources~04 and~09
+were merged into Parts~I and~II. Source~10 arrived later, as manuscript~03 of a
+later batch, and was added as Part~III. Source~11 arrived as manuscript~06 of
+batch~29 and was added as Part~V. Sources~04 and~09 carry their numbers in the
+batch in which they arrived; the additions are numbered 10 and~11 here, after
+the highest existing file prefix, so that numbers do not collide.
 
 {\small
 \begin{longtable}{L{0.07\textwidth}L{0.32\textwidth}L{0.09\textwidth}L{0.38\textwidth}}
@@ -279,6 +298,14 @@ Source & Manuscript & Pin & Contribution here\\
  \cref{e3:sec:conclusion} with \cref{e3:cut:sub:open}, and
  \cref{e3:cut:sub:ledger10}. Files prefixed
  \texttt{10-rotation-quotients-}.\\
+11 & \emph{Small Representations and Normal Structure of Surreal Compact Groups:
+ a semisimplicity criterion, valuation-cut classification, and contrasts with
+ split groups and omnific lattices} (24 pages) & \texttt{9693b28} &
+ All of Part~V (\crefrange{e3:cpt:sec:intro}{e3:cpt:sec:scope}) except the
+ framing and the comparisons written for the addition
+ (\cref{e3:cpt:sub:consistency,e3:cpt:sub:ogl}); the source~11 paragraph of
+ \cref{e3:sub:checks}, \cref{e3:cpt:sub:nonclaims11} and
+ \cref{e3:cpt:sub:ledger11}. Files prefixed \texttt{11-compact-groups-}.\\
 \bottomrule
 \end{longtable}}
 
@@ -301,6 +328,20 @@ directly on \cref{e3:so:thm:split,e3:so:thm:perfect,e3:so:thm:graded} and their
 proofs. Its main object is $\SO(3,\No)$, so it belongs to Part~II's report
 rather than to the surquaternion report; the circle, where its main theorem
 fails, is cross-referenced to the trigonometry report.
+
+\textbf{Why source~11 is an addition.} Source~10 asks for ``a uniform reductive
+classification'' that separates semisimple from toral factors of compact real
+algebraic groups (\cref{e3:cut:sub:open}). Source~11 proves one for every
+connected real linear algebraic group with compact connected real points
+(\cref{e3:cpt:thm:main-intro}). It also classifies the normal subgroups of the
+higher-rank groups that Part~III leaves unclassified
+(\cref{e3:cpt:thm:fullnormal,e3:cpt:thm:productcuts}), and it reproves
+\cref{e3:cut:thm:smallquotient,e3:cut:thm:su2,e3:cut:thm:allranks} by a
+uniform second route. Its groups and its scalar field are those of Part~III, so
+it belongs here rather than in the omnific-groups report, whose kernels are
+constant-term kernels over $\Oz$. Part~V is printed after Part~IV, not between
+Parts~III and~IV, so that no existing section, theorem or equation number
+changes.
 
 \textbf{Printed once.} The following results are proved in both sources~04
 and~09 and
@@ -358,6 +399,22 @@ proof are source~10's. The simplicity of $\SO(3,\R)$
 (\cref{e3:cut:lem:realsimple}) is classical and is printed with source~10's
 proof because the classification uses it.
 
+Source~11 recalls results of this report and of the collection. They are cited,
+or printed once with every proving source named. The size lemma
+\cref{e3:cut:lem:largeinterval} is cited; source~11 proves it with the same map.
+The infinitesimal circle logarithm \cref{e3:cpt:lem:circlelog} is the
+infinitesimal factor of the trigonometry report's circle splitting, which Part~III
+recalls as \cref{e3:cut:eq:torussplit}. The omnific statements of
+\cref{e3:cpt:sec:omnific} are credited to \texttt{odg:cor:orthogonal},
+\texttt{ogl:lem:bounded} and \texttt{ogl:alg:thm:real}; only the unitary count is
+new there. For $\SO(3)$, $\SO(n)$ and $\SU(n)$, source~11 reproves
+\cref{e3:cut:thm:normalclosure,e3:cut:thm:normalclass,e3:cut:thm:smallquotient,e3:cut:thm:su2,e3:cut:thm:allranks}
+as special cases of its all-type theorems, by Nash charts instead of
+quaternions and Givens elimination. Those statements are not reprinted; both
+routes are kept, and each Part~V theorem names the Part~III case it contains.
+The commutator bound \cref{e3:cpt:lem:commbound} is the identity of source~10's
+proof of \cref{e3:cut:lem:bound}, stated for every compact group.
+
 \textbf{Where the merge had to choose.} Symbols were renamed only where the
 two sources, or a source and the rest of the collection, used one symbol for
 two things. \Cref{e3:sub:notation} lists each renaming. The largest is that
@@ -368,13 +425,21 @@ surreal topology. Here \emph{fine} always has the second meaning, in agreement
 with the surquaternion and foundations reports. Source~04's usage is written
 \emph{intrinsic}. Labels from source~04 carry the prefix \texttt{e3:}, and
 labels from source~09 carry \texttt{e3:so:}, and labels from source~10 carry
-\texttt{e3:cut:}. Source~10's symbols were renamed where they collided with
-Parts~I and~II or with \path{docs/NOTATION.md}; \cref{e3:cut:sub:notation}
-lists each renaming. Text written for the merge and the addition is confined to
-this section, the framing of \cref{e3:sec:rotations} and of Part~III,
-\cref{e3:sec:nonclaims}, the ledgers, and short cross-reference remarks
-(among them \cref{e3:cut:rem:gradedequality,e3:cut:rem:residualforward}). It adds
-no mathematical claim (\cref{e3:sub:nonclaimsmerge}).
+\texttt{e3:cut:}, and labels from source~11 carry \texttt{e3:cpt:}. Source~10's
+symbols were renamed where they collided with Parts~I and~II or with
+\path{docs/NOTATION.md}; \cref{e3:cut:sub:notation} lists each renaming, and
+\cref{e3:cpt:sub:notation} does the same for source~11. Source~11 states its
+classification of normal subgroups for ``every proper class subgroup''; the
+intended meaning is a proper subgroup, set or class, and
+\cref{e3:cpt:thm:fullnormal} is worded that way. Text written for the merge and
+the additions is confined to this section, the framing of
+\cref{e3:sec:rotations}, of Part~III and of Part~V, \cref{e3:sec:nonclaims}, the
+ledgers, short cross-reference remarks and paragraphs (among them
+\cref{e3:cut:rem:gradedequality,e3:cut:rem:residualforward} and the one-line
+comparisons after Part~V statements),
+\cref{e3:cpt:sub:consistency,e3:cpt:sub:ogl}, and the status notes in
+\cref{e3:sec:conclusion}. It adds no mathematical claim
+(\cref{e3:sub:nonclaimsmerge}).
 
 \subsection{Relation to the collection}\label{e3:sub:collection}
 
@@ -400,6 +465,13 @@ added at \texttt{7b5f934}, cites its canonical circle splitting
 \texttt{465a54b}. The ledger maps \texttt{trigonometry:thm:polar} to Lean
 declarations on the actual surcomplex field; the circle character of
 \cref{e3:cut:prop:circlecounter} has no such mapping.
+
+Part~V, added at \texttt{66d7e55}, uses the infinitesimal factor of the
+trigonometry report's circle splitting, the map
+$\ell_{\mm}$ of \texttt{trigonometry:rot:eq:ellm}, as
+\cref{e3:cpt:lem:circlelog}; its coefficient characters induce
+\texttt{trigonometry:rot:thm:graded} on layers. Source~11 did not cite the
+trigonometry report; the credit is added here.
 
 \textbf{Surquaternions.} The report \emph{Surquaternions}
 (\path{docs/surquaternions/surquaternions}) \cite{RepoQuaternion} already
@@ -442,6 +514,20 @@ separates intrinsic from full-class subspace topologies
 (\texttt{found:prop:twotopologies}). \Cref{e3:so:thm:finediscrete} specializes the
 first to rotation coordinates.
 
+\textbf{Omnific groups and omnific Diophantine geometry.} The report
+\path{docs/surreal/omnific-groups-and-lattices} \cite{RepoOGL} studies matrix
+groups over the omnific integers. Its \texttt{ogl:alg:thm:real} characterizes the
+real algebraic groups with no new omnific points and contains the compact
+collapse \cref{e3:cpt:prop:ozcompact}. Its \texttt{ogl:el:prop:finiteside} gives
+a universal set-sized quotient for $\SL_n$ of the finite surreals, $n\ge3$, and
+its \texttt{ogl:el:rem:e3} compares that with Part~III.
+\Cref{e3:cpt:sub:ogl} records that neither \texttt{ogl:el:prop:finiteside} nor
+\cref{e3:cpt:thm:main-intro} implies the other. The report
+\path{docs/surreal/omnific-diophantine-geometry} \cite{RepoODG} proves that
+$\SO_n(\Oz)$ is the finite group of signed permutation matrices of determinant
+one (\texttt{odg:cor:orthogonal}), which is \cref{e3:cpt:thm:ozclassical}(i).
+Source~11 did not cite either report; both were in the tree at its pin.
+
 \textbf{Lean.} \texttt{Surreal/Algebra/Geometry.lean} develops
 two-dimensional dot products, determinants, Cauchy--Schwarz, the Ptolemy
 inequality and the area form of Heron's identity over ordered fields with
@@ -449,8 +535,10 @@ nonnegative square roots, for labels of the trigonometry report
 \cite{RepoGeometry}. It explicitly distinguishes these field-valued lengths from
 the real-valued distances used by conventional metric-space interfaces. The repository contains no three-dimensional Euclidean or
 rotation-group Lean development, and no label of this report is mapped to a
-Lean declaration. Both statements still hold at \texttt{7b5f934}, and they
-apply to Part~III as well.
+Lean declaration. Both statements still hold at \texttt{7b5f934} and at
+\texttt{66d7e55}, and they apply to Parts~III and~V as well; the Lean modules on
+rotations added in between concern the planar results of the trigonometry
+report.
 
 \textbf{Vector and tensor fields.} The report
 \path{docs/surreal/vector-and-tensor-fields}, placed in the same commit as
@@ -508,6 +596,12 @@ full class $\No$ in an NBG-style set/class foundation, with class homomorphisms
 into a group that is a set in the same foundation. Only the circle
 counterexample of \cref{e3:cut:sub:torus} uses infinitesimal Hahn exp/log.
 
+Source~11 (Part~V) works over the full classes $\No$ and $\No[i]$ in NBG with
+choice, with a connected real linear algebraic group whose real points are
+compact and connected. Its local arguments transfer finite first-order
+statements about real Nash maps (\cref{e3:cpt:sec:nash}). Only its central-torus
+logarithm uses infinitesimal Hahn exp/log.
+
 \subsection{Notation, and the renamings made by the merge}\label{e3:sub:notation}
 
 $F$ denotes a real closed scalar field. In Part~I it is a set-sized workspace
@@ -561,7 +655,8 @@ exponential map of a sphere and its inverse, while $\Exp_{\mm},\Log_{\mm}$ are
 the strong matrix exponential and logarithm.
 
 Part~III keeps these conventions. Its own symbols, and the renamings of source~10
-that avoid the letters above, are listed in \cref{e3:cut:sub:notation}.
+that avoid the letters above, are listed in \cref{e3:cut:sub:notation}. Part~V
+does the same; its renamings are listed in \cref{e3:cpt:sub:notation}.
 
 \section{Scalar foundations and canonical finite trigonometry}\label{e3:sec:scalars}
 
@@ -5112,7 +5207,12 @@ Use the set-sized targets $\Sym(\mathcal X)$ and $\GL(d,k)$, as in
 Part~III does not classify the normal subgroups of these higher-rank groups;
 finite centers and products of simple factors introduce additional structure.
 The theorem concerns the universal standard-part factorization, and the finite
-generator argument suffices for that.
+generator argument suffices for that. Part~V (source~11) supplies that
+classification over $\No$: all proper normal subgroups when the Lie algebra is
+simple, which covers $\SO(n,\No)$ with $n\ge3$, $n\ne4$, and $\SU(n,\No[i])$
+with $n\ge2$ (\cref{e3:cpt:thm:fullnormal}), and, for semisimple groups such as
+$\SO(4)$, the subgroups of the infinitesimal kernel that are normal in the whole
+group (\cref{e3:cpt:thm:productcuts}).
 
 \section{Examples, sharp boundaries, and the circle}\label{e3:cut:sec:examples}
 
@@ -5223,7 +5323,11 @@ torus angles have additive coefficient functionals, whereas ambient normal
 generation in three-dimensional rotations forces a whole proper class of depth
 layers to survive whenever one survives. This is also the only part of Part~III
 that needs infinitesimal formal exp/log; the universal quotient theorem and all
-exact commutator and normal-generation results are proved without it.
+exact commutator and normal-generation results are proved without it. Part~V
+shows that this boundary is exact among compact connected groups: toral factors
+are the only obstruction to a universal set-sized quotient
+(\cref{e3:cpt:thm:criterion}), and for $\Un(n,\No[i])$ the separating class
+quotient is $\Un(n,\C)\times\mm_{\R}$ (\cref{e3:cpt:prop:unitary}).
 
 \part{Computation, limits, and provenance}\label{e3:part:limits}
 
@@ -5232,7 +5336,8 @@ exact commutator and normal-generation results are proved without it.
 Sources~04 and~09 give complementary implementation plans, one for the
 geometry and one for the rotation group. Source~10 adds a formalization plan
 and constructive recipes for Part~III (\cref{e3:cut:sub:lean,e3:cut:sub:recipes}).
-All are printed; none describes existing software.
+All are printed; none describes existing software. Source~11 gives no
+formalization plan.
 
 \subsection{A coordinate-to-invariants algorithm (source 04)}\label{e3:sub:impl04}
 
@@ -5431,7 +5536,7 @@ $V\in K_{\gg\alpha}$; the obstruction is exact, not an implementation failure.
 
 \subsection{The companion checks}\label{e3:sub:checks}
 
-Each source came with an exact SymPy script. All three are kept byte-identical,
+Each source came with an exact SymPy script. All four are kept byte-identical,
 under the prefixed names given here.
 
 \texttt{code/04-three-space-verify\_identities.py} (source~04) checks selected
@@ -5493,10 +5598,39 @@ finite-power bound for every integer, the subgroup classification, the
 transfinite intersections, the Hartogs argument or the universal
 factorization; those are proved in the text.
 
+\texttt{code/11-compact-groups-verify.py} (source~11) runs 33 named exact checks
+with SymPy and the Python standard library. Five concern the $\SL_2$ Weyl and
+diagonal factorizations, root scaling by a square, and the root subgroup, as
+used in \cref{e3:cpt:thm:sl}. One is the matrix commutator identity of
+\cref{e3:cpt:lem:commbound}. Eleven concern $\so(3)$ and $\mathfrak{su}(3)$:
+bases, brackets and bracket-spanning certificates; for $\mathfrak{su}(3)$ they
+include both a
+spanning set of brackets and a spanning set of brackets with conjugates of one
+fixed nonzero Lie vector under explicit rational special unitary matrices, with
+certificate determinants $16$ and $4608/625$. Four concern a rational orthogonal
+Cayley commutator, whose normalized mixed derivative is the Lie bracket; four
+check the formal circle logarithm through a finite truncation; and eight
+enumerate the signed-permutation and Gaussian-unit counts of
+\cref{e3:cpt:thm:ozclassical} for $n\le4$ ($1,4,24,192$ and $1,8,96,1536$). Its
+recorded run, \texttt{data/11-compact-groups-verification\_results.json}
+(Python~3.13.5, SymPy~1.14.0; the requirement \texttt{sympy>=1.12,<2} is in
+\texttt{data/11-compact-groups-requirements.txt}), passed all 33 checks. For
+this addition the script was rerun on a copy with Python~3.14.4 and
+SymPy~1.14.0; it passed 33/33, and its report differs from the recorded one only
+in the Python version field. By default the script writes
+\texttt{verification\_results.json} next to itself, so it should be run with
+\texttt{--output} pointing elsewhere or on a copy. The delivered helper
+\texttt{code/11-compact-groups-build.sh} calls the unprefixed names
+\texttt{verify.py} and \texttt{article.tex} in its own directory; it does not run
+from the placed layout and is kept only as delivered. These are representative
+finite checks of the local mechanisms, not substitutes for the all-type
+Lie-algebra lemma. They do not verify class replacement, Nash implicit-function
+transfer, the normal-generation proofs, or novelty.
+
 \section{Non-claims and limits, by source}\label{e3:sec:nonclaims}
 
 A merged report must not silently upgrade any source. This section records
-every limitation, disclaimer and priority caveat stated by any of the three
+every limitation, disclaimer and priority caveat stated by any of the four
 manuscripts.
 Most also appear at the point of use.
 
@@ -5735,13 +5869,109 @@ Most also appear at the point of use.
  statements. The status paragraph in \cref{e3:sec:conclusion} re-scopes a
  direction of further work; it does not claim that any other direction has been
  addressed.
+\item The addition of source~11 adds no mathematical result. Part~V is
+ source~11's; the results it shares with Part~III and with the omnific reports
+ are cited or printed once with every proving source named
+ (\cref{e3:sub:provenance}).
+ \Cref{e3:cpt:sub:consistency,e3:cpt:sub:ogl}, the one-line comparisons after
+ Part~V statements, the two paragraphs added to Part~III and the status notes in
+ \cref{e3:sec:conclusion,e3:cut:sub:open} relate statements. They change no
+ statement or label of Parts~I--IV.
+\item Part~V is printed after Part~IV so that no existing number changes. The
+ renamings of \cref{e3:cpt:sub:notation} change symbols, not statements. The
+ wording of \cref{e3:cpt:thm:fullnormal} restores its intended meaning, a proper
+ subgroup that may be a set or a class, and the change is disclosed after it.
+\item C15 and C18 are source~10's statements about source~10, and they stand as
+ such. Part~V now supplies, for compact connected groups over $\No$, the
+ higher-rank normal subgroups and the uniform classification that they mention;
+ the status notes in \cref{e3:cut:sub:open} say what remains open. Every other
+ non-claim is unchanged.
+\end{enumerate}
+
+\subsection{Source 11 (Part V)}\label{e3:cpt:sub:nonclaims11}
+\begin{enumerate}[label=\textup{P\arabic*.},leftmargin=2.6em]
+\item The manuscript is AI-assisted, not independently refereed and not
+ Lean-verified. No Lean source is supplied and no Lean build was performed. Its
+ proofs are mathematical proofs, not machine-checked ones.
+\item The 33 finite checks do not prove the Nash-transfer, normal-generation or
+ class arguments. They do not verify class replacement, Nash implicit-function
+ transfer, the normal-generation proofs, or novelty, and they are not
+ substitutes for the all-type Lie-algebra lemma (\cref{e3:sub:checks}).
+\item Historical priority is not certified, and no named longstanding open
+ problem is claimed solved. The candidate-original package is narrowly the
+ exact all-set invisible subgroup, the separating class quotient and the
+ semisimplicity criterion; general priority for the supporting valuation
+ normal-subgroup calculations is left open. Bibliographic searches and a
+ targeted repository comparison cannot certify absence from the literature.
+\item The repository comparison was targeted. The repository was read at
+ \texttt{9693b28} through a connector; a local clone failed and was not used as
+ evidence. The 306-kilobyte article, the 96-page predecessor and the other reports
+ were not read line by line. No repository build and no complete review of its
+ source code is claimed. Source~11's proofs do not rely on Part~III's
+ calculations, which it treats as unreviewed.
+\item The $\SO(3)$, $\SO(n)$, $\SU(n)$ and circle and $\Un(n)$ results of
+ Part~III are prior results, not claimed as new. Several special cases and much
+ of the surrounding structure have published or repository precedents.
+\item The central and semisimple decomposition of infinitesimals and
+ valued-field interpretability are Bays and Peterzil's \cite{BP}; no new
+ interpretability claim is made. The infinitesimal logarithm, local commutator
+ openness \cite{DM}, quantitative normal generation (Kramer, Nikolov and Segal
+ \cite{Kramer}) and the signed-permutation classification are credited, not
+ claimed. Kramer's ordinary and countable small-target questions are not
+ identified with the proper-class question of Part~V. The textbooks
+ \cite{Conway,Gonshor,BCR} are background references, checked through
+ publisher records and not claimed as fully read.
+\item The $\SL_n$ argument is the classical simplicity mechanism; its
+ proper-class consequence is a contrast, not a new simplicity theorem.
+ Determinant is not claimed to be a set-sized universal quotient, and its
+ abstract set-valued characters are not classified.
+\item Compactness is an assumption about the real group. $G=\sG(\No)$ is not
+ asserted compact for the fine topology.
+\item The number of conjugates in normal generation is not uniformly bounded,
+ and no infinite or surreal-length word or infinite product is used; only
+ ordinary finite powers are.
+\item The segment theorems concern subgroups normal in the full ambient group.
+ They do not classify subgroups normal only in $\mu_G$, or arbitrary
+ subgroups, and must not be used as a substitute for that problem.
+\item The mixed commutator theorem concerns generated subgroups, not
+ single-commutator images; neither local openness nor Part~III's $\SO(3)$
+ result is substituted for it. The graded proposition describes the graded
+ bracket only, not the whole group law.
+\item A nontrivial perfect residual is not asserted in rank-one Hahn fields.
+\item The actions corollary does not classify the abstract representations of
+ $G_0$.
+\item The coefficient maps separate central infinitesimals but are not claimed
+ to exhaust the abstract additive dual.
+\item Universal does not mean faithful: the identity homomorphism detects every
+ infinitesimal, but its target is a proper class.
+\item ``Points over $\Oz$'' needs care for groups not defined over $\Z$; the
+ compact collapse concerns entrywise integral matrices in a chosen realization.
+ No independent novelty is claimed for the signed-permutation classification.
+\item Exact normal closure of one element is false for an element supported in
+ one simple factor of a semisimple group, and false for a central torus.
+\item $G/\mu_S$ is shorthand for the class of pairs $G_0\times\mu_Z$. No class
+ of proper-class cosets and no product over all class homomorphisms is formed.
+\item No completeness, saturation or topological convergence in $\No$ is
+ imported; only finite first-order statements transfer. No global exponential
+ on $\No[i]$, no extension of the logarithm to infinite angles, no
+ infinite-dimensional Hilbert theory and no classification of arithmetic
+ homomorphisms from $\Oz$ is used or established.
+\item The finite-quotient triviality of compact connected groups is a familiar
+ observation and is not the source of the all-set theorem.
+\item Left open: an exact single-commutator theorem at two prescribed depths in
+ all compact semisimple types; a small-observation classification for
+ noncompact real reductive groups; a classification of $\mu_G$-normal
+ subgroups; and a hierarchy of small-target theorems for a fixed set-sized
+ real closed Hahn field (\cref{e3:cpt:sub:remains}).
 \end{enumerate}
 
 \section{Conclusion and directions}\label{e3:sec:conclusion}
 
 The first two paragraphs are source~04's conclusion, the next five are
-source~09's, one status paragraph is written for the addition, and the rest is
-source~10's.
+source~09's, one status paragraph is written for the addition of source~10, and
+the rest is source~10's. Status notes written for the addition of source~11
+(Part~V) follow the first status paragraph and the questions of
+\cref{e3:cut:sub:open}.
 
 Three-dimensional surreal geometry has a large, rigorous core that is
 both familiar and genuinely more informative than its real standard-part
@@ -5808,6 +6038,18 @@ subgroups normal only in $K$, abstract subgroups of $G(F)$ and automorphisms
 (the non-claim above stands), normal subgroups of $\SO(n)$ and $\SU(n)$ in
 higher rank, and the other directions listed, which source~10 does not address.
 
+\emph{Status after source~11.} Over $\No$, Part~V classifies the proper normal
+subgroups of every compact connected group with simple Lie algebra, including
+$\SO(n,\No)$ with $n\ge3$, $n\ne4$, and $\SU(n,\No[i])$ with $n\ge2$, and the
+subgroups of the infinitesimal kernel normal in the whole group for every compact
+semisimple group (\cref{e3:cpt:thm:fullnormal,e3:cpt:thm:productcuts}). The
+higher-rank item above is therefore answered over $\No$ for subgroups normal in
+the full group. Part~V states its results over $\No$ only; source~11 notes that
+its local normal-generation proof also applies over a fixed set-sized real
+closed Hahn field but does not state the classification there. Subgroups normal
+only in the infinitesimal kernel, abstract subgroups and automorphisms remain
+open in every type.
+
 The exact identity
 $\commset{K_{\mathcal C}}{K_{\mathcal D}}=K_{\mathcal C+\mathcal D}$ turns
 infinitesimal rotation theory into a calculus of valuation cuts. Normal
@@ -5829,12 +6071,20 @@ and over proper-class scalar systems.
 
 \subsection{Questions left open by source 10}\label{e3:cut:sub:open}
 
+The four questions below are source~10's. Source~11 (Part~V) bears on the first
+three, and the status note after each of them is written for its addition.
+
 \emph{Normal subgroups of the infinitesimal group itself.} Part~III classifies
 $G$-normal subgroups inside $K$, not all $K$-normal subgroups. The leading-axis
 action of an infinitesimal conjugator is much more restricted than that of a
 macroscopic rotation. A full intrinsic normal lattice of $K$, and a
 corresponding analysis of its own arbitrary set-sized images, require
 additional ideas; the universal quotient theorem for $G$ does not answer them.
+\emph{Status after source~11:} still open, in every compact type. Part~V also
+classifies only subgroups normal in the full group, it lists the $\mu_G$-normal
+subgroups among its open problems (\cref{e3:cpt:sub:remains}), and its theorems
+concern homomorphisms of the full group, not homomorphisms defined only on
+$\mu_G$.
 
 \emph{Exact word images in other anisotropic groups.} The quaternion scalar
 identity reduces an exact commutator equation in $\SO(3)$ to one real scalar
@@ -5842,7 +6092,13 @@ constraint. It is natural to ask for exact mixed-cut word images in other
 compact real forms, not merely inclusion bounds or local openness. The
 higher-dimensional universal factorization needed only generation by rank-one
 blocks, and does not itself provide higher-dimensional commutator width one at
-prescribed depths.
+prescribed depths. \emph{Status after source~11:} partly addressed. For every
+compact connected semisimple group the \emph{generated} mixed commutator
+subgroups are exact, $\comm{\mu_{\ge\alpha}}{\mu_{\ge\beta}}=\mu_{\ge\alpha+\beta}$
+and $\comm{\mu_{\mathcal C}}{\mu_{\mathcal D}}=\mu_{\mathcal C+\mathcal D}$
+(\cref{e3:cpt:thm:mixed,e3:cpt:cor:cutcomm}). Exact single-commutator images at
+prescribed depths, and commutator width, remain open outside $\SO(3)$; source~11
+lists the single-commutator theorem as open.
 
 \emph{A uniform reductive classification.}
 \Cref{e3:cut:thm:smallquotient,e3:cut:thm:allranks}, together with
@@ -5851,12 +6107,1573 @@ semisimple and toral factors of compact real algebraic groups. A general
 statement must account for finite central overlaps, specify the real form, and
 state its class foundation. Only the orthogonal and special unitary cases above
 are proved, not a theorem about every reductive class group.
+\emph{Status after source~11:} answered for connected real linear algebraic
+groups with compact connected real points (\cref{e3:cpt:thm:main-intro}). The
+invisible subgroup is the derived infinitesimal subgroup $\mu_S$, the central
+torus contributes the separating factor $\mu_Z$, and a universal set-sized
+quotient exists exactly for semisimple groups. The statement accounts for finite
+central overlaps through the isogeny $\sS\times\sZ\to\sG$, uses the compact real
+form with its designated conjugation, and is stated in NBG with choice. Still
+open: noncompact real reductive groups, which source~11 also lists as open, and
+groups whose real points are not connected.
 
 \emph{Which quotient information is first-order accessible?} The compact
 elements of the whole normal-subgroup lattice recover value addition, by a
 construction that quantifies over subgroups. Relating this reconstruction to
 definable data, without replacing it by the already stronger published
 field-interpretation theorem, is a separate model-theoretic task.
+
+\part{Surreal compact groups: small representations and normal structure}\label{e3:cpt:part}
+
+Part~V is source~11, \emph{Small Representations and Normal Structure of
+Surreal Compact Groups: a semisimplicity criterion, valuation-cut
+classification, and contrasts with split groups and omnific lattices}
+(23~September 2026). It is printed after Part~IV rather than before it, so that
+no section, theorem or equation number of Parts~I--IV changes
+(\cref{e3:sub:provenance}). Part~V extends the class-group theorems of Part~III
+from $\SO(3)$, $\SO(n)$ and $\SU(n)$ to every compact connected real algebraic
+group. For that class it answers the question ``A uniform reductive
+classification'' of \cref{e3:cut:sub:open}. Results that Parts~II and~III
+already prove are cited. Where source~11 proves a special case by a different
+method, both proofs are kept and the relation is stated.
+
+A surreal matrix group is a proper-class object, but a permutation group on a
+set, a matrix group over an ordinary field, and an ordinary abstract group all
+have set-sized underlying collections. This raises a representation-theoretic
+question that does not arise for ordinary Lie groups:
+\begin{quote}
+Which distinctions between surreal group elements can be detected by an
+abstract homomorphism into a set-sized group? Is there one set-sized quotient
+through which every such observation factors?
+\end{quote}
+No continuity, definability, measurability, or support-preservation hypothesis
+is imposed on these homomorphisms. The restriction concerns only the size of
+the target, so the answer is not a disguised continuity theorem.
+
+\section{Setting, the main theorem, and notation for Part V}\label{e3:cpt:sec:intro}
+
+\subsection{Hypotheses and the main theorem}\label{e3:cpt:sub:main}
+
+Throughout Part~V, $\sG$ is a finite-dimensional connected real linear
+algebraic group with compact connected $\sG(\R)$. We evaluate its defining
+equations in the real closed surreal field and write
+\[
+ G=\sG(\No),\qquad G_0=\sG(\R),\qquad
+ \mu_G=\ker(\st:G\longrightarrow G_0).
+\]
+Let $\sS$ denote the connected semisimple derived algebraic group and let
+$\sZ=Z(\sG)^0$ denote the connected central torus. Set
+$\mu_S=\sS(\No)\cap\mu_G$ and $\mu_Z=\sZ(\No)\cap\mu_G$.
+Compactness here is an assumption about the \emph{real} group. We do not assert
+that $G$ is compact for the surreal fine topology. For $\sG=\SO(3)$ these are
+the groups $G_{\No}$, $\SO(3,\R)$ and $K_{\No}$ of \cref{e3:cut:sec:class}.
+
+\begin{theorem}[Small-observation theorem]\label{e3:cpt:thm:main-intro}
+Under these hypotheses, the following assertions hold.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Every class homomorphism $\varphi:G\to\mathcal T$ to a set-sized group
+kills $\mu_S$.
+\item There is a surjective class homomorphism
+\[
+ \varpi:G\longrightarrow G_0\times\mu_Z
+ \quad\text{with}\quad \ker\varpi=\mu_S.
+\]
+Every nonidentity point of $G_0\times\mu_Z$ is separated from the identity
+by a homomorphism to a set-sized group.
+\item A universal set-sized quotient of $G$ exists exactly when
+$\dim\sZ=0$, or equivalently when $\sG$ is semisimple. In this case
+$\st:G\to G_0$ is universal.
+\item The subgroup in \textup{(i)} is intrinsically
+$\mu_S=\comm{\mu_G}{\mu_G}$.
+\end{enumerate}
+\end{theorem}
+
+As in Part~III (\cref{e3:cut:sub:notation}), the commutator $\comm{A}{B}$ of
+two subgroups is the subgroup generated by single commutators, and
+$\commset{A}{B}$ is the set of single commutators. The distinction matters in
+the valuation results below. A universal set-sized quotient means a
+homomorphism to a set group through which every homomorphism to every set group
+factors uniquely. Assertions (i) and~(ii) are \cref{e3:cpt:thm:allsmall} with
+\cref{e3:cpt:prop:separation}, (iii) is \cref{e3:cpt:thm:criterion}, and (iv)
+is \cref{e3:cpt:prop:centralproduct}.
+
+When $\sG$ is semisimple, \cref{e3:cpt:thm:main-intro} identifies all actions on
+all sets with ordinary actions of $G_0$. When a central torus is present,
+arbitrarily fine central infinitesimals can be observed one coefficient at a
+time, and no set is large enough to collect all these observations into one
+universal group. Thus the torus is an exact obstruction, not merely one
+counterexample. For semisimple $\sG$ the invisible subgroup is all of $\mu_G$,
+in agreement with \cref{e3:cut:thm:smallquotient,e3:cut:thm:su2,e3:cut:thm:allranks};
+for tori the separating maps are the characters of
+\cref{e3:cut:prop:circlecounter}. \Cref{e3:cpt:sub:consistency} states the
+agreement with Parts~II and~III point by point.
+
+\emph{Logical dependency of the proofs.} The proofs have three independent
+ingredients. A local Nash chart transfers finite real implicit-function
+assertions to the surreal field. Simplicity of the real Lie algebra makes a
+suitable word map submersive after division by its infinitesimal scale.
+Finally, every positive surreal interval contains sets of arbitrarily large
+cardinality, which forces collisions under any map to a fixed set. Only the last
+ingredient is specifically proper-class in nature. The central torus is handled
+by the strongly summable logarithm near one.
+
+\subsection{What Part V inherits and what it adds}\label{e3:cpt:sub:inherited}
+
+Source~11 compared its results with the repository at commit \texttt{9693b28}
+(full hash in \cref{e3:app:ledger}), read through a connector after a local
+clone failed. It read the repository catalogue, which then listed
+51 reports, this report's README, and
+\texttt{10-rotation-quotients-SOURCE\_AUDIT.md}. It did not read the
+306-kilobyte \texttt{article.tex} or the 96-page predecessor line by line. This
+report did not change between that commit and the placement of source~11, so
+source~11's descriptions of Part~III (``Sections~28--35'', a 96-page
+predecessor, the single-commutator theorem for $\SO(3)$) are accurate.
+
+The following are inherited and are not claimed as new by source~11. From this
+report: the valuation-cut calculus, normal closures, mixed single-commutator
+images, perfect residuals and the universal set-sized quotient for
+$\SO(3,\No)$, the extensions to $\SO(n)$ and $\SU(n)$, and the circle and
+$\Un(n)$ boundary (Part~III). From the literature: local openness of the
+commutator map for compact semisimple groups \cite{DM}; the central and
+semisimple decomposition of infinitesimals and the model-theoretic recovery of
+valued fields \cite{BP}; small abstract quotients and quantitative normal
+generation in ordinary Lie and locally compact groups, including a theorem of
+Nikolov and Segal, surveyed by Kramer \cite{Kramer}; the infinitesimal surreal
+logarithm \cite{BG,Gonshor}; the signed-permutation classification; and the
+classical simplicity mechanism for special linear groups. The specific
+proper-class and set-sized classification is the subject of Part~V; it is not a
+claim to have introduced infinitesimal Lie theory.
+
+Source~11 did not see three items of the collection. They are credited where
+used. The omnific-groups report \cite{RepoOGL} was already in the tree at
+\texttt{9693b28} but was not yet listed in the catalogue that source~11 read.
+Its Part~I contains the omnific points of compact groups used in
+\cref{e3:cpt:sec:omnific}, and its \texttt{ogl:el:prop:finiteside} is compared
+with Part~V in \cref{e3:cpt:sub:ogl}. The omnific Diophantine report
+\cite{RepoODG} proves the orthogonal count of \cref{e3:cpt:thm:ozclassical}(i)
+as \texttt{odg:cor:orthogonal}. The trigonometry report's circle splitting
+\cite{RepoTrig} is \cref{e3:cpt:lem:circlelog}.
+
+\begin{center}\small
+\begin{tabular}{L{0.36\textwidth}L{0.54\textwidth}}
+\toprule
+Statement or ingredient & Treatment in Part~V\\
+\midrule
+Standard-part splitting, central decomposition, infinitesimal logarithm,
+signed-permutation counts & Established background, reproved only as
+needed; credited.\\
+Nash normal generation in every compact simple type & A uniform route; the
+$\SO(3)$ case is \cref{e3:cut:thm:normalclosure}, proved there by quaternions
+with a width bound.\\
+Ambient-normal classification in simple type and in finite products & Extends
+Part~III beyond $\SO(3)$, whose case is \cref{e3:cut:thm:normalclass}; general
+priority left open.\\
+Generated mixed commutator subgroups, series, perfect residuals & All
+semisimple types; weaker for $\SO(3)$ than the single-commutator results of
+Part~III; general priority left open.\\
+Exact invisible subgroup, separating class quotient, semisimplicity criterion
+& The main candidate-original contribution of source~11.\\
+Triviality of set-sized images of $\SL_n(\No)$ & The classical simplicity
+mechanism; presented as a contrast.\\
+Compact omnific collapse & Elementary; the orthogonal case is in the
+collection already.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The provenance comparison of source~11 was targeted rather than exhaustive. No
+identical all-compact-group formulation was found in the material it inspected.
+That is a limited novelty assessment, not a proof of priority.
+
+\subsection{Notation, and the renamings made for Part V}\label{e3:cpt:sub:notation}
+
+Part~V keeps the conventions of \cref{e3:sub:notation,e3:cut:sub:notation}.
+The symbols of source~11 listed in the two tables below were changed so that
+each has one meaning in this report. No normalization changes. The new symbols
+are $\mu_G$, $\mu_S$, $\mu_Z$, the depth $\nu(g)=v(g-I)$, and the subgroups $\mu_{\ge\alpha}$, $\mu_{>\alpha}$,
+$\mu_{\mathcal C}$ of \cref{e3:cpt:sec:normalgeneration,e3:cpt:sec:cuts}. For
+$\sG=\SO(3)$ they are Part~III's $K_{\No}$, the depth $v(U-I)$, and
+$K_{\ge\alpha}$, $K_{>\alpha}$, $K_{\mathcal C}$. The letters $\mu,\nu$ also
+appear as local scalars in Part~I, for example in its Ceva computation. Upper
+segments here are upward closed subclasses $\mathcal C\subseteq\No_{>0}$, possibly empty and
+possibly proper classes. The map $\operatorname{gr}_\alpha$ of
+\cref{e3:cpt:prop:graded} has the normalization of Part~II's layer map: for
+$U\in K_{\ge\alpha}\le\SO(3,\No)$, $\operatorname{gr}_\alpha(U)$ is the hat matrix
+of $\ell_\alpha(U)$, because $\cay(t)-I=2\widehat t+\text{higher terms}$.
+\begin{center}\small
+\begin{tabular}{L{0.27\textwidth}L{0.23\textwidth}L{0.4\textwidth}}
+\toprule
+Here & Source~11 & Reason\\
+\midrule
+Nash chart $\sigma$, chart coordinates $\sigma^{-1}$ & $q$, $c=q^{-1}$ &
+$q$ is a unit quaternion and $p(q)$ the spin map; $c$ is the cosine coordinate of
+$\Rot(n;c,s)$; source~11 also uses $q$ for its quotient\\
+class quotient $\varpi$, unitary quotient $\varpi_n$ & $q$, $Q_n$ & as above;
+$Q_n$ is a kernel in \texttt{ogl:el:prop:finiteside}\\
+$\omega^{-\gamma}$ & $t^\gamma$ & Part~III writes Conway monomials over $\No$
+this way; $t$ is a Cayley coordinate\\
+$\coef_\gamma$, $\chi_{j,\gamma}$ & $[t^\gamma]$, $\lambda_{j,\gamma}$ & the
+coefficient and the circle character $\chi_\eta$ of
+\cref{e3:cut:prop:circlecounter}\\
+$g_0=\st(g)$ & $r_g$, $r$ & $r$ also named $\dim\sZ$, the number of simple
+factors and a matrix\\
+$\dim\sZ$; an index set $\mathcal I$ of simple factors & $r$ & as above\\
+$h^{1/m}$ & $r_m(h)$ & as for $r_g$\\
+$\dim\mathfrak g$ & $d$ & $d=\sqrt D$ is the Gram quantity\\
+$\diag(c,c^{-1},1,\ldots,1)$ & $d(c)$ & as above\\
+$\mathcal T$ (target group) & $H$ & $H_n$ is a half-turn\\
+$\comm gh$, $\comm AB$ & $[g,h]$, $[A,B]$ & square brackets are Lie brackets\\
+$\Lambda_n(\mathcal Y)$, $\mathcal Y^{(n)}$ & $\gamma_n K$, $D^nK$ & $\gamma$ is a
+value, $D$ the Gram determinant\\
+$\mathcal Y$ (a generic group) & $K$ & $K$ is the kernel of standard part\\
+$Q$ (a perfect subgroup) & $P$ & $P$ is a positive matrix; $Q$ as in
+\cref{e3:cut:thm:residual}\\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{center}\small
+\begin{tabular}{L{0.27\textwidth}L{0.23\textwidth}L{0.4\textwidth}}
+\toprule
+Here & Source~11 & Reason (continued)\\
+\midrule
+upper segment & upper cut & Part~III's term (\cref{e3:cut:sub:notation})\\
+$\No[i]$, $\Un(n,\cdot)$, $\TT(F)$ & $\No(i)$, $\mathrm U(n)$, $T(F)$ & as in
+\cref{e3:cut:sub:notation}\\
+$\ell_{\mm}$, $\exp(i\theta)$ on $\mm_{\R}$ & $L$, $E$ & the trigonometry
+report's names; $E$ is the spherical excess\\
+$\mathcal X$ (a set) & $X$ & $X$ is a Lie algebra element\\
+$\mathcal W$ (a word map) & $W$ & $W$ is a Givens block\\
+$B_j\in G_0$ & $k_j$ & $k$ is a set-sized field\\
+$\mathcal A\le Z(G_0)$ & $A\le Z_0$ & $A$ is a group element; $Z_0$ is local to
+the proof of \cref{e3:cut:thm:su2}\\
+$\Psi$ (a Nash map) & $F$ & $F$ is a real closed field\\
+$\mathbb K\in\{\No,\No[i]\}$ & $F$ & as above; $\No[i]$ is not real closed\\
+$\varrho,\varrho_0$ (real radii) & $\eta$, $\epsilon$ & $\eta,\eps$ are
+values\\
+$\lambda_-,\lambda_+$ (real constants) & $a,b$ & $a,b$ are scales below\\
+$\operatorname{gr}_\alpha$ & $\ell_\alpha$ & $\ell_\gamma$ is the layer map of
+\cref{e3:so:thm:graded}\\
+$\mathcal U\subseteq G_0$, $\mathbb B_{\varrho_0}\subseteq\mathfrak g$ &
+$U$, $B_\epsilon(0)$ & $U$ is an element of $K$, $B$ a real rotation\\
+$k$, $\mathcal V$ (field, vector space) & $K$, $V$ & $K$ as above; $V$ is an
+element of $K$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Scalars, size and standard part}\label{e3:cpt:sub:scalars}
+
+The scalars are those of \cref{e3:cut:sub:foundations}. Every surreal number has
+a Conway normal form
+\begin{equation}\label{e3:cpt:eq:normalform}
+ x=\sum_{\gamma\in A}x_\gamma\,\omega^{-\gamma},
+ \qquad x_\gamma\in\R,
+ \qquad A\subseteq\No\text{ a well-ordered set},
+\end{equation}
+with the Hahn rules for addition and multiplication
+\cite[Section~2.3]{BG}, \cite{Conway,Gonshor}. The monomials $\omega^{-\gamma}$
+are Conway monomials, with
+$\omega^{-\alpha-\beta}=\omega^{-\alpha}\omega^{-\beta}$; they are not obtained
+by substituting surreal exponents into a chosen global exponential. In
+particular $\omega^{-\gamma}$ is infinitesimal for \emph{every} $\gamma>0$,
+even when $\gamma$ is itself infinitesimal. The support of an individual number
+is a set; no proper-class family is summed. The valuation is
+$v(x)=\min\supp(x)$, with $v(0)=+\infty$, and
+$\OO=\{x:v(x)\ge0\}$, $\mm=\{x:v(x)>0\}$ are the finite and the infinitesimal
+numbers; next to surcomplex numbers $\mm$ is written $\mm_{\R}$, as in
+\cref{e3:cut:eq:torussplit}. Every $x\in\OO$ is uniquely $\st(x)+\eps$ with $\st(x)\in\R$ and
+$\eps\in\mm$, and standard part is a ring homomorphism acting coordinatewise on
+vectors and matrices. For a vector or matrix $X$ put $v(X)=\min_jv(X_j)$.
+Multiplication by an invertible real matrix preserves this value, and for
+$\alpha\in\No$ the vector $X/\omega^{-\alpha}$ is finite exactly when
+$v(X)\ge\alpha$. For surcomplex numbers the normal form has coefficients in
+$\C$, and $v(x+iy)=\min\{v(x),v(y)\}$. Conjugation and infinitesimal logarithms
+are used, but no global surcomplex exponential or phase.
+
+The foundation is NBG with choice; \cref{e3:cut:sub:foundations} uses the same
+NBG-style conventions.
+Elements of $\No$, matrices and individual finite words are sets; subgroups may
+be classes, and a class homomorphism has a class graph whose restriction to a
+set has a set-sized image. ``Killed by every set-sized homomorphism'' is a
+pointwise property: for every set group $\mathcal T$ and every class
+homomorphism to $\mathcal T$ a stated equality holds. No product indexed by all
+class homomorphisms is formed, and no class whose elements are proper classes.
+Where a quotient would have proper-class cosets, an explicit class of set-coded
+representatives is used, or only equality of cosets is spoken of.
+
+Source~11 proves that for every $\delta>0$ and every set cardinal, the interval
+$(0,\delta)$ contains a set of more than that many elements, using the values
+$\delta/(2+\xi)$ for the ordinals $\xi$ below a larger cardinal. This is
+\cref{e3:cut:lem:largeinterval}, with the same map, and is not repeated. It is
+stronger than the statement that $\No$ is a proper class: normal-generation
+arguments need many scales \emph{below a prescribed positive depth}.
+
+Choose a faithful real algebraic matrix representation of $\sG$. One may choose
+an orthogonal representation, but most arguments need only bounded matrix
+entries and bounded inverse entries. Ordinary compactness of $G_0$ supplies
+real bounds for both. Those bounds are first-order statements in real closed
+fields and therefore remain true over $\No$.
+
+\begin{proposition}[Standard-part splitting]\label{e3:cpt:prop:st}
+All entries of every $g\in G$ and $g^{-1}$ are finite. Coordinatewise standard
+part gives a surjective group homomorphism
+\[
+ \st:G\longrightarrow G_0.
+\]
+The inclusion of real matrices splits it, and multiplication gives
+$G=\mu_G\rtimes G_0$.
+\end{proposition}
+\begin{proof}
+Transfer the real bounds just described. Polynomial equations defining the
+group are preserved by standard part. If the chosen affine description also
+uses the inverse of the determinant, boundedness of $g^{-1}$ ensures that
+$\st(g)$ is invertible: taking standard parts of $gg^{-1}=I$ gives an explicit
+inverse. Thus $\st(g)\in G_0$. Matrix multiplication commutes with standard
+part, and real points are fixed. Finally
+$g=\bigl(g\st(g)^{-1}\bigr)\st(g)$ is the unique required decomposition.
+\end{proof}
+
+For $\sG=\SO(3)$ this is \cref{e3:so:thm:split}, and the same entrywise argument
+proves it.
+
+\begin{remark}[Transfer is not completeness]\label{e3:cpt:rem:transfer}
+An ordered-field sentence with finitely many real parameters transfers to
+$\No$ by real-closed-field quantifier elimination. Alternatively, every finite
+tuple used in such a sentence may be placed in a set-sized real closed subfield
+containing its parameters. No sequential completeness, order completeness,
+saturation assumption, or topological convergence in $\No$ is imported.
+\end{remark}
+
+\section{Finite Nash charts and transfer at infinitesimal scales}\label{e3:cpt:sec:nash}
+
+A Nash map is a real analytic semialgebraic map on an open semialgebraic set.
+This category is used because its graphs can be interpreted in every real
+closed field, while real differential calculus supplies the local existence
+statements. Standard Nash-manifold and semialgebraic transfer background is in
+\cite{BCR}.
+
+Write $\mathfrak g=\Lie(G_0)$ and identify it with $\R^{\dim\mathfrak g}$ by a
+real basis. There is a Nash chart
+\begin{equation}\label{e3:cpt:eq:chart}
+ \sigma:\mathbb B_{\varrho_0}\longrightarrow\mathcal U\subseteq G_0,
+ \quad \sigma(0)=I,\quad D\sigma_0(X)=X,
+\end{equation}
+on a real ball $\mathbb B_{\varrho_0}\subseteq\mathfrak g$, with inverse
+$\sigma^{-1}$. Here the derivative is viewed in the ambient matrix algebra. A
+real algebraic matrix group is a smooth real algebraic manifold; local
+algebraic-coordinate projection and the real implicit function theorem give
+such a chart. Only a fixed sufficiently small chart is used. Over $\No$ the
+symbols $\sigma,\sigma^{-1}$ mean the interpretations of their semialgebraic
+graphs, not arbitrary extensions of real analytic functions.
+
+\begin{lemma}[Chart and matrix depths agree]\label{e3:cpt:lem:chart-depth}
+Over $\No$ the chart contains all of $\mu_G$, and $\sigma^{-1}$ identifies
+$\mu_G$ with $\mm^{\dim\mathfrak g}$. For $g\in\mu_G$,
+\[
+ v(\sigma^{-1}(g))=v(g-I).
+\]
+Moreover, for infinitesimal $X$,
+$\sigma(X)=I+X+\smallO(\norm{X}^2)$. The remainder statement means an actual
+inequality with a fixed real constant on a sufficiently small real
+neighbourhood, transferred to $\No$.
+\end{lemma}
+\begin{proof}
+A smaller real neighbourhood of the identity lies in $\mathcal U$, and every
+infinitesimal point lies there. Both $\sigma$ and $\sigma^{-1}$ preserve the
+identity under standard part, so they give the stated bijection. The invertible
+derivative and bounded first derivatives of the chart and its inverse on
+smaller neighbourhoods give positive real constants $\lambda_-,\lambda_+$ with
+\[
+ \lambda_-\norm{\sigma^{-1}(g)}\le\norm{g-I}\le\lambda_+\norm{\sigma^{-1}(g)}.
+\]
+All finite-dimensional coordinate norms are equivalent by real constants.
+Taking natural valuations yields the equality. The second-order estimate is
+ordinary Taylor's theorem on a smaller real neighbourhood; its finite
+inequality transfers.
+\end{proof}
+
+\begin{lemma}[Removal of a scale factor]\label{e3:cpt:lem:division}
+Suppose $\Psi(a,u)$ is Nash near $(0,u_0)$ and $\Psi(0,u)=0$. Then
+$\Psi(a,u)/a$, for $a\ne0$, extends to a Nash map near $(0,u_0)$. If
+$\Psi(a,b,u)$ vanishes whenever $a=0$ and whenever $b=0$, then
+$\Psi(a,b,u)/(ab)$ has a Nash extension. The statement holds coordinatewise for
+vector-valued maps.
+\end{lemma}
+\begin{proof}
+Analytic division by the coordinate $a$ gives an analytic extension, with value
+$\partial_a\Psi(0,u)$ on the hyperplane. This extension is semialgebraic: off
+the hyperplane its graph is a quotient of semialgebraic graphs, and on the
+hyperplane the derivative is semialgebraic, since its defining limit is a
+first-order condition over the real field. Thus it is Nash. In the second
+assertion, divide by $a$ first. The result still vanishes on $b=0$, including
+$a=0$ by continuity, so division by $b$ applies.
+\end{proof}
+
+\begin{lemma}[Parametric local solvability]\label{e3:cpt:lem:ift}
+Let $\Psi(p,y)$ be a Nash map near $(p_0,0)$, where $p$ ranges over a
+finite-dimensional real parameter space and $y$ over $\mathfrak g$, with
+$\Psi(p_0,0)=0$ and $D_y\Psi(p_0,0)$ invertible. There are positive real radii
+such that, for $p$ close to $p_0$ and $z$ sufficiently close to zero, the
+equation $\Psi(p,y)=z$ has a solution $y$ close to zero, unique in a smaller
+prescribed neighbourhood. This assertion holds with the same real radii over
+$\No$.
+\end{lemma}
+\begin{proof}
+Apply the ordinary real inverse function theorem to $(p,y)\mapsto(p,\Psi(p,y))$.
+Shrink to semialgebraic neighbourhoods and real balls on which existence and
+uniqueness hold. The statement that each $(p,z)$ in the chosen balls has exactly
+one corresponding $y$ in the chosen ball is first-order, because the graph of
+$\Psi$ is semialgebraic. Transfer that statement. No completeness-dependent
+analytic theorem is applied directly inside $\No$.
+\end{proof}
+
+\subsection{Roots as a finite rescaling device}
+
+\begin{lemma}[Unique infinitesimal roots]\label{e3:cpt:lem:roots}
+For every ordinary integer $m\ge1$, the map $h\mapsto h^m$ is a bijection of
+$\mu_G$. If $h^{1/m}$ denotes the unique infinitesimal $m$th root, then
+\begin{equation}\label{e3:cpt:eq:roots}
+ \sigma^{-1}(h^{1/m})=\frac1m\sigma^{-1}(h)+\smallO(\norm{\sigma^{-1}(h)}^2),
+ \qquad v(h^{1/m}-I)=v(h-I).
+\end{equation}
+The constants in the remainder may depend on the fixed integer $m$.
+\end{lemma}
+\begin{proof}
+In chart coordinates the power map is $P_m(X)=\sigma^{-1}(\sigma(X)^m)$, with
+$P_m(0)=0$ and derivative $mI$. Apply \cref{e3:cpt:lem:ift} to its local
+inverse. The inverse contains every infinitesimal input and has infinitesimal
+output, by standard part and local uniqueness. Any two infinitesimal roots lie
+in the same real uniqueness neighbourhood. Taylor's theorem for the real inverse
+has linear part $I/m$; transfer gives \cref{e3:cpt:eq:roots}. The quadratic
+remainder has strictly larger valuation than the nonzero linear term, which
+proves the depth assertion.
+\end{proof}
+
+For $\sG=\SO(3)$, unique divisibility of $K$ is \cref{e3:so:thm:divisible}.
+
+\begin{lemma}[From a small real output ball to a whole valuation ball]\label{e3:cpt:lem:amplify}
+Let $a>0$ be infinitesimal and let $N\le G$ be any subgroup. Suppose that for
+some positive real $\varrho$,
+\[
+ h\in\mu_G,\quad \norm{\sigma^{-1}(h)/a}<\varrho\quad\Longrightarrow\quad h\in N.
+\]
+Then every $h\in\mu_G$ with $v(\sigma^{-1}(h))\ge v(a)$ belongs to $N$.
+\end{lemma}
+\begin{proof}
+The vector $z=\sigma^{-1}(h)/a$ is finite. Choose an ordinary integer $m$ so
+large that $\norm{\st(z)}/m<\varrho/2$. By \cref{e3:cpt:lem:roots},
+\[
+ \frac{\sigma^{-1}(h^{1/m})}{a}=\frac{z}{m}
+ +\smallO\!\left(\frac{\norm{\sigma^{-1}(h)}^2}{a}\right).
+\]
+The last term is infinitesimal, since $\sigma^{-1}(h)/a$ is finite and
+$\sigma^{-1}(h)$ is infinitesimal. Consequently $h^{1/m}$ satisfies the
+displayed hypothesis, and $h=(h^{1/m})^m\in N$. The exponent $m$ is an ordinary
+finite integer, although it may depend on $h/a$. No infinite product is used.
+\end{proof}
+
+\section{Exact normal generation at one valuation scale}\label{e3:cpt:sec:normalgeneration}
+
+For $g\in\mu_G$ define the depth $\nu(g)=v(g-I)$, with $\nu(I)=+\infty$. For
+$\alpha>0$ put
+\[
+ \mu_{\ge\alpha}=\{g\in\mu_G:\nu(g)\ge\alpha\},\qquad
+ \mu_{>\alpha}=\{g\in\mu_G:\nu(g)>\alpha\}.
+\]
+The group is suppressed from the subscript when unambiguous.
+
+\begin{lemma}[Elementary filtration bounds]\label{e3:cpt:lem:filtration}
+For $g,h\in\mu_G$ and $A\in G$,
+\[
+ \nu(gh)\ge\min\{\nu(g),\nu(h)\},\qquad
+ \nu(g^{-1})=\nu(g),\qquad
+ \nu(AgA^{-1})=\nu(g).
+\]
+Consequently $\mu_{\ge\alpha}$ and $\mu_{>\alpha}$ are normal in $G$.
+\end{lemma}
+\begin{proof}
+Use $gh-I=(g-I)+(h-I)+(g-I)(h-I)$ and $g^{-1}-I=-g^{-1}(g-I)$; all matrices
+involved have finite entries. For conjugation, $AgA^{-1}-I=A(g-I)A^{-1}$ gives
+one inequality, and conjugating back by $A^{-1}$ gives the reverse one. The
+inverse argument is similar.
+\end{proof}
+
+For $\sG=\SO(3)$ these are \cref{e3:cut:eq:depthbasic}.
+
+\begin{lemma}[The Lie-algebra spanning mechanism]\label{e3:cpt:lem:span}
+Assume $\mathfrak g$ is simple and nonabelian. For every nonzero
+$X\in\mathfrak g$,
+\begin{equation}\label{e3:cpt:eq:span}
+ \Span_{\R}
+ \{[\Ad(B)X,Y]:B\in G_0,\ Y\in\mathfrak g\}=\mathfrak g.
+\end{equation}
+If $s\in G_0$ is not central, then also
+\begin{equation}\label{e3:cpt:eq:span-noncentral}
+ \Span_{\R}
+ \{(\Ad(BsB^{-1})-I)Y:B\in G_0,\ Y\in\mathfrak g\}=\mathfrak g.
+\end{equation}
+For any semisimple $\mathfrak g$, the span of all brackets $[X,Y]$ is
+$\mathfrak g$.
+\end{lemma}
+\begin{proof}
+The span of the adjoint orbit of a nonzero $X$ is a nonzero
+$\Ad(G_0)$-invariant subspace. Differentiating the adjoint action makes it an
+ideal, hence all of $\mathfrak g$. Bracketing that span with $\mathfrak g$ gives
+$[\mathfrak g,\mathfrak g]=\mathfrak g$, proving \cref{e3:cpt:eq:span}.
+
+The span in \cref{e3:cpt:eq:span-noncentral} is likewise invariant. It is
+nonzero, since the kernel of the adjoint representation of a connected Lie group
+is its center. Simplicity again applies. Finally a semisimple Lie algebra is a
+direct sum of nonabelian simple ideals, each equal to its derived algebra.
+\end{proof}
+
+\begin{theorem}[Exact normal closure of an infinitesimal]\label{e3:cpt:thm:normalclosure}
+Suppose $\Lie(G_0)$ is simple and nonabelian. If $I\ne g\in\mu_G$, then
+\begin{equation}\label{e3:cpt:eq:normalclosure}
+ \nc{g}_{G}=\mu_{\ge\nu(g)}.
+\end{equation}
+Thus every infinitesimal at least as deep as $g$ is a finite product of
+conjugates of $g$ and $g^{-1}$ in the full group.
+\end{theorem}
+\begin{proof}
+The right-hand side is normal and contains $g$, so it contains the normal
+closure. We prove the reverse inclusion.
+
+Let $\alpha=\nu(g)$, $a=\omega^{-\alpha}$ and $u=\sigma^{-1}(g)/a$. By
+\cref{e3:cpt:lem:chart-depth}, $u$ is finite with nonzero standard part
+$X\in\mathfrak g$. Using \cref{e3:cpt:lem:span}, choose $\dim\mathfrak g$ pairs
+$(B_j,Y_j)\in G_0\times\mathfrak g$ such that
+$[\Ad(B_1)X,Y_1],\ldots,[\Ad(B_{\dim\mathfrak g})X,Y_{\dim\mathfrak g}]$ form
+a real basis of $\mathfrak g$.
+
+For real variables $a,u,y$ near $0,X,0$, form the Nash word
+\begin{equation}\label{e3:cpt:eq:normalword}
+ \mathcal W(a,u,y)=\prod_{j=1}^{\dim\mathfrak g}
+ \comm{B_j\sigma(au)B_j^{-1}}{\sigma(y_jY_j)},
+\end{equation}
+with the factors in the displayed order and $\comm xy=xyx^{-1}y^{-1}$. The
+chart coordinate $\sigma^{-1}(\mathcal W)$ vanishes at $a=0$, so
+$\Psi(a,u,y)=a^{-1}\sigma^{-1}(\mathcal W(a,u,y))$ has a Nash extension by
+\cref{e3:cpt:lem:division}. The derivative of $\Psi$ in $y_j$ at $(0,X,0)$ is
+$[\Ad(B_j)X,Y_j]$. This follows either by differentiating the matrix word twice
+or by retaining its bilinear term:
+\[
+ \comm{I+aX'+\smallO(a^2)}{I+yY'+\smallO(y^2)}
+ =I+ay[X',Y']+\text{terms of higher total degree}.
+\]
+Thus $D_y\Psi(0,X,0)$ is invertible.
+
+Apply \cref{e3:cpt:lem:ift}. For some real $\varrho>0$, our infinitesimal $a$
+and $u\approx X$ have the following property: whenever $h\in\mu_G$ and
+$\norm{\sigma^{-1}(h)/a}<\varrho$, a finite vector $y$ solves
+$\Psi(a,u,y)=\sigma^{-1}(h)/a$. Since $\sigma(au)=g$, the word
+\cref{e3:cpt:eq:normalword} then expresses $h$ as a product of commutators,
+each involving a conjugate of $g$. Each such commutator lies in $\nc{g}_G$.
+
+Finally apply \cref{e3:cpt:lem:amplify} with $N=\nc{g}_G$. It includes every
+$h$ with $v(\sigma^{-1}(h))\ge\alpha$, which is exactly the desired valuation
+ball.
+\end{proof}
+
+For $\sG=\SO(3)$ this is \cref{e3:cut:thm:normalclosure}. Part~III proves that
+case by the quaternion two-conjugate interval and obtains more: every element
+of $K_{\ge\delta}$ is a product of two conjugates of one power $U^m$. The proof
+above uses no quaternions and applies to every compact simple type, but gives no
+such width bound.
+
+\begin{remark}[What the theorem does not assert]\label{e3:cpt:rem:nowidth}
+The number of conjugates need not be uniformly bounded for all elements of
+$\mu_{\ge\alpha}$: the normalized target may have an arbitrarily large real
+standard part. The proof gives a fixed local word and then an ordinary finite
+power. It does not turn an infinite or surreal-valued word length into a
+legitimate group word. This is one reason to keep the rescaling lemma explicit.
+For $\SO(3)$, \cref{e3:cut:prop:width} proves that no uniform width exists.
+\end{remark}
+
+\begin{theorem}[Normal generation from a noncentral standard part]\label{e3:cpt:thm:noncentral}
+Under the same simple-Lie-algebra hypothesis, if $g\in G$ has noncentral
+standard part, then $\nc{g}_G=G$.
+\end{theorem}
+\begin{proof}
+Put $s=\st(g)$ and choose pairs $(B_j,Y_j)$ using
+\cref{e3:cpt:eq:span-noncentral}. Consider
+\[
+ (x,y)\longmapsto
+ \sigma^{-1}\!\left(\prod_{j=1}^{\dim\mathfrak g}
+ \comm{B_jxB_j^{-1}}{\sigma(y_jY_j)}\right)
+\]
+near $(s,0)$. Its derivative in $y$ has columns $(\Ad(B_jsB_j^{-1})-I)Y_j$, so
+it is invertible. The parametric local solvability lemma shows that the normal
+closure of $g\approx s$ contains all points in a fixed positive real
+neighbourhood of the identity over $\No$. In particular it contains $\mu_G$ and
+the real points of that neighbourhood.
+
+In the connected real group $G_0$, the subgroup generated by any identity
+neighbourhood is open. Its other cosets are open, so it is also closed and must
+be all of $G_0$. Therefore the normal closure contains $G_0$. By
+\cref{e3:cpt:prop:st}, it contains $G=\mu_GG_0$.
+\end{proof}
+
+\section{Normal subgroups and valuation segments}\label{e3:cpt:sec:cuts}
+
+\begin{definition}\label{e3:cpt:def:segment}
+An \emph{upper segment} is an upward closed subclass $\mathcal C\subseteq\No_{>0}$;
+the empty subclass is allowed. Define
+\[
+ \mu_{\mathcal C}=\{I\}\cup\{g\in\mu_G:\nu(g)\in\mathcal C\}.
+\]
+An upper segment need not have a realized endpoint and need not be a set.
+\end{definition}
+
+\begin{theorem}[Ambient-normal infinitesimal subgroups]\label{e3:cpt:thm:cuts}
+If $\Lie(G_0)$ is simple and nonabelian, the subgroups of $\mu_G$ normal in $G$
+are exactly the $\mu_{\mathcal C}$ for upper segments $\mathcal C$. The segment
+is unique, and inclusions of subgroups correspond to inclusions of segments.
+\end{theorem}
+\begin{proof}
+The filtration bounds show that $\mu_{\mathcal C}$ is a subgroup normal in $G$.
+Conversely, let $N\le\mu_G$ be normal in $G$ and let $\mathcal C$ be the class
+of finite values $\nu(g)$ for $I\ne g\in N$. If $\alpha\in\mathcal C$, the
+exact normal-closure theorem gives $\mu_{\ge\alpha}\subseteq N$. Every positive
+value $\beta$ is realized by $\sigma(\omega^{-\beta}X)$ for a fixed nonzero real
+Lie vector $X$, so $\mathcal C$ is upward closed and $N=\mu_{\mathcal C}$.
+Realization of every value also proves uniqueness and the inclusion assertion.
+\end{proof}
+
+Normality in the \emph{full ambient group} is essential. This theorem does not
+classify subgroups normal only in $\mu_G$, much less arbitrary subgroups of
+$\mu_G$.
+
+\begin{theorem}[All proper normal subgroups in simple type]\label{e3:cpt:thm:fullnormal}
+Suppose $\Lie(G_0)$ is simple and nonabelian, and let $Z(G_0)$ be the center of
+$G_0$, a finite group. Every proper normal subgroup $N\lhd G$ \textup(a set or a
+proper class\textup) has a unique expression
+\begin{equation}\label{e3:cpt:eq:fullnormal}
+ N=\mathcal A\,\mu_{\mathcal C},
+ \qquad \mathcal A\le Z(G_0),
+ \qquad\mathcal C\subseteq\No_{>0}\text{ an upper segment}.
+\end{equation}
+Conversely, every subgroup displayed in \cref{e3:cpt:eq:fullnormal} is proper
+and normal in $G$.
+\end{theorem}
+\begin{proof}
+By \cref{e3:cpt:thm:noncentral}, every member of a proper normal subgroup has
+central standard part. Write such a member as $g=zh$, with $z\in Z(G_0)$ and
+$h\in\mu_G$. Real central elements remain central over $\No$ by transfer. If
+$m$ is the finite order of $z$, then $g^m=h^m\in N$.
+
+If $h\ne I$, \cref{e3:cpt:lem:roots} gives $\nu(h^m)=\nu(h)$, and
+\cref{e3:cpt:thm:normalclosure} applied to $h^m$ puts $h$ in $N$. If $h=I$ this
+already holds. Hence $z=gh^{-1}\in N$ as well. It follows that
+\[
+ N=\bigl(N\cap Z(G_0)\bigr)\bigl(N\cap\mu_G\bigr).
+\]
+Apply \cref{e3:cpt:thm:cuts} to the second factor. The intersection of the two
+factors is trivial, by standard part, which proves uniqueness. Conversely these
+products are normal, and their standard parts lie in the proper subgroup
+$Z(G_0)\ne G_0$, so they are proper.
+\end{proof}
+
+Source~11 states this theorem for ``every proper class subgroup $N$''. The
+intended reading is a proper subgroup, which may be a class; read literally,
+``proper class'' would exclude the set-sized subgroups $N=\mathcal A$ with
+$\mathcal C=\varnothing$, which the theorem includes. The statement above is
+worded accordingly. For $\sG=\SO(3)$ the center is trivial and the theorem is
+\cref{e3:cut:thm:normalclass}. For $\SO(n)$ with $n\ge3$ and $n\ne4$, and for
+$\SU(n)$ with $n\ge2$, it classifies all proper normal subgroups of
+$\SO(n,\No)$ and $\SU(n,\No[i])$; the centers are $\{\pm I\}$ for even $n$,
+trivial for odd $n$, and the $n$th roots of unity, respectively.
+
+\subsection{Several simple factors and the absence of diagonal normals}
+
+Standard compact Lie structure gives a finite central isogeny from a product of
+compact connected almost simple groups onto any connected compact semisimple
+group. Such a map has invertible derivative and is a local Nash isomorphism. It
+therefore identifies the infinitesimal subgroup with the product of the factor
+infinitesimal groups, and the finite central kernel has no nonidentity
+infinitesimal point. These are familiar structural facts; compare
+\cite[Section~5]{BP}. The cut calculation adds the following.
+
+\begin{theorem}[Product classification]\label{e3:cpt:thm:productcuts}
+Let $\sG$ be compact connected semisimple, with simple Lie factors indexed by a
+finite set $\mathcal I$. In the infinitesimal product identification
+$\mu_G\simeq\prod_{i\in\mathcal I}\mu_i$, every subgroup $N\le\mu_G$ normal in
+$G$ is uniquely
+\[
+ N=\prod_{i\in\mathcal I}\mu_{i,\mathcal C_i}
+\]
+for upper segments $\mathcal C_i$. Thus no diagonal coupling of two simple
+factors survives ambient normality, even when the factors are isomorphic.
+\end{theorem}
+\begin{proof}
+It is enough to work in the finite central covering product. Take
+$n=(n_i)_{i\in\mathcal I}\in N$ and fix $i$ with $n_i\ne I$. Let
+$\alpha_i=\nu(n_i)$ and let $X_i\ne0$ be its normalized leading Lie vector.
+There is $B_i\in G_{i,0}$ with $(\Ad(B_i)-I)X_i\ne0$, since the Lie center is
+zero. Commuting $n$ with the element that is $B_i$ in factor $i$ and the
+identity elsewhere gives an element of $N$ supported only in factor $i$, with
+depth exactly $\alpha_i$ there. Its ambient normal closure contains the pure
+$i$th-factor element $n_i$, by \cref{e3:cpt:thm:normalclosure}.
+
+Thus $N$ contains each component of each of its elements. There are only
+finitely many factors, so $N$ is the product of its intersections with the
+factors. Each intersection is classified by \cref{e3:cpt:thm:cuts}. Pulling
+through the infinitesimal isomorphism gives the result for $\sG$.
+\end{proof}
+
+For $\SO(4)$, which has two simple Lie factors, the ambient-normal
+infinitesimal subgroups are indexed by two segments, not one. Part~III treats
+$\SO(4,\No)$ only through the universal quotient (\cref{e3:cut:thm:allranks}),
+which agrees: both segments must be killed by a set-sized image.
+
+\section{Exact mixed commutator subgroups}\label{e3:cpt:sec:mixed}
+
+\begin{lemma}[The matrix commutator bound]\label{e3:cpt:lem:commbound}
+For $g,h\in\mu_G$,
+\[
+ \nu(\comm gh)\ge\nu(g)+\nu(h).
+\]
+\end{lemma}
+\begin{proof}
+The exact identity
+\[
+ \comm gh-I=(gh-hg)g^{-1}h^{-1}
+ =\bigl((g-I)(h-I)-(h-I)(g-I)\bigr)g^{-1}h^{-1}
+\]
+and finiteness of the inverse matrices give the inequality.
+\end{proof}
+
+This is the identity of source~10's proof of \cref{e3:cut:lem:bound}, which
+Part~III states for $\SO(3)$; it holds verbatim for every $G$.
+
+\begin{theorem}[Two prescribed scales]\label{e3:cpt:thm:mixed}
+Let $\sG$ be compact connected semisimple. For any positive surreal depths
+$\alpha,\beta$,
+\begin{equation}\label{e3:cpt:eq:mixed}
+ \comm{\mu_{\ge\alpha}}{\mu_{\ge\beta}}=\mu_{\ge\alpha+\beta}.
+\end{equation}
+The left-hand side is the generated commutator subgroup; the theorem does not
+assert equality with the set $\commset{\mu_{\ge\alpha}}{\mu_{\ge\beta}}$ of
+single commutators.
+\end{theorem}
+\begin{proof}
+The inclusion from left to right follows from \cref{e3:cpt:lem:commbound} and
+the filtration bounds. For the converse, choose $\dim\mathfrak g$ pairs
+$(X_j,Y_j)$ whose brackets form a real basis of the semisimple Lie algebra,
+using \cref{e3:cpt:lem:span}. Set $a=\omega^{-\alpha}$, $b=\omega^{-\beta}$ and
+consider
+\[
+ \mathcal W(a,b,y)=\prod_{j=1}^{\dim\mathfrak g}
+ \comm{\sigma(aX_j)}{\sigma(by_jY_j)}.
+\]
+For real parameters near zero the chart coordinate $\sigma^{-1}(\mathcal W)$
+vanishes on both axes $a=0$ and $b=0$. Thus
+$\Psi(a,b,y)=\sigma^{-1}(\mathcal W(a,b,y))/(ab)$ has a Nash extension. Its
+$y$-derivative at $(0,0,0)$ has columns $[X_j,Y_j]$ and is invertible. By
+\cref{e3:cpt:lem:ift}, all targets $h$ for which $\sigma^{-1}(h)/(ab)$ belongs
+to a fixed small real ball are represented by this word.
+
+The solved parameters $y_j$ remain finite. Therefore
+$\sigma(aX_j)\in\mu_{\ge\alpha}$ and $\sigma(by_jY_j)\in\mu_{\ge\beta}$, and all
+those targets lie in the left-hand subgroup of \cref{e3:cpt:eq:mixed}. Apply
+\cref{e3:cpt:lem:amplify} with scale $ab$ to obtain every target of depth at
+least $\alpha+\beta$.
+\end{proof}
+
+For upper segments put
+$\mathcal C+\mathcal D=\{\alpha+\beta:\alpha\in\mathcal C,\ \beta\in\mathcal D\}$.
+If either segment is empty, the sum is empty. Otherwise it is upward closed: an
+excess in a sum can be added to its first summand.
+
+\begin{corollary}[Segment calculus]\label{e3:cpt:cor:cutcomm}
+For compact connected semisimple $\sG$ and upper segments $\mathcal C,\mathcal D$,
+\[
+ \comm{\mu_{\mathcal C}}{\mu_{\mathcal D}}=\mu_{\mathcal C+\mathcal D}.
+\]
+In particular, $\mu_G$ is perfect.
+\end{corollary}
+\begin{proof}
+The commutator bound gives the forward inclusion for each generator and then for
+finite products. Conversely, if $\nu(h)=\gamma\in\mathcal C+\mathcal D$, choose
+$\alpha\in\mathcal C$, $\beta\in\mathcal D$ with $\alpha+\beta=\gamma$ and
+apply \cref{e3:cpt:thm:mixed}. For the final assertion use
+$\mathcal C=\mathcal D=\No_{>0}$ and split every positive depth into two equal
+halves.
+\end{proof}
+
+\begin{remark}[Position relative to local openness and to Part~III]\label{e3:cpt:rem:openness}
+D'Andrea and Maffei prove local openness of the single-commutator map
+\cite[Theorem~2.5]{DM}. The argument above is deliberately weaker concerning
+single commutators, but it makes the two valuation constraints explicit and
+arbitrary. For $\SO(3)$, Part~III proves the stronger single-commutator
+statements $\commset{K_{\ge\alpha}}{K_{\ge\beta}}=K_{\ge\alpha+\beta}$ and
+$\commset{K_{\mathcal C}}{K_{\mathcal D}}=K_{\mathcal C+\mathcal D}$ by
+quaternion algebra (\cref{e3:cut:thm:mixed,e3:cut:thm:cuts}), and the perfectness
+of $K$ is \cref{e3:so:thm:perfect}. Neither that special result nor ordinary
+local openness alone is silently substituted for \cref{e3:cpt:thm:mixed}.
+\end{remark}
+
+\subsection{The associated graded Lie algebra}
+
+\begin{proposition}[Leading Lie coefficients]\label{e3:cpt:prop:graded}
+For every $\alpha>0$, the map
+\[
+ \operatorname{gr}_\alpha:\mu_{\ge\alpha}\longrightarrow\mathfrak g,
+ \qquad
+ \operatorname{gr}_\alpha(g)=\st\!\bigl(\omega^{\alpha}(g-I)\bigr)
+\]
+is a surjective homomorphism to the additive real Lie algebra, with kernel
+$\mu_{>\alpha}$. If $g\in\mu_{\ge\alpha}$ and $h\in\mu_{\ge\beta}$, then
+\[
+ \operatorname{gr}_{\alpha+\beta}(\comm gh)
+ =[\operatorname{gr}_\alpha(g),\operatorname{gr}_\beta(h)].
+\]
+\end{proposition}
+\begin{proof}
+The chart estimate implies that the leading coefficient belongs to
+$\mathfrak g$, and $\sigma(\omega^{-\alpha}X)$ realizes every $X\in\mathfrak g$.
+The product term $(g-I)(h-I)$ has value at least $2\alpha>\alpha$ when both
+inputs have depth at least $\alpha$, which proves additivity at that level. The
+kernel is exactly the strict inequality in depth. In the exact commutator
+identity the inverse factors have standard part $I$, so the coefficient at
+$\alpha+\beta$ is the ordinary matrix Lie bracket of the two leading
+coefficients.
+\end{proof}
+
+For $\sG=\SO(3)$ this is \cref{e3:so:thm:graded} with its bracket, in the
+normalization recorded in \cref{e3:cpt:sub:notation}. The proposition describes
+the graded bracket, not the entire noncommutative group law. The exact subgroup
+statements need the submersion argument, since a leading term alone does not
+control the higher-order remainder.
+
+\section{Derived series and perfect residuals}\label{e3:cpt:sec:residual}
+
+For a group $\mathcal Y$ write $\mathcal Y^{(0)}=\mathcal Y$,
+$\mathcal Y^{(n+1)}=\comm{\mathcal Y^{(n)}}{\mathcal Y^{(n)}}$, and
+$\Lambda_1(\mathcal Y)=\mathcal Y$,
+$\Lambda_{n+1}(\mathcal Y)=\comm{\Lambda_n(\mathcal Y)}{\mathcal Y}$, as in
+\cref{e3:cut:sec:perfect}.
+
+\begin{theorem}[Exact series]\label{e3:cpt:thm:series}
+For compact connected semisimple $\sG$ and any upper segment $\mathcal C$,
+\[
+ \Lambda_n(\mu_{\mathcal C})=\mu_{n\mathcal C},\qquad
+ \mu_{\mathcal C}^{(n)}=\mu_{2^n\mathcal C},
+\]
+where $n\mathcal C$ is the $n$-fold sum. Furthermore
+\begin{equation}\label{e3:cpt:eq:residual}
+ \bigcap_{n<\omega}\mu_{\mathcal C}^{(n)}=\mu_{\mathcal C_\infty},\qquad
+ \mathcal C_\infty=
+ \{\gamma>0:\gamma/m\in\mathcal C\text{ for every ordinary }m\ge1\}.
+\end{equation}
+This subgroup is perfect and contains every perfect subgroup of
+$\mu_{\mathcal C}$. Thus the transfinite derived series stabilizes by stage
+$\omega$.
+\end{theorem}
+\begin{proof}
+The finite identities follow inductively from \cref{e3:cpt:cor:cutcomm}. For an
+upper segment,
+\begin{equation}\label{e3:cpt:eq:cut-average}
+ n\mathcal C=\{\gamma>0:\gamma/n\in\mathcal C\}.
+\end{equation}
+Indeed, if $\gamma$ is a sum of $n$ members of $\mathcal C$, their minimum is at
+most their average, so the average is in $\mathcal C$. Conversely use $n$ equal
+summands. The powers of two are cofinal among positive ordinary integers, so
+intersecting the derived segments gives exactly \cref{e3:cpt:eq:residual}.
+
+The segment $\mathcal C_\infty$ is closed under halving. Hence
+$\mathcal C_\infty+\mathcal C_\infty=\mathcal C_\infty$, and its subgroup is
+perfect by \cref{e3:cpt:cor:cutcomm}. If $Q\le\mu_{\mathcal C}$ is perfect,
+induction gives $Q\le\mu_{\mathcal C}^{(n)}$ for every $n$, without any
+normality assumption on $Q$. Thus $Q\le\mu_{\mathcal C_\infty}$, which proves
+maximality and stabilization.
+\end{proof}
+
+For $\sG=\SO(3)$ and $\mathcal C=[\alpha,\infty)$ this is
+\cref{e3:cut:thm:series,e3:cut:thm:residual}: then
+$\mathcal C_\infty=\{\gamma:\gamma>n\alpha\text{ for every }n\}$ and
+$\mu_{\mathcal C_\infty}=K_{\gg\alpha}$. Part~III also has commutator width one
+for these subgroups and the lower-central residual; the theorem above states
+the derived-series residual for every segment and every semisimple type.
+
+\begin{corollary}[No nontrivial solvable ambient segment]\label{e3:cpt:cor:nonsolvable}
+Every nonempty upper segment $\mathcal C\subseteq\No_{>0}$ has nonempty
+$\mathcal C_\infty$. Hence every nontrivial ambient-normal infinitesimal
+subgroup in simple type is neither solvable nor nilpotent.
+\end{corollary}
+\begin{proof}
+Choose $\alpha\in\mathcal C$. Then $\gamma=\omega\alpha$ satisfies
+$\gamma/m>\alpha$ for every ordinary $m\ge1$, so $\gamma\in\mathcal C_\infty$.
+The corresponding perfect subgroup is nontrivial because every positive depth
+is realized. A solvable group has no nontrivial perfect subgroup, and a
+nilpotent group is solvable.
+\end{proof}
+
+This is the all-type and all-segment form of \cref{e3:cut:cor:norn}.
+
+\begin{example}[A ball whose finite derived stages never stabilize]\label{e3:cpt:ex:ball}
+For $\mathcal C=[\alpha,+\infty)$ with $\alpha>0$,
+\[
+ \mu_{\ge\alpha}^{(n)}=\mu_{\ge2^n\alpha},\qquad
+ \mu_{\ge\alpha}^{(\omega)}
+ =\{I\}\cup\{g:\nu(g)>m\alpha\text{ for all }m\ge1\}.
+\]
+Every finite inclusion is strict. The residual is nevertheless nontrivial and
+perfect, containing elements of depth $\omega\alpha$. These statements use
+multiplication and inequalities of surreal \emph{values}; they involve no
+infinite group product.
+\end{example}
+
+\begin{remark}[Why a rank-one model can behave differently]\label{e3:cpt:rem:rankone}
+The nonemptiness argument uses a value larger than every ordinary multiple of a
+prescribed value, which is unavailable in an Archimedean value group. The local
+mixed-segment calculation remains valid over suitable real closed extensions,
+but the existence of this particular nontrivial residual must not be inferred in
+every rank-one Hahn field. The rank-one workspace of \cref{e3:cut:sec:examples}
+is an example: there $K_{\gg\alpha}=\{I\}$.
+\end{remark}
+
+\section{Why every small representation kills semisimple infinitesimals}\label{e3:cpt:sec:small}
+
+We now use the size of the full surreal value group. The proof gives a specific
+finite obstruction to any proposed nontrivial image of an infinitesimal; it
+does not argue merely from the size of $G$.
+
+\begin{lemma}[Separated infinitesimal points]\label{e3:cpt:lem:separated}
+Fix $0\ne X\in\mathfrak g$. For distinct positive surreal values
+$\beta,\gamma$,
+\[
+ \nu\!\left(\sigma(\omega^{-\beta}X)\,\sigma(\omega^{-\gamma}X)^{-1}\right)
+ =\min\{\beta,\gamma\}.
+\]
+\end{lemma}
+\begin{proof}
+Suppose $\beta<\gamma$. The chart expansion gives
+$\sigma(\omega^{-\beta}X)=I+\omega^{-\beta}X+{}$a matrix of strictly higher
+value, and similarly for the other factor and its inverse. In the product, the
+term $\omega^{-\beta}X$ is the unique lowest-value contribution; the second
+scale is strictly deeper and cannot cancel it. The case $\gamma<\beta$ is
+symmetric.
+\end{proof}
+
+This is the all-type form of \cref{e3:cut:eq:separation}.
+
+\begin{theorem}[Semisimple infinitesimal invisibility]\label{e3:cpt:thm:kill}
+Let $\sG$ be compact connected semisimple, $\mathcal T$ a set-sized group, and
+$\varphi:G\to\mathcal T$ an arbitrary class homomorphism. Then
+$\varphi(\mu_G)=\{1\}$.
+\end{theorem}
+\begin{proof}
+First suppose the real Lie algebra is simple. Fix $h\in\mu_G$, $h\ne I$, and let
+$\alpha=\nu(h)$. By \cref{e3:cut:lem:largeinterval}, choose a set of more than
+$|\mathcal T|$ distinct values $\beta_j\in(0,\alpha)$. The points
+$g_j=\sigma(\omega^{-\beta_j}X)$ form a set for a fixed nonzero real $X$. Two
+have the same image under $\varphi$. Therefore $g_jg_k^{-1}\in\ker\varphi$, and
+by \cref{e3:cpt:lem:separated} its depth is $\min\{\beta_j,\beta_k\}<\alpha$.
+
+The kernel is normal in the full group. Its containment of this element and
+\cref{e3:cpt:thm:normalclosure} imply that it contains every element of depth
+at least that minimum, including $h$. Since $h$ was arbitrary, all of $\mu_G$
+is killed.
+
+For a semisimple group, use a finite central covering product of compact almost
+simple groups and restrict $\varphi$ along each factor homomorphism. The first
+part kills the factor's infinitesimal subgroup. These factor infinitesimals
+generate the entire infinitesimal subgroup downstairs, by the local isomorphism
+of the central isogeny. Thus $\varphi$ kills $\mu_G$.
+\end{proof}
+
+\begin{corollary}[Universal set-sized quotient in the semisimple case]\label{e3:cpt:cor:universal}
+For compact connected semisimple $\sG$, every homomorphism
+$\varphi:G\to\mathcal T$ with $\mathcal T$ a set group has the unique form
+\[
+ \varphi=\varphi_0\circ\st,
+ \qquad\varphi_0:G_0\to\mathcal T.
+\]
+\end{corollary}
+\begin{proof}
+Take $\varphi_0$ to be the restriction to real points. Writing $g=h\st(g)$ with
+$h\in\mu_G$ and applying \cref{e3:cpt:thm:kill} gives the factorization.
+Surjectivity of standard part makes it unique.
+\end{proof}
+
+For $\SO(3,\No)$, $\SU(2,\No[i])$, $\SO(n,\No)$ with $n\ge3$ and $\SU(n,\No[i])$
+with $n\ge2$ this is
+\cref{e3:cut:thm:smallquotient,e3:cut:thm:su2,e3:cut:thm:allranks}. Those
+proofs are different: Part~III kills the kernel of $\SO(3,\No)$ by quaternion
+normal generation and a Hartogs argument, passes to $\SU(2)$ through the spin
+quotient and perfectness, and reaches higher rank by near-identity Givens
+factorization. The proof above treats every compact simple type directly. Both
+routes are kept.
+
+\begin{corollary}[Actions and linear representations]\label{e3:cpt:cor:actions}
+Every action of $G$ on a set is obtained uniquely by standard-part pullback of an
+action of $G_0$. In particular, for any set-sized field $k$ and any set-sized
+$k$-vector space $\mathcal V$, every abstract linear representation
+$G\to\GL_k(\mathcal V)$ factors through standard part.
+\end{corollary}
+\begin{proof}
+For an action on a set $\mathcal X$, the target $\Sym(\mathcal X)$ is a set
+group. For a linear representation, $\GL_k(\mathcal V)$ is also a set. Apply
+\cref{e3:cpt:cor:universal}.
+\end{proof}
+
+This statement is stronger than a classification of continuous
+finite-dimensional complex representations: it applies to arbitrary set
+dimensions and arbitrary abstract homomorphisms. It is weaker in another
+direction, since it does not classify the resulting abstract representations of
+the ordinary real group. For the groups of Part~III, the finite-dimensional case
+is \cref{e3:cut:cor:actions,e3:cut:cor:allranksactions}.
+
+\section{Central tori and the exact obstruction}\label{e3:cpt:sec:central}
+
+\subsection{Splitting the infinitesimal kernel}
+
+For a compact connected group, standard structure theory gives a finite central
+isogeny
+\[
+ \sS\times\sZ\longrightarrow\sG,
+ \qquad(s,z)\longmapsto sz,
+\]
+where $\sS$ is semisimple, $\sZ$ is a compact torus, and $\sS\cap\sZ$ is finite.
+The infinitesimal decomposition is a classical input; its local proof is
+included to avoid hidden saturation assumptions.
+
+\begin{proposition}[Central--semisimple infinitesimal product]\label{e3:cpt:prop:centralproduct}
+Multiplication gives an isomorphism
+\begin{equation}\label{e3:cpt:eq:centralproduct}
+ \mu_S\times\mu_Z\ \xrightarrow{\ \sim\ }\ \mu_G.
+\end{equation}
+The central factor commutes with all of $G$, and
+$\comm{\mu_G}{\mu_G}=\mu_S$.
+\end{proposition}
+\begin{proof}
+The derivative of the multiplication map at the identity is the direct-sum
+isomorphism $\Lie(\sS)\oplus\Lie(\sZ)\to\mathfrak g$. Local Nash inversion gives
+a unique infinitesimal lift of every infinitesimal point. The finite kernel has
+no nonidentity infinitesimal point, which also shows injectivity. Centrality is
+preserved under real-closed-field transfer. Finally the central factor has no
+commutators, and $\mu_S$ is perfect by \cref{e3:cpt:cor:cutcomm}.
+\end{proof}
+
+The decomposition itself is in Bays and Peterzil \cite[Section~5]{BP}; it is not
+offered here as a new fact.
+
+\subsection{Logarithmic coordinates on the central infinitesimals}
+
+Let $\TT(F)=\{z\in F(i):z\bar z=1\}$ be the algebraic circle over a real closed
+field. Over $\No$ its infinitesimal subgroup is
+\[
+ \mu_{\TT}=\{z\in\TT(\No):z-1\in\mm+i\mm\},
+\]
+the group $\TT_{\mm}$ of \texttt{trigonometry:rot:eq:ellm}.
+
+\begin{lemma}[The infinitesimal circle logarithm]\label{e3:cpt:lem:circlelog}
+For $z\in\mu_{\TT}$ and $\theta\in\mm_{\R}$ the maps
+\[
+ \ell_{\mm}(z)=-i\sum_{n\ge1}\frac{(-1)^{n+1}}n(z-1)^n,
+ \qquad \exp(i\theta)=\sum_{n\ge0}\frac{(i\theta)^n}{n!}
+\]
+are well-defined strong Hahn sums. They are inverse group isomorphisms
+$\ell_{\mm}:\mu_{\TT}\to(\mm_{\R},+)$ and
+$\exp(i\,\cdot\,):(\mm_{\R},+)\to\mu_{\TT}$.
+\end{lemma}
+\begin{proof}
+This is the infinitesimal factor of the trigonometry report's canonical circle
+splitting \texttt{trigonometry:eq:circlesplit} in
+\texttt{trigonometry:thm:polar} \cite{RepoTrig}, restricted to $\st(z)=1$, where
+it is the map $\ell_{\mm}$ of \texttt{trigonometry:rot:eq:ellm}; Part~III
+recalls it as \cref{e3:cut:eq:torussplit}. Source~11 gives the same proof as the
+one recalled there. The union of the finitely many input supports is a
+well-ordered subset of the positive value group; the positive-support lemma
+(\cref{e3:sec:scalars}) makes the power-series families strongly summable, with
+set supports, so formal identities may be evaluated and regrouped
+coefficientwise. They show that the two series are inverse, that
+$\log(zw)=\log z+\log w$ for commuting near-one arguments, and that conjugation
+commutes with both series. Since $z\bar z=1$,
+$\overline{\log z}=\log\bar z=\log(z^{-1})=-\log z$, so $-i\log z$ is real and
+infinitesimal. Conversely $\exp(i\theta)\overline{\exp(i\theta)}=1$.
+\end{proof}
+
+The ordinary infinitesimal surreal logarithm and its Hahn interpretation are
+standard \cite{BG,Gonshor}. No extension to infinite angles enters the quotient
+theorem.
+
+\begin{proposition}[Coefficient separation of a central torus]\label{e3:cpt:prop:separation}
+After a choice of real torus coordinates,
+\[
+ \mu_Z\simeq(\mm_{\R},+)^{\dim\sZ}.
+\]
+For each coordinate $j$ and each positive surreal $\gamma$, coefficient
+extraction
+\[
+ \chi_{j,\gamma}(\theta_1,\ldots,\theta_{\dim\sZ})=\coef_\gamma(\theta_j)
+\]
+is a homomorphism to the set group $(\R,+)$. This family separates points. If
+$\dim\sZ>0$, $\mu_Z$ is a proper class.
+\end{proposition}
+\begin{proof}
+A compact real algebraic torus is a product of algebraic circles; equivalently
+one may use a real torus isogeny, which is an isomorphism on infinitesimals.
+Apply \cref{e3:cpt:lem:circlelog} in each coordinate. Coefficient extraction is
+additive by the normal-form addition rule. Any nonzero coordinate has a nonempty
+support, so one of its coefficients is nonzero. Finally $\mm_{\R}$ contains the
+distinct monomials $\omega^{-\gamma}$ for all $\gamma>0$, and
+\cref{e3:cut:lem:largeinterval} precludes a set-sized underlying collection.
+\end{proof}
+
+For the circle, $\chi_{1,\eta}$ is the character $\chi_\eta$ of
+\cref{e3:cut:prop:circlecounter} restricted to $\mu_{\TT}$, and on the layer
+$\{u\in\mu_{\TT}:v(u-1)\ge\gamma\}$ the map $\chi_{1,\gamma}$ induces the layer
+isomorphism \texttt{trigonometry:rot:thm:graded}.
+
+\subsection{The class quotient and its universal property for observations}
+
+For $g\in G$ put $g_0=\st(g)$ and use \cref{e3:cpt:prop:centralproduct} to write
+uniquely
+\[
+ g g_0^{-1}=s_g z_g,
+ \qquad s_g\in\mu_S,\quad z_g\in\mu_Z.
+\]
+Define
+\begin{equation}\label{e3:cpt:eq:q}
+ \varpi(g)=(g_0,z_g)\in G_0\times\mu_Z.
+\end{equation}
+This defines the quotient by concrete pairs of sets, rather than by treating
+proper-class cosets as elements of another class.
+
+\begin{theorem}[Exact classification of set-sized observations]\label{e3:cpt:thm:allsmall}
+The map $\varpi$ of \cref{e3:cpt:eq:q} is a surjective class homomorphism with
+kernel $\mu_S$. Every homomorphism from $G$ to a set group factors uniquely
+through $\varpi$. For every $g\notin\mu_S$ there is a homomorphism from $G$ to a
+set group that does not kill $g$.
+\end{theorem}
+\begin{proof}
+The decomposition $G=\mu_G\rtimes G_0$ is compatible with
+$\mu_G=\mu_S\times\mu_Z$. Conjugation by $G_0$ preserves $\mu_S$ and is trivial
+on $\mu_Z$, since the latter is central. Therefore the central infinitesimal
+component of a product is the product of the two central components, and
+$\varpi$ is a homomorphism. The point $(g_0,z)$ is represented by $zg_0$, which
+proves surjectivity, and the kernel is exactly $\mu_S$.
+
+Let $\varphi:G\to\mathcal T$ have set-sized target. Restricting to $\sS(\No)$
+and using \cref{e3:cpt:thm:kill} shows that $\varphi$ kills $\mu_S$. Its unique
+factor through the explicit quotient is $\overline\varphi(g_0,z)=\varphi(zg_0)$.
+To separate $g\notin\mu_S$, first check its real component. If $g_0\ne I$, the
+homomorphism $\st:G\to G_0$ separates it. If $g_0=I$, then $z_g\ne I$, and one
+of the homomorphisms of \cref{e3:cpt:prop:separation}, composed with the second
+component of $\varpi$, separates it with target $(\R,+)$.
+\end{proof}
+
+Equivalently, a homomorphism into a set group $\mathcal T$ amounts to
+homomorphisms $\varphi_0:G_0\to\mathcal T$ and $\varphi_Z:\mu_Z\to\mathcal T$
+whose images commute, with $\varphi(g)=\varphi_0(g_0)\varphi_Z(z_g)$. This is a
+classification in terms of the ordinary real factor and a divisible abelian
+class factor. It does not claim that every additive map on $\mm_{\R}$ is a
+finite combination of coefficient extractions. The coefficient maps are used for
+separation, not as a description of the entire algebraic dual.
+
+\begin{theorem}[The semisimplicity criterion]\label{e3:cpt:thm:criterion}
+The class group $G$ has a universal set-sized quotient if and only if $\sG$ is
+semisimple. When it exists, standard part is such a quotient.
+\end{theorem}
+\begin{proof}
+If $\sG$ is semisimple, $\mu_Z$ is trivial, and \cref{e3:cpt:cor:universal}
+applies.
+
+Conversely, suppose $\dim\sZ>0$ and let $\upsilon:G\to\mathcal T_0$ be a
+proposed universal homomorphism with $\mathcal T_0$ a set group. The first part
+of \cref{e3:cpt:thm:allsmall} gives $\mu_S\subseteq\ker\upsilon$. If some
+$g\notin\mu_S$ lay in $\ker\upsilon$, the separating homomorphism supplied by
+that theorem could not factor through $\upsilon$. Hence $\ker\upsilon=\mu_S$.
+Its restriction to $\mu_Z$ would then be injective, since
+$\mu_Z\cap\mu_S=\{I\}$. This injects a proper class into a set, which is
+impossible by replacement and \cref{e3:cpt:prop:separation}.
+
+For a compact connected algebraic group, the connected center has dimension
+zero exactly when the group is semisimple. This completes the equivalence.
+\end{proof}
+
+\begin{remark}[A limitation specific to small targets]\label{e3:cpt:rem:faithful}
+The identity homomorphism of $G$ detects all of its infinitesimal elements. Its
+target is a proper class, so it does not contradict the criterion. Conversely,
+standard part has a large kernel even though it is universal among maps to sets
+in the semisimple case. Universal does not mean faithful.
+\end{remark}
+
+\section{Examples over surreal and surcomplex scalars}\label{e3:cpt:sec:examples}
+
+\subsection{Classical and exceptional semisimple groups}
+
+For $n\ge2$, every homomorphism $\SU(n,\No[i])\to\mathcal T$ to a set group
+factors uniquely through $\SU(n,\C)$. For $n\ge3$ the analogous statement holds
+for $\SO(n,\No)$ and $\SO(n,\R)$. These are the cases of Part~III
+(\cref{e3:cut:thm:allranks}). The group $\SO(4)$ is semisimple with two simple
+Lie factors, so its infinitesimal normal subgroups use two segments, not one. In
+contrast, $\SO(2)$ is a torus and fails the set-universality criterion.
+
+The same theorem applies to the compact symplectic groups and to compact real
+forms of the exceptional simple algebraic groups. No case-by-case root-system
+calculation is required. Finite central coverings and finite central quotients
+change the real group that appears as the universal recipient but do not alter
+the infinitesimal argument. The orthogonal and special unitary instances overlap
+Part~III; the uniform all-type statement follows from the general proof here.
+
+\subsection{An explicit formula for the unitary obstruction}
+
+Let $g\in\Un(n,\No[i])$ and put $g_0=\st(g)\in\Un(n,\C)$. Then
+$\det(g)/\det(g_0)$ is a near-one circle element. Define
+\begin{equation}\label{e3:cpt:eq:unitaryq}
+ \varpi_n(g)=\left(g_0,\ \ell_{\mm}\!\left(\frac{\det g}{\det g_0}\right)\right)
+ \in\Un(n,\C)\times\mm_{\R}.
+\end{equation}
+
+\begin{proposition}[The exact unitary small quotient]\label{e3:cpt:prop:unitary}
+The map $\varpi_n$ is a surjective class homomorphism with kernel
+$\mu_{\SU(n)}$. All homomorphisms from $\Un(n,\No[i])$ to set groups factor
+through it, and its points are separated by such homomorphisms. In particular,
+$\Un(n,\No[i])$ has no universal set-sized quotient.
+\end{proposition}
+\begin{proof}
+Both determinant and standard part are homomorphisms, and $\ell_{\mm}$ is
+additive on the near-one circle, so $\varpi_n$ is a homomorphism. Given
+$(g_0,\theta)$, its preimage is $\exp(i\theta/n)g_0$, with the scalar
+$\exp(i\theta/n)$ multiplying the identity matrix. The determinant of that scalar
+matrix is $\exp(i\theta)$, so the formula gives exactly the desired point. The
+kernel condition is $\st(g)=I$ and $\det(g)=1$. The remaining assertions are
+\cref{e3:cpt:thm:allsmall,e3:cpt:thm:criterion}.
+\end{proof}
+
+For example, for every fixed $\gamma>0$ the map
+\[
+ g\longmapsto\coef_\gamma\,\ell_{\mm}\!\left(\frac{\det g}{\det\st(g)}\right)
+ \in(\R,+)
+\]
+is a group homomorphism with a set target. It detects the central matrix
+$\exp(i\omega^{-\gamma}/n)I_n$, whose standard part is the identity. Different
+coefficients need not be assembled into a single set-valued faithful map. This
+refines the last clause of \cref{e3:cut:prop:circlecounter}: the failure of the
+standard-part factorization for $\Un(n,\No[i])$ is now an exact class quotient.
+
+\subsection{Products and finite observations}
+
+For $G=\SU(2,\No[i])\times\TT(\No)$, the invisible subgroup is
+$\mu_{\SU(2)}\times\{1\}$, while a separating class quotient is
+$\SU(2,\C)\times\TT(\R)\times\mm_{\R}$. This example separates three issues:
+real nonabelian information survives, nonabelian infinitesimal information is
+invisible to sets, and central infinitesimal information remains visible.
+
+All compact connected groups nevertheless have trivial finite quotients. For each
+ordinary $m\ge1$, the $m$th-power map on a compact connected real Lie group is
+surjective, by placing a point in a maximal torus. This is a first-order
+assertion for fixed $m$ and transfers to $G$. If $\mathcal T$ is finite, choose
+$m$ divisible by the orders of all its elements. For every $g=x^m$, any
+homomorphism to $\mathcal T$ gives $\varphi(g)=\varphi(x)^m=1$. Thus central
+infinitesimals need genuinely infinite set targets to be detected. This familiar
+finite-quotient observation is not the source of the much stronger all-set
+theorem.
+
+\section{The split contrast: special linear groups have no small images}\label{e3:cpt:sec:split}
+
+Compactness constrained conjugation to preserve infinitesimal depth. A split
+torus can change scale, and the outcome is opposite.
+
+\begin{theorem}[Triviality of all set-sized special-linear images]\label{e3:cpt:thm:sl}
+Let $\mathbb K=\No$ or $\mathbb K=\No[i]$, and let $n\ge2$. Every class
+homomorphism $\varphi:\SL_n(\mathbb K)\to\mathcal T$ to a set-sized group is
+trivial.
+\end{theorem}
+\begin{proof}
+For $a\in\mathbb K$ write $u(a)=I+aE_{12}$. The map $a\mapsto\varphi(u(a))$
+cannot be injective, because $\mathbb K$ contains sets larger than
+$\mathcal T$. Hence the kernel contains $u(a)$ for some $a\ne0$. Direct
+multiplication with the determinant-one diagonal matrix
+$\diag(c,c^{-1},1,\ldots,1)$ gives
+\begin{equation}\label{e3:cpt:eq:root-scaling}
+ \diag(c,c^{-1},1,\ldots,1)\,u(a)\,\diag(c,c^{-1},1,\ldots,1)^{-1}=u(c^2a).
+\end{equation}
+If $\mathbb K=\No[i]$, every nonzero $b/a$ is a square, so all $u(b)$ lie in
+the kernel. If $\mathbb K=\No$, every positive $b/a$ is a square, and the other
+sign is obtained from $u(-a)=u(a)^{-1}$; again every $u(b)$ is killed.
+
+Conjugation by determinant-one signed permutation matrices moves this root
+subgroup to every off-diagonal elementary subgroup, with a possible sign
+absorbed into the parameter. Thus the kernel contains all elementary matrices
+$I+bE_{ij}$, $i\ne j$.
+
+For completeness, those elementary matrices generate $\SL_n(\mathbb K)$.
+Gaussian elimination uses elementary row additions and determinant-one row
+interchanges to reduce to a diagonal matrix. The necessary two-by-two diagonal
+blocks are also elementary. With
+\[
+ u(a)=\begin{pmatrix}1&a\\0&1\end{pmatrix},\qquad
+ l(b)=\begin{pmatrix}1&0\\b&1\end{pmatrix},\qquad
+ w(a)=u(a)l(-a^{-1})u(a)=\begin{pmatrix}0&a\\-a^{-1}&0\end{pmatrix},
+\]
+one has $w(a)w(-1)=\diag(a,a^{-1})$. This finishes elimination inside the
+elementary subgroup and proves that the kernel is all of $\SL_n(\mathbb K)$.
+\end{proof}
+
+\begin{corollary}[Determinant is the only source of small general-linear images]\label{e3:cpt:cor:gl}
+For $\mathbb K=\No$ or $\No[i]$ and $n\ge2$, every homomorphism from
+$\GL_n(\mathbb K)$ to a set group factors uniquely through
+$\det:\GL_n(\mathbb K)\to\mathbb K^\times$. Every action of $\SL_n(\mathbb K)$
+on a set is trivial.
+\end{corollary}
+\begin{proof}
+The kernel of determinant is $\SL_n(\mathbb K)$, which is killed by
+\cref{e3:cpt:thm:sl}. The determinant is onto, which gives unique
+factorization. For actions use the set group $\Sym(\mathcal X)$.
+\end{proof}
+
+The determinant target is still a proper class. The corollary does not classify
+its abstract set-valued characters or assert that determinant itself is a
+set-sized universal quotient. The elementary argument is closely related to the
+classical simplicity mechanism for projective special linear groups; its
+proper-class consequence is presented as a contrast, not as a new simplicity
+theorem.
+
+\section{Omnific lattices inside compact matrix groups}\label{e3:cpt:sec:omnific}
+
+An omnific integer has Conway normal form
+$z=z_0+\sum_{\alpha>0}z_\alpha\omega^\alpha$ with $z_0\in\Z$, $z_\alpha\in\R$
+and reverse-well-ordered set support on the positive exponents. The ring is
+$\Oz$; this is the ordinary omnific-integer definition, not the valuation ring
+$\OO$ and not a nonstandard model of the ordinary integers. The results of this
+section are already in the collection, except the unitary count; they are
+printed with source~11's short proofs and with credit.
+
+\begin{lemma}[Finite omnific integers]\label{e3:cpt:lem:ozfinite}
+One has $\Oz\cap\OO=\Z$ and $\Oz[i]\cap(\OO+i\OO)=\Z[i]$.
+\end{lemma}
+\begin{proof}
+A nonzero positive-exponent part of an omnific integer has an infinite leading
+monomial, so the number is not finite. Thus a finite omnific integer has only
+its ordinary integral constant term. Apply this argument to both coordinates in
+the complexification.
+\end{proof}
+
+The omnific-groups report contains this as \texttt{ogl:lem:bounded}
+\cite{RepoOGL}: bounded coordinates are constant, and $\Oz\cap\R=\Z$.
+
+For a real matrix group not defined over $\Z$, the notation ``points over
+$\Oz$'' can mislead: $\Oz$ does not contain all real constants. The following
+statement is explicitly about entrywise integral matrices in a chosen real
+representation. For the classical orthogonal and unitary equations below, the
+equations themselves have integral coefficients, so the usual ring-of-points
+notation is legitimate.
+
+\begin{proposition}[Compact integral collapse]\label{e3:cpt:prop:ozcompact}
+In any fixed bounded real matrix realization of a compact group,
+\[
+ G\cap\GL_N(\Oz)=G_0\cap\GL_N(\Z).
+\]
+This group is finite. In an orthogonal realization the same assertion can be
+stated entrywise, since transposition supplies the inverse.
+\end{proposition}
+\begin{proof}
+An element on the left has finite entries by compactness, and its omnific
+entries are ordinary integers by \cref{e3:cpt:lem:ozfinite}. Its inverse has the
+same properties, so it belongs to $\GL_N(\Z)$. Being a real matrix, it is in
+$G_0$. The reverse inclusion is immediate. There are only finitely many integral
+matrices within any fixed real coordinate bounds, which proves finiteness. In an
+orthogonal realization the inverse has exactly the transposed entries, so the
+entrywise condition already gives invertibility over the indicated ring.
+\end{proof}
+
+For a closed subgroup scheme of $\GL_{N,\Z}$ with compact real points, the
+equality is the rigid case of \texttt{ogl:alg:thm:real} \cite{RepoOGL}, which
+characterizes all real algebraic groups with no new omnific points.
+
+\begin{theorem}[Explicit orthogonal and unitary omnific groups]\label{e3:cpt:thm:ozclassical}
+For every ordinary $n\ge1$:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\SO_n(\Oz)$ consists exactly of the signed permutation matrices of
+determinant one, and has order $2^{n-1}n!$.
+\item $\SU_n(\Oz[i])$ consists exactly of the monomial matrices with nonzero
+entries in $\{1,-1,i,-i\}$ and determinant one, and has order $4^{n-1}n!$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+For an orthogonal matrix each entry has absolute value at most one, so an
+omnific entry is in $\{-1,0,1\}$. The sum of the squared entries in each column
+is one, so exactly one entry is $1$ or $-1$, and orthogonality puts these
+entries in distinct rows. For each permutation, choosing the first $n-1$ signs
+arbitrarily determines the last sign from the determinant condition. This gives
+$2^{n-1}n!$.
+
+For a unitary matrix, the real and imaginary coordinates of every entry are
+finite omnific integers, hence ordinary integers. Each column has a sum of
+squares of these integer coordinates equal to one, so exactly one entry is a
+Gaussian unit and all the others vanish. Distinct columns use distinct rows.
+After fixing the permutation and the first $n-1$ Gaussian units, the determinant
+condition fixes the last unit, giving $4^{n-1}n!$.
+\end{proof}
+
+Part~(i) is \texttt{odg:cor:orthogonal} of the omnific Diophantine report
+\cite{RepoODG}, proved there by sources~01 and~02 of that report from the row
+sums, and reproved in the omnific-groups report through the column bound
+(\texttt{ogl:alg:sec:examples}, with $|\SO_3(\Oz)|=24$). Part~(ii) is an explicit instance of
+\texttt{ogl:alg:thm:real}, since the unitary group is a real algebraic group
+with compact real points; the omnific-groups report notes that the complex
+orthogonal group $\SO_3(\Oz[i])$ is not compact in this sense and does acquire
+new points, so the two statements do not conflict. No independent novelty is
+claimed for the signed-permutation classification. These assertions are
+elementary consequences of normal form and positive definiteness. They supply a
+boundary for the main theory: the surreal compact group has a proper-class
+infinitesimal kernel, but its omnific lattice contains no nonidentity
+infinitesimal matrix at all. Large surreal analytic symmetry does not by itself
+produce large compact omnific arithmetic.
+
+\section{Consistency, contrasts, and what remains}\label{e3:cpt:sec:scope}
+
+\subsection{Consistency with Parts II and III}\label{e3:cpt:sub:consistency}
+
+This subsection is written for the addition; it relates statements and adds
+none. Source~11 and Part~III were written independently. Their statements agree
+wherever both apply, and Part~III is stronger in some places.
+\begin{itemize}
+\item \emph{Semisimple groups.} For semisimple $\sG$, $\mu_Z$ is trivial and the
+invisible subgroup of \cref{e3:cpt:thm:main-intro} is all of $\mu_G$. For
+$\SO(3,\No)$, $\SU(2,\No[i])$, $\SO(n,\No)$ with $n\ge3$ and $\SU(n,\No[i])$
+with $n\ge2$ this is
+\cref{e3:cut:thm:smallquotient,e3:cut:thm:su2,e3:cut:thm:allranks}. The proofs
+are different (\cref{e3:cpt:sec:small}). For $\SO(4)$, Part~III uses Givens
+factorization and Part~V uses two segments (\cref{e3:cpt:thm:productcuts}); the
+conclusions agree.
+\item \emph{Tori.} The points separated by \cref{e3:cpt:prop:separation} are
+those separated by \cref{e3:cut:prop:circlecounter}: source~11's coefficient of
+$t^\gamma$, with $t^\gamma=\omega^{-\gamma}$, is Part~III's $\coef_\gamma$. For
+$\Un(n)$, Part~III's statement that standard part is not universal becomes the
+exact class quotient $\Un(n,\C)\times\mm_{\R}$ of \cref{e3:cpt:prop:unitary}.
+\item \emph{Normal subgroups and series.} For $\SO(3)$, the segment subgroups
+$\mu_{\mathcal C}$, the ambient-normal classification, the lower central and
+derived series $\mu_{n\mathcal C}$, $\mu_{2^n\mathcal C}$ and the perfect
+residual $\mu_{\mathcal C_\infty}$ agree with
+\cref{e3:cut:thm:normalclass,e3:cut:thm:series,e3:cut:thm:residual}; for
+$\mathcal C=[\alpha,\infty)$ the residual is $K_{\gg\alpha}$.
+\item \emph{Where Part~III is stronger.} For $\SO(3)$, Part~III proves
+single-commutator exactness (\cref{e3:cut:thm:mixed,e3:cut:thm:cuts}),
+commutator width one for perfect segment subgroups
+(\cref{e3:cut:thm:perfectcuts}), width two for normal generation
+(\cref{e3:cut:thm:normalclosure}), and the universal residually nilpotent
+quotient (\cref{e3:cut:thm:universalrn}). Source~11 claims none of these for
+other types.
+\item \emph{Where Part~V is more general.} It treats every compact connected real
+algebraic group, including the compact symplectic and exceptional types, finite
+central quotients and products; all proper normal subgroups in simple type
+(\cref{e3:cpt:thm:fullnormal}); every segment, not only principal and convex
+ones, in \cref{e3:cpt:thm:series}; and representations on set-sized vector spaces
+of any dimension (\cref{e3:cpt:cor:actions}).
+\end{itemize}
+
+\subsection{Relation to the omnific-groups report}\label{e3:cpt:sub:ogl}
+
+This subsection is written for the addition. For $n\ge3$, the omnific-groups
+report \cite{RepoOGL} proves as \texttt{ogl:el:prop:finiteside} that every class
+homomorphism from $\SL_n(\mathcal O_{\mathrm{fin}}(k))$ to a
+set-sized group factors through standard part onto $\SL_n(k)$, and it compares
+that statement with Part~III in \texttt{ogl:el:rem:e3}. Neither
+that proposition nor \cref{e3:cpt:thm:main-intro} implies the other. A
+homomorphism defined on a compact subgroup of $\SL_n(\mathcal O_{\mathrm{fin}})$
+need not extend to the whole group, and conversely the proposition says nothing
+about homomorphisms defined only on a compact subgroup. The two are consistent.
+A compact torus inside $\SL_3(\mathcal O_{\mathrm{fin}}(\R))$ carries the set
+characters of \cref{e3:cpt:prop:separation}, which do not extend. The group
+$\SL_n(\mathcal O_{\mathrm{fin}}(\R))$ is a non-normal subgroup of
+$\SL_n(\No)$ with set-sized image $\SL_n(\R)$, while $\SL_n(\No)$ has only
+trivial set-sized images (\cref{e3:cpt:thm:sl}); restricting the trivial maps
+causes no conflict. The compact omnific collapse of \cref{e3:cpt:sec:omnific}
+agrees with Part~I of the omnific-groups report.
+
+\subsection{What the results settle, and what remains}\label{e3:cpt:sub:remains}
+
+The representation-theoretic question posed at the beginning of Part~V has an
+exact answer in the compact connected real algebraic setting. The invisible
+subgroup is not all infinitesimals in general: it is precisely their derived
+subgroup. Removing it leaves a real compact group and a central abelian
+infinitesimal group. The former is a set; the latter is pointwise observable by
+set targets but cannot itself fit faithfully into a set. This proves the
+semisimplicity criterion and explains both sides of it.
+
+The valuation results determine the ambient-normal infinitesimal subgroups in
+each simple type and in their finite semisimple products. They also determine
+mixed \emph{generated} commutator subgroups and transfinite perfect residuals.
+Their proofs neither use nor establish a global exponential on $\No[i]$, an
+infinite-dimensional Hilbert theory, or a classification of all arithmetic
+homomorphisms from $\Oz$.
+
+Several substantive extensions remain outside the proved scope. The first is a
+general exact \emph{single}-commutator theorem with two prescribed valuation
+bounds in all compact semisimple types. The second is a comparably explicit
+small-observation classification for arbitrary noncompact real reductive
+groups, where compact derived factors and split root subgroups interact with a
+more complicated real torus. The third is a classification of normal subgroups
+of $\mu_G$ without ambient normality; the segment theorem must not be used as
+a substitute for that problem. The status notes in \cref{e3:cut:sub:open}
+record these problems against the questions left open by source~10.
+
+A further size-sensitive direction is to replace the full surreal class by a
+fixed set-sized real closed Hahn field. The local normal-generation proof still
+applies, but the collision step only eliminates infinitesimals whose lower-scale
+interval is larger than the chosen target. A formulation with explicit interval
+cardinalities should produce a hierarchy of small-target theorems rather than
+the absolute all-set conclusion proved here, compare \cref{e3:cut:eq:cardbound}.
+This direction isolates exactly which part of the argument is lost on passing
+from $\No$ to a single small workspace.
+
+\subsection{Proof audit and foundations checklist}\label{e3:cpt:sub:audit}
+
+Source~11 lists the delicate points at which a superficially similar argument
+could fail.
+
+\emph{No analytic convergence is transferred.} The normal-generation and
+mixed-commutator proofs use real Nash maps and first-order local existence
+statements with fixed real radii. The divided maps extend as Nash maps by
+\cref{e3:cpt:lem:division}. Real Taylor estimates enter only as finite
+inequalities. Strong Hahn summation is used separately, for the infinitesimal
+central logarithm, where positive supports justify it.
+
+\emph{The target normalization can be large but only finitely large.} Depth
+$\nu(h)\ge\alpha$ implies that $\sigma^{-1}(h)/\omega^{-\alpha}$ is finite, not
+that it lies in a fixed small real ball. \Cref{e3:cpt:lem:amplify} closes
+exactly this gap: an ordinary root and a finite power enlarge local
+surjectivity to the whole valuation ball.
+
+\emph{Simplicity is used only where needed.} Exact normal closure of one
+infinitesimal requires a simple nonabelian Lie algebra. It is false in that form
+for a semisimple element supported in only one simple factor, and false for a
+central torus. The mixed commutator theorem needs only semisimplicity. Product
+classification is proved by extracting individual components, not by assuming
+that a subdirect product is a direct product.
+
+\emph{The collision argument is set-sized at every execution.} For a fixed
+target $\mathcal T$, one set of scales of cardinality greater than
+$|\mathcal T|$ is chosen. Its image is a set and ordinary pigeonhole applies. No
+set theorem is applied directly to an unbounded proper-class family.
+
+\emph{Quotients use explicit representatives.} The class quotient
+\cref{e3:cpt:eq:q} has underlying class $G_0\times\mu_Z$ of pairs of sets. The
+notation $G/\mu_S$ is shorthand for that model, not a collection of proper-class
+cosets.
+
+\emph{Central separation is not a dual-classification theorem.} Normal-form
+coefficients separate $\mm_{\R}$. They need not exhaust all abstract additive
+functionals, and the nonexistence of a set-sized universal recipient needs
+separation only.
+
+\emph{Scalar and arithmetic conventions are distinct.} The finite ring $\OO$,
+its infinitesimal ideal $\mm$, the omnific integers $\Oz$ and the ordinary
+integers $\Z$ are not identified. In particular $\Oz\cap\OO=\Z$ is a conclusion
+from normal form, not a convention.
+
+\emph{Verification boundary.} The companion program checks finite matrix
+identities, selected real Lie spanning calculations, formal logarithm
+coefficients and finite counts (\cref{e3:sub:checks}). It does not verify class
+replacement, Nash implicit-function transfer, the normal-generation proofs, or
+novelty. No Lean source is supplied and no Lean build was performed. Source~11
+asks independent review to focus on
+\cref{e3:cpt:thm:normalclosure,e3:cpt:thm:mixed,e3:cpt:thm:allsmall,e3:cpt:thm:criterion}.
 
 \appendix
 \section{Formula and convention reference for Part II}\label{e3:so:app:formulas}
@@ -5920,6 +7737,14 @@ Source 10 files & \texttt{code/10-rotation-quotients-verify.py},
  \texttt{data/10-rotation-quotients-verification.json},
  \texttt{data/10-rotation-quotients-requirements.txt},
  \texttt{10-rotation-quotients-SOURCE\_AUDIT.md}\\
+Source 11 pin & \texttt{9693b28c24e6fcb317ce47969a40185c5dfef402}\\
+Placement of source 11 & \texttt{66d7e55} (files only; this article unchanged)\\
+Part~V written at & \texttt{66d7e55}\\
+Source 11 files & \texttt{code/11-compact-groups-verify.py},
+ \texttt{code/11-compact-groups-build.sh},
+ \texttt{data/11-compact-groups-verification\_results.json},
+ \texttt{data/11-compact-groups-requirements.txt},
+ \texttt{11-compact-groups-SOURCE\_AUDIT.md}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -5927,7 +7752,11 @@ The manuscripts themselves, their PDFs, READMEs and source~09's checksum list
 are not shipped. The code and data files are byte-identical to the delivered
 ones. Source~10 delivered no checksum list; its source and novelty audit is
 shipped verbatim as \texttt{10-rotation-quotients-SOURCE\_AUDIT.md}. That file
-names the delivered article and files by their unprefixed names.
+names the delivered article and files by their unprefixed names. Source~11 also
+delivered no checksum list. Its manuscript, PDF and README are not shipped; its
+source and proof audit is shipped verbatim as
+\texttt{11-compact-groups-SOURCE\_AUDIT.md}, which likewise uses the unprefixed
+names.
 
 \subsection{Source 04: inspected sources and dependencies}
 
@@ -6007,6 +7836,39 @@ Universal set quotient & Normal closure; proper-class value interval & Full $\No
 Surcomplex $\SU(2)$ & Spin quotient; perfect small kernel & Fixed conjugation; finite central image removed explicitly.\\
 Higher fixed ranks & Near-identity finite Givens products & $\SO(n)$, $n\ge3$; $\SU(n)$, $n\ge2$; ordinary finite $n$.\\
 Circle counterexample & Canonical infinitesimal logarithm; normal-form coefficient & Additional established strong-summation construction; not used by the main theorem.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Source 11: inspected sources and dependency ledger}\label{e3:cpt:sub:ledger11}
+
+At its pin \texttt{9693b28}, source~11 read through a connected GitHub reader,
+without a successful clone or build, the recursive tree and root README, the
+documentation catalogue (then 51 reports), the \path{docs/new} directory (then
+only its procedural README), this report's directory listing and README, and
+\texttt{10-rotation-quotients-SOURCE\_AUDIT.md} in full. Published sources
+inspected were \cite{DM}, including a visual inspection of the PDF, \cite{BP},
+with Section~5, Fact~5.3 and Claims~5.4--5.5 read explicitly, \cite{Kramer} and
+\cite{BG}. Publisher records were checked for \cite{Gonshor,Conway,BCR}.
+
+\begin{longtable}{L{0.26\textwidth}L{0.3\textwidth}L{0.35\textwidth}}
+\toprule
+Result & Main input & Essential boundary\\
+\midrule
+\endfirsthead
+\toprule Result & Main input & Essential boundary\\\midrule
+\endhead
+Standard-part splitting & Real bounds from compactness; transfer & Compactness of the real group only.\\
+Nash toolkit & Real inverse function theorem; semialgebraic graphs & Finite first-order statements with real radii; no completeness.\\
+Normal closure & Spanning lemma; division by the scale; roots & Simple nonabelian Lie algebra; conjugation by the full $G$; no width bound.\\
+Proper normal subgroups & Normal closure; noncentral normal generation & Simple type; finite center; ambient normality.\\
+Product classification & Finite central isogeny; component extraction & Semisimple; subgroups of $\mu_G$ normal in $G$.\\
+Mixed commutator subgroups & Bracket spanning; division by $ab$ & Generated subgroups, not single commutators.\\
+Series and residuals & Segment calculus & Derived residual at stage $\omega$; values above all ordinary multiples.\\
+Semisimple invisibility & Normal closure; proper-class value intervals & Full $\No$; class homomorphisms; set targets.\\
+Central tori & Infinitesimal circle logarithm; coefficients & Separation only, not the additive dual.\\
+Semisimplicity criterion & Class quotient; separation; replacement & Connected real linear algebraic group with compact connected real points.\\
+$\SL_n$ triviality & Root scaling by squares; elementary generation & Classical mechanism; presented as a contrast.\\
+Compact omnific collapse & $\Oz\cap\OO=\Z$ & Entrywise integral matrices in a chosen realization.\\
 \bottomrule
 \end{longtable}
 
@@ -6091,7 +7953,8 @@ A. D'Andrea and A. Maffei,
 algebras},
 Journal of Lie Theory \textbf{26} (2016), no.~3, 683--690.
 \url{https://www.heldermann-verlag.de/jlt/jlt26/andla2e.pdf}.
-Source~10 uses Theorem~2.5 for historical comparison.
+Source~10 uses Theorem~2.5 for historical comparison; source~11 cites the same
+local openness.
 
 \bibitem{BG}
 O. Bournez and Q. Guilmant,
@@ -6099,7 +7962,33 @@ O. Bournez and Q. Guilmant,
 arXiv:2201.08199v1 (2022).
 \url{https://arxiv.org/abs/2201.08199}.
 Source~10 uses Sections~2.2--2.3, Corollary~2.1 and Theorem~2.6 for the
-real-closed-field, Hahn and normal-form background.
+real-closed-field, Hahn and normal-form background; source~11 uses Section~2.3
+and the near-one logarithm.
+
+\bibitem{Kramer}
+L. Kramer,
+\emph{On small abstract quotients of Lie groups and locally compact groups},
+arXiv:1405.2711v3 (2016).
+\url{https://arxiv.org/abs/1405.2711}.
+Source~11 cites it for quantitative normal generation, including a theorem of
+Nikolov and Segal.
+
+\bibitem{BCR}
+J. Bochnak, M. Coste and M.-F. Roy,
+\emph{Real Algebraic Geometry},
+Ergebnisse der Mathematik und ihrer Grenzgebiete (3) \textbf{36},
+Springer, 1998.
+
+\bibitem{Conway}
+J. H. Conway,
+\emph{On Numbers and Games}, second edition,
+A K Peters, 2001; first edition, Academic Press, 1976.
+
+\bibitem{Gonshor}
+H. Gonshor,
+\emph{An Introduction to the Theory of Surreal Numbers},
+London Mathematical Society Lecture Note Series \textbf{110},
+Cambridge University Press, 1986.
 
 \bibitem{RepoTrig}
 \repo,
@@ -6114,7 +8003,10 @@ Labels cited in Parts~I and~II are those present at \texttt{50cb709}.
 Source~10 read its README at \texttt{465a54b}; Part~III cites
 \texttt{trigonometry:thm:polar}, \texttt{trigonometry:eq:circlesplit} and
 \texttt{trigonometry:rot:thm:graded}, present at \texttt{465a54b} and at
-\texttt{7b5f934}.
+\texttt{7b5f934}. Part~V cites \texttt{trigonometry:thm:polar},
+\texttt{trigonometry:eq:circlesplit}, \texttt{trigonometry:rot:eq:ellm} and
+\texttt{trigonometry:rot:thm:graded}, present at \texttt{66d7e55}; source~11
+itself did not cite this report.
 
 \bibitem{RepoGeometry}
 \repo,
@@ -6136,6 +8028,22 @@ Theorem numbers cited here are those at \texttt{50cb709}.
 \path{docs/foundations-and-computation/foundations/}; topology and size
 conventions, identified by source~09 through the documentation index at
 \href{https://github.com/VladimirReshetnikov/Surreal/tree/dcf86662b574988e75d08d515d3a2a5ba7bbc0d7/docs/foundations-and-computation/foundations}{\texttt{dcf86662b574}}.
+
+\bibitem{RepoOGL}
+\repo,
+\emph{Omnific Groups and Lattices: algebraic groups, elementary quotients, and
+missing lattice minima over the omnific integers},
+\path{docs/surreal/omnific-groups-and-lattices/article.tex}.
+Part~V cites \texttt{ogl:lem:bounded}, \texttt{ogl:alg:thm:real},
+\texttt{ogl:alg:sec:examples}, \texttt{ogl:el:prop:finiteside} and
+\texttt{ogl:el:rem:e3}, present at \texttt{66d7e55}. The report was in the tree
+at source~11's pin \texttt{9693b28} but not in the catalogue source~11 read.
+
+\bibitem{RepoODG}
+\repo,
+\emph{Omnific Integers and Omnific--Diophantine Geometry},
+\path{docs/surreal/omnific-diophantine-geometry/article.tex}.
+Part~V cites \texttt{odg:cor:orthogonal}, present at \texttt{66d7e55}.
 
 \bibitem{RepoLedger}
 \repo,

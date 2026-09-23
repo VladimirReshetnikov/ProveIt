@@ -11,7 +11,7 @@ Gaussian-fiber and étale-norm additions in Section 6 from sources 07 and 13.
 The added material in Section 10, Sections 16–18 with the
 pointers they added in Sections 6, 7 and 14, and Sections 20–21 remain
 outside the completed proof review.
-It does **not** certify integration of every result in the twelve manuscripts
+It does **not** certify integration of every result in the thirteen manuscripts
 or review of all later proofs and imported classical results. Section numbers
 below are those current when each pass was made; the last section gives the
 present numbering. The curve and differential rigidity part (Sections 16–18)
@@ -620,3 +620,34 @@ onward is byte-identical except for the appended bibliography item.
 This pass does not review the new curve pointer at the end of Section 6,
 the added quartic in Section 10, the curve/differential part (Sections
 16–18), later formalization/questions, or remaining source reconciliation.
+
+## Integration of the logarithmic manuscript
+
+One further manuscript on curve and differential rigidity, tagged C15 after its
+file prefix `15-`, was placed in `66d7e55` and integrated as Section 18.6
+(`odg:log:` labels), appended at the end of Section 18: annihilation of
+logarithmic symmetric differentials on normal-crossings compactifications, the
+tangent-separation criterion, descent over any coefficient ring and finite
+products. The same integration added C15 to the credits of results it reproves
+in Sections 16–18, corrected its normality remark in Section 17.5, and added
+notes in Sections 1, 20 and 21 (a sufficient answer to the first question of
+`odg:cr:q:higher` and a further rigid class for `odg:q:affine`) and in the
+appendices. That material is outside every pass recorded here. No section,
+statement or equation number changed, and no label was renamed or removed.
+
+## Combined state after the Gaussian-fiber review and batch 29
+
+The Section 6 review was committed in `85887ed` and merged with the
+batch-29 logarithmic additions through `751ff27`. All 200 standard
+statement texts of that incoming article and all 416 labels are preserved;
+existing result numbers are unchanged. A clean three-pass build gives a
+175-page combined article. Source C15 and the other curve material remain
+outside the proof review above.
+
+Commit `f879c1e` also supplies the actual omnific ring construction and the
+ring/constant-term package of `odg:prop:ring`. The guide, formalization
+route and repository comparisons now distinguish historical statements
+about absent Lean code from this coverage. The combined two-thread Lean
+build passes 4,380 jobs and the axiom audit accepts 14,672 declarations.
+Other manuscript results remain pending unless individually mapped in the
+ledger; this build does not verify the remaining Diophantine proofs.

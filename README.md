@@ -38,12 +38,26 @@ surcomplexification are proved. This supports results on the actual fields,
 including strong summation, surreal-valued valuation and modulus, fine
 calculus, polynomial root stability and finite geometry.
 
+The source collection also includes omnific-integer
+[Diophantine geometry](docs/surreal/omnific-diophantine-geometry/README.md),
+[set-sized quotients](docs/surreal/set-sized-quotients-of-omnific-integers/README.md),
+groups, lattices and normalization. The actual omnific ring is now constructed
+inside the surreal field: all growth exponents are nonnegative and only the
+constant coefficient must be an ordinary integer. Constant extraction is a
+surjective ring homomorphism onto `ℤ`; its kernel is the purely infinite
+ideal, and the quotient is exactly `ℤ`. The real and complex support rings
+likewise retract onto `ℝ` and `ℂ`. The purely infinite real ideal is also
+proved to be a vector space over `ℝ`. Higher Diophantine and set-sized quotient results
+remain pending; source review is distinct from checked formalization.
+
 The [research collection](docs/README.md) also includes work still awaiting
 Lean proofs. The [omnific Diophantine report](docs/surreal/omnific-diophantine-geometry/)
 exhibits dense arithmetic fibers with opposite denominator behavior and
 computes the failure of flatness when finer monomial scales are added.
 Its fraction section now has a full manuscript proof review, including
 a correction to the agreement locus of standard part and rational residue.
+The Gaussian-fiber and étale-norm proofs now spell out their support and
+splitting arguments, with boundary examples explaining the hypotheses.
 The [review record](docs/REVIEW.md) distinguishes these written proofs
 from formal verification and records the remaining review scope.
 Recent manuscript additions cover curve and differential rigidity, theta
@@ -785,5 +799,18 @@ the finite lattice estimate for multivariate domains, differential rigidity of
 holonomic entire Hahn functions, strong measures with actual surreal and
 surcomplex masses, and invariance of the Tate construction under exponent
 embeddings with its abstract extension obstruction.
+Positive forest sums of Hahn row Laplacians have no cancellation (relative
+stability, leading terms and remainder control). The projection-flag generator
+has exactly the prescribed plateaux and crossovers, its completion keeps the
+same shadows, and the initial eigenvalue factors follow the Newton profile.
+Gaussian integration by parts holds for the closed Wick moment formula. The
+Fejér densities give positive coefficientwise measures with a fixed Haar
+leading coefficient whose limit is not positive, and one positive measure
+needs the full null ideal. Under Prony's finite coefficient criterion the
+moment map sends the tangent lattice onto the error ball. Strongly entire functions
+are closed under the algebra operations, dilation and differentiation, and
+the refined periodic threshold holds under divisibility. Value-group
+automorphisms have canonical Hahn lifts, while rational dilations have no
+exponential lift.
 A successful build proves only the imported Lean
 statements, not coverage of all the source documents.

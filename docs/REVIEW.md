@@ -3206,6 +3206,39 @@ The new combined consequences and characteristic extension remain
 material and pointers, companions, imported foundations and remaining
 source reconciliation still require review.
 
+## Combined validation with batch 29 and the actual omnific ring
+
+The Gaussian-fiber and norm review was committed in `85887ed`. Merging
+the twenty incoming commits through `751ff27` preserves that work and
+incorporates six expanded manuscripts: logarithmic rigidity, exact
+homological dimensions, elementary-group kernels, convex factors and
+profinite obstructions, compact groups, and quantum/gauge reductions.
+These additions are indexed, but their independent proof review remains
+pending. The reader map and catalogue now describe the written assemblies
+and link the maintained quantum/gauge PDF.
+
+The combined Diophantine article preserves all 200 incoming standard
+statement texts and 416 labels, with no changes to existing result
+numbers. Clean three-pass builds give a 175-page article and 29-page
+catalogue. The independent inventory verifies 3,592 statements in 58 main
+texts. Mapped statements in the changed manuscripts retain their text;
+the ring proposition and its new actual-field implementation were compared
+directly. The formalization route and repository comparisons now replace
+stale claims that no omnific Lean code exists with the exact ring and
+constant-term coverage supplied by `f879c1e`. Historical source claims
+remain identified by their pins.
+
+The source-label audit resolves all 4,126 references, and all 1,501 local
+Markdown destinations pass. Visual inspection covers combined article
+pages 16, 35, 125–126, 146–148 and 175 and catalogue pages 2, 8–10,
+25–26. The article and catalogue logs have no warnings, unresolved
+references or box diagnostics.
+
+`LEAN_NUM_THREADS=2 lake build` passes all 4,380 jobs; the audit accepts
+14,672 declarations with only `propext`, `Classical.choice` and
+`Quot.sound`. This validates the merged library, including the incoming
+omnific construction, and does not establish the pending manuscript proofs.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
