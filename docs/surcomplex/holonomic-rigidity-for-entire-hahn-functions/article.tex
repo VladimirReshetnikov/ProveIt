@@ -94,15 +94,15 @@
 \centering
 \vspace*{0in}
 {\color{olive}\large\sffamily SURREAL AND SURCOMPLEX RESEARCH}\par
-\vspace{0.14in}
+\vspace{0.08in}
 {\color{ink}\huge\bfseries Holonomic Rigidity\\[6pt] for Entire Hahn Functions}\par
-\vspace{0.16in}
+\vspace{0.1in}
 {\Large A sharp order-unit criterion for dilations,\\[4pt]
 with uniform exclusion bounds,\\[4pt]
 and the exact boundary of nonlinear differential rigidity}\par
-\vspace{0.16in}
+\vspace{0.1in}
 {\large Merged research report\quad\textperiodcentered\quad 22--23 September 2026}\par
-\vspace{0.12in}
+\vspace{0.06in}
 \begin{minipage}{0.94\textwidth}
 \begin{abstract}
 Fix a nonzero set-sized ordered abelian group $\Gamma$ and the complex Hahn
@@ -143,8 +143,8 @@ $\Gamma$ has no order unit, every nonpolynomial strongly entire series is
 differentially transcendental, jointly with its dilates by parameters whose
 quotients are not roots of unity. A sixth source shows that the hypothesis is
 necessary, with a Chebyshev-descended theta series of minimal differential
-order three; whether order two occurs stays open. $\Gamma$ is \emph{not}
-assumed divisible;
+order three, and a seventh that no such series has an equation of order at
+most two, for any value group. $\Gamma$ is \emph{not} assumed divisible;
 divisibility enters only in the
 three threshold constructions of Section~\ref{hol:sub:divisibility}, each of
 which states it.
@@ -157,8 +157,9 @@ which states it.
 refereeing are not certified. Lean covers support and escape lemmas,
 exponential and partial-theta domains, polynomial-orbit valuations,
 constant-point avoidance, inward stability and torsion covariance.
-The full classifications and the nonlinear, coefficient-field and
-theta-descent theorem packages remain pending. The variable derivative is not the
+The full classifications and the nonlinear, coefficient-field,
+theta-descent and order-three-threshold theorem packages remain pending. The
+variable derivative is not the
 Berarducci--Mantova derivation on surreal coefficients.
 \end{minipage}
 \end{titlepage}
@@ -188,6 +189,9 @@ answer it in every order when the value group has no order unit; and
 Sections~\ref{hol:td:sec:setting}--\ref{hol:td:sec:boundary} show that with an
 order unit the answer changes: an explicit nonpolynomial strongly entire
 series satisfies an algebraic differential equation of order three.
+Sections~\ref{hol:ot:sec:setting}--\ref{hol:ot:sec:theta} show that three is
+the least such order: for every value group, no nonpolynomial strongly entire
+series satisfies an equation of order at most two.
 
 The answer depends decisively on which operator is used, and for dilation
 equations it depends further on whether the valuation of the particular
@@ -348,7 +352,10 @@ a relation involving $D_z^2f$. Theorem~\ref{hol:cf:main:entire} below says
 this when $\Gamma$ has no order unit, and Theorem~\ref{hol:td:main:boundary}
 shows that the hypothesis cannot be dropped: with an order unit a
 nonpolynomial strongly entire series can satisfy a relation of order three.
-Question~\ref{hol:q:nonlinear} is re-scoped to order exactly two.
+Theorem~\ref{hol:ot:main:second} below extends Theorem~\ref{hol:nl:main:first}
+to order two for every $\Gamma$, so that three is the least order;
+Question~\ref{hol:q:nonlinear}, once re-scoped to order exactly two, is now
+re-scoped to the classification of the series of minimal order three.
 
 The last three principal theorems come from sources~11 and~12 and are proved
 in Sections~\ref{hol:cf:sec:setting}--\ref{hol:cf:sec:families}, over the
@@ -476,8 +483,10 @@ entire series can satisfy an algebraic differential equation of order at
 least two, a differentially algebraic element of $\FE$ need not be rational,
 and the absence of an order unit is necessary for differential algebraic
 rigidity. With Theorem~\ref{hol:nl:main:first}, the least order of such an
-equation over all examples is two or three, and the question is re-scoped to
-order two (Section~\ref{hol:sec:status}). The equation of $\mathcal T_p$ is
+equation over all examples was then two or three, and the question was
+re-scoped to order two; Theorem~\ref{hol:ot:main:second} below (source~14)
+shows that it is three (Section~\ref{hol:sec:status}). The equation of
+$\mathcal T_p$ is
 explicit (Theorem~\ref{hol:td:thm:ode}); its residue corner polynomial vanishes
 identically while its full corner polynomial is a nonzero constant
 (Proposition~\ref{hol:td:prop:corner}). The direction (ii)$\Rightarrow$(i) is
@@ -488,6 +497,50 @@ Chebyshev descent of the bilateral theta series $\sum_{n\in\Z}p^{n^2}u^n$ along
 $z=u+u^{-1}$; the classical triple product gives all its zeros, and in the
 surreal specialization $p=\omega^{-1}$ none of them is an omnific integer
 (Corollary~\ref{hol:td:cor:omnific}).
+
+The ninth principal theorem comes from source~14 and is proved in
+Sections~\ref{hol:ot:sec:setting}--\ref{hol:ot:sec:theta}, again over
+$\KK=k((t^\Gamma))$ for an arbitrary field $k$ of characteristic zero
+(Convention~\ref{hol:ot:conv:field}).
+
+\begin{maintheorem}[Second-order rigidity and the order-three threshold;
+source~14]\label{hol:ot:main:second}
+Let $\Gamma$ be as in Convention~\ref{hol:conv:group} and $k$ any field of
+characteristic zero.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item Every $f\in\EK$ that satisfies a nonzero algebraic differential equation
+$P(z,f,D_zf,D_z^2f)=0$ with $P\in\KK(z)[Y_0,Y_1,Y_2]$ is a polynomial.
+Equivalently, for every nonpolynomial $f\in\EK$ the series $f$, $D_zf$ and
+$D_z^2f$ are algebraically independent over $\KK(z)$.
+\item If $\Gamma$ has an order unit, the least order of a nonzero algebraic
+differential equation over $\KK(z)$ satisfied by a nonpolynomial element of
+$\EK$ is exactly three. If $\Gamma$ has no order unit, no nonpolynomial
+element of $\EK$ satisfies one of any order.
+\end{enumerate}
+\end{maintheorem}
+
+Part~(a) needs no divisibility, rank, algebraic closedness or order-unit
+hypothesis, and no condition on the residue corner. Its polynomiality
+conclusion contains those of Theorem~\ref{hol:nl:main:first} and of
+Theorem~\ref{hol:nl:thm:corner} in orders at most two, but not their explicit
+exclusion bounds, and it holds in particular for equations with $\chi_P=0$,
+such as \eqref{hol:nl:eq:degenerate}. The new ingredient is the
+lower bound three; the witness of order three and the no-order-unit direction
+in part~(b) are Theorems~\ref{hol:td:main:boundary}
+and~\ref{hol:cf:main:entire}\,(a). The proof keeps the whole initial
+polynomial at the infinitely many scales where it is not a monomial, reduces
+the equation there to one fixed homogeneous polynomial over $k$, and shows
+with logarithmic Euler derivatives that both endpoints of every such initial
+polynomial lie in a finite set, while a nonpolynomial entire series has such
+scales with arbitrarily large endpoints (Section~\ref{hol:ot:sub:endpoint}).
+At order three an extra integer, the gap next to an endpoint, survives
+(Theorem~\ref{hol:ot:thm:gaps}); for the equation of $\mathcal T_p$ it is
+always one, the initial polynomials of every nonpolynomial entire solution
+are eventually $bX^m(1+aX)$, and the coefficient values of such a solution
+are eventually strictly convex (Theorems~\ref{hol:ot:thm:classification}
+and~\ref{hol:ot:thm:convexity}). Consequences include rational two-state
+systems and quotients with a polynomial denominator
+(Corollaries~\ref{hol:ot:cor:systems} and~\ref{hol:ot:cor:meromorphic}).
 
 For the linear theorems, the hypotheses separate two obstructions.
 Differential equations have bounded valuation costs after passing to their
@@ -546,16 +599,26 @@ divisibility either. It works in $\Gamma\otimes_\Z\Q$ only to measure rational
 rank, and the principal convex bound of Lemma~\ref{hol:cf:lem:principal} uses
 integer multiples only.
 
+The theta-descent part uses no divisibility. The order-three-threshold part,
+Sections~\ref{hol:ot:sec:setting}--\ref{hol:ot:sec:theta}, states its theorems
+for $\Gamma$ as in Convention~\ref{hol:conv:group}; to find scales at which the
+initial polynomial is not a monomial it divides in the divisible hull
+$\Gamma\otimes_\Z\Q$, after extending the field by
+Lemma~\ref{hol:ot:lem:extension}, and transfers the polynomiality and
+coefficient conclusions back to $\Gamma$, in which the hull is cofinal
+(Lemmas~\ref{hol:ot:lem:extension} and~\ref{hol:ot:lem:breaks}).
+
 No theorem in this report states a conclusion under
 Convention~\ref{hol:conv:group} while resting on a proof step that divides by
-an integer in $\Gamma$. The division-free predecessors in (1) and (2) are
+an integer in $\Gamma$; the divisions of the order-three-threshold part take
+place in $\Gamma\otimes_\Z\Q$. The division-free predecessors in (1) and (2) are
 weaker in the constant only, not in the conclusion.
 
 \subsection{Position relative to the collection and the literature}
 \label{hol:sub:position}
 
 \paragraph{Provenance.}
-This report is built from six manuscripts, numbered as they arrived in the
+This report is built from seven manuscripts, numbered as they arrived in the
 collection. Sources~08 and~09 were written independently on 22 September 2026
 and both prove the differential rigidity theorem and the order-unit dilation
 criterion (Theorems~\ref{hol:main:ode} and~\ref{hol:main:q}); source~08 is
@@ -618,6 +681,23 @@ Questions~19.1--19.9 and of Theorems~A--G is unchanged; its one new question is
 Question~\ref{hol:td:q:domains}. The merge's choices for this part, including
 two steps it writes out, are recorded in
 Section~\ref{hol:td:sub:conventions}.
+
+Source~14, \emph{The Order-Three Threshold for Entire Hahn--Surcomplex
+Functions}, delivered in a later batch, answers the order-two question that
+source~13 left open: no nonpolynomial strongly entire series satisfies an
+algebraic differential equation of order at most two, for every value group.
+It forms the order-three-threshold part,
+Sections~\ref{hol:ot:sec:setting}--\ref{hol:ot:sec:theta}, with
+Theorem~\ref{hol:ot:main:second}. It consulted the snapshot
+\begin{center}\small\texttt{b895e8672990e8b5a56f97dd7246f9dd5f86c771},\end{center}
+at which this report's text was still the five-source text and source~13 was
+known to it only as a manuscript; its description of this report was accurate
+there. The new part is placed after
+Section~\ref{hol:td:sec:boundary}, so that the numbering of Sections~1--25, of
+Questions~19.1--19.10 and of Theorems~A--H is unchanged; the conclusion moves
+to the end. Its new questions are
+Questions~\ref{hol:ot:q:lift}--\ref{hol:ot:q:omnific}. The merge's choices for
+this part are recorded in Section~\ref{hol:ot:sub:conventions}.
 
 \paragraph{The companion entire-function report.}
 The collection already contains a merged report on cofinality, factorization
@@ -699,10 +779,11 @@ or an exhaustive bibliography search, and a repository content search for
 \texttt{holonomic} returning no matches is not proof of absence. Source~10's
 repository and literature comparison, equally targeted, is recorded in
 Section~\ref{hol:nl:sub:predecessors}, that of sources~11 and~12 in
-Section~\ref{hol:cf:sub:predecessors}, and that of source~13 in
-Section~\ref{hol:td:sub:predecessors}. Section~\ref{hol:sec:status} and
-Sections~\ref{hol:cf:sub:nonclaims} and~\ref{hol:td:sub:nonclaims} record
-exactly what is and is not claimed.
+Section~\ref{hol:cf:sub:predecessors}, that of source~13 in
+Section~\ref{hol:td:sub:predecessors}, and that of source~14 in
+Section~\ref{hol:ot:sub:predecessors}. Section~\ref{hol:sec:status} and
+Sections~\ref{hol:cf:sub:nonclaims}, \ref{hol:td:sub:nonclaims}
+and~\ref{hol:ot:sub:nonclaims} record exactly what is and is not claimed.
 
 \section{Hahn support and what evaluation means}\label{hol:sec:support}
 
@@ -1541,8 +1622,10 @@ different argument, which bounds the field generated by the Taylor
 coefficients (Theorem~\ref{hol:cf:main:entire}, sources~11 and~12). With an
 order unit they are not always excluded: the series $\mathcal T_p$ of
 Theorem~\ref{hol:td:main:boundary} (source~13) is a nonpolynomial strongly
-entire solution of a relation of order three with vanishing residue corner,
-and whether order two occurs is Question~\ref{hol:q:nonlinear}.
+entire solution of a relation of order three with vanishing residue corner.
+Relations of order two are excluded for every $\Gamma$ by a fourth argument,
+through initial polynomials at infinitely many scales
+(Theorem~\ref{hol:ot:main:second}, source~14), so three is the least order.
 \end{remark}
 
 \section{Generic lines and several-variable rigidity}\label{hol:sec:multi}
@@ -2306,8 +2389,9 @@ unit, although $F$ is entire.\\
 In every row, nonpolynomial strongly entire D-finite series are impossible.
 Nonpolynomial strongly entire differentially algebraic series exist exactly in
 the rows whose group has an order unit, that is, in all rows except the last
-row of the second table (Theorem~\ref{hol:td:main:boundary}); this does not
-depend on the parameter.
+row of the second table (Theorem~\ref{hol:td:main:boundary}), and their least
+differential order is then three (Theorem~\ref{hol:ot:main:second}); this does
+not depend on the parameter.
 Torsion parameters are deliberately absent from the second table: their
 annihilating operator may be an identity on every series. Finite valuation
 rank alone is therefore not the criterion, and the distinction persists for
@@ -2517,15 +2601,24 @@ differential system, and the resulting D-finiteness argument are pending.
 The nonlinear rigidity theorems in
 Sections~\ref{hol:nl:sec:setting}--\ref{hol:nl:sec:consequences},
 the coefficient-field theorem package in
-Sections~\ref{hol:cf:sec:setting}--\ref{hol:cf:sec:families}, and the
+Sections~\ref{hol:cf:sec:setting}--\ref{hol:cf:sec:families}, the
 theta-descent part in
-Sections~\ref{hol:td:sec:setting}--\ref{hol:td:sec:boundary}
+Sections~\ref{hol:td:sec:setting}--\ref{hol:td:sec:boundary}, and the
+order-three-threshold part in
+Sections~\ref{hol:ot:sec:setting}--\ref{hol:ot:sec:theta}
 remain unformalized; the shared support and inward-stability prerequisites
 above do not prove them. For the latter source~12 suggests the order:
 valuation-rank inequality, proper-convex-subgroup obstruction, formal
 coefficient recurrence, all-order differential corollary; the mixed
 statements would also need a formal theorem implying the zero-set lemma
-for nondegenerate exponential polynomials. The build and axiom audit cover
+for nondegenerate exponential polynomials. For the order-three-threshold part
+source~14 suggests two nearly independent layers: finite algebra
+(dehomogenization, the logarithmic Euler identities, constants of rational
+differentiation in characteristic zero and the two endpoint evaluations,
+which give the finite endpoint lemma without surreal infrastructure), then
+the Hahn layer (the all-scale criterion, transport through the divisible
+hull, finite active-index sets and the estimate
+\eqref{hol:ot:eq:gapbound}). The build and axiom audit cover
 only imported declarations recorded in the ledger. The Python checks are
 finite checks of formulas and examples; they do not establish any remaining
 infinite statement.
@@ -3376,8 +3469,12 @@ nonpolynomial strongly entire solution $\mathcal T_p$
 nonzero constant of positive valuation, so the hypothesis $\chi_P\ne0$ of
 Theorems~\ref{hol:nl:thm:certificate} and~\ref{hol:nl:thm:corner} cannot be
 weakened to $I_P\ne0$ (Proposition~\ref{hol:td:prop:corner} and
-Remark~\ref{hol:td:rem:corner}). Whether order two occurs is
-Question~\ref{hol:q:nonlinear}.
+Remark~\ref{hol:td:rem:corner}). In order two the vanishing-corner case is
+decided negatively for every $\Gamma$ by source~14
+(Theorem~\ref{hol:ot:main:second}\,(a)): its endpoint lemma uses the whole
+initial polynomial at infinitely many scales, and for
+\eqref{hol:nl:eq:degenerate} it permits no nonmonomial initial polynomial at
+all (Example~\ref{hol:ot:ex:degenerate}).
 
 \subsection{Positive-weight Euler equations in several variables}
 \label{hol:nl:sub:euler}
@@ -3755,7 +3852,7 @@ the main nonlinear rigidity theorems remain unmapped in the current
 implementation ledger. No independent human referee report accompanies the
 delivered source package.
 
-\section{The six finite check suites}\label{hol:sec:verification}
+\section{The seven finite check suites}\label{hol:sec:verification}
 
 Each source manuscript shipped an independent exact-arithmetic suite. The
 suites of sources~08 and~09 were run on copies and passed, and neither
@@ -3768,12 +3865,15 @@ coefficient-field part; both were run on copies for this merge and reproduced
 their records exactly, apart from the recorded interpreter and package
 versions. The suite of source~13 checks finite facts of the theta-descent
 part; it was run on a copy for this merge and reproduced its record apart from
-the interpreter version and the elapsed time. The suites of sources~08, 09,
-10 and~12 use only the Python standard library, integers, and
-\texttt{fractions.Fraction}; the suites of sources~11 and~13 use exact
-symbolic and rational arithmetic in SymPy, the only third-party package any
-suite needs. None uses floating-point mathematics or network access; source~13's
-records its elapsed time.
+the interpreter version and the elapsed time. The suite of source~14 checks
+finite facts of the order-three-threshold part; it was run on a copy for this
+merge and reproduced its record apart from the interpreter version and the
+elapsed time. The suites of sources~08, 09, 10 and~12 use only the Python
+standard library, integers, and \texttt{fractions.Fraction}; the suites of
+sources~11, 13 and~14 use exact symbolic and rational arithmetic in SymPy, the
+only third-party package any suite needs. None uses floating-point
+mathematics or network access; those of sources~13 and~14 record their
+elapsed time.
 
 \paragraph{\texttt{code/08-finite-recurrences-verify.py} --- 3{,}705 checks,
 0 failures.}
@@ -3979,6 +4079,54 @@ equation and product modulo $p^{50}$ were also checked with an independent
 SymPy script, which is not shipped; it also confirms that with the nome $p$ in
 place of $p^2$ the residual of the cleared equation is nonzero.
 
+\Needspace{24\baselineskip}
+\paragraph{\texttt{code/14-order-three-threshold-verify.py} --- 600 checks, 0
+failures.}
+It checks finite facts of the order-three-threshold part with exact rational
+and polynomial arithmetic in SymPy
+(\path{data/14-order-three-threshold-requirements.txt} pins
+\texttt{sympy>=1.13,<2}; the record was made with Python~3.13.5 and
+SymPy~1.14.0, the merge's rerun with Python~3.14.4 and SymPy~1.14.0).
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}X r@{}}
+\toprule
+Group in \path{data/14-order-three-threshold-verification.json} & Checks\\
+\midrule
+\path{symbolic_jets}: the coefficient $(z^2-4)^3Y_0^4$ of $Y_3^2$; after
+\eqref{hol:ot:eq:eulersub}, $z$-degree six, the form \eqref{hol:ot:eq:thetatop}
+and its residue \eqref{hol:ot:eq:thetainitial}; the binomial gap identity
+$(\mathsf g^2-1)\mathsf v^2$; a second-order endpoint example & 6\\
+\path{endpoint_cancellation}: removal of $V^{i_0}$, $0\le i_0\le4$, and the
+resulting endpoint polynomial, as in Lemma~\ref{hol:ot:lem:endpoints} & 10\\
+\path{finite_initial_classification}: all $242$ nonzero polynomials of degree
+at most four with coefficients in $\{-1,0,1\}$ against
+Theorem~\ref{hol:ot:thm:classification} & 242\\
+\path{chebyshev}: identities \eqref{hol:td:eq:chebsub}
+and~\eqref{hol:td:eq:chebcoef} & 72\\
+\path{newton_corners}: at $\delta_n=(2n+1)\mu$, $0\le n\le80$, the active
+indices $\{n,n+1\}$ and the value $-n(n+1)\mu$ for $\mathcal T_p$ & 162\\
+\path{positive_characteristic}: derivative zero of $\sum z^{\mathfrak pn}$ modulo
+$\mathfrak p\in\{2,3,5,7,11\}$ & 5\\
+\path{theta_product_truncation}; \path{theta_ode_truncation}: the product
+\eqref{hol:td:eq:product} and the cleared equation \eqref{hol:td:eq:cleared}
+through $p^{47}$ & 48; 48\\
+\path{theta_coefficient_values}: \eqref{hol:td:eq:coeffval} & 7\\
+\midrule
+Total & 600\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The record's group names use source~14's word ``corner'' for a break and its
+letter $q$ for the nome called $p$ here; its field
+\texttt{cutoff\_exclusive} is $48$, so every $p$-coefficient below $p^{48}$ of
+the product and of the cleared equation is compared as an exact polynomial in
+$z$. The initial-form enumeration admits $26$ of the $242$ polynomials and is
+not the proof of the classification. The script takes no arguments: it
+writes \path{data/verification.json} in the parent of its own directory. In
+this layout that is a new file beside the delivered record
+\path{data/14-order-three-threshold-verification.json}, which it does not
+touch, but a second run overwrites the first; run it on a copy.
+
 \paragraph{What the checks do not do.}
 No suite proves any infinite theorem. No finite prefix can prove strong
 summability of an infinite family, cofinality of $(e_n)$, noncofinality of
@@ -4000,17 +4148,21 @@ computation can witness the independence of all jets of~$F$. Source~13's
 suite does not verify strong summability of infinite supports, minimal
 differential order or algebraic independence, the no-order-unit obstruction,
 completeness of the infinite zero set, or priority, as its record states; a
-finite truncation of $\mathcal T_p$ is a polynomial. What the suites
+finite truncation of $\mathcal T_p$ is a polynomial. Source~14's suite does
+not establish the quantifiers over arbitrary Hahn supports, ordered groups,
+scales or formal solutions, and its enumeration of initial polynomials is not
+the classification proof. What the suites
 can detect is sign,
 indexing, conversion and finite valuation-comparison mistakes. Everything else
 rests on the written arguments.
 
 The mathematical dependency chain is short.
-\begin{center}
-\begin{tabularx}{\textwidth}{@{}l X@{}}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.33\textwidth}
+                    >{\raggedright\arraybackslash}p{0.63\textwidth}@{}}
 \toprule
 Conclusion & Load-bearing ingredients\\
 \midrule
+\endhead
 Differential rigidity & Integer evaluation lemma; finite shift conversion;
 escape chain and exclusion criterion.\\
 Unit-dilation rigidity & Residue polynomial; finite binomial leading terms;
@@ -4053,15 +4205,27 @@ No linear equation for $\mathcal T_p$ & Transcendence of $\psi_1$ over the
 elliptic field; highest power in normalized derivatives.\\
 Omnific consequences & Linear-factor product; normal forms; local product
 linearization.\\
+Second-order rigidity (Theorem~\ref{hol:ot:main:second}) & All-scale
+criterion; cofinal divisible extension; local finiteness and late breaks;
+exterior homogeneous reduction by jet degree, then $z$-degree; nonzero
+dehomogenization; removal of $V^{i_0}$; nonconstant logarithmic Euler
+derivative in characteristic zero; the finite endpoint lemma.\\
+Minimum order three & Second-order rigidity; the entire witness
+$\mathcal T_p$ and its equation of order three.\\
+Third-order gap certificate & Homogeneous logarithmic substitution; lowest
+transverse degree; expansions at $0$ and $\infty$.\\
+Theta initial forms and eventual convexity & Residue form of the exterior
+equation; rational Riccati reduction; constants of rational differentiation;
+exclusion of skipped and triply tied indices; local finiteness.\\
 \bottomrule
-\end{tabularx}
-\end{center}
+\end{longtable}
 
 All supports are sets. All operators are finite sums. All integer indices are
 ordinary nonnegative integers. The coefficient valuation is trivial in
 characteristic zero; the coefficient field is $\C$ in
 Sections~\ref{hol:sec:intro}--\ref{hol:sec:certificates} and any
-characteristic-zero field in the nonlinear and coefficient-field parts. The
+characteristic-zero field in the nonlinear, coefficient-field, theta-descent
+and order-three-threshold parts. The
 coefficient-field part imports one external recurrence theorem without
 proof, the Skolem--Mahler--Lech theorem, used only for relations involving at
 least two distinct dilations. The equations use the
@@ -4131,6 +4295,16 @@ support-controlled descent to an entire series with its exact domain at every
 scale, the exact boundary of Theorem~\ref{hol:td:main:boundary} with the
 minimal-order certificate, the differential field and non-D-finiteness, and
 the surreal and omnific consequences; its priority is equally provisional.
+
+The order-three-threshold part (source~14) inherits the theta material of
+source~13, the no-order-unit direction of Theorem~\ref{hol:cf:main:entire},
+the Gauss initial polynomials of source~10 and classical logarithmic
+derivatives (Section~\ref{hol:ot:sub:predecessors}). Its proposed
+contributions are second-order rigidity for every value group
+(Theorem~\ref{hol:ot:main:second}\,(a)) with its finite endpoint lemma, the
+exact least order three, the third-order endpoint--gap obstruction, the
+classification of theta initial polynomials and eventual Newton convexity;
+its priority is equally provisional.
 
 \subsection{A result-by-result attribution ledger}
 
@@ -4227,16 +4401,29 @@ Substitution homomorphism, global proof of $\psi_3\ne0$, corner data of the
 cleared equation, clause~(iv) of Theorem~\ref{hol:cf:main:sharp},
 Corollary~\ref{hol:td:cor:sharp} & Added by the merge from source~13's
 results; the first two write out steps source~13 used.\\[4pt]
+Second-order rigidity for every $\Gamma$ and exact least order three
+(Theorem~\ref{hol:ot:main:second}), endpoint lemma, endpoint--gap
+obstruction, theta initial forms, eventual Newton convexity, two-state systems
+and polynomial-denominator quotients & Proposed by source~14; the witness of
+order three is source~13's and the no-order-unit direction is
+Theorem~\ref{hol:cf:main:entire}\,(a); priority provisional.\\[4pt]
+Cofinal scalar extension, all-scale criterion, surreal full-class boundary &
+Lemma~\ref{hol:ot:lem:extension} and
+Proposition~\ref{hol:ot:prop:fullclass} are source~14's; the criterion is
+Proposition~\ref{hol:cf:prop:criterion}, printed once.\\[4pt]
+Exterior form as the residue corner in Euler jets; three jets of $G$ and
+$\Theta_p$ & Added by the merge (Remark~\ref{hol:ot:rem:corner},
+Corollary~\ref{hol:ot:cor:examples}).\\[4pt]
 Named published open conjecture & None claimed solved; the nonlinear question,
-answered in order one, without an order unit in all orders, and with an order
-unit by an example of order three, is a question of this report, not a
-historical conjecture.\\[4pt]
+answered in order one, without an order unit in all orders, with an order
+unit by an example of order three, and in order two for every $\Gamma$, is a
+question of this report, not a historical conjecture.\\[4pt]
 Priority, peer review, formal verification & Priority and independent
 refereeing are not certified. Lean covers support and escape lemmas,
 exponential and partial-theta domains, polynomial-orbit valuations,
 constant-point avoidance, inward stability and torsion covariance.
-The full classifications and the nonlinear, coefficient-field and
-theta-descent theorem packages remain pending.\\
+The full classifications and the nonlinear, coefficient-field,
+theta-descent and order-three-threshold theorem packages remain pending.\\
 \bottomrule
 \end{longtable}
 
@@ -4253,10 +4440,10 @@ Accordingly this is a proposed original result with proofs, not a certified
 claim of bibliographic priority. Independent mathematical review is still
 needed; machine-checked scope is the partial coverage recorded in
 Section~\ref{hol:sec:certificates} and the formalization ledger. The
-corresponding records for the nonlinear, coefficient-field and
-theta-descent parts, with their own search limits, are
-Sections~\ref{hol:nl:sub:predecessors}, \ref{hol:cf:sub:predecessors}
-and~\ref{hol:td:sub:predecessors}.
+corresponding records for the nonlinear, coefficient-field,
+theta-descent and order-three-threshold parts, with their own search limits,
+are Sections~\ref{hol:nl:sub:predecessors}, \ref{hol:cf:sub:predecessors},
+\ref{hol:td:sub:predecessors} and~\ref{hol:ot:sub:predecessors}.
 
 \subsection{What the nonlinear part does not claim}
 \label{hol:nl:sub:nonclaims}
@@ -4265,25 +4452,30 @@ Every limitation stated by source~10, in its manuscript or its two audit
 files, is kept; they are collected here. They describe source~10's results;
 where the coefficient-field or theta-descent part goes further, a
 parenthesis says so. The limitations of sources~11 and~12 are listed
-separately as (C1)--(C26) in Section~\ref{hol:cf:sub:nonclaims}, and those of
-source~13 as (T1)--(T19) in Section~\ref{hol:td:sub:nonclaims}.
+separately as (C1)--(C26) in Section~\ref{hol:cf:sub:nonclaims}, those of
+source~13 as (T1)--(T19) in Section~\ref{hol:td:sub:nonclaims}, and those of
+source~14 as (O1)--(O18) in Section~\ref{hol:ot:sub:nonclaims}.
 \begin{enumerate}[label=\textup{(N\arabic*)}]
 \item Only the first-order case of Question~\ref{hol:q:nonlinear} is
 answered, not the unrestricted higher-order question. (Sources~11 and~12
 answer the case without an order unit in every order; source~13 shows that
 with an order unit a nonpolynomial strongly entire series can satisfy an
-equation of order three.)
+equation of order three; source~14 answers order two for every $\Gamma$.)
 \item Theorem~\ref{hol:nl:main:first} does not say that a nonpolynomial
 entire function is differentially transcendental in all orders; independence
 of $f$ and $D_zf$ does not exclude a relation involving $D_z^2f$.
 (Theorem~\ref{hol:cf:main:entire}\,(a) says it when $\Gamma$ has no order
-unit, and Theorem~\ref{hol:td:main:boundary} shows it fails with one.)
+unit, and Theorem~\ref{hol:td:main:boundary} shows it fails with one;
+Theorem~\ref{hol:ot:main:second} adds $D_z^2f$ to the independent jets for
+every $\Gamma$.)
 \item The criterion $\chi_P\ne0$ is sufficient, not a complete invariant of a
 solution set, and the methods of source~10 do not decide equations of order
 at least two with vanishing residue corner. Proposition~\ref{hol:nl:prop:degenerate} is not
 a nonpolynomial entire solution and does not refute higher-order rigidity.
 (Source~13's order-three equation, with $\chi_P=0$, does have one when
-$\Gamma$ has an order unit; Proposition~\ref{hol:td:prop:corner}.)
+$\Gamma$ has an order unit; Proposition~\ref{hol:td:prop:corner}. Source~14
+decides order two negatively for every $\Gamma$,
+Theorem~\ref{hol:ot:main:second}.)
 \item The corner is a finite selection, not a full differential Newton
 polygon; no invention of differential Newton polygons, no equivalence to
 tropical differential algebra, and no new tropical fundamental theorem is
@@ -4337,20 +4529,20 @@ set-theoretic choice.
 
 \subsection{Further mathematical questions}
 
-\begin{question}[Nonlinear differential equations of order two, with an
-order unit]\label{hol:q:nonlinear}
-Suppose $\Gamma$ has an order unit. Can a nonpolynomial $f\in\E$ satisfy a
-nonzero algebraic differential equation $P(z,f,D_zf,\ldots,D_z^sf)=0$ over
-$\K(z)$ of order $s=2$, that is, are $f$, $D_zf$ and $D_z^2f$ algebraically
-dependent over $\K(z)$ for some nonpolynomial $f\in\E$? By
-Theorem~\ref{hol:nl:main:first} no equation of order at most one is possible,
-and by Theorem~\ref{hol:td:main:boundary} order three occurs, so the least
-order over all examples is two or three. More broadly, to what extent do
-finite algebraic descents of theta or abelian functions, combined with
-elementary operations preserving strong entireness, account for the
-nonpolynomial strongly entire series that are differentially algebraic over
-$\K(z)$? The same questions are open over $\KK=k((t^\Gamma))$ for every field
-$k$ of characteristic zero.
+\begin{question}[Differentially algebraic entire series of minimal order
+three]\label{hol:q:nonlinear}
+Suppose $\Gamma$ has an order unit. By Theorem~\ref{hol:ot:main:second} no
+nonpolynomial $f\in\E$ satisfies a nonzero algebraic differential equation
+over $\K(z)$ of order at most two, and by Theorem~\ref{hol:td:main:boundary}
+order three occurs. Which nonpolynomial strongly entire series have minimal
+differential order three? Are they all accounted for by support-controlled
+algebraic descents of elliptic or theta constructions, or are there
+fundamentally different families? More broadly, to what extent do finite
+algebraic descents of theta or abelian functions, combined with elementary
+operations preserving strong entireness, account for the nonpolynomial
+strongly entire series that are differentially algebraic over $\K(z)$? The
+same questions are open over $\KK=k((t^\Gamma))$ for every field $k$ of
+characteristic zero.
 \end{question}
 
 \paragraph{Status.}
@@ -4429,17 +4621,48 @@ absence of an order unit is necessary: linear rigidity
 (Theorem~\ref{hol:main:ode}) cannot be strengthened to differential algebraic
 rigidity for any $\Gamma$ with an order unit (Corollary~\ref{hol:td:cor:sharp}).
 Source~13 leaves open whether order exactly two occurs and asks for a
-classification (its Questions~11.1 and~11.2); the question is re-scoped to
-these, as printed above. Neither $\Theta_p$ nor $G$ is decided: whether either
-is differentially algebraic stays open.
+classification (its Questions~11.1 and~11.2); the question was re-scoped to
+these, in the wording recorded in the next paragraph. Neither $\Theta_p$ nor
+$G$ is decided: whether either is differentially algebraic stays open.
+
+As re-scoped after source~13, the question read: \emph{Suppose $\Gamma$ has an
+order unit. Can a nonpolynomial $f\in\E$ satisfy a nonzero algebraic
+differential equation $P(z,f,D_zf,\ldots,D_z^sf)=0$ over $\K(z)$ of order
+$s=2$, that is, are $f$, $D_zf$ and $D_z^2f$ algebraically dependent over
+$\K(z)$ for some nonpolynomial $f\in\E$? By Theorem~\ref{hol:nl:main:first}
+no equation of order at most one is possible, and by
+Theorem~\ref{hol:td:main:boundary} order three occurs, so the least order over
+all examples is two or three. More broadly, to what extent do finite algebraic
+descents of theta or abelian functions, combined with elementary operations
+preserving strong entireness, account for the nonpolynomial strongly entire
+series that are differentially algebraic over $\K(z)$? The same questions are
+open over $\KK=k((t^\Gamma))$ for every field $k$ of characteristic zero.}
+Source~14 (the order-three-threshold part) answers the first sentence
+negatively, for every $\Gamma$, with or without an order unit, and for every
+characteristic-zero coefficient field, including $k=\C$: a strongly entire
+solution of a nonzero equation of order at most two is a polynomial
+(Theorem~\ref{hol:ot:main:second}\,(a)), even when its residue corner
+vanishes. So the least order is exactly three
+(Theorem~\ref{hol:ot:main:second}\,(b)). Source~14 was written against the
+repository at \texttt{b895e86}, before source~13 was merged, and answers
+source~13's question \texttt{q:order2}, which is the same question
+(Section~\ref{hol:ot:sub:conventions}). The classification sentence stays
+open; source~14 poses it again as its Research question~1, which is merged
+here, and the question is re-scoped to it, as printed above. For $\Theta_p$
+and $G$ the answer gives three independent jets
+(Corollary~\ref{hol:ot:cor:examples}); whether either satisfies an equation of
+order at least three stays open. The eight further questions of source~14 are
+Questions~\ref{hol:ot:q:lift}--\ref{hol:ot:q:omnific} below.
 
 The escape proof does not answer this, in any order. A nonlinear differential
 relation produces convolution sums in the coefficients rather than a
 bounded-step linear recurrence, and treating it as though it had the form
 \eqref{hol:eq:generalrecurrence} would be an invalid extension. The
 first-order answer uses the different route of
-Section~\ref{hol:nl:sec:setting}, and the no-order-unit answer the third route
-of Section~\ref{hol:cf:sec:coefficients}.
+Section~\ref{hol:nl:sec:setting}, the no-order-unit answer the third route
+of Section~\ref{hol:cf:sec:coefficients}, and the order-two answer a fourth,
+initial polynomials at infinitely many scales
+(Section~\ref{hol:ot:sub:endpoint}).
 
 \begin{question}[Beyond a positive Euler operator]\label{hol:nl:q:vectorfields}
 Which polynomial vector fields $V$ have the property that every strongly
@@ -4587,7 +4810,7 @@ unconditional version for all coefficients exists; a blockwise theorem would
 need explicit conditions on which residue classes are constrained, not only
 on the nonzero part of the multiplier.
 
-The last question comes from source~13 (its Question~11.3).
+The next question comes from source~13 (its Question~11.3).
 
 \begin{question}[Effective strong domains for differential solutions]
 \label{hol:td:q:domains}
@@ -4604,6 +4827,118 @@ those supports and a decision procedure for the relevant coefficient
 cancellations; inspecting the leading differential monomials cannot suffice
 in the vanishing-corner case. Compare Questions~\ref{hol:nl:q:effective}
 and~\ref{hol:q:optimal}.
+
+The last eight questions come from source~14 (its Research questions~2--9;
+its Research question~1 is merged into Question~\ref{hol:q:nonlinear}).
+
+\begin{question}[Lifting admissible initial polynomials; source~14]
+\label{hol:ot:q:lift}
+Given an equation of order three and an unbounded sequence of initial
+polynomials satisfying its exterior form, what compatibility conditions
+guarantee that they are the initial polynomials of one strongly entire
+solution?
+\end{question}
+
+A criterion would have to control both coefficient lifting and global
+support: local formal solutions at separate scales need not assemble into one
+series. $\mathcal T_p$ is a fully worked positive case, with the initial
+polynomials $X^n(1+X)$ at its breaks.
+
+\begin{question}[The entire solutions of the theta equation; source~14]
+\label{hol:ot:q:thetasolutions}
+For the constants \eqref{hol:td:eq:constants}, determine all strongly entire
+solutions of \eqref{hol:td:eq:cleared}. Which are scalar multiples,
+coordinate transforms or other members of a theta family, and which come from singular
+branches of the cleared equation?
+\end{question}
+
+Theorem~\ref{hol:ot:thm:convexity} forces eventually full coefficient support
+and strictly increasing consecutive coefficient differences. The next step
+would use the lower exterior terms, discarded by the exterior form, to
+constrain those differences and the leading coefficients; the cleared form may
+have exceptional solutions not represented in logarithmic coordinates, which
+need separate treatment. Since \eqref{hol:td:eq:jetpoly} is homogeneous in
+the jets, every constant multiple of $\mathcal T_p$ is a solution.
+
+\begin{question}[Effective third-order exclusion; source~14]
+\label{hol:ot:q:effective}
+For which coefficient fields and equations can boundedness of the
+nonnegative-integral endpoint projection of $\Upsilon_{\mathfrak h_P}(T,G)=0$
+be decided? Can a finite library of classifications of residue polynomials
+extend the certificate of Corollary~\ref{hol:ot:cor:gapcriterion}?
+\end{question}
+
+At order two the construction is finite algebra once the leading coefficient
+values are accessible: dehomogenize, substitute, remove a power of $V$ and
+inspect the remainder on $V=0$. Order three introduces a genuine two-integer
+constraint. Any algorithmic claim must include computability of the Hahn
+coefficients of the input and of their exact leading terms; compare
+Question~\ref{hol:nl:q:effective}.
+
+\begin{question}[Higher-order break invariants; source~14]
+\label{hol:ot:q:higher}
+Can the expansion transverse to constant logarithmic derivatives be organized
+into a hierarchy of gap and multiplicity spectra for orders four and above,
+with rigidity theorems at each level?
+\end{question}
+
+At higher orders several logarithmic derivatives vanish to the same first
+local order, with leading ratios determined by powers of an endpoint gap;
+secondary terms could record further support spacings. When the resulting
+constraints are complete is open.
+
+\begin{question}[Meromorphic second-order solutions; source~14]
+\label{hol:ot:q:meromorphic}
+Beyond polynomial denominators, which algebraic differential equations of
+order two have nonrational quotients of strongly entire series as solutions?
+Can the break method bound the density or the valuation distribution of
+their poles?
+\end{question}
+
+Elliptic meromorphic functions suggest that polynomiality cannot simply be
+extended to every quotient of entire series when an order unit exists; the
+comparison involves separate Newton data for numerator and denominator,
+including cancellation and common zeros. Without an order unit,
+Theorem~\ref{hol:cf:main:entire}\,(c) already makes every differentially
+algebraic element of $\FE$ rational.
+
+\begin{question}[Partial differential systems; source~14]
+\label{hol:ot:q:pde}
+Is there a useful several-variable analogue of three-jet independence for
+series strongly summable at every point of $\KK^d$? Which finite-dimensional
+rational differential systems force polynomiality of all strongly entire
+observables?
+\end{question}
+
+Restriction to lines may settle special cases, as for
+Theorem~\ref{hol:main:multi}, but algebraic relations among several partial
+derivatives do not in general reduce to a relation among the first two
+derivatives on every line; a several-variable analysis of initial forms is
+needed.
+
+\begin{question}[Positive residue characteristic; source~14]
+\label{hol:ot:q:charp}
+Can a replacement for second-order rigidity be formulated with Hasse or
+divided derivatives, after excluding series that are constant for the
+Frobenius and specifying the behaviour of integer valuations?
+\end{question}
+
+The example of Section~\ref{hol:ot:sub:surreal} and
+Example~\ref{hol:nl:ex:charp} show that ordinary derivatives cannot suffice.
+A replacement must distinguish the characteristic of the field, that of the
+residue field and the notion of summation.
+
+\begin{question}[Omnific approximation of differential zero sets; source~14]
+\label{hol:ot:q:omnific}
+For explicitly represented entire solutions of minimal order three, which
+zero sets admit uniform approximation by omnific integers, and how do endpoint
+gaps constrain the valuations of the rounding errors?
+\end{question}
+
+The zeros of $\mathcal T_{\omega^{-1}}$ have exact rounding errors
+$\omega^{-(2m-1)}$ (Corollary~\ref{hol:td:cor:omnific}). For other entire
+solutions the coefficient valuations are not enough: residue directions and
+higher terms can move individual zeros.
 
 These questions are directions suggested by the proved statements, not claims
 that they were already posed in the published literature, and their
@@ -6011,7 +6346,10 @@ for $f_*$). The question's sentence about hypotheses on $\Gamma$ is answered
 in one direction: the absence of an order unit suffices. With an order unit
 it stayed open after sources~11 and~12 and was re-scoped to that case;
 source~13 has since answered it there (Theorem~\ref{hol:td:main:boundary}),
-and it is now re-scoped to order two in Section~\ref{hol:sec:status}.
+source~14 has excluded order two for every $\Gamma$
+(Theorem~\ref{hol:ot:main:second}), and it is now re-scoped to the
+classification of series of minimal order three in
+Section~\ref{hol:sec:status}.
 
 \paragraph{Question~\ref{hol:q:mixedunit}.}
 Theorem~\ref{hol:cf:main:entire}\,(b) with $\Lambda=\{q^i:i\in\Z\}$
@@ -7677,8 +8015,10 @@ jets and the order of an equation. The zeros follow by substitution.
 
 There are therefore many explicit entire nonlinear solutions, not one isolated
 series. The argument classifies neither all differentially algebraic entire
-series nor the possible minimal orders: whether order two occurs for another
-series is Question~\ref{hol:q:nonlinear}.
+series nor the possible minimal orders. Order two, which source~13 left open
+for other series, is excluded for every series by
+Theorem~\ref{hol:ot:main:second} (source~14); the classification is
+Question~\ref{hol:q:nonlinear}.
 
 \subsection{Predecessors, repository comparison and priority}
 \label{hol:td:sub:predecessors}
@@ -7766,7 +8106,9 @@ verification.
 \item No classification of strongly entire differentially algebraic series is
 given, and whether minimal order two occurs for some other series is open; a
 lower-order equation for $\mathcal T_p$ itself is excluded, which is a
-different assertion. The geometric route suggested by
+different assertion. (Source~14 has since excluded order two for every series,
+Theorem~\ref{hol:ot:main:second}; the non-claim is kept as source~13's
+statement, and the classification stays open.) The geometric route suggested by
 Theorem~\ref{hol:td:thm:field} is a research direction, not a theorem.
 \item ``No omnific zero'' concerns the strong domain only; it is not a
 polynomial Diophantine statement, and no values are assigned outside the
@@ -7800,6 +8142,1073 @@ Theorem~\ref{hol:cf:main:sharp}, Corollary~\ref{hol:td:cor:sharp} and the
 consistency statements of Section~\ref{hol:td:sub:consistency} are the
 merge's. The first two write out steps that source~13 used; no historical
 priority is claimed for any of them.
+\end{enumerate}
+
+%======================================================================
+% Order-three-threshold part: source 14. Labels use hol:ot:.
+%======================================================================
+\section{Second-order rigidity: finite endpoint spectra at exterior breaks}
+\label{hol:ot:sec:setting}
+
+This section and the next contain the material of source~14, delivered after
+the theta-descent part had been merged. They answer the question left open by
+source~13 and re-scoped in Section~\ref{hol:sec:status} after it: no
+nonpolynomial strongly entire series satisfies a nonzero algebraic
+differential equation of order at most two, for every value group and every
+coefficient field of characteristic zero
+(Theorem~\ref{hol:ot:main:second}\,(a)). With
+Theorem~\ref{hol:td:main:boundary} this makes the least order exactly three
+when $\Gamma$ has an order unit (Theorem~\ref{hol:ot:main:second}\,(b)). The
+method is the finite initial polynomial of
+Sections~\ref{hol:nl:sec:setting}--\ref{hol:nl:sec:consequences}, applied not
+at one scale but at infinitely many scales where the initial polynomial is not
+a monomial, and read through logarithmic Euler derivatives; it succeeds
+exactly where the corner criterion of Theorem~\ref{hol:nl:thm:corner} is
+silent, since an equation of order two may have $\chi_P=0$
+(Proposition~\ref{hol:nl:prop:degenerate}). It is neither the escape chain,
+nor the finite coefficient field, nor a difference-field argument.
+
+\subsection{Source, conventions and the merge's choices}
+\label{hol:ot:sub:conventions}
+
+\begin{convention}[Setting of the order-three-threshold part]
+\label{hol:ot:conv:field}
+In Sections~\ref{hol:ot:sec:setting}--\ref{hol:ot:sec:theta}, $k$ is an
+arbitrary field of characteristic zero with the trivial valuation, $\Gamma$ is
+as in Convention~\ref{hol:conv:group}, $\KK=k((t^\Gamma))$, and $v$, $\lc$,
+$\res$, strong summability, $\Dom(f)$, $\EK$, $\FE$, $D_z$, the coefficient
+family algebra $\Sfam_1$ with its residue homomorphism $\rho$, and the Gauss
+data $\gamma_\delta$, $\phi_\delta$, $N_\delta$ of \eqref{hol:nl:eq:gaussdata}
+are as in Conventions~\ref{hol:nl:conv:field} and~\ref{hol:cf:conv:field} and
+Section~\ref{hol:nl:sub:scaled}. Write $\vartheta=zD_z$, as in
+Convention~\ref{hol:td:conv:field}, and $\vartheta_X=X\,\mathrm d/\mathrm dX$
+on $k(X)$. Where a statement needs a divisible group it says so; it is then
+applied to the divisible hull $\Gamma_\Q=\Gamma\otimes_\Z\Q$ and
+$\KK_\Q=k((t^{\Gamma_\Q}))$ (Lemma~\ref{hol:ot:lem:extension}). $U,V,W,T$
+and $G$ are indeterminates of polynomial rings over $k$ in this part, except
+that in Corollary~\ref{hol:ot:cor:examples} $G$ is the series of
+Corollary~\ref{hol:nl:cor:theta}; $E_0,\ldots,E_s$ are Euler-jet variables.
+\end{convention}
+
+For $k=\C$ one has $\KK=\K$ and $\EK=\E$. As for the three previous parts,
+the generality in $k$ is recorded for this part only.
+
+\paragraph{The source.}
+Source~14 is \emph{The Order-Three Threshold for Entire Hahn--Surcomplex
+Functions: Second-order rigidity, Newton-corner spectra, and sharp theta
+examples} (26 pages, 23 September 2026). It consulted the repository at
+\begin{center}\small\texttt{b895e8672990e8b5a56f97dd7246f9dd5f86c771}.\end{center}
+At that pin the article and README of this report were exactly the five-source
+text (sources~08--12); source~13's audit files, programs and records had been
+placed in this directory but its manuscript had not yet been merged. Source~14
+read this report's README there, and took source~13 from the author's own
+file library as an unpublished manuscript, with its baseline \texttt{4cdeaec}
+and its question \texttt{q:order2}, ``whether a different example could have
+order two''. Its statements about this report (first-order nonlinear rigidity
+and the all-order obstruction without an order unit) were accurate at the pin.
+Since then source~13 has been merged as Sections~\ref{hol:td:sec:setting}--%
+\ref{hol:td:sec:boundary}, and \texttt{q:order2} is its Question~11.1, merged
+into Question~\ref{hol:q:nonlinear}; the question source~14 answers is
+therefore the one recorded there, and source~14's description of source~13 as
+a private project source that is not a published paper describes the state at
+its pin. Source~14 assumes characteristic zero and an arbitrary ordered
+abelian group; it passes to the divisible hull by a cofinal extension and
+uses no divisibility, rank, algebraic or real closedness or order-unit
+hypothesis in its main theorem. Its standing hypotheses are therefore those of
+the coefficient-field and theta-descent parts, and every proof taken from it
+was re-read against the statement it is attached to.
+
+\paragraph{Renamed symbols.}
+The following symbols of source~14 would collide with symbols of the earlier
+parts. They are renamed here, in the new material only.
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.27\textwidth}
+>{\raggedright\arraybackslash}p{0.2\textwidth}
+>{\raggedright\arraybackslash}p{0.45\textwidth}@{}}
+\toprule
+Source~14 & Here & Reason\\
+\midrule
+\endhead
+$D=\mathrm d/\mathrm dz$, $f'$, $f''$ & $D_z$, $D_zf$, $D_z^2f$ & The
+notation of Convention~\ref{hol:nl:conv:field}. (Source~14's $\KK=k((t^\Gamma))$,
+$\EK$ and $\vartheta=zD_z$ are this report's.)\\
+radius $r$; $\alpha_f(r)$; $\phi_r$; $I_f(r)$; $m_f(r)$, $N_f(r)$ & scale
+$\delta$; $\gamma_\delta$; $\phi_\delta$; $\operatorname{Act}_\delta$;
+$\underline N_\delta$, $N_\delta$ & The Gauss data \eqref{hol:nl:eq:gaussdata};
+$r$ indexes derivative orders, and $I_P$ is the full corner polynomial.\\
+Newton corner & break (Definition before
+Lemma~\ref{hol:ot:lem:localfinite}) & A \emph{corner} is the finite term
+selection of Section~\ref{hol:nl:sub:corner}.\\
+restricted ring $\mathcal O\langle X\rangle_v$, $\red$ & $\Sfam_1^+$, $\rho$ &
+Lemma~\ref{hol:nl:lem:algebra}; $\red_\Delta$ is a coarsened residue.\\
+order bound $\ell$; blocks $P_{d,j}$; $\mu$, $M$, $C$ & $s$; $P_{d,w}$;
+$\beta$, $n_1$, $C_1$ & $\ell$ is a dilation power; $\mu$ is a scale; $M(S)$
+is a support monoid.\\
+$H$ (exterior homogeneous polynomial) & $\mathfrak h_P$ & $H\in\Gamma$, and
+$\mathcal H[f]$ is a theta expression.\\
+$Q(U,V)$, $Q(U,V,W)$; $s$, $R$; $Q_s$ & $\mathfrak q$; $i_0$, $\mathfrak r$;
+$\mathfrak q_{i_0}$ & $Q_s$ is a shift polynomial, $s$ an order, $R$ an order
+bound.\\
+$S_H$ & $\operatorname{Sp}(\mathfrak h)$ & $S$ is a support alphabet.\\
+$u=\vartheta_X\phi/\phi$, $V_\phi$, $W_\phi$; $h=W/V$, $r$ & $\mathsf u_\phi$,
+$\mathsf v_\phi$, $\mathsf w_\phi$; $\mathsf k$, $\mathsf r$ & $u$ is the
+Laurent variable of Section~\ref{hol:td:sub:laurent}.\\
+$\chi_H(T,G)$ & $\Upsilon_{\mathfrak h}(T,G)$ & $\chi_P$ is the residue corner
+polynomial.\\
+upper gap $g$, lower gap $e$ & $\mathsf g^+$, $\mathsf g^-$ & $g_2,g_3$ are
+theta invariants, $e_n\in\Gamma$.\\
+$h$, $q=t^h$, $Q=q^2$, $s_r(Q)$, $c$ & $\mu$, $p=t^\mu$, $p^2$,
+$\mathcal Q_r(p^2)$, $\mathfrak c$ & As for source~13
+(Section~\ref{hol:td:sub:conventions}).\\
+$F_q$; $H_f$, $J_f$, $B_f$ & $\mathcal T_p$; $\mathcal H[f]$, $\mathcal K[f]$,
+$\mathcal B[f]$ & \eqref{hol:td:eq:series}, \eqref{hol:td:eq:H},
+\eqref{hol:td:eq:KB}.\\
+$r_n=v(a_{n+1})-v(a_n)$ & $\delta_n$ & It is a break scale.\\
+$F=g/p$; characteristic $p$ & $F_0=g/\mathsf p$; $\mathfrak p$ & $F$ is the
+series \eqref{hol:eq:explicitF}; $p=t^\mu$.\\
+differential field $L$; state variables $u,v$ & $\mathfrak L\subseteq\mathfrak
+F$; $u_1,u_2$ & $L$ is a coefficient subfield, $M(S)$ a support monoid.\\
+Stirling numbers (implicit) & $\varsigma_{j,i}$ & $s$ is an order.\\
+$\Gamma_\Q$; $\No(i)$ & $\Gamma_\Q$; $\No[i]$ & The collection writes
+$\No[i]$.\\
+Theorems~1.1 and~1.3 & Theorem~\ref{hol:ot:main:second}\,(a) and~(b) &
+Theorems~A--H of this report are different theorems.\\
+\bottomrule
+\end{longtable}}
+The shipped audit file \path{14-order-three-threshold-SOURCE_AUDIT.md} keeps
+the source's notation.
+
+\paragraph{Words with two meanings.}
+A \emph{break} is a scale $\delta$ at which the initial polynomial
+$\phi_\delta$ is not a monomial; source~14 calls it a Newton corner. A
+\emph{corner} keeps the meaning of Section~\ref{hol:nl:sub:corner}, and the
+residue corner polynomial $\chi_P$ of a differential polynomial is not the
+endpoint--gap polynomial $\Upsilon_{\mathfrak h}$ of a homogeneous one;
+Remark~\ref{hol:ot:rem:corner} gives their exact relation. \emph{Exterior}
+means, as elsewhere in this report, large $\delta$, that is arguments
+$t^{-\delta}$ of large absolute valuation. The \emph{endpoint spectrum}
+$\operatorname{Sp}(\mathfrak h)$ is a finite set of nonnegative integers, not
+the spectrum of an operator. \emph{Order} and \emph{minimal order} are as in
+Section~\ref{hol:td:sub:conventions}: the order of an equation is the highest
+derivative in it. A \emph{gap} is a difference of exponents of $\phi$ at one
+end. $\mathsf u_\phi,\mathsf v_\phi,\mathsf w_\phi$ are rational functions of
+$X$ attached to a polynomial $\phi$, while $U,V,W$ are indeterminates.
+
+\paragraph{Results printed once.}
+Source~14 reproves several facts that the report already contains. They are
+printed once and cited: the definitions of an order unit and of strong
+entireness (Definitions~\ref{hol:def:orderunit} and~\ref{hol:def:entire});
+its all-scale coefficient criterion (Lemma~2.2), which is
+Proposition~\ref{hol:cf:prop:criterion}, proved there by the same two-scale
+argument; the restricted-series ring and its reduction homomorphism, which are
+$\Sfam_1^+$ and $\rho$ of Lemma~\ref{hol:nl:lem:algebra}, with the
+commutation of Euler derivatives and reduction in
+Lemma~\ref{hol:nl:lem:derivatives}; the first assertion of its Lemma~3.2,
+which is Lemma~\ref{hol:nl:lem:active}; its Proposition~5.2, whose equation
+$z^2(ff''-(f')^2)+zff'=0$ is \eqref{hol:nl:eq:degenerate} and whose
+classification is Proposition~\ref{hol:nl:prop:degenerate}; its
+Corollary~6.4 on Painlev\'e~I and~II, which is
+Proposition~\ref{hol:nl:prop:painleve} (source~14's second route is recorded in
+Remark~\ref{hol:ot:rem:painleve}); its Section~8, the theta example, whose
+entireness, coefficients, cleared equation and derivation are
+Theorem~\ref{hol:td:thm:domain}, Proposition~\ref{hol:td:prop:coeff},
+Theorem~\ref{hol:td:thm:ode} and
+Sections~\ref{hol:td:sub:elliptic}--\ref{hol:td:sub:formal}, except that its
+minimality argument is a genuinely different route and is kept
+(Remark~\ref{hol:ot:rem:secondroute}); its Section~10, the no-order-unit
+direction, which is Theorem~\ref{hol:cf:main:entire}\,(a) in the Euler
+presentation already recorded in Remark~\ref{hol:td:rem:euler} (its
+Lemmas~10.1--10.2 and Theorem~10.3 are
+Theorem~\ref{hol:cf:thm:coefficients}\,(a),
+Lemmas~\ref{hol:cf:lem:valuerank}--\ref{hol:cf:lem:principal} and
+Proposition~\ref{hol:cf:prop:exterior}); its Examples~10.4 and~10.5, which
+are Example~\ref{hol:td:ex:cofinality} and, over $\R\oplus_{\mathrm{lex}}\R$
+instead of $\Z\oplus_{\mathrm{lex}}\Z$, Example~\ref{hol:td:ex:lex}; the
+surreal embedding \eqref{hol:eq:embedding}; the surreal witness, product,
+zeros and omnific rounding of its Section~11.3, which are
+Section~\ref{hol:td:sub:surreal}, Theorem~\ref{hol:td:thm:zeros} and
+Corollary~\ref{hol:td:cor:omnific}; its Example~12.1 in positive
+characteristic, which is Example~\ref{hol:nl:ex:charp} with the scale $1$ of
+$\Q$ replaced by an order unit of $\Gamma$; and the $\Gamma=0$ remark, which
+is in Section~\ref{hol:sec:fields}. Source~14 credits the theta material and
+the no-order-unit direction as prior and claims neither.
+
+\paragraph{Where each numbered result went.}
+Theorem~1.1 is Theorem~\ref{hol:ot:main:second}\,(a), and Theorem~1.3 is
+Theorem~\ref{hol:ot:main:second}\,(b); Lemma~2.4 is
+Lemma~\ref{hol:ot:lem:extension}; Lemma~3.1 is
+Lemma~\ref{hol:ot:lem:localfinite}; the second assertion of Lemma~3.2 is
+Lemma~\ref{hol:ot:lem:breaks}; Lemma~4.1 and Remark~4.2 are
+Lemma~\ref{hol:ot:lem:exterior} and Example~\ref{hol:ot:ex:degenerate};
+Lemma~5.1 is Lemma~\ref{hol:ot:lem:endpoints};
+Corollaries~6.1--6.3 are
+Corollaries~\ref{hol:ot:cor:threejets}--\ref{hol:ot:cor:meromorphic};
+Definition~7.1, Theorem~7.2 and Corollary~7.3 are
+Definition~\ref{hol:ot:def:gaps}, Theorem~\ref{hol:ot:thm:gaps} and
+Corollary~\ref{hol:ot:cor:gapcriterion}; Theorems~9.1 and~9.2 are
+Theorems~\ref{hol:ot:thm:classification} and~\ref{hol:ot:thm:convexity};
+Proposition~11.1 is Proposition~\ref{hol:ot:prop:fullclass}; Research
+question~1 is merged into the re-scoped Question~\ref{hol:q:nonlinear}, and
+Research questions~2--9 are
+Questions~\ref{hol:ot:q:lift}--\ref{hol:ot:q:omnific}; Appendix~A is
+\eqref{hol:td:eq:jetpoly} with \eqref{hol:ot:eq:eulersub}; Appendix~B and the
+proof checkpoints of Section~14.1 are merged into the dependency table of
+Section~\ref{hol:sec:verification}.
+
+\paragraph{The merge's choices.}
+The review of source~14 for this merge found its proofs correct. Three points
+are written out here and marked as the merge's. First, the existence of a
+late break (Lemma~\ref{hol:ot:lem:breaks}) is proved by naming the break
+scale, the least of finitely many quotients, rather than by the phrase ``a
+change of the minimum occurs at an equality''. Second, the exterior form
+$\mathfrak h_P$ of Lemma~\ref{hol:ot:lem:exterior} is identified with the
+residue corner of Section~\ref{hol:nl:sub:corner} written in Euler jets, and
+its values on monomials are $\chi_P$
+(Remark~\ref{hol:ot:rem:corner}); this is what connects source~14's endpoint
+lemma to the corner criterion of source~10. Third, Corollary~\ref{hol:ot:cor:threejets}
+and Corollary~\ref{hol:ot:cor:systems} are stated inside an explicit
+differential field containing $\KK((z))$, which is how source~14's phrase
+``every $f\in L\cap\mathcal E_\Gamma(k)$'' must be read, and
+Corollary~\ref{hol:ot:cor:examples} applies Theorem~\ref{hol:ot:main:second}
+to the series $G$ and $\Theta_p$ of earlier parts. Source~14's theorems,
+proofs and non-claims are otherwise printed as delivered, in the renamed
+notation.
+
+\subsection{Breaks and the exterior form}\label{hol:ot:sub:breaks}
+
+\begin{lemma}[Cofinal scalar extension; source~14]\label{hol:ot:lem:extension}
+Let $\Gamma\subseteq\Lambda$ be an extension of ordered abelian groups with
+$\Gamma$ cofinal in $\Lambda$. Every $f\in\EK$ is strongly entire over
+$k((t^\Lambda))$. In particular this holds for $\Lambda=\Gamma_\Q$, in which
+$\Gamma$ is cofinal.
+\end{lemma}
+
+\begin{proof}
+Write $f=\sum_na_nz^n$ and use Proposition~\ref{hol:cf:prop:criterion}\,(iii)
+over $\Lambda$. Given $\gamma,\beta\in\Lambda$, choose $\gamma'\in\Gamma$ with
+$\gamma'\le\gamma$ and $\beta'\in\Gamma$ with $\beta'\ge\beta$; since $\Gamma$
+is cofinal in the group $\Lambda$, it is also coinitial. If $n\ge0$ and
+$v(a_n)+n\gamma\le\beta$, then $v(a_n)+n\gamma'\le\beta'$, which holds for only
+finitely many $n$ with $a_n\ne0$. For $\Lambda=\Gamma_\Q$, the torsion-free
+group $\Gamma$ embeds in $\Gamma\otimes_\Z\Q$, and an element $g/m$ with
+$g\in\Gamma$ and $m\ge1$ satisfies $\abs{g/m}\le\abs g$.
+\end{proof}
+
+A series is a polynomial over $\KK_\Q$ exactly when it is one over $\KK$, and
+a polynomial relation over $\KK(z)$ remains a nonzero relation over
+$\KK_\Q(z)$. So a polynomiality conclusion proved over $\KK_\Q$ descends to
+$\KK$. This is the only use of divisibility in the part.
+
+Let $f=\sum_na_nz^n\in\EK$ be nonzero. For every $\delta\in\Gamma$ the Gauss
+value $\gamma_\delta$ and the initial polynomial $\phi_\delta$ of
+\eqref{hol:nl:eq:gaussdata} exist. Put
+\begin{equation}\label{hol:ot:eq:active}
+ \operatorname{Act}_\delta=\{n:a_n\ne0,\ v(a_n)-n\delta=\gamma_\delta\},\qquad
+ \underline N_\delta=\min\operatorname{Act}_\delta,\qquad
+ N_\delta=\max\operatorname{Act}_\delta ,
+\end{equation}
+so that $\underline N_\delta=\operatorname{ord}_X\phi_\delta$, the $X$-adic order, and
+$N_\delta=\deg\phi_\delta$. A scale $\delta$ is a \emph{break} of $f$ if
+$\underline N_\delta<N_\delta$, that is, if $\phi_\delta$ is not a monomial.
+Lemma~\ref{hol:nl:lem:algebra} gives
+$\rho\bigl(t^{-\gamma_\delta}(\vartheta^jf)(t^{-\delta}X)\bigr)
+=\vartheta_X^j\phi_\delta$ for every $j$, because $\vartheta^jf$ scales like
+$f$ with each coefficient multiplied by the integer $n^j$, and Euler
+operators commute with $\rho$. A derivative on the right may vanish; no
+equality of individual valuations is asserted.
+
+\begin{lemma}[Local finiteness of active indices; source~14]
+\label{hol:ot:lem:localfinite}
+Let $f\in\EK$ be nonzero and $\delta_1\le\delta_2$ in $\Gamma$. Only finitely
+many indices lie in $\operatorname{Act}_\delta$ for some
+$\delta\in[\delta_1,\delta_2]$. If $\delta<\delta'$, $n\in\operatorname{Act}_\delta$
+and $n'\in\operatorname{Act}_{\delta'}$, then $n\le n'$.
+\end{lemma}
+
+\begin{proof}
+Fix $a_j\ne0$. On the interval its weighted value $v(a_j)-j\delta$ is at most
+$C=v(a_j)-j\delta_1$. By Proposition~\ref{hol:cf:prop:criterion}\,(iii) at
+$\gamma=-\delta_2$ all but finitely many nonzero $a_n$ have
+$v(a_n)-n\delta_2>C$, and then $v(a_n)-n\delta\ge v(a_n)-n\delta_2>C$ for
+$\delta\le\delta_2$, so such $n$ is never active. For the monotonicity, the
+two minimality inequalities $v(a_n)-n\delta\le v(a_{n'})-n'\delta$ and
+$v(a_{n'})-n'\delta'\le v(a_n)-n\delta'$ add to
+$(n'-n)(\delta'-\delta)\ge0$.
+\end{proof}
+
+\begin{lemma}[Late breaks; source~14]\label{hol:ot:lem:breaks}
+Let $\Gamma$ be divisible and $f\in\EK$ nonpolynomial. For every $\delta_*\in\Gamma$
+and every $B\in\N$ there is a break $\delta\ge\delta_*$ of $f$ with
+$\underline N_\delta>B$.
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{hol:nl:lem:active} there is $\delta_B$ such that every active
+index at every $\delta\ge\delta_B$ exceeds $B$. Let
+$\delta_1=\max(\delta_*,\delta_B)$. If $\delta_1$ is a break we are done;
+otherwise $\operatorname{Act}_{\delta_1}=\{N\}$. Lemma~\ref{hol:nl:lem:active}
+again gives $\delta_2>\delta_1$ at which every active index exceeds $N$. By
+Lemma~\ref{hol:ot:lem:localfinite} the set $F$ of indices active somewhere on
+$[\delta_1,\delta_2]$ is finite, and on that interval $\gamma_\delta$ is the
+minimum of the finitely many affine functions $v(a_n)-n\delta$, $n\in F$. For
+$n\in F$ with $n>N$ put
+\[
+ \delta^{(n)}=\frac{v(a_n)-v(a_N)}{n-N}\in\Gamma,
+\]
+using divisibility; then $v(a_N)-N\delta\le v(a_n)-n\delta$ exactly when
+$\delta\le\delta^{(n)}$. Since $N$ is active at $\delta_1$, every
+$\delta^{(n)}\ge\delta_1$, and since some $n>N$ in $F$ is active at $\delta_2$
+while $N$ is not, $\delta^{(n)}<\delta_2$ for that $n$. Let $\delta^\star$ be
+the least $\delta^{(n)}$ (the merge names this scale). For $n\in F$ with
+$n<N$, activity of $N$ at $\delta_1$ and $\delta^\star\ge\delta_1$ give
+$v(a_N)-N\delta^\star\le v(a_n)-n\delta^\star$; for $n>N$ the same holds
+because $\delta^\star\le\delta^{(n)}$, with equality for an index attaining
+$\delta^\star$. Since the least weighted value on the interval is attained in
+$F$, $N$ and that index are both active at $\delta^\star$, which is a break,
+and $\delta^\star\ge\delta_1\ge\delta_B$ makes every active index there exceed
+$B$.
+\end{proof}
+
+The proof uses only finite lower envelopes on bounded intervals: no
+completeness of $\Gamma$, no real-valued norm, no countable cofinal sequence
+and no order unit.
+
+Let $P\in\KK[z,Y_0,\ldots,Y_s]$ be a nonzero differential polynomial of order
+at most $s$. Since $z^jD_z^j=\vartheta(\vartheta-1)\cdots(\vartheta-j+1)$, the
+substitution
+\begin{equation}\label{hol:ot:eq:stirling}
+ Y_j\longmapsto z^{-j}\sum_{i=0}^j\varsigma_{j,i}E_i\qquad(0\le j\le s),
+\end{equation}
+with $\varsigma_{j,i}$ the signed Stirling numbers of the first kind, so that
+$\sum_i\varsigma_{j,i}T^i=\fall Tj$, rewrites $P(z,f,D_zf,\ldots)$ as a Laurent
+polynomial in $z$ in the Euler jets $E_i=\vartheta^if$. After multiplication by
+a power of $z$ it becomes $\widetilde P(z,f,\vartheta f,\ldots,\vartheta^sf)$
+with $0\ne\widetilde P\in\KK[z,E_0,\ldots,E_s]$; the change is invertible and
+preserves total jet degree. Decompose
+\[
+ \widetilde P=\sum_{d,w}z^wP_{d,w}(E_0,\ldots,E_s),
+\]
+with $P_{d,w}$ homogeneous of total degree $d$ in the jets, choose the largest
+$d$ occurring, then the largest $w$ with $P_{d,w}\ne0$, let $\beta$ be the
+least valuation of a coefficient of $P_{d,w}$, and put
+\begin{equation}\label{hol:ot:eq:exterior}
+ \mathfrak h_P=\res\bigl(t^{-\beta}P_{d,w}\bigr)\in k[Y_0,\ldots,Y_s],
+\end{equation}
+applying $\res$ to coefficients and renaming $E_i$ as $Y_i$. It is a nonzero
+homogeneous polynomial, the \emph{exterior form} of $P$.
+
+\begin{lemma}[Exterior homogeneous reduction; source~14]
+\label{hol:ot:lem:exterior}
+Let $f\in\EK$ be nonpolynomial with $P(z,f,D_zf,\ldots,D_z^sf)=0$ for a nonzero
+$P$ of order at most $s$. Then $\mathfrak h_P$ has positive total degree, and
+there is $\delta_0\in\Gamma_{>0}$ such that for every $\delta\ge\delta_0$
+\[
+ \mathfrak h_P\bigl(\phi_\delta,\vartheta_X\phi_\delta,\ldots,
+ \vartheta_X^s\phi_\delta\bigr)=0\quad\text{in }k[X].
+\]
+No divisibility of $\Gamma$ is used.
+\end{lemma}
+
+\begin{proof}
+If $d=0$, then $\widetilde P$ is a nonzero element of $\KK[z]$, which cannot
+vanish as a series; so $d\ge1$. Because $f$ is nonpolynomial there is $n_1$ with
+$a_{n_1}\ne0$ and $(d-d')n_1+w-w'>0$ for every block $P_{d',w'}\ne0$ with
+$d'<d$; put $C_1=v(a_{n_1})$, so that $\gamma_\delta\le C_1-n_1\delta$ for
+every $\delta$.
+
+Evaluate at $z=t^{-\delta}X$ and normalize by $t^{\beta+d\gamma_\delta-w\delta}$.
+Each factor $(\vartheta^if)(t^{-\delta}X)$ equals $t^{\gamma_\delta}$ times an
+element of $\Sfam_1^+$, so a monomial of a block $z^{w'}P_{d',w'}$ with
+coefficient $b\ne0$ becomes $t^{v(b)-w'\delta+d'\gamma_\delta}$ times an element
+of $\Sfam_1^+$. Relative to the normalization its exponent is at least
+\begin{equation}\label{hol:ot:eq:gapbound}
+ v(b)-\beta-(d-d')\gamma_\delta+(w-w')\delta
+ \ \ge\ v(b)-\beta-(d-d')C_1+\bigl((d-d')n_1+w-w'\bigr)\delta .
+\end{equation}
+For $d'<d$ the coefficient of $\delta$ is a positive integer by the choice of
+$n_1$; for $d'=d$ and $(d',w')\ne(d,w)$ it is $w-w'>0$. There are finitely many
+monomials, so the right side is positive for all $\delta\ge\delta_0$ once
+$\delta_0>0$ exceeds the absolute values of the finitely many constants; no
+division occurs. The monomials of $P_{d,w}$ itself with coefficients of value
+above $\beta$ also lose their residue. Applying the ring homomorphism $\rho$ of
+Lemma~\ref{hol:nl:lem:algebra} to the normalized identity $0=\widetilde P(\ldots)$
+leaves $X^w\mathfrak h_P(\phi_\delta,\vartheta_X\phi_\delta,\ldots)=0$, and
+$X^w$ cancels in $k[X]$.
+\end{proof}
+
+\begin{remark}[The exterior form is the residue corner in Euler jets; merge]
+\label{hol:ot:rem:corner}
+Write $P$ in the combined-monomial form \eqref{hol:nl:eq:P}. By
+\eqref{hol:ot:eq:stirling} the monomial
+$c_\nu z^{k_\nu}\prod_jY_j^{m_{\nu j}}$ becomes
+$c_\nu z^{w_\nu}\prod_j\bigl(\sum_i\varsigma_{j,i}E_i\bigr)^{m_{\nu j}}$, with the
+weight $w_\nu$ of \eqref{hol:nl:eq:dw}. The substitution
+$Y_j\mapsto\sum_i\varsigma_{j,i}Y_i$ is a unitriangular, hence invertible, linear
+change of variables over $\Z$ and preserves total degree, so the selection of
+Lemma~\ref{hol:ot:lem:exterior} picks $d=d_P$ and the $z$-power of weight $w_P$:
+its block is the image of $\sum_{\nu\in\mathcal C_P}c_\nu\prod_jY_j^{m_{\nu j}}$.
+Its least coefficient value is $\beta_P$, because the image of the nonzero
+residue vector $(\bar c_\nu)$ under the invertible integral change is nonzero.
+Hence
+\[
+ \mathfrak h_P(Y_0,\ldots,Y_s)=\sum_{\nu\in\mathcal C_P}\bar c_\nu
+ \prod_{j=0}^s\Bigl(\sum_{i=0}^j\varsigma_{j,i}Y_i\Bigr)^{m_{\nu j}},\qquad
+ \mathfrak h_P(1,T,T^2,\ldots,T^s)=\chi_P(T),
+\]
+the second because $\sum_i\varsigma_{j,i}T^i=\fall Tj$. On a monomial $\phi=X^N$ one
+has $\vartheta_X^iX^N=N^iX^N$, so
+$\mathfrak h_P(X^N,\vartheta_XX^N,\ldots)=\chi_P(N)X^{d_PN}$: the monomial test
+of the exterior form is the residue corner polynomial, and the corner
+criterion of Theorem~\ref{hol:nl:thm:corner} uses exactly this test. When
+$\chi_P=0$ the exterior form vanishes on every monomial but is still a
+nonzero polynomial, and source~14 keeps the whole initial polynomial at
+breaks. For the equation \eqref{hol:nl:eq:degenerate}, $\mathfrak
+h_P=Y_0Y_2-Y_1^2$; for the cleared theta equation \eqref{hol:td:eq:cleared},
+$\beta_P=0$ and the dehomogenized exterior form is
+\eqref{hol:ot:eq:thetainitial} below, consistent with
+Proposition~\ref{hol:td:prop:corner}.
+\end{remark}
+
+\begin{example}[The cancellation that must not be ignored; source~14]
+\label{hol:ot:ex:degenerate}
+For $\mathfrak h=Y_0Y_2-Y_1^2$ one has $\mathfrak h(X^N,\vartheta_XX^N,
+\vartheta_X^2X^N)=0$ for every $N$, so substituting a trial monomial and
+assuming that the resulting polynomial in $N$ is nonzero proves nothing. This
+$\mathfrak h$ is the exterior form of \eqref{hol:nl:eq:degenerate}, whose
+formal solutions are exactly $0$ and the monomials $cz^n$
+(Proposition~\ref{hol:nl:prop:degenerate}, which is source~14's
+Proposition~5.2). Lemma~\ref{hol:ot:lem:endpoints} below gives
+$\operatorname{Sp}(\mathfrak h)=\varnothing$ for it: no nonmonomial initial
+polynomial is permitted at any exterior break, which is stronger than the
+identically vanishing monomial test and consistent with unbounded monomial
+solutions. Polynomiality is therefore not a uniform degree bound: a fixed
+equation can have polynomial solutions of every degree.
+\end{example}
+
+\subsection{The endpoint lemma and the proof of Theorem~\ref{hol:ot:main:second}\,(a)}
+\label{hol:ot:sub:endpoint}
+
+For a nonzero $\phi\in k[X]$ put $\mathsf u_\phi=\vartheta_X\phi/\phi$,
+$\mathsf v_\phi=\vartheta_X\mathsf u_\phi$ and
+$\mathsf w_\phi=\vartheta_X\mathsf v_\phi$ in $k(X)$. Then
+\[
+ \frac{\vartheta_X^2\phi}\phi=\mathsf u_\phi^2+\mathsf v_\phi,\qquad
+ \frac{\vartheta_X^3\phi}\phi=\mathsf u_\phi^3+3\mathsf u_\phi\mathsf v_\phi
+ +\mathsf w_\phi .
+\]
+
+\begin{lemma}[Finite endpoint spectrum; source~14]\label{hol:ot:lem:endpoints}
+Let $0\ne\mathfrak h\in k[Y_0,Y_1,Y_2]$ be homogeneous. There is a finite set
+$\operatorname{Sp}(\mathfrak h)\subseteq\N$ such that every nonmonomial
+$\phi\in k[X]$ with $\mathfrak h(\phi,\vartheta_X\phi,\vartheta_X^2\phi)=0$ has
+both its $X$-adic order $\operatorname{ord}_X\phi$ and $\deg\phi$ in
+$\operatorname{Sp}(\mathfrak h)$.
+\end{lemma}
+
+\begin{proof}
+Put
+\begin{equation}\label{hol:ot:eq:dehom}
+ \mathfrak q(U,V)=\mathfrak h(1,U,U^2+V).
+\end{equation}
+It is nonzero: setting $Y_0=1$ is injective on homogeneous polynomials of a
+fixed degree, since the missing power of $Y_0$ is determined by the other
+exponents, and $Y_2\mapsto U^2+V$ is a triangular automorphism. Let $V^{i_0}$
+be the largest power of $V$ dividing $\mathfrak q$ and write
+\begin{equation}\label{hol:ot:eq:factor}
+ \mathfrak q=V^{i_0}\mathfrak r,\qquad \mathfrak r(U,0)\ne0 .
+\end{equation}
+By homogeneity $\mathfrak q(\mathsf u_\phi,\mathsf v_\phi)=0$. The function
+$\mathsf u_\phi$ is not constant: $\vartheta_X\phi=b\phi$ with $b\in k$ forces
+$n=b$ for every exponent $n$ of $\phi$, and in characteristic zero there is at
+most one such exponent. The constants of $\mathrm d/\mathrm dX$ in $k(X)$ are
+$k$, so $\mathsf v_\phi\ne0$, and cancelling $\mathsf v_\phi^{i_0}$ in the field
+$k(X)$ gives $\mathfrak r(\mathsf u_\phi,\mathsf v_\phi)=0$. With
+$m=\operatorname{ord}_X\phi$ and $N=\deg\phi$, the expansions at $0$ and at $\infty$ are
+\[
+ \mathsf u_\phi=m+O(X),\quad\mathsf v_\phi=O(X);\qquad
+ \mathsf u_\phi=N+O(X^{-1}),\quad\mathsf v_\phi=O(X^{-1}),
+\]
+and their constant terms give $\mathfrak r(m,0)=\mathfrak r(N,0)=0$. The
+nonzero polynomial $\mathfrak r(T,0)$ has finitely many roots in $k$, and
+distinct nonnegative integers are distinct in $k$; let
+$\operatorname{Sp}(\mathfrak h)$ be its set of roots in $\N$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{hol:ot:main:second}\,\textup{(a)}]
+Let $f\in\EK$ satisfy a nonzero relation of order at most two over $\KK(z)$;
+clearing denominators gives a nonzero $P\in\KK[z,Y_0,Y_1,Y_2]$. Suppose $f$ is
+nonpolynomial. By Lemma~\ref{hol:ot:lem:extension}, $f$ is strongly entire
+over $\KK_\Q$ and satisfies the same relation there, so we may assume $\Gamma$
+divisible. Lemma~\ref{hol:ot:lem:exterior} gives $\mathfrak h_P\ne0$ and
+$\delta_0$. Choose $B\in\N$ larger than every element of
+$\operatorname{Sp}(\mathfrak h_P)$ ($B=0$ if it is empty).
+Lemma~\ref{hol:ot:lem:breaks} gives a break $\delta\ge\delta_0$ with
+$\underline N_\delta>B$; its initial polynomial is nonmonomial, satisfies
+$\mathfrak h_P(\phi_\delta,\vartheta_X\phi_\delta,\vartheta_X^2\phi_\delta)=0$,
+and has $\operatorname{ord}_X\phi_\delta=\underline N_\delta\notin
+\operatorname{Sp}(\mathfrak h_P)$, contradicting
+Lemma~\ref{hol:ot:lem:endpoints}. So $f$ is a polynomial over $\KK_\Q$, hence
+over $\KK$. The equivalent formulation is the same statement for the
+algebraic dependence of $f,D_zf,D_z^2f$ over $\KK(z)$.
+\end{proof}
+
+The proof uses characteristic zero twice: nonzero integer multipliers keep
+valuation zero under differentiation, and infinitely many degree indices stay
+distinct in the residue field. The finite endpoint set is what the corner
+criterion lacks when $\chi_P=0$: at order two the degenerate part of an
+equation leaves only the finitely many roots of $\mathfrak r(T,0)$ for both
+endpoints of every nonmonomial initial polynomial, while a nonpolynomial
+entire series has breaks with arbitrarily large endpoints.
+
+\subsection{Consequences and the proof of Theorem~\ref{hol:ot:main:second}\,(b)}
+\label{hol:ot:sub:consequences}
+
+\begin{corollary}[Three-jet transcendence; source~14]
+\label{hol:ot:cor:threejets}
+For nonpolynomial $f\in\EK$,
+\[
+ \trdeg_{\KK(z)}\KK(z)(f,D_zf,D_z^2f)=3 .
+\]
+More generally, let $\mathfrak F$ be a
+differential field extension of $\KK((z))$ whose derivation extends $D_z$, and
+$\mathfrak L\subseteq\mathfrak F$ a differential subfield containing $\KK(z)$ with
+$\trdeg_{\KK(z)}\mathfrak L\le2$. Every $f\in\mathfrak L\cap\EK$ is a polynomial.
+\end{corollary}
+
+\begin{proof}
+The first assertion is Theorem~\ref{hol:ot:main:second}\,(a). For the second,
+$f,D_zf,D_z^2f\in\mathfrak L$ are algebraically dependent over $\KK(z)$ in $\mathfrak F$, and a
+polynomial relation among elements of $\KK((z))$ holds in $\mathfrak F$ exactly when it
+holds in $\KK((z))$.
+\end{proof}
+
+\begin{corollary}[Rational two-state systems; source~14]
+\label{hol:ot:cor:systems}
+Let $\mathfrak F$ be as in Corollary~\ref{hol:ot:cor:threejets} and let $u_1,u_2\in\mathfrak F$
+satisfy $D_zu_1=R_1(z,u_1,u_2)$ and $D_zu_2=R_2(z,u_1,u_2)$ with
+$R_1,R_2\in\KK(z,Y_1,Y_2)$, all denominators nonzero after substitution.
+Every element of $\KK(z,u_1,u_2)$ that lies in $\EK$ is a polynomial.
+\end{corollary}
+
+\begin{proof}
+The system makes $\KK(z,u_1,u_2)$ a differential field, by the quotient rule,
+of transcendence degree at most two over $\KK(z)$; apply
+Corollary~\ref{hol:ot:cor:threejets}.
+\end{proof}
+
+The state variables themselves need not be entire; the corollary restricts
+the strongly entire observables of the field. A nonpolynomial strongly entire
+function therefore cannot be generated by a rational nonautonomous system with
+two state variables over the full Hahn coefficient field, for every $\Gamma$.
+Corollary~\ref{hol:cf:cor:systems} (source~11) allows any number of states and
+quotients of entire series but needs the absence of an order unit, and
+Corollary~\ref{hol:cor:systems} is the linear case. With an order unit,
+$\mathcal T_p$ is an observable of the rational system with the four states
+$f,\mathcal L,\mathcal A,\mathcal A_1$ of Theorem~\ref{hol:td:thm:field}, so
+there the number two cannot be replaced by four; three states are not decided
+here (an observation of the merge). Arbitrary
+transcendental right-hand sides remove the finite differential-field
+hypothesis and are outside the corollary.
+
+\begin{corollary}[Polynomial-denominator meromorphic rigidity; source~14]
+\label{hol:ot:cor:meromorphic}
+Let $g\in\EK$, $0\ne\mathsf p\in\KK[z]$ and $F_0=g/\mathsf p\in\KK((z))$. If $F_0$
+satisfies a nonzero algebraic differential equation of order at most two over
+$\KK(z)$, then $F_0\in\KK(z)$.
+\end{corollary}
+
+\begin{proof}
+The relations $g=\mathsf pF_0$, $D_zg=D_z\mathsf p\,F_0+\mathsf pD_zF_0$ and
+$D_z^2g=D_z^2\mathsf p\,F_0+2D_z\mathsf p\,D_zF_0+\mathsf pD_z^2F_0$ form an invertible
+triangular linear change of jets over $\KK(z)$, so $g$ satisfies a nonzero
+relation of order at most two, and Theorem~\ref{hol:ot:main:second}\,(a)
+makes it a polynomial.
+\end{proof}
+
+This concerns quotients with a polynomial denominator only; it does not
+assert that every object called meromorphic with finitely many poles in a
+Hahn analytic category has such a representation. For the fraction field $\FE$
+without an order unit, Theorem~\ref{hol:cf:main:entire}\,(c) gives rationality
+in every order.
+
+\begin{remark}[Painlev\'e~I and~II: a second route; source~14]
+\label{hol:ot:rem:painleve}
+Source~14's Corollary~6.4 is Proposition~\ref{hol:nl:prop:painleve}, with the
+same degree comparison for polynomials. Source~10 reaches polynomiality
+through the nonzero corners $\chi_P=-6$ and $\chi_P=-2$; source~14 reaches it
+through Theorem~\ref{hol:ot:main:second}\,(a), since both equations have order
+two. The equations of DLMF~\S32.2~\cite{dlmfpainleve} are read as formal
+equations over $\KK$; nothing is said about local formal solutions, which
+exist, or about classical complex Painlev\'e transcendents.
+\end{remark}
+
+\begin{corollary}[The explicit series of earlier parts; merge]
+\label{hol:ot:cor:examples}
+The series $G=\sum_{n\ge0}t^{n^2}z^n$ over $\C((t^\Q))$ of
+Corollary~\ref{hol:nl:cor:theta}, and, for an order unit $\mu$ and $p=t^\mu$,
+the partial theta series $\Theta_p\in\EK$ of
+Proposition~\ref{hol:cf:prop:theta}, have three algebraically independent jets
+$f,D_zf,D_z^2f$ over the respective $\KK(z)$.
+\end{corollary}
+
+\begin{proof}
+Both are nonpolynomial and strongly entire (Corollary~\ref{hol:nl:cor:theta},
+Proposition~\ref{hol:cf:prop:theta}); apply
+Theorem~\ref{hol:ot:main:second}\,(a).
+\end{proof}
+
+Whether $G$ or $\Theta_p$ satisfies an algebraic differential equation of
+order at least three is not decided; the corollary only raises the known
+lower bound from two jets (Corollary~\ref{hol:nl:cor:theta}) to three.
+
+\begin{proof}[Proof of Theorem~\ref{hol:ot:main:second}\,\textup{(b)}]
+Let $\mu$ be an order unit and $p=t^\mu$. By
+Theorem~\ref{hol:td:thm:domain} and Proposition~\ref{hol:td:prop:coeff},
+$\mathcal T_p$ is a nonpolynomial element of $\EK$, and by
+Theorem~\ref{hol:td:thm:ode} it satisfies a nonzero algebraic differential
+equation of order three. By part~(a) no nonpolynomial element of $\EK$
+satisfies one of order at most two; an equation of order zero is included,
+being of order at most two. So the least order is three. Without an order
+unit, Theorem~\ref{hol:cf:main:entire}\,(a) excludes every finite order.
+\end{proof}
+
+When $\Gamma=0$ every strongly entire series is a polynomial, by strong
+summability at $x=1$ (Section~\ref{hol:sec:fields}); source~14 includes this
+case in its statement, and Convention~\ref{hol:conv:group} excludes it here.
+
+\begin{remark}[A second route to minimal order three for $\mathcal T_p$;
+source~14]\label{hol:ot:rem:secondroute}
+The lower bound of Corollary~\ref{hol:td:cor:order}, that
+$\mathcal T_p,D_z\mathcal T_p,D_z^2\mathcal T_p$ are algebraically independent
+over $\KK(z)$ when $\mu$ is an order unit, is also a case of
+Theorem~\ref{hol:ot:main:second}\,(a), since $\mathcal T_p$ is nonpolynomial
+and strongly entire. Source~14 proves minimality this way, ``without the
+separate difference-field minimality argument''. The two routes are genuinely
+different: source~13's argument uses the Laurent ring, the substitution
+homomorphism and three difference-field obstructions for $u\mapsto p^2u$, and
+also yields the degree-two statement of Theorem~\ref{hol:td:thm:field} and
+non-D-finiteness (Proposition~\ref{hol:td:prop:nondfinite}), which
+Theorem~\ref{hol:ot:main:second} does not give; source~14's argument uses no
+property of $\mathcal T_p$ beyond nonpolynomial strong entireness. Both are
+kept. The strict inequality of orders also shows again that
+$\mathcal T_p$ satisfies no equation to which
+Theorem~\ref{hol:nl:thm:certificate} applies (Remark~\ref{hol:td:rem:corner}),
+but not conversely.
+\end{remark}
+
+\section{Order three: endpoint gaps, theta breaks and scope}
+\label{hol:ot:sec:theta}
+
+\subsection{The endpoint--gap polynomial}\label{hol:ot:sub:gaps}
+
+At order three the endpoint lemma has a precise analogue with one more
+integer parameter; this is what an equation of order three can use, and the
+theta equation uses it.
+
+\begin{definition}[Endpoint gaps; source~14]\label{hol:ot:def:gaps}
+For a nonmonomial $\phi\in k[X]$ with highest exponent $N$ and second-highest
+exponent $N-\mathsf g^+$, the positive integer $\mathsf g^+$ is its
+\emph{upper gap}; with lowest exponent $m$ and second-lowest exponent
+$m+\mathsf g^-$, the positive integer $\mathsf g^-$ is its \emph{lower gap}.
+The pairs $(N,\mathsf g^+)$ and $(m,\mathsf g^-)$ are its endpoint--gap
+pairs.
+\end{definition}
+
+\begin{theorem}[Third-order endpoint--gap obstruction; source~14]
+\label{hol:ot:thm:gaps}
+Let $0\ne\mathfrak h\in k[Y_0,Y_1,Y_2,Y_3]$ be homogeneous and
+\begin{equation}\label{hol:ot:eq:dehom3}
+ \mathfrak q(U,V,W)=\mathfrak h(1,U,U^2+V,U^3+3UV+W).
+\end{equation}
+Let $i_0$ be the least total degree in $(V,W)$ of a nonzero term of
+$\mathfrak q$ and $\mathfrak q_{i_0}$ the sum of the terms of that degree. Then
+\begin{equation}\label{hol:ot:eq:upsilon}
+ \Upsilon_{\mathfrak h}(T,G)=\mathfrak q_{i_0}(T,1,-G)\in k[T,G]
+\end{equation}
+is nonzero, and every nonmonomial $\phi\in k[X]$ with
+$\mathfrak h(\phi,\vartheta_X\phi,\vartheta_X^2\phi,\vartheta_X^3\phi)=0$
+satisfies $\Upsilon_{\mathfrak h}(N,\mathsf g^+)=0$ and
+$\Upsilon_{\mathfrak h}(m,-\mathsf g^-)=0$ for its endpoint--gap pairs.
+\end{theorem}
+
+\begin{proof}
+As in Lemma~\ref{hol:ot:lem:endpoints}, $\mathfrak q\ne0$. The polynomial
+$\mathfrak q_{i_0}$ is homogeneous of degree $i_0$ in $(V,W)$, and $V=1$,
+$W=-G$ is injective on such polynomials, so $\Upsilon_{\mathfrak h}\ne0$. By
+homogeneity and the identities before Lemma~\ref{hol:ot:lem:endpoints},
+$\mathfrak q(\mathsf u_\phi,\mathsf v_\phi,\mathsf w_\phi)=0$. At infinity
+write $\phi=aX^N(1+bX^{-\mathsf g^+}+\cdots)$ with $ab\ne0$; then, in
+$k((X^{-1}))$,
+\[
+ \mathsf u_\phi=N-\mathsf g^+bX^{-\mathsf g^+}+\cdots,\qquad
+ \mathsf v_\phi=(\mathsf g^+)^2bX^{-\mathsf g^+}+\cdots,\qquad
+ \mathsf w_\phi/\mathsf v_\phi=-\mathsf g^++O(X^{-1}).
+\]
+Writing each homogeneous part as
+$\mathfrak q_i(\mathsf u_\phi,\mathsf v_\phi,\mathsf w_\phi)=\mathsf v_\phi^i
+\mathfrak q_i(\mathsf u_\phi,1,\mathsf w_\phi/\mathsf v_\phi)$, the parts with
+$i>i_0$ have $X^{-1}$-order above $i_0\mathsf g^+$, and the coefficient of
+$X^{-i_0\mathsf g^+}$ is $\bigl((\mathsf g^+)^2b\bigr)^{i_0}
+\mathfrak q_{i_0}(N,1,-\mathsf g^+)$; replacing $\mathsf u_\phi$ by $N$ changes
+only higher orders. So $\Upsilon_{\mathfrak h}(N,\mathsf g^+)=0$. At $0$
+write $\phi=aX^m(1+bX^{\mathsf g^-}+\cdots)$: then $\mathsf u_\phi\to m$,
+$\mathsf v_\phi$ has order $\mathsf g^-$ and
+$\mathsf w_\phi/\mathsf v_\phi\to\mathsf g^-$, and the same argument gives
+$\mathfrak q_{i_0}(m,1,\mathsf g^-)=\Upsilon_{\mathfrak h}(m,-\mathsf g^-)=0$.
+\end{proof}
+
+At order two the lowest transverse part is $A(U)V^{i_0}$, whose
+specialization is $A(T)$: no gap variable remains, which is
+Lemma~\ref{hol:ot:lem:endpoints}. At order three a polynomial such as $G^2-1$
+permits arbitrarily large endpoints while fixing the gap to one; this is what
+happens for the theta equation (Section~\ref{hol:ot:sub:thetaform}).
+
+\begin{corollary}[A third-order rigidity certificate; source~14]
+\label{hol:ot:cor:gapcriterion}
+Let $P$ have order at most three, with exterior form $\mathfrak h_P$ as in
+Lemma~\ref{hol:ot:lem:exterior}. If the set
+\[
+ \{N\in\N:\ \Upsilon_{\mathfrak h_P}(N,\mathsf g)=0\text{ for some integer }
+ 1\le\mathsf g\le N\}
+\]
+is bounded, every strongly entire solution of $P[f]=0$ is a polynomial.
+\end{corollary}
+
+\begin{proof}
+Pass to $\Gamma_\Q$ as in the proof of Theorem~\ref{hol:ot:main:second}\,(a).
+A nonpolynomial entire solution has breaks $\delta\ge\delta_0$ with
+$\underline N_\delta$, hence $N_\delta$, arbitrarily large
+(Lemma~\ref{hol:ot:lem:breaks}), and the upper endpoint--gap pair
+$(N_\delta,\mathsf g^+)$ of $\phi_\delta$ has $1\le\mathsf g^+\le N_\delta$;
+Theorem~\ref{hol:ot:thm:gaps} and Lemma~\ref{hol:ot:lem:exterior} contradict the
+boundedness.
+\end{proof}
+
+This is a sufficient certificate, not a decision algorithm for third-order
+equations: deciding the integral zero set of a bivariate polynomial is a
+separate arithmetic problem, and an unbounded zero set of
+$\Upsilon_{\mathfrak h_P}$ is necessary for escaping the obstruction, not
+sufficient for the existence of an entire solution.
+
+\subsection{The exterior form of the theta equation}
+\label{hol:ot:sub:thetaform}
+
+Let $P$ be the polynomial \eqref{hol:td:eq:jetpoly} with the constants
+\eqref{hol:td:eq:constants}; it is homogeneous of degree six in the jets. In
+Euler jets $E_j$ the substitution \eqref{hol:ot:eq:stirling} reads
+\begin{equation}\label{hol:ot:eq:eulersub}
+ Y_0=E_0,\quad Y_1=E_1/z,\quad Y_2=(E_2-E_1)/z^2,\quad
+ Y_3=(E_3-3E_2+2E_1)/z^3 ,
+\end{equation}
+and after multiplication by $z^6$ the highest $z$-power is six. Its block,
+dehomogenized by $E_0=1$, $E_1=U$, $E_2=U^2+V$, $E_3=U^3+3UV+W$, is
+\begin{equation}\label{hol:ot:eq:thetatop}
+ W^2-4(\mathfrak c-V)^3+g_2(\mathfrak c-V)+g_3
+ =W^2+4V^3-12\mathfrak cV^2+(12\mathfrak c^2-g_2)V-4\mathfrak c^3
+ +\mathfrak cg_2+g_3 .
+\end{equation}
+Directly: in Euler jets the top part of $\mathcal H[f]$ is
+$f\vartheta^2f-(\vartheta f)^2$, that is $E_0E_2-E_1^2$, which dehomogenizes to
+$V$; the top part of $z\mathcal K[f]$ is
+$f\vartheta\mathcal H_0-2\vartheta f\,\mathcal H_0$ with $\mathcal H_0$ that
+part, which dehomogenizes to $W$; so $\mathcal B[f]$ contributes
+$\mathfrak c-V$ and $(z^2-4)\mathcal K[f]^2$ contributes $W^2$. The
+coefficient of
+$W^2$ is $1$ and all coefficients lie in $\Z[\mathfrak c,g_2,g_3]$, of
+nonnegative valuation, so $\beta=0$ in \eqref{hol:ot:eq:exterior}. With the
+residues $\res\mathfrak c=\frac1{12}$, $\res g_2=\frac1{12}$ and
+$\res g_3=-\frac1{216}$ the constant and linear terms cancel and the
+dehomogenized exterior form is
+\begin{equation}\label{hol:ot:eq:thetainitial}
+ W^2-V^2+4V^3 .
+\end{equation}
+Its value at $V=W=0$ is $0$, which is $\chi_P=0$ in
+Proposition~\ref{hol:td:prop:corner}, by Remark~\ref{hol:ot:rem:corner}. Its
+transverse part of least degree is $W^2-V^2$, so
+Theorem~\ref{hol:ot:thm:gaps} gives $\Upsilon(T,G)=G^2-1$: every exterior upper
+and lower gap of a solution is one. The Euler-jet conversion and
+\eqref{hol:ot:eq:thetainitial} are checked symbolically by source~14's
+program.
+
+\subsection{Theta breaks and eventual Newton convexity}
+\label{hol:ot:sub:convexity}
+
+\begin{theorem}[Polynomial solutions of the theta exterior equation;
+source~14]\label{hol:ot:thm:classification}
+Let $0\ne\phi\in k[X]$. Then
+$\mathsf w_\phi^2-\mathsf v_\phi^2+4\mathsf v_\phi^3=0$ if and only if
+$\phi=bX^m$ or $\phi=bX^m(1+aX)$ with $m\in\N$ and $a,b\in k^\times$.
+\end{theorem}
+
+\begin{proof}
+If $\mathsf v_\phi=0$, then $\mathsf u_\phi$ is constant and $\phi$ is a
+monomial, as in the proof of Lemma~\ref{hol:ot:lem:endpoints}. Suppose
+$\mathsf v_\phi\ne0$ and put $\mathsf k=\mathsf w_\phi/\mathsf v_\phi$. The
+equation becomes $\mathsf k^2=1-4\mathsf v_\phi$. If $\mathsf k=0$ then
+$\mathsf v_\phi=\frac14$, impossible because the constant term of
+$\vartheta_X\mathsf u_\phi$ in its Laurent expansion at $0$ is zero. Applying
+$\vartheta_X$ and using $\mathsf w_\phi=\mathsf k\mathsf v_\phi$ gives
+$2\mathsf k\vartheta_X\mathsf k=-4\mathsf k\mathsf v_\phi$, so
+$\vartheta_X\mathsf k=(\mathsf k^2-1)/2$; and $\mathsf k\ne\pm1$, since either
+would give $\mathsf v_\phi=0$. For $\mathsf r=(\mathsf k-1)/(\mathsf k+1)$ a
+direct computation gives $\vartheta_X\mathsf r=\mathsf r$, so
+$\mathrm d(\mathsf r/X)/\mathrm dX=0$ and $\mathsf r=b_1X$ with $b_1\in
+k^\times$. With $a=-b_1$,
+\[
+ \mathsf k=\frac{1-aX}{1+aX},\qquad \mathsf v_\phi=\frac{aX}{(1+aX)^2},\qquad
+ \vartheta_X\Bigl(\mathsf u_\phi-\frac{aX}{1+aX}\Bigr)=0 .
+\]
+The constant is $m=\operatorname{ord}_X\phi$, by evaluation at $0$, so
+$\phi/(X^m(1+aX))$ has zero logarithmic derivative and is a nonzero constant.
+Conversely a monomial has $\mathsf v_\phi=\mathsf w_\phi=0$, and for
+$\phi=bX^m(1+aX)$
+\[
+ \mathsf u_\phi=m+\frac{aX}{1+aX},\quad
+ \mathsf v_\phi=\frac{aX}{(1+aX)^2},\quad
+ \mathsf w_\phi=\frac{aX(1-aX)}{(1+aX)^3},
+\]
+which satisfy the equation.
+\end{proof}
+
+For a binomial with gap $\mathsf g$, $\phi=bX^m(1+aX^{\mathsf g})$, the same
+computation with $aX^{\mathsf g}$ in place of $aX$ gives
+$\mathsf w_\phi^2-\mathsf v_\phi^2+4\mathsf v_\phi^3
+=(\mathsf g^2-1)\mathsf v_\phi^2$: gap one is accepted and every larger
+binomial gap is rejected (source~14, Appendix~A).
+
+\begin{theorem}[Eventual strict Newton convexity; source~14]
+\label{hol:ot:thm:convexity}
+Let $\mathfrak c,g_2,g_3\in\KK$ have nonnegative valuation and the residues
+$\frac1{12},\frac1{12},-\frac1{216}$, and let a nonpolynomial
+$f=\sum_na_nz^n\in\EK$ satisfy the cleared equation \eqref{hol:td:eq:cleared}
+with these constants. Then:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item after passing to $\Gamma_\Q$, every break $\delta\ge\delta_0$ of $f$ has
+initial polynomial $bX^m(1+aX)$ with $a,b\in k^\times$;
+\item $a_n\ne0$ for every sufficiently large $n$;
+\item the differences $\delta_n=v(a_{n+1})-v(a_n)\in\Gamma$ are strictly
+increasing for all sufficiently large $n$ and tend cofinally to $+\infty$ in
+$\Gamma$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Pass to $\Gamma_\Q$ (Lemma~\ref{hol:ot:lem:extension}). The exterior form of
+the equation, dehomogenized, is \eqref{hol:ot:eq:thetainitial}, by the
+computation of Section~\ref{hol:ot:sub:thetaform}, which uses only the
+residues and the nonnegative valuations of the constants; so, beyond the
+$\delta_0$ of Lemma~\ref{hol:ot:lem:exterior}, every initial polynomial
+satisfies $\mathsf w^2-\mathsf v^2+4\mathsf v^3=0$, and
+Theorem~\ref{hol:ot:thm:classification} excludes the monomial case at a break,
+proving~(i). Beyond $\delta_0$, therefore, a break has exactly two active
+indices $n$ and $n+1$, with no skipped index and no three-way tie, and between
+breaks the active index is single. By Lemma~\ref{hol:ot:lem:localfinite}
+only finitely many indices are active on a bounded interval, and a change of
+the active index happens only at a break (as in the proof of
+Lemma~\ref{hol:ot:lem:breaks}); so the active index increases by exactly one
+at each break, and by Lemma~\ref{hol:nl:lem:active} it exceeds every bound.
+Every sufficiently large integer is therefore active at some scale, and its
+coefficient is nonzero, proving~(ii). The break at which $n$ is replaced by
+$n+1$ is the solution of $v(a_n)-n\delta=v(a_{n+1})-(n+1)\delta$, namely
+$\delta=\delta_n$, which lies in $\Gamma$ without any division. These scales
+increase by the monotonicity in Lemma~\ref{hol:ot:lem:localfinite}, strictly
+because a repeated break would carry three active indices, and they are
+cofinal because an upper bound would put infinitely many active indices in one
+bounded interval. Nonvanishing of coefficients, inequalities between their
+values and cofinality in $\Gamma_\Q$ descend to $\Gamma$, since $\Gamma$ is
+cofinal in $\Gamma_\Q$.
+\end{proof}
+
+For $f=\mathcal T_p$ with $\mu$ an order unit, \eqref{hol:td:eq:coeffval}
+gives the realization $\delta_n=(2n+1)\mu$,
+$\gamma_{\delta_n}=-n(n+1)\mu$ and $\phi_{\delta_n}=X^n(1+X)$ for $n\ge0$: at
+$\delta_n$ the weighted value of degree $j$ is $(j^2-(2n+1)j)\mu$, least exactly
+at $j=n,n+1$. This is the Newton profile of Section~\ref{hol:td:sub:bilateral},
+and it makes the order-three escape visible without analytic asymptotics:
+unbounded degrees coexist with the fixed gap one.
+Theorem~\ref{hol:ot:thm:convexity} is a necessary condition on solutions, not
+a classification of the entire solutions of the theta equation: it does not
+force $v(a_n)=n^2\mu$, does not determine coefficients from their values, and
+does not assert that every eventually strictly convex value sequence occurs.
+
+\subsection{Surreal consequences and boundaries}\label{hol:ot:sub:surreal}
+
+Through \eqref{hol:eq:embedding}, Theorem~\ref{hol:ot:main:second} applies to
+every set-sized surreal or surcomplex field $k((\omega^{-\Gamma}))$ with
+$\Gamma\subseteq\No$ and $k=\R$ or $\C$: there no nonpolynomial strongly
+entire series satisfies an algebraic differential equation of order at most
+two, whatever the rank of $\Gamma$, and algebraic closedness of the
+coefficient field is not needed. For $\Gamma=\Q$ or $\R$ and $p=\omega^{-1}$
+the series $\mathcal T_p$ of Section~\ref{hol:td:sub:surreal} has three
+algebraically independent jets over the field of rational functions and an
+explicit equation of order three. The following proposition, from source~14,
+states once for every series what Section~\ref{hol:sub:notallsurcomplex},
+Section~\ref{hol:td:sub:surreal} and Corollary~\ref{hol:nl:cor:theta} show for
+particular ones.
+
+\begin{proposition}[No nonpolynomial series is entire on the class;
+source~14]\label{hol:ot:prop:fullclass}
+A power series $\sum_na_nz^n$ with coefficients in $\No[i]$ that is strongly
+summable at every point of $\No[i]$ has only finitely many nonzero
+coefficients.
+\end{proposition}
+
+\begin{proof}
+Suppose infinitely many $a_n$ are nonzero, and let $v(a)$ be the negative of
+the largest Conway exponent of $a\ne0$. The values $v(a_n)$ of the nonzero
+coefficients and their pairwise differences form a set of surreals, so there
+is a positive surreal $\gamma$ larger than the absolute value of every such
+difference. At $x=\omega^\gamma$ the leading values of the terms are
+$v(a_n)-n\gamma$, and along increasing indices with $a_n\ne0$ they decrease
+strictly, since $v(a_{n'})-v(a_n)<\gamma\le(n'-n)\gamma$. They cannot lie in a
+well-ordered union of Hahn supports, contradicting strong summability at $x$.
+\end{proof}
+
+This is a size-and-domain obstruction, not an instance of second-order
+rigidity: entireness is always relative to one set-sized field, $\mathcal T_p$
+is entire on its field because $\mu$ is an order unit there, and enlarging to
+every surreal scale destroys that property. The zeros of $\mathcal T_p$ and
+their omnific floors and ceilings are those of Theorem~\ref{hol:td:thm:zeros}
+and Corollary~\ref{hol:td:cor:omnific}, inherited; source~14's new contribution
+there is the universal lower bound for the function that produces them and the
+necessary Newton geometry of Theorem~\ref{hol:ot:thm:convexity} for every other
+entire solution of its equation.
+
+\paragraph{Boundaries recorded by source~14.}
+In characteristic $\mathfrak p>0$ and with an order unit $\mu$, the series
+$\sum_{n\ge0}t^{n^2\mu}z^{\mathfrak pn}$ is nonpolynomial and strongly entire with
+derivative zero, so Theorem~\ref{hol:ot:main:second} fails already in order
+one; this is Example~\ref{hol:nl:ex:charp} with $\Q$ replaced by any group with
+an order unit. Mixed-characteristic $\mathfrak p$-adic fields are not covered merely
+because they have characteristic zero: their residue characteristic and
+integer valuations differ from the hypotheses used here. The ordinary
+exponential $\sum z^n/n!$ solves $D_zf=f$ formally but is not strongly
+summable at $z=1$, since infinitely many terms have exponent zero; allowing
+ordinary convergence inside a fixed coefficient layer would change the
+function class and need a different theorem. The proof classifies neither
+functions patched from local formulas nor analytic identities in the fine
+topology of $\No[i]$. It passes only to a cofinal divisible extension and never
+reduces the group to rank one; the no-order-unit argument uses finite rational
+rank of a coefficient field, not of the ambient group, and a group of high rank
+can have an order unit while one of countable cofinality can lack one
+(Examples~\ref{hol:td:ex:lex} and~\ref{hol:td:ex:cofinality}).
+
+\subsection{Predecessors, repository comparison and priority}
+\label{hol:ot:sub:predecessors}
+
+\paragraph{Literature.}
+Source~14 consulted NIST DLMF \S20.5 for the triple product and logarithmic
+derivatives~\cite{dlmftheta}, \S23.3 for the Weierstrass differential
+equation~\cite{dlmfelliptic}, and \S32.2 for the Painlev\'e
+equations~\cite{dlmfpainleve}; the Mantova--Matusinski
+survey~\cite{mantovamatusinski} for normal forms, not as a source for the
+second-order theorem; and the publisher abstract of Sebbar's
+paper~\cite{sebbar}, which explicitly treats classical third-order theta
+relations, without its full text. It also consulted the Wikipedia article on
+surreal numbers for orientation only. General searches for second-order Hahn
+and non-Archimedean rigidity returned unrelated results, including Hahn
+difference operators; these are not evidence of absence. No exhaustive
+MathSciNet or zbMATH review and no full subscription-literature review was
+made. For this merge the DLMF sections and the Mantova--Matusinski survey were
+checked, and the bibliographic data of Sebbar's paper were checked against
+its Crossref record; its content was not checked by this merge, and nothing
+in this part rests on it.
+
+\paragraph{Repository comparison at the pin.}
+Source~14 read the repository at \texttt{b895e86} through a connector: the
+root README and tree, \texttt{docs/README.md}, this report's README and
+neighbouring report inventories. The formalization ledger did not return text,
+so no assertion about it is made, and the new proof is not represented as
+covered by the Lean build. It took source~13 from the author's file library
+(\texttt{article(20260923-193210).tex}, baseline \texttt{4cdeaec}). Its
+statements were checked for this merge and are accurate at the pin, as
+recorded in Section~\ref{hol:ot:sub:conventions}. This was a targeted
+comparison, not an audit of every file, branch or archived draft.
+
+\paragraph{Priority.}
+The triple product, the theta--elliptic identity and third-order theta
+relations are classical; the Chebyshev descent of the theta series, its
+equation, zeros and omnific rounding are source~13's; the no-order-unit
+obstruction and the finite-generation principle are the coefficient-field
+part's. The proposed contribution of source~14 is universal second-order
+rigidity for every ordered value group and every characteristic-zero
+coefficient field (Theorem~\ref{hol:ot:main:second}\,(a)), with the endpoint
+lemma at degenerate breaks, the resulting exact minimum order
+(Theorem~\ref{hol:ot:main:second}\,(b)), the third-order endpoint--gap
+obstruction, the classification of theta initial polynomials and eventual
+Newton convexity, and the stated consequences for two-state systems and
+polynomial-denominator quotients. Whether an equivalent result exists in the
+literature needs a more exhaustive review; the answered question is a
+question of this report, not a named classical conjecture.
+
+\subsection{What the order-three-threshold part does not claim}
+\label{hol:ot:sub:nonclaims}
+
+Every limitation stated by source~14, in its manuscript, README, audit file or
+verification record, is kept.
+\begin{enumerate}[label=\textup{(O\arabic*)}]
+\item No Lean formalization, no independent referee report and no certified
+bibliographic priority accompany source~14; no new Lean file is presented as
+verified, and the repository's build and axiom audit do not cover this part.
+Independent review of the exterior reduction and the endpoint lemma is the
+most useful next check.
+\item Only the question of this report is resolved; no named classical
+conjecture is claimed solved.
+\item The repository comparison at \texttt{b895e86} was targeted; the
+formalization ledger was not read, and no audit of every branch or archived
+draft was made.
+\item Entireness is relative to one specified Hahn field; $\mathcal T_p$ is
+not strongly entire on $\No[i]$, and no nonpolynomial series is
+(Proposition~\ref{hol:ot:prop:fullclass}).
+\item $D_z$ acts on the external variable and kills every Hahn coefficient; it
+is not the Berarducci--Mantova derivation.
+\item The theta product and the elliptic identity are classical, and the theta
+descent with its equation, zeros and omnific rounding and the no-order-unit
+obstruction are prior; source~14 reproves them for completeness and claims
+none. ``No omnific zero'' concerns the strong domain only.
+\item Theorem~\ref{hol:ot:thm:convexity} is necessary only: it gives no
+sufficiency and no classification of entire solutions, does not force
+$v(a_n)=n^2\mu$, does not determine coefficients from their values, and does
+not assert that every eventually strictly convex sequence occurs.
+\item Corollary~\ref{hol:ot:cor:gapcriterion} is a sufficient certificate, not
+a decision algorithm for third-order equations; an unbounded zero set of
+$\Upsilon_{\mathfrak h_P}$ is necessary, not sufficient, for an entire
+solution.
+\item Corollary~\ref{hol:ot:cor:meromorphic} concerns quotients $g/\mathsf p$ with a
+polynomial denominator only; no global division theorem in a Hahn analytic
+category is asserted.
+\item Corollary~\ref{hol:ot:cor:systems} concerns rational systems; arbitrary
+transcendental right-hand sides are outside it.
+\item Nothing is claimed about local formal solutions or about classical
+complex Painlev\'e functions; the all-scale requirement, not local existence
+theory, does the work.
+\item Positive characteristic is excluded, with a counterexample, and
+mixed-characteristic $\mathfrak p$-adic fields are not covered.
+\item Theorem~\ref{hol:ot:main:second} gives no uniform degree bound for
+polynomial solutions of a fixed equation
+(Example~\ref{hol:ot:ex:degenerate}).
+\item The proof does not reduce every group to rank one; it classifies neither
+functions patched from local formulas nor identities in the fine topology,
+and a different summation convention is a different function class.
+\item The 600 finite checks, with the theta product and cleared equation
+compared modulo $p^{48}$ (source~14's $q^{48}$), do not certify the
+quantifiers over arbitrary supports, value groups, scales or formal solutions;
+the classification of Theorem~\ref{hol:ot:thm:classification} is proved for
+rational functions, not extrapolated from the finite enumeration, and no
+floating-point agreement is used as evidence.
+\item Sebbar's paper was seen through its publisher abstract only, and broad
+searches are not evidence of absence; no exhaustive MathSciNet or zbMATH
+review was made.
+\item The research questions of source~14
+(Questions~\ref{hol:q:nonlinear} and~\ref{hol:ot:q:lift}--\ref{hol:ot:q:omnific})
+are not asserted solved.
+\item \emph{[merge]} Remark~\ref{hol:ot:rem:corner},
+Corollary~\ref{hol:ot:cor:examples}, the named break scale in the proof of
+Lemma~\ref{hol:ot:lem:breaks}, the reading of
+Corollaries~\ref{hol:ot:cor:threejets} and~\ref{hol:ot:cor:systems} inside a
+differential field containing $\KK((z))$, and the four-state observation after
+Corollary~\ref{hol:ot:cor:systems} are the merge's; no historical priority is
+claimed for them.
 \end{enumerate}
 
 \section{Conclusion}
@@ -7858,8 +9267,17 @@ and the classical elliptic identity gives it an explicit algebraic
 differential equation of order three. Its residue corner vanishes, as it
 must. The shift of the theta series by $u\mapsto p^2u$ then excludes every
 equation of lower order, by three elementary difference-field arguments.
-Whether some other nonpolynomial entire series satisfies an equation of order
-exactly two is the open part of Question~\ref{hol:q:nonlinear}.
+
+The order-three-threshold part shows that no other series does better. At the
+infinitely many scales where a nonpolynomial entire series has a nonmonomial
+initial polynomial, a fixed equation of order at most two reduces to one
+homogeneous polynomial over the residue field, and logarithmic Euler
+derivatives confine both endpoints of those initial polynomials to a finite
+set, even when the leading-monomial test vanishes identically. So order three
+is the least possible for every value group with an order unit. At order three
+one further integer, the gap next to an endpoint, survives, and the theta
+equation uses it with gap one. Which series attain order three is the open
+part of Question~\ref{hol:q:nonlinear}.
 
 \appendix
 
@@ -7956,6 +9374,23 @@ $\mathcal U_\mu$, $f^\natural$, $\vartheta_u$, $\mathsf S$ & The Laurent ring,
 the substitution $z=u+u^{-1}$, $uD_u$, and $u\mapsto p^2u$.\\
 $\psi_1,\psi_2,\psi_3$; $\mathcal L$, $\mathcal A_1$ & $\vartheta_u\Psi/\Psi$
 and its two $\vartheta_u$-derivatives; $D_zf/f$ and $D_z\mathcal A[f]$.\\
+\midrule
+\multicolumn{2}{@{}l}{\emph{Order-three-threshold part,
+Sections~\ref{hol:ot:sec:setting}--\ref{hol:ot:sec:theta}}}\\
+$\Gamma_\Q$, $\KK_\Q$ & The divisible hull $\Gamma\otimes_\Z\Q$ and
+$k((t^{\Gamma_\Q}))$.\\
+$\operatorname{Act}_\delta$, $\underline N_\delta$ & Active indices at the
+scale $\delta$ and the least of them \eqref{hol:ot:eq:active}; a
+\emph{break} is a scale with $\underline N_\delta<N_\delta$.\\
+$\vartheta_X$; $\mathsf u_\phi,\mathsf v_\phi,\mathsf w_\phi$ & $XD_X$;
+$\vartheta_X\phi/\phi$ and its two $\vartheta_X$-derivatives.\\
+$\mathfrak h_P$ & The exterior form of $P$ \eqref{hol:ot:eq:exterior}.\\
+$\mathfrak q$, $i_0$, $\mathfrak r$, $\operatorname{Sp}(\mathfrak h)$ &
+Dehomogenization, the power of $V$ removed, the remainder, the finite endpoint
+spectrum (Lemma~\ref{hol:ot:lem:endpoints}).\\
+$\Upsilon_{\mathfrak h}$, $\mathsf g^\pm$, $\delta_n$ & Endpoint--gap
+polynomial \eqref{hol:ot:eq:upsilon}; upper and lower gaps; the break scale
+$v(a_{n+1})-v(a_n)$.\\
 \bottomrule
 \end{tabularx}
 \end{center}
@@ -7989,7 +9424,13 @@ three uses the classical triple product and elliptic identity, proved as a
 formal identity over $\Q$ and transferred by ring homomorphisms; the lower
 bound uses the Laurent ring, the substitution homomorphism and three
 difference-field obstructions. Its necessity direction is
-Theorem~\ref{hol:cf:main:entire}\,(a).
+Theorem~\ref{hol:cf:main:entire}\,(a). The order-three-threshold part uses
+the all-scale criterion, a cofinal extension to the divisible hull, the
+Hahn-family algebra and its residue homomorphism, local finiteness of active
+indices and late breaks, the exterior reduction and the finite endpoint lemma;
+its least-order statement adds the witness $\mathcal T_p$ and
+Theorem~\ref{hol:cf:main:entire}\,(a), and its theta results the exterior form
+of the cleared equation and a rational Riccati reduction.
 
 No unproved ring-theoretic conclusion from another report in this collection
 is used. The real-valued coarsening of~\cite[Lemma~9.1]{repoentire} is cited
@@ -8013,7 +9454,9 @@ Formal Laurent series have only finitely many negative powers.
 \item $\Gamma\ne0$, set-sized, ordered abelian. \emph{Divisibility is not
 assumed} except in Corollary~\ref{hol:cor:periodic}, the refined threshold
 \eqref{hol:eq:refinedthreshold}, Theorem~\ref{hol:thm:coarse}\,(b),
-and Example~\ref{hol:ex:sparse}, each of which states it.
+and Example~\ref{hol:ex:sparse}, each of which states it, and in
+Lemma~\ref{hol:ot:lem:breaks}, which is applied only after the cofinal
+extension of Lemma~\ref{hol:ot:lem:extension} to the divisible hull.
 \item Series are ordinary $\N$-indexed power series in one variable, except
 in the several-variable Sections~\ref{hol:sec:multi}
 and~\ref{hol:nl:sub:euler}, and in the formal Laurent fraction field
@@ -8025,8 +9468,9 @@ $k_0((z))$; that generality is used in the joint-independence criterion.
 \item The residue field is characteristic zero and trivially valued.
 Algebraic closedness is not used. It is $\C$ in
 Sections~\ref{hol:sec:intro}--\ref{hol:sec:certificates} and an arbitrary
-characteristic-zero field in the nonlinear part; the latter generality is not
-transferred to the linear theorems (Convention~\ref{hol:nl:conv:field}).
+characteristic-zero field in the nonlinear, coefficient-field, theta-descent
+and order-three-threshold parts; the latter generality is not transferred to
+the linear theorems (Convention~\ref{hol:nl:conv:field}).
 Characteristic zero is essential (Example~\ref{hol:nl:ex:charp}).
 \item The single parameter $q$ in the main dilation classification is
 nonzero and nontorsion. In the mixed-jet statements every $\lambda$ is
@@ -8040,7 +9484,8 @@ $\No[i]$. Strong summability requires both well-ordering and local finiteness.
 Sections~\ref{hol:sec:intro}--\ref{hol:sec:certificates} concern
 \emph{linear} equations. For every $\Gamma\ne0$, nonlinear differential
 equations are treated only in order one, in higher order under
-$\chi_P\ne0$, and for positive-weight Euler relations (the nonlinear part).
+$\chi_P\ne0$, and for positive-weight Euler relations (the nonlinear part),
+and in order two (the order-three-threshold part).
 Nonlinear differential transcendence in all orders, and algebraic
 independence of derivatives at dilations with pairwise quotients that are not
 roots of unity, are proved only when $\Gamma$ has no order unit, or for a
@@ -8048,7 +9493,8 @@ single series with infinite coefficient-value rank (the coefficient-field
 part). No universal all-order rigidity theorem is claimed for groups with an
 order unit, and none can hold: for them the theta-descent part gives a
 nonpolynomial entire series with an algebraic differential equation of
-order three. No general mixed-jet independence theorem is claimed when
+order three, and three is then the least order. No general mixed-jet
+independence theorem is claimed when
 a quotient is a root of unity.
 \end{itemize}
 
@@ -8066,19 +9512,22 @@ Deliberate exclusions, recorded so that no reader supplies them by analogy:
 finite-order $q$ is excluded from the main classification and has genuine
 periodic-support counterexamples; mixed operators at unit valuation are not
 classified when $\Gamma$ has an order unit. For such $\Gamma$, the universal
-nonlinear rigidity results cover order one, the nondegenerate higher-order
-class and positive-weight Euler relations; the infinite-coefficient-value-rank
+nonlinear rigidity results cover orders one and two, the nondegenerate
+higher-order class and positive-weight Euler relations; the infinite-coefficient-value-rank
 criterion gives additional all-order results for individual series, including
 Theorem~\ref{hol:cf:thm:rankone}, while Theorem~\ref{hol:td:main:boundary}
-shows that universal differential algebraic rigidity fails for them, and
-whether minimal order two occurs is not decided. The nonlinear part keeps the
+shows that universal differential algebraic rigidity fails for them, with
+least order three by Theorem~\ref{hol:ot:main:second}; which series have
+minimal order three is not decided. The nonlinear part keeps the
 non-claims of Section~\ref{hol:nl:sub:nonclaims}, the no-order-unit results
-keep those of Section~\ref{hol:cf:sub:nonclaims}, and the theta-descent part
-keeps those of Section~\ref{hol:td:sub:nonclaims}; no complete algorithm for arbitrary
+keep those of Section~\ref{hol:cf:sub:nonclaims}, the theta-descent part
+keeps those of Section~\ref{hol:td:sub:nonclaims}, and the
+order-three-threshold part those of Section~\ref{hol:ot:sub:nonclaims}; no
+complete algorithm for arbitrary
 surreal comparisons or cofinality decisions is claimed; the finite checks
 prove no infinite theorem. The full classifications and the nonlinear,
-coefficient-field and theta-descent theorem packages remain without Lean
-verification or independent refereeing.
+coefficient-field, theta-descent and order-three-threshold theorem packages
+remain without Lean verification or independent refereeing.
 The formalization ledger records the proved support and escape lemmas,
 exponential and partial-theta domains, polynomial-orbit valuations,
 constant-point avoidance, inward stability and torsion covariance,
@@ -8088,11 +9537,11 @@ including the partial-theta directions of the dilation classification.
 \label{hol:app:reproduce}
 
 The directory contains this standalone \LaTeX{} source, its compiled PDF, a
-README, ten source audit documents at the top level, ten files under
-\texttt{code/} (the six source verification programs, the build scripts of
-sources~10, 11 and~13, and source~12's \texttt{Makefile}), and fifteen under
-\texttt{data/} (the six recorded outputs, the source build and layout
-reports, and the requirements files of sources~11 and~13). No source document from the
+README, eleven source audit documents at the top level, eleven files under
+\texttt{code/} (the seven source verification programs, the build scripts of
+sources~10, 11 and~13, and source~12's \texttt{Makefile}), and eighteen under
+\texttt{data/} (the seven recorded outputs, the source build and layout
+reports, and the requirements files of sources~11, 13 and~14). No source document from the
 inspected repository is redistributed, and no source manuscript is shipped. The bibliography is embedded: no BibTeX run, external
 graphics, shell escape, or repository checkout is required, and a conventional
 TeX Live or MiKTeX installation with the named packages suffices.
@@ -8107,6 +9556,8 @@ python code/11-coarsening-differential-rigidity-verify.py --output rerun-11.json
 python code/12-coefficient-field-rigidity-verify.py --output rerun-12.json
 pip install -r data/13-theta-descent-requirements.txt
 python code/13-theta-descent-verify.py --precision 128 --output rerun-13.json
+pip install -r data/14-order-three-threshold-requirements.txt
+python code/14-order-three-threshold-verify.py
 \end{verbatim}
 
 The \verb|--output| argument is required by the scripts of sources~08, 10,
@@ -8114,9 +9565,13 @@ The \verb|--output| argument is required by the scripts of sources~08, 10,
 report, and optional for those of sources~09 and~11; the scripts of
 sources~10 and~12 refuse an existing output path (source~12's unless
 \verb|--force| is given), source~13's overwrites one, and source~11's writes
-\texttt{verification.json} in the current directory when no path is given. All use exact integer and
-rational arithmetic, source~11's through SymPy, and exit with a nonzero
-status if a check fails. The build script
+\texttt{verification.json} in the current directory when no path is given.
+Source~14's takes no arguments and always writes
+\path{data/verification.json} next to its own \texttt{code/} directory: here a
+new file beside the delivered record, overwritten by the next run, so it
+should be run on a copy. All use exact integer and rational arithmetic, those
+of sources~11, 13 and~14 through SymPy, and exit with a nonzero status if a
+check fails. The build script
 \path{code/10-nonlinear-rigidity-build.py} was written for source~10's own
 manuscript: run here it would typeset this report, leave auxiliary files in
 the directory and write \texttt{data/build\_report.json}. The shipped
@@ -8138,7 +9593,9 @@ here it creates \texttt{code/build/}, writes a failed first-pass log into it
 and exits with an error. In its original delivery layout it writes only into
 \texttt{build/}. The shipped \path{data/13-theta-descent-build_report.json}
 describes the 21-page source manuscript, whose source and PDF, hashed there,
-are not shipped.
+are not shipped. Likewise \path{data/14-order-three-threshold-build_report.json}
+describes source~14's 26-page A4 manuscript, whose source and PDF, hashed
+there, are not shipped; source~14 shipped no build script.
 
 \clearpage
 \begin{thebibliography}{99}
@@ -8287,7 +9744,7 @@ survey}, arXiv:1608.03413, inspected version~2, Section~2 on normal forms
 \url{https://arxiv.org/html/1608.03413v2}.
 Published in \emph{Contemporary Mathematics} \textbf{697} (2017), 265--290;
 source~13 consulted the publication records and the preprint for normal
-forms.
+forms, and source~14 the preprint for normal-form and Hahn-field background.
 
 \bibitem{hayman}
 W. K. Hayman,
@@ -8409,7 +9866,14 @@ NIST Digital Library of Mathematical Functions, Chapter~23, \S23.6
 (relations to theta functions) and \S23.8 (trigonometric series and
 products).
 \url{https://dlmf.nist.gov/23.6}; \url{https://dlmf.nist.gov/23.8}. Accessed
-by source~13 on 23 September 2026.
+by source~13 on 23 September 2026. Source~14 consulted \S23.3 (differential
+equations of the Weierstrass function), \url{https://dlmf.nist.gov/23.3}, on
+the same day.
+
+\bibitem{dlmfpainleve}
+NIST Digital Library of Mathematical Functions, Chapter~32, \S32.2
+(differential equations; the definitions of Painlev\'e~I and~II).
+\url{https://dlmf.nist.gov/32.2}. Accessed by source~14 on 23 September 2026.
 
 \bibitem{woodbury}
 \emph{Elliptic Curves and Modular Forms}, lecture notes hosted by
@@ -8431,8 +9895,10 @@ A. Sebbar,
 \emph{Finite and infinite order differential relations for theta functions},
 Milan Journal of Mathematics \textbf{84} (2016), 317--347.
 \url{https://doi.org/10.1007/s00032-016-0261-6}.
-Publisher abstract and bibliography consulted by source~13; full text not
-inspected.
+Publisher abstract and bibliography consulted by source~13, and the
+publisher abstract by source~14; full text not inspected by either. For the
+merge of source~14 the bibliographic data were checked against the Crossref
+record (volume~84, issue~2); the content was not verified.
 
 \end{thebibliography}
 \end{document}

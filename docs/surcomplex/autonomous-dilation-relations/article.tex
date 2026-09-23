@@ -86,6 +86,9 @@
 \newcommand{\id}{\operatorname{id}}
 \newcommand{\abs}[1]{\lvert#1\rvert}
 \newcommand{\repo}{\texttt{VladimirReshetnikov/Surreal}}
+\newcommand{\rpath}[1]{\nolinkurl{#1}}% a path in the collection, relative to docs/
+\newcommand{\lbl}[1]{\nolinkurl{#1}}% a label of another report, cited by name
+\newcommand{\wtag}{\textup{[write]}}% text added when the report joined the collection
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 \tcbset{colback=Pale,colframe=Olive,boxrule=.5pt,arc=1pt,
  left=9pt,right=9pt,top=8pt,bottom=8pt}
@@ -94,7 +97,7 @@
 \hypersetup{pageanchor=false}
 \begin{titlepage}
 \vspace*{0.15in}
-{\large\scshape\color{Olive} Research article\par}
+{\large\scshape\color{Olive} Single-source research report\par}
 \vspace{0.22in}
 {\Huge\bfseries Dilation Rigidity\par}
 \vspace{0.10in}
@@ -108,7 +111,10 @@ sharp algebraic degrees, and a higher-order hierarchy\par}
 {Research article prepared with ChatGPT\\for Vladimir Reshetnikov\par}
 \vspace{0.08in}
 {23 September 2026\par}
-\vspace{0.25in}
+\vspace{0.04in}
+{\small Built from one manuscript of batch~30 of the collection,
+pinned to repository commit \texttt{b895e86}\par}
+\vspace{0.18in}
 \begin{abstract}
 For an integer $d\ge2$, exponent dilation sends
 $\sum a_\gamma t^\gamma$ to $\sum a_\gamma t^{d\gamma}$.
@@ -142,7 +148,12 @@ Newton--Puiseux or B\"ottcher theorems. Complete written arguments are supplied
 relative to the stated classical inputs. The results have not been refereed
 or Lean-verified, and priority is not certified. No named published conjecture
 is claimed solved. Exact finite checks accompany the article but do not
-verify the infinite theorems.
+verify the infinite theorems. An AI-assisted research draft. Every label
+carries the prefix \texttt{adr:}. Conventions, the relation to the
+collection as it now stands, the ledger of non-claims and the provenance
+are in \cref{adr:sec:conventions,adr:sec:collection,adr:sec:nonclaims} and
+Appendix~\ref{adr:app:report}; text added when the manuscript joined the collection
+is marked \wtag{} where it sits inside the source's text.
 \end{tcolorbox}
 \end{titlepage}
 \hypersetup{pageanchor=true}
@@ -151,7 +162,7 @@ verify the infinite theorems.
 \clearpage
 \pagenumbering{arabic}
 
-\section{Research position and the questions answered}\label{sec:position}
+\section{Research position and the questions answered}\label{adr:sec:position}
 
 An omnific integer can have a transfinite normal form, infinitely many
 nonzero coefficients, and exponents at mutually incomparable Archimedean
@@ -161,7 +172,7 @@ between a number and its own exponent-dilated copy can distinguish these
 situations.
 
 The dilation is
-\begin{equation}\label{eq:dilationintro}
+\begin{equation}\label{adr:eq:dilationintro}
  S_d\!\left(\sum_\alpha a_\alpha\omega^{g_\alpha}\right)
    =\sum_\alpha a_\alpha\omega^{d g_\alpha}.
 \end{equation}
@@ -178,7 +189,7 @@ infinite omnific integer is algebraic over $\R$.
 \subsection{The main answer in omnific notation}
 
 For $x\in\Oz\setminus\Z$ and $d\ge2$, we prove the equivalence
-\begin{equation}\label{eq:headline}
+\begin{equation}\label{adr:eq:headline}
  \begin{split}
  &x\text{ and }S_dx\text{ are algebraically dependent over }\R\\
  &\quad\Longleftrightarrow\quad
@@ -195,7 +206,7 @@ positive exponents must be commensurable, not merely comparable in size.
 There is an exact quantitative refinement. Normalize $\delta$ so that the
 nonzero positive exponents of $x$ generate $\delta\Z$. Then, writing
 $x=P(\omega^\delta)$ and $M=\deg P$,
-\begin{equation}\label{eq:headline-degree}
+\begin{equation}\label{adr:eq:headline-degree}
  \min\{\deg_YF:0\ne F\in\R[X,Y],\ F(x,S_dx)=0\}=M.
 \end{equation}
 In particular, the answer is independent of the chosen integer $d\ge2$.
@@ -222,6 +233,9 @@ an exact omnific classification, and sharp degrees. The inspected
 repository excerpts do not supply this classification. That comparison
 is not an assertion that every line of every repository manuscript has
 been independently reviewed.
+\wtag{} This subsection is the source's, written at its pin. The relation
+to the collection as it now stands, with exact labels, is in
+\cref{adr:sec:collection}.
 
 \subsection{Literature and the novelty boundary}
 
@@ -244,6 +258,12 @@ These works prevent any claim that Mahler equations, B\"ottcher
 coordinates, or non-Puiseux solutions are new topics. The contribution
 proposed here is the \emph{arbitrary-rank support-collapse theorem}, the
 resulting exact omnific criterion, and their quantitative synthesis.
+\wtag{} The full text of \cite{NN} was read when the manuscript joined the
+collection. It records a 1983 criterion of Mahler \cite{Mahler83} for the
+existence of a convergent power-series solution of a constant-coefficient
+relation $P(f(z),f(z^d))=0$, a rank-one, positive-support antecedent of the
+existence statements of \cref{adr:sec:profiles}; see
+Appendix~\ref{adr:app:literature}.
 
 For omnific arithmetic, L'Innocente--Mantova \cite{LM} provide the relevant
 published factorization framework. Our result is not a factorization theorem
@@ -252,8 +272,165 @@ The user's encyclopedia link \cite{Wiki} is useful orientation, but none
 of the proofs relies on an encyclopedia assertion in place of the
 classical inputs above.
 
+\subsection{Notation and conventions in this report}
+\label{adr:sec:conventions}
+
+\wtag{} This subsection and the next were written when the manuscript
+joined the collection. No symbol of the source was renamed and no
+normalization was changed; the meanings below are fixed once for the whole
+report, and paths such as \rpath{surcomplex/single-dilation-hahn-support}
+are relative to \rpath{docs/}.
+\begin{itemize}[leftmargin=*,itemsep=3pt]
+\item \emph{The dilation.} $S_d$ is the exponent dilation
+\eqref{adr:eq:Sd}, with $d\ge2$ an ordinary integer; in
+\cref{adr:sec:rational} and \cref{adr:sec:boundaries} also $S_q$ for
+rational $q>1$. It is the map that the single-dilation report writes $S_q$
+at $q=d$ (\lbl{dsup:sec:conventions}) and that the
+surcomplex-automorphisms report writes $S_a$ at $a=d$
+(\lbl{saut:eq:dilation}). On $\No$ it is the canonical Hahn lift
+of the value-group dilation $\gamma\mapsto d\gamma$ in the
+exponential-automorphism report (\lbl{prop:hahn-lift}; that report writes
+the dilation $T_r$ and its lift $\widehat T_r$). The tempting false
+readings, beside the true one: $S_d$ is not $y\mapsto y^d$ (the two agree
+exactly on the monomials of \cref{adr:lem:monomial}); it is not the
+argument dilation $f(z)\mapsto f(\lambda z)$ of formal functions in the
+holonomic-rigidity report (\lbl{hol:sec:qnecessity}); and it is not an
+exponential automorphism (\cref{adr:sec:collection}).
+\item \emph{Fields and rings.} $\K=k((t^\Gamma))$ is a set-sized full Hahn
+field over an arbitrary field $k$, of characteristic zero wherever the
+main results are stated; the notation guide \rpath{NOTATION.md} writes
+$K_\Gamma$ for the case $k=\C$ and $F_\Gamma$ for $k=\R$. The ring $\A$ of
+\eqref{adr:eq:A} is the \emph{negative-support} ring, support in
+$\Gamma_{\le0}$; it is not the valuation ring $\mathcal O$. Under
+\eqref{adr:eq:omega-bridge} it is the ring of forms with nonnegative growth
+support, which the notation guide records as the Diophantine report's
+$\mathcal A_k(\Gamma)$. The symbol $\A$ is local to this report. $\Oz$ and
+$\Goz$ are as in \eqref{adr:eq:Oz}, in agreement with the guide's
+$\Oz=\Z\oplus\Pi$.
+\item \emph{Order.} The autonomous algebraic order of \cref{adr:sec:order}
+is the least $r$ for which $y,S_dy,\ldots,S_d^ry$ are algebraically
+dependent over $k$. It is not the order of a linear Mahler equation, and
+not the differential order of the holonomic-rigidity report. $\ord_Z$ is
+the $Z$-adic order of an ordinary Laurent series.
+\item \emph{Local letters.} $M(y)$ is the primitive degree of
+\cref{adr:sec:degree}; it is not the monomial formula $M(m)$ of the
+single-dilation report (\lbl{dsup:eq:monomialformula}). The letters $M$
+(an auxiliary series in the proof of \cref{adr:lem:bottcher}) and $M_c$ (a
+chart in \cref{adr:thm:rational}) are local. $M$ is also a polynomial degree in
+\cref{adr:thm:finite-polynomials,adr:thm:decidable}. $D$ is an integer
+degree in \cref{adr:lem:puiseux,adr:thm:collapse,adr:thm:degree,adr:thm:finite-polynomials,adr:thm:decidable}
+and an auxiliary series in the proof of \cref{adr:lem:bottcher}; it never
+denotes a derivation. $H_a$ is the normalized inverse B\"ottcher
+coordinate of \cref{adr:prop:germ}, an ordinary power series; it is not
+the convex subgroup $H_\alpha$ of the notation guide. $L$ is a series in
+\cref{adr:lem:bottcher} and in Appendix~\ref{adr:app:checks}, and a field in
+\cref{adr:cor:coefficients,adr:thm:degree}. $T$ is a monomial variable,
+$t^{-\delta}$ or $\omega^\delta$, or an ordinary polynomial variable, and
+$T_j=\omega^{g_j}$ in \cref{adr:thm:all-orders}.
+\item \emph{Strong} means preserving Hahn summation, not convergence of
+partial sums (\cref{adr:sec:support}). \emph{Cyclically supported} means
+support in one cyclic subgroup $\delta\Z$, bounded below
+(\cref{adr:sec:setup}).
+\end{itemize}
+
+\subsection{Relation to other reports in the collection}
+\label{adr:sec:collection}
+
+\wtag{} The source compared itself with selected reports at its pin
+(Appendix~\ref{adr:app:pinned}). Checked against the collection at the placement
+commit, the relations are these.
+
+\paragraph{Single dilation} (\rpath{surcomplex/single-dilation-hahn-support},
+prefix \texttt{dsup:}). This is the nearest report: the same operator and
+the same recognizer.
+\begin{enumerate}[leftmargin=*,itemsep=3pt]
+\item \emph{Recognizer.} \Cref{adr:lem:monomial} at $d=2$ is
+\lbl{dsup:lem:monomialrecognition}, where $a=a^2$ forces coefficient one,
+with the same least-term proof; the general-$d$ statement is the source's.
+The equality $\operatorname{Fix}(S_d)=k$ of \cref{adr:lem:constants} is
+\lbl{dsup:eq:dilationfixed}. The report there also has the power-equation
+recognizer \lbl{dsup:lem:rationalrecognition} (item~3 below).
+\item \emph{Linear and multiplicative first-order equations} are treated
+there (\lbl{dsup:thm:dilationcohom}). The boundary equation
+$S_du_d-u_d=\omega^d$ of \cref{adr:sec:boundaries} is, at $d=2$, the Conway
+form of that report's example \lbl{dsup:ex:opposite}: under
+\eqref{adr:eq:omega-bridge} its second series becomes
+$y=\sum_{n\ge1}\omega^{2^{-n}}$ with $S_2y-y=\omega$, and $u_2=S_2y$, so
+applying $S_2$ gives $S_2u_2-u_2=\omega^2$. For general $d$ the same
+telescoping applies. That report presents the example as an illustrative
+calculation; the source credits the series pattern to \cite{CDDM,GG}. Only
+the exact autonomous order of \cref{adr:thm:order-two} is claimed here.
+\item \emph{Nonintegral rational dilations.} The source leaves implicit
+relations $F(y,S_qy)=0$ with $q\in\Q_{>1}\setminus\Z$ open
+(\cref{adr:sec:boundaries} and the question on nonintegral rational
+dilation in \cref{adr:sec:questions}). The single-dilation report already
+exhibits nonconstant solutions of such relations. For divisible $\Gamma$,
+$q=a/b$ with positive integers $a,b$ and $n=\abs{a-b}$,
+\lbl{dsup:lem:rationalrecognition} shows that the nonzero solutions of
+$(S_qx)^b=x^a$, that is of $F(X,Y)=Y^b-X^a$, are exactly the elements of
+$\mu_n(k)\,t^\Gamma$. These solutions are monomials, so they satisfy the
+cyclic-support conclusion trivially. There is no contradiction with
+\cref{adr:thm:rational}: since $q\notin\Z$ one has $b\ge2$, and
+$t^{qg}$ is not a rational function of $t^g$ for $g\neq0$. This is a
+partial datum for the question, not an answer: whether every solution of
+every such relation has controlled support remains open, and the caution
+at the end of \cref{adr:sec:boundaries} stands.
+\item \emph{Decidability.} The undecidability of that report
+(\lbl{dsup:thm:undecidable}) concerns the full first-order theory of the
+expanded field; \cref{adr:thm:decidable} decides one specified equation.
+The source says there is no contradiction (\cref{adr:sec:boundaries}), and
+there is none.
+\item \emph{Its questions and non-claims.} None of the three questions of
+\lbl{dsup:sec:questions} is answered. In particular its question on
+definability from other exponent automorphisms asks which ordered exponent
+automorphisms $\theta$ admit polynomial equations recognizing canonical
+monomials; this report treats only $\theta=$ multiplication by an integer
+$d\ge2$. Its non-claim that no solvability theorem for arbitrary
+variable-coefficient Mahler systems is inferred (item~7 of
+\lbl{dsup:sec:nonclaims}) stands: this report is about constant-coefficient
+nonlinear relations, and \cref{adr:sec:boundaries} shows that the collapse
+fails with nonconstant coefficients.
+\end{enumerate}
+
+\paragraph{Surcomplex field automorphisms}
+(\rpath{surcomplex/surcomplex-field-automorphisms}, prefix \texttt{saut:}).
+$S_d$ is its $S_a$ at $a=d$ (\lbl{saut:eq:dilation}), built by its
+monomial construction (\lbl{saut:thm:monomial}). None of the questions of
+\lbl{saut:sec:questions} concerns algebraic relations between an element
+and its dilate, and none is addressed.
+
+\paragraph{Exponential automorphism rigidity}
+(\rpath{surreal/exponential-automorphism-rigidity}, bare labels). On $\No$,
+$S_d$ is the canonical lift \lbl{prop:hahn-lift} of the value-group
+dilation by $d$, and \lbl{thm:dilation} shows that for rational $r\ne1$ the
+value-group dilation by $r$ has no exponential lift at all. So $S_d$ does not commute with the surreal
+exponential. That report's subject, which value-group automorphisms lift to
+exponential automorphisms (\lbl{q:image}), is not this report's subject:
+nothing here bears on it, and the source's last question, on the
+interaction of the finite-profile classes with the surreal exponential,
+remains open and is consistent with that theorem.
+
+\paragraph{Holonomic rigidity}
+(\rpath{surcomplex/holonomic-rigidity-for-entire-hahn-functions}, prefix
+\texttt{hol:}). Its dilations are argument dilations $f(z)\mapsto f(qz)$ of
+entire Hahn functions by a scalar $q$ of the field, in linear
+$q$-difference equations (\lbl{hol:main:q}, \lbl{hol:sec:qnecessity}).
+They are not the exponent dilations of this report, whose equations are
+between numbers, not functions. No statement of that report is used or
+extended, as the single-dilation report also records.
+
+\paragraph{Dynamics}
+(\rpath{surcomplex/dynamics-and-normal-forms}). The source lists it as a
+point of contact. It studies multipliers, linearization and normal forms of
+germs; the superattracting germs and the B\"ottcher coordinate of
+\cref{adr:sec:bottcher} occur in no other report of the collection, and no
+statement of that report is used.
+
+\paragraph{Formalization.} No \texttt{adr:} label has a Lean mapping in
+\rpath{FORMALIZATION.md}; no theorem of this report is Lean-verified.
+
 \section{Hahn fields, normal forms, and the two support directions}
-\label{sec:setup}
+\label{adr:sec:setup}
 
 \begin{definition}
 Let $k$ be a field and $\Gamma$ an ordered abelian group. The full Hahn
@@ -269,13 +446,13 @@ $v(0)=+\infty$.
 
 Throughout the main classification, $\operatorname{char}k=0$ and $d$ is
 an ordinary integer at least two. No order on $k$ is required. Dilation
-\begin{equation}\label{eq:Sd}
+\begin{equation}\label{adr:eq:Sd}
  S_d\Bigl(\sum a_\gamma t^\gamma\Bigr)=
  \sum a_\gamma t^{d\gamma}
 \end{equation}
 is a strong injective field endomorphism; it is an automorphism when
 $\Gamma$ is $d$-divisible. Its elementary valuation law is
-\begin{equation}\label{eq:val-dilation}
+\begin{equation}\label{adr:eq:val-dilation}
  v(S_dy)=d\,v(y).
 \end{equation}
 
@@ -286,7 +463,7 @@ The valuation ring and its maximal ideal are
 \]
 For $y\in\mathcal O$, its residue is its coefficient at zero, an element
 of $k$. In contrast, define
-\begin{equation}\label{eq:A}
+\begin{equation}\label{adr:eq:A}
  \A=\{y\in\K:\supp y\subseteq\Gamma_{\le0}\}.
 \end{equation}
 This is a subring, but it is \emph{not} the valuation ring. A nonconstant
@@ -310,7 +487,7 @@ contained in any cyclic subgroup of $\Q$.
 
 Conway normal forms use decreasing powers of $\omega$. The correspondence
 with the increasing Hahn convention is
-\begin{equation}\label{eq:omega-bridge}
+\begin{equation}\label{adr:eq:omega-bridge}
  t^\gamma\longmapsto\omega^{-\gamma}.
 \end{equation}
 For any set-sized ordered additive subgroup $\Gamma\subseteq\No$, it
@@ -322,7 +499,7 @@ The usual normal-form arithmetic is the algebraic input here
 \cite{LM,Repo}.
 
 The omnific integers have the description
-\begin{equation}\label{eq:Oz}
+\begin{equation}\label{adr:eq:Oz}
  \Oz=\left\{n+\sum_{\alpha<\lambda}r_\alpha\omega^{g_\alpha}:
  n\in\Z,\ r_\alpha\in\R,\ g_\alpha>0,
  \ (g_\alpha)_{\alpha<\lambda}\text{ strictly decreasing}\right\},
@@ -347,22 +524,22 @@ separation between support summability and topological convergence is
 essential throughout.
 
 \section{The support calculus and a monomial recognizer}
-\label{sec:support}
+\label{adr:sec:support}
 
 A family $(f_i)$ of Hahn series is \emph{strongly summable} when the union
 of its supports is well ordered and every exponent occurs in the support
 of only finitely many family members. Its sum is then defined coefficientwise.
 
-\begin{lemma}[Formal evaluation]\label{lem:evaluation}
+\begin{lemma}[Formal evaluation]\label{adr:lem:evaluation}
 Let $x\in\mathfrak m$. Every formal series $f(Z)\in k[[Z]]$ can be evaluated
 at $x$ as a strong Hahn sum. This gives a $k$-algebra homomorphism.
 For $x\ne0$ it extends to an injective map $k((Z))\to\K$, and
-\begin{equation}\label{eq:evaluation-value}
+\begin{equation}\label{adr:eq:evaluation-value}
  v(f(x))=\ord_Z(f)\,v(x)\qquad(f\ne0).
 \end{equation}
 Formal composition is respected whenever the inner series has zero
 constant coefficient. Moreover,
-\begin{equation}\label{eq:commute-eval}
+\begin{equation}\label{adr:eq:commute-eval}
  S_d(f(x))=f(S_dx).
 \end{equation}
 \end{lemma}
@@ -377,13 +554,13 @@ cause no extra infinite-sum issue.
 
 If the initial term of $f$ is $aZ^m$, its evaluation has initial valuation
 $m\,v(x)$: every later power has strictly larger valuation. This proves
-\eqref{eq:evaluation-value} and injectivity. Exponent dilation preserves
+\eqref{adr:eq:evaluation-value} and injectivity. Exponent dilation preserves
 well ordering, finite occurrence, and coefficientwise sums, proving
-\eqref{eq:commute-eval}.
+\eqref{adr:eq:commute-eval}.
 \end{proof}
 
 \begin{lemma}[Constants are relatively algebraically closed]
-\label{lem:constants}
+\label{adr:lem:constants}
 Every element of $\K$ algebraic over $k$ belongs to $k$. In particular,
 every nonconstant Hahn series is transcendental over $k$, and
 $\operatorname{Fix}(S_d)=k$.
@@ -402,9 +579,9 @@ positive valuation and is fixed. The equation $d\,v(x)=v(x)$ contradicts
 $d>1$ in an ordered group.
 \end{proof}
 
-\begin{lemma}[Monomial recognizer]\label{lem:monomial}
+\begin{lemma}[Monomial recognizer]\label{adr:lem:monomial}
 Suppose $w\ne0$ and $S_dw=w^d$. Then
-\begin{equation}\label{eq:monomial-recognizer}
+\begin{equation}\label{adr:eq:monomial-recognizer}
  w=a t^\eta,\qquad a\in k^\times,\quad a^{d-1}=1,
  \quad\eta\in\Gamma.
 \end{equation}
@@ -427,10 +604,13 @@ The least-term proof eliminates possible tails at \emph{all} other scales
 at once. It neither examines the terms sequentially nor assumes that an
 iteration approaches its limit in the ambient valuation topology.
 The $d=2$ instance is the repository's monomial recognizer
-\cite{RepoDilation}.
+\cite{RepoDilation}. \wtag{} That is \lbl{dsup:lem:monomialrecognition},
+proved there by the same least-term comparison; the equality
+$\operatorname{Fix}(S_d)=k$ of \cref{adr:lem:constants} is
+\lbl{dsup:eq:dilationfixed} (\cref{adr:sec:collection}).
 
 \section{The classical ramification input and its degree bound}
-\label{sec:puiseux}
+\label{adr:sec:puiseux}
 
 We use the Newton--Puiseux theorem in the following standard form:
 if $k$ is algebraically closed of characteristic zero, then
@@ -442,12 +622,12 @@ polynomial in $k((U))[V]$ splits into linear factors there. The next
 lemma spells out both the quantitative point and its transport into a
 Hahn field.
 
-\begin{lemma}[Evaluated Puiseux branch]\label{lem:puiseux}
+\begin{lemma}[Evaluated Puiseux branch]\label{adr:lem:puiseux}
 Assume $k$ algebraically closed, $\Gamma$ divisible, and $x\in\K$ with
 $v(x)=\gamma>0$. Let $0\ne G(U,V)\in k[U,V]$ have $V$-degree $D$, and
 suppose $G(x,z)=0$. Then there exist an integer $1\le e\le D$, an
 $e$th root $u$ of $x$ in $\K$, and $\phi(Z)\in k((Z))$ such that
-\begin{equation}\label{eq:puiseux-branch}
+\begin{equation}\label{adr:eq:puiseux-branch}
  z=\phi(u),\qquad G(Z^e,\phi(Z))=0.
 \end{equation}
 Moreover $v(u)=\gamma/e$, and
@@ -464,10 +644,10 @@ $b^N=a$, and use
 \[
  b t^{\gamma/N}(1+\varepsilon)^{1/N},
 \]
-where the binomial series is evaluated by \cref{lem:evaluation}.
+where the binomial series is evaluated by \cref{adr:lem:evaluation}.
 Evaluation at this root sends the Puiseux factorization to a genuine
 factorization in $\K$. Its leading coefficient is nonzero by the
-injectivity in \cref{lem:evaluation}. Consequently $z$ equals one of
+injectivity in \cref{adr:lem:evaluation}. Consequently $z$ equals one of
 the evaluated roots.
 
 Choose the smallest denominator $e$ for that root. Its series can be
@@ -478,7 +658,7 @@ distinct conjugates of this series. Indeed a stabilizing $\zeta$ must
 satisfy $\zeta^j=1$ for every exponent $j$ occurring in $\phi$, and
 minimality says their common divisor with $e$ is one. All these conjugates
 are roots of $G$. Hence $e\le D$. The valuation statements follow from
-\cref{lem:evaluation}.
+\cref{adr:lem:evaluation}.
 \end{proof}
 
 \begin{remark}
@@ -488,28 +668,28 @@ larger than $D$. Confusing these two denominators would invalidate the
 sharp degree theorem below.
 \end{remark}
 
-\section{A support-safe B\"ottcher construction}\label{sec:bottcher}
+\section{A support-safe B\"ottcher construction}\label{adr:sec:bottcher}
 
 The formal-coordinate theorem in this section is classical
 \cite[Proposition~1]{SS}. We include a construction so that no unstated
 convergence hypothesis enters its Hahn-field application. All sums in
 the construction are first formed in the ordinary formal ring $k[[Z]]$.
 
-\begin{lemma}[Normalized formal coordinate]\label{lem:bottcher}
+\begin{lemma}[Normalized formal coordinate]\label{adr:lem:bottcher}
 Let $h(Z)=Z^dU(Z)$, where $U\in1+Zk[[Z]]$ and
 $\operatorname{char}k=0$. There is a unique
 $b(Z)\in Z+Z^2k[[Z]]$ with
-\begin{equation}\label{eq:bottcher-b}
+\begin{equation}\label{adr:eq:bottcher-b}
  b(h(Z))=b(Z)^d.
 \end{equation}
 Its compositional inverse $H$ satisfies
-\begin{equation}\label{eq:bottcher-H}
+\begin{equation}\label{adr:eq:bottcher-H}
  H(Z^d)=h(H(Z)).
 \end{equation}
 \end{lemma}
 \begin{proof}
 Put
-\begin{equation}\label{eq:bottcher-log}
+\begin{equation}\label{adr:eq:bottcher-log}
  L(Z)=\sum_{n\ge0}\frac{1}{d^{n+1}}
        \log U\bigl(h^{\circ n}(Z)\bigr),\qquad
  b(Z)=Z\exp L(Z).
@@ -524,7 +704,7 @@ Therefore
  b(h(Z))=Z^dU(Z)\exp L(h(Z))=Z^d\exp(dL(Z))=b(Z)^d.
 \]
 The linear coefficient of $b$ is one, so it has a unique compositional
-inverse, which gives \eqref{eq:bottcher-H}.
+inverse, which gives \eqref{adr:eq:bottcher-H}.
 
 For uniqueness, any normalized coordinate has the form $Z\exp M(Z)$.
 The difference $D=L-M$ satisfies $D(h)=dD$. A nonzero $D$ of positive
@@ -533,33 +713,33 @@ $d\ord D$ and $\ord D$. Thus $D=0$.
 \end{proof}
 
 \begin{proposition}[All Hahn solutions of a superattracting germ]
-\label{prop:germ}
+\label{adr:prop:germ}
 Let $h(Z)=A Z^d+O(Z^{d+1})\in k[[Z]]$, $A\ne0$, and let $x\ne0$
 have positive valuation. Then $S_dx=h(x)$ is solvable with prescribed
 leading coefficient $a\in k^\times$ and valuation $\delta\in\Gamma_{>0}$
 if and only if
-\begin{equation}\label{eq:leading-a}
+\begin{equation}\label{adr:eq:leading-a}
  A a^{d-1}=1.
 \end{equation}
 For each such pair there is exactly one solution:
-\begin{equation}\label{eq:germ-profile}
+\begin{equation}\label{adr:eq:germ-profile}
  x=aH_a(t^\delta),
 \end{equation}
 where $H_a$ is the normalized inverse B\"ottcher coordinate of
 $h_a(Z)=a^{-1}h(aZ)$.
 \end{proposition}
 \begin{proof}
-Leading coefficients force \eqref{eq:leading-a}. With this condition,
+Leading coefficients force \eqref{adr:eq:leading-a}. With this condition,
 $h_a(Z)=Z^d+O(Z^{d+1})$. Write $u=x/a$, and let $b_a$ be the coordinate
-of \cref{lem:bottcher}. Strong evaluation and its commutation with $S_d$
+of \cref{adr:lem:bottcher}. Strong evaluation and its commutation with $S_d$
 give
 \[
  S_d(b_a(u))=b_a(S_du)=b_a(h_a(u))=b_a(u)^d.
 \]
 The left-hand argument $b_a(u)$ has valuation $\delta$ and leading
-coefficient one. By \cref{lem:monomial} it is exactly $t^\delta$.
-Inversion yields \eqref{eq:germ-profile} and uniqueness. Conversely,
-\eqref{eq:bottcher-H}, evaluated strongly at $t^\delta$, verifies that
+coefficient one. By \cref{adr:lem:monomial} it is exactly $t^\delta$.
+Inversion yields \eqref{adr:eq:germ-profile} and uniqueness. Conversely,
+\eqref{adr:eq:bottcher-H}, evaluated strongly at $t^\delta$, verifies that
 this expression is a solution.
 \end{proof}
 
@@ -568,17 +748,17 @@ series is ordinary, but the element to which it is applied may initially
 have arbitrary support. The recognizer proves that every extra support
 scale disappears after the coordinate change.
 
-\section{The arbitrary-rank support-collapse theorem}\label{sec:main}
+\section{The arbitrary-rank support-collapse theorem}\label{adr:sec:main}
 
 \begin{theorem}[First-order autonomous support rigidity]
-\label{thm:collapse}
+\label{adr:thm:collapse}
 Let $k$ be any field of characteristic zero, $\Gamma$ any ordered abelian
 group, and $d\ge2$. Suppose $y\in\K\setminus k$ and
-\begin{equation}\label{eq:F-main}
+\begin{equation}\label{adr:eq:F-main}
  F(y,S_dy)=0,\qquad 0\ne F\in k[X,Y].
 \end{equation}
 Define a positive-valuation coordinate
-\begin{equation}\label{eq:coordinate}
+\begin{equation}\label{adr:eq:coordinate}
  x=\begin{cases}
  y-c,&v(y)\ge0,\quad c=\operatorname{res}(y),\\
  1/y,&v(y)<0,
@@ -586,7 +766,7 @@ Define a positive-valuation coordinate
  \qquad \gamma=v(x)>0.
 \end{equation}
 Then for some integer $e$ with $1\le e\le\deg_YF$, one has
-\begin{equation}\label{eq:collapse}
+\begin{equation}\label{adr:eq:collapse}
  \delta=\gamma/e\in\Gamma,
  \qquad y\in k((t^\delta)).
 \end{equation}
@@ -609,9 +789,9 @@ In the infinite case, if $a=\deg_XF$, use
 monomial factors can be removed. These substitutions give nonzero
 polynomials, and $x,S_dx$ are nonzero.
 
-Apply \cref{lem:puiseux}. There are $1\le e\le D$, an element $z$ with
+Apply \cref{adr:lem:puiseux}. There are $1\le e\le D$, an element $z$ with
 $z^e=x$, and a Laurent series $\phi$ such that
-\begin{equation}\label{eq:mainbranch}
+\begin{equation}\label{adr:eq:mainbranch}
  S_dx=\phi(z),\qquad v(z)=\gamma/e.
 \end{equation}
 But $v(S_dx)=d\gamma$. Consequently
@@ -628,10 +808,10 @@ Every such root has the form
 Since $(S_dz)^e=S_dx=\phi(z)$, the ratio between $S_dz$ and one evaluated
 root $h(z)$ is an $e$th root of unity. Multiplying $A$ by that root of
 unity gives an $h$ with the exact identity
-\begin{equation}\label{eq:z-germ}
+\begin{equation}\label{adr:eq:z-germ}
  S_dz=h(z).
 \end{equation}
-By \cref{prop:germ},
+By \cref{adr:prop:germ},
 $z=aH(t^{\gamma/e})$ for an ordinary formal power series $H$ and a
 nonzero constant $a$. Thus $x=z^e$ belongs to
 $k((t^{\gamma/e}))$, as does $y=c+x$ or $y=1/x$. This proves the
@@ -653,12 +833,12 @@ cyclic group and contains $\gamma$. Put $e'=e/m$. Then
 $1\le e'\le D$, $\gamma/e'\in\Gamma$, and the original support is
 contained in $(\gamma/e')\Z$. Its coefficients are still in $k$, by
 uniqueness of Hahn coefficients. The support is bounded below in that
-cyclic group. Renaming $e'$ as $e$ proves \eqref{eq:collapse}.
+cyclic group. Renaming $e'$ as $e$ proves \eqref{adr:eq:collapse}.
 \end{proof}
 
 \begin{remark}[What the theorem does not assert]
 Membership in a cyclic Laurent subfield is a necessary condition for
-\eqref{eq:F-main}, not a claim that every ordinary Laurent series satisfies
+\eqref{adr:eq:F-main}, not a claim that every ordinary Laurent series satisfies
 some autonomous Mahler equation. Nor does the support conclusion turn
 strong evaluation into ambient valuation convergence. The exponent group
 can have arbitrarily high rank even when the individual solution is
@@ -666,21 +846,21 @@ forced into one cyclic subgroup.
 \end{remark}
 
 \section{Finite profiles, coefficient descent, and an existence test}
-\label{sec:profiles}
+\label{adr:sec:profiles}
 
 The proof gives more than a necessary support condition. For a fixed
 polynomial equation it supplies a finite collection of ordinary formal
 shapes; the only remaining continuous scale parameter is the monomial
 at which a shape is evaluated.
 
-\begin{theorem}[Finite-profile classification]\label{thm:profiles}
+\begin{theorem}[Finite-profile classification]\label{adr:thm:profiles}
 Let $k$ be algebraically closed of characteristic zero, $d\ge2$, and
 $0\ne F\in k[X,Y]$. There is a finite, possibly empty collection
 \[
  \mathscr P(F,d)\subset k((Z))\setminus k
 \]
 such that for every nonzero divisible ordered group $\Gamma$,
-\begin{equation}\label{eq:profiles}
+\begin{equation}\label{adr:eq:profiles}
  \{y\in\K\setminus k:F(y,S_dy)=0\}
   =\{f(t^\delta):f\in\mathscr P(F,d),\ \delta\in\Gamma_{>0}\}.
 \end{equation}
@@ -690,13 +870,13 @@ $\deg_YF$. The list need not be free of duplicates.
 \end{theorem}
 \begin{proof}
 Remove all factors $Y-X$ from $F$, obtaining $F_0$. A nonconstant solution
-cannot satisfy $S_dy=y$ by \cref{lem:constants}, so this removal does not
+cannot satisfy $S_dy=y$ by \cref{adr:lem:constants}, so this removal does not
 change the nonconstant solution set. The polynomial $F_0(X,X)$ is not
 identically zero. Consequently there are only finitely many possible
 finite residues $c$, namely its roots.
 
 For each such $c$, form $G(U,V)=F_0(c+U,c+V)$. Also form the reciprocal
-polynomial at infinity as in the proof of \cref{thm:collapse}. For each
+polynomial at infinity as in the proof of \cref{adr:thm:collapse}. For each
 of these finitely many polynomials, choose its finitely many Puiseux roots
 $V=\phi(U^{1/e})$. Keep only the nonzero branches satisfying
 $\ord_Z\phi=de$. For each kept branch, there are finitely many formal
@@ -705,15 +885,15 @@ $e$th roots
  h(Z)^e=\phi(Z),\qquad h(Z)=A Z^d+O(Z^{d+1}),
 \]
 and finitely many constants $a$ with $Aa^{d-1}=1$. Let $H_a$ be the
-coordinate in \cref{prop:germ}. Put on the list
-\begin{equation}\label{eq:profile-shapes}
+coordinate in \cref{adr:prop:germ}. Put on the list
+\begin{equation}\label{adr:eq:profile-shapes}
  f(Z)=c+(aH_a(Z))^e
  \quad\text{or}\quad
  f(Z)=(aH_a(Z))^{-e},
 \end{equation}
 according to the finite or infinite chart.
 
-The proof of \cref{thm:collapse} shows that every nonconstant solution
+The proof of \cref{adr:thm:collapse} shows that every nonconstant solution
 has one of these forms after evaluation at a positive monomial.
 Conversely let $z=aH_a(t^\delta)$. Then $S_dz=h(z)$, so with $x=z^e$,
 \[
@@ -723,7 +903,7 @@ Undoing the chart gives the original equation. The pole-order bound is
 the branch denominator bound $e\le\deg_YF$.
 \end{proof}
 
-\begin{corollary}[Coefficient descent]\label{cor:coefficients}
+\begin{corollary}[Coefficient descent]\label{adr:cor:coefficients}
 Let $k_0\subseteq L$ be characteristic-zero fields and
 $0\ne F\in k_0[X,Y]$. If $y\in L((t^\Gamma))\setminus L$ satisfies
 $F(y,S_dy)=0$, then every Hahn coefficient of $y$ is algebraic over $k_0$.
@@ -746,14 +926,14 @@ equation}. It does not contradict the existence of $a\omega^\delta$ as
 a first-order solution over $\R$ for arbitrary real $a$: the corresponding
 equation generally contains $a$ among its coefficients.
 
-\begin{theorem}[Exact local Newton-weight criterion]\label{thm:newton}
+\begin{theorem}[Exact local Newton-weight criterion]\label{adr:thm:newton}
 Let $k$ be algebraically closed of characteristic zero and $\Gamma\ne0$
 divisible. For
 \[
  0\ne G(U,V)=\sum g_{ij}U^iV^j\in k[U,V],
 \]
 there is a nonzero $x\in\mathfrak m$ satisfying $G(x,S_dx)=0$ if and only if
-\begin{equation}\label{eq:newton-weight}
+\begin{equation}\label{adr:eq:newton-weight}
  \min\{i+dj:g_{ij}\ne0\}
  \quad\text{is attained by at least two monomials.}
 \end{equation}
@@ -779,21 +959,21 @@ $W$, and one equal to $d$ contributes $W-A$ with $A\ne0$. The product
 has a nonzero root precisely in the last case.
 
 Thus some branch is $V=\phi(U^{1/e})$ with $\ord_Z\phi=de$.
-The construction in \cref{thm:profiles} gives a nonzero positive-valuation
+The construction in \cref{adr:thm:profiles} gives a nonzero positive-valuation
 solution at every chosen positive monomial scale.
 \end{proof}
 
-\begin{corollary}[Scale-independent existence]\label{cor:existence}
+\begin{corollary}[Scale-independent existence]\label{adr:cor:existence}
 For a fixed $F$ over an algebraically closed characteristic-zero field,
 existence of a nonconstant solution is the same in every nonzero divisible
 Hahn value group. It is decided by finitely many tests
-\eqref{eq:newton-weight}: the finite diagonal-residue charts after removal
+\eqref{adr:eq:newton-weight}: the finite diagonal-residue charts after removal
 of $Y-X$ factors, and the chart at infinity. For algebraic-number
 coefficients this is an effective decision procedure.
 \end{corollary}
 \begin{proof}
-The charts and their number are as in \cref{thm:profiles}.
-Each chart has a solution exactly when \cref{thm:newton} applies.
+The charts and their number are as in \cref{adr:thm:profiles}.
+Each chart has a solution exactly when \cref{adr:thm:newton} applies.
 The test uses polynomial arithmetic, roots of one ordinary polynomial,
 and comparison of finitely many integer weights. With exact algebraic
 coefficients, all the required equality tests and root calculations are
@@ -805,10 +985,10 @@ infinite Hahn series satisfies the equation. It also does not make an
 arbitrary complex coefficient into computable input.
 
 \section{The exact classification in the negative-support ring}
-\label{sec:negative}
+\label{adr:sec:negative}
 
 \begin{theorem}[Polynomial-in-one-monomial criterion]
-\label{thm:negative}
+\label{adr:thm:negative}
 Let $\operatorname{char}k=0$, $d\ge2$, and $y\in\A\setminus k$.
 The following are equivalent:
 \begin{enumerate}[label=\textup{(\roman*)},leftmargin=2em,itemsep=2pt]
@@ -822,7 +1002,7 @@ can be chosen of degree at most $\deg_YF$.
 \end{theorem}
 \begin{proof}
 Since $y\notin k$ and its support has no positive exponent, $v(y)<0$.
-Put $\gamma=-v(y)$. By \cref{thm:collapse}, for some $e\le\deg_YF$ its
+Put $\gamma=-v(y)$. By \cref{adr:thm:collapse}, for some $e\le\deg_YF$ its
 support lies in $(\gamma/e)\Z$. It also lies between $-\gamma$ and zero.
 There are only $e+1$ points of this cyclic subgroup in that interval.
 Consequently
@@ -835,7 +1015,7 @@ For (ii)$\Rightarrow$(i), write $T=t^{-\delta}$. Then
 $y=P(T)$ and $S_dy=P(T^d)$ belong to the one-variable rational function
 field $k(T)$, whose transcendence degree is one. More explicitly, the
 nonzero polynomial
-\begin{equation}\label{eq:resultant}
+\begin{equation}\label{adr:eq:resultant}
  R_P(X,Y)=\Res_T(P(T)-X,\ P(T^d)-Y)
 \end{equation}
 vanishes on $(y,S_dy)$. Its degree in $Y$ is $\deg P$, so it is not
@@ -844,7 +1024,7 @@ positive generator of the subgroup generated by the finitely many support
 exponents.
 \end{proof}
 
-\begin{corollary}[Dilation independence]\label{cor:d-independent}
+\begin{corollary}[Dilation independence]\label{adr:cor:d-independent}
 For $y\in\A$, dependence of $y,S_dy$ for one integer $d\ge2$ is
 equivalent to dependence for every such integer. If $y$ has infinite
 support, every pair $y,S_dy$ is algebraically independent over $k$.
@@ -852,7 +1032,7 @@ The same independence conclusion holds for a finite support of rational
 rank at least two.
 \end{corollary}
 \begin{proof}
-The support condition in \cref{thm:negative} does not mention $d$.
+The support condition in \cref{adr:thm:negative} does not mention $d$.
 For a finite subset of a torsion-free abelian group, the generated subgroup
 is cyclic exactly when its rational span has dimension at most one.
 \end{proof}
@@ -866,7 +1046,7 @@ A merely bounded, nondiscrete support can still be infinite.
 \end{remark}
 
 \section{Sharp algebraic degrees and recovery of a monomial}
-\label{sec:degree}
+\label{adr:sec:degree}
 
 \begin{definition}
 For a nonconstant finite-support $y\in\A$ satisfying the criterion, let
@@ -876,13 +1056,13 @@ nonzero exponents. Write $y=P(t^{-\delta})$. The polynomial $P$ is
 positive supported degrees is one. Define $M(y)=\deg P$.
 \end{definition}
 
-\begin{theorem}[The exact relation degree]\label{thm:degree}
+\begin{theorem}[The exact relation degree]\label{adr:thm:degree}
 For every $d\ge2$,
-\begin{equation}\label{eq:exact-degree}
+\begin{equation}\label{adr:eq:exact-degree}
  \min_{\substack{0\ne F\in k[X,Y]\\F(y,S_dy)=0}}\deg_YF=M(y).
 \end{equation}
 Moreover, if $T=t^{-\delta}$ is the primitive monomial, then
-\begin{equation}\label{eq:recover}
+\begin{equation}\label{adr:eq:recover}
  k(y,S_dy)=k(T).
 \end{equation}
 The irreducible relation has bidegree
@@ -890,13 +1070,13 @@ $(\deg_X,\deg_Y)=(dM(y),M(y))$.
 \end{theorem}
 \begin{proof}
 Let $M=M(y)$ and let a relation of $Y$-degree $D$ be given.
-The degree-bounded conclusion of \cref{thm:negative} supplies
+The degree-bounded conclusion of \cref{adr:thm:negative} supplies
 $y=Q(t^{-\delta'})$ of degree $e\le D$.
 The support-generated subgroup $\delta\Z$ is contained in
 $\delta'\Z$, so $\delta=m\delta'$ for an integer $m\ge1$.
 Comparison of the largest support magnitude gives
 $M\delta=e\delta'$, hence $e=Mm\ge M$. Therefore $D\ge M$.
-The resultant \eqref{eq:resultant} gives the reverse inequality.
+The resultant \eqref{adr:eq:resultant} gives the reverse inequality.
 
 For the field statement, the extension
 $k(T)/k(P(T))$ has degree $M$. One elementary proof is that
@@ -912,16 +1092,16 @@ in $X$; its degree in $Y$ is $M$.
 \end{proof}
 
 \begin{corollary}[An ordinary polynomial field identity]
-\label{cor:polynomial-field}
+\label{adr:cor:polynomial-field}
 Let $P\in k[T]\setminus k$, and let
 $g=\gcd\{j\ge1:[T^j]P\ne0\}$. In characteristic zero,
-\begin{equation}\label{eq:polynomial-field}
+\begin{equation}\label{adr:eq:polynomial-field}
  k(P(T),P(T^d))=k(T^g)\qquad(d\ge2).
 \end{equation}
 \end{corollary}
 \begin{proof}
 Write $P(T)=Q(T^g)$, with $Q$ primitive in its exponents, and apply
-\cref{thm:degree} to $Q$ in an ordinary Laurent Hahn field.
+\cref{adr:thm:degree} to $Q$ in an ordinary Laurent Hahn field.
 \end{proof}
 
 This corollary can be read entirely in classical rational-function
@@ -933,20 +1113,20 @@ $k(T+T^{-1})$, a proper subfield of $k(T)$.
 
 \begin{example}[A genuinely quadratic relation]
 For $y=T^2+T$ and $d=2$, the primitive degree is two. The relation
-\begin{align}\label{eq:sample-resultant}
+\begin{align}\label{adr:eq:sample-resultant}
  0={}&Y^2-(2X^2+6X+2)Y\\
      &+X^4+2X^3+2X^2\nonumber
 \end{align}
 is obtained by elimination and has the least possible $Y$-degree.
 There is no rational function $R\in k(X)$ with $S_2y=R(y)$.
 Thus the implicit algebraic classification is strictly broader than the
-explicit rational-map classification in \cref{sec:rational}.
+explicit rational-map classification in \cref{adr:sec:rational}.
 \end{example}
 
 \section{Consequences for surreal and Gaussian omnific integers}
-\label{sec:omnific}
+\label{adr:sec:omnific}
 
-\begin{theorem}[Omnific dilation classification]\label{thm:omnific}
+\begin{theorem}[Omnific dilation classification]\label{adr:thm:omnific}
 Let $d\ge2$ and $x\in\Oz\setminus\Z$. The following are equivalent:
 \begin{enumerate}[label=\textup{(\roman*)},leftmargin=2em,itemsep=2pt]
 \item $x,S_dx$ are algebraically dependent over $\R$;
@@ -962,15 +1142,15 @@ $P\in\C[T]$, $P(0)\in\Z[i]$, and dependence over $\C$.
 \end{theorem}
 \begin{proof}
 Choose a set-sized divisible subgroup of $\No$ containing the exponent
-support, and use \eqref{eq:omega-bridge}. Apply
-\cref{thm:negative,thm:degree}. In the real case, a complex polynomial
+support, and use \eqref{adr:eq:omega-bridge}. Apply
+\cref{adr:thm:negative,adr:thm:degree}. In the real case, a complex polynomial
 relation splits into its real and imaginary coefficient polynomials;
 at least one is a nonzero real relation. Conversely a real relation is
 a complex one. The coefficient at zero imposes exactly the integer or
 Gaussian-integer condition and no condition on the other coefficients.
 \end{proof}
 
-\begin{corollary}[All distinct forward dilates]\label{cor:pairs}
+\begin{corollary}[All distinct forward dilates]\label{adr:cor:pairs}
 If $x$ is an infinite-support omnific or Gaussian omnific integer, then
 for every $d\ge2$ and every pair of integers $0\le a<b$,
 \[
@@ -980,7 +1160,7 @@ are algebraically independent over $\C$ (and over $\R$ in the real case).
 \end{corollary}
 \begin{proof}
 The first member still has infinite support and the second is its
-$S_{d^{b-a}}$ dilate. Apply \cref{thm:omnific}.
+$S_{d^{b-a}}$ dilate. Apply \cref{adr:thm:omnific}.
 \end{proof}
 
 \begin{example}[Finite but incommensurable]
@@ -1012,7 +1192,7 @@ The valid normal form
 \]
 has infinite support of order type $\omega$. All its exponents lie in
 $\Q$, but not in any cyclic subgroup. It is algebraically independent
-of $S_du_d$. In \cref{sec:order} we show that its first three transforms
+of $S_du_d$. In \cref{adr:sec:order} we show that its first three transforms
 satisfy an exact polynomial relation. Pairwise independence must not be
 confused with independence of a longer tuple.
 \end{example}
@@ -1021,21 +1201,21 @@ confused with independence of a longer tuple.
 Let $a\in\R$ be transcendental over $\Q$ and $\delta>0$. Although
 $x=a\omega^\delta$ satisfies
 $S_dx=a^{1-d}x^d$ over $\R$, it has no first-order autonomous polynomial
-relation over $\Q$. This follows from \cref{cor:coefficients}.
+relation over $\Q$. This follows from \cref{adr:cor:coefficients}.
 The constants allowed in a relation materially change the answer.
 \end{example}
 
-\section{Complete solutions for rational maps}\label{sec:rational}
+\section{Complete solutions for rational maps}\label{adr:sec:rational}
 
 We now classify the explicit equations $S_qy=R(y)$, with
 $q\in\Q_{>1}$, $\Gamma$ divisible, and $R\in k(Z)$ nonconstant.
 The polynomial relation theorem allows implicit ramification; in this
 explicit case there is no such support ramification.
 
-\begin{theorem}[Rational-map classification]\label{thm:rational}
+\begin{theorem}[Rational-map classification]\label{adr:thm:rational}
 Assume $k$ algebraically closed of characteristic zero and $\Gamma\ne0$
 divisible. A nonconstant solution of
-\begin{equation}\label{eq:rational}
+\begin{equation}\label{adr:eq:rational}
  S_qy=R(y)
 \end{equation}
 exists exactly when $R$ has a fixed point $c\in\mathbb P^1(k)$ whose
@@ -1050,7 +1230,7 @@ and write
    =A Z^d+O(Z^{d+1}).
 \]
 All nonconstant solutions associated with $c$ are exactly
-\begin{equation}\label{eq:rational-solutions}
+\begin{equation}\label{adr:eq:rational-solutions}
  y=M_c^{-1}\bigl(aH_a(t^\gamma)\bigr),
  \qquad \gamma\in\Gamma_{>0},\quad Aa^{d-1}=1,
 \end{equation}
@@ -1069,7 +1249,7 @@ valuation, and
 \]
 If $m\ge1$ is the local degree, comparison of valuations gives
 $q\,v(u)=m\,v(u)$, hence $q=m$. Since $q>1$, this is an integer $d\ge2$.
-The germ now has the form in \cref{prop:germ}, which gives all solutions
+The germ now has the form in \cref{adr:prop:germ}, which gives all solutions
 and their converse. Because $k$ is algebraically closed, the required
 leading coefficients $a$ exist.
 \end{proof}
@@ -1083,10 +1263,10 @@ root lie in that field. For real solutions, these are genuine real-root
 conditions, not automatic consequences of the complex theorem.
 
 \begin{theorem}[Rational-map rigidity in the negative-support ring]
-\label{thm:rational-negative}
+\label{adr:thm:rational-negative}
 Let $\operatorname{char}k=0$, $y\in\A\setminus k$, and $d\ge2$.
 If $S_dy=R(y)$ for $R\in k(Z)$, then
-\begin{equation}\label{eq:affine-monomial}
+\begin{equation}\label{adr:eq:affine-monomial}
  y=\alpha t^{-\gamma}+b,
  \qquad
  R(Z)=\alpha^{1-d}(Z-b)^d+b,
@@ -1100,14 +1280,14 @@ $b\in\Z[i]$.
 Writing $R=A/B$ in reduced form, the equation
 $B(y)S_dy-A(y)=0$ has degree one in the dilated variable. The denominator
 is nonzero since $y$ is transcendental over $k$. By the degree bound in
-\cref{thm:negative}, $y$ is affine in one monomial, giving the first
+\cref{adr:thm:negative}, $y$ is affine in one monomial, giving the first
 formula. Substitute this into the equation, and use transcendence of
 the monomial to obtain the displayed rational-function identity.
 The converse is direct substitution. The constant-term restrictions
 are exactly the definitions of the two omnific rings.
 \end{proof}
 
-\begin{corollary}[Simultaneous rational equations]\label{cor:simultaneous}
+\begin{corollary}[Simultaneous rational equations]\label{adr:cor:simultaneous}
 Suppose the same nonconstant $y\in\A$ satisfies
 $S_py=P(y)$ and $S_qy=Q(y)$ for integers $p,q\ge2$ and rational functions
 $P,Q$. Then, with one common $\alpha,b,\gamma$,
@@ -1120,20 +1300,20 @@ In particular, $P$ and $Q$ commute. Even without the negative-support
 restriction, simultaneous nonconstant solutions force $P\circ Q=Q\circ P$.
 \end{corollary}
 \begin{proof}
-Apply \cref{thm:rational-negative}; the representation is unique from
+Apply \cref{adr:thm:rational-negative}; the representation is unique from
 its leading monomial and constant term. For the last assertion, commute
 the dilations and use the fact that they fix the coefficients:
 $(P\circ Q)(y)=(Q\circ P)(y)$. Transcendence of $y$ turns equality at
 $y$ into equality of rational functions.
 \end{proof}
 
-\section{A sharp infinitesimal-tail obstruction}\label{sec:tail}
+\section{A sharp infinitesimal-tail obstruction}\label{adr:sec:tail}
 
 The rational-map obstruction has a quantitative form. It identifies the
 first infinitesimal term that prevents an otherwise legitimate surreal
 solution from being an omnific integer.
 
-\begin{theorem}[First forbidden tail]\label{thm:tail}
+\begin{theorem}[First forbidden tail]\label{adr:thm:tail}
 Let $P\in\C[Z]$ have degree $d\ge2$, with leading coefficients
 $p_d,p_{d-1}$. Put
 \[
@@ -1148,7 +1328,7 @@ Then $Q$ is monic and centered. If $Q\ne X^d$, write
 \]
 For each positive scale $\gamma$, the infinite solution with leading
 coefficient $\alpha$ has expansion, with $T=t^{-\gamma}$,
-\begin{equation}\label{eq:tail}
+\begin{equation}\label{adr:eq:tail}
  y=\alpha T+b-\frac{\alpha c}{d}T^{1-r}+O(T^{-r}).
 \end{equation}
 Its first positive-valuation term has valuation exactly $(r-1)\gamma$.
@@ -1156,7 +1336,7 @@ In particular it does not belong to the negative-support ring.
 \end{theorem}
 \begin{proof}
 The normalization eliminates the coefficient of $X^{d-1}$ and makes the
-leading coefficient one. The infinity case of \cref{thm:rational}
+leading coefficient one. The infinity case of \cref{adr:thm:rational}
 gives a unique normalized Laurent solution
 \[
  F(T)=T+\sum_{n\ge0}b_nT^{-n},\qquad F(T^d)=Q(F(T)),
@@ -1176,7 +1356,7 @@ required by the theorem.
 \subsection{Examples and exact coefficients}
 
 For $P(Z)=Z^2+1$, the unique infinite branch at each positive scale begins
-\begin{equation}\label{eq:quadratic-example}
+\begin{equation}\label{adr:eq:quadratic-example}
  y=T-\frac12T^{-1}-\frac38T^{-3}-\frac3{16}T^{-5}
       -\frac{45}{128}T^{-7}+\cdots.
 \end{equation}
@@ -1200,10 +1380,10 @@ By contrast, $P(Z)=(Z-3)^2+3$ has the omnific solutions
 $y=3+\omega^\gamma$, since its centered normalization is exactly $Z^2$.
 The finite exact checks supplied with the article verify the displayed
 coefficients and the coordinate identities through the stated truncation
-orders; \cref{thm:tail} proves the infinite statement.
+orders; \cref{adr:thm:tail} proves the infinite statement.
 
 \section{A strict hierarchy of autonomous algebraic orders}
-\label{sec:order}
+\label{adr:sec:order}
 
 \begin{definition}
 For a fixed dilation $S_d$, define the \emph{autonomous algebraic order}
@@ -1218,13 +1398,13 @@ an arbitrary variable-coefficient linear equation.
 \end{definition}
 
 \begin{theorem}[An infinite-support element of exact order two]
-\label{thm:order-two}
+\label{adr:thm:order-two}
 For each integer $d\ge2$, the omnific integer
 \[
  u_d=\sum_{n\ge0}\omega^{d^{-n}}
 \]
 has exact autonomous algebraic order two over $\C$ for $S_d$. It satisfies
-\begin{equation}\label{eq:order-two}
+\begin{equation}\label{adr:eq:order-two}
  S_d^2u_d-S_du_d=(S_du_d-u_d)^d.
 \end{equation}
 Every two distinct forward transforms are nevertheless algebraically
@@ -1238,11 +1418,11 @@ is strong, and direct comparison of supports gives
 \]
 Applying $S_d$ once more gives
 $S_d^2u_d-S_du_d=\omega^{d^2}=(\omega^d)^d$, proving
-\eqref{eq:order-two}. The polynomial
+\eqref{adr:eq:order-two}. The polynomial
 $Z-Y-(Y-X)^d$ is nonzero, so the order is at most two.
-By \cref{thm:omnific}, the infinite support makes $u_d,S_du_d$
+By \cref{adr:thm:omnific}, the infinite support makes $u_d,S_du_d$
 algebraically independent. Thus the order is exactly two.
-The last assertion is \cref{cor:pairs}.
+The last assertion is \cref{adr:cor:pairs}.
 \end{proof}
 
 Decreasing-denominator generalized series and their linear Mahler
@@ -1251,8 +1431,12 @@ identities are already present in the literature; compare
 not offered as a new construction. The point here is the rigorous
 \emph{minimal autonomous order} and the resulting sharp boundary of the
 first-order classification in the omnific setting.
+\wtag{} In the collection, the linear identity $S_2u_2-u_2=\omega^2$ is
+the Conway form, after one application of $S_2$, of the second series in
+the single-dilation report's example \lbl{dsup:ex:opposite}
+(\cref{adr:sec:collection}).
 
-\begin{theorem}[Every finite order occurs]\label{thm:all-orders}
+\begin{theorem}[Every finite order occurs]\label{adr:thm:all-orders}
 Let $g_1,\ldots,g_r$ be positive surreal exponents linearly independent
 over $\Q$, and let $a_1,\ldots,a_r\in\R^\times$. Then
 \[
@@ -1269,7 +1453,7 @@ exponents. For $0\le i<r$, put
  Y_i=\sum_{j=1}^r a_jT_j^{d^i}.
 \]
 Their Jacobian determinant is
-\begin{equation}\label{eq:jacobian}
+\begin{equation}\label{adr:eq:jacobian}
  \left(\prod_{j=1}^r a_j\right)
  \left(\prod_{i=0}^{r-1}d^i\right)
  \det\bigl(T_j^{d^i-1}\bigr)_{0\le i<r,\,1\le j\le r}.
@@ -1289,7 +1473,7 @@ dependent. The least order is exactly $r$.
 \end{proof}
 
 \begin{proposition}[Bounds from the rational rank of finite support]
-\label{prop:rank-bounds}
+\label{adr:prop:rank-bounds}
 Let $x$ be a nonconstant finite-support omnific integer and let $r$ be
 the dimension over $\Q$ of the span of its positive exponents. Its
 order is at most $r$. It is exactly one for $r=1$ and exactly two for
@@ -1303,7 +1487,7 @@ the upper bound. The first-order classification gives precisely the
 remaining assertions.
 \end{proof}
 
-\section{Boundaries that the conclusions cannot cross}\label{sec:boundaries}
+\section{Boundaries that the conclusions cannot cross}\label{adr:sec:boundaries}
 
 \subsection{Positive characteristic}
 If $k=\mathbb F_p$ and the dilation is $S_p$, then
@@ -1325,14 +1509,23 @@ The right side is not in the ordinary constant field. Thus there is no
 extension of the support-collapse theorem to unrestricted nonconstant
 coefficients. The distinction from variable-coefficient Mahler algorithms
 \cite{FR,CDDM} is structural, not a matter of proof technique.
+\wtag{} At $d=2$ this equation is the Conway form of
+\lbl{dsup:ex:opposite} after one application of $S_2$
+(\cref{adr:sec:collection}).
 
 \subsection{Identity dilation and arbitrary rational dilations}
 For $d=1$, every series satisfies $S_1y-y=0$, so the theorem is false.
-For a nonintegral rational $q>1$, \cref{thm:rational} rules out explicit
+For a nonintegral rational $q>1$, \cref{adr:thm:rational} rules out explicit
 rational-map solutions. That argument does not classify implicit
 relations $F(y,S_qy)=0$. In the Puiseux step the leading order becomes
 $qe$, and taking an $e$th root need not produce an ordinary integer-order
 germ. The proof given here must not be quoted as covering that case.
+\wtag{} Implicit relations of this kind do have nonconstant solutions:
+by the single-dilation report's \lbl{dsup:lem:rationalrecognition}, for
+divisible $\Gamma$ and $q=a/b$ the nonzero solutions of $(S_qx)^b=x^a$
+are exactly the monomials $\mu_{\abs{a-b}}(k)\,t^\Gamma$. They satisfy the
+cyclic-support conclusion trivially; the general implicit case remains
+open (\cref{adr:sec:collection}).
 
 \subsection{Full first-order theories}
 The decision procedure below is for one specified autonomous equation
@@ -1344,18 +1537,18 @@ undecidability phenomena discussed in the repository's single-dilation
 report \cite{RepoDilation}.
 
 \section{Effective finite shapes and a decision procedure}
-\label{sec:effective}
+\label{adr:sec:effective}
 
 The sharp degree bound turns the omnific problem into a finite algebraic
 problem, even though a general omnific integer is specified by a
 potentially transfinite normal form.
 
 \begin{theorem}[Finitely many bounded polynomial shapes]
-\label{thm:finite-polynomials}
+\label{adr:thm:finite-polynomials}
 Let $k$ be algebraically closed of characteristic zero,
 $0\ne F\in k[X,Y]$, and $d\ge2$. Put $D=\deg_YF$.
 The set
-\begin{equation}\label{eq:polynomial-shapes}
+\begin{equation}\label{adr:eq:polynomial-shapes}
  \mathcal P_{\le D}(F,d)=
  \{P\in k[T]:1\le\deg P\le D,
           \ F(P(T),P(T^d))=0\}
@@ -1369,12 +1562,12 @@ conditions.
 \begin{proof}
 Fix a degree $M$. For a polynomial $P$ of that degree satisfying the
 identity, view $P(t^{-1})$ in $k((t^\Q))$. It has valuation $-M$.
-By \cref{thm:profiles} it equals $f(t^\delta)$ for one of finitely many
+By \cref{adr:thm:profiles} it equals $f(t^\delta)$ for one of finitely many
 infinity profiles $f$ of pole order $e$. Valuation comparison forces
 $\delta=M/e$. Thus, for each fixed $M$ and profile, there is at most
 one possible polynomial $P$. Finiteness follows on taking
 $1\le M\le D$. Exhaustion of all negative-support solutions is precisely
-the degree-bounded assertion of \cref{thm:negative} and transcendence of
+the degree-bounded assertion of \cref{adr:thm:negative} and transcendence of
 the chosen monomial. Filtering the coefficients gives the omnific versions.
 \end{proof}
 
@@ -1384,7 +1577,7 @@ arbitrarily large $n$. These do not create new shapes modulo the free
 monomial scale, since $(t^{-\delta})^n=t^{-n\delta}$.
 
 \begin{theorem}[Decidable nonconstant omnific solvability]
-\label{thm:decidable}
+\label{adr:thm:decidable}
 Let $F\in\overline{\Q}[X,Y]\setminus\{0\}$ be supplied by exact
 algebraic-number coefficients and let $d\ge2$. There is an algorithm to
 decide whether $F(x,S_dx)=0$ has a nonconstant solution in $\Oz$, or in
@@ -1401,7 +1594,7 @@ $1\le M\le D$, introduce unknowns $a_0,\ldots,a_M$ and form
 Set every coefficient in $T$ of $F(P(T),P(T^d))$ equal to zero and impose
 $a_M\ne0$, for instance by adding an auxiliary inverse variable.
 These are finite polynomial systems with algebraic-number coefficients.
-By \cref{thm:finite-polynomials}, each has only finitely many solutions
+By \cref{adr:thm:finite-polynomials}, each has only finitely many solutions
 in $\C$. A finite algebraic set over $\overline\Q$ has algebraic-number
 coordinates. Its points can be computed by standard zero-dimensional
 polynomial-system methods. Alternatively, separate real and imaginary
@@ -1413,7 +1606,7 @@ $a_0\in\Z$. For $\Goz$, retain those with $a_0\in\Z[i]$.
 Reality, equality, and integrality of exact algebraic numbers are
 decidable. The retained list is nonempty exactly when a nonconstant
 solution exists. Its evaluations at $T=\omega^\delta$ give all solutions
-by \cref{thm:omnific}. A witness may always be produced already at
+by \cref{adr:thm:omnific}. A witness may always be produced already at
 $T=\omega$.
 \end{proof}
 
@@ -1434,12 +1627,12 @@ $F(P(T),P(T^d))=0$, the leading-coefficient test, and the constant-term
 condition. No truncation of an unknown infinite surreal number is used
 as a certificate of support termination.
 
-The Newton-weight test of \cref{cor:existence} is a different algorithm:
+The Newton-weight test of \cref{adr:cor:existence} is a different algorithm:
 it decides nonconstant solvability in the full surcomplex field, where
 infinite Laurent tails are allowed. The two procedures can therefore
 legitimately give different answers, as for $S_2x=x^2+1$.
 
-\section{Further research questions and priorities}\label{sec:questions}
+\section{Further research questions and priorities}\label{adr:sec:questions}
 
 The questions below are proposed research directions arising from this
 article. Unless explicitly stated otherwise, they are not claimed to be
@@ -1453,14 +1646,14 @@ rank $r\ge3$, is its autonomous order always $r$? The answer is established
 here for $r\le2$ and for sums supported on a rationally independent set.
 The unresolved case allows several supported monomials in the same
 $r$-dimensional exponent span. A useful first target is rank three with
-four support terms. The bound in \cref{prop:rank-bounds} isolates the
+four support terms. The bound in \cref{adr:prop:rank-bounds} isolates the
 precise remaining gap.
 \end{question}
 
 \begin{question}[The support spectrum at order two; high priority]
 Which well-ordered Hahn supports can occur for omnific solutions of
 $F(x,S_dx,S_d^2x)=0$ over the ordinary constants? Infinite support of
-order type $\omega$ occurs by \cref{thm:order-two}. Determine whether
+order type $\omega$ occurs by \cref{adr:thm:order-two}. Determine whether
 fixed equation degree or fixed autonomous order bounds the possible
 support order types, denominator growth, or rational rank. The goal is
 a classification or a sharp no-bound theorem, not an extrapolation from
@@ -1470,7 +1663,7 @@ the one telescoping example.
 \begin{question}[Formal verification of the core theorem; high priority]
 Formalize the chain from strong Hahn evaluation through the monomial
 recognizer, the formal B\"ottcher coordinate, and the evaluated Puiseux
-branch to \cref{thm:collapse}. The most substantial imported obligation
+branch to \cref{adr:thm:collapse}. The most substantial imported obligation
 is a usable Newton--Puiseux theorem with the \emph{individual branch}
 degree bound. A staged formalization can state that theorem as an explicit
 parameter before replacing it with a verified construction; it should
@@ -1478,7 +1671,7 @@ not silently add it as an axiom and call the entire result verified.
 \end{question}
 
 \begin{question}[An efficient shape solver]
-Implement \cref{thm:decidable} for rational or algebraic coefficients,
+Implement \cref{adr:thm:decidable} for rational or algebraic coefficients,
 using the Newton-weight filter, Puiseux branches, and polynomial degree
 bounds before general elimination. Prove bounds in terms of the input
 bidegree, coefficient height, and $d$. Can the finite candidate list be
@@ -1494,6 +1687,14 @@ Newton slope. Determine whether an appropriate generalized B\"ottcher
 coordinate still forces a controlled support subgroup, or permits
 unbounded denominators already at order one.
 \end{question}
+
+\wtag{} \emph{Status in the collection: open, with one partial datum.}
+The single-dilation report's \lbl{dsup:lem:rationalrecognition} solves
+the particular relation $(S_qx)^b=x^a$, $q=a/b$, exactly: for divisible
+$\Gamma$ its nonzero solutions are $\mu_{\abs{a-b}}(k)\,t^\Gamma$. So
+the class of implicit relations with nonintegral $q$ is not empty of
+nonconstant solutions, and for this relation the solutions are single
+monomials. Nothing is known here about general $F$.
 
 \begin{question}[Tame positive-characteristic variants]
 When $\operatorname{char}k=p>0$ and $p\nmid d$, which support-collapse
@@ -1523,7 +1724,7 @@ Distinguish finite-generation assertions from mere countability.
 
 \begin{question}[Arithmetic and convergence of the profiles]
 For algebraic coefficients, all profile coefficients are algebraic by
-\cref{cor:coefficients}. Determine effective denominator and height bounds,
+\cref{adr:cor:coefficients}. Determine effective denominator and height bounds,
 and compare their Archimedean and non-Archimedean analytic convergence.
 The underlying B\"ottcher arithmetic is already an established subject
 \cite{SS}; the new target is a uniform statement through the ramified
@@ -1533,7 +1734,7 @@ correspondence and the finite-profile list.
 \begin{question}[Simultaneous algebraic correspondences]
 Describe the intersection of the finite-profile solution classes for two
 multiplicatively independent dilations. The rational omnific case is
-completely rigid by \cref{cor:simultaneous}, but implicit correspondences
+completely rigid by \cref{adr:cor:simultaneous}, but implicit correspondences
 and full Laurent tails allow more geometry. Determine which compatibility
 conditions replace commutation of two rational maps.
 \end{question}
@@ -1562,7 +1763,7 @@ implement the finite-shape solver, and then attack the rank-three and
 order-two problems. Each has a precise success criterion and can be
 pursued without a general theory of analysis on the entire proper class.
 
-\section{Proof audit and concluding assessment}\label{sec:audit}
+\section{Proof audit and concluding assessment}\label{adr:sec:audit}
 
 \subsection{Dependency ledger}
 
@@ -1625,6 +1826,9 @@ through the retrieval route used here, and no detailed theorem from it
 is invoked. This is a limitation on novelty assessment, not a missing
 premise in any proof. An absence of matching search results is not proof
 of priority.
+\wtag{} The full text of \cite{NN} was read when the manuscript joined the
+collection; what it contains, and the priority caveat that follows, are in
+Appendix~\ref{adr:app:literature} and \cref{adr:sec:nonclaims}.
 
 \subsection{Conclusion}
 
@@ -1642,8 +1846,142 @@ algebra. It supplies both positive classifications and explicit negative
 results without relying on a problematic global topology or treating a
 proper class as an ordinary analytic field.
 
+\section{Consolidated ledger of non-claims}\label{adr:sec:nonclaims}
+
+\wtag{} The source states its limitations where they arise, and each is
+kept in place. This ledger collects them with their locations; ``README''
+and ``audit'' refer to the delivered README (not shipped; its content is in
+the collection README) and to \rpath{SOURCE_AUDIT.md}. Items S1--S24 are
+the source's; items W1--W7 were added when the report joined the
+collection.
+\begin{enumerate}[label=S\arabic*.,leftmargin=2.6em,itemsep=2pt]
+\item Not refereed. No named published conjecture is claimed solved.
+Novelty is proposed, not certified; priority is not certified by an
+exhaustive literature review, and an absence of search results is not
+proof of priority (title page; \cref{adr:sec:audit}; README; audit).
+\item The classical inputs are credited, not claimed: Hahn arithmetic and
+normal forms, the Neumann support lemma, Newton--Puiseux factorization,
+formal B\"ottcher coordinates and their arithmetic, the repository's
+$d=2$ recognizer, resultants and exact algebraic-system solving. Mahler
+equations, B\"ottcher coordinates and non-Puiseux solutions are not new
+topics (\cref{adr:sec:position,adr:sec:support,adr:sec:bottcher,adr:sec:audit};
+audit).
+\item The repository comparison covers selected reports and the inventory
+at the pin. It is not a line-by-line review of the repository and not an
+exhaustive repository-wide absence certificate; no clone or repository
+build was made and no repository file was changed (\cref{adr:sec:position};
+README; audit).
+\item The headline equivalence is about polynomial relations with $S_d$
+over the ordinary constants; it does not say that an infinite omnific
+integer is algebraic over $\R$ (\cref{adr:sec:position}).
+\item This is not a factorization theorem and settles none of the remaining
+factorization conjectures for omnific integers. The primality of
+$\omega^{\sqrt2}+\omega+1$ is cited, not proved or claimed; dilation
+independence is a different property (\cref{adr:sec:position},
+\cref{adr:sec:omnific}; audit).
+\item The encyclopedia page was used for orientation only, never in place
+of a primary source (\cref{adr:sec:position}; audit).
+\item The late-2025 preprints \cite{FP,FRPurity} are cited from their
+abstracts for context, not as proof inputs (\cref{adr:sec:position};
+bibliography; audit).
+\item The source compared Nishioka--Nishioka \cite{NN} at abstract level
+only; no result of it is a premise, and its full comparison was named as a
+priority task before any publication-level novelty claim
+(\cref{adr:sec:audit}; README; audit). See W2.
+\item Membership in $k((t^\delta))$ is necessary, not sufficient, for a
+relation; the support conclusion does not turn strong evaluation into
+valuation convergence (the remark after \cref{adr:thm:collapse}).
+\item Coefficient descent is for a fixed coefficient field of the equation
+(after \cref{adr:cor:coefficients}).
+\item The Newton-weight test decides existence, not whether an arbitrary
+encoded series satisfies the equation, and does not make arbitrary complex
+coefficients computable input; it decides solvability in the full field,
+so it can differ from omnific solvability, as for $S_2x=x^2+1$ (after
+\cref{adr:cor:existence}; \cref{adr:sec:effective}).
+\item The polynomial-field identity \cref{adr:cor:polynomial-field} is a
+consequence and consistency check, not a priority claim in polynomial
+decomposition theory; it fails for Laurent polynomials such as $T+T^{-1}$
+(after \cref{adr:cor:polynomial-field}; audit).
+\item Pairwise independence of dilates is not independence of a longer
+tuple (the example of $u_d$ in \cref{adr:sec:omnific}).
+\item Over a field that is not algebraically closed, and for real
+solutions, the fixed point and leading-coefficient root in
+\cref{adr:thm:rational} are genuine conditions, not automatic consequences
+of the complex theorem (after \cref{adr:thm:rational}).
+\item In \cref{adr:thm:tail}, $O(T^{-r})$ is a formal Laurent tail, not an
+analytic estimate at all surreal magnitudes; the finite checks verify
+displayed coefficients through stated truncation orders only (after
+\cref{adr:thm:tail}; \cref{adr:sec:tail}).
+\item The decreasing-denominator series pattern of $u_d$ and its linear
+Mahler identity are prior \cite[Remark~2.18]{CDDM}, \cite{GG}; only the
+minimal autonomous order is claimed (after \cref{adr:thm:order-two};
+\cref{adr:sec:audit}; audit).
+\item Characteristic zero cannot be dropped: in characteristic $p$ with
+$d=p$, Frobenius gives arbitrary supports (\cref{adr:sec:boundaries}).
+\item There is no extension to unrestricted nonconstant coefficients, by
+$S_du_d-u_d=\omega^d$ (\cref{adr:sec:boundaries}).
+\item For $d=1$ the theorem is false; implicit relations $F(y,S_qy)=0$
+with nonintegral rational $q$ are not covered by the proof
+(\cref{adr:sec:boundaries}). See W3.
+\item The decision procedure concerns one specified equation with
+algebraic-number coefficients. It says nothing about full first-order
+theories, arbitrary systems of omnific Diophantine equations or equality of
+infinite normal-form descriptions, and does not contradict the
+single-dilation report's undecidability (\cref{adr:sec:boundaries}).
+\item The decision procedure is a termination result, not a complexity
+claim; it is not implemented, and \rpath{code/verify.py} checks
+representative identities only. The degree bound is essential to the
+finiteness of shapes (\cref{adr:sec:effective}; README; audit).
+\item The exact autonomous order for finite support of rational rank
+$r\ge3$ is open; only $2\le\text{order}\le r$ is proved
+(\cref{adr:prop:rank-bounds}; \cref{adr:sec:questions}).
+\item The twelve research questions are proposed directions, not
+previously published open problems. A formalization should not add the
+Newton--Puiseux theorem as an axiom and call the result verified
+(\cref{adr:sec:questions}; audit).
+\item No Lean formalization is supplied and no repository Lean build was
+performed; the collection's formalization status is not inherited. The
+finite exact checks cover finite instances only; they do not certify the
+infinite theorems, the classical dependencies or the decision procedure.
+Independent mathematical review remains necessary. The script should not
+be run with Python optimization flags that disable assertions (title page;
+\cref{adr:sec:audit}; Appendix~\ref{adr:app:checks}; README; audit).
+\end{enumerate}
+\begin{enumerate}[label=W\arabic*.,leftmargin=2.6em,itemsep=2pt]
+\item No \texttt{adr:} label has a Lean mapping in \rpath{FORMALIZATION.md}
+(\cref{adr:sec:collection}).
+\item The full text of \cite{NN}, read for this report, records Mahler's
+1983 criterion \cite{Mahler83} for a convergent power-series solution of a
+constant-coefficient relation $P(f(z),f(z^d))=0$. For ordinary power series
+over a number field or $\C$, existence of nonconstant solutions of such
+relations is therefore prior to this report, and no priority is claimed for
+\cref{adr:thm:newton,adr:cor:existence} or \cref{adr:thm:profiles} restricted
+to that rank-one setting. Mahler's paper itself was not read; its content
+is taken from \cite{NN} (Appendix~\ref{adr:app:literature}).
+\item The single-dilation report's power-equation lemma gives nonconstant
+solutions of $(S_qx)^b=x^a$ for nonintegral $q$. This is a partial datum
+for the question on nonintegral rational dilation, which stays open
+(\cref{adr:sec:collection}, \cref{adr:sec:questions}).
+\item None of the three questions of the single-dilation report
+(\lbl{dsup:sec:questions}) is answered; its question on definability from
+other exponent automorphisms is untouched beyond integer dilations. Its
+non-claim on variable-coefficient Mahler systems stands
+(\cref{adr:sec:collection}).
+\item The exponent dilations here are not the argument dilations
+$f(z)\mapsto f(qz)$ of the holonomic-rigidity report, and nothing of that
+report is used or extended (\cref{adr:sec:collection}).
+\item Nothing here bears on which value-group automorphisms admit
+exponential lifts (\lbl{q:image} of the exponential-automorphism report);
+$S_d$ has no exponential lift by that report's \lbl{thm:dilation}. None of
+the surcomplex-automorphisms report's questions is addressed
+(\cref{adr:sec:collection}).
+\item The source's repository statements were checked at the placement
+commit and stand; they are kept as provenance of its pin
+(Appendix~\ref{adr:app:pinned}).
+\end{enumerate}
+
 \appendix
-\section{A worked elimination identity}\label{app:elimination}
+\section{A worked elimination identity}\label{adr:app:elimination}
 
 Let $X=T^2+T$ and $Y=T^4+T^2$. From $T^2=X-T$ one obtains
 \[
@@ -1666,7 +2004,7 @@ This simultaneously exhibits the relation and reconstructs the primitive
 monomial from the pair. The degree theorem proves minimality; the
 calculation alone would not rule out a hidden linear relation.
 
-\section{Reproducing the finite checks}\label{app:checks}
+\section{Reproducing the finite checks}\label{adr:app:checks}
 
 The file \texttt{verify.py} requires Python 3.9 or later and SymPy.
 It uses only exact arithmetic. Run
@@ -1678,6 +2016,9 @@ The second command writes \texttt{verification\_results.json} beside the
 script and prints the same report. The recorded run used Python 3.13.5
 and SymPy 1.14.0. The script is not an implementation of infinite Hahn
 series and does not pretend that truncation is an infinite proof.
+\wtag{} In this directory the script is \rpath{code/verify.py} and the
+recorded run is \rpath{data/verification_results.json}; see
+Appendix~\ref{adr:app:files} before rerunning.
 
 For the inverse B\"ottcher checks, set $L(z)=zF(1/z)$ for a monic centered
 polynomial $Q(X)=\sum q_jX^j$ of degree $d$. The checked identity is
@@ -1697,6 +2038,166 @@ identity is deliberately the correct truncated one,
 not the infinite identity with its boundary term silently deleted.
 The infinite identity follows separately from coefficientwise comparison
 of the full well-ordered supports.
+
+\section{Provenance of this report}\label{adr:app:report}
+
+\subsection{One manuscript}\label{adr:app:onesource}
+
+This report is built from \emph{one} manuscript: the archive
+\texttt{surreal\_dilation\_rigidity}, manuscript~08 of batch~30 of the
+collection, dated 23 September 2026 and pinned to repository commit
+\nolinkurl{b895e8672990e8b5a56f97dd7246f9dd5f86c771}. It was placed in
+commit \texttt{21375f8} as a new report: no report of the collection names
+its question, and it continues the single-dilation report's subject without
+answering any of that report's questions (\cref{adr:sec:collection}). There
+was no second source; nothing was merged and nothing was selected away.
+Every result, proof, example, question and limitation of the manuscript is
+printed here.
+
+The delivered verification program \rpath{code/verify.py}, its recorded
+run \rpath{data/verification_results.json}, the dependency pin
+\rpath{data/requirements.txt} and the author-side audit
+\rpath{SOURCE_AUDIT.md} are kept byte-identical. The manuscript's article
+(delivered as \texttt{dilation\_rigidity.tex}) and README were rewritten;
+the delivered PDF and checksum list are not shipped, and \texttt{article.pdf}
+is a build of this text.
+
+The editorial changes are these.
+\begin{enumerate}[label=(\arabic*)]
+\item Every label carries the prefix \texttt{adr:}. The source's 83 labels
+are kept, unchanged after the prefix, and eight were added
+(\lbl{adr:sec:conventions}, \lbl{adr:sec:collection},
+\lbl{adr:sec:nonclaims}, \lbl{adr:app:report},
+\lbl{adr:app:onesource}, \lbl{adr:app:pinned},
+\lbl{adr:app:literature}, \lbl{adr:app:files}).
+\item The title page names the report as a single-source report of the
+collection, gives the batch and pin, and extends the status box.
+\Cref{adr:sec:conventions,adr:sec:collection}, the ledger of
+\cref{adr:sec:nonclaims} and this appendix are new, and the bibliography
+gained the entry \cite{Mahler83}. Sentences marked \wtag{} were added at the
+end of the source's subsection on the repository, at the end of its
+literature paragraph on Mahler equations, after \cref{adr:lem:monomial},
+after \cref{adr:thm:order-two}, in \cref{adr:sec:boundaries} (two places),
+after the question on nonintegral rational dilation, in
+\cref{adr:sec:audit} and in Appendix~\ref{adr:app:checks}. The bibliography entry
+\cite{NN} gained one sentence.
+\end{enumerate}
+No mathematical statement was changed, and no symbol was renamed: the
+collisions are between reports, and \cref{adr:sec:conventions} fixes the
+meanings. Where the edit had to choose: the manuscript was placed as a new
+report rather than as an addition to the single-dilation report, because it
+answers no question or named gap of that report; it was placed among the
+surcomplex reports, because its main theorem is uniform in the
+characteristic-zero coefficient field, its omnific corollary treats $\Oz$
+and $\Goz$ together, and its nearest neighbour is there; the title is kept;
+and the directory name records the subject, first-order autonomous
+relations between an element and its exponent dilate.
+
+\subsection{Repository statements at the pin}\label{adr:app:pinned}
+
+The source compared itself with the collection at its pin. Checked against
+the placement commit \texttt{21375f8}, its statements stand.
+\begin{itemize}[leftmargin=*,itemsep=3pt]
+\item The single-dilation report uses the recognizer $S_2w=w^2$
+(\lbl{dsup:lem:monomialrecognition}), treats linear and multiplicative
+dilation equations (\lbl{dsup:thm:dilationcohom}), proves undecidability
+of the expanded field (\lbl{dsup:thm:undecidable}), and recovers the
+normal-form data from one dilation (\lbl{dsup:thm:definability}).
+\item No report of the collection supplies the classification of
+\cref{adr:thm:collapse,adr:thm:negative,adr:thm:omnific}; superattracting
+germs and B\"ottcher coordinates occur in no other report.
+\item The three reports the source inspected (single dilation, dynamics,
+entire functions at arbitrary rank) are unchanged between the pin and the
+placement commit, as are the surcomplex-automorphisms and
+exponential-automorphism reports compared in \cref{adr:sec:collection}.
+The holonomic-rigidity report gained material after the pin; none of it
+concerns exponent dilations.
+\end{itemize}
+
+\subsection{References checked for this report}\label{adr:app:literature}
+
+The placement audit confirmed the references to Neumann \cite{Neumann},
+Mannaa--Coquand \cite{MC}, Salerno--Silverman \cite{SS},
+Chyzak--Dreyfus--Dumas--Mezzarobba \cite{CDDM} and Faverjon--Roques
+\cite{FR}. The following were checked when the report was written.
+\begin{itemize}[leftmargin=*,itemsep=3pt]
+\item \emph{L'Innocente--Mantova} \cite{LM}. In the introduction of arXiv
+version~5, Theorem~B states that the omnific integer
+$\omega^{\sqrt2}+\omega+1$ is prime in $\Oz$; the abstract describes this
+as Gonshor's conjecture. The attribution in \cref{adr:sec:omnific} is
+therefore correct. The arXiv page lists the journal DOI
+\nolinkurl{10.1016/j.aim.2024.109513}; the volume number was not checked.
+\item \emph{Nishioka--Nishioka} \cite{NN}. The bibliographic data were
+confirmed on Project Euclid, and the full text (seven pages, open access)
+was read. It works with ordinary convergent power series over a number
+field or $\C$ and proves transcendence of values. It records Mahler's 1983
+criterion \cite{Mahler83} (Theorem~2 there): a convergent power series
+$f(z)=f_0+f_rz^r(1+\sum_{j\ge1}f_jz^j)$ satisfying $P(f(z),f(z^d))=0$, for
+an irreducible $P$ with algebraic-number coefficients that is not a
+constant multiple of $u-v$, exists if and only if three conditions on a
+Puiseux expansion of the curve $P=0$ at a point $(f_0,f_0)$ hold.
+It also records S.~Nishioka's algebraic independence theorem for solutions
+of first-order rational Mahler equations of distinct degrees; the example
+$f(z^2)=f(z)^2/(1-2f(z)^2)$ with solution $(z^r+z^{-r})^{-1}$, whose
+reciprocal is the identity $y=T+T^{-1}$, $S_2y=y^2-2$, of
+\cref{adr:sec:tail}; and a computation showing that
+$g(z^d)=g(z)^d+c$ with $d\ge3$ and $c\ne0$ has no solution $g\in\C(z)$
+(the proof first reduces to Laurent polynomials), a rank-one relative of
+\cref{adr:thm:rational-negative,adr:thm:tail}. It
+contains nothing on Hahn series of higher rank, support collapse,
+negative-support rings, relation degrees or omnific integers. Mahler's
+criterion is a rank-one antecedent of the existence statements in
+\cref{adr:thm:newton,adr:cor:existence} and of \cref{adr:thm:profiles},
+restricted to ordinary power series (non-claim W2). Mahler's paper itself
+was not read.
+\item \emph{Gontsov--Goryuchkina} \cite{GG}. Title, journal, volume, year
+and article number were confirmed through the DOI registry; the paper was
+not read, so the source's use of it for the decreasing-denominator pattern
+is unverified here.
+\item \emph{Faverjon--Poulet} \cite{FP} and \emph{Faverjon--Roques}
+\cite{FRPurity}. Titles, authors and arXiv numbers were confirmed on arXiv
+(submitted 24 November and 11 December 2025). Only the abstracts were read,
+as by the source. The first abstract describes an algorithm computing a
+basis of solutions of any Mahler equation, with a decomposition over
+Puiseux series. The second describes a purity theorem, that certain
+arithmetic properties of a Mahler function propagate to all solutions of
+its minimal equation; the source's summary of it in
+\cref{adr:sec:position} as developing generalized Mahler-series structure
+could not be confirmed from the abstract. Neither is a proof input.
+\item Basu--Pollack--Roy \cite{BPR} and the encyclopedia page \cite{Wiki}
+were not checked.
+\end{itemize}
+
+\subsection{Files as placed and rerun}\label{adr:app:files}
+
+\begin{center}\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+File & Role \\
+\midrule
+\rpath{code/verify.py} & the delivered finite checks (delivered as \texttt{verify.py})\\
+\rpath{data/verification_results.json} & the delivered recorded run\\
+\rpath{data/requirements.txt} & the delivered pin \texttt{sympy==1.14.0}\\
+\rpath{SOURCE_AUDIT.md} & the delivered author-side source and claim audit\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The program writes \texttt{verification\_results.json} beside itself,
+overwriting any file of that name, and prints the same report. In this
+layout a run in place would create \rpath{code/verification_results.json}
+inside the report directory. Appendix~\ref{adr:app:checks} and the audit describe
+the flat delivered layout. Run it on a copy, from the report directory,
+with a fresh scratch directory \texttt{\$T}:
+\begin{verbatim}
+python -m pip install -r data/requirements.txt
+cp code/verify.py $T/ && (cd $T && python verify.py)
+\end{verbatim}
+and compare \texttt{\$T/verification\_results.json} with
+\rpath{data/verification_results.json}. This was done for this report
+under Python~3.14.4 with SymPy~1.14.0: exit code~0, status \texttt{PASS},
+and the output agrees with the recorded run except for the field recording
+the Python version (3.13.5 in the recorded run).
 
 \begin{thebibliography}{99}
 \small\raggedright
@@ -1744,6 +2245,14 @@ Autonomous equations of Mahler type and transcendence,
 issue year 2015, online publication 2016.
 \url{https://doi.org/10.21099/tkbjm/1461270059}.
 Scope checked from the abstract; no detailed result is used as a premise.
+\wtag{} Full text read for this report; see Appendix~\ref{adr:app:literature}.
+
+\bibitem{Mahler83}
+Kurt Mahler,
+On the analytic solution of certain functional and difference equations,
+\emph{Proceedings of the Royal Society of London, Series A} \textbf{389}
+(1983), 1--13.
+\wtag{} Cited as reported in \cite{NN}; not consulted.
 
 \bibitem{GG}
 R.~Gontsov and I.~Goryuchkina,

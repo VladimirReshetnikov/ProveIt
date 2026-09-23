@@ -584,6 +584,8 @@ import Surreal.Foundations.OmnificOrdinaryArithmetic
 import Surreal.Foundations.OmnificFiniteQuotients
 import Surreal.Foundations.OmnificConstantRigidity
 import Surreal.Foundations.OmnificPadicCompletion
+import Surreal.Algebra.IdealCongruenceTopology
+import Surreal.Foundations.OmnificCongruenceTopology
 import Surreal.Surcomplex.OmnificDegree
 import Surreal.Surcomplex.OmnificUnits
 import Surreal.Surcomplex.NormalFormDegree

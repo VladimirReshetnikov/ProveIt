@@ -1,18 +1,21 @@
 # Nonabelian Support Obstructions: A Matrix Cousin Criterion and the Surcomplex Riemann–Hilbert Problem
 
-Merged research report from **three** independently written manuscripts: two
-dated 21 September 2026 (Parts I and II) and one dated 22 September 2026
-(Part III, "localization-resistant bundles"). AI-assisted research draft: not
-refereed, not formalized in Lean.
+Merged research report from **four** independently written manuscripts: two
+dated 21 September 2026 (Parts I and II), one dated 22 September 2026
+(Part III, "localization-resistant bundles") and one dated 23 September 2026
+(Part V, "pole localization and omnific interpolation"). AI-assisted research
+draft: not refereed, not formalized in Lean.
 
 ```
 article.tex   merged article, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 83 pages
+article.pdf   the compiled report, 107 pages
 README.md     this file
+11-pole-localization-SOURCE_AUDIT.md                            (Part V source)
 code/         08-polar-support-matrix-cousin-verify.py          (Part I source)
               08-polar-support-matrix-cousin-Makefile           (Part I source)
               09-support-monodromy-realization-verify-examples.py (Part II source)
               10-localization-bundles-verify.py                 (Part III source)
+              11-pole-localization-verify.py                    (Part V source)
 data/         08-polar-support-matrix-cousin-requirements.txt,
               08-polar-support-matrix-cousin-verification.txt   (Part I source)
               09-support-monodromy-realization-build-and-provenance.json,
@@ -23,25 +26,33 @@ data/         08-polar-support-matrix-cousin-requirements.txt,
               10-localization-bundles-verification.json,
               10-localization-bundles-verification.txt,
               10-localization-bundles-build_qa.json             (Part III source)
+              11-pole-localization-verification_results.json,
+              11-pole-localization-requirements.txt,
+              11-pole-localization-build_report.json            (Part V source)
 ```
 
 Without `latexmk`, run `pdflatex -interaction=nonstopmode -halt-on-error
 article.tex` three times to settle references and the contents.
 
-The article has 98 numbered environments: 84 numbered results (24 theorems,
-16 lemmas, 15 propositions, 19 corollaries, 10 examples; there were 50 before
-Part III was added) plus 6 definitions and 8 remarks. The delivered build has
-no errors, no LaTeX or package warnings, no overfull or underfull boxes, no
-undefined references or citations, no multiply-defined labels and no duplicate
-PDF destinations.
+The article has 117 numbered environments: 103 numbered results (33 theorems,
+18 lemmas, 17 propositions, 24 corollaries, 11 examples; there were 50 before
+Part III was added and 84 before Part V) plus 6 definitions and 8 remarks. The
+delivered build has no errors, no LaTeX or package warnings, no overfull or
+underfull boxes, no undefined references or citations, no multiply-defined
+labels and no duplicate PDF destinations.
 
 Every `\label` carries the prefix `nab:`. Material added with Part III carries
-the sub-prefix `nab:loc:`. **No pre-existing label was renamed or removed**:
-the article had 169 labels before Part III was added and has 257 after it (88
-new, all `nab:loc:`), and all 169 original labels are still present.
+the sub-prefix `nab:loc:`, material added with Part V the sub-prefix `nab:pl:`.
+**No pre-existing label was renamed or removed**: the article had 169 labels
+before Part III was added, 257 after it (88 new, all `nab:loc:`) and 328 after
+Part V (71 new, all `nab:pl:`); all 257 earlier labels are still present.
 `docs/FORMALIZATION.md` cites `nab:` labels by name with line numbers; the
-names are unchanged, but every cited line number has moved (the preamble gained
-15 macro lines, and Part III sits between Parts II and IV).
+names are unchanged, but cited line numbers have moved (with Part III the
+preamble gained 15 macro lines and Part III was placed between Parts II and IV;
+with Part V the preamble gained 6 lines and stale passages throughout Parts
+I–IV were updated). Part V was placed **after** Part IV, so every section,
+statement and item number of Parts I–IV is unchanged (checked against a build
+of the previous text: 0 of 257 label numbers changed).
 
 The September 22, 2026 review corrects the full-raw-support sufficiency claim
 and distinguishes it from the failure of raw singular support in both
@@ -50,7 +61,8 @@ matrix exponential/logarithm domains and support-condition invariance, and
 separates the Part I bundle question from the Part II framed classification.
 That review covered Parts I and II before Part III was added. The merged
 83-page PDF builds in three `pdflatex` passes without warnings or box errors;
-Part III has not received this maintained mathematical review. Temporary-copy reruns passed all 2,899 Part I exact checks and
+Part III has not received this maintained mathematical review, and neither
+has Part V. Temporary-copy reruns passed all 2,899 Part I exact checks and
 the eight exact plus four numerical Part II checks under Python 3.13.14,
 SymPy 1.14.0, NumPy 2.3.5 and SciPy 1.17.0; the largest numerical error was
 `1.472e-13`, below `2e-9`. Historical code and data remain unchanged.
@@ -77,7 +89,11 @@ complex domain**. When `Gamma` is an ordered subgroup of the surreals,
   over the coefficientwise meromorphic sheaf `Mer((t^Gamma))`, and classifies
   them.
 * **Part IV (sections 28–32)** collects effectivity, the verification record,
-  the full list of what is not claimed, the open questions and the conclusion.
+  the full list of what is not claimed, the open questions and the conclusion,
+  for all five parts.
+* **Part V (sections 33–38)**, new, answers the question Parts I–III left open:
+  Part I's pole-only examples become **trivial** after monomial localization.
+  It is placed after Part IV so that no earlier number moves.
 
 ### The one thing to read before generalizing anything
 
@@ -110,13 +126,18 @@ introduces exactly that descending set among the raw poles and thereby
 logarithm is not a repair: its `(1,3)` coefficient is off by a factor of `1/2`
 from the correct polar coefficient.
 
-### The second thing to read: what Part III does and does not answer
+### The second thing to read: what Parts III and V do and do not answer
 
 Part I proves its bundles nontrivial over the **integral** sheaf `I_Gamma`
 only, and its open-question section asked whether the explicit hidden and deep
 examples (Theorems 8.2, 9.2) survive **monomial localization**, i.e. over
-`H_Gamma = O((t^Gamma))`. **That printed question is still open.** Part III
-answers a broader question with a *different* family, and says so:
+`H_Gamma = O((t^Gamma))`. **Part V answers that printed question: they do
+not.** Both become trivial after inverting the single monomial `t`, by explicit
+determinant-one frames with entries of valuation at least `-3/4` (hidden,
+Theorem 35.1) and `-(2r-3)/4` (deep, Corollary 35.2, a merge result). Nothing
+is retracted: no earlier part claimed nontriviality over `H_Gamma`, and
+item 2 of section 30 declined that claim. Part III, before that, answered a
+broader question with a *different* family, and says so:
 
 * The new bundles glue free modules on the star cover of the plane by the
   **finite** matrix exponentials `G_n = exp(t^(alpha_n) exp(1/(z-n)) N)`, `N`
@@ -128,11 +149,23 @@ answers a broader question with a *different* family, and says so:
   checks the hypothesis of Proposition 27.1 for each). This decides nothing
   about them over `H_Gamma`.
 
+Part V's mechanism is an entire function `f` vanishing at the punctures and a
+Laurent frame `T_0 = [[f, 0], [S, 1/f]]` with `S = sum_j t^(-alpha_j) kappa_j`:
+the interpolation coefficients sit at the *admissible increasing negative*
+exponents `-alpha_j`, where a positive frame would need the forbidden
+descending ones. It works for finite-order poles and one fixed nilpotent
+direction, not for essential singularities, so it does not touch Part III.
+What stays open: puncture-dependent nilpotent directions, an exact pole-only
+criterion after localization (Criterion P is not one: the hidden example fails
+it and is Laurent-trivial), the optimal negative budget, and the
+determinant-one diagonal examples `diag(g_n, g_n^-1)` of Theorem 11.4 over
+`H_Gamma`.
+
 ## Which archives it came from, and what each contributed
 
-Three independently written manuscripts. Their code and recorded output are
+Four independently written manuscripts. Their code and recorded output are
 preserved unchanged under `code/` and `data/`; the manuscripts themselves are
-not shipped. The file prefixes `08-`, `09-`, `10-` are local to this
+not shipped. The file prefixes `08-`, `09-`, `10-`, `11-` are local to this
 directory.
 
 | | Archive | Repository pin | Contributes |
@@ -140,6 +173,7 @@ directory.
 | 08 | `surcomplex_nonabelian_support` | `39f2be6` | Part I and the shared machinery |
 | 09 | `surcomplex_riemann_hilbert` | `39f2be6` | Part II |
 | 10 | `surreal_localization_bundles` | `0097304` | Part III, Theorem 28.4, the Part III check suite, items 23–28 of section 30, three questions of section 31 |
+| 11 | `pole_localization_research` | `0865f04` | Part V except Corollary 35.2, the Part V check suite, items 30–38 of section 30, nine questions of section 31, the source audit |
 
 The third archive is named "surreal" but its objects are **surcomplex**
 (complex-valued Hahn coefficients read in `No[i]`). At its pin `0097304` this
@@ -211,6 +245,36 @@ A 28-page manuscript, called "the localization manuscript" in the article.
 Everything in sections 19–27 comes from it except the merge observations
 listed below, and it also contributes Theorem 28.4 (section 28.5).
 
+### `pole_localization_research` → Part V
+
+A 27-page manuscript, *Pole Localization and Omnific Interpolation*, called
+"the pole-localization manuscript" in the article. It inspected this report
+only, at commit `0865f04`, whose article blob `c2dc2f9` is exactly the text
+of Parts I–IV into which Part V was merged. It contributes:
+
+* the pole-cancellation lemma (Lemma 34.1, Example 34.2), the explicit
+  determinant-one rank-two Laurent frames (Theorem 34.3), the balanced and
+  small-budget bounds (Corollaries 34.4–34.5), and every fixed nilpotent
+  direction via symmetric powers of `SL_2` (Theorem 34.6);
+* the trivialization of the hidden example over `I_Q[t^-1]` (Theorem 35.1);
+* the Picard decomposition and persistence of pole line classes over
+  `H_Gamma` (Proposition 36.1, Corollary 36.2), both printed as citations of
+  the global-divisor report;
+* nonsplit self-extensions with **free** middle bundle (Theorems 36.3–36.4);
+* the cardinal-sine family `S = sum t^(-1/n) sinc(z - a_n)` over an
+  enumeration of the integers, omnific-integer valued at every ordinary real
+  argument, with no Hahn-holomorphic reciprocal interpolant (Theorem 37.1);
+  the interpolation criterion (Proposition 37.2, = `global:cor:interp`); the
+  proper, locally unit, nonprincipal ideal `(f, S)` (Theorem 37.3), the free
+  resolution with `pd = 2` (Corollary 37.4), ultrafilter maximal ideals
+  (Theorem 37.5); Taylor prolongation to finite halos, the implicit root
+  lemma and the exact classification of the finite-halo zeros (Lemma 38.1,
+  Theorem 38.2);
+* its 215-check SymPy suite, its source audit (shipped as
+  `11-pole-localization-SOURCE_AUDIT.md`), nine research questions, a
+  formalization route, and its limitations (items 30–38 of section 30 and
+  additions to items 1, 9, 10, 11).
+
 ### How the merge was done
 
 A merge here is a union, not a selection. Results more than one member proved
@@ -258,6 +322,29 @@ section 22.1 states the translation once.
   connected domain. Part III is its first use on the plane as a coefficient
   sheaf for vector bundles.
 * Item 29 of section 30.
+
+**Part V merge record.** Placed after Part IV so no earlier number moves;
+section 33.3 reconciles its gluing convention `B_n = B_0 G_n` with Part I's
+`G_a = B_0 B_a^-1` (its frames are the inverses of Part I's splittings, so
+triviality statements coincide) and Part III's `B_n = G_n B_0` (the same
+equation for `G_n^-1`), and lists the renamed symbols (`D, U_n` → `A, D_n`;
+`S` → script `S`; `F_n, l_n` → `kappa_n`; `L, C_n, R_n` → Part I's `F^-1, Q_n,
+H_n^-1 Q_n`; the reduced cocycle `Q_n` → `Xi_n`; the ideal `I` → `a`; and
+others). Printed once and credited: the Picard decomposition and the line-class
+persistence are the global-divisor report's (`global:prop:explog`,
+`global:prop:Picreduction`, `global:thm:piccompact`, `global:thm:obstruction`,
+`global:thm:dichotomy`, `global:thm:cousincriterion`); Proposition 37.2 is
+`global:cor:interp`, not reproved. Kept with proofs, with credit: the Bézout,
+corona and ultrafilter statements, which are *plane versions* of the
+analytic-geometry report's unit-disk results (`analytic:thm:fixed-quotient`,
+`analytic:thm:fixed-bezout`, `analytic:thm:fixed-corona`,
+`analytic:thm:fixed-two-ideals`). Kept as a second route: the manuscript's
+direct proof of integral nontriviality beside Criterion P. **Added by the
+merge** (item 39 of section 30): Corollary 35.2 (the deep examples) with a
+complete proof; consequences (a)–(d) in section 35.3; the explicit choice
+`f = 1/Gamma(2 - z)`; the cross-references to the trigonometry report's sine
+zeros and to the entire-functions Bézout theorem; the question on the diagonal
+examples; a textbook reference (Rudin) beside the manuscript's course notes.
 
 ## What the report claims
 
@@ -318,23 +405,72 @@ Lemmas 20.2–20.3). Profile `alpha_1 > alpha_2 > ... > 0`, `h_n = exp(1/(z-n))`
 8. **Undecidability** (Theorem 28.4): for the rational binary profiles, neither
    isomorphism nor nonisomorphism is semidecidable, in all three categories.
 
+**Part V.** Base: a puncture-and-disk cover of the plane; `Gamma` any set-sized
+ordered abelian group; sheaves `I_Gamma ⊂ H_Gamma` as above.
+
+1. **Pole-only localization** (Lemma 34.1, Theorem 34.3, Corollaries
+   34.4–34.5, Theorem 34.6): for `alpha_1 > alpha_2 > ... > 0`, poles `p_n` of
+   finite (unbounded) order and a fixed nilpotent `N`, the cocycle
+   `exp(t^(alpha_n) p_n N)` is nontrivial over `I_Gamma` and trivial over
+   `I[(t^(alpha_1))^-1]`, with explicit `SL` frames of valuation at least
+   `-(nu-1) alpha_1` (halved if `alpha_1/2 ∈ Gamma`); over `Q` with
+   `alpha_n → 0` every budget `-epsilon` suffices, and budget 0 does not.
+2. **The printed examples** (Theorem 35.1, Corollary 35.2): the hidden and deep
+   examples of Theorems 8.2 and 9.2 are trivial over `I_Q[t^-1]`, with bounds
+   `-3/4` and `-(2r-3)/4`; the deep case is a merge corollary, obtained by an
+   integral reduction to the rank-two cocycle
+   `I + (-1)^r t^(r-2+1/n)/(z-n) E_(1r)`.
+3. **Rank one and extensions** (Proposition 36.1, Corollary 36.2, Theorems
+   36.3–36.4): pole line classes stay nontrivial over `H_Gamma` (the
+   global-divisor report's theorem, extended to finite-order poles);
+   `C^N / C^(N)` injects into `Ext^1` of sheaves of `H_Gamma`-modules by classes
+   whose middle bundle is free.
+4. **Omnific sine family and global algebra** (Theorem 37.1, Proposition 37.2,
+   Theorem 37.3, Corollary 37.4, Theorem 37.5): `S(x) ∈ Oz \ {0}` for every
+   ordinary real `x`, `S(a_n) = omega^(1/n)`, no common-domain `B` with
+   `B(a_n) = t^(1/n)`; `(sin(pi z), S)` is proper, locally the unit ideal, not
+   principal, with no common zero on any finite surcomplex halo, so
+   `O(C)((t^Delta))` is not Bézout; `f, S` is a regular sequence,
+   `pd(A/(f,S)) = 2`, `Tor_2 ≠ 0`, the ideal is not flat; each nonprincipal
+   ultrafilter gives a distinct maximal ideal with residue field
+   `C_U((t^Delta))`.
+5. **Zeros on finite halos** (Lemma 38.1, Theorem 38.2): exactly one real zero
+   `a_n + epsilon_n` for each `n >= 2`,
+   `epsilon_n = (-1)^(a_n+1) a_n omega^(-(1-1/n)) + ...`, none elsewhere.
+
 ## What is NOT claimed
 
-Section 30 lists **29** numbered limitations (22 before Part III): items 1–11
-from Part I's source, 12–21 from Part II's, 23–28 from Part III's, item 22 on
-the two criteria, and item 29 added by the merge; Part III's generic
-limitations are folded into items 1, 8, 9, 10, 11 and 21. None was weakened.
+Section 30 lists **39** numbered limitations (22 before Part III, 29 before
+Part V): items 1–11 from Part I's source, 12–21 from Part II's, 23–28 from
+Part III's, 30–38 from Part V's, item 22 on the two criteria, and items 29 and
+39 added by the merges; Part III's generic limitations are folded into items 1,
+8, 9, 10, 11 and 21, Part V's into items 1, 9, 10 and 11. None was weakened.
 The load-bearing ones:
 
-* Nothing is refereed or proof-assistant verified; all three sources are
+* Nothing is refereed or proof-assistant verified; all four sources are
   self-described AI-assisted research drafts. No Lean code is supplied.
-* **Nontriviality of Part I's examples is proved only over `I_Gamma`.** It is
-  *not* claimed over `H_Gamma`, where positive monomials are units and no
-  reduction homomorphism to `O` exists. Part III does not change this: its
+* **Nontriviality of Part I's examples is proved only over `I_Gamma`.** It was
+  never claimed over `H_Gamma`, and Part V shows it is false there: the hidden
+  and deep examples are trivial over `H_Gamma` (section 31, "Monomial
+  localization (answered for the printed examples; re-scoped)"). Part III's
   localization-resistant bundles are a **different, essential-singularity
-  family**, and the pole-only hidden and deep examples remain open over
-  `H_Gamma` (section 31, "Monomial localization (open, re-scoped)"). Over
-  `Mer((t^Gamma))` they are trivial.
+  family**. Over `Mer((t^Gamma))` Part I's examples are trivial as well.
+* **Part V** settles the printed repository question, not every pole-only
+  cocycle: fixed nilpotent direction and finite-order poles only; no
+  classification of varying or noncommuting directions, no exact criterion
+  after localization, nothing about essential singularities; the bounds
+  `-3/4`, `-(2r-3)/4` are not claimed optimal; the diagonal `SL` examples are
+  not decided over `H_Gamma`. Omnific values are claimed at ordinary real
+  arguments only; prolongation, zeros and the no-common-zero statement concern
+  finite surcomplex halos only, never infinite arguments; `S` is not a strongly
+  entire series. The ideal-theoretic statements concern the global ring, not
+  sheaves; the ultrafilter ideals are not claimed to exhaust the maximal ideals
+  above `(f, S)`; `Ext^1` is in sheaves of modules. The Picard decomposition is
+  elementary unit-group algebra; the implicit root lemma is not a new Hensel
+  theorem; no Oka principle is transferred to the Hahn sheaf. The manuscript
+  audited this report only (the overlaps with the global-divisor and
+  analytic-geometry reports were found by the merge) and used Wikipedia for
+  orientation only.
 * Corollary 27.2 concerns the displayed families only: it does **not** say that
   every class of `Pic(C, H_Gamma)` dies over `M_Gamma`, and nothing is claimed
   about the Picard group of `M_Gamma` or about rank-one `M_Gamma`-bundles.
@@ -401,6 +537,26 @@ The load-bearing ones:
   Picard classes become trivial over `M_Gamma` (Corollary 27.2), which does not
   contradict its dichotomy (that concerns `I` and `H` only). Its compact-base
   sheaf `M_Gamma` is the same recipe as Part III's.
+  Part V prints its Picard reduction and line-class persistence once, as
+  citations (Proposition 36.1, Corollary 36.2), and its interpolation
+  criterion `global:cor:interp` as Proposition 37.2; the nonsplitting of
+  Theorem 36.3 is an instance of its Cousin criterion.
+* `docs/surcomplex/analytic-geometry/` — its fixed-divisor quotient, exact
+  Bézout criterion, uniform corona failure and ultrafilter ideals on the unit
+  disk (`analytic:thm:fixed-quotient`, `analytic:thm:fixed-bezout`,
+  `analytic:thm:fixed-corona`, `analytic:thm:fixed-two-ideals`) use the same
+  cardinal-function mechanism with `sin(pi/(1-z))`; Part V's Theorems
+  37.3–37.5 are plane versions. Part V adds the omnific values, `pd = 2` and
+  the zero classification.
+* `docs/surcomplex/trigonometry/` — its canonical sine has zeros exactly
+  `pi Z` on the strip and `pi Oz` globally (`trigonometry:thm:striptrig`,
+  `trigonometry:cor:globalzeros`); Part V's finite-halo zero set of
+  `sin(pi z)` is `Z`, consistent with the first, and Part V evaluates nothing
+  at infinite arguments.
+* `docs/surcomplex/entire-functions-at-arbitrary-rank/` — its ring of strongly
+  entire series *is* Bézout with an order unit (`ent:thm:bezout`); Part V's
+  non-Bézout statement is about the different common-domain ring
+  `O(C)((t^Delta))`. No conflict.
 * `docs/surcomplex/differential-equations/` — its theorem *"Monodromy valued in
   `GL_d(K_Gamma)`"* is the **forward** map; Theorem 14.2 here is the converse for
   near-identity representations.
@@ -412,7 +568,9 @@ The load-bearing ones:
 
 Parts I–II reviewed the repository at commit
 `39f2be6667ade51bca2b45daa47e289d69c09764` (21 September 2026); Part III's
-source at `0097304c7ae9d5de46d2ea342e2494f8fc126303` (22 September 2026). No
+source at `0097304c7ae9d5de46d2ea342e2494f8fc126303` (22 September 2026);
+Part V's source at `0865f043aec113c14c69ef45006bbc7546a4e75a` (23 September
+2026). No
 source audited every manuscript in the repository, and one repository
 code-search response was marked incomplete; its empty result is not evidence
 of absence.
@@ -432,7 +590,7 @@ Standalone LaTeX with an internal bibliography: no `.bib`, no graphics.
 
 ## Code and data
 
-`code/` and `data/` hold all three delivered suites and their recorded outputs,
+`code/` and `data/` hold all four delivered suites and their recorded outputs,
 unchanged. No suite verifies a theorem; each audits finite identities and
 prints its own scope disclaimer. Section 29 describes exactly what each checks.
 
@@ -443,6 +601,8 @@ python "$check_dir/08-polar-support-matrix-cousin-verify.py"
 python "$check_dir/09-support-monodromy-realization-verify-examples.py"
 python "$check_dir/10-localization-bundles-verify.py" --max-rank 6 \
   --output "$check_dir/localization-verification.json"
+python "$check_dir/11-pole-localization-verify.py" \
+  --output "$check_dir/pole-localization-verification.json"
 ```
 
 * Part I: 2,899 exact rational-arithmetic checks. Recorded run Python 3.13.5 /
@@ -460,6 +620,16 @@ python "$check_dir/10-localization-bundles-verify.py" --max-rank 6 \
   the Python version field. The two recorded files are byte-identical. It does
   **not** check the essential-singularity theorem, well-ordering, descent,
   classification, undecidability or novelty.
+* Part V: **215** exact SymPy checks (matrix identities 17, symmetric powers in
+  degrees 1–6 36, finite-node pole cancellation 48, cardinal-sine formulas
+  106, finite support sanity 8). Recorded run Python 3.13.5 / SymPy 1.14.0
+  (pinned in `data/11-pole-localization-requirements.txt`); an independent
+  rerun on a copy under Python 3.14.4 / SymPy 1.14.0 reproduced the recorded
+  JSON except for the Python version field. It does **not** check infinite
+  supports, Weierstrass existence, sheaf cohomology, the transfinite implicit
+  recursion, or Corollary 35.2 (the merge checked that corollary's matrix
+  identities symbolically for `3 <= r <= 8`; that check is not shipped, and the
+  corollary rests on its written proof).
 
 **Operational cautions, verified directly rather than read from a README.**
 
@@ -476,3 +646,15 @@ python "$check_dir/10-localization-bundles-verify.py" --max-rank 6 \
    here match it, but the manifest itself is not shipped.
 4. `data/10-localization-bundles-build_qa.json` is layout QA of source 10's own
    28-page PDF (not shipped), not of this article and not theorem verification.
+5. The Part V script **writes its own evidence** by default: without
+   `--output` it writes `verification_results.json` beside itself (under
+   `code/` in this layout; the record under `data/` is not touched). Run it on
+   a copy with `--output`, as above.
+6. The Part V archive carried a SHA-256 manifest: all eight entries verified,
+   and the five files placed here (`code/11-…`, three `data/11-…` files and
+   `11-pole-localization-SOURCE_AUDIT.md`) are byte-identical to the delivered
+   ones; the manifest itself is not shipped. The source audit and the
+   manuscript's own README name `article.tex`, `article.pdf`, `verify.py` and
+   `SHA256SUMS`, which are not shipped here (the article is merged into this
+   report's `article.tex`). `data/11-pole-localization-build_report.json` is
+   layout QA of the manuscript's own 27-page PDF, not of this article.
