@@ -22,13 +22,15 @@ now assembles seven manuscripts, and the
 sixteen. The Diophantine proof review covers the original material in
 Sections 1–10 and current Sections 14 and 16, plus the new elementary
 definability, constant-term and reconstruction Sections 11–13. Added material in Sections 6
-and 10, Sections 15.8–15.12 and 17–18, and remaining source reconciliation need review;
+and 10, Sections 17–18, and remaining source reconciliation need review;
 the [reconciliation](surreal/omnific-diophantine-geometry/RECONCILIATION.md)
-records that boundary. Sections 15.1–15.7 now have a proof review of
-denominator ideals, the multiplier theorem, rational-function and curve
-applications, congruence orbits and density. The
+records that boundary. Section 15 now has a proof review throughout:
+denominator ideals, rational-function and curve applications, dense
+arithmetic fibers, localization, scale defects and Gaussian fractions.
+It corrects the agreement locus of the two residues and distinguishes
+finite real dimension from infinite module length in the scale defect. The
 fraction companions (08–09) and quotient companions (17–19) are integrated;
-the remaining fraction proofs and the quotient additions await review. The rectification
+the later Diophantine and quotient additions await review. The rectification
 addition to [entire functions](surcomplex/entire-functions-at-arbitrary-rank/)
 is integrated, but remains outside its earlier review scope.
 
@@ -122,7 +124,7 @@ not extend their earlier proof-review scope.
 | [Vector and tensor fields](surreal/vector-and-tensor-fields/) | Layered tensor calculus with surreal coefficients in every dimension: Hahn-supported smooth fields, Taylor prolongation, Hodge and Stokes; 3D calculus and Minkowski fields as parts; not a physics claim |
 | [Euclidean three-space](surreal/euclidean-three-space/) | Coordinate and spherical geometry of `No³` with finite angles, and the rotation group `SO(3,No)` as a split extension with a perfect infinitesimal kernel; normal subgroups by valuation cuts and the universal set-sized quotient of `SO(3,No)` |
 | [Finite surreal probability](surreal/finite-surreal-probability/) | Surreal-valued probability on finite algebras: conditioning on infinitesimal events, log-odds, entropy, scoring rules; compare the measures report for countable additivity |
-| [Omnific Diophantine geometry](surreal/omnific-diophantine-geometry/) | Arithmetic and Diophantine equations over the omnific integers; constant-term transfer, rigidity and definability; seven-source assembly; reviewed original material in Sections 1–10, new Sections 11–13 and current Sections 14 and 16; other added material and later review pending |
+| [Omnific Diophantine geometry](surreal/omnific-diophantine-geometry/) | Arithmetic and Diophantine equations over the omnific integers; constant-term transfer, rigidity and definability; seven-source assembly; reviewed original material in Sections 1–10, new Sections 11–13 and current Sections 14–16; other added material and later review pending |
 | [Set-sized quotients of omnific integers](surreal/set-sized-quotients-of-omnific-integers/) | Constant-term factorization of maps to set-sized rings and cardinal/homological thresholds; sixteen-source assembly; relation modules, ordinary-output loci and normalization fibres added; proof review pending |
 | [Omnific-preserving automorphisms](surreal/omnific-preserving-automorphisms/) | Convex-scale stabilizers, definable constants, nondefinable monomials and algebraic-parameter rigidity; four-source assembly, review pending |
 | [Omnific groups and lattices](surreal/omnific-groups-and-lattices/) | Algebraic groups, elementary kernels and missing lattice minima over omnific integers; three-source assembly, review pending |

@@ -12,7 +12,7 @@ installed, run:
 
 ```sh
 lake exe cache get
-lake build
+LEAN_NUM_THREADS=2 lake build
 ```
 
 Lean warnings are treated as errors, including warnings for incomplete proofs.
@@ -30,6 +30,15 @@ and the source manuscripts preserved in Git history. The
 [coverage and dependency ledger](docs/FORMALIZATION.md) records their statements,
 the proposed Layer A–E implementation order, and the exact scope of each
 implemented result.
+
+The [research collection](docs/README.md) also includes work still awaiting
+Lean proofs. The [omnific Diophantine report](docs/surreal/omnific-diophantine-geometry/)
+exhibits dense arithmetic fibers with opposite denominator behavior and
+computes the failure of flatness when finer monomial scales are added.
+Its fraction section now has a full manuscript proof review, including
+a correction to the agreement locus of standard part and rational residue.
+The [review record](docs/REVIEW.md) distinguishes these written proofs
+from formal verification and records the remaining review scope.
 
 The complex cosine fold now has its exact infinitesimal root classification,
 real and imaginary branch behavior, half-valuation law, and complete strong
