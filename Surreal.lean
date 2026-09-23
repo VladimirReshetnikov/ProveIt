@@ -582,6 +582,7 @@ import Surreal.Foundations.OmnificResidues
 import Surreal.Foundations.OmnificIntegerDivisors
 import Surreal.Foundations.OmnificOrdinaryArithmetic
 import Surreal.Foundations.OmnificFiniteQuotients
+import Surreal.Foundations.OmnificConstantRigidity
 import Surreal.Surcomplex.OmnificDegree
 import Surreal.Surcomplex.OmnificUnits
 import Surreal.Surcomplex.NormalFormDegree
