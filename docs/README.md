@@ -22,10 +22,11 @@ now assembles seven manuscripts, and the
 sixteen. The Diophantine proof review covers the original material in
 Sections 1–10 and current Sections 14 and 16, plus the new elementary
 definability, constant-term and reconstruction Sections 11–13. Added material in Sections 6
-and 10, Sections 15.5–15.12 and 17–18, and remaining source reconciliation need review;
+and 10, Sections 15.8–15.12 and 17–18, and remaining source reconciliation need review;
 the [reconciliation](surreal/omnific-diophantine-geometry/RECONCILIATION.md)
-records that boundary. Sections 15.1–15.4 now have a proof review of
-denominator ideals, the multiplier theorem and the affine dichotomy. The
+records that boundary. Sections 15.1–15.7 now have a proof review of
+denominator ideals, the multiplier theorem, rational-function and curve
+applications, congruence orbits and density. The
 fraction companions (08–09) and quotient companions (17–19) are integrated;
 the remaining fraction proofs and the quotient additions await review. The rectification
 addition to [entire functions](surcomplex/entire-functions-at-arbitrary-rank/)

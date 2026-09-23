@@ -79,13 +79,21 @@ which differs from `a ≠ 0` and from invertibility. The graph predicate
 need not be unique. The predicate `Mult(a,b)` describes the fraction
 `a/b` preserving the ideal under multiplication, with `b ≠ 0`. Recovering
 the coefficient field requires both a nonzero multiplier and its inverse
-to be multipliers. For fractions, `𝔇(x₁,…,xₙ)` includes zero; actual
+to be multipliers. The interpreted value group uses `v(x) ≥ v(y)` exactly
+when `x/y` is finite, consistent with `v = −leading exponent`.
+
+For fractions, `𝔇(x₁,…,xₙ)` includes zero; actual
 denominators are its nonzero members. It is defined for affine tuples,
 not for the projective point at infinity. In the multiplier theorem, if
 `λv` is primitive integral, the allowed scalar set is `λR_ℤ` for the
 original vector and `R_ℤ` after rescaling the vector by `λ`.
-The interpreted value group uses `v(x) ≥ v(y)` exactly
-when `x/y` is finite, consistent with `v = −leading exponent`.
+The specialization label is a real projective point, so it can be infinity
+even for an affine surreal value. The topology on `P¹(No)` uses the order
+topology in both affine charts, with reciprocal coordinate `1/z` at infinity.
+For `0 ≠ t ∈ Π`, the fixed field `ℝ(t)` is discrete in the induced surreal
+order topology; its degree topology is a different, non-discrete topology.
+The focusing matrix `F_{x,b}`
+is the identity when `b = 0`; its value `x + 1/b` at infinity requires `b ≠ 0`.
 
 For the full proper class, `Oz/J ≅ ℤ` and, for nonzero ordinary `n`,
 `Oz/nOz ≅ ℤ/nℤ` describe quotient
