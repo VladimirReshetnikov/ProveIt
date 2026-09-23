@@ -2082,6 +2082,102 @@ The default audit accepted 9,427 declarations using only `propext`,
 has 2,535 statements in 49 reports. The Drazin source improvements add no
 Lean coverage.
 
+## Fredholm spectral main-text review
+
+Reviewed Part IV, Sections 38–48, of the infinite-dimensional Hahn spectral
+report in dependency order: analytic identity lifting, the compact range
+defect, Riesz projections and direct rotation, finite Hermitian clusters,
+the main classification, the unitary obstruction, trace and determinant,
+finite coupling and the coherent analytic boundary, then higher-rank
+examples. Independent checks of the determinant chain and counterexamples
+found no failure under the stated hypotheses. The abstract now explicitly
+requires infinite-dimensional separable `H` for the compact-spectrum
+formula; finite-dimensional injective residues do not have its whole monad.
+The comparison table now says perturbations need not commute with `T`,
+which includes commuting perturbations and zero.
+
+Section 44's determinant and Fredholm alternative use fewer hypotheses
+than the compact-spectrum classification. Their scope now allows any
+ordinary complex Hilbert `H` and any set-sized ordered abelian `Γ`, including
+`H = 0` and `Γ = 0`, without divisibility, self-adjointness or a compact
+residue. The proof needs finite-word support, the ordinary trace-class
+Fredholm alternative and finite linear algebra over the Hahn field, with
+no scalar root extraction. This is an independently checked extension of
+the written source, **Pending** in Lean. The subsequent compact-spectrum,
+finite-coupling and no-characteristic applications retain their stated
+hypotheses. Summaries and the shared notation guide distinguish these scopes.
+
+Two displayed standard statements have explicit typing clarifications:
+`ihs:fr:prop:detidentities` names a fixed Hilbert conjugation for operator
+conjugation, while the canonical adjoint identity is separate;
+`ihs:fr:lem:correction` requires bounded finite-rank factors. The other
+91 displayed standard statements are textually unchanged, but Section 44's
+broader hypotheses change the effective scope of its results. No Lean
+implementation mapping is added or extended.
+
+Expanded the finite-direction Taylor argument and the contour's ordinary
+resolvent bound, without assuming a common neighbourhood for all clusters
+or all coefficient directions. Gave the direct rotation's constant term,
+the zero-dimensional Hermitian case, and explicit cluster kernel/cokernel
+maps. The exterior-power bound proves the determinant is an entire map
+on the trace-class Banach space; the rectangular finite-rank identity is
+derived from finite linear algebra. The Fredholm proof now types the
+Sylvester lifting in `B(C^m,H)`, allows negative exponents in the finite
+matrix inverse, and gives both induced quotient maps and their composites.
+
+The counterexample now also excludes a common complex disc of labelled
+analytic eigenvalues: the ordinary operator norm and Cauchy's estimate
+would uniformly bound their second coefficients, contradicting the computed
+growth. Trace-norm convergence and Cauchy's formula justify convergence of
+every fixed finite-section determinant coefficient, separate from the
+divergent product of the infinite operator's labelled branches. Corrected
+the reciprocal-coupling sentence to exclude `z=0`. Expanded the coherent
+nonvanishing argument with the identity theorem and an explicit monomial
+beyond its threshold, and retained the precise lexicographic exponents in
+the repeated-residue example.
+
+Targeted primary checks verified Kato's direct-rotation formula as recalled
+by [Simon, Equation (4)](https://arxiv.org/pdf/1703.05437), the exterior-power
+determinant inputs and trace-norm perturbation estimate in
+[Bornemann, Section 3 and Equation (4.1)](https://arxiv.org/pdf/0804.2543),
+and arbitrary-rank Hahn algebraic closedness in
+[Poonen, Corollary 4](https://math.stanford.edu/~conrad/Perfseminar/refs/poonencomplete.pdf).
+The stronger Banach-space analyticity and rectangular identity are explained
+in the article rather than attributed as explicit statements of Bornemann.
+These checks do not renew a priority search or exhaust the remaining
+foundational imports and original-source reconciliation.
+
+Baseline and revised PDFs each completed three LaTeX passes, at 98 and
+99 pages, with the same single underfull notice in the novelty table and
+no new diagnostics. All 404 source labels and their numbers are preserved;
+the report has 93 standard results, including Part IV's 21. All 20 historical
+code, data and provenance files are unchanged. The copied Part IV verifier
+passes 1,268 finite checks with Python 3.13.14 and SymPy 1.14.0; its JSON
+differs from the historical record only in Python version, elapsed time and
+timestamp. These finite checks do not establish the infinitary assertions
+or the broader determinant/Fredholm scope.
+
+All 36 pages with changed text or pagination were rendered and visually
+inspected: revised physical pages 2–3, 6–8, 10–20, 72–87 and 93–96. No layout
+issue remains. A final interface consistency edit was followed by another
+three-pass build; the affected interface pages were inspected in that build,
+and the other inspected page images were unchanged. The README's ten Part IV
+numbered result references match the final auxiliary file. The independent
+inventory still has 2,535 standard statements in 49 reports; all 2,866 cited
+source labels and 1,149 local Markdown destinations resolve. This review
+changes source exposition and scope, with no new Lean coverage.
+
+Merged `cb479fe`, including `f6fe627`'s amplitude-intersection and signed
+tangency formalizations. A bounded source/declaration review confirmed all
+seven new root imports and the three new mapping rows, including the signed
+error estimate and the tangent example's positive-infinitesimal parameter;
+SSA reconstruction remains pending. No manuscript or historical artifact
+changed upstream. The combined `LEAN_NUM_THREADS=2 lake build` passed all
+4,083 jobs, and the default audit accepted 9,588 declarations using only
+`propext`, `Classical.choice` and `Quot.sound`. After merging, all 2,872 cited
+source labels and 1,156 local Markdown destinations resolve; the inventory
+remains 2,535 standard statements in 49 reports.
+
 ## Remaining scope
 
 Batch 22, placed in `7b5f934`, was assembled in `68e2960` and catalogued
@@ -2138,9 +2234,9 @@ above; remaining foundational imports and source reconciliation are separate.
 The holonomic report now has the source-10 nonlinear and source-11/12
 coefficient-field main-text reviews recorded above, including the new mixed
 fraction-field consequence. Its remaining foundational/source reconciliation
-and formalization obligations are separate. The Drazin spectral addition has
-the Part III main-text review above; its remaining imports/source
-reconciliation and the Part IV Fredholm main-text review remain pending.
+and formalization obligations are separate. The spectral additions have
+the Part III Drazin and Part IV Fredholm main-text reviews above; their
+remaining imports/source reconciliation and formalization remain pending.
 The critical-potential main-text review now
 covers Sections 35–42; remaining imports and source reconciliation are pending.
 Their inclusion in the statement index does not extend an earlier proof-review
