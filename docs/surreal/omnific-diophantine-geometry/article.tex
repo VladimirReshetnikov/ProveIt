@@ -6599,8 +6599,9 @@ squarefree certificate and two-ring differential principle, through symmetric
 forms and inheritance. It also covers the curve classification in
 \cref{odg:cr:sub:positivegenus,odg:cr:sub:affine}, including arbitrary coefficient
 descent and the logarithmic proof, and the arithmetic fibers, polynomial witnesses
-and separated-model descent in \cref{odg:cr:sub:arith}. Projective coordinates
-and subsequent geometric applications remain outside it; imported foundations are
+and separated-model descent in \cref{odg:cr:sub:arith}. It also covers projective
+coordinates and their ideal obstruction in \cref{odg:cr:sub:projective}.
+Singular curves and subsequent geometric applications remain outside it; imported foundations are
 identified separately.
 A sixth manuscript, source C15
 (prefix \fn{15-}), reproves much of the part independently and extends the two-ring
@@ -7950,8 +7951,13 @@ points, and it gives no height bound \src{C12}.
 \subsection{Projective coordinates}\label{odg:cr:sub:projective}
 
 A nonzero homogeneous tuple over a field determines a projective point. Over a
-ring it determines one only when its coordinate ideal is invertible, for example
-the unit ideal \src{C10, C11, C12, C13, C14}. By \cref{odg:cor:projectiveclear},
+domain $S$, a tuple $\mathbf a$ generates the coordinate ideal
+$J=\sum_i Sa_i$. If $J$ is invertible, the surjection $S^{N+1}\to J$ defines
+a projective $S$-point, as proved below. Here invertibility means that
+$JJ'=S$ for a fractional ideal $J'\subseteq\Frac S$; it does not mean
+$J=S$. Every nonzero principal ideal is invertible, including a proper one.
+The special case $J=S$ is a unimodular tuple
+\src{C10, C11, C12, C13, C14}. By \cref{odg:cor:projectiveclear},
 every point of $\mathbb P^n(\No)$ has coordinates in $\Pi^{n+1}$, and such
 coordinates generate a proper ideal; sources C10 and C12 reprove this clearing,
 which may fail when the clearing exponent is confined to a fixed workspace
@@ -7966,12 +7972,16 @@ then $\mathbf a=\ct(\mathbf a)\in\mathfrak o^{N+1}$.
 \end{theorem}
 \begin{proof}
 Choose $b_i\in R$ with $\sum_ib_ia_i=1$ and put $c_i=\ct(a_i)$, $d_i=\ct(b_i)$, so
-$\sum_id_ic_i=1$. The unimodular tuple defines a point of $X(\crA)$, which is
+$\sum_id_ic_i=1$. In particular $\mathbf c$ is nonzero and unimodular over
+$\mathfrak o$. The original unit-ideal identity remains valid in $\crA$, so
+the tuple defines a point of $X(\crA)$, which is
 constant; applying $\ct$ identifies it with $[c_0:\cdots:c_N]$. So
 $a_ic_j=a_jc_i$ in $\crH$ for all $i,j$. Put $s=\sum_jd_ja_j\in R$. Then
 $sc_i=\sum_jd_ja_jc_i=a_i\sum_jd_jc_j=a_i$, and $1=\sum_ib_ia_i=s\sum_ib_ic_i$, so
 $s\in R^\times=\mathfrak o^\times$ (\cref{odg:cr:lem:rings}). As $\ct(s)=\sum d_jc_j=1$
-and $s$ is constant, $s=1$ and $a_i=c_i$.
+and $s$ is constant, $s=1$ and $a_i=c_i$. This last step upgrades equality of
+projective points to equality of the given tuples: the residual scalar is
+forced to be the constant unit $1$.
 \end{proof}
 
 \begin{lemma}[Invertible coordinate ideals \src{C12}]\label{odg:cr:lem:coordinatepoint}
@@ -7981,9 +7991,14 @@ $\langle\mathbf a\rangle$ is invertible, the tuple defines a morphism
 $\Spec S\to X$ with that $L$-point.
 \end{lemma}
 \begin{proof}
-The surjection $S^{N+1}\to\langle\mathbf a\rangle$ onto an invertible module defines a
-morphism to $\mathbb P^N_S$ \cite[Tag 01ND]{StacksProjSpace}. The inverse image of
-$X$ is a closed subscheme of $\Spec S$ whose ideal vanishes in $L$, hence is zero.
+Put $J=\langle\mathbf a\rangle$. The surjection $S^{N+1}\to J$, sending the
+$i$th basis vector to $a_i$, is an invertible quotient. It defines a morphism
+$f:\Spec S\to\mathbb P^N_S$ \cite[Tag 01ND]{StacksProjSpace}. Under the natural
+identification $J\otimes_S L\cong L$, its generating sections become precisely
+the coordinates $a_i$, so $f_L=[\mathbf a]$. The inverse image of $X$ is a
+closed subscheme of $\Spec S$, say with ideal $I$. Since $f_L$ factors through
+$X$, every element of $I$ maps to zero in $L$. Injectivity of $S\hookrightarrow L$
+gives $I=0$, proving that $f$ factors through $X$.
 \end{proof}
 
 Only this sufficient direction is used; no claim is made that every projective
@@ -7998,8 +8013,9 @@ invertible if and only if it is principal, if and only if $p\in X(\Bbbk)$.
 If $\langle\mathbf a\rangle$ is invertible, \cref{odg:cr:lem:coordinatepoint} gives an
 $\crA$-point, which is constant. If $p=[c_0:\cdots:c_N]$ with $c_i\in\Bbbk$, then
 $a_i=\mu c_i$ with $\mu=a_j/c_j\in\crA$ for some $c_j\ne0$, and the constants $c_i$
-generate the unit ideal, so $\langle\mathbf a\rangle=\mu\crA$. A nonzero principal
-ideal is invertible.
+generate the unit ideal, so $\langle\mathbf a\rangle=\mu\crA$. Here $\mu\ne0$
+because $\mathbf a\ne0$. Its inverse fractional ideal is
+$\mu^{-1}\crA$, proving invertibility without requiring $\mu$ to be a unit.
 \end{proof}
 
 \begin{theorem}[Omnific coordinate ideals \src{C12}]\label{odg:cr:thm:ozideal}
@@ -8011,15 +8027,28 @@ $[\mathbf a]\in\mathcal X(\Q)$. If $\langle\mathbf a\rangle=\Oz$, every $a_i$ is
 ordinary integer.
 \end{theorem}
 \begin{proof}
-Put the generators, an inverse fractional ideal with its finitely many generators,
-and the finite relations witnessing invertibility into one workspace. By
+Write $J=\sum_i\Oz a_i$. Invertibility gives finitely many
+$b_i\in\No$ such that
+\[
+ \sum_i a_i b_i=1,\qquad a_jb_i\in\Oz\quad\text{for all }i,j.
+\]
+Indeed, expand a finite expression of $1$ in $JJ'$ in terms of the given
+generators $a_i$, absorbing its coefficients into $b_i\in J'$.
+Write each $b_i$ as a fraction of omnific integers. Put their numerators and
+nonzero denominators, all $a_i$, and all products $a_jb_i$ into one workspace.
+Then $b_i\in\Frac(\Oz_\Gamma)$ and
+$J'_{\Gamma}=\sum_i\Oz_\Gamma b_i$ is a fractional ideal there (the product
+of the chosen denominators clears it). The displayed identities give
+$J_\Gamma J'_\Gamma=\Oz_\Gamma$. This uses finitely many witnesses, not a
+Noetherian hypothesis or a spectrum of a proper-class ring. By
 \cref{odg:cr:lem:coordinatepoint} the tuple is a point of $\mathcal X(\Oz_\Gamma)$,
 which is ordinary by \cref{odg:cr:thm:descent}; so $[\mathbf a]$ is rational. If
 $[\mathbf a]$ is rational, choose a primitive integer representative $\mathbf c$ and
 integers $r_i$ with $\sum r_ic_i=1$; then $\mathbf a=\mu\mathbf c$ with
 $\mu=\sum r_ia_i\in\Oz$ and $\langle\mathbf a\rangle=\mu\Oz$ (as after
 \cref{odg:thm:realray}). A nonzero principal ideal is invertible. If
-$\langle\mathbf a\rangle=\Oz$, then $\mu\in\Oz^\times=\{\pm1\}$.
+$\langle\mathbf a\rangle=\Oz$, then $\mu\in\Oz^\times=\{\pm1\}$, giving the
+ordinary tuple $\mathbf a=\pm\mathbf c$.
 \end{proof}
 
 \begin{corollary}[Rational projective points \src{C14; also C10, C12, C13, C15}]\label{odg:cr:cor:projectiveQ}
@@ -8043,6 +8072,14 @@ hence unimodular over $\Oz$ \src{C14}. The last assertion is
 \cref{odg:cr:thm:ozideal} \src{C12}.
 \end{proof}
 
+For the Gaussian analogue, a $\Q(i)$-point has a primitive $\Z[i]$-tuple
+because $\Z[i]$ is a Euclidean domain. Its B\'ezout identity makes it
+unimodular over $\Og$. Conversely the first assertion makes any unimodular
+$\Og$-tuple Gaussian integral. Two primitive Gaussian representatives of
+the same point differ by one of $1,-1,i,-i$. Thus in the same rigid setting
+the Gaussian unimodular representatives are exactly the primitive ordinary
+Gaussian tuples, up to those units \src{C14}.
+
 An ordinary integer tuple is unimodular over $\Oz$ exactly when its coordinates
 generate $\Z$: apply $\ct$ to an omnific witness, and use an ordinary B\'ezout
 identity for the converse \src{C13}. For the Fermat curve of exponent $n\ge3$,
@@ -8058,10 +8095,20 @@ common nonunit divisor is a different condition in the non-B\'ezout ring $\Oz$, 
 complementary to \cref{odg:frac:cor:curves}: there, on rational curves, primitive
 coordinates exist exactly at points of rational specialization; here, on rigid
 projective targets, only constant points have unimodular or invertible coordinates.
-Both agree that a principal coordinate ideal means a rational point.
+The rationality conditions are different: the earlier result tests the
+constant-term specialization, whereas the rigid-target result tests the
+projective point itself. For example $[\omega:1]\in\mathbb P^1(\No)$ has
+coordinate ideal $\Oz$ and specialization $[0:1]\in\mathbb P^1(\Q)$, but
+is not a rational point. Thus a principal coordinate ideal alone does not
+force rationality on a rational curve. For a constant projective direction,
+the two criteria agree by \cref{odg:thm:realray}.
 
 \begin{example}[A noninvertible coordinate ideal \src{C12}]\label{odg:cr:ex:denominator}
-Let $\mathcal E:\ Y^2Z=X^3-XZ^2+Z^3$, whose affine cubic has $\Delta_0=23$. In $\No$
+Let $\mathcal E:\ Y^2Z=X^3-XZ^2+Z^3$, whose affine cubic has $\Delta_0=23$.
+It is squarefree, so the affine curve is smooth; its only point at infinity
+is $[0:1:0]$, where the derivative of the defining polynomial with respect
+to $Z$ is $1$. Thus the projective complex fiber is a smooth genus-one cubic.
+In $\No$
 put $x=\omega^2$ and
 \[
  y=\omega^3\bigl(1-\omega^{-4}+\omega^{-6}\bigr)^{1/2}
@@ -8069,12 +8116,16 @@ put $x=\omega^2$ and
  +\tfrac14\omega^{-7}-\tfrac3{16}\omega^{-9}+\cdots,
 \]
 so $y^2=x^3-x+1$ and $y\notin\BR$. With $M=\omega^\omega$ the tuple
-$(Mx,My,M)$ is omnific, since every exponent of $y$ is an integer at most $3$, and
+$(Mx,My,M)$ is purely infinite: the exponents of $y$ are ordinary integers,
+and $\omega+n>0$ for every ordinary integer $n$. Multiplication by $M$ shifts
+these exponents by $\omega$. The tuple
 represents the nonrational point $[x:y:1]$. By \cref{odg:cr:thm:ozideal} the ideal
 $\langle Mx,My,M\rangle=\langle My,M\rangle$ is neither invertible nor principal. The
 monomial $M$ is not a common divisor in $\Oz$, since $My/M=y\notin\Oz$, but
-$\omega^{\omega/2}$ is; so this tuple is not primitive and does not bear on the
-primitive question.
+$\omega^{\omega/2}$ is: dividing each coordinate by it leaves only exponents
+$\omega/2+n>0$, with $n$ ordinary. This divisor is a nonunit, so the tuple is
+not primitive and does not bear on the primitive question. The ideal equality
+uses $Mx=xM$ and $x=\omega^2\in\Oz$; it does not assert that $M$ divides $My$.
 \end{example}
 
 \begin{remark}[Field points outside the ring \src{C10; also C12, C13, C14, C15}]\label{odg:cr:rem:fieldpoints}
@@ -8087,7 +8138,14 @@ $y\notin\BR$ \src{C10}. Likewise $x=\omega^2$,
 $y=\omega^3(1+\omega^{-4})^{1/2}=\omega^3+\tfrac12\omega^{-1}-\tfrac18\omega^{-5}+\cdots$
 on $y^2=x^3+x$ \src{C14}, the point of \cref{odg:cr:ex:denominator}
 \src{C12, C13}, and, for real $a,b$, any positive infinite $x$ with the positive square
-root of $x^3+ax+b$ in the real closed field $\No$ \src{C15}. The binomial expansions are support-controlled Hahn sums. Truncating
+root of $x^3+ax+b$ in the real closed field $\No$ \src{C15}. This last existence
+statement by itself does not locate a negative tail: for example $a=b=0$,
+$x=\omega^2$ gives $y=\omega^3$ in $\Oz$, on a singular cubic. For the explicit
+nonsingular examples above the displayed first negative coefficient proves
+failure of membership in $\BR$. The binomial expansions are support-controlled
+Hahn sums: powers of the infinitesimal inside the square root have
+reverse-well-ordered union of supports and finitely many contributions at
+each exponent. Truncating
 the tail changes the equation: replacing $y$ by $\omega^3$ in
 \cref{odg:cr:ex:denominator} turns $\omega^6-\omega^2+1$ into $\omega^6$
 \src{C12, C14}. Clearing such a point by \cref{odg:cor:projectiveclear} gives an

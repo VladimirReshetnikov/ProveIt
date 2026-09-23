@@ -3643,6 +3643,46 @@ cited source references resolve, local Markdown destinations pass, and
 by this merge and remains 179 pages. This synchronization adds no Lean
 coverage for the reviewed geometric arguments.
 
+## Projective-coordinate proof review
+
+The Diophantine review now covers Section 17.4: the unimodular theorem,
+invertible-quotient construction, coordinate-ideal classification, rational
+projective corollary, elliptic example and field-point remark. The proofs
+distinguish invertibility from generating the unit ideal, identify the
+generic quotient coordinates, and explain the scalar step that recovers
+the original unimodular tuple. The full-class ideal theorem now exhibits
+finite inverse-ideal witnesses and includes their numerators, denominators
+and products in one workspace. The Gaussian case includes its four units.
+
+The cross-section claim that both the rational-curve and rigid-target
+results make a principal coordinate ideal imply a rational point was false.
+The counterexample `[ω:1]` has coordinate ideal `Oz` and rational
+constant-term specialization `[0:1]`, but is not a `ℚ`-point. The revised
+comparison keeps rational specialization distinct from rationality of the
+point itself and retains the rigid-target hypothesis. The notation guide
+also distinguishes this constant-term specialization from projective
+standard part `[1:0]`.
+
+The elliptic example now checks smoothness at infinity and gives the
+support inequalities behind its clearing monomial and common nonunit
+divisor. The field-point remark distinguishes square-root existence from
+the negative-tail obstruction and explains Hahn summability. Targeted C12
+and C14 comparisons and the projective-space reference are recorded in
+the report reconciliation. No theorem statement changes and no new Lean
+coverage is claimed. Section 17.5, later applications and full source
+reconciliation remain pending review.
+
+The three-pass article/catalogue builds produce 180/32 pages without
+warnings, unresolved references or bad boxes. Article PDF pages 114–117
+and catalogue pages 9–10 were inspected. All 200 standard statements,
+416 labels and existing numbers are unchanged. SymPy 1.14.0 verifies the
+displayed elliptic expansion through exponent −9, its squared identity
+to that order, the discriminant and the derivative at infinity; these
+finite checks do not prove the ideal classification. The independent
+inventory audit checks 3,759 results in 61 reports; all 4,301 cited source
+references resolve and the 1,562 local Markdown destinations pass.
+No Lean source changed in this review.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

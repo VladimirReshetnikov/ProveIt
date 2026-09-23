@@ -14,7 +14,7 @@ Vladimir Reshetnikov.
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 179 pages
+article.pdf                        the compiled report, 180 pages
 README.md                          this guide
 RECONCILIATION.md                  the source comparisons and precise proof-review scope
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
@@ -177,7 +177,11 @@ It makes equation descent through injective coefficient maps explicit, allows
 nonflat integral models, and distinguishes set-sized workspace fibers from
 proper-class fibers. Clearing denominators preserves the entire purely infinite
 fiber; finite-support witnesses can be chosen with integer coefficients.
-Section 17.4 onward and 18, the pointers added in Sections 6, 7
+Section 17.4 now has a proof review of unimodular coordinates and invertible
+coordinate ideals, including their finite workspace witnesses. It corrects the
+comparison with rational curves: rational specialization does not imply a
+rational projective point. The Gaussian unit factors and the elliptic
+noninvertible-ideal example are explicit. Section 17.5 and 18, the pointers added in Sections 6, 7
 and 14, the additions to Section 20, Section 21.4, the re-scoped notes to
 Questions 21.1, 21.3 and 21.8, and Questions 21.17–21.22 remain unreviewed.
 The elementary pass also covers the corresponding claims credited to

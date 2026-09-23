@@ -213,7 +213,9 @@ Hahn support ring when the exponent group is nonzero. The proof explains descent
 and the role of geometric punctures. The arithmetic review shows that an
 integer polynomial parametrization covers each entire exceptional fiber,
 including infinite-support points; a finite-support witness can always be
-chosen in the same fiber. These curve and fiber results remain pending in Lean.
+chosen in the same fiber. The projective review makes the coordinate-ideal
+obstruction explicit and separates rational points from rational specialization.
+These curve and fiber results remain pending in Lean.
 The [review record](docs/REVIEW.md) distinguishes these written proofs
 from formal verification and records the remaining review scope.
 Recent manuscript additions cover curve and differential rigidity, theta

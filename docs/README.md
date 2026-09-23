@@ -56,8 +56,8 @@ Those proofs now include support arguments and boundary examples. Source
 07's quartic and the elementary ring/Euler subsections 16.2–16.3 are also
 reviewed, with the trivial-exponent-group exception and the meaning of
 image inclusions made explicit. Later passes cover the rest of Section 16
-and Sections 17.1–17.3: differential rigidity, smooth curves, exact arithmetic
-fibers and separated-model descent. Projective coordinates, curve pointers
+and Sections 17.1–17.4: differential rigidity, smooth curves, exact arithmetic
+fibers, separated-model descent and projective coordinate ideals. Singular curves, curve pointers
 and later additions remain outside that review, with the exact boundary in its
 [reconciliation](surreal/omnific-diophantine-geometry/RECONCILIATION.md); its
 remaining geometric arguments and the other new reports and additions await
