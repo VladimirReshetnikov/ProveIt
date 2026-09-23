@@ -3,13 +3,13 @@
 **The finite-primitive criterion, the phase obstruction, and support-certified
 coordinate systems**
 
-A merged research report, 194 pages, built from eleven manuscripts. Everything
+A merged research report, 195 pages, built from eleven manuscripts. Everything
 in this directory other than `article.tex`, `article.pdf` and this README is
 preserved source material.
 
 ```
 article.tex                        the merged report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled 194-page report
+article.pdf                        the compiled 195-page report
 README.md                          this guide
 11-autonomous-dynamics-sources.md  member 11's literature and repository-review log, unmodified
 code/                              the verification programs and build scripts of the eleven
@@ -28,13 +28,15 @@ The current proof review covers the earlier scalar, matrix, workspace and
 coordinate arguments, the complete regular-singular main text (Sections
 23–28), and the autonomous proofs through the abelian image and speed
 threshold, together with their scope comparisons (Sections 29–34).
+The critical-potential review now covers the tower, summability and
+fundamental-pair arguments in Sections 35–36.
 
-The latest pass makes the finite decision procedure's input requirements
-explicit, illustrates the difference between formal and intrinsic time, and
-explains the noncommutative boundary by an invariant form that is not closed.
-It distinguishes current algebraic evaluation coverage from the pending
-intrinsic chain rule and geometric bridge. The critical-potential part,
-remaining imports and source reconciliation still require review. Detailed scope and validation are in the collection's
+The latest pass checks the imported ordinal tower formulas, expands the
+double sum's support and finite incidence, and gives unique Wronskian
+coordinates for every solution. It separates real powers from undefined
+non-real Conway exponents and illustrates the first two critical stages.
+Sections 37–42, remaining imports and source reconciliation still require
+review. Detailed scope and validation are in the collection's
 [review record](../../REVIEW.md).
 
 ## What the report is
@@ -1047,6 +1049,46 @@ PDF were unchanged by the merge. The independent statement audit still
 checks all 2,030 entries, and all 837 local Markdown destinations in 93
 files resolve. The incoming sign-lifting results retain their own scope;
 they do not supply the intrinsic derivative or geometric bridge.
+
+The first critical-potential pass reviewed Sections 35–36. It checked
+ADH arXiv v3, Lemma 2.3, Proposition 2.5, Lemmas 2.6–2.8 and the derivative
+formula on page 10, and pinned the bibliography link to that version.
+The proof now makes the double family's well-ordered support and its at-most-two
+coefficient incidence explicit, proves unique Wronskian coordinates, and
+includes the empty stage and the first two normalized solution pairs.
+It distinguishes sums of increments from the nonsummable family of
+partial potentials, and real powers from non-real Conway exponents.
+
+The PDF rebuilt in three passes at 195 pages without warnings or box issues,
+against a clean 194-page baseline; the changed pages were inspected.
+Member 13's copied verifier passed all 70 checks with Python 3.13.14 and
+SymPy 1.14.0, matching its delivered output apart from Python version.
+Separate exact checks covered the support order and coefficient incidence
+at lengths 1–12, both initial solution pairs and their Wronskians, and the
+two Cramer coordinate identities. These are finite checks, not verification
+of transfinite summability or the imported intrinsic derivation. All 51
+historical code, data and source-log files remain byte-identical. The full
+Lean build passed 3,887 jobs and the 5,998-declaration axiom audit. The
+independent source audit checks all 2,030 entries across 44 texts, and all
+837 local Markdown destinations in 93 files resolve. Sections 37–42 and
+the remaining imports and source reconciliation are still pending.
+
+The final sync for the Sections 35–36 review merged `1e74537`: batch 20's
+four assembled reports, measures and trigonometry expansions, catalogue
+updates, and `2b323f7`'s analytic-composition and Taylor-rule uniqueness
+proofs. The independent index audit checks 2,114 standard statements in
+44 reports. Three stale physics line references were refreshed. The audit
+also exposed five escaped-command control characters in the measures
+report's new probability cross-link: repaired `\texttt`, `\tfrac` and
+`\ref`, then rebuilt its 86-page PDF in three passes and inspected that
+paragraph. Both the upstream baseline and repaired build have no warnings
+or box issues. All other incoming article sources are unchanged by this
+integration check, including the reviewed differential-equations source
+and PDF. The combined Lean build passes 3,890 jobs and audits 6,044
+declarations using only `propext`, `Classical.choice` and `Quot.sound`.
+All 876 local Markdown destinations in 93 files resolve. These checks
+establish integration and navigation, not review of batch 20's new proofs
+or Lean coverage for the critical-potential results.
 
 ## Re-running the source verifiers
 

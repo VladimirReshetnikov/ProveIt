@@ -1,11 +1,12 @@
 % Merged research report. Standalone: no external graphics, no BibTeX run.
-% Built from three manuscripts (batch numbers 10, 11, 15); see Section 1.4.
+% Built from four manuscripts (local source numbers 10, 11, 15, 16); see Section 1.4.
 \documentclass[11pt]{article}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
 \usepackage[a4paper,margin=26mm,headheight=15pt]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{mathrsfs}
 \usepackage{microtype}
 \usepackage{booktabs,array,longtable,tabularx}
 \usepackage{xcolor}
@@ -77,7 +78,14 @@
 \newcommand{\inner}[2]{\langle#1,#2\rangle}
 \newcommand{\repo}{\path{VladimirReshetnikov/Surreal}}
 \newcommand{\pin}{\path{4cf691c7d951e037739d32d9f5c387dcce724f3c}}
+\newcommand{\pinb}{\path{d22a5b35d5b3040e870c3cfd6d1c8f7259e094b0}}
 \newcommand{\src}[1]{\textsf{[#1]}}
+\newcommand{\Kc}{K_{\mathrm c}}
+\newcommand{\intc}{\mathop{\int}\nolimits^{\mathrm{coef}}}
+\newcommand{\tocoef}{\xrightarrow{\mathrm{coef}}}
+\newcommand{\Lad}{L^1_{\mathrm{ad}}}
+\newcommand{\Hone}[1]{\mathscr H^1(#1)}
+\newcommand{\Hinf}[1]{\mathscr H^\infty(#1)}
 \setlist[itemize]{leftmargin=1.5em,itemsep=2pt,topsep=4pt}
 \setlist[enumerate]{leftmargin=1.9em,itemsep=3pt,topsep=4pt}
 
@@ -92,7 +100,7 @@
 {\Large Strong atomicity, coefficientwise extension,\\[3pt]
 and hidden negative mass}\par
 \vspace{0.14in}
-{\large Merged research report from three manuscripts\quad\textperiodcentered\quad 22 September 2026}\par
+{\large Merged research report from four manuscripts\quad\textperiodcentered\quad 22 September 2026}\par
 \vspace{0.14in}
 \begin{minipage}{0.97\textwidth}
 \begin{abstract}
@@ -133,22 +141,31 @@ and $1$, and under an $\ell^1$ condition at deterministic baselines, positively
 on all Borel sets; an i.i.d.\ Bernoulli law extends if and only if its bias is
 real. The threshold $\omega+1$ and the finite real shadow hold in the strong
 class only (Section~\ref{meas:sub:traps}).
+
+\emph{Countably many exponents.} With a countable exponent set a
+coefficientwise measure has a Hahn-valued density with respect to one finite real control measure, and is positive exactly
+when that density is nonnegative almost everywhere, the pointwise form of the
+null-ideal criterion. This yields a Hahn--Jordan decomposition, an integral of
+Hahn-valued functions with a full Radon--Nikodym correspondence, products and
+Fubini, and conditional expectations, which may leave the original integrable
+class.
 \end{abstract}
 \end{minipage}
 \vfill
 \begin{minipage}{0.97\textwidth}
 \small
 \textbf{Status.} A merged AI-assisted research report with written
-mathematical proofs and three independent exact finite check suites. The
+mathematical proofs and four exact finite check suites. The
 strong-class classification, the extension criteria, the threshold and the
 coefficientwise product thresholds are offered as proposed original
-contributions, not as certified priority. This is \emph{not} a first
+contributions, not as certified priority; the countable-scale theory is
+partly a reformulation of classical scalar measure theory. This is \emph{not} a first
 non-Archimedean Kolmogorov extension theorem (Ludkovsky and Khrennikov proved
 one under different axioms) and not a first non-Archimedean probability
 theory. No named published conjecture is claimed solved; the proofs have not
 been independently refereed. Current Lean coverage is recorded separately in
-\path{docs/FORMALIZATION.md}; it includes the strong atomicity core, not all
-results of this report.
+\path{docs/FORMALIZATION.md}; it includes the strong atomicity core and the
+null-ideal criterion, not all results of this report.
 \end{minipage}
 \end{titlepage}
 \hypersetup{pageanchor=true}
@@ -220,9 +237,15 @@ The report has two spines. Parts~\ref{meas:part:strong}--\ref{meas:part:moments}
 treat the strong class: classification (sources~10 and~11, independently),
 extension on product spaces (source~10), and the moment problem with its hidden
 negative mass (source~11, with the Cantor-space form from source~10).
-Part~\ref{meas:part:coef} treats the coefficientwise class (source~15).
-Part~\ref{meas:part:scope} collects the scope, the non-claims of all three
-sources, the open questions, the three check suites and the provenance.
+Part~\ref{meas:part:coef} treats the coefficientwise class: product
+thresholds and the null-ideal criterion (source~15), then, for countably many
+exponents, a real control measure, decompositions, integration of Hahn-valued
+functions, products and conditioning (source~16,
+Sections~\ref{meas:cw:sec:control}--\ref{meas:cw:sec:boundary}). Source~16 also
+adds a third reading of countable addition, by limits in the surreal order, to
+Part~\ref{meas:part:axioms} (Section~\ref{meas:cw:sub:orderlimits}).
+Part~\ref{meas:part:scope} collects the scope, the non-claims of all four
+sources, the open questions, the four check suites and the provenance.
 
 \subsection{Principal results}\label{meas:sub:results}
 
@@ -272,16 +295,42 @@ exactly under a weighted $\ell^2$ row condition at interior baselines
 baselines (Theorem~\ref{meas:thm:boundary}), and their combination
 (Theorem~\ref{meas:thm:mixed}); an i.i.d.\ Bernoulli law extends if and only
 if its bias is real (Corollary~\ref{meas:cor:iid}).
+\item \textbf{Countably many scales} (source 16). A coefficientwise measure with a
+countable exponent set has a Hahn-valued density $\theta$ with respect to one finite
+real control, and is positive exactly when $\theta\ge0$ almost everywhere
+(Theorem~\ref{meas:cw:thm:representation}); for countable exponent sets this is
+the pointwise form of the null-ideal criterion
+(Proposition~\ref{meas:cw:prop:nullideal}, added in the merge), and it contains
+Corollary~\ref{meas:cor:dominated} (Remark~\ref{meas:cw:rem:dominated}). There
+follow a Hahn--Jordan decomposition with attained order variation
+(Theorems~\ref{meas:cw:thm:jordan} and~\ref{meas:cw:thm:variation}), a
+density-adapted integral of Hahn-valued functions with an exact Radon--Nikodym
+correspondence even where the derivative has no common well-ordered support
+(Theorem~\ref{meas:cw:thm:rn}, Example~\ref{meas:cw:ex:rn-support}), Lebesgue
+decomposition, dominated convergence, positive products and Fubini
+(Theorems~\ref{meas:cw:thm:product} and~\ref{meas:cw:thm:fubini}), and
+conditional expectation on the restricted $\sigma$-algebra
+(Theorem~\ref{meas:cw:thm:conditional}), which can leave the original integrable
+class (Example~\ref{meas:cw:ex:conditional-fail}) but not in a bounded
+unit-leading class (Theorem~\ref{meas:cw:thm:unit-conditional}). Additivity by
+limits in the surreal order allows only finitely many nonzero masses
+(Corollary~\ref{meas:cw:cor:orderlimits}).
 \end{enumerate}
 
 \subsection{Sources, and where the merge had to choose}\label{meas:sub:provenance}
 
-The report is built from three manuscripts, written independently on
-22 September 2026 against the same repository snapshot
+The report is built from four manuscripts, all dated 22 September 2026. Three
+(sources 10, 11 and 15) were written independently against the same repository
+snapshot
 \begin{center}\small\pin\end{center}
-of \repo~\cite{repo}. None of the three read the other two. Their batch numbers are kept as
-source numbers; the programs and data files in this directory carry them as
-prefixes.
+of \repo~\cite{repo}, and none of them read the other two; their batch numbers
+are kept as source numbers. The fourth, source~16, arrived in a later delivery
+(its manuscript~06) and continues the local numbering. It was written against
+the later snapshot \pinb{} and read this report as it then stood (the version
+built from sources 10, 11 and 15, 64 pages), so it is not independent of them;
+it attributes the strong/coefficientwise distinction, the strong atomicity
+results and the null-ideal criterion to this report. The programs and data files
+in this directory carry the source numbers as prefixes.
 
 \begin{center}
 \small
@@ -312,7 +361,19 @@ The two-axiom framing; the coefficientwise extension test; the null-ideal
 positivity criterion; the positive-cylinder counterexample with two
 exponents; interior $\ell^2$, boundary $\ell^1$ and mixed thresholds; the
 i.i.d.\ corollary and examples; the near-boundary example; complex versions;
-conditioning; finite-orbit rigidity and exchangeability.\\
+conditioning; finite-orbit rigidity and exchangeability.\\[3pt]
+16 & \emph{Surreal-Valued Measure and Integration: countable-scale Hahn
+measures, density-adapted integrals, and the limits of classical measure
+theory} &
+Order-limit and supremum obstructions; the countable-scale class, control
+measure, sign lemma and density criterion; completion, Hahn--Jordan
+decomposition, attained variation, lattice; construction and extension from an
+algebra; common-support and density-adapted integrals; Radon--Nikodym and
+Lebesgue decomposition; convergence theorems and counterexamples; products,
+Fubini, Cauchy--Schwarz; leading-scale conditioning, the worked two-atom law,
+Borel--Cantelli; conditional expectation, its domain obstruction and the bounded
+unit-leading class; surreal masses and charts; numerosity probability; the
+countability boundary; a framework comparison.\\
 \bottomrule
 \end{tabularx}
 \end{center}
@@ -369,6 +430,37 @@ imported.
 $n/(n+1)$ example are cited from the foundations report, the Neumann lemma from
 its positive-support section, and the finite spectral theorem that source~11
 reproved from the spectral-theory report (Section~\ref{meas:sub:collection}).
+\item \emph{Placement of source 16.} Its obstructions to order limits and
+suprema form Section~\ref{meas:cw:sub:orderlimits} of Part~\ref{meas:part:axioms};
+the rest forms Sections~\ref{meas:cw:sec:control}--\ref{meas:cw:sec:boundary}, at
+the end of Part~\ref{meas:part:coef}. Its labels carry the sub-prefix
+\path{meas:cw:}. Sections~1--24 and every earlier theorem number are unchanged;
+the sections of Part~\ref{meas:part:scope} moved from 25--29 to 32--36.
+\item \emph{Notation of source 16.} Its density, its ``coherent'' functions, its
+domain $\mathcal D(\mu)$, its order variation and its $\varepsilon$ are renamed
+(Convention~\ref{meas:cw:conv:notation}), because each collides with a symbol or
+word already used here.
+\item \emph{Duplicates of source 16 printed once.} Convergence of set-indexed
+nets in the surreal order and the absence of suprema are the foundations
+report's (\path{found:thm:discrete}, \path{found:sub:notdedekind}); the support
+calculus is Lemmas~\ref{meas:lem:sumalgebra} and~\ref{meas:lem:neumann}; the
+normal-form embedding is Convention~\ref{meas:conv:surreal}; the two-scale
+positivity obstruction on Cantor space is Example~\ref{meas:ex:negative}; the
+classical shadow is Remark~\ref{meas:rem:probability-exponents}; conditioning on
+an event is Proposition~\ref{meas:prop:conditioning}; its uncountable atomic
+example is of the kind in Remark~\ref{meas:rem:many-atoms}. Each is credited to
+both where it occurs.
+\item \emph{Density criterion and null-ideal criterion.} Source~16 calls its
+positivity theorem the countable-scale density form of
+Theorem~\ref{meas:thm:nullideal}. The exact relation is stated and proved as
+Proposition~\ref{meas:cw:prop:nullideal}, added in the merge; the relation to
+Corollary~\ref{meas:cor:dominated} is Remark~\ref{meas:cw:rem:dominated}. Both
+proofs are kept (Remark~\ref{meas:cw:rem:routes}): source~16's sign lemma is a
+second route to Theorem~\ref{meas:thm:nullideal} for countable exponent sets, and
+Theorem~\ref{meas:cw:thm:product} is a second route to the positivity in
+Theorem~\ref{meas:thm:mixed} when $S$ is countable. Source~16's proofs were
+reread for hidden uses of countability before any was attached to a statement
+of this report; none is attached to an uncountable exponent set.
 \end{enumerate}
 
 \subsection{Position relative to the collection}\label{meas:sub:collection}
@@ -381,7 +473,11 @@ is \path{found:sub:positivesupport}; the sign convention
 $t^\gamma=\omega^{-\gamma}$ is \path{found:eq:workspaces}; and localization of a
 set of surreal numbers in a set-sized Hahn workspace is
 \path{found:thm:workspace}, all in \path{foundations-and-computation/foundations}~\cite{repofound}.
-None of these is claimed here.
+So are two facts that source~16 re-derived: a convergent set-indexed net in
+the surreal order is eventually equal to its limit (\path{found:thm:discrete}),
+and a set of surreals without a largest member has no supremum
+(\path{found:sub:notdedekind}); they are cited in
+Section~\ref{meas:cw:sub:orderlimits}. None of these is claimed here.
 
 \paragraph{Physics.} The report
 \path{physics/surreal-scalars-and-spacetime}~\cite{repophys} already
@@ -435,6 +531,16 @@ It proved the null-ideal criterion independently
 Toeplitz counterpart of the two-exponent counterexample of
 Example~\ref{meas:ex:negative}.
 
+\paragraph{Finite surreal probability.} The report
+\path{surreal/finite-surreal-probability}~\cite{repofsp}, placed with source~16
+and written against the same later snapshot, develops finite probability over
+set-sized ordered surreal fields and builds on this report's
+strong/coefficientwise distinction. It answers none of the questions of
+Section~\ref{meas:sec:questions}. Its example of a pointwise positive Hahn-valued
+function with an uncountable support and a negative coefficientwise integral
+marks the countability boundary of Lemma~\ref{meas:cw:lem:sign}
+(Section~\ref{meas:cw:sec:boundary}).
+
 \paragraph{Prony reconstruction and Markov generators.} The word ``moment''
 has other senses in the collection (Convention~\ref{meas:conv:terms}). The
 report \path{surcomplex/prony-reconstruction-at-surreal-scales}~\cite{repoprony}
@@ -444,6 +550,13 @@ first power moments; it involves no measure. The report
 finite-state Hahn rate matrices and excludes path measures; the extension of
 Markov path laws to infinite sequences is not treated there or here
 (Question~\ref{meas:q:markov}).
+
+\paragraph{Finite surreal probability.}
+The report \path{docs/surreal/finite-surreal-probability/} develops the finite
+theory. Its \texttt{fsp:thm:rarecoin} and \texttt{fsp:thm:faircoin} are the
+cases $p=t$ and $p=\tfrac12+t$ of Corollary~\ref{meas:cor:iid}, and
+\texttt{fsp:cor:coinextension} gives regular finitely additive laws on all
+subsets for the same data.
 
 \subsection{Position relative to the literature}\label{meas:sub:literature}
 
@@ -475,8 +588,19 @@ coefficientwise extension theorems of Part~\ref{meas:part:coef}. (Source~10
 made this attribution; source~15 did not cite Ludkovsky and Khrennikov, and
 the attribution is extended to its theorems here.)
 
+Source~16 adds a targeted, not exhaustive, comparison
+(Section~\ref{meas:cw:sec:boundary}): elementary numerosities~\cite{BBDN},
+measure on the Levi-Civita field~\cite{LeviCivita}, and again the theories of
+Benci--Horsten--Wenmackers, Brickhill--Horsten, Kaiser and Bottazzi. It certifies
+no priority for its combination of classical scalar measure theory, Hahn algebra
+and this report's coefficientwise framework, and does not claim that the
+literature lacks related formulations.
+
 Classical inputs are used and credited: the Hahn--Neumann support
-lemma~\cite{Neumann}, Gonshor's normal forms~\cite{Gonshor} and the Hahn-field
+lemma~\cite{Neumann}, the scalar signed-measure theory (Radon--Nikodym,
+Lebesgue decomposition, Fubini, conditional expectation, Carath\'eodory
+extension) applied by source~16~\cite{Bogachev}, Conway's cut and normal-form
+properties~\cite{Conway}, Gonshor's normal forms~\cite{Gonshor} and the Hahn-field
 facts reviewed by Bournez and Guilmant~\cite{BG}, the Riesz--Markov
 representation theorem, Kakutani's square-summability criterion for real
 infinite products~\cite{Kakutani}, and the classical moment theory on an
@@ -737,8 +861,9 @@ additive, and not a strong operator topology.
 \subsection{Terminology}\label{meas:sub:terms}
 
 \begin{convention}[One meaning per word]\label{meas:conv:terms}
-The three sources and the rest of the collection use several words in more
-than one sense. In this report:
+The sources and the rest of the collection use several words in more than one
+sense (source~16's additional renamings are in
+Convention~\ref{meas:cw:conv:notation}). In this report:
 \begin{enumerate}[label=(\alph*)]
 \item \emph{Moment} means a power moment $m_n=\int x^n\,d\mu$ of a measure,
 or $L(X^n)$ of a linear functional, on an \emph{ordinary real} sample set
@@ -828,6 +953,65 @@ A third, milder confusion concerns symmetry. Ordinary invariant probability
 on the circle, embedded with constant values, is a coefficientwise Hahn
 probability; for an irrational rotation there is no strong one
 (Remark~\ref{meas:rem:shift-rotation}).
+
+\subsection{Two further readings that fail: order limits and suprema}
+\label{meas:cw:sub:orderlimits}
+
+Source~16 examines a third reading of countable addition, besides strong and
+coefficientwise sums: finite partial sums converging in the order topology of
+the full surreal field. The relevant topology is already settled in the
+collection. The foundations report proves, as \path{found:thm:discrete}(2),
+that every convergent net indexed by a \emph{set-sized} directed set is
+eventually equal to its limit; the proof takes a positive surreal below the set
+of nonzero distances (\path{found:lem:bounds})~\cite{repofound}. Source~16
+re-derived this with the same argument. Like the foundations statement, it
+concerns set-indexed nets only and says nothing about a net indexed by a proper
+class; in a universe-relative formalization the index set and its image must be
+small for the universe to which the cut principle is applied. The consequence
+for measures is source~16's.
+
+\begin{corollary}[Order-limit additivity; source 16]\label{meas:cw:cor:orderlimits}
+Let $\mu$ be a set function on a $\sigma$-algebra with values in $\No$, and
+suppose that for every disjoint sequence $(A_n)$ the partial sums
+$\sum_{n\le N}\mu(A_n)$ converge to $\mu(\bigcup_nA_n)$ in the order topology of
+$\No$. Then in every disjoint sequence only finitely many $\mu(A_n)$ are
+nonzero. In particular such a $\mu$ does not extend Lebesgue measure on
+$[0,1]$.
+\end{corollary}
+\begin{proof}
+By \path{found:thm:discrete} the partial sums are eventually constant, so their
+successive differences are eventually zero. Disjoint intervals in $[0,1]$ of
+lengths $2^{-n}$ would all have nonzero mass.
+\end{proof}
+
+A separate and simpler obstruction exists in every ordered field properly
+extending $\R$: the real sequence $1/n$ does not converge to $0$ in its order
+topology, since it never falls below a fixed positive infinitesimal. So even
+replacing $\No$ by one fixed non-Archimedean field does not turn ordinary real
+countable additivity into an order-topological statement (source~16). The
+family $(t^n)_{n\ge1}$ is strongly summable with sum $t/(1-t)$, and its partial
+sums converge in the valuation topology of $\R((t))$; their images in $\No$ do
+not converge in the full order topology. Formal summation and topological
+convergence therefore stay distinct even where a familiar identity holds, as in
+Example~\ref{meas:ex:sums} and in the collection's index (\path{docs/README.md},
+``Specify the topology and the size of the index set'').
+
+Suprema fail as well. A nonempty set of surreal numbers with no largest member
+has no supremum in $\No$: if $b$ is an upper bound, the legal cut between the
+set and $\{b\}$ produces a smaller one. The foundations report states this
+after \path{found:prop:incomplete} (its subsection \path{found:sub:notdedekind})
+and notes that the cut construction selects the simplest separator, not a
+least upper bound~\cite{repofound}; source~16 re-derived it and drew the
+consequence for measure theory. ``The integral is the supremum of simple
+integrals'' is not a definition in $\No$ without additional structure, and a
+Carath\'eodory outer measure is not obtained by replacing a real infimum of
+covering costs with a surreal infimum. Selecting the simplest surreal above or
+below a set is a different operation, whose additivity would have to be proved
+anew. The countable-scale theory of
+Sections~\ref{meas:cw:sec:control}--\ref{meas:cw:sec:boundary} uses neither
+limits in the surreal order nor surreal suprema: sums are coefficientwise, and
+its one extremum, the order variation of Theorem~\ref{meas:cw:thm:variation},
+is proved to be attained.
 
 \part{Strong Hahn measures: classification}\label{meas:part:strong}
 
@@ -2849,7 +3033,9 @@ This localization uses neither a set of all surreals nor a proper-class sum.
 
 \part{Coefficientwise Hahn measures}\label{meas:part:coef}
 
-This part is source~15's. Every measure in it is a coefficientwise Hahn measure
+Sections~\ref{meas:sec:coef-extension}--\ref{meas:sec:coef-complex} of this part
+are source~15's; Sections~\ref{meas:cw:sec:control}--\ref{meas:cw:sec:boundary},
+on countably many exponents, are source~16's. Every measure in it is a coefficientwise Hahn measure
 (Definition~\ref{meas:def:coefficientwise}) and, unless it is proved, is
 \emph{not} strong. Leading coefficients may be diffuse, standard parts may have
 infinitely many atoms, and two exponents suffice for hidden negative mass. Here
@@ -3009,7 +3195,11 @@ for every real $g\in L^1(P)$, however negative or unbounded); it excludes a
 negative component concentrated on a set invisible to all earlier coefficients.
 The Herglotz report finds such a hidden negative atom already at two exponents
 on the circle (\texttt{herg:thm:negativeatom}).
-No matrix-valued version is claimed.
+No matrix-valued version is claimed. For countable $W$ one control serves all
+exponents at once, and the criterion becomes the pointwise inequality
+$\theta\ge0$ for a Hahn-valued density (source~16;
+Theorem~\ref{meas:cw:thm:representation} and
+Proposition~\ref{meas:cw:prop:nullideal}).
 \end{remark}
 
 \begin{corollary}[Dominated corrections; source 15]\label{meas:cor:dominated}
@@ -3618,8 +3808,1192 @@ observables converges pointwise, dominated convergence applies separately to
 every coefficient measure; the conclusion is coefficientwise convergence of the
 integrals, not convergence in the fine surreal topology. Integrating arbitrary
 Hahn-valued functions would need further joint support and integrability
-conditions and is not asserted. (For strong measures the integral
+conditions and is not asserted by source~15; for countably many exponents
+source~16 supplies such conditions and an integral
+(Section~\ref{meas:cw:sec:integral}). (For strong measures the integral
 \eqref{meas:eq:integral} is defined for every scalar function, bounded or not.)
+
+\section{Countably many scales: one real control measure}
+\label{meas:cw:sec:control}
+
+Sections~\ref{meas:cw:sec:control}--\ref{meas:cw:sec:boundary} are source~16's.
+Source~16 read this report at a later repository snapshot and took the
+coefficientwise class of Definition~\ref{meas:def:coefficientwise} as its
+starting point. It restricts to \emph{countably many} exponents, and under that
+restriction develops a real control measure, decompositions, an integral of
+Hahn-valued functions with a Radon--Nikodym theorem, products, and conditional
+expectation. The strong/coefficientwise distinction and the null-ideal
+criterion are this report's (sources~15 and~18), and source~16 attributes them
+so. Several of its steps are, in its own words, reformulations of standard
+scalar measure theory; the scalar Radon--Nikodym, Lebesgue decomposition,
+Fubini, conditional-expectation and Carath\'eodory theorems it applies are
+classical inputs~\cite{Bogachev}. Its restrictions (countably many scales,
+finite real coefficient variation) are substantive, and each proof below says
+where it uses them.
+
+\begin{convention}[Countable scales; notation of
+Sections~\ref{meas:cw:sec:control}--\ref{meas:cw:sec:boundary}]
+\label{meas:cw:conv:notation}
+\begin{enumerate}[label=(\alph*)]
+\item $\Kc\subseteq\KR$ is the set of real Hahn series with \emph{countable}
+support. It is a subfield: sums and products preserve countable support
+(Lemma~\ref{meas:lem:sumalgebra}), and after a leading monomial is extracted,
+the inverse $(1-\epsilon)^{-1}=\sum_k\epsilon^k$ of an $\epsilon$ with positive
+countable support has support in the monoid of finite words over that support,
+which is countable, with finitely many words at each exponent
+(Lemma~\ref{meas:lem:neumann}). When every well-ordered subset of $\Gamma$ is
+countable, as for $\Gamma=\Z,\Q,\R$, one has $\Kc=\KR$. Surreal values are
+obtained through Convention~\ref{meas:conv:surreal}; coefficientwise summation is
+transported along that specified embedding and is not identified with any
+convergence in $\No$.
+\item A \emph{countable-scale measure} is a real coefficientwise Hahn measure
+(Definition~\ref{meas:def:coefficientwise}, $k=\R$) whose exponent set $W$ is
+countable. Its values lie in $\Kc$. Positivity and probability are those of
+Definition~\ref{meas:def:positive}.
+\item \emph{Renamed from source~16.} Its density $m$ is written $\theta$ here
+($m_k$ are power moments, Convention~\ref{meas:conv:terms}(a), and $m$ is Haar
+measure in Remark~\ref{meas:rem:dynamics}). Its ``coherent Hahn function'' is a
+\emph{common-support Hahn function} here, because ``coherent'' already means
+consistent cylinder data. Its integrability domain $\mathcal D(\mu)$ is written
+$\Lad(\mu)$. Its order variation $\abs\sigma$ is written $\abs\sigma_{\mathrm{ord}}$,
+because $\abs\nu$ is the total-variation measure of a scalar $\nu$ throughout. Its
+$\varepsilon$, which is $t$ with $\Gamma\supseteq\Z$, is written $t$ (the
+$\epsilon_j$ of Sections~\ref{meas:sec:interior}--\ref{meas:sec:mixed} are
+Bernoulli perturbations). Its $\int^{\mathrm{cw}}$ and $\to_{\mathrm{cw}}$ are
+written $\intc$ and $\tocoef$, matching $\csum$.
+\item $\lambda$ is a finite positive real \emph{control} measure, as
+$\lambda_{<\gamma}$ in \eqref{meas:eq:control}; the cylinder weights
+$\lambda_n(x)$ of Section~\ref{meas:sec:coef-extension} are unrelated.
+$\mathcal G\subseteq\mathcal G'$ denote sub-$\sigma$-algebras.
+\item The Hahn and Hahn--Jordan \emph{decompositions} of
+Section~\ref{meas:cw:sec:jordan} are named after Hans Hahn's theorem on signed
+measures; Hahn \emph{series} carry the same name. A Hahn-valued function $f$ is
+\emph{$\ge0$ almost everywhere} if $f(x)\ge0$ in $\KR$ outside a null set.
+\end{enumerate}
+\end{convention}
+
+For series $a_n,a$ whose supports lie in one fixed countable well-ordered set
+$W$, write $a_n\tocoef a$ when every real coefficient converges. This is the
+product topology on the coefficient space $\R^W$. The common $W$ is part of the
+hypothesis; without it, limits of coefficients need not define a Hahn series.
+Multiplication by a fixed scalar is continuous between the relevant
+support-controlled spaces, since each coefficient of a product is a finite sum
+(Lemma~\ref{meas:lem:sumalgebra}).
+
+\subsection{Elementary properties}
+
+A countable-scale measure is its coefficient family, not a particular
+enumeration of $W$; zero coefficients may be inserted or removed, and equality
+of the $\Kc$-valued set functions determines every coefficient measure. For
+disjoint events \eqref{meas:eq:coef-add} holds with ordinary real total
+variation on the right. Restrictions, measurable pushforwards, finite linear
+combinations and multiples by a scalar $c\in\Kc$ are again countable-scale
+measures; for $c\mu$ each new coefficient is a finite linear combination of old
+ones, and the new support lies in the sumset $\supp c+W$. For positive $\mu$,
+finite additivity gives monotonicity, finite subadditivity and
+$\mu(A)\le\mu(X)$. For $A_n\uparrow A$ or $A_n\downarrow A$, continuity of the
+finite signed coefficient measures gives $\mu(A_n)\tocoef\mu(A)$. This is
+continuity of a specified measure, not an order-completeness principle.
+
+\subsection{A control measure and the Hahn density}
+
+Enumerate $W=\{\gamma_1,\gamma_2,\ldots\}$ (finitely, if $W$ is finite; the
+enumeration need not follow the order of $W$) and put
+\begin{equation}\label{meas:cw:eq:control}
+ \lambda=\sum_{k\ge1}\frac{2^{-k}}{1+\norm{\mu_{\gamma_k}}_\TV}\,\abs{\mu_{\gamma_k}} .
+\end{equation}
+Then $\lambda(X)\le1$ and
+\begin{equation}\label{meas:cw:eq:control-null}
+ \lambda(A)=0\iff\abs{\mu_\gamma}(A)=0\ \text{for every }\gamma\in W .
+\end{equation}
+This is the control \eqref{meas:eq:control} of Theorem~\ref{meas:thm:nullideal}
+formed over all of $W$ instead of over the predecessors of one exponent. More
+generally, any finite positive measure $\lambda$ with $\abs{\mu_\gamma}\ll\lambda$
+for every $\gamma$ is called a \emph{control} of $\mu$. By the scalar
+Radon--Nikodym theorem $\mu_\gamma=\theta_\gamma\lambda$ with
+$\theta_\gamma\in L^1(\lambda)$, and because $W$ is countable the representatives
+can be chosen simultaneously outside one null set. Thus
+\begin{equation}\label{meas:cw:eq:density}
+ \theta(x)=\sum_{\gamma\in W}\theta_\gamma(x)\,t^\gamma,\qquad
+ \mu(A)=\intc_A\theta\,d\lambda
+ :=\sum_{\gamma\in W}\Bigl(\int_A\theta_\gamma\,d\lambda\Bigr)t^\gamma .
+\end{equation}
+$\theta$ is the \emph{Hahn density} of $\mu$ relative to $\lambda$.
+
+\begin{lemma}[Integrating a Hahn sign; source 16]\label{meas:cw:lem:sign}
+Let $W$ be countable and well ordered, $\lambda$ a finite positive measure, and
+$h=\sum_{\gamma\in W}h_\gamma t^\gamma$ with every $h_\gamma\in L^1(\lambda)$.
+The following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item $h(x)\ge0$ for $\lambda$-almost every $x$;
+\item $\intc_Ah\,d\lambda\ge0$ for every measurable $A$.
+\end{enumerate}
+Under these conditions $\intc_Ah\,d\lambda=0$ if and only if $h=0$ almost
+everywhere on $A$.
+\end{lemma}
+\begin{proof}
+Suppose $h\ge0$ outside a null set $N_0$. The sets
+\[
+ E_\gamma=\{x:h_\delta(x)=0\text{ for every }\delta<\gamma,\ h_\gamma(x)>0\}
+ \qquad(\gamma\in W)
+\]
+are measurable, since only countably many predecessor conditions occur, and
+outside $N_0$ they partition $\{h>0\}$ according to the leading exponent. If $h$
+is not zero almost everywhere on $A$, some $A\cap E_\gamma$ has positive measure,
+because $W$ is countable; choose the least such $\gamma$. The union of the sets
+$A\cap E_\delta$, $\delta<\gamma$, is null, again by countability. Hence every
+coefficient $h_\delta$ with $\delta<\gamma$ vanishes almost everywhere on $A$, while
+$h_\gamma\ge0$ almost everywhere on $A$ and $h_\gamma>0$ on $A\cap E_\gamma$. So the
+coefficients of $\intc_Ah\,d\lambda$ before $\gamma$ vanish and the one at $\gamma$
+is positive. This proves (ii) and the assertion about zero.
+
+Conversely, if $h<0$ on a set of positive measure, one of the measurable sets
+$F_\gamma=\{x:h_\delta(x)=0\text{ for }\delta<\gamma,\ h_\gamma(x)<0\}$ has positive
+measure. On $F_\gamma$ all earlier coefficient integrals vanish and the
+$\gamma$-coefficient integral is negative, contradicting (ii).
+\end{proof}
+
+\begin{theorem}[Scalar-control representation and positivity; source 16]
+\label{meas:cw:thm:representation}
+Every countable-scale measure $\mu$ has the representation
+\eqref{meas:cw:eq:density} relative to every control, in particular relative
+to \eqref{meas:cw:eq:control}. It is positive if and only if $\theta\ge0$
+almost everywhere. If $\mu$ is positive and $\lambda$ is
+\eqref{meas:cw:eq:control}, then $\theta>0$ almost everywhere and
+\begin{equation}\label{meas:cw:eq:null-equivalence}
+ \mu(A)=0\iff\lambda(A)=0 .
+\end{equation}
+\end{theorem}
+\begin{proof}
+The positivity criterion is Lemma~\ref{meas:cw:lem:sign} with $h=\theta$. For
+\eqref{meas:cw:eq:control}, the set on which every $\theta_\gamma$ vanishes is null
+for every $\abs{\mu_\gamma}=\abs{\theta_\gamma}\lambda$, hence for $\lambda$; so a
+positive $\mu$ has $\theta>0$ almost everywhere, and the zero clause of the sign
+lemma gives \eqref{meas:cw:eq:null-equivalence}.
+\end{proof}
+
+The criterion allows negative coefficient measures: $(1-t)\lambda$ is
+positive, its first density coefficient being positive. By contrast
+$\lambda-t\delta_a$ is negative on $\{a\}$ when $\lambda$ is atomless.
+
+\subsection{The density criterion and the null-ideal criterion}
+\label{meas:cw:sub:nullideal}
+
+Source~16 calls Theorem~\ref{meas:cw:thm:representation} the countable-scale
+density form of this report's null-ideal criterion. The precise relation is
+the following; the proposition is added in the merge.
+
+\begin{proposition}[Pointwise form of the null-ideal criterion]
+\label{meas:cw:prop:nullideal}
+Let $\mu$ be a countable-scale measure with exponent set $W$, let $\lambda$ be any
+control of $\mu$, and let $\theta$ be the Hahn density. For $\gamma\in W$ put
+$Z_\gamma=\{x:\theta_\delta(x)=0\text{ for every }\delta\in W,\ \delta<\gamma\}$.
+\begin{enumerate}[label=(\roman*)]
+\item A measurable $A$ lies in the $\sigma$-ideal $\mathcal J_{<\gamma}$ of
+\eqref{meas:eq:nullideal} if and only if $\lambda(A\setminus Z_\gamma)=0$. In
+particular $Z_\gamma\in\mathcal J_{<\gamma}$ is its largest member up to
+$\lambda$-null sets.
+\item Condition (c) of Theorem~\ref{meas:thm:nullideal} at $\gamma$, namely
+$\mu_\gamma^-(A)=0$ for $A\in\mathcal J_{<\gamma}$, holds if and only if
+$\theta_\gamma\ge0$ almost everywhere on $Z_\gamma$.
+\item Conditions (a)--(c) of Theorem~\ref{meas:thm:nullideal} are equivalent to
+$\theta\ge0$ $\lambda$-almost everywhere.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(i) $\abs{\mu_\delta}(A)=\int_A\abs{\theta_\delta}\,d\lambda$, so $A\in\mathcal
+J_{<\gamma}$ exactly when every $\theta_\delta$, $\delta<\gamma$, vanishes almost
+everywhere on $A$; these are countably many conditions. (ii)
+$\mu_\gamma^-(A)=\int_A\theta_\gamma^-\,d\lambda$. If $\theta_\gamma^-=0$ almost
+everywhere on $Z_\gamma$, then by (i) $\mu_\gamma^-(A)=0$ for $A\in\mathcal
+J_{<\gamma}$; conversely $\mu_\gamma^-(Z_\gamma)=0$ forces $\theta_\gamma^-=0$ almost
+everywhere on $Z_\gamma$. (iii) At a point $x$, $\theta(x)\ge0$ holds if and only
+if $\theta_\gamma(x)\ge0$ for every $\gamma$ with $x\in Z_\gamma$: if $\theta(x)\ne0$
+has leading exponent $\gamma_0$, then $x\in Z_\gamma$ exactly for
+$\gamma\le\gamma_0$, and $\theta_\gamma(x)=0$ for $\gamma<\gamma_0$. Since $W$ is countable,
+``for almost every $x$ and every $\gamma$'' is the same as ``for every $\gamma$ and
+almost every $x$''. With (ii), $\theta\ge0$ almost everywhere is therefore
+equivalent to (c) at every $\gamma$, and Theorem~\ref{meas:thm:nullideal} gives
+the equivalence with (a) and (b). (Alternatively, Lemma~\ref{meas:cw:lem:sign}
+with $h=\theta$ gives $\theta\ge0$ almost everywhere $\Leftrightarrow$ (a) directly.)
+\end{proof}
+
+\begin{remark}[Two routes, and what each gives]\label{meas:cw:rem:routes}
+For countable $W$ the positivity clause of
+Theorem~\ref{meas:cw:thm:representation} therefore has two proofs: source~16's,
+integrating the leading-sign strata (Lemma~\ref{meas:cw:lem:sign}), and the
+route through Proposition~\ref{meas:cw:prop:nullideal} and
+Theorem~\ref{meas:thm:nullideal} (sources~15 and~18), whose transfinite
+induction uses the full null ideals and no control. Read the other way, the
+sign lemma is a second proof of (a)$\Leftrightarrow$(c) of
+Theorem~\ref{meas:thm:nullideal} for countable $W$. Neither statement contains
+the other. Theorem~\ref{meas:thm:nullideal} holds for well-ordered $W$ of every
+cardinality, where no single control need exist
+(\texttt{herg:ex:uncountable}, Remark~\ref{meas:rem:nullideal}, and
+Example~\ref{meas:cw:ex:omega1}). The density form gives what the null-ideal
+theorem does not state: the null ideal of a positive countable-scale measure is
+the null ideal of one finite real measure \eqref{meas:cw:eq:null-equivalence},
+and positivity becomes a pointwise inequality between Hahn series, on which the
+integration theory of Sections~\ref{meas:cw:sec:integral}--\ref{meas:cw:sec:probability}
+is built. The condition $\mu_\gamma^-\ll\lambda_{<\gamma}$ of
+Theorem~\ref{meas:thm:nullideal} is the coefficient-by-coefficient form; $\theta\ge0$
+almost everywhere is the pointwise form. The Lean formalization recorded in
+\path{docs/FORMALIZATION.md} covers the null-ideal theorem, its control-measure
+form and Corollary~\ref{meas:cor:dominated}; it does not cover the density form
+or anything else in Sections~\ref{meas:cw:sec:control}--\ref{meas:cw:sec:boundary}.
+\end{remark}
+
+\begin{remark}[Corollary~\ref{meas:cor:dominated} in density form]
+\label{meas:cw:rem:dominated}
+With $W$ countable, Corollary~\ref{meas:cor:dominated} is the case of
+Theorem~\ref{meas:cw:thm:representation} in which the leading law $P_0$ is itself
+a control: relative to $\lambda=P_0$ the density is
+$\theta=1+\sum_{\gamma>0}\theta_\gamma t^\gamma$, whose leading coefficient is the
+constant $1$, so $\theta>0$ everywhere and $\mu(A)=0$ exactly when $P_0(A)=0$.
+Source~16's construction principle \eqref{meas:cw:eq:unit-density} is the same
+mechanism. The density criterion goes further in two directions: the leading
+exponent of $\theta(x)$ may vary with $x$, only $\theta>0$ almost everywhere being
+required, and a later coefficient need not be absolutely continuous
+with respect to $P_0$, provided it is nonnegative where every earlier density
+vanishes; the law $\lambda+t\delta_0+t^2\delta_1$ of
+Example~\ref{meas:cw:ex:worked} is positive although $\delta_0\not\ll\lambda$.
+Corollary~\ref{meas:cor:dominated} itself needs no countability, and for
+uncountable $W$ it is not a case of the density theorem. For the interior
+extension of Theorem~\ref{meas:thm:interior} with $S$ countable, the Hahn
+density relative to $P_0$ is $\sum_{\rho\in S^*}H_\rho t^\rho$ with $H_0=1$, by
+\eqref{meas:eq:density-measure}.
+\end{remark}
+
+\begin{example}[Example~\ref{meas:ex:negative} in density form]
+\label{meas:cw:ex:negative-density}
+For $\mu=P_0+t^\alpha(\delta_y-\delta_x)$ take the control
+$\lambda=P_0+\delta_x+\delta_y$. Then $\theta=1$ at $P_0$-almost every point,
+$\theta(y)=t^\alpha$ and $\theta(x)=-t^\alpha$. The density is negative exactly on
+$\{x\}$, a set of positive $\lambda$-mass, and $\mu(\{x\})=-t^\alpha$; the
+cylinder masses are positive because every cylinder also carries $P_0$-mass.
+\end{example}
+
+\section{Null sets, the Hahn--Jordan decomposition, and constructions}
+\label{meas:cw:sec:jordan}
+
+\subsection{Completion and the countable chain condition}
+
+\begin{corollary}[Completion; source 16]\label{meas:cw:cor:completion}
+The null sets of a positive countable-scale measure form a $\sigma$-ideal. The
+measure extends uniquely to the completion of $\Sigma$ obtained by adjoining all
+subsets of null measurable sets, and this completion is the ordinary completion
+for any finite real control with the same null sets.
+\end{corollary}
+\begin{proof}
+Use \eqref{meas:cw:eq:null-equivalence}. Each real coefficient, being
+absolutely continuous with respect to $\lambda$, extends uniquely to the scalar
+completion, and the Hahn assembly of the extensions is positive by the same
+density.
+\end{proof}
+
+A family of pairwise disjoint measurable sets of positive $\mu$-mass is
+countable, since each member has positive $\lambda$-mass and $\lambda$ is finite. So
+on an uncountable space with measurable singletons a countable-scale
+probability cannot give positive mass to every singleton. This does not
+contradict Remark~\ref{meas:rem:many-atoms}: its strong probabilities with
+uncountably many atoms have uncountable exponent support and are outside the
+countable-scale class. Nor does it rule out such assignments under a different
+axiom (Section~\ref{meas:cw:sub:numerosity}).
+
+\subsection{A genuine Hahn decomposition}
+
+\begin{theorem}[Hahn--Jordan decomposition; source 16]\label{meas:cw:thm:jordan}
+Every countable-scale measure $\sigma$ has a measurable decomposition
+$X=P\sqcup N$ such that every measurable subset of $P$ has nonnegative
+$\sigma$-mass and every measurable subset of $N$ has nonpositive $\sigma$-mass.
+There are unique positive countable-scale measures $\sigma^+,\sigma^-$,
+concentrated on disjoint measurable sets, with $\sigma=\sigma^+-\sigma^-$, namely
+\begin{equation}\label{meas:cw:eq:jordan}
+ \sigma^+(A)=\sigma(A\cap P),\qquad\sigma^-(A)=-\sigma(A\cap N).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Choose a control and write $\sigma=\intc s\,d\lambda$. The sign sets
+$P=\{s\ge0\}$ and $N=\{s<0\}$ are measurable because $s$ has countable common
+support. Apply Lemma~\ref{meas:cw:lem:sign} to $s\ind_P$ and $-s\ind_N$;
+multiplying coefficients by an indicator preserves integrability and support,
+so \eqref{meas:cw:eq:jordan} defines countable-scale measures. For uniqueness let
+$\sigma=\alpha-\beta$ with positive $\alpha,\beta$ concentrated on disjoint $U,V$. On
+$U$ the restriction of $\sigma$ is $\alpha\ge0$, on $V$ it is $-\beta\le0$, and on
+the complement of $U\cup V$ it vanishes. A set that is positive for one
+decomposition and negative for another carries the zero restriction, since
+every measurable subset has mass both $\ge0$ and $\le0$. Comparing $P,N$ with
+$U,V$ piece by piece gives $\alpha=\sigma^+$ and $\beta=\sigma^-$ on every set.
+\end{proof}
+
+\begin{theorem}[Order variation is attained; source 16]\label{meas:cw:thm:variation}
+Put $\abs\sigma_{\mathrm{ord}}=\sigma^++\sigma^-$. For every measurable $A$,
+\begin{equation}\label{meas:cw:eq:variation}
+ \abs\sigma_{\mathrm{ord}}(A)=\max_{\mathcal P}\sum_{B\in\mathcal P}\abs{\sigma(B)},
+\end{equation}
+the maximum, in $\Kc$, over finite measurable partitions $\mathcal P$ of $A$; the
+two-piece partition $\{A\cap P,A\cap N\}$ attains it.
+\end{theorem}
+\begin{proof}
+For every $B$,
+$\abs{\sigma(B)}=\abs{\sigma^+(B)-\sigma^-(B)}\le\sigma^+(B)+\sigma^-(B)$; sum over a
+partition. The sign partition gives equality by \eqref{meas:cw:eq:jordan}.
+\end{proof}
+
+Here an order supremum causes no difficulty (compare
+Section~\ref{meas:cw:sub:orderlimits}): it is a maximum, proved to exist. The
+order variation is not the coefficientwise envelope
+$\sum_\gamma\abs{\sigma_\gamma}t^\gamma$: for $\sigma=(1-t)\lambda$ the former is
+$(1-t)\lambda$ and the latter $(1+t)\lambda$.
+
+\begin{corollary}[Lattice structure; source 16]\label{meas:cw:cor:lattice}
+The countable-scale measures on $(X,\Sigma)$ form a vector lattice over the
+ordered field $\Kc$, with
+$\sigma\vee\tau=\frac12(\sigma+\tau+\abs{\sigma-\tau}_{\mathrm{ord}})$ and
+$\sigma\wedge\tau=\frac12(\sigma+\tau-\abs{\sigma-\tau}_{\mathrm{ord}})$.
+\end{corollary}
+\begin{proof}
+The union of the two countable coefficient families has a common control.
+Relative to it, the order of measures is the almost-everywhere pointwise order
+of densities (Lemma~\ref{meas:cw:lem:sign}); take pointwise maxima and minima of
+the densities.
+\end{proof}
+
+\subsection{Constructing positive measures}
+
+Start with a finite positive measure $\lambda$ and a countable well-ordered
+family $(h_\gamma)$ in $L^1(\lambda)$. If $h=\sum h_\gamma t^\gamma\ge0$ almost
+everywhere, then $A\mapsto\intc_Ah\,d\lambda$ is a positive countable-scale
+measure; the density is a positivity certificate. A robust choice is
+\begin{equation}\label{meas:cw:eq:unit-density}
+ h=1+\sum_{n\ge1}a_nt^n,\qquad a_n\in L^1(\lambda),
+\end{equation}
+whose value at every point has leading coefficient $1$, whatever the signs and
+sizes of the later coefficients; dividing by the total mass gives a
+probability. Bounds on the $a_n$ are needed later for conditioning
+(Theorem~\ref{meas:cw:thm:unit-conditional}), not for positivity. Another
+construction is a \emph{positive hierarchy} $\mu=\sum_\gamma t^\gamma\rho_\gamma$ with
+finite positive real measures $\rho_\gamma$ on a countable well-ordered index set,
+mutually singular or overlapping: disjoint strata, bulk, surface and point
+measures, mixtures of ordinary laws. Normalizing a hierarchy can create signed
+coefficients although the hierarchy itself had positive ones.
+
+\begin{proposition}[Extension from a generating algebra; source 16]
+\label{meas:cw:prop:extension}
+Let an algebra $\mathcal A_0$ generate $\Sigma$, let $W$ be countable and well
+ordered, and suppose that for each $\gamma\in W$ a real signed premeasure
+$p_\gamma$ on $\mathcal A_0$ has a unique finite signed extension $\bar p_\gamma$ to
+$\Sigma$. Then $\sum_\gamma\bar p_\gamma t^\gamma$ is the unique coefficientwise extension
+of the Hahn-valued data $\sum_\gamma p_\gamma t^\gamma$. It is positive exactly when its
+Hahn density relative to a control is nonnegative almost everywhere.
+\end{proposition}
+\begin{proof}
+Existence is the definition, since every value has support in $W$ and every
+coefficient is countably additive. A competing coefficientwise extension agrees
+coefficient by coefficient on $\mathcal A_0$, including at exponents where the
+data vanish, and the assumed uniqueness of finite signed extensions gives
+equality. Positivity is Theorem~\ref{meas:cw:thm:representation}.
+\end{proof}
+
+The hypothesis holds, for instance, when each premeasure is a difference of
+two finite positive premeasures, to which Carath\'eodory's theorem applies; the
+proposition deliberately does not replace it by bare finite additivity. On
+$E^{\N}$ with its cylinder algebra every finitely additive set function is a
+premeasure (a clopen set is not a countably infinite disjoint union of nonempty
+clopen sets, by compactness), and the per-exponent hypothesis is the bounded
+variation condition \eqref{meas:eq:var-test}. So for countable $W$ the
+proposition, given that condition, recovers the existence and uniqueness in
+Theorem~\ref{meas:thm:extension}; the theorem itself proves that the condition is
+exact and computes the norm. Positive data on the algebra do not give a positive extension.
+Source~16 shows this on Cantor space with $p=\rho+t(\rho-\delta_{x_*})$, for the
+fair Bernoulli probability $\rho$: positive on every nonempty cylinder event,
+total mass $1$, extension mass $-t$ at $\{x_*\}$. It notes that this two-scale
+obstruction is already this report's; it is the mechanism of
+Example~\ref{meas:ex:negative}, printed there once. Positivity must be checked on
+the generated $\sigma$-algebra, or secured by a density certificate; finite
+tests cannot replace that obligation.
+
+\section{Integration of Hahn-valued functions}\label{meas:cw:sec:integral}
+
+The integrals of Sections~\ref{meas:sec:integration}
+and~\ref{meas:sec:coef-complex} integrate functions with values in the
+coefficient field. Source~16 integrates Hahn-valued functions against
+countable-scale measures.
+
+\subsection{Common-support functions and a first integral}
+
+A \emph{common-support Hahn function} is a pointwise series
+\begin{equation}\label{meas:cw:eq:common-support}
+ f(x)=\sum_{\alpha\in S}f_\alpha(x)\,t^\alpha,
+\end{equation}
+with one countable well-ordered $S$ and measurable real coefficients $f_\alpha$.
+Countable unions and intersections make its sign sets measurable. Its pointwise
+absolute value is again a common-support function with support $S$ and
+coefficients $\operatorname{sgn}(f(x))f_\alpha(x)$; the actual support at a point may
+be smaller than $S$. For a countable-scale $\mu=\sum_{\gamma\in W}\mu_\gamma t^\gamma$, a
+convenient sufficient integrability condition is
+\begin{equation}\label{meas:cw:eq:rectangular}
+ \int_X\abs{f_\alpha}\,d\abs{\mu_\gamma}<\infty\qquad(\alpha\in S,\ \gamma\in W),
+\end{equation}
+and under it
+\begin{equation}\label{meas:cw:eq:first-integral}
+ \int_Xf\,d\mu=\sum_{\delta\in S+W}\Bigl(\sum_{\alpha+\gamma=\delta}
+ \int_Xf_\alpha\,d\mu_\gamma\Bigr)t^\delta .
+\end{equation}
+Each inner sum is finite and $S+W$ is well ordered and countable
+(Lemma~\ref{meas:lem:sumalgebra}); no uncontrolled interchange of infinite sums
+occurs. Every common-support function with bounded real coefficients satisfies
+\eqref{meas:cw:eq:rectangular}, with no bound uniform in $\alpha$. For
+$S=\{0\}$ and bounded $f$, \eqref{meas:cw:eq:first-integral} is the integral
+\eqref{meas:eq:coef-integral} of bounded ordinary observables.
+
+\begin{proposition}[Consistency and positivity; source 16]
+\label{meas:cw:prop:first-integral}
+The integral \eqref{meas:cw:eq:first-integral} is $\Kc$-linear on its domain,
+agrees with finite simple integration, and agrees with ordinary integration for
+a real measure and a real integrable function. If $\mu$ is positive and
+$f\ge0$ almost everywhere, then $\int f\,d\mu\ge0$; moreover
+$\abs{\int f\,d\mu}\le\int\abs f\,d\mu$.
+\end{proposition}
+\begin{proof}
+With $d\mu_\gamma=\theta_\gamma\,d\lambda$, \eqref{meas:cw:eq:first-integral} becomes
+$\intc f\theta\,d\lambda$, and \eqref{meas:cw:eq:rectangular} says that every
+product coefficient $f_\alpha\theta_\gamma$ is $\lambda$-integrable. Linearity
+involves finitely many terms at each exponent. If $f\ge0$, then $f\theta\ge0$
+almost everywhere and Lemma~\ref{meas:cw:lem:sign} applies. Apply positivity to
+$\abs f\pm f$ for the last inequality.
+\end{proof}
+
+\begin{example}[A derivative with no common well-ordered support; source 16]
+\label{meas:cw:ex:rn-support}
+On $X=\N$ with all subsets measurable put $\mu(A)=\sum_{n\in A}t^n$ and
+$\nu(A)=\sum_{n\in A}2^{-n}$, both positive countable-scale measures with trivial
+null ideals, so $\nu\ll\mu$. A density satisfying the integral identity on
+singletons must be $f(n)=2^{-n}t^{-n}$. The union of these supports is
+$\{-1,-2,\ldots\}$, not well ordered, so there is no common-support density. The
+weighted values $f(n)\mu(\{n\})=2^{-n}$ are nevertheless summable
+coefficientwise; the obstruction lies in the unweighted support of the
+integrand, not in the desired measure.
+\end{example}
+
+Example~\ref{meas:ex:hahn-integrand} (source~10) uses the same unweighted
+supports $t^{-n}$ against the strong probability with weights $t^n$, but there
+the weighted values $g(n)w_n=1$ do not decay, so that integrand fails every
+integrability condition of this section, not only the support condition. (This
+comparison is added in the merge.) A theory insisting that every integrand have
+a common support would have to state a restricted Radon--Nikodym theorem;
+source~16 instead enlarges the domain in a way determined by the measure.
+
+\subsection{The density-adapted integral}
+
+Fix a nonzero positive countable-scale $\mu$ and a control $\lambda$ with the same
+null sets (for instance \eqref{meas:cw:eq:control}); write $d\mu=\theta\,d\lambda$,
+so $\theta>0$ almost everywhere. Let
+\[
+ \Hone{\lambda}=\Bigl\{h=\sum_{\delta\in T}h_\delta t^\delta:
+ T\text{ countable well ordered},\ h_\delta\in L^1(\lambda)\Bigr\},
+\]
+regarded modulo equality outside one null set; countability again permits
+simultaneous representatives.
+
+\begin{definition}[Density-adapted integrability; source 16]
+\label{meas:cw:def:adapted}
+A function $f:X\to\Kc$ (modulo null sets) is \emph{$\mu$-integrable in the adapted
+sense}, $f\in\Lad(\mu)$, if
+\begin{equation}\label{meas:cw:eq:adapted-domain}
+ f=h/\theta\quad\lambda\text{-almost everywhere, for some }h\in\Hone{\lambda},
+\end{equation}
+and then
+\begin{equation}\label{meas:cw:eq:adapted-integral}
+ \int_Af\,d\mu=\intc_Ah\,d\lambda=\sum_{\delta\in T}\Bigl(\int_Ah_\delta\,d\lambda\Bigr)t^\delta .
+\end{equation}
+The quotient is formed pointwise in $\Kc$ and is arbitrary on the null set
+$\{\theta=0\}$. No common support is imposed on $f$ itself.
+\end{definition}
+
+This definition also fixes the class of measurable Hahn-valued functions in
+use: an admissible integrand is presented by an integrable common-support
+numerator and the positive common-support density. An arbitrary map into $\No$,
+measurable for some order-Borel structure, is not automatically admissible.
+Each pointwise quotient has countable support because $\Kc$ is a field; that
+support may vary from point to point without a well-ordered union.
+
+\begin{theorem}[Independence of the control; source 16]
+\label{meas:cw:thm:control-invariant}
+The class $\Lad(\mu)$, its almost-everywhere equivalence and the integrals
+\eqref{meas:cw:eq:adapted-integral} do not depend on the choice of a finite
+control with the same null sets as $\mu$.
+\end{theorem}
+\begin{proof}
+Let $\lambda'$ be another and $r=d\lambda/d\lambda'$, so $0<r<\infty$ almost
+everywhere, and $\theta'=r\theta$. Then $f\theta'=r(f\theta)$ has the same pointwise
+support, a real factor introducing no exponent, and for every coefficient
+$\int\abs{rh_\delta}\,d\lambda'=\int\abs{h_\delta}\,d\lambda$ and
+$\int_Arh_\delta\,d\lambda'=\int_Ah_\delta\,d\lambda$. Countably many coefficient
+versions can be fixed on one common full-measure set.
+\end{proof}
+
+\begin{theorem}[Algebra, order and definiteness; source 16]
+\label{meas:cw:thm:integral-properties}
+$\Lad(\mu)$ is a $\Kc$-vector space closed under pointwise absolute value,
+maximum and minimum. The integral is positive and $\Kc$-linear, and for $f\ge0$,
+$\int f\,d\mu=0$ exactly when $f=0$ almost everywhere. The map
+$f\mapsto\norm f_{1,\mu}=\int\abs f\,d\mu\in(\Kc)_{\ge0}$ is a definite
+$\Kc$-valued norm: homogeneous, with the triangle inequality. Every function
+satisfying \eqref{meas:cw:eq:rectangular} lies in $\Lad(\mu)$, with the same
+integral.
+\end{theorem}
+\begin{proof}
+Transport the operations through $f\mapsto f\theta$. A fixed scalar times an
+$L^1$-coefficient numerator has integrable coefficients, by finite
+convolution. Since $\theta>0$, $\abs f\theta=\abs{f\theta}$, which has the same
+common support and coefficient magnitudes $\abs{h_\delta}$; maxima and minima
+follow from absolute values. Lemma~\ref{meas:cw:lem:sign} gives positivity and
+definiteness, and $\abs{f+g}\le\abs f+\abs g$ gives the triangle inequality. The
+last assertion is the product-density computation in the proof of
+Proposition~\ref{meas:cw:prop:first-integral}.
+\end{proof}
+
+``Norm'' means a norm with values in an ordered field. It is not asserted that
+$\Lad(\mu)$ is a real Banach space, nor that order-bounded functions form an
+integrability ideal; the latter is false (Example~\ref{meas:cw:ex:bounded-fail}).
+
+For $f\in\Lad(\mu)$ the set function
+\begin{equation}\label{meas:cw:eq:nu-f}
+ \nu_f(A)=\int_Af\,d\mu
+\end{equation}
+is a countable-scale measure with coefficient measures $h_\delta\lambda$, absolutely
+continuous with respect to $\mu$. It is positive exactly when $f\ge0$ almost
+everywhere, and by Theorem~\ref{meas:cw:thm:jordan}, applied with the sign sets of
+$h$,
+\begin{equation}\label{meas:cw:eq:weighted-variation}
+ \abs{\nu_f}_{\mathrm{ord}}(A)=\int_A\abs f\,d\mu .
+\end{equation}
+
+\section{Radon--Nikodym, Lebesgue decomposition, and convergence}
+\label{meas:cw:sec:rn}
+
+For a positive $\mu$ and a countable-scale $\nu$, $\nu\ll\mu$ means that
+$\mu(A)=0$ implies $\nu(A)=0$. Since the subsets of a $\mu$-null set are
+$\mu$-null, every coefficient measure of $\nu$ then vanishes on the whole null
+ideal of $\mu$.
+
+\begin{theorem}[Adapted Radon--Nikodym theorem; source 16]\label{meas:cw:thm:rn}
+Let $\mu$ be a nonzero positive countable-scale measure and $\nu$ a
+countable-scale measure on the same $\sigma$-algebra. Then $\nu\ll\mu$ if and only
+if $\nu(A)=\int_Af\,d\mu$ for every $A$, for some $f\in\Lad(\mu)$. The density is
+unique almost everywhere, and it is nonnegative exactly when $\nu$ is positive.
+Thus $f\mapsto\nu_f$ is an order-preserving $\Kc$-linear bijection from $\Lad(\mu)$
+onto the countable-scale measures absolutely continuous with respect to $\mu$.
+\end{theorem}
+\begin{proof}
+Take a control $\lambda$ with the null sets of $\mu$ and $d\mu=\theta\,d\lambda$. If
+$\nu\ll\mu$, each coefficient $\nu_\delta$ is absolutely continuous with respect to
+$\lambda$, so $\nu_\delta=n_\delta\lambda$ with $n_\delta\in L^1(\lambda)$; with the common
+support of $\nu$, $n=\sum n_\delta t^\delta\in\Hone{\lambda}$, and $f=n/\theta$ has the
+required integrals. Positivity follows from the sign lemma and $\theta>0$.
+Conversely \eqref{meas:cw:eq:nu-f} has $\lambda$-integrable coefficient densities,
+so it vanishes on $\mu$-null sets. If $f,g$ give the same measure, every
+coefficient of $(f-g)\theta$ has zero integral on every set and so vanishes almost
+everywhere; there are countably many, so $(f-g)\theta=0$ almost everywhere, and
+$\theta>0$ gives $f=g$.
+\end{proof}
+
+In Example~\ref{meas:cw:ex:rn-support} take $\lambda(\{n\})=2^{-n}$. Then
+$\theta(n)=2^nt^n$, the density of $\nu$ relative to $\lambda$ is $1$, and the adapted
+derivative is $1/\theta(n)=2^{-n}t^{-n}$ with weighted numerator exactly $1$. The
+theorem repairs the support obstruction rather than overlooking it.
+
+\begin{theorem}[Lebesgue decomposition; source 16]\label{meas:cw:thm:lebesgue}
+For positive countable-scale measures $\mu,\nu$ there are unique positive
+countable-scale measures $\nu_{\mathrm{ac}},\nu_{\mathrm s}$ with
+$\nu=\nu_{\mathrm{ac}}+\nu_{\mathrm s}$, $\nu_{\mathrm{ac}}\ll\mu$, and
+$\nu_{\mathrm s}$ concentrated on a measurable $\mu$-null set. When $\mu\ne0$, the
+absolutely continuous part has a unique density in $\Lad(\mu)$.
+\end{theorem}
+\begin{proof}
+Let $\lambda$ be the sum of controls of $\mu$ and $\nu$ and $\theta,n\ge0$ their
+densities. Put $E=\{\theta>0\}$; by the sign lemma $\mu(A)=0$ exactly when $\theta=0$
+almost everywhere on $A$. Define $\nu_{\mathrm{ac}}$ and $\nu_{\mathrm s}$ by the
+densities $n\ind_E$ and $n\ind_{E^c}$; positivity, additivity and support are
+immediate, $E^c$ is $\mu$-null, and $\mu(A)=0$ makes $A\cap E$ $\lambda$-null, so
+$\nu_{\mathrm{ac}}(A)=0$. For uniqueness, the absolutely continuous parts of two
+decompositions vanish on the union of their singular carriers, which is
+$\mu$-null, and on its complement both singular parts vanish; restrict to the two
+pieces. Theorem~\ref{meas:cw:thm:rn} gives the density. If $\mu=0$ the
+decomposition is $0+\nu$.
+\end{proof}
+
+\paragraph{A bounded unit-leading special case.} Let $\Gamma=\Z$, $\lambda$ finite, and
+\begin{equation}\label{meas:cw:eq:bounded-unit}
+ d\mu=w\,d\lambda,\qquad w=1+\sum_{n\ge1}a_nt^n,\qquad a_n\in L^\infty(\lambda).
+\end{equation}
+Every coefficient of $w^{-1}$ is a polynomial in finitely many $a_j$, hence
+bounded. Consequently
+\begin{equation}\label{meas:cw:eq:domain-unit}
+ \Lad(\mu)=L^1(\lambda)((t))
+\end{equation}
+as sets of function classes: series with one integer lower bound on their
+exponents and integrable real coefficients, a class preserved by multiplication
+by $w$ and $w^{-1}$. So every countable-scale measure absolutely continuous with
+respect to $\lambda$ has a common-support density relative to $\mu$. The
+boundedness matters: an $L^1$ coefficient need not have an integrable square.
+In particular the interior extensions of Theorem~\ref{meas:thm:interior}, whose
+density coefficients $H_\rho$ are in $L^2(P_0)$ and in general not bounded, are not
+automatically in this special case.
+
+\subsection{Convergence: valid theorems and sharp warnings}
+
+\begin{theorem}[Coefficientwise dominated convergence; source 16]\label{meas:cw:thm:dct}
+Let $f_n\in\Lad(\mu)$ and $h_n=f_n\theta$, all with support in one countable
+well-ordered $T$. Suppose that for every $\delta\in T$, $h_{n,\delta}\to h_\delta$
+almost everywhere and $\abs{h_{n,\delta}}\le H_\delta$ with $H_\delta\in L^1(\lambda)$. Then
+$h=\sum h_\delta t^\delta\in\Hone{\lambda}$, $f=h/\theta\in\Lad(\mu)$,
+$\int f_n\,d\mu\tocoef\int f\,d\mu$, and $\norm{f_n-f}_{1,\mu}\tocoef0$.
+\end{theorem}
+\begin{proof}
+Scalar dominated convergence gives $L^1$ convergence at every exponent, and the
+common support stays $T$. The $\delta$-coefficient of $\abs{h_n-h}$ is
+$\operatorname{sgn}(h_n-h)(h_{n,\delta}-h_\delta)$, whose integral is bounded in absolute
+value by $\int\abs{h_{n,\delta}-h_\delta}\,d\lambda\to0$.
+\end{proof}
+
+For common-support $f_n$ with one support, a stronger but easily checked
+sufficient hypothesis is coefficientwise almost-everywhere convergence and a
+separate integrable majorant for each pair of function and measure coefficients
+in \eqref{meas:cw:eq:rectangular}. Neither statement concerns limits in the
+surreal order. For real functions $0\le f_n\uparrow f$ with $\int f\,d\abs{\mu_\gamma}<\infty$
+for every $\gamma$, ordinary monotone convergence followed by signed dominated
+convergence gives the expected coefficientwise limit; a weighted numerator whose
+every coefficient increases nonnegatively has a monotone-convergence principle
+\emph{provided every limiting coefficient integral is finite}. This does not
+include arbitrary order-monotone Hahn functions.
+
+\begin{example}[A bounded function outside the domain; source 16]
+\label{meas:cw:ex:bounded-fail}
+Let $X=(0,1]$ with Lebesgue measure $\lambda$, a constant Hahn measure. At every
+$x$, $0<f(x)=t/x<1$; yet $f\notin\Lad(\lambda)$, since its $t$-coefficient $1/x$ is
+not integrable. An integrable constant dominates, in the field order, a
+nonintegrable Hahn-valued function.
+\end{example}
+
+\begin{example}[Bounded convergence fails with eventual pointwise equality;
+source 16]\label{meas:cw:ex:bct-fail}
+On the same space let $f_n(x)=t\min\{n,1/x\}$. Every $f_n$ has bounded
+coefficients and lies in the domain; $0\le f_n\le1$, the sequence increases, and
+at each fixed $x$ it is eventually equal to $t/x$, so it converges even in the
+order topology of $\No$. But $\int_0^1f_n\,dx=t(1+\log n)$, splitting the real
+integral at $1/n$, and the $t$-coefficient diverges: no coefficientwise limit
+exists. The hypotheses of bounded and dominated convergence, read in the surreal
+order alone, are insufficient. Replacing the divergent coefficient by a chosen
+infinite surreal would be an additional regularization rule, not a consequence
+of this theory.
+\end{example}
+
+\begin{example}[The positive cone is not coefficientwise closed; source 16]
+\label{meas:cw:ex:positive-not-closed}
+Each $a_n=1/n-t$ is positive, but $a_n\tocoef-t<0$; so positive functions, and
+positive measures such as $(1/n-t)\lambda$, can have a negative coefficientwise
+limit. Normalization does not help: on a two-point space the weights $1/n-t$ and
+$1-1/n+t$ form a probability for every $n\ge2$, with negative limiting first
+weight. This does not contradict the sign lemma, which concerns one function or
+measure; positivity of a limit must be verified separately. It is the
+measure-level counterpart of the quantifier distinction in
+Section~\ref{meas:sec:coef-examples} (``No ordinary continuity in the field
+order'').
+\end{example}
+
+\paragraph{Support-controlled completeness.} For a fixed countable well-ordered
+$T=\{\delta_1,\delta_2,\ldots\}$ the numerators with support in $T$ form the product
+$\prod_{\delta\in T}L^1(\lambda)$, complete for its product locally convex topology,
+with compatible metric
+$d(h,g)=\sum_k2^{-k}\min\{1,\norm{h_{\delta_k}-g_{\delta_k}}_{L^1(\lambda)}\}$. Through
+$f\mapsto f\theta$ this gives a complete support-controlled space of adapted
+functions, whose coefficient seminorms do not depend on the control (as in
+Theorem~\ref{meas:cw:thm:control-invariant}). No global completeness is claimed
+once the support may vary.
+
+\section{Products, Fubini, and quadratic inequalities}
+\label{meas:cw:sec:products}
+
+\begin{theorem}[Product measure; source 16]\label{meas:cw:thm:product}
+Let $\mu=\sum_{\alpha\in S}\mu_\alpha t^\alpha$ and $\nu=\sum_{\beta\in T}\nu_\beta t^\beta$ be positive
+countable-scale measures on $(X,\Sigma)$ and $(Y,\mathcal T)$. There is a unique
+coefficientwise measure on $\Sigma\otimes\mathcal T$ with
+$(\mu\otimes\nu)(A\times B)=\mu(A)\nu(B)$, namely
+\begin{equation}\label{meas:cw:eq:product}
+ \mu\otimes\nu=\sum_{\delta\in S+T}\Bigl(\sum_{\alpha+\beta=\delta}\mu_\alpha\otimes\nu_\beta\Bigr)t^\delta ,
+\end{equation}
+and it is positive on every product-measurable set.
+\end{theorem}
+\begin{proof}
+Each coefficient in \eqref{meas:cw:eq:product} is a finite sum of ordinary finite
+signed product measures, with support in the countable well-ordered $S+T$. With
+controls $\lambda,\rho$ and densities $\theta,\zeta\ge0$, the product has density
+$\theta(x)\zeta(y)$ relative to $\lambda\otimes\rho$, every coefficient being integrable
+since $\iint\abs{\theta_\alpha(x)\zeta_\beta(y)}\,d\lambda\,d\rho=
+\norm{\theta_\alpha}_{L^1(\lambda)}\norm{\zeta_\beta}_{L^1(\rho)}$. The density is nonnegative
+almost everywhere, so the sign lemma gives positivity on all product-measurable
+sets, not merely on rectangles. Uniqueness holds exponent by exponent, by
+uniqueness of finite signed measures agreeing on rectangles.
+\end{proof}
+
+Iteration gives associative finite products and finite-dimensional
+independence. No countably infinite product theorem is inferred: infinite
+products need separate uniform coefficient control, which is the subject of
+Theorems~\ref{meas:thm:interior}--\ref{meas:thm:mixed}. When $S$ is countable, the
+two factors in the proof of Theorem~\ref{meas:thm:mixed} are countable-scale
+measures (their exponents lie in the countable monoid $S^*$), and
+Theorem~\ref{meas:cw:thm:product} gives a second proof of the positivity of
+\eqref{meas:eq:mixed-tensor} on all Borel sets, without the section formula
+\eqref{meas:eq:mixed-sections}. That proof via sections needs no countability.
+(This observation is added in the merge.)
+
+\begin{theorem}[Adapted Fubini theorem; source 16]\label{meas:cw:thm:fubini}
+Let $\mu,\nu$ be nonzero positive countable-scale measures and
+$f\in\Lad(\mu\otimes\nu)$. For almost every $x$ the section $f(x,\cdot)$ lies in
+$\Lad(\nu)$; its integral, as a function of $x$, lies in $\Lad(\mu)$; and
+\begin{equation}\label{meas:cw:eq:fubini}
+ \int f\,d(\mu\otimes\nu)=\int_X\Bigl(\int_Yf(x,y)\,d\nu(y)\Bigr)d\mu(x).
+\end{equation}
+The same holds with $X$ and $Y$ interchanged.
+\end{theorem}
+\begin{proof}
+With the controls and densities above write
+$h(x,y)=f(x,y)\theta(x)\zeta(y)=\sum_{\delta\in U}h_\delta(x,y)t^\delta$, with $U$ countable
+well ordered and every $h_\delta\in L^1(\lambda\otimes\rho)$. Scalar Fubini gives,
+outside one $\lambda$-null set, integrable sections of every coefficient and
+$G_\delta(x)=\int h_\delta(x,y)\,d\rho(y)\in L^1(\lambda)$. Fix such an $x$ with
+$\theta(x)>0$. The weighted section $f(x,y)\zeta(y)=h(x,y)/\theta(x)$ is a Hahn function
+of $y$ with integrable coefficients times the fixed scalar $\theta(x)^{-1}$; its
+support lies in $U+\supp(\theta(x)^{-1})$ and each coefficient is a finite linear
+combination of integrable sections, so it is admissible for $\nu$. Its integral is
+$G(x)/\theta(x)$ with $G=\sum G_\delta t^\delta\in\Hone{\lambda}$, admissible for $\mu$, with
+outer integral $\intc G\,d\lambda$. Scalar Fubini at each exponent gives
+\eqref{meas:cw:eq:fubini}.
+\end{proof}
+
+The theorem assumes coefficientwise absolute integrability of the \emph{weighted
+joint} function, through membership in the adapted domain. A nonnegative Hahn
+function does not satisfy a universal Tonelli theorem with values in $\Kc$:
+Example~\ref{meas:cw:ex:bounded-fail} already has a divergent coefficient. If all
+weighted coefficients are nonnegative, ordinary Tonelli applies coefficient by
+coefficient, and a Hahn-valued answer exists when all resulting coefficient
+integrals are finite.
+
+\paragraph{Quadratic inequalities without a Hilbert space.} Let $\Hinf{\lambda}$ be
+the common-support Hahn functions with individually bounded real coefficients,
+modulo $\lambda$-null equality; it is a $\Kc$-algebra. For a positive $\mu$ with
+control $\lambda$ put $\inner fg_\mu=\int fg\,d\mu$ for $f,g\in\Hinf{\lambda}$. All
+coefficient products are integrable, the form is positive definite, and
+\begin{equation}\label{meas:cw:eq:cs}
+ \abs{\inner fg_\mu}^2\le\inner ff_\mu\,\inner gg_\mu :
+\end{equation}
+if $\inner gg_\mu>0$, apply positivity to $\inner{f-cg}{f-cg}_\mu$ with
+$c=\inner fg_\mu/\inner gg_\mu\in\Kc$; if it is $0$, then $g=0$ almost everywhere. No
+real closure or square root is used. For complex coefficients put
+$\inner fg=\int f\overline g\,d\mu$, integrating real and imaginary parts; the same
+argument gives the Hermitian inequality, with values in $\Kc(i)$ and, through
+Convention~\ref{meas:conv:surreal}, in the surcomplex numbers. There is no order
+on the surcomplex field; positivity refers to the squared modulus and the
+underlying positive measure. This gives finite Gram-matrix algebra; it is not a
+complete Hilbert space, and no spectral theorem for arbitrary operators is
+claimed. The Hermitian moment forms of Section~\ref{meas:sec:hermitian} are
+different objects: forms of a functional on polynomials, which there need not
+come from any positive strong measure.
+
+\section{Probability: standard part, conditioning, conditional expectation}
+\label{meas:cw:sec:probability}
+
+\subsection{Normalization, the real shadow, and conditioning on events}
+
+Every nonzero positive countable-scale measure normalizes to a probability
+$P=\mu/\mu(X)$, even when $\mu(X)$ is infinite or infinitesimal; scalar
+multiplication preserves the class, positivity and the null ideal. That a
+coefficientwise probability has no negative-exponent coefficient, that $P_0$ is an
+ordinary probability, and that $\st P(A)=P_0(A)$ is
+Remark~\ref{meas:rem:probability-exponents}; source~16 re-derived it as its
+``classical shadow'' theorem, printed here once. The shadow need not detect
+all null sets: a point of positive infinitesimal mass has shadow zero without
+being $P$-null. Standard-part reduction forgets exactly the information the
+further scales were meant to keep, and it differs from taking standard parts of
+an arbitrary finitely additive non-Archimedean probability, which need not be
+countably additive (Section~\ref{meas:cw:sub:numerosity}). In the strong class the
+shadow is finitely supported (Trap~2 of Section~\ref{meas:sub:traps}).
+
+For an event $B$ with $P(B)>0$, $P(\,\cdot\mid B)=P(\,\cdot\cap B)/P(B)$ is again a
+coefficientwise probability: this is Proposition~\ref{meas:prop:conditioning}
+(source~15), which source~16 states for countable scales, with values in $[0,1]$
+and finite Bayes identities and the multiplication rule following from field
+algebra. There is no need for $P_0(B)>0$. Source~16 adds the leading-scale
+description.
+
+\begin{proposition}[Conditioning activates the first layer that sees the event;
+source 16]\label{meas:cw:prop:leading}
+Let $P(B)>0$ and $\beta=v(P(B))$. If $P(A\cap B)\ne0$ then $v(P(A\cap B))\ge\beta$ and
+\begin{equation}\label{meas:cw:eq:leading}
+ \st P(A\mid B)=\begin{cases}
+ \lc P(A\cap B)/\lc P(B),& v(P(A\cap B))=\beta,\\
+ 0,& v(P(A\cap B))>\beta .\end{cases}
+\end{equation}
+For a positive hierarchy $\mu=\sum_\gamma t^\gamma\rho_\gamma$ and $P=\mu/\mu(X)$, let $\beta$ be
+the first index with $\rho_\beta(B)>0$. Then
+$\st P(A\mid B)=\rho_\beta(A\cap B)/\rho_\beta(B)$.
+\end{proposition}
+\begin{proof}
+Monotonicity gives $0\le P(A\cap B)\le P(B)$, hence the valuation inequality, and
+\eqref{meas:cw:eq:leading} is the leading-term quotient. For a hierarchy every
+coefficient $\rho_\gamma(B)$ is nonnegative, so $v(\mu(B))=\beta$ with leading coefficient
+$\rho_\beta(B)$, while $\rho_\gamma(A\cap B)\le\rho_\gamma(B)=0$ for $\gamma<\beta$.
+\end{proof}
+
+Example~\ref{meas:ex:conditioning} (source~15) is an instance: conditioning on at
+least one rare success activates the $t^\alpha$ layer $\sum_jc_j\delta_{e_j}$. The
+formula resembles lexicographic probability; exact coefficientwise
+$\sigma$-additivity and the integration domain are additional structure, and the
+relations among lexicographic, Popper and non-Archimedean probability are
+Brickhill and Horsten's~\cite{BH}.
+
+\begin{example}[A diffuse law with two infinitesimal atoms; source 16]
+\label{meas:cw:ex:worked}
+On $[0,1]$ with Lebesgue probability $\lambda$ put
+\begin{equation}\label{meas:cw:eq:worked}
+ \mu=\lambda+t\delta_0+t^2\delta_1,\qquad P=\frac{\mu}{1+t+t^2}.
+\end{equation}
+For real bounded measurable $f$,
+$\E_Pf=\bigl(\int_0^1f(x)\,dx+tf(0)+t^2f(1)\bigr)/(1+t+t^2)$. The shadow is
+Lebesgue measure. For $B=\{0,1\}$, $P(\{1\}\mid B)=t/(1+t)$ and
+$P(\{0\}\mid B)=1/(1+t)$, defined although $P_0(B)=0$. For the identity function,
+\[
+ \E_PX=\frac{1/2+t^2}{1+t+t^2}=\frac12-\frac12t+t^2-\frac12t^3-\frac12t^4+\cdots ;
+\]
+the exact rational expression, not a truncation, is the expectation. A control
+is $\lambda+\delta_0+\delta_1$, relative to which the density of $\mu$ is $1$ on the
+diffuse part, $t$ at $0$ and $t^2$ at $1$: the strata are explicit.
+\end{example}
+
+\begin{proposition}[A first Borel--Cantelli lemma; source 16]
+\label{meas:cw:prop:borel-cantelli}
+If events $A_n$ satisfy $\sum_n\abs{P_\gamma}(A_n)<\infty$ for every $\gamma$, then
+$P(\limsup_nA_n)=0$.
+\end{proposition}
+\begin{proof}
+The scalar lemma for each finite positive measure $\abs{P_\gamma}$ makes the limsup
+null for every coefficient, hence for the control, hence for $P$.
+\end{proof}
+The hypothesis is coefficient-variation summability, not an unqualified
+summability of event probabilities.
+
+\subsection{Conditional expectation}
+
+Let $\mathcal G\subseteq\Sigma$ be a sub-$\sigma$-algebra and $f\in\Lad(\mu)$. The
+measure $\nu_f$ of \eqref{meas:cw:eq:nu-f} restricts to $\mathcal G$ and stays
+absolutely continuous with respect to $\mu|_{\mathcal G}$, so
+Theorem~\ref{meas:cw:thm:rn} gives a unique adapted derivative \emph{on the
+restricted measurable space}.
+
+\begin{theorem}[Conditional expectation on the restricted space; source 16]
+\label{meas:cw:thm:conditional}
+There is a unique $\E_\mu[f\mid\mathcal G]\in\Lad(\mu|_{\mathcal G})$ with
+\begin{equation}\label{meas:cw:eq:conditional}
+ \int_A\E_\mu[f\mid\mathcal G]\,d(\mu|_{\mathcal G})=\int_Af\,d\mu\qquad(A\in\mathcal G).
+\end{equation}
+With a control $\lambda$ with the null sets of $\mu$, $\theta=d\mu/d\lambda$ and
+$h=f\theta$,
+\begin{equation}\label{meas:cw:eq:conditional-ratio}
+ \E_\mu[f\mid\mathcal G]=\frac{\E_\lambda[h\mid\mathcal G]}{\E_\lambda[\theta\mid\mathcal G]},
+\end{equation}
+numerator and denominator being ordinary conditional expectations taken
+coefficient by coefficient; the denominator is positive almost everywhere. The
+operator is $\Kc$-linear and positive, and for $\mathcal G'\subseteq\mathcal G$,
+\begin{equation}\label{meas:cw:eq:tower}
+ \E_{\mu|_{\mathcal G}}\bigl[\E_\mu[f\mid\mathcal G]\mid\mathcal G'\bigr]=\E_\mu[f\mid\mathcal G'] .
+\end{equation}
+\end{theorem}
+\begin{proof}
+Coefficientwise scalar conditional expectations of $h$ and $\theta$ keep their
+countable common supports and integrable coefficients; they are the densities of
+$\nu_f|_{\mathcal G}$ and $\mu|_{\mathcal G}$ relative to $\lambda|_{\mathcal G}$. For
+$A\in\mathcal G$, $\mu(A)=0$ exactly when $\lambda(A)=0$, so the density of
+$\mu|_{\mathcal G}$ is positive almost everywhere by the sign lemma, and the ratio is
+the adapted derivative. Linearity, positivity and uniqueness come from
+Theorem~\ref{meas:cw:thm:rn}. Both sides of \eqref{meas:cw:eq:tower} represent
+$\nu_f|_{\mathcal G'}$.
+\end{proof}
+
+Quotients of two common-support functions have measurable coefficient
+functions: partition the space by the countably many possible leading exponents
+of the denominator and use finite convolution and formal inversion on each
+piece. The union of possible exponents is countable but need not be well
+ordered. This is what measurability of the representatives in
+\eqref{meas:cw:eq:conditional-ratio} means; there is no appeal to a Borel
+structure on the proper class $\No$. The theorem does \emph{not} assert
+$\E_\mu[f\mid\mathcal G]\in\Lad(\mu)$ on the original $\sigma$-algebra: integrating
+on the coarser space can allow cancellation within a fibre before absolute
+integrability is tested.
+
+\begin{example}[Conditioning leaves the original domain; source 16]
+\label{meas:cw:ex:conditional-fail}
+Let $X=\N\times\{0,1\}$ with all subsets measurable,
+$\lambda(\{(n,b)\})=c/(2n^3)$ with $c=(\sum_nn^{-3})^{-1}$, $a(n,0)=0$, $a(n,1)=n$, and
+$d\mu=(1+ta)\,d\lambda$. Since $\sum_nn^{-2}<\infty$, $a$ is integrable and $\mu$ is a
+positive two-scale measure. Let $f=\ind_{\{b=0\}}$, bounded and in $\Lad(\mu)$, and
+let $\mathcal G$ consist of the unions of fibres $\{n\}\times\{0,1\}$. On fibre $n$
+the scalar conditional expectations are $1+\frac n2t$ and $\frac12$, so the only
+possible fibre-constant derivative is
+\begin{equation}\label{meas:cw:eq:bad-conditional}
+ g_n=\frac1{2+nt}=\frac12-\frac n4t+\frac{n^2}8t^2-\cdots ,
+\end{equation}
+which lies in $\Lad(\mu|_{\mathcal G})$ because its weighted numerator is
+$g_n(1+\frac n2t)=\frac12$. On the full space, the $t^2$-coefficient of
+$g(1+ta)$ is $n^2/8$ at $(n,0)$ and $-n^2/8$ at $(n,1)$, with absolute integral
+$\sum_n\frac c{n^3}\frac{n^2}8=\frac c8\sum_n\frac1n=\infty$. So $g\notin\Lad(\mu)$,
+and since every $\mathcal G$-measurable candidate equals
+\eqref{meas:cw:eq:bad-conditional}, no version lies in the full domain. The
+function $g$ has support in $\{0,1,2,\ldots\}$: the obstruction is not a lack of
+common support but coefficientwise absolute integrability on the finer
+$\sigma$-algebra.
+\end{example}
+
+A conditional expectation is therefore, in general, a restricted-space
+Radon--Nikodym derivative, not an endomorphism of one global $L^1$ space.
+
+\begin{theorem}[Bounded-coefficient perturbative conditioning; source 16]
+\label{meas:cw:thm:unit-conditional}
+Let $\lambda$ be a real probability, $\Gamma=\Z$, and $d\mu=w\,d\lambda$ with $w$ as in
+\eqref{meas:cw:eq:bounded-unit}. On the algebra
+$\mathscr A=L^\infty(\lambda)((t))$ the conditional expectation
+\eqref{meas:cw:eq:conditional-ratio} takes values in
+$L^\infty(\lambda|_{\mathcal G})((t))\subseteq\Lad(\mu)$. It preserves constants, is
+positive and $\Kc$-linear, satisfies the tower and idempotence identities, and
+satisfies $\E_\mu[uf\mid\mathcal G]=u\,\E_\mu[f\mid\mathcal G]$ for $u$ in the bounded
+$\mathcal G$-measurable algebra $L^\infty(\lambda|_{\mathcal G})((t))$.
+\end{theorem}
+\begin{proof}
+The denominator is $1+\sum_n\E_\lambda[a_n\mid\mathcal G]t^n$, with bounded
+coefficients and an inverse with bounded coefficients. For $f\in\mathscr A$ the
+numerator $\E_\lambda[fw\mid\mathcal G]$ has bounded coefficients and an integer lower
+bound on its support, and finite convolution gives the membership; by
+\eqref{meas:cw:eq:domain-unit} the result may be integrated against $\mu$ on the full
+$\sigma$-algebra, its coefficient products with those of $w$ being integrable. The
+defining identity follows from the scalar conditional identity exponent by
+exponent. Tower, idempotence and constants follow from uniqueness, all functions
+now lying in the full domain. For pull-out, the coefficients of $u$ are bounded and
+$\mathcal G$-measurable, so scalar pull-out and finite convolution give
+$\E_\lambda[ufw\mid\mathcal G]=u\,\E_\lambda[fw\mid\mathcal G]$; divide by the same
+denominator. Positivity is inherited from
+Theorem~\ref{meas:cw:thm:conditional}.
+\end{proof}
+
+For real bounded $f$ and $w=1+ta+t^2b+\cdots$, with $F=\E[f\mid\mathcal G]$,
+$A=\E[a\mid\mathcal G]$, $B=\E[b\mid\mathcal G]$ (all under $\lambda$),
+\begin{equation}\label{meas:cw:eq:covariance}
+ \E_\mu[f\mid\mathcal G]=F+t\bigl(\E[fa\mid\mathcal G]-FA\bigr)
+ +t^2\bigl(\E[fb\mid\mathcal G]-A\,\E[fa\mid\mathcal G]+F(A^2-B)\bigr)+\cdots,
+\end{equation}
+where the omitted terms are an exact formal remainder with exponents at least
+$3$. The $t$-coefficient is a conditional covariance. These are exact
+perturbative Bayesian updates at successive scales, not approximations requiring
+a numerical value of $t$.
+
+\paragraph{Two certificates.} In symbolic computation source~16 recommends
+storing a common support descriptor with symbolic coefficient measures, and
+attaching to every result two certificates: a support certificate and an
+absolute-integrability certificate.
+Example~\ref{meas:cw:ex:rn-support} fails the first for an unweighted integrand;
+Example~\ref{meas:cw:ex:conditional-fail} fails the second after conditioning. A
+system reporting only a formal quotient would miss both.
+
+\section{Surreal masses, charts, equal point masses, and the countability
+boundary}\label{meas:cw:sec:boundary}
+
+\subsection{Infinite and infinitesimal masses; charts; strata}
+
+If $\lambda$ is a real probability, $t^{-1}\lambda$ is a countable-scale measure of
+infinite total mass $t^{-1}$ and $t\lambda$ one of infinitesimal mass; both are
+diffuse when $\lambda$ is. The class is not limited to finite surreal
+probabilities. This does not assign the value $t^{-1}$ to an arbitrary divergent
+real integral: the scale is part of the definition of the measure. Lebesgue
+measure on all of $\R$ is not in the class with interval lengths unchanged, since
+its exponent-zero coefficient would have infinite total mass; a local or
+$\sigma$-finite extension needs further definitions, not the symbol $\omega$ in place
+of $+\infty$.
+
+Fix $a\in\Kc$ and $s\in(\Kc)_{>0}$. The map $\phi(u)=a+su$ sends $[0,1]\subseteq\R$
+injectively into $\No$ (after Convention~\ref{meas:conv:surreal}). On
+$X_{a,s}=\phi([0,1])$, with the transported Borel $\sigma$-algebra,
+$\mu_{a,s}(\phi(A))=s\lambda(A)$ is a positive measure of total mass $s$, and for
+admissible $f$, $\int_{X_{a,s}}f\,d\mu_{a,s}=s\int_0^1f(a+su)\,du$, by pushforward and
+scalar multiplication. It is a measure on a set of surreal points. But $X_{a,s}$ is
+\emph{not} the surreal interval $[a,a+s]$: it omits the parameters that are
+nonreal surreals in $(0,1)$. Real parameter charts with surreal affine images
+and chosen volume factors work in higher dimensions as well; consistency on
+overlaps must be checked from the coordinate changes, and a canonical volume on
+all surreal subsets does not follow.
+
+On a compact region $D\subseteq\R^d$ with finite volume $\lambda_D$, a finite surface
+measure $\sigma$ on a boundary or defect, and a finite atomic $\eta$,
+$\mu=\lambda_D+t\sigma+t^2\eta$ keeps all three contributions: a surface invisible to
+the standard part has positive conditional mass at the first infinitesimal scale
+(Proposition~\ref{meas:cw:prop:leading}). More generally, for disjoint strata
+$X_k$ with finite measures $\rho_k$ on them, $\sum_kt^{\gamma_k}\rho_k$ is a positive
+hierarchy whenever the exponents form a countable well-ordered set, with no
+decay rate imposed on the masses. A physical reading would need compatible units
+and a model for the coefficients; no claim that surreal scalars regularize a
+physical singularity follows from the algebra.
+
+\subsection{Equal infinitesimal point masses need another axiom}
+\label{meas:cw:sub:numerosity}
+
+Coefficientwise measures keep classical countable additivity at each scale. A
+different goal is to give \emph{the same} positive infinitesimal to every point
+of an infinite sample space, with a probability defined on all subsets. The
+following construction is of the standard type in the non-Archimedean
+probability and numerosity tradition~\cite{BHW,BBDN}. Let $X$ be infinite and
+$I$ the set of its nonempty finite subsets. The cones
+$C_{F_0}=\{F\in I:F_0\subseteq F\}$, $F_0$ finite, have the finite intersection
+property; choose an ultrafilter $\mathcal U$ on $I$ containing them all, and in the
+ordered ultrapower field $\R^I/\mathcal U$ put
+\begin{equation}\label{meas:cw:eq:numerosity}
+ \mathfrak n(A)=\bigl[F\mapsto\abs{A\cap F}\bigr]_{\mathcal U},\qquad
+ \mathfrak N=\mathfrak n(X),\qquad P(A)=\mathfrak n(A)/\mathfrak N .
+\end{equation}
+
+\begin{proposition}[Numerosity probability; source 16]
+\label{meas:cw:prop:numerosity}
+$\mathfrak n$ is finitely additive on disjoint sets, $\mathfrak n(\{x\})=1$, and
+$\mathfrak N$ exceeds every positive integer. $P$ is a finitely additive probability
+on all subsets of $X$, with $P(A)>0$ for every nonempty $A$ and
+$P(\{x\})=\mathfrak N^{-1}$ for every $x$.
+\end{proposition}
+\begin{proof}
+Finite counting identities hold pointwise on $I$, hence in the ultrapower. The
+cone requiring $x$ lies in $\mathcal U$, so $\mathfrak n(\{x\})=1$; a cone requiring $k+1$
+distinct points shows $\mathfrak N>k$. If $x\in A$, then $\mathfrak n(A)\ge1$ on that
+cone, so $P(A)\ge\mathfrak N^{-1}>0$.
+\end{proof}
+
+\begin{proposition}[Set-sized ordered fields embed in $\No$; classical]
+\label{meas:cw:prop:realization}
+Every set-sized ordered field extending $\R$ has an ordered-field embedding into
+$\No$ fixing $\R$.
+\end{proposition}
+\begin{proof}[Proof (source 16's sketch)]
+Pass to the real closure and choose a well-ordered transcendence basis over $\R$.
+Embed the real closures generated by initial segments. At a successor stage the
+next basis element determines a cut in the preceding real closed field, a set;
+the cut property of $\No$ supplies a surreal realizing the image cut, necessarily
+outside the image and hence transcendental over it. Over a real closed field the
+sign of a polynomial is determined by position relative to its roots, so the cut
+determines an ordered embedding of the rational function field; extend to its
+real closure inside $\No$, using real-closedness of $\No$~\cite{Conway,Gonshor}.
+Take unions at limit stages.
+\end{proof}
+
+The foundations report records the caveats on universality claims
+(\path{found:sub:universality}~\cite{repofound}). Applied to the ultrapower, the
+proposition makes the probabilities of \eqref{meas:cw:eq:numerosity} genuine
+surreal numbers; the infinitesimal $\mathfrak N^{-1}$ depends on the embedding and
+is not automatically the $\omega^{-1}$ of earlier examples.
+
+For countably infinite $X$ the construction satisfies none of the three
+countable-sum axioms: at the common leading exponent of the masses
+$\mathfrak N^{-1}$ the real coefficient series diverges (coefficientwise additivity
+fails), infinitely many terms contribute there (strong summability fails; this
+is the physics report's observation, Section~\ref{meas:sub:collection}), and
+order-limit additivity fails by Corollary~\ref{meas:cw:cor:orderlimits}. Its finite
+additivity is exact. Benci, Horsten and Wenmackers use a distinct
+infinite-additivity axiom~\cite{BHW}, not to be conflated with any of these. On
+$\N$ a free ultrafilter applied to the initial-segment frequencies,
+$P(A)=[\abs{A\cap\{1,\ldots,n\}}/n]_{\mathcal U}$, gives $\st P(A)=d$ whenever $A$
+has natural density $d$; but the standard-part set function on all subsets is not
+countably additive, every singleton having standard part $0$. Loeb-type
+procedures obtain countably additive real measures on suitably specified spaces
+and $\sigma$-algebras; taking standard parts on an arbitrary fixed event algebra is
+not such a procedure. Bottazzi develops a related real-valued measure theory on
+non-Archimedean extensions~\cite{Bottazzi}. The collection's report
+\path{surreal/finite-surreal-probability}~\cite{repofsp} treats finite probability
+over surreal fields and keeps its infinite-space constructions (strong laws,
+coefficientwise hierarchies, finitely additive extensions, internal and Loeb
+models) apart.
+
+\subsection{Why countably many scales are essential}
+
+The coefficientwise definition makes sense for any well-ordered common support,
+and Theorem~\ref{meas:thm:nullideal} is stated in that generality. The control
+measure, and every proof above that takes a union of exceptional null sets, use
+countability. This is a genuine boundary.
+
+\begin{example}[Uncountably many positive atoms; source 16]\label{meas:cw:ex:omega1}
+Let $X=\omega_1$ with all subsets measurable, let $\Gamma$ be the subgroup of $\No$
+generated by the ordinals below $\omega_1$, and put $\mu(A)=\sum_{\alpha\in A}t^\alpha$ in
+$\R((t^\Gamma))$. Every coefficient is a point mass $\delta_\alpha$, every disjoint
+sequence is strongly summable (at each exponent at most one event contributes),
+and every singleton has positive mass. No finite real measure has the same null
+ideal, since it would have uncountably many atoms. The total mass is a valid
+Hahn series outside $\Kc$.
+\end{example}
+
+This is a strong Hahn measure on a countably separated space (the points of
+$\omega_1$ are separated by countably many sets, as $\omega_1$ injects into
+$\{0,1\}^{\N}$), of the kind in Remark~\ref{meas:rem:many-atoms} (there
+normalized by an anchor point), printed there once; its role here is to show that the control cannot be kept. Source~18's
+\texttt{herg:ex:uncountable} (Remark~\ref{meas:rem:nullideal}) shows the same
+boundary for the null-ideal criterion. The report
+\path{surreal/finite-surreal-probability}~\cite{repofsp} gives, in its section on
+arbitrary surreal-valued observables, a pointwise positive Hahn-valued function
+with one uncountable well-ordered support whose coefficientwise integral against
+an ordinary countably additive probability is negative, and notes that with
+countable support positivity is preserved: that is the sharpness of the
+implication (i)$\Rightarrow$(ii) of Lemma~\ref{meas:cw:lem:sign} in its countability
+hypothesis. None of these refutes a theorem above. Uncountable support can be
+studied with local controls, transfinite null ideals or another measurable
+structure, but those are further theories.
+
+\subsection{A comparison of frameworks}
+
+The literature contains genuinely different non-Archimedean measure programs,
+and source~16 compares its own with them. Benci, Horsten and Wenmackers replace
+classical countable additivity by another infinite-additivity axiom~\cite{BHW};
+elementary numerosities encode finite counting identities on infinite sets and
+relate suitable standard parts to ordinary measures~\cite{BBDN}; Brickhill and
+Horsten compare non-Archimedean, lexicographic and Popper probability~\cite{BH}.
+Kaiser constructs measure and integration for semialgebraic sets and functions
+over certain non-Archimedean real closed fields, with values in a controlled
+extension, such as a polynomial ring, rather than the field itself~\cite{Kaiser}.
+Work on the Levi-Civita field builds measure from interval covers and outer
+measures adapted to that field, with a changed measurable-set
+category~\cite{LeviCivita}. Bottazzi's measure is real-valued on a
+non-Archimedean domain~\cite{Bottazzi}, whereas the measures here have a
+non-Archimedean range on an ordinary measurable space.
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.21\textwidth}
+ >{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X
+ >{\raggedright\arraybackslash}X@{}}
+\toprule
+Framework & Addition and limits & Diffuse real shadow & Equal infinitesimal
+point masses\\
+\midrule
+Order limits in $\No$ & Set-indexed limits eventually constant
+(Cor.~\ref{meas:cw:cor:orderlimits}) & No Lebesgue extension & No countable
+lottery\\
+Strong Hahn measures & Finitely many contributions per exponent & No: finitely
+supported shadow on countably separated spaces (Cor.~\ref{meas:cor:shadow}) & No
+countable lottery (Cor.~\ref{meas:cor:transitive})\\
+Coefficientwise, countable scales & Absolutely convergent real sums at every
+exponent & Yes & Not on a countably infinite sample space\\
+Ultrafilter or numerosity & Finite additivity, with a separately chosen
+generalized-limit structure & May recover selected real measurements; no
+automatic $\sigma$-additivity & Yes\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The table is not a ranking: the right framework depends on whether ordinary
+diffuse integration, exact finite counting, geometric measure on a
+non-Archimedean domain, or another feature comes first, and no construction makes
+these choices disappear.
 
 \part{Scope, questions, verification, and provenance}\label{meas:part:scope}
 
@@ -3655,6 +5029,20 @@ perturbations on a common well-ordered exponent set the exact sequence-space
 conditions are identified, and positivity is proved rather than assumed, by
 domination in the interior and by nonnegative exact path weights at the
 boundary (Theorems~\ref{meas:thm:interior}--\ref{meas:thm:mixed}).
+
+\paragraph{Countably many scales (source 16).} With a countable exponent set, and
+finite real coefficient variation, the class has a coherent measure theory with
+actual surreal values and diffuse shadows: one real control and a Hahn-valued
+density making positivity pointwise, a Hahn--Jordan decomposition, a faithful
+density-adapted integral with an exact Radon--Nikodym correspondence, Lebesgue
+decomposition, products and Fubini, and a subclass with stable conditioning. The
+boundary is equally exact: order smallness does not control coefficient
+integrability (Examples~\ref{meas:cw:ex:bounded-fail}
+and~\ref{meas:cw:ex:bct-fail}), coefficientwise limits of positive measures can be
+negative (Example~\ref{meas:cw:ex:positive-not-closed}), conditioning can require
+cancellation before integration (Example~\ref{meas:cw:ex:conditional-fail}), and
+the control cannot survive uncountably many scales
+(Example~\ref{meas:cw:ex:omega1}).
 
 \paragraph{A practical rule (source 15).} A model treating Hahn coefficients as
 finite ordinary measures can carry infinitely many independent infinitesimal
@@ -3817,7 +5205,79 @@ After Cor.~\ref{meas:cor:exchangeable}\\
 15.14 & No summation of the per-exponent bounds over all exponents is used or
 available. & Sec.~\ref{meas:sec:interior}\\
 15.15 & Powers of $t^\alpha$ are never inferred to be cofinal. &
-Rem.~\ref{meas:rem:cofinal}\\
+Rem.~\ref{meas:rem:cofinal}\\[3pt]
+\multicolumn{3}{@{}l}{\emph{Source 16}}\\
+16.1 & Not a measure on the proper class of all surreals; no proper class is used
+as a $\sigma$-algebra, support or integration domain; no Borel structure on $\No$ is
+assumed. & Conv.~\ref{meas:cw:conv:notation}, Secs.~\ref{meas:cw:sec:probability},
+\ref{meas:cw:sec:boundary}\\
+16.2 & Not a canonical length measure on every surreal interval; a real-parameter
+chart is not the surreal interval; chart consistency must be checked; no canonical
+volume on all surreal subsets follows. & Sec.~\ref{meas:cw:sec:boundary}\\
+16.3 & Not a blanket extension of the real convergence theorems; its convergence
+theorems concern coefficientwise, not surreal-order, limits; no universal Tonelli
+theorem; monotone convergence does not cover arbitrary order-monotone Hahn
+functions. & Secs.~\ref{meas:cw:sec:rn},~\ref{meas:cw:sec:products}\\
+16.4 & The countable-scale and finite-coefficient restrictions are substantive: no
+arbitrary $\sigma$-finite theory on the surreal line, no Lebesgue measure on $\R$ in
+the class, no uncountable-scale Radon--Nikodym theory. &
+Secs.~\ref{meas:cw:sec:control},~\ref{meas:cw:sec:boundary}\\
+16.5 & Coefficientwise summation is transported along a specified normal-form
+embedding and is not full-surreal convergence; no group is identified with
+surreals without a specified embedding. & Conv.~\ref{meas:cw:conv:notation}\\
+16.6 & The strong/coefficientwise distinction, strong atomicity, the null-ideal
+criterion and the two-scale obstruction are this report's, not source~16's; some of
+its arguments reformulate standard scalar measure theory. &
+Secs.~\ref{meas:sub:provenance},~\ref{meas:cw:sec:control}\\
+16.7 & Its repository inspection was not an exhaustive audit (index, this report's
+guide and the opening of its source only). & Sec.~\ref{meas:sec:audit}\\
+16.8 & The adapted $\Kc$-valued norm does not make $\Lad(\mu)$ a real Banach space;
+order-bounded functions do not form an integrability ideal. &
+Thm.~\ref{meas:cw:thm:integral-properties}\\
+16.9 & No global completeness once supports vary. & Sec.~\ref{meas:cw:sec:rn}\\
+16.10 & No countably infinite product theorem is inferred from finite products. &
+Sec.~\ref{meas:cw:sec:products}\\
+16.11 & The Cauchy--Schwarz inequality gives no complete Hilbert space and no
+spectral theorem; the surcomplex field has no order. &
+Sec.~\ref{meas:cw:sec:products}\\
+16.12 & Conditional expectation is not asserted to lie in the original domain; no
+single projection on all adapted integrands exists
+(Ex.~\ref{meas:cw:ex:conditional-fail}). & Sec.~\ref{meas:cw:sec:probability}\\
+16.13 & Borel--Cantelli only under per-coefficient variation summability. &
+Prop.~\ref{meas:cw:prop:borel-cantelli}\\
+16.14 & Replacing a divergent coefficient by a chosen infinite surreal is a
+regularization rule, not a consequence. & Ex.~\ref{meas:cw:ex:bct-fail}\\
+16.15 & No claim that surreal scalars regularize a physical singularity. &
+Sec.~\ref{meas:cw:sec:boundary}\\
+16.16 & The numerosity construction is of a standard type; its infinitesimal
+depends on the embedding; its standard-part set function is not countably
+additive; it is not to be conflated with the Benci--Horsten--Wenmackers axiom;
+standard parts on an arbitrary event algebra are not a Loeb procedure. &
+Sec.~\ref{meas:cw:sub:numerosity}\\
+16.17 & The uncountable example refutes no theorem; uncountable support needs
+further theories. & Ex.~\ref{meas:cw:ex:omega1}\\
+16.18 & The framework table is not a ranking; no framework makes the choices
+disappear. & Sec.~\ref{meas:cw:sec:boundary}\\
+16.19 & Positivity must be checked on the generated $\sigma$-algebra or by a density
+certificate; finite tests cannot replace it. & Prop.~\ref{meas:cw:prop:extension}\\
+16.20 & The order-limit theorem concerns set-indexed nets only, with a
+smallness caveat for universe-relative formalization; selecting simplest surreals
+is not a supremum. & Sec.~\ref{meas:cw:sub:orderlimits}\\
+16.21 & Leading-scale conditioning resembles lexicographic probability; exact
+$\sigma$-additivity is additional structure. & Prop.~\ref{meas:cw:prop:leading}\\
+16.22 & Scalar Radon--Nikodym, Fubini, conditional expectation, Carath\'eodory,
+Neumann's lemma and the field embedding are classical inputs. &
+Secs.~\ref{meas:cw:sec:control},~\ref{meas:cw:sub:numerosity}\\
+16.23 & No compiling Lean implementation; the repository's checked results do not
+formalize its theorems. & Rem.~\ref{meas:cw:rem:routes},
+Sec.~\ref{meas:sec:audit}\\
+16.24 & Its finite checks verify no infinite summability, countable additivity,
+almost-everywhere statement or infinite divergence; its build record is a record
+of delivery, not regenerated. & Sec.~\ref{meas:sec:verification}\\
+16.25 & Not independently refereed; no certified novelty or priority, also for the
+combination; no published conjecture resolved; the literature comparison is
+targeted, and related formulations in the literature are not excluded. & Title
+page, Sec.~\ref{meas:sub:literature}\\
 \bottomrule
 \end{longtable}
 \endgroup
@@ -3828,12 +5288,20 @@ vector measures with finite coefficient incidence, so it remains a candidate
 contribution. Corollary~\ref{meas:cor:two-axioms} and
 Remarks~\ref{meas:rem:mustar-coef} and~\ref{meas:rem:one-exponent} were added in the
 merge to reconcile the sources; they are elementary consequences of the sources'
-theorems, and they are marked where they appear.
+theorems, and they are marked where they appear. The same holds for
+Proposition~\ref{meas:cw:prop:nullideal}, Remarks~\ref{meas:cw:rem:routes}
+and~\ref{meas:cw:rem:dominated}, Example~\ref{meas:cw:ex:negative-density}, and the
+comparisons of source~16's results with Example~\ref{meas:ex:hahn-integrand},
+Theorem~\ref{meas:thm:extension} and Theorem~\ref{meas:thm:mixed}, which the
+merge added to relate source~16 to the earlier sources. Source~16's own
+reliance on classical scalar theorems was checked only against their standard
+statements.
 
 \section{Open questions}\label{meas:sec:questions}
 
-The questions below were formulated by the three sources, not taken from a named
-list of open problems. Where a question is answered in part, the answer and its
+The questions below were formulated by the four sources, not taken from a named
+list of open problems. Source~16 answers none of the earlier questions; it adds
+Questions~\ref{meas:cw:q:conditional} and~\ref{meas:cw:q:uncountable}. Where a question is answered in part, the answer and its
 source are recorded and the question stays open, re-scoped.
 
 \begin{question}[Standard Borel alphabets; source 10]\label{meas:q:borel}
@@ -3927,10 +5395,35 @@ all events. For the strong axiom \eqref{meas:eq:SH} the question is answered: on
 countably separated spaces the common support is automatic
 (Theorem~\ref{meas:thm:atomic}, sources 10 and 11), and even finite coefficient
 atomicity alone forces it (Corollary~\ref{meas:cor:coefficient-test}). Open for
-coefficientwise and other rules.
+coefficientwise and other rules. Source~16's adapted integral
+(Definition~\ref{meas:cw:def:adapted}) drops the common well-ordered support for
+\emph{integrands}, not for measures, and leaves this question unchanged.
 \end{question}
 
-\section{The three check suites}\label{meas:sec:verification}
+\begin{question}[Conditioning-stable coefficient classes; source 16]
+\label{meas:cw:q:conditional}
+Characterize the largest classes of density coefficients, between the bounded
+unit-leading class of Theorem~\ref{meas:cw:thm:unit-conditional} and general
+integrable coefficients, on which the conditional quotients
+\eqref{meas:cw:eq:conditional-ratio} stay in the original integrable class.
+Example~\ref{meas:cw:ex:conditional-fail} shows that integrable coefficients alone
+do not suffice. Open.
+\end{question}
+
+\begin{question}[Beyond countably many scales; source 16]
+\label{meas:cw:q:uncountable}
+Source~16 names what its theory does not give: a $\sigma$-finite theory (for instance
+Lebesgue measure on $\R$ with unchanged lengths), and integration and
+Radon--Nikodym theory with uncountably many scales, where no single control exists
+(Example~\ref{meas:cw:ex:omega1}) and, by the example of the finite
+surreal-probability report cited in Section~\ref{meas:cw:sec:boundary}, positivity of
+naive coefficientwise integrals fails. It suggests local controls or transfinite
+null ideals (Theorem~\ref{meas:thm:nullideal}). Which of these, if any, gives an
+integral with a Radon--Nikodym theorem? (Formulated in the merge from source~16's
+stated boundary.) Open.
+\end{question}
+
+\section{The four check suites}\label{meas:sec:verification}
 
 Each source delivered a standard-library Python program using exact rational
 arithmetic; they are kept byte-identical under \path{code/}, with their recorded
@@ -3968,13 +5461,26 @@ the two-sided bounds of Lemma~\ref{meas:lem:L1lower} at the fair baseline (8,
 recorded under the name \path{interior_moment_bounds}); the cylinders of
 Example~\ref{meas:ex:negative} (510) and its normalization (8); and one check
 (\path{counterexample_singleton_formula}) that only asserts that a hard-coded
-value is negative, so is tautological. Integer exponents only.\\
+value is negative, so is tautological. Integer exponents only.\\[3pt]
+\path{16-coefficientwise-measure-theory-verify_examples.py} & 1{,}722 & Exact
+rational series modulo $t^9$, seed \texttt{20260922}, 40 random trials on finite
+spaces: normalization (80) and formal inversion (40); finite Radon--Nikodym
+identities (280); conditional expectation, total expectation, idempotence, tower,
+event and pull-out identities (280); finite Fubini (80) and rectangle mass (40);
+Hahn--Jordan reconstruction and attainment (80) and the finite-partition bound of
+Theorem~\ref{meas:cw:thm:variation} over all partitions of four points (600); the
+coefficients of \eqref{meas:cw:eq:covariance} against series division (80); the
+coefficients of Example~\ref{meas:cw:ex:worked} (2); the fibre cancellation,
+opposite $t^2$-coefficients and harmonic term of
+Example~\ref{meas:cw:ex:conditional-fail} for $n\le40$ (120). The 40 checks named
+\path{RN support obstruction} only multiply two hard-coded monomials, so are
+tautological. Integer exponents only.\\
 \bottomrule
 \end{tabularx}
 \end{center}
 
-All three were rerun on a scratch copy of this directory while the report was
-written (Python 3.14.4). All assertions passed with the recorded counts; the
+The programs of sources 10, 11 and 15 were rerun on a scratch copy of this
+directory when the report was first written (Python 3.14.4). All assertions passed with the recorded counts; the
 outputs agree with the delivered records except for the recorded Python version
 (source~10) and line endings (source~11). Two of the programs write files, so run
 them on a copy: \path{10-strong-hahn-measures-verify.py} writes
@@ -3984,11 +5490,18 @@ prefixed records), and \path{11-hahn-moments-verify.py} writes
 \path{verification_results.json} and \path{verification_summary.txt} into its
 own directory unless \path{--output-dir} is given.
 \path{15-infinite-products-of-probabilities-verify.py} prints to standard output
+and writes a file only with \path{--output}. \path{16-coefficientwise-measure-theory-verify_examples.py} prints its JSON record
 and writes a file only with \path{--output}. The delivered build scripts
 (\path{code/*-build.sh}) are kept as delivered; they refer to the source packages'
 own layouts and do not build this report. The file
 \path{15-infinite-products-of-probabilities-build_summary.json} is source~15's
-hand-recorded note on its own 23-page build; no program generates it.
+hand-recorded note on its own 23-page build, and
+\path{16-coefficientwise-measure-theory-build_validation.json} is source~16's record
+of its own 29-page build; no program generates either.
+
+When source~16 was merged, all four programs were rerun on a scratch copy under
+Python 3.14.4. They passed 5{,}135, 682, 1{,}009 and 1{,}722 assertions; source~16's
+output agrees with its delivered record except for the recorded Python version.
 
 \paragraph{Maintained review rerun.}
 The three unchanged programs were run on temporary copies under Python
@@ -4001,7 +5514,7 @@ the finite scope listed above, including the tautological singleton check.
 
 \subsection{Repository snapshot and what the sources inspected}
 
-All three sources inspected \repo\ at the snapshot \pin\ (22 September 2026) and
+Sources 10, 11 and 15 inspected \repo\ at the snapshot \pin\ (22 September 2026) and
 wrote no repository files. Source~10 read the root and catalogue READMEs, directory
 listings, and a prior physics text; its code search found no \texttt{Kolmogorov}
 match while an API search reported incomplete indexing. Source~11 read the root
@@ -4023,6 +5536,15 @@ spectral report explicitly supplies no spectral measures. The delivered audit
 records \path{10-strong-hahn-measures-provenance.md} and
 \path{15-infinite-products-of-probabilities-RESEARCH_AUDIT.md} are kept as written
 at the pin; source~11's audit was an appendix of its article and is summarized here.
+
+Source~16 was pinned to the later snapshot \pinb. It reports inspecting the
+documentation index \path{docs/README.md}, this report's guide and the opening
+definitions of this report's source, and says expressly that this was not an audit
+of every repository file or of the whole 64-page report. This report's source and
+guide did not change between that snapshot and the placement of source~16, so what
+it read is the report of sources 10, 11 and 15 as printed here, before the merge.
+Its audit is a section of its article and is summarized here and in
+Section~\ref{meas:sub:stale}; no separate audit file was delivered.
 
 \subsection{Stale statements corrected}\label{meas:sub:stale}
 
@@ -4052,6 +5574,30 @@ coefficientwise criterion is withdrawn (Remark~\ref{meas:rem:selection}).
 \item Source~15 did not cite Ludkovsky and Khrennikov; source~10's warning against
 ``a first non-Archimedean Kolmogorov theorem'' is extended to source~15's extension
 theorems (Section~\ref{meas:sub:literature}).
+\item Source~16 describes this report as 64 pages, with Theorem~19.2 as its canonical
+null-ideal criterion. Both were correct at its pin \pinb; the report now has 86
+pages, and Theorem~\ref{meas:thm:nullideal} keeps the number 19.2.
+\item Source~16 says that the repository ``has separately recorded checked results for
+portions of its existing strong theory''. At its pin the Lean ledger
+\path{docs/FORMALIZATION.md} already recorded as proved, besides the strong
+atomicity core, the coefficientwise null-ideal criterion
+(Theorem~\ref{meas:thm:nullideal}, with its control-measure form) and
+Corollary~\ref{meas:cor:dominated}. Its conclusion stands: none of source~16's own
+theorems, the density form included, is formalized. This report's own formalization
+subsection and guide, which listed only strong-class items, are corrected in the
+same way.
+\item Source~16 proved the eventual constancy of convergent set-indexed nets from
+Conway's cut property and cited Conway; the collection already had it as
+\path{found:thm:discrete}, and the absence of suprema as
+\path{found:sub:notdedekind}. Both are now cited
+(Section~\ref{meas:cw:sub:orderlimits}). Its citation of the documentation index for
+the distinction between formal summation and topological convergence is correct.
+\item Source~16 treated equal infinitesimal point masses without citing the physics
+report's prior observation \path{phys:ex:summable}; the observation is credited to
+that report (Section~\ref{meas:cw:sub:numerosity}, non-claim 10.13).
+\item Source~16 could not refer to \path{surreal/finite-surreal-probability}, placed in
+the same delivery; its uncountable-support integration example is now cited
+(Section~\ref{meas:cw:sec:boundary}).
 \end{enumerate}
 
 \subsection{A result-by-result attribution ledger}
@@ -4093,6 +5639,26 @@ Candidate contributions of 15; the $\ell^2$ phenomenon for real products is
 Kakutani's~\cite{Kakutani}.\\[3pt]
 Two-axiom equivalence, one-exponent remark, interval example in the coefficientwise
 class & Added in the merge; elementary.\\[3pt]
+Order-limit and supremum obstructions (Section~\ref{meas:cw:sub:orderlimits}) &
+Facts of the foundations report, re-derived by 16; the corollary for measures is
+16's.\\[3pt]
+Control measure, sign lemma, density criterion, completion, Hahn--Jordan, attained
+variation, lattice, extension from an algebra & 16; standard scalar inputs; the
+positivity clause is the countable case of the null-ideal criterion (15, 18).\\[3pt]
+Pointwise form of the null-ideal criterion
+(Proposition~\ref{meas:cw:prop:nullideal}), its relation to
+Corollary~\ref{meas:cor:dominated} & Added in the merge; elementary.\\[3pt]
+Common-support and density-adapted integrals, control invariance, Radon--Nikodym,
+Lebesgue decomposition, dominated convergence, products, Fubini, Cauchy--Schwarz &
+16; reformulations of classical scalar theorems exponent by exponent, with the
+support and weighting that make them valid; candidate contribution as a
+combination, priority not certified.\\[3pt]
+Counterexamples (support, bounded functions, bounded convergence, closedness,
+conditioning) & 16.\\[3pt]
+Leading-scale conditioning, conditional expectation, bounded unit-leading class &
+16; conditioning on an event also 15.\\[3pt]
+Numerosity probability, field embedding & Standard type~\cite{BHW,BBDN}; classical
+embedding~\cite{Conway,Gonshor}; presented by 16.\\[3pt]
 Named open conjecture; priority; refereeing & None claimed.\\
 \bottomrule
 \end{longtable}
@@ -4104,9 +5670,14 @@ The repository ledger \path{docs/FORMALIZATION.md} records checked
 versions of the disjoint-finite scalar lemma, finite coefficient atomicity,
 automatic common support, the forward atomic representation and coefficient
 criterion, and the construction, integration and positivity of strong atomic
-measures. It also records positive-support product prerequisites. These
+measures. It also records positive-support product prerequisites, and, in the
+coefficientwise class, the null-ideal criterion (Theorem~\ref{meas:thm:nullideal},
+with the control-measure form) and Corollary~\ref{meas:cor:dominated} as proved
+(\path{Surreal/HahnSeries/NullIdealPositivity.lean}). These
 declarations have their own precise scope; they do not formalize every
-extension, moment, quadrature or coefficientwise theorem here.
+extension, moment, quadrature or coefficientwise theorem here, and nothing in
+Sections~\ref{meas:cw:sub:orderlimits} or~\ref{meas:cw:sec:control}--\ref{meas:cw:sec:boundary}
+is formalized.
 
 The source's proposed order remains useful for the pending steps: the
 coefficient tree lemma from finite branching, monotone natural-number widths
@@ -4117,20 +5688,34 @@ word finiteness and geometric inversion explicitly.
 Source~15's dependency order for the coefficientwise class is: scalar signed-measure
 extension; finite-product coefficient identities; the multilinear norm bounds;
 common-support Hahn assembly; and the separate positivity arguments.
+Source~16's order for the countable-scale class is: common-support Hahn algebra and
+the finite-convolution support lemma; countable families of finite signed measures
+and the control \eqref{meas:cw:eq:control}; measurable leading-sign strata and
+Lemma~\ref{meas:cw:lem:sign}; representation, completion and Hahn--Jordan
+decomposition; weighted $L^1$ numerator classes, control invariance and the
+Radon--Nikodym correspondence; products and Fubini, then restricted-space
+conditioning; finally the bounded unit-leading class. It advises defining a new
+field-valued measure object rather than substituting $\No$ for the extended
+nonnegative reals of an existing scalar measure structure, and checking the reused
+library interfaces at implementation time. The null-ideal declarations above
+formalize the coefficient-by-coefficient positivity criterion, not the sign lemma
+or the density.
 
 \section{Reproducing the document and the checks}\label{meas:sec:reproduce}
 
 The directory contains this standalone \LaTeX{} source with an embedded
-bibliography, its compiled PDF, a README, the three delivered programs and build
-scripts under \path{code/}, their recorded outputs under \path{data/}, and the
-two delivered audit records. No source manuscript is redistributed. From a copy of
-the directory:
+bibliography, its compiled PDF, a README, the four delivered programs and build
+scripts under \path{code/}, their recorded outputs and build records under
+\path{data/}, and the two delivered audit records. No source manuscript is
+redistributed. From a copy of the directory:
 \begin{verbatim}
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 python code/10-strong-hahn-measures-verify.py
 python code/11-hahn-moments-verify.py --output-dir rerun-11
 python code/15-infinite-products-of-probabilities-verify.py \
     --output rerun-15.json
+python code/16-coefficientwise-measure-theory-verify_examples.py \
+    --output rerun-16.json
 \end{verbatim}
 Python 3.10 or later suffices; only the standard library is used.
 
@@ -4197,6 +5782,24 @@ H. Gonshor,
 London Mathematical Society Lecture Note Series 110, Cambridge University Press,
 1986.
 
+\bibitem{Conway}
+J. H. Conway,
+\emph{On Numbers and Games}, second edition, A K Peters, 2001.
+
+\bibitem{Bogachev}
+V. I. Bogachev,
+\emph{Measure Theory}, Volumes I and II, Springer, 2007.
+
+\bibitem{BBDN}
+V. Benci, E. Bottazzi and M. Di Nasso,
+\emph{Elementary numerosity and measures}, preprint (2012),
+\href{https://arxiv.org/abs/1212.6201}{arXiv:1212.6201}.
+
+\bibitem{LeviCivita}
+M. Restrepo Borrero, V. Srivastava and K. Shamseddine,
+\emph{On a new measure on the Levi-Civita field $\mathcal R$}, preprint (2022),
+\href{https://arxiv.org/abs/2211.05051}{arXiv:2211.05051}.
+
 \bibitem{BG}
 O. Bournez and Q. Guilmant,
 \emph{Surreal fields stable under exponential and logarithmic functions},
@@ -4204,16 +5807,20 @@ preprint (2022), \href{https://arxiv.org/abs/2201.08199}{arXiv:2201.08199};
 Section 2.3 on Hahn fields and normal forms.
 
 \bibitem{repo}
-V. Reshetnikov, \emph{Surreal}, GitHub repository, snapshot \pin, consulted by all
-three sources on 22 September 2026.
-\url{https://github.com/VladimirReshetnikov/Surreal/tree/4cf691c7d951e037739d32d9f5c387dcce724f3c}.
+V. Reshetnikov, \emph{Surreal}, GitHub repository, snapshot \pin, consulted by
+sources 10, 11 and 15 on 22 September 2026,
+\url{https://github.com/VladimirReshetnikov/Surreal/tree/4cf691c7d951e037739d32d9f5c387dcce724f3c};
+and snapshot \pinb, consulted by source 16 on the same day,
+\url{https://github.com/VladimirReshetnikov/Surreal/tree/d22a5b35d5b3040e870c3cfd6d1c8f7259e094b0}.
 
 \bibitem{repofound}
 \repo\ project, \emph{Foundations}, report
 \path{docs/foundations-and-computation/foundations/}; labels
 \path{found:eq:summability}, \path{found:ex:boundedrankone},
 \path{found:sub:positivesupport}, \path{found:eq:workspaces},
-\path{found:thm:workspace}.
+\path{found:thm:workspace}, \path{found:lem:bounds}, \path{found:thm:discrete},
+\path{found:prop:incomplete}, \path{found:sub:notdedekind},
+\path{found:sub:universality}.
 
 \bibitem{repophys}
 \repo\ project, \emph{Surreal scalars and spacetime}, report
@@ -4242,6 +5849,10 @@ analysis}).
 
 \bibitem{repomarkov}
 \repo\ project, report \path{docs/surreal/markov-generators-at-every-scale/}.
+
+\bibitem{repofsp}
+\repo\ project, report \path{docs/surreal/finite-surreal-probability/}, placed
+with source 16; its subsection on arbitrary surreal-valued observables.
 
 \end{thebibliography}
 

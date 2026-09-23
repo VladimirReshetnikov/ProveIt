@@ -4,7 +4,7 @@
 \usepackage{lmodern}
 \usepackage[margin=1in,headheight=15pt]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
-\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage{microtype,booktabs,longtable,array,enumitem,aliascnt}
 \usepackage{xcolor}
 \usepackage{fancyhdr}
 \usepackage[colorlinks=true,linkcolor=blue!40!black,citecolor=green!30!black,urlcolor=blue!40!black]{hyperref}
@@ -21,14 +21,24 @@ pdfsubject={Canonical phases, arbitrary-scale geometry, and infinitesimal degene
 \setcounter{tocdepth}{2}
 \numberwithin{equation}{section}
 \newtheorem{theorem}{Theorem}[section]
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{corollary}[theorem]{Corollary}
+% Shared numbering through alias counters, so that \cref names each result by its own kind.
+\newaliascnt{lemma}{theorem}\newtheorem{lemma}[lemma]{Lemma}\aliascntresetthe{lemma}
+\newaliascnt{proposition}{theorem}\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\newaliascnt{corollary}{theorem}\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
 \theoremstyle{definition}
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{example}[theorem]{Example}
+\newaliascnt{definition}{theorem}\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\newaliascnt{example}{theorem}\newtheorem{example}[example]{Example}\aliascntresetthe{example}
 \theoremstyle{remark}
-\newtheorem{remark}[theorem]{Remark}
+\newaliascnt{remark}{theorem}\newtheorem{remark}[remark]{Remark}\aliascntresetthe{remark}
+\crefname{lemma}{lemma}{lemmas}
+\crefname{proposition}{proposition}{propositions}
+\crefname{corollary}{corollary}{corollaries}
+\crefname{definition}{definition}{definitions}
+\crefname{example}{example}{examples}
+\crefname{remark}{remark}{remarks}
 \newcommand{\No}{\mathbf{No}}
 \newcommand{\SC}{\mathbf{SC}}
 \newcommand{\Oz}{\mathbf{Oz}}
@@ -61,6 +71,14 @@ pdfsubject={Canonical phases, arbitrary-scale geometry, and infinitesimal degene
 \newcommand{\Cos}{\operatorname{Cos}}
 \newcommand{\Tan}{\operatorname{Tan}}
 \newcommand{\SO}{\operatorname{SO}}
+\newcommand{\Orth}{\operatorname{O}}
+\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\Rot}{\operatorname{Rot}}
+\newcommand{\Gm}{\mathbb G_{\mathrm m}}
+\newcommand{\Ga}{\mathbb G_{\mathrm a}}
+\newcommand{\ellm}{\ell_{\mm}}
+\newcommand{\Tm}{\TT_{\mm}}
 \newcommand{\sh}{^{\sharp}}
 \newcommand{\HInt}{\mathop{\overset{\scriptscriptstyle H}{\int}}\nolimits}
 \newcommand{\abs}[1]{\left|#1\right|}
@@ -72,14 +90,14 @@ pdfsubject={Canonical phases, arbitrary-scale geometry, and infinitesimal degene
 \centering
 \vspace*{0.2cm}
 {\large\scshape A merged theorem-driven development\par}
-\vspace{0.45cm}
+\vspace{0.3cm}
 {\LARGE\bfseries Trigonometry on the\\[0.2em] Surcomplex Plane\par}
-\vspace{0.4cm}
+\vspace{0.3cm}
 {\Large Canonical Phases, Arbitrary-Scale Geometry,\\[0.15em]
 and Infinitesimal Degeneration\par}
-\vspace{0.5cm}
-{\large September 21, 2026\par}
-\vspace{0.45cm}
+\vspace{0.3cm}
+{\large September 21, 2026; extended September 22, 2026\par}
+\vspace{0.3cm}
 \begin{minipage}{0.94\textwidth}\small
 \begin{abstract}
 The surcomplex plane is the algebraically closed class field $\SC=\No[i]$ with Euclidean norm
@@ -110,12 +128,15 @@ Finally we classify the freedom in extending circular trigonometry to infinite r
 The Ehrlich--Kaplan integer-part normalization is one member of a character family; every member
 necessarily acquires infinite periods, and none admits a bounded common-domain Hahn-analytic
 description at infinite frequency.
+
+A last section treats the rotation group $\SO(2,\No)$ and its algebraic, fine, standard-part and
+semialgebraic geometries.
 \end{abstract}
 \end{minipage}
 \vfill
 \begin{minipage}{0.94\textwidth}\small
-\textbf{Status and provenance.} This is one merged report assembled from three independently
-written manuscripts of September 21, 2026. It develops three supplied unpublished manuscripts
+\textbf{Status and provenance.} This is one merged report assembled from four independently
+written manuscripts of September 21--22, 2026 (\cref{trigonometry:sec:provenance}). It develops three supplied unpublished manuscripts
 rather than presenting their results as published literature. Classical identities and established
 surreal analytic machinery are identified as such. The literature search behind it was targeted
 rather than exhaustive; no priority claim and no claim to have solved a named published open
@@ -212,10 +233,26 @@ recorded in \cite{DLMF}; algebraic approaches to trigonometry over general field
 analogue is not by itself evidence that its exact formulation is absent from all previous
 literature.
 
+\emph{The four component manuscripts.} The report itself is built from four manuscripts, numbered
+locally 16--19; the numbers prefix their code and data files. Sources 16, 17 and 18 --- \emph{Finite
+Radians, Arbitrary-Scale Geometry, and Infinitesimal Angular Phenomena}; \emph{Canonical Phases,
+Arbitrary-Scale Triangles, and Infinitesimal Degeneration}; \emph{Canonical Angles, Infinite
+Triangles, Infinitesimal Contact, and Hahn-Analytic Oscillation}, all of September 21, 2026 --- are
+three drafts of one article on the trigonometry of $\SC$; 18 is the base text of
+Sections~\ref{trigonometry:sec:intro}--\ref{trigonometry:sec:global}, and 16 and 17 contribute the results
+the directory's README lists. They were written from the three supplied manuscripts above and record
+no repository commit. Source 19, \emph{Rotations of the Surreal Plane: The Norm-One Torus,
+Infinitesimal Angles, and Topology at Every Scale} (September 22, 2026), was written against
+repository commit \texttt{dcf86662b574}, at which this article stood unchanged; it contributes
+\cref{trigonometry:rot:sec:main}. Its structure theorem re-derives \cref{trigonometry:prop:rotation}
+and \cref{trigonometry:thm:polar}, and \cref{trigonometry:rot:sec:overlap} lists every result it
+shares with sources 16--18, each printed once with both credited.
+
 \subsection{Conventions: one symbol per concept}\label{trigonometry:sec:conventions}
-Because this report merges three drafts with three notations, the following choices are fixed once
-and used without exception thereafter. Synonyms appearing in the source manuscripts are recorded
-here and nowhere else.
+Because sources 16--18 are three drafts with three notations, the following choices are fixed once
+and used without exception thereafter. Synonyms appearing in those manuscripts (``the sources''
+below) are recorded here and nowhere else; those of source 19 are recorded in
+\cref{trigonometry:rot:sec:overlap}.
 
 \begin{itemize}
 \item \textbf{Unit circle.} $\TT(\No)=\{u\in\SC:u\bar u=1\}$, with $\TT(\R)$ its ordinary complex
@@ -246,6 +283,9 @@ here and nowhere else.
  along a sequence. For a fixed nonzero infinitesimal $h$, $O(h^m)$ denotes a remainder whose
  quotient by $h^m$ is finite; it is an algebraic size statement, not a statement about an ordinary
  integer tending to infinity.
+\item \textbf{Rotation-group symbols.} Source 19 uses its own symbols for the objects above and
+ for the new ones of \cref{trigonometry:rot:sec:main}; they are converted once, in
+ \cref{trigonometry:rot:sec:overlap}, and not used elsewhere.
 \item \textbf{Ordinary finiteness.} Every integer $n$, polynomial degree $N$ or $n$, Fourier grid
  size $M$, and polygon size in this article is an \emph{ordinary} finite integer unless the
  contrary is said explicitly. ``Finite coefficients'' of a trigonometric polynomial means instead
@@ -658,7 +698,8 @@ linear part by its positive scale factor reduces it to the isometry case. For th
 take $\rho=|z|$ and $u=z/|z|$; taking norms proves uniqueness and multiplicativity.
 \end{proof}
 Thus addition, double-angle and finite multiple-angle identities already have an algebraic meaning
-over any real closed field. Surreal-specific analysis enters only when these unit directions are
+over any real closed field. The linearity hypothesis on isometries can be dropped
+(\cref{trigonometry:rot:thm:isometry}, from source 19, which also proves the matrix identification). Surreal-specific analysis enters only when these unit directions are
 identified with numerical radians, which is the content of the next theorem.
 
 \subsection{The finite phase theorem}
@@ -692,6 +733,8 @@ $\Ex(i\eps)=1$, and logarithmic inversion gives $\eps=0$. Applying the circle re
 and \cref{trigonometry:prop:rotation} gives the polar statement.
 \end{proof}
 
+This theorem is also the structure theorem of source 19 for $\SO(2,\No)$, proved there by the same
+argument; \cref{trigonometry:rot:sec:main} develops its group-theoretic consequences.
 The infinitesimal component in \cref{trigonometry:eq:circlesplit} is independent of an ordinary
 argument branch. A numerical representative of an angle class, however, requires a cut.
 
@@ -717,6 +760,9 @@ $X^n-u$ by degree. In the splitting \cref{trigonometry:eq:circlesplit}, $n\delta
 $\delta=0$. The chord formula follows from \cref{trigonometry:eq:gram} or the cosine double-angle
 identity.
 \end{proof}
+Source 19 proves the root count by a second route through the splitting alone
+(\cref{trigonometry:rot:rem:rootsroute}), and adds the classification of finite subgroups
+(\cref{trigonometry:rot:cor:torsion}).
 
 \begin{remark}[Two branch conventions, kept apart]\label{trigonometry:rem:cut}
 A representative constrained to have \emph{actual value} in $(-\pi,\pi]$ has a branch jump at the
@@ -2444,7 +2490,7 @@ analytic function. For contrast,
 trigonometric polynomial whose positivity margin is genuinely infinitesimal.
 \end{example}
 
-\section{Spherical trigonometry over $\No$}\label{trigonometry:sec:spherical}
+\section{Spherical trigonometry over \texorpdfstring{$\No$}{No}}\label{trigonometry:sec:spherical}
 
 The distinction between algebraic geometry and angle evaluation extends beyond the plane. This
 section and the next record two substantial analogues, proved from Gram identities, using only
@@ -2492,6 +2538,13 @@ on arbitrarily small angular scales, and equally spherical triangles on a sphere
 radius. \emph{It is a family of metric identities under explicit nondegeneracy hypotheses, not a
 complete global geometric or measure-theoretic foundation for spherical geometry over $\No$.}
 
+
+{\raggedright Spatial spherical trigonometry over $\No^3$ --- polar duality, reconstruction,
+the exceptional side-side-angle family, branch-correct excess, area and
+holonomy --- is developed in \path{docs/surreal/euclidean-three-space/}
+(\texttt{e3:sec:spherical-laws} to \texttt{e3:sec:differential}); its
+\texttt{e3:thm:phase} is the Hahn-workspace form of
+\cref{trigonometry:thm:polar}.\par}
 \section{Hyperbolic trigonometry in the full surreal disk}
 \label{trigonometry:sec:hyperbolic}
 
@@ -2904,6 +2957,709 @@ possess one Hahn support over an entire ordinary angular domain. It is also why 
 coherence category, in which entire functions are polynomials, is not the category being asserted
 for these global sine functions.
 
+\section{The rotation group \texorpdfstring{$\SO(2,\No)$}{SO(2,No)}}\label{trigonometry:rot:sec:main}
+
+This section is the contribution of source~19, \emph{Rotations of the Surreal Plane: The Norm-One
+Torus, Infinitesimal Angles, and Topology at Every Scale} (September 22, 2026). It organizes the
+finite-angle theory of \cref{trigonometry:sec:circle} around the group
+\begin{equation}\label{trigonometry:rot:eq:defG}
+ \SO(2,\No)=\{A\in M_2(\No):A^{\mathsf T}A=I,\ \det A=1\},
+\end{equation}
+whose structure theorem
+\begin{equation}\label{trigonometry:rot:eq:main}
+ \SO(2,\No)\ \cong\ \TT(\No)\ \cong\ \OO_{\R}/2\pi\Z\ \cong\ \TT(\R)\times(\mm_{\R},+)
+\end{equation}
+is exactly \cref{trigonometry:prop:rotation} together with \cref{trigonometry:thm:polar}, and is
+printed only there. In this section the word \emph{rotation} always means the algebraic isometry;
+continuity is an additional property in a specified topology, never part of an informal picture of
+turning a rigid object through ordinary real time. The entries of a rotation matrix lie in
+$[-1,1]$, but there is a proper class of infinitesimal corrections to them: bounded coordinates do
+not make the group set-sized, and they do not make it compact in any ordinary sense.
+
+\subsection{What source 19 re-derives, and the conventions of this section}
+\label{trigonometry:rot:sec:overlap}
+Source~19 was written against repository commit \texttt{dcf86662b574}, at which the present
+article already stood unchanged, and it inspected only the opening of this article. It states
+that the finite-angle quotient, the split real/infinitesimal phase, the projective half-angle
+coordinates and the distinction between global normalization and arbitrary extensions were already
+here, and presents itself as a group-centred synthesis rather than a discovery of these. The overlap
+is larger than it records: the results in the following table were also already here, and each is
+printed once, at the place indicated, with both sources credited. The only genuinely different proof
+among them is kept as a marked second route (\cref{trigonometry:rot:rem:rootsroute}). For the
+evaluation of formal series at infinitesimals, source 19 cites the surreal analytic use of Neumann's
+lemma in \cite[\S3]{BMgerms}; here that role is played by \cref{trigonometry:lem:support}.
+\begin{center}\small
+\begin{longtable}{L{0.47\textwidth}L{0.45\textwidth}}
+\toprule
+Source 19 statement & Printed as\\
+\midrule\endhead
+$\TT(F)\cong\SO(2,F)$ by $a+ib\mapsto\left(\begin{smallmatrix}a&-b\\b&a\end{smallmatrix}\right)$; the group is abelian & \cref{trigonometry:prop:rotation}\\
+Structure theorem; logarithmic linearization $\TT(\No)\cong\TT(\R)\times\mm_{\R}$; finite-angle uniformization with kernel $2\pi\Z$; polar decomposition & \cref{trigonometry:thm:polar}, \cref{trigonometry:eq:anglegroup,trigonometry:eq:circlesplit}; same argument (conjugation makes the logarithm purely imaginary), not a second route\\
+Infinitesimal exponential and logarithm, inverse and addition laws, formal evaluation on infinitesimals, leading-term control & \cref{trigonometry:eq:explog,trigonometry:eq:logleading}, \cref{trigonometry:lem:support,trigonometry:lem:leading}\\
+$\cis(r+\eps)=e^{ir}\Ex(i\eps)$ and its addition law & \cref{trigonometry:eq:finiteEuler}, \cref{trigonometry:thm:identities}\\
+Principal angle in $(-\pi,\pi]$ with endpoint correction; a branch of $\Arg$ is not additive & \cref{trigonometry:cor:representatives}, \cref{trigonometry:rem:cut}\\
+Rational chart $C$, its inverse and its homogeneous group law & \cref{trigonometry:thm:cayley}, in this article's homogeneous convention (below)\\
+Angular distance; chord $=2\sin(\text{angle}/2)$ and its series; equal valuations of angular and chordal distance & \cref{trigonometry:thm:metric}\\
+All $n$th roots; no infinitesimal torsion & \cref{trigonometry:cor:representatives}; second route in \cref{trigonometry:rot:rem:rootsroute}\\
+$v(\sin\eps)=v(\eps)$, $v(1-\cos\eps)=2v(\eps)$; $v(u-v)=v(\ellm(u)-\ellm(v))$ in one monad & \cref{trigonometry:prop:leading}; \cref{trigonometry:eq:localangle}\\
+Displacement $|uz-vz|=|z||u-v|$ at any radius & \cref{trigonometry:eq:rotdisplacement}; its valuation form is \cref{trigonometry:rot:eq:dispval}\\
+Set-sized subsets closed and discrete; convergent set-indexed nets eventually constant; no nonconstant ordinary real paths & \cref{trigonometry:prop:topology}; the Cauchy-net clause is added in \cref{trigonometry:rot:sec:topology}\\
+$\fin$, $\Oz=\Pi\oplus\Z$, the normalized global phase, kernel $2\pi\Oz$, the Ehrlich--Kaplan exponential & \cref{trigonometry:def:globaltrig}, \cref{trigonometry:thm:globalexp}, \cref{trigonometry:cor:globalzeros}\\
+All extensions of the finite phase; explicit extensions with any value at $\omega$; unavoidable infinite periods & \cref{trigonometry:thm:characters}, \cref{trigonometry:ex:phases} (a finite $\tau$ there covers source 19's real parameter), \cref{trigonometry:thm:infiniteperiods} (its coset form is source 19's ``for every infinite $x$ a finite $\theta$ with $x-\theta$ in the kernel'')\\
+$(\cis)'=i\cis$; every global phase obeys the same local law; Taylor data on each monad select $\cis$ & \cref{trigonometry:thm:identities}, \cref{trigonometry:eq:globallocal}, \cref{trigonometry:prop:normalization}\\
+A derivation on $\No$ is not a fine derivative & the closing paragraph of \cref{trigonometry:sec:foundations}\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\emph{Notation.} Source 19's symbols are converted once, here, and not used again. Its $\OO,\mm$ are
+$\OO_{\R},\mm_{\R}$. Its $\Exp,\operatorname{Log}$ on infinitesimals are $\Ex,\Logm$, because $\Exp$ in this report
+is the global exponential of \cref{trigonometry:thm:globalexp}. Its $H_0$, $H_\chi$ and
+purely infinite summand $\mathcal J$ are $\Phi$, $\Psi_\chi$ and $\Pi$; its angular distance
+$d_{\mathrm{ang}}$ is $\angle$; its coefficient $a_\omega(p)$ is the $\ell(p)$ of
+\cref{trigonometry:ex:phases}. Its infinitesimal angle $\ell(u)$ is written $\ellm(u)$ below, since
+the bare letter $\ell$ is taken by that coefficient; its identity monad $U$ is $\Tm$, since $U$ is
+used for Chebyshev polynomials and for $E(iz)$; its rotation matrix $R(a,b)$ is $\Rot(a,b)$, since
+$R$ is a circumradius; its generator $J$ is $\mathsf J$, since $J$ is an interval in (R1); its
+conjugation $\kappa$ is $\mathsf c$, since $\kappa=v(f'(a))$ in \cref{trigonometry:thm:stability};
+its dual-number variable $\delta$, double-angle map $p_2$, Clifford bivector $E$, invariant
+differential $\alpha$, rescaling automorphism $F_\lambda$ and circles $S_r$ are $\mathsf d$,
+$\mathrm{sq}$, $e_{12}$, $\varpi$, $\Xi_a$ and $\mathcal S_\rho$. Source 19 writes the homogeneous
+chart as $[s:t]\mapsto C(t/s)$ with law $[s:t]*[p:q]=[sp-tq:sq+tp]$; in this article's convention
+$[p:q]\mapsto C(p/q)$ this is exactly \cref{trigonometry:eq:projectiveaddition}. Throughout this
+section $F$ denotes a real closed field and $L=F[i]$; in the topological subsections $F$ is a
+\emph{set} field, and in the algebraic ones the field $\No$ itself may be taken, all arguments being
+finite algebra.
+
+For $u\in\TT(\No)$ with $u_0=\st(u)$ put
+\begin{equation}\label{trigonometry:rot:eq:ellm}
+ \ellm(u)=-i\Logm(u/u_0)\in\mm_{\R},\qquad u=u_0\Ex\bigl(i\ellm(u)\bigr),\qquad
+ \Tm=\{u\in\TT(\No):\st(u)=1\}.
+\end{equation}
+By \cref{trigonometry:thm:polar}, $\ellm$ is additive, $\Tm\to(\mm_{\R},+)$ is an isomorphism, and
+\begin{equation}\label{trigonometry:rot:eq:exact}
+ 1\longrightarrow\Tm\longrightarrow\TT(\No)\xrightarrow{\ \st\ }\TT(\R)\longrightarrow1
+\end{equation}
+is split by the literal inclusion of the ordinary unit circle. The splitting uses the embedded real
+field, coefficientwise standard part and formal Taylor evaluation; once these are fixed no basis or
+arbitrary section is chosen, and the infinitesimal angle of a unit is recovered exactly, not up to
+an infinitesimal error.
+
+\emph{Size convention.} $\No$ is a proper class, so statements about $\SO(2,\No)$ are class-group
+statements, readable in a class theory supporting the surreal construction or relative to a
+universe. No proper-class Hahn sum is formed, no quantifier ranges over a set of all class
+functions, and the group is never treated as a set-sized manifold. Topological statements about the
+full class are made with ball neighbourhoods and explicit quantifiers, not with a set of all open
+subclasses.
+
+\begin{remark}[Infinitesimal angles are not a surreal vector space]\label{trigonometry:rot:rem:notvector}
+$\mm_{\R}$ is an $\OO_{\R}$-module and an $\R$-vector space, but not an $\No$-vector space:
+$\omega^{-1}\in\mm_{\R}$ while $\omega\cdot\omega^{-1}=1\notin\mm_{\R}$. Accordingly $\Tm$ is
+torsion-free, uniquely divisible, and an $\R$-vector group through $r\odot\Ex(i\eps)=\Ex(ir\eps)$,
+$r\in\R$; the same formula does not extend to all surreal scalars while staying in $\Tm$. That the
+algebraic Lie algebra of \cref{trigonometry:rot:sec:lie} is one-dimensional over $\No$ is a different
+statement, about tangent vectors.
+\end{remark}
+
+\subsection{Isometries fixing the origin}\label{trigonometry:rot:sec:isometry}
+\Cref{trigonometry:prop:rotation} identifies the orientation-preserving \emph{linear} isometries.
+Linearity need not be assumed.
+
+\begin{theorem}[Isometry rigidity]\label{trigonometry:rot:thm:isometry}
+Let $F$ be a real closed field, $\|x\|=\sqrt{x_1^2+x_2^2}$ on $F^2$, and let $f:F^2\to F^2$ satisfy
+$f(0)=0$ and $\|f(x)-f(y)\|=\|x-y\|$ for all $x,y$. Then $f$ is $F$-linear and orthogonal. Neither
+continuity nor surjectivity is assumed. The maps of this kind with positive orientation are exactly
+$\SO(2,F)$.
+\end{theorem}
+\begin{proof}
+Polarization $2\langle x,y\rangle=\|x\|^2+\|y\|^2-\|x-y\|^2$ shows that $f$ preserves inner
+products. Put $u=f(e_1)$, $w=f(e_2)$; their Gram matrix is the identity, so they form an orthonormal
+basis. The inner products of $f(x)$ with $u$ and $w$ are $x_1$ and $x_2$, hence $f(x)=x_1u+x_2w$.
+This is linear and orthogonal, and an orthogonal matrix has determinant $\pm1$.
+\end{proof}
+Preserving only $\|f(x)\|=\|x\|$ would not suffice: circles of different radii can be rotated by
+different units, destroying pairwise distances. A field automorphism that changes surreal distances
+is not an isometry in this exact surreal-valued sense.
+
+Every origin-fixing isometry is therefore uniquely $z\mapsto uz$ or $z\mapsto u\bar z$ with
+$u\in\TT(F)$. With $\mathsf c(z)=\bar z$ one has $\mathsf c\,u\,\mathsf c=u^{-1}$, so
+\begin{equation}\label{trigonometry:rot:eq:orthogonal}
+ \Orth(2,F)\cong\TT(F)\rtimes\{1,\mathsf c\},
+\end{equation}
+the nontrivial element acting by inversion, and subtracting the image of the origin gives the
+Euclidean group $F^2\rtimes\Orth(2,F)$. \emph{These are algebraic semidirect products, not
+assertions about connected components in an unspecified topology.}
+
+\subsection{The rational chart: exceptional cases and the logarithmic bridge}
+\label{trigonometry:rot:sec:chart}
+In the affine coordinate of \cref{trigonometry:thm:cayley} the exceptional cases of the law
+$t\oplus s=(t+s)/(1-ts)$ are
+\[
+ t\oplus s=\infty\ (ts=1),\qquad \infty\oplus t=-1/t\ (t\ne0),\qquad
+ \infty\oplus0=\infty,\qquad \infty\oplus\infty=0;
+\]
+the identity is $0$ and the inverse is $t\mapsto-t$, with $\infty$ fixed. For instance $C(1)=i$,
+and $1\oplus1=\infty$ records $i^2=-1$. In homogeneous coordinates the inverse of $[p:q]$ is
+$[-p:q]$, and $[p:q]=[r:s]$ exactly when $ps-qr=0$. Near the missing half-turn,
+\begin{equation}\label{trigonometry:rot:eq:halfturn}
+ C(t)+1=\frac{2(1+it)}{1+t^2}:
+\end{equation}
+an infinite chart parameter is a finite angle infinitesimally close to $\pi$, not an infinite
+angle, which is one reason the projective formula is more robust than an unqualified use of
+$\tan(\theta/2)$.
+
+\begin{remark}[A parametrization of points, not an isomorphism of varieties]
+\label{trigonometry:rot:rem:projective}
+\Cref{trigonometry:thm:cayley} concerns $F$-points and semialgebraic maps. It is \emph{not} an
+isomorphism of the complete variety $\PP^1_F$ with the affine algebraic torus: over $F[i]$ the
+denominator $p^2+q^2$ vanishes at nonzero pairs, and identifying the two statements would erase
+exactly the complex points at which the rational formula has poles.
+\end{remark}
+
+For infinitesimal $t\in\mm_{\R}$ the chart value lies in $\Tm$, and
+\begin{equation}\label{trigonometry:rot:eq:arctanbridge}
+ \ellm\bigl(C(t)\bigr)=-i\Logm C(t)=2\arctan t=2\sum_{n\ge0}\frac{(-1)^nt^{2n+1}}{2n+1},
+\end{equation}
+because $\Logm C(t)=\Logm(1+it)-\Logm(1-it)$ and the even powers cancel. This is a direct bridge
+between exact rational arithmetic and the infinitesimal angle, consistent with $t=\tan(\theta/2)$
+in \cref{trigonometry:thm:cayley} and with \cref{trigonometry:eq:smallseries}. On infinitesimal
+parameters the law $t\oplus s$ stays infinitesimal and is linearized by $2\arctan$; no branch issue
+arises there.
+
+\subsection{Powers, roots, torsion and finite subgroups}\label{trigonometry:rot:sec:torsion}
+
+\begin{remark}[Second route to all roots, via the splitting]\label{trigonometry:rot:rem:rootsroute}
+Write $u=u_0\Ex(i\eps)$ with $u_0=e^{ir}\in\TT(\R)$ and $\eps=\ellm(u)$. For every ordinary integer
+$n$ the direct-product law gives $u^n=u_0^n\Ex(in\eps)$. For ordinary $n\ge1$ the solutions of
+$v^n=u$ are exactly
+\begin{equation}\label{trigonometry:rot:eq:roots}
+ v_k=e^{i(r+2\pi k)/n}\,\Ex(i\eps/n),\qquad 0\le k<n .
+\end{equation}
+Indeed, writing $v=d\,\Ex(i\eta)$, uniqueness of the split factors in
+\cref{trigonometry:eq:circlesplit} gives $d^n=u_0$ and $n\eta=\eps$; the first equation has the
+displayed $n$ ordinary solutions and the second exactly one, and the $v_k$ are distinct because
+their standard parts are. This is source 19's proof. The count in
+\cref{trigonometry:cor:representatives} uses instead the kernel of $\cis$ and the degree bound for
+$X^n-u$; the route here uses neither, only the splitting and ordinary complex roots.
+\end{remark}
+
+\begin{corollary}[No new finite-order rotations]\label{trigonometry:rot:cor:torsion}
+The torsion subgroup of $\TT(\No)$ consists exactly of the ordinary complex roots of unity and is
+isomorphic to $\Q/\Z$. Every finite subgroup of $\TT(\No)\cong\SO(2,\No)$ is the literal standard
+group $\mu_n=\{e^{2\pi ik/n}:0\le k<n\}$ for one ordinary $n\ge1$.
+\end{corollary}
+\begin{proof}
+If $u^n=1$ then $n\ellm(u)=0$, so $\ellm(u)=0$ and $u$ is an ordinary root of unity
+(\cref{trigonometry:cor:representatives}). A finite subgroup has a finite exponent $N$, hence lies
+in the cyclic group $\mu_N$, and is $\mu_n$ for a divisor $n$ of $N$.
+\end{proof}
+Thus infinitesimal rotations produce new elements of \emph{infinite} order, not new regular polygons
+with a finite nonstandard symmetry order; ordinary finite order is the only meaning of torsion used.
+
+\begin{corollary}[Divisibility]\label{trigonometry:rot:cor:divisible}
+$\SO(2,\No)$ is divisible, has no nontrivial homomorphism to a finite group, and has no proper
+subgroup of finite index.
+\end{corollary}
+\begin{proof}
+Divisibility is \cref{trigonometry:rot:eq:roots}. If $f$ maps onto a finite group of order $N$,
+write $u=v^N$; then $f(u)=f(v)^N=1$. A finite-index subgroup of an abelian group gives a finite
+quotient.
+\end{proof}
+
+\emph{Square roots without transcendental evaluation.} For $u=a+ib\ne-1$ in $\TT(F)$ the unique
+square root with positive real part is
+\begin{equation}\label{trigonometry:rot:eq:sqrt}
+ w=\sqrt{\frac{1+a}2}+i\,\frac{b}{2\sqrt{(1+a)/2}},
+\end{equation}
+since $b^2=(1-a)(1+a)$ gives $w^2=u$; the other root is $-w$, and the roots of $-1$ are $\pm i$. Only
+ordered-field square roots are used. This branch suits a half-angle near the identity and is
+\emph{not} a globally multiplicative choice: no multiplicative section of $u\mapsto u^2$ exists on
+the whole circle, since it would send $-1$, of order two, to an element whose square is $-1$ but
+whose order divides two. The obstruction is elementary and persists over the surreals.
+
+\emph{The double-angle map and $\operatorname{Spin}(2)$.} The map
+$\mathrm{sq}:\TT(F)\to\TT(F)$, $a+ib\mapsto(a^2-b^2)+2iab$, is onto with kernel $\{\pm1\}$. In the
+Clifford algebra with $e_1^2=e_2^2=-1$ put $e_{12}=e_1e_2$, so $e_{12}^2=-1$; then
+\begin{equation}\label{trigonometry:rot:eq:spin}
+ (a+be_{12})\,e_1\,(a-be_{12})=(a^2-b^2)e_1+2ab\,e_2 ,
+\end{equation}
+with the corresponding expression for $e_2$, so conjugation by the spinor $a+be_{12}$, $a^2+b^2=1$,
+induces the rotation $\mathrm{sq}(a+ib)$. This is a finite algebraic calculation and does not depend
+on ordinary path lifting in the fine topology.
+
+\begin{proposition}[Finite orthogonal subgroups]\label{trigonometry:rot:prop:dihedral}
+A finite subgroup of $\Orth(2,\No)$ is either some $\mu_n$ or conjugate, by a rotation, to the
+standard dihedral group $\mu_n\rtimes\{1,\mathsf c\}$.
+\end{proposition}
+\begin{proof}
+Its rotation subgroup is some $\mu_n$ by \cref{trigonometry:rot:cor:torsion}. If it contains a
+reflection $z\mapsto u\bar z$, choose $v$ with $v^2=u$. Conjugating by multiplication by $v$ sends
+$z\mapsto u\bar z$ to $z\mapsto v^{-1}u\bar v\bar z=\bar z$ and leaves all rotations unchanged, so the
+group becomes $\mu_n\cup\mu_n\mathsf c$.
+\end{proof}
+The conjugacy is stronger than saying the abstract finite groups have familiar names, and weaker
+than saying all their matrices are literally real: before conjugation a reflection axis may have a
+genuinely nonstandard direction.
+
+\subsection{Valuation scales and precision}\label{trigonometry:rot:sec:scales}
+For $\gamma>0$ in the value group put
+$\Tm^{\ge\gamma}=\{u\in\Tm:v(u-1)\ge\gamma\}$ and $\Tm^{>\gamma}=\{u\in\Tm:v(u-1)>\gamma\}$. Since
+$v(\Ex(i\eps)-1)=v(\eps)$ (\cref{trigonometry:eq:logleading}), these are subgroups, identified by
+$\ellm$ with the valuation subgroups of $\mm_{\R}$.
+
+\begin{theorem}[One real angular coordinate at each scale]\label{trigonometry:rot:thm:graded}
+For every surreal $\gamma>0$ there is a canonical isomorphism
+\begin{equation}\label{trigonometry:rot:eq:graded}
+ \Tm^{\ge\gamma}/\Tm^{>\gamma}\ \cong\ (\R,+),
+\end{equation}
+sending the class of $u$ to the coefficient of $t^\gamma$ in $\ellm(u)$.
+\end{theorem}
+\begin{proof}
+On angles of valuation at least $\gamma$, extraction of the coefficient at $t^\gamma$ is additive,
+onto (by the angles $rt^\gamma$), and has kernel the angles of valuation greater than $\gamma$.
+Transport through $\ellm$.
+\end{proof}
+This is a scale \emph{filtration}, not a decomposition of $\Tm$ as a direct sum of one copy of $\R$
+per surreal exponent: individual angles can have infinite well-ordered supports, and neither an
+unrestricted product nor the finite-support vectors captures the normal-form condition. Measuring the
+cosine defect alone loses first-order information, since $v(1-\cos\eps)=2v(\eps)$
+(\cref{trigonometry:prop:leading}): a cosine error of scale $t^{2\gamma}$ can encode an angular change
+of scale $t^\gamma$.
+
+\emph{Displacement at any radius.} For $u,v\in\TT(\No)$ and $z\in\SC$ one has exactly
+$|uz-vz|=|z||u-v|$, the same amplification in every direction, with no supremum over vectors. Hence
+for $z\ne0$ and a nonzero infinitesimal angle $\eps$, by \cref{trigonometry:eq:rotdisplacement},
+\begin{equation}\label{trigonometry:rot:eq:dispval}
+ v\bigl(\Ex(i\eps)z-z\bigr)=v(z)+v(\eps),
+\end{equation}
+so an infinitesimal angle at an infinite radius can produce an infinitesimal, appreciable or infinite
+displacement according to the sign of $v(z)+v(\eps)$. Here and below $x\sim y$ is the algebraic
+relation of \cref{trigonometry:sec:conventions}, not a sequence limit.
+
+\begin{example}[A finite displacement from an infinitesimal angle]\label{trigonometry:rot:ex:cayleydisp}
+Take $t=\omega^{-1}$ and $u=C(t)$. The rational formula gives exactly
+\[
+ u\,\omega=\omega-\frac{2\omega^{-1}}{1+\omega^{-2}}+i\,\frac2{1+\omega^{-2}} .
+\]
+The angle $\ellm(u)=2\arctan\omega^{-1}$ is infinitesimal, yet $u\omega-\omega$ is finite with
+standard part $2i$: the longitudinal change is infinitesimal and the transverse displacement
+appreciable. Likewise the single angle $\eps=\omega^{-2}$ displaces the points $\omega$, $\omega^2$,
+$\omega^3$ by amounts $\sim\omega^{-1}$, $\sim1$, $\sim\omega$, while the rotation matrix, the same in
+all three cases, is infinitesimally close to the identity.
+\end{example}
+
+\emph{Precision under products, powers and roots.} If $u_j=c_j\Ex(i\eps_j)$ and approximations
+$\widehat u_j=c_j\Ex(i\widehat\eps_j)$ have the same standard phases, then for an ordinary finite
+number of factors
+\begin{equation}\label{trigonometry:rot:eq:producterror}
+ \ellm\Bigl(\prod_ju_j\Big/\prod_j\widehat u_j\Bigr)=\sum_j(\eps_j-\widehat\eps_j),
+\end{equation}
+whose valuation is at least the least individual error valuation and may be larger through
+cancellation. Multiplication by a fixed ordinary nonzero integer, or division by it when a fixed root
+branch is selected, preserves a nonzero infinitesimal valuation, so ordinary-degree powers and
+matched root branches neither lose nor gain valuation precision; a mismatched standard root branch
+causes an appreciable error.
+
+\emph{Hahn products.} If a set-indexed family $(\eps_j)_{j\in I}$ of infinitesimal angles is
+strongly summable, its sum is infinitesimal and
+\begin{equation}\label{trigonometry:rot:eq:hahnproduct}
+ \prod_{j\in I}^{\mathrm{Hahn}}\Ex(i\eps_j)=\Ex\Bigl(i\sum_{j\in I}\eps_j\Bigr).
+\end{equation}
+To justify the notation, expand the left side over finite-support choices of powers of the factors.
+Each exponent of a resulting term is a finite word in the well-ordered positive union of the
+supports, which has only finitely many representations by \cref{trigonometry:lem:support}, and each
+letter comes from only finitely many members of the family by strong summability; so each exponent
+receives finitely many terms, each coefficient identity reduces to a finite exponential identity, and
+the value is independent of ordering. For example, with $t=\omega^{-1}$,
+$\prod_{n\ge1}^{\mathrm{Hahn}}\Ex(it^n)=\Ex\bigl(it/(1-t)\bigr)$. \emph{The finite partial products
+do not converge to this value in the fine topology} (\cref{trigonometry:rot:sec:topology}), and
+repeating one fixed nonzero infinitesimal angle infinitely often is not a strongly summable family,
+so \cref{trigonometry:rot:eq:hahnproduct} assigns no canonical value to an ``infinite number of
+identical turns.''
+
+\emph{Surreal exponents of a rotation.} For an ordinary integer $n$, $u^n$ is a group operation. For
+a nonordinary surreal $s$ the group axioms supply nothing analogous. On $\Tm$ the unique logarithm
+gives the partial definition
+\begin{equation}\label{trigonometry:rot:eq:surrealpower}
+ \bigl(\Ex(i\eps)\bigr)^s:=\cis(s\eps)\qquad\text{whenever }s\eps\in\OO_{\R},
+\end{equation}
+an analytic scaling of a uniquely chosen infinitesimal angle, \emph{not} a transfinite iteration of
+the group operation. Beyond that domain a global phase extension (\cref{trigonometry:thm:characters})
+supplies additional choices; for general $u$ even the choice of a finite argument is a branch, and
+changing it by $2\pi n$ can change the result after multiplication by $s$.
+
+\subsection{The action on the plane and its polynomial invariants}\label{trigonometry:rot:sec:action}
+For $\rho>0$ let $\mathcal S_\rho=\{z\in\SC:|z|=\rho\}$. The action of $\SO(2,\No)$ on
+$\mathcal S_\rho$ is free and transitive: the unique rotation taking $z$ to $w$ is multiplication by
+$w/z$, and $uz=z$ with $z\ne0$ forces $u=1$. The orbits are the origin and one circle for each
+positive surreal radius. The absence of nonzero fixed points of a nonidentity rotation is an
+algebraic fact and needs no continuous motion from the identity. The products $\langle z,w\rangle$
+and $[z,w]$ of \cref{trigonometry:eq:dotcross} are invariant under simultaneous rotation, and the
+cyclic order of directions is defined by ordering the two semicircles with determinant signs, or by
+finite arguments modulo $2\pi$ --- not by ordinary real paths in the fine topology.
+
+\begin{proposition}[Polynomial invariants]\label{trigonometry:rot:prop:invariants}
+For a real closed field $F$, the polynomial invariants of the algebraic rotation group acting on one
+plane vector are
+\begin{equation}\label{trigonometry:rot:eq:invariants}
+ F[X,Y]^{\SO(2)}=F[X^2+Y^2],
+\end{equation}
+and the same holds for invariance under all $F$-valued rotations, in particular with surreal
+coefficients.
+\end{proposition}
+\begin{proof}
+Over $L=F[i]$ put $Z=X+iY$, $W=X-iY$; a unit $u$ acts by $Z\mapsto uZ$, $W\mapsto u^{-1}W$, so
+$Z^aW^b$ has weight $a-b$. Independence of distinct Laurent powers of $u$ forces an invariant to
+contain only terms with $a=b$, so it lies in $L[ZW]=L[X^2+Y^2]$, and conjugation fixes exactly
+$F[X^2+Y^2]$. For invariance under $F$-points, the rational chart supplies infinitely many $u$, and a
+Laurent polynomial in one variable vanishing at infinitely many points is zero.
+\end{proof}
+\emph{This is a statement about polynomial functions}, not a classification of all class functions
+on orbits; arbitrary functions of the radius are nonpolynomial invariants.
+
+\subsection{The norm-one torus and its Lie algebra}\label{trigonometry:rot:sec:lie}
+The coordinate ring of the rotation group over $F$ is
+$A_F=F[\mathsf a,\mathsf b]/(\mathsf a^2+\mathsf b^2-1)$. The gradient $(2\mathsf a,2\mathsf b)$
+vanishes nowhere on the circle, so the group is smooth of dimension one. Over $L$ put
+$\mathsf z=\mathsf a+i\mathsf b$, with inverse $\mathsf a-i\mathsf b$; then
+$\mathsf a=(\mathsf z+\mathsf z^{-1})/2$, $\mathsf b=(\mathsf z-\mathsf z^{-1})/(2i)$ and
+\begin{equation}\label{trigonometry:rot:eq:torussplit}
+ A_F\otimes_FL\cong L[\mathsf z,\mathsf z^{-1}].
+\end{equation}
+So the rotation group is the norm-one torus $\ker(\operatorname{Res}_{L/F}\Gm\to\Gm)$, split over
+$L$ and anisotropic over $F$: conjugation acts on its character lattice $\Z$ by $n\mapsto-n$, and
+there is no nontrivial $F$-defined character to $\Gm$. These are the standard algebraic-group
+interpretations \cite[Chapters 10 and 12]{Milne}. For $\No$ this fixed algebraic group is applied at
+surreal points, rather than treating the class $\No$ as a set-sized coefficient field of scheme
+theory; each finite construction lives in a real closed Hahn workspace.
+
+\emph{Tangent vectors.} With dual numbers $F[\mathsf d]/(\mathsf d^2)$, a tangent vector $I+\mathsf dX$
+satisfies $(I+\mathsf dX)^{\mathsf T}(I+\mathsf dX)=I+\mathsf d(X^{\mathsf T}+X)$, so $X$ is
+skew-symmetric, hence traceless, and the determinant adds no condition:
+\begin{equation}\label{trigonometry:rot:eq:lie}
+ \mathfrak{so}(2,F)=F\mathsf J,\qquad
+ \mathsf J=\begin{pmatrix}0&-1\\1&0\end{pmatrix},\qquad [a\mathsf J,b\mathsf J]=0 .
+\end{equation}
+This is the precise sense in which the surreal tangent space is one-dimensional over $\No$. From
+$\mathsf J^2=-I$,
+\begin{equation}\label{trigonometry:rot:eq:formalexp}
+ \exp(T\mathsf J)=I\sum_{n\ge0}\frac{(-1)^nT^{2n}}{(2n)!}+\mathsf J\sum_{n\ge0}\frac{(-1)^nT^{2n+1}}{(2n+1)!},
+\end{equation}
+Hahn-evaluable at infinitesimal $T$ and equal to $\Rot(\cos T,\sin T)$ at finite $T$ by the
+real-plus-infinitesimal prescription, where
+$\Rot(a,b)=\left(\begin{smallmatrix}a&-b\\b&a\end{smallmatrix}\right)$. At an arbitrary infinite
+$T$ the displayed series is not strongly summable, its $\mathsf J$-component being the sine family
+of \cref{trigonometry:sec:global}: the Lie algebra has all
+surreal scalars, but the canonical finite-angle exponential is defined only on $\OO_{\R}\mathsf J$.
+
+\begin{proposition}[No algebraic additive exponential]\label{trigonometry:rot:prop:noalgexp}
+Every morphism of algebraic groups $\Ga\to\SO(2)$ over a real closed field is trivial.
+\end{proposition}
+\begin{proof}
+Over $L$ the target is $\Gm$, and a regular map $\mathbb A^1_L\to\Gm$ is a unit of $L[T]$, a
+constant, which must be $1$. Triviality after scalar extension gives triviality over $F$.
+\end{proof}
+The analytic phase is therefore not a missing algebraic morphism: even over $\R$ the exponential is
+transcendental, and over the surreals its domain and summation convention must also be specified.
+
+\emph{The invariant differential.} On the circle $\varpi=\mathsf a\,d\mathsf b-\mathsf b\,d\mathsf a$
+is invariant, $\mathsf a\,d\mathsf a+\mathsf b\,d\mathsf b=0$ by differentiating the equation, and
+the rational chart pulls it back to
+\begin{equation}\label{trigonometry:rot:eq:cayleyform}
+ C^*\varpi=\frac{2\,dt}{1+t^2},
+\end{equation}
+locally $d(2\arctan t)=d\theta$. This is an identity of algebraic differential forms whose local
+primitive is evaluated by the infinitesimal rule; \emph{it does not by itself define integration over
+arbitrary full-class contours.} The tangent space, the algebraic dimension and this form survive
+even though the fine topology has no nonconstant ordinary real paths; a connected-component argument
+cannot replace the algebraic tangent calculation.
+
+\subsection{Algebraic representations and nonalgebraic symmetries}
+\label{trigonometry:rot:sec:representations}
+
+\begin{theorem}[Algebraic endomorphisms]\label{trigonometry:rot:thm:endomorphisms}
+For the norm-one torus over a real closed field $F$,
+\begin{equation}\label{trigonometry:rot:eq:endomorphisms}
+ \End_{F,\mathrm{alg}}(\SO(2))\cong\Z,\qquad n\longleftrightarrow(u\mapsto u^n),
+\end{equation}
+and the algebraic automorphisms are exactly the identity and inversion.
+\end{theorem}
+\begin{proof}
+Over $L$ a regular homomorphism $\Gm\to\Gm$ is an invertible Laurent polynomial $c\mathsf z^n$, and
+the identity value forces $c=1$. Each $\mathsf z^n$ commutes with the descent involution
+$\mathsf z\mapsto\mathsf z^{-1}$, so it is defined over $F$. An inverse would have exponent $m$ with
+$mn=1$.
+\end{proof}
+For $n\ne0$ the power maps are isogenies of degree $|n|$, whose surreal fibres
+\cref{trigonometry:rot:eq:roots} describes; they multiply the infinitesimal angle exactly by $n$.
+
+Over $L$ a finite-dimensional algebraic representation of $\Gm$ is a finite direct sum of
+integer-weight spaces: write its coaction $v\mapsto\sum_nv_n\otimes\mathsf z^n$ (finitely many terms
+for each $v$); coassociativity makes each $v_n$ a weight-$n$ vector, the counit axiom gives
+$v=\sum_nv_n$, and independence of Laurent monomials makes the sum direct. Over $F$ conjugation pairs
+weight $n$ with weight $-n$, so the irreducible algebraic representations are the trivial one and,
+for each ordinary $n\ge1$, the two-dimensional
+\begin{equation}\label{trigonometry:rot:eq:weightrep}
+ u\longmapsto\Rot\bigl(\re(u^n),\im(u^n)\bigr),
+\end{equation}
+and every finite-dimensional algebraic representation is a direct sum of these. This is the rank-one
+case of torus representation theory \cite[\S12h]{Milne}; the weight calculation shows why \emph{no
+new weight labels occur: the weights are ordinary integers}, not omnific integers or surreal
+frequencies. Finite linear combinations of these matrix coefficients are algebraic trigonometric
+polynomials (\cref{trigonometry:thm:polyroots}). \emph{Nothing here supplies a Fourier convergence
+theorem, a Haar measure on the full class, or a classification of arbitrary abstract
+representations.}
+
+For each nonzero ordinary real $a$ define
+\begin{equation}\label{trigonometry:rot:eq:nonalgauto}
+ \Xi_a\bigl(u_0\Ex(i\eps)\bigr)=u_0\Ex(ia\eps),\qquad u_0\in\TT(\R),\ \eps\in\mm_{\R}.
+\end{equation}
+It is a group automorphism with inverse $\Xi_{1/a}$, fixes every ordinary rotation, rescales every
+infinitesimal angle, and is continuous in the fine topology by \cref{trigonometry:rot:thm:finesplit}.
+For $a\ne1$ it is not algebraic: an algebraic endomorphism fixing all ordinary units has exponent $1$
+and is the identity. No basis of a large vector space is chosen. Likewise
+\begin{equation}\label{trigonometry:rot:eq:unipotent}
+ u\longmapsto\begin{pmatrix}1&\ellm(u)\\0&1\end{pmatrix}\in\GL_2(\No)
+\end{equation}
+is a homomorphism, nontrivial on infinitesimal rotations and trivial on ordinary ones. The line
+spanned by $(1,0)$ is invariant and has no invariant complement, since a vector $(x,y)$ with $y\ne0$
+is moved by $\ellm(u)y$ in its first coordinate; so this fine-continuous representation is not
+semisimple, consistent with the semisimplicity of the algebraic representations above.
+
+\subsection{The fine topology of the circle}\label{trigonometry:rot:sec:topology}
+The fine topology is that of \cref{trigonometry:prop:topology}: balls $|z-a|<\rho$ with $\rho$ any
+positive surreal, the circle carrying the induced topology. Coordinatewise order neighbourhoods give
+the same topology, because $\max\{|x|,|y|\}\le|x+iy|\le|x|+|y|$; addition, multiplication, inversion
+away from zero and conjugation are continuous by their elementary difference identities, so the
+circle is a class topological group in this explicit neighbourhood sense. \emph{All positive surreal
+radii are allowed}: restricting to real radii, or to radii in one set-sized Hahn subfield, gives a
+different topology; in particular a set-sized Hahn field $K_\Gamma$ has its own intrinsic order
+topology, while the topology it inherits from $\SC$ is discrete by
+\cref{trigonometry:prop:topology}. Enlarging the admissible radii changes the topology but no
+algebraic identity.
+
+The existence of a positive surreal below any \emph{set} of positive surreals, used in the proof of
+\cref{trigonometry:prop:topology}, also gives: \emph{every set-indexed Cauchy net is eventually
+constant.} Indeed, take a positive lower bound for all its nonzero pairwise distances; on a tail all
+pairwise distances are smaller than it, hence zero. \emph{This is special to the full surreal class}:
+it is not a theorem about a non-Archimedean real closed set field with its intrinsic topology, it does
+not forbid a properly class-indexed net of radii from approaching zero, and the restriction on index
+size is essential.
+
+The subgroup $\mm_{\R}\subset\No$ is open, since it contains $(-\omega^{-1},\omega^{-1})$ and its
+translates by elements of $\mm_{\R}$; an open subgroup is closed, its complement being a union of open
+cosets. The same holds for $\mm_{\C}$ and every nonzero multiple $\rho\,\mm_{\C}$. For $a\in\SC$ and
+$\rho>0$ the set $a+\rho\,\mm_{\C}$ is therefore clopen and lies in the ball of radius $\rho$; and if
+$a\ne b$, taking $\rho=|a-b|$ separates them, since $(b-a)/\rho$ has norm one and is not
+infinitesimal.
+
+\begin{proposition}[Total separation without isolated points]\label{trigonometry:rot:prop:totalseparated}
+The fine circle $\TT(\No)$ is totally separated and has a basis of clopen neighbourhoods, but has no
+isolated points. In particular topological connectedness is not the meaning of the algebraic
+connectedness of the norm-one torus.
+\end{proposition}
+\begin{proof}
+The clopen sets above separate any two points. Given $u$ and $\rho>0$, choose a positive
+infinitesimal $\eta<\rho/4$; then $0<|\Ex(i\eta)-1|=2\sin(\eta/2)<\eta<\rho$, so $u\Ex(i\eta)$ is a
+point of the ball other than $u$.
+\end{proof}
+So the circle is not discrete as a class, although every set-sized subset is; in the
+universe-relative reading, small subsets are discrete while the whole larger-universe carrier is not.
+No contradiction is involved.
+
+\begin{theorem}[The splitting is topological only with a discrete real factor]
+\label{trigonometry:rot:thm:finesplit}
+With the fine topology on $\TT(\No)$ and on $\mm_{\R}$, the splitting \cref{trigonometry:eq:circlesplit}
+is a homeomorphism
+\begin{equation}\label{trigonometry:rot:eq:finesplit}
+ \TT(\No)_{\mathrm{fine}}\ \cong\ \TT(\R)_{\mathrm{discrete}}\times(\mm_{\R})_{\mathrm{fine}},
+\end{equation}
+and the fine quotient topology on $\TT(\No)/\Tm$ is discrete, not the usual topology of the real
+circle.
+\end{theorem}
+\begin{proof}
+The monad $\Tm=\TT(\No)\cap(1+\mm_{\C})$ is open, and its cosets are the fibres of $\st$. Within one
+fibre, for infinitesimal $\eps,\eta$,
+$\tfrac12|\eps-\eta|\le|\Ex(i\eps)-\Ex(i\eta)|\le2|\eps-\eta|$, since the ratio is $1$ plus an
+infinitesimal when $\eps\ne\eta$ (\cref{trigonometry:cor:phaseisometry}). So $\Ex(i\,\cdot)$ and
+$\ellm$ are mutually inverse continuous maps on each monad. All monads being open, the circle is their
+topological disjoint union, which is the product with a discrete real factor; every union of fibres
+is open, which gives the quotient statement.
+\end{proof}
+The embedded ordinary circle is itself a closed discrete subspace; its usual topology is recovered
+only by a coarser choice (\cref{trigonometry:rot:sec:othergeometry}), not as a subspace topology.
+
+\begin{corollary}[Small subgroups]\label{trigonometry:rot:cor:subgroups}
+Every subgroup of the fine circle generated by a set is closed and discrete, and none is dense.
+\end{corollary}
+\begin{proof}
+Such a subgroup consists of finite words in the generators and their inverses, hence is a set, and
+\cref{trigonometry:prop:topology} applies. It is not the whole circle, which is a proper class, the
+rational chart embedding all of $\No$.
+\end{proof}
+In particular an ordinary irrational rotation has a countable orbit that is closed and discrete in
+the fine topology, although its orbit is dense in the usual real circle: pigeonholing $N+1$ phases
+into $N$ equal arcs gives a nonzero angular step below $2\pi/N$. Arbitrarily small \emph{real} steps
+suffice for ordinary density but do not approach every surreal scale. There is consequently no
+ordinary real Lie-group interpretation of the fine circle: a set-sized compact subspace would be
+compact and discrete, hence finite, while no neighbourhood is finite. \emph{Classical compactness
+arguments and Haar integration cannot be imported from the familiar picture of $\SO(2)$.}
+
+Strong sums are not fine limits. With $t=\omega^{-1}$, $\Ex(it)$ is well defined, but the error of its
+degree-$N$ Taylor polynomial has leading exponent $N+1$, so for every ordinary $N$ it exceeds the
+fixed positive surreal $t^\omega=\omega^{-\omega}$ in absolute value; the partial sums do not converge
+finely. Similarly $\Ex(it^n)$ does not converge finely to $1$, all its nonzero distances having finite
+valuation $n<\omega$. In the intrinsic topology of the field $\R((t^{\Q}))$, by contrast, the integers
+are cofinal in the value group, so $t^n\to0$ and $\Ex(it^n)\to1$ there; in a higher-rank fixed field
+even this may fail if some positive value exceeds every $n\,v(t)$. These examples separate three
+notions: exact Hahn summation, convergence in a fixed workspace, and convergence at all surreal
+scales.
+
+\subsection{The standard-part topology and semialgebraic paths}
+\label{trigonometry:rot:sec:othergeometry}
+The \emph{standard-part topology} on $\TT(\No)$ has open sets $\st^{-1}(V)$, $V$ open in the usual
+topology of $\TT(\R)$. It deliberately forgets infinitesimal directions. It is a group topology, since
+$\st$ is a homomorphism, but it is not $T_0$: distinct units with the same standard part have the same
+neighbourhoods, and identifying topologically indistinguishable points yields the usual real circle.
+The map $\st$ from the fine circle to the usual circle is continuous, preimages of real open sets
+being unions of open monads, but it is not a quotient map: the quotient topology induced from the
+fine source is discrete (\cref{trigonometry:rot:thm:finesplit}). \emph{These two uses of the same
+set-theoretic map must not be conflated.}
+
+Let $F$ now be a fixed real closed \emph{set} field. In the semialgebraic category a path is a
+continuous semialgebraic map on $[0,1]_F$, not an ordinary real-parameter path. A unit $u\ne-1$ is
+joined to $1$ by
+\begin{equation}\label{trigonometry:rot:eq:semipath}
+ \gamma_u(s)=\frac{(1-s)+su}{|(1-s)+su|},\qquad0\le s\le1,
+\end{equation}
+whose denominator never vanishes, since a zero would make $u$ a negative real unit, that is $-1$;
+$1$ is joined to $-1$ by two such arcs through $i$, and multiplying by a starting unit joins any two
+points. The nonnegative square root is semialgebraic, so this proves semialgebraic path
+connectedness directly; the circle is closed and bounded, hence definably compact. The semialgebraic
+fundamental group is the usual one,
+\begin{equation}\label{trigonometry:rot:eq:sapi}
+ \pi_1^{\mathrm{sa}}\bigl(\TT(F),1\bigr)\cong\Z;
+\end{equation}
+\emph{this is imported, not proved here}: it invokes the standard comparison and scalar-extension
+theorems of semialgebraic homotopy \cite{DK,BaroOtero}, applicable because the circle is defined
+without parameters. There is no conflict with \cref{trigonometry:prop:topology}: the topology is
+intrinsic to $F$ and the parameter interval is $[0,1]_F$. The same formula on $[0,1]_{\No}$ with the
+fine topology is a nonconstant continuous class map, but that domain is not connected in the ordinary
+sense; and $[0,1]_{\R}$ with the topology induced from $\No$ is discrete, not the usual interval.
+
+Four statements therefore hold simultaneously and answer different questions: the algebraic torus is
+geometrically connected of dimension one; its semialgebraic $F$-points are definably path connected;
+its full fine surreal points are totally separated; its standard-part quotient is the ordinary
+connected circle. Correspondingly the exact sequence $2\pi\Z\to\OO_{\R}\to\TT(\No)$ is an algebraic
+group statement with local analytic charts, \emph{not} a claim that a connected real line is a
+universal covering space of the fine circle; semialgebraic and ordinary covering theories have their
+own categories and hypotheses.
+
+\subsection{Local angular velocities}\label{trigonometry:rot:sec:flows}
+The fine derivative (\cref{trigonometry:sec:foundations}), which is local Taylor calculus and not
+differentiation of a convergent sequence of partial sums \cite[\S3]{BMgerms}, gives $\frac{d}{d\theta}\cis\theta=i\cis\theta$
+and $\frac{d}{d\theta}\Rot(\cos\theta,\sin\theta)=\mathsf J\,\Rot(\cos\theta,\sin\theta)$ on finite
+angles. For a fixed $a\in\No$ the canonical local flow is
+\begin{equation}\label{trigonometry:rot:eq:localflow}
+ \Rot_a(x)=\Rot\bigl(\cos(ax),\sin(ax)\bigr),\qquad x\in D_a=\{x\in\No:ax\in\OO_{\R}\},
+\end{equation}
+with $D_a=\No$ if $a=0$ and otherwise $D_a=a^{-1}\OO_{\R}$, an open additive subgroup; on $D_a$,
+$\Rot_a(x+y)=\Rot_a(x)\Rot_a(y)$, $\Rot_a'(x)=a\mathsf J\Rot_a(x)$ and $\Rot_a(0)=I$. Every surreal
+angular velocity is allowed locally, but an infinite velocity requires a correspondingly small
+canonical time domain.
+
+Every extension $\Psi_\chi$ of \cref{trigonometry:thm:characters} obeys the same local law
+\cref{trigonometry:eq:globallocal}, is fine-continuous, and has $\Psi_\chi'=i\Psi_\chi$ and
+$\Psi_\chi^{(n)}=i^n\Psi_\chi$. The extensions of \cref{trigonometry:ex:phases} therefore have
+identical finite behaviour and identical local differential laws but can disagree at $\omega$:
+\emph{solving the local rotation equation and imposing $\Psi(0)=1$ does not choose a global phase
+normalization.} A sharper warning concerns solutions not assumed to be homomorphisms.
+
+\begin{example}[A locally constant factor]\label{trigonometry:rot:ex:locallyconstant}
+Let $g(x)=1$ for $x\in\mm_{\R}$ and $g(x)=-1$ otherwise. Both regions are fine-clopen, so $g$ is
+locally constant with zero fine derivative everywhere, and is not constant. On $\OO_{\R}$ the function
+$f(x)=g(x)\cis x$ satisfies $f'=if$ and $f(0)=1$, yet differs from $\cis x$ off the identity monad.
+\end{example}
+So even on a finite surreal interval the ordinary mean-value and initial-value uniqueness arguments
+cannot be used without further hypotheses. A coherent Taylor specification on every real-centred
+monad together with the ordinary real values does select $\cis$ (\cref{trigonometry:prop:normalization});
+that is additional global data, not a consequence of fine differentiability, and the classification
+of \cref{trigonometry:thm:characters} is not a classification of solutions of the fine differential
+equation. A derivation of the scalar field, such as a Berarducci--Mantova derivation \cite{BM}, is yet
+another operation; no compatibility between it and a globally normalized value such as
+$\Sin\omega=0$ is assumed.
+
+\subsection{Exact computation with rotations}\label{trigonometry:rot:sec:computation}
+Substantial rotation algebra can be implemented before arbitrary surreals are.
+\begin{center}\small
+\begin{tabular}{L{0.21\textwidth}L{0.33\textwidth}L{0.36\textwidth}}
+\toprule
+Representation & Best operations & Necessary caution\\
+\midrule
+$(a,b)$, $a^2+b^2=1$ & Action on coordinates, dot products, exact matrix operations & Normalizing an arbitrary pair needs a positive square root\\
+Projective $[p:q]$ & Composition \cref{trigonometry:eq:projectiveaddition} and inverse $[-p:q]$ by field arithmetic alone & Keep the point at infinity; equality is $ps-qr=0$, not coordinatewise\\
+$(u_0,\eps)$, $u_0\in\TT(\R)$, $\eps\in\mm_{\R}$ & Products, matched roots, valuations, infinitesimal error accounting & Exact real phase data and Hahn support information must be represented honestly\\
+\bottomrule
+\end{tabular}
+\end{center}
+In split form $(u_0,\eps)(w_0,\eta)=(u_0w_0,\eps+\eta)$ and $(u_0,\eps)^{-1}=(u_0^{-1},-\eps)$, exactly;
+a chosen $N$th-root branch divides $\eps$ by $N$ and takes the specified ordinary root of $u_0$, and
+\cref{trigonometry:rot:eq:producterror} gives the valuation of propagated error in a finite-support
+approximation. \emph{No representation of arbitrary surreal class elements by finite strings is
+asserted, and equality of effective Hahn-series names is not automatically decidable}; these concern
+representations and algorithms, not the definition of the group.
+
+Source 19 proposes a layered formal development: finite algebra (matrix/unit-circle isomorphism,
+isometry rigidity, projective chart, action, invariants) over an ordered field with square roots; a
+valuation layer ($\OO_{\R}$, $\mm_{\R}$, standard part, conjugation); a strong-series layer (exp/log
+inversion, purely imaginary logarithm of a near-one unit), which yields the splitting; ordinary
+complex phase for the finite-angle uniformization and kernel; a separate topology layer resting on
+the lower-bound cut; a semialgebraic layer; and a global layer resting on $\No=\Pi\oplus\OO_{\R}$
+rather than on a Taylor series at an infinite argument. It names the exact class-group splitting,
+with its fine-topological version, as a next formal target, and says this order is compatible with the
+repository's division between generic finite algebra, Hahn evaluation and concrete surreal
+foundations. The collection's formalization ledger \texttt{docs/FORMALIZATION.md} is not among the
+files source 19 lists as inspected. Already at its pin, and still now, that ledger records Lean proofs, on
+the actual surcomplex field, of several of these layers as stated in the analysis report --- the
+infinitesimal exponential/logarithm group isomorphism, the purely imaginary logarithm of a unit, and
+surjectivity of the finite phase onto the unit circle with kernel exactly $2\pi\Z$ --- and of the
+affine and projective circle charts over any ordered field (mapped, as prerequisites, to
+\cref{trigonometry:thm:cayley}). The splitting \cref{trigonometry:eq:circlesplit} itself, its
+fine-topological version \cref{trigonometry:rot:thm:finesplit}, and every label of this section have
+no Lean mapping; nothing in this section is formally verified.
+
+\subsection{Comparison with the classical circle}\label{trigonometry:rot:sec:comparison}
+\begin{center}\small
+\begin{longtable}{L{0.25\textwidth}L{0.27\textwidth}L{0.38\textwidth}}
+\toprule
+Question & Ordinary real plane & Surreal plane\\
+\midrule\endhead
+Origin-fixing rotations & $\SO(2,\R)$ & $\SO(2,\No)$, a class group\\
+Matrix form & $\Rot(a,b)$, $a^2+b^2=1$ & The same equations\\
+Geometric phase domain & $\R/2\pi\Z$ & $\OO_{\R}/2\pi\Z$\\
+Infinitesimal rotations & Trivial & $\Tm\cong(\mm_{\R},+)$\\
+Canonical factorization & Ordinary phase & Ordinary phase times exact infinitesimal phase\\
+Torsion; finite subgroups & Roots of unity; cyclic & The same literal roots of unity and $\mu_n$\\
+Roots of degree $n\ge1$ & Exactly $n$ & Exactly $n$, one infinitesimal lift per standard root\\
+Algebraic Lie algebra & $\R\mathsf J$ & $\No\mathsf J$, in the universe-relative reading\\
+Algebraic endomorphisms; weights & Integer power maps; integers & The same; still ordinary integers\\
+Fine topology & The usual topology & Totally separated, no isolated points, set-sized subsets discrete\\
+Ordinary real paths in the fine target & Nonconstant ones exist & All constant\\
+Standard-part quotient & The circle itself & The usual circle, only for the coarser standard-part topology\\
+Semialgebraic $\pi_1$ & $\Z$ & $\Z$ over a fixed real closed set field (imported)\\
+Global canonical phase & Periodic exponential & $\Phi(x)=\cis(\fin x)$, kernel $2\pi\Oz$\\
+Infinitely many repeated turns & Not a finite group operation & Still requires an explicit summation or phase convention\\
+\bottomrule
+\end{longtable}
+\end{center}
+The resulting picture is neither ``just the usual circle'' nor ``trigonometry breaks down'': the
+group has the familiar finite algebra, a very large exact infinitesimal angular factor, and several
+useful but inequivalent geometries, and which one is relevant depends on whether a question concerns
+finite equations, asymptotic scales, ordinary observations or definable paths. Higher-dimensional
+orthogonal groups are a natural extension, where infinitesimal logarithms are noncommutative and
+Baker--Campbell--Hausdorff terms appear; source 19 leaves them aside, and the collection now contains
+a separate report on the three-dimensional case, \texttt{docs/surreal/euclidean-three-space}.
+
 \section{Conclusions and dependency audit}\label{trigonometry:sec:conclusion}
 
 \subsection{What the theory establishes}
@@ -2934,6 +3690,13 @@ infinite frequency. \emph{Thus neither nonexistence nor canonical uniqueness is 
 blanket claim about ``surreal sine.''} The answer depends on the domain and on the analytic
 structure specified.
 
+Read through its rotation group, the circle is a class group with the classical finite algebra and
+an exact, very large infinitesimal factor (\cref{trigonometry:rot:sec:main}). Isometries fixing the
+origin are linear; torsion and finite subgroups are the standard ones; each valuation layer of
+infinitesimal rotations is one real line; algebraic endomorphisms and weights are ordinary integers
+while fine-continuous nonalgebraic symmetries exist; and the fine, standard-part and semialgebraic
+geometries of the same circle answer different questions and must not be interchanged.
+
 \subsection{A dependency audit}
 \begin{center}
 \small
@@ -2954,6 +3717,9 @@ Finite Fourier identities & Finite geometric sums; the coefficientwise integral 
 Arc and sector formulas & The explicit primitive-based coefficientwise integral convention, ring (R1)\\
 Infinite phase classification & The additive normal-form split $\No=\Pi\oplus\OO_{\R}$ and circle surjectivity\\
 Coherence obstructions & Ring (R1) only; normal-form uniqueness and one well-ordered support\\
+Rotation group: isometries, torsion, dihedral subgroups, invariants & Polarization, the splitting of \cref{trigonometry:thm:polar}, ordinary roots of unity, one-variable Laurent independence\\
+Norm-one torus, Lie algebra, representations & Finite algebra over a real closed field, dual numbers, Laurent coactions; the torus language of \cite{Milne}\\
+Fine, standard-part and semialgebraic circle & The lower-bound cut, open infinitesimal subgroups, the chord comparison; $\pi_1^{\mathrm{sa}}\cong\Z$ imported from \cite{DK,BaroOtero}\\
 \bottomrule
 \end{longtable}
 \end{center}
@@ -2963,20 +3729,29 @@ several-variable Noetherianity, division and residue theorems of
 \cite{SourceGeometry,SourceIntersections} are not assumed as black boxes anywhere.
 
 \subsection{Reproducible checks and their limits}
-The three source editions of this report carried accompanying Python scripts using exact SymPy
+Sources 16--18, the three editions of the trigonometric core, carried accompanying Python scripts using exact SymPy
 algebra and formal power series, which between them check the Gram, rational-circle, Heron,
 circumradius, Euler and Ptolemy identities; the Cayley group law; Chebyshev formulas; the spread
 and triple-spread identities; flat-triangle, tangency and inverse-cosine coefficients; the coupled
 angular algebra after sine coordinates; the algebraization of trigonometric equations; line--circle
 formulas and the collision algebra; finite quadrature and Fourier convolution; a spectral-factor
 example; and the rational identities behind the spherical and hyperbolic laws. Those runs reported
-$67$, $43$ and $68$ passing checks respectively.
+$67$, $43$ and $68$ passing checks respectively. Source 19's script checks, in $41$ exact identities,
+the Cayley norm, inverse chart, affine and homogeneous group laws and associativity, the exceptional
+chart cases and \cref{trigonometry:rot:eq:halfturn}, the invariant differential
+\cref{trigonometry:rot:eq:cayleyform}, rotation-matrix products, orthogonality and determinant, the
+displacement norm identity and the rational corrections of \cref{trigonometry:rot:ex:cayleydisp}, the
+Clifford calculation \cref{trigonometry:rot:eq:spin}, and truncated Taylor coefficients of the chart,
+of \cref{trigonometry:rot:eq:arctanbridge}, of $\Ex(ih)\Ex(-ih)=1$ and of the chord--angle ratio.
 
 \emph{These checks validate the finite algebra and selected Taylor coefficients occurring in the
 proofs.} They do not implement the full surreal class, verify transfinite support arguments or
 recursions, establish real closedness, or machine-check any mathematical proof. The support lemma,
 the branch arguments and the proper-class distinctions are justified in the text, not inferred from
-symbolic experiments, and no proof-assistant verification is claimed.
+symbolic experiments, and no proof-assistant verification is claimed. The same holds for source
+19's checks: they cannot check the surreal normal-form theorem, a class-sized topology, Neumann
+summability for arbitrary supports, or the universal quantifiers of the structure theorem, and no Lean
+compilation or independent kernel verification of that manuscript was performed.
 
 \subsection{What is not proved}\label{trigonometry:sec:notproved}
 The following non-claims are made in the body of the article and are collected here. They are
@@ -3073,6 +3848,75 @@ specific to individual results and are not pooled into a single blanket disclaim
  circle geometry, and neither is asserted over the radius-free ring (R3) or the formal ring (R4).
  It is not claimed that a unique canonical value of circular sine at every infinite real argument
  follows from the finite-angle theory.
+\item \emph{(\cref{trigonometry:rot:sec:main}, source 19.)} The following non-claims are source 19's,
+ each also stated at its point of use.
+ \begin{enumerate}[label=(\alph*),itemsep=0.2em]
+ \item Source 19 is a self-contained exposition organized around the rotation group, not a claim of
+  priority or a machine-checked formalization; the finite-angle splitting is not presented as a new
+  discovery, and it is compatible with, but logically prior to, the global construction of
+  \cite[\S11]{EK}.
+ \item ``Rotation'' means the algebraic isometry; continuity is an extra property in a specified
+  topology. Bounded matrix entries do not make the group set-sized or ordinarily compact.
+ \item All statements about $\SO(2,\No)$ are class-group statements: no proper-class Hahn sum, no
+  quantification over a set of all class functions, no treatment of the group as a set-sized
+  manifold, and topological statements use ball neighbourhoods with explicit quantifiers.
+ \item $\mm_{\R}$ is not an $\No$-vector space, and the $\R$-vector structure of $\Tm$ does not extend
+  to surreal scalars (\cref{trigonometry:rot:rem:notvector}).
+ \item Preserving norms alone does not force linearity, and a field automorphism changing distances
+  is not an isometry; the semidirect products \cref{trigonometry:rot:eq:orthogonal} are algebraic, not
+  statements about connected components.
+ \item The rational chart parametrizes $F$-points; it is not an isomorphism of $\PP^1_F$ with the
+  affine torus (\cref{trigonometry:rot:rem:projective}).
+ \item Formal evaluation at infinitesimals is asserted for real or complex coefficients only; an
+  arbitrary series with surreal coefficients need not be evaluable at every infinitesimal. Strong sums
+  are not limits of partial sums in the fine topology.
+ \item A branch of $\Arg$ is not an additive homomorphism; the group law belongs to angle classes.
+  $\No/2\pi\Z$ is not the finite-angle model compatible with the finite phase; source 19 does not
+  assert that some unrelated abstract class-group isomorphism $\No/2\pi\Z\cong\TT(\No)$ is impossible,
+  the compatibility requirement being essential.
+ \item Torsion means ordinary finite order; infinitesimal rotations give elements of infinite order,
+  not new regular polygons. The square-root formula \cref{trigonometry:rot:eq:sqrt} is a local branch,
+  not a multiplicative section; the $\operatorname{Spin}(2)$ calculation is finite algebra, not path
+  lifting; finite orthogonal groups are conjugate to standard ones, which does not make their matrices
+  real.
+ \item \Cref{trigonometry:rot:thm:graded} is a filtration, not a direct-sum decomposition; $\sim$ is an
+  algebraic relation, not a sequence limit; \cref{trigonometry:rot:eq:hahnproduct} gives no value to
+  infinitely many identical turns, and its partial products do not converge finely.
+ \item Cyclic order and the absence of fixed points are algebraic, not defined by ordinary real paths;
+  \cref{trigonometry:rot:eq:invariants} concerns polynomial functions, not all class functions on
+  orbits.
+ \item The algebraic group is applied at surreal points, without treating $\No$ as a set-sized
+  coefficient field of scheme theory; the exponential series is not summable at infinite $T$ and the
+  canonical exponential lives on $\OO_{\R}\mathsf J$; the invariant form defines no integration over
+  arbitrary full-class contours; a connected-component argument cannot replace the tangent
+  calculation.
+ \item The representation classification supplies no Fourier convergence theorem, no Haar measure on
+  the full class, and no classification of arbitrary abstract representations or of all abstract
+  automorphisms; the automorphisms $\Xi_a$ use no basis choice.
+ \item The surreal exponent \cref{trigonometry:rot:eq:surrealpower} is an analytic scaling on a
+  restricted domain, not a transfinite iteration; beyond it a phase extension supplies further choices.
+ \item Small-set discreteness is special to the full class, not a theorem about set-sized
+  non-Archimedean fields with their intrinsic topology; it does not forbid a properly class-indexed net
+  approaching zero. There is no ordinary real Lie-group interpretation of the fine circle, and
+  classical compactness or Haar integration cannot be imported.
+ \item The fine and standard-part uses of $\st$ must not be conflated. The semialgebraic fundamental
+  group \cref{trigonometry:rot:eq:sapi} is imported from \cite{DK,BaroOtero}, not proved; the sequence
+  $2\pi\Z\to\OO_{\R}\to\TT(\No)$ is not a universal-covering claim.
+ \item Solving the local rotation equation with $\Psi(0)=1$ does not choose a global normalization;
+  the classification of phase homomorphisms is not a classification of all solutions of the fine
+  differential equation; mean-value and initial-value uniqueness arguments need further hypotheses
+  (\cref{trigonometry:rot:ex:locallyconstant}); no compatibility with a scalar derivation is assumed.
+ \item No representation of arbitrary surreal class elements by finite strings is asserted, and
+  equality of effective Hahn-series names is not claimed decidable.
+ \item Source 19 claims no novel construction of global surreal sine, no resolution of an
+  Ehrlich--Kaplan robustness question, no classification of all abstract automorphisms, no Haar or
+  Fourier theory on the full class group, and no global mean-value or initial-value theorem for fine
+  differentiable functions; it does not assume that an infinitesimal Taylor sum is a fine limit. Its
+  repository search covered the root and documentation overviews and the opening of this article, and
+  no exhaustive search of the repository or of the literature is claimed; its arguments do not
+  presuppose verification of the rest of this report, whose component manuscripts are unrefereed
+  AI-assisted drafts.
+ \end{enumerate}
 \item \emph{(Global.)} No proper-class sum, no arbitrary infinite polygon, no full-class Riemann
  integral, no ordinary sequential Fourier convergence theorem, and no uniqueness theorem for all
  fine-analytic differential equations is asserted anywhere. The three supplied manuscripts are
@@ -3156,6 +4000,9 @@ $\Pi$, $\Oz=\Pi\oplus\Z$ & Purely infinite normal forms; the omnific integer par
 $\chi$, $\Psi_\chi$, $E_\chi$ & A phase character on $\Pi$, the resulting full-real-class phase, and the resulting full-plane exponential.\\[0.25em]
 $\HInt$ & Coefficientwise Hahn integral over the ring (R1), with analytic endpoint corrections; not a fine-topological Riemann integral.\\[0.25em]
 (R1)--(R4) & Fixed-domain, common-domain germ, radius-free and formal coefficient rings of \cref{trigonometry:sec:rings}.\\[0.25em]
+$\SO(2,\No)$, $\Rot(a,b)$ & The rotation group and its matrix $\left(\begin{smallmatrix}a&-b\\ b&a\end{smallmatrix}\right)$, $a^2+b^2=1$ (\cref{trigonometry:rot:sec:main}).\\[0.25em]
+$\ellm$, $\Tm$ & Infinitesimal angle $-i\Logm(u/\st u)$ of a unit; the identity monad $\{u:\st u=1\}\cong(\mm_{\R},+)$.\\[0.25em]
+$\mathsf J$, $\mathsf c$, $\Xi_a$, $\mathcal S_\rho$ & Generator of $\mathfrak{so}(2)$; complex conjugation as a reflection; the rescaling automorphism \cref{trigonometry:rot:eq:nonalgauto}; the circle of radius $\rho$.\\[0.25em]
 $\Z$, $n,N,M$ & Ordinary integers and ordinary finite degrees or sample sizes, never an unspecified class of ``surreal integers.''\\
 \bottomrule
 \end{longtable}
@@ -3270,6 +4117,31 @@ Alessandro Berarducci and Vincenzo Mantova, ``Surreal numbers, derivations and t
 \emph{Journal of the European Mathematical Society} \textbf{20} (2018), 339--390.
 \href{https://doi.org/10.4171/JEMS/769}{doi:10.4171/JEMS/769}.
 Cited to distinguish a derivation on the scalar field from the function derivatives used here.
+
+\bibitem{BMgerms}
+Alessandro Berarducci and Vincenzo Mantova, ``Transseries as germs of surreal functions,''
+\emph{Transactions of the American Mathematical Society} \textbf{371} (2019), 3549--3592.
+\href{https://doi.org/10.1090/tran/7428}{doi:10.1090/tran/7428};
+\href{https://arxiv.org/abs/1703.01995}{arXiv:1703.01995}. Cited by source 19, especially \S3, for
+the surreal analytic use of Neumann's lemma and local Taylor calculus.
+
+\bibitem{Milne}
+J.~S. Milne, \emph{Algebraic Groups: The Theory of Group Schemes of Finite Type over a Field},
+Cambridge Studies in Advanced Mathematics \textbf{170}, Cambridge University Press, 2017,
+especially Chapters 10 and 12. Background for the norm-one torus and its representations in
+\cref{trigonometry:rot:sec:lie,trigonometry:rot:sec:representations}.
+
+\bibitem{DK}
+Hans Delfs and Manfred Knebusch, \emph{Locally Semialgebraic Spaces}, Lecture Notes in Mathematics
+\textbf{1173}, Springer, 1985. See also their survey ``An introduction to locally semialgebraic
+spaces,'' \emph{Rocky Mountain Journal of Mathematics} \textbf{14} (1984), 945--963,
+\href{https://doi.org/10.1216/RMJ-1984-14-4-945}{doi:10.1216/RMJ-1984-14-4-945}.
+
+\bibitem{BaroOtero}
+El\'ias Baro and Margarita Otero, ``Locally definable homotopy,''
+\href{https://arxiv.org/abs/0812.2112}{arXiv:0812.2112} (2008), especially Corollary 6.7 on
+comparison with classical homotopy. With \cite{DK}, the source of the imported
+\cref{trigonometry:rot:eq:sapi}.
 
 \end{thebibliography}\endgroup
 \end{document}

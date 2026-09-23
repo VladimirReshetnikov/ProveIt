@@ -530,6 +530,16 @@ coordinates, unlike the multiplicative phase obstruction `Φ`. Defining it
 on every input requires surjectivity of `ð`. The abelian image theorem and
 the explicit speed threshold for `ω^(−p)v`, `p > 1`, do not.
 
+In the critical-potential part, `ℓ_α = ω^(ω^(−α))` uses the Conway
+monomial map at both levels. Each ordinal-indexed sum stops below one
+fixed ordinal, so its index is a set. The monomial product `ℓ_{<α}` is
+defined by summing its exponents; its logarithm agrees with the sum of
+logarithms by the stated imported theorem, including limit stages.
+The real powers `ℓ_α^r` use the ordered real exponential. These formulas
+do not define non-real Conway exponents or complex powers of infinite
+scales. A critical potential is the strong sum of its increments, not
+the generally nonsummable family of its partial potentials.
+
 Distinguish the ordered real surreal exponential, the strongly summed
 infinitesimal Hahn exponential, finite-angle `cis`, and a chosen global
 surcomplex exponential or global phase. A finite angle has ordinary period

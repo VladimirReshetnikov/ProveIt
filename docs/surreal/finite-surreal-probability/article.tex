@@ -115,8 +115,10 @@ refereed or Lean-verified paper. Non-Archimedean probability, lexicographic
 belief, and extended log-likelihood methods have substantial precedents.
 No first-in-literature claim or solution of a named open conjecture is made.
 The repository comparison is pinned to the commit recorded in
-Section~\ref{sec:position}; the delivered article is a new standalone file,
-not a modification of that repository.
+Section~\ref{fsp:sec:position}. The article was delivered as a standalone
+file and is now a single-source report of that collection;
+Section~\ref{fsp:sec:provenance} records its placement and every change.
+No statement of it has a Lean formalization.
 \end{minipage}
 \end{titlepage}
 \hypersetup{pageanchor=true}
@@ -125,13 +127,13 @@ not a modification of that repository.
 \clearpage\pagenumbering{arabic}
 
 \section{What a surreal probability theory should accomplish}
-\label{sec:position}
+\label{fsp:sec:position}
 
 A probability can be smaller than every positive real number without being
 zero. Such a value distinguishes an event that is negligible at ordinary
 resolution from an event excluded by the model. For example, with
 $t=\omega^{-1}$, the probabilities
-\begin{equation}\label{eq:intro}
+\begin{equation}\label{fsp:eq:intro}
  (p_1,p_2,p_3)=\frac{(1,t,t^2)}{1+t+t^2}
 \end{equation}
 encode three different orders of plausibility. Their ordinary shadow is
@@ -180,7 +182,7 @@ These rows are not five names for the same construction. In particular,
 ``countably additive surreal probability'' is incomplete terminology unless
 the addition and convergence conventions are specified.
 
-\subsection{Relation to the supplied repository}
+\subsection{Relation to the supplied repository}\label{fsp:sub:repository}
 
 The repository was consulted at commit
 \begin{center}\small\pin\end{center}
@@ -197,11 +199,30 @@ resolvents rather than general path measures \cite{repomarkov}.
 This article complements those topics by emphasizing conditional shadows,
 Bayesian and logit geometry, finite information theory, and the interfaces
 between infinite probability constructions. The two nonextension arguments
-in Section~\ref{sec:iid} are elementary special cases consistent with the
+in Section~\ref{fsp:sec:iid} are elementary special cases consistent with the
 repository's broader product discussion; they are not presented as new
 independent classification theorems. The repository's maintained guide and
 the opening of its source were read for the comparison. This is not a
 line-by-line independent audit of all of its proofs or formalization claims.
+
+\paragraph{Since the pin.}
+The manuscript was placed in the collection by commit \texttt{5fe7f8d},
+seventeen commits after its pin. The statements above remain true of the pin
+and are kept as provenance. The comparison of
+Section~\ref{fsp:sec:neighbours} was made at commit \texttt{50cb709}, against
+the full sources of the three reports cited above and of the physics report
+\cite{repophys}. Between the pin and \texttt{50cb709} the source of the
+measures report did not change. The placement commit added to that report's
+directory the program, build script and records of a further manuscript, on
+coefficientwise measure theory, with files prefixed
+\texttt{16-coefficientwise-measure-theory-}; this report makes no statement
+about that manuscript. The Markov report gained one comparison paragraph about
+another report, and the foundations and physics reports are unchanged. At
+\texttt{50cb709} a full-text search of every LaTeX source of the collection
+finds the words \texttt{logit}, \texttt{softmax}, \texttt{relative entropy},
+\texttt{Bayes}, \texttt{martingale} and \texttt{Gibbs} only in this report,
+and \texttt{Loeb} elsewhere only in the physics report. Such searches locate
+words, not results stated under other names.
 
 \subsection{Precedents and the meaning of development}
 
@@ -225,8 +246,388 @@ standard facts; others are direct calculations specific to this exposition.
 A proof supplied here establishes the stated implication, not priority over
 unsearched literature.
 
+\subsection{What this report does not claim}\label{fsp:sec:nonclaims}
+Each limitation below is also stated where it applies. They are collected
+here, from the article, its delivered README, research audit and verification
+record, so that none of them is lost when results are quoted elsewhere.
+\begin{enumerate}[label=(N\arabic*),leftmargin=3.2em]
+\item \emph{Status and priority.} The report is an AI-assisted synthesis with
+written proofs. It has not been independently refereed, no statement of it has
+a Lean formalization, and no Lean code accompanies it. Non-Archimedean
+probability \cite{bhw}, lexicographic and conditional probability
+\cite{halpern,brickhill}, extended logarithmic likelihood ratios
+\cite{hammond}, ranking theories \cite{spohn} and Loeb measure \cite{loeb} are
+precedents. No first-in-literature result is claimed, no named open
+conjecture is claimed solved, and no absence claim about the published
+literature is made. Some propositions are combinations of standard facts; a
+proof establishes its implication, not priority. A bibliography entry does not
+certify every theorem of its source. Loeb's paper was cited from its indexed
+metadata, since direct access to the full text failed; the Brickhill--Horsten
+citation is to the preprint; Conway and Gonshor are cited as foundational books;
+and no ordinal-length estimate of the uncorrected van den Dries--Ehrlich paper is
+used. Ordinary real disintegration, product laws and strong laws of large
+numbers are imported from \cite{kallenberg}, not re-proved.
+\item \emph{Repository comparison.} The comparison at the pin read the guide of
+the measures report and the opening of its source; the descriptions of the
+foundations and Markov reports rested on the collection's guides. It was not a
+line-by-line audit of any report or of the Lean ledger. The strong-class
+conclusions of the measures report (finitely supported standard part, the
+$\omega+1$ threshold) are not generalized to other regimes. The two coin
+obstructions of Section~\ref{fsp:sec:iid} are special cases of that report's
+product theorems (Section~\ref{fsp:sec:neighbours}), not new classification
+theorems.
+\item \emph{Scalars and size.} All sample spaces, event algebras, supports and
+parameter collections are set-sized; no probability distribution over the
+class $\No$ is constructed. The closure of Lemma~\ref{fsp:lem:workspace}
+supplies no algorithm, no canonical smallest
+Hahn presentation and no elementary transfer for arbitrary formulas. A Hahn
+field $K_\Gamma$ need not be closed under the canonical exponential. The
+canonical logarithm is not the omega-map, and $\omega^\gamma=\exp(\gamma\log\omega)$
+is not assumed for arbitrary $\gamma$. Transfer from the real exponential field
+is used only for universally quantified inequalities in a fixed ordinary number
+of variables, never for statements quantifying over sample spaces, sequences,
+measurable functions or integration.
+\item \emph{The finite core.} Definition~\ref{fsp:def:probability} carries no countable additivity.
+Finite Jensen is algebraic convexity, not a statement about a function given
+only on $\R$ without a specified extension. Zero-mass cells do not determine
+conditional probabilities. The finite no-sure-loss argument does not license
+infinitely many tickets, and physical interpretations of infinite stakes are a
+separate modeling issue.
+\item \emph{Shadows and compression.} Standard part forgets small quantities;
+it does not show that their effect after division by other small quantities is
+negligible. The lexicographic description after
+Theorem~\ref{fsp:thm:skeleton} represents conditional shadows only: it does
+not reconstruct the probability or all expected-utility comparisons.
+Theorem~\ref{fsp:thm:compression} concerns real-valued acts; it does not say
+that an arbitrary signed-row list is a lexicographic probability system, and
+it does not compress comparisons of surreal-valued acts.
+\item \emph{Bayes and logits.} No unspecified infinite product of likelihoods is
+licensed; learning from an infinite data stream needs a chosen law on streams
+and a chosen limit. The exponents of the minimum-plus rule lie in an ordered
+abelian group, and their addition is not ordinal addition. The endpoints
+$p=0,1$ correspond to formal symbols $\mp\infty$ outside $\No$, not to
+$\mp\omega$. Logits do not add over disjoint events; a score becomes a
+probability only through a normalization rule; stable normalization gives no
+finite symbolic representation of an arbitrary surreal score.
+\item \emph{Information and optimization.} All sums are finite. The value
+$+\infty$ of a relative entropy is formal. Entropy can leave a pure Laurent
+field, and no single Hahn field is assumed closed under the information
+operations. No entropy rate of a process is supplied, and standard part does
+not commute with relative entropy. The logistic optimum comes from an explicit
+identity, not an extreme-value theorem. The Gibbs principle constructs no
+thermodynamic limit, infinite-volume Gibbs measure or partition function on an
+infinite state space. The standard part of an expected utility needs limited
+payoffs, and surreal arithmetic does not decide which utilities and trades are
+admissible. The smoothing constants and scale are modeling choices, and the
+case $N=0$ is an ordinary prior. Proposition~\ref{fsp:prop:separation} gives
+no existence theorem for constrained or regularized regression.
+\item \emph{Finite processes.} Consistency of finite-horizon path weights is not
+a law on infinite paths; a stochastic matrix, a semigroup and a path measure are
+different objects. Optional stopping is proved for bounded stopping times only.
+``Take $n=1/t$'' has no meaning until a nonstandard or surreal-indexed number of
+trials is defined. No unconditional law of large numbers in the fine topology is
+hidden in the finite variance bounds.
+\item \emph{Infinite addition.} Proposition~\ref{fsp:prop:fine} concerns the full
+fine topology and set-sized index sets, not the intrinsic topology of a subfield.
+Failures of the strong rule are failures of a support rule, not contradictions
+in the field or in finite additivity. The strong classification of the measures
+report is quoted, not re-proved. Positivity on cylinders or finite tests does
+not imply positivity on all measurable sets.
+\item \emph{Hierarchies and integration.} Setting $t=1$ in a hierarchy is not an
+ordinary mixture. Dominated convergence holds coefficientwise, not in the fine
+or order topology. The Fubini identity is support-controlled and does not cover
+all surreal-valued functions. Theorem~\ref{fsp:thm:integrationfailure} asserts
+coefficientwise measurability only and does not contradict Lebesgue integration;
+the countable-support positivity statement after it is a sufficient condition.
+The posterior kernels of Section~\ref{fsp:subsec:kernels} are not a general
+surreal Radon--Nikodym or disintegration theorem; their version choices remain
+real choices, and no unique conditional law is assigned to observations of
+exactly zero mass. Example~\ref{fsp:ex:diffuse} is not an all-subsets regular
+probability.
+\item \emph{Coin obstructions.} Theorems~\ref{fsp:thm:rarecoin}
+and~\ref{fsp:thm:faircoin} do not make any finite coin experiment inconsistent,
+do not exclude a regular finitely additive path law
+(Corollary~\ref{fsp:cor:coinextension} constructs one), and do not say that every
+non-Archimedean Kolmogorov-type theorem fails. A logit parametrization supplies
+no infinite-addition rule.
+\item \emph{Extensions.} The embeddings of Lemma~\ref{fsp:lem:embedding} need
+not preserve an exponential, internal-set structure or a Hahn summation, and do
+not show that two exponential structures agree. The ultrafilter construction is
+nonconstructive, its snapshot addition is not a strong sum, the resulting laws
+are not unique even with a fixed infinitesimal unit, and symmetry is not implied
+by equal singleton masses. Theorem~\ref{fsp:thm:extension} provides no countable
+additivity, symmetry, canonical embedding or bound on the new scales, and does
+not compute the probability of a tail event, which can depend on the model
+chosen. Its compactness is first-order logical compactness, not topological
+compactness of a simplex.
+\item \emph{Latent regime and bridges.} Proposition~\ref{fsp:prop:tailfailure}
+is consistent with the real martingale convergence theorem; a surreal analogue
+must specify a different conclusion or further hypotheses. Writing an infinite
+logit does not define a surreal-indexed sum of log-likelihood increments. The
+Loeb bridge needs internal sets and saturation; a field embedding does not
+supply them, and a bare surreal $H>\N$ is not a substitute. An internal power
+is not identified with a canonical surreal exponential expression under a
+field-only embedding.
+\item \emph{Not asserted anywhere} (Section~\ref{fsp:sub:notasserted}). No countably
+additive probability on all events for the full fine topology; no universal
+Carath\'eodory, Radon--Nikodym, Fubini, martingale convergence, strong law of
+large numbers, central limit or stochastic calculus theorem after replacing
+$\R$ by $\No$; no unique answer to exact-zero conditioning; no canonical
+ultrafilter; no reconciliation of regularity with every symmetry demand; no
+effective computability of arbitrary surreal expressions; no identification of
+the omega-map with exponential powers; no transfer of internal hyperfinite
+operations through a field-only embedding. The Poisson and latent examples
+import ordinary component laws or a stated nonstandard model.
+\item \emph{Computation and evidence.} The engine of
+Section~\ref{fsp:sec:implementation} is a specification; a leading-scale answer
+is not an exact probability. The program \texttt{code/verify.py} checks finite
+examples in $\Q(t)$ with exact rational arithmetic and no floating-point
+surrogate for $t$. It implements no canonical exponential or logarithm, no
+infinite summation, measure extension, saturation, compactness, choice or
+uncountable set, and it proves no general theorem. Compilation and visual
+inspection are typesetting checks, not proof checks.
+\item \emph{Open.} The four directions of Section~\ref{fsp:sec:scope} are not
+settled: positive integration domains for coefficientwise probabilities beyond
+bounded real observables and countable supports; convergence of conditional
+beliefs that keeps chosen infinitesimal regimes; extension with additional
+structure (invariance, a preferred support group, an exponential-compatible
+embedding); and a verified computational library.
+\end{enumerate}
+
+\subsection{Relation to other reports of the collection}\label{fsp:sec:neighbours}
+No proof in this report depends on another report, and no other report
+depends on this one. The comparisons below are with the sources as committed
+at \texttt{50cb709}; theorem numbers of other reports are those of their
+builds at that commit, and each is followed by its label.
+
+\paragraph{Hahn-valued measures and probability.}
+That report \cite{repomeasures} is the collection's measure theory for
+Hahn-valued probabilities. This report continues it on the finite side and
+at its interfaces with other infinite constructions; it answers none of the
+questions of Section~33 there.
+\begin{enumerate}[label=(\alph*)]
+\item \emph{The same definitions.} Definition~\ref{fsp:def:coefficientwise} is
+Definition~2.7 there (\nolinkurl{meas:def:coefficientwise}), with the
+probability condition of Definition~2.9 there (\nolinkurl{meas:def:positive}).
+The strong rule of Section~\ref{fsp:sec:infinity} is Definition~2.8 there
+(\nolinkurl{meas:def:strong}), built on the strong summability of Definition~2.2
+there (\nolinkurl{meas:def:summability}). Finite additivity
+(Definition~\ref{fsp:def:probability} here) is the third notion, and neither report identifies it
+with the other two. On a finite event algebra a disjoint sequence has only
+finitely many nonempty members, so all three notions coincide there; this is
+why Sections~\ref{fsp:sec:shadows} and~\ref{fsp:sec:bayes} may speak of a
+\emph{finite Hahn probability} without a qualifier.
+\item \emph{Strong class.} Example~\ref{fsp:ex:geometric} is an instance of the
+atomic classification, Theorem~4.2 there (\nolinkurl{meas:thm:atomic}). The
+``classification'' quoted in Section~\ref{fsp:sec:infinity} is that theorem with
+Corollaries~4.5 and~4.6 there (\nolinkurl{meas:cor:two-axioms},
+\nolinkurl{meas:cor:shadow}): on countably separated spaces strong measures are
+the coefficientwise ones with finitely atomic coefficients, and a strong
+probability has a finitely supported standard part. The Lebesgue remark of
+Section~\ref{fsp:sec:infinity} is Trap~2 of Section~2.6 there
+(\nolinkurl{meas:sub:traps}).
+\item \emph{The coin obstructions.} Theorem~\ref{fsp:thm:rarecoin} (bias $t$) and
+Theorem~\ref{fsp:thm:faircoin} (bias $1/2+t$) are two cases of
+Corollary~23.1 there (\nolinkurl{meas:cor:iid}): the i.i.d.\ Bernoulli law with
+bias $p$ has a coefficientwise \emph{signed} extension if and only if $p$ is
+real. That corollary rests on the total-variation extension test, Theorem~19.1
+there (\nolinkurl{meas:thm:extension}). Its proof uses the same two mechanisms:
+the first infinitesimal coefficient of bias $t^\alpha$ has level-$n$ variation
+$2n$, where Theorem~\ref{fsp:thm:rarecoin} uses the first-success events, and
+for an interior bias the variation grows like $\sqrt n$ by H\"older's inequality
+and fourth-power expectations, Lemma~20.3 there (\nolinkurl{meas:lem:L1lower}),
+as in the proof of Theorem~\ref{fsp:thm:faircoin}. Neither coin law has a strong
+extension either (Corollary~10.3 and Example~10.4 there,
+\nolinkurl{meas:cor:bernoulli}, \nolinkurl{meas:ex:bernoulli}).
+Corollary~\ref{fsp:cor:coinextension} adds what that report leaves aside: its
+non-claims 10.1 and 15.1 (Section~32.2 there, \nolinkurl{meas:sub:nonclaims})
+say that its negative results do not exclude finitely additive or ultrafilter
+probability, and Corollary~\ref{fsp:cor:coinextension} gives both coin models
+regular finitely additive laws on all subsets.
+\item \emph{Conditioning.} Proposition~24.2 there
+(\nolinkurl{meas:prop:conditioning}) shows that conditioning a coefficientwise
+probability on an event of positive mass stays in the class, and Example~24.3
+there (\nolinkurl{meas:ex:conditioning}) computes a conditional shadow with
+infinitely many atoms. Theorem~\ref{fsp:thm:hierarchy} computes every
+conditional shadow of a normalized hierarchy, and Section~\ref{fsp:subsec:kernels}
+conditions on continuous observations; neither result is in that report.
+\item \emph{Observables.} The expectation \eqref{fsp:eq:hierintegral} is the
+restriction to normalized hierarchies of the integral of bounded ordinary
+observables in Section~24 there (\nolinkurl{meas:eq:coef-integral}, defined for
+every coefficientwise measure), with the same coefficientwise dominated
+convergence. That report says that integrating arbitrary Hahn-valued functions
+would need further joint support and integrability conditions and asserts
+nothing about it. Theorem~\ref{fsp:thm:integrationfailure} shows that a common
+well-ordered support with bounded integrable coefficients is not enough at
+uncountable support rank, and the paragraph after it shows that a countable
+support is enough for positivity. Its mechanism, an uncountable union of null
+sets, is reminiscent of the null-ideal criterion, Theorem~19.2 there
+(\nolinkurl{meas:thm:nullideal}), in which positivity of a coefficientwise
+measure is decided on the null ideal common to all earlier coefficients, and
+this ideal is that of one control measure when the predecessor set is countable.
+The two results concern different objects (integrals of Hahn-valued functions
+against an ordinary measure here, event masses of a Hahn-valued measure there),
+and neither is derived from the other.
+\item \emph{Open questions.} Question~33.9 there (\nolinkurl{meas:q:markov}),
+dependence governed by a transition kernel, stays open: Section~\ref{fsp:sec:processes}
+has finite horizons only, and the latent model of Section~\ref{fsp:sec:latent} is an
+exchangeable mixture of two product laws.
+\end{enumerate}
+
+\paragraph{Foundations.}
+The strong summability used here is (10.1) of the foundations report
+\cite{repofound} (\nolinkurl{found:eq:summability}), and the positive-support
+Neumann lemma is its Section~10.2 (\nolinkurl{found:sub:positivesupport}).
+Proposition~\ref{fsp:prop:fine} is clause~(2) of Theorem~12.1 there
+(\nolinkurl{found:thm:discrete}), with the same proof; that theorem also makes
+set-sized subsets discrete and small-index Cauchy nets eventually constant.
+The distinctions drawn in Section~\ref{fsp:sec:infinity} between the full fine
+topology, the intrinsic topology of a subfield and coefficientwise real
+convergence are those of its Section~12 (\nolinkurl{found:sec:topology}) and of
+the topology table in \nolinkurl{docs/NOTATION.md}.
+
+\paragraph{Markov generators at every scale.}
+The Markov report \cite{repomarkov} studies the normalized resolvent
+$R_L(s)=s(sI+L)^{-1}$ of a finite rate matrix over a Hahn field with divisible
+value group. Its non-claim~(N1) (Section~1.4 there,
+\nolinkurl{markov:sec:nonclaims}) excludes path measures, sample paths and
+surreal-valued probabilities on path space. Section~\ref{fsp:sec:processes}
+builds finite-horizon path weights from any finite stochastic matrix over $K$.
+The following link is an observation of the placement, not of either source.
+By Proposition~3.1 there (\nolinkurl{markov:prop:forest}), for positive $s$ the
+matrix $R_L(s)$ is entrywise positive and row stochastic with limited entries.
+So it may serve as $T$ in Section~\ref{fsp:sec:processes}, and there the path
+shadow is the ordinary finite-horizon chain whose transition matrix is the
+residue matrix $K_\alpha(c)$ of $R_L(ct^\alpha)$, which that report calls the
+shadow at scale $\alpha$. This gives laws of finite paths only; neither report
+constructs a law on infinite paths. The relative-stability Theorem~8.1 there
+(\nolinkurl{markov:thm:stability}) concerns resolvent entries under relative rate
+errors, and Theorem~\ref{fsp:thm:stability} concerns conditional probabilities
+under absolute or valuation-controlled errors; they are statements about
+different maps.
+
+\paragraph{Surreal scalars and spacetime.}
+The probability subsection of the physics report \cite{repophys}
+(Section~15.4 there, \nolinkurl{phys:sub:probability}) observes that equal
+positive infinitesimal weights on infinitely many outcomes are not strongly
+summable (Example~4.3 there, \nolinkurl{phys:ex:summable}); that a finite
+independent-trial model with a fixed ordinary number of trials keeps an
+infinitesimal event infinitesimally likely; and that non-Archimedean theories
+\cite{bhw} and Loeb's construction \cite{loeb} need additional structure and an
+account of how records relate to field-valued weights. Section~\ref{fsp:sec:infinity}
+repeats the first point, \eqref{fsp:eq:hitting} is the second, the
+fine-ultrafilter law of Section~\ref{fsp:sec:extension} gives equal positive
+singleton masses by snapshot addition, not by a strong sum, and
+Section~\ref{fsp:sec:bridges} states what Loeb's construction needs. Like that
+report, this one gives no physical interpretation of field-valued probabilities.
+
+\subsection{Words and symbols used differently elsewhere in the collection}
+\label{fsp:sec:words}
+Several words and letters of this report mean other things elsewhere. Each has
+one meaning here.
+\begin{itemize}
+\item \emph{Additivity.} \emph{Finite additivity} is Definition~\ref{fsp:def:probability}.
+\emph{Strong} additivity is the rule of Section~\ref{fsp:sec:infinity}, and
+\emph{coefficientwise} additivity is Definition~\ref{fsp:def:coefficientwise}; both
+are the measures report's classes. The snapshot addition of an ultrapower
+(Section~\ref{fsp:sec:extension}) and Loeb's countable additivity of a real
+standard part (Section~\ref{fsp:sec:bridges}) are further, different rules.
+\emph{Strong} always refers to strong Hahn summability; the classical strong law
+of large numbers is always written in full.
+\item \emph{Regular} is Brickhill and Horsten's regularity: every nonempty event
+of the algebra has positive probability. It is not Radon regularity, and the
+measures report gives the word no meaning of its own.
+\item \emph{Limited} means bounded in magnitude by an ordinary integer, which
+\nolinkurl{docs/NOTATION.md} calls \emph{finite}. Here \emph{finite} counts
+things (finitely many states, terms, trials or tickets); an ``ordinary finite
+$n$'' is a standard natural number, and the ``finite surreal'' of
+Section~\ref{fsp:sec:position} is a limited one.
+\item \emph{Shadow.} $P_0=\st P$, the conditional shadow $C(A\mid B)$ and the
+path shadow are standard parts, $\st$ being the collection's scalar standard
+part. The Markov report's shadow is the same operation applied to a resolvent
+matrix. No standard-part topology is used.
+\item \emph{Fine.} The fine topology is the collection's full surreal fine
+topology. A \emph{fine} ultrafilter (Sections~\ref{fsp:sub:ultrafilter} and~\ref{fsp:sub:nonunique}) is one containing
+every cone $\{s:F\subseteq s\}$; that sense, from the non-Archimedean probability
+literature, has nothing to do with the topology.
+\item \emph{Hierarchy} means a normalized hierarchy of ordinary probability laws
+(Theorem~\ref{fsp:thm:hierarchy}), not the Markov report's hierarchy of
+stochastic projections.
+\item \emph{Moment.} The fourth moment $\E S_n^4$ in the proof of
+Theorem~\ref{fsp:thm:faircoin} is the expectation of a power of an ordinary random
+variable, which the measures report calls a fourth-power expectation; no moment
+problem appears here.
+\item \emph{Positive}, for a Hahn series, means a positive leading coefficient.
+A positive coefficientwise probability is nonnegative on every event, as in the
+measures report; positivity of every event is regularity.
+\item \emph{Local letters.} $H$ is an entropy $H(p)$ (Section~\ref{fsp:sec:information}),
+a hypothesis with data $D$ in \eqref{fsp:eq:logitbayes}, a hyperinteger sample size
+(Sections~\ref{fsp:sub:ultrafilter}, \ref{fsp:sub:nonunique} and~\ref{fsp:sub:poisson}) and the latent label of Section~\ref{fsp:sec:latent}.
+$E$ is an exponential--logarithmic workspace, and $E_i\in E$ are energies in
+Theorem~\ref{fsp:thm:gibbs}; the blackboard $\E$ is expectation. $\lambda_\gamma$
+is $-\log t^\gamma$, while $\lambda$ alone is a precision in
+Theorem~\ref{fsp:thm:stability}, Lebesgue probability in
+Example~\ref{fsp:ex:diffuse} and a Poisson parameter in
+Section~\ref{fsp:sec:bridges}. $D$ is a relative entropy $D(p\Vert q)$, a leading
+constant in Theorem~\ref{fsp:thm:scalebayes} and a density $D(y)$ in
+\eqref{fsp:eq:kerneldensity}. $T$ is a stochastic matrix in
+Theorem~\ref{fsp:thm:dataprocessing} and Section~\ref{fsp:sub:paths} and a stopping time in
+Section~\ref{fsp:sub:stopping}. $K$ is the scalar field, $K_j$ are conditional kernels and $K_n$ are
+counts in Section~\ref{fsp:sec:latent}. $C(A\mid B)$ is a conditional shadow and
+$C$ a real constant in Section~\ref{fsp:sec:bayes}. In examples
+$t=\omega^{-1}$.
+\item The valuation is $v(x)=\min\supp x$, $\lc$ is the leading coefficient, and
+the surreal embedding is $t^\gamma\mapsto\omega^{-\gamma}$, as elsewhere in the
+collection. $\exp$ and $\log$ are the canonical ordered surreal exponential and
+its inverse, never a global surcomplex exponential.
+\end{itemize}
+
+\subsection{Provenance of this report}\label{fsp:sec:provenance}
+This report is built from one manuscript, \emph{Surreal Probability and
+Log-Odds: A multiscale theory of belief, information, and infinite sampling},
+dated 22 September 2026. It arrived as the archive
+\nolinkurl{surreal_probability.zip}, number~05 of nine archives committed on
+arrival at \texttt{2765c8f}. The archive held the LaTeX source
+\texttt{surreal\_probability.tex}, its PDF, a README, the research audit
+\texttt{RESEARCH\_AUDIT.md}, the program \texttt{verify.py} with its recorded
+output \texttt{verification.json}, a build record \texttt{BUILD\_VALIDATION.json}
+and a build script. It was placed at commit \texttt{5fe7f8d}. Its repository
+comparison is pinned to \texttt{\pin} (Section~\ref{fsp:sub:repository}).
+
+There is no second source, so there was no merge and no choice between sources.
+Every theorem, proof, example and disclaimer of the manuscript is kept. The
+manuscript continues the measures report but answers no question it names, so
+it was placed as a report of its own rather than as a part of that one.
+
+Placement changed the following and nothing else.
+\begin{enumerate}[label=(\alph*)]
+\item The source was renamed \texttt{article.tex}. The program and build script
+were moved to \texttt{code/}, the two JSON records to \texttt{data/}; they and
+\texttt{RESEARCH\_AUDIT.md} are byte-identical to the delivered files. The
+delivered PDF and README are not shipped.
+\item All 100 labels of the manuscript received the prefix \texttt{fsp:}, and
+every reference was updated. Fourteen labels were added, for the new
+subsections and for the definition, subsections and appendix that the new text
+cites.
+\item Sections~\ref{fsp:sec:nonclaims}--\ref{fsp:sec:provenance}, the paragraph
+``Since the pin'' in Section~\ref{fsp:sub:repository} and pointer sentences in
+Sections~\ref{fsp:sec:infinity} and~\ref{fsp:sec:iid} were added. They contain no
+numbered statement or equation, so every theorem, equation and section number of
+the manuscript is unchanged. The title-page status paragraph now states the draft
+status and the placement.
+\item To keep one meaning of \emph{strong}, the title of
+Example~\ref{fsp:ex:geometric} (``A regular strong law'') now reads ``A regular
+strong Hahn probability'', and the four mentions of classical strong laws
+(Sections~\ref{fsp:sec:latent} and~\ref{fsp:sub:notasserted}, Appendix~\ref{fsp:app:ledger}) now read
+``strong law(s) of large numbers''.
+\item Section~\ref{fsp:sub:verifier} and Appendix~\ref{fsp:app:build} now describe the files as placed
+and record a rerun of the checks; the bibliography entries of the repository
+reports carry a placement note, and an entry for the physics report was added.
+\end{enumerate}
+Placement left the mathematics unchanged.
+
 \section{Scalars, size, and the two meanings of exponentiation}
-\label{sec:scalars}
+\label{fsp:sec:scalars}
 
 \subsection{Set-sized workspaces inside the surreals}
 
@@ -241,7 +642,7 @@ universe formulation all sizes are interpreted relative to the chosen
 universes. No probability distribution over the entire proper class $\No$
 is constructed.
 
-\begin{lemma}[Local exponential workspace]\label{lem:workspace}
+\begin{lemma}[Local exponential workspace]\label{fsp:lem:workspace}
 Every set $S\subseteq\No$ is contained in a set-sized subfield $E$ containing
 $\R$ and closed under canonical exponential and positive logarithm.
 \end{lemma}
@@ -268,7 +669,7 @@ unique real standard part, denoted $\st x$, with $x\simeq\st x$.
 One proof takes the supremum in $\R$ of the real numbers below $x$; the
 Dedekind completeness used here belongs to $\R$, not to $\No$.
 
-\begin{proposition}[Residue algebra]\label{prop:st}
+\begin{proposition}[Residue algebra]\label{fsp:prop:st}
 On limited elements, standard part is an order-preserving ring homomorphism.
 If $y$ is limited and $\st y\ne0$, then
 $\st(x/y)=\st x/\st y$. If $x>0$ is limited, it is infinitesimal exactly
@@ -307,7 +708,7 @@ For $x\ne0$ set
 Here $+\infty$ is a bookkeeping symbol for the valuation, not a surreal.
 The order of a nonzero series is the sign of its leading coefficient.
 For positive $x,y$,
-\begin{equation}\label{eq:positiveval}
+\begin{equation}\label{fsp:eq:positiveval}
  v(xy)=v(x)+v(y),\qquad
  v(x+y)=\min\{v(x),v(y)\}.
 \end{equation}
@@ -335,12 +736,12 @@ is a different operation. In particular, one must not substitute
 \end{equation*}
 without an additional theorem on the exponents in question.
 A safe log-scale notation is
-\begin{equation}\label{eq:lambda}
+\begin{equation}\label{fsp:eq:lambda}
  \lambda_\gamma=-\log(t^\gamma).
 \end{equation}
 It satisfies $\lambda_{\gamma+\delta}=\lambda_\gamma+\lambda_\delta$ and is
 strictly increasing. Thus, for $c>0$ real and infinitesimal $u$,
-\begin{equation}\label{eq:logleading}
+\begin{equation}\label{fsp:eq:logleading}
  \log\bigl(c t^\gamma(1+u)\bigr)
  =\log c-\lambda_\gamma+\log(1+u).
 \end{equation}
@@ -348,7 +749,7 @@ Integer powers of a fixed $t$ are ordinary field powers and cause no such
 ambiguity.
 
 We use the scalar inequalities
-\begin{equation}\label{eq:logineq}
+\begin{equation}\label{fsp:eq:logineq}
  \exp x\ge1+x,\qquad \log y\le y-1\quad(y>0),
 \end{equation}
 with equality only at $x=0$ and $y=1$, respectively. These follow from the
@@ -360,11 +761,11 @@ arbitrary sample spaces, countable sequences, measurable functions, or
 integration operations. The distinction will matter repeatedly.
 
 \section{The finite probability core}
-\label{sec:finite}
+\label{fsp:sec:finite}
 
 \subsection{Events, weights, and random variables}
 
-\begin{definition}
+\begin{definition}\label{fsp:def:probability}
 A $K$-probability on an algebra $\A$ of subsets of a nonempty set $\Omega$
 is a function $P:\A\to K$ such that $P(\Omega)=1$, $P(A)\ge0$, and
 \begin{equation}
@@ -384,7 +785,7 @@ weights by infinitesimal ones.
 
 A finite-range $K$-valued random variable is a function constant on the
 members of a finite measurable partition. Its expectation is
-\begin{equation}\label{eq:expectation}
+\begin{equation}\label{fsp:eq:expectation}
  \E_P X=\sum_j x_jP(A_j),\qquad X=\sum_jx_j\ind_{A_j}.
 \end{equation}
 Refining partitions proves that this definition is independent of the
@@ -405,12 +806,12 @@ to a missing infinite extension theorem.
 \subsection{Finite inequalities}
 
 \begin{theorem}[Variance, Cauchy--Schwarz, and tail bounds]
-\label{thm:finitebounds}
+\label{fsp:thm:finitebounds}
 For finite-range variables over $K$,
 \begin{align}
  \Var(X)&=\E(X-\E X)^2\ge0,\\
- (\E XY)^2&\le\E X^2\,\E Y^2,\label{eq:cs}\\
- P(X\ge a)&\le\E X/a\quad(X\ge0,\ a>0),\label{eq:markov}\\
+ (\E XY)^2&\le\E X^2\,\E Y^2,\label{fsp:eq:cs}\\
+ P(X\ge a)&\le\E X/a\quad(X\ge0,\ a>0),\label{fsp:eq:markov}\\
  P(|X-\E X|\ge a)&\le\Var(X)/a^2\quad(a>0).
 \end{align}
 The thresholds and variable values may be surreal.
@@ -420,8 +821,8 @@ Positivity of squares gives the variance assertion. If $\E Y^2=0$,
 each positive-mass partition cell has $Y=0$, so $\E XY=0$.
 Otherwise substitute $c=\E XY/\E Y^2$ in
 $0\le\E(X-cY)^2$ and multiply by $\E Y^2>0$ to obtain
-\eqref{eq:cs}. The pointwise inequality
-$a\ind_{\{X\ge a\}}\le X$ proves \eqref{eq:markov}.
+\eqref{fsp:eq:cs}. The pointwise inequality
+$a\ind_{\{X\ge a\}}\le X$ proves \eqref{fsp:eq:markov}.
 Apply it to $(X-\E X)^2$ for the last claim.
 \end{proof}
 
@@ -435,7 +836,7 @@ theorem.
 \subsection{Conditioning and finite conditional expectation}
 
 Whenever $P(B)>0$, define
-\begin{equation}\label{eq:condition}
+\begin{equation}\label{fsp:eq:condition}
  P(A\mid B)=\frac{P(A\cap B)}{P(B)}.
 \end{equation}
 An infinitesimal denominator is nonzero and poses no algebraic problem.
@@ -451,7 +852,7 @@ probability system on those cells.
 For a finite subalgebra $\mathcal G$ with positive-mass atoms, set
 $\E[X\mid\mathcal G]$ on an atom $B$ equal to
 $\E[X\ind_B]/P(B)$. Direct finite summation gives
-\begin{equation}\label{eq:tower}
+\begin{equation}\label{fsp:eq:tower}
  \E\bigl[\E[X\mid\mathcal G]\bigr]=\E X,\qquad
  \E\bigl[\E[X\mid\mathcal G]\mid\mathcal H\bigr]
  =\E[X\mid\mathcal H]\quad(\mathcal H\subseteq\mathcal G).
@@ -485,20 +886,20 @@ interpretations of infinite stakes are a separate modeling issue; finite
 coherence alone does not require such stakes to be practically available.
 
 \section{Conditional shadows and finite scale hierarchies}
-\label{sec:shadows}
+\label{fsp:sec:shadows}
 
 \subsection{The unconditional shadow is not enough}
 
 The function $P_0(A)=\st P(A)$ is a real finitely additive probability.
-For $P_0(B)>0$, Proposition~\ref{prop:st} gives
-\begin{equation}\label{eq:stcondition}
+For $P_0(B)>0$, Proposition~\ref{fsp:prop:st} gives
+\begin{equation}\label{fsp:eq:stcondition}
  \st P(A\mid B)=P_0(A\mid B).
 \end{equation}
 For $P_0(B)=0<P(B)$ the right-hand side is undefined, and no replacement
 can be inferred from $P_0$ alone.
 
 \begin{example}[Identical shadows, different rare-event answers]
-\label{ex:shadowloss}
+\label{fsp:ex:shadowloss}
 On three states let
 \begin{equation}
  p=(1-2t,t,t),\qquad q=(1-4t,t,3t),\qquad B=\{2,3\},
@@ -510,12 +911,12 @@ Their total variation distance is only $2t$.
 \end{example}
 
 For a regular probability there is a richer real object:
-\begin{equation}\label{eq:conditionalshadow}
+\begin{equation}\label{fsp:eq:conditionalshadow}
  C(A\mid B)=\st\frac{P(A\cap B)}{P(B)},\qquad B\ne\varnothing.
 \end{equation}
 For each fixed $B$ it is a real finitely additive probability concentrated
 on $B$. Whenever $D\ne\varnothing$ and $B\cap D\ne\varnothing$,
-\begin{equation}\label{eq:popperproduct}
+\begin{equation}\label{fsp:eq:popperproduct}
  C(A\cap B\mid D)=C(A\mid B\cap D)C(B\mid D).
 \end{equation}
 Indeed the identity holds before taking standard part, and both factors
@@ -523,19 +924,19 @@ are limited. This remains true if $C(B\mid D)=0$. Such conditional
 systems are closely related to the Popper-function literature
 \cite{halpern,brickhill}; no convention for conditioning on the empty
 set is needed here. Importantly, the existence of all ratios in
-\eqref{eq:conditionalshadow} is supplied by regularity, not by a
+\eqref{fsp:eq:conditionalshadow} is supplied by regularity, not by a
 purported universal rule for $0/0$.
 
 \subsection{Leading atoms determine every conditional real shadow}
 
-\begin{theorem}[Conditional leading-scale skeleton]\label{thm:skeleton}
+\begin{theorem}[Conditional leading-scale skeleton]\label{fsp:thm:skeleton}
 Let a finite regular Hahn probability have atom weights
 \begin{equation}
  p_i=c_i t^{a_i}(1+\eta_i),\qquad c_i>0,\quad v(\eta_i)>0,
 \end{equation}
 where a zero error is allowed. For a nonempty $B$, put
 $a(B)=\min_{i\in B}a_i$. Then
-\begin{equation}\label{eq:skeleton}
+\begin{equation}\label{fsp:eq:skeleton}
  \st P(A\mid B)
  =\frac{\sum_{i\in A\cap B,\ a_i=a(B)}c_i}
         {\sum_{i\in B,\ a_i=a(B)}c_i}.
@@ -545,11 +946,11 @@ partition of atoms into equal-$a_i$ groups and their positive leading
 coefficients, up to a common positive rescaling within each group.
 \end{theorem}
 \begin{proof}
-Divide numerator and denominator of \eqref{eq:condition} by $t^{a(B)}$.
+Divide numerator and denominator of \eqref{fsp:eq:condition} by $t^{a(B)}$.
 The denominator has positive real standard part
 $\sum_{i\in B,a_i=a(B)}c_i$. Terms with larger exponent are
 infinitesimal, and terms with minimal exponent have standard part $c_i$.
-Proposition~\ref{prop:st} now applies. Common rescaling of the coefficients
+Proposition~\ref{fsp:prop:st} now applies. Common rescaling of the coefficients
 of the first group meeting $B$ cancels in the quotient.
 \end{proof}
 
@@ -565,7 +966,7 @@ group.
 
 \subsection{A finite compression that retains real-act comparisons}
 
-\begin{theorem}[Signed-row lexicographic compression]\label{thm:compression}
+\begin{theorem}[Signed-row lexicographic compression]\label{fsp:thm:compression}
 Let $p=(p_1,\ldots,p_n)$ be a finite Hahn probability. There are
 $r\le n$ real row vectors $u_1,\ldots,u_r$ such that for every
 $d\in\R^n$ the sign of $\sum_i p_i d_i$ is the sign of the first
@@ -602,13 +1003,13 @@ new exponents and cancellations. It is a finite-dimensional statement
 with an explicit domain of payoffs.
 
 \section{Bayesian inference at every scale}
-\label{sec:bayes}
+\label{fsp:sec:bayes}
 
 \subsection{Exact posterior algebra and scale selection}
 
 For finitely many hypotheses with positive prior probabilities $p_i$ and
 likelihoods $\ell_i\ge0$, not all zero, define
-\begin{equation}\label{eq:bayes}
+\begin{equation}\label{fsp:eq:bayes}
  q_i=\frac{p_i\ell_i}{Z},\qquad Z=\sum_jp_j\ell_j.
 \end{equation}
 If the likelihood is an event probability then $\ell_i\le1$; if it is a
@@ -618,7 +1019,7 @@ unchanged. Bayes' formula is exact for either interpretation when the
 likelihood is part of a specified model.
 
 \begin{theorem}[Minimum-plus Bayes with coefficient tie breaking]
-\label{thm:scalebayes}
+\label{fsp:thm:scalebayes}
 Suppose $p_i,\ell_i>0$ lie in a Hahn field. Write
 $a_i=v(p_i)$, $b_i=v(\ell_i)$, $c_i=\lc(p_i)$,
 $d_i=\lc(\ell_i)$, and
@@ -626,7 +1027,7 @@ $d_i=\lc(\ell_i)$, and
  m=\min_i(a_i+b_i),\qquad D=\sum_{i:a_i+b_i=m}c_id_i.
 \end{equation}
 Then
-\begin{equation}\label{eq:scalebayes}
+\begin{equation}\label{fsp:eq:scalebayes}
  v(q_i)=a_i+b_i-m,\qquad \lc(q_i)=c_id_i/D.
 \end{equation}
 In particular, the standard posterior is supported exactly on the
@@ -635,9 +1036,9 @@ Zero likelihoods may be omitted and yield zero posterior mass.
 \end{theorem}
 \begin{proof}
 The product $p_i\ell_i$ has valuation $a_i+b_i$ and leading coefficient
-$c_id_i>0$. Equation~\eqref{eq:positiveval} shows that $Z$ has leading
+$c_id_i>0$. Equation~\eqref{fsp:eq:positiveval} shows that $Z$ has leading
 term $Dt^m$. Dividing each numerator by this leading term proves
-\eqref{eq:scalebayes}. Nonminimal terms then have positive valuation,
+\eqref{fsp:eq:scalebayes}. Nonminimal terms then have positive valuation,
 while minimal terms have valuation zero and the displayed real residue.
 \end{proof}
 
@@ -649,10 +1050,10 @@ information needed when ranks tie. It is related to ranking models
 group; their addition is not automatically ordinal addition.
 
 \begin{example}[Rare evidence reverses the dominant hypothesis]
-\label{ex:bayes}
-Take the prior \eqref{eq:intro} and likelihoods $(t^3,t,1)$. The products
+\label{fsp:ex:bayes}
+Take the prior \eqref{fsp:eq:intro} and likelihoods $(t^3,t,1)$. The products
 are proportional to $(t^3,t^2,t^2)$, so
-\begin{equation}\label{eq:bayesexample}
+\begin{equation}\label{fsp:eq:bayesexample}
  q=\left(\frac{t}{2+t},\frac1{2+t},\frac1{2+t}\right),
  \qquad \st q=(0,1/2,1/2).
 \end{equation}
@@ -679,14 +1080,14 @@ The equality follows by taking the subset of positive differences and
 using $\sum_i(p_i-q_i)=0$; it is valid over any ordered field.
 
 \begin{theorem}[Absolute and valuation-sensitive conditioning stability]
-\label{thm:stability}
+\label{fsp:thm:stability}
 Suppose $P(B)\ge b>\delta$. Then $Q(B)>0$ and for every $A$,
-\begin{equation}\label{eq:conditionalbound}
+\begin{equation}\label{fsp:eq:conditionalbound}
  |P(A\mid B)-Q(A\mid B)|\le\frac{2\delta}{b}.
 \end{equation}
 For Hahn probabilities, let $\beta=v(P(B))$ and $\lambda\ge0$.
 If
-\begin{equation}\label{eq:precision}
+\begin{equation}\label{fsp:eq:precision}
  v(p_i-q_i)>\beta+\lambda\quad\text{for every atom }i,
 \end{equation}
 then $Q(B)$ has the same leading term as $P(B)$ and
@@ -703,9 +1104,9 @@ Then
  \le\frac{|x-y|}{d}+\frac{y|e-d|}{de}
  \le\frac{2\delta}{d},
 \end{equation}
-since $0\le y\le e$. This implies \eqref{eq:conditionalbound}.
+since $0\le y\le e$. This implies \eqref{fsp:eq:conditionalbound}.
 For the valuation assertion write $e=d+\Delta_d$ and
-$y=x+\Delta_x$. Finite sums in \eqref{eq:precision} give
+$y=x+\Delta_x$. Finite sums in \eqref{fsp:eq:precision} give
 $v(\Delta_d),v(\Delta_x)>\beta+\lambda$.
 Thus $v(e)=v(d)=\beta$ and $e$ has the same leading coefficient.
 Also $0\le x\le d$ implies $v(x)\ge\beta$ when $x\ne0$.
@@ -717,7 +1118,7 @@ $2\beta$. Division proves the assertion, including a zero numerator.
 Consequently an approximation suitable for unconditional probabilities
 may be unusable after rare conditioning. To preserve a conditional answer
 through scale $\lambda$, one needs input errors beyond the event scale
-$\beta+\lambda$. Example~\ref{ex:shadowloss} demonstrates the qualitative
+$\beta+\lambda$. Example~\ref{fsp:ex:shadowloss} demonstrates the qualitative
 issue: an infinitesimal unconditional discrepancy can become a real
 conditional discrepancy.
 
@@ -735,13 +1136,13 @@ law on streams and a chosen limiting operation; it does not follow from
 this finite observation.
 
 \section{Surreal logits, log-scores, and softmax geometry}
-\label{sec:logits}
+\label{fsp:sec:logits}
 
 \subsection{Binary probabilities and exact log-odds}
 
 \begin{definition}
 In an exponential/logarithmic workspace $E$, define
-\begin{equation}\label{eq:logit}
+\begin{equation}\label{fsp:eq:logit}
  \sigma(z)=\frac{1}{1+\exp(-z)},\qquad
  \logit(p)=\log\frac{p}{1-p}\quad(0<p<1).
 \end{equation}
@@ -751,7 +1152,7 @@ In an exponential/logarithmic workspace $E$, define
 The maps $\sigma:E\to(0,1)_E$ and $\logit:(0,1)_E\to E$ are inverse,
 strictly increasing bijections, and $\sigma(-z)=1-\sigma(z)$.
 For binary hypotheses and positive likelihoods,
-\begin{equation}\label{eq:logitbayes}
+\begin{equation}\label{fsp:eq:logitbayes}
  \logit P(H\mid D)=\logit P(H)
  +\log\frac{P(D\mid H)}{P(D\mid H^c)}.
 \end{equation}
@@ -761,7 +1162,7 @@ For every $z$, $\sigma(z)/(1-\sigma(z))=\exp z$.
 Conversely, substituting $p/(1-p)$ for $\exp z$ gives $\sigma(z)=p$.
 Monotonicity and the complement identity follow from positivity and
 monotonicity of $\exp$. Posterior odds are prior odds times the likelihood
-ratio, and $\log(xy)=\log x+\log y$ proves \eqref{eq:logitbayes}.
+ratio, and $\log(xy)=\log x+\log y$ proves \eqref{fsp:eq:logitbayes}.
 \end{proof}
 
 Every actual surreal $z$, including $\omega$ or $-\omega^2$, gives a
@@ -772,7 +1173,7 @@ from being confused with a logically impossible alternative.
 
 For positive infinite $L$ put $u=\exp(-L)$, which is a positive
 infinitesimal. Then
-\begin{equation}\label{eq:logittail}
+\begin{equation}\label{fsp:eq:logittail}
  \sigma(-L)=\frac{u}{1+u}=u-u^2+u^3-\cdots,\qquad
  \sigma(L)=1-u+u^2-u^3+\cdots.
 \end{equation}
@@ -786,7 +1187,7 @@ gives
 \end{equation}
 Here $O(\eta^2)$ means bounded by a real constant times $|\eta|^2$ in this
 local expansion. For $t=\omega^{-1}$,
-\begin{equation}\label{eq:logitt}
+\begin{equation}\label{fsp:eq:logitt}
  \logit(t)=\log t-\log(1-t)
  =-\log\omega+t+\frac{t^2}{2}+\frac{t^3}{3}+\cdots.
 \end{equation}
@@ -798,7 +1199,7 @@ smaller probability of order $\exp(-\omega)$.
 
 Logits are coordinates of probabilities, not a replacement additive
 measure. If independent events have logits $a,b$, then
-\begin{equation}\label{eq:andlogit}
+\begin{equation}\label{fsp:eq:andlogit}
  \logit P(A\cap B)=a+b-\log(1+e^a+e^b).
 \end{equation}
 Indeed, setting $u=e^a$, $v=e^b$ gives
@@ -816,7 +1217,7 @@ not remove that requirement.
 \subsection{Softmax, gauge invariance, and stable normalization}
 
 For an ordinary finite number of scores $z_1,\ldots,z_n\in E$, define
-\begin{equation}\label{eq:softmax}
+\begin{equation}\label{fsp:eq:softmax}
  \LSE(z)=\log\sum_{j=1}^n e^{z_j},\qquad
  p_i=e^{z_i-\LSE(z)}.
 \end{equation}
@@ -829,14 +1230,14 @@ scores does not change $p$. For $n\ge2$, the one-against-the-rest logit is
 not the raw score $z_i$ in general.
 
 \begin{proposition}[Normalization and perturbation bounds]
-\label{prop:softbound}
+\label{fsp:prop:softbound}
 Let $M=\max_i z_i$. Then
 \begin{equation}
  M\le\LSE(z)\le M+\log n.
 \end{equation}
 If $p$ and $q$ are the softmax laws of $z$ and $w$, and
 $|z_i-w_i|\le\delta$ for every $i$, where $\delta\ge0$, then
-\begin{equation}\label{eq:softbound}
+\begin{equation}\label{fsp:eq:softbound}
  e^{-2\delta}p_i\le q_i\le e^{2\delta}p_i.
 \end{equation}
 \end{proposition}
@@ -845,7 +1246,7 @@ Factor $e^M$ from the normalizing sum. The remaining positive sum lies
 between $1$ and $n$. For the perturbation claim,
 $e^{-\delta}e^{z_i}\le e^{w_i}\le e^\delta e^{z_i}$, and summing gives
 the same bounds on the two normalizers. Dividing the bounds proves
-\eqref{eq:softbound}.
+\eqref{fsp:eq:softbound}.
 \end{proof}
 
 Infinitesimal score errors therefore produce infinitesimal relative errors
@@ -858,7 +1259,7 @@ score.
 
 \subsection{Hierarchical scores and lexicographic concentration}
 
-\begin{theorem}[Finite multiscale softmax limit]\label{thm:multisoft}
+\begin{theorem}[Finite multiscale softmax limit]\label{fsp:thm:multisoft}
 Let $\Omega_1,\ldots,\Omega_m$ be positive surreals with
 $\Omega_m$ positive infinite and
 $\Omega_{r+1}/\Omega_r$ infinitesimal for $r<m$. For finitely many states
@@ -869,7 +1270,7 @@ suppose
 \end{equation}
 Let $I_*$ be the states whose real tuple
 $(a_{i1},\ldots,a_{im})$ is lexicographically maximal. Then
-\begin{equation}\label{eq:multisoft}
+\begin{equation}\label{fsp:eq:multisoft}
  \st p_i=
  \begin{cases}
  e^{b_i}/\sum_{j\in I_*}e^{b_j},&i\in I_*,\\
@@ -893,17 +1294,17 @@ softmax resolving the final ties and smaller terms retaining further
 information. For example, $\omega^2 a_i+\omega b_i+c_i$ first maximizes
 $a_i$, then $b_i$, then uses $c_i$ as a finite log-score. Here $\omega^2$
 is just the square of $\omega$, so the exponentiation warning in
-Section~\ref{sec:scalars} is not implicated. The standard part describes
+Section~\ref{fsp:sec:scalars} is not implicated. The standard part describes
 concentration; the exact law still gives positive mass to every state.
 
 \section{Finite information theory and proper scoring}
-\label{sec:information}
+\label{fsp:sec:information}
 
 \subsection{Entropy and relative entropy}
 
 All sums in this section have an ordinary finite number of terms and use
 canonical logarithms. For probability vectors $p,q$ define
-\begin{equation}\label{eq:entropy}
+\begin{equation}\label{fsp:eq:entropy}
  H(p)=-\sum_{i:p_i>0}p_i\log p_i,\qquad
  D(p\Vert q)=\sum_{i:p_i>0}p_i\log\frac{p_i}{q_i},
 \end{equation}
@@ -914,14 +1315,14 @@ The convention $0\log0=0$ refers to entropy, not to an evaluation of
 $\log0$.
 
 \begin{theorem}[Finite Gibbs inequality and entropy bounds]
-\label{thm:kl}
-Under the support condition in \eqref{eq:entropy},
+\label{fsp:thm:kl}
+Under the support condition in \eqref{fsp:eq:entropy},
 \begin{equation}
  D(p\Vert q)\ge0,
  \qquad D(p\Vert q)=0\ \Longleftrightarrow\ p=q.
 \end{equation}
 For $n$ states,
-\begin{equation}\label{eq:entropybound}
+\begin{equation}\label{fsp:eq:entropybound}
  0\le H(p)\le\log n,
  \qquad \st H(p)=H(\st p).
 \end{equation}
@@ -953,7 +1354,7 @@ zero coordinates.
 An entropy on a fixed finite alphabet is always limited. It nevertheless
 retains infinitesimal information discarded by its standard part. For a
 rare Bernoulli success of probability $t$,
-\begin{equation}\label{eq:rareentropy}
+\begin{equation}\label{fsp:eq:rareentropy}
  H(t,1-t)=t\log(1/t)+t-\frac{t^2}{2}+O(t^3).
 \end{equation}
 The log factor is essential: entropy need not remain in the original
@@ -971,7 +1372,7 @@ with $p^Y_j>0$. Expanding $\log(p^Y_jp^{X\mid j}_i)$ and summing yields
 \end{equation}
 where zero-mass cells contribute zero. The same decomposition for two
 joint laws satisfying the relative-entropy support condition gives
-\begin{equation}\label{eq:klchain}
+\begin{equation}\label{fsp:eq:klchain}
  D(p_{XY}\Vert q_{XY})
  =D(p_Y\Vert q_Y)
  +\sum_{j:p^Y_j>0}p^Y_j
@@ -981,7 +1382,7 @@ To verify it, replace every logarithm of a joint ratio by the logarithm
 of the marginal ratio plus that of the conditional ratio. All terms
 are finite sums, so regrouping requires no additional hypothesis.
 
-\begin{theorem}[Finite data processing]\label{thm:dataprocessing}
+\begin{theorem}[Finite data processing]\label{fsp:thm:dataprocessing}
 Let $T_{ij}\ge0$ be a finite stochastic matrix, $\sum_jT_{ij}=1$.
 For $p,q$ satisfying the support condition,
 \begin{equation}
@@ -994,7 +1395,7 @@ the two input conditional laws given $j$ coincide.
 Form the joint laws $P_{ij}=p_iT_{ij}$ and $Q_{ij}=q_iT_{ij}$.
 On each positive $P_{ij}$ their ratio is $p_i/q_i$; summing over $j$
 gives $D(P\Vert Q)=D(p\Vert q)$. Their output marginals are $pT,qT$.
-Equation~\eqref{eq:klchain} and Theorem~\ref{thm:kl} give the inequality.
+Equation~\eqref{fsp:eq:klchain} and Theorem~\ref{fsp:thm:kl} give the inequality.
 The difference is a finite sum with positive weights, so it vanishes
 exactly when every indicated conditional divergence vanishes.
 \end{proof}
@@ -1009,7 +1410,7 @@ horizon and is not supplied by these finite formulas.
 \subsection{Identical real shadows can hide infinite divergence}
 
 \begin{example}[An information scale invisible to standard probability]
-\label{ex:kl}
+\label{fsp:ex:kl}
 Let $t=\omega^{-1}$ and $u=\exp(-1/t^2)$. Consider
 \begin{equation}
  p=(t,1-t),\qquad q=(u,1-u).
@@ -1018,15 +1419,15 @@ Both standard parts equal $(0,1)$, but
 \begin{align}
  D(p\Vert q)
  &=\frac1t+t\log t
-   +(1-t)\bigl(\log(1-t)-\log(1-u)\bigr),\label{eq:hugekl}\\
+   +(1-t)\bigl(\log(1-t)-\log(1-u)\bigr),\label{fsp:eq:hugekl}\\
  \st\bigl(tD(p\Vert q)\bigr)&=1.
 \end{align}
 Thus their relative entropy is positive infinite. In fact the final
-term in \eqref{eq:hugekl} is infinitesimal, and $t\log t$ is
+term in \eqref{fsp:eq:hugekl} is infinitesimal, and $t\log t$ is
 infinitesimal, while the first term is $1/t$.
 \end{example}
 
-There is no conflict with \eqref{eq:entropybound}. Entropy uses each
+There is no conflict with \eqref{fsp:eq:entropybound}. Entropy uses each
 law's own probabilities and is bounded on a fixed alphabet. Relative
 entropy can compare a rare event against a vastly smaller prediction.
 Taking standard parts before forming the logarithmic ratio loses this
@@ -1043,7 +1444,7 @@ is exactly
  \E_p[-\log q_i]-H(p)=D(p\Vert q).
 \end{equation}
 On the strictly positive simplex it is therefore uniquely minimized by
-$q=p$, by Theorem~\ref{thm:kl}. The Brier loss
+$q=p$, by Theorem~\ref{fsp:thm:kl}. The Brier loss
 $S(q,i)=\sum_j(q_j-\ind_{j=i})^2$ satisfies the entirely algebraic identity
 \begin{equation}
  \E_p S(q,i)-\E_p S(p,i)=\sum_j(q_j-p_j)^2.
@@ -1054,7 +1455,7 @@ relative penalties can occur at different scales.
 
 For a binary soft target $0<p<1$ and logit $z$, the expected logarithmic
 loss is
-\begin{equation}\label{eq:logisticloss}
+\begin{equation}\label{fsp:eq:logisticloss}
  \Phi(z;p)=\log(1+e^z)-pz.
 \end{equation}
 Since $q=\sigma(z)$ parametrizes the strictly positive binary simplex,
@@ -1063,18 +1464,18 @@ identity and positivity, not an unproved extreme-value theorem on a
 surreal parameter space.
 
 \section{Gibbs laws, decision theory, and finite learning models}
-\label{sec:gibbs}
+\label{fsp:sec:gibbs}
 
 \subsection{A finite variational principle without compactness}
 
-\begin{theorem}[Surreal finite Gibbs principle]\label{thm:gibbs}
+\begin{theorem}[Surreal finite Gibbs principle]\label{fsp:thm:gibbs}
 Let $E_1,\ldots,E_n\in E$ be energies and let $\tau>0$ belong to $E$.
 Set
 \begin{equation}
  Z=\sum_i e^{-E_i/\tau},\qquad q_i=Z^{-1}e^{-E_i/\tau}.
 \end{equation}
 For every probability vector $p$,
-\begin{equation}\label{eq:gibbs}
+\begin{equation}\label{fsp:eq:gibbs}
  \sum_i p_iE_i-\tau H(p)
  =-\tau\log Z+\tau D(p\Vert q).
 \end{equation}
@@ -1083,7 +1484,7 @@ simplex, even when some energies or $1/\tau$ are infinite.
 \end{theorem}
 \begin{proof}
 Use $\log q_i=-E_i/\tau-\log Z$ in the definition of relative entropy.
-Multiplication by $\tau$ and rearrangement give \eqref{eq:gibbs}.
+Multiplication by $\tau$ and rearrangement give \eqref{fsp:eq:gibbs}.
 The last term is nonnegative and vanishes exactly at $p=q$.
 \end{proof}
 
@@ -1092,7 +1493,7 @@ The minimizer was written down, and the identity proved optimality.
 Infinitesimal temperature is meaningful for a finite system: among real
 energies with a positive real gap, excited states have infinitesimal
 probability. Several ordered energy scales can be treated by
-Theorem~\ref{thm:multisoft}. This does not construct a thermodynamic
+Theorem~\ref{fsp:thm:multisoft}. This does not construct a thermodynamic
 limit, an infinite-volume Gibbs measure, or a partition function over
 an arbitrary infinite state space.
 
@@ -1103,7 +1504,7 @@ calculation. A maximum among finitely many expected utilities exists.
 No Archimedean continuity of preferences is forced: a positive
 infinitesimal preference can be weaker than every positive real
 preference and still be strict. The compression in
-Theorem~\ref{thm:compression} explains how real-valued acts can detect
+Theorem~\ref{fsp:thm:compression} explains how real-valued acts can detect
 successive signed coefficient layers.
 
 There is an additional reason not to delete rare events when payoffs
@@ -1123,7 +1524,7 @@ surreal arithmetic does not itself settle that decision.
 Suppose a finite alphabet has ordinary counts $N_i\ge0$ with
 $N=\sum_iN_i>0$, and choose positive real constants $a_i$.
 The law
-\begin{equation}\label{eq:smoothing}
+\begin{equation}\label{fsp:eq:smoothing}
  p_i=\frac{N_i+t a_i}{N+t\sum_j a_j}
 \end{equation}
 is regular. Seen categories have standard probabilities $N_i/N$;
@@ -1134,7 +1535,7 @@ are modeling choices, not consequences of the data. Distinct choices
 can give the same empirical shadow and different answers after rare
 conditioning.
 
-For $N=0$, formula \eqref{eq:smoothing} instead reduces to the ordinary
+For $N=0$, formula \eqref{fsp:eq:smoothing} instead reduces to the ordinary
 prior $a_i/\sum_j a_j$; this case should be handled explicitly rather
 than described as an infinitesimal perturbation of absent empirical
 frequencies.
@@ -1142,7 +1543,7 @@ frequencies.
 \subsection{Surreals do not automatically cure separation}
 
 \begin{proposition}[No attained logistic optimum under strict separation]
-\label{prop:separation}
+\label{fsp:prop:separation}
 For a nonempty finite collection of feature vectors $x_i\in E^d$ and labels
 $y_i\in\{-1,1\}$, define
 \begin{equation}
@@ -1162,14 +1563,14 @@ infinite coordinates.
 An infinite parameter is not a terminal point at infinity: it can still
 be increased. Infinitesimal positive losses are not zero. Soft targets
 with independent logits have the explicit optimum described in
-\eqref{eq:logisticloss}; that fact does not establish existence for every
+\eqref{fsp:eq:logisticloss}; that fact does not establish existence for every
 constrained regression or regularization problem. Such problems need
 their own hypotheses and proofs.
 
 \section{Finite stochastic processes and the time-scale issue}
-\label{sec:processes}
+\label{fsp:sec:processes}
 
-\subsection{Finite chains and finite paths}
+\subsection{Finite chains and finite paths}\label{fsp:sub:paths}
 
 Let $T$ be a finite stochastic matrix over $K$ and let $\pi$ be an initial
 law. For each ordinary finite horizon $N$ the path weights
@@ -1181,7 +1582,7 @@ consistency when the horizon is shortened. Standard part commutes with
 all these finite products and sums, so the path shadow is the real
 chain with initial law $\st\pi$ and transition matrix $\st T$.
 This consistency alone is not a theorem about a probability measure on
-infinite paths; Section~\ref{sec:iid} supplies concrete obstructions to
+infinite paths; Section~\ref{fsp:sec:iid} supplies concrete obstructions to
 one proposed countable-additivity rule.
 
 The repository's analysis of finite Hahn Markov generators and their
@@ -1191,7 +1592,7 @@ a continuous-time semigroup, and a path measure are different objects.
 This article only asserts a path construction when the relevant
 finite or infinite probability framework has been specified.
 
-\subsection{Finite martingales and stopping}
+\subsection{Finite martingales and stopping}\label{fsp:sub:stopping}
 
 On a finite probability space with a finite filtration
 $\F_0\subseteq\cdots\subseteq\F_N$, a martingale satisfies
@@ -1222,7 +1623,7 @@ additional integration and convergence results.
 Consider a state that changes irreversibly with probability $t>0$
 infinitesimal at each step. At a fixed ordinary horizon $n$ its hitting
 probability is
-\begin{equation}\label{eq:hitting}
+\begin{equation}\label{fsp:eq:hitting}
  1-(1-t)^n\le nt.
 \end{equation}
 The inequality follows by the finite union bound, or by induction on
@@ -1249,12 +1650,12 @@ law of large numbers in the full fine surreal topology hidden in this
 finite calculation.
 
 \section{Why infinite addition is an additional axiom}
-\label{sec:infinity}
+\label{fsp:sec:infinity}
 
 \subsection{The fine topology is too strong for ordinary probabilistic limits}
 
 \begin{proposition}[Set-indexed fine convergence is eventually constant]
-\label{prop:fine}
+\label{fsp:prop:fine}
 If a net $(x_i)_{i\in I}$ with set-sized index set converges to $x$ in
 the full ordered-field topology of $\No$, then $x_i=x$ eventually.
 \end{proposition}
@@ -1275,7 +1676,9 @@ the ordinary real partial sums of $\sum_{n\ge1}2^{-n}$ do not converge
 to one in the field's order topology. Their real tails $2^{-N}$ exceed
 $t$ for every ordinary $N$. Coefficientwise real convergence and intrinsic
 valuation convergence are different again. These distinctions agree with
-the repository's foundations discussion \cite{repofound}.
+the repository's foundations discussion \cite{repofound}, and
+Proposition~\ref{fsp:prop:fine} is clause~(2) of a theorem of that report
+(Section~\ref{fsp:sec:neighbours}).
 
 Thus ordinary countable additivity cannot be imported by writing an
 unqualified order-topological limit of finite partial sums. A successful
@@ -1295,8 +1698,8 @@ singleton masses is not strong either, since the leading monomial repeats
 infinitely often. These are failures of a specified support rule, not
 contradictions in the ordered field or in finite additivity.
 
-\begin{example}[A regular strong law on a countably infinite space]
-\label{ex:geometric}
+\begin{example}[A regular strong Hahn probability on a countably infinite space]
+\label{fsp:ex:geometric}
 On $\N_{\ge1}$ take $t=\omega^{-1}$ and
 \begin{equation}
  w_n=(1-t)t^{n-1},\qquad
@@ -1313,7 +1716,8 @@ part is the point mass at $1$.
 Strong probabilities on countably separated spaces are much more rigid
 than arbitrary finite-additive or coefficientwise laws. The repository's
 classification gives finitely atomic coefficient measures and a finitely
-supported standard part in that class \cite{repomeasures}. We use the
+supported standard part in that class \cite{repomeasures}
+(Section~\ref{fsp:sec:neighbours}, item~(b)). We use the
 explicit example and the elementary support obstructions above without
 requiring the full classification proof. The real Lebesgue law, embedded
 as exponent zero, is not strong because disjoint positive-measure intervals
@@ -1321,11 +1725,11 @@ make that exponent recur infinitely often.
 
 \subsection{Coefficientwise countable additivity}
 
-\begin{definition}\label{def:coefficientwise}
+\begin{definition}\label{fsp:def:coefficientwise}
 A coefficientwise Hahn measure on $(\Omega,\A)$ is specified by a
 well-ordered set $W\subseteq\Gamma$ and ordinary finite signed measures
 $\mu_\gamma$ on $\A$, via
-\begin{equation}\label{eq:coefficientmeasure}
+\begin{equation}\label{fsp:eq:coefficientmeasure}
  P(A)=\sum_{\gamma\in W}\mu_\gamma(A)t^\gamma.
 \end{equation}
 It is a probability when these Hahn values are nonnegative on every
@@ -1345,24 +1749,24 @@ measurable sets; the repository treats this issue explicitly
 directly rather than inferred from finite tests alone.
 
 \section{Diffuse hierarchical probabilities and integration}
-\label{sec:hierarchy}
+\label{fsp:sec:hierarchy}
 
 \subsection{A positive construction with arbitrarily many ordered layers}
 
 \begin{theorem}[Normalized hierarchy of real probability laws]
-\label{thm:hierarchy}
+\label{fsp:thm:hierarchy}
 Let $(\mu_\alpha)_{\alpha<\kappa}$ be a nonempty set-sized well-ordered
 family of ordinary real probability measures on one measurable space.
 Choose strictly increasing exponents $\gamma_\alpha\in\Gamma$ with
 $\gamma_0=0$. Define
-\begin{equation}\label{eq:hierarchy}
+\begin{equation}\label{fsp:eq:hierarchy}
  Z=\hsum_{\alpha<\kappa}t^{\gamma_\alpha},\qquad
  P(A)=Z^{-1}\hsum_{\alpha<\kappa}t^{\gamma_\alpha}\mu_\alpha(A).
 \end{equation}
 Then $P$ is a coefficientwise Hahn probability. An event $B$ has positive
 mass exactly when some $\mu_\alpha(B)>0$. If $\alpha(B)$ is the first
 such index, then
-\begin{equation}\label{eq:hierconditional}
+\begin{equation}\label{fsp:eq:hierconditional}
  \st P(A\mid B)
  =\frac{\mu_{\alpha(B)}(A\cap B)}{\mu_{\alpha(B)}(B)}.
 \end{equation}
@@ -1384,17 +1788,17 @@ $\mu_\alpha$, hence an ordinary finite signed measure. The resulting
 support is common to all events. This proves coefficientwise countable
 additivity. Finally the factor $Z^{-1}$ cancels in conditional ratios;
 dividing by $t^{\gamma_{\alpha(B)}}$ and taking residues proves
-\eqref{eq:hierconditional}.
+\eqref{fsp:eq:hierconditional}.
 \end{proof}
 
 This construction is not restricted to finite or countable hierarchies.
 Its existence uses set-sized well-ordered support, not a real-convergent
 sum of the coefficients of $Z$. In particular, one must not evaluate
-$t=1$ in \eqref{eq:hierarchy} and regard the generally divergent result
+$t=1$ in \eqref{fsp:eq:hierarchy} and regard the generally divergent result
 as an ordinary mixture.
 
 \begin{example}[Diffuse probability with exceptional point events]
-\label{ex:diffuse}
+\label{fsp:ex:diffuse}
 On the Borel subsets of $[0,1]$ let $\lambda$ be Lebesgue probability and
 put
 \begin{equation}
@@ -1417,9 +1821,9 @@ of every coefficient.
 
 \subsection{A controlled expectation for bounded real observables}
 
-For the hierarchy in Theorem~\ref{thm:hierarchy} and a bounded measurable
+For the hierarchy in Theorem~\ref{fsp:thm:hierarchy} and a bounded measurable
 \emph{real-valued} function $f$, define
-\begin{equation}\label{eq:hierintegral}
+\begin{equation}\label{fsp:eq:hierintegral}
  \E_P f=Z^{-1}\hsum_{\alpha<\kappa}t^{\gamma_\alpha}
                   \int f\,d\mu_\alpha.
 \end{equation}
@@ -1467,7 +1871,7 @@ fails positivity. The distinction between real-valued observables and
 arbitrary surreal-valued observables is therefore substantive.
 
 \begin{theorem}[An uncountable-support positivity failure]
-\label{thm:integrationfailure}
+\label{fsp:thm:integrationfailure}
 There are an ordinary countably additive probability $\mu$ and a
 coefficientwise measurable Hahn-valued function $X$ with a common
 well-ordered support such that $0<X<1$ everywhere, all coefficient
@@ -1484,7 +1888,7 @@ countable.
 
 Choose a set-sized ordered subgroup $\Gamma\subset\No$ containing all
 ordinals $\xi\le\omega_1$, and use the associated Hahn field. Set
-\begin{equation}\label{eq:badintegral}
+\begin{equation}\label{fsp:eq:badintegral}
  X(\xi)=t^\xi-t^{\omega_1}\quad(\xi<\omega_1).
 \end{equation}
 Because $\xi<\omega_1$, the first term is larger than the second;
@@ -1502,7 +1906,7 @@ for an unspecified topology on the Hahn field. It exhibits precisely
 why that weak measurable-function class cannot support a positive
 coefficientwise integration operation. It does not contradict ordinary
 Lebesgue integration, the finite-range construction, or
-\eqref{eq:hierintegral} for real-valued functions.
+\eqref{fsp:eq:hierintegral} for real-valued functions.
 
 There is a useful boundary to this failure. If a pointwise nonnegative
 Hahn-valued function has a \emph{countable} common well-ordered support
@@ -1515,11 +1919,11 @@ zero set still has full measure. Pointwise Hahn positivity forces the
 current coefficient to be nonnegative there. Its integral is
 nonnegative, and if zero the coefficient also vanishes almost everywhere.
 The first nonzero integral is therefore positive, or all integrals
-are zero. The failure in \eqref{eq:badintegral} exploits an uncountable
+are zero. The failure in \eqref{fsp:eq:badintegral} exploits an uncountable
 union of null sets; that union need not be null.
 
 \subsection{Posterior kernels in a finite diffuse hierarchy}
-\label{subsec:kernels}
+\label{fsp:subsec:kernels}
 
 A conditional distribution for a continuous observation needs more than
 a ratio of event masses at a singleton. Here is a construction with its
@@ -1539,9 +1943,9 @@ $h_j=d\mu_j^Y/d\rho$. Choose versions which are finite and nonnegative
 on a common full-$\rho$ set. There $\sum_jh_j=m+1$, so at least one
 $h_j$ is positive. For $0=\gamma_0<\cdots<\gamma_m$, put
 \begin{align}
- D(y)&=\sum_{j=0}^m t^{\gamma_j}h_j(y),\label{eq:kerneldensity}\\
+ D(y)&=\sum_{j=0}^m t^{\gamma_j}h_j(y),\label{fsp:eq:kerneldensity}\\
  P_y(A)&=\frac{\sum_{j=0}^m t^{\gamma_j}h_j(y)K_j(y,A)}{D(y)}.
- \label{eq:posterior}
+ \label{fsp:eq:posterior}
 \end{align}
 For each such $y$ this is a positive normalized coefficientwise Hahn probability in
 $A$. Its standard part selects the first $j$ with $h_j(y)>0$ and uses
@@ -1549,7 +1953,7 @@ $K_j(y,\cdot)$. One can assign any fixed probability kernel on the
 remaining $\rho$-null set.
 
 The precise reconstruction identity is
-\begin{equation}\label{eq:kernelreconstruction}
+\begin{equation}\label{fsp:eq:kernelreconstruction}
  P(X\in A,Y\in B)
  =Z^{-1}\int_B D(y)P_y(A)\,d\rho(y)
  =Z^{-1}\sum_{j=0}^m t^{\gamma_j}
@@ -1563,7 +1967,7 @@ $h_j$ is a probability density. Coefficients of the quotient
 $P_y(A)$ alone need not have the integrability needed for an arbitrary
 termwise integration operation.
 
-Equation~\eqref{eq:kernelreconstruction} is a rigorous posterior
+Equation~\eqref{fsp:eq:kernelreconstruction} is a rigorous posterior
 construction for this model, not a general surreal Radon--Nikodym or
 disintegration theorem. Its version choices on sets null for every
 component remain real choices. Replacing scalars does not determine a
@@ -1571,17 +1975,19 @@ unique conditional law on observations which the entire model assigns
 exactly zero mass.
 
 \section{Two coherent coin models with no coefficientwise path law}
-\label{sec:iid}
+\label{fsp:sec:iid}
 
 For each ordinary finite $n$, independent coin weights are legitimate
 surreal probabilities. The following proofs show why this is not enough
-for the coefficientwise extension in Definition~\ref{def:coefficientwise}.
+for the coefficientwise extension in Definition~\ref{fsp:def:coefficientwise}.
 They concern $t=\omega^{-1}$ and the ordinary countable path space
 $\{0,1\}^{\N}$ with its Borel sigma-algebra. The conclusions are special
-cases of the repository's broader product analysis \cite{repomeasures}.
+cases of the repository's broader product analysis \cite{repomeasures};
+Section~\ref{fsp:sec:neighbours}, item~(c), names the corollary of that report
+which contains both and the mechanisms the proofs share.
 
 \begin{theorem}[A repeated infinitesimal success probability]
-\label{thm:rarecoin}
+\label{fsp:thm:rarecoin}
 The consistent finite-dimensional laws of independent Bernoulli$(t)$
 coordinates do not extend to a coefficientwise Hahn probability with
 ordinary finite signed coefficient measures.
@@ -1590,7 +1996,7 @@ ordinary finite signed coefficient measures.
 Let $B_n$ be the cylinder event whose first success occurs at time $n$.
 These events are pairwise disjoint, and the prescribed finite-dimensional
 laws require
-\begin{equation}\label{eq:firstsuccess}
+\begin{equation}\label{fsp:eq:firstsuccess}
  P(B_n)=t(1-t)^{n-1}.
 \end{equation}
 The coefficient of $t$ is one for every $n$. If a coefficientwise law
@@ -1602,19 +2008,19 @@ $\sum_{n=1}^N|\mu_1(B_n)|=N$, contradicting finiteness.
 
 The obstruction does not say that any finite coin experiment is
 inconsistent. Nor does it say that a regular finitely additive path law
-is impossible: Section~\ref{sec:extension} constructs such laws after
+is impossible: Section~\ref{fsp:sec:extension} constructs such laws after
 field enlargement. It says that one specific coefficientwise rule cannot
 accommodate these finite-dimensional distributions.
 
 \begin{theorem}[A repeated infinitesimal perturbation of a fair coin]
-\label{thm:faircoin}
+\label{fsp:thm:faircoin}
 The independent Bernoulli$(1/2+t)$ finite-dimensional distributions also
 have no coefficientwise extension with finite signed coefficient measures.
 \end{theorem}
 \begin{proof}
 A length-$n$ cylinder containing $k$ successes has probability
 $(1/2+t)^k(1/2-t)^{n-k}$. Its coefficient at $t$ is
-\begin{equation}\label{eq:coinrow}
+\begin{equation}\label{fsp:eq:coinrow}
  2(2k-n)2^{-n}.
 \end{equation}
 The total variation of the proposed exponent-one coefficient measure,
@@ -1636,7 +2042,7 @@ on all cylinder partitions.
 A logit parametrization does not remove this obstruction. If every
 independent coordinate has the common infinitesimal logit $t$, then
 $\sigma(t)=1/2+t/4+O(t^3)$. Its exponent-one cylinder coefficients are
-one quarter of those in \eqref{eq:coinrow}, and their variations are
+one quarter of those in \eqref{fsp:eq:coinrow}, and their variations are
 still unbounded. Likewise, with $u=\exp(-L)$ for positive infinite $L$,
 a shared success probability $\sigma(-L)=u/(1+u)$ has coefficient one
 at the first $u$ scale in every first-success event. The first proof
@@ -1653,14 +2059,14 @@ other hypotheses and addition rules address different questions
 \cite{bhw,brickhill,repomeasures}.
 
 \section{Regular all-subsets laws and extension inside the surreals}
-\label{sec:extension}
+\label{fsp:sec:extension}
 
 \subsection{A relative ordered-field embedding lemma}
 
 To distinguish an obstruction in one workspace from absolute
 inconsistency, we need an explicit enlargement principle.
 
-\begin{lemma}[Set-sized relative field embedding]\label{lem:embedding}
+\begin{lemma}[Set-sized relative field embedding]\label{fsp:lem:embedding}
 Let $K\subseteq\No$ be a set-sized ordered subfield, and let $L/K$ be
 a set-sized ordered field extension. There is an ordered-field embedding
 $j:L\to\No$ fixing $K$ pointwise.
@@ -1695,10 +2101,10 @@ so the construction embeds all of $L$. All stages and cuts are sets.
 The map preserves field operations and order. It need not preserve a
 previously chosen exponential on $L$, an internal-set structure, or a
 specified Hahn summation operation. After embedding we may take the
-canonical exponential closure from Lemma~\ref{lem:workspace}, but that
+canonical exponential closure from Lemma~\ref{fsp:lem:workspace}, but that
 is not a proof that two different exponential structures agree.
 
-\subsection{A fine-ultrafilter construction}
+\subsection{A fine-ultrafilter construction}\label{fsp:sub:ultrafilter}
 
 The following is a direct version of the non-Archimedean sampling
 construction in the literature \cite{bhw,brickhill}. Let $\Omega$ be
@@ -1709,7 +2115,7 @@ cones are cones. Extend the cone filter to an ultrafilter $\mathcal U$.
 This use of the ultrafilter lemma is nonconstructive.
 
 The ultrapower $L=\R^I/\mathcal U$ is an ordered field. Define
-\begin{equation}\label{eq:ultrafilter}
+\begin{equation}\label{fsp:eq:ultrafilter}
  P(A)=\left[\frac{|A\cap s|}{|s|}\right]_{\mathcal U},\qquad
  H=[|s|]_{\mathcal U},\qquad A\subseteq\Omega.
 \end{equation}
@@ -1721,20 +2127,20 @@ $P(A)>0$. Fineness also gives
  H>n\quad(n\in\N),\qquad P(\{a\})=1/H
  \quad(a\in\Omega).
 \end{equation}
-Lemma~\ref{lem:embedding}, applied over $\R$, turns these into surreal
+Lemma~\ref{fsp:lem:embedding}, applied over $\R$, turns these into surreal
 probability values without changing any field identities. This yields
 positive equal singleton masses even on an uncountable set.
 
-The addition implicit in \eqref{eq:ultrafilter} is a snapshot operation:
+The addition implicit in \eqref{fsp:eq:ultrafilter} is a snapshot operation:
 \begin{equation}
  P(A)=\left[\sum_{a\in A\cap s}\frac1{|s|}\right]_{\mathcal U}.
 \end{equation}
 It is not a strong Hahn sum of the identical surreal numbers $1/H$.
 The finite terms being summed depend on the snapshot before passage to
 the quotient. Erasing this dependence would change the construction and
-produce the strong-summability obstruction of Section~\ref{sec:infinity}.
+produce the strong-summability obstruction of Section~\ref{fsp:sec:infinity}.
 
-\subsection{Nonuniqueness and limited symmetry}
+\subsection{Nonuniqueness and limited symmetry}\label{fsp:sub:nonunique}
 
 On $\N_{\ge1}$ one can instead use the initial segments
 $s_n=\{1,\ldots,n\}$ and a nonprincipal ultrafilter on the indices.
@@ -1748,7 +2154,7 @@ probability is
 For either model the ordered field $\R(H)$ can be identified with
 $\R(\omega)$ by $H\mapsto\omega$: both generators are positive
 infinite and transcendental over $\R$, so polynomial signs are determined
-by their leading terms. Lemma~\ref{lem:embedding} then embeds the full
+by their leading terms. Lemma~\ref{fsp:lem:embedding} then embeds the full
 field over that identification. The two resulting surreal probabilities
 have the same chosen singleton mass $1/\omega$ and the same real
 probability of the evens, but different exact probabilities of the evens.
@@ -1766,7 +2172,7 @@ as separate constraints, not inferred from the word ``uniform.''
 \subsection{Regular extension of any regular event algebra}
 
 \begin{theorem}[All-subsets regular extension after field enlargement]
-\label{thm:extension}
+\label{fsp:thm:extension}
 Let $\Omega$ be a nonempty set, $\A$ an algebra of its subsets, and
 $P_0:\A\to K$ a regular finitely additive probability, where
 $K\subseteq\No$ is set sized. There is a set-sized ordered field
@@ -1797,7 +2203,7 @@ First-order compactness gives a set-sized ordered-field model of all
 these axioms. Its copy of $K$ is an ordered subfield, and the values of
 the $p_A$ define the desired extension. Restricting to the subfield
 generated by those values and $K$ is enough. Finally apply
-Lemma~\ref{lem:embedding} over $K$; its image remains a set-sized field
+Lemma~\ref{fsp:lem:embedding} over $K$; its image remains a set-sized field
 and all original probabilities are fixed.
 \end{proof}
 
@@ -1810,7 +2216,7 @@ a canonical embedding, or a prescribed bound on the new scales.
 Imposing such extra conditions may block the construction.
 
 \begin{corollary}[The two coin models do have regular finite-additive laws]
-\label{cor:coinextension}
+\label{fsp:cor:coinextension}
 The finite cylinder probabilities of either Bernoulli$(t)$ or
 Bernoulli$(1/2+t)$ extend to regular finitely additive surreal
 probabilities on all subsets of $\{0,1\}^{\N}$, with the original
@@ -1819,11 +2225,11 @@ $t=\omega^{-1}$ unchanged.
 \begin{proof}
 Each nonempty cylinder-algebra event is a nonempty finite union of
 positive finite-pattern atoms, so the consistent cylinder law is
-regular and finitely additive. Apply Theorem~\ref{thm:extension}
+regular and finitely additive. Apply Theorem~\ref{fsp:thm:extension}
 over its original scalar field.
 \end{proof}
 
-Theorems~\ref{thm:rarecoin} and \ref{thm:faircoin} prove that these
+Theorems~\ref{fsp:thm:rarecoin} and \ref{fsp:thm:faircoin} prove that these
 extensions cannot carry the specified coefficientwise finite-measure
 structure. There is no contradiction: the extension theorem promised
 a different axiom system. It also does not compute the probability of
@@ -1831,7 +2237,7 @@ an arbitrary tail event. Such probabilities can depend on which model
 of the extension axioms has been selected.
 
 \section{An infinite learning model with a rare latent regime}
-\label{sec:latent}
+\label{fsp:sec:latent}
 
 The previous obstructions should not leave the impression that no
 interesting infinite stochastic models survive coefficientwise addition.
@@ -1841,14 +2247,14 @@ impression, and also expose a limitation of finite Bayesian updating.
 Let $\mu_0$ be the ordinary independent Bernoulli$(1/3)$ law on
 $\{0,1\}^{\N}$ and $\mu_1$ the independent Bernoulli$(2/3)$ law. Attach
 a latent label $H\in\{0,1\}$ and give the joint space the Hahn law
-\begin{equation}\label{eq:latentlaw}
+\begin{equation}\label{fsp:eq:latentlaw}
  P=\frac{\delta_0\otimes\mu_0+t\delta_1\otimes\mu_1}{1+t}.
 \end{equation}
-Theorem~\ref{thm:hierarchy} makes this a positive coefficientwise
+Theorem~\ref{fsp:thm:hierarchy} makes this a positive coefficientwise
 probability on its product sigma-algebra. It has an exact rare regime
 $P(H=1)=t/(1+t)>0$, not merely a family of finite-dimensional proposals.
 Its unconditional coordinate means and covariances are
-\begin{equation}\label{eq:latentcov}
+\begin{equation}\label{fsp:eq:latentcov}
  \E X_i=\frac{1+2t}{3(1+t)},\qquad
  \Cov(X_i,X_j)=\frac{t}{9(1+t)^2}>0\quad(i\ne j).
 \end{equation}
@@ -1856,13 +2262,13 @@ To check the covariance, write the mean as the mixture of $1/3,2/3$
 and the cross moment as the same mixture of their squares. Subtraction
 leaves the variance of the latent success probability. The process is
 exchangeable but not independent. Therefore its infinitesimally shifted
-marginals do not contradict Theorem~\ref{thm:faircoin} or the analogous
+marginals do not contradict Theorem~\ref{fsp:thm:faircoin} or the analogous
 coefficientwise independent-product obstructions.
 
 Let $\F_n$ record the first $n$ observed coordinates, and write
 $K_n=\sum_{i=1}^nX_i$. Bayes' rule gives the finite conditional
 probability of the rare regime:
-\begin{equation}\label{eq:latentposterior}
+\begin{equation}\label{fsp:eq:latentposterior}
  M_n=P(H=1\mid\F_n)
  =\frac{t\,2^{2K_n-n}}{1+t\,2^{2K_n-n}}.
 \end{equation}
@@ -1870,29 +2276,29 @@ Every value of $M_n$ is infinitesimal for each ordinary $n$: the factor
 $2^{2K_n-n}$ is a positive real number. These finite-range variables
 form a bounded martingale by the finite tower property.
 
-The ordinary strong laws of the two real component measures
+The ordinary strong laws of large numbers of the two real component measures
 \cite{kallenberg} give the Borel event
 \begin{equation}
  B=\left\{\lim_{n\to\infty}\frac{K_n}{n}=\frac23\right\},
  \qquad \mu_0(B)=0,\quad\mu_1(B)=1.
 \end{equation}
 Consequently
-\begin{equation}\label{eq:tailposterior}
+\begin{equation}\label{fsp:eq:tailposterior}
  P(B)=\frac{t}{1+t}>0,
  \qquad P(H=1\mid B)=1.
 \end{equation}
 
 \begin{proposition}[Finite-update shadows need not recover rare tail conditioning]
-\label{prop:tailfailure}
-In model \eqref{eq:latentlaw}, every finite posterior in
-\eqref{eq:latentposterior} has standard part zero, but observing the tail
+\label{fsp:prop:tailfailure}
+In model \eqref{fsp:eq:latentlaw}, every finite posterior in
+\eqref{fsp:eq:latentposterior} has standard part zero, but observing the tail
 event $B$ gives conditional probability one to $H=1$. On $B$, the
 finite posteriors do not converge to that conditional value even in the
 intrinsic ordered-field topology.
 \end{proposition}
 \begin{proof}
 The finite-posterior assertion was proved above. The component strong
-laws give \eqref{eq:tailposterior}. For every ordinary $n$ and every
+laws of large numbers give \eqref{fsp:eq:tailposterior}. For every ordinary $n$ and every
 path, $M_n<1/2$ because it is infinitesimal. Thus on $B$ its distance
 from the value one remains greater than $1/2$.
 \end{proof}
@@ -1926,11 +2332,11 @@ The first has a rigorous interpretation here; the second has not been
 defined merely by writing an infinite logit.
 
 \section{Standard-part bridges, Loeb measure, and sampling limits}
-\label{sec:bridges}
+\label{fsp:sec:bridges}
 
 \subsection{Exactly when the real shadow is countably additive}
 
-\begin{theorem}[A continuity test for the shadow]\label{thm:shadowcountable}
+\begin{theorem}[A continuity test for the shadow]\label{fsp:thm:shadowcountable}
 Let $P$ be a finitely additive $K$-probability on a sigma-algebra.
 Then $P_0=\st P$ is countably additive exactly when, for every
 $A_n\downarrow\varnothing$ and every positive real $\eps$, there is
@@ -1955,7 +2361,7 @@ hence zero. This is the required continuity.
 
 The standard part of the normalized hierarchy is the ordinary measure
 $\mu_0$ and satisfies this test. The all-subsets uniform law on $\N$
-from \eqref{eq:ultrafilter} does not: singleton shadows are zero while
+from \eqref{fsp:eq:ultrafilter} does not: singleton shadows are zero while
 the shadow of their union is one. More explicitly, for
 $A_n=\{n+1,n+2,\ldots\}$, one has
 $P(A_n)=1-n/H$ and $P_0(A_n)=1$. Standard part is always a finite-additive
@@ -1990,7 +2396,7 @@ however, does not manufacture internal events, saturation, hyperfinite
 sets, or transferred sums. A bare surreal $H>\N$ is not a substitute
 for this package of structure.
 
-\subsection{A Poisson shadow at reciprocal-probability sample size}
+\subsection{A Poisson shadow at reciprocal-probability sample size}\label{fsp:sub:poisson}
 
 Here is a concrete sampling limit with all semantics supplied. Fix a
 positive real $\lambda$. For each ordinary integer $N>\lambda$, perform
@@ -2002,7 +2408,7 @@ probability $\lambda/H$.
 
 For a fixed ordinary integer $k\ge0$, the internal event that the count
 is $k$ has probability represented by
-\begin{equation}\label{eq:poisson}
+\begin{equation}\label{fsp:eq:poisson}
  b_k=\left[
  \binom Nk\left(\frac\lambda N\right)^k
            \left(1-\frac\lambda N\right)^{N-k}
@@ -2025,14 +2431,14 @@ of a convergent bounded real sequence has that standard part.
 
 In a saturated internal realization, the Loeb probability of the count
 being an ordinary finite integer is one: the disjoint events with fixed
-counts $k$ have the real Poisson masses in \eqref{eq:poisson}, whose
+counts $k$ have the real Poisson masses in \eqref{fsp:eq:poisson}, whose
 ordinary sum is one. Thus the Poisson limit is recovered at a sample
 size comparable to the reciprocal of an infinitesimal success probability.
 This supplies the missing meaning of the informal scale calculation
 $n\asymp1/p$ in a \emph{chosen nonstandard experiment}.
 
 After an ordered-field embedding into $\No$, the probabilities and
-standard parts in \eqref{eq:poisson} remain valid. But an internal power
+standard parts in \eqref{fsp:eq:poisson} remain valid. But an internal power
 such as $[(1-\lambda/N)^N]$ must not be silently identified with the
 canonical surreal expression $\exp(H\log(1-\lambda/H))$ under a
 field-only embedding. The latter uses extra exponential structure.
@@ -2041,7 +2447,7 @@ preservation of field operations. The fixed-$k$ probability limits
 above do not require that extra claim.
 
 \section{An implementation and formalization architecture}
-\label{sec:implementation}
+\label{fsp:sec:implementation}
 
 \subsection{Choose a representable scalar fragment}
 
@@ -2057,17 +2463,17 @@ probability fragment.
 For a finite normalized model, a useful representation stores positive
 unnormalized weights rather than rounded probabilities. Normalization,
 conditioning, and Bayes then use exact sums and quotients. The minimum-plus
-and leading-coefficient layer from Theorem~\ref{thm:scalebayes} can be
+and leading-coefficient layer from Theorem~\ref{fsp:thm:scalebayes} can be
 computed first, while residual expressions are retained for ties and
 later rare conditioning. A leading-scale answer should not be presented
 as an exact full probability.
 
-Theorem~\ref{thm:stability} supplies a precision contract. An operation
+Theorem~\ref{fsp:thm:stability} supplies a precision contract. An operation
 conditioning on mass of valuation $\beta$ and requesting output through
 scale $\lambda$ must demand input error beyond $\beta+\lambda$.
 An implementation which first truncates all atoms at one fixed absolute
 threshold cannot guarantee every subsequent conditional query. For
-score-based models, Proposition~\ref{prop:softbound} gives a different
+score-based models, Proposition~\ref{fsp:prop:softbound} gives a different
 contract: an additive score error bound controls multiplicative
 probability error. This can be preferable when tiny probabilities must
 remain distinguishable.
@@ -2100,9 +2506,9 @@ exact checks in a small rational-function fragment. They are evidence
 about those examples and the implementation, not a formal verification
 of the general mathematical theorems.
 
-\subsection{What the accompanying verifier checks}
+\subsection{What the accompanying verifier checks}\label{fsp:sub:verifier}
 
-The file \texttt{verify.py} implements exact arithmetic in $\Q(t)$ with
+The file \texttt{code/verify.py} implements exact arithmetic in $\Q(t)$ with
 $t$ ordered as a positive infinitesimal. It checks finite Bayesian
 normalization and update order, leading-scale posterior formulas,
 conditional shadows, conditional precision examples, finite probability
@@ -2113,7 +2519,7 @@ breakdown recorded in the JSON output.
 All comparisons use rational polynomial arithmetic, not substitution of
 a small floating-point number for $t$.
 
-The output \texttt{verification.json} records the actual assertion count
+The output \texttt{data/verification.json} records the actual assertion count
 and test families. The program cannot check first-order compactness,
 uncountable sets, saturation, canonical surreal exponentiation, or an
 infinite measure-extension theorem. Those parts are justified by the
@@ -2121,8 +2527,13 @@ written proofs and explicitly cited foundational inputs, not by finite
 experiments. The separation is important: thousands of finite successful
 checks would not establish an infinite extension axiom.
 
+On placement the unchanged program was rerun on a copy under Python 3.14.4.
+It passed the same 2,145 assertions in the same 19 families, and its output,
+written to a separate file, matched \texttt{data/verification.json} in every
+field except the recorded Python version.
+
 \section{Scope, limitations, and next mathematical questions}
-\label{sec:scope}
+\label{fsp:sec:scope}
 
 \subsection{What has been built}
 
@@ -2146,13 +2557,13 @@ integration theory. The latent-regime example separates finite posterior
 shadows from conditioning on a tail observation. These are concrete
 requirements for any stronger theory.
 
-\subsection{What is not asserted}
+\subsection{What is not asserted}\label{fsp:sub:notasserted}
 
 We have not constructed a countably additive probability on all events
-using the full fine topology of $\No$; Proposition~\ref{prop:fine}
+using the full fine topology of $\No$; Proposition~\ref{fsp:prop:fine}
 explains why ordinary set-indexed convergence is unsuitable there.
 We have not proved a universal Carath\'eodory, Radon--Nikodym, Fubini,
-martingale convergence, strong law, central limit, or stochastic calculus
+martingale convergence, strong law of large numbers, central limit, or stochastic calculus
 theorem after unrestricted replacement of $\R$ by $\No$. Each such
 theorem needs a specified infinite framework. The Poisson and latent
 examples import ordinary component laws or a stated nonstandard model;
@@ -2171,7 +2582,7 @@ unspecified sum over a proper class or infinitely many states.
 
 One productive question is to characterize positive integration domains
 for coefficientwise Hahn probabilities beyond bounded real observables
-and countable-support functions. Theorem~\ref{thm:integrationfailure}
+and countable-support functions. Theorem~\ref{fsp:thm:integrationfailure}
 shows that a common well-ordered support and integrable coefficients
 are insufficient at uncountable rank. A stronger condition could require
 simultaneous almost-everywhere control along support filtrations, with a
@@ -2186,7 +2597,7 @@ scale cutoff. These choices yield different, potentially useful notions
 of learning.
 
 A third question concerns extension with additional structure. Theorem~
-\ref{thm:extension} guarantees regular all-subsets extension after field
+\ref{fsp:thm:extension} guarantees regular all-subsets extension after field
 enlargement, but not invariance, a preferred support group, or an
 exponential-compatible embedding. Identifying exactly which finite
 constraints on these extra structures have simultaneous realizations
@@ -2216,7 +2627,7 @@ statements that can themselves be proved and tested.
 
 \appendix
 \section{Notation and dependency ledger}
-\label{app:ledger}
+\label{fsp:app:ledger}
 
 \begin{center}
 \small
@@ -2240,32 +2651,38 @@ $H$ in ultraproducts & A specified internal sample-size class, not an arbitrary 
 \end{tabularx}
 \end{center}
 
-The algebraic results in Sections~\ref{sec:finite}--\ref{sec:bayes} need
+The algebraic results in Sections~\ref{fsp:sec:finite}--\ref{fsp:sec:bayes} need
 only ordered fields plus the explicitly used residue or Hahn structure.
-Sections~\ref{sec:logits}--\ref{sec:gibbs} additionally use canonical
-exponential and its scalar inequalities. Section~\ref{sec:hierarchy}
+Sections~\ref{fsp:sec:logits}--\ref{fsp:sec:gibbs} additionally use canonical
+exponential and its scalar inequalities. Section~\ref{fsp:sec:hierarchy}
 uses ordinary real finite measures and Hahn support multiplication.
-Section~\ref{sec:extension} uses choice, ordered real closures, the
+Section~\ref{fsp:sec:extension} uses choice, ordered real closures, the
 surreal cut property, and first-order compactness.
-Section~\ref{sec:latent} imports two ordinary real product laws and their
-strong laws. Section~\ref{sec:bridges} distinguishes ordinary real
+Section~\ref{fsp:sec:latent} imports two ordinary real product laws and their
+strong laws of large numbers. Section~\ref{fsp:sec:bridges} distinguishes ordinary real
 measure extension from the extra saturation assumption in the Loeb
 construction. No infinite result is deduced solely from the finite
 exponential-field transfer principle.
 
-\section{Reproduction and evidence boundaries}
+\section{Reproduction and evidence boundaries}\label{fsp:app:build}
 
 The source is standalone and uses an internal bibliography, with no
-external images, bibliography processor, or downloaded fonts. Build with
+external images, bibliography processor, or downloaded fonts. In the
+directory of this report, build and check with
 \begin{verbatim}
-latexmk -pdf -interaction=nonstopmode -halt-on-error \
-  surreal_probability.tex
-python3 verify.py --output verification.json
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+python3 code/verify.py --output rerun-verification.json
 \end{verbatim}
 When \texttt{latexmk} is unavailable, run \texttt{pdflatex} repeatedly
-until cross-references and the table of contents stabilize. A build
-script is included. The delivery was checked for unresolved references
-and typesetting errors, and the PDF was rendered for visual inspection.
+until cross-references and the table of contents stabilize. The program
+writes a file only when \texttt{--output} is given; naming a new file keeps
+the delivered record \texttt{data/verification.json} intact. The delivered
+build script \texttt{code/build.sh} is kept unchanged. As placed it does not
+work: it changes into its own directory \texttt{code/} and builds
+\texttt{surreal\_probability.tex}, which is not there. The delivery was checked
+for unresolved references and typesetting errors, and the PDF was rendered for
+visual inspection; \texttt{data/BUILD\_VALIDATION.json} records that check of
+the delivered 35-page PDF, before placement.
 A clean typesetting log does not certify mathematical correctness.
 
 The research audit lists the consulted repository snapshot and primary
@@ -2361,6 +2778,19 @@ conventions at snapshot \pin.
 \repo, \emph{Markov Generators at Every Scale}, repository report
 at snapshot \pin.
 \url{https://github.com/VladimirReshetnikov/Surreal/tree/d22a5b35d5b3040e870c3cfd6d1c8f7259e094b0/docs/surreal/markov-generators-at-every-scale}.
+
+\bibitem{repophys}
+\repo, \emph{Surreal Scalars in Theoretical Physics: Black-Hole
+Singularities, Asymptotic Structure, and the Limits of Replacing the Scalar
+Field}, merged research report of the same repository, compared at commit
+\texttt{50cb709}; its directory is
+\nolinkurl{docs/physics/surreal-scalars-and-spacetime}. This entry was added
+on placement.
+
+\medskip\noindent\emph{Placement note.} The three entries above that carry
+the manuscript's pin are its own references. This report now belongs to the
+same collection, and Section~\ref{fsp:sec:neighbours} compares it with those
+reports as committed at \texttt{50cb709}.
 
 \end{thebibliography}
 \end{document}
