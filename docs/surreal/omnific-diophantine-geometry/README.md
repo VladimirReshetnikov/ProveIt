@@ -1,20 +1,23 @@
 # Omnific Integers and Omnific–Diophantine Geometry
 
 **Retractions, rigidity, definability, and infinite families**
-Merged research report, from five manuscripts written independently: three
+Merged research report, from seven manuscripts written independently: three
 dated 22 September 2026 (batch items 01, 02 and 05 of the batch placed in
-`be06fc8`) and two dated 23 September 2026 (batch items 01 and 07 of the batch
-placed in `cf350b1`, numbered 06 and 07 here). Prepared for Vladimir
-Reshetnikov.
+`be06fc8`), two dated 23 September 2026 (batch items 01 and 07 of the batch
+placed in `cf350b1`, numbered 06 and 07 here), and two more dated 23 September
+2026 (batch items 01 and 02 of the batch placed in `a4dcb91`, numbered 08 and
+09 here). Prepared for Vladimir Reshetnikov.
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 86 pages
+article.pdf                        the compiled report, 117 pages
 README.md                          this guide
-RECONCILIATION.md                  the elementary source review and the Sections 5–10 proof reviews
+RECONCILIATION.md                  the elementary source review and the proof reviews of
+                                   Sections 1–10 and 14
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
 05-diophantine-rigidity-BUILD.md   source 05's build and check instructions, as delivered
 06-definability-reconstruction-SOURCE_AUDIT.md   source 06's source and novelty audit, as delivered
+08-fractions-SOURCE_AUDIT.md       source 08's source and novelty audit, as delivered
 code/
   01-diophantine-geometry-verification.py   source 01 checks (writes a JSON report; see below)
   01-diophantine-geometry-build.sh, .ps1    source 01's build scripts (they compile source 01's
@@ -27,6 +30,12 @@ code/
   07-defining-arithmetic-verify.py          source 07 checks (standard library only; prints)
   07-defining-arithmetic-build.sh           source 07's build script (compiles its own
                                             article.tex in its own directory; not this report)
+  08-fractions-verify.py                    source 08 checks (writes JSON; see below)
+  08-fractions-Makefile                     source 08's build and check targets (delivered
+                                            file names; they do not build this report)
+  09-fraction-fibres-verify_examples.py     source 09 checks (always writes JSON; see below)
+  09-fraction-fibres-build.sh, .ps1         source 09's build scripts (they compile source 09's
+                                            own file name and do not build this report)
 data/
   01-diophantine-geometry-verification_report.json   source 01's recorded run
   02-diophantine-verification.txt                    source 02's recorded run
@@ -34,18 +43,22 @@ data/
   06-definability-reconstruction-verification.json   source 06's recorded run
   06-definability-reconstruction-build_report.json   source 06's build summary for its own article
   07-defining-arithmetic-verification.txt            source 07's recorded run
-  01-, 02-, 05-, 06-...-requirements.txt             each pins sympy==1.14.0
+  08-fractions-verification.json                     source 08's recorded run
+  08-fractions-build_audit.json                      source 08's build record for its own article
+  09-fraction-fibres-verification_report.json        source 09's recorded run
+  01-, 02-, 05-, 06-, 08-, 09-...-requirements.txt   each pins sympy==1.14.0
 ```
 
-Every label in `article.tex` carries the prefix `odg:` (228 labels, counting
+Every label in `article.tex` carries the prefix `odg:` (310 labels, counting
 both `\label{…}` and `\label[type]{…}`): the 150 labels of the three-source
 assembly `bbdd536`, none renamed or removed; nine aliases kept by the
-elementary review merged from upstream; and 69 labels added by the batch-25
-integration. The material of sources 06 and 07 carries the sub-prefix
-`odg:def:` (63 labels) and the fiber and norm results printed from the sibling
-report's manuscript 13 carry `odg:dec:` (6 labels). Two older labels,
-`odg:def:rings` and `odg:def:primitive`, name Definitions 2.1 and 7.7 and
-predate the sub-prefix.
+elementary review merged from upstream; 69 labels added by the batch-25
+integration; and 82 labels added by the batch-27 integration. The material of
+sources 06 and 07 carries the sub-prefix `odg:def:` (63 labels), the fiber and
+norm results printed from the sibling report's manuscript 13 carry `odg:dec:`
+(6 labels), and the material of sources 08 and 09 carries `odg:frac:` (82
+labels). Two older labels, `odg:def:rings` and `odg:def:primitive`, name
+Definitions 2.1 and 7.7 and predate the sub-prefix.
 
 The elementary review (`7784f7f`, `8f1527c`), written in parallel with the
 assembly and merged into it in `1186c11`, added four results, which the
@@ -60,16 +73,22 @@ separated-power rigidity to complex coefficients and corrected Remark 7.5; a
 further review of Sections 8–10 (`40c09a3`, `58cd8e1`) expanded their proofs
 without adding or renumbering statements. Neither covered the batch-25
 material (Sections 11–13, the Section 6 results of sources 07 and 13, and
-Remark 10.5). See [RECONCILIATION.md](RECONCILIATION.md) for the elementary
-claim correspondence, these proof reviews and the remaining review boundary.
+Remark 10.5). A review of Section 14 (`25e372c`, merged in `ef806c0`) expanded
+its proofs. None of these reviews covers the batch-27 material: Section 15, the
+additions to Section 17, Section 18.3 and Questions 18.12–18.16. Inserting
+Section 15 moved the former Sections 15–17 to 16–18; statement numbers in
+Sections 1–14 are unchanged. See [RECONCILIATION.md](RECONCILIATION.md) for the
+elementary claim correspondence, these proof reviews and the remaining review
+boundary.
 
-The article has 104 standard results (40 theorems, 19 propositions, 19 lemmas,
-26 corollaries). The [ledger](../../FORMALIZATION.md) indexes the 67 standard
-results of the three-source assembly by `odg:` label, all **Pending**; no
-implementation mapping cites an `odg:` label, and no Lean code about omnific
-integers exists in the repository.
+The article has 143 standard results (51 theorems, 31 propositions, 25 lemmas,
+36 corollaries), of which 39 are in Section 15. The
+[ledger](../../FORMALIZATION.md) indexes the 67 standard results of the
+three-source assembly by `odg:` label, all **Pending**; no implementation
+mapping cites an `odg:` label, and no Lean code about omnific integers exists
+in the repository.
 
-## Five sources, one report
+## Seven sources, one report
 
 | | Manuscript | Repository pin | Contributes |
 |---|---|---|---|
@@ -78,6 +97,8 @@ integers exists in the repository.
 | **05** | *Omnific Integers and Diophantine Rigidity* | `2cb9c02` | Binary rigidity over `C` (Theorem 6.7); Euler derivations (Section 7); separated powers (Theorem 7.4) and unimodular Fermat (Theorem 7.9); the four-square definition of `Z` (Theorem 10.4); a failed existential induction (Theorem 10.10); failed lifting (Proposition 15.4, Example 15.5); finite-support specialization (Theorem 14.7). Also the universal set-sized quotient theorem, which is **printed in the sibling report** and only quoted here (Cited theorem 3.6). Files prefixed `05-diophantine-rigidity-`. |
 | **06** | *Definable Arithmetic and Coefficient Reconstruction in Omnific Integer Rings* | `71e9606` | Base of Sections 11–13: the one-witness Diophantine definition of `Π` (Theorem 11.2), the Diophantine graph of `ct` (Theorem 12.8), all homomorphisms preserve `ct` (Theorem 12.12), the multiplier identity (Theorem 13.2), reconstruction of `R`, `No`, order and standard part from the pure ring `Oz` (Theorem 13.4), automorphisms fix `R` (Theorem 13.6), the phase twist and the real–Gaussian asymmetry (Theorem 13.10), c.e. sets (Theorem 13.11); its quintic is Remark 11.10. Files prefixed `06-definability-reconstruction-`. |
 | **07** | *Defining Arithmetic Inside Omnific Integers* | `71e9606` | The order-free system in intermediate rings (Theorem 11.9, with 06); the augmentation root detector (Theorem 12.1) and the constant-term detector (Theorem 12.2); support bounds (Proposition 12.3); the ideal test (Theorem 12.6); number-field coefficient rings (Theorem 12.14); norm rigidity over any base field (in Theorem 6.15); recursive saturation (Theorem 13.15); its quartic is Remark 10.5. Files prefixed `07-defining-arithmetic-`. |
+| **08** | *Fractions of Omnific Integers: Rational Specialization, Lowest Terms, Denominator Ideals, and Scale Extensions* | `9a385d3` | Base of Section 15: real constants (Theorem 15.7); the multiplier theorem for any retraction and any number of coordinates (Theorem 15.11); the classification of all representations of rational-function tuples at any `0 ≠ t ∈ Π` (Theorem 15.18, Corollaries 15.19–15.21); no lcm (Example 15.27); rational curves (Corollary 15.28); the localization at `Π` and independent residues (Proposition 15.40, Theorem 15.42); polynomial models, the enlargement and scale defects, nonflatness and `Tor_1` (Theorems 15.45–15.47, Proposition 15.48); monomial denominators (Proposition 15.50); the Gaussian dichotomy (Theorem 15.54). Files prefixed `08-fractions-`. |
+| **09** | *Omnific Fractions: Rationality, Denominator Ideals, and Dense Arithmetic Fibres* | `9a385d3` | The calculus of denominator ideals and least denominators (Propositions 15.2, 15.3); the unimodular region `𝒱` and its dichotomy (Theorem 15.15); nearly equal values of opposite type (Example 15.24); local density (Proposition 15.26); fibers as congruence orbits (Theorem 15.32, Corollary 15.33); set-wise focusing (Theorem 15.35), dense fibers (Corollaries 15.36, 15.37) and nowhere continuity (Corollary 15.38). Its pair multiplier theorem and its one-scale classification are special cases of 08's Theorems 15.11 and 15.18 and are credited there. Files prefixed `09-fraction-fibres-`. |
 
 Batch-25 item 03 is manuscript 13 of the sibling report
 [`set-sized-quotients-of-omnific-integers`](../set-sized-quotients-of-omnific-integers/),
@@ -86,15 +107,22 @@ fiber and norm results (its Sections 8–9) are printed here once, tagged `[13]`
 the Gaussian fiber theorem (Theorem 6.3), the converse of the kernel criterion
 (Corollary 6.4), the real-kernel remark (Remark 6.5), a rank-deficient level
 (Example 6.6) and étale norms (in Theorem 6.15). Its real fiber theorem is
-Theorem 6.2(a), printed once. It is not counted among this report's five
-sources.
+Theorem 6.2(a), printed once. It is not counted among this report's seven
+sources. Batch-25 item 04 is the sibling report's manuscript 14 (files
+`14-arithmetic-tensors-` there). Its criterion for unimodular constant
+directions over `Z` and `Z[i]` is printed here once, tagged `[14]`, as
+Corollary 15.55, which is also the constant case of source 08's Gaussian
+dichotomy. The sibling report says that this criterion is printed here with
+Theorem 14.5; before this integration it was not.
 
 The source manuscripts are not shipped; their code, data, source 02's
-provenance note, source 05's build note and source 06's source audit are. The
-delivered READMEs of sources 06 and 07 are not shipped. The pin `2cb9c02` is
-107 commits before `be06fc8`; the pin `71e9606` also precedes `be06fc8`, so
-sources 06 and 07 did not see this report or its sibling. Source 01's checksum
-manifest is not shipped because it lists the delivered file names.
+provenance note, source 05's build note and the source audits of sources 06
+and 08 are. The delivered READMEs of sources 06–09 are not shipped. The pin
+`2cb9c02` is 107 commits before `be06fc8`; the pin `71e9606` also precedes
+`be06fc8`, so sources 06 and 07 did not see this report or its sibling. The pin
+`9a385d3` of sources 08 and 09 is 35 commits before `a4dcb91`; at that pin this
+report had only sources 01, 02 and 05. The checksum manifests of sources 01 and
+09 are not shipped because they list the delivered file names.
 
 **Why one report.** Sources 01, 02 and 05 prove the same spine: normal forms,
 the rings `B_R ⊃ Oz = Z ⊕ Π`, degree and units, the floor, the retraction `ct`
@@ -111,8 +139,15 @@ same order-free system (three equations, five witnesses, degrees 3, 3, 7), the
 same intersective polynomial and the same Pell divisibility argument, and each
 has decisive results the other lacks. They answer this report's question on an
 existential definition of `Π` and extend its definability section, so they are
-added as Sections 11–13 after Section 10, with source 06 as base. None of the
-five sources, nor source 13, contradicts another.
+added as Sections 11–13 after Section 10, with source 06 as base. Sources 08
+and 09 prove the same core theorem: for a tuple unimodular over `B_R`, the
+constant vector decides whether the admissible multipliers form `Oz` or `Π`.
+Source 08 is the base because it has the weaker hypotheses (any retraction, any
+number of coordinates, any `0 ≠ t ∈ Π`, against 09's pairs and monomials
+`t = ω^α`). The core generalizes Theorems 4.10 and 14.5 and fills the gap
+stated after Theorem 14.5. So the two are added as one new Section 15,
+directly after Section 14, with the label sub-prefix `odg:frac:`. None of the
+seven sources, nor source 13 or 14, contradicts another.
 
 **Printed once from sources 06, 07 and 13.** The units lemma, Pell rigidity
 (with the Gaussian solution `(i, i)`), Pell divisibility, the intersective
@@ -121,6 +156,18 @@ problem, the collapse obstruction, `Frac(Oz) = No`, the zero Pell fiber, the
 cubic norm, the negative-exponent Pell solutions and the omitted types. Source
 07's quartic is source 05's up to a substitution and is printed once as Remark
 10.5.
+
+**Printed once from sources 08 and 09.** Their re-proofs of the rings and
+units, the common divisor, `Π² = Π` and its non-generation, `Frac(Oz) = No`,
+the floor and ordered division stay in Sections 2–4. Within Section 15, the
+unimodular-fraction lemma (Lemma 15.4), real constants (Theorem 15.7), ordinary
+denominators (Proposition 15.5), the one-function criterion (Corollary 15.21),
+the monomial criterion (Proposition 15.50) and the Gaussian fraction field are
+printed once, naming both. 09's pair multiplier theorem and one-scale
+classification are credited as special cases of Theorems 15.11 and 15.18, and
+09's region `𝒱` is kept as the formulation of Theorem 15.15. The two example
+tables are merged into Example 15.23. Source 08's conic example is Proposition
+14.4 with source 01's witness and is not reprinted.
 
 **Kept twice, as different proofs.** Uniqueness of `ct`: 01's divisibility
 proof (Proposition 3.5) and 05's route through the set-sized quotient theorem.
@@ -133,7 +180,12 @@ variables, three squares) and 05's (six auxiliary variables, four squares).
 Pell divisibility: 07's permutation argument and 06's finite-ring argument
 (Lemma 11.6). The universal definition of `Π` and the `∃⁵∀²`/`∀²∃⁵`
 definitions of the graph of `ct` of source 07 (Corollary 12.7, Remark 12.11),
-next to source 06's existential ones.
+next to source 06's existential ones. The Bézout lift in Theorem 15.11: 08's
+one-line formula and 09's adjustment of constants (Remark 15.12). The absence
+of a gcd: the halving argument of 08 and 09 (Remark 15.8), next to the two
+routes for Theorem 4.10. Two elements outside the fraction field of one
+workspace: 08's exponential series and 09's factorial-gap series (Example
+15.52).
 
 **Added in the merge**, each tagged `[merge]` with a complete proof: an
 explicit identity giving the divisibility step of the separated-power proof
@@ -148,7 +200,16 @@ graph of `ct` over number-field coefficient rings through another radicand
 6.15); the collapse of source 06's quintic over `Oz[i]` at `x = ω` (Remark
 11.10); and the Gaussian point `(1 + ω, iω)` of `X + iY = 1` (Remark 6.5). The
 degrees, witness identities and collapses were checked with SymPy when the
-merge was made.
+merge was made. The batch-27 merge adds three items, also tagged `[merge]`
+with complete proofs. Remark 15.8: the conclusion of Theorem 4.10 holds in
+every fixed workspace `Oz_Γ`, by the halving route. Corollary 15.30: source
+08's curve criterion stated for homogeneous systems, the partial answer to
+Question 18.3. Remark 15.39: comparison with the omnific groups report. The
+focusing matrices `F_{x,b}` are transposes of that report's non-elementary
+unipotents; they lie outside `E_2(Oz)` at centres with irrational standard
+part; and `E_2(Oz)·∞` is not dense although `K·∞` is, so the density of
+Corollary 15.36 needs non-elementary matrices. Its certificates, the table of
+Example 15.23 and the second Bézout lift were checked with SymPy.
 
 **Notation.** The purely infinite ideal is `Π`, the letter used by the
 foundations report (`found:eq:omnific`); the sources wrote `𝒥` (01), `𝓘`
@@ -168,8 +229,20 @@ sources' `D`, the Pell parameter here), the rings are `𝒜_𝕜(Γ)`, `Π_𝕜(
 `ℛ_𝔬(𝕜, Γ) = 𝔬 + Π_𝕜(Γ)`, the Gaussian omnific integers are `Oz[i]`, and
 the intersective polynomial `(T²−13)(T²−17)(T²−221)` is `Λ` (06's `H`, 07's
 `P`). Source 07's constant definition `Φ` is `Ξ` here, because `Φ` is the
-induction formula of Theorem 10.10. The full per-source table is Table 1 in
-Appendix A.
+induction formula of Theorem 10.10. In Section 15 (conventions in Section
+15.1) the purely infinite parameter is `t` (08's `τ` is the phase twist here),
+projective coordinates put the denominator last (08 put it first), a point
+other than `∞` is *affine* (09 says "finite", reserved here for bounded
+surreals), the denominator ideal is `𝔇` (09's `D` is the Pell parameter), the
+specialization is `sp` (09's `σ`), the congruence kernel of
+`SL_2(Oz) → SL_2(Z)` is `K` (09's `Γ`, the exponent group here), the rational
+residue is `res` on the localization `Oz_Π` (08's `ρ` on `𝒜`; `ρ = √2 − 1` and
+`𝒜_𝕜(Γ)` here), the abstract pullback is `R_Z = c⁻¹(Z)` for a retraction
+`c : R → R` (08's `A`, `B`; `A` is an intermediate ring and `B` a bilinear form
+here), the polynomial models are `𝒫[X] = Z + X R[X]` (08's `A_τ`, `A_0`,
+`A_m`), the focusing matrices are `F_{x,b} = I + b N_x` (09's `G_{x,b}`; `G` is
+the Gram matrix), and 09's lemma "transvection" is Lemma 15.34, not Lemma 8.2.
+The full per-source table is Table 1 in Appendix A.
 
 ## What the report claims
 
@@ -281,30 +354,81 @@ Numbers refer to the built `article.pdf`.
     integer tuple. Finite-support solutions specialize to polynomial arcs
     over real coefficients (Theorem 14.7, extending source 05’s integer
     case); supplied finite-support Bézout witnesses specialize with them.
-14. **Omnific coefficients (Section 15).** The square-discriminant criterion
-    (Theorem 15.1), initial forms (Proposition 15.3), two-term roots
-    (Proposition 15.4) and a simple residue root that does not lift (Example
-    15.5). The sibling report's fresh-scale image-gap theorem contains
-    `x² = ω² + 1` (Example 15.2) and the two-term equations as special cases.
+14. **Fractions and denominator ideals (Section 15).** `𝔇(x)` is a nonzero
+    ideal with the covariance `𝔇((ax+b)/(cx+d)) = (cx+d)𝔇(x)` under `GL_2(Oz)`
+    (Proposition 15.2), principal exactly when it has a least positive member
+    (Proposition 15.3). `Oz[(Z∖0)⁻¹] = Q ⊕ Π`, with `𝔇(y + m/n) = nOz`
+    (Proposition 15.5); no set of denominators serves all surreals
+    (Proposition 15.6). For real `r`, `𝔇(r)` is `qOz` or `Π`, and five
+    properties characterize `r ∈ Q` (Theorem 15.7); the pair `(t, rt)` has no
+    gcd in every fixed workspace `Oz_Γ` (Remark 15.8). *Multiplier theorem*:
+    for a tuple unimodular over a domain `R` with a retraction `c : R → R`,
+    every ambient scalar making it `c⁻¹(Z)`-valued lies in `R`; the scalars form
+    `c⁻¹(Z)` (rational constant direction, after normalization, and the tuple
+    is then unimodular over `c⁻¹(Z)`) or `ker c` (irrational)
+    (Theorem 15.11). On the region `𝒱 ⊆ P¹(No)` of points with a
+    `B_R`-unimodular presentation, `𝔇(x)` is `λQ·Oz` with a unique primitive,
+    unimodular presentation, or `QΠ` with no gcd, no set of generators and no
+    least denominator, according as `sp(x) ∈ P¹(Q)`, and `𝒰 = sp⁻¹(P¹(Q))`
+    (Theorem 15.15). For coprime real polynomials and `0 ≠ t ∈ Π`, all
+    representations of `(p_j(t)/q(t))_j` are `h(p(t), q(t))` with `h ∈ Oz` or
+    `h ∈ Π` according to `[p(0):q(0)]`, for arbitrary supports
+    (Theorem 15.18); lowest terms are all or nothing (Corollary 15.19); the
+    leading-exponent spectrum (Corollary 15.20); `f(t)` has lowest terms iff
+    `f(0) ∈ Q ∪ {∞}` (Corollary 15.21); a table of eleven examples
+    (Example 15.23); `r + 1/t` and `r + 1/(t+1)` have opposite types
+    (Example 15.24); local density at infinity (Proposition 15.26). Two reduced
+    fractions without an lcm (Example 15.27); primitive coordinates on rational
+    curves iff `φ(0) ∈ Pⁿ(Q)` (Corollary 15.28) and unimodular solutions of
+    homogeneous systems along such curves (Corollary 15.30). The fibers of `sp`
+    are the orbits of `K = ker(SL_2(Oz) → SL_2(Z))` (Theorem 15.32);
+    `𝒰 = SL_2(Oz)·∞` (Corollary 15.33); one matrix of `K` sends any set of
+    points into any interval (Theorem 15.35), so every `K`-orbit is dense
+    (Corollary 15.36), both denominator types occur in every interval
+    (Corollary 15.37) and `sp` is continuous nowhere (Corollary 15.38); the
+    density needs matrices outside `E_2(Oz)` (Remark 15.39). `Oz_Π` is local
+    with residue field `Q` (Proposition 15.40), its rational-function part is
+    described (Proposition 15.41), and on finite elements `(st, res)` maps onto
+    `R × Q` (Theorem 15.42). `Oz ∩ R(t) = Z + tR[t]` (Proposition 15.43), whose
+    ideal `tR[t]` needs `𝔠` generators (Proposition 15.44); extension to `Oz`
+    loses denominators (Theorem 15.45); under `T = U^m` the irrational defect is
+    `UR[U]/U^mR[U]`, of real dimension `m − 1` (Theorem 15.46), the extension is
+    integral but neither finite nor flat (Theorem 15.47), and `Tor_1` realizes
+    the same defect (Proposition 15.48). Monomial denominators (Proposition
+    15.50, Examples 15.51, 15.52). The Gaussian dichotomy (Theorem 15.54) and
+    the constant-direction criterion over `Z` and `Z[i]` (Corollary 15.55,
+    sources 08 and 14).
+15. **Omnific coefficients (Section 16).** The square-discriminant criterion
+    (Theorem 16.1), initial forms (Proposition 16.3), two-term roots
+    (Proposition 16.4) and a simple residue root that does not lift (Example
+    16.5). The sibling report's fresh-scale image-gap theorem contains
+    `x² = ω² + 1` (Example 16.2) and the two-term equations as special cases.
 
-**Questions (Section 17).** Two source questions are recorded as settled by
-source 05 (Section 17.1): source 01's `Y² = X³ + 1` and coprime exponents, and
-the unimodular half of the Fermat questions of sources 01 and 02. Section 17.2
-records that source 06 answers the first part of Question 17.4 (an
+**Questions (Section 18).** Two source questions are recorded as settled by
+source 05 (Section 18.1): source 01's `Y² = X³ + 1` and coprime exponents, and
+the unimodular half of the Fermat questions of sources 01 and 02. Section 18.2
+records that source 06 answers the first part of Question 18.4 (an
 existential definition of `Π`) and source 07's closing question on
 positive-existential definitions of `Π` and of the graph of `ct`, and that the
-report's quartics answer source 06's degree question in part. Still open:
-affine varieties and curves, including `Y² = X³ + aX + b` with `a ≠ 0`
-(Question 17.1); primitive, non-unimodular Fermat triples (Question 17.2);
-primitive homogeneous solutions (Question 17.3); which fibers or subideals of
-`Π` are Diophantine (the second part of Question 17.4); the guard's
-complexity, the least degree of a definition of `Z`, a single Gaussian
-polynomial and better quantifier bounds (Question 17.5); roots with omnific
-coefficients (Question 17.6); the size boundary (Question 17.7); finite-support
-search (Question 17.8); coefficient recovery of lower quantifier complexity
-(Question 17.9); structure that determines the real form of `Oz[i]`
-(Question 17.10); infinite algebraic extensions (Question 17.11). No source
-claims that these are open in the literature.
+report's quartics answer source 06's degree question in part. Section 18.3
+records that source 08's rational-curve criterion answers Question 18.3 in part
+(Corollary 15.30); points off rational curves and the dependence on the
+integral model remain open. Still open: affine varieties and curves, including
+`Y² = X³ + aX + b` with `a ≠ 0` (Question 18.1; the omnific groups report
+answers it for closed subgroup schemes of `GL_N`); primitive, non-unimodular
+Fermat triples (Question 18.2); primitive homogeneous solutions, re-scoped
+(Question 18.3); which fibers or subideals of `Π` are Diophantine (the second
+part of Question 18.4); the guard's complexity, the least degree of a
+definition of `Z`, a single Gaussian polynomial and better quantifier bounds
+(Question 18.5); roots with omnific coefficients (Question 18.6); the size
+boundary (Question 18.7); finite-support search (Question 18.8); coefficient
+recovery of lower quantifier complexity (Question 18.9); structure that
+determines the real form of `Oz[i]` (Question 18.10); infinite algebraic
+extensions (Question 18.11); and, from sources 08 and 09, denominator ideals
+beyond one parameter (Question 18.12), the extent of `𝒱` (Question 18.13),
+orbits outside `𝒱` (Question 18.14), several parameters (Question 18.15) and
+other scale extensions (Question 18.16). No source claims that these are open
+in the literature.
 
 ## Corrections made in the merge
 
@@ -337,7 +461,8 @@ claims that these are open in the literature.
   Theory*, p. 3, which is added.
 - Source 06's `∃y (x² = 2y²)` fails for number-field coefficient rings with
   `√2` in their fraction field; Remark 12.15 uses another radicand.
-- No mathematical error was found in any main proof of the five sources.
+- No mathematical error was found in any main proof of sources 01, 02, 05, 06
+  and 07.
 - The later Sections 5–7 review corrected the merge's own divisibility
   identity (Remark 7.5): it requires the derivation to kill `a` and `b`, and
   its use at level `c` also requires `∂c = 0`. The Euler derivations satisfy
@@ -356,10 +481,25 @@ claims that these are open in the literature.
   specifies the induction domain, and gives nonnegative witnesses for the
   order-free arithmetic formula. The open-induction argument explicitly
   transfers quantifier-free truth to a set-sized Hahn workspace.
-- The Section 11 review strengthens the description of primitive real
-  directions, expands the finite ordered specialization argument, and
-  extends the arc theorem to real coefficients. Finite-support Bézout
-  witnesses and the positive-parameter sign condition are explicit.
+- The Section 11 review (now Section 14) strengthens the description of
+  primitive real directions, expands the finite ordered specialization
+  argument, and extends the arc theorem to real coefficients. Finite-support
+  Bézout witnesses and the positive-parameter sign condition are explicit.
+- No mathematical error was found in sources 08 and 09. Source 09 says "finite
+  x" for `x ≠ ∞`; these points are called affine here. Its local density
+  proposition ends "unless `g = f` exactly", which is unnecessary (Proposition
+  15.26). Its introduction's "unique positive least denominator" is simply the
+  least positive denominator. Source 08's `A = c⁻¹(Z)` and `𝒜 = Oz_Π` share a
+  letter, and the two sources order projective coordinates oppositely; both are
+  fixed (Section 15.1). Source 09's `lem:transvection` would collide with this
+  report's Lemma 8.2 and is Lemma 15.34.
+- Credits added: source 08's conic is Proposition 14.4 with source 01's
+  witness; its no-lcm example is, for monomial `t`, the sibling report's
+  `osq:tn:thm:syzygy`(iii); its real-constant ideal is, for irrational `r`,
+  `osq:tn:thm:duals`; source 09's `M⁻¹Oz = No` is `osq:prop:fractions`(iii);
+  and source 08's Gaussian theorem contains manuscript 14's direction
+  criterion. The sibling report's results postdate the pin of sources 08
+  and 09.
 
 **Stale repository statements.** Source 01 said the repository's
 trigonometry material used the omnific integer part; at the pin the
@@ -374,13 +514,25 @@ report and its sibling, and still no Lean. Descriptions of
 `docs/NORMAL_FORM_BRIDGE.md`, the `Surreal/Foundations/` workspace modules,
 the surcomplex automorphism report's phase twists, the catalogue entry on
 coefficient recovery by a dilation, and the formalization ledger remain
-accurate.
+accurate. Sources 08 and 09 cite the rational-direction criterion as
+"Theorem 11.5", its number at their pin `9a385d3`; it is now Theorem 14.5 (and
+09's "§§4, 11" are now Sections 4 and 14). Source 09 describes this report as
+built from manuscripts of 22 September, true at its pin; it now has seven
+sources of 22 and 23 September. Source 08 gives the sibling report its old
+title, *The Universal Set-Sized Quotient of the Omnific Integers*; it is now
+*Set-Sized Quotients of the Omnific Integers*. Their other citations of this
+report (Theorems 4.2, 4.6, 4.10, Corollary 4.3, the floor of Section 2) are
+accurate, and 09's statement that its omnific results are pending in Lean
+still holds. The sibling report's statement that manuscript 14's Gaussian
+direction criterion is printed here was not true before this integration; it
+is now (Corollary 15.55).
 
 ## What the report does not claim
 
 No non-claim of any source was dropped. Appendix B lists them per source (01:
-24 items, 02: 22, 05: 26, 06: 25, 07: 19, and 7 for the results printed from
-source 13, plus the caveats common to 01, 02 and 05 and to 06 and 07). The
+24 items, 02: 22, 05: 26, 06: 25, 07: 19, 08: 25, 09: 20, 7 for the results
+printed from source 13 and 2 for the criterion printed from source 14, plus
+the caveats common to 01, 02 and 05, to 06 and 07, and to 08 and 09). The
 main ones:
 
 - **Status.** AI-assisted; not refereed; nothing formalized in Lean; the finite
@@ -390,9 +542,11 @@ main ones:
   and the guard, source 02 the exact decomposable fibers and uniform quadratic
   lifting, source 05 the separated-power, unimodular Fermat and set-sized
   quotient proofs, source 06 the explicit Diophantine formulas and the
-  reconstruction package, and source 07 the formula package and the
-  constant-term detector as their most distinctive contributions. None is
-  certified new. First-order definability of `Z` in `Oz` and its nonsaturation
+  reconstruction package, source 07 the formula package and the
+  constant-term detector, source 08 the rational-function classification and
+  the denominator-defect package, and source 09 the multiplier and dichotomy
+  theorems, the one-scale classification and the orbit and focusing theorems
+  as their most distinctive contributions. None is certified new. First-order definability of `Z` in `Oz` and its nonsaturation
   go back to a 2018 MathOverflow comment by *nombre*, which source 06 credits;
   the ideal equation belongs to the same obstruction.
 - **Rigidity is not finiteness.** No Thue or Baker finiteness, no bounds and no
@@ -431,7 +585,27 @@ main ones:
 - **Refinement.** The 18 September 2026 announcement of a Lean proof of
   Conway's refinement conjecture is recorded, not audited and not used; no
   result assumes refinement, GCD or UFD properties.
-- **Formalization.** The proposed Lean modules (Section 16.2) are proposals.
+- **Fractions.** `Frac(Oz) = No` is classical (Conway; L'Innocente–Mantova,
+  Proposition 2.4.5), and Hamkins's observations on lowest terms are not new;
+  the pullback and matrix-completion methods are ordinary algebra (LM Lemma
+  9.2.1 and Klawa as precedents); integrality and nonflatness of such
+  extensions are classical (Stacks 00HK). Sources 08 and 09 name their
+  candidate contributions without certifying priority; their searches were
+  targeted or keyword-based. The classification covers tuples in `R(t)` and
+  `C(t)`, and the region `𝒱`; it does not classify `𝔇(x)` for all `x`, and
+  neither source claims `𝒱 = P¹(No)`. `t` must be purely infinite and
+  nonzero; one parameter only (a multivariate gcd of one gives no Bézout
+  identity). Primitive and unimodular coincide only for the classified
+  representations. `sp` is not a field homomorphism, and `f(0)` is a formal
+  substitution: no homomorphism `No → R` sets `ω = 0`. `res` and `st` have
+  different domains; neither is a retraction of `No`. The dense fibers are
+  not open and not separated, and focusing fails for proper classes. The
+  scale defect is a real dimension, not a length, and there is no general
+  flatness or normalization theorem for Hahn integer parts. The certificate
+  procedure needs exact coefficients. The primitive-fraction class is not a
+  subring. Manuscript 14's criterion concerns coordinate representatives, not
+  all points of a projective scheme over a ring.
+- **Formalization.** The proposed Lean modules (Section 17.2) are proposals.
   At the repository's Mathlib pin (`81a5d257`) `Nat.sum_four_squares` exists and
   no three-square theorem does, so only the four-square definitions of `Z`
   rest on a theorem in Mathlib.
@@ -456,7 +630,19 @@ main ones:
   preliminaries overlap Sections 2–4 here. Its manuscript 13 supplies the
   Gaussian fiber and étale norm results printed here once (Section 6), and
   its manuscript 16 (files `16-fresh-scale-`) proves the fresh-scale image-gap
-  theorem generalizing Example 15.2 and Proposition 15.4.
+  theorem generalizing Example 16.2 and Proposition 16.4. Its manuscript 14
+  (files `14-arithmetic-tensors-`) proves the direction criterion printed here
+  as Corollary 15.55; its `osq:tn:thm:duals`, `osq:tn:thm:syzygy`(iii) and
+  `osq:tn:thm:hom` contain the rank-two case of Theorem 15.7, the intersection
+  of Example 15.27 for monomial `t`, and the scalar step of Theorem 15.11;
+  `osq:prop:fractions`(iii) gives `M⁻¹Oz = No`, and `osq:cor:smallprimes` agrees
+  with the residue field `Q` of `Oz_Π` (Proposition 15.40).
+- [`omnific-groups-and-lattices`](../omnific-groups-and-lattices/): its
+  cusp-residue obstruction and non-elementary unipotents
+  (`ogl:el:prop:cuspresidue`, `ogl:el:thm:nonel`) show that the focusing
+  matrices of Lemma 15.34 lie outside `E_2(Oz)` at irrational centres and that
+  the density of Corollary 15.36 needs such matrices (Remark 15.39). It also
+  answers Question 18.1 for closed subgroup schemes of `GL_N`.
 - [`surcomplex-field-automorphisms`](../../surcomplex/surcomplex-field-automorphisms/)
   constructs the phase twists and the dilations `S_a`; source 06 credits it and
   proves that the twist of Lemma 13.9 preserves `Oz[i]`.
@@ -478,8 +664,15 @@ processor is needed:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The build gives 86 pages with no errors, warnings, undefined references or
-overfull boxes. Source 01's `code/01-diophantine-geometry-build.sh` and `.ps1`
+The build gives 117 pages with no errors, warnings, undefined references,
+multiply defined labels or overfull boxes. (The text at `a4dcb91`, before
+Section 15, built to 87 pages with the same MiKTeX installation; the PDF
+committed then had 86 pages.) Source 08's `code/08-fractions-Makefile` and
+source 09's `code/09-fraction-fibres-build.sh` and `.ps1` compile the delivered
+`omnific_fractions.tex`, which is not shipped; they do not build this report.
+Source 08's shipped source audit describes its own article and files
+(`verify.py`, `verification.json`), which are shipped here as
+`code/08-fractions-verify.py` and `data/08-fractions-verification.json`. Source 01's `code/01-diophantine-geometry-build.sh` and `.ps1`
 compile source 01's delivered file name (`omnific_integers.tex`), which is not
 shipped; they do not build this report. Source 06's
 `code/06-definability-reconstruction-Makefile` and source 07's
@@ -492,9 +685,9 @@ its delivered file names (`article.tex`, `verify_examples.py`,
 `data/05-diophantine-rigidity-requirements.txt`. Source 06's shipped source
 audit likewise describes source 06's own article.
 
-The checks of sources 01, 02, 05 and 06 need Python 3.9 or later (3.10 for
-source 06) and SymPy (tested with 1.14.0); source 07's needs Python 3.10 or
-later and the standard library only. From this directory:
+The checks of sources 01, 02, 05, 06, 08 and 09 need Python 3.9 or later
+(3.10 for sources 06 and 08) and SymPy (tested with 1.14.0); source 07's needs
+Python 3.10 or later and the standard library only. From this directory:
 
 ```text
 python -m pip install -r data/01-diophantine-geometry-requirements.txt
@@ -504,6 +697,9 @@ python code/05-diophantine-rigidity-verify_examples.py
 python code/05-diophantine-rigidity-verify_examples.py --standard-radius 200
 python code/06-definability-reconstruction-verify.py --output <scratch>/verification-rerun.json
 python code/07-defining-arithmetic-verify.py
+python code/08-fractions-verify.py --output <scratch>/08-verification.json
+cp code/09-fraction-fibres-verify_examples.py <scratch>/verify_examples.py
+python <scratch>/verify_examples.py
 ```
 
 Source 01's script **writes** a JSON report, by default
@@ -514,7 +710,12 @@ record. Source 06's script writes only to the path given with `--output`
 (without it, it prints the report), so it never overwrites
 `data/06-definability-reconstruction-verification.json`. The scripts of
 sources 02, 05 and 07 print to the terminal only. Source 07's script uses
-assertions: do not run it with `python -O`.
+assertions: do not run it with `python -O`. Source 08's script **writes**
+`verification.json` next to itself (that is, into `code/`) unless `--output`
+is given; pass a path outside this directory, as above. Source 09's script
+**always** writes `verification_report.json` next to itself, so run a copy, as
+above, to keep `code/` unchanged; the shipped record is
+`data/09-fraction-fibres-verification_report.json`.
 
 When this report was assembled all five passed with Python 3.14.4 and SymPy
 1.14.0: source 01's checks cover scalar identities, 20 quadratic-isometry cases
@@ -526,4 +727,16 @@ up to 500 and roots of `Λ` modulo every integer up to 2000; source 07's 13
 groups, including roots of `Λ` modulo every integer up to 4096 and quartic
 witnesses for `|x| ≤ 100`. The outputs of sources 01, 02 and 06 differ from the
 shipped records only in the recorded Python version (3.13.5 there); the
-outputs of sources 05 and 07 are identical to their records.
+outputs of sources 05 and 07 are identical to their records. When Section 15
+was written, the scripts of sources 08 and 09 passed on copies with the same
+versions. Source 08's 833 assertions in 13 categories (40 random polynomial
+vectors, Bézout identities and lifted certificates, the classification over
+`Q(√2)`, scalar memberships, the examples, the substitution `T = U^m` and its
+defect layers, the nonflat relation, integrality equations, residue identities
+and falling-factorial independence) gave a report with the same content as
+the shipped record, which has no timestamp. Source 09's 92 assertions (the
+matrices `F_{x,b}`, the covariance, Bézout certificates, nine one-scale
+examples, local density and five focusing samples) gave a report that differs
+from its record only in the generation time and Python version. The
+certificates and table of the merge's Section 15 additions were checked
+separately with SymPy.

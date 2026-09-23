@@ -191,3 +191,11 @@ The three original verification scripts are unchanged by synchronization.
 Their finite examples do not prove the new class-sized arguments or establish
 full equivalence of the manuscripts. No additional Lean theorem is asserted
 by this reconciliation.
+
+Two further manuscripts on omnific fractions, local 08 and 09, were placed in
+`a4dcb91` and integrated after these reviews as a new Section 15
+(`odg:frac:` labels), with additions to the formalization section, a partial
+answer to `odg:q:homogeneous` and five new questions. That material is outside
+this review. Inserting Section 15 moved the sections that followed Section 14
+by one: the section numbered 11 in the passes above is Section 14, and the
+former Sections 15–17 are Sections 16–18. No label was renamed or removed.
