@@ -2430,6 +2430,16 @@ resolve, and `git diff --check` passes. This is a documentation-only change;
 it adds no Lean coverage. Sections 8 onward, remaining imported results,
 source reconciliation and the placed companions remain on the review queue.
 
+Synchronization merged `04a5b88`, adding the verified centered-sine formal
+coordinate automorphism and transport of the coupled angular defining ideal
+to a monomial formal quotient. Its numeric local dimensions and resulting
+angular total multiplicity remain pending, as the incoming ledger states.
+No manuscript or PDF changed in this merge. The combined
+`LEAN_NUM_THREADS=2 lake build` passes all 4,290 jobs, and the axiom audit
+passes 13,135 declarations with only `propext`, `Classical.choice` and
+`Quot.sound`. The source-label and 51-report inventory audits still pass,
+and all 1,308 local Markdown destinations resolve.
+
 ## Remaining scope
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
