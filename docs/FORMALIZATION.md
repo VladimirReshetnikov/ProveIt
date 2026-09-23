@@ -466,9 +466,19 @@ cannot replace strong Hahn summability.
 
 `T`, `L`, `P`, `C` mean literal `theorem`, `lemma`, `proposition` and
 `corollary` environments; examples, computations, assessments and other
-custom environments are not included. Paths below identify all 36 canonical
-main texts present in the repository, including the two whose source is not
-named `article.tex`. The document map and typeset catalogue list the same reports.
+custom environments are not included. Paths below identify 36 of the 40
+canonical main texts present in the repository, including the two whose source
+is not named `article.tex`. The document map and typeset catalogue list all 40.
+Four reports placed in `30dfb4f` are **not yet indexed or mapped**:
+`surcomplex/three-duals-of-hahn-vector-spaces`,
+`surcomplex/hidden-negative-hermitian-directions`,
+`surreal/transcendence-over-bounded-support` and
+`surreal/matrix-scaling-at-surreal-scales`. The same commit added sections to
+four indexed reports (`dynamics-and-normal-forms`,
+`infinite-dimensional-hahn-spectral-theory`,
+`holonomic-rigidity-for-entire-hahn-functions` and `differential-equations`),
+whose new result environments are not indexed either; some line hints below
+have moved. None of this material is in the counts on this page.
 
 | Main report source | T | L | P | C | Total |
 |---|---:|---:|---:|---:|---:|

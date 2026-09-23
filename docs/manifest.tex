@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={The surreal and surcomplex reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of thirty-six research packages on surreal and surcomplex numbers}}
+  pdfsubject={Catalogue of forty research packages on surreal and surcomplex numbers}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -59,7 +59,7 @@
 
 \begin{center}
  {\LARGE\bfseries\color{Ink} The surreal and surcomplex reports}\\[8pt]
- {\large Thirty-six independent mathematical research packages,\\
+ {\large Forty independent mathematical research packages,\\
  on the surreal field, its algebraic closure, its quaternion algebra,\\
  their reach into physics, and the foundations and computation of all of them}\\[10pt]
  {\small September 2026}
@@ -70,24 +70,27 @@
 \section*{Scope}
 \addcontentsline{toc}{section}{Scope}
 
-This document catalogues the thirty-six research packages stored under
+This document catalogues the forty research packages stored under
 \dir{docs}.  Each entry names the problem the report attacks, the result it
 claims, and the delivery it arrived in.
 
-The collection divides in five, and so does the directory tree.  Eleven
+The collection divides in five, and so does the directory tree.  Thirteen
 reports, under \dir{docs/surreal}, are about the surreal field $\No$ itself and
 its real Hahn subfields: birthdays and their behaviour under multiplication,
 the option graphs of surreal forms, genetic functions and gaps, two questions
 of Lipparini about evaluating formal sums, the rigidity of exponential
 automorphisms, Gamma functions, differential transcendence of explicit
-surreals, Hahn-valued measures and probability, and Markov generators.
-Twenty, under \dir{docs/surcomplex}, are about the algebraic closure $\SC$:
+surreals, Hahn-valued measures and probability, Markov generators,
+transcendence over bounded-support series, and diagonal matrix scaling.
+Twenty-two, under \dir{docs/surcomplex}, are about the algebraic closure $\SC$:
 the theory of holomorphic functions over it, its differential algebra, its
 rank-one analytic geometry, its finite and infinite-dimensional spectral
 theory, its local, quasi-periodic and expanding dynamics, its nonabelian
 support obstructions, its entire functions at arbitrary valuation rank and
 their holonomic rigidity, Tate curves and multiscale theta series, Herglotz
-positivity, moment reconstruction, and the summability of Wick expansions.  One, under \dir{docs/surquaternions}, leaves
+positivity, moment reconstruction, the summability of Wick expansions,
+the duals of Hahn vector spaces, and hidden negative directions of Hermitian
+forms.  One, under \dir{docs/surquaternions}, leaves
 commutativity behind for Hamilton's division algebra $\mathbb{H}_{\No}$ over
 $\No$.  One, under \dir{docs/physics}, is the only report here whose subject is
 not mathematics: it asks what surreal scalars do and do not buy in general
@@ -125,7 +128,7 @@ latexmk -pdf manifest.tex \&\& latexmk -c manifest.tex
 
 \section{The surreal field}
 
-Eleven reports about $\No$ and its real Hahn subfields.  Two questions of
+Thirteen reports about $\No$ and its real Hahn subfields.  Two questions of
 Lipparini on evaluating formal sums; two independent halves of Gonshor's
 product-birthday conjecture, on domains neither of which contains the other;
 the subgraph question from Roughan's paper on birthday arithmetic; a genetic
@@ -133,7 +136,8 @@ counterexample separating pointwise derivatives from differences of
 constants; a rigidity theorem for exponential automorphisms; a sharp
 convexity classification of surreal Gamma functions; differential
 transcendence of explicit surreals; Hahn-valued measures and probability;
-and Markov generators at every valuation scale.  The first and the fourth
+Markov generators at every valuation scale; transcendence over bounded-support
+series; and diagonal matrix scaling.  The first and the fourth
 each arrived as a pair of archives and were merged; the exponential-automorphism
 report later absorbed two independent re-derivations of its own theorem, and
 the measures report merges three manuscripts; the rest are single
@@ -466,18 +470,68 @@ the Cauchy--Binet identity of \nolinkurl{surcomplex/spectral-theory} for another
 matrix class; neither this report nor
 \nolinkurl{surreal/hahn-valued-measures-and-probability} depends on the other.}
 
+\entry{Transcendence over bounded-support Hahn series}
+{surreal/transcendence-over-bounded-support}
+{article.pdf}{one manuscript, delivered 22~September 2026}
+{Let $G$ be a nonzero set-sized ordered abelian group, $K$ a field of
+characteristic zero, $\mathcal{B}_G(K)$ the ring of Hahn series whose support
+is bounded above, $\mathcal{F}_G(K)$ its fraction field and
+$\kappa=\mathrm{cf}(G)$, cofinality in exactly the sense of
+\nolinkurl{surcomplex/entire-functions-at-arbitrary-rank}.  There are $2^\kappa$
+elements of $K((t^G))$, with positive integer coefficients and one common
+support of order type $\kappa$, algebraically independent over
+$\mathcal{F}_G(K)$ (Theorem~5.3); no smaller support cardinality carries even
+one transcendental element (Corollary~5.4), every valuation ball contains such
+a family, and for real-exponent Hahn fields over $\R$ or $\C$ the transcendence
+degree is the continuum.  A descent theorem makes $K((t^H))$ and
+$\mathcal{F}_G(L)$ linearly disjoint over $\mathcal{F}_H(K)$ for cofinal
+$H\subseteq G$ and $K\subseteq L$ (Theorem~3.2), so relation ideals and finite
+degrees survive enlargement of coefficients and cofinal exponents.  Also: when
+$\mathcal{B}_G(K)$ is a field, its units via the highest Archimedean quotient,
+a GCD-descent theorem that stays \emph{conditional}, and Conway-normal-form
+witnesses that are actual surreal numbers.  Transcendence here comes from the
+support, not from the coefficients as in
+\nolinkurl{surreal/tail-spans-and-differential-transcendence}; the two bases
+do not contain each other, and neither report uses the other.  One
+manuscript; priority not certified, not refereed, no Lean verification.}
+
+\entry{Diagonal matrix scaling at surreal scales}
+{surreal/matrix-scaling-at-surreal-scales}
+{article.pdf}{one manuscript, delivered 22~September 2026}
+{Diagonal scaling of a positive matrix to fixed row and column sums over
+$F=\R((t^\Gamma))$ and $K=\C((t^\Gamma))$, whose entries may sit at
+arbitrarily different infinitesimal scales; the local theory assumes no rank
+or divisibility for $\Gamma$.  The normalization has a unique
+support-controlled analytic branch on the whole relative infinitesimal
+polydisc.  The invariant is the \emph{spanning-tree deletion gap}: with $\tau$
+the least valuation sum over spanning trees of the bipartite support graph and
+$\tau_e^-$ the least over trees avoiding the edge $e$,
+$\kappa_e=\tau_e^--\tau$ is the exact uniform gain at entry $e$ --- an input
+change of valuation at least $\delta>0$ moves that output entry by valuation
+at least $\delta+\kappa_e$, a nonlinear two-point estimate, attained by changes
+in $e$ alone, with bridges fixed exactly.  Taylor coefficients obey the same
+bounds; evaluation at arbitrary rank needs a separate finite-generator support
+argument; along a tridiagonal bistochastic chain the gains add exactly.  The
+positive-sum mechanism is that of the forest sums of
+\nolinkurl{surreal/markov-generators-at-every-scale} and the Cauchy--Binet sums
+of \nolinkurl{surcomplex/spectral-theory}, but the maps differ: the Markov
+report's stability bound has no gain, and $\kappa_e$ is not a condition
+number.  No convergence or complexity claim for Sinkhorn iteration.  One
+manuscript; not refereed, no Lean verification, priority not certified.}
+
 \section{The surcomplex plane}
 
-Twenty reports about $\SC=\No[i]$.  Seven are about holomorphic function
+Twenty-two reports about $\SC=\No[i]$.  Seven are about holomorphic function
 theory, rest on one framework, and are all merges: twenty-seven manuscripts
-reduced to seven documents.  The other thirteen came later and are listed
-after them.  Eight are merges: differential algebra (ten manuscripts),
-dynamics and normal forms (nine), nonabelian support obstructions (three),
+reduced to seven documents.  The other fifteen came later and are listed
+after them.  Eight are merges: differential algebra (eleven manuscripts),
+dynamics and normal forms (ten), nonabelian support obstructions (three),
 entire functions at arbitrary rank (five), finite spectral theory (three),
-Hahn--Tate uniformization (three), holonomic rigidity (two) and
-infinite-dimensional spectral theory (two).  Five are single manuscripts: on
+Hahn--Tate uniformization (three), holonomic rigidity (three) and
+infinite-dimensional spectral theory (four).  Seven are single manuscripts: on
 rank-one analytic geometry, expanding polynomial dynamics, Herglotz
-positivity, moment reconstruction and Wick summability.  Each of the thirteen
+positivity, moment reconstruction, Wick summability, the three duals of Hahn
+vector spaces and hidden negative Hermitian directions.  Each of the fifteen
 was written against this repository and names the gap it fills.
 
 \medskip
@@ -703,11 +757,11 @@ divergence near-total on the last.}}
 
 \entry{Differential algebra and differential equations over the surreal and surcomplex numbers}
 {surcomplex/differential-equations}
-{article.pdf}{ten manuscripts, delivered 21 and 22~September 2026}
-{Ten manuscripts on the Berarducci--Mantova derivation $\der$ on $\No$,
+{article.pdf}{eleven manuscripts, delivered 21 and 22~September 2026}
+{Eleven manuscripts on the Berarducci--Mantova derivation $\der$ on $\No$,
 normalized by $\der\omega=1$, and its unique extension to $\SC$ --- unique
 because differentiating $i^2+1=0$ forces $\der i=0$.  Seven share a twelve-item
-spine, printed once; three later members each add a part.  The organizing
+spine, printed once; four later members each add a part.  The organizing
 identity is exact: the logarithmic-derivative image is $\No+i\mathcal{A}$,
 $\mathcal{A}=\der\mathfrak{m}=\der\mathcal{O}$, the two forms agreeing only
 through a proved lemma, so $\der y=(a+ib)y$ has a nonzero surcomplex solution
@@ -746,12 +800,17 @@ lines apart.  Each gets one symbol, $\mathrm{Ph}(A)$ collects obstructions of
 the third, member~12's ``phase labels'' become residual frequencies, $J$ is
 retired, and the meaningless merged sentence is printed beside the correct one.
 Later reproofs are cited as agreements; hedges that later members answer, some
-only in part, are amended in place, wording kept.  Section~43 registers 94
+only in part, are amended in place, wording kept.  Section~51 registers 106
 non-claim items: the derivation is imported, not reproved, and no priority,
 refereeing or proof-assistant verification is claimed.  Corollary~11.4
 strengthens in phase-independence the prior chosen-exponential obstruction of
 \nolinkurl{surcomplex/analysis}; $\mathrm{Ph}$ is not the spectrum of
-\nolinkurl{surcomplex/spectral-theory}.}
+\nolinkurl{surcomplex/spectral-theory}.  Part~VII (member~13): on the log-atomic tower,
+$\der^2y+(Q_\alpha+c(\ell_\alpha'/\ell_\alpha)^2)y=0$ has a two-dimensional
+solution space for $c\le1/4$ and none for $c>1/4$ at every ordinal depth
+(Theorem~38.1); no set of earlier scales decides this (Theorem~39.2); at limit
+stages three nested Hahn fields give dimensions $0$, $1$, $2$, with a Borel
+Galois group (Theorems~40.4, 41.2).}
 
 \entry{Rank-one non-Archimedean analytic geometry inside the surcomplex numbers}
 {surcomplex/rank-one-berkovich}
@@ -829,10 +888,10 @@ infinite-dimensional sibling, and no theorem of it is used here.}
 
 \entry{Surcomplex dynamics: linearization thresholds, periods, and normal forms}
 {surcomplex/dynamics-and-normal-forms}
-{article.pdf}{nine manuscripts, seven delivered 21 and two 22~September 2026}
+{article.pdf}{ten manuscripts, seven delivered 21 and three 22~September 2026}
 {Local and global dynamics over complex Hahn fields $K=\C((t^\Gamma))$ realized
 inside $\SC$, with $\Gamma$ a set-sized ordered abelian group of \emph{arbitrary}
-valuation rank.  The report is the \emph{union} of nine manuscripts: eight on
+valuation rank.  The report is the \emph{union} of ten manuscripts: nine on
 germ and fixed-point dynamics, and one (\S\S17--19) on the quasi-periodic half,
 a cohomological equation on a real torus whose frequency vector has
 \emph{surreal} components, with divisors $k\cdot\Upsilon$ indexed by an integer
@@ -873,8 +932,11 @@ positive coefficient disk iff $\sigma=0$ (Corollary~8.17).  Source~08 is the
 base (every $d$, and the drifted theorem); source~09, translated from its
 forward convention (its $H$ is the report's $H^{-1}$), adds the tree product
 bound (Theorem~7.5) and a plane-tree proof for $d=1$, kept as a marked second
-route sharing the arithmetic lemmas.  The nonscalar exact case stays open
-(Question~25.1); Section~26 keeps all 106 source limitations.  Extends
+route sharing the arithmetic lemmas.  Source~10 (\S\S7.7--7.13) settles the nonscalar exact case: every exact
+nonresonant diagonal unitary $\Lambda$ with $\tau<\infty$ has a common polydisk
+of radius $Re^{-r\tau}$, $r$ the rational rank of the angles (Theorem~7.23),
+sharp when $r=1$; the optimal radius for $r\ge2$ stays open (Question~25.1).
+Section~26 keeps all 123 source limitations.  Extends
 \nolinkurl{surcomplex/differential-equations}, but uses external coordinate
 derivatives, not its Berarducci--Mantova derivation; kept apart from the disks
 of \nolinkurl{surcomplex/rank-one-berkovich}.  Not refereed; priority not
@@ -982,7 +1044,7 @@ priority is not certified.}
 
 \entry{Holonomic rigidity for entire Hahn functions: a sharp order-unit criterion for dilations}
 {surcomplex/holonomic-rigidity-for-entire-hahn-functions}
-{article.pdf}{two manuscripts, delivered 22~September 2026}
+{article.pdf}{three manuscripts, delivered 22~September 2026}
 {Power series over one fixed Hahn field $K_\Gamma=\C((t^\Gamma))$, with
 $\Gamma$ a nonzero set-sized ordered abelian group \emph{not assumed
 divisible}; \emph{entire} means that the evaluation family is strongly Hahn
@@ -1027,7 +1089,13 @@ in \nolinkurl{surcomplex/differential-equations}.  From
 coarsening lemma and background, not the ring theorems, and that report's
 order-unit dichotomy (B\'ezout, Hermite interpolation) is \textbf{not} this
 one.  As \nolinkurl{surcomplex/rank-one-berkovich} has $\sum t^{n^2}z^n$, the
-theta witness is not counted as new.}
+theta witness is not counted as new.  A third manuscript (Sections~14--17) proves that every strongly
+entire solution of a nonzero \emph{first-order algebraic} differential
+equation over $k((t^\Gamma))$, any field $k$ of characteristic zero and any
+$\Gamma\ne0$, is a polynomial (Theorem~D), with a higher-order corner
+criterion and Euler rigidity; higher-order nonlinear equations stay open
+(Question~19.1), and the wider coefficient field is not transferred to
+Theorems~A--C.}
 
 \entry{Hahn--Tate uniformization at arbitrary valuation rank}
 {surcomplex/hahn-tate-uniformization}
@@ -1073,7 +1141,7 @@ targeted searches.  Neighbours: \nolinkurl{surcomplex/rank-one-berkovich}
 
 \entry{Infinite-dimensional Hahn spectral theory: infinitesimal thickening, range defects, and algebra-relative spectra}
 {surcomplex/infinite-dimensional-hahn-spectral-theory}
-{article.pdf}{two manuscripts, delivered 22~September 2026}
+{article.pdf}{four manuscripts, delivered 22~September 2026}
 {Two manuscripts over one Hahn field $K=\C((t^\Gamma))$, printed as \emph{two
 parts}: \emph{spectrum} means different things on their two vector spaces
 and in their different operator algebras.  Section~3 sets the
@@ -1121,7 +1189,16 @@ convergence. No trace-class theory or general topological spectral-measure
 theorem is provided; \nolinkurl{surcomplex/hahn-herglotz-positivity} gives a
 separate obstruction to a positive coefficientwise circle measure.  Both suites report 218 checks, by coincidence; the
 assertions differ.  Priority not certified; not refereed; no proof-assistant
-check.}
+check.  Two later manuscripts add Parts~III and~IV.  Part~III computes the
+spectrum of a constant element relative to $\mathfrak{A}((t^\Gamma))$ for any
+unital algebra $\mathfrak{A}$ through Drazin invertibility (Theorem~32.1): it is
+Part~I's adjointable spectrum for $B(H)$ and Part~II's for row- and
+column-finite matrices, and recovers only that half of Part~I's theorem.
+Part~IV, with $\Gamma$ divisible, treats compact self-adjoint operators under
+noncommuting positive-valuation perturbations: finite Hermitian clusters at
+nonzero eigenvalues, the whole monad of zero in the spectrum, and no global
+bounded-coefficient spectral theorem; its coefficientwise Fredholm
+determinant is not a trace-class theory.}
 
 \entry{Expanding polynomial dynamics over surreal and surcomplex fields: exact symbolic fibers and the order-unit obstruction}
 {surcomplex/expanding-polynomial-dynamics}
@@ -1308,6 +1385,53 @@ neither uses the other.  Classical inputs
 credited; priority provisional; not refereed. The Lean ledger covers the
 positive-support, finite-semigroup and valuation Cauchy--Schwarz lemmas;
 the main summability and connected-domain theorems remain pending.}
+
+\entry{Three duals at surreal scales: completion, strong maps and valuation continuity}
+{surcomplex/three-duals-of-hahn-vector-spaces}
+{article.pdf}{one manuscript, delivered 22~September 2026}
+{For a $k$-vector space $V$ and $V_\Gamma=V((t^\Gamma))$ over
+$k((t^\Gamma))$, three objects are kept apart: the algebraic scalar extension,
+its valuation completion, and its closure under strong Hahn summation.  The
+completion consists exactly of the series whose coefficients below each
+valuation cut span a finite-dimensional space; in infinite coefficient
+dimension it is the whole Hahn space exactly when $\Gamma\cong\Z$, and it is
+strictly larger than the algebraic extension exactly when $\Gamma$ has
+countable cofinality; a cofinal exponent enlargement preserves this and a
+noncofinal one collapses it.  Every strong linear operator is one Hahn series
+of arbitrary $k$-linear coefficient maps.  For infinite-dimensional Hilbert $H$
+and noncyclic $\Gamma$ there are three strictly nested duals ---
+inner-product-represented, strong, valuation-continuous --- the first gap being
+the Hahn extension of $H^\#/H'$; all strong maps are bounded by a positive
+real Hahn scalar; and a choice-based hyperplane has a strong bounded
+projection but zero orthogonal complement.  It works on the Hahn--Hilbert
+space of \nolinkurl{surcomplex/infinite-dimensional-hahn-spectral-theory},
+whose non-represented functional it shows to be strong, and whose
+adjointable operators sit inside its strong ones.  One manuscript; some cited
+literature was not available to its author and is attributed, not verified;
+not refereed, no Lean verification.}
+
+\entry{Hidden negative directions of Hermitian forms}
+{surcomplex/hidden-negative-hermitian-directions}
+{article.pdf}{one manuscript, delivered 22~September 2026}
+{For divisible $\Gamma\ne0$ let $\mathscr{P}_\Gamma\subset\C((t^\Gamma))$ be the
+series supported in finitely generated subgroups: an algebraically closed
+subfield containing every monomial.  For every $r\ge1$ an explicit Hermitian
+matrix of size $r+1$ is strictly positive at every nonzero vector over
+$\mathscr{P}_\Gamma$, and even over its valuation closure, yet has inertia
+$(1,r,0)$ over $\C((t^\Gamma))$; so the exponent group in the Hermitian
+spectral theorem of \nolinkurl{surcomplex/spectral-theory} cannot in general be
+replaced by a finitely generated one.  ``Positive semidefinite'' always means
+nonnegative at \emph{every} vector over the full field.  The engine is
+prime-denominator tails $\sum_pt^{\delta(1-1/p)}$: every finite-lattice
+approximant misses below valuation $\delta$, matching $N$ terms algebraically
+needs degree exactly $\prod_{j\le N}p_j$, and almost-disjoint prime sets give
+continuum many independent tails.  A second theorem characterizes positivity of
+a two-scale matrix-valued measure $M_0+\varepsilon M_1$ by scalar null ideals
+and a vector-valued absolute-continuity condition --- the two-exponent case of
+the matrix criterion that \nolinkurl{surcomplex/hahn-herglotz-positivity}
+excludes; more exponents stay open.  Transported to surreal normal forms.
+One manuscript; background inputs are named as such; not refereed, no Lean
+verification.}
 
 
 \section{Surquaternions}
