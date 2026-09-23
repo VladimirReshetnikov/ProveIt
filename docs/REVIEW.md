@@ -625,6 +625,15 @@ across 44 reports, and all 876 local Markdown destinations in 93 files
 resolve. Sections 39–42, remaining imports and source reconciliation are
 still pending.
 
+The final sync merged `63568cb`, including `49b102e`'s fine derivatives
+of finite sine, cosine and the real-parameter surcomplex phase. The
+combined build passed 3,893 jobs and audited 6,070 declarations using
+only `propext`, `Classical.choice` and `Quot.sound`. The reviewed
+critical-potential source and PDF were unchanged by the merge. All 2,114
+statement-index entries still match, and all 879 local Markdown
+destinations in 93 files resolve. These incoming fine-derivative proofs
+do not formalize the intrinsic differential equations reviewed here.
+
 ## Remaining scope
 
 The newly assembled [vector and tensor fields](surreal/vector-and-tensor-fields/),
