@@ -308,6 +308,13 @@ import Surreal.Surcomplex.ReciprocalLegAsymptotics
 import Surreal.Surcomplex.ThinTriangle
 import Surreal.Surcomplex.ThinTriangleOmega
 import Surreal.Surcomplex.ThinTriangleHierarchy
+import Surreal.Surcomplex.LineCircleIntersection
+import Surreal.Surcomplex.AmplitudePhase
+import Surreal.Surcomplex.AmplitudeIntersection
+import Surreal.Surcomplex.InfiniteTangent
+import Surreal.Surcomplex.ContactAngleDifference
+import Surreal.Surcomplex.ContactPerturbation
+import Surreal.Surcomplex.TangencySplitting
 import Surreal.Surcomplex.TrigonometricFineDerivative
 import Surreal.Surcomplex.TrigonometricOrder
 import Surreal.Surcomplex.TrigonometricLeading

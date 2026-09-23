@@ -25,7 +25,7 @@ Apache license are included in the repository.
 
 ## Formalization
 
-The [source inventory](docs/FORMALIZATION.md) covers twenty-six research reports
+The [source inventory](docs/FORMALIZATION.md) covers 49 main texts
 and the source manuscripts preserved in Git history. The
 [coverage and dependency ledger](docs/FORMALIZATION.md) records their statements,
 the proposed Layer A–E implementation order, and the exact scope of each
@@ -526,6 +526,14 @@ stated inradius expansion at every positive infinite scale. Thin coordinate
 triangles retain their exact formulas at arbitrary side scales; the omega-base
 and epsilon-offset families realize finite and infinite radii and distinct
 infinitesimal angle scales, including the full omega-family angle series.
+First-harmonic equations with a nonzero normal vector have an exact zero, one
+or two solution classification modulo ordinary full turns, at any surreal scale.
+The explicit line-circle points have the stated derivative and Jacobian magnitudes; the
+tangent solution has zero first derivative and nonzero second derivative.
+Near tangency, the two angle branches have square-root splitting. Signed
+perturbations retain the exact finite remainder at relative rate `e/tau`
+and the half-valuation loss. The nearby finite circle points also realize
+the example's infinite rational half-angle coordinates.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual
