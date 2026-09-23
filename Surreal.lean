@@ -581,6 +581,7 @@ import Surreal.Foundations.OmnificPolynomialRoots
 import Surreal.Foundations.OmnificResidues
 import Surreal.Foundations.OmnificIntegerDivisors
 import Surreal.Foundations.OmnificOrdinaryArithmetic
+import Surreal.Foundations.OmnificFiniteQuotients
 import Surreal.Surcomplex.OmnificDegree
 import Surreal.Surcomplex.OmnificUnits
 import Surreal.Surcomplex.NormalFormDegree

@@ -171,7 +171,13 @@ all positive powers of any one ordinary prime. A divisor of a nonzero
 ordinary integer must itself be an ordinary integer divisor. Ordinary primes
 remain prime and generate maximal ideals; mixed gcds and finite Chinese
 remainder decompositions reduce to ordinary integer arithmetic.
-Higher Diophantine and set-sized quotient results remain pending; source
+
+The finite-quotient classification is also proved: every proper ideal
+containing a nonzero ordinary integer is `nOz` for a unique `n ≥ 2`, and
+every nonzero finite quotient is `ℤ/nℤ`. Every homomorphism to a finite ring
+factors uniquely through the constant-term map, so these maps kill the
+entire purely infinite ideal. Higher Diophantine and general set-sized
+quotient results remain pending; source
 review is distinct from checked formalization.
 
 The [research collection](docs/README.md) also includes work still awaiting
