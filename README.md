@@ -75,8 +75,12 @@ coefficients. Its native series order equals the cleared polynomial root
 multiplicity, so the `2N` bound also counts actual angular multiplicities.
 For every positive ordinary `n`, `sin(nθ)` attains the bound: its roots
 have exactly the `2n` classes represented by `jπ/n`, all with angular order
-one. The global strip exponential and its root-class correspondence remain
-pending.
+one. Angular differentiation preserves the frequency bound and annihilates
+exactly the constants. Consequently every nonconstant real trigonometric
+polynomial of degree at most `N` has at most `2N` stationary finite-angle
+classes, also when counted with derivative-germ multiplicities. Stationarity
+uses the native fine derivative. The global strip exponential and its
+root-class correspondence remain pending.
 
 The first modules establish size obstructions and reusable finite algebra.
 Complexification uses mathlib's `QuadraticAlgebra`, with its cross-term
