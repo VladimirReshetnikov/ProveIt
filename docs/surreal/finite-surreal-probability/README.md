@@ -678,3 +678,15 @@ remain pending. All 964 local Markdown destinations in 108 files resolve.
 The reviewed finite-probability source and 50-page PDF are unchanged by the
 merge. No new Lean mapping is added for that report, whose Sections 14 onward
 and remaining imports still await review.
+
+The next synchronization, `6149ce2`, incorporates the inverse-tangent Taylor
+formalization from `5e2b6e3`/`2638239`. The geometric inverse agrees with its
+analytic lift at finite inputs, its odd-power strong series has the explicit
+coefficients, and positive infinite slopes have an exact finite remainder
+with the stated standard part. Inverse-sine coefficients and endpoint
+ramification remain pending. No manuscript source changed in this merge.
+The combined build passes 3,971 jobs and audits 7,074 declarations using only
+`propext`, `Classical.choice` and `Quot.sound`. All 2,542 referenced source
+labels resolve; the independent index checks 2,298 entries in 48 sources,
+and all 967 local Markdown destinations in 108 files resolve. The probability
+review remains through Section 13, with its 50-page PDF unchanged.
