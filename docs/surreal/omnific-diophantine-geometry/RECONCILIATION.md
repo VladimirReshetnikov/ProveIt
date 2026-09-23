@@ -4,8 +4,8 @@ This record covers the elementary source comparison in Sections 1–4 of the
 maintained [article](article.tex), followed by proof reviews of the original Sections 5–12.
 After both expansions, the reviewed original Sections 11–12 are Sections
 14 and 16; the new fractions section is Section 15.
-Subsequent passes review the newly added Sections 11–12 from sources 06–07.
-The added material in Sections 6 and 10 and Sections 13, 15 and 17–18 remain
+Subsequent passes review the newly added Sections 11–13 from sources 06–07.
+The added material in Sections 6 and 10 and Sections 15 and 17–18 remain
 outside the completed proof review.
 It does **not** certify integration of every result in the seven manuscripts
 or review of all later proofs and imported classical results.
@@ -304,3 +304,51 @@ this review. Inserting Section 15 moved the sections that followed Section 14
 by one: the passes above use the numbering current when they were made: the
 families section they call 11 (in the passes before the batch-25 merge) is
 Section 14, and the omnific-coefficients section they call 15 is Section 16. No label was renamed or removed.
+
+## Reconstruction and logical consequences: Section 13
+
+This pass compares the multiplier, real reconstruction, automorphism,
+Gaussian obstruction and logical sections of source 06 with the maintained
+Section 13, and compares its transfer and omitted-type clauses with source
+07. The recovered source versions are those identified in the Section 11
+record. Imported real closedness, MRDP and historical priority remain
+separate review obligations.
+
+The fraction presentation now gives its operations and witness domains.
+The multiplier proof isolates the noncancelling translated coefficient,
+and the coefficient predicate explicitly tests units, not just nonzero
+multipliers. The internal-reconstruction corollary has a proof and repeats
+the subsection's nontrivial-exponent hypothesis. The integer-radicand ideal
+predicate from the number-field extension can be substituted unchanged,
+giving the same reconstruction even when two is a square in the coefficient
+subring's fraction field. The value-group proof gives its equivalence and
+order relations and checks the sign convention `v = −leading exponent`.
+Normal-form representatives respect the proper-class convention.
+
+The automorphism arguments distinguish exponent substitution from squaring,
+use finite coefficient convolution without continuity assumptions, and
+separate named complex constants from Gaussian ring parameters. The phase
+twist still obstructs a definable real axis after naming all complex
+constants. Standard-part existence uses the largest remaining negative
+exponent; uniqueness uses that no nonzero real is infinitesimal.
+
+The c.e.-set proof guards the free tuple and transfers auxiliary witnesses.
+Its finite-system version extends to every characteristic-zero coefficient
+field by using the number-field theorem's integer predicate with `K = Q`;
+this needs neither ordering nor a square root of two. The same predicate
+proves non-elementarity without that root. These are combined consequences,
+not claims that source 06 stated the stronger generality. The collapse
+obstruction now says strictly positive cone, and the singleton `x = h`
+explains its parameter restriction. The quantifier-free lower bound spells
+out finite Boolean combinations and uses the coefficient predicate to
+exclude quantifier elimination, without adding a square-root assumption.
+Canonical polynomial syntax makes the omitted type decidable, and a degree
+bound supplies an ordinary integer for each finite part.
+
+The 143 standard statements and 310 labels are retained. Two statements
+have wording clarifications: the already standing nontrivial-group
+hypothesis in internal reconstruction and strict positivity in the collapse
+theorem. No result numbers change. Section 14 onward is unchanged. All
+these source-level arguments remain pending in Lean. Added material in
+Sections 6 and 10, Sections 15 and 17–18, the new companions and remaining
+foundational/source reconciliation still need review.
