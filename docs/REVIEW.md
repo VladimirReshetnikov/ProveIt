@@ -3401,6 +3401,55 @@ axiom audit accepts 14,809 declarations using only `propext`,
 and 1,539 local Markdown destinations resolve. The squarefree proof
 review remains distinct from this new checked ordinary arithmetic.
 
+## Two-ring differential principle and tangent detection
+
+The next Diophantine pass reviews the remainder of Section 16, from
+differential separation data through inheritance. The scalar conventions
+now distinguish a field derivation over `k` from its tangent functional
+after base change to `L`. The two contractions agree by naturality of
+Kähler differentials even without a map between the rings or a common
+affine chart. The valuation-ring contraction lies in the `r`th power
+of its maximal ideal. The symmetric clause explicitly requires positive
+degree; the constant section `1` explains the excluded endpoint.
+Symmetric evaluation is defined on the quotient symmetric power and
+does not rely on lifting global sections to tensor sections.
+
+The proper-rigidity proof now uses right exactness of pullback at the
+field-valued point. It also proves the consequence without smoothness,
+assuming global generation of the Kähler differential sheaf. Symmetric
+rigidity extends to arbitrary separating data. For smooth projective
+schemes, a finite-cover and common-degree argument proves that tangent
+detection is equivalent to semiampleness of the tautological quotient
+line bundle. This is not asserted necessary for rigidity itself.
+Inheritance now spells out the fiber-product argument and the absence
+of smoothness restrictions on the immersed subscheme.
+
+Explicit examples explain why finitely generated coordinate algebras
+need not be stable under Euler differentiation and why a rational form
+with a pole cannot replace a global regular form. The zero exponent
+group, positive tensor degree and complex finite-element conventions
+are explicit. The introduction now distinguishes C11/C13's arbitrary
+characteristic-zero proper-rigidity statements from their more restricted
+curve classifications. The targeted source comparison and imported
+Stacks hypotheses are recorded in the report's reconciliation file.
+The root README, notation guide and catalogue reflect this review.
+
+One of 200 standard statements changes, the annihilation theorem's
+positive-degree clarification. The other 199 statements, all 416 labels
+and existing result numbers are unchanged. All Section 16 results and
+the new prose consequences remain **Pending** in Lean. The curve
+classification, subsequent applications, earlier pointers and remaining
+source reconciliation still require review. No finite symbolic check
+is offered as verification of the geometric argument.
+
+Clean three-pass builds give a 178-page article and 32-page catalogue,
+without warnings, unresolved references or box diagnostics. Rendered
+article pages 102–106 and catalogue page 9 were inspected. The
+independent inventory validates 3,650 standard results in 60 reports;
+all 4,188 source references and 1,539 local Markdown destinations resolve.
+The library is unchanged by this pass; the preceding 4,406-job build and
+14,809-declaration axiom audit remain applicable before synchronization.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

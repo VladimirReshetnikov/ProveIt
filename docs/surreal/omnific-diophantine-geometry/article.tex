@@ -6575,24 +6575,30 @@ September 23, 2026, tagged \src{C10}--\src{C14} after their file prefixes
 \src{14} without the letter keep their meaning as manuscripts of the sibling
 report. All five prove the same spine. A smooth geometrically integral affine
 curve with constant coefficients has nonconstant points over a one-sided Hahn
-ring exactly when it is the affine line
+ring with nonzero exponent group exactly when it is the affine line
 (\cref{odg:cr:thm:affine}); in particular every omnific solution of a
 nonsingular Weierstrass equation is an ordinary integer solution
-(\cref{odg:cr:cor:weierstrass}). Each source reaches this by two routes: an
-elementary B\'ezout certificate for squarefree equations $y^m=P(x)$, and a
-geometric \emph{two-ring} argument in which properness and the Euler
-derivations force every global differential form to vanish at a point. Source
+(\cref{odg:cr:cor:weierstrass}). The elementary route gives a B\'ezout
+certificate for squarefree equations $y^m=P(x)$. The geometric
+\emph{two-ring} argument treats more general targets: properness and the
+Euler derivations force the contractions of every global differential
+form at a point to vanish. Source
 C14 is the base because it has the weakest hypotheses on the shared theorems:
 any coefficient field of characteristic zero and any ordered exponent group.
-Sources C10 and C12 assume an algebraically closed field for curves, source
-C11 an algebraically closed field or $\R$, and source C13 a divisible exponent
-group and the fields $\R$, $\C$. The results answer \cref{odg:q:affine} for
+For the affine-curve classification, sources C10 and C12 use an
+algebraically closed field, C11 an algebraically closed field or $\R$,
+and C13 the fields $\R$, $\C$. The abstract proper-rigidity results of
+C11 and C13 already allow every characteristic-zero coefficient field;
+C13 assumes a divisible exponent group. The results answer \cref{odg:q:affine} for
 smooth curves and its Weierstrass test completely, and they answer
 \cref{odg:q:search,odg:q:homogeneous} in part (\cref{odg:cr:sub:settled}).
 They contain \cref{odg:thm:separated,odg:cor:mordell} as special cases.
-Labels of this material carry the sub-prefix \fn{odg:cr:}. Only the elementary ring and Euler subsections
-(\cref{odg:cr:sub:rings,odg:cr:sub:euler}) have a proof review in
-\fn{RECONCILIATION.md}; the curve and geometric proofs remain outside it.
+Labels of this material carry the sub-prefix \fn{odg:cr:}. The proof review in
+\fn{RECONCILIATION.md} covers this section's ring and Euler prerequisites,
+squarefree certificate and two-ring differential principle, through symmetric
+forms and inheritance. The curve classification and subsequent geometric
+applications remain outside it; imported scheme-theoretic foundations are
+identified separately.
 A sixth manuscript, source C15
 (prefix \fn{15-}), reproves much of the part independently and extends the two-ring
 argument to logarithmic forms in every dimension; its new results form
@@ -6619,8 +6625,10 @@ $\crO$ is its valuation ring and $\crm$ the maximal ideal. For a subring
 $\mathfrak o\subseteq\Bbbk$ the arithmetic ring is
 $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)=\mathfrak o+\crP$. In the surreal instances
 $\Gamma\subseteq\No$, $\crA$ is the part of $\BR$ or $\BC$ supported in $\Gamma$,
-$\mathcal R_\Z(\R,\Gamma)=\Oz_\Gamma$, and $\crO$ is the workspace form of the
-finite surreals $\Ofin$, with $\crm$ its infinitesimals. The two rings $\crA$
+$\mathcal R_\Z(\R,\Gamma)=\Oz_\Gamma$. For $\Bbbk=\R$, $\crO$ is the
+workspace form of the finite surreals $\Ofin$, with $\crm$ its infinitesimals;
+for $\Bbbk=\C$, both real and imaginary coordinates must be finite,
+and both are infinitesimal in $\crm$. The two rings $\crA$
 and $\crO$ point in opposite support directions. For $\Gamma\ne0$ they
 are distinct: $\crA$ is not the valuation ring or the ring of finite
 elements (\cref{odg:rem:notvaluation}). For $\Gamma=0$ both reduce to
@@ -6647,7 +6655,8 @@ identified after passage to a common larger workspace \src{C10, C12, C13}. A
 projective point over a ring is given by an invertible quotient; its finite
 presentation data, like a unit-ideal witness, fit into one workspace \src{C12}.
 By \cref{odg:lem:workspace} every finite datum lies in some $\mathcal A_\R(\Gamma)$
-or $\mathcal A_\C(\Gamma)$, and every theorem below holds for every $\Gamma$, so
+or $\mathcal A_\C(\Gamma)$, and the theorems below hold for arbitrary $\Gamma$
+subject to their stated hypotheses, so
 either the rational span of the supports \src{C10, C12, C13} or the group they
 generate \src{C11, C14} may be used.
 
@@ -7080,6 +7089,21 @@ $L$ may be larger than $\Frac R$ \src{C10, C11, C14}. By
 $(L,R,V,\mathcal D)=(\crH,\crA,\crO,\{\partial_\lambda\})$ is separating data, with
 the stronger inclusion $\partial(\crA)\subseteq\crP$.
 
+Here is the meaning of differentiating a point. For a $\Bbbk$-algebra $S$,
+an $S$-point $p_S$ and a $\Bbbk$-derivation $\partial:S\to M$, where $M$ is
+an $S$-module, compose the natural pullback map with the universal map:
+\[
+ p_S^*\Omega^1_{X/\Bbbk}\longrightarrow\Omega^1_{S/\Bbbk}
+ \xrightarrow{\ \iota_\partial\ }M,
+ \qquad \dif f\longmapsto\partial(f(p_S)).
+\]
+For $S=L$ and $M=L$ this is an $L$-linear functional on the cotangent
+fiber, denoted $\partial p_L$. On an affine open with coordinate algebra
+$B$, the corresponding tangent derivation of $B\otimes_\Bbbk L$ is
+$f\otimes a\mapsto a\,\partial(f(p_L))$: it annihilates the new scalar factor
+$L$. Thus it is a tangent vector to $X_L$ at $p_L$, although the original
+map $\partial:L\to L$ is only $\Bbbk$-linear.
+
 \begin{lemma}[Equality from an ambient field \src{C10, C11, C12, C13, C14, C15}]\label{odg:cr:lem:separated}
 Let $X$ be a separated scheme and $\sigma_1,\sigma_2\in X(S)$. If $S\to T_i$ are
 ring maps whose kernels have zero intersection, and the images of
@@ -7102,29 +7126,47 @@ $\partial_1,\ldots,\partial_r\in\mathcal D$,
 \begin{equation}\label{odg:cr:eq:annihilation}
  s_{p_L}(\partial_1p_L,\ldots,\partial_rp_L)=0 ,
 \end{equation}
-and every global symmetric differential vanishes on the diagonal
-$(\partial p_L,\ldots,\partial p_L)$. Smoothness of $X$ is not needed.
+and every global symmetric differential of positive degree $r$ vanishes on
+the diagonal $(\partial p_L,\ldots,\partial p_L)$. Smoothness of $X$ is not needed.
 \end{theorem}
 \begin{proof}
 A $\Bbbk$-derivation $\partial:S\to M$ into an $S$-module factors uniquely through
 an $S$-linear map $\iota_\partial:\Omega^1_{S/\Bbbk}\to M$,
 $\sum a_j\,\dif b_j\mapsto\sum a_j\partial b_j$; the sums are finite, and no finite
-generation of $S$ is needed \cite[Tag 00RM]{StacksDiff}. Pulling $s$ back along
-$p$ to $(\Omega^1_{R/\Bbbk})^{\otimes r}$ and contracting with the restrictions
-$\partial_j|_R:R\to R$ gives an element $a_R\in R$. By the valuative criterion
+generation of $S$ is needed \cite[Tag 00RM]{StacksDiff}. Pull $s$ back along
+$p$, apply the natural maps to $(\Omega^1_{R/\Bbbk})^{\otimes r}$, and
+contract with the restrictions $\partial_j|_R:R\to R$. The resulting global
+function on $\Spec R$ is an element $a_R\in R$. By the valuative criterion
 for properness, which holds for arbitrary valuation rings and not only discrete
 ones \cite[Tag 0BX5]{StacksProper}, $p_L$ extends to $q\in X(V)$. The restrictions
 $\partial_j|_V$ take values in the $V$-module $\mathfrak m_V$; pulling $s$ back along
 $q$ and contracting gives a finite sum of products of $r$ elements of
-$\mathfrak m_V$ with coefficients in $V$, an element $a_V\in\mathfrak m_V$. Both
-constructions are functorial and restrict to the contraction along $p_L$ by the
-same derivations of $L$; locally, for $s$ written with regular functions $f$ and
-differentials $\dif g$, both give the same finite expression in the values
-$f(p_L)$ and $\partial_j(g(p_L))$, and these local expressions agree on overlaps
-even when the images of $\Spec R$ and $\Spec V$ lie in different affine charts
-\src{C13, C14}. Hence $a_R=a_V\in R\cap\mathfrak m_V=0$. For a symmetric
-differential contract every factor with the same derivation.
+$\mathfrak m_V$ with coefficients in $V$. More precisely,
+$a_V\in\mathfrak m_V^r\subseteq\mathfrak m_V$, since $r\ge1$.
+
+For either $S=R$ or $S=V$, restriction of the contraction to $L$ is the
+composition of $p_L^*\Omega^1_{X/\Bbbk}\to\Omega^1_{L/\Bbbk}$ with the
+same maps $\iota_{\partial_j}$. Indeed, the natural map
+$\Omega^1_{S/\Bbbk}\otimes_S L\to\Omega^1_{L/\Bbbk}$ takes $\dif b$ to
+$\dif b$, and both contractions take it to $\partial_j b$. Tensor products
+and multiplication preserve this compatibility. No claim that this
+natural map is an isomorphism, or that $L=\Frac R$, is needed. Hence
+$a_R$ and $a_V$ have the same image in $L$, even when $p$ and $q$ use
+different affine charts, and that image lies in $R\cap\mathfrak m_V=0$
+\src{C13, C14}.
+
+For a symmetric differential, use one derivation in every factor. The map
+$(\alpha_1,\ldots,\alpha_r)\mapsto
+\prod_j\iota_\partial(\alpha_j)$ is symmetric and therefore descends to
+$\Sym^r\Omega^1$. Its value over $V$ is still in $\mathfrak m_V^r$.
+This uses the quotient definition of the symmetric power; no lift of a
+global symmetric section to a global tensor section is assumed.
 \end{proof}
+
+The positive-degree restriction matters: in degree zero the global section
+$1$ evaluates to $1$, and $\mathfrak m_V^0=V$ gives no vanishing. The joint
+constant condition in \eqref{odg:cr:eq:data} is used only in the later
+descent from zero tangent vectors to constant points.
 
 The derivations are relative to $\Bbbk$, not to $L$: an $L$-linear derivation of
 $L$ is zero and would give nothing. The forms are global and regular; a rational
@@ -7133,7 +7175,11 @@ form with a pole at the centre of $q$ need not contract into $\mathfrak m_V$
 does not assert a ring map $R\to V$ compatible with the embeddings in $L$, and
 such a map generally does not exist \src{C10}. For $X\subseteq\mathbb P^n_\Bbbk$
 the valuative step is concrete: write $p_L=[a_0:\cdots:a_n]$, choose $j$ with $a_j\ne0$
-of least valuation, and use the coordinates $a_i/a_j\in V$ \src{C13}. A regular
+of least valuation among the nonzero coordinates, and use $a_i/a_j\in V$.
+The $j$th coordinate is $1$, so these ratios define a $V$-point of projective
+space. The homogeneous equations of $X$ vanish in $L$ and hence in $V$,
+so the point lies in $X$. This uses only the minimum of a finite set of
+values, with no rank-one or discreteness condition \src{C13}. A regular
 differential thus has two descriptions at the point, one with no strictly
 negative exponent and one, after an Euler derivation, with only strictly negative
 exponents; properness supplies the second even when the affine coordinates of
@@ -7154,6 +7200,12 @@ The constant $R$-point of $p_0$ and $p$ agree over $L$, hence over $R$ by
 point $p$ need not factor through $W$ before this is proved \src{C13}.
 \end{proof}
 
+It is enough to test finitely many algebra generators of $\Bbbk[W]$:
+the derivations kill coefficients in $\Bbbk$ and satisfy the sum and
+product rules. This finite test concerns the chosen affine chart; it
+does not require a finitely generated subalgebra of $L$ stable under
+all the derivations.
+
 \begin{theorem}[Proper differential rigidity \src{C14; also C10, C11, C12, C13}]\label{odg:cr:thm:proper}
 Let $(L,R,V,\mathcal D)$ be separating data and $X$ a smooth proper $\Bbbk$-scheme
 whose cotangent sheaf $\Omega^1_{X/\Bbbk}$ is generated by global sections. Then
@@ -7162,13 +7214,21 @@ $X(\Bbbk)\to X(R)$ is a bijection.
 \begin{proof}
 Let $p\in X(R)$ and $\partial\in\mathcal D$. Differentiation of $p_L$ defines an
 $L$-linear map $p_L^*\Omega^1_{X/\Bbbk}\to L$. Global generation makes
-$H^0(X,\Omega^1_{X/\Bbbk})\otimes_\Bbbk L\to p_L^*\Omega^1_{X/\Bbbk}$ surjective,
-since tensoring a surjection with a residue field preserves surjectivity; by
-\cref{odg:cr:thm:annihilation} the map vanishes on its image, hence is zero. So
+$H^0(X,\Omega^1_{X/\Bbbk})\otimes_\Bbbk L\to p_L^*\Omega^1_{X/\Bbbk}$ surjective:
+pull back the surjective evaluation map
+$H^0(X,\Omega^1_{X/\Bbbk})\otimes_\Bbbk\mathcal O_X\to\Omega^1_{X/\Bbbk}$
+along $p_L$. Pullback is right exact, even when $p_L$ is not a closed
+point. By \cref{odg:cr:thm:annihilation}, the tangent functional vanishes
+on the image of this evaluation map, hence on the whole cotangent fiber. So
 $\partial(f(p_L))=0$ for every regular $f$ on an affine open through $p_L$, and
 \cref{odg:cr:lem:constantpoint} makes $p$ constant. Injectivity follows from
 $\Bbbk\hookrightarrow L$.
 \end{proof}
+
+In fact this proof also works for a proper, possibly singular $X$ whose
+K\"ahler differential sheaf is globally generated: neither its local
+freeness nor smoothness was used. Smoothness in the stated theorem
+provides the cotangent-bundle setting used in the applications below.
 
 \begin{corollary}[Hahn realization \src{C14; also C10, C11, C12, C13}]\label{odg:cr:cor:hahnproper}
 For every field $\Bbbk$ of characteristic zero, every set-sized ordered abelian
@@ -7199,9 +7259,15 @@ $s\in H^0(X,\Sym^r\Omega^1_{X/\Bbbk})$ with $s_x(u,\ldots,u)\ne0$.
 \end{definition}
 
 The quantification over extension fields is needed because the point $p_L$ is
-generally not classical; since proper coherent cohomology commutes with field
-extension, sections after base change are linear combinations of sections over
-$\Bbbk$ \src{C13}.
+generally not classical. For $\mathcal F=\Sym^r\Omega^1_{X/\Bbbk}$, flat base
+change gives
+$H^0(X_L,\mathcal F_L)=H^0(X,\mathcal F)\otimes_\Bbbk L$
+\cite[Tag 02KH]{StacksBaseChange}; here
+$(\Omega^1_{X/\Bbbk})_L=\Omega^1_{X_L/L}$, with the base field changed
+along with the scheme. Thus a detecting section after field
+extension is a finite $L$-linear combination of base-field sections; if
+its value is nonzero, at least one of those sections has nonzero value.
+This justifies using sections over $\Bbbk$ in the definition \src{C13}.
 
 \begin{theorem}[Symmetric-differential rigidity \src{C13, C15}]\label{odg:cr:thm:symmetric}
 If $X$ is smooth and proper over $\Bbbk$ and its global symmetric differentials
@@ -7214,6 +7280,11 @@ would have nonzero diagonal value on it, contrary to
 \cref{odg:cr:lem:constantpoint} applies.
 \end{proof}
 
+The same proof works for any separating data $(L,R,V,\mathcal D)$:
+tangent detection at its field $L$ gives $X(R)=X(\Bbbk)$. The Hahn
+realization supplies one such family, rather than an additional
+geometric ingredient.
+
 \begin{corollary}[A semiample tautological bundle \src{C13}; ample case also \src{C15}]\label{odg:cr:cor:semiample}
 Let $X$ be smooth and projective over $\Bbbk$, and let
 $\mathcal L=\mathcal O_{\mathbb P(\Omega^1_{X/\Bbbk})}(1)$, with $\mathbb P(E)$
@@ -7224,11 +7295,16 @@ ample'' means here, and when $\Sym^r\Omega^1_{X/\Bbbk}$ is globally generated fo
 some $r\ge1$.
 \end{corollary}
 \begin{proof}
-A nonzero tangent vector $u$ at $x$ defines a one-dimensional quotient of the
-cotangent space, a point of $\mathbb P(\Omega^1)$ over $x$. Under
+A nonzero tangent vector $u$ at $x\in X(L)$ is a nonzero $L$-linear map
+$x^*\Omega^1_{X/\Bbbk}\to L$, hence a surjection. It defines a point
+$[u]\in\mathbb P(\Omega^1)(L)$ over $x$. If $\mathcal L^{\otimes r}$ is
+globally generated, its evaluation at $[u]$ is surjective onto a
+one-dimensional $L$-space; at least one base-field section is nonzero
+there. Since $\Omega^1$ is locally free, the projective-bundle identity is
 $H^0(\mathbb P(\Omega^1),\mathcal L^{\otimes r})=H^0(X,\Sym^r\Omega^1)$
-\cite[Tag 01OA]{StacksProjBundle}, a section of $\mathcal L^{\otimes r}$ not vanishing at
-that point is a symmetric differential with $s_x(u,\ldots,u)\ne0$. An ample line
+\cite[Tag 01OA]{StacksProjBundle}. Under the quotient identification
+provided by $u$, the value of that section is exactly
+$s_x(u,\ldots,u)\ne0$. An ample line
 bundle on a projective scheme has a globally generated power
 \cite[Tag 01PR]{StacksAmple}, and global generation of $\Sym^r\Omega^1$ gives that of
 $\mathcal L^{\otimes r}$ through the universal quotient. Apply
@@ -7239,6 +7315,18 @@ Conventions for semiample vector bundles vary, so the hypothesis is stated for
 the tautological line bundle. No implication from nefness, bigness or general
 type is asserted \src{C13}.
 
+For a smooth projective $X$, tangent detection is in fact equivalent to
+this tautological semiampleness condition. To see the converse, put
+$P=\mathbb P(\Omega^1)$ and suppose detection holds. Applying it over
+the residue field of each point of $P$ shows that the nonvanishing loci
+of the sections of all positive powers of $\mathcal L$ cover $P$.
+Quasi-compactness gives a finite subcover, from sections $s_i$ of degrees
+$r_i\ge1$. For a common positive multiple $N$ of the $r_i$, the sections
+$s_i^{N/r_i}$ of $\mathcal L^{\otimes N}$ still have no common zero,
+so they generate that line bundle. If $P$ is empty the conclusion is
+vacuous. This equivalence concerns tangent detection; it does not assert
+that every rigid variety satisfies either condition.
+
 \begin{proposition}[Inheritance \src{C13; also C10, C11, C14, C15}]\label{odg:cr:prop:inherit}
 Let $X$ be a separated $\Bbbk$-scheme of finite type with $X(\crA)=X(\Bbbk)$. Every
 locally closed subscheme $Y\subseteq X$ has $Y(\crA)=Y(\Bbbk)$. For a morphism
@@ -7248,12 +7336,19 @@ fiber of $f$ over a $\Bbbk$-point is rigid, then $Z(\crA)=Z(\Bbbk)$.
 \begin{proof}
 For $y\in Y(\crA)$ its image in $X$ is constant, equal to the image of
 $y_0=\ct(y)\in Y(\Bbbk)$; an immersion is a monomorphism, so $y=y_0$. For $f$, the
-point $f(z)$ is constant with constant term $f(\ct z)$, so $z$ lies in that
-fiber.
+point $f(z)$ is constant with constant term $x_0=f(\ct z)$, so the
+universal property of $Z\times_X\Spec\Bbbk$, formed using $x_0$, puts
+$z$ in that fiber as a $\crA$-point. If the fiber is rigid, this point
+comes from a $\Bbbk$-point of the fiber and hence of $Z$. Conversely,
+constant points always extend, and the retraction makes their extension
+injective. The immersion argument also works for singular or nonreduced
+$Y$; no smoothness is used here.
 \end{proof}
 
-Neither hypothesis of \cref{odg:cr:thm:proper} can be dropped
-\src{C10, C11, C12, C13, C14}. The affine line $\Ga$ has trivial cotangent sheaf,
+Properness and global generation in \cref{odg:cr:thm:proper} cannot in general
+be dropped \src{C10, C11, C12, C13, C14}. For the counterexamples choose
+$\gamma>0$ in $\Gamma$ (when $\Gamma=0$, $\crA=\Bbbk$ already).
+The affine line $\Ga$ has trivial cotangent sheaf,
 generated by $\dif T$, but is not proper, and $\Ga(\crA)=\crA$: the point
 $T=\omega^\gamma$ does not extend to a $\crO$-point of that chart. The projective
 line is proper but has no nonzero global one-form, and $[\omega^\gamma:1]$ is a
@@ -7264,6 +7359,15 @@ generates a finitely generated algebra, but an Euler derivation need not preserv
 it, so one cannot infer that the tuple comes from a polynomial arc; polynomial
 arcs appear only after the classification has forced the affine line
 (\cref{odg:cr:cor:polywitness}) \src{C14}.
+
+For an explicit failure of stability, put $t=\omega^\gamma$, choose
+$\partial t=t$, and set $f=t+t^2$. Then $\partial f=2f-t$ does not belong
+to the finitely generated algebra $\Bbbk[f]$: otherwise $t$ would belong
+to it, whereas every nonconstant polynomial in $f$ has degree at least
+$2\gamma>\gamma=\ddeg t$. The same point $[t:1]$ also illustrates why
+regularity of the form is essential. On $\mathbb P^1$ the rational form
+$\dif T$ contracts to $t$, which is not in $\crm$; at the valuation
+centre, with coordinate $u=T^{-1}$, it is $-u^{-2}\dif u$ and has a pole.
 
 \section{Smooth curves and their omnific points}\label{odg:cr:sec:curves}
 
@@ -11666,6 +11770,11 @@ The Stacks Project Authors.
 \emph{Plane curves}, Section 53.9, Tag 0BYA, especially the discussion of
 partial derivatives in the proof of Lemma 53.9.4.
 \url{https://stacks.math.columbia.edu/tag/0BYA}.
+
+\bibitem{StacksBaseChange}
+The Stacks Project Authors.
+\emph{Flat base change}, Lemma 30.5.2, Tag 02KH.
+\url{https://stacks.math.columbia.edu/tag/02KH}.
 
 \bibitem{StacksProper}
 The Stacks Project Authors.

@@ -11,14 +11,16 @@ Gaussian-fiber and étale-norm additions in Section 6 from sources 07 and 13.
 A further pass reviews source 07's quartic in Section 10 and the
 elementary ring and Euler subsections 16.2–16.3. The subsequent pass
 reviews the squarefree certificate and Weierstrass applications in
-Section 16.4. The rest of Sections 16–18, their pointers in Sections 6, 7 and 14, and Sections 20–21 remain
+Section 16.4. The next pass covers Section 16.5 through inheritance,
+completing the maintained Section 16 proof chain. Sections 17–18,
+their pointers in Sections 6, 7 and 14, and Sections 20–21 remain
 outside the completed proof review.
 It does **not** certify integration of every result in the thirteen manuscripts
 or review of all later proofs and imported classical results. Section numbers
 below are those current when each pass was made; the last section gives the
 present numbering. The geometric curve proofs and all of Sections 17–18
-remain outside these passes; the review of Section 16 extends through
-the squarefree and Weierstrass arguments, before the two-ring principle.
+remain outside these passes; the review of Section 16 now includes
+the two-ring principle, symmetric differentials and inheritance.
 
 ## Recoverable sources
 
@@ -760,3 +762,73 @@ the geometric theorems. The combined Lean build after merging `40a3990`
 passes 4,393 jobs and audits 14,779 declarations using only `propext`,
 `Classical.choice` and `Quot.sound`; this validates the incoming residue
 and divisor formalizations, not the pending squarefree theorem.
+
+## Two-ring contraction, tangent detection and inheritance
+
+This pass reviews Section 16.5, Definitions 16.12 and 16.18 through
+Proposition 16.21, completing the maintained Section 16 proof chain.
+The introduction and conventions now distinguish the coefficient fields
+of C11/C13's proper-rigidity theorems from those of their affine-curve
+classifications, qualify nonconstant examples by a nonzero exponent
+group, and distinguish the real and complex valuation rings of finite elements.
+The class convention retains each theorem's stated hypotheses.
+
+The proof now constructs the tangent functional from pullback and the
+universal property of Kähler differentials. The original field derivation
+is `k`-linear; the tangent derivation of a chart after base change sends
+`f ⊗ a` to `a∂(f(p_L))` and kills the new scalar factor. Contractions over
+the two rings agree by naturality, without an isomorphism between their
+differential modules, a map between the rings, or a common affine chart.
+Over the valuation ring a degree-`r` contraction lands in `m^r`. The
+symmetric clause explicitly requires positive degree: the degree-zero
+section `1` would be a counterexample. Symmetric evaluation descends to
+the quotient symmetric power directly, without assuming that a global
+symmetric section lifts to a global tensor section.
+
+The proper-rigidity proof uses right exactness of pullback at the actual
+field-valued point. The same proof applies without smoothness when the
+Kähler differential sheaf is globally generated. This is recorded as a
+proved manuscript consequence, not as a general rigidity assertion for
+singular varieties. Constant descent needs only affine algebra generators;
+it does not need a finitely generated algebra stable under derivations.
+For example, if `t = ω^γ`, `γ > 0`, and `∂t = t`, then `k[t+t²]` is not
+stable: `∂(t+t²) = 2(t+t²)−t`, and degree excludes `t` from that algebra.
+The rational form `dT` on the projective line gives a separate example
+showing why regularity at the valuation centre is essential.
+
+The symmetric proof works for arbitrary separating data. On a smooth
+projective scheme the stated tangent-detection property is equivalent
+to semiampleness of the tautological quotient line bundle: detection
+gives a cover of its projective bundle by nonvanishing loci of sections
+of positive powers, quasi-compactness gives a finite subcover, and raising
+these sections to a common positive degree gives global generation.
+The empty projective bundle is included. This is a criterion for tangent
+detection, not a necessary condition for rigidity. The inheritance proof
+now supplies the fiber-product factorization and explains that immersion
+inheritance allows singular and nonreduced subschemes.
+
+The contraction, constant-point and symmetric proofs were compared with
+C13's sections “The two-ring differential annihilation theorem” and
+“Cotangent and symmetric-differential rigidity”, recovered from the archive
+identified in the preceding pass. C11's `main:curves` and `main:proper`,
+in `curve-and-abelian-rigidity/article.tex` from
+`c6359e4^:docs/new/Curve_and_Abelian_Rigidity.zip`, were checked for their
+coefficient-field scope. This is a targeted comparison, not full
+reconciliation of sources C10–C15.
+
+The following imported foundations were checked for the needed hypotheses:
+[universal differentials](https://stacks.math.columbia.edu/tag/00RM),
+[properness for arbitrary valuation rings](https://stacks.math.columbia.edu/tag/0BX5),
+[flat cohomological base change](https://stacks.math.columbia.edu/tag/02KH),
+[the quotient projective-bundle convention and locally free pushforward](https://stacks.math.columbia.edu/tag/01OA),
+and [globally generated powers of an ample line bundle](https://stacks.math.columbia.edu/tag/01PR).
+They are cited foundations, not independently formalized or fully re-proved
+here. The new base-change reference and shared notation make the scalar
+and projective conventions explicit.
+
+Exactly one standard statement changes, `odg:cr:thm:annihilation`, by
+specifying positive symmetric degree. The other 199 standard statements
+and all 416 labels are preserved. All Section 16 results and the new
+prose consequences remain **Pending** in Lean. Section 17's curve proofs,
+Section 18, their earlier pointers and later additions remain unreviewed.
+No finite verifier is claimed to validate the geometric argument.

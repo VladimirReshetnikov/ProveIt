@@ -1151,8 +1151,20 @@ the cubic proposition distinguishes its universal polynomial identity
 from the formula requiring a nonzero discriminant. Its proof and the
 following prose correct the differential normalization, explain regularity
 at `y = 0` and supply the missing zero-parameter case for singular cubics.
-These results remain **Pending** in Lean. The later geometric curve
-proofs and pointers are unreviewed.
+These results remain **Pending** in Lean. The subsequent pass reviews
+the rest of Section 16, including `odg:cr:lem:separated`,
+`odg:cr:thm:annihilation`, `odg:cr:lem:constantpoint`, `odg:cr:thm:proper`,
+`odg:cr:cor:hahnproper`, `odg:cr:thm:symmetric`, `odg:cr:cor:semiample`
+and `odg:cr:prop:inherit`. It specifies positive symmetric degree and
+expands pullback compatibility, constant descent and tangent evaluation.
+Prose consequences extend proper rigidity to globally generated Kähler
+differentials without smoothness and symmetric rigidity to arbitrary
+separating data; a finite-cover argument identifies tangent detection
+with tautological semiampleness for smooth projective schemes.
+All these claims remain **Pending** in Lean. Imported scheme foundations
+are cited and their hypotheses checked; full foundational proof review,
+the curve classification in Section 17 and subsequent applications remain
+outside this pass.
 
 ### Synchronization of the September 23 expansions
 
@@ -1163,7 +1175,7 @@ in holonomic rigidity, and curve/differential rigidity in Diophantine
 geometry. Their current standard statements are indexed below.
 At that merge the Diophantine review covered Section 15; the newly added
 Sections 16–18 were unreviewed, and the former Sections 16–18 became 19–21.
-The later elementary passes described above cover Sections 16.2–16.4.
+The later passes described above now cover the maintained Section 16.
 The incoming assemblies do not extend earlier proof-review or Lean scope.
 
 Placement `66d7e55` adds the quantum/gauge base, bringing the inventory
@@ -4541,8 +4553,10 @@ in Sections 17–18 (`b829d8b`). The subsequent denominator review covers
 all of Section 15. Further passes cover the Gaussian-fiber and norm
 additions in Section 6, source 07's quartic in Section 10 and the
 elementary ring/Euler subsections 16.2–16.3, followed by the squarefree
-and Weierstrass arguments in Section 16.4. The two-ring principle,
-later geometric arguments and later additions remain unreviewed.
+and Weierstrass arguments in Section 16.4. The next pass covers the
+two-ring principle, symmetric differentials and inheritance in Section 16.5.
+The curve classification, subsequent applications and later additions
+remain unreviewed.
 The ring/retraction proposition
 `odg:prop:ring`, degree lemma `odg:lem:degree`, unit/finite-element
 proposition `odg:prop:units`, exact floor theorem `odg:thm:floor`,
@@ -4696,66 +4710,66 @@ The separately styled cited theorem
 | Proposition | `odg:frac:prop:gaussianfrac` (line 6443) | Gaussian fractions \src{08}; \src{09} |
 | Theorem | `odg:frac:thm:gaussian` (line 6467) | Gaussian representation dichotomy \src{08} |
 | Corollary | `odg:frac:cor:gaussiandirections` (line 6506) | Constant directions over $\Z$ and $\Z{[i]}$ \src{08, 14} |
-| Lemma | `odg:cr:lem:rings` (line 6674) | Intersections, units and degree \src{C14; also C10--C13, C15} |
-| Lemma | `odg:cr:lem:euler` (line 6744) | Euler derivations on the two rings \src{C12, C13; also C10, C11, C14, C15} |
-| Lemma | `odg:cr:lem:separation` (line 6794) | Joint constants and leading detection \src{C10, C11, C12, C13, C14, C15} |
-| Corollary | `odg:cr:cor:algclosed` (line 6815) | Relatively algebraically closed constants \src{C10, C14, C15} |
-| Lemma | `odg:cr:lem:division` (line 6830) | Differential division \src{C14; also C10, C11, C12, C13, C15} |
-| Theorem | `odg:cr:thm:squarefree` (line 6862) | Squarefree superelliptic rigidity \src{C12, C13, C15; also C10, C11, C14} |
-| Proposition | `odg:cr:prop:cubic` (line 6916) | A cubic certificate \src{C10, C11, C12, C13, C14, C15} |
-| Corollary | `odg:cr:cor:weierstrass` (line 6967) | Nonsingular short Weierstrass equations \src{C10, C11, C12, C13, C14, C15} |
-| Corollary | `odg:cr:cor:generalweierstrass` (line 6996) | General Weierstrass equations \src{C13}, for every $\Bbbk$ |
-| Proposition | `odg:cr:prop:singular` (line 7029) | Singular cubics \src{C10, C11, C12, C14, C15} |
-| Lemma | `odg:cr:lem:separated` (line 7083) | Equality from an ambient field \src{C10, C11, C12, C13, C14, C15} |
-| Theorem | `odg:cr:thm:annihilation` (line 7096) | Two-ring annihilation \src{C13}; one-forms \src{C10, C11, C12, C14} |
-| Lemma | `odg:cr:lem:constantpoint` (line 7143) | From vanishing tangents to a constant point \src{C13, C14; also C10, C11, C12} |
-| Theorem | `odg:cr:thm:proper` (line 7157) | Proper differential rigidity \src{C14; also C10, C11, C12, C13} |
-| Corollary | `odg:cr:cor:hahnproper` (line 7173) | Hahn realization \src{C14; also C10, C11, C12, C13} |
-| Theorem | `odg:cr:thm:symmetric` (line 7206) | Symmetric-differential rigidity \src{C13, C15} |
-| Corollary | `odg:cr:cor:semiample` (line 7217) | A semiample tautological bundle \src{C13}; ample case also \src{C15} |
-| Proposition | `odg:cr:prop:inherit` (line 7242) | Inheritance \src{C13; also C10, C11, C14, C15} |
-| Lemma | `odg:cr:lem:canonical` (line 7272) | Canonical forms have no common zero \src{C13, C14; also C10, C11, C12} |
-| Theorem | `odg:cr:thm:positivegenus` (line 7289) | Positive-genus curves \src{C11, C13, C14; also C10, C12} |
-| Lemma | `odg:cr:lem:punctures` (line 7327) | Two punctures force constancy \src{C10, C11, C13, C14, C15} |
-| Lemma | `odg:cr:lem:formA1` (line 7346) | Forms of the affine line \src{C14}; real case \src{C10, C11, C13} |
-| Theorem | `odg:cr:thm:affine` (line 7366) | Smooth affine curves \src{C14; also C10, C11, C12, C13, C15} |
-| Lemma | `odg:cr:lem:logdim` (line 7424) | Logarithmic forms \src{C12, C15} |
-| Theorem | `odg:cr:thm:logroute` (line 7442) | The logarithmic route \src{C12; also C15}, closed centre \mergetag |
-| Corollary | `odg:cr:cor:subalgebra` (line 7481) | Curve subalgebras \src{C11, C12} |
-| Corollary | `odg:cr:cor:allcurves` (line 7497) | All smooth curves \src{C13; also C15}, for every $\Bbbk$ |
-| Theorem | `odg:cr:thm:arith` (line 7519) | Exact fibers over an arbitrary coefficient ring \src{C11}, for every $\Bbbk$ |
-| Corollary | `odg:cr:cor:omnific` (line 7557) | Omnific points on smooth affine curves \src{C10, C11, C13, C14} |
-| Lemma | `odg:cr:lem:arcs` (line 7608) | Integer polynomial arcs \src{C14} |
-| Proposition | `odg:cr:prop:congruence` (line 7633) | A congruence criterion \src{C14} |
-| Corollary | `odg:cr:cor:polywitness` (line 7660) | Polynomial witnesses \src{C13}; also \src{C12} |
-| Theorem | `odg:cr:thm:descent` (line 7694) | Descent for separated models \src{C12} |
-| Theorem | `odg:cr:thm:unimodular` (line 7734) | Unimodular coordinates \src{C14}; for $\mathfrak o=\Bbbk$ \src{C10, C13} |
-| Lemma | `odg:cr:lem:coordinatepoint` (line 7750) | Invertible coordinate ideals \src{C12} |
-| Theorem | `odg:cr:thm:ideals` (line 7765) | Coordinate ideals on rigid targets \src{C12} |
-| Theorem | `odg:cr:thm:ozideal` (line 7778) | Omnific coordinate ideals \src{C12} |
-| Corollary | `odg:cr:cor:projectiveQ` (line 7798) | Rational projective points \src{C14; also C10, C12, C13, C15} |
-| Lemma | `odg:cr:lem:invariant` (line 7920) | Invariant differentials \src{C11, C12, C13, C14, C15} |
-| Theorem | `odg:cr:thm:abelian` (line 7934) | Abelian varieties \src{C10, C11, C13, C14, C15; also C12} |
-| Lemma | `odg:cr:lem:torus` (line 7953) | Tori \src{C14; also C10, C11, C12, C13, C15} |
-| Theorem | `odg:cr:thm:semiabelian` (line 7972) | Semiabelian varieties \src{C10, C11, C12, C13, C14, C15} |
-| Theorem | `odg:cr:thm:quasifinite` (line 7989) | Quasi-finite maps \src{C11, C15; also C10, C12, C14} |
-| Theorem | `odg:cr:thm:groupkernel` (line 8010) | The nonconstant part of a commutative group \src{C13}, for every $\Bbbk$ |
-| Lemma | `odg:cr:lem:reducedinjective` (line 8083) | Coefficientwise separation \src{C11} |
-| Theorem | `odg:cr:thm:reduced` (line 8094) | Reduced coefficient algebras \src{C11} |
-| Lemma | `odg:cr:lem:tangent` (line 8125) | Square-zero lifts \src{C11} |
-| Theorem | `odg:cr:thm:dualdefect` (line 8137) | The dual-number defect \src{C11} |
-| Proposition | `odg:cr:prop:char2` (line 8168) | An elliptic point in characteristic two \src{C11, C14, C15} |
-| Proposition | `odg:cr:prop:charp` (line 8199) | Squarefree rigidity fails in characteristic $p$ \src{C13} |
-| Theorem | `odg:cr:thm:dor` (line 8230) | A discretely ordered ring with no omnific copy \src{C11} |
-| Lemma | `odg:log:lem:valuation` (line 8358) | The valuation-ring side \src{C15} |
-| Theorem | `odg:log:thm:annihilation` (line 8391) | Logarithmic annihilation \src{C15} |
-| Corollary | `odg:log:cor:criterion` (line 8439) | The logarithmic tangent criterion \src{C15} |
-| Theorem | `odg:log:thm:descent` (line 8507) | Descent over any coefficient ring \src{C15} |
-| Corollary | `odg:log:cor:omnific` (line 8531) | Omnific points on logarithmic complements \src{C15} |
-| Proposition | `odg:log:prop:products` (line 8559) | Finite products \src{C15} |
-| Theorem | `odg:thm:quadraticformula` (line 8596) | Square-discriminant criterion \src{02} |
-| Proposition | `odg:prop:initial` (line 8657) | Initial forms of an omnific solution \src{01, 02} |
-| Proposition | `odg:prop:binomial` (line 8699) | A two-term root obstruction \src{05} |
+| Lemma | `odg:cr:lem:rings` (line 6683) | Intersections, units and degree \src{C14; also C10--C13, C15} |
+| Lemma | `odg:cr:lem:euler` (line 6753) | Euler derivations on the two rings \src{C12, C13; also C10, C11, C14, C15} |
+| Lemma | `odg:cr:lem:separation` (line 6803) | Joint constants and leading detection \src{C10, C11, C12, C13, C14, C15} |
+| Corollary | `odg:cr:cor:algclosed` (line 6824) | Relatively algebraically closed constants \src{C10, C14, C15} |
+| Lemma | `odg:cr:lem:division` (line 6839) | Differential division \src{C14; also C10, C11, C12, C13, C15} |
+| Theorem | `odg:cr:thm:squarefree` (line 6871) | Squarefree superelliptic rigidity \src{C12, C13, C15; also C10, C11, C14} |
+| Proposition | `odg:cr:prop:cubic` (line 6925) | A cubic certificate \src{C10, C11, C12, C13, C14, C15} |
+| Corollary | `odg:cr:cor:weierstrass` (line 6976) | Nonsingular short Weierstrass equations \src{C10, C11, C12, C13, C14, C15} |
+| Corollary | `odg:cr:cor:generalweierstrass` (line 7005) | General Weierstrass equations \src{C13}, for every $\Bbbk$ |
+| Proposition | `odg:cr:prop:singular` (line 7038) | Singular cubics \src{C10, C11, C12, C14, C15} |
+| Lemma | `odg:cr:lem:separated` (line 7107) | Equality from an ambient field \src{C10, C11, C12, C13, C14, C15} |
+| Theorem | `odg:cr:thm:annihilation` (line 7120) | Two-ring annihilation \src{C13}; one-forms \src{C10, C11, C12, C14} |
+| Lemma | `odg:cr:lem:constantpoint` (line 7189) | From vanishing tangents to a constant point \src{C13, C14; also C10, C11, C12} |
+| Theorem | `odg:cr:thm:proper` (line 7209) | Proper differential rigidity \src{C14; also C10, C11, C12, C13} |
+| Corollary | `odg:cr:cor:hahnproper` (line 7233) | Hahn realization \src{C14; also C10, C11, C12, C13} |
+| Theorem | `odg:cr:thm:symmetric` (line 7272) | Symmetric-differential rigidity \src{C13, C15} |
+| Corollary | `odg:cr:cor:semiample` (line 7288) | A semiample tautological bundle \src{C13}; ample case also \src{C15} |
+| Proposition | `odg:cr:prop:inherit` (line 7330) | Inheritance \src{C13; also C10, C11, C14, C15} |
+| Lemma | `odg:cr:lem:canonical` (line 7376) | Canonical forms have no common zero \src{C13, C14; also C10, C11, C12} |
+| Theorem | `odg:cr:thm:positivegenus` (line 7393) | Positive-genus curves \src{C11, C13, C14; also C10, C12} |
+| Lemma | `odg:cr:lem:punctures` (line 7431) | Two punctures force constancy \src{C10, C11, C13, C14, C15} |
+| Lemma | `odg:cr:lem:formA1` (line 7450) | Forms of the affine line \src{C14}; real case \src{C10, C11, C13} |
+| Theorem | `odg:cr:thm:affine` (line 7470) | Smooth affine curves \src{C14; also C10, C11, C12, C13, C15} |
+| Lemma | `odg:cr:lem:logdim` (line 7528) | Logarithmic forms \src{C12, C15} |
+| Theorem | `odg:cr:thm:logroute` (line 7546) | The logarithmic route \src{C12; also C15}, closed centre \mergetag |
+| Corollary | `odg:cr:cor:subalgebra` (line 7585) | Curve subalgebras \src{C11, C12} |
+| Corollary | `odg:cr:cor:allcurves` (line 7601) | All smooth curves \src{C13; also C15}, for every $\Bbbk$ |
+| Theorem | `odg:cr:thm:arith` (line 7623) | Exact fibers over an arbitrary coefficient ring \src{C11}, for every $\Bbbk$ |
+| Corollary | `odg:cr:cor:omnific` (line 7661) | Omnific points on smooth affine curves \src{C10, C11, C13, C14} |
+| Lemma | `odg:cr:lem:arcs` (line 7712) | Integer polynomial arcs \src{C14} |
+| Proposition | `odg:cr:prop:congruence` (line 7737) | A congruence criterion \src{C14} |
+| Corollary | `odg:cr:cor:polywitness` (line 7764) | Polynomial witnesses \src{C13}; also \src{C12} |
+| Theorem | `odg:cr:thm:descent` (line 7798) | Descent for separated models \src{C12} |
+| Theorem | `odg:cr:thm:unimodular` (line 7838) | Unimodular coordinates \src{C14}; for $\mathfrak o=\Bbbk$ \src{C10, C13} |
+| Lemma | `odg:cr:lem:coordinatepoint` (line 7854) | Invertible coordinate ideals \src{C12} |
+| Theorem | `odg:cr:thm:ideals` (line 7869) | Coordinate ideals on rigid targets \src{C12} |
+| Theorem | `odg:cr:thm:ozideal` (line 7882) | Omnific coordinate ideals \src{C12} |
+| Corollary | `odg:cr:cor:projectiveQ` (line 7902) | Rational projective points \src{C14; also C10, C12, C13, C15} |
+| Lemma | `odg:cr:lem:invariant` (line 8024) | Invariant differentials \src{C11, C12, C13, C14, C15} |
+| Theorem | `odg:cr:thm:abelian` (line 8038) | Abelian varieties \src{C10, C11, C13, C14, C15; also C12} |
+| Lemma | `odg:cr:lem:torus` (line 8057) | Tori \src{C14; also C10, C11, C12, C13, C15} |
+| Theorem | `odg:cr:thm:semiabelian` (line 8076) | Semiabelian varieties \src{C10, C11, C12, C13, C14, C15} |
+| Theorem | `odg:cr:thm:quasifinite` (line 8093) | Quasi-finite maps \src{C11, C15; also C10, C12, C14} |
+| Theorem | `odg:cr:thm:groupkernel` (line 8114) | The nonconstant part of a commutative group \src{C13}, for every $\Bbbk$ |
+| Lemma | `odg:cr:lem:reducedinjective` (line 8187) | Coefficientwise separation \src{C11} |
+| Theorem | `odg:cr:thm:reduced` (line 8198) | Reduced coefficient algebras \src{C11} |
+| Lemma | `odg:cr:lem:tangent` (line 8229) | Square-zero lifts \src{C11} |
+| Theorem | `odg:cr:thm:dualdefect` (line 8241) | The dual-number defect \src{C11} |
+| Proposition | `odg:cr:prop:char2` (line 8272) | An elliptic point in characteristic two \src{C11, C14, C15} |
+| Proposition | `odg:cr:prop:charp` (line 8303) | Squarefree rigidity fails in characteristic $p$ \src{C13} |
+| Theorem | `odg:cr:thm:dor` (line 8334) | A discretely ordered ring with no omnific copy \src{C11} |
+| Lemma | `odg:log:lem:valuation` (line 8462) | The valuation-ring side \src{C15} |
+| Theorem | `odg:log:thm:annihilation` (line 8495) | Logarithmic annihilation \src{C15} |
+| Corollary | `odg:log:cor:criterion` (line 8543) | The logarithmic tangent criterion \src{C15} |
+| Theorem | `odg:log:thm:descent` (line 8611) | Descent over any coefficient ring \src{C15} |
+| Corollary | `odg:log:cor:omnific` (line 8635) | Omnific points on logarithmic complements \src{C15} |
+| Proposition | `odg:log:prop:products` (line 8663) | Finite products \src{C15} |
+| Theorem | `odg:thm:quadraticformula` (line 8700) | Square-discriminant criterion \src{02} |
+| Proposition | `odg:prop:initial` (line 8761) | Initial forms of an omnific solution \src{01, 02} |
+| Proposition | `odg:prop:binomial` (line 8803) | A two-term root obstruction \src{05} |
 
 ### set-sized-quotients-of-omnific-integers
 
