@@ -441,9 +441,9 @@ Sources 08 and 09, placed in \texttt{a4dcb91}, were integrated after those
 reviews as \cref{odg:frac:sec:fractions}, together with additions to
 \cref{odg:sec:formal}, one partly answered question and five new questions in
 \cref{odg:sec:questions}. A further pass now reviews
-\cref{odg:frac:sub:conventions,odg:frac:sub:ideals,odg:frac:sub:multiplier,odg:frac:sub:region}:
-denominator ideals, least denominators, the multiplier theorem and the
-affine denominator dichotomy. The rest of the added material remains
+\cref{odg:frac:sub:conventions,odg:frac:sub:ideals,odg:frac:sub:multiplier,odg:frac:sub:region,odg:frac:sub:rational,odg:frac:sub:curves,odg:frac:sub:orbits}:
+denominator ideals, the multiplier theorem, rational-function and curve
+applications, and the specialization-orbit and density arguments. The rest of the added material remains
 unreviewed. The insertion of \cref{odg:frac:sec:fractions} moved the three sections after it
 by one: the former Sections 15--17 are now \cref{odg:sec:coefficients,odg:sec:formal,odg:sec:questions}.
 Nine earlier
@@ -4695,7 +4695,7 @@ witness, and the Gaussian dichotomy. The Gaussian dichotomy contains the
 Gaussian unimodular-direction criterion of manuscript 14 of the sibling
 report (\cref{odg:frac:cor:gaussiandirections}). The proof review recorded in
 \fn{RECONCILIATION.md} now covers this section through
-\cref{odg:frac:sub:region}; the rational-function applications and later
+\cref{odg:frac:sub:orbits}; the localization, scale-extension and later
 subsections still await that review.
 
 \subsection{Conventions}\label{odg:frac:sub:conventions}
@@ -5181,10 +5181,18 @@ $\R(T)\hookrightarrow\No$. For every polynomial $p$, $\ct(p(t))=p(0)$, and for
 $p\ne0$, $\ddeg(p(t))=(\deg p)\,\ddeg(t)$.
 \end{lemma}
 \begin{proof}
-$\ct(t)=0$ gives the constant coefficient. The nonzero terms $a_jt^j$ have
-distinct leading exponents $j\,\ddeg(t)$, so the term of largest degree cannot
-cancel; this is the argument of \cref{odg:prop:univariate}. So no nonzero
-polynomial vanishes at $t$.
+Every power of $t$ has nonnegative support, so polynomial evaluation lands
+in $\BR$. Applying the retraction and using $\ct(t)=0$ gives
+$\ct(p(t))=p(0)$. Put $\delta=\ddeg(t)>0$; this holds for either sign of $t$.
+The nonzero terms $a_jt^j$ have distinct leading exponents $j\delta$, so the
+term of largest degree cannot cancel; this is the argument of
+\cref{odg:prop:univariate}. Thus evaluation is injective. In particular
+$q(t)\ne0$ for every nonzero $q\in\R[T]$, and the fraction-field extension
+is well defined and injective by cross multiplication. For later use, if
+$0\ne f=p/q\in\R(T)$, multiplicativity of leading exponents gives
+\[
+ \ddeg(f(t))=(\deg p-\deg q)\delta=(\deg f)\delta.
+\]
 \end{proof}
 
 \begin{theorem}[Representations of rational-function tuples \src{08}]\label{odg:frac:thm:main}
@@ -5214,13 +5222,27 @@ These statements cover representations with arbitrary surreal supports.
 The polynomial gcd gives a B\'ezout identity
 $\sum_jU_j(T)p_j(T)+U_0(T)q(T)=1$ in $\R[T]$. By \cref{odg:frac:lem:evaluation}
 its evaluation shows that the vector at $t$ is unimodular over $\BR$, with
-residue vector the constant vector of the polynomials. Apply
+residue vector the constant vector of the polynomials. Evaluating the same
+identity at $0$ shows that this vector is nonzero. Equivalently, if all
+constants vanished then $T$ would be a common polynomial factor. Apply
 \cref{odg:frac:thm:pullback} with $(R,c)=(\BR,\ct)$ and $K=\No$. Every
-representation has $h=b/q(t)$, and every admissible $h$ gives a representation.
-The ideals are the sets of last coordinates, and multiplication by $q(t)$ is an
-$\Oz$-linear bijection $\Pi\to q(t)\Pi$, so \cref{odg:cor:Pglobal} excludes a
-set of generators.
+representation has the unique multiplier $h=b/q(t)\ne0$, and every admissible
+nonzero $h$ gives a representation. In (a), $q$ and the $p_j$ henceforth
+mean the rescaled polynomials; for an original denominator $q_{\rm old}$
+the ideal is $\lambda q_{\rm old}(t)\Oz$, where $\lambda$ is the common
+normalizing scalar. The ideals are the classes of last coordinates, including
+zero. In (b), multiplication by $q(t)\ne0$ is an $\Oz$-linear bijection
+$\Pi\to q(t)\Pi$. A set of generators for its image would pull back to a
+set of generators for $\Pi$, contrary to \cref{odg:cor:Pglobal}.
 \end{proof}
+
+The projective specialization is independent of the chosen reduced
+polynomial vector. Indeed, two such evaluated vectors for the same tuple
+differ by a nonzero surreal scalar. Their two $\BR$-B\'ezout identities
+force both that scalar and its inverse into $\BR$, just as in
+\cref{odg:frac:lem:welldefined}; hence the scalar is a nonzero real.
+Taking constants gives the same projective point. This argument applies to
+any number of coordinates and is compatible with $\spz$ on $\Vreg$.
 
 \status{Source 09 proves the case $n=1$, $t=\omega^\alpha$ (its one-scale
 classification), including the formula
@@ -5243,11 +5265,16 @@ in the divisibility order, and there is no least positive common denominator.
 \end{corollary}
 \begin{proof}
 Case (a) is \cref{odg:frac:lem:unimodular} with $\Oz^\times=\{\pm1\}$, and
-$|h|\ge1$ for $0\ne h\in\Oz$. In case (b) every coordinate is $h$ times an
+$|h|\ge1$ for $0\ne h\in\Oz$. The denominator $|q(t)|$ is attained by
+choosing $h=1$ or $h=-1$ according to the sign of $q(t)$.
+In case (b) every coordinate is $h$ times an
 element of $\BR$ with $h\in\Pi$, hence lies in $\Pi$. If $d$ is a common
 divisor, dividing by $d$ gives another representation, whose multiplier $h/d$
 lies in $\Pi$ by \cref{odg:frac:thm:main}; so $2d$ is a common divisor not
-dividing $d$. Every positive denominator can be halved.
+dividing $d$: otherwise cancellation of $d\ne0$ would put $1/2$ in $\Oz$.
+Division by any nonzero ordinary integer preserves positive support, proving
+the asserted ordinary divisibility of all coordinates. Replacing $h$ by
+$h/2$ halves a positive denominator and preserves the whole representation.
 \end{proof}
 
 This strengthens \cref{odg:thm:nogcd}: there the pair is the constant point
@@ -5278,7 +5305,10 @@ depend on $t$.
 \begin{proof}
 For a reduced pair $p(0)$ and $q(0)$ are not both zero, and $[p(0):q(0)]$ is
 rational exactly when $f(0)\in\Q\cup\{\infty\}$. Apply
-\cref{odg:frac:thm:main,odg:frac:cor:lowest}.
+\cref{odg:frac:thm:main,odg:frac:cor:lowest}. In particular a pole at $0$
+means $q(0)=0$ and $p(0)\ne0$, giving the rational projective point
+$[1:0]$; it does not mean that $q(t)=0$. The zero function uses the
+reduced pair $(0,1)$ and has least denominator $1$.
 \end{proof}
 
 \begin{remark}[A formal specialization \src{08, 09}]\label{odg:frac:rem:formal}
@@ -5318,7 +5348,12 @@ $(t^2+1)/(t^2+r)$ & $1/r$ & $(t^2+r)\,\Pi$ & no & 09\\
 \bottomrule
 \end{tabular}
 \end{center}
-All displayed polynomial pairs are coprime because $r$ is irrational. The
+The constant-denominator rows are coprime automatically. In the nonconstant
+rows involving $r$, a common root would force $r=1$, $r=2/3$ or $r=0$,
+as applicable; irrationality excludes these possibilities. For
+$(2T+3,5T+7)$, the combination $5(2T+3)-2(5T+7)=1$ is already a
+B\'ezout identity. The denominator $t/r$ in the row $r/t$ comes from
+rescaling $(r,T)$ by $1/r$, not from asserting that $r\in\Oz$. The
 function $(rt+1)/(t+1)$ has irrational standard part $r$ but unique lowest
 terms, while $(t+r)/(t+1)$ has standard part $1$ and none. So the standard part
 does not decide cancellation \src{08}.
@@ -5340,7 +5375,9 @@ with the certificate
 \begin{equation}\label{odg:frac:eq:closebezout}
  (1-rt)(1+rt)+(r^2t)\,t=1
 \end{equation}
-over $\Oz$. But $\spz(x_-)=r+1\notin\Q$, so $\Den(x_-)=(t+1)\Pi$ and no
+over $\Oz$: $1-rt$ has integer constant $1$, while $r^2t\in\Pi$,
+so the real coefficients do not obstruct membership of the witnesses.
+But $\spz(x_-)=r+1\notin\Q$, so $\Den(x_-)=(t+1)\Pi$ and no
 presentation of $x_-$ has a gcd. Yet $x_+-x_-=1/(t(t+1))$ and
 $\st(x_+)=\st(x_-)=r$. The standard part does not detect the obstruction, even
 at the next infinitesimal scale.
@@ -5353,12 +5390,18 @@ B\'ezout identity. (2) Evaluate at $0$ and decide whether the direction is
 rational. (3) If it is not, return $\Den=q(t)\Pi$. (4) If it is, normalize to a
 primitive integer vector, compute an integer B\'ezout identity, and apply
 \eqref{odg:frac:eq:lift} (or \cref{odg:frac:rem:lift}) to get an omnific
-B\'ezout certificate. (5) Choose the sign so that $q(t)>0$, from the leading
-coefficient of $q$ and the sign of $t$. The certificate is valid for every
-nonzero purely infinite parameter and, by the ambient-scalar identity, governs
-representations with arbitrary supports. The procedure is effective only over
-coefficient fields in which equality, polynomial gcds and rationality are
-decidable, for example real algebraic number fields; it is not a uniform
+B\'ezout certificate. To perform step (2), choose a nonzero constant
+coordinate $v_k$; the direction is rational exactly when every $v_j/v_k$
+is rational. Clearing their denominators and then their integer gcd gives
+the primitive vector and the scalar used in step (4).
+(5) For the chosen parameter, choose the sign so that $q(t)>0$:
+$\operatorname{sgn}(q(t))=\operatorname{sgn}(\lc(q))\operatorname{sgn}(t)^{\deg q}$.
+The polynomial certificate works for every nonzero purely infinite parameter;
+the positive-denominator sign may depend on that parameter. The ambient-scalar
+identity makes the classification apply to representations with arbitrary
+supports. The procedure is effective over coefficient fields with exact
+arithmetic, decidable equality and rationality, and the required sign tests,
+for example real algebraic number fields; it is not a uniform
 algorithm for reals given by approximation oracles, and no factorization in
 $\Oz$ is used \src{08, 09}.
 \end{remark}
@@ -5371,20 +5414,33 @@ $r\in\R$ there is $g\in\R(T)$, regular at $0$, with $g(0)=r$ and
 $\deg(g-f)<-N$.
 \end{proposition}
 \begin{proof}
-Choose an ordinary $L>0$ larger than the pole order of $f$ at $0$ and put
+Choose an ordinary integer $L>0$ larger than the pole order of $f$ at $0$
+(take that order to be $0$ when $f$ is regular), and for an ordinary integer
+$M\ge1$ put
 \[
  H=(1+T^L)^{-M},\qquad g=(1-H)f+rH .
 \]
-Since $1-H$ vanishes to order $L$ at $0$, $g$ is regular at $0$ with $g(0)=r$.
-Moreover $g-f=H(r-f)$. If $f=r$ this is $0$; otherwise its degree is
-$\deg(r-f)-LM$, which is less than $-N$ for large $M$.
+The numerator of $1-H$ is $(1+T^L)^M-1$, whose lowest nonzero term is
+$MT^L$, and its denominator is nonzero at $0$. Thus $(1-H)f$ is regular
+and vanishes at $0$, while $H(0)=1$, proving $g(0)=r$. Moreover
+$g-f=H(r-f)$. If $f=r$ this is $0$; otherwise its degree is
+$\deg(r-f)-LM$. Choose $M\ge1$ with $LM>N+\deg(r-f)$ to obtain the
+strict inequality. Degrees of rational functions add under multiplication,
+even if numerator and denominator factors cancel.
 \end{proof}
 
 Source 09 states the conclusion ``unless $g=f$ exactly''; the clause is not
-needed, since $g=f$ gives degree $-\infty$. This topology is not the surreal
-order topology: no ordinary power $t^{-N}$ lies below every positive
-infinitesimal. \Cref{odg:frac:thm:focusing} removes this restriction by
-choosing a new monomial after the target interval \src{09}.
+needed, since $g=f$ gives degree $-\infty$. This topology is not the topology
+induced by the full surreal order. More explicitly \mergetag, fix $t$ and put
+$\delta=\ddeg(t)>0$. The set-cut bound supplies $\eta>N\delta$ for every
+ordinary $N\ge0$. Every nonzero $f(t)\in\R(t)$ has leading exponent
+$m\delta$ for an integer $m$, by \cref{odg:frac:lem:evaluation}, and hence
+$|f(t)|>\omega^{-\eta}$. The interval of radius $\omega^{-\eta}$ around
+any member of $\R(t)$ therefore meets $\R(t)$ only there: the induced
+topology is discrete. In contrast, the degree topology has nonzero
+$T^{-M}$ arbitrarily close to zero. \Cref{odg:frac:thm:focusing} achieves
+arbitrary surreal accuracy by choosing a new monomial after the target
+interval \src{09}.
 
 \subsection{Simultaneous denominators and rational curves}\label{odg:frac:sub:curves}
 
@@ -5401,7 +5457,9 @@ canonical denominators have no least common multiple in the divisibility order.
 The common polynomial vector is $(1,\sqrt2,T)$, with specialization
 $[1:\sqrt2:0]$, which is not rational. \Cref{odg:frac:thm:main} gives
 \eqref{odg:frac:eq:nolcm}. An lcm would generate the intersection of the two
-principal ideals. The individual assertions are
+principal ideals: being a common multiple gives one inclusion, and dividing
+every common multiple gives the other. This would make $t\Pi$ principal,
+contrary to its lack of a set of generators. The individual assertions are
 \cref{odg:frac:cor:onefunction}.
 \end{proof}
 
@@ -5460,8 +5518,15 @@ with $0\ne t\in\Pi$ has a primitive, in particular a unimodular, omnific
 coordinate vector.
 \end{corollary}
 \begin{proof}
-The identities $F_j(p_0,\ldots,p_n)=0$ persist under evaluation. Apply
-\cref{odg:frac:cor:curves} and \cref{odg:frac:lem:evaluation}.
+A common real rescaling by $\lambda\ne0$ preserves each equation:
+homogeneity gives $F_j(\lambda p_0,\ldots,\lambda p_n)
+=\lambda^{\deg F_j}F_j(p_0,\ldots,p_n)=0$ for nonzero $F_j$, and zero
+equations are automatic. Evaluation then preserves these identities.
+\Cref{odg:frac:cor:curves} gives the unimodular vector in the rational case
+and excludes primitive coordinates in the irrational case. If $p_i$ has
+positive degree, \cref{odg:frac:lem:evaluation} gives
+$\ddeg(p_i(t))=(\deg p_i)\ddeg(t)>0$, so that coordinate is infinite in
+absolute value; rescaling by a nonzero real does not change its degree.
 \end{proof}
 
 This answers \cref{odg:q:homogeneous} in part: a homogeneous system whose
@@ -5472,7 +5537,9 @@ rational curves, nor about the dependence on an integral model asked there
 (\cref{odg:frac:sub:settled}). The corollary is the merge's formulation of
 source 08's \cref{odg:frac:cor:curves}. \Cref{odg:prop:polylift} asks for
 integer constants of the $p_i$ and gives omnific solutions, not unimodularity;
-here the constant vector need only be rational, and the output is unimodular.
+here only its projective direction needs to be rational, and the output
+after normalization is unimodular. The polynomial gcd condition is also
+essential for this stronger conclusion.
 
 \subsection{Specialization fibers, congruence orbits and density}\label{odg:frac:sub:orbits}
 
@@ -5482,7 +5549,9 @@ Apply $\ct$ entrywise to matrices. It gives a split exact sequence
  \qquad \Kcong=\ker\bigl(\ct:\SL_2(\Oz)\to\SL_2(\Z)\bigr),
 \]
 split by the integer matrices. The kernel of $\ct:\SL_2(\BR)\to\SL_2(\R)$ is the
-same group $\Kcong$: a matrix over $\BR$ with constant matrix $I$ has integer
+same group $\Kcong$: determinants are polynomial expressions, so taking
+constants commutes with determinants and matrix multiplication, and a matrix
+over $\BR$ with constant matrix $I$ has integer
 constants, hence entries in $\Oz$ \src{09}. Source 09 writes $\Gamma$ for
 $\Kcong$.
 
@@ -5492,7 +5561,10 @@ $\spz(gx)=\ct(g)\,\spz(x)$. In particular $\Kcong$ preserves $\spz$.
 \end{lemma}
 \begin{proof}
 An invertible matrix carries a unimodular column to a unimodular column: apply
-its inverse to transport a B\'ezout row. Taking constants gives the formula.
+its inverse to transport a B\'ezout row. Explicitly, if a row $u$ and a
+column $v$ satisfy $uv=1$, then $(ug^{-1})(gv)=1$ with entries still in
+$\BR$. Taking constants commutes with matrix multiplication, giving
+$\ct(gv)=\ct(g)\ct(v)$ and the asserted projective formula.
 \end{proof}
 
 \begin{theorem}[Specialization fibers are congruence orbits \src{09}]\label{odg:frac:thm:orbits}
@@ -5502,7 +5574,7 @@ For every $r\in\mathbb P^1(\R)$, $\spz^{-1}(r)=\Kcong\cdot r$. Hence
  \Ureg=\coprod_{r\in\mathbb P^1(\Q)}\Kcong\cdot r,
 \]
 disjoint unions of classes, and every $\Kcong$-orbit in $\Vreg$ contains exactly
-one real point.
+one constant real projective point (including $\infty$).
 \end{theorem}
 \begin{proof}
 One inclusion is \cref{odg:frac:lem:equivariance}. For the other let $(P,Q)$
@@ -5512,7 +5584,7 @@ be a $\BR$-unimodular column representing $x$, with $UP+VQ=1$, and put
  M_0=\ct(M)\in\SL_2(\R),\qquad g=MM_0^{-1}.
 \]
 Then $M\infty=x$, $\ct(g)=I$, so $g\in\Kcong$, and $g(M_0\infty)=x$ with
-$M_0\infty=\spz(x)$. Distinct real points have distinct specializations, and the
+$M_0\infty=\spz(x)$. Distinct real projective points have distinct specializations, and the
 description of $\Ureg$ follows from \cref{odg:frac:thm:dichotomy}.
 \end{proof}
 
@@ -5526,8 +5598,17 @@ converse uses integer matrices. An $\Oz$-unimodular column completes to a
 determinant-one matrix over $\Oz$ as in the proof of \cref{odg:frac:thm:orbits}.
 \end{proof}
 
-The orbits carry a canonical real label, and the rational labels select exactly
-the fibers whose fractions have lowest terms \src{09}.
+The orbits carry a canonical real projective label, and the rational labels
+select exactly the fibers whose affine points have lowest terms \src{09}.
+The fiber labeled $\infty$ has affine points too, such as $1/t$.
+
+Here and below the topology on $\mathbb P^1(\No)$ is the ordered-field
+topology in its two affine charts. Around a surreal point use order
+intervals. Around $\infty$ use the reciprocal chart $[P:Q]\mapsto Q/P$:
+basic neighborhoods are $\{\infty\}\cup\{z\in\No:|z|>1/\varepsilon\}$
+for $\varepsilon>0$. In particular every nonempty projective open
+neighborhood contains an affine interval. These are class-defined
+neighborhoods; no set of all surreal open subsets is assumed.
 
 \begin{lemma}[Focusing matrices \src{09}]\label{odg:frac:lem:focusmatrix}
 For $x\in\No$ and $b\in\Pi$ with $bx,bx^2\in\Pi$ put
@@ -5541,15 +5622,22 @@ $\mathsf F_{x,b}\mathsf F_{x,c}=\mathsf F_{x,b+c}$ when both are defined,
 $\mathsf F_{x,b}^{-1}=\mathsf F_{x,-b}$, and
 \begin{equation}\label{odg:frac:eq:focusaction}
  \mathsf F_{x,b}(z)=x+\frac{z-x}{1+b(z-x)},\qquad
- \mathsf F_{x,b}(\infty)=x+\frac1b,
+ \mathsf F_{x,b}(\infty)=x+\frac1b\quad(b\ne0),
 \end{equation}
-the first formula where its denominator is nonzero.
+the first formula where its denominator is nonzero. For $b=0$ the matrix is
+the identity and fixes $\infty$. For $b\ne0$, the pole $x-1/b$ is sent
+to $\infty$.
 \end{lemma}
 \begin{proof}
 The entries other than the constant diagonal lie in $\Pi$, and
 $\det\mathsf F_{x,b}=(1+bx)(1-bx)+b^2x^2=1$. The identities follow from
-$\mathsf N_x^2=0$, and \eqref{odg:frac:eq:focusaction} from subtracting $x$ from
-the fractional-linear action.
+$\mathsf N_x^2=0$. The hypotheses also hold for $b+c$ and $-b$ because
+$\Pi$ is an additive group, which justifies the composition and inverse
+inside $\Kcong$. The action on a column $(z,1)$ has denominator
+$1+b(z-x)$; subtracting $x$ gives \eqref{odg:frac:eq:focusaction}.
+The image of $(1,0)$ is $(1+bx,b)$, giving the stated infinity formula
+when $b\ne0$ and the fixed point when $b=0$. At $z=x-1/b$ the numerator
+is $-1/b\ne0$, so the projective image is indeed $\infty$.
 \end{proof}
 
 Source 09 calls $\mathsf F_{x,b}$ an omnific transvection. It is unrelated to
@@ -5568,7 +5656,10 @@ The set $\{1,x,x^2\}$ can be cleared by one monomial (\cref{odg:thm:fractions}),
 and any larger exponent also clears it. The positive surreals $2/\varepsilon$
 and $2/|z-x|$, for affine $z\in S\setminus\{x\}$, form a set, so by
 \cref{odg:lem:setbounds} we may also take $\beta$ larger than all their leading
-exponents. Then $b,bx,bx^2\in\Pi$, $b>2/\varepsilon$, and $b|z-x|>2$ for those
+exponents, as well as larger than the clearing exponent and zero. A
+positive monomial with strictly greater leading exponent dominates each
+specified positive bound regardless of its real leading coefficient.
+Then $b,bx,bx^2\in\Pi$, $b>2/\varepsilon$, and $b|z-x|>2$ for those
 $z$. For such $z$ put $w=z-x$; then $|1+bw|\ge|bw|-1>\tfrac12|bw|>0$ and
 \[
  |\mathsf F_{x,b}(z)-x|=\frac{|w|}{|1+bw|}<\frac2b<\varepsilon .
@@ -5578,11 +5669,13 @@ The point $x$ is fixed, and $\infty$ goes to $x+1/b$, in the same interval.
 
 The conclusion holds for every set-sized family, not only for finite ones. It
 fails for the proper class $\mathbb P^1(\No)$, since an invertible matrix acts
-bijectively; the restriction to sets is essential \src{09}.
+bijectively; the restriction to sets is essential \src{09}. In this explicit
+family its pole $x-1/b$ always maps to infinity. The bound $b|z-x|>2$
+ensures that this pole is outside the chosen set $S$.
 
 \begin{corollary}[Dense fibers \src{09}]\label{odg:frac:cor:dense}
-Every $\Kcong$-orbit in $\mathbb P^1(\No)$ is dense in the order topology. In
-particular every fiber $\spz^{-1}(r)$, $r\in\mathbb P^1(\R)$, is dense, and
+Every $\Kcong$-orbit in $\mathbb P^1(\No)$ is dense in the topology of its
+ordered-field charts. In particular every fiber $\spz^{-1}(r)$, $r\in\mathbb P^1(\R)$, is dense, and
 $\Vreg$ contains continuum many pairwise disjoint dense fibers.
 \end{corollary}
 \begin{proof}
@@ -5602,24 +5695,34 @@ in any prescribed irrational fiber.
 Combine \cref{odg:frac:cor:dense,odg:frac:thm:dichotomy}.
 \end{proof}
 
-Explicitly \src{09}, for $x\in\No$ and $\varepsilon>0$ choose $b$ as in the
-proof of \cref{odg:frac:thm:focusing} with $b>1/\varepsilon$. Then
+Explicitly \src{09}, fix $x\in\No$, $\varepsilon>0$ and an irrational real
+$r$. Apply \cref{odg:frac:thm:focusing} with $S=\{\infty,r\}$, choosing
+$b$ with the bounds in its proof. The point with specialization $\infty$ is
 \[
  y=x+\frac1b=\frac{1+bx}{b},\qquad (1-bx)(1+bx)+(bx^2)\,b=1,
 \]
-so $b$ is the least positive denominator of $y$, and $|y-x|<\varepsilon$. For an
-irrational real $r$, the point
-$y=\mathsf F_{x,b}(r)=x+(r-x)/(1+b(r-x))$ has
+so $b$ is the least positive denominator of $y$, and $|y-x|<\varepsilon$. For the
+already chosen irrational real $r$, the point
+$y=\mathsf F_{x,b}(r)=x+(r-x)/(1+b(r-x))$ also satisfies $|y-x|<\varepsilon$
+and has
 $\Den(y)=\bigl(1+b(r-x)\bigr)\Pi$, since the transformed $\BR$-unimodular column
-has constant vector $(r,1)$. For $r=x$ this is $y=r$.
+has constant vector $(r,1)$. Its second entry is $1+b(r-x)$, and its
+first is $r+bx(r-x)$; applying a determinant-one matrix preserves
+$\BR$-unimodularity. The bound in the focusing proof excludes a zero
+denominator. For $r=x$ this is $y=r$ and the denominator factor is $1$.
 
 \begin{corollary}[Nowhere continuity \src{09}]\label{odg:frac:cor:discontinuous}
 The map $\spz:\Vreg\to\mathbb P^1(\R)$ is continuous at no point, for the
-relative order topology on $\Vreg$ and the usual topology on $\mathbb P^1(\R)$.
+relative topology from the ordered-field charts on $\mathbb P^1(\No)$ and
+the usual topology on $\mathbb P^1(\R)$.
 \end{corollary}
 \begin{proof}
 At $y\in\Vreg$ choose $r\ne\spz(y)$ and a neighbourhood of $\spz(y)$ omitting
-$r$. Every neighbourhood of $y$ meets the dense fiber $\spz^{-1}(r)$.
+$r$. Every relative neighborhood of $y$ is the intersection with $\Vreg$
+of a projective open neighborhood, and the latter meets the dense fiber
+$\spz^{-1}(r)\subseteq\Vreg$. Thus no such neighborhood maps into the
+chosen target neighborhood. The same argument uses the reciprocal chart
+when $y=\infty$.
 \end{proof}
 
 Denominator arithmetic is thus invisible to order approximation of any

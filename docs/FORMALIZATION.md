@@ -1042,7 +1042,7 @@ constant-term graph and number-field extension. In
 an integer radicand for a one-witness existential ideal and six-witness
 existential graph. This further combined consequence remains **Pending**
 in Lean, as do the original claims. New material in Sections 6 and 10,
-Sections 15.5–15.12 and 17–18, and remaining source reconciliation still need review.
+Sections 15.8–15.12 and 17–18, and remaining source reconciliation still need review.
 Section 13 has now received a proof review of fraction interpretation,
 coefficient reconstruction, automorphisms and logical consequences. Its
 reconstruction extends to the number-field ideal predicates, and the
@@ -1052,7 +1052,13 @@ consequences are also **Pending** in Lean. Sections 15.1–15.4 now have a
 proof review of denominator ideals, least denominators, the multiplier
 theorem and the affine dichotomy. Translation at zero is restored and
 the denominator-equivalence remark excludes infinity. These arguments
-remain **Pending** in Lean.
+remain **Pending** in Lean. The subsequent Sections 15.5–15.7 review
+expands rational-function and curve applications and the focusing/density
+proofs. It corrects the zero focusing parameter and projective-point
+wording, and specifies the topology at infinity. The fixed field `R(t)`
+is discrete in the induced surreal topology, unlike its degree topology,
+by the preceding degree and set-cut lemmas. This consequence is also
+**Pending** in Lean.
 The four Diophantine companions and fifteen quotient companions from the earlier
 placements are now assembled; the entire-function rectification addition is
 also written. These assemblies are distinct from proof review and formalization.
@@ -4367,7 +4373,7 @@ witness-closure and coefficient-intersection distinctions, detector and
 number-field existential graph, coefficient reconstruction and logical
 consequences. Sources 08–09 add Section 15 and clauses
 in Sections 17–18 (`b829d8b`). The subsequent denominator review covers
-Sections 15.1–15.4; Sections 15.5–15.12 and the later additions remain
+Sections 15.1–15.7; Sections 15.8–15.12 and the later additions remain
 unreviewed. All statements
 below are **Pending** in Lean. The separately styled cited theorem
 `odg:fact:settarget` is also in scope, outside the standard-environment table.
@@ -4486,37 +4492,37 @@ below are **Pending** in Lean. The separately styled cited theorem
 | Lemma | `odg:frac:lem:welldefined` (line 5114) | Well-defined specialization \src{09} |
 | Theorem | `odg:frac:thm:dichotomy` (line 5129) | Denominator dichotomy on the unimodular region \src{09}; \src{08} |
 | Lemma | `odg:frac:lem:evaluation` (line 5178) | Evaluation at an omnific parameter \src{08}; monomials \src{09} |
-| Theorem | `odg:frac:thm:main` (line 5190) | Representations of rational-function tuples \src{08} |
-| Corollary | `odg:frac:cor:lowest` (line 5235) | Lowest terms are all or nothing \src{08}; \src{09} |
-| Corollary | `odg:frac:cor:spectrum` (line 5257) | Leading exponents of denominators \src{08} |
-| Corollary | `odg:frac:cor:onefunction` (line 5271) | One rational function \src{08, 09} |
-| Proposition | `odg:frac:prop:localdense` (line 5366) | Prescribed specialization near a given function \src{09} |
-| Corollary | `odg:frac:cor:curves` (line 5416) | Primitive coordinates on rational curves \src{08} |
-| Corollary | `odg:frac:cor:homogeneous` (line 5450) | Solutions on rational curves \src{08} \mergetag |
-| Lemma | `odg:frac:lem:equivariance` (line 5489) | Equivariance \src{09} |
-| Theorem | `odg:frac:thm:orbits` (line 5498) | Specialization fibers are congruence orbits \src{09} |
-| Corollary | `odg:frac:cor:modular` (line 5519) | Modular equivalence \src{09} |
-| Lemma | `odg:frac:lem:focusmatrix` (line 5532) | Focusing matrices \src{09} |
-| Theorem | `odg:frac:thm:focusing` (line 5558) | Set-wise focusing \src{09} |
-| Corollary | `odg:frac:cor:dense` (line 5583) | Dense fibers \src{09} |
-| Corollary | `odg:frac:cor:bothtypes` (line 5594) | Both denominator types in every interval \src{09} |
-| Corollary | `odg:frac:cor:discontinuous` (line 5616) | Nowhere continuity \src{09} |
-| Proposition | `odg:frac:prop:localization` (line 5666) | A local ring with residue field $\Q$ \src{08} |
-| Proposition | `odg:frac:prop:localeval` (line 5688) | Rational functions in the localization \src{08} |
-| Theorem | `odg:frac:thm:tworesidues` (line 5705) | Independent real and rational residues \src{08} |
-| Proposition | `odg:frac:prop:intersection` (line 5744) | The omnific part of a one-parameter field \src{08} |
-| Proposition | `odg:frac:prop:generators` (line 5766) | Generator counts \src{08} |
-| Theorem | `odg:frac:thm:enlargement` (line 5782) | Enlargement defect \src{08} |
-| Theorem | `odg:frac:thm:scale` (line 5807) | Scale-extension defect \src{08} |
-| Theorem | `odg:frac:thm:nonflat` (line 5832) | An integral extension that is neither finite nor flat \src{08} |
-| Proposition | `odg:frac:prop:tor` (line 5850) | The defect as a Tor group \src{08} |
-| Proposition | `odg:frac:prop:monomial` (line 5883) | Monomial denominators \src{08, 09} |
-| Proposition | `odg:frac:prop:gaussianfrac` (line 5960) | Gaussian fractions \src{08}; \src{09} |
-| Theorem | `odg:frac:thm:gaussian` (line 5979) | Gaussian representation dichotomy \src{08} |
-| Corollary | `odg:frac:cor:gaussiandirections` (line 6002) | Constant directions over $\Z$ and $\Z{[i]}$ \src{08, 14} |
-| Theorem | `odg:thm:quadraticformula` (line 6068) | Square-discriminant criterion \src{02} |
-| Proposition | `odg:prop:initial` (line 6129) | Initial forms of an omnific solution \src{01, 02} |
-| Proposition | `odg:prop:binomial` (line 6171) | A two-term root obstruction \src{05} |
+| Theorem | `odg:frac:thm:main` (line 5198) | Representations of rational-function tuples \src{08} |
+| Corollary | `odg:frac:cor:lowest` (line 5257) | Lowest terms are all or nothing \src{08}; \src{09} |
+| Corollary | `odg:frac:cor:spectrum` (line 5284) | Leading exponents of denominators \src{08} |
+| Corollary | `odg:frac:cor:onefunction` (line 5298) | One rational function \src{08, 09} |
+| Proposition | `odg:frac:prop:localdense` (line 5409) | Prescribed specialization near a given function \src{09} |
+| Corollary | `odg:frac:cor:curves` (line 5474) | Primitive coordinates on rational curves \src{08} |
+| Corollary | `odg:frac:cor:homogeneous` (line 5508) | Solutions on rational curves \src{08} \mergetag |
+| Lemma | `odg:frac:lem:equivariance` (line 5558) | Equivariance \src{09} |
+| Theorem | `odg:frac:thm:orbits` (line 5570) | Specialization fibers are congruence orbits \src{09} |
+| Corollary | `odg:frac:cor:modular` (line 5591) | Modular equivalence \src{09} |
+| Lemma | `odg:frac:lem:focusmatrix` (line 5613) | Focusing matrices \src{09} |
+| Theorem | `odg:frac:thm:focusing` (line 5646) | Set-wise focusing \src{09} |
+| Corollary | `odg:frac:cor:dense` (line 5676) | Dense fibers \src{09} |
+| Corollary | `odg:frac:cor:bothtypes` (line 5687) | Both denominator types in every interval \src{09} |
+| Corollary | `odg:frac:cor:discontinuous` (line 5714) | Nowhere continuity \src{09} |
+| Proposition | `odg:frac:prop:localization` (line 5769) | A local ring with residue field $\Q$ \src{08} |
+| Proposition | `odg:frac:prop:localeval` (line 5791) | Rational functions in the localization \src{08} |
+| Theorem | `odg:frac:thm:tworesidues` (line 5808) | Independent real and rational residues \src{08} |
+| Proposition | `odg:frac:prop:intersection` (line 5847) | The omnific part of a one-parameter field \src{08} |
+| Proposition | `odg:frac:prop:generators` (line 5869) | Generator counts \src{08} |
+| Theorem | `odg:frac:thm:enlargement` (line 5885) | Enlargement defect \src{08} |
+| Theorem | `odg:frac:thm:scale` (line 5910) | Scale-extension defect \src{08} |
+| Theorem | `odg:frac:thm:nonflat` (line 5935) | An integral extension that is neither finite nor flat \src{08} |
+| Proposition | `odg:frac:prop:tor` (line 5953) | The defect as a Tor group \src{08} |
+| Proposition | `odg:frac:prop:monomial` (line 5986) | Monomial denominators \src{08, 09} |
+| Proposition | `odg:frac:prop:gaussianfrac` (line 6063) | Gaussian fractions \src{08}; \src{09} |
+| Theorem | `odg:frac:thm:gaussian` (line 6082) | Gaussian representation dichotomy \src{08} |
+| Corollary | `odg:frac:cor:gaussiandirections` (line 6105) | Constant directions over $\Z$ and $\Z{[i]}$ \src{08, 14} |
+| Theorem | `odg:thm:quadraticformula` (line 6171) | Square-discriminant criterion \src{02} |
+| Proposition | `odg:prop:initial` (line 6232) | Initial forms of an omnific solution \src{01, 02} |
+| Proposition | `odg:prop:binomial` (line 6274) | A two-term root obstruction \src{05} |
 
 ### set-sized-quotients-of-omnific-integers
 
