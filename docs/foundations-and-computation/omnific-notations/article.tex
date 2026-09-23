@@ -1,0 +1,2109 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,multicol}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr,hyperref,listings,xurl}
+\definecolor{inkblue}{HTML}{17365D}
+\definecolor{muted}{HTML}{536471}
+\hypersetup{colorlinks=true,linkcolor=inkblue,citecolor=inkblue,urlcolor=inkblue,
+ pdftitle={Notations for Omnific Integers: Exact Holonomic Towers and the Complexity of Equality},
+ pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\urlstyle{same}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\textsc{Notations for omnific integers}}
+\fancyhead[R]{\small\textsc{Theory and decision procedures}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt}\setlength{\parindent}{1.15em}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\hypersetup{bookmarksdepth=2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\Oz}{\mathbf{Oz}}
+\newcommand{\On}{\mathbf{On}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\DF}{\operatorname{DF}}
+\newcommand{\Frac}{\operatorname{Frac}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\ct}{\operatorname{ct}}
+\newcommand{\lc}{\operatorname{lc}}
+\newcommand{\lt}{\operatorname{lt}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\WF}{\mathrm{WF}}
+\newcommand{\KB}{\mathrm{KB}}
+\newcommand{\Pos}{\mathrm{Pos}}
+\newcommand{\Eq}{\mathrm{Eq}}
+\newcommand{\val}{\operatorname{v}}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,breaklines=true,
+ frame=single,rulecolor=\color{muted},showstringspaces=false}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{0.55in}
+\noindent{\color{inkblue}\Large\textsc{Foundations, ordinal notation, and effective algebra}}
+\vspace{0.32in}
+
+\noindent{\Huge\bfseries Notations for\\[5pt] Omnific Integers}
+\vspace{0.25in}
+
+\noindent{\LARGE Exact holonomic towers and\\[4pt] the complexity of equality}
+\vspace{0.36in}
+
+\noindent{\large A mathematical article with complete proofs,\\
+explicit representation contracts, and a finite verification prototype}
+\vspace{0.38in}
+
+\noindent Prepared for Vladimir Reshetnikov\\
+23 September 2026
+
+\vfill
+\noindent\begin{minipage}{\textwidth}
+\textbf{Main results.} A decidable notation system obtained by iterating
+certified differential equations has computable equality, order, truncation,
+omnific-integer recognition, and omnific floor. With hereditary Cantor-normal-form
+scale labels, its ordinal trace is exactly $\varepsilon_0$. For a contrasting
+primitive-recursive stream representation, equality is $\Pi^0_1$-complete,
+while positivity in $d$ dominance layers is complete at the $d$th finite
+mind-change level---already on values with at most $d$ monomials.
+
+\medskip
+\textbf{Status.} The proofs in this article are mathematical arguments, not
+Lean formalizations. Standard ingredients and repository precedents are
+identified explicitly. Several combined results are proposed as original
+formulations; the literature search is not a proof of priority. The supplied
+program checks a restricted exact-arithmetic implementation, not the infinite
+or computability-theoretic theorems.
+\end{minipage}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\begin{abstract}
+An omnific integer may have a transfinite Conway normal form, arbitrary real
+coefficients on its positive exponents, and an ordinary integer constant
+term. Consequently, finite notation is not synonymous with a finite normal
+form, and decidable syntax is not synonymous with decidable equality.
+We develop three precisely separated types of notation.
+
+First, over an effective ordered real coefficient field, a certified Euler
+operator and a finite compatible jet describe a unique D-finite power series.
+A leading-polynomial argument computes all exceptional integer indices even
+when the coefficients themselves are non-Archimedean. Iterating fraction
+fields of these series produces effective finite-rank surreal fields.
+Their omnific-integer parts admit a unique triangular decomposition, exact
+truncation, a computable floor, and an effective test for being an ordinal.
+Varying finitely many scale labels below $\varepsilon_0$ gives one decidable
+notation system whose ordinal trace is exactly the ordinals below
+$\varepsilon_0$, while also naming nonordinal omnific integers with infinite
+support. At rank $r$, support order types are bounded by $\omega^r$; the
+strict bound for the integer part is sharp.
+
+Second, primitive-recursive rational coefficient streams on $d$ fixed positive
+blocks always denote omnific integers, but their equality relation is
+$\Pi^0_1$-complete. Their positivity relation is many-one complete for the
+$d$-c.e. sets. The lower bounds require at most one nonzero coefficient per
+block. Thus the same very simple values can have decidable or undecidable
+notation equality depending on the information supplied by their names.
+Third, a fixed computable family of dyadic exponents in $(1,2)$ makes semantic
+support validity $\Pi^1_1$-complete, even with all nonzero coefficients equal
+to one. These results isolate coefficient, dominance, and well-foundedness
+obstructions rather than treating them as one universal undecidability claim.
+\end{abstract}
+
+\begingroup\small\setlength{\parskip}{0pt}
+\begin{multicols}{2}\tableofcontents\end{multicols}
+\endgroup
+\newpage
+
+\section{The problem and its three different answers}
+\label{sec:intro}
+
+An ordinal notation is a finite object with an ordinal interpretation.
+Hereditary Cantor normal forms illustrate one especially favorable situation:
+validity and comparison are decidable, and canonical expressions name exactly
+the ordinals below $\varepsilon_0$. More general recursive ordinal systems
+make well-foundedness part of the semantics, so recognizing valid expressions
+can itself become highly undecidable. The overview requested by the user
+\cite{ordinalwiki} motivates this distinction; our arguments use the
+underlying mathematical facts rather than relying on that overview as a
+technical source.
+
+For omnific integers, the analogous question has an additional dimension.
+Expressions can contain real coefficients, negative terms, and infinite
+normal forms whose exponents remain positive. A system can be very rich in
+its values while being algorithmically tame, or extremely restricted in its
+values while having an undecidable equality relation. This article makes
+both possibilities explicit.
+
+The principal positive construction is denoted $\mathcal R_A$ when its finite
+set of scale labels is $A$. It is obtained as the omnific-integer part of an
+effective field $\mathcal F_A$. Its names include differential equations with
+certified initial data, rational operations, and finitely nested scales.
+The principal negative construction uses raw coefficient programs rather
+than differential certificates. There, the support geometry is fixed in
+advance and harmless, but the name does not certify when a coefficient
+stream is identically zero. A third construction releases the support
+geometry as well, exposing an independent well-foundedness obstruction.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.16}
+\begin{tabular}{@{}P{.24\textwidth}P{.23\textwidth}P{.22\textwidth}P{.22\textwidth}@{}}
+\toprule
+Representation & Semantic validity & Equality & Order / positivity\\
+\midrule
+Certified holonomic towers & Decidable & Decidable & Decidable\\
+$d$ primitive-recursive positive blocks & Every well-formed name is valid &
+$\Pi^0_1$-complete & $d$-c.e.-complete positivity\\
+Tree-controlled dyadic supports & $\Pi^1_1$-complete & Co-c.e. on valid inputs;
+checked equality is $\Pi^1_1$-complete & Not needed for the validity lower bound\\
+\bottomrule
+\end{tabular}
+\end{center}
+The last row deliberately distinguishes an equality question under a promise
+from a question that must also check the promise.
+
+\subsection{Relation to existing work}
+
+Conway normal forms and the characterization of omnific integers are
+classical \cite{conway,gonshor}. Modern omnific-integer work uses generalized
+power series in a substantial way; L'Innocente and Mantova develop a
+factorisation theory and settle a specific primality conjecture
+\cite{innocente-mantova}. Our subject is not factorisation, but finite
+representations and their decision problems.
+
+D-finite power-series algebra is classical as well \cite{stanley}. In
+particular, closure under addition and multiplication, and finite
+initial-value zero tests for specified linear differential equations, are
+not new claims here. There are stronger results: Chen, Fang, and van der
+Hoeven give a zero-test for D-algebraic transseries in an effective
+differential-field framework with specified solutions and transbases
+\cite{chen-fang-hoeven}. The construction below is not presented as the
+first zero-test beyond rational functions. Its purpose is a transparent
+finite certificate format, recursive use of non-Archimedean coefficient
+fields, and an exact description of the resulting omnific-integer and ordinal
+parts. Our differential operator at a given level treats the lower-level
+coefficient field as constant; no compatibility with a global surreal
+derivation is assumed.
+
+The inspected Surreal repository already distinguishes structural names,
+numerical coefficient names, exact equality, support certificates, and
+computability of arithmetic \cite{repo-computable,repo-cas}. Its computer
+algebra report contains effective rational ordered-monomial cores and
+explicit zero-test and high-rank leading-term obstructions. The present
+article does not claim those general principles as new. It adds the
+particular certified tower and the exact finite mind-change classification
+for omnific positive blocks. Section~\ref{sec:provenance} gives a claim-level
+novelty and verification ledger.
+
+\subsection{What ``decidable'' means here}
+
+All algorithms are ordinary terminating algorithms on finite strings, with
+no oracle unless explicitly stated. A procedure need not have a practical
+complexity bound to be decidable. The coefficient field at the bottom is
+part of the input convention, not an arbitrary oracle for real numbers.
+The positive construction starts from a fixed effectively presented ordered
+subfield $C\subseteq\R$. Its valid codes, equality, order, and field
+operations are decidable or computable. Typical choices are $\Q$ and the
+real algebraic numbers with exact algebraic representations. Arbitrary
+Cauchy names for all computable reals do not satisfy this equality contract.
+
+Every set and sum in the proofs is set-sized. The proper class $\No$ is used
+only as an ambient semantic domain. In a universe-relative formalization,
+one may choose a universe containing the countable fields and supports under
+consideration. No truth predicate for the entire universe is required.
+
+\section{Normal forms and representation contracts}
+\label{sec:normal}
+
+\subsection{The semantic domain}
+
+We use Conway's monomial map $x\mapsto\omega^x$, not an unspecified extension
+of ordinary exponentiation. Every surreal has a unique normal form
+\begin{equation}\label{eq:normal}
+ x=\sum_{\gamma\in S} c_\gamma\omega^\gamma,
+ \qquad c_\gamma\in\R\setminus\{0\},
+\end{equation}
+where $S\subseteq\No$ is a set and is reverse well ordered: each nonempty
+subset has a greatest element. The sum is a normal-form or Hahn sum.
+Its existence is a support assertion, not convergence of a real analytic
+series or of the sequence of partial sums in the full surreal order topology.
+
+For $x\ne0$, let $\ell(x)=\max S$ and let $\lc(x)=c_{\ell(x)}$.
+The sign of $x$ is the sign of $\lc(x)$. Addition collects equal exponents;
+multiplication uses $\omega^\gamma\omega^\eta=\omega^{\gamma+\eta}$
+and finite convolution at each exponent. These operations are justified by
+the standard support lemmas for generalized power series
+\cite{conway,gonshor,innocente-mantova}.
+
+\begin{definition}[Omnific integer]\label{def:oz}
+An omnific integer is a surreal of the form
+\begin{equation}\label{eq:oz}
+ z=m+\sum_{\gamma\in S}c_\gamma\omega^\gamma,
+ \qquad m\in\Z,\quad S\subseteq\No_{>0}
+\end{equation}
+with reverse well-ordered set support. The class of these numbers is $\Oz$.
+The positive-exponent coefficients need not be ordinary integers.
+\end{definition}
+
+For example, $\sqrt2\,\omega-\tfrac13\omega^{1/2}+7$ is an omnific
+integer, whereas $\omega+\tfrac12$ and $\omega-\omega^{-1}$ are not.
+The support criterion shows directly that $\Oz$ is a subring of $\No$.
+It is discretely ordered: a positive element with a nonempty positive support
+is greater than every real number, and otherwise it is a positive ordinary
+integer. Thus $1$ is its least positive element.
+
+It is useful to write
+\begin{equation}\label{eq:threeparts}
+ x=x_{>0}+\ct(x)+x_{<0}.
+\end{equation}
+The constant term is an ordinary real number. The last part is either zero
+or infinitesimal, and the first is either zero or purely infinite. This is a
+normal-form decomposition; $x_{>0}$ is not generally the positive part in the
+order-theoretic sense.
+
+\subsection{Names, validity, and quotients}
+
+\begin{definition}[Notation system]
+A notation system consists of a decidable set $D$ of finite syntactic codes,
+a subset $V\subseteq D$ of semantically valid codes, and a denotation map
+$\nu:V\to\Oz$. Its equality problem on valid inputs is
+$\nu(a)=\nu(b)$ under the promise $a,b\in V$. Its \emph{checked equality}
+relation on all syntactic inputs is
+\[
+ E^{\mathrm{chk}}=\{(a,b)\in D^2:a,b\in V\text{ and }\nu(a)=\nu(b)\}.
+\]
+A total notation system has $V=D$. A canonicalization is a computable map
+$N:V\to V$ with $\nu(N(a))=\nu(a)$ and
+$N(a)=N(b)$ exactly when $\nu(a)=\nu(b)$.
+\end{definition}
+
+A coefficient-access algorithm answers a different question: it computes a
+specified coefficient or a specified finite collection of coefficients.
+It does not, by itself, certify that all remaining coefficients vanish.
+Likewise, a support generator is not automatically a support-validity
+certificate.
+
+\begin{proposition}[Canonicalization and decidable quotients]\label{prop:canonical}
+For a total notation system with effectively coded finite strings, equality
+is decidable if and only if it has a computable canonicalization.
+\end{proposition}
+\begin{proof}
+A canonicalizer decides equality by comparing its outputs. Conversely,
+number all finite strings by natural numbers. For input code $a$, test the
+finitely many codes $b\le a$ for syntactic validity and semantic equality to
+$a$, and return the least successful one. The set tested is nonempty since
+it contains $a$. The result is the least code in the whole equivalence
+class: no code larger than $a$ can be the least. Equal inputs therefore give
+the same result.
+\end{proof}
+This proposition supplies a canonical form in the computability sense, not
+necessarily a useful algebraic expression or an efficient normalizer.
+
+\begin{proposition}[Cardinality obstruction]
+The image of a finite-alphabet notation system is countable. No such system
+names all omnific integers, or even all numbers $c\omega$ with $c\in\R$.
+\end{proposition}
+\begin{proof}
+Finite strings form a countable set, whereas $c\mapsto c\omega$ is injective
+on $\R$. Moreover $\Oz$ contains every ordinal and is a proper class.
+\end{proof}
+This elementary obstruction does not prevent large and useful countable
+subrings. The question is which semantic closure properties can coexist
+with effective equality.
+
+\section{A sparse baseline and the source of additional difficulty}
+\label{sec:sparse}
+
+Let $G\subseteq(\No,+,<)$ be an effectively presented ordered abelian group
+whose embedding and group operations are fixed. Over the exact coefficient
+field $C$, use finite records
+\begin{equation}\label{eq:sparse}
+ (m;(\gamma_1,c_1),\ldots,(\gamma_s,c_s)),
+ \qquad m\in\Z,\quad\gamma_i>0.
+\end{equation}
+Zero coefficients and repeated exponents may be allowed in raw records.
+Sort exponents in decreasing order, collect equal exponents, and remove
+zero coefficients.
+
+\begin{proposition}[Sparse normalization]\label{prop:sparse}
+The records \eqref{eq:sparse} have decidable validity, equality, and order,
+and computable ring operations. After collection and sorting, their list of
+exponent--coefficient values and their integer constant term are unique.
+\end{proposition}
+\begin{proof}
+Only finitely many comparisons and coefficient operations are involved.
+The normal-form uniqueness theorem proves both equality and uniqueness.
+The sign of the first nonzero term decides order; if no positive term remains,
+the ordinary integer constant decides it. Products have exponent set in the
+finite sumset of the input supports, and positive exponents remain positive.
+\end{proof}
+
+If coefficient and exponent codes are not themselves canonical, this is
+uniqueness of values rather than literal strings. Proposition~\ref{prop:canonical}
+can normalize those codes too. The sparse core is familiar generalized
+polynomial algebra and already occurs in the repository's computer algebra
+work \cite{repo-cas}.
+
+Adding infinite series is not merely adding longer lists. For instance,
+\begin{equation}\label{eq:guardbasic}
+ \sum_{n\ge0}a_n\omega^{\omega-n}
+ =\omega^\omega\sum_{n\ge0}a_n(\omega^{-1})^n
+\end{equation}
+always has positive exponents and valid reverse well-ordered support,
+whatever the real coefficients $a_n$ are. But an algorithm for each $a_n$
+need not decide whether every $a_n$ is zero. A finite differential certificate
+can supply the missing information. The next sections make that assertion
+precise, including the singular initial indices that cannot simply be ignored.
+
+\section{Computing integer singularities over non-Archimedean fields}
+\label{sec:integerroots}
+
+The recursive construction will need to solve a modest but important problem:
+given $P(X)\in K[X]\setminus\{0\}$, compute all ordinary nonnegative integers
+$n$ for which $P(n)=0$, even though $K$ is non-Archimedean. Bounding roots by
+the absolute values of the coefficients in $K$ does not solve this: that
+bound may be an infinite surreal with no ordinary integer above it.
+
+\begin{definition}[Effective leading-data field]
+An effective leading-data field over $C$ is an effectively presented ordered
+subfield $K\subseteq\No$ with support in an effective ordered exponent group
+$G$, together with algorithms that, on $a\ne0$, compute
+$\ell(a)\in G$ and $\lc(a)\in C$.
+\end{definition}
+At rank zero, $K=C$, every nonzero element has exponent zero and is its own
+leading coefficient.
+
+\begin{lemma}[Archimedean integer search]\label{lem:archsearch}
+Given $c\in C$, an ordinary integer greater than $|c|$ can be found
+effectively, and $\floor{c}\in\Z$ can be computed.
+\end{lemma}
+\begin{proof}
+Test $2^j>|c|$ for $j=0,1,\ldots$. Archimedeanness guarantees termination.
+Within the resulting finite integer interval, exact comparisons determine
+the greatest integer at most $c$. Binary search is optional.
+\end{proof}
+
+\begin{theorem}[Leading-polynomial integer-root algorithm]\label{thm:integerroots}
+Let $K$ be an effective leading-data field over $C$. There is an algorithm
+that, given $0\ne P\in K[X]$, returns the complete finite set
+\[
+ I(P)=\{n\in\N:P(n)=0\}.
+\]
+In particular, it computes
+$B(P)=\max(I(P)\cup\{-1\})$.
+\end{theorem}
+\begin{proof}
+Write $P(X)=\sum_{i=0}^m a_iX^i$, omitting zero coefficients when taking
+leading exponents. Put
+\[
+ g=\max_{a_i\ne0}\ell(a_i),\qquad
+ p(X)=\sum_{\ell(a_i)=g}\lc(a_i)X^i\in C[X].
+\]
+The polynomial $p$ is nonzero: its nonzero contributions have different
+powers of $X$, so they cannot cancel as polynomial coefficients.
+For each ordinary nonnegative integer $n$, the coefficient of $\omega^g$
+in $P(n)$ is exactly $p(n)$. Hence
+\begin{equation}\label{eq:rootcontain}
+ P(n)=0\quad\Longrightarrow\quad p(n)=0.
+\end{equation}
+This includes $n=0$; the constant coefficient is evaluated in the usual way.
+
+If $p$ is a nonzero constant, return the empty set. Otherwise, write
+$p(X)=b_dX^d+\cdots+b_0$ with $b_d\ne0$. Choose an integer
+\[
+ M>1+\max_{i<d}|b_i/b_d|
+\]
+by Lemma~\ref{lem:archsearch}. The elementary Cauchy bound implies that
+$p$ has no real root of absolute value at least $M$. To verify the bound
+directly, for $|x|>1+\max_{i<d}|b_i/b_d|$, the sum of the lower-degree
+terms has absolute value smaller than $|b_dx^d|$, by the geometric-series
+estimate. Thus \eqref{eq:rootcontain} reduces the problem to the finite list
+$n=0,\ldots,M$. Evaluate $P(n)$ in $K$ and retain exactly its zeros.
+\end{proof}
+
+The theorem does not compute all roots in $K$, nor require $K$ to be real
+closed. It uses ordinary real leading coefficients to bound possible
+\emph{ordinary integer} roots, followed by exact testing in $K$. The leading
+polynomial is only a filter: cancellation at its root can leave a nonzero
+lower-scale term, which is why the final tests are necessary.
+
+\begin{example}
+In a field containing $t=\omega^{-1}$, let
+$P(X)=(X-3)\omega+(X-2)$. Its leading polynomial is $X-3$.
+The only candidate nonnegative integer root is $3$, but $P(3)=1$, so
+$I(P)=\varnothing$. In contrast, $(X-3)(\omega+1)$ has the same leading
+polynomial and does have the integer root $3$.
+\end{example}
+
+\section{Certified differential-series names}
+\label{sec:certificates}
+
+Fix an effective leading-data field $K$ and an independent formal variable
+$t$. Differentiation with respect to $t$ kills every element of $K$.
+Set $\theta=t\,d/dt$.
+
+\subsection{Euler-normalized operators}
+
+An Euler-normalized operator is
+\begin{equation}\label{eq:euleroperator}
+ L=\sum_{j=0}^{J}t^jP_j(\theta),\qquad
+ P_j(X)\in K[X],\quad P_0\ne0.
+\end{equation}
+All nonzero linear differential operators over $K(t)$ can be put into this
+form without changing their power-series solutions. First clear rational
+function denominators. Then use
+\begin{equation}\label{eq:falling}
+ t^a\left(\frac d{dt}\right)^b
+ =t^{a-b}\theta(\theta-1)\cdots(\theta-b+1).
+\end{equation}
+Collect equal powers of $t$, and multiply by a suitable power of $t$ to make
+the least occurring power zero. Multiplication of the equation by a nonzero
+rational function does not change its solution set inside $K((t))$.
+The uniqueness of the differential-operator normal form, or the triangular
+change of basis between powers and falling factorials, ensures that a
+nonzero operator stays nonzero.
+
+For $f=\sum_{n\ge0}a_nt^n$, the equation $Lf=0$ is equivalent to
+\begin{equation}\label{eq:recurrence}
+ P_0(n)a_n+\sum_{j=1}^{J}P_j(n-j)a_{n-j}=0
+ \quad(n\ge0),\qquad a_m=0\ (m<0).
+\end{equation}
+It is important that the argument of $P_j$ is $n-j$, not $n$.
+
+\begin{definition}[Certified holonomic name]\label{def:certificate}
+A certified holonomic name over $K$ is an operator \eqref{eq:euleroperator}
+together with the finite jet
+\[
+ (a_0,\ldots,a_B),\qquad B=B(P_0),
+\]
+where the jet is empty if $B=-1$, and every equation
+\eqref{eq:recurrence} with $0\le n\le B$ is satisfied. A syntactically
+well-formed but incompatible jet is invalid and is rejected.
+\end{definition}
+
+\begin{theorem}[Finite certification, zero testing, and leading data]
+\label{thm:certificate}
+A certified holonomic name has a unique denotation in $K[[t]]$. Validity,
+coefficient extraction, and the zero test are effective. Explicitly,
+\begin{equation}\label{eq:jetzero}
+ f=0\quad\Longleftrightarrow\quad a_0=\cdots=a_B=0.
+\end{equation}
+For a nonzero denotation its least nonzero index is the least nonzero
+index in the supplied jet, and is at most $B$.
+Conversely, every D-finite power series over $K$ has such a name.
+\end{theorem}
+\begin{proof}
+Compute $B$ by Theorem~\ref{thm:integerroots}. There are finitely many
+compatibility equations to check. For every $n>B$, $P_0(n)\ne0$, so define
+\begin{equation}\label{eq:extendjet}
+ a_n=-P_0(n)^{-1}\sum_{j=1}^{J}P_j(n-j)a_{n-j}.
+\end{equation}
+This is a uniquely determined finite computation from earlier coefficients.
+It gives a formal series satisfying every coefficient equation, hence $Lf=0$.
+Any solution with that jet must satisfy the same recursion, proving
+uniqueness. If the entire jet is zero, induction in \eqref{eq:extendjet}
+gives the zero series. The converse of \eqref{eq:jetzero} is immediate.
+If $B=-1$, induction starts at $n=0$ and the only solution is zero.
+
+By definition, a D-finite series satisfies a nonzero linear differential
+equation over $K(t)$. Normalize that equation as above and supply the finite
+jet of this particular series through the computed bound. It satisfies all
+compatibility equations and recovers the series uniquely.
+\end{proof}
+
+Here ``every D-finite series'' refers to series whose coefficients belong to
+$K$, so its finitely many initial coefficients have $K$-names. No algorithm
+is asserted for recognizing that an arbitrary coefficient program is
+D-finite or for finding its differential equation.
+
+\begin{example}[Why the differential order is not a sufficient jet bound]
+\label{ex:resonance}
+The operator $L=\theta(\theta-M)$, for an ordinary integer $M>0$, has the
+solutions $1$ and $t^M$. Its differential order is two, but $t^M$ agrees with
+zero through index $M-1$. The correct bound from $P_0(X)=X(X-M)$ is $B=M$.
+A name for $t^M$ must therefore include its exceptional coefficient at $M$.
+There is no valid argument that replaces the computed singular-index bound
+by the operator order.
+\end{example}
+
+\subsection{Closure algorithms, not just closure assertions}
+
+Let $\DF_K[[t]]$ be the ring of D-finite series over $K$. Its familiar
+ring-closure theorem \cite{stanley} has the following effective version in
+our representation.
+
+\begin{theorem}[Effective addition and multiplication]\label{thm:dfclosure}
+From certified names for $f,g\in\DF_K[[t]]$, one can compute certified
+names for $f+g$, $-f$, and $fg$. No oracle for algebraic independence or for
+minimal differential equations is required.
+\end{theorem}
+\begin{proof}
+For completeness, an explicit linear-algebra construction follows.
+A nonzero series satisfying an operator of differential order $r\ge1$
+has a derivative vector
+\[
+ v_f=(f,f',\ldots,f^{(r-1)})^{\mathsf T},\qquad v_f'=A_fv_f,
+\]
+where $A_f$ is the companion matrix over $K(t)$. The zero case is already
+decidable and can be treated separately. For a sum use the direct-sum
+system $A_f\oplus A_g$ and an output row selecting $f+g$.
+For a product use
+\[
+ A=A_f\otimes I+I\otimes A_g
+\]
+on $v_f\otimes v_g$, with the output row selecting $fg$.
+These systems have dimensions $r+s$ and $rs$, respectively.
+
+If a scalar output is $h=c_0v$ in a system $v'=Av$, define rows
+$c_{i+1}=c_i'+c_iA$. Then $h^{(i)}=c_iv$. In a system of dimension $q$,
+the rows $c_0,\ldots,c_q$ are linearly dependent over $K(t)$.
+Gaussian elimination computes a nontrivial relation
+$\sum_i b_i(t)c_i=0$, yielding the nonzero operator
+$\sum_i b_i(t)(d/dt)^i$ annihilating $h$.
+All rational-function operations and zero tests reduce to the corresponding
+operations in $K$.
+
+Normalize the resulting operator to \eqref{eq:euleroperator}, compute its
+bound $B$, and compute the required jet by finite coefficient addition or
+Cauchy convolution. The genuine sum or product supplies a solution, so the
+jet satisfies the finite compatibility equations. The uniqueness theorem
+then verifies the returned name. Negation can retain the original operator
+and negate every jet coefficient.
+\end{proof}
+
+Repeated operator construction may be expensive and can produce nonminimal
+orders. That affects performance, not termination. The proof also explains
+why two different differential equations for the same series can be
+compared: compute an annihilator and the required finite jet of their
+difference, rather than comparing their input operators literally.
+
+\subsection{Passing to a field safely}
+
+D-finite series do not in general form a field. We therefore explicitly take
+\begin{equation}\label{eq:H}
+ H(K,t)=\Frac(\DF_K[[t]])\subseteq K((t)).
+\end{equation}
+A name is a pair $(p,q)$ of certified power-series names with $q\ne0$.
+The denominator test is decidable by Theorem~\ref{thm:certificate}.
+
+\begin{proposition}[Effective fraction field]\label{prop:fractions}
+The field $H(K,t)$ has computable arithmetic and equality. Its Laurent
+valuation, leading coefficient in $K$, and individual Laurent coefficients
+are computable.
+\end{proposition}
+\begin{proof}
+Use the usual fraction formulas and Theorem~\ref{thm:dfclosure}.
+The equality test is
+\[
+ \frac pq=\frac rs\quad\Longleftrightarrow\quad ps-rq=0.
+\]
+For a nonzero fraction, write
+$p=t^a(p_a+p_{a+1}t+\cdots)$ and
+$q=t^b(q_b+q_{b+1}t+\cdots)$ with $p_aq_b\ne0$.
+The integers $a,b$ are read from the finite certified jets. Its Laurent
+valuation is $a-b$, and its leading coefficient is $p_a/q_b$.
+To compute its coefficient at any specified Laurent index, use triangular
+series division after removing $t^b$ from the denominator. Every requested
+coefficient requires only finitely many earlier coefficients and division
+by the fixed nonzero element $q_b$.
+\end{proof}
+A reciprocal in $H(K,t)$ is represented as a fraction; it is not silently
+asserted to be D-finite. Rational functions are included because polynomials
+are D-finite. Every D-finite Laurent series also belongs to this field after
+multiplication by a sufficiently large power of $t$.
+
+\section{Finite-rank holonomic towers inside the surreal field}
+\label{sec:towers}
+
+\subsection{Scales and their order}
+
+Choose a finite increasing list of ordinal labels
+\[
+ \alpha_1<\cdots<\alpha_r.
+\]
+Set
+\begin{equation}\label{eq:scales}
+ \delta_j=\omega^{\alpha_j},\qquad
+ t_j=\omega^{-\delta_j},\qquad U_j=t_j^{-1}=\omega^{\delta_j},
+ \qquad G_j=\Z\delta_1+\cdots+\Z\delta_j.
+\end{equation}
+The coefficients in $G_j$ are ordinary integers, and addition in $G_j$ is
+surreal addition. The $\delta_j$ are linearly independent over $\Q$ by
+normal-form uniqueness. Their integer span is ordered lexicographically
+from the \emph{largest} index: the sign of a nonzero vector is the sign of
+its last nonzero coordinate. Thus every positive multiple of $\delta_j$
+dominates every element of $G_{j-1}$ in absolute value.
+
+The ordinal labels are not exponents in a formal analytic exponential.
+They specify actual Conway monomials and consequently a definite embedding
+of the exponent lattice in $\No$. Different label choices can have the same
+finite-rank algorithmic structure but very different surreal magnitudes.
+
+Define recursively
+\begin{equation}\label{eq:tower}
+ F_0=C,\qquad F_j=H(F_{j-1},t_j)\quad(1\le j\le r).
+\end{equation}
+At level $j$, the field $F_{j-1}$ is constant for differentiation in $t_j$.
+The recursion on levels is essential; an operator is not allowed to use its
+own unknown denotation among its coefficients.
+
+\begin{lemma}[Iterated Laurent embedding]\label{lem:embedding}
+There is an injective ordered-field embedding
+\[
+ C((t_1))\cdots((t_r))\longrightarrow\No
+\]
+with the substitutions \eqref{eq:scales}. For
+$f=\sum_{n\ge N}a_nt_r^n\ne0$, where $a_N\ne0$, its leading data are
+\begin{equation}\label{eq:leadingtower}
+ \ell(f)=\ell(a_N)-N\delta_r,
+ \qquad \lc(f)=\lc(a_N).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Proceed by induction on $r$. Expand each coefficient $a_n$ at lower rank.
+Every exponent in $a_nt_r^n$ has the form $g-n\delta_r$ with $g\in G_{r-1}$.
+If $n<m$, every exponent in the $n$th block exceeds every exponent in the
+$m$th block, because $(m-n)\delta_r$ dominates $G_{r-1}$. Each individual
+block is reverse well ordered by induction, and the blocks are indexed by
+a subset of the integers bounded below. Their ordered union is therefore
+reverse well ordered. Distinct integer vectors give distinct surreal
+exponents, so no two different blocks overlap.
+
+For multiplication, a prescribed top coordinate in a product receives only
+finitely many pairs of top indices, since both Laurent series are bounded
+below. Within each such pair, the lower-rank convolution is legitimate by
+induction. Hence expansion respects addition and multiplication.
+Nonzero series have the leading term in \eqref{eq:leadingtower}, proving
+injectivity and order preservation. Inverses are respected since a field
+homomorphism sends the algebraic inverse to the inverse. The rank-zero
+case is the fixed embedding $C\subseteq\R\subseteq\No$.
+\end{proof}
+
+\begin{theorem}[Effective holonomic tower]\label{thm:tower}
+For every finite list of labels, \eqref{eq:tower} gives a countable
+subfield $F_r\subseteq\No$ with a decidable finite-name representation.
+It has computable field operations, equality, order, leading exponent,
+real leading coefficient, and coefficient extraction at each specified
+exponent of $G_r$.
+\end{theorem}
+\begin{proof}
+At rank zero the hypotheses hold by the contract for $C$. Suppose they hold
+at rank $j-1$. Theorem~\ref{thm:integerroots} computes the exceptional
+indices for every Euler operator over $F_{j-1}$. Therefore finite
+certificates over that field have decidable validity and zero tests.
+Theorem~\ref{thm:dfclosure} and Proposition~\ref{prop:fractions} give the
+field algorithms at rank $j$.
+
+Lemma~\ref{lem:embedding} supplies its surreal denotation and computes its
+leading exponent and real leading coefficient by descending one rank.
+The sign is the sign of the latter. To extract the coefficient at
+$g=m\delta_j+h$, first extract the Laurent coefficient at index $-m$
+and then its coefficient at $h\in G_{j-1}$. This is finite recursion.
+Each algorithm calls lower-rank algorithms and finitely many same-rank
+finite algebra operations; none calls an unconstructed next rank.
+The codes are finite trees, so there are countably many.
+\end{proof}
+
+There is no unproved claim of analytic convergence in this construction.
+For example, a formal factorial series is accepted just as legitimately as
+an exponential series. Nor is real closedness asserted: the tower is a
+specific effective subfield, not an algebraic closure or the full field of
+all surreal numbers with a prescribed support group.
+
+\subsection{A useful modular generalization}
+
+The role of differential equations can be isolated. Suppose a class
+$\mathcal A(K,t)\subseteq K[[t]]$ has decidable finite names, computable
+ring operations and coefficients, and a computable finite zero-test bound
+for each name. Suppose it contains $K[t]$. Then the same fraction-field and
+finite-rank construction applies, provided the resulting fields carry the
+leading data needed at the next stage. Certified D-finite series give one
+explicit, completely specified realization of these assumptions.
+
+This observation permits later replacement by stronger certified series
+classes without changing the omnific-integer arguments below. It does
+\emph{not} justify inserting arbitrary differential-equation solvers:
+a zero test, a chosen-solution convention, and terminating coefficient
+algorithms remain actual hypotheses.
+
+\section{Truncation, triangular integer forms, and floor}
+\label{sec:integerpart}
+
+\subsection{Finite descriptions of possibly infinite truncations}
+
+For $g\in G_r$, write $\Tr_{\ge g}(f)$ for the sum of normal-form terms of
+$f$ with exponent at least $g$, and similarly define $\Tr_{>g}(f)$.
+The resulting truncation need not have finite support.
+
+\begin{theorem}[Effective truncation closure]\label{thm:truncation}
+The field $F_r$ is closed effectively under $\Tr_{\ge g}$ and $\Tr_{>g}$
+for every $g\in G_r$. In particular, $f_{>0}$, $\ct(f)$, and $f_{<0}$
+can be computed as finite names.
+\end{theorem}
+\begin{proof}
+The assertion is immediate at rank zero, where the only exponent is zero.
+At rank $r$, take $f=\sum_{n\ge N}a_nt_r^n$ and
+$g=m\delta_r+h$ with $h\in G_{r-1}$. For $f=0$ return zero.
+Block dominance gives the exact identity
+\begin{equation}\label{eq:truncation}
+ \Tr_{\ge g}(f)
+ =\sum_{N\le n<-m}a_nt_r^n+
+ t_r^{-m}\Tr_{\ge h}(a_{-m}),
+\end{equation}
+where an empty sum is zero and coefficients below $N$ are zero.
+The same formula with $>$ in the recursive term gives $\Tr_{>g}(f)$.
+The first sum is finite. Each coefficient has an effective $F_{r-1}$-name,
+and the recursive term is available by induction. Every term is in $F_r$,
+so the formula supplies the required finite name. Constant extraction is
+the iterated coefficient at zero; subtraction yields the negative part.
+\end{proof}
+
+A subtlety worth retaining in an implementation is that an exponent cutoff
+and a number-of-terms cutoff are different interfaces. Formula
+\eqref{eq:truncation} returns a finite \emph{expression} for the exact
+truncation, which can have support of order type $\omega^{r-1}$ or larger.
+It does not promise to print an infinite list as a finite list.
+
+\subsection{The exact omnific-integer part}
+
+Put $R_r=F_r\cap\Oz$. Define $R_0=\Z$ inside $C$.
+
+\begin{theorem}[Triangular omnific normal form]\label{thm:triangular}
+For each $r\ge1$,
+\begin{equation}\label{eq:Rrecursion}
+ R_r=R_{r-1}+U_rF_{r-1}[U_r].
+\end{equation}
+More explicitly, every element of $R_r$ has a unique finite decomposition
+by coefficient values
+\begin{equation}\label{eq:triangular}
+ z=m+\sum_{j=1}^r\sum_{k=1}^{d_j}U_j^k a_{j,k},
+ \qquad m\in\Z,\quad a_{j,k}\in F_{j-1},
+\end{equation}
+after deleting trailing zero coefficients at each level. Recognition of
+$R_r$ inside $F_r$ and computation of this decomposition are decidable.
+Arithmetic, equality, and order in this notation are computable.
+\end{theorem}
+\begin{proof}
+Write $f=\sum_{n\ge N}a_nt_r^n$. All exponents of a nonzero coefficient
+block with $n<0$ are positive, since $-n\delta_r$ dominates every
+lower-rank exponent. All exponents of a nonzero block with $n>0$ are
+negative. The block $n=0$ has exactly its lower-rank normal form.
+Consequently $f$ is omnific if and only if the positive-$t_r$ tail is zero
+and $a_0\in R_{r-1}$. There are only finitely many negative Laurent
+indices, and their coefficients may be arbitrary elements of $F_{r-1}$.
+This proves \eqref{eq:Rrecursion} inductively.
+
+For the algorithm, extract the finite nonpositive Laurent prefix and compare
+it with $f$ using the field equality algorithm. If they differ, the
+positive-$t_r$ tail is nonzero and $f\notin R_r$. Otherwise apply the
+lower-rank recognition algorithm to $a_0$. At rank zero,
+Lemma~\ref{lem:archsearch} computes $\floor{c}$ and decides whether it equals
+$c$, which is exactly membership in $\Z$.
+
+Different top indices have disjoint support blocks. Equality of two such
+expressions therefore forces equality of each top coefficient and of the
+constant block. Descending the ranks proves uniqueness of
+\eqref{eq:triangular}. The field algorithms decide arithmetic and order;
+the resulting omnific elements are normalized again by the same algorithm.
+Closure also follows directly from \eqref{eq:Rrecursion}: products of
+positive-degree polynomials retain positive top degree, and $R_{r-1}$ is a
+subring of the coefficient field.
+\end{proof}
+
+The triangular form is a finite outer normal form with exact field
+coefficients; it is not a claim that every coefficient has a finite Conway
+normal form. Applying Proposition~\ref{prop:canonical} to coefficient names
+would additionally give a literal canonical string, but is not necessary
+for an effective equality test.
+
+\begin{corollary}[Normal-form membership test]\label{cor:oztest}
+For $x\in F_r$, let $p=x_{>0}$, $c=\ct(x)$, and $\epsilon=x_{<0}$.
+Then
+\[
+ x\in R_r\quad\Longleftrightarrow\quad \epsilon=0\ \text{and}\ c\in\Z.
+\]
+Both tests are effective. The element $p$ always belongs to $R_r$.
+\end{corollary}
+
+\subsection{The infinitesimal correction in floor}
+
+\begin{theorem}[Computable omnific floor]\label{thm:floor}
+For every $x\in F_r$ there is a unique $z\in R_r$ with
+$z\le x<z+1$, and it is computable. With the decomposition of
+Corollary~\ref{cor:oztest}, it is
+\begin{equation}\label{eq:floor}
+ \floor{x}_{\Oz}
+ =p+\floor{c}_{\Z}-
+ \begin{cases}
+ 1,&c\in\Z\text{ and }\epsilon<0,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The element on the right is omnific by Corollary~\ref{cor:oztest}.
+If $c$ is not an integer, its distances from its two adjacent integers are
+strictly positive real numbers; an infinitesimal perturbation cannot cross
+either boundary. Thus $p+\floor{c}$ is the desired integer part.
+If $c$ is an integer and $\epsilon\ge0$, then $0\le\epsilon<1$.
+If $c$ is an integer and $\epsilon<0$, then $0<1+\epsilon<1$.
+These are exactly the two remaining cases in \eqref{eq:floor}.
+Uniqueness follows because two distinct omnific integers differ in absolute
+value by at least one. All terms and tests in the formula are effective.
+\end{proof}
+
+\begin{example}
+For $x=-\omega+3-\omega^{-1}$ the floor is $-\omega+2$, not $-\omega+3$.
+Deleting negative-exponent terms is therefore not an omnific floor algorithm.
+For $x=\omega+\tfrac32-\omega^{-1}$ the floor is $\omega+1$; the
+nonintegral constant has a genuine real gap to the adjacent integers.
+\end{example}
+
+\section{Support order types and the ordinal part}
+\label{sec:ordinals}
+
+\subsection{Sharp finite-rank support bounds}
+
+Let $\ord(\supp f)$ denote the ordinal order type of the support when read
+in decreasing exponent order, and give the empty support order type zero.
+This is a property of the normal form, not the birthday of $f$.
+
+\begin{theorem}[Support spectrum]\label{thm:support}
+For $r\ge1$,
+\[
+ f\in F_r\Longrightarrow\ord(\supp f)\le\omega^r,
+ \qquad
+ z\in R_r\Longrightarrow\ord(\supp z)<\omega^r.
+\]
+The field bound is attained by a rational expression. For each
+$\eta<\omega^r$, a rational expression in $R_r$ has support order type
+exactly $\eta$.
+\end{theorem}
+\begin{proof}
+At rank zero, a nonzero coefficient has a single term. An iterated Laurent
+series at rank $r$ has at most countably many top blocks, each of order type
+at most $\omega^{r-1}$ by induction. Their ordinal sum has order type at
+most $\omega^{r-1}\cdot\omega=\omega^r$. The support of an omnific
+integer has only finitely many negative-$t_r$ blocks and then one
+$R_{r-1}$ block. For $r=1$ its support is finite. For $r>1$ the bound is
+\[
+ \omega^{r-1}\cdot d+\beta<\omega^r
+ \qquad(d<\omega,\ \beta<\omega^{r-1}).
+\]
+
+For sharpness in the field, the rational expression
+\[
+ G_r=\prod_{j=1}^r(1-t_j)^{-1}
+\]
+has one nonzero coefficient at every vector in $\N^r$, read in the iterated
+lexicographic order. Its support has order type $\omega^r$.
+Now write an arbitrary $\eta<\omega^r$ as
+\[
+ \eta=\omega^{r-1}d_r+\omega^{r-2}d_{r-1}+\cdots+d_1,
+ \qquad d_j\in\N.
+\]
+The element
+\begin{equation}\label{eq:realizesupport}
+ z_\eta=\sum_{j=1}^r\sum_{k=1}^{d_j}
+ U_j^k\prod_{\ell<j}(1-t_\ell)^{-1}
+\end{equation}
+is omnific by Theorem~\ref{thm:triangular}. Each $(j,k)$ block has
+support order type $\omega^{j-1}$. All its coefficients are positive, and
+the blocks are disjoint, so none cancels. Higher $j$ blocks precede all
+lower $j$ blocks, giving exactly the displayed Cantor normal form of $\eta$.
+For $\eta=0$ take the zero expression.
+\end{proof}
+
+These bounds will contrast with Section~\ref{sec:raw}: arbitrarily large
+finite-rank support order types are compatible with decidable equality,
+whereas a raw name with at most one monomial can already have an
+undecidable zero test.
+
+\subsection{Recognizing actual ordinals}
+
+There are three operations that must not be conflated: surreal addition,
+ordinary ordinal addition, and natural (Hessenberg) ordinal addition.
+On ordinal inputs the first agrees with the third, not generally with the
+second. For example, in surreal arithmetic $1+\omega=\omega+1$, while
+ordinary ordinal addition has $1+_{\mathrm{ord}}\omega=\omega$.
+Our notation constructors use field operations; ordinary ordinal operations
+can instead be performed on the recognized Cantor normal forms.
+
+\begin{lemma}[Ordinal points of the exponent group]\label{lem:ordinalgroup}
+For the scales \eqref{eq:scales},
+\[
+ G_r\cap\On=\N\delta_1+\cdots+\N\delta_r.
+\]
+\end{lemma}
+\begin{proof}
+A nonnegative-integer combination is the Cantor normal form of an ordinal.
+Conversely, an element of $G_r$ already has Conway normal form
+$\sum_j n_j\omega^{\alpha_j}$ with distinct ordinal exponents.
+An ordinal's Conway normal form is its Cantor normal form, whose
+coefficients are positive ordinary integers. Uniqueness forces every
+nonzero $n_j$ to be positive.
+\end{proof}
+
+\begin{theorem}[Ordinal slice and its effective recognition]
+\label{thm:ordinalslice}
+The ordinals in $F_r$, equivalently in $R_r$, are exactly
+\begin{equation}\label{eq:ordinaltrace}
+ F_r\cap\On=\N[U_1,\ldots,U_r].
+\end{equation}
+Given an $F_r$-name, one can decide whether its value is an ordinal and,
+in the affirmative case, compute its ordinary Cantor normal form.
+For labels $\alpha_j=j-1$, this slice is exactly
+$\On_{<\omega^{\omega^r}}$.
+\end{theorem}
+\begin{proof}
+An ordinal has a finite Cantor normal form with ordinal exponents and
+positive integer coefficients. Every exponent of an $F_r$ element lies in
+$G_r$, so Lemma~\ref{lem:ordinalgroup} implies that such a normal form is a
+polynomial in the $U_j$ with natural-number coefficients. Conversely, every
+such polynomial is an ordinal by its Cantor normal form.
+
+For recognition, expand in $t_r$. Extract the finite Laurent prefix with
+indices at most zero and use equality to test that the positive-index tail
+vanishes. If it does not, there is an exponent with negative top coordinate,
+which cannot be an ordinal exponent. If the tail vanishes, recursively test
+each coefficient of this finite polynomial in $U_r$ for membership in
+$\N[U_1,\ldots,U_{r-1}]$. At rank zero the test is membership in $\N$,
+which is decidable in $C$. The recursive procedure terminates on a finite
+number of coefficients. It yields the finite polynomial and hence the
+Cantor normal form: each monomial $\prod_jU_j^{n_j}$ has exponent
+$\sum_j n_j\omega^{\alpha_j}$, and these exponents can be sorted exactly.
+
+For consecutive labels, the exponent-group ordinals are exactly those
+below $\omega^r$. Finite Cantor normal forms with exponents below
+$\omega^r$ give exactly the ordinals below $\omega^{\omega^r}$.
+\end{proof}
+
+The recognition algorithm is not an algorithm deciding whether all terms of
+an arbitrary recurrence are nonnegative. It uses a zero test for the entire
+positive-index tail and then finitely many lower-rank ordinal tests. That
+finite structure is why no unproved general positivity procedure is hidden
+in the theorem.
+
+\section{One notation system containing all ordinals below epsilon-zero}
+\label{sec:epsilon}
+
+\subsection{Canonical labels}
+
+Use the usual hereditary Cantor-normal-form trees: zero is a tree, and a
+nonzero tree is a finite list
+\[
+ (\beta_1,n_1),\ldots,(\beta_s,n_s),
+ \qquad \beta_1>\cdots>\beta_s,\quad n_i\in\N_{>0},
+\]
+whose interpretation is $\omega^{\beta_1}n_1+\cdots+\omega^{\beta_s}n_s$.
+The exponents are themselves such trees. Comparison is lexicographic,
+recursing into the exponent trees. Finite-tree induction proves termination
+and decidable validity. The classical Cantor-normal-form theorem identifies
+these canonical trees with exactly $\On_{<\varepsilon_0}$; see also the
+formal treatment in \cite{bancerek}. Here $\varepsilon_0$ is the least fixed
+point of $\beta\mapsto\omega^\beta$.
+
+For a finite set $A=\{\alpha_1<\cdots<\alpha_r\}$ of these labels, denote
+the fields and rings above by $\mathcal F_A$ and $\mathcal R_A$.
+A global name is the pair of its finite label set and a valid local name.
+Empty label sets give $C$ and $\Z$.
+
+\begin{lemma}[Effective insertion of scales]\label{lem:insert}
+If $A\subseteq B$, there are computable denotation-preserving embeddings
+of local names for $\mathcal F_A$ into those for $\mathcal F_B$.
+These preserve the corresponding omnific-integer parts. The resulting
+semantic embeddings commute under successive insertions.
+\end{lemma}
+\begin{proof}
+Insert missing labels in increasing order. At an existing variable, map all
+lower-level operator coefficients and jet entries through the already
+constructed embedding. A nonzero polynomial stays nonzero, and its
+ordinary integer roots are unchanged under an injective field embedding.
+Thus its exceptional bound and compatibility equations are preserved.
+The induced power series has the mapped coefficients by the uniqueness
+recursion. Fraction pairs map in the same way, with nonzero denominators
+remaining nonzero.
+
+At an inserted variable, regard every old lower-field element as a constant
+series. It has the certificate $\theta f=0$ with the single jet entry
+$f(0)$ equal to that element. This supplies the missing tower stage.
+Lemma~\ref{lem:embedding} identifies both expressions with the same
+surreal number under the fixed scale assignments. Hence different orders
+of insertion agree semantically, and omnific membership is preserved.
+\end{proof}
+
+\begin{theorem}[Epsilon-labelled decidable omnific notation]
+\label{thm:epsilon}
+The directed unions
+\[
+ \mathcal F_\varepsilon=\bigcup_{A\subseteq_{\mathrm{fin}}\varepsilon_0}
+ \mathcal F_A,\qquad
+ \mathcal R_\varepsilon=\bigcup_{A\subseteq_{\mathrm{fin}}\varepsilon_0}
+ \mathcal R_A
+\]
+have finite-name representations with decidable validity, equality, and
+order, computable arithmetic, computable omnific recognition and floor,
+and computable truncation at every finitely named exponent in their
+exponent groups. Moreover,
+\begin{equation}\label{eq:epsilontrace}
+ \mathcal F_\varepsilon\cap\On
+ =\mathcal R_\varepsilon\cap\On=\On_{<\varepsilon_0}.
+\end{equation}
+Recognition and conversion of this ordinal slice are effective, and the
+whole omnific system admits a computable canonicalization.
+\end{theorem}
+\begin{proof}
+Given two names, compute the sorted union of their finite sets of canonical
+labels and embed both names in that common field by
+Lemma~\ref{lem:insert}. Apply the local algorithms there. A cutoff exponent
+can be handled by the same union operation. Validity is checked by finite
+label comparison and the finite recursive certificate checks. Local floor
+and recognition preserve denotations under insertion, so their answers are
+independent of the chosen common field.
+
+If an element in the union is an ordinal, Theorem~\ref{thm:ordinalslice}
+expresses it as a finite natural-coefficient polynomial in finitely many
+$\omega^{\omega^\alpha}$ with $\alpha<\varepsilon_0$.
+Every exponent in its Cantor normal form is a finite natural sum of
+$\omega^\alpha$ with such labels and is below $\varepsilon_0$.
+A finite Cantor normal form with exponents below $\varepsilon_0$ is itself
+below $\varepsilon_0$.
+
+Conversely, let $\xi<\varepsilon_0$. Its Cantor normal form is finite.
+For each exponent $\beta$ in that form, take the finite Cantor normal form
+of $\beta$ and collect its exponents as labels into $A$. They are all below
+$\varepsilon_0$. Then each $\omega^\beta$ is a monomial in the
+$U_\alpha=\omega^{\omega^\alpha}$ for $\alpha\in A$, so $\xi$ belongs
+to $\mathcal R_A$. The local recognition procedure converts between these
+forms effectively. Finally apply Proposition~\ref{prop:canonical} to the
+global total notation system consisting of all locally valid names.
+\end{proof}
+
+Here the phrase ``total notation system'' uses the decidable set of locally
+valid codes as its syntactic domain. Malformed strings or incompatible
+certificates can first be rejected. No noncomputable choice of a valid
+representative is hidden in the canonicalizer.
+
+\begin{corollary}[Cofinality and an ambient ordinal bound]\label{cor:ambientbound}
+For a nonempty finite label set $A$ with greatest label $\alpha$, the
+positive integer powers of $U_\alpha=\omega^{\omega^\alpha}$ are cofinal
+in the ordered field $\mathcal F_A$. Its least ordinal upper bound is
+\[
+ \lambda_A=\omega^{\omega^{\alpha+1}}.
+\]
+For the global field,
+\[
+ \mathcal F_\varepsilon\subset(-\varepsilon_0,\varepsilon_0),
+\]
+and $\varepsilon_0$ is its least ordinal upper bound. These are statements
+about ordinal upper bounds, not suprema in $\No$.
+\end{corollary}
+\begin{proof}
+For a nonzero $x\in\mathcal F_A$, its leading exponent belongs to the
+integer span of the scale generators. Choose a positive ordinary integer
+$N$ with $\ell(x)<N\omega^\alpha$. Normal-form dominance then implies
+$|x|<\omega^{N\omega^\alpha}=U_\alpha^N$. These powers are themselves
+ordinals in $\mathcal F_A$. Their supremum in the ordinal order is
+\[
+ \sup_{N<\omega}\omega^{\omega^\alpha\cdot N}
+ =\omega^{\omega^\alpha\cdot\omega}
+ =\omega^{\omega^{\alpha+1}},
+\]
+where the middle products are ordinary ordinal products. This proves the
+local assertion. For the empty label set, ordinary natural numbers are
+cofinal in $C$ and its least ordinal upper bound is $\omega$.
+For every $\alpha<\varepsilon_0$ the displayed $\lambda_A$ is below
+$\varepsilon_0$, so every global field element has absolute value below
+$\varepsilon_0$. Equation~\eqref{eq:epsilontrace} shows that no smaller
+ordinal is an upper bound for the entire union.
+
+Indeed $\varepsilon_0/2$ is already a smaller surreal upper bound: every
+field element is below some ordinal $\beta<\varepsilon_0$, and the surreal
+sum $\beta+\beta$ is still an ordinal below $\varepsilon_0$. Thus
+$\beta<\varepsilon_0/2$. This explicitly prevents reading ``least ordinal
+upper bound'' as ``surreal supremum.''
+\end{proof}
+
+\begin{remark}[Epsilon-zero is a design choice]
+This theorem does not say that $\varepsilon_0$ is an absolute ceiling for
+effective omnific notation. The chosen labels are canonical hereditary
+Cantor trees. A different, independently justified decidable ordinal-label
+system can be substituted in the finite-rank construction. One must prove
+its validity and comparison properties separately; an unrestricted
+well-foundedness promise cannot be smuggled in as decidable syntax.
+\end{remark}
+
+\begin{example}[Large magnitudes at small rank]
+The two labels $A=\{0,\omega\}$ permit the ordinal
+$\omega^{\omega^\omega}+\omega^3+2$ at rank two.
+Its magnitude is far beyond the consecutive-label rank-two ordinal cutoff
+$\omega^{\omega^2}$, but the number of nested coefficient fields is still
+two. Label magnitude, finite rank, support order type, and birthday are
+four different measurements.
+\end{example}
+
+\section{Worked infinite-support notations and exact identities}
+\label{sec:examples}
+
+Take $C=\Q$, consecutive labels $0,1$, and abbreviate
+\[
+ t=t_1=\omega^{-1},\qquad U=U_2=\omega^\omega.
+\]
+For every $f\in F_1$, the element $Uf$ is omnific, because all exponents
+of $f$ are ordinary integers bounded above and $\omega$ dominates them.
+In fact $\Z+UF_1[U]\subseteq R_2$; this is the restricted ring implemented
+by the accompanying prototype.
+
+\subsection{A factorial tail with no analytic convergence requirement}
+
+Consider
+\begin{equation}\label{eq:factorial}
+ A(t)=\sum_{n\ge0}n!\,t^n.
+\end{equation}
+It has the certificate
+\[
+ L_A=\theta-t(\theta+1)^2,\qquad a_0=1.
+\]
+Indeed, $P_0(X)=X$ has the sole nonnegative integer root zero, and
+\eqref{eq:recurrence} reads
+\[
+ n a_n-n^2a_{n-1}=0\quad(n\ge1),
+\]
+so $a_n=n a_{n-1}=n!$. Thus
+\[
+ UA(t)=\omega^\omega+\omega^{\omega-1}
+       +2\omega^{\omega-2}+6\omega^{\omega-3}+\cdots
+\]
+is a finitely named omnific integer of infinite support. The fact that
+\eqref{eq:factorial} has no positive ordinary analytic radius of convergence
+is irrelevant to its formal or surreal denotation. Each coefficient and
+each multiplication coefficient is obtained by a finite computation.
+
+\subsection{Exponential notation without a global exponential convention}
+
+Let
+\[
+ E(t)=\sum_{n\ge0}\frac{t^n}{n!},\qquad
+ E_-(t)=\sum_{n\ge0}\frac{(-t)^n}{n!}.
+\]
+Their certificates are $\theta-t$ and $\theta+t$, each with constant
+coefficient one. The formal product $E(t)E_-(t)$ has derivative zero and
+constant coefficient one. In characteristic zero, a power series with
+zero derivative is constant, so
+\begin{equation}\label{eq:expidentity}
+ (UE(t))(UE_-(t))=U^2.
+\end{equation}
+Both factors have infinite normal forms and are omnific. The identity is
+proved in formal series and transported to $\No$; it does not require a
+choice of a global surreal exponential or a theorem identifying every
+appearance of the symbol $e$ in some other notation system.
+
+The closure algorithm independently produces a differential certificate
+for the difference in \eqref{eq:expidentity} and checks its finite jet.
+It need not recognize the identity from the printed expressions.
+
+\subsection{Cancellations and leading terms}
+
+The geometric series
+\[
+ G(t)=(1-t)^{-1}=\sum_{n\ge0}t^n
+\]
+has the certificate $\theta-t(\theta+1)$ with initial coefficient one.
+The first two coefficients of $G-E$ vanish and the next is $1/2$, hence
+\begin{equation}\label{eq:leadingexample}
+ \lt\bigl(U(G(t)-E(t))\bigr)=\tfrac12\omega^{\omega-2}.
+\end{equation}
+The tower computes this leading term after a finite certified zero test;
+it does not trust a fixed arbitrary truncation length. Multiplication by
+$U$ places the entire remaining infinite tail at positive exponents.
+
+At a higher rank, cancellation of a whole lower-rank infinite series can
+occur in a single top coefficient. The recursive field equality test is
+precisely what allows the leading-term algorithm to move past such a zero
+coefficient. Merely enumerating the globally expanded normal form would
+not provide the same guarantee.
+
+\subsection{Ordinal versus nonordinal outputs}
+
+The polynomial expression
+\[
+ U(t^{-2}+3)+5t^{-2}+7
+ =\omega^{\omega+2}+3\omega^\omega+5\omega^2+7
+\]
+is an ordinal. The recognition procedure outputs the displayed Cantor
+normal form. In contrast, $UA(t)$ is not an ordinal: it has infinitely
+many terms, and $\omega-n$ for $n>0$ is not an ordinal, despite being a
+positive surreal exponent. The coefficient $n!$ being an ordinary
+integer does not remedy either issue.
+
+Similarly, $\sqrt2\,U$ is omnific when $C$ contains $\sqrt2$, but is not
+an ordinal. The definition of an omnific integer permits arbitrary real
+coefficients on positive exponents; confusing those coefficients with
+natural-number Cantor coefficients would incorrectly exclude many elements
+of the intended domain.
+
+\section{Primitive-recursive stream names: equality is already hard}
+\label{sec:raw}
+
+The positive system supplies a certificate that tells when an entire
+coefficient sequence vanishes. We now remove that certificate without
+introducing any uncertainty about totality or support validity.
+
+\subsection{An everywhere-valid syntax}
+
+Fix a standard decidable grammar of primitive-recursive functions
+$\N\to\N$. A rational-valued program is a triple of such programs
+$(p,q,b)$, with value $(p(n)-q(n))/(1+b(n))$. Thus its denominator is
+positive by syntax, not by an undecidable semantic promise. Integer-valued
+programs are the special case $b=0$. Every code in this grammar is total,
+and universal evaluation on a code and an argument is computable.
+The universal evaluator need not itself be primitive recursive.
+
+For a fixed $d\ge1$, a raw $d$-block name is a tuple of such rational
+coefficient programs $a_1,\ldots,a_d$, with denotation
+\begin{equation}\label{eq:raw}
+ Z(a_1,\ldots,a_d)
+ =\sum_{k=1}^d\sum_{n\ge0}a_k(n)\omega^{k\omega-n}
+ =\sum_{k=1}^d U^k\sum_{n\ge0}a_k(n)t^n.
+\end{equation}
+Here $k\omega$ means the surreal integer multiple of $\omega$, equivalently
+the ordinal $\omega\cdot k$, not ordinary ordinal multiplication
+$k\cdot\omega$. This convention avoids an otherwise serious collapse of
+all the blocks.
+
+\begin{proposition}[Total validity and effective ring operations]
+\label{prop:rawvalid}
+Every raw $d$-block name denotes an omnific integer. Distinct pairs $(k,n)$
+have distinct exponents. Allowing finitely many blocks and an ordinary
+integer constant gives a notation ring with computable addition,
+negation, and multiplication on codes.
+\end{proposition}
+\begin{proof}
+All exponents $k\omega-n$ are positive. Within each block they are strictly
+decreasing with $n$, and every exponent in block $k+1$ is greater than every
+exponent in block $k$. A finite union of these blocks is reverse well
+ordered, even after zero coefficients are omitted. Distinctness follows
+from the linear independence of $1$ and $\omega$ in the exponent group.
+
+Addition and negation operate coefficientwise. In a product, the coefficient
+in block $k$ at index $n$ is a finite sum of products with block indices
+adding to $k$ and ordinary indices adding to $n$. Bounded sums and products
+of primitive-recursive rational functions are primitive recursive. The
+finite number of blocks can increase, but remains finite. Integer constants
+act in the usual way. All product exponents remain positive except for the
+ordinary constant term.
+\end{proof}
+
+For the exact positivity classification below, we use the zero-constant
+syntax \eqref{eq:raw}. Adding a positive ordinary constant changes the
+initial-default bookkeeping of the mind-change bound and is therefore
+not silently included in that theorem.
+
+\subsection{The exact equality complexity}
+
+Recall that a relation is $\Pi^0_1$ if it can be expressed by a universal
+ordinary-natural-number quantifier over a computable predicate; equivalently,
+its complement is computably enumerable. Completeness below is under
+computable many-one reductions.
+
+\begin{theorem}[Raw equality and zero testing]\label{thm:raw-equality}
+For every fixed $d\ge1$, equality of raw $d$-block notations is
+$\Pi^0_1$-complete. The zero test has the same complexity. Hardness holds
+on a uniformly generated family whose denotations have at most one nonzero
+monomial.
+\end{theorem}
+\begin{proof}
+Normal-form uniqueness and the fixed distinct exponent grid give
+\[
+ Z(a_1,\ldots,a_d)=Z(b_1,\ldots,b_d)
+ \quad\Longleftrightarrow\quad
+ \forall n\,\forall k\le d\ [a_k(n)=b_k(n)].
+\]
+The matrix is computable, proving the upper bound.
+
+Let machine $e$ run on empty input. The predicate
+\[
+ h_e(n)=
+ \begin{cases}
+ 1,&\text{machine $e$ halts for the first time at step $n$},\\
+ 0,&\text{otherwise}
+ \end{cases}
+\]
+is primitive recursive, uniformly in $e$, because simulation is bounded
+by $n$. Put $a_1=h_e$ and all remaining blocks equal to zero. Then
+\begin{equation}\label{eq:spike}
+ Z_e=\sum_{n\ge0}h_e(n)\omega^{\omega-n}
+ =\begin{cases}
+ 0,&e\text{ never halts},\\
+ \omega^{\omega-N},&e\text{ first halts at step }N.
+ \end{cases}
+\end{equation}
+Thus $Z_e=0$ is exactly nonhalting, a $\Pi^0_1$-complete property.
+There is at most one nonzero monomial in every value, proving the final
+assertion. Equality with a fixed zero name gives the pair-equality lower
+bound as well.
+\end{proof}
+
+This is an application of a standard halting reduction, not a new
+undecidability principle. Its role is the localization: the syntax is total,
+all exponents are positive, the support has at most one term in the hard
+family, and every such value is already available in the decidable
+holonomic system.
+
+\begin{corollary}[Known leading data do not decide equality]
+\label{cor:knownleading}
+There is no equality algorithm for a uniformly named family of nonzero
+omnific integers having the same leading exponent, leading coefficient,
+and ordinary constant term, even if each support has at most two terms.
+\end{corollary}
+\begin{proof}
+Use $Y_e=U^2+Z_e$ and compare with $U^2$. The leading exponent is $2\omega$,
+the leading coefficient is one, and the constant term is zero for every
+$e$. Equality still holds exactly when $e$ never halts.
+\end{proof}
+
+\begin{theorem}[Same values, incompatible effective representations]
+\label{thm:notranslator}
+Every denotation in the family \eqref{eq:spike} belongs to $R_2$ and has
+a finite rational-monomial name. There is nevertheless no algorithm
+translating all its raw names into any notation system with decidable
+equality, while preserving their denotations and a name for zero.
+In particular, there is no such translator into the certified holonomic
+system.
+\end{theorem}
+\begin{proof}
+A nonzero value is $Ut^N$, a rational monomial in $R_2$; the zero value is
+also there. If a total denotation-preserving translator existed, translate
+$Z_e$ and compare the result with the translated zero. This would decide
+nonhalting, contradicting Theorem~\ref{thm:raw-equality}.
+\end{proof}
+The obstruction is not that the values lack exact finite descriptions.
+It is the absence of a uniform algorithm extracting those descriptions
+from this particular input representation.
+
+\subsection{What finite-support information suffices}
+
+\begin{proposition}[An exact support count is enough]\label{prop:count}
+For a raw finite-block name promised to have exactly $s<\omega$ nonzero
+coefficients, where $s$ is supplied, an algorithm computes its finite
+normal form. Replacing the exact count by the upper bound ``at most one''
+is insufficient for an equality algorithm.
+\end{proposition}
+\begin{proof}
+If $s=0$, return zero. Otherwise evaluate coefficients in all blocks in
+successive complete prefixes until $s$ nonzero coefficients have been
+found. The promise implies that the search terminates and that no other
+terms remain. Sort the found exponents and return the list. The failure
+for an upper bound is exactly \eqref{eq:spike}.
+\end{proof}
+This is a promise algorithm: it does not certify the supplied count for
+arbitrary raw names. An erroneous count can make it diverge or return an
+incorrect truncation, so the count must come from a trusted certificate or
+be explicitly treated as a precondition.
+
+\begin{corollary}[No uniform finite observation bound]\label{cor:nojet}
+No total computable function of a raw name supplies a finite prefix length
+whose being zero in every block guarantees that the entire denotation is
+zero. There is also no sound, computably enumerable, complete proof system
+for equality of all these raw names.
+\end{corollary}
+\begin{proof}
+A prefix bound would turn the zero test into finitely many coefficient
+tests. A sound and complete enumerable equality-proof system would make
+the equality relation computably enumerable. Since inequality is already
+computably enumerable, dovetailing the two searches would decide equality.
+Both conclusions contradict Theorem~\ref{thm:raw-equality}.
+\end{proof}
+
+\section{The exact finite mind-change spectrum of positivity}
+\label{sec:ershov}
+
+Equality of raw names is controlled by one universal quantifier over their
+coefficients. Order has a different obstruction: a later discovery in a
+higher block overrides every earlier conclusion based on a lower block.
+This gives an exact classification in the finite part of the Ershov
+hierarchy, rather than just another proof of undecidability.
+
+\begin{definition}[$d$-c.e. set]
+For $d\ge1$, a set $A\subseteq\N$ is $d$-c.e. if there is a total
+computable approximation $a(e,s)\in\{0,1\}$ such that $a(e,0)=0$,
+$\lim_s a(e,s)=\mathbf1_A(e)$, and for each $e$ the value changes at most
+$d$ times as $s$ increases. The $1$-c.e. sets are the computably enumerable
+sets, and $2$-c.e. sets are also called d.c.e. sets. The finite levels and
+their strictness are standard parts of the mind-change hierarchy
+\cite{ershov}.
+\end{definition}
+
+\begin{theorem}[Dominance-layer completeness]\label{thm:ershov}
+For each $d\ge1$, let $\Pos_d$ be the set of raw $d$-block names
+\eqref{eq:raw} denoting a strictly positive omnific integer. Then
+$\Pos_d$ is many-one complete for the $d$-c.e. sets.
+The hardness reduction can be chosen so that each block has at most one
+nonzero coefficient, every such coefficient is $1$ or $-1$, and the total
+support has at most $d$ terms. Equality on the unrestricted raw $d$-block
+syntax remains $\Pi^0_1$-complete.
+\end{theorem}
+\begin{proof}[Upper bound]
+At stage $s\ge1$, compute the coefficients with $0\le n<s$ in every
+block. A block is discovered if this prefix contains a nonzero coefficient.
+For any discovered block, its first nonzero coefficient and its sign are
+known permanently: all earlier indices were checked in the same prefix.
+If no block has been discovered, output zero. Otherwise let $k_s$ be the
+largest discovered block index and output one exactly when that block's
+first nonzero coefficient is positive. Set the stage-zero output to zero.
+
+The only possible changes arise when a previously undiscovered higher
+block replaces the current highest discovered block. The sequence of
+record block indices is strictly increasing and has length at most $d$.
+Thus the output changes at most $d$ times, including a possible initial
+change from zero to one. Every nonzero block is eventually discovered.
+If all blocks are zero, the output stays zero. Otherwise the eventual
+highest discovered block is the highest genuinely nonzero block, and its
+first nonzero coefficient is the leading coefficient of the whole number.
+The approximation therefore converges to the indicator of $\Pos_d$.
+\end{proof}
+\begin{proof}[Lower bound]
+Let $A$ be any $d$-c.e. set, with a fixed computable approximation starting
+at zero. For each input $e$, run a machine that computes its successive
+approximation values and emits a change event whenever the value flips.
+The machine has at most $d$ change events. Computing a stage can take an
+unbounded but finite time; this causes no problem because the following
+predicate uses machine steps, not stages of a possibly non-primitive-recursive
+approximation.
+
+Let $\chi_{j,e}(n)$ mean that machine step $n$ is exactly the $j$th change
+event. Bounded simulation makes this predicate primitive recursive,
+uniformly in $(j,e,n)$. It is one at at most one $n$ for each $j$.
+Define raw coefficients
+\begin{equation}\label{eq:mindchangecode}
+ a_{j,e}(n)=(-1)^{j+1}\chi_{j,e}(n),\qquad 1\le j\le d.
+\end{equation}
+Their codes can be computed uniformly from $e$ by inserting $e$ as a
+constant into the fixed bounded-simulation program.
+
+If there are no changes, the resulting omnific integer is zero and
+$e\notin A$. If there are $j\ge1$ changes, its highest occupied block is
+$j$, whose sole coefficient has sign $(-1)^{j+1}$. The number is positive
+exactly when $j$ is odd. Starting from zero, the final value of the
+approximation is one exactly when its number of changes is odd. Therefore
+\[
+ e\in A\quad\Longleftrightarrow\quad
+ Z(a_{1,e},\ldots,a_{d,e})>0.
+\]
+This is the required many-one reduction, with the asserted finite support
+and coefficient restrictions. The equality statement is
+Theorem~\ref{thm:raw-equality}.
+\end{proof}
+
+\begin{corollary}[Strict order hierarchy with fixed equality complexity]
+\label{cor:hierarchy}
+One raw positive block has c.e.-complete positivity; two blocks have
+d.c.e.-complete positivity; in general $d$ blocks attain the $d$th finite
+mind-change level. These positivity levels are strict, although all the
+corresponding equality problems have the same $\Pi^0_1$-complete complexity.
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{thm:ershov} and the strictness of the finite mind-change
+hierarchy \cite{ershov}. If a complete set for level $d+1$ were at level
+$d$, closure of $d$-c.e. sets under computable preimages would collapse
+those two levels.
+\end{proof}
+
+The theorem is insensitive to the times of the individual change events.
+Those times determine the finite subtractive offsets $-n$ in the exponents,
+but any term in a higher block dominates every term in a lower one.
+This is the precise mechanism converting logical mind changes into
+surreal dominance changes.
+
+\begin{example}[A sign obstruction under a nonzero promise]
+For the halting spike $Z_e$ of \eqref{eq:spike}, put
+\[
+ W_e=U-U Z_e=U-\sum_{n\ge0}h_e(n)\omega^{2\omega-n}.
+\]
+Every $W_e$ is nonzero and has at most two monomials. If $e$ does not halt,
+$W_e=U>0$. If it halts, the negative term in block two dominates $U$,
+so $W_e<0$. Thus a nonzero promise does not make the two-block sign
+problem decidable. In contrast, for a single block under a nonzero
+promise, scanning until its first nonzero coefficient always terminates
+and decides the sign.
+\end{example}
+
+\begin{proposition}[Known highest occupied block]\label{prop:highestblock}
+For a raw finite-block name supplied with the index of its highest nonzero
+block, and the promise that all higher blocks vanish, sign and leading
+monomial are computable. Neither this information nor even the full
+leading monomial is enough to decide equality in general.
+\end{proposition}
+\begin{proof}
+Scan the specified nonzero block until its first nonzero coefficient occurs.
+Its exponent and coefficient give the leading monomial, and its coefficient
+gives the sign. The promise makes this correct and terminating. The equality
+counterexample is Corollary~\ref{cor:knownleading}.
+\end{proof}
+
+An ordinary halting oracle $0'$ decides whether each of the finitely many
+blocks is identically zero. It can therefore find the highest nonzero block
+and then use Proposition~\ref{prop:highestblock}. This gives a uniform
+$0'$ upper bound for order over the union of all finite-block syntaxes.
+The one-block equality lower bound shows that this oracle strength is
+necessary for a general equality decision. No stronger oracle is concealed
+in the finite-level results.
+
+\section{Support validity can be harder than every arithmetic level}
+\label{sec:validity}
+
+The raw block construction made support validity automatic. To expose the
+separate cost of recognizing a valid support, it suffices to use dyadic
+exponents in a fixed small real interval and coefficient one everywhere.
+No large ordinal labels, exotic real constants, or varying exponent algebra
+are needed.
+
+\subsection{A fixed computable dyadic coding of finite sequences}
+
+Let $\N^{<\N}$ be the set of finite sequences of natural numbers. Its
+Kleene--Brouwer order is defined by
+\[
+ s<_{\KB}t
+\]
+if $t$ is a proper prefix of $s$, or, at their first differing coordinate,
+$s$ has the smaller entry. This is a computable linear order.
+
+\begin{lemma}[Dyadic order reversal]\label{lem:dyadic}
+There is a fixed computable injective map
+\[
+ q:\N^{<\N}\longrightarrow\Q\cap(1,2)
+\]
+whose values are dyadic and such that
+$s<_{\KB}t$ if and only if $q(s)>q(t)$.
+\end{lemma}
+\begin{proof}
+Enumerate finite sequences without repetition in an effective order.
+At stage $m$, only finitely many values have been assigned. Compare the
+new sequence with each earlier sequence and find its required position in
+the reverse Kleene--Brouwer order. Let $l<u$ be the values of its immediate
+assigned neighbors in that order, using endpoints $1$ and $2$ when a
+neighbor is absent. Assign the midpoint $(l+u)/2$. It is a new dyadic value
+in $(1,2)$ and respects all earlier comparisons. To compute $q(s)$, run
+this finite construction through the stage where $s$ is enumerated.
+Induction on stages proves the claimed equivalence and injectivity.
+\end{proof}
+
+Let $T_e\subseteq\N^{<\N}$ range over primitive-recursive trees. A raw
+tree-support notation denotes the proposed formal expression
+\begin{equation}\label{eq:treeexpression}
+ S_e=\sum_{s\in T_e}\omega^{q(s)}.
+\end{equation}
+The grammar is total: for example, start with a primitive-recursive
+predicate and define membership to require that predicate on every prefix,
+so that the generated set is always a tree. Its semantic validity means
+that the displayed support is reverse well ordered.
+
+\begin{lemma}[Tree well-foundedness and its linearization]
+\label{lem:kbtree}
+A tree $T\subseteq\N^{<\N}$ has no infinite branch if and only if
+$(T,<_{\KB})$ is a well-order.
+\end{lemma}
+\begin{proof}
+An infinite branch gives the strictly descending Kleene--Brouwer chain of
+its successively longer prefixes. Conversely, suppose $T$ has no infinite
+branch. The proper-extension relation on its nodes is well founded.
+Induct on that relation. The subtree rooted at a node $s$ is, in
+Kleene--Brouwer order, the ordinal sum in increasing $n$ of the subtrees
+rooted at its children $s^\frown n$, followed by the singleton $s$.
+By induction the child subtrees are well ordered. A countable ordered sum
+of well-orders followed by one element is a well-order. This applies at
+the root; the empty tree is harmless.
+\end{proof}
+
+The index set of well-founded primitive-recursive trees on
+$\N^{<\N}$ is $\Pi^1_1$-complete. This standard effective descriptive-set
+theoretic fact is also explicitly recorded in
+\cite[Theorem 2.6(g)]{cenzer-marek-remmel}. Here $\Pi^1_1$ means definability
+by a universal quantifier over functions $\N\to\N$ followed by an
+arithmetic condition. It is not the same class as $\Pi^0_1$.
+
+\begin{theorem}[Localized validity complexity]\label{thm:validity}
+Semantic validity of \eqref{eq:treeexpression} is $\Pi^1_1$-complete.
+This holds with all nonzero coefficients equal to one and all exponents
+in the fixed dyadic subset $q(\N^{<\N})\subset(1,2)$.
+Every valid expression denotes an omnific integer.
+\end{theorem}
+\begin{proof}
+By Lemma~\ref{lem:dyadic}, the reverse order on the exponent set of
+\eqref{eq:treeexpression} is isomorphic to $(T_e,<_{\KB})$.
+Lemma~\ref{lem:kbtree} therefore gives the equivalences
+\[
+ S_e\text{ has valid support}
+ \quad\Longleftrightarrow\quad
+ (T_e,<_{\KB})\text{ is well ordered}
+ \quad\Longleftrightarrow\quad T_e\text{ is well founded}.
+\]
+This proves hardness. It also proves the upper bound, or one can write it
+directly as the nonexistence of an infinite strictly increasing chain of
+active exponents, a $\Pi^1_1$ condition on the computable code.
+All exponents are positive and the constant term is zero, so every valid
+sum is omnific by Definition~\ref{def:oz}.
+\end{proof}
+
+\begin{proposition}[Promised equality versus checked equality]
+\label{prop:treeequality}
+On valid tree-support names,
+\[
+ S_e=S_f\quad\Longleftrightarrow\quad T_e=T_f,
+\]
+so equality under the validity promise has a co-c.e. test for inequality.
+The checked equality relation, requiring both validity and equality on all
+raw input pairs, is $\Pi^1_1$-complete.
+\end{proposition}
+\begin{proof}
+The coefficient of the distinct exponent $q(s)$ is exactly the indicator
+of $s\in T_e$. Normal-form uniqueness yields the equivalence, and a
+finite node witnessing different tree membership witnesses inequality.
+For checked equality, the conjunction of the two $\Pi^1_1$ validity
+conditions and the arithmetic condition $T_e=T_f$ is $\Pi^1_1$.
+Its restriction to the diagonal $(e,e)$ is exactly the validity predicate,
+which gives hardness.
+\end{proof}
+
+\begin{corollary}[No complete enumerable support-certificate system]
+No sound computably enumerable family of finite certificates recognizes
+exactly all valid tree-support names.
+\end{corollary}
+\begin{proof}
+Existence of an accepted finite certificate would make validity computably
+enumerable, contrary to its $\Pi^1_1$-completeness.
+\end{proof}
+
+This does not undermine the positive certificate syntax in
+Section~\ref{sec:certificates}. That syntax certifies a deliberately
+restricted, total family of valid supports. It does not purport to accept
+every semantically valid program-generated support.
+
+\section{A practical specification for implementations}
+\label{sec:implementation}
+
+\subsection{Data types and trustworthy boundaries}
+
+A full implementation of the positive construction should separate three
+data layers. An exact coefficient backend supplies $C$, with decidable
+validity, equality, order, and field arithmetic. A scale context stores a
+sorted finite list of canonical ordinal labels and represents each lattice
+exponent by its integer coordinate vector. A recursive field name is either
+a $C$-name or a fraction of certified Euler-series names whose operator and
+jet coefficients are field names in the preceding context.
+
+An omnific name may use the triangular form \eqref{eq:triangular} directly.
+Its constant is an ordinary integer; each positive outer power is an
+ordinary positive integer; and the coefficients are arbitrary valid field
+names one level lower. This grammar makes omnific membership automatic.
+An importer of an unrestricted field name must instead run the recognition
+algorithm of Theorem~\ref{thm:triangular}.
+
+The following pseudocode specifies the critical field-to-integer conversion.
+A nonzero field name provides an exact Laurent valuation; zero is handled
+before calling that operation.
+\begin{lstlisting}
+OmnificNormalize(x, level):
+    if level == 0:
+        m := ordinary_floor(x)
+        return Integer(m) if x == m else Reject
+    if x == 0:
+        return Zero
+    N := LaurentValuation(x, top_variable)
+    prefix := sum(Coefficient(x,n) * top_variable^n
+                  for n from N through 0)
+    # The sum is empty when N > 0.
+    if x != prefix:
+        return Reject
+    lower := OmnificNormalize(Coefficient(x,0), level-1)
+    if lower is Reject:
+        return Reject
+    return Triangular(lower, all nonzero coefficients at N <= n < 0)
+\end{lstlisting}
+Every equality sign in this algorithm invokes the certified field equality
+test. Replacing it by a numerical tolerance or by comparison of a fixed
+number of coefficients would invalidate the proof.
+
+\subsection{Finite certificates for zero and nonzero answers}
+
+At one level, a zero answer for a certified series consists of its normalized
+operator, the verified exceptional-index computation, and the compatible
+zero jet. A nonzero answer identifies the first nonzero jet coefficient,
+whose own nonzeroness is certified recursively. For fractions, equality
+uses a certified numerator cross-difference. At the bottom, exact rational
+arithmetic or an exact algebraic-number backend discharges the claims.
+
+The integer-root procedure can expose its finite certificate: a leading
+polynomial $p$, an ordinary integer Cauchy bound $M$, and the exact tests of
+$P(n)$ for $0\le n\le M$. An independent checker can verify this certificate
+without trusting a black-box non-Archimedean root solver. A faster
+implementation may factor $p$ first and only test its possible integer
+roots, but the exhaustive bounded procedure already proves termination.
+
+These are mathematical certificate specifications. The supplied prototype
+uses exact arithmetic but does not emit a proof-assistant object or a
+complete independent proof trace for every call.
+
+\subsection{Complexity and resource limits}
+
+The construction has no claimed uniform polynomial-time bound. Differential
+orders can grow under tensor products; coefficient expressions can grow
+under repeated field operations; a singularity $M$ written in binary can
+force a jet of length $M+1$ in the elementary certificate format.
+The examples $\theta(\theta-M)$ make this last issue explicit.
+A production system could use sparse compatible jets with a proved
+completion procedure, share expression subtrees, cache zero tests, and use
+specialized annihilator algorithms. Those refinements require their own
+correctness arguments.
+
+A resource-limited implementation should return a distinct ``not completed''
+status when a permitted computation exceeds a limit. That is not a proof
+of inequality, invalidity, or nonexistence. Similarly, failing to import a
+raw stream into the holonomic backend says nothing about whether its
+\emph{value} has a holonomic or even rational name; Theorem~\ref{thm:notranslator}
+shows why these questions cannot be identified.
+
+\subsection{Delivered finite verification code}
+
+The accompanying Python prototype implements certified Euler series over
+$\Q$, effective sum and product annihilators by finite differential-system
+linear algebra, their fraction field, and the guarded ring
+$\Z+UF_1[U]\subset R_2$. It also includes finite checks for the dominance
+encoding and a small hereditary ordinal-normal-form module. Its scope is
+strictly smaller than the full tower theorem: arbitrary coefficient
+backends, general higher-rank operators, the full $R_2$ recognition and floor
+algorithms, and all $\varepsilon_0$-labelled field embeddings are mathematical
+constructions in this article, not claimed implementations.
+
+The exact test list and actual outcomes are stored in
+\path{data/verification.json}. All 41 test groups passed in the supplied run
+with Python 3.13.5 and SymPy 1.14.0; the report records the actual runtime
+versions as well. The finite combinatorial checks include 521 event schedules,
+780 arbitrary-sign block assignments, and all ordered comparisons among
+121 dyadic-coded tree nodes. The tests exercise differential recurrence
+indices, exceptional jets, infinite-series identities through certificates,
+Laurent leading data, and finite instances of the dominance encodings.
+Their correctness evidence is executable finite algebra. No finite test
+establishes a halting reduction, a completeness theorem, a support theorem
+for arbitrary trees, or the correctness of every possible input to the code.
+
+\section{Novelty, repository provenance, and limitations}
+\label{sec:provenance}
+
+\subsection{Inspected repository snapshot}
+
+The repository was inspected at the following main-branch commit on
+23 September 2026:
+\begin{center}
+\texttt{a45d72292a46dac13300d395101df188efb84eef}.
+\end{center}
+The directly relevant sources were the repository overview, the reports
+catalogue, the opening representation and provenance sections of
+\path{docs/foundations-and-computation/computable-surreals/article.tex},
+and the detailed overview of
+\path{docs/foundations-and-computation/computer-algebra/README.md}.
+The bibliography pins these paths. This is a targeted inspection, not a
+claim to have read or verified every report or every Lean declaration in
+the repository.
+
+The repository catalogue identifies its reports as AI-assisted research
+drafts and separates mathematical exposition, finite verification programs,
+and Lean coverage \cite{repo-overview}. That separation is retained here. No theorem of this article is
+asserted to have been checked by the repository's axiom audit, and no new
+Lean file is supplied. We use classical normal-form semantics directly,
+not a claim that every semantic bridge in the repository is already
+formalized.
+
+\subsection{Claim-level originality ledger}
+
+\begin{longtable}{@{}P{.30\textwidth}P{.62\textwidth}@{}}
+\toprule
+Result or ingredient & Attribution and status\\
+\midrule
+\endfirsthead
+\toprule Result or ingredient & Attribution and status\\\midrule
+\endhead
+Conway normal forms; omnific support criterion; Hahn arithmetic & Classical
+surreal and generalized-series theory. No novelty claim.\\
+Sparse exact monomial algebra; representation-sensitive obstructions &
+Classical in substance and already developed in the inspected repository.
+Used as a baseline, not presented as a new result.\\
+D-finite ring closure and linear-equation zero tests & Classical.
+The article gives explicit proofs to expose the required certificate
+information. More general transseries zero tests are acknowledged.\\
+Leading-polynomial integer-root procedure and recursive certificate format &
+An explicit elementary construction here. Its ingredients are standard;
+no separate broad priority claim is made for a root-bound observation.\\
+Holonomic fraction towers with triangular $\Oz$-part, exact floor,
+truncation, ordinal recognition, and labelled union & Proposed original
+combined formulation, with proofs in Sections~\ref{sec:towers}--\ref{sec:epsilon}.
+The novelty sought is the simultaneous explicit representation contract and
+integer/ordinal analysis, not D-finite closure alone.\\
+Raw equality hardness & Standard halting method, localized here to valid
+positive-support omnific names and then to at most one monomial. The
+same-value nontranslation theorem makes the representation distinction
+explicit.\\
+$d$-layer positivity is $d$-c.e.-complete, already on at most $d$ monomials &
+Proposed original exact classification in the omnific-notation setting.
+The Ershov hierarchy and the reduction techniques are established theory;
+the dominance-layer realization and matching upper bound are proved here.\\
+Dyadic support validity and checked equality & Standard well-founded-tree
+complexity transferred by an explicit fixed dyadic order embedding.
+A localized formulation, not a new discovery of $\Pi^1_1$-completeness of
+well-foundedness.\\
+\bottomrule
+\end{longtable}
+
+The literature search included exact combinations of omnific integers,
+notation equality, holonomic or D-finite representations, and finite
+mind-change or Ershov levels, as well as current transseries zero-testing
+work. No matching published statement of the two proposed combined
+packages was located. This supports only the cautious phrase ``to our
+knowledge''; it cannot certify absence from all published literature,
+unpublished work, or uninspected repository companions.
+
+\subsection{Limits that are part of the results}
+
+The construction is not a notation system for every omnific integer. It
+requires an exact coefficient field, finitely many scales per name, and a
+specified class of finite differential certificates. It is not closed under
+all conceivable surreal analytic functions or arbitrary cuts, and no
+real-closedness theorem is claimed for its field. A general routine deciding
+whether a raw coefficient program admits one of these certificates is
+neither supplied nor implied. The nontranslation theorem already forbids
+such an unrestricted uniform importer for some elementary values.
+
+The strict support bounds concern finite rank, not birthdays. The
+$\varepsilon_0$ ordinal trace concerns the chosen label syntax, not the
+largest possible ordinal in every decidable notation system. The
+$d$-c.e. classification concerns zero-constant raw $d$-block names with
+primitive-recursive rational coefficients and ordinary finite block count.
+The $\Pi^1_1$ result concerns semantic well-foundedness of a different raw
+syntax. Moving any of these conclusions to a different representation
+requires a new proof.
+
+\section{Further questions suggested by the theory}
+\label{sec:future}
+
+The results leave several concrete extensions rather than a single vague
+request for a universal surreal simplifier.
+
+\paragraph{More compact certificates.}
+The full jet through the last exceptional index can be very long.
+A compressed certificate could list free singular coefficients and prove
+that all nonsingular coefficients between them are generated by the
+recurrence. Developing such a format with a small independently checkable
+proof object could substantially improve the explicit algorithms without
+altering their denotations.
+
+\paragraph{Stronger effective coefficient towers.}
+One can investigate replacing the D-finite numerator and denominator
+class by richer uniquely specified differential-algebraic classes. The
+current D-algebraic transseries literature \cite{chen-fang-hoeven} gives
+relevant tools, but the integer-part construction needs a precise common
+field, leading-data access, truncation closure, and compatible parameter
+semantics. Those obligations should be verified separately rather than
+inferred from the phrase ``zero-test'' alone.
+
+\paragraph{Beyond finitely many dominance priorities.}
+Theorem~\ref{thm:ershov} suggests assigning higher effective difference
+hierarchies to appropriately well-founded systems of dominance priorities.
+The finite proof relies on a computable uniform bound on the number of
+record priorities; an infinite or ordinal-indexed version must specify a
+validity certificate and an effective descending control measure. This
+article does not assert that the finite classification automatically
+extends to arbitrary ordinal priorities.
+
+\paragraph{Intrinsic versus presentation-based invariants.}
+A finite value can carry an arbitrarily delayed coefficient discovery in
+a raw name. It would be useful to classify representation morphisms that
+preserve leading-term certificates or exact support counts, and to determine
+which natural subclasses admit effective translations. Theorem~\ref{thm:notranslator}
+shows that an extensional inclusion of denotation sets alone is much too
+weak to answer this question.
+
+\paragraph{Formal verification.}
+A manageable formalization target is the Euler recurrence theorem over an
+abstract effective field, followed by the leading-polynomial integer-root
+lemma and the triangular integer-part theorem over iterated Laurent fields.
+The final bridge to actual surreal monomials can then be kept as a separate
+semantic layer. This would parallel the repository's separation of finite
+algebra, Hahn support, and surreal interpretation without presuming that a
+prototype execution has already supplied the formal proof.
+
+\section{Conclusion}
+
+A theory of omnific notation should state what information a name supplies,
+not only what number it denotes. Certified differential equations yield
+finite equality tests strong enough to support recursive non-Archimedean
+coefficient fields, exact omnific truncation and floor, and a decidable
+ordinal slice reaching every ordinal below $\varepsilon_0$. None of this
+requires flattening an infinite normal form into a finite term list.
+
+Raw coefficient programs on the very same elementary scales behave
+differently. Equality is already co-c.e.-complete on a one-monomial family,
+and $d$ dominance layers realize exactly $d$ finite mind changes in the
+positivity problem. Releasing support validity exposes the still different
+$\Pi^1_1$ well-foundedness barrier, even for dyadic exponents in $(1,2)$.
+The positive and negative results are compatible because their
+representations carry different certificates. That distinction is the
+organizing principle of the theory.
+
+\appendix
+\section{Dependency map for the principal proofs}
+
+The positive construction uses the following order of dependencies:
+\[
+\begin{gathered}
+ \text{exact ordered real coefficients}
+ \Longrightarrow\text{leading-polynomial integer-root bounds}\\
+ \Longrightarrow\text{finite Euler certificates}
+ \Longrightarrow\text{effective D-finite ring operations}\\
+ \Longrightarrow\text{fraction fields and leading data}
+ \Longrightarrow\text{finite-rank recursion}\\
+ \Longrightarrow\text{truncation and triangular integer parts}
+ \Longrightarrow\text{floor and ordinal recognition}\\
+ \Longrightarrow\text{effective insertion of finitely many labels}.
+\end{gathered}
+\]
+The field at the next rank is never used to justify the preceding rank's
+zero test. The polynomial root procedure needs only real leading
+coefficients, not roots or quantifier elimination in the next field.
+
+The negative results are independent of the differential construction.
+They use normal-form uniqueness, fixed positive support blocks, bounded
+machine simulation, and---only for the support-validity theorem---the
+standard completeness of well-founded primitive-recursive trees.
+The same-value nontranslation theorem joins the two tracks by observing
+that every value in the spike family has a rational monomial name.
+
+\section{Notation reference}
+
+\begin{longtable}{@{}P{.22\textwidth}P{.70\textwidth}@{}}
+\toprule Symbol & Meaning\\\midrule\endfirsthead
+\toprule Symbol & Meaning\\\midrule\endhead
+$\No,\Oz,\On$ & Surreal numbers, omnific integers, and ordinals.\\
+$C$ & Fixed effective ordered subfield of the ordinary real numbers.\\
+$\ell(x),\lc(x)$ & Greatest normal-form exponent and its real coefficient,
+for $x\ne0$.\\
+$\ct(x)$ & Coefficient of the exponent zero.\\
+$\theta$ & Euler operator $t\,d/dt$ with the preceding coefficient field
+held constant.\\
+$B(P_0)$ & Largest nonnegative integer root of $P_0$, or $-1$ if none exists.\\
+$H(K,t)$ & Fraction field of the D-finite power series in $K[[t]]$.\\
+$\alpha_j,\delta_j$ & Ordinal scale label and the exponent-group generator
+$\delta_j=\omega^{\alpha_j}$.\\
+$t_j,U_j$ & Actual surreal monomials $\omega^{-\delta_j}$ and
+$\omega^{\delta_j}$.\\
+$G_r$ & Integer span of $\delta_1,\ldots,\delta_r$, ordered with the
+largest index most significant.\\
+$F_r,R_r$ & Iterated holonomic fraction field and its omnific-integer part.\\
+$\mathcal F_A,\mathcal R_A$ & The same objects with their finite label set
+$A$ made explicit.\\
+$\mathcal R_\varepsilon$ & Directed union over finite label sets below
+$\varepsilon_0$.\\
+$\ord(\supp x)$ & Order type of support read in decreasing exponent order;
+not a birthday.\\
+$Z(a_1,\ldots,a_d)$ & Raw positive-block expression
+$\sum_{k,n}a_k(n)\omega^{k\omega-n}$.\\
+$d$-c.e. & Admits a computable binary approximation starting at zero with
+at most $d$ changes on each input.\\
+$<_{\KB}$ & Kleene--Brouwer order on finite sequences of natural numbers.\\
+\bottomrule
+\end{longtable}
+
+\begin{thebibliography}{99}
+\bibitem{conway}
+J. H. Conway, \emph{On Numbers and Games}, second edition,
+A K Peters, 2001. Originally published in 1976.
+
+\bibitem{gonshor}
+H. Gonshor, \emph{An Introduction to the Theory of Surreal Numbers},
+London Mathematical Society Lecture Note Series 110,
+Cambridge University Press, 1986.
+
+\bibitem{innocente-mantova}
+S. L'Innocente and V. Mantova,
+\emph{A factorisation theory for generalised power series and omnific integers},
+Advances in Mathematics (2024), article 109513.
+\href{https://doi.org/10.1016/j.aim.2024.109513}{doi:10.1016/j.aim.2024.109513}.
+Preprint \href{https://arxiv.org/abs/1710.07304v5}{arXiv:1710.07304v5}, 2024.
+
+\bibitem{stanley}
+R. P. Stanley, \emph{Differentiably finite power series},
+European Journal of Combinatorics \textbf{1} (1980), 175--188.
+\url{https://math.mit.edu/~rstan/pubs/pubfiles/45.pdf}.
+
+\bibitem{chen-fang-hoeven}
+S. Chen, H. Fang, and J. van der Hoeven,
+\emph{A zero-test for D-algebraic transseries}, 2026.
+\href{https://arxiv.org/abs/2602.01188}{arXiv:2602.01188}.
+Author-hosted version dated 6 February 2026:
+\url{https://www.texmacs.org/joris/zttr/zttr.html}.
+
+\bibitem{ershov}
+Yu. L. Ershov, \emph{A hierarchy of sets. I},
+Algebra and Logic \textbf{7} (1968), 25--43.
+\href{https://doi.org/10.1007/BF02218750}{doi:10.1007/BF02218750}.
+
+\bibitem{cenzer-marek-remmel}
+D. Cenzer, V. W. Marek, and J. B. Remmel,
+\emph{Index sets for finite normal predicate logic programs}, 2013.
+\href{https://arxiv.org/abs/1303.6555}{arXiv:1303.6555}.
+See Section 2, especially Theorem 2.6(g), for the well-founded-tree
+index-set fact used here.
+
+\bibitem{bancerek}
+G. Bancerek, \emph{Epsilon numbers and Cantor normal form},
+Formalized Mathematics (2009).
+\href{https://doi.org/10.2478/v10037-009-0032-8}{doi:10.2478/v10037-009-0032-8}.
+
+\bibitem{ordinalwiki}
+Wikipedia contributors, \emph{Ordinal notation}, accessed 23 September 2026.
+\url{https://en.wikipedia.org/wiki/Ordinal_notation}.
+User-specified introductory reference, not a substitute for the proofs
+or primary mathematical sources.
+
+\bibitem{repo-computable}
+V. Reshetnikov, Surreal project, \emph{Computable Surreal Numbers:
+Structural names, Puiseux series, and effective left-finite fields},
+reconciled research report, 21 September 2026.
+Inspected at commit \texttt{a45d72292a46dac13300d395101df188efb84eef}.
+\href{https://github.com/VladimirReshetnikov/Surreal/blob/a45d72292a46dac13300d395101df188efb84eef/docs/foundations-and-computation/computable-surreals/article.tex}{Pinned LaTeX source in the Surreal repository}.
+
+\bibitem{repo-cas}
+V. Reshetnikov, Surreal project,
+\emph{Surreal and Surcomplex Numbers in Symbolic Computer Algebra},
+research-report overview and implementation-scope record.
+Inspected at the same commit.
+\href{https://github.com/VladimirReshetnikov/Surreal/blob/a45d72292a46dac13300d395101df188efb84eef/docs/foundations-and-computation/computer-algebra/README.md}{Pinned report overview in the Surreal repository}.
+
+\bibitem{repo-overview}
+V. Reshetnikov, Surreal project,
+\emph{The surreal and surcomplex reports}, catalogue and provenance overview.
+\href{https://github.com/VladimirReshetnikov/Surreal/blob/a45d72292a46dac13300d395101df188efb84eef/docs/README.md}{Pinned catalogue at the inspected commit},
+accessed 23 September 2026.
+\end{thebibliography}
+\end{document}

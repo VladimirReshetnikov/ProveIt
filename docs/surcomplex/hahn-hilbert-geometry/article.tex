@@ -1,0 +1,1928 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{microtype,booktabs,tabularx,array,longtable}
+\usepackage{xcolor,fancyhdr,titlesec,needspace,enumitem}
+\usepackage[colorlinks=true,linkcolor=blue!35!black,citecolor=green!30!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{xurl}
+\definecolor{Ink}{HTML}{243747}
+\definecolor{Accent}{HTML}{37666D}
+\titleformat{\section}{\Large\bfseries\color{Ink}}{\thesection}{.65em}{}
+\titleformat{\subsection}{\large\bfseries\color{Accent}}{\thesubsection}{.65em}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Hilbert geometry at surreal scales}
+\fancyhead[R]{\small Splitting, graphs, and least squares}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{.26em}
+\setlength{\parindent}{1.1em}
+\setlength{\emergencystretch}{3em}
+\widowpenalty=10000\clubpenalty=10000
+\setlist{itemsep=.15em,topsep=.3em,leftmargin=2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\F}{F}
+\newcommand{\K}{K}
+\newcommand{\HH}[1]{\mathscr H_\Gamma(#1)}
+\newcommand{\BB}[2]{\mathscr B_\Gamma(#1,#2)}
+\newcommand{\BH}{\mathscr B_\Gamma(H,H)}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\mm}{\mathfrak m}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\res}{\operatorname{res}}
+\newcommand{\Graph}{\operatorname{Graph}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\ind}{\operatorname{ind}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\LC}{\operatorname{lc}}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\sH}{\mathop{\sum}\nolimits^{\mathrm H}}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\cG}{\mathcal G}
+\newcommand{\Spl}{\operatorname{Spl}}
+\newcommand{\Commit}{9a385d3957bdfe3d9ea79f9a524751c90bd2c894}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\hypersetup{pdftitle={Hilbert Geometry at Surreal Scales: Orthogonal Splitting, Amplified Graphs, and Fredholm Least Squares},pdfauthor={Research manuscript prepared for Vladimir Reshetnikov},pdfsubject={Surreal and surcomplex Hahn--Hilbert spaces; orthogonal projections; closed-range threshold; Moore--Penrose inverses}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{7mm}
+{\large\scshape A research manuscript for the Surreal project\par}
+\vspace{10mm}
+{\Huge\bfseries\color{Ink} Hilbert Geometry\\[.15em] at Surreal Scales\par}
+\vspace{7mm}
+{\Large Orthogonal Splitting, Amplified Graphs,\\[.2em] and Fredholm Least Squares\par}
+\vspace{8mm}
+{\large September 23, 2026\par}
+\vspace{7mm}
+\begin{minipage}{.96\textwidth}
+\begin{abstract}\noindent
+We develop Hilbert geometry over set-sized surreal and surcomplex Hahn
+fields while retaining an ordinary Hilbert space at each coefficient.
+The scalar-valued inner product is positive definite, its norm exists
+without assuming a divisible value group, and the resulting valued space
+is spherically complete. These facts do not imply the projection theorem.
+
+Using the repository's automatic adjoint theorem, we classify every
+orthogonally complemented subspace as an infinitesimal unitary deformation
+of an ordinary closed subspace. We then prove an exact scale threshold:
+for an ordinary bounded operator $T$ and an infinite Hahn scalar $a$,
+$\Graph(aT)$ admits orthogonal projection if and only if $\ran T$ is
+ordinarily closed; every finite scalar amplification has a complemented
+graph. This yields an explicit pair of orthogonally complemented subspaces
+whose intersection is not orthogonally complemented. In fact, for a nontrivial
+value group, the poset of complemented subspaces is a lattice exactly
+when the ordinary coefficient Hilbert space is finite dimensional.
+
+A positive counterpart is an arbitrary-rank Fredholm least-squares
+ theorem. Every positive-order Hahn perturbation of an ordinary Fredholm
+operator has an adjointable Moore--Penrose inverse. A finite Schur matrix
+ determines its kernel, cokernel, index, and exact inverse valuation:
+if its rank is $r>0$, then $v(A^\dagger)=-(\nu_r-\nu_{r-1})$, where
+$\nu_j$ is the least valuation of its nonzero $j$-minors.
+\end{abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{.96\textwidth}\small
+\textbf{Scope and status.} The main statements are proved in the text.
+The construction, automatic adjoints, direct rotation formula, and
+classical perturbation tools are credited, not claimed as new.
+The proposed contributions are the exact graph threshold, the
+finite-dimensional/lattice dichotomy, and the combined finite-defect
+least-squares and sharp-valuation package. A targeted comparison did not
+locate these exact statements; priority is not certified. This is an
+AI-assisted research draft, not independently refereed or formally
+verified. Finite symbolic checks are supplementary, not proofs.
+
+\textbf{Repository pin.} \texttt{9a385d3957bdfe3d9ea79f9a524751c90bd2c894}.
+The main arguments are set-sized; Section~\ref{sec:global} separately
+treats full surcomplex vector classes. No named published conjecture
+is asserted to be solved.
+\end{minipage}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\setcounter{tocdepth}{2}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{The question, the model, and the new results}
+\label{sec:intro}
+
+Replacing real or complex vector components by surreal or surcomplex
+numbers is not merely a change of notation. In infinite dimension one
+must choose which coordinate families are vectors, which infinite sums
+are legitimate, and which topology defines completeness. Different
+choices produce genuinely different theories.
+
+We use the coefficient-Hilbert model already constructed in the Surreal
+repository's \emph{Infinite-Dimensional Hahn Spectral Theory}
+\cite{RepoSpectral}:
+\[
+ \cH=\HH{H}=H((t^\Gamma)),\qquad
+ \F=\R((t^\Gamma)),\qquad \K=\C((t^\Gamma))=\F[i].
+\]
+Here $H$ is an ordinary complex Hilbert space and $\Gamma\ne0$ is a
+set-sized ordered abelian group. A vector is a well-supported formal
+series of ordinary Hilbert vectors. Through a chosen normal-form
+embedding of the scalar field, its coordinates are actual surcomplex
+numbers. There is also an entirely real version.
+
+This model retains every ordinary vector of $H$, not only vectors with
+finite coordinate support. It also retains ordinary bounded operators
+as constant coefficients. It does \emph{not} retain ordinary Hilbert
+norm convergence as the topology on the constant copy of $H$.
+The distinction is crucial both for what works and for what fails.
+
+\subsection{A usable replacement for the projection theorem}
+Call a $\K$-linear subspace $M\subseteq\cH$ \emph{orthogonally split}
+when $\cH=M\oplus M^\perp$. This is equivalent to every vector having a
+nearest point in $M$, and to $M$ being the range of a self-adjoint
+idempotent. No prior closedness assumption is required for the
+equivalence.
+
+Our first structural theorem says that every such $M$ is exactly
+\[
+ M=U\HH{M_0},\qquad U^*U=UU^*=I,\qquad v(U-I)>0,
+\]
+for a uniquely determined ordinary closed $M_0\subseteq H$. There is a
+canonical direct-rotation choice of $U$, although there are generally
+many possible unitaries. Equivalently, relative to
+$H=M_0\oplus M_0^\perp$, the subspace is the graph of a positive-order
+Hahn series of bounded operators. This is a classification of all
+orthogonally split subspaces, not of all valuation-closed subspaces.
+
+The algebraic rotation formula is classical \cite{Simon}; its use in the
+repository for finite spectral clusters is also prior work
+\cite{RepoSpectral}. We use it here as a tool for an intrinsic global
+subspace classification and the obstructions that follow.
+
+\subsection{An exact graph threshold and a lattice dichotomy}
+For an ordinary bounded $T:H\to G$ and a scalar $a\in\K$, let
+\[
+ M(a,T)=\{(x,aTx):x\in\HH{H}\}
+       \subseteq\HH{H\oplus G}.
+\]
+Theorem~\ref{thm:threshold} proves
+\[
+ M(a,T)\text{ is orthogonally split}
+ \quad\Longleftrightarrow\quad
+ \bigl(a=0\text{ or }v(a)\ge0\bigr)
+ \ \text{or}\ \ran T\text{ is closed in }G.
+\]
+For $v(a)<0$, the residue of the graph is precisely
+$\ker T\oplus\ran T$. Thus a failure of ordinary closed range becomes a
+failure of surreal best approximation after \emph{any} infinite
+amplification, however small its negative valuation is.
+
+This has a structural consequence beyond a single counterexample.
+Theorem~\ref{thm:lattice} proves that, for every nonzero $\Gamma$,
+\[
+ \Spl(\HH{H})\text{ is a lattice}
+ \quad\Longleftrightarrow\quad \dim_\C H<\infty.
+\]
+For infinite $H$ it is still an orthomodular poset, with orthogonal sums
+and orthocomplementation, but some pairs have neither the relevant meet
+nor, after taking complements, the relevant join.
+
+\subsection{A positive theorem: finite defects remain manageable}
+Let $T_0:H\to G$ be an ordinary Fredholm operator, and let
+$A=T_0+E$ where $E$ is a globally Hahn-supported series of bounded
+operators of positive order. A finite matrix $S$ between
+$\ker T_0$ and $\ker T_0^*$ controls the entire defect. If
+$m=\dim\ker T_0$, $n=\dim\ker T_0^*$, and $r=\rank_\K S$, then
+\[
+ \dim_\K\ker A=m-r,\qquad
+ \dim_\K(\cG/\ran A)=n-r,\qquad
+ \ind_\K A=m-n.
+\]
+Moreover $A^\dagger$ exists in the adjointable Hahn operator algebra,
+so all least-squares and minimum-norm problems have exact solutions.
+For $r>0$ the largest amplification scale is the explicit invariant
+\[
+ v(A^\dagger)=-\bigl(\nu_r(S)-\nu_{r-1}(S)\bigr),
+ \qquad \nu_0(S)=0.
+\]
+The definition of $\nu_j$ uses only finitely many minors. No
+Archimedean hypothesis, divisibility, analytic convergence, or bound on
+all coefficient operator norms is imposed.
+
+\subsection{What this article does not claim}
+We do not claim the invention of non-Archimedean inner products,
+non-Archimedean failures of Riesz representation or orthogonal
+complementation, formal deformation of projections, the Schur
+complement, or the Moore--Penrose inverse. Nearby precedents include
+Aguayo--Nova's work on $c_0$-type spaces \cite{AN}, Hermitian deformation
+theory \cite{BW}, generalized-inverse perturbation theory
+\cite{Avrachenkov}, and Hahn-meromorphic Fredholm theory \cite{MS}.
+Section~\ref{sec:provenance} distinguishes these from the precise claims
+made here.
+
+\section{Scalars, supports, and the surreal interpretation}
+\label{sec:scalars}
+
+\subsection{Standing conventions}
+An ordered abelian group is written additively. A subset is well ordered
+in its given order, not in the reverse order. For a vector space $V$,
+\[
+ V((t^\Gamma))=
+ \left\{x=\sum_{\gamma\in\Gamma}x_\gamma t^\gamma:
+ x_\gamma\in V,\ \supp x\text{ well ordered}\right\}.
+\]
+Set $v(0)=+\infty$ and $v(x)=\min\supp x$ otherwise.
+The field $\F$ is ordered by its leading nonzero coefficient, and
+complex conjugation on $\K$ acts on coefficients and fixes monomials.
+The valuation ring and its maximal ideal are
+\[
+ \OO=\{a\in\K:v(a)\ge0\},\qquad
+ \mm=\{a\in\K:v(a)>0\}.
+\]
+Zero is included. Residue is extraction of the coefficient of $t^0$.
+A scalar is finite in the ordered-field modulus precisely when it is in
+$\OO$. An infinite scalar has negative valuation.
+
+\begin{definition}[Strong Hahn summation]
+A set-indexed family $(x_j)_{j\in J}$ in $V((t^\Gamma))$ is strongly
+Hahn summable if the union of its supports is well ordered and, at each
+exponent, only finitely many members have a nonzero coefficient.
+The sum $\sH_jx_j$ is formed by these finite coefficient sums.
+\end{definition}
+
+We use the classical Hahn--Neumann support lemma: finite sums of
+well-ordered subsets of an ordered abelian group are well ordered,
+with finitely many decompositions of any fixed exponent. If
+$S\subseteq\Gamma_{>0}$ is well ordered, its generated additive monoid
+$S^*$ is well ordered, and any exponent is the sum of only finitely many
+finite words from $S$. A support-engine proof and attribution are given
+in the repository's spectral reports \cite{RepoSpectral}. These facts
+justify every formal multiplication and positive-order power series
+used below.
+
+In particular, in a unital coefficient algebra,
+\begin{equation}\label{eq:neumann}
+ (I+B)^{-1}=\sH_{j\ge0}(-B)^j\qquad (v(B)>0).
+\end{equation}
+Binomial series $(I+B)^q$ for rational $q$ are also defined by the same
+support lemma. These are identities of Hahn series. They do not
+presuppose topological convergence of the finite partial sums.
+
+\begin{example}[A summable family not converging through finite sums]
+In $\C((t^\Q))$, the family $t^{n/(n+1)}$, $n\ge1$, is strongly summable.
+Its exponents increase to $1$. The tail of every finite partial sum still
+has valuation below $1$, so the partial sums do not converge in the
+valuation topology. This distinction is already emphasized in the
+repository's foundations and duality reports \cite{RepoFound,RepoDuals}.
+\end{example}
+
+\subsection{Actual surreal and surcomplex components}
+Fix an order-preserving additive embedding
+$\iota:\Gamma\hookrightarrow(\No,+)$. For example, the usual
+$\Z,\Q,\R$ can be embedded using their standard surreal copies.
+Conway normal forms give the embedding
+\begin{equation}\label{eq:embedding}
+ \sum_\gamma r_\gamma t^\gamma
+ \longmapsto
+ \sum_\gamma r_\gamma\omega^{-\iota(\gamma)}.
+\end{equation}
+The support on the right is reverse well ordered in its exponents,
+exactly as a surreal normal form requires. Addition, multiplication,
+order, and strong summation are preserved; adjoining $i$ gives an
+embedding into $\No[i]$ \cite{Conway,RepoFound}.
+
+For a fixed ordinary orthonormal basis $(e_j)$ of $H$, every vector in
+$\HH{H}$ therefore has coordinates in a specified subfield of
+$\No[i]$. Section~\ref{sec:coordinates} gives the exact coordinate
+admissibility condition. The real construction uses $H$ real and
+$\F$ instead of $\K$, with no other change in the main results.
+
+\subsection{Why the whole surreal class is not silently a set field}
+A nonzero vector space over all of $\No$ or $\No[i]$ cannot have a
+set-sized underlying collection: multiplication of any fixed nonzero
+vector by all scalars would inject a proper class into that set.
+Thus a literal global theory requires class-sized objects or a
+universe-relative formulation. The main theorems below are set-sized
+and can be transported by \eqref{eq:embedding}; Section~\ref{sec:global}
+then states a separate class-theoretic extension.
+
+For any specified set of scalar normal forms, their supports lie in a
+common set-sized additive subgroup of surreal exponents. Thus particular
+calculations take place in a common Hahn workspace. This does not mean
+that every class-sized problem has been reduced to a single set field,
+nor that the full surreal fine topology equals the intrinsic topology of
+that workspace.
+
+\section{The Hahn--Hilbert space and its completeness}
+\label{sec:construction}
+
+\subsection{The inner product and its norm}
+Take ordinary inner products to be linear in the first argument.
+For $x,y\in\HH{H}$ put
+\begin{equation}\label{eq:inner}
+ \ip{x}{y}=\sum_{\alpha,\beta}
+           \ip{x_\alpha}{y_\beta}_H t^{\alpha+\beta}.
+\end{equation}
+At each exponent only finitely many coefficient pairs contribute.
+The ordinary Hilbert inner products are evaluated \emph{before} the
+Hahn convolution. This is the repository's coefficient-Hilbert inner
+product, restated with its proof for the present applications
+\cite{RepoSpectral}.
+
+\begin{proposition}[Positive-definite Hahn extension]\label{prop:inner}
+The form \eqref{eq:inner} is Hermitian and positive definite. Every
+squared norm has a positive square root in $\F$, regardless of whether
+$\Gamma$ is divisible. With $\norm{x}=\sqrt{\ip{x}{x}}$,
+\[
+ v(\norm{x})=v(x),\qquad
+ v(\ip{x}{x})=2v(x)\quad(x\ne0).
+\]
+Cauchy--Schwarz, the triangle inequality, the parallelogram identity, and
+finite Pythagoras hold over $\F$.
+\end{proposition}
+\begin{proof}
+Hermitian symmetry and sesquilinearity follow by the finite rearrangement
+at each coefficient. If $\delta=v(x)$, the coefficient of
+$t^{2\delta}$ in $\ip{x}{x}$ is exactly
+$c=\norm{x_\delta}_H^2>0$. Consequently
+\[
+ \ip{x}{x}=ct^{2\delta}(1+u),\quad v(u)>0\text{ or }u=0,
+\]
+and its positive root is
+\[
+ \sqrt c\,t^\delta\sH_{j\ge0}\binom{1/2}{j}u^j.
+\]
+The support lemma proves existence and the binomial identity proves the
+square-root assertion. Positivity makes the root unique. This also
+constructs $\abs a=\sqrt{a\bar a}$ for $a\in\K$.
+For $y\ne0$ expand the nonnegative scalar
+$\ip{x-by}{x-by}$ with $b=\ip{x}{y}/\ip{y}{y}$.
+It gives $\abs{\ip{x}{y}}^2\le\ip{x}{x}\ip{y}{y}$.
+The triangle inequality follows by expanding $\norm{x+y}^2$ and using
+Cauchy--Schwarz. The remaining identities are finite expansions.
+\end{proof}
+
+\begin{warning}
+The assertion is not that every positive element of $\F$ has a square
+root. For example, $t$ has no square root when $\Gamma=\Z$.
+Squared norms have even leading valuation, which is exactly why all roots
+needed here do exist.
+\end{warning}
+
+\subsection{Valuation topology and spherical completeness}
+A neighborhood basis of $0$ is $\{x:v(x)>\gamma\}$, $\gamma\in\Gamma$.
+It is the same topology as that generated by all positive
+$\F$-valued norm radii: a strict increase of valuation beats every
+ordinary leading coefficient, and the positive monomial radii are
+cofinal among the needed tests. In rank one, when $\Gamma\subseteq\R$,
+$d(x,y)=\exp(-v(x-y))$, with $d(x,x)=0$, is a real-valued ultrametric
+for the same topology. It is not the $\F$-valued Hilbert norm itself.
+
+\begin{theorem}[Spherical completeness of the coefficient space]
+\label{thm:complete}
+For every ordinary vector space $V$, every nonempty nested set of balls
+\[
+ B(a,\gamma)=\{x:v(x-a)\ge\gamma\}
+       \quad(a\in V((t^\Gamma)),\ \gamma\in\Gamma)
+\]
+has nonempty intersection. In particular $V((t^\Gamma))$ is complete
+for valuation-Cauchy nets. Thus $\HH{H}$ is spherically complete even
+when its orthogonal projection theorem fails.
+\end{theorem}
+\begin{proof}
+A ball fixes all coefficients strictly below its radius exponent.
+Nested balls impose compatible fixed coefficients. At an exponent fixed
+by at least one ball, choose that forced value; at all other exponents
+choose zero. Call the resulting coefficient family $x$.
+
+Its support is well ordered. Indeed, if it contained a strictly
+decreasing sequence $\delta_1>\delta_2>\cdots$, some ball fixes the
+nonzero coefficient at $\delta_1$ and hence every coefficient at
+$\delta_j$. The entire sequence would then occur in the well-ordered
+support of that ball's center, a contradiction. In ZFC the absence of
+such a sequence in a linearly ordered set is equivalent to
+well-ordering. Thus $x$ is a Hahn vector and belongs to every ball.
+
+For completeness, a valuation-Cauchy net has an eventually fixed
+truncation below every exponent. These truncations are compatible.
+The same argument gives a Hahn vector with those truncations, and the
+net converges to it. The argument uses no norm convergence in $V$.
+\end{proof}
+
+The last sentence is informative: completeness here does not force
+ordinary completeness on coefficient subspaces. If $V\subset H$ is
+any ordinary linear subspace, even one that is not ordinarily closed,
+then $V((t^\Gamma))$ is valuation closed in $H((t^\Gamma))$. To see this,
+a coefficient outside $V$ cannot be changed by a sufficiently small
+valuation perturbation. This is one source of the projection failure.
+
+\subsection{Finite-dimensional Hilbert geometry survives}
+\begin{proposition}\label{prop:finite}
+Every finite-dimensional $\K$-linear subspace of $\HH{H}$ has an
+orthonormal basis and an orthogonal projection. If
+$u_1,\ldots,u_d$ is such a basis, then
+\[
+ P_Mx=\sum_{j=1}^d\ip{x}{u_j}u_j.
+\]
+The coefficient-zero vectors $(u_j)_0$ form an ordinary orthonormal
+family, and the residue of $M$ has ordinary dimension $d$.
+\end{proposition}
+\begin{proof}
+Finite Gram--Schmidt uses only positive squared norms and their roots
+from Proposition~\ref{prop:inner}. The displayed formula is then a
+self-adjoint idempotent onto $M$. Since $\norm{u_j}=1$, one has
+$v(u_j)=0$, and taking constant coefficients of the orthogonality
+identities gives ordinary orthonormality.
+For $x=\sum a_ju_j$, positivity gives
+$v(x)=\min_jv(a_j)$; there is no cancellation of its least coefficient
+because the leading coefficient vectors of the $u_j$ are orthonormal.
+Thus integral vectors in $M$ have precisely the residue span of those
+$d$ vectors.
+\end{proof}
+
+\section{Coordinates, two summation levels, and duality}
+\label{sec:coordinates}
+
+\subsection{An exact coordinate-space description}
+Choose an ordinary orthonormal basis indexed by a set $I$, identifying
+$H$ with $\ell^2(I,\C)$. The coordinate map sends
+$x=\sum x_\gamma t^\gamma$ to
+$a_i=\sum_\gamma(x_\gamma)_i t^\gamma$.
+
+\begin{proposition}[Admissible surcomplex coordinate arrays]
+The coordinate map identifies $\HH{\ell^2(I)}$ with the families
+$(a_i)\in\K^I$ satisfying both conditions:
+\[
+ \bigcup_{i\in I}\supp a_i\text{ is well ordered},\qquad
+ \bigl([t^\gamma]a_i\bigr)_{i\in I}\in\ell^2(I)
+       \quad\text{for every }\gamma.
+\]
+The inner product is
+\begin{equation}\label{eq:twosums}
+ [t^\delta]\ip{x}{y}
+ =\sum_{\alpha+\beta=\delta}
+     \left(\sum_{i\in I}(x_\alpha)_i
+                         \overline{(y_\beta)_i}\right).
+\end{equation}
+The outer sum is finite and each inner sum is ordinarily absolutely
+convergent.
+\end{proposition}
+\begin{proof}
+The conditions are precisely that the coefficient rows define ordinary
+Hilbert vectors and that their nonzero support is a Hahn support.
+They provide the inverse coordinate map. Cauchy--Schwarz in the ordinary
+$\ell^2(I)$ proves absolute convergence of the inner sum; the support
+lemma proves finiteness of the outer sum.
+\end{proof}
+
+\begin{example}[Why a single formal coordinate sum is inadequate]
+The constant vector $x=(1/n)_{n\ge1}$ belongs to $\HH{\ell^2}$ and has
+its usual real squared norm. But the scalar family $(1/n^2)_{n\ge1}$
+is not strongly Hahn summable: infinitely many nonzero terms occur at
+exponent zero. Formula~\eqref{eq:twosums} uses ordinary Hilbert summation
+at a fixed coefficient, not that inadmissible formal sum. Conversely,
+$x=\sum_{n\ge1}e_n t^{n/(n+1)}$ is a legitimate Hahn vector even though
+its monomial partial sums do not converge in valuation.
+\end{example}
+
+Thus ``square summable surcomplex coordinates'' must include a summation
+rule. Merely requiring finite partial squared sums to be bounded is
+far too weak: an infinite scalar already bounds every ordinary integer,
+so the constant family of coordinate values $1$ would pass that test.
+
+\subsection{What becomes of an orthonormal basis}
+The constant $e_i$ remain orthonormal and separate all vectors by inner
+products. They need not be a valuation-topological Schauder basis.
+A nonzero ordinary tail, however small its ordinary Hilbert norm, has
+valuation zero. Its size therefore does not tend to zero at all surreal
+scales. Basis synthesis in this model is \emph{layered}: ordinary
+Hilbert synthesis within each coefficient, then Hahn assembly across
+exponents. Parseval holds coefficientwise in the sense of
+\eqref{eq:twosums}, not as an unrestricted strong sum over $i$.
+
+\subsection{Riesz representation requires more than valuation continuity}
+The repository's three-duals report \cite{RepoDuals} proves a detailed
+classification. One elementary obstruction is enough here. In infinite
+dimension choose an everywhere-defined but ordinarily discontinuous
+complex-linear functional $\ell:H\to\C$ using a Hamel basis, and set
+\[
+ L\left(\sum x_\gamma t^\gamma\right)
+       =\sum\ell(x_\gamma)t^\gamma.
+\]
+It respects strong sums and satisfies $v(Lx)\ge v(x)$, hence is
+valuation continuous. It cannot equal $\ip{x}{y}$ for a Hahn vector
+$y$: testing constants forces all nonconstant coefficients of $y$ to
+vanish and represents $\ell$ by an ordinary Hilbert vector, a
+contradiction.
+
+For a fixed $\eta>0$, this functional even satisfies
+$\abs{Lx}\le t^{-\eta}\norm{x}$. The infinite bound dominates each
+individual ordinary coefficient ratio. Therefore the usual phrase
+``bounded functional'' does not restore Riesz unless the meaning of
+boundedness is strengthened. By contrast, a globally Hahn-supported
+series of ordinary continuous functionals is represented, coefficient
+by coefficient, by a unique Hahn vector. Neither observation is claimed
+as new here.
+
+\section{The intrinsic algebra of adjointable operators}
+\label{sec:adjoints}
+
+\subsection{Operators with a common Hahn support}
+For ordinary Hilbert spaces $H,G$, put
+\[
+ \BB{H}{G}=\mathcal B(H,G)((t^\Gamma)).
+\]
+An element $A=\sum A_\gamma t^\gamma$ has one well-ordered support of
+nonzero ordinary bounded operators. It acts on all Hahn vectors by
+\[
+ (Ax)_\delta=\sum_{\gamma+\alpha=\delta}A_\gamma x_\alpha.
+\]
+The support lemma makes these coefficient sums finite. Composition is
+Hahn convolution and
+$A^*=\sum A_\gamma^*t^\gamma$. There is no requirement that the numbers
+$\norm{A_\gamma}$ be uniformly bounded as $\gamma$ varies.
+Write $v(A)=\min\supp A$ for $A\ne0$, and $v(0)=+\infty$.
+Then
+\begin{equation}\label{eq:opvaluation}
+ v(Ax)\ge v(A)+v(x),\qquad v(AB)\ge v(A)+v(B).
+\end{equation}
+An operator is called \emph{integral} if its valuation is nonnegative.
+An integral operator with an integral two-sided inverse preserves vector
+valuations exactly. Multiplication on either side by such an operator
+also preserves the valuation of any nonzero operator: apply
+\eqref{eq:opvaluation} first to the operator and then to its inverse.
+
+The apparent restriction to globally supported series is intrinsic to
+adjoints, rather than an optional technical convenience. We give the
+repository's theorem and proof in the rectangular form needed below.
+
+\begin{theorem}[Automatic adjoint structure; repository input]
+\label{thm:adjoint}
+Let $A:\HH{H}\to\HH{G}$ and $B:\HH{G}\to\HH{H}$ be everywhere-defined
+$\K$-linear maps satisfying
+\[
+ \ip{Ax}{y}=\ip{x}{By}\qquad(x\in\HH{H},\ y\in\HH{G}).
+\]
+There is a unique $A\in\BB{H}{G}$ producing the given map, and
+$B=A^*$ coefficientwise. In particular every everywhere-defined
+adjointable map is strong, valuation continuous, and order bounded.
+\end{theorem}
+\begin{proof}
+The square version and its argument are
+\texttt{ihs:hh:thm:adjoint} in \cite{RepoSpectral}. The same argument
+works between different coefficient spaces, as follows.
+
+For constants $u\in H,w\in G$, define
+$A_\gamma u=[t^\gamma]Au$ and $B_\gamma w=[t^\gamma]Bw$.
+Extracting coefficients gives
+\[
+ \ip{A_\gamma u}{w}_G=\ip{u}{B_\gamma w}_H.
+\]
+Each $A_\gamma$ has a closed ordinary graph. Indeed, if
+$u_j\to u$ and $A_\gamma u_j\to z$ in ordinary Hilbert norms, testing
+against an arbitrary $w$ gives
+$\ip{z}{w}=\ip{u}{B_\gamma w}=\ip{A_\gamma u}{w}$.
+Thus $z=A_\gamma u$. The ordinary closed graph theorem makes
+$A_\gamma$ bounded. The same argument applies to $B_\gamma$, and the
+identity identifies it with $A_\gamma^*$.
+
+Suppose the set $S=\{\gamma:A_\gamma\ne0\}$ were not well ordered.
+Choice gives a strictly decreasing sequence
+$\gamma_1>\gamma_2>\cdots$ in $S$. Each $\ker A_{\gamma_j}$ is a proper
+closed subspace of $H$, hence nowhere dense. By the ordinary Baire
+category theorem some $u$ lies outside their union. All $\gamma_j$
+would then lie in the support of the Hahn vector $Au$, a contradiction.
+Therefore $S$ is well ordered. The adjoint coefficients have the same
+support.
+
+Form the convolution operators $\widetilde A,\widetilde B$ from these
+coefficient families. They are adjoints, and agree with $A,B$ on
+constants. For arbitrary $x$ and constant $w$,
+\[
+ \ip{Ax}{w}=\ip{x}{Bw}
+ =\ip{x}{\widetilde B w}=\ip{\widetilde A x}{w}.
+\]
+Pairing with every constant vector separates Hahn coefficients, so
+$Ax=\widetilde A x$. The analogous argument proves
+$B=\widetilde B$. This also proves uniqueness.
+
+The support lemma shows that convolution preserves strong sums, and
+\eqref{eq:opvaluation} gives continuity. For order boundedness let
+$s=v(A)$ and choose an ordinary real $c>\norm{A_s}$. For nonzero
+$x$ with leading term $t^\delta u$, the coefficient at
+$2(s+\delta)$ of
+$c^2t^{2s}\norm{x}^2-\norm{Ax}^2$ is
+$c^2\norm{u}^2-\norm{A_su}^2>0$. Hence
+$\norm{Ax}\le ct^s\norm{x}$.
+\end{proof}
+
+\begin{remark}
+The theorem uses ordinary Hilbert completeness in its coefficient
+closed-graph and Baire arguments. Spherical completeness of the Hahn
+space alone does not supply those arguments for arbitrary coefficient
+vector spaces. Nor does the theorem classify all valuation-continuous
+maps: the three-duals report gives strictly larger classes
+\cite{RepoDuals}.
+\end{remark}
+
+\subsection{Finite-rank operators and self-adjoint inverses}
+For fixed Hahn vectors $u,w$, the map $x\mapsto\ip{x}{w}u$ is
+adjointable, with adjoint $y\mapsto\ip{y}{u}w$. Expanding its two
+vector supports gives a Hahn series of bounded finite-rank coefficient
+operators. Finite sums of these maps include every finite-dimensional
+orthogonal projection constructed in Proposition~\ref{prop:finite}.
+
+If a self-adjoint everywhere-defined map $B$ is bijective, then its
+algebraic inverse is self-adjoint: writing $x=Bu,y=Bv$ gives
+\[
+ \ip{B^{-1}x}{y}=\ip{u}{Bv}=\ip{Bu}{v}
+ =\ip{x}{B^{-1}y}.
+\]
+Theorem~\ref{thm:adjoint} then puts $B^{-1}$ in the Hahn operator
+algebra. We shall use this specific observation, rather than assume
+without proof a general bounded-inverse theorem over $\K$.
+
+\section{Orthogonal splitting and its residue normal form}
+\label{sec:splitting}
+
+\subsection{Three equivalent formulations}
+
+\begin{definition}
+A $\K$-linear subspace $M\subseteq\cH$ is \emph{orthogonally split}
+if $\cH=M\oplus M^\perp$, where
+$M^\perp=\{x:\ip{x}{m}=0\text{ for every }m\in M\}$.
+The word ``split'' below always means this orthogonal property.
+\end{definition}
+
+\begin{proposition}[Projection and best approximation]
+\label{prop:projection}
+For a subspace $M\subseteq\cH$, the following are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $M$ is orthogonally split;
+\item $M$ is the range of an everywhere-defined self-adjoint idempotent;
+\item every $x\in\cH$ has a nearest point in $M$, with distances
+compared in the ordered field $\F$.
+\end{enumerate}
+The projection and all nearest points are unique. A split subspace is
+valuation closed and closed under all strong sums of its vectors.
+\end{proposition}
+\begin{proof}
+A decomposition $x=m+n$ with $m\in M,n\in M^\perp$ is unique by
+positivity. Sending $x$ to $m$ defines a linear self-adjoint idempotent.
+Conversely the range and kernel of a self-adjoint idempotent are
+orthogonal, and its kernel equals the orthogonal complement of its
+range.
+
+For such a decomposition and any $m'\in M$, Pythagoras gives
+\[
+ \norm{x-m'}^2=\norm{n}^2+\norm{m-m'}^2.
+\]
+Thus $m$ is the unique nearest point. Conversely, let $m$ be nearest
+to $x$ and put $r=x-m$. If $n\in M$ and $\ip{r}{n}\ne0$, then $n\ne0$
+and the scalar $a=\ip{r}{n}/\ip{n}{n}$ gives
+\[
+ \norm{r-an}^2=\norm{r}^2-
+          \frac{\abs{\ip{r}{n}}^2}{\norm{n}^2}<\norm{r}^2,
+\]
+contradicting minimality. Hence $r\in M^\perp$ and the splitting
+follows. Finally $M=\ker(I-P)$ for its projection $P$; automatic
+adjoint structure makes $P$ continuous and strong. These two
+properties prove the two closure assertions.
+\end{proof}
+
+\subsection{Every projection has ordinary residue}
+
+\begin{lemma}[Integral projections]\label{lem:integralproj}
+Every self-adjoint idempotent $P$ in $\BH$ is integral. If $P\ne0$,
+then $v(P)=0$. Its residue $P_0$ is an ordinary orthogonal projection,
+and $P-P_0$ has strictly positive order or is zero.
+\end{lemma}
+\begin{proof}
+Let $s=v(P)$ when $P\ne0$. Its nonzero leading coefficient $P_s$ is
+ordinary self-adjoint, so $P_s^2\ne0$: otherwise
+$\norm{P_su}^2=\ip{P_s^2u}{u}=0$ for all $u$.
+Consequently $v(P^2)=2s$. The identity $P^2=P$ forces $2s=s$, hence
+$s=0$. Taking residues gives $P_0^2=P_0=P_0^*$.
+\end{proof}
+
+For any subspace define its \emph{integral residue space} by
+\[
+ \res M=\{x_0:x\in M,\ v(x)\ge0\}\subseteq H.
+\]
+This is an ordinary complex-linear subspace, without a presumed
+ordinary closedness property.
+
+\begin{corollary}[Closed-residue obstruction]\label{cor:residue}
+If $M$ is split with projection $P$, then
+\[
+ \res M=\ran P_0.
+\]
+In particular its residue space is ordinarily closed in $H$.
+\end{corollary}
+\begin{proof}
+For integral $x=Px$ one has $x_0=P_0x_0$. Conversely, for constant
+$u\in H$, the vector $Pu$ is integral, belongs to $M$, and has residue
+$P_0u$. The range of an ordinary orthogonal projection is closed.
+\end{proof}
+
+Ordinary closedness in this corollary is a substantially stronger
+restriction than valuation closedness of $M$. It will detect the
+amplified-graph obstruction without an appeal to spectral theory.
+
+\subsection{A global normal form using the classical direct rotation}
+
+\begin{theorem}[Residue normal form]\label{thm:normalform}
+A subspace $M\subseteq\HH{H}$ is orthogonally split if and only if
+there are an ordinary closed subspace $M_0\subseteq H$ and a Hahn
+unitary $U\in\BH$ satisfying $v(U-I)>0$ or $U=I$, such that
+\begin{equation}\label{eq:normalform}
+ M=U\HH{M_0}.
+\end{equation}
+Here $M_0=\res M$ is unique. Given the projection $P$ onto $M$ and
+$P_0$ onto $M_0$, a canonical choice is
+\begin{align}
+ W&=PP_0+(I-P)(I-P_0),\label{eq:rotationW}\\
+ D&=I-(P-P_0)^2,\nonumber\\
+ U&=W D^{-1/2}.\label{eq:rotation}
+\end{align}
+The inverse square root is the formal binomial series about $I$.
+\end{theorem}
+\begin{proof}
+For a split $M$, Lemma~\ref{lem:integralproj} gives
+$P=P_0+\text{positive-order terms}$. Direct multiplication, using
+$P^2=P$ and $P_0^2=P_0$, gives
+\[
+ W^*W=WW^*=D,\qquad WP_0=PW.
+\]
+The element $(P-P_0)^2$ commutes with both projections, and thus with
+$W$ and $W^*$. Its support is positive, unless it vanishes.
+The Hahn--Neumann lemma therefore defines the binomial series
+$D^{-1/2}$ and verifies its identities algebraically. It commutes
+with the same operators. Consequently
+\[
+ U^*U=UU^*=I,\qquad UP_0=PU,
+\]
+and $U=I+\text{positive-order terms}$. It follows that
+$P=UP_0U^*$ and hence \eqref{eq:normalform} holds with
+$M_0=\ran P_0$. Corollary~\ref{cor:residue} proves uniqueness of
+$M_0$. Conversely, the operator $UP_0U^*$ is an orthogonal projection
+onto the subspace in \eqref{eq:normalform}.
+
+The formula \eqref{eq:rotation} is the classical direct rotation of
+projections; see Simon's account and attribution to earlier work
+\cite{Simon}. The point here is that automatic adjoints and integral
+projections place \emph{every} split Hahn subspace in its domain of
+formal applicability. The formula itself is not a new result.
+\end{proof}
+
+\subsection{Exact graph coordinates for a fixed residue}
+
+\begin{corollary}[The positive-order graph chart]\label{cor:graphchart}
+Fix an ordinary closed $M_0\subseteq H$ and decompose
+$H=M_0\oplus M_0^\perp$. The split subspaces with residue $M_0$ are in
+bijection with
+\[
+ X\in\BB{M_0}{M_0^\perp},\qquad X=0\text{ or }v(X)>0,
+\]
+by $X\mapsto\Graph X$. For $J=(I,X)^{\mathsf T}$ the projection is
+\begin{equation}\label{eq:graphproj}
+ P_X=J(I+X^*X)^{-1}J^*
+ =\begin{pmatrix}R&RX^*\\XR&XRX^*\end{pmatrix},
+ \qquad R=(I+X^*X)^{-1}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+Take the near-identity unitary $U$ in Theorem~\ref{thm:normalform}
+and write its blocks relative to the displayed decomposition.
+The block $U_{00}=I+\text{positive-order terms}$ is invertible by
+\eqref{eq:neumann}. Its image of $M_0$ is therefore the graph of
+$X=U_{10}U_{00}^{-1}$, a positive-order operator. A graph determines
+its map uniquely.
+
+Conversely $I+X^*X$ has a Neumann inverse of residue $I$. Formula
+\eqref{eq:graphproj} is self-adjoint and idempotent, since
+$J^*J=I+X^*X$; its range is exactly $\Graph X$. Its residue is the
+projection onto the first summand. All products and inverses have
+support in the positive monoid generated by the supports of $X,X^*$.
+\end{proof}
+
+\begin{remark}[No assertion that closed residue is sufficient]
+The closed-residue test in Corollary~\ref{cor:residue} is necessary,
+not a general characterization of arbitrary closed subspaces. The
+complete characterization above also requires an adjointable
+positive-order graph chart. We make no claim that an arbitrary
+valuation-closed subspace with closed residue automatically has one.
+\end{remark}
+
+\section{Amplified graphs: an exact closed-range threshold}
+\label{sec:graphs}
+
+\subsection{The normal equation is the whole obstruction}
+
+\begin{proposition}[General adjointable graph criterion]
+\label{prop:graphcriterion}
+Let $A\in\BB{H}{G}$. Its graph is valuation closed and closed under
+strong Hahn sums. It is orthogonally split if and only if
+$I+A^*A$ is surjective on $\HH{H}$. In that case this operator is
+invertible in $\BB{H}{H}$ and the graph projection is
+\[
+ P=\begin{pmatrix}I\\A\end{pmatrix}
+       (I+A^*A)^{-1}\begin{pmatrix}I&A^*\end{pmatrix}.
+\]
+\end{proposition}
+\begin{proof}
+The graph is the kernel of the continuous strong map
+$(x,y)\mapsto y-Ax$, which gives both closure properties.
+The operator $B=I+A^*A$ is injective because
+\[
+ \ip{Bx}{x}=\norm{x}^2+\norm{Ax}^2>0\quad(x\ne0).
+\]
+If the graph is split, project $(f,0)$ onto a point $(x,Ax)$.
+Orthogonality of the residual to every $(h,Ah)$ gives $Bx=f$.
+As $f$ was arbitrary, $B$ is onto. Conversely, if $B$ is onto it is
+bijective and self-adjoint, so the observation following
+Theorem~\ref{thm:adjoint} gives $B^{-1}$ in the adjointable algebra.
+Writing $Jx=(x,Ax)$, the identity $J^*J=B$ verifies that
+$JB^{-1}J^*$ is an orthogonal projection with range $\Graph A$.
+\end{proof}
+
+Positivity of $I+A^*A$ does not alone imply its surjectivity. This is
+exactly the step in an ordinary Hilbert-space graph argument that
+cannot be imported without further hypotheses.
+
+\subsection{Finite and infinite scalar amplification}
+
+\begin{theorem}[Exact amplification threshold]\label{thm:threshold}
+Let $T:H\to G$ be an ordinary bounded operator and $a\in\K$.
+Then
+\begin{equation}\label{eq:threshold}
+ \Graph(aT)\text{ is split}
+ \quad\Longleftrightarrow\quad
+ a=0\text{ or }v(a)\ge0\text{ or }\ran T\text{ is ordinarily closed}.
+\end{equation}
+For nonzero infinite $a$, one has the exact residue formula
+\begin{equation}\label{eq:graphresidue}
+ \res\Graph(aT)=\ker T\oplus\ran T\subseteq H\oplus G.
+\end{equation}
+When the graph is split, its projection has residue the ordinary
+projection onto $\Graph(a_0T)$ in the finite case, and onto
+$\ker T\oplus\ran T$ in the infinite case.
+\end{theorem}
+\begin{proof}
+If $a=0$ the graph is horizontal. Suppose $v(a)\ge0$, and put
+$a_0=[t^0]a$. The constant coefficient of
+$B=I+\bar a a T^*T$ is
+$B_0=I+\abs{a_0}^2T^*T$, an ordinary boundedly invertible positive
+operator. Factor
+$B=B_0(I+B_0^{-1}(B-B_0))$ and apply the positive-order Neumann
+series. Thus $B$ is invertible in the Hahn operator algebra, and
+Proposition~\ref{prop:graphcriterion} proves splitting. Taking the
+residue of its projection formula gives the finite-case assertion.
+
+Now let $v(a)<0$. Set $b=a^{-1}$ and $\eta=v(b)>0$, with
+$b_\eta\ne0$. A graph vector $(x,y)$ is integral exactly when both
+components are integral. It satisfies $Tx=by$. The constant
+coefficient gives $Tx_0=0$. The coefficient at $\eta$ gives
+\[
+ T x_\eta=b_\eta y_0,
+\]
+because $y$ has no negative exponents and $b$ has least exponent
+$\eta$. Hence $(x_0,y_0)\in\ker T\oplus\ran T$.
+Conversely, for any $k\in\ker T,u\in H$,
+\[
+ x=k+bu,\qquad y=Tu
+\]
+is an integral graph vector with residue $(k,Tu)$. This proves
+\eqref{eq:graphresidue}. If the graph is split,
+Corollary~\ref{cor:residue} makes this residue space ordinarily
+closed, forcing $\ran T$ to be closed in $G$.
+
+For the converse assume $\ran T$ closed. Write
+\[
+ H=N\oplus X,\quad N=\ker T,\qquad
+ G=Y\oplus C,\quad Y=\ran T.
+\]
+The ordinary operator $T_1=T|_X:X\to Y$ is a bounded isomorphism,
+by the ordinary bounded inverse theorem. Let $C_1=T_1^*T_1$ on $X$;
+it is boundedly invertible. On $N$, $B=I+\bar a a T^*T$ equals $I$.
+On $X$ an inverse is
+\begin{equation}\label{eq:infinitegraphinverse}
+ B_X^{-1}=(\bar a a)^{-1}C_1^{-1}
+      \bigl(I+(\bar a a)^{-1}C_1^{-1}\bigr)^{-1}.
+\end{equation}
+The inner correction has positive valuation $2\eta$, so its inverse
+is Hahn defined. This supplies a two-sided inverse to $B$ and proves
+splitting. The residue projection is the ordinary projection onto
+\eqref{eq:graphresidue}, by Corollary~\ref{cor:residue}.
+\end{proof}
+
+\begin{remark}[Geometric interpretation]
+At a finite nonzero residue $a_0$, the leading geometry is the ordinary
+sloped graph. If $v(a)>0$, it is horizontal. At an infinite scale and
+with closed range, the nonkernel portion of the graph becomes vertical:
+its residue is $\ker T\oplus\ran T$. A nonclosed ordinary range
+cannot be the residue of an orthogonal projection, so precisely this
+case obstructs the transition. The threshold depends on the sign of
+$v(a)$, not on a metric magnitude or a discrete value-group step.
+\end{remark}
+
+\subsection{An explicit complete graph with no nearest point}
+
+\begin{example}\label{ex:badgraph}
+Let $H=G=\ell^2(\N_{\ge1})$, let $Te_n=n^{-1}e_n$, choose
+$\eta\in\Gamma_{>0}$, and put $q=t^\eta$, $A=q^{-1}T$.
+The range of $T$ is not ordinarily closed: it contains all
+finite-support vectors but does not contain $h=(1/n)_{n\ge1}$.
+Indeed $Tx=h$ would require $x=(1,1,\ldots)\notin\ell^2$.
+The graph of $A$ is therefore not split.
+
+There is also a direct witness to failure of best approximation.
+The vector $z=(h,0)$ has no nearest point in the graph. Such a point
+$(x,Ax)$ would solve the normal equation
+\begin{equation}\label{eq:badnormal}
+ (q^2I+T^2)x=q^2h.
+\end{equation}
+Because $T^2$ is injective, the left side has valuation $v(x)$ for
+nonzero $x$. Thus $v(x)=2\eta$. Its coefficient there would satisfy
+$T^2x_{2\eta}=h$, requiring
+$x_{2\eta}=(n)_{n\ge1}$, again not a Hilbert vector.
+The contradiction proves the assertion without a compact-operator
+spectral theorem.
+
+This graph is valuation closed, strong-sum closed, and complete as a
+closed subspace of the complete valued space in Theorem~\ref{thm:complete}.
+These properties do not supply a nearest point. We assert failure of
+an attained minimum here; no assertion about a distance infimum is
+needed for the example.
+\end{example}
+
+\begin{corollary}[Enlarging the scale group cannot repair this graph]
+\label{cor:norepair}
+Let $\Gamma\hookrightarrow\Delta$ be an ordered group embedding,
+and extend coefficients and exponents to the $\Delta$ Hahn spaces.
+For ordinary $T$ and $v(a)<0$, the extended graph is split exactly
+when the original one is split, namely when $\ran T$ is ordinarily
+closed. This holds also for noncofinal embeddings of value groups.
+\end{corollary}
+\begin{proof}
+The image of $a$ still has negative valuation. Theorem~\ref{thm:threshold}
+applies over both groups with the same ordinary range condition.
+\end{proof}
+
+\section{The orthogonal-subspace poset is usually not a lattice}
+\label{sec:lattice}
+
+\subsection{What survives: orthocomplements and orthogonal sums}
+Let $\Spl(\cH)$ be the collection of split $\K$-linear subspaces,
+ordered by inclusion. Its bottom and top are $0$ and $\cH$.
+Orthocomplementation is an order-reversing involution on this
+collection, by the defining orthogonal decompositions.
+
+\begin{proposition}[Orthomodular poset structure]\label{prop:poset}
+If $M,N\in\Spl(\cH)$ and $M\perp N$, then $M\oplus N$ is split
+and is their least upper bound in $\Spl(\cH)$. If $M\subseteq N$,
+then $N\cap M^\perp$ is split and
+\[
+ N=M\oplus(N\cap M^\perp).
+\]
+Consequently $\Spl(\cH)$ is an orthomodular poset.
+\end{proposition}
+\begin{proof}
+Let $P_M,P_N$ be the unique projections. Orthogonality gives
+$P_MP_N=P_NP_M=0$, so $P_M+P_N$ is a self-adjoint idempotent with
+range $M\oplus N$. Every subspace containing both contains their sum,
+which proves the least-upper-bound assertion.
+
+If $M\subseteq N$, then $P_NP_M=P_M$ and, taking adjoints,
+$P_MP_N=P_M$. The operator $P_N-P_M$ is a self-adjoint idempotent.
+Its range is exactly $N\cap M^\perp$, proving both splitting and the
+displayed orthomodular identity. These properties, together with
+orthocomplementation and the bounds $0,\cH$, are the asserted
+orthomodular-poset axioms. They do not assert that arbitrary binary
+meets or joins exist.
+\end{proof}
+
+\subsection{Two good subspaces with a bad intersection}
+
+\begin{theorem}[Exact finite-dimensional/lattice dichotomy]
+\label{thm:lattice}
+Let $\Gamma\ne0$ be any set-sized ordered abelian group. For an
+ordinary real or complex Hilbert space $H$,
+\[
+ \Spl(\HH{H})\text{ is a lattice}
+ \quad\Longleftrightarrow\quad \dim H<\infty.
+\]
+If $H$ is infinite dimensional, there are two split subspaces whose
+intersection is not split and which have no greatest lower bound in
+$\Spl(\HH{H})$. Their orthogonal complements have no least upper bound.
+\end{theorem}
+\begin{proof}
+First work in $\HH{H_1\oplus H_1\oplus H_1}$ with
+$H_1=\ell^2(\N_{\ge1})$. Use $T,q$ from Example~\ref{ex:badgraph}
+and define
+\begin{align*}
+ M&=\{(x,y,0):x,y\in\HH{H_1}\},\\
+ N&=\{(x,y,Tx-qy):x,y\in\HH{H_1}\}.
+\end{align*}
+The first is a constant orthogonal summand. The second is the graph
+of the integral adjointable operator
+$B(x,y)=Tx-qy$. The residue of $I+B^*B$ is the ordinary operator
+$I+B_0^*B_0$, boundedly invertible because it is at least $I$.
+A positive-order Neumann inverse and
+Proposition~\ref{prop:graphcriterion} show that $N$ is split.
+
+Their intersection is
+\begin{equation}\label{eq:intersection}
+ M\cap N=\{(x,q^{-1}Tx,0):x\in\HH{H_1}\}.
+\end{equation}
+Its residue space is $0\oplus\ran T\oplus0$, since $\ker T=0$.
+That space is not ordinarily closed. Corollary~\ref{cor:residue}
+therefore proves that the intersection is not split.
+
+Suppose a greatest lower bound $L$ of $M,N$ existed in the split
+poset. For every nonzero $z\in M\cap N$, the one-dimensional space
+$\K z$ is split by finite-dimensional orthogonal projection, and is
+a common lower bound. Greatestness implies $\K z\subseteq L$ for
+all such $z$. It follows that $M\cap N\subseteq L$, whereas the
+lower-bound condition gives $L\subseteq M\cap N$. This would make
+the nonsplit intersection itself split, a contradiction. An
+order-reversing involution exchanges meets and joins, so
+$M^\perp,N^\perp$ have no least upper bound.
+
+Every infinite-dimensional Hilbert space contains a closed isometric
+copy of $H_1\oplus H_1\oplus H_1$, obtained by partitioning a countable
+orthonormal family into three infinite families and taking their
+closed spans. Extend the two projections by zero on the ordinary
+orthogonal complement. They give split subspaces in $\HH{H}$ with
+the same intersection. Its residue is still nonclosed in $H$, and
+the preceding no-meet argument applies unchanged. All choices here
+are set-sized.
+
+Finally, if $\dim H=d<\infty$, then $\HH{H}$ is isometric to
+$\K^d$ (or $\F^d$ in the real case). Every linear subspace has a
+finite orthonormal basis by Proposition~\ref{prop:finite}, hence is
+split. Ordinary algebraic intersection and sum are meet and join
+in the full subspace lattice, so the split poset is a lattice.
+\end{proof}
+
+\begin{remark}[Relation to existing non-Archimedean obstructions]
+The general phenomenon of nonorthomodularity in other non-Archimedean
+Hilbert-like models is not new; Aguayo--Nova give such results for
+$c_0$-type spaces \cite{AN}. Here the coefficient-Hilbert model,
+the complete classification of split subspaces, and the precise
+criterion ``finite ordinary coefficient dimension'' identify a
+particular obstruction. In particular, the poset of \emph{split}
+subspaces remains orthomodular, but ceases to be a lattice. This is
+more specific than saying that some closed subspaces lack
+orthogonal complements.
+\end{remark}
+
+At the level of inner-product geometry, $\Gamma=0$ gives the ordinary
+Hilbert space and its complete closed-subspace lattice even in infinite
+dimension. The earlier comparison of valuation and norm topologies
+assumed $\Gamma\ne0$ and is not being applied to this degenerate case.
+Thus nontrivial scale structure is an essential hypothesis of the
+dichotomy, not just a notational preference.
+
+\section{Fredholm perturbations reduce to a finite defect matrix}
+\label{sec:schur}
+
+\subsection{The hypotheses and the reduction}
+Let $T_0:H\to G$ be an ordinary bounded Fredholm operator. This means
+that its ordinary range is closed and that its kernel and cokernel
+are finite dimensional. Write
+\[
+ N=\ker T_0,\quad X=N^\perp,\qquad
+ Y=\ran T_0,\quad C=Y^\perp=\ker T_0^*.
+\]
+Let $m=\dim N$, $n=\dim C$. The restriction
+$B_0=T_0|_X:X\to Y$ is a bounded isomorphism. We permit zero
+summands; identity and inverse formulas on a zero space are
+interpreted in their unique empty-block sense.
+
+Suppose
+\[
+ A=T_0+E\in\BB{H}{G},\qquad E=0\text{ or }v(E)>0.
+\]
+Relative to $H=X\oplus N$, $G=Y\oplus C$, write
+\begin{equation}\label{eq:blocks}
+ A=\begin{pmatrix}B&C_1\\D&F_1\end{pmatrix}.
+\end{equation}
+Here $B=B_0+\text{positive-order terms}$ is invertible by the
+Neumann formula, and the other three blocks have positive order
+or are zero. Define the finite \emph{Schur defect matrix}
+\begin{equation}\label{eq:schur}
+ S=F_1-DB^{-1}C_1:\HH{N}\longrightarrow\HH{C}.
+\end{equation}
+Choosing ordinary orthonormal bases identifies it with an
+$n\times m$ matrix over $\K$. Its entries have positive valuation
+or are zero.
+
+\begin{theorem}[Exact finite-defect reduction]\label{thm:schur}
+With these hypotheses, the integral block operators
+\begin{equation}\label{eq:LR}
+ L=\begin{pmatrix}I&0\\-DB^{-1}&I\end{pmatrix},\qquad
+ R=\begin{pmatrix}I&-B^{-1}C_1\\0&I\end{pmatrix}
+\end{equation}
+have integral inverses, are near the identity, and satisfy
+\begin{equation}\label{eq:schuridentity}
+ LAR=\begin{pmatrix}B&0\\0&S\end{pmatrix}=:\mathcal D.
+\end{equation}
+For $r=\rank_\K S$,
+\begin{align}
+ \dim_\K\ker A&=m-r,\label{eq:kerdim}\\
+ \dim_\K(\HH{G}/\ran A)&=n-r,\label{eq:cokerdim}\\
+ \ind_\K A&=m-n=\ind_\C T_0.\label{eq:index}
+\end{align}
+All identities are exact Hahn identities at arbitrary rank.
+\end{theorem}
+\begin{proof}
+Factor $B=B_0(I+B_0^{-1}(B-B_0))$. Its inverse belongs to
+$\BB{Y}{X}$, has integral valuation, and has residue $B_0^{-1}$.
+The off-diagonal blocks in \eqref{eq:LR} are positive order.
+Changing their signs gives the respective inverses of $L,R$.
+Direct multiplication first clears the upper-right block by $R$
+and then the lower-left block by $L$, leaving precisely
+$F_1-DB^{-1}C_1$ in the lower-right corner. This proves
+\eqref{eq:schuridentity}.
+
+Because $L,R$ are bijections and $B$ is an isomorphism, the kernel
+and cokernel of $A$ are isomorphic to those of the finite matrix $S$.
+Finite rank-nullity gives \eqref{eq:kerdim}--\eqref{eq:index}.
+For support validity, all inverse expansions use the positive
+monoid generated by the support of $E$; multiplication and the
+finite block decompositions preserve well-ordered support. No
+analytic or norm-convergent infinite process is involved.
+\end{proof}
+
+This is a standard Schur-complement calculation applied in the
+specified Hahn algebra. Its role is to isolate a finite part where
+orthogonal linear algebra is safe. In particular, ``Fredholm'' in
+\eqref{eq:index} is the finite algebraic kernel/cokernel condition
+on these named spaces; it is not a compactoid-operator definition in
+a different non-Archimedean category.
+
+\subsection{Finite Moore--Penrose geometry without field closure}
+A finite matrix $S:\K^m\to\K^n$ has an algebraic Moore--Penrose
+inverse over $\K$ with its standard positive Hermitian form.
+Indeed finite Gram--Schmidt gives
+\[
+ \K^m=\ker S\oplus(\ker S)^\perp,\qquad
+ \K^n=\ran S\oplus(\ran S)^\perp.
+\]
+The restriction of $S$ between $(\ker S)^\perp$ and $\ran S$ is a
+bijection of finite-dimensional spaces. Invert it there and set it
+to zero on $(\ran S)^\perp$; call the resulting map $S^\dagger$.
+It satisfies
+\begin{equation}\label{eq:penrose}
+ SS^\dagger S=S,\quad S^\dagger SS^\dagger=S^\dagger,
+ \quad (SS^\dagger)^*=SS^\dagger,
+ \quad (S^\dagger S)^*=S^\dagger S.
+\end{equation}
+This construction does not require that $\K$ be algebraically
+closed or that $\F$ be real closed. In particular no assumption of
+divisibility of $\Gamma$ has been inserted: the vector-norm roots
+needed by Gram--Schmidt already exist by Proposition~\ref{prop:inner}.
+These finite identities and their geometry are classical
+Moore--Penrose linear algebra, not proposed new results.
+
+\section{Exact Moore--Penrose inverses and least squares}
+\label{sec:least}
+
+\subsection{Finite defects restore orthogonal range decomposition}
+
+\begin{theorem}[Fredholm-residue least-squares theorem]
+\label{thm:MP}
+For $A=T_0+E$ as in Section~\ref{sec:schur}, both $\ker A$ and
+$\ran A$ are orthogonally split. There is a unique
+$A^\dagger\in\BB{G}{H}$ satisfying the four Penrose identities
+\eqref{eq:penrose} with $S$ replaced by $A$.
+If $P$ projects onto $\ker A$ and $Q$ onto $\ran A$, it is explicitly
+\begin{equation}\label{eq:MPformula}
+ A^\dagger=(I-P)\,
+ R\begin{pmatrix}B^{-1}&0\\0&S^\dagger\end{pmatrix}L\,Q.
+\end{equation}
+In particular
+\begin{equation}\label{eq:MPproj}
+ AA^\dagger=Q,\qquad A^\dagger A=I-P.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The kernel is finite dimensional by Theorem~\ref{thm:schur}, so
+its orthogonal projection $P$ exists. To prove the exact range
+assertion rather than assume a Hilbert closed-range theorem, use
+$A=L^{-1}\mathcal D R^{-1}$ from \eqref{eq:schuridentity}. Then
+\[
+ A^*=R^{-*}\mathcal D^*L^{-*},\qquad
+ \ker A^*=L^*\ker\mathcal D^*.
+\]
+Here $L^{-*}=(L^*)^{-1}$ and similarly for $R$. On the finite Schur
+block, ordinary finite orthogonal algebra over $\K$ gives
+$(\ker S^*)^\perp=\ran S$. On the other block $B$ is invertible.
+Therefore
+\[
+ (\ker\mathcal D^*)^\perp=\ran\mathcal D.
+\]
+For any subspace $Z$, the adjoint identity gives
+$(L^*Z)^\perp=L^{-1}Z^\perp$. Consequently
+\begin{equation}\label{eq:closedrangeexact}
+ (\ker A^*)^\perp=L^{-1}\ran\mathcal D=\ran A.
+\end{equation}
+The subspace $\ker A^*$ has finite dimension $n-r$, so it is split.
+Its orthogonal complement \eqref{eq:closedrangeexact} is split
+as well; let $Q=I-P_{\ker A^*}$ be its projection. This proves
+splitting using the finite reduction, not merely finite codimension.
+
+Put
+\[
+ G_0=R\begin{pmatrix}B^{-1}&0\\0&S^\dagger\end{pmatrix}L.
+\]
+The block identity gives $AG_0A=A$, so $AG_0$ is the identity on
+$\ran A$. Since $AP=0$, the map
+$F=(I-P)G_0Q$ satisfies $AF=Q$. Moreover for every $x$,
+$A(G_0Ax-x)=0$, so
+\[
+ FAx=(I-P)G_0Ax=(I-P)x.
+\]
+Thus $FA=I-P$. The range of $F$ lies in $(\ker A)^\perp$, and
+$F=FQ$, which yields $FAF=F$. The two product identities give
+self-adjointness of $AF,FA$ and hence all four Penrose equations.
+Every factor in $F$ is adjointable: the finite Schur inverse and
+finite-rank projections are Hahn operators, and all remaining
+factors were already constructed in the Hahn algebra.
+
+For uniqueness, any Penrose inverse $F'$ makes $AF'$ a
+self-adjoint idempotent with range $\ran A$, hence $AF'=Q$.
+Similarly $F'A$ is a self-adjoint idempotent with kernel $\ker A$,
+hence $F'A=I-P$. Also $F'=F'AF'$, so its values lie in
+$(\ker A)^\perp$. Both $F'f$ and $Ff$ lie there and solve
+$Ax=Qf$; their difference lies in $\ker A$, and is therefore zero.
+\end{proof}
+
+\begin{corollary}[All least-squares and minimum-norm solutions]
+\label{cor:LS}
+For every $f\in\HH{G}$ let $u_0=A^\dagger f$. Then
+\begin{equation}\label{eq:LSidentity}
+ \norm{Ax-f}^2=\norm{(I-Q)f}^2+\norm{A(x-u_0)}^2
+ \qquad(x\in\HH{H}).
+\end{equation}
+The least-squares minimizers are exactly $u_0+\ker A$.
+Among them $u_0$ is the unique vector of minimum norm. The equation
+$Ax=f$ is solvable exactly when $(I-Q)f=0$.
+\end{corollary}
+\begin{proof}
+Write $Ax-f=A(x-u_0)-(I-Q)f$. Its two terms lie in the orthogonal
+spaces $\ran A$ and $\ker A^*$, respectively. Pythagoras proves
+\eqref{eq:LSidentity}; positivity identifies equality with
+$A(x-u_0)=0$. Since $u_0\in(\ker A)^\perp$, one also has
+$\norm{u_0+n}^2=\norm{u_0}^2+\norm{n}^2$ for $n\in\ker A$.
+This proves the minimum-norm and exact-solvability assertions.
+\end{proof}
+
+\begin{remark}[Why this does not contradict the graph obstruction]
+Example~\ref{ex:badgraph} has an infinite-dimensional ordinary range
+defect, invisible to a finite matrix: its residue range is dense
+and not closed. Theorem~\ref{thm:MP} starts with an ordinarily closed
+Fredholm range and leaves only finitely many kernel and cokernel
+coordinates to resolve. A finite matrix over $\K$ always has the
+orthogonal decompositions needed here. The two results therefore
+identify different regimes, not competing definitions of solvability.
+\end{remark}
+
+\section{The exact amplification scale from finite minors}
+\label{sec:valuation}
+
+\subsection{Finite valuation-ring reduction}
+The valuation ring $\OO$ need not be Noetherian or discretely valued.
+Nevertheless finite matrices admit the following elementary reduction.
+We supply its proof to make the generality of the inverse-scale
+formula explicit.
+
+\begin{lemma}[Finite diagonal reduction over the valuation ring]
+\label{lem:smith}
+Let $S\in M_{n\times m}(\OO)$ have rank $r>0$. There are
+$U\in\GL_n(\OO)$, $V\in\GL_m(\OO)$, both with inverses over $\OO$,
+and exponents
+$0\le s_1\le\cdots\le s_r$ such that
+\begin{equation}\label{eq:smith}
+ USV=\operatorname{diag}(t^{s_1},\ldots,t^{s_r},0).
+\end{equation}
+If every nonzero entry of $S$ has positive valuation, then $s_1>0$.
+For $1\le j\le r$, set
+\[
+ \nu_j(S)=\min\{v(\det S_{I,J}):\abs I=\abs J=j,
+                         \det S_{I,J}\ne0\},\qquad \nu_0(S)=0.
+\]
+Then
+\begin{equation}\label{eq:minors}
+ \nu_j(S)=s_1+\cdots+s_j.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Choose a nonzero entry of minimum valuation and permute it to the
+upper-left corner. Write it as $p=t^s u$ with $u\in\OO^\times$.
+Multiplying its row by $u^{-1}$ makes the pivot $t^s$; all entries
+still have valuation at least $s$. Because the pivot has minimum
+valuation, it divides every entry in $\OO$. Subtract multiples of
+the first row to clear the first column, then multiples of the
+first column to clear the first row. These are invertible integral
+row and column operations. The remaining lower-right block still
+has all entries of valuation at least $s$: each new entry is a
+difference of terms with that property. Repeat on this finite block.
+The process terminates after $r$ nonzero pivots and produces
+nondecreasing exponents. This proves \eqref{eq:smith} and the
+strict positivity assertion.
+
+Cauchy--Binet expresses every $j$-minor after an integral left or
+right multiplication as a finite sum of original $j$-minors times
+integral minors of the multiplier. Thus its minimum nonzero minor
+valuation cannot decrease. Applying the integral inverse gives
+the reverse inequality, so $\nu_j$ is invariant under both
+operations. For the diagonal matrix in \eqref{eq:smith}, the least
+nonzero $j$-minor valuation is $s_1+\cdots+s_j$. This proves
+\eqref{eq:minors} and also shows that the exponents are invariants.
+\end{proof}
+
+The diagonal exponents in this lemma are valuation invariants, not
+asserted eigenvalue or singular-value exponents of an arbitrary
+infinite operator. No spectral theorem is being used.
+
+\subsection{A sharp formula for the Moore--Penrose inverse}
+
+\begin{theorem}[Exact finite-defect amplification]\label{thm:scale}
+Let $A=T_0+E$ and $S$ be as in Theorem~\ref{thm:MP}. If
+$r=\rank S>0$, then
+\begin{equation}\label{eq:scale}
+ v(A^\dagger)=-s_r
+       =-\bigl(\nu_r(S)-\nu_{r-1}(S)\bigr)<0,
+\end{equation}
+where the $s_j$ are the exponents in Lemma~\ref{lem:smith}.
+If $S=0$ and $T_0\ne0$, then
+\begin{equation}\label{eq:nolift}
+ v(A^\dagger)=0,
+ \qquad [t^0]A^\dagger=T_0^\dagger.
+\end{equation}
+If $S=0=T_0$, then $A=A^\dagger=0$.
+\end{theorem}
+\begin{proof}
+Combine the Schur reduction, multiplication of the regular block
+by $B^{-1}$, and the integral finite transformations in
+Lemma~\ref{lem:smith}. There are bounded-coefficient Hahn
+isomorphisms $J$ on the codomain side and $K_1$ on the domain side,
+with integral inverses, such that
+\begin{equation}\label{eq:fullnormal}
+ JAK_1=\mathcal E
+  =\operatorname{diag}(I_X,t^{s_1},\ldots,t^{s_r},0).
+\end{equation}
+To write the regular identity $I_X$ we identify $Y$ with $X$ by
+$B_0$ or $B$ as appropriate; this is an isomorphism between the
+named coefficient summands, not a dimension-changing operation.
+Every change and its inverse is integral. Zero regular summands
+are allowed.
+
+Assume first $r>0$. The diagonal map
+\[
+ Z_0=\operatorname{diag}(I_X,t^{-s_1},\ldots,t^{-s_r},0)
+\]
+is an inner generalized inverse of $\mathcal E$ and has valuation
+$-s_r$. Therefore
+$G=K_1Z_0J$ satisfies $AGA=A$ and has valuation $-s_r$, because
+integral invertible multipliers preserve operator valuation.
+The proof of Theorem~\ref{thm:MP} works with any such $G$ and gives
+\[
+ A^\dagger=(I-P)GQ.
+\]
+Both orthogonal projections are integral by
+Lemma~\ref{lem:integralproj}. Hence
+$v(A^\dagger)\ge-s_r$.
+
+For the converse bound put
+$Z=K_1^{-1}A^\dagger J^{-1}$. The identity
+$AA^\dagger A=A$ implies $\mathcal E Z\mathcal E=\mathcal E$.
+At the $j$th nonzero finite pivot, its diagonal entry says
+\[
+ t^{s_j}Z_{jj}t^{s_j}=t^{s_j},
+ \qquad\text{so}\qquad Z_{jj}=t^{-s_j}.
+\]
+A nonzero scalar coordinate of valuation $-s_r$ forces
+$v(Z)\le-s_r$. The integral invertible transformations preserve
+valuation, so $v(Z)=v(A^\dagger)$. This proves equality; the
+minor formula follows from \eqref{eq:minors}.
+
+If $S=0$, the generalized inverse
+$G_0=R\operatorname{diag}(B^{-1},0)L$ is integral and its residue
+is $T_0^\dagger$ relative to the ordinary orthogonal decompositions.
+Thus $A^\dagger=(I-P)G_0Q$ is integral. To identify the projection
+residues, observe from the Schur formulas with $S=0$ that
+\[
+ \ker A=R(0\oplus\HH{N}),\qquad
+ \ker A^*=L^*(0\oplus\HH{C}).
+\]
+Because $R,L^*$ and their inverses are near the identity, their
+integral residue spaces are $N,C$. Corollary~\ref{cor:residue}
+therefore gives $P_0=P_N$ and $Q_0=P_Y$. Taking residues in
+\eqref{eq:MPformula} yields
+$[t^0]A^\dagger=(I-P_N)T_0^\dagger P_Y=T_0^\dagger$.
+This is nonzero if $T_0\ne0$, proving \eqref{eq:nolift}.
+If $T_0=0$ is Fredholm, both $H,G$ are finite dimensional and the
+regular block is empty; then $S=A$, so $S=0$ gives $A=0$.
+\end{proof}
+
+\begin{corollary}[Exactly when the inverse stays finite]
+\label{cor:finiteinverse}
+For a nonzero ordinary Fredholm $T_0$, the following are equivalent:
+$A^\dagger$ is integral; $S=0$; $\dim_\K\ker A=\dim_\C\ker T_0$.
+They are also equivalent to preservation of the ordinary cokernel
+dimension. If even one finite defect direction is lifted, the
+Moore--Penrose inverse acquires a strictly negative valuation,
+exactly as measured by \eqref{eq:scale}.
+\end{corollary}
+\begin{proof}
+Use \eqref{eq:kerdim}, \eqref{eq:cokerdim}, and
+Theorem~\ref{thm:scale}; all $s_j$ are strictly positive.
+\end{proof}
+
+\subsection{An off-diagonal term can dominate the inverse scale}
+
+\begin{example}[A fourth-order pole from second- and third-order diagonals]
+\label{ex:pole}
+Fix $\eta>0$, put $q=t^\eta$, and on $H_0\oplus\C^2$ take
+\[
+ T_0=I_{H_0}\oplus0_2,
+ \qquad A=I_{H_0}\oplus
+ S,\qquad S=\begin{pmatrix}q^2&q\\0&q^3\end{pmatrix}.
+\]
+Here $H_0$ may be infinite dimensional. The finite Schur matrix is
+exactly $S$, with
+\[
+ \nu_1(S)=\eta,\qquad \nu_2(S)=5\eta,
+ \qquad s_1=\eta,
+ \quad s_2=4\eta.
+\]
+Since $A$ is bijective, $A^\dagger=A^{-1}$, and explicitly
+\[
+ S^{-1}=\begin{pmatrix}q^{-2}&-q^{-4}\\0&q^{-3}\end{pmatrix}.
+\]
+The inverse valuation is $-4\eta$, not $-2\eta$ or $-3\eta$.
+Off-diagonal coupling is measured by minors and cannot be recovered
+merely by inspecting the orders on the original diagonal.
+\end{example}
+
+More generally, for positive $\alpha,\beta,\gamma\in\Gamma$,
+\[
+ S=\begin{pmatrix}t^\alpha&t^\beta\\0&t^\gamma\end{pmatrix}
+ \quad\Longrightarrow\quad
+ v(S^{-1})=-\bigl(\alpha+\gamma-
+                       \min\{\alpha,\beta,\gamma\}\bigr).
+\]
+This follows either from the two-minor formula or by writing its
+inverse. The expression makes sense in any ordered abelian group.
+For example, in $\Q\oplus\Q$ with lexicographic order take
+$\alpha=(1,0)$, $\beta=(0,1)$, $\gamma=(1,1)$. Then the inverse
+valuation is $-(2,0)$. There is no need to collapse these scales to
+real numbers or choose an Archimedean embedding.
+
+\section{Coherent extension of scales and the full surreal class}
+\label{sec:global}
+
+\subsection{Set-sized scalar extension preserves the formulas}
+An ordered embedding $\Gamma\hookrightarrow\Delta$ sends a
+well-ordered support to a well-ordered support, and defines embeddings
+of scalar fields, vector spaces, and bounded-coefficient Hahn
+operator algebras. It preserves products, conjugation, adjoints,
+and the strong sums used in this article. A projection therefore
+extends to a projection on the larger Hahn space.
+
+\begin{proposition}[Coherence of the constructive results]
+\label{prop:extension}
+Under any ordered embedding $\Gamma\hookrightarrow\Delta$:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item the projection normal form and its direct rotation extend by
+coefficient transport;
+\item for a Fredholm-residue $A$, its transported Moore--Penrose
+inverse is the Moore--Penrose inverse of the transported operator;
+\item the Schur rank is unchanged, its nonzero minor valuations are
+transported, and the exact amplification formula is unchanged under
+that transport.
+\end{enumerate}
+No cofinality assumption on the embedding is required.
+\end{proposition}
+\begin{proof}
+The normal form is made from finite algebraic expressions and
+positive-support binomial series, all preserved by the embedding.
+The transported Moore--Penrose inverse still satisfies the four
+Penrose identities on the larger space, since they are operator
+Hahn identities. Uniqueness in Theorem~\ref{thm:MP} identifies it.
+A finite determinant is preserved by an injective field map, so the
+largest nonzero minor size, namely the rank, is unchanged. Its
+valuation is mapped by the ordered embedding, which preserves
+minima of finite sets; this proves the final assertion.
+\end{proof}
+
+These are algebraic and support-coherence statements. They do not
+assert that valuation completions or topological closures commute
+with a noncofinal scale enlargement. The three-duals report explains
+why those topological operations behave differently \cite{RepoDuals}.
+
+\subsection{A literal vector space over all surcomplex scalars}
+For readers who want all of $\No[i]$, rather than a specified set
+subfield, there is a precise class formulation. Work here in
+von Neumann--Bernays--G\"odel class theory without assuming global
+choice, and keep the ordinary Hilbert spaces $H,G$ as sets. Define
+\[
+ \mathscr H_{\No}(H)=
+ \left\{\sH_{\gamma\in S}h_\gamma t^\gamma:
+ S\subset\No\text{ is a set and well ordered},\ h_\gamma\in H\right\},
+ \qquad t^\gamma=\omega^{-\gamma}.
+\]
+Vectors can be encoded as sets of nonzero coefficient pairs. The
+collection of all these vectors is a proper class when $H\ne0$.
+By Conway normal forms the scalar class
+$\C((t^{\No}))$ is exactly $\No[i]$ in this notation. The vector
+operations and inner product remain the same coefficient formulas.
+Any finite calculation involves a set of supports and lies in one
+set-sized exponent subgroup. This supplies a literal positive
+inner-product vector class over all surcomplex scalars, rather than
+calling a proper class a set.
+
+\begin{theorem}[Class extension and set support of adjoints]
+\label{thm:class}
+In this class formulation the following hold.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The inner product, vector norm, and all support-admissible
+set-indexed strong sums are well defined over $\No[i]$.
+\item Every everywhere-defined surcomplex-linear map
+$A:\mathscr H_{\No}(H)\to\mathscr H_{\No}(G)$ with an
+everywhere-defined adjoint has a single \emph{set-supported}
+Hahn expansion in ordinary bounded maps $H\to G$.
+\item Every orthogonal projection, every amplified-graph criterion
+of Theorem~\ref{thm:threshold}, and every Fredholm-residue
+Moore--Penrose construction above applies on these full vector
+classes. Each resulting operator has its coefficients in one
+set-sized Hahn workspace, although it acts on vectors from all
+workspaces.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+For (i), each operand has set support. The sum, product, and inner
+product use only finite unions, support sums, and finite coefficient
+convolutions of those sets. Their validity is the already proved
+set-sized argument in the subgroup they generate. A set-indexed
+admissible family has set union of supports by replacement and union;
+the same reduction applies to its strong sum. The positive-root
+construction for norms also has set support.
+
+For (ii), restrict $A$ to the set $H$ of constant vectors. Class
+replacement says that the image $\{Au:u\in H\}$ is a set. Therefore
+\[
+ S_A=\bigcup_{u\in H}\supp(Au)
+\]
+is a set of surreal exponents. Do the same for the adjoint restricted
+to $G$. Extract coefficients as in Theorem~\ref{thm:adjoint}; the
+ordinary closed graph argument makes them bounded, and the Baire
+argument makes the nonzero coefficient support well ordered.
+That proof only uses the two set coefficient spaces and the support
+sets just exhibited. Finally, testing against constants identifies
+the convolution expansion on every class vector. This proves one
+set-supported expansion for the entire operator, not a separate
+expansion for each input.
+
+For (iii), an orthogonal projection is everywhere adjointable, so
+(ii) applies and the integral-projection and direct-rotation proofs
+use its set support. For a given surcomplex scalar $a$ choose a
+set-sized group containing its normal-form support; the residue
+proof of the graph threshold applies without alteration, as does
+its explicit inverse in the closed-range case. For a positive-order
+adjointable perturbation $E$, part (ii) places all its coefficients
+in one set-sized group. The Schur and Moore--Penrose formulas can
+be formed there. Their identities then hold on every class vector:
+include that vector's support in a larger set-sized group and apply
+Proposition~\ref{prop:extension}. Necessity in the graph obstruction
+also persists, since any hypothetical global projection would have
+an ordinarily closed residue by the same argument as before.
+\end{proof}
+
+This extension explains why the operator theorems genuinely concern
+surcomplex scalars, not only a convenient notation for ordinary
+series. It does not turn the global vector class into an ordinary
+set-sized Hilbert space. Nor do we form a ``class of all subspace
+classes.'' Orthogonal projections can instead be represented by
+their set Hahn codes; the non-meet example of
+Theorem~\ref{thm:lattice} still obstructs the corresponding
+projection-code order in infinite coefficient dimension.
+
+\subsection{Global fine completeness has a different meaning}
+
+\begin{proposition}[Set-indexed fine Cauchy nets stabilize]
+\label{prop:globalnets}
+In $\mathscr H_{\No}(H)$, a net indexed by a set that is Cauchy for
+\emph{all} positive surreal norm radii is eventually constant.
+A convergent set-indexed net in the same fine topology is likewise
+eventually constant.
+\end{proposition}
+\begin{proof}
+The nonzero pairwise differences of a set-indexed net form a set of
+vectors, and their valuations form a set of surreal exponents.
+Every set of surreals has a surreal strict upper bound: for a set
+$S$, the Conway cut $\{S\mid\varnothing\}$ is larger than every
+member. Choose $\rho$ above all these difference valuations.
+The Cauchy condition at a sufficiently small monomial radius makes
+all differences in a tail have valuation greater than $\rho$.
+No nonzero difference can do so, hence that tail is constant.
+For a convergent net use instead the set of nonzero differences
+from its limit and the same argument.
+\end{proof}
+
+This is consistent with nonconstant convergent sequences such as
+$t^n\to0$ inside $\C((t^\Q))$: those sequences only pass the
+\emph{workspace} tests. In the full surreal field, a radius smaller
+than all their nonzero terms prevents convergence. Thus the
+spherically complete set-valued model, the class-valued fine model,
+and strong formal summation should not be conflated. We make no
+claim about arbitrary class-indexed Cauchy families.
+
+\section{Scope, provenance, and questions left by the theory}
+\label{sec:provenance}
+
+\subsection{Repository comparison at a fixed revision}
+The comparison used revision
+\texttt{9a385d3957bdfe3d9ea79f9a524751c90bd2c894}, retrieved on
+September 23, 2026. In particular the following repository results
+are predecessors, not contributions of this article.
+
+The \emph{Infinite-Dimensional Hahn Spectral Theory} report
+\cite{RepoSpectral} already constructs $H((t^\Gamma))$, proves its
+positive inner product and the automatic adjoint theorem, and studies
+spectra and range defects. Its relevant labels include
+\texttt{ihs:hh:prop:inner}, \texttt{ihs:hh:thm:adjoint}, and
+\texttt{ihs:hh:thm:defect}. Its later Fredholm-window part uses the
+classical direct rotation for isolated finite spectral clusters and
+develops a coefficientwise Fredholm determinant.
+The \emph{Three Duals at Surreal Scales} report \cite{RepoDuals}
+separates represented, strong, and continuous duals and distinguishes
+algebraic scalar extension, valuation completion, and strong closure.
+It also exhibits failures of Hilbert-style orthogonal geometry.
+
+The present article does not reproduce those spectral classifications,
+claim a new discovery of nonrepresented continuous functionals, or
+rename a Fredholm determinant as a Moore--Penrose inverse. It uses
+the intrinsic adjoint algebra to characterize all split subspaces,
+then applies that characterization to graphs, the projection poset,
+and finite-defect best approximation. The class argument in
+Theorem~\ref{thm:class} adds the explicit set-support descent step
+when using all surcomplex scalars.
+
+The relevant repository portions were inspected, not the complete
+proof corpus or all unintegrated source manuscripts. The repository
+itself distinguishes drafted mathematics, proof review, and formal
+verification. Accordingly no claim of novelty relative to every
+uninspected source, or of inherited Lean verification, is made here.
+
+\subsection{Primary-literature comparison and novelty boundary}
+The literature search was targeted, not exhaustive. It included the
+phrases ``Hahn Hilbert orthogonal graph,'' ``Hahn Moore--Penrose,''
+``Hahn Fredholm least squares,'' non-Archimedean orthogonal
+complementation, and the named works below. Failure of those searches
+to identify an exact predecessor is evidence for a candidate
+contribution, not a proof that none exists under other terminology.
+
+Aguayo--Nova study non-Archimedean Hilbert-like $c_0$ spaces and
+orthogonal-complementation obstructions \cite{AN}. Their model is
+not the layered coefficient space retaining all of an ordinary
+Hilbert $H$. The comparison used the publication record and
+available author-posted text; a blocked publisher download was not
+silently treated as a completed full-text audit.
+
+Bursztyn--Waldmann develop formal deformations of Hermitian vector
+bundles and finite projective modules, including uniqueness up to
+isometric equivalence \cite{BW}. Simon discusses unitaries relating
+projections and records the classical direct-rotation formula
+\cite{Simon}. Thus neither projection deformation nor that formula
+is claimed to originate here.
+
+Avrachenkov--Lasserre investigate analytic perturbations of
+generalized inverses \cite{Avrachenkov}. M\"uller--Strohmaier develop
+Hahn-meromorphic functions and a holomorphic Fredholm theorem
+\cite{MS}. They provide important analytic precedents. The present
+proofs use instead unrestricted well-ordered supports over an
+arbitrary ordered group, finite-defect orthogonal geometry, and
+exact leading valuation from minors. Their analyticity and
+convergence hypotheses are not imported, and neither their
+methods nor classical generalized inverses are presented as new.
+The comparison for \cite{Avrachenkov} used its abstract and the
+coauthor's publication description, not an unavailable full PDF.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}p{.27\textwidth}YY@{}}
+\toprule
+Result here & Prior input & Proposed contribution or status\\
+\midrule
+Coefficient-Hilbert construction and automatic adjoints
+ & Repository spectral report
+ & Reproved background; not new\\
+Residue normal form
+ & Automatic adjoints; classical direct rotation
+ & Global classification of split subspaces in this model\\
+Amplified graphs
+ & Normal equations; ordinary closed-range inverse
+ & Exact finite/infinite threshold and residue obstruction\\
+Projection-code order
+ & Orthomodular identities; finite projection theorem
+ & Lattice if and only if coefficient dimension is finite\\
+Fredholm least squares
+ & Schur reduction; finite Penrose geometry
+ & Arbitrary-rank existence and exact infinite-space solutions\\
+Sharp inverse valuation
+ & Finite valuation-ring elimination; determinantal ideals
+ & Exact finite-Schur minor formula for the full pseudoinverse\\
+Full surcomplex extension
+ & Class replacement; normal forms; automatic adjoints
+ & Explicit set support of global adjointable operators\\
+\bottomrule
+\end{tabularx}
+\caption{Attribution and the boundary of the proposed theorem package.}
+\end{table}
+
+\subsection{What the theory deliberately leaves open}
+The Fredholm assumption is sufficient, not asserted necessary, for
+an adjointable Moore--Penrose inverse. A broader characterization
+would have to treat infinitely many interacting defect directions
+without assuming that their inverses share a well-ordered support
+of bounded coefficient operators. The graph threshold exhibits a
+precise obstruction that any such characterization must explain.
+
+Likewise, closed residue alone does not classify arbitrary
+valuation-closed subspaces. The graph chart characterizes the split
+ones, but deciding when an independently presented closed subspace
+admits such a chart is a separate question. General tensor products,
+frame bounds, spectral measures, unbounded operators with proper
+domains, and infinite-family projection joins are not developed
+here. In particular no classical infinite-dimensional spectral
+theorem, measurement postulate, or physical interpretation is
+claimed merely from the existence of a positive surreal norm.
+
+For computational use, the finite Schur matrix is exact but its
+entries may themselves be infinite Hahn series. The minor formula
+specifies an invariant and an algebraic reduction; it is not an
+algorithm for deciding equality or leading terms of arbitrary
+uncomputably presented surreal numbers. Effective implementations
+need an explicit support and coefficient representation.
+
+\subsection{Proof status and reproducibility}
+All central arguments are given in full above. Their main dependencies
+are the ordinary Hilbert closed-graph, Baire, and bounded-inverse
+theorems; the Hahn--Neumann support lemma; Conway normal forms;
+and finite linear algebra. The full-class section additionally
+uses class replacement in the stated class theory. No proof
+assistant was run, and the manuscript has not been independently
+refereed. The mathematical claims should be evaluated by checking
+the proofs and their hypotheses, not the novelty wording.
+
+The accompanying \texttt{checks.py} uses exact symbolic algebra to
+test representative finite identities: the projection rotation,
+a Schur factorization, four Moore--Penrose equations, and the
+coupled-pole example. It also checks finite triangular exponent
+examples for the minor formula. These checks can catch algebraic
+sign or transpose mistakes; they do not establish support
+well-ordering, infinite-dimensional boundedness, spherical
+completeness, the class argument, or bibliographic priority.
+The archive includes the source, compiled PDF, check output, and
+a short proof-audit ledger. It contains no repository modifications.
+
+\clearpage
+\appendix
+\section{A dependency and hypothesis checklist}
+
+\begin{longtable}{@{}p{.24\textwidth}p{.35\textwidth}p{.33\textwidth}@{}}
+\toprule
+Statement & Essential hypotheses & Proof mechanism\\
+\midrule
+\endfirsthead
+\toprule
+Statement & Essential hypotheses & Proof mechanism\\
+\midrule
+\endhead
+Inner product and norms & Set support; ordinary positive Hilbert form
+ & Leading coefficient and binomial root\\[.5em]
+Spherical completeness & Set-sized group and nested set of balls
+ & Compatible fixed truncations\\[.5em]
+Automatic adjoints & Everywhere-defined adjoint; ordinary complete coefficient spaces
+ & Coefficient closed graph, Baire, separation by constants\\[.5em]
+Projection normal form & Self-adjoint idempotent; ordinary Hilbert coefficients
+ & Integral leading projection and direct rotation\\[.5em]
+Infinite graph threshold & Ordinary bounded $T$; scalar of negative valuation
+ & Residue $\ker T\oplus\ran T$ and closed-range inverse\\[.5em]
+Lattice dichotomy & Nontrivial group; ordinary Hilbert coefficient space
+ & Three-coordinate graph intersection; all lines split\\[.5em]
+Fredholm least squares & Ordinary closed range; finite kernel and cokernel; positive-order global perturbation
+ & Schur reduction, finite orthogonal complements, Penrose compression\\[.5em]
+Exact inverse scale & Nonzero finite Schur rank
+ & Integral diagonal reduction and a forced inverse pivot\\[.5em]
+Scalar extension & Ordered group embedding; no cofinality needed
+ & Transport of finite algebra and admissible strong sums\\[.5em]
+Full-class adjoints & Set coefficient spaces; class replacement; everywhere-defined adjoint
+ & Set image of constants, then the automatic adjoint proof\\[.5em]
+Fine-net stabilization & Set index and all surreal radii
+ & A surreal upper bound on all difference valuations\\
+\bottomrule
+\end{longtable}
+
+No theorem in the main set-sized treatment assumes a divisible group.
+No infinite-dimensional theorem uses a finite matrix spectral theorem
+to diagonalize an arbitrary Hahn operator. No unqualified exchange
+of an ordinary Hilbert coordinate sum with a strong Hahn family is
+performed. All nearest-point statements compare exact ordered-field
+norms; they do not replace minimization by an unproved infimum.
+
+\clearpage
+\begin{thebibliography}{99}
+
+\bibitem{Conway}
+J.~H. Conway,
+\emph{On Numbers and Games}, second edition,
+A K Peters, 2001.
+\href{https://www.routledge.com/On-Numbers-and-Games/Conway/p/book/9781568811277}{Publisher record, ISBN 9781568811277}.
+
+\bibitem{RepoSpectral}
+Surreal project, repository maintained by V.~Reshetnikov,
+\emph{Infinite-Dimensional Hahn Spectral Theory},
+AI-assisted research report, September 22, 2026;
+revision \texttt{9a385d3957bdfe3d9ea79f9a524751c90bd2c894}.
+\href{https://github.com/VladimirReshetnikov/Surreal/blob/9a385d3957bdfe3d9ea79f9a524751c90bd2c894/docs/surcomplex/infinite-dimensional-hahn-spectral-theory/article.tex}{Pinned manuscript source}.
+
+\bibitem{RepoDuals}
+Surreal project, repository maintained by V.~Reshetnikov,
+\emph{Three Duals at Surreal Scales: Strong Hahn Operators,
+Completion Defects, and Invisible Functionals},
+AI-assisted research report, September 22, 2026; same pinned revision.
+\href{https://github.com/VladimirReshetnikov/Surreal/blob/9a385d3957bdfe3d9ea79f9a524751c90bd2c894/docs/surcomplex/three-duals-of-hahn-vector-spaces/article.tex}{Pinned manuscript source}.
+
+\bibitem{RepoFound}
+Surreal project, repository maintained by V.~Reshetnikov,
+\emph{Foundations} report and collection's notation and reading guide;
+same pinned revision, accessed September 23, 2026.
+\href{https://github.com/VladimirReshetnikov/Surreal/tree/9a385d3957bdfe3d9ea79f9a524751c90bd2c894/docs/foundations-and-computation/foundations}{Pinned foundations directory}.
+The collection guide records the fine-topology and set-size distinctions.
+
+\bibitem{Simon}
+B.~Simon,
+\emph{Unitaries Permuting Two Orthogonal Projections},
+arXiv:1703.05437, 2017, version 2.
+\url{https://arxiv.org/abs/1703.05437}.
+In particular, formula (4) records the classical direct rotation.
+
+\bibitem{BW}
+H.~Bursztyn and S.~Waldmann,
+\emph{Deformation Quantization of Hermitian Vector Bundles},
+arXiv:math/0009170, 2000.
+\url{https://arxiv.org/abs/math/0009170}.
+
+\bibitem{AN}
+J.~Aguayo and M.~Nova,
+\emph{Non-Archimedean Hilbert like spaces},
+Bulletin of the Belgian Mathematical Society--Simon Stevin
+\textbf{14} (2007), no.~5, 787--797.
+\href{https://doi.org/10.36045/bbms/1197908895}{doi:10.36045/bbms/1197908895}.
+
+\bibitem{Avrachenkov}
+K.~E. Avrachenkov and J.-B. Lasserre,
+\emph{Analytic perturbation of generalized inverses},
+Linear Algebra and its Applications \textbf{438} (2013), no.~4,
+1793--1813. Author-deposited record:
+\url{https://inria.hal.science/hal-00926609}.
+Coauthor's description:
+\url{https://www.laas.fr/fr/homepages/lasserre/softwares/singular-perturbations/}.
+
+\bibitem{MS}
+J.~M\"uller and A.~Strohmaier,
+\emph{The theory of Hahn meromorphic functions, a holomorphic
+Fredholm theorem and its applications},
+Analysis \& PDE \textbf{7} (2014), no.~3, 745--770.
+\href{https://doi.org/10.2140/apde.2014.7.745}{doi:10.2140/apde.2014.7.745};
+\url{https://arxiv.org/abs/1205.0236}.
+
+\end{thebibliography}
+\end{document}
