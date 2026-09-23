@@ -3607,6 +3607,42 @@ The updated synopsis was checked against `opa:as:thm:main` and
 `opa:as:thm:explicit`; it reports their claims as awaiting proof review and
 Lean formalization, preserving the unresolved Gaussian compatibility case.
 
+## Profinite completion and independent-copies placement
+
+The merge through `4253328` brings in `5edd752`'s profinite completion and
+`9d28e28`'s new report placement. The profinite construction uses the actual
+positive-modulus diagram, reduction maps, compatible-section ring and a
+proved limit universal property in `CommRingCat`. Its componentwise
+constant-term isomorphisms respect reduction, identify the canonical map,
+and give exactly the purely infinite ideal as kernel. Every finite-index
+omnific ideal occurs, including the unit ideal at modulus one. The source
+paragraph at `odg:eq:profinite` and the incoming mapping were read; topology
+on the limit carriers and completion homeomorphisms remain **Pending**.
+
+The combined `LEAN_NUM_THREADS=2 lake build` passes 4,418 jobs and audits
+15,013 declarations using only `propext`, `Classical.choice` and `Quot.sound`.
+No other Lean process was active when it began. The incoming placement
+changes none of the previously mapped manuscript statements.
+
+The independent-copies base is now included in the report navigation,
+catalogue and ledger: 29 standard environments, plus its three separately
+styled main theorems as additional obligations. Its claims and NBG with
+Global Choice foundations remain unreviewed and pending in Lean. Its
+README now uses the actual repository filenames; a three-pass build
+produces the missing 25-page PDF without warnings. The catalogue also
+builds in three passes without warnings and remains 32 pages. Its dilation
+entry now links the written PDF and retains the report's single-source
+provenance. The other
+eight placed manuscripts are companions awaiting integration; their
+delivered verification files are not treated as checked proofs.
+
+The independent inventory audit passes for 3,759 standard results in
+61 reports, including 3,740 labeled and 19 unlabeled entries. All 4,301
+cited source references resolve, local Markdown destinations pass, and
+`git diff --check` is clean. The arithmetic-review article is unchanged
+by this merge and remains 179 pages. This synchronization adds no Lean
+coverage for the reviewed geometric arguments.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
