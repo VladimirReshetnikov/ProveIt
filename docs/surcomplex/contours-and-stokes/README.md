@@ -366,6 +366,12 @@ search (21 September 2026), no named published conjecture claimed solved, not
 formally verified, symbolic checks validate the displayed finite examples only,
 all sums and workspaces set-sized.
 
+[surreal/vector-and-tensor-fields](../../surreal/vector-and-tensor-fields/)
+restates coefficientwise Stokes, the radial Poincaré lemma, Hahn cohomology,
+polynomial Stokes and the finite-partition obstruction for real coefficients in
+the tensor setting (its Theorems 11.1, 11.3 and 12.1 and Proposition 5.1),
+crediting this report.
+
 ## Build
 
 ```sh

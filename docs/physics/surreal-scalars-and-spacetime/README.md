@@ -274,6 +274,12 @@ relation is **inherit and cite**, never restate.
 
 ---
 
+[surreal/vector-and-tensor-fields](../../surreal/vector-and-tensor-fields/):
+its Theorem 13.1 (`vtf:thm:reduction`) is the any-dimension, any-signature form
+of `phys:thm:reduction`, and its Section 3 and Proposition 32.2 carry
+`phys:prop:frame`. Its Part III is mathematics on Minkowski space, not an
+assessment in this report's tiers.
+
 ## What is NOT claimed
 
 Appendix D of the article is the consolidated register: **31 numbered items

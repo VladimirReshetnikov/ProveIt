@@ -311,6 +311,16 @@ Cited by title and repository path, at repository snapshot
   surcomplex Ehrlich–Kaplan exponential with kernel `2 pi i Oz`; see Section 2.1 for why
   that claim and this report's non-homomorphism statement are both true.
 
+[euclidean-three-space](../../surreal/euclidean-three-space/) treats SO(3,No)
+as 3×3 matrices (split extension, perfect kernel, finite subgroups, rotation
+exponential) and cites this report's spin double cover rather than reproving
+it.
+
+[vector-and-tensor-fields](../../surreal/vector-and-tensor-fields/), Part II:
+the `K³` cross product is the vector part of the pure-quaternion product. Its
+Theorem 19.1 (a coefficientwise infinite-frequency obstruction) is distinct from
+`squat:thm:nooscillation`.
+
 ## Status
 
 An AI-assisted research draft with written proofs and finite symbolic checks, merged from

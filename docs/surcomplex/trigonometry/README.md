@@ -1,186 +1,384 @@
 # Trigonometry on the Surcomplex Plane
 
 **Canonical Phases, Arbitrary-Scale Geometry, and Infinitesimal Degeneration**
-September 21, 2026 — `article.tex` / `article.pdf`, 58 pages, 81 numbered results.
-
-## What this report is
-
-One merged research article on the trigonometry of the surcomplex class field
-`SC = No[i]`. Its organizing theorem is that every surcomplex direction has a
-**finite** surreal angle: `cis : (O_R, +) → (T(No), ·)` is surjective with kernel
-exactly `2πZ`, so `O_R/2πZ ≅ T(No) ≅ T(R) × (m_R, +)`, and the whole of plane,
-spherical and hyperbolic triangle geometry is therefore available at arbitrary
-surreal length scale without ever choosing a value for `sin ω`.
-
-From that theorem the article develops, in order: the Hahn-summation construction
-of canonical sine and cosine on finite angles and its normalization; the unit
-circle, its branch conventions and its projective half-angle chart; inverse
-functions on their full surreal domains and the angular metric; the angle-sum,
-cosine, sine, tangent, half-angle, Heron, incircle, Euler, angle-bisector,
-cevian, Ceva, inscribed-angle and Ptolemy theorems; the exact valuation
-dictionary between sides, angles and area, with a quadratic triangle-inequality
-defect formula and two flat-triangle theorems; line–circle intersection,
-tangency, the cosine fold, a rank-two collision-stable intersection algebra, a
-coupled four-point angular collision, and three separate root-stability
-certificates; the canonical complex extension to the strip of arguments with
-finite real part and arbitrary surreal imaginary part, where sine is surjective
-with completely determined fibres; the algebraization of trigonometric
-polynomials and support-controlled cluster lifting; finite Fourier inversion,
-Parseval and a surcomplex Fejér–Riesz factorization; spherical and hyperbolic
-trigonometry; coherent arc length and sector area; and the classification of all
-global phase extensions, with the canonical Ehrlich–Kaplan normalization placed
-inside that classification and two coherence obstructions.
-
-## Which archives it came from
-
-Three independently written manuscripts of 21 September 2026:
-
-| file | title |
-|---|---|
-| `16-finite-radians-angular-phenomena.tex` | *Trigonometry on the Surcomplex Plane: Finite Radians, Arbitrary-Scale Geometry, and Infinitesimal Angular Phenomena* |
-| `17-canonical-phases-degeneration.tex` | *Surcomplex Trigonometry: Canonical Phases, Arbitrary-Scale Triangles, and Infinitesimal Degeneration* |
-| `18-canonical-angles-oscillation.tex` | *Trigonometry on the Surcomplex Plane: Canonical Angles, Infinite Triangles, Infinitesimal Contact, and Hahn-Analytic Oscillation* |
-
-All three are drafts of one article — two even share a title — and all three
-prove the finite-angle/canonical-phase theorem, the polar decomposition, the
-half-angle parametrization, the inverse functions, the angle sum and the full
-triangle laws, triangle existence, Heron and the half-angle formulas, Ptolemy,
-trigonometric Ceva, the valuation forms of the triangle laws, a quadratic defect
-formula for degeneration, Fejér–Riesz, finite Fourier inversion and Parseval,
-and the classification of global phase extensions with unavoidable infinite
-periods. **Each of those appears once in the merged article.** No mathematical
-disagreement was found between the three.
-
-### What each contributed
-
-**18 — the base.** The largest and most completely fibred of the three; its
-versions of the shared core are the ones printed. Uniquely its own: Euler's
-incentre–circumcentre identity and the cevian/angle-bisector theorem; the SSS
-existence theorem with the explicit Heron factorization; circle length and
-sector area at every radius, with the negative result that inscribed polygon
-perimeters do not fine-converge and have no least upper bound; exact cluster
-multiplicity with a coefficient-support bound, proved by a finite Sylvester map
-and transfinite recursion over `S*`; the algebraization of trigonometric
-polynomials with the sharp `2n` root bound; the complete fibres of strip sine
-with the exact coincidence condition `w = ±1`; the two-square lemma over a real
-closed field; hyperbolic geometry in the full surreal Poincaré disk with the
-`No`-valued disk metric; and the no-go theorem that no bounded common-domain
-Hahn-analytic function represents an infinite-frequency sine.
-
-**17.** Spherical trigonometry, which appears nowhere else in the set; the chord
-and inscribed-angle theorems with their exact factorization; line–circle
-intersection with explicit intersection points and Jacobian; the rank-two
-intersection algebra `A_d = SC[W]/(W² − d)` with its collision-stable residue
-pairing, two-simple-residue formula and dual-number degeneration; the sharp
-conditioned inversion of cosine with second-order term and remainder bound
-`v(R) ≥ 3σ − 5κ`; the exact triangle-inequality defect formula with no
-comparability assumption; the relative flatness threshold `δ ≺ bc/B` together
-with the `Δ` and `R` equivalents; the internal-bisector length; the angle→triangle
-reconstruction at arbitrary scale; the canonical global normalization
-`Sin x = sin(fin x)` attributed to Ehrlich–Kaplan, with `ker Exp = 2πi·Oz` and the
-period class `2πOz`; and the fine-topology degeneracy proposition.
-
-**16.** The cosine fold including its purely imaginary roots at negative
-parameter; the sharp `σ > 2κ` angular root-stability bound with **both**
-valuation estimates and a separate sharpness proposition showing the threshold
-cannot be weakened and that both exponents are attained; the standalone
-simple-residue-root (Hensel-type) lemma using the polynomial intermediate-value
-property with an infinitesimal test radius; the coupled four-point angular
-collision algebra `B_{s,u}`; the normalization proposition for the finite
-trigonometric pair; the projective `P¹(No)` tangent parametrization with its
-homogeneous group law; the `Δ ≤ s²/(3√3)` area inequality; the quadrance/spread
-and triple-spread identities; the Dirichlet and Fejér kernel identities with the
-warning that they are not an approximation theorem; the uniqueness normalization
-for the Fejér–Riesz factor (`Q` with no zero in `|u| < 1` and `Q(0) > 0`); and the
-explicit negative-window analysis of the degree-two polynomial that is positive
-at every ordinary angle.
-
-Both 17 and 18 carry hyperbolic laws. Only 18's Poincaré-disk version is stated;
-17's Lorentz-hyperboloid proof is recorded as a remark and not restated.
-
-## Conflicts and how they were resolved
-
-- **Coefficient rings.** Four rings circulate in this set under nearly identical
-  notation. Section 1.3 fixes them as (R1) fixed-domain, (R2) common-domain germ,
-  (R3) radius-free, (R4) formal, and every coherence statement names its ring.
-  Only (R1)–(R2) carry theorems here; (R3) and (R4) carry none.
-- **Canonical vs. free global phase.** 17 asserts a canonical global
-  normalization; 16 and 18 decline to derive canonicity from the local axioms and
-  prove infinite periods are unavoidable. Both are printed: the canonical choice
-  is an extra structural input (the initial integer part), and its period class
-  `2πOz` is exactly the unavoidable-infinite-period phenomenon.
-- **Three stability certificates.** Section 9.6 states explicitly which of the
-  three is sharper for which purpose before proving them.
-- **Branch conventions.** The actual-interval cut and the standard-part-pinned
-  unwrapped branch are stated once, side by side, and declared not to be the same
-  function; angle classes are used thereafter.
-- **Stronger versions kept.** Ptolemy is stated as the general inequality with
-  the cyclic equality case (not equality alone); the root bound is the bijective
-  with-multiplicity version; strip sine is stated with complete fibres; the
-  Fejér–Riesz factor carries the uniqueness normalization.
-
-## Notation
-
-One symbol per concept, fixed in §1.2: `T(No)` for the unit circle, `cis` for the
-finite phase (`E` reserved for the strip exponential), `O_R`/`m_R` for finite
-elements and infinitesimals, `d(α)` for the angle defect, `∠(u,v)` for the angular
-metric, `α,β,γ` for interior angles, and `h, ε, τ, δ` for the four small
-parameters the sources overload. The map to `C` is the **standard part** and the
-topology it induces the **standard-part topology**; the sources' synonyms
-(reduction, shadow, residue) are noted once and not reused. The genuinely
-different **fine** topology keeps its own name. All labels are prefixed
-`trigonometry:`.
-
-## What is not proved
-
-Collected in §18.4 of the article, one entry per source non-claim. In outline:
-no general transfer of infinite families of inequalities, and no uniqueness from
-a differential equation rather than the Taylor rule; no inference of global
-monotonicity from the sign of a fine derivative; asymptotic equivalences concern
-a single infinitesimal and are not sequence limits; the endpoint derivative of
-inverse sine does not exist as a surreal-valued derivative, and no derivation on
-`No` is being chosen; the side–side–angle ambiguity remains; quadrances and
-spreads forget orientation; no directed Menelaus/Ceva; cyclic order is not
-defined by fine-continuous motion; angular error must not be inferred from cosine
-error alone; the least side valuation is attained at least twice, which is not to say
-all three are equal; the
-flatness denominator `bc/(b+c)` is essential; the branch-matching conditions
-`e ≺ τ` and `σ > 2κ` cannot be relaxed; the dimension four of `B_{s,u}` is a total
-multiplicity, not a per-root claim; the cluster support bound belongs to factor
-coefficients, not to individual roots, with no reality conclusion for a multiple
-zero, and is a coefficient recursion rather than Newton convergence; the
-derivative root count invokes no extreme-value theorem; the finite Fourier
-identities establish no infinite-series convergence or completeness, and the
-Dirichlet/Fejér kernels are not an approximation theorem; Fejér–Riesz is a
-real-closed-field extension of a classical result, with no multivariable
-single-square claim; the positivity counterexample does not contradict sign
-lifting; the coefficientwise arc-length functional is not a Riemann integral and
-asserts no fine-continuous path; the spherical and hyperbolic sections give
-metric identities, not a global geometric or measure-theoretic foundation; the
-global normalization is the established Ehrlich–Kaplan construction and is not
-claimed as new; the extension classification is not a classification of solutions
-of a differential equation and does not settle the Ehrlich–Kaplan robustness
-questions; the two coherence obstructions are restrictions on uniform analytic
-descriptions over ring (R1) only; and no proper-class sum, infinite polygon,
-full-class Riemann integral, priority claim, or resolution of a named published
-conjecture is asserted anywhere. The literature search was targeted rather than
-exhaustive, nothing is formally verified, and the accompanying symbolic checks
-(67, 43 and 68 in the three source editions) validate displayed examples rather
-than machine-checking the general proofs.
-
-## Build
+Merged research report of 21 September 2026, extended 22 September 2026, built
+from four manuscripts written independently on those two days. AI-assisted
+drafts; not refereed; not formally verified.
 
 ```
-latexmk -pdf -interaction=nonstopmode article.tex
+article.tex      the report, standalone LaTeX with an internal bibliography
+article.pdf      the compiled report, 73 pages
+README.md        this guide
+code/            16-finite-radians-angular-phenomena.py      (source 16)
+                 17-canonical-phases-degeneration.py         (source 17)
+                 18-canonical-angles-oscillation.py          (source 18)
+                 19-rotation-group-verify.py                 (source 19)
+                 19-rotation-group-build.sh, .ps1            (source 19, see "Build")
+data/            16-finite-radians-angular-phenomena-requirements.txt,
+                 -source_provenance.txt, -verification_report.txt   (source 16)
+                 17-canonical-phases-degeneration-requirements.txt,
+                 -verification_report.txt                     (source 17)
+                 18-canonical-angles-oscillation-requirements.txt,
+                 -verification_report.txt                     (source 18)
+                 19-rotation-group-requirements.txt,
+                 19-rotation-group-verification_results.json  (source 19)
+```
+
+Every label in `article.tex` carries the prefix `trigonometry:`. The material
+of source 19 carries the sub-prefix `trigonometry:rot:`. **No pre-existing label
+was renamed or removed**: the report had 221 labels before source 19 was merged
+and has 279 after it, and all 221 are still present. Every existing theorem,
+equation and section number is unchanged except the concluding section, which
+moved from 18 to 19 (its non-claims subsection is now 19.4). The
+[formalization ledger](../../FORMALIZATION.md) maps some `trigonometry:` labels
+(for example `trigonometry:prop:lift`, `trigonometry:thm:cayley`,
+`trigonometry:thm:fourier`) to Lean declarations; no `trigonometry:rot:` label
+has a mapping. The ledger's line-number index of this report predates the merge
+and needs regenerating.
+
+## Four sources, one report
+
+| | Manuscript | Repository pin | Contributes |
+|---|---|---|---|
+| **16** | *Trigonometry on the Surcomplex Plane: Finite Radians, Arbitrary-Scale Geometry, and Infinitesimal Angular Phenomena* (21 Sep) | none recorded | see below; files prefixed `16-finite-radians-angular-phenomena-` |
+| **17** | *Surcomplex Trigonometry: Canonical Phases, Arbitrary-Scale Triangles, and Infinitesimal Degeneration* (21 Sep) | none recorded | see below; files prefixed `17-canonical-phases-degeneration-` |
+| **18** | *Trigonometry on the Surcomplex Plane: Canonical Angles, Infinite Triangles, Infinitesimal Contact, and Hahn-Analytic Oscillation* (21 Sep) | none recorded | the base text of Sections 1–17; files prefixed `18-canonical-angles-oscillation-` |
+| **19** | *Rotations of the Surreal Plane: The Norm-One Torus, Infinitesimal Angles, and Topology at Every Scale* (22 Sep) | `dcf86662b574` | Section 18; files prefixed `19-rotation-group-` |
+
+The source manuscripts themselves are not shipped; their code and data are,
+under the prefixes above. Sources 16–18 were written from three user-supplied
+manuscripts (surcomplex analysis, finite zero geometry, finite intersections;
+`data/16-finite-radians-angular-phenomena-source_provenance.txt` records their
+titles and checksums) and record no repository commit. Source 19 was written
+against commit `dcf86662b574`, at which `article.tex` stood exactly as before
+this merge; it inspected the root and documentation READMEs, this directory's
+README and the opening of the article.
+
+**Sources 16–18.** All three are drafts of one article — two share a title —
+and all three prove the finite-angle/canonical-phase theorem, the polar
+decomposition, the half-angle parametrization, the inverse functions, the angle
+sum and the full triangle laws, triangle existence, Heron and the half-angle
+formulas, Ptolemy, trigonometric Ceva, the valuation forms of the triangle laws,
+a quadratic defect formula for degeneration, Fejér–Riesz, finite Fourier
+inversion and Parseval, and the classification of global phase extensions with
+unavoidable infinite periods. Each of those appears once. No mathematical
+disagreement was found between the three.
+
+- **18, the base.** The largest and most completely fibred; its versions of the
+  shared core are the ones printed. Uniquely its own: Euler's
+  incentre–circumcentre identity and the cevian/angle-bisector theorem; the SSS
+  existence theorem with the explicit Heron factorization; circle length and
+  sector area at every radius, with the negative result that inscribed polygon
+  perimeters do not fine-converge and have no least upper bound; exact cluster
+  multiplicity with a coefficient-support bound, proved by a finite Sylvester map
+  and transfinite recursion over `S*`; the algebraization of trigonometric
+  polynomials with the sharp `2n` root bound; the complete fibres of strip sine
+  with the exact coincidence condition `w = ±1`; the two-square lemma over a real
+  closed field; hyperbolic geometry in the full surreal Poincaré disk with the
+  `No`-valued disk metric; and the no-go theorem that no bounded common-domain
+  Hahn-analytic function represents an infinite-frequency sine.
+- **17.** Spherical trigonometry; the chord and inscribed-angle theorems with
+  their exact factorization; line–circle intersection with explicit points and
+  Jacobian; the rank-two intersection algebra `A_d = SC[W]/(W² − d)` with its
+  collision-stable residue pairing, two-simple-residue formula and dual-number
+  degeneration; the sharp conditioned inversion of cosine with second-order term
+  and remainder bound `v(R) ≥ 3σ − 5κ`; the exact triangle-inequality defect
+  formula with no comparability assumption; the relative flatness threshold
+  `δ ≺ bc/B` with the `Δ` and `R` equivalents; the internal-bisector length; the
+  angle→triangle reconstruction at arbitrary scale; the canonical global
+  normalization `Sin x = sin(fin x)` attributed to Ehrlich–Kaplan, with
+  `ker Exp = 2πi·Oz` and period class `2πOz`; and the fine-topology degeneracy
+  proposition.
+- **16.** The cosine fold including its purely imaginary roots at negative
+  parameter; the sharp `σ > 2κ` angular root-stability bound with both valuation
+  estimates and a separate sharpness proposition; the simple-residue-root
+  (Hensel-type) lemma; the coupled four-point angular collision algebra
+  `B_{s,u}`; the normalization proposition for the finite trigonometric pair; the
+  projective `P¹(No)` tangent parametrization with its homogeneous group law; the
+  `Δ ≤ s²/(3√3)` area inequality; the quadrance/spread and triple-spread
+  identities; the Dirichlet and Fejér kernel identities with the warning that
+  they are not an approximation theorem; the uniqueness normalization of the
+  Fejér–Riesz factor; and the negative-window analysis of the degree-two
+  polynomial that is positive at every ordinary angle.
+
+Both 17 and 18 carry hyperbolic laws. Only 18's Poincaré-disk version is
+stated; 17's Lorentz-hyperboloid proof is recorded as Remark 15.4.
+
+**Source 19.** Organizes the finite-angle theory around the rotation group
+`SO(2,No)`. Its structure theorem `SO(2,No) ≅ T(No) ≅ O_R/2πZ ≅ T(R) × (m_R,+)`
+is Proposition 4.1 with Theorem 4.2, already here; everything it adds is Section
+18 (below).
+
+**Printed once (source 19 with sources 16–18).** The table in Section 18.1
+lists each shared result and where it is printed: the matrix identification (Proposition
+4.1); the structure theorem, logarithmic linearization and finite-angle
+uniformization (Theorem 4.2, proved in both by the same conjugation argument);
+infinitesimal exp/log and formal evaluation (equations (4.1)–(4.2), Lemmas 2.2
+and 2.6); principal angles and branch conventions (Corollary 4.3, Remark 4.4);
+the rational chart and homogeneous law (Theorem 4.5); angular distance and
+chord (Theorem 5.4); roots and absence of infinitesimal torsion (Corollary
+4.3); valuations of `sin`, `1 − cos` (Proposition 3.3); displacement at any
+radius (Corollary 5.5); small-set discreteness and nets (Proposition 2.4); the
+canonical global phase with kernel `2πOz` (Definition 17.1, Theorem 17.2,
+Corollary 17.3); all phase extensions, explicit ones with any value at `ω`, and
+unavoidable infinite periods (Theorem 17.4, Example 17.5, Theorem 17.6); the
+local law of phases and the normalization of the finite pair (Theorem 3.1,
+equation (17.6), Proposition 3.4). Each place carries a one-line credit.
+
+**Kept twice, as different proofs.** The count of `n`-th roots: Corollary 4.3
+(degree bound for `Xⁿ − u` and the kernel of `cis`) and Remark 18.4 (source
+19's route through uniqueness of the split factors alone).
+
+**Renamed to avoid collisions** (in source 19's material only). Its `O, m` →
+`O_R, m_R`; its infinitesimal `Exp, Log` → `Exp_m, Log_m` (`Exp` here is the
+global Ehrlich–Kaplan exponential); `H_0, H_χ, 𝒥` → `Φ, Ψ_χ, Π`; `d_ang` → `∠`;
+its coefficient `a_ω(p)` → the `ℓ(p)` of Example 17.5; its infinitesimal angle
+`ℓ(u)` → `ℓ_m(u)`; its monad `U` → `T_m` (`U` is used for Chebyshev
+polynomials and for `E(iz)`); its matrix `R(a,b)` → `Rot(a,b)` (`R` is a
+circumradius); its generator `J` → sans-serif `J` (`J` is an interval in ring
+(R1)); its conjugation `κ` → `c` (`κ = v(f'(a))` in Theorem 9.7); its `δ, p_2,
+E, α, F_λ, S_r` → `d, sq, e₁₂, ϖ, Ξ_a, 𝒮_ρ`. Its homogeneous chart `[s:t] ↦
+C(t/s)` with law `[sp−tq : sq+tp]` is converted to this article's `[p:q] ↦
+C(p/q)` with law (4.9); the two laws agree. Its bibliography key for
+Berarducci–Mantova's *Transseries as germs of surreal functions* is `BMgerms`
+here, since `BM` already denotes their *Surreal numbers, derivations and
+transseries*. All conversions are stated once, in Section 18.1.
+
+## What the report claims
+
+Numbers refer to the built `article.pdf`.
+
+**Finite angles (sources 16–18).** Canonical sine and cosine on finite surreal
+arguments by Taylor lifting (Theorem 3.1, Proposition 3.4); the unit circle
+`T(No) = SO(2,No)` (Proposition 4.1); **Theorem 4.2**: `cis : (O_R, +) → T(No)`
+is onto with kernel exactly `2πZ`, and `T(No) ≅ T(R) × (m_R, +)` canonically;
+representatives, roots and torsion (Corollary 4.3); the projective half-angle
+chart `P¹(No) → T(No)` (Theorem 4.5); inverse functions on full surreal domains
+(Theorem 5.1); angular and chordal distance with equal valuations (Theorem 5.4).
+
+**Geometry at every scale.** Angle sum and triangle laws (Theorems 6.1–6.2),
+SSS existence (6.4), Heron and the radii (6.5), Euler (6.6); cevians, Ceva,
+inscribed angles, Ptolemy (Section 7); the valuation dictionary, defect
+formula and flatness thresholds (Theorems 8.1–8.4); intersections, tangency,
+the cosine fold, the collision-stable residue pairing and the three stability
+certificates (Section 9, certificates compared in 9.5, Theorems 9.7 and 9.9).
+
+**Complex and analytic.** The canonical strip exponential and strip sine with
+complete fibres (Theorems 10.1, 10.4); the `2n` root bound (Theorem 11.1);
+cluster multiplicity (Theorem 12.1); finite Fourier inversion, Parseval and
+Fejér–Riesz (Theorems 13.1, 13.2, 13.4); spherical and hyperbolic laws
+(Theorems 14.1, 15.2); coherent arc length (Theorem 16.1) and the failure of
+fine convergence of perimeters (Proposition 16.2); the canonical global phase
+(Theorem 17.2), the classification of all extensions (Theorem 17.4),
+unavoidable infinite periods (Theorem 17.6) and the two coherence obstructions
+over ring (R1) (Theorems 17.7, 17.8).
+
+**The rotation group (source 19, Section 18).**
+1. **Isometry rigidity, Theorem 18.2**: a distance-preserving map of `F²`
+   fixing `0`, `F` real closed, is linear and orthogonal; `O(2,F) ≅ T(F) ⋊ {1,c}`.
+2. The chart's exceptional cases, `C(t)+1 = 2(1+it)/(1+t²)` (18.6), the
+   point-versus-variety caveat (Remark 18.3), and `ℓ_m(C(t)) = 2 arctan t` for
+   infinitesimal `t` (18.7).
+3. **Torsion ≅ Q/Z and every finite subgroup is `μ_n`** (Corollary 18.5);
+   divisibility, no finite quotients (Corollary 18.6); algebraic square roots
+   and no multiplicative square-root section; the double-angle map and
+   `Spin(2)`; finite subgroups of `O(2,No)` conjugate to standard dihedral
+   groups (Proposition 18.7).
+4. **Theorem 18.8**: each layer `T_m^{≥γ}/T_m^{>γ} ≅ (R,+)`; the displacement
+   valuation `v(z) + v(ε)` (18.12) with Example 18.9; exact error propagation
+   (18.13); Hahn products of summable families (18.14); surreal exponents of a
+   rotation on a restricted domain (18.15).
+5. Free transitive action on each circle; **polynomial invariants
+   `F[X,Y]^{SO(2)} = F[X²+Y²]`** (Proposition 18.10).
+6. The norm-one torus: split over `F[i]`, anisotropic over `F`,
+   `so(2,F) = F·J`, no algebraic additive exponential (Proposition 18.11), the
+   invariant differential and `C*ϖ = 2dt/(1+t²)` (18.20).
+7. **Theorem 18.12**: algebraic endomorphisms `≅ Z`, automorphisms `±1`;
+   irreducible algebraic representations have ordinary integer weights; the
+   nonalgebraic fine-continuous automorphisms `Ξ_a` (18.23) and a
+   non-semisimple fine-continuous representation (18.24).
+8. Fine topology: set-indexed Cauchy nets are eventually constant; **the fine
+   circle is totally separated without isolated points (Proposition 18.13)**;
+   **Theorem 18.14**: `T(No)_fine ≅ T(R)_discrete × (m_R)_fine`; set-generated
+   subgroups are closed, discrete and not dense (Corollary 18.15); strong sums
+   are not fine limits.
+9. The standard-part topology (a non-`T₀` group topology whose Kolmogorov
+   quotient is the usual circle); semialgebraic path connectedness over a fixed
+   real closed set field, proved; `π₁^sa ≅ Z` (18.27), **imported** from
+   Delfs–Knebusch and Baro–Otero.
+10. Local flows `Rot_a` on `D_a = a⁻¹O_R` (18.28); Example 18.16, a solution of
+    `f' = if`, `f(0) = 1` other than `cis`.
+11. Three exact representations for computation; a comparison table with the
+    classical circle (Section 18.13).
+
+## What the report does not claim
+
+No non-claim of any source was dropped. The article states each at its point of
+use and collects them in Section 19.4 (items 1–23 for sources 16–18, item 24
+with sub-items (a)–(s) for source 19, item 25 global).
+
+**Across the report.** The proofs have **not** been refereed and have **not**
+been formalized in Lean. The symbolic checks validate finite identities and
+selected Taylor coefficients, not the general proofs. The literature search was
+targeted, not exhaustive; no priority claim and no resolution of a named
+published problem is made.
+
+**Sources 16–18.** No general transfer of infinite families of inequalities, and
+no uniqueness from a differential equation rather than the Taylor rule; no
+inference of global monotonicity from the sign of a fine derivative; asymptotic
+equivalences concern a single infinitesimal and are not sequence limits; the
+endpoint derivative of inverse sine does not exist as a surreal-valued
+derivative, and no derivation on `No` is chosen; the side–side–angle ambiguity
+remains; quadrances and spreads forget orientation; no directed Menelaus/Ceva;
+cyclic order is not defined by fine-continuous motion; angular error must not be
+inferred from cosine error alone; the least side valuation is attained at least
+twice, which does not make all three equal; the flatness denominator
+`bc/(b+c)` is essential; the branch-matching conditions `e ≺ τ` and `σ > 2κ`
+cannot be relaxed; the dimension four of `B_{s,u}` is a total multiplicity; the
+cluster support bound belongs to factor coefficients, not roots, with no reality
+conclusion for a multiple zero and no Newton-convergence claim; the derivative
+root count uses no extreme-value theorem; the finite Fourier identities give no
+infinite-series convergence or completeness, and the Dirichlet/Fejér kernels are
+not an approximation theorem; Fejér–Riesz is a real-closed-field extension of a
+classical result, with no multivariable single-square claim; the positivity
+counterexample does not contradict sign lifting; the coefficientwise
+arc-length functional is not a Riemann integral and asserts no fine-continuous
+path; the spherical and hyperbolic sections are metric identities, not a global
+foundation; the global normalization is the established Ehrlich–Kaplan
+construction, not new; the extension classification is not a classification of
+solutions of a differential equation and does not settle the Ehrlich–Kaplan
+robustness questions; the coherence obstructions are statements over ring (R1)
+only; no proper-class sum, infinite polygon or full-class Riemann integral.
+
+**Source 19.** An exposition organized around the group, not a priority claim
+or a formalization; the finite-angle splitting is not presented as new.
+"Rotation" is the algebraic isometry; bounded entries do not make the group
+set-sized or compact; all statements are class-group statements with no
+proper-class Hahn sum. `m_R` is not a `No`-vector space. Norm preservation alone
+does not force linearity; the semidirect products are algebraic, not about
+components. The rational chart is a parametrization of points, not an
+isomorphism of varieties. Evaluation is asserted for real or complex
+coefficients only; strong sums are not fine limits. `No/2πZ` is not the
+finite-angle model compatible with the finite phase — source 19 does **not**
+assert that an unrelated abstract isomorphism `No/2πZ ≅ T(No)` is impossible.
+Torsion means ordinary finite order; the square-root branch is not
+multiplicative; the dihedral conjugacy does not make matrices real. The graded
+theorem is a filtration, not a direct sum; Hahn products give no value to
+infinitely many identical turns. The invariants are polynomial only. The
+algebraic group is applied at surreal points, not over `No` as a set-sized
+field; the exponential series is not summable at infinite argument; the
+invariant form defines no full-class contour integral. No Fourier convergence,
+no Haar measure on the full class, no classification of abstract
+representations or automorphisms. Surreal exponents are an analytic scaling on
+a restricted domain. Small-set discreteness is special to the full class and
+does not forbid class-indexed nets approaching zero; there is no ordinary real
+Lie-group interpretation. The two uses of `st` must not be conflated; `π₁^sa` is
+imported; the sequence `2πZ → O_R → T(No)` is not a universal-covering claim. A
+local rotation equation with `Ψ(0) = 1` does not choose a global normalization,
+and mean-value or initial-value uniqueness needs further hypotheses. No
+finite-string representation of all surreals, no decidable equality of effective
+names. No novel global sine, no resolution of an Ehrlich–Kaplan robustness
+question, no global mean-value theorem. No exhaustive repository or literature
+search; the other manuscripts of the collection are unrefereed drafts.
+
+## Stale statements corrected
+
+- Source 19 lists "exact displacement at infinite radii" among the connections
+  it adds, and presents torsion, small-set discreteness and the extension
+  classification as its own development. At its pin `dcf86662b574` this article
+  already contained all of them (Corollary 5.5 with equation (5.13), Corollary
+  4.3, Proposition 2.4, Theorems 17.4 and 17.6), unchanged since. They are
+  printed once, credited to both (Section 18.1).
+- Source 19 names the exact class-group splitting as a next formal target. Its
+  list of inspected files does not include the formalization ledger, which
+  already at its pin — and now — records Lean proofs of the analysis report's
+  infinitesimal exp/log group isomorphism, the purely imaginary logarithm of a
+  unit, and surjectivity of the finite phase with kernel `2πZ`, and of the
+  affine and projective circle charts. The splitting of Theorem 4.2 itself and
+  its fine version (Theorem 18.14) remain unmapped. Stated in Section 18.12.
+- Source 19 calls higher-dimensional orthogonal groups a natural extension. The
+  collection now contains `docs/surreal/euclidean-three-space`, placed in the
+  same batch, which treats `SO(3,No)`.
+- This README previously said 58 pages and 81 numbered results (now 73 and 97),
+  pointed to "Section 9.6" for the three certificates (it is 9.5) and to "§18.4"
+  for the non-claims (now 19.4), and listed the source `.tex` files as if they
+  were present; they are not shipped.
+- Cross-references in the PDF named every numbered result "theorem" regardless
+  of its kind (for example "theorem 2.2" for Lemma 2.2). Alias counters now give
+  each its own name; no number changed.
+
+## Relation to the neighbouring reports
+
+**[analysis](../analysis/)** proves the finite polar decomposition and the
+infinitesimal exp/log isomorphism (`e:prop-polar`, `e:prop-infexp`), which the
+ledger maps to Lean on the actual surcomplex field; Theorem 4.2 here is the
+same finite-angle statement, with the canonical splitting and the rotation-group
+consequences of Section 18.
+
+**[euclidean-three-space](../../surreal/euclidean-three-space/)** (placed with
+source 19, not yet merged) develops rotations of `No³`, `SO(3,No)` and
+quaternions, citing this report for finite angles. Its rotations are
+noncommutative, where Section 18's plane case is abelian.
+
+**[surcomplex-field-automorphisms](../surcomplex-field-automorphisms/)** studies
+field automorphisms of `No[i]`. It cites Theorem 4.5 here
+(`trigonometry:thm:cayley`) for its Cayley map and contrasts rotations, which
+preserve every modulus, with field automorphisms. The automorphisms `Ξ_a` of
+Section 18.8 are group automorphisms of the unit circle, not field
+automorphisms.
+
+## What was run
+
+On Python 3.14.4 with SymPy 1.14.0, each script on a copy outside this
+directory:
+
+- `code/16-finite-radians-angular-phenomena.py --output …`: 67 checks passed;
+  identical to `data/16-…-verification_report.txt` apart from line endings.
+- `code/17-canonical-phases-degeneration.py`: 43 checks passed; identical to
+  `data/17-…-verification_report.txt` apart from line endings.
+- `code/18-canonical-angles-oscillation.py --report …`: 68 checks passed;
+  identical to `data/18-…-verification_report.txt` apart from the recorded
+  Python version (3.13.5 there) and line endings.
+- `code/19-rotation-group-verify.py`: all 41 finite symbolic checks passed;
+  output identical to `data/19-rotation-group-verification_results.json` apart
+  from line endings.
+- `latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex`: 73 pages,
+  no errors, no undefined references or citations, no multiply defined labels,
+  no duplicate PDF destinations, no overfull or underfull boxes, no LaTeX or
+  package warnings.
+
+A clean compile and passing finite checks prove nothing about the infinite
+arguments.
+
+## Build and reproduce
+
+A LaTeX distribution with the AMS packages, Latin Modern, geometry, microtype,
+booktabs, longtable, array, enumitem, aliascnt, xcolor, fancyhdr, hyperref and
+cleveref. The bibliography is embedded; no BibTeX or Biber run is needed.
+
+```
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 latexmk -c
 ```
 
-Requires a LaTeX distribution with the AMS packages, Latin Modern, geometry,
-microtype, hyperref, cleveref, fancyhdr, booktabs, longtable, array, enumitem and
-xcolor. The bibliography is embedded in a `thebibliography` environment; no BibTeX
-or Biber run is needed. The current build produces 58 pages with 0 errors, 0
-undefined references, 0 undefined citations, 0 duplicate PDF destinations and 0
-overfull or underfull boxes.
+**Run the programs on a copy, never in this directory.** Each writes next to
+its own file unless told otherwise: 16 and 17 both write
+`verification_report.txt` beside the script (so run in one directory the second
+overwrites the first; 16 accepts `--output PATH`), 18 writes only with
+`--report PATH`, and 19 writes `verification_results.json` beside the script.
+All need SymPy (`data/*-requirements.txt`, SymPy 1.14.0). For example:
+
+```
+mkdir -p /tmp/trig && cp code/*.py /tmp/trig/ && cd /tmp/trig
+python 16-finite-radians-angular-phenomena.py --output r16.txt   # compare with data/16-…-verification_report.txt
+python 17-canonical-phases-degeneration.py                      # writes verification_report.txt; compare with data/17-…
+python 18-canonical-angles-oscillation.py --report r18.txt       # compare with data/18-…
+python 19-rotation-group-verify.py                              # writes verification_results.json; compare with data/19-…
+```
+
+`code/19-rotation-group-build.sh` and `.ps1` are source 19's delivered build
+scripts; they build its original `surreal_rotation_group.tex`, which is not
+shipped, and do not build this report. They are kept only as delivered.
 
 ## Notation review — 22 September 2026
 
