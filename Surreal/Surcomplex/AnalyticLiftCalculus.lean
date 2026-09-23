@@ -86,6 +86,27 @@ theorem analyticLiftFunction_comp (f g : ℝ → ℝ) (z : SignSequence.{u}) (hz
       (by simpa only [standardPart_analyticLift] using hf)]
   exact analyticLift_comp f g z hz hf hg
 
+/-- Constant ordinary functions lift to their embedded constant on finite inputs. -/
+theorem analyticLiftFunction_const (a : ℝ) (x : SignSequence.{u}) (hx : IsFinite x) :
+    analyticLiftFunction (fun _ : ℝ => a) x = ofReal a := by
+  rw [analyticLiftFunction_of_domain _ x hx analyticAt_const]
+  simp only [analyticLift, analyticTaylorEvaluation, Analytic.taylorSeries_const,
+    powerSeriesEvaluation_C]
+
+/-- The identity ordinary function lifts to the identity on all finite actual inputs. -/
+theorem analyticLiftFunction_id (x : SignSequence.{u}) (hx : IsFinite x) :
+    analyticLiftFunction (id : ℝ → ℝ) x = x := by
+  rw [analyticLiftFunction_of_domain _ x hx analyticAt_id]
+  simp only [analyticLift, analyticTaylorEvaluation, Analytic.taylorSeries_id,
+    map_add, powerSeriesEvaluation_C, powerSeriesEvaluation_X, add_sub_cancel]
+
+/-- Differences are preserved on the common finite analytic domain. -/
+theorem analyticLiftFunction_sub (f g : ℝ → ℝ) (x : SignSequence.{u}) (hx : IsFinite x)
+    (hf : AnalyticAt ℝ f (standardPart x)) (hg : AnalyticAt ℝ g (standardPart x)) :
+    analyticLiftFunction (f - g) x = analyticLiftFunction f x - analyticLiftFunction g x := by
+  simpa only [sub_eq_add_neg, analyticLiftFunction_neg g x hx hg] using
+    analyticLiftFunction_add f (-g) x hx hf hg.neg
+
 /-- The Taylor strong-sum rule determines the extension uniquely on its natural domain. -/
 theorem analyticLiftFunction_unique (f : ℝ → ℝ) (F : SignSequence.{u} → SignSequence.{u})
     (hF : ∀ (z : SignSequence.{u}) (hz : IsFinite z) (_hf : AnalyticAt ℝ f (standardPart z)),
@@ -217,6 +238,27 @@ theorem analyticLiftFunction_comp (f g : ℂ → ℂ) (z : Surcomplex.{u}) (hz :
     analyticLiftFunction_of_domain f _ (isFinite_analyticLift g z hz hg)
       (by simpa only [standardPart_analyticLift] using hf)]
   exact analyticLift_comp f g z hz hf hg
+
+/-- Constant ordinary functions lift to their embedded constant on finite inputs. -/
+theorem analyticLiftFunction_const (a : ℂ) (x : Surcomplex.{u}) (hx : IsFinite x) :
+    analyticLiftFunction (fun _ : ℂ => a) x = ofComplex a := by
+  rw [analyticLiftFunction_of_domain _ x hx analyticAt_const]
+  simp only [analyticLift, analyticTaylorEvaluation, Analytic.taylorSeries_const,
+    powerSeriesEvaluation_C]
+
+/-- The identity ordinary function lifts to the identity on all finite actual inputs. -/
+theorem analyticLiftFunction_id (x : Surcomplex.{u}) (hx : IsFinite x) :
+    analyticLiftFunction (id : ℂ → ℂ) x = x := by
+  rw [analyticLiftFunction_of_domain _ x hx analyticAt_id]
+  simp only [analyticLift, analyticTaylorEvaluation, Analytic.taylorSeries_id,
+    map_add, powerSeriesEvaluation_C, powerSeriesEvaluation_X, add_sub_cancel]
+
+/-- Differences are preserved on the common finite analytic domain. -/
+theorem analyticLiftFunction_sub (f g : ℂ → ℂ) (x : Surcomplex.{u}) (hx : IsFinite x)
+    (hf : AnalyticAt ℂ f (standardPart x)) (hg : AnalyticAt ℂ g (standardPart x)) :
+    analyticLiftFunction (f - g) x = analyticLiftFunction f x - analyticLiftFunction g x := by
+  simpa only [sub_eq_add_neg, analyticLiftFunction_neg g x hx hg] using
+    analyticLiftFunction_add f (-g) x hx hf hg.neg
 
 /-- The Taylor strong-sum rule determines the extension uniquely on its natural domain. -/
 theorem analyticLiftFunction_unique (f : ℂ → ℂ) (F : Surcomplex.{u} → Surcomplex.{u})

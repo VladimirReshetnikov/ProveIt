@@ -190,6 +190,7 @@ import Surreal.Foundations.SignSequenceAnalyticSign
 import Surreal.Surcomplex.AnalyticFineDerivative
 import Surreal.Surcomplex.AnalyticFineDerivativeAll
 import Surreal.Surcomplex.AnalyticLiftCalculus
+import Surreal.Foundations.SignSequenceAnalyticStrictSign
 import Surreal.Surcomplex.AnalyticLeading
 import Surreal.Surcomplex.StrongEvaluation
 import Surreal.Surcomplex.PowerSeriesStrongHom
@@ -203,6 +204,7 @@ import Surreal.Surcomplex.PolarNormalization
 import Surreal.Surcomplex.FiniteTrigonometry
 import Surreal.Surcomplex.TrigonometricTaylor
 import Surreal.Surcomplex.TrigonometricFineDerivative
+import Surreal.Surcomplex.TrigonometricOrder
 import Surreal.Surcomplex.StrongConjugation
 import Surreal.Surcomplex.ExpLogConjugation
 import Surreal.Surcomplex.MvPowerSeries

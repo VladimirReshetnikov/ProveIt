@@ -409,11 +409,16 @@ coefficient. For real germs that monomial also determines the sign.
 Ordinary analytic nonnegativity on a closed interval lifts to every actual
 surreal point between its endpoints, including infinitesimal endpoint
 displacements. Finiteness and the permitted one-sided signs follow from
-the interval hypotheses.
+the interval hypotheses. Strict positivity on an ordinary open interval also
+lifts to every actual interior point when the function is analytic on the
+closed interval. This proves the finite trigonometric signs, strict
+monotonicity on the principal intervals, Jordan's inequality, the absolute
+sine bound, and the strict sine/input/tangent comparison, including
+infinitesimal distances from the endpoints.
 A nonconstant infinitesimal-coset indicator has zero fine derivative everywhere.
 The approximation inequalities alone never give uniqueness: a sufficiently
 small positive monomial produces another solution. Multivariable analytic
-lifting, the trigonometric signs, monotonicity and inequalities, and universe
+lifting, the explicit trigonometric leading-order expansions, and universe
 coherence remain separate obligations.
 The reports placed after the canonical inventory are formalized clause by
 clause. Strong sums of nonnegative Hahn series are nonnegative, and strongly

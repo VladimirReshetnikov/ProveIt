@@ -83,6 +83,13 @@ theorem taylorSeries_mul {f g : K → K} {c : K}
   linear_combination iteratedDeriv i f c * iteratedDeriv (n - i) g c * hc
 
 omit [CompleteSpace K] [CharZero K] in
+/-- The identity function has the expected affine Taylor series. -/
+@[simp] theorem taylorSeries_id (c : K) :
+    taylorSeries (id : K → K) c = PowerSeries.C c + PowerSeries.X := by
+  ext n
+  rcases n with _ | _ | n <;> simp [iteratedDeriv_id, PowerSeries.coeff_X]
+
+omit [CompleteSpace K] [CharZero K] in
 /-- Negation of ordinary functions negates every Taylor coefficient. -/
 theorem taylorSeries_neg (f : K → K) (c : K) :
     taylorSeries (-f) c = -taylorSeries f c := by
