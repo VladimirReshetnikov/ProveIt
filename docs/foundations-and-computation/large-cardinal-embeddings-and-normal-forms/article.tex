@@ -1,0 +1,2279 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype,booktabs,array,longtable,enumitem,xurl}
+\usepackage{xcolor,fancyhdr,needspace,tcolorbox}
+\definecolor{ink}{HTML}{354E42}
+\definecolor{pale}{HTML}{F1F5F2}
+\usepackage[colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink]{hyperref}
+\hypersetup{pdftitle={Critical-Point Defects in Surreal Arithmetic},
+ pdfauthor={Research draft prepared with ChatGPT for Vladimir Reshetnikov},
+ pdfsubject={Large-cardinal embeddings, strong Hahn summation, normal-form support, surcomplex numbers, and omnific integers}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\scshape Critical-point defects}
+\fancyhead[R]{\small Surreals and large cardinals}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{3.5pt}
+\setlength{\parindent}{1.15em}
+\setlength{\emergencystretch}{3em}
+\setlist{leftmargin=1.7em,itemsep=3pt,topsep=5pt}
+\clubpenalty=10000\widowpenalty=10000
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\On}{\mathbf{On}}
+\newcommand{\Oz}{\mathbf{Oz}}
+\newcommand{\SC}{\mathbf{SC}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\dom}{\operatorname{dom}}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\crit}{\operatorname{crit}}
+\newcommand{\LT}{\operatorname{LT}}
+\newcommand{\ct}{\operatorname{ct}}
+\newcommand{\Frac}{\operatorname{Frac}}
+\newcommand{\bd}{\operatorname{b}}
+\newcommand{\len}{\operatorname{len}}
+\newcommand{\Pow}{\mathcal P}
+\newcommand{\Sk}{\mathscr S_{<\kappa}}
+\newcommand{\Ik}{\mathscr I_{<\kappa}}
+\newcommand{\Gam}{\Gamma_j}
+\newcommand{\Common}{C_j}
+\newcommand{\Hj}{H_j}
+\newcommand{\Dj}{D_j}
+\newcommand{\Jc}{J_{\C}}
+\newcommand{\Hc}{H_{j,\C}}
+\newcommand{\Om}{\Omega}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\imset}[2]{#1\mathbin{``}#2}
+\newcommand{\coef}[2]{[\omega^{#1}]\,#2}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\set}[1]{\{#1\}}
+\newcommand{\res}{\mathbin{\upharpoonright}}
+\newcommand{\infideal}{\mathfrak m}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\GBC}{\mathsf{GBC}}
+\newcommand{\RCF}{\mathsf{RCF}}
+\newcommand{\ACF}{\mathsf{ACF}_0}
+\newcommand{\repo}{\texttt{0865f043aec1}}
+\newcommand{\status}[1]{\begin{tcolorbox}[colback=pale,colframe=ink,boxrule=.45pt,arc=0pt,left=9pt,right=9pt,top=7pt,bottom=7pt]#1\end{tcolorbox}}
+\newcommand{\thref}[1]{Theorem~\ref{#1}}
+\newcommand{\prref}[1]{Proposition~\ref{#1}}
+\newcommand{\leref}[1]{Lemma~\ref{#1}}
+
+\begin{document}
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{0.65in}
+{\color{ink}\large\scshape Surreal arithmetic / set theory}\par
+\vspace{0.35in}
+{\huge\bfseries Critical-Point Defects\\[7pt] in Surreal Arithmetic\par}
+\vspace{0.27in}
+{\Large Large-cardinal embeddings, exact support thresholds,\\[5pt]
+ surcomplex fields, and omnific integers\par}
+\vspace{0.45in}
+{\large A proof-focused research article}\par
+\vspace{0.13in}
+Prepared for Vladimir Reshetnikov with ChatGPT\par
+23 September 2026\par
+\vspace{0.4in}
+\status{\textbf{Main result.} An elementary embedding $j:V\to M$ with critical
+point $\kappa$ induces two ordered-field embeddings $J,H_j:\No\to\No$.
+They agree on every real number, ordinal, and Conway monomial, but
+\[
+ J(x)=H_j(x)\quad\Longleftrightarrow\quad
+ \abs{\supp(x)}<\kappa.
+\]
+Their images have an exactly determined intersection. A single coefficient
+of their discrepancy recovers the normal measure derived from $j$.}
+\vfill
+\textbf{Scope and status.} All central assertions below have written proofs
+under explicit hypotheses. The general Hahn and large-cardinal ingredients
+are classical; the exact defect and intersection package is offered as a
+candidate original contribution. Publication priority has not been certified,
+and the article is neither refereed nor Lean-verified. It does not claim a
+solution to a named published conjecture or a new consistency proof for a
+large-cardinal axiom.
+\vspace{0.24in}
+
+\small Repository context: \texttt{VladimirReshetnikov/Surreal}, snapshot
+\repo.\par
+Standalone source, compiled PDF, proof-status notes, and finite algebraic
+regression checks accompany this article.
+\end{titlepage}
+
+\pagenumbering{roman}
+\begin{abstract}
+Large-cardinal embeddings preserve every finitary arithmetic identity, but
+need not preserve the external strong sums that define surreal normal forms.
+We make this distinction exact. Let $j:V\to M$ be an amenable elementary
+embedding into a transitive inner class, with critical point $\kappa$. Its
+restriction to surreal sign sequences gives an ordered-field embedding $J$.
+The same action on Conway monomials has a unique strongly $\R$-linear
+extension $H_j$. If $x$ has normal form indexed by $\theta$, then $J(x)-H_j(x)$
+is precisely the subseries of the transformed normal form indexed by
+$j(\theta)\setminus\imset j\theta$. Consequently the equalizer of $J$ and
+$H_j$ is exactly the real-closed field of surreal numbers with fewer than
+$\kappa$ outer normal-form terms. Moreover, their two image fields intersect
+exactly in the common image of that equalizer, and are its incomparable
+logarithmic and strong-sum closures. For a positive strongly
+summable family, preservation by $J$ holds exactly when the index set has
+cardinality less than $\kappa$.
+
+The defect has a first term at the first missing index $\kappa$. For
+$h_A=\sum_{\alpha\in A}\omega^{-\alpha}$, $A\subseteq\kappa$, its coefficient
+at $\omega^{-\kappa}$ is the indicator of membership in the normal measure
+derived from $j$. This gives a coefficient realization of classical
+ultrafilter evaluation and a precise measurable-cardinal criterion for the
+associated Hadamard mask algebra. The field results transfer to surcomplex
+numbers and to omnific integers; a purely infinite omnific defect encodes the
+same measure while its constant term vanishes. We also obtain a logarithmic
+defect homomorphism, an exact exponential compatibility locus, and a
+supercompact seed-coefficient construction. The
+article distinguishes these contributions from standard Hahn reindexing,
+classical derived measures, and the repository's earlier work on birthday
+expansions and forcing. Twelve further research questions and a formalization
+plan conclude the account.
+\end{abstract}
+\vspace{4pt}
+\noindent\textbf{Keywords.} Surreal number; Conway normal form; strong summation;
+measurable cardinal; elementary embedding; omnific integer; surcomplex number;
+Hahn field; ultrafilter; supercompactness.
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+\pagenumbering{arabic}
+
+\section{The questions answered and the novelty boundary}\label{sec:intro}
+
+\subsection{The distinction that drives the construction}
+For a set-theoretic elementary embedding, the image $j(I)$ of an infinite set
+is generally larger than its pointwise image $\imset jI$. For a surreal
+normal form, this is not merely a difference between two encodings of the
+same sum. The additional indices can carry additional nonzero monomials.
+The resulting discrepancy is visible in arithmetic, even when every original
+summand is individually fixed.
+
+This article answers the following concrete question under a measurable-cardinal
+hypothesis: \emph{how much of a surreal number is determined by the action of
+an embedding on all real coefficients and all monomials?} The answer is
+exactly its short-support part. There are two explicitly associated embeddings
+that agree on all those generators, and even on every ordinal, but disagree
+on every surreal whose outer normal form has at least $\kappa$ terms.
+The distinction is a support-cardinality threshold, not a birthday cutoff.
+
+Conway's normal-form theorem and the generalized-series presentation of
+$\No$ are the classical background \cite{Conway,Gonshor,vdDE,EhrlichNames}.
+Strongly additive maps and monomial reindexing also have a substantial
+literature. In particular, Kaplan--Krapp--Serra distinguish strong from
+non-strong automorphisms and study their relation to extra surreal structure
+\cite{KKS}. The contribution proposed here is not the bare possibility of
+non-strong behavior. It is the exact critical-point formula, equalizer,
+intersection, and coefficient reconstruction for the specific large-cardinal
+construction.
+
+\subsection{Assumption and headline statements}
+Throughout the main construction, assume that
+\begin{equation}\label{eq:setting}
+ j:V\longrightarrow M\subseteq V
+\end{equation}
+is an elementary class embedding, $M$ is transitive and contains every
+ordinal, and $\kappa=\crit(j)$ exists. Class parameters are allowed in the
+Separation and Replacement instances used below. A sufficient, familiar
+instance is a normal ultrapower embedding from a measurable cardinal.
+One can carry out that instance in $\ZFC$ using the measure as a set
+parameter; the use of classes is notation for definable constructions.
+The general class-embedding version can be read in $\GBC$ with the indicated
+embedding as an amenable class. These hypotheses are discussed in
+Section~\ref{sec:foundations}.
+
+Let
+\begin{equation}\label{eq:shortfield}
+ \Sk=\set{x\in\No:\abs{\supp(x)}<\kappa},
+\end{equation}
+where $\supp(x)$ means the set of \emph{outer exponents} in its Conway normal
+form. Zero has empty support. Define $J(x)=j(x)$ on surreal sign sequences,
+and define
+\begin{equation}\label{eq:Hintro}
+ H_j\left(\sum_{\alpha<\theta}r_\alpha\omega^{a_\alpha}\right)
+   =\sum_{\alpha<\theta}r_\alpha\omega^{J(a_\alpha)}.
+\end{equation}
+The central conclusions, proved in Sections~\ref{sec:companion}--\ref{sec:positive},
+are
+\begin{align}
+ \operatorname{Eq}(J,H_j)&=\Sk,\label{eq:eqintro}\\
+ J(\No)\cap H_j(\No)&=J(\Sk)=H_j(\Sk),\label{eq:interintro}\\
+ J\left(\sum_{i\in I}x_i\right)=\sum_{i\in I}J(x_i)
+  &\quad\Longleftrightarrow\quad \abs I<\kappa
+   \quad(x_i>0\text{ and strongly summable}).\label{eq:posintro}
+\end{align}
+The two image fields in \eqref{eq:interintro} are incomparable, not merely
+different. Their common image is real closed. Coefficient projection
+canonically identifies the two images as immediate valued extensions of
+that common field (Theorem~\ref{thm:projection}). An intrinsic version
+shows that every positive strong sum of at least $\kappa$ image elements
+escapes the elementary image (Theorem~\ref{thm:escape}).
+
+For $A\subseteq\kappa$, put $h_A=\sum_{\alpha\in A}\omega^{-\alpha}$.
+One then obtains
+\begin{equation}\label{eq:Uintro}
+ \coef{-\kappa}{\bigl(J(h_A)-H_j(h_A)\bigr)}
+    =\begin{cases}1,&\kappa\in j(A),\\0,&\kappa\notin j(A).
+      \end{cases}
+\end{equation}
+Thus the usual derived measure is recovered from a distinguished coefficient
+of the arithmetic defect. The derived measure itself is classical
+\cite{Neeman}; the coefficient realization is the new construction being
+proposed.
+
+\subsection{What is not being asserted}
+We do not establish that arbitrary non-strong surreal embeddings require a
+measurable cardinal. We do not prove a new consistency result about
+measurability, supercompactness, or elementary self-embeddings of the set
+universe. We do not identify the two embeddings as automorphisms. Nor do we
+claim that their equality on monomials implies equality on a completed
+field: the whole point is that the relevant external sums need not be
+preserved by $J$.
+
+The proofs are mathematical arguments, not output from a theorem prover.
+The accompanying finite checks test finite identities used in the arguments;
+they cannot test an elementary embedding of the universe or a nonprincipal
+complete ultrafilter. A targeted literature and repository comparison appears
+in Section~\ref{sec:position}; it is not an exhaustive priority search.
+
+\section{Foundations, normal forms, and the meaning of a sum}\label{sec:foundations}
+
+\subsection{Surreal conventions}
+We use the sign-sequence realization of $\No$: a surreal is a function from
+an ordinal to $\{-,+\}$. Its birthday $\bd(x)$ is the domain of that function.
+The numerical order is the first-disagreement order, with
+$-<\text{undefined}<+$. Simplicity is proper prefix inclusion.
+Ordinals are identified with all-plus sequences.
+The distinction between an ordinal and its all-plus sign code will normally
+be suppressed, but all applications of $j$ commute with that identification.
+
+The Conway monomial map is denoted by
+\[
+ \Om(a)=\omega^a.
+\]
+Here $\omega^a$ is the Conway omega-map, not an abbreviation for
+$\exp(a\log\omega)$ with an arbitrarily chosen exponential structure.
+It satisfies $\omega^{a+b}=\omega^a\omega^b$, and is strictly increasing.
+Every nonzero surreal has a unique normal form
+\begin{equation}\label{eq:NF}
+ x=\sum_{\alpha<\theta} r_\alpha\omega^{a_\alpha},
+ \qquad r_\alpha\in\R\setminus\{0\},\quad
+ a_\alpha>a_\beta\quad(\alpha<\beta<\theta),
+\end{equation}
+where $\theta$ is an ordinal. All supports in this article are sets, even
+though the full coefficient and exponent universes are classes.
+Write $\len(x)=\theta$ for the length of \eqref{eq:NF} and
+$\supp(x)=\{a_\alpha:\alpha<\theta\}$.
+For $x\ne0$, define
+\[
+ \LT(x)=r_0\omega^{a_0},\qquad v(x)=-a_0.
+\]
+This is the additive natural valuation with values in $(\No,+)$; $v(0)=\infty$.
+The infinitesimal ideal of the finite-surreal valuation ring is
+\[
+ \infideal=\{0\}\cup\{x\in\No:v(x)>0\}.
+\]
+These conventions use decreasing omega-exponents; sources that use $t^g$
+with increasing support have the opposite sign convention for exponents.
+
+\begin{definition}[Strong summability]\label{def:strong}
+A set-indexed family $(x_i)_{i\in I}$ is \emph{strongly summable} if
+$\bigcup_{i\in I}\supp(x_i)$ is reverse well ordered and each exponent occurs
+in the support of only finitely many members. Its strong sum is the unique
+normal form obtained by adding those finitely many coefficients at each
+exponent and discarding zero coefficients. A map is \emph{strongly
+$\R$-linear} if it is $\R$-linear and preserves all such external set-indexed
+sums, including their summability.
+\end{definition}
+
+The field laws for generalized series, in particular the finiteness of
+contributions in a product, are part of the Hahn--Neumann support theorem
+\cite{Gonshor,vdDE,KKS}. We use them for sets of exponents. There is no
+summation over a proper-class support.
+
+\begin{remark}[Not order-topological convergence]\label{rem:topology}
+A displayed strong sum is not defined as the supremum of its partial sums,
+and is not asserted to be an order-topological limit in all of $\No$.
+For example, the sum $h_\kappa$ constructed below exists by
+Definition~\ref{def:strong}. This makes no assertion that its partial sums
+converge against every positive surreal neighborhood. Confusing these two
+notions would invalidate the threshold argument.
+\end{remark}
+
+\subsection{Elementary embeddings and external sets}
+The standard large-cardinal facts used here are that the critical point of
+\eqref{eq:setting} is an uncountable inaccessible cardinal, that $j$ fixes
+$V_\kappa$, and that a measurable cardinal supplies such an embedding by a
+normal ultrapower \cite{Neeman}. In particular,
+\begin{equation}\label{eq:fixedcoeff}
+ j(\R)=\R,\qquad j(r)=r\ (r\in\R),\qquad \R^M=\R^V.
+\end{equation}
+We take these large-cardinal facts as background, not as results of this
+article. When a normal measure $U$ is chosen, the ultrapower is first formed
+on set functions with domain $\kappa$ and then collapsed to its transitive
+class model. Countable completeness gives well-foundedness. All individual
+images and all set-indexed images used below are sets.
+
+We distinguish $j(I)$, an element of $M$, from the external pointwise image
+$\imset jI=\{j(i):i\in I\}$, formed in $V$. The latter need not belong to
+$M$. Every cardinality without a superscript is computed in $V$. In
+particular, $\abs{\supp(x)}<\kappa$ always concerns the original external
+support. No cardinal arithmetic in $M$ is silently substituted for it.
+
+\begin{lemma}[The first missing index]\label{lem:index}
+For any set $I$,
+\[
+ j(I)=\imset jI\quad\Longleftrightarrow\quad\abs I<\kappa.
+\]
+For any ordinal $\theta$, define
+$P_\theta=j(\theta)\setminus\imset j\theta$. Then
+\[
+ P_\theta=\varnothing\quad(\theta<\kappa),\qquad
+ \min P_\theta=\kappa\quad(\theta\ge\kappa).
+\]
+\end{lemma}
+\begin{proof}
+Choose a bijection $e:\mu\to I$, where $\mu$ is the cardinality of $I$.
+If $\mu<\kappa$, then $j(\mu)=\mu$, and every member of $j(I)$ has the
+form $j(e)(\alpha)=j(e(\alpha))$ for some $\alpha<\mu$.
+Conversely, suppose $\mu\ge\kappa$. The ordinal $\kappa$ belongs to
+$j(\mu)$, but is not $j(\alpha)$ for any ordinal $\alpha$: below $\kappa$
+all ordinals are fixed, while for $\alpha\ge\kappa$ we have
+$j(\alpha)\ge j(\kappa)>\kappa$. Thus $j(e)(\kappa)$ is in $j(I)$ but
+not in $\imset jI$, by injectivity of $j(e)$.
+
+For ordinal $\theta<\kappa$, every index is fixed. If $\theta\ge\kappa$,
+then $j(\theta)>\kappa$, all smaller indices are in $\imset j\theta$, and
+$\kappa$ is not. This proves both assertions.
+\end{proof}
+
+\subsection{The absoluteness needed to compare the two fields}
+There are two universe changes in play. Applying $j$ moves an input into
+$M$. Then the identity inclusion regards the resulting old surreal sign
+sequence as a surreal of $V$. We need the standard constructions to agree
+under this second passage.
+
+\begin{lemma}[Absolute surreal constructions]\label{lem:absolute}
+Let $M\subseteq V$ be transitive models or inner classes of $\ZFC$ with the
+same ordinals and the same reals. On inputs that belong to $M$, the identity
+inclusion $\No^M\subseteq\No^V$ preserves order, the field operations, the
+Conway omega-map, and canonical normal forms. An $M$-set strongly summable
+family in $M$ is externally strongly summable in $V$, with the same sum.
+\end{lemma}
+\begin{proof}
+Order and prefix comparison are comparisons of ordinal-length sign
+functions, so they are absolute. The simplest separator of a given
+\emph{set} cut is constructed by following the forced signs until the
+first permissible termination; this construction depends only on its
+input sign sequences. Thus the cut construction is absolute. Well-founded
+recursion on canonical sign options gives the same negation, addition,
+multiplication, and omega-map in both universes. Inverses then agree by
+uniqueness in the ordered field.
+
+For normal forms we use the constructive sign-sequence version of the
+Conway--Gonshor normal-form theorem \cite[Chapter~5]{Gonshor}, not just the
+existence of an unspecified isomorphism with a Hahn field. The conversion
+from a reverse well-ordered list of real-coefficient monomials to its
+surreal sign sequence is given by the normal-form sign expansion: ordinal
+sign concatenations with the prescribed deletions determined by the input
+exponent signs and preceding terms. The ordinal operations, restrictions,
+and sign comparisons in that construction are absolute on a given set of
+inputs. Hence an $M$-normal form represents the same sign sequence in $V$.
+Uniqueness of the normal form in $V$ shows that it acquires no extra terms
+on passing to $V$.
+
+Finally, a reverse well ordering of an $M$-set has an ordinal order-type
+witness in $M$, which remains a witness in $V$; finiteness of an old fiber
+is absolute. The old family is therefore still strongly summable. Its
+coefficientwise finite sums agree, as do the normal forms just considered.
+\end{proof}
+
+\begin{remark}[Where a classical theorem is used]\label{rem:classicalinput}
+The normal-form sign-expansion theorem is a classical input to
+\leref{lem:absolute}; it is not reproved from the axioms of surreal games
+here. This is the one place where an arbitrary Hahn-field identification
+would be insufficient: the identification must be the canonical Conway
+normal form. A formal verification should first prove this absoluteness
+lemma from that canonical construction, rather than assuming that every
+isomorphism chosen in $M$ is absolute.
+\end{remark}
+
+\begin{proposition}[The elementary-induced surreal embedding]\label{prop:J}
+The map $J:\No\to\No$, $J(x)=j(x)$ on sign codes, is an ordered-field
+embedding that fixes $\R$, and
+\[
+ J(\omega^a)=\omega^{J(a)},\qquad
+ \bd(J(x))=j(\bd(x)).
+\]
+It preserves and reflects prefix simplicity. It is elementary in the
+ordered-field language.
+\end{proposition}
+\begin{proof}
+Elementary transfer into $M$ preserves the defining surreal constructions;
+\leref{lem:absolute} then identifies their values with the values in $V$.
+The all-plus coding of ordinals is definable, so it commutes with $j$.
+The domain of $j(x)$ is $j(\dom x)$, proving the birthday formula.
+Prefix simplicity is a definable statement about sign functions and is
+absolute after transfer. Fixing the reals follows from \eqref{eq:fixedcoeff}.
+An embedding between real-closed ordered fields is elementary by
+quantifier elimination for $\RCF$. Applied formula by formula, the same
+argument works for these class fields: it makes no demand for a class-sized
+satisfaction set.
+\end{proof}
+
+\section{The strong companion}\label{sec:companion}
+
+\subsection{General Hahn reindexing}
+We record the standard mechanism in the form needed here. It does not use
+large cardinals.
+
+\begin{lemma}[Reindexing exponents]\label{lem:reindex}
+Let $f:(\No,+,<)\to(\No,+,<)$ be an additive order embedding. Then
+\[
+ T_f\left(\sum_a r_a\omega^a\right)=\sum_a r_a\omega^{f(a)}
+\]
+defines a strongly $\R$-linear ordered-field embedding of $\No$ into itself.
+Its image consists exactly of the surreal numbers whose exponent supports
+are contained in $f(\No)$. It preserves and reflects the condition of being
+an omnific integer.
+\end{lemma}
+\begin{proof}
+An order embedding carries each reverse well-ordered set to a reverse
+well-ordered set of the same order type. Thus the displayed normal form
+exists and is unique. Coefficientwise addition and scalar multiplication
+commute with reindexing. For multiplication, $f(a+b)=f(a)+f(b)$, and
+injectivity shows that exactly the same finitely many contributing pairs
+occur at corresponding exponents. Hence $T_f(xy)=T_f(x)T_f(y)$. Also
+$T_f(1)=1$, so inverses are preserved by the field equation
+$T_f(x)T_f(x^{-1})=1$ when $x\ne0$. A nonzero leading coefficient is
+unchanged; signs, strict order, and injectivity follow.
+
+For a strongly summable family, the union of its supports and every finite
+coefficient fiber are simply reindexed by $f$. This proves strong
+$\R$-linearity for arbitrary external set-indexed families.
+
+One inclusion in the image description is immediate. For the other, take a
+set support $S\subseteq f(\No)$. Injectivity and class-parameter Replacement
+form the set of its unique inverse images. That set is reverse well ordered,
+and reindexing its series gives the desired preimage. No assertion is made
+that the inverse-image class of an arbitrary class is a set.
+
+An omnific integer has only nonnegative exponents and has integer
+coefficient at exponent zero. An additive order embedding fixes zero,
+preserves and reflects nonnegativity, and does not change coefficients.
+This proves the last assertion.
+\end{proof}
+
+The preceding proof is the usual Hahn reindexing argument; compare
+\cite{vdDE,KKS} and the exponent-embedding results described in the
+repository \cite{Repo}. Its role is to produce a canonical comparison map,
+not to supply the critical-point obstruction.
+
+\begin{definition}[Strong companion and defect]\label{def:companion}
+For the embedding in \eqref{eq:setting}, let $H_j=T_J$ and set
+\[
+ D_j(x)=J(x)-H_j(x),\qquad \Gam=J(\No).
+\]
+The subgroup $\Gam$ is being used as an \emph{exponent group} when it
+occurs inside a support condition. Write
+\[
+ \mathcal H(\Gam)=\{y\in\No:\supp(y)\subseteq\Gam\}.
+\]
+\end{definition}
+
+\begin{theorem}[Existence and uniqueness of the companion]\label{thm:companion}
+The map $H_j$ is a strongly $\R$-linear ordered-field embedding and
+\begin{equation}\label{eq:Himage}
+ H_j(\No)=\mathcal H(\Gam).
+\end{equation}
+It is the unique strongly $\R$-linear map that agrees with $J$ on every
+Conway monomial. The maps $J$ and $H_j$ agree on every real number and on
+every ordinal, as well as on every monomial.
+\end{theorem}
+\begin{proof}
+Apply \leref{lem:reindex} to the additive order embedding $J$.
+For any strongly $\R$-linear map with the stated monomial values, applying
+strong linearity to the normal form \eqref{eq:NF} forces
+\eqref{eq:Hintro}, proving uniqueness.
+
+Agreement on monomials follows from \prref{prop:J}. Real coefficients are
+fixed. Every ordinal has a finite Cantor normal form
+$\omega^{\beta_0}n_0+\cdots+\omega^{\beta_{m-1}}n_{m-1}$, which is also its
+Conway normal form. Finite additivity therefore gives agreement on every
+ordinal, irrespective of its size.
+\end{proof}
+
+\begin{remark}[A crucial noncommutation]\label{rem:omega}
+The formula for the companion is
+\[
+ H_j(\omega^a)=\omega^{J(a)},
+\]
+not $\omega^{H_j(a)}$ in general. In the former expression, $J$ acts on an
+\emph{exponent}; in $H_j(x)$, it reindexes the outer exponents of $x$.
+Failing to distinguish these two levels would incorrectly make the two
+embeddings identical.
+\end{remark}
+
+\section{The exact normal-form defect}\label{sec:defect}
+
+\subsection{The transformed index set}
+Fix a nonzero $x$ with normal form \eqref{eq:NF}. Regard the coefficient
+list $r$ and the exponent list $a$ as set functions with domain $\theta$.
+Put
+\[
+ r^*=j(r),\qquad a^*=j(a),\qquad
+ P_\theta=j(\theta)\setminus\imset j\theta.
+\]
+The transformed lists have domain $j(\theta)$. By elementary transfer and
+\leref{lem:absolute}, the full \emph{external} normal form of $J(x)$ is
+\begin{equation}\label{eq:Jnormal}
+ J(x)=\sum_{\beta<j(\theta)}r^*_\beta\omega^{a^*_\beta}.
+\end{equation}
+For every $\alpha<\theta$,
+\begin{equation}\label{eq:oldindices}
+ r^*_{j(\alpha)}=r_\alpha,\qquad
+ a^*_{j(\alpha)}=J(a_\alpha).
+\end{equation}
+The extra indices in $P_\theta$ will be called \emph{missing-image indices}.
+They are ordinary set indices in $V$, not informal nonstandard positions.
+
+\begin{theorem}[Exact defect and first term]\label{thm:defect}
+For $x$ as above,
+\begin{equation}\label{eq:defectformula}
+ D_j(x)=\sum_{\beta\in P_\theta}r^*_\beta\omega^{a^*_\beta}.
+\end{equation}
+Every exponent occurring on the right lies outside $\Gam=J(\No)$.
+Consequently
+\begin{equation}\label{eq:exactequalizer}
+ D_j(x)=0\quad\Longleftrightarrow\quad\theta<\kappa
+ \quad\Longleftrightarrow\quad\abs{\supp(x)}<\kappa.
+\end{equation}
+If $\theta\ge\kappa$, then
+\begin{equation}\label{eq:firstterm}
+ \LT(D_j(x))=r^*_{\kappa}\omega^{a^*_{\kappa}},\qquad
+ v(D_j(x))=-a^*_{\kappa}.
+\end{equation}
+The same statements include $x=0$ by giving it empty support.
+\end{theorem}
+\begin{proof}
+The normal form \eqref{eq:Jnormal} is a strongly summable family. Split it
+into the subfamilies on $\imset j\theta$ and $P_\theta$. Subfamilies of a
+strongly summable family remain strongly summable. By
+\eqref{eq:oldindices}, the first subfamily sums to $H_j(x)$.
+Subtracting it leaves exactly \eqref{eq:defectformula}.
+
+Suppose, toward a contradiction, that $a^*_\beta=J(b)$ for some
+$\beta\in P_\theta$ and $b\in\No$. Then in $M$,
+$j(b)\in\ran(j(a))$. Elementarity gives $b\in\ran(a)$ in $V$, so
+$b=a_\alpha$ for some $\alpha<\theta$. But then
+$a^*_\beta=J(a_\alpha)=a^*_{j(\alpha)}$. Since $a^*$ is strictly decreasing,
+it is injective, and $\beta=j(\alpha)$, a contradiction. Thus all the
+missing-image exponents lie outside $\Gam$.
+
+All $r^*_\beta$ are nonzero, and all $a^*_\beta$ are distinct. There is
+therefore no cancellation between the terms of \eqref{eq:defectformula}.
+The defect vanishes precisely when $P_\theta$ is empty, which by
+\leref{lem:index} is precisely when $\theta<\kappa$.
+Since $\kappa$ is an initial ordinal, the latter condition is equivalent to
+$\abs\theta<\kappa$. The bijection $\alpha\mapsto a_\alpha$ converts it
+into the last condition of \eqref{eq:exactequalizer}.
+
+For $\theta\ge\kappa$, the least missing-image index is $\kappa$.
+The exponent list is strictly decreasing, so its term at that index is
+the leading term of the defect, proving \eqref{eq:firstterm}.
+\end{proof}
+
+\begin{corollary}[Same leading scale, different tails]\label{cor:leading}
+For every $x\ne0$,
+\[
+ \LT(J(x))=\LT(H_j(x))=r_0\omega^{J(a_0)},\qquad
+ v(J(x))=v(H_j(x))=J(v(x)).
+\]
+If $D_j(x)\ne0$, its valuation is strictly larger than this common value.
+\end{corollary}
+\begin{proof}
+Index zero is fixed and is never a missing-image index. The first missing
+index, when present, is later in a strictly decreasing exponent list.
+\end{proof}
+
+\begin{corollary}[Exact omega-map compatibility locus]\label{cor:omegalocus}
+For every $x\in\No$,
+\[
+ H_j(\omega^x)=\omega^{H_j(x)}
+   \quad\Longleftrightarrow\quad x\in\Sk.
+\]
+Thus $J$ preserves the omega-map globally but is not strongly additive,
+whereas $H_j$ is strongly additive but does not preserve the omega-map
+globally.
+\end{corollary}
+\begin{proof}
+By \prref{prop:J} and the companion formula,
+$H_j(\omega^x)=\omega^{J(x)}$. The omega-map is injective, so the desired
+equality is equivalent to $J(x)=H_j(x)$. Apply \thref{thm:defect}.
+The existence of a long-support witness is established explicitly in
+Section~\ref{sec:witness}.
+\end{proof}
+
+\subsection{Why small support is not small birthday}
+Every monomial belongs to $\Sk$, however large its exponent or birthday.
+For example, $\omega^b\in\Sk$ for every surreal $b$. This excludes any
+interpretation of \eqref{eq:exactequalizer} as agreement only on a
+set-sized initial segment of $\No$.
+Conversely, the simplest witness below has $\kappa$ outer terms and falls
+outside the equalizer even though all its individual monomials are fixed
+by $J$. The cardinal bound applies to the number of terms, not to the
+size of a single exponent.
+
+The distinction from the classical bounded birthday fields $\No(\lambda)$
+is substantial. Van den Dries--Ehrlich analyze those fields and their
+restricted analytic and exponential closures \cite[Proposition~4.7 and
+Corollary~5.5]{vdDE}. We are not renaming those set-sized fields; $\Sk$ is a
+proper class because it contains every monomial.
+
+\section{The equalizer field and the exact image intersection}\label{sec:intersection}
+
+\begin{theorem}[Equalizer and common image]\label{thm:intersection}
+Let $\Common=J(\Sk)=H_j(\Sk)$. Then
+\begin{align}
+ \operatorname{Eq}(J,H_j)&=\Sk,\label{eq:equalizer}\\
+ J(\No)\cap H_j(\No)&=\Common,\label{eq:intersection}\\
+ \Common&=\{y\in\No:\abs{\supp(y)}<\kappa
+                   \text{ and }\supp(y)\subseteq\Gam\}.\label{eq:Cdescription}
+\end{align}
+Both $\Sk$ and $\Common$ are real-closed subfields of $\No$.
+\end{theorem}
+\begin{proof}
+The equalizer assertion is \thref{thm:defect}. Suppose
+$y=J(x)\in H_j(\No)$. The image description \eqref{eq:Himage} says that
+all exponents in the normal form of $y$ lie in $\Gam$. If $x$ had at
+least $\kappa$ normal-form terms, \thref{thm:defect} would exhibit a
+nonzero term of $J(x)$ with exponent outside $\Gam$. Hence $x\in\Sk$,
+and $y=J(x)=H_j(x)\in\Common$. The opposite inclusion is immediate.
+Reindexing preserves the cardinality of support, and the inverse-support
+construction in \leref{lem:reindex} proves \eqref{eq:Cdescription}.
+
+The equalizer of two field embeddings is a subfield, so $\Sk$ is a
+subfield. To prove real closedness without relying on a separate
+bounded-support theorem, let $0\ne p\in\Sk[X]$. If $r_1<\cdots<r_m$ are all
+its distinct real roots in $\No$, then $J(r_1)<\cdots<J(r_m)$ and
+$H_j(r_1)<\cdots<H_j(r_m)$ are both the full ordered list of real roots
+of the same transformed polynomial. Indeed, the images of $\No$ under
+these embeddings are real closed, and an ordered extension of a real-closed
+field cannot add a new real algebraic element. Each ordered position
+therefore agrees: $J(r_i)=H_j(r_i)$. Every such root lies in $\Sk$.
+
+In particular, each positive member of $\Sk$ has its positive square root
+in $\Sk$, and each odd-degree polynomial over $\Sk$ has a root there.
+This characterizes real closedness. The isomorphic common image
+$\Common$ is real closed as well.
+\end{proof}
+
+\begin{remark}[Domain equalizer versus image intersection]\label{rem:twocommon}
+The equalizer is $\Sk$, whereas the intersection is its \emph{image}
+$\Common$. The two are not being identified. An arbitrary short-support
+series can have exponents outside $J(\No)$, and then it is not in
+$\Common$. In \eqref{eq:Cdescription}, both the support bound and the
+exponent-image condition are essential.
+\end{remark}
+
+\begin{corollary}[Transcendental separation]\label{cor:transcendence}
+Every element of $J(\No)\setminus\Common$ is transcendental over
+$H_j(\No)$, and every element of $H_j(\No)\setminus\Common$ is
+transcendental over $J(\No)$. In particular, each is transcendental over
+$\Common$.
+\end{corollary}
+\begin{proof}
+Both image fields are real closed. An element of one outside their
+intersection is not in the other. A real-closed field has no proper
+algebraic ordered extension, so that element cannot be algebraic over
+the other field.
+\end{proof}
+
+\subsection{A canonical isomorphism by erasing nonimage exponents}
+Define a coefficient projection on all surreals by
+\begin{equation}\label{eq:projection}
+ \Pi_j(y)=\sum_{a\in\supp(y)\cap\Gam}
+                  (\coef{a}{y})\,\omega^a.
+\end{equation}
+This retains a subseries; it is not generally an initial normal-form
+truncation. Its support is a set, formed by Separation with the embedding
+parameter.
+
+\begin{theorem}[Isomorphic immediate image fields]\label{thm:projection}
+The projection $\Pi_j$ is strongly $\R$-linear and idempotent, with image
+$H_j(\No)$, and
+\begin{equation}\label{eq:projectionJ}
+ \Pi_j\circ J=H_j.
+\end{equation}
+Its restriction is an ordered-field isomorphism
+\begin{equation}\label{eq:fieldiso}
+ \Pi_j\res J(\No):J(\No)\xrightarrow{\ \cong\ }H_j(\No)
+\end{equation}
+that fixes $\Common$ pointwise and fixes every Conway monomial in either
+image. Both image fields are immediate valued extensions of $\Common$:
+they have the same value group $\Gam$ and residue field $\R$.
+The projection is not a field homomorphism on all of $\No$.
+\end{theorem}
+\begin{proof}
+Taking a subseries is compatible with coefficientwise finite sums, and
+commutes with an arbitrary strong sum: one either retains or deletes all
+contributions at each exponent. This proves strong $\R$-linearity.
+The image and idempotence follow from \eqref{eq:Himage}.
+The defect theorem states that $J(x)$ consists of $H_j(x)$ supported on
+$\Gam$, plus a series supported outside $\Gam$. Therefore
+$\Pi_j(J(x))=H_j(x)$.
+
+The maps $J$ and $H_j$ are ordered-field isomorphisms onto their respective
+images. Hence \eqref{eq:projectionJ} identifies the restriction in
+\eqref{eq:fieldiso} with $H_j\circ J^{-1}$, which is an ordered-field
+isomorphism. It fixes every element of the intersection, since those
+supports are contained in $\Gam$. The monomials in either image are
+exactly $\{\omega^{J(a)}:a\in\No\}$, and they already lie in $\Common$.
+For the assertion about the monomials of $J(\No)$, a monomial image must
+have normal-form length one and leading coefficient one, so its preimage
+also does.
+
+Every nonzero member of either image has valuation in $\Gam$, and the
+monomials just listed realize every value in $\Gam$. They belong to
+$\Common$, so its value group is the same. All three fields contain the
+constant copy of $\R$ and have residue field $\R$. Equality of these
+value groups and residue fields is precisely immediacy; the value groups
+here are allowed to be classes.
+
+Finally choose $a\notin\Gam$, for instance $a=\kappa$. Then also
+$-a\notin\Gam$, and
+\[
+ \Pi_j(\omega^a)=\Pi_j(\omega^{-a})=0,
+ \qquad \Pi_j(\omega^a\omega^{-a})=\Pi_j(1)=1.
+\]
+Thus global multiplicativity fails. The fact that multiplicativity holds
+on $J(\No)$ is a genuine restriction on the tails of that image field.
+\end{proof}
+
+This gives transcendence, not algebraic independence between the two image
+fields. Exact intersection alone does not establish linear disjointness;
+that stronger question is left open in Section~\ref{sec:questions}.
+
+\section{Explicit witnesses and incomparability}\label{sec:witness}
+
+For every ordinal $\eta$, define the genuine strong sum
+\begin{equation}\label{eq:heta}
+ h_\eta=\sum_{\alpha<\eta}\omega^{-\alpha}.
+\end{equation}
+The set $\{-\alpha:\alpha<\eta\}$ is strictly decreasing in its displayed
+order, and each exponent occurs once, so this is a legitimate normal form.
+We always use surreal negation and subtraction in exponents; they are not
+ordinal subtraction.
+
+\begin{theorem}[The basic witness]\label{thm:witness}
+For $h_\kappa$ one has
+\begin{align}
+ H_j(h_\kappa)&=h_\kappa,\label{eq:Hh}\\
+ J(h_\kappa)&=h_{j(\kappa)},\label{eq:Jh}\\
+ D_j(h_\kappa)&=
+  \sum_{\kappa\le\beta<j(\kappa)}\omega^{-\beta}
+  =\omega^{-\kappa}(1+\eps),\qquad 0<\eps\in\infideal.
+  \label{eq:Dh}
+\end{align}
+Moreover,
+\[
+ h_\kappa\in H_j(\No)\setminus J(\No),\qquad
+ h_{j(\kappa)}\in J(\No)\setminus H_j(\No).
+\]
+Thus $J(\No)$ and $H_j(\No)$ are incomparable real-closed subfields of
+$\No$, although the embeddings agree on all reals, ordinals, and monomials.
+\end{theorem}
+\begin{proof}
+Each $\alpha<\kappa$ is fixed, so $J(-\alpha)=-\alpha$, and
+\eqref{eq:Hh} follows. The definition of the whole list in
+\eqref{eq:heta} transfers to the list of length $j(\kappa)$, giving
+\eqref{eq:Jh}. Their difference is \eqref{eq:Dh}. Factoring out its first
+monomial leaves 1 plus a nonempty series with strictly negative exponents
+and positive coefficients. That remainder is a positive infinitesimal.
+It is nonempty because $j(\kappa)$ is a limit cardinal strictly above
+$\kappa$.
+
+If $h_\kappa=J(x)$, then the length of its normal form is
+$j(\len(x))=\kappa$, contradicting that $\kappa$ is not in the ordinal
+range of $j$. Hence $h_\kappa$ is not in $J(\No)$.
+On the other hand, the normal form of $h_{j(\kappa)}$ contains the exponent
+$-\kappa$. This exponent is not $J(b)$ for any surreal $b$: if it were,
+$J(-b)=\kappa$, and elementarity would make $-b$ an ordinal, again
+contradicting the missing-index fact. The image description for $H_j$
+therefore excludes $h_{j(\kappa)}$ from its image.
+\end{proof}
+
+\begin{example}[A short-support element outside the common image]
+By \prref{prop:J}, $J(\kappa)=j(\kappa)>\kappa$. Consequently
+$\omega^{-\kappa}$ is not in $\Common$: its exponent is outside $\Gam$.
+This is a one-term surreal, so it nevertheless belongs to $\Sk$.
+It concretely illustrates Remark~\ref{rem:twocommon}. The two assertions
+``$x$ has short support'' and ``$x$ lies in the common image'' really are
+different assertions.
+\end{example}
+
+\section{The exact strong-summation threshold}\label{sec:positive}
+
+The previous results compare the images of a \emph{single normal form}.
+There is a separate, equally sharp statement about an arbitrary family
+whose individual members may themselves have very long supports.
+
+\begin{theorem}[Positive-family threshold]\label{thm:positive}
+Let $F:I\to\No$ be an external set-indexed strongly summable family.
+Then $(J(F(i)))_{i\in I}$ is strongly summable. If $\abs I<\kappa$, then
+\begin{equation}\label{eq:smallfamily}
+ J\left(\sum_{i\in I}F(i)\right)=\sum_{i\in I}J(F(i)).
+\end{equation}
+If in addition $F(i)>0$ for every $i\in I$, then
+\eqref{eq:smallfamily} holds \emph{if and only if} $\abs I<\kappa$.
+For $\abs I\ge\kappa$ in this positive case,
+\begin{equation}\label{eq:positivegap}
+ J\left(\sum_{i\in I}F(i)\right)-\sum_{i\in I}J(F(i))>0.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The family $j(F)$ is strongly summable over $j(I)$ in $M$, and hence
+externally in $V$ by \leref{lem:absolute}. Its sum is
+$J(\sum_{i\in I}F(i))$. Restrict it to the old-index part $\imset jI$:
+its values there are $j(F)(j(i))=J(F(i))$. This proves external
+summability of the termwise image family. Splitting the full family yields
+\begin{equation}\label{eq:familydefect}
+ J\left(\sum_{i\in I}F(i)\right)-\sum_{i\in I}J(F(i))
+    =\sum_{u\in j(I)\setminus\imset jI}j(F)(u).
+\end{equation}
+If $\abs I<\kappa$, the right side is empty by \leref{lem:index}.
+
+Suppose now that every $F(i)>0$. Transfer gives $j(F)(u)>0$ for all
+$u\in j(I)$. A nonempty strongly summable family of positive surreals has
+positive sum: take the largest exponent in the union of its supports.
+Every term contributing at that exponent has it as a leading exponent,
+so its coefficient is positive; only finitely many contribute, and their
+sum is positive. When $\abs I\ge\kappa$, the missing-index part is
+nonempty by \leref{lem:index}. Applying this observation to
+\eqref{eq:familydefect} proves \eqref{eq:positivegap}.
+\end{proof}
+
+\begin{remark}[Why the positivity hypothesis is necessary]
+Let $I=\kappa\times\{0,1\}$ and put
+$F(\alpha,0)=\omega^{-\alpha}$,
+$F(\alpha,1)=-\omega^{-\alpha}$. This is strongly summable and has sum
+zero. The termwise image also sums to zero, so preservation holds even
+though $\abs I=\kappa$. One cannot replace the positive-family conclusion
+by an unconditional cardinality criterion for signed families.
+The exact criterion in general is that the missing-index sum in
+\eqref{eq:familydefect} vanish.
+\end{remark}
+
+\begin{corollary}[First failure cardinal]\label{cor:firstfailure}
+The least cardinality of a positive strongly summable family on which $J$
+fails to commute with strong summation is exactly $\kappa$.
+\end{corollary}
+\begin{proof}
+All smaller families are preserved, and the monomial family defining
+$h_\kappa$ is a positive witness of size $\kappa$.
+\end{proof}
+
+There is no conflict between this theorem and the defect of an individual
+long-support $x$. A singleton family $\{x\}$ is always preserved by $J$.
+Its normal-form decomposition may have $\kappa$ or more terms, and that
+is the different family on which $J$ and $H_j$ disagree.
+
+\subsection{An intrinsic closure theorem for the image}
+The threshold can be stated without first specifying a family in the
+domain of $J$. This strengthens the noncommutation result to an actual
+failure of membership in the image.
+
+\begin{theorem}[Strong-sum closure and positive escape]\label{thm:escape}
+Let $(y_i)_{i\in I}$ be an external strongly summable family in $J(\No)$,
+and let $x_i$ be the unique preimage with $J(x_i)=y_i$. Then $(x_i)$ is
+strongly summable and
+\begin{equation}\label{eq:membershipsum}
+ \sum_{i\in I}y_i\in J(\No)
+ \quad\Longleftrightarrow\quad
+ \sum_{i\in I}y_i=J\left(\sum_{i\in I}x_i\right).
+\end{equation}
+In particular, $J(\No)$ is closed under all external strongly summable
+families of cardinality less than $\kappa$. If every $y_i>0$, then
+\begin{equation}\label{eq:positiveescape}
+ \sum_{i\in I}y_i\in J(\No)
+   \quad\Longleftrightarrow\quad\abs I<\kappa.
+\end{equation}
+In contrast, $H_j(\No)$ is closed under every external set-indexed strong
+sum of its members.
+\end{theorem}
+\begin{proof}
+Replacement with the embedding parameter gives the set-indexed preimage
+family. For every $a$, the normal-form defect theorem implies
+\[
+ \coef{J(a)}{y_i}=\coef{a}{x_i}.
+\]
+Thus $\imset J{\bigcup_i\supp(x_i)}$ is a subset of the reverse
+well-ordered union $\bigcup_i\supp(y_i)$. Pulling this suborder back by
+the order embedding $J$ proves reverse well ordering of
+$\bigcup_i\supp(x_i)$. An exponent $a$ occurs in $x_i$ exactly when
+$J(a)$ occurs in $y_i$, so the coefficient fibers are finite as well.
+Hence the preimage family is strongly summable.
+
+Let $x=\sum_i x_i$ and $y=\sum_i y_i$. At every exponent $J(a)$ the
+finite coefficient sums give
+\[
+ \coef{J(a)}{y}=\sum_i\coef{a}{x_i}
+        =\coef{a}{x}=\coef{J(a)}{J(x)}.
+\]
+Therefore $J(x)-y$ has support disjoint from $\Gam$.
+But every nonzero element of $J(\No)$ has its leading exponent in
+$\Gam$, by Corollary~\ref{cor:leading}. If $y\in J(\No)$, the
+difference $J(x)-y$ is in that field and must consequently be zero.
+This proves the forward implication in \eqref{eq:membershipsum}; the
+reverse implication is immediate.
+
+For $\abs I<\kappa$, Theorem~\ref{thm:positive} gives equality, without
+requiring positive terms. If all $y_i>0$, then all $x_i>0$, and that
+theorem makes equality equivalent to $\abs I<\kappa$. Finally, a strong
+sum of series supported on $\Gam$ is again supported on $\Gam$;
+\eqref{eq:Himage} proves the closure assertion for $H_j(\No)$.
+\end{proof}
+
+\section{Recovering a normal measure from one coefficient}\label{sec:measure}
+
+\subsection{Boolean masks at ordinal exponents}
+For each $A\subseteq\kappa$, define
+\begin{equation}\label{eq:maskA}
+ h_A=\sum_{\alpha\in A}\omega^{-\alpha}.
+\end{equation}
+The notation is unambiguous: the index set is ordered by the ordinal order,
+and zeros are omitted from the full $\kappa$-list. In particular,
+$h_\varnothing=0$ and $h_\kappa$ agrees with \eqref{eq:heta}.
+
+\begin{theorem}[The measure-coefficient formula]\label{thm:measure}
+For every $A\subseteq\kappa$,
+\begin{align}
+ H_j(h_A)&=h_A,\label{eq:maskfixed}\\
+ J(h_A)&=\sum_{\beta\in j(A)}\omega^{-\beta},\label{eq:maskJ}\\
+ \coef{-\kappa}{D_j(h_A)}&=\mathbf 1_{\{\kappa\in j(A)\}}.
+ \label{eq:measurecoef}
+\end{align}
+Consequently
+\begin{equation}\label{eq:derivedU}
+ U_j=\set{A\subseteq\kappa:\coef{-\kappa}{D_j(h_A)}=1}
+\end{equation}
+is the nonprincipal normal $\kappa$-complete ultrafilter on $\kappa$
+derived from $j$.
+\end{theorem}
+\begin{proof}
+The original exponents $-\alpha$, $\alpha<\kappa$, are fixed by $J$, so
+\eqref{eq:maskfixed} follows from the companion formula. Transferring the
+whole mask construction gives \eqref{eq:maskJ}. Since $\kappa$ is not an
+original index, $h_A$ has no coefficient at $\omega^{-\kappa}$.
+The coefficient in $J(h_A)$ is 1 precisely when $\kappa\in j(A)$.
+This proves \eqref{eq:measurecoef} and identifies \eqref{eq:derivedU}
+with the classical derived measure.
+
+For completeness, its properties can be read directly from this last
+identification. Since $\kappa\in j(\kappa)$, the whole space is in $U_j$
+and the empty set is not. Elementary transfer of complements and finite
+intersections makes it an ultrafilter. For $\alpha<\kappa$,
+$j(\{\alpha\})=\{\alpha\}$ does not contain $\kappa$, so it is
+nonprincipal. If $\mu<\kappa$ and $A_\xi\in U_j$ for $\xi<\mu$, then
+$j(\mu)=\mu$ and
+\[
+ \kappa\in\bigcap_{\xi<\mu}j(A_\xi)
+       =j\left(\bigcap_{\xi<\mu}A_\xi\right),
+\]
+which proves $\kappa$-completeness.
+
+Finally, suppose $A\in U_j$ and $f:A\to\kappa$ is regressive, meaning
+$f(\alpha)<\alpha$ for all nonzero $\alpha\in A$. Then
+$j(f)(\kappa)<\kappa$, so $j(f)(\kappa)=\eta=j(\eta)$ for some
+$\eta<\kappa$. Therefore
+\[
+ \kappa\in j\bigl(\{\alpha\in A:f(\alpha)=\eta\}\bigr).
+\]
+The indicated fiber is in $U_j$, proving normality.
+\end{proof}
+
+The ultrafilter properties just proved are standard properties of derived
+measures \cite{Neeman}. The new information is their simultaneous realization
+by \eqref{eq:measurecoef} within one explicitly given surreal coefficient
+space. No real-valued probability measure on all surreal sets is being
+introduced.
+
+\begin{corollary}[Distinguishing normal measures]\label{cor:distinctU}
+Suppose $U$ and $W$ are distinct normal measures on the same $\kappa$, with
+normal ultrapower embeddings $j_U$ and $j_W$. Their coefficient functionals
+\[
+ A\longmapsto\coef{-\kappa}{D_{j_U}(h_A)},\qquad
+ A\longmapsto\coef{-\kappa}{D_{j_W}(h_A)}
+\]
+are distinct. Thus the first failure cardinal does not determine the
+coefficient-level defect data.
+\end{corollary}
+\begin{proof}
+Choose $A$ in exactly one of $U,W$. In the normal ultrapower construction,
+the measure derived at the seed $\kappa$ is the original measure.
+Apply \thref{thm:measure}.
+\end{proof}
+
+\begin{remark}[A zero probe does not mean a zero defect]
+If $A\subseteq\kappa$ has cardinality $\kappa$ but does not belong to
+$U_j$, then $D_j(h_A)\ne0$ by the exact support theorem, although its
+coefficient at $\omega^{-\kappa}$ is zero. Such sets exist: partition
+$\kappa$ into two sets of size $\kappa$, at most one of which is in the
+ultrafilter. The first missing \emph{normal-form index} is always
+$\kappa$ for a long support, but its associated \emph{exponent} depends
+on the exponent list. The fixed mask probe need not be the leading
+nonzero term of every mask defect.
+\end{remark}
+
+\subsection{Real-valued masks and the Hadamard product}
+For $f:\kappa\to\R$, set
+\begin{equation}\label{eq:hf}
+ h_f=\sum_{\alpha<\kappa} f(\alpha)\omega^{-\alpha}.
+\end{equation}
+This includes zero coefficients with the convention that they are suppressed
+in the canonical normal form. Let $\mathcal B_\kappa$ denote the set of
+all these masks. Give it its coefficientwise, or Hadamard, product
+\begin{equation}\label{eq:hadamard}
+ h_f\odot h_g=h_{fg},\qquad (fg)(\alpha)=f(\alpha)g(\alpha).
+\end{equation}
+Together with ordinary addition and real scalar multiplication, this makes
+$\mathcal B_\kappa$ an $\R$-algebra isomorphic to $\R^\kappa$.
+Its multiplicative unit is $h_\kappa=h_{\mathbf 1}$, \emph{not} the surreal
+number 1. The map from scalars into this algebra is
+$r\mapsto r h_\kappa$.
+
+\begin{theorem}[Ultrafilter evaluation as a defect coefficient]\label{thm:character}
+The functional
+\begin{equation}\label{eq:chi}
+ \chi_j(h_f)=\coef{-\kappa}{\bigl(J(h_f)-H_j(h_f)\bigr)}
+\end{equation}
+satisfies
+\begin{equation}\label{eq:chievaluation}
+ \chi_j(h_f)=j(f)(\kappa).
+\end{equation}
+It is a unital $\R$-algebra homomorphism
+$(\mathcal B_\kappa,+,\odot)\to\R$. Its value is the unique $r\in\R$
+for which $f^{-1}(\{r\})\in U_j$.
+\end{theorem}
+\begin{proof}
+All original exponents are fixed, so $H_j(h_f)=h_f$. The whole transformed
+mask is
+\[
+ J(h_f)=\sum_{\beta<j(\kappa)}j(f)(\beta)\omega^{-\beta}.
+\]
+Reading its coefficient at $-\kappa$ proves
+\eqref{eq:chievaluation}. The value lies in $\R$, since $j(f)$ takes
+values in $j(\R)=\R$. If $r=j(f)(\kappa)$, then $j(r)=r$ and
+\[
+ \kappa\in j\bigl(f^{-1}(\{r\})\bigr),
+\]
+which gives the asserted fiber. Two distinct fibers cannot both belong to
+an ultrafilter. Transferring pointwise addition and multiplication gives
+\[
+ j(f+g)(\kappa)=j(f)(\kappa)+j(g)(\kappa),\qquad
+ j(fg)(\kappa)=j(f)(\kappa)j(g)(\kappa).
+\]
+Constant functions take their constant real value. These are exactly the
+claimed algebra-homomorphism laws under \eqref{eq:hadamard}.
+\end{proof}
+
+\status{\textbf{Product warning.} The character theorem concerns the Hadamard
+product $\odot$. It does not say that coefficient extraction at
+$\omega^{-\kappa}$ is multiplicative for ordinary surreal multiplication.
+Ordinary multiplication convolves exponents; Hadamard multiplication
+multiplies coefficients at matching exponents.}
+
+Infinite direct-product homomorphisms and their ultrafilter factorizations
+are a classical subject; see, for example, Bergman \cite{Bergman}.
+The next result records an exact large-cardinal criterion in this particular
+mask presentation. Its underlying ultrafilter characterization is not claimed
+to be new.
+
+\begin{theorem}[A mask criterion for measurability]\label{thm:measurablecriterion}
+Let $\kappa$ be an uncountable cardinal, without initially assuming an
+embedding $j$. The following are equivalent.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\kappa$ is measurable.
+\item There is a unital $\R$-algebra homomorphism
+$\chi:(\mathcal B_\kappa,+,\odot)\to\R$ such that
+$\chi(h_{\{\alpha\}})=0$ for every $\alpha<\kappa$, and for every
+pairwise disjoint family $(A_\xi)_{\xi<\mu}$ with $\mu<\kappa$,
+\begin{equation}\label{eq:smallidempotent}
+ \chi\left(h_{\bigcup_{\xi<\mu}A_\xi}\right)
+    =\sum_{\xi<\mu}\chi(h_{A_\xi}).
+\end{equation}
+\end{enumerate}
+The scalar sum in \eqref{eq:smallidempotent} has at most one nonzero term,
+so no infinite real summation convention is needed. Under measurability,
+$\chi$ can be chosen to be the defect functional \eqref{eq:chi} of a
+normal ultrapower embedding.
+\end{theorem}
+\begin{proof}
+Assume (i) and choose a normal measure and its ultrapower. The functional
+from \thref{thm:character} vanishes on singleton masks. Its value on each
+indicator mask is 0 or 1 according to membership in the measure.
+For fewer than $\kappa$ disjoint sets, their union belongs to a
+$\kappa$-complete ultrafilter exactly when one of them belongs to it:
+otherwise all their complements have intersection in the ultrafilter.
+This proves \eqref{eq:smallidempotent}.
+
+Conversely, assume (ii). Each $h_A$ is a Hadamard idempotent, so
+$\chi(h_A)^2=\chi(h_A)$ and hence $\chi(h_A)\in\{0,1\}$.
+Define $U=\{A\subseteq\kappa:\chi(h_A)=1\}$. The identities
+\[
+ h_A\odot h_B=h_{A\cap B},\qquad
+ h_{\kappa\setminus A}=h_\kappa-h_A
+\]
+show that $U$ is an ultrafilter. For example, upward closure follows from
+$h_A\odot h_B=h_A$ when $A\subseteq B$, and exactly one of a set and
+its complement has value 1. The singleton hypothesis makes it
+nonprincipal.
+
+To verify $\kappa$-completeness, let $A_\xi\in U$ for $\xi<\mu<\kappa$.
+Set $B_\xi=\kappa\setminus A_\xi$, and disjointify the family by
+\[
+ C_\xi=B_\xi\setminus\bigcup_{\eta<\xi}B_\eta.
+\]
+Each $C_\xi\subseteq B_\xi$ has value zero: multiplying its idempotent
+by $h_{B_\xi}$ leaves it unchanged. By \eqref{eq:smallidempotent},
+$\bigcup_{\xi<\mu}C_\xi=\bigcup_{\xi<\mu}B_\xi$ also has value zero.
+Its complement $\bigcap_{\xi<\mu}A_\xi$ is therefore in $U$.
+Thus $U$ is a nonprincipal $\kappa$-complete ultrafilter on $\kappa$,
+which is the usual measure characterization of measurability.
+\end{proof}
+
+This criterion detects measurability only because the mask algebra and its
+small-union condition explicitly retain a $\kappa$-indexed Boolean algebra.
+It is not a characterization of measurability in the pure ordered-field
+language of $\No$.
+
+\section{Omnific integers and a purely infinite measure code}\label{sec:omnific}
+
+\subsection{The ring and its short-support part}
+The omnific integers form the discretely ordered subring
+\begin{equation}\label{eq:Oz}
+ \Oz=\left\{\sum_a r_a\omega^a:
+      \supp(x)\subseteq\No^{\ge0},\quad r_0\in\Z\right\}.
+\end{equation}
+A missing zero exponent has coefficient zero. Nonzero coefficients at
+positive exponents are arbitrary reals, not necessarily ordinary integers.
+This is Conway's normal-form description \cite{Conway,Gonshor}.
+We use it rather than an informal criterion such as ``having no fractional
+part,'' which can hide a convention at exponent zero.
+Put
+\[
+ \Ik=\Oz\cap\Sk.
+\]
+
+\begin{theorem}[Omnific equalizer, intersection, and fractions]\label{thm:Oz}
+The maps $J$ and $H_j$ preserve and reflect membership in $\Oz$, and
+\begin{align}
+ \{z\in\Oz:J(z)=H_j(z)\}&=\Ik,\label{eq:Ozeq}\\
+ J(\Oz)\cap H_j(\Oz)&=J(\Ik)=H_j(\Ik),\label{eq:Ozinter}\\
+ \Frac(\Ik)&=\Sk,\label{eq:Ozfrac}\\
+ \Frac\bigl(J(\Oz)\cap H_j(\Oz)\bigr)&=\Common.\label{eq:commonfrac}
+\end{align}
+Also $\ct(J(z))=\ct(H_j(z))=\ct(z)$ for every $z\in\Oz$.
+\end{theorem}
+\begin{proof}
+For $H_j$ this preservation and reflection is part of
+\leref{lem:reindex}. For $J$, transfer the canonical normal form and the
+condition in \eqref{eq:Oz}. Nonnegativity of all exponents and the integer
+condition on the constant coefficient are absolute; equivalently, apply
+elementarity to the normal-form description and then
+\leref{lem:absolute}. A coefficient at exponent zero is fixed, and a new
+missing-image exponent cannot equal zero because $0\in\Gam$.
+The same reasoning gives the constant-term identity for both maps.
+
+The equalizer formula is \thref{thm:defect} restricted to $\Oz$.
+If $y\in J(\Oz)\cap H_j(\Oz)$, write $y=J(z)$ with $z\in\Oz$.
+The field intersection theorem forces $z\in\Sk$, so $z\in\Ik$.
+Conversely, both maps have the same value on any $z\in\Ik$.
+This proves \eqref{eq:Ozinter}.
+
+To prove \eqref{eq:Ozfrac}, take nonzero $x\in\Sk$. Its support is a
+set, so choose $d>0$ such that $d>-a$ for every $a\in\supp(x)$.
+The monomial $q=\omega^d$ and the shifted series $p=\omega^d x$ have
+only strictly positive exponents. Their constant coefficients vanish,
+and both are in $\Oz$. Their supports have cardinality less than
+$\kappa$, so $p,q\in\Ik$ and $x=p/q$. The reverse inclusion follows
+because $\Sk$ is a field containing $\Ik$. Applying the field embedding
+$J$ gives \eqref{eq:commonfrac}.
+\end{proof}
+
+\subsection{A defect with no finite residue}
+For $A\subseteq\kappa$, define
+\begin{equation}\label{eq:zA}
+ z_A=\omega^\kappa h_A
+     =\sum_{\alpha\in A}\omega^{\kappa-\alpha}.
+\end{equation}
+Every exponent is strictly positive, since $\alpha<\kappa$.
+Thus $z_A$ is a purely infinite omnific integer when $A$ is nonempty,
+and is zero otherwise. Here and below $\kappa-\alpha$ is the difference
+in the surreal ordered field.
+
+\begin{theorem}[Omnific recovery of the measure]\label{thm:Ozmeasure}
+For $A\subseteq\kappa$,
+\begin{align}
+ D_j(z_A)&=\omega^{j(\kappa)}D_j(h_A),\label{eq:zdefect}\\
+ \coef{j(\kappa)-\kappa}{D_j(z_A)}
+      &=\mathbf 1_{\{A\in U_j\}},\label{eq:zmeasure}\\
+ \ct(D_j(z_A))&=0.\label{eq:zct}
+\end{align}
+In particular, for $z_\kappa=\omega^\kappa h_\kappa$,
+\[
+ D_j(z_\kappa)=
+   \sum_{\kappa\le\beta<j(\kappa)}\omega^{j(\kappa)-\beta}>0,
+ \qquad
+ \LT(D_j(z_\kappa))=\omega^{j(\kappa)-\kappa}.
+\]
+Every nonzero term of every $D_j(z_A)$ is purely infinite.
+\end{theorem}
+\begin{proof}
+The two embeddings agree on $\omega^\kappa$, with common value
+$\omega^{j(\kappa)}$, and both are multiplicative. This proves
+\eqref{eq:zdefect}. Multiplication by that monomial shifts exponents by
+$j(\kappa)$, so \eqref{eq:zmeasure} follows from
+\eqref{eq:measurecoef}. Moreover $j(A)\cap\kappa=A$, so the defect of
+$h_A$ has its possible indices only in
+$j(A)\setminus A\subseteq[\kappa,j(\kappa))$.
+After shifting, all exponents $j(\kappa)-\beta$ are strictly positive,
+which proves \eqref{eq:zct} and the last assertion. Taking $A=\kappa$
+gives the explicit nonempty series and its leading term.
+\end{proof}
+
+The constant-term map therefore loses this large-cardinal information,
+even though one specified infinite-scale coefficient recovers it.
+This is compatible with the repository's emphasis on constant-term
+factorizations in omnific arithmetic \cite{RepoQuotients}; it does not
+supply a new factorization theorem for set-sized quotient rings.
+
+\section{Surcomplex numbers and the Gaussian omnific lattice}\label{sec:complex}
+
+Let $\SC=\No(i)$ with a fixed named element $i$ satisfying $i^2=-1$,
+and write conjugation as $\overline{x+iy}=x-iy$.
+A surcomplex normal form has complex coefficients and a reverse
+well-ordered set of surreal exponents. Its support is the union of the
+supports of its real and imaginary coordinates: a complex coefficient
+vanishes exactly when both real coordinates vanish.
+Define
+\[
+ \Jc(x+iy)=J(x)+iJ(y),\qquad
+ \Hc(x+iy)=H_j(x)+iH_j(y).
+\]
+These definitions fix the chosen orientation $i$; they are not a statement
+about arbitrary automorphisms of the pure surcomplex field.
+
+\begin{theorem}[Surcomplex transfer]\label{thm:complex}
+The maps $\Jc,\Hc:\SC\to\SC$ are field embeddings fixing $\C$ and
+commuting with conjugation. The second is strongly $\C$-linear.
+They are elementary in the pure field language, and
+\begin{align}
+ \operatorname{Eq}(\Jc,\Hc)&=\Sk(i),\label{eq:complexeq}\\
+ \Jc(\SC)\cap\Hc(\SC)&=\Common(i).\label{eq:complexinter}
+\end{align}
+Both fields on the right are algebraically closed. The image fields on
+the left of \eqref{eq:complexinter} are incomparable. Their intersection
+with the Gaussian omnific lattice satisfies
+\begin{equation}\label{eq:Gaussian}
+ \Jc(\Oz[i])\cap\Hc(\Oz[i])=J(\Ik)[i].
+\end{equation}
+\end{theorem}
+\begin{proof}
+The quadratic-extension multiplication law proves the field-homomorphism
+claims coordinatewise. Uniqueness of real and imaginary parts gives
+injectivity and commutation with conjugation. The strong summation claim
+is the real statement on both coordinates. Since $\No$ is real closed,
+$\SC$ and both image fields are algebraically closed of characteristic
+zero. Quantifier elimination for $\ACF$ gives elementarity, formula by
+formula, as before.
+
+Equality of $\Jc(x+iy)$ and $\Hc(x+iy)$ is equivalent to both
+$J(x)=H_j(x)$ and $J(y)=H_j(y)$. This is precisely $x,y\in\Sk$.
+Equivalently, the union of the two supports has size less than $\kappa$:
+a finite union of sets of size less than an infinite cardinal still has
+size less than that cardinal. This proves \eqref{eq:complexeq}.
+The same coordinate comparison and \thref{thm:intersection} prove
+\eqref{eq:complexinter}. The fields $\Sk$ and $\Common$ are real closed,
+so adjoining $i$ makes them algebraically closed.
+
+The real witnesses $h_\kappa$ and $h_{j(\kappa)}$ still witness
+incomparability. If a real element is the image of $x+iy$, its imaginary
+coordinate is zero, forcing $y=0$; allowing a complex preimage cannot
+repair the failure of a real preimage. Finally apply
+\thref{thm:Oz} separately to the two integer coordinates to obtain
+\eqref{eq:Gaussian}.
+\end{proof}
+
+The exact defect formula also holds directly with complex coefficients:
+for $z=\sum_{\alpha<\theta}c_\alpha\omega^{a_\alpha}$, set
+$c^*=j(c)$ after identifying $\C$ with $\R^2$. Then
+\[
+ \Jc(z)-\Hc(z)=
+   \sum_{\beta\in P_\theta}c^*_\beta\omega^{a^*_\beta}.
+\]
+Nonzero complex coefficients at distinct exponents cannot cancel. Thus
+long complex support, not a sign or order on complex numbers, is what
+forces disagreement. The Boolean measure masks from
+Section~\ref{sec:measure} already lie on the real axis and require no
+complex choice beyond the named inclusion.
+
+\begin{corollary}[Conjugation and modulus]\label{cor:modulus}
+If $|z|=(z\overline z)^{1/2}\in\No^{\ge0}$, then
+\[
+ |\Jc(z)|=J(|z|),\qquad |\Hc(z)|=H_j(|z|).
+\]
+Every surcomplex number in either image outside $\Common(i)$ is
+transcendental over $\Common(i)$.
+\end{corollary}
+\begin{proof}
+Both maps preserve conjugation and the unique nonnegative square root.
+The transcendence assertion follows because $\Common(i)$ is algebraically
+closed.
+\end{proof}
+
+\section{Defect algebra and a logarithmic homomorphism}\label{sec:log}
+
+\subsection{What all old-image coefficients fail to see}
+\begin{proposition}[Coefficient invisibility]\label{prop:invisible}
+For every $a,x\in\No$,
+\begin{equation}\label{eq:oldcoeff}
+ \coef{J(a)}{J(x)}=\coef{a}{x}=\coef{J(a)}{H_j(x)}.
+\end{equation}
+In particular, $J$ and $H_j$ preserve the coefficient at exponent zero.
+They preserve the finite-surreal valuation ring and its infinitesimal
+ideal, and induce the identity on its residue field $\R$.
+\end{proposition}
+\begin{proof}
+If $a$ is in the support of $x$, its unique original index gives the
+coefficient in \eqref{eq:oldindices}. A missing-image index cannot supply
+exponent $J(a)$ by \thref{thm:defect}. If $a$ is not in the support, the
+same range-reflection argument used in that theorem excludes $J(a)$ from
+the support of $J(x)$. The identity for $H_j$ is its definition.
+Setting $a=0$ gives the constant coefficient. The valuation identities
+in Corollary~\ref{cor:leading}, together with $J(0)=0$ and order
+preservation, give preservation of the valuation ring and its maximal
+ideal. On a finite surreal, its residue is its coefficient at zero.
+\end{proof}
+
+Thus \eqref{eq:measurecoef} detects genuinely new exponent positions. No
+coefficient extraction at an exponent in $J(\No)$ can see the defect.
+Both embeddings nevertheless have the same value-group action and the
+same residue action.
+
+\begin{proposition}[Twisted product law]\label{prop:twisted}
+The additive map $D_j$ satisfies
+\begin{equation}\label{eq:twisted}
+ D_j(xy)=J(x)D_j(y)+D_j(x)H_j(y).
+\end{equation}
+For $c\in\Sk$ one has $D_j(cx)=J(c)D_j(x)$.
+\end{proposition}
+\begin{proof}
+Expand the right side as
+$J(x)J(y)-J(x)H_j(y)+J(x)H_j(y)-H_j(x)H_j(y)$.
+The middle terms cancel and multiplicativity gives the left side.
+The scalar identity follows because $D_j(c)=0$.
+\end{proof}
+
+Equation~\eqref{eq:twisted} is a twisted derivation identity, not an
+ordinary Leibniz rule for a derivation on $\No$. No claim is made that
+$D_j$ is a Berarducci--Mantova derivation or a strongly additive derivation.
+
+\subsection{Passing from a multiplicative discrepancy to an additive one}
+For $x\ne0$, let
+\begin{equation}\label{eq:eta}
+ \eta_j(x)=\frac{J(x)}{H_j(x)}.
+\end{equation}
+By Corollary~\ref{cor:leading}, this ratio lies in $1+\infideal$.
+For $u\in\infideal$, the formal series
+\begin{equation}\label{eq:logseries}
+ \log(1+u)=\sum_{n\ge1}\frac{(-1)^{n+1}}{n}u^n
+\end{equation}
+is strongly summable by the Hahn--Neumann lemma. The usual formal
+power-series identities are legitimate after such infinitesimal
+substitution; in particular, this logarithm takes products in
+$1+\infideal$ to sums \cite{Gonshor,vdDE}. Only this near-one logarithm
+is needed, not a preservation theorem for the global surreal exponential.
+
+\begin{theorem}[Logarithmic defect]\label{thm:logdefect}
+The map
+\[
+ L_j:\No^\times\longrightarrow(\infideal,+),\qquad
+ L_j(x)=\log\eta_j(x)
+\]
+is a group homomorphism with kernel $\Sk^\times$. If $x$ has normal form
+\eqref{eq:NF} of length $\theta\ge\kappa$, then
+\begin{equation}\label{eq:LTlog}
+ \LT(L_j(x))=
+   \frac{r^*_{\kappa}}{r_0}\,
+       \omega^{a^*_{\kappa}-J(a_0)}.
+\end{equation}
+Thus a nonzero additive infinitesimal invariant records every departure
+from the equalizer, after multiplicative normalization.
+\end{theorem}
+\begin{proof}
+Because both embeddings are multiplicative,
+$\eta_j(xy)=\eta_j(x)\eta_j(y)$. The logarithm identity gives
+$L_j(xy)=L_j(x)+L_j(y)$.
+If $\eta_j(x)=1+u$ with $u\ne0$, then the first term of
+\eqref{eq:logseries} is $u$, while all higher powers have strictly larger
+valuation. Hence the logarithm is nonzero and has leading term $\LT(u)$.
+It follows that $L_j(x)=0$ precisely when $J(x)=H_j(x)$, proving the
+kernel assertion.
+
+Finally $u=D_j(x)/H_j(x)$. Its leading term is the quotient of the
+leading term in \eqref{eq:firstterm} by the common leading term from
+Corollary~\ref{cor:leading}, namely \eqref{eq:LTlog}. Its exponent is
+negative since $a^*_{\kappa}<a^*_0=J(a_0)$, so it is infinitesimal as
+required.
+\end{proof}
+
+For the basic witness,
+\[
+ \LT(L_j(h_\kappa))=\omega^{-\kappa}.
+\]
+The homomorphism formulation avoids introducing a quotient whose
+individual equivalence classes might be proper classes. We use its
+kernel as a class predicate; no extra axiom for forming hyperclasses or
+class-sized quotient objects is needed.
+
+\section{An exact exponential compatibility locus}\label{sec:exponential}
+This section adds the canonical Gonshor exponential. It is independent of
+the proof of the main defect and image-intersection theorems, but the same
+support calculation yields a second exact boundary.
+
+Write every surreal uniquely as
+\[
+ x=p(x)+r(x)+\eps(x),
+\]
+where $p(x)$ has only positive exponents, $r(x)\in\R$, and
+$\eps(x)\in\infideal$. Thus $p(x)$ is its purely infinite part.
+We use the classical exponential facts that $\exp(p)$ is a Conway monomial
+for purely infinite $p$, that the exponential on infinitesimals is its
+strong power series, and that the inverse logarithm of a monomial is
+purely infinite \cite[Chapter~10]{Gonshor}\cite[Section~5]{vdDE}.
+
+\begin{lemma}[Exponential transfer]\label{lem:exptransfer}
+The elementary-induced embedding satisfies
+\[
+ J(\exp x)=\exp J(x),\qquad
+ J(\log y)=\log J(y)\quad(y>0).
+\]
+\end{lemma}
+\begin{proof}
+Gonshor's exponential is defined by a uniform recursive cut on the
+canonical options of its argument, using exponentials of simpler options,
+finite Taylor polynomials, field operations, and their inequalities.
+The cut absoluteness argument from \leref{lem:absolute} applies to this
+recursion as well. Therefore the exponential computed in $M$ on an old
+argument equals the one in $V$. Elementary transfer of the defining
+recursion gives the first identity. The second follows from the uniqueness
+of the inverse of the strictly increasing bijection $\exp$.
+\end{proof}
+
+\begin{theorem}[Exact exponential defect]\label{thm:expdefect}
+For every $x\in\No$,
+\begin{equation}\label{eq:expdefect}
+ \frac{H_j(\exp x)}{\exp(H_j(x))}
+      =\exp\bigl(D_j(p(x))\bigr).
+\end{equation}
+In particular,
+\begin{equation}\label{eq:explocus}
+ H_j(\exp x)=\exp(H_j(x))
+    \quad\Longleftrightarrow\quad
+ \abs{\supp(p(x))}<\kappa.
+\end{equation}
+The companion commutes with the exponential on every finite surreal,
+including finite surreals with arbitrarily long infinitesimal support.
+For a positive $y=r\omega^a(1+u)$, with $r>0$ real and $u\in\infideal$,
+\begin{equation}\label{eq:logcompat}
+ \log(H_j(y))-H_j(\log y)=D_j(\log(\omega^a)).
+\end{equation}
+\end{theorem}
+\begin{proof}
+The companion preserves the purely infinite, real, and infinitesimal
+parts separately, because it preserves the sign of exponents. Since
+$\exp(p(x))$ is a single monomial,
+\[
+ H_j(\exp(p(x)))=J(\exp(p(x)))=\exp(J(p(x))).
+\]
+Strong linearity and infinitesimal power-series evaluation give
+$H_j(\exp(\eps(x)))=\exp(H_j(\eps(x)))$, while real exponential
+values are fixed. Applying $H_j$ to
+$\exp x=\exp(p(x))e^{r(x)}\exp(\eps(x))$ and dividing by
+$\exp(H_j(x))$ proves \eqref{eq:expdefect}. Injectivity of the
+exponential and \thref{thm:defect} give \eqref{eq:explocus}.
+For finite $x$, its purely infinite part is zero.
+
+Finally use
+$\log y=\log r+\log(\omega^a)+\log(1+u)$.
+The near-one logarithm commutes with $H_j$ by its strong power-series
+formula. Also
+$\log(H_j(\omega^a))=\log(J(\omega^a))=J(\log(\omega^a))$.
+Subtracting the two decompositions gives \eqref{eq:logcompat}.
+\end{proof}
+
+\begin{corollary}[Exponential closure without logarithmic closure]\label{cor:expclosure}
+The fields $\Sk$ and $\Common$ are closed under the Gonshor exponential
+but not under logarithms of positive elements. With this induced
+exponential, neither is an elementary substructure of $(\No,\exp)$,
+although both are elementary ordered subfields of $\No$.
+\end{corollary}
+\begin{proof}
+If $x\in\Sk$, then $p(x)\in\Sk$. By the preceding theorem and
+\leref{lem:exptransfer},
+\[
+ H_j(\exp x)=\exp(H_j(x))=\exp(J(x))=J(\exp x).
+\]
+The equalizer theorem yields $\exp x\in\Sk$. The same closure for
+$\Common=J(\Sk)$ follows from exponential transfer.
+
+The purely infinite element $z_\kappa$ of Section~\ref{sec:omnific} has
+$\kappa$ outer terms, so it is not in $\Sk$. But $\exp(z_\kappa)$ is
+a positive monomial and hence belongs to $\Sk$. Its unique logarithm
+in $\No$ is $z_\kappa$, which is absent. Similarly
+$J(\exp(z_\kappa))$ lies in $\Common$, whereas its logarithm
+$J(z_\kappa)$ does not, by injectivity of $J$ and the description of
+$\Common$. Thus the sentence asserting that every positive element has
+an exponential preimage holds in $(\No,\exp)$ and fails in both smaller
+exponential structures. Their ordered-field elementarity follows from
+real closedness.
+\end{proof}
+
+\begin{corollary}[One image is exponentially closed and the other is not]
+\label{cor:Hnotexp}
+The image $J(\No)$ is closed under both exponential and logarithm.
+The image $H_j(\No)$ is not closed under exponential.
+\end{corollary}
+\begin{proof}
+The first assertion follows immediately from \leref{lem:exptransfer}.
+For the second, use the classical order-preserving bijection
+$g:\No^{>0}\to\No$ specified by
+\[
+ \exp(\omega^b)=\omega^{\omega^{g(b)}}\quad(b>0).
+\]
+The purely infinite exponential formula says that
+$\exp(\sum r_\alpha\omega^{b_\alpha})
+=\omega^{\sum r_\alpha\omega^{g(b_\alpha)}}$ when all $b_\alpha>0$;
+see \cite[Theorem~10.13]{Gonshor} and \cite[Lemma~5.2, proof]{vdDE}.
+Define
+\[
+ p_\kappa=\sum_{\alpha<\kappa}\omega^{g^{-1}(-\alpha)}.
+\]
+The exponents are strictly decreasing and positive, so this is a purely
+infinite normal form and $\exp(p_\kappa)=\omega^{h_\kappa}$.
+The definition of $g$, together with transfer of exponential and the
+omega-map, shows that $J(g(b))=g(J(b))$ and hence that $J$ commutes with
+$g^{-1}$. Since $-\alpha$ is fixed for $\alpha<\kappa$, all the displayed
+exponents are fixed. Therefore $H_j(p_\kappa)=p_\kappa$, so
+$p_\kappa\in H_j(\No)$.
+
+But $h_\kappa\notin J(\No)=\Gam$ by \thref{thm:witness}.
+The monomial $\omega^{h_\kappa}$ consequently has its exponent outside
+$\Gam$ and is not in $H_j(\No)$ by \eqref{eq:Himage}.
+This proves the failure of exponential closure.
+\end{proof}
+
+\begin{theorem}[Two canonical closures of the common field]\label{thm:twoclosures}
+Among class subfields of $\No$ containing $\Common$, the least one closed
+under logarithms of positive elements is $J(\No)$, and the least one
+closed under external set-indexed strong sums is $H_j(\No)$.
+More explicitly, every element of $J(\No)$ has the form
+\begin{equation}\label{eq:singlelog}
+ \frac{\log m_1}{m_2},
+ \qquad m_1,m_2\in\{\omega^{J(a)}:a\in\No\}\subseteq\Common,
+\end{equation}
+and every element of $H_j(\No)$ is a strong sum of elements of
+$\Common$. These two closures are incomparable and intersect in exactly
+$\Common$.
+In contrast, both the logarithmic field closure and the strong-sum closure
+of the domain equalizer $\Sk$ are all of $\No$.
+\end{theorem}
+\begin{proof}
+The field $J(\No)$ contains $\Common$ and is logarithmically closed by
+\leref{lem:exptransfer}. Take $J(x)\in J(\No)$.
+Choose $d>0$ so that $z=\omega^d x$ is purely infinite, exactly as in
+\thref{thm:Oz}. Then $\exp z$ is a monomial. Both $\exp z$ and
+$\omega^d$ have one-term support and hence lie in $\Sk$.
+Set $m_1=J(\exp z)$ and $m_2=J(\omega^d)$; they are monomials in
+$\Common$. Exponential transfer gives
+\[
+ J(x)=\frac{J(z)}{J(\omega^d)}=\frac{\log m_1}{m_2}.
+\]
+Any logarithmically closed class subfield containing $\Common$ must
+therefore contain every $J(x)$, proving minimality and
+\eqref{eq:singlelog}.
+
+The field $H_j(\No)$ is strongly closed by \thref{thm:escape}. Every
+normal-form term $r\omega^{J(a)}$ in one of its members already lies in
+$\Common$, so strong closure of any class containing $\Common$ forces
+that member to be included. This proves the other minimality assertion.
+Incomparability and the intersection were proved earlier.
+
+For $\Sk$, the identical shift argument without $J$ expresses every
+$x\in\No$ as a quotient of the logarithm of a monomial in $\Sk$ by
+another monomial in $\Sk$. Also every surreal is a strong sum of real
+multiples of monomials, all of which lie in $\Sk$. This proves both
+final assertions. The minimality statements are explicit universal
+properties; they do not require forming an intersection of a collection
+of all classes.
+\end{proof}
+
+The two image fields are therefore canonically isomorphic as ordered
+valued fields over $\Common$, but their actual placement in $\No$ has
+different compatibility with the canonical exponential. Neither their
+shared residue field and value group nor their common monomials detect
+this difference. The support criterion \eqref{eq:explocus} is different
+from the whole-support equalizer criterion: the long-support finite
+number $h_\kappa$ lies in the former locus and not the latter.
+
+\section{Supercompactness as a seed-coefficient system}\label{sec:supercompact}
+
+The first support threshold depends only on the critical point. Thus it
+cannot by itself distinguish a measurable embedding from a stronger
+embedding with the same critical point. A richer family of coefficient
+probes does retain the classical seed information used for
+supercompactness.
+
+Assume $\lambda\ge\kappa$, $j(\kappa)>\lambda$, and $M$ is closed under
+$\lambda$-sequences from $V$. Let
+\[
+ I=P_\kappa(\lambda)=\{a\subseteq\lambda:\abs a<\kappa\},\qquad
+ s=\imset j\lambda.
+\]
+Closure gives $s\in M$, and in $M$ it has size at most $\lambda<j(\kappa)$,
+so $s\in j(I)$. These are the standard hypotheses and seed for a
+$\lambda$-supercompactness measure \cite{Neeman}.
+Choose a bijection $e:\theta\to I$. Let $\beta_s<j(\theta)$ be the
+unique index satisfying
+\begin{equation}\label{eq:seedindex}
+ j(e)(\beta_s)=s.
+\end{equation}
+For $A\subseteq I$, define the mask
+\[
+ m_A=\sum_{\substack{\alpha<\theta\\e(\alpha)\in A}}\omega^{-\alpha}.
+\]
+The construction depends on the enumeration $e$, which is explicitly part
+of the data.
+
+\begin{theorem}[Seed extraction]\label{thm:supercompact}
+The index $\beta_s$ is a missing-image index:
+$\beta_s\notin\imset j\theta$. Moreover
+\begin{equation}\label{eq:seedcoef}
+ \coef{-\beta_s}{D_j(m_A)}
+     =\mathbf 1_{\{s\in j(A)\}}\qquad(A\subseteq I).
+\end{equation}
+Consequently the seed coefficient recovers the fine normal
+$\kappa$-complete ultrafilter
+\[
+ U_s=\{A\subseteq P_\kappa(\lambda):s\in j(A)\}.
+\]
+\end{theorem}
+\begin{proof}
+If $\beta_s=j(\alpha)$, then $s=j(e(\alpha))=j(a)$ for some
+$a\in P_\kappa(\lambda)$. Since $\abs a<\kappa$,
+\leref{lem:index} gives $j(a)=\imset ja$. But
+$s=\imset j\lambda$, so injectivity of $j$ implies $a=\lambda$, a
+contradiction. Thus $\beta_s$ is missing from the pointwise index image.
+
+The transformed mask has coefficient 1 at $-\beta_s$ exactly when
+$j(e)(\beta_s)=s$ belongs to $j(A)$. The companion has its exponents
+only at positions $-j(\alpha)$, so it contributes zero there. This gives
+\eqref{eq:seedcoef}.
+
+Ultrafilter and $\kappa$-completeness follow by the same Boolean and
+short-index argument as in \thref{thm:measure}, with $s$ replacing
+$\kappa$. For each $\xi<\lambda$, the seed contains $j(\xi)$, so
+\[
+ \{a\in P_\kappa(\lambda):\xi\in a\}\in U_s;
+\]
+this is fineness. If $A\in U_s$ and $f:A\to\lambda$ satisfies
+$f(a)\in a$, then $j(f)(s)\in s=\imset j\lambda$.
+Write $j(f)(s)=j(\xi)$ for some $\xi<\lambda$. The fiber where
+$f(a)=\xi$ then belongs to $U_s$, proving normality.
+\end{proof}
+
+Fine normal $\kappa$-complete ultrafilters on $P_\kappa(\lambda)$ are the
+classical ultrafilter characterization of supercompactness, due to Solovay;
+see \cite{Neeman}. We have not discovered a new large-cardinal equivalence.
+The contribution is that the seed can be read as a coefficient of the
+same defect construction, and that its index is provably outside the
+termwise image. An intrinsic, enumeration-free coefficient geometry for
+these seed systems is a further research question, not a result claimed
+here.
+
+\section{What large cardinals change, and what they do not}\label{sec:interpretation}
+
+\subsection{No change to finite algebraic truth}
+Both $J$ and $H_j$ are elementary ordered-field embeddings. Their complex
+lifts are elementary embeddings of algebraically closed fields. Consequently
+they preserve every first-order formula in those respective field
+languages. The distinction made in this article is in additional structure:
+normal forms, external supports, indexed strong sums, and their coefficient
+probes. It would be wrong to describe \eqref{eq:Dh} as a failure of an
+ordinary field axiom.
+
+Likewise, a measurable cardinal does not alter the formula for adding two
+specified old surreal sign sequences. It supplies a nontrivial elementary
+embedding of the surrounding set universe, and that map moves certain
+\emph{entire set-indexed presentations}. The finite identities still
+transfer; the pointwise index set does not exhaust the transferred one.
+
+\subsection{Why there is no Kunen contradiction}
+The set-theoretic map is $j:V\to M$, not an elementary self-embedding
+$V\to V$. After forming surreal numbers in $M$, we compose with the
+identity inclusion into the ambient $\No^V$. That inclusion is elementary
+in the \emph{ordered-field reduct}, by real closedness. It is not being
+claimed elementary in a structure that recovers all of the surrounding
+set theory from birthdays or other codes.
+
+This matters when comparing with the repository's birthday-enriched
+structures \cite{RepoBirthday}. An order-field embedding can preserve
+specific operations and a birthday identity on its image without making
+the full ambient birthday expansion an elementary extension. The extra
+quantifiers of that expansion can range over new sign codes. Accordingly,
+our construction is not an exception to Kunen-type obstructions for a
+set-theoretically faithful elementary self-embedding.
+
+\subsection{A hierarchy of information}
+The first failure cardinal of positive strong summation is $\kappa$.
+The first missing coefficient on the masks $h_A$ recovers the normal
+measure $U_j$. At a supercompact seed, the wider mask family $m_A$
+recovers the associated fine normal measure. These are three different
+levels of data:
+\[
+ \text{critical point}
+ \quad\longleftarrow\quad
+ \text{normal-measure coefficient functional}
+ \quad\longleftarrow\quad
+ \text{seed-coefficient systems}.
+\]
+The arrows mean forgetting information, not an implication that every
+normal measure extends to every seed system. In particular, two distinct
+normal measures can have the same critical cardinal and the same equalizer
+field $\Sk$, while their defect functionals differ by
+Corollary~\ref{cor:distinctU}.
+
+\subsection{Choice and the scope of set formation}
+The proof does use Choice, already present in $\ZFC$, to enumerate an
+arbitrary set in \leref{lem:index} and to use the conventional measure
+characterizations. It uses Replacement with the embedding parameter to
+form pointwise images and inverse images of \emph{sets}. It does not
+choose a basis for the entire proper class $\No$, does not appeal to a
+class version of Zorn's lemma, and does not form the collection of all
+class endomorphisms as a set or class of its own. A definable normal
+ultrapower provides all the specific maps needed.
+
+\section{Position relative to the literature and the supplied repository}
+\label{sec:position}
+
+\subsection{Classical ingredients and proposed contributions}
+The following separation is part of the claim, not merely an editorial
+qualification. Conway normal forms, the real closedness of $\No$, the
+algebraic closedness of $\No(i)$, Hahn reindexing, and Gonshor's
+exponential are established background. Normal measures derived from
+embeddings, the ultrapower construction, and the fine-normal-measure
+characterization of supercompactness are also established background.
+The article uses these results to obtain an explicit comparison inside
+one ambient surreal field.
+
+\begin{longtable}{@{}p{0.26\textwidth}p{0.36\textwidth}p{0.32\textwidth}@{}}
+\toprule
+\textbf{Item} & \textbf{Status in this article} & \textbf{Relevant precedent}\\
+\midrule\endhead
+Conway normal forms and strong summation & Classical input; conventions and
+absoluteness requirements made explicit. & Conway, Gonshor, van den
+Dries--Ehrlich, Ehrlich \cite{Conway,Gonshor,vdDE,EhrlichNames}.\\[5pt]
+Monomial reindexing & Classical Hahn construction; elementary proof supplied.
+& General Hahn-field theory and the strong maps studied in \cite{KKS}.\\[5pt]
+Critical-index defect & Candidate original exact formula, including its first
+term and exclusion of image exponents. & Standard distinction
+$j(I)\ne\imset jI$ supplies the set-theoretic mechanism.\\[5pt]
+Equalizer and intersection & Candidate original package: exact short-support
+equalizer, common-image formula, incomparability, and coefficient projection.
+& Real-closed-field facts are classical; the present pair is constructed
+from the embedding.\\[5pt]
+Strong-sum escape & Candidate original intrinsic closure threshold for
+$J(\No)$, not only a noncommutation example. & Strong summability itself is
+classical.\\[5pt]
+Measure coefficient & Candidate original arithmetic realization. The derived
+ultrafilter and its properties are not new. & Normal ultrapowers and seed
+measures \cite{Neeman}.\\[5pt]
+Mask criterion & Classical ultrafilter criterion transported to an explicitly
+specified Hadamard algebra. & Direct-product homomorphisms and ultrafilters
+\cite{Bergman}.\\[5pt]
+Exponential boundary & Candidate original compatibility locus for this
+companion and its two-closure description. & Gonshor's exponential
+normal-form formula \cite{Gonshor,vdDE}.\\[5pt]
+Omnific and surcomplex transfer & Consequences proved here from the real
+construction; no separate large-cardinal assumption. & Canonical integer
+parts and quadratic extensions are classical.\\
+\bottomrule
+\end{longtable}
+
+The phrase ``candidate original'' means that this formulation and proof
+package was not located in the targeted material inspected for this
+article. It does not assert that no specialist has previously observed
+some or all of the consequences. In particular, elementary embeddings
+and Hahn series are mature subjects; the mechanism is simple once the
+correct two images are compared.
+
+\subsection{The repository snapshot actually inspected}
+The repository was read at commit
+\begin{center}\small
+\texttt{0865f043aec113c14c69ef45006bbc7546a4e75a}.
+\end{center}
+The targeted inspection comprised the root \texttt{README.md}, the
+\texttt{docs/README.md} report index, the READMEs for
+\emph{Surreal Fields Across Set-Theoretic Universes} and
+\emph{Birthday Cutoffs and Hereditary Sets}, and the former article's
+LaTeX preamble \cite{Repo,RepoUniverses,RepoBirthday}.
+The style here follows that report's restrained theorem-centered layout.
+This was not a line-by-line audit of the whole repository or its formalization
+ledger.
+
+The cross-universe report describes omitted cuts, fresh sign sequences,
+external saturation, first new birthdays, and Prikry examples. The
+birthday report describes hereditary-set interpretations and the recovery
+of set-theoretic information from birthday-enriched structures. Its README
+explicitly attributes the announced full-class bi-interpretation to
+Chen--Hamkins--Yang. Those earlier themes are relevant context but are not
+used as unproved premises of our theorems.
+
+The present article takes a different route. It does not add birthday
+coding to recover the entire set universe, and it does not change the
+universe by forcing. It compares the pointwise elementary action and its
+strong monomial extension inside a fixed universe. The output is an
+arithmetic defect whose support and coefficients can be calculated exactly.
+The constant-term discussion of omnific integers is also kept separate
+from the repository's proposed set-sized quotient theorems
+\cite{RepoQuotients}.
+
+The root README reports existing formal Hahn infrastructure, including
+summable families and exponent-embedding maps. That makes a substantial
+part of the algebraic proof a plausible formalization target. It does
+\emph{not} mean the large-cardinal construction, the absoluteness lemma,
+or any theorem specific to this article is already checked in Lean.
+The repository itself warns that research reports, finite tests, and
+formal proof coverage are different kinds of evidence.
+
+\subsection{Relation to current automorphism work}
+Kaplan--Krapp--Serra \cite{KKS} provide a contemporary framework for
+strongly additive maps, monomial actions, valuation structure, and
+additional surreal operations. We use their definitions and general Hahn
+context, not a particular non-strong automorphism construction from that
+paper. Our maps are nonsurjective embeddings, and their valuations are
+transported by $J$ rather than fixed pointwise. Results that assume
+bijectivity or pointwise preservation of the value group must not be
+applied to this pair without checking those hypotheses.
+
+No claim is made to settle one of that paper's numbered questions.
+Rather, our construction answers a new precisely stated family of
+structural questions under an explicit large-cardinal hypothesis. A
+specialist comparison with the unpublished details of related projects
+would be appropriate before submitting a priority claim.
+
+\section{Further research questions and concrete next steps}\label{sec:questions}
+
+The following questions are proposed by this article. They are not
+presented as an established list of famous open problems. Each isolates
+something not proved above and indicates what a meaningful answer would
+require.
+
+\begin{question}[Optimal consistency strength]\label{q:strength}
+Suppose two ordered-field embeddings $P,Q:\No\to\No$ fix $\R$, agree
+on all ordinals and monomials, $Q$ is strongly linear, and their equalizer
+and image intersection satisfy the formulas of
+\thref{thm:intersection} for an uncountable $\kappa$. Suppose also that
+$P$ fixes every ordinal below $\kappa$, moves $\kappa$, and commutes with
+the omega-map. Must $\kappa$ be measurable, or can such a pair exist
+without an ambient elementary embedding of set theory?
+\end{question}
+The obstruction to a converse is precise: the first defect coefficient
+is not automatically a character for the Hadamard product merely because
+$P$ is multiplicative for ordinary surreal multiplication.
+\thref{thm:measurablecriterion} solves the converse only when the
+coefficient-algebra structure and its small-union law are available.
+
+\begin{question}[Classification of strong companions]
+For an arbitrary real-fixing omega-map-compatible ordered-field embedding
+$P$, classify the equalizer of $P$ with the Hahn reindexing map $T_P$.
+Which equalizers are cardinal support bounds, and which depend on the
+shape, cofinality, or iterated structure of the exponent support?
+\end{question}
+The construction $T_P$ is always available by \leref{lem:reindex}.
+What is special to the present large-cardinal setting is the exact
+missing-index formula and the absence of cancellation in it.
+
+\begin{question}[Recovering an embedding from fewer coefficient probes]
+What is the least family of masks and coefficient positions that determines
+$j$ on a specified hereditary-size universe $H_\lambda$? Can normal-form
+probes of bounded complexity recover more than the derived normal measure
+at the critical point?
+\end{question}
+Using all subsets of all ordinals with all coefficients would retain
+far more information than a single normal measure. The meaningful task
+is to specify a restricted family and prove a sharp reconstruction or
+nonreconstruction theorem.
+
+\begin{question}[Measure order from defect data]
+Can the Mitchell ordering, or another comparison relation between normal
+measures on $\kappa$, be recovered from a natural algebraic relation between
+their coefficient functionals $\chi_j$, without naming the ambient
+ultrapower models as extra predicates?
+\end{question}
+Corollary~\ref{cor:distinctU} gives injective detection of individual
+measures. It gives no criterion for their relative position in an
+ultrapower hierarchy.
+
+\begin{question}[Intrinsic supercompact seed systems]
+Can the seed construction of \thref{thm:supercompact} be formulated
+without choosing an enumeration of $P_\kappa(\lambda)$? Is there a natural
+coordinate-free compatibility law for the resulting systems as $\lambda$
+varies that detects the appropriate closure of $M$?
+\end{question}
+Any proposal must preserve fineness and normality and must distinguish
+an actual seed in $j(P_\kappa(\lambda))$ from an arbitrary missing-image
+index. Merely having many extra coefficients does not imply
+supercompactness.
+
+\begin{question}[Joint algebraic dependence of the images]
+Are $J(\No)$ and $H_j(\No)$ linearly disjoint over $\Common$? More
+modestly, for a finite tuple $x$, can one decide the transcendence degree
+of $H_j(\No)(J(x))$ over $H_j(\No)$ from the missing-image supports?
+\end{question}
+Every single element outside the intersection is transcendental over
+the opposite real-closed image field. That does not decide joint algebraic
+independence of a tuple, and the exact intersection theorem is not a
+substitute for a disjointness proof.
+
+\begin{question}[Alternating the two closures]
+Starting with $\Common$, what field is obtained by alternating logarithmic
+field closure and external strong-sum closure? Do finitely many alternations
+stabilize, and can the result be characterized directly from the exponent
+image $J(\No)$?
+\end{question}
+\thref{thm:twoclosures} determines each first closure exactly. Their
+incomparability makes the mixed closure a genuinely different question.
+One should distinguish closure under sums from closure under all normal-form
+subseries or the omega-map.
+
+\begin{question}[Differential compatibility]
+For a specified canonical surreal derivation, what is the exact locus on
+which $J$ or $H_j$ commutes with it? Can a differential analogue of
+\eqref{eq:explocus} be expressed using support or the iterated logarithmic
+structure of the exponents?
+\end{question}
+The exponential locus is settled here. A derivation may depend on further
+normal-form and logarithmic data, so its preservation is not a consequence
+of being an ordered-field embedding. No differential claim should be
+imported without verifying the actual chosen derivation.
+
+\begin{question}[Definability in weaker signatures]
+Which of $\Sk$, $\Common$, and the coefficient projection $\Pi_j$ are
+definable in natural reducts of the structure with the maps $J,H_j$?
+Can any of the large-cardinal information survive after the embedding
+symbols and the Hadamard product are forgotten?
+\end{question}
+With both maps named, $\Sk$ is the immediate equalizer formula. The
+question concerns losing symbols, not that trivial definition. Pure
+field elementarity alone cannot recover the external strong-sum threshold.
+
+\begin{question}[Extending the coefficient-projection isomorphism]
+Under what explicit additional hypotheses does the isomorphism
+$\Pi_j:J(\No)\to H_j(\No)$ extend to an automorphism of a larger
+specified surreal subfield, or of the full ordered field? Which extension
+requirements on monomials, simplicity, or exponentiation obstruct it?
+\end{question}
+The given isomorphism fixes the common field and all common monomials.
+It is not globally multiplicative on $\No$, so its existing definition
+cannot simply be reused as the desired extension.
+
+\begin{question}[Forcing and lifted embeddings]
+If an embedding $j$ lifts through a forcing extension, which of its old
+coefficient defects are preserved and which new supports appear? Can the
+lifting criterion be expressed through a commuting square of strong
+companions and coefficient projections?
+\end{question}
+This would connect the present arithmetic construction to the repository's
+cross-universe saturation work. One must first specify the ground and
+extension, verify the lift, and distinguish new index sets from changed
+cardinalities; no automatic preservation is asserted.
+
+\begin{question}[A reusable formal theorem package]
+Can the exact defect, image intersection, and closure theorems be formalized
+in a way that separates abstract ordered Hahn algebra from the set-theoretic
+embedding interface? What is the smallest verified interface sufficient
+for the elementary-embedding application?
+\end{question}
+The proposed architecture in Appendix~\ref{app:formalization} treats the
+critical-point and absoluteness obligations as explicit theorems to be
+proved, not as silently trusted axioms. This would make the genuinely
+new algebraic consequences independently reusable and auditable.
+
+\section{Conclusion}
+The difference between $j(I)$ and $\imset jI$ becomes a literal normal-form
+difference in surreal arithmetic. Comparing the elementary-induced map
+with the strongly linear map having the same monomial values exposes that
+difference without sacrificing finite algebra.
+
+The outcome is stronger than a single counterexample to summation
+preservation. There is an exact equalizer, an exact intersection, a
+canonical isomorphism of two incomparable immediate image fields, and an
+intrinsic positive-family escape threshold. Their common field has two
+different canonical enlargements: logarithmic closure produces the
+elementary image, while strong-sum closure produces its Hahn companion.
+One coefficient of the difference recovers the derived normal measure;
+shifting the code makes it purely infinite and omnific. The same mechanism
+works over complex coefficients and at supercompact seeds.
+
+These statements answer the structural questions posed in this article
+under a measurable-cardinal hypothesis. They are offered for independent
+verification and comparison with the literature, not as a claim that the
+large-cardinal hierarchy or a named longstanding conjecture has been
+settled. The strongest next step is to test the converse: how much of the
+set-theoretic embedding can be forced by the arithmetic signature alone?
+
+\appendix
+\section{Proof dependencies and a formalization plan}\label{app:formalization}
+
+\subsection{Dependency order}
+The proof does not use the repository's unreviewed set-theoretic
+bi-interpretation or quotient theorems as assumptions. Its main dependency
+chain is
+\begin{align*}
+ &\text{canonical surreal/Hahn theory}
+   +\text{elementary embedding with critical point}\\
+ &\hspace{12pt}\Longrightarrow
+   \text{absolute normal forms and the missing-index lemma}\\
+ &\hspace{12pt}\Longrightarrow J,\ H_j,
+   \text{ exact defect and exponent-range exclusion}\\
+ &\hspace{12pt}\Longrightarrow
+   \text{equalizer, intersection, coefficient projection, strong escape}\\
+ &\hspace{12pt}\Longrightarrow
+   \text{omnific, surcomplex, and mask-coefficient consequences}.
+\end{align*}
+The logarithmic-defect homomorphism adds only the standard near-one Hahn
+logarithm. The exact exponential locus and two-closure theorem add the
+canonical Gonshor exponential and its purely infinite normal-form
+formula. The supercompact seed theorem adds the separate
+$\lambda$-sequence-closure hypothesis on $M$.
+
+\subsection{A proposed Lean interface, not a formalization claim}
+A realistic implementation should begin with a universe-bounded Hahn
+workspace, then state separately how that workspace represents canonical
+surreal normal forms. The following components are logically distinct.
+
+\begin{longtable}{@{}p{0.22\textwidth}p{0.46\textwidth}p{0.25\textwidth}@{}}
+\toprule
+\textbf{Component} & \textbf{Obligation} & \textbf{Verification status here}\\
+\midrule\endhead
+Exponent reindexing & An additive order embedding preserves reverse
+well-ordered support, finite convolution, and summable families. & Written
+proof; repository describes related infrastructure.\\[5pt]
+Canonical bridge & Sign sequences, Conway arithmetic, the omega-map, and
+normal-form reconstruction agree with the Hahn representation. & Classical
+input; not rebuilt or kernel-checked here.\\[5pt]
+Universe absoluteness & Old normal forms and their strong sums are unchanged
+on passage from $M$ to $V$. & Written reduction to the constructive
+sign-expansion theorem.\\[5pt]
+Embedding interface & Images of index functions; fixed coefficients;
+$j(\theta)\setminus\imset j\theta$; critical-index and range-reflection
+lemmas. & Written proofs; no Lean set-theory implementation supplied.\\[5pt]
+Defect theorem & Split a transformed summable family into image and
+missing-image indices; prove first-term and support exclusion. & Written
+proof; finite deletion identity checked separately.\\[5pt]
+Image geometry & Exact intersection, projection isomorphism, real closedness,
+immediacy, and strong-sum escape. & Written proofs only.\\[5pt]
+Measure interface & Indicator masks, Hadamard characters, completeness,
+normality, and supercompact seeds. & Written proofs; finite Boolean
+characters checked only as a finite analogue.\\[5pt]
+Exponential interface & Absolute recursive exponential, monomial values on
+purely infinite inputs, and infinitesimal power-series evaluation. &
+Classical input and written consequences; not formalized here.\\
+\bottomrule
+\end{longtable}
+
+The measurable-cardinal assumption must not be inserted as an unnamed
+``surreal summation axiom.'' A useful interface can abstract the exact
+properties of $j$ for the algebraic proofs, but the application to a normal
+ultrapower still needs an explicit model of the set-theoretic construction.
+That boundary is essential for avoiding a formal proof whose interesting
+mathematics has merely been assumed.
+
+\section{Verification, limitations, and an audit checklist}\label{app:verification}
+
+\subsection{Finite regression checks}
+The accompanying program \texttt{code/finite\_regression.py} uses only the
+Python standard library and exact rational arithmetic. It tests finite
+Laurent-polynomial reindexing, the deletion-of-indices coefficient identity,
+the twisted product identity, a finite exponent shift, and the exhaustive
+Boolean-algebra characters of a four-point set. Results are saved in
+\texttt{data/finite\_regression\_results.json}.
+
+These tests can detect an incorrect sign, a wrong coefficient position,
+or confusion between pointwise and convolution products in a finite
+identity. They do not model a nontrivial elementary embedding of the
+universe. On a finite Boolean algebra every ultrafilter is principal;
+the exhaustive check confirms that fact and cannot certify the existence
+of a nonprincipal complete ultrafilter. There is no numerical experiment
+for measurability in this package.
+
+The PDF is compiled from the standalone source and visually inspected.
+No Lean kernel, Wolfram kernel, or other proof assistant was used to
+verify this article's new theorems. The source and finite program are
+provided so that those limited forms of verification can be reproduced.
+
+\subsection{Points requiring particular attention in an independent review}
+The most important review target is the passage from the internal normal
+form of $j(x)$ to its external canonical normal form. That passage uses
+\leref{lem:absolute} and the constructive, not arbitrary, Hahn
+identification. Next, verify that the missing-image exponents cannot lie
+in $J(\No)$; this range-reflection argument is the source of both the
+intersection theorem and the intrinsic escape theorem.
+
+Further checks concern the separation of outer support from birthday;
+the restriction to positive nonzero terms in the exact family-cardinality
+criterion; the distinction between a zero coefficient probe and a zero
+whole defect; and the use of Hadamard multiplication in the character
+theorem. In the exponential section, check the uniform recursive
+absoluteness and the monomial value of a purely infinite exponential.
+The supercompact theorem requires its actual seed to belong to $M$, not
+just an external set of the right apparent cardinality.
+
+Every assertion about classes in this article reduces to a specified class
+map and set-indexed operations, or to a universal property of such maps.
+No proof uses a proper-class normal-form support. No claim is made that
+$H_j(\No)\subseteq\No^M$, or that $J(\No)=\No^M$; neither identification
+is part of the construction. All image and intersection statements occur
+inside the fixed ambient $\No^V$.
+
+\subsection{Claim summary}
+Under \eqref{eq:setting}, the exact defect, support equalizer, image
+intersection, projection isomorphism, positive escape, measure coefficients,
+omnific and surcomplex transfers, exponential locus, and two closures are
+proved in the text, relative to the stated classical inputs. The
+supercompact construction is proved with its additional closure hypothesis.
+The mask criterion is a proved reformulation of the classical measure
+characterization. Publication priority, consistency-strength converses,
+joint algebraic independence, differential compatibility, and all twelve
+research questions remain outside the claims of this article.
+
+\begingroup
+\small
+\raggedright
+\begin{thebibliography}{99}
+\setlength{\itemsep}{4pt}
+\setlength{\parskip}{0pt}
+\addcontentsline{toc}{section}{References}
+
+\bibitem{Conway}
+John H. Conway,
+\emph{On Numbers and Games}, second edition,
+A K Peters, 2001; first edition, Academic Press, 1976.
+Classical source for surreal arithmetic, normal forms, and omnific integers.
+
+\bibitem{Gonshor}
+Harry Gonshor,
+\emph{An Introduction to the Theory of Surreal Numbers},
+London Mathematical Society Lecture Note Series 124,
+Cambridge University Press, 1986.
+Especially Chapters 5 (normal forms) and 10 (exponentiation).
+
+\bibitem{vdDE}
+Lou van den Dries and Philip Ehrlich,
+``Fields of surreal numbers and exponentiation,''
+\emph{Fundamenta Mathematicae} \textbf{167}(2) (2001), 173--188.
+\href{https://doi.org/10.4064/fm167-2-3}{doi:10.4064/fm167-2-3}.
+Publisher-hosted text consulted:
+\url{https://www.impan.pl/shop/en/publication/transaction/download/product/89226}.
+
+\bibitem{EhrlichNames}
+Philip Ehrlich,
+``Conway names, the simplicity hierarchy and the surreal number tree,''
+\emph{Journal of Logic \& Analysis} \textbf{3}:1 (2011).
+\url{https://logicandanalysis.org/index.php/jla/article/download/88/34}.
+
+\bibitem{KKS}
+Elliot Kaplan, Lothar Sebastian Krapp, and Michele Serra,
+``Decomposing the automorphism group of the surreal numbers,''
+\texttt{arXiv:2509.22374}, version 3, consulted 23 September 2026.
+\url{https://arxiv.org/html/2509.22374v3}.
+Used for the contemporary Hahn and strong-map framework, not as a
+premise for a particular non-strong automorphism example.
+
+\bibitem{Neeman}
+Itay Neeman,
+``Ultrafilters and Large Cardinals,'' author-hosted manuscript,
+Section 1, consulted 23 September 2026.
+\url{https://www.math.ucla.edu/~ineeman/uflc.pdf/}.
+Includes the standard elementary-embedding, derived-measure, and
+supercompact-seed constructions.
+
+\bibitem{Bergman}
+George M. Bergman,
+``Homomorphisms on infinite direct products of groups, rings and monoids,''
+\texttt{arXiv:1406.1932}, version 2, consulted 23 September 2026.
+\url{https://arxiv.org/html/1406.1932v2}.
+Context for ultrafilters and homomorphisms of infinite product algebras.
+
+\bibitem{Repo}
+Vladimir Reshetnikov and contributors,
+\emph{Surreal}, repository snapshot
+\texttt{0865f043aec113c14c69ef45006bbc7546a4e75a},
+root \texttt{README.md} and \texttt{docs/README.md},
+consulted 23 September 2026.
+\url{https://github.com/VladimirReshetnikov/Surreal/tree/0865f043aec113c14c69ef45006bbc7546a4e75a}.
+Repository statements and formalization coverage are distinguished from
+independently checked proofs in the present article.
+
+\bibitem{RepoUniverses}
+\emph{Surreal Fields Across Set-Theoretic Universes},
+repository research report, README and source preamble inspected at the
+snapshot in \cite{Repo}.
+\url{https://github.com/VladimirReshetnikov/Surreal/tree/0865f043aec113c14c69ef45006bbc7546a4e75a/docs/foundations-and-computation/surreal-fields-across-universes}.
+Research context only; its new theorems are not premises here.
+
+\bibitem{RepoBirthday}
+\emph{Birthday Cutoffs and Hereditary Sets},
+repository research report, README inspected at the snapshot in \cite{Repo}.
+\url{https://github.com/VladimirReshetnikov/Surreal/tree/0865f043aec113c14c69ef45006bbc7546a4e75a/docs/foundations-and-computation/birthday-cutoffs-and-hereditary-sets}.
+The README credits the full-class bi-interpretation announcement to
+Chen--Hamkins--Yang. That announcement is not claimed as new here.
+
+\bibitem{RepoQuotients}
+\emph{Set-Sized Quotients of Omnific Integers},
+catalogue entry in \texttt{docs/README.md} at the snapshot in \cite{Repo}.
+Relevant report directory:
+\url{https://github.com/VladimirReshetnikov/Surreal/tree/0865f043aec113c14c69ef45006bbc7546a4e75a/docs/surreal/set-sized-quotients-of-omnific-integers}.
+Cited only to identify the repository's existing constant-term theme.
+
+\end{thebibliography}
+\endgroup
+\end{document}
