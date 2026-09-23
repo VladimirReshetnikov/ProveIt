@@ -34,9 +34,10 @@ implemented result.
 The complex cosine fold now has its exact infinitesimal root classification,
 real and imaginary branch behavior, half-valuation law, and complete strong
 inverse-sine expansion. The displayed cubic factor has an exact finite
-fourth-order remainder. Fine derivatives and the order-two collision series
-are verified; the bridge to the manuscript's polynomial definition of angular
-multiplicity remains pending.
+fourth-order remainder. The exact local angular strong series has order one at separated roots and
+order two at collision. Euler's identity identifies the manuscript's
+exponential coordinate, and the native polynomial multiplicities agree
+with those local orders, completing the cosine fold theorem.
 
 The first modules establish size obstructions and reusable finite algebra.
 Complexification uses mathlib's `QuadraticAlgebra`, with its cross-term
