@@ -472,6 +472,14 @@ remaining imports and source reconciliation still require review.
 The independent statement-index audit checks 2,030 entries across 44 current
 texts; all 829 local Markdown destinations in 93 files resolve.
 
+The final sync merged `4590b2c`, including the leading-term formalizations
+from `6ae6fd5`. The combined Lean build passed 3,885 jobs and its
+5,990-declaration audit using only `propext`, `Classical.choice` and
+`Quot.sound`. The differential-equations source and PDF were unchanged by
+the merge. The independent index still checks 2,030 entries, and all 833
+local Markdown destinations in 93 files resolve. These incoming analytic
+mappings do not formalize the abelian results reviewed here.
+
 ## Collection-wide work
 
 The [reader map](README.md) and statement index now cover all 44 main texts,
