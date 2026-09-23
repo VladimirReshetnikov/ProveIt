@@ -132,7 +132,7 @@
 {\Large Convex-scale stabilizers, definable constants,\\[1mm]
  nondefinable monomials, and algebraic-parameter rigidity\par}
 \vspace{5mm}
-{\large Built from eight manuscripts dated September 23, 2026\par}
+{\large Built from nine manuscripts dated September 23, 2026\par}
 \vspace{4mm}
 \begin{minipage}{\textwidth}
 \begin{abstract}
@@ -172,8 +172,11 @@ every ring automorphism of $\Oz$ extends to a strong automorphism of $\No$, as
 constant-term tests detect Hahn summability, and classifies the strong
 monomial-preserving embeddings that preserve the integer parts; proper
 self-embeddings of $\No$ preserving and reflecting $\Oz$ can move a real number.
+A fourth part adds a third proof of the constant-term detection, by induced
+matchings, detection inside subfields containing enough all-ones series, and
+equivariance of formal power-series evaluation.
 
-This report merges eight independently written manuscripts, prints shared
+This report merges nine independently written manuscripts, prints shared
 results once with every source named, and keeps every source's limitations.
 It is an AI-assisted draft: it has not been refereed, and nothing in it has
 been formalized in Lean.
@@ -185,8 +188,9 @@ been formalized in Lean.
 Sources: manuscripts 09 (the base text), 04 and 02, pinned to repository
 commit \texttt{fb5c4b5}, 08, pinned to \texttt{befe739}, the later
 addition 10, pinned to \texttt{58cd8e1}, and the batch-30 additions 11, 12
-and 13, pinned to \texttt{cf56b89}, \texttt{a6c68ac} and \texttt{0865f04};
-their titles are in \cref{opa:sub:provenance,opa:as:sub:sources}. Results already printed in the omnific
+and 13, pinned to \texttt{cf56b89}, \texttt{a6c68ac} and \texttt{0865f04},
+and the batch-31 addition 14, pinned to \texttt{3d40856};
+their titles are in \cref{opa:sub:provenance,opa:as:sub:sources,opa:cm:sub:source}. Results already printed in the omnific
 Diophantine report \fn{docs/surreal/omnific-diophantine-geometry} are cited,
 not reprinted. The provenance of every section is recorded in
 \cref{opa:app:provenance}; non-claims are collected in
@@ -223,7 +227,9 @@ nonconstant \emph{algebraic} family of embeddings, although it admits
 formal flows of all orders. \Cref{opa:part:as}, from three later
 manuscripts, removes the strongness hypothesis from the classification for
 $(\No,\Oz)$ and shows that the rigidity of automorphisms does not pass to
-proper embeddings.
+proper embeddings. \Cref{opa:cm:part}, from a ninth manuscript, derives the
+same automatic strongness a third time and adds a third detection proof and
+detection in subfields.
 
 \subsection{Principal results}\label{opa:sub:results}
 
@@ -315,7 +321,7 @@ finite-type domains land in a finite field of algebraic constants
 formal flows of all orders that no polynomial family realizes, with an exact
 transcendence degree for their monomial orbit fields
 (\cref{opa:par:thm:nonalg,opa:par:thm:orbitfield}).
-\item \textbf{Automatic strongness and proper embeddings} \src{11, 12, 13}. A
+\item \textbf{Automatic strongness and proper embeddings} \src{11, 12, 13; 14}. A
 set-indexed family in a full Hahn field is summable exactly when, for every
 $y$, only finitely many $\ct(x_jy)$ are nonzero, and countable $\{0,1\}$-valued
 tests suffice; so a field isomorphism of full Hahn fields commuting with $\ct$
@@ -335,6 +341,18 @@ at set size and a proper-class obstruction, closed images and a
 continuity dichotomy, nonelementarity, continuum many nonconjugate copies,
 parameter-fixed copies and surcomplex versions
 (\cref{opa:as:sec:adjoint,opa:as:sec:topology,opa:as:sec:model,opa:as:sec:complex}).
+\item \textbf{A fourth derivation} \src{14}. Source 14 proves the automatic
+strongness of the real pair again, in less generality, and is credited beside 12
+and 13. It adds a third proof of detection: an induced matching yields a detector
+with all coefficients $1$, so monomials and all-ones series on increasing
+sequences suffice (\cref{opa:cm:lem:matching,opa:cm:cor:allones}). Detection and
+transport of sums hold in every subfield containing those series
+(\cref{opa:cm:prop:workspace}), but not in the Puiseux field
+(\cref{opa:cm:ex:puiseux}, \mergetag). Pair automorphisms commute with formal
+power-series evaluation at infinitesimals (\cref{opa:cm:thm:formal}), the adjoint
+is a sign-reversed transpose (\cref{opa:cm:prop:adjointmatrix}), and an extension
+of a ring automorphism of $\mathcal R_\Gamma$ is unique
+(\cref{opa:cm:prop:unique}, \mergetag).
 \end{enumerate}
 
 These statements are proved here, but proving a statement here is not a claim
@@ -346,9 +364,10 @@ contributions, and no exhaustive priority claim is made
 
 \subsection{Provenance of this report}\label{opa:sub:provenance}
 
-The report is built from eight manuscripts written independently: five for
-\cref{opa:part:aut,opa:part:par}, described here, and three for
-\cref{opa:part:as}, described in \cref{opa:as:sub:sources}. Four were
+The report is built from nine manuscripts written independently: five for
+\cref{opa:part:aut,opa:part:par}, described here, three for
+\cref{opa:part:as}, described in \cref{opa:as:sub:sources}, and one for
+\cref{opa:cm:part}, described in \cref{opa:cm:sub:source}. Four were
 placed together in commit \texttt{f4c9504} (batch 26, items 02, 04, 08 and
 09; they keep these numbers here, as their shipped file prefixes do).
 Manuscripts 02, 04 and 09 pin repository commit \texttt{fb5c4b53} (12 commits
@@ -422,6 +441,12 @@ The same main theorems as 12, printed once; its countable binary witness,
 isomorphisms between different groups, the coefficient-matrix formula, the
 example that constant-term preservation does not preserve $\Oz$, the
 small-integer-part example and the failure of pair homogeneity.\\
+14 & \emph{Automatic Summability from Omnific Arithmetic: constant-term duality,
+the full omnific stabilizer, and a sharp set--class distinction} &
+A third derivation of 12's and 13's main theorems, printed once with them; all of
+\cref{opa:cm:part}: the induced-matching route to detection, detection in
+subfields with the countable detector property, formal evaluation, the general
+adjoint matrix, the case $\Gamma=\R$ and one new question.\\
 \bottomrule
 \end{longtable}
 \end{center}
@@ -472,6 +497,17 @@ embeddings of 12 and 13 as instances. Where the merge chose is recorded in
 \cref{opa:as:sub:sources}. None of the three contradicts this report or another;
 they answer \cref{opa:q:strong}, and the passages of
 \cref{opa:part:aut} that recorded it as open now carry status notes.
+
+Manuscript 14, item 07 of batch 31, was placed as an addition in commit
+\texttt{9d28e28}. It pins \texttt{3d40856}, which contains the batch-26 text of
+this report but none of the material of sources 10--13, and it proves the main
+theorems of 12 and 13 again, for $\Gamma=\Delta$ divisible. Those results are
+printed once in \cref{opa:part:as}, with 14 added to their sources; its genuinely
+new material forms \cref{opa:cm:part}, placed after \cref{opa:part:as} and before
+the appendices, so that no existing number changes, with the sub-prefix
+\lbl{opa:cm:}. It contradicts neither this report nor any other; its statement
+that it removes the strongness hypothesis was accurate at its pin and is stale at
+the merge (\cref{opa:cm:sub:stale}).
 
 \subsection{Imported results}\label{opa:sub:imported}
 
@@ -2755,7 +2791,7 @@ one is strong. \emph{Partial information} \src{10}: the necessity half of the
 criterion holds without strongness on every monomial
 (\cref{opa:sc:rem:nonstrong}); the passage to arbitrary series is what remains.
 The question stays open. \emph{Status} (batch 30): \emph{answered} by sources 12
-and 13. Every ring automorphism of $\Oz$ extends uniquely to a strongly
+and 13 (and independently by source 14, batch 31, \cref{opa:cm:part}). Every ring automorphism of $\Oz$ extends uniquely to a strongly
 $\R$-linear automorphism of $\No$ with strong inverse (\cref{opa:as:thm:main}):
 all of them extend to strong automorphisms, preservation of $\Oz$ forces
 strongness, there is no nonstrong example, 09's characterization is vacuous, and
@@ -2772,7 +2808,8 @@ class the integer-part condition is exactly $a_\delta(C_\delta)=0$.
 Common positive support is one sufficient regime; the convex condition alone is not
 asserted to solve the global problem. This is the problem the surcomplex report
 describes under ``what monomial prescriptions do not automatically give''. Sources
-12 and 13 ask it again; it stays open (\cref{opa:as:sub:status}).
+12 and 13 ask it again; it stays open (\cref{opa:as:sub:status}). Source 14 asks it again
+as a parameter space for the whole leading-term-fixing factor (\cref{opa:cm:sub:status}).
 
 \begin{question}[Full relative fixed fields \src{04}]\label{opa:q:relative}
 For a set $A$ of parameters, determine $\Fix((\UU_\Oz)_A)$. It is contained in
@@ -3507,6 +3544,10 @@ another and with the rest of the report: automorphisms preserving $\Oz$ fix $\R$
 audits are wrong and are recorded in \cref{opa:sub:corrections}; neither affects the
 mathematics.
 
+\emph{Batch 31.} Source 14, written independently of 11--13, re-derives the
+automatic-strongness results of this part; where it does, 14 is added to the source
+tag, and its own material and its notation are in \cref{opa:cm:part}.
+
 \subsection{What this part settles}\label{opa:as:sub:settles}
 
 \begin{itemize}[itemsep=2pt]
@@ -3656,7 +3697,7 @@ $K=\Hahn k\Gamma$ a full Hahn field; $\Gamma$ may be a set or $\No$, with set-si
 supports. The point is that one scalar functional, $\ct$, together with multiplication,
 recognizes Hahn summability.
 
-\begin{lemma}[Finite intersection \src{12, 13}]\label{opa:as:lem:intersection}
+\begin{lemma}[Finite intersection \src{12, 13, 14}]\label{opa:as:lem:intersection}
 If $S,T\subseteq\Gamma$ are well ordered, then $S\cap(-T)$ is finite.
 \end{lemma}
 \begin{proof}
@@ -3708,7 +3749,7 @@ uncountability, genericity or analytic argument. Asking for \emph{every} row to 
 would be false: over $\mathbb F_2$ the forms $x$, $y$, $x+y$ cannot all be nonzero
 \src{13}.
 
-\begin{theorem}[Scalar detection of Hahn summability \src{12, 13}]\label{opa:as:thm:detect}
+\begin{theorem}[Scalar detection of Hahn summability \src{12, 13, 14}]\label{opa:as:thm:detect}
 For a set-indexed family $(x_j)_{j\in I}$ in the full Hahn field $K$ the following are
 equivalent:
 \begin{enumerate}[label=\textup{(\roman*)},itemsep=1pt]
@@ -3746,7 +3787,9 @@ The two routes differ in how cancellation is prevented: 12 first makes the famil
 triangular and then chooses coefficients; 13 keeps the family and chooses coefficients
 row by row. 12's witness is also countable and binary, although 12 does not state it;
 13 does. Every witness has countable set support, so the theorem holds for
-$\Gamma=\No$ \src{12, 13}.
+$\Gamma=\No$ \src{12, 13}. A third route, 14's induced matching, whose witness has all
+coefficients $1$ and involves no choice of coefficients, is printed in
+\cref{opa:cm:sec:matching}.
 
 \begin{corollary}[Countable certificates \src{13}]\label{opa:as:cor:countable}
 Every nonsummable set-indexed family has a countable subfamily and a countably supported
@@ -3767,7 +3810,7 @@ descend. Each monomial test detects at most one member, whereas the Hahn series
 $y=\sum_{n\ge1}t^n$ has $\ct(yx_n)=1$ for every $n$.
 \end{example}
 
-\begin{remark}[Finiteness spaces \src{12, 13}]\label{opa:as:rem:finiteness}
+\begin{remark}[Finiteness spaces \src{12, 13, 14}]\label{opa:as:rem:finiteness}
 \Cref{opa:as:lem:intersection} is finite-intersection orthogonality, and its linearization
 is the finiteness-space duality of Ehrhard, applied to generalized power series by Blute,
 Cockett, Jacqmin and Scott \cite{BCJS}. Neither support duality nor the notion of a strong
@@ -3780,7 +3823,7 @@ topology \src{13}.
 
 \section{Constant-term-covariant isomorphisms are strong}\label{opa:as:sec:ctiso}
 
-\begin{theorem}[Automatic strongness from constant-term covariance \src{12, 13}]\label{opa:as:thm:ctiso}
+\begin{theorem}[Automatic strongness from constant-term covariance \src{12, 13, 14}]\label{opa:as:thm:ctiso}
 Let $K=\Hahn k\Gamma$ and $L=\Hahn l\Delta$ be full Hahn fields, the exponent groups sets or
 $\No$, with set supports. Let $F:K\to L$ be a field isomorphism and $\alpha:k\to l$ a field
 isomorphism with
@@ -3802,7 +3845,7 @@ $\pairing{F(s)}y=\alpha\bigl(\sum_j\pairing{x_j}z\bigr)=\sum_j\pairing{F(x_j)}y=
 for all $y$, so $F(s)=w$. The inverse satisfies the hypotheses with $\alpha^{-1}$.
 \end{proof}
 
-13 proves this with the extra hypothesis $F(k)=l$ and $\alpha=F|_k$; 12 derives it. The
+13 and 14 prove this with the extra hypothesis $F(k)=l$ and $\alpha=F|_k$; 12 derives it. The
 proof detects summability of the image family before any target sum is used, and it
 does not represent arbitrary strong functionals, which would fail for $\No$
 (\cref{opa:as:thm:classdefect}). Surjectivity enters twice: it supplies a preimage of every
@@ -3813,7 +3856,7 @@ support obstructions. This is a real boundary, not a removable word: the embeddi
 coefficients; they are strongly additive, so they contradict coefficient rigidity without
 surjectivity, not strongness \src{12, 13}.
 
-\begin{corollary}[The summation operation is recovered \src{12}]\label{opa:as:cor:recover}
+\begin{corollary}[The summation operation is recovered \src{12, 14}]\label{opa:as:cor:recover}
 An isomorphism of full Hahn fields that carries the coefficient field onto the coefficient
 field and commutes with the constant term up to that coefficient isomorphism respects the
 whole set-indexed Hahn summation. It need not preserve the monomial sections.
@@ -3855,7 +3898,7 @@ They credit these as prior work, and they are not reprinted. The one form needed
 that is not already stated in the report is 13's version for isomorphisms between
 different, possibly non-divisible groups.
 
-\begin{proposition}[Pair isomorphisms preserve the constant term \src{12, 13}]\label{opa:as:prop:setpairs}
+\begin{proposition}[Pair isomorphisms preserve the constant term \src{12, 13, 14}]\label{opa:as:prop:setpairs}
 Let $\Gamma,\Delta$ be nonzero ordered abelian groups, sets or $\No$, and let
 $F:K_\Gamma\to K_\Delta$ be an ordered field isomorphism of the real Hahn fields with
 $F(\mathcal R_\Gamma)=\mathcal R_\Delta$. Then $F$ fixes $\R$ pointwise, maps $\Pi_\Gamma$,
@@ -3883,7 +3926,7 @@ pointwise; an ordered embedding $\R\hookrightarrow\No$ need not have image $\R$,
 
 \subsection{The main theorem}
 
-\begin{theorem}[Automatic strongness of omnific automorphisms \src{12, 13}]\label{opa:as:thm:main}
+\begin{theorem}[Automatic strongness of omnific automorphisms \src{12, 13, 14}]\label{opa:as:thm:main}
 Every unital ring automorphism $\sigma$ of $\Oz$ extends uniquely to a field automorphism
 $\widetilde\sigma$ of $\No$. The extension preserves the order and fixes $\R$ pointwise,
 and $\widetilde\sigma$ and $\widetilde\sigma^{-1}$ are strongly $\R$-linear: for every
@@ -3903,7 +3946,7 @@ $P_0=\ct$, without any strongness assumption. \Cref{opa:as:thm:ctiso} with
 $k=l=\R$ and $\alpha=\id$ gives strongness of $\widetilde\sigma$ and its inverse.
 \end{proof}
 
-The dependencies are not circular \src{13}:
+The dependencies are not circular \src{13, 14}:
 \[
  \Oz\longrightarrow\Pi\longrightarrow\Ak\longrightarrow\R\longrightarrow
  (\Pi,\R,\mm)\longrightarrow\ct\longrightarrow\text{Hahn summation}.
@@ -3913,7 +3956,7 @@ criterion is used only after the constant term has been recovered. The group not
 \eqref{opa:as:eq:main} is schematic, in the sense of \cref{opa:sub:foundations}: it
 concerns individual class maps and their compositions, and forms no class of all of them.
 
-\begin{remark}[What is and is not asserted \src{12, 13}]\label{opa:as:rem:main}
+\begin{remark}[What is and is not asserted \src{12, 13, 14}]\label{opa:as:rem:main}
 The theorem does not say that every automorphism of the field $\No$ is strong:
 Kaplan, Krapp and Serra construct automorphisms of $\No$ that are not strongly additive
 \cite[Example 4.4]{KKS}, and the theorem shows that none of them preserves $\Oz$. Nor does it
@@ -3928,7 +3971,7 @@ $\ct(yg)=\sum_j\ct(y\widetilde\sigma(f_j))$ for every $y\in\No$, each a finite e
 \cref{opa:q:strong}; see \cref{opa:as:sub:status}.
 \end{remark}
 
-\begin{corollary}[Full real Hahn pairs \src{12, 13}]\label{opa:as:cor:setpairs}
+\begin{corollary}[Full real Hahn pairs \src{12, 13, 14}]\label{opa:as:cor:setpairs}
 Every isomorphism $F$ in \cref{opa:as:prop:setpairs} is strongly $\R$-linear with strongly
 $\R$-linear inverse. In particular, for a nonzero divisible set-sized $\Gamma$, every field
 automorphism of $K_\Gamma$ stabilizing $\mathcal R_\Gamma$ is strongly $\R$-linear.
@@ -3944,7 +3987,7 @@ R_\Gamma$ is smaller than $K_\Gamma$, which can happen (\cref{opa:as:ex:smallfra
 \cite[Proposition 2.4.5]{LM}); 12 states the automorphism case, 13 the isomorphism case
 \src{12, 13}.
 
-\begin{corollary}[Determination by monomials \src{12, 13}]\label{opa:as:cor:monodet}
+\begin{corollary}[Determination by monomials \src{12, 13, 14}]\label{opa:as:cor:monodet}
 Two automorphisms of $\Oz$ whose extensions agree on every Conway monomial are equal. An
 $\Oz$-preserving field automorphism of $\No$ fixing every monomial is the identity.
 \end{corollary}
@@ -3973,7 +4016,7 @@ $\theta(C_1)\ne0$, since $\sqrt2\in C_1$.
 
 \section{The whole stabilizer}\label{opa:as:sec:factor}
 
-\begin{theorem}[Factorization of every pair automorphism \src{12, 13}]\label{opa:as:thm:factor}
+\begin{theorem}[Factorization of every pair automorphism \src{12, 13, 14}]\label{opa:as:thm:factor}
 Let $\Gamma=\No$, or a nonzero divisible set-sized ordered abelian group. Every field
 automorphism $\sigma$ of $K_\Gamma=\Hahn\R\Gamma$ with $\sigma(\mathcal R_\Gamma)=\mathcal
 R_\Gamma$ factors uniquely as
@@ -3998,14 +4041,17 @@ positive. \Cref{opa:thm:factorization} now applies, with $k=\R$ and $\oo=\Z$.
 This is \cref{opa:thm:factorization} and the second sentence of \cref{opa:cor:allautos}
 without the hypothesis of strongness. 12 proves the factorization for $\No$ and set-sized
 groups, 13 for $\No$, in the order $\sigma=U\circ M_{\chi,\tau}$
-(\cref{opa:as:sub:notation}). Both reprove the convex-support criterion: 12 by the least
-forbidden shift, which is source 10's route (\cref{opa:sc:thm:supportcut}), and 13 by a
+(\cref{opa:as:sub:notation}); 14 proves it for both, in the order $M\circ u$, reading the
+leading data from order and the fixed reals, so the existence of the factorization needs no
+strongness, and the composition law it states is the one after
+\eqref{opa:eq:monomialmap}. All three reprove the convex-support criterion: 12 by the least
+forbidden shift, which is source 10's route (\cref{opa:sc:thm:supportcut}), and 13 and 14 by a
 polynomial in the rational parameter $q$ with infinitely many zeros, which is 04's route
 (\cref{opa:thm:criterion}); those proofs are printed there. 13's nontrivial example, the shear
 $t^\gamma\mapsto t^\gamma\exp(q_1(\gamma)t)$ with $\omega^\omega\mapsto\omega^\omega\exp(-\omega^{-1})$,
 is \cref{opa:ex:omegaomega}.
 
-\begin{remark}[Admissibility is retained \src{12, 13}]\label{opa:as:rem:admissible}
+\begin{remark}[Admissibility is retained \src{12, 13, 14}]\label{opa:as:rem:admissible}
 \Cref{opa:as:thm:factor} classifies \emph{existing} automorphisms. An arbitrary array of
 additive $a_\delta$ with $a_\delta(C_\delta)=0$ is not thereby shown to define one: the
 monomial substitution must be summable on every well-ordered support, multiplicative and
@@ -4015,7 +4061,7 @@ and no class-wide exponential--logarithm correspondence is used or established
 licenses no unchecked infinite substitution.
 \end{remark}
 
-\begin{corollary}[Archimedean groups \src{12}]\label{opa:as:cor:arch}
+\begin{corollary}[Archimedean groups \src{12, 14}]\label{opa:as:cor:arch}
 For a nonzero divisible Archimedean set-sized $\Gamma$, every field automorphism of
 $\Hahn\R\Gamma$ stabilizing $\mathcal R_\Gamma$ is a monomial map $M_{\chi,\tau}$.
 \end{corollary}
@@ -4025,7 +4071,9 @@ In \cref{opa:as:thm:factor}, $u\in\UU_{\mathcal R_\Z}(\Gamma)=\{\id\}$ by \cref{
 
 \Cref{opa:thm:rank} gave this among strong maps; automatic strongness removes the
 qualification. No claim is made that omnific-preserving automorphisms are trivial: the
-monomial factor, and in higher rank the factor $\UU$, can be large \src{12}.
+monomial factor, and in higher rank the factor $\UU$, can be large \src{12}. For $\Gamma=\Q$
+this is the form $t^q\mapsto c^qt^{\lambda q}$ after \cref{opa:thm:factorization}, and for
+$\Gamma=\R$ the character may be discontinuous (\cref{opa:cm:rem:real}) \src{14}.
 
 \begin{corollary}[What an automorphism of $\Oz$ does inside $\Pi$ \mergetag]\label{opa:as:cor:invisible}
 Every ring automorphism of $\Oz$ fixes $\ct$ and $\R$, and its extension is $M_{\chi,\tau}\circ
@@ -4060,7 +4108,7 @@ $\lambda:K\to k$ is \emph{strong} if it sends every summable family to a finitel
 scalar family and commutes with the finite sum. $T$ denotes a $k$-linear map $K\to L$ in
 this section only.
 
-\begin{proposition}[Scalar representability at set size \src{12, 13}]\label{opa:as:prop:scalarrep}
+\begin{proposition}[Scalar representability at set size \src{12, 13, 14}]\label{opa:as:prop:scalarrep}
 Every strong $k$-linear functional $\lambda$ on $K$ has a unique representation
 $\lambda(x)=\ct(ax)$ with $a\in K$; conversely every such functional is strong.
 \end{proposition}
@@ -4074,7 +4122,7 @@ $\{\gamma:\lambda(t^\gamma)\ne0\}$, which meets every well-ordered set finitely 
 therefore reverse well ordered, by dependent choice.
 \end{proof}
 
-\begin{theorem}[Adjoint characterization \src{12, 13}]\label{opa:as:thm:adjoint}
+\begin{theorem}[Adjoint characterization \src{12, 13, 14}]\label{opa:as:thm:adjoint}
 A $k$-linear map $T:K\to L$ is strongly $k$-linear if and only if it has a
 \emph{constant-term adjoint} $T^\dagger:L\to K$,
 \begin{equation}\label{opa:as:eq:adjoint}
@@ -4162,7 +4210,7 @@ question is whether all target residue functionals can be pulled back; this loca
 remaining embedding questions without answering them \src{13}
 (\cref{opa:as:q:embeddingstrong,opa:as:q:targettests}).
 
-\begin{theorem}[A strong functional with no representing surreal \src{12, 13}]\label{opa:as:thm:classdefect}
+\begin{theorem}[A strong functional with no representing surreal \src{12, 13, 14}]\label{opa:as:thm:classdefect}
 For $x\in\No$ put
 \begin{equation}\label{opa:as:eq:classfunctional}
  \lambda_{\On}(x)=\sum_{\alpha\in\On}\coef{-\alpha}x .
@@ -4746,7 +4794,7 @@ imaginary families are. The general Gaussian problem is kept separate from two r
 named, and with the natural valuation assumed preserved. They must not be merged into an unconditional
 classification \src{12, 13}.
 
-\begin{theorem}[Conjugation-compatible automorphisms \src{12, 13}]\label{opa:as:thm:conjugation}
+\begin{theorem}[Conjugation-compatible automorphisms \src{12, 13, 14}]\label{opa:as:thm:conjugation}
 Every field automorphism $F$ of $\SC$ with $F(\Og)=\Og$ that commutes with conjugation has the form
 $F(x+iy)=\sigma(x)+\varepsilon i\sigma(y)$ with $\sigma$ an $\Oz$-preserving automorphism of $\No$ and
 $\varepsilon=\pm1$, and $F$ and $F^{-1}$ are strongly additive. Conversely every such map has these properties, so
@@ -4759,7 +4807,7 @@ Commuting with conjugation preserves its fixed field $\No$, and $\Og\cap\No=\Oz$
 conjugation, which makes the product direct.
 \end{proof}
 
-\begin{theorem}[Valuation-compatible Gaussian automorphisms \src{12, 13}]\label{opa:as:thm:gaussian}
+\begin{theorem}[Valuation-compatible Gaussian automorphisms \src{12, 13, 14}]\label{opa:as:thm:gaussian}
 Let $F$ be a field automorphism of $\SC$ with $F(\Og)=\Og$ that maps the Hahn valuation ring onto itself
 (equivalently $v(Fx)=\tau(v(x))$ for an ordered automorphism $\tau$ of $\No$; values need not be fixed). Then $F(\C)=\C$;
 with $\alpha=F|_\C$, $F$ is $\alpha$-semilinear, $\ct(Fx)=\alpha(\ct x)$, and $F$ and $F^{-1}$ are strongly additive. The
@@ -4850,7 +4898,7 @@ support of size $\kappa$ \src{12}. For singular $\kappa$ the union argument fail
 proposition identifies no birthday cutoff with a support-bounded Hahn field \src{12}. 13 records the regular case only
 inside its singular-cardinal question (\cref{opa:as:q:singular}).
 
-\begin{example}[Small integer parts \src{13}]\label{opa:as:ex:smallfrac}
+\begin{example}[Small integer parts \src{13, 14}]\label{opa:as:ex:smallfrac}
 The proof of $\Frac\Oz=\No$ uses an upper bound in $\No$ for every set of exponents, and does not transfer to set-sized
 groups. For $\Gamma=\Z$ and $u=t^{-1}$, $\mathcal R_\Z=\Z\oplus u\R[u]$ and $\Frac\mathcal R_\Z=\R(u)\ne\R((t))$:
 $ru/u=r$ gives $\R(u)$, and $f=\sum_{n\ge1}t^{n!}$ is not rational, since a rational power series has coefficients
@@ -4862,7 +4910,8 @@ This is the phenomenon of \cref{opa:par:prop:fracworkspace} and of \cite[Proposi
 
 \begin{remark}[Distinctions kept \src{12, 13}]\label{opa:as:rem:checklist}
 The detector must lie in the field tested: automatic for full Hahn fields and for the countable witness in
-$K_{<\kappa}$, not for arbitrary subfields. Strongness is not $\R$-linearity: $J_{\mu,d}$ is strong but not
+$K_{<\kappa}$, not for arbitrary subfields (a sufficient condition is 14's countable detector property,
+\cref{opa:cm:prop:workspace}, and \cref{opa:cm:ex:puiseux} is a subfield where detection fails). Strongness is not $\R$-linearity: $J_{\mu,d}$ is strong but not
 $\R$-linear, so the adjoint theorem, which is for $k$-linear maps, does not apply to it by treating its coefficient lift
 as scalar multiplication. The retraction $\ret_\phi$ is linear, never a field retraction for a proper extension. The
 adjoint theorem needs a set of exponents; automatic strongness of isomorphisms does not. No result of this part concerns
@@ -4906,14 +4955,15 @@ The novelty statements of 11, 12 and 13 were checked against the tree at the mer
 strongness, the scalar detection of summability, the adjoint theorems, or coefficient-moving embeddings of
 $(\No,\Oz)$; their statements about this report and the Diophantine report were accurate at their pins. What
 they reprove (reconstruction, the criterion, the strong factorization, the Taylor automorphism) is credited
-above. Priority remains provisional, as each source says.
+above. Priority remains provisional, as each source says. Source 14's novelty statement (batch 31), accurate at
+its pin but stale at the merge, is recorded in \cref{opa:cm:sub:stale}.
 
 \subsection{Questions}\label{opa:as:sub:questions}
 
 Each question is a proposed research direction, not a published open problem \src{11, 12, 13}. Duplicates across
 the three sources are merged, with every source named.
 
-\begin{question}[The unrestricted Gaussian stabilizer \src{12, 13}]\label{opa:as:q:gaussian}
+\begin{question}[The unrestricted Gaussian stabilizer \src{12, 13, 14}]\label{opa:as:q:gaussian}
 Does every ring automorphism of $\Og$ have a valuation-compatible extension to $\SC$, that is, is $\mm_\C$
 invariant? Can the positive-support component be recovered from $\Og$ and its fraction field without naming
 conjugation or a valuation?
@@ -4921,9 +4971,12 @@ conjugation or a valuation?
 $\C$ and $\Pi_\C$ are already intrinsic, so the missing object is $\mm_\C$; a positive answer with
 \cref{opa:as:thm:gaussian} would give automatic strongness for all automorphisms of $\Og$. A negative answer
 should exhibit an automorphism of the ring violating a valuation inequality, not merely moving the real axis or
-being an unrelated automorphism of the algebraically closed fraction field \src{12, 13}.
+being an unrelated automorphism of the algebraically closed fraction field \src{12, 13}. 14 asks the same, adding
+whether equivariance of the full constant term at least follows, and proposes first targets: the full field
+$\Hahn\C\Q$, then a rank-two lexicographic exponent group. A counterexample must do more than move the real axis,
+since the strong phase twists of \cref{opa:cm:rem:gaussian} do that \src{14}. \emph{Status} (batch 31): open.
 
-\begin{question}[Strongness of omnific embeddings \src{11, 12, 13}]\label{opa:as:q:embeddingstrong}
+\begin{question}[Strongness of omnific embeddings \src{11, 12, 13, 14}]\label{opa:as:q:embeddingstrong}
 Let $f:\No\hookrightarrow\No$ be a field embedding with $f^{-1}(\Oz)=\Oz$. Must $f$ be strongly additive? What
 changes if also $\ct\circ f=\ct$? Without strongness, which coefficient and image restrictions survive; can such
 an $f$ have a proper dense image, or one that is neither closed nor discrete?
@@ -4944,13 +4997,17 @@ The necessary gap restriction of \cref{opa:as:thm:classification} and the dichot
 expansion formula. The questions on dense images and on images neither closed nor discrete are not settled here
 \src{11}.
 
-\begin{question}[Coefficient-fixing embeddings and target tests \src{13}]\label{opa:as:q:targettests}
+\begin{question}[Coefficient-fixing embeddings and target tests \src{13, 14}]\label{opa:as:q:targettests}
 For $\R$-linear embeddings preserving the omnific predicate, can every target test $\ct(y\,\cdot\,)$ be represented,
 after pullback, by a source multiplier?
 \end{question}
 Such adjoints suffice for strongness and are necessary at set size (\cref{opa:as:thm:adjoint}); the functional
 $\lambda_{\On}$ shows that a proof for $\No$ must use the multiplicativity of the embedding, not a theorem about all
-strong linear operators \src{13}.
+strong linear operators \src{13}. 14 asks which additional hypotheses make a constant-term-compatible embedding of full
+Hahn fields strong, in particular for embeddings of $\No$ preserving the integer part. The isomorphism proof fails
+exactly because a target detector need not lie in the image; at set size an adjoint of the underlying semilinear map
+suffices, and 14 proposes seeking a criterion that the image supplies all detectors needed for its families, weaker
+than surjectivity. No embedding theorem is deduced \src{14}.
 
 \begin{question}[Coefficient-moving embeddings \src{12}; re-scoped]\label{opa:as:q:coefficientmoving}
 Which subfields $C_0\subseteq\R$ occur as $f(\No)\cap\R$ for strongly additive embeddings $f$ with
@@ -5011,12 +5068,15 @@ nonconjugate copies of \cref{opa:as:cor:complexcopies} stay nonconjugate under t
 \end{question}
 $\Og$ reconstructs $\C$ but gives no pointwise real rigidity for the sign invariant \src{11}.
 
-\begin{question}[The proper-class strong dual \src{12}]\label{opa:as:q:classdual}
+\begin{question}[The proper-class strong dual \src{12, 14}]\label{opa:as:q:classdual}
 Can the strong $\R$-linear dual of $\No$ be described by class coefficient functionals meeting every well-ordered set
 finitely, and which maps have transposes that stay set-supported on every argument?
 \end{question}
 Such a description must avoid unlicensed collections of classes; the issue is foundational as well as algebraic
-\src{12}.
+\src{12}. 14 asks for a natural enlargement of surreal kernels representing every strong $\R$-linear functional on
+$\No$: formal kernels supported on a proper class whose pairing with every set-sized normal form is finite, which
+recover the set-sized duality on restriction and explain which strong class operators have surreal-valued adjoints.
+Such kernels are not surreal numbers, and merely writing a proper-class sum is not a definition \src{14}.
 
 \begin{question}[Singular support bounds \src{12, 13}]\label{opa:as:q:singular}
 For singular uncountable $\kappa$, when does a coefficient- and constant-term-compatible automorphism of
@@ -5024,9 +5084,12 @@ $K_{<\kappa}$ preserve summability with total support of size $<\kappa$?
 \end{question}
 Countable binary witnesses lie in $K_{<\kappa}$ and detect well-ordering and local finiteness, but not the cardinal
 bound on unions; a sharp theorem may need uniform bounds on supports of monomial images, and a counterexample must
-preserve the restricted fields themselves \src{12, 13}.
+preserve the restricted fields themselves \src{12, 13}. \emph{Partial information} (batch 31): by 14's detection in
+subfields (\cref{opa:cm:prop:workspace,opa:cm:rem:kappa}) such an automorphism sends every family summable in
+$K_{<\kappa}$ to a Hahn-summable family with sum the image of the sum; only the size of the union of the image
+supports remains. The question stays open.
 
-\begin{question}[Other rings and coefficient fields \src{12}; \mergetag]\label{opa:as:q:otherrings}
+\begin{question}[Other rings and coefficient fields \src{12, 14}; \mergetag]\label{opa:as:q:otherrings}
 For which integer parts, truncation subrings or distinguished subrings of a real closed Hahn field can one reconstruct a
 scalar pairing that forces automatic strongness of their stabilizers? In particular, for which characteristic-zero $k$
 and unital $\oo\subseteq k$ does $\sigma(\Ro)=\Ro$ force a field automorphism of $\Hahn k\Gamma$ to be strong?
@@ -5034,15 +5097,22 @@ and unital $\oo\subseteq k$ does $\sigma(\Ro)=\Ro$ force a field automorphism of
 The omnific proof uses a divisible ideal, its multiplier ring and units to recover coefficients, then the order to
 recover the infinitesimals; it would be useful to find the weakest hypotheses under which this works and examples of
 failure \src{12}. The merge adds the second sentence: for $\oo=k$ the divisible-ideal step fails, and for non-real $k$
-without valuation data the order step is missing; compare \cref{opa:sc:q:otherparts}.
+without valuation data the order step is missing; compare \cref{opa:sc:q:otherparts}. 14 asks the same for integer
+parts $A$ of a real closed Hahn field, and whether the full constant term is reconstructible from $A$ by the same chain;
+it suggests the checkable sufficient condition that the divisibility core of $A$ recover a negative-support complement
+whose multiplier units form the coefficient field, and asks when that condition is necessary and stable under
+conjugation \src{14}.
 
-\begin{question}[Isomorphisms of small integer parts \src{13}]\label{opa:as:q:smallparts}
+\begin{question}[Isomorphisms of small integer parts \src{13, 14}]\label{opa:as:q:smallparts}
 For which ordered groups $\Gamma,\Delta$ does every ring isomorphism $\mathcal R_\Gamma\cong\mathcal R_\Delta$ extend to
 an isomorphism of the full real Hahn fields preserving order and integer parts?
 \end{question}
 \Cref{opa:as:ex:smallfrac} shows the fraction field is not the Hahn field in general. One route is an intrinsic
 summation completion compatible with the pairing; another is to find two Hahn fields with indistinguishable small
-integer parts \src{13}.
+integer parts \src{13}. 14 asks the automorphism case for divisible $\Gamma$, with uniqueness: first determine
+$\Frac\mathcal R_\Gamma$ and its position in $K_\Gamma$, since extension through the remaining series is a separate
+problem \src{14}. \emph{Status} (batch 31): an extension, if it exists, is unique (\cref{opa:cm:prop:unique},
+\mergetag); existence stays open.
 
 \begin{question}[Exponential, omega-map and differential structure \src{11, 12, 13}]\label{opa:as:q:exp}
 Which proper embeddings preserving $\Oz$, and which gap sections and value embeddings, are compatible with the surreal
@@ -5066,14 +5136,514 @@ $(\tau_1,\rho_1)$ and $(\tau_2,\rho_2)$ has exponent map $\tau_2\tau_1$ and sect
 image inclusion and ambient extendability be decided from smaller invariants?
 \end{question}
 
-\begin{question}[Formalization \src{11, 12, 13}]\label{opa:as:q:formal}
+\begin{question}[Formalization \src{11, 12, 13, 14}]\label{opa:as:q:formal}
 Formalize the finite-intersection lemma, the triangular or binary detector, the detection theorem and the
 constant-term isomorphism theorem for arbitrary full Hahn fields; then the multiplier reconstruction and the omnific
 specialization; and, separately, the bottom-gap classification for set-sized Hahn fields, the closed-image proof and the
 two-level index lift, isolating the class-size assumptions for $\No$.
 \end{question}
 The sources propose this order; finite checks remain a separate test layer. Nothing in this part is formalized in Lean
-\src{11, 12, 13}.
+\src{11, 12, 13}. 14 proposes the same order, beginning with an abstract matrix lemma with finite row and column
+supports (\cref{opa:cm:lem:matching}), and asks that the full-surreal corollary go through a stated universe-relative
+or class-coded normal-form interface, not by treating $\No$ as a set, and that the failure of class duality
+(\cref{opa:as:thm:classdefect}) be formalized separately; its proposed module names are plans only \src{14}.
+
+\part{A fourth derivation: induced matchings, detector subfields and formal evaluation}\label{opa:cm:part}
+
+This part records manuscript 14, the addition of batch 31. It proves again the main
+theorems of \cref{opa:part:as} for the real pair, in less generality; those results are
+printed once, in \cref{opa:part:as}, with 14 added to their sources, and
+\cref{opa:cm:sub:once} lists them. What is printed here is what 14 adds: a third proof of
+scalar detection, by induced matchings, whose witness has all coefficients equal to $1$
+and needs no choice of coefficients (\cref{opa:cm:sec:matching}); detection inside subfields
+that contain enough such witnesses (\cref{opa:cm:sec:workspaces}); and equivariance of
+formal power-series evaluation, the general adjoint-matrix formula, the rank-one group
+$\Gamma=\R$ and the source's shear and truncation examples
+(\cref{opa:cm:sec:further}). Its labels carry the sub-prefix \lbl{opa:cm:}.
+
+\section{Source 14, what it re-derives, and its notation}\label{opa:cm:sec:intro}
+
+\subsection{The manuscript and its pin}\label{opa:cm:sub:source}
+
+Manuscript 14 is \emph{Automatic Summability from Omnific Arithmetic: constant-term duality,
+the full omnific stabilizer, and a sharp set--class distinction}, dated 23 September 2026,
+24 pages. It is item 07 of batch 31, delivered as the archive
+\fn{omnific_automatic_summability} in commit \texttt{39fe674} and placed as an addition in
+commit \texttt{9d28e28}; it is numbered 14 here after its file prefix, continuing this
+report's local sequence. Its finite checks, their recorded run and its source statement are
+shipped as \fn{code/14-automatic-summability-verify.py},
+\fn{data/14-automatic-summability-verification.json} and
+\fn{14-automatic-summability-SOURCES.md}; its \fn{article.tex}, PDF, README and checksum list
+are not shipped.
+
+It pins repository commit \texttt{3d40856}. That commit contains this report's
+\fn{article.tex} exactly as written in batch 26 (\texttt{9b80a30}), that is
+\cref{opa:part:aut,opa:part:par} without the material of source 10, together with the
+placement \texttt{c6359e4} of source 10's files. It contains neither \texttt{b3fa9e2}, the
+batch-28 write of source 10, nor \texttt{21375f8} and \texttt{20c4c9f}, the placement and
+the write of sources 11--13. So 14's author saw \cref{opa:q:strong} open and saw none of
+\cref{opa:part:as}; the three batch-30 authors and 14 worked independently of one another.
+14 describes the batch-26 report accurately: its criterion concerns strong
+coefficient-fixing $1$-automorphisms, and 14 credits its reconstruction and its
+convex-scale criterion as antecedents.
+
+\subsection{Printed once}\label{opa:cm:sub:once}
+
+The table maps 14's statements to the results where they are printed. ``Same'' means the
+same statement with at most notational differences; otherwise the difference is named.
+14's theorem numbers are those of its own PDF.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.30\textwidth}>{\raggedright\arraybackslash}p{0.35\textwidth}}
+\toprule
+14 & Printed as & Comparison\\
+\midrule
+\endhead
+Thm.~1.1, Thm.~5.3, Cor.~5.5 & \cref{opa:as:thm:main,opa:as:cor:setpairs} & Less general: 14 treats
+$\Gamma=\Delta$ divisible, while \cref{opa:as:prop:setpairs} allows ordered isomorphisms
+between different, possibly non-divisible groups (13).\\
+Lem.~2.2; the Neumann lemma & \cref{opa:lem:shift} and the support principle of
+\cref{opa:sec:prelim}; \cref{opa:as:lem:intersection} is its case of exponent $0$ & Same.\\
+Lem.~3.1, Thm.~3.3, Cor.~3.4 & \cref{opa:as:thm:detect} & Same statement; 14's proof is the third
+route of \cref{opa:cm:sec:matching}.\\
+Thm.~4.1, Cor.~4.2 & \cref{opa:as:thm:ctiso,opa:as:cor:recover} & 14 assumes $\sigma(k)=l$ with
+$\alpha=\sigma|_k$, as 13 does; 12 derives it.\\
+Props.~5.1, 5.2 & The reconstruction cited before \cref{opa:as:prop:setpairs}, and that
+proposition & Re-derivation.\\
+Lem.~5.4 and the remark after Cor.~5.5 & \lbl{odg:thm:fractions};
+\cref{opa:as:ex:smallfrac} & Same, including the example $\Gamma=\Z$.\\
+Cor.~5.6 & \cref{opa:as:cor:monodet} & Same.\\
+The route (5.4) & The dependency chain after \cref{opa:as:thm:main} & Same chain.\\
+Thms.~6.1, 6.2, Cor.~6.3 & \cref{opa:as:prop:scalarrep,opa:as:thm:adjoint} & Same; the general
+matrix formula (6.2) is printed as \cref{opa:cm:prop:adjointmatrix}.\\
+Thm.~7.1 and the operator after it & \cref{opa:as:thm:classdefect} & Same.\\
+Thm.~8.1 and the composition law & \cref{opa:as:thm:factor}; the law after
+\eqref{opa:eq:monomialmap} & Same.\\
+Thm.~8.2 & \cref{opa:thm:criterion}, by 04's polynomial route (\cref{opa:lem:polynomial}) & Re-proof
+for $(\R,\Z)$.\\
+Cor.~8.3 & \cref{opa:as:cor:arch}; the form for $\Gamma=\Q$ after \cref{opa:thm:factorization} &
+Same; the case $\Gamma=\R$ is \cref{opa:cm:rem:real}.\\
+Prop.~9.1 and the truncation example & \cref{opa:sc:ex:ranktwo}, \eqref{opa:sc:eq:binomialone} &
+The inverse of that example with the two letters swapped; \cref{opa:cm:rem:shear}.\\
+Prop.~10.1, Thm.~10.2 & \cref{opa:as:thm:gaussian} and its proof & Same.\\
+Thm.~10.3 & \cref{opa:as:thm:conjugation} & Equivalent hypothesis (\cref{opa:cm:rem:gaussian}).\\
+Ex.~10.4 & The phase twists recorded after \cref{opa:thm:realaxis} & An instance.\\
+Questions 12.1--12.8 and the question of its Section 10 & \cref{opa:cm:sec:questions} & One
+new question; the others are merged.\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+So 14 is a third independent derivation of the automatic-strongness theorem, after 12 and
+13, and adds nothing to its generality. Its route
+$\mathcal R_\Gamma\to\Pi\to\mathcal A_\Gamma\to\R\to\mm\to\ct\to$ summation is the chain
+printed after \cref{opa:as:thm:main}. Where 14's proof of a shared result differs only in
+presentation it is not reprinted. Its genuinely different proof, the induced matching, is
+kept as a marked third route.
+
+\subsection{Conventions and notation of this part}\label{opa:cm:sub:notation}
+
+This part uses the conventions of \cref{opa:as:sub:notation}: the small-$t$ convention
+$t^\gamma=\omega^{-\gamma}$, $K_\Gamma=\Hahn k\Gamma$, $\Pi_\Gamma$, $\mathcal R_\Gamma=\Z\oplus\Pi_\Gamma$,
+$\mathcal A_\Gamma=\R\oplus\Pi_\Gamma$ and the pairing $\pairing xy=\ct(xy)$. Manuscript 14 also
+writes in the $t$-convention. Its symbols are renamed as follows.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.65\textwidth}}
+\toprule
+14's symbol & Here\\
+\midrule
+\endhead
+$A_\Gamma=\Z\oplus\Pi$, and $A$ & $\mathcal R_\Gamma$; for $\Gamma=\No$, $\Oz$.\\
+$B=k\oplus\Pi$ & $\Ak$; for $k=\R$, $\mathcal A_\Gamma$.\\
+$\langle x,y\rangle$ & $\pairing xy$.\\
+$\tau:k\to l$, the coefficient isomorphism & $\alpha$, as in \cref{opa:as:thm:ctiso}.\\
+$\phi$, the exponent automorphism; $M_{\chi,\phi}$ & $\tau$; $M_{\chi,\tau}$ of \eqref{opa:eq:monomialmap}.\\
+$\rho$, a ring automorphism of $\Oz$; $\widetilde\rho$ & $\sigma$ and $\widetilde\sigma$, as in \cref{opa:as:thm:main}.\\
+$\nu$, a normalized $1$-automorphism; $\mathcal U$, $\mathcal G$, $\mathcal M$ & $u$; $\UU_{\mathcal R_\Z}(\Gamma)$
+(and $\UU_\Oz$); the stabilizer of $\mathcal R_\Gamma$; the monomial maps.\\
+$L_\nu(g)$, $a_{\nu,\delta}$ & $h_u(g)$, $a_{u,\delta}$ of \eqref{opa:eq:logchar}.\\
+$T^*$ & $T^\dagger$; the matrix $T_{h,g}=\coef h{T(t^g)}$ keeps its name.\\
+$\Lambda$ & $\lambda_{\On}$ of \eqref{opa:as:eq:classfunctional}; 14's $[\omega^\alpha]x$ is $\coef{-\alpha}x$.\\
+$F$, a power series & $\mathsf F$.\\
+$F$, a subfield & $K'$.\\
+$P_{<\gamma}$, truncation & $T_{<\gamma}$, as in \cref{opa:thm:projections}.\\
+$e_1,e_2$ of its shear ($e_1$ the larger scale); $s=t^{e_2}$ & $e_2,e_1$ of \cref{opa:ex:Qr} ($e_1\bb e_2$);
+$s$ is written $t^{e_1}$.\\
+$h$, an additive map & $\theta$.\\
+$u_1,\dots,u_m$, $u$, infinitesimals & $z_1,\dots,z_m$, $z$; $u$ is the leading-term-fixing factor.\\
+$d>0$ in its cancellation example & $\delta>0$; $d$ is a derivation of $\R$ in \cref{opa:part:as}.\\
+$\mathbf{No}[i]$, $\mathbf{Oz}[i]$; $A_\C$, $K_\C$, $\Pi_\C$, $B_\C$ & $\SC$, $\Og$;
+$\mathcal R^\C_\Gamma$, $K^\C_\Gamma$, $\Pi^\C_\Gamma$, $\C\oplus\Pi^\C_\Gamma$.\\
+$L=l((u^\Delta))$ & $L=\Hahn l\Delta$, with $t$ for the monomials of both fields.\\
+$a\ll b$ & $a\bb b$, the same relation.\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+The collisions are resolved here only, and the tempting false readings are wrong:
+\begin{itemize}[itemsep=1pt]
+\item 14's $A_\Gamma$ is \emph{not} $\mathcal A_\Gamma$: 14's $A_\Gamma=\Z\oplus\Pi$ is
+$\mathcal R_\Gamma$, and $\mathcal A_\Gamma=\R\oplus\Pi$ is 14's $B$.
+\item 14's $\tau$ is a coefficient isomorphism; $\tau$ here is the exponent automorphism,
+14's $\phi$. 14's $\rho$ is a ring automorphism of $\Oz$; $\rho$ in \cref{opa:part:as} is a
+coefficient section.
+\item 14's $F$ has two meanings, neither of which is the isomorphism $F$ of
+\cref{opa:as:thm:ctiso} or the profile $F$ of \eqref{opa:sc:eq:binomial}.
+\item In 14's shear $e_1$ is the \emph{larger} scale; in \cref{opa:ex:Qr} it is the smaller. The
+letters are swapped here.
+\item 14's truncation $P_{<\gamma}$ is not one of the zero-cut projections $P_-,P_0,P_+$.
+\item 14's additive $h$ is not the logarithmic character $h_\sigma$.
+\end{itemize}
+14 calls an additive map \emph{strong} when it sends summable families to summable families
+with the same sum; this is ``strongly additive'' here, and 14 states both directions where it
+asserts them. Its ``normalized $1$-automorphism'' is a $1$-automorphism in the sense of
+\cref{opa:sub:notation}; 14 does not assume it strong, and by \cref{opa:as:cor:setpairs}
+every one preserving $\mathcal R_\Gamma$ is.
+
+\section{Induced matchings: a third route to scalar detection}\label{opa:cm:sec:matching}
+
+\begin{lemma}[An infinite induced matching \src{14}]\label{opa:cm:lem:matching}
+Let $(a_{n,j})_{n\in\N,\,j\in I}$ be a matrix over a field, $I$ a set. Suppose that every row
+is nonzero and has finite support, and that every column has finite support. Then there are
+row indices $n_0<n_1<\cdots$ and distinct column indices $j_0,j_1,\ldots$ with
+\[
+ a_{n_r,j_r}\ne0,\qquad a_{n_r,j_s}=0\quad(r\ne s).
+\]
+\end{lemma}
+\begin{proof}
+Choose a nonzero entry in row $n_0=0$, in column $j_0$. After $r$ choices let $E$ be the union
+of the supports of the chosen rows, a finite set of columns. Only finitely many rows meet $E$,
+since each column is finite. Choose a row $n_r$ beyond all earlier chosen rows that does not
+meet $E$, and a nonzero entry in it, in column $j_r$. Then $j_r\notin E$, so column $j_r$
+vanishes on the earlier chosen rows, and row $n_r$ vanishes on the earlier chosen columns,
+which lie in $E$. Induction gives the matching. The selection uses only the pattern of
+nonzero entries, not the characteristic or the values of the coefficients.
+\end{proof}
+
+\begin{proof}[Third route to \textup{(iii)$\Rightarrow$(i)} in \cref{opa:as:thm:detect} \src{14}]
+Assume (iii). The tests $y=t^{-g}$ give pointwise finiteness. Suppose the union $S$ of the
+supports is not well ordered, and choose $g_0>g_1>\cdots$ in $S$. Put
+$a_{n,j}=\coef{g_n}{x_j}$. Row $n$ is nonzero because $g_n\in S$, and finite by pointwise
+finiteness. Column $j$ is finite, since infinitely many $g_n$ in $\supp x_j$ would descend in
+a well-ordered set. \Cref{opa:cm:lem:matching} gives $n_r$ and $j_r$; put
+\begin{equation}\label{opa:cm:eq:allones}
+ y=\sum_{r\ge0}t^{-g_{n_r}} ,
+\end{equation}
+a Hahn series, since its exponents increase, with countable support and every coefficient
+equal to $1$. Then $\pairing{x_{j_r}}y=\sum_{s\ge0}\coef{g_{n_s}}{x_{j_r}}=a_{n_r,j_r}\ne0$ for every
+$r$: the sum is finite, and only its term $s=r$ is nonzero. The distinct $j_r$ contradict
+(iii).
+\end{proof}
+
+The three routes differ in how cancellation is prevented. 12's triangular detector
+(\cref{opa:as:lem:triangular}) makes the family triangular and then chooses coefficients in
+$\{0,1\}$ one at a time; 13's binary lemma (\cref{opa:as:lem:binary}) keeps the family and
+chooses coefficients row by row; 14 passes to an induced matching, a diagonal submatrix, so
+each selected pairing is one matrix entry and nothing is chosen. 14's witness is therefore a
+special case of the tests in (iii): countable support and all coefficients $1$. Every
+construction uses a countable subset of one set-sized support, so the route works for
+$\Gamma=\No$ and for $\SC$ \src{14}.
+
+\begin{corollary}[Monomial and all-ones tests suffice \src{14}]\label{opa:cm:cor:allones}
+A set-indexed family $(x_j)$ in a full Hahn field $K=\Hahn k\Gamma$, $\Gamma$ a set or $\No$, is
+Hahn summable if and only if every exponent lies in only finitely many supports and, for
+every strictly increasing sequence $(h_n)_{n\in\N}$ in $\Gamma$, only finitely many $j$ have
+$\pairing{x_j}{\sum_nt^{h_n}}\ne0$.
+\end{corollary}
+\begin{proof}
+Necessity is (i)$\Rightarrow$(ii) of \cref{opa:as:thm:detect}. For sufficiency the third route
+uses only monomial tests and the series \eqref{opa:cm:eq:allones}, whose exponents
+$-g_{n_r}$ increase strictly.
+\end{proof}
+
+14 states this through the proof of its detection theorem and its Proposition~11.3
+(\cref{opa:cm:prop:workspace}).
+
+\begin{example}[A nonexistent sum disguised as zero \src{14}]\label{opa:cm:ex:cancellation}
+Let $\delta>0$ in $\Gamma$ and, for $n\ge1$, $x_{n,+}=t^{-n\delta}$ and $x_{n,-}=-t^{-n\delta}$. Each exponent
+lies in exactly two members, and grouping the members in pairs would cancel every
+coefficient. The family is not Hahn summable, since $\{-n\delta:n\ge1\}$ descends. The all-ones
+series $y=\sum_{n\ge1}t^{n\delta}$ gives $\pairing{x_{n,+}}y=1$ and $\pairing{x_{n,-}}y=-1$ for every
+$n$: the test fails before any cancellation can hide the infinitely many contributions.
+\end{example}
+
+Here each exponent occurs twice with cancelling coefficients, whereas in
+\cref{opa:as:ex:monomialtests} each exponent occurs once. The detection theorem recognizes
+admissibility of the family, not a value assigned by some other summation convention;
+neither conditional convergence nor an ordering of the index set is used \src{14}.
+
+\begin{remark}[Summability is not convergence \src{14}]\label{opa:cm:rem:topology}
+The family $(t^{n/(n+1)})_{n\ge1}$ is Hahn summable over $\Q$, since its exponents increase,
+but its terms do not tend to zero in the valuation topology. A valuation-preserving
+automorphism is continuous, but continuity speaks only about families that converge in that
+topology, and the detector also handles bounded increasing supports; for $\No$, set-indexed
+topological convergence meets further size obstructions. The detection theorem reduces
+summability to scalar product tests, without completeness or net arguments. This agrees
+with \cref{opa:as:rem:finiteness}. 14 identifies the dual supports, the sets meeting every
+well-ordered set finitely, with the reverse-well-ordered sets, as the total-order case of
+\cite[Theorem~3 and Lemmas~4.1--4.2]{BCJS}, and claims no origin of that duality.
+\end{remark}
+
+\section{Detection in subfields with enough detectors}\label{opa:cm:sec:workspaces}
+
+\begin{definition}[Countable detector property \src{14}]\label{opa:cm:def:detector}
+Let $K'$ be a subfield of $K=\Hahn k\Gamma$, $\Gamma$ a set or $\No$, containing $k$ and every
+monomial. $K'$ has the \emph{countable detector property} if $\sum_{n\ge0}t^{h_n}\in K'$ for every
+strictly increasing sequence $(h_n)_{n\in\N}$ in $\Gamma$.
+\end{definition}
+
+\begin{proposition}[Detection in a subfield \src{14}]\label{opa:cm:prop:workspace}
+Let $K'$ have the countable detector property.
+\begin{enumerate}[label=\textup{(\alph*)},itemsep=1pt]
+\item A set-indexed family in $K'$ is Hahn summable in $K$ if and only if, for every $y\in K'$,
+only finitely many $\pairing{x_j}y$ are nonzero.
+\item Let $\sigma$ be a field automorphism of $K'$ with $\sigma(k)=k$ and
+$\ct(\sigma x)=\alpha(\ct x)$ for $x\in K'$, where $\alpha=\sigma|_k$. If $(x_j)$ in $K'$ is Hahn
+summable in $K$, so is $(\sigma(x_j))$. If moreover $s=\sum_jx_j$ lies in $K'$, then
+$\sum_j\sigma(x_j)=\sigma(s)$; in particular this sum lies in $K'$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) Necessity holds because $K'\subseteq K$ (\cref{opa:as:thm:detect}). The tests of
+\cref{opa:cm:cor:allones} are monomials and series \eqref{opa:cm:eq:allones}, which lie in $K'$;
+this gives sufficiency.
+(b) For $y\in K'$ write $y=\sigma(z)$ with $z\in K'$. Then
+$\pairing{\sigma x_j}y=\ct(\sigma(x_jz))=\alpha(\pairing{x_j}z)$, nonzero for finitely many $j$ by
+(a), so $(\sigma(x_j))$ is summable in $K$ by (a). Let $s'$ be its sum in $K$. By
+\eqref{opa:as:eq:pairingsum} in $K$, for every $y\in K'$,
+\[
+ \pairing{\sigma(s)}y=\alpha(\pairing sz)=\sum_j\alpha(\pairing{x_j}z)=\sum_j\pairing{\sigma x_j}y
+ =\pairing{s'}y,
+\]
+with finite sums. So $\sigma(s)-s'$ pairs to zero with every $y\in K'$, in particular with every
+monomial, and $\sigma(s)=s'$.
+\end{proof}
+
+The inverse satisfies the same hypotheses with $\alpha^{-1}$. As in the proof of
+\cref{opa:as:thm:ctiso}, the hypothesis $\sigma(k)=k$ may be replaced by covariance
+$\ct(\sigma x)=\alpha(\ct x)$ for some field automorphism $\alpha$ of $k$: since $K'$ contains
+every monomial the pairing separates $K'$, and $\sigma(r)=\alpha(r)$ follows for $r\in k$
+\mergetag. The proposition says nothing about sums that leave $K'$, and it concerns the
+summation of the ambient full Hahn field, not a summation intrinsic to $K'$.
+
+\begin{example}[Puiseux series have too few detectors \mergetag]\label{opa:cm:ex:puiseux}
+Let $K=\Hahn\R\Q$ and let $K'=\bigcup_{N\ge1}\Hahn\R{\tfrac1N\Z}$ be the field of Puiseux series; it
+contains $\R$ and every monomial. The family $x_n=t^{-n/(n+1)}$, $n\ge1$, is not Hahn summable
+in $K$, since its exponents descend. For $y\in K'$ with $\supp y\subseteq\frac1N\Z$,
+$\pairing{x_n}y=\coef{n/(n+1)}y$ is nonzero only if $Nn/(n+1)\in\Z$, that is only if $n+1$
+divides $N$, since $n$ and $n+1$ are coprime. So every test in $K'$ gives finitely many nonzero
+pairings, and (a) of \cref{opa:cm:prop:workspace} fails for $K'$. Accordingly
+$\sum_nt^{n/(n+1)}$, the sum of the summable family of \cref{opa:cm:rem:topology}, is not a
+Puiseux series.
+\end{example}
+
+\begin{remark}[Relation to support-bounded fields \mergetag]\label{opa:cm:rem:kappa}
+For every uncountable cardinal $\kappa$, regular or singular, the field $K_{<\kappa}$ of
+\cref{opa:as:prop:kappa} has the countable detector property. So
+\cref{opa:cm:prop:workspace} gives for all such $\kappa$ what \cref{opa:as:prop:kappa} gives for
+regular $\kappa$ as far as ambient summability goes: a coefficient- and constant-term-compatible
+automorphism of $K_{<\kappa}$ sends every family that is summable in the sense of $K_{<\kappa}$ to a
+family that is Hahn summable in $K$, with fewer than $\kappa$ nonzero members and with sum the
+image of the sum. For singular $\kappa$ what \cref{opa:as:q:singular} still asks is only
+whether the union of the image supports has size $<\kappa$. The warning of
+\cref{opa:as:rem:checklist}, that the detector must lie in the field tested and that this
+fails for arbitrary subfields, stands: \cref{opa:cm:ex:puiseux} is such a failure, and the
+countable detector property is a sufficient condition, not a characterization
+(\cref{opa:cm:q:closure}). 14 does not claim the property for transseries, Puiseux or
+left-finite subfields; it notes that a series on an increasing sequence of exponents bounded
+above can fail a left-finiteness restriction \src{14}. \Cref{opa:as:q:workspaces} (11) asks
+the analogous question for the bottom-gap embeddings.
+\end{remark}
+
+\section{Further consequences}\label{opa:cm:sec:further}
+
+\begin{theorem}[Formal evaluation is transported \src{14}]\label{opa:cm:thm:formal}
+Let $\Gamma$ be $\No$ or a nonzero divisible set-sized ordered abelian group, and let $\sigma$
+be a field automorphism of $K_\Gamma=\Hahn\R\Gamma$ with $\sigma(\mathcal R_\Gamma)=\mathcal R_\Gamma$.
+For $\mathsf F\in\R[[X_1,\dots,X_m]]$ and $z_1,\dots,z_m\in\mm_\Gamma$,
+\begin{equation}\label{opa:cm:eq:formal}
+ \sigma\bigl(\mathsf F(z_1,\dots,z_m)\bigr)=\mathsf F\bigl(\sigma(z_1),\dots,\sigma(z_m)\bigr).
+\end{equation}
+In particular $\sigma(\exp z)=\exp(\sigma z)$ and $\sigma(\log(1+z))=\log(1+\sigma z)$ for
+$z\in\mm_\Gamma$.
+\end{theorem}
+\begin{proof}
+Write $\mathsf F=\sum_\nu c_\nu X^\nu$ over $\nu\in\N^m$. The union of the supports of the $z_j$ is
+a well-ordered subset of $\Gamma^{>0}$, so the Neumann support principle
+(\cref{opa:sec:prelim}) makes $(c_\nu z^\nu)_\nu$ Hahn summable; its sum is the formal evaluation.
+By \cref{opa:as:prop:setpairs,opa:as:cor:setpairs} (and \cref{opa:as:thm:main} for $\No$),
+$\sigma$ fixes $\R$, maps $\mm_\Gamma$ onto itself and is strongly $\R$-linear, so
+$\sigma(\sum_\nu c_\nu z^\nu)=\sum_\nu c_\nu\sigma(z)^\nu$, and the $\sigma(z_j)$ are again
+infinitesimal.
+\end{proof}
+
+No radius of convergence enters: a formal series with arbitrarily fast-growing real
+coefficients is evaluated at Hahn infinitesimals through support finiteness. For a
+valuation-compatible Gaussian automorphism as in \cref{opa:as:thm:gaussian}, with
+$\alpha=\sigma|_\C$, the same proof gives $\sigma(\mathsf F(z))=(\alpha\mathsf F)(\sigma(z))$, where
+$\alpha$ acts on the coefficients; for the conjugation-compatible automorphisms of
+\cref{opa:as:thm:conjugation}, $\alpha$ is the identity or complex conjugation \src{14}. The
+exponential here is the local one at infinitesimals (\cref{opa:sec:prelim}); nothing is
+claimed about the Gonshor exponential of infinite arguments, whose compatibility is a
+further condition studied in \cite{KKS}.
+
+\begin{proposition}[The adjoint as a sign-reversed transpose \src{14}]\label{opa:cm:prop:adjointmatrix}
+In the setting of \cref{opa:as:sec:adjoint}, let $T:K\to L$ be strongly $k$-linear and put
+$T_{\eta,\gamma}=\coef\eta{T(t^\gamma)}$ for $\gamma\in\Gamma$, $\eta\in\Delta$. Then for every
+$y=\sum_\eta y_\eta t^\eta\in L$ and $\gamma\in\Gamma$
+\begin{equation}\label{opa:cm:eq:adjointmatrix}
+ \coef\gamma{T^\dagger(y)}=\sum_{\eta\in\Delta}T_{-\eta,-\gamma}\,y_\eta ,\qquad\text{so}\qquad
+ (T^\dagger)_{\gamma,\eta}=T_{-\eta,-\gamma},
+\end{equation}
+with finitely many nonzero terms.
+\end{proposition}
+\begin{proof}
+$\coef\gamma{T^\dagger(y)}=\pairing{t^{-\gamma}}{T^\dagger y}=\pairing{T(t^{-\gamma})}y$ by
+\eqref{opa:as:eq:adjoint}, and the last constant term is
+$\sum_\eta\coef{-\eta}{T(t^{-\gamma})}\,y_\eta$, finite by \cref{opa:as:lem:intersection}.
+\end{proof}
+
+For a coefficient-fixing isomorphism $F$ with $\ct\circ F=\ct$ one has $F^\dagger=F^{-1}$
+(\cref{opa:as:thm:adjoint}), and \eqref{opa:cm:eq:adjointmatrix} becomes the coefficient-matrix
+formula \eqref{opa:as:eq:matrix} of 13. The general formula is 14's; it presupposes the
+strongness of $T$, which \cref{opa:as:thm:adjoint} supplies, and 14's suite checks it only on
+finite matrices (\cref{opa:app:checks}).
+
+\begin{remark}[Rank one with $\Gamma=\R$ \src{14}]\label{opa:cm:rem:real}
+By \cref{opa:as:cor:arch} every field automorphism of $\Hahn\R\R$ preserving $\mathcal R_\R$ is
+a monomial map $M_{\chi,\tau}$. Here $\tau(\gamma)=\lambda\gamma$ with $\lambda>0$, since an
+order-preserving additive bijection of $\R$ is monotone and additive, hence $\R$-linear; and
+$\chi(\gamma)=\exp(\theta(\gamma))$ with $\theta:\R\to\R$ additive, since $\chi$ is positive.
+$\theta$ need not be continuous: any $\Q$-linear map defined on a Hamel basis will do, and
+every such pair $(\lambda,\theta)$ gives an automorphism by \eqref{opa:eq:monomialmap}. So
+rank one removes the factor $u$, not all automorphisms and not all nonclassical coefficient
+scalings. For $\Gamma=\Q$ the character is $q\mapsto c^q$ (the paragraph after
+\cref{opa:thm:factorization}).
+\end{remark}
+
+\begin{remark}[The shear of source 14 and truncation \src{14}]\label{opa:cm:rem:shear}
+Let $\Gamma=\Q e_1\oplus\Q e_2$ with $e_1\bb e_2$ as in \cref{opa:ex:Qr}, and let $\theta$ be the
+$e_2$-coordinate. 14's automorphism, in these letters,
+\[
+ t^{ae_2+be_1}\longmapsto t^{ae_2+be_1}(1+t^{e_1})^a\qquad(a,b\in\Q),
+\]
+is the binomial twist $\sigma^{1+\xi}_{e_1,\theta}$ of \eqref{opa:sc:eq:binomialone}, so it is a strong
+$\R$-linear $1$-automorphism preserving $\mathcal R_\Gamma$ (\cref{opa:sc:thm:twists}, since
+$\theta(C_{e_1})=0$); it is the inverse of \cref{opa:sc:ex:ranktwo}. It sends $t^{-e_2}$ to
+$\sum_{n\ge0}(-1)^nt^{-e_2+ne_1}$, a monomial to an infinite series. With $\gamma=-e_2+\frac12e_1$
+and $T_{<\gamma}$ the truncation below $\gamma$,
+\[
+ T_{<\gamma}\bigl(\sigma(t^{-e_2})\bigr)=t^{-e_2},\qquad
+ \sigma\bigl(T_{<\gamma}(t^{-e_2})\bigr)=\sigma(t^{-e_2})\ne t^{-e_2}.
+\]
+So automatic strongness does not give commutation with truncation at a monomial, even when
+the exponent automorphism is the identity. This does not contradict \cref{opa:thm:projections}:
+the definable truncation $T_{<\gamma}(f)=mP_-(f/m)$ uses the parameter $m=t^\gamma$, and
+$\sigma$ carries it to $f\mapsto\sigma(m)P_-(f/\sigma(m))$, truncation relative to
+$\sigma(m)=t^\gamma(1+t^{e_1})^{-1}$, which is not a monomial. The tempting reading ``every
+$\Oz$-preserving automorphism commutes with truncation at every monomial'' is false; the true
+statements are commutation with $P_-,P_0,P_+$ (\cref{opa:cor:allautos}) and with the
+projection onto any union of signed Archimedean blocks (\cref{opa:sc:prop:blocks}), in
+agreement with the paragraph after that proposition. 14 relates naming truncations to the
+complexity studied by Camacho \cite{Camacho}.
+\end{remark}
+
+\begin{proposition}[Extensions from $\mathcal R_\Gamma$ are unique \mergetag]\label{opa:cm:prop:unique}
+Let $\Gamma$ be a nonzero divisible set-sized ordered abelian group. A ring automorphism $\sigma$ of
+$\mathcal R_\Gamma$ has at most one extension to a field automorphism of $K_\Gamma$; an extension,
+if one exists, fixes $\R$ and is strongly $\R$-linear with strongly $\R$-linear inverse.
+\end{proposition}
+\begin{proof}
+An extension $\widetilde\sigma$ satisfies $\widetilde\sigma(\mathcal R_\Gamma)=\sigma(\mathcal R_\Gamma)=\mathcal R_\Gamma$,
+so by \cref{opa:as:cor:setpairs} it fixes $\R$ and is strongly $\R$-linear with strong inverse. Its
+values on monomials are forced: $\widetilde\sigma(t^\gamma)=\sigma(t^\gamma)$ for $\gamma<0$, since
+$t^\gamma\in\Pi_\Gamma$, and $\widetilde\sigma(t^\gamma)=\sigma(t^{-\gamma})^{-1}$ for $\gamma>0$. Applied to
+the normal-form family $(a_\gamma t^\gamma)$ of any $f$, strongness gives
+$\widetilde\sigma(f)=\sum_\gamma a_\gamma\widetilde\sigma(t^\gamma)$, which depends only on $\sigma$.
+\end{proof}
+
+This answers the uniqueness clause of 14's Question~12.7 without assuming
+$\Frac\mathcal R_\Gamma=K_\Gamma$, which fails in general (\cref{opa:as:ex:smallfrac}); 14 notes
+only that uniqueness on the fraction field is automatic. Existence is
+\cref{opa:as:q:smallparts}.
+
+\begin{remark}[Gaussian statements of source 14 \src{14}]\label{opa:cm:rem:gaussian}
+14's real-structure theorem assumes $\sigma(\No)=\No$, where \cref{opa:as:thm:conjugation}
+assumes commutation with conjugation. The hypotheses are equivalent: conjugation fixes exactly
+$\No$, and conversely $\sigma(i)=\pm i$ gives $\sigma(x+iy)=\sigma(x)\pm i\sigma(y)$, which commutes
+with conjugation when $\sigma(\No)=\No$. 14's example over $\Gamma=\Q$, the strong map
+$\sum a_qt^q\mapsto\sum a_qe^{i\pi q/2}t^q$, preserves $\mathcal R^\C_\Q$, fixes $\C$ and sends
+$t$ to $it$; on $\SC$ it uses $\chi(\gamma)=\exp(i\pi\theta(\gamma)/2)$ with $\theta(\gamma)=\ct(\gamma)$.
+It is a phase twist of the kind recorded after \cref{opa:thm:realaxis}
+(\lbl{odg:def:lem:twist}, \lbl{saut:thm:phase}). Since it is strong, it does not bear on
+\cref{opa:as:q:gaussian}; it only shows that preservation of $\Og$ alone does not give the
+hypothesis of \cref{opa:as:thm:conjugation}.
+\end{remark}
+
+\section{Questions of source 14, and stale statements}\label{opa:cm:sec:questions}
+
+\subsection{Status of the source's questions}\label{opa:cm:sub:status}
+
+14 poses eight questions (its 12.1--12.8), proposed as research problems, not as published
+open problems, and repeats its Gaussian question at the end of its Section~10. Seven are
+merged into questions already in the report, with 14 added to their sources:
+\begin{itemize}[itemsep=2pt]
+\item 12.1 and the Section-10 question (must every automorphism of $\SC$ preserving $\Og$ be
+strong; does $\Og$ determine the valuation ring, or at least $\ct$-equivariance?):
+\cref{opa:as:q:gaussian}, open; 14's suggested first targets are recorded there.
+\item 12.2 (which hypotheses make a constant-term-compatible embedding strong; embeddings of
+$\No$ preserving $\Oz$): \cref{opa:as:q:embeddingstrong,opa:as:q:targettests}. The first
+clauses of the former have a negative answer given a measurable cardinal, as recorded there.
+\item 12.4 (class-supported kernels for strong functionals on $\No$): \cref{opa:as:q:classdual}.
+\item 12.5 (other integer parts): \cref{opa:as:q:otherrings}, and \cref{opa:sc:q:otherparts}
+for the criterion.
+\item 12.6 (a parameter space for the normalized factor): \cref{opa:q:characters}, with
+\cref{opa:q:generation}; open. 14 adds that the convex criterion recognizes existing
+automorphisms and does not construct them, and that a parameterization must distinguish
+pointwise positive support from uniform control on summable families.
+\item 12.7 (does every automorphism of $\mathcal R_\Gamma$ extend to $K_\Gamma$, uniquely?): the
+automorphism case of \cref{opa:as:q:smallparts}. Uniqueness is answered by
+\cref{opa:cm:prop:unique}; existence stays open.
+\item 12.8 (a kernel-checked automatic-strongness theorem): \cref{opa:as:q:formal}.
+\end{itemize}
+One question is new:
+
+\begin{question}[Minimal closure for algebraic detection \src{14}]\label{opa:cm:q:closure}
+Can the countable detector property be weakened to a necessary and sufficient closure condition
+on a subfield $K'$ for the product detection of \cref{opa:cm:prop:workspace}(a)? Which natural
+computable or transseries subfields satisfy that condition?
+\end{question}
+The induced-matching proof needs one all-ones detector for a subsequence of each bad
+configuration, not every countable series with arbitrary coefficients, so a closure principle
+could quantify over bad support configurations rather than over all increasing sequences. The
+question has algebraic and computability aspects: the existence of a detector need not give an
+algorithm that recognizes or constructs it from a chosen representation \src{14}.
+\Cref{opa:cm:ex:puiseux} shows that some closure condition is needed \mergetag.
+
+\subsection{Stale and checked statements}\label{opa:cm:sub:stale}
+
+\begin{itemize}[itemsep=2pt]
+\item \emph{Stale novelty.} 14's abstract says that ``the strong-additivity hypothesis can be
+removed'' from this report's real stabilizer classification, its introduction that it
+``supplies a missing implication'', and its questions section that its main result ``closes
+the automatic-strongness question for the real omnific pair''. At its pin \texttt{3d40856}
+this was accurate: \cref{opa:q:strong} was open. At the merge it is stale: sources 12 and 13
+answered \cref{opa:q:strong} in \texttt{20c4c9f} (\cref{opa:as:thm:main}). 14 is recorded as an
+independent third derivation, and its priority statement is not printed as current; its own
+caveat that global priority is not certified is kept.
+\item \emph{Checked true.} 14's description of the pinned report (the criterion concerns strong
+coefficient-fixing $1$-automorphisms; reconstruction and criterion are credited), the example
+$\Frac(\Z\oplus t^{-1}\R[t^{-1}])=\R(t)$ for $\Gamma=\Z$, and the finite checks of its suite, rerun for the
+merge (\cref{opa:app:checks}). No mathematical error was found in 14.
+\item \emph{Not rechecked.} 14's pinpoint citations of \cite{KS} (an example of a non-strongly
+additive automorphism) and of \cite{BCJS} (Theorem~3, Lemmas~4.1--4.2) are reported as 14 gives
+them.
+\end{itemize}
+
+14's limitations are listed with the other sources' in \cref{opa:app:nonclaims}.
 
 \appendix
 
@@ -5092,7 +5662,8 @@ Section & Sources and choices\\
 automorphism sources; the Fact~4.2 recheck is the merge's (\cref{opa:rem:import}).
 10's provenance and symbols were added with it (batch 28); item (8) of
 \cref{opa:sub:results} and the rows and paragraph for 11, 12 and 13 in
-\cref{opa:sub:provenance} were added in batch 30.\\
+\cref{opa:sub:provenance} were added in batch 30; item (9), the row and paragraph for 14,
+and the counts on the title page and in the abstract were updated in batch 31.\\
 \ref{opa:sec:prelim} & 04's one-shift lemma and coefficient polynomial; 09's and 04's
 ring decompositions; 04's and 08's divisible part. Units and constant products are
 cited from the Diophantine report, not reprinted. 10's one-shift lemma is
@@ -5162,7 +5733,17 @@ three by the merge), 13's non-homogeneity; the Taylor automorphism is \lbl{saut:
 distinctions. \ref{opa:as:sec:questions}: the thirty questions of the three sources (ten each)
 merged into eighteen, with 12's and 13's admissibility question recorded under
 \cref{opa:q:characters}; the status records and the note on the large-cardinal report are the
-merge's.\\
+merge's. Batch 31: 14 added to the sources of the results it re-derives, pointers to
+\cref{opa:cm:part}, and 14's comments and status notes after
+\cref{opa:as:q:gaussian,opa:as:q:targettests,opa:as:q:classdual,opa:as:q:singular,opa:as:q:otherrings,opa:as:q:smallparts,opa:as:q:formal}.\\
+\cref{opa:cm:part} & Manuscript 14 (batch 31). \ref{opa:cm:sec:intro}: the merge's, from 14's
+comparison with the report. \ref{opa:cm:sec:matching}: 14's matching lemma and detection proof
+(third route), its cancellation example and topology remark. \ref{opa:cm:sec:workspaces}: 14's
+definition and proposition; the Puiseux example, the weakened hypothesis after the proposition and
+\cref{opa:cm:rem:kappa} are the merge's. \ref{opa:cm:sec:further}: 14's formal evaluation, matrix
+formula, $\Gamma=\R$ remark, shear and truncation example and Gaussian statements, translated;
+\cref{opa:cm:prop:unique} is the merge's. \ref{opa:cm:sec:questions}: 14's eight questions, one
+new, seven merged, and the stale-novelty record.\\
 \bottomrule
 \end{longtable}
 \end{center}
@@ -5239,6 +5820,22 @@ embeddings (12 prop.~10.3, 13 cor.~10.4) as the case $\varepsilon=1$ of
 \item \emph{Added by the merge} (batch 30): \cref{opa:as:cor:invisible}, the gap $C_\omega$ for
 12's exponent embedding (\cref{opa:as:lem:gaps}), the extension of \cref{opa:as:cor:image} to all
 three maps, and the second sentence of \cref{opa:as:q:otherrings}.
+\item \emph{Source 14, printed once} (batch 31; its numbering): Thm.~1.1, Thm.~5.3 and Cor.~5.5 as
+\cref{opa:as:thm:main,opa:as:cor:setpairs}; Lem.~2.2 as \cref{opa:lem:shift} and
+\cref{opa:as:lem:intersection}; Thm.~3.3 and Cor.~3.4 as \cref{opa:as:thm:detect}; Thm.~4.1 and
+Cor.~4.2 as \cref{opa:as:thm:ctiso,opa:as:cor:recover}; Props.~5.1--5.2 as the cited
+reconstruction and \cref{opa:as:prop:setpairs}; Lem.~5.4 as \lbl{odg:thm:fractions}; Cor.~5.6 as
+\cref{opa:as:cor:monodet}; Thms.~6.1--6.2 and Cor.~6.3 as
+\cref{opa:as:prop:scalarrep,opa:as:thm:adjoint}; Thm.~7.1 as \cref{opa:as:thm:classdefect};
+Thm.~8.1 as \cref{opa:as:thm:factor}; Thm.~8.2 as \cref{opa:thm:criterion}; Cor.~8.3 as
+\cref{opa:as:cor:arch}; Prop.~9.1 as the inverse of \cref{opa:sc:ex:ranktwo}; Prop.~10.1 and
+Thms.~10.2--10.3 as \cref{opa:as:thm:gaussian,opa:as:thm:conjugation}; Ex.~10.4 as the phase twists
+of \lbl{odg:def:lem:twist} (table in \cref{opa:cm:sub:once}).
+\item \emph{Source 14, kept as a third route}: its induced-matching proof of detection
+(\cref{opa:cm:lem:matching}), beside 12's triangular and 13's binary detectors.
+\item \emph{Added by the merge} (batch 31): \cref{opa:cm:ex:puiseux,opa:cm:rem:kappa,opa:cm:prop:unique},
+the weakened hypothesis after \cref{opa:cm:prop:workspace}, and the status notes after
+\cref{opa:as:q:singular,opa:as:q:smallparts}.
 \end{itemize}
 
 \subsection{Corrections and stale statements}\label{opa:sub:corrections}
@@ -5324,6 +5921,18 @@ commit (it is 12's pin), whose tree is \texttt{12bfef3}. 11's pin \texttt{cf56b8
 top-level \fn{README.md} at its pin \texttt{0865f04}; that blob is the file at the earlier
 commit \texttt{b895e86}, and at \texttt{0865f04} it is \texttt{8c636c7}. Neither affects the
 mathematics.
+\item \emph{Stale novelty} (14, batch 31): at its pin \texttt{3d40856}, which contains the batch-26
+text of this report but not \texttt{20c4c9f}, 14 stated that the strongness hypothesis ``can be
+removed'' from this report's real stabilizer classification and that it supplies the missing
+implication. That was accurate at the pin and is stale at the merge: sources 12 and 13 answered
+\cref{opa:q:strong} in \texttt{20c4c9f}. 14 is credited as an independent third derivation
+(\cref{opa:cm:sub:stale}); no mathematical error was found in it.
+\item \emph{Delivered-file behaviour} (14, batch 31): 14's script, shipped as
+\fn{code/14-automatic-summability-verify.py}, always writes \fn{data/verification.json} under
+the parent of its own directory and has no output option; its delivered README says it writes
+\fn{data/verification.json}. Run in place it would create an unprefixed
+\fn{data/verification.json} in this report; the file is not edited, and the collection README
+gives rerun instructions on a copy.
 \end{enumerate}
 
 \subsection{Symbols renamed from the sources}
@@ -5362,6 +5971,17 @@ is $\mu_{13}$, its $\rho=\sigma|_k$ is $\alpha$, its $D$, $E_D$ and $F_D$ are $d
 $J_{\mu_{13},d}$, its $T^*$ is $T^\dagger$, its $\lambda$ is $\lambda_{\On}$, its $\mathcal P$ is
 $\Pi$, and its factorization $U\circ M$ is $M\circ u$ with $U=MuM^{-1}$. The large-cardinal
 report's $J$ is $\hat\jmath$. No normalization changes.
+Source 14 (the table of \cref{opa:cm:sub:notation}): its $A_\Gamma=\Z\oplus\Pi$ and $A$ are
+$\mathcal R_\Gamma$; its $B$ is $\Ak$ ($\mathcal A_\Gamma$ for $k=\R$); its $\langle x,y\rangle$ is
+$\pairing xy$; its coefficient isomorphism $\tau$ is $\alpha$ and its exponent automorphism
+$\phi$ is $\tau$; its $\rho,\widetilde\rho$ are $\sigma,\widetilde\sigma$; its $\nu$, $\mathcal U$,
+$\mathcal G$, $\mathcal M$ are $u$, $\UU_{\mathcal R_\Z}(\Gamma)$, the stabilizer and the monomial maps;
+its $L_\nu(g)$, $a_{\nu,\delta}$ are $h_u(g)$, $a_{u,\delta}$; its $T^*$ is $T^\dagger$; its $\Lambda$
+is $\lambda_{\On}$; its power series $F$ is $\mathsf F$ and its subfield $F$ is $K'$; its $P_{<\gamma}$
+is $T_{<\gamma}$; its shear letters $e_1,e_2$ are $e_2,e_1$ and its $s$ is $t^{e_1}$; its additive
+$h$ is $\theta$; its infinitesimals $u_j$ are $z_j$; its $d>0$ is $\delta$; its $\mathbf{No}[i]$, $\mathbf{Oz}[i]$, $A_\C$, $K_\C$, $\Pi_\C$, $B_\C$ are $\SC$, $\Og$,
+$\mathcal R^\C_\Gamma$, $K^\C_\Gamma$, $\Pi^\C_\Gamma$, $\C\oplus\Pi^\C_\Gamma$; its target monomial $u$ is
+$t$. No normalization changes.
 
 \section{Non-claims, by source}\label{opa:app:nonclaims}
 
@@ -5619,6 +6239,54 @@ set-sized induced substructures, not elementary maps.
 \item No repository build was run, and the formalization ledger was not read.
 \end{enumerate}
 
+\paragraph{Source 14.}
+\begin{enumerate}[itemsep=1pt]
+\item It is an AI-assisted research draft, not refereed and not Lean-verified; ``theorem'' means
+that a proof is supplied. Global priority is not certified: the literature search is not a
+certificate of absence, and the priority of the omnific application, of the detector's
+formulation and of the class counterexample needs independent review.
+\item Finiteness-space duality \cite{BCJS} and the general decompositions of Hahn-field
+automorphisms \cite{KS,KKS} are prior work; no priority is claimed for those frameworks, and the
+underlying support duality is not claimed to originate there. The reconstruction and the
+convex-scale criterion are credited to this report and re-proved.
+\item The unrestricted Gaussian problem is not solved: neither automatic strongness of every
+automorphism preserving $\Og$ nor a nonstrong counterexample is claimed, and the phase example is
+strong, so it disproves nothing.
+\item No embedding theorem: the isomorphism proof uses surjectivity essentially, and no statement
+about constant-term-compatible embeddings is inferred.
+\item No compatibility with the global Gonshor exponential is claimed; the formal exponential and
+logarithm are evaluated at infinitesimals only. Continuity, the Conway monomial cross-section and
+arbitrary truncations are neither assumed nor concluded, and commutation with every truncation is
+false.
+\item The representation of strong functionals and the adjoint theory hold for set-sized exponent
+groups only and fail for $\No$.
+\item It does not assert that every ring automorphism of every $\mathcal R_\Gamma$ extends to its
+full Hahn field; the fraction-field argument is for $\Oz$ only.
+\item The convex criterion classifies existing normalized automorphisms; it does not construct
+automorphisms from additive data satisfying the vanishing condition, since joint support conditions
+and invertibility are needed.
+\item Summability, the monomials and a cross-section are not claimed first-order definable; the
+intersection formula for $\Pi$ is not a single first-order formula; the conclusion is invariance of
+an externally quantified operation, not definability.
+\item The class-group notation $\Aut(\No,\Oz)$ and its factorization are elementwise; no NBG class of
+proper-class graphs is formed; every summed family is set-indexed and every series has set support,
+in NBG with global choice.
+\item The countable detector property is a sufficient closure condition only; it is not claimed for
+transseries, Puiseux or left-finite subfields.
+\item The adjoints are for a bilinear algebraic pairing, not a Hilbert-space inner product;
+$\sigma^\dagger=\sigma^{-1}$ is not analytic unitarity, and the pairing is not a Hermitian norm.
+\item Formal summability is not convergence of partial sums or in the valuation topology; no
+ordering of the index set is used; the automorphism--derivation correspondence of \cite{BKKPS} is
+not used.
+\item Its finite checks validate finite identities only: they do not establish well-ordering of
+arbitrary supports, quantify over all series, verify class replacement or prove the main theorem.
+No Lean compilation was performed, and the proposed Lean modules and names are plans only.
+\item Conway's irreducibility conjectures are not addressed and no famous open conjecture is
+claimed settled; its questions are proposed research problems, not published open problems.
+\item The repository was read, not modified; its comparison was targeted, not an audit of every
+manuscript; the Wikipedia article it lists was an orientation source only.
+\end{enumerate}
+
 \emph{Status note} (batch 30). Non-claim~1 of 09, non-claim~1 of 04 and non-claim~1 of 10 say
 that nonstrong automorphisms are not classified and that strongness is not shown. They are
 kept as the sources' records. For $(\No,\Oz)$ and the full real Hahn pairs with divisible
@@ -5628,16 +6296,16 @@ valuation data, and for a general $(k,\oo)$, those non-claims still describe the
 knowledge (\cref{opa:as:q:gaussian,opa:as:q:otherrings}).
 
 Counts: 13 non-claims from 09, 13 from 04, 12 from 08, 11 from 02, 18 from 10, 13 from 11,
-14 from 12, 12 from 13.
+14 from 12, 12 from 13, 16 from 14.
 
 \section{Finite checks}\label{opa:app:checks}
 
-Eight suites ship with the report, byte-identical to their delivery, under the prefixes
+Nine suites ship with the report, byte-identical to their delivery, under the prefixes
 of their manuscripts. They check finite identities in exact arithmetic; they do not
 prove Hahn summability, class-sized statements, definability or novelty. They were
 rerun on copies for the merges (10's for the batch-28 addition, 11's, 12's and 13's for
-the batch-30 addition) with Python~3.14.4 and SymPy~1.14.0, with the recorded results
-reproduced.
+the batch-30 addition, 14's for the batch-31 addition) with Python~3.14.4 and
+SymPy~1.14.0, with the recorded results reproduced.
 
 \begin{center}
 \renewcommand{\arraystretch}{1.15}
@@ -5694,6 +6362,15 @@ seed 20260923. 13{,}885 assertions in 16 categories: binary finite-row choices a
 persistence, descending-support detection, coefficient reconstruction, monomial adjoints and
 retractions, scale-separated Taylor models. \emph{Writes} \fn{../data/verification.json}
 relative to its own directory unless \fn{--output} is given.\\
+\fn{code/14-automatic-summability-verify.py};
+\fn{data/14-automatic-summability-verification.json} & Standard library, exact fractions,
+seed 20260923 for the adjoint trials. Generalized binomial identities to degree 20 for 31
+rational parameters (961 multiplication and 31 inverse cases); the induced matching on a
+banded 256-row prefix (rows meeting columns $n,n+1,n+3$), with a matching of size 64 and its
+all-ones detector; the sign-reversed transpose \eqref{opa:cm:eq:adjointmatrix} in 100 random
+trials with 13 source and 9 target exponents; the finite prefixes of \cref{opa:cm:ex:cancellation} for 1, 2, 5,
+16 and 64 pairs. Prints its report and \emph{always writes} \fn{../data/verification.json}
+relative to its own directory; it has no output option.\\
 \bottomrule
 \end{longtable}
 \end{center}

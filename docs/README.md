@@ -74,13 +74,16 @@ reports. The first four writes through `1ab41af` integrate those companions
 and the dilation report; `de45cee` completes the three-manuscript
 critical-point-defects assembly. Its 76 standard results are now indexed;
 independent proof review and Lean formalization remain pending.
-The automorphism assembly now has eight manuscripts and states automatic
+The automorphism assembly now has nine manuscripts and states automatic
 strongness for `Oz` automorphisms; these new claims await proof review.
 
 Placement `9d28e28` adds [independent surreal copies](surreal/independent-surreal-copies/),
 a proposed construction of copies sharing a prescribed set-sized Hahn core,
-written as a single-source report in `781b19e`, and eight further companions
-awaiting integration. The new report and its
+written as a single-source report in `781b19e`. Two of its eight companions
+are now integrated: automatic summability (`d4d72d7`) and singular curves
+(`1ad4ad8`), while the other six await integration. The singular-curve addition
+claims a normalization criterion beyond the reviewed smooth case; it remains
+outside the Diophantine proof-review boundary. The new report and its
 class-foundation assumptions remain pending proof review and Lean formalization.
 
 Batch 23 (placed in `e4f8848`, written in `7af7056`) adds

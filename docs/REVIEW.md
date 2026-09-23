@@ -3737,6 +3737,36 @@ source changed, so the preceding 4,422-job build and 15,076-declaration
 audit apply without another build. The Diophantine review boundary and
 its validated 180-page article are unchanged.
 
+## Singular-curve and automatic-summability integration
+
+Merged the next upstream publication through `889b87c`, including
+`1ad4ad8` (Diophantine source C16) and `d4d72d7` (automorphism source 14).
+The Diophantine report now has fourteen manuscripts and 217 standard
+results; the automorphism report has nine manuscripts and 140 standard
+results. The ledger adds all seventeen singular-curve results and six
+automatic-summability results. The catalogue and reader map now describe
+these additions without treating their mathematical review as complete.
+The six other batch-31 companions still await integration.
+
+The merge preserves every one of the previous 200 Diophantine statements
+and 134 automorphism statements, apart from source-credit additions.
+The projective-coordinate proof corrections survive intact. The index
+conflict was resolved from the current sources, and the Diophantine PDF
+conflict by rebuilding the merged article. All existing Diophantine label
+numbers are unchanged. The three-pass article build has 198 pages, with
+no warnings, unresolved references or bad boxes; pages 117–118 at the
+reviewed/unreviewed transition were inspected. The catalogue builds cleanly
+in three passes to 32 pages, with the changed continuation pages inspected.
+
+The independent inventory passes for 3,826 standard results across 61
+reports, including 3,807 labeled and 19 unlabeled entries. All 4,370 cited
+source references resolve and all 1,575 local Markdown destinations pass.
+No Lean source changed; the passing 4,422-job build and 15,076-declaration
+audit remain applicable. Sections 17.5–17.6 and 18 of the Diophantine report,
+the new automorphism arguments and remaining imported foundations still
+need independent proof review. In particular, indexing the normalization
+criterion does not justify using a normalization lift without proof.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

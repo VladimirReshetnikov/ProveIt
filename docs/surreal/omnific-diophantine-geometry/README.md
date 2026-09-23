@@ -1,20 +1,21 @@
 # Omnific Integers and Omnific–Diophantine Geometry
 
 **Retractions, rigidity, definability, and infinite families**
-Merged research report, from thirteen manuscripts written independently: three
+Merged research report, from fourteen manuscripts written independently: three
 dated 22 September 2026 (batch items 01, 02 and 05 of the batch placed in
 `be06fc8`), two dated 23 September 2026 (batch items 01 and 07 of the batch
 placed in `cf350b1`, numbered 06 and 07 here), two more dated 23 September
 2026 (batch items 01 and 02 of the batch placed in `a4dcb91`, numbered 08 and
 09 here), and five more dated 23 September 2026 (batch items 02, 03, 04, 07 and
 08 of the batch placed in `c6359e4`, tagged C10–C14 here after their file
-prefixes `10-` to `14-`), and one more dated 23 September 2026 (batch item 02 of the
-batch placed in `66d7e55`, tagged C15 after its file prefix `15-`). Prepared for
-Vladimir Reshetnikov.
+prefixes `10-` to `14-`), one more dated 23 September 2026 (batch item 02 of the
+batch placed in `66d7e55`, tagged C15 after its file prefix `15-`), and one more dated
+23 September 2026 (batch-31 manuscript 04, placed in `9d28e28`, tagged C16 after its file
+prefix `16-`). Prepared for Vladimir Reshetnikov.
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 180 pages
+article.pdf                        the compiled report, 198 pages
 README.md                          this guide
 RECONCILIATION.md                  the source comparisons and precise proof-review scope
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
@@ -28,6 +29,7 @@ RECONCILIATION.md                  the source comparisons and precise proof-revi
 13-differential-rigidity-SOURCE_AND_PROOF_AUDIT.md   source C13's source and proof audit, as delivered
 14-hahn-differential-rigidity-SOURCE_AUDIT.md        source C14's source, novelty and proof audit, as delivered
 15-logarithmic-rigidity-PROOF_AUDIT.md      source C15's author-side proof audit, as delivered
+16-singular-curves-SOURCE_AUDIT.md          source C16's source, proof and artifact audit, as delivered
 code/
   01-diophantine-geometry-verification.py   source 01 checks (writes a JSON report; see below)
   01-diophantine-geometry-build.sh, .ps1    source 01's build scripts (they compile source 01's
@@ -62,6 +64,9 @@ code/
   15-logarithmic-rigidity-verify.py         source C15 checks (prints; writes JSON only to --output)
   15-logarithmic-rigidity-build.sh, .ps1    source C15's build scripts (they compile article.tex in
                                             their own directory, code/; not this report)
+  16-singular-curves-verify.py              source C16 checks (prints; writes JSON only to --output)
+  16-singular-curves-build.sh               source C16's build script (compiles article.tex in its
+                                            own directory, code/; not this report)
 data/
   01-diophantine-geometry-verification_report.json   source 01's recorded run
   02-diophantine-verification.txt                    source 02's recorded run
@@ -81,26 +86,30 @@ data/
   14-hahn-differential-rigidity-BUILD_AUDIT.json     source C14's build record for its own article
   15-logarithmic-rigidity-verification.json          source C15's recorded run
   15-logarithmic-rigidity-build_report.json          source C15's build record for its own article
-  01-, 02-, 05-, 06-, 08-, 09-, 10-, 12-, 13-, 14-, 15-...-requirements.txt   each pins sympy==1.14.0
+  16-singular-curves-verification.json               source C16's recorded run
+  16-singular-curves-build_report.json               source C16's build record for its own article
+  01-, 02-, 05-, 06-, 08-, 09-, 10-, 12-, 13-, 14-, 15-, 16-...-requirements.txt   each pins sympy==1.14.0
 ```
 
-The shipped files of source C15 (placed in `66d7e55`) are byte-identical to the
-delivery. The shipped files of sources C10–C14 are byte-identical to the deliveries,
+The shipped files of sources C15 (placed in `66d7e55`) and C16 (placed in `9d28e28`) are
+byte-identical to the deliveries. The shipped files of sources C10–C14 are byte-identical to the deliveries,
 except that `12-curve-logarithmic-SOURCE_AUDIT.md` differs from the delivery in
 one Markdown hard break normalized for whitespace checks (`a6c68ac`); its
 content is unchanged.
 
-Every label in `article.tex` carries the prefix `odg:` (416 labels, counting
+Every label in `article.tex` carries the prefix `odg:` (471 labels, counting
 both `\label{…}` and `\label[type]{…}`): the 150 labels of the three-source
 assembly `bbdd536`, none renamed or removed; nine aliases kept by the
 elementary review merged from upstream; 69 labels added by the batch-25
 integration; 82 labels added by the batch-27 integration; 95 labels added by
-the batch-28 integration; and 11 labels added by the batch-29 integration. The material of
+the batch-28 integration; 11 labels added by the batch-29 integration; and 55 labels added
+by the batch-31 integration. The material of
 sources 06 and 07 carries the sub-prefix `odg:def:` (63 labels), the fiber and
 norm results printed from the sibling report's manuscript 13 carry `odg:dec:`
 (6 labels), the material of sources 08 and 09 carries `odg:frac:` (82
 labels), the material of sources C10–C14 carries `odg:cr:` (95 labels), and the new
-material of source C15 carries `odg:log:` (11 labels). Two older labels, `odg:def:rings` and `odg:def:primitive`, name
+material of source C15 carries `odg:log:` (11 labels), and the material of source C16
+carries `odg:sg:` (55 labels). Two older labels, `odg:def:rings` and `odg:def:primitive`, name
 Definitions 2.1 and 7.7 and predate the sub-prefix.
 
 The elementary review (`7784f7f`, `8f1527c`), written in parallel with the
@@ -188,17 +197,22 @@ The elementary pass also covers the corresponding claims credited to
 source C15. The other batch-29 material remains outside it: Section 18.6, the credits, corrections and remarks added for
 source C15 in Sections 16–18, and its additions to Sections 1, 20 and 21 and to the
 appendices. Section 18.6 was appended at the end of Section 18, so no section,
-statement or equation number changed. Inserting Section 15
+statement or equation number changed. The batch-31 material of source C16 is also
+unreviewed: Section 17.6, the credits and status notes added in Sections 1, 16, 17, 20
+and 21, Questions 21.23–21.30 and the appendix additions. Section 17.6 was appended at the
+end of Section 17, after Section 17.5, so again no section, statement or equation number
+changed. Inserting Section 15
 moved the former Sections 15–17 to 16–18, and inserting Sections 16–18 moved them
 on to 19–21; statement numbers in Sections 1–15 are unchanged. See
 [RECONCILIATION.md](RECONCILIATION.md) for the elementary claim correspondence,
 these proof reviews and the remaining review boundary.
 
-The article has 200 standard results (72 theorems, 38 propositions, 42 lemmas,
-48 corollaries), of which 39 are in Section 15 and 57 in Sections 16–18 (6 of them in
-Section 18.6). The
+The article has 217 standard results (79 theorems, 40 propositions, 44 lemmas,
+54 corollaries), of which 39 are in Section 15 and 74 in Sections 16–18 (6 of them in
+Section 18.6 and 17 in Section 17.6). The
 [ledger](../../FORMALIZATION.md) indexes the standard results of the
-report by `odg:` label, including all six results of Section 18.6.
+report by `odg:` label, including all six results of Section 18.6 and all 17
+results of Section 17.6. Indexing does not extend the proof-review scope.
 The ring and constant-term package `odg:prop:ring` is **Proved**, using
 [actual omnific integers](../../../Surreal/Foundations/OmnificIntegers.lean)
 and the [complex support ring](../../../Surreal/Surcomplex/NonnegativeSupportRing.lean).
@@ -226,7 +240,7 @@ is ring-isomorphic to `ℤ_p`; its canonical map is integer constant
 extraction followed by the ordinary embedding and has kernel `Π`.
 Other results remain **Pending** unless individually mapped in the ledger.
 
-## Thirteen sources, one report
+## Fourteen sources, one report
 
 | | Manuscript | Repository pin | Contributes |
 |---|---|---|---|
@@ -243,6 +257,7 @@ Other results remain **Pending** unless individually mapped in the ledger.
 | **C13** | *Differential Rigidity of Omnific Points: Smooth-curve classification, squarefree equations, and algebraic groups* | `4cdeaec` | Annihilation of global tensors (Theorem 16.14); symmetric differentials and ample cotangent bundles (Definition 16.18, Theorem 16.19, Corollary 16.20); inheritance (Proposition 16.21); general Weierstrass equations (Corollary 16.10); all smooth curves, including `P¹` (Corollary 17.10); polynomial witnesses (Corollary 17.16); the nonconstant part of commutative groups (Theorem 18.6); the characteristic-`p` example (Proposition 18.13). Files prefixed `13-differential-rigidity-`. |
 | **C14** | *Differential Rigidity of Hahn Rings: Curves, Abelian Varieties, and Omnific Diophantine Points* | `4cdeaec` | Base of Sections 16–18: the two-ring principle over any field of characteristic zero and any exponent group (Definition 16.12, Theorem 16.16, Corollary 16.17); the curve classification over every such field (Lemma 17.5, Theorem 17.6); integer polynomial arcs and the congruence criterion (Lemma 17.14, Proposition 17.15); unimodular coordinates over `ℛ_𝔬(𝕜, Γ)` and rational projective points (Theorem 17.18, Corollary 17.22); tori via `𝕜̄` (Lemma 18.3). Files prefixed `14-hahn-differential-rigidity-`. |
 | **C15** | *Geometric Rigidity over Omnific Integer Rings: Smooth curves, semiabelian varieties, and logarithmic differential certificates* | `934810a` | Section 18.6: logarithmic symmetric differentials on a smooth proper compactification with normal-crossings boundary contract into the valuation ring (Lemma 18.15) and vanish on the Euler derivations at every point (Theorem 18.16); tangent separation by them, in particular spanning by logarithmic one-forms, forces rigidity (Definition 18.17, Corollary 18.18); the abstract interface with its logarithmic hypothesis (Remark 18.19); descent over any coefficient ring (Theorem 18.20) and the omnific consequence (Corollary 18.21); finite products (Proposition 18.22). Its other results are independent proofs of statements of C10–C14 and are credited there. Files prefixed `15-logarithmic-rigidity-`. |
+| **C16** | *Singular Curves over Omnific Integers: Conductor differentials, a complete Hahn-rigidity criterion, and polynomial witnesses at every surreal scale* | `bcac55a` | Section 17.6: for every geometrically integral affine curve over a field of characteristic zero, singular or not, and every `Γ ≠ 0`, nonconstant `𝒜_𝕜(Γ)`-points exist iff the normalization is `𝔸¹`, iff there is a nonconstant polynomial map `𝔸¹ → C`, with finite-support witnesses (Theorem 17.25); Seidenberg's power identity (Lemma 17.27), the conductor certificate `κ^{2ℓ+1} α(∂)^n ∈ 𝒜_𝕜(Γ)` and the derivative-order bound (Theorem 17.28, Corollary 17.29); the place at infinity and the one-place obstruction in every characteristic (Lemma 17.30, Proposition 17.31); positive genus across singularities (Theorem 17.32); scale independence and finite birational invariance (Corollaries 17.34, 17.35); all affine schemes of dimension at most one over an algebraically closed field (Theorem 17.36); witnesses in every fiber (Corollary 17.37); the repeated-root superelliptic test (Theorem 17.38, Corollary 17.39); `Z² = X²(X³ − X + 1)` with a seventh-order certificate (Theorem 17.40); omnific and Gaussian rigidity, arithmetic families and the Gaussian dichotomy (Theorem 17.41, Proposition 17.42, Corollary 17.43); Questions 21.23–21.30. Its rings, Euler derivations, non-normality example, descent of forms of `𝔸¹` and smooth case are credited where printed. Files prefixed `16-singular-curves-`. |
 
 Batch-25 item 03 is manuscript 13 of the sibling report
 [`set-sized-quotients-of-omnific-integers`](../set-sized-quotients-of-omnific-integers/),
@@ -251,7 +266,7 @@ fiber and norm results (its Sections 8–9) are printed here once, tagged `[13]`
 the Gaussian fiber theorem (Theorem 6.3), the converse of the kernel criterion
 (Corollary 6.4), the real-kernel remark (Remark 6.5), a rank-deficient level
 (Example 6.6) and étale norms (in Theorem 6.15). Its real fiber theorem is
-Theorem 6.2(a), printed once. It is not counted among this report's thirteen
+Theorem 6.2(a), printed once. It is not counted among this report's fourteen
 sources. Batch-25 item 04 is the sibling report's manuscript 14 (files
 `14-arithmetic-tensors-` there). Its criterion for unimodular constant
 directions over `Z` and `Z[i]` is printed here once, tagged `[14]`, as
@@ -277,7 +292,13 @@ all three pins this report had only sources 01, 02 and 05. Source C15 is shipped
 its code, data and proof audit under the prefix `15-`; its text, PDF, delivered
 README and checksum manifest are not. It pins `934810a`, 18 commits before `c6359e4`
 and 23 before its own placement `66d7e55` (its archive arrived in `65775fb`); at that
-pin this report had sources 01, 02, 05, 06 and 07, and C15 saw none of C10–C14.
+pin this report had sources 01, 02, 05, 06 and 07, and C15 saw none of C10–C14. Source C16
+is shipped with its code, data and source audit under the prefix `16-singular-curves-`
+(the sibling report's manuscript 16 uses `16-fresh-scale-`; it is not a source here); its
+text, PDF, delivered README and checksum manifest are not. It pins `bcac55a`, 87 commits
+before its placement `9d28e28` (its archive arrived in `39fe674`); at that pin C10–C14 were
+placed but not yet written into this article (`ac54217` is not an ancestor of the pin) and
+C15 was not placed, so C16 saw only the audits of C13 and C14 among the curve sources.
 
 **Why one report.** Sources 01, 02 and 05 prove the same spine: normal forms,
 the rings `B_R ⊃ Oz = Z ⊕ Π`, degree and units, the floor, the retraction `ct`
@@ -320,8 +341,13 @@ unimodular coordinates, the characteristic-two point); its new material is the
 logarithmic form of the two-ring argument in every dimension, which answers the first
 question of Question 21.19 in sufficient form. So it is an addition to the same part,
 appended as Section 18.6 with the sub-prefix `odg:log:`, and its duplicates are
-credited where they are printed. None of the thirteen sources, nor source 13 or 14,
-contradicts another.
+credited where they are printed. Source C16 answers the first two clauses of Question
+21.17 (singular curves): the smooth classification extends to every geometrically
+integral affine curve, with the normalization in place of the curve. It shares the part's
+spine and generalizes its main theorem, so it is appended to the same part as Section
+17.6, at the end of Section 17 directly after Section 17.5, which states the problem, with
+the sub-prefix `odg:sg:`; appending at the end of a section moves no number. None of the
+fourteen sources, nor source 13 or 14, contradicts another.
 
 **Printed once from sources 06, 07 and 13.** The units lemma, Pell rigidity
 (with the Gaussian solution `(i, i)`), Pell divisibility, the intersective
@@ -377,6 +403,14 @@ with `x` and `y` interchanged), and the field and valuation-ring points (Remark 
 Section 18.5) are printed once, with C15 added to their credits. Its workspace lemma
 is Lemma 2.6 here.
 
+**Printed once from source C16.** Its ring lemma (units, the retraction, transcendence of
+nonconstant elements, no nonzero element of positive valuation; Lemma 16.1), its Euler
+derivations and their detection (Lemmas 16.2, 16.3), its fixed-workspace non-normality
+example (for any `0 < e < H` with `ne < H`; Section 17.5), its descent of forms of the
+affine line (Lemma 17.5) and its smooth case (Theorem 17.6) are printed once, with C16
+added to their credits. Its elliptic Bézout polynomials are those of Proposition 16.8 at
+`(a, b) = (−1, 1)`.
+
 **Kept twice, as different proofs.** Uniqueness of `ct`: 01's divisibility
 proof (Proposition 3.5) and 05's route through the set-sized quotient theorem.
 Homogeneous systems: 01's leading-coefficient proof, which needs no quantifier
@@ -403,7 +437,11 @@ C12's logarithmic proof (Theorem 17.8). Positive genus: global generation
 finite splitting field recorded there. The Weierstrass result has
 both an elementary and a geometric proof. C15's proof of the curve classification by
 one logarithmic form is described after Corollary 18.18; its local computation works
-wherever the centre lies, so it needs no closed-centre step.
+wherever the centre lies, so it needs no closed-centre step. C16's proof of the smooth
+case (one regular differential and its valuation at the centre; a function with a single
+pole instead of the unit argument) is a third route to the rigid direction of Theorem 17.6
+(Remark 17.33), and for `Z² = X²(X³ − X + 1)` both of C16's proofs are printed, by the
+general theorem and by the explicit seventh-order certificate (Theorem 17.40).
 
 **Added in the merge**, each tagged `[merge]` with a complete proof: an
 explicit identity giving the divisibility step of the separated-power proof
@@ -440,7 +478,12 @@ characteristic-`p` curve `y^p = x^p − x` is an affine line (after Proposition
 characteristic zero and every exponent group (Corollaries 16.10, 17.10, Theorems
 16.14, 17.11, 18.6), with the sources' own proofs. The batch-29 integration of
 source C15 adds nothing tagged `[merge]`; Section 18.6 prints C15's own results with
-its own proofs.
+its own proofs. The batch-31 integration of source C16 adds three items tagged `[merge]`
+with complete proofs: the observation that the one-place obstruction (Proposition 17.31)
+is consistent with the characteristic-two and characteristic-`p` examples, each with one
+point at infinity; the third route to the smooth classification (Remark 17.33); and the
+superelliptic test over an arbitrary field of characteristic zero, by base change to `𝕜̄`
+and Lemma 17.5 (after Theorem 17.38).
 
 **Notation.** The purely infinite ideal is `Π`, the letter used by the
 foundations report (`found:eq:omnific`); the sources wrote `𝒥` (01), `𝓘`
@@ -491,6 +534,19 @@ congruence integers `M, D, L` are `N, N_1, N_2`. Source C15 also uses the
 `𝒪_𝕜(Γ)`, `ℍ_𝕜(Γ)` and `ℛ_𝔬(𝕜, Γ)`; its `D_ℓ` is `∂_{−ℓ}`, the same family; its
 symmetric power `q` is `r` (here `q` is the valuation-ring point); and in Section 18.6
 `X̄` is a smooth proper scheme, `E` a normal-crossings boundary and `X = X̄ ∖ E`.
+Source C16 (conventions at the start of Section 17.6) uses the `t`-convention: its
+`B_{k,Γ}`, `K`, `O`, `𝔪` are `𝒜_𝕜(Γ)`, `ℍ_𝕜(Γ)`, `𝒪_𝕜(Γ)`, `𝔪_𝕜(Γ)`, its `𝒥_R`, `𝒥_C`
+are `Π`, `Π_C`, and its `D_λ` is `∂_{−λ}`, the same family; its `Oz[i]` and its
+valuation `v` are unchanged. Letters it uses twice, or that the part reserves, are renamed: the coordinate
+ring `A` and normalization `Ã` are `𝕜[C]`, `𝕜[C̃]` (`A` is an abelian variety here); the
+smooth projective model `X` is `C̄`; the centre `p` is `Q`; the conductor element `d` is
+`κ`; the number `m` of terms of a differential presentation is `ℓ` (`m` stays the
+superelliptic exponent); the contraction `s = α(D)` is `α(∂)`; a general derivation `D`
+is `∂` and a coefficient subring `D` is `𝔬`; the formal variable `z` and Taylor map `E`
+are `w`, `𝒯`; the number of roots `r` is `k` and `r_∞` is `n_∞` (`r` stays the vanishing
+order); the cofactors `Q`, `S` are `P_1`, `P_odd`; the Bézout polynomial `V` is `W`;
+points `P`, `P_0` are `x`, `x_0` (bold); and in the arithmetic families `h`, `a` are `s`,
+`β`.
 The full per-source table is Table 1 in Appendix A.
 
 ## What the report claims
@@ -721,6 +777,29 @@ Numbers refer to the built `article.pdf`.
     only points in `𝔬` over `ℛ_𝔬(𝕜, Γ)` (Theorem 18.20), so logarithmic complements
     over `Z` and `Z[i]` have only ordinary points in `Oz` and `Oz[i]` (Corollary
     18.21); rigidity passes to finite products (Proposition 18.22).
+   *Singular curves (Section 17.6, source C16).* For a geometrically integral affine curve
+   `C` over any field of characteristic zero and any `Γ ≠ 0`: `C(𝒜_𝕜(Γ)) ≠ C(𝕜)` iff the
+   normalization is `𝔸¹_𝕜` iff there is a nonconstant morphism `𝔸¹ → C`, with
+   finite-support witnesses on any scale `ω^γ` (Theorem 17.25). Seidenberg's identity
+   gives `κ²(∂b)^n ∈ R` whenever `κb^j ∈ R` for `j ≤ n` (Lemma 17.27); a conductor element
+   `κ` then gives `κ^{2ℓ+1} α(∂)^n ∈ 𝒜_𝕜(Γ)` for a differential with an `ℓ`-term
+   presentation (Theorem 17.28), and derivatives through order
+   `⌊(2ℓ+1)δ/(r+1)⌋ + 1` give the contradiction (Corollary 17.29). A nonconstant point
+   selects one boundary place of the normalization, where the valuation is discrete
+   (Lemma 17.30); in every characteristic only one boundary point can be missing
+   (Proposition 17.31), and in characteristic zero positive genus is rigid across
+   singularities (Theorem 17.32). Rigidity does not depend on `Γ` and is a finite
+   birational invariant (Corollaries 17.34, 17.35); over an algebraically closed field
+   it extends to all affine schemes of dimension at most one (Theorem 17.36), with
+   witnesses in every fiber (Corollary 17.37). `Y^m = c∏(X − a_i)^{e_i}` is flexible iff
+   exactly one `e_i` is not divisible by `m` and it is prime to `m` (Theorem 17.38); for
+   `Y² = P(X)` the test is `deg P_odd ≤ 1`, with a sign condition over `R` (Corollary
+   17.39). `Z² = X²(X³ − X + 1)` has only ordinary omnific and Gaussian omnific points,
+   by a seventh-order certificate (Theorem 17.40). Rigid singular curves over `Z` or
+   `Z[i]` have only ordinary points in `Oz` or `Oz[i]` (Theorem 17.41); over an integer
+   point with a real (or complex) normalization preimage there is a proper class of
+   finite-support points (Proposition 17.42), and nonordinary Gaussian points exist iff
+   the normalization is `𝔸¹_C` and a Gaussian integer point exists (Corollary 17.43).
 18. **Omnific coefficients (Section 19).** The square-discriminant criterion
     (Theorem 19.1), initial forms (Proposition 19.3), two-term roots
     (Proposition 19.4, also proved by finite factorization) and simple residue
@@ -747,31 +826,44 @@ first question of Question 21.19, which hypotheses on logarithmic forms force
 constancy, in sufficient form in every dimension (Corollary 18.18: tangent separation
 by logarithmic symmetric differentials, in particular spanning by logarithmic
 one-forms), and adds the rigid logarithmic complements to Question 21.1 (Corollary
-18.21); both questions stay open. Still open: singular curves and general affine
-varieties of higher dimension (Question 21.1, re-scoped; the omnific groups
-report answers it for closed subgroup schemes of `GL_N`); primitive,
+18.21); both questions stay open. It records that source C16 answers the first two
+clauses of Question 21.17 (Theorem 17.25), the curve part of Question 21.1 (Theorem
+17.41, Corollary 17.43; over `Oz` the case of integer points whose normalization
+preimages are all nonreal remains), the existence part of Question 21.8 for singular
+curves over `Oz[i]` and, at integer points with a real normalization preimage, over `Oz`,
+adds a characteristic-free necessary condition to Question 21.21 (Proposition 17.31) and
+finite certificates to Question 21.22 (Theorem 17.28, Corollary 17.29); all stay open,
+re-scoped. Still open: general affine varieties of higher dimension (Question 21.1,
+re-scoped; the omnific groups report answers it for closed subgroup schemes of `GL_N`); primitive,
 non-unimodular Fermat triples (Question 21.2); primitive homogeneous solutions
 off rational curves and off rigid targets, and the dependence on the integral
 model (Question 21.3, re-scoped); which fibers or subideals of `Π` are
 Diophantine (the second part of Question 21.4); the guard's complexity, the
 least degree of a definition of `Z`, a single Gaussian polynomial and better
 quantifier bounds (Question 21.5); roots with omnific coefficients (Question
-21.6); the size boundary (Question 21.7); finite-support search beyond smooth
-curves (Question 21.8, re-scoped); coefficient recovery of lower quantifier
+21.6); the size boundary (Question 21.7); finite-support search in higher dimension and
+at real singular integer points without a real normalization preimage (Question 21.8,
+re-scoped); coefficient recovery of lower quantifier
 complexity (Question 21.9); structure that determines the real form of `Oz[i]`
 (Question 21.10); infinite algebraic extensions (Question 21.11); from sources
 08 and 09, denominator ideals beyond one parameter (Question 21.12), the extent
 of `𝒱` (Question 21.13), orbits outside `𝒱` (Question 21.14), several parameters
 (Question 21.15) and other scale extensions (Question 21.16); and, from sources
-C10–C14, singular curves (Question 21.17), rigidity beyond cotangent generation
+C10–C14, singular curves (Question 21.17, re-scoped to lifting through the
+normalization), rigidity beyond cotangent generation
 (Question 21.18), affine varieties of higher dimension (Question 21.19,
 re-scoped: necessary conditions, a classification of rigid complements, the
 converse from the absence of polynomial curves, which C15 also asks, and C10's
 surviving tangent directions),
 primitive versus unimodular tuples on curves of positive genus (Question 21.20),
 positive characteristic (Question 21.21), and omnific coefficients and
-effective certificates (Question 21.22). No source claims that these are open
-in the literature.
+effective certificates (Question 21.22); and, from source C16, lifting through the
+normalization (Question 21.23), real singular arithmetic fibers (Question 21.24), optimal
+certificates (Question 21.25), a certificate-producing procedure (Question 21.26), a
+positive-characteristic replacement (Question 21.27), normalization invariance in higher
+dimension (Question 21.28), images of the constant term (Question 21.29) and
+formalization (Question 21.30). No source claims that these are open in the
+literature.
 
 ## Corrections made in the merge
 
@@ -905,6 +997,11 @@ in the literature.
   abstract interface asks for a valuation ring `V ⊆ K`; the proof needs a valuation
   ring of `K` (Remark 18.19). No gap was found in C15's proofs, and it contradicts no
   other source.
+- Source C16 introduces `t^{-1}(1 + t²)^{1/2}` in the Hahn field "over a sufficiently
+  divisible group"; the element already lies in `𝕜((t^Z))`, and `ω^γ(1 + ω^{−2γ})^{1/2}`
+  lies in the Hahn field for every `Γ ≠ 0` (Section 17.6.9). No gap was found in C16's
+  proofs, and it contradicts no other source; its one-place proposition agrees with the
+  characteristic-two and characteristic-`p` examples.
 
 **Stale repository statements.** Source 01 said the repository's
 trigonometry material used the omnific integer part; at the pin the
@@ -948,7 +1045,13 @@ quoted correctly its guide's statement that `y² = x³ + ax + b` with `a ≠ 0` 
 outside the method; since `c6359e4` the collection settles that equation
 independently (Corollary 16.9), and C15's proof is printed there once. Its remarks
 that the unimodular Fermat case was already here and that the ledger separates
-source assertions, review and Lean coverage are accurate. Their absence-of-Lean
+source assertions, review and Lean coverage are accurate. Source C16 inspected the
+repository through the connector at `bcac55a` and did not read the assembled article in
+full; it says that this report "and later companion audits" already classify smooth
+curves, citing the audits of C13 and C14. At its pin that classification was in those
+staged audits, not in the article; it has been Theorem 17.6 since `ac54217`. Its
+statement that the audits leave singular curves outside their scope is accurate, and the
+report said the same until this integration. Their absence-of-Lean
 statements describe the source pins; the ring package is now formalized,
 as recorded above.
 
@@ -956,7 +1059,7 @@ as recorded above.
 
 No non-claim of any source was dropped. Appendix B lists them per source (01:
 24 items, 02: 22, 05: 26, 06: 25, 07: 19, 08: 25, 09: 20, C10: 14, C11: 15,
-C12: 13, C13: 13, C14: 12, C15: 18, 7 for the results printed from source 13 and 2 for
+C12: 13, C13: 13, C14: 12, C15: 18, C16: 19, 7 for the results printed from source 13 and 2 for
 the criterion printed from source 14, plus the caveats common to 01, 02 and 05,
 to 06 and 07, to 08 and 09, and to C10–C14). The main ones:
 
@@ -1011,8 +1114,9 @@ to 06 and 07, to 08 and 09, and to C10–C14). The main ones:
   C10–C14 settle the equation by a different certificate (Corollary 16.9); they
   do not list or bound its ordinary solutions.
 - **Curve and differential rigidity.** The question answered is this report's
-  continuation question, not a literature conjecture, and nothing is claimed
-  about singular curves in general, affine varieties of higher dimension or
+  continuation question, not a literature conjecture, and nothing is claimed by
+  C10–C14 about singular curves in general (source C16 now supplies them), affine
+  varieties of higher dimension or
   primitive, non-unimodular tuples. Coefficients must be constants; nothing is
   claimed over `No`, `No[i]` or the valuation ring, where nonconstant points
   exist. The Euler derivations are local, not canonical and not the
@@ -1033,7 +1137,7 @@ to 06 and 07, to 08 and 09, and to C10–C14). The main ones:
   canonical bundle need not supply separating symmetric differentials), and no
   equivalence between rigidity and the absence of nonconstant maps from `𝔸¹` is
   established or may be inferred from the curve classification. No classification
-  of singular curves; `𝒜_𝕜(Γ)` is not assumed normal and a normalization lift is not
+  of singular curves by C15 (source C16 now supplies one); `𝒜_𝕜(Γ)` is not assumed normal and a normalization lift is not
   available; quasi-finiteness is essential (`𝔸¹ × G → G`); no morphism between the
   spectra of the ring and the valuation ring is asserted. No enumeration, finiteness
   or height bound for integral points, nothing on Siegel's theorem or Hilbert's tenth
@@ -1041,6 +1145,21 @@ to 06 and 07, to 08 and 09, and to C10–C14). The main ones:
   (1981) was inspected through its record and abstract only. Its 2,820 finite cases do
   not verify the infinite-support or scheme-theoretic assertions, and its proof audit
   is author-side, not a referee report.
+- **Singular curves (source C16).** Characteristic zero, constant coefficients,
+  geometric integrality, dimension one and finite type are required; Theorem 17.36 needs
+  an algebraically closed field, and in positive characteristic only the one-place
+  obstruction is proved (no genus-zero conclusion). The criterion is about existence:
+  no lifting of points through the normalization (Question 21.23), no classification of
+  real singular fibers or of the isolated real node (Question 21.24), no description of
+  fibers or images of `ct` (Question 21.29). The derivative-order bound is not claimed
+  optimal, and no algorithm for conductors or differentials is given. Ordinary
+  integer-point existence is not decided and no integer points are enumerated; nothing
+  is claimed over the Hahn field, `No` or `No[i]`, or in higher dimension. Not refereed
+  and not Lean-checked; priority is not asserted, "complete criterion" refers only to
+  the stated class, and van den Dries (1981) was compared by record and abstract only.
+  Seidenberg's identity, the smooth theorem, normalization, Riemann–Roch and
+  Riemann–Hurwitz are credited. Its 113,940 finite assertions are regression checks, not
+  proofs.
 - **Full class versus workspace.** Common divisors, clearing, `Frac(Oz) = No`,
   the reconstruction of `No`, non-generation of `Π`, the general no-gcd pair
   and the set-sized quotient theorem are not asserted for fixed Hahn
@@ -1111,7 +1230,8 @@ to 06 and 07, to 08 and 09, and to C10–C14). The main ones:
   the density of Corollary 15.36 needs such matrices (Remark 15.39). It also
   answers Question 21.1 for closed subgroup schemes of `GL_N`; its remark
   `ogl:alg:rem:affine` still records the curve case as open, which Sections
-  16–18 now settle for smooth curves. The two answers agree (Remark 18.7): `G_a`
+  16–18 now settle for smooth curves, and Section 17.6 for geometrically integral
+  singular curves. The two answers agree (Remark 18.7): `G_a`
   is nonrigid and the one-dimensional tori (`G_m`, `SO(2)`) are rigid; the
   commutative-group kernel of Theorem 18.6 is its unipotent kernel
   `ogl:alg:prop:bch` for commutative groups; semiabelian rigidity extends its
@@ -1147,8 +1267,12 @@ processor is needed:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The build gives 174 pages with no errors, warnings, undefined references,
-multiply defined labels or overfull boxes. (The text at `6f47cf9`, before source
+The build gives 198 pages with no errors, warnings, undefined references,
+multiply defined labels or overfull boxes (one page more than the C16 write alone, from the
+concurrent proof review merged with it). (The text at `4253328`, before source C16
+was integrated, built to 178 pages with the same MiKTeX installation and the same zero
+counts, and every label it defines has the same number in the present build. The text
+at `6f47cf9`, before source
 C15 was integrated, built to 162 pages with the same MiKTeX installation and the
 same zero counts, and every label it defines has the same number in the present
 build. Before the merge that joined the
@@ -1167,7 +1291,12 @@ names, and none of these scripts builds this report. Source C15's
 `code/15-logarithmic-rigidity-build.sh` and `.ps1` change to their own directory
 (`code/`) and run `pdflatex` on an `article.tex` there, which does not exist; they do
 not build this report either, and its shipped build record and proof audit describe
-its own article and file names (`code/verify.py`, `data/verification.json`). The shipped source audits
+its own article and file names (`code/verify.py`, `data/verification.json`). Source
+C16's `code/16-singular-curves-build.sh` changes to its own directory (`code/`) and runs
+`latexmk` or `pdflatex` on an `article.tex` there, which does not exist; it does not
+build this report, and its shipped source audit and build record describe its own
+article and file names (`verify.py`, `verification.json`, `SHA256SUMS.txt`, which is not
+shipped). The shipped source audits
 of sources C10–C14 and the build records of C10, C11 and C14 describe their own
 articles and file names (`verify.py`, `verification.json`,
 `verification_report.json`, `verify_certificates.py`), shipped here with the
@@ -1213,6 +1342,9 @@ cp code/14-hahn-differential-rigidity-verify.py <scratch>/verify.py
 python <scratch>/verify.py
 python code/15-logarithmic-rigidity-verify.py
 python code/15-logarithmic-rigidity-verify.py --output <scratch>/15-verification.json
+python -m pip install -r data/16-singular-curves-requirements.txt
+python code/16-singular-curves-verify.py
+python code/16-singular-curves-verify.py --output <scratch>/16-verification.json
 ```
 
 The safest course for sources C10, C11, C12 and C14 is to run copies of the
@@ -1231,6 +1363,12 @@ Source C15's script prints its report and writes a file only to a path given wit
 `--output`; do not point that option at the shipped record
 `data/15-logarithmic-rigidity-verification.json`. It needs Python 3.9 or later and
 SymPy.
+
+Source C16's script likewise prints its report and writes a file only to a path given
+with `--output`; do not point that option at the shipped record
+`data/16-singular-curves-verification.json` (its delivered README's line
+`python verify.py --output verification.json` would overwrite a file of that name in the
+working directory). It needs Python 3.10 or later and SymPy (`sympy==1.14.0` pinned).
 
 Source 01's script **writes** a JSON report, by default
 `verification_report.json` in the working directory; pass `--output` with a
@@ -1298,3 +1436,14 @@ rank-two Hahn examples, 64 characteristic-two telescoping checks with the partia
 derivatives, and the valuation-ring binomial series). Run without `--output` it only
 printed; the report written with `--output` differs from the shipped record only in
 the recorded Python version (3.13.5 there).
+
+When Section 17.6 was written, source C16's script passed on a copy in a scratch
+directory with Python 3.14.4 and SymPy 1.14.0: 113,940 assertions in 28 groups, with the
+same group counts as the shipped record (264 rational and 8 symbolic checks of
+Seidenberg's identity, 1,493 finite Hahn checks, 200 rank-two comparisons, 36,071
+superelliptic multiplicity patterns with three checks each and 21 normalization
+identities, the elliptic and conductor identities, the node, cusp, acnode and real
+parametrizations, and 3,696 derivative-order checks). The report written with `--output`
+differs from the shipped record only in the recorded Python version (3.13.5 there) and
+the run time. The parametrizations and identities printed in Section 17.6 were checked
+separately with SymPy.

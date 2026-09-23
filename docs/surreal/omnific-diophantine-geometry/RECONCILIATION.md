@@ -15,15 +15,19 @@ Section 16.4. The next pass covers Section 16.5 through inheritance,
 completing the maintained Section 16 proof chain. Later passes cover the curve
 classification in Sections 17.1–17.2 and the arithmetic fibers, polynomial
 witnesses and separated-model descent in Section 17.3, followed by projective
-coordinates and coordinate ideals in Section 17.4. Section 17.5 and 18,
+coordinates and coordinate ideals in Section 17.4. Sections 17.5–17.6 and 18,
 their pointers in Sections 6, 7 and 14, and Sections 20–21 remain
 outside the completed proof review.
-It does **not** certify integration of every result in the thirteen manuscripts
+It does **not** certify integration of every result in the fourteen manuscripts
 or review of all later proofs and imported classical results. Section numbers
 below are those current when each pass was made; the last section gives the
 present numbering. Singular curves, group varieties and subsequent
 geometric applications remain outside these passes. The review of Section 16
 includes the two-ring principle, symmetric differentials and inheritance.
+Source C16, integrated in `1ad4ad8`, adds seventeen standard results in
+Section 17.6 and updates the earlier singular-curve status notes. Its
+normalization criterion, conductor certificates and arithmetic applications
+are indexed but remain outside the completed proof review.
 
 ## Recoverable sources
 
