@@ -536,3 +536,5 @@ import Surreal.Surcomplex.SineRootCountSharpness
 import Surreal.Algebra.LaurentFrequencyWeight
 import Surreal.Surcomplex.TrigonometricFrequencyDerivative
 import Surreal.Surcomplex.TrigonometricStationaryAngles
+import Surreal.Algebra.NonnegativePolynomialRoots
+import Surreal.Algebra.NonnegativePolynomialDegree
