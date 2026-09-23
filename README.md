@@ -508,6 +508,12 @@ opposite angle is infinitesimally close to pi exactly when the side gap
 is infinitesimal relative to `bc/(b+c)`. Its full inverse-sine strong
 series gives square-root equivalents and exact valuation formulas for
 the angle supplement, area, and circumradius at arbitrary surreal scales.
+Normalized triangles with vertices `0`, `1`, and `x + i*y` now have exact
+arctangent base angles and finite-remainder expansions for their sides,
+quadratic slack, circumradius and inradius. Positive leading residues
+prove all six height-valuation identities, including the supplement of
+the upper angle. The coordinate formulas also hold for arbitrary positive
+surreal base length and height before any infinitesimal specialization.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual
