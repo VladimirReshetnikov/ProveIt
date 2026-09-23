@@ -1,6 +1,7 @@
 # The surreal and surcomplex reports
 
-This collection has **44 research reports in five families**. Start with the
+This collection has **44 assembled research reports in five families**,
+plus two newly placed manuscript packages awaiting assembly. Start with the
 reading routes below, use the [notation guide](NOTATION.md) when moving between
 reports, and consult the [typeset catalogue](manifest.pdf)
 ([source](manifest.tex)) for longer descriptions. The
@@ -16,13 +17,24 @@ hypotheses, limitations and provenance.
 
 ## Newest reports
 
+Nine manuscripts placed in `d4e71b7` form two planned reports:
+[birthday cutoffs and hereditary sets](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/)
+and [surreal fields across universes](foundations-and-computation/surreal-fields-across-universes/).
+Their current main sources and guides are the selected base manuscripts;
+assembly, catalogue integration and proof review remain pending. They are
+not yet included in the typeset catalogue. The statement index provisionally
+covers their two current base sources as well as the 44 assembled reports;
+the other seven delivered manuscripts still require assembly and indexing.
+
 Four reports placed in `5fe7f8d` and written in `fb182ea` are catalogued in the
 tables below:
 [vector and tensor fields](surreal/vector-and-tensor-fields/),
 [Euclidean three-space](surreal/euclidean-three-space/),
 [finite surreal probability](surreal/finite-surreal-probability/) and
 [surcomplex field automorphisms](surcomplex/surcomplex-field-automorphisms/).
-Their proof review and formalization remain pending. The same batch added
+The finite-probability review now covers Sections 2–3; review of its later
+sections and the other three reports remains pending. Lean coverage is tracked
+separately in the ledger. The same batch added
 source material to the measures and trigonometry reports; those additions do
 not extend their earlier proof-review scope.
 

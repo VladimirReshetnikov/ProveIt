@@ -744,7 +744,30 @@ checks 6,127 declarations using only `propext`, `Classical.choice` and
 `Quot.sound`. This source review adds no Lean coverage. Sections 4 onward,
 remaining imports and broader source reconciliation still require review.
 
+The final probability-core integration merged `e79b92a` through `2cda5fe`,
+including the finite-angle quotient and canonical polar-group splitting.
+Its source mapping retains the finite-angle domain and ordinary `2πℤ`
+periods while allowing a nonzero surcomplex modulus of arbitrary size.
+The combined build passes 3,912 jobs, and 6,214 declarations pass the axiom
+audit with only `propext`, `Classical.choice` and `Quot.sound`.
+The merge also brought in two packages placed in `d4e71b7`; their 67 base-source
+statements are indexed provisionally, with assembly and review explicitly
+pending. The independent index now checks 2,181 entries across 46 current
+main sources (44 assembled reports plus two base manuscripts). All 903 local
+Markdown destinations in 97 files resolve. The probability source and its
+43-page PDF are unchanged by the merge, and the 30 newly delivered files
+remain unchanged. This is integration validation, not a proof review of
+the new foundations packages or additional probability Lean coverage.
+
 ## Remaining scope
+
+The nine manuscripts placed in `d4e71b7` are grouped as
+[birthday cutoffs](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/)
+and [fields across universes](foundations-and-computation/surreal-fields-across-universes/).
+Their current sources are the selected base manuscripts, now provisionally
+indexed. Assembly, catalogue integration, indexing the other seven manuscripts,
+proof review and source reconciliation remain pending; these two packages are
+additional to the 44 assembled reports counted above.
 
 The newly assembled [vector and tensor fields](surreal/vector-and-tensor-fields/),
 [three-space](surreal/euclidean-three-space/) and

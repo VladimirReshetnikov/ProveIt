@@ -15,8 +15,9 @@ that the current Lean target compiles or imports them.
 
 ## Scope and how to read this ledger
 
-The canonical inventory below identifies **44 main texts** with **2114**
-standard result environments. Counts cover
+The canonical inventory below identifies **46 current main sources** with
+**2181** standard result environments: 44 assembled reports plus two
+provisionally indexed base manuscripts awaiting assembly. Counts cover
 literal `theorem`, `lemma`, `proposition`, and `corollary` environments;
 examples, equations, prose assertions and companion proofs contain further
 claims. Counts are a navigation aid, **not a completeness certificate**.
@@ -29,8 +30,12 @@ expansions integrated through `66dd6bc`, plus batch 19: four new reports and
 further expansions of four existing reports, integrated from `7657737`.
 Batch 20 (placed in `5fe7f8d`, written in `fb182ea`) adds four reports and
 expands the measures and trigonometry reports; all are indexed in their
-written form, and their review remains pending. Inclusion supplies
-navigation, not mathematical review or formalization. The implementation
+written form. The finite-probability review now covers Sections 2–3; later
+sections, the other new reports and the expansions remain pending within the
+review scopes recorded separately. Two packages placed in `d4e71b7` add 67
+provisionally indexed statements from their selected base manuscripts; the
+other seven delivered manuscripts still require assembly and reconciliation.
+Inclusion supplies navigation, not mathematical review or formalization. The implementation
 table retains the precise scope of the newly mapped Lean statements.
 
 Before archive retirement in `e5791a8`, the tree contained 63 source
@@ -498,13 +503,21 @@ cannot replace strong Hahn summability.
 
 `T`, `L`, `P`, `C` mean literal `theorem`, `lemma`, `proposition` and
 `corollary` environments; examples, computations, assessments and other
-custom environments are not included. Paths below identify all 44 main texts
-present in the repository, including the two whose source is not named
-`article.tex`. The reader map and the typeset catalogue list all of them. The
-four reports placed in `5fe7f8d` were written in `fb182ea`, which prefixed
-their labels; they are indexed here but not yet reviewed.
+custom environments are not included. The index covers 46 current main
+sources: 44 assembled reports and two selected base manuscripts awaiting
+assembly. Two assembled sources are not named `article.tex`.
+The reader map and typeset catalogue describe the 44 assembled reports.
+The two packages placed in `d4e71b7`,
+[birthday cutoffs](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/)
+and [fields across universes](foundations-and-computation/surreal-fields-across-universes/),
+are indexed provisionally from their current base sources. This does not
+claim that the other seven delivered manuscripts are assembled or indexed;
+assembly and full source reconciliation remain pending.
+The four reports placed in `5fe7f8d` were written in `fb182ea`, which prefixed
+their labels; they are indexed here. The finite-probability review covers
+Sections 2–3; its later sections and the other three reports await review.
 The four reports and expanded sections from batch 19 are indexed here, but
-remain pending unless a precise implementation mapping below states otherwise.
+remain pending unless a precise implementation mapping states otherwise.
 
 | Main report source | T | L | P | C | Total |
 |---|---:|---:|---:|---:|---:|
@@ -552,7 +565,9 @@ remain pending unless a precise implementation mapping below states otherwise.
 | [surreal/euclidean-three-space/article.tex](surreal/euclidean-three-space/article.tex) | 28 | 3 | 8 | 1 | 40 |
 | [surreal/finite-surreal-probability/article.tex](surreal/finite-surreal-probability/article.tex) | 15 | 2 | 7 | 1 | 25 |
 | [surreal/vector-and-tensor-fields/article.tex](surreal/vector-and-tensor-fields/article.tex) | 23 | 1 | 15 | 4 | 43 |
-| **Total** | 844 | 401 | 460 | 409 | **2114** |
+| [foundations-and-computation/birthday-cutoffs-and-hereditary-sets/article.tex](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/article.tex) | 16 | 14 | 6 | 4 | 40 |
+| [foundations-and-computation/surreal-fields-across-universes/article.tex](foundations-and-computation/surreal-fields-across-universes/article.tex) | 11 | 7 | 4 | 5 | 27 |
+| **Total** | 871 | 422 | 470 | 418 | **2181** |
 
 The earlier refresh from `796f8d4` through `1f6d6b8` added four reports and
 expanded an existing one.
@@ -3414,3 +3429,96 @@ Statements are **pending unless explicitly mapped** in the implementation table.
 | Theorem | `vtf:mink:thm:Cauchy` (line 3899) | Support-preserving Cauchy lifting |
 | Theorem | `vtf:mink:thm:retardedperturb` (line 3941) | Exact causal inverse for a positive-order perturbation |
 | Theorem | `vtf:mink:thm:cubic` (line 4076) | Positive-order cubic-wave deformation |
+
+### birthday-cutoffs-and-hereditary-sets
+
+Source: [foundations-and-computation/birthday-cutoffs-and-hereditary-sets/article.tex](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/article.tex).
+
+Provisional index of the selected base manuscript placed in `d4e71b7`.
+The package contains additional source material awaiting assembly; this index
+covers only the current `article.tex`. Its delivered proof and source audits
+do not establish review or Lean coverage. All statements are **Pending**
+unless explicitly mapped in the implementation table.
+
+| Kind | Source label or line | Heading |
+|---|---|---|
+| Theorem | `thm:main-rounding` (line 163) | Cardinal rounding and cutoff recovery; proved below |
+| Theorem | `thm:main-elementary` (line 186) | Elementary-inclusion spectrum; proved below |
+| Theorem | `thm:main-growth` (line 202) | Growth spectrum; proved below |
+| Theorem | `thm:main-extension` (line 220) | Extension rigidity at a strong-limit cutoff; proved below |
+| Lemma | `lem:birthday-language` (line 298) | Birthday order and birthday function |
+| Lemma | `lem:card-estimates` (line 330) | Closure and cardinal estimates |
+| Lemma | `lem:hereditary` (line 360) | Basic hereditary-size facts |
+| Lemma | `lem:cut-test` (line 406) | Prefix test for a cut value |
+| Lemma | `lem:graph-size` (line 433) | Small numeric graphs have small certificates |
+| Theorem | `thm:certificates` (line 490) | Hereditary-size arithmetic certificates |
+| Lemma | `lem:prefix` (line 562) | Definable prefix relation |
+| Lemma | `lem:pairing` (line 607) | Bounded pairing |
+| Lemma | `lem:collapse` (line 696) | Rooted collapse |
+| Lemma | `lem:equal-member` (line 751) | Correctness of equality and membership |
+| Theorem | `thm:collapse-range` (line 784) | Exact collapse range |
+| Theorem | `thm:collector` (line 888) | The cutoff is a set exactly in the noncardinal case |
+| Theorem | `thm:biinterpretation` (line 931) | Uniform local bi-interpretation |
+| Corollary | `cor:epsilon0` (line 961) | The first epsilon cutoff and hereditary countability |
+| Proposition | `prop:coherence` (line 985) | Coherence under cutoff inclusions |
+| Lemma | `lem:lower-noncardinal` (line 1020) | Noncardinal lower cutoffs never include elementarily |
+| Lemma | `lem:upper-noncardinal` (line 1036) | A cardinal lower cutoff cannot include elementarily into a noncardinal cutoff |
+| Theorem | `thm:elementary` (line 1047) | Classification of elementary initial inclusions |
+| Corollary | Line 1067 (unlabeled) | Two kinds of elementary extension |
+| Corollary | Line 1088 (unlabeled) | Comparison with the full class |
+| Theorem | `thm:eternity-noncardinal` (line 1134) | Eternity forces cardinality of an epsilon cutoff |
+| Lemma | `lem:H-background` (line 1159) | The fixed background axioms |
+| Theorem | `thm:eternity-replacement` (line 1192) | Eternity--Replacement equivalence |
+| Corollary | Line 1245 (unlabeled) | Untitled |
+| Theorem | `thm:packing` (line 1277) | Exact packing threshold |
+| Proposition | `prop:powerset` (line 1305) | Power Set in the interpreted universe |
+| Lemma | `lem:worldly-HV` (line 1345) | When hereditary size becomes cumulative rank |
+| Theorem | `thm:worldly` (line 1376) | Worldly-cutoff characterization |
+| Proposition | `prop:singular-worldly` (line 1451) | A conditional source of singular worldly cutoffs |
+| Proposition | `prop:cross-model` (line 1497) | Cross-model coherence |
+| Theorem | `thm:detector` (line 1539) | Uniform detector for an added subset |
+| Proposition | `prop:detector-cost` (line 1571) | Sharpness of the detector's parameter cost |
+| Theorem | `thm:extension-rigidity` (line 1607) | Strong-limit extension rigidity |
+| Proposition | `prop:real-recovery` (line 1662) | Recovery of the real birthday structure |
+| Lemma | `lem:rigidity` (line 1700) | Rigidity of a standard birthday cutoff |
+| Theorem | `thm:orientation` (line 1717) | The two-element orientation obstruction |
+
+### surreal-fields-across-universes
+
+Source: [foundations-and-computation/surreal-fields-across-universes/article.tex](foundations-and-computation/surreal-fields-across-universes/article.tex).
+
+Provisional index of the selected base manuscript placed in `d4e71b7`.
+The package contains additional source material awaiting assembly; this index
+covers only the current `article.tex`. Its delivered proof and source audits
+do not establish review or Lean coverage. All statements are **Pending**
+unless explicitly mapped in the implementation table.
+
+| Kind | Source label or line | Heading |
+|---|---|---|
+| Theorem | `thm:main-summary` (line 156) | Main spectrum theorem |
+| Theorem | `thm:package-summary` (line 173) | First loss and language sensitivity |
+| Lemma | `lem:signcone` (line 288) | The cone of a sign |
+| Lemma | `lem:RCFsat` (line 350) | Real closed saturation from cuts |
+| Proposition | `prop:absolute` (line 379) | Old arithmetic and elementary inclusions |
+| Lemma | `lem:groundbound` (line 422) | Every external set of old numbers is ground-bounded |
+| Lemma | `lem:shortold` (line 442) | Coding short families |
+| Theorem | `thm:oneside` (line 459) | One old side suffices |
+| Corollary | `cor:NSoneside` (line 475) | Untitled |
+| Lemma | `lem:tree` (line 502) | Arbitrarily branching interval tree |
+| Theorem | `thm:decode` (line 554) | Branch decoder and omitted cut |
+| Proposition | `prop:deltaregular` (line 646) | Untitled |
+| Theorem | `thm:firstgap` (line 686) | First gap theorem |
+| Corollary | `cor:recover` (line 719) | Recovering the sequence threshold from the order |
+| Corollary | `cor:spectrum` (line 731) | Untitled |
+| Theorem | `thm:omega` (line 751) | Finite-parameter saturation |
+| Corollary | `cor:omegaone` (line 805) | Untitled |
+| Theorem | `thm:purecomplex` (line 834) | Absolute set-saturation of the old pure surcomplex field |
+| Lemma | `lem:coordinates` (line 888) | Real coordinates are interpretable |
+| Theorem | `thm:conjugation` (line 918) | Conjugation spectrum |
+| Corollary | `cor:noniso` (line 960) | Untitled |
+| Theorem | `thm:fragments` (line 997) | Bounded-birthday preservation |
+| Proposition | `prop:setACF` (line 1050) | Pure complexification of a set fragment |
+| Proposition | `prop:topology` (line 1214) | External discreteness and Cauchy rigidity |
+| Theorem | `thm:booleanyes` (line 1305) | Set-complete dense completion |
+| Lemma | `lem:classdiag` (line 1355) | Diagonal obstruction |
+| Theorem | `thm:booleanno` (line 1387) | No all-subclass completion |
