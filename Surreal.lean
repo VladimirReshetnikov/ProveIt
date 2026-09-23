@@ -73,6 +73,11 @@ import Surreal.Algebra.TailAnalyticSpan
 import Surreal.Algebra.GenericConstantPoint
 import Surreal.Algebra.ExponentialProfile
 import Surreal.Algebra.MarkovEffective
+import Surreal.Algebra.HerglotzHierarchy
+import Surreal.Algebra.MultiquadraticSigns
+import Surreal.Algebra.PolynomialJensen
+import Surreal.Algebra.DescendingProfiles
+import Surreal.Algebra.LatticeEnergyCertificate
 import Surreal.Foundations.SizeObstructions
 import Surreal.Foundations.SmallCutData
 import Surreal.Foundations.SignSequence
@@ -393,3 +398,8 @@ import Surreal.HahnSeries.UnitOrbitPolynomials
 import Surreal.HahnSeries.TorsionCovariance
 import Surreal.HahnSeries.AdmissibleCones
 import Surreal.HahnSeries.BoundedOrbitLocus
+import Surreal.HahnSeries.PronyLocalRoots
+import Surreal.HahnSeries.PronyRows
+import Surreal.HahnSeries.ContinuumDefects
+import Surreal.HahnSeries.EulerDerivation
+import Surreal.HahnSeries.FiniteBaseChange

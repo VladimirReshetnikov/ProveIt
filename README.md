@@ -574,5 +574,17 @@ exponential profile theorem holds for every ordered field with a valuation.
 Admissible exponent sets form cones with the period-inequality criterion,
 the bounded-orbit locus of an expanding polynomial is exact, and a
 compressed resolvent family determines a unique row-Laplacian generator.
+Prony's perturbed annihilator has exactly one simple root in each
+nearest-neighbour ball, the non-monic residue-simple Hensel lemma holds, and
+the Hermite rows of the moment differential are exact. Independent square
+classes give multiquadratic extensions of full degree with every sign
+automorphism, extended coefficientwise to Hahn series, and finite base change
+commutes with Hahn series. The vectors `(n^{-r})` have continuum many
+independent classes modulo the range of `diag(1/n)`. Jensen's disk theorem
+and the weighted incomplete-polynomial hull hold over every ordered field.
+The Euler derivation preserves `K_Γ` exactly when `Γ = {0}` or `1 ∈ Γ`, and a
+primitive of `1` is transcendental. Every nonzero noncyclic ordered abelian
+group has continuum many translation classes of descending positive profiles,
+and quadratic lattice energies admit finite minimum certificates.
 A successful build proves only the imported Lean
 statements, not coverage of all the source documents.
