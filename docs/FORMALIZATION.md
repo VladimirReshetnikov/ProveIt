@@ -5795,38 +5795,38 @@ Placed in `21375f8` from source 07. This is the critical-point-defects base; sou
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `lem:index` (line 349) | The first missing index |
-| Lemma | `lem:absolute` (line 382) | Absolute surreal constructions |
-| Proposition | `prop:J` (line 427) | The elementary-induced surreal embedding |
-| Lemma | `lem:reindex` (line 456) | Reindexing exponents |
-| Theorem | `thm:companion` (line 510) | Existence and uniqueness of the companion |
-| Theorem | `thm:defect` (line 566) | Exact defect and first term |
-| Corollary | `cor:leading` (line 612) | Same leading scale, different tails |
-| Corollary | `cor:omegalocus` (line 625) | Exact omega-map compatibility locus |
-| Theorem | `thm:intersection` (line 661) | Equalizer and common image |
-| Corollary | `cor:transcendence` (line 705) | Transcendental separation |
-| Theorem | `thm:projection` (line 728) | Isomorphic immediate image fields |
-| Theorem | `thm:witness` (line 794) | The basic witness |
-| Theorem | `thm:positive` (line 847) | Positive-family threshold |
-| Corollary | `cor:firstfailure` (line 893) | First failure cardinal |
-| Theorem | `thm:escape` (line 912) | Strong-sum closure and positive escape |
-| Theorem | `thm:measure` (line 974) | The measure-coefficient formula |
-| Corollary | `cor:distinctU` (line 1027) | Distinguishing normal measures |
-| Theorem | `thm:character` (line 1071) | Ultrafilter evaluation as a defect coefficient |
-| Theorem | `thm:measurablecriterion` (line 1118) | A mask criterion for measurability |
-| Theorem | `thm:Oz` (line 1194) | Omnific equalizer, intersection, and fractions |
-| Theorem | `thm:Ozmeasure` (line 1241) | Omnific recovery of the measure |
-| Theorem | `thm:complex` (line 1293) | Surcomplex transfer |
-| Corollary | `cor:modulus` (line 1347) | Conjugation and modulus |
-| Proposition | `prop:invisible` (line 1364) | Coefficient invisibility |
-| Proposition | `prop:twisted` (line 1390) | Twisted product law |
-| Theorem | `thm:logdefect` (line 1424) | Logarithmic defect |
-| Lemma | `lem:exptransfer` (line 1482) | Exponential transfer |
-| Theorem | `thm:expdefect` (line 1500) | Exact exponential defect |
-| Corollary | `cor:expclosure` (line 1542) | Exponential closure without logarithmic closure |
-| Corollary | `cor:Hnotexp` (line 1569) | One image is exponentially closed and the other is not |
-| Theorem | `thm:twoclosures` (line 1603) | Two canonical closures of the common field |
-| Theorem | `thm:supercompact` (line 1685) | Seed extraction |
+| Lemma | `lce:lem:index` (line 349) | The first missing index |
+| Lemma | `lce:lem:absolute` (line 382) | Absolute surreal constructions |
+| Proposition | `lce:prop:J` (line 427) | The elementary-induced surreal embedding |
+| Lemma | `lce:lem:reindex` (line 456) | Reindexing exponents |
+| Theorem | `lce:thm:companion` (line 510) | Existence and uniqueness of the companion |
+| Theorem | `lce:thm:defect` (line 566) | Exact defect and first term |
+| Corollary | `lce:cor:leading` (line 612) | Same leading scale, different tails |
+| Corollary | `lce:cor:omegalocus` (line 625) | Exact omega-map compatibility locus |
+| Theorem | `lce:thm:intersection` (line 661) | Equalizer and common image |
+| Corollary | `lce:cor:transcendence` (line 705) | Transcendental separation |
+| Theorem | `lce:thm:projection` (line 728) | Isomorphic immediate image fields |
+| Theorem | `lce:thm:witness` (line 794) | The basic witness |
+| Theorem | `lce:thm:positive` (line 847) | Positive-family threshold |
+| Corollary | `lce:cor:firstfailure` (line 893) | First failure cardinal |
+| Theorem | `lce:thm:escape` (line 912) | Strong-sum closure and positive escape |
+| Theorem | `lce:thm:measure` (line 974) | The measure-coefficient formula |
+| Corollary | `lce:cor:distinctU` (line 1027) | Distinguishing normal measures |
+| Theorem | `lce:thm:character` (line 1071) | Ultrafilter evaluation as a defect coefficient |
+| Theorem | `lce:thm:measurablecriterion` (line 1118) | A mask criterion for measurability |
+| Theorem | `lce:thm:Oz` (line 1194) | Omnific equalizer, intersection, and fractions |
+| Theorem | `lce:thm:Ozmeasure` (line 1241) | Omnific recovery of the measure |
+| Theorem | `lce:thm:complex` (line 1293) | Surcomplex transfer |
+| Corollary | `lce:cor:modulus` (line 1347) | Conjugation and modulus |
+| Proposition | `lce:prop:invisible` (line 1364) | Coefficient invisibility |
+| Proposition | `lce:prop:twisted` (line 1390) | Twisted product law |
+| Theorem | `lce:thm:logdefect` (line 1424) | Logarithmic defect |
+| Lemma | `lce:lem:exptransfer` (line 1482) | Exponential transfer |
+| Theorem | `lce:thm:expdefect` (line 1500) | Exact exponential defect |
+| Corollary | `lce:cor:expclosure` (line 1542) | Exponential closure without logarithmic closure |
+| Corollary | `lce:cor:Hnotexp` (line 1569) | One image is exponentially closed and the other is not |
+| Theorem | `lce:thm:twoclosures` (line 1603) | Two canonical closures of the common field |
+| Theorem | `lce:thm:supercompact` (line 1685) | Seed extraction |
 
 ### autonomous-dilation-relations
 
@@ -5874,38 +5874,38 @@ Source: [surreal/independent-surreal-copies/article.tex](surreal/independent-sur
 Placed in `9d28e28` as a single-source base. Its prescribed independent copies
 use a set-sized divisible Hahn core and NBG with Global Choice for the class
 construction. The 29 standard environments are indexed below. The separately
-styled main theorems `main:copies`, `main:fractions` and `main:join` are additional
+styled main theorems `isc:main:copies`, `isc:main:fractions` and `isc:main:join` are additional
 obligations outside that count. All claims are **Pending** in Lean; mathematical
 proof review and source reconciliation remain pending.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `lem:avoid` (line 393) | A cut avoiding a set |
-| Lemma | `lem:extend` (line 407) | Ordered one-point extension with avoidance |
-| Theorem | `thm:group` (line 447) | Independent group copies over any set-sized base |
-| Corollary | `cor:groupintersection` (line 501) | Untitled |
-| Theorem | `thm:lift` (line 526) | Monomial lift |
-| Proposition | `prop:arithmeticlift` (line 558) | What the lift remembers |
-| Proposition | `prop:classification` (line 602) | Classification within the monomial-preserving class |
-| Lemma | `lem:slice` (line 646) | Slice linearity and separation |
-| Lemma | `lem:matrix` (line 661) | A finite separating matrix |
-| Theorem | `thm:sliceddisjoint` (line 681) | Full Hahn fields are disjoint over their full intersection |
-| Corollary | `cor:joint` (line 711) | Independence of any finite number of full Hahn fields |
-| Corollary | `cor:relations` (line 731) | Polynomial-relation descent |
-| Corollary | `cor:parameters` (line 766) | Fixing every element of a prescribed set |
-| Theorem | `thm:intersectionclassification` (line 786) | Exact classification of set-sized intersections in this class |
-| Theorem | `thm:boolean` (line 814) | Boolean meet realization |
-| Corollary | `cor:choices` (line 847) | Independent choices and absence of new relations |
-| Lemma | `lem:compression` (line 885) | Compression of the surreal order |
-| Theorem | `thm:explicit` (line 934) | An explicit independent ordinal family |
-| Lemma | `lem:iterated` (line 984) | Re-expansion at separated scales |
-| Lemma | `lem:finitecoeff` (line 1024) | Finite coefficient-field control |
-| Theorem | `thm:joinobstruction` (line 1043) | A coefficient-transcendence obstruction |
-| Lemma | `lem:denominator` (line 1139) | Common denominators for a set of surreals |
-| Proposition | `prop:uniform` (line 1161) | Separate uniform denominators, no shared uniform one |
-| Proposition | `prop:boundedfrac` (line 1212) | Identification of the fraction fields |
-| Lemma | `lem:gapscale` (line 1243) | Cofinal sequences with polynomial gaps |
-| Theorem | `thm:cofinalgap` (line 1280) | One transcendental series over all bounded-support fractions |
-| Corollary | `cor:factorial` (line 1335) | The factorial witness |
-| Corollary | `cor:noshareddenom` (line 1365) | Failure witnessed by the denominator equation |
-| Theorem | `thm:setversion` (line 1402) | Independent embeddings in a saturated ordered group |
+| Lemma | `isc:lem:avoid` (line 393) | A cut avoiding a set |
+| Lemma | `isc:lem:extend` (line 407) | Ordered one-point extension with avoidance |
+| Theorem | `isc:thm:group` (line 447) | Independent group copies over any set-sized base |
+| Corollary | `isc:cor:groupintersection` (line 501) | Untitled |
+| Theorem | `isc:thm:lift` (line 526) | Monomial lift |
+| Proposition | `isc:prop:arithmeticlift` (line 558) | What the lift remembers |
+| Proposition | `isc:prop:classification` (line 602) | Classification within the monomial-preserving class |
+| Lemma | `isc:lem:slice` (line 646) | Slice linearity and separation |
+| Lemma | `isc:lem:matrix` (line 661) | A finite separating matrix |
+| Theorem | `isc:thm:sliceddisjoint` (line 681) | Full Hahn fields are disjoint over their full intersection |
+| Corollary | `isc:cor:joint` (line 711) | Independence of any finite number of full Hahn fields |
+| Corollary | `isc:cor:relations` (line 731) | Polynomial-relation descent |
+| Corollary | `isc:cor:parameters` (line 766) | Fixing every element of a prescribed set |
+| Theorem | `isc:thm:intersectionclassification` (line 786) | Exact classification of set-sized intersections in this class |
+| Theorem | `isc:thm:boolean` (line 814) | Boolean meet realization |
+| Corollary | `isc:cor:choices` (line 847) | Independent choices and absence of new relations |
+| Lemma | `isc:lem:compression` (line 885) | Compression of the surreal order |
+| Theorem | `isc:thm:explicit` (line 934) | An explicit independent ordinal family |
+| Lemma | `isc:lem:iterated` (line 984) | Re-expansion at separated scales |
+| Lemma | `isc:lem:finitecoeff` (line 1024) | Finite coefficient-field control |
+| Theorem | `isc:thm:joinobstruction` (line 1043) | A coefficient-transcendence obstruction |
+| Lemma | `isc:lem:denominator` (line 1139) | Common denominators for a set of surreals |
+| Proposition | `isc:prop:uniform` (line 1161) | Separate uniform denominators, no shared uniform one |
+| Proposition | `isc:prop:boundedfrac` (line 1212) | Identification of the fraction fields |
+| Lemma | `isc:lem:gapscale` (line 1243) | Cofinal sequences with polynomial gaps |
+| Theorem | `isc:thm:cofinalgap` (line 1280) | One transcendental series over all bounded-support fractions |
+| Corollary | `isc:cor:factorial` (line 1335) | The factorial witness |
+| Corollary | `isc:cor:noshareddenom` (line 1365) | Failure witnessed by the denominator equation |
+| Theorem | `isc:thm:setversion` (line 1402) | Independent embeddings in a saturated ordered group |

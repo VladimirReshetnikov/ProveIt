@@ -23,7 +23,9 @@ data/
   07-initial-core-verification.json                source 07's recorded run
 ```
 
-Every label in `article.tex` carries the prefix `dsn:` (138 labels). The
+Every label in `article.tex` carries the prefix `dsn:` (139 labels: 138 from
+the merge, and `dsn:rem:largecardinal`, added when the large-cardinal report
+was written). The
 [formalization ledger](../../FORMALIZATION.md) now indexes the assembled
 report under these labels, with all claims **Pending**. It supplies no
 checked implementation mapping for this report.
@@ -225,6 +227,16 @@ added by the merge. In brief:
   support fields (04; the universes-report inner models are recorded as an
   unproved instance), possible first omitted ordinals (07), syntactic costs
   (07). All open.
+- **Remark 17.6** (added with the
+  [large-cardinal report](../large-cardinal-embeddings-and-normal-forms/)):
+  that report's absoluteness lemma `lce:lem:absolute` gives omega-map and
+  normal-form absoluteness for transitive inner models with the same ordinals
+  and the same reals, so for such a proper `M` the field `No^M` satisfies the
+  hypotheses of Theorem 8.2 (`lce:rem:dsnsupport`). This supplies the
+  same-reals instance that Question 17.3 recorded as unproved, including the
+  targets of elementary embeddings with a critical point. Inner models lacking
+  a real (`L` when not every real is constructible, `HOD` when it lacks a real)
+  are not covered, and Question 17.3 itself stays open.
 - **`odg:q:size`** (omnific Diophantine report): the definable fragments give
   one instance (Remark 16.6). This is partial information; the question stays
   open. The other report was not edited.
@@ -280,6 +292,9 @@ Appendix A.3 records these.
   sources' language questions (Proposition 15.3).
 - [`computable-surreals`](../computable-surreals/). Definability is kept
   distinct from its computable representations (Section 3.4, Question 17.5).
+- [`large-cardinal-embeddings-and-normal-forms`](../large-cardinal-embeddings-and-normal-forms/)
+  (`lce:`). Its absoluteness lemma supplies the same-reals instance of
+  Question 17.3 (Remark 17.6). The rest of this report is unchanged by it.
 
 ## What was run
 

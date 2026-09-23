@@ -1,16 +1,17 @@
 # Omnific-Preserving Automorphisms
 
 **Convex-scale stabilizers, definable constants, nondefinable monomials, and algebraic-parameter rigidity**
-Merged research report from eight manuscripts written independently and dated
+Merged research report from nine manuscripts written independently and dated
 23 September 2026: items 02, 04, 08 and 09 of batch 26, placed in `f4c9504`
 (they keep those numbers here); item 05 of batch 28, placed in `c6359e4`
-as an addition and numbered 10 here; and items 03, 04 and 05 of batch 30,
-placed in `21375f8` as an addition and numbered 11, 12 and 13 here. Prepared
-for Vladimir Reshetnikov.
+as an addition and numbered 10 here; items 03, 04 and 05 of batch 30,
+placed in `21375f8` as an addition and numbered 11, 12 and 13 here; and item
+07 of batch 31, placed in `9d28e28` as an addition and numbered 14 here.
+Prepared for Vladimir Reshetnikov.
 
 ```
 article.tex                                 the report, standalone LaTeX with an internal bibliography
-article.pdf                                 the compiled report, 90 pages
+article.pdf                                 the compiled report, 104 pages
 README.md                                   this guide
 02-parameter-rigidity-source_audit.md       source 02's source and novelty audit, as delivered
 04-preserving-automorphisms-source_audit.md source 04's source and claim audit, as delivered
@@ -18,6 +19,7 @@ README.md                                   this guide
 11-coefficient-gaps-SOURCE_AUDIT.md         source 11's source and novelty audit, as delivered
 12-automatic-strongness-SOURCE_AUDIT.md     source 12's source, proof and novelty audit, as delivered
 13-omnific-isomorphisms-SOURCE_AUDIT.md     source 13's source, novelty and verification audit, as delivered
+14-automatic-summability-SOURCES.md         source 14's repository snapshot, literature and novelty statement, as delivered
 code/
   09-omnific-preserving-verify_finite_identities.py   source 09 checks (standard library; prints only)
   09-omnific-preserving-Makefile                      source 09's build/check targets (delivered
@@ -47,6 +49,9 @@ code/
                                                       ../data/verification.json by default)
   13-omnific-isomorphisms-build.sh                    source 13's build wrapper (delivered layout;
                                                       it does not build this report)
+  14-automatic-summability-verify.py                  source 14 checks (standard library; always
+                                                      writes ../data/verification.json relative
+                                                      to its own directory; no output option)
 data/
   09-omnific-preserving-verification_output.txt       source 09's recorded run
   04-preserving-automorphisms-verification_report.json  source 04's recorded run (7,062 assertions)
@@ -66,12 +71,15 @@ data/
                                                       of seven delivered files
   13-omnific-isomorphisms-verification.json           source 13's recorded run (13,885 assertions)
   13-omnific-isomorphisms-BUILD_REPORT.json           source 13's build record for its own PDF (no hashes)
+  14-automatic-summability-verification.json          source 14's recorded run (four check groups, all passed)
 ```
 
-Every label in `article.tex` carries the prefix `opa:` (287 labels). Source
+Every label in `article.tex` carries the prefix `opa:` (316 labels). Source
 02's part carries the sub-prefix `opa:par:` (43 labels), the material added
-from source 10 carries `opa:sc:` (30 labels), and Part III, from sources 11,
-12 and 13, carries `opa:as:` (110 labels, besides `opa:part:as`). These
+from source 10 carries `opa:sc:` (30 labels), Part III, from sources 11,
+12 and 13, carries `opa:as:` (110 labels, besides `opa:part:as`), and Part IV,
+from source 14, carries `opa:cm:` (29 labels, the part label `opa:cm:part`
+included). These
 prefixed labels identify the assembled report; the earlier placed base used
 source-local labels. The batch-28 addition renamed and removed no label and
 changed no existing theorem, section or equation number: its material is
@@ -79,16 +87,19 @@ appended at the ends of Sections 3, 4, 6, 7, 9, 10 and 11. The batch-30
 addition likewise renamed and removed no label; its Part III (Sections 20–32)
 sits after Part II and before the appendices, and a comparison of the
 auxiliary files of the builds before and after it shows all 176 earlier labels
-with unchanged numbers. The [formalization ledger](../../FORMALIZATION.md)
+with unchanged numbers. The batch-31 addition likewise renamed and removed no
+label (287 kept, 29 added); its Part IV (Sections 33–37) sits after Part III and
+before the appendices, and the same comparison shows all 287 earlier labels with
+unchanged numbers. The [formalization ledger](../../FORMALIZATION.md)
 lists this report's statements in its inventory, all **Pending**; its line
-anchors predate the batch-28 and batch-30 additions. No implementation mapping
+anchors predate the batch-28, batch-30 and batch-31 additions. No implementation mapping
 cites an `opa:` label. The repository now has Lean code constructing the
 omnific rings themselves (`Surreal/Foundations/OmnificIntegers.lean`, for ring
 clauses of the Diophantine report), but none for any statement of this report;
 the earlier sentence here that there was no Lean code about omnific integers
 is out of date.
 
-## Eight sources, one report
+## Nine sources, one report
 
 | | Manuscript | Repository pin | Contributes |
 |---|---|---|---|
@@ -100,6 +111,7 @@ is out of date.
 | **11** | *Coefficient Gaps and Proper Self-Embeddings of the Surreal Field: omnific preservation, topological dichotomies, and nonconjugate copies* (batch 30, item 03) | `cf56b89` | Base of the embedding sections of Part III: the bottom-gap classification (Theorem 26.3), Taylor admissibility and the coinitiality criterion (Theorem 26.6, Corollary 26.7), the explicit embedding (Theorem 27.3), closed images and the continuity dichotomy (Theorems 28.1, 28.3, 28.4), nonelementarity (Theorem 29.1), the ordinary overlap (Proposition 29.2), continuum many nonconjugate copies (Theorem 29.4), parameter-fixed copies (Theorems 29.6, 29.7), conjugation-compatible surcomplex embeddings (Theorem 30.3, Proposition 30.4, Corollary 30.5). Files prefixed `11-coefficient-gaps-`. |
 | **12** | *Automatic Strongness and Proper Embeddings of the Omnific Integers: constant-term duality, full stabilizers, and the surreal–surcomplex boundary* (batch 30, item 04) | `a6c68ac` | Base of the automatic-strongness sections of Part III: scalar detection (Theorem 21.4), the constant-term isomorphism theorem with the weaker hypothesis (Theorem 22.1), automatic strongness of `Aut(Oz)` (Theorem 23.2), the factorization at set size and the Archimedean corollary (Theorem 24.1, Corollary 24.3), adjoints and the general retraction (Theorems 25.2, 25.3, Corollary 25.4), the proper-class functional (Theorem 25.6), the image corollary (Corollary 27.4), regular cardinals (Proposition 31.1). Files prefixed `12-automatic-strongness-`. |
 | **13** | *Automatic Hahn Linearity of Omnific Isomorphisms: residue duality, full stabilizers, and coefficient-drifting self-embeddings* (batch 30, item 05) | `0865f04` | The same main theorems as 12, printed once. Its own additions: the countable binary witness and finite-row lemma (Lemma 21.3, second route in Theorem 21.4, Corollary 21.5), isomorphisms between different, possibly non-divisible groups (Proposition 23.1, Corollary 23.4), the coefficient-matrix formula (Proposition 22.3), constant-term preservation without `Oz`-preservation (Example 23.6), the small-integer-part example (Example 31.2), the failure of pair homogeneity (Corollary 27.5). Files prefixed `13-omnific-isomorphisms-`. |
+| **14** | *Automatic Summability from Omnific Arithmetic: constant-term duality, the full omnific stabilizer, and a sharp set–class distinction* (batch 31, item 07; 24 pages) | `3d40856` | A third derivation of 12's and 13's main theorems, in less generality, printed once with them (14 added to their sources in Part III). Its own material is Part IV (Sections 33–37): the induced-matching route to detection (Lemma 34.1, third route in Theorem 21.4, Corollary 34.2), the cancellation example (Example 34.3), detection in subfields with the countable detector property (Definition 35.1, Proposition 35.2), formal power-series evaluation (Theorem 36.1), the general adjoint matrix (Proposition 36.2), the case `Γ = R` (Remark 36.3), and Question 37.1. Files prefixed `14-automatic-summability-`. |
 
 `fb5c4b5` is 12 commits before the placement `f4c9504` and `befe739` is 10
 commits before it. Both pins contain the batch-24 placement `be06fc8`. Neither
@@ -156,6 +168,28 @@ edited:
   manuscripts: 12's Theorem 5.5 is Theorem 23.2 here, 13's Theorem 6.1 is also
   Theorem 23.2, and 11's Theorem 4.2 is Theorem 26.3.
 
+Source 14 pins `3d40856`, which contains this report's `article.tex` exactly as
+written in batch 26 (`9b80a30`) and the placement `c6359e4` of source 10's files,
+but not `b3fa9e2` (source 10's write) nor `21375f8` and `20c4c9f` (the placement
+and write of 11–13). So its author saw Question 11.1 open and none of Part III.
+Its checks, recorded run and source statement are shipped under the prefix
+`14-automatic-summability-`; its `article.tex`, PDF, README and `SHA256SUMS.txt`
+are not (the checksum list was verified at placement and dropped). Disclosures
+about its delivered files, which are kept byte-identical:
+
+- `code/14-automatic-summability-verify.py` was delivered as `checks/verify.py`.
+  It always writes `data/verification.json` under the parent of its own directory
+  (`Path(__file__).resolve().parents[1]`) and has no option to change that. Run in
+  place it would create an unprefixed `data/verification.json` in this report
+  (not overwriting `data/14-automatic-summability-verification.json`); run from a
+  flat copy directory it writes into that directory's parent. The rerun
+  instructions below account for this.
+- Its delivered README (not shipped) says the program writes
+  `data/verification.json`; that is the delivered layout.
+- `14-automatic-summability-SOURCES.md` describes the batch-26 text of this report
+  (accurate at the pin) and states a novelty claim that is stale at the merge
+  (see "Stale statements corrected").
+
 **Why one report.** 04, 08 and 09 prove one classification at three
 generalities, with the same consequences:
 
@@ -190,6 +224,16 @@ and are printed once with 12 as the base; 11 is the base of the embedding
 sections. Section 20.1 records where the merge chose. None of the three
 contradicts this report or another: automorphisms preserving `Oz` fix `R`,
 embeddings need not.
+
+14, added in batch 31, is a **third independent derivation** of automatic
+strongness for the real pair (after 12 and 13), in less generality: it treats
+isomorphisms of one divisible group, where Proposition 23.1 allows different,
+possibly non-divisible groups, and its constant-term theorem assumes `σ(k) = l`, as
+13's does. Its proof chain `ℛ_Γ → Π → 𝒜_Γ → R → 𝔪 → ct → summation` is the one
+printed after Theorem 23.2. So its shared results are printed once in Part III
+with 14 added to their sources, and only its genuinely new material forms **Part
+IV** (Sections 33–37; Section 33.2 has the full correspondence table). 14
+contradicts neither this report nor any other.
 
 **Printed once.**
 
@@ -234,6 +278,18 @@ embeddings need not.
   `No → No_{>0}` or `No → (1, ∞)` (Theorem 27.3), all instances of 11's
   classification (Theorem 26.3). `J(No) ∩ R = ker d` (12 and 11) is Corollary
   27.4 and Proposition 29.2; nonelementarity (12 and 11) is Theorem 29.1.
+- **Source 14, printed once** (batch 31; its numbering; Section 33.2): Theorem 1.1,
+  Theorem 5.3 and Corollary 5.5 as Theorem 23.2 and Corollary 23.4; Lemma 2.2 as
+  Lemma 2.1 and Lemma 21.1; Theorem 3.3 and Corollary 3.4 as Theorem 21.4;
+  Theorem 4.1 and Corollary 4.2 as Theorem 22.1 and Corollary 22.2; Propositions
+  5.1–5.2 as the cited reconstruction and Proposition 23.1; Lemma 5.4 as
+  `odg:thm:fractions` (and its `Γ = Z` warning as Example 31.2); Corollary 5.6 as
+  Corollary 23.5; Theorems 6.1–6.2 and Corollary 6.3 as Proposition 25.1 and
+  Theorem 25.2; Theorem 7.1 as Theorem 25.6; Theorem 8.1 as Theorem 24.1;
+  Theorem 8.2 as Theorem 3.3 (04's polynomial route); Corollary 8.3 as Corollary
+  24.3; Proposition 9.1 as the inverse of Example 4.19 (letters swapped);
+  Proposition 10.1 and Theorems 10.2–10.3 as Theorems 30.2 and 30.1; Example 10.4
+  as the phase twists of `odg:def:lem:twist`.
 - **Reproved and cited, not reprinted**: the reconstruction of `R`, `Π`, the
   multiplier ring and `Frac Oz = No` (all three; `odg:`), the convex-support
   criterion (12 by the least forbidden shift, which is 10's route; 13 by the
@@ -278,6 +334,9 @@ extras are printed:
   route in Theorem 21.4), beside 12's triangular detector. 12 makes the family
   triangular and then chooses coefficients; 13 keeps the family and chooses
   them row by row.
+- 14's induced-matching proof (Lemma 34.1 and the **third route** in Section 34),
+  beside those two. It passes to a diagonal submatrix, so the witness has all
+  coefficients `1` and nothing is chosen.
 
 **Added by the merge**, each tagged `[merge]` with a complete proof:
 
@@ -292,7 +351,12 @@ extras are printed:
 - with 11–13: Corollary 24.4 (what an automorphism of `Oz` does inside `Π`),
   the bottom gap `C_ω` of 12's exponent embedding (Lemma 27.2), the extension of
   12's image corollary to all three embeddings (Corollary 27.4), and the second
-  sentence of Question 32.13 (general `(k, 𝔬)`).
+  sentence of Question 32.13 (general `(k, 𝔬)`);
+- with 14 (batch 31): Example 35.3 (the Puiseux field, where detection fails),
+  Remark 35.4 (support-bounded fields for every uncountable `κ`, and partial
+  information on Question 32.12), Proposition 36.5 (an extension of a ring
+  automorphism of `ℛ_Γ` to `K_Γ` is unique), the weakened coefficient hypothesis
+  after Proposition 35.2, and the status notes after Questions 32.12 and 32.14.
 
 **Notation.**
 
@@ -337,7 +401,25 @@ extras are printed:
   - Strongly additive is one-directional and does not include `R`-linearity; a
     strong automorphism has a strongly additive inverse.
 
-Section 1.5, Section 20.3 and Appendix A.4 list every renaming.
+- Part IV (14) uses the same `t`-convention; Section 33.3 has its table. Traps:
+  - 14's `A_Γ = Z ⊕ Π` is `ℛ_Γ` here; `𝒜_Γ = R ⊕ Π` here is 14's `B`. **14's `A`
+    is not `𝒜`.**
+  - 14's coefficient isomorphism `τ` is `α`; 14's exponent automorphism `φ` is
+    `τ` here, and `M_{χ,φ}` is `M_{χ,τ}`. 14's ring automorphism `ρ` of `Oz` is
+    `σ` (Part III's `ρ` is a coefficient section).
+  - 14's normalized factor `ν`, its `𝒰` and `L_ν(g)`, `a_{ν,δ}` are `u`,
+    `U_{ℛ_Z}(Γ)` and `h_u(g)`, `a_{u,δ}`; its `T*` is `T†`; its `Λ` is `λ_On`.
+  - 14's `F` is a power series (written `𝖥`) in one theorem and a subfield
+    (written `K'`) in the next; neither is Part III's isomorphism `F`.
+  - In 14's shear `e_1` is the **larger** scale; in Example 4.16 it is the
+    smaller, so the letters are swapped. Its `s = t^{e_2}` is written `t^{e_1}`.
+  - 14's truncation `P_{<γ}` is `T_{<γ}`, not a zero-cut projection; its additive
+    `h` is `θ`, not a logarithmic character; its infinitesimals `u_j` are `z_j`;
+    its `d > 0` is `δ` (`d` is a derivation of `R` in Part III); its target
+    monomial `u` is `t`.
+  - 14's `≪` is the same relation as `≪` here.
+
+Section 1.5, Section 20.3, Section 33.3 and Appendix A.4 list every renaming.
 
 ## What the report claims
 
@@ -540,10 +622,48 @@ Part III (sources 11, 12 and 13; Sections 20–32). `K_Γ = k((t^Γ))`,
   `<κ`-support fields, `κ` regular uncountable. **Example 31.2** (13):
   `Frac(Z ⊕ uR[u]) = R(u) ≠ R((t))`.
 
+Part IV (source 14; Sections 33–37). Everything 14 shares with Part III is
+credited there; Part IV adds:
+
+- **Lemma 34.1 and the third route in Theorem 21.4.** A matrix over a field with
+  nonzero finite rows (indexed by `N`) and finite columns has an infinite induced
+  matching. Applied to a descending sequence in the union of the supports, it
+  gives the detector `y = Σ_r t^{−g_{n_r}}`, all coefficients `1`, with
+  `⟨x_{j_r}, y⟩_0` a single nonzero matrix entry; no coefficient is chosen, in
+  every characteristic, for `Γ` a set or `No`. **Corollary 34.2**: monomial tests
+  and all-ones series on strictly increasing sequences suffice. **Example
+  34.3**: `±t^{−nδ}` cancel in pairs but are not summable, and the all-ones test
+  gives `±1`. **Remark 34.4**: `(t^{n/(n+1)})` is summable but does not tend to 0.
+- **Definition 35.1 and Proposition 35.2.** A subfield `K'` containing `k`, every
+  monomial and every all-ones series on a strictly increasing sequence detects
+  ambient summability by tests in `K'`, and a coefficient- and
+  `ct`-compatible automorphism of `K'` preserves ambient summability and carries a
+  sum lying in `K'` to the sum. **Example 35.3** (merge): in the Puiseux field
+  `t^{−n/(n+1)}` passes every test but is not summable. **Remark 35.4** (merge):
+  every `K_{<κ}`, `κ` uncountable, has the property.
+- **Theorem 36.1.** Every automorphism of a full real Hahn pair (divisible `Γ`, or
+  `(No, Oz)`) commutes with the evaluation of formal power series at
+  infinitesimals, in particular with the local `exp` and `log(1 + ·)`; with `α` on
+  the coefficients in the valuation-compatible Gaussian case.
+- **Proposition 36.2.** At set size the constant-term adjoint of a strong
+  `k`-linear map is the sign-reversed transpose `(T†)_{γ,η} = T_{−η,−γ}`.
+- **Remark 36.3.** For `Γ = R` the stabilizer consists of
+  `t^γ ↦ e^{θ(γ)} t^{λγ}` with `λ > 0` and `θ` additive, possibly discontinuous.
+- **Remark 36.4.** 14's shear moves `t^{−e_2}` to `Σ(−1)^n t^{−e_2+ne_1}` and does
+  not commute with truncation at the monomial `t^{−e_2+e_1/2}`; the definable
+  truncation of Theorem 8.2 is carried to truncation at a non-monomial.
+- **Proposition 36.5** (merge). For nonzero divisible set-sized `Γ`, a ring
+  automorphism of `ℛ_Γ` has at most one extension to `K_Γ`, and any extension is
+  strong and fixes `R`.
+- **Remark 36.6.** 14's real-structure hypothesis `σ(No) = No` is equivalent to
+  commuting with conjugation; its phase example is a phase twist already in the
+  collection.
+
 ## What the report does not claim
 
 Appendix B lists every source's non-claims: 13 from 09, 13 from 04, 12 from
-08, 11 from 02, 18 from 10, 13 from 11, 14 from 12 and 12 from 13. In brief:
+08, 11 from 02, 18 from 10, 13 from 11, 14 from 12, 12 from 13 and 16 from 14.
+In brief:
 
 - Sources 04, 09 and 10 state that nonstrong automorphisms are not classified
   and that strongness is not shown. These non-claims are kept as their records.
@@ -607,6 +727,30 @@ Appendix B lists every source's non-claims: 13 from 09, 13 from 04, 12 from
   - no exponential, logarithm, omega-map, birthday or simplicity structure is
     preserved or used; omnific automorphisms are not trivial, and not every
     automorphism of `No` is strong.
+- Source 14 (Part IV):
+  - the unrestricted Gaussian problem is not solved, in either direction; its
+    phase example is strong and disproves nothing;
+  - no embedding theorem (the isomorphism proof uses surjectivity essentially);
+  - no compatibility with the global Gonshor exponential (formal evaluation is at
+    infinitesimals only), and no commutation with arbitrary truncations, which is
+    false; continuity and the monomial cross-section are neither assumed nor
+    concluded;
+  - the strong dual and adjoint theory hold at set size only and fail for `No`;
+  - it does not assert that ring automorphisms of a set-sized `ℛ_Γ` extend to
+    `K_Γ`;
+  - the convex criterion classifies existing automorphisms and constructs none;
+  - summation, the monomials and a cross-section are not claimed first-order
+    definable;
+  - class-group notation is elementwise (NBG with global choice, set-indexed
+    families, set supports);
+  - the countable detector property is sufficient only, and is not claimed for
+    transseries, Puiseux or left-finite subfields;
+  - the adjoint is algebraic, not a Hilbert-space adjoint;
+  - finiteness-space duality (Blute–Cockett–Jacqmin–Scott) and the Hahn
+    automorphism decompositions (Kuhlmann–Serra, Kaplan–Krapp–Serra) are prior
+    work; no priority is claimed, and global priority is not certified;
+  - its finite checks are not proofs; no Lean; its proposed Lean modules are
+    plans only; Conway's irreducibility conjectures are not addressed.
 - No named conjecture is solved. The report is not refereed, has no Lean
   formalization and makes no priority claim. The finite checks test identities
   only.
@@ -638,9 +782,9 @@ depend on it.
     is vacuous, and 10's variant ("is every one strong?") has the answer yes.
     10's partial information (Remark 3.9) is subsumed. The analogue for `Oz[i]`
     is answered under conjugation or valuation compatibility and open otherwise
-    (Question 32.1).
-  - 11.2: admissible logarithmic characters (04). Still open; 12 and 13 ask it
-    again. Automatic strongness settles recognition of existing automorphisms,
+    (Question 32.1). Source 14 (batch 31) answers it again independently.
+  - 11.2: admissible logarithmic characters (04). Still open; 12, 13 and 14 ask
+    it again. Automatic strongness settles recognition of existing automorphisms,
     not their construction.
   - 11.3: full relative fixed fields (04). 10's definable-closure question is
     recorded with it.
@@ -656,9 +800,10 @@ depend on it.
 - **Questions 32.1–32.18** (Part III): the thirty questions of 11, 12 and 13
   (ten each), merged where they coincide, with 12's and 13's admissibility
   question recorded under 11.2.
-  - 32.1: the unrestricted Gaussian stabilizer (12, 13).
+  - 32.1: the unrestricted Gaussian stabilizer (12, 13, 14). Still open; 14
+    proposes `C((t^Q))`, then a rank-two lexicographic group, as first targets.
   - 32.2: must an embedding `f` of `No` with `f^{−1}(Oz) = Oz` be strong, also
-    when `ct ∘ f = ct`, and what survives without strongness (12, 13; 11)?
+    when `ct ∘ f = ct`, and what survives without strongness (12, 13, 14; 11)?
     **Negative answer under a measurable cardinal**: the large-cardinal report
     ([`large-cardinal-embeddings-and-normal-forms`](../../foundations-and-computation/large-cardinal-embeddings-and-normal-forms/))
     shows that applying an elementary embedding `j` with critical point to sign
@@ -667,7 +812,7 @@ depend on it.
     onto, so it does not conflict with Theorem 23.2. Without large cardinals the
     question stays open, as do 11's clauses on dense images and images neither
     closed nor discrete.
-  - 32.3: target tests for coefficient-fixing embeddings (13).
+  - 32.3: target tests for coefficient-fixing embeddings (13, 14).
   - 32.4: which subfields of `R` occur as `f(No) ∩ R` (12). **Partly answered**
     by 11 (Proposition 29.2): in the exact-monomial strong class they are the
     real closed fixed fields of the sections, and Taylor sections give `ker d`.
@@ -677,14 +822,24 @@ depend on it.
     Theorem 29.4.
   - 32.9: homogeneity of the pair (12, 13).
   - 32.10: surcomplex embeddings without a real form (11).
-  - 32.11: the proper-class strong dual (12).
-  - 32.12: singular support bounds (12, 13).
-  - 32.13: other rings and coefficient fields (12, with the merge's clause on
+  - 32.11: the proper-class strong dual (12, 14).
+  - 32.12: singular support bounds (12, 13). **Partial information** (batch 31,
+    Remark 35.4): the image family is Hahn summable with the right sum; only the
+    size of the union of its supports remains open.
+  - 32.13: other rings and coefficient fields (12, 14, with the merge's clause on
     general `(k, 𝔬)`).
-  - 32.14: isomorphisms of small integer parts (13).
+  - 32.14: isomorphisms of small integer parts (13, 14). 14 asks the automorphism
+    case with uniqueness; **uniqueness is answered** by Proposition 36.5 (merge),
+    existence stays open.
   - 32.15: exponential, omega-map and differential structure (11, 12, 13).
   - 32.16–32.18: restricted workspaces and compositions (11); formalization
-    (11, 12, 13).
+    (11, 12, 13, 14).
+- **Question 37.1** (Part IV, 14), new: can the countable detector property be
+  weakened to a necessary and sufficient closure condition for product
+  detection, and which computable or transseries subfields satisfy it? Example
+  35.3 shows that some closure is needed. 14's other seven questions are merged
+  into 32.1, 32.2–32.3, 32.11, 32.13 (with 11.7), 11.2 (with 11.4), 32.14 and
+  32.18 (Section 37.1).
 - **08's Question 2** asked whether `C` is first-order reconstructible from
   the pure ring `Oz[i]`. It is **answered** by `odg:def:cor:internal`, and
   independently by 09's Pell-divisibility route, so it is dropped.
@@ -759,6 +914,17 @@ Appendix A.3 records these.
   carry status notes. No label, number or earlier sentence was removed.
 - **Credits added (batch 30):** `saut:thm:coeffflow` for the Taylor motion used by
   12 and 13, which do not credit it; 11 does.
+- **14's novelty statement (batch 31).** 14's abstract says the strong-additivity
+  hypothesis "can be removed" from this report's real stabilizer classification,
+  its introduction that it "supplies a missing implication", and its questions
+  section that it "closes the automatic-strongness question for the real omnific
+  pair". That was accurate at its pin `3d40856`, where Question 11.1 was open. It
+  is stale at the merge: 12 and 13 answered Question 11.1 in `20c4c9f`. 14 is
+  credited as an independent third derivation (Section 37.2, Appendix A.3), and
+  only the material listed above is printed as its contribution. No mathematical
+  error was found in 14. Its pinpoint citations of Kuhlmann–Serra (an example of a
+  non-strongly additive automorphism) and of Blute–Cockett–Jacqmin–Scott (Theorem
+  3, Lemmas 4.1–4.2) were not rechecked.
 - **Checked true (batch 30):** 12's statement that this report's Theorem 5.1 is
   the strong factorization and that Corollary 5.2 needs no strongness, and that
   10's audit disclaims nonstrong classification; 13's statements on Theorems 3.3
@@ -782,7 +948,10 @@ Appendix A.3 records these.
     negative information for `odg:def:q:realform`.
 - [`set-sized-quotients-of-omnific-integers`](../set-sized-quotients-of-omnific-integers/)
   (`osq:`).
-  - Its `osq:q:invisible` is partly answered.
+  - Its `osq:q:invisible` is partly answered: the second clause by Corollary 24.4
+    (from 12 and 13, and again from 14's factorization and automatic
+    strongness), the first clause not. The quotient report still records the
+    question as open.
   - Its `osq:prop:classder` derivations are Part II's `D_b`.
   - Its `osq:thm:derivations` (derivations into set-sized modules vanish) is
     consistent with them.
@@ -817,13 +986,16 @@ Appendix A.3 records these.
 - [`large-cardinal-embeddings-and-normal-forms`](../../foundations-and-computation/large-cardinal-embeddings-and-normal-forms/)
   (batch 30, written concurrently; cited by directory only). Under a measurable
   cardinal its sign-sequence embedding answers Question 32.2 negatively; it is not
-  an automorphism, so Theorem 23.2 stands.
+  an automorphism, so Theorem 23.2 stands. Under the same hypothesis it shows that
+  14's embedding question (merged into 32.2–32.3) needs hypotheses beyond
+  constant-term compatibility and preservation and reflection of `Oz`.
 
 ## What was run
 
-For the merges all eight suites were rerun on copies, with Python 3.14.4 and
+For the merges all nine suites were rerun on copies, with Python 3.14.4 and
 SymPy 1.14.0 (10's for the batch-28 addition, 11's, 12's and 13's for the
-batch-30 addition). Each reproduced its recorded result:
+batch-30 addition, 14's for the batch-31 addition). Each reproduced its
+recorded result:
 
 | Suite | Result |
 |---|---|
@@ -835,6 +1007,7 @@ batch-30 addition). Each reproduced its recorded result:
 | 11 | 3,880 assertions in 15 categories, `passed`; the report written with `--output` is identical to the shipped record up to line endings |
 | 12 | 17,774 assertions (10,800 detector, 4,502 adjoint, 2,472 Taylor-block), `PASS`; identical up to line endings |
 | 13 | 13,885 assertions in 16 categories, all passed; identical up to line endings |
+| 14 | four groups, all `passed`: binomial identities to degree 20 for 31 rational parameters (961 multiplication and 31 inverse cases), an induced matching of size 64 on a 256-row banded prefix, 100 adjoint trials with 13 source and 9 target exponents (seed 20260923), cancellation prefixes for 1, 2, 5, 16 and 64 pairs; the written file and the printed report are identical to the shipped record up to line endings |
 
 The placement dossiers ran further independent checks, which are not shipped:
 
@@ -856,7 +1029,7 @@ The build uses standard packages only and gives no errors, warnings,
 overfull or underfull boxes, or undefined references. Build in a scratch
 directory; the auxiliary files are not kept here.
 
-Six of the shipped scripts can write files, so rerun the checks on a copy, outside
+Seven of the shipped scripts can write files, so rerun the checks on a copy, outside
 this directory, and pass `--output` where it is shown:
 
 ```
@@ -869,6 +1042,16 @@ python 10-support-cut-verify.py --output rerun-10.json              # standard l
 python 11-coefficient-gaps-verify_finite_models.py --output rerun-11.json
 python 12-automatic-strongness-verify.py --output rerun-12.json
 python 13-omnific-isomorphisms-verify.py --output rerun-13.json    # --output is required, see below
+```
+
+Source 14's script has no output option and writes `../data/verification.json`
+relative to its own directory, so give it a subdirectory of its own inside a
+fresh scratch directory (do not run it from the flat copy above, where it would
+write into the parent of `$D`):
+
+```
+E=$(mktemp -d) && mkdir "$E/code" && cp code/14-automatic-summability-verify.py "$E/code/"
+python "$E/code/14-automatic-summability-verify.py"   # prints; writes $E/data/verification.json
 ```
 
 The scripts write as follows:
@@ -887,6 +1070,11 @@ The scripts write as follows:
   inside this report, it would create an unprefixed `data/verification.json`
   here (not overwriting `data/13-omnific-isomorphisms-verification.json`), so
   always pass `--output`.
+- 14's script prints its report and always writes `../data/verification.json`
+  relative to its own directory; it has no `--output`. Run in place it would
+  create an unprefixed `data/verification.json` here (not overwriting
+  `data/14-automatic-summability-verification.json`). On Windows the written file
+  has CRLF line endings; it matches the shipped record up to line endings.
 
 The five Makefiles and the build scripts `04-preserving-automorphisms-build.sh`
 and `13-omnific-isomorphisms-build.sh` are shipped as delivered. They name the

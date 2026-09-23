@@ -138,7 +138,7 @@
 \vspace{3mm}
 {\Large Retractions, rigidity, definability,\\ and infinite families\par}
 \vspace{3mm}
-{\large Built from thirteen manuscripts dated September 22 and 23, 2026\par}
+{\large Built from fourteen manuscripts dated September 22 and 23, 2026\par}
 \vspace{2mm}
 \begin{minipage}{\textwidth}
 \begin{abstract}
@@ -192,9 +192,11 @@ over the one-sided ring. So only the affine line among smooth affine curves has
 nonconstant such points, and every nonsingular $y^2=x^3+ax+b$ has only ordinary
 omnific solutions. Logarithmic symmetric differentials on a normal-crossings
 compactification vanish in the same way, so a complement whose logarithmic forms
-separate tangent directions has only constant such points.
+separate tangent directions has only constant such points. A geometrically integral
+affine curve, singular or not, has nonconstant such points exactly when its
+normalization is the affine line.
 
-This report merges thirteen independently written manuscripts; it states which
+This report merges fourteen independently written manuscripts; it states which
 source proved each result, prints shared results once, and keeps every
 source's limitations. It is an AI-assisted draft: it has not been refereed,
 and nothing in it has been formalized in Lean.
@@ -204,7 +206,7 @@ and nothing in it has been formalized in Lean.
 \begin{minipage}{\textwidth}
 \footnotesize
 Sources: manuscripts 01 (the base text), 02, 05, 06, 07, 08, 09 and
-C10--C15; their titles and pinned repository commits are in
+C10--C16; their titles and pinned repository commits are in
 \cref{odg:sub:provenance}.
 Fiber results of one manuscript of the sibling report, and the direction
 criterion of another, appear here once. The provenance of every
@@ -347,7 +349,7 @@ coordinates on rational curves, a localization with residue field $\Q$, a
 nonflat integral scale extension with its $\Tor_1$ witness, and the Gaussian
 form of \cref{odg:thm:realray}
 (\cref{odg:frac:cor:curves,odg:frac:prop:localization,odg:frac:thm:nonflat,odg:frac:cor:gaussiandirections}).
-\item \textbf{Curve and differential rigidity} \src{C10--C15}. Over any field
+\item \textbf{Curve and differential rigidity} \src{C10--C16}. Over any field
 $\Bbbk$ of characteristic zero and any ordered exponent group $\Gamma$, a smooth
 proper variety with globally generated cotangent sheaf, in particular a curve of
 positive genus or an abelian variety, has only constant points over the
@@ -367,7 +369,11 @@ targets only rational points have invertible coordinate ideals
 logarithmic symmetric differentials on a smooth proper compactification with
 normal-crossings boundary vanish on the Euler derivations at every point, so the
 complement is rigid when they separate tangent directions
-(\cref{odg:log:thm:annihilation,odg:log:cor:criterion}) \src{C15}.
+(\cref{odg:log:thm:annihilation,odg:log:cor:criterion}) \src{C15}. A geometrically
+integral affine curve, singular or not, has nonconstant $\crA$-points exactly when its
+normalization is $\Aff^1$; a conductor of the curve and Seidenberg's identity give finite
+derivative-order certificates, and the rigid singular curves have only ordinary omnific
+points (\cref{odg:sg:thm:main,odg:sg:thm:conductor,odg:sg:thm:omnific}) \src{C16}.
 \end{enumerate}
 
 These statements are proved here, but proving a statement here is not a
@@ -385,7 +391,7 @@ special cases proved by source 01.
 
 \subsection{Provenance of this report}\label{odg:sub:provenance}
 
-This report is built from thirteen manuscripts written independently. Sources
+This report is built from fourteen manuscripts written independently. Sources
 01, 02 and 05, dated September 22, 2026, are items of the batch placed in
 commit \texttt{be06fc8} and pin repository commit \pin{} (107 commits before
 that placement). Sources 06 and 07, dated September 23, 2026, are items 01
@@ -420,7 +426,12 @@ None of the five saw the others. Source C15, also dated September 23, 2026, is i
 of the batch placed in commit \texttt{66d7e55} (its archive arrived in \texttt{65775fb});
 its shipped files carry the prefix \fn{15-}, and it is tagged like C10--C14. It pins
 \texttt{934810a}, 18 commits before \texttt{c6359e4}; at that pin this report had
-sources 01, 02, 05, 06 and 07, and source C15 saw none of C10--C14.
+sources 01, 02, 05, 06 and 07, and source C15 saw none of C10--C14. Source C16, also dated
+September 23, 2026, is item 04 of the batch placed in commit \texttt{9d28e28} (its archive
+arrived in \texttt{39fe674}); its shipped files carry the prefix \fn{16-}, and it is tagged
+like C10--C15. It pins \texttt{bcac55a}, 87 commits before \texttt{9d28e28}; at that pin
+sources C10--C14 were placed but not yet written into this report, source C15 was not yet
+placed, and source C16 saw none of C10--C15 except the audits of C13 and C14.
 
 \begin{center}
 \renewcommand{\arraystretch}{1.2}
@@ -511,6 +522,12 @@ Logarithmic symmetric-differential annihilation on normal-crossings compactifica
 and the tangent-separation criterion (\cref{odg:log:sub:log}); descent over any
 coefficient ring; finite products; independent proofs of the squarefree, curve, abelian
 and semiabelian results of C10--C14.\\
+C16 & \emph{Singular Curves over Omnific Integers: Conductor differentials, a complete
+Hahn-rigidity criterion, and polynomial witnesses at every surreal scale} &
+The criterion for singular geometrically integral affine curves
+(\cref{odg:sg:sub:singular}); Seidenberg's identity and conductor certificates; the
+one-place obstruction in every characteristic; affine schemes of dimension at most one;
+repeated-root superelliptic equations; a pinched elliptic curve; the Gaussian dichotomy.\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -573,7 +590,11 @@ statement numbers in Sections 1--15 are unchanged. Source C15, placed in
 correction in \cref{odg:cr:sub:singular} and re-scoped notes in
 \cref{odg:sec:questions}; its elementary ring/Euler claims are included in
 the pass just described, while its other material remains unreviewed. No section or
-statement number changed. Nine earlier
+statement number changed. Source C16, placed in \texttt{9d28e28}, was integrated after that as
+\cref{odg:sg:sub:singular}, at the end of \cref{odg:cr:sec:curves}, with credits added to
+the results it reproves, status notes in \cref{odg:cr:sub:singular,odg:sec:questions} and
+eight new questions; it is outside the reviews, and again no section or statement number
+changed. Nine earlier
 labels renamed or combined during assembly remain as aliases, so existing
 references resolve.
 
@@ -751,9 +772,12 @@ arbitrary valuation rings, smooth completion, Riemann--Roch and genus zero for c
 invariant differentials and the structure of commutative algebraic groups
 \cite{StacksDiff,StacksProper,StacksCurves,StacksRR,StacksGenusZero,MilneAV,MilneAG},
 and source C15 adds differentials with logarithmic poles along a normal-crossings divisor
-\cite{StacksLog}. Sources C10--C14 inspected the repository at commits where this report
-had only sources 01, 02 and 05, and source C15 at one where it had sources 01, 02, 05, 06
-and 07; their references to its numbering are translated in \cref{odg:app:provenance}.
+\cite{StacksLog}; source C16 adds Seidenberg's finite derivation identity
+\cite{Seidenberg,Ciuperca}, finite normalization and Riemann--Hurwitz
+\cite{StacksNormal,StacksRH}. Sources C10--C14 inspected the repository at commits where
+this report had only sources 01, 02 and 05, source C15 at one where it had sources 01, 02,
+05, 06 and 07, and source C16 at one where it had the same sources and the placed files
+of C10--C14; their references to its numbering are translated in \cref{odg:app:provenance}.
 Relations to neighbouring reports are listed in \cref{odg:sub:neighbours}.
 
 \section{The normal-form rings and the integer part}\label{odg:sec:basic}
@@ -6606,7 +6630,9 @@ A sixth manuscript, source C15
 (prefix \fn{15-}), reproves much of the part independently and extends the two-ring
 argument to logarithmic forms in every dimension; its new results form
 \cref{odg:log:sub:log}, with the sub-prefix \fn{odg:log:}, and its other results are
-credited where they are printed.
+credited where they are printed. A seventh, source C16 (prefix \fn{16-}), extends the curve
+classification to singular curves; its new results form \cref{odg:sg:sub:singular}, with
+the sub-prefix \fn{odg:sg:}, and its other results are credited where they are printed.
 
 \subsection{Conventions}\label{odg:cr:sub:conventions}
 
@@ -6683,7 +6709,7 @@ $\Aff$, $\ddeg$ and $\dif$ instead. The complete list of renamed symbols is in
 
 \subsection{Two opposite rings in one Hahn field}\label{odg:cr:sub:rings}
 
-\begin{lemma}[Intersections, units and degree \src{C14; also C10--C13, C15}]\label{odg:cr:lem:rings}
+\begin{lemma}[Intersections, units and degree \src{C14; also C10--C13, C15, C16}]\label{odg:cr:lem:rings}
 \begin{enumerate}[label=\textup{(\alph*)},leftmargin=*]
 \item $\crA$ is a $\Bbbk$-subalgebra of $\crH$, $\crP$ is an ideal of it,
 $\crA=\Bbbk\oplus\crP$, and $\ct$ is a ring retraction of $\crA$ onto $\Bbbk$ with
@@ -6753,7 +6779,7 @@ local, freely chosen derivations; they are not a canonical surreal derivation,
 not the Berarducci--Mantova derivation, and not derivatives in the surreal
 order topology \src{C10, C11, C12, C13, C14}.
 
-\begin{lemma}[Euler derivations on the two rings \src{C12, C13; also C10, C11, C14, C15}]\label{odg:cr:lem:euler}
+\begin{lemma}[Euler derivations on the two rings \src{C12, C13; also C10, C11, C14, C15, C16}]\label{odg:cr:lem:euler}
 Each $\partial=\partial_\lambda$ is a $\Bbbk$-derivation of $\crH$ with
 $\supp\partial f\subseteq\supp f$, hence $v(\partial f)\ge v(f)$, and
 \begin{equation}\label{odg:cr:eq:tworings}
@@ -6803,7 +6829,7 @@ denominator is a unit of $\crO$. This explains both logarithmic-derivative
 clauses: an arbitrary monomial can give a nonzero constant, whereas a
 unit of $\crO$ has $\alpha=0$ \mergetag.
 
-\begin{lemma}[Joint constants and leading detection \src{C10, C11, C12, C13, C14, C15}]\label{odg:cr:lem:separation}
+\begin{lemma}[Joint constants and leading detection \src{C10, C11, C12, C13, C14, C15, C16}]\label{odg:cr:lem:separation}
 The common kernel of all Euler derivations of $\crH$ is $\Bbbk$. If
 $x\in\crA\setminus\Bbbk$ has $\ddeg x=\alpha$, there is $\lambda$ with
 $\lambda(\alpha)=1$, and then $\partial_\lambda x\ne0$ and
@@ -7460,7 +7486,7 @@ This is the curve case of the torus remark of \cref{odg:sec:rigidity}
 (``An algebraic-geometric formulation''): a coordinate ring generated by units
 has only constant points.
 
-\begin{lemma}[Forms of the affine line \src{C14}; real case \src{C10, C11, C13}]\label{odg:cr:lem:formA1}
+\begin{lemma}[Forms of the affine line \src{C14; also C16}; real case \src{C10, C11, C13}]\label{odg:cr:lem:formA1}
 If $C$ is a smooth geometrically integral affine curve over $\Bbbk$ with
 $C_{\bar\Bbbk}\cong\Aff^1_{\bar\Bbbk}$, then $C\cong\Aff^1_\Bbbk$.
 \end{lemma}
@@ -7486,7 +7512,7 @@ line minus two points, so its rigidity follows from
 of the affine line. Source C13 includes it in the full real-descent argument;
 the one-boundary-point step alone does not apply to it.
 
-\begin{theorem}[Smooth affine curves \src{C14; also C10, C11, C12, C13, C15}]\label{odg:cr:thm:affine}
+\begin{theorem}[Smooth affine curves \src{C14; also C10, C11, C12, C13, C15, C16}]\label{odg:cr:thm:affine}
 Let $\Gamma\ne0$ and let $C$ be a smooth geometrically integral affine curve over
 a field $\Bbbk$ of characteristic zero. Then
 \[
@@ -7902,7 +7928,10 @@ curves or in higher dimension, and it gives no algorithm for the integer points
 field, $C(\crA)\ne C(\Bbbk)$ exactly when there is a nonconstant morphism
 $\Aff^1\to C$, which is the last equivalence of \cref{odg:cr:thm:affine}; this
 classifies which curves acquire points, not the shape of an arbitrary
-infinite-support point.
+infinite-support point. Status (batch 31): for singular curves source C16 proves the Gaussian form
+and the real form at integer points with a real preimage under the normalization
+(\cref{odg:sg:cor:gaussian,odg:sg:prop:arithfamily}); the remaining real case is
+\cref{odg:sg:q:real}.
 
 In the setting of \cref{odg:cr:cor:polywitness}, the affine-line isomorphism
 also descends to $\Q$. Applying \cref{odg:cr:lem:arcs} at the same integer point
@@ -8112,8 +8141,10 @@ domain $\crA$ has its generic image in one component, which may be singular
 Points need not lift to the normalization, because $\crA$ need not be integrally
 closed. For the full class this is \cref{odg:prop:notnormal}, with the witness
 $\sqrt{\omega^2+1}$ of sources 01, 02 and 05. Sources C10 and C13 give the same
-witness in a fixed workspace: for $\Gamma=\Q+\Q\omega\subseteq\No$ (C13 allows any
-$\Q+\Q H$ with $H$ above every ordinary integer),
+witness in a fixed workspace, and source C16 gives it again: for
+$\Gamma=\Q+\Q\omega\subseteq\No$ (C13 allows any $\Q+\Q H$ with $H$ above every ordinary
+integer, and C16 any $0<e<H$ in $\Gamma$ with $ne<H$ for every ordinary $n$, with
+$\omega^e$ in place of $\omega$),
 $q=\sqrt{\omega^2+1}=\omega+\tfrac12\omega^{-1}-\tfrac18\omega^{-3}+\cdots$ is integral
 over $\mathcal A_\R(\Gamma)$ and not in it, while $\omega^\omega q\in\mathcal A_\R(\Gamma)$
 because all its exponents $\omega+1-2n$ are positive; so
@@ -8138,7 +8169,766 @@ by itself a point of a constant curve that fails to lift \src{C13}. For an arbit
 morphism $f:X\to G$ to a rigid target, \cref{odg:cr:prop:inherit} gives only
 $f(x)=f(\ct x)$; applied to an Albanese map this confines nonconstant directions to
 its fibers, and positive-dimensional fibers need not be rigid \src{C10}. The
-remaining problem is \cref{odg:cr:q:singular}.
+remaining problem is \cref{odg:cr:q:singular}. Status (batch 31): source C16 classifies the
+geometrically integral affine curves, singular or not, and the affine schemes of dimension
+at most one over an algebraically closed field (\cref{odg:sg:thm:main,odg:sg:thm:allcurves},
+\cref{odg:sg:sub:singular}); what remains of the question is the lifting problem
+\cref{odg:sg:q:lifting} and the real fibers \cref{odg:sg:q:real}.
+
+\subsection{Singular curves: normalization and conductor certificates}\label{odg:sg:sub:singular}
+
+This subsection is built from a seventh manuscript on the subject of the part,
+\emph{Singular Curves over Omnific Integers: Conductor differentials, a complete
+Hahn-rigidity criterion, and polynomial witnesses at every surreal scale}, tagged
+\src{C16} after its file prefix \fn{16-singular-curves-} (\cref{odg:sub:provenance}).
+It pins \texttt{bcac55a}. At that pin sources C10--C14 were placed, with their audits,
+but their material was not yet in this article, and source C15 was not yet placed; source
+C16 read the audits of sources C13 and C14, which leave singular curves outside the
+smooth classification, and saw none of the other curve manuscripts. It answers the first
+two clauses of \cref{odg:cr:q:singular}: over every field of characteristic zero and for
+every $\Gamma\ne0$, a geometrically integral affine curve, singular or not, has a
+nonconstant $\crA$-point exactly when its normalization is the affine line
+(\cref{odg:sg:thm:main}). Points need not lift to the normalization, since $\crA$ need not
+be integrally closed (\cref{odg:cr:sub:singular}); the proof does not lift them. A single
+conductor element of the curve clears every power of a contracted regular differential
+after a fixed finite multiplication (Seidenberg's identity), and the discrete valuation at
+the one boundary point that a nonconstant point selects turns this into a contradiction
+after finitely many derivatives. Labels of this subsection carry the sub-prefix
+\fn{odg:sg:}. It is outside the proof reviews recorded in \fn{RECONCILIATION.md}.
+
+Some statements of source C16 are already printed above and are not reprinted; source C16
+is added to their credits. Its ring lemma (units, the retraction, transcendence of
+nonconstant elements, no nonzero element of positive valuation) is
+\cref{odg:cr:lem:rings}; its Euler derivations and their detection property are
+\cref{odg:cr:lem:euler,odg:cr:lem:separation}, including the caution that one derivation
+need not detect every nonconstant series; its non-normality example is the
+fixed-workspace witness of \cref{odg:cr:sub:singular}; its descent from $\bar\Bbbk$ to
+$\Bbbk$ is the argument of \cref{odg:cr:lem:formA1}; its smooth case is
+\cref{odg:cr:thm:affine}, for which its proof is a third route to the rigid direction
+(\cref{odg:sg:rem:thirdroute}); and its elliptic B\'ezout certificate is
+\eqref{odg:cr:eq:cubic} at $(a,b)=(-1,1)$. Three short additions carry the tag
+\mergetag{} and have complete proofs.
+
+\paragraph{Translation and letters.} Source C16 uses the $t$-convention
+$t^\gamma=\omega^{-\gamma}$. Its ring $B_{k,\Gamma}$ of Hahn series with nonpositive
+$t$-exponents is $\crA$ with exponents negated; it is not the valuation ring, and the
+italic $B$ is a bilinear form here. Its field $K=k((t^\Gamma))$, valuation ring $O$ and
+maximal ideal $\mathfrak m$ are $\crH$, $\crO$ and $\crm$. Its valuation
+$v(f)=\min\supp_t f$ is the valuation $v=-\ddeg$ of \cref{odg:cr:sub:conventions},
+unchanged. Its purely infinite parts $\mathcal J_\R$, $\mathcal J_\C$ are $\Pi$, $\Pi_{\C}$,
+and its $\Oz[i]$ is the ring $\Og$ of this report, unchanged. Its Euler derivation $D_\lambda$ multiplies $t^\gamma$ by
+$\lambda(\gamma)$; it is $\partial_{-\lambda}$ in the notation of \eqref{odg:cr:eq:euler},
+the same family. Its letter $D$ also names a general derivation, written $\partial$ here,
+and a coefficient subring, written $\mathfrak o$ ($D$ is the Pell parameter). The
+following letters are renamed because source C16 uses each twice or because the part
+reserves them: its coordinate ring $A$ and normalization $\widetilde A$ are
+$\Bbbk[C]$ and $\Bbbk[\widetilde C]$ ($A$ is an abelian variety in this part); its smooth
+projective model $X$ is $\overline C$, the smooth projective model of the function field
+$F=\Frac\Bbbk[C]$, which completes $\widetilde C$; its boundary is
+$\Sigma=\overline C\setminus\widetilde C$ and its centre $p$ is $Q$, as in
+\cref{odg:cr:thm:logroute}; its conductor element $d$ is $\kappa$ ($d$ is a degree and
+$\dif$ the differential); its length $m$ of a differential presentation is $\ell$ ($m$ is
+the superelliptic exponent); its contraction $s=\alpha(D)$ is $\alpha(\partial)$, as
+$\eta(\partial)$ in \cref{odg:cr:thm:logroute}; its formal variable $z$ and Taylor map $E$
+are $w$ and $\mathcal T$ ($z$ is a coordinate and $E$ an elliptic curve in
+\cref{odg:sg:sub:example}); in \cref{odg:sg:sub:super} its number $r$ of distinct roots
+is $k$ and $r_\infty$ is $n_\infty$ ($r$ is the vanishing order of a differential in
+\cref{odg:sg:sub:seidenberg}), and its cofactors $Q$, $S$ are $P_1$, $P_{\mathrm{odd}}$
+($Q$ is the centre); its B\'ezout polynomial $V$ is $W$ ($V$ is a valuation ring); its
+points $P$, $P_0$ are $\mathbf x$, $\mathbf x_0$; and its purely infinite parameter $h$ and
+exponent $a$ in \cref{odg:sg:sub:arith} are $s$ and $\beta$. In this subsection $E$ is the
+affine elliptic curve of \cref{odg:sg:sub:example} and nothing else, and $P_1$ is a
+polynomial, not a boundary point as in \cref{odg:cr:lem:logdim}. The complete list is in
+\cref{odg:tab:renames}.
+
+Two readings are tempting and false. ``The normalization of $C$ is $\Aff^1$'' does not
+mean ``$C\cong\Aff^1$'': the node and the cusp are singular, have normalization $\Aff^1$
+and carry polynomial families (\cref{odg:cr:prop:singular}). And ``$C$ has a nonconstant
+$\crA$-point'' does not mean that every nonconstant point lifts to the normalization, or
+is a polynomial family evaluated at a Hahn parameter; the criterion is about existence.
+
+\subsubsection{The criterion}\label{odg:sg:sub:criterion}
+
+\begin{theorem}[Singular curve criterion \src{C16}]\label{odg:sg:thm:main}
+Let $\Bbbk$ be a field of characteristic zero, $\Gamma\ne0$, and $C$ a geometrically
+integral affine curve of finite type over $\Bbbk$, with normalization
+$\nu:\widetilde C\to C$. The following are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=*]
+\item $C(\crA)$ contains a point not in $C(\Bbbk)$;
+\item $\widetilde C\cong\Aff^1_\Bbbk$;
+\item there is a nonconstant $\Bbbk$-morphism $\Aff^1_\Bbbk\to C$;
+\item there is a nonconstant point in $C(\Bbbk[T])$.
+\end{enumerate}
+When they hold, for every $0<\gamma\in\Gamma$ there is a nonconstant point whose
+coordinates have finite support in $\{0,\gamma,2\gamma,\ldots,n\gamma\}$ for some ordinary
+$n$.
+\end{theorem}
+
+Here $C(\Bbbk[T])$ is a polynomial family, not a single ordinary point: for a closed
+embedding $C\hookrightarrow\Aff^N_\Bbbk$, condition (iv) asks for polynomials
+$p_1(T),\ldots,p_N(T)$, not all constant, that satisfy the equations of $C$ identically.
+The theorem does not say that every nonconstant point is such a family evaluated at a
+Hahn parameter. For a smooth curve it is \cref{odg:cr:thm:affine}. The node, the cusp and
+the singular short Weierstrass cubics (\cref{odg:cr:prop:singular}) are its first
+singular exceptional cases, and it removes every singularity restriction from the
+smooth classification while keeping arbitrary $\Gamma$. The proof, in
+\cref{odg:sg:sub:proof}, has four steps: a nonconstant point makes the function field a
+subfield of $\crH$; the conductor gives a fixed denominator for all powers of a contracted
+differential (\cref{odg:sg:thm:conductor}); a regular differential has a positive
+valuation at the boundary place (\cref{odg:sg:lem:place}); and a fixed denominator
+against a positive discrete valuation is a contradiction (\cref{odg:sg:cor:jetbound}).
+
+The generalized-series setting and the normal forms of $\Oz$ are classical
+\cite{Conway,Gonshor,LM}; the finite identity used here is Seidenberg's
+\cite{Seidenberg}; normalization, Riemann--Roch and Riemann--Hurwitz are standard
+\cite{StacksNormal,StacksCurves,StacksRR,StacksRH}. Source C16 names as its contribution
+the combination that removes all singularity restrictions from the affine-curve
+dichotomy at arbitrary rank, the finite-order certificate and the repeated-root
+consequences; it does not attribute Seidenberg's identity, smooth rigidity or
+Riemann--Hurwitz to itself. ``Complete criterion'' refers to the class of curves and
+points of \cref{odg:sg:thm:main}, not to a named problem of the literature. Its targeted
+comparison did not find the combined singular statement, and it is not a priority
+search. Van den Dries \cite{vdDries} concerns infinite points in \emph{some} discretely
+ordered ring, not in the fixed ring $\Oz$; source C16 checked only its record and
+abstract (\cref{odg:cr:sub:dor}).
+
+Source C16's reason for the next step is the one recorded in \cref{odg:cr:sub:singular}:
+a point cannot be lifted through the normalization by an appeal to normality, because
+$\crA$ need not be integrally closed even in its fraction field. Its witness is the
+fixed-workspace example printed there: for $e,H\in\Gamma$ with $0<e$ and $ne<H$ for every
+ordinary $n$, the element $\omega^e(1+\omega^{-2e})^{1/2}$ has exponents $(1-2n)e$, is
+integral over $\crA$ and not in it, and becomes an element of $\crA$ after multiplication
+by $\omega^H$ \src{C10, C13, C16}.
+
+\begin{remark}[Why discreteness is needed \src{C16}]\label{odg:sg:rem:discrete}
+The same example shows the danger of a careless almost-integrality argument: a fixed
+denominator $\omega^H$ clears every power of an element, but a positive infinitesimal
+scale $e$ need not outrun the much larger scale $H$ after any finite number of
+multiplications. In the proof below, the denominator and the differential both lie in a
+one-variable function field whose restricted value group is $\gamma\Z$
+(\cref{odg:sg:lem:place}), so their valuations are commensurable. This is not an
+assumption that $\Gamma$ has rank one. The hypothesis $ne<H$ for all $n$ is essential to
+the example, in accordance with \cref{odg:cr:sub:singular}: for $\Gamma=\Z$ the ring is
+$\Bbbk[\omega]$ and normal.
+\end{remark}
+
+Every finite tuple of surreals lies in a set-sized workspace
+(\cref{odg:lem:workspace}); scheme theory and derivations are used only there, and no
+spectrum of a proper-class ring is formed \src{C16}. In the surreal instances
+$\crA$ is the part of $\BR=\R\oplus\Pi$ or $\BC=\C\oplus\Pi_{\C}$ supported in $\Gamma$,
+and $\Oz=\Z\oplus\Pi$, $\Og=\Z[i]\oplus\Pi_{\C}$ \cite{Conway,Gonshor,LM}.
+
+\subsubsection{Seidenberg's identity and conductor certificates}\label{odg:sg:sub:seidenberg}
+
+Let $C$ be an integral affine curve over a field. Its normalization
+$\Bbbk[\widetilde C]$ in $F=\Frac\Bbbk[C]$ is a finite $\Bbbk[C]$-module
+\cite{StacksNormal,StacksCurves}; a common denominator of finitely many module generators
+gives a \emph{conductor element}
+\begin{equation}\label{odg:sg:eq:conductor}
+ 0\ne\kappa\in\Bbbk[C],\qquad \kappa\,\Bbbk[\widetilde C]\subseteq\Bbbk[C],
+ \qquad\text{hence}\qquad \kappa b^j\in\Bbbk[C]\quad(b\in\Bbbk[\widetilde C],\ j\ge0).
+\end{equation}
+No principal conductor or greatest common divisor is needed \src{C16}.
+
+\begin{lemma}[Seidenberg's power identity \src{C16}; after \cite{Seidenberg}]\label{odg:sg:lem:seidenberg}
+Let $R$ be a domain containing $\Q$ in a field $L$ with a derivation $\partial$ such that
+$\partial(R)\subseteq R$. If $\kappa,b\in L$ and $\kappa b^j\in R$ for $0\le j\le n$, then
+\begin{equation}\label{odg:sg:eq:seidenberg}
+ \kappa^2(\partial b)^n
+ =\frac1{n!}\sum_{j=0}^n(-1)^{n-j}\binom nj\,(\kappa b^{n-j})\,\partial^n(\kappa b^j)\in R .
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $w$ be an independent formal variable and $\mathcal T:L\to L[[w]]$,
+$\mathcal T(f)=\sum_{i\ge0}\partial^i(f)w^i/i!$; the Leibniz rule makes $\mathcal T$ a ring
+homomorphism. By the binomial theorem and multiplicativity,
+\[
+ \kappa\,\mathcal T(\kappa)\bigl(\mathcal T(b)-b\bigr)^n
+ =\sum_{j=0}^n(-1)^{n-j}\binom nj(\kappa b^{n-j})\,\mathcal T(\kappa b^j).
+\]
+Since $\mathcal T(b)-b=(\partial b)w+O(w^2)$ and $\mathcal T(\kappa)=\kappa+O(w)$, the
+coefficient of $w^n$ on the left is $\kappa^2(\partial b)^n$, and on the right it is the
+sum in \eqref{odg:sg:eq:seidenberg}. Each $\kappa b^{n-j}$ and each
+$\partial^n(\kappa b^j)$ lies in $R$, and $1/n!\in\Q\subseteq R$.
+\end{proof}
+
+The variable $w$ is an ordinary formal variable, separate from the monomials
+$\omega^\gamma$; only one coefficient, involving finitely many derivatives, is used, and
+nothing is substituted for $w$. An element $b\in\Frac R$ is almost integral over $R$ when
+$\kappa b^n\in R$ for all $n$ and a fixed $0\ne\kappa\in R$; the lemma is the finite form
+of Seidenberg's theorem that derivations preserve complete integral closure, also for
+non-Noetherian $\Q$-algebras \cite[Section 3]{Seidenberg}, \cite[Section 2.5]{Ciuperca}.
+Here the actual multiplier $\kappa^2$ is kept \src{C16}.
+
+\begin{theorem}[Conductor contraction certificate \src{C16}]\label{odg:sg:thm:conductor}
+Let $\Bbbk$ have characteristic zero, let $\Bbbk[C]\subseteq R\subseteq L$ be
+$\Bbbk$-algebras in a field $L$, where $\Bbbk[C]$ is the coordinate ring of an integral
+affine curve with normalization $\Bbbk[\widetilde C]\subseteq F\subseteq L$, and let
+$\partial$ be a $\Bbbk$-derivation of $L$ with $\partial(R)\subseteq R$. Choose $\kappa$ as
+in \eqref{odg:sg:eq:conductor}. For
+\[
+ \alpha=\sum_{j=1}^{\ell}a_j\,\dif b_j\in\Omega^1_{\Bbbk[\widetilde C]/\Bbbk},
+ \qquad a_j,b_j\in\Bbbk[\widetilde C],\quad \ell\ge1,
+\]
+put $\alpha(\partial)=\sum_{j=1}^{\ell}a_j\,\partial b_j\in L$. Then for every ordinary
+$n\ge0$
+\begin{equation}\label{odg:sg:eq:contract}
+ \kappa^{2\ell+1}\alpha(\partial)^n\in R ,
+\end{equation}
+and for fixed $n$ the proof uses derivatives of order at most $n$ of finitely many
+elements of $\Bbbk[C]$.
+\end{theorem}
+\begin{proof}
+Expand $\alpha(\partial)^n$ by the multinomial theorem. Apart from an integer coefficient,
+a term is $\bigl(\prod_ja_j^{e_j}\bigr)\bigl(\prod_j(\partial b_j)^{e_j}\bigr)$ with
+$e_j\ge0$ and $\sum_je_j=n$. The first factor lies in $\Bbbk[\widetilde C]$, so $\kappa$
+times it lies in $\Bbbk[C]\subseteq R$. For each $j$, all $\kappa b_j^i$ lie in $\Bbbk[C]$,
+so \cref{odg:sg:lem:seidenberg} with $n=e_j$ puts $\kappa^2(\partial b_j)^{e_j}$ in $R$.
+Multiplying these $\ell+1$ memberships puts $\kappa^{2\ell+1}$ times the term in $R$, and
+summing proves \eqref{odg:sg:eq:contract}. Only the derivatives $\partial^{e_j}$,
+$e_j\le n$, of the elements $\kappa b_j^i$ occur.
+\end{proof}
+
+The ring $R$ may be all of $\crA$: no finite generation, normality or equality
+$\Frac R=L$ is hidden in the statement. Only $\Bbbk[\widetilde C]$ is normalized, and its
+elements $b_j$ may lie outside $R$ \src{C16}.
+
+\begin{corollary}[A finite derivative-order bound \src{C16}]\label{odg:sg:cor:jetbound}
+In \cref{odg:sg:thm:conductor} take $R=\crA\subseteq L=\crH$ and $\partial$ an Euler
+derivation. Suppose that for some $\gamma>0$ and ordinary $\delta,r\ge0$
+\[
+ v(\kappa)=-\delta\gamma,\qquad v\bigl(\alpha(\partial)\bigr)=(r+1)\gamma .
+\]
+These data are impossible; the contradiction occurs at
+\begin{equation}\label{odg:sg:eq:jetbound}
+ n=\Bigl\lfloor\frac{(2\ell+1)\delta}{r+1}\Bigr\rfloor+1 .
+\end{equation}
+\end{corollary}
+\begin{proof}
+The element \eqref{odg:sg:eq:contract} is nonzero, lies in $\crA$ and has valuation
+$\bigl(n(r+1)-(2\ell+1)\delta\bigr)\gamma>0$; but $\crA\cap\crm=\{0\}$
+(\cref{odg:cr:lem:rings}).
+\end{proof}
+
+This is a finite certificate in differential algebra. The bound \eqref{odg:sg:eq:jetbound}
+is the least $n$ for which that valuation is positive, for the given parameters; it is not
+claimed optimal over the choices of conductor, presentation and differential, and no
+algorithm is given for producing a conductor and a regular differential from an
+arbitrary presentation (\cref{odg:sg:q:order,odg:sg:q:engine}) \src{C16}.
+
+\subsubsection{The place at infinity}\label{odg:sg:sub:place}
+
+Let $C=\Spec\Bbbk[C]$ be an integral affine curve and $\varphi:\Bbbk[C]\to\crA$ a
+$\Bbbk$-algebra map. If its kernel is nonzero, then $\Bbbk[C]/\ker\varphi$ is a field
+finite over $\Bbbk$, and its image in $\crA$ is algebraic over $\Bbbk$, hence equal to
+$\Bbbk$ (\cref{odg:cr:lem:rings}(d)); the point is constant. So a nonconstant point gives
+\begin{equation}\label{odg:sg:eq:generic}
+ \Bbbk[C]\hookrightarrow\crA\subseteq\crH,\qquad F=\Frac\Bbbk[C]\hookrightarrow\crH,
+\end{equation}
+and some element of $\Bbbk[C]$ has negative valuation \src{C16}.
+
+\begin{lemma}[The place at infinity \src{C16}]\label{odg:sg:lem:place}
+Let $\Bbbk$ be algebraically closed and let \eqref{odg:sg:eq:generic} come from a
+nonconstant point. There are a closed point $Q\in\Sigma=\overline C\setminus\widetilde C$, a
+uniformizer $u\in F$ at $Q$ and $\gamma=v(u)>0$ such that
+\begin{equation}\label{odg:sg:eq:place}
+ v(f)=\operatorname{ord}_Q(f)\,\gamma\qquad(f\in F^\times).
+\end{equation}
+In particular $v(F^\times)=\gamma\Z$.
+\end{lemma}
+\begin{proof}
+The ring $V=F\cap\crO$ is a valuation ring of $F$ containing $\Bbbk$, nontrivial because
+some element of $\Bbbk[C]$ has negative valuation. By the valuative criterion of
+properness \cite[Tag 0BX5]{StacksProper}, the generic point extends to
+$\Spec V\to\overline C$. The centre $Q$ is not the generic point, for then $F\subseteq V$;
+so it is closed, and $\mathcal O_{\overline C,Q}$ is a discrete valuation ring
+\cite{StacksCurves}. The local inclusion $\mathcal O_{\overline C,Q}\to V$ sends a
+uniformizer $u$ into the maximal ideal of $V$, so $\gamma=v(u)>0$. Every $f\in F^\times$ is
+$u^nw$ with $w\in\mathcal O_{\overline C,Q}^\times$; both $w$ and $w^{-1}$ lie in $V$, so
+$v(w)=0$ and \eqref{odg:sg:eq:place} holds. If $Q$ were in $\widetilde C$, every element of
+$\Bbbk[C]\subseteq\Bbbk[\widetilde C]\subseteq\mathcal O_{\overline C,Q}$ would have
+nonnegative valuation, hence lie in $\crA\cap\crO=\Bbbk$, and the point would be
+constant.
+\end{proof}
+
+This is the centre of \cref{odg:cr:thm:logroute}, with the discreteness of the induced
+valuation on $F$ made explicit. The smooth projective model used here exists over any
+algebraically closed, hence perfect, field, and the lemma does not use the
+characteristic; the next proposition uses that \src{C16}.
+
+\begin{proposition}[Only one point may be missing \src{C16}]\label{odg:sg:prop:oneplace}
+Let $\Bbbk$ be algebraically closed of any characteristic, with $\crA$ defined by the same
+formula. If an integral affine curve $C$ over $\Bbbk$ has a nonconstant $\crA$-point, then
+$\Sigma=\overline C\setminus\widetilde C$ consists of exactly one point.
+\end{proposition}
+\begin{proof}
+Let $Q$ be the centre of \cref{odg:sg:lem:place}, which is in $\Sigma$, and suppose that
+$q\ne Q$ is also in $\Sigma$. For $N\ge g(\overline C)+1$ Riemann--Roch gives
+$h^0(\overline C,\mathcal O(Nq-Q))\ge N-g\ge1$ \cite{StacksRR}; a nonzero $f$ in this space
+is regular on $\widetilde C$, vanishes at $Q$ and has its only possible pole at $q$. So
+$f\in\Bbbk[\widetilde C]$ and $v(f)>0$. For a conductor element $\kappa$ every $\kappa f^n$
+lies in $\Bbbk[C]\subseteq\crA$, while by \eqref{odg:sg:eq:place} both $v(\kappa)\le0$ and
+$v(f)>0$ are integer multiples of $\gamma$; for large ordinary $n$, $v(\kappa f^n)>0$,
+contradicting $\crA\cap\crm=\{0\}$. Hence $\Sigma=\{Q\}$.
+\end{proof}
+
+The argument uses no derivation and no normality of the target ring; it is the part of
+the obstruction that survives in positive characteristic. In characteristic zero
+regular differentials add the restriction of genus zero \src{C16}. The two
+positive-characteristic examples of \cref{odg:cr:sub:charp} satisfy it, as they must: the
+affine curve $y^2+y=x^3$ of \cref{odg:cr:prop:char2} and the affine line $y^p=x^p-x$ of
+\cref{odg:cr:prop:charp} each have one point at infinity \mergetag. So a
+characteristic-free statement can only be one-place, not genus zero.
+
+\subsubsection{Proof of the criterion}\label{odg:sg:sub:proof}
+
+\begin{theorem}[Positive genus across singularities \src{C16}]\label{odg:sg:thm:genus}
+Let $\Bbbk$ be algebraically closed of characteristic zero. If the smooth projective model
+$\overline C$ of an integral affine curve $C$ over $\Bbbk$ has genus at least one, then
+$C(\crA)=C(\Bbbk)$.
+\end{theorem}
+\begin{proof}
+Suppose a nonconstant point exists, and take $Q$, $u$ and $\gamma$ from
+\cref{odg:sg:lem:place}. As $g\ge1$, there is a nonzero
+$\alpha\in H^0(\overline C,\Omega^1_{\overline C/\Bbbk})$, a space of dimension $g$
+\cite{StacksRR}. Its restriction to the smooth affine curve $\widetilde C$ lies in
+$\Omega^1_{\Bbbk[\widetilde C]/\Bbbk}$ and has a finite presentation
+\begin{equation}\label{odg:sg:eq:alpha}
+ \alpha=\sum_{j=1}^{\ell}a_j\,\dif b_j,\qquad a_j,b_j\in\Bbbk[\widetilde C].
+\end{equation}
+Since $v(u)=\gamma$, the leading exponent of $u$ is $-\gamma\ne0$; choose $\lambda$ with
+$\lambda(-\gamma)=1$ (\cref{odg:cr:lem:separation}) and put $\partial=\partial_\lambda$. The
+leading term of $u$ survives, so $\partial u\ne0$ and $v(\partial u)=\gamma$. At $Q$ the
+differential $\dif u$ freely generates the module of differentials, since $\overline C$ is
+smooth and the residue field is separable \cite[Lemma 53.12.3]{StacksRH}; write
+$\alpha=h\,\dif u$ with $0\ne h\in\mathcal O_{\overline C,Q}$ and $r=\operatorname{ord}_Q(h)\ge0$.
+The universal property of K\"ahler differentials, applied to the $\Bbbk$-derivation
+$F\to\crH$ obtained by restricting $\partial$, gives
+\[
+ \alpha(\partial)=\sum_{j=1}^{\ell}a_j\,\partial b_j=h\,\partial u ,
+\]
+which is nonzero with valuation $(r+1)\gamma$ by \eqref{odg:sg:eq:place}. A conductor
+element $\kappa\in\Bbbk[C]\subseteq\crA$ has $v(\kappa)=-\delta\gamma$ with an ordinary
+$\delta\ge0$. \Cref{odg:sg:thm:conductor,odg:sg:cor:jetbound} give the contradiction.
+\end{proof}
+
+The derivation is defined on $F$ with values in $\crH$; it need not preserve $F$, and it
+is never identified with an endomorphism of the function field. The equality
+$\alpha(\partial)=h\,\partial u$ takes place in $\crH$ and is justified by the relative
+module $\Omega^1_{F/\Bbbk}$ \src{C16}.
+
+\begin{remark}[A third route in the smooth case \mergetag]\label{odg:sg:rem:thirdroute}
+For smooth $C$ one may take $\kappa=1$ and $\delta=0$; then \eqref{odg:sg:eq:jetbound} gives $n=1$, that
+is, $\alpha(\partial)\in\crA\cap\crm=\{0\}$ directly, and
+\cref{odg:sg:prop:oneplace} replaces the unit argument of \cref{odg:cr:lem:punctures}
+by Riemann--Roch. So the rigid direction of \cref{odg:cr:thm:affine} has a third proof,
+after the descent proof of source C14 and the logarithmic proof of source C12
+(\cref{odg:cr:thm:logroute}): positive genus by one regular differential and its
+valuation at the centre, and genus zero with two or more boundary points by a function
+with a single pole.
+\end{remark}
+
+\paragraph{The algebraically closed case.} Suppose $\Bbbk$ is algebraically closed and $C$
+has a nonconstant point. By \cref{odg:sg:thm:genus} the model $\overline C$ has genus zero,
+and by \cref{odg:sg:prop:oneplace} the affine normalization omits exactly one point; a
+smooth projective genus-zero curve over an algebraically closed field is $\mathbb P^1$
+\cite{StacksGenusZero}, so $\widetilde C\cong\Aff^1_\Bbbk$. Conversely, if
+$\widetilde C\cong\Aff^1_\Bbbk$, the normalization map in a closed embedding
+$C\hookrightarrow\Aff^N_\Bbbk$ is a tuple $(p_1(T),\ldots,p_N(T))$ of polynomials, not all
+constant, and for $0<\gamma\in\Gamma$ the substitution $T=\omega^\gamma$ gives a point of
+$C(\crA)$ with support in $\{0,\gamma,\ldots,n\gamma\}$, $n=\max\deg p_i$. It is
+nonconstant because $\omega^\gamma$ is transcendental over $\Bbbk$ \src{C16}.
+
+\paragraph{Descent to every field of characteristic zero.} Coefficientwise inclusion
+$\crA\subseteq\mathcal A_{\bar\Bbbk}(\Gamma)$ preserves nonconstancy, and $C_{\bar\Bbbk}$ is
+integral because $C$ is geometrically integral; so a nonconstant point over $\Bbbk$ gives
+one over $\bar\Bbbk$, and the normalization of $C_{\bar\Bbbk}$ is $\Aff^1_{\bar\Bbbk}$. Over
+the perfect field $\Bbbk$ the normalization $\widetilde C$ is smooth and geometrically
+integral, and its base change is the normalization of $C_{\bar\Bbbk}$: base change keeps
+the finite birational map, and the source stays normal. So $\widetilde C$ is a form of the
+affine line, and $\widetilde C\cong\Aff^1_\Bbbk$ by \cref{odg:cr:lem:formA1}: its completion
+has genus zero and one geometric boundary point, which is rational because in
+characteristic zero a closed point of higher degree splits into several geometric points
+\src{C16}. This proves (i)$\Rightarrow$(ii) of \cref{odg:sg:thm:main}. The normalization map
+gives (ii)$\Rightarrow$(iii); (iii) and (iv) are the same statement about the affine
+functor; and evaluating a nonconstant polynomial family at $\omega^\gamma$ gives
+(iv)$\Rightarrow$(i) with the stated finite support.
+
+\paragraph{What the proof does not use.} No analyticity, no countability of supports, no
+divisibility of $\Gamma$, no saturation, and no statement that an element integral over
+$\crA$ lies in $\crA$; the proof works for $\Gamma=\Z$, for dense rank-one groups and for
+every set-sized rank. The smooth normalization is a theorem about finite-type curves over
+a perfect field, not a hypothesis on $C$: nodes, cusps, several branches and non-planar
+singularities are allowed. The finite-type and constant-coefficient hypotheses are
+substantive \src{C16}.
+
+\subsubsection{Structural consequences}\label{odg:sg:sub:structure}
+
+\begin{corollary}[Independence of the scale \src{C16}]\label{odg:sg:cor:scale}
+For a geometrically integral affine curve $C$ over a field of characteristic zero, whether
+$C(\crA)=C(\Bbbk)$ does not depend on the nonzero ordered group $\Gamma$, and it holds
+exactly when $C(\Bbbk[T])=C(\Bbbk)$.
+\end{corollary}
+\begin{proof}
+Each statement is equivalent to $\widetilde C\not\cong\Aff^1_\Bbbk$ by
+\cref{odg:sg:thm:main}.
+\end{proof}
+
+So transfinite supports never create the first nonconstant point on a constant-coefficient
+affine curve; they can create further points, and complicated fibers, on the exceptional
+curves. The corollary is an existence reduction, not a description of all points
+\src{C16}.
+
+\begin{corollary}[Finite birational invariance \src{C16}]\label{odg:sg:cor:birational}
+Let $C'\to C$ be a finite birational morphism of geometrically integral affine curves over a
+field of characteristic zero. Then $C'(\crA)=C'(\Bbbk)$ if and only if $C(\crA)=C(\Bbbk)$.
+\end{corollary}
+\begin{proof}
+$\Bbbk[C']$ is integral over $\Bbbk[C]$ with the same fraction field, so both have the same
+normalization; apply \cref{odg:sg:thm:main}.
+\end{proof}
+
+The affine normalization, including which points at infinity are removed, must be
+retained: arbitrary birational equivalence is not enough, since $\Aff^1$ is flexible and
+$\Gm$ rigid with the same function field \src{C16}.
+
+\begin{theorem}[Affine schemes of dimension at most one \src{C16}]\label{odg:sg:thm:allcurves}
+Let $\Bbbk$ be algebraically closed of characteristic zero and $X$ an affine $\Bbbk$-scheme
+of finite type and dimension at most one, possibly reducible or nonreduced. Then
+$X(\crA)=X(\Bbbk)$ if and only if no one-dimensional irreducible component of
+$X_{\mathrm{red}}$ has affine normalization $\Aff^1_\Bbbk$.
+\end{theorem}
+\begin{proof}
+A map $\Bbbk[X]\to\crA$ kills nilpotents, since $\crA$ is a domain, and its kernel $P$ is
+prime. If $\dim\Bbbk[X]/P=0$, the image is a domain algebraic over $\Bbbk$, hence $\Bbbk$
+(\cref{odg:cr:lem:rings}(d)), and the point is constant. Otherwise $P$ is a minimal prime,
+$V(P)$ is a one-dimensional irreducible component of $X_{\mathrm{red}}$, integral and,
+over the algebraically closed $\Bbbk$, geometrically integral, and the point is a
+nonconstant point of it; \cref{odg:sg:thm:main} applies. Conversely the normalization of
+an exceptional component gives a nonconstant polynomial map into $X$, which
+$T=\omega^\gamma$ turns into a nonconstant point.
+\end{proof}
+
+This classifies the reducible affine curves over an algebraically closed field of
+characteristic zero, which \cref{odg:cr:sub:singular} records as not classified by sources
+C10--C15; over other fields components need not be geometrically integral, and no
+statement is made there \src{C16}.
+
+\begin{corollary}[Polynomial witnesses in every fiber \src{C16}]\label{odg:sg:cor:fibre}
+Let $\Bbbk$ be algebraically closed of characteristic zero and $\widetilde C\cong\Aff^1_\Bbbk$.
+For every $\mathbf x_0\in C(\Bbbk)$ and every $0<\gamma\in\Gamma$ there is a nonconstant
+finite-support $\mathbf x\in C(\crA)$ with $\ct(\mathbf x)=\mathbf x_0$.
+\end{corollary}
+\begin{proof}
+The finite normalization map is surjective; choose $c\in\Bbbk$ over $\mathbf x_0$ and write
+the map as $(p_i(T))_i$. The coordinates $p_i(c+\omega^\gamma)$ lie in $\crA$, have constant
+terms $p_i(c)$, and are not all constant.
+\end{proof}
+
+Over a field that is not algebraically closed the same construction works at every
+$\mathbf x_0$ with a $\Bbbk$-rational preimage under the normalization, in particular at
+every nonsingular $\Bbbk$-point. It is not replaced by the existence of a $\Bbbk$-point on
+the singular curve; the distinction matters at real isolated singularities
+(\cref{odg:sg:q:real}) \src{C16}.
+
+\subsubsection{Repeated-root superelliptic equations}\label{odg:sg:sub:super}
+
+Let $\Bbbk$ be algebraically closed of characteristic zero, $m\ge2$, and
+\begin{equation}\label{odg:sg:eq:superpoly}
+ P(X)=c\prod_{i=1}^{k}(X-a_i)^{e_i},\qquad c\ne0,\quad e_i\ge1,
+\end{equation}
+with distinct $a_i$ and $d=\deg P=\sum_ie_i$. The polynomial $Y^m-P(X)$ is irreducible if
+and only if $\gcd(m,e_1,\ldots,e_k)=1$: the field $\Bbbk(X)$ contains the $m$th roots of
+unity, so the Kummer extension $\Bbbk(X)(P^{1/m})$ has degree $m$ exactly when $P$ is not a
+$p$th power for any prime $p\mid m$, and over an algebraically closed field that happens
+exactly when $p$ divides every $e_i$ \src{C16}.
+
+\begin{theorem}[Superelliptic flexibility criterion \src{C16}]\label{odg:sg:thm:super}
+Under these hypotheses $Y^m=P(X)$ has a nonconstant $\crA$-point if and only if exactly one
+index $i$ has $m\nmid e_i$, and for that index $\gcd(m,e_i)=1$. Equivalently, after
+extracting polynomial $m$th powers,
+\begin{equation}\label{odg:sg:eq:exceptional}
+ P(X)=c\,P_1(X)^m(X-a)^e,\qquad 1\le e<m,\quad\gcd(m,e)=1,
+\end{equation}
+and then a normalization parameter is
+\begin{equation}\label{odg:sg:eq:superparam}
+ X=a+T^m,\qquad Y=\eta\,P_1(a+T^m)\,T^e,\qquad \eta^m=c .
+\end{equation}
+In every other irreducible case all solutions in $\crA^2$ are constant.
+\end{theorem}
+\begin{proof}
+In the smooth projective model of the cover of the $X$-line, a finite root $a_i$ has
+$\gcd(m,e_i)$ points above it, each with ramification index $m/\gcd(m,e_i)$, and infinity
+has $n_\infty=\gcd(m,d)$ points, each with index $m/\gcd(m,d)$: extract a unit $m$th root
+in the completed local field and factor $Y^m=s^{e_i}$ (with $s=1/X$ at infinity); the
+coprime residual exponents give a uniformizer. Riemann--Hurwitz \cite{StacksRH} gives
+\begin{equation}\label{odg:sg:eq:RH}
+ 2g-2=-2m+\sum_{i=1}^k\bigl(m-\gcd(m,e_i)\bigr)+m-\gcd(m,d).
+\end{equation}
+The normalization of the ring of the equation, which is monic in $Y$, is finite over the
+$X$-line, so the affine normalization omits exactly the $n_\infty$ points over infinity. By
+\cref{odg:sg:thm:main} (with \cref{odg:sg:thm:genus,odg:sg:prop:oneplace}), flexibility is
+equivalent to $g=0$ and $n_\infty=1$, which by \eqref{odg:sg:eq:RH} give
+\begin{equation}\label{odg:sg:eq:deficit}
+ \sum_{i=1}^k\bigl(m-\gcd(m,e_i)\bigr)=m-1 .
+\end{equation}
+A nonzero summand is at least $m/2$, since a proper divisor of $m$ is at most $m/2$; so
+there is exactly one nonzero summand, and its gcd is one. Conversely that pattern gives
+$d\equiv e\pmod m$, so $\gcd(m,d)=1$, and \eqref{odg:sg:eq:deficit}, hence $g=0$ and one
+point at infinity. Finally \eqref{odg:sg:eq:superparam} satisfies the equation; $T$ is
+integral over the coordinate ring since $T^m=X-a$; and $T^m$ and $T^e=Y/(\eta P_1(X))$
+generate $T$ in the function field because $\gcd(m,e)=1$. So $\Bbbk[T]$ is a finite
+birational normal extension of the coordinate ring, that is, its normalization.
+\end{proof}
+
+Repeated factors, and so arbitrarily singular affine models, are governed by the same test;
+the Riemann--Hurwitz computation itself is classical. Many repeated roots do not make a
+curve flexible: only the residues of the multiplicities modulo $m$ matter \src{C16}. The
+theorem contains \cref{odg:cr:thm:squarefree} over an algebraically closed field, where
+all $e_i=1$ and $k=d\ge2$ gives at least two indices with $m\nmid e_i$, and it agrees with
+\cref{odg:cr:prop:singular}: the singular cubic $(X-r)^2(X+2r)$, $r\ne0$, and the cusp $X^3$
+have exactly one odd multiplicity. Over any field $\Bbbk$ of characteristic zero, if
+$Y^m-P(X)$ is irreducible over $\bar\Bbbk$, the test applied to the factorization over
+$\bar\Bbbk$ decides flexibility over $\Bbbk$: by \cref{odg:sg:thm:main} flexibility over
+$\Bbbk$ means $\widetilde C\cong\Aff^1_\Bbbk$, which holds exactly when
+$\widetilde C_{\bar\Bbbk}\cong\Aff^1_{\bar\Bbbk}$ by \cref{odg:cr:lem:formA1} and base
+change \mergetag.
+
+For $P\in\C[X]\setminus\{0\}$ write $P=cP_1^2P_{\mathrm{odd}}$ with $P_1$, $P_{\mathrm{odd}}$
+monic, $P_{\mathrm{odd}}$ squarefree and $c\ne0$; $P_{\mathrm{odd}}$ is the product of the
+irreducible factors of odd multiplicity. The same factorization is used over $\R$.
+
+\begin{corollary}[The quadratic-root test \src{C16}]\label{odg:sg:cor:hyper}
+For $P\in\C[X]\setminus\{0\}$, the equation $Y^2=P(X)$ has a nonconstant
+$\mathcal A_\C(\Gamma)$-point if and only if $\deg P_{\mathrm{odd}}\le1$; if
+$\deg P_{\mathrm{odd}}\ge2$, every solution is constant. For $P\in\R[X]\setminus\{0\}$ and the
+same factorization over $\R$, there is a nonconstant $\mathcal A_\R(\Gamma)$-point if and only
+if $\deg P_{\mathrm{odd}}=1$, or $\deg P_{\mathrm{odd}}=0$ and $c>0$.
+\end{corollary}
+\begin{proof}
+Over $\C$, a nonconstant $P_{\mathrm{odd}}$ makes the curve irreducible and
+\cref{odg:sg:thm:super} applies with $m=2$; if $P_{\mathrm{odd}}=1$ the two components
+$Y=\pm\sqrt c\,P_1(X)$ are polynomial graphs. Over $\R$, $\deg P_{\mathrm{odd}}\ge2$ is rigid
+after complexification. If $P_{\mathrm{odd}}=X-a$, then $X=a+cT^2$, $Y=cP_1(a+cT^2)\,T$ is a
+real polynomial family for either sign of $c$. If $P_{\mathrm{odd}}=1$ and $c>0$ the graphs
+are real. If $P_{\mathrm{odd}}=1$ and $c<0$, the ordering of the real Hahn field forces
+$Y=0$ and $P_1(X)=0$, and the roots of a real polynomial in an ordered extension of $\R$
+are real, so the points are constant.
+\end{proof}
+
+The excluded $P=0$ has the family $(T,0)$. For example $Y^2=X^2(X-1)$ is flexible and
+$Y^2=X^2(X-1)(X-2)$ is rigid, although both are singular at the origin; for
+$\deg P_{\mathrm{odd}}=2$ the obstruction is two points at infinity, not positive genus, and
+for $\deg P_{\mathrm{odd}}\ge3$ genus contributes as well \src{C16}.
+
+\subsubsection{A pinched elliptic curve with a seventh-order certificate}\label{odg:sg:sub:example}
+
+Consider
+\begin{equation}\label{odg:sg:eq:pinched}
+ Z^2=X^2(X^3-X+1),
+\end{equation}
+singular at the origin. Put $f(X)=X^3-X+1$, of discriminant $-23$, so the affine elliptic
+curve $E:\ Y^2=f(X)$ is smooth; it is the curve with $\Delta_0=23$ of
+\cref{odg:cr:cor:weierstrass,odg:cr:ex:denominator}. The map $(X,Y)\mapsto(X,Z=XY)$ is the
+normalization of \eqref{odg:sg:eq:pinched} and identifies $(0,1)$ with $(0,-1)$. In ring
+terms $\Bbbk[C]=\Bbbk[x,xy]\subseteq\Bbbk[\widetilde C]=\Bbbk[x,y]$ with $y^2=f(x)$, and
+$x\,\Bbbk[\widetilde C]\subseteq\Bbbk[C]$, so $\kappa=x$ is a conductor element \src{C16}.
+
+\begin{theorem}[A pinched elliptic curve \src{C16}]\label{odg:sg:thm:example}
+Over every field of characteristic zero every solution of \eqref{odg:sg:eq:pinched} in
+$\crA^2$ is constant. In particular
+\[
+ \{(x,z)\in\Oz^2:z^2=x^2(x^3-x+1)\}=\{(x,z)\in\Z^2:z^2=x^2(x^3-x+1)\},
+\]
+and likewise with $\Og$ and $\Z[i]$. A nonconstant solution is excluded by derivatives of
+order at most seven.
+\end{theorem}
+\begin{proof}
+Rigidity follows from \cref{odg:sg:thm:main}, since the normalization $E$ has genus one.
+Here is the explicit certificate. Suppose $(x,z)\in\crA^2$ is nonconstant. If $x\in\Bbbk$,
+then $z$ is algebraic over $\Bbbk$ and constant; so $x\notin\Bbbk$, $x\ne0$, and
+$y=z/x\in\crH$ satisfies $y^2=f(x)$. Then $2v(y)=3v(x)$, and $\gamma=v(x/y)\in\Gamma$
+satisfies $\gamma>0$, $v(x)=-2\gamma$ and $v(y)=-3\gamma$: these are the pole orders two and
+three at the point at infinity of $E$. Choose $\lambda$ with $\lambda(-\gamma)=1$, so
+$\lambda(\ddeg x)=-2\ne0$, and put $\partial=\partial_\lambda$ and
+$\alpha(\partial)=\partial x/(2y)$; the leading term of $x$ survives, so
+$v(\alpha(\partial))=\gamma$. The polynomials
+\begin{equation}\label{odg:sg:eq:bezout}
+ U(X)=\frac{18X+27}{23},\qquad W(X)=\frac{-6X^2-9X+4}{23},\qquad Uf+Wf'=1,
+\end{equation}
+are those of \eqref{odg:cr:eq:cubic} at $(a,b)=(-1,1)$, divided by $\Delta_0=23$. With
+$2y\,\partial y=f'(x)\,\partial x$ they give
+\begin{equation}\label{odg:sg:eq:sdecomp}
+ \alpha(\partial)=\frac{U(x)\,y}{2}\,\partial x+W(x)\,\partial y .
+\end{equation}
+For every $j\ge0$, $xy^j\in\Bbbk[C]$: reduce even powers by $y^2=f(x)$ and use $xy=z$ for
+the odd ones. By \cref{odg:sg:lem:seidenberg}, $x^2(\partial y)^j\in\crA$ for all $j$.
+Expanding the $n$th power of \eqref{odg:sg:eq:sdecomp}, a term with $y^i(\partial y)^j$
+lies in $\crA$ after multiplying $y^i$ by $x$ and $(\partial y)^j$ by $x^2$, the factors
+$U(x)$, $W(x)$, $\partial x$ being in $\crA$ already. Hence
+\begin{equation}\label{odg:sg:eq:ellipticcert}
+ x^3\alpha(\partial)^n\in\crA\qquad(n\ge0).
+\end{equation}
+At $n=7$ this nonzero element has valuation $3(-2\gamma)+7\gamma=\gamma>0$, a contradiction.
+Only derivatives of order at most seven of the elements $xy^j$, $0\le j\le7$, occur. The
+omnific statements follow in a common workspace, as in \cref{odg:cr:cor:weierstrass}.
+\end{proof}
+
+The certificate is not a squarefree equation in disguise: $y=z/x$ is \emph{not} assumed to
+be in $\crA$, and the fixed multiplier $x^2$ for all powers of $\partial y$ replaces that
+missing statement. The theorem is also \cref{odg:sg:cor:hyper} with
+$P_{\mathrm{odd}}=X^3-X+1$. It classifies the additional omnific points by proving that
+there are none; it does not enumerate the ordinary integer points of the curve or of $E$
+\src{C16}. The general bound \eqref{odg:sg:eq:jetbound}, with $\ell=2$, $\delta=2$ and
+$r=0$ for the differential $\dif x/(2y)$, which does not vanish at infinity, gives eleven;
+seven improves it, and no optimality is claimed (\cref{odg:sg:q:order}).
+
+\subsubsection{Omnific and Gaussian omnific points}\label{odg:sg:sub:arith}
+
+Let $\mathcal C\subseteq\Aff^N_\Z$ be an affine scheme given by finitely many integer
+equations whose real fiber $C_\R$ is a geometrically integral curve; the coordinate
+embedding is fixed.
+
+\begin{theorem}[Omnific rigidity for singular curves \src{C16}]\label{odg:sg:thm:omnific}
+If the affine normalization of $C_\R$ is not $\Aff^1_\R$, then
+$\mathcal C(\Oz)=\mathcal C(\Z)$. Likewise, for an affine $\Z[i]$-model with geometrically
+integral complex fiber $C_\C$ whose affine normalization is not $\Aff^1_\C$,
+$\mathcal C(\Og)=\mathcal C(\Z[i])$.
+\end{theorem}
+\begin{proof}
+A candidate tuple lies in a set-sized real or complex workspace (\cref{odg:lem:workspace});
+there the curve is rigid by \cref{odg:sg:thm:main}, so the coordinates are constants, and
+$\Oz\cap\R=\Z$, $\Og\cap\C=\Z[i]$. The reverse inclusions are clear.
+\end{proof}
+
+The argument works for any coefficient subring $\mathfrak o\subseteq\Bbbk$ and the ring
+$\mathfrak o\oplus\ker(\ct)=\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$; it uses the constant-term
+condition, not an order on $\mathfrak o$. This is \cref{odg:cr:thm:arith}(i) and
+\cref{odg:log:thm:descent} for singular curves. For reducible complex models
+\cref{odg:sg:thm:allcurves} gives the componentwise test \src{C16}.
+
+If $\nu(T)=(p_1(T),\ldots,p_N(T))$, $p_i\in\Bbbk[T]$, parametrizes the normalization of an
+exceptional curve, then for $c\in\Bbbk$ and every purely infinite $s$ with coefficients in
+$\Bbbk$,
+\begin{equation}\label{odg:sg:eq:arithfamily}
+ \ct\bigl(p_i(c+s)\bigr)=p_i(c),
+\end{equation}
+since the positive powers of $s$ are purely infinite \src{C16}.
+
+\begin{proposition}[Arithmetic families above liftable points \src{C16}]\label{odg:sg:prop:arithfamily}
+Let $\widetilde C\cong\Aff^1_\Bbbk$ with $\Bbbk=\R$ or $\C$, and $\mathfrak o=\Z$ or $\Z[i]$
+respectively. If $\mathbf x_0\in\mathcal C(\mathfrak o)$ has a $\Bbbk$-rational preimage $c$
+under the normalization, then $\nu(c+\omega^\beta)\in\mathcal C(\mathfrak o\oplus\Pi_\Bbbk)$
+for every positive surreal $\beta$, where $\Pi_\R=\Pi$. These points are nonconstant, have
+finite support and constant term $\mathbf x_0$, and they form a proper class of distinct
+points.
+\end{proposition}
+\begin{proof}
+Membership and constant terms follow from \eqref{odg:sg:eq:arithfamily}. A coordinate
+polynomial of degree $e\ge1$ has leading exponent $e\beta$ at $c+\omega^\beta$, which
+cannot cancel against lower powers of $\omega^\beta$; so distinct $\beta$ give distinct
+tuples, and every tuple has finitely many exponents.
+\end{proof}
+
+Over $\C$ every ordinary point has a complex preimage under the finite surjective
+normalization, so the existence dichotomy is complete for Gaussian points.
+
+\begin{corollary}[The Gaussian existence dichotomy \src{C16}]\label{odg:sg:cor:gaussian}
+Let $\mathcal C$ be an affine $\Z[i]$-model with geometrically integral complex fiber $C_\C$.
+Nonordinary $\Og$-points exist if and only if $\widetilde C_\C\cong\Aff^1_\C$ and
+$\mathcal C(\Z[i])\ne\varnothing$. Then every ordinary Gaussian point is the constant term of
+a proper class of finite-support nonordinary points.
+\end{corollary}
+\begin{proof}
+A nonordinary point forces the normalization condition by \cref{odg:sg:thm:main}, and its
+constant term is an ordinary Gaussian point. The converse is
+\cref{odg:sg:prop:arithfamily}.
+\end{proof}
+
+For real omnific points the converse holds at every nonsingular ordinary point and at every
+singular ordinary point with a real preimage under the normalization. A real point of a
+singular curve can have only nonreal preimages, so the complex argument does not transfer,
+and the real singular fibers are not classified (\cref{odg:sg:q:real}) \src{C16}. For
+smooth curves the fibers are known exactly (\cref{odg:cr:cor:omnific}); for singular
+exceptional curves \cref{odg:sg:prop:arithfamily} gives families in the fibers, not the
+fibers, since a point need not lift to the normalization (\cref{odg:sg:q:lifting}).
+
+The criterion decides whether a curve supports nonconstant points once its affine
+normalization is known, and for superelliptic equations \cref{odg:sg:thm:super} makes this a
+multiplicity computation. It does not decide whether ordinary integer points exist; the
+implication $\mathcal C(\Oz)\ne\varnothing\Rightarrow\mathcal C(\Z)\ne\varnothing$ already
+follows from the retraction. What it decides is whether \emph{additional} nonordinary
+solutions can occur \src{C16}.
+
+\subsubsection{Boundaries of the criterion}\label{odg:sg:sub:boundaries}
+
+\paragraph{The field is different.} The Hahn field contains
+$\omega^\gamma(1+\omega^{-2\gamma})^{1/2}$ for every $\gamma>0$, while $\crA$ does not, and
+similar expansions give nonconstant field points on many curves of positive genus
+(\cref{odg:cr:rem:fieldpoints}). The criterion concerns $\crA$-points, not $\crH$-points;
+the prohibition of negative $\omega$-exponents is indispensable \src{C16}.
+
+\paragraph{Constant coefficients.} If a coefficient may be a chosen element of the Hahn
+ring, a prescribed tuple can be forced to solve a relation
+(\cref{odg:cr:sub:boundaries}). The proof needs the Euler derivations to kill the
+coefficients, and the function field to have transcendence degree one over the constant
+field \src{C16}.
+
+\paragraph{Characteristic zero is used twice.} Seidenberg's identity divides by $n!$, and an
+Euler derivation must detect a nonzero valuation. In characteristic $p$ an additive map
+$\Gamma\to\Bbbk$ kills $p\Gamma$ and vanishes on a $p$-divisible group
+(\cref{odg:cr:sub:charp}). Seidenberg also treats Hasse--Schmidt operators, but that alone
+does not supply a valuation-detecting operator. \Cref{odg:sg:prop:oneplace} survives in
+every characteristic; the genus-zero conclusion is not asserted in positive
+characteristic \src{C16}.
+
+\paragraph{Higher dimension.} For a curve a nontrivial valuation trivial on constants is
+controlled by one discrete place, and one nonzero regular differential has a scalar local
+expression $h\,\dif u$ whose contraction is nonzero with known positive valuation. In
+higher dimension valuations need not be discrete, the derivation can annihilate chosen
+global forms, and a centre may have several tangent directions. The conductor identity
+holds for finite birational extensions of domains in any dimension, but the geometric step
+needs new hypotheses. The logarithmic and symmetric-differential criteria of
+\cref{odg:cr:thm:symmetric,odg:log:cor:criterion} are not subsumed by this curve argument
+(\cref{odg:sg:q:birational}) \src{C16}.
+
+\paragraph{Normalization lifting.} The criterion concerns the \emph{existence} of a
+nonconstant $\crA$-point and of a polynomial arc. It does not say that a given nonconstant
+point of a singular exceptional curve factors through an $\crA$-point of the normalization;
+\cref{odg:sg:thm:conductor} deliberately allows $b_j\notin\crA$. So the complete existence
+dichotomy and the open lifting problem (\cref{odg:sg:q:lifting}) are consistent \src{C16}.
+
+\subsubsection{Source C16's own audit}\label{odg:sg:sub:audit}
+
+Source C16 ends with a table of the pitfalls it checked. Support reversal: $t^\gamma=
+\omega^{-\gamma}$ throughout, and its ring has nonpositive $t$-support. Normality of $\crA$:
+never assumed, with an explicit counterexample in $\Frac\crA$. The conductor: it comes from
+the finite normalization of the finite-type curve, not from properties of $\crA$. Infinite
+differential closure: only the finite identity \eqref{odg:sg:eq:seidenberg} is used, with no
+Noetherian hypothesis on a differential hull. High rank: the conductor and the local
+parameter come from one function field, so their valuations are integer multiples of one
+$\gamma$. The derivation may leave $F$; the contraction uses $\Omega^1_{F/\Bbbk}$ and takes
+values in $\crH$. Nonzero contraction: $\alpha=h\,\dif u$ with $h\ne0$, and the chosen
+derivation keeps the leading term of $u$. No hidden infinite sum: the only auxiliary series
+is formal in a new variable, and one coefficient is used. Arithmetic and geometry: ordinary
+integer points and real normalization fibers are kept separate from the geometric
+criterion. Proper classes: all algebraic geometry takes place in a set-sized workspace
+containing the finite tuple. Novelty: a proposed extension of the inspected baseline, with
+no exhaustive priority or peer-review claim.
+
+Its script checks the finite Taylor identity, Euler derivations on finite rational
+supports, the multiplicity and genus arithmetic of \cref{odg:sg:sub:super}, explicit
+normalization substitutions, the elliptic B\'ezout certificate and the derivative-order
+inequalities, with exact arithmetic (\cref{odg:app:verification}). These are regression
+checks for finite parts of the argument, not proofs of Hahn summability, normalization,
+Riemann--Roch or the universally quantified theorems; proofs, finite checks and a clean
+build are different kinds of evidence \src{C16}. Its summary: the smooth result extends
+through arbitrary affine-curve singularities, not by lifting a point into a normal ring but
+by keeping one conductor of the original curve to bound all powers of a contracted
+differential, which the one-dimensional place turns into a finite contradiction; the
+only escape is normalization by the affine line, and transfinite supports or larger
+scales cannot make a rigid constant curve flexible. What remains concerns the exceptional
+fibers, higher dimension and effective verification (\cref{odg:sg:q:lifting,odg:sg:q:real,odg:sg:q:order,odg:sg:q:engine,odg:sg:q:charp,odg:sg:q:birational,odg:sg:q:images,odg:sg:q:lean}).
 
 \section{Group varieties, coefficient algebras and sharpness}\label{odg:cr:sec:groups}
 
@@ -9203,7 +9993,10 @@ for arbitrary smooth curves would make the geometric chain checkable in the same
 as the cubic certificate (\cref{odg:cr:q:coefficients}); these too are proposals.
 Source C15 proposes the same two stages, with the local description of logarithmic
 forms in the geometric one, and notes that a conditional Lean theorem would not by
-itself verify the instantiations.
+itself verify the instantiations. Source C16 proposes, for its own results, finite differential algebra first,
+then the abstract valuation contradiction, then normalization of curves and
+Riemann--Roch, and the proper-class application last (\cref{odg:sg:q:lean}); this too is a
+proposal.
 
 \section{Questions and synthesis}\label{odg:sec:questions}
 
@@ -9218,6 +10011,10 @@ smooth curves, answer \cref{odg:q:search,odg:q:homogeneous} in part, and add six
 questions (\cref{odg:cr:sub:settled}); the three questions stay open, re-scoped.
 Source C15 answers the first question of \cref{odg:cr:q:higher} in sufficient form and
 adds a class of rigid varieties to \cref{odg:q:affine}; both stay open, re-scoped.
+Source C16 answers the first two clauses of \cref{odg:cr:q:singular} and the curve part of
+\cref{odg:q:affine}, answers the existence part of \cref{odg:q:search} for singular curves
+over $\Og$ and in part over $\Oz$, and adds eight questions; the questions stay open,
+re-scoped.
 
 \subsection{Questions settled by source 05}\label{odg:sub:settled}
 
@@ -9230,7 +10027,9 @@ particular $Y^2=X^3+1$ and $x^2-y^3=1$ have only ordinary omnific points
 (\cref{odg:cor:mordell}). The general part of source 01's question, a
 criterion for arbitrary affine curves, was left open as \cref{odg:q:affine};
 sources C10--C14 answer it for smooth curves (\cref{odg:cr:sub:settled}), and it
-remains open for singular curves and in higher dimension.
+remains open for singular curves and in higher dimension. Status (batch 31): source
+C16 settles the geometrically integral singular curves (\cref{odg:cr:sub:settled}); higher
+dimension remains open.
 
 \paragraph{Unimodular Fermat (sources 01 and 02).} Source 01 asked for the
 classification of primitive or unimodular omnific solutions of
@@ -9315,7 +10114,9 @@ adds descent over every coefficient ring (\cref{odg:log:thm:descent}) and the
 complements of normal-crossings divisors whose logarithmic symmetric differentials
 separate tangent directions (\cref{odg:log:cor:criterion,odg:log:cor:omnific}). The
 question stays open for singular curves and for general affine varieties of higher
-dimension; its refined forms are \cref{odg:cr:q:singular,odg:cr:q:higher}.
+dimension; its refined forms are \cref{odg:cr:q:singular,odg:cr:q:higher}. Status
+(batch 31): source C16 settles the curve part; see the paragraph on singular curves
+below.
 
 \paragraph{Effective finite-support discovery (source 05).} For smooth affine curves
 the existence part of \cref{odg:q:search} is answered: a nonordinary omnific point
@@ -9325,7 +10126,8 @@ polynomial arcs through every integer point and a finite congruence test describ
 the points once an affine-line isomorphism and its inverse are supplied
 (\cref{odg:cr:lem:arcs,odg:cr:prop:congruence}). The question stays open beyond
 smooth curves, and \cref{odg:cr:cor:polywitness} is not an algorithm for the ordinary
-points.
+points. Status (batch 31): source C16 extends the answer to singular curves in part
+(paragraph on singular curves below).
 
 \paragraph{Primitive homogeneous solutions (source 02).} For projective varieties
 whose complex fiber is rigid, in particular smooth projective curves of positive
@@ -9372,6 +10174,42 @@ characteristic under \cref{odg:cr:q:charp}; and minimal certificates for curves 
 several equations under \cref{odg:cr:q:coefficients}. None of the sources presents these
 as known open problems of the literature.
 
+\paragraph{Singular curves (source C16).} Source C16 answers the first two clauses of
+\cref{odg:cr:q:singular}. Uniformly in $\Gamma\ne0$ and over every field of characteristic
+zero, a geometrically integral affine curve has only constant $\crA$-points unless its
+normalization is $\Aff^1$ (\cref{odg:sg:thm:main}); the answer is expressed through the
+normalization and its points at infinity (genus zero and exactly one boundary point), and
+the conductor supplies finite certificates (\cref{odg:sg:thm:conductor,odg:sg:cor:jetbound}).
+Over an algebraically closed field this extends to all affine schemes of dimension at
+most one, reducible or not (\cref{odg:sg:thm:allcurves}). The third clause, which finite
+normalization maps admit nonconstant points without a lift, stays open as
+\cref{odg:sg:q:lifting}, so \cref{odg:cr:q:singular} stays open, re-scoped. For
+\cref{odg:q:affine} this settles the curve part: every omnific point of a model whose real
+fiber is geometrically integral is ordinary unless the normalization of that fiber is
+$\Aff^1_\R$, and every Gaussian omnific point of a model whose complex fiber is
+geometrically integral is ordinary unless that normalization is $\Aff^1_\C$
+(\cref{odg:sg:thm:omnific}); conversely nonordinary Gaussian points exist exactly when in
+addition there is a Gaussian integer point (\cref{odg:sg:cor:gaussian}), and nonordinary
+omnific points exist when some integer point has a real preimage under the normalization
+(\cref{odg:sg:prop:arithfamily}), in particular when it is nonsingular. For
+\cref{odg:q:search} it answers the existence part for singular curves over $\Og$, and
+over $\Oz$ at integer points with a real normalization preimage; the case of integer
+points whose preimages are all nonreal, such as an isolated real node, stays open
+(\cref{odg:sg:q:real}). For \cref{odg:cr:q:charp} it adds a necessary condition in every
+characteristic, one boundary point (\cref{odg:sg:prop:oneplace}); for
+\cref{odg:cr:q:coefficients} it gives finite derivative-order certificates for every
+rigid curve, without optimality or an algorithm (\cref{odg:sg:q:order,odg:sg:q:engine}).
+
+\paragraph{New questions (source C16).} Its eight questions are printed as stated:
+lifting through the normalization (\cref{odg:sg:q:lifting}, the third clause of
+\cref{odg:cr:q:singular}), real singular fibers (\cref{odg:sg:q:real}), optimal
+certificates and a certificate-producing procedure (\cref{odg:sg:q:order,odg:sg:q:engine},
+refining \cref{odg:cr:q:coefficients}), positive characteristic (\cref{odg:sg:q:charp},
+refining \cref{odg:cr:q:charp}), normalization invariance in higher dimension
+(\cref{odg:sg:q:birational}), images of the constant term (\cref{odg:sg:q:images}) and
+formalization (\cref{odg:sg:q:lean}). Source C16 does not present them as known open
+problems of the literature.
+
 \subsection{Open questions}
 
 \begin{question}[Rigid affine varieties and curves \src{01, 02, 05}; smooth curves answered by \src{C10--C14}]\label{odg:q:affine}
@@ -9403,7 +10241,11 @@ comes from a real polynomial curve (\cref{odg:cr:cor:omnific,odg:cr:cor:polywitn
 Source C15 adds a class in every dimension: complements of normal-crossings divisors
 whose logarithmic symmetric differentials separate tangent directions
 (\cref{odg:log:cor:omnific}). Singular curves and general affine varieties of higher
-dimension remain open (\cref{odg:cr:q:singular,odg:cr:q:higher}).
+dimension remain open (\cref{odg:cr:q:singular,odg:cr:q:higher}). Status (batch 31):
+source C16 settles the curve part for geometrically integral curves, and over the Gaussian
+ring completely (\cref{odg:cr:sub:settled}); over $\Oz$ the case of an exceptional curve
+whose integer points all lack a real normalization preimage remains (\cref{odg:sg:q:real}).
+General affine varieties of higher dimension remain open.
 
 \begin{question}[Primitive Fermat triples \src{01, 05}]\label{odg:q:primitivefermat}
 For $n\ge3$, can the unit-ideal hypothesis of
@@ -9502,7 +10344,11 @@ nonordinary omnific point exists exactly when one of finite support with the sam
 constant term exists (\cref{odg:cr:cor:polywitness}), and source C14 makes the
 affine-line case constructive once a parametrization is supplied
 (\cref{odg:cr:lem:arcs,odg:cr:prop:congruence}). Beyond smooth curves the question
-stays open (\cref{odg:cr:sub:settled}).
+stays open (\cref{odg:cr:sub:settled}). Status (batch 31): source C16 answers the existence part
+for geometrically integral singular curves over $\Og$
+(\cref{odg:sg:cor:gaussian}) and over $\Oz$ at integer points with a real normalization
+preimage (\cref{odg:sg:prop:arithfamily}); the remaining real case is \cref{odg:sg:q:real},
+and higher dimension stays open.
 
 \begin{question}[Coefficient recovery of lower complexity \src{06}]\label{odg:def:q:coeffpe}
 Can the canonical $\R$ or $\C$ in the interpreted fraction field be recovered
@@ -9594,7 +10440,12 @@ logarithmic differentials on the normalization whose pullbacks are regular on th
 singular curve, with the conductor controlling the descent; this is a proposal, not a
 proved criterion. Source C15 asks the same question for every exponent group, naming the
 identifications of branches among the data; the quasi-finite criterion settles some
-singular targets but gives no classification \src{C15}.
+singular targets but gives no classification \src{C15}. Status (batch 31): source C16
+answers the first two clauses for geometrically integral curves: uniformly in
+$\Gamma\ne0$, only constant points exist unless the normalization is $\Aff^1$, a condition
+on the genus and the points at infinity of the normalization, and a conductor gives finite
+certificates (\cref{odg:sg:thm:main,odg:sg:thm:conductor}). The third clause stays open as
+\cref{odg:sg:q:lifting}; the question stays open, re-scoped.
 
 \begin{question}[Beyond cotangent generation \src{C11, C13, C14}]\label{odg:cr:q:beyond}
 For which smooth proper varieties does $X(\crA)=X(\Bbbk)$ hold for every $\Gamma$?
@@ -9658,7 +10509,9 @@ the squarefree theorem fail as stated in positive characteristic
 (\cref{odg:cr:sub:charp}): a characteristic-free version of the theorems is false, not
 merely unproved. Source C15 asks the same question, how the $p$-divisibility of
 $\Gamma$ and the inseparable geometry of the target control the points, and whether
-higher or iterative differential operators can replace the Euler family \src{C15}.
+higher or iterative differential operators can replace the Euler family \src{C15}. Status (batch 31): source C16 proves in every characteristic that a curve with a
+nonconstant point has exactly one boundary point in its normalization
+(\cref{odg:sg:prop:oneplace}); its refinement is \cref{odg:sg:q:charp}.
 
 \begin{question}[Omnific coefficients and effective certificates \src{C12; also C10, C15}]\label{odg:cr:q:coefficients}
 For equations with genuinely omnific coefficients, which support and nondegeneracy
@@ -9674,7 +10527,95 @@ With nonconstant coefficients even nonsingular cubics have nonordinary omnific p
 statements \src{C12}. A finite certificate would formalize the mechanism; it would not
 by itself enumerate integer points \src{C10}. Source C15 asks for such a certificate of the
 logarithmic obstruction, extracted effectively, for a smooth affine curve presented by
-several equations, so that a checker need not reconstruct the geometry \src{C15}.
+several equations, so that a checker need not reconstruct the geometry \src{C15}. Status
+(batch 31): source C16 gives finite certificates for every rigid curve, smooth or singular,
+with an explicit derivative-order bound (\cref{odg:sg:thm:conductor,odg:sg:cor:jetbound,odg:sg:thm:example});
+optimal bounds and a certificate-producing procedure are \cref{odg:sg:q:order,odg:sg:q:engine}.
+
+The next eight questions are those of source C16, printed as it states them; it presents
+them as continuations of its article, not as recognized open problems of the literature.
+
+\begin{question}[Exact normalization lifting \src{C16}]\label{odg:sg:q:lifting}
+If $C$ has normalization $\Aff^1_\Bbbk$, does every nonconstant $\crA$-point of $C$ lift to an
+$\crA$-point of the normalization? If not, what are the smallest explicit singular curve and
+ordered group exhibiting the failure?
+\end{question}
+This is the third clause of \cref{odg:cr:q:singular}, which \cref{odg:sg:thm:main} leaves
+open. The conductor proof controls powers only after multiplication. A first test is a
+rational curve with two distinct parameter values identified at a node; a positive answer
+must deal with the non-normality of \cref{odg:cr:sub:singular} rather than assume it away
+\src{C16}.
+
+\begin{question}[Real singular arithmetic fibers \src{C16}]\label{odg:sg:q:real}
+For a real curve with normalization $\Aff^1_\R$, which ordinary integer points are constant
+terms of nonordinary omnific points? Is a real preimage under the normalization necessary,
+as well as sufficient?
+\end{question}
+This is the remaining real--Gaussian asymmetry of \cref{odg:sg:cor:gaussian}. A concrete
+test is the isolated real node of $Y^2=X^2(X-1)$ at $(0,0)$: the normalization is
+$X=T^2+1$, $Y=T(T^2+1)$, the preimages of the origin are $T=\pm i$, and the real
+polynomial families of \cref{odg:sg:prop:arithfamily} do not reach that fiber, while the
+complex ones do \src{C16}.
+
+\begin{question}[Optimal certificate complexity \src{C16}]\label{odg:sg:q:order}
+How small can the derivative order of \eqref{odg:sg:eq:jetbound} be made by optimizing the
+conductor, the presentation of $\alpha$ and the regular differential? Can the least order be
+bounded by the genus, the conductor length and the pole semigroup at infinity alone?
+\end{question}
+The seventh-order certificate of \cref{odg:sg:thm:example} improves the direct bound eleven;
+no optimality is claimed. The identity is an effective target for symbolic algebra and
+formal verification \src{C16}. This refines the certificate part of
+\cref{odg:cr:q:coefficients}.
+
+\begin{question}[A constructive curve-rigidity procedure \src{C16}]\label{odg:sg:q:engine}
+Can normalization, conductor computation and the construction of a regular differential be
+combined into a certificate-producing procedure for arbitrary affine curve presentations
+over effective fields of characteristic zero, with proofs checked independently of the
+computer algebra system?
+\end{question}
+For superelliptic input the multiplicities already decide (\cref{odg:sg:thm:super}). For
+general input a certificate should specify a normalization presentation, conductor
+witnesses, a differential presentation and the finite derivative identity, not only a
+yes-or-no answer \src{C16}. This refines the effective-certificate part of
+\cref{odg:cr:q:coefficients}.
+
+\begin{question}[Positive-characteristic replacement \src{C16}]\label{odg:sg:q:charp}
+Among one-place affine curves in characteristic $p$, which admit nonconstant $\crA$-points?
+Can support-preserving Hasse--Schmidt operators separate subclasses according to the
+$p$-divisibility of $\Gamma$?
+\end{question}
+The first step is to separate the failure of a derivation to detect a scale from the genuine
+existence of a Hahn point; Seidenberg's higher-derivation theorem is relevant but not
+sufficient by itself \src{C16}. \Cref{odg:sg:prop:oneplace} gives the one-place condition
+in every characteristic; the question refines \cref{odg:cr:q:charp}.
+
+\begin{question}[Higher-dimensional normalization invariance \src{C16}]\label{odg:sg:q:birational}
+For which affine varieties is the property $X(\crA)=X(\Bbbk)$ invariant under finite
+birational morphisms? Can conductor certificates be combined with enough differential
+tensors to remove singularity assumptions from the higher-dimensional criteria?
+\end{question}
+A promising restricted setting has a controlled rank-one valuation at the centre and
+differential tensors detecting every relevant tangent direction; the curve theorem is the
+one-dimensional model, not a proof there \src{C16}. The criteria in question are
+\cref{odg:cr:thm:symmetric,odg:log:cor:criterion} (see \cref{odg:cr:q:higher}).
+
+\begin{question}[Images, not just existence \src{C16}]\label{odg:sg:q:images}
+For an exceptional curve, describe the image of $C(\crA)$ under $\ct$, the possible support
+order types in each fiber, and their behaviour under embeddings of ordered groups. How much
+of this is encoded by the conductor?
+\end{question}
+\Cref{odg:sg:cor:scale} concerns existence only; fibers may keep rank and support
+information that the dichotomy forgets \src{C16}. For smooth curves the fibers are copies of
+$\crP$ (\cref{odg:cr:thm:arith}).
+
+\begin{question}[Formalization across the normal-form bridge \src{C16}]\label{odg:sg:q:lean}
+Can the finite power identity, the conductor certificate and the one-variable valuation
+argument be formalized in Lean and transported to the repository's surreal normal-form
+interface?
+\end{question}
+Source C16 proposes the order: finite differential algebra, then the abstract valuation
+contradiction, then normalization of curves and Riemann--Roch, and the proper-class
+application last; none of these stages is claimed done \src{C16}.
 
 \subsection{Synthesis}
 
@@ -9736,6 +10677,13 @@ case. Source C15 carries the differential side to logarithmic forms: a form with
 logarithmic poles along the boundary still contracts into the valuation ring, so with the
 image condition $\partial(\crA)\subseteq\crP$ it vanishes as well, and complements whose
 logarithmic forms separate tangent directions are rigid in every dimension.
+
+Source C16 removes smoothness from the curve case. A point need not lift to the
+normalization, but one conductor element of the curve clears every power of a contracted
+regular differential after a fixed multiplication, and at the one boundary place selected
+by a nonconstant point the valuation is discrete; so a regular differential forces a
+contradiction after finitely many derivatives. The only escape is normalization by the
+affine line, and larger scales never make a rigid constant curve flexible.
 
 \subsection{Relations to neighbouring reports}\label{odg:sub:neighbours}
 
@@ -9801,7 +10749,8 @@ That report also cites \cref{odg:thm:nogcd,odg:thm:realray}, and it answers
 \cref{odg:q:affine} for closed subgroup schemes of $\GL_N$ over $\Z$ (and over
 $\Z[i]$ for $\Og$), not for general affine varieties or curves; its remark
 \replabel{ogl:alg:rem:affine} still records the curve case as open, which
-\cref{odg:cr:sec:curves} now settles for smooth curves. The two answers agree where
+\cref{odg:cr:sec:curves} now settles for smooth curves, and \cref{odg:sg:sub:singular}
+for geometrically integral singular curves. The two answers agree where
 they overlap (\cref{odg:cr:rem:ogl}): $\Ga$ is nonrigid and the one-dimensional tori
 are rigid; the vector-group kernel of \cref{odg:cr:thm:groupkernel} is its unipotent
 kernel \replabel{ogl:alg:prop:bch} for commutative groups; semiabelian rigidity
@@ -9832,7 +10781,7 @@ $\SO(3,\Oz)$ is finite.
 
 \subsection{Sources}
 
-The report is built from thirteen manuscripts. Sources 01, 02 and 05 are three of
+The report is built from fourteen manuscripts. Sources 01, 02 and 05 are three of
 a batch of eleven placed in commit \texttt{be06fc8}, and their numbers are the
 batch item numbers; they are dated September 22, 2026, and the repository
 commit they pin is \pin. Sources 06 and 07 are items 01 and 07 of a batch of
@@ -9897,6 +10846,20 @@ C10--C14. Its proof audit, code and data are shipped under that prefix
 scripts, the recorded run, the build report of its own article and the requirements
 file). Its text, PDF and delivered README are not shipped, nor is its checksum manifest,
 which lists the delivered file names.
+
+Source C16 is item 04 of a batch of nine placed in commit \texttt{9d28e28}, whose archives
+arrived in \texttt{39fe674}; it is tagged by its shipped file prefix
+\fn{16-singular-curves-}, with the letter C as for sources C10--C15 (the sibling report's
+manuscript 16, files \fn{16-fresh-scale-}, is not a source of this report). It is dated
+September 23, 2026, and pins \nolinkurl{bcac55ae6fd3f2b354e568ba1d2e94d496a2cc59}
+(``Construct Fejer-Riesz factors on the full affine Cayley chart''), 87 commits before
+\texttt{9d28e28}. At that pin sources C10--C14 had been placed (\texttt{c6359e4}), but their
+material was not yet written into this article (\texttt{ac54217} is not an ancestor of the
+pin), and source C15 had not been placed. Its source audit, code and data are shipped under
+that prefix (\fn{16-singular-curves-SOURCE_AUDIT.md}, the verification script, its build
+script, the recorded run, the requirements file and the build report of its own article).
+Its text, PDF and delivered README are not shipped, nor is its checksum manifest, which
+lists the delivered file names.
 
 \subsection{Section map}
 
@@ -9981,7 +10944,10 @@ cubic certificate and singular families (node of C11)\\
 forms of $\Aff^1$, integer arcs, congruences, unimodular coordinates over
 $\mathcal R_{\mathfrak o}$; C12 logarithmic route (closed-centre step \mergetag),
 descent, coordinate ideals; C11 fibers over any $\mathfrak o$, class size, one-form
-remark; C13 all curves, polynomial witnesses; C10 fiber bijection, field points\\
+remark; C13 all curves, polynomial witnesses; C10 fiber bijection, field points; C16
+singular-curve criterion, conductor certificates, one-place obstruction, curves of dimension
+at most one, superelliptic test, pinched elliptic curve, Gaussian dichotomy
+(\ref{odg:sg:sub:singular}), and credits on the results it reproves\\
 \ref{odg:cr:sec:groups} Groups and boundaries & all five abelian and semiabelian;
 C11 quasi-finite, reduced algebras, dual numbers, discretely ordered ring; C13 group
 kernel, characteristic $p$; C11 and C14 characteristic two; C10, C12, C13, C14
@@ -9993,7 +10959,7 @@ Sections \ref{odg:cr:sec:principle}--\ref{odg:cr:sec:groups}\\
 initial forms (also 01); 05 binomials and failed lifting\\
 \ref{odg:sec:coefficients} (continued) & pointer to the image-gap theorem of
 the sibling report\\
-\ref{odg:sec:formal}, \ref{odg:sec:questions} & All thirteen; settled
+\ref{odg:sec:formal}, \ref{odg:sec:questions} & All fourteen; settled
 questions recorded in
 \cref{odg:sub:settled,odg:def:sub:settled,odg:frac:sub:settled,odg:cr:sub:settled}\\
 \bottomrule
@@ -10186,6 +11152,31 @@ zero; both are covered by the statements above over every field. Its abstract
 interface asks for a valuation ring $V\subseteq K$; the valuative criterion needs $V$ to
 be a valuation ring of $K$, and \cref{odg:log:rem:interface} says so. No result is added
 by the merge in \cref{odg:log:sub:log}.
+\item \emph{Singular addition.} Source C16 arrived after source C15. It answers a question
+of this part and shares its spine, so its new results are appended as
+\cref{odg:sg:sub:singular}, at the end of \cref{odg:cr:sec:curves}, directly after the
+subsection that states the problem; appending at the end of a section moves no existing
+number. Its rings, Euler derivations, non-normality example, descent of forms of the affine
+line and smooth case are not reprinted, and C16 is added to the credits of
+\cref{odg:cr:lem:rings,odg:cr:lem:euler,odg:cr:lem:separation,odg:cr:lem:formA1,odg:cr:thm:affine}
+and of the witness in \cref{odg:cr:sub:singular}.
+\item \emph{Routes of source C16.} Its proof of the smooth case is recorded as a third
+route (\cref{odg:sg:rem:thirdroute}). For the pinched elliptic curve both of its proofs are
+printed, by the general theorem and by the explicit seventh-order certificate
+(\cref{odg:sg:thm:example}); its B\'ezout polynomials are those of \eqref{odg:cr:eq:cubic}.
+\item \emph{Stated generality of source C16.} Its results are printed at the generality it
+states: the criterion over every field of characteristic zero, the one-place proposition
+over an algebraically closed field of any characteristic, and the dimension-one theorem and
+superelliptic test over an algebraically closed field of characteristic zero. Three items
+carry the tag \mergetag{} and have complete proofs: the consistency of the one-place
+obstruction with the positive-characteristic examples (after \cref{odg:sg:prop:oneplace}),
+the third route (\cref{odg:sg:rem:thirdroute}) and the superelliptic test over an arbitrary
+field of characteristic zero (after \cref{odg:sg:thm:super}).
+\item \emph{Questions of source C16.} Its eight questions are printed as stated
+(\cref{odg:sg:q:lifting,odg:sg:q:real,odg:sg:q:order,odg:sg:q:engine,odg:sg:q:charp,odg:sg:q:birational,odg:sg:q:images,odg:sg:q:lean});
+the first is the third clause of \cref{odg:cr:q:singular}, and the third, fourth and fifth
+refine \cref{odg:cr:q:coefficients,odg:cr:q:charp}. They are not merged into those questions,
+so that each is printed as its source states it.
 \end{enumerate}
 
 \paragraph{Printed once.} The floor formula, retraction, congruences, finite
@@ -10236,7 +11227,13 @@ cotangent bundles, unimodular coordinates on curves of positive genus, the
 characteristic-two point (C11's example with the coordinates interchanged), the
 $\Gamma=\Z$ integrality example of C14, and the field and valuation-ring points; these are
 printed once, with C15 named in their credits, and the workspace lemma it uses is
-\cref{odg:lem:workspace}.
+\cref{odg:lem:workspace}. Source C16 reproves the rings, the retraction and the units,
+the transcendence of nonconstant elements, the Euler derivations and their detection
+property, the fixed-workspace non-normality example (for any $0<e<H$ with $ne<H$), the
+descent of forms of the affine line and, as its smooth case, the smooth classification;
+these are printed once, with C16 named in their credits
+(\cref{odg:cr:lem:rings,odg:cr:lem:euler,odg:cr:lem:separation,odg:cr:lem:formA1,odg:cr:thm:affine},
+\cref{odg:cr:sub:singular}).
 
 \subsection{Renamed symbols}
 
@@ -10412,6 +11409,22 @@ C15 & \texttt{\textbackslash A}, \texttt{\textbackslash V}, \texttt{\textbacksla
 \texttt{\textbackslash V} is a zero set)\\
 C15 & ``tangent-separating'' & separating tangent directions
 (\cref{odg:log:def:separation})\\
+C16 & $k$; $B_{k,\Gamma}$, $K=k((t^\Gamma))$, $O$, $\mathfrak m$ ($t$-convention); $v$ &
+$\Bbbk$; $\crA$, $\crH$, $\crO$, $\crm$ (exponents negated); $v$ (unchanged)\\
+C16 & $\mathcal J_\R$, $\mathcal J_\C$; $B^{\mathrm{No}}_\R$, $B^{\mathrm{No}}_\C$ &
+$\Pi$, $\Pi_{\C}$; $\BR$, $\BC$\\
+C16 & $D_\lambda$ ($t^\gamma\mapsto\lambda(\gamma)t^\gamma$); $D$ (a derivation); $D\subseteq k$
+(coefficient ring) & $\partial_{-\lambda}$ (the same family); $\partial$; $\mathfrak o$\\
+C16 & $A$, $\widetilde A$; $X$ (smooth projective model); $p$ (centre); $d$ (conductor
+element) & $\Bbbk[C]$, $\Bbbk[\widetilde C]$; $\overline C$; $Q$; $\kappa$\\
+C16 & $m$ (terms of $\alpha$); $s=\alpha(D)$; $z$, $E$ (formal variable, Taylor map) &
+$\ell$; $\alpha(\partial)$; $w$, $\mathcal T$\\
+C16 & $r$ (number of roots), $r_\infty$; $Q$, $S$ (cofactors); $d$ (support bound) & $k$,
+$n_\infty$; $P_1$, $P_{\mathrm{odd}}$; $n$\\
+C16 & $V$ (B\'ezout); $P$, $P_0$ (points); $h$, $a$ (arithmetic families) & $W$;
+$\mathbf x$, $\mathbf x_0$; $s$, $\beta$\\
+C16 & $m$ (superelliptic exponent), $d=\sum e_i$, $r$ (vanishing order), $\delta$, $\gamma$,
+$\lambda$, $E$ (elliptic curve), $F$, $U$, $\nu$ & unchanged\\
 \end{longtable}
 
 \subsection{Corrections to the sources}
@@ -10543,6 +11556,11 @@ criterion; no claim is made here that semiabelian rigidity follows from
 \item Source C15's abstract interface asks for a valuation ring $V\subseteq K$ containing
 $k$; the proof needs $V$ to be a valuation ring of $K$, so that the valuative criterion
 applies (\cref{odg:log:rem:interface}).
+\item Source C16 introduces the element $t^{-1}(1+t^2)^{1/2}$ of the Hahn field ``over a
+sufficiently divisible group''. The element lies in $\Bbbk((t^{\Z}))$, and for every
+$\Gamma\ne0$ and $0<\gamma\in\Gamma$ the element $\omega^\gamma(1+\omega^{-2\gamma})^{1/2}$ lies in
+$\crH$ and not in $\crA$; no divisibility is needed, and the statement is printed in that
+form (\cref{odg:sg:sub:boundaries}).
 \end{enumerate}
 No mathematical error was found in any main proof of the seven sources, or in
 the printed results of sources 13 and 14. In sources C10--C14 the only gap found is
@@ -10550,6 +11568,9 @@ the closed-centre step of source C12, supplied above; there is no false theorem 
 no contradiction among the five, with the collection, or with the other sources of this
 report. In source C15 no gap was found in the proofs; its remark on normality and the
 logical route stated in its abstract are corrected above, and it contradicts no other
+source. In source C16 no gap was found in the proofs; its one remark with an
+unnecessary hypothesis is noted above, its one-place proposition is consistent with the
+positive-characteristic examples of \cref{odg:cr:sub:charp}, and it contradicts no other
 source. The later proof review of
 \cref{odg:sec:transfer,odg:sec:rigidity,odg:sec:derivations} (recorded in
 \fn{RECONCILIATION.md}) corrects the coefficient-derivation hypothesis in the
@@ -10613,7 +11634,7 @@ Likewise source 09's ``\S\S4,11'' for the absence of lowest terms are now
 and the floor of \cref{odg:sec:basic}) are accurate.
 \item Source 09 describes this report as merged from manuscripts dated
 September 22, 2026. That was true at its pin, when the report had three
-sources; it now has thirteen, dated September 22 and 23. Its fraction results
+sources; it now has fourteen, dated September 22 and 23. Its fraction results
 remain pending in Lean; the basic ring package is now implemented.
 \item Source 08's bibliography gives the sibling report the title \emph{The
 Universal Set-Sized Quotient of the Omnific Integers}. That was its title at the
@@ -10640,7 +11661,7 @@ $y^2=x^3+ax+b$, the finite-support specialization (now
 C14) and \nolinkurl{47af413cd5f5d186a8c1391514d69e9933034498} at \texttt{89bec38}
 (C12), the same blob as at \texttt{f6e031a} (C11). Source C14 describes the report as a three-source
 assembly and source C11 says that its guide separates the reviewed Sections 1--7 from
-later material; both were true at their pins. The report now has thirteen sources, and
+later material; both were true at their pins. The report now has fourteen sources, and
 the reviews recorded in \fn{RECONCILIATION.md} extend further, but do not cover
 \cref{odg:cr:sec:principle,odg:cr:sec:curves,odg:cr:sec:groups}.
 \item Source C12 describes the collection as having 51 reports, true at
@@ -10657,13 +11678,27 @@ there once. Its statements that the unimodular Fermat case is already in this re
 more specific form (\cref{odg:thm:unimodularfermat}) and that the ledger separates source
 assertions, proof review and Lean coverage are accurate. Its absence-of-Lean
 statement is historical; \cref{odg:sec:formal} records the current coverage.
+\item Source C16 inspected the repository through the GitHub connector at
+\texttt{bcac55a}, without a checkout or build, and did not read the assembled article in
+full. It says that this report ``and later companion audits'' contain smooth curve
+rigidity and the smooth classification, citing the audits of sources C13 and C14. At its
+pin the classification was in those staged audits and their manuscripts, not in this
+article; since \texttt{ac54217} it is \cref{odg:cr:thm:affine}. Its statement that these
+audits leave arbitrary singular curves outside their scope is accurate, and the report
+said the same until this integration (\cref{odg:cr:sub:singular,odg:cr:q:singular}). It saw
+neither the written curve part nor source C15, so it does not cite
+\cref{odg:cr:thm:logroute,odg:cr:prop:singular} or \cref{odg:log:sub:log}; the comparisons
+are made in \cref{odg:sg:sub:singular}. Its statement that its results are not
+Lean-verified remains accurate.
 \end{enumerate}
 
 \section{Non-claims by source}\label{odg:app:nonclaims}
 
 Every limitation, disclaimer and priority caveat stated by a source is kept.
 Most also appear at their point of use in the text; this appendix is the
-per-source record.
+per-source record. The non-claims of sources C10--C15 about singular curves record
+what those sources claim; the singular-curve criterion is now supplied by source C16
+(\cref{odg:sg:sub:singular}), within its own non-claims below.
 
 \paragraph{Common to sources 01, 02 and 05.} No independent peer review; no Lean
 or other proof-assistant verification; the finite scripts check finite
@@ -11283,6 +12318,55 @@ the instantiations; its formalization plan is a proposal.
 machine verification, and supplies neither priority nor independent proof checking.
 \end{enumerate}
 
+\paragraph{Source C16 (19 items).}
+\begin{enumerate}[leftmargin=*,itemsep=1pt]
+\item Characteristic zero is required for the criterion. In positive characteristic only
+the one-place obstruction is proved; the genus-zero conclusion is not asserted, and
+Seidenberg's Hasse--Schmidt operators are relevant but not claimed to supply a
+valuation-detecting operator.
+\item Constant coefficients are required; nothing is claimed for coefficients that vary at a
+surreal scale.
+\item Geometric integrality, dimension one and finite type are required; the theorem on
+affine schemes of dimension at most one is stated over an algebraically closed field only.
+\item The criterion is an existence and classification statement: it does not claim that
+every nonconstant point lifts to the normalization, nor that every point is a polynomial
+family evaluated at a Hahn parameter.
+\item The real singular arithmetic fibers are not classified; a real normalization preimage
+is shown sufficient, not necessary, and the isolated real node is left open.
+\item No description is given of the fibers or the image of $\ct$ on exceptional curves, or
+of the support order types in them.
+\item The derivative-order bound is not claimed optimal, and no algorithm is given for
+normalizations, conductors or regular differentials of an arbitrary presentation.
+\item Ordinary integer-point existence is not decided, and no integer points are enumerated,
+for the pinched curve or otherwise.
+\item Nothing is claimed about points over the Hahn field, $\No$ or $\No[i]$; it is not a
+claim that all field-valued surreal points are constant.
+\item No higher-dimensional statement is made, and the curve argument does not subsume the
+existing higher-dimensional criteria.
+\item Full surreal statements are made only after reduction to set-sized workspaces; no
+spectrum of a proper-class ring is formed.
+\item Not refereed and not formalized in Lean; its formalization order is a proposal, and no
+stage of it is claimed done.
+\item Historical priority is not asserted: the targeted comparison is not exhaustive, and
+``complete criterion'' refers only to the stated class of curves and points, not to a
+named long-standing problem.
+\item Van den Dries (1981) was compared through its bibliographic record and abstract only;
+no comparison with its proofs is claimed.
+\item Seidenberg's identity, the smooth classification, normalization, Riemann--Roch,
+Riemann--Hurwitz, Hahn normal forms, the retraction, the units, the Euler derivations and
+the non-normality of the ring are credited, not claimed.
+\item The 113,940 finite assertions are regression checks, not counts of verified
+theorems; they do not verify infinite Hahn series, normalization of arbitrary curves,
+Riemann--Roch, Riemann--Hurwitz, the universal conclusions or novelty.
+\item A clean compilation and the checksum manifest are not substitutes for mathematical
+review or formal verification.
+\item The repository comparison was not exhaustive: the assembled article was not read in
+full, and no report, historical source, unmerged manuscript or Lean module was reviewed line
+by line.
+\item Its questions are proposed continuations, not recognized open problems of the
+literature.
+\end{enumerate}
+
 \section{Dependencies and verification}\label{odg:app:verification}\label{odg:app:dependencies}
 
 \subsection{Imported inputs}
@@ -11328,6 +12412,11 @@ perfect field and the genus of a smooth plane cubic. It also uses
 C15 imports in addition the local description of differentials with logarithmic poles
 along a normal-crossings divisor \cite[Tag 0FMU]{StacksLog}
 (\cref{odg:log:lem:valuation}); its other inputs are among those just listed.
+The material of source C16 imports in addition the finiteness of normalization for curves
+\cite{StacksNormal,StacksCurves}, Seidenberg's identity \cite{Seidenberg} (reproved in
+\cref{odg:sg:lem:seidenberg}), the free generation of local differentials by a
+uniformizer and the Riemann--Hurwitz formula \cite{StacksRH}, and Kummer theory over a
+field containing the roots of unity (\cref{odg:sg:sub:super}).
 All other deductions are proved here from these and finite algebra.
 
 The principal dependency chains are:
@@ -11369,7 +12458,9 @@ The principal dependency chains are:
  &\text{smooth affine curves}+\ct+\text{separatedness}
  \ \Longrightarrow\ \text{arithmetic fibers and descent};\\
  &\text{image condition}+\text{properness}+\text{logarithmic poles}
- \ \Longrightarrow\ \text{logarithmic tangent criterion}.
+ \ \Longrightarrow\ \text{logarithmic tangent criterion};\\
+ &\text{conductor}+\text{Seidenberg's identity}+\text{discrete boundary place}
+ \ \Longrightarrow\ \text{singular affine curves}.
 \end{align*}
 The source-05 proofs that most deserve independent review are, by its own
 account, the separated-power theorem (divisibility in a quotient ring without
@@ -11381,18 +12472,21 @@ scheme-valued two-ring argument at the level of its functorial maps, and of the 
 arithmetic fibers; the elementary chain of the squarefree theorem is independent of
 algebraic geometry, and the Weierstrass result has both proofs. Source C15's proof audit
 asks first for review of the functorial contraction and of the passage from logarithmic
-annihilation to constancy, then of the set-sized formulation of the class applications.
+annihilation to constancy, then of the set-sized formulation of the class applications. Source C16's audit lists fifteen critical checks; it singles out the commensurability of
+the conductor and the contracted differential at the boundary place as the step that would
+fail without discreteness (\cref{odg:sg:rem:discrete}).
 
 \subsection{Finite checks}
 
-Thirteen scripts are shipped in \fn{code/}, each with its recorded output in
+Fourteen scripts are shipped in \fn{code/}, each with its recorded output in
 \fn{data/}. The first three need Python~3.9 or later and SymPy (tested with
 SymPy 1.14.0); source 06's needs Python~3.10 or later and SymPy, and source
 07's Python~3.10 or later and the standard library only; source 08's needs
 Python~3.10 or later and source 09's Python~3.9 or later, both with SymPy. Of
 the scripts of sources C10--C14, source C11's needs Python~3.10 or later and the
 standard library only, source C12's Python~3.9 or later with SymPy, and the others
-Python~3.10 or later with SymPy; source C15's needs Python~3.9 or later and SymPy. They
+Python~3.10 or later with SymPy; source C15's needs Python~3.9 or later and SymPy, and
+source C16's Python~3.10 or later and SymPy. They
 check finite identities and examples only.
 
 \begin{itemize}[leftmargin=*]
@@ -11502,6 +12596,20 @@ given with \texttt{--output}; the shipped record is
 \fn{15-logarithmic-rigidity-verification.json}, and
 \fn{15-logarithmic-rigidity-build_report.json} records source C15's build of its own
 article.
+\item \fn{16-singular-curves-verify.py}: 113,940 exact assertions in 28 groups: 264 rational
+and 8 symbolic checks of Seidenberg's identity; 1,493 checks of finite-support Hahn
+arithmetic over $\Q$ (Leibniz rule, constant terms, valuations, iterated supports and
+leading-term detection); 200 lexicographic rank-two comparisons for the non-normality
+example; the superelliptic test for all 36,071 multiplicity patterns with $2\le m\le20$ and
+one to three nonzero residues (genus integrality, the equivalence of
+\cref{odg:sg:thm:super}, invariance under full $m$th powers) and 21 normalization
+identities; the elliptic B\'ezout and differential identities, the discriminant $-23$ and the
+normalization of the pinched curve; the conductor memberships $xy^j\in\Bbbk[C]$ for $j<15$;
+the node, cusp, acnode and real signed parametrizations; and 3,696 checks of the
+derivative-order bound for $1\le\ell\le8$, $0\le\delta\le20$, $0\le r\le10$. It prints its
+report and writes a file only to the path given with \texttt{--output}; the shipped record
+is \fn{16-singular-curves-verification.json}, and \fn{16-singular-curves-build_report.json}
+records source C16's build of its own article.
 \end{itemize}
 When this report was assembled the first three passed with Python 3.14.4 and
 SymPy 1.14.0, and source 05's script also passed with
@@ -11541,7 +12649,14 @@ scratch directory: seven groups and 2,820 cases. The report it wrote with
 (3.13.5 there), and without \texttt{--output} it only prints. The universal cubic identity
 and the squarefreeness of the polynomials named for source C15 in
 \cref{odg:cr:sub:squarefree} were checked separately with SymPy; the shipped script is
-unchanged.
+unchanged. Source C16's script passed with Python 3.14.4 and SymPy 1.14.0 when
+\cref{odg:sg:sub:singular} was written, run on a copy in a scratch directory: 113,940
+assertions in 28 groups, with the same group counts as the shipped record. The report it
+wrote with \texttt{--output} differs from that record only in the recorded Python version
+(3.13.5 there) and the run time; without \texttt{--output} it only prints. The
+parametrizations and identities printed in
+\cref{odg:sg:sub:super,odg:sg:sub:example,odg:sg:cor:hyper} were checked separately with
+SymPy; the shipped script is unchanged.
 
 \section{Repository and literature audit}\label{odg:app:repo}\label{odg:app:audit}
 
@@ -11578,7 +12693,11 @@ targeted inspection through the connector, without a checkout or build. Source C
 \texttt{934810a} and read, at that pin, the first 180 lines of
 \fn{docs/FORMALIZATION.md}, lines 130--280 of this report's article (blob
 \texttt{cfc25a5}), lines 1--150 and 360--540 of its README and the first 210 lines of the
-sibling report's article, through the connector and without a build. The checks of
+sibling report's article, through the connector and without a build. Source C16 pins
+\texttt{bcac55a} and read, through the connector, the repository metadata and recursive tree,
+the root and documentation READMEs, the directory and README of this report, and the audits
+of sources C13 and C14 in full; it did not read the assembled article in full and did not
+build the repository. The checks of
 all these repository statements against the placement commits are in
 \cref{odg:app:provenance}.
 
@@ -11652,6 +12771,17 @@ curve; Tag 0BYA is Section 53.9, plane curves, with the genus $(d-1)(d-2)/2$; an
 0A22 is Section 33.43, curves, with the remark on compactification. Its citations of
 Milne's \emph{Abelian Varieties} (Chapter III, Proposition 2.3; Chapter IV, Proposition
 6.4) were not rechecked.
+\item For source C16 the following were checked when \cref{odg:sg:sub:singular} was
+written. Seidenberg's \emph{Derivations and integral closure} is Pacific J.\ Math.\ 16 (1966),
+167--173 \cite{Seidenberg}. Ciuperc\u{a}'s \emph{Integral closure of strongly Golod ideals} is
+Nagoya Math.\ J.\ 241, 204--216, first published online on 18 July 2019 \cite{Ciuperca}.
+Stacks Tag 035E is Section 29.55, \emph{Normalization}, and Tag 0C1B is Section 53.12,
+\emph{Riemann--Hurwitz}, whose Lemma 53.12.3 says that the differential of a uniformizer
+freely generates the module of differentials at a closed point with separable residue
+field. Its other Stacks tags (0BXX, 0BY3, 0BX5, 0BS6, 0C6L) are cited above. Seidenberg's
+Section 3 and Ciuperc\u{a}'s Section 2.5 were not re-read; the identity is reproved in
+\cref{odg:sg:lem:seidenberg}. Source C16 cites van den Dries from its record and abstract, as
+sources C11, C14 and C15 do.
 \end{itemize}
 
 \subsection{A dated factorization announcement}
@@ -11984,5 +13114,29 @@ The Stacks Project Authors.
 \emph{\'Etale ring maps}, Lemma 10.143.4: \'etale algebras over a field,
 Tag 00U3. \url{https://stacks.math.columbia.edu/tag/00U3}.
 
+
+\bibitem{Seidenberg}
+A. Seidenberg.
+Derivations and integral closure.
+\emph{Pacific Journal of Mathematics} \textbf{16} (1966), 167--173, especially Section 3.
+\href{https://doi.org/10.2140/pjm.1966.16.167}{doi:10.2140/pjm.1966.16.167}. Cited by
+source C16.
+
+\bibitem{Ciuperca}
+C\u{a}t\u{a}lin Ciuperc\u{a}.
+Integral closure of strongly Golod ideals.
+\emph{Nagoya Mathematical Journal} \textbf{241} (2021), 204--216, especially Section 2.5.
+\href{https://doi.org/10.1017/nmj.2019.22}{doi:10.1017/nmj.2019.22}. Cited by source C16
+for the complete-integral-closure formulation of Seidenberg's argument.
+
+\bibitem{StacksNormal}
+The Stacks Project Authors.
+\emph{Normalization}, Section 29.55, Tag 035E.
+\url{https://stacks.math.columbia.edu/tag/035E}. Cited by source C16.
+
+\bibitem{StacksRH}
+The Stacks Project Authors.
+\emph{Riemann--Hurwitz}, Section 53.12, Tag 0C1B, including Lemma 53.12.3.
+\url{https://stacks.math.columbia.edu/tag/0C1B}. Cited by source C16.
 \end{thebibliography}
 \end{document}
