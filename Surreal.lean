@@ -480,3 +480,11 @@ import Surreal.Surcomplex.CosineFold
 import Surreal.Surcomplex.StrongReindex
 import Surreal.Surcomplex.CosineFoldSeries
 import Surreal.Surcomplex.CosineFoldDerivative
+import Surreal.Algebra.ComplexEulerSeries
+import Surreal.Algebra.CosineFoldPolynomial
+import Surreal.Surcomplex.InfinitesimalPhase
+import Surreal.Surcomplex.CosineFoldMultiplicity
+import Surreal.Algebra.CoupledQuadraticAlgebra
+import Surreal.Surcomplex.CoupledAngularRoots
+import Surreal.Surcomplex.CoupledAngularJacobian
+import Surreal.Surcomplex.CoupledAngularReal

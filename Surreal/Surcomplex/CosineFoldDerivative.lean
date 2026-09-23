@@ -8,7 +8,8 @@ The formal derivative evaluates to the actual fine derivative at every
 infinitesimal angle. Separated roots have nonzero derivative, while the
 zero-parameter series has native formal order two. These are analytic
 prerequisites for `trigonometry:thm:fold`. The polynomial-coordinate
-convention for angular multiplicity still requires a separate bridge.
+convention for angular multiplicity is connected to these germs in
+`CosineFoldMultiplicity.lean`.
 -/
 
 universe u
