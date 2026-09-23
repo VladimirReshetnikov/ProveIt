@@ -402,10 +402,14 @@ agree with their separate even and odd strong Taylor sums.
 An analytic germ of finite ordinary zero order lifts to its leading monomial
 times one plus an infinitesimal, with the exact predicted valuation and leading
 coefficient. For real germs that monomial also determines the sign.
+Ordinary analytic nonnegativity on a closed interval lifts to every actual
+surreal point between its endpoints, including infinitesimal endpoint
+displacements. Finiteness and the permitted one-sided signs follow from
+the interval hypotheses.
 A nonconstant infinitesimal-coset indicator has zero fine derivative everywhere.
 The approximation inequalities alone never give uniqueness: a sufficiently
 small positive monomial produces another solution. Multivariable analytic
-lifting, analytic composition, sign lifting, the trigonometric derivative and
+lifting, analytic composition, the trigonometric derivative and
 order identities, and universe coherence remain separate obligations.
 The reports placed after the canonical inventory are formalized clause by
 clause. Strong sums of nonnegative Hahn series are nonnegative, and strongly
