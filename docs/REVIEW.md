@@ -2917,6 +2917,13 @@ angular-multiplicity work `1ced5a4`. It changed no manuscript. The combined
 13,560 declarations using only `propext`, `Classical.choice` and
 `Quot.sound`.
 
+The final fetch added `cf56b89` (sine-family sharpness and finite-angle
+root classes), merged in `a094091`. It changes no manuscript or PDF.
+The combined two-thread build passes 4,326 jobs and audits 13,608
+declarations with the same three permitted axioms. All 3,797 cited labels
+and 1,421 local Markdown destinations resolve; the 3,297-row source
+inventory is unchanged.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
