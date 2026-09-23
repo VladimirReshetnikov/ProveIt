@@ -399,6 +399,9 @@ have the lifted ordinary derivative throughout their infinitesimal monads.
 An exact bivariate quadratic remainder supplies a uniform ordinary bound.
 The chain, reciprocal and quotient rules hold, and finite sine and cosine
 agree with their separate even and odd strong Taylor sums.
+An analytic germ of finite ordinary zero order lifts to its leading monomial
+times one plus an infinitesimal, with the exact predicted valuation and leading
+coefficient. For real germs that monomial also determines the sign.
 A nonconstant infinitesimal-coset indicator has zero fine derivative everywhere.
 The approximation inequalities alone never give uniqueness: a sufficiently
 small positive monomial produces another solution. Multivariable analytic
