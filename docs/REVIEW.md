@@ -1077,6 +1077,19 @@ more. These targeted corrections do not constitute review of the rest of
 Section 16. The PDF remains 51 pages after three warning-free passes, with
 the affected page inspected and all 114 label numbers preserved.
 
+Synchronization through `64e8a0e` incorporates `f8840cc`/`2cb9c02`.
+The actual inverse-sine strong series now has explicit central-binomial
+coefficients and a finite ninth-order remainder; inverse sine and inverse
+tangent preserve exact valuation at infinitesimal inputs. The endpoint
+ramification and derivative obstruction remain separate pending claims.
+No manuscript source changed in this merge, and both added Lean modules
+are included by the root import. The combined build passes 3,973 jobs and
+audits 7,098 declarations with only `propext`, `Classical.choice` and
+`Quot.sound`. All 2,543 referenced source labels resolve. The independent
+index still checks 2,298 entries in 48 sources, and all 969 local Markdown
+destinations in 108 files resolve. These integration checks add no Lean
+coverage for finite probability.
+
 ## Remaining scope
 
 The placement `7b5f934` adds two manuscripts,

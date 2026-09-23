@@ -3365,8 +3365,8 @@ workspaces, residue algebra, finite probability, conditional shadows and
 Bayesian updates, logits, softmax, finite information theory, Gibbs laws,
 smoothing, logistic separation, finite stochastic processes, infinite addition,
 normalized hierarchies, integration, coin obstructions and all-subsets
-extensions and the rare latent learning model; Sections 15 onward remain pending. The point-weight
-representation in Section 3 now explicitly assumes
+extensions and the rare latent learning model; Sections 15 onward remain
+pending. The point-weight representation in Section 3 now explicitly assumes
 the full event algebra. On a smaller finite algebra only its atom masses are
 uniquely determined. Standard-part division requires limited numerator and
 denominator with nonzero denominator residue; conditional identities on
