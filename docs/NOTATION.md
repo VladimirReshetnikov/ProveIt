@@ -470,6 +470,17 @@ group. Two constant rank-one Euler coefficients `λ, μ ∈ ℂ` are
 gauge equivalent over `K_Γ` exactly when `λ − μ ∈ Γ`. In particular,
 their imaginary parts agree and their real parts agree modulo `Γ`.
 
+The autonomous part of the differential-equations report uses `ð` for
+an arbitrary normalized derivation with `ðω = 1`, not for the rescaled
+Euler derivation. A local parameter `σ` on an ordinary complex curve
+evaluates to an infinitesimal at any point reducing to its center. Formal
+maps acting within these infinitesimal tuples have zero constant term;
+their invertible ordinary linear part gives an inverse on the same
+monad. For a simple zero, `ξ(σ) = λσ + O(σ²)`, the coefficient `λ`
+is unchanged by a change of local parameter. The normalized linearizer
+has `h_p(σ) = σ + O(σ²)`; its formal derivative is distinct from `ð`,
+with the evaluation chain rule connecting them.
+
 Distinguish the ordered real surreal exponential, the strongly summed
 infinitesimal Hahn exponential, finite-angle `cis`, and a chosen global
 surcomplex exponential or global phase. A finite angle has ordinary period

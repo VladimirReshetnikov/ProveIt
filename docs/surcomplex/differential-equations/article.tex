@@ -7496,21 +7496,47 @@ inner series have zero constant term, and satisfies
 \begin{equation}\label{diff:aut:eq:chain}
  \Dn f(\varepsilon)=\sum_{j=1}^{r}(\partial_{T_{j}}f)(\varepsilon)\,\Dn\varepsilon_{j}.
 \end{equation}
-Formal inverse maps with invertible linear part evaluate to mutually inverse
-maps on the corresponding infinitesimal tuples.
+Formal maps with zero constant term and invertible linear part have
+formal inverses, and the two maps evaluate to mutually inverse maps on
+infinitesimal tuples.
 \end{lemma}
 \begin{proof}
-Discard zero coordinates. The finite union of the supports of the
-$\varepsilon_{j}$ is a well-ordered set of positive exponents in the convention of
-\cref{diff:eq:tmonomial}, so \cref{diff:lem:neumann} makes the family
-$\varepsilon^{\nu}$, $\nu\in\N^{r}$, summable, with finitely many contributions to
-each monomial even after full expansion; ordinary complex coefficients do not
-change supports. The same finiteness proves multiplicativity and permits the
-regrouping in a zero-constant composition. Strong additivity and the Leibniz
-rule give $\Dn(\varepsilon^{\nu})=\sum_{j}\nu_{j}\varepsilon^{\nu-e_{j}}\Dn\varepsilon_{j}$;
-each derivative family is again a valid evaluation multiplied by one fixed
-element, and there are finitely many $j$. The last assertion follows by
-evaluating the two formal composition identities.
+Zero coordinates can first be set to zero in the formal series; if
+all coordinates vanish, evaluation is the constant coefficient and the
+claims are immediate. Otherwise the union $S$ of their supports is a
+well-ordered set of positive exponents in the convention of
+\cref{diff:eq:tmonomial}. For a fixed output exponent, the ordered-word
+lemma \cref{diff:lem:neumann} gives only finitely many contributing
+words in $S$. Each occurrence of a letter has at most $r$ labels,
+one for each input coordinate. Thus the fully expanded family of
+monomials $\varepsilon^\nu$ has finitely many contributions at each
+exponent and support in the well-ordered monoid $S^*$. Ordinary
+complex coefficients add no exponents. Every nonconstant monomial has
+positive exponent, proving the residue assertion.
+
+This finiteness licenses the Cauchy product and proves
+multiplicativity. For composition, let each inner series have zero
+constant term. In a fully expanded term, each inner factor then
+contributes at least one input letter. A fixed output exponent permits
+only finitely many input words, hence only finitely many partitions
+into nonempty inner factors and finitely many formal monomials at
+each resulting degree. The composed evaluation is therefore strongly
+summable before regrouping, and agrees with the formal composition.
+
+Strong additivity and Leibniz give
+\[
+ \Dn(\varepsilon^\nu)=
+ \sum_{\substack{1\leq j\leq r\\\nu_j>0}}
+       \nu_j\varepsilon^{\nu-e_j}\Dn\varepsilon_j.
+\]
+For fixed $j$, the resulting sum is the evaluation of
+$\partial_{T_j}f$ multiplied by the fixed element
+$\Dn\varepsilon_j$. There are only finitely many $j$, giving
+\cref{diff:aut:eq:chain}. Finally, formal inversion is constructed
+degree by degree: at each positive degree the unknown vector of
+coefficients is multiplied by the same invertible ordinary linear
+matrix. The two inverse identities then evaluate by the composition
+clause.
 \end{proof}
 
 For $r=1$ and $\Dn=\der$ this is \cref{diff:lem:smallchain}; the multivariable
@@ -7530,9 +7556,17 @@ $\Theta(\varepsilon,u)=0$.
 Solve by homogeneous degree: the unknown degree-$n$ term occurs with coefficient
 $a$, and all other terms of that degree are determined by lower degrees.
 Evaluation (\cref{diff:aut:lem:evaluation}) gives a solution. For
-$u,v\in\mm_{\C}$, formal subtraction and division by $W-W'$ give
-$\Theta(\varepsilon,u)-\Theta(\varepsilon,v)=(u-v)(a+\varepsilon')$ with
-$\varepsilon'\in\mm_{\C}$, and the second factor is a unit. The argument also
+$u,v\in\mm_{\C}$, use the formal divided difference
+\[
+ \Theta(X,W)-\Theta(X,W')=(W-W')Q(X,W,W'),
+ \qquad Q(0,0,0)=a.
+\]
+Indeed, each difference $W^k-(W')^k$ is divisible by $W-W'$;
+the quotient of the linear term contributes $a$, and every other
+term has positive total degree. Evaluation therefore gives
+$\Theta(\varepsilon,u)-\Theta(\varepsilon,v)
+ =(u-v)(a+\varepsilon')$ with $\varepsilon'\in\mm_{\C}$.
+The factor $a+\varepsilon'$ is a unit, so two roots must coincide. The argument also
 applies after translating the unknown to any ordinary constant value.
 \end{proof}
 
@@ -7573,7 +7607,9 @@ For $\Dn=\der$ the derivative statement is the remark after
 \cref{diff:thm:strip}: all strip logarithms of $z$ have the same intrinsic
 derivative $z^{\dagger}$. $\Log$ is used pointwise or on a specified
 leading-term class; it is not a global additive logarithm and it does not
-define a global surcomplex exponential.
+define a global surcomplex exponential. With the leading decomposition fixed,
+changing the ordinary choice of $\log a$ adds $2\pi i k$ for an ordinary
+integer $k$; it changes no derivative or growth estimate.
 
 \section{The realization classification on curves}
 \label{diff:aut:sec:curves}
@@ -7588,9 +7624,13 @@ embedding
  \qquad \Dn\iota(g)=\iota(\xi g)\quad(g\in\C(\mathcal X)),
 \end{equation}
 equivalently a nonconstant point $\mathbf y\in\mathcal X(\SC)$ with
-$\Dn\mathbf y=\xi(\mathbf y)$. A nonconstant point of a curve over the
-algebraically closed constant field is generic over it, so rational functions
-cause no evaluation ambiguity; constant points are treated separately. This
+$\Dn\mathbf y=\xi(\mathbf y)$. Here a nonconstant point means one not in $\mathcal X(\C)$.
+Its Zariski closure over $\C$ is the whole curve: a proper closed
+subset of a smooth connected curve consists of finitely many closed
+points, all ordinary because $\C$ is algebraically closed.
+Consequently no nonzero rational-function denominator vanishes there,
+and evaluation gives an embedding of $\C(\mathcal X)$.
+Constant points are treated separately. This
 curve-and-derivation formalism, with classical formal local normal forms, is
 that of Noordman, van der Put and Top \cite{NPT}, whose local discussion
 concerns a formal time parameter at zero; here the time is the fixed infinite
@@ -7604,8 +7644,11 @@ write
  \xi(\sigma)=f(\sigma)=c_{k}\sigma^{k}+c_{k+1}\sigma^{k+1}+\cdots,
  \qquad c_{k}\neq0,\quad k\in\Z .
 \end{equation}
-At a simple zero ($k=1$) the coefficient $\lambda=c_{1}$ does not depend on the
-local parameter.
+At a simple zero ($k=1$) the coefficient $\lambda=c_1$ does not
+depend on the local parameter. Indeed, another parameter has expansion
+$\widetilde\sigma=a\sigma+O(\sigma^2)$ with $a\in\C^\times$, and
+$\xi(\widetilde\sigma)=(a+O(\sigma))(\lambda\sigma+O(\sigma^2))
+=\lambda\widetilde\sigma+O(\widetilde\sigma^2)$.
 
 \begin{theorem}[Autonomous realization classification]
 \label{diff:aut:thm:main}
@@ -7659,20 +7702,42 @@ finite and their standard parts are not all zero, the $j$th being $1$; reducing
 the homogeneous equations gives a point of $\mathcal Y(\C)$. Another coordinate
 of maximal modulus differs by a finite unit, whose nonzero standard part
 rescales all reduced coordinates by one scalar, so the reduction is well
-defined, and morphisms commute with it by evaluating regular coordinate
-expressions in the finite ring. This is the usual valuative reading of
-properness \cite[Tag~0BX4]{Stacks}. At a smooth point of a curve, shrink to a
-standard smooth affine presentation with an invertible Jacobian minor and a
-coordinate $\sigma$ with nonzero differential; the completed local ring is
-$\C[[\sigma]]$, the other coordinates are formal implicit functions of $\sigma$
-with ordinary constant terms, and \cref{diff:aut:lem:evaluation} evaluates them at
-every $\varepsilon\in\mm_{\C}$, giving a point reducing to $p$. Conversely, if two
-coordinate tuples with the same $\sigma$ and the same reduction solve the affine
-equations, the linear system for their differences has as matrix the ordinary
-Jacobian minor plus an infinitesimal matrix, of determinant with nonzero
-residue, so the differences vanish; no completeness of an ambient valuation
-topology is used. A regular denominator nonvanishing at $p$ remains a unit after
-evaluation, so the point lies in the chosen chart.
+defined. A regular map near the reduction point can be written in
+affine coordinates using denominators nonzero at that ordinary point.
+Their evaluations are finite units, so taking standard parts commutes
+with these expressions. This proves compatibility with regular
+morphisms, and hence independence of the projective embedding.
+
+For the valuative interpretation, take the set-sized field $E$
+generated over $\C$ by the finitely many homogeneous coordinates and
+use its valuation ring $E\cap\Ofin_{\C}$, with residue field $\C$.
+The properness criterion \cite[Tag~0BX5]{Stacks} applies in that
+set-sized setting; no scheme with a proper-class coefficient field is
+needed for this interpretation.
+
+At a smooth point of a curve, choose an affine presentation, with
+denominators nonzero at $p$, in which the equations for the coordinates
+other than $\sigma$ have an invertible ordinary Jacobian minor.
+Translate their ordinary values to zero and write them as a tuple
+$Z$. The formal map consisting of $\sigma$ and these equations has
+invertible linear part. Its formal inverse gives the other coordinates
+as ordinary-coefficient series in $\sigma$. Evaluating at any
+$\varepsilon\in\mm_{\C}$ gives a point reducing to $p$; all defining
+identities are preserved by \cref{diff:aut:lem:evaluation}, and every
+chart denominator remains a unit.
+
+For uniqueness, suppose two tuples $Z,Z'$ have the same value of
+$\sigma$ and the same reduction. Subtract the polynomial equations,
+or first clear their unit denominators. Their difference factors as
+\[
+ 0=M(\varepsilon,Z,Z')(Z-Z'),
+ \qquad M(\varepsilon,Z,Z')=M_0+\Delta,
+\]
+where $M_0$ is the invertible ordinary Jacobian minor and every entry
+of $\Delta$ is infinitesimal. Thus
+$\st(\det M)=\det M_0\neq0$, so $M$ is invertible and $Z=Z'$.
+This proves the claimed bijection without completeness of an ambient
+valuation topology.
 \end{proof}
 
 \begin{lemma}[A nonconstant trajectory reduces to a zero]
@@ -7681,8 +7746,10 @@ If $\mathbf y$ is a nonconstant solution and $p=\st(\mathbf y)$, then $k\geq1$ i
 \cref{diff:aut:eq:localfield}.
 \end{lemma}
 \begin{proof}
-Put $u=\sigma(\mathbf y)$; since $\mathbf y$ is nonconstant $u\neq0$, and reduction
-gives $u\in\mm_{\C}$, so $\Dn u\in\mm_{\C}$ by \cref{diff:aut:lem:small}. The local
+Put $u=\sigma(\mathbf y)$. Reduction gives $u\in\mm_{\C}$.
+The parameter value $0$ corresponds to the ordinary point $p$ under
+\cref{diff:aut:lem:projective}; since $\mathbf y$ is nonconstant,
+$u\neq0$. Hence $\Dn u\in\mm_{\C}$ by \cref{diff:aut:lem:small}. The local
 expression gives $\Dn u=f(u)=c_{k}u^{k}(1+\varepsilon)$ with $\varepsilon\in\mm_{\C}$.
 For $k=0$ the right side has nonzero standard part, and for $k<0$ it is
 infinite; both contradict the infinitesimal left side.
@@ -7728,12 +7795,22 @@ solutions of $\Dn u=f(u)$ are exactly $u=h_{p}^{-1}(c\,e^{\lambda\omega})$ with
 $c\in\C^{\times}$ when $\lambda\in\R_{<0}$, and there are none otherwise.
 \end{proposition}
 \begin{proof}
-$\lambda/f(\sigma)-1/\sigma$ lies in $\C[[\sigma]]$; integrate it with zero
-constant term and put
-$h_{p}(\sigma)=\sigma\exp\bigl(\int_{0}^{\sigma}(\lambda/f(s)-1/s)\,ds\bigr)$, a
-formal exponential of a zero-constant series. Logarithmic differentiation proves
-the identity, and conversely the identity determines $h_{p}/\sigma$ from its
-logarithmic derivative and constant term $1$. Its formal inverse exists. For a
+Write $f(\sigma)=\lambda\sigma(1+\sigma q(\sigma))$. Then
+$\lambda/f(\sigma)-1/\sigma$ is in $\C[[\sigma]]$, because
+$(1+\sigma q)^{-1}-1$ is divisible by $\sigma$. Let $H(\sigma)$
+be its formal primitive with constant term zero and put
+\[
+ h_p(\sigma)=\sigma\exp H(\sigma),\qquad
+ H(\sigma)=\int_0^\sigma\bigl(\lambda/f(s)-1/s\bigr)\,ds .
+\]
+The integral divides the coefficient of $s^j$ by the nonzero integer
+$j+1$, and the exponential is a formal series in the zero-constant
+$H$. Thus $h_p=\sigma+O(\sigma^2)$. Its logarithmic derivative is
+$\lambda/f$, proving the required identity. Conversely, if
+$h_p=\sigma U$ with $U(0)=1$, the identity forces
+$U'/U=\lambda/f-1/\sigma=H'$. The derivative of $U\exp(-H)$
+vanishes, so this series equals its constant term $1$. This proves
+uniqueness; the linear coefficient $1$ gives the formal inverse. For a
 nonzero infinitesimal solution the chain rule gives $\Dn h_{p}(u)=\lambda h_{p}(u)$
 with $h_{p}(u)\sim u\neq0$, and \cref{diff:aut:lem:eigen} gives necessity and the
 form. Conversely each displayed input is infinitesimal when $\lambda<0$, all
@@ -7741,7 +7818,18 @@ evaluations exist, and differentiating the inverse identity gives $\Dn u=f(u)$;
 $c$ is unique by injectivity of the inverse formal map.
 \end{proof}
 
-The formal linearization is classical \cite[Lemma~6.1]{NPT}. The exclusion of
+For the quadratic local field $f(\sigma)=\lambda\sigma+a\sigma^2$,
+the normalized maps are explicitly
+\[
+ h_p(\sigma)=\frac{\sigma}{1+(a/\lambda)\sigma},
+ \qquad h_p^{-1}(v)=\frac{v}{1-(a/\lambda)v}.
+\]
+Their denominators are units on infinitesimal inputs, and
+$h'_pf=\lambda h_p$ follows directly. This includes the local
+linearization used in the logistic example
+(\cref{diff:aut:ex:logistic}).
+
+The formal linearization is classical \cite[Lemma~6.1(i), arXiv v1]{NPT}. The exclusion of
 every nonreal $\lambda$, including those with negative real part, is the
 specifically surcomplex restriction: a classical spiralling decay at
 $\lambda=-1+i$ does not become a nonzero element of $\SC$ satisfying that
@@ -11901,8 +11989,9 @@ logarithm argument of \cref{diff:aut:lem:formallog} is proved in full.
 
 \bibitem{Stacks}
 The Stacks Project Authors,
-\emph{The Stacks Project}, Section 29.43, Valuative criteria.
-\url{https://stacks.math.columbia.edu/tag/0BX4}.
+\emph{The Stacks Project}, Section 29.43, Valuative criteria,
+especially Lemma 29.43.1 (Tag~0BX5).
+\url{https://stacks.math.columbia.edu/tag/0BX5}.
 The valuative reading of the projective reduction of
 \cref{diff:aut:lem:projective}, which is proved there by elementary means.
 

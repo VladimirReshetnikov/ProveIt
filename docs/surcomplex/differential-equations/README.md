@@ -3,13 +3,13 @@
 **The finite-primitive criterion, the phase obstruction, and support-certified
 coordinate systems**
 
-A merged research report, 168 pages, built from ten manuscripts. Everything in
+A merged research report, 169 pages, built from ten manuscripts. Everything in
 this directory other than `article.tex`, `article.pdf` and this README is
 preserved source material.
 
 ```
 article.tex                        the merged report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled 168-page report
+article.pdf                        the compiled 169-page report
 README.md                          this guide
 11-autonomous-dynamics-sources.md  member 11's literature and repository-review log, unmodified
 code/                              the verification programs and build scripts of the ten
@@ -30,9 +30,13 @@ The revisions expand the proof steps, distinguish the derivative frames
 and field extensions, illustrate the normalizations, and prove the forced
 degree bound sharp. The finite procedure now states its effective
 coefficient requirements; complex algebraic coefficients suffice.
-Autonomous proofs, remaining imports and source reconciliation are still
-pending; scope and validation are recorded in the collection's
-[review record](../../REVIEW.md).
+The autonomous review now covers normalized derivations, formal evaluation,
+projective reduction and simple zeros (Section 29 and Sections 30.1–30.3).
+It expands the support and local uniqueness arguments, makes the
+properness comparison set-sized, and gives an explicit quadratic
+linearizer. Multiple zeros, later autonomous proofs, remaining imports
+and source reconciliation are still pending; scope and validation are
+recorded in the collection's [review record](../../REVIEW.md).
 
 ## What the report is
 
@@ -756,6 +760,20 @@ remain byte-identical. The full Lean build passed 3,872 jobs and the
 5,880-declaration axiom audit. The main-text review now covers all of
 Part V; the autonomous part and remaining imports and source reconciliation
 are still pending.
+
+The first autonomous pass reviewed Section 29 and Sections 30.1–30.3,
+through simple zeros, and rebuilt the report in three passes at 169 pages
+without warnings or box issues. The formal-evaluation, divided-difference,
+projective-reduction and linearization pages were inspected. Member 11's
+unchanged verifier passed its ten default-degree checks on a temporary
+copy with Python 3.13.14 and SymPy 1.14.0; its output matches the delivered
+record apart from the Python version. Separate exact calculations checked
+the quadratic linearizer, its inverse and the local divided-difference
+example. All 48 historical files remain byte-identical. The full Lean
+build passed 3,872 jobs and the 5,880-declaration axiom audit. The primary
+comparison checked NPT arXiv v1 Lemma 6.1(i) and Stacks Tag 0BX5;
+the multiple-zero classification and later autonomous arguments remain
+for review.
 
 ## Re-running the source verifiers
 
