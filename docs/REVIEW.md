@@ -2857,6 +2857,73 @@ Diophantine source and its 119-page PDF are unchanged in this synchronization.
 13,506 declarations using only `propext`, `Classical.choice` and
 `Quot.sound`. The full review and formalization goals remain incomplete.
 
+## Coefficient reconstruction and logic: the added Section 13
+
+Compared Section 13 with source 06's multiplier, real reconstruction,
+automorphism, Gaussian obstruction and logical sections, and with source
+07's transfer and omitted-type arguments, using the recovered source versions
+identified in the Section 11 record. The review now covers the newly added
+Sections 11–13, alongside the previously reviewed original Sections 1–10,
+14 and 16. Additions in Sections 6 and 10, Sections 15 and 17–18, the new
+companions and remaining foundational/source reconciliation still need review.
+
+The fraction presentation supplies operations, nonzero denominators and
+witness domains. The multiplier proof identifies the single translated
+coefficient that cannot cancel. Coefficient reconstruction uses units of
+the multiplier ring, with zero treated separately, and the corollary now
+repeats its standing nontrivial-group hypothesis and includes a proof.
+Any parameter-free ideal predicate supports the same reconstruction; in
+particular the number-field integer-radicand predicate from Section 12 does
+so even when two is a square in the coefficient subring's fraction field.
+The standard-part proof uses the largest remaining negative exponent, and
+the value-group proof verifies equivalence, ordering and the sign convention
+`v = −leading exponent` without adding a definable monomial section.
+
+The automorphism explanations distinguish exponent substitution from
+squaring, use finite coefficient convolution without analytic continuity,
+and make the composition-preserving coefficient section explicit. The
+phase twist fixes every named complex constant; its restriction to the
+Gaussian ring fixes all allowable Gaussian parameters. Proper-class
+quotients and sentence-by-sentence translations remain distinct from a
+global satisfaction predicate.
+
+The c.e.-set proof guards free tuples and transfers its auxiliary witnesses.
+Combining it with the order-free integer guard extends the finite-system
+classification to every characteristic-zero coefficient field, without
+ordering or a square root of two. The same guard proves non-elementarity
+when that root is absent. The collapse obstruction specifies strict
+positivity, and the singleton `x = h` explains why its coefficient-parameter
+restriction matters. The quantifier-free lower bound includes negated
+equalities and uses the coefficient predicate to exclude quantifier
+elimination without an extra root assumption. Canonical polynomial syntax
+makes the omitted type decidable; a sum-of-degrees bound gives an ordinary
+integer satisfying each finite part.
+
+All 143 standard statements, 310 labels and their numbers are retained.
+Only two standard statement texts change: the explicit standing hypothesis
+and strict-positivity wording above. Section 14 onward is byte-identical.
+The article builds in three passes to 121 pages and the catalogue to 29,
+without warnings or box diagnostics. The reviewed pages, contents, status
+and transitions, and the changed catalogue page, were visually checked.
+The independent inventory audit passes 3,297 standard rows across 57 texts;
+all 3,797 cited labels and 1,419 local Markdown destinations resolve.
+The finite suites are unchanged and were not rerun; they would not verify
+the logical extensions. These source-level arguments remain **Pending**
+in Lean; real closedness, MRDP and historical priority are separate imports.
+
+The initial synchronization fast-forwarded to `0865f04`, including the
+angular-multiplicity work `1ced5a4`. It changed no manuscript. The combined
+`LEAN_NUM_THREADS=2 lake build` passes 4,324 jobs, and the audit accepts
+13,560 declarations using only `propext`, `Classical.choice` and
+`Quot.sound`.
+
+The final fetch added `cf56b89` (sine-family sharpness and finite-angle
+root classes), merged in `a094091`. It changes no manuscript or PDF.
+The combined two-thread build passes 4,326 jobs and audits 13,608
+declarations with the same three permitted axioms. All 3,797 cited labels
+and 1,421 local Markdown destinations resolve; the 3,297-row source
+inventory is unchanged.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
