@@ -206,6 +206,9 @@ factorization of every finite-target homomorphism through the constant term.
 The [constant rigidity package](../../../Surreal/Foundations/OmnificConstantRigidity.lean)
 proves `odg:prop:canonicalct`, its noninjective-endomorphism example,
 and non-residual-finiteness using an explicit nonzero monomial.
+The [p-adic completion](../../../Surreal/Foundations/OmnificPadicCompletion.lean)
+is ring-isomorphic to `ℤ_p`; its canonical map is integer constant
+extraction followed by the ordinary embedding and has kernel `Π`.
 Other results remain **Pending** unless individually mapped in the ledger.
 
 ## Thirteen sources, one report

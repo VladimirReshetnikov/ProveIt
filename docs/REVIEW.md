@@ -3470,6 +3470,24 @@ references and 1,542 local Markdown destinations resolve. No LaTeX or
 PDF changed in this synchronization; the clean 178/32-page artifacts
 remain current.
 
+## Combined validation with the ordinary p-adic completion
+
+The next sync through `6a30999` proves the p-adic clause of
+`odg:eq:profinite` using Mathlib's actual ideal-adic completion and
+p-adic integers. The transition maps, both inverse ring maps, the
+constant-term formula for the canonical map and its purely infinite
+kernel are explicit. The source equation agrees with that scope; the
+profinite completion and congruence-topology assertions remain pending.
+The report guide and incoming root README distinguish those obligations.
+
+The final `LEAN_NUM_THREADS=2 lake build` passes 4,413 jobs and audits
+14,859 declarations with only `propext`, `Classical.choice` and
+`Quot.sound`. The independent 3,650-result inventory, all 4,189 source
+references and 1,544 local Markdown destinations pass. LaTeX and PDFs
+are unchanged by this sync, so the 178/32-page build and visual checks
+remain applicable. Section 17 and subsequent manuscript work remain
+outside the completed review.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
