@@ -2370,6 +2370,17 @@ above remain applicable. This incoming merge changes only documentation,
 so the successful 4,280-job Lean build and 12,934-declaration axiom audit
 remain applicable. `git diff --check` passes.
 
+A second publish retry merged `9a385d3`, including the coupled local-algebra
+proofs in `04c93de` and an independent refresh of the same Diophantine index.
+The conflict resolution retains the expanded article's reviewed labels and
+placement boundaries while preserving all incoming Lean mappings. No
+manuscript or PDF changed in this second merge. The combined
+`LEAN_NUM_THREADS=2 lake build` passes all 4,285 jobs; the audit passes
+13,003 declarations using only the three permitted axioms. Source-label and
+inventory checks still pass, and all 1,301 local Markdown destinations
+resolve. The angular transport of algebraic multiplicities remains pending
+in the incoming coverage mapping.
+
 ## Remaining scope
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

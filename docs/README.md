@@ -16,7 +16,7 @@ hypotheses, limitations and provenance.
 
 ## Newest reports
 
-Eleven omnific-integer manuscripts placed in `be06fc8` are assigned to
+The omnific-integer manuscripts placed in `be06fc8` are assigned to
 [omnific Diophantine geometry](surreal/omnific-diophantine-geometry/) and
 [set-sized quotients](surreal/set-sized-quotients-of-omnific-integers/).
 The Diophantine article now assembles sources 01, 02 and 05 (`bbdd536`),

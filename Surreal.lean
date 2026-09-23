@@ -488,3 +488,7 @@ import Surreal.Algebra.CoupledQuadraticAlgebra
 import Surreal.Surcomplex.CoupledAngularRoots
 import Surreal.Surcomplex.CoupledAngularJacobian
 import Surreal.Surcomplex.CoupledAngularReal
+import Surreal.Algebra.QuadraticSplit
+import Surreal.Algebra.CoupledQuadraticSplit
+import Surreal.Algebra.CoupledQuadraticLocal
+import Surreal.Surcomplex.CoupledAngularLocalAlgebra
