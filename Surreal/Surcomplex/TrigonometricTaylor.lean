@@ -1,4 +1,5 @@
 import Surreal.Surcomplex.FiniteTrigonometry
+import Surreal.Algebra.TrigonometricTaylor
 import Surreal.Foundations.SignSequenceStrongRegroup
 import Mathlib.RingTheory.PowerSeries.WellKnown
 
@@ -178,6 +179,51 @@ theorem finiteSin_eq_taylor (θ : SignSequence.FiniteElement.{u}) :
   rw [finiteSin, finitePhase_eq_exp_mul_infExp, mul_im, ofComplex_re, ofComplex_im,
     Complex.exp_ofReal_mul_I_re, Complex.exp_ofReal_mul_I_im,
     infExp_ofReal_mul_I_re, infExp_ofReal_mul_I_im, add_comm]
+
+
+/-- The separate cosine strong sum is the evaluated ordinary Taylor series at zero. -/
+theorem powerSeriesEvaluation_taylor_cos_zero (ε : SignSequence.{u})
+    (hε : SignSequence.IsInfinitesimal ε) :
+    SignSequence.powerSeriesEvaluation ε hε (Analytic.taylorSeries Real.cos 0) =
+      cosTaylorSum ε hε := by
+  have hf := SignSequence.stronglySummable_coeff_mul_powers ε hε
+    (fun n => (Analytic.taylorSeries Real.cos 0).coeff n)
+  have hz : ∀ n, n ∉ Set.range (fun k : ℕ => 2 * k) →
+      SignSequence.ofReal ((Analytic.taylorSeries Real.cos 0).coeff n) * ε ^ n = 0 := by
+    intro n hn
+    obtain ⟨k, hk | hk⟩ := Nat.even_or_odd' n
+    · exact (hn ⟨k, hk.symm⟩).elim
+    · rw [hk]
+      simp only [Analytic.coeff_taylorSeries, Real.iteratedDeriv_odd_cos, Pi.mul_apply,
+        Pi.pow_apply, Pi.neg_apply, Pi.one_apply, Real.sin_zero, mul_zero, zero_div,
+        map_zero, zero_mul]
+  have hs := strongSum_comp_injective hf (fun n => 2 * n)
+    (by intro a b h; dsimp at h; omega) hz
+  rw [SignSequence.powerSeriesEvaluation_eq_strongSum]
+  simpa only [cosTaylorSum, Analytic.coeff_taylorSeries, Real.iteratedDeriv_even_cos,
+    Pi.mul_apply, Pi.pow_apply, Pi.neg_apply, Pi.one_apply, Real.cos_zero, mul_one] using hs.symm
+
+/-- The separate sine strong sum is the evaluated ordinary Taylor series at zero. -/
+theorem powerSeriesEvaluation_taylor_sin_zero (ε : SignSequence.{u})
+    (hε : SignSequence.IsInfinitesimal ε) :
+    SignSequence.powerSeriesEvaluation ε hε (Analytic.taylorSeries Real.sin 0) =
+      sinTaylorSum ε hε := by
+  have hf := SignSequence.stronglySummable_coeff_mul_powers ε hε
+    (fun n => (Analytic.taylorSeries Real.sin 0).coeff n)
+  have hz : ∀ n, n ∉ Set.range (fun k : ℕ => 2 * k + 1) →
+      SignSequence.ofReal ((Analytic.taylorSeries Real.sin 0).coeff n) * ε ^ n = 0 := by
+    intro n hn
+    obtain ⟨k, hk | hk⟩ := Nat.even_or_odd' n
+    · rw [hk]
+      simp only [Analytic.coeff_taylorSeries, Real.iteratedDeriv_even_sin, Pi.mul_apply,
+        Pi.pow_apply, Pi.neg_apply, Pi.one_apply, Real.sin_zero, mul_zero, zero_div,
+        map_zero, zero_mul]
+    · exact (hn ⟨k, hk.symm⟩).elim
+  have hs := strongSum_comp_injective hf (fun n => 2 * n + 1)
+    (by intro a b h; dsimp at h; omega) hz
+  rw [SignSequence.powerSeriesEvaluation_eq_strongSum]
+  simpa only [sinTaylorSum, Analytic.coeff_taylorSeries, Real.iteratedDeriv_odd_sin,
+    Pi.mul_apply, Pi.pow_apply, Pi.neg_apply, Pi.one_apply, Real.cos_zero, mul_one] using hs.symm
 
 end
 

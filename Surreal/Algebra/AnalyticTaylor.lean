@@ -83,6 +83,13 @@ theorem taylorSeries_mul {f g : K → K} {c : K}
   linear_combination iteratedDeriv i f c * iteratedDeriv (n - i) g c * hc
 
 omit [CompleteSpace K] [CharZero K] in
+/-- Negation of ordinary functions negates every Taylor coefficient. -/
+theorem taylorSeries_neg (f : K → K) (c : K) :
+    taylorSeries (-f) c = -taylorSeries f c := by
+  ext n
+  simp only [coeff_taylorSeries, map_neg, iteratedDeriv_neg, neg_div]
+
+omit [CompleteSpace K] [CharZero K] in
 @[simp] theorem taylorSeries_const (r c : K) :
     taylorSeries (fun _ => r) c = PowerSeries.C r := by
   ext n
