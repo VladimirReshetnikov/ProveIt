@@ -1,8 +1,9 @@
 # Reconciliation of the three Diophantine manuscripts
 
-This record covers the elementary algebra in Sections 1–4 of the maintained
-[article](article.tex). It does **not** certify integration of every result
-in the three manuscripts or review of the base text's later proofs.
+This record covers the elementary source comparison in Sections 1–4 of the
+maintained [article](article.tex), followed by a proof review of Sections 5–7.
+It does **not** certify integration of every result in the three manuscripts
+or review of all later proofs and imported classical results.
 
 ## Recoverable sources
 
@@ -82,9 +83,33 @@ nilpotent test. It also corrects the incoming phrase “ring of nonpositive
 valuation”: `ω + ω⁻¹` has negative valuation but violates the required
 support restriction. Every supported exponent must satisfy that restriction.
 
-Sections 5 onward of the expanded text now include companion-source results
-beyond the previously reviewed base. Their independent proof review and
-claim-by-claim source reconciliation remain pending; the assembly's own
+The subsequent review reads the expanded Sections 5–7: retraction and
+positive-existential transfer, Smith systems, constant products, decomposable
+fibers, binary/Pell/conic and norm rigidity, local Euler derivations,
+separated powers and unimodular Fermat. It compares the Euler, separated-power
+and Fermat arguments with source 05's corresponding sections. The other
+Sections 5–6 source correspondences have not yet had an exhaustive
+claim-by-claim reconciliation.
+
+The review corrects the merge's direct divisibility identity
+`odg:rem:separatedidentity`: differentiating `a x^m + b y^n` without killing
+`a,b` gives additional terms. The local Euler derivations kill all scalar
+coefficients, including the level `c`, as required. It also extends
+`odg:prop:univariate` and `odg:thm:separated` from real coefficients and `B_R`
+to complex coefficients and `B_C`; the real and omnific conclusions remain
+special cases. These extensions are explicitly distinguished from the
+archived statements. No new standard environment is added.
+
+Further explanations cover the full zero-row condition in Smith form, real
+versus complex kernels, the Pell descent's zero case, norm polynomials
+without an embedding of the number field into `No`, the sign of the Euler
+rule under `t = ω⁻¹`, and the kernel of a fixed Euler functional. The Fermat
+proof now spells out why ratios can lie in the Hahn field while Bézout
+witnesses and nonzero divisibility quotients must lie in its
+nonnegative-support subring. Its ordinary-coordinate conclusion explicitly
+retains the hypothesis that all three coordinates are nonzero.
+
+Sections 8 onward still await independent proof review; the assembly's own
 section map and corrections in Appendix A are inputs to that review.
 Imported foundations, classical results and historical priority are separate
 obligations. No broad preservation of the old statement wording or numbering

@@ -7,7 +7,7 @@ Merged research report, from three manuscripts written independently on
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 55 pages
+article.pdf                        the compiled report, 56 pages
 README.md                          this guide
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
 05-diophantine-rigidity-BUILD.md   source 05's build and check instructions, as delivered
@@ -29,8 +29,9 @@ in the ledger before the three-source assembly in `bbdd536`; the parallel
 elementary review also added four results. This merge retains that review's
 support and size clarifications, and preserves nine renamed or combined
 labels as aliases (159 labels in total). See
-[RECONCILIATION.md](RECONCILIATION.md) for the elementary claim correspondence
-and review boundary. The [ledger](../../FORMALIZATION.md) indexes the current
+[RECONCILIATION.md](RECONCILIATION.md) for the elementary claim correspondence,
+the subsequent Sections 5–7 proof review, and the remaining source-reconciliation
+boundary. The [ledger](../../FORMALIZATION.md) indexes the current
 67 standard results; it does not claim Lean coverage for this report.
 
 Two further manuscripts, locally numbered 06 and 07 and placed in `cf350b1`,
@@ -123,13 +124,13 @@ Numbers refer to the built `article.pdf`.
    (Theorem 6.3); Pell rigidity for every `D ≠ 0` (Corollary 6.5), the full
    class for `x² − 2y² = 1` (Example 6.6), central conics (Corollary 6.8), norm
    forms for any `Q`-basis (Theorem 6.10).
-6. **Separated powers and Fermat (Section 7).** For real `a, b, c ≠ 0` and
-   `m, n ≥ 2`, every `B_R`-solution of `ax^m + by^n = c` is constant (Theorem
-   7.4), so `y² = x³ + k` (`k ≠ 0`) and `x^m − y^n = c ≠ 0` have only ordinary
-   omnific solutions (Corollary 7.6). For `n ≥ 3` a nonzero Fermat triple in
-   `B_C` generating the unit ideal is constant (Theorem 7.9); with Wiles and
-   Taylor–Wiles there is no nonzero unimodular omnific Fermat triple (Corollary
-   7.10). The threshold is sharp at `n = 2`.
+6. **Separated powers and Fermat (Section 7).** For complex `a, b, c ≠ 0` and
+   `m, n ≥ 2`, every `B_C`-solution of `ax^m + by^n = c` is constant (Theorem
+   7.4; extending source 05’s real case), so `y² = x³ + k` (`k ≠ 0`) and
+   `x^m − y^n = c ≠ 0` have only ordinary omnific solutions (Corollary 7.6).
+   For `n ≥ 3` a Fermat triple in `B_C`, with all three coordinates nonzero
+   and generating the unit ideal, is constant (Theorem 7.9); with Wiles and
+   Taylor–Wiles there is no such unimodular omnific triple (Corollary 7.10). The threshold is sharp at `n = 2`.
 7. **Quadratic levels (Section 8).** For integral `q` and `c ≠ 0`: ordinary
    points only in the nondegenerate definite case and in dimension at most
    two; injective linear families for degenerate `q`; injective quadratic
@@ -183,7 +184,13 @@ the literature.
   for the observation that nonzero Fermat solutions exist in `Oz`. The site
   could not be reached; the attribution is printed as source 02's and marked
   unverified (after Example 11.3).
-- No mathematical error was found in any main proof.
+- The assembly reported no mathematical error in its main proofs. The later
+  Sections 5–7 review corrected the added divisibility identity: it requires
+  the derivation to kill `a` and `b`, and its use at level `c` also requires
+  `∂c = 0`. The Euler derivations satisfy these hypotheses. The review also
+  extends one-variable and separated-power rigidity to complex coefficients,
+  explains the support-ring witnesses in Fermat rigidity, and distinguishes
+  these local Euler derivations from the normalized surreal derivation.
 
 **Stale repository statements.** Source 01 said the repository's
 trigonometry material used the omnific integer part; at the pin the

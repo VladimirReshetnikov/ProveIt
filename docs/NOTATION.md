@@ -700,6 +700,15 @@ distinction to explain nonconstant zero-derivative functions. The
 (`phys:tab:derivatives`) states explicitly which operation is used for its
 fields on ordinary spacetime.
 
+The [omnific Diophantine report](surreal/omnific-diophantine-geometry/article.tex)
+(`odg:eq:euler`) instead uses freely chosen local Euler derivations
+`∂_λ(ω^h) = λ(h)ω^h`, where `λ : H → ℝ` is rational linear and `H` is a
+set-sized divisible exponent group. They kill the scalar coefficient field.
+In the `t = ω⁻¹` convention this becomes `∂_λ(t^γ) = −λ(γ)t^γ`.
+One fixed `λ` can kill nonconstant monomials; detecting a given nonconstant
+requires choosing a suitable functional. This construction does not specify
+a derivation of the full surreal field.
+
 In the regular-singular part of the differential-equations report,
 `t = ω⁻¹` and `τ = log t = −log ω` denote actual surreal numbers.
 The Euler derivation `∂_τ = −ω∂` satisfies `∂_τ(t^γ) = γt^γ`
