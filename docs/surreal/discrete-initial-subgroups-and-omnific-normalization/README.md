@@ -1,7 +1,7 @@
 # Discrete Initial Groups and Omnific Normalization
 
-**Sign-tree surgery, a sharp image classification, and an Ehrlich–Kaplan question**  
-AI-assisted research draft prepared for the Surreal project  
+**Sign-tree surgery, a sharp image classification, and an Ehrlich–Kaplan question**\
+AI-assisted research draft prepared for the Surreal project\
 23 September 2026
 
 ## Status
