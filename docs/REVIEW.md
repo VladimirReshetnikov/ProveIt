@@ -2598,21 +2598,172 @@ to the current Section 11 review boundary. The combined
 label audit resolves 3,127 references, and all 1,318 local Markdown
 destinations resolve; the 51-report inventory and `git diff --check` pass.
 
-## Remaining scope
+## Omnific root obstructions and residue domains
+
+The Section 12 review compares source 02's quadratic criterion, sources
+01–02's initial-form calculation, and source 05's two-term root obstruction
+and failed-lifting example. The quadratic argument explicitly includes the
+repeated-root case and exhaustiveness. For a nonmonic quadratic it gives the
+additional condition `y − b ∈ 2a Oz`; the example `6x² + x − 1`, with square
+discriminant `25` but roots `1/3` and `−1/2`, shows why that condition matters.
+The initial-form discussion explains the candidate maximum before
+cancellation, includes a real-sign obstruction even when two terms have
+maximal weight, and handles substitution that makes the polynomial zero.
+
+The two-term root obstruction now has a shorter proof using finite algebra.
+For a proposed positive root `x` and the positive monomial root `u`,
+`xⁿ − uⁿ = b ≠ 0` factors as `(x − u) S`. Both factors have nonnegative
+support, so the constant-product lemma forces `S` to be real; positivity
+gives `S ≥ uⁿ⁻¹`, an infinite lower bound. Source 05's binomial expansion is
+retained to display the forbidden negative exponent. Its reverse-well-ordered
+support and finite convolution fibers are now justified for every positive
+surreal exponent, without cofinality or a topological limit.
+
+The failed-lifting example `X² − X − ω` has two simple residue roots, and
+its nonsquare discriminant proves absence of an omnific lift using the
+finite-algebra obstruction. The notation guide and article distinguish this
+constant-term map from the finite-surreal valuation ring's standard-part
+map. The polynomial has an infinite coefficient, so it is outside the
+hypotheses of the simple-root lifting theorem for that valuation ring.
+
+All 67 standard statements, 159 labels and label numbers are preserved;
+main Sections 13–14 are byte-identical. Article and catalogue have clean
+three-pass builds of 60 and 28 pages; all 21 changed article pages and four
+changed catalogue pages were visually inspected. Source-02 and source-05 SymPy 1.14.0
+checks pass, with only source 02's recorded Python version differing from
+delivery. Separate finite symbolic checks verify the new discriminant and
+factorization examples and the displayed square-root coefficients. Those
+checks do not replace the general source proofs. The 51-report inventory
+resolves all 2,636 results, and all 3,127 cited source labels and 1,318 local
+Markdown destinations resolve. No Lean source or coverage is added; later
+sections, imported foundations, source reconciliation and unintegrated
+companions remain pending.
+
+
+## Synchronization of the omnific reviews and expanded collection
+
+The root-obstruction review in `3dd4e2c` is preserved through the assembly
+merge `ed7202a` and synchronization with `9693b28`. The Diophantine article
+now has 104 standard statements and 228 labels; all statement texts and
+labels from the incoming five-source assembly survive. The local root
+proof changes survive in Section 15, alongside the incoming pointer to the
+sibling report's fresh-scale image-gap theorem. The earlier specialization
+review is now Section 14. These numbers replace the historical numbering in
+the preceding review records.
+
+The reviewed scope is the **original material in Sections 1–10 and current
+Sections 14–15**. New material in Sections 6 and 10, Sections 11–13 and
+16–17, and remaining imported results and source reconciliation still need
+review. In particular, integration does not certify the newly added
+Diophantine definitions or reconstruction arguments.
+
+The reader map, catalogue and ledger now cover 56 main texts and 3,089
+standard statements. The quotient assembly, entire-function rectification,
+omnific-preserving automorphisms and omnific groups/lattices are recorded
+in their current written forms. The three new bases placed in `a4dcb91`
+are indexed separately from their four unintegrated companions. Two further
+Diophantine fraction manuscripts and three quotient companions also await
+integration. The new base READMEs now describe the actual maintained paths,
+missing PDFs and scratch-directory verification commands, instead of
+claiming that the original delivery layout is still present.
+
+Validation: the merged Diophantine PDF builds in three passes to 88 pages,
+and the catalogue to 28, with no warnings or box diagnostics. Rendered
+specialization/root pages, section transitions and provenance tables were
+inspected, as were all catalogue pages. All 56 catalogue destinations exist.
+An independent parser checks the 3,089 ledger rows against their source
+statements, labels, headings and line anchors. The source-reference audit
+finds no missing labels among 3,582 cited labels; local Markdown links also
+pass. All earlier standard statements and labels in the expanded
+entire-functions report are retained unchanged. The incoming computer-algebra
+correction identifies its `Π ⊕ Z` floor as the omnific floor, consistently
+with the shared notation guide.
+
+The corrected commands rerun the three new base finite suites successfully:
+41 holonomic-notation groups, 16 Hilbert symbolic checks (including 125
+exponent triples), and the HOD suite's finite codes, floor and support-coset
+examples. They establish finite regression evidence, not the reports'
+transfinite or definability claims. Delivered data files are unchanged.
+
+At synchronization with `9693b28`, the incoming Laurent Cayley implementation
+had chart-level coverage; its build passed 4,303 jobs and audited 13,351
+declarations. The final fetch brought `934810a`, completing transport to
+angular coordinates and identifying the Fourier derivative with the native
+fine derivative. Its exact mapping for `trigonometry:thm:stability` is
+retained. The combined `LEAN_NUM_THREADS=2 lake build` passes 4,307 jobs and
+audits 13,389 declarations, using only `propext`, `Classical.choice` and
+`Quot.sound`. All 3,089 statement-index rows, 3,582 cited labels and 1,383
+local Markdown destinations pass after that merge. The article and catalogue
+PDFs are unchanged by this Lean-only follow-up. This documentation review
+adds no Lean coverage of omnific integers.
+
+## Elementary omnific definability: the added Section 11
+
+Reviewed the newly assembled Section 11 against sources 06 and 07 recovered
+from `de0acc6`. Its degree algebra, quadratic ideal predicate, Pell rigidity
+and divisibility, intersective polynomial, order-free integer definition,
+real quintic comparison and natural-number clause are now covered by this
+main-text pass. This does not extend the review to Sections 12–13 or to the
+inserted material in Sections 6 and 10.
+
+The proof now identifies the unique leading product and explains why a
+nonconstant polynomial evaluation has positive degree over an unordered
+coefficient field. An intermediate ring need not admit a constant-term
+retraction onto its constant subring: `Z[ω + 1/2]` demonstrates the distinction.
+The quadratic ideal predicate needs its witness inside the ring;
+`Z[ω]` and `Z[√2] + Π` explain, respectively, the witness-closure and
+nonsquare hypotheses. The homomorphism argument needs only preservation
+of the integer numeral, not of the chosen root or coefficient field.
+
+The Pell recurrence proof supplies an integral inverse matrix and removes
+any possible preperiod via a finite pigeonhole argument, including modulus
+one. The alternative quotient-ring proof explains its cardinality. The
+principal-ideal argument uses algebraicity without assuming integrality.
+The intersectivity proof makes CRT assembly explicit and distinguishes
+existence of roots at each power of two from lifting a prescribed residue.
+The order-free system's witnesses are typed correctly: four are ordinary
+integers, while the fifth can be Gaussian. Its proof uses coefficient
+intersection, not a retraction. The notation guide corrects the quotient
+report's now-obsolete `I` notation and translates its coefficient-restricted
+`𝒜_{D,k}` to the Diophantine report's `ℛ_o(k,Γ)`.
+
+All 104 standard statements, all 228 labels and their numbers are preserved.
+Section 12 onward is byte-identical in the source. The article builds in
+three passes to 89 pages without warnings or box diagnostics; the reviewed
+pages, contents and section transitions were visually checked. The catalogue
+builds cleanly to 28 pages, and all three changed pages were inspected.
+Source 06's finite verification output agrees with delivery except for the
+Python version; source 07's output agrees exactly. Neither finite suite
+proves the infinite-support or definability claims. The independent inventory
+and statement audit passes 3,089 rows in 56 texts, and all 3,582 cited labels
+and 1,383 local Markdown destinations resolve. No Lean source changes in
+this pass; the 4,307-job build and 13,389-declaration axiom audit from
+`c0a36ee` remain applicable. Formalization and the remaining imported-result,
+historical-priority and source-reconciliation work stay pending.
+
+The final fetch brought `eeb87b2`, whose sine-square Fourier witnesses prove
+sharpness of the angular stability bounds. Merge `e3b086d` retains those
+implementation mappings and changes no manuscript or PDF. The combined
+`LEAN_NUM_THREADS=2 lake build` passes 4,311 jobs, and its axiom audit accepts
+13,431 declarations using only `propext`, `Classical.choice` and `Quot.sound`.
+The 3,089-row statement audit and 3,582-label audit still pass; all 1,387 local
+Markdown destinations resolve.
+
+## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
-`be06fc8`, which was merged after the field-automorphism build. This is a
+`be06fc8`, which was merged after the field-automorphism build. That was a
 documentation-only merge: no existing mapped manuscript or Lean source
 changed. At that placement, the two new reports contained only base
 manuscripts 01 and 06, with nine companions still to integrate, obsolete
-build filenames and no current PDFs. The elementary Diophantine update
-above now supplies a partial integration and maintained PDF; the quotient
-report and the later Diophantine comparison remain pending. At placement
+build filenames and no current PDFs. At that stage, the elementary Diophantine update supplied a partial
+integration and maintained PDF; the quotient report and later comparison
+were pending. The synchronization record above supersedes that status. At placement
 the reader map, catalogue and ledger recorded 75
 standard statements, bringing the inventory to 2,610 in 51 reports; the
 quotient base's three `maintheorem` statements are additional claims outside
 the standard-environment count. Proof review and formalization are pending.
-The independent inventory audit passes for all 51 present sources, and all
+The independent inventory audit passes for all 51 sources then present, and all
 3,090 cited labels and 1,261 local Markdown destinations resolve. The
 catalogue's 51 main-document destinations exist; its three-pass build has
 28 pages and no diagnostics, and all pages were visually checked. The
@@ -2629,6 +2780,13 @@ axiom audit passed 12,787 declarations with only `propext`,
 local Markdown destinations resolve, and the 51-source inventory audit
 passes. This is integration validation, not a proof review of the new reports.
 
+## Remaining scope
+
+The current collection has 56 main texts. The synchronization record above
+states the latest omnific review boundary and the remaining companion
+integrations. Historical counts below identify the versions previously
+reviewed; they do not replace the current inventory.
+
 Batch 22, placed in `7b5f934`, was assembled in `68e2960` and catalogued
 in `5d369a0`. Its two reports,
 [first-kappa coefficients](surcomplex/first-kappa-coefficients/) and
@@ -2636,7 +2794,7 @@ in `5d369a0`. Its two reports,
 new sections of entire functions, holonomic rigidity, trigonometry, Euclidean
 three-space and Hahn probability are now indexed from their written sources.
 Their mathematical proof review and source reconciliation remain pending.
-The collection now has 49 assembled reports. The six gamma/zeta archives
+At that stage the collection had 49 assembled reports. The six gamma/zeta archives
 delivered in `cafe42f` and placed in `e4f8848` were assembled in `7af7056` as
 [gamma and zeta functions](surcomplex/gamma-and-zeta-functions/) and catalogued
 in `087ee37`. The current merged source has 94 standard result environments,

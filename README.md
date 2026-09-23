@@ -25,7 +25,7 @@ Apache license are included in the repository.
 
 ## Formalization
 
-The [source inventory](docs/FORMALIZATION.md) covers 51 main texts
+The [source inventory](docs/FORMALIZATION.md) covers 57 main texts
 and the source manuscripts preserved in Git history. The
 [coverage and dependency ledger](docs/FORMALIZATION.md) records their statements,
 the proposed Layer A–E implementation order, and the exact scope of each
@@ -56,6 +56,21 @@ Their native local dimensions are one, two and four, agreeing with the
 algebraic local factors. The finite sum of angular multiplicities over all
 actual infinitesimal solutions is four, completing the coupled collision
 assertions.
+
+Conditioned inverse cosine now has its second-order expansion at every
+actual interior angle, including angles with infinitesimal sine. The proof
+controls the endpoint margin and gives all three valuation bounds under
+`v(ε)>2v(sin θ)`. At equality, explicit infinitesimal-angle examples reach
+the endpoint or move the target above one, proving the strict threshold
+is necessary for a uniform guarantee.
+
+Finite Laurent sums now have a verified polynomial algebraization and the
+`2N` root bound on finite real angles modulo ordinary periods. Over an
+algebraically closed field, the cleared polynomial has exactly `2N` nonzero
+roots counted with multiplicity when both endpoint coefficients are nonzero.
+Ordinary-angle values determine all actual surcomplex Fourier coefficients;
+real-valuedness is equivalent to conjugate symmetry. The full strip theorem
+and the general angular-series multiplicity bridge remain pending.
 
 The first modules establish size obstructions and reusable finite algebra.
 Complexification uses mathlib's `QuadraticAlgebra`, with its cross-term
@@ -305,8 +320,11 @@ for the exact trigonometric pullback in `x=2 tan(h/2)`. The inverse chart
 preserves valuation and has a finite cubic remainder, transferring both bounds
 to the actual angle `h`. The formal Fourier derivative is the native fine
 derivative, and the perturbed angular root is simple and unique throughout
-`v(h)>κ`. This completes the angular stability theorem; its separate
-sharpness examples remain pending.
+`v(h)>κ`. The sine-square witnesses also prove sharpness: for every positive
+surreal `κ` and every `σ>2κ`, constant perturbations attain both error bounds
+exactly. At `σ=2κ`, cancelling the constant term leaves no root in the original
+neighborhood. These complete the angular stability theorem and its sharpness
+proposition.
 In the Hahn theorem, the first correction coefficient is the negative error coefficient evaluated
 at the residue root, divided by the residue derivative; cancellation is allowed.
 The distinct complex residue roots also index unique cluster factors, with

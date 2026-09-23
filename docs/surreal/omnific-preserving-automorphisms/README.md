@@ -36,9 +36,9 @@ data/
 ```
 
 Every label in `article.tex` carries the prefix `opa:` (146 labels). Source
-02's part carries the sub-prefix `opa:par:` (43 labels). The report is new, so
-no label was renamed or removed. No [formalization ledger](../../FORMALIZATION.md)
-row cites an `opa:` label, and there is no Lean code about omnific integers in
+02's part carries the sub-prefix `opa:par:` (43 labels). These prefixed labels identify the assembled report; the earlier placed
+base used source-local labels. No implementation mapping in the [formalization ledger](../../FORMALIZATION.md)
+cites an `opa:` label, and there is no Lean code about omnific integers in
 the repository.
 
 ## Four sources, one report

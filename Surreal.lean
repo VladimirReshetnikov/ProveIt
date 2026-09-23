@@ -524,3 +524,14 @@ import Surreal.Surcomplex.CayleyAngularBounds
 import Surreal.Surcomplex.TrigonometricAngularStability
 import Surreal.Surcomplex.TrigonometricPolynomialDerivative
 import Surreal.Surcomplex.TrigonometricRootStability
+import Surreal.Surcomplex.SineSquareExpansion
+import Surreal.Surcomplex.SineSquareStabilityErrors
+import Surreal.Surcomplex.SineSquareLaurent
+import Surreal.Surcomplex.TrigonometricStabilitySharpness
+import Surreal.Algebra.CirclePerturbation
+import Surreal.Surcomplex.ConditionedCosineExpansion
+import Surreal.Surcomplex.ConditionedCosineValuation
+import Surreal.Surcomplex.ConditionedCosineSharpness
+import Surreal.Algebra.LaurentAlgebraization
+import Surreal.Surcomplex.TrigonometricPolynomialRootCount
+import Surreal.Surcomplex.TrigonometricPolynomialUniqueness
