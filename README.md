@@ -191,9 +191,12 @@ The profinite ring isomorphism is also proved: the inverse limit over all
 positive ordinary moduli is exactly the ordinary profinite integer ring,
 and its canonical map again has the purely infinite ideal as its kernel.
 The construction satisfies Mathlib's limit universal property, and every
-finite-index omnific ideal occurs in the diagram. Completion homeomorphisms,
-higher Diophantine and general set-sized quotient results remain pending;
-source review is distinct from checked formalization.
+finite-index omnific ideal occurs in the diagram. With the inverse-limit
+topology this isomorphism is also a homeomorphism of compact Hausdorff,
+totally disconnected topological rings. The canonical map has dense image
+and induces exactly the omnific congruence topology. The `p`-adic completion
+homeomorphism, higher Diophantine and general set-sized quotient results
+remain pending; source review is distinct from checked formalization.
 
 The [research collection](docs/README.md) also includes work still awaiting
 Lean proofs. The [omnific Diophantine report](docs/surreal/omnific-diophantine-geometry/)
