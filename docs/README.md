@@ -1,6 +1,6 @@
 # The surreal and surcomplex reports
 
-This collection has **60 research reports in five families**. Start with the
+This collection has **61 research reports in five families**. Start with the
 reading routes below, use the [notation guide](NOTATION.md) when moving between
 reports, and consult the [typeset catalogue](manifest.pdf)
 ([source](manifest.tex)) for longer descriptions. The
@@ -55,10 +55,12 @@ The Diophantine report's review covers its original material and Sections
 Those proofs now include support arguments and boundary examples. Source
 07's quartic and the elementary ring/Euler subsections 16.2–16.3 are also
 reviewed, with the trivial-exponent-group exception and the meaning of
-image inclusions made explicit. The geometric curve proofs, curve pointers
+image inclusions made explicit. Later passes cover the rest of Section 16
+and Sections 17.1–17.3: differential rigidity, smooth curves, exact arithmetic
+fibers and separated-model descent. Projective coordinates, curve pointers
 and later additions remain outside that review, with the exact boundary in its
 [reconciliation](surreal/omnific-diophantine-geometry/RECONCILIATION.md); its
-remaining rigidity arguments in Sections 16–18 and the other new reports and additions await
+remaining geometric arguments and the other new reports and additions await
 review. Lean covers the omnific ring and constant-term package, degree
 laws, units and finite elements, the exact omnific floor and ordinary
 polynomial-root rigidity of the Diophantine report. Its other unmapped
@@ -68,7 +70,15 @@ Placement `21375f8` (batch 30) adds two report bases,
 [critical-point defects](foundations-and-computation/large-cardinal-embeddings-and-normal-forms/)
 and [dilation rigidity](surcomplex/autonomous-dilation-relations/), and
 companions to the holonomic, nonabelian-support and omnific-preserving
-reports. Their write phase is pending.
+reports. The first four writes through `1ab41af` integrate those companions
+and the dilation report; the critical-point-defects write is pending.
+The automorphism assembly now has eight manuscripts and states automatic
+strongness for `Oz` automorphisms; these new claims await proof review.
+
+Placement `9d28e28` adds [independent surreal copies](surreal/independent-surreal-copies/),
+a proposed construction of copies sharing a prescribed set-sized Hahn core,
+and eight further companions awaiting integration. The new report and its
+class-foundation assumptions remain pending proof review and Lean formalization.
 
 Batch 23 (placed in `e4f8848`, written in `7af7056`) adds
 [Gamma and zeta](surcomplex/gamma-and-zeta-functions/), merged from six
@@ -131,6 +141,7 @@ not extend their earlier proof-review scope.
 
 | Report | Question or main subject |
 |---|---|
+| [Independent surreal copies](surreal/independent-surreal-copies/) | Proposed prescribed Hahn cores, linearly disjoint copies and transcendental arithmetic-intersection gaps; proof review pending |
 | [Hahn evaluation at omega](surreal/hahn-evaluation-at-omega/) | Why increasing-support evaluation `x^a ↦ ω^a` fails, and which exponent maps permit field homomorphisms |
 | [Broadcast sums](surreal/broadcast-sum-of-surreal-sequences/) | The sign-truncation game and Lipparini's broadcast-sum question |
 | [Product birthdays](surreal/gonshor-product-birthdays/) | Gonshor's bound `b(xy) ≤ b(x) ⊗ b(y)` for specified ordinal-support normal forms |
@@ -190,7 +201,7 @@ those powers but uses the integer exponent lattice. Their common part includes
 | [First-κ coefficients](surcomplex/first-kappa-coefficients/) | Hahn series with fewer than `κ` terms: omitted types classified by the first `κ` coefficients, completion iff `cf(Γ) ≠ cf(κ)`, never spherically complete |
 | [Single-dilation Hahn support](surcomplex/single-dilation-hahn-support/) | One monomial dilation defines coefficients, monomials and the valuation ring; its centralizer among all field automorphisms; undecidability |
 | [Gamma and zeta](surcomplex/gamma-and-zeta-functions/) | Finite lifts and RH, strongly summable Dirichlet series at infinity, Stirling and Hurwitz, Gamma and zeta on the horizontal tube for any phase, reflection obstructions at infinite height; six manuscripts reconciled |
-| [Dilation rigidity](surcomplex/autonomous-dilation-relations/) | A series algebraically dependent with its exponent dilate lies in one Laurent subfield; placed in `21375f8`, write phase pending |
+| [Dilation rigidity](surcomplex/autonomous-dilation-relations/) | Autonomous relations between exponent dilates; assembled in `260c143`, proof review pending |
 
 Three distinctions recur throughout these reports.
 
@@ -285,7 +296,7 @@ lattice, supported operations and known implementation defects.
 ## Files, provenance and building
 
 Each report has a LaTeX source, a typeset PDF and a local README, except
-the two bases placed in `21375f8`, which await their write phase. Most
+the critical-point-defects base placed in `21375f8`, whose write is pending. Most
 also retain verification programs under `code/` and recorded outputs under
 `data/`. Those finite checks do not establish infinite theorems. The former
 `sources/` archives were retired in `e5791a8`; their tracked originals remain

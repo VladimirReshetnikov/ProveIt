@@ -4,8 +4,8 @@ A 25-page AI-assisted research article, dated 23 September 2026.
 
 ## Files
 
-- `independent_surreal_copies.pdf`: complete typeset article.
-- `independent_surreal_copies.tex`: self-contained LaTeX source, including bibliography.
+- [article.pdf](article.pdf): typeset article, 25 pages in the repository build.
+- [article.tex](article.tex): self-contained LaTeX source, including bibliography.
 - `README.md`: this guide and the verification boundary.
 
 ## Main results developed
@@ -63,7 +63,7 @@ foundations. These are proposed research results, not a certified priority
 claim or a claim to have settled a named published conjecture. The manuscript
 has not undergone independent peer review and is not Lean-verified.
 
-The source was compiled successfully using pdfTeX 1.40.26 and latexmk.
+The delivered production record reports compilation using pdfTeX 1.40.26 and latexmk.
 The final LaTeX log has no undefined references, overfull boxes, or compilation
 warnings. All 25 PDF pages were rendered; contact sheets and selected full-size
 pages were visually inspected. These production checks are not formal
@@ -73,8 +73,13 @@ verification of the mathematics.
 
 With a standard TeX Live installation, run:
 
-    latexmk -pdf -interaction=nonstopmode -halt-on-error independent_surreal_copies.tex
+    latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 
 Alternatively run pdflatex on the source three times to resolve references
 and the table of contents. No external figures, bibliography database, or
 source downloads are required to build the PDF.
+
+The source was placed as `article.tex` in `9d28e28`; the delivery used the
+stem `independent_surreal_copies`. The repository build ran pdfLaTeX three
+times, producing 25 pages with no warnings or unresolved references.
+This build and inventory entry do not constitute mathematical proof review.
