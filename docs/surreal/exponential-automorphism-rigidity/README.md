@@ -4,9 +4,11 @@
 output in `data/`, external-source audit in
 `05-exponential-valuation-SOURCE_AUDIT.md`.
 
-An unrefereed AI-assisted draft, dated 21 September 2026. Not refereed, not
-machine-checked; the article states plainly that no Lean proof is claimed for
-it.
+An unrefereed AI-assisted draft, dated 21 September 2026. The delivered
+article claimed no Lean verification. Subsequent repository work proves
+many generic results; the actual surreal exponential applications remain
+pending. The current coverage is recorded below and in the
+[formalization ledger](../../FORMALIZATION.md).
 
 ## What it establishes
 
@@ -158,6 +160,22 @@ familiar in other language, and that a specialist may recognize further
 antecedents; the searches behind it were targeted, not exhaustive.
 
 ## Where it sits
+
+The generic Lean coverage now includes valued displacement and derivation
+rigidity in `Surreal/Algebra/SigmaDerivation.lean`, and the ordered
+displacement, exponential and profile arguments in
+`Surreal/Algebra/ExponentialProfile.lean`. Section 9's logarithmic-modulus
+classification, including the direct-product group isomorphism, is proved
+in `Surreal/Algebra/LogModulusClassification.lean`; its extended valuation
+and valuation-kernel assertions are proved in
+`Surreal/Algebra/ComplexValuationKernel.lean`. The last two modules use an
+ordered field with nonnegative square roots and an explicitly injective
+`OrderedExp`, with a nontrivial convex valuation for the kernel. Their
+`log`, `L` and `IsLAut` predicates are defined separately, without a formal
+bridge, and the coarsened action is encoded relationally. The ledger gives
+the exact hypotheses and remaining clauses. These proofs do not supply
+the actual surreal exponential or the Berarducci–Mantova derivation needed
+for the corresponding surreal applications.
 
 `surreal/` — the surreal field **No** itself, plus `No[i]` in Section 9.
 

@@ -42,6 +42,14 @@ remains pending. The original archives remain in Git history at `cafe42f`.
 Inclusion supplies navigation, not mathematical review or formalization. The implementation
 table retains the precise scope of the newly mapped Lean statements.
 
+The eleven omnific-integer manuscripts placed in `be06fc8` are assigned to
+two new reports. Only base manuscripts 01 and 06 are currently written as
+`article.tex`; integration of the other nine manuscripts, correction of
+delivery filenames, current PDF builds and proof review remain pending.
+The inventory counts 41 and 34 standard environments in these base sources.
+The quotient source also has three `maintheorem` environments, outside that
+count; all mathematical claims remain in scope. No Lean coverage is implied.
+
 The source-10 nonscalar dynamics review now covers its angular-rate lemma,
 colored-tree product bound, common-domain proof, exact criterion and examples
 (Sections 7.7–7.13), with the corresponding limitations in Section 26.10.
@@ -79,6 +87,19 @@ abelian exponent groups, including zero, without divisibility or
 self-adjointness. This extension is **Pending** in Lean; it does not weaken
 the compact-spectrum hypotheses or extend any implementation mapping.
 Remaining imported-result/source reconciliation is a separate obligation.
+
+The field-automorphism main-text review covers Sections 1–15 and the
+real-form conjugacy criterion. It clarifies strong coefficient action,
+class-map and set-stage constructions, the derivative codomain and the
+actual valuation image, and extends the written non-density argument to
+the full `Aut(K)`. The review adds no dedicated `saut:` implementation
+mapping. Existing `ExponentialProfile` mappings already prove the generic
+ordered displacement and value-fixing exponential rigidity implications;
+`LogModulusClassification` and `ComplexValuationKernel` also prove the
+generic logarithmic-modulus classification and valuation-kernel clauses,
+with their precise hypotheses and separate predicates recorded below.
+The actual surreal exponential instantiation and the report's further
+class automorphism conclusions remain pending. See [the review record](REVIEW.md).
 
 Before archive retirement in `e5791a8`, the tree contained 63 source
 manuscripts with 1582 literal standard result environments. Those are historical
@@ -445,7 +466,7 @@ remaining clauses of a partially mapped statement.
 | `meas:lem:recover` (with `meas:eq:first-error`, `meas:eq:survival` and `meas:eq:recover`) and `meas:def:summability` in [hahn-valued measures](surreal/hahn-valued-measures-and-probability/article.tex) | `Surreal.FirstError.StronglySummable`, `stronglySummable_iff`, `supportSubring`, `stronglySummable_of_support_subset_fibre`, `stronglySummable_of_support_subset`, `rowSum`, `survival`, `firstError`, `firstErrorMass`, `survival_eq`, `survival_mem`, `firstErrorMass_mem`, `orderTop_firstError_pos`, `orderTop_firstErrorMass_pos`, `eq_firstError_mul_hsum_powers`, `firstError_smul_powers_apply`, `hsum_firstError_smul_powers`, `stronglySummable_iff_firstError`, `stronglySummable_firstError_mul_pow`, `eq_firstError_mul_inv` in [FirstErrorRecovery.lean](../Surreal/HahnSeries/FirstErrorRecovery.lean) | Rare entries are indexed by `Σ n, J n`, with finitely many `j` at each level. Levels start at `0`, so products and sums over `k < n` run over `Finset.range n`. A family is strongly summable when it is the family of members of a Mathlib `SummableFamily`. This is equivalent to the two clauses of `meas:def:summability`, with a partially well-ordered union of supports, which means well ordered for linearly ordered exponents. For entries of positive order (zero allowed), `(p_{n,j})` is strongly summable exactly when the first-error masses `(h_{n,j})` are. The survival identity `∏_{k<n}(1-q_k) = 1 - H_{<n}` needs no hypothesis. The recovery identity `p_{n,j} = ∑ˢ_m h_{n,j}H_{<n}^m` holds, and over a coefficient field this equals `h_{n,j}(1-H_{<n})⁻¹`. When `(h_{n,j})` is strongly summable, the double family `(h_{n,j}H_{<n}^m)_{(n,j),m}` is strongly summable, with no bound on `n` or `m`. Instead of the source's labelled-word expansion, the proof uses a support-domination criterion through Neumann's lemma. Everything except the inverse form holds over any commutative coefficient ring and any linearly ordered cancellative exponent monoid. **Proved**; the event masses `μ(B_{n,a}) = h_{n,a}` and the projection away from `J` in the necessity half of `meas:thm:independent` remain pending. Build and axiom audit pass. |
 | `tail:lem:difference`, including `tail:eq:diffidentity` and the value form used in `tail:prop:orbit`, in [tail spans](surreal/tail-spans-and-differential-transcendence/article.tex) | `Surreal.TailSpan.translate`, `eval_translate`, `diffOp`, `dirDeriv`, `dirDeriv_eq_sum_pderiv`, `diffOp_step`, `iterDiff`, `iterDirDeriv`, `iterDiff_zero`, `iterDirDeriv_zero`, `iterDiff_eq_iterDirDeriv`, `iterDirDeriv_homogeneousComponent_eq_C`, `iterDiff_eq_C`, `eval_iterDiff`, `alternatingSum_eq_coeff_iterDirDeriv`, `dirDeriv_commute`, `iterDirDeriv_comp_perm`, `pow_dirDeriv_of_isHomogeneous`, `alternatingSum_diagonal_eq`, `polarization`, `polarization_apply`, `polarization_zero`, `iterDirDeriv_eq_C_factorial_mul_polarization`, `iterDiff_eq_factorial_mul_polarization`, `polarization_comp_perm`, `polarization_diagonal`, `eq_polarization_of_symmetric`, `alternatingSum_eq_factorial_mul_polarization`, `homogeneousComponent_eq_zero_of_polarization_eq_zero`, `mixedDifference_of_charZero` in [MixedDifference.lean](../Surreal/Algebra/MixedDifference.lean) | Over any commutative ring, in any set of variables, and for `P` of total degree at most `D`, `Δ_{u_1}⋯Δ_{u_D}P = D_{u_1}⋯D_{u_D}P_D`. This is a constant polynomial, and at every base point `x` the alternating sum of `P(x + ∑_{j∈J} u_j)` over `J ⊆ {1,…,D}` equals that constant. Over a field with `D! ≠ 0`, which the source's characteristic zero implies, the `D`-linear form `T = (D!)⁻¹ D_{u_1}⋯D_{u_D}P_D` is symmetric. It satisfies `T(x,…,x) = P_D(x)` at every point and is the unique symmetric form that does. It gives `D_{u_1}⋯D_{u_D}P_D = D! T(u_1,…,u_D)` and the value form with `D! T`. For `D = 0` the operator products are the identity and `T = P_0`. Over an infinite field, `T = 0` forces `P_D = 0`. A degree-lowering induction replaces the source's Taylor expansion, and the identity `P_D(X) = T(X,…,X)` is stated pointwise, which determines `P_D` over the source's infinite field. **Proved**; `tail:prop:orbit` itself remains pending. Build and axiom audit pass. |
 | `prony:eq:numerators`, `prony:lem:pade` with `prony:eq:pade`, `prony:lem:cross` with `prony:eq:cross`, and `prony:eq:Dvalues` in [Prony reconstruction](surcomplex/prony-reconstruction-at-surreal-scales/article.tex) | `Surreal.Prony.momentSeriesPoly`, `padeNumerator`, `coeff_mul_momentSeriesPoly`, `degree_padeNumerator_lt`, `degree_pade_remainder_lt`, `coeff_reflect_padeNumerator_mul_inv`, `nodePoly_mul_momentSeriesPoly_moment`, `degree_sum_C_mul_cofactor_lt`, `padeNumerator_moment_nodePoly`, `degree_nodePoly_pade_remainder_lt`, `eq_sum_C_mul_cofactor`, `eq_nodePoly_of_isRoot`, `moment_eq_of_padeNumerator_eq`, `moment_padeResidues`, `cross_numerator_eq`, `degree_cross_lt`, `cross_numerator_nodePoly`, `eval_cross_cofactor`, `le_valuation_coeff_cross`, `le_orderTop_coeff_cross`, `le_orderTop_coeff_cross_nodePoly` in [PronyPade.lean](../Surreal/Algebra/PronyPade.lean) | The work is over an arbitrary field, with the Laurent series in `X⁻¹` cleared of denominators: `momentSeriesPoly N m = X^N ∑_{k<N} m_k X^{-k-1}`, and `[·]_+` is the quotient `/ₘ X^N`. Both numerators have degree `< n`. For every configuration, the unperturbed numerator is `A = ∑ w_i Q_i`, with no need for distinct nodes. If `L̂(P̂ X^r) = 0` for `r < n` and `deg P̂ ≤ n`, then `deg(P̂ · momentSeriesPoly (2n) m̂ - X^{2n} Â) < n`. For monic `P̂` of degree `n` this is equivalent to `prony:eq:pade`. The expansion at infinity is also proved literally in `K[[Y]]`, `Y = X⁻¹`, through reflected polynomials. If `P̂` is monic of degree `n` with `n` distinct roots `â_i`, the residues `Â(â_i)/P̂'(â_i)` realize `m̂_0, …, m̂_{2n-1}`. Let `P, P̂` have degree at most `n`, and let their numerators satisfy the polynomial Padé identities. Then `D = Â P - A P̂` is the polynomial part of `P P̂ ∑_{k<2n} ε_k X^{-k-1}`, so `deg D < 2n`. If `P, P̂` are integral and `v(ε_k) ≥ κ` for `k < 2n`, every coefficient of `D` has valuation `≥ κ`. This holds for any additive valuation, and in particular for `orderTop` on `R((t^Γ))`, with `R` any field and `Γ` any ordered abelian group. It is also stated in the source configuration `P = ∏(X - a_i)`, `A = ∑ w_i Q_i`. Monicity is not needed in `prony:lem:cross`. In cofactor coordinates `P̂ = P + ∑ b_j Q_j`, `D(a_i) = -w_i Q_i(a_i)² b_i = -u_i` for every `Â`. **Proved**; `prony:thm:main` is mapped in the main-theorem row below and `prony:lem:weight` in the weight-error row. Build and axiom audit pass. |
-| `def:sigma-derivation` with `eq:sigma-leibniz` and `eq:twisted`; `thm:sigma-derivation` (both forms, `eq:uniform-output`), `prop:valued-amplification`, `cor:detector` (`eq:detector`), `thm:derivation-valued` (both forms, `eq:loss-bound`) and `cor:no-contraction` in [exponential automorphism rigidity](surreal/exponential-automorphism-rigidity/article.tex) | `Surreal.SigmaDerivation.IsSigmaDerivation`, `isSigmaDerivation_displacement`, `isSigmaDerivation_derivation`, `IsSigmaDerivation.toDerivation`, `IsSigmaDerivation.coe_toDerivation`, `min_le_valuation_mul`, `valuation_lt_or_valuation_lt`, `exists_valuation_neg`, `exists_valuation_mul_lt`, `exists_valuation_ne_zero`, `exists_valuation_lt_of_surjective`, `exists_valuation_lt_valuation`, `exists_valuation_lt`, `eq_zero_of_forall_le`, `IsSigmaDerivation.eq_zero`, `IsSigmaDerivation.exists_valuation_lt`, `eq_id_of_displacement_eq_zero`, `exists_displacement_lt_valuation`, `exists_displacement_lt`, `eq_id_of_detector`, `derivation_eq_zero_of_loss`, `exists_loss_lt`, `not_forall_le`, `not_forall_lt`, `smul_ne_zero_and_comp`, `not_forall_le_mul`, `not_forall_lt_mul` in [Algebra/SigmaDerivation.lean](../Surreal/Algebra/SigmaDerivation.lean) | The results hold on any field of any characteristic with an additive valuation `v` into `WithTop Γ`, where `Γ` is a linearly ordered abelian group of any rank. Nontriviality (`∃ x ≠ 0, v x ≠ 0`) and surjectivity onto `Γ` are explicit hypotheses wherever the source states them, and `σ` is never assumed to preserve `v`. The displacement `σ x - x` of a unital endomorphism is a `σ`-derivation, and ordinary derivations over any base ring are exactly the `id`-derivations. A `σ`-derivation whose output values are all `≥ β` for one `β` vanishes, and a nonzero one has output values below every `β`. The core argument needs only the twisted Leibniz rule for arbitrary maps `σ`, `δ` and a nontrivial `v`, which gives coinitiality in the value group `v(Kˣ)`. Coinitiality of the values of `v` in `Γ` can replace surjectivity, but surjectivity cannot simply be dropped: a nonzero bounded derivation exists when the image is `{0}×ℤ` in lexicographic `ℤ×ℤ`. The displacement values of a nonidentity endomorphism are coinitial in `v(Kˣ)` without surjectivity, and in `Γ` when `v` is surjective. The detector takes `E` to be a group homomorphism `(K,+) → (Kˣ,·)` and reads `E x ∈ 𝒪ᵥˣ` as `v (E x) = 0`. The loss theorem holds for any derivation over any base ring and any nowhere-vanishing `E`, and its second form reads `v(∂(E x)) < v(E x) + γ`. All four no-contraction assertions are proved, including those for `c∂` with `c ≠ 0`. **Proved** for these clauses. The ordered-field results `lem:amplify`, `cor:bounded-displacement`, `prop:sigma-witness`, `lem:derivation-amplify` and `thm:derivation` remain pending, as do the convex-valuation and exponential theorems and the surreal instantiations of `cor:detector` (via `prop:finite-log`) and `thm:derivation-valued` (via the Berarducci–Mantova derivation). Build and axiom audit pass. |
+| `def:sigma-derivation` with `eq:sigma-leibniz` and `eq:twisted`; `thm:sigma-derivation` (both forms, `eq:uniform-output`), `prop:valued-amplification`, `cor:detector` (`eq:detector`), `thm:derivation-valued` (both forms, `eq:loss-bound`) and `cor:no-contraction` in [exponential automorphism rigidity](surreal/exponential-automorphism-rigidity/article.tex) | `Surreal.SigmaDerivation.IsSigmaDerivation`, `isSigmaDerivation_displacement`, `isSigmaDerivation_derivation`, `IsSigmaDerivation.toDerivation`, `IsSigmaDerivation.coe_toDerivation`, `min_le_valuation_mul`, `valuation_lt_or_valuation_lt`, `exists_valuation_neg`, `exists_valuation_mul_lt`, `exists_valuation_ne_zero`, `exists_valuation_lt_of_surjective`, `exists_valuation_lt_valuation`, `exists_valuation_lt`, `eq_zero_of_forall_le`, `IsSigmaDerivation.eq_zero`, `IsSigmaDerivation.exists_valuation_lt`, `eq_id_of_displacement_eq_zero`, `exists_displacement_lt_valuation`, `exists_displacement_lt`, `eq_id_of_detector`, `derivation_eq_zero_of_loss`, `exists_loss_lt`, `not_forall_le`, `not_forall_lt`, `smul_ne_zero_and_comp`, `not_forall_le_mul`, `not_forall_lt_mul` in [Algebra/SigmaDerivation.lean](../Surreal/Algebra/SigmaDerivation.lean) | The results hold on any field of any characteristic with an additive valuation `v` into `WithTop Γ`, where `Γ` is a linearly ordered abelian group of any rank. Nontriviality (`∃ x ≠ 0, v x ≠ 0`) and surjectivity onto `Γ` are explicit hypotheses wherever the source states them, and `σ` is never assumed to preserve `v`. The displacement `σ x - x` of a unital endomorphism is a `σ`-derivation, and ordinary derivations over any base ring are exactly the `id`-derivations. A `σ`-derivation whose output values are all `≥ β` for one `β` vanishes, and a nonzero one has output values below every `β`. The core argument needs only the twisted Leibniz rule for arbitrary maps `σ`, `δ` and a nontrivial `v`, which gives coinitiality in the value group `v(Kˣ)`. Coinitiality of the values of `v` in `Γ` can replace surjectivity, but surjectivity cannot simply be dropped: a nonzero bounded derivation exists when the image is `{0}×ℤ` in lexicographic `ℤ×ℤ`. The displacement values of a nonidentity endomorphism are coinitial in `v(Kˣ)` without surjectivity, and in `Γ` when `v` is surjective. The detector takes `E` to be a group homomorphism `(K,+) → (Kˣ,·)` and reads `E x ∈ 𝒪ᵥˣ` as `v (E x) = 0`. The loss theorem holds for any derivation over any base ring and any nowhere-vanishing `E`, and its second form reads `v(∂(E x)) < v(E x) + γ`. All four no-contraction assertions are proved, including those for `c∂` with `c ≠ 0`. **Proved** for these clauses. The ordered-field displacement and derivation results, and the generic convex-valuation/exponential clauses, are covered by the later `ExponentialProfile` mapping below. The surreal instantiations of `cor:detector` (via `prop:finite-log`) and `thm:derivation-valued` (via the Berarducci–Mantova derivation) remain pending. Build and axiom audit pass. |
 | `tate:node:lem:isometry` (`tate:node:eq:isometry`), with the vector valuation `𝐯` of `tate:node:sec:metric`, in [Hahn–Tate uniformization](surcomplex/hahn-tate-uniformization/article.tex) | `Surreal.ChartIsometry.vecOrderTop_mvEvaluate_sub`, `isometry_of_det_ne_zero`, `vecOrderTop`, `le_vecOrderTop_iff`, `vecOrderTop_le`, `vecOrderTop_of_isEmpty`, `linearPart`, `nonlinearPart`, `coeff_nonlinearPart_zero`, `coeff_nonlinearPart_single`, `mvEvaluate_eq_linear_add_nonlinear`, `mvEvaluate_sub_eq`, `vecOrderTop_smul_sum`, `vecOrderTop_le_vecOrderTop_smul_sum`, `add_le_orderTop_mvEvaluate_nonlinearPart_sub`, `add_le_orderTop_prod_pow_sub`, `add_le_orderTop_prod_map_sub`, `card_nsmul_le_orderTop_prod_map`, `two_le_card_toMultiset`, `prod_pow_eq_prod_map_toMultiset`, `le_orderTop_hsum`, `le_orderTop_finset_sum` in [ChartIsometry.lean](../Surreal/HahnSeries/ChartIsometry.lean) | Let `A = (A_i)` be a family of formal power series whose linear part `L_A` (entry `(i,j)` is the coefficient of `Z_j` in `A_i`) is invertible. Strong Hahn evaluation of `A` at vectors `a, b` of positive-order Hahn series then satisfies `𝐯(A(a)−A(b)) = 𝐯(a−b)`, where `𝐯(w) = min_j v(w_j)` and `v(0) = ⊤`. The case `a = b`, zero coordinates and zero variables are all included. The coefficients may lie in any commutative ring with `L_A` a unit, so neither a field nor characteristic zero is used. `Γ` may be any linearly ordered cancellative commutative monoid, and the variables may be indexed by any finite type. No zero-constant-term hypothesis is needed, because the constant terms cancel. `isometry_of_det_ne_zero` is the source's setting: a field, an ordered abelian group, `Fin d` variables and `det L_A ≠ 0`. Every nonlinear monomial difference has order at least `𝐯(a−b)+ε`, and the proof bounds the strong sum term by term using this. It does not use the source's formal factorization `N(a)−N(b)=C(a,b)(a−b)`. An invertible constant matrix preserves `𝐯`. **Proved**; no clause of the lemma is pending. The node-chart consequence `tate:node:cor:bidisk` is not formalized: it also needs the node chart and `tate:node:lem:implicit`. Build and axiom audit pass. |
 | `ihs:lem:neumann` with `ihs:eq:neumann`; `ihs:hh:thm:smooth` with `ihs:hh:eq:constres`, `ihs:hh:eq:inversesmooth`, `ihs:hh:eq:smoothsolution` in [infinite-dimensional Hahn spectral theory](surcomplex/infinite-dimensional-hahn-spectral-theory/article.tex) | `Surreal.InfiniteSpectral.mulRight`, `hsum_mulRight`, `pow_finite_co_support_of_semiring`, `ringPowers`, `hsum_ringPowers_eq_one_add_mul`, `mul_hsum_ringPowers_comm`, `one_sub_mul_hsum_ringPowers`, `hsum_ringPowers_mul_one_sub`, `neumannFamily`, `one_add_mul_hsum_neumannFamily`, `hsum_neumannFamily_mul_one_add`, `support_hsum_neumannFamily_subset`, `isUnit_one_add_of_orderTop_pos`, `inv_one_add_eq_hsum_neumannFamily`, `neumann`, `shiftResolvent`, `coeff_shiftResolvent`, `shiftResolvent_eq_const_coeff`, `inverseSmoothFamily`, `inverseSmoothFamily_apply_eq_smul`, `shiftResolvent_hsum_inverseSmoothFamily`, `shiftResolvent_injective`, `mem_iInf_range_pow_iff`, `exists_shiftResolvent_eq_const_iff`, `eq_hsum_of_shiftResolvent_eq_const`, `inverseSmooth` in [NoncommutativeNeumann.lean](../Surreal/HahnSeries/NoncommutativeNeumann.lean) | Take any ring, possibly noncommutative, and exponents in a linearly ordered cancellative monoid. If `0 < orderTop E` (which includes `E = 0`), the powers `(-E)^n` form a strongly summable family. Its sum is a two-sided inverse of `1 + E`, equal to the unit inverse and supported in the additive monoid generated by `supp E`. Mathlib's commutative-only summability of powers is reproved, and the right identity uses only associativity, via `x·H = H·x`. Now take an injective endomorphism `S` of any module over a semiring, `η > 0` in a partially ordered abelian group, and constant data `f`. Then `(S - t^η)y = f` has a solution in `HahnModule Γ k V` exactly when `f ∈ Ran S^m` for every `m ≥ 1`. `S - t^η` is injective and the preimages `S^(-n-1)f` are unique. Every solution is the strong sum of the terms `t^(nη) S^(-n-1)f` and is supported in `{nη}`. **Proved** for both statements, at or above the source's generality. The analytic example `ihs:hh:ex:smoothD` and the corollaries `ihs:cor:evaluate` and `ihs:cor:binomial` remain pending. Build and axiom audit pass. |
 | Half-angle, sum-to-product, product-to-sum and remaining double-angle clauses of `trigonometry:thm:identities`; the tangent-addition, sum-to-product and product-to-sum consequences displayed after it, including `trigonometry:eq:chebyshev`, in [surcomplex trigonometry](surcomplex/trigonometry/article.tex) | `Surreal.Surcomplex.eq_of_chebyshev_recurrence`, `finiteCos_zsmul_add_one`, `finiteSin_zsmul_add_one`, `chebyshev_T_eval_finiteCos`, `chebyshev_U_eval_finiteCos_mul_finiteSin`, `finiteSin_zsmul_eq_mul_chebyshev_U`, `finiteCos_two_mul_eq_cos_sq`, `finiteCos_two_mul_eq_sin_sq`, `finiteCos_sq_eq`, `finiteSin_sq_eq`, `finiteHalf`, `val_finiteHalf`, `finiteHalf_add_finiteHalf`, `two_mul_finiteHalf`, `eq_finiteHalf_iff`, `finiteHalf_add_add_finiteHalf_sub`, `finiteHalf_add_sub_finiteHalf_sub`, `finiteCos_finiteHalf_sq`, `finiteSin_finiteHalf_sq`, `finiteTan`, `finiteTan_zero`, `finiteTan_neg`, `finiteTan_add`, `finiteTan_sub`, `finiteTan_two_mul`, `finiteTan_eq_finiteSin_two_mul_div`, `finiteTan_eq_one_sub_finiteCos_two_mul_div`, `finiteTan_sq_eq`, `finiteTan_finiteHalf_eq_finiteSin_div`, `finiteTan_finiteHalf_eq_one_sub_finiteCos_div`, `finiteTan_finiteHalf_sq`, `two_mul_finiteSin_mul_finiteSin`, `two_mul_finiteCos_mul_finiteCos`, `two_mul_finiteSin_mul_finiteCos`, `two_mul_finiteCos_mul_finiteSin`, `finiteSin_add_finiteSin`, `finiteSin_sub_finiteSin`, `finiteCos_add_finiteCos`, `finiteCos_sub_finiteCos` in [FiniteTrigonometryIdentities.lean](../Surreal/Surcomplex/FiniteTrigonometryIdentities.lean) | Setting: the phase-coordinate sine and cosine on the whole finite subring `O_R`. The half angle `θ/2` is formed inside `O_R`, and it is the unique finite angle whose double is `θ`. The following hold: `cos 2θ = 2cos²θ − 1 = 1 − 2sin²θ` and power reduction; `cos²(θ/2) = (1+cos θ)/2` and `sin²(θ/2) = (1−cos θ)/2`; `tan(θ/2) = sin θ/(1+cos θ) = (1−cos θ)/sin θ` and `tan²(θ/2) = (1−cos θ)/(1+cos θ)`; all four sum-to-product and all four product-to-sum identities; and tangent addition, subtraction and doubling. Quotients use `x/0 = 0`. With that convention the half-angle tangent formulas need no hypothesis, and tangent addition needs only `cos α ≠ 0` and `cos β ≠ 0`. Both are stronger than the source's nonzero-denominator restriction. `cos(nα) = T_n(cos α)` and `sin(nα) = sin α U_{n−1}(cos α)` hold for every integer `n`, using Mathlib's ℤ-indexed Chebyshev polynomials. Their initial values and three-term recurrence are the source's, so the source's `n ≥ 1` is included. The proof is uniqueness for the shared recurrence over any commutative ring. **Proved for these identities and `trigonometry:eq:chebyshev`**. The derivative clauses `(sin)' = cos`, `(cos)' = −sin` and `(cis)' = i cis` are proved in the trigonometric differentiation row above. The identification with the Taylor sums `trigonometry:eq:sinfinite`/`cosfinite` is proved in the finite Euler/Taylor row above. Build and axiom audit pass. |
@@ -652,7 +673,7 @@ cannot replace strong Hahn summability.
 `corollary` environments; examples, computations, assessments and other
 custom environments are not included. The index covers all 51 main texts
 present in the repository; two are not named `article.tex`. The reader map
-lists all 51; the typeset catalogue still covers the earlier 49. The report placed in `e4f8848` and
+and the typeset catalogue list all 51. The report placed in `e4f8848` and
 written in `7af7056` is indexed from its written, six-source text. The two reports placed in `7b5f934`
 and written in `68e2960`, and the five reports that batch extended, are
 indexed from their written sources. The two reports placed in `d4e71b7`
@@ -663,8 +684,9 @@ merge nine manuscripts and are indexed from their written sources; their
 review remains pending.
 The four reports placed in `5fe7f8d` were written in `fb182ea`, which prefixed
 their labels; they are indexed here. The finite-probability main-text review covers
-Sections 2–17; remaining imports and source reconciliation, and the other
-three reports, await review.
+Sections 2–17, and the field-automorphism review covers Sections 1–15 and
+Appendix B; their remaining imports and source reconciliation, and the two
+other reports, await review.
 The four reports and expanded sections from batch 19 are indexed here, but
 remain pending unless a precise implementation mapping states otherwise.
 
@@ -951,9 +973,10 @@ These are source-level support arguments; their Lean coverage remains
 
 ### September 23 omnific-integer additions
 
-The documents placed in `be06fc8` add two main texts, merged from eleven
-incoming manuscripts: [omnific Diophantine geometry](surreal/omnific-diophantine-geometry/article.tex)
+The documents placed in `be06fc8` add two base texts for reports assigned
+eleven incoming manuscripts: [omnific Diophantine geometry](surreal/omnific-diophantine-geometry/article.tex)
 and [set-sized quotients of the omnific integers](surreal/set-sized-quotients-of-omnific-integers/article.tex).
+The other nine manuscripts have not yet been integrated into these texts.
 They add 75 literal standard results (20 theorems, 13 lemmas, 26 propositions,
 16 corollaries), plus three custom `maintheorem` statements indexed separately.
 All new statements, including the unlabeled Gaussian-quotient corollary, are
@@ -3633,32 +3656,32 @@ Statements are **pending unless explicitly mapped** in the implementation table.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `saut:lem:order` (line 501) | Untitled |
-| Theorem | `saut:thm:axis` (line 512) | Centralizer and stabilizer |
-| Theorem | `saut:thm:norm` (line 559) | Exact norm rigidity |
-| Theorem | `saut:thm:circle` (line 582) | Untitled |
-| Lemma | `saut:lem:support` (line 664) | Support control used below |
-| Theorem | `saut:thm:monomial` (line 698) | Monomial construction |
-| Theorem | `saut:thm:phase` (line 793) | A faithful phase action |
-| Theorem | `saut:thm:coeffflow` (line 880) | Taylor motion of coefficient constants |
-| Theorem | `saut:thm:shiftflow` (line 948) | A fixed-shift flow |
-| Theorem | `saut:thm:decomp` (line 1020) | Four layers for surcomplex valued automorphisms |
-| Proposition | `saut:prop:continuous` (line 1165) | Untitled |
-| Proposition | `saut:prop:discrete` (line 1196) | Untitled |
-| Theorem | `saut:thm:derivative` (line 1280) | Derivative dichotomy for field automorphisms |
-| Theorem | `saut:thm:zeroderiv` (line 1300) | Exponent dilations have derivative zero |
-| Corollary | `saut:cor:bidifferentiable` (line 1330) | Untitled |
-| Theorem | `saut:thm:acfhomogeneity` (line 1362) | Class back-and-forth |
-| Theorem | `saut:thm:orderedhomogeneity` (line 1389) | Ordered surreal extension |
-| Proposition | `saut:prop:nondefinability` (line 1431) | Untitled |
-| Proposition | `saut:prop:fixedfields` (line 1470) | Untitled |
-| Theorem | `saut:thm:torsion` (line 1531) | Finite subgroups and real forms |
-| Theorem | `saut:thm:inequivalentrealform` (line 1563) | Untitled |
-| Lemma | `saut:lem:displacement` (line 1662) | Displacement cannot be globally bounded |
-| Theorem | `saut:thm:expfaithful` (line 1685) | Faithful value-group action |
-| Proposition | `saut:prop:rationalnonlift` (line 1737) | Untitled |
-| Theorem | `saut:thm:L` (line 1773) | Logarithmic-modulus automorphisms |
-| Proposition | `saut:prop:conjugacycriterion` (line 2304) | Untitled |
+| Lemma | `saut:lem:order` (line 529) | Untitled |
+| Theorem | `saut:thm:axis` (line 540) | Centralizer and stabilizer |
+| Theorem | `saut:thm:norm` (line 587) | Exact norm rigidity |
+| Theorem | `saut:thm:circle` (line 610) | Untitled |
+| Lemma | `saut:lem:support` (line 695) | Support control used below |
+| Theorem | `saut:thm:monomial` (line 729) | Monomial construction |
+| Theorem | `saut:thm:phase` (line 824) | A faithful phase action |
+| Theorem | `saut:thm:coeffflow` (line 914) | Taylor motion of coefficient constants |
+| Theorem | `saut:thm:shiftflow` (line 986) | A fixed-shift flow |
+| Theorem | `saut:thm:decomp` (line 1058) | Four layers for surcomplex valued automorphisms |
+| Proposition | `saut:prop:continuous` (line 1224) | Untitled |
+| Proposition | `saut:prop:discrete` (line 1257) | Untitled |
+| Theorem | `saut:thm:derivative` (line 1354) | Derivative dichotomy for field automorphisms |
+| Theorem | `saut:thm:zeroderiv` (line 1374) | Exponent dilations have derivative zero |
+| Corollary | `saut:cor:bidifferentiable` (line 1405) | Untitled |
+| Theorem | `saut:thm:acfhomogeneity` (line 1439) | Class back-and-forth |
+| Theorem | `saut:thm:orderedhomogeneity` (line 1474) | Ordered surreal extension |
+| Proposition | `saut:prop:nondefinability` (line 1516) | Untitled |
+| Proposition | `saut:prop:fixedfields` (line 1555) | Untitled |
+| Theorem | `saut:thm:torsion` (line 1616) | Finite subgroups and real forms |
+| Theorem | `saut:thm:inequivalentrealform` (line 1661) | Untitled |
+| Lemma | `saut:lem:displacement` (line 1765) | Displacement cannot be globally bounded |
+| Theorem | `saut:thm:expfaithful` (line 1788) | Faithful value-group action |
+| Proposition | `saut:prop:rationalnonlift` (line 1844) | Untitled |
+| Theorem | `saut:thm:L` (line 1881) | Logarithmic-modulus automorphisms |
+| Proposition | `saut:prop:conjugacycriterion` (line 2415) | Untitled |
 
 ### euclidean-three-space
 
@@ -4220,12 +4243,12 @@ It asserts no Lean coverage. All statements remain **pending unless explicitly m
 | Lemma | `gz:lem:heatpersist` (line 3962) | Local real-root persistence \src{04, 05, 06} |
 | Theorem | `gz:thm:escape` (line 3979) | Escape at negative infinitesimal time \src{04, 05, 06} |
 
-
 ### omnific-diophantine-geometry
 
 Source: [surreal/omnific-diophantine-geometry/article.tex](surreal/omnific-diophantine-geometry/article.tex).
 
-All entries are **Pending**. The three `maintheorem` entries in the quotient report are indexed for completeness but excluded from the literal four-environment counts.
+Placed base manuscript only; integration, proof review and formalization are
+**Pending**. The statement index does not cover the unintegrated manuscripts.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
@@ -4275,13 +4298,15 @@ All entries are **Pending**. The three `maintheorem` entries in the quotient rep
 
 Source: [surreal/set-sized-quotients-of-omnific-integers/article.tex](surreal/set-sized-quotients-of-omnific-integers/article.tex).
 
-All entries are **Pending**. The three `maintheorem` entries in the quotient report are indexed for completeness but excluded from the literal four-environment counts.
+Placed base manuscript only; integration, proof review and formalization are
+**Pending**. The statement index does not cover the unintegrated manuscripts.
+
+Three additional `maintheorem` statements remain in scope: `main:class`
+(line 167), `main:cardinal` (line 210) and `main:homological` (line 239).
+They are not included in the literal standard-environment table below.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Main theorem | `main:class` (line 167) | The universal set-sized quotient |
-| Main theorem | `main:cardinal` (line 210) | Cardinal detection threshold |
-| Main theorem | `main:homological` (line 239) | Homological reflection and hidden obstructions |
 | Lemma | `lem:c0` (line 367) | Constant coefficient |
 | Lemma | `lem:gap` (line 400) | A positive gap below a set |
 | Proposition | `prop:common` (line 413) | Common monomial divisibility |
@@ -4298,7 +4323,7 @@ All entries are **Pending**. The three `maintheorem` entries in the quotient rep
 | Proposition | `prop:unitconstant` (line 771) | The same obstruction without primality |
 | Proposition | `prop:primereservoir` (line 788) | A scaled field in every non-arithmetic residue field |
 | Proposition | `prop:matrices` (line 829) | Finite matrix representations |
-| Corollary | line 864 | Untitled |
+| Corollary | Line 864 (unlabeled) | Untitled |
 | Theorem | `thm:polynomialtests` (line 890) | Coefficient reduction for all set-algebra tests |
 | Proposition | `prop:derivations` (line 922) | Reduction of derivations |
 | Proposition | `prop:euler` (line 958) | An internal Euler-type derivation |

@@ -16,11 +16,14 @@ hypotheses, limitations and provenance.
 
 ## Newest reports
 
-The documents placed in `be06fc8` add [omnific Diophantine geometry](surreal/omnific-diophantine-geometry/)
-and [set-sized quotients of the omnific integers](surreal/set-sized-quotients-of-omnific-integers/),
-from eleven incoming manuscripts. Their 75 standard results and three custom
-main theorems are indexed in the formalization ledger and remain pending.
-The typeset catalogue still covers the earlier 49 reports.
+Eleven omnific-integer manuscripts placed in `be06fc8` are assigned to
+[omnific Diophantine geometry](surreal/omnific-diophantine-geometry/) and
+[set-sized quotients](surreal/set-sized-quotients-of-omnific-integers/).
+Only their base manuscripts are currently installed as `article.tex`.
+The remaining nine manuscripts, delivery READMEs and build paths still need
+integration; no current compiled PDFs accompany these two sources. Their
+proof review and formalization are pending. The inventory indexes the
+present base texts, not the full eleven-manuscript delivery.
 
 Batch 23 (placed in `e4f8848`, written in `7af7056`) adds
 [Gamma and zeta](surcomplex/gamma-and-zeta-functions/), merged from six
@@ -47,8 +50,9 @@ tables below:
 [finite surreal probability](surreal/finite-surreal-probability/) and
 [surcomplex field automorphisms](surcomplex/surcomplex-field-automorphisms/).
 The finite-probability main-text review now covers Sections 2–17; remaining
-imports and source reconciliation, and review of the other three reports,
-remain pending. Lean coverage is tracked
+imports and source reconciliation remain pending. The field-automorphism
+main-text review covers Sections 1–15 and Appendix B; its remaining imports
+and source reconciliation, and review of the other two reports, are pending. Lean coverage is tracked
 separately in the ledger. The same batch added
 source material to the measures and trigonometry reports; those additions do
 not extend their earlier proof-review scope.
@@ -98,8 +102,8 @@ not extend their earlier proof-review scope.
 | [Vector and tensor fields](surreal/vector-and-tensor-fields/) | Layered tensor calculus with surreal coefficients in every dimension: Hahn-supported smooth fields, Taylor prolongation, Hodge and Stokes; 3D calculus and Minkowski fields as parts; not a physics claim |
 | [Euclidean three-space](surreal/euclidean-three-space/) | Coordinate and spherical geometry of `No³` with finite angles, and the rotation group `SO(3,No)` as a split extension with a perfect infinitesimal kernel; normal subgroups by valuation cuts and the universal set-sized quotient of `SO(3,No)` |
 | [Finite surreal probability](surreal/finite-surreal-probability/) | Surreal-valued probability on finite algebras: conditioning on infinitesimal events, log-odds, entropy, scoring rules; compare the measures report for countable additivity |
-| [Omnific Diophantine geometry](surreal/omnific-diophantine-geometry/) | Constant-term retraction, finite quotients, norm and quadratic rigidity, a quartic definition of the ordinary integers, and global support bounds |
-| [Set-sized quotients of the omnific integers](surreal/set-sized-quotients-of-omnific-integers/) | Universal constant-term quotients, small module actions, Gaussian analogues, cardinal detection thresholds and homological obstructions |
+| [Omnific Diophantine geometry](surreal/omnific-diophantine-geometry/) | Arithmetic and Diophantine equations over the omnific integers; constant-term transfer, rigidity and definability; placed base manuscript, integration pending |
+| [Set-sized quotients of omnific integers](surreal/set-sized-quotients-of-omnific-integers/) | Constant-term factorization of maps to set-sized rings and cardinal/homological thresholds; placed base manuscript, integration pending |
 
 The two birthday reports have different domains. The first allows its specified
 ordinal supports but excludes positive powers of `ω`; the Laurent report allows

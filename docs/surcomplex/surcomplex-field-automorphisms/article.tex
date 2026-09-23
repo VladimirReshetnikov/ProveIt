@@ -120,9 +120,11 @@ proved statements, imported theorems, and unresolved classification problems.
 \textbf{Scope and status.} An AI-assisted research draft, not refereed.
 A mathematical research exposition, not a claim of
 complete classification or of historical priority. Written proofs are supplied
-for the main reductions and constructions. No new Lean verification or
-independent build of the repository is claimed, and no theorem of this report
-is Lean-verified. Repository comparison is
+for the main reductions and constructions. No new Lean verification is
+supplied here. Its labels have no dedicated implementation mappings;
+existing generic Lean results cover ordered displacement, exponential
+rigidity, logarithmic-modulus classification and the valuation kernel
+(Section~\ref{saut:sec:position}). The original repository comparison is
 pinned to the revision recorded in Section~\ref{saut:sec:repo}; the relations
 to the collection as it now stands are in
 Section~\ref{saut:sec:position} and Appendix~\ref{saut:app:provenance}.
@@ -209,6 +211,14 @@ collection of class maps}; it is not itself a class-object in NBG. A group
 isomorphism formula means a unique factorization statement about individual
 automorphisms, with the stated composition law. This convention avoids
 forming a nonexistent set or class of all class functions.
+Likewise, a finite subgroup means a faithful action of an ordinary finite
+group $G$, encoded by one class relation in $G\times\K\times\K$ whose
+slices are field automorphisms. No set of proper-class graphs is formed;
+the fixed field is defined by quantifying over the finite index set $G$.
+For a collection of all class automorphisms, a displayed fixed-field
+identity is instead read pointwise: it asserts that an element is fixed
+by every individual map exactly when it belongs to the named field.
+It does not invoke class comprehension with a quantifier over class maps.
 
 Global choice is used for the nonconstructive extension arguments in
 Section~\ref{saut:sec:bare}. The explicit Hahn maps need no class-sized
@@ -472,7 +482,8 @@ placed in the decomposition of Theorem~\ref{saut:thm:decomp}.
 \paragraph{Unit circle and rotations.} The Cayley map in the proof of
 Theorem~\ref{saut:thm:circle}, $u=(x-i)/(x+i)$, is a reparametrization of
 \lbl{trigonometry:thm:cayley} of \repo{surcomplex/trigonometry}
-($u=C(-1/x)$ in its notation); that report identifies the unit circle with
+($u=C(-1/x)$ for $x\ne0$, while $x=0$ gives $u=-1$);
+that report identifies the unit circle with
 $\operatorname{SO}(2,\No)$ in Section~\lbl{trigonometry:sec:circle}.
 Rotations there, and in \repo{surreal/euclidean-three-space}, placed in the
 same batch, are $\No$-linear isometries, not field automorphisms. The
@@ -488,10 +499,27 @@ as a ring automorphism of the concrete surcomplex field, and
 \texttt{coefficientEquiv} lifts a ring equivalence of coefficients to Hahn
 series over an ordered exponent monoid, keeping supports: the case
 $M_{\rho,\id,1}$ of \eqref{saut:eq:monomial} in a workspace. \nolinkurl{Surreal/Algebra/SigmaDerivation.lean}
-proves the valued-field forms of the rigidity report's displacement
-results; its ordered-field \lbl{lem:amplify}, used here, is recorded in
-\repo{FORMALIZATION.md} as pending. No statement of this report is covered
-by a Lean proof.
+proves the valued-field forms of the rigidity report's displacement results.
+The later \nolinkurl{Surreal/Algebra/ExponentialProfile.lean} proves its
+ordered displacement lemma (\texttt{displacement\_cofinal}) and the
+value-fixing exponential rigidity implication (\texttt{eq\_id\_of\_commute}).
+The modules \nolinkurl{Surreal/Algebra/LogModulusClassification.lean} and
+\nolinkurl{Surreal/Algebra/ComplexValuationKernel.lean} now also prove the
+generic logarithmic-modulus classification and valuation-kernel theorem.
+They work over an ordered field with nonnegative square roots and an
+injective \texttt{OrderedExp}; injectivity is an explicit hypothesis,
+not a field of that structure. The kernel theorem additionally uses a
+nontrivial convex valuation. The classification includes the direct-product
+isomorphism (\texttt{autLEquiv}); the kernel module uses separate definitions
+of \texttt{log}, $L$ and the $L$-automorphism predicate, without a formal
+bridge to the classification module. Its coarsened action is expressed
+relationally, not through a constructed ordered quotient.
+These generic results cover the corresponding arguments here;
+their mappings use the rigidity report's labels. No dedicated
+\texttt{saut:} implementation mapping is added. Instantiation at the actual
+surreal exponential, rational non-lifting and the classification for the
+actual surcomplex logarithmic modulus remain pending; no class automorphism-group object follows
+merely from a theorem about individual type-based maps.
 
 \section{Conjugation and the real-axis stabilizer}\label{saut:sec:axis}
 
@@ -651,9 +679,12 @@ $\OO/\mm\simeq\C$. The analogous real residue field is $\R$.
 A set-indexed family $(z_j)_{j\in J}$ is Hahn-summable if the union of its
 supports is well-ordered and every exponent occurs in only finitely many
 of the supports. Its sum is then defined coefficientwise by finite sums.
-We call an automorphism \emph{strong} here when it and its inverse carry
-summable families to summable families and commute with their sums.
-It is strongly $\C$-linear when it is strong and fixes $\C$ pointwise.
+An additive map is \emph{strongly additive} when it carries summable
+families to summable families and commutes with their sums. An automorphism
+is \emph{strong} here when it and its inverse are strongly additive.
+A strongly $\C$-linear map is a strongly additive $\C$-linear map;
+for an automorphism we also require its inverse to be strongly additive.
+For field automorphisms, $\C$-linearity is equivalent to fixing $\C$ pointwise.
 \end{definition}
 
 This definition is a support condition, not a limit of finite partial sums.
@@ -873,8 +904,11 @@ For $r\in\R$, rational comparisons imply only
 \[
  \sigma(r)-r\in\mm\cap\No,
 \]
-not $\sigma(r)=r$. In a non-Archimedean extension, the rational cut of $r$
-is shared by every infinitesimal perturbation of $r$.
+not, for a general $r$, $\sigma(r)=r$. For an \emph{irrational} real $r$,
+every infinitesimal perturbation has the same strict rational comparisons:
+each nonzero ordinary distance $|r-q|$, $q\in\Q$, dominates every
+infinitesimal. Rational $r$ are fixed already, and real algebraic $r$ are
+fixed by their polynomial and order data (\cref{saut:lem:order}).
 The following construction makes the distinction explicit.
 
 \begin{theorem}[Taylor motion of coefficient constants]\label{saut:thm:coeffflow}
@@ -911,6 +945,10 @@ which is $1$ for $k=0$ and $0$ otherwise. This proves the inverse formula.
 Every term with $n>0$ has exponent strictly larger than the original
 minimum; the $n=0$ term retains its original leading coefficient. Hence
 $\Phi_d\in\U$. Since $d(1)=0$, each monomial is fixed.
+For any $z\ne0$, the correction in fact satisfies
+$v(\Phi_d(z)-z)\ge v(z)+\delta$, with $v(0)=\infty$.
+Also $d(i)=0$ is automatic from $d(i^2+1)=2i\,d(i)=0$; preservation of
+the real coefficients is the extra condition in the real-axis assertion.
 
 To obtain \eqref{saut:eq:realmove}, choose a transcendence basis $B$ of $\R/\Q$
 and an element $b\in B$. Define a derivation on $\Q(B)$ by $d(b)=1$ and
@@ -1071,7 +1109,12 @@ $\beta(1+\varepsilon)$ still has leading coefficient $1$. Hence
 It follows that $\beta\mapsto\chi_\beta$ is a group homomorphism on $I$,
 with kernel exactly $\U$. The maps $D_\chi$ split it. Thus
 $u=\beta D_{\chi_\beta}^{-1}$ gives \eqref{saut:eq:factor}, and all parameters
-are forced by the preceding operations. Evaluating
+are forced by the preceding operations. More explicitly, the character in
+that factorization is
+$\chi(g)=\lc(\alpha(t^{\tau^{-1}(g)}))$; it is indexed after undoing the
+value action. The subgroup $\U$ is normal in $G_v$, since conjugation by
+a valued automorphism transports its strict valuation inequality through
+the ordered map $\tau$. Evaluating
 $M_{\rho,\tau}D_\chi M_{\rho,\tau}^{-1}$ on a monomial gives
 \eqref{saut:eq:charouter}.
 \end{proof}
@@ -1084,9 +1127,16 @@ exhibit automorphisms outside $G_v$ in Section~\ref{saut:sec:bare}.
 The same proof works with the strong subgroup, replacing $\U$ by its strong
 part. All explicit sections are strong, so strength of an automorphism
 is concentrated in the residual kernel factor. The factor $\U$ itself is
-not replaced by a conveniently finite list of coefficients: its elements
-may act on full series in ways not determined by their action on individual
-monomials unless strongness is imposed.
+not replaced by a conveniently finite list of coefficients. A strong field
+map is determined by its action on \emph{both} ordinary coefficients and
+monomials, using
+$\alpha(\sum z_gt^g)=\sum\alpha(z_g)\alpha(t^g)$.
+Monomial images alone suffice when it also fixes $\C$ pointwise.
+Strongness alone does not remove the coefficient data: the nonidentity
+Taylor motions \cref{saut:thm:coeffflow} fix every monomial. Without
+strongness, the displayed reconstruction is not licensed:
+Section~\ref{saut:sec:topology} gives an automorphism that fixes every
+summand of a Hahn family but moves its sum.
 
 \subsection{The real reduction}
 
@@ -1127,11 +1177,20 @@ $(a_g)_{g\in\Gamma}$, the formula
 defines an ordered additive automorphism. Here $\zeta$ need not be additive:
 this is an additive-group construction, not a field construction.
 
-An ordered additive automorphism permutes the Archimedean classes in order.
-On the quotient at each class, it induces an ordered additive automorphism
-of $\R$, which is multiplication by a positive real number. Removing
-\eqref{saut:eq:skeleton} leaves exactly $\U_{\mathrm{add}}$. This gives an
-additional kernel--skeleton factorization, parallel to \cite{KSG}.
+An ordered additive automorphism $\tau$ permutes the Archimedean classes
+in order. Its parameters can be read directly as
+$\zeta(g)=v(\tau(t^g))$ and $a_g=\lc(\tau(t^g))>0$.
+For fixed $g$, comparison of $rt^g$ with rational multiples of $t^g$
+shows that the leading coefficient of $\tau(rt^g)$ is $a_gr$ for every
+$r\in\R^\times$, at value $\zeta(g)$. A tail of value greater than $g$
+is infinitesimal relative to $t^g$ in the ordered additive group, and its
+image has value greater than $\zeta(g)$. Thus the leading term of the
+image of any input with leading term $rt^g$ is
+$a_grt^{\zeta(g)}$. This uses only order and additivity, not strong
+summation or a quotient whose elements would be proper classes.
+Removing \eqref{saut:eq:skeleton} leaves exactly
+$\U_{\mathrm{add}}$, and the parameters are unique. This is the additional
+kernel--skeleton factorization, parallel to \cite{KSG}.
 
 It is important to retain the reindexing action in its group law. Direct
 calculation gives
@@ -1172,7 +1231,9 @@ If $\alpha$ induces $\tau$ on $\Gamma$, then
 \[
  v(\alpha z-\alpha a)=\tau(v(z-a)).
 \]
-The order bijection $\tau$ takes the neighborhood basis to itself. Applying
+The order bijection $\tau$ takes the neighborhood basis to itself: for a
+target threshold $\eta$, use the input threshold $\tau^{-1}(\eta)$.
+This threshold is independent of the base point. Applying
 the same equation to pairs of points proves uniform continuity of both
 $\alpha$ and its inverse. The real-axis subgroup lies in $G_v$ by
 \cref{saut:lem:order} and \eqref{saut:eq:equivariantnorm}.
@@ -1225,9 +1286,11 @@ Newton--Puiseux fact that
 \[
  \mathcal P=\bigcup_{m\ge1}\R((t^{1/m}))
 \]
-is real closed. Its complexification is the algebraically closed Puiseux
-field; this is a set-sized field, discussed among the special cases in
-\cite{KS}. Define
+is real closed. Indeed,
+$\mathcal P(i)=\bigcup_{m\ge1}\C((t^{1/m}))$ is algebraically closed by
+Newton--Puiseux \cite{ParanVo}; an ordered field with algebraically closed
+quadratic extension by $i$ is real closed. This set-sized Puiseux field is
+also discussed among the special cases in \cite[Section~5.5]{KS}. Define
 \begin{equation}\label{saut:eq:nonstronga}
  a=\sum_{n\ge2}t^{1-1/n},\qquad \varepsilon=t^\omega.
 \end{equation}
@@ -1261,9 +1324,20 @@ $a$. Hence the neighborhood specified by
 \[
  \psi(t)=t,\qquad \psi(a)=a+\varepsilon
 \]
-in the pointwise-equality topology on automorphisms contains $\sigma$ and
+in the pointwise-equality topology on $\Aut(\No)$ contains $\sigma$ and
 contains no strong automorphism. This proves non-density in that particular
 automorphism-group topology, not in every possible topology on the group.
+
+The same finite observations exclude strong maps in the full $\Aut(\K)$.
+If $\psi(t)=t$ and $q_n=1-1/n$, then
+$\psi(t^{q_n})^n=t^{n-1}$, so
+$\psi(t^{q_n})=\zeta_n t^{q_n}$ with $\zeta_n$ an ordinary complex
+$n$th root of unity. Strongness would force
+$\psi(a)=\sum_{n\ge2}\zeta_n t^{q_n}$, whose support is contained in
+$\Q$ and cannot contain the exponent $\omega$ of $a+\varepsilon$.
+The lifted witness satisfies both observations, so the strong subgroup
+is not dense there either. This argument requires neither preservation of
+the real axis nor fixation of all ordinary complex constants by $\psi$.
 
 \section{Differentiability: a surprising zero-derivative phenomenon}\label{saut:sec:derivative}
 
@@ -1302,7 +1376,7 @@ For the maps $S_a$ of \eqref{saut:eq:dilation},
 \[
  S_a'\equiv0\quad(a>1),\qquad S_1'\equiv1.
 \]
-For $0<a<1$, $S_a$ has no finite fine derivative at any point.
+For $0<a<1$, $S_a$ has no $\K$-valued fine derivative at any point.
 In particular, $S_2$ is a nonidentity field automorphism and a fine
 homeomorphism with derivative zero everywhere.
 \end{theorem}
@@ -1315,11 +1389,12 @@ If $a>1$, given any $\eta\in\Gamma$, taking
 $v(h)>\eta/(a-1)$ forces the quotient into $V_\eta(0)$.
 Thus the quotient tends to zero. This argument works for positive
 infinitesimal $a-1$ as well as for ordinary positive $a-1$.
-If $0<a<1$, already along monomial increments $h=t^\gamma$ with $\gamma$
-arbitrarily large, the quotient has valuation $(a-1)\gamma$ arbitrarily
-negative. It eventually leaves any fixed bounded neighborhood of any
-proposed finite limit. Equivalently, by \cref{saut:thm:derivative} a limit
-would have to be zero, which \eqref{saut:eq:dilationquot} rules out.
+If $0<a<1$, \cref{saut:thm:derivative} would force any derivative to be
+zero, since $S_a(t)=t^a\ne t$. But for every proposed input threshold
+$\gamma_0$, choose $\gamma>\max\{\gamma_0,0\}$ and put $h=t^\gamma$.
+Then $h\in V_{\gamma_0}(0)$, while the quotient has value
+$(a-1)\gamma<0$ and lies outside $V_0(0)$. This rules out a zero limit
+using the full neighbourhood criterion, without a set-indexed cofinal net.
 \end{proof}
 
 Conjugating the input does not change its valuation. Thus $S_a c$ also
@@ -1340,7 +1415,8 @@ Put $k=\alpha(h)$; continuity implies $k\to0$ as $h\to0$. The product
  \frac{\alpha(h)}h\,
  \frac{\alpha^{-1}(k)}k=1
 \]
-would then tend to zero, a contradiction. The identity satisfies both
+would then tend to zero, a contradiction. Injectivity ensures $k\ne0$
+for $h\ne0$, so the inverse's punctured limit applies. The identity satisfies both
 conditions.
 \end{proof}
 
@@ -1348,7 +1424,8 @@ These results do not assert that $S_2$ is representable by a locally
 convergent power series with fixed coefficients. They concern the fine
 difference-quotient definition. In this setting, ``everywhere
 differentiable'' cannot be used as a synonym for ordinary complex analytic
-rigidity, and a zero derivative does not imply local constancy. The
+rigidity, and a zero derivative does not imply local constancy: $S_2$ is
+injective and the full field has no isolated points. The
 Berarducci--Mantova scalar derivation discussed later is a different
 operation again.
 
@@ -1367,7 +1444,8 @@ In particular, every isomorphism between set-sized subfields of $\K$
 extends to a field automorphism of $\K$.
 \end{theorem}
 \begin{proof}
-Choose set-like class enumerations of $K_1$ and $K_2$, indexed by $\On$.
+Fix a set-like global well-order and the resulting class enumerations of
+$K_1$ and $K_2$, indexed by $\On$.
 Recursively maintain an isomorphism $f_\alpha:A_\alpha\to B_\alpha$
 between \emph{set-sized} subfields. At a forth step, take the next element
 $x$ of $K_1$. If $x$ is algebraic over $A_\alpha$, send it to a root in
@@ -1377,13 +1455,20 @@ $B_\alpha$. This is possible because the elements of $K_2$ algebraic over
 a set-sized subfield form a set: there are set many polynomials and each
 has finitely many roots. A proper-class field cannot be exhausted by it.
 
-At a back step do the same for the next element of $K_2$, using the inverse
-partial map. At a limit ordinal take unions. There are only set many
+At each successor stage perform both a forth step and a back step, the
+latter for the next element of $K_2$ using the inverse partial map; skip an
+element already in the relevant partial field. Always select the least
+admissible witness in the fixed global well-order. At a limit ordinal
+take unions. There are only set many
 earlier stages at any given ordinal, so the partial domains and ranges
 remain sets. The class union of all partial maps is a field isomorphism;
 forth steps exhaust $K_1$ and back steps exhaust $K_2$.
-All choices and recursions concern sets at each ordinal stage, with the
-ambient fields as class parameters.
+Each partial map is a set. The deterministic rule has a unique recursion
+of every set ordinal length, with the ambient fields and well-order as
+class parameters; these compatible recursions define the class union.
+The candidate witnesses can form a proper class, but its least member is
+selected by the global well-order. No recursion whose stage value is itself
+a proper class, or class-sized transcendence basis, is needed.
 \end{proof}
 
 \begin{theorem}[Ordered surreal extension]\label{saut:thm:orderedhomogeneity}
@@ -1525,8 +1610,8 @@ We use the classical Artin--Schreier theorem: if an algebraically closed
 field is a proper finite extension of a subfield, that subfield is real
 closed, the characteristic is zero, and the extension has degree two.
 A proof and the finite-automorphism application are given in \cite{Conrad}.
-The finite-degree arguments apply to class fields as well: the degree,
-polynomials, and automorphism tuples involved are finite.
+We apply these ordinary set-field theorems inside invariant set-sized
+algebraically closed subfields, as follows.
 
 \begin{theorem}[Finite subgroups and real forms]\label{saut:thm:torsion}
 Every nontrivial finite subgroup of $\Aut(\K)$ has order two.
@@ -1536,11 +1621,24 @@ Consequently $\Aut(\K/\C)$ and the leading-term kernel $\U$ are torsion-free.
 Within $G_{\No}$, the only nonidentity torsion element is $c$.
 \end{theorem}
 \begin{proof}
-For a finite group $H$ of automorphisms, Artin's fixed-field theorem gives
-$[\K:\K^H]=|H|$. If $H$ is nontrivial, Artin--Schreier forces this degree
-to be two. Apply this first to finite cyclic groups and then to arbitrary
-finite $H$. The fixed field cannot contain $i$, and $j(i)=\pm i$, so the
-sign is negative. An automorphism fixing $\C$ cannot be such an involution.
+For a nontrivial finite indexed group $H$, choose for each nonidentity
+element a moved point. Adjoin $i$ and close this finite set under $H$,
+then take the relative algebraic closure in $\K$ of its generated field.
+The result is a set-sized, $H$-stable algebraically closed field $E$,
+and the restricted action is faithful. Artin's fixed-field theorem and
+Artin--Schreier give $[E:E^H]=|H|=2$. Applying this to a finite cyclic
+action shows that every nonidentity finite-order automorphism is an
+involution.
+
+For such an involution $j$, the same construction can include any prescribed
+set of elements of $\Fix(j)$. Each $E^j$ is real closed, and these fields
+form a directed family with union $F_j=\Fix(j)$; hence $F_j$ is real closed.
+Because $i\in E$ and $E^j$ is real closed, $j(i)=-i$. For every $z\in\K$,
+\[
+ z=\frac{z+jz}{2}+i\frac{z-jz}{2i},
+\]
+and both displayed coordinates are fixed by $j$. Thus $\K=F_j(i)$.
+An automorphism fixing $\C$ cannot be such an involution.
 A member of $\U$ must fix $i$, since changing it to $-i$ changes its leading
 coefficient, and is therefore also torsion-free.
 Finally, an order-preserving bijection of a linear order has no nontrivial
@@ -1574,15 +1672,20 @@ coefficients. Let
  H=\No(T)^{\rc}
 \]
 be an ordered real closure. To construct this in class foundations,
-choose a set-like enumeration of $\No(T)$ and take increasing set-sized subfields
-$A_\alpha$ exhausting it. Choose a real closure at each successor stage.
-Uniqueness of ordered real closures gives compatible ordered embeddings
-of the earlier closures into the later ones; identify their copies and
-take unions at limits. Every adjoined element is algebraic over some
-$A_\alpha$, and every polynomial over the union appears at a set stage.
-The resulting class field contains the original $\No(T)$, is algebraic
-over it, and is real closed. This is a coherent set-stage construction,
-not an application of a class Zorn lemma.
+choose a set-like enumeration of $\No(T)$ and increasing set-sized subfields
+$A_\alpha$ exhausting it. For each $\alpha$ choose a set-coded ordered real
+closure $R_\alpha$ of $A_\alpha$, using the fixed global well-order.
+For $\alpha\le\beta$, there is a unique ordered embedding
+$R_\alpha\to R_\beta$ extending $A_\alpha\subseteq A_\beta$.
+Uniqueness follows by preserving the order of the finitely many real roots
+of each polynomial, and makes these embeddings compatible under composition.
+Take the direct limit: represent an element by the least equivalent
+stage--element pair in the set-like global well-order. Thus the elements
+are sets, not proper-class equivalence classes. Every finite tuple occurs
+in one stage, so the resulting class field is real closed; every element
+is algebraic over the embedded $\No(T)$. Identifying that canonical image
+with $\No(T)$ gives the required extension. This is a coherent set-stage
+construction, not an application of a class Zorn lemma.
 
 The powers $T,T^2,T^3,\ldots$ are cofinal in $\No(T)$. Indeed, each rational
 function has finite degree and each nonzero coefficient and its reciprocal
@@ -1695,7 +1798,11 @@ The homomorphism
 \[
  \nu:F\to\Lambda,\qquad \nu(x)=w(E(x))
 \]
-is additive and surjective. Its kernel $H$ is a proper convex additive
+is additive, with image exactly $w(F^\times)$: for $a\ne0$ use
+$x=E^{-1}(|a|)$ and $w(-1)=0$ to get $\nu(x)=w(a)$.
+Thus it is onto the actual value group, even if $\Lambda$ was presented
+as a larger ambient group. Nontriviality of $w$ makes
+its kernel $H$ a proper convex additive
 subgroup: $E$ is increasing and a convex valuation reverses the order on
 positive elements. A proper convex additive subgroup is bounded above in
 $F$; if $b>0$ lies outside it, then every $h\in H$ satisfies $|h|<b$.
@@ -1741,7 +1848,8 @@ is not induced by any exponential automorphism of $\No$.
 \begin{proof}
 If $\sigma$ were such an automorphism, the homomorphism
 $\nu(x)=v(\exp x)$ would satisfy
-$\nu(\sigma x)=q\nu(x)=\nu(qx)$. Thus
+$\nu(\sigma x)=q\nu(x)=\nu(qx)$, using the $\Q$-linearity of the additive
+map $\nu$. Thus
 $\sigma(x)-qx$ would be finite for every $x$.
 Choose a positive infinite $X$, and write
 \[
@@ -2208,11 +2316,14 @@ the source's and were not rechecked for this report.
 \item \emph{(Added.)} Whether $\Gexp$ is nontrivial, equivalently whether
 $\{\id,c\}\subsetneq\AutL(\K)$, is not decided; nor is whether $S_a|_{\No}$
 is exponential when $a$ is not rational (Section~\ref{saut:sec:conventions}).
-\item \emph{(Added.)} No statement of this report is covered by a Lean
-proof. The Lean modules named in Section~\ref{saut:sec:position} are
-interfaces and neighbouring results only; the Lean proof of the
-discreteness clauses concerns lower-universe-small subsets of the Lean
-carrier.
+\item \emph{(Added; status updated.)} No dedicated \texttt{saut:} mappings
+are supplied. Existing generic Lean proofs cover ordered displacement,
+exponential rigidity, logarithmic-modulus classification and the valuation
+kernel, as recorded in
+Section~\ref{saut:sec:position}; their actual surreal exponential
+instantiation remains pending. The discreteness proof concerns
+lower-universe-small subsets of the Lean carrier, not an unqualified
+proper-class statement.
 \item \emph{(Added.)} The relations of Section~\ref{saut:sec:position}
 identify results by their content; no theorem is transferred between the
 full fine topology and a workspace topology, or between the fine
@@ -2365,11 +2476,11 @@ $P\to\mathcal P$, the automorphism $\tau\to\psi$ of the non-density
 argument, and cut sides $(L,R)\to(\mathcal L,\mathcal R)$; the source's
 $\Aut(\K,L)$ is written $\AutL(\K)$.
 \end{enumerate}
-No mathematical statement of the source was changed. Where the edit had to
-choose: the results the source reproduces from the rigidity report (its
+The placement edit preserved the source's mathematical statements.
+It retained the results reproduced from the rigidity report (its
 Lemma~3.1, the faithfulness of Corollary~4.2, the content of
 Theorem~5.1 and Corollary~5.2, Theorem~8.4, and Theorem~9.2 with its
-kernel clause) are printed here once, with the
+kernel clause). They are printed here once, with the
 source's proofs and attribution, rather than replaced by pointers, because
 they are part of one manuscript's argument; Section~\ref{saut:sec:position}
 names each counterpart. The letter $E$ was freed for the exponential,
@@ -2377,6 +2488,14 @@ following the rigidity report, rather than renaming that report's symbol.
 The title is the source's; the directory is named
 \texttt{surcomplex-field-automorphisms} to say that the automorphisms are
 field automorphisms.
+
+The later proof review clarifies rational cuts and strong coefficient action.
+It expands the class and support arguments and excludes every derivative
+value in $\K$, including infinite values. The finite-observation
+non-density proof is extended to all surcomplex field automorphisms.
+Current generic Lean coverage is separated from the pinned inspection.
+See \repo{REVIEW.md} for the changes and validation.
+The added arguments are not attributed to the original delivery.
 
 \subsection{Pinned repository scope}\label{saut:app:pinned}
 
@@ -2496,5 +2615,10 @@ opening assessment and implementation notes inspected.
 \bibitem{RepoFine}
 \nolinkurl{Surreal/Algebra/FineDerivative.lean}, snapshot in \cite{Repo}.
 \href{https://github.com/VladimirReshetnikov/Surreal/blob/dcf86662b574988e75d08d515d3a2a5ba7bbc0d7/Surreal/Algebra/FineDerivative.lean}{Pinned source file}.
+\bibitem{ParanVo}
+E.~Paran and T.~N.~Vo,
+\emph{A skew Newton--Puiseux Theorem}, introduction (classical
+Newton--Puiseux theorem), 2023.
+\url{https://arxiv.org/abs/2311.17544}.
 \end{thebibliography}
 \end{document}
