@@ -243,6 +243,7 @@ import Surreal.Algebra.Circumcircle
 import Surreal.Surcomplex.TriangleLaws
 import Surreal.Surcomplex.TriangleCircumcircle
 import Surreal.Surcomplex.TriangleSideValuation
+import Surreal.Surcomplex.RightTriangle
 import Surreal.Surcomplex.TrigonometricFineDerivative
 import Surreal.Surcomplex.TrigonometricOrder
 import Surreal.Surcomplex.TrigonometricLeading

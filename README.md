@@ -459,6 +459,9 @@ Every such triangle has a unique circumcircle with positive actual radius
 `abc/(4*area)`. All three side-to-sine ratios equal twice that radius,
 and the tangent law has positive denominators on its prescribed domains.
 The least of the three side valuations is attained at least twice.
+Right triangles are characterized by Pythagoras. Each acute angle is the
+inverse tangent of its opposite-to-adjacent leg ratio, and explicit
+triangles realize every positive surreal slope, including infinite slopes.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual
