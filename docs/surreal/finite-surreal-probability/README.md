@@ -13,7 +13,7 @@ source, and nothing here was selected out of a larger body of work.
 ```
 article.tex        the report, standalone LaTeX with an internal bibliography
                    (delivered as surreal_probability.tex, renamed on placement)
-article.pdf        the compiled report, 46 pages
+article.pdf        the compiled report, 47 pages
 README.md          this guide
 RESEARCH_AUDIT.md  the manuscript's own repository, literature and evidence audit, as delivered
 code/verify.py     exact finite checks in Q(t) (Python 3.10+, standard library only)
@@ -36,14 +36,17 @@ contains no numbered statement or equation, so every theorem, equation and
 section number of the manuscript is unchanged. The numbers below are checked
 against the build of `article.tex` in this directory.
 
-The current proof review covers Sections 2–7: scalar workspaces, standard
+The current proof review covers Sections 2–9: scalar workspaces, standard
 part, finite probability, conditional shadows, Bayesian updates, logits,
-softmax and finite information theory. It corrects the point-weight event-algebra hypothesis,
+softmax, finite information theory, Gibbs laws, smoothing, logistic separation
+and finite stochastic processes. It corrects the point-weight event-algebra hypothesis,
 the joint-normalizer condition for successive updates, neutral evidence and
 the distinction between sufficient and necessary conditioning precision.
 It also separates the attained interior logarithmic-score minimum from the
 unattained boundary infimum over strictly positive predictions.
-Later sections and the remaining imports still require review; see the
+Smoothing now distinguishes positive prior weights from posterior support,
+and optional stopping states adaptation and stopping-time measurability.
+Sections 10 onward and the remaining imports still require review; see the
 collection's [review record](../../REVIEW.md).
 
 ## What the report claims
@@ -308,7 +311,7 @@ the pin and the delivered 35-page PDF.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-This build gives 46 pages (a title page, two contents pages and 43 numbered
+This build gives 47 pages (a title page, two contents pages and 44 numbered
 pages), with no errors, no undefined or multiply-defined references or
 citations, no duplicate PDF destinations, and no LaTeX, package or box warnings.
 No bibliography database or external figure is needed.
@@ -485,3 +488,34 @@ current sources and all 907 local Markdown destinations in 97 files resolve.
 The full Lean build passes 3,916 jobs; its axiom audit checks 6,277 declarations
 using only `propext`, `Classical.choice` and `Quot.sound`. No new probability
 Lean coverage is claimed. Sections 8 onward and remaining imports are pending.
+
+The fourth finite-probability pass reviews Sections 8–9. Gibbs minimization
+now includes its full-simplex domain, uniqueness at infinitesimal temperature,
+and the ground-state shadow with a contrasting temperature-scale energy gap.
+The finite decision argument includes the nonempty-act hypothesis and the
+limited-payoff condition for standard part. Smoothing now distinguishes prior
+regularity from posterior support and requires a positive joint normalizer
+for successive updates. Its Hahn leading coefficient includes `lc(t)` for a
+general infinitesimal scale, and the no-observation case is explicit.
+
+The logistic-separation proof improves every candidate by a finite parameter
+shift; an opposite-label example shows that a minimizer can exist without
+separation. Finite path consistency is proved by terminal-coordinate sums,
+including horizon zero. Optional stopping states adaptation, null-atom
+versions and stopping-time measurability, expands the tower/pull-out proof,
+and includes an anticipative-time counterexample. Rare hitting includes the
+zero horizon, and Bernoulli variance and the failure of infinitesimal accuracy
+at any ordinary sample size have explicit calculations.
+
+Validation: baseline and revised PDFs rebuilt in three passes without warnings
+at 46 and 47 pages; changed proof pages were visually inspected. All 114 label
+numbers and five historical audit/code/data files are preserved. The copied
+verifier reproduces 2,145 assertions with JSON unchanged apart from the Python
+version. Separate checks pass 275 exact `Q(t)` cases for path marginals,
+finite stopping rules (including null atoms and infinite payoffs), hitting,
+Bernoulli moments and smoothing, plus 19 symbolic identities for Gibbs laws
+and the opposite-label minimum. These finite checks do not construct an
+infinite path law or compute canonical surreal exp/log. The independent index
+audit checks 2,181 entries in 46 current sources, and all 907 local Markdown
+destinations in 97 files resolve. No new probability Lean coverage is claimed.
+Sections 10 onward and remaining imports are pending.
