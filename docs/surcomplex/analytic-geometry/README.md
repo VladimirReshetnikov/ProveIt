@@ -396,6 +396,12 @@ source's own non-claims. In summary:
   sufficient data), and a replacement function algebra with a valid corona
   principle — enlarging the scalar field alone is ruled out.
 
+The entire-functions report builds continuum prime chains above a
+one-simple-node canonical product in the strongly entire ring from the same
+power gauges (`ent:ps:thm:dichotomy`, `ent:ps:lem:gaps`); there the chains come
+from the quotient groups `Γ/H_n` and vanish when `Γ` has an order unit. No
+statement transfers between the two rings.
+
 ## Build
 
 ```sh

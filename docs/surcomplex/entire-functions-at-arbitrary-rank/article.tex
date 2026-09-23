@@ -91,6 +91,7 @@
 \DeclareMathOperator{\conv}{conv}
 \DeclareMathOperator{\remp}{rem}\DeclareMathOperator{\Res}{Res}
 \DeclareMathOperator{\ev}{ev}
+\DeclareMathOperator{\Spec}{Spec}\DeclareMathOperator{\red}{red}
 \newcommand{\RD}{\mathcal R_D}\newcommand{\Ucal}{\mathcal U}
 \newcommand{\ggA}{\mathrel{\gg_{\!A}}}
 \newcommand{\abs}[1]{\lvert#1\rvert}
@@ -158,7 +159,18 @@ criterion for finitely many generators and an exact separation threshold
 for paired zeros complete the ideal-theoretic picture. Apart from the
 statement that those residue fields are algebraically closed, these results
 use no algebraic closedness, and all of them hold with real Hahn
-coefficients, the boundary residue fields then being real closed. The third
+coefficients, the boundary residue fields then being real closed. Beyond the
+maximal ideals, every prime ideal containing a product with one \emph{simple}
+node per shell is given by a nonprincipal ultrafilter together with a convex
+subgroup of an ultraproduct of quotient value groups, or is an evaluation
+ideal. That quotient is zero-dimensional exactly when $\Gamma$ has an order
+unit, and otherwise every nonprincipal fibre of its spectrum contains a
+strict chain of continuum many primes, although the quotient is a reduced
+B\'ezout ring in which finite matrices have Smith forms. A cofinal
+enlargement of the value group leaves the product and its zeros unchanged
+and can nevertheless split one prime into continuum many; in the explicit
+surreal example even an old maximal ideal acquires continuum many nonmaximal
+extensions. The third
 classification is analytic. For every
 ordered-group extension $\Gamma\subseteq\Delta$, all nonpolynomial entire
 series over $\K$ share one exact strong evaluation domain in $\KD$: the
@@ -178,19 +190,24 @@ homogeneous-block summation, the ordinary complex directions along which a
 new dominating scale can be crossed are exactly the proper countable unions
 of projective algebraic sets.
 
-This report is the union of five manuscripts. Two were written
+This report is the union of six manuscripts. Two were written
 independently and proved the same engine; a third, written against their
 merge, answered the question about the interpolation image that the merge
 had left open; a fourth, written in parallel against a snapshot in which
 that question was still open, proved the same image theorem independently by
 a different construction and
 added the ideal-theoretic refinements above; a fifth answered the
-scalar-extension clause of the several-variable question. The arbitrary-rank
+scalar-extension clause of the several-variable question; a sixth described
+the prime ideals above a product with one simple node per shell. The
+arbitrary-rank
 classifications, the explicit non-B\'ezout construction, the exact shellwise
 image and its ideal theory, the universal extension domain and its
-several-variable replacement are proposed original contributions, not a
+several-variable replacement, and the analytic prime fibres with their
+splitting under cofinal extension are proposed original contributions, not a
 claimed solution of any named published conjecture. Classical Hahn-field
-inputs and rank-one antecedents are identified and credited. Complete proofs
+inputs and rank-one antecedents are identified and credited, and so is the
+classical ultraproduct and valuation-domain mechanism behind the prime
+fibres. Complete proofs
 are supplied; they have not been independently refereed or verified in a
 proof assistant.
 \end{abstract}
@@ -428,6 +445,31 @@ the Stone--\v{C}ech space $\beta\N$
 (\cref{ent:sm:thm:maximal-all,ent:sm:thm:beta}). None of these classifies
 the whole maximal spectrum of $\E$; see \cref{ent:q:spectrum}.
 
+The sixth source goes below the maximal ideals, for one \emph{simple} node
+per shell (\cref{ent:ps:sec:spectrum}). Starting from the quotient of part
+(b), which it credits, it shows that every prime ideal of $\E$ containing
+such a product is an evaluation ideal or is given by a nonprincipal
+ultrafilter $\Ucal$ and a convex subgroup of the ultraproduct
+$\prod_\Ucal(\Gamma/H_n)$, the fibre over $\Ucal$ being the spectrum of an
+explicit ultraproduct valuation domain (\cref{ent:ps:thm:spectrum}). The
+quotient is zero-dimensional exactly when $\Gamma$ has an order unit, and
+otherwise each nonprincipal fibre contains a chain of continuum many primes
+(\cref{ent:ps:thm:dichotomy}); it is nevertheless a reduced semihereditary
+B\'ezout ring with Smith forms (\cref{ent:ps:thm:bezout,ent:ps:thm:smith}).
+Under a cofinal enlargement $\Gamma\subseteq\Delta$ the contraction of these
+primes is intersection of convex subgroups, with all extensions of a prime
+described by an interval of convex subgroups
+(\cref{ent:ps:thm:contraction}); for $\Gamma_\infty$ inside its
+rational-indexed enlargement one prime splits into continuum many while the
+product and its zeros do not change
+(\cref{ent:ps:thm:splitting,ent:ps:cor:maximal-splitting}). Bounded
+multiplicities do not change the spectrum, and unbounded ones produce primes
+that the reduced description misses (\cref{ent:ps:thm:multiplicity}). This
+answers the ``prime ideals'' clause of \cref{ent:q:spectrum} for one simple
+node per shell. The ultraproduct and valuation-domain mechanism is classical
+\cite{FFW,StacksValuation}; what is proposed is its exact analytic
+realization, the dichotomy and the splitting construction.
+
 \Needspace{14\baselineskip}
 \begin{theorem}[Universal scalar-extension package]\label{ent:thm:main-extension}
 Let $\Gamma\subseteq\Delta$ be nonzero divisible ordered abelian groups and
@@ -523,7 +565,7 @@ $a_{n,j}$ were the exact inverses of this report's, and the single
 renormalizing pass that fixed that is recorded in
 \cref{ent:subsec:notation}.
 
-Two further manuscripts were merged later. The \emph{fourth} was written
+Three further manuscripts were merged later. The \emph{fourth} was written
 against a snapshot of the merged report taken after the third source's pin
 but before the third source was merged in, and it too set out to identify
 the missing image of the infinite jet map. It did so independently and at the same
@@ -544,7 +586,19 @@ each other --- and \cref{ent:subsec:notation} records the translation. The
 \emph{fifth} was written against a later snapshot, after the third source
 had been merged, and answers the scalar-extension clause of
 \cref{ent:q:several}; it is \cref{ent:sec:multivariable}, which absorbs the
-finite-variable criteria that earlier versions kept in an appendix.
+finite-variable criteria that earlier versions kept in an appendix. The
+\emph{sixth} was written against a still later snapshot, after the fifth
+source had been merged; this report's directory is identical at that pin and
+at the base of the sixth merge. It takes
+\cref{ent:thm:quotient,ent:cor:single-node} and the maximal-ideal results of
+the fourth source as its starting point, credits them, and describes all
+prime ideals above a product with one simple node per shell, their
+behaviour under cofinal enlargement of the value group, and the
+multiplicity threshold; it is \cref{ent:ps:sec:spectrum}. It reproves the
+simple-node interpolation theorem for dependency control, by the argument of
+the first route (\cref{ent:ps:rem:route}), so that proof is printed once.
+Its sequence ring, convex subgroups and several other letters collide with
+this report's and are renamed (\cref{ent:subsec:notation}).
 
 The repository supplied with the question already contains a rank-one report
 over $\C((t^\R))$, including preparation, zero counting, zero-free rigidity
@@ -613,9 +667,17 @@ of the extension geometry with the exceptional-direction classification and
 realization. It credits the Ma--Neelon realization of countable algebraic
 unions as convergence sets of divergent power series \cite{MaNeelon}, and
 does not reclaim the finite-variable growth criterion, the one-variable
-extension domain or the whole-class rigidity.
+extension domain or the whole-class rigidity. The sixth source proposes the
+description of all prime fibres above a simple one-node-per-shell product,
+the order-unit dichotomy for that reduced divisor and the cofinal splitting
+construction, stating that these were not found in the sources it compared
+and that this is not proof of their absence. It credits the ultraproduct and
+valuation-domain mechanism for primes of product rings to Finocchiaro,
+Frisch and Windisch \cite{FFW} and the valuation-domain prime correspondence
+to the standard literature \cite{StacksValuation}, and it does not reclaim
+the interpolation quotient, the maximal ideals or the maximal spectrum.
 \Cref{ent:sec:scope,ent:app:sources} state the limits in full; every
-limitation recorded by any of the five source manuscripts is preserved
+limitation recorded by any of the six source manuscripts is preserved
 there.
 
 \section{Hahn supports, the surreal interpretation, and the algebra chain}
@@ -751,14 +813,14 @@ engine of \cref{ent:sec:units}.
 \subsection{Notation: radii live in \texorpdfstring{$\Gamma$}{Gamma}, nodes
 live in \texorpdfstring{$\K$}{K}}
 \label{ent:subsec:notation}
-Five manuscripts are merged here, and three of them arrived with letters
+Six manuscripts are merged here, and four of them arrived with letters
 that collide with this report's. The third arrived with the opposite
 convention for the two letters that matter most. Its $\rho_n$ was a positive
 element of the \emph{value group} and its $a_{n,j}$ was a point of the
 \emph{field}. This report keeps the convention of the first two throughout,
 in which $\rho$ always names a point of $\K$ and $\gamma$ always names an
-element of $\Gamma$. Every statement taken from the third, fourth or fifth
-manuscript has been rewritten in the convention below; the tables are
+element of $\Gamma$. Every statement taken from the third, fourth, fifth or
+sixth manuscript has been rewritten in the convention below; the tables are
 recorded so that a reader comparing the texts is not misled by a symbol that
 typesets identically and means something else.
 
@@ -877,6 +939,54 @@ prescribed algebraic sets, relation lattice, damping sequence & $Z_N$, $V_m$,
 $L$, $\beta_n$ & our $Z$ is the variable, $V_n$ the coarsened rings\\[0.3em]
 $\mathcal D^{\mathrm{hom}}(F)$, $\omega^x$ & homogeneous-block domain,
 Conway omega-map & $\operatorname{Dom}_{\mathrm{hom}}(F)$, $\Omega(x)$ & \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The sixth manuscript's letters are used only in \cref{ent:ps:sec:spectrum}.
+Its nodes, radii, $H_n$, $V_n$, $\mathfrak q_n$ (our $\mathfrak
+q_{\gamma_n}$), ultrafilters $\Ucal$, residue fields $L_\Ucal$, order units
+and cofinality agree with ours; the following are renamed. The word
+\emph{spectrum} means prime spectrum in that section, and \emph{free}
+ultrafilters and fibres are called nonprincipal, as elsewhere here.
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}P{0.2\textwidth}P{0.3\textwidth}P{0.17\textwidth}Y@{}}
+\toprule
+Symbol here & Meaning & In the sixth manuscript & Note\\\midrule
+$\RD$, $\RD^\Gamma$ & sequence ring $\cong\mathcal E_\Gamma/(P_D)$ &
+$\mathcal A$, $\mathcal A_\Gamma$ & our $\A$ is the Hahn algebra\\[0.3em]
+$P_D$, $P_{D_{\mathbf m}}$ & simple and multiple one-node products & $P$,
+$Q$ & our $P$ in \eqref{ent:eq:infinite-product} runs over $j\ge0$; our $Q_n$
+is \eqref{ent:eq:Qn}\\[0.3em]
+$\kk$ & $\R$ or $\C$ & $k$ & our $k$ is an index\\[0.3em]
+$\mathfrak e_n$ & evaluation prime of $\RD$ & $\mathfrak p_n$ & the fourth
+source's $\mathfrak p_n$ is our $\mathfrak q_{\gamma_n}$\\[0.3em]
+$\mathfrak n_\Ucal$, $\overline{\mathfrak M}_\Ucal$ & minimal and maximal
+prime of a fibre & $\mathfrak n_\Ucal$, $\mathfrak m_\Ucal$ & the inverse
+image of $\overline{\mathfrak M}_\Ucal$ in $\E$ is our $\mathfrak M_\Ucal$;
+our $\mathfrak m_\Gamma$ is the maximal ideal of $\OO$\\[0.3em]
+$\mathfrak p_{\Ucal,\mathcal C}$, $\mathcal C$, $\mathcal C'$ & fibre prime,
+convex subgroups & $\mathfrak p_{\Ucal,C}$, $C$, $D$ & our $C_n$ are
+corrections, our $D$ a divisor\\[0.3em]
+$\mathcal C_{\min}$, $\mathcal C_{\max}$, $\mathcal C_{\mathrm{int}}$,
+$\mathcal C'_\theta$, $\mathcal C_\theta$ & convex extensions, splitting and
+gap subgroups & $C_{\min}$, $C_{\max}$, $C$, $D_r$, $C_r$ & real parameter
+$\theta\in(0,1)$ for its $r$\\[0.3em]
+$\mathcal V_\Ucal$, $\mathcal K_\Ucal$, $\Gamma_\Ucal$, $w_\Ucal$ &
+ultraproduct valuation ring, its fraction field, value group, valuation &
+$W_\Ucal$, $F_\Ucal$, $G_\Ucal$, $w_\Ucal$ & our $W$ and $F$ are entire
+functions\\[0.3em]
+$\red_\Ucal$ & quotient map to $\mathcal V_\Ucal$ & $q_\Ucal$ & our $q_n$
+counts nodes; our $\Phi_\Ucal$ is $\red_\Ucal$ followed by residues\\[0.3em]
+$\bar\eta_n$, $\zeta_\theta$ & gap elements & $d_n$, $d_r$ & our $d$ is a
+damping exponent\\[0.3em]
+$m_{-r}(F)$ & weighted Gauss valuation & $\mu_r(F)$ & \emph{sign-inverted},
+as in the first table\\[0.3em]
+$\Delta_\Q=\bigoplus_{q\in\Q_{\ge0}}\Q e_q$ & rational-indexed
+enlargement of $\Gamma_\infty$ & $\bigoplus\Q f_q$, $f_j=e_j$ & our $f$ is
+\eqref{ent:eq:f-explicit}\\[0.3em]
+$\No[i]$ & surcomplex numbers & $\No(i)$ & collection notation\\
 \bottomrule
 \end{tabularx}
 \end{center}
@@ -3343,6 +3453,17 @@ no product of this form are not described. The unit-ideal criteria of
 \cref{ent:subsec:no-bezout} are not a corona theorem: no bounded function
 algebra and no norm lower bound is involved. See \cref{ent:q:spectrum}.
 
+\emph{Re-scoped by the sixth source.} The fourth source's non-claim about
+prime ideals is kept above as it was written. For one \emph{simple} node per
+shell with empty finite part, the prime ideals below these maximal ideals are
+now classified in \cref{ent:ps:sec:spectrum}
+(\cref{ent:ps:thm:spectrum}); the classification transfers to uniformly
+bounded multiplicities as a statement about prime spaces and dimension, and
+for unbounded multiplicities \cref{ent:ps:thm:multiplicity} shows only that
+primes not containing the reduced product exist. Shells with several nodes,
+unbounded multiplicities, and maximal or prime ideals of $\E$ containing no
+product of this form remain unclassified.
+
 \subsection{Real Hahn coefficients}
 \begin{proposition}[Real form]\label{ent:prop:real-form}
 \Cref{ent:thm:image,ent:thm:quotient,ent:thm:bezout-criterion} and the
@@ -4840,6 +4961,1239 @@ choice is used for lattice bases, coefficient bounds and algebraically
 independent coordinates.
 \end{itemize}
 
+\section{Prime spectra above a one-node-per-shell product}
+\label{ent:ps:sec:spectrum}
+
+This section is the sixth source's contribution. It describes every prime
+ideal of $\E$ that contains a canonical product with one simple node per
+shell, not only the maximal ones of \cref{ent:sm:thm:maximal-all}; it decides
+when the quotient by such a product is zero-dimensional; it computes the
+contraction of these primes under a cofinal enlargement of the value group,
+with an explicit surreal example in which the prime spectrum refines while
+the function and its zeros do not change; and it locates the multiplicity
+threshold beyond which the reduced description is incomplete. It answers the
+``prime ideals'' clause of \cref{ent:q:spectrum} for one simple node per
+shell, and only for that case; the non-claim about prime ideals recorded at
+the end of \cref{ent:sm:subsec:all-maximal} is kept there as written, now
+with a pointer to this section. Three warnings govern the section.
+
+\begin{enumerate}[label=(\arabic*),leftmargin=2em]
+\item \emph{What is inherited.} The analytic input is the quotient theorem
+\cref{ent:thm:quotient} in its one-node form \cref{ent:cor:single-node}, over
+$\R((t^\Gamma))$ by \cref{ent:prop:real-form}. The sixth source reproved the
+simple-node case so as not to depend on this report's preparation theory; its
+argument is the first route of \cref{ent:thm:image} specialized to one simple
+node per shell, and it is printed once, by citation
+(\cref{ent:ps:rem:route}). The maximal ideals, their residue fields and the
+maximal spectrum are \cref{ent:thm:maximal,ent:sm:thm:maximal-all,ent:sm:thm:beta};
+the sixth source recovers them from the full spectrum and does not claim them.
+\item \emph{What is classical.} The idempotent and ultraproduct mechanism for
+the primes of a product ring, including products of Pr\"ufer domains described
+by ultrafilters, ultraproduct valuations and cuts in value groups, is due to
+Finocchiaro, Frisch and Windisch \cite{FFW}, a direct precedent for
+\cref{ent:ps:lem:ultrafilter,ent:ps:prop:fibre}. The correspondence between
+the primes of a valuation domain and the convex subgroups of its value group
+is standard \cite{StacksValuation}. The Hahn support calculus is Neumann's
+\cite{Neumann}, and the normal forms used in \cref{ent:ps:subsec:splitting}
+are Conway's and Gonshor's \cite{Conway,Gonshor}. The sixth source proposes
+as new only the exact analytic realization of these mechanisms, the
+order-unit dichotomy for the reduced divisor and the cofinal splitting
+construction, and it certifies none of them against the whole literature
+(\cref{ent:ps:subsec:limits}).
+\item \emph{Words and letters.} \emph{Spectrum} means prime spectrum
+$\Spec$ throughout this section; the maximal spectrum is written
+$\operatorname{Max}$, as in \cref{ent:sm:thm:beta}. The sixth source's
+letters are translated by the last table of \cref{ent:subsec:notation}. In
+particular its sequence ring $\mathcal A$ is written $\RD$ here, because our
+$\A$ is the Hahn algebra of \cref{ent:sec:growth}; its convex subgroups $C$
+and $D$ are written $\mathcal C$ and $\mathcal C'$, because our $C_n$ are
+corrections and our $D$ is a divisor; and its coefficient field $k$ is
+written $\kk$.
+\end{enumerate}
+
+\subsection{Setting and the inherited quotient}
+\label{ent:ps:subsec:setting}
+
+\begin{convention}[Standing hypotheses of this section]
+\label{ent:ps:conv:standing}
+Unless a second group is introduced explicitly, $\Gamma$ is a nonzero
+set-sized divisible ordered abelian group with $\cf(\Gamma)=\aleph_0$. The
+coefficient field $\kk$ is $\R$ or $\C$, with the trivial valuation; in this
+section $K_\Gamma$ denotes $\kk((t^\Gamma))$ and $\mathcal E_\Gamma$ its
+ring of strongly entire series (for $\kk=\C$ these are $\K$ and $\E$, for
+$\kk=\R$ the real forms of \cref{ent:prop:real-form}). In
+\cref{ent:sec:multivariable} the letter $\kk$ denoted an arbitrary trivially
+valued field; here it is $\R$ or $\C$, although the sixth source records that
+most of its proofs work over any trivially valued field. Fix a strictly
+increasing positive sequence $\gamma_1<\gamma_2<\cdots$ cofinal in $\Gamma$
+and put
+\begin{equation}\label{ent:ps:eq:product}
+ \rho_n=t^{-\gamma_n},\qquad
+ D=\sum_{n\ge1}[\rho_n],\qquad
+ P_D(Z)=\prod_{n\ge1}\bigl(1-t^{\gamma_n}Z\bigr)
+       =\prod_{n\ge1}\Bigl(1-\frac Z{\rho_n}\Bigr).
+\end{equation}
+The letters $H_n=H_{\gamma_n}$, $V_n=V_{\gamma_n}$ and
+$\mathfrak q_{\gamma_n}$ are those of \cref{ent:def:coarse} and
+\cref{ent:lem:coarse-residue}, and $\kappa_n=\kk((t^{H_n}))$. Ultrafilters
+are ultrafilters on $\N_{>0}$; nonprincipal ones exist by the axiom of choice,
+which is used, and no particular one is computed. All rings, products and
+ultraproducts below are sets.
+\end{convention}
+
+The node $\rho_n$ is the shell normalizer $\tau_n$ of
+\eqref{ent:eq:shellpoly}, and $P_D$ is the canonical product of
+\cref{ent:thm:product}. The product in \eqref{ent:ps:eq:product} is not the
+product $P$ of \eqref{ent:eq:infinite-product}, which runs over $j\ge0$; for
+$\Gamma=\Gamma_\infty$ and $\gamma_n=e_n$ it is the function $f$ of
+\eqref{ent:eq:f-explicit}. By \cref{ent:thm:quotient,ent:cor:single-node}
+(and \cref{ent:prop:real-form} over $\R$), evaluation at the nodes induces a
+$K_\Gamma$-algebra isomorphism
+\begin{equation}\label{ent:ps:eq:quotient}
+ \begin{gathered}
+ \mathcal E_\Gamma/(P_D)\ \xrightarrow{\ \sim\ }\ \RD,
+ \qquad F\longmapsto\bigl(F(\rho_n)\bigr)_n ,\\
+ \RD=\bigl\{(b_n)_{n\ge1}\in K_\Gamma^{\N_{>0}}:
+      b_n\in V_n\text{ for all sufficiently large }n\bigr\},
+ \end{gathered}
+\end{equation}
+the ring displayed in \cref{ent:subsec:invisible}; operations
+are coordinatewise. We write $\RD^\Gamma$ when the group varies. From now on
+$\mathcal E_\Gamma/(P_D)$ is identified with $\RD$. A prime of $\RD$ is the
+same as a prime of $\mathcal E_\Gamma$ containing $P_D$, through its inverse
+image; in particular a \emph{minimal} prime of $\RD$ is minimal \emph{above}
+$(P_D)$, not a minimal prime of the domain $\mathcal E_\Gamma$.
+
+\begin{remark}[The sixth source's analytic route, printed once]
+\label{ent:ps:rem:route}
+The sixth source proves, for the monomial nodes \eqref{ent:ps:eq:product}, a
+coefficient criterion, Gauss multiplicativity, the canonical product with a
+weighted bound on the formal inverse of its tails, division by a linear
+factor, translation and additivity of orders, the principal kernel and the
+exact value image. These are \cref{ent:thm:criterion},
+\cref{ent:prop:operations} with \eqref{ent:eq:gauss-mult},
+\cref{ent:thm:product} with \eqref{ent:eq:productcoef},
+\cref{ent:lem:linear-division}, \cref{ent:prop:operations} with
+\cref{ent:cor:evaluation}, \cref{ent:prop:kernel-direct} and
+\cref{ent:cor:single-node}; its weighted value
+$\min_j\{v(a_j)-jr\}$ is $m_{-r}$ of \eqref{ent:eq:weighted}. Its sufficiency
+construction fits finitely many values by a polynomial with coefficients in
+some $V_L$ and then adds
+\[
+ C_n(Z)=y_n\prod_{j<n}\frac{Z-\rho_j}{\rho_n-\rho_j}\Bigl(\frac
+ Z{\rho_n}\Bigr)^{d_n},\qquad d_n\ge\max\{n,2c_n+2\},
+\]
+where $y_n$ is the residual value and $v(y_n)\ge-c_n\gamma_n$. This is the
+correction \eqref{ent:eq:correction} of the first route for one simple node
+per shell: with $\tau_n=\rho_n$ the normalized node is $1$, the shell algebra
+is $K_\Gamma$, $\Psi_{n,d}$ is the constant $y_n/Q_n(1)$, and
+$(Z/\tau_n)^dQ_n(Z/\tau_n)/Q_n(1)$ is the displayed Lagrange factor times
+$(Z/\rho_n)^d$. The initialization over $V_L$ and the damping bound
+\eqref{ent:eq:damping-target} are the same. Its kernel proof, like
+\cref{ent:prop:kernel-direct}, divides by the finite product $P_{\le N}$ and
+multiplies by the formal inverse of the tail; it controls the quotients
+through the stabilized Gauss value
+$m_{-r}(F/P_{\le N})=m_{-r}(F)-\sum_{n\le N}\min\{0,\gamma_n-r\}$ rather than
+through a coefficient bound uniform in $N$. Both are therefore printed once,
+here by citation; the kernel argument differs from
+\cref{ent:prop:kernel-direct} only in that bookkeeping and is not kept as a
+separate route. Like the first route, neither uses preparation or algebraic
+closedness.
+\end{remark}
+
+\begin{lemma}[Indicator idempotents]\label{ent:ps:lem:idempotents}
+For every $S\subseteq\N_{>0}$ the indicator sequence
+$e_S=(\mathbf 1_S(n))_n$ lies in $\RD$, and
+$e_Se_T=e_{S\cap T}$, $e_S+e_{\N_{>0}\setminus S}=1$. Some $F\in\mathcal
+E_\Gamma$ interpolates it. The ring $\RD$ is reduced, so $(P_D)$ is a radical
+ideal of $\mathcal E_\Gamma$.
+\end{lemma}
+\begin{proof}
+The values $0$ and $1$ lie in every $V_n$, so \cref{ent:cor:single-node}
+supplies an interpolant; it need not be idempotent in $\mathcal E_\Gamma$ and
+becomes idempotent only modulo $(P_D)$. The identities are coordinatewise.
+The ring $\RD$ is a subring of a product of fields, hence reduced.
+\end{proof}
+
+The subscript of $e_S$ is a set; an integer subscript, as in $e_j$, denotes a
+basis vector of $\Gamma_\infty$, as elsewhere in this report. The same
+idempotents were used in the proof of \cref{ent:sm:thm:maximal-all}.
+
+\begin{remark}[Other nodes on the same radii]\label{ent:ps:rem:nodes}
+The sixth source takes the monomial nodes $\rho_n=t^{-\gamma_n}$. The ring
+$\RD$ of \eqref{ent:ps:eq:quotient} depends only on the radii: by
+\cref{ent:thm:quotient,ent:cor:single-node} it is also the quotient of
+$\mathcal E_\Gamma$ by the canonical product of any divisor with one simple
+node $\rho_n'$ of valuation $-\gamma_n$ on each shell and empty finite part,
+through $F\mapsto(F(\rho_n'))_n$. Consequently
+\cref{ent:ps:subsec:fibres,ent:ps:subsec:classification,ent:ps:subsec:topology,ent:ps:subsec:dichotomy,ent:ps:subsec:finite-algebra},
+which are statements about $\RD$ and about inverse images under that
+evaluation map, hold verbatim for such nodes. This observation is the
+merge's. \Cref{ent:ps:subsec:contraction,ent:ps:subsec:splitting,ent:ps:subsec:multiplicity}
+are stated only in the source's setting.
+\end{remark}
+
+\subsection{The ultrafilter fibres}
+\label{ent:ps:subsec:fibres}
+
+For an ultrafilter $\Ucal$ put
+\begin{equation}\label{ent:ps:eq:nU}
+ \mathfrak n_\Ucal=\{a\in\RD:\{n:a_n=0\}\in\Ucal\}.
+\end{equation}
+For the principal ultrafilter at $n$ this is the coordinate ideal
+\[
+ \mathfrak e_n=\{a\in\RD:a_n=0\},\qquad \RD/\mathfrak e_n\cong K_\Gamma,
+\]
+whose inverse image in $\mathcal E_\Gamma$ is the evaluation ideal
+$(Z-\rho_n)\mathcal E_\Gamma$ of \cref{ent:cor:evaluation}.
+
+\begin{lemma}[Idempotents select exactly one ultrafilter]
+\label{ent:ps:lem:ultrafilter}
+For a prime ideal $\mathfrak p$ of $\RD$ the set
+$\Ucal_{\mathfrak p}=\{S\subseteq\N_{>0}:e_S\notin\mathfrak p\}$ is an
+ultrafilter, and $\mathfrak p\supseteq\mathfrak n_{\Ucal_{\mathfrak p}}$.
+Primes with different selected ultrafilters are incomparable.
+\end{lemma}
+\begin{proof}
+In the domain $\RD/\mathfrak p$ every idempotent is $0$ or $1$, and the
+identities of \cref{ent:ps:lem:idempotents} give the ultrafilter axioms. If
+$a$ vanishes on some $S\in\Ucal_{\mathfrak p}$, then $ae_S=0$ with
+$e_S\notin\mathfrak p$, so $a\in\mathfrak p$. If
+$\mathfrak p\subseteq\mathfrak p'$ and $e_S\notin\mathfrak p'$, then
+$e_S\notin\mathfrak p$; thus $\Ucal_{\mathfrak p'}\subseteq\Ucal_{\mathfrak
+p}$, and two ultrafilters one of which contains the other are equal.
+\end{proof}
+
+\begin{proposition}[The fibre ring]\label{ent:ps:prop:fibre}
+Let $\Ucal$ be nonprincipal. Replacing the finitely many coordinates of
+$a\in\RD$ that lie outside $V_n$ by zero and passing to the class modulo
+$\Ucal$ defines a surjective ring homomorphism
+\[
+ \red_\Ucal:\RD\longrightarrow\mathcal V_\Ucal=\prod_\Ucal V_n
+\]
+with kernel $\mathfrak n_\Ucal$, so $\RD/\mathfrak n_\Ucal\cong\mathcal
+V_\Ucal$. Here an ultraproduct is a quotient by agreement on a member of
+$\Ucal$, not a space of convergent sequences. The ring $\mathcal V_\Ucal$ is
+a valuation domain with fraction field $\mathcal K_\Ucal=\prod_\Ucal K_\Gamma$
+and value group
+\[
+ \Gamma_\Ucal=\prod_\Ucal(\Gamma/H_n),
+\]
+the valuation of a nonzero class being
+\begin{equation}\label{ent:ps:eq:wU}
+ w_\Ucal\bigl([a_n]_\Ucal\bigr)=[v(a_n)+H_n]_\Ucal ,
+\end{equation}
+where zero coordinates on a set outside $\Ucal$ may be changed arbitrarily.
+\end{proposition}
+\begin{proof}
+Changing finitely many coordinates does not change a class at a nonprincipal
+ultrafilter, which gives well-definedness and compatibility with the ring
+operations. Every sequence in $\prod_nV_n$ already lies in $\RD$, so
+$\red_\Ucal$ is onto, and its kernel is $\mathfrak n_\Ucal$.
+
+The ultraproduct $\mathcal K_\Ucal$ is a field: a nonzero class has a
+representative that is nonzero on a member of $\Ucal$, and reciprocals there
+invert it. Every class in $\mathcal K_\Ucal^\times$ lies in $\mathcal V_\Ucal$
+or has its inverse there, because the alternative holds in each coordinate
+and $\Ucal$ contains one of the two index sets. So $\mathcal V_\Ucal$ is a
+valuation domain with fraction field $\mathcal K_\Ucal$. Formula
+\eqref{ent:ps:eq:wU} respects agreement modulo $\Ucal$, multiplication and
+the ultrametric inequality coordinatewise. Its range is the whole ordered
+group ultraproduct: choose an exponent in each coordinate coset and take the
+corresponding monomials. The classes of nonnegative value are exactly the
+nonzero classes in $\mathcal V_\Ucal$. No model-theoretic transfer theorem is
+used.
+\end{proof}
+
+Composing $\red_\Ucal$ with the coordinatewise coarsened residue maps of
+\cref{ent:lem:coarse-residue} gives $\Phi_\Ucal$ of \eqref{ent:eq:Phi} on
+$\RD$: the kernel of $[a_n]_\Ucal\mapsto[\res_n(a_n)]_\Ucal$ on $\mathcal
+V_\Ucal$ consists of the classes with $a_n\in\mathfrak q_{\gamma_n}$ on a
+member of $\Ucal$, which is the maximal ideal $\{w_\Ucal>0\}\cup\{0\}$, and
+the map is onto $L_\Ucal=\prod_\Ucal\kappa_n$. This remark is the merge's
+bridge between the two notations.
+
+\begin{remark}[Relation to the product-ring literature]
+\label{ent:ps:rem:ffw}
+\Cref{ent:ps:lem:ultrafilter,ent:ps:prop:fibre} are the familiar idempotent
+and ultraproduct mechanisms of product-ring theory; compare \cite{FFW}. What
+the analytic theory supplies is the particular restricted sequence ring
+$\RD$, with coarsenings that change with $n$. This is why a statement about
+product rings becomes a statement about the values of entire functions at
+the nodes.
+\end{remark}
+
+\begin{lemma}[Primes of a valuation domain]
+\label{ent:ps:lem:valuation-primes}
+Let $\mathcal V$ be a valuation domain with surjective valuation
+$w:\operatorname{Frac}(\mathcal V)^\times\to\mathcal G$. For a convex subgroup
+$\mathcal C\le\mathcal G$ put
+\[
+ \mathfrak p_{\mathcal C}(\mathcal V)=\{0\}\cup
+ \{x\in\mathcal V\setminus\{0\}:w(x)>\mathcal C\},
+\]
+where $g>\mathcal C$ means that $g$ exceeds every element of $\mathcal C$.
+Every prime of $\mathcal V$ is $\mathfrak p_{\mathcal C}(\mathcal V)$ for
+exactly one $\mathcal C$, and $\mathcal C\subseteq\mathcal C_1$ if and only
+if $\mathfrak p_{\mathcal C_1}(\mathcal V)\subseteq\mathfrak p_{\mathcal
+C}(\mathcal V)$. The endpoints are $\mathfrak p_{\mathcal G}(\mathcal V)=0$ and
+$\mathfrak p_0(\mathcal V)$, the maximal ideal.
+\end{lemma}
+\begin{proof}
+For $g\ge0$, lying outside a convex subgroup is the same as exceeding all of
+it. Hence $\mathfrak p_{\mathcal C}(\mathcal V)$ is zero together with the
+elements of positive value for the coarsening $w+\mathcal C$; it is an ideal
+by the valuation inequalities, and prime because two nonnegative values in
+$\mathcal C$ have their sum in $\mathcal C$.
+
+Conversely let $\mathfrak p$ be prime. The values of the nonzero elements of
+$\mathcal V\setminus\mathfrak p$ form an additive submonoid $S$ of
+$\mathcal G_{\ge0}$ that is closed downwards: if $0\le g\le w(s)$ with
+$s\notin\mathfrak p$, choose $x$ of value $g$; then $s=xu$ with
+$u\in\mathcal V$, so $x\notin\mathfrak p$. The set $S\cup(-S)$ is a convex
+subgroup whose nonnegative part is $S$, and $\mathfrak p=\mathfrak
+p_{S\cup(-S)}(\mathcal V)$. Surjectivity of $w$ separates distinct convex
+subgroups and gives the inclusion rule. This is the standard correspondence
+\cite{StacksValuation}.
+\end{proof}
+
+\subsection{The complete classification}
+\label{ent:ps:subsec:classification}
+
+\begin{theorem}[All primes above the reduced product]
+\label{ent:ps:thm:spectrum}
+The prime ideals of $\RD\cong\mathcal E_\Gamma/(P_D)$ are exactly the
+following.
+\begin{enumerate}[label=\textnormal{(\alph*)},leftmargin=2em]
+\item For each $n\ge1$, the maximal ideal $\mathfrak e_n$, with inverse image
+$(Z-\rho_n)\mathcal E_\Gamma$.
+\item For each nonprincipal ultrafilter $\Ucal$ and each convex subgroup
+$\mathcal C\le\Gamma_\Ucal$, the prime
+\begin{equation}\label{ent:ps:eq:pUC}
+ \mathfrak p_{\Ucal,\mathcal C}
+ =\red_\Ucal^{-1}\bigl(\mathfrak p_{\mathcal C}(\mathcal V_\Ucal)\bigr).
+\end{equation}
+\end{enumerate}
+The parameters are unique. Primes over different ultrafilters are
+incomparable; within one fibre, inclusion of primes reverses inclusion of
+convex subgroups. The fibre over $\Ucal$ has the unique minimal prime
+$\mathfrak n_\Ucal=\mathfrak p_{\Ucal,\Gamma_\Ucal}$ and the unique maximal
+prime
+\[
+ \overline{\mathfrak M}_\Ucal=\mathfrak p_{\Ucal,0},
+\]
+whose inverse image in $\mathcal E_\Gamma$ is the ideal $\mathfrak M_\Ucal$
+of \cref{ent:thm:maximal}. For a principal ultrafilter at $n$ both endpoints
+are $\mathfrak e_n$.
+\end{theorem}
+\begin{proof}
+Let $\mathfrak p$ be prime and $\Ucal=\Ucal_{\mathfrak p}$. If $\Ucal$ is
+principal at $n$, then $1-e_{\{n\}}\in\mathfrak p$, and evaluation
+identifies $\RD/(1-e_{\{n\}})\RD$ with the field $K_\Gamma$; hence
+$\mathfrak p=\mathfrak e_n$. If $\Ucal$ is nonprincipal,
+\cref{ent:ps:lem:ultrafilter} makes $\mathfrak p$ the inverse image of a prime
+of $\RD/\mathfrak n_\Ucal\cong\mathcal V_\Ucal$
+(\cref{ent:ps:prop:fibre}), and \cref{ent:ps:lem:valuation-primes} applies.
+The converse and uniqueness follow from the same correspondence and from the
+idempotents, which recover $\Ucal$. Convex subgroups of an ordered group are
+linearly ordered by inclusion, which gives the uniqueness of the endpoints.
+The kernel of $\Phi_\Ucal$ on $\RD$ is $\mathfrak p_{\Ucal,0}$ by the
+remark after \cref{ent:ps:prop:fibre}, and its inverse image in
+$\mathcal E_\Gamma$ is $\mathfrak M_\Ucal$ by \eqref{ent:eq:Mexplicit}.
+\end{proof}
+
+The maximal ideals among these are the $\mathfrak e_n$ and the
+$\overline{\mathfrak M}_\Ucal$. For simple nodes this is
+\cref{ent:sm:thm:maximal-all}, which the sixth source recovers and does not
+claim; the new content is the nonmaximal part of each fibre.
+
+\begin{corollary}[Membership test for entire functions]
+\label{ent:ps:cor:membership}
+The inverse image of $\mathfrak p_{\Ucal,\mathcal C}$ in $\mathcal E_\Gamma$
+consists of the $F$ with $\{n:F(\rho_n)=0\}\in\Ucal$ and, in the
+complementary case, of the $F$ whose ultraproduct value satisfies
+\[
+ \bigl[v(F(\rho_n))+H_n\bigr]_\Ucal>\mathcal C .
+\]
+Thus an entire function can lie in a non-evaluation prime even when none of
+its node values vanishes. The condition measures an asymptotic scale of the
+values, not an additional zero.
+\end{corollary}
+
+\begin{theorem}[Local rings and residue towers]\label{ent:ps:thm:local}
+For nonprincipal $\Ucal$ and convex $\mathcal C\le\Gamma_\Ucal$ there are
+canonical isomorphisms
+\[
+ (\RD)_{\mathfrak p_{\Ucal,\mathcal C}}
+ \cong(\mathcal V_\Ucal)_{\mathfrak p_{\mathcal C}(\mathcal V_\Ucal)}
+ =\{0\}\cup\{x\in\mathcal K_\Ucal^\times:w_\Ucal(x)+\mathcal C\ge0\}.
+\]
+This is a valuation domain with value group $\Gamma_\Ucal/\mathcal C$. Its
+residue field carries a residual valuation with value group $\mathcal C$,
+whose residue field is
+\begin{equation}\label{ent:ps:eq:residue}
+ L_\Ucal=\prod_\Ucal\kk\bigl((t^{H_n})\bigr).
+\end{equation}
+At a principal prime $\mathfrak e_n$ the local ring and the residue field are
+$K_\Gamma$.
+\end{theorem}
+\begin{proof}
+The quotient map to $\mathcal V_\Ucal$ localizes to a surjection, and its
+kernel dies after localization: if $a\in\mathfrak n_\Ucal$ vanishes on
+$S\in\Ucal$, then $ae_S=0$ and $e_S\notin\mathfrak p_{\Ucal,\mathcal C}$.
+
+For a valuation domain $\mathcal V$ with value group $\mathcal G$, localizing
+at $\mathfrak p_{\mathcal C}(\mathcal V)$ inverts exactly the elements whose
+nonnegative values lie in $\mathcal C$, so the localization is the ring of
+the coarsening $w+\mathcal C$. In the one case needing an argument, if
+$w(x)\in\mathcal C$ is negative, choose $h\in\mathcal C_{\ge0}$ with
+$h\ge-w(x)$ and $s\in\mathcal V$ of value $h$; then
+$s\notin\mathfrak p_{\mathcal C}(\mathcal V)$ and $sx\in\mathcal V$. This
+gives the description and the value group. A nonzero residue of a unit for
+$w+\mathcal C$ has a well-defined residual value in $\mathcal C$, every
+element of $\mathcal C$ occurs by surjectivity of $w$, and taking residues
+once more gives the residue field of $\mathcal V$. For $\mathcal V_\Ucal$ the
+coordinatewise residue maps and \cref{ent:lem:coarse-residue} identify that
+field with \eqref{ent:ps:eq:residue}. The principal case follows by inverting
+$e_{\{n\}}$.
+\end{proof}
+
+\begin{remark}[What is and is not new about the residue fields]
+The fields \eqref{ent:ps:eq:residue} are the residue fields $L_\Ucal$ of
+\cref{ent:thm:maximal,ent:sm:thm:maximal-all}, algebraically closed for
+$\kk=\C$ and real closed for $\kk=\R$ by \cref{ent:sm:cor:boundary-fields}.
+At intermediate primes the residual valuation is additional structure. No
+ultraproduct field is asserted to be canonically a Hahn field on its
+ultraproduct value group; no such identification is needed.
+\end{remark}
+
+\subsection{Topology: a Stone space of valuation fibres}
+\label{ent:ps:subsec:topology}
+
+Give $\Spec\RD$ the Zariski topology, with basic open sets
+$D(a)=\{\mathfrak p:a\notin\mathfrak p\}$, and give $\beta\N_{>0}$ the basic
+clopen sets $\widehat S=\{\Ucal:S\in\Ucal\}$, as in \cref{ent:sm:thm:beta}.
+
+\begin{theorem}[The spectrum over the ultrafilter space]
+\label{ent:ps:thm:topology}
+The map $\pi:\Spec\RD\to\beta\N_{>0}$, $\mathfrak p\mapsto\Ucal_{\mathfrak
+p}$, is continuous and onto, with $\pi^{-1}(\widehat S)=D(e_S)$. Its fibre at
+a nonprincipal $\Ucal$ is the closed irreducible subspace
+$V(\mathfrak n_\Ucal)\cong\Spec\mathcal V_\Ucal$, with generic point
+$\mathfrak n_\Ucal$ and unique closed point $\overline{\mathfrak M}_\Ucal$.
+Principal fibres are open points. Both endpoint maps are homeomorphisms
+\[
+ \operatorname{Min}\RD\ \cong\ \beta\N_{>0},\qquad
+ \operatorname{Max}\RD\ \cong\ \beta\N_{>0}
+\]
+for the subspace topologies, and the evaluation primes $\mathfrak e_n$ form a
+discrete dense subset of the \emph{whole} prime spectrum.
+\end{theorem}
+\begin{proof}
+The formula for $\pi^{-1}(\widehat S)$ is the definition of
+$\Ucal_{\mathfrak p}$, and $\pi$ is onto by \cref{ent:ps:thm:spectrum}. A
+prime contains $\mathfrak n_\Ucal$ exactly when it selects $\Ucal$: if
+$S\notin\Ucal$ then $e_S\in\mathfrak n_\Ucal$, and if $S\in\Ucal$ the
+complementary idempotent lies there. So the fibre is $V(\mathfrak n_\Ucal)$,
+homeomorphic to $\Spec\mathcal V_\Ucal$; the spectrum of a domain is
+irreducible with generic point $0$, and a valuation domain has one maximal
+ideal. Principal fibres are $D(e_{\{n\}})=\{\mathfrak e_n\}$.
+
+For the minimal primes put $S_a=\{n:a_n\ne0\}$; then $a\notin\mathfrak
+n_\Ucal$ exactly when $S_a\in\Ucal$, so $D(a)$ meets the minimal primes in
+$\widehat{S_a}$, and the idempotents give every $\widehat S$. For the maximal
+primes put $T_a=\{n:a_n\in V_n^\times\}\subseteq S_a$. At a nonprincipal
+$\Ucal$, $a\notin\overline{\mathfrak M}_\Ucal$ exactly when $T_a\in\Ucal$; at
+the principal point $n$, exactly when $n\in S_a$. So $D(a)$ meets the maximal
+primes in
+$\widehat{T_a}\cup\{\text{principal point at }n:n\in S_a\setminus T_a\}$,
+which is open, and the idempotents again give continuity of the inverse. This
+recovers \cref{ent:sm:thm:beta} for simple nodes. Finally a nonempty $D(a)$
+has $a\ne0$, hence some $a_n\ne0$ and $\mathfrak e_n\in D(a)$; together with
+the open points this gives density and discreteness.
+\end{proof}
+
+\begin{remark}[Not a disjoint union]
+The fibres partition the primes but are not open in general, so the spectrum
+is not a topological disjoint union of valuation spectra. A nonprincipal
+fibre is closed, and its position relative to the principal points is
+governed by all indicator idempotents at once.
+\end{remark}
+
+\begin{corollary}[Semiprimitive, and Jacobson only in the degenerate case]
+\label{ent:ps:cor:semiprimitive}
+The Jacobson radical of $\RD$ is zero. If some nonprincipal fibre has more
+than one point, then $\RD$ is not a Jacobson ring.
+\end{corollary}
+\begin{proof}
+The intersection of the $\mathfrak e_n$ is zero, hence so is the intersection
+of all maximal ideals. A nonmaximal prime of a nonprincipal fibre lies in
+exactly one maximal ideal, by \cref{ent:ps:thm:spectrum}, so it is not the
+intersection of the maximal ideals containing it; that is the failure of the
+Jacobson property.
+\end{proof}
+
+\subsection{The order-unit dichotomy and continuum prime chains}
+\label{ent:ps:subsec:dichotomy}
+
+\emph{Order unit} is the notion of \cref{ent:def:order-unit}; countable
+cofinality does not imply that one exists (\cref{ent:rem:one-name}). In this
+subsection $\theta$ denotes a real number in $(0,1)$, and $\lfloor\cdot\rfloor$
+the integer part.
+
+\begin{lemma}[Uniform Archimedean gaps in an ultraproduct]
+\label{ent:ps:lem:gaps}
+Let $\mathcal G_n$ be nonzero ordered abelian groups, choose
+$\bar\eta_n>0$ in $\mathcal G_n$, and let $\Ucal$ be nonprincipal. For
+$0<\theta<1$ put
+\[
+ \zeta_\theta=\bigl[\lfloor n^\theta\rfloor\,\bar\eta_n\bigr]_\Ucal
+ \in\prod_\Ucal\mathcal G_n,
+ \qquad
+ \mathcal C_\theta=\conv(\Z\zeta_\theta),
+\]
+the convex subgroup generated by $\zeta_\theta$. If $\theta<\theta'$ then
+$m\zeta_\theta<\zeta_{\theta'}$ for every positive integer $m$, and hence
+$\mathcal C_\theta\subsetneq\mathcal C_{\theta'}$.
+\end{lemma}
+\begin{proof}
+For fixed $\theta<\theta'$ and $m$, the integer inequality
+$m\lfloor n^\theta\rfloor<\lfloor n^{\theta'}\rfloor$ holds for all large
+$n$; multiplying by $\bar\eta_n>0$ preserves it, and a nonprincipal
+ultrafilter contains every cofinite set. So $\zeta_{\theta'}$ exceeds every
+ordinary multiple of $\zeta_\theta$. The convex subgroup generated by a
+positive $\zeta$ consists of the elements bounded in absolute value by an
+ordinary finite multiple of $\zeta$, which gives the strict inclusion.
+\end{proof}
+
+\begin{theorem}[Reduced-divisor dichotomy]\label{ent:ps:thm:dichotomy}
+Under \cref{ent:ps:conv:standing} the following are equivalent.
+\begin{enumerate}[label=\textnormal{(\alph*)},leftmargin=2em]
+\item $\Gamma$ has an order unit.
+\item $V_n=K_\Gamma$ for all sufficiently large $n$, and
+$\RD=K_\Gamma^{\N_{>0}}$.
+\item $\RD$ is von Neumann regular: for every $a\in\RD$ there is $b\in\RD$
+with $a^2b=a$.
+\item Every prime of $\RD$ is maximal; equivalently $\dim\RD=0$.
+\item $\RD$ is a Jacobson ring.
+\end{enumerate}
+If they fail, then for every nonprincipal $\Ucal$ the fibre over $\Ucal$
+contains a strict chain of primes indexed by $(0,1)$ with its order reversed.
+In particular $\mathcal E_\Gamma/(P_D)$ has infinite Krull dimension,
+although every zero of $P_D$ is simple.
+\end{theorem}
+\begin{proof}
+If $h$ is an order unit, cofinality gives $\gamma_n\ge h$ eventually, so
+$H_n=\Gamma$ and $V_n=K_\Gamma$. Conversely $V_n=K_\Gamma$ forces
+$H_n=\Gamma$, by testing monomials of arbitrarily negative value, so
+$\gamma_n$ is an order unit. This is (a)$\Leftrightarrow$(b), which is
+\cref{ent:cor:order-unit-image} together with \cref{ent:sm:cor:no-order-unit}.
+In a product of fields put $b_n=a_n^{-1}$ where $a_n\ne0$ and $b_n=0$
+elsewhere; this gives (c). Under (b) every $\Gamma/H_n$ is zero, so every
+$\Gamma_\Ucal$ is zero and \cref{ent:ps:thm:spectrum} gives (d); and (d)
+implies (e).
+
+Suppose there is no order unit. Every $H_n$ is proper; choose $\eta_n>H_n$
+and put $\bar\eta_n=\eta_n+H_n>0$ in $\Gamma/H_n$.
+\Cref{ent:ps:lem:gaps} gives strictly increasing convex subgroups
+$\mathcal C_\theta\le\Gamma_\Ucal$, and the primes $\mathfrak
+p_{\Ucal,\mathcal C_\theta}$ strictly decrease by \cref{ent:ps:thm:spectrum},
+so (d) fails. Each nonprincipal fibre then has a nonmaximal prime, so (e)
+fails by \cref{ent:ps:cor:semiprimitive}. For (c) take $a_n=t^{\eta_n}$,
+which lies in $\RD$ and has no zero coordinate: $a^2b=a$ would force
+$b_n=t^{-\eta_n}$, which lies in no $V_n$, so $b\notin\RD$. A real interval
+contains finite strict chains of every length, which gives the assertion
+about Krull dimension.
+\end{proof}
+
+The assertion concerns the quotient $\mathcal E_\Gamma/(P_D)$. It does
+\emph{not} say that $\mathcal E_\Gamma$ itself is zero-dimensional in the
+order-unit case.
+
+\begin{proposition}[Entire witnesses for every strict inclusion]
+\label{ent:ps:prop:witnesses}
+Without an order unit, choose $\eta_n>H_n$ as above. For each $0<\theta<1$
+there is $F_\theta\in\mathcal E_\Gamma$ with
+$F_\theta(\rho_n)=t^{\lfloor n^\theta\rfloor\eta_n}$ for all $n$. For the
+subgroups $\mathcal C_{\theta'}$ of the proof of
+\cref{ent:ps:thm:dichotomy}, the class of $F_\theta$ lies in
+$\mathfrak p_{\Ucal,\mathcal C_{\theta'}}$ when $\theta>\theta'$ and not when
+$\theta\le\theta'$. None of these node values is zero.
+\end{proposition}
+\begin{proof}
+All prescribed values lie in $V_n$, so \cref{ent:cor:single-node} supplies
+$F_\theta$, whose ultraproduct value is $\zeta_\theta$. If $\theta>\theta'$
+it exceeds every element of $\mathcal C_{\theta'}$ by
+\cref{ent:ps:lem:gaps}; if $\theta\le\theta'$ it lies in
+$\mathcal C_{\theta'}$. Apply \cref{ent:ps:cor:membership}.
+\end{proof}
+
+\begin{remark}[Cardinality and order type]
+The theorem asserts a chain with continuum many distinct members. It assigns
+no cardinal-valued Krull dimension, does not assert that the chain is well
+ordered, and does not bound the number of convex subgroups of an
+ultraproduct; those are different set-theoretic questions.
+\end{remark}
+
+\begin{remark}[Rank is not the dividing invariant]\label{ent:ps:rem:rank}
+The sixth source's example is \cref{ent:subsec:finite-rank} together with
+\cref{ent:subsec:gamma-infinity}, printed once there. Every nonzero
+Archimedean divisible group, and $\Q^d$ in lexicographic order, has an order
+unit, so for them $\RD=K_\Gamma^{\N_{>0}}$ and every prime above $P_D$ is
+maximal. The group $\Gamma_\infty$ has countable cofinality and no order
+unit, so every nonprincipal fibre carries a continuum chain. What divides the
+two regimes is one cofinal cyclic scale, not rank greater than one; this is
+the same dividing line as case (ii) versus case (iii) of \cref{ent:thm:main}.
+\end{remark}
+
+\subsection{Finite algebra in an infinite-dimensional spectrum}
+\label{ent:ps:subsec:finite-algebra}
+
+The quotient can have a very deep spectrum and still admit simple finite
+linear algebra: every coordinate ring $V_n$ is a valuation ring, and every
+subset of the index set has an indicator idempotent.
+
+\begin{theorem}[Finitely generated ideals and annihilators]
+\label{ent:ps:thm:bezout}
+Every finitely generated ideal of $\RD$ is principal. For $a\in\RD$,
+\[
+ \operatorname{Ann}(a)=e_{\{n:a_n=0\}}\RD,\qquad
+ a\RD\cong e_{\{n:a_n\ne0\}}\RD .
+\]
+Hence every finitely generated ideal is projective and $\RD$ is
+semihereditary. It is a B\'ezout ring with zero divisors, not a B\'ezout
+domain.
+\end{theorem}
+\begin{proof}
+Let $a^{(1)},\ldots,a^{(s)}\in\RD$. Outside a finite exceptional set all their
+coordinates lie in $V_n$. At such a coordinate with some nonzero value choose
+the first index $j$ whose coarsened valuation $v+H_n$ is least among the
+nonzero values; at an exceptional coordinate choose any index with a nonzero
+value, if there is one. This partitions the coordinates with some nonzero
+value into sets $S_1,\ldots,S_s$; put $g=\sum_je_{S_j}a^{(j)}$, an element of
+the ideal. Define $b^{(j)}_n=a^{(j)}_n/g_n$ where $g_n\ne0$ and $0$ elsewhere.
+The minimality of the chosen valuation puts these ratios in $V_n$ at every
+nonexceptional coordinate, so $b^{(j)}\in\RD$ and $a^{(j)}=gb^{(j)}$; the
+ideal is $g\RD$. The annihilator of $a$ consists of the sequences supported
+on its zero set, and multiplication by $a$ maps $e_{\{a_n\ne0\}}\RD$
+isomorphically onto $a\RD$, being onto by definition and injective because
+each surviving coordinate is a nonzero element of a field. A direct summand
+of the free module $\RD$ is projective.
+\end{proof}
+
+\begin{remark}[Translation to $\mathcal E_\Gamma$]\label{ent:ps:rem:fg-ideals}
+Every finitely generated ideal $I$ of $\mathcal E_\Gamma$ that contains
+$P_D$ is $(P_D,G)$ for a single $G\in\mathcal E_\Gamma$: the image of $I$ in
+$\RD$ is finitely generated, hence $g\RD$, and any lift $G$ of $g$ works.
+Membership of an arbitrary element in $(P_D,G)$ is decided by
+\cref{ent:sm:cor:membership}. This translation is the merge's; it bears on
+\cref{ent:q:ideals} only for ideals containing this product.
+\end{remark}
+
+\begin{theorem}[Smith forms for finite matrices]\label{ent:ps:thm:smith}
+For every $r\times s$ matrix $M$ over $\RD$ there are
+$U\in\operatorname{GL}_r(\RD)$ and $V\in\operatorname{GL}_s(\RD)$ with
+\[
+ UMV=\operatorname{diag}(d_1,\ldots,d_\ell,0,\ldots),\qquad
+ \ell=\min(r,s),\qquad d_i\mid d_{i+1},
+\]
+the diagonal taken in the rectangular sense and zero entries allowed. Thus
+$\RD$ is an elementary divisor ring, and every finitely presented
+$\RD$-module is a direct sum of finitely many cyclic modules and a finite
+free module.
+\end{theorem}
+\begin{proof}
+Choose a finite exceptional set outside which every entry of $M$ lies in
+$V_n$. Over a valuation domain a finite matrix has the usual pivot
+reduction: a nonzero entry of least valuation divides every entry; swaps move
+it to the corner, elementary operations clear its row and column, the
+remaining entries stay divisible by it, and one inducts on the smaller block.
+A zero matrix takes identity transformations. Perform this reduction over
+$V_n$ at each nonexceptional coordinate and over $K_\Gamma$ at the
+exceptional ones. The row and column operations and their inverses have
+entries in $V_n$ eventually, so their coordinate sequences define invertible
+matrices $U,V$ over $\RD$. The diagonal entries lie in $\RD$, and the
+coordinatewise quotients $d_{i+1}/d_i$ lie in $V_n$ eventually, so
+$d_i\mid d_{i+1}$ in $\RD$; a zero pivot is followed only by zero pivots at
+that coordinate, and the quotient there is taken to be $0$. Applying this to
+a presentation matrix gives the module decomposition. No uniqueness of the
+diagonal representatives is claimed.
+\end{proof}
+
+In this subsection $U$ and $V$ are invertible matrices, not an ultrafilter or
+a coarsened valuation ring.
+
+\begin{proposition}[Total quotient ring and integral closedness]
+\label{ent:ps:prop:total-quotient}
+An element of $\RD$ is a non-zero-divisor exactly when none of its
+coordinates is zero, and the total quotient ring is
+$Q(\RD)=K_\Gamma^{\N_{>0}}$. The ring $\RD$ is integrally closed in it, and
+it is not Noetherian.
+\end{proposition}
+\begin{proof}
+A zero coordinate gives a nonzero annihilating indicator, and a sequence with
+no zero coordinate acts injectively; so the total quotient ring embeds in
+$K_\Gamma^{\N_{>0}}$. Given $b\in K_\Gamma^{\N_{>0}}$ put $s_n=1$ if
+$b_n\in V_n$ and $s_n=b_n^{-1}$ otherwise; then $s$ is a non-zero-divisor of
+$\RD$, $sb\in\RD$ and $b=(sb)/s$. If $b$ satisfies a monic equation over
+$\RD$, all its coefficients lie in $V_n$ for large $n$, and a valuation ring
+is integrally closed: an element of negative valuation cannot satisfy a monic
+equation, since its leading power would have strictly smaller valuation than
+every other term. So $b_n\in V_n$ eventually and $b\in\RD$. The ideals
+generated by $e_{\{1,\ldots,N\}}$ increase strictly with $N$.
+\end{proof}
+
+\begin{remark}[Two B\'ezout statements that do not conflict]
+Without an order unit the full ring $\mathcal E_\Gamma$ is not B\'ezout
+(\cref{ent:thm:main}(iii)); \cref{ent:ps:thm:bezout} says that its quotient by
+this particular simple one-node-per-shell product \emph{is} a B\'ezout ring.
+There is no contradiction: the quotient acquires indicator idempotents,
+which permit coordinatewise choices of generator.
+\end{remark}
+
+\subsection{Cofinal scalar extension and contraction of primes}
+\label{ent:ps:subsec:contraction}
+
+Let $\Gamma\subseteq\Delta$ be an ordered-group inclusion of divisible
+ordered abelian groups with $\Gamma$ cofinal in $\Delta$, and keep the radii
+$\gamma_n\in\Gamma$ and the nodes $\rho_n=t^{-\gamma_n}$. Superscripts record
+the group:
+\[
+ H_n^\Gamma=H_{\gamma_n}\subseteq\Gamma,\qquad
+ H_n^\Delta=\{\delta\in\Delta:\abs\delta\le m\gamma_n
+   \text{ for some }m\in\N\},
+\]
+and similarly $V_n^\Gamma$, $V_n^\Delta$, $\RD^\Gamma$, $\RD^\Delta$ and
+$\Gamma_\Ucal=\prod_\Ucal(\Gamma/H_n^\Gamma)$,
+$\Delta_\Ucal=\prod_\Ucal(\Delta/H_n^\Delta)$. The notation $\Delta$ is that
+of \cref{ent:sec:extension}; the convex hull there is all of $\Delta$,
+because $\Gamma$ is cofinal.
+
+\begin{lemma}[The comparison maps]\label{ent:ps:lem:comparison}
+Coefficientwise inclusion gives
+$K_\Gamma\subseteq K_\Delta$, $\mathcal E_\Gamma\subseteq\mathcal E_\Delta$
+and $\RD^\Gamma\subseteq\RD^\Delta$, the last induced on the quotients by the
+same series $P_D$. Moreover
+\[
+ H_n^\Delta\cap\Gamma=H_n^\Gamma,\qquad
+ V_n^\Delta\cap K_\Gamma=V_n^\Gamma ,
+\]
+and the zero set of $P_D$ in either field is $\{\rho_n:n\ge1\}$, every zero
+being simple.
+\end{lemma}
+\begin{proof}
+An ordered-group inclusion preserves well-ordered supports and the Hahn
+operations. Coefficient slopes cofinal in $\Gamma$ are cofinal in $\Delta$,
+so \cref{ent:thm:criterion} gives the second inclusion; for $\kk=\C$ this is
+\cref{ent:cor:entire-extension}. The equality of convex subgroups is the
+common inequality $\abs g\le m\gamma_n$ for $g\in\Gamma$, and the equality of
+valuation rings follows by testing the leading exponent. The evaluation maps
+commute with the inclusions, and both kernels are $(P_D)$ by
+\cref{ent:prop:kernel-direct}, so the induced map of quotients is injective
+and is the displayed inclusion of sequence rings. The radii remain cofinal in
+$\Delta$. At $z\ne0$ choose $N$ with $\gamma_{N+1}+v(z)>0$: the tail
+$\prod_{n>N}(1-t^{\gamma_n}z)$ is $1$ plus an element of positive valuation,
+hence nonzero, so only the listed nodes are zeros; removing one factor
+leaves a cofactor that does not vanish at its node, so each zero is simple.
+\end{proof}
+
+\begin{remark}[What scalar extension means here]
+Rings are compared by coefficientwise inclusion and the induced map of
+quotients. It is \emph{not} asserted that
+$\mathcal E_\Gamma\otimes_{K_\Gamma}K_\Delta=\mathcal E_\Delta$, or that the
+corresponding tensor product of quotients is the larger quotient; these
+surjectivity assertions are neither needed nor proved. Cofinality cannot
+simply be dropped: without it a nonpolynomial series entire over $K_\Gamma$
+is not entire over $K_\Delta$ (\cref{ent:thm:extension-criterion}).
+\end{remark}
+
+For nonprincipal $\Ucal$ the coordinate maps
+$\Gamma/H_n^\Gamma\to\Delta/H_n^\Delta$ reflect order and equality, so they
+induce an order embedding $\Gamma_\Ucal\hookrightarrow\Delta_\Ucal$,
+by which $\Gamma_\Ucal$ is identified with a subgroup of $\Delta_\Ucal$.
+
+\begin{lemma}[All convex extensions of a convex subgroup]
+\label{ent:ps:lem:convex-interval}
+Let $\mathcal G\subseteq\mathcal G'$ be an inclusion of ordered abelian
+groups with $\mathcal G$ divisible, and let $\mathcal C$ be a convex subgroup
+of $\mathcal G$. Put
+\begin{align}
+ \mathcal C_{\min}&=\{x\in\mathcal G':\abs x\le c\text{ for some }
+   c\in\mathcal C_{\ge0}\},\label{ent:ps:eq:Cmin}\\
+ \mathcal C_{\max}&=\{x\in\mathcal G':\abs x<g\text{ for every }
+   g\in\mathcal G_{>0}\setminus\mathcal C\},\label{ent:ps:eq:Cmax}
+\end{align}
+with $\mathcal C_{\max}=\mathcal G'$ when the condition is empty. Both are
+convex subgroups of $\mathcal G'$ with trace $\mathcal C$ on $\mathcal G$, and
+the convex subgroups $\mathcal C'\le\mathcal G'$ with
+$\mathcal C'\cap\mathcal G=\mathcal C$ are exactly those with
+\begin{equation}\label{ent:ps:eq:interval}
+ \mathcal C_{\min}\subseteq\mathcal C'\subseteq\mathcal C_{\max}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+$\mathcal C_{\min}$ is the convex subgroup of $\mathcal G'$ generated by
+$\mathcal C$, and its trace is $\mathcal C$ by convexity of $\mathcal C$ in
+$\mathcal G$. The set $\mathcal C_{\max}$ is symmetric and convex. If
+$\mathcal C=\mathcal G$ there is nothing more to prove; otherwise, for $g>0$
+outside $\mathcal C$ also $g/2$ is outside $\mathcal C$, by divisibility, and
+$\abs{x+y}<g/2+g/2=g$ for $x,y\in\mathcal C_{\max}$, so $\mathcal C_{\max}$ is
+a subgroup. A positive element of $\mathcal G$ outside $\mathcal C$ exceeds
+all of $\mathcal C$, so $\mathcal C\subseteq\mathcal C_{\max}$, while no
+$g\in\mathcal G\setminus\mathcal C$ lies in $\mathcal C_{\max}$; its trace is
+$\mathcal C$, and it contains $\mathcal C_{\min}$. If $\mathcal C'$ is convex
+with trace $\mathcal C$, it contains $\mathcal C_{\min}$; and for
+$x\in\mathcal C'$ and $g\in\mathcal G_{>0}\setminus\mathcal C$, the
+inequality $g\le\abs x$ would put $g$ in $\mathcal C'\cap\mathcal G=\mathcal
+C$, so $\mathcal C'\subseteq\mathcal C_{\max}$. Conversely every convex
+subgroup in the interval has trace $\mathcal C$.
+\end{proof}
+
+\begin{theorem}[Exact contraction and all extensions of a prime]
+\label{ent:ps:thm:contraction}
+Contraction of primes along $\RD^\Gamma\subseteq\RD^\Delta$ preserves the
+selected ultrafilter. At a principal point it sends $\mathfrak e_n^\Delta$ to
+$\mathfrak e_n^\Gamma$. At a nonprincipal $\Ucal$,
+\begin{equation}\label{ent:ps:eq:contraction}
+ \mathfrak p^\Delta_{\Ucal,\mathcal C'}\cap\RD^\Gamma
+ =\mathfrak p^\Gamma_{\Ucal,\mathcal C'\cap\Gamma_\Ucal}.
+\end{equation}
+Every prime of $\RD^\Gamma$ extends to $\RD^\Delta$. The primes contracting
+to $\mathfrak p^\Gamma_{\Ucal,\mathcal C}$ are exactly the
+$\mathfrak p^\Delta_{\Ucal,\mathcal C'}$ with $\mathcal C'$ in the interval
+\eqref{ent:ps:eq:interval} for $\mathcal G=\Gamma_\Ucal$ and
+$\mathcal G'=\Delta_\Ucal$, so each fibre of the contraction map is
+anti-isomorphic, as an ordered set, to that interval.
+\end{theorem}
+\begin{proof}
+Each indicator $e_S$ maps to the same indicator, so contraction preserves
+the zero-or-one test and hence the ultrafilter; the principal case is
+coordinate evaluation. For nonprincipal $\Ucal$ the maps of ultraproduct
+valuation rings are injective and compatible with
+$\Gamma_\Ucal\hookrightarrow\Delta_\Ucal$. A nonzero element of
+$\mathcal V_\Ucal^\Gamma$ of value $g\ge0$ maps into the prime indexed by
+$\mathcal C'$ exactly when $g\notin\mathcal C'$, that is, when
+$g\notin\mathcal C'\cap\Gamma_\Ucal$; zero is preserved. This is
+\eqref{ent:ps:eq:contraction}. The group $\Gamma_\Ucal$ is divisible, since
+division by a positive integer is performed coordinatewise, so
+\cref{ent:ps:lem:convex-interval} supplies at least one convex extension and
+describes all of them, and \cref{ent:ps:thm:spectrum} translates this into
+primes with the order reversed.
+\end{proof}
+
+\begin{corollary}[Uniqueness of extension]\label{ent:ps:cor:unique-extension}
+The prime $\mathfrak p^\Gamma_{\Ucal,\mathcal C}$ has a unique extension
+exactly when $\mathcal C_{\min}=\mathcal C_{\max}$ in $\Delta_\Ucal$. If
+$\Gamma_\Ucal=\Delta_\Ucal$, every prime of that fibre extends uniquely. If
+$\Gamma$ has an order unit, the spectral map
+$\Spec\RD^\Delta\to\Spec\RD^\Gamma$ is the identity of the common
+ultrafilter space $\beta\N_{>0}$.
+\end{corollary}
+\begin{proof}
+Both endpoints of the interval are admissible, so uniqueness means that they
+coincide; if the groups coincide, both endpoints are $\mathcal C$. An order
+unit of $\Gamma$ remains one in $\Delta$: first bound a given element by an
+element of $\Gamma$, then by a multiple of the order unit. Both quotients are
+then products of fields (\cref{ent:ps:thm:dichotomy}), whose spectra are the
+ultrafilter spaces, and indicators are preserved.
+\end{proof}
+
+\begin{corollary}[Stable endpoint spectra]\label{ent:ps:cor:endpoints}
+For every cofinal extension of this subsection, contraction restricts to
+homeomorphisms of the minimal and of the maximal spectra, both identified
+with the identity of $\beta\N_{>0}$. Every minimal prime of $\RD^\Gamma$ has a
+unique prime extension to $\RD^\Delta$. Every maximal ideal has a unique
+\emph{maximal} extension, but it can have further nonmaximal extensions.
+\end{corollary}
+\begin{proof}
+The embedding $\Gamma_\Ucal\subseteq\Delta_\Ucal$ is cofinal: dominate a
+representative of each new coordinate by an old exponent and pass to the
+ultraproduct. A convex subgroup of $\Delta_\Ucal$ containing all of
+$\Gamma_\Ucal$ is therefore all of $\Delta_\Ucal$, which by
+\cref{ent:ps:thm:contraction} gives unique extension at the minimal endpoint
+$\mathcal C=\Gamma_\Ucal$. At the maximal endpoint $\mathcal C'=0$ contracts
+to $\mathcal C=0$, and \cref{ent:ps:thm:spectrum} gives exactly one maximal
+prime over the selected ultrafilter. Principal points behave in the same way
+by coordinate evaluation, and \cref{ent:ps:thm:topology} makes both endpoint
+maps the identity of $\beta\N_{>0}$.
+\end{proof}
+
+\subsection{An explicit continuum splitting with no new zeros}
+\label{ent:ps:subsec:splitting}
+
+The sixth source's main construction separates new cuts in the value group
+from new zeros, inside the surreal numbers. It enlarges the group
+$\Gamma_\infty$ of \cref{ent:subsec:gamma-infinity} by rational indices:
+\begin{equation}\label{ent:ps:eq:groups}
+ \Gamma_\infty=\bigoplus_{j\in\Z_{\ge0}}\Q e_j
+ \quad\subseteq\quad
+ \Delta_\Q=\bigoplus_{q\in\Q_{\ge0}}\Q e_q ,
+\end{equation}
+finitely supported rational combinations, a nonzero one being positive
+exactly when its coefficient at the largest occupied index is positive. The
+integer-indexed basis vectors of $\Delta_\Q$ are those of $\Gamma_\infty$; the
+sixth source writes $f_q$ for the basis of $\Delta_\Q$ and $f_j=e_j$, and the
+single letter $e_q$ is used here because our $f$ is the function of
+\eqref{ent:eq:f-explicit}. Take $\gamma_n=e_n$ for $n\ge1$. Then $P_D$ is that
+function $f$, and $\rho_n=t^{-e_n}$. In this subsection $q$ and $u$ denote
+rational numbers, not the node count $q_n$ or a unit.
+
+\begin{lemma}[The two groups]\label{ent:ps:lem:groups}
+Both groups in \eqref{ent:ps:eq:groups} are divisible and of countable
+cofinality, neither has an order unit, and $\Gamma_\infty$ is cofinal in
+$\Delta_\Q$. Their radius subgroups are
+\[
+ H_n^{\Gamma_\infty}=\bigoplus_{0\le j\le n}\Q e_j,
+ \qquad
+ H_n^{\Delta_\Q}=\bigoplus_{q\in\Q\cap[0,n]}\Q e_q ,
+\]
+and the quotients are identified with the finite combinations supported on
+indices strictly greater than $n$.
+\end{lemma}
+\begin{proof}
+Every nonzero finite support has a largest index, and a basis vector with a
+larger integer index dominates every ordinary multiple of the given vector;
+this gives the absence of an order unit, countable cofinality and cofinality
+of $\Gamma_\infty$ in $\Delta_\Q$. A vector supported on indices at most $n$
+is bounded by a multiple of $e_n$, and a vector with a larger leading index
+is not; this gives the radius subgroups, the first of which is
+\cref{ent:cor:residue-fields}. Discarding the coordinates of index at most
+$n$ gives the quotient identifications.
+\end{proof}
+
+Fix a nonprincipal $\Ucal$ and write $\Gamma_{\infty,\Ucal}$ and
+$\Delta_{\Q,\Ucal}$ for the two ultraproduct value groups. Define the convex
+subgroup
+\begin{equation}\label{ent:ps:eq:Cint}
+ \mathcal C_{\mathrm{int}}=\prod_\Ucal(\Q e_{n+1})\ \subseteq\
+ \Gamma_{\infty,\Ucal},
+\end{equation}
+the internal ultraproduct of the coordinate subgroups $\Q e_{n+1}$ under the
+identifications of \cref{ent:ps:lem:groups}, and for real $0<\theta<1$
+\begin{equation}\label{ent:ps:eq:Ctheta}
+ \mathcal C'_\theta=\prod_\Ucal\Bigl(\bigoplus_{\substack{q\in\Q\\
+   n<q\le n+1+\theta}}\Q e_q\Bigr)\ \subseteq\ \Delta_{\Q,\Ucal}.
+\end{equation}
+These are convex subgroups: each coordinate subgroup is convex, and an order
+interval bounded by an element of one of them stays inside it on a member
+of $\Ucal$.
+
+\begin{theorem}[Cofinal prime splitting without new zeros]
+\label{ent:ps:thm:splitting}
+For the inclusion \eqref{ent:ps:eq:groups}, the function
+$P_D(Z)=\prod_{n\ge1}(1-t^{e_n}Z)$ is entire over both $K_{\Gamma_\infty}$
+and $K_{\Delta_\Q}$ and has exactly the same simple zeros $t^{-e_n}$ in both
+fields. Nevertheless, for every nonprincipal $\Ucal$ the primes
+$\mathfrak p^{\Delta_\Q}_{\Ucal,\mathcal C'_\theta}$, $0<\theta<1$, form a
+strictly decreasing chain with continuum many members, all of which contract
+to the single intermediate prime
+$\mathfrak p^{\Gamma_\infty}_{\Ucal,\mathcal C_{\mathrm{int}}}$.
+Intermediate means strictly between the unique minimal and the unique maximal
+prime of its fibre.
+\end{theorem}
+\begin{proof}
+Entireness and the zeros are \cref{ent:ps:lem:comparison}. At coordinate $n$
+the only integer index in $(n,n+1+\theta]$ is $n+1$, so
+$\mathcal C'_\theta\cap\Gamma_{\infty,\Ucal}=\mathcal C_{\mathrm{int}}$; the
+equality holds for ultraproduct classes, because membership on a member of
+$\Ucal$ can be represented coordinatewise there and changes off it are
+irrelevant. If $\theta<\theta'$, choose a rational $u$ with
+$\theta<u<\theta'$; then $b_u=[e_{n+1+u}+H_n^{\Delta_\Q}]_\Ucal$ lies in
+$\mathcal C'_{\theta'}$ but not in $\mathcal C'_\theta$, so
+$\mathcal C'_\theta\subsetneq\mathcal C'_{\theta'}$. The subgroup
+$\mathcal C_{\mathrm{int}}$ is nonzero, since it contains
+$[e_{n+1}]_\Ucal$, and proper, since it omits $[e_{n+2}]_\Ucal$, so its prime
+is intermediate. The inclusion rule of \cref{ent:ps:thm:spectrum} and
+\eqref{ent:ps:eq:contraction} finish the proof.
+\end{proof}
+
+\begin{proposition}[Entire functions separating the new primes]
+\label{ent:ps:prop:splitting-witness}
+For each rational $u\in(0,1)$ there is $G_u\in\mathcal E_{\Delta_\Q}$ with
+$G_u(t^{-e_n})=t^{e_{n+1+u}}$ for all $n\ge1$. Whenever $\theta<u<\theta'$,
+its class lies in $\mathfrak p^{\Delta_\Q}_{\Ucal,\mathcal C'_\theta}$ and not
+in $\mathfrak p^{\Delta_\Q}_{\Ucal,\mathcal C'_{\theta'}}$. So the
+distinctions of \cref{ent:ps:thm:splitting} are witnessed by entire functions
+over the enlarged workspace, not only by elements of an ordered group.
+\end{proposition}
+\begin{proof}
+The prescribed values have positive coarsened valuation for every $n$, so
+\cref{ent:cor:single-node} over $K_{\Delta_\Q}$ realizes them. Their
+ultraproduct value is $b_u$, whose leading index $n+1+u$ exceeds every index
+allowed in the coordinate subgroups of $\mathcal C'_\theta$, so
+$b_u>\mathcal C'_\theta$, while $b_u\in\mathcal C'_{\theta'}$. Apply
+\cref{ent:ps:cor:membership}.
+\end{proof}
+
+\begin{corollary}[A maximal ideal with continuum many prime extensions]
+\label{ent:ps:cor:maximal-splitting}
+In the same example, for every nonprincipal $\Ucal$ the old maximal ideal
+$\overline{\mathfrak M}{}^{\Gamma_\infty}_\Ucal$ is the contraction of a
+strictly decreasing chain of continuum many nonmaximal primes of
+$\RD^{\Delta_\Q}$, all strictly below
+$\overline{\mathfrak M}{}^{\Delta_\Q}_\Ucal$. Unchanged zero sets and
+homeomorphic maximal spectra therefore do not make the full spectral
+contraction map injective.
+\end{corollary}
+\begin{proof}
+Replace \eqref{ent:ps:eq:Ctheta} by
+$\mathcal C'^{\,0}_\theta=\prod_\Ucal\bigl(\bigoplus_{q\in\Q\cap(n,n+\theta]}
+\Q e_q\bigr)$. There is no integer strictly between $n$ and $n+1$, so these
+convex subgroups meet $\Gamma_{\infty,\Ucal}$ in $0$; they are nonzero, and
+they increase strictly with $\theta$ by a rational witness between two
+cutoffs. Their primes are nonmaximal, strictly decreasing, and contract to
+$\mathfrak p^{\Gamma_\infty}_{\Ucal,0}=\overline{\mathfrak
+M}{}^{\Gamma_\infty}_\Ucal$. An analytic witness at a rational cutoff $u$
+interpolates the values $t^{e_{n+u}}$ at the nodes.
+\end{proof}
+
+\begin{remark}[Why the internal subgroup is needed]
+The subgroup $\mathcal C_{\mathrm{int}}$ is not the convex subgroup generated
+by the single class $[e_{n+1}]_\Ucal$: it contains $[q_ne_{n+1}]_\Ucal$ for
+arbitrary rational sequences $(q_n)$, unbounded ones included, and the
+intersection in the proof of \cref{ent:ps:thm:splitting} keeps every such
+sequence. Replacing $\mathcal C_{\mathrm{int}}$ by that smaller convex hull
+would give a false contraction statement.
+\end{remark}
+
+\paragraph{What the splitting does and does not mean.}
+Every prime of the chain lies over the same ultrafilter of ordinary nodes,
+and $P_D$ vanishes only at the same node coordinates. The new distinctions
+come from scales of the enlarged value group lying between consecutive old
+integer-indexed levels. They are invisible to the values of old-field
+functions after contraction and are detected by the $G_u$. The theorem is a
+failure of the inference ``no new zeros under cofinal extension, hence no new
+primes above the divisor''. It is not a failure of injectivity of the
+coefficient map, nor a claim that a polynomial acquires more roots than its
+degree: the divisor is infinite, the primes are algebraic objects of its
+quotient, and the new points are non-evaluation points. The cofinal
+extension of \cref{ent:subsec:two-extensions}, which adjoins $\omega^{1/2}$
+to $\Gamma_\infty$, lies between the two groups of \eqref{ent:ps:eq:groups};
+nothing is asserted here about its own prime spectrum.
+
+\paragraph{The surreal realization.}
+Under the normal-form embedding \eqref{ent:eq:embedding},
+$t^g\mapsto\omega^{-g}$, take $e_q=\omega^q$ for $q\in\Q_{\ge0}$ as elements
+of the additive group of $\No$; finite rational combinations of distinct
+such monomials are ordered by their largest exponent, as
+\eqref{ent:ps:eq:groups} requires, and $e_j=\omega^j$ is the choice of
+\eqref{ent:eq:concrete-group}. The real workspaces
+$\R((\omega^{-\Gamma_\infty}))\subset\R((\omega^{-\Delta_\Q}))\subset\No$ and
+their complexifications in $\No[i]$ are set-sized subfields, and
+\[
+ P_D(Z)=\prod_{n\ge1}\bigl(1-\omega^{-\omega^n}Z\bigr),\qquad
+ \rho_n=\omega^{\omega^n},\qquad
+ G_u(\omega^{\omega^n})=\omega^{-\omega^{n+1+u}}\quad(u\in\Q\cap(0,1)),
+\]
+the first being \eqref{ent:eq:f-explicit} and the nodes being
+\eqref{ent:eq:surreal-roots}. These formulas specify values of genuine entire
+power series over the larger fixed Hahn workspace.
+
+\begin{corollary}[Surreal-workspace prime splitting]
+\label{ent:ps:cor:surreal-splitting}
+There are explicit set-sized subfields
+$\R((\omega^{-\Gamma_\infty}))\subset\R((\omega^{-\Delta_\Q}))\subset\No$, and
+their complexifications in $\No[i]$, such that the entire divisor
+$\prod_{n\ge1}(1-\omega^{-\omega^n}Z)$ has the same simple surreal zeros
+$\omega^{\omega^n}$ in both workspaces, while a single prime of the smaller
+divisor quotient is the contraction of a chain of continuum many primes of
+the larger one. This holds over real and over complex coefficients.
+\end{corollary}
+\begin{proof}
+Apply \cref{ent:ps:thm:splitting} through \eqref{ent:eq:embedding}. The
+interpolation, classification and contraction arguments do not use
+algebraic closedness and hold for either coefficient field.
+\end{proof}
+
+\begin{remark}[Workspace-relative, not class-wide]
+``The same zeros'' means the zeros in the two specified fields. No strongly
+summable value of this product is asserted at every point of $\No[i]$: the
+ambient class contains scales beyond any set-sized cofinal sequence, and at
+such a scale strong summability fails by \cref{ent:thm:extension-criterion}. The ultraproduct residue
+fields are not identified canonically with subfields of the surreal field.
+The construction shows a dependence on the chosen set-sized universe of
+scales: an analytic object keeps its formula and every zero under an
+enlargement while its prime spectrum refines, the refinement being encoded
+by convex subgroups of an ultraproduct of quotient value groups. All
+carriers are sets and all embeddings are explicit; no paradox is involved.
+The Boolean layer is stable --- every stage has the same indicators and the
+same ultrafilter space --- and what changes inside a fibre is the ordered
+hierarchy of value cuts. Ordinary zero coordinates, ultrafilter choices of
+infinitely many shells, and convex subgroups of their asymptotic value group
+are three separate pieces of information.
+\end{remark}
+
+\subsection{Multiplicity: the limit of the reduced description}
+\label{ent:ps:subsec:multiplicity}
+
+The results so far concern one \emph{simple} node per shell. Multiplicity is
+another, logically separate, source of nonmaximal primes. For positive
+integers $m_n$ put
+\[
+ D_{\mathbf m}=\sum_{n\ge1}m_n[\rho_n],\qquad
+ P_{D_{\mathbf m}}(Z)=\prod_{n\ge1}\Bigl(1-\frac Z{\rho_n}\Bigr)^{m_n},
+\]
+the canonical product of \cref{ent:thm:product} and the setting of
+\cref{ent:sm:subsec:all-maximal}; the sixth source calls it $Q$, a letter
+reserved here for \eqref{ent:eq:Qn}. Write $\ord_{\rho_n}(F)$ for the order of
+a nonzero $F$ at $\rho_n$, zero when $F(\rho_n)\ne0$.
+
+\begin{lemma}[Divisibility with arbitrary finite multiplicities]
+\label{ent:ps:lem:multiplicity-division}
+$P_{D_{\mathbf m}}$ is entire, with zeros exactly the $\rho_n$ of
+multiplicities $m_n$, and $F\in\mathcal E_\Gamma$ is divisible by
+$P_{D_{\mathbf m}}$ if and only if $\ord_{\rho_n}(F)\ge m_n$ for every $n$.
+\end{lemma}
+\begin{proof}
+The first assertion is \cref{ent:thm:product}; over $\R$, a zero in
+$\R((t^\Gamma))$ is a zero of the same order in $\C((t^\Gamma))$. The
+divisibility criterion is \cref{ent:prop:kernel-direct}, since
+$\ord_{\rho_n}(F)\ge m_n$ says that the prescribed zero jets vanish; over
+$\R$ it holds by \cref{ent:prop:real-form}. The sixth source reproves this
+lemma along the lines of \cref{ent:ps:rem:route}, with each index repeated
+$m_n$ times.
+\end{proof}
+
+\begin{theorem}[Radicals and the bounded-multiplicity threshold]
+\label{ent:ps:thm:multiplicity}
+For every $F\in\mathcal E_\Gamma$,
+\begin{equation}\label{ent:ps:eq:radical}
+ F\in\sqrt{P_{D_{\mathbf m}}\mathcal E_\Gamma}
+ \iff
+ \text{some integer }d\ge1\text{ has }
+ d\ord_{\rho_n}(F)\ge m_n\text{ for every }n .
+\end{equation}
+In particular $\sqrt{P_{D_{\mathbf m}}\mathcal E_\Gamma}=P_D\mathcal E_\Gamma$
+if and only if $\sup_nm_n<\infty$. If $m_n\le M$ for all $n$, the natural map
+$\mathcal E_\Gamma/(P_{D_{\mathbf m}})\to\mathcal E_\Gamma/(P_D)$ has nilpotent
+kernel of exponent at most $M$ and induces a homeomorphism of prime spectra,
+so the prime and dimension statements of
+\cref{ent:ps:thm:spectrum,ent:ps:thm:dichotomy} persist for uniformly bounded
+multiplicities. This transfers the prime spaces and dimensions, not the
+reduced-ring conclusions such as von Neumann regularity or semiheredity. If
+$(m_n)$ is unbounded, some prime ideal of $\mathcal E_\Gamma$ contains
+$P_{D_{\mathbf m}}$ but not $P_D$, so the reduced description cannot account
+for all primes above such a divisor.
+\end{theorem}
+\begin{proof}
+$F\in\sqrt{P_{D_{\mathbf m}}\mathcal E_\Gamma}$ means $F^d\in
+P_{D_{\mathbf m}}\mathcal E_\Gamma$ for some $d\ge1$; orders multiply by $d$,
+and \cref{ent:ps:lem:multiplicity-division} gives \eqref{ent:ps:eq:radical}.
+If $m_n\le M$, then $P_{D_{\mathbf m}}$ divides $P_D^M$ and $P_D$ divides
+$P_{D_{\mathbf m}}$, so
+$P_D^M\mathcal E_\Gamma\subseteq P_{D_{\mathbf m}}\mathcal E_\Gamma\subseteq
+P_D\mathcal E_\Gamma$. Since $P_D\mathcal E_\Gamma$ is radical
+(\cref{ent:ps:lem:idempotents}), the radicals agree. The kernel
+$P_D\mathcal E_\Gamma/P_{D_{\mathbf m}}\mathcal E_\Gamma$ has vanishing $M$th
+power, every prime contains a nilpotent ideal, and the quotient
+correspondence gives the homeomorphism. Conversely, if $P_D\in
+\sqrt{P_{D_{\mathbf m}}\mathcal E_\Gamma}$, some $P_D^M$ is divisible by
+$P_{D_{\mathbf m}}$, and its order $M$ at each $\rho_n$ forces $m_n\le M$.
+When $(m_n)$ is unbounded, the class of $P_D$ in
+$\mathcal E_\Gamma/(P_{D_{\mathbf m}})$ is therefore not nilpotent;
+localizing at its powers gives a nonzero ring, a maximal ideal of which
+contracts to a prime avoiding that class, and its inverse image in
+$\mathcal E_\Gamma$ is the required prime.
+\end{proof}
+
+\begin{example}[Pointwise nilpotence is not uniform nilpotence]
+Take $m_n=n$. In the finite jet algebra at each $\rho_n$ the class of $P_D$
+is nilpotent, since $P_D$ has a simple zero there. Its class in
+$\mathcal E_\Gamma/(P_{D_{\mathbf m}})$ is not nilpotent, because no single
+power has order at least $n$ at every node. Unbounded multiplicity cannot be
+removed by observing that every jet variable is nilpotent; the exponent must
+be uniform over the whole sequence.
+\end{example}
+
+\begin{remark}[What the threshold does not do]
+\Cref{ent:ps:thm:multiplicity} does not classify the primes that avoid $P_D$
+when the multiplicities are unbounded. It identifies the exact threshold at
+which the reduced spectrum suffices and proves that beyond it there are
+additional primes; no assertion about the complete spectrum in that regime is
+hidden in the other results. By \cref{ent:sm:thm:maximal-all}, every maximal
+ideal containing $P_{D_{\mathbf m}}$ is an evaluation ideal or some
+$\mathfrak M_\Ucal$, and each of these contains $P_D$; so the additional
+primes are not maximal. That consequence is the merge's.
+\end{remark}
+
+\subsection{Sensitive steps and what this section does not establish}
+\label{ent:ps:subsec:limits}
+
+\paragraph{Logically sensitive steps.}
+The sixth source lists the following as parts of its proofs, not as
+qualifications. The coarsened ultrafilter values are read in the quotient
+groups $\Gamma/H_n$; the scalar field is not embedded as a constant sequence
+into the residue fields $\kappa_n$, and a scalar may have support in no single
+$H_n$ although its leading exponent lies in $H_n$ eventually (compare
+\cref{ent:rem:coeff-action}). The convex-subgroup parameters of
+\cref{ent:ps:thm:spectrum} need not be internal ultraproduct subgroups; every
+convex subgroup of $\Gamma_\Ucal$ is allowed, and only the subgroups of the
+splitting example are internal by construction. Every localization of the
+reduced quotient is a domain although the quotient has many zero divisors;
+the annihilating indicator kills the kernel of the fibre map after
+localization. Prime-chain length is not inferred from the number of zeros:
+the witnesses of \cref{ent:ps:prop:witnesses,ent:ps:prop:splitting-witness}
+have no zero node values and distinguish only asymptotic valuation cuts. The
+analytic steps it lists --- a second evaluation radius in the coefficient
+criterion, a coefficient bound for a formal inverse that is not itself
+entire, and a finite initialization before damping --- are those of
+\cref{ent:thm:criterion,ent:prop:kernel-direct,ent:thm:image}. Finally, the
+quantifiers differ in statements that look alike: $x_n\in V_n$ means
+$v(x_n)\ge-m\gamma_n$ for some $m$ depending on $n$; a class of
+$\Gamma_\Ucal$ lies in the convex subgroup generated by $\zeta$ when
+$\abs g\le m\zeta$ for one ordinary integer $m$ outside the ultraproduct,
+whereas an internal subgroup of sequences of rational multiples is in general
+larger; $g>\mathcal C$ quantifies over every element of $\mathcal C$; a
+family of locally nilpotent elements need not be globally nilpotent in the
+product; and a chain with continuum many members is not thereby well
+ordered.
+
+\paragraph{Non-claims of the sixth source.}
+The following are retained without weakening.
+\begin{itemize}[leftmargin=1.4em]
+\item ``Entire'' is strong summability at every point of one fixed set-sized
+Hahn field, not entireness on $\No[i]$; nothing is claimed for the proper
+class.
+\item The exact value image and quotient, the canonical product and
+divisibility, the nonprincipal maximal ideals with their residue fields, the
+identification of the maximal spectrum with $\beta\N_{>0}$, and the
+preservation of entireness and zeros under cofinal extension are inherited
+from this report and are not new; the specialized simple-node proof is
+supplied only for dependency control (\cref{ent:ps:rem:route}).
+\item The ultraproduct and valuation-domain mechanism for primes is classical
+\cite{FFW,StacksValuation}; the Hahn support machinery is classical
+\cite{Neumann}; the normal forms are classical \cite{Conway,Gonshor}; the
+valuation-ring elimination behind the Smith forms is standard. No new abstract
+theory of product rings is claimed.
+\item The proposed contributions --- the analytic prime fibres, the
+reduced-divisor dichotomy and the cofinal splitting construction --- were
+not found in the sources it compared. That is not proof of their absence
+from the literature; the search was targeted, not exhaustive, and no
+priority is certified.
+\item No named published conjecture is solved. The manuscript has not been
+refereed; no Lean file is supplied and no machine-checked proof is claimed;
+its suggested Lean dependency order (Hahn-series, analytic,
+commutative-algebra, ordered-group and ultraproduct interfaces) is a
+suggestion, not code or a claim about present Mathlib coverage. It does not
+claim to have verified this repository completely: its comparison was
+concentrated on this report at its pin, and it states that the formalization
+status of those reports is not inferred from the presence of their LaTeX
+statements.
+\item The complete classification is for one simple node per occupied shell,
+extended to bounded multiplicities only for prime spaces and dimension. Shells
+carrying several nodes, unbounded multiplicities and the proper class
+$\No[i]$ are not classified.
+\item In the order-unit case the quotient is zero-dimensional; the full ring
+$\mathcal E_\Gamma$ is not claimed to be. The bounded-multiplicity transfer
+covers prime spaces and dimension, not von Neumann regularity or
+semiheredity.
+\item No assertion is made that zeros change under cofinal extension; the
+point of \cref{ent:ps:thm:splitting} is that they do not.
+\item The finite checks (Suite~F of \cref{ent:app:checks}) do not establish
+strong summability, construct ultrafilters, prove continuum chains or certify
+novelty.
+\end{itemize}
+
 \section{Assembly of the classifications}
 \label{ent:sec:classification}
 
@@ -5170,7 +6524,7 @@ invariant at work.
 \section{Relation to other reports in this collection}
 \label{ent:sec:collection}
 
-This report is a merge of five manuscripts, each prepared against a pinned
+This report is a merge of six manuscripts, each prepared against a pinned
 snapshot of the same repository, and each states explicitly which of its
 neighbours' results it does \emph{not} claim. Those statements are preserved
 here, and the cross-references are reciprocal.
@@ -5302,6 +6656,27 @@ and calls the non-evaluation maximal ideals of
 different rings and no statement transfers, although the moral --- a proper
 finitely generated ideal with no common zero --- is shared, and both reports
 credit Henriksen \cite{Henriksen}.
+
+The same report also has a prime spectrum with continuum chains, and the
+resemblance to \cref{ent:ps:sec:spectrum} is again close enough to state the
+difference. Its section on the prime spectrum of the fixed-polydisk ring
+$\mathcal O(D)((t^\R))$ (\texttt{analytic:sec:fixed-spectrum},
+\texttt{analytic:thm:fixed-gauge-prime}, \texttt{analytic:thm:fixed-fibre})
+builds, from a nonprincipal ultrafilter and the gauges $w(n)=n^r$, a
+continuum-sized chain of primes in one fibre over a classical maximal
+ideal; \cref{ent:ps:lem:gaps} uses the same power gauges $\lfloor
+n^\theta\rfloor$. The rings are different --- ordinary holomorphic
+coefficients on a fixed disk and value group $\R$ there
+\cite{RepoAnalyticGeometry}, strongly entire
+series over a fixed Hahn field here --- and so are the reasons: its chain
+comes from the growth of Hahn valuations of values at a fixed simple divisor
+inside one classical fibre, ours from the quotient value groups
+$\Gamma/H_n$, which are zero when $\Gamma$ has an order unit, as $\R$ does
+(\cref{ent:ps:thm:dichotomy}). No statement transfers. That report credits
+Henriksen's work on prime ideals of the ring of classical entire functions,
+which attaches primes to the growth of zero multiplicities
+\cite{Henriksen53}; the sixth source does not cite it, and we record it as
+context for \cref{ent:ps:thm:multiplicity}, not as a checked comparison.
 
 \paragraph{Holonomic rigidity and several variables --- one device, two
 uses.}
@@ -5452,7 +6827,12 @@ source's \cref{ent:sm:thm:maximal-all} shows that, for one node per shell,
 these and the evaluation ideals are all the maximal ideals containing $P_D$;
 it too does not classify the maximal ideals of $\E$ that contain no such
 product, does not treat shells with several nodes, and does not classify
-prime ideals.
+prime ideals. The sixth source's \cref{ent:ps:thm:spectrum} classifies the
+prime ideals containing such a product when every node is simple, and
+\cref{ent:ps:thm:multiplicity} extends that to uniformly bounded
+multiplicities for prime spaces and dimension; primes above products with
+unbounded multiplicities or with several nodes on a shell, and primes
+containing no such product, remain unclassified.
 
 \paragraph{Limits recorded by the fourth source.}
 Its unit-ideal criteria are not a corona theorem: no bounded function algebra
@@ -5498,6 +6878,18 @@ and because \cref{ent:prop:kernel-direct} supplies the kernel without
 preparation. Nothing in \cref{ent:prop:real-form} should be read as weakening
 the algebraic-closedness hypothesis of the factorization theory.
 
+\paragraph{Limits recorded by the sixth source.}
+They are listed in full in \cref{ent:ps:subsec:limits}. In summary: its
+``entire'' has fixed-field scope and nothing is claimed for $\No[i]$; the
+quotient, the maximal ideals, their residue fields, the maximal spectrum and
+the cofinal-extension results on entireness and zeros are inherited, not new;
+the ultraproduct and valuation-domain mechanism, the Hahn support calculus,
+the normal forms and the elimination behind the Smith forms are classical;
+its classification covers one simple node per shell, and bounded
+multiplicities only for prime spaces and dimension; in the order-unit case
+only the quotient, not $\E$, is claimed zero-dimensional; and no change of
+zeros under extension is asserted.
+
 \paragraph{What is and is not claimed about priority and verification.}
 The results of this report are self-declared proposed original contributions,
 not a solution of any named published conjecture. The first two source
@@ -5515,7 +6907,7 @@ credited to the repository, as recorded in \cref{ent:rem:rigidity-credit}.
 One source's audit further notes that Lazard was checked bibliographically
 only and that Conway and Gonshor were not re-audited in full; its repository
 review was a targeted read of four files, not a line-by-line proof audit or
-an independent build. None of the five manuscripts was independently
+an independent build. None of the six manuscripts was independently
 refereed and none was machine-checked: one records
 \texttt{formal\_verification false},
 \texttt{independent\_peer\_review false} and \texttt{priority\_certified
@@ -5542,7 +6934,15 @@ and \texttt{proof\_assistant\_verification} as false. The fifth records
 targeted, that no search returning nothing was treated as proof of novelty,
 and that binary repository archives, retired historical manuscripts and the
 Lean modules were not audited; and states that a successful build shows only
-that its source typesets. No theorem below depends for its validity on the
+that its source typesets. The sixth states that no named published conjecture
+is declared solved, that it has not been refereed or verified in Lean and
+supplies no Lean file, that its novelty language means only ``not found in
+the compared sources'' after a targeted comparison, not a priority
+certification, that its review concentrated on this report and the
+catalogue at its pin and is not a complete verification of the repository;
+its build record gives the verification boundary as written proofs and
+finite sanity checks, with no peer review or Lean verification claimed.
+No theorem below depends for its validity on the
 correctness of an unrefereed repository report. The repository's Lean modules
 on finite algebra and Hahn supports are plausible \emph{prerequisites} for a
 future formalization, not a certificate that these proofs have been
@@ -5551,9 +6951,10 @@ mathematical problem. No repository files under \texttt{code/} or
 \texttt{data/} have been modified.
 
 \paragraph{What the finite checks do not do.}
-See \cref{ent:app:checks} for the full statement. In summary: the five
-delivered suites verify $831$, $664$, $1958$, $1876$ and $1072$ finite exact
-assertions respectively, and they prove \emph{no} infinite theorem. The first
+See \cref{ent:app:checks} for the full statement. In summary: the six
+delivered suites verify $831$, $664$, $1958$, $1876$, $1072$ and $10889$
+finite exact assertions respectively, and they prove \emph{no} infinite
+theorem. The first
 three articles and their READMEs state that the finite truncations of the
 counterexample pair \emph{are} coprime polynomials and \emph{do} satisfy
 polynomial B\'ezout identities, so no finite computation can witness
@@ -5575,7 +6976,12 @@ example certificates; it cannot prove that an infinite support is well
 ordered, that a series is entire, that a general quotient fibre has finite
 incidence, or that every countable union of algebraic sets is realized, and
 it does not test the irrational example of \cref{ent:mv:ex:dense} through a
-rational approximation.
+rational approximation. The sixth checks finite identities, ordered-group
+inequalities in finite-support rational vectors, finite multiplicity tests
+and Smith reductions over $\Z_{(2)}$; it does not establish strong
+summability, construct a nonprincipal ultrafilter, enumerate convex
+subgroups, prove the continuum-chain assertions, treat a proper-class
+construction, certify entireness from finite data or certify novelty.
 
 \subsection{Questions opened by the classification}
 \label{ent:subsec:questions}
@@ -5660,6 +7066,14 @@ ideal. Still open: membership in $(P_D,G)$ when shells carry several nodes or
 multiplicities, and a description of $(f,g)$ as an ideal beyond membership
 tests. See also \cref{ent:q:spectrum}.
 
+\emph{A related structural fact from the sixth source.} For one simple node
+per shell the quotient $\E/(P_D)$ is a B\'ezout ring
+(\cref{ent:ps:thm:bezout}), so every finitely generated ideal of $\E$
+containing $P_D$ equals $(P_D,G)$ for a single $G$
+(\cref{ent:ps:rem:fg-ideals}), and \cref{ent:ps:cor:membership} lists every
+prime ideal containing it. This does not describe $(f,g)$ for arbitrary $f$,
+and the open parts listed above remain open.
+
 \begin{question}[The maximal spectrum]\label{ent:q:spectrum}
 Do all non-evaluation maximal ideals of $\E$ arise as $\mathfrak M_\Ucal$ of
 \cref{ent:thm:maximal} for some divisor and some nonprincipal ultrafilter,
@@ -5677,6 +7091,24 @@ finite residue algebras have several maximal ideals; whether every
 non-evaluation maximal ideal of $\E$ contains a product of the treated kind;
 the prime ideals; and the relations between the restricted products of
 different divisors.
+
+\emph{The ``prime ideals'' clause is partly answered by the sixth source.}
+Above a product with one \emph{simple} node per shell and empty finite part,
+every prime ideal is an evaluation ideal or one of the primes
+$\mathfrak p_{\Ucal,\mathcal C}$, indexed by a nonprincipal ultrafilter and a
+convex subgroup of $\prod_\Ucal(\Gamma/H_n)$
+(\cref{ent:ps:thm:spectrum}), with local rings, topology and Krull dimension
+described in \cref{ent:ps:thm:local,ent:ps:thm:topology,ent:ps:thm:dichotomy}
+and contraction under cofinal extension in \cref{ent:ps:thm:contraction}.
+For uniformly bounded multiplicities the prime spectrum is the same
+(\cref{ent:ps:thm:multiplicity}). Still open after the sixth source: the
+primes above products whose shells carry several nodes
+(\cref{ent:ps:q:several-nodes}); the primes above products with unbounded
+multiplicities, where only the existence of primes not containing the reduced
+product is known (\cref{ent:ps:q:unbounded}); primes and maximal ideals of
+$\E$ containing no product of the treated kind; and the relations between the
+restricted products of different divisors. The first clause of the question
+is not affected.
 
 \begin{question}[Several variables]\label{ent:q:several}
 Which parts of the cofinality criterion and of the B\'ezout obstruction
@@ -5739,6 +7171,34 @@ natural surreal subfields meeting both would turn these full-Hahn results
 into a more computationally selective theory.
 \end{question}
 
+The sixth source adds three questions, suggested by
+\cref{ent:ps:sec:spectrum}; like the others, they are not claims that any
+publication lists them as open.
+
+\begin{question}[Several nodes on a shell]\label{ent:ps:q:several-nodes}
+\Cref{ent:thm:image} uses finite shell algebras when several nodes share a
+radius. Which additional prime fibres appear when distinct normalized nodes
+collide after coarsening? The one-node valuation-domain description of
+\cref{ent:ps:thm:spectrum} does not apply directly to those finite algebras.
+\end{question}
+
+\begin{question}[Unbounded multiplicities]\label{ent:ps:q:unbounded}
+For $P_{D_{\mathbf m}}=\prod_n(1-Z/\rho_n)^{m_n}$ with $(m_n)$ unbounded, can
+the primes not containing $P_D$ be described directly from asymptotic zero
+orders and coarsened coefficient values? \Cref{ent:ps:thm:multiplicity} gives
+an exact radical test but not that classification.
+\end{question}
+
+\begin{question}[When is the prime spectrum invariant?]
+\label{ent:ps:q:invariance}
+\Cref{ent:ps:thm:contraction} reduces unique extension of a prime to the
+equality $\mathcal C_{\min}=\mathcal C_{\max}$. Which convenient conditions on
+a cofinal inclusion $\Gamma\subseteq\Delta$ make these equalities hold for
+every nonprincipal ultrafilter and every convex subgroup? The order-unit case
+is one sufficient condition (\cref{ent:ps:cor:unique-extension}), but it does
+not exhaust the conceivable cases.
+\end{question}
+
 \subsection{A proof-assistant route}
 The research statement does not require a formalization of the entire proper
 class $\No$. A first formal development can work over a set-sized divisible
@@ -5754,6 +7214,16 @@ not a formal-verification claim. The current repository ledger
 \texttt{docs/FORMALIZATION.md} distinguishes checked Hahn support,
 summability and algebraic-closure prerequisites from the still-pending
 statements of this report. No Lean code is included in this report package.
+For \cref{ent:ps:sec:spectrum} the sixth source suggests five interfaces in
+dependency order: Hahn series (strong summability, the coefficient
+criterion, weighted Gauss multiplication, linear division); the analytic
+layer (canonical product, divisibility, exact evaluation quotient);
+commutative algebra of the eventual-integrality sequence ring (idempotents,
+annihilators, finite generators, localization); ordered groups (the
+convex-subgroup prime correspondence and the interval
+\eqref{ent:ps:eq:Cmin}--\eqref{ent:ps:eq:Cmax}); and ultraproducts, combining
+these and specializing the explicit example. It is a suggestion, not code or
+a claim about Mathlib coverage.
 
 \section{Conclusion}
 \label{ent:sec:conclusion}
@@ -5793,6 +7263,19 @@ a well-ordering condition on the quotient weights of the ordinary support,
 while for nonpolynomial series homogeneous-block summation along complex
 directions sees exactly the proper countable unions of projective algebraic
 sets, all of which occur when the value group has countable cofinality.
+
+Below the maximal ideals, a product with one simple node per shell carries
+two kinds of boundary data. Its idempotents record which infinite
+collections of shells an ultrafilter selects, and produce the Stone space
+$\beta\N_{>0}$ common to its minimal and maximal primes; its ultraproduct
+value groups record how small the other functions become along those
+shells, and produce the prime chains inside each fibre. With an order unit
+the second layer disappears from the quotient; without one it contains a
+continuum chain in every nonprincipal fibre. Under a cofinal enlargement the
+nodes and the Stone base stay fixed while the second layer can refine, and
+the rational-indexed enlargement of $\Gamma_\infty$ realizes this inside
+surreal and surcomplex Hahn workspaces: preserving zeros is not the same as
+preserving the prime spectrum of an entire divisor.
 
 \appendix
 \section{Proof-dependency and hypothesis audit}
@@ -5863,6 +7346,20 @@ Of the other sections it uses only \cref{ent:lem:neumann}, the definitions
 \cref{ent:thm:multi-unit} alone keeps the report's standing hypotheses and
 cites \cref{ent:thm:units}.
 
+\Cref{ent:ps:sec:spectrum} sits downstream of the quotient isomorphism. Of
+the analytic theory it uses \cref{ent:thm:quotient} in the form
+\cref{ent:cor:single-node}, hence either route to the image together with
+\cref{ent:prop:kernel-direct}, and, for the canonical product with
+multiplicities, \cref{ent:thm:product}; for the comparison of two workspaces
+it uses \cref{ent:thm:criterion} and \cref{ent:prop:kernel-direct} over the
+larger group. It uses no preparation, root count, factorization or algebraic
+closedness, and it does not use zero conservation: the zeros of its product
+in the larger field are located directly (\cref{ent:ps:lem:comparison}).
+The rest is commutative algebra of the sequence ring, ultraproducts and the
+valuation-domain prime correspondence. Algebraic closedness enters only
+through the type of the residue fields $L_\Ucal$, quoted from
+\cref{ent:sm:cor:boundary-fields}.
+
 \subsection{Where an attained minimum is load-bearing}
 \paragraph{Attained minima.}
 The proof of \cref{ent:thm:criterion} uses a minimum attained at an ordinary
@@ -5904,13 +7401,15 @@ can genuinely fail.
 
 \section{Reproducible finite checks}
 \label{ent:app:checks}
-Five independent exact-arithmetic suites accompany this report, one from
+Six independent exact-arithmetic suites accompany this report, one from
 each source manuscript, preserved unmodified in \texttt{code/} and
-\texttt{data/} under the file names given below. All five use only the
+\texttt{data/} under the file names given below. All six use only the
 Python standard library, with exact integer and \texttt{fractions.Fraction}
 arithmetic and no floating point. The first four represent group elements as
 tuples of rational coordinates ordered by the largest nonzero coordinate;
-the fifth needs no ordered-group tuples beyond integer relation vectors.
+the fifth needs no ordered-group tuples beyond integer relation vectors; the
+sixth uses finitely supported rational vectors with rational indices, ordered
+in the same way.
 
 \paragraph{Suite A (831 checks).}
 The source program \texttt{verify\_examples.py} is shipped as
@@ -6033,8 +7532,39 @@ For this merge both new suites were re-run with \texttt{--output} pointing
 outside the repository; each reproduced its delivered record exactly, up to
 platform line endings.
 
+\paragraph{Suite F (10889 checks).}
+\texttt{code/09-prime-spectra-verify\_finite.py} accompanies the sixth source
+and \cref{ent:ps:sec:spectrum}. It checks the node values of the
+simple-node Lagrange corrections of \cref{ent:ps:rem:route} at the rational
+nodes $2,4,\ldots,2^n$ ($153$; the source calls them cardinal corrections,
+which are not the entire cardinal corrections of
+\cref{ent:sm:subsec:cardinal}) and their damping inequalities in rational
+vectors ($390$); the
+intersection of old integer scales with new rational cutoffs, at an
+intermediate subgroup and at the maximal endpoint ($3600$ each), with $192$
+strict-containment witnesses, in finite-support rational vectors; $30$
+representative power-gap inequalities $mn^{\theta}<n^{\theta'}$ at the single
+value $n=2^{60}$, with $\theta,\theta'\in\{\tfrac15,\ldots,\tfrac45\}$, behind
+\cref{ent:ps:lem:gaps}; $200$ Smith diagonalizations of random matrices of
+sizes up to $5\times5$ over the valuation ring $\Z_{(2)}$, checking the
+diagonal shape ($200$), the identity $UMV=\operatorname{diag}$ ($200$), the
+integrality of the transformations and their inverses ($800$), the pivot
+ratios ($1190$) and the divisibility chain ($240$); and the finite
+multiplicity tests behind \cref{ent:ps:thm:multiplicity} ($196$ uniform-power
+and $98$ radical-order checks). Its random seeds are $23092026$, $10050$ and
+$31$. The delivered record \texttt{data/09-prime-spectra-verification\_results.json}
+reports \textbf{10889} passing assertions in $13$ categories and states that
+the checks are finite sanity checks, not proofs of infinite or ultrafilter
+theorems; \texttt{data/09-prime-spectra-BUILD\_REPORT.json} records the
+source's own build of its $28$-page article, which is not shipped. The
+\texttt{--json} argument is optional; without it the script only prints, and
+the documented command rewrites the delivered record in place, so a re-run
+should name a scratch path. For this merge it was re-run with \texttt{--json}
+pointing outside the repository and reproduced the delivered record exactly,
+up to platform line endings.
+
 \paragraph{What the checks cannot do.}
-All five suites print their own scope disclaimers, and all five are correct
+All six suites print their own scope disclaimers, and all six are correct
 to do so.
 The counts are counts of finite assertions, not confidence scores for any
 infinite theorem. No suite can prove cofinality statements, Hahn support
@@ -6054,7 +7584,7 @@ coefficient. Everything else rests on the proofs in the body.
 
 \section{Source and novelty ledger}
 \label{ent:app:sources}
-The first two of this report's five source manuscripts are both dated
+The first two of this report's six source manuscripts are both dated
 21 September 2026, and each pinned the repository at its own snapshot: one at commit
 \texttt{4896a2808ce30e01b1c8\allowbreak 6ae3ba2295a64762d246} and the other at
 \texttt{aa846271b4dcae2c055b\allowbreak 216126a87210292ec19b}. The first re-read four
@@ -6166,6 +7696,49 @@ its standalone localization proposition is printed as
 of this report's divisible-group or algebraically closed results was
 attached to its weaker hypotheses.
 
+A sixth manuscript, \emph{Prime Spectra at Surreal Infinity: Reduced entire
+divisors, valuation fibres, and splitting under cofinal scalar extension},
+dated September 2026, pinned the repository at
+\texttt{465a54b479a1ee842cbf\allowbreak 7db1689a7d2f6bfe25e1}, after the fifth
+source had been merged; this report's directory is identical at that pin and
+at the base of the sixth merge, and the seven labels its audit cites
+(\texttt{ent:thm:image}, \texttt{ent:thm:quotient},
+\texttt{ent:cor:single-node}, \texttt{ent:thm:product},
+\texttt{ent:thm:maximal}, \texttt{ent:sm:thm:maximal-all},
+\texttt{ent:sm:thm:beta}) exist with the meaning it gives them. Its
+statements about this report --- that it identifies the quotient by a
+one-simple-node product with the eventually integral sequences, describes
+all maximal ideals of that quotient with ultraproduct residue fields,
+identifies the maximal spectrum with $\beta\N_{>0}$, proves that the full
+entire ring fails to be B\'ezout without an order unit, and uses finite shell
+algebras for several nodes on a shell --- were checked and hold; no stale
+statement was found. Its review concentrated on this report, its README and
+the documentation catalogue; it compared the literature of Finocchiaro,
+Frisch and Windisch \cite{FFW}, the Stacks Project on valuation rings
+\cite{StacksValuation}, Neumann, and Conway and Gonshor (the last two not
+reviewed page by page). It is \cref{ent:ps:sec:spectrum}, all of which is
+its material except where stated: its analytic section is printed once by
+citation (\cref{ent:ps:rem:route}); its recovered maximal ideals, residue
+fields and maximal spectrum are
+\cref{ent:thm:maximal,ent:sm:thm:maximal-all,ent:sm:thm:beta}; its example
+``rank is not the dividing invariant'' is \cref{ent:subsec:finite-rank} with
+\cref{ent:subsec:gamma-infinity}; and its divisibility lemma for arbitrary
+multiplicities is \cref{ent:thm:product} with \cref{ent:prop:kernel-direct}.
+Its three questions are \cref{ent:ps:q:several-nodes,ent:ps:q:unbounded,ent:ps:q:invariance},
+and its suggested Lean dependency order is summarized in
+\cref{ent:subsec:questions}. Where the merge had to choose: its letters were
+renamed (\cref{ent:subsec:notation}), including $e_q$ for its $f_q$; its
+kernel argument was not kept as a separate route, being a bookkeeping
+variant of \cref{ent:prop:kernel-direct}; and four statements are the
+merge's, not the source's, and are marked where they occur --- that the
+ring-theoretic results hold for any nodes on the same radii
+(\cref{ent:ps:rem:nodes}), that $\Phi_\Ucal$ is $\red_\Ucal$ followed by
+residues (after \cref{ent:ps:prop:fibre}), that finitely generated ideals containing the
+product are $(P_D,G)$ (\cref{ent:ps:rem:fg-ideals}), and that the additional
+primes for unbounded multiplicities are not maximal (the remark after
+\cref{ent:ps:thm:multiplicity}). Its finite checks are Suite~F of
+\cref{ent:app:checks}.
+
 The strongest proposed original statements of the first two sources are
 \cref{ent:thm:no-bezout} and its use in \cref{ent:thm:main}, together with
 \cref{ent:thm:extension,ent:thm:zero-conservation,ent:thm:no-continuation}
@@ -6260,6 +7833,20 @@ M. Henriksen, On the ideal structure of the ring of entire functions,
 Free maximal ideals, their residue fields, and the transcendental coordinate
 of Theorem~5.
 
+\bibitem{Henriksen53}
+M. Henriksen, On the prime ideals of the ring of entire functions,
+\emph{Pacific Journal of Mathematics} \textbf{3} (1953), no.~4, 711--720.
+\url{https://msp.org/pjm/1953/3-4/pjm-v3-n4-p04-p.pdf}.
+Cited as recorded in the analytic-geometry report of this collection; not
+cited by the sixth source and not compared here.
+
+\bibitem{FFW}
+C. A. Finocchiaro, S. Frisch and D. Windisch, \emph{Prime ideals in
+infinite products of commutative rings}, arXiv:2009.03069v2, revised
+24 August 2023. \url{https://arxiv.org/abs/2009.03069v2}.
+Credited by the sixth source as the direct precedent for the ultrafilter and
+valuation-domain mechanism of \cref{ent:ps:sec:spectrum}.
+
 \bibitem{Bruno}
 N. Bruno, \emph{Ideal Structure of Rings of Analytic Functions with
 non-Archimedean Metrics}, Ph.D. dissertation, The Ohio State University,
@@ -6275,6 +7862,12 @@ In particular Corollary~4.19.
 The Stacks Project Authors, \emph{The Stacks Project}, Section~10.31,
 Noetherian rings, accessed 22 September 2026.
 \url{https://stacks.math.columbia.edu/tag/00FM}.
+
+\bibitem{StacksValuation}
+The Stacks Project Authors, \emph{The Stacks Project}, Section~10.50,
+Valuation rings, Tag~00I8. \url{https://stacks.math.columbia.edu/tag/00I8}.
+Cited by the sixth source for the correspondence between primes of a
+valuation ring and convex subgroups of its value group.
 
 \bibitem{Berarducci}
 A. Berarducci, \emph{Surreal numbers, exponentiation and derivations}, 2020,

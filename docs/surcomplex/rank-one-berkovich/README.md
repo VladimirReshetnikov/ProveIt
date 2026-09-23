@@ -107,6 +107,10 @@ this article's chain is that table extended. Then note four relationships.
   localization theorem from the same report is what licenses working in a
   fixed workspace at all.
 
+The closure of finite-support series described here has an analogue with
+"finite" replaced by "fewer than `κ` terms", `κ` uncountable:
+[first-kappa-coefficients](../first-kappa-coefficients/) (`fkc:thm:completion`).
+
 ## The historical gap audit
 
 The original report identified a developed rank-one analytic theory as a gap

@@ -196,6 +196,12 @@ maps. The manuscript's finding that no coefficient-rank completion theorem,
 restriction sequence or completion-intersection formula appears in the
 collection still holds for the current tree.
 
+For the uncountable-cardinal analogue of the completion results — Hahn series
+with fewer than `κ` terms — see
+[first-kappa-coefficients](../first-kappa-coefficients/) (`fkc:thm:completion`,
+`fkc:thm:dichotomy`): there the field is complete exactly when
+`cf(Γ) ≠ cf(κ)`.
+
 ## Build
 
 ```sh

@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={The surreal and surcomplex reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of forty-six research packages on surreal and surcomplex numbers}}
+  pdfsubject={Catalogue of forty-eight research packages on surreal and surcomplex numbers}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -59,7 +59,7 @@
 
 \begin{center}
  {\LARGE\bfseries\color{Ink} The surreal and surcomplex reports}\\[8pt]
- {\large Forty-six independent mathematical research packages,\\
+ {\large Forty-eight independent mathematical research packages,\\
  on the surreal field, its algebraic closure, its quaternion algebra,\\
  their reach into physics, and the foundations and computation of all of them}\\[10pt]
  {\small September 2026}
@@ -70,7 +70,7 @@
 \section*{Scope}
 \addcontentsline{toc}{section}{Scope}
 
-This document catalogues the forty-six research packages stored under
+This document catalogues the forty-eight research packages stored under
 \dir{docs}.  Each entry names the problem the report attacks, the result it
 claims, and the delivery it arrived in.
 
@@ -83,15 +83,16 @@ automorphisms, Gamma functions, differential transcendence of explicit
 surreals, Hahn-valued measures and probability, Markov generators,
 transcendence over bounded-support series, diagonal matrix scaling, vector
 and tensor fields, Euclidean three-space and its rotations, and finite
-probability.  Twenty-three, under \dir{docs/surcomplex}, are about the algebraic closure $\SC$:
+probability.  Twenty-five, under \dir{docs/surcomplex}, are about the algebraic closure $\SC$:
 the theory of holomorphic functions over it, its differential algebra, its
 rank-one analytic geometry, its finite and infinite-dimensional spectral
 theory, its local, quasi-periodic and expanding dynamics, its nonabelian
 support obstructions, its entire functions at arbitrary valuation rank and
 their holonomic rigidity, Tate curves and multiscale theta series, Herglotz
 positivity, moment reconstruction, the summability of Wick expansions,
-the duals of Hahn vector spaces, the automorphisms of the field, and hidden
-negative directions of Hermitian
+the duals of Hahn vector spaces, the automorphisms of the field, cardinally
+bounded Hahn fields, what one dilation defines, and hidden negative directions
+of Hermitian
 forms.  One, under \dir{docs/surquaternions}, leaves
 commutativity behind for Hamilton's division algebra $\mathbb{H}_{\No}$ over
 $\No$.  One, under \dir{docs/physics}, is the only report here whose subject is
@@ -146,8 +147,8 @@ dimension; Euclidean three-space and $\mathrm{SO}(3,\No)$; and finite surreal
 probability.  The first and the fourth
 each arrived as a pair of archives and were merged; the exponential-automorphism
 report later absorbed two independent re-derivations of its own theorem, and
-the measures report merges four manuscripts, the vector-field report three
-and the three-space report two; the rest are single manuscripts.
+the measures report merges five manuscripts, the vector-field report three
+and the three-space report three; the rest are single manuscripts.
 
 \entry{A square-root obstruction to evaluating increasing Hahn series at $\omega$}
 {surreal/hahn-evaluation-at-omega}
@@ -391,7 +392,7 @@ theorems remain pending.}
 
 \entry{Hahn-valued measures and probability: strong atomicity, coefficientwise extension, and hidden negative mass}
 {surreal/hahn-valued-measures-and-probability}
-{article.pdf}{four manuscripts, delivered 22~September 2026}
+{article.pdf}{five manuscripts, delivered 22~September 2026}
 {Measures with values in $\R((t^\Gamma))$ and $\C((t^\Gamma))$, and through
 $t^\gamma=\omega^{-\gamma}$ in $\No$ and $\SC$, with $\Gamma$ a set-sized ordered
 abelian group \emph{not} assumed divisible except in one Gaussian quadrature
@@ -435,7 +436,11 @@ class for countably many scales: every measure has a Hahn-valued density with
 respect to one finite real control measure, positivity is positivity of that
 density almost everywhere (related exactly to the null-ideal criterion, whose
 proof it re-derives for countable exponent sets), and Hahn--Jordan,
-Radon--Nikodym, Fubini, conditional expectation and infinite masses follow.}
+Radon--Nikodym, Fubini, conditional expectation and infinite masses follow.  A fifth manuscript (Sections~32--34) removes the uniform separation of the
+Bernoulli product theorem: at arbitrary interior baselines the laws extend
+exactly when every exponent row lies in $\ell^1+\ell^2(1/[p_j(1-p_j)])$,
+answering the report's near-boundary question; a mixed-baseline version is
+added by the merge and marked as such.}
 
 \entry{Surreal Markov generators at every valuation scale}
 {surreal/markov-generators-at-every-scale}
@@ -558,7 +563,7 @@ certified.}
 
 \entry{Euclidean three-space and the rotation group over the surreals}
 {surreal/euclidean-three-space}
-{article.pdf}{two manuscripts, delivered 22~September 2026}
+{article.pdf}{three manuscripts, delivered 22~September 2026}
 {Coordinate geometry of $\No^3$ inside set-sized real-closed Hahn fields,
 where lengths, areas and radii may be infinite or infinitesimal but angles
 between directions always have canonical finite representatives, so spatial
@@ -576,7 +581,11 @@ critical spheres.  What both manuscripts proved (isometries, Rodrigues, the
 Cayley chart, the finite phase) is printed once; the spin double cover is
 cited from \nolinkurl{surquaternions/surquaternions}, and the plane case is
 the $\mathrm{SO}(2,\No)$ section of \nolinkurl{surcomplex/trigonometry}.  Not
-refereed, no Lean verification, priority not certified.}
+refereed, no Lean verification, priority not certified.  A third manuscript (Part~III) classifies the normal subgroups of
+$\mathrm{SO}(3,F)$ by valuation cuts, computes lower central and derived
+series, and proves that every class homomorphism from $\mathrm{SO}(3,\No)$ to a
+set-sized group factors through standard part, also for $\mathrm{SO}(n,\No)$ and
+$\mathrm{SU}(n,\SC)$.}
 
 \entry{Finite surreal probability, log-odds and conditioning}
 {surreal/finite-surreal-probability}
@@ -600,19 +609,21 @@ refereed, no Lean verification, priority not certified.}
 
 \section{The surcomplex plane}
 
-Twenty-three reports about $\SC=\No[i]$.  Seven are about holomorphic function
+Twenty-five reports about $\SC=\No[i]$.  Seven are about holomorphic function
 theory, rest on one framework, and are all merges: twenty-seven manuscripts
-reduced to seven documents, with a twenty-eighth, on $\mathrm{SO}(2,\No)$,
-later added to trigonometry.  The other sixteen came later and are listed
+reduced to seven documents, with three more later added to trigonometry,
+one on $\mathrm{SO}(2,\No)$ and two on the periods of global phases.  The
+other eighteen came later and are listed
 after them.  Eight are merges: differential algebra (eleven manuscripts),
 dynamics and normal forms (ten), nonabelian support obstructions (three),
-entire functions at arbitrary rank (five), finite spectral theory (three),
-Hahn--Tate uniformization (three), holonomic rigidity (three) and
-infinite-dimensional spectral theory (four).  Eight are single manuscripts: on
+entire functions at arbitrary rank (six), finite spectral theory (three),
+Hahn--Tate uniformization (three), holonomic rigidity (five) and
+infinite-dimensional spectral theory (four).  Ten are single manuscripts: on
 rank-one analytic geometry, expanding polynomial dynamics, Herglotz
 positivity, moment reconstruction, Wick summability, the three duals of Hahn
-vector spaces, hidden negative Hermitian directions and the automorphisms of
-the field.  Each of the sixteen
+vector spaces, hidden negative Hermitian directions, the automorphisms of
+the field, cardinally bounded Hahn fields, and what one dilation defines.  Each
+of the eighteen
 was written against this repository and names the gap it fills.
 
 \medskip
@@ -837,7 +848,11 @@ $\mathrm{SO}(2,\No)\cong\mathcal{O}/2\pi\Z\cong\mathrm{SO}(2,\R)\times(\mathfrak
 isometries are automatically linear, a rational projective chart, torsion
 $\Q/\Z$, one real coordinate per valuation layer, a strongly summable
 logarithm, non-algebraic group automorphisms and the fine topology; what it
-shares with the circle-group results above is printed once.}
+shares with the circle-group results above is printed once.  Two further manuscripts (Section~19) study the periods of global phases:
+their profinite defect, and normalized surcomplex exponentials whose
+kernel-multiplier ring is exactly $\Z$ without being an integer part, which
+refutes one sufficiency possibility in the first Ehrlich--Kaplan robustness
+question; the question itself stays open.}
 
 
 
@@ -1083,7 +1098,7 @@ refereed, no Lean code, no priority certified.}
 
 \entry{Cofinality, factorization and scalar extension for entire Hahn functions at arbitrary rank}
 {surcomplex/entire-functions-at-arbitrary-rank}
-{article.pdf}{five manuscripts: two delivered 21~September 2026, three 22~September 2026}
+{article.pdf}{six manuscripts: two delivered 21~September 2026, four 22~September 2026}
 {Ordinary power series $\sum a_nZ^n$ over a \emph{fixed} Hahn field
 $K_\Gamma=\C((t^\Gamma))$, $\Gamma$ nonzero, set-sized, divisible and of
 arbitrary valuation rank; \emph{entire} means strongly Hahn-summable at every
@@ -1126,11 +1141,15 @@ credit, a conclusion already in \nolinkurl{surcomplex/analysis} and
 is not that of \nolinkurl{surcomplex/global-divisors}.  Rank is not the driver:
 $\bigoplus_{\alpha<\omega_1}\Q e_\alpha$, ordered by the largest nonzero index,
 admits only polynomials.  No source was refereed or machine-checked, and
-priority is not certified.}
+priority is not certified.  A sixth manuscript (Section~12) classifies every prime ideal above a
+canonical product with one simple node per shell: the quotient is
+zero-dimensional exactly when $\Gamma$ has an order unit, otherwise continuum
+chains of primes appear, and a cofinal group extension can split one prime into
+a continuum-sized chain while the zeros are unchanged.}
 
 \entry{Holonomic rigidity for entire Hahn functions: a sharp order-unit criterion for dilations}
 {surcomplex/holonomic-rigidity-for-entire-hahn-functions}
-{article.pdf}{three manuscripts, delivered 22~September 2026}
+{article.pdf}{five manuscripts, delivered 22~September 2026}
 {Power series over one fixed Hahn field $K_\Gamma=\C((t^\Gamma))$, with
 $\Gamma$ a nonzero set-sized ordered abelian group \emph{not assumed
 divisible}; \emph{entire} means that the evaluation family is strongly Hahn
@@ -1181,7 +1200,12 @@ equation over $k((t^\Gamma))$, any field $k$ of characteristic zero and any
 $\Gamma\ne0$, is a polynomial (Theorem~D), with a higher-order corner
 criterion and Euler rigidity; higher-order nonlinear equations stay open
 (Question~19.1), and the wider coefficient field is not transferred to
-Theorems~A--C.}
+Theorems~A--C.  Two later manuscripts (Sections~20--22) answer the nonlinear question
+when $\Gamma$ has no order unit: a differential or dilation relation forces all
+Taylor coefficients into one finitely generated field, so every nonpolynomial
+strongly entire series is differentially transcendental in all orders, jointly
+with its non-torsion dilates, and a continuum-sized differentially independent
+family exists; the order-unit case stays open.}
 
 \entry{Hahn--Tate uniformization at arbitrary valuation rank}
 {surcomplex/hahn-tate-uniformization}
@@ -1540,6 +1564,50 @@ $\mathrm{Aut}_L(\SC)$ is observed to be a proper subgroup of the real-axis
 stabilizer.  Readings of the Kaplan--Krapp--Serra paper beyond Question~5.4
 are the source's and were not rechecked.  One manuscript; not refereed, no
 Lean verification.}
+
+\entry{The first-$\kappa$ coefficients: omitted types and completion in Hahn fields}
+{surcomplex/first-kappa-coefficients}
+{article.pdf}{surreal\_first\_kappa\_types.zip, delivered 22~September 2026}
+{Inside a full Hahn field $k((t^\Gamma))$, $k=\R$ or $\C$, take the series with
+fewer than $\kappa$ nonzero terms, for an uncountable and possibly singular
+cardinal $\kappa$.  Which one-variable types does the full field realize that
+this subfield omits?  Exactly those coded by the first $\kappa$ nonzero terms of
+a series: these terms determine its complete ordered-field type in the real
+case and its valued-field type in the complex case, and the least number of
+formulas witnessing omission is $\operatorname{cf}(\kappa)$, while in the pure
+complex field language all missing elements share one type.  The same
+invariant gives the approximation cut, the least empty nest of closed balls,
+the valuation completion (the subfield is complete exactly when
+$\operatorname{cf}(\Gamma)\ne\operatorname{cf}(\kappa)$, and never spherically
+complete) and the valuation loss of linear retractions; Conway normal forms
+give surreal examples at $\kappa=\aleph_\omega$.  The countable-support
+analogues in \nolinkurl{surcomplex/three-duals-of-hahn-vector-spaces} and
+\nolinkurl{surcomplex/rank-one-berkovich} are cross-referenced.  The
+constructions and quantifier-elimination inputs are established; the proposed
+contribution is the joint classification.  Not refereed, no Lean verification,
+limited priority audit.}
+
+\entry{A single dilation recovers Hahn support}
+{surcomplex/single-dilation-hahn-support}
+{article.pdf}{surreal\_dilation\_support.zip, delivered 22~September 2026}
+{Can one field automorphism make the Hahn structure of $k((t^\Gamma))$
+visible?  For every coefficient-fixing monomial automorphism
+$\sigma(t^g)=\chi(g)t^{\theta g}$ the report constructs a strong partial inverse
+of $\sigma-\lambda$, obstructed only at exponents fixed by $\theta$ where
+$\chi=\lambda$, and for finitely many commuting ones a deformation retraction
+of the Koszul complex onto its joint-resonant coefficients, computing additive
+and principal-unit multiplicative cohomology.  The main application: the single
+dilation $S_2(\sum a_gt^g)=\sum a_gt^{2g}$ defines, in the language of fields
+with one automorphism, the coefficient field, every coefficient, the canonical
+monomials, the valuation ring and truncation.  Hence its centralizer among
+\emph{all} field automorphisms is exactly the untwisted coefficient--exponent
+lifts, full monadic second-order arithmetic is interpreted (so the theory is
+undecidable, with a TP$_2$ witness), and all nonidentity rational dilations
+give the same definable data though no two are conjugate.  The dilation is the
+$S_a$ of \nolinkurl{surcomplex/surcomplex-field-automorphisms}, whose
+questions it does not answer.  Elementwise results reach $\No$ and $\No[i]$
+through Conway normal forms, with proper-class qualifications stated.  Not
+refereed, no Lean verification.}
 
 
 \section{Surquaternions}

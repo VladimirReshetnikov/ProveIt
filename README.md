@@ -434,6 +434,12 @@ fourth-order remainder, and its valuation is half the defect valuation.
 At both inverse-sine endpoints the inward difference quotient eventually
 exceeds every fixed surreal bound, including infinite bounds, so no
 surreal-valued one-sided or fine derivative exists.
+Angular distance on the actual unit circle satisfies the metric axioms and
+the exact chord formula, with Jordan comparison bounds and identical
+angular/chordal valuation. Directions with equal standard part have a unique
+infinitesimal relative angle, given by the strong logarithm; its absolute
+value is their angular distance. The normalized chord and cosine-defect
+factors have full strong series and exact finite remainders.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual

@@ -226,6 +226,10 @@ import Surreal.Surcomplex.ArcsinSeries
 import Surreal.Surcomplex.AcosEndpoint
 import Surreal.Surcomplex.AcosEndpointSeries
 import Surreal.Surcomplex.InverseTrigonometricEndpointDerivative
+import Surreal.Surcomplex.AngularDistance
+import Surreal.Surcomplex.AngularMetric
+import Surreal.Surcomplex.LocalAngularDistance
+import Surreal.Surcomplex.AngularDistanceSeries
 import Surreal.Surcomplex.TrigonometricFineDerivative
 import Surreal.Surcomplex.TrigonometricOrder
 import Surreal.Surcomplex.TrigonometricLeading

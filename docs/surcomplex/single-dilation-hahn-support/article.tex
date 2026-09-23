@@ -7,6 +7,7 @@
 \usepackage{microtype,booktabs,longtable,array,enumitem}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{fancyhdr}
+\usepackage{xurl}
 \usepackage{hyperref}
 \usepackage{bookmark}
 \usepackage{listings}
@@ -23,7 +24,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\small\color{Ink}A single dilation recovers Hahn support}
-\fancyhead[R]{\small Research manuscript}
+\fancyhead[R]{\small Single-source research report}
 \fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0.3pt}
 \numberwithin{equation}{section}
@@ -62,26 +63,35 @@
 \newcommand{\eps}{\varepsilon}
 \DeclareMathOperator{\Cen}{Cen}
 \DeclareMathOperator{\Nor}{Nor}
+\DeclareMathOperator{\Supp}{Supp}
+\newcommand{\repo}[1]{\nolinkurl{#1}}% a path in the collection, relative to docs/
+\newcommand{\lbl}[1]{\nolinkurl{#1}}% a label of another report, cited by name
 \newcommand{\restr}[2]{#1\!\upharpoonright_{#2}}
 \newcommand{\pin}{\texttt{465a54b479a1ee842cbf7db1689a7d2f6bfe25e1}}
 \lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,
  frame=single,rulecolor=\color{black!20},showstringspaces=false}
 
 \begin{document}
+\hypersetup{pageanchor=false}
 \begin{titlepage}
-\vspace*{14mm}
-{\color{Ink}\large SURREAL AND SURCOMPLEX DIFFERENCE FIELDS\par}
-\vspace{12mm}
+\vspace*{4mm}
+{\color{Ink}\large SINGLE-SOURCE RESEARCH REPORT\par}
+\vspace{2mm}
+{\color{Ink}\small Surreal and surcomplex difference fields\par}
+\vspace{9mm}
 {\color{Ink}\Huge\bfseries A Single Dilation\\[4pt] Recovers Hahn Support\par}
 \vspace{8mm}
 {\Large Exact difference cohomology, definable normal forms,\\
  and centralizers of monomial automorphisms\par}
-\vspace{13mm}
+\vspace{9mm}
 {\large Research article prepared with ChatGPT\\
  for Vladimir Reshetnikov\par}
-\vspace{4mm}
+\vspace{3mm}
 {22 September 2026\par}
-\vspace{12mm}
+\vspace{1mm}
+{\small Built from one manuscript of batch~22 of the collection,
+pinned to repository commit \texttt{465a54b}\par}
+\vspace{8mm}
 \begin{abstract}
 Let $K=\kk((t^\Gamma))$ be a full Hahn field of characteristic zero.
 We construct a strong, valuation-nondecreasing partial inverse of
@@ -95,7 +105,7 @@ multiplicative cohomology, and gives exact criteria for simultaneous
 multiplicative equations.
 
 The main structural application is that the single automorphism
-$D_2(\sum a_gt^g)=\sum a_gt^{2g}$ defines the coefficient field, constant
+$S_2(\sum a_gt^g)=\sum a_gt^{2g}$ defines the coefficient field, constant
 coefficient, canonical monomials, every coefficient, the valuation ring,
 and truncation in the language of fields with one automorphism. Consequently
 its centralizer among \emph{all} field automorphisms consists precisely of
@@ -112,8 +122,16 @@ normal forms, with proper-class qualifications stated explicitly.
 {\small\color{Ink}\textbf{Status.} Complete proofs are supplied for the stated
 results. Novelty is a qualified research claim, not certified priority.
 The accompanying finite checks are not a formal verification. No solution
-to the published exponential-automorphism questions is asserted.}
+to the published exponential-automorphism questions is asserted.
+An AI-assisted research draft, not refereed; no theorem of this report is
+Lean-verified. The exponent dilation is written $S_q$, as in the
+collection's surcomplex-automorphisms report; the source wrote $D_q$
+(Section~\ref{dsup:sec:conventions}). Relations to the collection as it now
+stands are in Section~\ref{dsup:sec:position} and
+Appendix~\ref{dsup:app:report}. Every label carries the prefix
+\texttt{dsup:}.}
 \end{titlepage}
+\hypersetup{pageanchor=true}
 
 \begingroup
 \small
@@ -122,7 +140,7 @@ to the published exponential-automorphism questions is asserted.}
 \endgroup
 \newpage
 
-\section{Introduction and research position}\label{sec:intro}
+\section{Introduction and research position}\label{dsup:sec:intro}
 
 A normal form is often treated as external information attached to a
 non-Archimedean field. The underlying field need not visibly identify its
@@ -132,13 +150,13 @@ automorphism can recover all of this information.
 
 The automorphism is exponent doubling. It does not square a general series:
 \[
- D_2\Bigl(\sum_g a_gt^g\Bigr)=\sum_g a_gt^{2g},
+ S_2\Bigl(\sum_g a_gt^g\Bigr)=\sum_g a_gt^{2g},
  \qquad
  \Bigl(\sum_g a_gt^g\Bigr)^2=\sum_{g,h}a_ga_ht^{g+h}.
 \]
-The contrast between these operations is useful. The equation $D_2x=x^2$
+The contrast between these operations is useful. The equation $S_2x=x^2$
 recognizes precisely the canonical monomials. A second equation,
-$D_2y-y=x-c$, recognizes the constant coefficient $c$ of $x$. Together these
+$S_2y-y=x-c$, recognizes the constant coefficient $c$ of $x$. Together these
 two equations recover arbitrary coefficients. Even the direction of the
 valuation is recovered from the constant coefficient of $(1-m)^{-1}$ for a
 monomial $m$. This works over $\C$, without ordering the field or naming
@@ -152,8 +170,8 @@ obstructions into a monomial part and a resonant logarithmic part.
 
 \subsection{Principal results}
 
-Theorems~\ref{thm:resolvent}, \ref{thm:koszul}, \ref{thm:definability}, and
-\ref{thm:centralizer} are the main structural statements. Their content is
+Theorems~\ref{dsup:thm:resolvent}, \ref{dsup:thm:koszul}, \ref{dsup:thm:definability}, and
+\ref{dsup:thm:centralizer} are the main structural statements. Their content is
 as follows.
 
 \begin{enumerate}[leftmargin=*,itemsep=4pt]
@@ -170,11 +188,11 @@ complex, and
 \]
 The analogous statement holds for the additive infinitesimal ideal; the
 Hahn logarithm turns it into a statement about principal units.
-\item In $(K,D_2)$, for nonzero $2$-divisible $\Gamma$, the entire canonical
+\item In $(K,S_2)$, for nonzero $2$-divisible $\Gamma$, the entire canonical
 coefficient and truncation structure is parameter-free definable. In
 particular,
 \[
- \Cen_{\Aut(K)}(D_2)
+ \Cen_{\Aut(K)}(S_2)
  \simeq \Aut(\kk)\times\Aut_{\mathrm{ord}}(\Gamma).
 \]
 Every member of this centralizer is automatically strong.
@@ -187,7 +205,7 @@ but they are pairwise nonconjugate as field automorphisms.
 
 Here ``strong'' refers to preservation of Hahn summation, not convergence
 of finite partial sums. Every assertion about ordinary group cohomology
-is initially made for a set-sized Hahn field. Section~\ref{sec:surreal}
+is initially made for a set-sized Hahn field. Section~\ref{dsup:sec:surreal}
 then states exactly what transfers to the proper-class surreal fields.
 
 \subsection{What is inherited and what is proposed as new}
@@ -243,10 +261,193 @@ interfaces for formalizing this article.
 The catalogue and the surcomplex-automorphism report's guide were inspected,
 not every source line in the repository. The repository was not independently
 built. No theorem in this article is being represented as already checked
-by Lean. Appendix~\ref{app:verification} records exactly what the delivered
+by Lean. Appendix~\ref{dsup:app:verification} records exactly what the delivered
 finite verification program does and does not check.
 
-\section{Conventions, supports, and monomial automorphisms}\label{sec:setup}
+This subsection is the source's, as of its pin. The repository statements
+it makes were checked again against the collection as it now stands; the
+result, with the one addition that matters here, is in
+Appendix~\ref{dsup:app:pinned}.
+
+\subsection{Notation and conventions in this report}\label{dsup:sec:conventions}
+
+This report prints the source manuscript with its notation adapted to the
+collection's notation guide \repo{docs/NOTATION.md}. One map was renamed and
+one formula symbol was renamed; no normalization changed.
+
+\begin{enumerate}[leftmargin=*,itemsep=3pt]
+\item \emph{The exponent dilation is $S_q$.} For $q\in\Q_{>0}$ and divisible
+$\Gamma$ ($2$-divisibility suffices for $q=2$),
+\[
+ S_q\Bigl(\sum_g a_gt^g\Bigr)=\sum_g a_gt^{qg}.
+\]
+The source wrote $D_q$, and in Section~\ref{dsup:sec:definability} and
+Appendix~\ref{dsup:app:formulas} abbreviated $D_2$ to $D$. The notation guide
+reserves $D$ (with $\partial$) for a scalar derivation of the surreal field,
+and the collection's surcomplex-automorphisms report writes this same map
+$S_a$ (\lbl{saut:eq:dilation}, there for every positive surreal $a$) while
+using $D_\lambda$ and $D_\chi$ for character twists
+$t^g\mapsto\chi(g)t^g$. Here $S_q$ always carries its subscript, and the
+abbreviation $D$ is not used: every $D$, $D_2$, $D_q$, $D_r$, $D_s$ of the
+source is $S$ with the same subscript ($S_2$ for the bare $D$). The only
+$D$ left in the report is $D_\chi$ in Section~\ref{dsup:sec:position}, which
+denotes that report's character twist. An unsubscripted $S$ is a well-ordered subset of $\Gamma$ (in the definition
+of $K$ and in Lemma~\ref{dsup:lem:orbit}).
+\item \emph{The support formula is $\Supp(m,x)$}, ``$m$ is a canonical
+monomial in the support of $x$'' (equation~\eqref{dsup:eq:supportformula}).
+The source wrote $S(m,x)$, which would now clash with the dilation. The
+support \emph{set} is still $\supp(x)$.
+\end{enumerate}
+
+The other symbols are the source's. Their meanings here are fixed as
+follows.
+\begin{itemize}[leftmargin=*,itemsep=3pt]
+\item $\sigma$ is always a coefficient-fixing monomial automorphism
+$\sigma(t^g)=\chi(g)t^{\theta g}$ of the \emph{scalar} field
+\eqref{dsup:eq:sigma}. It is not the argument dilation $f(z)\mapsto
+f(\lambda z)$ of formal functions studied in the collection's
+holonomic-rigidity report, and not the symbolic shift or the small-divisor
+rate that the notation guide records under $\sigma$.
+\item $\theta\in\Aut_{\mathrm{ord}}(\Gamma)$ is the surcomplex-automorphisms
+report's $\tau$; $\chi$ and $\rho$ agree with its $\chi$ and $\rho$. In its
+notation $\sigma=M_{\id,\theta,\chi}$ (\lbl{saut:thm:monomial}), and the maps
+\eqref{dsup:eq:centralizerform} are its $M_{\rho,\theta}=M_{\rho,\theta,1}$.
+\item $K=\kk((t^\Gamma))$ is a \emph{set-sized} full Hahn field over an
+arbitrary coefficient field $\kk$ of characteristic zero; the guide's
+$K_\Gamma=\C((t^\Gamma))$ is the case $\kk=\C$. (The surcomplex-automorphisms
+report uses $K$ for the class $\No(i)$.) The class $\SC$ is the guide's
+$\No[i]$. In Section~\ref{dsup:sec:surreal}, and in
+Theorem~\ref{dsup:thm:surreal}(5) in particular, $\theta$ ranges over ordered
+additive class automorphisms of $(\No,+,<)$: there the exponent group is a
+proper class, departing from the guide's set-sized $\Gamma$ as the
+surcomplex-automorphisms report also does.
+\item $U_1=1+\mm$ is the group of principal units. It is not that report's
+group $\mathcal U$ of $1$-automorphisms; the sets $\mathcal U_\pm(S)$ of
+Lemma~\ref{dsup:lem:orbit} are orbit hulls of exponents. $M(m)$ is the
+monomial formula~\eqref{dsup:eq:monomialformula}, not a map $M_{\rho,\tau}$.
+$F$ is the fixed field of one $\sigma$ (Corollary~\ref{dsup:cor:fixed}) or of
+a commuting family \eqref{dsup:eq:jointgroup}.
+\item \emph{Resonance} means only the set
+$R_\lambda=\{g:\theta g=g,\ \chi(g)=\lambda\}$ and the restriction
+$P_\lambda$ to it \eqref{dsup:eq:resonance}. It is unrelated to the
+multiplier resonances of the dynamics-and-normal-forms report.
+\emph{Spectrum} is used once, in the algebraic sense stated after
+Corollary~\ref{dsup:cor:fixed}. A \emph{centralizer} is always taken in a
+group of field automorphisms, not among germs.
+\item \emph{Strong} means preserving Hahn summation
+(Definition in Section~\ref{dsup:sec:setup}), not convergence of finite
+partial sums. \emph{Dilation} always means an exponent dilation of the
+scalar field.
+\end{itemize}
+
+The tempting false readings, beside the true ones: $S_2$ is not squaring,
+since $S_2(\sum a_gt^g)=\sum a_gt^{2g}$ while
+$(\sum a_gt^g)^2=\sum a_ga_ht^{g+h}$, and the two agree exactly on the
+canonical monomials (Lemma~\ref{dsup:lem:monomialrecognition}). $S_q$ is not
+$f(z)\mapsto f(\lambda z)$, and it is not the surreal exponential, the
+omega-map, a derivation or an exponential-preserving automorphism
+(Section~\ref{dsup:sub:recovered}).
+
+\subsection{Relation to other reports in the collection}\label{dsup:sec:position}
+
+This subsection was written when the manuscript joined the collection; the
+source compared itself only with the root README, the catalogue and the
+surcomplex-automorphisms report's guide.
+
+\paragraph{Surcomplex field automorphisms}
+(\repo{surcomplex/surcomplex-field-automorphisms}). The dilation $S_q$ is
+that report's $S_a$ at $a=q$ (\lbl{saut:eq:dilation}), and the maps
+\eqref{dsup:eq:sigma} are its monomial automorphisms $M_{\rho,\tau,\chi}$
+(\lbl{saut:thm:monomial}) with $\rho=\id$ and $\tau=\theta$. The source
+credits that construction (Section~\ref{dsup:sec:intro}) and uses none of
+that report's classification statements as premises. Four relations are
+precise.
+\begin{enumerate}[leftmargin=*,itemsep=3pt]
+\item \emph{Consistency with the four-layer decomposition.}
+\lbl{saut:thm:decomp} factors every valued automorphism $\alpha\in G_v$
+(those with $\alpha(\OO)=\OO$) of $\No(i)$ uniquely as
+$\alpha=u\,D_\chi M_{\rho,\tau}$. By Theorem~\ref{dsup:thm:surreal}(5), a
+class field automorphism of $\No(i)$ commuting with some $S_q$, $q\ne1$, is
+of the form $M_{\rho,\theta}$. So it lies in $G_v$, and in that
+factorization $u=1$ and $\chi=1$. Theorem~\ref{dsup:thm:centralizer} is the
+set-sized analogue, and the computation after
+Corollary~\ref{dsup:cor:nohidden} is the same statement for the layer
+$D_\chi$ alone ($D_\chi$ commutes with $S_2$ only if $\chi=1$). Both
+uniqueness statements describe the same maps; there is no conflict.
+\item \emph{One subgroup beyond $G_v$.} That report states, as non-claims,
+that its four-layer decomposition covers $G_v$ only, not all field
+automorphisms, and that no complete classification of the automorphisms of
+$\No(i)$ is claimed (items~1 and~10 of \lbl{saut:sec:nonclaims}). The
+centralizer here is computed among \emph{all} field automorphisms, with no
+assumption that they preserve the valuation ring or Hahn sums; being valued
+and strong is a conclusion. Thus one subgroup of the unrestricted group,
+the centralizer of $S_q$, is shown to lie in $G_v$ and is identified there.
+That is the whole extension. It does not classify $\Aut(\No(i))$, it says
+nothing about automorphisms that commute with no $S_q$, and both non-claims
+of that report otherwise stand.
+\item \emph{Complement to non-definability.}
+\lbl{saut:prop:nondefinability} shows that over every set of parameters
+there are pure-field automorphisms moving $\No$ and moving $\OO$, so neither
+is definable in the pure field with parameters.
+Theorem~\ref{dsup:thm:definability} and
+Theorem~\ref{dsup:thm:surreal}(4) show that after adding the single
+automorphism $S_q$ the coefficient field, the monomials, every coefficient
+and the valuation ring become parameter-free definable. The expansion is a
+different structure, so the two results are complementary. On $\No(i)$ the
+real axis $\No$ is still not claimed definable, and the centralizer
+contains every automorphism of $\C$ (Section~\ref{dsup:sub:recovered}).
+\item \emph{Its questions.} None of the four questions of
+\lbl{saut:sec:questions} is answered here: the image of exponential
+automorphisms on the value group, omega-map compatibility, effective
+descriptions inside the leading-term kernel, and real-form and continuity
+classifications. The source says that it does not settle the
+exponential-automorphism image problems discussed in \cite{KKS,RepoAut}
+(Section~\ref{dsup:sub:recovered}). The only centralizer computed in that
+report is that of conjugation (\lbl{saut:thm:axis}), a different group; and
+that report never asserts that $S_r$ and $S_s$ are conjugate, so
+Theorem~\ref{dsup:thm:nonconjugate} contradicts nothing there.
+\end{enumerate}
+
+\paragraph{Exponential automorphism rigidity}
+(\repo{surreal/exponential-automorphism-rigidity}). On $\No$, $S_q$ is that
+report's canonical lift $\widehat T_q$ (\lbl{prop:hahn-lift}) of the
+value-group dilation $T_q(\gamma)=q\gamma$, and for rational $q\ne1$ that
+report proves that $T_q$ has no exponential lift (\lbl{thm:dilation}). With
+$\kk=\R$, Theorem~\ref{dsup:thm:surreal}(5) says that the class field
+automorphisms of $\No$ commuting with $S_q$ are exactly the canonical lifts
+$\widehat T$ of the ordered additive automorphisms $T$ of $(\No,+,<)$.
+Theorems~\ref{dsup:thm:rationaldef} and~\ref{dsup:thm:nonconjugate} are new
+statements about the same maps and contradict nothing there. Nothing here
+decides which of these lifts, or which other automorphisms, commute with
+the exponential; that report's Question~13.1 (\lbl{q:image}) is untouched.
+
+\paragraph{Holonomic rigidity}
+(\repo{surcomplex/holonomic-rigidity-for-entire-hahn-functions}). The
+dilations in that report's batch-22 material are argument dilations
+$f(z)\mapsto f(\lambda z)$ of formal functions, with $\lambda$ in the field.
+The dilations here act on the exponents of scalars. The two share a word,
+not a theorem.
+
+\paragraph{Birthday cutoffs and hereditary sets}
+(\repo{foundations-and-computation/birthday-cutoffs-and-hereditary-sets}),
+placed after the pin. There the ordered surreal field expanded by the
+birthday function interprets full second-order arithmetic
+(\lbl{hset:prop:arithmetic}), its complete theory is undecidable
+(\lbl{hset:cor:undecidable}), and a definable relation has the independence
+property (\lbl{hset:prop:ip}). Section~\ref{dsup:sec:logic} obtains the same
+kind of consequence, and in addition $\mathrm{TP}_2$ and the strict order
+property, for a different expansion (a Hahn field with one exponent
+dilation) by a different mechanism (Boolean coefficient coding, after
+Camacho \cite{Camacho}). Neither result implies the other.
+
+\paragraph{Unrelated uses of shared words.} The resonances, homological
+operator and centralizers of \repo{surcomplex/dynamics-and-normal-forms}
+concern local dynamics of germs, and the Koszul complexes of
+\repo{surcomplex/analytic-geometry} and \repo{surcomplex/finite-deformations}
+are complexes of polynomial ideals. No statement there is used or extended.
+No \texttt{dsup:} label has a Lean mapping in \repo{docs/FORMALIZATION.md}.
+
+\section{Conventions, supports, and monomial automorphisms}\label{dsup:sec:setup}
 
 Throughout the set-sized theory, $\Gamma$ is an ordered abelian group,
 $\kk$ is a field of characteristic zero, and
@@ -286,17 +487,17 @@ that an orbit ``tends to infinity.''
 \begin{definition}[Coefficient-fixing monomial automorphism]
 Let $\theta\in\Aut_{\mathrm{ord}}(\Gamma)$ and let
 $\chi:\Gamma\to\kk^\times$ be a group homomorphism. Put
-\begin{equation}\label{eq:sigma}
+\begin{equation}\label{dsup:eq:sigma}
  \sigma\left(\sum_g a_gt^g\right)
    =\sum_g a_g\chi(g)t^{\theta g}.
 \end{equation}
 \end{definition}
 
-\begin{proposition}\label{prop:monomial}
-The map \eqref{eq:sigma} is a strong field automorphism fixing $\kk$.
+\begin{proposition}\label{dsup:prop:monomial}
+The map \eqref{dsup:eq:sigma} is a strong field automorphism fixing $\kk$.
 Its valuation action is $v(\sigma x)=\theta(vx)$ for $x\ne0$. Two such
 maps $\sigma_i,\sigma_j$ commute if and only if
-\begin{equation}\label{eq:commute-data}
+\begin{equation}\label{dsup:eq:commute-data}
  \theta_i\theta_j=\theta_j\theta_i,\qquad
  \chi_i(\theta_jg)\chi_j(g)=\chi_j(\theta_i g)\chi_i(g)
  \quad(g\in\Gamma).
@@ -311,20 +512,20 @@ sums are finite; thus the monomial calculation extends to arbitrary
 series. The inverse sends $t^g$ to
 $\chi(\theta^{-1}g)^{-1}t^{\theta^{-1}g}$. Leading terms give the valuation
 formula. Computing both compositions on $t^g$ proves
-\eqref{eq:commute-data}, and strength extends the result to all series.
+\eqref{dsup:eq:commute-data}, and strength extends the result to all series.
 \end{proof}
 
-For $q\in\Q_{>0}$ on a divisible $\Gamma$, write $D_q$ for the case
-$\theta g=qg$ and $\chi=1$. For $D_2$ alone, $2$-divisibility is sufficient.
+For $q\in\Q_{>0}$ on a divisible $\Gamma$, write $S_q$ for the case
+$\theta g=qg$ and $\chi=1$. For $S_2$ alone, $2$-divisibility is sufficient.
 No ordinary absolute value on $\kk$ is used in the Hahn theory.
 
-\section{The orbit-support lemma}\label{sec:orbits}
+\section{The orbit-support lemma}\label{dsup:sec:orbits}
 
 The following elementary support fact is responsible for the unrestricted
 rank of the results. The forward direction of summation is chosen
 separately on the two movement chambers of $\theta$.
 
-\begin{lemma}[Increasing orbit hull]\label{lem:orbit}
+\begin{lemma}[Increasing orbit hull]\label{dsup:lem:orbit}
 Let $\theta$ be an increasing automorphism of an ordered abelian group.
 If $S\subseteq\{g:\theta g>g\}$ is well ordered, then
 \[
@@ -366,14 +567,14 @@ chamber and omit the $n=0$ terms. Every subset of a well-ordered set is
 well ordered.
 \end{proof}
 
-\begin{corollary}[Labeled version]\label{cor:labeled}
+\begin{corollary}[Labeled version]\label{dsup:cor:labeled}
 Suppose $(x_i)_{i\in I}$ is a summable family whose supports are all in the
 increasing chamber. Then $(\sigma^n x_i)_{(n,i)\in\N\times I}$ is summable.
 The corresponding inverse-iterate assertion holds on the decreasing
 chamber.
 \end{corollary}
 \begin{proof}
-Apply Lemma~\ref{lem:orbit} to the union of the original supports. For a
+Apply Lemma~\ref{dsup:lem:orbit} to the union of the original supports. For a
 given output exponent there are finitely many pairs $(n,s)$; at each $s$
 there are finitely many original labels $i$. Nonzero character factors
 and nonzero scalar multipliers do not affect this support argument.
@@ -387,16 +588,16 @@ above by $(2,0)$. Its orbit is summable in the Hahn sense, but finite
 subsums need not converge in the valuation topology.
 \end{remark}
 
-\section{An exact resolvent and its resonance obstruction}\label{sec:resolvent}
+\section{An exact resolvent and its resonance obstruction}\label{dsup:sec:resolvent}
 
-Fix $\sigma$ as in \eqref{eq:sigma} and $\lambda\in\kk^\times$. Define
+Fix $\sigma$ as in \eqref{dsup:eq:sigma} and $\lambda\in\kk^\times$. Define
 \[
  A_+=\{g:\theta g>g\},\quad A_-=\{g:\theta g<g\},\quad
  A_=\Fix(\theta).
 \]
 Write $f=f_++f_-+f_=$ by restricting its support to these three sets. The
 \emph{resonance set} and \emph{resonance projection} are
-\begin{equation}\label{eq:resonance}
+\begin{equation}\label{dsup:eq:resonance}
  R_\lambda=\{g\in\Gamma:\theta g=g,\ \chi(g)=\lambda\},
  \qquad P_\lambda f=\sum_{g\in R_\lambda}f_gt^g.
 \end{equation}
@@ -406,21 +607,21 @@ Define
         +\sum_{n\ge1}\lambda^{n-1}\sigma^{-n}(f_-)
  \notag\\[-2pt]
  &+\sum_{\substack{g\in A_=\\\chi(g)\ne\lambda}}
-           \frac{f_g}{\chi(g)-\lambda}t^g .\label{eq:Q}
+           \frac{f_g}{\chi(g)-\lambda}t^g .\label{dsup:eq:Q}
 \end{align}
 All sums here are Hahn sums.
 
-\begin{theorem}[Strong partial inverse]\label{thm:resolvent}
+\begin{theorem}[Strong partial inverse]\label{dsup:thm:resolvent}
 The map $Q_\lambda:K\to K$ is well defined, strong, and $\kk$-linear.
 It satisfies
 \begin{align}
  (\sigma-\lambda)Q_\lambda
-   &=Q_\lambda(\sigma-\lambda)=I-P_\lambda,\label{eq:resolvent-identities}\\
- P_\lambda Q_\lambda&=Q_\lambda P_\lambda=0,\label{eq:normalization}\\
- v(Q_\lambda f)&\ge v(f).\label{eq:valuation-Q}
+   &=Q_\lambda(\sigma-\lambda)=I-P_\lambda,\label{dsup:eq:resolvent-identities}\\
+ P_\lambda Q_\lambda&=Q_\lambda P_\lambda=0,\label{dsup:eq:normalization}\\
+ v(Q_\lambda f)&\ge v(f).\label{dsup:eq:valuation-Q}
 \end{align}
 Consequently,
-\begin{equation}\label{eq:kerim}
+\begin{equation}\label{dsup:eq:kerim}
  \ker(\sigma-\lambda)=P_\lambda K,
  \qquad \im(\sigma-\lambda)=\ker P_\lambda.
 \end{equation}
@@ -428,7 +629,7 @@ The equation $(\sigma-\lambda)y=f$ is solvable exactly when
 $P_\lambda f=0$. Its unique solution with $P_\lambda y=0$ is $Q_\lambda f$.
 \end{theorem}
 \begin{proof}
-Lemma~\ref{lem:orbit} makes each of the first two families in \eqref{eq:Q}
+Lemma~\ref{dsup:lem:orbit} makes each of the first two families in \eqref{dsup:eq:Q}
 summable. The third is a restriction and coefficient rescaling of $f$.
 The finite union of the three supports is well ordered and the three
 families remain point-finite, so their sum exists. The labeled version
@@ -448,16 +649,16 @@ There is no limiting remainder. On the decreasing chamber the calculation is
 \]
 On a fixed exponent, $\sigma-\lambda$ multiplies its coefficient by
 $\chi(g)-\lambda$. This proves the left-hand identity in
-\eqref{eq:resolvent-identities}. The chamber restrictions commute with
+\eqref{dsup:eq:resolvent-identities}. The chamber restrictions commute with
 $\sigma$, as do the fixed-exponent division operation and the iterate
 sums. Thus $Q_\lambda$ commutes with $\sigma$, proving the right-hand
-identity. No term of \eqref{eq:Q} lies in $R_\lambda$, which gives
-\eqref{eq:normalization}.
+identity. No term of \eqref{dsup:eq:Q} lies in $R_\lambda$, which gives
+\eqref{dsup:eq:normalization}.
 
 Every exponent appearing in the first sum is at least its originating
 exponent, because it is a forward iterate in the increasing chamber.
 The same is true of inverse iterates in the decreasing chamber. Fixed
-exponents are unchanged. This proves \eqref{eq:valuation-Q}, including the
+exponents are unchanged. This proves \eqref{dsup:eq:valuation-Q}, including the
 possibility of cancellation.
 
 For completeness, the kernel also has a direct support proof. If
@@ -465,14 +666,14 @@ $\sigma y=\lambda y$, then $\theta\supp(y)=\supp(y)$. A nonfixed exponent
 would therefore force its whole bi-infinite orbit into the support. That
 orbit contains an infinite strictly decreasing sequence. Hence the support
 is fixed pointwise by $\theta$, and its coefficients require
-$\chi(g)=\lambda$. This gives the kernel in \eqref{eq:kerim}.
+$\chi(g)=\lambda$. This gives the kernel in \eqref{dsup:eq:kerim}.
 The projection $P_\lambda$ annihilates the image of $\sigma-\lambda$;
-conversely \eqref{eq:resolvent-identities} produces every element of its
+conversely \eqref{dsup:eq:resolvent-identities} produces every element of its
 kernel. Finally, two normalized solutions differ by a kernel element with
 zero resonance projection and therefore coincide.
 \end{proof}
 
-\begin{corollary}[Fixed fields and eigenspaces]\label{cor:fixed}
+\begin{corollary}[Fixed fields and eigenspaces]\label{dsup:cor:fixed}
 Let
 \[
  \Gamma_\sigma=\{g:\theta g=g,\ \chi(g)=1\},\qquad
@@ -489,7 +690,7 @@ $\ker(\sigma-\lambda)^n=\ker(\sigma-\lambda)$.
 \end{corollary}
 \begin{proof}
 The set $\Gamma_\sigma$ is a subgroup, so its full Hahn series form a
-subfield. The fixed-field statement is Theorem~\ref{thm:resolvent} with
+subfield. The fixed-field statement is Theorem~\ref{dsup:thm:resolvent} with
 $\lambda=1$. Subtracting $g_\lambda$ from another resonant exponent proves
 the coset formula, and translation of supports gives the eigenspace.
 The decomposition $K=P_\lambda K\oplus\ker P_\lambda$ is invariant under
@@ -504,7 +705,7 @@ the spectrum of a linear map consists of scalars where it fails to be
 bijective, the spectrum of $\sigma$ is
 $\chi(\Fix\theta)$. Zero is not in this spectrum.
 
-\begin{corollary}[Split polynomial difference operators]\label{cor:poly}
+\begin{corollary}[Split polynomial difference operators]\label{dsup:cor:poly}
 Suppose $p\in\kk[X]\setminus\{0\}$ splits over $\kk$. Put
 \[
  R_p=\{g:\theta g=g,\ p(\chi(g))=0\},\qquad P_pf=\restr f{R_p}.
@@ -516,7 +717,7 @@ is strong.
 \begin{proof}
 The factor $X$ is harmless since $\sigma$ is a strong automorphism.
 On the moving chambers every nonzero scalar factor $\sigma-\lambda$ has
-the inverse supplied by \eqref{eq:Q}; these inverses commute because they
+the inverse supplied by \eqref{dsup:eq:Q}; these inverses commute because they
 are inverses of commuting bijections on that invariant subspace.
 On the fixed chamber $p(\sigma)$ multiplies the coefficient at $g$ by
 $p(\chi(g))$. Invert this scalar where nonzero and set the inverse to zero
@@ -532,7 +733,7 @@ $g\ne0$, both $P_1(t^g)$ and $P_1(t^{-g})$ vanish, whereas
 $P_1(t^gt^{-g})=1$.
 \end{remark}
 
-\section{Commuting equations and an explicit Koszul contraction}\label{sec:koszul}
+\section{Commuting equations and an explicit Koszul contraction}\label{dsup:sec:koszul}
 
 Let $\sigma_1,\ldots,\sigma_d$ be a finite commuting family of
 coefficient-fixing monomial automorphisms. Write
@@ -541,14 +742,14 @@ coefficient-fixing monomial automorphisms. Write
  E_0=I,\quad E_j=P_1\cdots P_j,\quad P=E_d.
 \]
 The subscript $(j,1)$ refers to the construction in
-Theorem~\ref{thm:resolvent} for $\sigma_j$ and $\lambda=1$. Let
-\begin{equation}\label{eq:jointgroup}
+Theorem~\ref{dsup:thm:resolvent} for $\sigma_j$ and $\lambda=1$. Let
+\begin{equation}\label{dsup:eq:jointgroup}
  \Gamma_0=\{g:\theta_jg=g,\ \chi_j(g)=1\text{ for every }j\},
  \qquad F=\kk((t^{\Gamma_0})).
 \end{equation}
 Thus $P$ restricts a series to its joint-resonant exponents.
 
-\begin{lemma}[Commuting normalized inverses]\label{lem:operatorscommute}
+\begin{lemma}[Commuting normalized inverses]\label{dsup:lem:operatorscommute}
 The maps $P_i,Q_i,\sigma_i$ commute with $P_j,Q_j,\sigma_j$ whenever the
 two displayed maps have different indices. In particular $P$ commutes
 with every operator, and $F=K^{\sigma_1,\ldots,\sigma_d}$.
@@ -556,7 +757,7 @@ with every operator, and $F=K^{\sigma_1,\ldots,\sigma_d}$.
 \begin{proof}
 If $g$ is fixed by $\theta_i$, commutativity of the exponent maps makes
 $\theta_jg$ fixed by $\theta_i$. The character identity
-\eqref{eq:commute-data} then gives
+\eqref{dsup:eq:commute-data} then gives
 $\chi_i(\theta_jg)=\chi_i(g)$. Thus the resonance subset for $i$ is
 invariant under $\theta_j$ and its inverse. Restriction to this subset
 commutes with $\sigma_j$. The projections also commute with one another,
@@ -572,7 +773,7 @@ The normalized solution is unique, so $AQ_i=Q_iA$. Apply this first to
 $A=\sigma_j$ and $A=P_j$. It follows that $Q_i$ commutes with $\Delta_j$
 and $P_j$; applying the same argument for $Q_j$ then gives $Q_iQ_j=Q_jQ_i$.
 The common fixed field is obtained by intersecting the fixed-support
-conditions of Corollary~\ref{cor:fixed}.
+conditions of Corollary~\ref{dsup:cor:fixed}.
 \end{proof}
 
 Let $e_1,\ldots,e_d$ be the standard basis of $\kk^d$, and set
@@ -597,19 +798,19 @@ $\eps_i\iota_j+\iota_j\eps_i=\delta_{ij}I$.
 Extend $P$ to each cochain degree by applying it to every coefficient;
 call this extension $\Pi$.
 
-\begin{theorem}[Explicit deformation retraction]\label{thm:koszul}
+\begin{theorem}[Explicit deformation retraction]\label{dsup:thm:koszul}
 The operator
-\begin{equation}\label{eq:homotopy}
+\begin{equation}\label{dsup:eq:homotopy}
  \hh=\sum_{j=1}^d Q_jE_{j-1}\iota_j:C^r\longrightarrow C^{r-1}
 \end{equation}
 is strong on coefficient tuples and satisfies
-\begin{equation}\label{eq:homotopyidentity}
+\begin{equation}\label{dsup:eq:homotopyidentity}
  \dd\hh+\hh\dd=I-\Pi,\qquad
  \hh^2=0,\qquad \hh\Pi=\Pi\hh=0,\qquad
  \dd\Pi=\Pi\dd=0.
 \end{equation}
 Consequently
-\begin{equation}\label{eq:cohomology}
+\begin{equation}\label{dsup:eq:cohomology}
  H^r(\Z^d,K_{\mathrm{add}})
  \simeq F\otimes_\kk\bigwedge^r\kk^d
  \simeq F^{\binom dr}
@@ -619,8 +820,8 @@ and the cohomology vanishes for $r>d$. The isomorphism sends a cocycle to
 its coefficientwise joint-resonant part.
 \end{theorem}
 \begin{proof}
-All coefficient operators in \eqref{eq:homotopy} commute by
-Lemma~\ref{lem:operatorscommute}. Therefore the exterior-algebra identities
+All coefficient operators in \eqref{dsup:eq:homotopy} commute by
+Lemma~\ref{dsup:lem:operatorscommute}. Therefore the exterior-algebra identities
 reduce the anticommutator to its diagonal terms:
 \begin{align*}
  \dd\hh+\hh\dd
@@ -638,7 +839,7 @@ The target subcomplex $F\otimes\bigwedge^\bullet\kk^d$ has zero
 differential. If $\dd\alpha=0$, then
 $\alpha=\dd\hh\alpha+\Pi\alpha$, and a coboundary has zero projection.
 Thus the inclusion of that zero-differential complex induces exactly
-\eqref{eq:cohomology}.
+\eqref{dsup:eq:cohomology}.
 
 To identify this with group cohomology, regard $K_{\mathrm{add}}$ as a
 module over $\Z[z_1^{\pm1},\ldots,z_d^{\pm1}]$, with $z_j$ acting by
@@ -656,35 +857,35 @@ above, up to the standard consistent choice of exterior signs. It has
 length $d$, giving the assertion in larger degrees.
 \end{proof}
 
-\begin{corollary}[Simultaneous additive equations]\label{cor:simultaneous}
+\begin{corollary}[Simultaneous additive equations]\label{dsup:cor:simultaneous}
 Let $f_1,\ldots,f_d\in K$. The system
 \[
  \Delta_jy=f_j\qquad(1\le j\le d)
 \]
 has a solution if and only if
-\begin{equation}\label{eq:additivecriteria}
+\begin{equation}\label{dsup:eq:additivecriteria}
  \Delta_i f_j=\Delta_jf_i\quad\text{for all }i,j,
  \qquad Pf_j=0\quad\text{for all }j.
 \end{equation}
 When these conditions hold, its unique solution with $Py=0$ is
-\begin{equation}\label{eq:simultaneoussolution}
+\begin{equation}\label{dsup:eq:simultaneoussolution}
  y=\sum_{j=1}^d Q_jE_{j-1}f_j.
 \end{equation}
 All other solutions are obtained by adding an arbitrary element of $F$.
 \end{corollary}
 \begin{proof}
 The first condition says that $\alpha=\sum_j f_je_j$ is a cocycle. The
-second says $\Pi\alpha=0$. Equation~\eqref{eq:homotopyidentity} gives
+second says $\Pi\alpha=0$. Equation~\eqref{dsup:eq:homotopyidentity} gives
 $\dd(\hh\alpha)=\alpha$, and contraction of the basis vectors gives
-\eqref{eq:simultaneoussolution}. Necessity follows from
+\eqref{dsup:eq:simultaneoussolution}. Necessity follows from
 $\dd^2=0$ and $\Pi\dd=0$. The normalization follows from $P\hh=0$, and
 uniqueness from the common fixed-field calculation.
 \end{proof}
 
-\begin{corollary}[Definable invariant projection]\label{cor:defproj}
+\begin{corollary}[Definable invariant projection]\label{dsup:cor:defproj}
 In the language of fields with $\sigma_1,\ldots,\sigma_d$, the graph of
 $P:K\to F$ is parameter-free definable by
-\begin{equation}\label{eq:defproj}
+\begin{equation}\label{dsup:eq:defproj}
  P(x)=c\quad\Longleftrightarrow\quad
  \bigwedge_{j=1}^d\sigma_jc=c
  \ \land\ 
@@ -706,12 +907,12 @@ makes $\dd$ an ordinary derivation. This avoids confusing its additive
 calculation with a differential graded algebra structure.
 \end{remark}
 
-\section{Principal units and multiplicative difference equations}\label{sec:multiplicative}
+\section{Principal units and multiplicative difference equations}\label{dsup:sec:multiplicative}
 
 \subsection{The formal logarithm is the appropriate logarithm}
 
 For $h\in\mm$, the formal series
-\begin{equation}\label{eq:explog}
+\begin{equation}\label{dsup:eq:explog}
  \exp(h)=\sum_{n\ge0}\frac{h^n}{n!},\qquad
  \log(1+h)=\sum_{n\ge1}\frac{(-1)^{n+1}}n h^n
 \end{equation}
@@ -730,18 +931,18 @@ and regrouping. They give mutually inverse group isomorphisms
 \]
 A strong coefficient-fixing automorphism commutes with both maps, since
 it preserves the rational coefficients and every summable family in
-\eqref{eq:explog}. This is an infinitesimal Hahn exponential. It is not a
+\eqref{dsup:eq:explog}. This is an infinitesimal Hahn exponential. It is not a
 claim that a monomial automorphism commutes with the global surreal
 exponential.
 
-\begin{lemma}[Multiplicative coordinates]\label{lem:multcoords}
+\begin{lemma}[Multiplicative coordinates]\label{dsup:lem:multcoords}
 Every $x\in K^\times$ has a unique expression
-\begin{equation}\label{eq:multcoords}
+\begin{equation}\label{dsup:eq:multcoords}
  x=c\,t^g\exp(h),\qquad
  g=v(x),\quad c=\lc(x)\in\kk^\times,\quad h\in\mm.
 \end{equation}
 Under $\sigma_j$, these coordinates transform as
-\begin{equation}\label{eq:multaction}
+\begin{equation}\label{dsup:eq:multaction}
  (g,c,h)\longmapsto(\theta_jg,\ c\chi_j(g),\ \sigma_jh).
 \end{equation}
 \end{lemma}
@@ -749,16 +950,16 @@ Under $\sigma_j$, these coordinates transform as
 Dividing $x$ by its leading monomial $ct^g$ leaves a principal unit; apply
 its unique logarithm. Multiplication adds the exponent and logarithm
 coordinates and multiplies the coefficient coordinate. Applying
-\eqref{eq:sigma} and the naturality of \eqref{eq:explog} gives
-\eqref{eq:multaction}.
+\eqref{dsup:eq:sigma} and the naturality of \eqref{dsup:eq:explog} gives
+\eqref{dsup:eq:multaction}.
 \end{proof}
 
 Put $\mm_F=F\cap\mm$. The projections $P_j$ preserve $\mm$, and
-\eqref{eq:valuation-Q} shows that $Q_j$ also preserves it. Thus the whole
+\eqref{dsup:eq:valuation-Q} shows that $Q_j$ also preserves it. Thus the whole
 Koszul contraction restricts to infinitesimals.
 
-\begin{corollary}[Principal-unit cohomology]\label{cor:unitcohom}
-For the commuting family of Section~\ref{sec:koszul},
+\begin{corollary}[Principal-unit cohomology]\label{dsup:cor:unitcohom}
+For the commuting family of Section~\ref{dsup:sec:koszul},
 \[
  H^r(\Z^d,\mm)\simeq\mm_F^{\binom dr},\qquad
  H^r(\Z^d,U_1)\simeq\mm_F^{\binom dr}
@@ -769,15 +970,15 @@ where the second isomorphism uses $\log$. Both vanish above degree $d$.
 
 \subsection{One multiplicative equation}
 
-\begin{theorem}[Exact multiplicative obstruction]\label{thm:multsingle}
+\begin{theorem}[Exact multiplicative obstruction]\label{dsup:thm:multsingle}
 For one automorphism $\sigma$, write
 $f=c\,t^\gamma\exp(h)$ in multiplicative coordinates and let $P=P_1$,
 $Q=Q_1$. The equation
-\begin{equation}\label{eq:multsingle}
+\begin{equation}\label{dsup:eq:multsingle}
  \frac{\sigma y}{y}=f,\qquad y\in K^\times,
 \end{equation}
 is solvable if and only if there exists $g\in\Gamma$ with
-\begin{equation}\label{eq:multsinglecriteria}
+\begin{equation}\label{dsup:eq:multsinglecriteria}
  (\theta-I)g=\gamma,\qquad \chi(g)=c,
  \qquad Ph=0.
 \end{equation}
@@ -785,14 +986,14 @@ For each such $g$, $y=t^g\exp(Qh)$ is a solution. The full solution set,
 when nonempty, is a torsor under $(K^\sigma)^\times$.
 \end{theorem}
 \begin{proof}
-Write $y=d\,t^g\exp(u)$. Formula~\eqref{eq:multaction} gives
-\begin{equation}\label{eq:multquotient}
+Write $y=d\,t^g\exp(u)$. Formula~\eqref{dsup:eq:multaction} gives
+\begin{equation}\label{dsup:eq:multquotient}
  \frac{\sigma y}{y}
  =\chi(g)t^{(\theta-I)g}\exp((\sigma-I)u).
 \end{equation}
 Uniqueness of multiplicative coordinates proves necessity of the first
 two conditions and reduces the third to $\Delta u=h$. Theorem
-\ref{thm:resolvent} solves that equation exactly when $Ph=0$, with
+\ref{dsup:thm:resolvent} solves that equation exactly when $Ph=0$, with
 $u=Qh\in\mm$. The ratio of any two solutions is fixed by $\sigma$, and
 multiplication by a fixed nonzero element preserves a solution.
 \end{proof}
@@ -803,7 +1004,7 @@ $\Gamma\times\kk^\times$. The map
  g\longmapsto((\theta-I)g,\chi(g))
 \]
 is a group homomorphism. The preceding theorem yields
-\begin{equation}\label{eq:multquotientgroup}
+\begin{equation}\label{dsup:eq:multquotientgroup}
  K^\times/\{\sigma y/y:y\in K^\times\}
  \simeq
  \frac{\Gamma\times\kk^\times}
@@ -814,24 +1015,24 @@ The isomorphism sends the class of $c t^\gamma\exp(h)$ to the class of
 $(\gamma,c)$ and to $Ph$. Its kernel is exactly the displayed subgroup.
 In general the first quotient cannot be replaced by independent
 ``valuation'' and ``leading coefficient'' quotients: the same $g$ must
-solve both equations in \eqref{eq:multsinglecriteria}.
+solve both equations in \eqref{dsup:eq:multsinglecriteria}.
 
 \subsection{A commuting multiplicative system}
 
 A tuple $(f_1,\ldots,f_d)$ in $(K^\times)^d$ is multiplicatively
 compatible if
-\begin{equation}\label{eq:multcompatible}
+\begin{equation}\label{dsup:eq:multcompatible}
  \frac{\sigma_i(f_j)}{f_j}=\frac{\sigma_j(f_i)}{f_i}
  \quad\text{for all }i,j.
 \end{equation}
 This is precisely the consistency condition forced by
 $\sigma_jy/y=f_j$.
 
-\begin{theorem}[Simultaneous multiplicative equations]\label{thm:multsystem}
+\begin{theorem}[Simultaneous multiplicative equations]\label{dsup:thm:multsystem}
 Write $f_j=c_jt^{\gamma_j}\exp(h_j)$. Suppose
-\eqref{eq:multcompatible} holds. Then there exists $y\in K^\times$ with
+\eqref{dsup:eq:multcompatible} holds. Then there exists $y\in K^\times$ with
 $\sigma_jy/y=f_j$ for every $j$ if and only if
-\begin{equation}\label{eq:multsystemcriteria}
+\begin{equation}\label{dsup:eq:multsystemcriteria}
  \begin{gathered}
  \text{there is one }g\in\Gamma\text{ such that }
     (\theta_j-I)g=\gamma_j,\quad \chi_j(g)=c_j\quad(1\le j\le d),\\
@@ -839,34 +1040,34 @@ $\sigma_jy/y=f_j$ for every $j$ if and only if
  \end{gathered}
 \end{equation}
 When these conditions hold, a solution is
-\begin{equation}\label{eq:multsystemsolution}
+\begin{equation}\label{dsup:eq:multsystemsolution}
  y=t^g\exp\left(\sum_{j=1}^d Q_jE_{j-1}h_j\right),
 \end{equation}
 and all solutions differ by an element of $F^\times$.
 \end{theorem}
 \begin{proof}
 Applying uniqueness of multiplicative coordinates to
-\eqref{eq:multcompatible} gives exactly
+\eqref{dsup:eq:multcompatible} gives exactly
 \begin{align*}
  (\theta_i-I)\gamma_j&=(\theta_j-I)\gamma_i,\\
  \chi_i(\gamma_j)&=\chi_j(\gamma_i),\\
  \Delta_i h_j&=\Delta_j h_i.
 \end{align*}
 The constants $c_j$ cancel from compatibility, but not from the search
-for a common solution. Formula~\eqref{eq:multquotient}, for all $j$, shows
+for a common solution. Formula~\eqref{dsup:eq:multquotient}, for all $j$, shows
 that the exponent and coefficient coordinates require a single $g$ as
-in \eqref{eq:multsystemcriteria}. The remaining additive system in
-$\mm$ is solved by Corollary~\ref{cor:simultaneous} and its infinitesimal
-restriction. This gives \eqref{eq:multsystemsolution}. Ratios of solutions
+in \eqref{dsup:eq:multsystemcriteria}. The remaining additive system in
+$\mm$ is solved by Corollary~\ref{dsup:cor:simultaneous} and its infinitesimal
+restriction. This gives \eqref{dsup:eq:multsystemsolution}. Ratios of solutions
 are fixed by every $\sigma_j$.
 \end{proof}
 
 For clarity about the residual cohomology, let
 $M=\Gamma\times\kk^\times$ with action
-$(g,c)\mapsto(\theta_jg,\chi_j(g)c)$. Lemma~\ref{lem:multcoords} is an
+$(g,c)\mapsto(\theta_jg,\chi_j(g)c)$. Lemma~\ref{dsup:lem:multcoords} is an
 equivariant isomorphism of abelian groups $K^\times\simeq M\times\mm$.
 Hence
-\begin{equation}\label{eq:allmultcohom}
+\begin{equation}\label{dsup:eq:allmultcohom}
  H^r(\Z^d,K^\times)
  \simeq H^r(\Z^d,M)\times\mm_F^{\binom dr}.
 \end{equation}
@@ -875,23 +1076,23 @@ ordinary finite-coordinate monomial-module problem. We do not claim that
 $H^r(\Z^d,M)$ has a universal smaller formula for arbitrary shears and
 characters.
 
-\section{Rational dilations: only scalar obstructions survive}\label{sec:dilations}
+\section{Rational dilations: only scalar obstructions survive}\label{dsup:sec:dilations}
 
 Assume in this section that $\Gamma$ is divisible. Let
 $q_1,\ldots,q_d\in\Q_{>0}$, with at least one $q_j\ne1$, and use
-$\sigma_j=D_{q_j}$. Since a nonzero rational scalar acts injectively on
+$\sigma_j=S_{q_j}$. Since a nonzero rational scalar acts injectively on
 an ordered divisible group, the joint fixed exponent subgroup is $\{0\}$.
 Therefore
-\begin{equation}\label{eq:dilationfixed}
+\begin{equation}\label{dsup:eq:dilationfixed}
  F=\kk,\qquad P(x)=[x]_0,\qquad\mm_F=0.
 \end{equation}
 
-\begin{theorem}[Dilation equations and cohomology]\label{thm:dilationcohom}
+\begin{theorem}[Dilation equations and cohomology]\label{dsup:thm:dilationcohom}
 For this family,
 \begin{align}
- H^r(\Z^d,K_{\mathrm{add}})&\simeq\kk^{\binom dr},\label{eq:diladd}\\
+ H^r(\Z^d,K_{\mathrm{add}})&\simeq\kk^{\binom dr},\label{dsup:eq:diladd}\\
  H^r(\Z^d,K^\times)&\simeq(\kk^\times)^{\binom dr}
- \quad(0\le r\le d).\label{eq:dilmult}
+ \quad(0\le r\le d).\label{dsup:eq:dilmult}
 \end{align}
 Both vanish for $r>d$. A compatible additive system is solvable exactly
 when every right-hand side has constant coefficient zero. A compatible
@@ -900,15 +1101,15 @@ has leading coefficient one.
 \end{theorem}
 \begin{proof}
 The additive formula and its solvability criterion follow from
-\eqref{eq:dilationfixed}. In multiplicative coordinates, the monomial
+\eqref{dsup:eq:dilationfixed}. In multiplicative coordinates, the monomial
 module is now the direct product of $\Gamma$ acted on by rational
 multiplication and $\kk^\times$ acted on trivially. On $\Gamma$, at least
 one $q_j-1$ is an automorphism. Its inverse times the corresponding
 exterior contraction contracts the entire Koszul complex. Thus all
 cohomology of this $\Gamma$-module, including invariants, is zero.
-The infinitesimal module is also acyclic by Corollary~\ref{cor:unitcohom}.
+The infinitesimal module is also acyclic by Corollary~\ref{dsup:cor:unitcohom}.
 The trivial module $\kk^\times$ has zero Koszul differential, giving
-\eqref{eq:dilmult}.
+\eqref{dsup:eq:dilmult}.
 
 For an explicit check of the multiplicative criterion, choose $j_0$ with
 $q_{j_0}\ne1$ and set $g=\gamma_{j_0}/(q_{j_0}-1)$. Compatibility gives
@@ -923,55 +1124,57 @@ abstract quotient description.
 
 For one $q\ne1$, these statements read
 \begin{align}
- D_qy-y=f&\quad\Longleftrightarrow\quad [f]_0=0
-       &&\text{for existence of }y\in K,\label{eq:scalaradd}\\
- D_qy/y=f&\quad\Longleftrightarrow\quad \lc(f)=1
-       &&\text{for existence of }y\in K^\times.\label{eq:scalarmult}
+ S_qy-y=f&\quad\Longleftrightarrow\quad [f]_0=0
+       &&\text{for existence of }y\in K,\label{dsup:eq:scalaradd}\\
+ S_qy/y=f&\quad\Longleftrightarrow\quad \lc(f)=1
+       &&\text{for existence of }y\in K^\times.\label{dsup:eq:scalarmult}
 \end{align}
 The solutions are unique modulo addition of $\kk$ or multiplication by
 $\kk^\times$, respectively. These are existence equivalences, not claims
 that either equation has a solution for every right-hand side.
 
-\begin{example}[Two opposite support directions]\label{ex:opposite}
-For $D_2$ one has
+\begin{example}[Two opposite support directions]\label{dsup:ex:opposite}
+For $S_2$ one has
 \[
- (D_2-I)\left(-\sum_{n\ge0}t^{2^n}\right)=t,
+ (S_2-I)\left(-\sum_{n\ge0}t^{2^n}\right)=t,
  \qquad
- (D_2-I)\left(\sum_{n\ge1}t^{-2^{-n}}\right)=t^{-1}.
+ (S_2-I)\left(\sum_{n\ge1}t^{-2^{-n}}\right)=t^{-1}.
 \]
 The second solution has negative exponents increasing to zero. It is a
 perfectly valid Hahn series, but it is not a Laurent series with a fixed
 bound on exponent denominators. There is no solution to
-$(D_2-I)y=1$.
+$(S_2-I)y=1$.
 \end{example}
 
-\begin{example}[A multiplicative Mahler product]\label{ex:product}
+\begin{example}[A multiplicative Mahler product]\label{dsup:ex:product}
 The family defining
 \[
  y=\prod_{n\ge0}(1-t^{2^n})^{-1}
 \]
 is interpreted either coefficientwise or by its strongly summable
-logarithm. It satisfies $D_2y/y=1-t$: doubling drops the factor with
-$n=0$. On the other hand, $D_2y/y=2$ has no nonzero solution. The
+logarithm. It satisfies $S_2y/y=1-t$: doubling drops the factor with
+$n=0$. On the other hand, $S_2y/y=2$ has no nonzero solution. The
 obstruction is its leading coefficient, not its valuation. These
 particular rank-one identities are illustrative Mahler calculations,
 not separate claims of novelty.
 \end{example}
 
-\section{Doubling defines the entire coefficient structure}\label{sec:definability}
+\section{Doubling defines the entire coefficient structure}\label{dsup:sec:definability}
 
-For this section assume only that $\Gamma\ne0$ is $2$-divisible, and put
-$D=D_2$. We work in the one-sorted language
+For this section assume only that $\Gamma\ne0$ is $2$-divisible. (The
+source abbreviated $S_2$ to $D$ in this section; the report writes $S_2$
+throughout, see Section~\ref{dsup:sec:conventions}.) We work in the
+one-sorted language
 \[
- L_D=\{0,1,+,-,\cdot,D\}.
+ L_{S_2}=\{0,1,+,-,\cdot,S_2\}.
 \]
 Division by a nonzero element is a definable operation in this language.
 Every auxiliary symbol introduced below abbreviates an explicit
 first-order formula. Neither the coefficient field nor the value group
-is named in $L_D$.
+is named in $L_{S_2}$.
 
-\begin{theorem}[Recovery from a single dilation]\label{thm:definability}
-In $(K,D)$ the following data are parameter-free definable: the embedded
+\begin{theorem}[Recovery from a single dilation]\label{dsup:thm:definability}
+In $(K,S_2)$ the following data are parameter-free definable: the embedded
 coefficient field, the constant-coefficient map, the canonical monomial
 group $t^\Gamma$, the coefficient function on $K\times t^\Gamma$, the
 support relation, the order of the monomial exponents, the valuation
@@ -983,13 +1186,13 @@ The proof is constructive. We give the definitions and check each one.
 
 \subsection{Constants and the constant-coefficient map}
 
-By Corollary~\ref{cor:fixed}, since $2g=g$ only for $g=0$,
-\begin{equation}\label{eq:defconstants}
- C(c):\quad Dc=c
+By Corollary~\ref{dsup:cor:fixed}, since $2g=g$ only for $g=0$,
+\begin{equation}\label{dsup:eq:defconstants}
+ C(c):\quad S_2c=c
 \end{equation}
-defines precisely $\kk$. Theorem~\ref{thm:resolvent} gives
-\begin{equation}\label{eq:constantformula}
- B(x,c):\quad Dc=c\ \land\ \exists y\;(x-c=Dy-y).
+defines precisely $\kk$. Theorem~\ref{dsup:thm:resolvent} gives
+\begin{equation}\label{dsup:eq:constantformula}
+ B(x,c):\quad S_2c=c\ \land\ \exists y\;(x-c=S_2y-y).
 \end{equation}
 For every $x$ there is exactly one $c$ satisfying $B(x,c)$, namely $[x]_0$.
 Write $B(x)$ for this definable function. Only the inverse of doubling
@@ -997,25 +1200,25 @@ on $\Gamma$ is needed in that application of the resolvent theorem.
 
 \subsection{The equation that recognizes monomials}
 
-\begin{lemma}[Monomial recognition]\label{lem:monomialrecognition}
+\begin{lemma}[Monomial recognition]\label{dsup:lem:monomialrecognition}
 For $x\in K$,
-\begin{equation}\label{eq:monomialformula}
- x\in t^\Gamma\quad\Longleftrightarrow\quad x\ne0\ \land\ Dx=x^2.
+\begin{equation}\label{dsup:eq:monomialformula}
+ x\in t^\Gamma\quad\Longleftrightarrow\quad x\ne0\ \land\ S_2x=x^2.
 \end{equation}
 \end{lemma}
 \begin{proof}
-Every $t^g$ satisfies $D(t^g)=t^{2g}=(t^g)^2$.
+Every $t^g$ satisfies $S_2(t^g)=t^{2g}=(t^g)^2$.
 Conversely, let $x\ne0$ satisfy the equation. Write
 $x=ct^g(1+u)$, where $c\in\kk^\times$ and $u\in\mm$. Comparison of
 leading coefficients gives $c=c^2$, so $c=1$. The remaining equation is
-$D(1+u)=(1+u)^2$. If $u\ne0$, put $\eps=v(u)>0$.
+$S_2(1+u)=(1+u)^2$. If $u\ne0$, put $\eps=v(u)>0$.
 The left-hand side minus $1$ has valuation $2\eps$, whereas
 $2u+u^2$ has valuation $\eps$, since the characteristic is zero and
 $v(u^2)=2\eps>\eps$. This is impossible. Thus $u=0$ and $x=t^g$.
 \end{proof}
 
 Let $M(m)$ denote the formula on the right of
-\eqref{eq:monomialformula}. An important feature is that it selects
+\eqref{dsup:eq:monomialformula}. An important feature is that it selects
 coefficient \emph{one}, not arbitrary nonzero scalar multiples of
 monomials. It is also entirely algebraic; no positivity condition on
 $x$ occurs.
@@ -1023,15 +1226,15 @@ $x$ occurs.
 \subsection{All coefficients and the support relation}
 
 For $M(m)$ define
-\begin{equation}\label{eq:coefficientformula}
+\begin{equation}\label{dsup:eq:coefficientformula}
  \coef(x,m)=B(x/m).
 \end{equation}
 If $m=t^g$, this equals $x_g$. Hence
-\begin{equation}\label{eq:supportformula}
- S(m,x):\quad M(m)\ \land\ \coef(x,m)\ne0
+\begin{equation}\label{dsup:eq:supportformula}
+ \Supp(m,x):\quad M(m)\ \land\ \coef(x,m)\ne0
 \end{equation}
 is the exact support relation expressed on monomials. In particular,
-\begin{equation}\label{eq:coefficientsseparate}
+\begin{equation}\label{dsup:eq:coefficientsseparate}
  x=y\quad\Longleftrightarrow\quad
  \forall m\bigl(M(m)\Rightarrow\coef(x,m)=\coef(y,m)\bigr).
 \end{equation}
@@ -1040,7 +1243,7 @@ This step recovers the full series, not merely its leading term.
 \subsection{Recovering the orientation of the valuation}
 
 Define
-\begin{equation}\label{eq:infmon}
+\begin{equation}\label{dsup:eq:infmon}
  J(m):\quad M(m)\ \land\ m\ne1\ \land\ B((1-m)^{-1})=1.
 \end{equation}
 For $m=t^g$ with $g>0$, the expansion
@@ -1051,11 +1254,11 @@ For $g<0$, the correct expansion is
 \]
 whose constant coefficient is zero. Both supports are well ordered in
 their indicated directions. Thus
-\begin{equation}\label{eq:infmeaning}
+\begin{equation}\label{dsup:eq:infmeaning}
  J(t^g)\quad\Longleftrightarrow\quad g>0.
 \end{equation}
 Consequently, for monomials $m,n$,
-\begin{equation}\label{eq:monomialorder}
+\begin{equation}\label{dsup:eq:monomialorder}
  v(m)<v(n)\quad\Longleftrightarrow\quad J(n/m).
 \end{equation}
 Multiplication of monomials corresponds to addition in $\Gamma$, so
@@ -1068,15 +1271,15 @@ positive monomials. For complex coefficients no field order is required.
 The following formulas now define $\OO$ and $\mm$:
 \begin{align}
  x\in\OO&\quad\Longleftrightarrow\quad
-  \forall m\bigl(S(m,x)\Rightarrow(m=1\ \lor\ J(m))\bigr),\label{eq:defO}\\
+  \forall m\bigl(\Supp(m,x)\Rightarrow(m=1\ \lor\ J(m))\bigr),\label{dsup:eq:defO}\\
  x\in\mm&\quad\Longleftrightarrow\quad
-  \forall m\bigl(S(m,x)\Rightarrow J(m)\bigr).\label{eq:defm}
+  \forall m\bigl(\Supp(m,x)\Rightarrow J(m)\bigr).\label{dsup:eq:defm}
 \end{align}
 They include zero by vacuous quantification, as they should. For $x\ne0$,
 the leading monomial is the unique $\ell$ such that
-\begin{equation}\label{eq:leadingformula}
- S(\ell,x)\ \land\
- \forall m\bigl(S(m,x)\Rightarrow(m=\ell\ \lor\ J(m/\ell))\bigr).
+\begin{equation}\label{dsup:eq:leadingformula}
+ \Supp(\ell,x)\ \land\
+ \forall m\bigl(\Supp(m,x)\Rightarrow(m=\ell\ \lor\ J(m/\ell))\bigr).
 \end{equation}
 Its coefficient is $\coef(x,\ell)$. Existence follows from the
 well-ordering of the support.
@@ -1086,7 +1289,7 @@ For $M(m)$, the truncation $T(x,m)$ removes all exponents at least $v(m)$:
  T(x,t^g)=\sum_{h<g}x_ht^h.
 \]
 Its graph is given by
-\begin{equation}\label{eq:truncformula}
+\begin{equation}\label{dsup:eq:truncformula}
  \begin{split}
  y=T(x,m)\quad\Longleftrightarrow\quad M(m)\ \land\
  \forall n\bigl(M(n)\Rightarrow{}&
@@ -1095,47 +1298,47 @@ Its graph is given by
  \end{split}
 \end{equation}
 The retained support is a subset of a well-ordered set, so the required
-$y$ exists. Equation~\eqref{eq:coefficientsseparate} gives uniqueness.
-This completes the proof of Theorem~\ref{thm:definability}.
+$y$ exists. Equation~\eqref{dsup:eq:coefficientsseparate} gives uniqueness.
+This completes the proof of Theorem~\ref{dsup:thm:definability}.
 
 \begin{remark}[The role of fullness]
-The proof uses that the orbit sums solving $Dy-y=f-[f]_0$ belong to the
+The proof uses that the orbit sums solving $S_2y-y=f-[f]_0$ belong to the
 field. An arbitrary subfield of $\kk((t^\Gamma))$ that is stable under
-$D$ need not have this property. Likewise, all Boolean subseries used
+$S_2$ need not have this property. Likewise, all Boolean subseries used
 below must exist. Thus replacing the full Hahn field by a rational
 function field, a finite-support ring, or an arbitrary union of Laurent
 fields requires new hypotheses. Definability in the full field does not
 supply an algorithm for arbitrary presentations of its elements.
 \end{remark}
 
-\section{The full centralizer of doubling}\label{sec:centralizer}
+\section{The full centralizer of doubling}\label{dsup:sec:centralizer}
 
 The defining formulas have a strong algebraic consequence. A field
 automorphism commuting with doubling must preserve all the recovered
 normal-form data, even when nothing of that kind is assumed beforehand.
 
-\begin{theorem}[Unrestricted centralizer]\label{thm:centralizer}
+\begin{theorem}[Unrestricted centralizer]\label{dsup:thm:centralizer}
 Let $\Gamma\ne0$ be $2$-divisible. Every field automorphism
-$\alpha\in\Aut(K)$ satisfying $\alpha D_2=D_2\alpha$ has a unique form
-\begin{equation}\label{eq:centralizerform}
+$\alpha\in\Aut(K)$ satisfying $\alpha S_2=S_2\alpha$ has a unique form
+\begin{equation}\label{dsup:eq:centralizerform}
  \alpha\left(\sum_g a_gt^g\right)
        =\sum_g\rho(a_g)t^{\theta g},
  \quad \rho\in\Aut(\kk),\quad
        \theta\in\Aut_{\mathrm{ord}}(\Gamma).
 \end{equation}
-Conversely, every map \eqref{eq:centralizerform} commutes with $D_2$.
+Conversely, every map \eqref{dsup:eq:centralizerform} commutes with $S_2$.
 Therefore
-\begin{equation}\label{eq:centralizer}
- \Cen_{\Aut(K)}(D_2)
+\begin{equation}\label{dsup:eq:centralizer}
+ \Cen_{\Aut(K)}(S_2)
      \simeq\Aut(\kk)\times\Aut_{\mathrm{ord}}(\Gamma).
 \end{equation}
 Every member of this centralizer is strong and preserves the valuation
 ring and all truncations.
 \end{theorem}
 \begin{proof}
-Since $\alpha$ is an automorphism of the $L_D$-structure, it preserves
+Since $\alpha$ is an automorphism of the $L_{S_2}$-structure, it preserves
 every parameter-free definable set and function in
-Theorem~\ref{thm:definability}. In particular its restriction to the
+Theorem~\ref{dsup:thm:definability}. In particular its restriction to the
 coefficient field is an automorphism $\rho$ of $\kk$.
 It permutes the canonical monomials, so write
 $\alpha(t^g)=t^{\theta g}$. Multiplicativity makes $\theta$ additive;
@@ -1150,26 +1353,26 @@ function gives
  =\alpha(\coef(x,t^g))=\rho(x_g).
 \]
 The map $\theta$ is onto, so this computes every coefficient of $\alpha x$.
-It proves \eqref{eq:centralizerform} by uniqueness of Hahn expansions.
+It proves \eqref{dsup:eq:centralizerform} by uniqueness of Hahn expansions.
 There is no prior assumption that $\alpha$ commutes with infinite sums.
 The formula itself now proves that it does: $\theta$ preserves
 well-ordered supports, while $\rho$ preserves finite sums and nonzero
 coefficients.
 
-Conversely, \eqref{eq:centralizerform} defines a strong field automorphism.
+Conversely, \eqref{dsup:eq:centralizerform} defines a strong field automorphism.
 Additivity of $\theta$ gives $\theta(2g)=2\theta(g)$, so it commutes with
-$D_2$. The two choices are unique on coefficients and monomials. Their
+$S_2$. The two choices are unique on coefficients and monomials. Their
 composition is componentwise, since coefficient and exponent operations
-commute, which gives the direct product in \eqref{eq:centralizer}.
+commute, which gives the direct product in \eqref{dsup:eq:centralizer}.
 \end{proof}
 
-\begin{corollary}[No hidden centralizing motions]\label{cor:nohidden}
-A field automorphism commuting with $D_2$ and fixing every coefficient
+\begin{corollary}[No hidden centralizing motions]\label{dsup:cor:nohidden}
+A field automorphism commuting with $S_2$ and fixing every coefficient
 and canonical monomial is the identity. In particular a centralizing
 automorphism which fixes every leading term is the identity.
 \end{corollary}
 \begin{proof}
-For the first assertion use \eqref{eq:centralizerform} with
+For the first assertion use \eqref{dsup:eq:centralizerform} with
 $\rho=\id$ and $\theta=\id$. For the second, the formula implies that
 fixing all leading terms fixes the coefficient and exponent components,
 so the first assertion applies.
@@ -1189,7 +1392,7 @@ cut. When $\kk=\C$, arbitrary field automorphisms of $\C$ remain; only
 those equal to the identity or complex conjugation preserve $\R$ setwise,
 by the preceding observation and $\C=\R(i)$.
 
-\section{Arithmetic interpreted by one automorphism}\label{sec:logic}
+\section{Arithmetic interpreted by one automorphism}\label{dsup:sec:logic}
 
 This section identifies the logical cost of recovering normal-form
 information. The implication from support to arithmetic is related to
@@ -1208,11 +1411,11 @@ $\{m^n:n\in\N\}$. Define
 Field multiplication on $N_m$ represents addition of natural numbers:
 $m^r m^s=m^{r+s}$. The represented zero and one are $1$ and $m$.
 Define the Boolean-series set
-\begin{equation}\label{eq:Booleanseries}
+\begin{equation}\label{dsup:eq:Booleanseries}
  \begin{split}
  \mathcal B_m=\{x\in K:\ \forall u\,[M(u)\Rightarrow{}&
  (\coef(x,u)=0\ \lor\ \coef(x,u)=1)]\ \land{}\\[-2pt]
- &\forall u\,[S(u,x)\Rightarrow u\in N_m]\}.
+ &\forall u\,[\Supp(u,x)\Rightarrow u\in N_m]\}.
  \end{split}
 \end{equation}
 Each subset $A\subseteq\N$ has exactly one representative
@@ -1223,9 +1426,9 @@ with these operations and relation, are exactly
 $(\N,\mathcal P(\N);+,\in)$. No quotient by equal supports is needed
 because Boolean coefficients make the coding unique.
 
-\begin{theorem}[Undecidability in the unexpanded signature]\label{thm:undecidable}
+\begin{theorem}[Undecidability in the unexpanded signature]\label{dsup:thm:undecidable}
 For every nonzero $2$-divisible $\Gamma$ and characteristic-zero field
-$\kk$, the complete first-order theory of $(\kk((t^\Gamma)),D_2)$ is
+$\kk$, the complete first-order theory of $(\kk((t^\Gamma)),S_2)$ is
 undecidable. It uniformly interprets full monadic second-order arithmetic
 with one suitable monomial parameter. The undecidability assertion does
 not require adding a constant symbol for that parameter.
@@ -1235,10 +1438,10 @@ The preceding definitions give an effective translation of every
 sentence $\varphi$ of $(\N,\mathcal P(\N);+,\in)$ to a formula
 $\varphi^m$ with the parameter $m$. Every $m$ satisfying $J$ yields the
 same standard interpreted structure. Therefore
-\begin{equation}\label{eq:parameterremoval}
+\begin{equation}\label{dsup:eq:parameterremoval}
  (\N,\mathcal P(\N);+,\in)\models\varphi
  \quad\Longleftrightarrow\quad
- (K,D_2)\models\exists m\,(J(m)\land\varphi^m).
+ (K,S_2)\models\exists m\,(J(m)\land\varphi^m).
 \end{equation}
 For completeness, multiplication on $\N$ is definable in the interpreted
 structure. The relation $a\mid b$ says that every subset containing zero
@@ -1253,8 +1456,8 @@ product to be zero. Its difference from $a$ defines $a^2$. Finally
 \]
 defines $ab$ uniquely using addition and squares. Hence ordinary true
 arithmetic is interpreted and its undecidability rules out a decision
-algorithm for the theory of $(K,D_2)$ via
-\eqref{eq:parameterremoval}. The explicit existential quantification is
+algorithm for the theory of $(K,S_2)$ via
+\eqref{dsup:eq:parameterremoval}. The explicit existential quantification is
 important: interpretation with an arbitrary named parameter alone would
 not justify this particular reduct claim.
 \end{proof}
@@ -1270,13 +1473,13 @@ language associated with a valued field.
 The following argument is independent of the arithmetic reduction and
 uses arbitrary coefficients rather than only zero and one.
 
-\begin{theorem}[Coefficient independence]\label{thm:tp2}
+\begin{theorem}[Coefficient independence]\label{dsup:thm:tp2}
 The formula
 \[
  \varphi(x;u,c):\quad M(u)\ \land\ C(c)\ \land\ \coef(x,u)=c
 \]
 has the tree property of the second kind in the complete theory of
-$(K,D_2)$. The support relation also has the independence property and
+$(K,S_2)$. The support relation also has the independence property and
 the strict order property.
 \end{theorem}
 \begin{proof}
@@ -1303,7 +1506,7 @@ monomials. This witnesses the strict order property.
 \end{proof}
 
 \begin{remark}[No contradiction with tame valued-field reducts]
-Adding $D_2$ is a genuine expansion. The formulas use $D_2$ to recover
+Adding $S_2$ is a genuine expansion. The formulas use $S_2$ to recover
 coefficient extraction throughout the field, including its purely
 infinite part. The resulting interpreted arithmetic does not follow
 merely from naming a valuation ring. Likewise, this coefficient-fixing
@@ -1312,19 +1515,19 @@ difference structures occurring in other theories of valued difference
 fields \cite{Pal}.
 \end{remark}
 
-\section{Every nonidentity rational dilation recovers the same data}\label{sec:alldilations}
+\section{Every nonidentity rational dilation recovers the same data}\label{dsup:sec:alldilations}
 
 Assume again that $\Gamma\ne0$ is divisible. For
 $q=a/b\in\Q_{>0}\setminus\{1\}$, with positive integers $a,b$, let
 $n=|a-b|>0$ and put
 \[
- E_{a,b}(x):\quad x\ne0\ \land\ D_q(x)^b=x^a.
+ E_{a,b}(x):\quad x\ne0\ \land\ S_q(x)^b=x^a.
 \]
 The next result both extends the recovery theorem and distinguishes
 interdefinability from conjugacy.
 
-\begin{lemma}[Power-equation recognition]\label{lem:rationalrecognition}
-In $(K,D_q)$,
+\begin{lemma}[Power-equation recognition]\label{dsup:lem:rationalrecognition}
+In $(K,S_q)$,
 \[
  \{x:E_{a,b}(x)\}=\mu_n(\kk)\,t^\Gamma,
  \qquad
@@ -1335,79 +1538,79 @@ where $\mu_n(\kk)=\{c\in\kk^\times:c^n=1\}$.
 \begin{proof}
 Write $x=ct^g\exp(h)$. The exponent equation is automatic since
 $bq=a$. The coefficient equation is $c^b=c^a$, equivalently $c^n=1$.
-The principal-unit equation is $bD_qh=ah$, or $D_qh=qh$.
+The principal-unit equation is $bS_qh=ah$, or $S_qh=qh$.
 The resonance set for the scalar $\lambda=q$ is empty: the only fixed
 exponent is zero and its character value is $1\ne q$. Therefore
-Theorem~\ref{thm:resolvent} implies $h=0$. This proves the first equality.
+Theorem~\ref{dsup:thm:resolvent} implies $h=0$. This proves the first equality.
 The $n$th powers of these elements are precisely $t^{n\Gamma}=t^\Gamma$,
 because $\Gamma$ is divisible and every $c\in\mu_n(\kk)$ has $c^n=1$.
 \end{proof}
 
-\begin{theorem}[Interdefinable dilations]\label{thm:rationaldef}
-For each nonidentity $q\in\Q_{>0}$, the structure $(K,D_q)$ parameter-free
-defines all the normal-form data of Theorem~\ref{thm:definability} and
-every rational dilation $D_r$. In particular,
+\begin{theorem}[Interdefinable dilations]\label{dsup:thm:rationaldef}
+For each nonidentity $q\in\Q_{>0}$, the structure $(K,S_q)$ parameter-free
+defines all the normal-form data of Theorem~\ref{dsup:thm:definability} and
+every rational dilation $S_r$. In particular,
 \[
- \Cen_{\Aut(K)}(D_q)
+ \Cen_{\Aut(K)}(S_q)
  =\{\text{untwisted coefficient--ordered-exponent lifts}\}
  \simeq\Aut(\kk)\times\Aut_{\mathrm{ord}}(\Gamma).
 \]
 These centralizers are the same subgroup of $\Aut(K)$ for all $q\ne1$.
-The arithmetic and $\mathrm{TP}_2$ conclusions hold for every such $D_q$.
+The arithmetic and $\mathrm{TP}_2$ conclusions hold for every such $S_q$.
 \end{theorem}
 \begin{proof}
-The fixed field of $D_q$ is $\kk$, and
-$x-c\in\im(D_q-I)$ defines $c=[x]_0$, by
-\eqref{eq:scalaradd}. Lemma~\ref{lem:rationalrecognition} defines the
+The fixed field of $S_q$ is $\kk$, and
+$x-c\in\im(S_q-I)$ defines $c=[x]_0$, by
+\eqref{dsup:eq:scalaradd}. Lemma~\ref{dsup:lem:rationalrecognition} defines the
 canonical monomial set. Once these two pieces are known, every subsequent
-formula in Section~\ref{sec:definability} is unchanged.
+formula in Section~\ref{dsup:sec:definability} is unchanged.
 
 For a positive rational $r=c/d$, the monomial power $m^r$ is the unique
 monomial $z$ satisfying $z^d=m^c$; existence uses divisibility of
-$\Gamma$ and uniqueness uses its torsion-freeness. The graph of $D_r$ is
+$\Gamma$ and uniqueness uses its torsion-freeness. The graph of $S_r$ is
 then defined by
 \[
- y=D_rx\quad\Longleftrightarrow\quad
+ y=S_rx\quad\Longleftrightarrow\quad
  \forall m\bigl(M(m)\Rightarrow
        \coef(y,m^r)=\coef(x,m)\bigr).
 \]
 Every exponent is an $r$-multiple, so this determines all coefficients.
 Existence follows from the increasing exponent automorphism $g\mapsto rg$.
-In particular $D_2$ is definable from $D_q$, and conversely $D_q$ is
-definable from $D_2$. The centralizer statement follows either from these
+In particular $S_2$ is definable from $S_q$, and conversely $S_q$ is
+definable from $S_2$. The centralizer statement follows either from these
 mutual definitions or by repeating the proof of
-Theorem~\ref{thm:centralizer}. The logical consequences transfer through
+Theorem~\ref{dsup:thm:centralizer}. The logical consequences transfer through
 the explicit definitions.
 \end{proof}
 
-\begin{theorem}[Distinct rational dilations are not conjugate]\label{thm:nonconjugate}
-If $r,s\in\Q_{>0}$ are distinct, then $D_r$ and $D_s$ are not conjugate
+\begin{theorem}[Distinct rational dilations are not conjugate]\label{dsup:thm:nonconjugate}
+If $r,s\in\Q_{>0}$ are distinct, then $S_r$ and $S_s$ are not conjugate
 by any field automorphism of $K$. Moreover,
 \[
- \Nor_{\Aut(K)}(\langle D_2\rangle)
-   =\Cen_{\Aut(K)}(D_2).
+ \Nor_{\Aut(K)}(\langle S_2\rangle)
+   =\Cen_{\Aut(K)}(S_2).
 \]
 \end{theorem}
 \begin{proof}
 The identity dilation is not conjugate to a nonidentity map, so assume
 $r\ne1$. Write $r=a/b$ and $n=|a-b|$. The equation
 \[
- D_r(x)^b=x^a,\qquad x\ne0,
+ S_r(x)^b=x^a,\qquad x\ne0,
 \]
 has infinitely many solutions, since every $t^g$ is a solution and
-$\Gamma\ne0$ is infinite. For $D_s$ in place of $D_r$, the valuation
+$\Gamma\ne0$ is infinite. For $S_s$ in place of $S_r$, the valuation
 comparison gives $(bs-a)v(x)=0$, so $v(x)=0$ because $s\ne r$.
-Writing $x=c\exp(h)$ reduces the equation to $c^n=1$ and $D_sh=rh$.
+Writing $x=c\exp(h)$ reduces the equation to $c^n=1$ and $S_sh=rh$.
 There is no nonzero solution of the latter scalar eigen-equation:
 if $s\ne1$, its only possible fixed exponent is zero, with eigenvalue
 $1\ne r$; if $s=1$, it is simply $(1-r)h=0$.
-Thus there are at most $n$ nonzero solutions for $D_s$.
+Thus there are at most $n$ nonzero solutions for $S_s$.
 Conjugation would carry the first solution set bijectively to the second,
 a contradiction. Equivalently, a single first-order sentence requiring
 more than $n$ distinct solutions distinguishes the two pointed fields.
 
-The group $\langle D_2\rangle$ is infinite cyclic. An automorphism
-normalizing it must send its generator to $D_2$ or $D_2^{-1}=D_{1/2}$.
+The group $\langle S_2\rangle$ is infinite cyclic. An automorphism
+normalizing it must send its generator to $S_2$ or $S_2^{-1}=S_{1/2}$.
 The second alternative is excluded by nonconjugacy, leaving exactly the
 centralizer.
 \end{proof}
@@ -1417,7 +1620,7 @@ recovers each particular dilation by a formula from another; conjugacy
 would have to carry the distinguished operator itself to the other one.
 The power equations distinguish the latter requirement.
 
-\section{Arbitrary-rank examples and sharp distinctions}\label{sec:examples}
+\section{Arbitrary-rank examples and sharp distinctions}\label{dsup:sec:examples}
 
 \subsection{A shear with a large fixed Hahn field}
 
@@ -1434,7 +1637,7 @@ $\{0\}\times\Q$, so
 \]
 The entire series supported on that subgroup is the additive obstruction,
 not just the scalar constant coefficient. For example,
-\begin{equation}\label{eq:shear}
+\begin{equation}\label{dsup:eq:shear}
  (\sigma-I)\left(-\sum_{n\ge0}t^{(1,n)}\right)=t^{(1,0)},
  \qquad
  -\sum_{n\ge0}t^{(1,n)}
@@ -1442,7 +1645,7 @@ not just the scalar constant coefficient. For example,
 \end{equation}
 The inverse is exact although the exponents $(1,n)$ never exceed $(2,0)$.
 The errors in finite partial sums therefore do not eventually have
-valuation greater than $(2,0)$. Equation~\eqref{eq:shear} is a concrete
+valuation greater than $(2,0)$. Equation~\eqref{dsup:eq:shear} is a concrete
 reason to retain strong support arguments rather than impose a rank-one
 analytic convergence intuition.
 
@@ -1503,9 +1706,9 @@ $(c_1,\ldots,c_d)\in(\kk^\times)^d$. It is compatible because the
 coefficient action is trivial. For a rational-dilation family with at
 least one nonidentity member, it is exact precisely when every $c_j=1$.
 These examples realize every scalar obstruction appearing in
-Theorem~\ref{thm:dilationcohom}.
+Theorem~\ref{dsup:thm:dilationcohom}.
 
-\section{Transfer to surreal and surcomplex normal forms}\label{sec:surreal}
+\section{Transfer to surreal and surcomplex normal forms}\label{dsup:sec:surreal}
 
 \subsection{The normal-form dictionary}
 
@@ -1517,7 +1720,7 @@ The standard Conway normal form writes a surreal as
 \]
 where $\alpha$ is an ordinal. The normal-form theorem, and its use as a
 Hahn-field representation, is described in \cite{KKS}. With
-\begin{equation}\label{eq:surrealdictionary}
+\begin{equation}\label{dsup:eq:surrealdictionary}
  t^g=\omega^{-g},
 \end{equation}
 the support is well ordered in increasing $g$-notation. Combining the
@@ -1525,8 +1728,8 @@ supports of real and imaginary parts gives the corresponding
 complex-coefficient normal form for $\SC=\No(i)$.
 
 Thus, for $q\in\Q_{>0}$, define the class field automorphisms
-\begin{equation}\label{eq:surrealdilation}
- D_q\left(\sum_{\beta<\alpha}c_\beta\omega^{a_\beta}\right)
+\begin{equation}\label{dsup:eq:surrealdilation}
+ S_q\left(\sum_{\beta<\alpha}c_\beta\omega^{a_\beta}\right)
        =\sum_{\beta<\alpha}c_\beta\omega^{qa_\beta},
  \quad c_\beta\in\R\text{ or }\C.
 \end{equation}
@@ -1553,38 +1756,38 @@ adjoined monomial-solution exponents. This does not bound their surreal
 birthdays and does not assert that a chosen birthday fragment is closed
 under all these operations.
 
-The ordinary cohomology groups in Theorems~\ref{thm:koszul} and
-\ref{thm:dilationcohom} remain statements about these set-sized fields.
+The ordinary cohomology groups in Theorems~\ref{dsup:thm:koszul} and
+\ref{dsup:thm:dilationcohom} remain statements about these set-sized fields.
 For the full proper-class fields, we state the corresponding
 \emph{elementwise equation and formula assertions}. They involve
 set-supported series and finite tuples, not a purported set of all
 class cochains.
 
-\begin{theorem}[Surreal and surcomplex consequences]\label{thm:surreal}
+\begin{theorem}[Surreal and surcomplex consequences]\label{dsup:thm:surreal}
 Let $\mathbb F$ be $\No$ or $\SC$, with coefficient field $\kk=\R$ or
 $\C$, respectively. Then the following assertions hold.
 \begin{enumerate}[leftmargin=*,itemsep=4pt]
 \item For $q\in\Q_{>0}\setminus\{1\}$,
-$D_qy-y=f$ is solvable in $\mathbb F$ exactly when the coefficient of
+$S_qy-y=f$ is solvable in $\mathbb F$ exactly when the coefficient of
 $\omega^0$ in $f$ is zero. The solution is unique modulo $\kk$.
-\item For $f\in\mathbb F^\times$, the equation $D_qy/y=f$ is solvable
+\item For $f\in\mathbb F^\times$, the equation $S_qy/y=f$ is solvable
 exactly when the leading normal-form coefficient of $f$ is one. The
 solution is unique modulo $\kk^\times$.
-\item The simultaneous criteria of Theorem~\ref{thm:dilationcohom} hold
+\item The simultaneous criteria of Theorem~\ref{dsup:thm:dilationcohom} hold
 for every finite family of positive rational dilations with at least
 one nonidentity member.
-\item In the field expanded by $D_q$, the formulas in
-Sections~\ref{sec:definability} and \ref{sec:alldilations} define the
+\item In the field expanded by $S_q$, the formulas in
+Sections~\ref{dsup:sec:definability} and \ref{dsup:sec:alldilations} define the
 ordinary coefficient field, the Conway monomial class, every normal-form
 coefficient, the natural valuation ring, and all monomial truncations.
-\item If a class field automorphism $\alpha$ commutes with $D_q$, then
+\item If a class field automorphism $\alpha$ commutes with $S_q$, then
 there are unique $\rho\in\Aut(\kk)$ and an ordered additive class
 automorphism $\theta$ of $(\No,+,<)$ such that
-\begin{equation}\label{eq:surrealcentralizer}
+\begin{equation}\label{dsup:eq:surrealcentralizer}
  \alpha\left(\sum_{\beta<\alpha_0}c_\beta\omega^{a_\beta}\right)
       =\sum_{\beta<\alpha_0}\rho(c_\beta)\omega^{\theta(a_\beta)}.
 \end{equation}
-Conversely every such class map commutes with $D_q$. For $\No$, necessarily
+Conversely every such class map commutes with $S_q$. For $\No$, necessarily
 $\rho=\id_\R$.
 \end{enumerate}
 \end{theorem}
@@ -1599,16 +1802,16 @@ The defining formulas hold for all surreal or surcomplex arguments,
 because their proofs use only the unique normal form of the element
 being tested and explicit set-supported witnesses. For the centralizer,
 repeat the preservation-of-definable-coefficients argument from
-Theorem~\ref{thm:centralizer}. The normal-form monomial group is identified
-with $(\No,+)$ by \eqref{eq:surrealdictionary}, and the recovered valuation
+Theorem~\ref{dsup:thm:centralizer}. The normal-form monomial group is identified
+with $(\No,+)$ by \eqref{dsup:eq:surrealdictionary}, and the recovered valuation
 orientation gives its order. Additivity of $\theta$ makes the switch from
-$g$ to $a=-g$ in \eqref{eq:surrealcentralizer} consistent. Every class
+$g$ to $a=-g$ in \eqref{dsup:eq:surrealcentralizer} consistent. Every class
 image of a set support is again a set in a class theory with replacement
 for the class maps under consideration. Uniqueness of normal forms
 therefore gives the formula for each element. The converse is the
 standard strong monomial-lift calculation. Finally a field automorphism
 of $\R$ is the identity, as proved after
-Corollary~\ref{cor:nohidden}.
+Corollary~\ref{dsup:cor:nohidden}.
 \end{proof}
 
 \begin{remark}[Foundational reading]
@@ -1624,7 +1827,7 @@ surreal expansions; no global satisfaction class for arbitrary class
 structures is needed for those individual formula identities.
 \end{remark}
 
-\subsection{What is recovered, and what is not}
+\subsection{What is recovered, and what is not}\label{dsup:sub:recovered}
 
 On $\SC$, the theorem recovers the \emph{complex} coefficient field and
 the canonical monomials. It does not claim that the distinguished real
@@ -1633,7 +1836,7 @@ coefficient-field automorphisms of $\C$; the ones preserving $\R$ are
 only the identity and conjugation. Thus preserving the recovered
 valuation structure is not the same as preserving a chosen real form.
 
-Nor does $D_q$ here mean the surreal exponential, the omega-map itself,
+Nor does $S_q$ here mean the surreal exponential, the omega-map itself,
 a Berarducci--Mantova derivation, or an automorphism known to preserve
 any of those additional structures. The centralizer theorem is a result
 about an explicitly named \emph{field} automorphism. It does not settle
@@ -1643,7 +1846,7 @@ used in the proofs. The repository distinguishes its small-net behavior
 from strong Hahn summation \cite{RepoDocs}; the present constructions stay
 on the latter side of that distinction.
 
-\section{A formalization route and precise limitations}\label{sec:formalization}
+\section{A formalization route and precise limitations}\label{dsup:sec:formalization}
 
 \subsection{A dependency-oriented route}
 
@@ -1653,7 +1856,7 @@ support algebra. The natural first target is a set-sized Hahn field,
 using the repository's documented summability interface \cite{Repo}.
 
 The first layer is order-theoretic: prove
-Lemma~\ref{lem:orbit} as a summability certificate for the map
+Lemma~\ref{dsup:lem:orbit} as a summability certificate for the map
 $(n,s)\mapsto\theta^ns$ on the increasing chamber, and separately prove
 finite fibers. This should not be replaced by a convergence theorem.
 The labeled version then permits the construction of a strong linear
@@ -1674,14 +1877,14 @@ whole multiplicative field, and keep the monomial-coordinate quotient
 as an explicit residual obstruction.
 
 The definability theorem can first be recorded as algebraic equivalences:
-$Dx=x^2$ iff $x$ is a monomial; existence of $y$ in $x-c=Dy-y$ iff $c$ is
+$S_2x=x^2$ iff $x$ is a monomial; existence of $y$ in $x-c=S_2y-y$ iff $c$ is
 the constant coefficient; and the two geometric expansions deciding
 $B((1-m)^{-1})$. A later model-theory layer can translate these
 identities into formula syntax. The unrestricted centralizer theorem
 then follows by preservation of these definable operations, rather than
 by assuming a strong automorphism instance at the outset.
 
-\subsection{Claims deliberately not made}
+\subsection{Claims deliberately not made}\label{dsup:sub:notmade}
 
 There is no Lean source accompanying this manuscript and no claim of
 machine-checked infinite mathematics. The finite Python tests check signs,
@@ -1690,7 +1893,7 @@ uniform algorithm here for arbitrary Hahn names: deciding an exponent's
 movement chamber or testing exact equality of coefficient values may
 itself require unavailable computational information.
 
-The coefficient action in \eqref{eq:sigma} is the identity. Allowing a
+The coefficient action in \eqref{dsup:eq:sigma} is the identity. Allowing a
 nontrivial difference automorphism of $\kk$ changes the fixed-exponent
 recurrences; division by $\chi(g)-\lambda$ is no longer the right
 operation. The finite family is commuting; no analogous contraction is
@@ -1708,14 +1911,163 @@ characteristic two the monomial-recognition equation degenerates when
 coefficient squaring is trivial, so that particular formula cannot be
 silently exported.
 
-\section{Further questions suggested by the results}\label{sec:questions}
+\subsection{Consolidated ledger of non-claims}\label{dsup:sec:nonclaims}
+
+The source states its limitations where they arise, and each is kept in
+place. The list collects them, with the place where each stands.
+Items~1--28 are the source's; items~29--33 were added when the report
+joined the collection.
+\begin{enumerate}[label=\arabic*.,leftmargin=2.2em,itemsep=2pt]
+\item Not refereed. No theorem is Lean-verified, no Lean source accompanies
+the report, and nothing is represented as already checked by Lean; the
+formalization route of Section~\ref{dsup:sec:formalization} is a route, not a
+completed formalization (title page, Section~\ref{dsup:sec:intro},
+Section~\ref{dsup:sub:notmade}, Appendix~\ref{dsup:app:provenance}; the
+delivered README).
+\item No named published open problem is claimed settled. In particular
+nothing here determines the existence or image of nontrivial exponential
+automorphisms of $\No$, and Camacho's monomial-definability question in the
+smaller language without the extra automorphism is not answered (title
+page, Section~\ref{dsup:sec:intro}, Section~\ref{dsup:sub:recovered},
+Appendix~\ref{dsup:app:provenance}).
+\item Priority is not certified. The main statements are proposed additions;
+the literature review was focused (Hahn automorphisms, Mahler solutions,
+valued difference fields, truncation definability), not exhaustive, and a
+later-located antecedent would change the priority assessment, not the
+proofs (title page, Section~\ref{dsup:sec:intro},
+Appendix~\ref{dsup:app:provenance}).
+\item The repository was not independently built or exhaustively audited:
+only the catalogue, the root README and the surcomplex-automorphisms
+report's guide were inspected, and that report's full article was not
+audited (Section~\ref{dsup:sec:intro}, bibliography entry \cite{RepoAut}; the
+delivered README).
+\item Credited, not claimed: monomial and character lifts (Kaplan--Krapp--Serra
+and the surcomplex-automorphisms report); the construction of the dilations
+on $\No$ and $\No(i)$; Hahn field operations and the normal-form dictionary;
+the support-to-arithmetic principle (Camacho); the principal-unit logarithm
+and exponential and the Neumann lemma (Sections~\ref{dsup:sec:intro},
+\ref{dsup:sec:multiplicative}, \ref{dsup:sec:logic}, \ref{dsup:sec:surreal},
+Appendix~\ref{dsup:app:provenance}).
+\item The rank-one Mahler identities of Examples~\ref{dsup:ex:opposite}
+and~\ref{dsup:ex:product} are illustrative calculations, not separate
+claims of novelty (Section~\ref{dsup:sec:dilations}).
+\item The first-order, constant-scalar resolvent does not replace the
+higher-order, variable-coefficient theory of Faverjon--Roques; no
+support-growth, convergence or solvability theorem for arbitrary
+variable-coefficient Mahler systems is inferred
+(Section~\ref{dsup:sec:intro}, Section~\ref{dsup:sub:notmade}).
+\item No claim that these structures satisfy the residue difference
+closedness hypotheses of Pal's relative quantifier elimination, and the
+coefficient-fixing structure is not identified with the existentially
+closed residue difference structures of other theories of valued
+difference fields (Section~\ref{dsup:sec:intro}, the remark after
+Theorem~\ref{dsup:thm:tp2}).
+\item The coefficient action is the identity; a nontrivial difference
+automorphism of $\kk$ changes the fixed-exponent recurrences
+(Section~\ref{dsup:sub:notmade}, Section~\ref{dsup:sec:questions}).
+\item Finite commuting families only; no contraction is asserted for a
+nonabelian acting group (Section~\ref{dsup:sub:notmade}).
+\item The multiplicative results concern the abelian group $K^\times$, not
+matrix gauge classification; no universal smaller formula for
+$H^r(\Z^d,M)$ is claimed for arbitrary shears and characters
+(Sections~\ref{dsup:sec:multiplicative} and~\ref{dsup:sub:notmade}).
+\item The resonance projection is linear but not a field homomorphism, and
+$[x]_0$ is not a ring homomorphism on $K$ (Section~\ref{dsup:sec:setup}, the
+remark after Corollary~\ref{dsup:cor:poly}).
+\item The kernel statements do not say that $K$ is a direct sum of
+eigenspaces (after Corollary~\ref{dsup:cor:fixed}).
+\item The Koszul complex is a complex of additive groups; its naive
+coefficientwise wedge product is not claimed to make $\dd$ an ordinary
+derivation, and $\Delta_j$ satisfies no ordinary Leibniz rule
+(Section~\ref{dsup:sec:koszul}).
+\item Lemma~\ref{dsup:lem:orbit} is not an assertion of cofinal growth;
+strong summation is not valuation convergence of finite partial sums, and
+no support proof is replaced by ``the orbit tends to infinity''
+(Sections~\ref{dsup:sec:setup} and~\ref{dsup:sec:orbits}, and the shear
+example~\eqref{dsup:eq:shear}).
+\item The single-equation criteria \eqref{dsup:eq:scalaradd} and
+\eqref{dsup:eq:scalarmult} are existence equivalences, not claims that the
+equations are solvable for every right-hand side
+(Section~\ref{dsup:sec:dilations}).
+\item Full Hahn fields are essential: restricted support classes need
+separate closure checks, and definability in the full field supplies no
+algorithm for arbitrary presentations (the remark on fullness in
+Section~\ref{dsup:sec:definability}, Section~\ref{dsup:sub:notmade},
+Section~\ref{dsup:sec:questions}).
+\item Characteristic zero is retained; the monomial-recognition formula is
+not exported to characteristic two (Section~\ref{dsup:sub:notmade}).
+\item The undecidability theorem concerns the complete theory of the
+specified structure; it asserts no failure of decidability for every
+smaller language of a valued field, and interpretation with a named
+parameter alone would not justify the reduct claim
+(Section~\ref{dsup:sec:logic}).
+\item The interpreted arithmetic does not follow merely from naming a
+valuation ring; adding $S_2$ is a genuine expansion, so there is no
+contradiction with tame valued-field reducts (the remark after
+Theorem~\ref{dsup:thm:tp2}).
+\item Interdefinability of the rational dilations does not imply
+conjugacy (Section~\ref{dsup:sec:alldilations}).
+\item Ordinary group cohomology and complete first-order theories are
+set-sized only. There is no set of class automorphisms or class cochains;
+the centralizer of class automorphisms is structural shorthand; the
+support localizations carry no birthday bound, and no birthday fragment is
+asserted closed under them (Section~\ref{dsup:sec:surreal}).
+\item On $\No(i)$ the real axis $\No$ is not recovered, and the centralizer
+contains all automorphisms of $\C$; preserving the recovered valuation
+structure is not preserving a chosen real form
+(Section~\ref{dsup:sub:recovered}).
+\item $S_q$ is not the surreal exponential, the omega-map, a
+Berarducci--Mantova derivation or an automorphism known to preserve any of
+these; that strong coefficient-fixing automorphisms commute with the
+infinitesimal Hahn exponential is not a claim that a monomial automorphism
+commutes with the global surreal exponential (Sections~\ref{dsup:sec:multiplicative} and~\ref{dsup:sub:recovered}).
+\item The fine topology of the full surreal field is not the summation
+mechanism of any proof (Section~\ref{dsup:sub:recovered}).
+\item No uniform algorithm for arbitrary Hahn names is supplied; deciding a
+movement chamber or testing coefficient equality may need unavailable
+information (Section~\ref{dsup:sub:notmade}).
+\item The questions of Section~\ref{dsup:sec:questions} are raised here, not
+claimed to have been posed before in exactly this form, and the boundary of
+the method they describe is not a claim that the general problem is
+impossible (Section~\ref{dsup:sec:questions}).
+\item The 66,131 finite checks are not a formal verification: they do not
+decide Hahn summability, quantify over ordered groups, check the
+first-order interpretations or verify proper-class assertions; compiling
+and inspecting the PDF and running the script were not independent review
+(title page, Appendices~\ref{dsup:app:verification}
+and~\ref{dsup:app:provenance}; the delivered README and
+\repo{PROOF_AUDIT.md}).
+\item Added: none of the four questions of the surcomplex-automorphisms
+report (\lbl{saut:sec:questions}) is answered. Its non-claims that the
+four-layer decomposition covers $G_v$ only and that $\Aut(\No(i))$ is not
+classified are extended only by the one subgroup $\Cen(S_q)$, which is
+shown to lie in $G_v$; the unrestricted group is not classified
+(Section~\ref{dsup:sec:position}).
+\item Added: the rigidity report's Question~13.1 (\lbl{q:image}) is
+untouched; nothing here says which canonical lifts $\widehat T$ commute with
+the exponential (Section~\ref{dsup:sec:position}).
+\item Added: the dilations here are not the argument dilations
+$f(z)\mapsto f(\lambda z)$ of the holonomic-rigidity report, and no
+statement of that report is used or extended
+(Section~\ref{dsup:sec:position}).
+\item Added: the arithmetic interpretation and undecidability of the
+birthday-cutoffs report concern a different expansion of $\No$; neither
+result implies the other (Section~\ref{dsup:sec:position}).
+\item Added: no \texttt{dsup:} label has a Lean mapping in
+\repo{docs/FORMALIZATION.md}; the Lean Hahn-series interfaces the source
+cites (strong summation, the Neumann lemma, infinitesimal exponential and
+logarithm, algebraic closedness) prove none of this report's statements
+(Section~\ref{dsup:sec:position}, Appendix~\ref{dsup:app:pinned}).
+\end{enumerate}
+
+\section{Further questions suggested by the results}\label{dsup:sec:questions}
 
 The following are questions raised by this article, not problems claimed
 to have been previously posed in exactly this form.
 
 \begin{question}[Minimal closure for definable normal forms]
-Characterize $D_2$-invariant subfields $L\subseteq\kk((t^\Gamma))$ on which
-$\im(D_2-I)=\{f\in L:[f]_0=0\}$ and every required coefficient shift
+Characterize $S_2$-invariant subfields $L\subseteq\kk((t^\Gamma))$ on which
+$\im(S_2-I)=\{f\in L:[f]_0=0\}$ and every required coefficient shift
 $x/t^g$ remains available. Which natural restricted-series fields recover
 truncation without containing all full Hahn subseries?
 \end{question}
@@ -1766,7 +2118,7 @@ leading-coefficient condition and an exactly computable logarithmic
 obstruction.
 
 For doubling, the resonant projection is just the ordinary constant
-coefficient. Together with the equation $D_2x=x^2$, it recovers the entire
+coefficient. Together with the equation $S_2x=x^2$, it recovers the entire
 normal form inside the field language with one automorphism. This forces
 all centralizing field automorphisms to be strong untwisted lifts, and
 it makes full arithmetic support coding available. In this precise
@@ -1777,11 +2129,13 @@ forms without confusing proper-class topology, formal Hahn summation,
 or the separate exponential structure.
 
 \appendix
-\section{Endpoint identities and finite verification}\label{app:verification}
+\section{Endpoint identities and finite verification}\label{dsup:app:verification}
 
 The accompanying \texttt{verify.py} uses only Python's standard library
 and exact rational arithmetic. Its output is recorded in
-\texttt{verification.txt}. It is intentionally a collection of finite
+\texttt{verification.txt}. (As placed in the collection these are
+\repo{code/verify.py} and \repo{data/verification.txt};
+Appendix~\ref{dsup:app:files} gives the rerun.) It is intentionally a collection of finite
 checks rather than a finite approximation advertised as proof of an
 infinite statement.
 
@@ -1791,7 +2145,7 @@ For a truncation of the increasing-chamber part, define
                 \lambda^{-n-1}\sigma^nf.
 \]
 A finite telescope gives
-\begin{equation}\label{eq:finiteplus}
+\begin{equation}\label{dsup:eq:finiteplus}
  (\sigma-\lambda)Q^+_{\lambda,N}f
    =f-\lambda^{-N}\sigma^Nf.
 \end{equation}
@@ -1801,7 +2155,7 @@ For the decreasing chamber, define
                   \lambda^{n-1}\sigma^{-n}f.
 \]
 Then
-\begin{equation}\label{eq:finiteminus}
+\begin{equation}\label{dsup:eq:finiteminus}
  (\sigma-\lambda)Q^-_{\lambda,N}f
    =f-\lambda^N\sigma^{-N}f.
 \end{equation}
@@ -1820,16 +2174,16 @@ algebra appearing in the proof, not a reduction of arbitrary Hahn
 operators to finite diagonal matrices.
 
 Additional checks compare the first finitely many coefficients in the
-multiplicative product of Example~\ref{ex:product},
+multiplicative product of Example~\ref{dsup:ex:product},
 test explicit phase-twist resonance projections, and demonstrate the
 failure of a nontrivial character twist to commute with doubling on a
 monomial. The program does not decide Hahn summability, quantify over
 all ordered groups, check the first-order interpretations, or verify
 proper-class assertions. Those tasks remain in the written proofs.
 
-\section{A compact formula dictionary}\label{app:formulas}
+\section{A compact formula dictionary}\label{dsup:app:formulas}
 
-This dictionary uses $D=D_2$ and the definable functions whose existence
+This dictionary uses $S_2$ and the definable functions whose existence
 and uniqueness were proved above. Every occurrence of a function can
 be eliminated in favor of its graph formula.
 
@@ -1838,18 +2192,18 @@ be eliminated in favor of its graph formula.
 \toprule
 Recovered object & Definition or test \\
 \midrule\endhead
-Coefficient field & $C(c)\iff Dc=c$.\\
-Constant coefficient & $B(x)=c\iff C(c)\land\exists y\,(x-c=Dy-y)$.\\
-Canonical monomial & $M(m)\iff m\ne0\land Dm=m^2$.\\
+Coefficient field & $C(c)\iff S_2c=c$.\\
+Constant coefficient & $B(x)=c\iff C(c)\land\exists y\,(x-c=S_2y-y)$.\\
+Canonical monomial & $M(m)\iff m\ne0\land S_2m=m^2$.\\
 Coefficient at $m$ & $\coef(x,m)=B(x/m)$, for $M(m)$.\\
-Support & $S(m,x)\iff M(m)\land\coef(x,m)\ne0$.\\
+Support & $\Supp(m,x)\iff M(m)\land\coef(x,m)\ne0$.\\
 Positive exponent & $J(m)\iff M(m)\land m\ne1\land B((1-m)^{-1})=1$.\\
 Exponent comparison & $v(m)<v(n)\iff J(n/m)$, for monomials.\\
 Valuation ring & Every monomial in the support is $1$ or satisfies $J$.\\
 Infinitesimal ideal & Every monomial in the support satisfies $J$.\\
 Leading monomial & The unique support monomial of least recovered exponent.\\
 Truncation at $m$ & Preserve the coefficient at $n$ exactly when $J(m/n)$; set it to zero otherwise.\\
-Natural-number sort & $N_m=\{u:S(u,(1-m)^{-1})\}$, for $J(m)$.\\
+Natural-number sort & $N_m=\{u:\Supp(u,(1-m)^{-1})\}$, for $J(m)$.\\
 Power-set sort & Series with coefficients in $\{0,1\}$ and support contained in $N_m$.\\
 \bottomrule
 \end{longtable}
@@ -1859,12 +2213,13 @@ interpreted natural-number sort the field element $1=m^0$ represents
 $0\in\N$, whereas the parameter $m$ represents $1\in\N$.
 This distinction is essential when translating arithmetic formulas.
 
-\section{Provenance, reproducibility, and novelty ledger}\label{app:provenance}
+\section{Provenance, reproducibility, and novelty ledger}\label{dsup:app:provenance}
 
-The delivery contains this standalone \LaTeX{} source, its compiled PDF,
+The delivery contained this standalone \LaTeX{} source, its compiled PDF,
 a standard-library verification script, the exact output of that script,
 a README, and a small Makefile. The bibliography is internal, so no
-Bib\TeX{} database is required. A typical build is
+Bib\TeX{} database is required. In the delivered flat layout a typical
+build was
 \begin{lstlisting}
 python3 verify.py
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
@@ -1872,9 +2227,11 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 The PDF was compiled from the delivered source and visually inspected
 through rendered page images. The finite test output was generated by
 running the delivered script. Neither activity is described as an
-independent mathematical review.
+independent mathematical review. (As placed in the collection the delivered
+PDF and README are not shipped; the files and working commands are in
+Appendix~\ref{dsup:app:files}.)
 
-\begin{longtable}{@{}p{.27\textwidth}p{.68\textwidth}@{}}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.27\textwidth}>{\raggedright\arraybackslash}p{.68\textwidth}@{}}
 \toprule
 Result or ingredient & Status in this manuscript \\
 \midrule\endhead
@@ -1900,6 +2257,125 @@ literature. A subsequently located antecedent would change the priority
 assessment, not the logical content of the proofs. The intended research
 contribution is the collection of exact statements and their deductions,
 with the single-dilation recovery theorem as its organizing result.
+
+\section{Provenance of this report}\label{dsup:app:report}
+
+\subsection{One manuscript}\label{dsup:app:onesource}
+
+This report is built from \emph{one} manuscript: the archive
+\texttt{surreal\_dilation\_support}, manuscript~09 of batch~22 of the
+collection, dated 22 September 2026 and pinned to repository commit
+\nolinkurl{465a54b479a1ee842cbf7db1689a7d2f6bfe25e1}. It was placed in commit
+\texttt{7b5f934} as a new report: it answers no question that a report of
+the collection names, and it continues only one non-claim of the
+surcomplex-automorphisms report (Section~\ref{dsup:sec:position}). There was
+no second source; nothing was merged and nothing was selected away. Every
+result, proof, example, question and limitation of the manuscript is
+printed here.
+
+The delivered verification program \repo{code/verify.py}, its Makefile
+\repo{code/Makefile}, the recorded output \repo{data/verification.txt} and
+the author-side audit \repo{PROOF_AUDIT.md} are kept byte-identical. The
+audit and the Makefile describe the delivered flat layout (see
+Appendix~\ref{dsup:app:files}). The manuscript's article and README were
+rewritten, and the delivered PDF was replaced by a build of this text.
+
+The editorial changes are these.
+\begin{enumerate}[label=(\arabic*)]
+\item Every label carries the prefix \texttt{dsup:}. The source's 99 labels
+are kept, unchanged after the prefix, and nine were added
+(\texttt{dsup:sec:conventions}, \texttt{dsup:sec:position},
+\texttt{dsup:sub:recovered}, \texttt{dsup:sub:notmade},
+\texttt{dsup:sec:nonclaims}, \texttt{dsup:app:report},
+\texttt{dsup:app:onesource}, \texttt{dsup:app:pinned},
+\texttt{dsup:app:files}).
+\item The exponent dilation $D_q$ is written $S_q$, the abbreviation $D$ for
+$D_2$ is dropped, and the support formula $S(m,x)$ is written $\Supp(m,x)$
+(Section~\ref{dsup:sec:conventions}). The sentence introducing the language
+at the start of Section~\ref{dsup:sec:definability} and the first sentence of
+Appendix~\ref{dsup:app:formulas} were adjusted accordingly.
+\item The title page names the report as a single-source report of the
+collection and extends the status paragraph. Sections~\ref{dsup:sec:conventions}
+and~\ref{dsup:sec:position}, the ledger of Section~\ref{dsup:sec:nonclaims}
+(with five items added) and this appendix are new. Short sentences pointing
+to them, and to the files as placed, were added at the end of
+Section~\ref{dsup:sec:intro} and in Appendices~\ref{dsup:app:verification}
+and~\ref{dsup:app:provenance}; the latter's description of the delivery is
+put in the past tense.
+\item The columns of the two appendix tables are set ragged right, which
+removes two underfull lines of the delivered build.
+\end{enumerate}
+No mathematical statement was changed. Where the edit had to choose: the
+dilation was renamed rather than keeping $D_q$, because the notation guide
+reserves $D$ for a scalar derivation and the nearest report already calls
+the map $S_a$; the support formula was renamed rather than giving the
+dilation a third letter; the title is kept; and the report is placed among
+the surcomplex reports, because its results are uniform in the coefficient
+field, Theorem~\ref{dsup:thm:surreal} treats $\No$ and $\No(i)$ together,
+and its nearest neighbour is the surcomplex-automorphisms report.
+
+\subsection{Corrections since the pin}\label{dsup:app:pinned}
+
+The source compared itself with the collection at its pin. Checked against
+the collection at the placement commit \texttt{7b5f934}, its repository
+statements stand; one addition matters.
+\begin{itemize}[leftmargin=*,itemsep=3pt]
+\item The root README still documents strong Hahn summation, the full
+Neumann support lemma, coefficient maps preserving strong sums, the
+infinitesimal exponential and logarithm, and algebraic closedness of Hahn
+fields over algebraically closed characteristic-zero coefficients; these
+are Lean statements of the collection's Hahn layer, and none of them is a
+statement of this report. The catalogue still separates the small-net
+behaviour of the fine topology from strong Hahn summation. The
+surcomplex-automorphisms report still constructs the coefficient, exponent
+and character lifts (\lbl{saut:thm:monomial}); neither its article nor that
+of the rigidity report has changed since the pin.
+\item At the pin the catalogue listed 44 research reports in five families.
+Batch~21, placed in \texttt{d4e71b7} after the pin, added two, among them
+the birthday-cutoffs report whose undecidability results are compared in
+Section~\ref{dsup:sec:position}; batch~22, placed in \texttt{7b5f934}, adds
+further reports, this one among them.
+\item The surcomplex-automorphisms guide that the source inspected gained,
+after the pin, one paragraph on the two batch-21 reports that use
+conjugation on $\No[i]$; it bears on no statement here. The source did not
+audit that report's article; the relations of
+Section~\ref{dsup:sec:position} were checked against the article itself.
+\end{itemize}
+
+\subsection{Files as placed and rerun}\label{dsup:app:files}
+
+\begin{center}\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+File & Role \\
+\midrule
+\repo{code/verify.py} & the delivered finite checks (delivered as \texttt{verify.py})\\
+\repo{code/Makefile} & the delivered Makefile, for the flat delivered layout\\
+\repo{data/verification.txt} & the delivered recorded output\\
+\repo{PROOF_AUDIT.md} & the delivered author-side audit\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The program uses only the Python standard library, prints to standard
+output and writes no file. The Makefile, however, assumes that
+\texttt{article.tex}, \texttt{verify.py} and \texttt{verification.txt} sit in
+one directory: its target \texttt{check} runs
+\texttt{python3 verify.py > verification.txt}, overwriting the recorded output
+in place, and \texttt{all} also rebuilds \texttt{article.pdf}. It must not
+be run in this directory. Two working reruns, from the report directory,
+with a fresh scratch directory \texttt{\$T}:
+\begin{lstlisting}
+python code/verify.py > $T/direct.txt
+diff --strip-trailing-cr $T/direct.txt data/verification.txt
+
+cp code/verify.py code/Makefile $T/ && make -C $T check
+diff --strip-trailing-cr $T/verification.txt data/verification.txt
+\end{lstlisting}
+Both were run for this report under Python~3.14.4 on Windows (the second
+with GNU Make). Each printed 17 \texttt{PASS} groups and 66,131 checks and
+reproduced \repo{data/verification.txt} exactly apart from line endings
+(Windows writes CRLF).
 
 \begin{thebibliography}{99}
 \small

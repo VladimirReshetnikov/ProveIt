@@ -204,6 +204,15 @@ classification of elementary embeddings and, under GBC, its elementary
 self-embeddings of the full structure are new there. Neither addresses
 `Aut_L`.
 
+[single-dilation-hahn-support](../single-dilation-hahn-support/) computes the
+centralizer of a rational dilation `S_q` (`q ≠ 1`) among all field automorphisms
+(`dsup:thm:centralizer`): it consists of untwisted coefficient–exponent lifts,
+consistent with `saut:thm:decomp`, and naming `S_q` makes the coefficient field
+and every coefficient definable, complementing `saut:prop:nondefinability`. It
+answers none of the questions of Section 14. The trigonometry report's shifts
+`Sh_c` (`trigonometry:per:thm:shifts`) are the flows of `saut:thm:shiftflow`,
+and act freely on all global phases (`trigonometry:per:thm:free`).
+
 ## Stale statements corrected
 
 The source compared itself with the repository at `dcf8666` (Section 13, kept

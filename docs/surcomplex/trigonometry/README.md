@@ -2,18 +2,23 @@
 
 **Canonical Phases, Arbitrary-Scale Geometry, and Infinitesimal Degeneration**
 Merged research report of 21 September 2026, extended 22 September 2026, built
-from four manuscripts written independently on those two days. AI-assisted
+from six manuscripts written independently on those two days. AI-assisted
 drafts; not refereed; not formally verified.
 
 ```
 article.tex      the report, standalone LaTeX with an internal bibliography
-article.pdf      the compiled report, 73 pages
+article.pdf      the compiled report, 96 pages
 README.md        this guide
+21-period-arithmetic-source_audit.md                          (source 21, its delivered audit)
 code/            16-finite-radians-angular-phenomena.py      (source 16)
                  17-canonical-phases-degeneration.py         (source 17)
                  18-canonical-angles-oscillation.py          (source 18)
                  19-rotation-group-verify.py                 (source 19)
                  19-rotation-group-build.sh, .ps1            (source 19, see "Build")
+                 20-exponential-kernels-verify.py            (source 20)
+                 20-exponential-kernels-build.sh             (source 20, see "Build")
+                 21-period-arithmetic-verify_examples.py     (source 21)
+                 21-period-arithmetic-Makefile               (source 21, see "Build")
 data/            16-finite-radians-angular-phenomena-requirements.txt,
                  -source_provenance.txt, -verification_report.txt   (source 16)
                  17-canonical-phases-degeneration-requirements.txt,
@@ -22,21 +27,25 @@ data/            16-finite-radians-angular-phenomena-requirements.txt,
                  -verification_report.txt                     (source 18)
                  19-rotation-group-requirements.txt,
                  19-rotation-group-verification_results.json  (source 19)
+                 20-exponential-kernels-verification_results.json (source 20)
+                 21-period-arithmetic-verification.json       (source 21)
 ```
 
 Every label in `article.tex` carries the prefix `trigonometry:`. The material
-of source 19 carries the sub-prefix `trigonometry:rot:`. **No pre-existing label
-was renamed or removed**: the report had 221 labels before source 19 was merged
-and has 279 after it, and all 221 are still present. Every existing theorem,
-equation and section number is unchanged except the concluding section, which
-moved from 18 to 19 (its non-claims subsection is now 19.4). The
+of source 19 carries the sub-prefix `trigonometry:rot:`, that of sources 20 and
+21 the sub-prefix `trigonometry:per:`. **No pre-existing label was renamed or
+removed**: the report had 221 labels before source 19 was merged, 279 after it,
+and has 349 after sources 20 and 21; all 279 are still present. Every existing
+theorem, equation and section number is unchanged except the concluding
+section, which moved from 18 to 19 with source 19 and from 19 to 20 with sources
+20 and 21 (its non-claims subsection is now 20.4). The
 [formalization ledger](../../FORMALIZATION.md) maps some `trigonometry:` labels
 (for example `trigonometry:prop:lift`, `trigonometry:thm:cayley`,
-`trigonometry:thm:fourier`) to Lean declarations; no `trigonometry:rot:` label
-has a mapping. The ledger's line-number index of this report predates the merge
-and needs regenerating.
+`trigonometry:thm:fourier`) to Lean declarations; no `trigonometry:rot:` or
+`trigonometry:per:` label has a mapping. The ledger's line-number index of this
+report predates both merges and needs regenerating.
 
-## Four sources, one report
+## Six sources, one report
 
 | | Manuscript | Repository pin | Contributes |
 |---|---|---|---|
@@ -44,6 +53,8 @@ and needs regenerating.
 | **17** | *Surcomplex Trigonometry: Canonical Phases, Arbitrary-Scale Triangles, and Infinitesimal Degeneration* (21 Sep) | none recorded | see below; files prefixed `17-canonical-phases-degeneration-` |
 | **18** | *Trigonometry on the Surcomplex Plane: Canonical Angles, Infinite Triangles, Infinitesimal Contact, and Hahn-Analytic Oscillation* (21 Sep) | none recorded | the base text of Sections 1–17; files prefixed `18-canonical-angles-oscillation-` |
 | **19** | *Rotations of the Surreal Plane: The Norm-One Torus, Infinitesimal Angles, and Topology at Every Scale* (22 Sep) | `dcf86662b574` | Section 18; files prefixed `19-rotation-group-` |
+| **20** | *Exponential Kernels and Arithmetic Rigidity in the Surcomplex Field: Minimal Multiplier Rings, Nonsplit Periods, and the Limits of Canonical Extension* (22 Sep; 28 pp.) | `465a54b479a1` | Section 19, with 21 (below); files prefixed `20-exponential-kernels-` |
+| **21** | *Period Arithmetic and Noncanonical Surcomplex Exponentials: Profinite Defects, Minimal Multiplier Rings, and a Partial Answer to an Ehrlich–Kaplan Question* (22 Sep; 25 pp.) | `465a54b479a1` | the base text of Section 19; files prefixed `21-period-arithmetic-` |
 
 The source manuscripts themselves are not shipped; their code and data are,
 under the prefixes above. Sources 16–18 were written from three user-supplied
@@ -52,7 +63,12 @@ manuscripts (surcomplex analysis, finite zero geometry, finite intersections;
 titles and checksums) and record no repository commit. Source 19 was written
 against commit `dcf86662b574`, at which `article.tex` stood exactly as before
 this merge; it inspected the root and documentation READMEs, this directory's
-README and the opening of the article.
+README and the opening of the article. Sources 20 and 21 were written against
+commit `465a54b479a1ee842cbf7db1689a7d2f6bfe25e1`, at which this directory stood
+exactly as before their merge; source 20 audited the root and documentation
+READMEs, this README and the article's Section 17, source 21 the repository
+tree, the same READMEs, this article and the automorphism report's README
+(its audit is shipped as `21-period-arithmetic-source_audit.md`).
 
 **Sources 16–18.** All three are drafts of one article — two share a title —
 and all three prove the finite-angle/canonical-phase theorem, the polar
@@ -144,6 +160,65 @@ Berarducci–Mantova's *Transseries as germs of surreal functions* is `BMgerms`
 here, since `BM` already denotes their *Surreal numbers, derivations and
 transseries*. All conversions are stated once, in Section 18.1.
 
+**Sources 20 and 21.** Two independent manuscripts on one spine: from the
+character classification (Theorem 17.4) and unavoidable infinite periods
+(Theorem 17.6), both cited and not reproved, they study the arithmetic of the
+periods of the global phases and show that a surcomplex exponential with the
+canonical strip values can have kernel-multiplier ring exactly `Z`. Source 21
+is the base text of Section 19, because it proves more under weaker hypotheses:
+its set-sized theorem is in ZFC on a fixed continuum-sized field (`No(ε₀)`,
+`R((t^Q))`), it fixes an arbitrary ordinary character and profinite defect, and
+it keeps the standard part of the phase at every argument. Source 20's own
+set-sized examples live on unspecified large fragments `No(λ)` obtained by
+reflecting a global-choice construction on `No`. Section 19.1 has the full
+table; in short:
+
+- *Printed once, both credited:* the character coordinates (19.2), phases and
+  exponentials (19.5), the kernel dictionary (19.3), the local law (19.6), the
+  splitting criterion (19.10: source 21's conditions (1)–(3), source 20's (2),
+  (4), (5)), the multiplier ring and integer-part criterion (19.19, 19.20), the
+  initial ring `Z` that is not an integer part (19.33), the shift automorphisms
+  (19.43) and the failure of equivariance (19.44).
+- *Kept as different theorems:* source 21's avoidance construction fixes the
+  ordinary character and perturbs the infinitesimal one (19.26, 19.28); source
+  20's relative construction prescribes the ordinary character on a set-sized
+  subspace and keeps every value in the ordinary circle (19.31, 19.32), which its
+  reflection theorem needs. Source 20's direct proof of non-equivariance under
+  one shift is Remark 19.46. Both profinite examples are kept (Example 19.16).
+- *Source 21 only:* the profinite defect (19.9) and its realization (19.14), the
+  counts on `R((t^Q))` (19.15), cofinal divisible periods on `No` (19.17), the
+  free action and the shadow formula (19.44, 19.47).
+- *Source 20 only:* `Hom(I, Z)` (19.11), the non-initial multiplier ring
+  (Example 19.22), reflection (19.36), the sentence `RingKer` (19.38), three
+  structures (19.39), definable `Z` and an omitted type (19.41).
+- *Stated by neither, obtained by combining them (Corollary 19.40):* source 20's
+  sentence separates source 21's `No(ε₀)` example from the canonical
+  exponential, and source 21's defects give three pairwise nonisomorphic
+  exponentials on `No(ε₀)[i]` in ZFC.
+
+**Credits the sources owe.** The shifts `Sh_c` (source 21's `T_c`, source 20's
+`σ_a`) are the fixed-shift flows `saut:thm:shiftflow` (Theorem 5.2) of
+[surcomplex-field-automorphisms](../surcomplex-field-automorphisms/), with
+`δ = 1`, `λ = [·]₀` and the flow parameter's sign reversed; source 21 credits
+them and Kaplan–Krapp–Serra §4, source 20 does not. The residue map, the maximal
+divisible subgroup, and the splitting and `Hom(·, Z)` facts are classical
+`Z`-group theory (Jeřábek); source 21 says so, source 20 does not cite it.
+
+**Conventions and renamings** (Section 19.1). Angles stay in radians; both
+sources use turns, so periods are divided by `2π` once: the normalized period
+group `I(Ψ) = {a : Ψ(2πa) = 1}` (source 20's `D`, source 21's `I_Φ`). Their
+purely infinite part `P` is `Π`; source 21's arbitrary phase `Φ` and canonical
+`Φ₀` are `Ψ` and `Φ` (`Φ` keeps its meaning here); source 21's character pair
+`(h, L)` is `(ψ, 𝓛)` (`h` and `L` are taken); source 20's `T = R/Z` is written
+`R/Z` (`T(F)` is the circle) and its `M(E)` is `Z_E`; source 21's maximal
+divisible subgroup `D_Φ` is `I^div` and its defect `δ_Φ` is `pd_Ψ`, the
+*profinite defect* (`δ` is a side gap and "defect" already names two other
+things); its `K_Γ = R((t^Γ))` is `F_Γ`, since `K_Γ` is `C((t^Γ))` here and in the
+collection's notation guide; the shifts are `Sh_c` (`T_n` is Chebyshev, `σ` a
+threshold), and their exponent map is `[g]₀`, since `ℓ(p)` is Example 17.5's
+coefficient of `ω`. Global choice is named at each statement that uses it;
+everything about a set-sized field is ZFC.
+
 ## What the report claims
 
 Numbers refer to the built `article.pdf`.
@@ -211,17 +286,61 @@ over ring (R1) (Theorems 17.7, 17.8).
 11. Three exact representations for computation; a comparison table with the
     classical circle (Section 18.13).
 
+**Period arithmetic (sources 20 and 21, Section 19).** For a phase `Ψ` on `F`
+(`No`, `No(λ)`, `R((t^Q))`, or a truncation-closed continuum-sized field):
+1. **Theorem 19.3**: `Ψ ↦ I(Ψ)` is a bijection onto the additive integer parts
+   of `F`, with exact sequence `0 → Z → I → Π_F → 0`; division with remainder
+   (19.4); phases correspond to exponentials with the strip and modulus laws,
+   with `ker E = 2πi·I` (19.5); the common local law and fine derivatives (19.6).
+2. **Profinite defect** `pd_Ψ : Π_F → Ẑ/Z`, whose kernel is the set of principal
+   parts of the maximal divisible subgroup (19.9); split ⇔ zero defect ⇔ unique
+   additive retraction ⇔ a `Q`-linear lift of the ordinary character (19.10);
+   split ⇔ a nonzero homomorphism to `Z` (19.11). **Every linear defect is
+   realized (19.14)**, using only a choice between sets; on `R((t^Q))` there are
+   exactly `2^(2^ℵ₀)` reduced and `2^(2^ℵ₀)` split period groups (19.15, ZFC).
+3. **Theorem 19.17**: on `No` every phase has cofinally large periods all of
+   whose rational multiples are periods; no phase on `No` has a reduced period
+   group (19.18).
+4. **Criterion 19.20**: the multiplier ring is an integer part ⇔ the normalized
+   periods form a ring ⇔ the binary kernel condition; with initiality, ⇔ the
+   canonical exponential. A kernel whose multiplier ring is not initial
+   (Example 19.22).
+5. **Minimal multiplier rings**: for every ordinary character, an
+   infinitesimal character with multiplier ring `Z`, in ZFC on `R((t^Q))` and
+   `No(ε₀)` (19.26) and with global choice on `No` (19.28), together with any
+   prescribed defect and a fixed standard-part phase (19.29); source 20's
+   relative version extending a prescribed set-sized character (19.31) and a
+   nonsplit example (19.32).
+6. **Theorem 19.33**: exponentials on `No(ε₀)[i]` (ZFC) and `No[i]` (global
+   choice) with the canonical strip values, modulus, conjugation and local
+   Taylor law, differing from `Exp` by an infinitesimal unit-circle factor, whose
+   kernel-multiplier ring is `Z`: initial, not an integer part. **This is a
+   partial negative answer to one sufficiency possibility in the first
+   robustness question of Ehrlich–Kaplan §11.1**; the question stays open
+   (Section 19.8).
+7. Reflection to arbitrarily large fragments `No(λ)`, `cf λ = ω` (19.36); the
+   parameter-free sentence `RingKer`, true for `Exp` and false whenever
+   `Z_E = Z` (19.38); three nonisomorphic exponentials on such fragments (19.39)
+   and, by combining the sources, on `No(ε₀)[i]` in ZFC (19.40); definable `Z`
+   and an omitted type (19.41).
+8. The shifts `Sh_c` (19.43) act freely on all phases on `R((t^Q))` and `No`, so
+   no phase is natural for the valued-field structure alone (19.44, 19.45); the
+   shadow of the translated canonical phase (19.47).
+
 ## What the report does not claim
 
 No non-claim of any source was dropped. The article states each at its point of
-use and collects them in Section 19.4 (items 1–23 for sources 16–18, item 24
-with sub-items (a)–(s) for source 19, item 25 global).
+use and collects them in Section 20.4 (items 1–23 for sources 16–18, item 24
+with sub-items (a)–(s) for source 19, item 25 with sub-items (a)–(k) for sources
+20 and 21, item 26 global).
 
 **Across the report.** The proofs have **not** been refereed and have **not**
 been formalized in Lean. The symbolic checks validate finite identities and
 selected Taylor coefficients, not the general proofs. The literature search was
 targeted, not exhaustive; no priority claim and no resolution of a named
-published problem is made.
+published problem is made. Section 19 refutes one sufficiency possibility in the
+first Ehrlich–Kaplan robustness question and leaves that question, and their
+second one, open.
 
 **Sources 16–18.** No general transfer of infinite families of inequalities, and
 no uniqueness from a differential equation rather than the Taylor rule; no
@@ -281,6 +400,37 @@ names. No novel global sine, no resolution of an Ehrlich–Kaplan robustness
 question, no global mean-value theorem. No exhaustive repository or literature
 search; the other manuscripts of the collection are unrefereed drafts.
 
+**Sources 20 and 21.** Theorem 19.33 is a partial negative answer to one
+sufficiency possibility: no classification of the conditions that would
+suffice, no claim that Ehrlich and Kaplan conjectured initiality to suffice, and
+nothing on their second question (exponentials from different initial
+embeddings); the first-order separation is in the broader class of all
+exponentials with the strip and modulus laws. The finite-angle theory, the
+canonical phase, Theorems 17.4 and 17.6 and the local law are prerequisites;
+the canonical integer-part exponential is published; `Z`-group residues and
+divisible subgroups are classical; the shifts are a prior type, re-proved, not
+asserted to preserve `exp`, the omega map or simplicity, and the naturality
+obstruction concerns only the weaker valued-field data and is compatible with
+the canonical construction; no failure of invariance under exponential-field
+automorphisms is asserted. The criterion is an exact reduction, not a
+classification of multiplier rings; intermediate rings and orbits under the
+full valued automorphism group are not classified. No claim that distinct
+noncanonical exponentials of source 21 are isomorphic or not to each other
+(their non-isomorphism with `Exp` is the merge's Corollary 19.40); the split and
+nonsplit minimal examples are nonisomorphic, with no claim about their
+first-order theories. Reflection gives unboundedly many fragments, not every
+one, and no computable least `λ`; no large-cardinal strength is hidden. Failure
+of saturation concerns the expansion, and `Z_E = Z` does not axiomatize
+standardness; no tameness, decidability, o-minimality or elementary-equivalence
+claims, no finite names or computable oracles. `E' = E` is the fine derivative,
+not the Berarducci–Mantova derivation; strong sums are not fine limits.
+`No(ε₀)` is not asserted to be a full Hahn field; `Ẑ/Z` is an abstract group;
+the counts on `R((t^Q))` are of embedded groups and use no continuum
+hypothesis. Both are AI-assisted and unrefereed, not Lean-verified; neither
+built nor modified the repository; their Lean routes are proposals; their finite
+checks do not reach the transfinite arguments; novelty rests on targeted
+audits, and failure to find a prior statement is not proof of priority.
+
 ## Stale statements corrected
 
 - Source 19 lists "exact displacement at infinite radii" among the connections
@@ -307,6 +457,20 @@ search; the other manuscripts of the collection are unrefereed drafts.
   of its kind (for example "theorem 2.2" for Lemma 2.2). Alias counters now give
   each its own name; no number changed.
 
+- Section 17 said that the character classification does not answer the
+  Ehrlich–Kaplan robustness questions, and the non-claims (item 21, now in
+  Section 20.4) repeated it. That stays true of Theorem 17.4 by itself; the text
+  now records what sources 20 and 21 add and that the questions remain open.
+  The title page's count of manuscripts (four) and this README's page count (73)
+  were updated.
+- Source 20 credits this report for the finite phase, the classification and
+  the infinite periods, correctly, but not the automorphism report for its shift
+  automorphisms (they are `saut:thm:shiftflow`), nor the `Z`-group literature;
+  both credits are added in Section 19.1.
+- Source 21 reports that the strip map printed on p. 33 of arXiv v3 of
+  Ehrlich–Kaplan has sine and cosine interchanged. That page was checked for
+  this merge and reads so (Remark 19.34); nothing depends on it.
+
 ## Relation to the neighbouring reports
 
 **[analysis](../analysis/)** proves the finite polar decomposition and the
@@ -325,7 +489,17 @@ field automorphisms of `No[i]`. It cites Theorem 4.5 here
 (`trigonometry:thm:cayley`) for its Cayley map and contrasts rotations, which
 preserve every modulus, with field automorphisms. The automorphisms `Ξ_a` of
 Section 18.8 are group automorphisms of the unit circle, not field
-automorphisms.
+automorphisms. Its fixed-shift flows `T_s` (Theorem 5.2,
+`saut:thm:shiftflow`) are, with `δ = 1`, `λ = [·]₀` and `s = −c`, the shifts
+`Sh_c` of Section 19.10, which act freely on all phases.
+
+**[analysis](../analysis/)**'s one-parameter family of global exponentials
+(`e:thm-twisted`) is a slice of the character family of Theorem 17.4, whose
+period arithmetic Section 19 studies. The
+**[differential-equations](../differential-equations/)** and
+**[surquaternions](../../surquaternions/surquaternions/)** reports mention the
+Ehrlich–Kaplan robustness questions as not settled; that remains true, with the
+partial answer of Section 19.8.
 
 ## What was run
 
@@ -342,7 +516,15 @@ directory:
 - `code/19-rotation-group-verify.py`: all 41 finite symbolic checks passed;
   output identical to `data/19-rotation-group-verification_results.json` apart
   from line endings.
-- `latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex`: 73 pages,
+- `code/20-exponential-kernels-verify.py --output r20.json`: "PASS: 47939 exact
+  finite checks"; identical to `data/20-…-verification_results.json` apart
+  from the `generated_utc` timestamp and line endings.
+- `code/21-period-arithmetic-verify_examples.py`: `"status": "PASS"`, with 128
+  CRT moduli, 645 compatibility pairs, 58,081 additivity pairs, 15 displayed
+  assertions, 1,575 translation coefficients, 24 witnesses and 20 shadow
+  checks; its `verification.json` is identical to
+  `data/21-…-verification.json` apart from line endings.
+- `latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex`: 96 pages,
   no errors, no undefined references or citations, no multiply defined labels,
   no duplicate PDF destinations, no overfull or underfull boxes, no LaTeX or
   package warnings.
@@ -365,8 +547,11 @@ latexmk -c
 its own file unless told otherwise: 16 and 17 both write
 `verification_report.txt` beside the script (so run in one directory the second
 overwrites the first; 16 accepts `--output PATH`), 18 writes only with
-`--report PATH`, and 19 writes `verification_results.json` beside the script.
-All need SymPy (`data/*-requirements.txt`, SymPy 1.14.0). For example:
+`--report PATH`, 19 writes `verification_results.json` beside the script, 20
+writes `verification_results.json` in the current directory unless given
+`--output PATH`, and 21 always writes `verification.json` beside the script.
+16–19 need SymPy (`data/*-requirements.txt`, SymPy 1.14.0); 20 and 21 need only
+the Python standard library (3.10 or later). For example:
 
 ```
 mkdir -p /tmp/trig && cp code/*.py /tmp/trig/ && cd /tmp/trig
@@ -374,11 +559,19 @@ python 16-finite-radians-angular-phenomena.py --output r16.txt   # compare with 
 python 17-canonical-phases-degeneration.py                      # writes verification_report.txt; compare with data/17-…
 python 18-canonical-angles-oscillation.py --report r18.txt       # compare with data/18-…
 python 19-rotation-group-verify.py                              # writes verification_results.json; compare with data/19-…
+python 20-exponential-kernels-verify.py --output r20.json        # compare with data/20-… (timestamp differs)
+python 21-period-arithmetic-verify_examples.py                  # writes verification.json; compare with data/21-…
 ```
 
 `code/19-rotation-group-build.sh` and `.ps1` are source 19's delivered build
 scripts; they build its original `surreal_rotation_group.tex`, which is not
 shipped, and do not build this report. They are kept only as delivered.
+Likewise `code/20-exponential-kernels-build.sh` compiles source 20's unshipped
+`surcomplex_exponential_kernels.tex`, copies the result over a PDF of that name
+and rewrites `verification_results.json`, and `code/21-period-arithmetic-Makefile`
+runs an unprefixed `verify_examples.py` and `latexmk article.tex` in the current
+directory; neither builds this report as intended, and neither should be run
+here.
 
 ## Notation review — 22 September 2026
 

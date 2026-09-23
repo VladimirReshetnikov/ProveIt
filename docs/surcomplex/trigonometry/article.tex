@@ -79,6 +79,17 @@ pdfsubject={Canonical phases, arbitrary-scale geometry, and infinitesimal degene
 \newcommand{\Ga}{\mathbb G_{\mathrm a}}
 \newcommand{\ellm}{\ell_{\mm}}
 \newcommand{\Tm}{\TT_{\mm}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\Mult}{\operatorname{Mult}}
+\newcommand{\pr}{\operatorname{pr}}
+\newcommand{\res}{\operatorname{res}}
+\newcommand{\pd}{\operatorname{pd}}
+\newcommand{\Sh}{\operatorname{Sh}}
+\newcommand{\cl}{\operatorname{cl}}
+\newcommand{\Zhat}{\widehat{\Z}}
+\newcommand{\Qv}{\Q^{\vee}}
+\newcommand{\cI}{\mathcal I}
+\newcommand{\cL}{\mathcal L}
 \newcommand{\sh}{^{\sharp}}
 \newcommand{\HInt}{\mathop{\overset{\scriptscriptstyle H}{\int}}\nolimits}
 \newcommand{\abs}[1]{\left|#1\right|}
@@ -127,15 +138,15 @@ angle and negative at a finite nonordinary one.
 Finally we classify the freedom in extending circular trigonometry to infinite real arguments.
 The Ehrlich--Kaplan integer-part normalization is one member of a character family; every member
 necessarily acquires infinite periods, and none admits a bounded common-domain Hahn-analytic
-description at infinite frequency.
-
-A last section treats the rotation group $\SO(2,\No)$ and its algebraic, fine, standard-part and
-semialgebraic geometries.
+description at infinite frequency. Two further sections treat the
+rotation group $\SO(2,\No)$ and the arithmetic of the periods, where exponentials with the initial
+kernel-multiplier ring $\Z$ give a partial negative answer to a robustness question of Ehrlich and
+Kaplan, which stays open.
 \end{abstract}
 \end{minipage}
 \vfill
 \begin{minipage}{0.94\textwidth}\small
-\textbf{Status and provenance.} This is one merged report assembled from four independently
+\textbf{Status and provenance.} This is one merged report assembled from six independently
 written manuscripts of September 21--22, 2026 (\cref{trigonometry:sec:provenance}). It develops three supplied unpublished manuscripts
 rather than presenting their results as published literature. Classical identities and established
 surreal analytic machinery are identified as such. The literature search behind it was targeted
@@ -188,7 +199,8 @@ Three assertions must be kept apart, and this article keeps them apart everywher
 \end{enumerate}
 We prove that (1) and (2) agree and suffice for all plane, spherical and hyperbolic geometry
 below. Assertion (3) requires additional data; \cref{trigonometry:sec:global} says exactly which
-data, and what is lost whichever choice is made.
+data, and what is lost whichever choice is made, and \cref{trigonometry:per:sec:main} studies the
+arithmetic of the periods that every such choice creates.
 
 \begin{center}
 \small
@@ -233,8 +245,8 @@ recorded in \cite{DLMF}; algebraic approaches to trigonometry over general field
 analogue is not by itself evidence that its exact formulation is absent from all previous
 literature.
 
-\emph{The four component manuscripts.} The report itself is built from four manuscripts, numbered
-locally 16--19; the numbers prefix their code and data files. Sources 16, 17 and 18 --- \emph{Finite
+\emph{The six component manuscripts.} The report itself is built from six manuscripts, numbered
+locally 16--21; the numbers prefix their code and data files. Sources 16, 17 and 18 --- \emph{Finite
 Radians, Arbitrary-Scale Geometry, and Infinitesimal Angular Phenomena}; \emph{Canonical Phases,
 Arbitrary-Scale Triangles, and Infinitesimal Degeneration}; \emph{Canonical Angles, Infinite
 Triangles, Infinitesimal Contact, and Hahn-Analytic Oscillation}, all of September 21, 2026 --- are
@@ -246,13 +258,19 @@ Infinitesimal Angles, and Topology at Every Scale} (September 22, 2026), was wri
 repository commit \texttt{dcf86662b574}, at which this article stood unchanged; it contributes
 \cref{trigonometry:rot:sec:main}. Its structure theorem re-derives \cref{trigonometry:prop:rotation}
 and \cref{trigonometry:thm:polar}, and \cref{trigonometry:rot:sec:overlap} lists every result it
-shares with sources 16--18, each printed once with both credited.
+shares with sources 16--18, each printed once with both credited. Sources 20 and 21, \emph{Exponential
+Kernels and Arithmetic Rigidity in the Surcomplex Field} and \emph{Period Arithmetic and
+Noncanonical Surcomplex Exponentials} (both September 22, 2026), were written independently against
+repository commit \texttt{465a54b479a1}, at which this article stood unchanged; they build on
+\cref{trigonometry:thm:characters,trigonometry:thm:infiniteperiods} and together contribute
+\cref{trigonometry:per:sec:main}, with source 21 as its base text. \Cref{trigonometry:per:sec:overlap}
+lists what they share, the credits they owe, and where the merge had to choose.
 
 \subsection{Conventions: one symbol per concept}\label{trigonometry:sec:conventions}
 Because sources 16--18 are three drafts with three notations, the following choices are fixed once
 and used without exception thereafter. Synonyms appearing in those manuscripts (``the sources''
 below) are recorded here and nowhere else; those of source 19 are recorded in
-\cref{trigonometry:rot:sec:overlap}.
+\cref{trigonometry:rot:sec:overlap}, and those of sources 20 and 21 in \cref{trigonometry:per:sec:overlap}.
 
 \begin{itemize}
 \item \textbf{Unit circle.} $\TT(\No)=\{u\in\SC:u\bar u=1\}$, with $\TT(\R)$ its ordinary complex
@@ -286,6 +304,10 @@ below) are recorded here and nowhere else; those of source 19 are recorded in
 \item \textbf{Rotation-group symbols.} Source 19 uses its own symbols for the objects above and
  for the new ones of \cref{trigonometry:rot:sec:main}; they are converted once, in
  \cref{trigonometry:rot:sec:overlap}, and not used elsewhere.
+\item \textbf{Period-arithmetic symbols.} Angles are radians everywhere, including
+ \cref{trigonometry:per:sec:main}. Sources 20 and 21 measure phases in turns; their objects are
+ converted once, in \cref{trigonometry:per:sec:overlap}, where periods divided by $2\pi$ form the
+ normalized period group $\cI$.
 \item \textbf{Ordinary finiteness.} Every integer $n$, polynomial degree $N$ or $n$, Fourier grid
  size $M$, and polygon size in this article is an \emph{ordinary} finite integer unless the
  contrary is said explicitly. ``Finite coefficients'' of a trigonometric polynomial means instead
@@ -2863,9 +2885,12 @@ constructed in \cite{SourceAnalysis}; the character formulation exposes the enti
 The trivial character gives the explicit normal-form extension $\Psi_1(x)=\cis(\fin x)$. \emph{It
 is a possible convention, not a consequence of the local trigonometric axioms alone}: the
 classification above concerns group homomorphisms with the specified finite restriction, and is not
-a classification of all solutions of a differential equation. In particular it does not answer the
-separate robustness questions formulated in \cite[\S11]{EK} for more general initial fields and
-their integer parts. Conversely, the existence of these alternatives does not negate the canonical
+a classification of all solutions of a differential equation. In particular it does not by itself
+answer the separate robustness questions formulated in \cite[\S11]{EK} for more general initial
+fields and their integer parts. Sources 20 and 21 use it to answer one specific possibility in the
+first of them negatively --- initiality of the kernel-multiplier ring does not force the canonical
+exponential (\cref{trigonometry:per:thm:robustness}) --- and those questions remain open otherwise
+(\cref{trigonometry:per:sec:ek}). Conversely, the existence of these alternatives does not negate the canonical
 status of the initial-integer-part construction: canonicity there refers to that additional
 structure, not to uniqueness under the weaker analytic hypotheses. The two statements are
 complementary, and both are kept.
@@ -2892,7 +2917,8 @@ surreal real inputs while retaining its finite-angle meaning. The canonical choi
 phenomenon that the integer-part normalization produces; the theorem says no other choice escapes
 it. Each $E_\chi$ agrees with the canonical strip functions of \cref{trigonometry:sec:strip}, so
 all disagreement occurs strictly beyond that strip, and the real-period and zero sets outside it
-are correspondingly larger and choice-dependent.
+are correspondingly larger and choice-dependent. \Cref{trigonometry:per:thm:cofinal} strengthens the
+theorem: every such extension has cofinally large periods all of whose rational multiples are periods.
 
 \subsection{Two coherence obstructions, both over the fixed-domain ring}
 Recall from \cref{trigonometry:sec:rings} the ring (R1): a \emph{common-domain Hahn-analytic}
@@ -3660,6 +3686,1163 @@ orthogonal groups are a natural extension, where infinitesimal logarithms are no
 Baker--Campbell--Hausdorff terms appear; source 19 leaves them aside, and the collection now contains
 a separate report on the three-dimensional case, \texttt{docs/surreal/euclidean-three-space}.
 
+\section{Period arithmetic and noncanonical surcomplex exponentials}\label{trigonometry:per:sec:main}
+
+This section is the contribution of sources~20 and~21. It continues
+\cref{trigonometry:sec:global}: \cref{trigonometry:thm:characters} says that every extension of the
+finite phase to all real surreal arguments is $\Psi_\chi$ for a character $\chi$ of $\Pi$, and
+\cref{trigonometry:thm:infiniteperiods} says that every such extension has infinite periods. Here we
+study the \emph{arithmetic} of those periods: which of them remain periods after division by every
+ordinary integer, which scalars preserve all of them under multiplication, and whether a choice of
+$\chi$ can be made invariant under automorphisms of the underlying valued field. The main
+application is a partial negative answer to the first open question of \cite[\S11.1]{EK}: a
+surcomplex exponential with the canonical strip values, the modulus law and all local Taylor
+identities can have kernel-multiplier ring exactly $\Z$, which is initial in the surreal
+simplicity tree but is not an integer part (\cref{trigonometry:per:thm:robustness}). Only that
+specific sufficiency possibility is refuted; the question itself stays open
+(\cref{trigonometry:per:sec:ek}).
+
+\subsection{What sources 20 and 21 contribute, and the conventions of this section}
+\label{trigonometry:per:sec:overlap}
+\emph{The two manuscripts.} Source~20 is \emph{Exponential Kernels and Arithmetic Rigidity in the
+Surcomplex Field: Minimal Multiplier Rings, Nonsplit Periods, and the Limits of Canonical
+Extension}; source~21 is \emph{Period Arithmetic and Noncanonical Surcomplex Exponentials: Profinite
+Defects, Minimal Multiplier Rings, and a Partial Answer to an Ehrlich--Kaplan Question}. Both are
+dated September 22, 2026, and both were written against repository commit
+\texttt{465a54b479a1}, at which this article stood exactly as it did before they were merged here
+(Sections~1--18 and the concluding section were unchanged between that commit and this merge).
+Both take \cref{trigonometry:thm:globalexp,trigonometry:thm:characters,trigonometry:thm:infiniteperiods}
+and the local law \eqref{trigonometry:eq:globallocal} as prerequisites, restate
+\cref{trigonometry:thm:characters} in turn coordinates, and do not claim these results; they are
+cited here and not proved again. Source~21 also records that no profinite-defect or
+minimal-multiplier construction was found in this article at that commit, which is correct.
+
+\emph{One spine, two bases of hypothesis.} The two manuscripts were written independently and prove
+the same central fact: a normalized surcomplex exponential can have kernel-multiplier ring $\Z$. Source~21
+is the base text of this section, because it proves more under weaker hypotheses: its set-sized theorem
+(\cref{trigonometry:per:thm:minimalset}) is proved in ZFC on a fixed continuum-sized field such as
+$\No(\eps_0)$ or $F_{\Q}=\R((t^{\Q}))$; it prescribes an arbitrary ordinary character on all of
+$\Pi$ and an arbitrary profinite defect; and it keeps the standard part of the phase fixed at every
+argument. Source~20's own set-sized examples live on arbitrarily large, unspecified fragments
+$\No(\lambda)$ obtained by reflecting a construction on all of $\No$ made with global choice
+(\cref{trigonometry:per:thm:reflection}). Source~20 contributes what source~21 lacks: a relative
+construction with values in the ordinary circle, the reflection theorem, the external invariant
+$\Hom(\cI,\Z)$, the first-order sentence $\mathsf{RingKer}$, definability of $\Z$ with an omitted
+type, and the example of a non-initial multiplier ring. Source~21 contributes what source~20 lacks:
+the profinite defect and its realization, the cardinal count on $F_{\Q}$, cofinal divisible periods
+on $\No$, and the free action of valued-field translations with the shadow formula.
+
+\emph{Printed once.} The following results are proved in both manuscripts; each is printed once, at
+the place indicated, with both credited. The proofs agree in substance except where a second route is
+marked.
+\begin{center}\small
+\begin{longtable}{L{0.30\textwidth}L{0.17\textwidth}L{0.17\textwidth}L{0.24\textwidth}}
+\toprule
+Result & Source 20 & Source 21 & Printed as\\
+\midrule\endhead
+Finite phase in turns, kernel $\Z$ & Prop.~3.1 & Prop.~2.1 & \cref{trigonometry:thm:polar} (radians); not reprinted\\
+Character coordinates of a phase & Prop.~3.3 & Prop.~3.2 & \cref{trigonometry:thm:characters}; coordinates in \cref{trigonometry:per:prop:coordinates}\\
+Phases $\leftrightarrow$ exponentials; modulus, conjugation, kernel & Prop.~3.4 & Prop.~8.1 & \cref{trigonometry:per:prop:exponentials}\\
+Kernels are exactly the additive integer parts & Thm.~4.1 & Thm.~3.4 & \cref{trigonometry:per:thm:dictionary}\\
+Local law and all fine derivatives & Prop.~10.1 & Props.~3.6, 8.3 & \cref{trigonometry:eq:globallocal}; \cref{trigonometry:per:prop:local}\\
+Split period sequence $\Leftrightarrow$ additive angle lift $\Leftrightarrow$ zero defect & Thm.~7.1 & Thm.~4.5 & \cref{trigonometry:per:thm:split}\\
+Explicit nonliftable profinite character & Lemma 7.2 (3-adic) & \S10 (2-adic) & \cref{trigonometry:per:ex:profinite}, both kept\\
+Multiplier ring and the integer-part criterion & Lemma 5.1, Thm.~5.2 & Props.~7.1, 8.2, eq.~(8.7) & \cref{trigonometry:per:prop:ZE,trigonometry:per:thm:criterion}\\
+Minimal multiplier ring $\Z$ by two-vector avoidance & Lemma 6.1, Thms.~6.2, 6.4 & Lemmas 7.2--7.6, Thms.~7.5, 7.7 & \cref{trigonometry:per:thm:minimalset,trigonometry:per:thm:minimalclass}; source 20's different route is \cref{trigonometry:per:thm:relative}\\
+Initial multiplier ring that is not an integer part & Cor.~6.5 & Thm.~8.4 & \cref{trigonometry:per:thm:robustness}\\
+Strong shift automorphisms & Thm.~11.1 & Thm.~9.2 & \cref{trigonometry:per:thm:shifts}, which is \cite[Theorem 5.2]{Saut}\\
+No phase equivariant under valued-field automorphisms & Thm.~11.2 ($c=1/2$) & Thm.~9.3, Cor.~9.4 & \cref{trigonometry:per:thm:free}; source 20's case in \cref{trigonometry:per:rem:halfshift}\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\emph{Credits the sources owe.} The shift automorphisms of \cref{trigonometry:per:thm:shifts} are the
+fixed-shift flows of the collection's report on field automorphisms of $\SC$ \cite[Theorem 5.2,
+label \texttt{saut:thm:shiftflow}]{Saut}, with its parameters $\delta=1$ and $\lambda=[\,\cdot\,]_0$
+and the sign of the flow parameter reversed; source~21 cites that theorem and \cite[\S4]{KKS},
+source~20 cites neither the repository report nor the flows. The residue map, the maximal divisible
+subgroup and the splitting and homomorphism facts behind
+\cref{trigonometry:per:prop:divisible,trigonometry:per:thm:split,trigonometry:per:thm:homz} are
+classical facts about $\Z$-groups \cite[\S\S2--4]{Jerabek}; source~21 says so, source~20 proves its
+versions without this citation. Neither source claims them as new, and neither is credited with them
+here.
+
+\emph{Where the merge had to choose.} (i) Source~21's text is the base, and source~20's statements are
+inserted where it has no counterpart. (ii) Where both prove one result, one proof is printed.
+(iii) Source~20's minimal-multiplier construction is not the same theorem as source~21's: it changes
+the ordinary character (outside a prescribed set-sized subspace) and keeps the infinitesimal
+character zero, so that all phase values lie in the ordinary circle, which is what its reflection
+theorem needs; source~21 fixes the ordinary character everywhere and changes only the infinitesimal
+character. Both are printed (\cref{trigonometry:per:thm:relative} and
+\cref{trigonometry:per:thm:minimalset,trigonometry:per:thm:minimalclass}). (iv) Source~20's
+non-equivariance theorem is the special case $c=1/2$ of source~21's free action; source~20's shorter
+proof is kept as a remark. (v) Two consequences are obtained by combining the sources and are stated by
+neither: source~20's first-order sentence separates source~21's example on $\No(\eps_0)$ from the
+canonical exponential, and source~21's defects give three pairwise nonisomorphic exponentials on
+$\No(\eps_0)[i]$ in ZFC (\cref{trigonometry:per:cor:combined}). Both are marked where they are stated.
+
+\emph{Set theory, kept attached to each statement.} Statements about a set-sized field are theorems
+of ZFC. Statements about a class map on all of $\No$ are made in NBG, reading ``all phases'' as a
+scheme with a class parameter rather than as a class whose elements are proper classes; every
+normal form, coefficient family and recursion stage is a set, and a quotient of a proper class is
+never treated as a set of classes. \emph{Global choice} (NBG with global choice, written GBC) is
+used exactly where it is named: in \cref{trigonometry:per:thm:minimalclass}, in
+\cref{trigonometry:per:thm:relative} and its variants, in the $\No[i]$ case of
+\cref{trigonometry:per:thm:robustness}, and to build the class maps that
+\cref{trigonometry:per:thm:reflection} reflects. The realization theorem
+(\cref{trigonometry:per:thm:realize}) uses only a choice between set-sized vector spaces, even for a
+defect defined on all of $\Pi$. The set-sized consequences of the global-choice constructions rest on
+the conservativity of GBC over ZFC for statements about sets; no large cardinal, saturation hypothesis
+or continuum hypothesis is used anywhere in this section.
+
+\emph{Radians, turns, and the symbols of this section.} This article measures angles in radians: the
+finite phase is $\cis$ with kernel $2\pi\Z$, and $\Phi$, $\Psi_\chi$, $\Exp$ and $E_\chi$ are exactly the
+objects of \cref{trigonometry:sec:global}. Both sources measure phases in \emph{turns}, with finite phase
+$a\mapsto e^{2\pi ia}$ and kernel $\Z$; a turn-phase at $x$ is here the radian phase at $2\pi x$. Because
+the arithmetic concerns the ordinary integers, periods are divided by $2\pi$ once and for all: the
+\emph{normalized period group} of a phase is $\cI(\Psi)=\{a:\Psi(2\pi a)=1\}$
+(\cref{trigonometry:per:def:periodgroup}). The remaining conversions are:
+\begin{itemize}
+\item Purely infinite part: the sources' $\mathcal P$ is $\Pi$ (the letter $\PP$ is used for the
+ projective line). Principal part $\pr(x)=x-\fin x\in\Pi$ (source 21's $\operatorname{pr}$; source 20
+ writes $p(x)$).
+\item Phases: source~21's admissible phase $\Phi$ and canonical phase $\Phi_0$, and source~20's
+ normalized phase $c$ and canonical phase $c_0$, are here $\Psi$ and $\Phi$; the letter $\Phi$ keeps
+ its meaning from \cref{trigonometry:def:globaltrig} and never denotes an arbitrary phase (other
+ reports of the collection use $\Phi$ for unrelated objects, none of which occurs here). Source~20's circle $\mathcal U_F$ is $\TT(F)$, and its
+ $\TT=\R/\Z$ is always written $\R/\Z$ here, since $\TT(F)$ is the unit circle.
+\item Characters: the character $\chi:\Pi\to\TT(\No)$ of \cref{trigonometry:thm:characters} has
+ coordinates $(\psi,\cL)$ (\cref{trigonometry:per:prop:coordinates}). Source~21's pair $(h,L)$ is
+ $(\psi,\cL)$; source~20's ordinary-circle character $\chi:\mathcal P\to\R/\Z$ is $\psi$ with
+ $\cL=0$, and its general character $\eta$ is our $\chi$. The letter $h$ keeps its meaning as a generic
+ infinitesimal increment, and $L$ its meaning in \cref{trigonometry:thm:infinitefrequency}.
+\item Exponentials: $E_\chi(x+iy)=\exp_{\No}(x)\Psi_\chi(y)$ as in \cref{trigonometry:thm:characters};
+ source~20's $E_\chi$ with $y/(2\pi)$ and a turn-valued $\chi$ is our $E_\chi$ for the character with
+ coordinates $(\chi,0)$. Source~20's finite phase $\mathrm e_0$ and circle map $\mathrm e(\theta)$ are
+ $f\mapsto\cis(2\pi f)$ and $\theta\mapsto e^{2\pi i\theta}$; source~21's $\mathrm e_{\OO}$ and
+ $\mathrm e_{\R}$ are the same two maps. (In their sources one macro name stands for $\exp_{\No}$ in
+ source~20 and for $r\mapsto e^{2\pi ir}$ in source~21; the printed symbols differ, and neither is
+ used here.) The strip exponential of
+ \cref{trigonometry:thm:stripexp} keeps the letter $E$ without subscript.
+\item Periods and multipliers: source~20's normalized kernel $D$ and source~21's $I_\Phi$ are $\cI$;
+ source~21's maximal divisible subgroup $D_\Phi$ or $D(I)$ is $\cI^{\mathrm{div}}$ (so neither source's
+ $D$ survives); source~20's $M(E)$ and source~21's $Z_E$ are $Z_E$; $\Mult$ is unchanged.
+\item Profinite objects: source~21's defect $\delta_\Phi$ is $\pd_\Psi$ (the letter $\delta$ is the side gap
+ $b+c-a$, and ``defect'' alone means the angle defect $d(\alpha)$ or the triangle-inequality defect,
+ so this one is always called the \emph{profinite defect}); its residue map $\rho_I$ is $\res_{\cI}$;
+ its $\mathcal V=\Zhat/\Z$ is written $\Zhat/\Z$; its $\Sigma$, $\partial$, $s$ are $\Qv$, $\cl$,
+ $\varsigma$; its continuum $\mathfrak c$ is $2^{\aleph_0}$; its representative $\theta(p)$ is
+ $\bar\psi(p)$; its retraction $r$ is $\mathfrak r$.
+\item Fields: source~21's $K_\Gamma=\R((t^\Gamma))$ is $F_\Gamma$ of \cref{trigonometry:sec:rings}, since
+ $K_\Gamma$ denotes $\C((t^\Gamma))$ in this article and in the collection's notation guide; its $K_0$ and
+ $K_\eps$ are $F_{\Q}$ and $\No(\eps_0)$. Source~20's $F$ keeps its name here; birthdays are written
+ out in words.
+\item Automorphisms: source~21's $T_c$ and source~20's $\sigma_a$ are $\Sh_c$ ($T_n$ is a Chebyshev
+ polynomial, $\sigma$ a valuation threshold, and $T_s$ in \cite{Saut} has the opposite sign); their
+ exponent map $\ell(g)$ is $[g]_0$, the real coefficient of $\omega^0$ in the exponent $g$, since
+ $\ell(p)$ is the coefficient of $\omega$ in \cref{trigonometry:ex:phases}. Source~21's $[X]p$ is that
+ $\ell(p)$. Source~20's witness monomial $h_x$ is $\mu_x$.
+\end{itemize}
+
+\subsection{Phases on a field, periods, and exponentials}\label{trigonometry:per:sec:phases}
+\emph{Fields.} In this section $F$ is one of the following: $\No$; a set-sized initial
+trigonometric-exponential subfield $\No(\lambda)=\{x\in\No:\text{the birthday of $x$ is less than
+$\lambda$}\}$ for an epsilon number $\lambda$, in particular $\No(\eps_0)$
+\cite[\S11.2, Theorem 11.1]{EK}, \cite{vdDE}; or, where no real exponential is needed, a Hahn field
+$F_\Gamma=\R((t^\Gamma))$, in particular $F_{\Q}$, or more generally a non-Archimedean
+truncation-closed subfield of $\No$ containing $\R$ on which the finite phase is available. Initial
+subfields are truncation closed. $\No(\eps_0)$ has cardinality $2^{\aleph_0}$, since its elements have
+countable sign sequences, of countably many lengths, and it contains $\R$; it is \emph{not} asserted to
+be a full Hahn field. Write $\OO_F,\mm_F,\Pi_F$ for the finite, infinitesimal and purely infinite
+elements of $F$; truncation closure gives $F=\Pi_F\oplus\OO_F$ and $\OO_F=\R\oplus\mm_F$. The group
+$\Pi_F$ is a $\Q$-vector space and a nonunital subring, and its nonzero elements are infinite. The
+finite phase $\cis:(\OO_F,+)\to\TT(F)$ is onto with kernel $2\pi\Z$, and
+$\TT(F)\cong\TT(\R)\times(\mm_F,+)$ through $\ellm$ of \cref{trigonometry:rot:eq:ellm}: this is
+\cref{trigonometry:thm:polar} for $\No$, and the same proof for these $F$, as both sources note. The
+occurrence of the ordinary $\Z$, not $\Oz$, in this kernel is essential.
+
+\begin{definition}[Phases and normalized periods]\label{trigonometry:per:def:periodgroup}
+A \emph{phase} on $F$ is a homomorphism $\Psi:(F,+)\to\TT(F)$ whose restriction to $\OO_F$ is
+$\cis$. Its \emph{normalized period group} is $\cI(\Psi)=\{a\in F:\Psi(2\pi a)=1\}$, so that
+$\ker\Psi=2\pi\cI(\Psi)$. An \emph{additive integer part} of $F$ is an additive subgroup
+$\cI\subseteq F$ containing $1$, with least positive element $1$, such that every $x\in F$ has an
+$a\in\cI$ with $a\le x<a+1$; no multiplicative closure is included. An \emph{integer part} is an
+additive integer part that is a subring.
+\end{definition}
+The canonical phase of \cref{trigonometry:def:globaltrig} has $\cI(\Phi)=\Oz$; on an initial subfield
+$F$ it has $\cI=\Oz\cap F$, the unique initial integer part of $F$ \cite[Lemma 11.1]{EK}, and on
+$F_\Gamma$ the phase $\cis\circ\fin$ has $\cI=\Pi_F\oplus\Z$. \emph{Initial} means closed under
+proper sign-sequence prefixes; it does not mean small, ordered or definable.
+
+\begin{proposition}[Coordinates of a phase; restating \cref{trigonometry:thm:characters}]
+\label{trigonometry:per:prop:coordinates}
+Every phase on $F$ is $\Psi_\chi(p+f)=\chi(p)\cis f$ for a unique homomorphism
+$\chi:\Pi_F\to\TT(F)$, and there are unique maps $\psi:\Pi_F\to\R/\Z$, additive, and
+$\cL:\Pi_F\to\mm_F$, $\Q$-linear, with
+\begin{equation}\label{trigonometry:per:eq:coordinates}
+ \chi(2\pi p)=e^{2\pi i\psi(p)}\,\Ex\bigl(2\pi i\cL(p)\bigr)\qquad(p\in\Pi_F).
+\end{equation}
+Every such pair occurs; we write $\Psi_{\psi,\cL}$ for the phase. The canonical phase is
+$\Psi_{0,0}=\Phi$.
+\end{proposition}
+\begin{proof}
+The first assertion is \cref{trigonometry:thm:characters}, whose proof applies verbatim on $F$
+(sources 20 and 21 state it so). Since $\Pi_F=2\pi\Pi_F$, compose $p\mapsto\chi(2\pi p)$ with the
+splitting $\TT(F)\cong\TT(\R)\times\mm_F$: the first coordinate is an additive map to
+$\TT(\R)\cong\R/\Z$, the second is additive between uniquely divisible groups, hence $\Q$-linear.
+\end{proof}
+Source~21 uses these coordinates to separate the ordinary phase from the infinitesimal one; source~20
+works mainly with $\cL=0$, where every value of $\chi$ lies in the ordinary circle.
+
+\begin{theorem}[Kernel dictionary]\label{trigonometry:per:thm:dictionary}
+The map $\Psi\mapsto\cI(\Psi)$ is a bijection from phases on $F$ onto additive integer parts of $F$.
+Every such $\cI$ has unique floors, satisfies $\cI\cap\OO_F=\Z$, and sits in an exact sequence
+\begin{equation}\label{trigonometry:per:eq:periodsequence}
+ 0\longrightarrow\Z\longrightarrow\cI\xrightarrow{\ \pr\ }\Pi_F\longrightarrow0 .
+\end{equation}
+In particular a phase is determined by its kernel. If $\Pi_F\ne0$, then $\cI$ contains infinite
+elements and is not cyclic.
+\end{theorem}
+\begin{proof}
+Let $\Psi$ be a phase. The finite restriction gives $\cI\cap\OO_F=\Z$. For $x\in F$ choose finite $f$
+with $\cis(2\pi f)=\Psi(2\pi x)$, so $x-f\in\cI$. Every finite $f=r+\eps$ has a unique ordinary integer
+$n$ with $n\le f<n+1$: the ordinary floor of $r$, lowered by one when $r\in\Z$ and $\eps<0$. Then
+$a=x-f+n\in\cI$ is a floor of $x$; two floors differ by an element of $\cI$ of absolute value less
+than one, hence by $0$, and $1$ is least positive since $(0,1)$ is finite and meets $\cI$ in nothing.
+Applying the same correction to $p\in\Pi_F$ proves that $\pr:\cI\to\Pi_F$ is onto; its kernel is
+$\cI\cap\OO_F=\Z$.
+
+Conversely let $\cI$ be an additive integer part. A finite element of $\cI$ minus its ordinary floor
+lies in $\cI\cap[0,1)=\{0\}$, so $\cI\cap\OO_F=\Z$, and floors are unique. Put
+$\Psi_{\cI}(y)=\cis\bigl(y-2\pi\lfloor y/2\pi\rfloor_{\cI}\bigr)$. For two arguments the floors of
+the sum and of the summands differ by $0$ or $1$, which $\cis(2\pi\,\cdot\,)$ ignores, so
+$\Psi_{\cI}$ is a homomorphism; it restricts to $\cis$ on $\OO_F$ and has normalized period group
+$\cI$. Two phases with the same $\cI$ agree at $2\pi x$, because both take there the finite phase of
+$x$ minus its common floor.
+
+For $p\ne0$ in $\Pi_F$ every element of the fibre of $\pr$ over $p$ is infinite. If $\cI=\tau\Z$ were
+cyclic, then $1=n\tau$ for an ordinary $n\ne0$, and every element of $\cI$ would be finite.
+\end{proof}
+The dictionary is source~20's Theorem 4.1 with Corollary 4.2 and source~21's Theorem 3.4; the proof
+printed is source~21's. That $\cI$ meets every coset $p+\OO_F$ is
+\cref{trigonometry:thm:infiniteperiods} in normalized form; the floor formulation isolates the
+additional arithmetic used below. For $F=\No$ and $\Psi=\Phi$ the floor is Ehrlich and Kaplan's
+integer-part floor \cite[\S11]{EK}.
+
+\begin{proposition}[Division with remainder; source 20]\label{trigonometry:per:prop:division}
+For every ordinary $n\ge1$ and $d\in\cI$ there are unique $e\in\cI$ and $r\in\{0,\dots,n-1\}$ with
+$d=ne+r$. Hence $\cI/n\cI\cong\Z/n\Z$, induced by the inclusion of $\Z$.
+\end{proposition}
+\begin{proof}
+Let $e$ be the $\cI$-floor of $d/n$; then $r=d-ne\in\cI\cap[0,n)$ is an ordinary integer. If
+$ne+r=ne'+r'$, then $e-e'=(r'-r)/n\in\cI\cap\OO_F=\Z$ has absolute value less than one.
+\end{proof}
+This arithmetic is additive; it does not allow arbitrary elements of $\cI$ to be multiplied inside
+$\cI$, and that is exactly where the counterexamples below enter. For set-sized $\cI$ the ordered
+group $\cI$ is discretely ordered with divisible quotient $\cI/\Z\cong\Pi_F$, that is, a $\Z$-group, a
+model of Presburger arithmetic in its ordered-group presentation \cite[\S2]{Jerabek}; this does not make
+it a model of arithmetic with multiplication.
+
+\begin{proposition}[Phases and exponentials]\label{trigonometry:per:prop:exponentials}
+Let $F$ carry a real exponential $\exp_F$, i.e.\ $F=\No$ or $F=\No(\lambda)$ with $\lambda$ an epsilon
+number. For every phase $\Psi_\chi$ on $F$, $E_\chi(x+iy)=\exp_F(x)\Psi_\chi(y)$ is a surjective
+homomorphism $(F[i],+)\to(F[i]^\times,\cdot)$ extending $\exp_F$ and the strip exponential of
+\cref{trigonometry:thm:stripexp}, with
+\begin{equation}\label{trigonometry:per:eq:explaws}
+ |E_\chi(z)|=\exp_F(\re z),\qquad E_\chi(\bar z)=\overline{E_\chi(z)},\qquad
+ \ker E_\chi=2\pi i\,\cI(\Psi_\chi).
+\end{equation}
+Conversely every additive-to-multiplicative homomorphism $E:F[i]\to F[i]^\times$ that agrees with the
+strip exponential at finite imaginary arguments and satisfies $|E(z)|=\exp_F(\re z)$ is $E_\chi$ for
+exactly one $\chi$, namely the restriction of $y\mapsto E(iy)$ to $\Pi_F$.
+\end{proposition}
+\begin{proof}
+The forward assertions other than conjugation and the kernel are \cref{trigonometry:thm:characters}.
+Conjugation follows from $\Psi(-y)=\Psi(y)^{-1}=\overline{\Psi(y)}$. A kernel element has modulus
+$\exp_F(x)=1$, so $x=0$, and then $\Psi_\chi(y)=1$ means $y\in2\pi\cI$. Conversely $\Psi(y)=E(iy)$
+has modulus one, is a homomorphism, and is $\cis$ on finite $y$; on the real axis $E=\exp_F$; the
+group law gives $E(x+iy)=\exp_F(x)\Psi(y)$.
+\end{proof}
+Ehrlich and Kaplan establish the integer-part case \cite[Proposition 11.2]{EK}; here the formula is
+used for additive integer parts that are not rings. The proposition is source~20's Proposition 3.4
+and source~21's Proposition 8.1.
+
+\begin{proposition}[The local law, for every phase]\label{trigonometry:per:prop:local}
+For every phase $\Psi$ on $F$, every $x\in F$, $h\in\mm_F$, and, when $F$ has a real exponential,
+every $z\in F[i]$ and $w\in\mm_F[i]$,
+\[
+ \Psi(x+h)=\Psi(x)\Ex(ih),\qquad E_\chi(z+w)=E_\chi(z)\Ex(w)=E_\chi(z)\sum_{n\ge0}\frac{w^n}{n!}.
+\]
+In the fine sense, with tolerances ranging over the positive elements of $F$,
+$\Psi^{(n)}=i^n\Psi$ and $E_\chi^{(n)}=E_\chi$ for every ordinary $n$, and $\Psi$ is uniformly
+continuous for the fine additive uniformity.
+\end{proposition}
+\begin{proof}
+The identities are \cref{trigonometry:eq:globallocal} and its exponential form, on $F$. For the fine
+derivative write $\Ex(w)=1+w+w^2R(w)$; for infinitesimal $w$ the factor $R(w)$ is finite with
+standard part $1/2$, so $|R(w)|<1$. Given a positive tolerance $\epsilon\in F$, choose a positive
+infinitesimal $\varrho\in F$; then
+$0<|w|<\min\{\varrho,\epsilon/(1+|E_\chi(z)|)\}$ gives $|(E_\chi(z+w)-E_\chi(z))/w-E_\chi(z)|\le|E_\chi(z)||w|<\epsilon$, and induction
+gives the higher derivatives; the phase is treated in the same way. Finally
+$|\Psi(x+h)-\Psi(x)|=|\cis h-1|$ does not depend on $x$, and $(\cis h-1)/h$ is finite with standard
+part $i$, so $|h|<\min\{\varrho,\epsilon/2\}$ forces $|\Psi(x+h)-\Psi(x)|<\epsilon$.
+\end{proof}
+This is source~20's Proposition 10.1 and source~21's Propositions 3.6 and 8.3; it is inherited, not a
+new uniqueness theorem. The sums are strong Hahn sums, not limits of finite partial sums in the fine
+topology. \emph{The local law does not remove the freedom}: for two phases $\Psi_1,\Psi_2$ the
+quotient $\Psi_1\Psi_2^{-1}$ is a homomorphism trivial on $\OO_F$, hence constant on every coset of
+$\OO_F$; those cosets are fine-open, so the quotient is locally constant and invisible to
+differentiation (source~20). The derivative rules are the same for all extensions; they do not say
+that the values of distinct exponentials agree at infinite points.
+
+\subsection{Profinite residues and the profinite defect}\label{trigonometry:per:sec:defect}
+Let $\Zhat=\varprojlim\Z/n\Z\cong\prod_p\Z_p$, with $\Z$ embedded diagonally. Throughout,
+$\Zhat/\Z$ is an \emph{abstract} additive group, not a separated topological quotient ($\Z$ is dense
+in $\Zhat$).
+
+\begin{lemma}\label{trigonometry:per:lem:zhat}
+$\Zhat/\Z$ is uniquely divisible, hence a $\Q$-vector space, of cardinality and $\Q$-dimension
+$2^{\aleph_0}$.
+\end{lemma}
+\begin{proof}
+Multiplication by $n>0$ is injective on $\Zhat$ with image the kernel of reduction modulo $n$; for
+$\alpha\in\Zhat$ choose $r\in\Z$ with $\alpha\equiv r$ modulo $n$, so $(\alpha-r)/n\in\Zhat$. If
+$n\alpha=m\in\Z$ then $n\mid m$ and $\alpha=m/n\in\Z$, so the quotient is torsion free. $\Zhat$ has
+cardinality $2^{\aleph_0}$, a countable quotient leaves it unchanged, and an uncountable
+$\Q$-vector space has cardinality equal to its dimension.
+\end{proof}
+
+Let $\cI=\cI(\Psi)$. For $a\in\cI$, $\Psi(2\pi a/n)$ is an $n$th root of unity, hence one of the
+ordinary ones, $\Psi(2\pi a/n)=e^{2\pi ir_n(a)/n}$ with $r_n(a)\in\Z/n\Z$. These residues are compatible
+under divisibility, so $\res_{\cI}(a)=(r_n(a))_n\in\Zhat$, and
+\begin{equation}\label{trigonometry:per:eq:residue}
+ a-r\in n\cI\iff r_n(a)\equiv r\pmod n .
+\end{equation}
+\begin{proposition}[The maximal divisible subgroup; classical]\label{trigonometry:per:prop:divisible}
+$\res_{\cI}$ is additive and restricts to the diagonal embedding on $\Z$, and
+\[
+ \cI^{\mathrm{div}}:=\ker\res_{\cI}=\bigcap_{n\ge1}n\cI=\{a\in\cI:\Q a\subseteq\cI\}
+\]
+is the maximal divisible subgroup of $\cI$.
+\end{proposition}
+\begin{proof}
+Additivity is immediate and \cref{trigonometry:per:eq:residue} gives the intersection formula. In the
+uniquely divisible ambient group, $a\in n\cI$ for every $n$ says $a/n\in\cI$ for every $n$, i.e.\
+$\Q a\subseteq\cI$; every divisible subgroup of $\cI$ has this property.
+\end{proof}
+This is the residue map and divisible kernel of the $\Z$-group $\cI$ \cite[Proposition 4.1 and
+Remark 4.2]{Jerabek}, read off from a phase; source~21 presents it so.
+
+\begin{theorem}[The profinite defect and its kernel; source 21]\label{trigonometry:per:thm:defect}
+For $p\in\Pi_F$ choose $a\in\cI$ with $\pr(a)=p$ and put $\pd_\Psi(p)=\res_{\cI}(a)+\Z\in\Zhat/\Z$.
+This is well defined and $\Q$-linear, and $\pr$ restricts to an isomorphism
+$\cI^{\mathrm{div}}\cong\ker\pd_\Psi$. Writing $q:\Zhat\to\Zhat/\Z$,
+\[
+ \res_{\cI}(\cI)=q^{-1}\bigl(\pd_\Psi(\Pi_F)\bigr),\qquad
+ \cI/\cI^{\mathrm{div}}\cong q^{-1}\bigl(\pd_\Psi(\Pi_F)\bigr)\subseteq\Zhat,
+\]
+so the nondivisible quotient is represented in a set of cardinality at most $2^{\aleph_0}$. For
+set-sized $F$, $\Pi_F/\pr(\cI^{\mathrm{div}})\cong\pd_\Psi(\Pi_F)$ has $\Q$-dimension at most
+$2^{\aleph_0}$; for $F=\No$ the same quotient is represented by the class map $\pd_\Psi$ with set-sized
+range, without forming a set of proper classes.
+\end{theorem}
+\begin{proof}
+Two lifts differ by an element of $\cI\cap\OO_F=\Z$, whose residue is diagonal; lifts of sums may be
+added; source and target are uniquely divisible. A divisible subgroup meets $\Z$ trivially, so $\pr$
+is injective on $\cI^{\mathrm{div}}$, and its image lies in $\ker\pd_\Psi$. If $\pd_\Psi(p)=0$, a lift
+$a$ has $\res_{\cI}(a)=k\in\Z$ and $a-k\in\cI^{\mathrm{div}}$ has principal part $p$. If
+$q(\alpha)=\pd_\Psi(p)$ and $a$ lifts $p$, then $\alpha=\res_{\cI}(a+k)$ for some $k\in\Z$; the
+isomorphism is the first isomorphism theorem, read in the class case as the displayed residue map,
+whose fibres are the cosets of $\cI^{\mathrm{div}}$.
+\end{proof}
+
+\begin{theorem}[When the period sequence splits]\label{trigonometry:per:thm:split}
+For a phase $\Psi=\Psi_{\psi,\cL}$ with $\chi=\Psi|_{\Pi_F}$ the following are equivalent:
+\begin{enumerate}[label=(\arabic*)]
+\item $\pd_\Psi=0$;
+\item the sequence \eqref{trigonometry:per:eq:periodsequence} splits as additive groups;
+\item there is an additive retraction $\mathfrak r:F\to\OO_F$, the identity on $\OO_F$, with
+ $\Psi(2\pi x)=\cis\bigl(2\pi\mathfrak r(x)\bigr)$ for all $x$;
+\item there is an additive $H:\Pi_F\to\OO_F$ with $\chi(2\pi p)=\cis\bigl(2\pi H(p)\bigr)$;
+\item the ordinary character $\psi$ has a $\Q$-linear lift $\Pi_F\to\R$ through $\R\to\R/\Z$.
+\end{enumerate}
+The retraction in (3) is unique when it exists, $\cI=\ker\mathfrak r\oplus\Z$, and
+$\cI^{\mathrm{div}}=\ker\mathfrak r$; every additive $H$ as in (4) is $\Q$-linear.
+\end{theorem}
+\begin{proof}
+(1)$\Rightarrow$(3): the isomorphism of \cref{trigonometry:per:thm:defect} gives a section
+$\iota:\Pi_F\to\cI^{\mathrm{div}}$; $\mathfrak r(x)=x-\iota(\pr x)$ is finite, additive, fixes
+$\OO_F$, and differs from $x$ by a period. (3)$\Rightarrow$(2): $p\mapsto p-\mathfrak r(p)$ is a section.
+(2)$\Rightarrow$(1): an additive section has divisible image, hence lies in $\cI^{\mathrm{div}}$, and
+it meets every principal part. If $\mathfrak r_1,\mathfrak r_2$ give the same phase, $\mathfrak
+r_1-\mathfrak r_2$ is an additive map from the divisible group $F$ to $\Z$, hence zero; $\mathfrak
+r(x)\in\Z$ characterizes $\cI$, and all rational divisions of $x$ lie in $\cI$ exactly when
+$\mathfrak r(x)=0$.
+
+(2)$\Leftrightarrow$(4) (source 20's route): given $H$, $p\mapsto p-H(p)$ is an additive section into
+$\cI$; given a section $\iota$, $H(p)=p-\iota(p)$ is finite and additive with $\chi(2\pi p)=\cis(2\pi H(p))$.
+Additive maps between torsion-free divisible groups are $\Q$-linear. (4)$\Leftrightarrow$(5): write
+$H=A+\mathcal E$ with $A$ real and $\mathcal E$ infinitesimal; by the splitting of $\TT(F)$,
+\cref{trigonometry:per:eq:coordinates} and $\chi(2\pi p)=\cis(2\pi H(p))$ are equivalent to
+$A+\Z=\psi$ and $\mathcal E=\cL$. The infinitesimal coordinate always lifts; all obstruction lies in
+$\psi$.
+\end{proof}
+This is source~21's Theorem 4.5 (conditions (1)--(3)) and source~20's Theorem 7.1 (conditions (2),
+(4), (5)). A real argument for each single value of $\chi$ always exists; condition (5) asks for them
+\emph{simultaneously and additively}. Replacing an arbitrary character by a real-valued linear
+functional therefore discards every nonzero profinite defect, while a zero defect says nothing about
+multiplicative closure (\cref{trigonometry:per:sec:multiplier}).
+
+\begin{theorem}[Homomorphisms to $\Z$; source 20]\label{trigonometry:per:thm:homz}
+The sequence \eqref{trigonometry:per:eq:periodsequence} splits if and only if there is a nonzero
+homomorphism $\cI\to\Z$. For set-sized $F$, $\Hom(\cI,\Z)\cong\Z$ if it splits and $\Hom(\cI,\Z)=0$ if
+it does not. For $F=\No$ the statement concerns existence and pointwise description of class
+homomorphisms, not a set of all of them.
+\end{theorem}
+\begin{proof}
+If it splits, $\cI\cong\Z\oplus\Pi_F$, and every homomorphism from the divisible group $\Pi_F$ to $\Z$
+vanishes, so the homomorphisms are the multiples of the first projection. Conversely let
+$\varphi:\cI\to\Z$ be nonzero and $m=\varphi(1)$; if $m=0$, $\varphi$ factors through
+$\cI/\Z\cong\Pi_F$ and vanishes. By \cref{trigonometry:per:prop:division} with $n=|m|$, $d=ne+r$
+gives $\varphi(d)=n\varphi(e)+rm\in m\Z$, so $\varphi/m$ is a retraction of $\Z\hookrightarrow\cI$, and
+$\pr$ maps its kernel bijectively onto $\Pi_F$.
+\end{proof}
+The group facts in \cref{trigonometry:per:thm:split,trigonometry:per:thm:homz} are classical for
+$\Z$-groups \cite[\S\S2--4]{Jerabek}; source~20 proves them without that citation.
+
+\subsection{Realizing every profinite defect}\label{trigonometry:per:sec:realize}
+Let $\Qv=\Hom(\Q,\R/\Z)$, an abstract group (the character group behind the solenoid; no topology is
+used), with rational scalars $(r\cdot f)(q)=f(rq)$.
+
+\begin{lemma}[A rational-line exact sequence]\label{trigonometry:per:lem:solenoid}
+There is an exact sequence of $\Q$-vector spaces
+$0\to\R\xrightarrow{j}\Qv\xrightarrow{\cl}\Zhat/\Z\to0$ with $j(a)(q)=qa+\Z$.
+\end{lemma}
+\begin{proof}
+$j$ is injective. For $f\in\Qv$ choose $\theta\in\R$ representing $f(1)$ and $g=f-j(\theta)$; then
+$g(1/n)=a_n/n+\Z$ with compatible $a_n\in\Z/n\Z$, i.e.\ $\alpha=(a_n)\in\Zhat$; put $\cl f=\alpha+\Z$,
+independent of $\theta$ and additive, hence linear. If $\cl f=0$ then $\alpha=k\in\Z$ and
+$f=j(\theta+k)$. For any $\alpha\in\Zhat$ the rule
+\begin{equation}\label{trigonometry:per:eq:falpha}
+ f_\alpha(k/n)=\frac{ka_n}{n}+\Z
+\end{equation}
+is well defined and additive (common denominators use exactly the compatibility), with $f_\alpha(1)=0$
+and $\cl f_\alpha=\alpha+\Z$.
+\end{proof}
+By choice between sets fix a linear section $\varsigma:\Zhat/\Z\to\Qv$ of $\cl$; this is a choice
+between set-sized vector spaces even when the defect below is defined on all of $\Pi$.
+
+\begin{lemma}[The defect is read from the ordinary character]\label{trigonometry:per:lem:hdefect}
+For $\psi:\Pi_F\to\R/\Z$ put $H_\psi(p)(q)=\psi(qp)$. Then $H_\psi:\Pi_F\to\Qv$ is $\Q$-linear and
+$\pd_{\Psi_{\psi,\cL}}=\cl\circ H_\psi$ for every $\cL$; in particular the profinite defect does not
+depend on $\cL$.
+\end{lemma}
+\begin{proof}
+Linearity is additivity of $\psi$. Choose $\theta\in\R$ representing $\psi(p)$; then
+$a=p-\theta-\cL(p)\in\cI$ with $\pr(a)=p$, and for every $n$, since $\cL$ is linear,
+$\Psi(2\pi a/n)=e^{2\pi i(\psi(p/n)-\theta/n)}$: the infinitesimal factors cancel. These are the residues
+defining $\cl(H_\psi(p))$.
+\end{proof}
+
+\begin{theorem}[Prescribed-defect realization; source 21]\label{trigonometry:per:thm:realize}
+Every $\Q$-linear $d:\Pi_F\to\Zhat/\Z$ is the profinite defect of a phase, also for a given
+class-linear $d$ on $\Pi$ when $F=\No$, without a class Hamel basis. After fixing a realizing
+ordinary character $\psi$, the infinitesimal character $\cL$ may be chosen freely.
+\end{theorem}
+\begin{proof}
+Put $H=\varsigma\circ d$ and $\psi(p)=H(p)(1)$. Then $\psi(qp)=H(qp)(1)=(q\cdot H(p))(1)=H(p)(q)$, so
+$H_\psi=H$ and $\pd_{\Psi_{\psi,\cL}}=\cl\,\varsigma\,d=d$ for every linear $\cL$, by
+\cref{trigonometry:per:lem:hdefect}. The only choice is the set map $\varsigma$.
+\end{proof}
+
+\begin{theorem}[Counts on $F_{\Q}$; source 21, ZFC]\label{trigonometry:per:thm:cardinality}
+On $F_{\Q}=\R((t^{\Q}))$: every cardinal $\kappa\le2^{\aleph_0}$ is $\dim_{\Q}\pd_\Psi(\Pi_F)$ for some
+phase; there are exactly $2^{2^{\aleph_0}}$ phases with \emph{reduced} period group
+($\cI^{\mathrm{div}}=0$) and exactly $2^{2^{\aleph_0}}$ with split period group; the same counts hold
+for their distinct normalized period groups.
+\end{theorem}
+\begin{proof}
+All supports lie in the countable $\Q$, so $|F_{\Q}|=2^{\aleph_0}$; $\Pi_F\supseteq\R\omega$ gives
+$\dim_{\Q}\Pi_F=2^{\aleph_0}=\dim_{\Q}\Zhat/\Z$ (\cref{trigonometry:per:lem:zhat}), so linear maps
+of every rank exist and are realized by \cref{trigonometry:per:thm:realize}. A linear isomorphism
+$d$ gives a reduced group by \cref{trigonometry:per:thm:defect}; multiplying the images of a basis
+independently by $1$ or $2$ gives $2^{2^{\aleph_0}}$ of them, with distinct defects, phases and (by
+\cref{trigonometry:per:thm:dictionary}) groups. For split phases take $\Q$-linear $A:\Pi_F\to\R$ and
+$\Psi_A(2\pi(p+f))=\cis(2\pi(f+A(p)))$; distinct $A$ give distinct phases, their difference mapping the
+divisible $\Pi_F$ into $\Z$. There are at most $(2^{\aleph_0})^{2^{\aleph_0}}=2^{2^{\aleph_0}}$ maps
+$F_{\Q}\to F_{\Q}[i]$.
+\end{proof}
+No continuum hypothesis or regularity of $2^{\aleph_0}$ is used. A reduced group still has infinite
+elements (every additive integer part of a non-Archimedean field has them), and these are counts of
+embedded period groups in a fixed field, not a claim that their abstract groups are pairwise
+nonisomorphic.
+
+\begin{example}[Two explicit nonliftable profinite characters]\label{trigonometry:per:ex:profinite}
+\emph{Source 21.} Let $\alpha_2\in\Zhat$ have $2$-adic component $0$ and every odd component $1$; its
+residue $a_n$ for $n=2^em$, $m$ odd, solves $a_n\equiv0\pmod{2^e}$, $a_n\equiv1\pmod m$:
+$a_2=0$, $a_3=1$, $a_6=4$, $a_{12}=4$, $a_{24}=16$, $a_{40}=16$. It is not a diagonal integer, so
+$[\alpha_2]\ne0$, and $f_{\alpha_2}$ vanishes on integers and dyadic rationals but not at $1/3$. On $\No$,
+or on $F_\Gamma$ with $1\in\Gamma$, choose a $\Q$-linear $\nu:\R\to\Q$ fixing $\Q$ (a Hamel-basis choice
+on which nothing displayed depends) and put $\psi(p)=f_{\alpha_2}(\nu(\ell(p)))$, $\cL=0$. Then
+\[
+ \Psi(2\pi\omega)=1,\quad \Psi(2\pi\omega/2^e)=1,\quad \Psi(2\pi\omega/3)=e^{2\pi i/3},\quad
+ \pd_\Psi(\omega)=[\alpha_2]\ne0 ,
+\]
+so a period need not bring its rational divisions with it. With $u=(\omega-1)/3$ one has
+$\Psi(2\pi u)=\Psi(2\pi\omega)=1$ but $\Psi\bigl(2\pi u\omega\bigr)=e^{-2\pi i/3}\ne1$, since
+$u\omega=(\omega^2-\omega)/3$: this period group is not a ring, and it is not split. The example
+establishes neither a minimal multiplier ring nor reducedness.
+
+\emph{Source 20.} Let $\alpha_3\in\Zhat$ have $3$-adic component $1$ and every other component $0$:
+for $n=3^km$ with $3\nmid m$, $a_n\equiv0\pmod m$ and $a_n\equiv1\pmod{3^k}$. The first residues are
+\[
+\begin{array}{c|rrrrrrrrrr}
+ n&2&3&4&6&8&9&12&18&24&27\\\hline
+ a_n&0&1&0&4&0&1&4&10&16&1
+\end{array}
+\]
+and $f_{\alpha_3}(1)=0$, $f_{\alpha_3}(1/2^k)=0$, $f_{\alpha_3}(1/3^k)=1/3^k+\Z$. \emph{It does not lift
+to an additive map $\Q\to\R$}: a lift is $q\mapsto qf(1)$ with $f(1)\in\Z$ divisible by every $2^k$,
+hence zero, which cannot represent $f_{\alpha_3}(1/3)$. (In general $f_\alpha$ lifts exactly when
+$[\alpha]=0$, by \cref{trigonometry:per:lem:solenoid}.) The roots are chosen coherently --- the cube
+of the value at $1/3$ is the value at $1$ --- but not by dividing one additive angle.
+\end{example}
+
+\subsection{Divisible periods are unavoidable and cofinal on \texorpdfstring{$\No$}{No}}
+\label{trigonometry:per:sec:cofinal}
+\begin{theorem}[Cofinal rationally divisible periods; source 21]\label{trigonometry:per:thm:cofinal}
+Let $\Psi$ be any phase on $\No$. For every $B\in\No$ there is $a>B$ with $\Psi(2\pi qa)=1$ for every
+$q\in\Q$. Equivalently, $\cI(\Psi)^{\mathrm{div}}$ is cofinal in $\No$.
+\end{theorem}
+\begin{proof}
+We may take $B\ge0$. Choose $g>0$ with $\omega^g>2B+\omega$, let $\kappa=(2^{\aleph_0})^+$ and
+$p_\beta=\omega^{g+\beta}$ for ordinals $\beta<\kappa$. The values $\pd_\Psi(p_\beta)$ lie in the set
+$\Zhat/\Z$ of cardinality $2^{\aleph_0}$, so $\pd_\Psi(p_\beta)=\pd_\Psi(p_\gamma)$ for some
+$\beta<\gamma$. Since $\gamma-\beta\ge1$, $p_\gamma\ge\omega p_\beta$ and
+$p=p_\gamma-p_\beta\ge(\omega-1)\omega^g>B+\omega$. As $p\in\ker\pd_\Psi$,
+\cref{trigonometry:per:thm:defect} gives $a\in\cI^{\mathrm{div}}$ with $\pr(a)=p$; $a-p$ is finite,
+so $a>B$.
+\end{proof}
+The argument is one set-sized pigeonhole, not cardinal arithmetic with a purported cardinality of
+$\No$. It strengthens \cref{trigonometry:thm:infiniteperiods}: not only does every coset of $\OO_{\R}$
+contain a period, but whole rational lines of periods reach beyond every bound. It does not assert
+that strong sums are fine limits.
+
+\begin{corollary}\label{trigonometry:per:cor:noreduced}
+No phase on $\No$ has a reduced period group. The reduced examples on $F_{\Q}$ of
+\cref{trigonometry:per:thm:cardinality} therefore cannot stay reduced in any extension to $\No$
+(this is conditional only on an extension being given; nothing is asserted about extending an
+arbitrary class character).
+\end{corollary}
+The defect rank is nevertheless unrestricted on $\No$: for $\kappa\le2^{\aleph_0}$ take a rank-$\kappa$
+linear $A:\R\to\Zhat/\Z$ and $d(p)=A(\ell(p))$; \cref{trigonometry:per:thm:realize} realizes it, and
+its divisible periods are still cofinal. \emph{A set/class contrast}: on the set field $F_{\Q}$ period
+groups can be reduced; on the class $\No$ they must contain cofinally large rational lines.
+
+\subsection{Multiplier rings and the integer-part criterion}\label{trigonometry:per:sec:multiplier}
+For an additive integer part $\cI$ put $\Mult(\cI)=\{a\in F:a\cI\subseteq\cI\}$. It is a unital subring
+containing $\Z$ and contained in $\cI$ (apply it to $1$), hence discretely ordered with least positive
+element $1$. For an exponential $E$ as in \cref{trigonometry:per:prop:exponentials} the
+\emph{kernel-multiplier ring} of Ehrlich and Kaplan is
+\begin{equation}\label{trigonometry:per:eq:ZE}
+ Z_E=\{z\in F[i]:\ E(y)=1\Rightarrow E(yz)=1\ \text{for every }y\in F[i]\}.
+\end{equation}
+
+\begin{proposition}[The kernel-multiplier ring]\label{trigonometry:per:prop:ZE}
+For $E=E_\chi$ with $\cI=\cI(\Psi_\chi)$, $Z_E=\Mult(\cI)\subseteq F$.
+\end{proposition}
+\begin{proof}
+$2\pi i\in\ker E$, so $z=u+iv\in Z_E$ gives $E(2\pi iz)=1$, whose modulus $\exp_F(-2\pi v)$ forces
+$v=0$; for real $u$, preserving every $2\pi ia$ with $a\in\cI$ is $u\cI\subseteq\cI$.
+\end{proof}
+
+\begin{theorem}[The integer-part criterion]\label{trigonometry:per:thm:criterion}
+For an additive integer part $\cI$ of $F$ the following are equivalent:
+(i) $\Mult(\cI)$ is an integer part of $F$; (ii) $\Mult(\cI)=\cI$; (iii) $\cI$ is a subring.
+If $\cI=\cI(\Psi_\chi)$ and $F$ has a real exponential, they are also equivalent to (iv) $Z_{E_\chi}$
+is an integer part, and to (v) the binary kernel condition
+\begin{equation}\label{trigonometry:per:eq:binary}
+ \forall u,v\in F\qquad \bigl(E_\chi(2\pi iu)=E_\chi(2\pi iv)=1\bigr)\Longrightarrow E_\chi(2\pi iuv)=1 .
+\end{equation}
+If $F$ is initial in $\No$ ($F=\No$ or $\No(\lambda)$) and $Z_{E_\chi}$ is initial, these conditions
+hold if and only if $E_\chi$ is the canonical exponential $\Exp$ on $F[i]$.
+\end{theorem}
+\begin{proof}
+If (i), take $a\in\cI$ and a $\Mult(\cI)$-floor $m$ of $a$; $m\in\cI$ gives $a-m\in\cI\cap[0,1)=\{0\}$,
+so $\cI\subseteq\Mult(\cI)$, which is (ii). A ring equal to $\cI$ makes $\cI$ a ring. If $\cI$ is a ring,
+each of its elements preserves it, so $\Mult(\cI)=\cI$, an integer part by the floor property.
+(iv) is (i) by \cref{trigonometry:per:prop:ZE}, and (v) is (iii) written with $E_\chi$. If $F$ and
+$Z_{E_\chi}$ are initial and the conditions hold, the uniqueness of the initial integer part
+\cite[Lemma 11.1]{EK} gives $\cI=Z_{E_\chi}=\Oz\cap F$, and the kernel dictionary gives $\Psi_\chi=\Phi$.
+Conversely $\Exp$ has $\cI=\Oz\cap F$, an initial integer part equal to its multiplier ring.
+\end{proof}
+This is source~20's Lemma 5.1 and Theorem 5.2 and source~21's Propositions 7.1, 8.2 and equation
+(8.7); the printed proof is source~20's. In source~21's formulation: with
+$P_E=\{a\in F:E(2\pi ia)=1\}$, $Z_E$ is an integer part if and only if $P_E$ is closed under
+multiplication. \emph{The criterion is an exact reduction, not a classification of every multiplier
+ring, and not a substitute for independent analytic or geometric hypotheses implying its right-hand
+side}; merely assuming that side would restate the missing content rather than explain it.
+
+\begin{remark}[Ring defects of a linear phase; source 20]\label{trigonometry:per:rem:ringdefect}
+For a $\Q$-linear $A:\Pi_F\to\R$ and the split phase with coordinates $(A+\Z,0)$ the period group is
+$\cI_A=\{p-A(p)+n:p\in\Pi_F,\ n\in\Z\}$. For $d_p=p-A(p)$ and $d_q=q-A(q)$ the product has principal
+part $pq-A(p)q-A(q)p$ and constant part $A(p)A(q)$, so
+\[
+ d_pd_q\in\cI_A\iff A\bigl(pq-A(p)q-A(q)p\bigr)+A(p)A(q)\in\Z .
+\]
+This holds for merely $\Q$-linear $A$; the generally irrational numbers $A(p),A(q)$ must not be pulled
+through $A$.
+\end{remark}
+
+\begin{example}[A non-ring kernel whose multiplier ring is not initial; source 20]
+\label{trigonometry:per:ex:noninitial}
+Let $A_2(p)$ be half the real coefficient of $\omega^2$ in $p$, and take the phase of
+\cref{trigonometry:per:rem:ringdefect}. Then $\Psi(2\pi\omega)=1$ and $\Psi(2\pi\omega^2)=-1$, so
+$\cI_{A_2}\ni\omega$ but $\omega^2\notin\cI_{A_2}$: the kernel is not a ring. Multiplication by
+$\omega^3$ sends every element $p-A_2(p)+n$ to an element with no finite part and zero coefficient at
+$\omega^2$, which lies in $\cI_{A_2}$, so $\omega^3\in\Mult(\cI_{A_2})$ while $\omega^2\notin
+\cI_{A_2}\supseteq\Mult(\cI_{A_2})$. The ordinal $\omega^2$ is a sign prefix of $\omega^3$, so this
+multiplier ring is \emph{not initial}. Initiality cannot be tested from one infinite-angle example;
+the constructions below prevent every nonintegral multiplier.
+\end{example}
+
+\subsection{Minimal multiplier rings}\label{trigonometry:per:sec:minimal}
+\emph{Source 21's route: fix the ordinary character, perturb the infinitesimal one.} Fix an additive
+$\psi:\Pi_F\to\R/\Z$ and let $\bar\psi(p)\in[0,1)$ be the ordinary representative of $\psi(p)$ (not
+additive). The infinitesimal character $\cL$ is built linearly.
+
+\begin{lemma}[One extension step]\label{trigonometry:per:lem:onestep}
+Let $U\subseteq\Pi_F$ be a $\Q$-subspace, $\cL_U:U\to\mm_F$ linear, and $a\in F$ positive infinite.
+Suppose $p\in\Pi_F$ is such that $p$ and $y:=\pr\bigl(a(p-\bar\psi(p))\bigr)$ are linearly
+independent modulo $U$. Then $\cL_U$ extends to $U+\Q p+\Q y$ so that for \emph{every} later linear
+extension $\cL$ the phase $\Psi_{\psi,\cL}$ has a normalized period $b$ with $ab$ not a normalized
+period.
+\end{lemma}
+\begin{proof}
+Fix $0\ne\eps_*\in\mm_F$ ($F$ is non-Archimedean), let $b=p-\bar\psi(p)$ and $f=\fin(ab)$, and
+prescribe $\cL(p)=0$, $\cL(y)=\eps_*-(f-\st f)$, consistent by independence. For every later
+extension, $\Psi(2\pi b)=e^{2\pi i(\psi(p)-\bar\psi(p))}=1$, while $ab=y+f$ gives
+$\Psi(2\pi ab)=e^{2\pi i(\psi(y)+\st f)}\Ex(2\pi i\eps_*)$, whose infinitesimal angle $2\pi\eps_*$ is
+nonzero, so it is not $1$. Both conclusions depend only on the two prescribed values.
+\end{proof}
+
+\begin{lemma}[Disjoint blocks]\label{trigonometry:per:lem:blocks}
+If a $\Q$-vector space contains two-dimensional subspaces $(W_j)_{j\in J}$ whose sum is direct and
+$\dim_{\Q}U<|J|$, then some $W_j$ meets $U$ only in $0$.
+\end{lemma}
+\begin{proof}
+Otherwise nonzero $u_j\in W_j\cap U$ would be $|J|$ independent vectors of $U$.
+\end{proof}
+
+\begin{lemma}[Fresh pairs in a continuum-sized field]\label{trigonometry:per:lem:setpairs}
+Let $F$ be a non-Archimedean truncation-closed subfield of $\No$ containing $\R$ with
+$|F|=2^{\aleph_0}$, let $a\in F$ be positive infinite, and let $U\subseteq\Pi_F$ have
+$\dim_{\Q}U<2^{\aleph_0}$. Then some $p$ satisfies \cref{trigonometry:per:lem:onestep}.
+\end{lemma}
+\begin{proof}
+Truncation closure gives a positive infinite monomial $X\in F$. Put $Y=\pr(aX)$ and $P_a=\pr(a)$; if the
+leading $\omega$-exponents of $a$ and $X$ are $\alpha,\gamma>0$, that of $Y$ is $\alpha+\gamma$, above
+those of $P_a$ and $X$. For a $\Q$-basis $(r_j)_{j\in J}$ of $\R$, $|J|=2^{\aleph_0}$, put $p_j=r_jX$ and
+$y_j=\pr(a(p_j-\bar\psi(p_j)))=r_jY-\bar\psi(p_j)P_a$. In a finite relation
+$(\sum v_jr_j)Y-(\sum v_j\bar\psi(p_j))P_a+(\sum u_jr_j)X=0$ the leading exponent of $Y$ forces
+$\sum v_jr_j=0$, so all $v_j=0$, and then all $u_j=0$. Apply
+\cref{trigonometry:per:lem:blocks} to $W_j=\Q p_j+\Q y_j$.
+\end{proof}
+
+\begin{theorem}[Minimal multiplier ring on a continuum-sized field; source 21, ZFC]
+\label{trigonometry:per:thm:minimalset}
+Let $F$ be as in \cref{trigonometry:per:lem:setpairs}, with the finite phase. For every additive
+$\psi:\Pi_F\to\R/\Z$ there is a $\Q$-linear $\cL:\Pi_F\to\mm_F$ with
+$\Mult\bigl(\cI(\Psi_{\psi,\cL})\bigr)=\Z$. This applies to $F_{\Q}$ and to $\No(\eps_0)$.
+\end{theorem}
+\begin{proof}
+Let $\lambda_{\mathfrak c}$ be the initial ordinal of $2^{\aleph_0}$; enumerate $\Pi_F$ as
+$(u_\xi)_{\xi<\lambda_{\mathfrak c}}$ and the positive infinite elements of $F$ as
+$(a_\xi)_{\xi<\lambda_{\mathfrak c}}$, with repetitions allowed. Build increasing partial linear maps
+$\cL_\xi:U_\xi\to\mm_F$: at stage $\xi$ add $u_\xi$ with value $0$ if it is new (the domain then has
+dimension at most $\max(\aleph_0,|\xi|)<2^{\aleph_0}$), find a pair for $a_\xi$ by
+\cref{trigonometry:per:lem:setpairs}, extend by \cref{trigonometry:per:lem:onestep}; at limits take
+unions. The union $\cL$ is total. Every positive infinite $a$ has a period $b$ with $ab$ not a period;
+a negative infinite multiplier would give a positive one; a finite multiplier lies in
+$\cI\cap\OO_F=\Z$; and $\Z$ always multiplies $\cI$ into itself. Below $\lambda_{\mathfrak c}$ every
+stage has $|\xi|<2^{\aleph_0}$ even if $2^{\aleph_0}$ is singular: no regularity is needed.
+\end{proof}
+
+\begin{lemma}[Fresh pairs outside a set-sized domain]\label{trigonometry:per:lem:classpairs}
+Let $a>\R$ be surreal, $\psi:\Pi\to\R/\Z$ a class character, and $U\subseteq\Pi$ a set-sized
+subspace. Then a pair as in \cref{trigonometry:per:lem:onestep} exists.
+\end{lemma}
+\begin{proof}
+Let $\alpha>0$ be the leading exponent of $a$ and $\kappa>\max(|U|,\aleph_0)$ a set cardinal. The
+exponents $\gamma_\beta=1+\alpha/(4(\beta+1))$, $\beta<\kappa$ (ordinals read as surreals), are
+distinct and lie in $(1,1+\alpha/2)$. Put $p_\beta=\omega^{\gamma_\beta}$ and
+$y_\beta=\pr(a(p_\beta-\bar\psi(p_\beta)))$, whose leading exponent is $\alpha+\gamma_\beta$, since
+$a\bar\psi(p_\beta)$ has exponents at most $\alpha$. These leading exponents are distinct and exceed
+every $\gamma_{\beta'}$ and $\alpha$, so the blocks $\Q p_\beta+\Q y_\beta$ are in direct sum;
+\cref{trigonometry:per:lem:blocks} finishes.
+\end{proof}
+
+\begin{theorem}[Minimal multiplier ring on $\No$; source 21, GBC]\label{trigonometry:per:thm:minimalclass}
+In NBG with global choice, for every class character $\psi:\Pi\to\R/\Z$ there is a class-linear
+$\cL:\Pi\to\mm_{\R}$ with $\Mult\bigl(\cI(\Psi_{\psi,\cL})\bigr)=\Z$.
+\end{theorem}
+\begin{proof}
+Global choice gives set-like ordinal enumerations of $\Pi$ and of the positive infinite surreals. Run
+the recursion of \cref{trigonometry:per:thm:minimalset} along the ordinals with
+\cref{trigonometry:per:lem:classpairs}. Every partial domain is a set (finitely many vectors at a
+successor, a set of earlier stages at a limit); the choices of sets and set functions use the fixed
+global well-order, so this is set-valued transfinite recursion with a class parameter; no class-valued
+stage or class Hamel basis occurs. The finite and negative cases are as before.
+\end{proof}
+
+\begin{corollary}[Any defect together with the minimal ring; source 21]\label{trigonometry:per:cor:simultaneous}
+On the fields of \cref{trigonometry:per:thm:minimalset} (ZFC) and on $\No$ (GBC), every $\Q$-linear
+$d:\Pi_F\to\Zhat/\Z$ is the profinite defect of a phase with multiplier ring $\Z$; in particular
+$\pd_\Psi=0$ and $\Mult(\cI(\Psi))=\Z$ occur together. Throughout the construction the standard part
+$\st\Psi(2\pi(p+f))=e^{2\pi i(\psi(p)+\st f)}$ of the phase is fixed at every argument.
+\end{corollary}
+\begin{proof}
+Realize $d$ by $\psi$ (\cref{trigonometry:per:thm:realize}) and apply the minimal-multiplier theorem
+to that $\psi$; the defect does not depend on $\cL$ (\cref{trigonometry:per:lem:hdefect}), nor does the
+displayed standard part. Take $\psi=0$ for the last example.
+\end{proof}
+For $\psi=0$ the phase is $\cis\circ2\pi\mathfrak r_{\cL}$ with $\mathfrak r_{\cL}(p+f)=f+\cL(p)$, and
+its period group is the split group $\{p-\cL(p)+n\}$, whose divisible part is the whole graph of $-\cL$;
+yet no nonintegral scalar preserves it. Division-compatible periods are abundant while universal
+multiplicative symmetries are minimal.
+
+\emph{Source 20's route: prescribe a set-sized part of the ordinary character, keep $\cL=0$.} This
+route works on $\No$ and gives ordinary-circle values, which
+\cref{trigonometry:per:sec:reflection} needs.
+
+\begin{lemma}[Fresh ordinal monomial]\label{trigonometry:per:lem:fresh}
+Let $W\subseteq\Pi$ be a set-sized $\Q$-subspace and $x\in\No\setminus\Q$. There is an ordinal
+$\beta$ such that $\mu=\omega^\beta$ satisfies $\mu,x\mu\in\Pi$ with $q\mu+rx\mu\in W$
+($q,r\in\Q$) only for $q=r=0$.
+\end{lemma}
+\begin{proof}
+Let $S$ be the union of the supports of elements of $W$ and $G=\supp(x)\cup\{0\}$; the set
+$\{s-g:s\in S\cup\{0\},\ g\in G\}$ is bounded above by an ordinal $\beta$ (a set of birthdays has an
+ordinal bound). Then each $\beta+g$ (surreal addition) is positive and above all of $S$, so $\mu$ and
+$x\mu$ are purely infinite with all exponents above $S$. If $q\mu+rx\mu\in W$, uniqueness of normal
+forms makes both sides vanish, so $q+rx=0$, and $x\notin\Q$ gives $r=q=0$.
+\end{proof}
+No bound on the exponents of $x$ and no finiteness of its support is assumed; only that single supports
+and the union of the supports of a set are sets.
+
+\begin{theorem}[Relative minimal-multiplier extension; source 20, GBC]\label{trigonometry:per:thm:relative}
+Let $W_0\subseteq\Pi$ be a set-sized $\Q$-subspace and $\psi_0:W_0\to\R/\Z$ a homomorphism. There is a
+class homomorphism $\psi:\Pi\to\R/\Z$ extending $\psi_0$ such that the phase $\Psi=\Psi_{\psi,0}$ has,
+for every $x\in\No\setminus\Q$, a positive purely infinite monomial $\mu_x$ with
+\[
+ \Psi(2\pi\mu_x)=1,\qquad \Psi(2\pi x\mu_x)=-1 .
+\]
+Hence $\Mult(\cI(\Psi))=\Z$. Likewise, a $\Q$-linear $A_0:W_0\to\R$ extends to a $\Q$-linear
+$A:\Pi\to\R$ whose split phase (coordinates $(A+\Z,0)$) has $\Mult=\Z$ and period group
+$\{p-A(p)+n\}$.
+\end{theorem}
+\begin{proof}
+Fix a set-like global enumeration $(x_\alpha)_{\alpha\in\mathrm{On}}$ of $\No$ and build set-sized
+subspaces $W_\alpha$ with compatible characters $\psi_\alpha$. At stage $\alpha$ adjoin
+$\pr(x_\alpha)$ if new, with value $0$ on its rational line. If $x_\alpha\notin\Q$, apply
+\cref{trigonometry:per:lem:fresh} to obtain $\mu_\alpha$, adjoin the direct summand
+$\Q\mu_\alpha\oplus\Q x_\alpha\mu_\alpha$ and set
+$\psi(w+q\mu_\alpha+rx_\alpha\mu_\alpha)=\psi(w)+r/2+\Z$. At limits take unions (set many stages). The
+union is defined on all of $\Pi$ and keeps every stage assignment. If $x\notin\Q$ then $\mu_x\in\cI$
+and $x\mu_x\notin\cI$, so $\Mult(\cI)\subseteq\Q\cap\cI=\Z$. For the split variant run the same
+recursion with real values $A(\mu_\alpha)=0$, $A(x_\alpha\mu_\alpha)=1/2$; the phase at $2\pi(p+r+\eps)$
+is $e^{2\pi i(A(p)+r)}\Ex(2\pi i\eps)$, which is $1$ exactly when $\eps=0$ and $A(p)+r\in\Z$, and
+$p\mapsto p-A(p)$ is a section.
+\end{proof}
+The character on a new rational direction is specified on \emph{all} its rational multiples, and the
+whole prescribed $\psi_0$ is retained; this is decisive below. Source~20 states the first part as its
+Theorem 6.2 and the split variant as Theorem 6.4.
+
+\begin{theorem}[A nonsplit minimal example; source 20, GBC]\label{trigonometry:per:thm:nonsplit}
+There is a phase $\Psi_{\mathrm n}$ on $\No$ with ordinary-circle values, multiplier ring $\Z$, and
+nonsplit period sequence, satisfying
+\[
+ \Psi_{\mathrm n}(2\pi\omega)=1,\qquad\Psi_{\mathrm n}(2\pi\omega/2^k)=1,\qquad
+ \Psi_{\mathrm n}(2\pi\omega/3^k)=e^{2\pi i/3^k}\quad(k\ge1).
+\]
+\end{theorem}
+\begin{proof}
+Apply \cref{trigonometry:per:thm:relative} to $W_0=\Q\omega$ and $\psi_0(q\omega)=f_{\alpha_3}(q)$
+(\cref{trigonometry:per:ex:profinite}). A splitting would give, by
+\cref{trigonometry:per:thm:split}(5), a real additive lift of $f_{\alpha_3}$, which does not exist.
+\end{proof}
+\emph{Comparison of the routes.} Source~21's theorems keep $\psi$ fixed on all of $\Pi_F$, hence the
+profinite defect and the standard part of the phase at every argument, and hold in ZFC on
+$\No(\eps_0)$ and $F_{\Q}$; with \cref{trigonometry:per:cor:simultaneous} they also give split
+($d=0$) and nonsplit ($d\ne0$) minimal examples. Their phase values have nonzero infinitesimal
+angles, and nothing is claimed about their restriction to subfields. Source~20's theorem prescribes
+$\psi$ only on a set-sized subspace, changes it elsewhere, keeps every value in the ordinary circle, and
+excludes every nonrational multiplier, finite ones included, by an explicit witness; that is what makes
+the restriction and reflection of \cref{trigonometry:per:sec:reflection} work.
+
+\subsection{Surcomplex exponentials and the Ehrlich--Kaplan question}\label{trigonometry:per:sec:ek}
+\begin{theorem}[Initial kernel-multiplier ring $\Z$]\label{trigonometry:per:thm:robustness}
+\begin{enumerate}[label=(\alph*)]
+\item \emph{(Source 21, ZFC.)} There is an exponential $E$ on $\No(\eps_0)[i]$ with all properties of
+ \cref{trigonometry:per:prop:exponentials,trigonometry:per:prop:local} and $Z_E=\Z$. It can be chosen
+ with
+ \begin{equation}\label{trigonometry:per:eq:invisible}
+  \frac{E(z)}{\Exp(z)}\in\TT\bigl(\No(\eps_0)\bigr)\cap(1+\mm[i])\qquad\text{for every }z ,
+ \end{equation}
+ and with zero profinite defect.
+\item \emph{(Source 21, GBC.)} The same holds on $\No[i]$.
+\item \emph{(Source 20, GBC.)} On $\No[i]$, for every set-sized $W_0\subseteq\Pi$ and homomorphism
+ $\psi_0:W_0\to\R/\Z$, there is $E=E_\chi$ with ordinary-circle phase values, coordinates extending
+ $(\psi_0,0)$, and $Z_E=\Z$; examples of this kind with split and with nonsplit period sequence exist
+ (\cref{trigonometry:per:thm:relative,trigonometry:per:thm:nonsplit}).
+\end{enumerate}
+In every case $Z_E=\Z$ is an initial subring of the field but not an integer part.
+\end{theorem}
+\begin{proof}
+For (a) and (b) apply \cref{trigonometry:per:thm:minimalset} or \cref{trigonometry:per:thm:minimalclass}
+with $\psi=0$ and take $E=E_\chi$ for $\Psi_\chi=\Psi_{0,\cL}$. Then $Z_E=\Z$ by
+\cref{trigonometry:per:prop:ZE}; the canonical phase is $\Psi_{0,0}$ because $\Oz=\Pi\oplus\Z$, so
+$E(a+ib)/\Exp(a+ib)=\Ex\bigl(2\pi i\cL(\pr(b/2\pi))\bigr)$, of modulus one and standard part one; the
+defect vanishes by \cref{trigonometry:per:lem:hdefect}. Part (c) is
+\cref{trigonometry:per:thm:relative,trigonometry:per:thm:nonsplit} with
+\cref{trigonometry:per:prop:ZE}. Every proper sign prefix of an ordinary integer is an ordinary integer,
+so $\Z$ is initial; no ordinary integer lies in $[\omega-1,\omega]$, so it is not an integer part.
+\end{proof}
+This is source~21's Theorem 8.4 and source~20's Theorem 1.1(i) with Corollary 6.5. The obstruction is
+not a failure of the group law, of the finite-angle normalization, of the modulus or conjugation laws,
+or of differentiability: all are built in.
+
+\emph{What this answers.} Ehrlich and Kaplan ask, for an initial trigonometric-exponential subfield
+$K\subseteq\No$ and any exponential on $K[i]$ extending their strip map and satisfying the modulus law,
+under which conditions --- including initiality of $Z_E$ --- $Z_E$ is an integer part, equivalently
+the exponential is the canonical one \cite[\S11.1, first open question; arXiv v3, printed
+p.~34]{EK}. \Cref{trigonometry:per:thm:robustness} shows that initiality of $Z_E$ is \emph{not}
+sufficient, even together with the strip values, the modulus and conjugation laws, the local Taylor
+identities of every order, and agreement of the standard part of the phase at every argument; $Z_E$
+can be as small as possible. With \cref{trigonometry:per:thm:criterion} this identifies the missing
+algebraic content exactly: multiplicative closure of the normalized periods.
+
+\emph{What it does not answer.} It is a partial negative answer to that one sufficiency possibility.
+It does not classify the additional conditions that would suffice; it does not assert that Ehrlich and
+Kaplan conjectured initiality to be sufficient; and it does not touch their separate second question,
+on how different the exponentials induced by different initial embeddings of one
+trigonometric-exponential field can be, whether they are isomorphic, and whether they have the same
+first-order theory \cite[\S11.1, second open question]{EK}. The first-order separation of
+\cref{trigonometry:per:sec:reflection} is proved in the broader class of all exponentials with the
+strip and modulus properties, whose members need not arise from initial embeddings; it answers
+nothing about that second question. The robustness question therefore remains open, re-scoped to
+conditions beyond initiality.
+
+\begin{remark}[The strip map in the source]\label{trigonometry:per:rem:ekstrip}
+Source~21 observes that the strip map displayed on printed p.~33 of arXiv v3 of \cite{EK} is
+$E(x+iy)=(\exp x)(\sin y+i\cos y)$, with sine and cosine interchanged, whereas the global formula
+immediately after it uses $\cos b+i\sin b$; the former gives $E(0)=i$ and cannot literally be the
+asserted group isomorphism. We checked this against the arXiv v3 PDF for this merge. Throughout,
+``strip exponential'' means $\exp(x)(\cos y+i\sin y)$, as in \cref{trigonometry:thm:stripexp},
+consistent with the group law and the adjacent formula; no argument uses the typographical discrepancy.
+\end{remark}
+$E'=E$ here is the fine derivative of a function of $z$, not the Berarducci--Mantova derivation of
+the scalar field \cite{BM}. No claim is made that the noncanonical exponentials of
+\cref{trigonometry:per:thm:robustness}(a),(b) are isomorphic or nonisomorphic to each other as
+unrestricted exponential fields (source~21); their relation to the canonical one is settled by
+\cref{trigonometry:per:cor:combined} below.
+
+\subsection{Reflection to set-sized fields and first-order separation}
+\label{trigonometry:per:sec:reflection}
+This subsection is source~20's. Restricting a class exponential with $Z_E=\Z$ to a subfield need not
+keep $Z_E=\Z$: a nonintegral element might fail to be a multiplier only because of a witness outside
+the subfield. The witnesses of \cref{trigonometry:per:thm:relative} let one close the field under
+them, and ordinary-circle values let the map itself restrict.
+
+\begin{lemma}[Restriction to epsilon fragments]\label{trigonometry:per:lem:restriction}
+Let $\Psi=\Psi_{\psi,0}$ be a phase on $\No$ with ordinary-circle character values. For every epsilon
+number $\lambda$, $E_\chi$ maps $\No(\lambda)[i]$ onto $\No(\lambda)[i]^\times$ and is an exponential
+there with the properties of \cref{trigonometry:per:prop:exponentials}.
+\end{lemma}
+\begin{proof}
+For $x\in F=\No(\lambda)$, initiality and truncation closure put $\pr(x),\fin(x)$ in $F$;
+$e^{2\pi i\psi(p)}$ is an ordinary complex number; $\cis$ of a finite element of $F$ lies in $F[i]$ by
+trigonometric closure, and $\exp_{\No}$ preserves $F$ by exponential closure. Surjectivity follows as
+in \cref{trigonometry:per:prop:exponentials} from the real logarithm of $F$ and surjectivity of
+$\cis$ onto $\TT(F)$.
+\end{proof}
+
+\begin{theorem}[Unbounded set-sized reflection]\label{trigonometry:per:thm:reflection}
+Let $E_{\mathrm s}$ and $E_{\mathrm n}$ be the split and nonsplit examples of
+\cref{trigonometry:per:thm:relative,trigonometry:per:thm:nonsplit} (constructed in GBC), with witness
+maps $x\mapsto\mu^{\mathrm s}_x,\mu^{\mathrm n}_x$. For every ordinal $\alpha$ there is an epsilon
+number $\lambda>\alpha$ of cofinality $\omega$ such that on $F=\No(\lambda)$ both restrictions have
+$Z_E=\Z$, the first restricted period sequence splits, the second does not, and their period groups are
+not isomorphic.
+\end{theorem}
+\begin{proof}
+Take an epsilon number $\lambda_0>\max\{\alpha,\omega\}$; given $\lambda_n$, the set of witnesses
+$\mu^{\mathrm s}_x,\mu^{\mathrm n}_x$ for $x\in\No(\lambda_n)\setminus\Q$ (a set by replacement) has
+birthdays bounded by an ordinal; choose an epsilon number $\lambda_{n+1}>\lambda_n$ above that bound,
+and let $\lambda=\sup_n\lambda_n$, an epsilon number of cofinality $\omega$. For $x\in F\setminus\Q$
+both witnesses and their products with $x$ lie in $F$, so $x$ is not a multiplier in $F$; nonintegral
+rationals are excluded by $\cI\cap\OO_F=\Z$; the maps restrict by
+\cref{trigonometry:per:lem:restriction}. The split section $p\mapsto p-A(p)$ stays in $F$. For the
+nonsplit example, $\Q\omega\subseteq F$ and its displayed values persist, so an additive angle lift on
+$\Pi_F$ would restrict to a forbidden lift on $\Q\omega$. \Cref{trigonometry:per:thm:homz} gives
+nonisomorphism.
+\end{proof}
+\emph{Set-theoretic strength.} The reflection uses only arbitrarily large epsilon numbers and ordinal
+bounds for sets of birthdays; no large cardinal is hidden. Global choice organizes the construction on
+$\No$, and conservativity of GBC over ZFC for statements about sets means the resulting set-sized
+existence statements need no additional strength. The theorem gives unboundedly many suitable
+fragments, \emph{not} that every fragment works for a fixed constructed phase (closure under the
+witnesses was part of the proof), and no computable description of the least suitable $\lambda$.
+
+Consider the language of fields with one unary function symbol $E$, naming neither $i$, $\pi$, the real
+axis, the order, standard part, nor the normal-form projections, and the sentence
+\begin{equation}\label{trigonometry:per:eq:ringker}
+ \mathsf{RingKer}:\quad \exists\tau\Bigl[\tau\ne0\wedge E(\tau)=1\wedge\forall x\,\forall y\bigl(
+ (E(x)=1\wedge E(y)=1)\Rightarrow\exists w\,(xy=\tau w\wedge E(w)=1)\bigr)\Bigr].
+\end{equation}
+
+\begin{lemma}\label{trigonometry:per:lem:ringker}
+If an exponential field satisfies $\mathsf{RingKer}$ with witness $\tau$, then $\tau^{-1}\ker E$ is a
+unital subring contained in $Z_E$.
+\end{lemma}
+\begin{proof}
+$\tau^{-1}\ker E$ is additive and contains $1$. For $x,y\in\ker E$, $xy/\tau\in\ker E$, so
+$(x/\tau)(y/\tau)\in\tau^{-1}\ker E$ and $(x/\tau)y\in\ker E$.
+\end{proof}
+
+\begin{theorem}[First-order separation]\label{trigonometry:per:thm:firstorder}
+Let $F$ be $\No$ or $\No(\lambda)$ with $\Pi_F\ne0$. The canonical exponential satisfies
+$\mathsf{RingKer}$; every exponential as in \cref{trigonometry:per:prop:exponentials} with $Z_E=\Z$
+fails it. Consequently, on each field of \cref{trigonometry:per:thm:reflection} the canonical
+exponential field is not elementarily equivalent to either minimal example, even in the bare language of
+fields with $E$.
+\end{theorem}
+\begin{proof}
+For $\Exp$ take $\tau=2\pi i$: its kernel is $2\pi i(\Oz\cap F)$ and $\Oz\cap F$ is a ring. If $Z_E=\Z$
+and $\tau$ witnesses $\mathsf{RingKer}$, \cref{trigonometry:per:lem:ringker} gives a unital ring
+$\tau^{-1}\ker E\subseteq\Z$, hence equal to $\Z$, so $\ker E=\tau\Z$ is cyclic, contrary to
+\cref{trigonometry:per:thm:dictionary}.
+\end{proof}
+
+\begin{corollary}[Three structures; source 20]\label{trigonometry:per:cor:three}
+For arbitrarily large epsilon numbers $\lambda$ of countable cofinality, $\No(\lambda)[i]$ carries at
+least three pairwise nonisomorphic exponentials agreeing on the real exponential and on every
+finite-imaginary strip; $\mathsf{RingKer}$ separates the canonical one from the other two, and
+\cref{trigonometry:per:thm:homz} separates those two.
+\end{corollary}
+
+\begin{corollary}[Combining the sources; stated in neither]\label{trigonometry:per:cor:combined}
+In ZFC: (i) the exponential $E$ of \cref{trigonometry:per:thm:robustness}(a) on $\No(\eps_0)[i]$ fails
+$\mathsf{RingKer}$, so $(\No(\eps_0)[i],E)$ is not elementarily equivalent, in particular not
+isomorphic, to $(\No(\eps_0)[i],\Exp)$; (ii) $\No(\eps_0)[i]$ carries three pairwise nonisomorphic
+exponentials agreeing on the real exponential and every finite-imaginary strip: $\Exp$, one with $Z_E=\Z$
+and zero profinite defect, and one with $Z_E=\Z$ and nonzero profinite defect.
+\end{corollary}
+\begin{proof}
+(i) $\No(\eps_0)$ is initial with $\Pi_F\ne0$, and $Z_E=\Z$, so \cref{trigonometry:per:thm:firstorder}
+applies; its proof is elementary. (ii) By \cref{trigonometry:per:cor:simultaneous} on $\No(\eps_0)$ take
+$d=0$ and some $d\ne0$ (possible since $\dim_{\Q}\Zhat/\Z=2^{\aleph_0}$); both have $Z_E=\Z$, so both
+fail $\mathsf{RingKer}$; their period sequences split and do not split
+(\cref{trigonometry:per:thm:split}), so \cref{trigonometry:per:thm:homz} distinguishes their kernels, and
+an isomorphism of exponential fields restricts to an isomorphism of kernels.
+\end{proof}
+Part (i) settles source~21's non-claim only as far as comparison with the canonical exponential goes;
+whether distinct noncanonical examples of source~21 are isomorphic to one another remains open.
+
+\begin{corollary}[Definable integers and an omitted type; source 20]\label{trigonometry:per:cor:definable}
+In each set-sized example with $Z_E=\Z$, the parameter-free formula
+$\varphi_{\Z}(z):\ \forall y\,(E(y)=1\Rightarrow E(yz)=1)$ defines exactly the ordinary integers, with
+their inherited ring operations, and the exponential field is not countably saturated: the type
+$\{\varphi_{\Z}(x)\}\cup\{x\ne n\cdot1:n\in\Z\}$ is finitely satisfiable and omitted.
+\end{corollary}
+The failure of saturation concerns the exponential expansion, not the underlying field. By compactness
+an elementary extension realizes the type, and there the definable multiplier ring has elements beyond
+the numerals: $Z_E=\Z$ does not axiomatize standardness across the elementary class. $\mathsf{RingKer}$
+gives non-elementary-equivalence; the invariant $\Hom(\cI,\Z)$ gives nonisomorphism of the split and
+nonsplit examples but \emph{no} claim about their elementary equivalence, since existence of an
+external homomorphism to $\Z$ is not a first-order sentence of the exponential field.
+
+\subsection{Valued-field automorphisms act freely on phases}\label{trigonometry:per:sec:shifts}
+In Hahn notation $t^g=\omega^{-g}$ with well-ordered supports, let $[g]_0$ be the real coefficient of
+$\omega^0$ in the normal form of the exponent $g$; it is additive, also on infinite exponents, with
+$[1]_0=1$, and it is not a standard part of an infinite number. On $F_{\Q}$ it is the identity. For real
+$c$ put
+\begin{equation}\label{trigonometry:per:eq:shift}
+ \Sh_c(t^g)=t^g(1+ct)^{-[g]_0},\qquad \Sh_c\Bigl(\sum_g a_gt^g\Bigr)=\sum_g a_g\Sh_c(t^g),
+\end{equation}
+the powers of $1+ct$ being their binomial series.
+
+\begin{lemma}[Support control]\label{trigonometry:per:lem:shiftsupport}
+\Cref{trigonometry:per:eq:shift} is well defined on every Hahn series and every set-supported normal
+form, and it preserves strongly summable families.
+\end{lemma}
+\begin{proof}
+The new support lies in $S+\N$, which is well ordered; at a fixed exponent only finitely many
+$(g,n)\in S\times\N$ contribute, since infinitely many would give a decreasing sequence in $S$. For a
+strongly summable family apply this to the union of supports.
+\end{proof}
+
+\begin{theorem}[The shift family]\label{trigonometry:per:thm:shifts}
+The maps $\Sh_c$ are strongly $\R$-linear field automorphisms of $F_{\Q}$ and of $\No$ that fix every
+valuation and leading coefficient, with
+\[
+ \Sh_c\Sh_d=\Sh_{c+d},\qquad \Sh_c(t)=\frac{t}{1+ct},\qquad \Sh_c(\omega)=\omega+c .
+\]
+They preserve order, $\OO$, $\mm$, standard part and the finite phase:
+$\Sh_c(\cis f)=\cis(\Sh_cf)$ for finite $f$, with $\Sh_c(i)=i$.
+\end{theorem}
+\begin{proof}
+Additivity follows from \cref{trigonometry:per:lem:shiftsupport}; multiplicativity on monomials from
+additivity of $[\,\cdot\,]_0$, and in general by strong products. Each monomial image is the monomial
+times a unit of standard part one, so leading terms, order, $\OO$, $\mm$ and standard parts are kept.
+Strong substitution gives $\Sh_c\Sh_d(t^g)=t^g(1+ct)^{-[g]_0}(1+dt/(1+ct))^{-[g]_0}=t^g(1+(c+d)t)^{-[g]_0}$,
+identities among units $1+{}$infinitesimal, with no branch choice. The maps fix real coefficients and
+preserve the strong sums defining $\Ex$, hence the finite phase.
+\end{proof}
+These are the fixed-shift flows of \cite[Theorem 5.2]{Saut} with $\delta=1$, $\lambda=[\,\cdot\,]_0$
+(its $\ell$ of equation \texttt{saut:eq:ell}) and $\Sh_c=T_{-c}$ there; they are strong
+$1$-automorphisms in the sense of \cite[\S4]{KKS}. Source~21 (Theorem 9.2) credits both and re-proves
+them to keep the action theorem independent of any decomposition theory; source~20 (Theorem 11.1) proves
+them without either citation. They are \emph{not} asserted to preserve $\exp_{\No}$, Conway's omega map
+or surreal simplicity; ``value-preserving'' means $v(\Sh_cx)=v(x)$ in the fixed value-group copy, not
+that the automorphism fixes the surreals labelling it.
+
+The shifts act on phases by $(\Sh_c\cdot\Psi)(x)=\Sh_c\bigl(\Psi(\Sh_{-c}x)\bigr)$, which preserves the
+finite restriction.
+
+\begin{theorem}[Free action; source 21]\label{trigonometry:per:thm:free}
+On $F_{\Q}$ or $\No$, $\Sh_c\cdot\Psi=\Psi$ for a phase $\Psi$ implies $c=0$. The real translations act
+freely on phases and on their normalized period groups.
+\end{theorem}
+\begin{proof}
+Invariance means $\Sh_c(\Psi(x))=\Psi(\Sh_cx)$. At $x=2\pi\omega/n$, since $\Sh_c$ fixes reals,
+$\Sh_c x=x+2\pi c/n$, and taking standard parts gives $\st\Psi(x)=\st\Psi(x)\,e^{2\pi ic/n}$. The
+standard part is nonzero, so $c/n\in\Z$ for every $n$, whence $c=0$. The acted phase has period group
+$\Sh_c(\cI)$, and the kernel dictionary is injective.
+\end{proof}
+
+\begin{corollary}[Valued-field naturality fails]\label{trigonometry:per:cor:naturality}
+No phase on $F_{\Q}$ or on $\No$ is invariant under all strongly $\R$-linear valued-field
+automorphisms; no global phase can be singled out by an automorphism-invariant characterization using
+only that structure and the real coefficients.
+\end{corollary}
+
+\begin{remark}[Source 20's form]\label{trigonometry:per:rem:halfshift}
+Source~20 proves the case $c=1/2$ directly: equivariance under $\Sh_{1/2}$ would give
+$\Sh_{1/2}\bigl(\Psi(2\pi\omega)\bigr)=\Psi(2\pi\omega+\pi)=-\Psi(2\pi\omega)$, and since $\Sh_{1/2}$
+fixes standard parts of finite elements, $\st\Psi(2\pi\omega)=-\st\Psi(2\pi\omega)$, impossible for a
+unit. The finite phase itself commutes with every $\Sh_c$;
+the conflict arises only in extending it to infinite arguments. The obstruction concerns the
+\emph{weaker} valued-field data. It does not contradict the canonical construction: initiality,
+truncation and the monomial section are additional structure, and $\Sh_{1/2}$ moves the monomial
+$\omega$ to $\omega+1/2$. Nor is a failure of invariance under exponential-field automorphisms
+asserted; that is a strictly stronger preservation requirement which the present witnesses do not
+satisfy in general.
+\end{remark}
+
+\emph{The orbit of the canonical phase.} Let $\Phi_c=\Sh_c\cdot\Phi$ on $F_{\Q}$ or $\No$ (on $F_{\Q}$,
+$\Phi$ means $\cis\circ\fin$). Its period group $\Sh_c(\Pi_F\oplus\Z)$ is an integer-part ring with
+zero profinite defect, the groups are distinct for distinct $c$, and the retraction is
+$\Sh_c\circ\fin\circ\Sh_{-c}$.
+
+\begin{proposition}[The standard-part shadow; source 21]\label{trigonometry:per:prop:shadow}
+For a normal form $x=\sum_\alpha a_\alpha\omega^\alpha$ in $F_{\Q}$ or $\No$,
+\[
+ \st\Phi_c(2\pi x)=\exp\Bigl(2\pi i\sum_{n\in\N}a_n(-c)^n\Bigr),
+\]
+a finite sum.
+\end{proposition}
+\begin{proof}
+The coefficient of $t^0$ in $\Sh_{-c}(x)$ comes only from terms $t^{-n}=\omega^n$ with $n\in\N$, since
+the binomial corrections raise $t$-exponents by nonnegative integers; $\Sh_{-c}(t^{-n})=t^{-n}(1-ct)^n$
+contributes $(-c)^n$. A reverse well-ordered support contains only finitely many nonnegative
+integers. Applying $\Sh_c$ after the finite phase does not change the standard part.
+\end{proof}
+Translating the canonical phase changes its ordinary shadow while keeping a ring kernel; the avoidance
+construction of \cref{trigonometry:per:thm:robustness}(a),(b) keeps the shadow while destroying every
+nonintegral multiplier.
+
+\subsection{What each test detects}\label{trigonometry:per:sec:tests}
+\begin{center}\small
+\begin{tabular}{L{0.26\textwidth}L{0.30\textwidth}L{0.34\textwidth}}
+\toprule
+Test (source 21) & Detects & Does not force\\
+\midrule
+Finite values and local Taylor identities & The canonical germ on every infinitesimal neighbourhood & The global phase or its period ring\\
+Standard part of the phase at every input & The ordinary character $\psi$ & The infinitesimal character $\cL$ or the multiplier ring\\
+Rational-division residues & The profinite defect and $\cI^{\mathrm{div}}$ & Multiplicative closure of periods\\
+Closure of normalized periods under products & $\Mult(\cI)=\cI$ & Initiality of this integer part\\
+Initiality of the multiplier ring alone & A simplicity-closed discrete subring & The integer-part property\\
+Invariance under all valued translations & Impossible for every phase & Nothing against extra simplicity structure\\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{center}\small
+\begin{tabular}{L{0.30\textwidth}L{0.17\textwidth}L{0.17\textwidth}L{0.19\textwidth}}
+\toprule
+Invariant (source 20; $F$ reflected) & Canonical & Minimal split & Minimal nonsplit\\
+\midrule
+$Z_E$ & $\Oz\cap F$ & $\Z$ & $\Z$\\
+Normalized kernel a ring & yes & no & no\\
+Period sequence splits & yes & yes & no\\
+$\Hom(\cI,\Z)$ & $\Z$ & $\Z$ & $0$\\
+$\mathsf{RingKer}$ & true & false & false\\
+Finite-angle agreement; $E'=E$ & yes & yes & yes\\
+\bottomrule
+\end{tabular}
+\end{center}
+The second table does not equate the first-order theories of the two minimal examples; that is not
+proved. Three kinds of splitting must not be conflated (source 20): the domain always splits as
+$F=\Pi_F\oplus\OO_F$; the circle always splits as $\TT(F)\cong\TT(\R)\times\mm_F$; neither makes the
+period sequence split, and a profinite character sits exactly between them. Conversely a split kernel
+need not be a ring: the minimal split example is additively isomorphic to the canonical kernel, yet its
+multiplier ring is $\Z$; ring closure depends on the embedding, not on the abstract group. Two
+failures are logically independent (source 21): \cref{trigonometry:per:ex:profinite} has nonzero
+defect and no ring closure; \cref{trigonometry:per:thm:robustness}(a),(b) has zero defect and no ring
+closure; the canonical orbit has zero defect and ring kernels. ``All periods split into a divisible
+part plus integers'' does not imply ``the periods form a ring.''
+
+On $F_{\Q}$ a reduced period group embeds in $\Zhat$ by its residue map, so distinct periods are
+separated by congruences: the classical ``Leibnizian'' phenomenon for $\Z$-groups
+\cite[Theorem 3.3]{Jerabek}, not a new theory of Presburger arithmetic. Nothing is claimed about
+tameness, decidability, o-minimality or elementary equivalence of the phase expansion with the ordinary
+complex exponential field. The avoidance constructions are existence arguments using linear choices;
+they give no finite names, computable coefficient oracles, algorithms for the phases, or effective
+recognition of periods, and finitely many rational divisions cannot determine an element of $\Zhat$.
+
+\subsection{Checks, formal status, and remaining questions}\label{trigonometry:per:sec:questions}
+Source~20's script (\texttt{code/20-exponential-kernels-verify.py}) passed $47{,}939$ exact finite
+checks: compatible CRT residues and additivity of $f_{\alpha_3}$, finite portions of the $2$- and
+$3$-power root towers, coefficient identities for $\Sh_a\Sh_b=\Sh_{a+b}$ through a fixed order, and
+finite Laurent-polynomial instances of \cref{trigonometry:per:lem:fresh} including a pair of periods
+whose product is not a period. Source~21's script (\texttt{code/21-period-arithmetic-verify\_examples.py})
+passed checks on $128$ CRT moduli, $645$ residue-compatibility pairs, $58{,}081$ additivity pairs of
+$f_{\alpha_2}$, $15$ displayed example assertions, $1{,}575$ translation-composition coefficients,
+$24$ one-step multiplier witnesses and $20$ shadow checks. All arithmetic is exact. \emph{These checks
+do not establish the transfinite recursions, arbitrary surreal supports, the reflection theorem, the
+abstract vector-space sections or novelty.}
+
+Neither source was verified in Lean, and neither built or modified the repository. Both propose a
+formalization order --- the kernel dictionary over an ordered field with a surjective phase of kernel
+$\Z$; $\Mult$ and the criterion; the splitting, the CRT characters and $\Zhat/\Z$ as abstract groups;
+the one-step or fresh-support lemma with an explicit set-sized parameter; then the set-sized recursion,
+with the class statements in a universe-relative form --- and identify the delicate obligations: support
+control for \cref{trigonometry:per:eq:shift}, compatibility of residues, and the cardinal bookkeeping of
+the recursion. These are proposed architectures, not existing declarations.
+
+\emph{Remaining questions}, as the sources state them: which discrete subrings occur as $Z_E$ on a fixed
+initial field, and which rings between $\Z$ and an additive integer part occur for a fixed ordinary
+character and profinite defect (sources 20, 21; source 21 realizes $\Z$ for every defect and exhibits
+maximal rings on the canonical orbit, and classifies no intermediate ring); whether an independent
+compatibility with simplicity, truncation or multiplication forces the normalized periods to be a ring
+(source 21); whether the split and nonsplit minimal examples can have the same first-order theory
+(source 20); which definability requirements in a specified expansion exclude the diagonal
+constructions without naming the canonical projection (source 20); the orbits of phases under the full
+valued automorphism group, which the free action does not classify (source 21); and the isomorphism
+types of the resulting exponential fields when no base structure is fixed (source 21; the comparison
+with the canonical exponential is \cref{trigonometry:per:cor:combined}). The second Ehrlich--Kaplan
+question is untouched.
+
 \section{Conclusions and dependency audit}\label{trigonometry:sec:conclusion}
 
 \subsection{What the theory establishes}
@@ -3697,6 +4880,17 @@ infinitesimal rotations is one real line; algebraic endomorphisms and weights ar
 while fine-continuous nonalgebraic symmetries exist; and the fine, standard-part and semialgebraic
 geometries of the same circle answer different questions and must not be interchanged.
 
+The periods of the global extensions have an arithmetic of their own (\cref{trigonometry:per:sec:main}).
+Normalized period groups are exactly the additive integer parts; their rational-division residues form a
+profinite defect, which can be prescribed arbitrarily and vanishes exactly when a linear finite-part
+choice suffices; on $\No$ divisible periods are cofinal, on $\R((t^{\Q}))$ they can be absent. Neither
+abundance of divisible periods nor perfect local exponential behaviour forces multiplicative closure:
+the kernel-multiplier ring can be the initial ring $\Z$, so initiality alone does not select the
+Ehrlich--Kaplan exponential, while closure of the normalized periods under products, together with
+initiality, does. The
+canonical choice therefore depends on global structure beyond the local identities and beyond
+valued-field symmetry, which acts freely on all phases.
+
 \subsection{A dependency audit}
 \begin{center}
 \small
@@ -3720,6 +4914,9 @@ Coherence obstructions & Ring (R1) only; normal-form uniqueness and one well-ord
 Rotation group: isometries, torsion, dihedral subgroups, invariants & Polarization, the splitting of \cref{trigonometry:thm:polar}, ordinary roots of unity, one-variable Laurent independence\\
 Norm-one torus, Lie algebra, representations & Finite algebra over a real closed field, dual numbers, Laurent coactions; the torus language of \cite{Milne}\\
 Fine, standard-part and semialgebraic circle & The lower-bound cut, open infinitesimal subgroups, the chord comparison; $\pi_1^{\mathrm{sa}}\cong\Z$ imported from \cite{DK,BaroOtero}\\
+Period arithmetic: dictionary, defect, splitting & \Cref{trigonometry:thm:characters}, floors, profinite residues; classical $\Z$-group facts \cite{Jerabek}; a set-sized linear section\\
+Minimal multiplier rings, reflection & Two-vector avoidance or fresh ordinal monomials; ZFC recursion on a continuum-sized field, or GBC recursion on $\No$ with conservativity; initial integer parts \cite[Lemma 11.1]{EK}\\
+Free action of translations & The fixed-shift flows of \cite[Theorem 5.2]{Saut}, support control, standard parts\\
 \bottomrule
 \end{longtable}
 \end{center}
@@ -3752,6 +4949,13 @@ symbolic experiments, and no proof-assistant verification is claimed. The same h
 19's checks: they cannot check the surreal normal-form theorem, a class-sized topology, Neumann
 summability for arbitrary supports, or the universal quantifiers of the structure theorem, and no Lean
 compilation or independent kernel verification of that manuscript was performed.
+
+Sources 20 and 21 carried standard-library Python scripts with exact rational arithmetic; their scope
+and counts ($47{,}939$ checks, and $128$ moduli, $645$ compatibility pairs, $58{,}081$ additivity pairs,
+$1{,}575$ translation coefficients, $24$ witnesses and $20$ shadow checks, respectively) are stated in
+\cref{trigonometry:per:sec:questions}. They test CRT residues, root towers, shift coefficients and
+finite instances of the avoidance step, not the transfinite recursions, the reflection theorem or
+arbitrary supports; no Lean proof of either manuscript was built.
 
 \subsection{What is not proved}\label{trigonometry:sec:notproved}
 The following non-claims are made in the body of the article and are collected here. They are
@@ -3838,8 +5042,10 @@ specific to individual results and are not pooled into a single blanket disclaim
  analyticity without asserting uniqueness from a differential equation.
 \item \emph{(\cref{trigonometry:thm:characters}.)} The classification concerns group homomorphisms
  with the specified finite restriction; it is not a classification of all solutions of a
- differential equation, and it does not answer the separate robustness questions formulated in
- \cite[\S11]{EK} for more general initial fields and their integer parts. It does not follow that
+ differential equation, and by itself it does not answer the separate robustness questions
+ formulated in \cite[\S11]{EK} for more general initial fields and their integer parts
+ (\cref{trigonometry:per:sec:ek} records what sources 20 and 21 add, and what stays open). It does not
+ follow that
  defining a full-plane convention is impossible: the trivial-character convention is perfectly
  explicit. What fails is uniqueness from the stated analytic and algebraic axioms.
 \item \emph{(\cref{trigonometry:thm:allscale}, \cref{trigonometry:thm:infinitefrequency}.)} Both
@@ -3909,7 +5115,8 @@ specific to individual results and are not pooled into a single blanket disclaim
  \item No representation of arbitrary surreal class elements by finite strings is asserted, and
   equality of effective Hahn-series names is not claimed decidable.
  \item Source 19 claims no novel construction of global surreal sine, no resolution of an
-  Ehrlich--Kaplan robustness question, no classification of all abstract automorphisms, no Haar or
+  Ehrlich--Kaplan robustness question (sources 20 and 21 later answer one part of the first one
+  negatively, \cref{trigonometry:per:sec:ek}), no classification of all abstract automorphisms, no Haar or
   Fourier theory on the full class group, and no global mean-value or initial-value theorem for fine
   differentiable functions; it does not assume that an infinitesimal Taylor sum is a fine limit. Its
   repository search covered the root and documentation overviews and the opening of this article, and
@@ -3917,13 +5124,69 @@ specific to individual results and are not pooled into a single blanket disclaim
   presuppose verification of the rest of this report, whose component manuscripts are unrefereed
   AI-assisted drafts.
  \end{enumerate}
+\item \emph{(\cref{trigonometry:per:sec:main}, sources 20 and 21.)} The following non-claims are those
+ of sources 20 and 21, each also stated at its point of use; the source is named when only one makes it.
+ \begin{enumerate}[label=(\alph*),itemsep=0.2em]
+ \item \Cref{trigonometry:per:thm:robustness} is a partial negative answer to one sufficiency
+  possibility in the first question of \cite[\S11.1]{EK}; it does not classify additional axioms that
+  would suffice, does not assert that Ehrlich and Kaplan conjectured initiality to be sufficient, and
+  does not answer their second question on exponentials from different initial embeddings (both). The
+  first-order separation is proved in the broader class of all exponentials with the strip and modulus
+  properties (source 20).
+ \item Finite-angle uniformization, the canonical phase, the character classification
+  \cref{trigonometry:thm:characters}, unavoidable infinite periods \cref{trigonometry:thm:infiniteperiods}
+  and the local law are prerequisites from this article, not new; the canonical integer-part
+  exponential is published \cite[Proposition 11.2, Theorem 11.1]{EK}; not every elementary lemma is
+  claimed new (both).
+ \item The residue map, the maximal divisible subgroup and the splitting and homomorphism facts are
+  classical $\Z$-group theory \cite{Jerabek}; the Leibnizian phenomenon is not a new theory of
+  Presburger arithmetic (source 21; source 20 does not cite this literature).
+ \item The shift automorphisms are a prior type of construction \cite[Theorem 5.2]{Saut},
+  \cite[\S4]{KKS}, re-proved; they are not asserted to preserve $\exp_{\No}$, Conway's omega map or
+  simplicity; ``value-preserving'' refers to the fixed value-group copy; the naturality obstruction
+  concerns only the weaker valued-field data, is compatible with the Ehrlich--Kaplan construction, and
+  no failure of invariance under exponential-field automorphisms is asserted (both).
+ \item The integer-part criterion is an exact reduction, not a classification of every multiplier ring
+  and not a substitute for independent hypotheses implying multiplicative closure; intermediate
+  multiplier rings are not classified; the free action does not classify orbits under the full valued
+  automorphism group (both).
+ \item No claim is made that distinct noncanonical exponentials of source 21 are isomorphic or
+  nonisomorphic to one another (source 21); their non-isomorphism with the canonical one is the merge's
+  \cref{trigonometry:per:cor:combined}. The split and nonsplit minimal examples are nonisomorphic, with
+  no claim that their first-order theories differ (source 20).
+ \item Reflection gives unboundedly many suitable fragments $\No(\lambda)$, not every fragment for a
+  fixed phase, and no computable least $\lambda$; no large-cardinal strength is hidden, the set-sized
+  consequences resting on conservativity of global choice (source 20).
+ \item The failure of countable saturation concerns the exponential expansion; $Z_E=\Z$ does not
+  axiomatize standardness across the elementary class (source 20). Nothing is claimed about tameness,
+  decidability, o-minimality or elementary equivalence of the phase expansion with the complex
+  exponential field; no finite names, computable oracles or effective recognition of periods
+  (source 21).
+ \item $E'=E$ is the fine derivative, not the Berarducci--Mantova derivation; the local law is
+  inherited, not a new uniqueness theorem; strong sums, including those in the cofinal-period theorem,
+  are not asserted to be fine limits of partial sums (both).
+ \item $\No(\eps_0)$ is not asserted to be a full Hahn field; $\Zhat/\Z$ is an abstract group, not a
+  topological quotient; the counts on $\R((t^{\Q}))$ are counts of embedded period groups, not of
+  abstract isomorphism types, and use no continuum hypothesis; the explicit profinite examples
+  establish neither a minimal multiplier ring nor reducedness (source 21).
+ \item Both are AI-assisted, unrefereed drafts, not Lean-verified; neither modified or built the
+  repository; their proposed Lean routes are architectures, not existing declarations; their finite
+  checks ($47{,}939$ and the counts of \cref{trigonometry:per:sec:questions}) test examples and finite
+  identities only, not transfinite recursions, arbitrary supports, reflection or novelty. Novelty is
+  provisional and rests on targeted audits (source 20: the root and documentation READMEs, this
+  report's guide and its Section 17, and targeted searches; source 21: the repository tree, root and
+  documentation READMEs, this report and the automorphism report's guide); failure to find a prior
+  statement is not proof of priority.
+ \end{enumerate}
 \item \emph{(Global.)} No proper-class sum, no arbitrary infinite polygon, no full-class Riemann
  integral, no ordinary sequential Fourier convergence theorem, and no uniqueness theorem for all
  fine-analytic differential equations is asserted anywhere. The three supplied manuscripts are
  identified as unpublished supplied documents, not as published literature. The literature search
  behind this report was targeted rather than exhaustive: a proof of an analogue is not, by itself,
  evidence that its exact formulation is absent from all previous literature, and no priority claim
- and no claim to have resolved a named published conjecture is made.
+ and no claim to have resolved a named published conjecture is made; the partial answer of
+ \cref{trigonometry:per:sec:ek} refutes one sufficiency possibility and leaves the Ehrlich--Kaplan
+ questions open.
 \end{enumerate}
 
 \appendix
@@ -3953,7 +5216,8 @@ For $z=x+iy$ with finite $x$ and arbitrary $y\in\No$,
 \]
 For infinite real $x$, circular sine and cosine require an explicitly selected extension; the
 lowercase finite-angle notation alone does not specify their values, and every such extension has
-an infinite period.
+an infinite period --- on $\No$, cofinally many rationally divisible ones
+(\cref{trigonometry:per:thm:cofinal}).
 
 \section{Worked formal series}\label{trigonometry:app:series}
 All of the following are strongly summable for infinitesimal $h$ or $\tau$, with the indicated
@@ -4003,6 +5267,9 @@ $\HInt$ & Coefficientwise Hahn integral over the ring (R1), with analytic endpoi
 $\SO(2,\No)$, $\Rot(a,b)$ & The rotation group and its matrix $\left(\begin{smallmatrix}a&-b\\ b&a\end{smallmatrix}\right)$, $a^2+b^2=1$ (\cref{trigonometry:rot:sec:main}).\\[0.25em]
 $\ellm$, $\Tm$ & Infinitesimal angle $-i\Logm(u/\st u)$ of a unit; the identity monad $\{u:\st u=1\}\cong(\mm_{\R},+)$.\\[0.25em]
 $\mathsf J$, $\mathsf c$, $\Xi_a$, $\mathcal S_\rho$ & Generator of $\mathfrak{so}(2)$; complex conjugation as a reflection; the rescaling automorphism \cref{trigonometry:rot:eq:nonalgauto}; the circle of radius $\rho$.\\[0.25em]
+$\cI$, $\cI^{\mathrm{div}}$, $\Mult$, $Z_E$ & Normalized period group $\{a:\Psi(2\pi a)=1\}$ of a phase, its maximal divisible subgroup, the multiplier ring, and the kernel-multiplier ring of an exponential (\cref{trigonometry:per:sec:main}).\\[0.25em]
+$(\psi,\cL)$, $\pd_\Psi$, $\Zhat$ & Ordinary and infinitesimal coordinates of a character; the profinite defect $\Pi\to\Zhat/\Z$; the profinite integers.\\[0.25em]
+$\Sh_c$, $[g]_0$, $F_{\Q}$ & Strong shift automorphism with $\Sh_c(\omega)=\omega+c$; the real coefficient of $\omega^0$ in an exponent; the Hahn field $\R((t^{\Q}))$.\\[0.25em]
 $\Z$, $n,N,M$ & Ordinary integers and ordinary finite degrees or sample sizes, never an unspecified class of ``surreal integers.''\\
 \bottomrule
 \end{longtable}
@@ -4068,7 +5335,9 @@ Philip Ehrlich and Elliot Kaplan, ``Surreal ordered exponential fields,''
 \href{https://doi.org/10.1017/jsl.2021.59}{doi:10.1017/jsl.2021.59};
 \href{https://arxiv.org/abs/2002.07739}{arXiv:2002.07739}.
 In particular \S11: canonical trigonometric functions from an initial integer part, and canonical
-surcomplex exponentiation. The paper credits an earlier idea of using $\Oz$ for trigonometric
+surcomplex exponentiation; its two open questions on robustness are in \S11.1, on printed p.~34 of
+arXiv v3 (June 22, 2021), whose page and section numbers are those cited in
+\cref{trigonometry:per:sec:main}. The paper credits an earlier idea of using $\Oz$ for trigonometric
 functions to Martin Kruskal.
 
 \bibitem{Neumann}
@@ -4142,6 +5411,24 @@ El\'ias Baro and Margarita Otero, ``Locally definable homotopy,''
 \href{https://arxiv.org/abs/0812.2112}{arXiv:0812.2112} (2008), especially Corollary 6.7 on
 comparison with classical homotopy. With \cite{DK}, the source of the imported
 \cref{trigonometry:rot:eq:sapi}.
+
+\bibitem{Jerabek}
+Emil Je\v{r}\'abek, ``Rigid models of Presburger arithmetic,''
+\emph{Mathematical Logic Quarterly} \textbf{65} (2019), no.~1, 108--115.
+\href{https://doi.org/10.1002/malq.201800019}{doi:10.1002/malq.201800019};
+\href{https://arxiv.org/abs/1803.05797}{arXiv:1803.05797}. Residue maps into $\Zhat$, maximal divisible
+subgroups and Leibnizian $\Z$-groups (\S\S2--4), cited by source 21.
+
+\bibitem{KKS}
+Elliot Kaplan, Lothar Sebastian Krapp and Michele Serra, ``Decomposing the automorphism group of the
+surreal numbers,'' preprint, \href{https://arxiv.org/abs/2509.22374v3}{arXiv:2509.22374v3}
+(April 23, 2026). Class conventions and strongly linear automorphisms (\S4).
+
+\bibitem{Saut}
+\emph{Automorphisms of the Surcomplex Numbers: Real Forms, Hahn Symmetries, Valuation, and Rigidity}.
+Report of this collection, \texttt{docs/surcomplex/surcomplex-field-automorphisms/}; Theorem 5.2
+(label \texttt{saut:thm:shiftflow}) is the fixed-shift flow used in \cref{trigonometry:per:sec:shifts}.
+Unrefereed.
 
 \end{thebibliography}\endgroup
 \end{document}
