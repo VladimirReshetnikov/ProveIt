@@ -73,7 +73,9 @@ real-valuedness is equivalent to conjugate symmetry. Every native Laurent
 polynomial now has an exact local angular strong series, even with infinite
 coefficients. Its native series order equals the cleared polynomial root
 multiplicity, so the `2N` bound also counts actual angular multiplicities.
-The global strip exponential and the sine-family sharpness witness remain
+For every positive ordinary `n`, `sin(nθ)` attains the bound: its roots
+have exactly the `2n` classes represented by `jπ/n`, all with angular order
+one. The global strip exponential and its root-class correspondence remain
 pending.
 
 The first modules establish size obstructions and reusable finite algebra.

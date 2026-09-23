@@ -531,3 +531,5 @@ import Surreal.Algebra.LaurentCoordinateMultiplicity
 import Surreal.Surcomplex.StrongSeriesFinite
 import Surreal.Surcomplex.AngularLaurentSeries
 import Surreal.Surcomplex.AngularLaurentEvaluation
+import Surreal.Surcomplex.SineLaurentPolynomial
+import Surreal.Surcomplex.SineRootCountSharpness
