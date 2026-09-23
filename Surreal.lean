@@ -252,6 +252,12 @@ import Surreal.Surcomplex.TriangleFromSides
 import Surreal.Surcomplex.TriangleCongruence
 import Surreal.Surcomplex.TriangleFromAngles
 import Surreal.Surcomplex.TriangleSimilarity
+import Surreal.Surcomplex.TriangleSASASA
+import Surreal.Algebra.LineDistance
+import Surreal.Surcomplex.TriangleHeron
+import Surreal.Surcomplex.TriangleBisector
+import Surreal.Surcomplex.TriangleIncenter
+import Surreal.Surcomplex.TriangleIncenterUniqueness
 import Surreal.Surcomplex.TrigonometricFineDerivative
 import Surreal.Surcomplex.TrigonometricOrder
 import Surreal.Surcomplex.TrigonometricLeading

@@ -468,6 +468,13 @@ inverse cosine, and equal side data gives an affine isometry preserving
 actual surreal distances. Positive finite angles summing to pi and any
 positive surreal scale also determine a triangle. Equal angles give an
 actual affine similarity; one specified positive side fixes the scale.
+The SAS and ASA constructions also have existence and congruence theorems.
+Heron's formula gives the positive half-angle square-root identities.
+The side-weighted incenter has a unique perpendicular contact with each
+side line, strictly inside the side segment, at radius equal to area
+divided by semiperimeter. It is the unique interior equidistant center.
+The internal bisector divides its opposite side in the prescribed ratio,
+has length `2bc*cos(alpha/2)/(b+c)`, and makes two actual equal half-angles.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual
