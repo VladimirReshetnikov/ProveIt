@@ -452,3 +452,13 @@ import Surreal.HahnSeries.MomentCriterion
 import Surreal.HahnSeries.HerglotzScalar
 import Surreal.HahnSeries.GradedQuadraticForms
 import Surreal.HahnSeries.DiagonalResolvent
+import Surreal.HahnSeries.CoefficientwisePositivity
+import Surreal.HahnSeries.NegativeAtomMeasure
+import Surreal.HahnSeries.PronyWeight
+import Surreal.HahnSeries.MarkovResidueShadow
+import Surreal.HahnSeries.WickTail
+import Surreal.HahnSeries.ExpandingMultipliers
+import Surreal.HahnSeries.AlgebraicCoefficientClosure
+import Surreal.HahnSeries.TateDiscriminant
+import Surreal.HahnSeries.CofinalityCriterion
+import Surreal.HahnSeries.DefectRigidity

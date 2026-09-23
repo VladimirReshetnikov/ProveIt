@@ -73,10 +73,11 @@ the form, `Uⁿ 1 = ζⁿ` for `n ∈ ℤ`, the vector `1` is cyclic, `⟨ζʲ, 
 Pending. The five classes `P, M, D, A, H` are not defined here, and the inclusions `P ⊂ M`
 (`herg:prop:measuretoeplitz`), `M ⊂ D`, `D ⊂ A` and the analytic part of `A ⊂ H` (finiteness of
 `cₙ` in `K_Γ`, vanishing of the negative-exponent coefficients, the classical
-Carathéodory–Toeplitz and Herglotz theorems for `H_0`, and transfer to the halo by
-`herg:lem:scalar`) remain pending. Of the strictness claims, the following remain pending: that
-the `M \ P` witness has no positive coefficientwise measure (uniqueness in
-`herg:thm:negativeatom`); that the `D \ M` coefficient distribution is `-δ₀''` of exact order
+Carathéodory–Toeplitz and Herglotz theorems for `H_0`, and transfer to the halo) remain pending
+here; `herg:lem:scalar` is proved in `Surreal/HahnSeries/HerglotzScalar.lean`. That the `M \ P`
+witness has no positive coefficientwise measure (uniqueness in `herg:thm:negativeatom`) is
+proved in `Surreal/HahnSeries/NegativeAtomMeasure.lean`. Of the other strictness claims, the
+following remain pending: that the `D \ M` coefficient distribution is `-δ₀''` of exact order
 two, and the `n^{2m}` generalization; that the `A \ D` witness has no periodic distribution (the
 necessity half of `herg:thm:representation`); and halo positivity of the `H \ A` witness as a
 coherent function (halos and coherent evaluation are not defined here; only the rational
@@ -86,8 +87,9 @@ hypothesis `Re f ≥ 0` on ordinary points and on the halo is established only i
 `re_harnackWitness_pos` for the rational evaluation in `F[i]`, not for `f` as a coherent
 function. For `herg:cor:unitary`, the
 identification of the Haar integral with the constant coefficient is used as the definition of
-`∫ G dm` on trigonometric polynomials (Fourier orthonormality is not rederived), and the absence
-of a positive coefficientwise spectral measure remains pending.
+`∫ G dm` on trigonometric polynomials (Fourier orthonormality is not rederived); the absence
+of a positive coefficientwise measure with the vacuum moments is proved in
+`Surreal/HahnSeries/NegativeAtomMeasure.lean` (`unitary`).
 -/
 
 namespace Surreal.HerglotzHierarchy

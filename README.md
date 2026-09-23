@@ -639,5 +639,17 @@ and resolvent of a row Laplacian with nonnegative stochastic entries. Graded
 quadratic forms over Hahn fields, the Newton-sum Hankel matrix, residue change
 of variables for Laurent differentials, the small-divisor tree bound and the
 diagonal resolvent clauses of the row-finite spectral theory are proved.
+Coefficientwise sums of nonnegative real Hahn series are positive with the least
+valuation, and order-limit additivity forces finitely many nonzero masses, so
+it has no Lebesgue extension. The negative-atom measure has its signed
+representation and unique Fourier moments. Prony weight errors incur no second
+conditioning loss. The residue shadows of Hahn row-Laplacian resolvents satisfy
+the same-scale and cross-scale identities and are stochastic, which leaves only
+the endpoint limits for the effective-generator theorem. Truncated Wick sums
+obey the valuation error estimate, the multipliers of expanding polynomial
+dynamics are exact, the algebraic coefficient part is closed, the Tate
+discriminant has `v(Δ) = v(q)`, the all-scale coefficient criterion decides
+entireness, and every positive-order perturbation of `diag(1/n)` keeps a
+cokernel of dimension at least the continuum.
 A successful build proves only the imported Lean
 statements, not coverage of all the source documents.

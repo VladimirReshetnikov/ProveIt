@@ -45,11 +45,12 @@ source index `n ≥ 1` is the Lean index `n - 1`, so the Lean coordinate `n` car
   `Ran D² ⊆ Ran D`, the same classes are independent modulo `Ran D²`
   (`linearIndependent_powerVec_mkQ_sq`, `continuum_le_rank_quotient_range_invDiag_sq`).
 
-## Pending
+## Related results
 
 `ihs:hh:thm:continuum` itself (the bound `dim_K coker(D + E) ≥ 2^ℵ₀` on `H((t^Γ))` for every
-positive-order `E`, and the same with leading operator `D²`) is not formalized here: it combines
-the results above with `ihs:hh:cor:independent`, which is not yet formalized in the project.
+positive-order `E`, and the same with leading operator `D²`) is not stated here. It combines the
+results above with `ihs:hh:cor:independent` and is proved in
+`Surreal/HahnSeries/DefectRigidity.lean`.
 -/
 
 namespace Surreal.ContinuumDefects

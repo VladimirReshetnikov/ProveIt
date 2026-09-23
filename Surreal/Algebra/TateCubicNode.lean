@@ -48,9 +48,9 @@ that `tateFamily_apply_of_pos` recovers the source's summands
 Nothing is pending for these three lemmas. Their uses (the formal inverse at infinity
 `tate:node:prop:infinity`, the smooth-residue inverse `tate:node:prop:smooth`, the
 constructive surjectivity `tate:node:thm:surjectivity` and the group law
-`tate:node:thm:group`) are not formalized here. Neither is `tate:prop:discriminant`
-(`Δ(q) ≠ 0`), which makes `E_q` an elliptic curve: `tateCurve q` is only a
-`WeierstrassCurve`.
+`tate:node:thm:group`) are not formalized here. `tate:prop:discriminant` (`Δ(q) ≠ 0`,
+which makes `E_q` an elliptic curve) is proved for `tateCurve q` in
+`Surreal/HahnSeries/TateDiscriminant.lean`, except for its product formula.
 -/
 
 namespace Surreal.TateNode
