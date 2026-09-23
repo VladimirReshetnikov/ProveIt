@@ -266,7 +266,10 @@ metadata, since direct access to the full text failed; the Brickhill--Horsten
 citation is to the preprint; Conway and Gonshor are cited as foundational books;
 and no ordinal-length estimate of the uncorrected van den Dries--Ehrlich paper is
 used. Ordinary real disintegration, product laws and strong laws of large
-numbers are imported from \cite{kallenberg}, not re-proved.
+numbers provide the classical background in \cite{kallenberg}. Real
+disintegration and product-law existence are imported; the two Bernoulli
+strong laws needed in Section~\ref{fsp:sec:latent} are proved there by a
+fourth-moment argument.
 \item \emph{Repository comparison.} The comparison at the pin read the guide of
 the measures report and the opening of its source; the descriptions of the
 foundations and Markov reports rested on the collection's guides. It was not a
@@ -368,8 +371,9 @@ Loeb bridge needs internal sets and saturation; a field embedding does not
 supply them, and a bare surreal $H>\N$ is not a substitute. An internal power
 is not identified with a canonical surreal exponential expression under a
 field-only embedding.
-\item \emph{Not asserted anywhere} (Section~\ref{fsp:sub:notasserted}). No countably
-additive probability on all events for the full fine topology; no universal
+\item \emph{Not asserted anywhere} (Section~\ref{fsp:sub:notasserted}). No general
+infinite probability theory using countable additivity in the full fine
+topology; finite-support laws are compatible with it. No universal
 Carath\'eodory, Radon--Nikodym, Fubini, martingale convergence, strong law of
 large numbers, central limit or stochastic calculus theorem after replacing
 $\R$ by $\No$; no unique answer to exact-zero conditioning; no canonical
@@ -649,7 +653,17 @@ nonintegrable coefficients before density cancellation. The
 Sections~\ref{fsp:sec:iid}--\ref{fsp:sec:extension} pass expands the
 coefficient-variation obstructions, the relative field embedding and finite
 compactness models, and replaces the logit change-of-variable shortcut by
-a calculation in the original Hahn coordinates.
+a calculation in the original Hahn coordinates. The
+Section~\ref{fsp:sec:latent} pass derives the martingale updates and
+component strong laws, and separates order, coefficientwise and
+standard-part convergence. Section~\ref{fsp:sec:bridges} now spells out
+the shadow-continuity equivalence, the internal-algebra extension and the
+Poisson ultraproduct, including its saturation proof and the measurable
+ordinary count. The final implementation and scope pass distinguishes
+nonnegative model weights from regular laws, separates algebraic scoring
+from exponential hypotheses, and aligns the dependency statements with
+these proofs. Source and provenance reconciliation remain separate from
+this main-text pass.
 
 \section{Scalars, size, and the two meanings of exponentiation}
 \label{fsp:sec:scalars}
@@ -2899,9 +2913,10 @@ interesting infinite stochastic models survive coefficientwise addition.
 Mixtures of ordinary path laws provide explicit counterexamples to that
 impression, and also expose a limitation of finite Bayesian updating.
 
-Let $\mu_0$ be the ordinary independent Bernoulli$(1/3)$ law on
-$\{0,1\}^{\N}$ and $\mu_1$ the independent Bernoulli$(2/3)$ law. Attach
-a latent label $H\in\{0,1\}$ and give the joint space the Hahn law
+Index coordinates by the positive integers. Let $\mu_0$ be the ordinary
+independent Bernoulli$(1/3)$ law on $\{0,1\}^{\N_{\ge1}}$ and $\mu_1$
+the independent Bernoulli$(2/3)$ law, both on the product sigma-algebra.
+Attach a latent label $H\in\{0,1\}$ and give the joint space the Hahn law
 \begin{equation}\label{fsp:eq:latentlaw}
  P=\frac{\delta_0\otimes\mu_0+t\delta_1\otimes\mu_1}{1+t}.
 \end{equation}
@@ -2913,23 +2928,44 @@ Its unconditional coordinate means and covariances are
  \E X_i=\frac{1+2t}{3(1+t)},\qquad
  \Cov(X_i,X_j)=\frac{t}{9(1+t)^2}>0\quad(i\ne j).
 \end{equation}
-To check the covariance, write the mean as the mixture of $1/3,2/3$
-and the cross moment as the same mixture of their squares. Subtraction
-leaves the variance of the latent success probability. The process is
-exchangeable but not independent. Therefore its infinitesimally shifted
+Indeed, independence within each component gives, for $i\ne j$,
+\[
+ \E(X_iX_j)=\frac{1+4t}{9(1+t)},\qquad
+ \Cov(X_i,X_j)
+ =\frac{(1+4t)(1+t)-(1+2t)^2}{9(1+t)^2}
+ =\frac{t}{9(1+t)^2}.
+\]
+Each component is invariant under finite coordinate permutations, so the
+mixture is exchangeable. Its positive covariance rules out independence.
+Therefore its infinitesimally shifted
 marginals do not contradict Theorem~\ref{fsp:thm:faircoin} or the analogous
 coefficientwise independent-product obstructions.
 
-Let $\F_n$ record the first $n$ observed coordinates, and write
-$K_n=\sum_{i=1}^nX_i$. Bayes' rule gives the finite conditional
+Let $\F_n=\sigma(X_1,\ldots,X_n)$ for ordinary integers $n\ge0$, with
+$\F_0$ trivial, and write $K_n=\sum_{i=1}^nX_i$ (so $K_0=0$).
+An observation word of length $n$ with $k$ successes has likelihoods
+$(1/3)^k(2/3)^{n-k}$ and $(2/3)^k(1/3)^{n-k}$ in the two regimes.
+Both are positive, and their ratio is $2^{2k-n}$. Every atom of $\F_n$
+therefore has positive probability. Bayes' rule gives the finite conditional
 probability of the rare regime:
 \begin{equation}\label{fsp:eq:latentposterior}
  M_n=P(H=1\mid\F_n)
  =\frac{t\,2^{2K_n-n}}{1+t\,2^{2K_n-n}}.
 \end{equation}
-Every value of $M_n$ is infinitesimal for each ordinary $n$: the factor
-$2^{2K_n-n}$ is a positive real number. These finite-range variables
-form a bounded martingale by the finite tower property.
+Every value of $M_n$ is positive infinitesimal for each ordinary $n$:
+the factor $r_n=2^{2K_n-n}$ is a positive real number. In particular,
+$M_0=t/(1+t)$ and $0<M_n<1$. These adapted finite-range variables
+form a bounded martingale by the finite tower property. One can also
+check this directly. Given a word with likelihood ratio $r$, the next
+success probability and the two next posterior values are
+\[
+ q=\frac{1+M_n}{3}=\frac{1+2tr}{3(1+tr)},\qquad
+ M_{n+1}^{(1)}=\frac{2tr}{1+2tr},\qquad
+ M_{n+1}^{(0)}=\frac{tr}{2+tr}.
+\]
+Then $qM_{n+1}^{(1)}+(1-q)M_{n+1}^{(0)}=tr/(1+tr)=M_n$.
+All these conditional expectations use finite partitions; no infinite
+surreal sum or martingale convergence theorem is used.
 
 The ordinary strong laws of large numbers of the two real component measures
 \cite{kallenberg} give the Borel event
@@ -2937,7 +2973,31 @@ The ordinary strong laws of large numbers of the two real component measures
  B=\left\{\lim_{n\to\infty}\frac{K_n}{n}=\frac23\right\},
  \qquad \mu_0(B)=0,\quad\mu_1(B)=1.
 \end{equation}
-Consequently
+Here an elementary real argument suffices for the imported strong law.
+For $h\in\{0,1\}$, write $\E_h$ for expectation under $\mu_h$,
+and put $p=(1+h)/3$, $Y_i=X_i-p$.
+Independence, centering and $\E_h Y_i^2\le1/4$, $\E_h Y_i^4\le1$ give, for $n\ge1$,
+\[
+ \E_h\Bigl(\sum_{i=1}^nY_i\Bigr)^4
+ =\sum_{i=1}^n\E_h Y_i^4
+   +6\sum_{i<j}\E_h Y_i^2\E_h Y_j^2
+ \le n+\frac{3n(n-1)}{16}\le n^2.
+\]
+For each real $\varepsilon>0$, Markov's inequality therefore bounds
+the component probability of $|K_n/n-p|\ge\varepsilon$ by
+$1/(n^2\varepsilon^4)$.
+The probability of a violation at some $n\ge N$ is bounded by the
+tail of this convergent real series, which tends to zero. Thus violations
+occur only finitely often almost surely. Intersecting these full-measure
+events for $\varepsilon=1,1/2,1/3,\ldots$ proves $K_n/n\to p$.
+This argument is entirely within the two real component measures.
+
+The convergence condition defining $B$ uses countably many inequalities
+between measurable real functions, so $B$ is measurable. For every fixed
+$m$, the same limit is obtained from $\sum_{i=m+1}^nX_i/n$, which depends
+only on coordinates after $m$. Hence $B$ belongs to every future-coordinate
+sigma-algebra and is a tail event. We also write $B$ for its inverse image
+in the joint space. Consequently
 \begin{equation}\label{fsp:eq:tailposterior}
  P(B)=\frac{t}{1+t}>0,
  \qquad P(H=1\mid B)=1.
@@ -2958,19 +3018,39 @@ path, $M_n<1/2$ because it is infinitesimal. Thus on $B$ its distance
 from the value one remains greater than $1/2$.
 \end{proof}
 
-This also has a precise conditional-expectation formulation. For every
-observation event $A$,
-$P(H=1,A)=P(B\cap A)$, by the two component almost-sure statements.
-Thus $\ind_B$ is a version of the conditional expectation of
-$\ind_{\{H=1\}}$ given the full observation sigma-algebra, in the
-finite-range integral sense. The martingale $(M_n)$ does not recover
-this version on $B$ even at a fixed real resolution. Off $B$, convergence
-to zero also fails at infinitesimal resolution: $M_n>t^2$ for every
-ordinary $n$ and every path. In fact, adjacent posterior differences
-have valuation one and positive real leading magnitude, since the
-likelihood-ratio factor is multiplied by either $2$ or $1/2$ at each
-step. Thus $|M_{n+1}-M_n|>t^2$ everywhere, so the bounded martingale
-is not order-Cauchy along any path.
+This also has a precise conditional-expectation formulation. Put
+$\F_\infty=\sigma(X_1,X_2,\ldots)$. For every observation event $A$,
+\[
+ P(H=1,A)=\frac{t\mu_1(A)}{1+t}
+ =\frac{\mu_0(B\cap A)+t\mu_1(B\cap A)}{1+t}
+ =P(B\cap A),
+\]
+because $\mu_0(B)=0$ and $\mu_1(B^c)=0$. Thus the $\F_\infty$-measurable
+variable $\ind_B$ satisfies
+$\E[\ind_A\ind_{\{H=1\}}]=\E[\ind_A\ind_B]$ for every
+$A\in\F_\infty$. This is precisely the defining integral identity for a
+version of conditional expectation, using only finite-range integrals.
+Also $P(\{H=1\}\mathbin{\triangle}B)=0$. The martingale $(M_n)$ does not
+recover this version on $B$ even at a fixed real resolution.
+
+Off $B$, convergence to zero fails at infinitesimal resolution as well.
+In the fixed chart $t=\omega^{-1}$, each $M_n$ has valuation one and
+leading coefficient $r_n>0$, so $M_n>t^2$ at every ordinary time and on
+every path. More explicitly, if the next observation is $1$ or $0$,
+respectively, then
+\[
+ M_{n+1}-M_n=
+ \begin{cases}
+ \displaystyle\frac{tr_n}{(1+2tr_n)(1+tr_n)},&X_{n+1}=1,\\[6pt]
+ \displaystyle-\frac{tr_n}{(2+tr_n)(1+tr_n)},&X_{n+1}=0.
+ \end{cases}
+\]
+The leading coefficient of the absolute difference is $r_n$ or $r_n/2$,
+respectively, and its valuation is one. Consequently
+$|M_{n+1}-M_n|>t^2$ everywhere. The single order tolerance $t^2$ therefore
+violates the Cauchy condition on every path, regardless of how small or
+large the real factors $r_n$ become. These are ordinary integer times;
+no transfinite extension of the process is being asserted.
 
 By contrast, the posterior standard parts are identically zero. Their
 ordinary limit differs from $\st\ind_B$ exactly on $B$, whose
@@ -2979,6 +3059,19 @@ is zero. This is fully consistent with the ordinary real martingale
 convergence theorem. A surreal analogue retaining all positive
 infinitesimal events or all infinitesimal resolutions must specify a
 different conclusion or impose additional hypotheses.
+
+Coefficientwise convergence gives a third, different answer. At each
+ordinary time the geometric expansion is
+\[
+ M_n=\hsum_{j\ge1}(-1)^{j-1}r_n^j t^j.
+\]
+On the event $B_0=\{K_n/n\to1/3\}$, which has $\mu_0$-measure one,
+$(2K_n-n)/n\to-1/3$, so $r_n\to0$ in $\R$. Every fixed coefficient
+then tends to zero: $M_n$ converges coefficientwise to zero on $B_0$,
+although it is nowhere order-Cauchy. On $B$, instead,
+$(2K_n-n)/n\to1/3$ and $r_n\to+\infty$; already the coefficient of $t$
+has no finite real limit. This coefficientwise statement is a limit in
+$\R$ at each fixed exponent, not strong Hahn summation of the time sequence.
 
 The example also distinguishes two uses of ``infinitely much evidence.''
 A Borel tail observation is an event in a specified path law. It is not
@@ -2998,25 +3091,37 @@ $A_n\downarrow\varnothing$ and every positive real $\eps$, there is
 an $n$ with $P(A_n)<\eps$.
 \end{theorem}
 \begin{proof}
-A real finitely additive probability is countably additive exactly when it is continuous
-from above at the empty set. For completeness, countable additivity
-gives this continuity by decomposing $A_1$ into successive differences.
-Conversely, for disjoint $B_n$ with union $B$, the remainder
-$A_N=B\setminus\bigcup_{n\le N}B_n$ decreases to the empty set, so
-finite additivity and continuity give
-$P_0(B)=\sum_nP_0(B_n)$.
+Since $0\le P(A)\le1$, every event probability is limited. Standard
+part preserves finite sums and order, so $P_0$ is a real finitely additive
+probability. Such a probability is countably additive exactly when it
+is continuous from above at the empty set. Here are both directions.
+If $A_n\downarrow\varnothing$, set $D_n=A_n\setminus A_{n+1}$ for
+$n\ge1$. The $D_n$ are disjoint and $A_m=\bigcup_{n\ge m}D_n$.
+Countable additivity gives $P_0(A_m)=\sum_{n\ge m}P_0(D_n)\to0$, since
+the nonnegative real series has total $P_0(A_1)\le1$.
+Conversely, let $B_n$ be disjoint measurable sets and
+$B=\bigcup_{n\ge1}B_n$. The measurable remainders
+$A_N=B\setminus\bigcup_{n=1}^N B_n$ decrease to the empty set, and
+\[
+ P_0(B)=\sum_{n=1}^N P_0(B_n)+P_0(A_N).
+\]
+Continuity from above makes the last term tend to zero and proves
+countable additivity.
 
 If $P_0(A_n)\to0$, choose $n$ with $P_0(A_n)<\eps/2$.
 The infinitesimal difference between $P(A_n)$ and its standard part is
 less than $\eps/2$, so $P(A_n)<\eps$.
 Conversely, the displayed condition implies that the decreasing real
 numbers $P_0(A_n)$ have infimum at most every positive real $\eps$,
-hence zero. This is the required continuity.
+hence zero. Monotonicity then makes the whole sequence tend to zero,
+not just a subsequence. This is the required continuity. The condition
+uses real tolerances: it does not assert $P(A_n)\to0$ at every positive
+surreal tolerance.
 \end{proof}
 
 The standard part of the normalized hierarchy is the ordinary measure
-$\mu_0$ and satisfies this test. The all-subsets uniform law on $\N$
-from \eqref{fsp:eq:ultrafilter} does not: singleton shadows are zero while
+$\mu_0$ and satisfies this test. The all-subsets uniform law on
+$\N_{\ge1}$ from \eqref{fsp:eq:ultrafilter} does not: singleton shadows are zero while
 the shadow of their union is one. More explicitly, for
 $A_n=\{n+1,n+2,\ldots\}$, one has
 $P(A_n)=1-n/H$ and $P_0(A_n)=1$. Standard part is always a finite-additive
@@ -3025,41 +3130,93 @@ property, not an automatic consequence of the existence of standard part.
 
 \subsection{The Loeb bridge requires internal structure}
 
-Loeb's construction starts with an internal finitely additive probability
-on an internal algebra in a sufficiently saturated nonstandard setting
-\cite{loeb}. Its limited values have real standard parts. On the internal
-algebra these define a real premeasure, which extends to a countably
-additive measure on the generated sigma-algebra and then to its completion.
-This real completed measure is the Loeb measure.
+In the finite-mass case used here, Loeb's construction starts with
+an internal sample space $\Omega$, an internal algebra $\mathcal I$ of
+subsets, and an internal finitely additive probability
+$\nu:\mathcal I\to{}^*\R$ in a countably saturated nonstandard setting
+\cite{loeb}. Here countable saturation means that a countable family of
+internal subsets of $\Omega$ with the finite-intersection property has
+nonempty intersection. All values of $\nu$ lie in $[0,1]$, and
+$\nu_0(A)=\st\nu(A)$ is a real finitely additive probability on
+$\mathcal I$, regarded as an ordinary algebra of subsets of $\Omega$.
+It need not be a sigma-algebra.
 
-The role of saturation can be seen directly in the finite-probability
-case. For a decreasing sequence of internal sets with empty intersection,
-countable saturation forces some member to be empty: otherwise their
-finite intersections would all be nonempty. In particular, if countably
-many disjoint internal sets have an internal union, only finitely many
-can be needed to cover that union. Standard-part finite additivity
-therefore supplies the premeasure property on the internal algebra.
-The ordinary measure-extension theorem then supplies the sigma-algebra
-and its countable additivity. These steps concern internal \emph{sets}
-as well as non-Archimedean numbers.
+To check the premeasure property, take disjoint $A_1,A_2,\ldots\in\mathcal I$
+whose union $A$ also belongs to $\mathcal I$. The remainders
+\[
+ R_N=A\setminus\bigcup_{n=1}^N A_n
+\]
+are internal and decrease to the empty set. If every $R_N$ were nonempty,
+countable saturation would give a point in their intersection. Hence some
+$R_N$ is empty. Disjointness then forces $A_n=\varnothing$ for $n>N$,
+so finite additivity gives $\nu_0(A)=\sum_{n\ge1}\nu_0(A_n)$.
+This is exactly the countable-additivity condition required of a
+premeasure on an algebra; no claim that arbitrary countable unions
+remain internal is needed.
 
-An ordered-field embedding of the underlying scalar field into $\No$
-preserves standard parts because it fixes $\R$ and preserves order.
-Thus one may carry an already specified internal model and its Loeb
-construction along with such a scalar embedding. The embedding alone,
-however, does not manufacture internal events, saturation, hyperfinite
-sets, or transferred sums. A bare surreal $H>\N$ is not a substitute
-for this package of structure.
+The ordinary finite-measure extension theorem now gives the unique
+probability on $\sigma(\mathcal I)$ extending $\nu_0$. Its completion
+is the Loeb probability $\nu_L$. Thus countable additivity concerns a
+real measure on an enlarged event domain, not a Hahn sum of the original
+hyperreal probabilities. Saturation was a statement about internal
+\emph{sets}, not merely about the order of the scalar field.
+
+An ordered embedding of the underlying scalar field into $\No$ fixing
+$\R$ preserves standard parts. Indeed, if $\st x=r$, then
+$r-\varepsilon<x<r+\varepsilon$ for every positive real $\varepsilon$;
+the same inequalities hold after embedding. Such an embedding exists
+for the set-sized hyperreal field by Lemma~\ref{fsp:lem:embedding}, with
+$K=\R$. Transporting the internal probability values therefore leaves
+$\nu_0$ and its Loeb extension unchanged on the specified event space.
+The embedding alone does not manufacture internal events, saturation,
+hyperfinite sets or transferred sums. A bare surreal $H>\N$ is not a
+substitute for this package of structure.
 
 \subsection{A Poisson shadow at reciprocal-probability sample size}\label{fsp:sub:poisson}
 
-Here is a concrete sampling limit with all semantics supplied. Fix a
-positive real $\lambda$. For each ordinary integer $N>\lambda$, perform
-$N$ independent Bernoulli trials with real success probability
-$p_N=\lambda/N$. Let $S_N$ be the count and pass along a nonprincipal
-ultrafilter on these indices to the corresponding internal experiments.
-Write $H=[N]$ for the hyperinteger sample size. A single trial then has
-probability $\lambda/H$.
+Fix a positive real $\lambda$ and let $I=\{N\in\N:N>\lambda\}$.
+For each $N\in I$, put $\Omega_N=\{0,1\}^N$ and give a word $x$ the
+ordinary product probability
+\[
+ P_N(\{x\})=(\lambda/N)^{S_N(x)}(1-\lambda/N)^{N-S_N(x)},
+ \qquad S_N(x)=\sum_{i=1}^N x_i.
+\]
+Both one-trial weights are positive and sum to one, so the binomial
+theorem normalizes $P_N$. Fix a nonprincipal ultrafilter $\mathcal U$
+on $I$, and form the set-sized ordered field ${}^*\R=\R^I/\mathcal U$
+and the sample space $\Omega=\prod_{N\in I}\Omega_N/\mathcal U$.
+An internal event, denoted $[A_N]$, consists of those $[x_N]$ for which
+$\{N:x_N\in A_N\}\in\mathcal U$, where $A_N\subseteq\Omega_N$.
+These events form an algebra $\mathcal I$, with internal probability
+\[
+ \nu([A_N])=[P_N(A_N)].
+\]
+Equality of two internal events forces their representing sets to agree
+on a $\mathcal U$-large set: otherwise one can select points in their
+symmetric differences and obtain a point belonging to just one event.
+Thus $\nu$ is well-defined. Finite set operations and finite additivity
+pass coordinatewise to the quotient.
+
+The needed countable saturation has a direct diagonal proof in this
+model. Suppose internal events $A_j=[A_{j,N}]$, $j\ge1$, have the
+finite-intersection property. Put
+\[
+ D_m=\{N:\bigcap_{j=1}^m A_{j,N}\ne\varnothing\}\in\mathcal U,
+ \qquad
+ m(N)=\max\bigl(\{0\}\cup\{m\le N:N\in D_m\}\bigr).
+\]
+Choose $x_N$ in the intersection of the first $m(N)$ sets, taking any
+point of $\Omega_N$ if $m(N)=0$. For fixed $j$, the set
+$D_j\cap\{N:N\ge j\}$ belongs to $\mathcal U$ and there $m(N)\ge j$.
+Hence $[x_N]\in A_j$ for every $j$. The preceding Loeb construction
+therefore applies to this explicit ultraproduct.
+
+Write $H=[N]$ and $S([x_N])=[S_N(x_N)]$ for the hyperinteger sample size
+and internal count. Since $\mathcal U$ contains every cofinite subset,
+$H$ exceeds every ordinary integer. A trial indexed internally by
+$[i_N]$, $1\le i_N\le N$, has probability $[\lambda/N]=\lambda/H$,
+a positive infinitesimal. The count $S$ and the internal trial structure
+come from this construction, not from the scalar $H$ alone.
 
 For a fixed ordinary integer $k\ge0$, the internal event that the count
 is $k$ has probability represented by
@@ -3078,21 +3235,50 @@ many indices. To verify the standard part, factor the binomial term as
  \prod_{r=0}^{k-1}\left(1-\frac rN\right)
  \left(1-\frac\lambda N\right)^{N-k}.
 \end{equation}
-The finite product tends to one in ordinary real analysis. The logarithm
-of the last factor is
-$(N-k)(-\lambda/N+O(N^{-2}))\to-\lambda$.
-This proves the ordinary real limit, and every nonprincipal ultrapower
-of a convergent bounded real sequence has that standard part.
+For $k=0$, the product is empty and equals one. For any fixed $k$ it
+tends to one in ordinary real analysis. A quantitative logarithm bound
+handles the remaining factor: for $0\le u\le1/2$,
+\[
+ 0\le-\log(1-u)-u=\int_0^u\frac{s}{1-s}\,ds\le u^2.
+\]
+Thus, for $N\ge\max(k,2\lambda)$,
+\[
+ \bigl|(N-k)\log(1-\lambda/N)+\lambda\bigr|
+ \le\frac{k\lambda+\lambda^2}{N}\longrightarrow0.
+\]
+Continuity of the ordinary real exponential gives the limit
+$e^{-\lambda}$ of the last factor. Finally, if a bounded real sequence
+$a_N$ tends to $a$, every real tolerance holds on a cofinite, hence
+$\mathcal U$-large, set. Therefore $[a_N]-a$ is infinitesimal, proving
+the standard-part formula in \eqref{fsp:eq:poisson}.
 
-In a saturated internal realization, the Loeb probability of the count
-being an ordinary finite integer is one: the disjoint events with fixed
-counts $k$ have the real Poisson masses in \eqref{fsp:eq:poisson}, whose
-ordinary sum is one. Thus the Poisson limit is recovered at a sample
-size comparable to the reciprocal of an infinitesimal success probability.
-This supplies the missing meaning of the informal scale calculation
-$n\asymp1/p$ in a \emph{chosen nonstandard experiment}.
+For each ordinary $k\ge0$, the event $E_k=\{S=k\}$ is internal.
+The disjoint union $E_{\rm fin}=\bigcup_{k\ge0}E_k$ is Loeb measurable,
+even though one must not assume it internal. Countable additivity gives
+\[
+ \nu_L(E_{\rm fin})
+ =\sum_{k=0}^{\infty}e^{-\lambda}\frac{\lambda^k}{k!}=1.
+\]
+Here the last equality is the ordinary real exponential series.
+There is also a direct check that no mass escapes to infinite counts:
+for every positive ordinary integer $m$, finite expectation gives
+$\E_{P_N}S_N=\lambda$, and Markov's inequality yields
+$\nu_L(S>m)\le\lambda/m$. These events decrease to
+$\Omega\setminus E_{\rm fin}$: a hyperinteger bounded by an ordinary
+integer takes one of finitely many ordinary values, as the ultrafilter
+selects one cell of the finite partition. Continuity from above gives
+zero mass to their intersection.
 
-After an ordered-field embedding into $\No$, the probabilities and
+Define an ordinary nonnegative integer-valued variable $Z$ to equal $k$ on $E_k$
+and zero on $\Omega\setminus E_{\rm fin}$. Its fibers are Loeb
+measurable and the extra part of its zero fiber is null. Consequently
+$Z$ has exactly the ordinary Poisson$(\lambda)$ law. This is the precise
+sense in which the internal count has a Poisson shadow at sample size
+$H=\lambda/(\lambda/H)$, comparable to the reciprocal of its infinitesimal
+one-trial probability. It supplies the meaning of the informal scale
+calculation $n\asymp1/p$ in this chosen nonstandard experiment.
+
+After an ordered-field embedding into $\No$ fixing $\R$, the probabilities and
 standard parts in \eqref{fsp:eq:poisson} remain valid. But an internal power
 such as $[(1-\lambda/N)^N]$ must not be silently identified with the
 canonical surreal expression $\exp(H\log(1-\lambda/H))$ under a
@@ -3115,17 +3301,22 @@ supported Hahn series with a certified leading term. Canonical logarithms
 and exponentials may require a larger expression language than the
 probability fragment.
 
-For a finite normalized model, a useful representation stores positive
-unnormalized weights rather than rounded probabilities. Normalization,
+For a finite model, a useful representation stores nonnegative
+unnormalized weights with positive total, retaining exact zeros. Requiring
+every weight to be positive restricts this interface to regular laws on
+the full event algebra. A conditional query must certify that the total
+weight on its conditioning event is positive. Normalization,
 conditioning, and Bayes then use exact sums and quotients. The minimum-plus
 and leading-coefficient layer from Theorem~\ref{fsp:thm:scalebayes} can be
 computed first, while residual expressions are retained for ties and
 later rare conditioning. A leading-scale answer should not be presented
 as an exact full probability.
 
-Theorem~\ref{fsp:thm:stability} supplies a precision contract. An operation
-conditioning on mass of valuation $\beta$ and requesting output through
-scale $\lambda$ must demand input error beyond $\beta+\lambda$.
+Theorem~\ref{fsp:thm:stability} supplies a sufficient precision contract:
+when conditioning on mass of valuation $\beta$ and requesting output through
+scale $\lambda$, require input error beyond $\beta+\lambda$.
+This uniform guarantee is not a necessary condition for each query;
+specific numerator--denominator cancellations can permit weaker precision.
 An implementation which first truncates all atoms at one fixed absolute
 threshold cannot guarantee every subsequent conditional query. For
 score-based models, Proposition~\ref{fsp:prop:softbound} gives a different
@@ -3143,8 +3334,11 @@ actual assumptions:
 conditioning, expectation, inequalities, finite products, and stopping.
 \item A residue/valuation layer: standard part, leading coefficients,
 conditional shadows, minimum-plus updates, and precision theorems.
-\item An exponential ordered-field layer: logit, softmax, entropy,
-relative entropy, proper scoring, and the explicit Gibbs identity.
+\item An ordered-field layer with an increasing exponential group
+isomorphism onto the positive elements, its inverse logarithm, and the
+scalar inequalities used in the proofs: logit, softmax, entropy, relative
+entropy, logarithmic scoring and the Gibbs identity. The Brier score
+belongs already to the first layer.
 \item Separate infinite modules for strong supports, coefficient measures,
 compactness/ultrafilter extensions, and internal/Loeb constructions.
 \end{enumerate}
@@ -3152,8 +3346,11 @@ The first three modules should not import an unproved global integration
 operator. An interface for infinite sums should name its support or
 convergence certificate and state which regroupings it permits.
 A field embedding interface should distinguish preservation of order,
-exponential, standard part, strong sums, and internal structure. None
-of the latter properties should be inferred merely from the first.
+exponential, standard part, strong sums, and internal structure. An ordered
+embedding fixing $\R$ preserves standard parts: the inequalities
+$r-\varepsilon<x<r+\varepsilon$ for every positive real $\varepsilon$
+are preserved. Preservation of exponentials, strong sums or internal
+structure requires additional hypotheses.
 
 The repository has a maintained formalization ledger, but no new Lean
 proofs are delivered here. The present package's executable tests are
@@ -3214,9 +3411,14 @@ requirements for any stronger theory.
 
 \subsection{What is not asserted}\label{fsp:sub:notasserted}
 
-We have not constructed a countably additive probability on all events
-using the full fine topology of $\No$; Proposition~\ref{fsp:prop:fine}
-explains why ordinary set-indexed convergence is unsuitable there.
+We do not assert a general infinite probability theory using countable
+additivity in the full fine topology of $\No$.
+Proposition~\ref{fsp:prop:fine} explains why ordinary set-indexed convergence
+there is unusually restrictive. Finite-support laws are an elementary
+exception: in a disjoint sequence only finitely many events can meet a
+fixed finite support, so the partial probability sums eventually stabilize
+at the probability of the union. This does not supply a theory of arbitrary
+infinite sampling.
 We have not proved a universal Carath\'eodory, Radon--Nikodym, Fubini,
 martingale convergence, strong law of large numbers, central limit, or stochastic calculus
 theorem after unrestricted replacement of $\R$ by $\No$. Each such
@@ -3302,6 +3504,8 @@ $\lambda_\gamma$ & $-\log(t^\gamma)$, with canonical logarithm\\
 $\sigma,\logit$ & Logistic map and its inverse on $(0,1)$\\
 $D(p\Vert q)$ & Finite relative entropy, under the support condition\\
 $H$ in ultraproducts & A specified internal sample-size class, not an arbitrary ordinal\\
+$H$ in the latent model & The binary latent label; unrelated to internal sample size\\
+$\mathcal I,\nu,\nu_L$ & Internal event algebra, internal probability and its completed real Loeb measure\\
 \bottomrule
 \end{tabularx}
 \end{center}
@@ -3313,10 +3517,10 @@ exponential and its scalar inequalities. Section~\ref{fsp:sec:hierarchy}
 uses ordinary real finite measures and Hahn support multiplication.
 Section~\ref{fsp:sec:extension} uses choice, ordered real closures, the
 surreal cut property, and first-order compactness.
-Section~\ref{fsp:sec:latent} imports two ordinary real product laws and their
-strong laws of large numbers. Section~\ref{fsp:sec:bridges} distinguishes ordinary real
-measure extension from the extra saturation assumption in the Loeb
-construction. No infinite result is deduced solely from the finite
+Section~\ref{fsp:sec:latent} imports two ordinary real product laws and
+proves their strong laws of large numbers by a fourth-moment argument. Section~\ref{fsp:sec:bridges} distinguishes
+ordinary real measure extension from the internal-set saturation used in the
+Loeb construction; it proves the needed saturation for the Poisson ultraproduct. No infinite result is deduced solely from the finite
 exponential-field transfer principle.
 
 \section{Reproduction and evidence boundaries}\label{fsp:app:build}

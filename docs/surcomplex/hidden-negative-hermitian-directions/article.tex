@@ -333,7 +333,9 @@ $\omega^{-\gamma}$, the collection's common convention (\repo{NOTATION.md}).
 
 The source compared itself with the collection at its pin; that comparison
 is kept in Appendix~\ref{hnd:app:audit}. The relations below were checked
-against the collection as it stands after this report was placed.
+at assembly (\texttt{ed88b8f}) and revisited during the main-text proof
+review against repository commit \texttt{b6819f7}. The historical search record remains
+in Appendix~\ref{hnd:app:audit}.
 
 \paragraph{Spectral theory.} Everything this report uses about one
 Hermitian matrix is finite Hermitian algebra over a real-closed field, as
@@ -352,9 +354,10 @@ negative eigenvectors supplied by \lbl{spec:thm:hermitian} have coordinates
 in the Hahn field of that subgroup, and
 Theorem~\ref{hnd:thm:closedseparation} shows that no vector with
 coordinates in $\overline{\mathscr P}_\Gamma$ can take their place. The
-congruence \eqref{hnd:eq:congruence} is an explicit instance of the
-diagonalization proved there in general; nothing here extends or
-contradicts a theorem of that report. The support-index bound,
+congruence \eqref{hnd:eq:congruence} uses the inertia invariance of
+\lbl{prop:positive}. Its triangular matrix $T$ is not unitary, so this
+calculation does not supply the unitary eigenbasis of
+\lbl{spec:thm:hermitian}. Nothing here extends or contradicts those results. The support-index bound,
 Lemma~\ref{hnd:lem:supportdegree}, is the counterpart over intermediate
 fields $\C(t^G)\subseteq L\subseteq\C((t^G))$ of \lbl{spec:lem:finiteindex},
 which computes $[K_\Lambda:K_\Gamma]=|\Lambda/\Gamma|$ for finite
@@ -390,7 +393,8 @@ null-ideal criterion, which is proved once in the collection as
 \repo{FORMALIZATION.md} records a Lean proof of the scalar two-scale
 criterion over any measurable space (\texttt{Surreal.NullIdeal.twoScale},
 \texttt{twoScale\_measure}); no matrix statement of this report is covered
-by it. Both reports use coefficientwise, not strong, countable additivity.
+by it. The null-ideal results compared here use coefficientwise countable
+additivity; they do not require strong Hahn additivity.
 
 \paragraph{Tail-spans and differential transcendence.}
 \repo{surreal/tail-spans-and-differential-transcendence} also builds
@@ -413,11 +417,15 @@ square-root coefficient tails cannot produce hidden directions relative to
 $\Pfield$: with $\xi_j$ in place of $h_j$, the negative vectors
 $(-\xi_j,e_j)$ of \eqref{hnd:eq:quadraticidentity} are probe vectors.
 Likewise \lbl{tail:thm:closure} shows that $\sum_n\sqrt{p_n}\,t^n$ is a
-valuation limit of its algebraic truncations when $\Gamma=\Q$, whereas
-Corollary~\ref{hnd:cor:degreebound} shows that no sequence of elements
-algebraic over the monomial field converges to $h_\delta$; ``algebraic''
-means algebraic coefficients over a coefficient field there and algebraic
-over $\C(t^\gamma:\gamma\in\Gamma)$ here. The warning
+valuation limit of its algebraic truncations when $\Gamma=\Q$.
+Those truncations are algebraic over $B_0$: their finitely many
+coefficients generate one finite extension of $\Q$. Merely having
+algebraic coefficients would not suffice, as the full transcendental
+tail itself demonstrates. Here Proposition~\ref{hnd:prop:probeclosed}
+and Theorem~\ref{hnd:thm:barrier} exclude convergence even of nets of
+elements algebraic over $\C(t^\gamma:\gamma\in\Gamma)$;
+Corollary~\ref{hnd:cor:degreebound} specializes to $\C(t^\delta)$.
+The base fields in these algebraicity assertions differ. The warning
 \lbl{tail:rem:indexfamily} applies verbatim: the family $(h_A)$ indexed by
 \emph{all} infinite sets of primes is not independent, since
 $h_{A\cup B}+h_{A\cap B}=h_A+h_B$ is a nontrivial linear relation among
@@ -431,11 +439,34 @@ Corollary~\ref{hnd:cor:trdeg} is the same cardinality count as in
 \repo{surreal/transcendence-over-bounded-support}, placed in the same
 commit as this report, proves algebraic independence over the fraction
 field of the ring $\mathcal B_\Gamma(K)$ of Hahn series with support bounded
-above. That base is not comparable with $\Pfield$: every prime tail $h_A$
+above. For $\Gamma=\Q$ the two bases are incomparable. Every prime tail $h_A$
 has support bounded above by $\delta$ and so lies in
-$\mathcal B_\Gamma(\C)$, while for $\Gamma=\Q$ the series
-$\sum_{n\ge1}t^n\in\mathscr P_\Q$ has unbounded support. Neither
-independence theorem implies the other.
+$\mathcal B_\Q(\C)$, but not in $\mathscr P_\Q$ by the same fresh-prime
+argument as Theorem~\ref{hnd:thm:barrier}. In the reverse direction,
+$\sqrt{1+t}\in\C[[t]]\subseteq\mathscr P_\Q$ does not belong to the
+bounded-support fraction field. Indeed, \lbl{bst:cor:onescale} gives
+\[
+ \C((t))\cap\operatorname{Frac}\mathcal B_\Q(\C)=\C(t),
+\]
+and $1+t$ is not a square in $\C(t)$: the multiplicity of the factor
+$t+1$ in a rational square is even.
+
+For this special intersection, the descent argument is short. If
+$f=a/b\in\C((t))$ with bounded-support $a,b$ and $b\ne0$, select a
+coset $r+\Z$ meeting $\supp b$. Restrict $bf=a$ to that coset and shift
+by $-r$. Since $f$ has integer exponents, this gives $b_r f=a_r$.
+The shifted supports of $a_r,b_r$ are well-ordered, bounded subsets of
+$\Z$, hence finite, and $b_r\ne0$. Thus $f$ is rational in $t$.
+In particular, unbounded support alone would not suffice: the geometric
+series $\sum_{n\ge1}t^n=t/(1-t)$ is already in the fraction field.
+No incomparability for arbitrary $\Gamma$ is asserted. If $\Gamma$ has
+no order unit (no $u>0$ whose positive integer multiples are cofinal),
+each finitely generated subgroup is bounded above in $\Gamma$.
+Indeed, its generators are dominated in absolute value by some $u>0$,
+and failure of cofinality supplies a bound above all $nu$.
+Thus $\Pfield\subseteq\mathcal B_\Gamma(\C)$.
+These distinctions of base and witnesses prevent either independence
+theorem from being identified with the other.
 
 \paragraph{Background inputs.} The positive-support (Neumann) lemma is
 \lbl{found:sub:positivesupport} of
@@ -462,7 +493,9 @@ ordered abelian group. We set
 An element is a formal sum $f=\sum_{\gamma\in S}f_\gamma t^\gamma$ with
 well-ordered support $S\subseteq\Gamma$. For $f\ne0$,
 $v(f)=\min S$; we set $v(0)=+\infty$. We use the usual conventions for
-comparisons involving $+\infty$.
+comparisons involving $+\infty$. The intrinsic $\Gamma$-valuation
+topology has neighborhoods $\{x:v(x-a)>\rho\}$ at $a$, for
+$\rho\in\Gamma$.
 
 The order on $F_\Gamma$ is the sign of the leading real coefficient.
 Complex conjugation acts coefficientwise and fixes precisely
@@ -546,8 +579,9 @@ This is an instance of the established support-family approach to Hahn
 subfields, not a new field construction \cite{rayner-structures}.
 
 \begin{example}\label{hnd:ex:puiseux}
-When $\Gamma=\Q$, every finitely generated subgroup is
-$\frac1n\Z$ for a suitable integer $n\ge1$, after harmless enlargement.
+When $\Gamma=\Q$, every finitely generated subgroup is contained in
+$\frac1n\Z$ for a suitable integer $n\ge1$, by taking a common
+denominator of its generators.
 Consequently
 \[
  \mathscr P_\Q=\bigcup_{n\ge1}\C((t^{1/n})),
@@ -566,11 +600,20 @@ $\Phi(a_1,\ldots,a_m)$, and this value belongs to $\Pfield$.
 \end{proposition}
 \begin{proof}
 Choose one finitely generated subgroup $H$ containing all the input
-supports. The finite union of their positive supports is well ordered.
-The positive-support lemma gives strong summability of all monomial
-contributions, including finiteness over all word lengths. Every resulting
+supports. Each nonzero input has entirely positive support because
+its least exponent is positive. Their finite union is well ordered.
+The positive-support lemma says that the monoid of finite sums from
+this union is well ordered, with only finitely many words giving any
+prescribed sum, over all word lengths. Tagging the
+letters of such a word by the $m$ input variables still gives finitely
+many choices. Thus all formal monomial contributions are strongly
+summable, regardless of the coefficients of $\Phi$. Every resulting
 exponent is a finite sum of input exponents and hence lies in $H$.
 The evaluated series therefore belongs to $\C((t^H))$.
+Here a zero argument simply kills every monomial using that variable;
+the constant monomial contributes at exponent zero. No convergence of
+successive total-degree truncations is needed, even when the positive
+input valuations are not cofinal in $\Gamma$.
 \end{proof}
 
 Thus infinitesimal exponential and logarithm do not leave the probe
@@ -607,6 +650,11 @@ value to $a$. Otherwise let $n$ be the least positive integer with
 $na\in B'$ and choose $c\in\C^\times$ with
 $c^n=\chi(na)$. The prescription
 $\chi(b+ka)=\chi(b)c^k$ is well-defined and extends the character.
+For if $b+ka=b'+k'a$, then $(k-k')a\in B'$. In the first case this
+forces $k=k'$ and $b=b'$. In the second, division with remainder by
+$n$ shows $k-k'=\ell n$ for some integer $\ell$; consequently
+$\chi(b'-b)=\chi(na)^\ell=c^{k-k'}$, which gives the same assigned value.
+The formula respects addition because $\chi$ is a homomorphism on $B'$.
 Both cases contradict maximality. Hence the maximal domain is $A$.
 
 For separation, define a character nontrivial on a given nonzero element
@@ -657,6 +705,9 @@ is at most $D$, so $D!\gamma\in G$.
 
 It follows that $B/G$ is a subgroup of
 $(\frac1{D!}G)/G$, a finite group because $G$ is finitely generated.
+More explicitly, if $G\cong\Z^k$, this quotient is isomorphic to
+$(\Z/D!\Z)^k$: multiplication by $D!$ identifies it with $G/(D!)G$.
+This includes $G=0$ and $D=1$.
 Write $e=[B:G]$. A finite abelian group of order $e$ has exactly $e$
 complex characters, as is seen by decomposing it into finite cyclic
 groups. Each character extends from $B/G$ to $\Gamma/G$.
@@ -683,7 +734,7 @@ algebraic over the monomial field
 belongs to $\Pfield$.
 \end{proposition}
 \begin{proof}
-A polynomial over $\Pfield$ has finitely many coefficients. Choose a
+A nonconstant polynomial over $\Pfield$ has finitely many coefficients. Choose a
 single finitely generated $G$ containing all their supports. A root $f$
 exists in $K_\Gamma$ by the standard Hahn closedness theorem.
 It is algebraic over $\C((t^G))$, so
@@ -711,7 +762,11 @@ finitely generated exponent group.
 
 \section{A prime-denominator approximation barrier}\label{hnd:sec:barrier}
 
-Fix $\delta>0$ and set $s=t^\delta$. Let $\primes$ be the ordinary set
+Fix $\delta>0$ and set $s=t^\delta$. Distinct nonnegative integer
+multiples of $\delta$ give distinct exponents, so no nonzero polynomial
+over $\C$ vanishes at $s$. Thus $s$ is transcendental and
+$\C(t^{\Z\delta})=\C(s)$ is a rational-function field.
+Let $\primes$ be the ordinary set
 of positive primes, in increasing order. Define
 \begin{equation}\label{hnd:eq:hdefinition}
  h_\delta=\sum_{p\in\primes}s^{1-1/p},\qquad
@@ -798,18 +853,22 @@ The subgroup of $\Gamma/G$ generated by these support classes contains
  \frac{\delta}{p_1}+G,\ldots,\frac{\delta}{p_N}+G,
 \]
 since $q_p\delta\equiv-\delta/p\pmod G$.
-These classes generate $(\frac1{P_N}\Z\delta)/(\Z\delta)$, whose order
-is $P_N$. Therefore $D\ge P_N$.
+These classes generate $(\frac1{P_N}\Z\delta)/(\Z\delta)$: the integers
+$P_N/p_1,\ldots,P_N/p_N$ have greatest common divisor one, so B\'ezout's
+identity produces $\delta/P_N$ from the $\delta/p_j$. This quotient has
+order $P_N$, because $\delta$ has infinite order. Therefore $D\ge P_N$.
 
-On the other hand, $h_{\delta,N}\in\C(s^{1/P_N})$, an extension of
-$\C(s)$ of degree at most $P_N$. Its support contains the first $N$
+On the other hand, put $u=t^{\delta/P_N}$. Then $u^{P_N}=s$ and
+$h_{\delta,N}=\sum_{j=1}^N u^{P_N-P_N/p_j}$ lies in $\C(u)$, an
+extension of $\C(s)$ of degree at most $P_N$. Its support contains the first $N$
 exponents, so the same lower bound shows that its degree is exactly
 $P_N$. Its difference from $h_\delta$ has least exponent
 $q_{p_{N+1}}\delta$, which proves both admissibility and
 \eqref{hnd:eq:partialprecision}.
 
-For real approximants, complexifying can only decrease field degree,
-so the same lower bound applies. The displayed real finite sum has
+For real approximants, adjoining $i$ can only decrease field degree:
+an $\R(s)$-basis of $\R(s,a)$ spans $\C(s,a)$ over $\C(s)$.
+Thus $[\C(s,a):\C(s)]\le[\R(s,a):\R(s)]$, so the same lower bound applies. The displayed real finite sum has
 real degree at most $P_N$ and hence exactly $P_N$.
 \end{proof}
 
@@ -838,7 +897,7 @@ If $a$ is algebraic over $\C(s)$ of degree less than $P_N$, then
  v(h_\delta-a)\le q_{p_N}\delta.
 \]
 No sequence of algebraic approximants, regardless of the growth of
-its degrees, converges to $h_\delta$ in the full valuation topology.
+its degrees, converges to $h_\delta$ in the intrinsic $\Gamma$-valuation topology.
 \end{corollary}
 \begin{proof}
 The first assertion is the contrapositive of
@@ -846,6 +905,9 @@ Theorem~\ref{hnd:thm:degree}. The second follows from
 Theorem~\ref{hnd:thm:barrier}: every such approximant stays outside the
 valuation neighborhood $v(h_\delta-a)>\delta$.
 \end{proof}
+The same fixed neighborhood excludes convergence of any net of these
+approximants. Increasing degrees or replacing sequences by nets cannot
+cross the missing valuation scale.
 
 \begin{remark}[What the degree law does not measure]\label{hnd:rem:degreescope}
 A field degree is not a lower bound for expression length or running
@@ -990,8 +1052,13 @@ For $k=0,\ldots,p-1$,
 \begin{equation}\label{hnd:eq:orbit-tail}
  T^k(h_r)=h_r+(\zeta^{-k}-1)t^{q_p\delta}.
 \end{equation}
-These are $p$ distinct elements. Since $T$ fixes the coefficients of
-$R$, they are all roots of the nonzero polynomial $R$. This contradicts
+These are $p$ distinct elements, since their coefficients at
+$q_p\delta$ are the distinct numbers $\zeta^{-k}$. The extension
+character need not have order $p$ on all of $\Gamma/J$; only these
+$p$ values and the displayed action on $h_r$ are used.
+Since $T$ fixes the original coefficients and every previous $h_j$,
+it fixes every coefficient of $R$. All the displayed elements are
+therefore roots of that same nonzero polynomial. This contradicts
 $p>d$. The induction is complete.
 \end{proof}
 
@@ -1096,6 +1163,7 @@ For $b\ne0$, the quadratic value at $(a,b)$ is
  |b|^2\left(|a/b+h|^2-t^{2\delta}\right).
 \]
 Theorem~\ref{hnd:thm:barrier} applies to $-a/b\in\Pfield$.
+When $b=0$ and $(a,b)\ne0$, the value is $|a|^2>0$.
 The remaining statements follow directly from the determinant and
 quadratic identity.
 \end{proof}
@@ -1164,7 +1232,10 @@ For every $j=0,\ldots,r$, choose $b_j\in\Pfield$ with
  v(a_j-b_j)>m_0+\delta.
 \]
 For $j\ge1$, these approximations preserve the minimum valuation:
-$\min_jv(b_j)=m_0$. Write
+$\min_jv(b_j)=m_0$. Indeed, all errors have valuation greater than
+$m_0$, so no $b_j$ has valuation below $m_0$, and an $a_j$ with
+valuation $m_0$ retains its nonzero leading coefficient. In particular,
+$(b_1,\ldots,b_r)\ne0$. Write
 $L_a=a_0+\sum h_ja_j$ and $L_b=b_0+\sum h_jb_j$.
 Since each $v(h_j)>0$,
 \[
@@ -1214,6 +1285,12 @@ There are explicit Hermitian matrices over $\C((t^\Q))$ with inertia
 $(1,r,0)$ that are strictly positive on every nonzero vector with
 complex Levi--Civita coordinates.
 \end{corollary}
+\begin{proof}
+Choose the almost-disjoint prime tails with $\Gamma=\Q$ and $\delta=1$.
+Theorem~\ref{hnd:thm:inertia} gives the inertia, and
+Theorem~\ref{hnd:thm:closedseparation} gives strict positivity on the
+closure identified in Proposition~\ref{hnd:prop:lc}.
+\end{proof}
 
 The coefficients of these matrices are \emph{not} all in the
 Levi--Civita field. In particular, $h_\delta$ has infinitely many
@@ -1246,11 +1323,17 @@ If $E$ is not order dense, a size-two form can in fact be strictly
 positive on every nonzero $E$-vector and negative at an $F$-vector.
 \end{proposition}
 \begin{proof}
-Assume density. If a quadratic form is negative at a point in $F^n$,
-polynomial continuity in the product order topology makes it negative
-on some product of open intervals around that point. Each interval
-contains an element of $E$. Thus an $E$-vector already has negative
-value. This proves (i)$\Rightarrow$(ii), and
+Assume density and let $q(x)=x^TAx$ satisfy $q(u)<0$ for some $u\in F^n$.
+We can see the needed polynomial continuity directly over any ordered
+field. Put
+\[
+ C=1+\sum_{i,j}|A_{ij}|\bigl(|u_i|+|u_j|+1\bigr),\qquad
+ \theta=\min\left(1,\frac{-q(u)}{2C}\right)>0.
+\]
+If $|x_i-u_i|<\theta$ for every $i$, expanding $q(x)-q(u)$ gives
+$|q(x)-q(u)|<C\theta\le-q(u)/2$, so $q(x)<0$.
+Density supplies such an $x\in E^n$ by choosing each coordinate in
+$(u_i-\theta,u_i+\theta)$. This proves (i)$\Rightarrow$(ii), and
 (ii)$\Rightarrow$(iii) is immediate.
 
 Conversely, if $E$ is not dense, choose $a<b$ in $F$ such that
@@ -1273,7 +1356,8 @@ For the corresponding complexified fields $E[i]\subseteq F[i]$, the
 same conclusion follows by applying continuity to real and imaginary
 coordinates. The real witness above also works directly: if
 $z/w=x+iy$ with $x,y\in E$, then
-$|z/w-h|^2=(x-h)^2+y^2>e^2$.
+$|z/w-h|^2=(x-h)^2+y^2>e^2$. This handles $w\ne0$; for
+$w=0$ and $z\ne0$, the quadratic value is $|z|^2>0$.
 
 This proposition is why a bare example over a nondense subfield would
 be too weak a contribution by itself. The prime-tail package specifies
@@ -1340,11 +1424,19 @@ local to each finite input. No set containing all surreal numbers, and
 no class-indexed Hahn summation, is being used.
 
 An analogous statement applies to actual surcomplex coordinates
-algebraic over rational expressions in surreal monomials. Any particular
-algebraic equation uses finitely many such expressions, hence finitely
-many monomial generators. The character support bound places its roots
-in a finite-lattice workspace. Again this does not include a coordinate
-whose defining parameters already contain the prime tail itself.
+algebraic over rational expressions in surreal monomials. To justify
+this without assuming a workspace already contains the root, let $x$
+be such a coordinate. Its equation uses finitely many monomials;
+let $H$ be the finitely generated group of their Hahn exponents.
+Adjoin $1$ and the negatives of all Conway exponents of $x$ to $H$
+and take the divisible hull. This is a nonzero set-sized ordered subgroup $\Gamma'$ of
+$\No$, and its Hahn workspace contains both $x$ and the equation.
+Now apply Lemma~\ref{hnd:lem:supportdegree} inside that workspace with
+$G=H$ and $L=\C(t^H)$. If $D=[L(x):L]$, the support of $x$ lies in
+$\frac1{D!}H$, which is finitely generated. Thus $x$ is an allowed probe.
+For a finite vector take the sum of these finitely many support groups.
+This does not include a coordinate whose defining parameters already
+contain the prime tail itself.
 
 \section{The exact two-scale matrix criterion}\label{hnd:sec:twoscale}
 
@@ -1363,10 +1455,12 @@ $x^*Ax\ge0$ for all $x$. If $u^*Au=0$, then $Au=0$.
 \end{lemma}
 \begin{proof}
 Fix a vector $w$ and write $b=w^*Au$ and $c=w^*Aw\ge0$.
-If $b\ne0$, choose $s=-\lambda b$ with $\lambda>0$ in $L$.
-Then
+If $b\ne0$, then $|b|^2>0$ because it is the sum of the squares of
+its real and imaginary parts. Choose $s=-\lambda b$ with $\lambda>0$
+in $L$. Hermitian symmetry gives $u^*Aw=\bar b$, so
 \[
  (u+sw)^*A(u+sw)
+ =s\bar b+\bar s b+|s|^2c
  =-2\lambda|b|^2+\lambda^2|b|^2c.
 \]
 For $c=0$ this is negative. For $c>0$, taking $\lambda=1/c$
@@ -1375,8 +1469,8 @@ $w^*Au=0$ for every $w$, and the coordinate vectors give $Au=0$.
 \end{proof}
 
 \begin{theorem}[Two-scale matrix positivity]\label{hnd:thm:twoscale}
-Let $P,Q\in M_d(\C)$ be Hermitian. If $P\succeq0$, let
-$N=\ker P$ and let $C_N$ denote the compression of $Q$ to $N$,
+Let $P,Q\in M_d(\C)$ be Hermitian. Write $N=\ker P$ and let
+$C_N$ denote the compression of $Q$ to $N$,
 viewed as an ordinary Hermitian operator on $N$.
 Then
 \begin{equation}\label{hnd:eq:twoscalecriterion}
@@ -1428,24 +1522,43 @@ has the block form
  \eps B^*&\eps C_+
  \end{pmatrix}.
 \end{equation}
+Assume first that both active spaces have positive dimension.
 Let $U=P_R+\eps A$. Every leading principal minor of $U$ has positive
-constant coefficient, so $U$ is positive definite over the ordered
-Hahn field. This is also immediate from an $LDL^*$ decomposition.
-Its inverse has entries rational in $\eps$ and constant term $P_R^{-1}$.
-The Schur complement of $U$ in \eqref{hnd:eq:activeblock} is
+constant coefficient, the corresponding minor of $P_R$.
+For a Hermitian matrix over an ordered field complexification, positive
+leading principal minors imply positive definiteness: elimination gives
+an $LDL^*$ factorization with diagonal pivots
+$\Delta_j/\Delta_{j-1}>0$, where $\Delta_0=1$ and $\Delta_j$ is the
+$j$th leading principal minor. Its quadratic value is a sum of positive
+pivots times squared moduli after an invertible triangular change of
+coordinates. This works for all Hahn vectors and needs no real-closedness.
+Thus $U\succ0$.
+
+The adjugate formula shows that $U^{-1}$ has entries rational in $\eps$.
+Since $\det U$ has nonzero constant term, its reciprocal has valuation
+zero and reciprocal constant coefficient; hence the constant matrix of
+$U^{-1}$ is $P_R^{-1}$. Put
 \[
- \eps\bigl(C_+-\eps B^*U^{-1}B\bigr).
+ V=\begin{pmatrix}I&-\eps U^{-1}B\\0&I\end{pmatrix}.
 \]
-Every leading principal minor of the factor in parentheses has the
-positive constant coefficient of the corresponding minor of $C_+$.
-That factor, and hence the Schur complement, is positive definite.
-Block Gaussian congruence now proves positivity on the entire active
-space. If either active space has dimension zero, the same argument
-reduces to its remaining positive block without taking an empty inverse.
+A block multiplication gives the explicit congruence
+\[
+ V^*\begin{pmatrix}U&\eps B\\\eps B^*&\eps C_+\end{pmatrix}V
+ =\diag\bigl(U,\eps(C_+-\eps B^*U^{-1}B)\bigr).
+\]
+The second factor in parentheses is Hermitian and has constant matrix
+$C_+$. Every leading principal minor therefore has positive constant
+coefficient, so the same pivot argument makes it positive definite.
+Since $\eps>0$ and $V$ is invertible, the entire active block is
+positive definite. If $R=0$, it is simply $\eps C_+$; if $N_+=0$,
+it is $P_R+\eps A$. If both are zero there is no active block.
+These cases need no empty inverse.
 
 The only kernel is therefore $N_0\otimes_\C K_\Gamma$.
-Within $N$, the condition $Qu=0$ is equivalent to $u\in\ker C_N$
-under our hypotheses. This proves \eqref{hnd:eq:kernel} and
+Within $N$, the condition $Qu=0$ implies $C_Nu=0$ by compression;
+the converse is exactly the assumed annihilation clause. Thus
+$N_0=\ker P\cap\ker Q$, and the active dimension is
+$\dim R+\dim N_+=\rank P+\rank C_N$. This proves \eqref{hnd:eq:kernel} and
 \eqref{hnd:eq:rank}. All inverses used are rational expressions in $\eps$;
 no sequential convergence assertion is involved.
 \end{proof}
@@ -1551,13 +1664,22 @@ The first is a finite signed real measure and the second a finite
 complex vector measure. Write $\nu_u=\nu_u^+-\nu_u^-$ for its Jordan
 decomposition, and $|\sigma_u|$ for total variation using the ordinary
 Euclidean norm. Any other ordinary norm on $\C^d$ gives the same null
-sets.
+sets. Finiteness follows directly from the entry measures: for each event $E$,
+\[
+ |\sigma_u|(E)\le\sum_{i,j}|u_j|\,|(M_1)_{ij}|(E)<\infty.
+\]
+Indeed, apply the triangle inequality to $\|M_1(B)u\|$ on each piece of
+a finite measurable partition of $E$, then take the supremum over partitions.
 
 For a positive scalar measure $\lambda$, the assertion
 $|\sigma_u|\ll\lambda$ means that $\sigma_u$ vanishes on every
 measurable subset of every $\lambda$-null set. Indeed, this is equivalent
 to the usual variation formulation by the definition of total
-variation through finite partitions.
+variation through finite partitions. If $\sigma_u(B)=0$ for every
+measurable $B\subseteq E$, each partition sum defining $|\sigma_u|(E)$
+is zero. Conversely,
+$\|\sigma_u(B)\|\le|\sigma_u|(B)\le|\sigma_u|(E)$, so zero variation
+on $E$ forces all those vector masses to vanish.
 
 \subsection{The characterization}
 
@@ -1593,7 +1715,9 @@ is also $\mu_u$-null. Positivity gives
  0\le u^*M(B)u=\eps\nu_u(B),
 \]
 so $\nu_u$ restricts to a positive measure on $E$.
-Therefore $\nu_u^-(E)=0$, proving \eqref{hnd:eq:scalar-null}.
+For example, intersect $E$ with a negative set in a Hahn decomposition
+of $\nu_u$: its mass is $-\nu_u^-(E)$ and must be nonnegative.
+Thus $\nu_u^-(E)=0$, proving \eqref{hnd:eq:scalar-null}.
 
 Next suppose $(\mu_u+\nu_u^+)(E)=0$. By
 \eqref{hnd:eq:scalar-null}, $\nu_u^-(E)=0$ as well.
@@ -1931,7 +2055,8 @@ the matrix case with more than two exponents remains open
 (Question~\ref{hnd:q:morescales}; Section~\ref{hnd:sec:position}).
 \item Theorem~\ref{hnd:thm:independence} neither implies nor follows from
 the independence theorems of the tail-spans and bounded-support reports;
-the bases are incomparable (Section~\ref{hnd:sec:position}).
+the comparison uses incomparable bases for $\Gamma=\Q$, with different
+witnesses (Section~\ref{hnd:sec:position}).
 \item The Lean proof of the scalar two-scale criterion recorded in
 \repo{FORMALIZATION.md} covers no matrix statement and no prime-tail
 statement of this report (Section~\ref{hnd:sec:position}).
@@ -1946,7 +2071,7 @@ This report is built from \emph{one} manuscript: the archive
 \texttt{hidden\_negative\_directions}, manuscript~06 of batch~19 of the
 collection, dated 22 September 2026 and pinned to repository commit
 \nolinkurl{048b72cf7cbfc8ab246e4f73788c10460cb3f6e0}. It was placed in
-commit \texttt{52c7ab6} as a new report, because it continues themes and
+commit \texttt{30dfb4f} as a new report, because it continues themes and
 non-claims of existing reports but answers no question a report names.
 There was no second source; nothing was merged and nothing was selected
 away. Every result, proof, example, question and limitation of the
@@ -1959,8 +2084,8 @@ The delivered verification program \repo{code/verify.py}, build script
 this one), the dependency pin \repo{data/requirements.txt}, and the audit
 note \repo{source_audit.md} are kept byte-identical. The audit note
 records the source's own audit at its pin; corrections are made here, not
-in that file. The manuscript's article and README were rewritten, and the
-delivered PDF was replaced by a build of this text.
+in that file. During editorial assembly at \texttt{ed88b8f}, the
+manuscript's article and README were rewritten, and a newly built PDF was added.
 
 The editorial changes are these.
 \begin{enumerate}[label=(\arabic*)]
@@ -2059,8 +2184,8 @@ The subsection above is the source's, as of its pin. Checked against the
 repository for this report:
 \begin{itemize}
 \item \emph{Reader map.} At the pin \repo{README.md} did describe 36
-reports. Since then commit \texttt{52c7ab6} has placed four new reports,
-this one among them.
+reports. Raw placement \texttt{30dfb4f} added four new reports,
+this one among them, bringing the count then to 40.
 \item \emph{Negative searches.} ``Algebraic probe'' occurs nowhere under
 \texttt{docs/} at the pin, as the source found. ``Finite-lattice'' does
 occur at the pin, in an unrelated sense: \lbl{tate:cor:lattice} of
@@ -2089,7 +2214,7 @@ and \repo{NOTATION.md}.
 placed with this report, could not have been seen by the source; its
 relation is in Section~\ref{hnd:sec:position}.
 \end{itemize}
-Between the pin and the placement commit, the spectral-theory,
+Between the pin and assembly at \texttt{ed88b8f}, the spectral-theory,
 Hahn--Herglotz, tail-spans and measures reports received no change of
 substance to the material compared here.
 

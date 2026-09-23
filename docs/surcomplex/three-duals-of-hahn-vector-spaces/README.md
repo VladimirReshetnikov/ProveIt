@@ -3,12 +3,12 @@
 **Strong Hahn operators, completion defects, and invisible functionals**
 Research report, 22 September 2026, built from one manuscript (item 04 of the
 collection's nineteenth batch, prepared for Vladimir Reshetnikov, written
-against repository revision `048b72c`, placed at `52c7ab6`). AI-assisted
-draft; not refereed; no Lean formalization.
+against repository revision `048b72c`, placed at `30dfb4f` and assembled at
+`ed88b8f`). AI-assisted draft; not refereed; no Lean formalization.
 
 ```
 article.tex        the report, standalone LaTeX with an internal bibliography
-article.pdf        the compiled report, 34 pages (title, contents i-ii, pages 1-31)
+article.pdf        the compiled report, 39 pages (title, contents i-ii, pages 1-36)
 README.md          this guide
 source_audit.md    the manuscript's own repository and literature audit, as delivered
 code/              verify_examples.py            exact finite checks (standard library only)
@@ -17,13 +17,24 @@ data/              verification_report.json      recorded output of that program
 
 Every label in `article.tex` carries the prefix `duals:`. The 70 labels of the
 delivered manuscript were all kept, each with the prefix added; seven labels
-were added at placement (`duals:sec:conventions`, `duals:rem:order-unit`,
+were added during assembly (`duals:sec:conventions`, `duals:rem:order-unit`,
 `duals:rem:ihs-riesz`, `duals:rem:basechange-collection`,
 `duals:sec:collection`, `duals:tab:ihs`, `duals:app:provenance`). No `duals:`
-label currently has a mapping in the [formalization ledger](../../FORMALIZATION.md).
+label currently has a row in the **Implementation mappings** section of the
+[formalization ledger](../../FORMALIZATION.md); its statement index lists
+labels without asserting proof coverage.
 The files in `code/` and `data/` and `source_audit.md` are byte-identical to
 the delivery; `source_audit.md` describes the repository at the manuscript's
 pin, not the current tree (see "Relation to neighbouring reports").
+
+The main-text proof review now covers Sections 1–15. It expands the support,
+completion, duality, Hilbert-geometry and enlargement arguments; checks the
+summaries against their hypotheses; and reconciles the cited local results.
+All result numbers and labels are preserved. Targeted primary-source checks
+cover summability terminology, the normal-form convention and the classical
+one-step extension statement. Remaining imported-result and source
+reconciliation work is separate; see the [review record](../../REVIEW.md).
+No new Lean coverage is claimed.
 
 ## The setting
 
@@ -74,7 +85,7 @@ Numbers refer to the built `article.pdf`.
    `cf(Γ) = ℵ0`. Hence the trichotomy `E ⊊ C = V_Γ` (`Γ ≅ Z`),
    `E ⊊ C ⊊ V_Γ` (noncyclic, countable cofinality), `E = C ⊊ V_Γ`
    (uncountable cofinality). An order unit is sufficient but not necessary
-   for the middle case.
+   for `E ⊊ C`; when `Γ` is noncyclic this gives the middle case.
 4. **Completeness and extension (Proposition 5.1, Theorem 5.3).** `V_Γ` is
    spherically complete at every rank with no topology on `V`; a contractive
    Hahn–Banach extension theorem over arbitrary `Γ`, proved in full (a
@@ -136,7 +147,9 @@ the manuscript's limitations was dropped. The main ones:
   formulas. The exact sequence has no canonical splitting; invisible
   functionals have no canonical transport under enlargement.
 - No least real-Hahn operator norm is defined; `F`-valued boundedness is not
-  an ordinary norm estimate.
+  an ordinary norm estimate. The spectral norm-attainment theorem uses
+  **nonnegative** bounds; the zero operator has least nonnegative bound `0`
+  but no least positive bound.
 - Everything is set-sized: no Zorn argument over a proper class, no dual of a
   class-sized space over `No[i]`; the intrinsic topology is not the fine
   topology; a Hilbert vector is not a surcomplex scalar.
@@ -156,17 +169,18 @@ citing it only by label because that report is receiving additions:
 - `ihs:hh:prop:riesz` (a non-represented continuous functional) is shown in
   Remark 8.5 to be **strong**, with a discontinuous leading coefficient, so it
   lies in the first gap `D_str / D_rep`, not the second. This is an editorial
-  comparison added at placement.
+  comparison added during assembly.
 - `ihs:hh:thm:closedrange` (closed range with zero orthogonal complement,
   infinite codimension) is the in-collection predecessor of Theorem 9.1 (a
   hyperplane). `ihs:hh:prop:complete` (rank-one metric completeness) is
   contained in Proposition 5.1. `ihs:hh:prop:inner` is Proposition 8.1.
   `ihs:hh:cor:autobounded` and `ihs:hh:thm:norm` are the bounded-coefficient
   counterparts of Proposition 8.2 and Theorem 8.3. `ihs:hh:cor:extension`
-  (persistence under every enlargement) answers a different question from
-  Theorem 10.1. `ihs:warn:three` ("not `H ⊗ K`") is made exact by Theorems
-  4.2 and 4.6. For Part II, `ihs:rf:lem:strongaction` is contained in
-  Theorem 3.2 with `V = C^(I)`, and `ihs:rf:prop:noconv` is the scalar form of
+  (persistence of constant-normal spectra and the stated injective-operator
+  positive-order range defects under every enlargement) answers a different
+  question from Theorem 10.1. `ihs:warn:three` ("not `H ⊗ K`") is made exact by Theorems
+  4.2 and 4.6. For Part II, the operator-action clause of
+  `ihs:rf:lem:strongaction` is contained in Theorem 3.2 with `V = C^(I)`, and `ihs:rf:prop:noconv` is the scalar form of
   the two-scale phenomenon.
 
 [Entire functions at arbitrary rank](../entire-functions-at-arbitrary-rank/)
@@ -182,10 +196,21 @@ Part I's divisibility hypothesis and proved `ihs:hh:thm:closedrange` at every
 rank (revision `6e34651`; at the pin, for divisible `Γ ⊆ R`), that
 `ihs:hh:prop:riesz` and `ihs:hh:thm:closedrange` were omitted from the
 manuscript's comparison, and that the two manuscripts added to the spectral
-report at `52c7ab6` contain no theorem about duals, completions or strong
-maps. The manuscript's finding that no coefficient-rank completion theorem,
-restriction sequence or completion-intersection formula appears in the
-collection still holds for the current tree.
+report at `30dfb4f` contain no theorem about duals, completions or strong
+maps. The negative search for other coefficient-rank completion, restriction
+sequence and completion-intersection theorems describes the assembly at
+`ed88b8f`; it is not a renewed repository-wide absence claim. The later first-kappa
+report now explicitly summarizes this report's completion results in
+`fkc:rem:countable-analogue` and proves a distinct cardinal-support analogue.
+
+For the uncountable-cardinal analogue of the completion results — Hahn series
+with fewer than `κ` terms — see
+[first-kappa-coefficients](../first-kappa-coefficients/) (`fkc:thm:completion`,
+`fkc:thm:dichotomy`). Its setting has uncountable `κ`, real or complex
+coefficients and nonzero divisible `Γ`. **When that bounded-support field is
+proper in the full Hahn field**, it is complete exactly when
+`cf(Γ) ≠ cf(κ)`. If every Hahn support already has fewer than `κ` terms,
+it equals the full Hahn field and is complete regardless of that test.
 
 ## Build
 
@@ -212,9 +237,39 @@ assertions in nine groups (operator composition 60, scalar compatibility 60,
 finite-family regrouping 60, leading squared norm 180, coefficient ranks below
 cuts 69, two-scale ranks 69, projection algebra 69, descending-support prefix
 42, cancellation 1), with seed 20260922 and `fractions.Fraction` arithmetic. A
-rerun at placement (Python 3.14) reproduced it exactly. The program does not
+rerun during assembly (Python 3.14) reproduced it exactly. The program does not
 verify infinite well-ordering or the arbitrary-rank Hom theorem, the
 completion and cofinality classifications, spherical completeness or
 Hahn–Banach, the existence of Hamel or invisible functionals, the
 infinite-dimensional orthogonal-complement and missing-infimum claims, or
 novelty.
+
+## Current proof review
+
+The review supplies the intermediate support, truncation, extension and
+separation arguments; canonical quotient maps; Hilbert norm and Riesz
+calculations; and the exact cofinal/noncofinal topology comparison. Strong
+operators extend uniquely as strong operators. The two-scale functional is
+explicitly restricted from the old vector topology into the larger scalar
+field with its Hausdorff intrinsic topology.
+
+The corrected comparisons distinguish positive from nonnegative bounds at
+the zero operator, an orthogonal complement from an orthogonal direct-sum
+complement, and scalar-valued functionals from general vector-valued operators.
+The first-kappa completeness criterion now includes its properness hypothesis.
+The formalization discussion distinguishes inventory entries from implementation
+mappings. Earlier pass details and their validation counts are retained in
+[docs/REVIEW.md](../../REVIEW.md), rather than restated as current status here.
+
+Primary-text checks cover BKKPS §§1.1–1.3, Kaplan–Krapp–Serra §§2.2 and 2.4,
+and Morillon §3.1.2, Lemma 2. The last uses real-valued seminorms; the arbitrary
+ordered-group extension is proved in this article. BKKPS's ultrafiniteness
+holds for the coefficient field here, but arbitrary term-dependent Hahn-field
+scalars can destroy summability. These checks do not certify priority or
+finish the remaining imported-result and source-reconciliation work.
+
+The rebuilt PDF retains all 77 source labels and result numbers. All three
+delivered audit/code/data artifacts remain unchanged, and the 610 exact
+assertions reproduce byte-identical JSON. Those finite checks do not prove
+infinite-dimensional classification, transfinite support arguments or the
+choice-based constructions. No Lean mapping for this report is claimed.

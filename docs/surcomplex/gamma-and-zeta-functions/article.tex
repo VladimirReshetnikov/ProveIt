@@ -1,0 +1,2058 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{booktabs,longtable,array}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\definecolor{ink}{HTML}{17324D}
+\definecolor{linkblue}{HTML}{245A81}
+\hypersetup{colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue,
+ pdftitle={Gamma and Zeta over the Surcomplex Numbers},
+ pdfauthor={AI-assisted research study prepared for Vladimir Reshetnikov}}
+\urlstyle{same}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{15pt}
+\setlist{nosep,leftmargin=1.8em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{Gamma and zeta over the surcomplex numbers}}
+\fancyhead[R]{\small September 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\Oz}{\mathbf{Oz}}
+\newcommand{\SC}{\mathbb K}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\mm}{\mathfrak m}
+\newcommand{\st}{\operatorname{st}}
+\newcommand{\pp}{\operatorname{pp}}
+\newcommand{\fin}{\operatorname{fin}}
+\newcommand{\cis}{\operatorname{cis}}
+\newcommand{\Arg}{\operatorname{Arg}}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\Mer}{\operatorname{Mer}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\RH}{\mathsf{RH}}
+\newcommand{\Sh}{\mathop{\sum}\nolimits^{\mathrm H}}
+\newcommand{\Ph}{\mathop{\prod}\nolimits^{\mathrm H}}
+\newcommand{\DD}{\mathcal D}
+\newcommand{\LSt}{L_{\mathrm{St}}}
+\newcommand{\zD}{\zeta_{\mathrm D}}
+\newcommand{\zp}{\zeta^{\#}}
+\newcommand{\Gp}{\Gamma^{\#}}
+\newcommand{\xip}{\xi^{\#}}
+\newcommand{\val}{v}
+\newcommand{\repo}{\texttt{VladimirReshetnikov/Surreal}}
+\newcommand{\pin}{\texttt{905dd19954db43ac81f76f72036520d0eadc5710}}
+\newcommand{\smallO}{\mathrm{o}}
+\newcommand{\bigO}{\mathrm{O}}
+\newcommand{\symh}{\mathcal S}
+\newcommand{\ds}{\displaystyle}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{16mm}
+{\color{ink}\Huge\bfseries Gamma and Zeta over the\\[4pt] Surcomplex Numbers\par}
+\vspace{10mm}
+{\Large Canonical finite lifts, infinite Dirichlet series,\\[3pt]
+phase obstructions, and the Riemann hypothesis\par}
+\vspace{13mm}
+{\large An AI-assisted research study prepared for\\[3pt]
+Vladimir Reshetnikov\par}
+\vspace{5mm}
+September 2026
+\vspace{14mm}
+\begin{abstract}
+There is more than one mathematically defensible meaning of a Gamma or zeta
+function with surcomplex arguments. We construct the canonical Taylor--Laurent
+extensions on the finite surcomplex plane and prove exact preservation of their
+divisors. Their Riemann hypothesis is therefore equivalent to the ordinary one.
+A stronger stability statement is proved: all finite zeros of every symmetric
+infinitesimal perturbation of the completed zeta function lie on the critical
+line if and only if the ordinary Riemann hypothesis holds and all its
+nontrivial zeros are simple.
+
+At positive infinite real part, ordinary Dirichlet coefficients of arbitrary
+growth admit a strongly summable, injective Dirichlet-convolution realization;
+in particular, zeta has an exact Euler product and no zeros there. A
+strongly summed Hurwitz expansion at an infinite positive shift recovers the
+Stirling log-Gamma by differentiation. At infinite imaginary part, however,
+phase choices matter. The published phase-forgetting surcomplex exponential,
+coefficientwise Dirichlet summation on translated galaxies, and a single-pole
+zeta continuation are incompatible. A corresponding functional-equation
+obstruction and a Gamma reflection obstruction are proved.
+
+An alternative, elementary-extension construction supports genuine
+infinite-height zeros and transfers classical zero-free regions, counting
+estimates and density results, but does not automatically agree with the
+canonical surreal exponential or Hahn summation. Recent 2026 proportion
+preprints are distinguished from published benchmarks. Finally, assuming RH
+and simplicity, we prove that nonreal zeros created at negative infinitesimal
+de Bruijn--Newman time must escape every ordinary bounded region.
+\end{abstract}
+\vfill
+\noindent\small
+\textbf{Status.} Complete arguments are supplied for the stated derived results,
+relative to the explicitly cited classical and surreal foundations. This is an
+unrefereed research manuscript, not a proof-assistant-verified development.
+It does not assert a proof of the ordinary Riemann hypothesis, a unique global
+surcomplex zeta function, or priority for every consequence derived here.
+\end{titlepage}
+\begingroup
+\footnotesize
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{Scope, provenance, and the central distinction}
+\label{sec:scope}
+
+The question is not answered by replacing the symbol $\C$ with $\No[i]$ in a
+classical formula. The formulas defining Gamma and zeta use several different
+operations: ordinary limits, integrals, infinite products, analytic
+continuation, complex exponentiation and arithmetic counting. These operations
+need not have the same extensions to a non-Archimedean field. The choice of
+extension is part of the definition, not a technicality that can be postponed.
+
+We write $\SC=\No[i]$ for the surcomplex field. Four constructions will be kept
+separate throughout:
+\begin{center}
+\begin{tabular}{P{0.20\textwidth}P{0.32\textwidth}P{0.36\textwidth}}
+\toprule
+Construction & Domain and mechanism & What it establishes\\
+\midrule
+Canonical finite lift & Finite arguments; ordinary germs evaluated at infinitesimals & Exact classical divisors and an RH equivalent to classical RH\\[3pt]
+Infinite-right series & Positive infinite real part and finite imaginary part; strong Hahn sums & An injective arithmetic algebra, Euler products and zero-freeness\\[3pt]
+Selected global prescription & Infinite-height sectors; a specified phase and continuation rule & Extra hypotheses are necessary; some natural combinations are inconsistent\\[3pt]
+Elementary extension & A set-sized elementary model, embedded in $\No[i]$ & Transfer at infinite heights, with transported rather than automatically canonical operations\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{What was read in the repository}
+
+The repository was inspected at the pinned snapshot
+\begin{center}\small\pin.\end{center}
+The principal inspected documents were the documentation catalogue and the
+maintained guides to the Gamma-functions, surcomplex-analysis and
+trigonometry reports \cite{repo,repoGamma,repoAnalysis,repoTrig}. The catalogue
+explicitly distinguishes research drafts, finite verification programs and
+partial Lean coverage. Its general warnings about strong summation,
+coefficientwise summation, fine topology and coefficient rings are retained
+here. This is a targeted audit, not an exhaustive review of every source file
+or every theorem in the repository. A repository search returning no zeta
+matches is not evidence that every existing zeta-related observation is absent.
+
+In particular, the Gamma report already develops a Taylor--Stirling baseline,
+proves nonuniqueness under literal surreal Bohr--Mollerup conditions, and
+studies a finite-phase tube. Those results are not claimed as new here.
+The finite-lift and phase foundations likewise have substantial antecedents
+in the analysis and trigonometry reports and in the literature
+\cite{CE,EK}. The present contribution is the Gamma--zeta comparison, the
+explicit arithmetic and deformation constructions, and the exact logical
+boundaries of possible RH generalizations.
+
+\subsection{How to read the theorem claims}
+
+The statements about ordinary Gamma, zeta, zero counting and the
+de Bruijn--Newman constant are imported results. Hahn support lemmas and the
+surreal exponential are also imported foundations. Results proved from these
+inputs are called \emph{derived theorems}; this describes their proof status,
+not a certified claim of historical novelty.
+
+The most substantial derived statements are the robust RH criterion
+(Theorem~\ref{thm:robust}), the arbitrary-coefficient Dirichlet realization
+(Theorem~\ref{thm:Dirichlet}), the two global phase obstructions
+(Theorems~\ref{thm:gamma-obstruction} and \ref{thm:resonance}), and the
+conditional escape theorem for infinitesimal heat time
+(Theorem~\ref{thm:escape}). Their proofs are independent of any assumed
+numerical verification of RH.
+
+\section{Finite parts, Hahn evaluation, and what a sum means}
+\label{sec:foundations}
+
+\subsection{Finite elements and infinitesimals}
+
+The modulus on $\SC$ is $|x+iy|=(x^2+y^2)^{1/2}$. Define
+\begin{align*}
+\OO&=\{z\in\SC: |z|<r\text{ for some }r\in\R_{>0}\},\\
+\mm&=\{z\in\SC: |z|<r\text{ for every }r\in\R_{>0}\}.
+\end{align*}
+Every $z\in\OO$ has a unique expression $z=c+\varepsilon$ with
+$c\in\C$ and $\varepsilon\in\mm$. We write $c=\st z$. For an ordinary
+set $U\subseteq\C$, its halo is $U^\#=\st^{-1}(U)$. Thus $\C^\#=\OO$.
+The halo $c+\mm$ of one ordinary point is much smaller than a \emph{galaxy}
+$b+\OO$; this distinction will matter at infinite height.
+
+A real surreal has a normal-form decomposition
+$x=\pp(x)+\fin(x)$, where $\pp(x)$ contains its purely infinite terms and
+$\fin(x)$ is finite. This is not the same as standard part: $\fin(x)$ retains
+infinitesimal terms. On finite real arguments there is a canonical trigonometric
+map
+\begin{equation}
+\cis(r+\epsilon)=e^{ir}\Sh_{n\geq0}\frac{(i\epsilon)^n}{n!},
+\qquad r\in\R,\quad \epsilon\in\mm\cap\No.
+\label{eq:cis}
+\end{equation}
+It maps the additive group of finite real surreals onto the entire norm-one
+surcomplex torus, with kernel $2\pi\Z$; see \cite{EK,repoTrig}.
+
+\subsection{Support conventions}
+
+In a set-sized Hahn workspace we write monomials as $t^\gamma$, with
+larger $\gamma$ meaning smaller magnitude. One may regard
+$t^\gamma=\omega^{-\gamma}$ when translating Conway normal forms. A Hahn
+series has well-ordered exponent support. The natural valuation $v$ is its
+least exponent; nonzero ordinary complex constants have valuation zero.
+For nonzero $a,b$, the notation $a\prec b$ means $a/b\in\mm$, and
+$a\sim b$ means $a/b\in1+\mm$.
+
+A family is \emph{strongly summable} when the union of its exponent supports
+is well ordered and each exponent occurs in only finitely many family
+members. Its strong sum is denoted $\Sh$. Every support calculation in this
+article is set-sized. Workspaces may be enlarged to contain the elements
+and exponentials involved; no single fixed Hahn field is asserted to be
+closed under every operation used here.
+
+We use the usual Neumann support lemma: if $S$ is a well-ordered subset of the
+positive cone of an ordered abelian group, the additive monoid generated by
+$S$ is well ordered, and each group element has only finitely many
+representations by finite multisets from $S$. This is the basic justification
+for evaluating power series at infinitesimals. The standard Hahn and surreal
+background is discussed in \cite{Conway,Gonshor,CE,repoAnalysis}.
+
+\begin{lemma}[Infinitesimal formal evaluation]
+\label{lem:evaluation}
+Let $a_n\in\C$ and $\varepsilon\in\mm$. Then
+$\Sh_{n\geq0}a_n\varepsilon^n$ exists. Evaluation commutes with sums,
+products and compositions of formal power series when the inner series has
+zero constant term. The corresponding assertion holds for finitely many
+infinitesimal variables.
+\end{lemma}
+\begin{proof}
+For $\varepsilon\ne0$, its exponent support is well ordered and positive.
+Every exponent appearing in a power of $\varepsilon$ is a finite sum from
+that support. Neumann's lemma gives both the support condition and local
+finiteness of the contributions. Multiplication and composition can
+therefore be regrouped exponent by exponent, with only finitely many terms
+at each exponent. For several variables use the finite union of their
+supports, which is again well ordered and positive. The case of a zero
+variable is immediate.
+\end{proof}
+
+No growth bound on the ordinary coefficients $a_n$ is required. Their
+Archimedean sizes do not change their Hahn valuations. Consequently a
+classically divergent formal series can have an exact value at a nonzero
+surreal infinitesimal. This is useful, but it does not turn that value into
+an ordinary analytic limit.
+
+\subsection{Three incompatible interpretations of an infinite series}
+
+An ordinary convergent complex sum is computed in $\C$. A strong Hahn sum is
+computed by support rules. A coefficientwise mixed sum first performs ordinary
+complex sums at each coefficient and only then takes a strong Hahn sum. They
+are different operations.
+
+For example, at ordinary $\sigma>1$, the family $(n^{-\sigma})_{n\geq1}$
+is not strongly summable: every member has exponent zero. Nevertheless its
+ordinary complex sum is $\zeta(\sigma)$. Conversely, at positive infinite
+$X$, the family $(n^{-X})_{n\geq1}$ has separated monomials and is strongly
+summable. Neither assertion follows from the other.
+
+A strong sum is not, merely by being a strong sum, the limit of finite partial
+sums in the full surreal fine topology. Formal differentiation, ordinary
+complex differentiation, fine differentiation of a local lift and the
+Berarducci--Mantova scalar derivation are also distinct operations. We use
+formal or local analytic differentiation below, and make no unstated scalar
+chain-rule assertion for the Berarducci--Mantova derivation.
+
+\section{Canonical Gamma, zeta, and xi on the finite plane}
+\label{sec:finite}
+
+\subsection{Taylor--Laurent extension}
+
+\begin{definition}[Canonical finite lift]
+For an ordinary holomorphic function $f$ near $c\in\C$, set
+\begin{equation}
+f^\#(c+\varepsilon)=\Sh_{n\geq0}
+ \frac{f^{(n)}(c)}{n!}\varepsilon^n,
+\qquad \varepsilon\in\mm.
+\label{eq:lift}
+\end{equation}
+For an ordinary meromorphic germ
+$f(c+u)=u^m\sum_{n\geq0}a_nu^n$, with $m\in\Z$ and $a_0\ne0$, use
+\begin{equation}
+f^\#(c+\varepsilon)=\varepsilon^m\Sh_{n\geq0}a_n\varepsilon^n
+\label{eq:laurent}
+\end{equation}
+when $\varepsilon\ne0$. At $\varepsilon=0$ use the ordinary value if the
+germ is holomorphic, and retain a meromorphic pole otherwise.
+\end{definition}
+
+Thus a pole at $c$ does not delete the entire halo $c+\mm$: every nonzero
+infinitesimal displacement has a well-defined surcomplex value, usually of
+infinite magnitude. A meromorphic pole is not itself a field element
+called infinity.
+
+\begin{proposition}[Functoriality of canonical lifting]
+\label{prop:functorial}
+The construction respects addition, multiplication, reciprocals where
+nonzero, conjugation, differentiation, and composition where the underlying
+ordinary germs can be composed. Every identity of ordinary meromorphic
+functions lifts to an identity on its finite halo, with removable
+singularities handled before evaluation.
+\end{proposition}
+\begin{proof}
+These are identities of Taylor or Laurent series. Lemma~\ref{lem:evaluation}
+permits their formal operations after infinitesimal evaluation. For a
+reciprocal, the nonzero constant coefficient of a unit permits a geometric
+series in its infinitesimal remainder. Composition is applied after
+subtracting the ordinary value of the inner function. Differentiation is
+coefficientwise formal differentiation of a local series; translating that
+series by another infinitesimal uses the same support lemma. Conjugation
+fixes the real monomials and conjugates ordinary coefficients.
+\end{proof}
+
+The word ``canonical'' in this section refers to the explicit Taylor--Laurent
+rule, not to uniqueness among all functions agreeing with $f$ on $\C$.
+
+\subsection{An exact divisor theorem}
+
+\begin{theorem}[Divisor preservation and infinitesimal valuation]
+\label{thm:divisor}
+Let $f$ be a nonzero ordinary meromorphic function and let
+$m=\ord_c f\in\Z$. Write
+$f(c+u)=a_mu^m+\cdots$, $a_m\ne0$. For every nonzero
+$\varepsilon\in\mm$,
+\begin{equation}
+f^\#(c+\varepsilon)\sim a_m\varepsilon^m,
+\qquad v\bigl(f^\#(c+\varepsilon)\bigr)=m\,v(\varepsilon).
+\label{eq:divisorvaluation}
+\end{equation}
+In particular, $f^\#$ has no zero or pole at a nonzero infinitesimal
+displacement from $c$. Its zeros and poles on the finite plane are exactly
+the ordinary zeros and poles of $f$, with the same multiplicities.
+\end{theorem}
+\begin{proof}
+Factor the Laurent series as
+$a_mu^m(1+u g(u))$, where $g\in\C[[u]]$. Its evaluation is
+$a_m\varepsilon^m(1+\eta)$ with $\eta\in\mm$. The factor $1+\eta$
+is a nonzero unit of valuation zero. This proves both formulas and excludes
+zeros away from $\varepsilon=0$. The order at the centre is read directly
+from the same local factorization. At any finite point the centre is uniquely
+specified by standard part, so these local conclusions exhaust the domain.
+\end{proof}
+
+The theorem is stronger than preservation of standard parts of zeros.
+It says that a fixed ordinary function does not acquire a cloud of displaced
+zeros merely by adjoining infinitesimals. Displaced zero clusters require
+an actual change of the function or its coefficients.
+
+\subsection{Gamma and its identities}
+
+The classical Gamma function is meromorphic, has no zeros, and has simple
+poles at $0,-1,-2,\ldots$, with residues $(-1)^n/n!$ at $-n$;
+its recurrence, reflection and multiplication identities are recorded in
+\cite{DLMFgamma,DLMFidentities}. Hence:
+
+\begin{corollary}
+The canonical finite Gamma function $\Gp$ is zero-free. Its only poles are
+the ordinary nonpositive integers, with their classical residues. It satisfies
+\begin{align}
+\Gp(z+1)&=z\Gp(z),\label{eq:gamma-rec}\\
+\Gp(z)\Gp(1-z)&=\frac{\pi}{\sin^\#(\pi z)},\label{eq:gamma-ref}\\
+\prod_{j=0}^{q-1}\Gp\!\left(z+\frac jq\right)
+ &=(2\pi)^{(q-1)/2}q^{1/2-qz}\Gp(qz),
+ \qquad q\in\N_{>0},\label{eq:gamma-gauss}
+\end{align}
+as identities of finite meromorphic lifts. The index $q$ is an ordinary
+positive integer.
+\end{corollary}
+
+For example, at a nonzero infinitesimal $\varepsilon$,
+\begin{equation}
+\Gp(\varepsilon)=\varepsilon^{-1}-\gamma+
+ \left(\frac{\gamma^2}{2}+\frac{\pi^2}{12}\right)\varepsilon
+ +\bigO(\varepsilon^2),
+\label{eq:gamma-zero}
+\end{equation}
+where $\gamma$ is Euler's constant. Here and below an $\bigO(\varepsilon^k)$
+remainder in a displayed Taylor example means $\varepsilon^k$ times a
+finite value obtained from the indicated ordinary germ; it is not an
+unexplained asymptotic limit along a set-indexed surreal sequence.
+
+\subsection{Zeta, its completed function, and finite functional equations}
+
+Define $\zp$ by the same meromorphic rule. Its unique pole is the ordinary
+point $1$, with residue $1$. At a nonzero infinitesimal displacement,
+\begin{equation}
+\zp(1+\varepsilon)=\varepsilon^{-1}
+ +\Sh_{n\geq0}\frac{(-1)^n\gamma_n}{n!}\varepsilon^n,
+\label{eq:zeta-pole}
+\end{equation}
+where $\gamma_n$ are the classical Stieltjes constants \cite{DLMFzeta}.
+The trivial zeros are exactly the ordinary points $-2,-4,\ldots$, and are
+simple. All other zeros are precisely the ordinary nontrivial zeros,
+with their original multiplicities.
+
+Use the standard normalization
+\begin{equation}
+\xi(s)=\frac12s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s).
+\label{eq:xi}
+\end{equation}
+It is entire, satisfies $\xi(s)=\xi(1-s)$ and
+$\xi(\overline s)=\overline{\xi(s)}$, and has $\xi(0)=\xi(1)=1/2$;
+see \cite{DLMFfe}. Define $\xip$ by lifting the entire function, not by
+multiplying undefined pole values in \eqref{eq:xi}. The product formula
+then holds meromorphically wherever its factors are interpreted, including
+its removable extensions.
+
+\begin{proposition}[Finite completed functional equation]
+\label{prop:finitefe}
+On the finite surcomplex plane,
+\begin{equation}
+\xip(s)=\xip(1-s),\qquad
+\xip(\overline s)=\overline{\xip(s)}.
+\end{equation}
+The ordinary zeta functional equation also lifts:
+\begin{equation}
+\zp(s)=2^s\pi^{s-1}\sin^\#(\pi s/2)\Gp(1-s)\zp(1-s),
+\label{eq:zetafe}
+\end{equation}
+as a meromorphic identity. All powers in this finite formula use the
+canonical finite exponential.
+\end{proposition}
+\begin{proof}
+Apply Proposition~\ref{prop:functorial} to the corresponding ordinary
+identities. At points with apparent products of a pole and a zero, first
+multiply the Laurent germs; their cancellation is a formal algebraic
+operation with finitely many negative powers.
+\end{proof}
+
+\subsection{How the finite Dirichlet series must be interpreted}
+
+Let $s=c+\varepsilon$ with $\Re c>1$. The correct mixed expression is
+\begin{equation}
+\zp(c+\varepsilon)=\Sh_{k\geq0}\frac{(-\varepsilon)^k}{k!}
+ \left(\sum_{n\geq1}^{\C}(\log n)^k n^{-c}\right).
+\label{eq:mixed}
+\end{equation}
+For each ordinary $k$, the inner series converges absolutely in $\C$ and
+is the appropriate zeta derivative. Its value is an ordinary coefficient.
+Only the outer series is a strong Hahn sum. Reading the unadorned expression
+$\sum n^{-s}$ as a strong sum at finite $s$ would be incorrect: infinitely
+many nonzero terms share exponent zero. This remains incorrect even when
+$\Re s$ is a large ordinary real number.
+
+\section{RH on finite halos and an infinitesimal stability criterion}
+\label{sec:robust}
+
+\subsection{The direct finite generalization}
+
+\begin{definition}
+The \emph{canonical finite surcomplex Riemann hypothesis}, denoted
+$\RH_{\mathrm{fin}}$, is
+\begin{equation}
+\forall s\in\OO\quad
+\bigl(\xip(s)=0\ \Longrightarrow\ \Re s=1/2\bigr).
+\label{eq:RHfinite}
+\end{equation}
+\end{definition}
+
+\begin{theorem}
+\label{thm:finiteRH}
+$\RH_{\mathrm{fin}}$ is equivalent to the ordinary Riemann hypothesis.
+\end{theorem}
+\begin{proof}
+If the ordinary RH holds, every zero of $\xip$ is an ordinary zero of
+$\xi$ by Theorem~\ref{thm:divisor}, and therefore has real part $1/2$.
+Conversely, restrict \eqref{eq:RHfinite} to ordinary complex arguments.
+\end{proof}
+
+This equivalence is useful: it identifies the correct zero geometry and
+prevents spurious ``infinitesimal counterexamples'' obtained by replacing an
+exact zero with a merely infinitesimal function value. For example, if
+$\rho$ is a simple ordinary zero and $\varepsilon\ne0$ is infinitesimal,
+then $\xip(\rho+\varepsilon)\sim\xi'(\rho)\varepsilon$ is nonzero.
+An infinitesimal residual is not a zero.
+
+\subsection{Symmetry-preserving perturbations}
+
+Let $\symh$ be the real vector space of ordinary entire functions $h$ with
+\begin{equation}
+h(1-s)=h(s),\qquad
+h(\overline s)=\overline{h(s)}.
+\label{eq:hsym}
+\end{equation}
+For real $\epsilon\in\mm$, set
+\begin{equation}
+F_{\epsilon,h}(s)=\xip(s)+\epsilon h^\#(s),\qquad s\in\OO.
+\label{eq:perturb}
+\end{equation}
+This is a genuine coefficient perturbation of the function. It is not the
+unperturbed lift studied by the divisor theorem.
+
+\begin{theorem}[Exact critical-line stability at a simple zero]
+\label{thm:simplestable}
+Suppose $\rho$ is a simple zero of $\xi$ on $\Re s=1/2$ and $h\in\symh$.
+For every real infinitesimal $\epsilon$, $F_{\epsilon,h}$ has exactly one
+zero in $\rho+\mm$. That zero lies exactly on $\Re s=1/2$.
+Its expansion begins
+\begin{align}
+s_{\epsilon}=\rho
+ &-\epsilon\frac{h(\rho)}{\xi'(\rho)}\notag\\
+ &+\epsilon^2\left(
+ \frac{h(\rho)h'(\rho)}{\xi'(\rho)^2}
+ -\frac{\xi''(\rho)h(\rho)^2}{2\xi'(\rho)^3}
+ \right)+\bigO(\epsilon^3).
+\label{eq:rootshift}
+\end{align}
+If $h(\rho)\ne0$ and $\epsilon\ne0$, the displacement has valuation
+$v(\epsilon)$.
+\end{theorem}
+\begin{proof}
+Consider the ordinary two-variable analytic germ
+$A(s,u)=\xi(s)+u h(s)$ at $(\rho,0)$. Since
+$\partial_sA(\rho,0)=\xi'(\rho)\ne0$, the ordinary implicit-function
+theorem gives an analytic root germ $s=r(u)$ and an analytic factorization
+\[
+A(s,u)=(s-r(u))B(s,u),\qquad B(\rho,0)=\xi'(\rho)\ne0.
+\]
+Evaluate both infinitesimal variables by Lemma~\ref{lem:evaluation}.
+The evaluated $B$ is a unit throughout the halo, proving existence and
+uniqueness there.
+
+The involution $J(s)=1-\overline s$ preserves the halo of $\rho$ and,
+by \eqref{eq:hsym}, sends a zero of $F_{\epsilon,h}$ to a zero. Uniqueness
+forces $J(s_\epsilon)=s_\epsilon$, which is the exact equality
+$\Re s_\epsilon=1/2$. Substitution of
+$r(u)=\rho+a_1u+a_2u^2+\cdots$ gives
+$a_1=-h/\xi'$ and the stated $a_2$. If $h(\rho)\ne0$, $a_1$ is a
+nonzero ordinary coefficient, so the valuation assertion follows.
+\end{proof}
+
+It is essential that the coefficient of the perturbation is real and that
+both symmetries are retained. Without these conditions, even a simple
+critical-line zero can move transversely.
+
+\subsection{A characterization involving RH and simplicity}
+
+\begin{theorem}[Robust finite RH criterion]
+\label{thm:robust}
+The following three statements are equivalent.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The ordinary RH holds and every nontrivial zeta zero is simple.
+\item For every ordinary real constant $c$ and every positive real
+infinitesimal $\epsilon$, all finite zeros of $\xip+c\epsilon$ have
+real part $1/2$.
+\item For every $h\in\symh$ and every real infinitesimal $\epsilon$, all
+finite zeros of $F_{\epsilon,h}$ have real part $1/2$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Assume (i). If $F_{\epsilon,h}(s)=0$ and $s$ is finite, taking standard
+parts gives $\xi(\st s)=0$. By (i), this centre is a simple critical-line
+zero. Theorem~\ref{thm:simplestable} gives $\Re s=1/2$. Thus (iii) holds,
+and (iii) implies (ii) by taking $h$ constant.
+
+Assume (ii). Taking $c=0$ and using Theorem~\ref{thm:finiteRH} proves RH.
+Suppose, for a contradiction, that $\rho=1/2+i\gamma$ is a zero of
+multiplicity $m\geq2$. The ordinary function
+\[
+ g(u)=\xi(\rho+iu)
+\]
+has real Taylor coefficients at $u=0$: it is real on ordinary real $u$,
+by the two xi symmetries. Hence
+\[
+g(u)=b_m u^m+b_{m+1}u^{m+1}+\cdots,\qquad
+b_m=\frac{i^m\xi^{(m)}(\rho)}{m!}\in\R\setminus\{0\}.
+\]
+Choose the constant $c=b_m$, choose a positive infinitesimal $\epsilon$,
+and put $\delta=\epsilon^{1/m}>0$. Substitution
+$s=\rho+i\delta v$ into $\xip(s)+b_m\epsilon=0$ and division by
+$b_m\delta^m$ gives the analytic germ equation
+\begin{equation}
+v^m+1+\sum_{k>m}\frac{b_k}{b_m}\delta^{k-m}v^k=0.
+\label{eq:split}
+\end{equation}
+Every root $r$ of $v^m+1$ is simple. The ordinary implicit-function theorem
+at $(\delta,v)=(0,r)$, followed by Hahn evaluation, gives a solution
+$v=r+\bigO(\delta)$ of \eqref{eq:split}. For $m\geq2$, at least one such
+$r$ is nonreal. For that solution,
+\[
+\Re s=\frac12-\delta\Im v\ne\frac12,
+\]
+since $\Im v$ has nonzero ordinary standard part. This contradicts (ii).
+Thus every zero is simple and (i) follows.
+\end{proof}
+
+\begin{corollary}[Multiplicity determines the splitting scale]
+In the multiple-zero construction of the proof, the off-line displacement
+has valuation $v(\epsilon)/m$. In particular, a symmetric perturbation of
+order $\epsilon$ can produce a much larger transverse displacement when
+$m>1$.
+\end{corollary}
+
+\begin{example}
+At a hypothetical double zero, the leading local equation is
+$u^2+\epsilon=0$. Its roots are $u=\pm i\sqrt\epsilon$, so
+$s=\rho+iu$ moves horizontally by $\mp\sqrt\epsilon$. The perturbation
+respects the functional-equation symmetries, but the two displaced zeros
+are exchanged by reflection in the critical line instead of being individually
+fixed by it.
+\end{example}
+
+The theorem packages two ordinary conjectural properties into one exact
+non-Archimedean robustness statement. It does not prove either of those
+ordinary properties. Its mechanism is the classical stability of simple
+real zeros and the splitting of multiple zeros, made exact by Hahn
+evaluation and the critical-line involution.
+
+\subsection{Stable halos and proportions}
+
+For a fixed symmetric perturbation, call an ordinary critical-line zero a
+\emph{uniformly stable centre} when the conclusion of
+Theorem~\ref{thm:simplestable} holds for every such $h$ and every real
+infinitesimal parameter. Every simple critical-line zero is a uniformly
+stable centre. The proof of Theorem~\ref{thm:robust} also shows that a
+multiple critical-line zero is not one.
+
+Consequently every lower bound on the classical proportion of simple
+critical-line zeros is immediately a lower bound on the proportion of
+uniformly stable centres. This is a count of centre-indexed halos, with the
+classical total zero count as denominator. It is not, without a separate
+boundary convention, a claim about the number of displaced roots below an
+arbitrary surcomplex height. Section~\ref{sec:partial} supplies explicit
+published and recent values.
+
+\section{Dirichlet series at positive infinite real part}
+\label{sec:dirichlet}
+
+\subsection{A domain on which ordinary Dirichlet coefficients separate}
+
+Let
+\begin{equation}
+\mathcal D_+=\{s\in\SC:\Re s>r\text{ for every }r\in\R,
+\quad \Im s\text{ is finite}\}.
+\label{eq:Dplus}
+\end{equation}
+On arguments with finite imaginary part there is an unambiguous
+finite-phase exponential
+\begin{equation}
+E_{\mathrm{fp}}(x+iy)=e^x\cis(y),
+\qquad x\in\No,\quad y\in\OO\cap\No,
+\label{eq:finitephase}
+\end{equation}
+using the Gonshor real exponential. For $s\in\mathcal D_+$ define
+$n^{-s}=E_{\mathrm{fp}}(-s\log n)$ for ordinary positive integers $n$.
+
+Write
+\begin{equation}
+s=X+c+\varepsilon,
+\quad X=\pp(\Re s)>0,
+\quad c\in\C,
+\quad\varepsilon\in\mm.
+\label{eq:Ddecomp}
+\end{equation}
+Then
+\begin{equation}
+n^{-s}=q_n n^{-c}\Sh_{k\geq0}
+ \frac{(-\varepsilon\log n)^k}{k!},
+\qquad q_n=e^{-X\log n}.
+\label{eq:qndecomp}
+\end{equation}
+The exponential of a purely infinite real surreal is a Conway monomial;
+this standard property of the surreal exponential makes each $q_n$ a
+monomial \cite{Gonshor,EK}. Moreover,
+\[
+q_mq_n=q_{mn},\qquad 1=q_1>q_2>q_3>\cdots,
+\qquad q_n/q_m\in\mm\quad(n>m).
+\]
+The separation is stronger than ordinary convergence of a Dirichlet series.
+Each successive ordinary index has a strictly smaller Archimedean scale.
+
+\begin{theorem}[Arbitrary-coefficient Dirichlet realization]
+\label{thm:Dirichlet}
+For each fixed $s\in\mathcal D_+$ and every arithmetic function
+$a:\N_{>0}\to\C$, the strong sum
+\begin{equation}
+\DD_s(a)=\Sh_{n\geq1}a(n)n^{-s}
+\label{eq:Da}
+\end{equation}
+exists. No growth assumption on $a(n)$ is needed. The map $\DD_s$ is an
+injective unital $\C$-algebra homomorphism from arithmetic functions with
+Dirichlet convolution to $\SC$:
+\begin{equation}
+\DD_s(a*b)=\DD_s(a)\DD_s(b),
+\qquad (a*b)(n)=\sum_{d\mid n}a(d)b(n/d).
+\label{eq:conv}
+\end{equation}
+If $a\ne0$ and $n_0$ is its least nonzero index, then
+\begin{equation}
+\DD_s(a)\sim a(n_0)n_0^{-s}.
+\label{eq:firstindex}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The positive valuations $v(q_n)$, $n\geq2$, form a strictly increasing
+sequence, hence a well-ordered set. Adjoin the positive, well-ordered
+support of $\varepsilon$. Their finite union $S$ is well ordered and
+positive. Formula~\eqref{eq:qndecomp} expresses every nonconstant
+contribution using a finite sum of elements of $S$. Neumann's lemma
+therefore proves strong summability, including the local finiteness of
+contributions from different $n$ and different powers of $\varepsilon$.
+Ordinary complex coefficients, however large as functions of $n$, do not
+change these supports.
+
+For multiplication, expand the two strongly summable families. The same
+support argument permits regrouping by $mn=k$. For each ordinary $k$ there
+are only finitely many ordered factorizations $mn=k$, and
+$m^{-s}n^{-s}=k^{-s}$. This gives \eqref{eq:conv}. The arithmetic function
+supported at $1$ with value $1$ maps to the field unit.
+
+For the last assertion, the $n_0$ term has leading monomial $q_{n_0}$
+with nonzero ordinary coefficient $a(n_0)n_0^{-c}$. Every term with
+$n>n_0$ has strictly smaller leading monomial, and all its other monomials
+are smaller still. Thus none can cancel that coefficient. Division by the
+$n_0$ term gives $1$ plus an infinitesimal. In particular the image of any
+nonzero $a$ is nonzero, proving injectivity.
+\end{proof}
+
+This embeds the entire algebra of ordinary complex arithmetic functions,
+not merely a classical half-plane convergence class. The least nonzero
+index is a leading-term invariant of its image. The image need not be the
+whole field. The units of the arithmetic algebra are exactly the functions
+with $a(1)\ne0$, whereas any nonzero image is invertible in the ambient
+field even when its reciprocal is not in that image.
+
+\subsection{Zeta, Euler products, and logarithmic differentiation}
+
+\begin{definition}
+On $\mathcal D_+$, define
+\begin{equation}
+\zD(s)=\Sh_{n\geq1}n^{-s}.
+\end{equation}
+The subscript records its exact strong-Dirichlet prescription.
+\end{definition}
+
+\begin{theorem}[Euler identities and zero-freeness]
+\label{thm:euler}
+For every $s\in\mathcal D_+$,
+\begin{align}
+\zD(s)&=\Ph_{p\ \mathrm{prime}}(1-p^{-s})^{-1},
+\label{eq:Euler}\\
+\zD(s)^{-1}&=\Sh_{n\geq1}\mu(n)n^{-s},
+\label{eq:Mobius}\\
+\log\zD(s)&=\Sh_{p\ \mathrm{prime}}\Sh_{k\geq1}\frac{p^{-ks}}{k},
+\label{eq:logEuler}\\
+-\frac{\zD'(s)}{\zD(s)}&=\Sh_{n\geq1}\Lambda(n)n^{-s}.
+\label{eq:Mangoldt}
+\end{align}
+The logarithm in \eqref{eq:logEuler} is the infinitesimal logarithm at $1$.
+The prime product means its strongly summable expansion. In particular,
+\begin{equation}
+\zD(s)\ne0,\qquad \zD(s)-1\sim2^{-s}.
+\label{eq:Dzerofree}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The formal Euler product expands into terms indexed by finite prime
+factorizations. Unique factorization assigns exactly one such monomial to
+each ordinary positive integer. The support proof of
+Theorem~\ref{thm:Dirichlet} justifies this expansion and regrouping. The
+Dirichlet identity $\mathbf1*\mu=\delta_1$ gives the reciprocal formula.
+Here $\mathbf1(n)=1$ and $\delta_1$ is the convolution identity.
+
+Since $\zD(s)-1$ is infinitesimal, its formal logarithm exists. Expanding
+the logarithm of each Euler factor gives the prime-power sum, again with
+strongly summable support. Equivalently the identity can be verified in the
+formal Dirichlet algebra, coefficient by coefficient, and then evaluated.
+Local differentiation is legitimate by the next proposition and gives
+\eqref{eq:Mangoldt}; it also follows by applying $\DD_s$ to
+$\log n=\sum_{d\mid n}\Lambda(d)$. Finally the first nonzero term of
+$\zD-1$ is $2^{-s}$, and $\zD=1+$ an infinitesimal is nonzero.
+\end{proof}
+
+\begin{proposition}[Local analytic dependence]
+\label{prop:Dderivative}
+For an arithmetic function $a$ and an infinitesimal $h$,
+\begin{equation}
+\DD_{s+h}(a)=\Sh_{k\geq0}\frac{h^k}{k!}
+ \left(\Sh_{n\geq1}a(n)(-\log n)^k n^{-s}\right).
+\label{eq:Dtaylor}
+\end{equation}
+The double family is strongly summable. Hence the parenthesized expression
+is the $k$th local analytic derivative of $\DD_s(a)$ for every ordinary
+$k\geq0$.
+\end{proposition}
+\begin{proof}
+Use \eqref{eq:qndecomp} and adjoin the positive support of $h$ to the
+support set used in Theorem~\ref{thm:Dirichlet}. Expansion of
+$e^{-h\log n}$ produces exactly \eqref{eq:Dtaylor}, with regrouping
+permitted by Neumann's lemma. The Taylor coefficients characterize the
+local analytic germ.
+\end{proof}
+
+At positive infinite real $X$, every term in
+$(-1)^k\zD^{(k)}(X)$ is nonnegative, and at least one is positive.
+Thus it is strictly positive for every ordinary $k\geq0$. This is an
+exact local complete-monotonicity statement on the infinite-right real
+domain, not a claim obtained by taking a classical limit $X\to\infty$.
+
+\subsection{What right-hand asymptotics do not determine}
+
+At positive infinite $X$,
+\begin{equation}
+e^{-X^2}\prec n^{-X}\qquad(n\geq2\text{ ordinary}).
+\label{eq:Dirichletflat}
+\end{equation}
+Indeed $X^2-X\log n$ is positive infinite, so the ratio is infinitesimal.
+Adding a term $e^{-X^2}$ is invisible after every fixed ordinary Dirichlet
+scale. Consequently agreement to every fixed Dirichlet asymptotic order
+is weaker than equality to the exact strong sum. This is the zeta analogue
+of the distinction between a complete power asymptotic expansion and a
+chosen Gamma normalization at infinity.
+
+Theorem~\ref{thm:euler} is a genuine new domain result for the specified
+extension. It does not address zeros in an infinite-height critical strip:
+$\Re s$ is positive infinite throughout $\mathcal D_+$.
+
+\section{Gamma at infinity and a Hurwitz--Stirling bridge}
+\label{sec:gamma-infinite}
+
+\subsection{The strong Stirling logarithm}
+
+For a positive infinite real $A$, define
+\begin{equation}
+\LSt(A)=\left(A-\frac12\right)\log A-A+\frac12\log(2\pi)
+ +\Sh_{k\geq1}\frac{B_{2k}}{2k(2k-1)}A^{1-2k},
+\label{eq:Stirling}
+\end{equation}
+and $\Gamma_{\mathrm{St}}(A)=e^{\LSt(A)}$. We use the standard Bernoulli
+convention
+\begin{equation}
+\frac{u}{e^u-1}=\sum_{n\geq0}B_n\frac{u^n}{n!},
+\qquad B_1=-\frac12.
+\label{eq:Bernoulli}
+\end{equation}
+The coefficients in \eqref{eq:Stirling} are the classical Stirling
+coefficients \cite{DLMFstirling}. The strong interpretation at an infinite
+argument is part of the surreal extension framework in \cite{CE,repoGamma}.
+Here it follows immediately from Lemma~\ref{lem:evaluation} applied to
+$A^{-1}$ that the displayed correction is well defined.
+
+The same expression defines $\LSt(z)$ for $\Re z>0$ and $|z|$ infinite,
+using the principal finite angle:
+\begin{equation}
+\Log z=\log|z|+i\Arg z,\qquad -\pi/2<\Arg z<\pi/2.
+\label{eq:principalLog}
+\end{equation}
+The canonical finite-angle parametrization of the unit circle supplies
+$\Arg z$ even when the coordinates of $z$ are infinite. Since $z^{-1}$ is
+infinitesimal, the correction series remains strongly summable. Locally,
+$\Log(z+h)-\Log z=\log(1+h/z)$ whenever $h$ is sufficiently small to
+remain in the half-plane; this defines the corresponding analytic germ.
+
+\begin{proposition}[Exact Stirling recurrence]
+\label{prop:Strec}
+On this infinite right-half-plane domain,
+\begin{equation}
+\LSt(z+1)-\LSt(z)=\Log z.
+\label{eq:Strec}
+\end{equation}
+If $E$ is any additive-to-multiplicative surcomplex exponential extending
+$E_{\mathrm{fp}}$, then
+$\Gamma_{E,\mathrm{St}}(z)=E(\LSt(z))$ is nonzero and satisfies
+\begin{equation}
+\Gamma_{E,\mathrm{St}}(z+1)=z\Gamma_{E,\mathrm{St}}(z).
+\end{equation}
+\end{proposition}
+\begin{proof}
+The Bernoulli identity proof of the Hurwitz shift relation in
+Theorem~\ref{thm:Hurwitz}, differentiated at its parameter $s=0$, gives
+\eqref{eq:Strec} as a formal identity in $z^{-1}$ and $\Log z$. Its proof
+is formal and therefore applies also to complex $z^{-1}$, with the local
+branch identity just noted. All series are strongly evaluable.
+Exponentiation uses the homomorphism property and
+$E(\Log z)=z$, since $\Arg z$ is finite. A homomorphism into
+$\SC^\times$ never takes the value zero.
+\end{proof}
+
+\subsection{Why a phase condition remains necessary}
+
+The logarithm $\LSt(z)$ need not have finite imaginary part. Thus the
+existence of a canonical principal logarithm does not by itself make
+$E_{\mathrm{fp}}(\LSt(z))$ meaningful. On the useful tube
+$z=x+iy$ with $x>0$ infinite and $y$ finite, direct expansion gives
+\begin{equation}
+\Im\LSt(x+iy)=y\log x+R,
+\qquad R\prec y\quad(y\ne0).
+\label{eq:phaseleading}
+\end{equation}
+For example, the first correction is $-y/(2x)$; subsequent terms have still
+smaller relative magnitude. Hence
+\begin{equation}
+\Im\LSt(x+iy)\text{ is finite}
+\quad\Longleftrightarrow\quad y\log x\text{ is finite}.
+\label{eq:phasetube}
+\end{equation}
+For $y=0$ the condition is automatic. This is the finite-phase tube phenomenon
+already developed in the repository Gamma report \cite{repoGamma}.
+
+For completeness, \eqref{eq:phaseleading} follows by writing
+$\Log(x+iy)=\log x+\log(1+iy/x)$. The terms $y$ from
+$(x-1/2)\Im\log(1+iy/x)$ and $-iy$ cancel, leaving
+$y\log x-y/(2x)$ and terms divisible by $y/x^2$ or $y^3/x^2$.
+The differentiated Stirling corrections are smaller still. Because $y$
+is finite and $x$ is infinite, division of $R$ by a nonzero $y$ gives an
+infinitesimal. An infinite $y\log x$ cannot be cancelled by such an $R$.
+
+Outside \eqref{eq:phasetube}, a global exponential is available after
+selecting its phase rule, but that selection has mathematical consequences.
+Section~\ref{sec:phases} discusses the published canonical phase and the
+obstructions it creates for a naive global zeta theory.
+
+\subsection{The infinite-shift Hurwitz function}
+
+The Hurwitz zeta function provides a direct bridge between zeta-type sums
+and log-Gamma. Its classical identities and asymptotic expansion are
+recorded in \cite{DLMFhurwitz}. We now interpret that expansion as an exact
+strong sum at an infinite positive shift, rather than as an ordinary
+remainder statement.
+
+For positive infinite real $A$ and ordinary real $s\ne1$, define
+\begin{equation}
+Z_\infty(s,A)=\frac{A^{1-s}}{s-1}+\frac12 A^{-s}
+ +\Sh_{k\geq1}\frac{B_{2k}}{(2k)!}
+ (s)_{2k-1} A^{-s-2k+1},
+\label{eq:Hurwitz}
+\end{equation}
+where $(s)_j=s(s+1)\cdots(s+j-1)$ and $(s)_0=1$.
+For fixed ordinary $s$, the tail is an ordinary-coefficient power series
+in $A^{-1}$ times $A^{-s}$ and is strongly summable.
+
+A parameter germ at any ordinary real $c$ is also defined: put $s=c+h$,
+require $h\log A$ to be infinitesimal, and use
+\[
+A^{-c-h}=A^{-c}\Sh_{j\geq0}\frac{(-h\log A)^j}{j!}.
+\]
+At $c=1$ this is a meromorphic parameter germ with a simple pole.
+This restricted local parameter domain is sufficient for differentiation
+at $s=0$. We do not assert an unrestricted finite-complex-parameter
+prescription when its infinite phase has not been specified.
+
+\begin{theorem}[Hurwitz shift, Bernoulli values, and log-Gamma]
+\label{thm:Hurwitz}
+For the construction \eqref{eq:Hurwitz}, the following identities hold
+as meromorphic parameter identities, with removable products evaluated by
+cancellation and parameter derivatives taken in the just-defined local germs:
+\begin{align}
+Z_\infty(s,A)-Z_\infty(s,A+1)&=A^{-s},
+\label{eq:Hshift}\\
+\partial_A Z_\infty(s,A)&=-s Z_\infty(s+1,A),
+\label{eq:HderA}\\
+Z_\infty(-m,A)&=-\frac{B_{m+1}(A)}{m+1},
+\qquad m\in\N,\label{eq:Hnegative}\\
+\left.\partial_s Z_\infty(s,A)\right|_{s=0}
+ &=\LSt(A)-\frac12\log(2\pi).
+\label{eq:Hgamma}
+\end{align}
+The residue at the parameter pole $s=1$ is $1$.
+\end{theorem}
+\begin{proof}
+Put $D=\partial_A$. On the formal generalized-power expressions involved,
+choose $D^{-1}A^{-s}=A^{1-s}/(1-s)$, with no added integration constant.
+The Bernoulli generating identity gives
+\begin{equation}
+(1-e^D)^{-1}=-D^{-1}+\frac12
+ -\sum_{k\geq1}\frac{B_{2k}}{(2k)!}D^{2k-1}.
+\label{eq:Bernoperator}
+\end{equation}
+This is a formal Laurent identity in the symbol $D$; multiplication by
+$1-e^D$ is interpreted before application. Since
+\[
+D^{2k-1}A^{-s}=-(s)_{2k-1}A^{-s-2k+1},
+\]
+its right-hand side applied to $A^{-s}$ is exactly \eqref{eq:Hurwitz}.
+Also $e^D$ acts as the formal shift $A\mapsto A+1$, by the binomial
+series in $A^{-1}$. Multiplying \eqref{eq:Bernoperator} by $1-e^D$
+therefore proves \eqref{eq:Hshift}. Strong evaluation preserves this
+formal identity. The argument is meromorphic in $s$, so covers the
+parameter germs as well.
+
+Termwise differentiation proves \eqref{eq:HderA}: the leading term
+differentiates to $-A^{-s}$, the next to $-sA^{-s-1}/2$, and in the tail
+$(s)_{2k-1}(s+2k-1)=s(s+1)_{2k-1}$.
+
+For $s=-m$, the rising factorial vanishes as soon as it contains the
+factor $s+m=0$, so the tail becomes finite. Expand
+\[
+B_{m+1}(A)=\sum_{j=0}^{m+1}\binom{m+1}{j}B_jA^{m+1-j}.
+\]
+Its $j=0$ and $j=1$ terms yield the first two terms of
+\eqref{eq:Hurwitz}; the odd Bernoulli numbers beyond $B_1$ vanish.
+For $j=2k\leq m+1$, the coefficient agrees because
+$(-m)_{2k-1}=-m!/(m-2k+1)!$. This proves \eqref{eq:Hnegative}.
+
+At $s=0$, differentiation of the first two terms gives
+$A(\log A-1)-\tfrac12\log A$. Moreover,
+\[
+\left.\frac{d}{ds}(s)_{2k-1}\right|_{s=0}=(2k-2)!,
+\]
+so each tail coefficient becomes
+$B_{2k}/[2k(2k-1)]$. This is precisely
+\eqref{eq:Hgamma}. Differentiating \eqref{eq:Hshift} at zero now gives
+\eqref{eq:Strec}, as used in Proposition~\ref{prop:Strec}.
+Finally only the first term in \eqref{eq:Hurwitz} has a pole at $s=1$,
+and its numerator is $1$ there.
+\end{proof}
+
+\begin{example}
+The first special values are exact polynomials:
+\[
+Z_\infty(0,A)=\frac12-A,\qquad
+Z_\infty(-1,A)=-\frac12A^2+\frac12A-\frac1{12}.
+\]
+They are not approximate large-$A$ formulas. The termination of the
+rising factorial makes them exact for the specified strong construction.
+\end{example}
+
+\begin{warning}[The ordinary shifted sum is not the strong construction]
+For ordinary real $s>1$ and positive infinite $A$, the family
+$((A+n)^{-s})_{n\geq0}$ is not strongly summable. Indeed
+$(A+n)^{-s}=A^{-s}(1+n/A)^{-s}$, and every summand has the same nonzero
+leading term as $A^{-s}$. Thus \eqref{eq:Hurwitz} is not justified by
+writing a strong sum of those terms. It is an exact asymptotic-series
+prescription with the shift identities proved separately. Nor may one
+substitute $A=1$ into an infinite-shift definition and thereby claim a
+global Riemann zeta function.
+\end{warning}
+
+\subsection{Nonuniqueness is an existing Gamma phenomenon}
+
+On positive finite arguments use the canonical Gamma lift, and on positive
+infinite arguments use $\Gamma_{\mathrm{St}}$. The resulting baseline can
+be modified on infinite galaxies without changing its finite values.
+For example, if $M(x)$ is the leading infinite Conway monomial of $x$
+with its real coefficient stripped, put
+\begin{equation}
+h_\lambda(x)=\lambda e^{-M(x)}\pp(x)
+\quad(x>0\text{ infinite}),\qquad
+h_\lambda(x)=0\quad(x>0\text{ finite}).
+\label{eq:gauge}
+\end{equation}
+Multiplying the baseline by $e^{h_\lambda(x)}$ preserves the ordinary
+unit-shift recurrence: $M(x+1)=M(x)$ and $\pp(x+1)=\pp(x)$.
+Also $h_\lambda(qx)=q h_\lambda(x)$ and
+$h_\lambda(x+j/q)=h_\lambda(x)$ for ordinary integers $q>0,j$.
+Therefore any finite Gauss identities of the baseline are preserved.
+
+The stronger assertion that this family can retain global strict
+log-convexity, and the sharp classification for its larger monomialwise
+family, belong to the repository Gamma report \cite{repoGamma}; they are
+not reproved here. Its example already rules out a naive uniqueness claim
+based on the classical Bohr--Mollerup axioms. The logarithmic correction
+\eqref{eq:gauge} is smaller than every fixed inverse power at positive
+infinite $x$, yet need not produce a small \emph{absolute} difference of
+Gamma values. Full power asymptotics, relative error and absolute error
+must be distinguished.
+
+\section{Infinite phases and two obstruction theorems}
+\label{sec:phases}
+
+\subsection{A global exponential exists, but its phase is extra structure}
+
+It would be incorrect to claim that there is no published global surcomplex
+exponential. Ehrlich and Kaplan construct one, with a distinguished choice
+associated to the omnific integer part \cite[Section 11]{EK}. In the
+normal-form convention used here it is
+\begin{equation}
+E_0(x+iy)=e^x\cis(\fin y),
+\qquad x,y\in\No.
+\label{eq:E0}
+\end{equation}
+It extends \eqref{eq:finitephase}, is an additive-to-multiplicative
+homomorphism onto $\SC^\times$, and has kernel $2\pi i\Oz$. We call its
+phase \emph{phase-forgetting}: for every purely infinite real $T$ and
+every ordinary real $r$,
+\begin{equation}
+E_0(irT)=1.
+\label{eq:forget}
+\end{equation}
+This normalization is canonical relative to the chosen surreal integer-part
+structure, but agreement with ordinary exponentiation does not uniquely
+force it. Other phase extensions exist; the repository treats their
+classification and infinite periods \cite{repoTrig}.
+
+To separate the relevant datum, write $U(y)=E(iy)$ for a chosen homomorphism
+from the additive real surreal group to the norm-one torus, extending finite
+$\cis$. Since finite $\cis$ is onto that torus, every infinite positive
+$T$ admits a finite $\theta$ with $U(T)=\cis\theta$. Thus
+$P=T-\theta$ is a positive infinite period of $U$. The existence of such
+periods is already a known structural fact; our first obstruction is its
+application to Gamma's divisor.
+
+\begin{theorem}[Gamma reflection forces extra infinite poles]
+\label{thm:gamma-obstruction}
+Let $U$ be a phase homomorphism extending finite $\cis$, and put
+\[
+\operatorname{Sin}_U(y)=\frac{U(y)-U(-y)}{2i}\qquad(y\in\No).
+\]
+There is no function $G$ taking a value in $\SC$ at every argument except
+possibly the \emph{ordinary} nonpositive integers and satisfying
+\begin{equation}
+G(x)G(1-x)\operatorname{Sin}_U(\pi x)=\pi
+\label{eq:globalreflection}
+\end{equation}
+whenever both displayed $G$ values are defined.
+\end{theorem}
+\begin{proof}
+Choose a positive infinite period $P$ of $U$ as above, and set $x=P/\pi$.
+Both $x$ and $1-x$ are infinite, so neither is an ordinary nonpositive
+integer. Both $G$ values are therefore field elements. But
+$\operatorname{Sin}_U(\pi x)=0$, making the left-hand side of
+\eqref{eq:globalreflection} zero, a contradiction.
+\end{proof}
+
+The conclusion is not that global Gamma functions are impossible. A global
+reflection formula must instead permit additional infinite poles, restrict
+its domain, or change some other part of the prescription. Elementary
+extensions do add nonstandard integer poles, as discussed below. The
+ordinary nonpositive integers are the complete pole set only for the
+\emph{finite canonical lift}.
+
+\subsection{A simultaneous-resonance test}
+
+\begin{proposition}[A two-frequency first-order distinction]
+\label{prop:twofreq}
+The following statement is true for ordinary real $t$ and remains true in
+any elementary extension of the real structure with its ordinary cosine and
+sine:
+\begin{equation}
+\cis(t\log2)=1\ \text{ and }\ \cis(t\log3)=1
+\quad\Longrightarrow\quad t=0.
+\label{eq:twofreq}
+\end{equation}
+It fails for the phase $U_0(t)=E_0(it)$ on $\No$.
+\end{proposition}
+\begin{proof}
+Over $\R$, the two equalities imply
+$t\log2=2\pi k$ and $t\log3=2\pi l$ for integers $k,l$.
+Thus $k\log3=l\log2$, or $3^k=2^l$. Unique prime factorization, after
+clearing negative exponents if needed, gives $k=l=0$ and $t=0$.
+The implication is a first-order statement in the named real functions and
+constants, so transfers to every elementary extension. In contrast, every
+nonzero purely infinite $T$ satisfies both antecedents for $U_0$, by
+\eqref{eq:forget}.
+\end{proof}
+
+Thus the phase-forgetting exponential cannot simply be treated as the full
+complex exponential of an elementary extension. In particular, the presence
+of a well-behaved real surreal exponential does not justify transferring
+statements involving arbitrary infinite imaginary phases.
+
+\subsection{Resonant galaxies and the zeta functional equation}
+
+Fix a positive purely infinite $T$. On the translated finite galaxy
+$iT+\OO$, write $s=iT+w$ with $w$ finite. For every ordinary positive
+integer $n$, \eqref{eq:forget} gives
+\begin{equation}
+E_0(-s\log n)=E_0(-w\log n)=n^{-w}.
+\label{eq:resonantn}
+\end{equation}
+Therefore coefficientwise ordinary Dirichlet summation on
+$\Re\st w>1$ forces the value $\zp(w)$, not a new high-frequency function.
+
+For clarity, a \emph{coherent meromorphic continuation in the galaxy
+coordinate} means a section with one set-sized well-ordered Hahn support
+and ordinary meromorphic coefficient functions on the connected ordinary
+$w$-plane. Evaluation at finite $w$ uses Taylor--Laurent lifting. This is
+the common-domain notion employed in the repository; it is stronger than
+being fine-analytic separately at each point.
+
+\begin{theorem}[Phase-forgetting zeta obstruction]
+\label{thm:resonance}
+Suppose $Z$ uses $E_0$ for its Dirichlet powers, agrees with coefficientwise
+ordinary Dirichlet summation on the subdomains
+$\Re\st w>1$ of both galaxies $iT+\OO$ and $-iT+\OO$, and has coherent
+meromorphic continuations on their connected ordinary coordinate planes.
+Then
+\begin{equation}
+Z(iT+w)=\zp(w),\qquad Z(-iT+w)=\zp(w)
+\label{eq:replica}
+\end{equation}
+as meromorphic functions of finite $w$. In particular:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $Z$ has poles at $1+iT$ and $1-iT$. It cannot have only the pole $1$.
+\item $Z(3+iT)=\zeta(3)\ne0$, whereas $Z(-2-iT)=0$.
+\item The usual pointwise zeta functional equation using $E_0$ cannot
+hold at $s=3+iT$ with a Gamma factor that is a field-valued function at
+$1-s=-2-iT$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Equation~\eqref{eq:resonantn} and the specified mixed summation give
+$Z(iT+w)=\zp(w)$ in the ordinary right half-plane of $w$.
+Subtract the canonical section of $\zeta$ from the coherent continuation.
+For every ordinary $w$ in that half-plane, each Hahn coefficient of the
+difference vanishes. The ordinary meromorphic identity theorem makes each
+coefficient zero on the connected ordinary plane. This proves the first
+identity in \eqref{eq:replica}; the second follows identically.
+
+The pole and value assertions are now ordinary zeta facts. At $s=3+iT$,
+the proposed equation would read
+\[
+\zeta(3)=2^s\pi^{s-1}\operatorname{Sin}_{E_0}(\pi s/2)
+ G(-2-iT)\,Z(-2-iT)=0,
+\]
+where $\operatorname{Sin}_{E_0}(z)=(E_0(iz)-E_0(-iz))/(2i)$ and the
+powers also use $E_0$. Every factor is a field element by hypothesis,
+while the last factor is zero. This is impossible.
+\end{proof}
+
+The Gamma qualification is substantial, not vacuous. The shifted Stirling
+prescription is field-valued and nonzero at the test point: define
+\begin{equation}
+G(-2-iT)=
+\frac{\Gamma_{E_0,\mathrm{St}}(1-iT)}{(-2-iT)(-1-iT)(-iT)}.
+\label{eq:shiftedGamma}
+\end{equation}
+The numerator is defined in the infinite right half-plane, and the three
+denominator factors are nonzero. Thus using this natural Gamma extension
+does not repair the contradiction. Introducing an actual Gamma pole there
+would change the pole prescription and require a meromorphic cancellation,
+not a pointwise multiplication of field values.
+
+\begin{remark}[Exact scope of the obstruction]
+The theorem rules out a conjunction of explicit axioms. It does not exclude
+all global surcomplex zeta functions. A different phase, a different
+summation rule, or a failure of connected ordinary-coordinate coherence
+can avoid its assumptions. In fact, any phase $U$ having a common
+nonzero infinite resonance $U(T\log n)=1$ for all ordinary $n$ encounters
+the same argument. The existence of an infinite period of $U$ alone does
+\emph{not} imply such a simultaneous logarithmic resonance.
+\end{remark}
+
+This also explains why the phrase ``trivial zeros'' needs care in a global
+theory. Extra zeros of a chosen global sine are not automatically the
+trivial-zero divisor of a completed zeta function. Gamma poles and zeta
+zeros must cancel in a specified meromorphic construction before its
+completed function and RH can be formulated.
+
+\section{What weak global analyticity does not decide}
+\label{sec:weakglobal}
+
+The finite canonical lift fixes values on $\OO$ but leaves every infinite
+galaxy untouched. Ordinary complex connectedness does not connect these
+galaxies. Even exact functional-equation symmetries do not determine the
+missing zeros.
+
+\begin{theorem}[Explicit symmetric completions with different infinite zeros]
+\label{thm:weakcompletions}
+There are two class functions on $\SC$, locally Hahn-analytic at every
+point, that agree with $\xip$ on the finite plane and satisfy
+\begin{equation}
+F(1-s)=F(s),\qquad F(\overline s)=\overline{F(s)},
+\label{eq:weaksym}
+\end{equation}
+but have different infinite zero sets. One has no infinite zeros. The other
+has exactly four infinite zeros, all simple and off the critical line.
+\end{theorem}
+\begin{proof}
+Set
+\[
+F_0(s)=
+\begin{cases}
+\xip(s),&s\in\OO,\\
+1,&s\notin\OO.
+\end{cases}
+\]
+Finite translation and conjugation preserve finiteness, so the symmetries
+hold. Every point has a sufficiently small fine neighborhood contained in
+its galaxy. On the finite galaxy use the canonical analytic lift; elsewhere
+$F_0$ is constant. This proves local Hahn analyticity and the absence of
+infinite zeros.
+
+Choose a positive purely infinite $T$ and an ordinary real $a$ with
+$0<a<1/2$. Let $c_\pm=1/2\pm iT$. Replace $F_0$ on the two galaxies
+$\pm iT+\OO$ by
+\[
+F_1(s)=(s-c_\pm)^2-a^2
+\quad\text{on }\ \pm iT+\OO,
+\]
+and keep $F_1=F_0$ elsewhere. Conjugation exchanges the two polynomials.
+Under $s\mapsto1-s$, the centred coordinate changes sign and the two
+galaxies are exchanged, so evenness of the square gives \eqref{eq:weaksym}.
+Local analyticity is unchanged. The added zeros are exactly
+$c_\pm+a$ and $c_\pm-a$, all simple; their real parts are $1/2\pm a$.
+\end{proof}
+
+The two functions are not proposed as equally good zeta completions. In
+particular no Euler product or Gamma factorization is asserted for them.
+They prove the narrower, important point that finite agreement, local
+analyticity and the two completed functional-equation symmetries do not
+settle the infinite-height RH question. A global RH must name its global
+function and the extra axioms that select it.
+
+\section{An elementary-extension route to infinite heights}
+\label{sec:transfer}
+
+\subsection{The analytic structure that is transferred}
+
+Start with the ordinary real field expanded by specified real functions.
+To avoid partial-function ambiguities, one can name the real and imaginary
+parts of the entire functions $\xi(s)$, $(s-1)\zeta(s)$ and
+$1/\Gamma(s)$, treating a complex input as a pair of real coordinates.
+Name the real exponential, ordinary sine and cosine, and whatever counting
+functions or arithmetic predicates are needed. A meromorphic function is
+then recovered by division off the zero set of its denominator. This is a
+set-sized first-order language and a genuine ordinary structure.
+
+Take a non-Archimedean elementary extension $\mathcal M^*$, for example a
+nonprincipal ultrapower. Its underlying ordered field $F$ is real closed
+and contains $\R$. It carries transferred functions $\xi^*$, $\zeta^*$,
+$\Gamma^*$ and so forth. These are the operations to which transfer applies.
+
+\begin{proposition}[An ordered-field realization inside the surreals]
+\label{prop:embedding}
+Every set-sized real closed ordered field extension $F$ of $\R$ admits an
+ordered-field embedding into $\No$ fixing $\R$. Hence its complexification
+embeds into $\SC$, and all the named transferred functions can be transported
+to that embedded subfield.
+\end{proposition}
+\begin{proof}
+Well-order a transcendence basis of $F$ over $\R$. Suppose a real closed
+subfield $E$ has already been embedded, and let $\alpha$ be the next
+transcendental basis element. The two sets
+\[
+L=\{j(e):e\in E,\ e<\alpha\},\qquad
+R=\{j(e):e\in E,\ e>\alpha\}
+\]
+form a set-sized surreal cut. A surreal realizing $\{L\mid R\}$ lies
+strictly between the two sets. It cannot belong to $j(E)$, since that would
+put it on one of the two sides of its own cut. As $j(E)$ is real closed,
+it is therefore transcendental over $j(E)$.
+
+Sending $\alpha$ to this cut realization extends the embedding to an
+ordered embedding of rational-function fields: signs of polynomials over
+a real closed field are determined by the cut relative to their real
+roots and the signs of their irreducible quadratic factors. Extend further
+to the compatible real closure inside $\No$. At limit stages take unions.
+After the whole basis is processed, real closedness and algebraicity of
+$F$ over the resulting rational-function field give the desired embedding.
+Adjoin $i$ to complexify. Transport of the extra named functions is then
+by conjugation with this embedding.
+\end{proof}
+
+This construction supplies actual surcomplex-valued models with
+infinite-height arguments. It does not supply a unique function on all of
+$\SC$. Moreover an ordered-field embedding alone need not preserve the
+Gonshor exponential, strong Hahn sums, or the canonical $E_0$ phase.
+Proposition~\ref{prop:twofreq} gives a direct obstruction to identifying
+the transferred full phase with $E_0$ on a domain containing a purely
+infinite simultaneous resonance. These operations must not be silently
+interchanged after embedding.
+
+\subsection{RH transfers exactly, not heuristically}
+
+\begin{theorem}[Elementary RH equivalence]
+\label{thm:transferRH}
+For any elementary extension of the specified xi structure,
+\begin{equation}
+\forall s\in F[i]\quad
+\bigl(\xi^*(s)=0\Longrightarrow\Re s=1/2\bigr)
+\label{eq:RHstar}
+\end{equation}
+is equivalent to the ordinary RH. The extension has zeros at genuinely
+infinite heights. Every finite zero of $\xi^*$ is nevertheless an exact
+ordinary zero, not merely a point infinitesimally close to one.
+\end{theorem}
+\begin{proof}
+The assertion \eqref{eq:RHstar} is the transfer of a first-order sentence
+about two real coordinates and the named components of $\xi$. Elementarity
+preserves its truth in both directions.
+
+Ordinary xi zeros have unbounded positive imaginary part. The first-order
+statement that for every real $T$ there is a zero of imaginary part greater
+than $T$ transfers to every $T\in F$, including infinite $T$. Thus the
+extension contains infinite-height zeros.
+
+Finally, fix an ordinary $R>0$. The ordinary closed disk $|s|\leq R$
+contains a finite list of xi zeros $\rho_1,\ldots,\rho_m$. The assertion
+that every zero in this disk equals one of those finitely many named points
+is first order and true in the ordinary structure, hence remains true in
+$\mathcal M^*$. Every finite $s\in F[i]$ belongs to some such ordinary
+disk. This proves the last assertion.
+\end{proof}
+
+This finite-zero agreement does not assert equality of all finite values
+$\xi^*(c+\epsilon)=\xip(c+\epsilon)$ after an arbitrary field embedding.
+Transferred Taylor remainder estimates give all fixed finite-order
+approximations. Exact equality with a specified strong Hahn sum is an
+additional summation compatibility requirement. A value smaller than every
+fixed power of a particular infinitesimal is not forced to be zero in a
+non-Archimedean field.
+
+If the integer predicate is included, the transferred reciprocal Gamma
+has zeros at the transferred nonpositive integers, including nonstandard
+ones. Thus $\Gamma^*$ acquires infinite poles. This is precisely one of
+the alternatives allowed by Theorem~\ref{thm:gamma-obstruction}; the
+reflection formula is not being combined with an incorrectly restricted
+ordinary pole set.
+
+\subsection{Counting functions and standard quantifiers}
+
+Let $N(T)$ count ordinary nontrivial zeta zeros with $0<\Im\rho\leq T$,
+with multiplicity. Naming $N$ in the language yields a transferred function
+$N^*(T)$. At infinite $T$ its value is a nonstandard integer. It is not
+the external cardinality of the set of ordinary zeros below an infinite
+surreal height; that external set is already all ordinary positive-height
+zeros and is countably infinite.
+
+A classical estimate $A(T)=\bigO(B(T))$ must be rewritten as a quantified
+inequality with witnesses: there are ordinary $C,T_0>0$ such that
+$|A(T)|\leq C B(T)$ for all $T\geq T_0$. Keeping these ordinary witnesses,
+transfer yields the same inequality for infinite $T$ in the model.
+Likewise a bound for each fixed ordinary $\sigma$ and each fixed ordinary
+$\eta>0$ does not automatically permit $\sigma$ or $\eta$ to be
+infinitesimal perturbations of endpoints. Uniformity must occur in the
+original theorem before it is transferred.
+
+\section{How classical partial results generalize}
+\label{sec:partial}
+
+This section gives selected precise benchmarks and their exact scopes.
+It is not a claim that every quoted numerical constant is the best currently
+available one. The literature check includes August and September 2026
+proportion preprints; these are marked separately from published results.
+
+\subsection{Zero-free regions and numerical verification}
+
+\begin{proposition}[Halo transfer of zero-free sets]
+\label{prop:halofree}
+If an ordinary set $A\subseteq\C$ contains no zeros of an ordinary
+meromorphic function $f$, then $f^\#$ has no zeros on $A^\#$. Poles are
+understood meromorphically and are not asserted to be function values.
+\end{proposition}
+\begin{proof}
+Any zero of $f^\#$ is an exact ordinary zero of $f$, by
+Theorem~\ref{thm:divisor}; its standard part is itself.
+\end{proof}
+
+Thus the classical zero-free half-plane $\Re s\geq1$, the critical-strip
+localization of nontrivial zeros, and every verified finite-height zero-free
+region hold exactly for the canonical finite lift \cite{DLMFzeros,Titch}.
+There is no additional infinitesimal boundary layer of new zeros.
+
+Platt and Trudgian rigorously verified RH for all zeros with
+$0<\Im\rho\leq H$, where $H=3\cdot10^{12}$, using interval arithmetic
+\cite{PT}. The same statement holds for $\xip$ at every finite surcomplex
+argument in that height range. This is a cited verified benchmark, not a
+new computation performed here and not a claim about the latest numerical
+record. It gives no information about infinite heights. We do not infer
+simplicity merely from the quoted verification statement.
+
+For an explicit analytic benchmark, Mossinghoff, Trudgian and Yang prove
+zero-freeness in
+\begin{equation}
+\sigma\geq1-
+\frac{1}{55.241(\log|t|)^{2/3}(\log\log|t|)^{1/3}},
+\qquad |t|\geq3,
+\label{eq:MTY}
+\end{equation}
+and also in
+\begin{equation}
+\sigma\geq1-\frac{1}{5.558691\log|t|},\qquad |t|\geq2
+\label{eq:MTYclassical}
+\end{equation}
+\cite{MTY}. Proposition~\ref{prop:halofree} gives the halo versions.
+In an elementary extension, the actual inequalities
+\eqref{eq:MTY}--\eqref{eq:MTYclassical} transfer to infinite $t$ as well,
+using the \emph{transported} logarithm. Their widths are then infinitesimal
+positive quantities. Substituting the Gonshor logarithm after an arbitrary
+ordered-field embedding would require compatibility not supplied by the
+embedding theorem.
+
+At infinitely large positive real part the stronger direct result
+\eqref{eq:Dzerofree} is already available for $\zD$, without transfer.
+This is a different sector from \eqref{eq:MTY} at infinite height and
+bounded real part.
+
+\subsection{Counting zeros at infinite height}
+
+The classical Riemann--von Mangoldt estimate is
+\begin{equation}
+N(T)=\frac{T}{2\pi}\log\frac{T}{2\pi}-\frac{T}{2\pi}
+ +\bigO(\log T),\qquad T\geq2,
+\label{eq:RvM}
+\end{equation}
+with multiplicities and a fixed endpoint convention \cite{Titch,DLMFzeros}.
+Changing the convention at a zero height is absorbed by the displayed
+error. The canonical finite lift has exactly this ordinary zero count at
+every ordinary height.
+
+When $N$ is named in the elementary structure, there is an ordinary
+constant $C$ such that, at all sufficiently large transferred heights,
+\begin{equation}
+\left|N^*(T)-\frac{T}{2\pi}\log^*\frac{T}{2\pi}
+             +\frac{T}{2\pi}\right|
+ \leq C\log^*T.
+\label{eq:RvMstar}
+\end{equation}
+In particular this holds for every infinite $T$ in the model. The normalized
+ratio of $N^*(T)$ to its leading expression differs from $1$ by an
+infinitesimal. Equation~\eqref{eq:RvMstar} is meaningful because $N^*$
+is a named internal counting function. It is not a count obtained by
+performing a proper-class contour integral or enumerating surreal zeros
+with surreal ordinal multiplicities.
+
+\subsection{Positive proportions and stable infinitesimal zero halos}
+
+Write $N_0(T)$ for the critical-line count with multiplicity, and
+$N_0^{\mathrm s}(T)$ for the number of simple critical-line zeros.
+A published benchmark of Pratt, Robles, Zaharescu and Zeindler is
+\begin{equation}
+\liminf_{T\to\infty}\frac{N_0(T)}{N(T)}\geq0.417293,
+\qquad
+\liminf_{T\to\infty}\frac{N_0^{\mathrm s}(T)}{N(T)}\geq0.407511
+\label{eq:PRZZ}
+\end{equation}
+\cite{PRZZ}. The two constants concern different properties; the first
+must not be quoted as a bound for simple critical-line zeros.
+
+The August 2026 preprint of Alp\"oge and Furman, followed by the September
+2026 preprint of Lamzouri, gives the stronger reported bound
+\begin{equation}
+\liminf_{T\to\infty}\frac{N_0^{\mathrm s}(T)}{N(T)}\geq C_0,
+\qquad
+C_0=\frac32-\frac1{\sqrt2}\cot\frac1{\sqrt2}
+       =0.6725007\ldots.
+\label{eq:C0}
+\end{equation}
+Both also give a distinct-zero proportion at least $(1+C_0)/2$;
+Lamzouri records additional inequalities for simple-or-critical zeros
+\cite{AF,Lamzouri}. These are cited recent preprint results, not arguments
+independently verified in this manuscript. Reported formal certificates
+in the source projects were not run here. The conclusions below are
+parametric in any accepted lower bound $\kappa$, so do not depend on
+treating the recent improvement as an independently audited input.
+
+\begin{corollary}[Quantitative robust-halo consequence]
+\label{cor:stableproportion}
+Suppose a classical theorem gives
+$\liminf N_0^{\mathrm s}(T)/N(T)\geq\kappa$.
+Then the centre-indexed proportion of uniformly stable critical-line halos
+from Section~\ref{sec:robust} has the same lower bound $\kappa$.
+In any elementary extension naming the two counting functions, for every
+fixed ordinary $c<\kappa$ and every infinite $T$,
+\begin{equation}
+(N_0^{\mathrm s})^*(T)\geq cN^*(T).
+\label{eq:proportionstar}
+\end{equation}
+\end{corollary}
+\begin{proof}
+The halo assertion is Theorem~\ref{thm:simplestable} applied to every
+simple critical-line centre. For the transferred assertion, the definition
+of liminf gives an ordinary $T_c$ such that
+$N_0^{\mathrm s}(T)\geq cN(T)$ for every $T\geq T_c$. Transfer preserves
+this quantified inequality with the same ordinary $c,T_c$.
+\end{proof}
+
+The conclusion is not generally the exact endpoint inequality with
+$c=\kappa$. A liminf bound alone does not provide an eventual lower bound
+at the endpoint itself. Nor does a positive proportion prove that every
+zero is on the line or simple. It does, together with the unbounded total
+count, imply the existence of critical-line zeros at infinite heights in
+the elementary model.
+
+\subsection{Zero density: transferred bounds and their limitations}
+
+For fixed ordinary $1/2<\sigma<1$, let $N(\sigma,T)$ count zeros with
+$\Re\rho\geq\sigma$ and $0<\Im\rho\leq T$. A useful recent benchmark
+from Guth and Maynard is
+\begin{equation}
+N(\sigma,T)\ll T^{A(\sigma)+o(1)},
+\qquad A(\sigma)=\frac{15(1-\sigma)}{3+5\sigma}.
+\label{eq:GM}
+\end{equation}
+Combining their estimate with Ingham's gives the convenient uniform-exponent
+form
+\begin{equation}
+N(\sigma,T)\ll T^{\frac{30}{13}(1-\sigma)+o(1)}.
+\label{eq:GMsimple}
+\end{equation}
+Their source counts both signs of the ordinate; these upper bounds therefore
+also apply to the upper-half-plane count used here \cite{GM}.
+At $\sigma=3/4$, the exponent in \eqref{eq:GM} is $5/9$.
+
+For each fixed ordinary $\sigma$ and ordinary $\eta>0$, an explicit
+quantified consequence has the form
+\begin{equation}
+N^*(\sigma,T)\leq C_{\sigma,\eta}T^{A(\sigma)+\eta}
+\label{eq:GMstar}
+\end{equation}
+for all sufficiently large $T$, including infinite $T$, with an ordinary
+constant and with the transported power function. This is transfer of an
+ordinary estimate, not a new improvement of its exponent.
+
+Even a bound making $N^*(\sigma,T)/N^*(T)$ infinitesimal does not imply
+$N^*(\sigma,T)=0$: an infinite population can have infinitesimal relative
+density. Moreover fixed-$\sigma$ bounds do not exclude zeros at
+$\Re\rho=1/2+\epsilon$ with positive infinitesimal $\epsilon$. Doing that
+would require a theorem whose uniformity actually includes that range,
+or RH itself. These are two separate ways in which density information
+falls short of a global zero-location statement.
+
+\subsection{Prime counting and finite positivity tests}
+
+The ordinary equivalence between RH and the prime-counting remainder
+\begin{equation}
+\psi(x)=x+\bigO\!\left(x^{1/2}\log^2x\right)
+\label{eq:psiRH}
+\end{equation}
+uses the classical Chebyshev function and its arithmetic definition
+\cite{Titch}. Once $\psi$ and the relevant arithmetic structure are named,
+its quantified consequences transfer. In a bare surreal field there is
+no specified function called ``the number of primes below $x$'' at an
+infinite $x$. Ordinary integers, omnific integers and transferred integers
+are different data; writing a sum over unspecified ``surreal primes''
+does not define \eqref{eq:psiRH}.
+
+There is also a simple limit on what extending scalar coefficients can
+achieve in finite-dimensional positivity criteria.
+
+\begin{proposition}[Finite Hermitian tests do not become stronger]
+\label{prop:Hermitian}
+Let $A$ be an ordinary complex Hermitian $n\times n$ matrix. It is
+positive semidefinite over $\C$ if and only if
+\begin{equation}
+u^*Au\geq0\qquad\text{for every }u\in\SC^n.
+\label{eq:Hermitian}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Diagonalize $A=UDU^*$ over $\C$, with ordinary real eigenvalues $d_j$.
+The same identity holds over $\SC$. If $d_j\geq0$ for every $j$, then
+$u^*Au=\sum_j d_j|(U^*u)_j|^2\geq0$ in the ordered real surreal field.
+If some $d_j<0$, its ordinary eigenvector already violates positivity.
+\end{proof}
+
+Thus allowing surreal coefficients in a fixed finite family of classical
+Weil-type tests adds no condition. A genuinely enlarged infinite test
+space requires its own support, summation and positivity theorems. It
+cannot be obtained by relabelling the scalars in a finite matrix argument.
+Likewise quantities defined by fixed ordinary orders of differentiation
+of the canonical lift at ordinary points are exactly the classical
+quantities. Adjoining infinitesimals does not alter those coefficients.
+
+\section{Infinitesimal heat time and escape to infinite modulus}
+\label{sec:heat}
+
+\subsection{The classical input}
+
+Use the normalization of Rodgers and Tao \cite{RT}:
+\begin{align}
+H_\tau(z)&=\int_0^\infty e^{\tau u^2}\Phi(u)\cos(zu)\,du,
+\label{eq:Hheat}\\
+\Phi(u)&=\sum_{n\geq1}
+ (2\pi^2n^4e^{9u}-3\pi n^2e^{5u})e^{-\pi n^2e^{4u}},
+\notag\\
+H_0(z)&=\frac18\xi\!\left(\frac12+\frac{iz}{2}\right).
+\label{eq:H0}
+\end{align}
+The de Bruijn--Newman constant $\Lambda$ is characterized by: all zeros
+of $H_\tau$ are real exactly when $\tau\geq\Lambda$. Rodgers and Tao
+prove $\Lambda\geq0$. Consequently every ordinary negative $\tau$ has
+at least one nonreal zero of $H_\tau$.
+
+The super-exponential decay of $\Phi$ makes $H_\tau(z)$ jointly analytic
+in complex $(\tau,z)$ on bounded parameter sets, by differentiation under
+the ordinary integral. Indeed the factors from differentiating are
+polynomials in $u$, multiplied by $e^{Cu^2+Cu}$ on a fixed compact set,
+and remain dominated by the super-exponential tail. For real $\tau$ the
+function is conjugation-symmetric, and direct differentiation gives
+$\partial_\tau H_\tau=-\partial_z^2H_\tau$.
+
+No surreal integral is being used here: these are ordinary analytic germs
+before lifting or transfer.
+
+\begin{lemma}[Local real-root persistence]
+\label{lem:heatpersist}
+If $a$ is a simple real zero of $H_0$, then there are ordinary $r,\delta>0$
+such that for every real $|\tau|<\delta$, all zeros of $H_\tau$ in
+$|z-a|<r$ are real and there is exactly one such zero. Its root germ has
+\begin{equation}
+z(\tau)=a+\tau\frac{H_0''(a)}{H_0'(a)}+\bigO(\tau^2).
+\label{eq:heatroot}
+\end{equation}
+The same local uniqueness and reality statements hold after canonical
+infinitesimal evaluation or elementary transfer.
+\end{lemma}
+\begin{proof}
+The analytic implicit-function theorem at $(0,a)$ gives one local root
+and a unit factorization. Shrink ordinary $r,\delta$ so that it is the
+only root in the disk. For real $\tau$, conjugation preserves this disk
+and the function; uniqueness makes the root real. Differentiating
+$H_\tau(z(\tau))=0$ gives
+$z'(0)=-\partial_\tau H/H_z=H_0''(a)/H_0'(a)$.
+Hahn evaluation preserves the factorization. Alternatively the existence,
+uniqueness and reality statement with its ordinary radii is first order
+in the real-coordinate functions $H$, so transfers.
+\end{proof}
+
+\begin{theorem}[Conditional escape at negative infinitesimal time]
+\label{thm:escape}
+Include the real-coordinate functions $H_\tau(z)$ in an elementary
+extension as in Section~\ref{sec:transfer}. Assume the ordinary RH and
+simplicity of every nontrivial zeta zero. For every negative infinitesimal
+$\tau\in F$, the transferred function $H^*_{\tau}$ has a nonreal zero,
+but every such nonreal zero has infinite modulus.
+
+By contrast, the canonical joint Taylor lift at $(0,\C)$, evaluated at
+that infinitesimal parameter, has only real zeros on its finite $z$-plane.
+\end{theorem}
+\begin{proof}
+The unconditional ordinary statement
+\[
+\forall\tau<0\ \exists z\quad
+\bigl(H_\tau(z)=0\text{ and }\Im z\ne0\bigr)
+\]
+follows from $\Lambda\geq0$ and the defining characterization of
+$\Lambda$. Transfer supplies a nonreal zero for every negative
+infinitesimal $\tau$.
+
+Suppose such a zero $z$ had finite modulus, and let $a=\st z$.
+Ordinary continuity of the joint function at $(0,a)$, applied with each
+ordinary positive error tolerance and then transferred, gives
+$\st(H^*_{\tau}(z))=H_0(a)$. Thus $H_0(a)=0$.
+By \eqref{eq:H0}, RH and simplicity make $a$ a simple real zero.
+Lemma~\ref{lem:heatpersist}, transferred with its ordinary radii, then
+forces $z$ real, a contradiction. Therefore every nonreal zero has
+infinite modulus.
+
+For the canonical joint lift the same standard-part argument puts every
+finite zero in the halo of a zero of $H_0$. The evaluated unit
+factorization in Lemma~\ref{lem:heatpersist} makes the unique root in
+that halo real. There is no domain of infinite $z$ in this finite-only
+construction, so it has no nonreal zeros at all on its stated domain.
+\end{proof}
+
+This is a concrete explanation of why infinitesimal stability at every
+ordinary zero does not contradict the criticality expressed by
+$\Lambda\geq0$. Under RH and simplicity, the instability is invisible
+on every fixed ordinary bounded region and is witnessed only at infinite
+modulus in the transferred model. The assertion concerns modulus; no
+specific asymptotic scale for the first nonreal zero is proved here.
+
+Without the two conjectural assumptions, the proof still gives an
+unconditional localization statement: a finite nonreal zero at infinitesimal
+time must have standard part either a nonreal zero of $H_0$ or a multiple
+real zero of $H_0$. It cannot have a simple real zero as its standard part.
+This is a useful diagnostic that does not presuppose RH.
+
+\section{Synthesis and concrete further questions}
+\label{sec:synthesis}
+
+The canonical finite theory is fully specified on its domain:
+Gamma and zeta are defined, their ordinary identities lift, their divisors
+are exactly known in terms of the classical divisors, and its RH is
+precisely classical RH. The robust version is strictly more informative
+as a formulation: it packages RH and simplicity into stability under
+symmetric infinitesimal perturbations.
+
+The infinite-right theory supplies a second exact construction. Strong
+Dirichlet summability, rather than ordinary convergence, gives an injective
+realization of all ordinary arithmetic coefficient functions. Euler products,
+M\"obius inversion, logarithmic derivatives and zero-freeness are literal
+identities. The infinite-shift Hurwitz construction provides a compatible
+formal bridge to the Stirling logarithm, while explicitly avoiding the
+nonsummable shifted ordinary series.
+
+At infinite height, the global problem requires additional choices.
+The canonical published phase $E_0$ is a legitimate exponential but
+forgets the frequencies needed by classical Dirichlet oscillation. The
+resonance theorem proves that certain natural continuation and divisor
+requirements cannot all coexist with it. Weak local analytic and symmetry
+axioms leave the global zero set undetermined, while elementary extension
+gives a coherent alternative on embedded set-sized models, with its own
+transported operations.
+
+Several sharply formulated projects emerge from these results.
+
+\paragraph{Nonresonant global completion.}
+Specify a phase $U$ satisfying at least the two-frequency test
+\eqref{eq:twofreq}, a summation rule in a finite-real-part right half-plane
+at infinite height, and a meromorphic continuation class. Determine whether
+one can simultaneously retain a single zeta pole, the completed functional
+equation and a prescribed Gamma asymptotic normalization. The theorem here
+identifies a necessary obstruction to avoid, not a sufficient construction.
+
+\paragraph{Compatibility of canonical and transferred local values.}
+An elementary model has exactly the correct finite zeros, but an arbitrary
+ordered-field embedding does not identify all its values with Hahn lifts.
+Find additional hypotheses on an embedding or on a restricted analytic
+substructure that enforce such equality, and determine how far this
+compatibility extends into infinite sectors. Restricted-analytic surreal
+extension results in \cite{CE,EK} provide relevant structure, but do not
+by themselves settle a global zeta-and-phase compatibility statement.
+
+\paragraph{Quantitative heat escape.}
+Under RH and simplicity, define in a transferred model the least scale, or
+an appropriate infimum scale, at which nonreal zeros appear for
+$\tau=-\epsilon$. Theorem~\ref{thm:escape} proves only that every ordinary
+bound is exceeded. Relating that scale to classical small gaps and the
+heat-flow collision mechanism would turn the qualitative infinite-modulus
+statement into asymptotic information.
+
+\paragraph{Certified local algebra.}
+The divisor theorem, simple-root symmetry argument, splitting-scale
+calculation and finite Dirichlet convolution identities have clean
+formalization boundaries. They can be formalized without assuming RH.
+The support and class-size infrastructure, and any imported analytic
+number-theory theorem, must be recorded separately rather than hidden
+inside a computational certificate.
+
+\medskip
+There is therefore no single unqualified statement called ``RH over the
+surcomplex numbers.'' There are precise statements attached to precise
+extensions. Two of them---the canonical finite RH and the elementary
+RH---are equivalent to ordinary RH for different reasons. A third, robust
+finite RH, is equivalent to RH plus simplicity. For a separately chosen
+global Hahn-analytic or phase-dependent completion, RH is a genuinely
+additional assertion whose content is inseparable from the construction.
+
+\appendix
+\section{Proof dependencies and reproducible finite checks}
+\label{app:checks}
+
+The supplied Python program passed 221 exact symbolic checks
+(Python 3.13.5, SymPy 1.14.0). It performs checks in ordinary
+polynomial and truncated formal-series rings. It checks the Stirling shift
+coefficients, the Hurwitz shift expansion for several ordinary parameters,
+Bernoulli special values, the derivative bridge at zero, the first two
+implicit-root coefficients, finite Dirichlet-convolution identities, and
+finite Euler-product coefficients. It also verifies the algebra of the
+symmetric quartet construction and several local splitting polynomials.
+
+These checks detect finite algebraic errors. They do not prove Hahn
+summability, quantify over surreal classes, verify analytic continuation,
+prove the classical RH, or validate any of the cited analytic-number-theory
+papers. No arbitrary large floating-point number is substituted for an
+infinite surreal. The general arguments are the proofs in the text.
+
+\begin{center}
+\begin{tabular}{P{0.34\textwidth}P{0.54\textwidth}}
+\toprule
+Result & Principal dependencies\\
+\midrule
+Finite divisor preservation & Neumann support lemma; ordinary meromorphic local factorization\\[3pt]
+Robust RH equivalence & Finite divisor preservation; ordinary analytic implicit-function theorem; xi symmetries\\[3pt]
+Infinite-right Dirichlet algebra & Purely-infinite exponential monomials; Neumann lemma; unique prime factorization\\[3pt]
+Hurwitz--Stirling bridge & Bernoulli generating identity; formal shift calculus; infinitesimal evaluation\\[3pt]
+Phase obstruction & Published phase-forgetting exponential; ordinary meromorphic identity theorem; classical zeta values\\[3pt]
+Elementary RH and estimates & Elementary extension; ordered-field embedding; explicitly named classical functions and estimates\\[3pt]
+Heat escape & Joint analytic root persistence; Rodgers--Tao nonnegativity; RH and simplicity for the conditional conclusion\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The source is self-contained LaTeX with an internal bibliography. Running
+\texttt{./build.sh} compiles the article; running
+\texttt{python code/checks.py} reruns the finite checks and prints a JSON
+report. An optional explicit output path writes a new report; the default
+does not overwrite the shipped evidence. See the accompanying README for
+file descriptions and the recorded build status.
+
+\section{Notation and domain index}
+
+\begin{longtable}{P{0.22\textwidth}P{0.66\textwidth}}
+\toprule
+Symbol & Meaning and scope\\
+\midrule
+\endhead
+$\SC=\No[i]$ & Surcomplex field; class-sized globally, with set-sized supports in every calculation.\\[3pt]
+$\OO$, $\mm$ & Finite surcomplex elements and infinitesimals.\\[3pt]
+$\st z$ & Ordinary complex standard part of a finite element.\\[3pt]
+$\pp x$, $\fin x$ & Purely infinite and finite normal-form parts of a real surreal.\\[3pt]
+$c+\mm$ & Infinitesimal halo of an ordinary centre.\\[3pt]
+$b+\OO$ & Finite-width galaxy about a possibly infinite point.\\[3pt]
+$\Sh$, $\Ph$ & Strong Hahn sum and product defined by strongly summable expansion.\\[3pt]
+$f^\#$ & Canonical finite Taylor--Laurent lift of an ordinary function.\\[3pt]
+$\xi$ & Completed zeta in normalization \eqref{eq:xi}; all its zeros are nontrivial zeta zeros.\\[3pt]
+$F_{\epsilon,h}$ & Symmetric infinitesimal perturbation of the finite xi lift.\\[3pt]
+$\mathcal D_+$, $\zD$ & Positive infinite real part, finite imaginary part; exact strong-Dirichlet zeta.\\[3pt]
+$\LSt$, $\Gamma_{E,\mathrm{St}}$ & Strong Stirling logarithm and its exponentiation with a specified global phase.\\[3pt]
+$Z_\infty(s,A)$ & Infinite-positive-shift Hurwitz prescription; ordinary real parameter and restricted parameter germs.\\[3pt]
+$E_0$ & Published phase-forgetting surcomplex exponential with kernel $2\pi i\Oz$.\\[3pt]
+$f^*$ & Named function in an elementary extension; not automatically a canonical Hahn lift after embedding.\\[3pt]
+$N^*(T)$ & Transferred internal zero count, not an external cardinality.\\[3pt]
+$H_\tau$ & Ordinary de Bruijn--Newman heat family before lifting or transfer.\\
+\bottomrule
+\end{longtable}
+
+\begin{thebibliography}{99}
+\small
+\raggedright
+\interlinepenalty=10000
+\setlength{\itemsep}{5pt}
+\setlength{\parskip}{0pt}
+\addcontentsline{toc}{section}{References}
+
+\bibitem{Conway}
+J. H. Conway, \emph{On Numbers and Games}, second edition, A K Peters, 2001.
+
+\bibitem{Gonshor}
+H. Gonshor, \emph{An Introduction to the Theory of Surreal Numbers},
+London Mathematical Society Lecture Note Series 110, Cambridge University
+Press, 1986.
+
+\bibitem{CE}
+O. Costin and P. Ehrlich, \emph{Integration on the surreals},
+arXiv:2208.14331v5. In particular the finite analytic extension framework,
+the Gamma example, and Proposition 93.
+\url{https://arxiv.org/html/2208.14331v5}.
+
+\bibitem{EK}
+P. Ehrlich and E. Kaplan, \emph{Surreal ordered exponential fields},
+arXiv:2002.07739v3. Section 11, especially Proposition 11.2 and Theorem 11.1,
+for surcomplex exponential extensions and integer parts.
+\url{https://arxiv.org/abs/2002.07739v3}.
+
+\bibitem{repo}
+V. Reshetnikov, \emph{Surreal} repository, documentation catalogue,
+pinned snapshot \pin. AI-assisted research collection; targeted inspection
+of the maintained documentation guides.
+\href{https://github.com/VladimirReshetnikov/Surreal/tree/905dd19954db43ac81f76f72036520d0eadc5710/docs}{Pinned documentation catalogue}.
+
+\bibitem{repoGamma}
+\repo, \emph{Gamma functions over the surreals: a sharp convexity
+classification}, maintained report guide and linked article, directory
+\texttt{docs/surreal/gamma-functions}, at the snapshot in \cite{repo}.
+\href{https://github.com/VladimirReshetnikov/Surreal/tree/905dd19954db43ac81f76f72036520d0eadc5710/docs/surreal/gamma-functions}{Pinned Gamma report directory}.
+
+\bibitem{repoAnalysis}
+\repo, \emph{Surcomplex analysis: holomorphic functions on
+$K=\No[i]$}, maintained report guide, directory
+\texttt{docs/surcomplex/analysis}, at the snapshot in \cite{repo}.
+\href{https://github.com/VladimirReshetnikov/Surreal/tree/905dd19954db43ac81f76f72036520d0eadc5710/docs/surcomplex/analysis}{Pinned analysis report directory}.
+
+\bibitem{repoTrig}
+\repo, \emph{Trigonometry on the Surcomplex Plane}, maintained report
+guide, directory \texttt{docs/surcomplex/trigonometry}, at the snapshot
+in \cite{repo}.
+\href{https://github.com/VladimirReshetnikov/Surreal/tree/905dd19954db43ac81f76f72036520d0eadc5710/docs/surcomplex/trigonometry}{Pinned trigonometry report directory}.
+
+\bibitem{DLMFgamma}
+NIST Digital Library of Mathematical Functions, Section 5.2,
+\emph{Definitions: Gamma and psi functions}.
+\url{https://dlmf.nist.gov/5.2}.
+
+\bibitem{DLMFidentities}
+NIST Digital Library of Mathematical Functions, Section 5.5,
+\emph{Functional relations for the Gamma function}.
+\url{https://dlmf.nist.gov/5.5}.
+
+\bibitem{DLMFstirling}
+NIST Digital Library of Mathematical Functions, Section 5.11,
+\emph{Asymptotic expansions for the Gamma function}.
+\url{https://dlmf.nist.gov/5.11}.
+
+\bibitem{DLMFzeta}
+NIST Digital Library of Mathematical Functions, Section 25.2,
+\emph{Definition and expansions of the Riemann zeta function}.
+\url{https://dlmf.nist.gov/25.2}.
+
+\bibitem{DLMFfe}
+NIST Digital Library of Mathematical Functions, Section 25.4,
+\emph{Reflection formulas for the Riemann zeta function}.
+\url{https://dlmf.nist.gov/25.4}.
+
+\bibitem{DLMFzeros}
+NIST Digital Library of Mathematical Functions, Section 25.10,
+\emph{Zeros of the Riemann zeta function}.
+\url{https://dlmf.nist.gov/25.10}.
+
+\bibitem{DLMFhurwitz}
+NIST Digital Library of Mathematical Functions, Section 25.11,
+\emph{Hurwitz zeta function}. Especially recurrence, Bernoulli special
+values, parameter derivative at zero and large-parameter asymptotics.
+\url{https://dlmf.nist.gov/25.11}.
+
+\bibitem{Titch}
+E. C. Titchmarsh, \emph{The Theory of the Riemann Zeta-Function}, second
+edition revised by D. R. Heath-Brown, Oxford University Press, 1986.
+
+\bibitem{PT}
+D. Platt and T. Trudgian, \emph{The Riemann hypothesis is true up to
+$3\cdot10^{12}$}, Bulletin of the London Mathematical Society (2021),
+DOI: 10.1112/blms.12460; arXiv:2004.09765.
+\url{https://arxiv.org/abs/2004.09765}.
+
+\bibitem{MTY}
+M. J. Mossinghoff, T. S. Trudgian and A. Yang,
+\emph{Explicit zero-free regions for the Riemann zeta-function},
+arXiv:2212.06867, 2022.
+\url{https://arxiv.org/abs/2212.06867}.
+
+\bibitem{PRZZ}
+K. Pratt, N. Robles, A. Zaharescu and D. Zeindler,
+\emph{More than five-twelfths of the zeros of $\zeta$ are on the critical
+line}, Research in the Mathematical Sciences \textbf{7}, article 2 (2020);
+arXiv:1802.10521v3. DOI: 10.1007/s40687-019-0199-8.
+\url{https://arxiv.org/abs/1802.10521v3}.
+
+\bibitem{GM}
+L. Guth and J. Maynard, \emph{New large value estimates for Dirichlet
+polynomials}, arXiv:2405.20552, 2024. Theorem 1.2 and equation (1.4)
+for the zero-density bounds used here.
+\url{https://arxiv.org/abs/2405.20552}.
+
+\bibitem{AF}
+L. Alp\"oge and R. Furman, \emph{More than two thirds of the zeta zeros
+are simple and on the critical line}, arXiv:2608.13637v2,
+19 August 2026. Recent preprint; cited as an external result, not
+independently verified here.
+\url{https://arxiv.org/abs/2608.13637v2}.
+
+\bibitem{Lamzouri}
+Y. Lamzouri, \emph{A new proof that more than $2/3$ of the zeros of the
+Riemann zeta function are simple and on the critical line},
+arXiv:2609.02882v2, 8 September 2026. Theorem 1.1.
+Recent preprint; cited as an external result, not independently verified here.
+\url{https://arxiv.org/abs/2609.02882v2}.
+
+\bibitem{RT}
+B. Rodgers and T. Tao, \emph{The de Bruijn--Newman constant is
+non-negative}, arXiv:1801.05914v5, corrected version of the published
+paper, 3 July 2021. The normalization of $H_0$ is equation (1), and
+nonnegativity is Theorem 1.
+\url{https://arxiv.org/html/1801.05914v5}.
+
+\end{thebibliography}
+\end{document}

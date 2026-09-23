@@ -427,7 +427,62 @@ and proves that its angle is strictly and infinitesimally below `pi/2`.
 Inverse sine has the full central-binomial strong series, with an exact finite
 ninth-order remainder after degree seven. Both inverse sine and inverse
 tangent preserve valuation at infinitesimals: each is its input times a
-finite factor of standard part one.
+finite factor of standard part one. At every positive infinitesimal defect,
+inverse cosine satisfies the exact square-root half-angle identity and full
+central-binomial strong series. Its normalized cubic expansion has a finite
+fourth-order remainder, and its valuation is half the defect valuation.
+At both inverse-sine endpoints the inward difference quotient eventually
+exceeds every fixed surreal bound, including infinite bounds, so no
+surreal-valued one-sided or fine derivative exists.
+Angular distance on the actual unit circle satisfies the metric axioms and
+the exact chord formula, with Jordan comparison bounds and identical
+angular/chordal valuation. Directions with equal standard part have a unique
+infinitesimal relative angle, given by the strong logarithm; its absolute
+value is their angular distance. The normalized chord and cosine-defect
+factors have full strong series and exact finite remainders.
+Phase differences preserve the exact infinitesimal angular valuation and
+have the expected complex linear term with infinitesimal relative error.
+Rotation displacement obeys the exact half-angle chord formula at arbitrary
+radii. Rotating by `omega^-1` gives displacement equivalent to one at radius
+`omega`, and infinite displacement at radius `omega^2`.
+For every relatively infinitesimal perturbation of a nonzero surcomplex
+number, the geometric direction change is the imaginary local logarithm.
+Its quadratic expansion has a bounded cubic remainder, and its valuation
+is at least that of the relative perturbation, with equality when the
+leading coefficient has nonzero imaginary part.
+Noncollinear triangles at arbitrary surreal scales have unique interior
+angles in `(0, pi)`, with the normalized dot product and area as cosine
+and sine coordinates. Their three angles sum exactly to ordinary pi,
+including their infinitesimal parts. The included-angle cosine and area
+laws also hold without restrictions on side lengths.
+Every such triangle has a unique circumcircle with positive actual radius
+`abc/(4*area)`. All three side-to-sine ratios equal twice that radius,
+and the tangent law has positive denominators on its prescribed domains.
+The least of the three side valuations is attained at least twice.
+Right triangles are characterized by Pythagoras. Each acute angle is the
+inverse tangent of its opposite-to-adjacent leg ratio, and explicit
+triangles realize every positive surreal slope, including infinite slopes.
+Positive side lengths determine a noncollinear triangle exactly when all
+three strict triangle inequalities hold. Its angles are recovered by
+inverse cosine, and equal side data gives an affine isometry preserving
+actual surreal distances. Positive finite angles summing to pi and any
+positive surreal scale also determine a triangle. Equal angles give an
+actual affine similarity; one specified positive side fixes the scale.
+The SAS and ASA constructions also have existence and congruence theorems.
+Heron's formula gives the positive half-angle square-root identities.
+The side-weighted incenter has a unique perpendicular contact with each
+side line, strictly inside the side segment, at radius equal to area
+divided by semiperimeter. It is the unique interior equidistant center.
+The internal bisector divides its opposite side in the prescribed ratio,
+has length `2bc*cos(alpha/2)/(b+c)`, and makes two actual equal half-angles.
+Euler's center-distance identity gives `|O-I|^2 = R*(R-2r)`.
+The radius inequality `2r ≤ R` and the sharp area bound
+`area ≤ s^2/(3*sqrt(3))` have equality exactly for equilateral triangles,
+at arbitrary positive surreal scales.
+Interior cevians satisfy the exact side-weighted sine ratio, which
+uniquely characterizes the internal bisector. Trigonometric Ceva gives
+an equivalence between concurrence of the three actual affine lines and
+the product of their positive split-angle sine ratios being one.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual

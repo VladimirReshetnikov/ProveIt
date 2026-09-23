@@ -45,7 +45,12 @@ No row below certifies every claim in an entire report.
 | [Infinite-dimensional Hahn spectral theory](surcomplex/infinite-dimensional-hahn-spectral-theory/) | Read the shared support tools and Part I inner-product, automatic-adjoint, defect, normal-spectrum, inverse-smooth, coercivity, completeness, duality and norm-attainment proofs. Reconstructed the norm over arbitrary value groups, then removed the unused Part I divisibility restriction after tracing every root operation. Proved closedness of the coercive range at every rank using the continuous defect projection, retaining the original metric argument under its rank-one hypothesis. Added the positive-scale guard to the backward-shift example, distinguished valuation zero from metric distance one, and aligned the two inner-product conventions, summaries and hypothesis ledger. A subsequent Part II pass read the algebra, homogeneous diagonalization, normalization, synthesis, commutant, resolvent, walk, stability, finite-section, example and transport proofs. Corrected strict diagonal-coherence claims at finite index sets and trivial groups; supplied a coherent diagonal with incoherent inverse. Distinguished vectorwise Hahn projection additivity from classical strong-operator additivity, checked against Williams Definition 5.1, and gave a rank-one counterexample to pointwise valuation convergence. Expanded the sharp boundary coefficient’s formal root-comparison step and supplied its positive-length guard. Other imported classical results, priority and source-claim reconciliation remain outside this review. |
 | [Hahn–Herglotz positivity](surcomplex/hahn-herglotz-positivity/) | Read the main support, scalar and matrix normalization, Harnack, null-ideal, functional, Fourier, quadrature, Schur, hierarchy and finite-prefix proof chains. Proved the Harnack, halo-positivity and common-kernel conclusions without divisibility by scalar normalization of quadratic forms. Expanded the zero-form and matrix-coefficient arguments; supplied the scalar-normalization positivity hypothesis and the integer-group obstruction to identity-block congruence. Corrected finite-valued versus finite-support terminology and the false disjointness of the strong and coefficientwise measure classes. Aligned partial Lean coverage and Fourier notation. Checked the classical disk representation against Bhattacharyya–Bhowmik–Kumar v3 and only the constant-kernel clause of Gesztesy–Tsekanovskii Lemma 5.3 against its preprint; other imports, priority and source-claim reconciliation remain outside this review. |
 | [Expanding polynomial dynamics](surcomplex/expanding-polynomial-dynamics/) | Read the main scale-ideal, inverse-branch, universal-center, fiber, periodicity, topology, extension, deformation, bounded-orbit and surreal-specialization proofs. Made degree preservation explicit in summaries and supplied a higher-degree two-cycle counterexample; clarified universal formal substitution and coefficient stabilization, and supplied the missing noncompactness argument. Distinguished an order unit from rank one, spelled out the proper-class specialization using set-sized compactness, and corrected the README’s ambiguous finite-orbit wording. Aligned partial Lean coverage and the notation guide. Checked the classical quadratic Cantor comparison and spherical Fatou/Julia definitions against Benedetto’s notes; other imports, priority and source-claim reconciliation remain separate. |
-| [Finite surreal probability](surreal/finite-surreal-probability/) | Reviewed Sections 2–13. Expanded workspace closure and standard-part existence, uniqueness, quotient and kernel arguments. Corrected the finite point-weight representation to require all subsets measurable; smaller finite algebras have atom weights. Expanded common-partition expectation, zero-second-moment Cauchy–Schwarz, tail bounds, finite Jensen, positive-denominator Bayes and chain rules, conditional tower and total variance, and both directions of finite coherence. Distinguished arbitrary versions on null atoms from pointwise identities and coherent laws from regular laws. Checked the canonical Hahn embedding and exponential transfer against van den Dries–Ehrlich Section 2 and its erratum. Expanded the conditional skeleton, its pairwise recovery, signed-row selection and Bayes leading coefficients. Corrected the joint-normalizer hypothesis for successive updates, neutral-likelihood wording, the difference numerator sign and sufficient-versus-necessary precision claim. Added the surreal-payoff and exact-threshold counterexamples. Checked the conditional-space comparison and real-payoff domain against Halpern Definition 2.1 and Section 4. Expanded logit inverse and domain checks, softmax gauge and perturbation bounds, separated-scale concentration, entropy and KL equality, support inheritance in the chain rule and data processing, and scoring identities. Distinguished the boundary logarithmic-score infimum from an attained interior minimum. Expanded Gibbs minimization, finite path consistency, adapted optional stopping and Bernoulli variance. Corrected the posterior-support claim after smoothing and the leading coefficient for a general infinitesimal scale. Added nonseparable logistic and non-stopping-time counterexamples and explicit zero-horizon cases. Expanded strong geometric regrouping, common-support coefficient measures, normalized hierarchy support and conditional shadows, real-observable dominated convergence and product Fubini, and the countable-support integration boundary. Distinguished uniform bounds from leading-component essential bounds. Expanded posterior coefficient measurability and added an explicit failure of coefficient integrability before density cancellation; checked the ordinary disintegration input against Kallenberg Theorem 8.5. Expanded the coin coefficient-variation bounds, polynomial-sign argument for relative field embeddings, ultrapower positivity, parity nonuniqueness and the finite compactness models. Replaced the logit change-of-variable shortcut with original Hahn leading data; distinguished finite-support permutations from unrestricted invariance. Checked the cited fine-ideal and fine-ultrafilter construction inputs. Sections 14 onward and remaining imports are pending. |
+| [Finite surreal probability](surreal/finite-surreal-probability/) | Reviewed main text, Sections 2–17. Expanded workspace closure and standard-part existence, uniqueness, quotient and kernel arguments. Corrected the finite point-weight representation to require all subsets measurable; smaller finite algebras have atom weights. Expanded common-partition expectation, zero-second-moment Cauchy–Schwarz, tail bounds, finite Jensen, positive-denominator Bayes and chain rules, conditional tower and total variance, and both directions of finite coherence. Distinguished arbitrary versions on null atoms from pointwise identities and coherent laws from regular laws. Checked the canonical Hahn embedding and exponential transfer against van den Dries–Ehrlich Section 2 and its erratum. Expanded the conditional skeleton, its pairwise recovery, signed-row selection and Bayes leading coefficients. Corrected the joint-normalizer hypothesis for successive updates, neutral-likelihood wording, the difference numerator sign and sufficient-versus-necessary precision claim. Added the surreal-payoff and exact-threshold counterexamples. Checked the conditional-space comparison and real-payoff domain against Halpern Definition 2.1 and Section 4. Expanded logit inverse and domain checks, softmax gauge and perturbation bounds, separated-scale concentration, entropy and KL equality, support inheritance in the chain rule and data processing, and scoring identities. Distinguished the boundary logarithmic-score infimum from an attained interior minimum. Expanded Gibbs minimization, finite path consistency, adapted optional stopping and Bernoulli variance. Corrected the posterior-support claim after smoothing and the leading coefficient for a general infinitesimal scale. Added nonseparable logistic and non-stopping-time counterexamples and explicit zero-horizon cases. Expanded strong geometric regrouping, common-support coefficient measures, normalized hierarchy support and conditional shadows, real-observable dominated convergence and product Fubini, and the countable-support integration boundary. Distinguished uniform bounds from leading-component essential bounds. Expanded posterior coefficient measurability and added an explicit failure of coefficient integrability before density cancellation; checked the ordinary disintegration input against Kallenberg Theorem 8.5. Expanded the coin coefficient-variation bounds, polynomial-sign argument for relative field embeddings, ultrapower positivity, parity nonuniqueness and the finite compactness models. Replaced the logit change-of-variable shortcut with original Hahn leading data; distinguished finite-support permutations from unrestricted invariance. Checked the cited fine-ideal and fine-ultrafilter construction inputs. Expanded the rare-regime likelihood, martingale and full-observation conditional expectation calculations, supplied a fourth-moment proof of the component strong laws, and separated coefficientwise limits from the nowhere order-Cauchy conclusion. Expanded shadow continuity, internal-algebra measure extension and an explicit Poisson ultraproduct with diagonal saturation. Added a logarithm error bound, a measurable ordinary count and a Markov check for escaped mass. Aligned model weights, exponential hypotheses, notation and dependency claims in the final sections. Remaining imports and source/provenance reconciliation are pending. |
+| [Three duals of Hahn vector spaces](surcomplex/three-duals-of-hahn-vector-spaces/) | Reviewed the main text, Sections 1–15. Expanded support facts, arbitrary regrouping, finite triple convolutions, the uniform shift bound and zero-group cases. Made the strong-map isomorphism and the descending-support counterexample explicit. Expanded coefficient-rank approximation by nets, nonzero-scalar closure and the countable-cofinal sequence construction. Corrected the guide's order-unit summary to distinguish strict completion from the noncyclic middle case. Expanded compatible-ball and Cauchy-net completeness, ball nesting, set-sized Zorn extension and its empty-chain case; corrected the claim that selecting one element of a known nonempty set separately requires choice. Expanded continuous restriction and separation, the canonical quotient kernel, cyclic finite-subsum convergence, Hilbert norm identities and topology, Riesz coefficients and cardinality. Corrected positive-versus-nonnegative bound scope at the zero operator and characterized bounds for unbounded leading coefficients. Expanded dense-kernel, projection, orthogonality and distance-cut proofs; distinguished an orthogonal complement from an orthogonal direct-sum complement. Expanded the cofinal/noncofinal induced topology, two-scale target topology, unique strong extension and normal-form transport. Corrected vector outputs described as scalars, the first-kappa comparison's missing properness hypothesis, spectral extension scope and stale negative-search/current-review claims. Checked BKKPS summability definitions, Kaplan–Krapp–Serra normal-form conventions and Morillon's real-valued one-step statement against primary text. Remaining imports/source reconciliation are pending. |
+| [Hidden negative Hermitian directions](surcomplex/hidden-negative-hermitian-directions/) | Reviewed the main text, Sections 1–11. Expanded character extension, finite support-index bounds, primorial degree, algebraic independence, closure minima, density and the workspace containing an algebraic surreal root. Expanded the positive-kernel lemma, arbitrary-ordered-field pivot argument, explicit Schur congruence and empty-block cases; detailed vector variation and scalar/vector null sets. Corrected the geometric-series witness for incomparable bases, restricted that comparison to rational exponents and explained containment when no order unit exists. Distinguished congruence from unitary diagonalization. Remaining imports, priority and original-source reconciliation are pending; no Lean mapping added. |
+| [Bounded-support Hahn arithmetic](surreal/transcendence-over-bounded-support/) | Reviewed Sections 1–10 and the conditional implication in Appendix A. Expanded elementary support bounds, localization, coset and coefficient projections, tensor consequences, separated support bands, coding, top-rank grouping and normalized GCD descent. Replaced the factorial-family limiting argument by a finite Vandermonde proof. Corrected convergence to bounded initial truncations, with an explicit obstruction to finite-subsum convergence at uncountable cofinality. Clarified ideal extension, coefficient-field hypotheses and the neighbouring base-field comparisons. Checked the cited Hahn and rank-one imports against L’Innocente–Mantova v5; the GCD premise remains conditional. Remaining foundational/source reconciliation and priority are separate; no Lean mapping added. |
+| [Matrix scaling at surreal scales](surreal/matrix-scaling-at-surreal-scales/) | Reviewed Sections 1–14 and the dependency appendix. Expanded finite-generator composition, complementary projections, formal coefficient recursion and unit inversion, recentering, tree replacement, chain base cases, positive scaling and local descent. Corrected evaluated-optimality wording for the trivial group, made strict feasibility on every support edge explicit, and separated formal tangent spaces from evaluated infinitesimal domains. Added the Hahn-valued constraint-minor counterexample and corrected two published theorem citations. Checked the current Markov, spectral and Prony comparisons. Other foundational imports, original-source reconciliation and priority remain separate; no Lean mapping added. |
+
 
 Each correction was reviewed against its local definitions and downstream uses
 within the stated scope. Changed PDFs were rebuilt and affected pages inspected.
@@ -1037,17 +1042,600 @@ labels resolve; the independent index checks 2,298 entries in 48 sources,
 and all 967 local Markdown destinations in 108 files resolve. The probability
 review remains through Section 13, with its 50-page PDF unchanged.
 
+The seventh finite-probability pass reviews Section 14. Positive integer
+coordinate indices and the zero-observation case are explicit. Word
+likelihoods derive the posterior, and the predictive success probability
+`(1+M_n)/3` verifies its martingale identity directly. Component moments
+give the exact nonzero covariance. A fourth-moment bound, Markov's inequality
+and the summable real tail estimate prove both Bernoulli strong laws here.
+The tail event's measurability, invariance under removal of an initial segment
+and pullback to the joint space are explicit. The full-observation conditional
+expectation is verified on every observation event using finite-range integrals.
+
+The two exact consecutive-posterior differences have valuation one, so the
+single order tolerance `t²` disproves the Cauchy condition on every path.
+This includes paths where the real likelihood ratios tend to zero: on the
+common-regime typical event, each Hahn coefficient tends to zero, whereas
+on the rare tail event even the first coefficient tends to positive infinity.
+The text distinguishes these real coefficient limits, standard-part limits,
+order convergence and strong Hahn summation, without introducing surreal times.
+
+Validation: the baseline and revised PDFs build in three warning-free passes
+at 50 and 51 pages; the changed pages were visually inspected. All 114 label
+numbers and five historical audit/code/data files are preserved. The copied
+verifier reproduces 2,145 assertions with JSON unchanged except Python version.
+Another 3,232 exact or symbolic checks cover word likelihoods, posterior
+normalization and expectation, predictive updates, covariance, consecutive
+differences, leading coefficients, geometric coefficients and centered fourth
+moments. These checks do not compute infinite path events or prove convergence
+theorems. The independent index checks 2,298 entries in 48 sources; all 967
+local Markdown destinations in 108 files resolve. No Lean module changed in
+this pass and no new probability formalization is claimed. Sections 15 onward
+and remaining imports are pending.
+
+A downstream consistency check also corrects two sentences in Section 16.
+The conditioning precision contract is sufficient, not necessary for each
+query with possible cancellation. An ordered field embedding fixing the
+reals does preserve standard parts, directly from the inequalities defining
+them; preserving exponentials, strong sums or internal structure requires
+more. These targeted corrections do not constitute review of the rest of
+Section 16. The PDF remains 51 pages after three warning-free passes, with
+the affected page inspected and all 114 label numbers preserved.
+
+Synchronization through `64e8a0e` incorporates `f8840cc`/`2cb9c02`.
+The actual inverse-sine strong series now has explicit central-binomial
+coefficients and a finite ninth-order remainder; inverse sine and inverse
+tangent preserve exact valuation at infinitesimal inputs. The endpoint
+ramification and derivative obstruction remain separate pending claims.
+No manuscript source changed in this merge, and both added Lean modules
+are included by the root import. The combined build passes 3,973 jobs and
+audits 7,098 declarations with only `propext`, `Classical.choice` and
+`Quot.sound`. All 2,543 referenced source labels resolve. The independent
+index still checks 2,298 entries in 48 sources, and all 969 local Markdown
+destinations in 108 files resolve. These integration checks add no Lean
+coverage for finite probability.
+
+A further synchronization through `d93d5fd` incorporates `3e30b1f`, completing
+the actual inverse-cosine endpoint half-angle identity, strong series, finite
+remainder and half-valuation formula. The endpoint derivative obstruction
+remains pending. No manuscript source changed. All three added modules are
+root imports, and the merged default build passes 3,976 jobs with 7,116
+declarations audited using only `propext`, `Classical.choice` and `Quot.sound`.
+All 2,545 cited source labels, 2,298 indexed entries in 48 sources and 972
+local Markdown destinations in 108 files pass their checks. The reviewed
+probability source and 51-page PDF are unchanged by this integration.
+
+The eighth finite-probability pass reviews Sections 15–17 and aligns the
+introductory and appendix dependency notes. The shadow-continuity theorem
+now proves real finite additivity first, expands both directions of continuity
+from above, and distinguishes real tolerances from arbitrary surreal ones.
+The Loeb construction specifies its internal event algebra and probability,
+uses saturation on internal remainders to prove the premeasure property,
+and distinguishes the unique real measure extension from its completion.
+An ordered embedding fixing the reals preserves that real measure but does
+not provide its internal events or preserve internal exponentiation.
+
+The Poisson model is now a defined ultraproduct of finite product experiments.
+Its internal probability is well-defined, and a diagonal selection proves the
+countable saturation needed for Loeb extension. A quantitative real logarithm
+bound gives the fixed-count limit, including the empty-product case. The
+ordinary finite-count event is Loeb measurable and has measure one; the
+resulting ordinary nonnegative integer-valued variable has the exact Poisson
+law. A separate Markov estimate shows that no mass escapes to infinite counts.
+The written infinite arguments are distinct from computations at finite sample
+sizes. Loeb's publisher text remains unavailable in this pass; the historical
+metadata-only citation boundary is retained, while the finite-probability
+construction is spelled out from saturation and ordinary measure extension.
+
+The implementation interface now permits nonnegative weights with positive
+total, retaining exact zeros; strictly positive weights describe regular laws.
+It places Brier scoring in the ordered-field layer and names the exponential
+isomorphism and scalar inequalities needed for the logarithmic results.
+Dependency notes now record the Bernoulli strong laws as proved here, while
+product-law existence and real disintegration remain imported. The scope
+section corrects an overstatement about full fine countable additivity:
+finite-support laws do satisfy it by eventual stabilization. What is absent
+is a general infinite sampling theory under that rule. The notation guide
+separates the internal and Loeb probabilities and the internal and ordinary
+counts, and distinguishes the two local meanings of `H`.
+
+Validation: baseline and revised PDFs build in three warning-free passes at
+51 and 53 pages, with changed pages visually inspected. All 114 label numbers
+and the five historical audit/code/data files are preserved. The copied
+verifier reproduces 2,145 assertions with JSON unchanged except Python version.
+Another 7,269 exact rational checks cover binomial normalization, means,
+factorization, Markov tails and independent enumeration of word probabilities.
+They do not implement an infinite ultrafilter, saturation or Loeb extension.
+The independent index checks 2,298 entries in 48 sources, all 2,545 cited
+source labels resolve, and all 972 local Markdown destinations in 108 files
+resolve. This completes the Sections 2–17 main-text review; remaining imports
+and source/provenance reconciliation still require work. No new probability
+Lean formalization is claimed.
+
+Synchronization through `b6c2493` incorporates `6437ec3`/`f16a616`.
+The inverse-sine endpoint module proves inward difference quotients exceed
+every fixed actual surreal bound, including infinite bounds, and excludes
+both one-sided endpoint derivatives and ambient fine derivatives. Its root
+import and the corresponding source scope were checked. No manuscript source
+changed in this merge. The combined default build passes 3,977 jobs and audits
+7,127 declarations using only `propext`, `Classical.choice` and `Quot.sound`.
+All 2,545 cited source labels resolve; the independent index still checks
+2,298 entries in 48 sources, and all 973 local Markdown destinations in 108
+files resolve. The reviewed probability source and 53-page PDF are preserved;
+this integration adds no Lean mapping for that report.
+
+The first three-duals pass reviews Sections 2–5. The support proof makes
+choice, the nondecreasing-subsequence argument and finite coefficient fibers
+explicit. Regrouping includes empty fibers, and triple-support finiteness
+justifies scalar associativity and the canonical strong-map isomorphism.
+The valuation-shift proof names its target neighborhood, handles zero values
+and treats the zero group separately. The operator calculus identifies its
+identity and central scalar action; cancellation yields an inequality rather
+than an equality of valuations. The pointwise-support example now uses
+`Γ = Q`, exponents `1/n` and an explicit Hahn vector whose putative image
+has infinitely many contributions at zero, in every coefficient characteristic.
+
+The completion criterion specifies the induced uniformity and its net of
+truncations, and handles zero scalars before subtracting their valuations.
+The countable-cofinal construction builds an increasing cofinal sequence
+without assuming an order unit; the converse chooses independent coefficients
+below a common cut. The guide's order-unit summary is corrected: it gives
+`E ⊊ C`, but yields the middle case only for noncyclic groups. All infinite
+formal sums in these proofs use the shared strong-sum notation.
+
+The completeness proof expands compatible ball prescriptions and uniform
+stabilization of Cauchy-net truncations, including the zero group and empty
+ball family. The Hahn–Banach proof writes out ball containment, uniqueness
+and linearity of the one-vector extension, and the set of partial extensions
+used by Zorn, including the empty-chain upper bound. It corrects the claim
+that selecting one element of a known nonempty intersection separately uses
+the axiom of choice. Independent reviews checked the completion boundaries,
+the edited support/operator proofs and the extension argument; the final
+empty-chain clarification arose from that review.
+
+Validation: three-pass baseline and revised PDFs are warning-free at 34 and
+35 pages, and changed pages were visually inspected. All 77 source-label
+numbers (154 including cleveref companions) and three historical audit/code/data
+files are preserved. The delivered verifier reproduces all 610 assertions
+with byte-equivalent JSON data. A separate 2,800 exact sparse-convolution
+checks in characteristics 2, 3, 5 and 7 cover scalar compatibility, operator
+composition, additivity, identity, direct triple expansion, finite regrouping
+and valuation shifts. These finite checks do not establish infinite support,
+completion or choice-based extension. The independent index checks 2,298
+entries in 48 sources, all 2,545 cited labels resolve, and all 976 local
+Markdown destinations in 108 files resolve. Sections 6 onward and remaining
+imports/source reconciliation are pending; no new Lean mapping is claimed.
+
+A separate independent reading of the revised finite-probability Sections
+14–17 found no error in the latent martingale, shadow-continuity criterion,
+Loeb premeasure construction, diagonal saturation, Poisson logarithm bound
+or measurable ordinary count. This checks the stated proof scope, not the
+unavailable full Loeb source or the report's remaining provenance obligations.
+
+### Batch-22 assembly and phase-isometry integration
+
+Merged the batch-22 assembly and catalogue through `37eefca`, followed by
+the local phase-isometry and arbitrary-radius rotation results in `cd80e5e`.
+The independent inventory now checks 2,440 standard statements in 48
+assembled sources. All 45 delivered batch-22 audit, code/build and data
+artifacts are byte-identical to their placement versions. The five expanded
+reports retain their old labels; the two new reports retain all delivered
+labels with their assembly prefixes. The catalogue has 48 entries.
+
+An independent comparison of the changed manuscripts checked all 120 labels
+cited by the current Implementation mappings: 35 in holonomic rigidity,
+47 in trigonometry and 38 in Hahn measures. Their statement environments,
+and the mapped subsection `hol:sub:coarseboundary`, are unchanged. The
+surrounding conventions do not change their hypotheses. This preserves
+existing mappings; it does not review the newly added mathematical claims.
+
+Corrected first-kappa's provenance in its source and guide: raw placement
+was `7b5f934`, while the editorial additions and report assembly were
+`68e2960`. Baseline and revised PDFs both have 25 pages, with three clean
+passes and visual checks of the changed pages. All 77 label numbers,
+23 standard statements, 22 proofs and five historical artifacts are
+unchanged. This is a provenance correction, not a proof review.
+
+The merged Lean build passed all 3,984 jobs; the default axiom audit passed
+for 7,210 declarations using only `propext`, `Classical.choice` and
+`Quot.sound`. All 2,695 cited source labels and 1,015 local Markdown
+destinations in 108 files resolve. Six incoming gamma/zeta archives remain
+unassembled and are outside the main-source inventory.
+
+### Three-duals continuous duality and Hilbert geometry
+
+The next three-duals pass reviews Sections 6–9. It verifies closure of the
+restriction space under scalar operations, explains why independent constants
+prevent leading cancellation, and expands the separation of every vector
+outside the coefficient-rank completion. The second quotient now has its
+canonical map and exact kernel written out. The finite-dimensional proof
+correctly uses a coefficient-space basis, and the cyclic argument gives the
+finite-index sets, shifted cuts and finite-subsum nets that justify continuity
+implying strongness. The constant-one obstruction is explicitly independent
+of characteristic; the zero-group endpoint is recorded separately.
+
+The Hilbert pass expands norm homogeneity, the real-part comparison in the
+triangle inequality, explicit norm/valuation neighborhoods, strongness of
+represented functionals, the adjoint convention and the cardinal quotient
+argument without a continuum hypothesis. It corrects a citation-scope error:
+the spectral norm-attainment theorem uses nonnegative bounds on nonzero
+coefficient spaces. The zero operator has least nonnegative bound zero but
+no least positive bound. For an ordinarily unbounded leading operator
+coefficient at exponent `s`, all positive Hahn bounds are characterized by
+`v(M) < s`; they need not be the monomials displayed as examples.
+
+The hyperplane pass gives the ordinary dense-kernel contradiction, the
+algebraic direct sum and projection bound, and the exact identity
+`v(u-m) = min(0,v(m))` for distances from an exterior constant. It distinguishes
+the existing zero orthogonal complement from the absent orthogonal direct-sum
+complement. The distance statement repeats the existing nonzero-group
+convention, and the proof excludes every possible infimum, including zero.
+Independent reviews of all four revised sections found no further issue.
+The appendix now also reflects the earlier correction from a claim of two
+uses of choice to the set-sized Zorn argument actually used.
+
+Validation: baseline and revised PDFs compile in three warning-free passes,
+at 35 and 37 pages; the changed pages and contents were visually checked.
+All 77 source labels and numbers (154 with cleveref companions) and all three
+historical audit/code/data artifacts are preserved. The delivered verifier
+reproduces its 610 exact assertions and byte-identical JSON. These finite
+checks do not establish infinite-dimensional duality or the choice-based
+constructions. The independent inventory checks all 2,440 indexed statements
+in 48 sources; all 2,695 cited source labels and 1,015 local Markdown
+destinations resolve. Sections 10 onward and remaining imports/source
+reconciliation are pending. No Lean coverage is added by this proof review.
+
+Merged `fc1c12a` after this review, adding the actual-surcomplex direction
+stability formalization and its root imports. No manuscript source changed
+in that merge. The combined Lean build passed all 3,987 jobs; the default
+axiom audit accepted 7,253 declarations using only `propext`,
+`Classical.choice` and `Quot.sound`. The statement index remains at 2,440
+results in 48 sources, all 2,695 cited labels resolve, and all 1,018 local
+Markdown destinations in 108 files resolve. The merge preserves the reviewed
+three-duals source and PDF exactly.
+
+### Three-duals enlargement, interpretation and source comparisons
+
+The three-duals review now covers the main text, Sections 1–15. The final
+pass expands coefficient preservation, both inclusions in the cofinality
+theorem, and the induced-topology dichotomy: a cofinal inclusion preserves
+the old intrinsic topology, while a noncofinal inclusion induces the discrete
+topology. The zero coefficient space and zero-group endpoint are explicit.
+The two-scale example gives its tail valuations and all-approximants rank
+obstruction. Its functional is restricted into the larger scalar field with
+that field's Hausdorff intrinsic topology; using only old thresholds there
+would lose Hausdorffness. Strong operator extensions are unique among strong
+extensions, and the represented-functional and hyperplane constructions are
+checked coefficientwise.
+
+Expanded the normal-form embedding's injectivity, arithmetic, order and strong
+sums, and the isolation of old scalars by full-surreal tolerances. Corrected
+general operator outputs described as scalars: they remain module vectors;
+norms and scalar-valued functionals supply scalar values. The same fine
+isolation argument for Hilbert modules is explicitly about norm balls.
+
+The local comparisons now restrict spectral persistence to its constant-normal
+and specified positive-order-defect cases. First-kappa's completeness summary
+includes its standing hypotheses and properness condition; without properness,
+`Γ = Q`, `κ = aleph_omega` already contradicts the omitted-hypothesis version.
+The old absence search is pinned to placement, recognizing the later report's
+explicit comparison. The guide's duplicated stale review status is replaced
+by the current scope and a link to this history. Inventory entries are
+distinguished from Implementation mappings; no new Lean coverage is claimed.
+
+Primary-text checks covered [BKKPS §§1.1–1.3](https://arxiv.org/pdf/2403.05827v2),
+including Definition 1.19, Example 1.7 and Definition 1.1's finite-copy
+ultrafiniteness. Corrected the attribution of nonstrong examples, which that
+paper refers to earlier work. Coefficient-field ultrafiniteness is explained;
+term-dependent Hahn scalars can destroy summability. Checked the normal-form
+sign convention in [Kaplan–Krapp–Serra §§2.2 and 2.4](https://arxiv.org/html/2509.22374v3)
+and the classical mechanism in [Morillon §3.1.2, Lemma 2](https://arxiv.org/html/1901.04021).
+The latter uses real-valued seminorms over spherically complete valued fields;
+the report supplies its own arbitrary-ordered-group proof. These are targeted
+checks, not a complete audit of imported results or a priority certification.
+
+Validation: independent mathematical and source-scope reviews passed after
+clarifying the locally chosen positive exponent and the meaning of losing
+completion membership. Baseline and revised PDFs build in three warning-free
+passes at 37 and 39 pages; changed pages, comparison tables and bibliography
+were visually checked. All 77 label numbers, all 29 standard statement
+environments, and all three historical audit/code/data files are unchanged.
+The delivered 610 assertions reproduce byte-identical JSON. The independent
+index checks 2,440 results in 48 sources; all 2,695 cited labels and 1,019 local
+Markdown destinations resolve. Remaining imported-result and source
+reconciliation work is separate from this completed main-text reading.
+
+Merged the triangle-angle formalization and gamma/zeta placement through
+`d2752d8`. The merge leaves the reviewed three-duals source and PDF unchanged
+and changes no previously mapped manuscript statement. The Lean build passed
+all 3,990 jobs; the default axiom audit accepted 7,287 declarations with only
+`propext`, `Classical.choice` and `Quot.sound`.
+
+An independent archive-member comparison verifies all 31 gamma/zeta files
+placed in `e4f8848`: two raw main files from manuscript 06 and 29 historical
+code/build/data artifacts from the six archives. The sole CRLF CSV retains
+all 738 bytes and 24 CRLF pairs, with its `-text` attribute. The current
+main source has 25 standard statements, 104 unprefixed labels and two
+unlabeled corollaries. Five labels collide with other reports, so index
+navigation includes the source path. The delivered guide still names old
+package paths and its 28-page source PDF; no assembled report PDF is present.
+Those write-phase tasks remain pending, and the other five source texts
+remain recoverable from the archives in Git history.
+
+The provisional source index now covers 2,465 statements in 49 current main
+sources, comprising 48 assembled reports and this placed base manuscript.
+The independent audit verifies the counts, headings, labels and line anchors;
+all 2,719 cited source labels and 1,025 local Markdown destinations in 109
+files resolve. This adds navigation only, not mathematical or Lean coverage
+of the new report.
+
+The final sync also merged `7666865` through `ab48639`, completing the
+incoming triangle-law and circumcircle work. The overlapping Gamma/zeta
+inventory edits were reconciled into one source row and one provisional
+statement section; the entire incoming Implementation mappings section is
+preserved verbatim. No manuscript source or delivered artifact changed.
+The combined build passed 3,994 jobs and audited 7,413 declarations using
+the same three permitted axioms. The independent 49-source index remains
+clean, and all 2,720 cited labels and 1,030 local Markdown destinations resolve.
+
+## Hidden-negative-directions main-text review
+
+The [hidden-negative Hermitian directions](surcomplex/hidden-negative-hermitian-directions/)
+review covers Sections 1–11. Independent readings checked the support and
+character arguments, prime-tail separation and independence, inertia, closure,
+density and transport, and the two-scale matrix and measure criteria. The
+core statements remain valid under their stated hypotheses. Character
+extension now proves well-definedness on the enlarged subgroup, the finite
+support quotient is identified explicitly, and the degree proof shows both
+Bézout generation and the radical upper bound. Formal evaluation spells out
+well-ordered finite sums and finite tagged contributors, including zero inputs.
+
+The bounded-support comparison contained an invalid witness: the unbounded
+geometric series `Σ_{n≥1} t^n = t/(1−t)` is itself a fraction of finite-support
+series. For `Γ = ℚ`, the replacement `√(1+t)` belongs to the probe field but
+not the bounded-support fraction field. The article gives the integer-coset
+projection proof and rational-square obstruction, checked also against
+`bst:cor:onescale`. Incomparability is not asserted for all groups: without
+an order unit each finitely generated subgroup is bounded above, so the
+probe field lies in the bounded-support ring. The guide and nonclaim ledger
+now use the same scope. The spectral comparison also distinguishes the
+explicit triangular congruence from unitary diagonalization.
+The tail-spans comparison now specifies algebraicity over the whole
+coefficient Hahn field via one finite coefficient extension, rather than
+merely having algebraic individual coefficients. Its monomial-field
+obstruction cites the probe-closedness and barrier results, and the
+coefficientwise-additivity comparison is limited to the null-ideal results.
+
+The closure proof now verifies preservation of the least coordinate
+valuation. The density proof gives an explicit ordered-field continuity
+estimate. For a surcomplex algebraic root, the proof first forms a nonzero
+set-sized workspace containing its normal-form support and the equation's
+parameters, then applies the character bound to shrink the support.
+The two-scale matrix proof defines compression unconditionally, gives the
+positive-pivot argument over an arbitrary ordered-field complexification,
+and displays the Schur congruence and all empty active-block cases.
+The measure proof bounds vector total variation by the entry variations and
+makes the finite-partition and Jordan-decomposition null-set steps explicit.
+
+The baseline and revised PDFs each compiled in three clean `pdflatex`
+passes; the current report has 33 pages (previously 31). All 89 labels and
+result numbers are preserved. Of the 24 standard result environments, 22
+are byte-identical; the two changes clarify intrinsic valuation topology
+and define `ker P` and its compression before testing positivity.
+All seven delivered audit/code/data files remain byte-identical.
+The delivered exact verifier passed under Python 3.13.14 and SymPy 1.14.0,
+matching historical JSON except for the Python version: 35,100 prime-coset
+comparisons, 5,946 real matrix pairs with 1,823 positive cases, plus the
+congruence, orbit and example checks. A separate scratch diagnostic checked
+390,625 Hermitian 2×2 pairs, including complex off-diagonal entries, against
+principal-minor leading signs; all agreed and all 18,145 positive cases
+also matched the rank formula. Those finite checks do not prove arbitrary
+Hahn-support or measure assertions. Remaining imports, literature priority
+and original-source reconciliation remain outside this main-text review.
+The rendered comparison, proof and appendix pages were inspected; the final
+comparison edits changed only physical pages 7–9, which were checked again.
+
+The sync merged `cfdcdc0` through `6980af8`, adding the complete right-triangle
+corollary. No incoming manuscript source changed. The combined
+`LEAN_NUM_THREADS=2 lake build` passed 3,995 jobs; the axiom audit checked
+7,429 declarations and used only `propext`, `Classical.choice` and `Quot.sound`.
+The independent 49-source index remains clean at 2,465 statements, and all
+2,720 cited source labels plus 1,035 local Markdown destinations resolve.
+This validation preserves the distinction between the new Lean triangle
+mapping and this report's mathematical proof review.
+
+## Bounded-support main-text review
+
+The [bounded-support report](surreal/transcendence-over-bounded-support/)
+review covers Sections 1–10 and the conditional implication in Appendix A.
+Independent readings checked the elementary support and localization facts,
+cofinal descent, separated exponents and polynomial support bands, coefficient
+coding, explicit families, rank structure and the surreal specializations.
+The proofs now spell out coset projection without treating it as a ring map,
+the finite-dimensional domain argument for algebraic degrees, and the
+noncofinal tensor-kernel witness. The integer-grid statement specifies a field;
+the descent preview now describes the ideal generated after scalar extension.
+
+The support-band proof makes the surviving coefficient and its two strict
+gaps explicit. The countable multiplicative-parameter family now uses a finite
+Vandermonde matrix over the Hahn field: among a sufficiently late block of
+consecutive evaluations, at least one is nonzero. No ordinary limit of Hahn
+coefficients is needed. The countable code's starting index is aligned with
+the delivered program, and the arbitrary-cardinal coding argument retains
+its singular-cardinal scope.
+
+The convergence prose previously conflated bounded initial Hahn truncations
+with finite subsums. Initial truncations of the constructed cofinal support
+have cofinal error valuations. For uncountable cofinality, every finite subset
+misses a term before the first limit index, so its error cannot enter the
+neighborhood beyond that limit exponent. The article, guide and notation
+reference now distinguish these nets and explain why full surreal fine
+convergence still fails.
+
+The rank proof constructs the maximal proper convex subgroup explicitly,
+checks the iterated Hahn presentation in both directions, and applies the
+rank-one upper-support formula only after passage to an Archimedean quotient.
+The imported closedness, iterated presentation, nonrationality obstruction
+and upper-support theorem were compared with L’Innocente–Mantova's cited
+v5, including the locations and hypotheses. Normalized GCD descent now
+includes the character-extension well-definedness and normalization steps.
+The GCD existence premise remains unproved here; no external Lean project
+was built or adopted. Other foundational imports, original-source
+reconciliation and literature priority remain separate obligations.
+
+Local comparisons distinguish full coefficient Hahn fields from bounded
+fraction fields, sufficient almost-disjoint families from unrestricted
+index sets, and the rational-exponent incomparability of two fields from
+containment when no order unit exists. Historical keyword counts are scoped
+to their pinned snapshots. Source inventory is distinguished from an
+Implementation mapping; this review adds no Lean proof coverage.
+
+
+The baseline and revised PDFs each compiled in three clean LaTeX passes;
+the revised report has 31 pages (previously 29). All 73 source labels and
+result numbers are preserved. Of the 30 standard result environments, 28
+are unchanged and two have only the ideal-extension and coefficient-field
+wording clarifications above. All seven delivered audit/code/data files
+remain byte-identical to both the previous source revision and raw placement;
+the six applicable historical manifest digests match. The delivered verifier
+passes all 3,163 assertions in 12 groups under Python 3.13.14, matching its
+recorded JSON except for the Python version. Those finite checks do not
+prove transfinite or cardinal assertions. All revised pages were visually
+inspected, including the corrected Theorem 8.2 page break.
+
+The 49-source inventory remains at 2,465 standard statements. Its independent
+audit reports no count, heading, label or anchor issues; all 2,720 cited
+source labels and 1,040 local Markdown destinations in 109 files resolve.
+
+
+The sync merged triangle reconstruction and incircle work through `c74287c`.
+No incoming manuscript source changed. The combined
+`LEAN_NUM_THREADS=2 lake build` passed all 4,009 jobs; the default axiom audit
+accepted 7,688 declarations using only `propext`, `Classical.choice` and
+`Quot.sound`. The independent 49-source index remains unchanged, and all
+2,723 cited source labels plus 1,054 local Markdown destinations resolve.
+The incoming triangle mappings remain distinct from this documentation review.
+
+## Batch 19 provenance correction
+
+The four new reports in batch 19 cited an unavailable placement hash,
+`52c7ab6`. Retained Git history identifies raw placement as
+`30dfb4f5b794818315af63ab6f4215337e68dec8` and its child, editorial assembly
+and the first compiled report PDFs, as
+`ed88b8f6a3901d4cbcf8e4249673161f493f679b`. Their articles and guides now
+attribute placement, editorial additions, PDF comparisons and historical
+search counts to the appropriate snapshot. This does not infer why the
+unavailable hash was recorded.
+
+The three-duals, hidden-negative-directions and matrix-scaling provenance
+changes preserve all mathematical statements and proofs. Their baseline and
+revised PDFs each passed three clean LaTeX passes and retain 39, 33 and 32
+pages respectively. All 260 source labels and their numbering are preserved;
+all 19 historical audit/code/data files remain byte-identical. The 19 changed
+PDF pages were visually inspected. Matrix scaling has received this
+provenance correction only; its mathematical proof review remains pending.
+
+## Matrix-scaling main-text review
+
+The [matrix-scaling report](surreal/matrix-scaling-at-surreal-scales/)
+review covers Sections 1–14 and the dependency appendix. Independent readings
+checked the elementary support and tree identities before the normalization,
+secant gain, coefficient bounds, combinatorial certificate, nonlinear chain,
+global positivity, real-constraint extension and surreal transport. The core
+statements remain valid under their intended hypotheses.
+
+The finite-generator evaluation proof now bounds both inner and outer formal
+degrees at each Hahn exponent, explicitly licensing composition. The tree proof
+identifies all four projection images and kernels and distinguishes row from
+column minors. The formal argument uses a weighted Laplacian whose constant
+term is invertible; its formal inverse is used algebraically, while strong
+evaluation still depends on the finite-generator lemma. Recentering displays
+its cut and conservation equations before invoking uniqueness. The remainder
+certificate specifies a nonnegative integer degree, including zero, and handles
+bridge rows and the relative-output series explicitly.
+
+The evaluated “largest uniform gain” claim needs a nontrivial value group:
+for the trivial group the infinitesimal domain is a singleton. The article,
+guide and notation reference now retain the formal coefficient assertion in
+that case without claiming an evaluated witness. Formal tangent spaces are
+identified at each balanced point and distinguished from the infinitesimal
+domain. Strong summability is no longer described as excluding partial-sum
+convergence; it does not imply convergence on its own.
+
+The one-minimum-tree certificate now includes its exchange proof. The chain
+proof states both continuant base cases and checks the `n = 2` case.
+The positive-normalization comparison explicitly requires a feasible matrix
+positive on every prescribed support edge, with a triangular-support
+counterexample to mere positive margins and nonnegative feasibility. Its cut
+bound now explains why root-normalized factor ratios are infinitesimally close
+to one. The real-constraint proof handles zero columns, coloops and empty
+systems; a Hahn-valued row `(1,t^β)` shows the missing minor valuation in a
+formula using entry costs alone. The phase example gives its exact discriminant.
+
+The published comparison now cites continuity as Idel Theorem 4.5 in v1,
+and generalized Dirichlet expansions as Sharify–Gaubert–Grigori Theorem 2.4
+in v2, with the nonnegative square matrix and total-support setting explicit.
+These passages, Eisenberger et al.'s implicit projection and approximate-input
+analysis, and Burton–Pemantle's transfer-current background were checked against
+primary sources. This does not independently re-audit every foundational import
+or certify priority. Current Markov, spectral and Prony source comparisons were
+checked at `034ab96`; the Prony certificate retains its strict-ball hypotheses,
+and the spectral geometric-series example is distinguished from this report's
+exponential example. Historical searches and delivered self-audits remain dated
+evidence, and the 16-statement inventory remains distinct from Lean coverage.
+
+
+The baseline and revised PDFs each passed three clean LaTeX passes, with no
+warnings or box notices. The revised report has 33 pages (previously 32),
+with the bibliography kept together. All 94 source labels and 188 auxiliary
+numbering entries are preserved. Of the 16 standard results, 13 are unchanged;
+three clarify the remainder degree, strict support feasibility and the empty
+basis-minimum convention. All nine historical audit/code/data files remain
+byte-identical to the baseline and raw placement. The unchanged exact verifier
+passes every group under Python 3.13.14 and SymPy 1.14.0, reproducing the recorded
+JSON except for the Python version: 2,056 projection entries, 2,612 edge gaps,
+four formal recurrence examples, 55 chain inverse entries and three square
+identities. These finite checks do not prove the general Hahn assertions.
+
+All revised pages were visually inspected. The independent source-index audit
+still checks 2,465 statements in 49 main sources without issues; all 2,723 cited
+labels and 1,059 local Markdown destinations resolve. The review table now keeps
+both recent reports inside the same Markdown table. No Lean coverage is added
+by these documentation checks.
+
+
+The sync merged Euler's triangle-center identity, the radius inequality and
+the sharp area bound through `14bb32b`. No manuscript source changed.
+The combined `LEAN_NUM_THREADS=2 lake build` passed 4,014 jobs, and the
+default axiom audit accepted 7,737 declarations using only `propext`,
+`Classical.choice` and `Quot.sound`. The independent 49-source index remains
+clean; all 2,724 cited source labels and 1,064 local Markdown destinations
+resolve. The incoming Lean mappings remain distinct from this mathematical
+review of the matrix-scaling report.
+
+
+A final sync merged `e439806`, adding cevian sine ratios and trigonometric
+Ceva, again without changing a manuscript source. The rebuilt combination
+passed 4,024 jobs and audited 7,827 declarations using the same three permitted
+axioms. All 2,726 cited source labels and 1,070 local Markdown destinations
+resolve; the 49-source statement inventory is unchanged.
+
 ## Remaining scope
 
-The placement `7b5f934` adds two manuscripts,
+Batch 22, placed in `7b5f934`, was assembled in `68e2960` and catalogued
+in `5d369a0`. Its two reports,
 [first-kappa coefficients](surcomplex/first-kappa-coefficients/) and
-[single-dilation Hahn support](surcomplex/single-dilation-hahn-support/), now
-provisionally indexed from their current sources. Their write phase, catalogue
-integration, proof review and source reconciliation remain pending. Added source
-material for entire functions, holonomic rigidity, trigonometry, Euclidean
-three-space and Hahn probability also awaits integration and review. The
-collection has 46 assembled reports plus these two placed manuscripts; the
-ledger indexes 2,298 results in the 48 current sources.
+[single-dilation Hahn support](surcomplex/single-dilation-hahn-support/), and
+new sections of entire functions, holonomic rigidity, trigonometry, Euclidean
+three-space and Hahn probability are now indexed from their written sources.
+Their mathematical proof review and source reconciliation remain pending.
+The collection has 48 assembled reports and one placed report awaiting assembly.
+The six gamma/zeta archives delivered in `cafe42f` were placed in `e4f8848` as
+[gamma and zeta functions](surcomplex/gamma-and-zeta-functions/). Its base
+manuscript 06 is provisionally indexed with 25 standard results, bringing the
+49-source index to 2,465. That count excludes the additional claims of the other
+five manuscripts. Assembly, catalogue integration and mathematical review of
+the six-source report remain pending; the retired archives remain in Git history.
 
 The nine manuscripts placed in `d4e71b7` are grouped as
 [birthday cutoffs](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/)
@@ -1063,16 +1651,24 @@ The newly assembled [vector and tensor fields](surreal/vector-and-tensor-fields/
 [field automorphisms](surcomplex/surcomplex-field-automorphisms/) reports
 are now written and catalogued, but await proof review.
 [Finite probability](surreal/finite-surreal-probability/) has received the
-Sections 2–13 review recorded above; its later proof chains remain pending. The measures and
+Sections 2–17 main-text review recorded above; remaining imports and
+source/provenance reconciliation are pending. The measures and
 trigonometry expansions are also assembled; their new claims remain outside
 the earlier review scopes. Delivered verification and source-audit artifacts
 remain historical evidence, not a substitute for that review.
 
-Batch 19 adds four reports whose mathematical proofs have not yet received
-this review: [three duals](surcomplex/three-duals-of-hahn-vector-spaces/),
-[hidden negative Hermitian directions](surcomplex/hidden-negative-hermitian-directions/),
+Batch 19's [three-duals report](surcomplex/three-duals-of-hahn-vector-spaces/)
+has now received the Sections 1–15 main-text review recorded above;
+remaining imports/source reconciliation are pending. Its
+[hidden negative Hermitian directions](surcomplex/hidden-negative-hermitian-directions/)
+report has now received the Sections 1–11 main-text review recorded above;
+remaining imports/source reconciliation are pending. Its
 [transcendence over bounded support](surreal/transcendence-over-bounded-support/)
-and [matrix scaling](surreal/matrix-scaling-at-surreal-scales/).
+report has received the Sections 1–10 and conditional Appendix A review above;
+remaining foundational/source reconciliation and priority are pending.
+[Matrix scaling](surreal/matrix-scaling-at-surreal-scales/) has received the
+Sections 1–14 main-text review above; remaining foundational imports,
+original-source reconciliation and priority are pending.
 Its nonscalar dynamics, nonlinear holonomic rigidity, Drazin/Fredholm spectral
 theory additions also remain pending. The critical-potential main-text review now
 covers Sections 35–42; remaining imports and source reconciliation are pending.

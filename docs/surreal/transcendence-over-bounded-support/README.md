@@ -3,12 +3,13 @@
 **Cofinal descent, optimal support thresholds, and maximal transcendence**
 Single-source research report, 22 September 2026, built from one manuscript
 (item 07 of batch 19, a research draft prepared with ChatGPT). Its own
-repository audit is pinned to `048b72cf7cbfc8ab246e4f73788c10460cb3f6e0`; it
-was placed in the collection in commit `52c7ab6`.
+repository audit is pinned to `048b72cf7cbfc8ab246e4f73788c10460cb3f6e0`; its
+raw source and artifacts were placed in `30dfb4f`, and the editorial article
+and first repository PDF were assembled in `ed88b8f`.
 
 ```
 article.tex         the report, standalone LaTeX with an internal bibliography
-article.pdf         the compiled report, 29 pages
+article.pdf         the compiled report, 31 pages
 README.md           this guide
 research_audit.md   the manuscript's repository and literature audit, as delivered
 code/  build.py          three-pass pdfLaTeX builder (expects the flat delivered layout, see "Build")
@@ -87,8 +88,8 @@ No non-claim of the manuscript was dropped. The article states each at its
 point of use; Section 10.3 and Appendix B collect the principal ones, and the
 delivered `research_audit.md` repeats most of them. There are 24, grouped here.
 
-**Status and verification (4).** Not refereed. No Lean proof, and no entry in
-the collection's formalization ledger. 3,163 is an assertion count, not a
+**Status and verification (4).** Not refereed. No Lean implementation mapping for its results. The 30 standard statements
+are listed in the collection's source inventory, which is not proof coverage. 3,163 is an assertion count, not a
 count of theorems; finite checks do not prove any transfinite, cardinal or
 summability statement. PDF byte-for-byte reproducibility is not claimed.
 
@@ -131,7 +132,7 @@ Section 9 of the article states this in full, with the labels it quotes.
 **[tail-spans-and-differential-transcendence](../tail-spans-and-differential-transcendence/)**
 (Section 9.1). Different base-field problems, neither implying the other.
 There the base is a *full* Hahn field `M((t^Γ))` and transcendence comes from
-the coefficients (`tail:thm:coefficient`: algebraic iff the coefficients
+the coefficients (`tail:thm:coefficient`, for `M` of characteristic zero: algebraic iff the coefficients
 generate a finite extension of `M`); here the base keeps the coefficients and
 transcendence comes from the support. The witnesses `η_A`, `η_p` here have
 integer coefficients and exponents, so they are *elements* of that report's
@@ -146,8 +147,9 @@ answer for the same surreal expansion (its `Q ↪ Q²` example in
 `tail:thm:closure`, which loses algebraic approximability; Section 8.4 here,
 which erases transcendence over the bounded base).
 *Differences:* differential and analytic independence and the exact relation
-classification (`tail:thm:tail`) are only there; the descent theorem, arbitrary
-cofinality and the exact support threshold are only here. Its `(ξ_A)` over all
+classification (`tail:thm:tail`) are only there; the simultaneous descent theorem
+and exact cofinality-dependent support threshold are only here. Its general
+coefficient and tail-span theorems also allow arbitrary ordered groups. Its `(ξ_A)` over all
 subsets satisfies `ξ_{A∪B} + ξ_{A∩B} = ξ_A + ξ_B` (`tail:rem:indexfamily`),
 whereas `(η_A)` here is independent over all subsets because `c_A` is a
 finite-pattern code; this is why the manuscript's `ξ_A`, `ξ_p` were renamed
@@ -173,8 +175,11 @@ of Appendix A, which concerns a different ring.
 `𝒫_Γ` of series supported in finitely generated subgroups (the Puiseux field
 for `Γ = Q`) by prime denominators in the exponents. Its prime-tail series have
 support bounded above, so they lie in the base `B_Γ(C)` here; the witnesses
-`W_A` here (with `u = 1`) lie in `C((t^Z)) ⊆ 𝒫_Q`. Neither base contains the
-other.
+`W_A` here (with `u = 1`) lie in `C((t^Z)) ⊆ 𝒫_Q` and are
+transcendental over `F_Q(C)`. Thus for `Γ = Q` the two *fields* `𝒫_Q` and
+`F_Q(C)` are incomparable. The prime-tail statement uses the chosen
+almost-disjoint family, not all infinite prime sets. Without an order unit,
+every finitely generated subgroup is bounded above and `𝒫_Γ ⊆ B_Γ(C)`.
 
 **Notation.** The collection's [notation guide](../../NOTATION.md) writes
 `F_Γ = R((t^Γ))`, and the tail-span report writes `B`, `B_0` for full Hahn
@@ -183,6 +188,38 @@ mean the bounded ring and its fraction field. The workspace-versus-fine
 topology distinction is the guide's "Topologies and strong summation"; the
 Lean normal-form bridge is tracked in
 [NORMAL_FORM_BRIDGE.md](../../NORMAL_FORM_BRIDGE.md).
+
+Cardinally bounded Hahn fields, which this report excludes, are studied in
+[first-kappa-coefficients](../../surcomplex/first-kappa-coefficients/): omitted
+types, completion and spherical completeness of the fields of series with fewer
+than `κ` terms.
+
+## Main-text proof review
+
+Sections 1–10 and the conditional implication in Appendix A have received a
+mathematical proof review. It expands the support and projection arguments,
+tensor-product consequences, polynomial support bands, coefficient coding,
+top-rank grouping and normalized GCD descent. The explicit factorial-family
+proof now uses a finite Vandermonde matrix over the Hahn field, eliminating
+the ordinary-limit step while keeping the theorem's hypotheses.
+
+The convergence wording is corrected: bounded initial Hahn truncations of
+the constructed families converge in the named workspace. At countable cofinality these are finite
+partial sums; at uncountable cofinality finite subsums do not converge, even
+though the family is strongly summable. The article gives the obstructing
+valuation neighborhood. Local comparisons now distinguish a sufficient
+almost-disjoint construction from a necessary condition and restrict the
+prime-tail base comparison to `Γ = Q`.
+
+The 30 standard result statements retain their mathematical content; two
+wording clarifications specify extension of relation ideals and that the
+integer-grid coefficient object is a field. All 73 labels and result numbers
+are preserved. The imported Hahn closedness, iterated presentation,
+nonrationality obstruction and upper-support theorem were checked against
+L'Innocente–Mantova's cited v5. The GCD input remains a hypothesis; no external
+Lean proof was built or adopted. Remaining foundational/source reconciliation
+and literature priority remain separate obligations. See
+[the review record](../../REVIEW.md); this review adds no Lean mapping.
 
 ## Provenance
 
@@ -193,20 +230,26 @@ all 67 delivered labels (none lost; 6 labels added, 73 in all); the renaming
 `ξ → η` above; the terminology conventions of Section 2.3; the comparison of
 Section 9 and its four bibliography entries; one tagged display changed to
 `equation*` to remove a duplicate PDF destination present in the delivered
-source. No theorem statement was changed.
+source. No theorem statement was changed at editorial assembly. The later main-text
+review clarifies two statement wordings without changing their intended scope.
 
 **Stale statements corrected**, keeping the pin as provenance:
 
-- "The catalogue contains 36 reports": true at the pin `048b72c`; the
-  collection now has 40 report directories, four of them placed in `52c7ab6`.
-- The repository searches "returned no indexed matches" for `lacunary` and
-  `bounded support`: a full-text check at placement (Appendix B.3) finds
-  `lacunary` nowhere, and "bounded support" once at the pin in
-  analytic-geometry and now also in three-duals-of-hahn-vector-spaces, both in
-  unrelated senses. Neither treats the bounded-support ring.
+- "The catalogue contains 36 reports": true at the pin `048b72c`. Raw
+  placement `30dfb4f` brought that historical count to 40; assembly followed
+  in `ed88b8f`. The former `52c7ab6` citation is unavailable in local history;
+  the guide and article now distinguish the two retained commits.
+- At the pin, a literal case-insensitive search in tracked documentation
+  excluding `docs/new` finds no `lacunary` and two `bounded support` matches,
+  in the analytic-geometry guide and article, concerning one unrelated topic.
+  At assembly `lacunary` occurs in this report and its audit, though not
+  outside this report. The three-duals example `duals:ex:bounded-support` is
+  a related concept, not a literal match for `bounded support` at assembly.
+  These dated searches make no absence claim about the current collection.
 - The normal-form transport "must be linked to the repository's exact proved
   normal-form bridge": the article now points to `docs/NORMAL_FORM_BRIDGE.md`
-  and records that no `bst:` statement is in the formalization ledger.
+  and distinguishes the source statement inventory from the Implementation
+  mappings table, which has no `bst:` result mapping.
 - The fine-topology distinction was cited to the catalogue only; the notation
   guide's table is now cited too.
 - File paths: the delivered text and README used the flat delivered layout
@@ -234,7 +277,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 or `pdflatex -interaction=nonstopmode -halt-on-error article.tex` three times.
-Last build: exit 0, **29 pages**, no errors, no LaTeX or package warnings, no
+Last build: exit 0, **31 pages**, no errors, no LaTeX or package warnings, no
 undefined or multiply defined references or citations, no duplicate PDF
 destinations, no overfull or underfull boxes.
 
@@ -266,3 +309,9 @@ delivered run used 3.13.5). `coefficients.py` prints a 12-term formal prefix
 of `W_A` for `A` the even numbers; it computes coefficients, not Hahn sums,
 and uses a surjective finite-table code with a repetition coordinate rather
 than the bijection of Lemma 5.1, which has the one property the theorem needs.
+
+The main-text review reran the delivered verifier under Python 3.13.14:
+all 3,163 assertions passed, with JSON identical apart from `python_version`.
+All seven delivered audit/code/data files, including the manifest, remain
+byte-identical; its six recorded digests for retained historical files match.
+The current PDF was rebuilt with three clean `pdflatex` passes.
