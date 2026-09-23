@@ -168,7 +168,9 @@ For every nonzero ordinary integer `n`, divisibility and residues modulo `n`
 depend only on the constant term: `Oz/nOz ≅ ℤ/nℤ`. The purely infinite ideal
 is exactly the intersection of all positive integer multiples, and also of
 all positive powers of any one ordinary prime. A divisor of a nonzero
-ordinary integer must itself be an ordinary integer divisor.
+ordinary integer must itself be an ordinary integer divisor. Ordinary primes
+remain prime and generate maximal ideals; mixed gcds and finite Chinese
+remainder decompositions reduce to ordinary integer arithmetic.
 Higher Diophantine and set-sized quotient results remain pending; source
 review is distinct from checked formalization.
 

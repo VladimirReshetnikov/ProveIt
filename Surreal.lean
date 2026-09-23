@@ -580,6 +580,7 @@ import Surreal.Foundations.OmnificFloor
 import Surreal.Foundations.OmnificPolynomialRoots
 import Surreal.Foundations.OmnificResidues
 import Surreal.Foundations.OmnificIntegerDivisors
+import Surreal.Foundations.OmnificOrdinaryArithmetic
 import Surreal.Surcomplex.OmnificDegree
 import Surreal.Surcomplex.OmnificUnits
 import Surreal.Surcomplex.NormalFormDegree
