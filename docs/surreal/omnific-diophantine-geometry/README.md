@@ -157,10 +157,9 @@ The article has 200 standard results (72 theorems, 38 propositions, 42 lemmas,
 48 corollaries), of which 39 are in Section 15 and 57 in Sections 16–18 (6 of them in
 Section 18.6). The
 [ledger](../../FORMALIZATION.md) indexes the standard results of the
-report by `odg:` label, all **Pending** (the 6 of Section 18.6 once it is
-refreshed); no implementation
-mapping cites an `odg:` label, and no Lean code about omnific integers exists
-in the repository.
+report by `odg:` label. The ring and constant-term package `odg:prop:ring`
+is **Proved** in Lean (its implementation row in the ledger gives the exact
+scope); every other statement is **Pending**.
 
 ## Thirteen sources, one report
 
