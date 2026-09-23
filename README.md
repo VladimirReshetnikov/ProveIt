@@ -159,6 +159,9 @@ normal-form exponent and adds under multiplication. The units of the real
 and complex support rings are exactly their nonzero ordinary constants;
 the omnific units are `1` and `-1`. An omnific integer bounded by an ordinary
 real is an ordinary integer, and `1` is the least positive omnific integer.
+Every surreal now has a unique omnific floor `a` satisfying `a ≤ x < a+1`.
+The proved formula includes the negative-infinitesimal boundary correction;
+for example, the floor of a negative infinitesimal is `-1`.
 Higher Diophantine and set-sized quotient results remain pending; source
 review is distinct from checked formalization.
 
