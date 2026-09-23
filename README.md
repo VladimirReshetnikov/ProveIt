@@ -389,6 +389,12 @@ The actual finite exponential maps onto the finite units with exact kernel
 and two finite angles give the same phase exactly modulo ordinary `2πℤ`.
 Each has a unique principal angle in `(-π, π]`, with angle `π` for every
 negative real input, including infinite and infinitesimal scales.
+The finite-angle quotient by ordinary full turns is isomorphic to the full
+actual unit circle. Each direction splits canonically into its ordinary
+standard-part direction and an additive infinitesimal angle, recovered by
+the strong logarithm. Positive moduli times these angle classes form the
+multiplicative group of all nonzero surcomplex numbers, without any bound
+on their size.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual

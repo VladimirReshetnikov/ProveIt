@@ -1,0 +1,10 @@
+.PHONY: all check clean
+
+all:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error surreal_universe_saturation.tex
+
+check:
+	python3 verify_finite_models.py
+
+clean:
+	latexmk -c surreal_universe_saturation.tex
