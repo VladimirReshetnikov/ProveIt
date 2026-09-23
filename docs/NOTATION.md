@@ -40,7 +40,8 @@ write `ℕ = {0,1,2,…}` and `n ≥ 1` where division by `n` is intended.
 ## Omnific integers and the constant coefficient
 
 The [Diophantine report](surreal/omnific-diophantine-geometry/article.tex)
-writes `A = Oz = ℤ ⊕ J`; the
+now writes `Oz = ℤ ⊕ Π`, agreeing with the foundations report. Its original
+base used `A = Oz = ℤ ⊕ J`; below `J` denotes the same ideal. The
 [set-sized quotient report](surreal/set-sized-quotients-of-omnific-integers/article.tex)
 uses `I` for the infinite-part ideal. The decomposition is additive, not a
 product of unital rings. In growth notation `ω^γ`, every exponent of `Oz`

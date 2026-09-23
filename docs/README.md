@@ -19,13 +19,18 @@ hypotheses, limitations and provenance.
 Eleven omnific-integer manuscripts placed in `be06fc8` are assigned to
 [omnific Diophantine geometry](surreal/omnific-diophantine-geometry/) and
 [set-sized quotients](surreal/set-sized-quotients-of-omnific-integers/).
-The Diophantine report now has a current PDF, corrected build paths and a
-Sections 1–4 elementary algebra review that partially integrates sources
-02 and 05 into base 01. Its [reconciliation](surreal/omnific-diophantine-geometry/RECONCILIATION.md)
-records the later work still pending. The quotient report remains base 06;
-its seven companions, delivery paths, PDF build and proof review await
-integration. Formalization of both reports remains pending. The inventory
-indexes the current texts, not the full eleven-manuscript delivery.
+The Diophantine article now assembles sources 01, 02 and 05 (`bbdd536`),
+with an elementary algebra review and a current PDF; its expanded later
+proofs still need independent review. Its
+[reconciliation](surreal/omnific-diophantine-geometry/RECONCILIATION.md)
+records that boundary. The quotient article remains base 06.
+
+The further placement `cf350b1` adds two Diophantine manuscripts (local
+06–07), five quotient manuscripts (12–16), and a rectification manuscript
+for [entire functions](surcomplex/entire-functions-at-arbitrary-rank/) (10).
+These additions are not yet integrated; the quotient report now has twelve
+companions awaiting assembly. Its maintained build paths, PDF and proof review
+also remain pending. Formalization of both omnific reports remains pending.
 
 Batch 23 (placed in `e4f8848`, written in `7af7056`) adds
 [Gamma and zeta](surcomplex/gamma-and-zeta-functions/), merged from six
@@ -104,7 +109,7 @@ not extend their earlier proof-review scope.
 | [Vector and tensor fields](surreal/vector-and-tensor-fields/) | Layered tensor calculus with surreal coefficients in every dimension: Hahn-supported smooth fields, Taylor prolongation, Hodge and Stokes; 3D calculus and Minkowski fields as parts; not a physics claim |
 | [Euclidean three-space](surreal/euclidean-three-space/) | Coordinate and spherical geometry of `No³` with finite angles, and the rotation group `SO(3,No)` as a split extension with a perfect infinitesimal kernel; normal subgroups by valuation cuts and the universal set-sized quotient of `SO(3,No)` |
 | [Finite surreal probability](surreal/finite-surreal-probability/) | Surreal-valued probability on finite algebras: conditioning on infinitesimal events, log-odds, entropy, scoring rules; compare the measures report for countable additivity |
-| [Omnific Diophantine geometry](surreal/omnific-diophantine-geometry/) | Arithmetic and Diophantine equations over the omnific integers; constant-term transfer, rigidity and definability; elementary algebra partially integrated; later reconciliation pending |
+| [Omnific Diophantine geometry](surreal/omnific-diophantine-geometry/) | Arithmetic and Diophantine equations over the omnific integers; constant-term transfer, rigidity and definability; three-source assembly; elementary review, later proof review pending |
 | [Set-sized quotients of omnific integers](surreal/set-sized-quotients-of-omnific-integers/) | Constant-term factorization of maps to set-sized rings and cardinal/homological thresholds; placed base manuscript, integration pending |
 
 The two birthday reports have different domains. The first allows its specified

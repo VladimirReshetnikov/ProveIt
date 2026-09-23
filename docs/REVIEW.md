@@ -2327,6 +2327,49 @@ in the introductory quotient notation and shared guide. The rebuilt article
 still has 31 pages and no diagnostics; only physical page 5 changed, and
 it was visually checked again. `git diff --check` passes.
 
+## Synchronizing the expanded omnific article
+
+The publish retry encountered the three-source assembly `bbdd536` and
+additional manuscript placement `cf350b1`, merged remotely in `ed2039f`.
+The expanded article is retained in full. Its 67 standard statements are
+unchanged by this synchronization apart from added label aliases. All 81
+labels of the preceding elementary review resolve among 159 unique labels;
+nine now identify combined or renamed statements, as the reconciliation
+explains. The independent review boundary is the shared elementary algebra
+and the added univariate, CRT, prime-adic and general no-gcd arguments in
+Sections 2–4. The expanded later proofs, the cited universal quotient and
+remaining foundational/source work are not certified by this merge.
+
+The incoming notation identified the nonnegative-growth support ring with
+“nonpositive valuation”. This is false: `ω + ω⁻¹` has negative valuation
+but a forbidden growth exponent. The corrected text requires the entire
+support condition. The merge also restores explicit class-quotient
+representatives, completion transition maps and the nilpotent proof via
+finite products, and specifies the integer constant coefficient in `Oz_H`.
+The claim excluding a universal common multiple now explicitly excludes
+zero. The guide adopts the expanded article's `Π` notation, and the README
+no longer claims that the previously indexed base was a new unreferenced
+report or that the sibling already contains an assembled source-05 proof.
+
+The newly placed local manuscripts 06–07 (Diophantine), 12–16 (quotients)
+and 10 (entire-function rectification) remain supplementary artifacts,
+not main-text integrations. The quotient source is still base 06, with
+twelve companions assigned. The reader map and catalogue now distinguish
+that placement from the assembled sources 01, 02 and 05. The current
+inventory is 2,636 standard statements in 51 sources (1,035 theorems,
+525 lemmas, 564 propositions, 512 corollaries), with separately styled
+claims still in scope. No extra Lean coverage is implied.
+
+Merge validation: three clean pdfLaTeX passes produce the 55-page article
+and 28-page catalogue. All article pages and the 23 catalogue pages whose
+text or pagination changed were visually checked; the final zero exclusion
+changed only article page 51, checked again. All 3,124 cited source labels,
+1,297 local Markdown destinations and the independent 51-source inventory
+pass. The original three verifiers are unchanged and their passing runs
+above remain applicable. This incoming merge changes only documentation,
+so the successful 4,280-job Lean build and 12,934-declaration axiom audit
+remain applicable. `git diff --check` passes.
+
 ## Remaining scope
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

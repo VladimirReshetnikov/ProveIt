@@ -17,16 +17,31 @@ as the article, without merging the other two texts.
 | 05 | `omnific_integers_article.zip` | `omnific_integers/article.tex` |
 
 The source-01 extraction was byte-identical to the installed base before
-this review. All its 41 standard theorem/lemma/proposition/corollary
-statements are retained. Their labels, and the article's other labels, now
-have the report prefix `odg:`; the suffix is unchanged. Four new standard
-statements bring the count to 45. Proof and explanatory changes in this pass
-are confined to Sections 1–4; label/reference renaming applies throughout.
+the elementary review in `7784f7f`. That review retained all 41 base standard
+statements and added four. Concurrent commit `bbdd536` assembled sources
+01, 02 and 05 more broadly into a 67-statement article. The present merge
+uses that expanded text and preserves the reviewed support, quotient and
+nilpotent-image clarifications. The notation is now `Oz = ℤ ⊕ Π`, agreeing
+with the foundations report; `J` below denotes the same ideal in the earlier
+review and source 01. The 67 standard statements do not count the separately
+styled cited theorem, remarks, examples and questions.
+
+All 81 labels from the elementary review still resolve. Nine are aliases
+for renamed or combined locations: `odg:cor:Jglobal` points to
+`odg:cor:Pglobal`; `odg:cor:commonmultiples` to `odg:cor:projectiveclear`;
+`odg:prop:nogcd` to the retained degree proof `odg:rem:nogcd01`;
+`odg:cor:powers` to `odg:rem:powers`; `odg:cor:Jdefinable` to
+`odg:cor:definablect`; `odg:eq:nA` to the residue formula in `odg:thm:finitequotients`; `odg:eq:pellmod8`
+to the residue assertion in `odg:lem:pellsequence`; and the dependency and
+audit appendices to `odg:app:verification` and `odg:app:repo`.
+These preserve navigation, not old theorem numbers or environment kinds.
 
 ## Elementary algebra correspondence
 
 The labels in the source columns are local to those archived manuscripts.
-The maintained labels resolve in [article.tex](article.tex).
+The maintained labels resolve in [article.tex](article.tex). The dispositions
+below record the elementary review; the expanded assembly may combine the
+statements, as described above.
 
 | Topic | Companion source | Maintained location and disposition |
 |---|---|---|
@@ -48,26 +63,41 @@ and differs from standard part; `v = −deg` translates growth exponents to
 valuation exponents. Quotients by class ideals are interpreted through their
 congruence maps and ordinary representatives where available.
 
-## Remaining reconciliation
+## Review boundary after synchronization
 
-The comparison read source 02's Sections 2–5 and source 05's elementary
+The elementary comparison read source 02's Sections 2–5 and source 05's
 normal-form, integer-part, residue and global-support arguments through
-its integral-closure corollary. This is not a claim that every assertion in
-those portions has been copied: for example, their separately stated CRT,
-prime-adic order and univariate consequences still need an explicit
-correspondence with the complete base text.
+its integral-closure corollary. The expanded article's corresponding
+Sections 2–4 were compared again during synchronization, including the
+new univariate, CRT, prime-adic order and general no-gcd arguments. The
+universal set-sized quotient is separately styled as a cited theorem;
+its foundational and sibling-source proof reconciliation remains pending.
 
-Source 01's Sections 5 onward, including equational transfer, rigidity,
-quadratic classification, the quartic guard, primitive points and later
-formalization discussion, retain their original proofs. Their comparison
-with the remaining source-02 and source-05 claims, including polynomial
-lifting, differential/Wronskian methods and set-target rigidity, is pending.
-The [set-sized quotient report](../set-sized-quotients-of-omnific-integers/)
-contains related material and needs its own eight-source reconciliation.
-Imported normal-form foundations, classical results and historical priority
-remain separate review obligations.
+The expanded article retains the common-workspace, mixed-gcd and nilpotent
+results; common multiples are combined with projective clearing, with the
+stronger `M/a^k ∈ Π` conclusion in its proof. The merge restores explicit
+class-quotient conventions, completion transition maps, the integer
+constant condition in `Oz_H`, and the finite-product argument for the
+nilpotent test. It also corrects the incoming phrase “ring of nonpositive
+valuation”: `ω + ω⁻¹` has negative valuation but violates the required
+support restriction. Every supported exponent must satisfy that restriction.
 
-The three preserved verification scripts exercise ordinary finite examples
-from their respective sources. They do not prove the new class-sized
-support arguments or establish full equivalence of the three manuscripts.
-No additional Lean theorem is asserted by this reconciliation.
+Sections 5 onward of the expanded text now include companion-source results
+beyond the previously reviewed base. Their independent proof review and
+claim-by-claim source reconciliation remain pending; the assembly's own
+section map and corrections in Appendix A are inputs to that review.
+Imported foundations, classical results and historical priority are separate
+obligations. No broad preservation of the old statement wording or numbering
+is claimed after the expansion.
+
+Two additional Diophantine manuscripts, local 06 and 07, arrived in
+`cf350b1` and remain unintegrated. Their archives are recoverable at
+`de0acc6`; their code and data are present here. The
+[quotient report](../set-sized-quotients-of-omnific-integers/) now has thirteen
+assigned manuscripts (its base and twelve companions), and still needs its
+own assembly and source reconciliation.
+
+The three original verification scripts are unchanged by synchronization.
+Their finite examples do not prove the new class-sized arguments or establish
+full equivalence of the manuscripts. No additional Lean theorem is asserted
+by this reconciliation.
