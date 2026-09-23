@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={The surreal and surcomplex reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of forty-nine research packages on surreal and surcomplex numbers}}
+  pdfsubject={Catalogue of fifty-one research packages on surreal and surcomplex numbers}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -59,7 +59,7 @@
 
 \begin{center}
  {\LARGE\bfseries\color{Ink} The surreal and surcomplex reports}\\[8pt]
- {\large Forty-nine independent mathematical research packages,\\
+ {\large Fifty-one mathematical research packages,\\
  on the surreal field, its algebraic closure, its quaternion algebra,\\
  their reach into physics, and the foundations and computation of all of them}\\[10pt]
  {\small September 2026}
@@ -70,11 +70,11 @@
 \section*{Scope}
 \addcontentsline{toc}{section}{Scope}
 
-This document catalogues the forty-nine research packages stored under
+This document catalogues the fifty-one research packages stored under
 \dir{docs}.  Each entry names the problem the report attacks, the result it
 claims, and the delivery it arrived in.
 
-The collection divides in five, and so does the directory tree.  Sixteen
+The collection divides in five, and so does the directory tree.  Eighteen
 reports, under \dir{docs/surreal}, are about the surreal field $\No$ itself and
 its real Hahn subfields: birthdays and their behaviour under multiplication,
 the option graphs of surreal forms, genetic functions and gaps, two questions
@@ -83,7 +83,8 @@ automorphisms, Gamma functions, differential transcendence of explicit
 surreals, Hahn-valued measures and probability, Markov generators,
 transcendence over bounded-support series, diagonal matrix scaling, vector
 and tensor fields, Euclidean three-space and its rotations, and finite
-probability.  Twenty-six, under \dir{docs/surcomplex}, are about the algebraic closure $\SC$:
+probability, and the arithmetic and set-sized quotients of omnific integers.
+Twenty-six, under \dir{docs/surcomplex}, are about the algebraic closure $\SC$:
 the theory of holomorphic functions over it, its differential algebra, its
 rank-one analytic geometry, its finite and infinite-dimensional spectral
 theory, its local, quasi-periodic and expanding dynamics, its nonabelian
@@ -112,13 +113,12 @@ That is why an entry may refer to a merge, a duplicate sweep or a delivery
 number: those describe how the report reached its present form, and the
 record is kept rather than rewritten.
 
-Each directory holds a typeset article with its \LaTeX{} source, a
-\texttt{README.md}, and in most cases verification code together with the
-recorded output of running it.  The source manuscripts a merged report was
-assembled from are not distributed here.  What is kept is the provenance
-record: each merged report states how many manuscripts it was merged from,
-what each contributed, and where the merge had to choose between them, and the
-disposition of every source result is recorded in that material.  These are
+Each directory holds a \LaTeX{} source and a \texttt{README.md}; all but the
+two newly placed omnific-integer reports also have a current typeset article.
+Most include verification code and its recorded output. The new placements
+retain delivery filenames and await integration, as their entries specify.
+Source manuscripts for merged reports remain in Git history; their
+provenance notes record contributions and editorial choices. These are
 AI-assisted research drafts. Some claims and prerequisites have checked Lean
 proofs, mapped precisely in \texttt{FORMALIZATION.md}; no complete verification
 of the collection is claimed. This catalogue describes the reports rather than
@@ -134,7 +134,7 @@ latexmk -pdf manifest.tex \&\& latexmk -c manifest.tex
 
 \section{The surreal field}
 
-Sixteen reports about $\No$ and its real Hahn subfields.  Two questions of
+Eighteen reports about $\No$ and its real Hahn subfields.  Two questions of
 Lipparini on evaluating formal sums; two independent halves of Gonshor's
 product-birthday conjecture, on domains neither of which contains the other;
 the subgraph question from Roughan's paper on birthday arithmetic; a genetic
@@ -145,11 +145,13 @@ transcendence of explicit surreals; Hahn-valued measures and probability;
 Markov generators at every valuation scale; transcendence over bounded-support
 series; diagonal matrix scaling; vector and tensor fields in every
 dimension; Euclidean three-space and $\mathrm{SO}(3,\No)$; and finite surreal
-probability.  The first and the fourth
+probability; and two new placements on omnific Diophantine geometry and
+set-sized quotients. Among the first sixteen, the first and the fourth
 each arrived as a pair of archives and were merged; the exponential-automorphism
 report later absorbed two independent re-derivations of its own theorem, and
 the measures report merges five manuscripts, the vector-field report three
-and the three-space report three; the rest are single manuscripts.
+and the three-space report three; the others are single manuscripts.
+The two omnific reports await integration from three and eight manuscripts.
 
 \entry{A square-root obstruction to evaluating increasing Hahn series at $\omega$}
 {surreal/hahn-evaluation-at-omega}
@@ -294,7 +296,9 @@ shared with \nolinkurl{surreal/gamma-functions} and
 \nolinkurl{surcomplex/analysis} nor the scalar rigidity of
 \nolinkurl{surreal/gamma-functions}.  The staged source audit's conclusion
 that the collection lacked this report is false, as its appended correction
-says.  Not refereed; no Lean proof; no exhaustive priority claim.}
+says. Generic displacement, exponential-profile, logarithmic-modulus and
+valuation-kernel proofs now have Lean mappings; actual surreal exponential
+instantiations remain pending. Not refereed; no exhaustive priority claim.}
 
 \entry{Gamma functions over the surreals: a sharp convexity classification}
 {surreal/gamma-functions}
@@ -607,6 +611,28 @@ the cases $p=t$ and $p=\tfrac12+t$ of the i.i.d.\ corollary of
 question of.  No physical interpretation is claimed, in line with
 \nolinkurl{physics/surreal-scalars-and-spacetime}.  One manuscript; not
 refereed, no Lean verification, priority not certified.}
+
+\entry{Omnific integers and omnific--Diophantine geometry}
+{surreal/omnific-diophantine-geometry}
+{article.tex}{manuscripts 01, 02 and 05, placed in be06fc8}
+{Arithmetic and Diophantine geometry over Conway's omnific integers:
+constant-term retraction, equational transfer, finite quotients, linear
+systems, binary and norm-form rigidity, quadratic levels and Diophantine
+definitions of the ordinary integers. Only base manuscript 01 is currently
+installed as the article. Integration of 02 and 05, correction of delivery
+filenames, a current PDF build and proof review remain pending. No new
+Lean coverage is claimed.}
+
+\entry{The universal set-sized quotient of the omnific integers}
+{surreal/set-sized-quotients-of-omnific-integers}
+{article.tex}{manuscripts 03, 04 and 06--11, placed in be06fc8}
+{The base manuscript claims that every unital ring map from the omnific
+integers to a set-sized ring factors through the constant term; it also
+studies Gaussian variants and cardinal and homological thresholds for
+set-sized integer parts. Only base manuscript 06 is currently installed as
+the article. The other seven manuscripts, delivery filenames and current
+PDF build await integration; proof review and formalization remain pending.
+The catalogue does not certify the delivery's priority claims.}
 
 \section{The surcomplex plane}
 
@@ -1563,8 +1589,8 @@ classification --- are reprinted with attribution from
 \nolinkurl{surreal/exponential-automorphism-rigidity}; here
 $\mathrm{Aut}_L(\SC)$ is observed to be a proper subgroup of the real-axis
 stabilizer.  Readings of the Kaplan--Krapp--Serra paper beyond Question~5.4
-are the source's and were not rechecked.  One manuscript; not refereed, no
-Lean verification.}
+are the source's and were not rechecked. Not refereed; generic Lean coverage
+uses the rigidity report's labels.}
 
 \entry{The first-$\kappa$ coefficients: omitted types and completion in Hahn fields}
 {surcomplex/first-kappa-coefficients}

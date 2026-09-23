@@ -839,6 +839,45 @@ functionals `Res_F` and `Λ_F` agree only through the stated comparison
 retain its `H` decoration and its ordinary parameter path; it is not defined
 by fine-topological Riemann-sum convergence.
 
+## Automorphism structures
+
+The [field-automorphism report](surcomplex/surcomplex-field-automorphisms/article.tex)
+uses `K = No(i)` and the proper-class exponent group `Γ = (No,+,<)`;
+every individual normal-form support remains a set. Its `Aut(K)` is a
+collection of class maps, not an NBG class containing their graphs.
+Factorizations describe individual maps and composition. A finite action
+is encoded by one class relation with a finite index set; fixed-field
+identities for all class automorphisms are interpreted pointwise.
+
+| Preserved structure | Meaning |
+|---|---|
+| Real axis | Setwise preservation of `No`; fixing it pointwise is stronger. |
+| Valuation ring | `α(𝒪)=𝒪`, allowing an ordered reindexing `v(αz)=τ(vz)`. |
+| Individual values | `v(αz)=v(z)` for every nonzero input. |
+| Leading terms | `v(αz−z)>v(z)`, the report's `1`-automorphism condition. |
+| Norm or modulus | Exact preservation forces identity or conjugation; equivariance `|αz|=σ(|z|)` allows other real-axis automorphisms. |
+
+Strong additivity preserves summable families and their Hahn sums; a strong
+automorphism requires this for both directions. It is separate from
+coefficient linearity and fine continuity. A strong field map is determined
+by its coefficient and monomial images. Monomial images alone determine it
+when coefficients are fixed; the Taylor motions `Φ_d` show why that condition
+matters. Residue action `ρ` also need not be the restriction to the embedded
+coefficient field, which can move by infinitesimals.
+
+The decomposition `α=u D_χ M_{ρ,τ}` applies the rightmost map first and uses
+`χ(g)=lc(α(t^{τ⁻¹g}))`. This character is indexed after undoing the value
+action. The additive-group decomposition one level deeper permits arbitrary
+order permutations of exponents, while a field monomial map needs an
+**additive** order automorphism. The coefficient functional `ℓ(g)=[g]₀`
+is defined even for infinite exponents and is not a standard-part map there.
+
+The fine derivative can take any value in `K`; “no `K`-valued derivative”
+excludes infinite values too. It is tested by punctured neighborhoods,
+not by a set-indexed cofinal sequence in the full surreal topology.
+Generic exponential rigidity acts on the actual valuation image `w(Fˣ)`;
+surjectivity onto a larger written codomain must be stated separately.
+
 ## Radii, modulus, and order-theoretic terminology
 
 An **ordinary radius** `R > 0` specifies a domain for complex coefficient

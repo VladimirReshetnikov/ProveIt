@@ -2178,7 +2178,134 @@ changed upstream. The combined `LEAN_NUM_THREADS=2 lake build` passed all
 source labels and 1,156 local Markdown destinations resolve; the inventory
 remains 2,535 standard statements in 49 reports.
 
+## Field-automorphism main-text review
+
+Reviewed Sections 1–15 and Appendix B of the field-automorphism report in
+dependency order: real-axis stabilizers and norm/circle rigidity, support
+control, monomial and coefficient-motion constructions, valued and additive
+decompositions, topology and derivatives, class homogeneity and real forms,
+then exponential rigidity and the stated applications. Independent readings
+of Sections 7–11 and the class arguments found no false theorem under the
+stated full-field hypotheses. This review does not complete original-source
+reconciliation or certify historical priority.
+
+Corrected the rational-cut explanation to refer to irrational ordinary reals;
+rationals are fixed already, and real algebraic constants are fixed by their
+polynomial and order data. Clarified that a strong field map is determined
+by both coefficient and monomial images. Strongness alone does not remove
+coefficient data: the Taylor motions fix every monomial but move constants.
+Defined strong additivity for general additive maps, so its use for the
+fixed-shift derivation is explicit. Added the coefficient-motion valuation
+bound, the automatic identity `d(i)=0`, the correctly reindexed character
+in the valued factorization, and the rational-comparison proof of the
+additive decomposition's leading coefficient. Corrected the Cayley comparison
+to exclude division by zero and give the missing `x=0` value separately.
+
+The finite-observation non-density proof now names `Aut(No)` and then proves
+the assertion for all `Aut(K)`: fixing `t` sends each rational power to that
+power times an ordinary root of unity, so a strong image of the chosen sum
+cannot acquire its new `ω`-exponent. This is an added source-level argument,
+still pending in Lean. The derivative theorem now excludes every `K`-valued
+derivative for `0<a<1`, removing the ambiguous word “finite.” Its proof uses
+an explicit increment beyond any proposed valuation threshold, without a
+set-indexed cofinal net. Injectivity justifies the inverse derivative's
+punctured limit and the failure of local constancy.
+
+Class-map collections, pointwise fixed-field predicates, and finite indexed
+actions now have distinct foundational interpretations. The back-and-forth
+proof fixes a set-like global well-order, makes both extension steps at each
+successor, and defines its class graph from compatible set-length recursions.
+The finite-group theorem is reduced to ordinary algebraically closed,
+invariant set subfields containing witnesses for faithfulness. Directed
+unions of their real fixed fields give the class real form; the explicit
+two-coordinate identity gives its complexification. The real closure of
+`No(T)` uses unique compatible ordered embeddings and least representatives
+of stage-element pairs, avoiding proper-class equivalence classes as elements.
+The set-cut conjugacy criterion retains both empty cut sides.
+
+The generic exponential proof now identifies the image of `w ∘ E` with
+`w(Fˣ)`, without silently assuming surjectivity onto a larger codomain.
+Current generic `ExponentialProfile` proofs are distinguished from dedicated
+`saut:` mappings and from the actual surreal exponential instantiation.
+The older `SigmaDerivation` ledger row now points to the later generic
+ordered results instead of incorrectly listing them as pending. No new Lean
+code or implementation mapping is introduced by this review.
+
+Targeted primary checks inspected the four-factor decomposition in
+[Kuhlmann–Serra, Theorem 3.7.1](https://arxiv.org/html/2107.03362v3), and the
+kernel/skeleton decomposition and canonical lifts in
+[their Hahn-group paper, Section 3.2](https://arxiv.org/html/2302.06290v2).
+The ordinary Puiseux input is stated in the introduction of
+[Paran–Vo](https://arxiv.org/abs/2311.17544); real closedness follows by
+complexification. [Conrad, Theorem 3.1 and Section 4](https://kconrad.math.uconn.edu/blurbs/galoistheory/artinschreier.pdf)
+supplies the set-field Artin–Schreier input, while
+[Hamkins's global-choice equivalences](https://jdh.hamkins.org/the-global-choice-principle-in-godel-bernays-set-theory/)
+justify the set-like global well-order. The manuscript supplies the passages
+to its class setting. These checks do not re-audit the pinned KKS questions
+or establish a complete external-literature review.
+
+Validation against `076b1fa`: three LaTeX passes produced a 37-page PDF
+without diagnostics; all 37 rendered pages were inspected for layout.
+All 86 source labels and their result numbers are preserved. Of the 26
+standard statements, only `saut:thm:zeroderiv` changes wording, as described
+above. The installed PDF matches the compiled source. All 2,872 cited source
+labels resolve, and the inventory still contains 2,535 standard statements
+in 49 reports. No verification code or data accompanied this report.
+
+Merged the subsequent formalization commits through `71e9606`; they change
+Lean code, the root imports and coverage documentation, but no manuscript
+sources. The ledger conflict keeps both the newly completed Prony mappings
+and the corrected `ExponentialProfile` status. Checked the assumptions and
+main declarations of the incoming `LogModulusClassification` and
+`ComplexValuationKernel` modules against their mappings, then updated both
+automorphism READMEs and the field-automorphism article. These generic
+results require an explicitly injective `OrderedExp`; the kernel also uses
+a nontrivial convex valuation. The separate `L`-automorphism predicates,
+relational treatment of coarsening and pending actual surreal instantiations
+are now explicit. This integration check is not a mathematical review of
+every incoming Lean module.
+
+The updated article again passes three LaTeX runs without diagnostics and
+retains 37 pages, all 86 labels and every result number. Inspected all 29
+pages whose extracted text or pagination changed after the coverage update.
+The report README's result references agree with the compiled numbering;
+its Taylor-motion summary now states the real-preservation condition.
+
+Combined validation: `LEAN_NUM_THREADS=2 lake build` passed all 4,264 jobs.
+The axiom audit passed for 12,648 declarations using only `propext`,
+`Classical.choice` and `Quot.sound`. All 3,016 cited source labels and 1,253
+local Markdown destinations resolve. The independent inventory remains
+2,535 standard statements in 49 reports, and `git diff --check` passes.
+
 ## Remaining scope
+
+Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
+`be06fc8`, which was merged after the field-automorphism build. This is a
+documentation-only merge: no existing mapped manuscript or Lean source
+changed. The two new reports currently contain only their base manuscripts,
+01 and 06. Their other nine manuscripts still need integration from Git
+history; their delivered READMEs and build commands retain old filenames,
+and no current PDFs are installed. The reader map, catalogue and ledger
+now identify this placement status. The two base texts contribute 75
+standard statements, bringing the inventory to 2,610 in 51 reports; the
+quotient base's three `maintheorem` statements are additional claims outside
+the standard-environment count. Proof review and formalization are pending.
+The independent inventory audit passes for all 51 present sources, and all
+3,090 cited labels and 1,261 local Markdown destinations resolve. The
+catalogue's 51 main-document destinations exist; its three-pass build has
+28 pages and no diagnostics, and all pages were visually checked. The
+previous 4,264-job Lean build remains applicable after this docs-only merge.
+
+The first publish attempt encountered `220784a`, including the eight
+cosine-fold modules in `4accabc` and an independent omnific inventory update.
+The merge retains those mappings and the catalogue's 51-entry status,
+correcting the incoming description that all eleven manuscripts had already
+been merged into the two base texts. No manuscript source changed.
+The combined `LEAN_NUM_THREADS=2 lake build` passed all 4,272 jobs; its
+axiom audit passed 12,787 declarations with only `propext`,
+`Classical.choice` and `Quot.sound`. All 3,091 cited source labels and 1,271
+local Markdown destinations resolve, and the 51-source inventory audit
+passes. This is integration validation, not a proof review of the new reports.
 
 Batch 22, placed in `7b5f934`, was assembled in `68e2960` and catalogued
 in `5d369a0`. Its two reports,
@@ -2206,10 +2333,12 @@ all nine manuscripts are now represented in the two written sources. Their
 proof review and source-claim reconciliation for these two assembled reports
 remain pending.
 
-The newly assembled [vector and tensor fields](surreal/vector-and-tensor-fields/),
-[three-space](surreal/euclidean-three-space/) and
-[field automorphisms](surcomplex/surcomplex-field-automorphisms/) reports
-are now written and catalogued, but await proof review.
+The newly assembled [vector and tensor fields](surreal/vector-and-tensor-fields/)
+and [three-space](surreal/euclidean-three-space/) reports are now written and
+catalogued, but await proof review. The
+[field-automorphism report](surcomplex/surcomplex-field-automorphisms/)
+has received the Sections 1–15 and Appendix B main-text review above;
+remaining imports, original-source reconciliation and priority remain separate.
 [Finite probability](surreal/finite-surreal-probability/) has received the
 Sections 2–17 main-text review recorded above; remaining imports and
 source/provenance reconciliation are pending. The measures and
