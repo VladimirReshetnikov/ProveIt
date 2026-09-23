@@ -25,7 +25,7 @@ Apache license are included in the repository.
 
 ## Formalization
 
-The [source inventory](docs/FORMALIZATION.md) covers 57 main texts
+The [source inventory](docs/FORMALIZATION.md) covers 58 main texts
 and the source manuscripts preserved in Git history. The
 [coverage and dependency ledger](docs/FORMALIZATION.md) records their statements,
 the proposed Layer A–E implementation order, and the exact scope of each
@@ -39,6 +39,11 @@ Its fraction section now has a full manuscript proof review, including
 a correction to the agreement locus of standard part and rational residue.
 The [review record](docs/REVIEW.md) distinguishes these written proofs
 from formal verification and records the remaining review scope.
+Recent manuscript additions cover curve and differential rigidity, theta
+descent, support cuts and convex factors, plus a new
+[quantum and gauge report](docs/physics/quantum-and-gauge-scale-reductions/).
+These additions and the newly delivered companions still need proof review
+and source reconciliation.
 
 The complex cosine fold now has its exact infinitesimal root classification,
 real and imaginary branch behavior, half-valuation law, and complete strong

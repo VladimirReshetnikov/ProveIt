@@ -3123,6 +3123,38 @@ library; it does not formalize the manuscript revisions. Sections 17–18,
 added material in Sections 6 and 10, companions, imported foundations
 and remaining source reconciliation still require review.
 
+## Combined validation after the batch-28 and new-manuscript merge
+
+The fraction review was committed as `b2a8686`. A pre-push fetch found
+eleven incoming commits through `6f47cf9`; merging them preserves the
+reviewed Section 15 and incorporates the new curve/differential material
+in Sections 16–18. The old Sections 16–18 are now 19–21. The combined
+article has 194 standard statements and 405 labels; all 143 preceding
+statement texts and all 310 preceding labels survive. Result numbers
+through Section 15 are unchanged, and the body of that section from its
+conventions subsection to the next section is byte-identical to `b2a8686`.
+The new curve material, its pointers and additions remain outside the
+completed proof review. Earlier review records use their then-current
+section numbers and counts.
+
+Three-pass pdfLaTeX builds produce a clean 163-page article and 29-page
+catalogue. The source-label and independent inventory audits pass after
+updating renamed normalization labels and indexing the current assemblies:
+3,428 standard statements in 58 main texts, with 3,934 cited labels
+resolved. Existing statement texts referenced by the Lean implementation
+table do not change in this incoming merge. All incoming files are under
+`docs/`, so the successful 4,346-job Lean build and 13,755-declaration
+audit at `d8ce588` remain the relevant build validation; no additional
+Lean build is needed for this merge.
+
+The inventory and reader map now include the newly placed quantum/gauge
+base. Its local guide distinguishes the actual repository paths from
+the delivered package's filenames. The catalogue and root README reflect
+the current assemblies and preserve their pending review status. The
+companions placed in `66d7e55` and the nine archives in `190d301` still
+need integration or placement and reconciliation; indexing the main
+texts does not establish coverage of those separate manuscripts.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
