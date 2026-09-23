@@ -200,6 +200,11 @@ It is the actual support length at positive monomial arguments; it is
 not a surreal birthday. Well-ordering of that exponent set and finiteness
 of every exponent fibre are separate requirements for strong summability.
 
+In Hahn–Tate's coupled theta example, `ξ` is the full Hahn solution and
+`ξ₀` is its reduction retaining only first-coordinate-zero terms. The
+zero-row equation is an equation for `ξ₀`. Its coefficients determine the
+displayed expansion of `ξ` below higher first-coordinate rows.
+
 ## Finite elements, standard part, and reduction
 
 Use `O_F = {v ≥ 0}` and `m_F = {v > 0}` for the finite valuation ring and

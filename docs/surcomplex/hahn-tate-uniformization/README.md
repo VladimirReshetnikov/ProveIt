@@ -88,34 +88,20 @@ minimum `δ_β` became `μ_β`; and "admissible" in the Amini–Nicolussi sense 
 always written **AN-admissible**, since "admissible" in Part I refers to the
 Hahn-admissible domain `U_q`.
 
-The proof review has checked the support foundations, exact bilateral
-domains and first uniformization route through the coarse reduction diagram.
-It expands finite normalization and the two convex-subgroup arguments,
-makes the formal inverse lemma characteristic-free, and explains why
-fine-positive inputs alone do not permit arbitrary coarse-coefficient
-evaluation. The later Tate-curve statements retain their characteristic-zero
-hypotheses. The second route and Section 9's support and valuation arguments have now
-also been read. The smooth-chart uniqueness proof exhibits its unit factor;
-the infinity chart explicitly checks the valuations needed for uniqueness;
-and a chart table assembles the normalized inverse before the group law.
-Examples explain an empty node tube over a discrete value group and the
-extra closeness erased by a rank-one quotient. Tate's universal secant
-identities and generic-pair lemma were checked against his pp. 6–7.
-Sections 10–13 have now also been read: scalar extension, value and residue
-sequences, the extension obstruction, modular recovery, classification,
-torsion fields and transfer to actual surreal and surcomplex numbers.
-The value quotient is distinguished from its rank-one circle quotient;
-the twist example explains why recovering a period does not classify a
-curve over a nondivisible workspace. Torsion exhaustiveness is proved from
-uniformization, and the class-level obstruction has an explicit finite
-witness. Sections 14–17 have now also been read: finite-rank exponent
-coordinates, positive generation, the exact quadratic flag criterion and
-ordinal support length. The review expands the lattice quotient arguments,
-gives an explicit bounded-allocation formula, and spells out the non-full
-lattice reduction. The bound on the generating set is a cardinality bound;
-it does not bound later descent steps. A repeated-exponent example
-separates well-ordering from finite fibres. The theta evaluation,
-minimum-certificate and zero-lifting sections remain for review.
+The main-text proof review now covers Sections 2–21: both uniformization
+routes, arithmetic and surreal transfer, positive generation, flag and
+ordinal criteria, theta evaluation, finite minimum certificates and smooth
+zero lifting. The [review record](../../REVIEW.md) gives the scope of each
+pass and its validation.
+
+The revisions expand the support, lattice and inverse arguments, separate
+the two coarsenings and the two value quotients, and make modular recovery
+valid over any characteristic-zero coefficient field. Sharp cube examples
+attain the minimizer and graph bounds; a singular theta zero demonstrates
+failure of unique lifting. In the coupled example, the zero-row equation
+now uses the reduced solution `ξ₀`, while `ξ` denotes the full Hahn
+solution, whose higher rows are essential. Full source reconciliation,
+remaining imported results and Lean formalization are still separate work.
 
 ## What the report claims
 
@@ -284,7 +270,8 @@ certified by any of the three targeted literature searches.
   is experimental; there is no algorithm for arbitrary real constants.
 - **No abelian-variety uniformization**, no global surcomplex exponential, no
   class-sized convergence, no fine-topological holomorphy.
-- Singular initial zeros are not treated.
+- No general lifting theorem for singular initial zeros is proved. A
+  diagonal two-variable example shows that unique lifting can fail.
 - Corollary 21.5 accords with, but does not reprove or strengthen, the
   collection's all-scale entire-function restrictions.
 
@@ -413,6 +400,16 @@ passed all its finite suites on a temporary copy, with JSON identical in
 every field to the delivered record. The proof review and published-source
 comparison cover Sections 14–17; rerunning later examples does not certify
 their general proofs.
+
+During the theta-evaluation and zero-lifting review, the PDF rebuilt in
+three passes at 65 pages without warnings or box issues, and the changed
+pages were inspected. All three unchanged verifiers passed on temporary
+copies. Source 01 used Python 3.13.14 and SymPy 1.14.0; only its Python
+version differs from the delivered JSON. Source 02's JSON matches every
+field, and source 03 again passes all 728 coefficient equalities with only
+elapsed time differing. All fifteen historical code, data and audit files
+remain byte-identical. The full Lean build and its 5,371-declaration axiom
+audit pass; these documentation changes add no Lean coverage.
 
 A clean compile and passing finite checks prove nothing about the infinite
 arguments.

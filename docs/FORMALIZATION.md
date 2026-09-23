@@ -598,6 +598,13 @@ This records corrected prose and hypotheses, not new Lean coverage.
   `ℝ`. The example `Γ = ℝ ⊕lex ℝ`, `α = (1,0)` makes that kernel explicit.
   The introductory description now also distinguishes the kernels of
   `v mod H_α^-` on `K_{H_α}` and `v mod H_α` on `K_Γ`.
+- **Corrected in source** (`tate:theta:eq:zerorow` in
+  [Hahn–Tate uniformization](surcomplex/hahn-tate-uniformization/article.tex)):
+  the zero-row equation now uses `ξ₀`, the coarse reduction of the full
+  solution `ξ`. Substituting `ξ₀` into the full coupled theta sum leaves
+  leading term `−2 τ₁² τ₂⁻³` from lattice index `(−1,1)`, so the higher
+  rows cannot be discarded. The displayed finite expansion of `ξ` remains
+  valid, since the difference has positive first-coordinate valuation.
 - **Corrected in source** (`diff:rs:lem:euler`, in
   [differential equations](surcomplex/differential-equations/article.tex)):
   `∂ = -t∂_T` preserves `K_Γ` exactly when `Γ = {0}` or `1 ∈ Γ`.
@@ -2566,15 +2573,15 @@ Mappings cover only the hypotheses and clauses they state.
 | Theorem | `tate:theta:thm:ordinal` (line 3379) | Exact ordinal support law |
 | Corollary | `tate:theta:cor:surrealordinal` (line 3424) | Actual surreal support lengths |
 | Theorem | `tate:theta:thm:units` (line 3454) | Exact domain and unit robustness |
-| Corollary | `tate:theta:cor:norepair` (line 3503) | No repair by units or ordered scalar extension |
-| Corollary | `tate:theta:cor:rankone` (line 3520) | One-dimensional and diagonal domains |
-| Theorem | `tate:theta:thm:certificate` (line 3583) | Finite minimum certificate |
-| Corollary | `tate:theta:cor:voronoi` (line 3615) | Finite higher-rank Voronoi inequalities |
-| Theorem | `tate:theta:thm:minimizers` (line 3641) | Finite minimizer geometry |
-| Corollary | `tate:theta:cor:BFS` (line 3672) | Complete finite enumeration after one minimum |
-| Lemma | `tate:theta:lem:implicit` (line 3714) | Implicit substitution with a Hahn certificate |
-| Theorem | `tate:theta:thm:zerolift` (line 3764) | Smooth initial zeros lift |
-| Corollary | `tate:theta:cor:notentire` (line 3941) | Untitled |
+| Corollary | `tate:theta:cor:norepair` (line 3509) | No repair by units or ordered scalar extension |
+| Corollary | `tate:theta:cor:rankone` (line 3526) | One-dimensional and diagonal domains |
+| Theorem | `tate:theta:thm:certificate` (line 3592) | Finite minimum certificate |
+| Corollary | `tate:theta:cor:voronoi` (line 3624) | Finite higher-rank Voronoi inequalities |
+| Theorem | `tate:theta:thm:minimizers` (line 3650) | Finite minimizer geometry |
+| Corollary | `tate:theta:cor:BFS` (line 3692) | Complete finite enumeration after one minimum |
+| Lemma | `tate:theta:lem:implicit` (line 3742) | Implicit substitution with a Hahn certificate |
+| Theorem | `tate:theta:thm:zerolift` (line 3800) | Smooth initial zeros lift |
+| Corollary | `tate:theta:cor:notentire` (line 4006) | Untitled |
 
 ### holonomic-rigidity-for-entire-hahn-functions
 
