@@ -290,6 +290,13 @@ import Surreal.Surcomplex.TriangleFlatGap
 import Surreal.Surcomplex.TriangleFlatSeries
 import Surreal.Surcomplex.TriangleFlatAsymptotics
 import Surreal.Surcomplex.TriangleFlatValuation
+import Surreal.Foundations.SignSequenceHypotenuseExpansion
+import Surreal.Foundations.SignSequenceReciprocalExpansion
+import Surreal.Surcomplex.TriangleCoordinates
+import Surreal.Surcomplex.SmallSlopeExpansion
+import Surreal.Surcomplex.NormalizedFlatTriangle
+import Surreal.Surcomplex.NormalizedFlatRadius
+import Surreal.Surcomplex.NormalizedFlatValuation
 import Surreal.Surcomplex.TrigonometricFineDerivative
 import Surreal.Surcomplex.TrigonometricOrder
 import Surreal.Surcomplex.TrigonometricLeading
