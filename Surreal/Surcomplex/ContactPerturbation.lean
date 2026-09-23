@@ -47,16 +47,6 @@ theorem contact_perturbed_defect_infinitesimal (τ e : SignSequence.{u}) (hp : 0
     exact SignSequence.finite_mul_infinitesimal (SignSequence.finite_of_infinitesimal hi) hu
   exact SignSequence.infinitesimal_add hi hei
 
-private theorem contact_arctan_cubic_remainder (t : SignSequence.{u})
-    (ht : SignSequence.IsInfinitesimal t) :
-    ∃ R : SignSequence.{u}, SignSequence.IsFinite R ∧ arctanFunction t = t + t ^ 3 * R := by
-  obtain ⟨R, hR, _, he⟩ := SignSequence.exists_finite_powerSeries_remainder t ht
-    (Analytic.taylorSeries Real.arctan 0) 3
-  rw [← arctanFunction_eq_powerSeries t ht] at he
-  simp_rw [Analytic.coeff_taylorSeries_arctan_zero] at he
-  norm_num [Finset.sum_range_succ, map_div₀, map_neg, map_ofNat] at he
-  exact ⟨R, hR, by linear_combination he⟩
-
 /-- The signed contact displacement has a finite error coefficient at the exact relative rate.
 The equality also holds at the zero perturbation; nonzero input is needed only for valuation. -/
 theorem arccosFunction_contact_expansion (τ e : SignSequence.{u})
@@ -132,7 +122,7 @@ theorem arccosFunction_contact_expansion (τ e : SignSequence.{u})
     apply (SignSequence.infinitesimal_sq_iff t).mp
     rw [ht2]
     exact SignSequence.infinitesimal_mul_finite hu hjf
-  obtain ⟨R, hR, hRe⟩ := contact_arctan_cubic_remainder t hti
+  obtain ⟨R, hR, hRe⟩ := arctanFunction_cubic_remainder t hti
   let F := -k / (1 + r) ^ 2
   let G := j * R
   have hFf : SignSequence.IsFinite F := by

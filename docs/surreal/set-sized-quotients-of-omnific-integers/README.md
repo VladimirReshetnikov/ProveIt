@@ -12,6 +12,12 @@ theorem too; it is merged into the sibling report
 [`omnific-diophantine-geometry`](../omnific-diophantine-geometry/) and credited
 here.
 
+Three further manuscripts placed in `f4c9504` have supplements prefixed
+`17-relations-arithmetic-`, `18-polynomial-rigidity-` and
+`19-normalization-fibres-`. They are not yet integrated into this
+thirteen-source article; the assembly and their proof review remain separate
+obligations.
+
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
 article.pdf   the compiled report, 140 pages

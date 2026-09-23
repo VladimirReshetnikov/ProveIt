@@ -10,10 +10,9 @@ placed in `cf350b1`, numbered 06 and 07 here), and two more dated 23 September
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 117 pages
+article.pdf                        the compiled report, 118 pages
 README.md                          this guide
-RECONCILIATION.md                  the elementary source review and the proof reviews of
-                                   Sections 1–10 and 14
+RECONCILIATION.md                  the source comparisons and precise proof-review scope
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
 05-diophantine-rigidity-BUILD.md   source 05's build and check instructions, as delivered
 06-definability-reconstruction-SOURCE_AUDIT.md   source 06's source and novelty audit, as delivered
@@ -71,10 +70,15 @@ aliases on the new locations, so all 81 labels of the review resolve. A later
 proof review of Sections 5–7 (`f0bdcf3`) extended one-variable and
 separated-power rigidity to complex coefficients and corrected Remark 7.5; a
 further review of Sections 8–10 (`40c09a3`, `58cd8e1`) expanded their proofs
-without adding or renumbering statements. Neither covered the batch-25
+without adding or renumbering statements. The later reviews `25e372c` and `3dd4e2c` cover the former Sections 11–12,
+now Sections 14–15, including real-coefficient specialization and the finite
+factorization proof of the two-term root obstruction. These reviews exclude the batch-25
 material (Sections 11–13, the Section 6 results of sources 07 and 13, and
 Remark 10.5). A review of Section 14 (`25e372c`, merged in `ef806c0`) expanded
-its proofs. None of these reviews covers the batch-27 material: Section 15, the
+its proofs. A further pass reviews Section 11: leading degrees, the quadratic ideal
+predicate, Pell divisibility, intersectivity and the order-free
+integer-defining system, with boundary examples for intermediate rings.
+Sections 12–13 and the new material in Sections 6 and 10 still need review. No review covers the batch-27 material: Section 15, the
 additions to Section 17, Section 18.3 and Questions 18.12–18.16. Inserting
 Section 15 moved the former Sections 15–17 to 16–18; statement numbers in
 Sections 1–14 are unchanged. See [RECONCILIATION.md](RECONCILIATION.md) for the
@@ -400,8 +404,10 @@ Numbers refer to the built `article.pdf`.
     sources 08 and 14).
 15. **Omnific coefficients (Section 16).** The square-discriminant criterion
     (Theorem 16.1), initial forms (Proposition 16.3), two-term roots
-    (Proposition 16.4) and a simple residue root that does not lift (Example
-    16.5). The sibling report's fresh-scale image-gap theorem contains
+    (Proposition 16.4, also proved by finite factorization) and simple residue
+    roots that do not lift (Example 16.5). Nonmonic quadratics need an extra
+    divisibility condition; the omnific lifting failure concerns a different
+    ring from finite-surreal standard-part lifting. The sibling report's fresh-scale image-gap theorem contains
     `x² = ω² + 1` (Example 16.2) and the two-term equations as special cases.
 
 **Questions (Section 18).** Two source questions are recorded as settled by
@@ -500,6 +506,18 @@ in the literature.
   and source 08's Gaussian theorem contains manuscript 14's direction
   criterion. The sibling report's results postdate the pin of sources 08
   and 09.
+- The review of the omnific-coefficients section (numbered 15 in that pass,
+  now Section 16) gives a finite-algebra proof of the two-term root
+  obstruction, expands the support justification of its binomial series,
+  and distinguishes the omnific constant-term map from finite-surreal
+  residue lifting. The monic hypothesis and leading-term cancellation
+  requirement have explicit counterexamples.
+
+- The new Section 11 review expands leading-degree and Pell-divisibility
+  proofs, separates arbitrary intermediate rings from full support rings,
+  and makes the witness and congruence steps in the integer definitions
+  explicit. The shared notation guide now records the different meanings
+  of the two reports' `𝒜` notation.
 
 **Stale repository statements.** Source 01 said the repository's
 trigonometry material used the omnific integer part; at the pin the
@@ -664,7 +682,7 @@ processor is needed:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The build gives 117 pages with no errors, warnings, undefined references,
+The build gives 118 pages with no errors, warnings, undefined references,
 multiply defined labels or overfull boxes. (The text at `a4dcb91`, before
 Section 15, built to 87 pages with the same MiKTeX installation; the PDF
 committed then had 86 pages.) Source 08's `code/08-fractions-Makefile` and

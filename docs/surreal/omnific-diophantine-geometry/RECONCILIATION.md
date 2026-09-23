@@ -1,8 +1,12 @@
-# Reconciliation of the three Diophantine manuscripts
+# Diophantine source reconciliation and proof review
 
 This record covers the elementary source comparison in Sections 1–4 of the
-maintained [article](article.tex), followed by proof reviews of Sections 5–11.
-It does **not** certify integration of every result in the three manuscripts
+maintained [article](article.tex), followed by proof reviews of the original Sections 5–12.
+After the expansion, the reviewed original Sections 11–12 are Sections 14–15.
+A subsequent pass reviews the newly added Section 11 from sources 06–07.
+The added material in Sections 6 and 10 and Sections 12–13 and 16–17 remain
+outside the completed proof review.
+It does **not** certify integration of every result in the five manuscripts
 or review of all later proofs and imported classical results.
 
 ## Recoverable sources
@@ -167,7 +171,24 @@ arbitrary witnesses are not silently assumed to have finite supports.
 The reverse implication uses `t = ω` to ensure finite supports, and positive
 parameters preserve the prescribed signs.
 
-Sections 12 onward still await independent proof review; the assembly's own
+The Section 12 pass compares source 02's square-discriminant proof,
+sources 01–02's initial-form test, and source 05's binomial-root and failed
+lifting arguments. The monic quadratic proof now records exhaustiveness and
+the repeated-root case; a nonmonic example shows why a square discriminant
+still needs divisibility by twice the leading coefficient. The initial-form
+discussion distinguishes a maximum candidate weight from the degree after
+cancellation and treats zero-variable substitution explicitly.
+
+The two-term root obstruction now has a finite-algebra proof from the
+constant-product lemma, with source 05's binomial proof retained as a
+support explanation. The expansion's support and finite convolution fibers
+are justified for every positive surreal exponent, without a cofinality or
+topological-limit assumption. The failed-lifting example has two simple
+ordinary residue roots and no omnific lift; its discriminant proves this
+without reading the full series. The omnific constant-term map is explicitly
+distinguished from the finite-surreal valuation ring's standard-part map.
+
+The original Sections 13 onward (now Sections 16 onward) still await independent proof review; the assembly's own
 section map and corrections in Appendix A are inputs to that review.
 Imported foundations, classical results and historical priority are separate
 obligations. No broad preservation of the old statement wording or numbering
@@ -178,12 +199,12 @@ Two additional Diophantine manuscripts, local 06 and 07, arrived in
 Sections 11–13, together with results of theirs and of the quotient report's
 manuscript 13 in Section 6 and source 07's quartic
 (`odg:def:rem:quarticvariant`) in Section 10. Merged with this review, the
-article has 86 pages, 104 standard statements and 228 labels; Sections 1–10
+article then had 88 pages, 104 standard statements and 228 labels; Sections 1–10
 keep their section numbers, while statement numbers in Sections 6 and 10
 shift. That material is outside this review. Their archives are recoverable at
 `de0acc6`; their code and data are present here. The
 [quotient report](../set-sized-quotients-of-omnific-integers/) has thirteen
-assigned manuscripts (its base and twelve companions); its assembly is
+assembled manuscripts and three further placed companions (17–19); its assembly is
 recorded in its own README, and its source reconciliation is not part of
 this record.
 
@@ -192,10 +213,49 @@ Their finite examples do not prove the new class-sized arguments or establish
 full equivalence of the manuscripts. No additional Lean theorem is asserted
 by this reconciliation.
 
+## Elementary definability review: Section 11
+
+Sources 06 and 07 were recovered from `de0acc6`:
+`omnific_definability_reconstruction.zip` (`omnific_definability/article.tex`)
+and `Omnific_Arithmetic_Definability.zip`
+(`Omnific_Arithmetic_Definability/article.tex`). This pass compares their
+nonnegative-support algebra, ideal predicate, Pell and modular arguments,
+integer-defining systems, real quintic comparison and natural-number clauses
+with the maintained Section 11. Source 07's quartic is read for that comparison;
+the inserted Remark 10.5 and other earlier additions have not thereby received
+a complete proof review.
+
+The maximum-degree proof now spells out uniqueness of the leading product
+and the absence of cancellation in polynomial evaluation. An intermediate
+ring need not be closed under constant coefficient: `Z[ω + 1/2]` has exactly
+`Z` as its constant elements but contains an element with constant coefficient
+`1/2`. Thus the order-free system's proof uses degree and coefficient
+intersection, whereas the quadratic ideal predicate additionally needs its
+witness in the full positive-support ring. In `Z[ω]`, `ω` has no witness
+for `x² = 2y²`; over `Z[√2] + Π`, the same equation also accepts a nonzero
+constant. These examples explain both boundaries without weakening the
+stated theorem.
+
+The Pell recurrence proof now exhibits its inverse matrix and explains why
+finite recurrence yields a positive return to the initial point, including
+modulus one. The alternative finite-ring proof gives unique degree-one
+representatives. The principal-ideal argument makes denominator clearing,
+nonzero constant coefficient and the lack of an integrality assumption
+explicit. The intersectivity proof completes the CRT step and notes that
+its two-adic construction need not lift an arbitrarily fixed residue class.
+The ordinary and Gaussian witness types are distinguished. No ordered
+coefficient-field hypothesis is used in the order-free argument.
+
+All standard statement texts and labels are unchanged. This is a source-level
+proof review, not new Lean coverage. Classical imported results, historical
+priority, Sections 12–13 and 16–17, and the unreviewed additions in Sections
+6 and 10 remain separate obligations.
+
 Two further manuscripts on omnific fractions, local 08 and 09, were placed in
 `a4dcb91` and integrated after these reviews as a new Section 15
 (`odg:frac:` labels), with additions to the formalization section, a partial
 answer to `odg:q:homogeneous` and five new questions. That material is outside
 this review. Inserting Section 15 moved the sections that followed Section 14
-by one: the section numbered 11 in the passes above is Section 14, and the
-former Sections 15–17 are Sections 16–18. No label was renamed or removed.
+by one: the passes above use the numbering current when they were made: the
+families section they call 11 (in the passes before the batch-25 merge) is
+Section 14, and the omnific-coefficients section they call 15 is Section 16. No label was renamed or removed.
