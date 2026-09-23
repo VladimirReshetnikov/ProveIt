@@ -521,6 +521,11 @@ side gap gives full strong series for the angle supplement, altitude and
 circumradius, with the corresponding square-root valuation scales.
 The omega-squared-side example has gap exactly one and infinitesimal angular
 defect, while its area and circumradius are infinite with the stated equivalents.
+A right triangle with reciprocal legs has area exactly one half and the
+stated inradius expansion at every positive infinite scale. Thin coordinate
+triangles retain their exact formulas at arbitrary side scales; the omega-base
+and epsilon-offset families realize finite and infinite radii and distinct
+infinitesimal angle scales, including the full omega-family angle series.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual

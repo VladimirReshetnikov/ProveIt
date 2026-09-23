@@ -303,6 +303,11 @@ import Surreal.Surcomplex.SymmetricGapTriangle
 import Surreal.Surcomplex.SymmetricGapSeries
 import Surreal.Surcomplex.SymmetricGapValuation
 import Surreal.Surcomplex.AppreciableGapTriangle
+import Surreal.Surcomplex.ReciprocalLegTriangle
+import Surreal.Surcomplex.ReciprocalLegAsymptotics
+import Surreal.Surcomplex.ThinTriangle
+import Surreal.Surcomplex.ThinTriangleOmega
+import Surreal.Surcomplex.ThinTriangleHierarchy
 import Surreal.Surcomplex.TrigonometricFineDerivative
 import Surreal.Surcomplex.TrigonometricOrder
 import Surreal.Surcomplex.TrigonometricLeading
