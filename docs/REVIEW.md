@@ -3530,6 +3530,33 @@ and the Markdown audit finds no broken local destinations. No finite
 verifier is claimed to validate these geometric arguments. No Lean source
 changed in this review.
 
+## Synchronization after the smooth-curve review
+
+The merge through `1ab41af` brings in the first four batch-30 report writes
+and `2f32ce4`'s Lean congruence topologies. The latter defines the ordinary
+congruence topology from positive-modulus ideals and the prime-adic topology
+using Mathlib's ideal-adic construction. For both, the closure of zero is
+the purely infinite ideal, indistinguishability means equality of constant
+terms, and the actual separation quotient is ring-isomorphic to `ℤ`.
+The source paragraph following `odg:eq:profinite` and the incoming mappings
+were checked. Completion homeomorphisms, topological identifications with
+integers carrying arithmetic topologies, and the profinite inverse limit
+remain **Pending**.
+
+The combined `LEAN_NUM_THREADS=2 lake build` passes 4,416 jobs and the
+axiom audit covers 14,910 declarations using only `propext`,
+`Classical.choice` and `Quot.sound`. No other Lean build was active when
+this validation began. This build validates the merged library; it does
+not formalize the reviewed curve arguments.
+
+The four report expansions retain all previously mapped theorem and
+equation texts in those reports. Their new material remains unreviewed
+and pending in Lean. The current index is refreshed to 3,730 results in
+60 reports, with 3,711 labeled and 19 unlabeled entries; 109 use typed
+labels. The renamed autonomous-dilation labels now use `adr:`. All 4,269
+cited source references resolve. The nine archives placed in `39fe674`
+are incoming material, not reviewed or indexed maintained articles.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
