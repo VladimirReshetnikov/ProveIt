@@ -202,15 +202,20 @@ still makes sense, but optimality over nonzero infinitesimal changes requires
 The [finite-dimensional spectral report](surcomplex/spectral-theory/article.tex)
 uses `⟨x,y⟩ = x* y`, conjugate-linear in the first variable.
 [Infinite-dimensional Hahn spectral theory](surcomplex/infinite-dimensional-hahn-spectral-theory/article.tex)
-retains different source conventions: Part I is linear in the first variable;
-Part II is conjugate-linear in the first. Conjugate the scalar value, or
+retains different source conventions: Parts I and IV are linear in the first
+variable; Part II is conjugate-linear in the first, and Part III uses none.
+Conjugate the scalar value, or
 exchange the arguments, when translating between them. Positivity and
 adjoint identities survive this change, but the linearity of a represented
 functional changes.
 
 In that report, `σ_Γ^alg` means failure of bijectivity on `H((t^Γ))` and
 `σ_Γ^adj` means failure of inversion in `B(H)((t^Γ))`. Their equality is
-proved for constant normal operators. Part II's `σ_𝒜` refers to inversion
+proved for constant normal operators and for Part IV's compact-residue
+class `T+E`, under their respective hypotheses; Part III also proves it in
+the Volterra and increasing-block examples. The Fredholm alternative
+separately equates bijectivity and algebra inversion for `I+C` with
+nonnegative-valuation trace-class coefficients. Part II's `σ_𝒜` refers to inversion
 in the row- and column-finite Hahn algebra on a different vector space.
 A prime in `σ_ℂ(T)'` denotes ordinary spectral accumulation, not a derivative.
 
@@ -241,6 +246,32 @@ least possible value. The vector norm and scalar modulus exist without
 divisibility because their squared values have even leading exponents;
 arbitrary positive Hahn scalars have a square root exactly when their
 leading exponent lies in `2Γ`.
+
+Part IV uses `𝒯_Γ = S₁(H)((t^Γ))` for trace-class coefficients and
+`𝒯_Γ⁺ = {C ∈ 𝒯_Γ : v(C) ≥ 0}`. The trace `Tr_Γ` is defined on all of
+`𝒯_Γ`; `Det_Γ(I+C)` is defined only for `C ∈ 𝒯_Γ⁺`. The determinant and
+its Fredholm alternative allow arbitrary complex Hilbert `H` and ordered
+set-sized `Γ`, including zero; the compact-spectrum classification retains
+its stronger hypotheses. Ordinary coefficient trace norms justify the
+Taylor derivatives; Hahn summability uses finite support contributions,
+without a uniform norm bound across coefficients. A zero standard part
+of the determinant does not imply that the Hahn determinant is zero.
+
+Adjunction `C*` is canonical. Operator conjugation `𝒥C𝒥` uses a fixed
+antilinear isometric involution `𝒥` of `H`; the bar on its determinant
+conjugates scalar coefficients only. The Riesz convention `(ζI−T)⁻¹`
+in Part IV has the opposite sign to Part III's local resolvent above.
+In the finite reduction, `F=ικ` has bounded ordinary factors,
+`M_F=I+C+F`, `R_F=M_F⁻¹ι`, and `L_F=I_m−κR_F`; the inverse of `L_F`
+may have negative valuation although each determinant argument lies in
+the declared nonnegative domain. Cokernels and the Fredholm index are
+algebraic over the Hahn field, not quotients by topological closures.
+
+The coupling variable `z` and spectral variable `λ` satisfy `λ=z⁻¹`
+only for `z ≠ 0`. Finite coupling detects reciprocal eigenvalues when
+`A` has trace-class coefficients; it does not evaluate the determinant at
+infinite coupling to detect the spectral monad. Ordinary entire coefficient
+functions alone do not license evaluation at negative-valuation inputs.
 
 The projection calculus in Part II is additive on disjoint label sets
 after applying each projection to a vector and taking a **strong Hahn sum**.

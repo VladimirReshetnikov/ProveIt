@@ -11,7 +11,7 @@ later batch.
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 98 pages
+article.pdf   the compiled report, 99 pages
 README.md     this guide
 03-infinite-spectral-PROVENANCE.md      Part II's delivered provenance record
 04-drazin-halos-RESEARCH_AUDIT.md       Part III's delivered audit record
@@ -67,10 +67,14 @@ all of them:
 | | Part I | Part II | Part III | Part IV |
 |---|---|---|---|---|
 | Vector space | `H((t^Γ))`, `H` an ordinary complex Hilbert space | `C^(I)((t^Γ))`: each Hahn coefficient has finite coordinate support | none needed | `H((t^Γ))`, `H` infinite-dimensional separable |
-| Operators | Hahn series of **ordinary bounded** operators | Hahn series of **row- and column-finite** matrices, no boundedness | **constant** elements of `𝔄((t^Γ))`, `𝔄` any nonzero unital complex algebra | `T+E`, `T` injective compact self-adjoint, `E=E*` of positive order, **not commuting** with `T` |
+| Operators | Hahn series of **ordinary bounded** operators | Hahn series of **row- and column-finite** matrices, no boundedness | **constant** elements of `𝔄((t^Γ))`, `𝔄` any nonzero unital complex algebra | `T+E`, `T` injective compact self-adjoint, `E=E*` of positive order, **not assumed to commute** with `T` |
 | "Spectrum" | failure of bijectivity on the space (`σ^alg`); also failure of invertibility in the adjointable algebra (`σ^adj`) | failure of invertibility **inside the named algebra** `𝒜_I` | failure of invertibility inside `𝔄((t^Γ))`: `σ^adj` for `𝔄 = B(H)`, `σ_{𝒜_I}` for `𝔄 = RCF_I(C)` | both Part I spectra, proved equal here; also an algebraic Fredholm spectrum |
 | `Γ` | nonzero, set-sized, **not assumed divisible**; only Section 12.1 assumes `Γ ⊆ R` | nonzero, set-sized, **not assumed divisible** | nonzero, set-sized, **not assumed divisible** | nonzero, set-sized, **divisible** |
 | Accumulation | accumulation points of `σ_C(T)` thicken into whole infinitesimal monads | accumulating residues `d_i` do **not** enlarge the spectrum beyond the labeled eigenvalues | every point of the Drazin spectrum gets a whole halo; in a Banach algebra, the accumulation points and the isolated non-poles | `0` keeps the whole monad, with no eigenvalues in it; each nonzero eigenvalue becomes a finite Hermitian cluster |
+
+The Part IV column describes its spectral classification. The determinant
+and Fredholm alternative in Section 44 separately allow any complex Hilbert
+space and any set-sized ordered abelian exponent group, including zero.
 
 Quoted without their categories, the Part I and Part II accumulation
 statements read as a contradiction. They are not one; Section 3 works the
@@ -155,8 +159,8 @@ The coefficient and Hahn algebra statements hold for every nonempty `I`.
 The closing zero-divisor assertion of `ihs:rf:prop:algebra` requires two
 distinct indices: the constant matrix units `E_ii` and `E_jj` are nonzero
 with product zero. For a singleton `I`, the algebra is the Hahn field `K`.
-This bounded correction is separate from the Part III review recorded below;
-the Fredholm main-text review remains pending.
+This bounded correction is separate from the Part III and Part IV main-text
+reviews recorded below.
 
 ## What Part III claims
 
@@ -212,14 +216,16 @@ directly: its `n`th block forces a nonzero coefficient at `−n v(ε)`.
 The [collection review record](../../REVIEW.md#drazin-spectral-main-text-review)
 states the targeted primary-source checks and validation. This is a
 main-text review and source-level extension, with no new Lean coverage or
-priority claim. Remaining foundational imports, original-source
-reconciliation and the Part IV main-text review remain separate.
+priority claim. Remaining foundational imports and original-source
+reconciliation are separate from the main-text reviews.
 
 ## What Part IV claims
 
-For `H` infinite-dimensional separable, `Γ` **divisible**, `T` ordinary
+The spectral classification assumes `H` infinite-dimensional separable,
+`Γ` nonzero, set-sized and **divisible**, `T` ordinary
 injective compact self-adjoint, and `E = E*` a Hahn series of bounded
-operators with positive valuation that need not commute with `T`:
+operators with positive valuation that need not commute with `T`. The
+determinant and Fredholm alternative in item 3 have the broader scope stated there.
 
 1. **Exact spectrum.** `σ^adj(T+E) = σ^alg(T+E)` is the whole monad `m_K`
    together with, over each nonzero eigenvalue `c` of `T`, a cluster of
@@ -236,13 +242,27 @@ operators with positive valuation that need not commute with `T`:
    eigenvalue list is not a bounded coefficient (Proposition 43.2).
 3. **Hahn Fredholm determinant.** On the nonnegative-valuation part of
    `S_1(H)((t^Γ))`, a coefficientwise determinant satisfies an exact Fredholm
-   alternative decided by one finite matrix (Theorem 44.4). For the example,
+   alternative decided by one finite matrix (Theorem 44.4). This holds for
+   arbitrary complex Hilbert `H` and set-sized ordered abelian `Γ`, including
+   the zero group, without divisibility or self-adjointness. For the example,
    the coefficientwise trace is `1` but the eigenvalue sum diverges at the
    second coefficient (Theorem 45.1), and the determinant's `s²` coefficient
    is negative while the eigenvalue product diverges (Theorem 45.2).
-4. **Accumulation boundary.** The finite-coupling determinant detects every
-   eigenvalue (Theorem 46.1), but no nonzero coherent Hahn analytic function
+4. **Accumulation boundary.** When `A = T+E` has trace-class coefficients,
+   the finite-coupling determinant detects every eigenvalue through its
+   reciprocal (Theorem 46.1). Under the spectral hypotheses, even without
+   trace-class coefficients, no nonzero coherent Hahn analytic function
    vanishes exactly on the spectrum near `0` (Theorem 46.4).
+
+The Part IV main-text review covers Sections 38–48. It makes finite-direction
+analytic lifting, the Riesz contour bound, cluster cokernels and the finite
+Fredholm reduction explicit. Operator conjugation now names a fixed Hilbert
+conjugation, and finite-rank correction factors are explicitly bounded.
+The determinant section's broader hypotheses are a source-level extension,
+still pending in Lean. The eigenbranch example also proves that no common
+complex disc supports all labelled analytic eigenvalues; trace-norm
+convergence justifies every fixed coefficient of the finite-section
+determinants. See the [review record](../../REVIEW.md#fredholm-spectral-main-text-review).
 
 ## What the report does not claim
 
@@ -256,7 +276,7 @@ operators with positive valuation that need not commute with `T`:
   poles, Banach Drazin spectra and polynomial spectral mapping (Drazin,
   Boasso), the generalized Drazin inverse (Koliha, a different condition),
   Riesz projections and isolated-cluster perturbation (Kato), the direct
-  rotation of two projections (Simon), trace-class determinant identities
+  rotation of two projections (Kato's formula as recalled by Simon), trace-class determinant identities
   (Bornemann), Hahn-field closedness (Poonen), and non-Archimedean Fredholm
   theory in Serre's different category. The failure of non-Archimedean
   orthogonal decomposition is known in other models (Aguayo–Nova,
@@ -268,10 +288,12 @@ operators with positive valuation that need not commute with `T`:
   III concerns **constant** elements and **algebra-relative** spectra only:
   it classifies no nonconstant operator and no bijectivity spectrum beyond
   its worked examples, and its algebraicity criterion needs a Banach
-  algebra. Part IV needs an injective compact self-adjoint residue, a
+  algebra. Part IV's spectral classification needs an injective compact self-adjoint residue, a
   self-adjoint perturbation, a separable infinite-dimensional `H` and a
-  divisible `Γ`; it says nothing without divisibility or for a residue with
-  kernel. Spectra of general Hahn operator series remain unclassified.
+  divisible `Γ`; that classification is not extended to nondivisible groups
+  or residues with kernel. Its separate determinant and Fredholm alternative
+  allow arbitrary `H` and ordered `Γ`. Spectra of general Hahn operator series
+  remain unclassified.
 - The Part II hypothesis of distinct real labels forces `|I| ≤ |R|`.
 - **No general trace-class theory or topological spectral-measure theorem**
   is provided. Parts I–III have no trace-class theory; Part IV's determinant
@@ -333,7 +355,7 @@ adjointable `B(H)((t^Γ))`; nothing here depends on it.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The current reviewed build has 98 pages, zero errors, zero undefined references and
+The current reviewed build has 99 pages, zero errors, zero undefined references and
 citations, zero multiply defined labels and zero duplicate PDF destinations.
 It retains the baseline underfull box in the novelty table. The title and
 status note are on the first page and the abstract on the second.
@@ -356,6 +378,20 @@ infinite-dimensional or new nonmonomial vector-surjectivity assertions.
 All 24 pages with changed text or pagination were visually inspected, with
 no layout issues; the 15 Part III numbered references in this README agree
 with the final auxiliary file.
+
+For the subsequent Fredholm review, baseline and revised sources each passed
+three LaTeX passes, at 98 and 99 pages, with the same single underfull notice.
+All 404 labels and their numbers remain unchanged. Two of the 93 standard
+statements clarify conjugation and bounded factors; Section 44's generality
+paragraph extends its effective hypotheses as described above. All 20
+historical files are unchanged. The copied Part IV verifier passes 1,268
+finite checks with Python 3.13.14 and SymPy 1.14.0; only the Python version,
+timestamp and duration differ from the delivered JSON. This does not prove
+the infinite-dimensional assertions or their extended scope. The ten Part IV
+numbered result references above agree with the final auxiliary file.
+All 36 pages with changed text or pagination were rendered and visually
+inspected, including the abstract, comparison table, revised proofs and
+dependency ledgers; no layout issue remains.
 
 To rerun the checks, copy this directory and run the scripts in `code/` on
 the copy: the Part II script writes `data/verification.json` in the directory above `code/`,

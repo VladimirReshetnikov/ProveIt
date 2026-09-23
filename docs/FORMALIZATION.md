@@ -71,8 +71,14 @@ ramified polynomial mapping and examples (Sections 28–37). Its block
 example now proves failure of vector surjectivity at every nonzero
 infinitesimal displacement, extending the written monomial calculation.
 This source-level strengthening remains **Pending** in Lean; no
-implementation mapping is added. Part IV's Fredholm proof review and
-remaining imported-result/source reconciliation are separate obligations.
+implementation mapping is added. The Part IV review now covers Sections
+38–48: analytic lifting, compact spectral clusters, the determinant/Fredholm
+chain and the counterexamples. Section 44's determinant and Fredholm
+alternative now allow arbitrary complex Hilbert spaces and set-sized ordered
+abelian exponent groups, including zero, without divisibility or
+self-adjointness. This extension is **Pending** in Lean; it does not weaken
+the compact-spectrum hypotheses or extend any implementation mapping.
+Remaining imported-result/source reconciliation is a separate obligation.
 
 Before archive retirement in `e5791a8`, the tree contained 63 source
 manuscripts with 1582 literal standard result environments. Those are historical
@@ -3012,99 +3018,99 @@ Mappings cover only the hypotheses and clauses they state.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Theorem | `ihs:hh:thm:package` (line 414) | Part I theorem package |
-| Lemma | `ihs:lem:support` (line 712) | Classical Hahn--Neumann support lemma |
-| Lemma | `ihs:lem:neumann` (line 768) | Support-certified Neumann inverse |
-| Corollary | `ihs:cor:evaluate` (line 797) | Evaluation of homogeneous constructions |
-| Corollary | `ihs:cor:binomial` (line 814) | Formal power series at a positive-support argument |
-| Proposition | `ihs:prop:unify` (line 951) | The algebra-relative spectra of constant elements |
-| Proposition | `ihs:hh:prop:inner` (line 1089) | Positive-definite scalar extension |
-| Theorem | `ihs:hh:thm:adjoint` (line 1144) | Automatic adjoint structure |
-| Corollary | `ihs:hh:cor:autobounded` (line 1200) | Automatic summability and boundedness |
-| Theorem | `ihs:hh:thm:defect` (line 1240) | Positive-order defect rigidity |
-| Corollary | `ihs:hh:cor:norepair` (line 1280) | No positive-order repair |
-| Corollary | `ihs:hh:cor:independent` (line 1287) | Explicit independent obstruction classes |
-| Lemma | `ihs:hh:lem:normalgap` (line 1341) | Normal isolated-point decomposition |
-| Theorem | `ihs:hh:thm:spectrum` (line 1362) | Accumulation-monad spectrum |
-| Theorem | `ihs:hh:thm:point` (line 1429) | No new normal eigenvalues |
-| Corollary | `ihs:hh:cor:reality` (line 1476) | A sharp spectral-reality criterion |
-| Corollary | `ihs:hh:cor:compact` (line 1504) | Ordinary compact normal extension |
-| Corollary | `ihs:hh:cor:extension` (line 1546) | Persistence under ordered-group extension |
-| Theorem | `ihs:hh:thm:smooth` (line 1576) | All inverse moments are necessary and sufficient |
-| Lemma | `ihs:hh:lem:continuum` (line 1660) | Continuum many independent defect vectors |
-| Theorem | `ihs:hh:thm:continuum` (line 1677) | Every positive-order perturbation retains a large defect |
-| Theorem | `ihs:hh:thm:coercive` (line 1713) | A coercive noninvertible self-adjoint operator |
-| Corollary | `ihs:hh:cor:lax` (line 1749) | Failure of a specified Lax--Milgram analogue |
-| Proposition | `ihs:hh:prop:complete` (line 1791) | Rank-one valuation completeness |
-| Theorem | `ihs:hh:thm:closedrange` (line 1819) | Closed-range orthogonality failure |
-| Proposition | `ihs:hh:prop:riesz` (line 1858) | Explicit failure of valuation Riesz representation |
-| Lemma | `ihs:hh:lem:contract` (line 1902) | Ordinary contraction bounds survive |
-| Theorem | `ihs:hh:thm:norm` (line 1921) | Norm-attainment criterion |
-| Lemma | `ihs:rf:lem:rcf` (line 2138) | Untitled |
-| Proposition | `ihs:rf:prop:algebra` (line 2177) | Untitled |
-| Proposition | `ihs:rf:prop:inner` (line 2207) | Untitled |
-| Lemma | `ihs:rf:lem:strongaction` (line 2248) | Strong sums are respected |
-| Theorem | `ihs:rf:thm:similarity` (line 2288) | Coherent simple-residue diagonalization |
-| Theorem | `ihs:rf:thm:unitary` (line 2358) | Normalized infinite Hahn spectral theorem |
-| Corollary | `ihs:rf:cor:scales` (line 2416) | No new scales |
-| Theorem | `ihs:rf:thm:synthesis` (line 2497) | Exact Hahn spectral synthesis |
-| Theorem | `ihs:rf:thm:commutant` (line 2563) | The complete commutant |
-| Corollary | `ihs:rf:cor:projsums` (line 2594) | Projection sums are pointwise Hahn sums |
-| Theorem | `ihs:rf:thm:resolvent` (line 2684) | Coherent resolvents at every noneigenvalue |
-| Corollary | `ihs:rf:cor:forcing` (line 2747) | The inhomogeneous equation |
-| Lemma | `ihs:rf:lem:finitewalks` (line 2778) | Finite walks at a prescribed weight |
-| Theorem | `ihs:rf:thm:walks` (line 2791) | Coefficientwise walk dependence |
-| Theorem | `ihs:rf:thm:marked` (line 2844) | Exact marked-walk stability |
-| Theorem | `ihs:rf:thm:finite` (line 2899) | Finite-section exactness |
-| Corollary | `ihs:rf:cor:radius` (line 2932) | One-scale radius bound |
-| Theorem | `ihs:rf:thm:sharp` (line 2954) | A nonzero first boundary coefficient |
-| Proposition | `ihs:rf:prop:closed` (line 3037) | An exact branch and its eigenvector |
-| Proposition | `ihs:rf:prop:noconv` (line 3149) | Why geometric partial sums need not converge |
-| Proposition | `ihs:rf:prop:bounded` (line 3174) | The inverse-gap obstruction |
-| Proposition | `ihs:rf:prop:degenerate` (line 3218) | A positive Hahn operator with no eigenvectors |
-| Proposition | `ihs:rf:prop:incoherent` (line 3251) | Failure without global support coherence |
-| Corollary | `ihs:rf:cor:surcomplex` (line 3276) | An infinite surcomplex spectral system |
-| Proposition | `ihs:rf:prop:extension` (line 3298) | Naturality and absence of new spectral points |
-| Lemma | `ihs:dz:lem:laurent` (line 3639) | Laurent inverse criterion |
-| Lemma | `ihs:dz:lem:straighten` (line 3687) | Strong parameter straightening |
-| Lemma | `ihs:dz:lem:projection` (line 3745) | Cyclic-support inverse descent |
-| Theorem | `ihs:dz:thm:descent` (line 3775) | Arbitrary-parameter inverse descent |
-| Theorem | `ihs:dz:thm:halo` (line 3807) | Constant-element spectrum |
-| Theorem | `ihs:dz:thm:scale` (line 3831) | Exact valuation and leading coefficient |
-| Corollary | `ihs:dz:cor:workspace` (line 3855) | Workspace invariance |
-| Corollary | `ihs:dz:cor:normal` (line 3914) | Recovery of the normal case |
-| Corollary | `ihs:dz:cor:algebraic` (line 3966) | Algebraicity criterion |
-| Lemma | `ihs:dz:lem:powers` (line 4009) | Power image |
-| Lemma | `ihs:dz:lem:local` (line 4023) | Exact local polynomial image |
-| Lemma | `ihs:dz:lem:commuting` (line 4050) | Commuting factors |
-| Proposition | `ihs:dz:prop:ordinarymapping` (line 4060) | Ordinary polynomial mapping |
-| Theorem | `ihs:dz:thm:image` (line 4087) | Exact ramified spectral image |
-| Lemma | `ihs:dz:lem:group` (line 4115) | Finite unions of integer-multiple subgroups |
-| Theorem | `ihs:dz:thm:criterion` (line 4134) | Sharp spectral-mapping criterion |
-| Proposition | `ihs:dz:prop:polemap` (line 4166) | Pole-order profile |
-| Theorem | `ihs:dz:thm:surcomplex` (line 4364) | Surcomplex halo classification |
-| Corollary | `ihs:dz:cor:fullmapping` (line 4384) | Polynomial mapping for the full surcomplex scalars |
-| Lemma | `ihs:fr:lem:lift` (line 4640) | Identity lifting |
-| Proposition | `ihs:fr:prop:continuum` (line 4693) | The size of a compact range defect |
-| Corollary | `ihs:fr:cor:reservoir` (line 4726) | The infinitesimal reservoir |
-| Proposition | `ihs:fr:prop:riesz` (line 4759) | Untitled |
-| Lemma | `ihs:fr:lem:rotation` (line 4783) | Support-controlled direct rotation |
-| Lemma | `ihs:fr:lem:hermitian` (line 4817) | Finite Hermitian diagonalization |
-| Theorem | `ihs:fr:thm:cluster` (line 4835) | Exact isolated-cluster reduction |
-| Theorem | `ihs:fr:thm:main` (line 4877) | Compact-residue spectral classification |
-| Corollary | `ihs:fr:cor:essential` (line 4931) | Untitled |
-| Corollary | `ihs:fr:cor:extension` (line 4950) | Fixed point spectrum, growing spectral monad |
-| Theorem | `ihs:fr:thm:nounitary` (line 5003) | No global bounded-coefficient Hahn unitary |
-| Proposition | `ihs:fr:prop:eigencoeff` (line 5047) | The eigenvalue list is not a bounded coefficient |
-| Proposition | `ihs:fr:prop:detidentities` (line 5134) | Determinant identities |
-| Lemma | `ihs:fr:lem:correction` (line 5165) | Ordinary finite-rank correction |
-| Theorem | `ihs:fr:thm:fredholm` (line 5179) | Hahn Fredholm alternative |
-| Theorem | `ihs:fr:thm:nolidskii` (line 5235) | Failure of the spectral trace sum |
-| Theorem | `ihs:fr:thm:noproduct` (line 5265) | Failure of a spectral product formula |
-| Theorem | `ihs:fr:thm:coupling` (line 5320) | Exact finite-coupling detection |
-| Proposition | `ihs:fr:prop:negeval` (line 5339) | Negative-valuation evaluation can fail |
-| Lemma | `ihs:fr:lem:nonvanishing` (line 5368) | A nonzero coherent germ cannot vanish on a whole monad |
-| Theorem | `ihs:fr:thm:nocharacteristic` (line 5387) | No analytic characteristic determinant at the accumulation point |
+| Theorem | `ihs:hh:thm:package` (line 425) | Part I theorem package |
+| Lemma | `ihs:lem:support` (line 726) | Classical Hahn--Neumann support lemma |
+| Lemma | `ihs:lem:neumann` (line 782) | Support-certified Neumann inverse |
+| Corollary | `ihs:cor:evaluate` (line 811) | Evaluation of homogeneous constructions |
+| Corollary | `ihs:cor:binomial` (line 828) | Formal power series at a positive-support argument |
+| Proposition | `ihs:prop:unify` (line 967) | The algebra-relative spectra of constant elements |
+| Proposition | `ihs:hh:prop:inner` (line 1106) | Positive-definite scalar extension |
+| Theorem | `ihs:hh:thm:adjoint` (line 1161) | Automatic adjoint structure |
+| Corollary | `ihs:hh:cor:autobounded` (line 1217) | Automatic summability and boundedness |
+| Theorem | `ihs:hh:thm:defect` (line 1257) | Positive-order defect rigidity |
+| Corollary | `ihs:hh:cor:norepair` (line 1297) | No positive-order repair |
+| Corollary | `ihs:hh:cor:independent` (line 1304) | Explicit independent obstruction classes |
+| Lemma | `ihs:hh:lem:normalgap` (line 1358) | Normal isolated-point decomposition |
+| Theorem | `ihs:hh:thm:spectrum` (line 1379) | Accumulation-monad spectrum |
+| Theorem | `ihs:hh:thm:point` (line 1446) | No new normal eigenvalues |
+| Corollary | `ihs:hh:cor:reality` (line 1493) | A sharp spectral-reality criterion |
+| Corollary | `ihs:hh:cor:compact` (line 1521) | Ordinary compact normal extension |
+| Corollary | `ihs:hh:cor:extension` (line 1563) | Persistence under ordered-group extension |
+| Theorem | `ihs:hh:thm:smooth` (line 1593) | All inverse moments are necessary and sufficient |
+| Lemma | `ihs:hh:lem:continuum` (line 1677) | Continuum many independent defect vectors |
+| Theorem | `ihs:hh:thm:continuum` (line 1694) | Every positive-order perturbation retains a large defect |
+| Theorem | `ihs:hh:thm:coercive` (line 1730) | A coercive noninvertible self-adjoint operator |
+| Corollary | `ihs:hh:cor:lax` (line 1766) | Failure of a specified Lax--Milgram analogue |
+| Proposition | `ihs:hh:prop:complete` (line 1808) | Rank-one valuation completeness |
+| Theorem | `ihs:hh:thm:closedrange` (line 1836) | Closed-range orthogonality failure |
+| Proposition | `ihs:hh:prop:riesz` (line 1875) | Explicit failure of valuation Riesz representation |
+| Lemma | `ihs:hh:lem:contract` (line 1919) | Ordinary contraction bounds survive |
+| Theorem | `ihs:hh:thm:norm` (line 1938) | Norm-attainment criterion |
+| Lemma | `ihs:rf:lem:rcf` (line 2155) | Untitled |
+| Proposition | `ihs:rf:prop:algebra` (line 2194) | Untitled |
+| Proposition | `ihs:rf:prop:inner` (line 2224) | Untitled |
+| Lemma | `ihs:rf:lem:strongaction` (line 2265) | Strong sums are respected |
+| Theorem | `ihs:rf:thm:similarity` (line 2305) | Coherent simple-residue diagonalization |
+| Theorem | `ihs:rf:thm:unitary` (line 2375) | Normalized infinite Hahn spectral theorem |
+| Corollary | `ihs:rf:cor:scales` (line 2433) | No new scales |
+| Theorem | `ihs:rf:thm:synthesis` (line 2514) | Exact Hahn spectral synthesis |
+| Theorem | `ihs:rf:thm:commutant` (line 2580) | The complete commutant |
+| Corollary | `ihs:rf:cor:projsums` (line 2611) | Projection sums are pointwise Hahn sums |
+| Theorem | `ihs:rf:thm:resolvent` (line 2701) | Coherent resolvents at every noneigenvalue |
+| Corollary | `ihs:rf:cor:forcing` (line 2764) | The inhomogeneous equation |
+| Lemma | `ihs:rf:lem:finitewalks` (line 2795) | Finite walks at a prescribed weight |
+| Theorem | `ihs:rf:thm:walks` (line 2808) | Coefficientwise walk dependence |
+| Theorem | `ihs:rf:thm:marked` (line 2861) | Exact marked-walk stability |
+| Theorem | `ihs:rf:thm:finite` (line 2916) | Finite-section exactness |
+| Corollary | `ihs:rf:cor:radius` (line 2949) | One-scale radius bound |
+| Theorem | `ihs:rf:thm:sharp` (line 2971) | A nonzero first boundary coefficient |
+| Proposition | `ihs:rf:prop:closed` (line 3054) | An exact branch and its eigenvector |
+| Proposition | `ihs:rf:prop:noconv` (line 3166) | Why geometric partial sums need not converge |
+| Proposition | `ihs:rf:prop:bounded` (line 3191) | The inverse-gap obstruction |
+| Proposition | `ihs:rf:prop:degenerate` (line 3235) | A positive Hahn operator with no eigenvectors |
+| Proposition | `ihs:rf:prop:incoherent` (line 3268) | Failure without global support coherence |
+| Corollary | `ihs:rf:cor:surcomplex` (line 3293) | An infinite surcomplex spectral system |
+| Proposition | `ihs:rf:prop:extension` (line 3315) | Naturality and absence of new spectral points |
+| Lemma | `ihs:dz:lem:laurent` (line 3656) | Laurent inverse criterion |
+| Lemma | `ihs:dz:lem:straighten` (line 3704) | Strong parameter straightening |
+| Lemma | `ihs:dz:lem:projection` (line 3762) | Cyclic-support inverse descent |
+| Theorem | `ihs:dz:thm:descent` (line 3792) | Arbitrary-parameter inverse descent |
+| Theorem | `ihs:dz:thm:halo` (line 3824) | Constant-element spectrum |
+| Theorem | `ihs:dz:thm:scale` (line 3848) | Exact valuation and leading coefficient |
+| Corollary | `ihs:dz:cor:workspace` (line 3872) | Workspace invariance |
+| Corollary | `ihs:dz:cor:normal` (line 3931) | Recovery of the normal case |
+| Corollary | `ihs:dz:cor:algebraic` (line 3983) | Algebraicity criterion |
+| Lemma | `ihs:dz:lem:powers` (line 4026) | Power image |
+| Lemma | `ihs:dz:lem:local` (line 4040) | Exact local polynomial image |
+| Lemma | `ihs:dz:lem:commuting` (line 4067) | Commuting factors |
+| Proposition | `ihs:dz:prop:ordinarymapping` (line 4077) | Ordinary polynomial mapping |
+| Theorem | `ihs:dz:thm:image` (line 4104) | Exact ramified spectral image |
+| Lemma | `ihs:dz:lem:group` (line 4132) | Finite unions of integer-multiple subgroups |
+| Theorem | `ihs:dz:thm:criterion` (line 4151) | Sharp spectral-mapping criterion |
+| Proposition | `ihs:dz:prop:polemap` (line 4183) | Pole-order profile |
+| Theorem | `ihs:dz:thm:surcomplex` (line 4381) | Surcomplex halo classification |
+| Corollary | `ihs:dz:cor:fullmapping` (line 4401) | Polynomial mapping for the full surcomplex scalars |
+| Lemma | `ihs:fr:lem:lift` (line 4658) | Identity lifting |
+| Proposition | `ihs:fr:prop:continuum` (line 4715) | The size of a compact range defect |
+| Corollary | `ihs:fr:cor:reservoir` (line 4748) | The infinitesimal reservoir |
+| Proposition | `ihs:fr:prop:riesz` (line 4781) | Untitled |
+| Lemma | `ihs:fr:lem:rotation` (line 4810) | Support-controlled direct rotation |
+| Lemma | `ihs:fr:lem:hermitian` (line 4847) | Finite Hermitian diagonalization |
+| Theorem | `ihs:fr:thm:cluster` (line 4866) | Exact isolated-cluster reduction |
+| Theorem | `ihs:fr:thm:main` (line 4914) | Compact-residue spectral classification |
+| Corollary | `ihs:fr:cor:essential` (line 4968) | Untitled |
+| Corollary | `ihs:fr:cor:extension` (line 4987) | Fixed point spectrum, growing spectral monad |
+| Theorem | `ihs:fr:thm:nounitary` (line 5040) | No global bounded-coefficient Hahn unitary |
+| Proposition | `ihs:fr:prop:eigencoeff` (line 5084) | The eigenvalue list is not a bounded coefficient |
+| Proposition | `ihs:fr:prop:detidentities` (line 5202) | Determinant identities |
+| Lemma | `ihs:fr:lem:correction` (line 5239) | Ordinary finite-rank correction |
+| Theorem | `ihs:fr:thm:fredholm` (line 5259) | Hahn Fredholm alternative |
+| Theorem | `ihs:fr:thm:nolidskii` (line 5327) | Failure of the spectral trace sum |
+| Theorem | `ihs:fr:thm:noproduct` (line 5357) | Failure of a spectral product formula |
+| Theorem | `ihs:fr:thm:coupling` (line 5417) | Exact finite-coupling detection |
+| Proposition | `ihs:fr:prop:negeval` (line 5436) | Negative-valuation evaluation can fail |
+| Lemma | `ihs:fr:lem:nonvanishing` (line 5465) | A nonzero coherent germ cannot vanish on a whole monad |
+| Theorem | `ihs:fr:thm:nocharacteristic` (line 5485) | No analytic characteristic determinant at the accumulation point |
 
 ### prony-reconstruction-at-surreal-scales
 
