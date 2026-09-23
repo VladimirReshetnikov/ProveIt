@@ -3275,33 +3275,33 @@ Mappings cover only the hypotheses and clauses they state.
 |---|---|---|
 | Theorem | `duals:thm:overview-completion` (line 196) | Completion and enlargement; proved in \cref{duals:sec:completion,duals:sec:enlargement} |
 | Theorem | `duals:thm:overview-duals` (line 218) | Strong maps and the continuous dual; proved in \cref{duals:sec:strong,duals:sec:continuous} |
-| Lemma | `duals:lem:support` (line 386) | Classical support facts |
-| Lemma | `duals:lem:continuous-shift` (line 461) | Continuity is a uniform valuation-shift bound |
-| Theorem | `duals:thm:strong` (line 516) | Global-support classification |
-| Corollary | `duals:cor:strong-calculus` (line 598) | Operator calculus and automatic continuity |
-| Proposition | `duals:prop:algebraic` (line 666) | Finite total coefficient rank |
-| Theorem | `duals:thm:completion` (line 691) | Finite rank below every cut |
-| Lemma | `duals:lem:group` (line 757) | An order-theoretic alternative |
-| Theorem | `duals:thm:cyclic` (line 787) | The cyclic-group boundary |
-| Theorem | `duals:thm:cofinality-completion` (line 816) | The cofinality boundary for nontrivial completion |
-| Proposition | `duals:prop:spherical` (line 893) | Spherical completeness of the full Hahn space |
-| Theorem | `duals:thm:HB` (line 957) | Contractive scalar extension |
-| Lemma | `duals:lem:E-extension` (line 1049) | Extension from constants to their algebraic span |
-| Theorem | `duals:thm:restriction` (line 1072) | Exact restriction sequence |
-| Theorem | `duals:thm:separation` (line 1110) | Separation of the completion defect |
-| Corollary | `duals:cor:ghost-boundary` (line 1162) | Exact existence boundary |
-| Theorem | `duals:thm:twofailures` (line 1183) | Two failures, for every noncyclic group |
-| Corollary | `duals:cor:second-quotient` (line 1229) | A second quotient obstruction |
-| Theorem | `duals:thm:continuous-strong` (line 1266) | When continuous and strong duals agree |
-| Proposition | `duals:prop:norm` (line 1345) | Norm and valuation; standard coefficient extension |
-| Proposition | `duals:prop:order-bound` (line 1411) | Order bounds for all continuous maps |
-| Theorem | `duals:thm:infinite-bounds` (line 1461) | An ordinary unbounded functional has precisely infinite bounds |
-| Theorem | `duals:thm:riesz` (line 1503) | Coefficientwise Riesz criterion and exact first gap |
-| Corollary | `duals:cor:three-duals` (line 1584) | The three-dual trichotomy |
-| Proposition | `duals:prop:dimension` (line 1611) | Untitled |
-| Theorem | `duals:thm:hyperplane` (line 1674) | A closed, strongly complemented hyperplane with zero orthogonal complement |
-| Theorem | `duals:thm:distance` (line 1747) | Exact lower-bound cut for the distance |
-| Theorem | `duals:thm:basechange` (line 1801) | Cofinal preservation and noncofinal collapse |
+| Lemma | `duals:lem:support` (line 398) | Classical support facts |
+| Lemma | `duals:lem:continuous-shift` (line 473) | Continuity is a uniform valuation-shift bound |
+| Theorem | `duals:thm:strong` (line 528) | Global-support classification |
+| Corollary | `duals:cor:strong-calculus` (line 610) | Operator calculus and automatic continuity |
+| Proposition | `duals:prop:algebraic` (line 678) | Finite total coefficient rank |
+| Theorem | `duals:thm:completion` (line 703) | Finite rank below every cut |
+| Lemma | `duals:lem:group` (line 769) | An order-theoretic alternative |
+| Theorem | `duals:thm:cyclic` (line 799) | The cyclic-group boundary |
+| Theorem | `duals:thm:cofinality-completion` (line 828) | The cofinality boundary for nontrivial completion |
+| Proposition | `duals:prop:spherical` (line 905) | Spherical completeness of the full Hahn space |
+| Theorem | `duals:thm:HB` (line 969) | Contractive scalar extension |
+| Lemma | `duals:lem:E-extension` (line 1061) | Extension from constants to their algebraic span |
+| Theorem | `duals:thm:restriction` (line 1084) | Exact restriction sequence |
+| Theorem | `duals:thm:separation` (line 1122) | Separation of the completion defect |
+| Corollary | `duals:cor:ghost-boundary` (line 1174) | Exact existence boundary |
+| Theorem | `duals:thm:twofailures` (line 1195) | Two failures, for every noncyclic group |
+| Corollary | `duals:cor:second-quotient` (line 1241) | A second quotient obstruction |
+| Theorem | `duals:thm:continuous-strong` (line 1278) | When continuous and strong duals agree |
+| Proposition | `duals:prop:norm` (line 1357) | Norm and valuation; standard coefficient extension |
+| Proposition | `duals:prop:order-bound` (line 1423) | Order bounds for all continuous maps |
+| Theorem | `duals:thm:infinite-bounds` (line 1473) | An ordinary unbounded functional has precisely infinite bounds |
+| Theorem | `duals:thm:riesz` (line 1515) | Coefficientwise Riesz criterion and exact first gap |
+| Corollary | `duals:cor:three-duals` (line 1596) | The three-dual trichotomy |
+| Proposition | `duals:prop:dimension` (line 1623) | Untitled |
+| Theorem | `duals:thm:hyperplane` (line 1686) | A closed, strongly complemented hyperplane with zero orthogonal complement |
+| Theorem | `duals:thm:distance` (line 1759) | Exact lower-bound cut for the distance |
+| Theorem | `duals:thm:basechange` (line 1815) | Cofinal preservation and noncofinal collapse |
 
 ### hidden-negative-hermitian-directions
 
