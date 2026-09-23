@@ -57,6 +57,13 @@ algebraic local factors. The finite sum of angular multiplicities over all
 actual infinitesimal solutions is four, completing the coupled collision
 assertions.
 
+Conditioned inverse cosine now has its second-order expansion at every
+actual interior angle, including angles with infinitesimal sine. The proof
+controls the endpoint margin and gives all three valuation bounds under
+`v(ε)>2v(sin θ)`. At equality, explicit infinitesimal-angle examples reach
+the endpoint or move the target above one, proving the strict threshold
+is necessary for a uniform guarantee.
+
 The first modules establish size obstructions and reusable finite algebra.
 Complexification uses mathlib's `QuadraticAlgebra`, with its cross-term
 multiplication, conjugation, and field construction. The modulus takes values

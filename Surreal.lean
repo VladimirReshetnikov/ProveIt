@@ -518,3 +518,7 @@ import Surreal.Surcomplex.SineSquareExpansion
 import Surreal.Surcomplex.SineSquareStabilityErrors
 import Surreal.Surcomplex.SineSquareLaurent
 import Surreal.Surcomplex.TrigonometricStabilitySharpness
+import Surreal.Algebra.CirclePerturbation
+import Surreal.Surcomplex.ConditionedCosineExpansion
+import Surreal.Surcomplex.ConditionedCosineValuation
+import Surreal.Surcomplex.ConditionedCosineSharpness
