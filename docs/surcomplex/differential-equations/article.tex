@@ -8391,19 +8391,42 @@ At such a multiple zero the real nonconstant solutions are exactly the families
 of \cref{diff:aut:prop:multiple} with real $\beta$, real $C$ and the real logarithm
 convention. There is one real branch when $m$ is odd; when $m$ is even there are
 two if $c<0$ and none if $c>0$; each branch is in bijection with $\R$. At a simple
-zero, real nonconstant solutions exist exactly when $\lambda<0$, with $c\in\R^{\times}$.
+zero, real nonconstant solutions exist exactly when $\lambda<0$, with
+real nonzero amplitude in the normalized linearizer.
 \end{corollary}
 \begin{proof}
-A real solution has real leading coefficient and real time constant in the real
-time primitive; conversely uniqueness of the formal implicit solution over $\R$
-keeps the construction real. The roots of $\beta^{m}=-1/(mc)$ have the stated
-count, and the simple-zero case follows from the real linearizer and
-\cref{diff:aut:lem:eigen}.
+For nonzero real $u$, the sign of $u$ is fixed and
+$\Dn\log|u|=\Dn u/u$, whether $u>0$ or $u<0$.
+The real time primitive therefore satisfies
+$\mathfrak t_{\R}(u)=\omega+C$ with $C\in\R$.
+The leading-scale argument gives a real
+$\beta=\st(u/\omega^{-1/m})\neq0$, and
+$W=u/(\beta\omega^{-1/m})\in1+\mm$ is positive.
+Thus the real implicit equation uses $\log|\beta|$ and $\log W$.
+Conversely, with real $\beta$ and $C$ that formal equation has real
+coefficients. Its unique solution has real coefficients, either by
+the coefficient recursion or by uniqueness after complex conjugation,
+and evaluates to a real solution. Distinct time constants give
+distinct solutions as before.
+
+If $m$ is odd, $\beta^m=-1/(mc)$ has exactly one real root.
+If $m$ is even, it has two real roots precisely when $c<0$,
+and none when $c>0$. These roots are nonzero and index the stated
+families. At a real simple zero the normalized linearizer and its
+inverse have real coefficients. Therefore
+$h_p^{-1}(a e^{\lambda\omega})$ is real exactly when its amplitude
+$a$ is real; nonconstant infinitesimal solutions require
+$\lambda<0$ and $a\neq0$.
 \end{proof}
 
 The sign restrictions reflect the orientation $\Dn\omega=1$, not a choice of
-complex branch cut (compare \cref{diff:rs:warn:orientation}); using
-$\log\abs\sigma$ avoids an imaginary time shift for a negative real solution.
+complex branch cut (compare \cref{diff:rs:warn:orientation}). For example,
+if $\beta<0$ and the complex convention chooses
+$\log\beta=\log|\beta|+i\pi$, then
+$\mathfrak t_{\C}=\mathfrak t_{\R}+i\pi\varrho$ and
+$C_{\C}=C_{\R}+i\pi\varrho$ on that branch. Thus a real solution
+need not have a real time constant in an arbitrary complex-logarithm
+convention. The real primitive removes this fixed imaginary shift.
 
 \begin{example}[Growth can be a stable branch at infinity]
 \label{diff:aut:ex:growth}
@@ -8412,6 +8435,10 @@ eigenvalue is $+1$, so no nonconstant solution reduces to $0$; at infinity the
 parameter $\sigma=1/u$ has $\Dn\sigma=-\sigma$, eigenvalue $-1$, and every
 nonconstant solution reduces to infinity. ``Negative simple eigenvalue'' is a
 projective statement, not a restriction to bounded affine solutions.
+Directly, $\Dn(u e^{-\omega})=0$ forces $u=c e^\omega$,
+so the family is exhaustive. For $c\neq0$ its local coordinate
+is $\sigma=c^{-1}e^{-\omega}\in\mm_\C$, displaying the stable
+branch in the chart at infinity.
 \end{example}
 
 \begin{example}[The logistic equation]
@@ -8419,9 +8446,19 @@ projective statement, not a restriction to bounded affine solutions.
 For $\Dn u=-u+u^{2}$ the equilibria $0$ and $1$ have eigenvalues $-1$ and $+1$,
 and at infinity $\sigma=1/u$ satisfies $\Dn\sigma=\sigma-1$, nonzero at
 $\sigma=0$. Every nonconstant solution is therefore
-$u=c\,e^{-\omega}/(1+c\,e^{-\omega})$ with $c\in\C^{\times}$, as direct
-differentiation confirms; the constants $0$ and $1$ are not both obtained by an
-ordinary value of $c$.
+\[
+ u=\frac{c e^{-\omega}}{1+c e^{-\omega}},\qquad c\in\C^\times.
+\]
+Indeed, for $u\neq1$ put $v=u/(1-u)$. The quotient rule gives
+$\Dn v=-v$, hence $v=c e^{-\omega}$ by
+\cref{diff:aut:lem:eigen}. Conversely $1+c e^{-\omega}$ is a
+finite unit of residue $1$, so the formula is always defined and
+solves the logistic equation. The value $c=0$ gives the equilibrium
+$u=0$; the other equilibrium $u=1$ is separate and is never obtained
+by an ordinary $c$. Since $\st(u)=0$ for every member of the
+nonconstant family, none has been lost at the other affine zero
+or at infinity. Real solutions correspond exactly to real $c$,
+together with the separate equilibrium $1$.
 \end{example}
 
 \begin{example}[Riccati without a tangent trajectory]
@@ -8439,22 +8476,43 @@ trigonometric function.
 \label{diff:aut:ex:logcorrection}
 Consider the branch at $u=0$ of $\Dn u=-u^{2}(1+u)$. A time primitive is
 $\mathfrak t(u)=1/u+\Log u-\Lmm(1+u)$, with $\mathfrak t'(u)=-1/(u^{2}(1+u))$;
-here $m=1$, $\beta=1$, $\varrho=1$. With $X=1/\omega$ and $Y=(\log\omega)/\omega$
-the implicit equation is
+here $m=1$, $\beta=1$, $\varrho=1$, and we choose $\log\beta=0$.
+Use formal variables $X,Y$ before evaluating them at
+$x_1=1/\omega$ and $y_\omega=(\log\omega)/\omega$.
+The formal implicit equation for the unit $W$ is
 \[
  W^{-1}+X\Lmm(W)-Y-X\Lmm(1+XW)-CX-1=0,
 \]
-and with $a=Y+CX$ its first homogeneous terms are
-$W=1-a+(a^{2}-Xa-X^{2})+O((X,Y)^{3})$. Thus, with $L=\log\omega$,
+and with $b=Y+CX$ its first homogeneous terms are
+$W=1-b+(b^{2}-Xb-X^{2})+O((X,Y)^{3})$. Thus, with $L=\log\omega$,
 \[
  u_{C}=\frac1\omega-\frac{L+C}{\omega^{2}}+\frac{(L+C)^{2}-(L+C)-1}{\omega^{3}}
  +\cdots,
 \]
-the remainder being the evaluation of a series in $X(X,Y)^{3}\C[[X,Y]]$ --- a
-more precise statement than a fine-topological big-$O$. The formula describes all
-solutions reducing to $0$. The same equation has a simple zero at $-1$ with
-eigenvalue $-1$ and hence also the exponential family of
-\cref{diff:aut:thm:main}(ii).
+the remainder being the evaluation of a series in
+$X(X,Y)^3\C[[X,Y]]$. This is a formal total-degree statement;
+it does not assert convergence of truncations in the fine topology.
+The formula describes all \emph{nonconstant} solutions reducing to
+$0$; the constant solution $u=0$ must also be included.
+
+There is a second family at $u=-1$. In the parameter $v=u+1$ the
+equation is $\Dn v=-v(1-v)^2$, with eigenvalue $-1$.
+Its normalized linearizer is explicitly
+\[
+ h(v)=\frac{v}{1-v}\exp\!\left(\frac{v}{1-v}\right),
+ \qquad h(v)=v+O(v^2).
+\]
+Here the exponential is the ordinary formal series, evaluated only
+at an infinitesimal argument. Its logarithmic derivative is
+$h'(v)/h(v)=1/(v(1-v)^2)$, so $h'(v)(-v(1-v)^2)=-h(v)$.
+Thus the nonconstant solutions reducing to $-1$ are
+$u=-1+h^{-1}(a e^{-\omega})$, $a\in\C^\times$.
+At infinity, $\sigma=1/u$ satisfies
+$\Dn\sigma=1+1/\sigma$, which has a pole at zero, so there are
+no nonconstant solutions reducing to infinity. Together the two
+families and the equilibria $0,-1$ give the complete list.
+Both families are real exactly for real time constant $C$ or
+real amplitude $a$, respectively.
 \end{example}
 
 \section{Holomorphic differentials and abelian varieties}
@@ -8470,12 +8528,24 @@ $\varphi$ be a global regular $1$-form on $\mathcal Y$. For every
 $\mathbf y\in\mathcal Y(\SC)$, $\varphi_{\mathbf y}(\Dn\mathbf y)\in\mm_{\C}$.
 \end{proposition}
 \begin{proof}
-Reduce $\mathbf y$ to $p$ and choose an affine neighbourhood with regular
-coordinates; its nonvanishing denominators evaluate to finite units. The
-coordinates of $\mathbf y$ are finite, their derivatives infinitesimal
-(\cref{diff:aut:lem:small}), and the coefficients of $\varphi$ at $\mathbf y$
-finite, so the contraction is a finite sum of products of the two kinds. It is
-intrinsic, hence independent of the chart.
+Reduce $\mathbf y$ to $p\in\mathcal Y(\C)$ by
+\cref{diff:aut:lem:projective}. On an affine neighbourhood of $p$,
+choose finitely many regular coordinate functions $t_1,\ldots,t_N$.
+After shrinking around $p$ if necessary, write
+$\varphi=\sum_j a_j\,dt_j$ with each $a_j$ regular there.
+The coordinates $t_j(\mathbf y)$ and coefficients $a_j(\mathbf y)$
+are finite: regular functions are ratios with denominators nonzero
+at $p$, whose evaluations are units with ordinary nonzero residue.
+By \cref{diff:aut:lem:small}, each
+$\Dn t_j(\mathbf y)$ is infinitesimal. Consequently
+\[
+ \varphi_{\mathbf y}(\Dn\mathbf y)
+ =\sum_j a_j(\mathbf y)\,\Dn t_j(\mathbf y)\in\mm_\C,
+\]
+since $\mm_\C$ is an ideal of the finite-element ring.
+The algebraic chain rule makes this contraction invariant under
+changing the chosen coordinates. No analytic integration or
+choice of a global coordinate system is used.
 \end{proof}
 
 \begin{corollary}[Holomorphic dual obstruction]
@@ -8489,8 +8559,13 @@ A nonconstant solution would give
 $1=\varphi_{\mathbf y}(\xi(\mathbf y))=\varphi_{\mathbf y}(\Dn\mathbf y)\in\mm_{\C}$.
 \end{proof}
 
-Equivalently $\xi$ has no zeros: it is nonzero where $\varphi$ is and has poles at
-the zeros of $\varphi$; this agrees with \cref{diff:aut:thm:main}.
+The same obstruction is visible in the divisor of $\xi$.
+Locally write $\varphi=\sigma^r a(\sigma)\,d\sigma$ with
+$r\geq0$ and $a(0)\neq0$. Then
+$\xi=\sigma^{-r}a(\sigma)^{-1}\,\partial/\partial\sigma$ has
+order $-r\leq0$: it is nonzero where $\varphi$ is nonzero and
+has a pole at a zero of $\varphi$. Thus it has no zeros anywhere,
+in agreement with \cref{diff:aut:thm:main}.
 
 \begin{theorem}[Squarefree hyperelliptic obstruction]
 \label{diff:aut:thm:hyperelliptic}
@@ -8501,18 +8576,48 @@ Let $Q\in\C[Y]$ be squarefree with $\deg Q\geq3$. Then the solutions in $\SC$ of
 are exactly the constants $y=c\in\C$ with $Q(c)=0$.
 \end{theorem}
 \begin{proof}
-These constants solve the equation. Suppose $y$ is nonconstant and put $z=\Dn y$;
-then $z\neq0$, and $z^{2}=Q(y)$ defines a nonconstant point on the smooth
-projective model of that affine curve. The differential $\varphi=dY/Z$ is
-holomorphic there: at a simple root $a$ of $Q$ use $Z$ as parameter, so
-$Y-a=Z^{2}/Q'(a)+O(Z^{4})$ and $dY/Z$ is regular; squarefreeness leaves no other
-finite singularity. At infinity write $\deg Q=2\mathrm g+1$ or $2\mathrm g+2$ with
-$\mathrm g\geq1$: in the odd case a local parameter has $Y\sim\sigma^{-2}$ and
-$Z\sim c\,\sigma^{-(2\mathrm g+1)}$, so $dY/Z$ is a unit multiple of
-$\sigma^{2\mathrm g-2}d\sigma$; in the even case, at either point above infinity,
-$Y=\sigma^{-1}$ and $Z\sim c\,\sigma^{-(\mathrm g+1)}$, so it is a unit multiple of
-$\sigma^{\mathrm g-1}d\sigma$. Contraction with the derivative at $(y,z)$ is
-$\Dn y/z=1$, which \cref{diff:aut:prop:contraction} makes infinitesimal.
+Every constant root of $Q$ solves the equation. Suppose instead that
+$y$ is nonconstant and put $z=\Dn y\neq0$.
+Squarefreeness makes $Q$ a nonsquare in $\C(Y)$, since each root
+has odd order one. Hence $Z^2-Q(Y)$ is irreducible, and the
+scalar-to-curve reduction in \cref{diff:aut:thm:independence}
+identifies $(y,z)$ with a nonconstant differential point on its
+smooth projective model.
+
+We check directly that $\varphi=dY/Z$ is a global regular
+$1$-form on this model. At finite points with $Z\neq0$ this is
+immediate. At a root $a$ of $Q$, squarefreeness gives $Q'(a)\neq0$,
+so $Z$ is a local parameter and the identity
+$2Z\,dZ=Q'(Y)\,dY$ gives
+\[
+ \frac{dY}{Z}=\frac{2\,dZ}{Q'(Y)}.
+\]
+The right side is regular at $(a,0)$, with unit denominator.
+These cases cover the affine curve, which is smooth because
+$Q$ and $Q'$ have no common root.
+
+At infinity put $w=1/Y$, $v=Z w^{\mathrm g+1}$ and let
+$q(w)=w^{\deg Q}Q(1/w)$, so $q(0)\neq0$ is the leading coefficient
+of $Q$. If $\deg Q=2\mathrm g+2$, $\mathrm g\geq1$, the local
+equation is $v^2=q(w)$. There are two points over infinity,
+with $v(0)=\pm\sqrt{q(0)}\neq0$; at each, $w$ is a local
+parameter and
+\[
+ \frac{dY}{Z}=-\frac{w^{\mathrm g-1}}{v}\,dw
+\]
+is regular. If $\deg Q=2\mathrm g+1$, the equation is
+$v^2=wq(w)$. Its unique point at infinity has parameter $v$,
+since the derivative in $w$ at $(0,0)$ is $-q(0)\neq0$.
+Solving formally gives $w=q(0)^{-1}v^2+O(v^4)$. The same
+formula $dY/Z=-w^{\mathrm g-1}dw/v$ is then a unit multiple
+of $v^{2\mathrm g-2}\,dv$, again regular. The exponents are
+nonnegative precisely in the degrees under consideration.
+
+Thus \cref{diff:aut:prop:contraction} applies to $\varphi$.
+But its contraction at the nonconstant point is
+$\varphi_{(y,z)}(\Dn(y,z))=\Dn y/z=1$, whereas that proposition
+makes it infinitesimal. This contradiction excludes every
+nonconstant solution.
 \end{proof}
 
 \begin{remark}[A necessary distinction at branch points]
@@ -8531,8 +8636,13 @@ scalar equation keeps its branch-point constants.
 \label{diff:aut:ex:hypotheses}
 For $Q(Y)=Y^{3}$, which is not squarefree, $y=4/(\omega+C)^{2}$ with $C\in\C$ is
 nonconstant and satisfies $(\Dn y)^{2}=y^{3}$. For degree two,
-$y=(e^{\omega}+e^{-\omega})/2$ satisfies $(\Dn y)^{2}=y^{2}-1$. Neither hypothesis
-of \cref{diff:aut:thm:hyperelliptic} can simply be deleted.
+$y=(e^{\omega}+e^{-\omega})/2$ satisfies $(\Dn y)^{2}=y^{2}-1$.
+Indeed, the first derivative is $-8/(\omega+C)^3$, whose square
+is $64/(\omega+C)^6=y^3$; in the second case
+$\Dn y=(e^\omega-e^{-\omega})/2$, and subtracting the two
+squares gives $1$. Both solutions are nonconstant for every
+normalized derivation. Neither hypothesis of
+\cref{diff:aut:thm:hyperelliptic} can simply be deleted.
 \end{example}
 
 \subsection{The formal logarithm and the identity monad}

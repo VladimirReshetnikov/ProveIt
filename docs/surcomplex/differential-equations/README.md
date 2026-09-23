@@ -3,13 +3,13 @@
 **The finite-primitive criterion, the phase obstruction, and support-certified
 coordinate systems**
 
-A merged research report, 190 pages, built from eleven manuscripts. Everything
+A merged research report, 192 pages, built from eleven manuscripts. Everything
 in this directory other than `article.tex`, `article.pdf` and this README is
 preserved source material.
 
 ```
 article.tex                        the merged report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled 190-page report
+article.pdf                        the compiled 192-page report
 README.md                          this guide
 11-autonomous-dynamics-sources.md  member 11's literature and repository-review log, unmodified
 code/                              the verification programs and build scripts of the eleven
@@ -25,26 +25,19 @@ from the merged upstream text. The earlier count included the malformed
 placeholder described in the correction record below.
 
 The current proof review covers the earlier scalar, matrix, workspace and
-coordinate chains and all of the regular-singular main text, Sections
-23–28: the Euler frame, support and resonance arguments, classification,
-logarithmic repair, forcing, examples, workspaces and finite procedure.
-The revisions expand the proof steps, distinguish the derivative frames
-and field extensions, illustrate the normalizations, and prove the forced
-degree bound sharp. The finite procedure now states its effective
-coefficient requirements; complex algebraic coefficients suffice.
-The autonomous review now covers Sections 29–31: normalized derivations,
-formal evaluation, projective reduction, the complete curve-realization
-classification, finite-scale localization and derivation independence.
-It expands the support, local uniqueness and forced-scale arguments, makes the properness
-comparison set-sized, and gives explicit quadratic and pure monomial
-formulas. Branch choices and the time parameter's first differing scale
-are stated explicitly. The localization proof handles arbitrary Hahn supports
-and all local coordinates, and the scalar reduction explains its injectivity
-and nonzero denominator. The zero-polynomial exception is explicit, and a
-quadratic example separates constant scalar solutions from curve embeddings.
-Later autonomous proofs, remaining imports and source reconciliation
-are still pending; scope and validation are recorded in the collection's
-[review record](../../REVIEW.md).
+coordinate arguments, the complete regular-singular main text (Sections
+23–28), and the autonomous classification, finite-scale localization,
+derivation independence and worked equations (Sections 29–32). It also
+covers the holomorphic-differential and hyperelliptic obstructions in
+Section 33.1.
+
+The latest pass makes the real logarithm convention explicit, expands the
+logistic and logarithmic examples into complete solution lists, and supplies
+local-coordinate calculations for the hyperelliptic obstruction at every
+finite branch point and point at infinity. The formal-group and abelian
+arguments from Section 33.2 onward, the critical-potential part, remaining
+imports and source reconciliation still require review. Detailed scope and
+validation are in the collection's [review record](../../REVIEW.md).
 
 ## What the report is
 
@@ -961,6 +954,26 @@ import in a set-sized field with constant field ℂ. The bibliography now links
 to those exact preprint versions. The finite checks do not prove the general
 Hahn-support or classification arguments. Review of Section 32 onward and
 remaining imports and source reconciliation is still pending.
+
+The fourth autonomous pass reviewed Section 32 and Section 33.1: real
+branches and all four worked equations, infinitesimal contraction, the
+holomorphic-dual and hyperelliptic obstructions, branch-point constants and
+both hypothesis counterexamples. The PDF rebuilt in three passes at 192
+pages without warnings or box issues, against a clean 190-page baseline;
+the changed pages were inspected. Member 11's unchanged verifier passed
+all ten default-degree checks with Python 3.13.14 and SymPy 1.14.0; the
+output matches its archive apart from Python version. Separate exact checks
+covered the logistic substitution and family, the logarithmic primitive,
+the normalized linearizer at −1, the pole at infinity and both obstruction
+counterexamples. Six squarefree examples of degrees three through eight
+verify the local infinity equations and the predicted orders of the regular
+differential, including both branches in even degree. All 51 historical
+code, data and source-log files remain byte-identical. The full Lean build
+passed 3,872 jobs and the 5,880-declaration axiom audit. These finite checks
+do not replace the general geometric and support proofs, and no new Lean
+coverage is claimed. Formal-group and abelian arguments from Section 33.2
+onward, the critical-potential part and remaining imports and source
+reconciliation still require review.
 
 ## Re-running the source verifiers
 
