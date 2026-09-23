@@ -511,6 +511,17 @@ For every `F ∈ ℂ[Y,Z]`, normalized derivations have the same solution
 collection for `F(y,ðy)=0`. Pointwise equality of their derivatives on that
 collection and a uniform set-sized Hahn field bound require `F ≠ 0`.
 
+For a constant abelian variety `𝐀/ℂ`, the formal logarithm
+`log_𝓕` maps its identity monad to `Lie(𝐀)(𝔪_ℂ)`; its inverse
+`exp_𝓕` is evaluated only at infinitesimal Lie coordinates. It is distinct
+from the scalar exponential and from an analytic uniformization by a period
+lattice. The logarithmic derivative `dlog_ð` is a Lie-valued group
+homomorphism with image `Lie(𝐀)(ð𝔪_ℂ)` and kernel `𝐀(ℂ)`.
+The complex primitive obstruction `Obs^ℂ_ð` tests both real and imaginary
+coordinates, unlike the multiplicative phase obstruction `Φ`. Defining it
+on every input requires surjectivity of `ð`. The abelian image theorem and
+the explicit speed threshold for `ω^(−p)v`, `p > 1`, do not.
+
 Distinguish the ordered real surreal exponential, the strongly summed
 infinitesimal Hahn exponential, finite-angle `cis`, and a chosen global
 surcomplex exponential or global phase. A finite angle has ordinary period

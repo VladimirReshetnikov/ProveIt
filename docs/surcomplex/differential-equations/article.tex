@@ -7482,9 +7482,10 @@ Three rules fix the use of the new symbol.
 \begin{enumerate}[label=(\arabic*),leftmargin=2.4em]
 \item Throughout \cref{diff:aut:part}, $\Dn$ denotes an \emph{arbitrary}
 normalized derivation, and every statement holds for every such $\Dn$ unless it
-is flagged. Two statements are flagged: the abelian finite-primitive criterion
-(\cref{diff:aut:cor:abeliancriterion}) assumes that $\Dn$ is surjective, and
-the speed threshold (\cref{diff:aut:cor:speeds}) is stated for $\Dn=\der$. The
+is flagged. The abelian finite-primitive criterion
+(\cref{diff:aut:cor:abeliancriterion}) assumes that $\Dn$ is surjective;
+the explicit speed threshold of \cref{diff:aut:cor:speeds} needs no
+such assumption and holds for every normalized derivation. The
 source writes $D$. In this report $D$ never denotes a derivation other than the
 fixed one (\cref{diff:warn:concordance}), and the new symbol keeps the
 $\der$-specific statements of the other parts visibly distinct.
@@ -8656,7 +8657,7 @@ a section. The formal completion of $\mathbf A$ at its identity carries a
 commutative formal group law
 $\mathcal F(T,S)\in\C[[T_{1},\dots,T_{d},S_{1},\dots,S_{d}]]^{d}$,
 $\mathcal F(T,S)=T+S+{}$higher terms. The geometric setting of abelian varieties
-and tangent spaces is standard \cite{Milne}; the characteristic-zero logarithm
+and tangent spaces is standard \cite[Chapter~I, \S1 and Theorem~6.4]{Milne}; the characteristic-zero logarithm
 fact is proved here.
 
 \begin{lemma}[Normalized formal-group logarithm]
@@ -8668,27 +8669,83 @@ a formal inverse $\exp_{\mathcal F}(T)=T+O(T^{2})$, and its differential is the
 normalized invariant differential matrix of the formal group.
 \end{lemma}
 \begin{proof}
-Translate a basis of the cotangent space at the identity to invariant formal
-$1$-forms $\varphi_{1},\dots,\varphi_{d}$, whose coefficient matrix has constant term
-the identity. Commutativity makes them closed: for invariant tangent fields $v,w$
-the formula for $d\varphi_{j}$ reduces to $-\varphi_{j}([v,w])=0$, and these fields
-form a basis. A closed formal $1$-form in characteristic zero has a unique
-primitive with prescribed constant term --- for a homogeneous coefficient form of
-degree $n$, contract with the Euler vector field and divide by $n+1$ --- and
-integrating the $\varphi_{j}$ with zero constant term gives $\log_{\mathcal F}$.
-Invariance gives
-$d\bigl(\log_{\mathcal F}(\mathcal F(T,S))-\log_{\mathcal F}(T)-\log_{\mathcal F}(S)\bigr)=0$,
-and the difference has zero constant term. Invertibility follows from the
-identity linear part. For uniqueness, compose another such map with
-$\exp_{\mathcal F}$: the result is additive with identity linear part, and each
-homogeneous term $H_{n}$ of degree $n>1$ vanishes because $H_{n}(2T)=2H_{n}(T)$ and
-$2^{n}-2\neq0$.
+Put $J(T)=\partial_S\mathcal F(T,0)$. Its constant matrix is the
+identity, so it is invertible over $\C[[T]]$. Translating the
+cotangent basis at zero gives the column of invariant formal forms
+\[
+ (\varphi_1,\ldots,\varphi_d)^{\mathsf t}=J(T)^{-1}\,dT.
+\]
+The dual invariant tangent fields commute: their infinitesimal
+translations commute because $\mathcal F$ is commutative.
+For such fields $v,w$, the identity
+$d\varphi_j(v,w)=v(\varphi_j(w))-w(\varphi_j(v))-\varphi_j([v,w])$
+has all three terms zero. These fields form a basis over
+$\C[[T]]$, so each $\varphi_j$ is closed.
+
+Here is the coefficientwise integration step. If
+$\alpha_n=\sum_i a_i(T)\,dT_i$ is closed with all $a_i$
+homogeneous of degree $n$, define
+\[
+ H_{n+1}(T)=\frac{1}{n+1}\sum_i T_i a_i(T).
+\]
+Closedness gives $\partial_j a_i=\partial_i a_j$; Euler's
+homogeneous identity then gives
+$\partial_j H_{n+1}=(a_j+\sum_iT_i\partial_i a_j)/(n+1)=a_j$.
+Integrating each homogeneous part in this way produces the unique
+zero-constant primitive of each $\varphi_j$. The resulting vector
+$\ell(T)$ has identity linear part.
+
+Associativity, and commutativity for the first variable, give
+\[
+ J(\mathcal F(T,S))^{-1}\,d\mathcal F(T,S)
+ =J(T)^{-1}\,dT+J(S)^{-1}\,dS.
+\]
+Thus the total differential in $(T,S)$ of
+$\ell(\mathcal F(T,S))-\ell(T)-\ell(S)$ vanishes.
+In characteristic zero a formal series with all partial derivatives
+zero is constant; here its constant term is zero. This proves the
+homomorphism identity and defines $\log_{\mathcal F}=\ell$.
+The identity linear part gives the formal inverse
+$\exp_{\mathcal F}$ by degree recursion.
+
+For uniqueness, compose another normalized logarithm with
+$\exp_{\mathcal F}$. The result is an additive formal map with
+identity linear part. For any homogeneous term $H_n$ of degree
+$n>1$, additivity gives $2^nH_n(T)=H_n(2T)=2H_n(T)$,
+so $H_n=0$. The map is the identity, as required.
 \end{proof}
 
-By the smooth-coordinate argument of \cref{diff:aut:lem:projective}, now in $d$
-variables, the formal completion parametrizes all of $\mathbf A_{1}(\SC)$, and
-\cref{diff:aut:lem:evaluation} evaluates $\log_{\mathcal F}$ and $\exp_{\mathcal F}$ on
-every infinitesimal tuple as inverse group isomorphisms.
+By the smooth-coordinate argument of \cref{diff:aut:lem:projective},
+now with $d$ free parameters and an invertible complementary Jacobian,
+the formal coordinates give a bijection between
+$\mathbf A_1(\SC)$ and $\mm_\C^d$. They describe every point of
+the monad, not only points already presented by a chosen series.
+All coordinates of $\mathcal F$, $\log_{\mathcal F}$ and
+$\exp_{\mathcal F}$ have zero constant term. Their evaluations
+therefore remain infinitesimal, and the composition clause of
+\cref{diff:aut:lem:evaluation} evaluates both inverse identities
+and the group identity on every infinitesimal tuple.
+
+For a local check, the one-dimensional multiplicative formal group
+$\mathcal F(T,S)=T+S+TS$ has $J(T)=1+T$ and
+\[
+ \log_{\mathcal F}(T)=\log(1+T),\qquad
+ \exp_{\mathcal F}(U)=e^U-1.
+\]
+These are ordinary formal series at zero, evaluated only on the
+infinitesimal domain. This example illustrates the local lemma;
+the later global splitting uses properness of an abelian variety.
+
+A formal coordinate change $\widetilde T=H(T)$ with $H(0)=0$
+and ordinary invertible linear part $B$ satisfies
+\[
+ \log_{\widetilde{\mathcal F}}(H(T))=B\log_{\mathcal F}(T).
+\]
+Indeed, composition with $\exp_{\mathcal F}$ is an additive
+formal map with linear part $B$, and the same homogeneous argument
+kills every higher term. Thus the logarithm is intrinsically
+Lie-algebra valued; its coordinate vectors change by the ordinary
+linear tangent map, not by a nonlinear reparametrization.
 
 \begin{proposition}[Global splitting through the identity monad]
 \label{diff:aut:prop:abeliansplit}
@@ -8702,9 +8759,23 @@ with inverse $(c,u)\mapsto c+\exp_{\mathcal F}(u)$. Intrinsically the second
 summand is $\Lie(\mathbf A)(\mm_{\C})$, independent of the basis.
 \end{proposition}
 \begin{proof}
-The constant section and reduction split $\mathbf A(\SC)$ into the constant
-subgroup and the identity monad; apply the evaluated formal logarithm to the
-latter. All group and inverse identities are evaluated formal identities.
+Reduction is a homomorphism because the ordinary group law commutes
+with reduction, and the inclusion of ordinary points is a section.
+Every point has the unique decomposition
+$\mathbf y=c+\mathbf q$ with
+$c=\st(\mathbf y)\in\mathbf A(\C)$ and
+$\mathbf q=\mathbf y-c\in\mathbf A_1(\SC)$.
+Uniqueness also follows from
+$\mathbf A(\C)\cap\mathbf A_1(\SC)=\{0\}$.
+Commutativity makes this a direct-product decomposition of groups.
+
+The evaluated formal logarithm identifies the second factor with
+the additive group $\mm_\C^d$. Its inverse sends $u$ to
+$\exp_{\mathcal F}(u)$, which has reduction zero. Consequently
+$(c,u)\mapsto c+\exp_{\mathcal F}(u)$ is inverse to the displayed
+map in both directions. The coordinate-change identity above
+identifies its second factor canonically with
+$\Lie(\mathbf A)(\mm_\C)$.
 \end{proof}
 
 No complex analytic uniformization, no period lattice and no exponential defined
@@ -8746,15 +8817,37 @@ The kernel is exactly $\mathbf A(\C)$, and in any ordinary Lie basis
 is split exact, with splitting $a\mapsto\exp_{\mathcal F}\bigl((\Dn|_{\mm_{\C}})^{-1}a\bigr)$.
 \end{theorem}
 \begin{proof}
-Translating $\mathbf y$ by the constant point $-\st(\mathbf y)$ does not change its
-logarithmic derivative and puts it in the identity monad; the differential of
-$\log_{\mathcal F}$ is the invariant differential matrix, and the chain rule
-(\cref{diff:aut:lem:evaluation}) gives the first identity. As $\mathbf y$ ranges over
-$\mathbf A(\SC)$ its logarithm coordinate ranges over all of $\mm_{\C}^{d}$
-(\cref{diff:aut:prop:abeliansplit}), so the derivative ranges over
-$(\Dn\mm_{\C})^{d}$ and vanishes exactly when that infinitesimal coordinate
-vanishes. The splitting is a homomorphism because $(\Dn|_{\mm_{\C}})^{-1}$ and
-$\exp_{\mathcal F}$ are, and composing it with $\dlog_{\Dn}$ gives the identity.
+For each fixed point $\mathbf y$, the point
+$c=\st(\mathbf y)$ is ordinary and has zero derivative.
+Translation by $-c$ therefore preserves the logarithmic derivative
+and gives $\mathbf q=\mathbf y-c$ in the identity monad.
+Writing its formal coordinate tuple as $T(\mathbf q)$, the evaluated
+chain rule and the differential formula from
+\cref{diff:aut:lem:formallog} give
+\[
+ \Dn\log_{\mathcal F}(\mathbf q)
+ =J(T(\mathbf q))^{-1}\Dn T(\mathbf q)
+ =\dlog_{\Dn}\mathbf y.
+\]
+This differentiates the coordinate tuple at the fixed point; it does
+not require differentiating a standard-part map.
+
+Under \cref{diff:aut:prop:abeliansplit}, the logarithmic derivative
+is exactly the homomorphism $(c,u)\mapsto\Dn u$.
+The restriction $\Dn:\mm_\C\to\Dn\mm_\C$ is a
+$\C$-linear bijection: surjectivity onto that image is its
+definition, and its kernel is $\mm_\C\cap\C=\{0\}$.
+Applied coordinatewise, it proves the asserted image and shows
+that the kernel consists precisely of the points with $u=0$,
+namely $\mathbf A(\C)$.
+
+Let $P_{\Dn}$ denote this restriction's inverse. Then
+$a\mapsto\exp_{\mathcal F}(P_{\Dn}a)$ is a homomorphism,
+has logarithmic derivative $a$, and reduces to the identity point.
+It is the unique section with image in the identity monad.
+In particular, all points over one value $a$ form its translate
+by the kernel $\mathbf A(\C)$. No surjectivity of $\Dn$ on
+all of $\SC$ was used.
 \end{proof}
 
 \begin{remark}[Agreement with, and contrast to, the multiplicative group]
@@ -8771,7 +8864,8 @@ generally proper differential image.
 \subsection{A primitive obstruction when primitives exist}
 \label{diff:aut:sub:primitive}
 
-For the rest of this subsection assume $\Dn$ is surjective, as $\der$ is. By
+For the obstruction construction and finite-primitive criterion, assume
+$\Dn$ is surjective, as $\der$ is. By
 \cref{diff:eq:split}, applied coordinatewise, every $z\in\SC$ is
 $z=\pp(z)+\ct(z)+\varepsilon$ with $\pp(z)\in\Pcl_{\C}$, $\ct(z)\in\C$ and
 $\varepsilon\in\mm_{\C}$. For $a\in\SC$ choose $\mathfrak b$ with $\Dn\mathfrak b=a$ and put
@@ -8798,30 +8892,63 @@ basis. Then, for a finite primitive vector $\mathfrak b$ with $\Dn\mathfrak b=a$
 Moreover $\Ker\Obs^{\C}_{\Dn}=\Dn\mm_{\C}$.
 \end{corollary}
 \begin{proof}
-The obstruction vanishes exactly when a primitive is finite, and subtracting its
-standard part then gives the unique infinitesimal primitive; this is
-$\Ker\Obs^{\C}_{\Dn}=\Dn\mm_{\C}$, and \cref{diff:aut:thm:abelianimage} finishes.
-A change of ordinary Lie basis is a constant invertible matrix and commutes with
-$\Obs^{\C}_{\Dn}$. \Cref{diff:aut:eq:abeliansolutions} is the splitting of
-\cref{diff:aut:eq:abelianexact} translated by the kernel.
+Choose any primitive vector $\mathfrak b$. Vanishing of its purely
+infinite part means precisely that it is finite; the remaining
+parts are an ordinary constant vector and an infinitesimal vector.
+For a finite primitive, put
+$u=\mathfrak b-\st(\mathfrak b)\in\mm_\C^d$.
+It still satisfies $\Dn u=a$. If $\mathfrak b'$ is another
+primitive, then $\mathfrak b'-\mathfrak b\in\C^d$; if one is
+finite, so is the other, and subtracting standard parts gives
+the same $u$. This is the unique infinitesimal primitive.
+Conversely an infinitesimal primitive has zero purely infinite
+part. This proves $\Ker\Obs^\C_{\Dn}=\Dn\mm_\C$
+coordinatewise, and \cref{diff:aut:thm:abelianimage} gives
+solvability and the full translate of its kernel displayed above.
+
+A change of ordinary Lie basis is an invertible matrix over $\C$.
+It commutes with $\Dn$, with the $\C$-linear obstruction and,
+on finite vectors, with standard part. Thus vanishing in one
+basis is equivalent to vanishing in every basis, and the solution
+formula represents the same points.
 \end{proof}
 
 The standard part in \cref{diff:aut:eq:abeliansolutions} is taken only after the
 finiteness of $\mathfrak b$ has been established; ``the standard part'' of an arbitrary
-infinite primitive would not be a valid substitute. Surjectivity is used only
-here and in the next corollary.
+infinite primitive would not be a valid substitute. Surjectivity is used
+to define the obstruction on every Lie-algebra input. For an input
+with an explicit primitive, the image theorem tests finiteness
+directly, without a surjectivity assumption.
 
-\begin{corollary}[Sharp one-power speed threshold; $\Dn=\der$]
+\begin{corollary}[Sharp one-power speed threshold; every normalized derivation]
 \label{diff:aut:cor:speeds}
-Fix $0\neq v\in\Lie(\mathbf A)(\C)$ and $p\in\R$. Under the Berarducci--Mantova
-derivation, $\dlog_{\der}\mathbf y=\omega^{-p}v$ is solvable exactly when $p>1$; in
-particular no nonzero constant speed and no speed $\omega^{-1}v$ is realizable.
+Fix $0\neq v\in\Lie(\mathbf A)(\C)$ and $p\in\R$.
+For every normalized derivation $\Dn$, the equation
+$\dlog_{\Dn}\mathbf y=\omega^{-p}v$ is solvable exactly when
+$p>1$. In that case all solutions are
+\[
+ \mathbf y=c+\exp_{\mathcal F}\!\left(
+ \frac{\omega^{1-p}}{1-p}v\right),\qquad c\in\mathbf A(\C).
+\]
+In particular no nonzero constant speed and no speed
+$\omega^{-1}v$ is realizable.
 \end{corollary}
 \begin{proof}
-A primitive is $\omega^{1-p}v/(1-p)$ for $p\neq1$ and $(\log\omega)v$ for $p=1$;
-the first is infinitesimal exactly when $p>1$, and otherwise, like the second, has
-a nonzero purely infinite component in some coordinate, which no constant vector
-removes. Apply \cref{diff:aut:cor:abeliancriterion}.
+Exponential compatibility and $\Dn\omega=1$ give
+$\Dn\omega^r=r\omega^{r-1}$ for every real $r$, and
+$\Dn\log\omega=1/\omega$. Thus an explicit primitive vector is
+$\omega^{1-p}v/(1-p)$ for $p\neq1$, and $(\log\omega)v$
+for $p=1$, for every normalized derivation.
+
+When $p>1$, the first vector is infinitesimal, so the image theorem
+and its splitting give exactly the displayed solutions.
+When $p<1$, any coordinate with $v_j\neq0$ is infinite in
+modulus; the same is true of $(\log\omega)v_j$ when $p=1$.
+Every other primitive differs by an ordinary constant vector,
+which cannot make that coordinate finite. There is therefore
+no infinitesimal primitive, and \cref{diff:aut:thm:abelianimage}
+excludes a solution. This argument uses neither surjectivity nor
+a globally defined primitive obstruction.
 \end{proof}
 
 This is the abelian analogue of \cref{diff:cor:power}. The integration is
@@ -8965,6 +9092,9 @@ residue section, the commutative formal logarithm on the identity monad. No
 global uniformization. \\
 Primitive obstruction (\cref{diff:aut:cor:abeliancriterion}) & In addition,
 surjectivity of $\Dn$. Standard part only of finite primitive vectors. \\
+Power-speed threshold (\cref{diff:aut:cor:speeds}) & Explicit power or
+logarithmic primitives and the abelian image theorem; no surjectivity
+assumption. \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -12201,9 +12331,11 @@ forms need not be closed, are excluded. No complex analytic uniformization, no
 period lattice and no exponential on all surcomplex Lie-algebra elements is
 used; $\exp_{\mathcal F}$ is evaluated only on $\mm_{\C}^{d}$.
 \item \emph{Surjectivity and standard part.} Surjectivity of the derivation is
-used only for $\Obs^{\C}_{\Dn}$, in \cref{diff:aut:cor:abeliancriterion,diff:aut:cor:speeds},
-and a standard part is taken only after finiteness of the primitive has been
-established.
+used to define $\Obs^{\C}_{\Dn}$ on every input and in
+\cref{diff:aut:cor:abeliancriterion}. The explicit primitives in
+\cref{diff:aut:cor:speeds} establish that threshold for every
+normalized derivation without surjectivity. A standard part is
+taken only after finiteness of the primitive has been established.
 \item \emph{Effectivity.} The finite geometric decision criterion is an effective
 procedure only when the coefficient field has exact algebraic operations and
 decidable sign tests, for example algebraic complex coefficients. It is not an

@@ -3,13 +3,13 @@
 **The finite-primitive criterion, the phase obstruction, and support-certified
 coordinate systems**
 
-A merged research report, 192 pages, built from eleven manuscripts. Everything
+A merged research report, 193 pages, built from eleven manuscripts. Everything
 in this directory other than `article.tex`, `article.pdf` and this README is
 preserved source material.
 
 ```
 article.tex                        the merged report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled 192-page report
+article.pdf                        the compiled 193-page report
 README.md                          this guide
 11-autonomous-dynamics-sources.md  member 11's literature and repository-review log, unmodified
 code/                              the verification programs and build scripts of the eleven
@@ -26,18 +26,16 @@ placeholder described in the correction record below.
 
 The current proof review covers the earlier scalar, matrix, workspace and
 coordinate arguments, the complete regular-singular main text (Sections
-23–28), and the autonomous classification, finite-scale localization,
-derivation independence and worked equations (Sections 29–32). It also
-covers the holomorphic-differential and hyperelliptic obstructions in
-Section 33.1.
+23–28), and the autonomous proofs through the abelian image and speed
+threshold (Sections 29–33).
 
-The latest pass makes the real logarithm convention explicit, expands the
-logistic and logarithmic examples into complete solution lists, and supplies
-local-coordinate calculations for the hyperelliptic obstruction at every
-finite branch point and point at infinity. The formal-group and abelian
-arguments from Section 33.2 onward, the critical-potential part, remaining
-imports and source reconciliation still require review. Detailed scope and
-validation are in the collection's [review record](../../REVIEW.md).
+The latest pass expands the formal logarithm, its coordinate independence,
+the identity-monad splitting and the primitive obstruction. The power-speed
+threshold now holds for every normalized derivation: its explicit primitives
+make surjectivity unnecessary. Section 34's scope comparisons, the
+critical-potential part, remaining imports and source reconciliation still
+require review. Detailed scope and validation are in the collection's
+[review record](../../REVIEW.md).
 
 ## What the report is
 
@@ -235,8 +233,9 @@ to the one fixed `∂`.
   identity monad, and the logarithmic-derivative image is exactly
   `Lie(A)(ð𝔪_C)` — for `ð = ∂`, the *whole* Lie coordinate must have finite
   primitives, unlike the multiplicative group, where only the imaginary part
-  is constrained. With surjectivity: a finite-primitive criterion and the
-  speed threshold `p > 1`.
+  is constrained. Surjectivity gives the primitive obstruction on every input
+  and its finite-primitive criterion. The speed threshold `p > 1` holds
+  for every normalized derivation, using explicit power/logarithmic primitives.
 
 These lift, for this class only, the report's former non-claims N21 and N25
 and the remark after Corollary 8.11 that it "is not a general nonlinear
@@ -983,6 +982,35 @@ source and PDF were unchanged by that merge. The source index still checks
 2,030 statements, and all 829 local Markdown destinations in 93 files
 resolve. The incoming formalization mappings retain their stated scope;
 they do not formalize this report's autonomous examples or obstruction.
+
+The fifth autonomous pass reviewed Sections 33.2–33.4: the formal-group
+logarithm, global splitting, abelian logarithmic-derivative image, primitive
+obstruction and power-speed threshold. The latter now holds for every
+normalized derivation; its explicit primitives remove the surjectivity
+assumption. The PDF rebuilt in three passes at 193 pages without warnings
+or box issues, against a clean 192-page baseline; the changed pages were
+inspected. Member 11's unchanged verifier passed ten default-degree checks
+with Python 3.13.14 and SymPy 1.14.0, matching the delivered record apart
+from Python version. Separate exact checks covered the multiplicative
+formal logarithm and inverse/group laws through degree six, a nonlinear
+two-dimensional formal group and its invariant matrix and coordinate
+covariance, homogeneous integration through degree six, and six explicit
+power/logarithmic primitives. All 51 historical code, data and source-log
+files remain byte-identical. Milne v2, Chapter I §1 and Theorem 6.4 were
+checked for the ordinary algebraic-group setting; the formal logarithm
+argument is supplied in the article and uses no analytic uniformization.
+The full Lean build passed 3,882 jobs and the 5,965-declaration axiom audit.
+The finite calculations support examples and formulas, not the entire
+formal-group or abelian proofs. Section 34, the critical-potential part,
+remaining imports and source reconciliation still require review.
+
+The final sync merged `4590b2c`, including the leading-term formalizations
+from `6ae6fd5`. The combined Lean build passed 3,885 jobs and its
+5,990-declaration audit using only `propext`, `Classical.choice` and
+`Quot.sound`. The differential-equations source and PDF were unchanged by
+the merge. The independent index still checks 2,030 entries, and all 833
+local Markdown destinations in 93 files resolve. These incoming analytic
+mappings do not formalize the abelian results reviewed here.
 
 ## Re-running the source verifiers
 
