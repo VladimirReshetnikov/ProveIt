@@ -186,7 +186,11 @@ It makes equation descent through injective coefficient maps explicit, allows
 nonflat integral models, and distinguishes set-sized workspace fibers from
 proper-class fibers. Clearing denominators preserves the entire purely infinite
 fiber; finite-support witnesses can be chosen with integer coefficients.
-Section 17.4 onward and 18, the pointers added in Sections 6, 7
+Section 17.4 now has a proof review of unimodular coordinates and invertible
+coordinate ideals, including their finite workspace witnesses. It corrects the
+comparison with rational curves: rational specialization does not imply a
+rational projective point. The Gaussian unit factors and the elliptic
+noninvertible-ideal example are explicit. Section 17.5 and 18, the pointers added in Sections 6, 7
 and 14, the additions to Section 20, Section 21.4, the re-scoped notes to
 Questions 21.1, 21.3 and 21.8, and Questions 21.17–21.22 remain unreviewed.
 The elementary pass also covers the corresponding claims credited to
@@ -207,8 +211,8 @@ The article has 217 standard results (79 theorems, 40 propositions, 44 lemmas,
 54 corollaries), of which 39 are in Section 15 and 74 in Sections 16–18 (6 of them in
 Section 18.6 and 17 in Section 17.6). The
 [ledger](../../FORMALIZATION.md) indexes the standard results of the
-report by `odg:` label, including all six results of Section 18.6; the 17 results of
-Section 17.6 are not yet indexed there.
+report by `odg:` label, including all six results of Section 18.6 and all 17
+results of Section 17.6. Indexing does not extend the proof-review scope.
 The ring and constant-term package `odg:prop:ring` is **Proved**, using
 [actual omnific integers](../../../Surreal/Foundations/OmnificIntegers.lean)
 and the [complex support ring](../../../Surreal/Surcomplex/NonnegativeSupportRing.lean).
