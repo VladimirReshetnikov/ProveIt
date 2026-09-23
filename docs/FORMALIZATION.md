@@ -15,7 +15,7 @@ that the current Lean target compiles or imports them.
 
 ## Scope and how to read this ledger
 
-The canonical inventory below identifies **58 main texts** with **3592**
+The canonical inventory below identifies **60 main texts** with **3650**
 standard result environments. Counts cover
 literal `theorem`, `lemma`, `proposition`, and `corollary` environments;
 examples, equations, prose assertions and companion proofs contain further
@@ -65,8 +65,10 @@ companions to five existing reports. Batch 28 is now written (`3d9dbe9`, `b3fa9e
 `a2b22a9`, `ac54217`): the index includes the prefixed normalization labels,
 support-cut automorphisms, Boolean branching, theta descent and curve rigidity.
 These additions are **Pending** in Lean. Placement `66d7e55` adds a physics
-main text and further companions; the archives in `190d301` still require
-ingestion and claim reconciliation. These additions remain within the
+main text and further companions. The nine archives from `190d301` are now
+placed in `21375f8`, adding the large-cardinal and autonomous-dilation main
+texts and companions to three existing reports. Companion integration and
+claim reconciliation remain pending. These additions remain within the
 goal; placement, assembly and proof review add no Lean coverage.
 
 The source-10 nonscalar dynamics review now covers its angular-rate lemma,
@@ -724,7 +726,7 @@ cannot replace strong Hahn summability.
 
 `T`, `L`, `P`, `C` mean literal `theorem`, `lemma`, `proposition` and
 `corollary` environments; examples, computations, assessments and other
-custom environments are not included. The inventory covers all 58 maintained main texts
+custom environments are not included. The inventory covers all 60 maintained main texts
 present in the repository; two are not named `article.tex`. Incoming archives
 and separately placed companions require reconciliation beyond this index. The two reports placed in
 `f4c9504` are indexed from their assembled texts; the three placed in
@@ -753,12 +755,14 @@ remain pending unless a precise implementation mapping states otherwise.
 | [foundations-and-computation/computer-algebra/article.tex](foundations-and-computation/computer-algebra/article.tex) | 4 | 0 | 8 | 2 | 14 |
 | [foundations-and-computation/definable-surreals-and-omnific-integers/article.tex](foundations-and-computation/definable-surreals-and-omnific-integers/article.tex) | 24 | 11 | 19 | 12 | 66 |
 | [foundations-and-computation/foundations/article.tex](foundations-and-computation/foundations/article.tex) | 3 | 2 | 16 | 2 | 23 |
+| [foundations-and-computation/large-cardinal-embeddings-and-normal-forms/article.tex](foundations-and-computation/large-cardinal-embeddings-and-normal-forms/article.tex) | 17 | 4 | 3 | 8 | 32 |
 | [foundations-and-computation/omnific-notations/article.tex](foundations-and-computation/omnific-notations/article.tex) | 34 | 13 | 16 | 13 | 76 |
 | [foundations-and-computation/surreal-fields-across-universes/article.tex](foundations-and-computation/surreal-fields-across-universes/article.tex) | 23 | 16 | 8 | 10 | 57 |
 | [physics/quantum-and-gauge-scale-reductions/article.tex](physics/quantum-and-gauge-scale-reductions/article.tex) | 32 | 15 | 17 | 12 | 76 |
 | [physics/surreal-scalars-and-spacetime/article.tex](physics/surreal-scalars-and-spacetime/article.tex) | 4 | 1 | 11 | 3 | 19 |
 | [surcomplex/analysis/article.tex](surcomplex/analysis/article.tex) | 57 | 10 | 24 | 26 | 117 |
 | [surcomplex/analytic-geometry/article.tex](surcomplex/analytic-geometry/article.tex) | 38 | 18 | 16 | 14 | 86 |
+| [surcomplex/autonomous-dilation-relations/article.tex](surcomplex/autonomous-dilation-relations/article.tex) | 13 | 5 | 2 | 6 | 26 |
 | [surcomplex/contours-and-stokes/article.tex](surcomplex/contours-and-stokes/article.tex) | 26 | 11 | 12 | 5 | 54 |
 | [surcomplex/differential-equations/article.tex](surcomplex/differential-equations/article.tex) | 64 | 37 | 35 | 39 | 175 |
 | [surcomplex/dynamics-and-normal-forms/article.tex](surcomplex/dynamics-and-normal-forms/article.tex) | 49 | 35 | 37 | 28 | 149 |
@@ -806,7 +810,7 @@ remain pending unless a precise implementation mapping states otherwise.
 | [surreal/tail-spans-and-differential-transcendence/article.tex](surreal/tail-spans-and-differential-transcendence/article.tex) | 8 | 8 | 4 | 1 | 21 |
 | [surreal/transcendence-over-bounded-support/article.tex](surreal/transcendence-over-bounded-support/article.tex) | 9 | 8 | 3 | 10 | 30 |
 | [surreal/vector-and-tensor-fields/article.tex](surreal/vector-and-tensor-fields/article.tex) | 23 | 1 | 15 | 4 | 43 |
-| **Total** | 1415 | 744 | 738 | 695 | **3592** |
+| **Total** | 1445 | 753 | 743 | 709 | **3650** |
 
 The earlier refresh from `796f8d4` through `1f6d6b8` added four reports and
 expanded an existing one.
@@ -1125,8 +1129,8 @@ The incoming assemblies do not extend earlier proof-review or Lean scope.
 Placement `66d7e55` adds the quantum/gauge base, bringing the inventory
 to 58 main texts, with companions for it and five existing reports.
 Those companions are now assembled by batch 29 below. The nine archives
-in `docs/new/` from `190d301` await placement and reconciliation; they
-are not counted as additional main texts yet. Every unmapped claim in
+from `190d301` were subsequently placed in `21375f8`; the two resulting
+new main texts are now included in the current inventory. Every unmapped claim in
 these additions remains **Pending**.
 
 The inventory now includes the batch-29 assemblies merged through
@@ -1137,8 +1141,16 @@ The current Diophantine and quotient texts contain **200** and **265**
 standard environments respectively; the physics main text contains **76**.
 These counts include assembly, not proof review or checked formalization.
 The mapped omnific rings-and-retraction statement is unchanged by the merge.
-Incoming archives still require ingestion and claim reconciliation beyond
-this maintained-main-text index.
+Placement `21375f8` brings the maintained inventory to 60 main texts. The
+large-cardinal report assumes an amenable elementary embedding into a
+transitive inner class with a critical point; formalization must retain
+these conditional and size hypotheses, rather than postulate its existence.
+The dilation report studies exponent dilation (not raising a series to a
+power), with characteristic-zero and integer-dilation hypotheses. Both
+reports are **Pending** in Lean. Their companion manuscripts, together with
+the new holonomic, nonabelian and omnific-automorphism companions, still
+require integration and claim reconciliation beyond this main-text index.
+No previously mapped main-text statement changed in this placement.
 
 ## Main-report statement index
 
@@ -5558,3 +5570,83 @@ independent proof review and source reconciliation remain pending.
 | Proposition | `qgs:prop:CCR` (line 2847) | \TC\ A complex finite-matrix obstruction |
 | Proposition | `qgs:ops:prop:puiseux` (line 2869) | \TC\ Convergent specialization for the power-scale examples |
 | Proposition | `qgs:ops:prop:rank-two` (line 2890) | \TC\ Finite rank-two monomial realization |
+
+### large-cardinal-embeddings-and-normal-forms
+
+Source: [foundations-and-computation/large-cardinal-embeddings-and-normal-forms/article.tex](foundations-and-computation/large-cardinal-embeddings-and-normal-forms/article.tex).
+
+All statements are **Pending** in Lean. This main text was placed in `21375f8`.
+Placement and source-level proof audits add no Lean coverage.
+Finite symbolic checks are not Lean proofs.
+
+| Kind | Source label or line | Heading |
+|---|---|---|
+| Lemma | `lem:index` (line 349) | The first missing index |
+| Lemma | `lem:absolute` (line 382) | Absolute surreal constructions |
+| Proposition | `prop:J` (line 427) | The elementary-induced surreal embedding |
+| Lemma | `lem:reindex` (line 456) | Reindexing exponents |
+| Theorem | `thm:companion` (line 510) | Existence and uniqueness of the companion |
+| Theorem | `thm:defect` (line 566) | Exact defect and first term |
+| Corollary | `cor:leading` (line 612) | Same leading scale, different tails |
+| Corollary | `cor:omegalocus` (line 625) | Exact omega-map compatibility locus |
+| Theorem | `thm:intersection` (line 661) | Equalizer and common image |
+| Corollary | `cor:transcendence` (line 705) | Transcendental separation |
+| Theorem | `thm:projection` (line 728) | Isomorphic immediate image fields |
+| Theorem | `thm:witness` (line 794) | The basic witness |
+| Theorem | `thm:positive` (line 847) | Positive-family threshold |
+| Corollary | `cor:firstfailure` (line 893) | First failure cardinal |
+| Theorem | `thm:escape` (line 912) | Strong-sum closure and positive escape |
+| Theorem | `thm:measure` (line 974) | The measure-coefficient formula |
+| Corollary | `cor:distinctU` (line 1027) | Distinguishing normal measures |
+| Theorem | `thm:character` (line 1071) | Ultrafilter evaluation as a defect coefficient |
+| Theorem | `thm:measurablecriterion` (line 1118) | A mask criterion for measurability |
+| Theorem | `thm:Oz` (line 1194) | Omnific equalizer, intersection, and fractions |
+| Theorem | `thm:Ozmeasure` (line 1241) | Omnific recovery of the measure |
+| Theorem | `thm:complex` (line 1293) | Surcomplex transfer |
+| Corollary | `cor:modulus` (line 1347) | Conjugation and modulus |
+| Proposition | `prop:invisible` (line 1364) | Coefficient invisibility |
+| Proposition | `prop:twisted` (line 1390) | Twisted product law |
+| Theorem | `thm:logdefect` (line 1424) | Logarithmic defect |
+| Lemma | `lem:exptransfer` (line 1482) | Exponential transfer |
+| Theorem | `thm:expdefect` (line 1500) | Exact exponential defect |
+| Corollary | `cor:expclosure` (line 1542) | Exponential closure without logarithmic closure |
+| Corollary | `cor:Hnotexp` (line 1569) | One image is exponentially closed and the other is not |
+| Theorem | `thm:twoclosures` (line 1603) | Two canonical closures of the common field |
+| Theorem | `thm:supercompact` (line 1685) | Seed extraction |
+
+### autonomous-dilation-relations
+
+Source: [surcomplex/autonomous-dilation-relations/article.tex](surcomplex/autonomous-dilation-relations/article.tex).
+
+All statements are **Pending** in Lean. This main text was placed in `21375f8`.
+Placement and source-level proof audits add no Lean coverage.
+Finite symbolic checks are not Lean proofs.
+
+| Kind | Source label or line | Heading |
+|---|---|---|
+| Lemma | `lem:evaluation` (line 356) | Formal evaluation |
+| Lemma | `lem:constants` (line 385) | Constants are relatively algebraically closed |
+| Lemma | `lem:monomial` (line 405) | Monomial recognizer |
+| Lemma | `lem:puiseux` (line 445) | Evaluated Puiseux branch |
+| Lemma | `lem:bottcher` (line 498) | Normalized formal coordinate |
+| Proposition | `prop:germ` (line 535) | All Hahn solutions of a superattracting germ |
+| Theorem | `thm:collapse` (line 573) | First-order autonomous support rigidity |
+| Theorem | `thm:profiles` (line 676) | Finite-profile classification |
+| Corollary | `cor:coefficients` (line 726) | Coefficient descent |
+| Theorem | `thm:newton` (line 749) | Exact local Newton-weight criterion |
+| Corollary | `cor:existence` (line 786) | Scale-independent existence |
+| Theorem | `thm:negative` (line 810) | Polynomial-in-one-monomial criterion |
+| Corollary | `cor:d-independent` (line 847) | Dilation independence |
+| Theorem | `thm:degree` (line 879) | The exact relation degree |
+| Corollary | `cor:polynomial-field` (line 914) | An ordinary polynomial field identity |
+| Theorem | `thm:omnific` (line 949) | Omnific dilation classification |
+| Corollary | `cor:pairs` (line 973) | All distinct forward dilates |
+| Theorem | `thm:rational` (line 1035) | Rational-map classification |
+| Theorem | `thm:rational-negative` (line 1085) | Rational-map rigidity in the negative-support ring |
+| Corollary | `cor:simultaneous` (line 1110) | Simultaneous rational equations |
+| Theorem | `thm:tail` (line 1136) | First forbidden tail |
+| Theorem | `thm:order-two` (line 1220) | An infinite-support element of exact order two |
+| Theorem | `thm:all-orders` (line 1255) | Every finite order occurs |
+| Proposition | `prop:rank-bounds` (line 1291) | Bounds from the rational rank of finite support |
+| Theorem | `thm:finite-polynomials` (line 1353) | Finitely many bounded polynomial shapes |
+| Theorem | `thm:decidable` (line 1386) | Decidable nonconstant omnific solvability |
