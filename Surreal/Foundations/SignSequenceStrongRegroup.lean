@@ -38,6 +38,15 @@ theorem stronglySummable_reindex_iff (e : κ ≃ ι) :
     simpa only [e.apply_symm_apply] using h.reindex e.symm
   · exact fun h => h.reindex e
 
+/-- Injective reindexing retains both native support certificates. -/
+theorem StronglySummable.comp_injective (hf : StronglySummable f) (k : κ → ι)
+    (hk : Function.Injective k) : StronglySummable (fun n => f (k n)) := by
+  constructor
+  · apply hf.1.mono
+    exact Set.iUnion_subset fun n => Set.subset_iUnion_of_subset (k n) (Set.Subset.refl _)
+  · intro a
+    exact (hf.2 a).preimage hk.injOn
+
 section Small
 
 variable [Small.{u} ι]
@@ -88,6 +97,25 @@ theorem strongSum_reindex [Small.{u} κ] (hf : StronglySummable f) (e : κ ≃ �
     intro i
     rfl
   rw [hs, _root_.HahnSeries.SummableFamily.hsum_equiv]
+
+/-- Omitting only zero terms by an injective reindexing preserves the actual strong sum. -/
+theorem strongSum_comp_injective [Small.{u} κ] (hf : StronglySummable f) (k : κ → ι)
+    (hk : Function.Injective k) (hzero : ∀ n, n ∉ Set.range k → f n = 0) :
+    strongSum (fun n => f (k n)) (hf.comp_injective k hk) = strongSum f hf := by
+  apply rawNormalForm_injective
+  rw [rawNormalForm_strongSum, rawNormalForm_strongSum]
+  have he : hf.toHahnFamily = (hf.comp_injective k hk).toHahnFamily.embDomain ⟨k, hk⟩ := by
+    apply _root_.HahnSeries.SummableFamily.ext
+    intro n
+    by_cases hn : n ∈ Set.range k
+    · obtain ⟨m, rfl⟩ := hn
+      exact (_root_.HahnSeries.SummableFamily.embDomain_image
+        (hf.comp_injective k hk).toHahnFamily ⟨k, hk⟩ (a := m)).symm
+    · rw [_root_.HahnSeries.SummableFamily.embDomain_notin_range
+        (hf.comp_injective k hk).toHahnFamily ⟨k, hk⟩ hn]
+      change rawNormalForm (f n) = 0
+      rw [hzero n hn, rawNormalForm_zero]
+  rw [he, _root_.HahnSeries.SummableFamily.hsum_embDomain]
 
 end Small
 
