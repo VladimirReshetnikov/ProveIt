@@ -433,10 +433,10 @@ imported foundations still require review. Sources 06 and 07, placed in
 together with their material and that of source 13 in
 \cref{odg:sec:rigidity} and source 07's quartic
 (\cref{odg:def:rem:quarticvariant}). A subsequent pass reviews
-\cref{odg:def:sec:arithmetic,odg:def:sec:ct}, including the distinction between
-intermediate rings and full positive-support rings, the detector witnesses
-and the number-field extension. The other newly inserted material
-remains outside the earlier reviews.
+\cref{odg:def:sec:arithmetic,odg:def:sec:ct,odg:def:sec:reconstruction}, including
+the distinction between intermediate rings and full positive-support rings,
+the detector witnesses, coefficient reconstruction and logical consequences.
+The other newly inserted material remains outside the earlier reviews.
 Sources 08 and 09, placed in \texttt{a4dcb91}, were integrated after those
 reviews as \cref{odg:frac:sec:fractions}, together with additions to
 \cref{odg:sec:formal}, one partly answered question and five new questions in
@@ -3885,7 +3885,11 @@ $\mathcal A\subseteq\mathcal F$.
 \end{lemma}
 \begin{proof}
 Choose $g\in\Gamma^{>0}$. For $a\in\mathcal A$ both $\omega^g$ and $a\omega^g$
-lie in $I\subseteq\mathcal R$, so $a=(a\omega^g)/\omega^g\in\mathcal F$.
+lie in $I\subseteq\mathcal R$, and $\omega^g\ne0$, so
+$a=(a\omega^g)/\omega^g\in\mathcal F$. This also covers constants
+$c\in\Bbbk$: although $c$ need not belong to $\mathcal R$, the fraction
+$(c\omega^g)/\omega^g$ does. No common positive lower bound on the support
+of $a$ is needed.
 \end{proof}
 
 \begin{theorem}[The multiplier identity \src{06}]\label{odg:def:thm:multiplier}
@@ -3901,13 +3905,19 @@ exponent, so $\mathcal AI\subseteq I$. Conversely let
 $r\in\mathcal F\setminus\mathcal A$ and choose a negative exponent $h$ in
 $\supp(r)$; it need not be the least, and there need not be a least. Then
 $\omega^{-h}\in I$, and the coefficient of $r\omega^{-h}$ at exponent zero is
-the nonzero coefficient of $\omega^h$ in $r$, so $r\omega^{-h}\notin I$. The
-second identity follows from $\mathcal A^\times=\Bbbk^\times$
+the nonzero coefficient of $\omega^h$ in $r$, so $r\omega^{-h}\notin I$.
+Multiplication by a single monomial translates support injectively; no
+other coefficient contributes at zero and no cancellation can remove it.
+This witnesses the failure to be a multiplier. The second identity follows
+from $\mathcal A^\times=\Bbbk^\times$
 (\cref{odg:def:lem:units}).
 \end{proof}
 
 An integral domain interprets its fraction field by pairs $(a,b)$ with
-$b\ne0$, modulo $ad=bc$, with the usual operations; for the proper classes
+$b\ne0$, where $(a,b)\sim(c,d)$ means $ad=bc$. Addition and multiplication
+are represented by $(ad+bc,bd)$ and $(ac,bd)$, and the original ring by
+$a\mapsto(a,1)$. The denominator $bd$ is nonzero because the ring is a
+domain. For the proper classes
 ``quotient'' means this definable presentation, with set-valued
 representatives supplied by the surreal quotient, and no proper class is used
 as an element of another \src{06}. With $\mathsf{Inf}$ from
@@ -3919,16 +3929,39 @@ as an element of another \src{06}. With $\mathsf{Inf}$ from
  \mathsf{Mult}(a,b)\wedge\mathsf{Mult}(b,a))\bigr).
 \end{align*}
 The first says that the fraction $a/b$ multiplies $I$ into $I$, and is
-invariant under change of representative; the second, by
-\cref{odg:def:thm:multiplier}, says that $a/b\in\Bbbk$.
+invariant under change of representative. Indeed $ax=by$ is equivalent in
+$\mathcal F$ to $(a/b)x=y$; all $x,y$ in this formula range over the original
+ring, where $\mathsf{Inf}$ defines $I$. The second formula handles zero
+separately and otherwise requires both $a/b$ and its inverse $b/a$ to be
+multipliers, so \cref{odg:def:thm:multiplier} identifies it with
+$a/b\in\Bbbk$. It does not assert that every nonzero multiplier is a
+coefficient: $\omega^g\in\mathcal A$ is not a unit there for $g>0$.
 
 \begin{corollary}[Internal reconstruction \src{06}]\label{odg:def:cor:internal}
-Under the hypotheses of \cref{odg:def:thm:ideal} (for instance in the real and
-Gaussian rings), $\mathcal A$ and the actual embedded coefficient field
+Assume $\Gamma\ne0$ and the hypotheses of \cref{odg:def:thm:ideal} (for
+instance in the real and Gaussian rings). Then $\mathcal A$ and the actual
+embedded coefficient field
 $\Bbbk$ are parameter-free first-order definable in the interpreted fraction
 field, and the coefficient map $\mathcal A\to\Bbbk$ has the definable graph
 $\{(a,c):a\in\mathcal A,\ c\in\Bbbk,\ a-c\in I\}$.
 \end{corollary}
+\begin{proof}
+Use $\mathsf{Mult}$ and $\mathsf{Coeff}$ in the interpreted fraction field.
+The last condition means that $a-c$ is the image of an element of the
+original ring satisfying $\mathsf{Inf}$. Every $a\in\mathcal A$ has a unique
+decomposition $a=c+u$ with $c\in\Bbbk$ and $u\in I$, so the displayed
+relation is exactly the coefficient map. This recovers the embedded field,
+not just an abstract isomorphic copy.
+\end{proof}
+
+The same reconstruction works whenever $I$ has a parameter-free definition
+in $\mathcal R$: the multiplier argument imposes no condition on
+$\mathfrak o$ beyond being a unital subring of $\Bbbk$. In particular, for
+$\Gamma\ne0$ the integer-radicand definitions in
+\cref{odg:def:rem:numberfieldideal} recover the coefficient field and map
+under the number-field detector hypotheses, even when $2$ is a square in
+$\Frac(\mathfrak o)$. Substitute that ideal predicate for $\mathsf{Inf}$ in
+the two formulas above; no square root is named in them.
 
 The formulas do not mention monomials; monomials are used only to prove that
 they define the right sets, and $\sqrt2$ is not a hidden parameter. The
@@ -3965,12 +3998,17 @@ graph of the standard part $\st:\Ofin\to\R$.
 Interpret the fraction field, which is $\No$. By \cref{odg:def:cor:internal}
 the predicate $\mathsf{Coeff}$ defines its subfield $\R$. Since $\No$ is real
 closed \cite{Conway,Gonshor}, $x>0\Leftrightarrow x\ne0\wedge\exists z\,(z^2=x)$
-defines the order. Put
-$\Ofin(x):\Leftrightarrow\exists r\in\R\,(r>0\wedge-r\le x\le r)$ and
+defines the order, with $x<y$ obtained by applying it to $y-x$.
+Here $z$ ranges over the interpreted field, not just $\Oz$.
+Put $\Ofin(x):\Leftrightarrow\exists r\in\R\,(r>0\wedge-r\le x\le r)$ and
 $\mathfrak m(x):\Leftrightarrow\forall r\in\R\,(r>0\Rightarrow-r<x<r)$. A
-finite surreal has no positive exponents, and its coefficient at exponent zero
-is a real number differing from it by an infinitesimal, unique since a nonzero
-real is not infinitesimal. So
+nonzero surreal is bounded by a real number exactly when its leading
+exponent is nonpositive. For a finite surreal, removing the coefficient at
+zero leaves either zero or a remainder with a largest, strictly negative
+exponent; that remainder is
+therefore smaller in absolute value than every positive real. This proves
+existence of standard part, including zero by taking coefficient zero.
+It is unique because a nonzero real is not infinitesimal. So
 $\mathsf{ST}(x,r):\Leftrightarrow\Ofin(x)\wedge r\in\R\wedge\mathfrak m(x-r)$
 defines the standard part.
 \end{proof}
@@ -3985,11 +4023,25 @@ $\omega+7$ is not finite \src{06}.
 The natural ordered value group of $\No$ is interpretable from $\Oz$ as
 $\No^\times/\Ofin^\times$, ordered by $v(x)\ge v(y)\Leftrightarrow x/y\in\Ofin$.
 \end{corollary}
+\begin{proof}
+For $x\ne0$, membership in $\Ofin^\times$ means that both $x$ and $x^{-1}$
+are finite. Thus $x\sim y$ iff $x/y\in\Ofin^\times$ is definable, and
+multiplication descends to the quotient. If the leading exponents of $x,y$
+are $g,h$, then $x/y$ has leading exponent $g-h$. It is finite exactly
+when $g\le h$, and a finite unit exactly when $g=h$. Consequently the
+displayed relation is a well-defined total order on the quotient,
+compatible with multiplication; in additive valuation notation
+$v(xy)=v(x)+v(y)$ it corresponds externally to $v(x)=-g$.
+\end{proof}
 
 This recovers the value group as an interpreted quotient, not a canonical
 cross-section of monomials, and does not show that the $\omega$-map, the
 simplicity order, birthdays or the surreal exponential are definable
-\src{06}. The fraction-field construction can be phrased as a canonical
+\src{06}. The external representative $-g$ also explains the proper-class
+convention: it is a surreal number representing a valuation class, not a
+proper class used as an element. Its use to verify the quotient does not
+put a definable monomial cross-section into the interpreted language.
+The fraction-field construction can be phrased as a canonical
 bi-interpretation between the pure ring $\Oz$ and the field $\No$ with a
 predicate for $\Oz$; the essential content is the reconstruction of the
 \emph{canonical} coefficient field.
@@ -4020,7 +4072,11 @@ homomorphisms \src{06}.
 The map $\mathsf S_2(\sum_ga_g\omega^g)=\sum_ga_g\omega^{2g}$ is a field
 automorphism of $\No$ with inverse $\mathsf S_{1/2}$, since doubling exponents
 is an order automorphism of $(\No,+)$; it preserves supports and $\Oz$, fixes
-real coefficients and sends $\omega$ to $\omega^2$. So $\Aut(\Oz)$ is not
+real coefficients and sends $\omega$ to $\omega^2$. Nonnegative exponents
+remain nonnegative,
+and the coefficient at zero is unchanged, so the inverse also preserves
+$\Oz$. This is an exponent substitution, not the squaring map $x\mapsto x^2$;
+for example $\mathsf S_2(1+\omega)=1+\omega^2$. Thus $\Aut(\Oz)$ is not
 trivial.
 \end{example}
 
@@ -4047,10 +4103,15 @@ $\sigma\mapsto\hat\sigma$ is a composition-preserving section.
 \end{proposition}
 \begin{proof}
 A coefficient automorphism preserves supports and the finite sums and products
-defining Hahn convolution; its inverse is $\widehat{\sigma^{-1}}$. It fixes $\Z$
+defining Hahn convolution; its inverse is $\widehat{\sigma^{-1}}$.
+The coefficients of each product are finite sums, so no continuity or
+analytic regularity of $\sigma$ is needed. It fixes $\Z$
 and sends $i$ to $\pm i$, so it preserves $\Z[i]$ and hence $\Og$. An
 automorphism of $\Og$ extends to the fraction field and preserves the
 first-order coefficient predicate of \cref{odg:def:cor:internal}.
+Finally $\widehat{\sigma\circ\rho}=\hat\sigma\circ\hat\rho$ coefficientwise,
+and restriction of $\hat\sigma$ to $\C$ is $\sigma$, giving the stated
+section.
 \end{proof}
 
 For proper-class fields this is a statement about individual maps and their
@@ -4075,7 +4136,10 @@ clear. If $a+b=g$, the contribution of $(a,b)$ to the coefficient at $g$ is
 multiplied by $\chi(a)\chi(b)=\chi(g)$, so $\tau$ commutes with convolution;
 $\chi^{-1}$ gives the inverse. Constants sit at exponent zero and are fixed. A
 Gaussian omnific integer keeps its positive support and its Gaussian integer
-constant term.
+constant term, since $\chi(0)=1$; the inverse has the same property.
+These operations are coefficientwise on set-supported normal forms,
+without an infinite analytic summation. The exponential in $\chi$ is only
+the ordinary complex exponential of a real scalar.
 \end{proof}
 
 The character-twist construction and its use to move the real axis while
@@ -4097,6 +4161,10 @@ sets are invariant under automorphisms fixing the parameters. Conjugation
 does not commute with $\tau$: $\tau(\overline\omega)=i\omega$ while
 $\overline{\tau(\omega)}=-i\omega$. Finally the restriction of $\tau$ to $\Og$
 fixes $\Z[i]$ and moves $\omega\in\Oz$ outside $\Oz$.
+Naming every element of $\C$ does not affect the first obstruction:
+$\tau$ fixes each of them, and every individual formula uses only finitely
+many names. For the restriction to $\Og$, the parameters $\Z[i]$ already
+lie in that ring; arbitrary complex constants need not.
 \end{proof}
 
 There is no conflict with the recovery of $\C$: the twist fixes $\C$
@@ -4116,6 +4184,9 @@ in the Gaussian case, with $\Z[i]$ in place of $\Z$. It is printed once, as
 \cref{odg:thm:transfer,odg:cor:H10}; the proof is the same for every
 $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$. Transfer does not make solutions
 constant: $y=x$ has many nonconstant solutions \src{07}.
+Both the parameters and the free tuple must be in the coefficient subring
+for this two-way transfer. Existential witnesses may range over the entire
+ring: applying $\ct$ supplies coefficient witnesses.
 
 \begin{theorem}[Diophantine subsets of $\Z^n$ \src{06}]\label{odg:def:thm:ce}
 Let $\Bbbk$ be an ordered field containing $\sqrt2$. A subset $S\subseteq\Z^n$,
@@ -4132,13 +4203,28 @@ integer form, by sign coding and sums of squares) $S$ is defined over $\Z$ by
 an integer system $\Phi_S$. In $\mathcal R_\Z(\Bbbk,\Gamma)$ impose
 $\Std(x_1)\wedge\cdots\wedge\Std(x_n)\wedge\Phi_S(\mathbf x)$, with $\Std$ the
 quintic \eqref{odg:def:eq:quintic}; once the free tuple is standard, transfer
-makes the remaining condition equivalent to $\Phi_S$ over $\Z$. In the real
-ring the conjunction can be written as one sum of squares.
+makes the remaining condition equivalent to $\Phi_S$ over $\Z$.
+The guards exclude nonstandard free tuples; no guards on the auxiliary
+witnesses of $\Phi_S$ are needed, since $\ct$ sends any such witnesses to
+integer ones. In the real ring the conjunction can be written as one sum
+of squares.
 \end{proof}
 
 Here $S$ is required to consist of standard tuples. No computability
 classification of arbitrary subsets of the ring is claimed, and arbitrary
 surreal parameters are not finite inputs to an algorithm \src{06}.
+
+\paragraph{Generality of the classification \mergetag.}
+With the finite-system convention for Diophantine definitions, the same
+equivalence holds in $\mathcal R_\Z(\Bbbk,\Gamma)$ for every characteristic-zero
+field $\Bbbk$, without an ordering or a square root of $2$. Apply
+\cref{odg:def:thm:numberfield} with $\mathfrak o=\Z$ and $K=\Q$ to obtain
+the integer guard $\Xi_\Q$; its first assertion needs no root of
+$\Lambda_\Q$ in $\Bbbk$. Replace $\Std$ by this guard in the proof, and use
+the same retraction in both directions. All formula coefficients are
+integers. A single sum-of-squares equation is not claimed over an
+unordered field. This is a consequence of combining the order-free
+definition with source 06's transfer argument.
 
 \begin{corollary}[Standard arithmetic is definable \src{06, 07}]\label{odg:def:cor:arithmetic}
 The structures $(\Z,+,\cdot,0,1)$ and $(\N,+,\cdot,0,1)$ are parameter-free
@@ -4159,7 +4245,8 @@ axiomatization of a complete theory would decide each sentence by searching for
 a proof of it or of its negation.
 \end{proof}
 
-For $\Oz$ the same holds sentence by sentence under the class convention.
+For $\Oz$ the same holds sentence by sentence under the class convention;
+no definable global satisfaction predicate for the class ring is asserted.
 Source 07 credits the non-axiomatizability of omnific arithmetic to
 Je\v r\'abek's 2011 MathOverflow answer \cite{JerabekMO}, and source 06 cites
 the same answer for the logical limitations of $\Oz$; the undecidability of
@@ -4174,7 +4261,7 @@ formula with parameters in $\mathfrak o$ defines a subset of $\mathcal R$ that
 contains a nonzero element of $\Pi_\Bbbk(\Gamma)$ and excludes $0$. In
 particular $\mathcal R\setminus\{0\}$, $\mathcal R\setminus\mathfrak o$ and
 $\Pi_\Bbbk(\Gamma)\setminus\{0\}$ are not so definable, and in the real case
-neither is the positive cone.
+neither is the strictly positive cone.
 \end{theorem}
 \begin{proof}
 The composite $\mathcal R\xrightarrow{\ct}\mathfrak o\hookrightarrow
@@ -4186,6 +4273,10 @@ contains $\omega^g$ for $g\in\Gamma^{>0}$, which is positive in the real case,
 and excludes $0$.
 \end{proof}
 
+The parameter restriction is essential to this endomorphism argument:
+for a fixed nonzero $h\in I$, the equation $x=h$ defines $\{h\}$ with
+parameter $h$, which is not fixed by $\ct$. In the real case ``strictly
+positive'' means $x>0$, so zero is excluded.
 This generalizes \cref{odg:prop:notdiophantine}. It is consistent with the
 Diophantine definitions of $\Pi$ and of $\{\ct\ne0\}$: the first contains $0$,
 and the second contains no element of $\Pi$. The detector avoids the
@@ -4204,10 +4295,17 @@ set-sized ring does not eliminate quantifiers in the ring language.
 \end{proposition}
 \begin{proof}
 In an infinite domain a nonzero one-variable polynomial has finitely many
-roots, so every quantifier-free one-variable definable set is finite or
-cofinite. The ideal and $\mathfrak o$ are infinite, and so are their
-complements: constants witness one, and the monomials $\omega^{kg}$, $k\ge1$,
-the other.
+roots. Each atomic equality is therefore true either everywhere (the
+zero polynomial) or at finitely many points; finite Boolean combinations
+of finite or cofinite sets remain finite or cofinite. This also covers
+negated equalities and any finite tuple of ring parameters.
+Fix $g\in\Gamma^{>0}$. The ideal contains the infinitely many distinct
+monomials $\omega^{kg}$, $k\ge1$, and its complement contains the nonzero
+ordinary integers. The coefficient subring is infinite and its complement
+contains those same monomials. Neither set is finite or cofinite. If the
+complete theory eliminated quantifiers, the coefficient-subring definition
+from \cref{odg:def:thm:numberfield}, with $K=\Q$ or $\Q(i)$, would be
+equivalent to a quantifier-free formula, contradicting what was just proved.
 \end{proof}
 
 This is a first lower bound on logical complexity only; it does not show that
@@ -4225,11 +4323,19 @@ the full rings $\Oz$ and $\Og$ the same explicit type is finitely satisfiable
 and omitted.
 \end{theorem}
 \begin{proof}
-A finite part excludes the roots of finitely many nonzero polynomials, which
-are finitely many elements of the infinite ring $\mathfrak o$, so some element
-of $\mathfrak o$ satisfies it. A realization of the whole type would lie in
-$\mathfrak o$ and be algebraic over $\Q$, so some nonzero integer polynomial
-would vanish at it.
+Use a fixed canonical syntax for integer polynomials, with signed integer
+coefficients and no trailing zero coefficient. Testing that a formula is
+$\Xi_A(x)$ or a displayed inequality for a nonzero polynomial is decidable;
+this makes the type computable, not just countable. Its only coefficients
+are integer numerals, including those of the fixed guard $\Xi_A$.
+A finite part excludes the roots of finitely many nonzero polynomials.
+If the sum of their degrees is $D$, at most $D$ of the ordinary integers
+$0,1,\ldots,D$ are excluded; at least one satisfies every inequality and
+$\Xi_A$. A realization of the whole type would lie in $\mathfrak o$, hence
+be algebraic over $\Q$; clearing denominators in an annihilating rational
+polynomial gives a nonzero integer polynomial vanishing at it, a
+contradiction. Recursive saturation would realize this computable finitely
+satisfiable type over no parameters.
 \end{proof}
 
 For $\mathfrak o=\Z$ the simpler countable type $\{\Std(x)\}\cup\{x\ne n:n\in\Z\}$
@@ -4247,6 +4353,12 @@ sentence $\exists x,y\,(x^2=2y^2\wedge y\ne0)$ is false in $\Z$ and in $\Z[i]$
 and holds in the ring, with $y=\omega^g$ and $x=\sqrt2\,\omega^g$ for any
 $g>0$ (when $\sqrt2\in\Bbbk$). This is a second route to the non-elementarity
 recorded after \cref{odg:thm:induction} and in \cref{odg:rem:ringinduction}.
+The same non-elementarity conclusion for
+$\Z\hookrightarrow\mathcal R_\Z(\Bbbk,\Gamma)$ holds even when $\Bbbk$
+does not contain $\sqrt2$: the sentence $\forall x\,\Xi_\Q(x)$, using the
+guard above, holds in $\Z$ but fails at $\omega^g$ in the larger ring.
+The guard defines $\Z$ in both structures by
+\cref{odg:def:thm:numberfield}; this argument uses no ordering of $\Bbbk$.
 A formula that defines the actual integers in this ring need not select the
 standard copy in an elementary extension, where it defines an elementary
 extension of the induced arithmetic; this is compatible with the omitted
