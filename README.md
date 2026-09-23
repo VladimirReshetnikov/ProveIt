@@ -38,6 +38,18 @@ surcomplexification are proved. This supports results on the actual fields,
 including strong summation, surreal-valued valuation and modulus, fine
 calculus, polynomial root stability and finite geometry.
 
+The source collection also includes omnific-integer
+[Diophantine geometry](docs/surreal/omnific-diophantine-geometry/README.md),
+[set-sized quotients](docs/surreal/set-sized-quotients-of-omnific-integers/README.md),
+groups, lattices and normalization. The actual omnific ring is now constructed
+inside the surreal field: all growth exponents are nonnegative and only the
+constant coefficient must be an ordinary integer. Constant extraction is a
+surjective ring homomorphism onto `ℤ`; its kernel is the purely infinite
+ideal, and the quotient is exactly `ℤ`. The real and complex support rings
+likewise retract onto `ℝ` and `ℂ`. The purely infinite real ideal is also
+proved to be a vector space over `ℝ`. Higher Diophantine and set-sized quotient results
+remain pending; source review is distinct from checked formalization.
+
 The [research collection](docs/README.md) also includes work still awaiting
 Lean proofs. The [omnific Diophantine report](docs/surreal/omnific-diophantine-geometry/)
 exhibits dense arithmetic fibers with opposite denominator behavior and

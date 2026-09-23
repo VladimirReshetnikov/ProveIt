@@ -568,3 +568,7 @@ import Surreal.Surcomplex.FejerRiesz
 import Surreal.Algebra.FiniteAutocorrelation
 import Surreal.Surcomplex.FejerRieszCoefficients
 import Surreal.Surcomplex.FejerRieszCoefficientBounds
+import Surreal.HahnSeries.NonpositiveSupport
+import Surreal.Algebra.CoefficientPullback
+import Surreal.Foundations.OmnificIntegers
+import Surreal.Surcomplex.NonnegativeSupportRing
