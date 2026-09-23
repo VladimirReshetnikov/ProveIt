@@ -362,7 +362,15 @@ or a common lower valuation bound. `E_Γ(V)` has finite total coefficient rank;
 for the induced valuation uniformity, with nets of truncations at arbitrary
 rank. An order unit implies `E ⊊ C` in infinite coefficient dimension; strict
 inclusion `C ⊊ V_Γ` additionally requires a noncyclic nonzero group. Neither
-completion nor strong closure means completion in a coefficient norm.
+completion nor strong closure means completion in a coefficient norm. The
+restriction space `P_Γ(V)` requires a common lower valuation bound on constants;
+its supports need not have a well-ordered union. The invisible continuous
+functionals vanish on `C_Γ(V)`, and their common kernel equals that completion.
+For Hilbert coefficients, **order-bounded** means a positive real-Hahn bound.
+When comparing least bounds with the spectral report, allow nonnegative bounds:
+the zero operator has least nonnegative bound `0` but no least positive one.
+A subspace with zero orthogonal complement can have an algebraic direct-sum
+complement while admitting no orthogonal direct-sum complement.
 
 A **coefficientwise Hahn sum** in the
 [measure report](surreal/hahn-valued-measures-and-probability/article.tex)
