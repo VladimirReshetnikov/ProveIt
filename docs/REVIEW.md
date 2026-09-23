@@ -2315,6 +2315,18 @@ were visually checked. The catalogue remains 28 pages with no diagnostics;
 its other pages have unchanged extracted text and pagination. All 1,287
 local Markdown destinations resolve. This update adds no Lean coverage.
 
+The synchronization through `6fbb985` imports the completed cosine-fold
+multiplicity proofs and coupled-angular roots, rank-four algebra and
+Jacobian/reality clauses. No manuscript source changed in that merge.
+`LEAN_NUM_THREADS=2 lake build` passes all 4,280 jobs; the axiom audit passes
+12,934 declarations with only `propext`, `Classical.choice` and `Quot.sound`.
+All 3,101 cited source labels and 1,295 local Markdown destinations resolve;
+the independent inventory remains 2,614 statements in 51 sources.
+Final inspection also made the nonzero ordinary-modulus hypothesis explicit
+in the introductory quotient notation and shared guide. The rebuilt article
+still has 31 pages and no diagnostics; only physical page 5 changed, and
+it was visually checked again. `git diff --check` passes.
+
 ## Remaining scope
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

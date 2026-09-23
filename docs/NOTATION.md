@@ -59,7 +59,8 @@ nonnegative-growth subring, the constant-coefficient kernel is `J + iJ`.
 For a nonzero form, growth degree is the largest supported exponent and
 satisfies `v = −deg` under the reversed valuation convention.
 
-For the full proper class, `Oz/J ≅ ℤ` and `Oz/nOz ≅ ℤ/nℤ` describe quotient
+For the full proper class, `Oz/J ≅ ℤ` and, for nonzero ordinary `n`,
+`Oz/nOz ≅ ℤ/nℤ` describe quotient
 maps and ordinary representatives; proper-class cosets are not elements of
 a set. Similarly, `Frac(Oz) = No` asserts representation by fractions
 inside `No`. Common support bounds for set-sized families may require a
