@@ -638,7 +638,11 @@ conditioning precision from necessity. The live review record is
 review makes the finite nonempty domains and binary-prior hypotheses explicit,
 expands softmax and information inequalities, and separates an attained
 interior logarithmic-score minimum from the boundary infimum. The delivered
-audit, programs and data remain unchanged.
+audit, programs and data remain unchanged. The
+Sections~\ref{fsp:sec:gibbs}--\ref{fsp:sec:processes} pass adds the
+posterior-support qualification after smoothing, expands the Gibbs and
+finite-process proofs, and makes adaptation and stopping-time measurability
+explicit.
 
 \section{Scalars, size, and the two meanings of exponentiation}
 \label{fsp:sec:scalars}
@@ -1791,12 +1795,13 @@ surreal parameter space.
 \subsection{A finite variational principle without compactness}
 
 \begin{theorem}[Surreal finite Gibbs principle]\label{fsp:thm:gibbs}
-Let $E_1,\ldots,E_n\in E$ be energies and let $\tau>0$ belong to $E$.
+Let $n\ge1$ be an ordinary integer, let $E_1,\ldots,E_n\in E$
+be energies, and let $\tau>0$ belong to $E$.
 Set
 \begin{equation}
  Z=\sum_i e^{-E_i/\tau},\qquad q_i=Z^{-1}e^{-E_i/\tau}.
 \end{equation}
-For every probability vector $p$,
+For every probability vector $p\in E^n$,
 \begin{equation}\label{fsp:eq:gibbs}
  \sum_i p_iE_i-\tau H(p)
  =-\tau\log Z+\tau D(p\Vert q).
@@ -1805,24 +1810,43 @@ Hence $q$ is the unique minimizer of the left-hand side on the finite
 simplex, even when some energies or $1/\tau$ are infinite.
 \end{theorem}
 \begin{proof}
-Use $\log q_i=-E_i/\tau-\log Z$ in the definition of relative entropy.
-Multiplication by $\tau$ and rearrangement give \eqref{fsp:eq:gibbs}.
-The last term is nonnegative and vanishes exactly at $p=q$.
+Each summand defining $Z$ is positive and lies in $E$; thus $Z>0$
+and $q$ is a strictly positive probability vector in $E^n$.
+Consequently $D(p\Vert q)$ is defined for every $p$ on the entire simplex,
+even when some $p_i=0$. On its positive support, substitute
+$\log q_i=-E_i/\tau-\log Z$ to obtain
+\[
+ D(p\Vert q)=-H(p)+\frac1\tau\sum_i p_iE_i+\log Z,
+\]
+using $\sum_i p_i=1$. Multiplication by the positive $\tau$ gives the
+identity, and Gibbs inequality makes its excess term nonnegative, with
+equality exactly at $p=q$. A positive infinitesimal $\tau$ preserves
+strict positivity of a nonzero excess just as any other positive field
+element does. At $n=1$, $q=(1)$ and the identity reduces to $E_1=E_1$.
 \end{proof}
 
 No compactness or Dedekind completeness of the simplex was invoked.
 The minimizer was written down, and the identity proved optimality.
-Infinitesimal temperature is meaningful for a finite system: among real
-energies with a positive real gap, excited states have infinitesimal
-probability. Several ordered energy scales can be treated by
+For a positive infinitesimal temperature and real energies, let
+$E_* = \min_i E_i$ and let $G=\{i:E_i=E_*\}$. Factor
+$e^{-E_*/\tau}$ out of $Z$. Every ground-state term is $1$; every
+excited term is $e^{-(E_i-E_*)/\tau}$, infinitesimal because its positive
+real gap divided by $\tau$ is infinite. The normalized denominator
+therefore has residue $|G|$, giving shadow $1/|G|$ on $G$ and zero
+elsewhere. The gap relative to temperature matters: for energies $(0,\tau)$
+the law is exactly $(1,e^{-1})/(1+e^{-1})$, even when $\tau$ is
+infinitesimal, so both shadows are positive.
+Several ordered energy scales can be treated by
 Theorem~\ref{fsp:thm:multisoft}. This does not construct a thermodynamic
 limit, an infinite-volume Gibbs measure, or a partition function over
 an arbitrary infinite state space.
 
 \subsection{Expected utility and the relevance of rare events}
 
-For finitely many acts and states, expected utility is an ordered-field
-calculation. A maximum among finitely many expected utilities exists.
+For a nonempty finite collection of acts on finitely many states, expected
+utility is an ordered-field calculation. Comparing the finite nonempty
+list of expected utilities successively produces a maximum; no supremum
+or compactness argument is required.
 No Archimedean continuity of preferences is forced: a positive
 infinitesimal preference can be weaker than every positive real
 preference and still be strict. The compression in
@@ -1837,28 +1861,47 @@ multiplication gives the wrong answer. By contrast, for finitely many
 \begin{equation}
  \st\E_pX=\sum_i(\st p_i)(\st X_i),
 \end{equation}
-by its ring property. The qualification on the payoffs is indispensable.
+Every product $p_iX_i$ and their finite sum are limited, so the ring
+property of standard part applies. This explains precisely why the
+qualification on the payoffs is indispensable. In the rare-loss example
+$X=\ind_A/t$ with $P(A)=t$, the payoff $1/t$ has no real standard part,
+although the expectation is the ordinary real number $1$.
 A normative application must decide which utilities and trades it permits;
 surreal arithmetic does not itself settle that decision.
 
 \subsection{Infinitesimal smoothing}
 
-Suppose a finite alphabet has ordinary counts $N_i\ge0$ with
-$N=\sum_iN_i>0$, and choose positive real constants $a_i$.
+Suppose a nonempty finite alphabet has ordinary counts $N_i\in\N$
+with $N=\sum_iN_i>0$. Choose $a_i\in\R_{>0}$ and a positive
+infinitesimal $t$ in the scalar field.
 The law
 \begin{equation}\label{fsp:eq:smoothing}
  p_i=\frac{N_i+t a_i}{N+t\sum_j a_j}
 \end{equation}
-is regular. Seen categories have standard probabilities $N_i/N$;
-unseen categories have positive infinitesimal probabilities with leading
-coefficient $a_i/N$ at scale $t$. Subsequent finite Bayes updates are
-well defined on all categories. The constants $a_i$ and the scale $t$
-are modeling choices, not consequences of the data. Distinct choices
+is regular: its numerator and denominator are positive, and summing
+the numerators gives the denominator. The denominator has residue $N$,
+so a seen category has standard probability $N_i/N$. For an unseen
+category,
+\[
+ p_i=t\frac{a_i}{N+t\sum_j a_j},\qquad
+ \st(p_i/t)=a_i/N.
+\]
+In Hahn coordinates this means $v(p_i)=v(t)$ and
+$\lc(p_i)=(a_i/N)\lc(t)$; the leading coefficient is literally $a_i/N$
+when $t$ is the unit-coefficient monomial $\omega^{-1}$.
+Any single nonnegative likelihood vector that is not identically zero
+has a positive normalizer for this regular prior. Its posterior is
+positive exactly on the positive-likelihood categories. A sequence of
+updates needs the positive joint normalizer from
+Section~\ref{fsp:sec:bayes}; smoothing cannot make incompatible zero
+likelihoods compatible. The constants $a_i$ and the scale $t$ are
+modeling choices, not consequences of the data. Distinct choices
 can give the same empirical shadow and different answers after rare
 conditioning.
 
-For $N=0$, formula \eqref{fsp:eq:smoothing} instead reduces to the ordinary
-prior $a_i/\sum_j a_j$; this case should be handled explicitly rather
+For $N=0$, all nonnegative counts vanish. Canceling the nonzero $t$
+in \eqref{fsp:eq:smoothing} gives the ordinary prior $a_i/\sum_j a_j$;
+this case should be handled explicitly rather
 than described as an infinitesimal perturbation of absent empirical
 frequencies.
 
@@ -1875,15 +1918,29 @@ If there exists $v\in E^d$ with $y_i x_i\cdot v>0$ for every $i$,
 then $L$ has no minimizer in $E^d$.
 \end{proposition}
 \begin{proof}
-For every $s>0$, each signed margin strictly increases from $\theta$
-to $\theta+sv$. Hence every exponential in the sum strictly decreases,
-and so does every logarithmic loss. Their finite sum strictly decreases.
-This improves every proposed parameter, including parameters with
-infinite coordinates.
+Fix any $\theta\in E^d$ and any $s>0$ in $E$. Each signed margin
+increases by $s(y_i x_i\cdot v)>0$ at $\theta+sv$. Its negative
+therefore decreases, and strict monotonicity of both $\exp$ and $\log$
+gives
+\[
+ \log(1+e^{-y_i x_i\cdot(\theta+sv)})
+ <\log(1+e^{-y_i x_i\cdot\theta}).
+\]
+The data set is nonempty, so summing its finitely many strict inequalities
+strictly lowers $L$. The new parameter still belongs to $E^d$, even when
+$\theta$ or $v$ has infinite coordinates. Thus every candidate is improved;
+no limiting point, derivative or continuity theorem is used.
 \end{proof}
 
 An infinite parameter is not a terminal point at infinity: it can still
-be increased. Infinitesimal positive losses are not zero. Soft targets
+be moved in the separating direction. Infinitesimal positive losses are
+not zero. Without strict separation a minimizer can exist.
+For example, two observations with the same scalar feature $x=1$ and
+opposite labels have loss
+$\log((1+e^{-\theta})(1+e^\theta))$.
+Writing $u=e^\theta>0$, one has
+$u+u^{-1}-2=(u-1)^2/u\ge0$, with equality only at $\theta=0$.
+Their loss therefore has its unique minimum $\log4$ at zero. Soft targets
 with independent logits have the explicit optimum described in
 \eqref{fsp:eq:logisticloss}; that fact does not establish existence for every
 constrained regression or regularization problem. Such problems need
@@ -1894,15 +1951,23 @@ their own hypotheses and proofs.
 
 \subsection{Finite chains and finite paths}\label{fsp:sub:paths}
 
-Let $T$ be a finite stochastic matrix over $K$ and let $\pi$ be an initial
-law. For each ordinary finite horizon $N$ the path weights
+Let the finite nonempty state set be $S$, let $T$ be a stochastic
+matrix over $K$ indexed by $S$, and let $\pi$ be an initial law.
+For each ordinary integer horizon $N\ge0$, use all subsets of $S^{N+1}$
+as events and define the path weights
 \begin{equation}
  P(i_0,\ldots,i_N)=\pi_{i_0}\prod_{k=1}^N T_{i_{k-1},i_k}
 \end{equation}
-are nonnegative and normalized. Summing the last coordinate proves
-consistency when the horizon is shortened. Standard part commutes with
-all these finite products and sums, so the path shadow is the real
-chain with initial law $\st\pi$ and transition matrix $\st T$.
+using the empty product $1$ at $N=0$. They are nonnegative.
+For any fixed prefix, summing its extensions multiplies its weight by
+$\sum_{i_N\in S}T_{i_{N-1},i_N}=1$. Repeatedly eliminate terminal
+coordinates to prove normalization and consistency with every shorter
+horizon, ending with $\sum_{i_0}\pi_{i_0}=1$.
+All initial and transition entries lie in $[0,1]$. Their standard parts
+are therefore defined, and the row sums remain $1$. The ring property
+of standard part applied to each path product and each finite event sum
+gives exactly the real chain with initial law $\st\pi$ and transition
+matrix $\st T$.
 This consistency alone is not a theorem about a probability measure on
 infinite paths; Section~\ref{fsp:sec:iid} supplies concrete obstructions to
 one proposed countable-additivity rule.
@@ -1916,10 +1981,15 @@ finite or infinite probability framework has been specified.
 
 \subsection{Finite martingales and stopping}\label{fsp:sub:stopping}
 
-On a finite probability space with a finite filtration
-$\F_0\subseteq\cdots\subseteq\F_N$, a martingale satisfies
-$\E[M_k\mid\F_{k-1}]=M_{k-1}$. The conditional expectation is the one
-already constructed by finite partitions.
+On a finite probability space with a filtration
+$\F_0\subseteq\cdots\subseteq\F_N$ of event algebras, a martingale
+$(M_k)_{k=0}^N$ is $K$-valued, has $M_k$ measurable with respect to
+$\F_k$, and satisfies $\E[M_k\mid\F_{k-1}]=M_{k-1}$ outside a null
+event for $1\le k\le N$. The conditional expectation is the one already
+constructed by finite partitions; null-atom versions do not affect scalar
+expectations. A stopping time $T:\Omega\to\{0,\ldots,N\}$ satisfies
+$\{T\le k\}\in\F_k$ for every $k$. Here $T$ denotes the random time,
+not the transition matrix of the preceding subsection.
 
 \begin{proposition}[Bounded finite-horizon optional stopping]
 If $T$ is a stopping time taking values in $\{0,\ldots,N\}$, then
@@ -1930,44 +2000,74 @@ The pathwise identity
 \begin{equation}
  M_T=M_0+\sum_{k=1}^N\ind_{\{T\ge k\}}(M_k-M_{k-1})
 \end{equation}
-is a finite telescoping sum. The indicator is
-$\F_{k-1}$-measurable. By the tower and pull-out properties, each
-summand has expectation zero. Taking expectations proves the claim.
+is a pointwise telescoping sum: on $\{T=j\}$ exactly the terms
+$1\le k\le j$ occur, including the empty sum when $j=0$.
+The stopping-time property gives
+$\{T\ge k\}=\Omega\setminus\{T\le k-1\}\in\F_{k-1}$.
+The pull-out rule and the martingale identity therefore give
+\[
+ \E[\ind_{\{T\ge k\}}(M_k-M_{k-1})]
+ =\E\!\left[\ind_{\{T\ge k\}}
+       \E[M_k-M_{k-1}\mid\F_{k-1}]\right]=0.
+\]
+Any null-atom version contributes zero. Taking expectations of the
+finite sum proves the claim, including $N=0$.
 \end{proof}
 
 No boundedness by a real constant of $M_k$ is needed on this finite
 space. Conversely, this proof does not justify an unbounded stopping
 time or a limit of stopped martingales. Those assertions require
-additional integration and convergence results.
+additional integration and convergence results. The stopping-time
+hypothesis is also essential: on two equiprobable states take $M_0=0$,
+$M_1\in\{-1,1\}$, trivial $\F_0$ and full $\F_1$.
+Choosing $T=1$ exactly when $M_1=1$ gives $\E M_T=1/2$,
+but is not a stopping time because $\{T\le0\}$ is not in $\F_0$.
+It selects whether to stop using information that was unavailable at time zero.
 
 \subsection{Rare transitions and sample size}
 
 Consider a state that changes irreversibly with probability $t>0$
-infinitesimal at each step. At a fixed ordinary horizon $n$ its hitting
-probability is
+infinitesimal at each step while it remains in its initial state.
+At a fixed ordinary horizon $n\ge0$ its hitting probability is
 \begin{equation}\label{fsp:eq:hitting}
  1-(1-t)^n\le nt.
 \end{equation}
-The inequality follows by the finite union bound, or by induction on
-$n$. Thus every ordinary finite-horizon shadow sees no transition,
-although the exact finite-horizon probability is positive.
+The no-change path has probability $(1-t)^n$, so its complement has
+probability $1-(1-t)^n$.
+For the bound, start with equality at $n=0$ and use
+\[
+ 1-(1-t)^{n+1}=1-(1-t)^n+t(1-t)^n\le nt+t.
+\]
+Here $0\le(1-t)^n\le1$. Thus the hitting probability is infinitesimal
+at every ordinary horizon; it is strictly positive when $n\ge1$ and zero
+when $n=0$. Its standard part is always zero.
 Writing ``take $n=1/t$'' is not a valid use of this formula unless a
 meaning for a nonstandard or surreal-indexed number of trials has first
 been supplied. A scalar in $\No$ is not automatically a finite set
 cardinality, a path length, or an induction index.
 
-For $n$ independent Bernoulli variables at an ordinary finite horizon,
-finite variance algebra gives
+For an ordinary positive integer $n$, let $X_1,\ldots,X_n$ be
+independent Bernoulli variables with parameter $p\in[0,1]_K$ and put
+$\overline X_n=n^{-1}\sum_{k=1}^nX_k$. Finite variance algebra gives
 \begin{equation}
  \E\overline X_n=p,\qquad
  \Var(\overline X_n)=\frac{p(1-p)}{n},\qquad
  P(|\overline X_n-p|\ge a)\le\frac{p(1-p)}{na^2}.
 \end{equation}
-These inequalities hold for surreal $a>0$. Their interpretation depends
-on scale. For fixed positive real $a$ and a real shadow, they have the
+Indeed $X_k^2=X_k$ gives $\Var(X_k)=p(1-p)$, and independence
+gives $\E[X_jX_k]=p^2$ for $j\ne k$, so all cross covariances vanish.
+Expanding the square of the finite sum yields variance $np(1-p)$;
+dividing by $n^2$ and applying Chebyshev proves the display.
+The inequalities hold for surreal $a>0$, including the deterministic
+cases $p=0,1$. Their interpretation depends on scale. For fixed positive real $a$ and a real shadow, they have the
 usual ordinary limiting implications in a compatible classical model.
 For an infinitesimal resolution $a$, increasing an ordinary integer
-$n$ need not make the right-hand side small. There is no unconditional
+$n$ need not make the right-hand side small. At $p=a=t$, for example,
+the bound $(1-t)/(nt)$ is infinite for every ordinary $n\ge1$.
+In fact $P(|\overline X_n-t|\ge t)=1$: the empirical mean is either
+zero, with error exactly $t$, or at least $1/n>2t$, with error greater
+than $t$. This is an exact finite experiment at each $n$, not a claim
+that an infinite path law has already been constructed. There is no unconditional
 law of large numbers in the full fine surreal topology hidden in this
 finite calculation.
 
