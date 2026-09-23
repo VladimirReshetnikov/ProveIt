@@ -5803,38 +5803,38 @@ Placed in `21375f8` from source 07. This is the critical-point-defects base; sou
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `lem:index` (line 349) | The first missing index |
-| Lemma | `lem:absolute` (line 382) | Absolute surreal constructions |
-| Proposition | `prop:J` (line 427) | The elementary-induced surreal embedding |
-| Lemma | `lem:reindex` (line 456) | Reindexing exponents |
-| Theorem | `thm:companion` (line 510) | Existence and uniqueness of the companion |
-| Theorem | `thm:defect` (line 566) | Exact defect and first term |
-| Corollary | `cor:leading` (line 612) | Same leading scale, different tails |
-| Corollary | `cor:omegalocus` (line 625) | Exact omega-map compatibility locus |
-| Theorem | `thm:intersection` (line 661) | Equalizer and common image |
-| Corollary | `cor:transcendence` (line 705) | Transcendental separation |
-| Theorem | `thm:projection` (line 728) | Isomorphic immediate image fields |
-| Theorem | `thm:witness` (line 794) | The basic witness |
-| Theorem | `thm:positive` (line 847) | Positive-family threshold |
-| Corollary | `cor:firstfailure` (line 893) | First failure cardinal |
-| Theorem | `thm:escape` (line 912) | Strong-sum closure and positive escape |
-| Theorem | `thm:measure` (line 974) | The measure-coefficient formula |
-| Corollary | `cor:distinctU` (line 1027) | Distinguishing normal measures |
-| Theorem | `thm:character` (line 1071) | Ultrafilter evaluation as a defect coefficient |
-| Theorem | `thm:measurablecriterion` (line 1118) | A mask criterion for measurability |
-| Theorem | `thm:Oz` (line 1194) | Omnific equalizer, intersection, and fractions |
-| Theorem | `thm:Ozmeasure` (line 1241) | Omnific recovery of the measure |
-| Theorem | `thm:complex` (line 1293) | Surcomplex transfer |
-| Corollary | `cor:modulus` (line 1347) | Conjugation and modulus |
-| Proposition | `prop:invisible` (line 1364) | Coefficient invisibility |
-| Proposition | `prop:twisted` (line 1390) | Twisted product law |
-| Theorem | `thm:logdefect` (line 1424) | Logarithmic defect |
-| Lemma | `lem:exptransfer` (line 1482) | Exponential transfer |
-| Theorem | `thm:expdefect` (line 1500) | Exact exponential defect |
-| Corollary | `cor:expclosure` (line 1542) | Exponential closure without logarithmic closure |
-| Corollary | `cor:Hnotexp` (line 1569) | One image is exponentially closed and the other is not |
-| Theorem | `thm:twoclosures` (line 1603) | Two canonical closures of the common field |
-| Theorem | `thm:supercompact` (line 1685) | Seed extraction |
+| Lemma | `lce:lem:index` (line 349) | The first missing index |
+| Lemma | `lce:lem:absolute` (line 382) | Absolute surreal constructions |
+| Proposition | `lce:prop:J` (line 427) | The elementary-induced surreal embedding |
+| Lemma | `lce:lem:reindex` (line 456) | Reindexing exponents |
+| Theorem | `lce:thm:companion` (line 510) | Existence and uniqueness of the companion |
+| Theorem | `lce:thm:defect` (line 566) | Exact defect and first term |
+| Corollary | `lce:cor:leading` (line 612) | Same leading scale, different tails |
+| Corollary | `lce:cor:omegalocus` (line 625) | Exact omega-map compatibility locus |
+| Theorem | `lce:thm:intersection` (line 661) | Equalizer and common image |
+| Corollary | `lce:cor:transcendence` (line 705) | Transcendental separation |
+| Theorem | `lce:thm:projection` (line 728) | Isomorphic immediate image fields |
+| Theorem | `lce:thm:witness` (line 794) | The basic witness |
+| Theorem | `lce:thm:positive` (line 847) | Positive-family threshold |
+| Corollary | `lce:cor:firstfailure` (line 893) | First failure cardinal |
+| Theorem | `lce:thm:escape` (line 912) | Strong-sum closure and positive escape |
+| Theorem | `lce:thm:measure` (line 974) | The measure-coefficient formula |
+| Corollary | `lce:cor:distinctU` (line 1027) | Distinguishing normal measures |
+| Theorem | `lce:thm:character` (line 1071) | Ultrafilter evaluation as a defect coefficient |
+| Theorem | `lce:thm:measurablecriterion` (line 1118) | A mask criterion for measurability |
+| Theorem | `lce:thm:Oz` (line 1194) | Omnific equalizer, intersection, and fractions |
+| Theorem | `lce:thm:Ozmeasure` (line 1241) | Omnific recovery of the measure |
+| Theorem | `lce:thm:complex` (line 1293) | Surcomplex transfer |
+| Corollary | `lce:cor:modulus` (line 1347) | Conjugation and modulus |
+| Proposition | `lce:prop:invisible` (line 1364) | Coefficient invisibility |
+| Proposition | `lce:prop:twisted` (line 1390) | Twisted product law |
+| Theorem | `lce:thm:logdefect` (line 1424) | Logarithmic defect |
+| Lemma | `lce:lem:exptransfer` (line 1482) | Exponential transfer |
+| Theorem | `lce:thm:expdefect` (line 1500) | Exact exponential defect |
+| Corollary | `lce:cor:expclosure` (line 1542) | Exponential closure without logarithmic closure |
+| Corollary | `lce:cor:Hnotexp` (line 1569) | One image is exponentially closed and the other is not |
+| Theorem | `lce:thm:twoclosures` (line 1603) | Two canonical closures of the common field |
+| Theorem | `lce:thm:supercompact` (line 1685) | Seed extraction |
 
 ### autonomous-dilation-relations
 

@@ -54,6 +54,9 @@
 \newcommand{\comp}{\mathbin{\cdot}}
 \newcommand{\snapshot}{\texttt{bcac55ae6fd3f2b354e568ba1d2e94d496a2cc59}}
 \newcommand{\repo}[1]{\href{https://github.com/VladimirReshetnikov/Surreal/blob/bcac55ae6fd3f2b354e568ba1d2e94d496a2cc59/#1}{\nolinkurl{#1}}}
+\newcommand{\rpath}[1]{\nolinkurl{#1}}% a path in the collection, relative to docs/
+\newcommand{\lbl}[1]{\nolinkurl{#1}}% a label of another report, cited by name
+\newcommand{\wtag}{\textup{[write]}}% text added when the report joined the collection
 \numberwithin{equation}{section}
 \setlength{\parskip}{3pt}
 \setlength{\parindent}{1.15em}
@@ -71,18 +74,21 @@
 \hypersetup{pageanchor=false}
 \begin{titlepage}
 \thispagestyle{empty}
-\vspace*{0.25in}
-{\large\scshape Surreal and surcomplex algebra\par}
-\vspace{0.28in}
+\vspace*{0.05in}
+{\large\scshape Single-source research report\par}
+\vspace{0.2in}
 {\Huge\bfseries Independent Surreal Copies\par}
 \vspace{0.12in}
 {\Huge\bfseries and Arithmetic Intersections\par}
-\vspace{0.22in}
+\vspace{0.16in}
 {\Large Prescribed Hahn cores, algebraic independence,\par
 and two transcendental descent obstructions\par}
-\vspace{0.28in}
+\vspace{0.2in}
 {\large AI-assisted research draft\par 23 September 2026\par}
-\vspace{0.22in}
+\vspace{0.04in}
+{\small Built from one manuscript of batch~31 of the collection,
+pinned to repository commit \texttt{bcac55a}\par}
+\vspace{0.16in}
 \hrule
 \vspace{0.15in}
 \begin{abstract}
@@ -117,6 +123,11 @@ and its arithmetic and compositum applications. The ingredients and the
 bounded-support transcendence mechanism are not claimed as new. This is an
 unrefereed, non-formalized draft, not a certified priority claim or a claimed
 solution of a named longstanding conjecture.
+\wtag{} Independent proof review and formalization are pending. Labels
+carry the prefix \texttt{isc:}. Conventions, the place in the collection,
+the non-claims and the provenance are in
+\cref{isc:sec:conventions,isc:sec:collection,isc:sec:nonclaims} and
+Appendix~\ref{isc:app:report}; added text is marked \wtag.
 
 \smallskip
 \noindent\small Repository comparison is pinned to commit\par
@@ -128,7 +139,7 @@ solution of a named longstanding conjecture.
 {\small\setlength{\parskip}{0pt}\tableofcontents}
 \clearpage
 
-\section{Three questions and their answers}\label{sec:introduction}
+\section{Three questions and their answers}\label{isc:sec:introduction}
 
 The existence of an embedding into the surreal numbers says little about
 how two embedded copies meet. An intersection question asks for much more:
@@ -155,7 +166,7 @@ are classical; see \cite{Gonshor,vdDE,LM}.
 
 \subsection{Prescribing the common field}
 
-\begin{mainthm}[Independent full copies over a prescribed Hahn core]\label{main:copies}
+\begin{mainthm}[Independent full copies over a prescribed Hahn core]\label{isc:main:copies}
 Let $H\subseteq\No$ be a set-sized divisible additive subgroup and write
 $L_k=\K{k}{H}$ for $k=\R,\C$. There are class maps
 \[
@@ -182,11 +193,11 @@ $L_\C$, commute with conjugation, and preserve and reflect $\GOz$.
 \end{enumerate}
 \end{mainthm}
 
-The proof is given in \cref{sec:group,sec:lifts,sec:slices,sec:copies}.
+The proof is given in \cref{isc:sec:group,isc:sec:lifts,isc:sec:slices,isc:sec:copies}.
 ``Jointly linearly disjoint'' is stronger than pairwise intersection being
 small: finitely many independent choices from different copies satisfy no
 new polynomial relations over the common core. Proper-class terminology is
-made precise in \cref{sec:foundations}; no tensor product indexed by a proper
+made precise in \cref{isc:sec:foundations}; no tensor product indexed by a proper
 class is required.
 
 A useful immediate specialization is $H=\{0\}$. It produces full copies of
@@ -197,8 +208,8 @@ In either case each copy is as large as the whole surreal field.
 
 \subsection{Arithmetic intersection is not field reconstruction}
 
-\begin{mainthm}[Transcendental failure of fraction-field descent]\label{main:fractions}
-Choose two copies in \cref{main:copies}. Then
+\begin{mainthm}[Transcendental failure of fraction-field descent]\label{isc:main:fractions}
+Choose two copies in \cref{isc:main:copies}. Then
 \[
  \Frac(R_\alpha)=K_\alpha,\qquad
  \Frac(R_\alpha\cap R_\beta)
@@ -220,7 +231,7 @@ $\Frac(\Oz)=\No$. Indeed that classical identity is indispensable to the
 argument. Each copy separately supplies denominators for every element of
 its field, but the \emph{shared} denominators need not suffice for their
 shared field. The phenomenon remains after the missing-real-constants
-explanation has been removed. \Cref{sec:fractions,sec:gaps} prove the result.
+explanation has been removed. \Cref{isc:sec:fractions,isc:sec:gaps} prove the result.
 
 \subsection{An ordinary compositum is smaller than a full Hahn join}
 
@@ -229,9 +240,9 @@ join} is the full Hahn field on the sum of their exponent groups. Their
 \emph{ordinary compositum} is the field generated using finitely many field
 operations. These should not be conflated.
 
-\begin{mainthm}[A transcendental gap above the compositum]\label{main:join}
+\begin{mainthm}[A transcendental gap above the compositum]\label{isc:main:join}
 There are explicit strong embeddings $\Phi_0,\Phi_1$ as in
-\cref{main:copies} with $H=0$ for which, writing
+\cref{isc:main:copies} with $H=0$ for which, writing
 \[
  K_j=\Phi_j(\No),\qquad
  E=\K{\R}{G_0+G_1},\qquad M=K_0K_1,
@@ -243,12 +254,12 @@ The same $S$ is transcendental over the compositum of the complexified
 copies inside $\K{\C}{G_0+G_1}$.
 \end{mainthm}
 
-The two-level normal-form construction is explicit in \cref{sec:explicit}.
+The two-level normal-form construction is explicit in \cref{isc:sec:explicit}.
 The formula for $S$ and the coefficient-field obstruction are proved in
-\cref{sec:join}. The latter argument is independent of the lacunary-series
-argument used for \cref{main:fractions}.
+\cref{isc:sec:join}. The latter argument is independent of the lacunary-series
+argument used for \cref{isc:main:fractions}.
 
-\subsection{What is new here, and what is not}\label{subsec:provenance}
+\subsection{What is new here, and what is not}\label{isc:subsec:provenance}
 
 The classical inputs are the set-cut property of $\No$, its normal-form
 presentation, Hahn multiplication and inversion, and the real/algebraic
@@ -277,7 +288,253 @@ arrangements. Targeted literature searches do not certify that this combined
 formulation is absent from all published or unpublished work. No claim of
 having audited every report or every later repository revision is made.
 
-\section{Foundations, support, and size}\label{sec:foundations}
+\wtag{} This subsection is the source's, written at its pin. Its
+description of the omnific-preserving report as concerning stabilizers and
+rigidity was accurate then: at the pin that report had no part on
+embeddings. Its Part~III, written afterwards, classifies the strong
+exact-monomial embeddings that preserve $\Oz$, and the lifts used here are
+the real-fixing case of that classification. The bounded-support report is
+unchanged since the pin. The attribution to L'Innocente--Mantova was checked
+(Appendix~\ref{isc:app:literature}). The relation to the collection as it
+now stands, with exact labels, is in \cref{isc:sec:collection}.
+
+\subsection{Notation and conventions in this report}
+\label{isc:sec:conventions}
+
+\wtag{} This subsection and the next were written when the manuscript
+joined the collection. No symbol of the source was renamed and no
+normalization was changed. The meanings below are fixed once for the whole
+report, and the collisions with other reports are disclosed here rather
+than removed. Paths such as \rpath{surreal/omnific-preserving-automorphisms}
+are relative to \rpath{docs/}, and labels of other reports are cited by
+name.
+\begin{itemize}[leftmargin=*,itemsep=3pt]
+\item \emph{Two exponent conventions.} \Cref{isc:sec:introduction} to
+\cref{isc:sec:join}, \cref{isc:sec:setversion} and the beginning of
+\cref{isc:sec:fractions} use Conway's decreasing large-$\omega$ convention
+$x=\sum r_g\omega^g$. There $\Oz$ consists of the series supported in
+$\No^{>0}\cup\{0\}$ with integral constant coefficient: the purely infinite
+part sits at \emph{positive} exponents. From \cref{isc:sub:bounded} to the end of
+\cref{isc:sec:gaps} the source switches to $t^h=\omega^{-h}$, the convention
+of the omnific-preserving report's Part~III (\lbl{opa:as:sub:notation}) and of
+the bounded-support report (\lbl{bst:sec:setup}); there the purely infinite
+part has \emph{negative} $t$-exponents and $v$ is the least $t$-exponent.
+The tempting false reading of $\B{k}{H}$ is ``support bounded above in the
+Conway exponents''. The true reading is ``bounded above in the
+$t$-exponents'', that is, Conway exponents bounded \emph{below}.
+\item \emph{Fields.} $\K{k}{G}$ is the \emph{full} Hahn field on $G$,
+support-closed and not generated by monomials; for $k\ne\R,\C$ it is
+formal. $L_k=\K{k}{H}$, with $H$ a set-sized divisible subgroup of $\No$.
+This $H$ need not be convex. It is not a convex subgroup $H_g$ of the
+omnific-preserving report (\lbl{opa:def:convex}), and not the large-cardinal
+report's embedding $H_j$.
+\item \emph{Rings.} $\A{k}{H}=D_k\oplus\PiG{k}{H}$ with $D_\R=\Z$,
+$D_\C=\Z[i]$ restricts the constant coefficient to $D_k$. It is the ring
+$\mathcal R_\Gamma$ (or $\mathcal R^\C_\Gamma$) of the omnific-preserving
+report's Part~III and the ring $\mathcal R_{D_k}(k,\Gamma)$ of the
+Diophantine report's Section~11. It is \emph{not} that Part's
+$\mathcal A_\Gamma=\R\oplus\Pi_\Gamma$. Nor is it the Diophantine report's
+$\mathcal A_k(\Gamma)$, whose constant coefficient ranges over all of $k$.
+$D_k$ is a ring of integers and never a derivation; the omnific-preserving
+report reserves $d$ and $D$ for derivations. $\B{k}{H}$ is the
+bounded-support report's $\mathcal B_H(k)$, with the two arguments in the
+opposite order, and $\Frac\B{k}{H}$ is its $\mathcal F_H(k)$.
+\item \emph{Maps.} $\Phi_h$ of \eqref{isc:eq:lift} is the monomial map
+$M_{1,h}=J_{h,\id}$ of \lbl{opa:as:eq:classification}. It is not the
+Taylor automorphism $\Phi_d$ of the surcomplex-automorphisms report
+(the omnific-preserving report's $\mathcal T_{d,\delta}$), and not the
+large-cardinal report's sign-sequence embedding $J$. The letters $h_\alpha$,
+$G_\alpha$, $\Phi_\alpha$, $K_\alpha$ denote the family of
+\cref{isc:thm:group} in \cref{isc:sec:group,isc:sec:lifts,isc:sec:slices,isc:sec:copies}
+and the explicit family in \cref{isc:sec:explicit,isc:sec:join}. There
+$h_\alpha$ is the \emph{inner} map \eqref{isc:eq:inner}, which is the inner
+lift $\iota_{\sigma_\alpha}$ of \lbl{opa:as:eq:innerlift}. The maps
+$h_\alpha$ fix $H$ as a set of exponents, and $\Phi_\alpha$ fixes
+$\K{\R}{H}$ (\cref{isc:rem:base}). ``Monomial-preserving'' is the
+omnific-preserving report's ``exact-monomial'': a Conway monomial goes to a
+Conway monomial with coefficient one. It does not mean commuting with the
+omega-map. The order isomorphism $\psi$ of \cref{isc:lem:compression} is
+not that report's $\mu_{12}$ (its source~12's $\psi$), nor $\mu_{11}$ or
+$\mu_{13}$. The slice $\lambda_{g,H}$ of \eqref{isc:eq:slice} is the
+bounded-support report's shifted coset projection $\pi_g$
+(\lbl{bst:eq:projection}); it is not the class functional $\lambda_{\On}$.
+\item \emph{Local letters.} $L,R$ are the sides of a cut in
+\eqref{isc:eq:cut} and \cref{isc:lem:avoid,isc:lem:extend}; $L$ is also a
+generic base field in the definition of linear disjointness and in
+\cref{isc:lem:matrix}. $M=K_0K_1$ is an ordinary compositum, not a
+monomial map $M_{\chi,\tau}$. $E$ is a span in the proof of
+\cref{isc:thm:group}, the field $E_J$ of \eqref{isc:eq:diagram}, and the
+Hahn join of \cref{isc:main:join}. $F$ is the witness of
+\cref{isc:main:fractions} and \eqref{isc:eq:cofinalF}, and a polynomial in
+\cref{isc:cor:relations}. It is not the image field $F$ of
+\lbl{opa:as:prop:overlap}, and not the fraction field $\mathcal F_G(K)$.
+$A$ is a set of parameters in \cref{isc:cor:parameters}, a matrix in
+\cref{isc:lem:matrix} and a subgroup in \cref{isc:lem:iterated}, where $B$
+is a subgroup too; the calligraphic $\mathcal A$, $\mathcal B$ are the
+rings. $D$ is a domain or subspace in \cref{isc:sec:group} and a
+coefficient field in \cref{isc:sec:join}. $S$ is a support set and the
+witness \eqref{isc:eq:explicitS}. $I$ is an index set and $I_\alpha$ an
+interval.
+\item \emph{Cardinals.} In \cref{isc:sec:gaps}, $\kappa=\cf(H)$. In
+\cref{isc:sec:setversion}, $\kappa$ is an arbitrary uncountable regular
+cardinal. Neither is the critical point $\kappa$ of the large-cardinal
+report.
+\item \emph{Strong} means preserving Hahn summability of set-indexed
+families; it is not convergence of partial sums.
+\end{itemize}
+
+\subsection{Place in the collection}\label{isc:sec:collection}
+
+\wtag{} The source compared itself with the catalogue, the
+omnific-preserving report and the bounded-support report at its pin
+(Appendix~\ref{isc:app:pinned}). Checked against the collection at the
+placement commit, the relations are these.
+
+\paragraph{Omnific-preserving automorphisms}
+(\rpath{surreal/omnific-preserving-automorphisms}, prefix \texttt{opa:}).
+Its Part~III (sub-prefix \texttt{opa:as:}) was written after the pin, so the
+source did not see it. Its bottom-gap classification
+\lbl{opa:as:thm:classification} lists the strongly additive field embeddings
+$J$ with $J(t^\gamma)=t^{\tau(\gamma)}$ and $J(\mathcal R_\Gamma)\subseteq
+\mathcal R_\Delta$ as the maps $J_{\tau,\rho}$. Here $\rho$ ranges over
+the ordered embeddings of $\R$ into the Hahn field of the bottom gap of
+$\tau$.
+\begin{enumerate}[leftmargin=*,itemsep=3pt]
+\item \emph{Lifts.} With $\Gamma=\Delta=\No$, $t^\gamma=\omega^{-\gamma}$
+and $\tau=h$, the lift $\Phi_h$ of \cref{isc:thm:lift} is $J_{h,\id}$, the
+case $\rho=\id$. The same exponent map serves in both conventions because
+$h$ is additive. The preservation and reflection of $\Oz$ in
+\cref{isc:prop:arithmeticlift} is Step~5 of that proof and the display
+\lbl{opa:as:eq:classprops}. \Cref{isc:prop:classification} is the
+uniqueness clause of Step~2, for real-fixing maps; here the order of $h$ is
+derived from real fixing. The floor, standard-part and modulus clauses of
+\cref{isc:prop:arithmeticlift} are not stated there.
+\item \emph{Real fixing is a choice.} The explicit ranges $G_\alpha$ of
+\cref{isc:sec:explicit} have a nonzero bottom gap: $\omega^{3\alpha}$ lies
+below every positive element of $G_\alpha$, and for $\alpha=0$ the gap is
+the group of finite surreals. By \lbl{opa:as:thm:taylorcriterion}, the
+composite of a Taylor automorphism $\mathcal T_{d,\delta}$ with $\Phi_\alpha$,
+for $0<\delta$ in that gap, therefore also preserves and reflects $\Oz$ and
+moves a transcendental real. The source takes $\rho=\id$ throughout, which
+is consistent. For the family of \cref{isc:thm:group} the construction does
+not determine the gap. \Cref{isc:thm:intersectionclassification} depends on
+the real-fixing hypothesis: in the larger exact-monomial class, images meet
+$\R$ in the fixed field of $\rho$, for example $\ker d$
+(\lbl{opa:as:prop:overlap}). No classification of intersections in that
+class is claimed.
+\item \emph{Inner and outer levels.} The inner map \eqref{isc:eq:inner} is
+the inner lift $\iota_{\sigma_\alpha}$ of \lbl{opa:as:eq:innerlift} and
+\lbl{opa:as:lem:inner}, and $\Phi_\alpha=M_{1,\iota_{\sigma_\alpha}}$. The
+order isomorphisms of \lbl{opa:as:eq:mus} have unbounded images; the
+explicit embeddings \lbl{opa:as:thm:explicit} combine them with Taylor
+sections in order to move a real. The maps $\sigma_\alpha$ here have
+bounded, pairwise disjoint images, which is what gives independence. The
+failure of omega-map commutation, $\Phi_0(\omega^1)\ne\omega^{\Phi_0(1)}$,
+is the same observation as the one recorded after
+\lbl{opa:as:cor:homogeneity}.
+\item \emph{Parameters.} \Cref{isc:cor:parameters} extends
+\lbl{opa:as:thm:parameters}, which gives two proper strong exact-monomial
+copies fixing $A\cup\R$ and preserving and reflecting $\Oz$. Here there is an
+$\On$-indexed family whose pairwise intersection is exactly the full Hahn
+field $\K{\R}{H}\supseteq A\cup\R$, jointly linearly disjoint over it.
+The mechanisms differ. That theorem fixes the inner supports through an
+order embedding (\lbl{opa:as:lem:parameters}); here the outer exponent
+group $H$ is fixed by $h_\alpha$. The topological assertions of that
+theorem (closed, discrete or nondiscrete images) are not claimed here, and
+that report does not study intersections.
+\item \emph{Complex version.} The complex clauses of \cref{isc:main:copies}
+and \cref{isc:thm:explicit} are the case $\varepsilon=1$, $\rho=\id$ of
+\lbl{opa:as:thm:complexembed}, parallel to \lbl{opa:as:cor:complexcopies}.
+\item \emph{Elementarity.} The ordered-field statement of \cref{isc:sub:model} is the first assertion of
+\lbl{opa:as:thm:elementary}. That theorem's nonelementarity criterion
+needs a moved real, and the maps here fix $\R$.
+\item \emph{Questions.} None is answered. Research question~2 is the pair
+version, at a fixed Hahn core, of \lbl{opa:as:q:conjugacy}. Research
+question~9 asks \lbl{opa:as:q:elementary} for the maps here, with a
+prescribed intersection added. Research questions~6 and~7 lie inside
+\lbl{opa:as:q:exp}. \Cref{isc:thm:boolean} decides image inclusion and
+intersection inside one independent family with $\rho=\id$. That touches
+\lbl{opa:as:q:composition}, which asks for image inclusion of classified
+maps in general, but does not answer it. Research question~1 is related to
+\lbl{opa:as:q:units}, which asks to remove exact monomial preservation, but
+it asks about intersections and is new.
+\end{enumerate}
+
+\paragraph{Bounded-support transcendence}
+(\rpath{surreal/transcendence-over-bounded-support}, prefix \texttt{bst:}).
+The source cites it and says that \cref{isc:sec:gaps} duplicates its
+one-witness case. That report is unchanged since the pin.
+\begin{enumerate}[leftmargin=*,itemsep=3pt]
+\item \Cref{isc:prop:boundedfrac} is the localization of
+\lbl{bst:prop:localdensity}, with the constant coefficient restricted to
+$D_k$.
+\item \Cref{isc:thm:cofinalgap} is \lbl{bst:cor:onegap} when
+$\cf(H)=\aleph_0$; that corollary's hypothesis forces a cofinal support of
+countable cofinality. In characteristic zero and at every cofinality it is
+the one-series case of \lbl{bst:thm:mainintro} (\lbl{bst:thm:independent}),
+which gives $2^\kappa$ independent series on one support of order type
+$\kappa$ and proves that $\kappa$ is optimal (\lbl{bst:cor:optimal}). The
+single-series form at uncountable cofinality over an arbitrary coefficient
+field, finite fields included, is not stated there; that report says that
+finite coefficient fields are not covered by its independence theorem. Its
+proof is that report's tail estimate and root count.
+\Cref{isc:lem:gapscale} is the second inequality of a separated exponent
+system (\lbl{bst:lem:skeleton}).
+\item The factorial witness of \cref{isc:cor:factorial} is
+\lbl{bst:cor:onegap} with $a_n=n!$ and all coefficients one; the constant
+$1$ changes nothing. \lbl{bst:thm:actualreal} uses the same exponents, with
+integer codes, for a continuum of independent actual infinitesimals over the
+complex bounded-support fraction field. In the omnific-preserving report,
+\lbl{opa:as:ex:smallfrac} uses $\sum t^{n!}$ at $\Gamma=\Z$ to show that
+$\sum t^{n!}$ is not in $\Frac\mathcal R_\Z=\R(t^{-1})$: non-membership,
+not transcendence.
+\item Research question~8 is that report's programme
+(\lbl{bst:cor:exactcard}, \lbl{bst:cor:realgroup}), as the source says.
+Only its uniformity over realized diagrams is new.
+\item The coset slice $\lambda_{g,H}$ is that report's projection $\pi_g$,
+and the linearity in \cref{isc:lem:slice} is \lbl{bst:lem:projection}.
+There it serves descent over a cofinal subgroup
+(\lbl{bst:thm:descent}). \Cref{isc:thm:sliceddisjoint} is not stated there:
+two full Hahn fields are linearly disjoint over the full Hahn field of the
+intersection of their groups, with no cofinality hypothesis. The source
+presents it as an elementary reusable lemma, not as a certified new theorem.
+\end{enumerate}
+
+\paragraph{Omnific Diophantine geometry}
+(\rpath{surreal/omnific-diophantine-geometry}, prefix \texttt{odg:}).
+\Cref{isc:lem:denominator} is the global monomial clearing
+\lbl{odg:thm:fractions}, with the same proof.
+
+\paragraph{Large-cardinal embeddings}
+(\rpath{foundations-and-computation/large-cardinal-embeddings-and-normal-forms},
+title ``Critical-Point Defects in Surreal Arithmetic''). It was placed after
+the pin, so the source did not see it. Its write phase is in progress, so
+it is cited here by name and question title, not by label. An elementary
+embedding with critical point $\kappa$ gives there two ordered-field
+embeddings $J$ and $H_j$ of $\No$. The strong one, $H_j$, is the lift
+$\Phi_h$ of \cref{isc:thm:lift} with $h$ the restriction of $J$ to
+$(\No,+,<)$, since $H_j(\omega^a)=\omega^{J(a)}$. The map $J$ is not strongly
+additive, and $J(\No)$ is not a full Hahn field on a subgroup. The common
+field there (surreals with fewer than $\kappa$ terms and exponents in
+$J(\No)$) is a proper class, not a full Hahn field. That report's question
+``Joint algebraic dependence of the images'' asks whether $J(\No)$ and
+$H_j(\No)$ are linearly disjoint over that common field. It is related to
+\cref{isc:thm:sliceddisjoint} but \emph{not answered} by it: the slice
+theorem needs full Hahn fields on subgroups on both sides.
+
+\paragraph{Formalization.} No \texttt{isc:} label has a Lean mapping in
+\rpath{FORMALIZATION.md}. No theorem of this report is Lean-verified, and
+the identifiers proposed in \cref{isc:sub:formal} do not exist in the
+collection's Lean library.
+
+\paragraph{Status of the research questions.} None of the collection's
+named questions is answered. Research questions~1, 3, 4, 5 and~10 are new.
+Research question~2 is a pair version of \lbl{opa:as:q:conjugacy}, 6 and~7
+lie inside \lbl{opa:as:q:exp}, 8 is the bounded-support programme, and 9 is
+an instance of \lbl{opa:as:q:elementary}. Research question~10 overlaps
+\lbl{opa:as:q:formal} in its Hahn-field kernel.
+
+\section{Foundations, support, and size}\label{isc:sec:foundations}
 
 \subsection{A class framework with set-sized constructions}
 
@@ -290,13 +547,13 @@ field}; its elements, finite tuples, polynomial coefficient lists, and the
 supports of individual elements are sets.
 
 The one surreal-specific order principle needed for the construction is:
-\begin{equation}\label{eq:cut}
+\begin{equation}\label{isc:eq:cut}
  L,R\subseteq\No\text{ sets},\quad L<R
  \quad\Longrightarrow\quad
  \text{there is }y\in\No\text{ with }L<y<R.
 \end{equation}
 Empty sides are permitted. The simplest such $y$, denoted $\{L\mid R\}$,
-is uniquely determined. We never apply \eqref{eq:cut} to proper-class sides.
+is uniquely determined. We never apply \eqref{isc:eq:cut} to proper-class sides.
 This restriction is central, not cosmetic.
 
 Global Choice supplies a set-like class well-order of the surreals: order
@@ -384,13 +641,13 @@ finite tuple of coefficients at a time. ``Algebraically independent'' also
 has its usual finite-polynomial meaning. We make no assertion about a
 proper-class-dimensional tensor object in the category of sets.
 
-\section{Independent ordered-group embeddings}\label{sec:group}
+\section{Independent ordered-group embeddings}\label{isc:sec:group}
 
 The core construction is carried out on the \emph{additive exponent group},
 not initially on the field. Its flexibility comes from the ability to realize
 a set-sized cut while avoiding all previously used values.
 
-\begin{lemma}[A cut avoiding a set]\label{lem:avoid}
+\begin{lemma}[A cut avoiding a set]\label{isc:lem:avoid}
 Let $L,R,E\subseteq\No$ be sets and suppose $L<R$. There is a surreal
 $y\notin E$ with $L<y<R$.
 \end{lemma}
@@ -404,7 +661,7 @@ Then $L<y<R$. Were $y\in E$, it would belong to $T$, contradicting
 $T<y$. This also covers empty $L$, $R$, or $T$.
 \end{proof}
 
-\begin{lemma}[Ordered one-point extension with avoidance]\label{lem:extend}
+\begin{lemma}[Ordered one-point extension with avoidance]\label{isc:lem:extend}
 Let $D$ be a set-sized $\Q$-vector subspace of $\No$, let
 $f:D\to\No$ be an ordered additive embedding, and let $E$ be a set-sized
 $\Q$-vector subspace containing $f(D)$. For $x\notin D$, there is an
@@ -420,7 +677,7 @@ Set
  L=\{f(d):d\in D,\ d<x\},\qquad
  R=\{f(d):d\in D,\ x<d\}.
 \]
-These are sets with $L<R$. By \cref{lem:avoid}, choose $y\notin E$
+These are sets with $L<R$. By \cref{isc:lem:avoid}, choose $y\notin E$
 realizing this cut. Define
 \[
  f^+(d+qx)=f(d)+qy\qquad(d\in D,\ q\in\Q).
@@ -445,7 +702,7 @@ additive group. The quotient here is algebraic; $H$ need not be convex.
 \end{definition}
 
 \begin{theorem}[Independent group copies over any set-sized base]
-\label{thm:group}
+\label{isc:thm:group}
 Let $H\subseteq\No$ be a set-sized divisible additive subgroup. There is
 an ordinal-indexed class family of ordered additive embeddings
 \[
@@ -457,7 +714,7 @@ are independent over $H$.
 \begin{proof}
 A divisible subgroup of the torsion-free additive group of $\No$ is a
 $\Q$-vector subspace. Fix the set-like enumeration of $\On\times\No$
-described in \cref{sec:foundations}. We process each requirement $(\alpha,x)$
+described in \cref{isc:sec:foundations}. We process each requirement $(\alpha,x)$
 in that order, meaning that $x$ must eventually be in the domain of the
 $\alpha$th partial embedding.
 
@@ -474,7 +731,7 @@ If $x\in D_\alpha$, do nothing. Otherwise let
      \bigcup_{\beta\text{ active}}f_\beta(D_\beta)\right).
 \]
 The state is a set, so $E$ is a set-sized vector space. Apply
-\cref{lem:extend} to extend $f_\alpha$ to $D_\alpha+\Q x$, choosing its
+\cref{isc:lem:extend} to extend $f_\alpha$ to $D_\alpha+\Q x$, choosing its
 new value $y$ outside $E$.
 
 We verify that independence survives. A new finite relation modulo $H$
@@ -498,7 +755,7 @@ final range elements is also witnessed at one stage. Consequently the final
 ranges are independent over $H$.
 \end{proof}
 
-\begin{corollary}\label{cor:groupintersection}
+\begin{corollary}\label{isc:cor:groupintersection}
 For distinct $\alpha,\beta$, one has $G_\alpha\cap G_\beta=H$. More
 generally, for $\alpha\notin J$,
 \[
@@ -514,18 +771,18 @@ identity on $H$ imply $h_\beta(x)\notin H$. Thus it cannot lie in
 $G_\alpha$, although it lies in $\No$.
 \end{proof}
 
-\begin{remark}[The role of the base]
+\begin{remark}[The role of the base]\label{isc:rem:base}
 The maps $h_\alpha$ fix $H$ as a set of \emph{exponent values}. The field
 maps constructed next fix $\K{\R}{H}$. These are different assertions:
 for a general subgroup $H$, it need not be true that $H\subseteq\K{\R}{H}$.
 No identification of those two roles is used.
 \end{remark}
 
-\section{Strong field lifts and omnific compatibility}\label{sec:lifts}
+\section{Strong field lifts and omnific compatibility}\label{isc:sec:lifts}
 
-\begin{theorem}[Monomial lift]\label{thm:lift}
+\begin{theorem}[Monomial lift]\label{isc:thm:lift}
 Let $h:\No\to\No$ be an ordered additive embedding. Then
-\begin{equation}\label{eq:lift}
+\begin{equation}\label{isc:eq:lift}
  \Phi_h\left(\sum_g r_g\omega^g\right)
    =\sum_g r_g\omega^{h(g)}
 \end{equation}
@@ -555,11 +812,11 @@ field on $h(\No)$, not merely the field generated by its monomials. Taking
 real and imaginary coefficients gives the complex assertion.
 \end{proof}
 
-\begin{proposition}[What the lift remembers]\label{prop:arithmeticlift}
+\begin{proposition}[What the lift remembers]\label{isc:prop:arithmeticlift}
 The map $\Phi_h$ preserves the three normal-form projections to positive,
 zero, and negative exponents. It preserves and reflects membership in
 $\Oz$, and
-\begin{equation}\label{eq:ozimage}
+\begin{equation}\label{isc:eq:ozimage}
  \Phi_h(\Oz)=\Phi_h(\No)\cap\Oz.
 \end{equation}
 It commutes with the omnific floor map and with standard part on finite
@@ -575,7 +832,7 @@ are equivalent to the respective conditions on $g$. The coefficient at zero
 is unchanged. An omnific integer is precisely a series supported in
 $\No^{>0}\cup\{0\}$ with integral constant coefficient, so membership is
 preserved and reflected. The image formula follows by pulling back a series
-in the intersection using \cref{thm:lift}.
+in the intersection using \cref{isc:thm:lift}.
 
 If $a=\lfloor x\rfloor_\Oz$, then $a\in\Oz$ and $a\le x<a+1$.
 Applying $\Phi_h$ gives an omnific integer in the corresponding unit interval
@@ -591,7 +848,7 @@ order preservation on the real part, and uniqueness of that square root
 prove the modulus identity.
 \end{proof}
 
-\begin{remark}[A floor boundary that must not be dropped]
+\begin{remark}[A floor boundary that must not be dropped]\label{isc:rem:floor}
 The positive-exponent truncation plus the ordinary floor of the constant
 coefficient is not always the omnific floor. For example, if $0<\varepsilon$
 is infinitesimal and $n\in\Z$, then
@@ -600,7 +857,7 @@ retains this endpoint case automatically.
 \end{remark}
 
 \begin{proposition}[Classification within the monomial-preserving class]
-\label{prop:classification}
+\label{isc:prop:classification}
 Every strongly additive, real-fixing field embedding
 $\Phi:\No\to\No$ that maps each Conway monomial to a Conway monomial
 is uniquely $\Phi_h$ for an ordered additive embedding $h:\No\to\No$.
@@ -614,10 +871,17 @@ $g>0$, the monomial $\omega^g$ exceeds every positive real number. Its image
 has the same property because the reals are fixed. A Conway monomial has
 this property exactly when its exponent is positive, so $h(g)>0$.
 Thus $h$ is ordered. Applying strong additivity to each normal form gives
-\eqref{eq:lift}. Uniqueness is immediate from the monomials.
+\eqref{isc:eq:lift}. Uniqueness is immediate from the monomials.
 \end{proof}
 
-\begin{warning}[Preserving monomials is not preserving the omega-map]
+\wtag{} \Cref{isc:thm:lift,isc:prop:arithmeticlift,isc:prop:classification}
+are the case $\rho=\id$ of the bottom-gap classification
+\lbl{opa:as:thm:classification} of the omnific-preserving report, written
+after the pin. Without the real-fixing hypothesis the exact-monomial
+embeddings preserving $\Oz$ are the maps $J_{h,\rho}$, which may move
+reals (\cref{isc:sec:collection}).
+
+\begin{warning}[Preserving monomials is not preserving the omega-map]\label{isc:warn:omega}
 The equality $\Phi_h(\omega^g)=\omega^{h(g)}$ does not say
 $\Phi_h(\omega^g)=\omega^{\Phi_h(g)}$. In general $h\ne\Phi_h$ as maps
 on surreal numbers. Nor have we shown compatibility with the Gonshor
@@ -625,7 +889,7 @@ exponential, the Berarducci--Mantova derivation, birthdays, or simplicity.
 These extra structures are outside the assertions of this article.
 \end{warning}
 
-\section{Coset slices and linear disjointness}\label{sec:slices}
+\section{Coset slices and linear disjointness}\label{isc:sec:slices}
 
 The next argument upgrades an exponent-group intersection calculation to
 linear disjointness of \emph{full} series fields. The subgroups need not be
@@ -634,7 +898,7 @@ convex, and no quotient ordering is needed.
 \begin{definition}[Normalized coset slice]
 Let $H\subseteq G$ be additive subgroups and $g\in G$. For
 $f=\sum_e a_e\omega^e\in\K{k}{G}$ set
-\begin{equation}\label{eq:slice}
+\begin{equation}\label{isc:eq:slice}
  \lambda_{g,H}(f)
  =\omega^{-g}\sum_{e\in(g+H)\cap\supp(f)}a_e\omega^e
  \ \in\K{k}{H}.
@@ -643,7 +907,7 @@ The value depends on the chosen representative $g$ by the expected monomial
 normalization. We do not choose a global transversal of $G/H$.
 \end{definition}
 
-\begin{lemma}[Slice linearity and separation]\label{lem:slice}
+\begin{lemma}[Slice linearity and separation]\label{isc:lem:slice}
 Every $\lambda_{g,H}$ is $\K{k}{H}$-linear, and the family of slices
 separates points of $\K{k}{G}$.
 \end{lemma}
@@ -658,7 +922,7 @@ If $f\ne0$, choose any $g$ in its support. Its slice contains the nonzero
 coefficient $a_g$ at exponent zero, so the slice is nonzero.
 \end{proof}
 
-\begin{lemma}[A finite separating matrix]\label{lem:matrix}
+\begin{lemma}[A finite separating matrix]\label{isc:lem:matrix}
 If $f_1,\ldots,f_m\in\K{k}{G}$ are linearly independent over
 $L=\K{k}{H}$, there are $g_1,\ldots,g_m\in G$ such that
 \[
@@ -669,7 +933,7 @@ $L=\K{k}{H}$, there are $g_1,\ldots,g_m\in G$ such that
 \begin{proof}
 On the $m$-dimensional space $V=\operatorname{span}_L(f_1,\ldots,f_m)$,
 the restrictions of the slices have common kernel zero by
-\cref{lem:slice}. Start with $V$. If the current common kernel is nonzero,
+\cref{isc:lem:slice}. Start with $V$. If the current common kernel is nonzero,
 choose a nonzero vector in it and a slice not vanishing on that vector.
 Intersecting with this new kernel strictly lowers dimension. After at most
 $m$ steps the common kernel is zero. The resulting linear map from $V$ to
@@ -679,7 +943,7 @@ This is a finite argument, also for class-sized $L$.
 \end{proof}
 
 \begin{theorem}[Full Hahn fields are disjoint over their full intersection]
-\label{thm:sliceddisjoint}
+\label{isc:thm:sliceddisjoint}
 Let $G_1,G_2$ be additive subgroups of one ordered abelian group and put
 $H=G_1\cap G_2$. Inside $\K{k}{G_1+G_2}$,
 \[
@@ -693,7 +957,7 @@ supports, and to any coefficient field $k$.
 The intersection identity follows from uniqueness of coefficients and
 support. Put $L=\K{k}{H}$ and let $f_1,\ldots,f_m\in\K{k}{G_1}$ be
 $L$-linearly independent. Choose the invertible slice matrix of
-\cref{lem:matrix} with representatives $g_a\in G_1$.
+\cref{isc:lem:matrix} with representatives $g_a\in G_1$.
 
 On the larger field $\K{k}{G_1+G_2}$ take slices
 $\lambda_{g_a,G_2}$ with values in $\K{k}{G_2}$. They are
@@ -709,7 +973,7 @@ disjointness.
 \end{proof}
 
 \begin{corollary}[Independence of any finite number of full Hahn fields]
-\label{cor:joint}
+\label{isc:cor:joint}
 If $(G_i)_{i\in I}$ are independent over $H$, then the full fields
 $\K{k}{G_i}$ are jointly linearly disjoint over $\K{k}{H}$.
 For $i\notin J$, the field $\K{k}{G_i}$ is linearly disjoint over
@@ -717,7 +981,7 @@ $\K{k}{H}$ even from the full field
 $\K{k}{H+\sum_{j\in J}G_j}$.
 \end{corollary}
 \begin{proof}
-The second assertion follows from \cref{thm:sliceddisjoint} and the
+The second assertion follows from \cref{isc:thm:sliceddisjoint} and the
 corresponding group intersection. For a finite family, induct on its size.
 The compositum of the preceding fields is contained in the full Hahn field
 on the sum of their groups, and the next field is linearly disjoint from
@@ -728,7 +992,7 @@ choose a basis of the finite span of the preceding products and apply linear
 disjointness to that basis.
 \end{proof}
 
-\begin{corollary}[Polynomial-relation descent]\label{cor:relations}
+\begin{corollary}[Polynomial-relation descent]\label{isc:cor:relations}
 Let $P=\K{k}{G_1}$, $Q=\K{k}{G_2}$, and $L=\K{k}{G_1\cap G_2}$.
 For a finite tuple $a$ from $P$, let $I_L(a)\subseteq L[X_1,\ldots,X_n]$
 be its polynomial relation ideal. Then
@@ -745,25 +1009,25 @@ independent over $P$. It follows that every $F_j(a)=0$. Thus $F$ belongs
 to the extended ideal. The other inclusion is immediate.
 \end{proof}
 
-\section{Prescribed intersections and Boolean meet diagrams}\label{sec:copies}
+\section{Prescribed intersections and Boolean meet diagrams}\label{isc:sec:copies}
 
-\begin{proof}[Proof of \cref{main:copies}]
-Apply \cref{thm:group} to obtain $(h_\alpha)$ and their independent ranges
+\begin{proof}[Proof of \cref{isc:main:copies}]
+Apply \cref{isc:thm:group} to obtain $(h_\alpha)$ and their independent ranges
 $G_\alpha$, and set $\Phi_\alpha=\Phi_{h_\alpha}$. By
-\cref{thm:lift}, the image is $K_\alpha=\K{\R}{G_\alpha}$.
+\cref{isc:thm:lift}, the image is $K_\alpha=\K{\R}{G_\alpha}$.
 Since $h_\alpha$ is the identity on $H$, it fixes every monomial with
 exponent in $H$, and strong additivity makes $\Phi_\alpha$ the identity
 on all of $L_\R$. Each $G_\alpha$ is proper by
-\cref{cor:groupintersection}; a monomial with exponent outside it witnesses
+\cref{isc:cor:groupintersection}; a monomial with exponent outside it witnesses
 properness of the corresponding field.
 
 The intersection and independence assertions follow from
-\cref{thm:sliceddisjoint,cor:joint}. \Cref{prop:arithmeticlift} gives the
+\cref{isc:thm:sliceddisjoint,isc:cor:joint}. \Cref{isc:prop:arithmeticlift} gives the
 omnific assertions. The same groups and the same slice argument with
 coefficients in $\C$ give the entire complex package.
 \end{proof}
 
-\begin{corollary}[Fixing every element of a prescribed set]\label{cor:parameters}
+\begin{corollary}[Fixing every element of a prescribed set]\label{isc:cor:parameters}
 For every set $A\subseteq\No$ there is a set-sized real closed full Hahn
 field $L\supseteq\R\cup A$ which is the exact pairwise intersection of
 an ordinal-indexed family of independent strong omnific-preserving copies
@@ -775,43 +1039,55 @@ Take $H$ to be the $\Q$-span of the union of the normal-form supports of
 all elements of $A$. In the complex case take the real and imaginary
 supports, equivalently the complex support. Replacement and union make this
 a set, and rational span remains a set. Then $A\subseteq\K{k}{H}$.
-Apply \cref{main:copies}.
+Apply \cref{isc:main:copies}.
 \end{proof}
 
 This corollary does \emph{not} assert that the intersection can be prescribed
 to be the ordinary field generated by $A$, its real closure, or an arbitrary
 non-Hahn subfield. It prescribes the full support closure just constructed.
 The distinction is essential to both the proof and the classification below.
+\wtag{} For two maps, and without intersection statements, proper strong
+exact-monomial copies fixing $A\cup\R$ and preserving and reflecting $\Oz$
+are \lbl{opa:as:thm:parameters} of the omnific-preserving report; the
+corollary extends that result to an $\On$-indexed family with an exact
+common field (\cref{isc:sec:collection}).
 
 \begin{theorem}[Exact classification of set-sized intersections in this class]
-\label{thm:intersectionclassification}
+\label{isc:thm:intersectionclassification}
 The set-sized fields that occur as intersections of two images of
 strong, real-fixing, monomial-preserving self-embeddings of $\No$ are
 exactly the fields $\K{\R}{H}$ with $H\subseteq\No$ a set-sized divisible
 additive subgroup.
 \end{theorem}
 \begin{proof}
-For necessity, \cref{prop:classification} writes the two images as full
+For necessity, \cref{isc:prop:classification} writes the two images as full
 Hahn fields on divisible groups $G_1,G_2$. Their intersection is
 $\K{\R}{G_1\cap G_2}$. In a torsion-free divisible ambient group, each
 divisible subgroup is closed under the uniquely defined rational division;
 therefore their intersection $H$ is divisible. If the intersection field
 is a set, its monomials form a set and their exponents, recovered by the
 inverse of the omega-map on monomials, form a set. Thus $H$ is set-sized.
-Sufficiency is \cref{main:copies}.
+Sufficiency is \cref{isc:main:copies}.
 \end{proof}
+
+\wtag{} The real-fixing hypothesis is used through
+\cref{isc:prop:classification}. Exact-monomial embeddings that preserve
+$\Oz$ but move reals exist whenever the bottom gap is nonzero
+(\lbl{opa:as:thm:taylorcriterion}); their images meet $\R$ in a proper
+real closed subfield (\lbl{opa:as:prop:overlap}). The theorem says nothing
+about intersections in that larger class.
 
 \subsection{All intersections in an entire diagram}
 
-Fix a set of indices $I$ from the family of \cref{main:copies}. For
+Fix a set of indices $I$ from the family of \cref{isc:main:copies}. For
 $J\subseteq I$ put
-\begin{equation}\label{eq:diagram}
+\begin{equation}\label{isc:eq:diagram}
  G_J=H+\sum_{j\in J}G_j,\qquad E_J=\K{k}{G_J},
  \qquad G_\varnothing=H.
 \end{equation}
 Every sum in $G_J$ is finite; no infinite additive closure is intended.
 
-\begin{theorem}[Boolean meet realization]\label{thm:boolean}
+\begin{theorem}[Boolean meet realization]\label{isc:thm:boolean}
 The assignment $J\mapsto E_J$ is injective and order preserving. For
 $J,T\subseteq I$,
 \[
@@ -829,7 +1105,7 @@ It lies in $G_J/H$ exactly when all of these components have indices in
 $J$. This proves all the group intersection identities and
 $G_J+G_T=G_{J\cup T}$. Uniqueness of normal form transfers the
 intersection identities to full Hahn fields, and
-\cref{thm:sliceddisjoint} proves the asserted linear disjointness.
+\cref{isc:thm:sliceddisjoint} proves the asserted linear disjointness.
 
 If $j\in J\setminus T$, choose $g\in G_j\setminus H$; then
 $\omega^g\in E_J\setminus E_T$. This proves injectivity and reflection
@@ -838,19 +1114,19 @@ on the sum of the two exponent groups, hence is $E_{J\cup T}$.
 Every $G_J$ is divisible, which gives the closedness assertions.
 \end{proof}
 
-\begin{remark}[The word ``join'']
+\begin{remark}[The word ``join'']\label{isc:rem:join}
 The theorem realizes a Boolean meet diagram with \emph{Hahn} joins. It does
-not identify ordinary field composita with those joins. \Cref{main:join}
+not identify ordinary field composita with those joins. \Cref{isc:main:join}
 shows that the difference can already be transcendental for two factors.
 \end{remark}
 
 \begin{corollary}[Independent choices and absence of new relations]
-\label{cor:choices}
+\label{isc:cor:choices}
 For distinct indices $i_1,\ldots,i_m$, choose
 $a_j\in K_{i_j}\setminus L_\R$. Then $(a_1,\ldots,a_m)$ is algebraically
 independent over $L_\R$. The same assertion holds over $L_\C$ for the
 complexified copies. More generally all polynomial relations across any
-square of \cref{thm:boolean} descend to its intersection field.
+square of \cref{isc:thm:boolean} descend to its intersection field.
 \end{corollary}
 \begin{proof}
 A real closed subfield has no proper algebraic extension inside an ordered
@@ -858,10 +1134,10 @@ field, so each $a_j$ is transcendental over $L_\R$. In the complex case
 use algebraic closedness. The polynomial algebras $L[a_j]$ therefore have
 no relations individually, and their finite tensor product is a polynomial
 algebra on $m$ variables. Joint linear disjointness makes its multiplication
-map injective. The last statement is \cref{cor:relations}.
+map injective. The last statement is \cref{isc:cor:relations}.
 \end{proof}
 
-\subsection{A limited model-theoretic conclusion}
+\subsection{A limited model-theoretic conclusion}\label{isc:sub:model}
 
 For each fixed first-order formula in the language of ordered fields, the
 inclusion of any $E_J$ into $\No$ is elementary, by quantifier elimination
@@ -876,13 +1152,13 @@ independence proved is algebraic independence and linear disjointness; it
 is not being silently identified with a model-theoretic independence notion
 in any richer theory.
 
-\section{Explicit copies with intersection exactly the constants}\label{sec:explicit}
+\section{Explicit copies with intersection exactly the constants}\label{isc:sec:explicit}
 
 The general construction can fix an arbitrary set-sized Hahn core, but uses
 class bookkeeping. When $H=0$ there is a direct formula. It also furnishes
-the separated scales needed for \cref{main:join}.
+the separated scales needed for \cref{isc:main:join}.
 
-\begin{lemma}[Compression of the surreal order]\label{lem:compression}
+\begin{lemma}[Compression of the surreal order]\label{isc:lem:compression}
 The function
 \[
  \psi(x)=\frac12+\frac{x}{2(1+|x|)}
@@ -908,31 +1184,37 @@ intervals are pairwise disjoint. Indeed $\alpha<\beta$ for ordinals implies
 $\alpha+1\le\beta$ in the surreal order, hence $3\alpha+1<3\beta$.
 
 Define an \emph{inner} map on normal forms by
-\begin{equation}\label{eq:inner}
+\begin{equation}\label{isc:eq:inner}
  h_\alpha\left(\sum_a r_a\omega^a\right)
    =\sum_a r_a\omega^{\sigma_\alpha(a)}.
 \end{equation}
 This map is an ordered, real-linear, strongly additive \emph{group}
 embedding. Additivity only uses the injective relabeling of coefficients;
 no additivity of $\sigma_\alpha$ is needed. It is not a unital field map:
-\begin{equation}\label{eq:innerone}
+\begin{equation}\label{isc:eq:innerone}
  h_\alpha(1)=\omega^{3\alpha+1/2}.
 \end{equation}
 Its image is precisely the additive class of all surreal normal forms
 supported in $I_\alpha$. Pulling back the support along the order
 isomorphism $\sigma_\alpha$ proves fullness of that image.
 
-Now apply the \emph{outer} construction of \cref{thm:lift}:
-\begin{equation}\label{eq:explicitouter}
+Now apply the \emph{outer} construction of \cref{isc:thm:lift}:
+\begin{equation}\label{isc:eq:explicitouter}
  \Phi_\alpha\left(\sum_g c_g\omega^g\right)
    =\sum_g c_g\omega^{h_\alpha(g)}.
 \end{equation}
-The distinction between \eqref{eq:inner} and \eqref{eq:explicitouter} is
+The distinction between \eqref{isc:eq:inner} and \eqref{isc:eq:explicitouter} is
 crucial: the outer exponents $g$ are themselves surreal numbers with their
-own normal forms.
+own normal forms. \wtag{} The inner map is the inner lift
+$\iota_{\sigma_\alpha}$ of the omnific-preserving report
+(\lbl{opa:as:eq:innerlift}, \lbl{opa:as:lem:inner}), and
+\eqref{isc:eq:explicitouter} is its monomial map $M_{1,\iota_{\sigma_\alpha}}$.
+That report's order isomorphisms $\mu_{11},\mu_{12},\mu_{13}$ have unbounded
+images; the bounded, pairwise disjoint images of the $\sigma_\alpha$ are
+what makes the ranges independent here.
 
-\begin{theorem}[An explicit independent ordinal family]\label{thm:explicit}
-The maps \eqref{eq:explicitouter} are strong, real-fixing,
+\begin{theorem}[An explicit independent ordinal family]\label{isc:thm:explicit}
+The maps \eqref{isc:eq:explicitouter} are strong, real-fixing,
 monomial-preserving proper field embeddings. Their image fields are jointly
 linearly disjoint over $\R$, have pairwise intersection $\R$, and their
 omnific image rings have pairwise intersection $\Z$. Their complexifications
@@ -943,7 +1225,7 @@ The inner ranges $G_\alpha$ have disjoint normal-form support intervals.
 In a finite sum of elements from different ranges, no nonzero coefficient
 from one interval can be canceled by another interval. Therefore these
 ranges are independent over zero. Apply
-\cref{thm:lift,prop:arithmeticlift,cor:joint}.
+\cref{isc:thm:lift,isc:prop:arithmeticlift,isc:cor:joint}.
 \end{proof}
 
 For example,
@@ -959,34 +1241,34 @@ also explicitly shows
 Thus preservation of the set of Conway monomials is much weaker than
 commutation with the omega-map as a unary operation on all of $\No$.
 
-\begin{remark}[A tempting formula that does not give a proper copy]
+\begin{remark}[A tempting formula that does not give a proper copy]\label{isc:rem:scaling}
 Replacing every exponent $g$ by $cg$ with a fixed $c>0$ gives an
 automorphism, not a proper self-embedding, because $c\No=\No$. The
 compression above is applied one normal-form level below the field lift;
 that is what makes the exponent-group image genuinely proper.
 \end{remark}
 
-\section{A transcendental gap above an ordinary compositum}\label{sec:join}
+\section{A transcendental gap above an ordinary compositum}\label{isc:sec:join}
 
-Take $G_0,G_1$ from \cref{sec:explicit}. These groups are not merely
+Take $G_0,G_1$ from \cref{isc:sec:explicit}. These groups are not merely
 independent. Their scales are separated:
-\begin{equation}\label{eq:separated}
+\begin{equation}\label{isc:eq:separated}
  |a|<b/n\quad
  (a\in G_0,\ 0<b\in G_1,\ n\in\N_{>0}).
 \end{equation}
 Indeed the inner leading exponent of a nonzero $a$ lies in $(0,1)$,
 whereas that of $b$ lies in $(3,4)$. Leading-monomial comparison proves
-\eqref{eq:separated}. Thus $G_0$ is convex in the ordered group
+\eqref{isc:eq:separated}. Thus $G_0$ is convex in the ordered group
 $G_0+G_1$, and the sign of $a+b$ for $b\ne0$ is the sign of $b$.
 
 \subsection{Iterated Hahn coordinates}
 
-\begin{lemma}[Re-expansion at separated scales]\label{lem:iterated}
+\begin{lemma}[Re-expansion at separated scales]\label{isc:lem:iterated}
 Suppose $A,B$ are additive subgroups with $A\cap B=0$ and every element
 of $A$ is infinitesimal relative to every positive element of $B$, in the
-sense of \eqref{eq:separated}. Then regrouping by $B$-coordinate gives a
+sense of \eqref{isc:eq:separated}. Then regrouping by $B$-coordinate gives a
 field isomorphism
-\begin{equation}\label{eq:iterated}
+\begin{equation}\label{isc:eq:iterated}
  \K{k}{A+B}\ \simeq\ \K{\K{k}{A}}{B},
  \qquad
  \sum_{a+b}c_{a,b}\omega^{a+b}
@@ -1021,7 +1303,7 @@ For $k=\R$ or $\C$, put
 In the iterated coordinates, $K_0$ is the coefficient field and $K_1$ has
 coefficients in the original $k$.
 
-\begin{lemma}[Finite coefficient-field control]\label{lem:finitecoeff}
+\begin{lemma}[Finite coefficient-field control]\label{isc:lem:finitecoeff}
 Every finite subset of the ordinary compositum $M$ is contained, in the
 iterated coordinates, in a field $\K{D}{G_1}$ where $D\subseteq K_0$ is
 a field finitely generated over $k$.
@@ -1040,7 +1322,7 @@ This lemma does not claim that every series with coefficients in such a
 $D$ is in $M$. It gives a necessary coefficient-field constraint, which is
 all that is needed.
 
-\begin{theorem}[A coefficient-transcendence obstruction]\label{thm:joinobstruction}
+\begin{theorem}[A coefficient-transcendence obstruction]\label{isc:thm:joinobstruction}
 Let $s_1,s_2,\ldots\in K_0$ be algebraically independent over $k$, where
 $k=\R$ or $\C$, and choose $0<g\in G_1$. The well-defined series
 \[
@@ -1050,8 +1332,8 @@ is transcendental over $M$.
 \end{theorem}
 \begin{proof}
 The outer support $\{-ng:n\ge1\}$ is strictly decreasing, so the series
-is valid by \cref{lem:iterated}. Suppose a nonzero polynomial over $M$
-annihilates $S$. By \cref{lem:finitecoeff}, all its coefficients lie in
+is valid by \cref{isc:lem:iterated}. Suppose a nonzero polynomial over $M$
+annihilates $S$. By \cref{isc:lem:finitecoeff}, all its coefficients lie in
 $\K{D}{G_1}$ for one finitely generated field $D\subseteq K_0$ over $k$.
 
 For $k=\R$, let $D'$ be the relative algebraic closure of $D$ in the real
@@ -1080,7 +1362,7 @@ whereas the $s_n$ are an infinite algebraically independent family over
 $k$. This contradiction proves the theorem.
 \end{proof}
 
-\begin{proof}[Explicit witness and proof of \cref{main:join}]
+\begin{proof}[Explicit witness and proof of \cref{isc:main:join}]
 Take
 \[
  g_n=h_0(\omega^n)=\omega^{\psi(n)},\qquad
@@ -1094,32 +1376,32 @@ monomials of a polynomial in the $s_n$ acquire distinct exponents
 $\sum_n m_ng_n$, and no nonzero coefficient can cancel.
 
 The promised actual normal form is
-\begin{equation}\label{eq:explicitS}
+\begin{equation}\label{isc:eq:explicitS}
  \boxed{\displaystyle
  S=\sum_{n=1}^{\infty}
    \omega^{\,\omega^{\psi(n)}-n\omega^{7/2}}.}
 \end{equation}
 Its exponents strictly decrease: the difference between consecutive
 exponents is $g+g_n-g_{n+1}>0$ by scale separation. Thus
-\eqref{eq:explicitS} is a legitimate countably supported surreal, not a
+\eqref{isc:eq:explicitS} is a legitimate countably supported surreal, not a
 formal expression awaiting an analytic interpretation. It belongs to $E$
 and is transcendental over the appropriate ordinary compositum by
-\cref{thm:joinobstruction}. Transcendence also excludes membership in its
+\cref{isc:thm:joinobstruction}. Transcendence also excludes membership in its
 relative algebraic closure.
 \end{proof}
 
-\begin{remark}[Why the infinite list of coefficients matters]
+\begin{remark}[Why the infinite list of coefficients matters]\label{isc:rem:infinite}
 A rational expression in the two fields can use arbitrary elements of each
 field, but only finitely many of them. In the separated-scale expansion this
 bounds the transcendence degree of its coefficient field over the constants.
 Algebraic extension does not remove that finite bound. The series
-\eqref{eq:explicitS} defeats it by displaying infinitely many independent
+\eqref{isc:eq:explicitS} defeats it by displaying infinitely many independent
 coefficients. This argument is different from simply observing that a series
 is an infinite sum; many infinite sums, such as a geometric series, already
 belong to an ordinary compositum.
 \end{remark}
 
-\section{Omnific intersections and their fraction fields}\label{sec:fractions}
+\section{Omnific intersections and their fraction fields}\label{isc:sec:fractions}
 
 For $k=\R,\C$ write $D_\R=\Z$ and $D_\C=\Z[i]$, and define
 \[
@@ -1136,7 +1418,7 @@ We use the ordinary class fraction field of a class domain to mean the
 subfield of the ambient field consisting of ratios of two of its elements,
 with nonzero denominator. No quotient set of a proper class is invoked.
 
-\begin{lemma}[Common denominators for a set of surreals]\label{lem:denominator}
+\begin{lemma}[Common denominators for a set of surreals]\label{isc:lem:denominator}
 Every set $X\subseteq\No$ has a positive monomial $d\in\Oz$ such that
 $dX\subseteq\Oz$. The same holds for a set of surcomplex numbers with
 $\GOz$ in place of $\Oz$, and a positive real monomial denominator.
@@ -1155,12 +1437,15 @@ supports. Applying the assertion to a singleton gives the fraction-field
 identities. These identities are classical; compare \cite[Proposition~2.4.5]{LM}.
 \end{proof}
 
+\wtag{} In the collection this is the global monomial clearing
+\lbl{odg:thm:fractions} of the Diophantine report, with the same proof.
+
 Transporting the lemma through an embedding gives more than merely one
 denominator for each individual element.
 
 \begin{proposition}[Separate uniform denominators, no shared uniform one]
-\label{prop:uniform}
-Let $K_\alpha,R_\alpha,L_\R$ be as in \cref{main:copies}. Then
+\label{isc:prop:uniform}
+Let $K_\alpha,R_\alpha,L_\R$ be as in \cref{isc:main:copies}. Then
 $\Frac(R_\alpha)=K_\alpha$, and there is a nonzero $d_\alpha\in R_\alpha$
 with
 \[
@@ -1173,7 +1458,7 @@ complex and Gaussian setting.
 \begin{proof}
 The image under $\Phi_\alpha$ of a ratio of omnific integers is a ratio
 of elements of $R_\alpha$, and every element of $K_\alpha$ arises this
-way by \cref{lem:denominator}. Since $L_\R$ is a set and is fixed
+way by \cref{isc:lem:denominator}. Since $L_\R$ is a set and is fixed
 pointwise, apply that lemma to $L_\R$ and transport its denominator by
 $\Phi_\alpha$. This yields the uniform denominator $d_\alpha$.
 
@@ -1185,14 +1470,19 @@ $1/2$). This is impossible. The same proof uses $1/2\notin\Z[i]$ in the
 complex case.
 \end{proof}
 
+\wtag{} The proof shows slightly more than the statement: since
+$dL_\R=L_\R\not\subseteq\Oz$, a nonzero element of $R_\alpha\cap R_\beta$
+satisfies \emph{neither} containment, not merely not both. The separate
+denominators $d_\alpha$ lie outside $L_\R$.
+
 This proposition already separates two notions of a denominator. To prove
-\cref{main:fractions}, however, we need an element with \emph{no shared
+\cref{isc:main:fractions}, however, we need an element with \emph{no shared
 denominator at all}, not merely the absence of a shared denominator uniform
 on the entire common field. That stronger assertion is proved next.
 
-\subsection{The bounded-support field is exactly the shared fraction field}
+\subsection{The bounded-support field is exactly the shared fraction field}\label{isc:sub:bounded}
 
-For this subsection and \cref{sec:gaps}, use the increasing-support Hahn
+For this subsection and \cref{isc:sec:gaps}, use the increasing-support Hahn
 convention
 \[
  t^h=\omega^{-h}.
@@ -1209,9 +1499,9 @@ two upper bounds bounds a product. Its elements can have infinite support
 inside a bounded interval. In this convention $\A{k}{H}$ consists of
 series with negative exponents and a constant coefficient in $D_k$.
 
-\begin{proposition}[Identification of the fraction fields]\label{prop:boundedfrac}
+\begin{proposition}[Identification of the fraction fields]\label{isc:prop:boundedfrac}
 If $H\ne0$, then
-\begin{equation}\label{eq:boundedfrac}
+\begin{equation}\label{isc:eq:boundedfrac}
  \Frac\A{k}{H}=\Frac\B{k}{H}.
 \end{equation}
 In particular this fraction field contains $k$ and every single monomial
@@ -1230,21 +1520,30 @@ The identity explains why a mere missing constant is not the obstruction
 for nonzero $H$. For example, $r=(r\omega^h)/\omega^h$ for any $r\in\R$
 and any positive $h\in H$. The unresolved issue is the unboundedness of
 supports \emph{within the fixed set group $H$}.
+\wtag{} \Cref{isc:prop:boundedfrac} is the localization of
+\lbl{bst:prop:localdensity} of the bounded-support report, with the
+constant coefficient restricted to $D_k$.
 
-\section{A self-contained cofinal gap argument}\label{sec:gaps}
+\section{A self-contained cofinal gap argument}\label{isc:sec:gaps}
 
 The mechanism in this section belongs to bounded-support Hahn arithmetic,
 not to the new embedding construction. It is included in full so that the
-transcendental conclusion in \cref{main:fractions} does not depend on an
+transcendental conclusion in \cref{isc:main:fractions} does not depend on an
 unreviewed repository result. The repository's bounded-support report gives
 stronger independent-family assertions \cite{RepoBounded}, and the
 non-fraction obstruction is already in \cite{LM}.
+\wtag{} In that report, \cref{isc:thm:cofinalgap} is \lbl{bst:cor:onegap}
+at countable cofinality and, in characteristic zero, the one-series case of
+\lbl{bst:thm:independent}; the single-series form at uncountable cofinality
+over an arbitrary coefficient field is not stated there, but its proof is
+that report's tail estimate and root count (\cref{isc:sec:collection}). No
+priority is claimed for it.
 
-\begin{lemma}[Cofinal sequences with polynomial gaps]\label{lem:gapscale}
+\begin{lemma}[Cofinal sequences with polynomial gaps]\label{isc:lem:gapscale}
 Let $H\ne0$ be a set-sized ordered abelian group and put $\kappa=\cf(H)$.
 There is a strictly increasing cofinal family $(a_\alpha)_{\alpha<\kappa}$
 in $H^{>0}$ such that for every positive integer $d$ and every $c\in H$,
-\begin{equation}\label{eq:gapscale}
+\begin{equation}\label{isc:eq:gapscale}
  a_{\alpha+1}-d a_\alpha>c
  \quad\text{for all sufficiently large }\alpha<\kappa.
 \end{equation}
@@ -1261,7 +1560,7 @@ When $\kappa=\aleph_0$, choose recursively $a_0>0,u_0$ and
  a_{n+1}>u_{n+1},\quad a_{n+1}>(n+2)a_n.
 \]
 The list is cofinal. For fixed $d$, once $n+2\ge d+1$ the difference in
-\eqref{eq:gapscale} exceeds $a_n$, and this eventually exceeds $c$.
+\eqref{isc:eq:gapscale} exceeds $a_n$, and this eventually exceeds $c$.
 
 When $\kappa>\aleph_0$, at stage $\alpha$ the set
 \[
@@ -1272,16 +1571,16 @@ has cardinality less than $\kappa$ and hence is bounded above in $H$.
 Choose $a_\alpha$ strictly above it. The resulting family is increasing and
 cofinal. At a successor stage,
 $a_{\alpha+1}>(d+1)a_\alpha$ for every positive integer $d$. Thus again
-the difference in \eqref{eq:gapscale} exceeds $a_\alpha$ and is eventually
+the difference in \eqref{isc:eq:gapscale} exceeds $a_\alpha$ and is eventually
 larger than $c$. Since an infinite cardinal has no last ordinal below it,
 all the successor indices used are still below $\kappa$.
 \end{proof}
 
 \begin{theorem}[One transcendental series over all bounded-support fractions]
-\label{thm:cofinalgap}
+\label{isc:thm:cofinalgap}
 For any field $k$ and nonzero set-sized ordered abelian group $H$, choose
-a sequence from \cref{lem:gapscale}. Then
-\begin{equation}\label{eq:cofinalF}
+a sequence from \cref{isc:lem:gapscale}. Then
+\begin{equation}\label{isc:eq:cofinalF}
  F=1+\sum_{\alpha<\kappa}t^{a_\alpha}
 \end{equation}
 is transcendental over $\Frac\B{k}{H}$.
@@ -1309,7 +1608,7 @@ $[0,a_\alpha]$, and
  v(P_\alpha)=0,\qquad v(F-P_\alpha)=a_{\alpha+1}.
 \]
 Finite Hahn multiplication gives
-\begin{equation}\label{eq:upperbound}
+\begin{equation}\label{isc:eq:upperbound}
  \supp_t Q(P_\alpha)\subseteq[b,c+d a_\alpha].
 \end{equation}
 The elementary factorization
@@ -1318,21 +1617,21 @@ The elementary factorization
   \sum_{\ell=0}^{j-1}F^{j-1-\ell}P_\alpha^\ell
 \]
 and the nonnegative valuations of the factors in the finite sum give
-\begin{equation}\label{eq:tailbound}
+\begin{equation}\label{isc:eq:tailbound}
  v\bigl(Q(F)-Q(P_\alpha)\bigr)\ge b+a_{\alpha+1}.
 \end{equation}
-By \cref{lem:gapscale}, eventually
+By \cref{isc:lem:gapscale}, eventually
 \[
  b+a_{\alpha+1}>c+d a_\alpha.
 \]
-Since $Q(F)=0$, \eqref{eq:tailbound} says that every nonzero exponent of
-$Q(P_\alpha)$ is above the upper bound in \eqref{eq:upperbound}. Therefore
+Since $Q(F)=0$, \eqref{isc:eq:tailbound} says that every nonzero exponent of
+$Q(P_\alpha)$ is above the upper bound in \eqref{isc:eq:upperbound}. Therefore
 $Q(P_\alpha)=0$ for every sufficiently large $\alpha$. This gives
 infinitely many distinct roots of the nonzero finite-degree polynomial
 $Q$, a contradiction. The argument uses no characteristic-zero assumption.
 \end{proof}
 
-\begin{corollary}[The factorial witness]\label{cor:factorial}
+\begin{corollary}[The factorial witness]\label{isc:cor:factorial}
 In $\R((t^\Q))$ or $\C((t^\Q))$, the series
 \[
  F=1+\sum_{n=1}^{\infty}t^{n!}
@@ -1343,41 +1642,46 @@ series, hence over $\Frac\A{k}{\Q}$.
 \begin{proof}
 The positive integers $n!$ are cofinal in $\Q$ and satisfy
 $(n+1)!-d n!=(n+1-d)n!\to+\infty$ for each fixed $d$. Thus the proof of
-\cref{thm:cofinalgap} applies to this explicit sequence. For clarity, its
+\cref{isc:thm:cofinalgap} applies to this explicit sequence. For clarity, its
 partial sums start with $1+t$, $1+t+t^2$, $1+t+t^2+t^6$; there is no
 duplicate exponent from a $0!$ term.
 \end{proof}
 
-\begin{proof}[Proof of \cref{main:fractions}]
-By \cref{main:copies}, the common field is $L_k=\K{k}{H}$ and the
+\wtag{} The same exponents carry the continuum of independent actual
+infinitesimals of \lbl{bst:thm:actualreal}. The omnific-preserving report's
+\lbl{opa:as:ex:smallfrac} uses $\sum t^{n!}$ at $\Gamma=\Z$ for the weaker
+statement that it is not a fraction of $\mathcal R_\Z$.
+
+\begin{proof}[Proof of \cref{isc:main:fractions}]
+By \cref{isc:main:copies}, the common field is $L_k=\K{k}{H}$ and the
 common integer ring is $\A{k}{H}$. Each full integer copy has fraction
-field equal to its field copy by \cref{prop:uniform}.
-If $H\ne0$, combine \cref{prop:boundedfrac,thm:cofinalgap} to obtain an
+field equal to its field copy by \cref{isc:prop:uniform}.
+If $H\ne0$, combine \cref{isc:prop:boundedfrac,isc:thm:cofinalgap} to obtain an
 element of $L_k$ transcendental over $\Frac\A{k}{H}$. If $H=0$, the
 common ring is $\Z$ or $\Z[i]$ and its fraction field is $\Q$ or
 $\Q(i)$. The ambient constant field $\R$ or $\C$ contains a
 transcendental element over that countable field: its algebraic elements
 are a countable union of finite root sets, whereas the constant field is
-uncountable. Finally \cref{cor:factorial} supplies the specified witness
+uncountable. Finally \cref{isc:cor:factorial} supplies the specified witness
 for $H=\Q$. This proves every assertion.
 \end{proof}
 
 \begin{corollary}[Failure witnessed by the denominator equation]
-\label{cor:noshareddenom}
-For $H=\Q$ and $F$ from \cref{cor:factorial}, there are nonzero
+\label{isc:cor:noshareddenom}
+For $H=\Q$ and $F$ from \cref{isc:cor:factorial}, there are nonzero
 $d_\alpha\in R_\alpha$ and $d_\beta\in R_\beta$ with
 $d_\alpha F\in R_\alpha$ and $d_\beta F\in R_\beta$, but there are no
 $a,d\in R_\alpha\cap R_\beta$ with $d\ne0$ and $dF=a$.
 \end{corollary}
 \begin{proof}
-The separate denominators follow even uniformly from \cref{prop:uniform}.
+The separate denominators follow even uniformly from \cref{isc:prop:uniform}.
 A shared solution would express $F=a/d$ in $\Frac\A{\R}{\Q}$,
 contradicting transcendence. The same proof works for the Gaussian rings.
 \end{proof}
 
 \subsection{Where the two transcendence arguments differ}
 
-The gap above an ordinary compositum in \cref{sec:join} is detected by an
+The gap above an ordinary compositum in \cref{isc:sec:join} is detected by an
 infinite algebraically independent \emph{coefficient} family in a separated
 scale decomposition. The gap above the shared fraction field in this section
 is detected by a cofinal sequence of \emph{support exponents}, even with
@@ -1386,7 +1690,7 @@ argument, and neither concludes merely that an element lacks a particular
 chosen representation: each excludes every finite-degree algebraic relation
 over the stated base.
 
-\section{A set-sized version of the construction}\label{sec:setversion}
+\section{A set-sized version of the construction}\label{isc:sec:setversion}
 
 The class construction has a direct conditional set-sized analogue. This
 both isolates the exact saturation used and gives a more conventional target
@@ -1400,7 +1704,7 @@ allowed.
 \end{definition}
 
 \begin{theorem}[Independent embeddings in a saturated ordered group]
-\label{thm:setversion}
+\label{isc:thm:setversion}
 Let $\kappa$ be uncountable regular, and let $V$ be a divisible ordered
 abelian group of cardinality $\kappa$ whose order is an $\eta_\kappa$-order.
 If $H\subseteq V$ is a divisible subgroup of cardinality less than
@@ -1433,7 +1737,7 @@ intersection and disjointness statements. Those Hahn fields need not have
 cardinality $\kappa$; the theorem places no unwarranted cardinality bound on
 all their allowable supports.
 
-\section{Further research questions}\label{sec:questions}
+\section{Further research questions}\label{isc:sec:questions}
 
 The questions below are proposed by the present theorems. They are not
 presented as a list of previously published open problems, nor as claims
@@ -1445,11 +1749,14 @@ Which set-sized real closed subfields $L\subseteq\No$ containing $\R$
 can occur as the exact intersection of two strong, omnific-preserving
 self-embedding images if the monomial-preserving hypothesis is removed?
 \end{question}
-\noindent\emph{Why it is the next step.} \Cref{thm:intersectionclassification}
+\noindent\emph{Why it is the next step.} \Cref{isc:thm:intersectionclassification}
 answers the monomial-preserving case exactly. A non-Hahn example, or an
 obstruction forcing Hahn closure for a larger class of embeddings, would
 identify the precise information carried by the chosen monomial
 cross-section. Strongness alone should not be assumed to settle it.
+\wtag{} \emph{Status in the collection: open and new.} It is related to
+\lbl{opa:as:q:units}, which asks to classify embeddings without exact
+monomial preservation, but that question does not concern intersections.
 
 \begin{question}[Relative classification of pairs of copies]
 Suppose two independent pairs have the same core $\K{\R}{H}$. Which
@@ -1460,6 +1767,9 @@ fixing that core carries one pair to the other?
 form different ordered amalgams over $H$, even when their abstract additive
 quotients agree. The ambient ordering of mixed sums is an evident invariant
 for monomial lifts, but it is not proved here to be complete.
+\wtag{} \emph{Status in the collection: open.} It is the pair version, at
+a fixed Hahn core, of \lbl{opa:as:q:conjugacy}, whose partial answer
+\lbl{opa:as:thm:continuum} concerns single copies that move reals.
 
 \begin{question}[An exact description of ordinary composita]
 For independent groups $G_1,G_2$ over $H$, characterize the subfield
@@ -1468,8 +1778,8 @@ transcendence degree of the full Hahn join over the ordinary compositum in
 natural set-sized and class-sized examples.
 \end{question}
 \noindent\emph{Available starting point.} In the separated case,
-\cref{lem:finitecoeff} gives a necessary finite coefficient-field condition,
-and \cref{thm:joinobstruction} supplies a transcendental obstruction even
+\cref{isc:lem:finitecoeff} gives a necessary finite coefficient-field condition,
+and \cref{isc:thm:joinobstruction} supplies a transcendental obstruction even
 after algebraic closure. A necessary-and-sufficient condition would be much
 stronger. For a proper-class extension, formulate dimension statements as
 independent families of specified set cardinalities rather than casually
@@ -1489,7 +1799,7 @@ should be compared with the repository's dedicated arithmetic reports.
 \begin{question}[Large fixed bases]
 For which proper-class divisible subgroups $H\subsetneq\No$ can independent
 ordered-group copies fixing $H$ be constructed? What cut-size or cofinality
-condition replaces the set-sized hypothesis of \cref{thm:group}?
+condition replaces the set-sized hypothesis of \cref{isc:thm:group}?
 \end{question}
 \noindent\emph{Obstacle to the present proof.} Its first partial domain and
 its forbidden range span must be sets. A proper-class $H$ invalidates that
@@ -1503,10 +1813,13 @@ What cores would necessarily be closed under those operations?
 \end{question}
 \noindent\emph{First necessary checks.} If an operation is preserved by both
 embeddings, their images and intersection must be closed under that operation.
-The explicit maps of \cref{sec:explicit} already fail to commute with the
+The explicit maps of \cref{isc:sec:explicit} already fail to commute with the
 omega-map. Therefore they cannot simply be relabeled as solutions in richer
 languages. Published work on exponential surreal embeddings provides a
 relevant comparison \cite{EK}.
+\wtag{} \emph{Status in the collection: open.} It lies inside
+\lbl{opa:as:q:exp} of the omnific-preserving report, restricted to
+prescribed intersections.
 
 \begin{question}[Simplicity and initiality]
 Which prescribed intersections remain possible when each image is required
@@ -1517,6 +1830,8 @@ birthdays is imposed?
 uses the simplest realizer of an enlarged cut to choose one point, but it
 does not preserve the global simplicity relation. Local use of a simplest
 number is not an initial-embedding theorem.
+\wtag{} \emph{Status in the collection: open.} Simplicity relations are
+also named in \lbl{opa:as:q:exp}.
 
 \begin{question}[Uniform maximal transcendence at a fixed core]
 For a fixed nonzero set-sized $H$, obtain an independently checked sharp
@@ -1531,6 +1846,9 @@ $2^{\cf(H)}$-sized independent family and optimal support thresholds
 \cite{RepoBounded}. A useful next contribution is verification, extension,
 or a genuinely different uniformity statement, not rediscovery of its
 one-witness special case.
+\wtag{} \emph{Status in the collection:} the programme of the
+bounded-support report (\lbl{bst:thm:independent}, \lbl{bst:cor:exactcard},
+\lbl{bst:cor:realgroup}); its uniformity over realized diagrams is open.
 
 \begin{question}[Elementary embeddings of the field--integer pair]
 Can the embeddings be chosen elementary in
@@ -1542,6 +1860,10 @@ integer-ring predicate impose?
 and reflect membership in $\Oz$ and commute with floor, but these facts do
 not establish preservation of all formulas with alternating quantifiers.
 Ordinary real-closed-field elementarity is a weaker assertion.
+\wtag{} \emph{Status in the collection: open.} For the maps here it is
+\lbl{opa:as:q:elementary}, with a prescribed intersection added; the
+nonelementarity criterion of \lbl{opa:as:thm:elementary} needs a moved real
+and does not apply.
 
 \begin{question}[A verified set-level kernel]
 Can the coset-slice lemma, finite separating-matrix argument, and saturated
@@ -1552,9 +1874,12 @@ then connected to a universe-aware model of the surreal construction?
 obligations at the level of mathematical specifications. A verified finite
 support computation is not a substitute for these support and class-size
 proofs.
+\wtag{} \emph{Status in the collection: open.} Its Hahn-field kernel
+overlaps \lbl{opa:as:q:formal}; none of the proposed identifiers exists in
+the collection's Lean library.
 
 \section{Proof dependencies, verification boundary, and conclusion}
-\label{sec:audit}
+\label{isc:sec:audit}
 
 \subsection{A dependency map}
 
@@ -1583,7 +1908,7 @@ separated-scale construction, iterated Hahn coordinates, and finite
 coefficient-field control. Neither application is used to justify the other,
 and neither is needed to justify the group construction.
 
-\subsection{A practical formalization decomposition}
+\subsection{A practical formalization decomposition}\label{isc:sub:formal}
 
 A set-level implementation could first express full Hahn series in the
 usual increasing-support convention and prove the following specifications.
@@ -1602,9 +1927,9 @@ after enlarging the scalar subgroup from the intersection to the second
 subgroup. This is the main reusable field-theoretic lemma.
 \item \texttt{orderedEmbedding\_extend\_avoid}: realize a cut of the current
 rational span while avoiding a prescribed small subspace, with explicit
-cardinality hypotheses for \cref{thm:setversion}.
+cardinality hypotheses for \cref{isc:thm:setversion}.
 \item \texttt{boundedSupport\_gap\_transcendental}: formalize the two support
-bounds \eqref{eq:upperbound} and \eqref{eq:tailbound}, followed by the
+bounds \eqref{isc:eq:upperbound} and \eqref{isc:eq:tailbound}, followed by the
 finite root bound. Start with the factorial sequence over $\Q$ before the
 transfinite cofinality version.
 \item \texttt{iteratedHahn\_coefficientField}: formalize separated ordered
@@ -1619,7 +1944,7 @@ does not discharge that final obligation. The repository contains relevant
 Hahn and normal-form infrastructure \cite{RepoCatalogue}, but this article
 adds no Lean code and makes no machine-verification claim.
 
-\subsection{Claims deliberately not made}
+\subsection{Claims deliberately not made}\label{isc:sub:notmade}
 
 The following boundaries prevent several plausible but invalid upgrades.
 The common field is a \emph{full Hahn field} on a \emph{set-sized} subgroup,
@@ -1631,6 +1956,9 @@ unproved complete first-order theory of the pair. They are not asserted to
 preserve the omega-map, exponentiation, derivation, birthdays, or simplicity.
 The proofs establish the stated theorems but do not establish historical
 priority or settle a named general factorization conjecture for $\Oz$.
+\wtag{} \Cref{isc:sec:nonclaims} collects these boundaries with every other
+limitation stated in the source, and adds those that come from the
+collection.
 
 \subsection{Conclusion}
 
@@ -1651,6 +1979,304 @@ ordinary field generation, and arithmetic localization are three distinct
 operations. The prescribed-intersection construction makes their difference
 visible within the actual surreal and surcomplex fields, rather than only
 in abstract auxiliary examples.
+
+\section{Consolidated ledger of non-claims}\label{isc:sec:nonclaims}
+
+\wtag{} The source states its limitations where they arise, and each is
+kept in place. This ledger collects them with their locations. ``README''
+refers to the delivered README, which is not shipped; its content is in the
+collection README. Items S1--S24 are the source's. Items W1--W8 were added
+when the report joined the collection.
+\begin{enumerate}[label=S\arabic*.,leftmargin=2.6em,itemsep=2pt]
+\item The common field is a \emph{full} Hahn field on a \emph{set-sized}
+divisible subgroup. It is not an arbitrary prescribed real closed or
+set-sized subfield, not the ordinary field generated by a parameter set,
+not its real closure, and not a non-Hahn subfield
+(after \cref{isc:cor:parameters}; \cref{isc:sub:notmade}; README).
+\item Group sums $G_J$ are finite sums, not hidden summable closures
+(after \eqref{isc:eq:diagram}; \cref{isc:sub:notmade}).
+\item The joins of \cref{isc:thm:boolean} are Hahn joins, not ordinary
+composita; \cref{isc:main:join} shows that the difference can be
+transcendental (\cref{isc:rem:join}; \cref{isc:sub:notmade}).
+\item Strongness concerns Hahn-summable set-indexed families, not
+convergence of real series or continuity; ordinary analytic convergence is
+not used in any proof (\cref{isc:sec:foundations}; \cref{isc:sub:notmade}).
+\item Elementarity is claimed only formula by formula in the languages of
+ordered fields and of fields, by quantifier elimination for real closed and
+algebraically closed fields. Nothing is asserted in the language with a
+predicate for $\Oz$, the omega-map or a derivation, and algebraic
+independence is not identified with a model-theoretic independence notion
+of a richer theory. Preservation and reflection of $\Oz$ and commutation
+with the floor do not give elementarity of the pair
+(\cref{isc:sub:model}; research question~9; \cref{isc:sub:notmade}).
+\item The embeddings are not asserted to preserve the omega-map, the Gonshor
+exponential, the Berarducci--Mantova derivation, birthdays or simplicity.
+Monomial preservation is not omega-map commutation: $h\ne\Phi_h$ in
+general, and $\Phi_0(\omega^1)\ne\omega^{\Phi_0(1)}$ for the explicit maps,
+so they cannot be relabelled as solutions in richer languages
+(\cref{isc:warn:omega}; \cref{isc:sec:explicit}; research question~6;
+\cref{isc:sub:notmade}).
+\item No proper-class base $H$ is treated. The obstacle is a limitation of
+the argument, whose first partial domain and forbidden span must be sets,
+not a proof that such extensions are impossible (research question~5).
+\item \Cref{isc:thm:setversion} is conditional on the existence of the
+stated saturated group; it does not assume that every cardinal admits one.
+Uncountability is needed for the proof. The lifted Hahn fields need not have
+cardinality $\kappa$ (\cref{isc:sec:setversion}).
+\item The fraction-field failure does not by itself compute a
+normalization, a Picard group or a nontrivial projective module
+(research question~4).
+\item The bounded-support transcendence mechanism of \cref{isc:sec:gaps}
+is not new. It belongs to bounded-support Hahn arithmetic; the
+bounded-support report gives stronger independent families, and the
+non-fraction obstruction is Proposition~2.4.5 of \cite{LM}. It is reproved
+so that \cref{isc:main:fractions} does not depend on an unreviewed
+repository result, not claimed as a discovery
+(\cref{isc:subsec:provenance}; \cref{isc:sec:gaps}; research question~8;
+README).
+\item The ingredients are not claimed as new: the set-cut property, normal
+forms, Hahn multiplication and inversion, and the closedness criteria. The
+group extension is a concrete saturation construction, not a new saturation
+principle; the monomial lift is standard Hahn functoriality; the coset-slice
+lemma is an elementary reusable lemma, not a certified new theorem of Hahn
+field theory (\cref{isc:subsec:provenance}; title page).
+\item Priority is not certified. Targeted literature searches do not certify
+that the combined formulation is absent from published or unpublished work,
+and no claim of having audited every report or every later repository
+revision is made (\cref{isc:subsec:provenance}; \cref{isc:sub:notmade};
+README).
+\item The article is unrefereed and not formalized. It adds no Lean code and
+makes no machine-verification claim. The identifiers of
+\cref{isc:sub:formal} are proposals, not existing declarations; a set-level
+Hahn formalization does not discharge the class-size obligations, and a
+verified finite support computation is no substitute for them
+(title page; \cref{isc:sub:formal}; research question~10; README).
+\item No named longstanding or published conjecture is claimed solved, and
+no general factorization conjecture for $\Oz$ is settled (title page;
+\cref{isc:sub:notmade}; README).
+\item \Cref{isc:main:fractions} is the failure of one descent operation, not
+of $\Frac(\Oz)=\No$, which the argument uses (after \cref{isc:main:fractions}).
+\item \Cref{isc:lem:finitecoeff} gives a necessary coefficient-field
+condition, not membership in $M$ of every series with coefficients in $D$.
+The compositum argument is not the invalid inference that every infinite
+sum lies outside a compositum; a geometric series already lies in one
+(after \cref{isc:lem:finitecoeff}; \cref{isc:rem:infinite}; README).
+\item The class framework uses no tensor product indexed by a proper class
+and no proper-class-dimensional tensor object, no class truth or
+satisfaction predicate, and no recursion with a proper-class state at a
+stage. The cut property is never applied to proper-class sides
+(\cref{isc:sec:foundations}; \cref{isc:sub:model}).
+\item \Cref{isc:thm:intersectionclassification} is a classification inside
+the strong, real-fixing, monomial-preserving class only. Strongness alone
+should not be assumed to settle research question~1.
+\item The maps $h_\alpha$ fix $H$ as a set of exponent values and the
+$\Phi_\alpha$ fix $\K{\R}{H}$; the two roles are not identified
+(\cref{isc:rem:base}).
+\item The positive-exponent truncation plus the ordinary floor of the
+constant coefficient is not always the omnific floor
+(\cref{isc:rem:floor}). Scaling all exponents by a constant gives an
+automorphism, not a proper copy (\cref{isc:rem:scaling}).
+\item The saturation proof uses a simplest realizer locally but does not
+preserve the simplicity relation; this is not an initial-embedding theorem
+(research question~7).
+\item The research questions are proposed by these theorems; they are not
+presented as previously published open problems or as claims of difficulty.
+Research question~8 is not an untouched direction (\cref{isc:sec:questions}).
+\item For coefficient fields other than $\R$ and $\C$ the Hahn-field
+notation is formal, not a subfield of $\No$ or $\SC$; fraction fields of
+class domains are ratios inside the ambient field, not quotients of a
+proper class (\cref{isc:sec:foundations}; \cref{isc:sec:fractions}).
+\item The encyclopedia page is orientation only; Ehrlich--Kaplan is a
+comparison, not a proof input; the repository reports were used for scope
+and nonduplication, not as dependencies. The delivered production checks
+(compilation, rendering and visual inspection of the PDF) are not formal
+verification of the mathematics (bibliography; README).
+\end{enumerate}
+\begin{enumerate}[label=W\arabic*.,leftmargin=2.6em,itemsep=2pt]
+\item No \texttt{isc:} label has a Lean mapping in \rpath{FORMALIZATION.md}.
+Independent proof review and formalization are pending. The package shipped
+no verification code, data or audit, so the report has no suite to rerun
+(\cref{isc:sec:collection}; Appendix~\ref{isc:app:files}).
+\item \Cref{isc:thm:lift,isc:prop:arithmeticlift,isc:prop:classification}
+and the inner lift of \cref{isc:sec:explicit} are the real-fixing case of
+the omnific-preserving report's classification and its inner lift; no
+priority is claimed for them relative to that report. \Cref{isc:cor:parameters}
+extends \lbl{opa:as:thm:parameters} but does not claim its topological
+assertions (\cref{isc:sec:collection}).
+\item \Cref{isc:lem:denominator} is \lbl{odg:thm:fractions},
+\cref{isc:prop:boundedfrac} is the localization of
+\lbl{bst:prop:localdensity}, the coset slice is \lbl{bst:eq:projection},
+and \cref{isc:thm:cofinalgap,isc:cor:factorial} duplicate
+\lbl{bst:cor:onegap} and the one-series case of \lbl{bst:thm:independent}
+(\cref{isc:sec:collection}).
+\item Real fixing is a choice. For the explicit copies the bottom gap is
+nonzero, so exact-monomial embeddings with the same exponent maps that
+preserve $\Oz$ and move reals exist; nothing is claimed about them or about
+intersections in that larger class (\cref{isc:sec:collection}).
+\item The large-cardinal report's question ``Joint algebraic dependence of
+the images'' is not answered: its image $J(\No)$ is not a full Hahn field
+on a subgroup (\cref{isc:sec:collection}).
+\item None of the omnific-preserving report's questions is answered; in
+particular \lbl{opa:as:q:composition}, \lbl{opa:as:q:conjugacy},
+\lbl{opa:as:q:elementary} and \lbl{opa:as:q:exp} stay open. None of the
+bounded-support report's questions is answered (\cref{isc:sec:collection}).
+\item The source's statements about the collection are those of its pin and
+are kept as provenance (\cref{isc:subsec:provenance};
+Appendix~\ref{isc:app:pinned}).
+\item The proofs were read when the report was written
+(Appendix~\ref{isc:app:checked}). That reading is not an independent proof
+review.
+\end{enumerate}
+
+\appendix
+\section{Provenance of this report}\label{isc:app:report}
+
+\subsection{One manuscript}\label{isc:app:onesource}
+
+This report is built from \emph{one} manuscript: the archive
+\texttt{Surreal\_Independent\_Copies}, manuscript~06 of batch~31 of the
+collection, with main file \texttt{independent\_surreal\_copies.tex}, a
+25-page PDF, dated 23 September 2026 and pinned to repository commit
+\nolinkurl{bcac55ae6fd3f2b354e568ba1d2e94d496a2cc59}. It was placed in
+commit \texttt{9d28e28} as a new report. It answers no named question of
+the collection, and its subject, independence, disjointness and descent
+for full copies of $\No$, is the subject of no existing report
+(\cref{isc:sec:collection}). There was no second source. Nothing was
+merged and nothing was selected away: every result, proof, example,
+question and limitation of the manuscript is printed here.
+
+The package contained the article, its PDF and a README, and nothing else:
+no code, recorded data, audit or checksum list. The article was renamed
+\texttt{article.tex} and rewritten as described below; the README was
+replaced by the collection README; the delivered PDF is not shipped, and
+\texttt{article.pdf} is a build of this text.
+
+The editorial changes are these.
+\begin{enumerate}[label=(\arabic*)]
+\item Every label carries the prefix \texttt{isc:}. The source's 62 labels
+are kept, unchanged after the prefix. Twenty were added:
+\lbl{isc:sec:conventions}, \lbl{isc:sec:collection},
+\lbl{isc:sec:nonclaims}, \lbl{isc:rem:base}, \lbl{isc:rem:floor},
+\lbl{isc:warn:omega}, \lbl{isc:rem:join}, \lbl{isc:rem:scaling},
+\lbl{isc:rem:infinite}, \lbl{isc:sub:model}, \lbl{isc:sub:bounded},
+\lbl{isc:sub:formal}, \lbl{isc:sub:notmade}, \lbl{isc:app:report},
+\lbl{isc:app:onesource}, \lbl{isc:app:pinned}, \lbl{isc:app:literature},
+\lbl{isc:app:checked}, \lbl{isc:app:files} and \lbl{isc:app:numbers}. Labels
+on existing environments change no number.
+\item The title page names the report as a single-source report of the
+collection, gives the batch and the pin, and extends the status paragraph.
+\Cref{isc:sec:conventions,isc:sec:collection}, the ledger of
+\cref{isc:sec:nonclaims} and this appendix are new. Sentences marked
+\wtag{} were added at the end of \cref{isc:subsec:provenance}; after
+\cref{isc:prop:classification}, \cref{isc:cor:parameters},
+\cref{isc:thm:intersectionclassification}, \eqref{isc:eq:explicitouter},
+\cref{isc:lem:denominator}, \cref{isc:prop:uniform} and
+\cref{isc:prop:boundedfrac}; at the start of \cref{isc:sec:gaps}; after
+\cref{isc:cor:factorial}; after research questions 1, 2, 6, 7, 8, 9 and~10;
+and in \cref{isc:sub:notmade}.
+\end{enumerate}
+No mathematical statement was changed and no symbol was renamed: the
+collisions are between reports, or between local letters of different
+sections, and \cref{isc:sec:conventions} fixes the meanings. Where the edit
+had to choose: the manuscript was placed as a new report, not as an
+addition to the omnific-preserving report, because it answers none of that
+report's questions and its spine (independence, exact intersections and
+descent) is not that report's (stabilizers, classification and
+coefficient motion). It was placed among the surreal reports because its
+fields are subfields of $\No$ and $\SC$. The title is kept.
+
+\subsection{Repository statements at the pin}\label{isc:app:pinned}
+
+The source compared itself with the catalogue, the omnific-preserving
+report and the bounded-support report at its pin, through links to that
+revision (\cite{RepoCatalogue,RepoAuto,RepoBounded}). Checked at the
+placement commit:
+\begin{itemize}[leftmargin=*,itemsep=3pt]
+\item At the pin the omnific-preserving report was the merged report of
+four manuscripts subtitled ``Convex-scale stabilizers, definable constants,
+nondefinable monomials, and algebraic-parameter rigidity''. It had no part
+on embeddings and no \texttt{opa:as:} label. The source's description of it
+as concerning stabilizers and rigidity was accurate. Its Part~III, on
+automatic strongness and proper embeddings, was written in
+\texttt{20c4c9f}, after the pin.
+\item The bounded-support report is unchanged between the pin and the
+placement commit (its last change, \texttt{ce6715b}, precedes the pin). The
+source's description of it as proposing stronger independent families
+stands.
+\item The large-cardinal report was placed in \texttt{21375f8}, after the
+pin, and is not cited by the source.
+\item No report of the collection supplies \cref{isc:main:copies},
+\cref{isc:thm:sliceddisjoint}, \cref{isc:main:fractions} for copies, or
+\cref{isc:main:join}; the overlaps are those of \cref{isc:sec:collection}.
+\end{itemize}
+
+\subsection{References checked for this report}\label{isc:app:literature}
+
+\begin{itemize}[leftmargin=*,itemsep=3pt]
+\item \emph{L'Innocente--Mantova} \cite{LM}. The arXiv page lists version~5
+of 22 January 2024 and the journal DOI
+\nolinkurl{10.1016/j.aim.2024.109513}; the volume number was not checked.
+In the arXiv text, Fact~2.1.1 states that a Hahn field is algebraically
+closed, respectively real closed, if and only if its coefficient field is
+algebraically closed, respectively real closed, and its group is divisible.
+Section~2.3 introduces the surreal numbers as a Hahn field. Proposition~2.4.5
+is stated for the Hahn field of series with supports of size below a
+cardinal $\kappa$: the fraction field of $\Z+K((G^{<0}))$ is the whole field
+if and only if $\cf(G)\ge\kappa$ (or $G=0$ and $\Frac\Z=K$), and in
+particular $\Frac(\Oz)=\No$. For a set-sized $G$ and $\kappa>\lvert G\rvert$ this is
+the full Hahn field, so its proof, with a lacunary series along a cofinal
+sequence, gives the non-membership obstruction cited in
+\cref{isc:subsec:provenance} and \cref{isc:sec:gaps}. It proves
+non-membership in the fraction field, not transcendence. The citations are
+therefore accurate.
+\item \emph{Ehrlich--Kaplan} \cite{EK}. The author-hosted PDF (37 pages) has
+the stated title and authors; only its first page was read.
+\item Gonshor \cite{Gonshor}, van den Dries--Ehrlich \cite{vdDE}, Marker
+\cite{Marker} and the encyclopedia page \cite{Wiki} were not checked.
+\end{itemize}
+
+\subsection{Proofs read when the report was written}\label{isc:app:checked}
+
+The proofs of \cref{isc:lem:avoid,isc:lem:extend}, \cref{isc:thm:group},
+\cref{isc:thm:lift}, \cref{isc:prop:arithmeticlift},
+\cref{isc:prop:classification}, \cref{isc:sec:slices}, \cref{isc:main:copies},
+\cref{isc:thm:intersectionclassification,isc:thm:boolean},
+\cref{isc:cor:choices}, \cref{isc:sec:explicit,isc:sec:join},
+\cref{isc:sec:fractions,isc:sec:gaps} and \cref{isc:thm:setversion} were
+read line by line when the report was written. No error was found. The
+explicit formulas were rechecked: $\Phi_0(\omega)=\omega^{\omega^{1/2}}$,
+$\Phi_1(\omega)=\omega^{\omega^{7/2}}$, $g=h_1(1)=\omega^{7/2}$, and the
+consecutive exponents of \eqref{isc:eq:explicitS} differ by
+$g+g_n-g_{n+1}>0$. One understatement is recorded after
+\cref{isc:prop:uniform}. This reading is not an independent proof review.
+
+\subsection{Theorem numbers}\label{isc:app:numbers}
+
+Numbers are those of this build and of the delivered PDF, which agree:
+labels were added and no environment was inserted before an existing one.
+Remarks and warnings share the theorem counter, so the classification of
+monomial-preserving embeddings is Proposition~\ref{isc:prop:classification}
+(after Remark~\ref{isc:rem:floor}), and the saturated-group theorem is
+Theorem~\ref{isc:thm:setversion} (after a definition).
+
+\subsection{Files}\label{isc:app:files}
+
+\begin{center}\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+File & Role \\
+\midrule
+\rpath{article.tex} & this report (delivered as \texttt{independent\_surreal\_copies.tex})\\
+\rpath{article.pdf} & a build of this text, not the delivered PDF\\
+\rpath{README.md} & the collection README, replacing the delivered one\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The source shipped no verification program, recorded run or audit, so
+there is nothing to rerun. The delivered README reports a build with
+pdfTeX~1.40.26 and a visual inspection of rendered pages and contact
+sheets; those renderings are not shipped.
 
 \begin{thebibliography}{99}
 
@@ -1709,7 +2335,7 @@ optimal support thresholds, and maximal transcendence}, AI-assisted
 research draft, 22 September 2026, at the same pinned snapshot.
 \repo{docs/surreal/transcendence-over-bounded-support/article.tex}.
 Its main theorems propose stronger transcendence and descent results;
-\cref{sec:gaps} gives the needed one-witness argument independently.
+\cref{isc:sec:gaps} gives the needed one-witness argument independently.
 
 \bibitem{Wiki}
 Wikipedia contributors, \emph{Surreal number}, user-supplied background
