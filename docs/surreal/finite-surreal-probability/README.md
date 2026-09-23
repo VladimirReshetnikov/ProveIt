@@ -747,3 +747,13 @@ audits 7,098 declarations with only `propext`, `Classical.choice` and
 index still checks 2,298 entries in 48 sources, and all 969 local Markdown
 destinations in 108 files resolve. These integration checks add no Lean
 coverage for finite probability.
+
+A further synchronization through `d93d5fd` incorporates `3e30b1f`, completing
+the actual inverse-cosine endpoint half-angle identity, strong series, finite
+remainder and half-valuation formula. The endpoint derivative obstruction
+remains pending. No manuscript source changed. All three added modules are
+root imports, and the merged default build passes 3,976 jobs with 7,116
+declarations audited using only `propext`, `Classical.choice` and `Quot.sound`.
+All 2,545 cited source labels, 2,298 indexed entries in 48 sources and 972
+local Markdown destinations in 108 files pass their checks. The reviewed
+probability source and 51-page PDF are unchanged by this integration.
