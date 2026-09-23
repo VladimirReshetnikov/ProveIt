@@ -794,6 +794,18 @@ passes 3,912 jobs and its axiom audit checks 6,214 declarations using only
 `propext`, `Classical.choice` and `Quot.sound`. Sections 6 onward and the
 remaining imports still require review; probability Lean coverage is unchanged.
 
+The final Sections 4–5 integration merged `ab36649` through `6f55757`,
+including unique interval representatives, natural roots and the complete
+polar root formulas. The source mapping was checked against the actual
+interval endpoints, positive-degree hypothesis, nonzero input and positive
+radius restrictions; the polygon result here is its side-length clause.
+The combined build passes 3,916 jobs and 6,277 declarations pass the axiom
+audit using only `propext`, `Classical.choice` and `Quot.sound`.
+All 2,181 indexed statements across 46 main sources remain correctly
+catalogued, and all 907 local Markdown destinations in 97 files resolve.
+The merge leaves the reviewed probability source and 44-page PDF unchanged.
+This integration adds no probability formalization or review of later sections.
+
 ## Remaining scope
 
 The nine manuscripts placed in `d4e71b7` are grouped as
