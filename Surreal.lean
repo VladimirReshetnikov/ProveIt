@@ -87,6 +87,9 @@ import Surreal.Algebra.HankelHermite
 import Surreal.Algebra.LaurentResidueChange
 import Surreal.Algebra.SmallDivisorTreeBound
 import Surreal.Algebra.MarkovForest
+import Surreal.Algebra.PseudoResolventLimits
+import Surreal.Algebra.LogModulusClassification
+import Surreal.Algebra.ComplexValuationKernel
 import Surreal.Foundations.SizeObstructions
 import Surreal.Foundations.SmallCutData
 import Surreal.Foundations.SignSequence
@@ -462,3 +465,10 @@ import Surreal.HahnSeries.AlgebraicCoefficientClosure
 import Surreal.HahnSeries.TateDiscriminant
 import Surreal.HahnSeries.CofinalityCriterion
 import Surreal.HahnSeries.DefectRigidity
+import Surreal.HahnSeries.PronyMain
+import Surreal.HahnSeries.RootQuadrature
+import Surreal.HahnSeries.RowFiniteInner
+import Surreal.HahnSeries.LatticeEstimate
+import Surreal.HahnSeries.DifferentialRigidity
+import Surreal.HahnSeries.TateExtension
+import Surreal.Surcomplex.ActualStrongMeasures

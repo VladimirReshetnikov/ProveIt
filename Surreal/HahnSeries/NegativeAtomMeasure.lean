@@ -82,8 +82,9 @@ circle. The classes `P, M, D, A, H` of `herg:thm:hierarchy` are not defined here
 spectral measures of `herg:cor:unitary` are not defined: the corollary is formalized as its
 cyclic unitary system over `K_Γ` together with its stated reason, the absence of a positive
 coefficientwise measure with the vacuum moments.
-The weak-* convergence clauses of `herg:thm:quadrature` and `herg:thm:fejer` remain pending;
-`negAtomFamily_not_positive` is the nonpositivity of their limit.
+The weak-* convergence clause of `herg:thm:fejer` remains pending; `herg:thm:quadrature` is
+proved in `Surreal/HahnSeries/RootQuadrature.lean`. `negAtomFamily_not_positive` is the
+nonpositivity of their limit.
 -/
 
 namespace Surreal.NegativeAtomMeasure

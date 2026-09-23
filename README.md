@@ -651,5 +651,19 @@ dynamics are exact, the algebraic coefficient part is closed, the Tate
 discriminant has `v(Δ) = v(q)`, the all-scale coefficient criterion decides
 entireness, and every positive-order perturbation of `diag(1/n)` keeps a
 cokernel of dimension at least the continuum.
+Prony's main theorem holds in full: above the threshold `Θ` the perturbed
+moments have a unique regular realization labelled by the strict
+nearest-neighbour balls, with the node and weight error bounds, and a
+last-moment perturbation shows that `Θ` is sharp. Positive root-of-unity
+quadratures converge to the nonpositive negative-atom measure. The
+effective-generator theorem holds for the actual residue shadows at every
+scale. The row-finite Hahn inner product is positive with its valuation
+formula and adjoint relation. Automorphisms of `F(i)` are classified by their
+logarithmic modulus, and the extended valuation has kernel `{id, conjugation}`
+over every ordered field with square roots and a convex valuation. Also proved:
+the finite lattice estimate for multivariate domains, differential rigidity of
+holonomic entire Hahn functions, strong measures with actual surreal and
+surcomplex masses, and invariance of the Tate construction under exponent
+embeddings with its abstract extension obstruction.
 A successful build proves only the imported Lean
 statements, not coverage of all the source documents.
