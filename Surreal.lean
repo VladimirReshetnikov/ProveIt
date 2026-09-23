@@ -55,6 +55,10 @@ import Surreal.Algebra.NonvanishingSelection
 import Surreal.Algebra.PronyHankel
 import Surreal.Algebra.StochasticIdempotent
 import Surreal.Algebra.StrictAlternative
+import Surreal.Algebra.MixedDifference
+import Surreal.Algebra.PronyPade
+import Surreal.Algebra.SigmaDerivation
+import Surreal.Algebra.WickQuartic
 import Surreal.Algebra.TailSpan
 import Surreal.Algebra.WickSemigroup
 import Surreal.Foundations.SizeObstructions
@@ -207,6 +211,7 @@ import Surreal.Surcomplex.PolynomialGeometry
 import Surreal.Surcomplex.PolynomialReduction
 import Surreal.Surcomplex.PolynomialFactorUniqueness
 import Surreal.Surcomplex.FiniteFourier
+import Surreal.Surcomplex.FiniteTrigonometryIdentities
 import Surreal.HahnSeries.Ancestry
 import Surreal.HahnSeries.AlgebraicallyClosed
 import Surreal.HahnSeries.Binomial
@@ -267,3 +272,8 @@ import Surreal.HahnSeries.StrongMeasureShadow
 import Surreal.HahnSeries.NullIdealPositivity
 import Surreal.HahnSeries.ScaleIdeal
 import Surreal.HahnSeries.EscapeChain
+import Surreal.HahnSeries.FirstErrorRecovery
+import Surreal.HahnSeries.ChartIsometry
+import Surreal.HahnSeries.NoncommutativeNeumann
+import Surreal.HahnSeries.BranchMetric
+import Surreal.HahnSeries.LeadingVectorTest
