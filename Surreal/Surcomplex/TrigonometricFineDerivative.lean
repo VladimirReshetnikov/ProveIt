@@ -1,5 +1,7 @@
 import Surreal.Surcomplex.TrigonometricTaylor
 import Surreal.Surcomplex.AnalyticLiftCalculus
+import Surreal.Surcomplex.FiniteTrigonometryIdentities
+import Surreal.Algebra.FineDerivativeRules
 
 /-!
 # Fine derivatives of finite surreal trigonometry
@@ -98,6 +100,28 @@ theorem continuousAt_sinFunction (x : SignSequence.{u}) (hx : SignSequence.IsFin
 /-- Finite cosine is continuous in the full native surreal topology. -/
 theorem continuousAt_cosFunction (x : SignSequence.{u}) (hx : SignSequence.IsFinite x) :
     ContinuousAt cosFunction x := (fineHasDerivAt_cosFunction x hx).continuousAt
+
+/-- The ambient tangent function, used on finite angles away from cosine zeros. -/
+def tanFunction (x : SignSequence.{u}) : SignSequence.{u} := sinFunction x / cosFunction x
+
+theorem tanFunction_eq_finiteTan (θ : SignSequence.FiniteElement.{u}) :
+    tanFunction θ.val = finiteTan θ := by
+  rw [tanFunction, sinFunction_eq_finiteSin, cosFunction_eq_finiteCos, finiteTan]
+
+/-- Tangent has fine derivative `1 + tan^2` wherever its finite-angle cosine is nonzero. -/
+theorem fineHasDerivAt_tanFunction (x : SignSequence.{u}) (hx : SignSequence.IsFinite x)
+    (hc : cosFunction x ≠ 0) : FineHasDerivAt tanFunction (1 + tanFunction x ^ 2) x := by
+  have h := (fineHasDerivAt_sinFunction x hx).div (fineHasDerivAt_cosFunction x hx) hc
+  have he := finiteCos_sq_add_finiteSin_sq (ArchimedeanClass.FiniteElement.mk x hx)
+  rw [← cosFunction_eq_finiteCos, ← sinFunction_eq_finiteSin] at he
+  change cosFunction x ^ 2 + sinFunction x ^ 2 = 1 at he
+  have hd : (cosFunction x * cosFunction x - sinFunction x * -sinFunction x) /
+      cosFunction x ^ 2 = 1 + tanFunction x ^ 2 := by
+    dsimp only [tanFunction]
+    field_simp
+    nlinarith
+  rw [hd] at h
+  exact h
 
 end
 
