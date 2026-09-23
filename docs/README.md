@@ -1,6 +1,7 @@
 # The surreal and surcomplex reports
 
-This collection has **40 research reports in five families**. Start with the
+This collection has **40 catalogued research reports in five families**,
+plus the four newly placed drafts listed below. Start with the
 reading routes below, use the [notation guide](NOTATION.md) when moving between
 reports, and consult the [typeset catalogue](manifest.pdf)
 ([source](manifest.tex)) for longer descriptions. The
@@ -13,6 +14,20 @@ finite verification programs, and Lean coverage are separate forms of evidence.
 Some statements and prerequisites now have checked Lean proofs; no complete
 formal verification of the collection is claimed. Each report records its
 hypotheses, limitations and provenance.
+
+## Newly placed drafts
+
+Four further report texts were placed in `5fe7f8d`. Their current source
+statements are in the formalization index, but assembly, catalogue updates,
+proof review and formalization remain pending:
+
+- [Vector and tensor fields](surreal/vector-and-tensor-fields/)
+- [Euclidean three-space](surreal/euclidean-three-space/)
+- [Finite surreal probability](surreal/finite-surreal-probability/)
+- [Surcomplex field automorphisms](surcomplex/surcomplex-field-automorphisms/)
+
+The placement also adds source material for the measures and trigonometry
+reports. These additions do not extend their earlier proof-review scope.
 
 ## Reading routes
 
