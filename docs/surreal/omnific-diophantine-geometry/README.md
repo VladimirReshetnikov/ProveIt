@@ -12,7 +12,7 @@ prefixes `10-` to `14-`). Prepared for Vladimir Reshetnikov.
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 160 pages
+article.pdf                        the compiled report, 162 pages
 README.md                          this guide
 RECONCILIATION.md                  the source comparisons and precise proof-review scope
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
@@ -127,9 +127,12 @@ automorphisms and logical consequences. It extends coefficient reconstruction
 to the number-field ideal predicates and the c.e.-set classification to
 all characteristic-zero coefficient fields using finite equation systems.
 The new material in Sections 6 and 10 still needs review.
-A further pass reviews Sections 15.1–15.4: denominator ideals, least
-denominators, the multiplier theorem and the affine denominator dichotomy.
-The rest of the batch-27 material remains unreviewed: Sections 15.5–15.12,
+Further passes review Sections 15.1–15.7: denominator ideals, the
+multiplier theorem, rational-function and curve applications, congruence
+orbits and density. The focusing formula now handles the zero parameter
+and the projective topology is explicit. The fixed rational-function field
+is discrete in the induced surreal topology, unlike its degree topology.
+The rest of the batch-27 material remains unreviewed: Sections 15.8–15.12,
 the additions to Section 20, Section 21.3 and Questions 21.12–21.16. No review
 covers the batch-28 material: Sections 16–18, the pointers added in Sections 6, 7
 and 14, the additions to Section 20, Section 21.4, the re-scoped notes to
@@ -976,7 +979,7 @@ processor is needed:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The build gives 160 pages with no errors, warnings, undefined references,
+The build gives 162 pages with no errors, warnings, undefined references,
 multiply defined labels or overfull boxes. (Before the merge that joined the
 reviews of Sections 12, 13 and 15.1–15.4 to Sections 16–18, the text at
 `ac54217` built to 157 pages and the reviewed text at `3d40856`, without

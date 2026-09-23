@@ -6,8 +6,8 @@ After the three expansions, the reviewed original Sections 11–12 are Sections
 14 and 19; the fractions section is Section 15, and the curve and differential
 rigidity part is Sections 16–18.
 Subsequent passes review the newly added Sections 11–13 from sources 06–07.
-A further pass reviews Sections 15.1–15.4 from sources 08–09. The added
-material in Sections 6 and 10, Sections 15.5–15.12, Sections 16–18 with the
+Further passes review Sections 15.1–15.7 from sources 08–09. The added
+material in Sections 6 and 10, Sections 15.8–15.12, Sections 16–18 with the
 pointers they added in Sections 6, 7 and 14, and Sections 20–21 remain
 outside the completed proof review.
 It does **not** certify integration of every result in the twelve manuscripts
@@ -411,6 +411,66 @@ pending in Lean. The unreviewed added material in Sections 6 and 10,
 Sections 15.5–15.12, Sections 17–18, new companions and remaining imported
 foundations/source reconciliation remain separate obligations.
 
+## Rational functions, curves and dense fibers: Sections 15.5–15.7
+
+This pass compares source 08's Sections 6–7 and source 09's Sections 7–9
+with the corresponding maintained text, using the same recovered archives
+as the preceding pass. The elementary-group comparison was read against
+the statements and displayed matrices at `ogl:el:prop:cuspresidue` and
+`ogl:el:thm:nonel` in the groups report. Its imported cusp-residue result
+and the underlying amalgam proof remain a separate dependency; this pass
+checks the consequences in the Diophantine article, not that entire report.
+
+Polynomial evaluation now proves fraction-field injectivity and the
+leading-degree formula for nonzero rational functions at either sign of a
+purely infinite parameter. The tuple classification tracks the rescaled
+denominator, nonzero multiplier and nonzero constant vector, and verifies
+independence of the projective specialization from the chosen reduced
+vector. Lowest terms include the attaining sign and divisibility of all
+coordinates. The one-function criterion handles the zero function and
+distinguishes a pole at formal zero from a zero denominator at the actual
+parameter. Table entries now have explicit coprimality checks, and the
+certificate procedure specifies finite ratio tests, normalization and
+parameter-dependent positivity.
+
+The local approximation proof supplies positive integer choices for both
+exponents and checks the vanishing order and strict degree inequality.
+A combined consequence explains the topology distinction: if
+`δ = deg_ω(t) > 0`, choose `η > Nδ` for every ordinary natural `N`.
+Every nonzero element of `R(t)` has leading exponent `mδ`, so its absolute
+value exceeds `ω⁻η`. Thus the fixed rational-function field is discrete
+in the full surreal order topology, unlike its non-discrete degree
+topology. This is an explicit consequence of the earlier set-cut and
+leading-degree lemmas, not a new statement attributed to the source.
+
+The no-lcm proof identifies both inclusions in the intersection argument.
+The homogeneous-system proof now uses homogeneity to justify the common
+real rescaling and states the positive leading degree of a nonconstant
+coordinate. The required constant vector has rational projective direction;
+its entries need not themselves be rational.
+
+The equivariance proof transports the Bézout row explicitly. The orbit
+theorem now says constant real *projective* point, retaining infinity.
+The ordered-field chart topology is defined, including reciprocal
+neighborhoods at infinity. The focusing lemma had an undefined `1/b`
+formula at the allowed value `b = 0`; the revised statement gives the
+identity in that case, restricts the affine infinity image to `b ≠ 0`,
+and identifies the pole `x − 1/b`. The proof checks closure under composition
+and inverse, and the set-wise bound explicitly excludes the pole. The
+nearby rational and irrational examples choose one focusing matrix for
+both labels; their transformed column, distance and denominator are
+verified. The nowhere-continuity argument covers the relative topology
+at infinity as well as at affine points.
+
+All 143 standard statements and 310 labels remain, without renumbering.
+Four statement texts change: projective wording in the orbit theorem,
+the zero-parameter correction in the focusing lemma, and explicit chart
+topology in the dense-fiber and nowhere-continuity corollaries. Section
+15.8 onward is byte-identical. The source-level results, including the
+explicit topology consequence, remain pending in Lean. Sections
+15.8–15.12 and 20–21 (numbered 17–18 in this pass), all of Sections 16–18, added material in Sections 6 and 10, new companions
+and remaining imported foundations and source reconciliation need review.
+
 ## Integration of curve and differential rigidity manuscripts and current numbering
 
 Five manuscripts on curve and differential rigidity, tagged C10–C14 after their
@@ -431,7 +491,7 @@ The passes above therefore use three numberings of the last three sections.
 The records up to and including the Section 11 and Section 12 reviews call the
 omnific-coefficients, formalization and questions sections 15, 16 and 17 (and,
 before the batch-25 merge, the families section 11); the fraction-integration
-record, the Section 13 review and the Sections 15.1–15.4 review call them 16, 17
-and 18. They are now
+record, the Section 13 review and the Sections 15.1–15.4 and 15.5–15.7 reviews
+call them 16, 17 and 18. They are now
 Sections 19, 20 and 21. Sections 1–15 and their subsections, including the
 Sections 15.1–15.4 reviewed above, keep their numbers.

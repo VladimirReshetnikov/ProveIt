@@ -2979,6 +2979,77 @@ build passes 4,331 jobs and audits 13,640 declarations with the same
 three permitted axioms. The source-label and independent inventory audits
 still pass; both reviewed PDFs remain identical to the validated builds.
 
+## Omnific rational functions, curves and focusing: Sections 15.5–15.7
+
+The [Diophantine article](surreal/omnific-diophantine-geometry/article.tex)
+now has a proof review through the congruence-orbit and dense-fiber
+arguments. The [reconciliation](surreal/omnific-diophantine-geometry/RECONCILIATION.md)
+records comparison with source 08's Sections 6–7 and source 09's Sections
+7–9, using the archived texts recovered in the preceding pass. The
+elementary-group comparison was checked against the cited cusp-residue
+statement and matrices in the groups report; its amalgam theorem and
+full proof remain separate imported dependencies.
+
+The polynomial evaluation proof now includes fraction-field injectivity
+and the leading-degree formula for rational functions. The classification
+tracks normalization of the denominator and uniqueness of the nonzero
+multiplier, and verifies independence of projective specialization from
+the chosen reduced vector. Lowest terms, the zero function and formal
+poles are explicit. The worked table has coprimality checks, and the
+certificate procedure spells out finite coordinate-ratio tests and the
+parameter-dependent sign needed for a positive denominator.
+
+The local-density construction specifies positive integer exponents,
+vanishing orders and a strict degree bound. Its topology comparison now
+has a concrete proof: a single exponent larger than every ordinary
+multiple of `deg_ω(t)` gives a positive radius isolating every element
+of the fixed field `R(t)` in the induced surreal topology. The degree
+topology remains non-discrete. The no-lcm argument identifies both
+ideal inclusions, and the homogeneous-system proof uses homogeneity to
+justify the real normalization and shows why a nonconstant coordinate
+is infinite in absolute value.
+
+The orbit theorem now says real projective point, including infinity.
+The topology is defined in both affine charts, and nowhere continuity
+uses relative neighborhoods at infinity as well. The focusing lemma
+previously used `1/b` at the allowed value `b = 0`; the statement now
+gives the identity at zero, restricts that formula to nonzero `b`, and
+identifies the pole `x − 1/b`. The focusing bound excludes that pole
+from the prescribed set. A single matrix supplies both nearby
+denominator types, with the transformed column and its residue explicit.
+
+All 143 standard results and 310 labels are preserved, with unchanged
+numbering. Four standard statement texts change: the orbit theorem,
+focusing lemma, dense-fiber corollary and nowhere-continuity corollary.
+Section 15.8 onward is byte-identical. Three-pass pdfLaTeX builds give
+a clean 123-page article and 29-page catalogue, with no warnings,
+unresolved references or box diagnostics. Visual inspection covers
+article PDF pages 5, 6, 11, 68 and 75–83 and the changed catalogue page 9.
+The independent inventory verifies 3,297 standard results in 57 main
+texts; source-label and local Markdown link checks pass.
+
+The delivered finite verifiers were rerun with SymPy 1.14.0 in scratch:
+source 08 passes 833 assertions and exactly reproduces its recorded JSON;
+source 09 passes 92, differing only in timestamp and Python version.
+Their symbolic identities and finite examples do not verify the
+proper-class focusing, topology or denominator classification proofs.
+No delivered script or recorded JSON was overwritten. No Lean source is
+changed by this review, and all these results remain **Pending** in Lean.
+
+The initial fetch found the branch synchronized at `9e95be1`. The
+remaining review starts at Section 15.8; later fraction material,
+Sections 17–18, added material in Sections 6 and 10, new companions,
+imported foundations and source reconciliation remain outstanding.
+
+The final synchronization merged `64571c3` and `bcac55a` through `129a053`,
+adding nonnegative-polynomial norm factorization and affine Cayley-chart
+Fejér–Riesz construction. No manuscript changed. The combined
+`LEAN_NUM_THREADS=2 lake build` passes 4,340 jobs and audits 13,715
+declarations using only `propext`, `Classical.choice` and `Quot.sound`.
+All 3,799 cited source labels resolve and the 3,297-row inventory still
+passes; both reviewed PDFs match their validated builds byte for byte.
+The local Markdown check resolves 1,430 destinations in 153 files.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

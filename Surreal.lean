@@ -541,3 +541,10 @@ import Surreal.Algebra.NonnegativePolynomialDegree
 import Surreal.Algebra.ConjugatePolynomialFactor
 import Surreal.Algebra.NonnegativePolynomialNorm
 import Surreal.Surcomplex.NonnegativePolynomialFactorization
+import Surreal.Algebra.PolynomialHomogeneousTransform
+import Surreal.Algebra.LaurentCayleyDegree
+import Surreal.Surcomplex.CayleySpectralFactor
+import Surreal.Surcomplex.FejerRieszCayley
+import Surreal.Algebra.CayleyBoundaryCoefficients
+import Surreal.Surcomplex.FejerRieszBoundary
+import Surreal.Surcomplex.FejerRieszExistence
