@@ -2252,6 +2252,31 @@ above. The installed PDF matches the compiled source. All 2,872 cited source
 labels resolve, and the inventory still contains 2,535 standard statements
 in 49 reports. No verification code or data accompanied this report.
 
+Merged the subsequent formalization commits through `71e9606`; they change
+Lean code, the root imports and coverage documentation, but no manuscript
+sources. The ledger conflict keeps both the newly completed Prony mappings
+and the corrected `ExponentialProfile` status. Checked the assumptions and
+main declarations of the incoming `LogModulusClassification` and
+`ComplexValuationKernel` modules against their mappings, then updated both
+automorphism READMEs and the field-automorphism article. These generic
+results require an explicitly injective `OrderedExp`; the kernel also uses
+a nontrivial convex valuation. The separate `L`-automorphism predicates,
+relational treatment of coarsening and pending actual surreal instantiations
+are now explicit. This integration check is not a mathematical review of
+every incoming Lean module.
+
+The updated article again passes three LaTeX runs without diagnostics and
+retains 37 pages, all 86 labels and every result number. Inspected all 29
+pages whose extracted text or pagination changed after the coverage update.
+The report README's result references agree with the compiled numbering;
+its Taylor-motion summary now states the real-preservation condition.
+
+Combined validation: `LEAN_NUM_THREADS=2 lake build` passed all 4,264 jobs.
+The axiom audit passed for 12,648 declarations using only `propext`,
+`Classical.choice` and `Quot.sound`. All 3,016 cited source labels and 1,253
+local Markdown destinations resolve. The independent inventory remains
+2,535 standard statements in 49 reports, and `git diff --check` passes.
+
 ## Remaining scope
 
 Batch 22, placed in `7b5f934`, was assembled in `68e2960` and catalogued

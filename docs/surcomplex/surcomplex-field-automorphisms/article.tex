@@ -122,8 +122,8 @@ A mathematical research exposition, not a claim of
 complete classification or of historical priority. Written proofs are supplied
 for the main reductions and constructions. No new Lean verification is
 supplied here. Its labels have no dedicated implementation mappings;
-existing generic Lean results already cover the ordered displacement and
-value-fixing exponential rigidity implications
+existing generic Lean results cover ordered displacement, exponential
+rigidity, logarithmic-modulus classification and the valuation kernel
 (Section~\ref{saut:sec:position}). The original repository comparison is
 pinned to the revision recorded in Section~\ref{saut:sec:repo}; the relations
 to the collection as it now stands are in
@@ -503,8 +503,19 @@ proves the valued-field forms of the rigidity report's displacement results.
 The later \nolinkurl{Surreal/Algebra/ExponentialProfile.lean} proves its
 ordered displacement lemma (\texttt{displacement\_cofinal}) and the
 value-fixing exponential rigidity implication (\texttt{eq\_id\_of\_commute}).
-These generic results already cover the corresponding finite arguments
-here; their mappings use the rigidity report's labels. No dedicated
+The modules \nolinkurl{Surreal/Algebra/LogModulusClassification.lean} and
+\nolinkurl{Surreal/Algebra/ComplexValuationKernel.lean} now also prove the
+generic logarithmic-modulus classification and valuation-kernel theorem.
+They work over an ordered field with nonnegative square roots and an
+injective \texttt{OrderedExp}; injectivity is an explicit hypothesis,
+not a field of that structure. The kernel theorem additionally uses a
+nontrivial convex valuation. The classification includes the direct-product
+isomorphism (\texttt{autLEquiv}); the kernel module uses separate definitions
+of \texttt{log}, $L$ and the $L$-automorphism predicate, without a formal
+bridge to the classification module. Its coarsened action is expressed
+relationally, not through a constructed ordered quotient.
+These generic results cover the corresponding arguments here;
+their mappings use the rigidity report's labels. No dedicated
 \texttt{saut:} implementation mapping is added. Instantiation at the actual
 surreal exponential, rational non-lifting and the classification for the
 actual surcomplex logarithmic modulus remain pending; no class automorphism-group object follows
@@ -2306,8 +2317,9 @@ the source's and were not rechecked for this report.
 $\{\id,c\}\subsetneq\AutL(\K)$, is not decided; nor is whether $S_a|_{\No}$
 is exponential when $a$ is not rational (Section~\ref{saut:sec:conventions}).
 \item \emph{(Added; status updated.)} No dedicated \texttt{saut:} mappings
-are supplied. Existing generic Lean proofs cover the ordered displacement
-and value-fixing exponential rigidity implications, as recorded in
+are supplied. Existing generic Lean proofs cover ordered displacement,
+exponential rigidity, logarithmic-modulus classification and the valuation
+kernel, as recorded in
 Section~\ref{saut:sec:position}; their actual surreal exponential
 instantiation remains pending. The discreteness proof concerns
 lower-universe-small subsets of the Lean carrier, not an unqualified

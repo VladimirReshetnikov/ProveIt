@@ -87,7 +87,10 @@ actual valuation image, and extends the written non-density argument to
 the full `Aut(K)`. The review adds no dedicated `saut:` implementation
 mapping. Existing `ExponentialProfile` mappings already prove the generic
 ordered displacement and value-fixing exponential rigidity implications;
-the actual surreal exponential instantiation and the report's further
+`LogModulusClassification` and `ComplexValuationKernel` also prove the
+generic logarithmic-modulus classification and valuation-kernel clauses,
+with their precise hypotheses and separate predicates recorded below.
+The actual surreal exponential instantiation and the report's further
 class automorphism conclusions remain pending. See [the review record](REVIEW.md).
 
 Before archive retirement in `e5791a8`, the tree contained 63 source
@@ -3619,32 +3622,32 @@ Statements are **pending unless explicitly mapped** in the implementation table.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `saut:lem:order` (line 518) | Untitled |
-| Theorem | `saut:thm:axis` (line 529) | Centralizer and stabilizer |
-| Theorem | `saut:thm:norm` (line 576) | Exact norm rigidity |
-| Theorem | `saut:thm:circle` (line 599) | Untitled |
-| Lemma | `saut:lem:support` (line 684) | Support control used below |
-| Theorem | `saut:thm:monomial` (line 718) | Monomial construction |
-| Theorem | `saut:thm:phase` (line 813) | A faithful phase action |
-| Theorem | `saut:thm:coeffflow` (line 903) | Taylor motion of coefficient constants |
-| Theorem | `saut:thm:shiftflow` (line 975) | A fixed-shift flow |
-| Theorem | `saut:thm:decomp` (line 1047) | Four layers for surcomplex valued automorphisms |
-| Proposition | `saut:prop:continuous` (line 1213) | Untitled |
-| Proposition | `saut:prop:discrete` (line 1246) | Untitled |
-| Theorem | `saut:thm:derivative` (line 1343) | Derivative dichotomy for field automorphisms |
-| Theorem | `saut:thm:zeroderiv` (line 1363) | Exponent dilations have derivative zero |
-| Corollary | `saut:cor:bidifferentiable` (line 1394) | Untitled |
-| Theorem | `saut:thm:acfhomogeneity` (line 1428) | Class back-and-forth |
-| Theorem | `saut:thm:orderedhomogeneity` (line 1463) | Ordered surreal extension |
-| Proposition | `saut:prop:nondefinability` (line 1505) | Untitled |
-| Proposition | `saut:prop:fixedfields` (line 1544) | Untitled |
-| Theorem | `saut:thm:torsion` (line 1605) | Finite subgroups and real forms |
-| Theorem | `saut:thm:inequivalentrealform` (line 1650) | Untitled |
-| Lemma | `saut:lem:displacement` (line 1754) | Displacement cannot be globally bounded |
-| Theorem | `saut:thm:expfaithful` (line 1777) | Faithful value-group action |
-| Proposition | `saut:prop:rationalnonlift` (line 1833) | Untitled |
-| Theorem | `saut:thm:L` (line 1870) | Logarithmic-modulus automorphisms |
-| Proposition | `saut:prop:conjugacycriterion` (line 2403) | Untitled |
+| Lemma | `saut:lem:order` (line 529) | Untitled |
+| Theorem | `saut:thm:axis` (line 540) | Centralizer and stabilizer |
+| Theorem | `saut:thm:norm` (line 587) | Exact norm rigidity |
+| Theorem | `saut:thm:circle` (line 610) | Untitled |
+| Lemma | `saut:lem:support` (line 695) | Support control used below |
+| Theorem | `saut:thm:monomial` (line 729) | Monomial construction |
+| Theorem | `saut:thm:phase` (line 824) | A faithful phase action |
+| Theorem | `saut:thm:coeffflow` (line 914) | Taylor motion of coefficient constants |
+| Theorem | `saut:thm:shiftflow` (line 986) | A fixed-shift flow |
+| Theorem | `saut:thm:decomp` (line 1058) | Four layers for surcomplex valued automorphisms |
+| Proposition | `saut:prop:continuous` (line 1224) | Untitled |
+| Proposition | `saut:prop:discrete` (line 1257) | Untitled |
+| Theorem | `saut:thm:derivative` (line 1354) | Derivative dichotomy for field automorphisms |
+| Theorem | `saut:thm:zeroderiv` (line 1374) | Exponent dilations have derivative zero |
+| Corollary | `saut:cor:bidifferentiable` (line 1405) | Untitled |
+| Theorem | `saut:thm:acfhomogeneity` (line 1439) | Class back-and-forth |
+| Theorem | `saut:thm:orderedhomogeneity` (line 1474) | Ordered surreal extension |
+| Proposition | `saut:prop:nondefinability` (line 1516) | Untitled |
+| Proposition | `saut:prop:fixedfields` (line 1555) | Untitled |
+| Theorem | `saut:thm:torsion` (line 1616) | Finite subgroups and real forms |
+| Theorem | `saut:thm:inequivalentrealform` (line 1661) | Untitled |
+| Lemma | `saut:lem:displacement` (line 1765) | Displacement cannot be globally bounded |
+| Theorem | `saut:thm:expfaithful` (line 1788) | Faithful value-group action |
+| Proposition | `saut:prop:rationalnonlift` (line 1844) | Untitled |
+| Theorem | `saut:thm:L` (line 1881) | Logarithmic-modulus automorphisms |
+| Proposition | `saut:prop:conjugacycriterion` (line 2415) | Untitled |
 
 ### euclidean-three-space
 

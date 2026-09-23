@@ -66,8 +66,9 @@ Section and theorem numbers are those of the build.
   move `No` (`P_{π/2}(t) = it`), witnessing `G_No ⊊ Aut(K)` with no choice.
   The conjugates `P_{2θ}c` have pairwise distinct fixed fields, all `≅ No`.
 - **Leading-term kernel (Theorems 5.1, 5.2).** Taylor motions `Φ_d` are
-  1-automorphisms preserving `No` that move a real transcendental constant
-  `b ↦ b + t^δ`; fixed-shift flows `T_s` (e.g. `t ↦ t/(1−st)`) are strongly
+  1-automorphisms. Suitable derivations preserving `R` give motions that
+  preserve `No` and move a real transcendental constant `b ↦ b + t^δ`;
+  fixed-shift flows `T_s` (e.g. `t ↦ t/(1−st)`) are strongly
   `C`-linear 1-automorphisms.
 - **Four layers (Theorem 6.1).** Every valued automorphism factors uniquely as
   `u · D_χ · M_{ρ,τ}`: `G_v ≅ (U ⋊ Hom(Γ,C^×)) ⋊ (Aut(C) × Aut_ord(Γ))`; for
@@ -81,7 +82,8 @@ Section and theorem numbers are those of the build.
 - **Derivatives (Theorems 8.1, 8.2; Corollary 8.3).** A field automorphism
   with a fine derivative somewhere has the same derivative everywhere, and a
   nonzero one forces the identity; `S_a` (`a > 1`) has derivative 0
-  everywhere; only the identity is bidifferentiable.
+  everywhere, while `0 < a < 1` gives no `K`-valued derivative; only the
+  identity is bidifferentiable.
 - **Pure field (Theorems 9.1, 9.2; Propositions 9.3, 9.4).** Class
   back-and-forth (global choice): `Aut(K/C)` is transitive on `K \ C`; for any
   set of parameters some automorphism fixing them moves `No`, and some moves
@@ -115,8 +117,9 @@ ledger of 33 items: 28 from the source and 5 added when the report joined the
 collection. In brief:
 
 - Not refereed; no new Lean code or dedicated `saut:` mappings accompany it.
-  Existing generic proofs cover the ordered displacement and value-fixing
-  exponential rigidity arguments, as detailed below. The delivery did not
+  Existing generic proofs cover ordered displacement, exponential rigidity,
+  logarithmic-modulus classification and the valuation kernel, as detailed
+  below. The delivery did not
   independently build the repository. No complete
   classification of `Aut(K)`; priority not certified; no exhaustive
   nonduplication claim.
@@ -187,6 +190,15 @@ proves valued-field forms of the rigidity report's displacement results, while
 the ordered displacement lemma is now proved by `displacement_cofinal` in
 `Surreal/Algebra/ExponentialProfile.lean`. That module's `eq_id_of_commute`
 also proves the generic value-fixing exponential rigidity implication.
+`Surreal/Algebra/LogModulusClassification.lean` now proves the generic
+logarithmic-modulus classification, including the direct-product group
+isomorphism `autLEquiv`. `Surreal/Algebra/ComplexValuationKernel.lean`
+proves the generic valuation-kernel theorem. Both use an ordered field
+with nonnegative square roots and an injective `OrderedExp`; injectivity
+is an explicit hypothesis, omitted from the structure itself. The kernel
+theorem additionally uses a nontrivial convex valuation. That module
+defines its own `log`, `L` and `IsLAut`, without a formal bridge to the
+classification module, and represents the coarsened action relationally.
 These existing mappings use the rigidity report's labels; this review adds
 no dedicated `saut:` mapping. The actual surreal exponential instantiation,
 rational non-lifting and the actual surcomplex logarithmic-modulus
