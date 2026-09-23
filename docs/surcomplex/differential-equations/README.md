@@ -29,14 +29,15 @@ coordinate arguments, the complete regular-singular main text (Sections
 23–28), and the autonomous proofs through the abelian image and speed
 threshold, together with their scope comparisons (Sections 29–34).
 The critical-potential review now covers the tower, summability and
-fundamental-pair arguments in Sections 35–36.
+fundamental-pair arguments, Euler threshold and transfinite classification
+in Sections 35–38.
 
-The latest pass checks the imported ordinal tower formulas, expands the
-double sum's support and finite incidence, and gives unique Wronskian
-coordinates for every solution. It separates real powers from undefined
-non-real Conway exponents and illustrates the first two critical stages.
-Sections 37–42, remaining imports and source reconciliation still require
-review. Detailed scope and validation are in the collection's
+The latest pass expands the Euler-kernel classification, the Liouville
+operator identity and Wronskian transport. It corrects the power-Hahn
+comparison's missing exception `Q_{1,0} = ¼ω⁻²` and makes the critical
+endpoint's smaller-perturbation example explicit. Sections 39–42,
+remaining imports and source reconciliation still require review.
+Detailed scope and validation are in the collection's
 [review record](../../REVIEW.md).
 
 ## What the report is
@@ -285,13 +286,16 @@ Q_α = ¼ Σ_{β<α} (ℓ_β†)² ,      Q_{α,c} = Q_α + c (ℓ_α†)² .
   first limit stage `λ = ω` in normal form (Example 42.3), and, as observations
   of this merge, the Euler operator as a constant-coefficient operator at the
   scale `log s` (Remark 37.4), stage 0 as a regular-singular system of Part V
-  (Remark 38.4), and the explicit unique Pinney amplitude and canonical phase of
+  (Remark 38.4), including the overlap `Q_{1,0} = Q_{0,¼}`, and the explicit unique Pinney amplitude and canonical phase of
   a supercritical member (Remark 38.5; its uniqueness and phase statements use
   Part III and that part's import).
 
-Part VII uses neither surjectivity of `∂` (except in one flagged Riccati
-remark) nor Part III's imported splitting theorem. It is relative to the one
-fixed `∂`; nothing is claimed for Part VI's class of normalized derivations.
+The tower, Euler and transfinite classification proofs do not require
+surjectivity of `∂` or Part III's imported splitting theorem. The real
+Riccati nonexistence remark uses surjectivity; the Pinney uniqueness and
+canonical-phase comparison uses both surjectivity and the Part III import.
+All statements here concern the fixed `∂`; no extension to Part VI's class
+of normalized derivations is asserted.
 
 A **deliberately separate** half treats *coordinate* differential equations in
 fixed-common-domain Hahn rings `Hol(U)((t^Γ))`: existence, uniqueness, support
@@ -1089,6 +1093,37 @@ declarations using only `propext`, `Classical.choice` and `Quot.sound`.
 All 876 local Markdown destinations in 93 files resolve. These checks
 establish integration and navigation, not review of batch 20's new proofs
 or Lean coverage for the critical-potential results.
+
+The second critical-potential pass reviewed Sections 37–38. It expanded
+the finite-primitive contradiction, stated the Liouville identity over an
+arbitrary characteristic-zero differential field, and supplied its kernel
+bijection and exact Wronskian transport. The repeated-root Jordan chain,
+injective non-real factors and real descent now justify completeness
+explicitly. The classification gives unique solution coefficients, the
+Riccati reduction names its primitive, and an exact next-stage example
+shows why a smaller perturbation can change the critical answer.
+
+The power-Hahn comparison had an exception: `Q_{1,0} = ¼ω⁻²` belongs to
+`ℂ((t^ℝ))`. The corrected support argument excludes every other potential
+at stages `α ≥ 1` by a surviving exponent outside `ℝ`. Rescaled operators
+retain the scale notation, the oscillator's distinct-root parameter is
+explicitly positive, and the README now includes the Pinney comparison's
+surjectivity and Part III import among its exceptions.
+
+The PDF rebuilt in three passes at 195 pages, with no warnings or box
+issues in either the reviewed text or its 195-page baseline; the changed
+pages were inspected. The copied member-13 verifier passed all 70 checks
+with Python 3.13.14 and SymPy 1.14.0 and matched the delivered output except
+for Python version. Separate exact calculations checked gauge and
+Wronskian transport at three scales with a variable coefficient, the
+repeated-root chain, and the support exception at finite stages 1–6.
+These finite checks do not verify intrinsic nonexistence or transfinite
+classification. All 51 historical artifacts remain byte-identical. The
+Lean build passed 3,890 jobs and audited 6,044 declarations with only the
+three permitted axioms. The independent index checks 2,114 statements
+across 44 reports, and all 876 local Markdown destinations in 93 files
+resolve. Sections 39–42, remaining imports and source reconciliation are
+still pending.
 
 ## Re-running the source verifiers
 

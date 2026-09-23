@@ -536,9 +536,20 @@ fixed ordinal, so its index is a set. The monomial product `ℓ_{<α}` is
 defined by summing its exponents; its logarithm agrees with the sum of
 logarithms by the stated imported theorem, including limit stages.
 The real powers `ℓ_α^r` use the ordered real exponential. These formulas
-do not define non-real Conway exponents or complex powers of infinite
-scales. A critical potential is the strong sum of its increments, not
+do not extend the Conway map to exponents in `ℂ \ ℝ`, or define complex
+powers of infinite scales. A surreal exponent outside `ℝ`, such as
+`−2−2ω⁻¹`, is still a valid Conway exponent; distinguish that case from
+a non-real complex exponent. A critical potential is the strong sum of its increments, not
 the generally nonsummable family of its partial potentials.
+
+For a scale `s` with `∂s ≠ 0`, the field derivation
+`∂_s = (∂s)⁻¹∂` has the same constants as `∂`; writing `s∂_s = ∂_{log s}`
+when `s > 0` asserts an operator identity, not a global substitution map.
+The Liouville gauge formula is algebraic for arbitrary coefficients in the
+field. Its Euler kernel classification additionally requires an ordinary
+real coefficient. Membership of a potential in the power-Hahn field
+`ℂ((t^ℝ))` is determined by its surviving Conway exponents: the critical
+family's stage `α = 1, c = 0` is still in that field.
 
 Distinguish the ordered real surreal exponential, the strongly summed
 infinitesimal Hahn exponential, finite-angle `cis`, and a chosen global

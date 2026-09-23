@@ -9192,9 +9192,11 @@ the second. Neither statement contains the other.
 $\ell_{n}^{\dagger}$ is the boundary case $p=1$ of \cref{diff:cor:logscales},
 and \cref{diff:cp:cor:nonreal} carries that obstructed boundary to every
 ordinal depth. Stage $0$ is a power-Hahn regular-singular system, and its
-classification in \cref{diff:rs:part} agrees with the one here; every stage
-$\alpha\geq1$ has coefficients outside $\KR$, where
-\cref{diff:rs:prop:boundary} shows that \cref{diff:rs:part} cannot reach
+classification in \cref{diff:rs:part} agrees with the one here.
+For $\alpha\geq1$ the potential lies outside $\KR$ except at
+$(\alpha,c)=(1,0)$, which is the previous stage's critical endpoint
+$Q_{1,0}=Q_{0,1/4}$. The Conway exponents outside $\R$ in the other
+potentials put them beyond that coefficient field
 (\cref{diff:cp:rem:stagezero}).
 \item \emph{\Cref{diff:part:matrix}.} For a real coefficient,
 \cref{diff:thm:matpinney} excludes a one-dimensional solution space in $\No$.
@@ -9557,12 +9559,24 @@ has no nonzero solution in $\SC$. For real $\nu$ its solutions are exactly
 $\C\,s^{\nu}$, with $s^{\nu}=\exp(\nu\log s)$.
 \end{corollary}
 \begin{proof}
-Write $\nu=a+ib$ with $b\neq0$. The imaginary coefficient $b\,s^{\dagger}$ has
-the accumulated phase $b\log s$, which is infinite: a real bound on $\log s$
-would exponentiate to a real bound on $s$. By \cref{diff:thm:phasecriterion},
-whose direction (i)$\Rightarrow$(iii) uses no primitive, there is no nonzero
-solution. For real $\nu$, $s^{\nu}$ is a solution by \ref{diff:BM:exp}, and the
-quotient of any solution by it has derivative zero.
+Write $\nu=a+ib$ with $a,b\in\R$ and $b\neq0$.
+The imaginary coefficient $b\,s^{\dagger}$ has the explicit real
+primitive $b\log s$. This primitive is infinite in modulus:
+$\log s$ exceeds every real number, since an ordinary upper bound
+would exponentiate to an ordinary upper bound on $s$.
+If a nonzero solution existed, the direction
+(i)$\Rightarrow$(ii) of \cref{diff:thm:phasecriterion}, or its direct
+polar proof, would supply an infinitesimal real $\eta$ with
+$\der\eta=b\,s^{\dagger}$. Then
+$\der(\eta-b\log s)=0$, so $\eta-b\log s\in\R$ by the
+constant-field property. An ordinary constant cannot turn an
+infinite primitive into a finite one, a contradiction. This uses
+the displayed primitive and no surjectivity of $\der$.
+
+For real $\nu$, $s^{\nu}=\exp(\nu\log s)$ is nonzero and has
+logarithmic derivative $\nu s^{\dagger}$. If $z$ is any solution,
+$\der(z/s^{\nu})=0$, so $z/s^{\nu}\in\C$; conversely each such
+constant multiple solves the equation, including zero.
 \end{proof}
 
 Member~13 proves this from an infinitesimal real primitive of the angular rate
@@ -9582,9 +9596,11 @@ $\derT y=iy/\log\omega$ is $\der y=-i\ell_{1}^{\dagger}y$.
 
 \begin{lemma}[Liouville transformation as an operator identity]
 \label{diff:cp:lem:gauge}
-Let $F\subseteq\SC$ be a differential subfield and let $s,u,Q\in F$ with
-$s\neq0$, $\der s\neq0$, $u\neq0$, $\der^{2}u+Qu=0$ and $u^{2}\der s=1$. Then for
-every $v\in F$ and every $c\in\C$,
+Let $F$ be a differential field of characteristic zero, and let
+$s,u,Q\in F$ with $s\neq0$, $\der s\neq0$, $u\neq0$,
+$\der^{2}u+Qu=0$ and $u^{2}\der s=1$. Define
+$\der_{s}=(\der s)^{-1}\der$ and $s^{\dagger}=\der s/s$.
+Then for every $v,c\in F$,
 \begin{equation}\label{diff:cp:eq:gauge}
  \Bigl(\der^{2}+Q+c\,(s^{\dagger})^{2}\Bigr)(uv)
  =u\,(s^{\dagger})^{2}\Bigl((s\der_{s})^{2}-s\der_{s}+c\Bigr)v .
@@ -9602,8 +9618,21 @@ Since $\der_{s}s=1$, $(s\der_{s})^{2}-s\der_{s}=s^{2}\der_{s}^{2}$; adding the
 term $c(s^{\dagger})^{2}uv$ gives \cref{diff:cp:eq:gauge}.
 \end{proof}
 
-The identity treats $v$ as an arbitrary element of the field. It does not
-assert that every surreal is a composite $v(s)$ and invokes no substitution
+The rescaled operator $\der_{s}$ is a derivation and has the same
+constant field as $\der$, since its multiplying scalar is nonzero.
+The identity does not differentiate $c$, so $c$ need not be constant
+in this lemma; the Euler classification below does require an
+ordinary constant. It gives a bijection between the two kernels
+by $v\mapsto uv$, because both $u$ and $u(s^{\dagger})^{2}$ are
+nonzero. It also transports Wronskians exactly:
+\[
+ \mathrm{Wr}(uv_{1},uv_{2})
+ =u^{2}(\der s)\mathrm{Wr}_{s}(v_{1},v_{2})
+ =\mathrm{Wr}_{s}(v_{1},v_{2}).
+\]
+These are pointwise field identities, so they also apply in $\SC$.
+They treat $v$ as an arbitrary element of the field and do not
+assert that every surreal is a composite $v(s)$ and invoke no substitution
 operator; such a distinction is essential in view of the global
 composition obstruction of \cite[Theorem~8.4]{BMGerms}
 (\cref{diff:rem:nocomposition}).
@@ -9628,12 +9657,25 @@ derivation of $\SC$ with constants $\C$. For real $r$, $s\der_{s}(s^{r})=rs^{r}$
 If $c<\frac14$ the two distinct real roots of $r^{2}-r+c$ give solutions with
 $\mathrm{Wr}_{s}(s^{r_{+}},s^{r_{-}})=(r_{-}-r_{+})s^{r_{+}+r_{-}-1}=r_{-}-r_{+}\neq0$,
 and \cref{diff:cp:lem:span} for $\der_{s}$ gives completeness. If $c=\frac14$,
-direct differentiation gives the pair $s^{1/2}$, $s^{1/2}\log s$ with
-$\mathrm{Wr}_{s}=1$. If $c>\frac14$ the roots are
+put $v_{0}=s^{1/2}$ and $v_{1}=s^{1/2}\log s$. Then
+\[
+ (s\der_{s}-\tfrac12)v_{0}=0,\qquad
+ (s\der_{s}-\tfrac12)v_{1}=v_{0}.
+\]
+Both therefore lie in the squared factor's kernel, and
+$\mathrm{Wr}_{s}(v_{0},v_{1})=v_{0}^{2}\der_{s}(\log s)=1$.
+The same spanning lemma proves completeness at the repeated root.
+If $c>\frac14$ the roots are
 $\nu_{\pm}=\frac12\pm i\sqrt{c-\frac14}$, the operator factors as
 $(s\der_{s}-\nu_{+})(s\der_{s}-\nu_{-})$ with commuting constant-coefficient
-factors, and each factor is injective by \cref{diff:cp:cor:nonreal}. Real
-statements follow by intersecting with $\No$.
+factors. If their product kills $v$, first apply
+\cref{diff:cp:cor:nonreal} to
+$(s\der_{s}-\nu_{-})v$: it must be zero. Apply that corollary
+again to obtain $v=0$. Thus the conclusion does not assume
+that a candidate solution has a power or exponential form.
+For the real statement, the displayed bases are real and
+independent over $\C$. Taking imaginary parts of a real solution's
+unique complex expansion forces both coefficients to be real.
 \end{proof}
 
 The number $\frac14$ and the repeated-root logarithm are the classical Euler
@@ -9643,14 +9685,16 @@ $\SC$, not merely a particular trial formula.
 \begin{remark}[The Euler operator is a constant-coefficient operator at a rescaled scale]
 \label{diff:cp:rem:constant}
 This remark is an observation of this merge; member~13 does not state it. For
-$s>0$, $s\der_{s}=\der_{\sigma}$ with $\sigma=\log s$ (\cref{diff:prop:rescale}),
-and $\sigma$ is positive infinite when $s>\R$. So
+$s>0$ with $\der s\neq0$, one has
+$s\der_{s}=\der_{\log s}$ (\cref{diff:prop:rescale}), and
+$\log s$ is positive infinite when $s>\R$. So
 \cref{diff:cp:prop:euler} is the order-two case of the constant-coefficient
 classification of \cref{diff:thm:constant}, with $P(X)=X^{2}-X+c$, read for
-$\der_{\sigma}$ and $\sigma$ in place of $\der$ and $\omega$: the roots are real
-exactly when $c\leq\frac14$, and $e^{\lambda\sigma}=s^{\lambda}$,
-$\sigma=\log s$. \Cref{diff:thm:constant} is stated for $\der$ only; its proof
-goes through for $\der_{\sigma}$ with \cref{diff:cp:cor:nonreal} in place of
+$\der_{\log s}$ and $\log s$ in place of $\der$ and $\omega$:
+the roots are real exactly when $c\leq\frac14$, and
+$\exp(r\log s)=s^{r}$ for each real root $r$.
+\Cref{diff:thm:constant} is stated for $\der$ only; its proof
+goes through for $\der_{\log s}$ with \cref{diff:cp:cor:nonreal} in place of
 \cref{diff:cor:oscillator}, but nothing below uses that, because member~13's
 direct proof is complete.
 \end{remark}
@@ -9668,16 +9712,18 @@ $u=e^{-\omega/2}$ satisfies $u^{2}\der s=1$ and $\der^{2}u-\frac14u=0$, so
 For $c=\frac14+b^{2}$ with $b\in\R\setminus\{0\}$ the left operator is
 $\der^{2}+b^{2}$, and the case $c>\frac14$ of \cref{diff:cp:prop:euler} is the
 second-order statement of \cref{diff:cor:oscillator}; for $c=\frac14-\kappa^{2}$
-it returns the solutions $Ae^{\kappa\omega}+Be^{-\kappa\omega}$ of
-$\der^{2}y-\kappa^{2}y=0$, and $A+B\omega$ at $c=\frac14$, as
+with $\kappa>0$ real it returns exactly
+$Ae^{\kappa\omega}+Be^{-\kappa\omega}$, $A,B\in\C$, solving
+$\der^{2}y-\kappa^{2}y=0$. At the repeated endpoint
+$c=\frac14$ it instead gives $A+B\omega$, as
 \cref{diff:thm:constant} does. At the scale $s=\omega$ the same lemma, with
 $u=1$ and $Q=0$, gives stage~$0$ of the family, and at the scale
 $s=\ell_{\alpha}$, with $u=u_{\alpha}$ and $Q=Q_{\alpha}$, it gives
 \cref{diff:cp:thm:main}. So the constant-potential oscillator, stage~$0$ and
 stage~$\alpha$ are one Euler threshold read at the scales
-$\sigma=\log s=\omega$, $\ell_{1}$ and $\ell_{\alpha+1}$, and in every
+$\log s=\omega$, $\ell_{1}$ and $\ell_{\alpha+1}$, and in every
 supercritical case the obstruction is the infinite accumulated phase
-$\sqrt{c-\frac14}\,\sigma$ of \cref{diff:cp:cor:nonreal}; the constant-potential
+$\sqrt{c-\frac14}\,\log s$ of \cref{diff:cp:cor:nonreal}; the constant-potential
 threshold $b^{2}>0$ is the Euler threshold $c>\frac14$ shifted by the gauge
 potential $-\frac14$.
 
@@ -9749,8 +9795,12 @@ exactly the next stage, including after a limit. In Conway normal form,
  &&(c=\tfrac14),\label{diff:cp:eq:ycrit}
 \end{align}
 with no unspecified primitive, inverse operator or integration constant; for
-$c=0$ the last term of \cref{diff:cp:eq:qnormal} is omitted. In the printed
-order, $\mathrm{Wr}(y_{+},y_{-})=-\sqrt{1-4c}$ and $\mathrm{Wr}(y_{0},y_{1})=1$.
+$c=0$ the last term of \cref{diff:cp:eq:qnormal} is omitted. The Wronskian transport following \cref{diff:cp:lem:gauge} gives,
+in the printed order,
+$\mathrm{Wr}(y_{+},y_{-})=-\sqrt{1-4c}$ and
+$\mathrm{Wr}(y_{0},y_{1})=1$. Consequently every solution is a
+unique constant linear combination of its displayed pair; the
+constants are the Wronskian ratios of \cref{diff:cp:lem:span}.
 
 \begin{remark}[A Riccati form]
 \label{diff:cp:rem:riccati}
@@ -9763,10 +9813,12 @@ $u_{\alpha}\ell_{\alpha}^{r}$ is
 Indeed $\der\ell_{\alpha}^{\dagger}=-\ell_{\alpha}^{\dagger}(\ell_{<\alpha}^{\dagger}
 +\ell_{\alpha}^{\dagger})$ by \cref{diff:cp:eq:ader}, and the coefficient of
 $(\ell_{\alpha}^{\dagger})^{2}$ in the residual is $r^{2}-r+c$. When
-$c>\frac14$ there is no \emph{real} Riccati solution: from one, a real
-primitive and its exponential would give a nonzero real solution of
-\cref{diff:cp:eq:main}. That implication uses the surjectivity clause
-\ref{diff:BM:surj}, equivalently the Liouville closedness of $\No$ \cite{BM};
+$c>\frac14$ there is no \emph{real} Riccati solution: if such a
+$w$ existed, surjectivity would supply $H\in\No$ with $\der H=w$.
+Then $y=\exp H\neq0$ would satisfy
+$\der^{2}y+Q_{\alpha,c}y=(\der w+w^{2}+Q_{\alpha,c})y=0$,
+contradicting \cref{diff:cp:thm:main}. This implication uses
+\ref{diff:BM:surj}, together with the real exponential law;
 the second-order nonexistence itself does not.
 \end{remark}
 
@@ -9778,9 +9830,16 @@ coefficients settles arbitrary perturbations, or that every
 $\varepsilon\prec(\ell_{\alpha}^{\dagger})^{2}$ preserves subcritical or
 supercritical behaviour of $Q_{\alpha,c}+\varepsilon$; that would need further
 differential asymptotic estimates, which the gauge identity alone does not
-give, and at $c=\frac14$ the construction itself shows that a smaller
-perturbation can matter. No comparison theorem for general surreal Riccati
-equations is used.
+give. At the critical endpoint a smaller perturbation can change
+the answer: for any real $d$,
+\[
+ Q_{\alpha,1/4}+d(\ell_{\alpha+1}^{\dagger})^{2}
+ =Q_{\alpha+1,d}.
+\]
+The added term is $\prec(\ell_{\alpha}^{\dagger})^{2}$ when
+$d\neq0$, yet $d=0$ gives dimension two and $d=1$ gives dimension
+zero. No comparison theorem for general surreal Riccati equations
+is used.
 \end{remark}
 
 \begin{remark}[Stage zero is a regular-singular system; the finite stages are first-order thresholds]
@@ -9796,9 +9855,20 @@ when $c\leq\frac14$, so \cref{diff:rs:thm:selection} gives dimension $2$ or
 $0$, in agreement; the bases correspond through $t^{\mu}=\omega^{r}$ with
 $\mu=-r$, and at $c=\frac14$ the Jordan block gives $\omega^{1/2}$ and
 $\omega^{1/2}\log\omega$. This comparison is made by this merge and is
-recorded as agreement. For $\alpha\geq1$ the potential involves $\log\omega$
-and lies outside $\KR$, beyond the class of \cref{diff:rs:part}
-(\cref{diff:rs:prop:boundary,diff:rs:rem:boundary}). For finite $n$ the
+recorded as agreement.
+
+There is one overlap at the next stage:
+$Q_{1,0}=Q_{1}=\frac14\omega^{-2}=Q_{0,1/4}$ belongs to $\KR$
+and is the repeated-root case just described. For $\alpha=1$
+with $c\neq0$, the term
+$c\omega^{-2\varpi_{2}}=c\omega^{-2-2\omega^{-1}}$ has Conway
+exponent $-2-2\omega^{-1}\notin\R$, so $Q_{1,c}\notin\KR$. For every $\alpha\geq2$
+the same monomial occurs with coefficient $\frac14$ in
+$Q_{\alpha}$; its exponent differs from all later terms, including
+the perturbation, so it cannot cancel. Thus these potentials
+also lie outside $\KR$. This exact support test, rather than
+merely the appearance of a logarithm in a formula, establishes
+the boundary of \cref{diff:rs:part}. For finite $n$ the
 supercritical obstruction is the boundary case $p=1$ of
 \cref{diff:cor:logscales} at depth $n$, and \cref{diff:cp:cor:nonreal} extends
 it to every ordinal.
