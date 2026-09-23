@@ -39,6 +39,14 @@ order two at collision. Euler's identity identifies the manuscript's
 exponential coordinate, and the native polynomial multiplicities agree
 with those local orders, completing the cosine fold theorem.
 
+The coupled two-angle collision now has a bijection with two independent
+quadratic root sets, the exact arcsine branches, and the complete counts of
+distinct complex and real solutions. Its intersection algebra represents the
+two diagonal equations in every commutative target algebra and has basis
+`1, X, Y, XY` at every parameter. Actual fine partial derivatives verify the
+Jacobian and its discriminant locus. Decomposition into local algebras and
+transport of their multiplicities to the angular germs remain pending.
+
 The first modules establish size obstructions and reusable finite algebra.
 Complexification uses mathlib's `QuadraticAlgebra`, with its cross-term
 multiplication, conjugation, and field construction. The modulus takes values
