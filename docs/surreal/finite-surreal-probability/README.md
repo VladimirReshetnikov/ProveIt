@@ -596,3 +596,14 @@ destinations in 97 files resolve. The Lean build passes 3,919 jobs and audits
 6,371 declarations using only `propext`, `Classical.choice` and `Quot.sound`.
 No new probability Lean coverage is claimed. Sections 12 onward and remaining
 imports are pending.
+
+The following synchronization merges `872f921`/`1c4f513` through `bd4cf96`.
+It completes the three actual inverse-trigonometric fine derivatives using
+native interval continuity and a topological-field local inverse rule.
+The ledger keeps subsequent series, infinite-slope asymptotic and endpoint
+assertions separate. The merged Lean build passes 3,920 jobs, with 6,397
+declarations audited using only `propext`, `Classical.choice` and `Quot.sound`.
+All 2,250 source-index entries remain correct and all 932 local Markdown
+destinations in 97 files resolve. The probability source and 49-page PDF
+are unchanged by the merge; it adds no probability formalization or review
+of Sections 12 onward.
