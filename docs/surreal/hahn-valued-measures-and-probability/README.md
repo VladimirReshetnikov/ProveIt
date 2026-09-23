@@ -319,3 +319,12 @@ again under Python 3.13.14 on temporary copies (5,135, 682 and 1,009
 assertions). The copied source hashes match the preserved programs. Outputs
 remained outside the repository; the tautological check remains included in
 source 15's historical total.
+
+A subsequent integration check repaired five escaped-command control
+characters in the finite-probability cross-link (`\texttt`, `\tfrac`,
+`\ref`). Its fraction and corollary reference now render correctly. The
+PDF rebuilt in three passes at 86 pages, with no warnings or box issues
+in either the incoming baseline or repaired build; the changed paragraph
+was inspected. This typesetting repair does not extend the mathematical
+review to source 16's new claims. Delivered verification and audit files
+were not modified.

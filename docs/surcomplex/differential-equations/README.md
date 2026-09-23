@@ -1073,6 +1073,23 @@ independent source audit checks all 2,030 entries across 44 texts, and all
 837 local Markdown destinations in 93 files resolve. Sections 37–42 and
 the remaining imports and source reconciliation are still pending.
 
+The final sync for the Sections 35–36 review merged `1e74537`: batch 20's
+four assembled reports, measures and trigonometry expansions, catalogue
+updates, and `2b323f7`'s analytic-composition and Taylor-rule uniqueness
+proofs. The independent index audit checks 2,114 standard statements in
+44 reports. Three stale physics line references were refreshed. The audit
+also exposed five escaped-command control characters in the measures
+report's new probability cross-link: repaired `\texttt`, `\tfrac` and
+`\ref`, then rebuilt its 86-page PDF in three passes and inspected that
+paragraph. Both the upstream baseline and repaired build have no warnings
+or box issues. All other incoming article sources are unchanged by this
+integration check, including the reviewed differential-equations source
+and PDF. The combined Lean build passes 3,890 jobs and audits 6,044
+declarations using only `propext`, `Classical.choice` and `Quot.sound`.
+All 876 local Markdown destinations in 93 files resolve. These checks
+establish integration and navigation, not review of batch 20's new proofs
+or Lean coverage for the critical-potential results.
+
 ## Re-running the source verifiers
 
 The programs in `code/` are the originals. **Run them on a copy.** Several
