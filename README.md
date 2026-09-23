@@ -187,9 +187,13 @@ topology are proved non-Hausdorff: the closure of zero is precisely that
 ideal, and two omnific integers are topologically indistinguishable exactly
 when their integer constant terms agree. Their separation quotients are
 ring-isomorphic to `ℤ`, with constant extraction as the canonical map.
-The profinite completion, completion homeomorphisms, higher Diophantine and
-general set-sized quotient results remain pending; source review is distinct
-from checked formalization.
+The profinite ring isomorphism is also proved: the inverse limit over all
+positive ordinary moduli is exactly the ordinary profinite integer ring,
+and its canonical map again has the purely infinite ideal as its kernel.
+The construction satisfies Mathlib's limit universal property, and every
+finite-index omnific ideal occurs in the diagram. Completion homeomorphisms,
+higher Diophantine and general set-sized quotient results remain pending;
+source review is distinct from checked formalization.
 
 The [research collection](docs/README.md) also includes work still awaiting
 Lean proofs. The [omnific Diophantine report](docs/surreal/omnific-diophantine-geometry/)
