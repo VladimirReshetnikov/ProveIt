@@ -534,6 +534,13 @@ Near tangency, the two angle branches have square-root splitting. Signed
 perturbations retain the exact finite remainder at relative rate `e/tau`
 and the half-valuation loss. The nearby finite circle points also realize
 the example's infinite rational half-angle coordinates.
+The line-circle coordinate algebra is the quadratic quotient at every
+discriminant, with dimension two and a perfect residue pairing of determinant
+minus one. Its universal property includes nonreduced target algebras;
+at tangency it is the dual-number algebra. Verified local Laurent expansions
+give the two simple residues and the derivative formula at a double root.
+For positive infinitesimal separation, the two constant-numerator residues
+are individually infinite and cancel exactly.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual

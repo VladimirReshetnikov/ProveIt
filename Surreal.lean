@@ -29,6 +29,11 @@ import Surreal.Algebra.PolynomialResidueDual
 import Surreal.Algebra.PolynomialResidueGram
 import Surreal.Algebra.PolynomialResidueInfinity
 import Surreal.Algebra.PolynomialResiduePairing
+import Surreal.Algebra.QuadraticResidueAlgebra
+import Surreal.Algebra.QuadraticResidueEvaluation
+import Surreal.Algebra.QuadraticLocalResidue
+import Surreal.Algebra.QuadraticDualNumber
+import Surreal.Algebra.QuadraticLineCircle
 import Surreal.Algebra.PolynomialResultant
 import Surreal.Algebra.PolynomialRootBounds
 import Surreal.Algebra.PolynomialTraceGram
@@ -315,6 +320,8 @@ import Surreal.Surcomplex.InfiniteTangent
 import Surreal.Surcomplex.ContactAngleDifference
 import Surreal.Surcomplex.ContactPerturbation
 import Surreal.Surcomplex.TangencySplitting
+import Surreal.Surcomplex.QuadraticCollisionPoints
+import Surreal.Surcomplex.QuadraticResidue
 import Surreal.Surcomplex.TrigonometricFineDerivative
 import Surreal.Surcomplex.TrigonometricOrder
 import Surreal.Surcomplex.TrigonometricLeading
