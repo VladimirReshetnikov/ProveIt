@@ -13,7 +13,7 @@ source, and nothing here was selected out of a larger body of work.
 ```
 article.tex        the report, standalone LaTeX with an internal bibliography
                    (delivered as surreal_probability.tex, renamed on placement)
-article.pdf        the compiled report, 44 pages
+article.pdf        the compiled report, 46 pages
 README.md          this guide
 RESEARCH_AUDIT.md  the manuscript's own repository, literature and evidence audit, as delivered
 code/verify.py     exact finite checks in Q(t) (Python 3.10+, standard library only)
@@ -36,11 +36,13 @@ contains no numbered statement or equation, so every theorem, equation and
 section number of the manuscript is unchanged. The numbers below are checked
 against the build of `article.tex` in this directory.
 
-The current proof review covers Sections 2–5: scalar workspaces, standard
-part, finite probability, conditional shadows, coefficient-row compression
-and Bayesian updates. It corrects the point-weight event-algebra hypothesis,
+The current proof review covers Sections 2–7: scalar workspaces, standard
+part, finite probability, conditional shadows, Bayesian updates, logits,
+softmax and finite information theory. It corrects the point-weight event-algebra hypothesis,
 the joint-normalizer condition for successive updates, neutral evidence and
 the distinction between sufficient and necessary conditioning precision.
+It also separates the attained interior logarithmic-score minimum from the
+unattained boundary infimum over strictly positive predictions.
 Later sections and the remaining imports still require review; see the
 collection's [review record](../../REVIEW.md).
 
@@ -82,7 +84,9 @@ sets; no law on the class `No` is constructed.
    and `st H(p) = H(st p)` (Theorem 7.1); chain rule and data processing with
    its equality case (Theorem 7.2); equal shadows with positive infinite
    relative entropy, so standard part does not commute with `D` (Example 7.3);
-   strict propriety of logarithmic and Brier scores.
+   strict propriety of logarithmic loss for interior true laws and Brier loss
+   on the full simplex; boundary logarithmic loss has an unattained infimum
+   when predictions must remain strictly positive.
 6. **Gibbs and decisions.** An exact finite Gibbs variational identity valid
    for infinite energies or infinitesimal temperature, with no compactness
    (Theorem 8.1); rare events with large payoffs; infinitesimal smoothing;
@@ -304,7 +308,7 @@ the pin and the delivered 35-page PDF.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-This build gives 44 pages (a title page, two contents pages and 41 numbered
+This build gives 46 pages (a title page, two contents pages and 43 numbered
 pages), with no errors, no undefined or multiply-defined references or
 citations, no duplicate PDF destinations, and no LaTeX, package or box warnings.
 No bibliography database or external figure is needed.
@@ -446,3 +450,38 @@ All 2,181 indexed statements across 46 main sources remain correctly
 catalogued, and all 907 local Markdown destinations in 97 files resolve.
 The merge leaves the reviewed probability source and 44-page PDF unchanged.
 This integration adds no probability formalization or review of later sections.
+
+The third finite-probability pass reviews Sections 6–7. Logit Bayes now
+states the interior-prior hypothesis and both positive likelihoods explicitly.
+The finite state and scale lists are nonempty. The proofs expand logistic
+inverses and the infinitesimal Taylor coefficient, softmax's exact common-shift
+ambiguity, multiplicative perturbation bounds and the normalizer's logarithmic
+bound, and the dominance argument for separated scales. The softmax “limit”
+is explicitly a standard-part formula at fixed surreal inputs.
+
+The information proofs now expose the nonnegative Gibbs slack terms, handle
+positive-residue and zero-residue entropy coordinates separately, and justify
+support inheritance in the chain rule and data processing. The data-processing
+gap is an exact sum of conditional divergences, including infinitesimal
+positive weights. The rare-entropy series and infinite-divergence example are
+expanded. For logarithmic loss over strictly positive predictions, an interior
+true law has its unique minimizer, while a boundary law has no minimizer.
+Explicit redistribution strictly improves any interior prediction for a
+boundary truth, and exponential smoothing attains arbitrarily small excess
+above entropy, proving the infimum inside the workspace. Brier's full-simplex
+identity and the logistic-loss identity are also expanded.
+
+Validation: baseline and revised PDFs rebuilt in three passes without warnings
+at 44 and 46 pages; changed proof pages were visually inspected. All 114 label
+numbers and five historical audit/code/data files are preserved. The copied
+source verifier reproduces 2,145 assertions with JSON unchanged apart from the
+Python version. Separate checks pass 813 exact `Q(t)` cases for softmax ratios,
+gauge invariance, infinitesimal errors, boundary redistribution, smoothing and
+Brier excess, plus 112 symbolic identities for logistic expansions, Gibbs slack,
+entropy chain rules and data-processing gaps with zero coordinates/columns.
+These finite checks do not implement arbitrary surreal exp/log or prove the
+multiscale theorem. The independent index audit checks 2,181 entries in 46
+current sources and all 907 local Markdown destinations in 97 files resolve.
+The full Lean build passes 3,916 jobs; its axiom audit checks 6,277 declarations
+using only `propext`, `Classical.choice` and `Quot.sound`. No new probability
+Lean coverage is claimed. Sections 8 onward and remaining imports are pending.

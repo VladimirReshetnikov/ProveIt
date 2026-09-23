@@ -634,7 +634,11 @@ The review of Sections~\ref{fsp:sec:shadows}--\ref{fsp:sec:bayes}
 subsequently adds the joint-normalizer hypothesis for commuting likelihood
 updates, corrects the neutral-likelihood wording, and separates sufficient
 conditioning precision from necessity. The live review record is
-\path{docs/REVIEW.md}; the delivered audit, programs and data remain unchanged.
+\path{docs/REVIEW.md}. The Sections~\ref{fsp:sec:logits}--\ref{fsp:sec:information}
+review makes the finite nonempty domains and binary-prior hypotheses explicit,
+expands softmax and information inequalities, and separates an attained
+interior logarithmic-score minimum from the boundary infimum. The delivered
+audit, programs and data remain unchanged.
 
 \section{Scalars, size, and the two meanings of exponentiation}
 \label{fsp:sec:scalars}
@@ -1355,18 +1359,27 @@ In an exponential/logarithmic workspace $E$, define
 \begin{proposition}[Logit coordinates]
 The maps $\sigma:E\to(0,1)_E$ and $\logit:(0,1)_E\to E$ are inverse,
 strictly increasing bijections, and $\sigma(-z)=1-\sigma(z)$.
-For binary hypotheses and positive likelihoods,
+For binary hypotheses with $0<P(H)<1$ and both likelihoods
+$P(D\mid H),P(D\mid H^c)>0$, all belonging to $E$,
 \begin{equation}\label{fsp:eq:logitbayes}
  \logit P(H\mid D)=\logit P(H)
  +\log\frac{P(D\mid H)}{P(D\mid H^c)}.
 \end{equation}
 \end{proposition}
 \begin{proof}
-For every $z$, $\sigma(z)/(1-\sigma(z))=\exp z$.
-Conversely, substituting $p/(1-p)$ for $\exp z$ gives $\sigma(z)=p$.
-Monotonicity and the complement identity follow from positivity and
-monotonicity of $\exp$. Posterior odds are prior odds times the likelihood
-ratio, and $\log(xy)=\log x+\log y$ proves \eqref{fsp:eq:logitbayes}.
+For $z\in E$, positivity of $\exp(-z)$ gives $0<\sigma(z)<1$, and
+closure puts $\sigma(z)$ in $E$. Direct division gives
+$\sigma(z)/(1-\sigma(z))=\exp z$, hence $\logit(\sigma(z))=z$.
+For $0<p<1$, the odds $p/(1-p)$ are positive in $E$; substituting
+their logarithm into $\sigma$ gives $\sigma(\logit(p))=p$.
+If $z<w$, then $\exp(-z)>\exp(-w)>0$ and taking reciprocals of
+$1+\exp(-z)$ and $1+\exp(-w)$ proves $\sigma(z)<\sigma(w)$.
+Its inverse is therefore strictly increasing too. Multiplying by
+$\exp z$ gives $\sigma(-z)=1-\sigma(z)$.
+Both prior weights and likelihoods are positive, so the evidence mass
+and both posterior weights are positive. Canceling the common evidence
+mass in the posterior odds, then applying $\log(xy)=\log x+\log y$,
+proves \eqref{fsp:eq:logitbayes}.
 \end{proof}
 
 Every actual surreal $z$, including $\omega$ or $-\omega^2$, gives a
@@ -1389,8 +1402,15 @@ gives
 \begin{equation}
  \sigma(r+\eta)=\sigma(r)+\sigma(r)(1-\sigma(r))\eta+O(\eta^2).
 \end{equation}
-Here $O(\eta^2)$ means bounded by a real constant times $|\eta|^2$ in this
-local expansion. For $t=\omega^{-1}$,
+Here $O(\eta^2)$ means bounded by a real constant times $|\eta|^2$
+in this local expansion, including zero remainder at $\eta=0$.
+To see the coefficient directly, put $a=\exp(-r)>0$ and use
+$\exp(-\eta)=1-\eta+\eta^2R$ with limited $R$. Factoring $1+a$
+from $1+a\exp(-\eta)$ leaves a principal unit. Its geometric inverse
+has linear term $a\eta/(1+a)$ and a limited quadratic remainder.
+Multiplication by $(1+a)^{-1}$ gives $a/(1+a)^2=\sigma(r)(1-\sigma(r))$
+as the linear coefficient. These are strong infinitesimal series identities,
+not ordinary sequence limits. For $t=\omega^{-1}$,
 \begin{equation}\label{fsp:eq:logitt}
  \logit(t)=\log t-\log(1-t)
  =-\log\omega+t+\frac{t^2}{2}+\frac{t^3}{3}+\cdots.
@@ -1420,14 +1440,19 @@ not remove that requirement.
 
 \subsection{Softmax, gauge invariance, and stable normalization}
 
-For an ordinary finite number of scores $z_1,\ldots,z_n\in E$, define
+For an ordinary positive integer $n$ and scores $z_1,\ldots,z_n\in E$, define
 \begin{equation}\label{fsp:eq:softmax}
  \LSE(z)=\log\sum_{j=1}^n e^{z_j},\qquad
  p_i=e^{z_i-\LSE(z)}.
 \end{equation}
 All $p_i$ are positive and sum to one. Every strictly positive finite
 law occurs, by taking $z_i=\log p_i$. Adding the same $c\in E$ to all
-scores does not change $p$. For $n\ge2$, the one-against-the-rest logit is
+scores multiplies their normalizing sum by $e^c$ and does not change $p$.
+Conversely, equal softmax laws satisfy
+$z_i-w_i=\LSE(z)-\LSE(w)$ for every $i$, by taking logarithms of
+the equal probabilities. Thus a common additive constant is exactly the
+ambiguity of the score vector. For $n=1$ the law is $(1)$ and its logit
+is not an element of $E$. For $n\ge2$, the one-against-the-rest logit is
 \begin{equation}
  \logit(p_i)=z_i-\log\sum_{j\ne i}e^{z_j},
 \end{equation}
@@ -1440,21 +1465,34 @@ Let $M=\max_i z_i$. Then
  M\le\LSE(z)\le M+\log n.
 \end{equation}
 If $p$ and $q$ are the softmax laws of $z$ and $w$, and
-$|z_i-w_i|\le\delta$ for every $i$, where $\delta\ge0$, then
+$|z_i-w_i|\le\delta$ for every $i$, where $\delta\in E_{\ge0}$, then
 \begin{equation}\label{fsp:eq:softbound}
  e^{-2\delta}p_i\le q_i\le e^{2\delta}p_i.
 \end{equation}
 \end{proposition}
 \begin{proof}
-Factor $e^M$ from the normalizing sum. The remaining positive sum lies
-between $1$ and $n$. For the perturbation claim,
-$e^{-\delta}e^{z_i}\le e^{w_i}\le e^\delta e^{z_i}$, and summing gives
-the same bounds on the two normalizers. Dividing the bounds proves
-\eqref{fsp:eq:softbound}.
+The maximum exists because $n\ge1$ is finite. Factoring $e^M$ from
+the sum leaves $\sum_i e^{z_i-M}$, whose terms lie in $(0,1]$ and
+at least one of which is $1$. It therefore lies in $[1,n]$; apply the
+increasing logarithm and add $M$.
+For perturbations, write $Z=\sum_i e^{z_i}$ and $W=\sum_i e^{w_i}$.
+Termwise monotonicity and finite summation give
+\[
+ e^{-\delta}\le\frac{e^{w_i}}{e^{z_i}}\le e^\delta,
+ \qquad e^{-\delta}\le\frac WZ\le e^\delta.
+\]
+All quantities are positive. Invert the second pair of bounds and
+multiply it by the first to obtain
+$e^{-2\delta}\le q_i/p_i\le e^{2\delta}$.
+The same normalizer bounds also give
+$|\LSE(w)-\LSE(z)|\le\delta$ after taking logarithms.
 \end{proof}
 
-Infinitesimal score errors therefore produce infinitesimal relative errors
-even in extremely small probabilities. This is a different guarantee from
+For infinitesimal $\delta$, both $e^{2\delta}-1$ and
+$1-e^{-2\delta}$ are infinitesimal by the strong exponential expansion.
+Thus the displayed bounds imply $q_i/p_i-1\simeq0$, even when $p_i$
+is extremely small. A finite list of infinitesimal score errors admits
+such a common $\delta$ by taking their maximum. This is a different guarantee from
 an absolute error bound on probabilities, which can be destroyed by rare
 conditioning. Subtracting $M$ before exponentiating is exact algebra and
 avoids representing an unnecessarily large common exponential. It does
@@ -1464,13 +1502,14 @@ score.
 \subsection{Hierarchical scores and lexicographic concentration}
 
 \begin{theorem}[Finite multiscale softmax limit]\label{fsp:thm:multisoft}
-Let $\Omega_1,\ldots,\Omega_m$ be positive surreals with
+Let $m\ge1$ be an ordinary integer and
+$\Omega_1,\ldots,\Omega_m$ positive surreals in $E$ with
 $\Omega_m$ positive infinite and
-$\Omega_{r+1}/\Omega_r$ infinitesimal for $r<m$. For finitely many states
-suppose
+$\Omega_{r+1}/\Omega_r$ infinitesimal for $r<m$. For an ordinary
+positive number $n$ of states suppose
 \begin{equation}
  z_i=\sum_{r=1}^m\Omega_r a_{ir}+b_i+\eta_i,
- \quad a_{ir},b_i\in\R,\quad \eta_i\simeq0.
+ \quad a_{ir},b_i\in\R,\quad \eta_i\in E,\quad \eta_i\simeq0.
 \end{equation}
 Let $I_*$ be the states whose real tuple
 $(a_{i1},\ldots,a_{im})$ is lexicographically maximal. Then
@@ -1483,16 +1522,31 @@ $(a_{i1},\ldots,a_{im})$ is lexicographically maximal. Then
 \end{equation}
 \end{theorem}
 \begin{proof}
-Choose $j\in I_*$. If $i\notin I_*$, at the first differing coordinate
-$r$ the coefficient of $\Omega_r$ in $z_i-z_j$ is a negative nonzero
-real. All later contributions divided by $\Omega_r$ are infinitesimal,
-and the bounded terms have that property too. Hence $z_i-z_j$ is
-negative infinite and $e^{z_i-z_j}$ is infinitesimal. For $i,j\in I_*$,
-all hierarchical terms cancel and
-$\st e^{z_i-z_j}=e^{b_i-b_j}$. Divide the finite normalizing sum by
-$e^{z_j}$ and take standard parts.
+A finite nonempty set of real tuples has a lexicographic maximum,
+so choose $j\in I_*$. All $\Omega_r$ are positive infinite: each
+earlier scale exceeds the next. For $s>r$, the ratio
+$\Omega_s/\Omega_r$ is a finite product of positive infinitesimals
+and is infinitesimal.
+If $i\notin I_*$, at the first differing coordinate $r$ write
+$a_{ir}-a_{jr}=-c$ with real $c>0$. Dividing $z_i-z_j$ by $\Omega_r$
+gives $-c$ plus an infinitesimal. The later scale terms have that property
+by the ratio calculation; the real and infinitesimal offsets do as well
+because $\Omega_r$ is infinite. Hence
+$z_i-z_j<-c\Omega_r/2$ is negative infinite, making $e^{z_i-z_j}$
+infinitesimal by comparison with the exponential of every real constant.
+For $i,j\in I_*$, the hierarchical terms cancel and
+\[
+ e^{z_i-z_j}=e^{b_i-b_j}e^{\eta_i-\eta_j}
+ \simeq e^{b_i-b_j}.
+\]
+Every term in $\sum_i e^{z_i-z_j}$ is limited. Its residue is the
+positive real $\sum_{i\in I_*}e^{b_i-b_j}$, with the $j$th term equal
+to $1$. The standard-part quotient rule applied to this normalizer gives
+the asserted formula, after canceling the real factor $e^{-b_j}$.
 \end{proof}
 
+The word ``limit'' in the theorem's title refers to this standard-part
+formula for one fixed list of surreal scales; no sequence or net is taken.
 This supplies an exact scalar model of ordered priorities, with ordinary
 softmax resolving the final ties and smaller terms retaining further
 information. For example, $\omega^2 a_i+\omega b_i+c_i$ first maximizes
@@ -1507,7 +1561,8 @@ concentration; the exact law still gives positive mass to every state.
 \subsection{Entropy and relative entropy}
 
 All sums in this section have an ordinary finite number of terms and use
-canonical logarithms. For probability vectors $p,q$ define
+canonical logarithms in $E$. Let $n\ge1$ be an ordinary integer.
+For probability vectors $p,q\in E^n$ define
 \begin{equation}\label{fsp:eq:entropy}
  H(p)=-\sum_{i:p_i>0}p_i\log p_i,\qquad
  D(p\Vert q)=\sum_{i:p_i>0}p_i\log\frac{p_i}{q_i},
@@ -1538,21 +1593,34 @@ multiply by $p_i>0$. Summing gives
  D(p\Vert q)\ge\sum_{i\in S}(p_i-q_i)
  =1-\sum_{i\in S}q_i\ge0.
 \end{equation}
-The difference between the first two expressions is a finite sum of
-nonnegative terms, each zero only if $q_i=p_i$. Equality therefore
-forces those equalities on $S$ and zero mass outside $S$, and the
-converse is immediate. Each $-p_i\log p_i$ is nonnegative. Applying
+More explicitly, the exact decomposition is
+\[
+ D(p\Vert q)=\sum_{i\in S}p_i
+ \left(-\log\frac{q_i}{p_i}-1+\frac{q_i}{p_i}\right)
+ +\sum_{i\notin S}q_i.
+\]
+Every summand is nonnegative. A finite sum of nonnegative elements of
+an ordered field is zero exactly when each summand is zero; the strict
+scalar logarithm inequality then forces $q_i=p_i$ on $S$ and zero
+mass outside $S$. The converse follows by $\log1=0$. Each $-p_i\log p_i$ is nonnegative. Applying
 Gibbs inequality to the uniform law gives
 $D(p\Vert(1/n,\ldots,1/n))=\log n-H(p)\ge0$.
 
-For the standard-part identity, if $\st p_i=r_i>0$, then
-$\log p_i\simeq\log r_i$ by the infinitesimal logarithm expansion.
-If $p_i>0$ is infinitesimal, the real-exponential inequality
-$\log x\le\sqrt{x}$ for real $x\ge4$ holds for surreal $x\ge4$ too.
-Consequently
-$0\le p_i\log(1/p_i)\le\sqrt{p_i}\simeq0$.
-Taking standard parts of the finite sum proves the formula, including
-zero coordinates.
+For the standard-part identity, if $\st p_i=r_i>0$, write
+$p_i=r_i(1+\xi_i)$ with infinitesimal $\xi_i$. Then
+$\log p_i=\log r_i+\log(1+\xi_i)\simeq\log r_i$, so the ring
+law gives $\st(-p_i\log p_i)=-r_i\log r_i$.
+If $p_i>0$ is infinitesimal, apply the transferred real-exponential
+inequality $\log x\le\sqrt{x}$ for $x\ge4$ to $x=1/p_i$.
+Here the positive root belongs to $E$, since
+$\sqrt{x}=\exp(\tfrac12\log x)$. This gives
+\[
+ 0\le p_i\log(1/p_i)\le\sqrt{p_i}\simeq0.
+\]
+The last infinitesimality follows from $p_i<a^2$ for every positive
+real $a$. Zero coordinates contribute the specified zero term. Taking
+standard parts of the finite sum now proves the formula. This argument
+does not take the standard part of $\log p_i$ when that logarithm is infinite.
 \end{proof}
 
 An entropy on a fixed finite alphabet is always limited. It nevertheless
@@ -1561,6 +1629,10 @@ rare Bernoulli success of probability $t$,
 \begin{equation}\label{fsp:eq:rareentropy}
  H(t,1-t)=t\log(1/t)+t-\frac{t^2}{2}+O(t^3).
 \end{equation}
+Indeed $-\log(1-t)=\sum_{k\ge1}t^k/k$ strongly; multiplication by
+$1-t$ gives $t-\sum_{k\ge2}t^k/(k(k-1))$, whose tail after degree two
+is $t^3$ times a limited element. Here the remainder notation again means
+a real bound times $t^3$.
 The log factor is essential: entropy need not remain in the original
 pure Laurent field $\R((t))$. It belongs to the exponential/logarithmic
 workspace, where the displayed products are meaningful. This is one
@@ -1582,9 +1654,15 @@ joint laws satisfying the relative-entropy support condition gives
  +\sum_{j:p^Y_j>0}p^Y_j
        D(p_{X\mid j}\Vert q_{X\mid j}).
 \end{equation}
-To verify it, replace every logarithm of a joint ratio by the logarithm
-of the marginal ratio plus that of the conditional ratio. All terms
-are finite sums, so regrouping requires no additional hypothesis.
+If $p^Y_j>0$, some $p_{ij}>0$, so the joint support condition gives
+$q_{ij}>0$ and hence $q^Y_j>0$. Both conditional laws are therefore
+defined, and their support condition also holds. On a cell with
+$p_{ij}>0$, factor the joint ratio as
+$(p^Y_j/q^Y_j)(p^{X\mid j}_i/q^{X\mid j}_i)$ and split its
+logarithm. Summing the marginal term over $i$ contributes
+$p^Y_j\log(p^Y_j/q^Y_j)$, and the remaining terms give the conditional
+divergence. Columns with $p^Y_j=0$ contribute nothing; their conditional
+laws need not be specified. All regrouping is finite.
 
 \begin{theorem}[Finite data processing]\label{fsp:thm:dataprocessing}
 Let $T_{ij}\ge0$ be a finite stochastic matrix, $\sum_jT_{ij}=1$.
@@ -1597,11 +1675,21 @@ the two input conditional laws given $j$ coincide.
 \end{theorem}
 \begin{proof}
 Form the joint laws $P_{ij}=p_iT_{ij}$ and $Q_{ij}=q_iT_{ij}$.
-On each positive $P_{ij}$ their ratio is $p_i/q_i$; summing over $j$
-gives $D(P\Vert Q)=D(p\Vert q)$. Their output marginals are $pT,qT$.
-Equation~\eqref{fsp:eq:klchain} and Theorem~\ref{fsp:thm:kl} give the inequality.
-The difference is a finite sum with positive weights, so it vanishes
-exactly when every indicated conditional divergence vanishes.
+If $P_{ij}>0$, then $p_i>0$ and $T_{ij}>0$, so $q_i>0$ and
+$Q_{ij}>0$. Thus the joint support condition holds, and on this cell
+$P_{ij}/Q_{ij}=p_i/q_i$. Summing over $j$ and using
+$\sum_jT_{ij}=1$ gives $D(P\Vert Q)=D(p\Vert q)$.
+The output marginals are $pT,qT$, with the inherited support condition.
+The chain rule now gives the exact nonnegative difference
+\[
+ D(p\Vert q)-D(pT\Vert qT)
+ =\sum_{j:(pT)_j>0}(pT)_j D(P_{X\mid j}\Vert Q_{X\mid j}).
+\]
+Its weights are positive even when infinitesimal. A finite sum of such
+nonnegative terms vanishes precisely when each conditional divergence
+vanishes, which is equivalent to equality of the entire two conditional
+vectors by Theorem~\ref{fsp:thm:kl}. No condition is imposed at outputs
+with zero $pT$ mass; their terms are absent.
 \end{proof}
 
 Taking $q_{ij}=p^X_ip^Y_j$ gives the nonnegative mutual information
@@ -1619,6 +1707,8 @@ Let $t=\omega^{-1}$ and $u=\exp(-1/t^2)$. Consider
 \begin{equation}
  p=(t,1-t),\qquad q=(u,1-u).
 \end{equation}
+The inequality $\exp x\ge1+x$ at $x=1/t^2$ gives
+$0<u\le t^2/(1+t^2)$, so $u$ is positive infinitesimal.
 Both standard parts equal $(0,1)$, but
 \begin{align}
  D(p\Vert q)
@@ -1627,8 +1717,11 @@ Both standard parts equal $(0,1)$, but
  \st\bigl(tD(p\Vert q)\bigr)&=1.
 \end{align}
 Thus their relative entropy is positive infinite. In fact the final
-term in \eqref{fsp:eq:hugekl} is infinitesimal, and $t\log t$ is
-infinitesimal, while the first term is $1/t$.
+term in \eqref{fsp:eq:hugekl} is infinitesimal because both
+$\log(1-t)$ and $\log(1-u)$ are infinitesimal and $1-t$ is limited.
+The entropy estimate above gives $t\log t\simeq0$.
+Thus $D(p\Vert q)=1/t+\eps$ for an infinitesimal $\eps$, which
+proves both positive infinitude and the displayed normalized residue.
 \end{example}
 
 There is no conflict with \eqref{fsp:eq:entropybound}. Entropy uses each
@@ -1647,13 +1740,35 @@ is exactly
 \begin{equation}
  \E_p[-\log q_i]-H(p)=D(p\Vert q).
 \end{equation}
-On the strictly positive simplex it is therefore uniquely minimized by
-$q=p$, by Theorem~\ref{fsp:thm:kl}. The Brier loss
+If the true law $p$ is strictly positive, the loss over strictly
+positive predictions is therefore uniquely minimized by $q=p$.
+If $p$ has a zero coordinate, $p$ is outside that prediction domain
+and no minimizer in it exists. Indeed let $S=\{i:p_i>0\}$ and
+$a=\sum_{i\in S}q_i<1$. Choose $a<c<1$, multiply the predicted weights
+on $S$ by $c/a$ and those outside $S$ by $(1-c)/(1-a)$.
+The new prediction remains strictly positive and normalized, while its
+expected loss decreases by $\log(c/a)>0$.
+
+The lower bound $H(p)$ is still the infimum. For
+$q^{(\eps)}=(1-\eps)p+\eps(1/n,\ldots,1/n)$ with $0<\eps<1$,
+\[
+ 0\le D(p\Vert q^{(\eps)})\le-\log(1-\eps),
+\]
+since $q_i^{(\eps)}\ge(1-\eps)p_i$ on $S$. Given any $\delta>0$ in
+$E$, take $\eps=1-\exp(-\delta/2)$ to make the excess at most
+$\delta/2$. This is an order-infimum argument inside $E$, with no
+convergence convention or evaluation of $\log0$.
+The Brier loss
 $S(q,i)=\sum_j(q_j-\ind_{j=i})^2$ satisfies the entirely algebraic identity
 \begin{equation}
  \E_p S(q,i)-\E_p S(p,i)=\sum_j(q_j-p_j)^2.
 \end{equation}
-It is strictly proper on the whole finite simplex over any ordered field.
+For completeness,
+$\E_pS(q,i)=\sum_jq_j^2-2\sum_jp_jq_j+1$;
+subtracting the same expression at $q=p$ gives the displayed sum of
+squares. It is nonnegative, with equality only when every $q_j=p_j$.
+Thus Brier loss is strictly proper on the whole finite simplex over any
+ordered field, including boundary laws.
 These scores distinguish infinitesimal prediction errors, though their
 relative penalties can occur at different scales.
 
@@ -1662,8 +1777,11 @@ loss is
 \begin{equation}\label{fsp:eq:logisticloss}
  \Phi(z;p)=\log(1+e^z)-pz.
 \end{equation}
+Indeed $-\log\sigma(z)=\log(1+e^z)-z$ and
+$-\log(1-\sigma(z))=\log(1+e^z)$, giving the displayed expected loss.
 Since $q=\sigma(z)$ parametrizes the strictly positive binary simplex,
-its unique minimizer is $z=\logit(p)$. This conclusion uses an explicit
+$\Phi(z;p)-H(p,1-p)$ is exactly the corresponding relative entropy.
+Its unique minimizer is therefore $z=\logit(p)$. This conclusion uses an explicit
 identity and positivity, not an unproved extreme-value theorem on a
 surreal parameter space.
 

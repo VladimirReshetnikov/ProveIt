@@ -30,7 +30,7 @@ expansions integrated through `66dd6bc`, plus batch 19: four new reports and
 further expansions of four existing reports, integrated from `7657737`.
 Batch 20 (placed in `5fe7f8d`, written in `fb182ea`) adds four reports and
 expands the measures and trigonometry reports; all are indexed in their
-written form. The finite-probability review now covers Sections 2–5; later
+written form. The finite-probability review now covers Sections 2–7; later
 sections, the other new reports and the expansions remain pending within the
 review scopes recorded separately. Two packages placed in `d4e71b7` add 67
 provisionally indexed statements from their selected base manuscripts; the
@@ -516,7 +516,7 @@ claim that the other seven delivered manuscripts are assembled or indexed;
 assembly and full source reconciliation remain pending.
 The four reports placed in `5fe7f8d` were written in `fb182ea`, which prefixed
 their labels; they are indexed here. The finite-probability review covers
-Sections 2–5; its later sections and the other three reports await review.
+Sections 2–7; its later sections and the other three reports await review.
 The four reports and expanded sections from batch 19 are indexed here, but
 remain pending unless a precise implementation mapping states otherwise.
 
@@ -3340,9 +3340,10 @@ Statements are **pending unless explicitly mapped** in the implementation table.
 
 Source: [surreal/finite-surreal-probability/article.tex](surreal/finite-surreal-probability/article.tex).
 
-Written in `fb182ea`. The proof review now covers Sections 2–5: scalar
+Written in `fb182ea`. The proof review now covers Sections 2–7: scalar
 workspaces, residue algebra, finite probability, conditional shadows and
-Bayesian updates; later sections remain pending. The point-weight
+Bayesian updates, logits, softmax and finite information theory; later
+sections remain pending. The point-weight
 representation in Section 3 now explicitly assumes
 the full event algebra. On a smaller finite algebra only its atom masses are
 uniquely determined. Standard-part division requires limited numerator and
@@ -3353,36 +3354,41 @@ commuting likelihood updates to a positive joint normalizer, and corrects the
 neutral-likelihood wording. The valuation stability clause now stands on its
 own positive-event hypothesis; its strict error contract is sufficient, not
 necessary for an individual pair of laws. These are source corrections and
-clarifications, not new Lean coverage.
+clarifications, not new Lean coverage. Sections 6–7 now explicitly require
+a positive finite state count and an interior binary prior for logit Bayes.
+The logarithmic-score discussion separates its unique interior minimizer
+from the unattained boundary infimum over strictly positive predictions.
+Softmax stability and concentration, entropy shadows, support inheritance
+and equality in data processing have expanded proofs.
 Statements are **pending unless explicitly mapped** in the implementation table.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `fsp:lem:workspace` (line 655) | Local exponential workspace |
-| Proposition | `fsp:prop:st` (line 693) | Residue algebra |
-| Theorem | `fsp:thm:finitebounds` (line 865) | Variance, Cauchy--Schwarz, and tail bounds |
-| Theorem | `fsp:thm:skeleton` (line 1045) | Conditional leading-scale skeleton |
-| Theorem | `fsp:thm:compression` (line 1094) | Signed-row lexicographic compression |
-| Theorem | `fsp:thm:scalebayes` (line 1169) | Minimum-plus Bayes with coefficient tie breaking |
-| Theorem | `fsp:thm:stability` (line 1251) | Absolute and valuation-sensitive conditioning stability |
-| Proposition | Line 1355 (unlabeled) | Logit coordinates |
-| Proposition | `fsp:prop:softbound` (line 1436) | Normalization and perturbation bounds |
-| Theorem | `fsp:thm:multisoft` (line 1466) | Finite multiscale softmax limit |
-| Theorem | `fsp:thm:kl` (line 1521) | Finite Gibbs inequality and entropy bounds |
-| Theorem | `fsp:thm:dataprocessing` (line 1589) | Finite data processing |
-| Theorem | `fsp:thm:gibbs` (line 1675) | Surreal finite Gibbs principle |
-| Proposition | `fsp:prop:separation` (line 1749) | No attained logistic optimum under strict separation |
-| Proposition | Line 1806 (unlabeled) | Bounded finite-horizon optional stopping |
-| Proposition | `fsp:prop:fine` (line 1861) | Set-indexed fine convergence is eventually constant |
-| Theorem | `fsp:thm:hierarchy` (line 1960) | Normalized hierarchy of real probability laws |
-| Theorem | `fsp:thm:integrationfailure` (line 2077) | An uncountable-support positivity failure |
-| Theorem | `fsp:thm:rarecoin` (line 2193) | A repeated infinitesimal success probability |
-| Theorem | `fsp:thm:faircoin` (line 2219) | A repeated infinitesimal perturbation of a fair coin |
-| Lemma | `fsp:lem:embedding` (line 2273) | Set-sized relative field embedding |
-| Theorem | `fsp:thm:extension` (line 2378) | All-subsets regular extension after field enlargement |
-| Corollary | `fsp:cor:coinextension` (line 2422) | The two coin models do have regular finite-additive laws |
-| Proposition | `fsp:prop:tailfailure` (line 2495) | Finite-update shadows need not recover rare tail conditioning |
-| Theorem | `fsp:thm:shadowcountable` (line 2543) | A continuity test for the shadow |
+| Lemma | `fsp:lem:workspace` (line 659) | Local exponential workspace |
+| Proposition | `fsp:prop:st` (line 697) | Residue algebra |
+| Theorem | `fsp:thm:finitebounds` (line 869) | Variance, Cauchy--Schwarz, and tail bounds |
+| Theorem | `fsp:thm:skeleton` (line 1049) | Conditional leading-scale skeleton |
+| Theorem | `fsp:thm:compression` (line 1098) | Signed-row lexicographic compression |
+| Theorem | `fsp:thm:scalebayes` (line 1173) | Minimum-plus Bayes with coefficient tie breaking |
+| Theorem | `fsp:thm:stability` (line 1255) | Absolute and valuation-sensitive conditioning stability |
+| Proposition | Line 1359 (unlabeled) | Logit coordinates |
+| Proposition | `fsp:prop:softbound` (line 1461) | Normalization and perturbation bounds |
+| Theorem | `fsp:thm:multisoft` (line 1504) | Finite multiscale softmax limit |
+| Theorem | `fsp:thm:kl` (line 1576) | Finite Gibbs inequality and entropy bounds |
+| Theorem | `fsp:thm:dataprocessing` (line 1667) | Finite data processing |
+| Theorem | `fsp:thm:gibbs` (line 1793) | Surreal finite Gibbs principle |
+| Proposition | `fsp:prop:separation` (line 1867) | No attained logistic optimum under strict separation |
+| Proposition | Line 1924 (unlabeled) | Bounded finite-horizon optional stopping |
+| Proposition | `fsp:prop:fine` (line 1979) | Set-indexed fine convergence is eventually constant |
+| Theorem | `fsp:thm:hierarchy` (line 2078) | Normalized hierarchy of real probability laws |
+| Theorem | `fsp:thm:integrationfailure` (line 2195) | An uncountable-support positivity failure |
+| Theorem | `fsp:thm:rarecoin` (line 2311) | A repeated infinitesimal success probability |
+| Theorem | `fsp:thm:faircoin` (line 2337) | A repeated infinitesimal perturbation of a fair coin |
+| Lemma | `fsp:lem:embedding` (line 2391) | Set-sized relative field embedding |
+| Theorem | `fsp:thm:extension` (line 2496) | All-subsets regular extension after field enlargement |
+| Corollary | `fsp:cor:coinextension` (line 2540) | The two coin models do have regular finite-additive laws |
+| Proposition | `fsp:prop:tailfailure` (line 2613) | Finite-update shadows need not recover rare tail conditioning |
+| Theorem | `fsp:thm:shadowcountable` (line 2661) | A continuity test for the shadow |
 
 ### vector-and-tensor-fields
 
