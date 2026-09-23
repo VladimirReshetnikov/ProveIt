@@ -483,6 +483,14 @@ Interior cevians satisfy the exact side-weighted sine ratio, which
 uniquely characterizes the internal bisector. Trigonometric Ceva gives
 an equivalence between concurrence of the three actual affine lines and
 the product of their positive split-angle sine ratios being one.
+Every positive-radius circle is parametrized by finite actual angles,
+with exact signed chord factorization and chord length at every surreal scale.
+The directed inscribed angle modulo ordinary pi is half the central angle
+modulo ordinary two pi; halving is well-defined on these quotient groups.
+Observers on either common open arc see equal actual interior angles,
+and every angle subtending a diameter is right.
+Four points in finite-lift cyclic order satisfy Ptolemy equality,
+including when consecutive arcs are infinitesimal.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual

@@ -273,6 +273,12 @@ import Surreal.Surcomplex.TriangleAffine
 import Surreal.Surcomplex.TriangleCevian
 import Surreal.Surcomplex.TriangleCeva
 import Surreal.Surcomplex.TrigonometricCeva
+import Surreal.Surcomplex.CircleChords
+import Surreal.Surcomplex.CircleChordQuotient
+import Surreal.Surcomplex.LineAngle
+import Surreal.Surcomplex.InscribedAngle
+import Surreal.Surcomplex.InscribedArcAngles
+import Surreal.Surcomplex.CyclicPtolemy
 import Surreal.Surcomplex.TrigonometricFineDerivative
 import Surreal.Surcomplex.TrigonometricOrder
 import Surreal.Surcomplex.TrigonometricLeading
