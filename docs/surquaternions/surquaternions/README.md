@@ -321,6 +321,11 @@ the `K³` cross product is the vector part of the pure-quaternion product. Its
 Theorem 19.1 (a coefficientwise infinite-frequency obstruction) is distinct from
 `squat:thm:nooscillation`.
 
+The trigonometry report now refutes one sufficiency possibility in the first
+Ehrlich–Kaplan robustness question (`trigonometry:per:thm:robustness`): the
+kernel-multiplier ring can be `Z` for a noncanonical exponential. The
+questions remain open.
+
 ## Status
 
 An AI-assisted research draft with written proofs and finite symbolic checks, merged from

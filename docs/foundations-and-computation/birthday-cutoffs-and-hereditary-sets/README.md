@@ -250,6 +250,11 @@ above; no argument here depends on it.
 **[computable-surreals](../computable-surreals/)** is a different program
 (countable effective subfields); the undecidability remarks here are standard.
 
+[single-dilation-hahn-support](../../surcomplex/single-dilation-hahn-support/)
+obtains the same kind of arithmetic interpretation and undecidability, and a
+TP₂ witness, for a Hahn field expanded by one exponent dilation
+(`dsup:thm:undecidable`, `dsup:thm:tp2`); neither result implies the other.
+
 ## What was run
 
 - `latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex` (MiKTeX):

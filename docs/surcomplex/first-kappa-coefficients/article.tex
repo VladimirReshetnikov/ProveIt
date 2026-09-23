@@ -36,6 +36,24 @@
 \newtheorem{question}[theorem]{Question}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% Added on placement: all environments share the theorem counter, and cleveref
+% would otherwise print every one of them as "theorem".
+\makeatletter
+\@for\fkc@env:=proposition,lemma,corollary,definition,example,question,remark\do{%
+  \edef\fkc@tmp{\noexpand\AddToHook{env/\fkc@env/begin}{\noexpand\crefalias{theorem}{\fkc@env}}}%
+  \fkc@tmp}
+\makeatother
+\crefname{theorem}{Theorem}{Theorems}
+\crefname{proposition}{Proposition}{Propositions}
+\crefname{lemma}{Lemma}{Lemmas}
+\crefname{corollary}{Corollary}{Corollaries}
+\crefname{definition}{Definition}{Definitions}
+\crefname{example}{Example}{Examples}
+\crefname{question}{Question}{Questions}
+\crefname{remark}{Remark}{Remarks}
+\crefname{section}{Section}{Sections}
+\crefname{subsection}{Section}{Sections}
+\crefname{appendix}{Appendix}{Appendices}
 \newcommand{\R}{\mathbb R}
 \newcommand{\C}{\mathbb C}
 \newcommand{\Q}{\mathbb Q}
@@ -78,6 +96,8 @@ We give an explicit description of the one-variable types over this field that a
 The same coefficient invariant gives the exact approximation-value cut, the least cardinality of an empty nest of closed valuation balls, and a concrete description of the valuation completion. Whenever $K_{\kappa,k}$ is proper, it is complete if and only if $\cf(\Gamma)\ne\cf(\kappa)$; it is never spherically complete, and its first empty ball nests have cardinality $\cf(\kappa)$. We also compute the precise valuation loss of every linear retraction from $K+Kx$ to $K$. Explicit Conway normal forms give surreal examples with countable omitted types at $\kappa=\aleph_\omega$, as well as complete fields exhibiting the same countable ball obstruction.
 
 The constructions, general approximation-type theory, and quantifier-elimination inputs are established mathematics. The proposed contribution is the joint first-$\kappa$ classification and its exact cardinal, topological, and linear consequences. Full proofs are supplied. This is an unrefereed research contribution with a limited priority audit, not a claimed solution of a named longstanding conjecture or a proof-assistant-certified result.
+
+This single-source report is built from one manuscript, pinned at repository commit \texttt{465a54b}. \Cref{fkc:subsec:collection} records its provenance, its notation conventions against the collection's, and its relation to neighbouring reports; \cref{fkc:subsec:nonclaims} collects its non-claims.
 \end{abstract}
 \vfill
 \noindent\small\textbf{Conventions.} All Hahn fields and parameter sets are sets in ZFC. All topological assertions use the intrinsic Hahn valuation topology, not the subspace topology inherited from the full class $\No$. The support bound is a \emph{cardinality} bound, not a bound on the magnitude of the exponents.
@@ -90,7 +110,7 @@ The constructions, general approximation-type theory, and quantifier-elimination
 \clearpage
 
 \section{The problem and the contribution}
-\label{sec:intro}
+\label{fkc:sec:intro}
 
 A series can fail to belong to a subfield for very different reasons. It may require new coefficients, a larger value group, or too many terms. The last obstruction is especially natural for surreal numbers: Conway normal form gives each individual surreal a set-sized, reverse-well-ordered sequence of monomials, but no fixed cardinal bounds the normal forms of all surreals. A support restriction therefore provides a set-theoretic way to organize exact surreal arithmetic.
 
@@ -102,7 +122,7 @@ The answer will retain the coefficients of an initial segment, not merely the or
 
 \subsection{Standing setup}
 Fix a nonzero divisible ordered abelian group $\Gamma$, an uncountable cardinal $\kappa$, and write $\mu=\cf(\kappa)$. Cardinals are identified with their initial ordinals. For $k\in\{\R,\C\}$, put
-\begin{equation}\label{eq:fields}
+\begin{equation}\label{fkc:eq:fields}
  F_k=k((t^\Gamma)),\qquad
  K_{\kappa,k}=\{f\in F_k:|\supp f|<\kappa\}.
 \end{equation}
@@ -113,12 +133,12 @@ The support is well ordered in the increasing order of $\Gamma$, and
 Thus larger values mean smaller elements. For real coefficients, the sign is the sign of the coefficient at the least exponent. We reserve $\cf(\Gamma)$ for the least cardinality of a cofinal subset of $\Gamma$ toward $+\infty$.
 
 If $x\in F_k\setminus K_{\kappa,k}$, enumerate its support increasingly as
-\begin{equation}\label{eq:enumerate}
+\begin{equation}\label{fkc:eq:enumerate}
  x=\sum_{\alpha<\lambda}c_\alpha t^{s_\alpha},\qquad
  c_\alpha\ne0,\quad s_\alpha<s_\beta\ (\alpha<\beta),\quad\lambda\ge\kappa.
 \end{equation}
 Its \emph{first-$\kappa$ prefix} is
-\begin{equation}\label{eq:prefix-intro}
+\begin{equation}\label{fkc:eq:prefix-intro}
  T_\kappa(x)=\sum_{\alpha<\kappa}c_\alpha t^{s_\alpha}.
 \end{equation}
 This series itself is not in $K_{\kappa,k}$. Every proper initial segment of it is.
@@ -126,7 +146,7 @@ This series itself is not in $K_{\kappa,k}$. Every proper initial segment of it 
 \subsection{A guide to the main results}
 The following statements are proved separately below. The real types use the language of ordered rings; the complex valued types use the language of rings with the binary relation $a\mid_v b$ meaning $v(a)\le v(b)$. All parameters belong to the indicated smaller field.
 
-\begin{theorem}[Main theorem package]\label{thm:main}
+\begin{theorem}[Main theorem package]\label{fkc:thm:main}
 In the standing setup, the following hold.
 \begin{enumerate}[label=\textup{(\roman*)}]
 \item $K_{\kappa,\R}$ is real closed and $K_{\kappa,\C}$ is algebraically closed, even when $\kappa$ is singular. Their inclusions in the full Hahn fields are elementary in the stated languages.
@@ -145,17 +165,60 @@ If $K_{\kappa,k}\ne F_k$, this is a proper extension of $K_{\kappa,k}$ exactly w
 \end{enumerate}
 \end{theorem}
 
-The pure complex field language gives a deliberately contrasting answer: there is only one missing one-variable type, and its omission number is $|K_{\kappa,\C}|$ rather than $\mu$; see \cref{thm:pure}. The linear application in \cref{thm:projection} provides an exact bound for every retraction $K+Kx\to K$, not merely an existence or nonexistence assertion.
+The pure complex field language gives a deliberately contrasting answer: there is only one missing one-variable type, and its omission number is $|K_{\kappa,\C}|$ rather than $\mu$; see \cref{fkc:thm:pure}. The linear application in \cref{fkc:thm:projection} provides an exact bound for every retraction $K+Kx\to K$, not merely an existence or nonexistence assertion.
 
 \subsection{What is established, and what is proposed here?}
 Cardinally bounded Hahn fields are not new. Kuhlmann and Shelah use $\kappa$-bounded Hahn fields for regular uncountable $\kappa$ in their construction of exponential-logarithmic fields \cite{KS}. Related bounded constructions appear in the work of Berarducci, Kuhlmann, Mantova, and Matusinski on omega-maps \cite{BKMM}. We do not claim the construction, Hahn arithmetic, or its familiar regular-cardinal instances as new.
 
-General approximation-type theory already describes immediate extensions by nests of balls. Kuhlmann's account includes their relation to first-order one-types \cite{FK}; the passage from polynomial data to complete types uses classical quantifier elimination \cite{Tarski,Robinson,Yin}. The contribution proposed here is an explicit \emph{cardinal-prefix calculation} for the fields in \eqref{eq:fields}, together with its sharp singular-cardinal and completion consequences. In particular, the exact omission number is proved for arbitrary formulas, not only for the displayed ball conditions.
+General approximation-type theory already describes immediate extensions by nests of balls. Kuhlmann's account includes their relation to first-order one-types \cite{FK}; the passage from polynomial data to complete types uses classical quantifier elimination \cite{Tarski,Robinson,Yin}. The contribution proposed here is an explicit \emph{cardinal-prefix calculation} for the fields in \eqref{fkc:eq:fields}, together with its sharp singular-cardinal and completion consequences. In particular, the exact omission number is proved for arbitrary formulas, not only for the displayed ball conditions.
 
-The repository comparison is with the pinned revision in \cref{sec:audit}. Its report on transcendence over bounded support concerns order-bounded supports and their fraction field, not the cardinal restriction in \eqref{eq:fields}. Its foundations and Hahn-vector-space reports supply a natural context, but the present proofs do not depend on a new, unaudited theorem from those manuscripts. A limited search did not identify the entire theorem package in the material reviewed. This is a scoped novelty assessment, not a guarantee that no equivalent statement exists.
+The manuscript's repository comparison was made at its pinned revision; see \cref{fkc:sec:audit}. Its report on transcendence over bounded support concerns order-bounded supports and their fraction field, not the cardinal restriction in \eqref{fkc:eq:fields}. Its foundations and Hahn-vector-space reports supply a natural context, but the present proofs do not depend on a new, unaudited theorem from those manuscripts. A limited search did not identify the entire theorem package in the material reviewed. This is a scoped novelty assessment, not a guarantee that no equivalent statement exists. The comparison with the collection as it now stands, including countable-support analogues of \cref{fkc:thm:completion,fkc:thm:dichotomy} in two reports that the manuscript's comparison did not mention, is in \cref{fkc:subsec:collection}.
+
+\subsection{This report in the collection}
+\label{fkc:subsec:collection}
+
+\paragraph{Provenance.}
+This report is built from one manuscript, \emph{The First-$\kappa$ Coefficients: Omitted Types, Singular Compression, and Completion in Surreal and Surcomplex Hahn Fields}, dated 22 September 2026 (21 pages, author line ``OpenAI ChatGPT''), delivered as the archive \texttt{surreal\_first\_kappa\_types} (item~04 of batch~22) and placed in the collection in commit \texttt{7b5f934}. Its repository comparison is pinned at commit \texttt{465a54b479a1ee842cbf7db1689a7d2f6bfe25e1}. It is not a merge: no other manuscript proves its results, and the nearest material in the collection is cross-referenced below, not merged. The statements, proofs, limitations and priority caveats are the manuscript's. On placement the following changed.
+\begin{itemize}
+\item Every label received the prefix \texttt{fkc:}; all 72 labels of the manuscript are kept, and no statement was renumbered or removed.
+\item Added: this subsection; \cref{fkc:rem:countable-analogue} (the countable analogues in other reports); \cref{fkc:rem:groups-elsewhere} (the groups $\Gamma_\theta$ elsewhere in the collection); a pointer after the rank-one boundary case; the corrections of \cref{fkc:subsec:corrections}; the collected non-claims of \cref{fkc:subsec:nonclaims}; bibliography entries for collection reports; and the file paths of \cref{fkc:app:checks}, which now name this directory's layout.
+\item The program \texttt{code/verify.py}, the script \texttt{code/build.sh}, the recorded run \texttt{data/verification.json}, the build record \texttt{data/build\_audit.json} and the file \texttt{research\_audit.md} are the delivered files, unchanged. The delivered member README and PDF are not shipped; \texttt{data/build\_audit.json} describes the delivered 21-page PDF, not the PDF of this report.
+\item Cross-references are now printed with the right names. All environments share one counter, and in the delivered build every reference to a proposition, lemma, corollary or example was printed as ``theorem'', and the reference to the appendix as ``section''. The preamble now declares the names; no statement changed.
+\item The family \texttt{surcomplex/} was chosen over \texttt{surreal/} because the results are stated uniformly for $k=\R$ and $k=\C$; this was the only placement choice.
+\end{itemize}
+
+\paragraph{Notation.}
+No symbol of the manuscript was renamed. Its symbols are fully subscripted and local to this report, and the following conventions fix them against the collection's notation guide (\texttt{docs/NOTATION.md}) and neighbouring reports.
+\begin{itemize}
+\item $F_k=k((t^\Gamma))$ denotes the full Hahn field for \emph{both} $k=\R$ and $k=\C$. The guide writes $F_\Gamma=\R((t^\Gamma))$ for the real workspace and $K_\Gamma=\C((t^\Gamma))$ for the complex one. Thus $F_\R$ here is the guide's $F_\Gamma$, and $F_\C$ here is the guide's $K_\Gamma$. The subscript $\Gamma$ is suppressed because $\Gamma$ is fixed throughout.
+\item $K_{\kappa,k}$ is the \emph{cardinally bounded subfield} of \eqref{fkc:eq:fields}, real or complex. It is never the guide's full complex workspace $K_\Gamma$. From \cref{fkc:sec:linear} on, $K$ and $F$ abbreviate $K_{\kappa,k}$ and $F_k$.
+\item $L_{\kappa,k}$ is the completion of \eqref{fkc:eq:localfield}; $D_x$ is the approximation cut of \eqref{fkc:eq:D}, not the quaternion algebra $D_\Gamma$ of the surquaternions report; $E_x=K+Kx$ is a two-dimensional valued space, neither the algebraic scalar extension $E_\Gamma(V)$ of the three-duals report nor the ring of entire functions of the entire-functions report.
+\item $\kappa$ is an uncountable cardinal and $\mu=\cf(\kappa)$ is a regular cardinal. Neither is a measure, a residue field (the entire-functions report writes $\kappa_n$ for residue fields) or a valuation gain (the expanding-dynamics report writes $\kappa=v(q)$).
+\item $I_D$ in \eqref{fkc:eq:ID} is an additive subgroup and not an ideal; it is unrelated to the error ideal $I_\kappa$ of the expanding-dynamics report. $T_\kappa(x)$ is an external invariant, not an operation of any language used here.
+\item $\cf(\Gamma)$ is cofinality toward $+\infty$; $v=\min\supp$, larger values mean smaller elements, and $t^\gamma\mapsto\omega^{-j(\gamma)}$. These agree with the guide.
+\end{itemize}
+Four words carry more than one meaning, and each tempting false reading is excluded here.
+\begin{itemize}
+\item \emph{Bounded.} A support bound is a bound on the \emph{cardinality} of the support. In the report on transcendence over bounded support, ``bounded support'' means bounded above in the exponent order, and that report says explicitly that it is not a cardinal restriction.
+\item \emph{Complete.} A \emph{complete type} is a maximal consistent set of formulas; a \emph{complete} field is complete for Cauchy nets of the valuation uniformity; a \emph{spherically complete} field has nonempty intersection for every nest of closed balls. \Cref{fkc:thm:dichotomy} shows that the last two differ: a proper $K_{\kappa,k}$ is never spherically complete but can be complete.
+\item \emph{Closure.} \Cref{fkc:thm:completion} concerns topological closure inside $F_k$; \cref{fkc:prop:closed} concerns real and algebraic closedness.
+\item \emph{Omitted.} An omitted type here is a one-type over the set-sized field $K_{\kappa,k}$, realized in $F_k$ and not in $K_{\kappa,k}$. It is not an omitted cut of a proper-class field.
+\end{itemize}
+
+\paragraph{Neighbouring reports.}
+The comparisons below were checked against the current collection. None of them is used in a proof, and none proves or refutes a statement here.
+\begin{itemize}
+\item \texttt{foundations-and-computation/surreal-fields-across-universes} (prefix \texttt{univ:}) \cite{CollUniv} studies saturation and omitted cuts of the old proper-class field $\No^M$ inside $\No^N$ for inner models $M\subseteq N$. It shares the vocabulary of omitted types, saturation and cofinality spectra, and it too contrasts languages, but its objects are different: it has no Hahn field, no support bound and no completion, and its topology is the fine order topology of proper classes. This report answers none of its questions. It was added after this manuscript's pin.
+\item \texttt{surreal/transcendence-over-bounded-support} (prefix \texttt{bst:}) \cite{CollBST} works over the order-bounded base $\{f:\supp f\text{ bounded above}\}$ and its fraction field. It explicitly excludes cardinal support bounds (its definition of the base, labelled \texttt{bst:eq:base}, and its list of conventions). Its corollary \texttt{bst:cor:optimal} is consistent with this report: its proof uses the fact that a support of cardinality less than $\cf(\Gamma)$ is bounded above. This report answers none of its questions and is not a new version of its independence theorem.
+\item \texttt{surcomplex/three-duals-of-hahn-vector-spaces} (prefix \texttt{duals:}) \cite{CollDuals} proves the vector-space analogue with ``finite coefficient rank'' in place of ``fewer than $\kappa$ support terms''; see \cref{fkc:rem:countable-analogue}. Its full-Hahn spherical completeness, \texttt{duals:prop:spherical}, is the gluing argument that \cref{fkc:lem:glue} refines by a cardinal bound.
+\item \texttt{surcomplex/rank-one-berkovich} (bare labels) \cite{CollBerk} proves spherical completeness of $\C((t^\R))$ (its label \texttt{prop:spherical}) and describes the closure of the finite-support series in $\C((t^\Q))$; see \cref{fkc:rem:countable-analogue} and the rank-one boundary case in \cref{fkc:sec:examples}.
+\item \texttt{surcomplex/entire-functions-at-arbitrary-rank} (prefix \texttt{ent:}) \cite{CollEnt} uses the group $\Gamma_\infty=\bigoplus_{j\ge0}\Q e_j$ with $e_j=\omega^j$ and the group $\Gamma_{\omega_1}$. These are the groups $\Gamma_\omega$ and $\Gamma_{\omega_1}$ of \eqref{fkc:eq:Gtheta}, with the same embedding in $\No$; see \cref{fkc:rem:groups-elsewhere}.
+\item \texttt{foundations-and-computation/foundations} (prefix \texttt{found:}) \cite{CollFound} distinguishes the intrinsic Hahn-workspace topology from the full fine topology (\texttt{found:prop:twotopologies}) and proves that small subsets and small-index nets are discrete in the latter (\texttt{found:thm:discrete}). \Cref{fkc:sec:surreal} relies on that distinction.
+\item \texttt{surcomplex/hidden-negative-hermitian-directions} (prefix \texttt{hnd:}) \cite{CollHND} asks, in an unlabelled question, which support conditions on a support-family subfield $E\subseteq F_\Gamma$ give order density and which support invariants bound the degree of approximants to an omitted valuation ball. $K_{\kappa,\R}$ is such a subfield, but this report computes approximation cuts and empty ball nests, not order density or degrees of approximants, so that question is not answered here.
+\end{itemize}
 
 \section{Hahn arithmetic and singular support bounds}
-\label{sec:algebra}
+\label{fkc:sec:algebra}
 
 \subsection{The support conventions}
 A Hahn series is a function $f:\Gamma\to k$ whose nonzero set is well ordered. Addition is coefficientwise, and multiplication is the Hahn convolution. The well-ordering and finite-contribution properties needed for multiplication are the standard Hahn--Neumann support facts. No ordinary convergence of finite partial sums is implicit in this notation.
@@ -166,19 +229,19 @@ For $\gamma\in\Gamma$, define
  f_{\le\gamma}=\sum_{g\le\gamma}f_g t^g.
 \]
 Subseries are Hahn series because a subset of a well-ordered set is well ordered. The essential valuation identity is
-\begin{equation}\label{eq:first-diff}
+\begin{equation}\label{fkc:eq:first-diff}
  v(f-g)\ge\gamma
  \quad\Longleftrightarrow\quad
  f_h=g_h\text{ for every }h<\gamma.
 \end{equation}
 Strict inequality means agreement at every $h\le\gamma$. When $v(f)\ne v(g)$,
-\begin{equation}\label{eq:ultra-exact}
+\begin{equation}\label{fkc:eq:ultra-exact}
  v(f+g)=\min\{v(f),v(g)\}.
 \end{equation}
 Both formulas follow by looking at the least exponent with nonzero coefficient.
 
 \subsection{A small exponent group contains all finite algebraic data}
-\begin{lemma}[Small-workspace lemma]\label{lem:workspace}
+\begin{lemma}[Small-workspace lemma]\label{fkc:lem:workspace}
 Let $A\subseteq F_k$ be finite and suppose each element of $A$ has support of cardinality less than $\kappa$. There is a divisible ordered subgroup $H\subseteq\Gamma$ with $|H|<\kappa$ such that
 \[
  A\subseteq k((t^H))\subseteq K_{\kappa,k}.
@@ -192,7 +255,7 @@ Let $S$ be the union of the supports of the finitely many elements of $A$. Then 
 The last strict inequality uses uncountability, not regularity, of $\kappa$. Every support contained in $H$ has cardinality at most $|H|$, which proves the second inclusion; the first is immediate from the choice of $S$.
 \end{proof}
 
-\begin{proposition}[Algebraic closedness and real closedness]\label{prop:closed}
+\begin{proposition}[Algebraic closedness and real closedness]\label{fkc:prop:closed}
 $\K$ is a subfield of $F_k$. Moreover, $\KC$ is algebraically closed, $\KR$ is real closed, and
 \[
  \KR[i]=\KC.
@@ -200,7 +263,7 @@ $\K$ is a subfield of $F_k$. Moreover, $\KC$ is algebraically closed, $\KR$ is r
 The valuation of $\K$ has value group $\Gamma$ and residue field $k$, so $F_k/\K$ is immediate.
 \end{proposition}
 \begin{proof}
-For two inputs, apply \cref{lem:workspace}. Their sum, product, and, for a nonzero input, inverse lie in the Hahn field $k((t^H))$. This proves the subfield assertion without any union of $\kappa$ many supports.
+For two inputs, apply \cref{fkc:lem:workspace}. Their sum, product, and, for a nonzero input, inverse lie in the Hahn field $k((t^H))$. This proves the subfield assertion without any union of $\kappa$ many supports.
 
 We use the classical theorem that a full Hahn field with algebraically closed coefficient field and divisible exponent group is algebraically closed; see \cite[Corollary~4]{Poonen}. Given a polynomial with coefficients in $\KC$, the small-workspace lemma puts all its coefficients in $\C((t^H))$. The polynomial splits there, and every root has support of size at most $|H|<\kappa$. Thus it splits in $\KC$.
 
@@ -209,8 +272,8 @@ Complex coefficients split uniquely into real and imaginary parts. Each resultin
 Finally, every monomial $t^\gamma$ and every constant from $k$ has finite support. Thus all values in $\Gamma$ and all residues in $k$ already occur in $\K$. They are also the value group and residue field of $F_k$, proving immediacy.
 \end{proof}
 
-\begin{remark}[Why singular cardinals cause no algebraic failure]\label{rem:singular}
-A countable union of sets of size less than a singular $\kappa$ can have size $\kappa$. That fact does not invalidate \cref{prop:closed}: a fixed polynomial has only finitely many coefficients, and all its roots can be found in \emph{one} exponent group of size less than $\kappa$. The relevant bound is not an uncontrolled union along a root construction. This distinction is central later: algebraic equations stay in one small workspace, whereas an infinite type may use parameters from many increasingly large workspaces.
+\begin{remark}[Why singular cardinals cause no algebraic failure]\label{fkc:rem:singular}
+A countable union of sets of size less than a singular $\kappa$ can have size $\kappa$. That fact does not invalidate \cref{fkc:prop:closed}: a fixed polynomial has only finitely many coefficients, and all its roots can be found in \emph{one} exponent group of size less than $\kappa$. The relevant bound is not an uncontrolled union along a root construction. This distinction is central later: algebraic equations stay in one small workspace, whereas an infinite type may use parameters from many increasingly large workspaces.
 \end{remark}
 
 \subsection{The imported logical tools}
@@ -221,18 +284,18 @@ It follows that $\KR\preccurlyeq\FR$ as ordered fields and $\KC\preccurlyeq\FC$ 
 We will only need the following concrete consequences. A formula in one variable over a real closed field is equivalent to a Boolean combination of polynomial sign conditions. A valued-field formula in one variable over an algebraically closed valued field is equivalent to a Boolean combination of polynomial equations and comparisons $v(P(X))\le v(Q(X))$. Over an algebraically closed field, a one-variable definable set is finite or cofinite. These are background inputs, not claims of new quantifier elimination.
 
 \section{The first-\texorpdfstring{$\kappa$}{kappa} approximation theorem}
-\label{sec:approx}
+\label{fkc:sec:approx}
 
-For a missing element $x$ as in \eqref{eq:enumerate}, define
-\begin{equation}\label{eq:D}
+For a missing element $x$ as in \eqref{fkc:eq:enumerate}, define
+\begin{equation}\label{fkc:eq:D}
  S_\kappa(x)=\{s_\alpha:\alpha<\kappa\},\qquad
  D_x=\{g\in\Gamma:g\le s_\alpha\text{ for some }\alpha<\kappa\}.
 \end{equation}
 The set $D_x$ is an initial segment of $\Gamma$ with no greatest element. It can be all of $\Gamma$ or a proper initial segment. Do not replace $D_x$ by a presumed supremum in $\Gamma$: that supremum need not exist.
 
-\begin{theorem}[Exact approximation values]\label{thm:approx}
+\begin{theorem}[Exact approximation values]\label{fkc:thm:approx}
 For every $x\in F_k\setminus\K$,
-\begin{equation}\label{eq:Aexact}
+\begin{equation}\label{fkc:eq:Aexact}
  A(x/\K):=\{v(x-a):a\in\K\}=D_x,
  \qquad \cf(D_x)=\cf(\kappa)=\mu.
 \end{equation}
@@ -254,13 +317,13 @@ Finally, for every $s_\alpha$ in the initial segment there is a later $s_\beta$,
 
 \begin{definition}[The invisible tail subgroup]
 For an initial segment $D\subseteq\Gamma$, set
-\begin{equation}\label{eq:ID}
+\begin{equation}\label{fkc:eq:ID}
  I_D=\{0\}\cup\{h\in F_k\setminus\{0\}:v(h)>d\text{ for all }d\in D\}.
 \end{equation}
 This is an additive subgroup. No assertion that it is an ideal of the field $F_k$ is intended. If $D=\Gamma$, then $I_D=\{0\}$.
 \end{definition}
 
-\begin{lemma}[Prefix fibers]\label{lem:fibers}
+\begin{lemma}[Prefix fibers]\label{fkc:lem:fibers}
 For missing elements $x,y\in F_k\setminus\K$, the following are equivalent:
 \[
  T_\kappa(x)=T_\kappa(y),\qquad x-y\in I_{D_x},\qquad
@@ -277,14 +340,14 @@ Two series may have identical sets $D_x$ but different first-$\kappa$ prefixes. 
 \end{remark}
 
 \section{Complete one-types and their fibers}
-\label{sec:types}
+\label{fkc:sec:types}
 
 A complete one-type over $K$ is the collection of all formulas $\varphi(X)$ with parameters in $K$ that hold of an element in an elementary extension. We only classify the types realized in the specified full Hahn extension $F_k$. Other elementary extensions can add new residue elements or values, and their types are outside this classification.
 
 \subsection{The complex valued-field language}
-\begin{theorem}[First-$\kappa$ classification: valued case]\label{thm:valued-type}
+\begin{theorem}[First-$\kappa$ classification: valued case]\label{fkc:thm:valued-type}
 For $x,y\in\FC\setminus\KC$,
-\begin{equation}\label{eq:valued-type}
+\begin{equation}\label{fkc:eq:valued-type}
  \tp_{\ACVF}(x/\KC)=\tp_{\ACVF}(y/\KC)
  \quad\Longleftrightarrow\quad T_\kappa(x)=T_\kappa(y).
 \end{equation}
@@ -294,8 +357,8 @@ The set of realizations in $\FC$ of the type of $x$ is exactly
 \]
 \end{theorem}
 \begin{proof}
-Suppose first that the prefixes agree. By \cref{lem:fibers}, either $x=y$ or $v(x-y)$ is greater than every element of $D_x$. For each $a\in\KC$, \cref{thm:approx} gives $v(x-a)\in D_x$, and therefore
-\begin{equation}\label{eq:linear-data}
+Suppose first that the prefixes agree. By \cref{fkc:lem:fibers}, either $x=y$ or $v(x-y)$ is greater than every element of $D_x$. For each $a\in\KC$, \cref{fkc:thm:approx} gives $v(x-a)\in D_x$, and therefore
+\begin{equation}\label{fkc:eq:linear-data}
  v(y-a)=v(x-a),\qquad \lc(y-a)=\lc(x-a).
 \end{equation}
 Indeed, the two differences differ only at strictly higher valuation.
@@ -304,7 +367,7 @@ Every nonzero polynomial over $\KC$ factors as
 \[
  P(X)=b\prod_{j=1}^{n}(X-a_j),\qquad b\in\KC^\times,\quad a_j\in\KC,
 \]
-with multiplicities retained. Neither $x$ nor $y$ is a root, since $\KC$ is algebraically closed and they do not belong to it. Formula \eqref{eq:linear-data} implies
+with multiplicities retained. Neither $x$ nor $y$ is a root, since $\KC$ is algebraically closed and they do not belong to it. Formula \eqref{fkc:eq:linear-data} implies
 \[
  v(P(x))=v(b)+\sum_j v(x-a_j)
          =v(b)+\sum_j v(y-a_j)=v(P(y)).
@@ -316,13 +379,13 @@ Conversely, suppose the types agree. For every $\alpha<\kappa$, the element
  b_\alpha=x_{\le s_\alpha}
 \]
 has fewer than $\kappa$ support terms and lies in $\KC$. The following is a formula over $\KC$, using $t^{s_\alpha}$ as a parameter to name its value:
-\begin{equation}\label{eq:prefix-formula}
+\begin{equation}\label{fkc:eq:prefix-formula}
  v(X-b_\alpha)>v(t^{s_\alpha}).
 \end{equation}
-It holds of $x$, hence of $y$. The two series consequently agree at every exponent at most $s_\alpha$, for all $\alpha<\kappa$. Their prefixes agree. The assertion about the entire realization set follows from \cref{lem:fibers}, which also excludes realizations in $\KC$.
+It holds of $x$, hence of $y$. The two series consequently agree at every exponent at most $s_\alpha$, for all $\alpha<\kappa$. Their prefixes agree. The assertion about the entire realization set follows from \cref{fkc:lem:fibers}, which also excludes realizations in $\KC$.
 \end{proof}
 
-\begin{corollary}[Rational-function data]\label{cor:rational}
+\begin{corollary}[Rational-function data]\label{fkc:cor:rational}
 If $x,y$ have the same first-$\kappa$ prefix, the isomorphism
 \[
  \KC(x)\longrightarrow\KC(y),\qquad x\longmapsto y,
@@ -330,32 +393,32 @@ If $x,y$ have the same first-$\kappa$ prefix, the isomorphism
 fixing $\KC$ preserves both valuation and leading coefficient of every nonzero rational function. In the real case, the corresponding isomorphism of rational function fields is order preserving.
 \end{corollary}
 \begin{proof}
-The missing elements are transcendental over their respective base fields. For complex coefficients, factor numerator and denominator into linear factors and apply \eqref{eq:linear-data}; leading coefficients multiply and divide. In the real case, the same identity shows that $x-a$ and $y-a$ have the same sign for every $a$ in the base. Factor real polynomials into real linear factors and monic irreducible quadratic factors, the latter positive everywhere. Signs of nonzero rational functions are therefore preserved.
+The missing elements are transcendental over their respective base fields. For complex coefficients, factor numerator and denominator into linear factors and apply \eqref{fkc:eq:linear-data}; leading coefficients multiply and divide. In the real case, the same identity shows that $x-a$ and $y-a$ have the same sign for every $a$ in the base. Factor real polynomials into real linear factors and monic irreducible quadratic factors, the latter positive everywhere. Signs of nonzero rational functions are therefore preserved.
 \end{proof}
 
 \subsection{The real ordered-field language}
-\begin{theorem}[First-$\kappa$ classification: ordered case]\label{thm:real-type}
+\begin{theorem}[First-$\kappa$ classification: ordered case]\label{fkc:thm:real-type}
 For $x,y\in\FR\setminus\KR$,
-\begin{equation}\label{eq:real-type}
+\begin{equation}\label{fkc:eq:real-type}
  \tp_{\RCF}(x/\KR)=\tp_{\RCF}(y/\KR)
  \quad\Longleftrightarrow\quad T_\kappa(x)=T_\kappa(y).
 \end{equation}
 The realizations in $\FR$ of the type of $x$ are exactly $T_\kappa(x)+I_{D_x}$.
 \end{theorem}
 \begin{proof}
-Equal prefixes imply equal signs of $x-a$ and $y-a$ for all $a\in\KR$, by the leading-coefficient argument in \eqref{eq:linear-data}. A nonzero real polynomial factors into linear factors and positive monic irreducible quadratic factors, together with a nonzero scalar. Thus its values at $x$ and $y$ have the same sign. Quantifier elimination for real closed fields now gives equal types.
+Equal prefixes imply equal signs of $x-a$ and $y-a$ for all $a\in\KR$, by the leading-coefficient argument in \eqref{fkc:eq:linear-data}. A nonzero real polynomial factors into linear factors and positive monic irreducible quadratic factors, together with a nonzero scalar. Thus its values at $x$ and $y$ have the same sign. Quantifier elimination for real closed fields now gives equal types.
 
 For the reverse direction, set $b_\alpha=x_{\le s_\alpha}\in\KR$. The ordered-ring formula
-\begin{equation}\label{eq:ordered-interval}
+\begin{equation}\label{fkc:eq:ordered-interval}
  b_\alpha-t^{s_\alpha}<X<b_\alpha+t^{s_\alpha}
 \end{equation}
-holds of $x$: its difference from $b_\alpha$ has valuation strictly greater than $s_\alpha$ and is therefore smaller in absolute value than the positive monomial $t^{s_\alpha}$. Equal types imply that \eqref{eq:ordered-interval} holds of $y$ as well.
+holds of $x$: its difference from $b_\alpha$ has valuation strictly greater than $s_\alpha$ and is therefore smaller in absolute value than the positive monomial $t^{s_\alpha}$. Equal types imply that \eqref{fkc:eq:ordered-interval} holds of $y$ as well.
 
 The inequality $|y-b_\alpha|<t^{s_\alpha}$ forces agreement of $y$ and $b_\alpha$ at all exponents strictly below $s_\alpha$. If there were a least disagreement $g<s_\alpha$, its nonzero real leading coefficient times $t^g$ would dominate $t^{s_\alpha}$ in absolute value. For any fixed $\beta<\kappa$, choose $\alpha$ strictly later than $\beta$. Agreement below $s_\alpha$ includes the coefficient at $s_\beta$ and all earlier exponents. Consequently the first-$\kappa$ prefixes agree. The realization-set description follows as before.
 \end{proof}
 
-\begin{corollary}[Counting and identifying the missing types]\label{cor:count}
-In either language of \cref{thm:valued-type,thm:real-type}, the missing one-types realized in $F_k$ are in bijection with the Hahn series whose support has order type exactly $\kappa$. The bijection sends a type to its first-$\kappa$ prefix. If $K_{\kappa,k}\ne F_k$, there are at least $2^\kappa$ such types.
+\begin{corollary}[Counting and identifying the missing types]\label{fkc:cor:count}
+In either language of \cref{fkc:thm:valued-type,fkc:thm:real-type}, the missing one-types realized in $F_k$ are in bijection with the Hahn series whose support has order type exactly $\kappa$. The bijection sends a type to its first-$\kappa$ prefix. If $K_{\kappa,k}\ne F_k$, there are at least $2^\kappa$ such types.
 \end{corollary}
 \begin{proof}
 Each missing element has exactly one prefix of order type $\kappa$, and each such prefix is itself a missing element. The two type-classification theorems show that this correspondence is well defined and bijective. Fix an increasing support $(s_\alpha)_{\alpha<\kappa}$. Choosing each coefficient independently from $\{1,2\}$ gives $2^\kappa$ different prefixes and therefore $2^\kappa$ types.
@@ -366,11 +429,11 @@ Equality of types guarantees conjugacy in a sufficiently homogeneous elementary 
 \end{remark}
 
 \section{The exact number of formulas needed for omission}
-\label{sec:omission}
+\label{fkc:sec:omission}
 
 \begin{definition}[Omission number of a type]
 Let $M\preccurlyeq N$ and let $p=\tp(x/M)$ be omitted in $M$. Define
-\begin{equation}\label{eq:omdef}
+\begin{equation}\label{fkc:eq:omdef}
  \om_M(p)=\min\{\,|\Phi|:\Phi\subseteq p
                   \text{ has no realization in }M\,\}.
 \end{equation}
@@ -379,17 +442,17 @@ This minimum exists because $p$ itself is a set of formulas omitted in $M$. Each
 
 \subsection{Formula-by-formula stabilization}
 Choose a strictly increasing cofinal sequence $(\alpha_i)_{i<\mu}$ in $\kappa$, and put
-\begin{equation}\label{eq:approximants}
+\begin{equation}\label{fkc:eq:approximants}
  a_i=x_{<s_{\alpha_i}}\in\K.
 \end{equation}
 Then
-\begin{equation}\label{eq:approx-errors}
+\begin{equation}\label{fkc:eq:approx-errors}
  v(x-a_i)=s_{\alpha_i},\qquad
  v(a_j-a_i)=s_{\alpha_i}\quad(i<j).
 \end{equation}
 The second equality uses the nonzero coefficient $c_{\alpha_i}$. Thus $(a_i)$ is a strictly pseudo-Cauchy family. It need not be a Cauchy net: its error values may stay bounded in $\Gamma$.
 
-\begin{lemma}[Eventual elementary agreement]\label{lem:stabilize}
+\begin{lemma}[Eventual elementary agreement]\label{fkc:lem:stabilize}
 In the real ordered-field or complex valued-field language, for every formula $\varphi(X)$ over $\K$ there is $i_0<\mu$ such that
 \[
  F_k\models\varphi(a_i)\ \Longleftrightarrow\ F_k\models\varphi(x)
@@ -397,7 +460,7 @@ In the real ordered-field or complex valued-field language, for every formula $\
 \]
 \end{lemma}
 \begin{proof}
-First consider a fixed $b\in\K$. By \cref{thm:approx}, $r=v(x-b)$ belongs to $D_x$. For all sufficiently large $i$, $s_{\alpha_i}>r$. Hence
+First consider a fixed $b\in\K$. By \cref{fkc:thm:approx}, $r=v(x-b)$ belongs to $D_x$. For all sufficiently large $i$, $s_{\alpha_i}>r$. Hence
 \[
  v(a_i-b)=v(x-b),\qquad \lc(a_i-b)=\lc(x-b).
 \]
@@ -408,33 +471,33 @@ For a finite collection of nonzero complex polynomials over $\KC$, take their fi
 Over $\KR$, instead factor the finitely many polynomials from a quantifier-free ordered formula into linear and positive irreducible quadratic factors. Their linear factors have stable signs by the first paragraph, and the quadratic signs are already constant. All polynomial sign conditions stabilize, and real quantifier elimination proves the assertion. Constant and identically zero polynomials require no stabilization condition.
 \end{proof}
 
-\begin{theorem}[Exact omission number]\label{thm:omission}
+\begin{theorem}[Exact omission number]\label{fkc:thm:omission}
 For each $x\in F_k\setminus\K$, in the ordered real or valued complex language,
-\begin{equation}\label{eq:om-main}
+\begin{equation}\label{fkc:eq:om-main}
  \boxed{\ \om_{\K}\bigl(\tp(x/\K)\bigr)=\cf(\kappa).\ }
 \end{equation}
 More precisely, every family of fewer than $\mu$ formulas from the type is realized by a sufficiently late truncation $a_i$, whereas an explicitly given family of $\mu$ ball or interval formulas is omitted.
 \end{theorem}
 \begin{proof}
-For the lower bound, let $\Phi$ be a subset of the type of cardinality less than $\mu$. For each $\varphi\in\Phi$, choose a stabilization index $i_\varphi$ from \cref{lem:stabilize}. The cardinal $\mu=\cf(\kappa)$ is regular, so fewer than $\mu$ such indices are bounded by some $i_*<\mu$. Then $a_i$ realizes every formula in $\Phi$ for all $i\ge i_*$. Elementarity lets us view this realization either in $F_k$ or in $\K$.
+For the lower bound, let $\Phi$ be a subset of the type of cardinality less than $\mu$. For each $\varphi\in\Phi$, choose a stabilization index $i_\varphi$ from \cref{fkc:lem:stabilize}. The cardinal $\mu=\cf(\kappa)$ is regular, so fewer than $\mu$ such indices are bounded by some $i_*<\mu$. Then $a_i$ realizes every formula in $\Phi$ for all $i\ge i_*$. Elementarity lets us view this realization either in $F_k$ or in $\K$.
 
 For the upper bound in the complex valued case, use the $\mu$ formulas
-\begin{equation}\label{eq:om-ball}
+\begin{equation}\label{fkc:eq:om-ball}
  v(X-a_i)\ge v(t^{s_{\alpha_i}})\qquad(i<\mu).
 \end{equation}
 They all hold of $x$. A common realization $a\in\KC$ would agree with $x$ at every exponent below each $s_{\alpha_i}$. Cofinality of the indices then forces agreement at all first $\kappa$ nonzero terms, placing at least $\kappa$ elements in $\supp a$. This is impossible.
 
 For the upper bound in the real case, put $b_i=x_{\le s_{\alpha_i}}$ and use
-\begin{equation}\label{eq:om-interval}
+\begin{equation}\label{fkc:eq:om-interval}
  b_i-t^{s_{\alpha_i}}<X<b_i+t^{s_{\alpha_i}}\qquad(i<\mu).
 \end{equation}
-These formulas belong to the type of $x$. As in the proof of \cref{thm:real-type}, a common realization must agree with $x$ below every $s_{\alpha_i}$ and hence on all first $\kappa$ terms. Again it cannot lie in $\KR$. This proves the upper bound and the equality.
+These formulas belong to the type of $x$. As in the proof of \cref{fkc:thm:real-type}, a common realization must agree with $x$ below every $s_{\alpha_i}$ and hence on all first $\kappa$ terms. Again it cannot lie in $\KR$. This proves the upper bound and the equality.
 \end{proof}
 
 \subsection{What forgetting the valuation does}
-\begin{theorem}[Pure-field collapse]\label{thm:pure}
+\begin{theorem}[Pure-field collapse]\label{fkc:thm:pure}
 Assume $\KC\ne\FC$ and work in the pure ring language. All elements of $\FC\setminus\KC$ realize the same complete one-type $p_{\mathrm{gen}}$ over $\KC$. Its omission number is
-\begin{equation}\label{eq:pureom}
+\begin{equation}\label{fkc:eq:pureom}
  \om_{\KC}(p_{\mathrm{gen}})=|\KC|.
 \end{equation}
 \end{theorem}
@@ -449,7 +512,7 @@ Conversely, the family $\{X\ne a:a\in\KC\}$ belongs to the generic type and has 
 In particular, when $\kappa$ is singular and $\KC\ne\FC$, the same individual missing element has omission number $\cf(\kappa)<\kappa\le|\KC|$ in the valued language and omission number $|\KC|$ in the pure field language. This is a quantitative distinction between two descriptions of a surcomplex workspace, not a change in its underlying arithmetic.
 
 \subsection{Singular compression along elementary chains}
-\begin{corollary}[Restriction of types is truncation of prefixes]\label{cor:tower}
+\begin{corollary}[Restriction of types is truncation of prefixes]\label{fkc:cor:tower}
 Let $\kappa<\lambda$ be uncountable cardinals, with the same $k$ and $\Gamma$. Then
 \[
  K_{\kappa,k}\preccurlyeq K_{\lambda,k}\preccurlyeq F_k
@@ -461,13 +524,13 @@ in the real ordered or complex valued language. If $x\notin K_{\lambda,k}$, rest
 The two omission numbers are respectively $\cf(\lambda)$ and $\cf(\kappa)$.
 \end{corollary}
 \begin{proof}
-The inclusions are elementary by \cref{prop:closed} and quantifier elimination. The assertions about prefixes and omission numbers follow from \cref{thm:valued-type,thm:real-type,thm:omission} applied at the two cardinals.
+The inclusions are elementary by \cref{fkc:prop:closed} and quantifier elimination. The assertions about prefixes and omission numbers follow from \cref{fkc:thm:valued-type,fkc:thm:real-type,fkc:thm:omission} applied at the two cardinals.
 \end{proof}
 
 For example, moving from the bound $\aleph_1$ to the larger bound $\aleph_\omega$ can \emph{decrease} the omission number from $\aleph_1$ to $\aleph_0$. There is no conflict with compactness: each parameter in the larger field is a single object but may encode a much longer initial segment. Countably many such parameters can encode $\aleph_\omega$ support positions. At the smaller bound, no analogous countable family of parameters can do so for these types.
 
 \section{The precise spherical-completeness threshold}
-\label{sec:balls}
+\label{fkc:sec:balls}
 
 A closed valuation ball in a valued field $K$ is
 \[
@@ -475,7 +538,7 @@ A closed valuation ball in a valued field $K$ is
 \]
 A \emph{nest} is a nonempty set of such balls linearly ordered by inclusion. Spherical completeness means that every nest has nonempty intersection. The radii here are values in $\Gamma$, not necessarily real numbers; nests need not be sequences.
 
-\begin{lemma}[Coefficient gluing with a cardinal bound]\label{lem:glue}
+\begin{lemma}[Coefficient gluing with a cardinal bound]\label{fkc:lem:glue}
 Let $\{B(a_j,\gamma_j):j\in J\}$ be a nest of balls in $\K$. If $|J|<\cf(\kappa)$, its intersection contains an element of $\K$.
 \end{lemma}
 \begin{proof}
@@ -491,23 +554,23 @@ Moreover,
 \[
  \supp f\subseteq\bigcup_{j\in J}\supp a_j.
 \]
-The union on the right has size less than $\kappa$: a union of fewer than $\cf(\kappa)$ sets, each of cardinality less than $\kappa$, still has cardinality less than $\kappa$. Therefore $f\in\K$. For each $j$, it agrees with $a_j$ at every exponent below $\gamma_j$, so \eqref{eq:first-diff} gives $f\in B(a_j,\gamma_j)$.
+The union on the right has size less than $\kappa$: a union of fewer than $\cf(\kappa)$ sets, each of cardinality less than $\kappa$, still has cardinality less than $\kappa$. Therefore $f\in\K$. For each $j$, it agrees with $a_j$ at every exponent below $\gamma_j$, so \eqref{fkc:eq:first-diff} gives $f\in B(a_j,\gamma_j)$.
 \end{proof}
 
 The gluing argument without the final cardinal bound is the standard proof of spherical completeness for full Hahn fields; compare \cite[Lemma~4]{Poonen}. The extra point here is exactly where the union of supports remains below $\kappa$.
 
-\begin{theorem}[First empty nests]\label{thm:balls}
+\begin{theorem}[First empty nests]\label{fkc:thm:balls}
 If $\K\ne F_k$, the least cardinality of an empty nest of closed valuation balls in $\K$ is $\mu=\cf(\kappa)$. In particular, $\K$ is not spherically complete.
 \end{theorem}
 \begin{proof}
-The lower bound is \cref{lem:glue}. For the upper bound, choose a missing $x$ and use the approximants from \eqref{eq:approximants}. Let
+The lower bound is \cref{fkc:lem:glue}. For the upper bound, choose a missing $x$ and use the approximants from \eqref{fkc:eq:approximants}. Let
 \[
  B_i=B(a_i,s_{\alpha_i})\quad(i<\mu).
 \]
-For $i<j$, the center difference has value $s_{\alpha_i}$, and the radius value $s_{\alpha_j}$ is larger. The ultrametric inequality therefore gives $B_j\subseteq B_i$. The inclusion is strict: $a_i\notin B_j$. A common point would satisfy all formulas \eqref{eq:om-ball}, whose common realization in $\K$ was shown impossible. Thus this is an empty nest of cardinality exactly $\mu$.
+For $i<j$, the center difference has value $s_{\alpha_i}$, and the radius value $s_{\alpha_j}$ is larger. The ultrametric inequality therefore gives $B_j\subseteq B_i$. The inclusion is strict: $a_i\notin B_j$. A common point would satisfy all formulas \eqref{fkc:eq:om-ball}, whose common realization in $\K$ was shown impossible. Thus this is an empty nest of cardinality exactly $\mu$.
 \end{proof}
 
-\begin{corollary}[Its intersection in the full Hahn field]\label{cor:ballfiber}
+\begin{corollary}[Its intersection in the full Hahn field]\label{fkc:cor:ballfiber}
 The balls just constructed, interpreted in $F_k$, have intersection
 \[
  \bigcap_{i<\mu}B_{F_k}(a_i,s_{\alpha_i})
@@ -520,28 +583,28 @@ The ball conditions say precisely that all coefficients below the cofinal thresh
 \end{proof}
 
 \begin{remark}[Not a full saturation theorem]
-The ball theorem does not say that every type over fewer than $\mu$ parameters is realized. Our lower bound in \cref{thm:omission} applies to types realized in the fixed full Hahn extension. Other types may demand new values or residues. A field can have all the small ball intersections established here while failing a different saturation condition. Likewise, the pure-field omission number in \cref{thm:pure} is not contradicted by the smaller valued-field ball obstruction.
+The ball theorem does not say that every type over fewer than $\mu$ parameters is realized. Our lower bound in \cref{fkc:thm:omission} applies to types realized in the fixed full Hahn extension. Other types may demand new values or residues. A field can have all the small ball intersections established here while failing a different saturation condition. Likewise, the pure-field omission number in \cref{fkc:thm:pure} is not contradicted by the smaller valued-field ball obstruction.
 \end{remark}
 
 \section{The valuation completion and its cofinality criterion}
-\label{sec:completion}
+\label{fkc:sec:completion}
 
 Completeness and spherical completeness differ because a Cauchy net must reach every valuation scale, whereas the radii of a nest can remain confined to a proper initial segment of the value group. In the present fields this distinction is determined exactly by the first-$\kappa$ support.
 
 \subsection{An explicit completion inside the full Hahn field}
 Define
-\begin{equation}\label{eq:localfield}
+\begin{equation}\label{fkc:eq:localfield}
  L_{\kappa,k}=\left\{f\in F_k:
  |\supp f\cap(-\infty,\gamma)|<\kappa
  \text{ for every }\gamma\in\Gamma\right\}.
 \end{equation}
 The condition is local in the \emph{exponent order}, not a condition of local finiteness in an ordinary real variable.
 
-\begin{theorem}[Completion by locally small support]\label{thm:completion}
+\begin{theorem}[Completion by locally small support]\label{fkc:thm:completion}
 The closure of $\K$ in $F_k$ is $L_{\kappa,k}$. This is a complete valued subfield of $F_k$ and, with the given inclusion of $\K$, is its Hausdorff valuation completion.
 \end{theorem}
 \begin{proof}
-Suppose $f$ is in the closure. Given $\gamma\in\Gamma$, there is $a\in\K$ with $v(f-a)\ge\gamma$. By \eqref{eq:first-diff}, the support of $f$ below $\gamma$ is contained in the support of $a$, so it has size less than $\kappa$. Thus $f\in L_{\kappa,k}$.
+Suppose $f$ is in the closure. Given $\gamma\in\Gamma$, there is $a\in\K$ with $v(f-a)\ge\gamma$. By \eqref{fkc:eq:first-diff}, the support of $f$ below $\gamma$ is contained in the support of $a$, so it has size less than $\kappa$. Thus $f\in L_{\kappa,k}$.
 
 Conversely, if $f\in L_{\kappa,k}$, then $f_{<\gamma}\in\K$ for every $\gamma$. Moreover,
 \[
@@ -554,7 +617,7 @@ The full Hahn field is complete; this follows from its classical spherical compl
 The closure of a subfield in a topological field is a subfield: addition and multiplication are continuous, and inversion is continuous at each nonzero point. A closed subspace of the complete Hahn uniform space is complete. Since $\K$ is dense in its closure, this closure is its Hausdorff uniform completion, with the induced field and valuation structures.
 \end{proof}
 
-\begin{proposition}[Exactly which supports are added]\label{prop:new-supports}
+\begin{proposition}[Exactly which supports are added]\label{fkc:prop:new-supports}
 For $f\in F_k\setminus\K$, the following are equivalent:
 \begin{enumerate}[label=\textup{(\roman*)}]
 \item $f\in L_{\kappa,k}$;
@@ -564,7 +627,7 @@ For $f\in F_k\setminus\K$, the following are equivalent:
 In particular, every new completion element satisfies $T_\kappa(f)=f$.
 \end{proposition}
 \begin{proof}
-Write the support increasingly as $(s_\alpha)_{\alpha<\lambda}$ with $\lambda\ge\kappa$. If $\lambda>\kappa$, the exponent $s_\kappa$ exists, and the support strictly below it already has cardinality $\kappa$. This violates \eqref{eq:localfield}. Hence membership in $L_{\kappa,k}$ forces $\lambda=\kappa$.
+Write the support increasingly as $(s_\alpha)_{\alpha<\lambda}$ with $\lambda\ge\kappa$. If $\lambda>\kappa$, the exponent $s_\kappa$ exists, and the support strictly below it already has cardinality $\kappa$. This violates \eqref{fkc:eq:localfield}. Hence membership in $L_{\kappa,k}$ forces $\lambda=\kappa$.
 
 If that support were not cofinal in $\Gamma$, choose $\gamma$ strictly above it. Then the support below $\gamma$ has size $\kappa$, again a contradiction. This proves (i)$\Rightarrow$(ii).
 
@@ -572,9 +635,9 @@ If the support has order type $\kappa$ and is cofinal, then for each $\gamma$ th
 \end{proof}
 
 \subsection{The group-theoretic existence calculation}
-\begin{lemma}[Long cofinal supports]\label{lem:long-cofinal}
+\begin{lemma}[Long cofinal supports]\label{fkc:lem:long-cofinal}
 Suppose $\Gamma$ contains a well-ordered subset of cardinality $\kappa$. Then it contains a cofinal well-ordered subset of order type $\kappa$ if and only if
-\begin{equation}\label{eq:cofinal-condition}
+\begin{equation}\label{fkc:eq:cofinal-condition}
  \cf(\Gamma)=\cf(\kappa).
 \end{equation}
 \end{lemma}
@@ -598,12 +661,12 @@ Now concatenate the blocks
 Different blocks are strictly separated, and their union is cofinal because it contains every $q_i$. Its order type is the ordinal sum $\sum_{i<\mu}\kappa_i$. This sum equals the initial ordinal $\kappa$. Indeed, every proper initial collection of blocks has cardinality less than $\kappa$, since it uses fewer than $\cf(\kappa)$ cardinals below $\kappa$; the same is true after adding a proper initial part of the next block. Thus every proper initial segment of the concatenation has cardinality less than $\kappa$, while the whole concatenation has cardinality $\kappa$. Its order type is therefore exactly $\kappa$.
 \end{proof}
 
-\begin{theorem}[Completeness dichotomy]\label{thm:dichotomy}
+\begin{theorem}[Completeness dichotomy]\label{fkc:thm:dichotomy}
 The following exhaustive alternatives hold.
 \begin{enumerate}[label=\textup{(\roman*)}]
 \item If $\Gamma$ has no well-ordered subset of cardinality $\kappa$, then $\K=F_k$, so $\K$ is complete and spherically complete.
 \item If $\Gamma$ has such a subset, then $\K\ne F_k$ and
-\begin{equation}\label{eq:complete-dichotomy}
+\begin{equation}\label{fkc:eq:complete-dichotomy}
  \boxed{\ \K\text{ is complete}\quad\Longleftrightarrow\quad
           \cf(\Gamma)\ne\cf(\kappa).\ }
 \end{equation}
@@ -613,15 +676,19 @@ In this second alternative, the least size of an empty closed-ball nest is alway
 \begin{proof}
 A missing Hahn series yields a well-ordered support containing its first $\kappa$ positions. Conversely, an increasing support of order type $\kappa$ supports a Hahn series with all coefficients equal to one, which is missing from $\K$. This proves the criterion for properness.
 
-By \cref{thm:completion,prop:new-supports}, a proper $\K$ fails to be complete exactly when $\Gamma$ admits a cofinal increasing sequence of order type $\kappa$. By \cref{lem:long-cofinal}, under the properness hypothesis this is equivalent to equality of the two cofinalities. The final assertion is \cref{thm:balls}.
+By \cref{fkc:thm:completion,fkc:prop:new-supports}, a proper $\K$ fails to be complete exactly when $\Gamma$ admits a cofinal increasing sequence of order type $\kappa$. By \cref{fkc:lem:long-cofinal}, under the properness hypothesis this is equivalent to equality of the two cofinalities. The final assertion is \cref{fkc:thm:balls}.
 \end{proof}
 
 \begin{remark}[The completion need not be the full Hahn field]
-A new completion element is required to have cofinal support of order type exactly $\kappa$. A series with $\kappa$ support positions confined below a fixed exponent is never added by completion. Thus the completion is not obtained simply by replacing $<\kappa$ by $\le\kappa$, nor by replacing $\kappa$ with $\kappa^+$. Example~\ref{ex:partialcompletion} gives an explicit strict chain $K_{\kappa,k}\subsetneq L_{\kappa,k}\subsetneq F_k$.
+A new completion element is required to have cofinal support of order type exactly $\kappa$. A series with $\kappa$ support positions confined below a fixed exponent is never added by completion. Thus the completion is not obtained simply by replacing $<\kappa$ by $\le\kappa$, nor by replacing $\kappa$ with $\kappa^+$. Example~\ref{fkc:ex:partialcompletion} gives an explicit strict chain $K_{\kappa,k}\subsetneq L_{\kappa,k}\subsetneq F_k$.
+\end{remark}
+
+\begin{remark}[The countable analogue elsewhere in the collection; added on placement]\label{fkc:rem:countable-analogue}
+The case $\kappa=\aleph_0$ is excluded here, since finite-support series do not form a field (\cref{fkc:app:checks}). Two other reports prove the countable analogue of \cref{fkc:thm:completion,fkc:thm:dichotomy} for other objects. In the report on three duals of Hahn vector spaces, the completion of the algebraic scalar extension $E_\Gamma(V)$ of an infinite-dimensional $k$-vector space $V$ consists of the vectors with finite coefficient rank below every $\gamma\in\Gamma$ (\texttt{duals:thm:completion}), and it is strictly larger than $E_\Gamma(V)$ exactly when $\cf(\Gamma)=\aleph_0$ (\texttt{duals:thm:cofinality-completion}). This is the shape of \eqref{fkc:eq:localfield} and \eqref{fkc:eq:complete-dichotomy} with ``finite coefficient rank'' in place of ``fewer than $\kappa$ support terms'' and $\aleph_0=\cf(\aleph_0)$ in place of $\cf(\kappa)$. In the rank-one Berkovich report, the metric closure of the finite-support series in $\C((t^\Q))$ consists of the series whose support meets every $(-\infty,B]$ in a finite set, which is \eqref{fkc:eq:localfield} with $\kappa$ replaced by $\aleph_0$. Neither result is used here, and neither implies nor is implied by the theorems above: the objects there are a vector space over the full Hahn field and the ring of finite-support series, and the bound is countable.
 \end{remark}
 
 \section{An exact two-dimensional linear obstruction}
-\label{sec:linear}
+\label{fkc:sec:linear}
 
 The same approximation cut has a direct functional interpretation. Fix either coefficient field and abbreviate $K=\K$, $F=F_k$. For $x\in F\setminus K$, let
 \[
@@ -630,30 +697,30 @@ The same approximation cut has a direct functional interpretation. Fix either co
 with the valuation inherited from $F$. The vectors $1,x$ are linearly independent over $K$, so $E_x$ is two dimensional. This is a $\Gamma$-valued linear space, not an asserted real-normed Banach space.
 
 Every $K$-linear retraction $P:E_x\to K$ of the inclusion $K\subseteq E_x$ has the form
-\begin{equation}\label{eq:Pc}
+\begin{equation}\label{fkc:eq:Pc}
  P_c(a+bx)=a+bc\qquad(a,b\in K)
 \end{equation}
 for a unique $c\in K$. For $\delta\in\Gamma_{\ge0}$, say that it has \emph{valuation loss at most $\delta$} when
-\begin{equation}\label{eq:loss}
+\begin{equation}\label{fkc:eq:loss}
  v(P_cz)\ge v(z)-\delta\qquad(z\in E_x).
 \end{equation}
 Loss zero is the nonexpanding, or contractive, case in valuation notation.
 
-\begin{theorem}[Exact retraction-loss formula]\label{thm:projection}
+\begin{theorem}[Exact retraction-loss formula]\label{fkc:thm:projection}
 Put $r_c=v(x-c)\in D_x$. Then
-\begin{equation}\label{eq:projectionexact}
- \boxed{\ P_c\text{ satisfies \eqref{eq:loss}}
+\begin{equation}\label{fkc:eq:projectionexact}
+ \boxed{\ P_c\text{ satisfies \eqref{fkc:eq:loss}}
  \quad\Longleftrightarrow\quad
  d\le r_c+\delta\text{ for every }d\in D_x.\ }
 \end{equation}
 Consequently no $P_c$ has loss zero. A continuous retraction exists if and only if $D_x$ is bounded above in $\Gamma$, equivalently $x\notin L_{\kappa,k}$.
 \end{theorem}
 \begin{proof}
-Vectors in $K$ satisfy \eqref{eq:loss} automatically. A vector $a+bx$ with $b\ne0$ is $b(x-d)$ for $d=-a/b\in K$. By linearity and multiplicativity of the valuation, it suffices to check
-\begin{equation}\label{eq:reducedloss}
+Vectors in $K$ satisfy \eqref{fkc:eq:loss} automatically. A vector $a+bx$ with $b\ne0$ is $b(x-d)$ for $d=-a/b\in K$. By linearity and multiplicativity of the valuation, it suffices to check
+\begin{equation}\label{fkc:eq:reducedloss}
  v(c-d)\ge v(x-d)-\delta\qquad(d\in K).
 \end{equation}
-Write $r_d=v(x-d)$. If $r_d<r_c$, then \eqref{eq:ultra-exact} gives $v(c-d)=r_d$, so \eqref{eq:reducedloss} holds. If $r_d=r_c$, the ultrametric inequality gives $v(c-d)\ge r_c$, so it also holds. If $r_d>r_c$, the exact value is $v(c-d)=r_c$, and \eqref{eq:reducedloss} is equivalent to $r_d\le r_c+\delta$. As the set of all $r_d$ is $D_x$, this is exactly \eqref{eq:projectionexact}.
+Write $r_d=v(x-d)$. If $r_d<r_c$, then \eqref{fkc:eq:ultra-exact} gives $v(c-d)=r_d$, so \eqref{fkc:eq:reducedloss} holds. If $r_d=r_c$, the ultrametric inequality gives $v(c-d)\ge r_c$, so it also holds. If $r_d>r_c$, the exact value is $v(c-d)=r_c$, and \eqref{fkc:eq:reducedloss} is equivalent to $r_d\le r_c+\delta$. As the set of all $r_d$ is $D_x$, this is exactly \eqref{fkc:eq:projectionexact}.
 
 There is no zero-loss retraction because $D_x$ has no greatest element. If $D_x$ is bounded above by $b$, then for any $c$ the nonnegative value $\delta=b-r_c$ is an admissible loss. Such a bound implies continuity directly.
 
@@ -665,10 +732,10 @@ makes $v(qz)=\beta+\eta>\beta$. If $Pz\ne0$, linearity yields
 \[
  v(Pz)>v(z)-\beta-\eta.
 \]
-The same lower bound is automatic if $Pz=0$. Thus $\delta=\max\{0,\beta+\eta\}$ is a loss bound. Applying \eqref{eq:projectionexact} to a continuous retraction forces $D_x$ to be bounded above. Finally, an initial segment of a linear order is unbounded exactly when it is the whole order, and \cref{prop:new-supports} identifies $D_x=\Gamma$ with $x\in L_{\kappa,k}$.
+The same lower bound is automatic if $Pz=0$. Thus $\delta=\max\{0,\beta+\eta\}$ is a loss bound. Applying \eqref{fkc:eq:projectionexact} to a continuous retraction forces $D_x$ to be bounded above. Finally, an initial segment of a linear order is unbounded exactly when it is the whole order, and \cref{fkc:prop:new-supports} identifies $D_x=\Gamma$ with $x\in L_{\kappa,k}$.
 \end{proof}
 
-\begin{corollary}[A zero-or-full continuous-dual dichotomy]\label{cor:dual}
+\begin{corollary}[A zero-or-full continuous-dual dichotomy]\label{fkc:cor:dual}
 Let $E_x'=\operatorname{Hom}_{K,\mathrm{cont}}(E_x,K)$. Then
 \[
  \dim_K E_x'=
@@ -680,7 +747,7 @@ Let $E_x'=\operatorname{Hom}_{K,\mathrm{cont}}(E_x,K)$. Then
 In the second case every algebraic linear functional is continuous, although no retraction has valuation loss zero.
 \end{corollary}
 \begin{proof}
-If $x\in L_{\kappa,k}\setminus K$, then $K$ is dense in $E_x$: approximate $x$ by elements of $K$ and multiply and translate to approximate $a+bx$. If a continuous functional $\ell$ had $\ell(1)\ne0$, dividing by $\ell(1)$ would produce a continuous retraction, contrary to \cref{thm:projection}. Hence $\ell$ vanishes on the dense subspace $K$ and therefore vanishes everywhere, since the target is Hausdorff.
+If $x\in L_{\kappa,k}\setminus K$, then $K$ is dense in $E_x$: approximate $x$ by elements of $K$ and multiply and translate to approximate $a+bx$. If a continuous functional $\ell$ had $\ell(1)\ne0$, dividing by $\ell(1)$ would produce a continuous retraction, contrary to \cref{fkc:thm:projection}. Hence $\ell$ vanishes on the dense subspace $K$ and therefore vanishes everywhere, since the target is Hausdorff.
 
 Suppose instead that $D_x$ is bounded. Fix $c\in K$ and a loss bound $\delta$ for $P_c$. The coefficient functional $Q(a+bx)=b$ is continuous as well. For $z=a+bx$, the identity $z-P_cz=b(x-c)$ gives, whenever $b\ne0$,
 \[
@@ -694,16 +761,16 @@ Replacing the right-hand loss by a larger nonnegative value if necessary gives a
 This application does not claim a new general Hahn--Banach theorem. The mechanism is the elementary best-approximation obstruction: contractivity of $P_c$ would require $c$ to approximate $x$ at least as well as every other base-field element. The contribution within the present package is that the full set of permitted losses, and the continuous-dual dichotomy, are explicitly calculated from the first-$\kappa$ support cut.
 
 \section{Explicit examples at regular and singular cardinals}
-\label{sec:examples}
+\label{fkc:sec:examples}
 
 \subsection{A concrete family of exponent groups}
 For an infinite limit ordinal $\theta$, let
-\begin{equation}\label{eq:Gtheta}
+\begin{equation}\label{fkc:eq:Gtheta}
  \Gamma_\theta=\bigoplus_{\alpha<\theta}\Q e_\alpha
 \end{equation}
 with finite supports and the order determined by the \emph{largest} nonzero coordinate. Thus $0<e_\alpha\ll e_\beta$ for $\alpha<\beta$: every positive integral multiple of $e_\alpha$ is less than $e_\beta$. This is a divisible ordered abelian group.
 
-\begin{lemma}\label{lem:groupcf}
+\begin{lemma}\label{fkc:lem:groupcf}
 For an infinite limit ordinal $\theta$,
 \[
  \cf(\Gamma_\theta)=\cf(\theta).
@@ -715,9 +782,9 @@ Every group element has finite support. An $e_\beta$ with index larger than all 
 \end{proof}
 
 \subsection{A singular bound with a countable missing Cauchy limit}
-\begin{example}\label{ex:singular}
+\begin{example}\label{fkc:ex:singular}
 Let $\kappa=\aleph_\omega$, $\Gamma=\Gamma_\kappa$, and take either $k=\R$ or $\C$. Define
-\begin{equation}\label{eq:xkappa}
+\begin{equation}\label{fkc:eq:xkappa}
  x_\kappa=\sum_{\alpha<\kappa}t^{e_\alpha},\qquad
  a_n=\sum_{\alpha<\aleph_n}t^{e_\alpha}\quad(n<\omega).
 \end{equation}
@@ -729,19 +796,19 @@ Each $a_n$ belongs to $K_{\kappa,k}$, whereas $x_\kappa$ does not. Furthermore,
 These values are cofinal in $\Gamma_\kappa$, so $(a_n)$ is a Cauchy sequence with limit $x_\kappa$ in the full Hahn field and no limit in $K_{\kappa,k}$.
 \end{example}
 
-All algebraic equations appropriate to real closedness or algebraic closedness can still be solved in the smaller field, by \cref{prop:closed}. The omitted type of $x_\kappa$ in the ordered real or valued complex language needs exactly countably many formulas. Its realization set in this particular full Hahn field is a singleton, because $D_{x_\kappa}=\Gamma_\kappa$ and $I_{D_{x_\kappa}}=\{0\}$. This does not mean the type is isolated by a single formula: \cref{thm:omission} proves the opposite.
+All algebraic equations appropriate to real closedness or algebraic closedness can still be solved in the smaller field, by \cref{fkc:prop:closed}. The omitted type of $x_\kappa$ in the ordered real or valued complex language needs exactly countably many formulas. Its realization set in this particular full Hahn field is a singleton, because $D_{x_\kappa}=\Gamma_\kappa$ and $I_{D_{x_\kappa}}=\{0\}$. This does not mean the type is isolated by a single formula: \cref{fkc:thm:omission} proves the opposite.
 
 For the two-dimensional valued space $K+Kx_\kappa$, the continuous $K$-linear dual is zero. Thus even two algebraic coordinates need not supply continuous coordinate functionals over this incomplete base field with its inherited valuation.
 
-In fact, the completion in \cref{ex:singular} is the entire full Hahn field. Every bounded interval in $\Gamma_\kappa$ has cardinality less than $\kappa$. To see this, choose an index $\beta<\kappa$ at least as large as all coordinate indices in its two endpoints. A group element with a nonzero coordinate beyond $\beta$ lies strictly above both endpoints or strictly below both, according to the sign of its last coordinate. The interval is consequently contained in the rational span of $\{e_\alpha:\alpha\le\beta\}$, a set of size less than $\kappa$. Since a nonempty Hahn support has a least exponent, each initial slice of it is contained in such a bounded interval. Thus every Hahn series has locally small support, and \cref{thm:completion} gives $L_{\kappa,k}=F_k$.
+In fact, the completion in \cref{fkc:ex:singular} is the entire full Hahn field. Every bounded interval in $\Gamma_\kappa$ has cardinality less than $\kappa$. To see this, choose an index $\beta<\kappa$ at least as large as all coordinate indices in its two endpoints. A group element with a nonzero coordinate beyond $\beta$ lies strictly above both endpoints or strictly below both, according to the sign of its last coordinate. The interval is consequently contained in the rational span of $\{e_\alpha:\alpha\le\beta\}$, a set of size less than $\kappa$. Since a nonempty Hahn support has a least exponent, each initial slice of it is contained in such a bounded interval. Thus every Hahn series has locally small support, and \cref{fkc:thm:completion} gives $L_{\kappa,k}=F_k$.
 
 \subsection{The same countable obstruction in a complete field}
-\begin{example}\label{ex:complete}
-Keep $\kappa=\aleph_\omega$ but enlarge the exponent group to $\Gamma_{\kappa^+}$. The same series $x_\kappa$ in \eqref{eq:xkappa} now has support bounded above by $e_\kappa$. Since
+\begin{example}\label{fkc:ex:complete}
+Keep $\kappa=\aleph_\omega$ but enlarge the exponent group to $\Gamma_{\kappa^+}$. The same series $x_\kappa$ in \eqref{fkc:eq:xkappa} now has support bounded above by $e_\kappa$. Since
 \[
  \cf(\Gamma_{\kappa^+})=\kappa^+\ne\omega=\cf(\kappa),
 \]
-\cref{thm:dichotomy} says that $K_{\kappa,k}$ is complete. Nevertheless, the countable nest
+\cref{fkc:thm:dichotomy} says that $K_{\kappa,k}$ is complete. Nevertheless, the countable nest
 \[
  B(a_n,e_{\aleph_n})\qquad(n<\omega)
 \]
@@ -755,7 +822,7 @@ For this example, all retractions $K+Kx_\kappa\to K$ are continuous but none is 
 are distinct elements with exactly the same ordered real type or complex valued type over $K_{\kappa,k}$. The coefficient at $e_\kappa$ is part of the invisible tail. Its addition changes the full support order type from $\kappa$ to $\kappa+1$ but leaves the first-$\kappa$ prefix unchanged.
 
 \subsection{A completion strictly between the two support fields}
-\begin{example}\label{ex:partialcompletion}
+\begin{example}\label{fkc:ex:partialcompletion}
 Let $\kappa=\aleph_\omega$ and take the ordered rational vector space
 \[
  \Gamma^*=\Gamma_\kappa\oplus\Q u,
@@ -764,14 +831,14 @@ where the $u$ coordinate dominates every coordinate of $\Gamma_\kappa$. Its cofi
 \[
  y=\sum_{n<\omega}\ \sum_{\alpha<\aleph_n}t^{nu+e_\alpha}
 \]
-has a cofinal well-ordered support of order type $\sum_{n<\omega}\aleph_n=\aleph_\omega$. The blocks are strictly separated because every $e_\alpha$ is less than $u$. Therefore $y\in L_{\kappa,k}\setminus K_{\kappa,k}$ by \cref{prop:new-supports}, whereas $x_\kappa\in F_k\setminus L_{\kappa,k}$. This proves the strict chain
+has a cofinal well-ordered support of order type $\sum_{n<\omega}\aleph_n=\aleph_\omega$. The blocks are strictly separated because every $e_\alpha$ is less than $u$. Therefore $y\in L_{\kappa,k}\setminus K_{\kappa,k}$ by \cref{fkc:prop:new-supports}, whereas $x_\kappa\in F_k\setminus L_{\kappa,k}$. This proves the strict chain
 \[
  K_{\kappa,k}\subsetneq L_{\kappa,k}\subsetneq F_k.
 \]
 \end{example}
 
 \subsection{A regular bound with a genuinely uncountable obstruction}
-\begin{example}\label{ex:regular}
+\begin{example}\label{fkc:ex:regular}
 Take $\kappa=\aleph_1$ and $\Gamma=\Gamma_{\omega_1}$. Every countable nest of closed balls in $K_{\aleph_1,k}$ meets, but a nest of cardinality $\aleph_1$ can be empty. The field is not complete, because $\cf(\Gamma)=\aleph_1=\cf(\kappa)$, and
 \[
  x=\sum_{\alpha<\omega_1}t^{e_\alpha}
@@ -786,14 +853,18 @@ If $\Gamma$ is a subgroup of $(\R,+)$, every well-ordered subset of $\Gamma$ is 
 \[
  K_{\kappa,k}=k((t^\Gamma)).
 \]
-The nontrivial cardinal-support phenomena in this paper therefore require value groups beyond the Archimedean case. Merely replacing the real coefficients by complex ones in a rank-one Hahn field does not create these missing types.
+The nontrivial cardinal-support phenomena in this paper therefore require value groups beyond the Archimedean case. Merely replacing the real coefficients by complex ones in a rank-one Hahn field does not create these missing types. This is consistent with the rank-one Berkovich report, where the proper closure of the finite-support series in $\C((t^\Q))$ occurs only at the excluded countable bound (\cref{fkc:rem:countable-analogue}).
+
+\begin{remark}[The same groups elsewhere in the collection; added on placement]\label{fkc:rem:groups-elsewhere}
+The construction \eqref{fkc:eq:Gtheta}, together with the embedding $e_\alpha\mapsto\omega^\alpha$ of \cref{fkc:sec:surreal}, is the one used in the report on entire functions at arbitrary rank. Its group $\Gamma_\infty=\bigoplus_{j\ge0}\Q e_j$ with $e_j=\omega^j$ (\texttt{ent:eq:concrete-group}) is $\Gamma_\omega$ here, and its group $\Gamma_{\omega_1}$ (\texttt{ent:eq:Gamma-omegaone}) is the group of \cref{fkc:ex:regular}. Both reports compute the same cofinalities, $\aleph_0$ and $\aleph_1$. The questions asked about these groups are different: there, entire functions and their rings; here, cardinally bounded subfields.
+\end{remark}
 
 \section{Transfer to actual surreal and surcomplex numbers}
-\label{sec:surreal}
+\label{fkc:sec:surreal}
 
 \subsection{The normal-form realization}
 Let $j:\Gamma\to(\No,+)$ be a specified increasing additive embedding of the set-sized exponent group. Conway normal-form arithmetic gives the field embedding
-\begin{equation}\label{eq:conway}
+\begin{equation}\label{fkc:eq:conway}
  \iota_j:\R((t^\Gamma))\longrightarrow\No,\qquad
  \sum_{\gamma\in S}r_\gamma t^\gamma
  \longmapsto
@@ -802,7 +873,7 @@ Let $j:\Gamma\to(\No,+)$ be a specified increasing additive embedding of the set
 The exponent set on the right is reverse well ordered, since $S$ is well ordered and $j$ is increasing. The minus sign is essential: the increasing-support convention for $t^\Gamma$ corresponds to decreasing exponents of $\omega$. Existence, uniqueness, and arithmetic of these Conway normal forms are the standard surreal normal-form theorem \cite{Gonshor}.
 
 The map is injective, order preserving, and preserves the support cardinality and its indexing order type after reversing the exponent convention. For complex coefficients, use the coordinatewise embedding
-\begin{equation}\label{eq:complexconway}
+\begin{equation}\label{fkc:eq:complexconway}
  \C((t^\Gamma))\cong\R((t^\Gamma))[i]
  \longrightarrow\No[i].
 \end{equation}
@@ -811,7 +882,7 @@ Its two real coordinates are the real and imaginary coefficient series. Their un
 Consequently every theorem in this paper applies to the actual subfields $\iota_j(K_{\kappa,\R})\subseteq\No$ and their quadratic complexifications, when furnished with the transported valued or ordered structures. No proper-class quantification is required for the one-types: their base fields and ambient full Hahn workspaces remain sets.
 
 \subsection{The explicit groups already live in the surreal field}
-For the groups $\Gamma_\theta$ in \eqref{eq:Gtheta}, define
+For the groups $\Gamma_\theta$ in \eqref{fkc:eq:Gtheta}, define
 \[
  j\left(\sum_{\alpha\in A}q_\alpha e_\alpha\right)
     =\sum_{\alpha\in A}q_\alpha\omega^\alpha,
@@ -819,8 +890,8 @@ For the groups $\Gamma_\theta$ in \eqref{eq:Gtheta}, define
 \]
 Finite Conway normal forms make this an additive embedding, and the largest exponent controls the sign, so it has exactly the required order. Thus $e_\alpha$ can be represented concretely by the surreal monomial $\omega^\alpha$.
 
-Under this embedding, the missing series in \eqref{eq:xkappa} is the actual surreal
-\begin{equation}\label{eq:actualx}
+Under this embedding, the missing series in \eqref{fkc:eq:xkappa} is the actual surreal
+\begin{equation}\label{fkc:eq:actualx}
  \boxed{\ X_\kappa=\sum_{\alpha<\kappa}\omega^{-\omega^\alpha}.\ }
 \end{equation}
 For $\kappa=\aleph_\omega$, its approximants are
@@ -832,21 +903,21 @@ In the workspace with exponent group $j(\Gamma_\kappa)$, these are a Cauchy sequ
 This is a precise example of why a surreal limit assertion must specify which scales are permitted in its neighborhoods. The formulas for the numbers alone do not determine a topology on an arbitrarily chosen subfield.
 
 \subsection{The topology and language boundaries}
-The topological statements here concern the valuation taking its finite values in the chosen group $\Gamma$. They are not statements about the topology induced from the order topology of the full class $\No$. In the latter setting, a set of nonzero differences has a positive surreal lower bound for its absolute values, so every set-sized subset is discrete. The repository's foundations treatment explicitly distinguishes this full fine topology from an intrinsic Hahn-workspace topology \cite{Repo}. In particular, convergence of the displayed sequence in one workspace does not contradict the eventual-constancy results for small-index nets in the full fine topology.
+The topological statements here concern the valuation taking its finite values in the chosen group $\Gamma$. They are not statements about the topology induced from the order topology of the full class $\No$. In the latter setting, a set of nonzero differences has a positive surreal lower bound for its absolute values, so every set-sized subset is discrete. The repository's foundations treatment explicitly distinguishes this full fine topology from an intrinsic Hahn-workspace topology \cite{Repo} (\texttt{found:prop:twotopologies} in \cite{CollFound}). In particular, convergence of the displayed sequence in one workspace does not contradict the eventual-constancy results for small-index nets in the full fine topology.
 
 Similarly, the support-restricted subfields are not asserted to be birthday-initial segments. No closure under the full surreal exponential, no compatibility with the Berarducci--Mantova derivation, and no definability of the prefix operator in the field language is claimed. The prefix is an external invariant describing the types; the individual tests used in the proofs are ordinary finitary formulas with allowed parameters.
 
-Naming complex conjugation would create another language. Its fixed field is the real axis, and positivity on that fixed field is definable by being a nonzero square. Thus the pure-field collapse from \cref{thm:pure} cannot be transferred without qualification to a surcomplex field with named conjugation. We have not classified all one-types in that expanded language: an arbitrary complex element corresponds to a pair of real coordinates, whose joint algebraic relations require a tuple analysis.
+Naming complex conjugation would create another language. Its fixed field is the real axis, and positivity on that fixed field is definable by being a nonzero square. Thus the pure-field collapse from \cref{fkc:thm:pure} cannot be transferred without qualification to a surcomplex field with named conjugation. We have not classified all one-types in that expanded language: an arbitrary complex element corresponds to a pair of real coordinates, whose joint algebraic relations require a tuple analysis.
 
 \section{Scope, provenance, and a formalization route}
-\label{sec:audit}
+\label{fkc:sec:audit}
 
 \subsection{Repository boundary}
 The repository was examined at the pinned commit
 \begin{center}\small\repoid.\end{center}
 The root overview, documentation catalogue, the \texttt{docs/new} directory, and the research audit of the closest bounded-support transcendence report were read through the GitHub connector. The catalogue at that revision describes 44 reports and explicitly distinguishes mathematical arguments, finite checks, and Lean coverage \cite{Repo}. No complete audit of every article, historical version, or Lean declaration is claimed.
 
-Three comparisons matter. The report on \emph{transcendence over bounded support} uses supports bounded in exponent order and the fraction field they generate; our base is instead the already-real-closed or algebraically closed field of all supports of cardinality less than $\kappa$. The foundations report treats universes, localization, and the full fine topology; our theorems concern exact one-types and intrinsic completion in a fixed set-sized localization. The Hahn-vector-space report studies strong maps and several duals; \cref{cor:dual} instead uses the inherited valuation on a two-dimensional space over a potentially incomplete cardinally bounded base field. These differences are substantive, not merely changes of notation.
+Three comparisons matter. The report on \emph{transcendence over bounded support} uses supports bounded in exponent order and the fraction field they generate; our base is instead the already-real-closed or algebraically closed field of all supports of cardinality less than $\kappa$. The foundations report treats universes, localization, and the full fine topology; our theorems concern exact one-types and intrinsic completion in a fixed set-sized localization. The Hahn-vector-space report studies strong maps and several duals; \cref{fkc:cor:dual} instead uses the inherited valuation on a two-dimensional space over a potentially incomplete cardinally bounded base field. These differences are substantive, not merely changes of notation.
 
 A targeted repository search returned no indexed matches for one relevant term, but the index was not treated as an exhaustive content audit. The comparisons above rely on the retrieved catalogue and the closest report's stated base field and scope, not on that negative search.
 
@@ -894,14 +965,44 @@ The one-variable invariant is complete precisely because over an algebraically c
 
 A second question concerns richer languages: named truncation, named conjugation, a surreal exponential, or a derivation. Each can make additional relations visible, and closure of the base field under the new operations must be established before even formulating an elementary-substructure comparison. The present language-sensitive examples supply test cases, not a claim that the same classification survives those expansions.
 
+\subsection{Corrections to the manuscript's repository statements}
+\label{fkc:subsec:corrections}
+The statements above describe the repository at the manuscript's pin \texttt{465a54b}, which is kept as provenance; the pinned URLs in \cite{Repo} are also kept. On placement they were checked against the current collection, with the following results.
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item \emph{Catalogue size.} At the pin the catalogue described 44 reports, as stated. Since then batch~21 added \texttt{surreal-fields-across-universes} and \texttt{birthday-cutoffs-and-hereditary-sets}, and batch~22 added this report and \texttt{single-dilation-hahn-support}; the collection had 48 report directories when this report was written.
+\item \emph{Universes.} At the pin, universes were treated in the foundations report. The collection now also has a report on surreal fields across set-theoretic universes, which studies saturation and omitted cuts of proper-class surreal fields of inner models. Its objects differ from the set-sized fields here; see \cref{fkc:subsec:collection}.
+\item \emph{The negative search.} The indexed search that returned no matches was for the word ``spherical'' (\texttt{research\_audit.md}). The negative result was wrong: at the pin the collection already stated spherical completeness of full Hahn fields, in the rank-one Berkovich report (its \texttt{prop:spherical}) and in the three-duals report (\texttt{duals:prop:spherical}). The manuscript did not rely on that search, as it says, and both statements are the classical full-Hahn result that it credits to Poonen.
+\item \emph{The Hahn-vector-space comparison was incomplete.} Besides strong maps and duals, the three-duals report already contained, at the pin, the completion formula \texttt{duals:thm:completion} and the cofinality criterion \texttt{duals:thm:cofinality-completion}, and the rank-one Berkovich report the closure of the finite-support series in $\C((t^\Q))$. These are countable analogues of \cref{fkc:thm:completion,fkc:thm:dichotomy} (\cref{fkc:rem:countable-analogue}). They are not cardinally bounded fields and do not anticipate the uncountable, and in particular the singular, case treated here, but they belong in the priority context of the completion results.
+\item \emph{Statements found accurate.} The description of the bounded-support report (order-bounded supports and their fraction field, explicitly not a cardinal restriction), the foundations report's separation of the fine and intrinsic topologies (\texttt{found:prop:twotopologies}), and the absence from the collection of any study of cardinally bounded Hahn fields, their types or their completions were confirmed.
+\end{enumerate}
+
+\subsection{What is not claimed}
+\label{fkc:subsec:nonclaims}
+The manuscript states its limitations where they arise. They are collected here, with the one limitation added on placement; none is withdrawn.
+\begin{enumerate}[label=\textup{N\arabic*.}, leftmargin=2.6em]
+\item $\kappa$ is uncountable; the finite-support case $\kappa=\aleph_0$ is excluded (\cref{fkc:app:checks}).
+\item Established mathematics is credited, not claimed: cardinally bounded Hahn fields (Kuhlmann--Shelah for regular $\kappa$; Berarducci--Kuhlmann--Mantova--Matusinski), Hahn arithmetic and closedness, Conway normal forms, general approximation-type theory including its ball formulas (F.-V.~Kuhlmann, Proposition~4.4 and Section~4.2), full-Hahn ball gluing (Poonen), and quantifier elimination for real closed and algebraically closed valued fields (Tarski, Robinson, Yin).
+\item The contribution is proposed only: the joint first-$\kappa$ classification, the exact omission number and the completion and linear consequences. The combined statements were not identified in the reviewed material; the priority search was targeted, not exhaustive (no MathSciNet or zbMATH search), and expert review may find equivalents or a simpler general formulation.
+\item No named longstanding conjecture is settled. The repository comparison was not an exhaustive audit, and a negative index search was not treated as evidence (it was in fact a false negative; \cref{fkc:subsec:corrections}). There is no Lean build or certification.
+\item Only types realized in the fixed full Hahn extension $F_k$ are classified. No saturation theorem and no automorphism homogeneity is proved, and types are not asserted to be automorphism orbits of $F_k$.
+\item All topology is intrinsic to the set-sized workspace, not the subspace topology from $\No$; support bounds are cardinalities, not order bounds.
+\item The subfields are not asserted to be birthday-initial. No closure under the surreal exponential, no compatibility with the Berarducci--Mantova derivation, and no definability of the prefix operator is claimed.
+\item Languages with named conjugation, truncation, exponential or derivation are not classified, nor are types of several-variable tuples; these remain questions.
+\item No new general Hahn--Banach theorem is claimed. The zero continuous dual is over an incomplete base in the inherited topology and does not contradict finite-dimensional functional analysis.
+\item This is not a new version of the independence theorem of the report on transcendence over bounded support.
+\item The 9,622 finite assertions of \texttt{code/verify.py} test finite local identities only. They do not verify the transfinite theorems, quantifier elimination, novelty or any Lean implementation.
+\item Added on placement: the comparisons with other reports in \cref{fkc:subsec:collection,fkc:rem:countable-analogue,fkc:rem:groups-elsewhere} are editorial. They prove no new theorem, and no statement here is derived from those reports.
+\end{enumerate}
+
 \section{Conclusion}
 The obstruction created by a cardinal support bound has a precise shape. A missing Hahn series is first-order visible through its first $\kappa$ nonzero terms, but the least number of formulas needed to force that missing prefix is only $\cf(\kappa)$. Its approximation values are the downward closure of those first support positions. Whether this cut reaches all of $\Gamma$ decides both membership in the completion and the existence of continuous retractions from the associated two-dimensional valued space.
 
 This gives a unified explanation of three superficially different effects: singular-cardinal compression of omitted types, complete fields with small empty ball nests, and failure of continuous coordinate functionals over an incomplete base. All three occur in explicitly specified surreal and surcomplex subfields. Their formulation requires neither a proper-class first-order structure nor an unspecified notion of surreal convergence.
 
 \appendix
+\crefalias{section}{appendix}
 \section{Proof-risk checklist and finite verification}
-\label{app:checks}
+\label{fkc:app:checks}
 
 \paragraph{Cardinal bounds.}
 The entire discussion assumes $\kappa>\aleph_0$. At $\kappa=\aleph_0$, finite-support series are generally not a field: $(1-t^g)^{-1}=\sum_{n\ge0}t^{ng}$ for $g>0$ has infinite support. Regularity is not assumed for $\kappa$; it is used only for $\mu=\cf(\kappa)$, which is regular. The small-workspace and small-union arguments are separate and use different bounds.
@@ -919,9 +1020,9 @@ The identity $v(a_j-a_i)=s_{\alpha_i}$ proves a pseudo-Cauchy condition. It give
 The type theorems use exactly the stated ordered or valued language. In the pure complex ring language the answer changes, as proved. A monomial appearing as a parameter in a formula is not a named global cross-section symbol. No quantifier-elimination result for a language with a prefix operation is assumed.
 
 \paragraph{Computational checks.}
-The companion \texttt{verify.py} uses exact rational coefficients in finite Laurent-polynomial supports over $\mathbb Z^2$ with lexicographic order. It checks first-disagreement identities, invariance of polynomial leading data under sufficiently high tails, nested-ball coefficient agreement, and the local trichotomy underlying the retraction-loss formula. A fixed seed makes its checks reproducible, and it writes their assertion counts to \texttt{verification.json}. These checks test finite algebraic mechanisms only. They do not prove any infinite-support, cardinality, completeness, first-order, or novelty statement. In particular, a finite support cutoff is \emph{not} treated as a field model of an uncountable cardinal cutoff.
+The companion \texttt{code/verify.py} uses exact rational coefficients in finite Laurent-polynomial supports over $\mathbb Z^2$ with lexicographic order. It checks first-disagreement identities, invariance of polynomial leading data under sufficiently high tails, nested-ball coefficient agreement, and the local trichotomy underlying the retraction-loss formula. A fixed seed makes its checks reproducible, and it writes their assertion counts to a file \texttt{verification.json} in its own directory; the recorded run is \texttt{data/verification.json} (9,622 assertions, all passed). These checks test finite algebraic mechanisms only. They do not prove any infinite-support, cardinality, completeness, first-order, or novelty statement. In particular, a finite support cutoff is \emph{not} treated as a field model of an uncountable cardinal cutoff.
 
-The TeX source, compiled PDF, build instructions, and a separate research-audit file are included with that script. The written proofs, finite checks, and document-layout checks are distinct forms of evidence.
+The manuscript was delivered with its TeX source, compiled PDF, build script, build record and a separate research-audit file. This report's directory contains the source and PDF of this report, the delivered script \texttt{code/build.sh}, the delivered build record \texttt{data/build\_audit.json} (which describes the delivered 21-page PDF) and \texttt{research\_audit.md}. The script was written for the delivery's flat layout; the README of this directory explains how to rerun it on a copy. The written proofs, finite checks, and document-layout checks are distinct forms of evidence.
 
 \begin{thebibliography}{99}
 \addcontentsline{toc}{section}{References}
@@ -989,7 +1090,43 @@ Documentation catalogue:
 \url{https://github.com/VladimirReshetnikov/Surreal/blob/465a54b479a1ee842cbf7db1689a7d2f6bfe25e1/docs/README.md}.
 Closest report's audit:
 \url{https://github.com/VladimirReshetnikov/Surreal/blob/465a54b479a1ee842cbf7db1689a7d2f6bfe25e1/docs/surreal/transcendence-over-bounded-support/research_audit.md}.
-See \cref{sec:audit} for the actual inspection boundary.
+See \cref{fkc:sec:audit} for the actual inspection boundary.
+\par\endgroup
+
+\begingroup\raggedright
+\bibitem{CollUniv}
+Surreal collection, \emph{Surreal Fields Across Set-Theoretic Universes},
+report \nolinkurl{docs/foundations-and-computation/surreal-fields-across-universes}
+(label prefix \texttt{univ:}). Added after the manuscript's pin.
+
+\bibitem{CollBST}
+Surreal collection, \emph{Bounded-Support Hahn Arithmetic},
+report \nolinkurl{docs/surreal/transcendence-over-bounded-support}
+(label prefix \texttt{bst:}).
+
+\bibitem{CollDuals}
+Surreal collection, \emph{Three Duals at Surreal Scales},
+report \nolinkurl{docs/surcomplex/three-duals-of-hahn-vector-spaces}
+(label prefix \texttt{duals:}).
+
+\bibitem{CollBerk}
+Surreal collection, \emph{Rank-One Non-Archimedean Analytic Geometry inside the Surcomplex Numbers},
+report \nolinkurl{docs/surcomplex/rank-one-berkovich} (bare labels).
+
+\bibitem{CollEnt}
+Surreal collection, \emph{Cofinality, Factorization and Scalar Extension for Entire Hahn Functions at Arbitrary Rank},
+report \nolinkurl{docs/surcomplex/entire-functions-at-arbitrary-rank}
+(label prefix \texttt{ent:}).
+
+\bibitem{CollFound}
+Surreal collection, \emph{Foundations for Surreal and Surcomplex Mathematics},
+report \nolinkurl{docs/foundations-and-computation/foundations}
+(label prefix \texttt{found:}).
+
+\bibitem{CollHND}
+Surreal collection, \emph{Hidden Negative Directions in Surcomplex Linear Algebra},
+report \nolinkurl{docs/surcomplex/hidden-negative-hermitian-directions}
+(label prefix \texttt{hnd:}).
 \par\endgroup
 
 \end{thebibliography}

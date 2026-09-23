@@ -863,6 +863,11 @@ N80–N94 from member 11 and N95–N106 from member 13. In outline:
   directory, so Part VII has no neighbour to cross-link beyond this report's
   own Parts II, III, IV and V.
 
+The trigonometry report now refutes one sufficiency possibility in the first
+Ehrlich–Kaplan robustness question: a normalized surcomplex exponential can
+have kernel-multiplier ring exactly `Z` without being the canonical one
+(`trigonometry:per:thm:robustness`). The questions remain open.
+
 ## Build
 
 `article.tex` is standalone: internal bibliography, no external `.bib`, no

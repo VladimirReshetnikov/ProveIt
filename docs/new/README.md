@@ -392,7 +392,8 @@ that commit.
 | 18 | `e9a9650` | `813ce54` | `befea11` (with batch 17) | — |
 | 19 | `30dfb4f` | `ed88b8f` | `9b69d4e` | — |
 | 20 | `5fe7f8d` | `fb182ea` | `463fcc7` | — |
-| 21 | `d4e71b7` | `3a2d35d` | this batch's catalogue commit | — |
+| 21 | `d4e71b7` | `3a2d35d` | `13cb68e` | — |
+| 22 | `7b5f934` | `68e2960` | this batch's catalogue commit | — |
 
 Batch numbers:
 - No commit names a batch 16. The only report added between batches 15 and 17

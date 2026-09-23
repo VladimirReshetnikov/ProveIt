@@ -184,6 +184,11 @@ topology distinction is the guide's "Topologies and strong summation"; the
 Lean normal-form bridge is tracked in
 [NORMAL_FORM_BRIDGE.md](../../NORMAL_FORM_BRIDGE.md).
 
+Cardinally bounded Hahn fields, which this report excludes, are studied in
+[first-kappa-coefficients](../../surcomplex/first-kappa-coefficients/): omitted
+types, completion and spherical completeness of the fields of series with fewer
+than `κ` terms.
+
 ## Provenance
 
 One manuscript; nothing was merged, so no result is printed twice and no
