@@ -10254,8 +10254,15 @@ Their exponents $\varpi_{\lambda}/2$ and $\omega^{-\lambda}$ are linearly
 independent over $\Q$ modulo $\Delta_{0}$ (\cref{diff:cp:lem:exponents}). In a
 finite relation $\sum_{(n,m)}f_{nm}u_{\lambda}^{n}\ell_{\lambda}^{m}=0$ with
 $f_{nm}\in k$, a nonzero term has support in the coset
-$\Delta_{0}+n\varpi_{\lambda}/2+m\omega^{-\lambda}$, distinct pairs give
-disjoint cosets, and terms in disjoint cosets cannot cancel.
+$\Delta_{0}+n\varpi_{\lambda}/2+m\omega^{-\lambda}$.
+If two such cosets meet, subtraction gives
+$(n-n')\varpi_{\lambda}/2+(m-m')\omega^{-\lambda}\in\Delta_0$,
+so independence forces $n=n'$ and $m=m'$. For any nonzero
+coefficient $f_{nm}$, choose one monomial in its support. Its
+translate has nonzero coefficient in that summand and appears
+in no other summand. The finite relation therefore cannot vanish.
+This permits arbitrary Hahn coefficients in $k$, not just
+constant or finitely supported coefficients.
 \end{proof}
 
 \begin{theorem}[Borel differential Galois group]
@@ -10277,29 +10284,57 @@ is
 \end{equation}
 \end{theorem}
 \begin{proof}
-By \cref{diff:cp:eq:pvder}, $L$ is a differential field. It contains the
-fundamental matrix
+The derivatives of both generators lie in $L$ by
+\cref{diff:cp:eq:pvder}; the product and quotient rules then
+make $L$ a differential field. It contains the matrix
 \[
  Y=\begin{pmatrix}u_{\lambda}&u_{\lambda}\ell_{\lambda}\\
  hu_{\lambda}&hu_{\lambda}\ell_{\lambda}+u_{\lambda}^{-1}\end{pmatrix},
  \qquad \det Y=1,
 \]
-whose entries generate $u_{\lambda}$ and $\ell_{\lambda}=(u_{\lambda}\ell_{\lambda})/u_{\lambda}$
-over $k$. No new constant occurs, because $L\subseteq\SC$, whose constants are
+satisfying
+$\der Y=\left(\begin{smallmatrix}0&1\\-Q_\lambda&0\end{smallmatrix}\right)Y$.
+Indeed its columns are the solution pair and their derivatives;
+$\der h+h^2=-Q_\lambda$ checks the second row directly.
+Its entries generate $u_{\lambda}$ and
+$\ell_{\lambda}=(u_{\lambda}\ell_{\lambda})/u_{\lambda}$ over $k$,
+and its determinant is already a unit. No new constant occurs, because $L\subseteq\SC$, whose constants are
 $\C\subseteq k$; these are the Picard--Vessiot requirements. The transcendence
 degree is \cref{diff:cp:lem:algind}. For a differential $k$-automorphism
 $\psi$, $\psi(u_{\lambda})^{\dagger}=h=u_{\lambda}^{\dagger}$, so
 $\psi(u_{\lambda})=au_{\lambda}$ with $a\in\C^{\times}$; then
 $\der\psi(\ell_{\lambda})=a^{-2}u_{\lambda}^{-2}$, so
 $\psi(\ell_{\lambda})-a^{-2}\ell_{\lambda}=b\in\C$. Conversely,
-\cref{diff:cp:lem:algind} makes \cref{diff:cp:eq:pvaction} a well-defined
-$k$-automorphism of the rational function field $k(u_{\lambda},\ell_{\lambda})$;
-\cref{diff:cp:eq:pvder} shows that it commutes with $\der$ on the generators,
-hence on $L$. It sends $u_{\lambda}\ell_{\lambda}$ to
-$ab\,u_{\lambda}+a^{-1}u_{\lambda}\ell_{\lambda}$, so its matrix is
-$\left(\begin{smallmatrix}a&ab\\0&a^{-1}\end{smallmatrix}\right)$, and $d=ab$ is
-arbitrary. The parameters and the action are algebraic, so the algebraic group
-is the Borel subgroup itself, not only an abstract list of automorphisms.
+\cref{diff:cp:lem:algind} identifies $L$ with a rational function
+field in two independent generators. The substitution in
+\cref{diff:cp:eq:pvaction} is invertible there, with inverse
+$\psi_{a^{-1},-a^2b}$, so no nonzero denominator is sent to zero.
+It commutes with $\der$ on $k$ and on the generators, since
+\[
+ \der(au_\lambda)=h(au_\lambda),\qquad
+ \der(a^{-2}\ell_\lambda+b)=(au_\lambda)^{-2}.
+\]
+The product and quotient rules extend this compatibility to all
+of $L$.
+
+Use the right-matrix convention $\psi(Y)=YM_\psi$. The action on
+$u_\lambda\ell_\lambda$ is
+$ab\,u_\lambda+a^{-1}u_\lambda\ell_\lambda$, hence
+\[
+ M_{\psi_{a,b}}=\begin{pmatrix}a&ab\\0&a^{-1}\end{pmatrix},\qquad
+ \psi_{a,b}\circ\psi_{a',b'}
+ =\psi_{aa',\,a'^{-2}b+b'}.
+\]
+Composition here applies the right-hand automorphism first; it
+agrees with $M_{\psi\circ\phi}=M_\psi M_\phi$, since all matrix
+entries are constants. Every upper-triangular determinant-one
+matrix occurs, with $b=d/a$. The parameter changes $d=ab$ and
+$b=d/a$ are regular on $a\neq0$, giving the claimed algebraic
+group identification. In particular the translation subgroup
+$a=1$ is additive, the quotient parameter is $a\in\C^\times$,
+and
+$\psi_{a,0}\psi_{1,b}\psi_{a,0}^{-1}=\psi_{1,a^2b}$.
+Taking $a=2$ and $b=1$ explicitly shows noncommutativity.
 \end{proof}
 
 \begin{corollary}[After the first Hahn enlargement]
@@ -10310,8 +10345,15 @@ with differential Galois group $\ell_{\lambda}\mapsto\ell_{\lambda}+b$, $b\in\C$
 \begin{proof}
 $K_{\Delta_{1}}$ contains $u_{\lambda}$ and not $\ell_{\lambda}$, which is therefore
 transcendental over it, $K_{\Delta_{1}}$ being algebraically closed. Its
-derivative lies in $K_{\Delta_{1}}$, an automorphism fixing $u_{\lambda}$ has
-$a=1$, and the same fundamental matrix and no-new-constants argument apply.
+derivative lies in $K_{\Delta_{1}}$. A differential automorphism
+fixing this base sends $\ell_\lambda$ to another primitive of
+$u_\lambda^{-2}$, hence to $\ell_\lambda+b$ with $b\in\C$.
+Conversely each translation defines a rational-field automorphism
+with inverse translation by $-b$, and commutes with the derivation.
+The displayed fundamental matrix still generates the extension,
+and the ambient constant field again supplies no new constants.
+Thus its transcendence degree over the new base is one and its
+group is exactly $(\C,+)$.
 \end{proof}
 
 \begin{remark}[Scope of the Galois computation]
@@ -10345,37 +10387,74 @@ involved.
 \label{diff:cp:lem:schwarzian}
 For $Q\in\SC$ the following are equivalent: some $s\in\SC$ has $\der s\neq0$ and
 $\Sch(s)=2Q$; the equation $\der^{2}y+Qy=0$ has a fundamental pair in $\SC$. If
-$y_{1},y_{2}$ is such a pair, every such $s$ is a constant fractional linear
-transform of $y_{2}/y_{1}$.
+$y_{1},y_{2}$ is such a pair, all such $s$ are exactly
+\[
+ s=\frac{m_{11}s_0+m_{12}}{m_{21}s_0+m_{22}},\qquad
+ s_0=y_2/y_1,\qquad M=(m_{jk})\in\GL_2(\C).
+\]
+Every displayed denominator is nonzero.
 \end{lemma}
 \begin{proof}
-Given $s$, algebraic closedness supplies $v=(\der s)^{-1/2}\neq0$, for either
-root. Then $v^{\dagger}=-\frac12\der^{2}s/\der s$ and
-$\der^{2}v/v=-\frac12\der^{3}s/\der s+\frac34(\der^{2}s/\der s)^{2}=-\frac12\Sch(s)$,
-so $v$ and $vs$ are solutions with $\mathrm{Wr}(v,vs)=v^{2}\der s=1$.
-Conversely, for a fundamental pair with constant $\mathrm{Wr}\neq0$, the
-quotient $s=y_{2}/y_{1}$ has $\der s=\mathrm{Wr}/y_{1}^{2}$, and the same
-differentiation gives $\Sch(s)=-2\der^{2}y_{1}/y_{1}=2Q$. If $s$ and
-$s_{0}=y_{2}/y_{1}$ both have Schwarzian $2Q$, their reconstructed fundamental
-pairs differ by an invertible constant matrix $(m_{jk})$
-(\cref{diff:cp:lem:span}), so $s=(m_{11}s_{0}+m_{12})/(m_{21}s_{0}+m_{22})$, the
-denominator being nonzero because
-$\der s_{0}\neq0$ rules out $s_{0}\in\C$; conversely every such quotient comes
-from another fundamental pair.
+Given $s$, algebraic closedness supplies $v$ with
+$v^2\der s=1$. This is a choice of either of two algebraic roots,
+not a complex logarithm or an analytic branch. Differentiating
+that identity gives
+\[
+ v^\dagger=-\frac12\frac{\der^2s}{\der s},\qquad
+ \frac{\der^2v}{v}
+ =-\frac12\frac{\der^3s}{\der s}
+   +\frac34\left(\frac{\der^2s}{\der s}\right)^2
+ =-\frac12\Sch(s).
+\]
+Thus $v$ solves the equation, and differentiating $v^2\der s=1$
+shows that $vs$ does too, as in \cref{diff:cp:thm:critical}.
+Their Wronskian is $1$, so they are independent.
+
+Conversely let $\mathcal W=\mathrm{Wr}(y_1,y_2)\neq0$.
+It is constant by \cref{diff:cp:lem:span}, and $y_1\neq0$.
+For $s_0=y_2/y_1$ the quotient rule gives
+$\der s_0=\mathcal W/y_1^2\neq0$ and
+$\der^2s_0/\der s_0=-2\der y_1/y_1$. Differentiating the latter
+identity in the definition of $\Sch$ yields
+$\Sch(s_0)=-2\der^2y_1/y_1=2Q$.
+
+Any other $s$ with this Schwarzian reconstructs an independent
+pair $(v,vs)$ in the same two-dimensional constant solution space.
+Write it as
+$(m_{22}y_1+m_{21}y_2,m_{12}y_1+m_{11}y_2)$ with
+$M\in\GL_2(\C)$; then its ratio is the displayed fraction.
+Conversely that
+constant change of basis has nonzero determinant, so it gives
+another fundamental pair with the same Schwarzian. Since
+$\der s_0\neq0$, one has $s_0\notin\C$; thus
+$m_{21}s_0+m_{22}=0$ would force $m_{21}=m_{22}=0$,
+contradicting invertibility. The transformed derivative is
+\[
+ \der\left(\frac{m_{11}s_0+m_{12}}{m_{21}s_0+m_{22}}\right)
+ =\frac{\det(M)\der s_0}{(m_{21}s_0+m_{22})^2}\neq0.
+\]
 \end{proof}
 
 \begin{corollary}[Transfinite Schwarzian potentials]
 \label{diff:cp:cor:schwarzian}
-For every ordinal $\alpha$, $\Sch(\ell_{\alpha})=2Q_{\alpha}$. The $s$ with
+For every ordinal $\alpha$, $\Sch(\ell_{\alpha})=2Q_{\alpha}$.
+For every $c\in\R$, the $s$ with
 $\der s\neq0$ and $\Sch(s)=2Q_{\alpha,c}$ are the constant fractional linear
 transforms of $\ell_{\alpha}^{\sqrt{1-4c}}$ if $c<\frac14$ and of
 $\ell_{\alpha+1}$ if $c=\frac14$; if $c>\frac14$ there is no such $s$ in $\SC$.
 \end{corollary}
 \begin{proof}
-Use the pair $u_{\alpha},u_{\alpha}\ell_{\alpha}$ for $Q_{\alpha}$, the quotient
-of the pair \cref{diff:cp:eq:basissub} for $c<\frac14$, and of
-\cref{diff:cp:eq:basiscrit} for $c=\frac14$; then apply
-\cref{diff:cp:lem:schwarzian,diff:cp:thm:main}.
+The pair $(u_\alpha,u_\alpha\ell_\alpha)$ has ratio
+$\ell_\alpha$. For $c<\frac14$, divide the first basis element
+in \cref{diff:cp:eq:basissub} by the second to obtain
+$\ell_\alpha^{r_+-r_-}=\ell_\alpha^{\sqrt{1-4c}}$.
+Reversing the pair only inverts the ratio, which is itself a
+constant fractional linear transformation. At $c=\frac14$ the
+ratio of the second basis element in \cref{diff:cp:eq:basiscrit}
+to the first is $\ell_{\alpha+1}$. These ratios have nonzero
+derivative. The lemma supplies precisely their fractional linear
+orbits; if $c>\frac14$, existence of such an $s$ would reconstruct
+a nonzero solution, contrary to \cref{diff:cp:thm:main}.
 \end{proof}
 
 So the invisible perturbation of \cref{diff:cp:thm:invisible} also crosses the
@@ -10416,7 +10495,12 @@ groups of \cref{diff:cp:eq:groups} are
  \Delta_{2}=\Delta_{1}+\R\,\omega^{-\omega};
 \]
 the direct sum is inside the additive surreals, its members have finitely
-many terms, and it is not the field of Laurent series in $\omega^{-1}$. Every
+many terms. The equality for $\Delta_0$ follows in both directions
+from $\varpi_n=\sum_{j<n}\omega^{-j}$ and
+$\omega^{-n}=\varpi_{n+1}-\varpi_n$. In particular
+$\varpi_\omega=1/(1-\omega^{-1})\notin\Delta_0$, even though
+$1-\omega^{-1}\in\Delta_0$: this additive group is not a field,
+and is not the field of Laurent series in $\omega^{-1}$. Every
 term of $Q_{\omega}$ has exponent $-2(1+\omega^{-1}+\dots+\omega^{-n})\in\Delta_{0}$,
 so $H_{\Delta_{0}}$ contains the potential; adjoining the direction
 $\omega/(\omega-1)$ admits the first solution monomial, and adjoining
@@ -10449,14 +10533,21 @@ about coordinate differentiation in $\Hol(U)((t^{\Gamma}))$
 \label{diff:cp:rem:inputs}
 The finite critical hierarchy is classical Kneser--Weber--Hartman--Hille
 theory, with a modern treatment and the positive-solution reduction in
-\cite[Section~2]{KT}, whose Schr\"odinger potential has the opposite sign to
-$Q$ here; neither the finite threshold nor reduction of order is new. The
+\cite[Section~2, especially (2.5) and Corollary~2.3]{KT}, whose
+Schr\"odinger potential has the opposite sign to $Q$ here: their
+$-y''+qy=0$ becomes $y''+Qy=0$ with $q=-Q$.
+Their finite logarithmic hierarchy is therefore an antecedent,
+not a transfinite-surreal existence theorem. Neither the finite
+threshold nor reduction of order is new. The
 derivation is Berarducci and Mantova's \cite{BM}, the ordinal log-atomic
 formulas are \cite[Section~2]{ADH}, Hahn real closedness and Neumann's lemma are
 standard, and the finite-primitive obstruction is \cref{diff:part:scalar}. The
 general logical theory of such solvability is not new either:
 \cite[p.~17]{ADH} discusses the predicate $\Omega(a)$ for the existence of a
-nonzero solution of $4y''+ay=0$, and the asymptotic differential algebra of
+nonzero solution of $4y''+ay=0$. In the present normalization the
+real equation is therefore tested by $\Omega(4Q)$, not
+$\Omega(Q)$; this comparison imports no decision procedure.
+The asymptotic differential algebra of
 \cite{ADHBook} is neither replaced nor claimed. Mantova's monotonicity and
 Taylor results for transseries \cite{Mantova2026} concern functional
 composition and are not used or superseded. The main proofs use no model
@@ -10471,13 +10562,25 @@ provisional (item~N103).
 
 \begin{remark}[A formalization interface]
 \label{diff:cp:rem:formalization}
-The proofs split into an imported surreal interface --- Conway normal forms,
-Hahn summability, the log-atomic derivative identities and the strongly
-additive derivation --- and explicit finite differential algebra: the operator
-identity, the Euler factorization, Wronskian spanning, exponent-coset
-independence and the automorphism calculation. Member~13 recommends isolating
-that interface rather than trying to infer the whole derivation from
-$\der\omega=1$. No Lean file is supplied (\cref{diff:warn:noformalization}).
+A dependency-ordered formalization can start with characteristic-zero
+differential-field algebra: Wronskians and spanning, the gauge
+identity, rational-field automorphisms, and the Schwarzian
+calculation with its explicit square-root hypothesis. These finite
+identities do not require the construction of all surreals.
+Next isolate Hahn support and exponent-coset arguments, keeping
+finite inner spans separate from full outer Hahn summation.
+Finally instantiate the intrinsic interface: the exact constant
+field, strong additivity, the phase obstruction and the imported
+log-atomic identities, including limit ordinals. Normalization
+$\der\omega=1$ cannot supply those missing laws by itself.
+
+The current library's actual-field and strong-evaluation results
+are reusable prerequisites; its fine-derivative calculus is a
+different operator. The live coverage ledger
+\path{docs/FORMALIZATION.md} does not claim the intrinsic tower,
+critical classification or this Galois computation as Lean proofs.
+Member~13 supplied no Lean file, a historical source-package fact
+(\cref{diff:warn:noformalization}).
 \end{remark}
 
 \begin{table}[htbp]
@@ -10494,7 +10597,8 @@ Critical identity (\cref{diff:cp:thm:critical}) & Strong additivity, the
 exponential clause, joint summability of the double family. No limit of partial
 sums. \\
 Nonreal powers (\cref{diff:cp:cor:nonreal}) & \Cref{diff:thm:phasecriterion},
-direction (i)$\Rightarrow$(iii); constant field $\C$. No primitive. \\
+finite angular primitive; exact constant field. The explicit
+primitive $b\log s$ gives the contradiction; no surjectivity. \\
 Euler classification (\cref{diff:cp:prop:euler}) & Wronskian spanning for
 $\der_{s}$, real powers, \cref{diff:cp:cor:nonreal}. \\
 Classification (\cref{diff:cp:thm:main}) & The gauge identity with
@@ -10505,6 +10609,9 @@ Field jump (\cref{diff:cp:thm:fieldjump}) & Bounded inner support, the monomial
 criterion, Hahn real closedness. Finite spans, not Hahn closure, of exponents. \\
 Borel group (\cref{diff:cp:thm:pv}) & Coset independence, constants of $\SC$.
 No abstract Picard--Vessiot existence theorem. \\
+Schwarzian (\cref{diff:cp:lem:schwarzian}) & Algebraic square root
+of $(\der s)^{-1}$, Wronskian spanning and the exact constant
+field. No choice of analytic branch or global composition. \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -14012,7 +14119,7 @@ Alessandro Berarducci and Vincenzo Mantova,
 Transactions of the American Mathematical Society \textbf{371} (2019),
 3549--3592.
 \href{https://doi.org/10.1090/tran/7428}{doi:10.1090/tran/7428}.
-Preprint: \href{https://arxiv.org/abs/1703.01995}{arXiv:1703.01995v3}.
+Preprint: \href{https://arxiv.org/abs/1703.01995v3}{arXiv:1703.01995v3}.
 The composition framework and Taylor theorem (Corollaries 7.6--7.7, Theorems
 7.14 and 8.2), the summability preliminaries of \S3, and the global
 composition-incompatibility theorem (Theorem 8.4).
@@ -14272,7 +14379,7 @@ which member~13 was merged.
 \bibitem{KT}
 Helge Kr\"uger and Gerald Teschl,
 \emph{Effective Pr\"ufer angles and relative oscillation criteria},
-preprint \href{https://arxiv.org/abs/0709.0127}{arXiv:0709.0127v2} (2007).
+preprint \href{https://arxiv.org/abs/0709.0127v2}{arXiv:0709.0127v2} (2007).
 Section~2: the Kneser--Weber--Hartman--Hille hierarchy and the positive-solution
 reduction behind it, cited by member~13 as the antecedent of the finite critical
 hierarchy of \cref{diff:cp:part}. The sign of their Schr\"odinger potential is

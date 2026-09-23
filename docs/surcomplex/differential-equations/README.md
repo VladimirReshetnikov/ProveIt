@@ -3,13 +3,13 @@
 **The finite-primitive criterion, the phase obstruction, and support-certified
 coordinate systems**
 
-A merged research report, 197 pages, built from eleven manuscripts. Everything
+A merged research report, 198 pages, built from eleven manuscripts. Everything
 in this directory other than `article.tex`, `article.pdf` and this README is
 preserved source material.
 
 ```
 article.tex                        the merged report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled 197-page report
+article.pdf                        the compiled 198-page report
 README.md                          this guide
 11-autonomous-dynamics-sources.md  member 11's literature and repository-review log, unmodified
 code/                              the verification programs and build scripts of the eleven
@@ -28,17 +28,16 @@ The current proof review covers the earlier scalar, matrix, workspace and
 coordinate arguments, the complete regular-singular main text (Sections
 23–28), and the autonomous proofs through the abelian image and speed
 threshold, together with their scope comparisons (Sections 29–34).
-The critical-potential review now covers the tower, summability and
-fundamental-pair arguments, Euler threshold, transfinite classification,
-and the scale and Hahn-field comparisons in Sections 35–40.
+The critical-potential main-text review now covers Sections 35–42: the
+tower and summability, Euler classification, earlier-scale precision,
+three differential Hahn fields, the Borel group and Schwarzian coordinates.
 
-The latest pass distinguishes exact Hahn sums from earlier-scale data,
-expands exponent support and field-membership arguments, and proves that
-the largest of the three limit-stage fields is not closed under logarithms.
-It separates this from logarithm closure in the first two fields and the
-solution dimensions zero, one and two. Sections 41–42, remaining imports
-and source reconciliation still require review. Detailed scope and
-validation are in the collection's [review record](../../REVIEW.md).
+The latest pass expands the automorphism composition and inverse laws,
+the reconstruction of a fundamental pair and the nonzero denominators
+in its Möbius orbit. It also distinguishes the finite algebraic steps from
+the intrinsic surreal interface required for formalization. Remaining
+imports and source reconciliation still require review. Detailed scope
+and validation are in the collection's [review record](../../REVIEW.md).
 
 ## What the report is
 
@@ -1169,6 +1168,39 @@ by the merge. The independent index still checks all 2,114 statements,
 and all 882 local Markdown destinations in 93 files resolve. The incoming
 analytic results retain their stated scope and do not supply Lean proofs
 for the critical-potential field constructions.
+
+The fourth critical-potential pass reviewed Sections 41–42, completing the
+Part VII main-text pass. It expands exponent-coset independence for arbitrary
+Hahn coefficients, verifies the Borel substitutions and their inverses as
+rational-field automorphisms, and records the composition convention,
+additive subgroup and explicit noncommutativity. Schwarzian reconstruction
+now states the algebraic square-root choice, invertible constant change of
+basis and nonzero-denominator argument. The subcritical quotient's sign and
+the first-limit finite-span calculation are explicit. The dependency table
+now includes the actual angular primitive and the Schwarzian hypotheses.
+The formalization route starts with finite differential-field algebra,
+then Hahn support, then the intrinsic surreal interface.
+
+The source comparisons check Krüger–Teschl's Section 2, equation (2.5) and
+Corollary 2.3 with the potential sign reversed; the first-limit primitive in
+Berarducci–Mantova's Theorem 8.4; and ADH's predicate with this report's
+normalization `Ω(4Q)`. Versioned preprint links now match the cited versions.
+This does not complete the other import or source-claim reconciliation.
+
+Validation: the PDF rebuilt in three passes at 198 pages, versus 197 in the
+baseline, with no warnings or overfull/underfull boxes in either final log;
+changed proof and dependency-table pages were visually inspected. The copied
+member-13 verifier reproduces all 70 delivered checks after removing only
+the Python-version line. Separate exact symbolic checks cover the Borel
+composition, inverse and conjugation, Möbius derivative and Schwarzian
+invariance, and finite geometric/prefix identities of lengths 1–8. These
+finite checks do not prove the transfinite or Picard–Vessiot assertions.
+All 51 historical code/data/source artifacts remain byte-for-byte unchanged.
+The independent index audit finds all 2,114 entries in 44 reports, and all
+882 local Markdown destinations in 93 files resolve. Before the incoming
+trigonometric-expansion merge, the full build passed 3,903 jobs and the axiom
+audit checked 6,092 declarations using only `propext`, `Classical.choice`
+and `Quot.sound`. The intrinsic Part VII results remain pending in Lean.
 
 ## Re-running the source verifiers
 
