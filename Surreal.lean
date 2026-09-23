@@ -583,6 +583,7 @@ import Surreal.Foundations.OmnificIntegerDivisors
 import Surreal.Foundations.OmnificOrdinaryArithmetic
 import Surreal.Foundations.OmnificFiniteQuotients
 import Surreal.Foundations.OmnificConstantRigidity
+import Surreal.Foundations.OmnificSupportBounds
 import Surreal.Foundations.OmnificPadicCompletion
 import Surreal.Algebra.IdealCongruenceTopology
 import Surreal.Foundations.OmnificCongruenceTopology

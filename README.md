@@ -184,8 +184,7 @@ completion is ring-isomorphic and homeomorphic to Mathlib's `ℤ_[p]` with
 its usual metric topology. The source has the inverse-limit topology of
 discrete prime-power quotients; it is compact, Hausdorff and totally
 disconnected. Its canonical map is dense and induces the original omnific
-`p`-adic topology. This map takes
-the integer constant term into `ℤ_[p]`, so its kernel is exactly the purely
+`p`-adic topology. This map takes the integer constant term into `ℤ_[p]`, so its kernel is exactly the purely
 infinite ideal. Both the ordinary congruence topology and each `p`-adic
 topology are proved non-Hausdorff: the closure of zero is precisely that
 ideal, and two omnific integers are topologically indistinguishable exactly
@@ -201,7 +200,18 @@ finite-index omnific ideal occurs in the diagram. With the inverse-limit
 topology this isomorphism is also a homeomorphism of compact Hausdorff,
 totally disconnected topological rings. The canonical map has dense image
 and induces exactly the omnific congruence topology. Higher Diophantine
-and general set-sized quotient results remain pending; source review is distinct from checked formalization.
+and general set-sized quotient results remain pending; source review is
+distinct from checked formalization.
+
+The actual surreal field is also proved to be a field of fractions of its
+omnific subring, using Mathlib's `IsFractionRing`. One positive Conway
+monomial simultaneously clears every member of a small surreal family into
+the purely infinite ideal. Conversely, every small family in that ideal
+has a common positive monomial divisor with purely infinite quotients.
+Each nonzero purely infinite element therefore factors into two nonzero
+purely infinite nonunits. These arguments use bounds on the union of the
+actual normal-form supports; the new exponent can leave any previously
+chosen Hahn workspace. Smallness is explicit in the carrier's lower universe.
 
 The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,
