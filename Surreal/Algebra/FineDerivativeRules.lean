@@ -109,6 +109,39 @@ theorem div [T1Space K] (hf : FineHasDerivAt f d a) (hg : FineHasDerivAt g e a)
   · field_simp
     ring
 
+/-- A continuous local right inverse has reciprocal derivative when the original derivative
+is nonzero. The completed slope avoids any assumption about punctured maps. -/
+theorem of_local_rightInverse [T1Space K] (hf : FineHasDerivAt f d (g a)) (hd : d ≠ 0)
+    (hg : ContinuousAt g a) (hfg : ∀ᶠ x in 𝓝 a, f (g x) = x) :
+    FineHasDerivAt g d⁻¹ a := by
+  have ha := hfg.self_of_nhds
+  have harg : ContinuousAt (fun h : K => a + h) 0 :=
+    continuous_const.continuousAt.add continuous_id.continuousAt
+  have hg' : ContinuousAt g (a + 0) := by simpa only [add_zero] using hg
+  have hinner : ContinuousAt (fun h : K => g (a + h) - g a) 0 :=
+    (hg'.comp harg).sub continuous_const.continuousAt
+  have hs : ContinuousAt (fineSlope f d (g a)) (g (a + 0) - g a) := by
+    simpa only [add_zero, sub_self] using hf.continuousAt_fineSlope
+  have ht : Tendsto (fun h => (fineSlope f d (g a) (g (a + h) - g a))⁻¹)
+      (𝓝[≠] 0) (𝓝 d⁻¹) := by
+    have hc := (hs.comp (f := fun h : K => g (a + h) - g a) hinner).tendsto
+    simp only [Function.comp_def, add_zero, sub_self, fineSlope_zero] at hc
+    exact (hc.inv₀ hd).mono_left nhdsWithin_le_nhds
+  have hshift : Tendsto (fun h : K => a + h) (𝓝[≠] 0) (𝓝 a) := by
+    simpa only [add_zero] using harg.tendsto.mono_left nhdsWithin_le_nhds
+  apply ht.congr'
+  filter_upwards [hshift.eventually hfg, self_mem_nhdsWithin] with h hh hne
+  have hn : h ≠ 0 := by simpa using hne
+  have he := mul_fineSlope f d (g a) (g (a + h) - g a)
+  rw [add_sub_cancel, hh, ha, add_sub_cancel_left] at he
+  have hsne : fineSlope f d (g a) (g (a + h) - g a) ≠ 0 := by
+    intro hz
+    rw [hz, mul_zero] at he
+    exact hn he.symm
+  apply (eq_div_iff hn).mpr
+  conv_lhs => rhs; rw [← he]
+  field_simp
+
 end FineHasDerivAt
 
 end
