@@ -1603,6 +1603,16 @@ labels and 1,059 local Markdown destinations resolve. The review table now keeps
 both recent reports inside the same Markdown table. No Lean coverage is added
 by these documentation checks.
 
+
+The sync merged Euler's triangle-center identity, the radius inequality and
+the sharp area bound through `14bb32b`. No manuscript source changed.
+The combined `LEAN_NUM_THREADS=2 lake build` passed 4,014 jobs, and the
+default axiom audit accepted 7,737 declarations using only `propext`,
+`Classical.choice` and `Quot.sound`. The independent 49-source index remains
+clean; all 2,724 cited source labels and 1,064 local Markdown destinations
+resolve. The incoming Lean mappings remain distinct from this mathematical
+review of the matrix-scaling report.
+
 ## Remaining scope
 
 Batch 22, placed in `7b5f934`, was assembled in `68e2960` and catalogued
