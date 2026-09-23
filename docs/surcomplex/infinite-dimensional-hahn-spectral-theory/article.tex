@@ -501,7 +501,8 @@ consists of the accumulation points and the isolated non-poles
 Part~I's normal formula (\cref{ihs:dz:cor:normal,ihs:dz:rem:recover}); the
 Volterra operator has spectrum $\{0\}$, no accumulation point, and
 $\Sigma^{\B}_\Gamma(\mathcal V)=\mK$. A polynomial germ of ramification index
-$e$ maps a halo onto exactly the infinitesimals with valuation in $e\Gamma$,
+$e$ maps a halo, after subtracting its ordinary image, onto zero and exactly
+the nonzero infinitesimals with valuation in $e\Gamma$,
 which gives a necessary and sufficient criterion for spectral mapping over
 every value group (\cref{ihs:dz:thm:image,ihs:dz:thm:criterion}).
 
@@ -673,10 +674,10 @@ Hilbert-space basis.
 
 \section{Shared Hahn preliminaries}\label{ihs:sec:prelim}
 
-This section fixes the conventions used by both parts and states the support
-lemma once. Everything else about the two constructions --- their inner
-products and their operator algebras --- is
-stated separately in each part, because in each case the two differ.
+This section fixes the Hahn conventions used by all four parts and states
+the support lemma once. Each part specifies its own coefficient space,
+operator algebra and, where present, inner product; these are not shared
+merely because the scalar field is the same.
 
 \subsection{Support conventions and strong summability}\label{ihs:sec:supportconv}
 A Hahn series with coefficients in a complex vector space $V$ is a family
@@ -698,7 +699,7 @@ summable family whose partial sums do not converge even in the intrinsic
 valuation topology of $\K$.
 
 \subsection{The support lemma, stated once}\label{ihs:sec:supportlemma}
-Both source manuscripts open with the Hahn--Neumann support lemma, one
+The first two source manuscripts open with the Hahn--Neumann support lemma, one
 citing it and supplying the two-set finiteness argument, the other
 reproving Higman's word-order input by a minimal bad sequence. The lemma is
 classical, and it is already printed with a full proof elsewhere in this
@@ -706,7 +707,7 @@ collection: the finite-dimensional spectral report proves the word-order
 statement as its \texttt{spec:lem:words} and the positive-monoid statement
 as its \texttt{spec:lem:neumann}, in its section ``A self-contained support
 engine'' \cite{RepoSpectral}. We therefore state it here once, in the form
-both parts use, and do not reprint that proof.
+all four parts use, and do not reprint that proof.
 
 \begin{lemma}[Classical Hahn--Neumann support lemma]\label{ihs:lem:support}
 Let $\Gamma$ be an ordered abelian group.
@@ -750,7 +751,7 @@ words cannot share one total. This deduction does not assume that $n\min S$
 is cofinal in $\Gamma$.
 
 \begin{remark}[Why the full word form is needed]\label{ihs:rem:wordform}
-Both parts use the finite-\emph{word} assertion of
+All four parts use the finite-\emph{word} assertion of
 \cref{ihs:lem:support}(ii), not only the assertion that each fixed power is
 meaningful. The latter alone would not justify a geometric series. The
 estimate $v(X^n)\ge n\eps$ is also not a substitute: in a value group of
@@ -3450,7 +3451,7 @@ operators, and its finite-section errors have verifiable scale thresholds.
 \emph{Standing hypotheses for Part III.} $\Alg$ is a nonzero associative
 unital complex algebra, with the complex scalars central, and $\Gamma$ is a
 nonzero set-sized ordered abelian group. Divisibility, a norm on $\Alg$,
-normality and rank one are \emph{not} assumed; only
+normality and rank one are \emph{not} assumed. Among general results, only
 \cref{ihs:dz:sec:banach} and \cref{ihs:dz:prop:polemap} add a Banach norm.
 ``Spectrum'' in this part means $\SigA(T)$, failure of two-sided
 invertibility of $T-\lambda1$ inside the named algebra $\AlgG$, for a
@@ -3488,7 +3489,8 @@ accumulation points. This part asks what replaces accumulation points when
 normality is dropped and the Hilbert operator algebra is replaced by an
 arbitrary unital algebra, and exactly how a nondivisible value group affects
 polynomial spectral mapping. The answers are finite-index Drazin
-invertibility and a ramification test. An isolated spectral point can acquire
+invertibility and a ramification test. In a Banach algebra, an isolated
+spectral point can acquire
 an entire infinitesimal halo when the ordinary resolvent singularity is not a
 finite pole. Conversely, every finite pole permits an inverse at every
 nonzero infinitesimal displacement, with an exact valuation determined by its
@@ -3617,13 +3619,18 @@ in $\sigma_\Alg(T)$.
 \end{definition}
 
 Given the identities, put $P_{\mathrm{nil}}=1-SS^{\mathrm D}$ and
-$P_{\mathrm{inv}}=SS^{\mathrm D}$. These are complementary idempotents
-commuting with $S$, $S^{\mathrm D}P_{\mathrm{nil}}=P_{\mathrm{nil}}S^{\mathrm D}=0$,
-and $S^\nu P_{\mathrm{nil}}=0$. In the corner algebra
+$P_{\mathrm{inv}}=SS^{\mathrm D}$. Indeed,
+$(SS^{\mathrm D})^2=S(S^{\mathrm D}SS^{\mathrm D})=SS^{\mathrm D}$, so these
+are complementary idempotents commuting with $S$. The second Drazin identity
+gives $S^{\mathrm D}P_{\mathrm{nil}}=P_{\mathrm{nil}}S^{\mathrm D}=0$, and
+the third gives $S^\nu P_{\mathrm{nil}}=0$. In the corner algebra
 $P_{\mathrm{inv}}\Alg P_{\mathrm{inv}}$, with identity $P_{\mathrm{inv}}$,
 the element $SP_{\mathrm{inv}}$ is invertible with inverse $S^{\mathrm D}$.
-Thus $P_{\mathrm{nil}}$ is the nilpotent part and $P_{\mathrm{inv}}$ the
-invertible part. If $\nu\ge1$ is least, then $S^{\nu-1}P_{\mathrm{nil}}\ne0$.
+Thus $P_{\mathrm{nil}}$ selects the nilpotent part and $P_{\mathrm{inv}}$ the
+invertible part; the corresponding elements are $SP_{\mathrm{nil}}$ and
+$SP_{\mathrm{inv}}$. Either corner may be zero. If $\nu\ge1$ is least,
+then $S^{\nu-1}P_{\mathrm{nil}}\ne0$: otherwise
+$S^\nu S^{\mathrm D}=S^{\nu-1}$ would lower the index by one.
 No centrality of $P_{\mathrm{nil}}$ in the whole algebra is required.
 
 Let $u$ be a central formal variable; the ordinary Laurent algebra $\Alg((u))$
@@ -3660,7 +3667,10 @@ including the finite lower bound, give $S^mP_{\mathrm{nil}}=0$, and the
 positive recurrences give $S^{\mathrm D}=S^mB_m$. Since $P_{\mathrm{nil}}$
 commutes with $S$, this gives $P_{\mathrm{nil}}S^{\mathrm D}=0$; the
 definition of $P_{\mathrm{nil}}$ and commutation give
-$S^{\mathrm D}P_{\mathrm{nil}}=0$. It follows that
+$S^{\mathrm D}P_{\mathrm{nil}}=0$. More explicitly,
+$P_{\mathrm{nil}}B_0=P_{\mathrm{nil}}S^mB_m=0$ and
+$B_0P_{\mathrm{nil}}=P_{\mathrm{nil}}B_0$, since $B_0$ commutes with $S$.
+It follows that
 $P_{\mathrm{nil}}^2=P_{\mathrm{nil}}$, $S^{\mathrm D}SS^{\mathrm D}=S^{\mathrm D}$
 and $S^{m+1}S^{\mathrm D}=S^m$, which are Drazin identities. Any Drazin data
 give \eqref{ihs:dz:eq:laurent}; uniqueness of a two-sided inverse therefore
@@ -3757,6 +3767,10 @@ The map $\varpi_\eta$ is not generally a ring homomorphism: if
 $\eta/2\in\Gamma$, it sends $t^{\eta/2}$ to zero but its square to $u$. The
 proof used only left and right compatibility with the particular cyclically
 supported pencil, and no claim that $n\eta$ is cofinal in $\Gamma$.
+The restriction to $\Z\eta$ is essential to the finite negative Laurent
+tail: in lexicographic $\Z\times\Z$, for example, the well-ordered set
+$\{(-1,n):n\ge0\}$ contains infinitely many negative exponents. General
+Hahn supports need not have only finitely many negative terms.
 
 \begin{theorem}[Arbitrary-parameter inverse descent]\label{ihs:dz:thm:descent}
 For $S\in\Alg$ and $0\ne\eps\in\mK$, the following are equivalent:
@@ -3869,14 +3883,17 @@ need one. In a Banach algebra, finite-index Drazin invertibility has a
 familiar analytic meaning: a spectral point is Drazin invertible exactly when
 it is a finite pole of the ordinary resolvent \cite{BoassoOperators,Boasso}.
 
-To see the mechanism, take $S=T-a1$ with Drazin inverse $S^{\mathrm D}$. The
+To see the mechanism, take $S=T-a1$ with Drazin inverse $S^{\mathrm D}$ and
+use the local resolvent convention $R(u)=(S-u1)^{-1}$. The
 positive part of \eqref{ihs:dz:eq:laurent} converges in norm for
 sufficiently small complex $u$, being a geometric series in $uS^{\mathrm D}$;
 its negative part is finite. It supplies the ordinary resolvent on a
 punctured disk, with pole order equal to the Drazin index if $a$ is
 spectral. Conversely, the coefficients of a finite-pole Laurent expansion of
 the analytic resolvent satisfy \eqref{ihs:dz:eq:recurrence}, so its constant
-coefficient is a Drazin inverse. No accumulation point of the ordinary
+coefficient is a Drazin inverse. With the opposite convention
+$(u1-S)^{-1}$ that coefficient would instead be $-S^{\mathrm D}$.
+No accumulation point of the ordinary
 spectrum can be a finite pole, and an isolated spectral singularity cannot be
 removable, since continuity of the inverse identity would then invert
 $T-a1$. Consequently
@@ -3935,7 +3952,8 @@ is the failure-of-bijectivity spectrum $\sigma^{\mathrm{alg}}_\Gamma(T)$ on
 $\Hil$: Part~III is a statement about invertibility in an algebra and says
 nothing about bijectivity on a vector space, except in its explicitly worked
 examples (the Volterra operator of \cref{ihs:dz:sec:volterra}, and the block
-operator of \cref{ihs:dz:sec:blocks} at monomial displacements). The second is point-spectrum rigidity,
+operator of \cref{ihs:dz:sec:blocks}, both at every infinitesimal
+displacement). The second is point-spectrum rigidity,
 \cref{ihs:hh:thm:point}. \Cref{ihs:hh:thm:spectrum} proves
 $\sigma^{\mathrm{alg}}_\Gamma(T)=\sigma^{\mathrm{adj}}_\Gamma(T)$ for
 constant normal $T$; together with \cref{ihs:dz:cor:normal} this gives the
@@ -4020,6 +4038,9 @@ evaluated at any element of $\mK$ by \cref{ihs:cor:binomial}; the values stay
 in $\mK$, and the identities make the resulting maps mutually inverse on the
 whole of $\mK$. The defining $e$th-power identity proves the claim. No
 ordinary convergence radius was used.
+For $x\ne0$ the nonzero linear coefficient is the unique leading term in
+each substitution, so $v(\varphi_a(x))=v(x)=v(\psi_a(x))$. In particular,
+both substitutions preserve nonzeroness as well as positive valuation.
 \end{proof}
 
 A ramification index is thus an exact condition on the value group, not an
@@ -4156,11 +4177,16 @@ $-\nu_bv(\eps)$.
 \begin{proof}
 The indicated spectral preimages are finite poles. Their finite Riesz
 decomposition separates them from a part on which $p(T)-b1$ is invertible.
-On the part for $a$ write $T=a1+N_a$ with $N_a$ of nilpotency index $\nu_a$.
-Then $p(a1+N_a)-b1=N_a^{e_a}w_a(N_a)$ with $w_a(0)\ne0$; the factor
+More precisely, let $P_a$ be the corresponding Riesz idempotents and work
+in the corner $P_a\Alg P_a$, whose identity is $P_a$. There
+$TP_a=aP_a+N_a$ with $N_a=(T-a1)P_a$ of nilpotency index $\nu_a$.
+Thus $(p(T)-b1)P_a=N_a^{e_a}w_a(N_a)$, where $w_a(0)\ne0$ and the
+polynomial $w_a$ is evaluated with corner identity $P_a$; the factor
 $w_a(N_a)$ is invertible and commutes with $N_a$, so the $k$th power vanishes
 exactly when $N_a^{e_ak}$ does, giving index $\lceil\nu_a/e_a\rceil$. The
-index of a finite direct sum is the maximum. Apply \cref{ihs:dz:thm:scale}
+index of a finite direct sum is the maximum. The complementary corner, if
+nonzero, has index zero; the nonempty spectral fibre ensures $\nu_b\ge1$.
+Apply \cref{ihs:dz:thm:scale}
 for the valuation.
 \end{proof}
 
@@ -4190,9 +4216,11 @@ negative powers.
 
 \subsection{Volterra: an isolated point that acquires a whole halo}\label{ihs:dz:sec:volterra}
 Let $H=L^2([0,1],\C)$ and $(\mathcal Vf)(x)=\int_0^xf(s)\,ds$. The operator is
-injective; its range consists of functions with an absolutely continuous
-representative vanishing at zero, so the constant function $1$ is not in its
-range. Repeated integration gives
+injective; its range consists exactly of the $L^2$ classes with an absolutely
+continuous representative $g$ satisfying $g(0)=0$ and $g'\in L^2([0,1])$.
+Indeed, an indefinite integral has those properties, and conversely
+$g=\mathcal Vg'$ almost everywhere. The constant function $1$ has no such
+representative and is not in the range. Repeated integration gives
 \begin{equation}\label{ihs:dz:eq:volterra}
  (\mathcal V^nf)(x)=\frac1{(n-1)!}\int_0^x(x-s)^{n-1}f(s)\,ds\qquad(n\ge1),
 \end{equation}
@@ -4265,14 +4293,28 @@ $\mathcal N$ nilpotent. Therefore
  \Sigma^{\B}_\Gamma(\mathcal N_M)=\{0\}\ \text{for every }M,\qquad
  \Sigma^{\B}_\Gamma(\mathcal N)=\mK.
 \end{equation}
-There is a direct support witness at $\eps=t^\eta$. The constant vector $y$
-whose $n$th block is $2^{-n}e_n$ lies in $H$. A putative solution $x$ of
-$(\mathcal N-t^\eta I)x=y$ must, in the $n$th block, equal
-$x^{(n)}=-\sum_{j=0}^{n-1}t^{-(j+1)\eta}(2^{-n}J_n)^j2^{-n}e_n$, whose
-coefficient at $-n\eta$ is nonzero. The global support of $x$ would contain
+There is a direct support witness for every $0\ne\eps\in\mK$. Put
+$\eta=v(\eps)>0$ and $c=\lc(\eps)$. The constant vector $y$ whose $n$th
+block is $2^{-n}e_n$ lies in $H$, since $\sum_n4^{-n}<\infty$. A putative
+solution $x$ of $(\mathcal N-\eps I)x=y$ must, in the $n$th block, equal
+\[
+ x^{(n)}=-\sum_{j=0}^{n-1}\eps^{-j-1}(2^{-n}J_n)^j2^{-n}e_n.
+\]
+Its final term has valuation $-n\eta$ and leading vector
+$-c^{-n}2^{-n^2}e_1\ne0$; every earlier term has strictly larger valuation.
+The coefficient of the global vector $x$ at $-n\eta$ is therefore nonzero,
+since its projection onto the $n$th block is nonzero. Its support would contain
 $-\eta,-2\eta,-3\eta,\ldots$, which is not well ordered, so no Hahn-vector
 solution exists. A finite number of block checks can never establish the
 uniform bound on nilpotent chain lengths that would remove this obstruction.
+At $\eps=0$ the operator already has nonzero kernel,
+whereas outside $\mK$ its algebra inverse gives a bijection. Consequently
+\[
+ \sigma^{\mathrm{alg}}_\Gamma(\mathcal N)
+ =\Sigma^{\B}_\Gamma(\mathcal N)=\mK.
+\]
+This extension to nonmonomial displacements follows from the same support
+argument; the source's explicit block calculation used a monomial.
 This is the Drazin counterpart of \cref{ihs:sec:finitesections}, where every
 finite section of a normal operator is invertible but the infinite one is
 not.
@@ -4285,8 +4327,8 @@ $\eps=t^{(0,1)}\bigl(1+t^{(0,2)}+t^{(1,0)}\bigr)$. At a Drazin point of index
 three, its shifted inverse has exact valuation $(0,-3)$, irrespective of the
 nonmonomial correction. The straightening lemma applies within this very
 group and adjoins no fractions. In contrast, the image of the squaring map
-on infinitesimals consists precisely of those whose valuation has both
-coordinates even; inverse descent and the scalar-power criterion answer
+on infinitesimals consists of zero and the nonzero infinitesimals whose
+valuation has both coordinates even; inverse descent and the scalar-power criterion answer
 different questions. Under the ordered embedding $(m,n)\mapsto m\omega+n$
 and $t^\gamma=\omega^{-\gamma}$, the displacement is the actual positive
 surreal number $\eps=\omega^{-1}(1+\omega^{-2}+\omega^{-\omega})$, and the
@@ -4374,9 +4416,10 @@ a spectral value in the corresponding real operator-normal-form algebra.
 \section{Part III: interpretation, boundaries and further questions}\label{ihs:dz:sec:limits}
 
 \subsection{What the results establish}\label{ihs:dz:sec:establish}
-There are two independent mechanisms. A constant pencil admits an
-infinitesimally shifted Hahn inverse exactly when its singular corner is
-nilpotent of bounded finite index, and that condition survives all
+There are two independent mechanisms. A constant pencil admits a Hahn
+inverse at a nonzero infinitesimal displacement exactly when it has a Drazin
+decomposition, with an invertible corner and a corner nilpotent of finite
+index, and that condition survives all
 exponent-workspace enlargements. A polynomial can then map the resulting
 halos onto only selected valuation levels when the workspace lacks enough
 roots, and the defect is determined exactly by the ramification indices over
@@ -5901,9 +5944,11 @@ criterion. Straightening plus cyclic-support projection yields inverse
 descent, which yields the halo formula and the exact scale. The power image
 and the formal inverse germ, with the halo formula and the commuting-factor
 lemma, yield the ramified image, and the finite-union subgroup lemma turns
-that image into the necessary and sufficient criterion. Only the Banach
-corollaries (\cref{ihs:dz:cor:normal,ihs:dz:cor:algebraic,ihs:dz:prop:polemap})
-use ordinary analytic spectral theory, and only the surreal specialization
+that image into the necessary and sufficient criterion. Among the general
+results, only the Banach section and the pole-order profile
+(\cref{ihs:dz:sec:banach,ihs:dz:prop:polemap}) use ordinary analytic spectral
+theory; the Volterra and block examples also use ordinary operator-norm
+estimates and convergence. Only the surreal specialization
 uses Conway normal forms. The steps most worth auditing independently are
 the surjectivity argument in \cref{ihs:dz:lem:straighten} and the converse
 direction of \cref{ihs:dz:lem:laurent}.

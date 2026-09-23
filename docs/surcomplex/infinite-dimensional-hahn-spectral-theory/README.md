@@ -11,7 +11,7 @@ later batch.
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 97 pages
+article.pdf   the compiled report, 98 pages
 README.md     this guide
 03-infinite-spectral-PROVENANCE.md      Part II's delivered provenance record
 04-drazin-halos-RESEARCH_AUDIT.md       Part III's delivered audit record
@@ -155,8 +155,8 @@ The coefficient and Hahn algebra statements hold for every nonempty `I`.
 The closing zero-divisor assertion of `ihs:rf:prop:algebra` requires two
 distinct indices: the constant matrix units `E_ii` and `E_jj` are nonzero
 with product zero. For a singleton `I`, the algebra is the Hahn field `K`.
-This bounded correction leaves the broader Drazin and Fredholm proof review
-pending.
+This bounded correction is separate from the Part III review recorded below;
+the Fredholm main-text review remains pending.
 
 ## What Part III claims
 
@@ -177,22 +177,43 @@ constant `T ∈ 𝔄`:
    isolated non-poles. For bounded normal `T` this gives
    `σ_C(T) ∪ (σ_C(T)' + m_K)` (Corollary 33.1). Since `B(H)((t^Γ))` is Part
    I's adjointable algebra, this recovers the adjointable-algebra half of
-   Part I's Theorem 8.2 by a second route, dropping **normality** and the
-   Hilbert and Banach structure (Remark 33.2). It does not recover the
+   Part I's Theorem 8.2 by a second route. The general halo theorem drops
+   **normality** and the Hilbert and Banach structure (Remark 33.2).
+   This recovery does not establish the
    bijectivity spectrum or Theorem 8.3. `Σ ⊆ C` exactly when `T` is
    algebraic (Corollary 33.3).
-4. **Ramified spectral mapping.** A polynomial germ of ramification index `e`
-   maps a halo onto exactly the infinitesimals with valuation in `eΓ`
+4. **Ramified spectral mapping.** After subtracting its ordinary value, a
+   polynomial germ of ramification index `e` maps a halo onto zero and exactly
+   the nonzero infinitesimals with valuation in `eΓ`
    (Theorem 34.5), so `Σ(p(T)) = p(Σ(T))` exactly when every relevant
    Drazin-spectral fibre has a point whose index acts surjectively on `Γ`
-   (Theorem 34.7), with an explicit missing value otherwise. Drazin indices
-   of `p(T) − b` follow a ceiling formula (Proposition 34.8).
+   (Theorem 34.7), with an explicit missing value otherwise. In a Banach
+   algebra, Drazin indices of `p(T) − b` follow a ceiling formula when its
+   nonempty spectral fibre consists of finite poles (Proposition 34.8).
 5. **Examples.** The Volterra operator has ordinary spectrum `{0}`, no
    accumulation point, and `Σ(V) = m_K`, with genuine vector nonsurjectivity
    (Section 35.2); `V²` over `Γ = Z` misses every odd valuation in its image
    (Section 35.3); increasing nilpotent Jordan blocks with norm-convergent
    nilpotent finite sections still acquire the whole halo (Section 35.4).
+   The same fixed vector witnesses nonsurjectivity for every nonzero
+   infinitesimal displacement of the block operator, including nonmonomial
+   ones; its bijectivity spectrum is also the whole monad.
    Theorem 36.1 transfers the halo formula to actual surcomplex parameters.
+
+The Part III main-text review covers Sections 28–37 and their summaries. It
+expands the Drazin corner and Laurent-recurrence calculations, distinguishes
+cyclic Laurent tails from general Hahn supports, and spells out the local
+germ's preservation of valuation. The pole-order proof now uses each Riesz
+corner's own identity. Volterra's exact range retains the square-integrable
+derivative condition, and the scalar-power summaries retain zero in the
+image. The block nonsurjectivity proof now treats every nonzero infinitesimal
+directly: its `n`th block forces a nonzero coefficient at `−n v(ε)`.
+
+The [collection review record](../../REVIEW.md#drazin-spectral-main-text-review)
+states the targeted primary-source checks and validation. This is a
+main-text review and source-level extension, with no new Lean coverage or
+priority claim. Remaining foundational imports, original-source
+reconciliation and the Part IV main-text review remain separate.
 
 ## What Part IV claims
 
@@ -312,7 +333,7 @@ adjointable `B(H)((t^Γ))`; nothing here depends on it.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The reviewed build has 97 pages, zero errors, zero undefined references and
+The current reviewed build has 98 pages, zero errors, zero undefined references and
 citations, zero multiply defined labels and zero duplicate PDF destinations.
 It retains the baseline underfull box in the novelty table. The title and
 status note are on the first page and the abstract on the second.
@@ -324,6 +345,18 @@ labels and their numbering were preserved. A rendered comparison of all
 were visually checked. The 20 historical code, data and provenance files
 were unchanged, and no verification script was rerun for this correction.
 
+For the subsequent Drazin review, baseline and revised sources each passed
+three LaTeX passes, at 97 and 98 pages, with the same single underfull-box
+notice. All 93 numbered result statements (including Part III's 19), all
+404 source labels and their numbers, and all 20 historical files are
+unchanged. The copied Part III verifier passes all 484 finite checks under
+Python 3.13.14; its full JSON differs from the historical record only in
+the Python version. These checks do not prove the arbitrary-support,
+infinite-dimensional or new nonmonomial vector-surjectivity assertions.
+All 24 pages with changed text or pagination were visually inspected, with
+no layout issues; the 15 Part III numbered references in this README agree
+with the final auxiliary file.
+
 To rerun the checks, copy this directory and run the scripts in `code/` on
 the copy: the Part II script writes `data/verification.json` in the directory above `code/`,
 and the Part IV script writes `data/verification.json` in the working
@@ -331,5 +364,5 @@ directory unless `--output` is given. SymPy 1.14.0 is pinned in `data/` for
 Parts I, II and IV; the Part III script needs only the Python standard
 library. The delivered `build.sh` wrappers refer to their source packages'
 original unnumbered file names (`article.tex`, `code/verify.py`) and do not
-run as placed. In this review, the Part III and Part IV scripts were rerun
+run as placed. In the earlier assembly review, the Part III and Part IV scripts were rerun
 under Python 3.14.4 with SymPy 1.14.0 and again passed 484 and 1,268 checks.
