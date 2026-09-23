@@ -1278,49 +1278,49 @@ Hermitian matrix theory; formal Hahn scalar calculus is not a substitute.
 | Corollary | `diff:aut:cor:realindep` (line 8338) | Real autonomous equations |
 | Corollary | `diff:aut:cor:earlier` (line 8349) | Two earlier corollaries hold for every normalized derivation |
 | Corollary | `diff:aut:cor:realbranches` (line 8388) | Exact real branch count |
-| Proposition | `diff:aut:prop:contraction` (line 8466) | Infinitesimal contraction |
-| Corollary | `diff:aut:cor:dual` (line 8481) | Holomorphic dual obstruction |
-| Theorem | `diff:aut:thm:hyperelliptic` (line 8495) | Squarefree hyperelliptic obstruction |
-| Lemma | `diff:aut:lem:formallog` (line 8552) | Normalized formal-group logarithm |
-| Proposition | `diff:aut:prop:abeliansplit` (line 8583) | Global splitting through the identity monad |
-| Theorem | `diff:aut:thm:abelianimage` (line 8622) | Abelian logarithmic-derivative image |
-| Corollary | `diff:aut:cor:abeliancriterion` (line 8679) | Finite-primitive criterion for abelian motion; surjective $\Dn$ |
-| Corollary | `diff:aut:cor:speeds` (line 8704) | Sharp one-power speed threshold; $\Dn=\der$ |
-| Proposition | `diff:cp:prop:tower` (line 8997) | The ordinal log-atomic tower: imported |
-| Lemma | `diff:cp:lem:scales` (line 9050) | Separation of scales |
-| Lemma | `diff:cp:lem:triangular` (line 9083) | Summation and triangular differentiation |
-| Theorem | `diff:cp:thm:critical` (line 9128) | Exact critical solutions and Wronskian |
-| Lemma | `diff:cp:lem:span` (line 9169) | A fundamental pair spans every solution |
-| Corollary | `diff:cp:cor:nonreal` (line 9192) | No nonreal powers of an infinite scale |
-| Lemma | `diff:cp:lem:gauge` (line 9226) | Liouville transformation as an operator identity |
-| Proposition | `diff:cp:prop:euler` (line 9254) | Euler classification at a positive infinite scale |
-| Theorem | `diff:cp:thm:main` (line 9345) | Transfinite critical classification |
-| Proposition | `diff:cp:prop:earlier` (line 9481) | The exact earlier-stage asymptotics |
-| Theorem | `diff:cp:thm:invisible` (line 9498) | No set of earlier scales decides solvability |
-| Proposition | `diff:cp:prop:noend` (line 9544) | There is no all-ordinal critical potential |
-| Lemma | `diff:cp:lem:exponents` (line 9602) | Bounded support in the exponent group |
-| Proposition | `diff:cp:prop:fieldclosure` (line 9626) | Derivative stability is a support assertion |
-| Theorem | `diff:cp:thm:fieldjump` (line 9653) | Zero, one and two solutions over closed Hahn fields |
-| Proposition | `diff:cp:prop:gaps` (line 9674) | An exponential gap followed by a primitive gap |
-| Lemma | `diff:cp:lem:algind` (line 9735) | Algebraic independence of the two generators |
-| Theorem | `diff:cp:thm:pv` (line 9748) | Borel differential Galois group |
-| Corollary | `diff:cp:cor:additive` (line 9792) | After the first Hahn enlargement |
-| Lemma | `diff:cp:lem:schwarzian` (line 9831) | Schwarzian and a normalized fundamental pair |
-| Corollary | `diff:cp:cor:schwarzian` (line 9854) | Transfinite Schwarzian potentials |
-| Theorem | `diff:thm:coherentlinear` (line 10099) | Positive-perturbation fundamental matrix |
-| Corollary | `diff:cor:coherentinhom` (line 10164) | Inhomogeneous coherent systems |
-| Corollary | `diff:cor:determinant` (line 10182) | Liouville determinant identity |
-| Proposition | `diff:prop:negativecoherent` (line 10199) | A negative leading exponent forbids a coherent scalar exponential |
-| Lemma | `diff:lem:nonlinear` (line 10266) | Admissibility of nonlinear evaluation |
-| Theorem | `diff:thm:ivp` (line 10296) | Support-certified positive-support initial-value problem |
-| Theorem | `diff:thm:monodromy` (line 10491) | Monodromy valued in $\GL_{d}(K_{\Gamma})$ |
-| Proposition | `diff:prop:formalrecursion` (line 10623) | Formal existence over any characteristic-zero field |
-| Lemma | `diff:lem:finiteincoming` (line 10676) | Finite incoming contributions |
-| Theorem | `diff:thm:coefderivation` (line 10690) | Differentiation preserves common-domain coherence |
-| Theorem | `diff:thm:totalchainhalo` (line 10739) | Total intrinsic derivative of an evaluation |
-| Corollary | `diff:cor:naturality` (line 10804) | Coefficientwise linear naturality |
-| Lemma | `diff:lem:twosupports` (line 12497) | Sum of two supports |
-| Lemma | `diff:lem:higman` (line 12526) | Finite-word lemma |
+| Proposition | `diff:aut:prop:contraction` (line 8524) | Infinitesimal contraction |
+| Corollary | `diff:aut:cor:dual` (line 8551) | Holomorphic dual obstruction |
+| Theorem | `diff:aut:thm:hyperelliptic` (line 8570) | Squarefree hyperelliptic obstruction |
+| Lemma | `diff:aut:lem:formallog` (line 8662) | Normalized formal-group logarithm |
+| Proposition | `diff:aut:prop:abeliansplit` (line 8693) | Global splitting through the identity monad |
+| Theorem | `diff:aut:thm:abelianimage` (line 8732) | Abelian logarithmic-derivative image |
+| Corollary | `diff:aut:cor:abeliancriterion` (line 8789) | Finite-primitive criterion for abelian motion; surjective $\Dn$ |
+| Corollary | `diff:aut:cor:speeds` (line 8814) | Sharp one-power speed threshold; $\Dn=\der$ |
+| Proposition | `diff:cp:prop:tower` (line 9107) | The ordinal log-atomic tower: imported |
+| Lemma | `diff:cp:lem:scales` (line 9160) | Separation of scales |
+| Lemma | `diff:cp:lem:triangular` (line 9193) | Summation and triangular differentiation |
+| Theorem | `diff:cp:thm:critical` (line 9238) | Exact critical solutions and Wronskian |
+| Lemma | `diff:cp:lem:span` (line 9279) | A fundamental pair spans every solution |
+| Corollary | `diff:cp:cor:nonreal` (line 9302) | No nonreal powers of an infinite scale |
+| Lemma | `diff:cp:lem:gauge` (line 9336) | Liouville transformation as an operator identity |
+| Proposition | `diff:cp:prop:euler` (line 9364) | Euler classification at a positive infinite scale |
+| Theorem | `diff:cp:thm:main` (line 9455) | Transfinite critical classification |
+| Proposition | `diff:cp:prop:earlier` (line 9591) | The exact earlier-stage asymptotics |
+| Theorem | `diff:cp:thm:invisible` (line 9608) | No set of earlier scales decides solvability |
+| Proposition | `diff:cp:prop:noend` (line 9654) | There is no all-ordinal critical potential |
+| Lemma | `diff:cp:lem:exponents` (line 9712) | Bounded support in the exponent group |
+| Proposition | `diff:cp:prop:fieldclosure` (line 9736) | Derivative stability is a support assertion |
+| Theorem | `diff:cp:thm:fieldjump` (line 9763) | Zero, one and two solutions over closed Hahn fields |
+| Proposition | `diff:cp:prop:gaps` (line 9784) | An exponential gap followed by a primitive gap |
+| Lemma | `diff:cp:lem:algind` (line 9845) | Algebraic independence of the two generators |
+| Theorem | `diff:cp:thm:pv` (line 9858) | Borel differential Galois group |
+| Corollary | `diff:cp:cor:additive` (line 9902) | After the first Hahn enlargement |
+| Lemma | `diff:cp:lem:schwarzian` (line 9941) | Schwarzian and a normalized fundamental pair |
+| Corollary | `diff:cp:cor:schwarzian` (line 9964) | Transfinite Schwarzian potentials |
+| Theorem | `diff:thm:coherentlinear` (line 10209) | Positive-perturbation fundamental matrix |
+| Corollary | `diff:cor:coherentinhom` (line 10274) | Inhomogeneous coherent systems |
+| Corollary | `diff:cor:determinant` (line 10292) | Liouville determinant identity |
+| Proposition | `diff:prop:negativecoherent` (line 10309) | A negative leading exponent forbids a coherent scalar exponential |
+| Lemma | `diff:lem:nonlinear` (line 10376) | Admissibility of nonlinear evaluation |
+| Theorem | `diff:thm:ivp` (line 10406) | Support-certified positive-support initial-value problem |
+| Theorem | `diff:thm:monodromy` (line 10601) | Monodromy valued in $\GL_{d}(K_{\Gamma})$ |
+| Proposition | `diff:prop:formalrecursion` (line 10733) | Formal existence over any characteristic-zero field |
+| Lemma | `diff:lem:finiteincoming` (line 10786) | Finite incoming contributions |
+| Theorem | `diff:thm:coefderivation` (line 10800) | Differentiation preserves common-domain coherence |
+| Theorem | `diff:thm:totalchainhalo` (line 10849) | Total intrinsic derivative of an evaluation |
+| Corollary | `diff:cor:naturality` (line 10914) | Coefficientwise linear naturality |
+| Lemma | `diff:lem:twosupports` (line 12607) | Sum of two supports |
+| Lemma | `diff:lem:higman` (line 12636) | Finite-word lemma |
 
 ### dynamics-and-normal-forms
 
