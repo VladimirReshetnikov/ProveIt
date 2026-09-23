@@ -2973,6 +2973,12 @@ stationary-angle work without changing any manuscript. The combined
 `LEAN_NUM_THREADS=2 lake build` passes 4,329 jobs and audits 13,627
 declarations, using only `propext`, `Classical.choice` and `Quot.sound`.
 
+The final synchronization merged `bf428a5` in `17aa289`, adding two
+polynomial-positivity modules and no manuscript changes. The combined
+build passes 4,331 jobs and audits 13,640 declarations with the same
+three permitted axioms. The source-label and independent inventory audits
+still pass; both reviewed PDFs remain identical to the validated builds.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
