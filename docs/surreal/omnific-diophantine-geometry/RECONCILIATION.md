@@ -1,7 +1,7 @@
 # Reconciliation of the three Diophantine manuscripts
 
 This record covers the elementary source comparison in Sections 1–4 of the
-maintained [article](article.tex), followed by proof reviews of Sections 5–10.
+maintained [article](article.tex), followed by proof reviews of Sections 5–11.
 It does **not** certify integration of every result in the three manuscripts
 or review of all later proofs and imported classical results.
 
@@ -146,7 +146,28 @@ Chevalier; the four-square statement against the pinned Mathlib source.
 Glivická–Glivický, Sections 2.1, 2.3 and Theorem 1, records the nonnegative
 semiring convention and Shepherdson equivalence. These checks do not prove
 the imported Hahn-field real-closedness or establish new Lean coverage.
-Sections 11 onward still await independent proof review; the assembly's own
+The Section 11 pass compares source 01's polynomial lifting, Pythagorean
+and rational-direction proofs, source 02's homogeneous clearing and signed
+existence argument, and source 05's finite ordered specialization and arc
+theorem. The rational-direction theorem now has an explicit consequence:
+every primitive representative of a real projective point is an ordinary
+coprime integer tuple. This follows by writing its coordinate ideal as
+`s Oz` using an ordinary Bézout identity; it does not identify primitivity
+and unimodularity for arbitrary omnific tuples.
+
+The finite ordered specialization proof now derives rationality of a
+minimal-support convex combination and constructs a separating functional
+from a closest point, rather than invoking those steps without detail.
+The arc theorem is extended from integer to real system coefficients,
+because the group-algebra homomorphism fixes real scalars. Its prescribed
+expressions now explicitly have real coefficients. A concrete kernel
+example explains why comparisons must be requested before choosing the
+map. Finite-support Bézout witnesses can be included in the combined tuple;
+arbitrary witnesses are not silently assumed to have finite supports.
+The reverse implication uses `t = ω` to ensure finite supports, and positive
+parameters preserve the prescribed signs.
+
+Sections 12 onward still await independent proof review; the assembly's own
 section map and corrections in Appendix A are inputs to that review.
 Imported foundations, classical results and historical priority are separate
 obligations. No broad preservation of the old statement wording or numbering

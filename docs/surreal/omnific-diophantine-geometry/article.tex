@@ -362,7 +362,7 @@ where the merge had to choose, and every symbol renamed from a source.
 \paragraph{Current review and placement status.}
 Commit \texttt{bbdd536} assembled sources 01, 02 and 05. The elementary
 algebra review, its preservation through that assembly, and later proof
-reviews reaching \cref{odg:sec:guard} are recorded in \fn{RECONCILIATION.md};
+reviews of Sections 1--10 and \cref{odg:sec:primitive} are recorded in \fn{RECONCILIATION.md};
 assembly is not a review of every later proof, and later proofs and remaining
 imported foundations still require review. Sources 06 and 07, placed in
 \texttt{cf350b1}, were integrated concurrently with those reviews, as
@@ -4055,7 +4055,10 @@ $d\gamma$, strictly larger than every other term's degree.
 
 No integrality is required of the nonconstant coefficients: for example
 $(1+t^2/2,\,t^2/2,\,t)$ is omnific for every $t\in\Pi$ although
-$1/2\notin\Oz$. The finiteness of the polynomials matters, however.
+$1/2\notin\Oz$; it satisfies $X^2-Y^2-Z^2=1$ by expansion.
+For $t<0$, leading degree still proves infinite size, though it need not
+preserve the eventual signs of the polynomials as $T\to+\infty$.
+The finiteness of the polynomials matters, however.
 Evaluating an infinite real power series at an infinite omnific argument is
 not licensed by this proposition; the Taylor expansion of $\sqrt{1+T}$ is not
 an admissible way to assert that $\sqrt{1+\omega}$ lies in $\Oz$. Polynomial
@@ -4098,12 +4101,18 @@ decision procedure for this finite formula with integer coefficients.
 \end{proof}
 
 The leading-vector route of (a) does not preserve sign or nonvanishing
-conditions on coordinates of lower degree, which is why (b) uses Tarski. Any
+conditions on coordinates of lower degree: for example $(\omega^2,\omega)$
+has both coordinates positive, but its highest-degree coefficient vector
+is $(1,0)$. This is why (b) uses Tarski. Any
 homogeneous solution over $\No$, not only over $\R$, can be multiplied by a
 common positive monomial into $\Pi^n$ preserving signs and zero patterns
 (\cref{odg:cor:projectiveclear}) \src{02, 05}. Neither statement decides
 affine equations: homogenizing an affine equation and requiring the new
 coordinate to be nonzero allows division in $\No$, not in $\Oz$.
+For example $X^2-2Z^2=0$ has the omnific solution
+$(X,Z)=(\sqrt2\,\omega,\omega)$ with $Z\ne0$. Its affine coordinate
+$X/Z=\sqrt2$ is not omnific, and $x^2=2$ has no omnific solution by
+\cref{odg:prop:univariate}.
 
 \begin{example}[Fermat scaling \src{01, 02, 05}]\label{odg:ex:fermatscaling}
 For every ordinary integer $n\geq2$ and $0<t\in\Pi$,
@@ -4181,6 +4190,23 @@ so $2$ divides every coordinate, contradicting primitivity. Hence $c\ne0$ and
 $(cr_0,\ldots,cr_n)$ is a nonzero integer representative of $p$.
 \end{proof}
 
+In fact every primitive representative of a real projective point is an
+ordinary coprime integer tuple. To see this additional consequence, the
+theorem first makes the point rational. Fix an ordinary representative
+$\mathbf m$ with gcd one and integers $b_i$ such that $\sum_i b_i m_i=1$.
+Every omnific representative has the form $\mathbf z=s\mathbf m$ for some
+$s\in\No^\times$, and
+\[
+ s=\sum_i b_i z_i\in\Oz,\qquad
+ (z_0,\ldots,z_n)=s\Oz.
+\]
+Indeed each $z_i$ is a multiple of $s$, and the displayed B\'ezout identity
+puts $s$ in the coordinate ideal. Thus such a representative is primitive
+if and only if $s$ is a unit, equivalently $s=\pm1$, and then it is also
+unimodular. This equivalence is specific to representatives of real
+directions; no general equivalence of primitivity and unimodularity over
+$\Oz$ is asserted.
+
 For example, $[1:\sqrt2]$ has omnific representatives such as
 $(\omega,\sqrt2\,\omega)$ but no primitive, hence no unimodular,
 representative; source 02 proved the unimodular half of this example
@@ -4202,26 +4228,44 @@ $\ell(a)>\ell(b)$ whenever $a,b\in E$ and $a>b$.
 \begin{proof}
 A finitely generated torsion-free abelian group is isomorphic to $\Z^r$. In
 such coordinates, form the finite set of vectors $a-b$ for $a,b\in E$ with
-$a>b$; they are positive in the original order. Zero is not in their convex
-hull in $\R^r$: otherwise, since the vectors are integral, the rational
-linear system describing such a convex combination would have a rational
-solution (a nonempty polytope given by rational equations, nonnegativity and
-a coordinate-sum equation has a rational vertex, obtained by setting a
-maximal set of coordinates to zero and solving the remaining independent
-rational equations), and clearing denominators would give a nontrivial sum of
-positive group elements equal to zero. Strict separation of this compact
-convex set from zero gives a real linear functional positive on all these
-vectors; a small rational perturbation keeps the finitely many strict
-inequalities, and clearing denominators gives an integer-valued functional.
-If there are no strict comparisons, $\ell=0$ works.
+$a>b$. If this set is empty, $\ell=0$ works. Otherwise enumerate it as
+$v_1,\ldots,v_s$; each vector represents a positive element in the original
+group order.
+
+We first show that $0$ is not in their ordinary real convex hull. If it
+were, choose a solution of
+\[
+ \sum_j c_jv_j=0,\qquad \sum_j c_j=1,\qquad c_j\ge0
+\]
+with the smallest possible number of positive coefficients. The augmented
+columns $(v_j,1)$ for those coefficients are linearly independent. Otherwise
+a nonzero dependence $d_j$ has $\sum_j d_j=0$, hence both positive and
+negative entries; moving the coefficient vector along this dependence
+until one positive coefficient reaches zero preserves all constraints and
+reduces its positive support. Independence gives a square nonsingular
+minor with integer entries, so the positive $c_j$ are rational by solving
+that subsystem. Clearing denominators yields a nonempty sum of positive
+integer multiples of the $v_j$ equal to zero, impossible in an ordered group.
+
+Let $C$ be their convex hull and choose $p\in C$ of least Euclidean norm.
+Compactness supplies $p$, and $p\ne0$. For $v\in C$, minimality along the
+segment $p+u(v-p)$, $0\le u\le1$, gives
+$p\mathbin{\cdot}(v-p)\ge0$. Consequently
+$p\mathbin{\cdot}v_j\ge\|p\|^2>0$ for every $j$.
+A rational vector sufficiently close to $p$ keeps these finitely many
+strict inequalities. Multiplying it by a positive common denominator
+gives an integer vector $w$, and $\ell(h)=w\mathbin{\cdot}h$ is the required
+additive map. All convexity here is in the ordinary finite-dimensional
+space $\R^r$, not in a surreal topological space.
 \end{proof}
 
 \begin{theorem}[Finite-support solutions specialize to arcs \src{05}]\label{odg:thm:specialization}
 Suppose $\mathbf x\in\Oz^n$ has finite normal-form supports and satisfies a
-finite polynomial system over $\Z$. There are real polynomials
+finite polynomial system over $\R$. There are real polynomials
 $f_1(T),\ldots,f_n(T)$ satisfying the same polynomial identities with
 $f_i(0)=\ct(x_i)$, and every nonconstant $x_i$ gives a nonconstant $f_i$. A
-prescribed finite list of nonzero polynomial expressions in $\mathbf x$ can
+prescribed finite list of nonzero real-coefficient polynomial expressions
+in $\mathbf x$ can
 be kept nonzero, with the same eventual signs as $T\to+\infty$ as their
 surreal signs.
 \end{theorem}
@@ -4229,8 +4273,11 @@ surreal signs.
 Let $E$ contain zero, all exponents of the coordinates, and all exponents of
 the prescribed expressions after expansion; it is finite. Let $H$ be its
 integer span and choose $\ell$ by \cref{odg:lem:specialization}. The
-group-algebra map $\R[H]\to\R[T,T^{-1}]$, $\omega^h\mapsto T^{\ell(h)}$, is a
-ring homomorphism. Positive coordinate exponents map to positive integers,
+group algebra $\R[H]$ identifies with the finite-support real normal forms
+on $H$: distinct monomials are linearly independent, and their multiplication
+adds exponents. Thus the original equations hold in this algebra. The map
+$\R[H]\to\R[T,T^{-1}]$, $\omega^h\mapsto T^{\ell(h)}$, is a ring
+homomorphism fixing every real coefficient. Positive coordinate exponents map to positive integers,
 so coordinate images are polynomials with the same constant coefficients;
 injectivity of $\ell$ on $E$ prevents cancellation of distinct supported
 terms, in particular of leading terms. Polynomial identities are preserved,
@@ -4238,11 +4285,38 @@ and each prescribed expression keeps its leading coefficient and hence its
 eventual sign for large positive $T$.
 \end{proof}
 
+Source 05 states the system over $\Z$; fixing real scalars in the same
+homomorphism proves the extension above. Coefficients of the additional
+expressions are specified as real for the same reason. The map need not be
+injective or order preserving on all of $H$: it preserves the finite list
+of comparisons used in its construction. For instance, on
+$H=\Z+\Z\sqrt2$, the map $\ell(1)=1$, $\ell(\sqrt2)=2$ preserves the order
+of $E=\{0,1,\sqrt2,1+\sqrt2\}$ but kills the nonzero group-algebra element
+$\omega^{\sqrt2}-\omega^2$. To preserve that expression as well, its
+supported exponent $2$ must be included in $E$ and a suitable map chosen
+again. Equations need no such extra condition: every ring homomorphism
+preserves them, even when it has a kernel.
+
 With \cref{odg:prop:polylift} (substituting $t\in\Pi$ for $T$), this gives an
 exact equivalence between the existence of a finite-support nonconstant
 solution and of a nonconstant real polynomial arc with integer constant
-coordinates. It does not turn infinite-support solutions into polynomial
-arcs.
+coordinates. For the reverse implication choose $t=\omega$: the resulting
+tuple has finite supports, and each nonconstant polynomial has a nonconstant
+value. Positive $t\in\Pi\setminus\{0\}$ also preserves the prescribed signs,
+because its positive leading term makes each polynomial's leading term
+determine its sign. A single specialization therefore preserves any finite
+list of polynomial equalities, disequalities and sign conditions. This does
+not turn infinite-support solutions into polynomial arcs.
+
+Finite-support B\'ezout certificates can be retained as well. If
+$x_i,u_i\in\Oz$ all have finite supports and $\sum_i u_i x_i=1$, apply the
+theorem to the combined tuple and include this equation. Its images satisfy
+$\sum_i g_i(T)f_i(T)=1$, with integer constant coefficients in every $f_i$
+and $g_i$. Evaluating at any $t\in\Pi$ gives an omnific B\'ezout certificate,
+so the resulting family is unimodular. This argument requires finite
+supports for the supplied witnesses $u_i$, not just for the coordinates
+$x_i$; existence of arbitrary omnific witnesses does not supply that
+additional hypothesis.
 
 For a finite-support implementation one may store an element as a map from
 exact exponents to nonzero exact real coefficients; the essential operations

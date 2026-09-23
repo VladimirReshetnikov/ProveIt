@@ -277,7 +277,10 @@ Numbers refer to the built `article.pdf`.
     14.1); homogeneous cone criterion and its decidability (Theorem 14.2);
     unimodular Pythagorean triples (Proposition 14.4); a real direction has a
     primitive omnific representative iff it is rational (Theorem 14.5);
-    finite-support solutions specialize to polynomial arcs (Theorem 14.7).
+    every primitive representative of a real direction is an ordinary coprime
+    integer tuple. Finite-support solutions specialize to polynomial arcs
+    over real coefficients (Theorem 14.7, extending source 05’s integer
+    case); supplied finite-support Bézout witnesses specialize with them.
 14. **Omnific coefficients (Section 15).** The square-discriminant criterion
     (Theorem 15.1), initial forms (Proposition 15.3), two-term roots
     (Proposition 15.4) and a simple residue root that does not lift (Example
@@ -353,6 +356,10 @@ claims that these are open in the literature.
   specifies the induction domain, and gives nonnegative witnesses for the
   order-free arithmetic formula. The open-induction argument explicitly
   transfers quantifier-free truth to a set-sized Hahn workspace.
+- The Section 11 review strengthens the description of primitive real
+  directions, expands the finite ordered specialization argument, and
+  extends the arc theorem to real coefficients. Finite-support Bézout
+  witnesses and the positive-parameter sign condition are explicit.
 
 **Stale repository statements.** Source 01 said the repository's
 trigonometry material used the omnific integer part; at the pin the
