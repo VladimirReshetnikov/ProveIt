@@ -489,5 +489,17 @@ critical values of a polynomial are the roots of `Disc(P - Y)` with their
 multiplicities, Prony's cofactor corrections obey the valuation budget
 `κ - E_i`, and polynomial iterates are equicontinuous at every point exactly
 when the value group has no order unit.
+The functions `1 - z/2^n` have independent square classes, a nonzero
+`R(X, Y)` vanishes at `(n, 2^n)` only finitely often, and every infinite
+family of the resulting jet vectors spans. Row- and column-finite matrices
+form an algebra with the finite row-by-column product. Sign-coherent Wick
+families are strongly summable exactly when their block sums are. When the
+constants are uncountable, countably many nonzero polynomials are all nonzero
+at one constant point, the unit-orbit and affine valuation lemmas and the torsion
+covariance of entire Hahn functions hold for every value group, and the
+exponential profile theorem holds for every ordered field with a valuation.
+Admissible exponent sets form cones with the period-inequality criterion,
+the bounded-orbit locus of an expanding polynomial is exact, and a
+compressed resolvent family determines a unique row-Laplacian generator.
 A successful build proves only the imported Lean
 statements, not coverage of all the source documents.
