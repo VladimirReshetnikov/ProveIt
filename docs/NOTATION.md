@@ -511,6 +511,14 @@ For every `F ∈ ℂ[Y,Z]`, normalized derivations have the same solution
 collection for `F(y,ðy)=0`. Pointwise equality of their derivatives on that
 collection and a uniform set-sized Hahn field bound require `F ≠ 0`.
 
+An ordinary formal time variable `s` with formal derivative `ds/ds=1`
+is not an arbitrary infinitesimal surcomplex input for the intrinsic
+normalized derivation `ð`: finite surcomplex elements have infinitesimal
+intrinsic derivatives. Thus formal flow identities, fine derivatives of
+evaluated series, and intrinsic differential equations require their
+respective compatibility statements. Current Lean formal evaluation and
+fine-differentiation results do not by themselves identify these operators.
+
 For a constant abelian variety `𝐀/ℂ`, the formal logarithm
 `log_𝓕` maps its identity monad to `Lie(𝐀)(𝔪_ℂ)`; its inverse
 `exp_𝓕` is evaluated only at infinitesimal Lie coordinates. It is distinct
