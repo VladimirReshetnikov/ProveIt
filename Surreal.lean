@@ -502,3 +502,7 @@ import Surreal.Surcomplex.CoupledAngularMultiplicity
 import Surreal.Algebra.PolynomialSimpleReduction
 import Surreal.Foundations.SignSequenceSimpleRootLifting
 import Surreal.Surcomplex.SimpleRootLifting
+import Surreal.Algebra.PolynomialRootNormalization
+import Surreal.Foundations.SignSequenceRootNormalization
+import Surreal.Foundations.SignSequencePolynomialStability
+import Surreal.Foundations.SignSequencePolynomialStabilityError
