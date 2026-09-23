@@ -279,6 +279,13 @@ import Surreal.Surcomplex.RegularPolygon
 import Surreal.Surcomplex.TriangleSpread
 import Surreal.Surcomplex.AngleDefect
 import Surreal.Surcomplex.TriangleValuation
+import Surreal.Foundations.SignSequenceRelativeAsymptotics
+import Surreal.Surcomplex.TriangleDefectExact
+import Surreal.Surcomplex.TriangleDefect
+import Surreal.Surcomplex.TriangleFlatGap
+import Surreal.Surcomplex.TriangleFlatSeries
+import Surreal.Surcomplex.TriangleFlatAsymptotics
+import Surreal.Surcomplex.TriangleFlatValuation
 import Surreal.Surcomplex.TrigonometricFineDerivative
 import Surreal.Surcomplex.TrigonometricOrder
 import Surreal.Surcomplex.TrigonometricLeading
