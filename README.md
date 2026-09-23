@@ -82,12 +82,17 @@ classes, also when counted with derivative-germ multiplicities. Stationarity
 uses the native fine derivative. The global strip exponential and its
 root-class correspondence remain pending.
 
-The positivity prerequisites for polynomial norm-square factorization now
-hold over every ordered field: real roots of a nonnegative polynomial have
-even multiplicity, extracting their full linear factors preserves
-nonnegativity, and a nonzero such polynomial has positive leading
-coefficient and even degree. The norm-square construction and the ensuing
-Fejér–Riesz factorization remain pending.
+Every everywhere-nonnegative actual surreal polynomial now factors as a
+surcomplex polynomial times its coefficientwise conjugate, with exactly
+half the original degree. At every real input its value is the squared
+modulus of the factor. The proof removes even real-root factors and
+strictly positive conjugate-root quadratics, preserving nonnegativity at
+each step. It uses the proved square roots and algebraic closedness of the
+actual fields. Mathlib homogenization now gives the explicit Fejér–Riesz
+polynomial factor of degree at most `N` on the entire affine Cayley chart.
+The proof tests positivity at all finite surreal angles and permits infinite
+coefficients and chart parameters. Extending the same factor to the omitted
+circle point `-1` and proving the normalized form remain pending.
 
 The first modules establish size obstructions and reusable finite algebra.
 Complexification uses mathlib's `QuadraticAlgebra`, with its cross-term
