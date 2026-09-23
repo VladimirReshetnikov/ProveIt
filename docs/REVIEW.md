@@ -3239,6 +3239,25 @@ references or box diagnostics.
 `Quot.sound`. This validates the merged library, including the incoming
 omnific construction, and does not establish the pending manuscript proofs.
 
+## Placement reconciliation after the second synchronization
+
+The next fetch brought three documentation commits through `0e4dc98`,
+merged as `516bb70`. Placement `21375f8` retires the nine archives from
+`190d301` into two report bases and companions to three existing reports.
+No existing manuscript body or Lean source changed in this merge. The
+4,380-job build and 14,672-declaration audit therefore remain applicable.
+
+The inventory now includes the autonomous-dilation base and the
+critical-point-defects base: 3,650 standard statements in 60 main texts.
+The independent index audit passes, all 4,183 cited labels resolve, and
+all 1,517 local Markdown destinations pass. Their local guides explain the
+installed paths separately from delivered filenames; their proof reviews,
+formalization and remaining companion assembly are pending. The reader
+map, root README and catalogue reflect this placement. The catalogue has
+a clean three-pass 29-page build, with its first page and the new entries
+on pages 25 and 29 inspected. No new manuscript theorem is claimed proved
+by these navigation and build checks.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

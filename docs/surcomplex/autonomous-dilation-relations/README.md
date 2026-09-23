@@ -2,6 +2,18 @@
 
 **Research article, 23 September 2026.** Prepared with ChatGPT for Vladimir Reshetnikov.
 
+## Repository placement
+
+Placed in `21375f8`. Independent proof review and formalization are pending.
+
+The current source is [article.tex](article.tex); the delivered PDF and
+checksum list named below are not installed here. The verifier is
+[code/verify.py](code/verify.py), with its recorded output and requirements
+under [data/](data/). Build the current source as `article.tex` in a scratch
+directory. To rerun the verifier, copy it to scratch first: it writes its
+JSON output beside the script. The delivery description below retains the
+original filenames and describes the author-side checks, not a new review.
+
 ## Contents
 
 - `dilation_rigidity.pdf`: the 24-page article, with complete written arguments, examples, 12 further research questions, a dependency ledger, and references.

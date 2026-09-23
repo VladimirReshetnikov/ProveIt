@@ -1,6 +1,6 @@
 # The surreal and surcomplex reports
 
-This collection has **58 research reports in five families**. Start with the
+This collection has **60 research reports in five families**. Start with the
 reading routes below, use the [notation guide](NOTATION.md) when moving between
 reports, and consult the [typeset catalogue](manifest.pdf)
 ([source](manifest.tex)) for longer descriptions. The
@@ -55,7 +55,11 @@ and companions to five existing reports. Their batch-29 assemblies are now
 written: logarithmic rigidity, exact homological dimensions, elementary-group
 kernels, convex factors and profinite obstructions, compact groups, and
 quantum/gauge reductions. These additions await independent proof review.
-The archives subsequently added in `190d301` await placement and reconciliation.
+The archives subsequently added in `190d301` were placed in `21375f8`,
+adding the [autonomous dilation](surcomplex/autonomous-dilation-relations/)
+and [large-cardinal embedding](foundations-and-computation/large-cardinal-embeddings-and-normal-forms/)
+report bases and companions to three existing reports. Their assembly,
+independent proof review and claim reconciliation remain pending.
 
 Batch 23 (placed in `e4f8848`, written in `7af7056`) adds
 [Gamma and zeta](surcomplex/gamma-and-zeta-functions/), merged from six
@@ -146,7 +150,7 @@ those powers but uses the integer exponent lattice. Their common part includes
 `ℝ[[ω⁻¹]]`. Neither domain theorem subsumes the other. Here `⊗` denotes
 **natural ordinal multiplication**, as distinguished in the notation guide.
 
-## Surcomplex numbers: twenty-seven reports
+## Surcomplex numbers: twenty-eight reports
 
 | Report | Main subject and useful prerequisite |
 |---|---|
@@ -246,7 +250,12 @@ trace distance, exact elimination of separated virtual sectors, quaternionic
 simulation, finite gauge curvature and observable limits. Proof review, priority review and formalization are pending;
 the mathematical models do not establish new experimental predictions.
 
-## Foundations and computation: seven reports
+[Autonomous dilation relations](surcomplex/autonomous-dilation-relations/)
+studies algebraic relations between a series and its exponent dilates,
+cyclic-support rigidity and omnific solutions. The placed base has no
+maintained PDF yet; its proofs and formalization remain pending.
+
+## Foundations and computation: eight reports
 
 | Report | Main subject |
 |---|---|
@@ -265,10 +274,17 @@ which operations need that additional information. The computer-algebra
 report separately records each prototype's coefficient field, exponent
 lattice, supported operations and known implementation defects.
 
+[Large-cardinal embeddings and normal forms](foundations-and-computation/large-cardinal-embeddings-and-normal-forms/)
+compares elementary embeddings on sign codes with termwise normal-form
+transport under explicit large-cardinal hypotheses. The placed
+critical-point-defects base has no maintained PDF yet; two companions
+await assembly, and independent proof review and formalization are pending.
+
 ## Files, provenance and building
 
-Each report has a LaTeX source and local README; the newly placed quantum/gauge
-base has no maintained PDF yet. Most
+Each report has a LaTeX source and local README. The newly placed autonomous
+dilation and large-cardinal embedding bases have no maintained PDFs yet;
+the quantum/gauge assembly now has one. Most
 also retain verification programs under `code/` and recorded outputs under
 `data/`. Those finite checks do not establish infinite theorems. The former
 `sources/` archives were retired in `e5791a8`; their tracked originals remain
