@@ -450,6 +450,11 @@ number, the geometric direction change is the imaginary local logarithm.
 Its quadratic expansion has a bounded cubic remainder, and its valuation
 is at least that of the relative perturbation, with equality when the
 leading coefficient has nonzero imaginary part.
+Noncollinear triangles at arbitrary surreal scales have unique interior
+angles in `(0, pi)`, with the normalized dot product and area as cosine
+and sine coordinates. Their three angles sum exactly to ordinary pi,
+including their infinitesimal parts. The included-angle cosine and area
+laws also hold without restrictions on side lengths.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual

@@ -236,6 +236,9 @@ import Surreal.Surcomplex.RotationDisplacement
 import Surreal.Surcomplex.InfinitesimalLogarithmLeading
 import Surreal.Surcomplex.DirectionNormalization
 import Surreal.Surcomplex.DirectionStability
+import Surreal.Surcomplex.InteriorAngle
+import Surreal.Surcomplex.AngleSumKernel
+import Surreal.Surcomplex.TriangleAngleSum
 import Surreal.Surcomplex.TrigonometricFineDerivative
 import Surreal.Surcomplex.TrigonometricOrder
 import Surreal.Surcomplex.TrigonometricLeading
