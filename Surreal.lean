@@ -41,6 +41,7 @@ import Surreal.Algebra.PowerSeriesHom
 import Surreal.Algebra.PowerSeriesUnitRoots
 import Surreal.Algebra.PowerSeriesRemainder
 import Surreal.Algebra.PowerSeriesTranslation
+import Surreal.Algebra.PowerSeriesLeadingFactor
 import Surreal.Algebra.FineDerivative
 import Surreal.Algebra.FineDerivativeRules
 import Surreal.Algebra.AnalyticTaylor
@@ -174,6 +175,7 @@ import Surreal.Surcomplex.Workspace
 import Surreal.Surcomplex.PowerSeries
 import Surreal.Surcomplex.PowerSeriesHom
 import Surreal.Surcomplex.PowerSeriesLeading
+import Surreal.Surcomplex.PowerSeriesLeadingFactor
 import Surreal.Surcomplex.PowerSeriesRemainder
 import Surreal.Surcomplex.MvPowerSeriesBounds
 import Surreal.Surcomplex.PowerSeriesFineDerivative
@@ -182,6 +184,7 @@ import Surreal.Surcomplex.AnalyticTaylor
 import Surreal.Foundations.SignSequenceAnalyticTaylor
 import Surreal.Surcomplex.AnalyticFineDerivative
 import Surreal.Surcomplex.AnalyticFineDerivativeAll
+import Surreal.Surcomplex.AnalyticLeading
 import Surreal.Surcomplex.StrongEvaluation
 import Surreal.Surcomplex.PowerSeriesStrongHom
 import Surreal.Foundations.SignSequencePowerSeriesAlgebra
