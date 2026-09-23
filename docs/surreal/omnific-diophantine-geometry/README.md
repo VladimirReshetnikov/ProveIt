@@ -1,22 +1,30 @@
 # Omnific Integers and Omnific–Diophantine Geometry
 
 **Retractions, rigidity, definability, and infinite families**
-Merged research report, from seven manuscripts written independently: three
+Merged research report, from twelve manuscripts written independently: three
 dated 22 September 2026 (batch items 01, 02 and 05 of the batch placed in
 `be06fc8`), two dated 23 September 2026 (batch items 01 and 07 of the batch
-placed in `cf350b1`, numbered 06 and 07 here), and two more dated 23 September
+placed in `cf350b1`, numbered 06 and 07 here), two more dated 23 September
 2026 (batch items 01 and 02 of the batch placed in `a4dcb91`, numbered 08 and
-09 here). Prepared for Vladimir Reshetnikov.
+09 here), and five more dated 23 September 2026 (batch items 02, 03, 04, 07 and
+08 of the batch placed in `c6359e4`, tagged C10–C14 here after their file
+prefixes `10-` to `14-`). Prepared for Vladimir Reshetnikov.
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 123 pages
+article.pdf                        the compiled report, 162 pages
 README.md                          this guide
 RECONCILIATION.md                  the source comparisons and precise proof-review scope
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
 05-diophantine-rigidity-BUILD.md   source 05's build and check instructions, as delivered
 06-definability-reconstruction-SOURCE_AUDIT.md   source 06's source and novelty audit, as delivered
 08-fractions-SOURCE_AUDIT.md       source 08's source and novelty audit, as delivered
+10-curve-rigidity-SOURCE_AUDIT.md  source C10's source and novelty audit, as delivered
+11-curve-abelian-rigidity-SOURCE_AUDIT.md   source C11's source and novelty audit, as delivered
+11-curve-abelian-rigidity-BUILD_AUDIT.md    source C11's build record for its own article
+12-curve-logarithmic-SOURCE_AUDIT.md        source C12's source and claim audit (see below)
+13-differential-rigidity-SOURCE_AND_PROOF_AUDIT.md   source C13's source and proof audit, as delivered
+14-hahn-differential-rigidity-SOURCE_AUDIT.md        source C14's source, novelty and proof audit, as delivered
 code/
   01-diophantine-geometry-verification.py   source 01 checks (writes a JSON report; see below)
   01-diophantine-geometry-build.sh, .ps1    source 01's build scripts (they compile source 01's
@@ -35,6 +43,19 @@ code/
   09-fraction-fibres-verify_examples.py     source 09 checks (always writes JSON; see below)
   09-fraction-fibres-build.sh, .ps1         source 09's build scripts (they compile source 09's
                                             own file name and do not build this report)
+  10-curve-rigidity-verify.py               source C10 checks (writes JSON; see below)
+  10-curve-rigidity-Makefile                source C10's build and check targets (delivered
+                                            names article.tex, verify.py; not this report)
+  11-curve-abelian-rigidity-verify.py       source C11 checks (standard library; writes JSON)
+  11-curve-abelian-rigidity-Makefile        source C11's build and check targets (delivered names)
+  12-curve-logarithmic-verification.py      source C12 checks (writes JSON; see below)
+  12-curve-logarithmic-build.sh, .ps1       source C12's build scripts (they run verification.py
+                                            and compile article.tex in their own directory)
+  13-differential-rigidity-verify_certificates.py   source C13 checks (prints; see below)
+  13-differential-rigidity-build.sh         source C13's build script (compiles its own
+                                            omnific_differential_rigidity.tex; not this report)
+  14-hahn-differential-rigidity-verify.py   source C14 checks (always writes JSON; see below)
+  14-hahn-differential-rigidity-Makefile    source C14's build and check targets (delivered names)
 data/
   01-diophantine-geometry-verification_report.json   source 01's recorded run
   02-diophantine-verification.txt                    source 02's recorded run
@@ -45,18 +66,38 @@ data/
   08-fractions-verification.json                     source 08's recorded run
   08-fractions-build_audit.json                      source 08's build record for its own article
   09-fraction-fibres-verification_report.json        source 09's recorded run
-  01-, 02-, 05-, 06-, 08-, 09-...-requirements.txt   each pins sympy==1.14.0
+  10-curve-rigidity-verification.json                source C10's recorded run
+  10-curve-rigidity-BUILD_AUDIT.json                 source C10's build record for its own article
+  11-curve-abelian-rigidity-verification.json        source C11's recorded run
+  12-curve-logarithmic-verification_report.json      source C12's recorded run
+  13-differential-rigidity-verification_report.txt   source C13's recorded run
+  14-hahn-differential-rigidity-verification.json    source C14's recorded run
+  14-hahn-differential-rigidity-BUILD_AUDIT.json     source C14's build record for its own article
+  01-, 02-, 05-, 06-, 08-, 09-, 10-, 12-, 13-, 14-...-requirements.txt   each pins sympy==1.14.0
 ```
 
-Every label in `article.tex` carries the prefix `odg:` (310 labels, counting
+The directory also holds the files of a later manuscript, local 15, placed in
+`66d7e55` and **not yet integrated** in this text: `15-logarithmic-rigidity-PROOF_AUDIT.md`,
+`code/15-logarithmic-rigidity-verify.py`, `code/15-logarithmic-rigidity-build.sh`
+and `.ps1`, and `data/15-logarithmic-rigidity-verification.json`,
+`-build_report.json` and `-requirements.txt`. According to its placement it bears
+on Question 21.19; nothing in the article or in this guide depends on it.
+
+The shipped files of sources C10–C14 are byte-identical to the deliveries,
+except that `12-curve-logarithmic-SOURCE_AUDIT.md` differs from the delivery in
+one Markdown hard break normalized for whitespace checks (`a6c68ac`); its
+content is unchanged.
+
+Every label in `article.tex` carries the prefix `odg:` (405 labels, counting
 both `\label{…}` and `\label[type]{…}`): the 150 labels of the three-source
 assembly `bbdd536`, none renamed or removed; nine aliases kept by the
 elementary review merged from upstream; 69 labels added by the batch-25
-integration; and 82 labels added by the batch-27 integration. The material of
+integration; 82 labels added by the batch-27 integration; and 95 labels added by
+the batch-28 integration. The material of
 sources 06 and 07 carries the sub-prefix `odg:def:` (63 labels), the fiber and
 norm results printed from the sibling report's manuscript 13 carry `odg:dec:`
-(6 labels), and the material of sources 08 and 09 carries `odg:frac:` (82
-labels). Two older labels, `odg:def:rings` and `odg:def:primitive`, name
+(6 labels), the material of sources 08 and 09 carries `odg:frac:` (82
+labels), and the material of sources C10–C14 carries `odg:cr:` (95 labels). Two older labels, `odg:def:rings` and `odg:def:primitive`, name
 Definitions 2.1 and 7.7 and predate the sub-prefix.
 
 The elementary review (`7784f7f`, `8f1527c`), written in parallel with the
@@ -71,10 +112,11 @@ proof review of Sections 5–7 (`f0bdcf3`) extended one-variable and
 separated-power rigidity to complex coefficients and corrected Remark 7.5; a
 further review of Sections 8–10 (`40c09a3`, `58cd8e1`) expanded their proofs
 without adding or renumbering statements. The later reviews `25e372c` and `3dd4e2c` cover the former Sections 11–12,
-now Sections 14 and 16, including real-coefficient specialization and the finite
+now Sections 14 and 19, including real-coefficient specialization and the finite
 factorization proof of the two-term root obstruction. These reviews exclude the batch-25
 material (Sections 11–13, the Section 6 results of sources 07 and 13, and
-Remark 10.5). A subsequent pass reviews Section 11: leading degrees, the
+Remark 10.5). A review of Section 14 (`25e372c`, merged in `ef806c0`) expanded
+its proofs. A subsequent pass reviews Section 11: leading degrees, the
 quadratic ideal predicate, Pell divisibility, intersectivity and the
 order-free integer-defining system. It adds boundary examples for intermediate
 rings and expands the finite congruence arguments. A further pass reviews
@@ -91,30 +133,39 @@ orbits and density. The focusing formula now handles the zero parameter
 and the projective topology is explicit. The fixed rational-function field
 is discrete in the induced surreal topology, unlike its degree topology.
 The rest of the batch-27 material remains unreviewed: Sections 15.8–15.12,
-the additions to Section 17, Section 18.3 and Questions 18.12–18.16. Inserting
-Section 15 moved the former Sections 15–17 to 16–18; statement numbers in
-Sections 1–14 are unchanged. See [RECONCILIATION.md](RECONCILIATION.md) for the
-elementary claim correspondence, these proof reviews and the remaining review
-boundary.
+the additions to Section 20, Section 21.3 and Questions 21.12–21.16. No review
+covers the batch-28 material: Sections 16–18, the pointers added in Sections 6, 7
+and 14, the additions to Section 20, Section 21.4, the re-scoped notes to
+Questions 21.1, 21.3 and 21.8, and Questions 21.17–21.22. Inserting Section 15
+moved the former Sections 15–17 to 16–18, and inserting Sections 16–18 moved them
+on to 19–21; statement numbers in Sections 1–15 are unchanged. See
+[RECONCILIATION.md](RECONCILIATION.md) for the elementary claim correspondence,
+these proof reviews and the remaining review boundary.
 
-The article has 143 standard results (51 theorems, 31 propositions, 25 lemmas,
-36 corollaries), of which 39 are in Section 15. The
-[ledger](../../FORMALIZATION.md) indexes all 143 standard results of the
-seven-source assembly by `odg:` label, all **Pending**; no implementation
+The article has 194 standard results (70 theorems, 37 propositions, 41 lemmas,
+46 corollaries), of which 39 are in Section 15 and 51 in Sections 16–18. The
+[ledger](../../FORMALIZATION.md) indexes the 143 standard results of the
+seven-source assembly by `odg:` label, all **Pending**, but not yet the 51 of
+Sections 16–18; no implementation
 mapping cites an `odg:` label, and no Lean code about omnific integers exists
 in the repository.
 
-## Seven sources, one report
+## Twelve sources, one report
 
 | | Manuscript | Repository pin | Contributes |
 |---|---|---|---|
 | **01** | *Omnific Integers and Omnific–Diophantine Geometry* | `2cb9c02` | The base text and structure; the exhaustive quadratic-level dichotomy including degenerate forms (Theorem 8.1); the five-auxiliary three-square guard (Theorem 10.3); rational directions (Theorem 14.5); no real point at infinity (Theorem 9.6); symmetric matrices (Corollary 9.5); the elementary uniqueness of `ct` (Proposition 3.5). Files prefixed `01-diophantine-geometry-`. |
-| **02** | *Omnific Integers and Diophantine Geometry* | `2cb9c02` | Exact decomposable fibers (Theorem 6.2(a)); bounded semialgebraic rigidity (Theorem 9.2); decidable homogeneous existence with sign conditions (Theorem 14.2(b)); the square-discriminant criterion (Theorem 15.1); the general pair without a gcd (Theorem 4.10); the explicit Lorentz matrix and the unipotent subgroup (Corollary 8.4); nilpotent tests and mixed gcds. Files prefixed `02-diophantine-`. |
-| **05** | *Omnific Integers and Diophantine Rigidity* | `2cb9c02` | Binary rigidity over `C` (Theorem 6.7); Euler derivations (Section 7); separated powers (Theorem 7.4) and unimodular Fermat (Theorem 7.9); the four-square definition of `Z` (Theorem 10.4); a failed existential induction (Theorem 10.10); failed lifting (Proposition 15.4, Example 15.5); finite-support specialization (Theorem 14.7). Also the universal set-sized quotient theorem, which is **printed in the sibling report** and only quoted here (Cited theorem 3.6). Files prefixed `05-diophantine-rigidity-`. |
+| **02** | *Omnific Integers and Diophantine Geometry* | `2cb9c02` | Exact decomposable fibers (Theorem 6.2(a)); bounded semialgebraic rigidity (Theorem 9.2); decidable homogeneous existence with sign conditions (Theorem 14.2(b)); the square-discriminant criterion (Theorem 19.1); the general pair without a gcd (Theorem 4.10); the explicit Lorentz matrix and the unipotent subgroup (Corollary 8.4); nilpotent tests and mixed gcds. Files prefixed `02-diophantine-`. |
+| **05** | *Omnific Integers and Diophantine Rigidity* | `2cb9c02` | Binary rigidity over `C` (Theorem 6.7); Euler derivations (Section 7); separated powers (Theorem 7.4) and unimodular Fermat (Theorem 7.9); the four-square definition of `Z` (Theorem 10.4); a failed existential induction (Theorem 10.10); failed lifting (Proposition 19.4, Example 19.5); finite-support specialization (Theorem 14.7). Also the universal set-sized quotient theorem, which is **printed in the sibling report** and only quoted here (Cited theorem 3.6). Files prefixed `05-diophantine-rigidity-`. |
 | **06** | *Definable Arithmetic and Coefficient Reconstruction in Omnific Integer Rings* | `71e9606` | Base of Sections 11–13: the one-witness Diophantine definition of `Π` (Theorem 11.2), the Diophantine graph of `ct` (Theorem 12.8), all homomorphisms preserve `ct` (Theorem 12.12), the multiplier identity (Theorem 13.2), reconstruction of `R`, `No`, order and standard part from the pure ring `Oz` (Theorem 13.4), automorphisms fix `R` (Theorem 13.6), the phase twist and the real–Gaussian asymmetry (Theorem 13.10), c.e. sets (Theorem 13.11); its quintic is Remark 11.10. Files prefixed `06-definability-reconstruction-`. |
 | **07** | *Defining Arithmetic Inside Omnific Integers* | `71e9606` | The order-free system in intermediate rings (Theorem 11.9, with 06); the augmentation root detector (Theorem 12.1) and the constant-term detector (Theorem 12.2); support bounds (Proposition 12.3); the ideal test (Theorem 12.6); number-field coefficient rings (Theorem 12.14); norm rigidity over any base field (in Theorem 6.15); recursive saturation (Theorem 13.15); its quartic is Remark 10.5. Files prefixed `07-defining-arithmetic-`. |
 | **08** | *Fractions of Omnific Integers: Rational Specialization, Lowest Terms, Denominator Ideals, and Scale Extensions* | `9a385d3` | Base of Section 15: real constants (Theorem 15.7); the multiplier theorem for any retraction and any number of coordinates (Theorem 15.11); the classification of all representations of rational-function tuples at any `0 ≠ t ∈ Π` (Theorem 15.18, Corollaries 15.19–15.21); no lcm (Example 15.27); rational curves (Corollary 15.28); the localization at `Π` and independent residues (Proposition 15.40, Theorem 15.42); polynomial models, the enlargement and scale defects, nonflatness and `Tor_1` (Theorems 15.45–15.47, Proposition 15.48); monomial denominators (Proposition 15.50); the Gaussian dichotomy (Theorem 15.54). Files prefixed `08-fractions-`. |
 | **09** | *Omnific Fractions: Rationality, Denominator Ideals, and Dense Arithmetic Fibres* | `9a385d3` | The calculus of denominator ideals and least denominators (Propositions 15.2, 15.3); the unimodular region `𝒱` and its dichotomy (Theorem 15.15); nearly equal values of opposite type (Example 15.24); local density (Proposition 15.26); fibers as congruence orbits (Theorem 15.32, Corollary 15.33); set-wise focusing (Theorem 15.35), dense fibers (Corollaries 15.36, 15.37) and nowhere continuity (Corollary 15.38). Its pair multiplier theorem and its one-scale classification are special cases of 08's Theorems 15.11 and 15.18 and are credited there. Files prefixed `09-fraction-fibres-`. |
+| **C10** | *Curve Rigidity over the Omnific Integers: Elliptic equations, differential separation, and semiabelian varieties* | `4cdeaec` | The fiber bijection `Π → ct⁻¹(n)` on affine-line models and the fact that only `s = 0` gives an ordinary point (Theorem 17.11(ii)); quasi-finite maps to semiabelian and other rigid targets (Theorem 18.5); nonsplit tori by faithful flatness (after Lemma 18.3); the general elliptic field point (Remark 17.24); the valuation-ring point and the verticality conclusion (Section 18.5, Section 17.5). Files prefixed `10-curve-rigidity-`. |
+| **C11** | *Curve and Abelian Rigidity over the Omnific Integers: A complete smooth-affine-curve dichotomy, support-preserving derivations, and invariance over reduced coefficient rings* | `f6e031a` | Exact fibers over any coefficient ring `𝔬 ⊆ 𝕜` (Theorem 17.11); proper classes of fiber points (Corollary 17.12(c)); positive genus by descent from `𝕜̄` and the one-form remark (Theorem 17.2, Remark 17.3); the quasi-finite theorem for any rigid target (Theorem 18.5); reduced coefficient algebras (Theorem 18.9); the dual-number defect (Theorem 18.11); the characteristic-two elliptic point (Proposition 18.12, with C14); a discretely ordered ring with no omnific copy (Theorem 18.14); curve subalgebras (Corollary 17.9, with C12). Files prefixed `11-curve-abelian-rigidity-`. |
+| **C12** | *Curve Rigidity over Omnific Integers: Logarithmic differentials, elliptic equations, and denominator ideals* | `89bec38` | The strict-ideal proof of the squarefree theorem (Theorem 16.6, with C13); the logarithmic proof of the curve classification (Lemma 17.7, Theorem 17.8); descent for separated models over `Z` (Theorem 17.17); coordinate ideals: invertible ⇔ principal ⇔ rational (Lemma 17.19, Theorems 17.20, 17.21) and the explicit ideal (Example 17.23); the singular Weierstrass dichotomy with integer `r` (Proposition 16.11). Files prefixed `12-curve-logarithmic-`. |
+| **C13** | *Differential Rigidity of Omnific Points: Smooth-curve classification, squarefree equations, and algebraic groups* | `4cdeaec` | Annihilation of global tensors (Theorem 16.14); symmetric differentials and ample cotangent bundles (Definition 16.18, Theorem 16.19, Corollary 16.20); inheritance (Proposition 16.21); general Weierstrass equations (Corollary 16.10); all smooth curves, including `P¹` (Corollary 17.10); polynomial witnesses (Corollary 17.16); the nonconstant part of commutative groups (Theorem 18.6); the characteristic-`p` example (Proposition 18.13). Files prefixed `13-differential-rigidity-`. |
+| **C14** | *Differential Rigidity of Hahn Rings: Curves, Abelian Varieties, and Omnific Diophantine Points* | `4cdeaec` | Base of Sections 16–18: the two-ring principle over any field of characteristic zero and any exponent group (Definition 16.12, Theorem 16.16, Corollary 16.17); the curve classification over every such field (Lemma 17.5, Theorem 17.6); integer polynomial arcs and the congruence criterion (Lemma 17.14, Proposition 17.15); unimodular coordinates over `ℛ_𝔬(𝕜, Γ)` and rational projective points (Theorem 17.18, Corollary 17.22); tori via `𝕜̄` (Lemma 18.3). Files prefixed `14-hahn-differential-rigidity-`. |
 
 Batch-25 item 03 is manuscript 13 of the sibling report
 [`set-sized-quotients-of-omnific-integers`](../set-sized-quotients-of-omnific-integers/),
@@ -123,7 +174,7 @@ fiber and norm results (its Sections 8–9) are printed here once, tagged `[13]`
 the Gaussian fiber theorem (Theorem 6.3), the converse of the kernel criterion
 (Corollary 6.4), the real-kernel remark (Remark 6.5), a rank-deficient level
 (Example 6.6) and étale norms (in Theorem 6.15). Its real fiber theorem is
-Theorem 6.2(a), printed once. It is not counted among this report's seven
+Theorem 6.2(a), printed once. It is not counted among this report's twelve
 sources. Batch-25 item 04 is the sibling report's manuscript 14 (files
 `14-arithmetic-tensors-` there). Its criterion for unimodular constant
 directions over `Z` and `Z[i]` is printed here once, tagged `[14]`, as
@@ -138,7 +189,14 @@ and 08 are. The delivered READMEs of sources 06–09 are not shipped. The pin
 `be06fc8`, so sources 06 and 07 did not see this report or its sibling. The pin
 `9a385d3` of sources 08 and 09 is 35 commits before `a4dcb91`; at that pin this
 report had only sources 01, 02 and 05. The checksum manifests of sources 01 and
-09 are not shipped because they list the delivered file names.
+09 are not shipped because they list the delivered file names. Sources C10–C14
+are shipped with their code, data and audits under the prefixes `10-` to `14-`;
+the letter C keeps their tags apart from `[13]` and `[14]`, which denote the
+sibling report's manuscripts. Their texts, PDFs, delivered READMEs and the
+checksum manifests of C10 and C12 are not shipped. Sources C10, C13 and C14 pin
+`4cdeaec`, source C11 pins `f6e031a` and source C12 pins `89bec38`, 23, 26 and 27
+commits before the archive commit `5610500` (C13 and C14 arrived in `21016dc`); at
+all three pins this report had only sources 01, 02 and 05.
 
 **Why one report.** Sources 01, 02 and 05 prove the same spine: normal forms,
 the rings `B_R ⊃ Oz = Z ⊕ Π`, degree and units, the floor, the retraction `ct`
@@ -162,8 +220,19 @@ Source 08 is the base because it has the weaker hypotheses (any retraction, any
 number of coordinates, any `0 ≠ t ∈ Π`, against 09's pairs and monomials
 `t = ω^α`). The core generalizes Theorems 4.10 and 14.5 and fills the gap
 stated after Theorem 14.5. So the two are added as one new Section 15,
-directly after Section 14, with the label sub-prefix `odg:frac:`. None of the
-seven sources, nor source 13 or 14, contradicts another.
+directly after Section 14, with the label sub-prefix `odg:frac:`. Sources
+C10–C14 all prove one spine: an elementary Bézout certificate for squarefree
+`y^m = P(x)` and a two-ring argument in which Euler derivations, which preserve
+the one-sided Hahn ring and push the opposite valuation ring into its maximal
+ideal, kill every global differential at a point of a proper variety; together
+they give the classification of smooth affine curves and the answer to this
+report's Question 21.1 for smooth curves, including its Weierstrass test. Source
+C14 is the base because it has the weakest hypotheses on the shared theorems
+(any field of characteristic zero, any exponent group); C10 and C12 assume an
+algebraically closed field for curves, C11 such a field or `R`, and C13 a
+divisible exponent group and the fields `R`, `C`. The five are added as one new
+part, Sections 16–18, directly after Section 15, with the label sub-prefix
+`odg:cr:`. None of the twelve sources, nor source 13 or 14, contradicts another.
 
 **Printed once from sources 06, 07 and 13.** The units lemma, Pell rigidity
 (with the Gaussian solution `(i, i)`), Pell divisibility, the intersective
@@ -185,6 +254,25 @@ classification are credited as special cases of Theorems 15.11 and 15.18, and
 tables are merged into Example 15.23. Source 08's conic example is Proposition
 14.4 with source 01's witness and is not reprinted.
 
+**Printed once from sources C10–C14.** All five reprove the rings, `ct`, the
+units, the degree rules and the Euler derivations (Sections 2, 7 and 11,
+extended in Lemmas 16.1–16.3). Within Sections 16–18, printed once with every
+proving source named: the squarefree theorem and the cubic certificate (all
+five; Theorem 16.6, Proposition 16.8), the nonsingular and singular Weierstrass
+results (Corollary 16.9; Proposition 16.11, from C10, C11, C12, C14), the
+two-ring principle and proper rigidity (all five; Theorems 16.14, 16.16), the
+canonical-bundle and puncture lemmas (Lemmas 17.1, 17.4), the curve
+classification (all five, at different generality; Theorem 17.6), the
+arithmetic fibers (C10, C11, C13, C14; Theorem 17.11, Corollary 17.12),
+unimodular coordinates (C10, C13, C14; Theorem 17.18), abelian and semiabelian
+rigidity (all five; Theorems 18.2, 18.4), the quasi-finite theorem (C10, C11,
+C12, C14; Theorem 18.5), the characteristic-two point (C11 and C14, the same
+example with exponents rescaled by three; Proposition 18.12), the fixed-workspace
+non-normality examples (C10, C12, C13, credited to Proposition 4.12; Section
+17.5), the field points outside the ring (C10, C12, C13, C14; Remark 17.24) and
+the nonconstant-coefficient examples (Section 18.5). The coordinate clearing
+reproved by C10 and C12 is Corollary 4.7 and is not reprinted.
+
 **Kept twice, as different proofs.** Uniqueness of `ct`: 01's divisibility
 proof (Proposition 3.5) and 05's route through the set-sized quotient theorem.
 Homogeneous systems: 01's leading-coefficient proof, which needs no quantifier
@@ -201,7 +289,14 @@ one-line formula and 09's adjustment of constants (Remark 15.12). The absence
 of a gcd: the halving argument of 08 and 09 (Remark 15.8), next to the two
 routes for Theorem 4.10. Two elements outside the fraction field of one
 workspace: 08's exponential series and 09's factorial-gap series (Example
-15.52).
+15.52). Squarefree rigidity: the strict-ideal proof of C12 and C13 (Theorem
+16.6) and the unit argument at the corner `(2,2)` of C10, C11 and C14 (Remark
+16.7); Theorem 7.4 keeps its own proof as a special case. The rigid direction of
+the curve classification: C14's proof by descent from `𝕜̄` (Theorem 17.6) and
+C12's logarithmic proof (Theorem 17.8). Positive genus: global generation
+(Theorem 17.2) and one nonzero form (Remark 17.3). Tori: C14's descent through
+`𝕜̄` and C10's faithful flatness (after Lemma 18.3). The Weierstrass result has
+both an elementary and a geometric proof.
 
 **Added in the merge**, each tagged `[merge]` with a complete proof: an
 explicit identity giving the divisibility step of the separated-power proof
@@ -221,12 +316,22 @@ merge was made. The batch-27 merge adds three items, also tagged `[merge]`
 with complete proofs. Remark 15.8: the conclusion of Theorem 4.10 holds in
 every fixed workspace `Oz_Γ`, by the halving route. Corollary 15.30: source
 08's curve criterion stated for homogeneous systems, the partial answer to
-Question 18.3. Remark 15.39: comparison with the omnific groups report. The
+Question 21.3. Remark 15.39: comparison with the omnific groups report. The
 focusing matrices `F_{x,b}` are transposes of that report's non-elementary
 unipotents; they lie outside `E_2(Oz)` at centres with irrational standard
 part; and `E_2(Oz)·∞` is not dense although `K·∞` is, so the density of
 Corollary 15.36 needs non-elementary matrices. Its certificates, the table of
-Example 15.23 and the second Bézout lift were checked with SymPy.
+Example 15.23 and the second Bézout lift were checked with SymPy. The batch-28
+merge adds three items tagged `[merge]` with complete proofs: the closed-centre
+step in C12's logarithmic proof (Theorem 17.8); the comparison with the omnific
+groups report (Remark 18.7): `G_a` is nonrigid and the one-dimensional tori are
+rigid in both reports, the vector-group kernel of Theorem 18.6 is that report's
+unipotent kernel for commutative groups, and real and complex rigidity coincide
+for smooth curves but not for groups (`SO_3`); and the observation that C13's
+characteristic-`p` curve `y^p = x^p − x` is an affine line (after Proposition
+18.13). It also states results of C11 and C13 over every field of
+characteristic zero and every exponent group (Corollaries 16.10, 17.10, Theorems
+16.14, 17.11, 18.6), with the sources' own proofs.
 
 **Notation.** The purely infinite ideal is `Π`, the letter used by the
 foundations report (`found:eq:omnific`); the sources wrote `𝒥` (01), `𝓘`
@@ -259,6 +364,20 @@ residue is `res` on the localization `Oz_Π` (08's `ρ` on `𝒜`; `ρ = √2 �
 here), the polynomial models are `𝒫[X] = Z + X R[X]` (08's `A_τ`, `A_0`,
 `A_m`), the focusing matrices are `F_{x,b} = I + b N_x` (09's `G_{x,b}`; `G` is
 the Gram matrix), and 09's lemma "transvection" is Lemma 15.34, not Lemma 8.2.
+In Sections 16–18 (conventions in Section 16.1) the sources C10–C14 are tagged
+with the letter C, because `[13]` and `[14]` already denote the sibling report's
+manuscripts. Their rings take the names of Section 11: `𝒜_𝕜(Γ)` for the
+nonnegative-support ring (C10's `B_{k,H}`, C11's and C14's `B_Γ(k)`, C12's `B`,
+C13's `ℬ_{k,Γ}`), `Π_𝕜(Γ)` for its ideal (C11's `P_Γ(k)`, C12's and C13's `I`),
+and `ℛ_𝔬(𝕜, Γ)` for the arithmetic ring (C11's `R_Γ(D,k)`, C14's `R_Γ(D;k)`; `D`
+is the Pell parameter here); the new names `ℍ_𝕜(Γ)`, `𝒪_𝕜(Γ)` and `𝔪_𝕜(Γ)`
+denote the Hahn field, its valuation ring and its maximal ideal. Three sources use
+the `t`-convention `t^γ = ω^{−γ}` and are translated. The Euler derivations are
+`∂_λ` with `λ : Γ_Q → 𝕜` (the sources' `D_λ`), and the sources' macros `\OO`
+(`𝒪`), `\A` (`𝔸`) and `\dd` are replaced, since `\OO` is the orthogonal group
+here. In those sections `A` is an abelian variety, not an intermediate ring, `Σ`
+is the boundary of a curve and `⟨a⟩` a coordinate ideal (C12's `J(a)`); C14's
+congruence integers `M, D, L` are `N, N_1, N_2`.
 The full per-source table is Table 1 in Appendix A.
 
 ## What the report claims
@@ -304,7 +423,8 @@ Numbers refer to the built `article.pdf`.
    and generating the unit ideal, is constant (Theorem 7.9); with Wiles and
    Taylor–Wiles there is no unimodular omnific Fermat triple with all
    coordinates nonzero (Corollary 7.10), although `(1, 0, 1)` is unimodular.
-   The threshold is sharp at `n = 2`.
+   The threshold is sharp at `n = 2`. Theorem 7.4 is the case
+   `P(X) = (c − aX^m)/b` of the squarefree theorem of Section 16 (Theorem 16.6).
 7. **Quadratic levels (Section 8).** For integral `q` and `c ≠ 0`: ordinary
    points only in the nondegenerate definite case and in dimension at most
    two; injective linear families for degenerate `q`; injective quadratic
@@ -372,7 +492,9 @@ Numbers refer to the built `article.pdf`.
     every primitive representative of a real direction is an ordinary coprime
     integer tuple. Finite-support solutions specialize to polynomial arcs
     over real coefficients (Theorem 14.7, extending source 05’s integer
-    case); supplied finite-support Bézout witnesses specialize with them.
+    case); supplied finite-support Bézout witnesses specialize with them. On
+   smooth affine curves every nonordinary point shares its constant term with a
+   finite-support one (Corollary 17.16).
 14. **Fractions and denominator ideals (Section 15).** `𝔇(x)` is a nonzero
     ideal with the covariance `𝔇((ax+b)/(cx+d)) = (cx+d)𝔇(x)` under `GL_2(Oz)`
     (Proposition 15.2), principal exactly when it has a least positive member
@@ -417,38 +539,105 @@ Numbers refer to the built `article.pdf`.
     15.50, Examples 15.51, 15.52). The Gaussian dichotomy (Theorem 15.54) and
     the constant-direction criterion over `Z` and `Z[i]` (Corollary 15.55,
     sources 08 and 14).
-15. **Omnific coefficients (Section 16).** The square-discriminant criterion
-    (Theorem 16.1), initial forms (Proposition 16.3), two-term roots
-    (Proposition 16.4, also proved by finite factorization) and simple residue
-    roots that do not lift (Example 16.5). Nonmonic quadratics need an extra
+15. **Differential rigidity (Section 16).** Throughout, `𝕜` is any field of
+    characteristic zero and `Γ` any set-sized ordered abelian group. Euler
+    derivations `∂_λ`, `λ : Γ_Q → 𝕜`, map `𝒜_𝕜(Γ)` into `Π_𝕜(Γ)` and the
+    opposite valuation ring `𝒪_𝕜(Γ)` into its maximal ideal `𝔪_𝕜(Γ)`, and their
+    common constants are `𝕜` (Lemmas 16.1–16.3, Corollary 16.4). Every solution
+    of `y^m = P(x)` in `𝒜_𝕜(Γ)` with `P` squarefree and `m, deg P ≥ 2` is
+    constant, by a finite Bézout certificate (Lemma 16.5, Theorem 16.6; the unit
+    route is Remark 16.7); this contains Theorem 7.4 and Corollary 7.6. For
+    `4a³ + 27b² ≠ 0` every omnific solution of `y² = x³ + ax + b` is an ordinary
+    integer solution, also over `Oz[i]` and for general Weierstrass equations
+    (Proposition 16.8, Corollaries 16.9, 16.10); if `4a³ + 27b² = 0` then
+    `a = −3r², b = 2r³` with `r ∈ Z` for integer `a, b`, and `(s² − 2r, s³ − 3rs)`
+    is an injective family (Proposition 16.11). For any subring `R` and valuation
+    ring `V` of a field with `∂(R) ⊆ R`, `∂(V) ⊆ 𝔪_V`, `R ∩ 𝔪_V = 0`, every global
+    covariant tensor on a proper variety vanishes on the Euler tangents of an
+    `R`-point (Theorem 16.14); with joint constants `𝕜`, a smooth proper `X` with
+    globally generated cotangent sheaf has `X(R) = X(𝕜)` (Theorem 16.16), so
+    `X(𝒜_𝕜(Γ)) = X(𝕜)` (Corollary 16.17). Detection by symmetric differentials, a
+    semiample tautological bundle or an ample cotangent bundle also suffices
+    (Theorem 16.19, Corollary 16.20), and rigidity passes to locally closed
+    subschemes (Proposition 16.21).
+16. **Smooth curves and their omnific points (Section 17).** Curves of positive
+    genus are rigid (Theorem 17.2). For `Γ ≠ 0`, a smooth geometrically integral
+    affine curve has nonconstant `𝒜_𝕜(Γ)`-points exactly when it is `𝔸¹_𝕜`
+    (Theorem 17.6), with a second, logarithmic proof over algebraically closed
+    fields (Theorem 17.8); every smooth geometrically integral separated curve with
+    nonconstant points is `𝔸¹` or `ℙ¹` (Corollary 17.10). Over any subring
+    `𝔬 ⊆ 𝕜` the points over `ℛ_𝔬(𝕜, Γ)` are ordinary unless the curve is an
+    affine line, and then every fiber of `ct` over an `𝔬`-point is a copy of
+    `Π_𝕜(Γ)` (Theorem 17.11). For an affine model over `Z` with smooth generic
+    fiber: `𝒞(Oz) = 𝒞(Z)` unless the fiber is `𝔸¹_Q`, and then each fiber over an
+    integer point is `{φ(φ⁻¹(n) + s) : s ∈ Π}` (Corollary 17.12), with integer
+    polynomial arcs through every integer point (Lemma 17.14), a congruence test
+    for the integer points (Proposition 17.15) and finite-support witnesses
+    (Corollary 17.16). Separated models over `Z` with rigid complex fiber have only
+    ordinary omnific points (Theorem 17.17). On a projective variety rigid over
+    `𝒜_𝕜(Γ)`, unimodular tuples over `ℛ_𝔬(𝕜, Γ)` are constant (Theorem 17.18); a
+    coordinate ideal is invertible iff principal iff the point is rational
+    (Theorems 17.20, 17.21); on a curve of positive genus over `Q` the points with
+    unimodular omnific coordinates are its rational points (Corollary 17.22), and
+    Example 17.23 gives an explicit noninvertible ideal. Field points outside the
+    ring and the status of singular curves are Remark 17.24 and Section 17.5.
+17. **Group varieties, coefficient algebras and sharpness (Section 18).**
+    Abelian varieties and their locally closed subschemes, tori and semiabelian
+    varieties are rigid (Theorem 18.2, Lemma 18.3, Theorem 18.4), and rigidity
+    passes along quasi-finite maps (Theorem 18.5). For a smooth connected
+    commutative algebraic group `G` with maximal unipotent subgroup `≅ G_a^d`,
+    `G(𝒜_𝕜(Γ)) ≅ G(𝕜) ⊕ Π_𝕜(Γ)^d` (Theorem 18.6), consistent with the omnific
+    groups report (Remark 18.7). For every reduced `𝕜`-algebra `S` the rigid
+    classes satisfy `X(S) ≅ X(𝒜_S(Γ))` (Theorem 18.9); over dual numbers an
+    abelian variety gains exactly `Lie A ⊗ Π_𝕜(Γ)` (Theorem 18.11). In
+    characteristic two the smooth cubic `y² + y = x³` has the nonconstant point
+    `(ω^{1/3}, Σ ω^{2^{−n}})` (Proposition 18.12), and in characteristic `p`
+    squarefree rigidity fails (Proposition 18.13). `Z[x, y] ⊆ R((ω⁻¹))` with
+    `x = ω²`, `y = ω³(1 − ω⁻⁴)^{1/2}` is a discretely ordered ring with no
+    injective homomorphism into `Oz` (Theorem 18.14). Nonconstant coefficients
+    and the valuation ring are not rigid (Section 18.5).
+18. **Omnific coefficients (Section 19).** The square-discriminant criterion
+    (Theorem 19.1), initial forms (Proposition 19.3), two-term roots
+    (Proposition 19.4, also proved by finite factorization) and simple residue
+    roots that do not lift (Example 19.5). Nonmonic quadratics need an extra
     divisibility condition; the omnific lifting failure concerns a different
     ring from finite-surreal standard-part lifting. The sibling report's fresh-scale image-gap theorem contains
-    `x² = ω² + 1` (Example 16.2) and the two-term equations as special cases.
+    `x² = ω² + 1` (Example 19.2) and the two-term equations as special cases.
 
-**Questions (Section 18).** Two source questions are recorded as settled by
-source 05 (Section 18.1): source 01's `Y² = X³ + 1` and coprime exponents, and
-the unimodular half of the Fermat questions of sources 01 and 02. Section 18.2
-records that source 06 answers the first part of Question 18.4 (an
+**Questions (Section 21).** Two source questions are recorded as settled by
+source 05 (Section 21.1): source 01's `Y² = X³ + 1` and coprime exponents, and
+the unimodular half of the Fermat questions of sources 01 and 02. Section 21.2
+records that source 06 answers the first part of Question 21.4 (an
 existential definition of `Π`) and source 07's closing question on
 positive-existential definitions of `Π` and of the graph of `ct`, and that the
-report's quartics answer source 06's degree question in part. Section 18.3
-records that source 08's rational-curve criterion answers Question 18.3 in part
-(Corollary 15.30); points off rational curves and the dependence on the
-integral model remain open. Still open: affine varieties and curves, including
-`Y² = X³ + aX + b` with `a ≠ 0` (Question 18.1; the omnific groups report
-answers it for closed subgroup schemes of `GL_N`); primitive, non-unimodular
-Fermat triples (Question 18.2); primitive homogeneous solutions, re-scoped
-(Question 18.3); which fibers or subideals of `Π` are Diophantine (the second
-part of Question 18.4); the guard's complexity, the least degree of a
-definition of `Z`, a single Gaussian polynomial and better quantifier bounds
-(Question 18.5); roots with omnific coefficients (Question 18.6); the size
-boundary (Question 18.7); finite-support search (Question 18.8); coefficient
-recovery of lower quantifier complexity (Question 18.9); structure that
-determines the real form of `Oz[i]` (Question 18.10); infinite algebraic
-extensions (Question 18.11); and, from sources 08 and 09, denominator ideals
-beyond one parameter (Question 18.12), the extent of `𝒱` (Question 18.13),
-orbits outside `𝒱` (Question 18.14), several parameters (Question 18.15) and
-other scale extensions (Question 18.16). No source claims that these are open
+report's quartics answer source 06's degree question in part. Section 21.3
+records that source 08's rational-curve criterion answers Question 21.3 in part
+(Corollary 15.30). Section 21.4 records that sources C10–C14 answer Question
+21.1 for smooth curves, including its test `Y² = X³ + aX + b` with `a ≠ 0`
+(nonsingular: only ordinary solutions; singular: polynomial families), answer
+the existence part of Question 21.8 for smooth curves (Corollary 17.16), and
+answer Question 21.3 in part for projective varieties with rigid complex fiber
+(Theorem 17.18, Corollary 17.22). Still open: singular curves and general affine
+varieties of higher dimension (Question 21.1, re-scoped; the omnific groups
+report answers it for closed subgroup schemes of `GL_N`); primitive,
+non-unimodular Fermat triples (Question 21.2); primitive homogeneous solutions
+off rational curves and off rigid targets, and the dependence on the integral
+model (Question 21.3, re-scoped); which fibers or subideals of `Π` are
+Diophantine (the second part of Question 21.4); the guard's complexity, the
+least degree of a definition of `Z`, a single Gaussian polynomial and better
+quantifier bounds (Question 21.5); roots with omnific coefficients (Question
+21.6); the size boundary (Question 21.7); finite-support search beyond smooth
+curves (Question 21.8, re-scoped); coefficient recovery of lower quantifier
+complexity (Question 21.9); structure that determines the real form of `Oz[i]`
+(Question 21.10); infinite algebraic extensions (Question 21.11); from sources
+08 and 09, denominator ideals beyond one parameter (Question 21.12), the extent
+of `𝒱` (Question 21.13), orbits outside `𝒱` (Question 21.14), several parameters
+(Question 21.15) and other scale extensions (Question 21.16); and, from sources
+C10–C14, singular curves (Question 21.17), rigidity beyond cotangent generation
+(Question 21.18), affine varieties of higher dimension (Question 21.19),
+primitive versus unimodular tuples on curves of positive genus (Question 21.20),
+positive characteristic (Question 21.21), and omnific coefficients and
+effective certificates (Question 21.22). No source claims that these are open
 in the literature.
 
 ## Corrections made in the merge
@@ -525,7 +714,7 @@ in the literature.
   criterion. The sibling report's results postdate the pin of sources 08
   and 09.
 - The review of the omnific-coefficients section (numbered 15 in that pass,
-  now Section 16) gives a finite-algebra proof of the two-term root
+  now Section 19) gives a finite-algebra proof of the two-term root
   obstruction, expands the support justification of its binomial series,
   and distinguishes the omnific constant-term map from finite-surreal
   residue lifting. The monic hypothesis and leading-term cancellation
@@ -547,6 +736,30 @@ in the literature.
   explicit, specifies strict positivity in the collapse obstruction, and
   derives the c.e.-set classification without ordering or a square root
   of two, using the order-free integer guard.
+- Source C12's logarithmic proof takes "the centre" of the valuation-ring point
+  without showing that it is a closed point; if it were the generic point the
+  function field would embed into `𝕜`. The step is added (Theorem 17.8).
+- Source C13 assumes a divisible exponent group and, for curves and groups, the
+  fields `R` and `C`; sources C10 and C12 assume algebraically closed fields for
+  curves and C11 such fields or `R`. None of this is needed; the report states
+  the results over every field of characteristic zero and every exponent group.
+- Sources C10, C11 and C14 treat the corner `m = d = 2` of the squarefree theorem
+  by units; the strict inclusion `∂(𝒜) ⊆ Π` of C12 and C13 removes it and is
+  printed first. That inclusion is already `opa:par:prop:Euler` and
+  `osq:prop:classder`, which none of the five cites; the credit is added.
+- Source C13 cites Stacks Tag 02AT for differentials, which is Section 111.50 of
+  the chapter of exercises; Tag 00RM (Section 10.131), as cited by C10 and C14,
+  is used instead. Its Tag 01KF for the valuative criterion was not checked; Tag
+  0BX5 (Lemma 29.43.1), cited by C12 and C14, is used. The numbering of Milne's
+  *Abelian Varieties* IV 6.7 (proposition in C10 and C11, corollary in C14) was
+  not checked.
+- The fixed-workspace non-integral-closure examples of C10, C12 and C13 repeat
+  the witness `√(ω² + 1)` of Proposition 4.12, which was in this report at their
+  pins; only their fixed-workspace forms are new, and the credit is added.
+- No other gap was found in sources C10–C14, and none contradicts another source
+  or the collection. Source C13's characteristic-`p` example is correct as a
+  counterexample to squarefree rigidity; its curve is an affine line in
+  characteristic `p`, which is recorded.
 
 **Stale repository statements.** Source 01 said the repository's
 trigonometry material used the omnific integer part; at the pin the
@@ -564,7 +777,7 @@ coefficient recovery by a dilation, and the formalization ledger remain
 accurate. Sources 08 and 09 cite the rational-direction criterion as
 "Theorem 11.5", its number at their pin `9a385d3`; it is now Theorem 14.5 (and
 09's "§§4, 11" are now Sections 4 and 14). Source 09 describes this report as
-built from manuscripts of 22 September, true at its pin; it now has seven
+built from manuscripts of 22 September, true at its pin; it now has twelve
 sources of 22 and 23 September. Source 08 gives the sibling report its old
 title, *The Universal Set-Sized Quotient of the Omnific Integers*; it is now
 *Set-Sized Quotients of the Omnific Integers*. Their other citations of this
@@ -572,15 +785,26 @@ report (Theorems 4.2, 4.6, 4.10, Corollary 4.3, the floor of Section 2) are
 accurate, and 09's statement that its omnific results are pending in Lean
 still holds. The sibling report's statement that manuscript 14's Gaussian
 direction criterion is printed here was not true before this integration; it
-is now (Corollary 15.55).
+is now (Corollary 15.55). Sources C10–C14 inspected the repository through the
+connector at `4cdeaec`, `f6e031a` and `89bec38`, when this report had only
+sources 01, 02 and 05 and fourteen sections. All five call `odg:q:affine`
+"Question 14.1"; it is now Question 21.1, source C14's "Question 14.2" is
+Question 21.2, source C13's "Section 11" is Section 14, and their "Section 14" is
+Section 21; Sections 6–7 and Theorem 7.4 keep their numbers. The blob hashes they
+record (`4c26f4e` at `4cdeaec`, `47af413` at `89bec38` and `f6e031a`) are
+correct. Source C14's "three-source assembly", source C11's "reviewed Sections
+1–7" and source C12's "51-report collection" were true at their pins; the report
+now has twelve sources, the reviews extend further but not to Sections 16–18,
+and the catalogue has grown. There is still no Lean declaration about omnific
+integers.
 
 ## What the report does not claim
 
 No non-claim of any source was dropped. Appendix B lists them per source (01:
-24 items, 02: 22, 05: 26, 06: 25, 07: 19, 08: 25, 09: 20, 7 for the results
-printed from source 13 and 2 for the criterion printed from source 14, plus
-the caveats common to 01, 02 and 05, to 06 and 07, and to 08 and 09). The
-main ones:
+24 items, 02: 22, 05: 26, 06: 25, 07: 19, 08: 25, 09: 20, C10: 14, C11: 15,
+C12: 13, C13: 13, C14: 12, 7 for the results printed from source 13 and 2 for
+the criterion printed from source 14, plus the caveats common to 01, 02 and 05,
+to 06 and 07, to 08 and 09, and to C10–C14). The main ones:
 
 - **Status.** AI-assisted; not refereed; nothing formalized in Lean; the finite
   scripts check identities and examples, not theorems. The repository was
@@ -592,8 +816,11 @@ main ones:
   reconstruction package, source 07 the formula package and the
   constant-term detector, source 08 the rational-function classification and
   the denominator-defect package, and source 09 the multiplier and dichotomy
-  theorems, the one-scale classification and the orbit and focusing theorems
-  as their most distinctive contributions. None is certified new. First-order definability of `Z` in `Oz` and its nonsaturation
+  theorems, the one-scale classification and the orbit and focusing theorems,
+  and sources C10–C14 the two-ring contraction, the squarefree extension, the
+  smooth-curve classification and its arithmetic, group, coefficient-algebra
+  and projective consequences, as their most distinctive contributions. None is
+  certified new. First-order definability of `Z` in `Oz` and its nonsaturation
   go back to a 2018 MathOverflow comment by *nombre*, which source 06 credits;
   the ideal equation belongs to the same obstruction.
 - **Rigidity is not finiteness.** No Thue or Baker finiteness, no bounds and no
@@ -624,7 +851,28 @@ main ones:
   number fields; class statements are read formula by formula.
 - **Fermat.** Scaling solutions are not primitive; Theorem 7.9 says nothing
   about triples that merely lack a common nonunit divisor.
-- **Elliptic curves.** `y² = x³ + ax + b` with `a ≠ 0` is outside the method.
+- **Elliptic curves.** Source 05's separated-power method does not reach
+  `y² = x³ + ax + b` with `a ≠ 0`; that stays a boundary of its proof. Sources
+  C10–C14 settle the equation by a different certificate (Corollary 16.9); they
+  do not list or bound its ordinary solutions.
+- **Curve and differential rigidity.** The question answered is this report's
+  continuation question, not a literature conjecture, and nothing is claimed
+  about singular curves in general, affine varieties of higher dimension or
+  primitive, non-unimodular tuples. Coefficients must be constants; nothing is
+  claimed over `No`, `No[i]` or the valuation ring, where nonconstant points
+  exist. The Euler derivations are local, not canonical and not the
+  Berarducci–Mantova derivation; no spectrum of a proper class is formed.
+  Global generation or symmetric detection is sufficient, not necessary, and
+  nothing is inferred from nefness, bigness, general type or the absence of
+  rational curves. The group-point splitting is not an algebraic splitting; the
+  reduced-base principle is not faithful flatness; the congruence criterion is
+  an algorithm only once a parametrization is supplied; C14's `Γ = Z` remark does
+  not assert non-normality, and a non-normality example is not a failed lift.
+  Van den Dries (1981) was not read in full: C11 and C14 consulted its record
+  and abstract only, the placement check confirmed the abstract, and no
+  comparison or priority is claimed. The characteristic-2
+  telescoping is not claimed as new, and the finite-polynomial case of
+  positive-genus rigidity is standard.
 - **Full class versus workspace.** Common divisors, clearing, `Frac(Oz) = No`,
   the reconstruction of `No`, non-generation of `Π`, the general no-gcd pair
   and the set-sized quotient theorem are not asserted for fixed Hahn
@@ -652,7 +900,7 @@ main ones:
   procedure needs exact coefficients. The primitive-fraction class is not a
   subring. Manuscript 14's criterion concerns coordinate representatives, not
   all points of a projective scheme over a ring.
-- **Formalization.** The proposed Lean modules (Section 17.2) are proposals.
+- **Formalization.** The proposed Lean modules (Section 20.2) are proposals.
   At the repository's Mathlib pin (`81a5d257`) `Nat.sum_four_squares` exists and
   no three-square theorem does, so only the four-square definitions of `Z`
   rest on a theorem in Mathlib.
@@ -677,19 +925,39 @@ main ones:
   preliminaries overlap Sections 2–4 here. Its manuscript 13 supplies the
   Gaussian fiber and étale norm results printed here once (Section 6), and
   its manuscript 16 (files `16-fresh-scale-`) proves the fresh-scale image-gap
-  theorem generalizing Example 16.2 and Proposition 16.4. Its manuscript 14
+  theorem generalizing Example 19.2 and Proposition 19.4. Its manuscript 14
   (files `14-arithmetic-tensors-`) proves the direction criterion printed here
   as Corollary 15.55; its `osq:tn:thm:duals`, `osq:tn:thm:syzygy`(iii) and
   `osq:tn:thm:hom` contain the rank-two case of Theorem 15.7, the intersection
   of Example 15.27 for monomial `t`, and the scalar step of Theorem 15.11;
   `osq:prop:fractions`(iii) gives `M⁻¹Oz = No`, and `osq:cor:smallprimes` agrees
-  with the residue field `Q` of `Oz_Π` (Proposition 15.40).
+  with the residue field `Q` of `Oz_Π` (Proposition 15.40). Its class-valued
+  derivations `Oz → Π` (`osq:prop:classder`) contain the strict inclusion
+  `∂(𝒜) ⊆ Π` of Lemma 16.2; its vanishing of derivations of the class ring into
+  set-sized modules (`osq:thm:derivations`) is no conflict, since the Euler
+  derivations here act on set-sized workspaces.
 - [`omnific-groups-and-lattices`](../omnific-groups-and-lattices/): its
   cusp-residue obstruction and non-elementary unipotents
   (`ogl:el:prop:cuspresidue`, `ogl:el:thm:nonel`) show that the focusing
   matrices of Lemma 15.34 lie outside `E_2(Oz)` at irrational centres and that
   the density of Corollary 15.36 needs such matrices (Remark 15.39). It also
-  answers Question 18.1 for closed subgroup schemes of `GL_N`.
+  answers Question 21.1 for closed subgroup schemes of `GL_N`; its remark
+  `ogl:alg:rem:affine` still records the curve case as open, which Sections
+  16–18 now settle for smooth curves. The two answers agree (Remark 18.7): `G_a`
+  is nonrigid and the one-dimensional tori (`G_m`, `SO(2)`) are rigid; the
+  commutative-group kernel of Theorem 18.6 is its unipotent kernel
+  `ogl:alg:prop:bch` for commutative groups; semiabelian rigidity extends its
+  torus freezing beyond linear groups; and real and complex rigidity coincide
+  for smooth curves but not for groups (`SO_3`), with no conflict because the
+  sources here transfer rigidity only from the complex fiber to the real one.
+- [`omnific-preserving-automorphisms`](../omnific-preserving-automorphisms/):
+  its Euler derivations map `ℛ_𝔬(k, Γ)` into `Π_k(Γ)` (`opa:par:prop:Euler`),
+  the strict inclusion used in Sections 16–17; sources C10–C14 did not cite it.
+- [`hahn-tate-uniformization`](../../surcomplex/hahn-tate-uniformization/): its
+  Tate points are field points of curves with nonconstant `j`-invariant, outside
+  the constant-coefficient hypothesis of Section 17; like Remark 17.24 and
+  Section 18.5 they show that field points and varying coefficients are not
+  constrained by the ring rigidity here.
 - [`surcomplex-field-automorphisms`](../../surcomplex/surcomplex-field-automorphisms/)
   constructs the phase twists and the dilations `S_a`; source 06 credits it and
   proves that the twist of Lemma 13.9 preserves `Oz[i]`.
@@ -711,10 +979,24 @@ processor is needed:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The build gives 118 pages with no errors, warnings, undefined references,
-multiply defined labels or overfull boxes. (The text at `a4dcb91`, before
-Section 15, built to 87 pages with the same MiKTeX installation; the PDF
-committed then had 86 pages.) Source 08's `code/08-fractions-Makefile` and
+The build gives 162 pages with no errors, warnings, undefined references,
+multiply defined labels or overfull boxes. (Before the merge that joined the
+reviews of Sections 12, 13 and 15.1–15.4 to Sections 16–18, the text at
+`ac54217` built to 157 pages and the reviewed text at `3d40856`, without
+Sections 16–18, to 122. The text at `c6359e4`, before
+Sections 16–18, built to 118 pages with the same MiKTeX installation, with the
+same zero counts; the text at `a4dcb91`, before Section 15, built to 87 pages,
+and the PDF committed then had 86 pages.) As in the text at `c6359e4`, the
+sources note of the title page runs onto the second page. The Makefiles of
+sources C10, C11 and C14 and the build scripts of C12 (`.sh`, `.ps1`) compile
+the delivered `article.tex` in their own directory and run the delivered
+`verify.py` or `verification.py`; source C13's `build.sh` compiles its delivered
+`omnific_differential_rigidity.tex`. None of those files is shipped under those
+names, and none of these scripts builds this report. The shipped source audits
+of sources C10–C14 and the build records of C10, C11 and C14 describe their own
+articles and file names (`verify.py`, `verification.json`,
+`verification_report.json`, `verify_certificates.py`), shipped here with the
+prefixes `10-` to `14-`. Source 08's `code/08-fractions-Makefile` and
 source 09's `code/09-fraction-fibres-build.sh` and `.ps1` compile the delivered
 `omnific_fractions.tex`, which is not shipped; they do not build this report.
 Source 08's shipped source audit describes its own article and files
@@ -732,9 +1014,10 @@ its delivered file names (`article.tex`, `verify_examples.py`,
 `data/05-diophantine-rigidity-requirements.txt`. Source 06's shipped source
 audit likewise describes source 06's own article.
 
-The checks of sources 01, 02, 05, 06, 08 and 09 need Python 3.9 or later
-(3.10 for sources 06 and 08) and SymPy (tested with 1.14.0); source 07's needs
-Python 3.10 or later and the standard library only. From this directory:
+The checks of sources 01, 02, 05, 06, 08, 09, C10, C12, C13 and C14 need
+Python 3.9 or later (3.10 for sources 06, 08, C10, C13 and C14) and SymPy (tested
+with 1.14.0); those of sources 07 and C11 need Python 3.10 or later and the
+standard library only. From this directory:
 
 ```text
 python -m pip install -r data/01-diophantine-geometry-requirements.txt
@@ -747,7 +1030,25 @@ python code/07-defining-arithmetic-verify.py
 python code/08-fractions-verify.py --output <scratch>/08-verification.json
 cp code/09-fraction-fibres-verify_examples.py <scratch>/verify_examples.py
 python <scratch>/verify_examples.py
+python code/10-curve-rigidity-verify.py --output <scratch>/10-verification.json
+python code/11-curve-abelian-rigidity-verify.py --output <scratch>/11-verification.json
+python code/12-curve-logarithmic-verification.py --output <scratch>/12-verification_report.json
+python code/13-differential-rigidity-verify_certificates.py
+cp code/14-hahn-differential-rigidity-verify.py <scratch>/verify.py
+python <scratch>/verify.py
 ```
+
+The safest course for sources C10, C11, C12 and C14 is to run copies of the
+scripts in a scratch directory, as these reports were checked; with `--output`
+pointing outside this directory, as above, the first three also leave `code/`
+unchanged. Their scripts **write** reports next to themselves by default
+(`verification.json` for C10 and C11, `verification_report.json` for C12), and
+source C14's script **always** writes `verification.json` next to itself, so it
+must be run on a copy. Source C11's script also prints its report. Source C13's
+script prints its report and writes a file only to a path given with
+`--output`; its delivered README's rerun line `--output verification_report.txt`
+would overwrite a report file, so do not point it at the shipped record
+`data/13-differential-rigidity-verification_report.txt`.
 
 Source 01's script **writes** a JSON report, by default
 `verification_report.json` in the working directory; pass `--output` with a
@@ -787,3 +1088,22 @@ examples, local density and five focusing samples) gave a report that differs
 from its record only in the generation time and Python version. The
 certificates and table of the merge's Section 15 additions were checked
 separately with SymPy.
+
+When Sections 16–18 were written, the five scripts of sources C10–C14 passed on
+copies in a scratch directory with Python 3.14.4 and SymPy 1.14.0. Source C10's
+3,991 assertions in eight groups (the cubic certificate, squarefree certificates
+for eleven polynomials and `2 ≤ m ≤ 8`, the degree obstruction for
+`2 ≤ d, m ≤ 30`, parametrizations, binomial coefficients, the constant-term
+boundary, finite-support Euler laws in lexicographic ranks one to three, and
+clearing) gave a report differing from its record only in the Python version, run
+time and timestamp. Source C11's 13,049 assertions in 19 categories (over `Q` and
+`F_2`: the cubic and divisibility identities, Euler laws, the characteristic-two
+tail, the discretely ordered ring, binomial coefficients, the dual-number example)
+gave a report identical to its record. Source C12's 49 checks (35 differential
+certificates, the cubic and singular identities, the elliptic root coefficients,
+400 finite-support trials) and source C14's 3,440 assertions in five groups
+(symbolic, finite series, degrees, arithmetic including the congruence example,
+characteristic two) differ from their records only in the Python version (3.13.5
+there). Source C13's 12,874 assertions in 17 checks printed a report identical to
+its record except for the Python version. The identities and expansions printed
+in Sections 16–18 were checked separately with SymPy.

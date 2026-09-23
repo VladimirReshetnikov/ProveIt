@@ -2,14 +2,19 @@
 
 This record covers the elementary source comparison in Sections 1–4 of the
 maintained [article](article.tex), followed by proof reviews of the original Sections 5–12.
-After both expansions, the reviewed original Sections 11–12 are Sections
-14 and 16; the new fractions section is Section 15.
+After the three expansions, the reviewed original Sections 11–12 are Sections
+14 and 19; the fractions section is Section 15, and the curve and differential
+rigidity part is Sections 16–18.
 Subsequent passes review the newly added Sections 11–13 from sources 06–07.
 Further passes review Sections 15.1–15.7 from sources 08–09. The added
-material in Sections 6 and 10, Sections 15.8–15.12 and Sections 17–18 remain
+material in Sections 6 and 10, Sections 15.8–15.12, Sections 16–18 with the
+pointers they added in Sections 6, 7 and 14, and Sections 20–21 remain
 outside the completed proof review.
-It does **not** certify integration of every result in the seven manuscripts
-or review of all later proofs and imported classical results.
+It does **not** certify integration of every result in the twelve manuscripts
+or review of all later proofs and imported classical results. Section numbers
+below are those current when each pass was made; the last section gives the
+present numbering. The curve and differential rigidity part (Sections 16–18)
+is outside every pass recorded here.
 
 ## Recoverable sources
 
@@ -295,7 +300,7 @@ added material in Sections 6 and 10, Sections 13 and 16–17, and remaining
 imported foundations, historical priority and source reconciliation still
 require review.
 
-## Integration of fraction manuscripts and current numbering
+## Integration of fraction manuscripts and the numbering then current
 
 Two further manuscripts on omnific fractions, local 08 and 09, were placed in
 `a4dcb91` and integrated after these reviews as a new Section 15
@@ -463,5 +468,30 @@ the zero-parameter correction in the focusing lemma, and explicit chart
 topology in the dense-fiber and nowhere-continuity corollaries. Section
 15.8 onward is byte-identical. The source-level results, including the
 explicit topology consequence, remain pending in Lean. Sections
-15.8–15.12 and 17–18, added material in Sections 6 and 10, new companions
+15.8–15.12 and 20–21 (numbered 17–18 in this pass), all of Sections 16–18, added material in Sections 6 and 10, new companions
 and remaining imported foundations and source reconciliation need review.
+
+## Integration of curve and differential rigidity manuscripts and current numbering
+
+Five manuscripts on curve and differential rigidity, tagged C10–C14 after their
+file prefixes `10-` to `14-`, were placed in `c6359e4` and integrated after the fraction manuscripts as
+new Sections 16–18 (`odg:cr:` labels): the squarefree and Weierstrass theorems,
+the two-ring differential principle, the classification of smooth affine curves,
+arithmetic fibers, projective coordinates, group varieties and boundary examples.
+The same integration added pointers in Sections 6, 7 and 14, a paragraph and a
+proposed module in the formalization section, the answer to `odg:q:affine` for
+smooth curves, partial answers to `odg:q:search` and `odg:q:homogeneous`, and six
+new questions. That material is outside every pass recorded here. Inserting Sections 16–18
+moved the three sections after them by three: the omnific-coefficients section
+(called 15 or 16 above) is now Section 19, the formalization section Section 20
+and the questions Section 21. Statement numbers in Sections 1–15 are unchanged,
+and no label was renamed or removed.
+
+The passes above therefore use three numberings of the last three sections.
+The records up to and including the Section 11 and Section 12 reviews call the
+omnific-coefficients, formalization and questions sections 15, 16 and 17 (and,
+before the batch-25 merge, the families section 11); the fraction-integration
+record, the Section 13 review and the Sections 15.1–15.4 and 15.5–15.7 reviews
+call them 16, 17 and 18. They are now
+Sections 19, 20 and 21. Sections 1–15 and their subsections, including the
+Sections 15.1–15.4 reviewed above, keep their numbers.
