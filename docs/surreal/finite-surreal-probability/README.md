@@ -13,7 +13,7 @@ source, and nothing here was selected out of a larger body of work.
 ```
 article.tex        the report, standalone LaTeX with an internal bibliography
                    (delivered as surreal_probability.tex, renamed on placement)
-article.pdf        the compiled report, 49 pages
+article.pdf        the compiled report, 50 pages
 README.md          this guide
 RESEARCH_AUDIT.md  the manuscript's own repository, literature and evidence audit, as delivered
 code/verify.py     exact finite checks in Q(t) (Python 3.10+, standard library only)
@@ -36,11 +36,12 @@ contains no numbered statement or equation, so every theorem, equation and
 section number of the manuscript is unchanged. The numbers below are checked
 against the build of `article.tex` in this directory.
 
-The current proof review covers Sections 2–11: scalar workspaces, standard
+The current proof review covers Sections 2–13: scalar workspaces, standard
 part, finite probability, conditional shadows, Bayesian updates, logits,
 softmax, finite information theory, Gibbs laws, smoothing, logistic separation,
 finite stochastic processes, infinite-addition conventions, normalized
-hierarchies and their integration and posterior kernels. It corrects the point-weight event-algebra hypothesis,
+hierarchies, integration, posterior kernels, coin obstructions and regular
+all-subsets extensions. It corrects the point-weight event-algebra hypothesis,
 the joint-normalizer condition for successive updates, neutral evidence and
 the distinction between sufficient and necessary conditioning precision.
 It also separates the attained interior logarithmic-score minimum from the
@@ -49,8 +50,9 @@ Smoothing now distinguishes positive prior weights from posterior support,
 and optional stopping states adaptation and stopping-time measurability.
 The hierarchy review makes common supports, uniform bounds and coefficientwise
 convergence explicit and gives a posterior with nonintegrable coefficients
-before density cancellation. Sections 12 onward and the remaining imports
-still require review; see the
+before density cancellation. The extension review expands coefficient variation,
+relative embeddings, ultrafilters and finite compactness models. Sections 14
+onward and the remaining imports still require review; see the
 collection's [review record](../../REVIEW.md).
 
 ## What the report claims
@@ -315,7 +317,7 @@ the pin and the delivered 35-page PDF.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-This build gives 49 pages (a title page, two contents pages and 46 numbered
+This build gives 50 pages (a title page, two contents pages and 47 numbered
 pages), with no errors, no undefined or multiply-defined references or
 citations, no duplicate PDF destinations, and no LaTeX, package or box warnings.
 No bibliography database or external figure is needed.
@@ -607,3 +609,84 @@ All 2,250 source-index entries remain correct and all 932 local Markdown
 destinations in 97 files resolve. The probability source and 49-page PDF
 are unchanged by the merge; it adds no probability formalization or review
 of Sections 12 onward.
+
+The sixth finite-probability pass reviews Sections 12–13. The two coin
+obstructions now expose the common mechanism: real coefficient measures
+would need unbounded total variation. The rare-coin first-success partition,
+including its complementary all-zero event, gives `2N`; the fair-coin proof
+expands pattern multiplicities, second/fourth moments, Hölder exponents and
+an explicit finite contradiction threshold. Both exclude signed extensions.
+The infinite negative-logit argument now uses the leading coefficient and
+exponent of `exp(−L)` in the original Hahn coordinates; it does not assume
+that this infinitesimal is a monomial or that changing coordinates preserves
+coefficientwise measure structure.
+
+The relative ordered-field embedding proof now constructs both real closures,
+checks their size, uses the simplest element of each cut, proves polynomial
+and rational-function sign preservation, and treats limit stages and the final
+restriction to the original extension. The ultrafilter argument spells out
+properness, fineness, nonprincipality, ultrapower order, positive singleton
+masses and the infinite snapshot size. The even/odd example and the limits of
+permutation invariance are expanded; the shift on the positive integers is
+explicitly an injection, and a separate permutation witnesses failure of
+unrestricted invariance under regularity. The shared notation guide separates
+fine ultrafilters from the fine topology and scalar snapshot sizes from ordinary
+cardinalities.
+
+The extension theorem explicitly assumes an ordered subfield and a set-sized
+language with a diagram that preserves the original constants. Its finite
+models split each positive parent mass equally among nonempty refined children,
+preserving all named old events and disjoint-additivity constraints. Different
+finite models need not be compatible. Finite sample spaces admit the splitting
+inside the original field; the coin corollary applies compactness over `R(t)`
+and fixes the original `t`. Checked the construction comparison against
+[Benci–Horsten–Wenmackers, arXiv Section 4.2](https://arxiv.org/pdf/1106.1524)
+and [Brickhill–Horsten, Definition 4 and Propositions 5–6](https://arxiv.org/pdf/1608.02850).
+These references support the sampling construction and its regularity/uniformity
+scope, without identifying their infinite-sum convention with Hahn summation.
+
+Validation: baseline and revised PDFs build in three warning-free passes at
+49 and 50 pages; changed proof pages were visually inspected. All 114 label
+numbers and five historical audit/code/data files are preserved. The copied
+verifier reproduces 2,145 assertions, with JSON unchanged except Python version.
+Another 5,650 exact finite checks cover coefficient variation and moments,
+nonmonomial leading terms, finite atom-splitting models and parity snapshots.
+They do not compute infinite ultrafilters, logical compactness, ordered-field
+embeddings or countable measure extensions. The independent index checks
+2,250 entries in 46 reports, and all 932 local Markdown destinations in 97
+files resolve. The Lean build passes 3,920 jobs and audits 6,397 declarations
+using only `propext`, `Classical.choice` and `Quot.sound`. No new probability
+Lean coverage is claimed. Sections 14 onward and remaining imports are pending.
+
+The following synchronization through `03b474b` merges ten Lean modules
+from `debd084` and the placement `7b5f934`. The new modules cover Wick and
+theta domains, Tate cubic lemmas, point-spectrum rigidity, polynomial-iterate
+equicontinuity, invariant strong measures, finite visibility of negative atoms,
+polynomial branch values and Prony cofactor bounds. Their source mappings retain
+exact hypotheses and remaining clauses. All ten are imported by the default
+root. The merged build passes 3,968 jobs and audits 7,045 declarations using
+only `propext`, `Classical.choice` and `Quot.sound`.
+
+Following the new source-reference check in `AGENTS.md`, all 2,542 distinct
+referenced labels in the ledger and Lean docstrings resolve in current LaTeX
+sources, including optional-argument labels. The placement adds two current
+manuscripts with 48 standard results and source material for five existing
+reports. All 49 newly placed files are preserved byte-for-byte. The two new
+sources are provisionally indexed, giving 2,298 entries in 48 current sources;
+the catalogue still covers 46 assembled reports. Their write phase and review
+remain pending. All 964 local Markdown destinations in 108 files resolve.
+The reviewed finite-probability source and 50-page PDF are unchanged by the
+merge. No new Lean mapping is added for that report, whose Sections 14 onward
+and remaining imports still await review.
+
+The next synchronization, `6149ce2`, incorporates the inverse-tangent Taylor
+formalization from `5e2b6e3`/`2638239`. The geometric inverse agrees with its
+analytic lift at finite inputs, its odd-power strong series has the explicit
+coefficients, and positive infinite slopes have an exact finite remainder
+with the stated standard part. Inverse-sine coefficients and endpoint
+ramification remain pending. No manuscript source changed in this merge.
+The combined build passes 3,971 jobs and audits 7,074 declarations using only
+`propext`, `Classical.choice` and `Quot.sound`. All 2,542 referenced source
+labels resolve; the independent index checks 2,298 entries in 48 sources,
+and all 967 local Markdown destinations in 108 files resolve. The probability
+review remains through Section 13, with its 50-page PDF unchanged.

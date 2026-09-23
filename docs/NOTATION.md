@@ -355,6 +355,15 @@ common support alone does not. Finite-hierarchy posterior coefficients are
 measurable on a common well-ordered support, but need not be integrable until
 the observation density is multiplied in and cancels the denominator.
 
+In probability extension arguments, a **fine ultrafilter** contains the cone
+of snapshots containing each prescribed point; “fine” here is a filter property,
+not the full surreal fine topology. The snapshot size `H = [|s|]` is a scalar
+in an ultrapower, and its image after an ordered-field embedding is a surreal;
+it is not an ordinary set cardinality or an induction index. Such embeddings
+preserve order and field operations, but need not preserve chosen exponential
+structures or Hahn coefficientwise summation. Equal singleton masses imply
+invariance under permutations with finite support, not arbitrary permutations.
+
 The [Hahn–Herglotz report](surcomplex/hahn-herglotz-positivity/article.tex)
 uses real coefficientwise measures on the ordinary circle. Its moments are
 Fourier moments `c_n = ∫ ζ^(−n) dμ` and its Toeplitz convention is

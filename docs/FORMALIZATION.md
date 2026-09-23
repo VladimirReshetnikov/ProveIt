@@ -15,8 +15,9 @@ that the current Lean target compiles or imports them.
 
 ## Scope and how to read this ledger
 
-The canonical inventory below identifies **46 main texts** with **2250**
-standard result environments. Counts cover
+The canonical inventory below identifies **48 current main sources** with
+**2298** standard result environments: 46 assembled reports and two
+provisionally indexed manuscripts awaiting the write phase. Counts cover
 literal `theorem`, `lemma`, `proposition`, and `corollary` environments;
 examples, equations, prose assertions and companion proofs contain further
 claims. Counts are a navigation aid, **not a completeness certificate**.
@@ -29,11 +30,13 @@ expansions integrated through `66dd6bc`, plus batch 19: four new reports and
 further expansions of four existing reports, integrated from `7657737`.
 Batch 20 (placed in `5fe7f8d`, written in `fb182ea`) adds four reports and
 expands the measures and trigonometry reports; all are indexed in their
-written form. The finite-probability review now covers Sections 2–11; later
+written form. The finite-probability review now covers Sections 2–13; later
 sections, the other new reports and the expansions remain pending within the
 review scopes recorded separately. Batch 21 (placed in `d4e71b7`, written in
 `3a2d35d`) adds two reports merged from nine manuscripts, with 136 indexed
-statements; their review remains pending.
+statements; their review remains pending. The placement `7b5f934` adds two
+provisionally indexed manuscripts (48 further statements) and new source
+material for five existing reports. Their write phase and review remain pending.
 Inclusion supplies navigation, not mathematical review or formalization. The implementation
 table retains the precise scope of the newly mapped Lean statements.
 
@@ -519,9 +522,11 @@ cannot replace strong Hahn summability.
 
 `T`, `L`, `P`, `C` mean literal `theorem`, `lemma`, `proposition` and
 `corollary` environments; examples, computations, assessments and other
-custom environments are not included. The index covers all 46 main texts
-present in the repository; two are not named `article.tex`. The reader map
-and the typeset catalogue list all 46. The two reports placed in `d4e71b7`
+custom environments are not included. The index covers all 48 current main
+sources; two are not named `article.tex`. The reader map and typeset catalogue
+list the 46 assembled reports. The two manuscripts placed in `7b5f934` are
+indexed provisionally below, with write phase and catalogue integration pending.
+The two reports placed in `d4e71b7`
 and written in `3a2d35d`,
 [birthday cutoffs](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/)
 and [fields across universes](foundations-and-computation/surreal-fields-across-universes/),
@@ -529,7 +534,7 @@ merge nine manuscripts and are indexed from their written sources; their
 review remains pending.
 The four reports placed in `5fe7f8d` were written in `fb182ea`, which prefixed
 their labels; they are indexed here. The finite-probability review covers
-Sections 2–11; its later sections and the other three reports await review.
+Sections 2–13; its later sections and the other three reports await review.
 The four reports and expanded sections from batch 19 are indexed here, but
 remain pending unless a precise implementation mapping states otherwise.
 
@@ -581,7 +586,9 @@ remain pending unless a precise implementation mapping states otherwise.
 | [surreal/vector-and-tensor-fields/article.tex](surreal/vector-and-tensor-fields/article.tex) | 23 | 1 | 15 | 4 | 43 |
 | [foundations-and-computation/birthday-cutoffs-and-hereditary-sets/article.tex](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/article.tex) | 33 | 22 | 13 | 11 | 79 |
 | [foundations-and-computation/surreal-fields-across-universes/article.tex](foundations-and-computation/surreal-fields-across-universes/article.tex) | 23 | 16 | 8 | 10 | 57 |
-| **Total** | 900 | 439 | 481 | 430 | **2250** |
+| [surcomplex/first-kappa-coefficients/article.tex](surcomplex/first-kappa-coefficients/article.tex) | 10 | 6 | 2 | 5 | 23 |
+| [surcomplex/single-dilation-hahn-support/article.tex](surcomplex/single-dilation-hahn-support/article.tex) | 12 | 5 | 1 | 7 | 25 |
+| **Total** | 922 | 450 | 484 | 442 | **2298** |
 
 The earlier refresh from `796f8d4` through `1f6d6b8` added four reports and
 expanded an existing one.
@@ -3353,11 +3360,12 @@ Statements are **pending unless explicitly mapped** in the implementation table.
 
 Source: [surreal/finite-surreal-probability/article.tex](surreal/finite-surreal-probability/article.tex).
 
-Written in `fb182ea`. The proof review now covers Sections 2–11: scalar
+Written in `fb182ea`. The proof review now covers Sections 2–13: scalar
 workspaces, residue algebra, finite probability, conditional shadows and
 Bayesian updates, logits, softmax, finite information theory, Gibbs laws,
 smoothing, logistic separation, finite stochastic processes, infinite addition,
-normalized hierarchies and integration; Sections 12 onward remain pending. The point-weight
+normalized hierarchies, integration, coin obstructions and all-subsets
+extensions; Sections 14 onward remain pending. The point-weight
 representation in Section 3 now explicitly assumes
 the full event algebra. On a smaller finite algebra only its atom masses are
 uniquely determined. Standard-part division requires limited numerator and
@@ -3384,36 +3392,41 @@ expectation bound uses a uniform real bound, rather than only the leading
 component's essential bound. Componentwise dominated convergence and product
 Fubini are separated from fine convergence and arbitrary Hahn-valued
 integration. Posterior coefficients are measurable with a common well-ordered
-support, but can fail integrability before density cancellation.
+support, but can fail integrability before density cancellation. Sections 12–13
+expand the real coefficient-variation contradictions and keep the logit
+argument in the original Hahn coordinates. The relative field embedding,
+fine-ultrafilter order and equal-mass symmetry, and finite-fragment atom
+splitting are explicit. The all-subsets extension fixes the original field
+but does not promise coefficientwise countable additivity.
 Statements are **pending unless explicitly mapped** in the implementation table.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `fsp:lem:workspace` (line 666) | Local exponential workspace |
-| Proposition | `fsp:prop:st` (line 704) | Residue algebra |
-| Theorem | `fsp:thm:finitebounds` (line 876) | Variance, Cauchy--Schwarz, and tail bounds |
-| Theorem | `fsp:thm:skeleton` (line 1056) | Conditional leading-scale skeleton |
-| Theorem | `fsp:thm:compression` (line 1105) | Signed-row lexicographic compression |
-| Theorem | `fsp:thm:scalebayes` (line 1180) | Minimum-plus Bayes with coefficient tie breaking |
-| Theorem | `fsp:thm:stability` (line 1262) | Absolute and valuation-sensitive conditioning stability |
-| Proposition | Line 1366 (unlabeled) | Logit coordinates |
-| Proposition | `fsp:prop:softbound` (line 1468) | Normalization and perturbation bounds |
-| Theorem | `fsp:thm:multisoft` (line 1511) | Finite multiscale softmax limit |
-| Theorem | `fsp:thm:kl` (line 1583) | Finite Gibbs inequality and entropy bounds |
-| Theorem | `fsp:thm:dataprocessing` (line 1674) | Finite data processing |
-| Theorem | `fsp:thm:gibbs` (line 1800) | Surreal finite Gibbs principle |
-| Proposition | `fsp:prop:separation` (line 1913) | No attained logistic optimum under strict separation |
-| Proposition | Line 1997 (unlabeled) | Bounded finite-horizon optional stopping |
-| Proposition | `fsp:prop:fine` (line 2082) | Set-indexed fine convergence is eventually constant |
-| Theorem | `fsp:thm:hierarchy` (line 2215) | Normalized hierarchy of real probability laws |
-| Theorem | `fsp:thm:integrationfailure` (line 2375) | An uncountable-support positivity failure |
-| Theorem | `fsp:thm:rarecoin` (line 2533) | A repeated infinitesimal success probability |
-| Theorem | `fsp:thm:faircoin` (line 2559) | A repeated infinitesimal perturbation of a fair coin |
-| Lemma | `fsp:lem:embedding` (line 2613) | Set-sized relative field embedding |
-| Theorem | `fsp:thm:extension` (line 2718) | All-subsets regular extension after field enlargement |
-| Corollary | `fsp:cor:coinextension` (line 2762) | The two coin models do have regular finite-additive laws |
-| Proposition | `fsp:prop:tailfailure` (line 2835) | Finite-update shadows need not recover rare tail conditioning |
-| Theorem | `fsp:thm:shadowcountable` (line 2883) | A continuity test for the shadow |
+| Lemma | `fsp:lem:workspace` (line 670) | Local exponential workspace |
+| Proposition | `fsp:prop:st` (line 708) | Residue algebra |
+| Theorem | `fsp:thm:finitebounds` (line 880) | Variance, Cauchy--Schwarz, and tail bounds |
+| Theorem | `fsp:thm:skeleton` (line 1060) | Conditional leading-scale skeleton |
+| Theorem | `fsp:thm:compression` (line 1109) | Signed-row lexicographic compression |
+| Theorem | `fsp:thm:scalebayes` (line 1184) | Minimum-plus Bayes with coefficient tie breaking |
+| Theorem | `fsp:thm:stability` (line 1266) | Absolute and valuation-sensitive conditioning stability |
+| Proposition | Line 1370 (unlabeled) | Logit coordinates |
+| Proposition | `fsp:prop:softbound` (line 1472) | Normalization and perturbation bounds |
+| Theorem | `fsp:thm:multisoft` (line 1515) | Finite multiscale softmax limit |
+| Theorem | `fsp:thm:kl` (line 1587) | Finite Gibbs inequality and entropy bounds |
+| Theorem | `fsp:thm:dataprocessing` (line 1678) | Finite data processing |
+| Theorem | `fsp:thm:gibbs` (line 1804) | Surreal finite Gibbs principle |
+| Proposition | `fsp:prop:separation` (line 1917) | No attained logistic optimum under strict separation |
+| Proposition | Line 2001 (unlabeled) | Bounded finite-horizon optional stopping |
+| Proposition | `fsp:prop:fine` (line 2086) | Set-indexed fine convergence is eventually constant |
+| Theorem | `fsp:thm:hierarchy` (line 2219) | Normalized hierarchy of real probability laws |
+| Theorem | `fsp:thm:integrationfailure` (line 2379) | An uncountable-support positivity failure |
+| Theorem | `fsp:thm:rarecoin` (line 2542) | A repeated infinitesimal success probability |
+| Theorem | `fsp:thm:faircoin` (line 2576) | A repeated infinitesimal perturbation of a fair coin |
+| Lemma | `fsp:lem:embedding` (line 2654) | Set-sized relative field embedding |
+| Theorem | `fsp:thm:extension` (line 2808) | All-subsets regular extension after field enlargement |
+| Corollary | `fsp:cor:coinextension` (line 2868) | The two coin models do have regular finite-additive laws |
+| Proposition | `fsp:prop:tailfailure` (line 2946) | Finite-update shadows need not recover rare tail conditioning |
+| Theorem | `fsp:thm:shadowcountable` (line 2994) | A continuity test for the shadow |
 
 ### vector-and-tensor-fields
 
@@ -3627,3 +3640,77 @@ unless explicitly mapped in the implementation table.
 | Theorem | `univ:thm:booleanyes` (line 2585) | Set-complete dense completion |
 | Lemma | `univ:lem:classdiag` (line 2626) | Diagonal obstruction |
 | Theorem | `univ:thm:booleanno` (line 2647) | No all-subclass completion |
+
+### first-kappa-coefficients
+
+Source: [surcomplex/first-kappa-coefficients/article.tex](surcomplex/first-kappa-coefficients/article.tex).
+
+Provisional index of the manuscript placed in `7b5f934`. Its current source
+is indexed for navigation; the write phase, catalogue integration, proof
+review and source reconciliation remain pending. The delivered verification
+and audit artifacts do not establish review or Lean coverage. Statements
+are **Pending** unless explicitly mapped in the implementation table.
+
+| Kind | Source label or line | Heading |
+|---|---|---|
+| Theorem | `thm:main` (line 129) | Main theorem package |
+| Lemma | `lem:workspace` (line 181) | Small-workspace lemma |
+| Proposition | `prop:closed` (line 195) | Algebraic closedness and real closedness |
+| Theorem | `thm:approx` (line 233) | Exact approximation values |
+| Lemma | `lem:fibers` (line 263) | Prefix fibers |
+| Theorem | `thm:valued-type` (line 285) | First-$\kappa$ classification: valued case |
+| Corollary | `cor:rational` (line 325) | Rational-function data |
+| Theorem | `thm:real-type` (line 337) | First-$\kappa$ classification: ordered case |
+| Corollary | `cor:count` (line 357) | Counting and identifying the missing types |
+| Lemma | `lem:stabilize` (line 392) | Eventual elementary agreement |
+| Theorem | `thm:omission` (line 411) | Exact omission number |
+| Theorem | `thm:pure` (line 435) | Pure-field collapse |
+| Corollary | `cor:tower` (line 452) | Restriction of types is truncation of prefixes |
+| Lemma | `lem:glue` (line 478) | Coefficient gluing with a cardinal bound |
+| Theorem | `thm:balls` (line 499) | First empty nests |
+| Corollary | `cor:ballfiber` (line 510) | Its intersection in the full Hahn field |
+| Theorem | `thm:completion` (line 540) | Completion by locally small support |
+| Proposition | `prop:new-supports` (line 557) | Exactly which supports are added |
+| Lemma | `lem:long-cofinal` (line 575) | Long cofinal supports |
+| Theorem | `thm:dichotomy` (line 601) | Completeness dichotomy |
+| Theorem | `thm:projection` (line 642) | Exact retraction-loss formula |
+| Corollary | `cor:dual` (line 671) | A zero-or-full continuous-dual dichotomy |
+| Lemma | `lem:groupcf` (line 706) | Untitled |
+
+### single-dilation-hahn-support
+
+Source: [surcomplex/single-dilation-hahn-support/article.tex](surcomplex/single-dilation-hahn-support/article.tex).
+
+Provisional index of the manuscript placed in `7b5f934`. Its current source
+is indexed for navigation; the write phase, catalogue integration, proof
+review and source reconciliation remain pending. The delivered verification
+and audit artifacts do not establish review or Lean coverage. Statements
+are **Pending** unless explicitly mapped in the implementation table.
+
+| Kind | Source label or line | Heading |
+|---|---|---|
+| Proposition | `prop:monomial` (line 295) | Untitled |
+| Lemma | `lem:orbit` (line 327) | Increasing orbit hull |
+| Corollary | `cor:labeled` (line 369) | Labeled version |
+| Theorem | `thm:resolvent` (line 413) | Strong partial inverse |
+| Corollary | `cor:fixed` (line 475) | Fixed fields and eigenspaces |
+| Corollary | `cor:poly` (line 507) | Split polynomial difference operators |
+| Lemma | `lem:operatorscommute` (line 551) | Commuting normalized inverses |
+| Theorem | `thm:koszul` (line 600) | Explicit deformation retraction |
+| Corollary | `cor:simultaneous` (line 659) | Simultaneous additive equations |
+| Corollary | `cor:defproj` (line 684) | Definable invariant projection |
+| Lemma | `lem:multcoords` (line 737) | Multiplicative coordinates |
+| Corollary | `cor:unitcohom` (line 760) | Principal-unit cohomology |
+| Theorem | `thm:multsingle` (line 772) | Exact multiplicative obstruction |
+| Theorem | `thm:multsystem` (line 830) | Simultaneous multiplicative equations |
+| Theorem | `thm:dilationcohom` (line 889) | Dilation equations and cohomology |
+| Theorem | `thm:definability` (line 973) | Recovery from a single dilation |
+| Lemma | `lem:monomialrecognition` (line 1000) | Monomial recognition |
+| Theorem | `thm:centralizer` (line 1117) | Unrestricted centralizer |
+| Corollary | `cor:nohidden` (line 1166) | No hidden centralizing motions |
+| Theorem | `thm:undecidable` (line 1226) | Undecidability in the unexpanded signature |
+| Theorem | `thm:tp2` (line 1273) | Coefficient independence |
+| Lemma | `lem:rationalrecognition` (line 1326) | Power-equation recognition |
+| Theorem | `thm:rationaldef` (line 1346) | Interdefinable dilations |
+| Theorem | `thm:nonconjugate` (line 1383) | Distinct rational dilations are not conjugate |
+| Theorem | `thm:surreal` (line 1563) | Surreal and surcomplex consequences |

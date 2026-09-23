@@ -16,6 +16,13 @@ hypotheses, limitations and provenance.
 
 ## Newest reports
 
+The placement `7b5f934` adds [first-kappa coefficients](surcomplex/first-kappa-coefficients/)
+and [single-dilation Hahn support](surcomplex/single-dilation-hahn-support/),
+plus source material for five existing reports. These two manuscript sources
+are provisionally indexed in the ledger; their write phase and catalogue
+integration remain pending. They are additional to the 46 assembled reports
+counted above. Proof review of the new material is pending.
+
 Two reports placed in `d4e71b7` and written in `3a2d35d` are catalogued in the
 tables below: [surreal fields across universes](foundations-and-computation/surreal-fields-across-universes/)
 and [birthday cutoffs and hereditary sets](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/),
@@ -28,7 +35,7 @@ tables below:
 [Euclidean three-space](surreal/euclidean-three-space/),
 [finite surreal probability](surreal/finite-surreal-probability/) and
 [surcomplex field automorphisms](surcomplex/surcomplex-field-automorphisms/).
-The finite-probability review now covers Sections 2–11; review of its later
+The finite-probability review now covers Sections 2–13; review of its later
 sections and the other three reports remains pending. Lean coverage is tracked
 separately in the ledger. The same batch added
 source material to the measures and trigonometry reports; those additions do
