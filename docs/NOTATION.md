@@ -76,6 +76,18 @@ the image is exactly `ω k[ω]`. For any nonzero Hahn series `u`,
 residue is zero. Here `ct` is applied to the logarithmic derivative in
 the valuation ring, not asserted multiplicative on the whole Hahn field.
 
+In that report's two-ring principle, `∂p_L` is the tangent functional
+`p_L*Ω¹_{X/k} → L` taking `df` to `∂(f(p_L))`. The field derivation
+`∂: L → L` kills `k`; the associated tangent derivation on a base-changed
+chart sends `f ⊗ a` to `a∂(f(p_L))` and kills the new scalar factor `L`.
+Symmetric differentials use the quotient symmetric power, evaluated by
+the same tangent functional in every factor. The annihilation statement
+requires positive degree; the degree-zero section `1` does not vanish.
+For the cotangent bundle, `P(E)` parametrizes one-dimensional quotients
+of `E`, so a nonzero tangent functional gives a point of `P(Ω¹)` and
+`O(1)` is the tautological quotient line bundle. Semiampleness here means
+that some positive power of this line bundle is globally generated.
+
 In the Diophantine report's Section 11, `𝒜_k(Γ)` is the ring of all
 nonnegative-growth-support forms over `k`, and `ℛ_o(k,Γ) = o + Π_k(Γ)`
 restricts the constant coefficient to `o`. The quotient report writes its

@@ -199,8 +199,10 @@ Its fraction section now has a full manuscript proof review, including
 a correction to the agreement locus of standard part and rational residue.
 The Gaussian-fiber and étale-norm proofs now spell out their support and
 splitting arguments, with boundary examples explaining the hypotheses.
-The elementary squarefree and Weierstrass proofs have also been reviewed,
-correcting a differential normalization and missing discriminant hypothesis.
+The review now covers squarefree and Weierstrass rigidity and the abstract
+two-ring differential principle, including tangent detection and inheritance.
+It corrects differential normalization and hypotheses and makes the
+geometric pullback argument explicit.
 The [review record](docs/REVIEW.md) distinguishes these written proofs
 from formal verification and records the remaining review scope.
 Recent manuscript additions cover curve and differential rigidity, theta

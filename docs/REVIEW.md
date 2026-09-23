@@ -3401,6 +3401,93 @@ axiom audit accepts 14,809 declarations using only `propext`,
 and 1,539 local Markdown destinations resolve. The squarefree proof
 review remains distinct from this new checked ordinary arithmetic.
 
+## Two-ring differential principle and tangent detection
+
+The next Diophantine pass reviews the remainder of Section 16, from
+differential separation data through inheritance. The scalar conventions
+now distinguish a field derivation over `k` from its tangent functional
+after base change to `L`. The two contractions agree by naturality of
+Kähler differentials even without a map between the rings or a common
+affine chart. The valuation-ring contraction lies in the `r`th power
+of its maximal ideal. The symmetric clause explicitly requires positive
+degree; the constant section `1` explains the excluded endpoint.
+Symmetric evaluation is defined on the quotient symmetric power and
+does not rely on lifting global sections to tensor sections.
+
+The proper-rigidity proof now uses right exactness of pullback at the
+field-valued point. It also proves the consequence without smoothness,
+assuming global generation of the Kähler differential sheaf. Symmetric
+rigidity extends to arbitrary separating data. For smooth projective
+schemes, a finite-cover and common-degree argument proves that tangent
+detection is equivalent to semiampleness of the tautological quotient
+line bundle. This is not asserted necessary for rigidity itself.
+Inheritance now spells out the fiber-product argument and the absence
+of smoothness restrictions on the immersed subscheme.
+
+Explicit examples explain why finitely generated coordinate algebras
+need not be stable under Euler differentiation and why a rational form
+with a pole cannot replace a global regular form. The zero exponent
+group, positive tensor degree and complex finite-element conventions
+are explicit. The introduction now distinguishes C11/C13's arbitrary
+characteristic-zero proper-rigidity statements from their more restricted
+curve classifications. The targeted source comparison and imported
+Stacks hypotheses are recorded in the report's reconciliation file.
+The root README, notation guide and catalogue reflect this review.
+
+One of 200 standard statements changes, the annihilation theorem's
+positive-degree clarification. The other 199 statements, all 416 labels
+and existing result numbers are unchanged. All Section 16 results and
+the new prose consequences remain **Pending** in Lean. The curve
+classification, subsequent applications, earlier pointers and remaining
+source reconciliation still require review. No finite symbolic check
+is offered as verification of the geometric argument.
+
+Clean three-pass builds give a 178-page article and 32-page catalogue,
+without warnings, unresolved references or box diagnostics. Rendered
+article pages 102–106 and catalogue page 9 were inspected. The
+independent inventory validates 3,650 standard results in 60 reports;
+all 4,188 source references and 1,539 local Markdown destinations resolve.
+The library is unchanged by this pass; the preceding 4,406-job build and
+14,809-declaration axiom audit remain applicable before synchronization.
+
+## Combined validation with canonical constant extraction
+
+After the two-ring review `bf1d084`, synchronization through `5da5961`
+adds canonical constant extraction, endomorphism preservation, a concrete
+noninjective constant endomorphism and non-residual-finiteness of the actual
+omnific ring. The new declarations agree with the unchanged source
+proposition and its following example; the latter finiteness result does
+not claim the pending inverse-limit or topology constructions. The
+report guide now includes this coverage. Two incoming index entries
+were corrected: the logit and Christoffel labels belong to equations
+inside unlabeled results, not to the enclosing result environments.
+
+The combined `LEAN_NUM_THREADS=2 lake build` passes 4,407 jobs and
+audits 14,830 declarations using only `propext`, `Classical.choice` and
+`Quot.sound`. The independent inventory still validates 3,650 standard
+results, of which 19 are unlabeled, across 60 reports. All 4,189 source
+references and 1,542 local Markdown destinations resolve. No LaTeX or
+PDF changed in this synchronization; the clean 178/32-page artifacts
+remain current.
+
+## Combined validation with the ordinary p-adic completion
+
+The next sync through `6a30999` proves the p-adic clause of
+`odg:eq:profinite` using Mathlib's actual ideal-adic completion and
+p-adic integers. The transition maps, both inverse ring maps, the
+constant-term formula for the canonical map and its purely infinite
+kernel are explicit. The source equation agrees with that scope; the
+profinite completion and congruence-topology assertions remain pending.
+The report guide and incoming root README distinguish those obligations.
+
+The final `LEAN_NUM_THREADS=2 lake build` passes 4,413 jobs and audits
+14,859 declarations with only `propext`, `Classical.choice` and
+`Quot.sound`. The independent 3,650-result inventory, all 4,189 source
+references and 1,544 local Markdown destinations pass. LaTeX and PDFs
+are unchanged by this sync, so the 178/32-page build and visual checks
+remain applicable. Section 17 and subsequent manuscript work remain
+outside the completed review.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

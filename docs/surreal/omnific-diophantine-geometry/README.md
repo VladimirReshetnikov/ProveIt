@@ -14,7 +14,7 @@ Vladimir Reshetnikov.
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 177 pages
+article.pdf                        the compiled report, 178 pages
 README.md                          this guide
 RECONCILIATION.md                  the source comparisons and precise proof-review scope
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
@@ -159,7 +159,14 @@ certificate, degree obstruction, cubic differential and Weierstrass
 applications, including singular families. It supplies the missing
 positive-integer hypothesis for differential division, qualifies division
 by the discriminant and corrects the factor of two in the contraction
-comparison. The rest of Sections 16–18, the pointers added in Sections 6, 7
+comparison. The next pass reviews Section 16.5 through inheritance,
+completing the maintained Section 16 proof chain. It explains the tangent
+functional, two-ring contraction, symmetric evaluation and constant descent;
+the symmetric clause now explicitly requires positive degree. The proof
+also yields the proper singular case with globally generated Kähler
+differentials, and tangent detection is shown equivalent to tautological
+semiampleness for smooth projective schemes. Imported geometric foundations
+are identified separately. Sections 17–18, the pointers added in Sections 6, 7
 and 14, the additions to Section 20, Section 21.4, the re-scoped notes to
 Questions 21.1, 21.3 and 21.8, and Questions 21.17–21.22 remain unreviewed.
 The elementary pass also covers the corresponding claims credited to
@@ -196,6 +203,12 @@ proves the primality, mixed-gcd and Chinese remainder corollary
 `odg:cor:mixedgcd`. The [finite quotient package](../../../Surreal/Foundations/OmnificFiniteQuotients.lean)
 proves `odg:cor:charideals`, including unique ordinary moduli and
 factorization of every finite-target homomorphism through the constant term.
+The [constant rigidity package](../../../Surreal/Foundations/OmnificConstantRigidity.lean)
+proves `odg:prop:canonicalct`, its noninjective-endomorphism example,
+and non-residual-finiteness using an explicit nonzero monomial.
+The [p-adic completion](../../../Surreal/Foundations/OmnificPadicCompletion.lean)
+is ring-isomorphic to `ℤ_p`; its canonical map is integer constant
+extraction followed by the ordinary embedding and has kernel `Π`.
 Other results remain **Pending** unless individually mapped in the ledger.
 
 ## Thirteen sources, one report
@@ -913,7 +926,7 @@ record (`4c26f4e` at `4cdeaec`, `47af413` at `89bec38` and `f6e031a`) are
 correct. Source C14's "three-source assembly", source C11's "reviewed Sections
 1–7" and source C12's "51-report collection" were true at their pins; the report
 now has thirteen sources, the reviews extend further, including the
-elementary Sections 16.2–16.4, but not the later geometric proofs,
+all of Section 16, but not the curve classification and subsequent applications,
 and the catalogue has grown. Source C15 inspected the repository through the
 connector at `934810a`, when this report had sources 01, 02, 05, 06 and 07, and
 quoted correctly its guide's statement that `y² = x³ + ax + b` with `a ≠ 0` was
