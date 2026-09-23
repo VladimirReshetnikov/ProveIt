@@ -15,7 +15,7 @@ prefix `16-`). Prepared for Vladimir Reshetnikov.
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 197 pages
+article.pdf                        the compiled report, 198 pages
 README.md                          this guide
 RECONCILIATION.md                  the source comparisons and precise proof-review scope
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
@@ -180,7 +180,13 @@ genus, the smooth affine classification, logarithmic differentials and all smoot
 curves. It distinguishes the real circle's two conjugate punctures from a form
 of the affine line, supplies descent across arbitrary field extensions and
 explains why the logarithmic valuation centre is a closed boundary point.
-Sections 17.3 onward and 18, the pointers added in Sections 6, 7
+Section 17.3 now also has a proof review of exact arithmetic fibers, integer
+polynomial arcs, the finite congruence criterion and separated-model descent.
+It makes equation descent through injective coefficient maps explicit, allows
+nonflat integral models, and distinguishes set-sized workspace fibers from
+proper-class fibers. Clearing denominators preserves the entire purely infinite
+fiber; finite-support witnesses can be chosen with integer coefficients.
+Section 17.4 onward and 18, the pointers added in Sections 6, 7
 and 14, the additions to Section 20, Section 21.4, the re-scoped notes to
 Questions 21.1, 21.3 and 21.8, and Questions 21.17–21.22 remain unreviewed.
 The elementary pass also covers the corresponding claims credited to
@@ -1257,8 +1263,9 @@ processor is needed:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The build gives 197 pages with no errors, warnings, undefined references,
-multiply defined labels or overfull boxes. (The text at `4253328`, before source C16
+The build gives 198 pages with no errors, warnings, undefined references,
+multiply defined labels or overfull boxes (one page more than the C16 write alone, from the
+concurrent proof review merged with it). (The text at `4253328`, before source C16
 was integrated, built to 178 pages with the same MiKTeX installation and the same zero
 counts, and every label it defines has the same number in the present build. The text
 at `6f47cf9`, before source

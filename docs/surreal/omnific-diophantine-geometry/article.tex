@@ -6622,8 +6622,9 @@ Labels of this material carry the sub-prefix \fn{odg:cr:}. The proof review in
 squarefree certificate and two-ring differential principle, through symmetric
 forms and inheritance. It also covers the curve classification in
 \cref{odg:cr:sub:positivegenus,odg:cr:sub:affine}, including arbitrary coefficient
-descent and the logarithmic proof. Arithmetic fibers and subsequent geometric
-applications remain outside it; imported scheme-theoretic foundations are
+descent and the logarithmic proof, and the arithmetic fibers, polynomial witnesses
+and separated-model descent in \cref{odg:cr:sub:arith}. Projective coordinates
+and subsequent geometric applications remain outside it; imported foundations are
 identified separately.
 A sixth manuscript, source C15
 (prefix \fn{15-}), reproves much of the part independently and extends the two-ring
@@ -7695,9 +7696,16 @@ characteristic zero.
 
 \subsection{Arithmetic models and exact fibers}\label{odg:cr:sub:arith}
 
+The geometric classification controls points in $\crA=\Bbbk\oplus\crP$.
+For arithmetic points we use its subring $R=\mathfrak o\oplus\crP$, where
+$\mathfrak o\subseteq\Bbbk$. The distinction matters: coefficients of a
+parametrization may lie anywhere in $\Bbbk$, while the constant coordinates
+of an $R$-point must lie in $\mathfrak o$. We use closed affine presentations,
+so a point is a tuple satisfying the defining polynomial equations.
+
 \begin{theorem}[Exact fibers over an arbitrary coefficient ring \src{C11}, for every $\Bbbk$]\label{odg:cr:thm:arith}
 Let $\mathfrak o\subseteq\Bbbk$ be a subring, $\mathcal U\subseteq\Aff^n_{\mathfrak o}$
-an affine scheme of finite type such that $U=\mathcal U_\Bbbk$ is a smooth
+a closed subscheme such that $U=\mathcal U_\Bbbk$ is a smooth
 geometrically integral curve, and $R=\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$.
 \begin{enumerate}[label=\textup{(\roman*)},leftmargin=*]
 \item If $U\not\cong\Aff^1_\Bbbk$, then $\mathcal U(R)=\mathcal U(\mathfrak o)$.
@@ -7711,12 +7719,21 @@ is a bijection, and $\phi(c_{\mathbf n}+s)$ is constant only for $s=0$.
 \end{enumerate}
 \end{theorem}
 \begin{proof}
-(i) A point of $\mathcal U(R)$ is a point of $U(\crA)$, constant by
+(i) When $\Gamma=0$, $R=\mathfrak o$ and the assertion is immediate.
+Otherwise a point of $\mathcal U(R)$ becomes a point of $U(\crA)$, constant by
 \cref{odg:cr:thm:affine}; its coordinates lie in $R\cap\Bbbk=\mathfrak o$.
-(ii) Write $\phi=(\phi_1,\ldots,\phi_n)$ with $\phi_j\in\Bbbk[T]$. Each
+They still satisfy the defining equations, giving the claimed ordinary point.
+The reverse inclusion is induced by $\mathfrak o\hookrightarrow R$.
+
+(ii) Write $\mathcal U=\Spec(\mathfrak o[X_1,\ldots,X_n]/J)$ and
+$\phi=(\phi_1,\ldots,\phi_n)$ with $\phi_j\in\Bbbk[T]$. Each
 $\phi_j(c_{\mathbf n}+s)-\phi_j(c_{\mathbf n})$ is a polynomial in $s$ without constant
 term, hence lies in $\crP$, and $\phi_j(c_{\mathbf n})=n_j\in\mathfrak o$; so the point
-lies in $R^n$, satisfies the equations and has constant term $\mathbf n$. The inverse
+lies in $R^n$ and has constant term $\mathbf n$. For every $F\in J$,
+$F(\phi(T))=0$ in $\Bbbk[T]$. After substitution it vanishes in $\crA$, hence
+in $R$, since $R\hookrightarrow\crA$ is injective. This proves that the tuple
+is a point of the original model, even if that model is not flat over
+$\mathfrak o$. The inverse
 of $\phi$ is a regular function on $U$, represented by a polynomial $q$ with
 coefficients in $\Bbbk$, and evaluation commutes with $\ct$. For $\mathbf x$ in the
 fiber, $t=q(\mathbf x)\in\crA$ has $\ct(t)=q(\mathbf n)=c_{\mathbf n}$, so
@@ -7733,8 +7750,15 @@ $\Bbbk=\R$; it holds for every $\Bbbk$ of characteristic zero by
 the model may have bad reduction at primes of $\mathfrak o$ \src{C11, C13, C14}. No
 integer-part assertion is made for an arbitrary $\mathfrak o$ or $\Gamma$ \src{C11}.
 
+For example the model $2Y=0$ in $\Aff^2_\Z$ has generic fiber an affine line
+and fiber $\Aff^2_{\mathbb F_2}$ at the prime $2$. Its coordinate ring has
+nonzero $\Z$-torsion, so it is not flat over $\Z$. Nevertheless its omnific
+points are exactly $(x,0)$, $x\in\Oz$, and the fiber over $(n,0)$ is
+$\{(n+s,0):s\in\Pi\}$. The theorem uses the generic geometry and the injective
+coefficient maps, not smoothness or flatness of the integral model.
+
 \begin{corollary}[Omnific points on smooth affine curves \src{C10, C11, C13, C14}]\label{odg:cr:cor:omnific}
-Let $\mathcal C\subseteq\Aff^n_\Z$ be an affine scheme of finite type whose generic
+Let $\mathcal C\subseteq\Aff^n_\Z$ be a closed subscheme whose generic
 fiber $C=\mathcal C_\Q$ is a smooth geometrically integral curve (equivalently, whose
 real or complex fiber is one).
 \begin{enumerate}[label=\textup{(\alph*)},leftmargin=*]
@@ -7754,8 +7778,9 @@ fiber in place of $C$.
 \end{corollary}
 \begin{proof}
 Smoothness and geometric integrality are invariant under extension of fields of
-characteristic zero, and so is the affine-line condition by
-\cref{odg:cr:lem:formA1}. A finite tuple of omnific integers lies in
+characteristic zero, in both directions; the affine-line condition descends
+across arbitrary extensions by \cref{odg:cr:thm:affine}.
+A finite tuple of omnific integers lies in
 $\mathcal R_\Z(\R,\Gamma)$ for a set-sized $\Gamma$ (\cref{odg:lem:workspace}); apply
 \cref{odg:cr:thm:arith} with $(\mathfrak o,\Bbbk)=(\Z,\R)$ or $(\Z[i],\C)$. The
 formula of \cref{odg:cr:thm:arith}(ii) is finite polynomial evaluation, so it makes
@@ -7764,7 +7789,10 @@ parameter exists uniquely. Since $\ct$ is a retraction, an omnific point has an
 ordinary constant term, so $\mathcal C(\Z)=\varnothing$ forces
 $\mathcal C(\Oz)=\varnothing$. A nonempty fiber in case (b) contains the distinct
 points for $s=\omega^\alpha$, $\alpha$ ranging over the positive ordinals, so it is a
-proper class \src{C10, C11, C13}.
+proper class \src{C10, C11, C13}. This argument uses an injective class-indexed
+family, not a scheme over a proper-class ring. For Gaussian fibers choose a
+complex affine-line isomorphism and replace $\Pi$ by $\Pi_\C$; the same real
+monomials already witness proper-class size.
 \end{proof}
 
 Source C14 states (a) and (b) with the generic fiber over $\Q$, source C10 with
@@ -7774,8 +7802,12 @@ $\mathcal C(\Oz)\to\mathcal C(\Z)$ is a bijection, not merely a surjection, and 
 the affine-line case it is surjective onto the integer points with explicitly
 parametrized fibers. The equality $\mathcal C(\Oz)=\mathcal C(\Z)$ is not an
 algorithm for the integer points and does not assert that there are finitely many
-\src{C10, C11, C13, C14}. The whole argument also takes place in one fixed nonzero
-workspace, with $\Pi$ replaced by $\Pi_\R(\Gamma)$ \src{C10, C13}.
+\src{C10, C11, C13, C14}. The rigidity and fiber formulas also hold in one fixed
+workspace, with $\Pi$ replaced by $\Pi_\R(\Gamma)$ \src{C10, C13}. That fiber is
+a set: the proper-class conclusion uses all surreal supports. A nonzero fixed
+$\Gamma$ still gives infinitely many distinct points, using
+$s=\omega^{m\gamma}$ for $m\ge1$ and a fixed $\gamma>0$; for $\Gamma=0$ each
+fiber is a singleton.
 
 \begin{example}[Complete fibers \src{C10, C11, C13}]\label{odg:cr:ex:fibers}
 On $Y=X^2$ the fiber over $(n,n^2)$ is $\{(n+s,\ n^2+2ns+s^2):s\in\Pi\}$. On
@@ -7785,7 +7817,8 @@ $u=\sum_{n\ge1}\omega^{1/n}$ one of infinite support, both by the same formula.
 \end{example}
 
 \begin{lemma}[Integer polynomial arcs \src{C14}]\label{odg:cr:lem:arcs}
-Let $\mathcal C\subseteq\Aff^n_\Z$ have generic fiber isomorphic to $\Aff^1_\Q$.
+Let $\mathcal C\subseteq\Aff^n_\Z$ be a closed subscheme with generic fiber
+isomorphic to $\Aff^1_\Q$.
 Through every $\mathbf n\in\mathcal C(\Z)$ there are polynomials $q_i(S)\in\Z[S]$
 with $q_i(0)=n_i$ such that $\mathbf q:R\to\mathcal C(R)$ is injective for every
 domain $R\supseteq\Z$ of characteristic zero. Over $\Oz$ every nonordinary parameter
@@ -7797,10 +7830,13 @@ Write an isomorphism $\Aff^1_\Q\to\mathcal C_\Q$ as $\mathbf p(T)$ with
 $p_i\in\Q[T]$, and its inverse as a polynomial $u$ with rational coefficients, so
 that $u(\mathbf p(T))=T$. Put $t_0=u(\mathbf n)\in\Q$, expand
 $p_i(t_0+T)=\sum_jc_{ij}T^j$ with $c_{i0}=n_i$, and choose an ordinary $N>0$
-clearing the denominators of all $c_{ij}$ with $j\ge1$. Then
-$q_i(S)=p_i(t_0+NS)\in\Z[S]$. The defining polynomials of $\mathcal C$ vanish on
+clearing the denominators of all $c_{ij}$ with $j\ge1$. The coefficient of
+$S^j$ is $N^jc_{ij}=N^{j-1}(Nc_{ij})\in\Z$, while the constant coefficient
+is already $n_i$. Thus $q_i(S)=p_i(t_0+NS)\in\Z[S]$ and $q_i(0)=n_i$.
+The defining polynomials of $\mathcal C$ vanish on
 $\mathbf q(S)$ over $\Q$, hence in $\Z[S]$. If $\mathbf q(s)=\mathbf q(s')$ in $R$,
-apply $u$ in $\Frac R$ to get $t_0+Ns=t_0+Ns'$. Some $q_i$ is nonconstant, since
+apply $u$ in $\Frac R$ to get $t_0+Ns=t_0+Ns'$. Since $N\ne0$ in this
+characteristic-zero field, $s=s'$. Some $q_i$ is nonconstant, since
 $u(\mathbf q(S))=t_0+NS$, and by \cref{odg:cr:lem:rings}(d) its value at a
 nonordinary omnific parameter is nonordinary. For $s\in\Pi$,
 $\ct(\mathbf q(s))=\mathbf q(0)=\mathbf n$.
@@ -7808,6 +7844,15 @@ $\ct(\mathbf q(s))=\mathbf q(0)=\mathbf n$.
 
 The nonemptiness condition is needed: the model $2X=1$ with a free coordinate $Y$
 has generic fiber $\Aff^1_\Q$ but neither integer nor omnific points \src{C14}.
+
+The injection actually works for any $\Z$-torsion-free algebra $R$: if $D>0$
+clears the coefficients of $u$ and $t_0$, the inverse identity becomes the
+identity $(Du)(\mathbf q(S))=Dt_0+DN S$ in $\Z[S]$. Equality of two images
+then gives $DN(s-s')=0$, and torsion-freeness gives $s=s'$. Characteristic
+zero alone would not suffice for this argument. For the affine line and
+the allowed choice $q(S)=2S$, the characteristic-zero ring
+$\Z\times\mathbb F_2$ has distinct elements $(0,0)$ and $(0,1)$ with the
+same image. The original domain hypothesis excludes such torsion.
 
 \begin{proposition}[A congruence criterion \src{C14}]\label{odg:cr:prop:congruence}
 Keep $\mathbf p$ and $u$ from \cref{odg:cr:lem:arcs}. Let $N_1>0$ clear the
@@ -7825,7 +7870,10 @@ For $\mathbf x\in\mathcal C(\Z)$, $u(\mathbf x)\in N_1^{-1}\Z$; write it $n/N_1$
 $x_i=p_i(n/N_1)=P_i(n)/N_2$ are integers, so $n$ satisfies the congruences.
 Conversely the congruences make the coordinates integral, and the defining
 polynomials vanish identically on $\mathbf p$. The inverse identity gives the
-bijection, and $P_i(n)\bmod N_2$ depends only on $n\bmod N_2$.
+bijection, with inverse $\mathbf x\mapsto N_1u(\mathbf x)$. Finally,
+$P_i(n+N_2m)-P_i(n)$ is divisible by $N_2$ for every integer $m$, so the
+congruences depend only on the residue class of $n$. The finite test includes
+$N_2=1$, when its sole residue is $0$ and all parameters are admissible.
 \end{proof}
 
 This is an algorithm only after an affine-line isomorphism and its inverse are
@@ -7835,6 +7883,16 @@ $N_2=3$, the admissible residues are $0$ and $1$ modulo $3$, and the arcs throug
 $(0,0)$ and $(1,0)$ are $(3S,\,3S^2-S)$ and $(1+3S,\,3S^2+S)$, valid for every
 omnific parameter. In the letters above, $N$, $N_1$, $N_2$ are the sources' $M$,
 $D$, $L$ (\cref{odg:tab:renames}).
+
+Thus, once $\mathbf p$ and $u$ are supplied, the ordinary point set is either
+empty or countably infinite: every admissible residue class contains infinitely
+many integers, and the displayed parametrization is injective. This statement
+concerns the affine-line branch only. Moreover the constructed integer arc
+$\mathbf q$ parametrizes the entire omnific fiber over $\mathbf n$ when its
+parameter ranges over $\Pi$: multiplication by the nonzero ordinary integer
+$N$ is a bijection of $\Pi$. In the exact fiber formula,
+$\mathbf p(t_0+s)=\mathbf q(s/N)$, and $s/N\in\Pi$. Thus denominator clearing
+retains the full fiber, including its infinite-support points.
 
 \begin{corollary}[Polynomial witnesses \src{C13}; also \src{C12}]\label{odg:cr:cor:polywitness}
 For $\mathcal C$ as in \cref{odg:cr:cor:omnific}, with real fiber $C_\R$, the
@@ -7852,10 +7910,12 @@ point of finite support.
 \begin{proof}
 (i) and (ii) are equivalent by \cref{odg:cr:cor:omnific}. Given (ii) and
 $\mathbf n=\phi(t_0)$, the arc $T\mapsto\phi(t_0+T)$ gives (iii). Given (iii),
+translate the real parameter so that the integer point occurs at $T=0$, then
 substitute $T=\omega^\gamma$ with $\gamma>0$ (\cref{odg:prop:polylift}); the
 coordinates have finite support and integer constants, and some coordinate has
-positive degree. Clearly (iv) implies (i). Applying this construction at the
-constant term of a given nonordinary point proves the last assertion.
+positive degree. Clearly (iv) implies (i). Given a nonordinary point, (i) gives
+the affine-line case; translating its isomorphism to the constant term of that
+point and making the same substitution proves the last assertion.
 \end{proof}
 
 For smooth affine curves this answers the existence part of \cref{odg:q:search}:
@@ -7873,6 +7933,14 @@ and the real form at integer points with a real preimage under the normalization
 (\cref{odg:sg:cor:gaussian,odg:sg:prop:arithfamily}); the remaining real case is
 \cref{odg:sg:q:real}.
 
+In the setting of \cref{odg:cr:cor:polywitness}, the affine-line isomorphism
+also descends to $\Q$. Applying \cref{odg:cr:lem:arcs} at the same integer point
+therefore gives a stronger choice of witness: every coordinate can be taken in
+$\Z[\omega^\gamma]$ for one $\gamma>0$. The finite-support witness may have
+integer coefficients even when the original point has arbitrary real
+coefficients and infinite support. This does not put the original point on a
+polynomial arc with a finite-support parameter.
+
 \begin{theorem}[Descent for separated models \src{C12}]\label{odg:cr:thm:descent}
 Let $\mathcal X$ be a separated scheme of finite type over $\Z$ and
 $X=\mathcal X_\C$. Suppose $X(\mathcal A_\C(\Gamma))=X(\C)$ for every set-sized
@@ -7881,13 +7949,19 @@ $\mathcal X(\Z)\cong\mathcal X(\Oz_\Gamma)$ for every such $\Gamma$, and
 $\mathcal X(\Oz)=\mathcal X(\Z)$ in the class convention.
 \end{theorem}
 \begin{proof}
-Let $p\in\mathcal X(\Oz_\Gamma)$ and $p_0=\ct(p)\in\mathcal X(\Z)$. The image of $p$
+Let $p\in\mathcal X(\Oz_\Gamma)$ and $p_0=\ct(p)\in\mathcal X(\Z)$, and denote
+the constant extension of $p_0$ to $\Oz_\Gamma$ by $\widetilde p_0$.
+The image of $p$
 in $X(\mathcal A_\C(\Gamma))$ is constant, and since
 $\Oz_\Gamma\to\Z\to\C$ and $\Oz_\Gamma\to\mathcal A_\C(\Gamma)\to\C$ are compatible
-with $\ct$, it is the image of $p_0$. So $p$ and $p_0$ agree over the field
+with $\ct$, it is the image of $p_0$. So $p$ and $\widetilde p_0$ agree over the field
 $\mathbb H_\C(\Gamma)$, in which the domain $\Oz_\Gamma$ embeds, hence over
-$\Oz_\Gamma$ by \cref{odg:cr:lem:separated}. Every class point lies over some
-$\Oz_\Gamma$.
+$\Oz_\Gamma$ by \cref{odg:cr:lem:separated}. Explicitly, their equalizer is
+a closed subscheme of $\Spec\Oz_\Gamma$ whose ideal maps to zero in that
+field; injectivity makes the ideal zero. Specialization of a constant point
+returns $p_0$, proving both inverse identities. In the class convention a
+point is represented in a set-sized workspace, so the same equality applies
+to each representative and remains true after enlarging the workspace.
 \end{proof}
 
 No smoothness of $\mathcal X$ at any prime and no flatness of
