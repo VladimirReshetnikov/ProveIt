@@ -40,7 +40,9 @@ import Surreal.Algebra.PowerSeriesExpLog
 import Surreal.Algebra.PowerSeriesHom
 import Surreal.Algebra.PowerSeriesUnitRoots
 import Surreal.Algebra.PowerSeriesRemainder
+import Surreal.Algebra.PowerSeriesTranslation
 import Surreal.Algebra.FineDerivative
+import Surreal.Algebra.FineDerivativeRules
 import Surreal.Algebra.AnalyticTaylor
 import Surreal.Algebra.PowerSeriesPolynomialFactorLifting
 import Surreal.Algebra.MvPowerSeriesFactorLifting
@@ -173,9 +175,13 @@ import Surreal.Surcomplex.PowerSeries
 import Surreal.Surcomplex.PowerSeriesHom
 import Surreal.Surcomplex.PowerSeriesLeading
 import Surreal.Surcomplex.PowerSeriesRemainder
+import Surreal.Surcomplex.MvPowerSeriesBounds
 import Surreal.Surcomplex.PowerSeriesFineDerivative
+import Surreal.Surcomplex.PowerSeriesDerivative
 import Surreal.Surcomplex.AnalyticTaylor
+import Surreal.Foundations.SignSequenceAnalyticTaylor
 import Surreal.Surcomplex.AnalyticFineDerivative
+import Surreal.Surcomplex.AnalyticFineDerivativeAll
 import Surreal.Surcomplex.StrongEvaluation
 import Surreal.Surcomplex.PowerSeriesStrongHom
 import Surreal.Foundations.SignSequencePowerSeriesAlgebra
@@ -186,9 +192,11 @@ import Surreal.Surcomplex.FiniteExponential
 import Surreal.Surcomplex.Polar
 import Surreal.Surcomplex.PolarNormalization
 import Surreal.Surcomplex.FiniteTrigonometry
+import Surreal.Surcomplex.TrigonometricTaylor
 import Surreal.Surcomplex.StrongConjugation
 import Surreal.Surcomplex.ExpLogConjugation
 import Surreal.Surcomplex.MvPowerSeries
+import Surreal.Surcomplex.UnivariateSubstitution
 import Surreal.Surcomplex.GeometricSeries
 import Surreal.Surcomplex.GeometricScale
 import Surreal.Surcomplex.OrderObstructions
@@ -235,6 +243,7 @@ import Surreal.HahnSeries.FiniteSupport
 import Surreal.HahnSeries.FiniteExponential
 import Surreal.HahnSeries.MvEvaluation
 import Surreal.HahnSeries.MvComposition
+import Surreal.HahnSeries.UnivariateSubstitution
 import Surreal.HahnSeries.Modulus
 import Surreal.HahnSeries.ModulusStandardPart
 import Surreal.HahnSeries.Neumann
