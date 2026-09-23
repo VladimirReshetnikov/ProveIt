@@ -15,7 +15,7 @@ that the current Lean target compiles or imports them.
 
 ## Scope and how to read this ledger
 
-The canonical inventory below identifies **60 main texts** with **3730**
+The canonical inventory below identifies **61 main texts** with **3759**
 standard result environments. Counts cover
 literal `theorem`, `lemma`, `proposition`, and `corollary` environments;
 examples, equations, prose assertions and companion proofs contain further
@@ -87,6 +87,13 @@ and holonomic companions; their current statements are indexed. Remaining
 companion integration, proof review and claim reconciliation remain pending.
 These additions remain within the
 goal; placement, assembly and proof review add no Lean coverage.
+
+The latest placement adds [independent surreal copies](surreal/independent-surreal-copies/article.tex),
+now indexed as the 61st main text, and companions on polynomial composition,
+theta hierarchies, single scales, unit dilation, Newton rigidity, singular
+curves, automatic summability and finite tests. These new results remain
+**Pending** in Lean; placing companion audits and verification code does not
+by itself integrate or formalize their mathematics.
 
 The source-10 nonscalar dynamics review now covers its angular-rate lemma,
 colored-tree product bound, common-domain proof, exact criterion and examples
@@ -758,7 +765,7 @@ cannot replace strong Hahn summability.
 custom environments are not included. A label inside a nested equation
 labels that equation, not the enclosing theorem or proposition; an
 environment without its own label is indexed by its source line.
-The inventory covers all 60 maintained main texts
+The inventory covers all 61 maintained main texts
 present in the repository; two are not named `article.tex`. Incoming archives
 and separately placed companions require reconciliation beyond this index. The two reports placed in
 `f4c9504` are indexed from their assembled texts; the three placed in
@@ -833,6 +840,7 @@ remain pending unless a precise implementation mapping states otherwise.
 | [surreal/gonshor-product-birthdays/surreal_product_birthdays.tex](surreal/gonshor-product-birthdays/surreal_product_birthdays.tex) | 3 | 4 | 5 | 2 | 14 |
 | [surreal/hahn-evaluation-at-omega/article.tex](surreal/hahn-evaluation-at-omega/article.tex) | 7 | 9 | 5 | 2 | 23 |
 | [surreal/hahn-valued-measures-and-probability/article.tex](surreal/hahn-valued-measures-and-probability/article.tex) | 37 | 17 | 18 | 27 | 99 |
+| [surreal/independent-surreal-copies/article.tex](surreal/independent-surreal-copies/article.tex) | 9 | 9 | 4 | 7 | 29 |
 | [surreal/markov-generators-at-every-scale/article.tex](surreal/markov-generators-at-every-scale/article.tex) | 9 | 5 | 3 | 3 | 20 |
 | [surreal/matrix-scaling-at-surreal-scales/article.tex](surreal/matrix-scaling-at-surreal-scales/article.tex) | 7 | 3 | 2 | 4 | 16 |
 | [surreal/omnific-diophantine-geometry/article.tex](surreal/omnific-diophantine-geometry/article.tex) | 72 | 42 | 38 | 48 | 200 |
@@ -842,7 +850,7 @@ remain pending unless a precise implementation mapping states otherwise.
 | [surreal/tail-spans-and-differential-transcendence/article.tex](surreal/tail-spans-and-differential-transcendence/article.tex) | 8 | 8 | 4 | 1 | 21 |
 | [surreal/transcendence-over-bounded-support/article.tex](surreal/transcendence-over-bounded-support/article.tex) | 9 | 8 | 3 | 10 | 30 |
 | [surreal/vector-and-tensor-fields/article.tex](surreal/vector-and-tensor-fields/article.tex) | 23 | 1 | 15 | 4 | 43 |
-| **Total** | 1477 | 770 | 752 | 731 | **3730** |
+| **Total** | 1486 | 779 | 756 | 738 | **3759** |
 
 The earlier refresh from `796f8d4` through `1f6d6b8` added four reports and
 expanded an existing one.
@@ -5833,3 +5841,46 @@ labels. All claims are **Pending** in Lean; proof and source review remain pendi
 | Proposition | `adr:prop:rank-bounds` (line 1475) | Bounds from the rational rank of finite support |
 | Theorem | `adr:thm:finite-polynomials` (line 1546) | Finitely many bounded polynomial shapes |
 | Theorem | `adr:thm:decidable` (line 1579) | Decidable nonconstant omnific solvability |
+
+### independent-surreal-copies
+
+Source: [surreal/independent-surreal-copies/article.tex](surreal/independent-surreal-copies/article.tex).
+
+All statements are **Pending** in Lean. This newly placed report concerns
+prescribed independent strong copies, arithmetic intersections and
+transcendental gaps above ordinary composita. Its class constructions use
+NBG with Global Choice; their universe-sensitive Lean formulation and proofs
+remain obligations. The source's production checks do not establish formal
+coverage.
+
+| Kind | Source label or line | Heading |
+|---|---|---|
+| Lemma | `lem:avoid` (line 393) | A cut avoiding a set |
+| Lemma | `lem:extend` (line 407) | Ordered one-point extension with avoidance |
+| Theorem | `thm:group` (line 447) | Independent group copies over any set-sized base |
+| Corollary | `cor:groupintersection` (line 501) | Untitled |
+| Theorem | `thm:lift` (line 526) | Monomial lift |
+| Proposition | `prop:arithmeticlift` (line 558) | What the lift remembers |
+| Proposition | `prop:classification` (line 602) | Classification within the monomial-preserving class |
+| Lemma | `lem:slice` (line 646) | Slice linearity and separation |
+| Lemma | `lem:matrix` (line 661) | A finite separating matrix |
+| Theorem | `thm:sliceddisjoint` (line 681) | Full Hahn fields are disjoint over their full intersection |
+| Corollary | `cor:joint` (line 711) | Independence of any finite number of full Hahn fields |
+| Corollary | `cor:relations` (line 731) | Polynomial-relation descent |
+| Corollary | `cor:parameters` (line 766) | Fixing every element of a prescribed set |
+| Theorem | `thm:intersectionclassification` (line 786) | Exact classification of set-sized intersections in this class |
+| Theorem | `thm:boolean` (line 814) | Boolean meet realization |
+| Corollary | `cor:choices` (line 847) | Independent choices and absence of new relations |
+| Lemma | `lem:compression` (line 885) | Compression of the surreal order |
+| Theorem | `thm:explicit` (line 934) | An explicit independent ordinal family |
+| Lemma | `lem:iterated` (line 984) | Re-expansion at separated scales |
+| Lemma | `lem:finitecoeff` (line 1024) | Finite coefficient-field control |
+| Theorem | `thm:joinobstruction` (line 1043) | A coefficient-transcendence obstruction |
+| Lemma | `lem:denominator` (line 1139) | Common denominators for a set of surreals |
+| Proposition | `prop:uniform` (line 1161) | Separate uniform denominators, no shared uniform one |
+| Proposition | `prop:boundedfrac` (line 1212) | Identification of the fraction fields |
+| Lemma | `lem:gapscale` (line 1243) | Cofinal sequences with polynomial gaps |
+| Theorem | `thm:cofinalgap` (line 1280) | One transcendental series over all bounded-support fractions |
+| Corollary | `cor:factorial` (line 1335) | The factorial witness |
+| Corollary | `cor:noshareddenom` (line 1365) | Failure witnessed by the denominator equation |
+| Theorem | `thm:setversion` (line 1402) | Independent embeddings in a saturated ordered group |
