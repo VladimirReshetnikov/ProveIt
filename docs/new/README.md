@@ -394,7 +394,13 @@ that commit.
 | 20 | `5fe7f8d` | `fb182ea` | `463fcc7` | — |
 | 21 | `d4e71b7` | `3a2d35d` | `13cb68e` | — |
 | 22 | `7b5f934` | `68e2960` | `5d369a0` | — |
-| 23 | `e4f8848` | `7af7056` | this batch's catalogue commit | audited before commit (`7af7056`) |
+| 23 | `e4f8848` | `7af7056` | `087ee37` | audited before commit (`7af7056`) |
+| 24 | `be06fc8` | `bbdd536`, `7494d53` | this catalogue commit | — |
+| 25 | `cf350b1` | `e27070f`, `0240140`, `3daef3c` | this catalogue commit | — |
+| 26 | `f4c9504` | `9b80a30`, `1e54d5a`, `aae58bb` | this catalogue commit | — |
+| 27 | `a4dcb91` | `337d4a4`, `600397e`, `e118d89`, `b829d8b` | this catalogue commit | — |
+| 28 | `c6359e4` | `3d9dbe9`, `b3fa9e2`, `74b8974`, `a2b22a9`, `ac54217` | this catalogue commit | — |
+| 29 | `66d7e55` | `1bdd65c`, `4420ec6`, `a8f35b5`, `298bed6`, `e9d1959`, `2da3bd4` | this catalogue commit | — |
 
 Batch numbers:
 - No commit names a batch 16. The only report added between batches 15 and 17
