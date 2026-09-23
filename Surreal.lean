@@ -83,6 +83,10 @@ import Surreal.Algebra.MultiquadraticSigns
 import Surreal.Algebra.PolynomialJensen
 import Surreal.Algebra.DescendingProfiles
 import Surreal.Algebra.LatticeEnergyCertificate
+import Surreal.Algebra.HankelHermite
+import Surreal.Algebra.LaurentResidueChange
+import Surreal.Algebra.SmallDivisorTreeBound
+import Surreal.Algebra.MarkovForest
 import Surreal.Foundations.SizeObstructions
 import Surreal.Foundations.SmallCutData
 import Surreal.Foundations.SignSequence
@@ -442,3 +446,9 @@ import Surreal.HahnSeries.PronyRows
 import Surreal.HahnSeries.ContinuumDefects
 import Surreal.HahnSeries.EulerDerivation
 import Surreal.HahnSeries.FiniteBaseChange
+import Surreal.HahnSeries.WickPositive
+import Surreal.HahnSeries.MeasureBarrier
+import Surreal.HahnSeries.MomentCriterion
+import Surreal.HahnSeries.HerglotzScalar
+import Surreal.HahnSeries.GradedQuadraticForms
+import Surreal.HahnSeries.DiagonalResolvent

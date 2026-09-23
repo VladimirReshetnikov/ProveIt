@@ -627,5 +627,17 @@ The Euler derivation preserves `K_Γ` exactly when `Γ = {0}` or `1 ∈ Γ`, and
 primitive of `1` is transcendental. Every nonzero noncyclic ordered abelian
 group has continuum many translation classes of descending positive profiles,
 and quadratic lattice energies admit finite minimum certificates.
+For positive-definite covariance the Wick atoms are strongly summable exactly
+when every `δ_a = λ_a + ½ Σ α_i^a c_ii` is positive, with an explicit balancing
+vector and the stationary power-counting criterion. If a positive strong
+measure has infinitely many atoms of valuation below `γ`, adding any signed
+measure that starts at scale `γ` keeps every nonzero polynomial square
+strictly positive. Moment sequences of positive strong Hahn probabilities are
+characterized row by row, and the scalar Herglotz lemma holds on the halo.
+The matrix-forest expansion gives the determinant, adjugate
+and resolvent of a row Laplacian with nonnegative stochastic entries. Graded
+quadratic forms over Hahn fields, the Newton-sum Hankel matrix, residue change
+of variables for Laurent differentials, the small-divisor tree bound and the
+diagonal resolvent clauses of the row-finite spectral theory are proved.
 A successful build proves only the imported Lean
 statements, not coverage of all the source documents.
