@@ -21,7 +21,7 @@ data/
 ```
 
 Every label in `article.tex` carries the prefix `fkc:` (77 labels: the
-manuscript's 72, all kept, and 5 added on placement). No
+manuscript's 72, all kept, and 5 added during assembly). No
 [Lean ledger](../../FORMALIZATION.md) row cites an `fkc:` label.
 
 ## Provenance
@@ -29,8 +29,9 @@ manuscript's 72, all kept, and 5 added on placement). No
 One manuscript, dated 22 September 2026 (21 pages). This is **not a merge**:
 no other manuscript proves its results, and the nearest material in the
 collection is cross-referenced, not merged. The statements, proofs,
-limitations and priority caveats are the manuscript's. It was placed in
-commit `7b5f934`. What changed on placement (Section 1.4 of the article):
+limitations and priority caveats are the manuscript's. The raw files were placed
+in commit `7b5f934`; the report was assembled in commit `68e2960`. The
+editorial changes during assembly (Section 1.4 of the article) were:
 
 - **Labels** received the prefix `fkc:`. No statement, section or equation
   of the manuscript was renumbered; the added remarks and subsections come
@@ -52,8 +53,8 @@ commit `7b5f934`. What changed on placement (Section 1.4 of the article):
   `data/build_audit.json` records the delivered PDF's page count (21) and
   SHA-256, which was checked on placement; it does not describe this
   report's PDF.
-- The family `surcomplex/` was chosen over `surreal/` because the results are
-  stated uniformly for real and complex coefficients.
+- The earlier raw placement chose the family `surcomplex/` over `surreal/`
+  because the results are stated uniformly for real and complex coefficients.
 
 `research_audit.md` is verbatim and describes the repository at the pin. Its
 "44 reports", its negative search for "spherical" and its comparison with the
@@ -136,7 +137,7 @@ valuation divisibility.
 ## What the report does not claim
 
 Section 11.6 collects every limitation of the manuscript (N1–N11) and the
-one added on placement (N12):
+one added during assembly (N12):
 
 1. `κ` is uncountable; the finite-support case is excluded.
 2. Cardinally bounded Hahn fields (Kuhlmann–Shelah for regular `κ`;
@@ -170,7 +171,7 @@ one added on placement (N12):
     `transcendence-over-bounded-support`.
 11. The 9,622 finite assertions do not verify the transfinite theorems,
     quantifier elimination, novelty or any Lean implementation.
-12. The placement comparisons with other reports prove no new theorem.
+12. The assembly comparisons with other reports prove no new theorem.
 
 ## Corrections to the manuscript's repository statements
 
@@ -266,7 +267,7 @@ The recorded run (`data/verification.json`, seed 20260922) passed **9,622
 exact-rational assertions** in 18 families over finite Laurent-polynomial
 supports in lexicographically ordered `Z²`: first disagreement, sums and
 products, leading data of factored polynomials, tail invariance, nested-ball
-agreement and gluing, and the retraction-loss trichotomy. On placement a
+agreement and gluing, and the retraction-loss trichotomy. During assembly a
 rerun on a copy (Python 3.14.4) reproduced it exactly, up to CRLF line
 endings on Windows. The flat `build.sh` run also passed and typeset this
 25-page report, not the delivered 21-page manuscript that

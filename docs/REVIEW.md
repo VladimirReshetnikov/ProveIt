@@ -1209,17 +1209,49 @@ Loeb premeasure construction, diagonal saturation, Poisson logarithm bound
 or measurable ordinary count. This checks the stated proof scope, not the
 unavailable full Loeb source or the report's remaining provenance obligations.
 
+### Batch-22 assembly and phase-isometry integration
+
+Merged the batch-22 assembly and catalogue through `37eefca`, followed by
+the local phase-isometry and arbitrary-radius rotation results in `cd80e5e`.
+The independent inventory now checks 2,440 standard statements in 48
+assembled sources. All 45 delivered batch-22 audit, code/build and data
+artifacts are byte-identical to their placement versions. The five expanded
+reports retain their old labels; the two new reports retain all delivered
+labels with their assembly prefixes. The catalogue has 48 entries.
+
+An independent comparison of the changed manuscripts checked all 120 labels
+cited by the current Implementation mappings: 35 in holonomic rigidity,
+47 in trigonometry and 38 in Hahn measures. Their statement environments,
+and the mapped subsection `hol:sub:coarseboundary`, are unchanged. The
+surrounding conventions do not change their hypotheses. This preserves
+existing mappings; it does not review the newly added mathematical claims.
+
+Corrected first-kappa's provenance in its source and guide: raw placement
+was `7b5f934`, while the editorial additions and report assembly were
+`68e2960`. Baseline and revised PDFs both have 25 pages, with three clean
+passes and visual checks of the changed pages. All 77 label numbers,
+23 standard statements, 22 proofs and five historical artifacts are
+unchanged. This is a provenance correction, not a proof review.
+
+The merged Lean build passed all 3,984 jobs; the default axiom audit passed
+for 7,210 declarations using only `propext`, `Classical.choice` and
+`Quot.sound`. All 2,695 cited source labels and 1,015 local Markdown
+destinations in 108 files resolve. Six incoming gamma/zeta archives remain
+unassembled and are outside the main-source inventory.
+
 ## Remaining scope
 
-The placement `7b5f934` adds two manuscripts,
+Batch 22, placed in `7b5f934`, was assembled in `68e2960` and catalogued
+in `5d369a0`. Its two reports,
 [first-kappa coefficients](surcomplex/first-kappa-coefficients/) and
-[single-dilation Hahn support](surcomplex/single-dilation-hahn-support/), now
-provisionally indexed from their current sources. Their write phase, catalogue
-integration, proof review and source reconciliation remain pending. Added source
-material for entire functions, holonomic rigidity, trigonometry, Euclidean
-three-space and Hahn probability also awaits integration and review. The
-collection has 46 assembled reports plus these two placed manuscripts; the
-ledger indexes 2,298 results in the 48 current sources.
+[single-dilation Hahn support](surcomplex/single-dilation-hahn-support/), and
+new sections of entire functions, holonomic rigidity, trigonometry, Euclidean
+three-space and Hahn probability are now indexed from their written sources.
+Their mathematical proof review and source reconciliation remain pending.
+The collection has 48 assembled reports and 2,440 indexed standard results.
+Six gamma/zeta archives delivered in `cafe42f` remain in `docs/new/`; their
+placement, assembly and review are still pending and they are not included
+in the main-source count.
 
 The nine manuscripts placed in `d4e71b7` are grouped as
 [birthday cutoffs](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/)
