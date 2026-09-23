@@ -15,7 +15,7 @@ that the current Lean target compiles or imports them.
 
 ## Scope and how to read this ledger
 
-The canonical inventory below identifies **48 main texts** with **2440**
+The canonical inventory below identifies **49 main texts** with **2465**
 standard result environments. Counts cover
 literal `theorem`, `lemma`, `proposition`, and `corollary` environments;
 examples, equations, prose assertions and companion proofs contain further
@@ -36,6 +36,8 @@ expansions remain pending within the review scopes recorded separately. Batch 21
 statements; their review remains pending. Batch 22 (placed in `7b5f934`, written in
 `68e2960`) adds two reports and new sections to five existing ones, all
 indexed in their written form; their review remains pending.
+The subsequently added Gamma–zeta report contributes 25 indexed statements;
+its proof review and Lean formalization remain **Pending**.
 Inclusion supplies navigation, not mathematical review or formalization. The implementation
 table retains the precise scope of the newly mapped Lean statements.
 
@@ -530,9 +532,12 @@ cannot replace strong Hahn summability.
 
 `T`, `L`, `P`, `C` mean literal `theorem`, `lemma`, `proposition` and
 `corollary` environments; examples, computations, assessments and other
-custom environments are not included. The index covers all 48 main texts
-present in the repository; two are not named `article.tex`. The reader map
-and the typeset catalogue list all 48. The two reports placed in `7b5f934`
+custom environments are not included. The index covers all 49 main texts
+present in the repository; two are not named `article.tex`. The newly added
+[Gamma–zeta report](surcomplex/gamma-and-zeta-functions/article.tex) has 25
+standard environments, all **Pending**; its finite symbolic checks and source
+audit do not establish mathematical review or Lean coverage.
+The two reports placed in `7b5f934`
 and written in `68e2960`, and the five reports that batch extended, are
 indexed from their written sources. The two reports placed in `d4e71b7`
 and written in `3a2d35d`,
@@ -561,6 +566,7 @@ remain pending unless a precise implementation mapping states otherwise.
 | [surcomplex/entire-functions-at-arbitrary-rank/article.tex](surcomplex/entire-functions-at-arbitrary-rank/article.tex) | 43 | 31 | 18 | 35 | 127 |
 | [surcomplex/expanding-polynomial-dynamics/article.tex](surcomplex/expanding-polynomial-dynamics/article.tex) | 10 | 3 | 4 | 8 | 25 |
 | [surcomplex/finite-deformations/article.tex](surcomplex/finite-deformations/article.tex) | 23 | 10 | 6 | 13 | 52 |
+| [surcomplex/gamma-and-zeta-functions/article.tex](surcomplex/gamma-and-zeta-functions/article.tex) | 12 | 2 | 8 | 3 | 25 |
 | [surcomplex/global-divisors/article.tex](surcomplex/global-divisors/article.tex) | 17 | 13 | 15 | 12 | 57 |
 | [surcomplex/hahn-herglotz-positivity/article.tex](surcomplex/hahn-herglotz-positivity/article.tex) | 12 | 2 | 2 | 4 | 20 |
 | [surcomplex/hahn-tate-uniformization/article.tex](surcomplex/hahn-tate-uniformization/article.tex) | 25 | 19 | 10 | 16 | 70 |
@@ -597,7 +603,7 @@ remain pending unless a precise implementation mapping states otherwise.
 | [foundations-and-computation/surreal-fields-across-universes/article.tex](foundations-and-computation/surreal-fields-across-universes/article.tex) | 23 | 16 | 8 | 10 | 57 |
 | [surcomplex/first-kappa-coefficients/article.tex](surcomplex/first-kappa-coefficients/article.tex) | 10 | 6 | 2 | 5 | 23 |
 | [surcomplex/single-dilation-hahn-support/article.tex](surcomplex/single-dilation-hahn-support/article.tex) | 12 | 5 | 1 | 7 | 25 |
-| **Total** | 971 | 486 | 509 | 474 | **2440** |
+| **Total** | 983 | 488 | 517 | 477 | **2465** |
 
 The earlier refresh from `796f8d4` through `1f6d6b8` added four reports and
 expanded an existing one.
@@ -1783,6 +1789,48 @@ Source: [surcomplex/finite-deformations/article.tex](surcomplex/finite-deformati
 | Theorem | `finite:thm:rootstability` (line 1572) | Sharp conditioned root stability |
 | Corollary | `finite:cor:matching` (line 1623) | Stable matching of an entire simple cluster |
 | Proposition | `finite:prop:sharpness` (line 1632) | Both bounds attained, and the threshold strict |
+
+### gamma-and-zeta-functions
+
+Source: [surcomplex/gamma-and-zeta-functions/article.tex](surcomplex/gamma-and-zeta-functions/article.tex).
+
+All 25 standard statements are **Pending**, including proof review. The
+report distinguishes canonical finite Taylor–Laurent lifts, strong Dirichlet
+and Hurwitz constructions, phase-dependent global continuations and
+transported elementary-extension models; these domains and their operations
+require separate formalization and comparison. Formalization must retain
+every RH and simplicity hypothesis and distinguish established classical
+analytic inputs from cited external preprints. The delivered finite symbolic checks and source audit
+provide no Lean coverage. Labels below belong to this report; the two
+unlabeled corollaries are identified by source line.
+
+| Kind | Source label or line | Heading |
+|---|---|---|
+| Lemma | `lem:evaluation` (line 250) | Infinitesimal formal evaluation |
+| Proposition | `prop:functorial` (line 323) | Functoriality of canonical lifting |
+| Theorem | `thm:divisor` (line 347) | Divisor preservation and infinitesimal valuation |
+| Corollary | line 384 | Untitled |
+| Proposition | `prop:finitefe` (line 436) | Finite completed functional equation |
+| Theorem | `thm:finiteRH` (line 488) | Untitled |
+| Theorem | `thm:simplestable` (line 521) | Exact critical-line stability at a simple zero |
+| Theorem | `thm:robust` (line 566) | Robust finite RH criterion |
+| Corollary | line 615 | Multiplicity determines the splitting scale |
+| Theorem | `thm:Dirichlet` (line 700) | Arbitrary-coefficient Dirichlet realization |
+| Theorem | `thm:euler` (line 764) | Euler identities and zero-freeness |
+| Proposition | `prop:Dderivative` (line 802) | Local analytic dependence |
+| Proposition | `prop:Strec` (line 882) | Exact Stirling recurrence |
+| Theorem | `thm:Hurwitz` (line 970) | Hurwitz shift, Bernoulli values, and log-Gamma |
+| Theorem | `thm:gamma-obstruction` (line 1121) | Gamma reflection forces extra infinite poles |
+| Proposition | `prop:twofreq` (line 1152) | A two-frequency first-order distinction |
+| Theorem | `thm:resonance` (line 1199) | Phase-forgetting zeta obstruction |
+| Theorem | `thm:weakcompletions` (line 1276) | Explicit symmetric completions with different infinite zeros |
+| Proposition | `prop:embedding` (line 1342) | An ordered-field realization inside the surreals |
+| Theorem | `thm:transferRH` (line 1384) | Elementary RH equivalence |
+| Proposition | `prop:halofree` (line 1457) | Halo transfer of zero-free sets |
+| Corollary | `cor:stableproportion` (line 1566) | Quantitative robust-halo consequence |
+| Proposition | `prop:Hermitian` (line 1650) | Finite Hermitian tests do not become stronger |
+| Lemma | `lem:heatpersist` (line 1705) | Local real-root persistence |
+| Theorem | `thm:escape` (line 1729) | Conditional escape at negative infinitesimal time |
 
 ### global-divisors
 
