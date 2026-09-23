@@ -3,13 +3,13 @@
 **The finite-primitive criterion, the phase obstruction, and support-certified
 coordinate systems**
 
-A merged research report, 167 pages, built from ten manuscripts. Everything in
+A merged research report, 168 pages, built from ten manuscripts. Everything in
 this directory other than `article.tex`, `article.pdf` and this README is
 preserved source material.
 
 ```
 article.tex                        the merged report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled 167-page report
+article.pdf                        the compiled 168-page report
 README.md                          this guide
 11-autonomous-dynamics-sources.md  member 11's literature and repository-review log, unmodified
 code/                              the verification programs and build scripts of the ten
@@ -23,15 +23,15 @@ members 11 and 12 carry the sub-prefixes `diff:aut:` and `diff:rs:`. No
 pre-existing label was renamed or removed (506 before, 685 after).
 
 The current proof review covers the earlier scalar, matrix, workspace and
-coordinate chains, and now Sections 23–26 of the regular-singular part:
-the Euler frame, support and resonance arguments, spectral selection, both
-classifications, logarithmic repair and forced equations. The revisions
-expand the dependency and classification proofs, distinguish the two
-derivative frames, illustrate whole-block resonance and the effect of
-adjoining the logarithm, and prove the forced-solution degree bound sharp.
-Remaining regular-singular examples, workspace and procedure arguments,
-autonomous proofs, imports and source reconciliation are still pending;
-scope and validation are recorded in the collection's
+coordinate chains and all of the regular-singular main text, Sections
+23–28: the Euler frame, support and resonance arguments, classification,
+logarithmic repair, forcing, examples, workspaces and finite procedure.
+The revisions expand the proof steps, distinguish the derivative frames
+and field extensions, illustrate the normalizations, and prove the forced
+degree bound sharp. The finite procedure now states its effective
+coefficient requirements; complex algebraic coefficients suffice.
+Autonomous proofs, remaining imports and source reconciliation are still
+pending; scope and validation are recorded in the collection's
 [review record](../../REVIEW.md).
 
 ## What the report is
@@ -184,8 +184,11 @@ The unknown ranges over all of `No[i]ⁿ`.
   exactly the resonant normal form of Theorem 19.3 (Remark 28.2). The
   infinitesimal coefficient `i/log ω` has no solution, so the power-Hahn
   hypothesis cannot be dropped.
-* **An exact finite procedure** for finite rational supports (§28.3), which is
-  explicitly *not* an oracle algorithm for indirectly described supports.
+* **An exact finite procedure** for finite rational supports and complex
+  algebraic matrix entries (§28.3), or another coefficient presentation
+  supplying the stated exact operations. Its reduced set of weights is
+  closed under the recursion's dependencies. This is not an oracle algorithm
+  for indirectly described supports or arbitrary named complex constants.
 
 ### The autonomous stratum (Part VI, member 11)
 
@@ -740,6 +743,19 @@ The 48 historical files remain byte-identical, and the full Lean build
 and 5,371-declaration axiom audit pass. The review now includes spectral
 selection, both classifications, logarithmic repair and all solutions of
 the forced equation; later sections and formalization remain separate.
+
+The final regular-singular pass reviewed Sections 27–28 and rebuilt the
+report in three passes at 168 pages without warnings or box issues.
+The workspace, rank-one classification, logarithmic boundary, procedure
+and dependency-table pages were inspected. Member 12's unchanged verifier
+again passed all eight suites on a copy, matching every historical JSON
+field. A separate finite calculation checked the reduced-weight example:
+deleting the noncritical input at weight `3/2` changes the gauge but
+preserves the normalized resonant coefficients. All 48 historical files
+remain byte-identical. The full Lean build passed 3,872 jobs and the
+5,880-declaration axiom audit. The main-text review now covers all of
+Part V; the autonomous part and remaining imports and source reconciliation
+are still pending.
 
 ## Re-running the source verifiers
 

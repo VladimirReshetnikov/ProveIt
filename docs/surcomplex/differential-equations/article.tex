@@ -4449,8 +4449,9 @@ consolidated list is \cref{diff:sub:nc:matrixscope}. (Added with member~12: for
 one class of coefficients the filtration question and the algorithm question are
 answered in part. \Cref{diff:rs:part} splits every power-Hahn regular-singular
 system over $\KR[\log t]$ into rank-one factors whose obstructions are read off
-from the residual matrix, and for finite rational supports computes its Hahn
-invariants by a finite procedure (\cref{diff:rs:rem:effective}). Everything in
+from the residual matrix, and for finite rational supports with algebraic
+coefficients computes its Hahn invariants by a finite procedure
+(\cref{diff:rs:rem:effective}). Everything in
 this warning stands outside that class.)
 \end{warning}
 
@@ -5859,7 +5860,8 @@ finite systems over $\SC$; computable formulas for broader non-Hermitian
 classes remain open (\cref{diff:sub:nc:open}).
 \item It supplies, for this class, an explicit splitting whose rank-one factors
 carry obstructions read off from $A_{0}$ alone, together with a finite exact
-procedure for finite rational supports (\cref{diff:rs:sub:procedure}). That is
+procedure for finite rational supports with algebraic coefficients
+(\cref{diff:rs:sub:procedure}). That is
 a partial answer to item~N57 and to the ``computable filtration'' question of
 \cref{diff:warn:matlimits}; it is \emph{not} an answer to item~N41, which
 concerns irregular singularities of \emph{coordinate} equations.
@@ -7033,10 +7035,11 @@ $\bigl((1-\tfrac1j)-1\bigr)(-j)=1$ gives $(\derT-1)h=f$, and since $E_{12}^{2}=0
 $G_{\natural}=I+hE_{12}$ satisfies $\derT G_{\natural}=AG_{\natural}-G_{\natural}A_{0}$.
 So $A^{\natural}=A_{0}$, $N=0$, and $G_{\natural}\operatorname{diag}(t,1)$ is
 already a Hahn fundamental matrix. The divisors $(1-\frac1j)-1$ tend to zero and
-the coefficients of $h$ grow without bound; neither is an obstruction. The only
-word in $S$ reaching the resonance $1$ is $(\tfrac12,\tfrac12)$, whose matrix
-product $E_{12}^{2}$ vanishes, so $S_{\crit}=\{\tfrac12\}$ is a valid finite
-dependence set while the minimal one here is empty.
+the coefficients of $h$ grow without bound; neither is an obstruction. Every letter is at least $\tfrac12$, so a word summing to $1$ has
+length at most two. There is no letter $1$, and a length-two word must
+have both letters equal to $\tfrac12$. Its matrix product $E_{12}^{2}$
+vanishes, so $S_{\crit}=\{\tfrac12\}$ is a valid finite dependence set
+while the minimal one here is empty.
 \end{example}
 
 \begin{example}[A nonsemisimple residual matrix]
@@ -7122,12 +7125,22 @@ eigenspaces with real residual eigenvalues, whose shear entries are the
 monomials in \cref{diff:rs:eq:solworkspace}.
 \end{proof}
 
+These adjunctions are ordinary field generation inside $\SC$: an element
+of $K_\Gamma(t^{a_1},\ldots,t^{a_k})$ is a rational expression in
+finitely many added monomials with coefficients in $K_\Gamma$.
+The assertion does not replace this field by the entire Hahn field on
+$\Gamma+\Z a_1+\cdots+\Z a_k$, or claim closure under arbitrary Hahn
+sums there. The generated field is $\derT$-stable, since
+$\derT t^{a_j}=a_jt^{a_j}$ and the product and quotient rules preserve
+rational expressions; adjoining $\tau$, with $\derT\tau=1$, also
+preserves this stability.
+
 The monomial adjunction can be necessary. For $\Gamma=\Q$ the equation
 $\derT y=\sqrt2\,y$, that is $\der y=-\sqrt2\,t\,y$, has the nonzero ambient
 solutions $c\,t^{\sqrt2}$, none of which lies in $K_{\Q}$. This is the second
 row of \cref{diff:tab:workspaceambient} with $\sqrt2$ replaced by $-\sqrt2$ ---
-the same obstruction, an irrational exponent-$1$ coefficient in $\der$-form ---
-and it is printed only there. Together with \cref{diff:ex:sqrt2}, where $\der$
+the same obstruction, an irrational exponent-$1$ coefficient in $\der$-form.
+Together with \cref{diff:ex:sqrt2}, where $\der$
 fails to preserve $K_{\Q\sqrt2}$, it shows why this part lets $\Gamma$ be
 arbitrary: $\derT$ preserves every $K_{\Gamma}$, and the obstruction moves from
 stability of the workspace to membership of the monomial $t^{a}$.
@@ -7157,6 +7170,19 @@ the real exponent modulo $\Gamma$. The complete invariants of
 \cref{diff:rs:thm:Kclass} are for $\KR=K_{\R}$ only. Applied unchanged to $K_{\Q}$
 they would identify $\derT y=\sqrt2\,y$ with the trivial equation, which is false
 over $K_{\Q}$.
+
+More precisely, two constant rank-one Euler systems with coefficients
+$\lambda,\mu\in\C$ are $K_\Gamma$-gauge equivalent exactly when
+$\lambda-\mu\in\Gamma$. A gauge $x\neq0$ must solve
+$\derT x=(\lambda-\mu)x$. Writing
+$x=\sum_{\gamma\in\Gamma}c_\gamma t^\gamma$ gives
+$(\gamma-\lambda+\mu)c_\gamma=0$ at every exponent. Thus a nonzero
+gauge exists only when $\lambda-\mu=\gamma\in\Gamma$, and all such
+gauges are $c\,t^\gamma$ with $c\in\C^\times$. Conversely these
+monomials are gauges. The invariant is therefore the imaginary part
+together with the real part modulo $\Gamma$. Rank-one positive
+perturbations first normalize over $K_\Gamma$, so the same criterion
+applies to their residual coefficients.
 \end{remark}
 
 \subsection{The power-Hahn hypothesis cannot be dropped}
@@ -7187,9 +7213,12 @@ positive infinite $\log\log\omega\pm rx$, and the norm-square argument of
 \cref{diff:rs:lem:eulermode}(ii) applied to $\der_{1}y=iy$ excludes every nonzero
 solution. Finally $\log\omega<\omega^{a}$ for every real $a>0$, a property of the
 surreal exponential \cite{BM,ADH}, so $1/\log\omega$ exceeds every $t^{a}$ while
-being infinitesimal; a nonzero infinitesimal of $\KR$ has a least positive
-exponent $a_{0}$ and leading size a nonzero real multiple of $t^{a_{0}}$, so it
-cannot be $1/\log\omega$.
+being infinitesimal. If $1/\log\omega$ were in $\KR$, its least
+exponent would be some $a_0>0$. Dividing by $t^{a_0}$ would give a
+positive finite element with nonzero ordinary residue, hence
+$1/\log\omega<Ct^{a_0}$ for some ordinary $C>0$. But
+$Ct^{a_0}<t^{a_0/2}<1/\log\omega$, a contradiction. The use of
+$a_0/2$ makes the comparison independent of the leading coefficient.
 \end{proof}
 
 \begin{remark}[What the counterexample shows, and what it does not]
@@ -7208,25 +7237,66 @@ an open continuation in \cref{diff:sub:nc:open}.
 \subsection{An exact finite procedure, and what it does not compute}
 \label{diff:rs:sub:procedure}
 
-For finite rational support the proofs are directly executable. Fix $A_{0}^{\circ}$
-and a finite rational $S$; construct $\Lev(A_{0})$ and enumerate the monoid
-exponents up to $\max\Lev(A_{0})$ when there are positive resonances. There are
-finitely many such exponents, since after taking a common denominator they lie
-on a lattice in a bounded interval. Apply
-\cref{diff:rs:eq:recursion,diff:rs:eq:explicit} through that range, record the
-nonzero $A^{\natural}_{r}$, perform the shear and compute the Jordan forms of the
-$N_{b}$. This finite calculation determines all the $\KR$-gauge invariants; the
-ambient invariants need only the residual eigenvalues. The record shrinks if one
-first computes the words reaching $\Lev(A_{0})$ and keeps only their letters and
-partial sums: the certificate is then the critical input coefficients, the
-finite homological inverses at their partial weights, the resulting
-$A^{\natural}_{r}$, and the nilpotent Jordan data, each checked by a finite
-identity.
+A concrete effective input class consists of finite positive rational
+supports and complex algebraic matrix entries, represented exactly with
+their algebraic roots specified. In this class one can compute a residual
+Jordan basis and eigenvalues, decide equality and whether an eigenvalue
+difference is positive real, and perform exact field arithmetic and
+matrix rank calculations. These coefficient operations are part of the
+input contract: finite rational support alone does not supply them for
+arbitrary named complex constants. The same finite procedure applies to
+another coefficient presentation only when it supplies these operations.
+
+Fix the resulting $A_0^\circ$ and finite rational $S$. Write
+$R=\Lev(A_0)$. If $R\neq\varnothing$, let $r_{\max}=\max R$ and
+choose a common denominator $d$ with $S\subseteq d^{-1}\Z_{>0}$.
+Every monoid exponent at most $r_{\max}$ belongs to the finite grid
+\[
+ \{j/d:0\leq j\leq\lfloor dr_{\max}\rfloor\}.
+\]
+Starting at $0$ and adding letters of $S$ while staying in this grid
+enumerates the required exponents. Apply
+\cref{diff:rs:eq:recursion,diff:rs:eq:explicit} in increasing order,
+record the nonzero $A^\natural_r$, perform the shear and compute the
+Jordan forms of the $N_b$. If $R=\varnothing$, the normalized
+coefficient is already $A_0^\circ$; the nilpotent blocks of that
+residual matrix must still be retained. Empty support requires no
+recursion either. This determines all $\KR$-gauge invariants; the
+ambient invariants need only the residual eigenvalues.
+
+A smaller certificate keeps only the weights
+\[
+ W=\{\gamma\in S^*:\text{ there is }r\in R
+                         \text{ with }r-\gamma\in S^*\}.
+\]
+These are precisely the partial sums of all words reaching a resonance,
+including their empty and full prefixes. The finite-word lemma makes
+$W$ finite, even for an accumulating support when those words have
+been determined. If $\gamma\in W$ and
+$\alpha+\beta=\gamma$ with $\alpha,\beta\in S^*_{>0}$, then both
+$\alpha,\beta\in W$: for a witnessing $r$,
+$r-\alpha=(r-\gamma)+\beta$ and
+$r-\beta=(r-\gamma)+\alpha$ lie in $S^*$.
+Thus the recursion on these weights is closed under every predecessor
+pair. Moreover $S\cap W=S_{\crit}(R)$, since a letter is in $W$
+exactly when it can be completed to a word reaching $R$.
+The certificate consists of these critical input coefficients, the
+homological inverses at positive weights in $W$, the resulting
+$A^\natural_r$ and the nilpotent Jordan data, each verified by finite
+identities. At a resonant weight the inverse is restricted to the
+complementary block space, as in \cref{diff:rs:eq:explicit}.
+For example, if $S=\{\tfrac23,1,\tfrac32\}$ and $R=\{1,2\}$, then
+$W=\{0,\tfrac23,1,\tfrac43,2\}$ and
+$S_{\crit}(R)=\{\tfrac23,1\}$. The coefficient at $\tfrac32$ is below
+the largest resonance but cannot affect the normalized resonant data.
 
 Three limits travel with this procedure. The full gauge $G_{\natural}$ may still
 have infinite support; a finite certificate for the invariants is not a finite
 listing of that gauge, whose exact specification is the support theorem and the
-recursion. For an arbitrary well-ordered support supplied only indirectly the
+recursion. Already the scalar coefficient $A=t$ has no Levelt
+resonances and normalizes to $0$, but its normalized gauge is
+$\sum_{k\geq0}t^k/k!$, with infinite support.
+For an arbitrary well-ordered support supplied only indirectly the
 critical set is finite, but finding all exact word sums that hit a resonance
 need not be an effective task under an unspecified representation; finitely
 many black-box coefficient queries cannot certify that an unseen coefficient at
@@ -7248,7 +7318,8 @@ admit a filtration whose rank-one factors carry computable obstructions. For
 power-Hahn regular-singular systems this part answers both \emph{in part}: the
 gauge $G_{\tau}$ splits the module over $\KR[\tau]$ into rank-one factors whose
 obstructions $(\Imm\lambda_{j})\tau$ are read off from the residual matrix, and
-for finite rational supports with exact coefficients the procedure above
+for finite rational supports with the effective coefficient operations
+specified above (in particular, algebraic coefficients), the procedure
 computes the $\KR$-invariants by a finite calculation. The gauge $G_{\tau}$ is not
 unitary, $G_{\natural}$ is not finitely listed, and nothing is said about other
 input languages; the unitary-gauge question of item~N57 and the general
@@ -7283,8 +7354,8 @@ gauge; scalar mode exclusion & The abstract normal form
 \cref{diff:thm:matnormal} \\
 Forced equation (\cref{diff:rs:thm:forced}) & Finite coefficient resolvents;
 polynomial resonant primitive & An ambient forcing theorem \\
-Minimal logarithm (\cref{diff:rs:thm:minlog}) & Trace and derivation; finite
-matrix logarithm; constants & Algebraic closedness of the Hahn field \\
+Minimal logarithm (\cref{diff:rs:thm:minlog}) & Minimal-polynomial
+differentiation; finite matrix logarithm; constants & Algebraic closedness of the Hahn field \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -10309,7 +10380,8 @@ as an open problem, not solved; the exact recurrences of
 \cref{diff:ex:matnoncommuting,diff:eq:matairyrec} are instances, not a
 solution. \emph{Amended with member~12:} one such language is now supplied for
 one class. For power-Hahn regular-singular systems with finite rational supports
-and exact coefficients, \cref{diff:rs:sub:procedure} computes the Hahn invariants
+and algebraic coefficients (or the effective coefficient operations of
+\cref{diff:rs:sub:procedure}), that procedure computes the Hahn invariants
 by a finite calculation, and the phase spectrum is read off from the residual
 eigenvalues (\cref{diff:rs:prop:phasespectrum}). Its gauge is not unitary and is
 not finitely listed, and for indirectly supplied supports it is not an oracle
@@ -10636,7 +10708,8 @@ open; \cref{diff:ex:matnonnormal} rules out the instantaneous-eigenvalue formula
 \item \emph{Identify restricted, support-certified input languages on which the
 phase map, the purely infinite parts of eigenvalue primitives and a normalizing
 unitary gauge become effectively computable.} Answered in part for one class:
-finite rational supports of power-Hahn regular-singular systems
+finite rational supports with algebraic coefficients for power-Hahn
+regular-singular systems
 (\cref{diff:rs:sub:procedure,diff:rs:rem:effective}). The gauge there is not
 unitary and not finitely listed, and the continuation stands for unitary gauges
 and for every other class.

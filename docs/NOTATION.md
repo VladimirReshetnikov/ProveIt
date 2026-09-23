@@ -463,6 +463,13 @@ refer to the reduced frame; morphisms of the original systems are
 has coefficient `A ⊗ I + I ⊗ A′`, rather than the matrix product
 `A ⊗ A′` alone.
 
+For smaller Euler-stable workspaces, `K_Γ(t^{a₁}, …, t^{a_k})`
+means the field of rational expressions in the added monomials over
+`K_Γ`; it does not denote the full Hahn field on the enlarged exponent
+group. Two constant rank-one Euler coefficients `λ, μ ∈ ℂ` are
+gauge equivalent over `K_Γ` exactly when `λ − μ ∈ Γ`. In particular,
+their imaginary parts agree and their real parts agree modulo `Γ`.
+
 Distinguish the ordered real surreal exponential, the strongly summed
 infinitesimal Hahn exponential, finite-angle `cis`, and a chosen global
 surcomplex exponential or global phase. A finite angle has ordinary period
