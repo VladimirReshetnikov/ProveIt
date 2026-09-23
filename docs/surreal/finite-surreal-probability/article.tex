@@ -645,7 +645,11 @@ finite-process proofs, and makes adaptation and stopping-time measurability
 explicit. The Sections~\ref{fsp:sec:infinity}--\ref{fsp:sec:hierarchy}
 pass expands common-support and integration arguments, distinguishes uniform
 bounds from one-component essential bounds, and supplies a posterior with
-nonintegrable coefficients before density cancellation.
+nonintegrable coefficients before density cancellation. The
+Sections~\ref{fsp:sec:iid}--\ref{fsp:sec:extension} pass expands the
+coefficient-variation obstructions, the relative field embedding and finite
+compactness models, and replaces the logit change-of-variable shortcut by
+a calculation in the original Hahn coordinates.
 
 \section{Scalars, size, and the two meanings of exponentiation}
 \label{fsp:sec:scalars}
@@ -2525,7 +2529,12 @@ For each ordinary finite $n$, independent coin weights are legitimate
 surreal probabilities. The following proofs show why this is not enough
 for the coefficientwise extension in Definition~\ref{fsp:def:coefficientwise}.
 They concern $t=\omega^{-1}$ and the ordinary countable path space
-$\{0,1\}^{\N}$ with its Borel sigma-algebra. The conclusions are special
+$\{0,1\}^{\N_{\ge1}}$ with its Borel sigma-algebra. Summing over a
+new coordinate multiplies any earlier pattern weight by $p+(1-p)=1$,
+so the finite laws are consistent; every pattern weight is positive for
+both biases. The obstructions below concern a real coefficient measure's
+finite total variation. Positivity of the proposed Hahn extension is not
+used, so signed extensions are excluded as well. The conclusions are special
 cases of the repository's broader product analysis \cite{repomeasures};
 Section~\ref{fsp:sec:neighbours}, item~(c), names the corollary of that report
 which contains both and the mechanisms the proofs share.
@@ -2533,13 +2542,15 @@ which contains both and the mechanisms the proofs share.
 \begin{theorem}[A repeated infinitesimal success probability]
 \label{fsp:thm:rarecoin}
 The consistent finite-dimensional laws of independent Bernoulli$(t)$
-coordinates do not extend to a coefficientwise Hahn probability with
-ordinary finite signed coefficient measures.
+coordinates do not extend even to a coefficientwise Hahn signed measure
+with ordinary finite signed coefficient measures.
 \end{theorem}
 \begin{proof}
-Let $B_n$ be the cylinder event whose first success occurs at time $n$.
-These events are pairwise disjoint, and the prescribed finite-dimensional
-laws require
+For $n\ge1$, let
+$B_n=\{x:x_1=\cdots=x_{n-1}=0,\ x_n=1\}$.
+The initial zero string is empty at $n=1$. These measurable cylinder
+events are pairwise disjoint: a path cannot have two different first
+success times. Their prescribed finite-dimensional laws require
 \begin{equation}\label{fsp:eq:firstsuccess}
  P(B_n)=t(1-t)^{n-1}.
 \end{equation}
@@ -2548,6 +2559,12 @@ existed, its exponent-one coefficient would be an ordinary finite
 signed measure $\mu_1$ with $\mu_1(B_n)=1$ for all $n$. For any positive
 integer $N$, its total variation would be at least
 $\sum_{n=1}^N|\mu_1(B_n)|=N$, contradicting finiteness.
+In fact the complementary event $C_N=\{x_1=\cdots=x_N=0\}$
+has mass $(1-t)^N$ and coefficient $-N$ at $t$.
+The finite partition $B_1,\ldots,B_N,C_N$ therefore gives the sharper
+bound $|\mu_1|(\Omega)\ge2N$. Given a proposed finite real total
+variation $M$, an ordinary integer $N>M/2$ is already a contradiction;
+no infinite sum of surreal event masses is taken.
 \end{proof}
 
 The obstruction does not say that any finite coin experiment is
@@ -2562,36 +2579,60 @@ The independent Bernoulli$(1/2+t)$ finite-dimensional distributions also
 have no coefficientwise extension with finite signed coefficient measures.
 \end{theorem}
 \begin{proof}
-A length-$n$ cylinder containing $k$ successes has probability
-$(1/2+t)^k(1/2-t)^{n-k}$. Its coefficient at $t$ is
+Fix an ordinary integer $n\ge1$. A length-$n$ pattern with $k$
+successes has probability $(1/2+t)^k(1/2-t)^{n-k}$.
+To obtain its coefficient at $t$, choose the linear term from exactly
+one factor: the $k$ success factors contribute $+2^{-(n-1)}$ each,
+and the $n-k$ failure factors contribute $-2^{-(n-1)}$ each. Thus
 \begin{equation}\label{fsp:eq:coinrow}
  2(2k-n)2^{-n}.
 \end{equation}
 The total variation of the proposed exponent-one coefficient measure,
 evaluated on the length-$n$ partition, must therefore be at least
-$2\E|S_n|$, where $S_n$ is a sum of $n$ ordinary independent symmetric
-signs. Ordinary finite moment expansion gives
-$\E S_n^2=n$ and $\E S_n^4=3n^2-2n\le3n^2$.
-H\"older applied to
-$|S_n|^2=|S_n|^{2/3}|S_n|^{4/3}$ gives
+\[
+ \sum_{k=0}^n\binom nk\,|2(2k-n)2^{-n}|=2\E|S_n|,
+\]
+where $S_n=\varepsilon_1+\cdots+\varepsilon_n$ under the ordinary
+uniform law on $n$ independent signs $\varepsilon_i\in\{-1,1\}$.
+There are $\binom nk$ patterns with $S_n=2k-n$; this explains the
+partition multiplicities. Centering and independence make every product
+with an odd occurrence of some index have expectation zero. Consequently
+\[
+ \E S_n^2=n,\qquad
+ \E S_n^4=n+6\binom n2=3n^2-2n\le3n^2.
+\]
+The fourth moment counts either one index four times or two indices
+twice each. H\"older with conjugate exponents $3/2$ and $3$, applied to
+$|S_n|^2=|S_n|^{2/3}|S_n|^{4/3}$, gives
 \begin{equation}
  n\le(\E|S_n|)^{2/3}(\E S_n^4)^{1/3},
  \qquad \E|S_n|\ge\sqrt{n/3}.
 \end{equation}
-The variation lower bound tends to infinity through ordinary real
-numbers. A finite signed coefficient measure cannot have these values
-on all cylinder partitions.
+Cubing the first inequality gives
+$n^3\le(\E|S_n|)^2\E S_n^4\le3n^2(\E|S_n|)^2$;
+divide by $n^2>0$ and take the nonnegative real square root.
+A proposed finite variation $M$ is contradicted by any ordinary integer
+$n>3M^2/4$, since then $2\sqrt{n/3}>M$. Thus no finite signed
+coefficient measure has the required values on all cylinder partitions.
+The argument uses finite real moments, not a central limit theorem.
 \end{proof}
 
 A logit parametrization does not remove this obstruction. If every
 independent coordinate has the common infinitesimal logit $t$, then
 $\sigma(t)=1/2+t/4+O(t^3)$. Its exponent-one cylinder coefficients are
-one quarter of those in \eqref{fsp:eq:coinrow}, and their variations are
-still unbounded. Likewise, with $u=\exp(-L)$ for positive infinite $L$,
-a shared success probability $\sigma(-L)=u/(1+u)$ has coefficient one
-at the first $u$ scale in every first-success event. The first proof
-applies in a Hahn chart in $u$. Specifying infinite or infinitesimal
-logits therefore does not supply a missing infinite-addition rule.
+one quarter of those in \eqref{fsp:eq:coinrow}, and their variations
+are at least $\tfrac12\sqrt{n/3}$, still unbounded.
+Likewise, put $u=\exp(-L)$ for positive infinite $L$. In canonical
+Hahn coordinates write its leading term as $a t^\beta$, with
+$a>0$ real and $\beta>0$; $u$ need not itself be a monomial.
+The shared success probability $\sigma(-L)=u/(1+u)$ has the same
+leading term, as does every first-success mass
+$u/(1+u)^n$. Its exponent-$\beta$ coefficient is therefore the same
+positive real $a$ for all $n$, again forcing unbounded coefficient
+variation. This argument uses the original Hahn coordinates and does
+not assume that a change of scalar variable preserves coefficientwise
+measure structure. Specifying logits does not supply a missing
+infinite-addition rule.
 
 The unperturbed fair coin has an ordinary real product law, hence a
 coefficientwise law at exponent zero. An infinitesimal perturbation at
@@ -2616,30 +2657,50 @@ a set-sized ordered field extension. There is an ordered-field embedding
 $j:L\to\No$ fixing $K$ pointwise.
 \end{lemma}
 \begin{proof}
-Replace $L$ by its ordered real closure. Its elements algebraic over
-$K$ form a real closure of $K$, whose unique ordered embedding into
-the real closure of $K$ inside $\No$ extends the given identity.
-Choose and well order a transcendence basis of $L$ over that real
-closure. We extend the embedding successively, keeping the domain and
-image real closed after each step.
+Let $M$ be an ordered real closure of $L$, still a set-sized field.
+The subfield $K_0$ of elements of $M$ algebraic over $K$ is a real
+closure of $K$: positive square roots and roots of odd-degree polynomials
+in $M$ remain algebraic over $K$. The same argument in the real closed
+field $\No$ gives its real closure of $K$, consisting of the surreals
+algebraic over $K$. This is set-sized, since there are set many polynomials
+and each has finitely many roots. Uniqueness of ordered real closures
+identifies these two fields by an ordered isomorphism fixing $K$.
 
-At a step let $F$ be the current real closed domain and $x$ the next
-transcendental basis element. The two sets
+Choose and well order a transcendence basis of $M$ over $K_0$. Extend
+this initial embedding successively, keeping its domain a real closed
+subfield of $M$ and its image real closed. At a step let $F$ be the
+current domain and $x$ the next basis element. This $x$ is transcendental
+over $F$, because earlier real-closure steps added only algebraic elements
+over the field generated by earlier basis elements. The sets
 \begin{equation}
  \{j(a):a\in F,\ a<x\},\qquad
  \{j(b):b\in F,\ x<b\}
 \end{equation}
-form a surreal cut. Choose a surreal $y$ strictly between them. It cannot
-belong to $j(F)$, since every element of that field lies on one side of
-the cut. Since $j(F)$ is real closed, $y$ is transcendental over it.
-Sending $x$ to $y$ preserves signs of polynomials: over a real closed
-field they factor into linear factors and quadratic factors of constant
-sign, and the signs of the linear factors are determined by the cut.
-It therefore defines an ordered embedding of $F(x)$, which extends
-uniquely to its ordered real closure. At limit stages take unions;
-a union of a chain of real closed fields is real closed. Finally $L$
-is the real closure of the field generated by its transcendence basis,
-so the construction embeds all of $L$. All stages and cuts are sets.
+form a surreal cut: every left entry is smaller than every right entry.
+The cut property applies even if one side is empty. Take its simplest
+surreal $y$, which lies strictly between the two sides. No element of $j(F)$ can equal $y$, since
+every element of $F$ lies strictly on one side of $x$. A real closed
+ordered field has no proper ordered algebraic extension, so $y$ is
+transcendental over $j(F)$.
+
+Substitution $x\mapsto y$ therefore gives an injective field map on
+$F(x)$. It preserves order: a nonzero polynomial over a real closed
+field factors into a nonzero constant, linear factors, and monic
+irreducible quadratic factors. The latter are positive everywhere
+(by completing the square), the linear signs are determined by the cut,
+and the constant's sign is already preserved. Apply this to numerator
+and denominator to preserve signs of rational functions. The ordered
+embedding extends uniquely to the real closure of $F(x)$ inside $M$,
+with image its real closure inside $\No$.
+
+At a limit stage take unions. Any positive element or odd-degree
+polynomial has all its data in one earlier stage, where its required
+root already exists, so the union remains real closed. After the whole
+basis has been included, $M$ is algebraic over the resulting real closed
+subfield and hence equals it. Restrict the resulting embedding of $M$
+to $L$. Every stage, image and cut is a set, since the basis is set-sized
+and algebraic closure steps adjoin set many elements. The original
+field $K$ is fixed throughout.
 \end{proof}
 
 The map preserves field operations and order. It need not preserve a
@@ -2651,29 +2712,47 @@ is not a proof that two different exponential structures agree.
 \subsection{A fine-ultrafilter construction}\label{fsp:sub:ultrafilter}
 
 The following is a direct version of the non-Archimedean sampling
-construction in the literature \cite{bhw,brickhill}. Let $\Omega$ be
+construction in the literature: compare the fine-ideal construction
+in \cite[Section~4.2]{bhw} and the fine-ultrafilter regularity and
+uniformity results in \cite[Definition~4 and Propositions~5--6]{brickhill}.
+The sections and numbers refer to the cited arXiv preprints. Let $\Omega$ be
 an infinite set and let $I$ be its nonempty finite subsets. For each
 finite $F\subseteq\Omega$, the cone
 $\{s\in I:F\subseteq s\}$ is nonempty, and finite intersections of
-cones are cones. Extend the cone filter to an ultrafilter $\mathcal U$.
+cones are cones: the intersection for $F_1,\ldots,F_r$ is the cone
+for their finite union. The empty set is in no such filter because every
+cone has a nonempty finite member. Extend this proper cone filter to an
+ultrafilter $\mathcal U$. It is fine, meaning that every cone containing
+one prescribed point belongs to it. It cannot be principal at any
+$s\in I$, since a point outside that finite $s$ has a cone omitting $s$.
 This use of the ultrafilter lemma is nonconstructive.
 
-The ultrapower $L=\R^I/\mathcal U$ is an ordered field. Define
+The ultrapower $L=\R^I/\mathcal U$ is a set-sized ordered field;
+reals embed as constant functions. Its order is defined by
+$[f]<[g]$ exactly when $\{s:f(s)<g(s)\}\in\mathcal U$.
+In particular a positive class need not have a positive real lower bound.
+Define
 \begin{equation}\label{fsp:eq:ultrafilter}
  P(A)=\left[\frac{|A\cap s|}{|s|}\right]_{\mathcal U},\qquad
  H=[|s|]_{\mathcal U},\qquad A\subseteq\Omega.
 \end{equation}
 These values give an all-subsets regular finitely additive probability.
 Indeed normalization and disjoint additivity hold at every snapshot.
-For $a\in A$, the cone containing $a$ belongs to $\mathcal U$, so
-$P(A)>0$. Fineness also gives
+For $a\in A$, every snapshot in its cone has
+$|A\cap s|/|s|\ge1/|s|>0$, so $P(A)>0$ in the ultrapower order.
+For every ordinary $n$, choose $n+1$ distinct points of the infinite
+set $\Omega$; their cone forces $|s|>n$. On the cone containing $a$,
+the singleton's snapshot frequency is exactly $1/|s|$. Thus
 \begin{equation}
  H>n\quad(n\in\N),\qquad P(\{a\})=1/H
  \quad(a\in\Omega).
 \end{equation}
 Lemma~\ref{fsp:lem:embedding}, applied over $\R$, turns these into surreal
-probability values without changing any field identities. This yields
-positive equal singleton masses even on an uncountable set.
+probability values without changing any field identities or real constants.
+The reciprocal $1/H$ is positive infinitesimal, since $H$ exceeds every
+ordinary integer and hence every real bound. This yields positive equal
+singleton masses even on an uncountable set. Every finite set $F$ has
+mass $|F|/H$, by finite additivity.
 
 The addition implicit in \eqref{fsp:eq:ultrafilter} is a snapshot operation:
 \begin{equation}
@@ -2690,8 +2769,10 @@ On $\N_{\ge1}$ one can instead use the initial segments
 $s_n=\{1,\ldots,n\}$ and a nonprincipal ultrafilter on the indices.
 This remains fine for every fixed finite subset of $\N$. If the
 ultrafilter concentrates on even indices, the even numbers have
-probability exactly $1/2$. If it concentrates on odd indices, their
-probability is
+probability exactly $1/2$, because the even count in $s_n$ is $n/2$
+on those indices. Such nonprincipal ultrafilters exist by extending the
+cofinite filter together with the infinite set of even indices.
+Using odd indices instead, the count is $(n-1)/2$, giving probability
 \begin{equation}
  \frac12-\frac{1}{2H},\qquad H=[n].
 \end{equation}
@@ -2705,10 +2786,19 @@ probability of the evens, but different exact probabilities of the evens.
 Thus even fixing the infinitesimal unit need not select a unique law.
 
 Equal singleton probabilities imply invariance under permutations with
-finite support, by finite additivity. They do not imply invariance
-under arbitrary transformations. In particular, a shift-invariant law
-on all subsets of $\N$ would satisfy
-$P(\N\setminus\{1\})=P(\N)$, contradicting a positive singleton mass.
+finite support. If a permutation moves only points in a finite set $F$,
+it fixes $A\setminus F$ and preserves the cardinality of $A\cap F$;
+finite additivity therefore preserves $P(A)$. This does not give invariance
+under arbitrary transformations. On $\N_{\ge1}$ the shift
+$n\mapsto n+1$ is an injection, not a permutation; invariance under
+that injection would give
+$P(\N_{\ge1}\setminus\{1\})=P(\N_{\ge1})$,
+contradicting $P(\{1\})>0$.
+Even invariance under all permutations of $\N_{\ge1}$ is impossible:
+partition it into two infinite sets $A,C$ and choose $a\in A$.
+Bijections $A\to A\setminus\{a\}$ and
+$C\to C\cup\{a\}$ combine into a permutation, under which
+$P(A)$ decreases by $P(\{a\})>0$.
 More generally, an invariance axiom can conflict with regularity even
 when every atom has the same mass. Symmetry requirements must be checked
 as separate constraints, not inferred from the word ``uniform.''
@@ -2719,7 +2809,7 @@ as separate constraints, not inferred from the word ``uniform.''
 \label{fsp:thm:extension}
 Let $\Omega$ be a nonempty set, $\A$ an algebra of its subsets, and
 $P_0:\A\to K$ a regular finitely additive probability, where
-$K\subseteq\No$ is set sized. There is a set-sized ordered field
+$K\subseteq\No$ is a set-sized ordered subfield. There is a set-sized ordered field
 extension $L/K$ and a regular finitely additive probability
 $P:\mathcal P(\Omega)\to L$ extending $P_0$.
 The extension can be realized with values in a set-sized subfield of
@@ -2728,20 +2818,32 @@ $\No$ while preserving every original value in $K$.
 \begin{proof}
 Use the first-order language of ordered fields with constants for the
 elements of $K$ and a constant $p_A$ for each subset $A\subseteq\Omega$.
-Include the ordered-field diagram of $K$, normalization, disjoint finite
-additivity, the axioms $p_A>0$ for every nonempty $A$, and
-$p_A=P_0(A)$ for $A\in\A$.
+This is a set-sized language because $K$ and $\mathcal P(\Omega)$
+are sets. Include the ordered-field axioms and the atomic diagram of
+$K$ with inequalities and distinctions between different constants, so
+that their interpretations form an ordered copy of $K$. Add
+$p_\varnothing=0$, $p_\Omega=1$, every disjoint finite-additivity
+identity, $p_A>0$ for every nonempty $A$, and
+$p_A=P_0(A)$ for $A\in\A$. This is a set of first-order sentences.
 
 Every finite fragment is satisfiable in $K$. To show this, take the
 finite Boolean algebra generated by the finitely many original events
 from $\A$ named in the fragment. Each of its nonempty atoms has positive
 $P_0$ mass. Refine its atoms by all the other finitely many subsets
-mentioned in the fragment. Within a parent atom of mass $b>0$, split
-$b$ equally among its finitely many nonempty refined children. The
-resulting positive finite atomic law has exactly the prescribed masses
-on the original finite Boolean algebra and satisfies every finite
-additivity constraint in the fragment. Empty cells have mass zero.
-The constants from $K$ retain their given values.
+mentioned in the fragment, including every union appearing in an
+additivity identity. Within a parent atom $C$ of mass $b=P_0(C)>0$,
+let $r_C\ge1$ be the number of its nonempty refined children and give
+each child mass $b/r_C$. This is positive in $K$, and their total is
+$b$. Assign each mentioned event the sum of the masses of its children.
+Every nonempty mentioned event contains a nonempty child, so its assigned
+mass is positive. Each original event is a union of parent atoms and
+therefore retains its $P_0$ mass. Disjoint unions correspond to disjoint
+lists of children, satisfying every additivity constraint in the fragment;
+the whole space has mass one and the empty set zero. Constants for
+unmentioned events may be interpreted arbitrarily for this fragment.
+The constants from $K$ retain their given values. The assignments for
+different finite fragments need not agree; compactness is what produces
+one simultaneous model.
 
 First-order compactness gives a set-sized ordered-field model of all
 these axioms. Its copy of $K$ is an ordered subfield, and the values of
@@ -2757,20 +2859,29 @@ Regularity is necessary if a regular extension must preserve every
 original mass: an original nonempty zero-mass event cannot become
 positive. The theorem does not require countable additivity, symmetry,
 a canonical embedding, or a prescribed bound on the new scales.
-Imposing such extra conditions may block the construction.
+Imposing such extra conditions may block the construction. If $\Omega$
+is finite, the same splitting can be done once down to singletons, giving
+an extension already in $K$; the compactness argument is needed for the
+unrestricted infinite case. Regularity is an actual hypothesis on the
+original event algebra, not a property supplied by changing scalar fields.
 
 \begin{corollary}[The two coin models do have regular finite-additive laws]
 \label{fsp:cor:coinextension}
 The finite cylinder probabilities of either Bernoulli$(t)$ or
 Bernoulli$(1/2+t)$ extend to regular finitely additive surreal
-probabilities on all subsets of $\{0,1\}^{\N}$, with the original
+probabilities on all subsets of $\{0,1\}^{\N_{\ge1}}$, with the original
 $t=\omega^{-1}$ unchanged.
 \end{corollary}
 \begin{proof}
-Each nonempty cylinder-algebra event is a nonempty finite union of
-positive finite-pattern atoms, so the consistent cylinder law is
-regular and finitely additive. Apply Theorem~\ref{fsp:thm:extension}
-over its original scalar field.
+Every cylinder-algebra event depends on finitely many coordinates and
+is a union of full patterns on those coordinates. For either bias,
+$0<p<1$, so each pattern has positive mass $p^k(1-p)^{n-k}$.
+Refining to any larger finite coordinate set preserves masses by
+$p+(1-p)=1$, proving that this assignment is well defined and finitely
+additive. A nonempty event contains a pattern and therefore has positive
+mass. All these finite probabilities lie in $K=\R(t)\subseteq\No$.
+Apply Theorem~\ref{fsp:thm:extension} over this $K$ and use the
+embedding that fixes $K$ pointwise, in particular the original $t$.
 \end{proof}
 
 Theorems~\ref{fsp:thm:rarecoin} and \ref{fsp:thm:faircoin} prove that these
