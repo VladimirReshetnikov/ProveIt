@@ -4,6 +4,21 @@
 
 Research article prepared for Vladimir Reshetnikov with ChatGPT, 23 September 2026.
 
+## Repository placement
+
+Placed in `21375f8`. Independent proof review and formalization are pending.
+
+The current [article.tex](article.tex) is source 07, the critical-point-defects
+base. Sources 06 and 09 remain separate manuscripts in the placement archive
+history; their assembly and comparison with this base are pending. No
+maintained PDF is installed yet. The current source-07 files are
+[proof status](07-critical-point-defects-PROOF_STATUS.md),
+[build helper](code/07-critical-point-defects-build.sh), and
+[finite verifier](code/07-critical-point-defects-finite_regression.py), with
+prefixed recorded outputs under [data/](data/). The delivery description
+below uses the original filenames. Build `article.tex` separately in scratch;
+the delivered helper assumes the original package layout.
+
 ## Contents
 
 - `critical_point_defects.pdf`: the 32-page article, including the title page, two front-matter pages, 29 numbered pages, and bibliography.

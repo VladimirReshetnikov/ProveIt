@@ -14,7 +14,7 @@ Vladimir Reshetnikov.
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 174 pages
+article.pdf                        the compiled report, 178 pages
 README.md                          this guide
 RECONCILIATION.md                  the source comparisons and precise proof-review scope
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
@@ -129,7 +129,16 @@ ideal and graph. Section 13 now also has a proof review of reconstruction,
 automorphisms and logical consequences. It extends coefficient reconstruction
 to the number-field ideal predicates and the c.e.-set classification to
 all characteristic-zero coefficient fields using finite equation systems.
-The new material in Sections 6 and 10 still needs review.
+The added Gaussian fibers and étale norm arguments in Section 6 now have
+a proof review against sources 07 and 13. Basis parameters are unique,
+and nonzero kernels give proper-class fibers when an ordinary point exists.
+The norm proof spells out separable splitting and coefficient extension;
+it extends to abstract Hahn rings in every characteristic, with concrete
+zero-level, nilpotent and inseparable counterexamples to weaker hypotheses.
+Source 07's quartic in Section 10 is now reviewed too: the proof uses the
+ambient support ring before the integer intersection, and constructs
+ordinary witnesses for every allowed intermediate ring. The later curve
+pointers still need review.
 Further passes review all of Section 15: denominator ideals, the
 multiplier theorem, rational-function and curve applications, congruence
 orbits and density. The focusing formula now handles the zero parameter
@@ -141,10 +150,27 @@ expands the scale-defect and Tor proofs, distinguishes finite real
 dimension from infinite module length, and checks fixed workspaces and
 Gaussian normalization.
 The rest of the batch-27 material remains unreviewed: the additions to Section 20, Section 21.3 and Questions 21.12–21.16. No review
-covers the batch-28 material: Sections 16–18, the pointers added in Sections 6, 7
+covers the full batch-28 material. A further elementary pass reviews
+Sections 16.2–16.3 (Lemmas 16.1–16.3 and Corollary 16.4): rings, Euler
+derivations and their joint constants. It corrects the trivial-group
+valuation-ring exception and distinguishes an image inclusion from a
+proper inclusion. A subsequent pass reviews Section 16.4: the squarefree
+certificate, degree obstruction, cubic differential and Weierstrass
+applications, including singular families. It supplies the missing
+positive-integer hypothesis for differential division, qualifies division
+by the discriminant and corrects the factor of two in the contraction
+comparison. The next pass reviews Section 16.5 through inheritance,
+completing the maintained Section 16 proof chain. It explains the tangent
+functional, two-ring contraction, symmetric evaluation and constant descent;
+the symmetric clause now explicitly requires positive degree. The proof
+also yields the proper singular case with globally generated Kähler
+differentials, and tangent detection is shown equivalent to tautological
+semiampleness for smooth projective schemes. Imported geometric foundations
+are identified separately. Sections 17–18, the pointers added in Sections 6, 7
 and 14, the additions to Section 20, Section 21.4, the re-scoped notes to
-Questions 21.1, 21.3 and 21.8, and Questions 21.17–21.22. Nor does any review cover
-the batch-29 material: Section 18.6, the credits, corrections and remarks added for
+Questions 21.1, 21.3 and 21.8, and Questions 21.17–21.22 remain unreviewed.
+The elementary pass also covers the corresponding claims credited to
+source C15. The other batch-29 material remains outside it: Section 18.6, the credits, corrections and remarks added for
 source C15 in Sections 16–18, and its additions to Sections 1, 20 and 21 and to the
 appendices. Section 18.6 was appended at the end of Section 18, so no section,
 statement or equation number changed. Inserting Section 15
@@ -157,9 +183,33 @@ The article has 200 standard results (72 theorems, 38 propositions, 42 lemmas,
 48 corollaries), of which 39 are in Section 15 and 57 in Sections 16–18 (6 of them in
 Section 18.6). The
 [ledger](../../FORMALIZATION.md) indexes the standard results of the
-report by `odg:` label. The ring and constant-term package `odg:prop:ring`
-is **Proved** in Lean (its implementation row in the ledger gives the exact
-scope); every other statement is **Pending**.
+report by `odg:` label, including all six results of Section 18.6.
+The ring and constant-term package `odg:prop:ring` is **Proved**, using
+[actual omnific integers](../../../Surreal/Foundations/OmnificIntegers.lean)
+and the [complex support ring](../../../Surreal/Surcomplex/NonnegativeSupportRing.lean).
+The degree lemma `odg:lem:degree`, unit/finite-element proposition
+`odg:prop:units` and exact floor theorem `odg:thm:floor` are also **Proved**.
+The [floor construction](../../../Surreal/Foundations/OmnificFloor.lean)
+handles the negative infinitesimal correction at an integer coefficient
+and proves existence and uniqueness of the omnific integer part.
+The [polynomial-root package](../../../Surreal/Foundations/OmnificPolynomialRoots.lean)
+also proves `odg:prop:univariate` and transcendence over `ℝ` of every
+infinite omnific integer. The [ordinary residue package](../../../Surreal/Foundations/OmnificResidues.lean)
+proves `odg:thm:finitequotients`, and
+[integer divisor rigidity](../../../Surreal/Foundations/OmnificIntegerDivisors.lean)
+proves `odg:prop:finitedivisors`.
+The [ordinary arithmetic package](../../../Surreal/Foundations/OmnificOrdinaryArithmetic.lean)
+proves the primality, mixed-gcd and Chinese remainder corollary
+`odg:cor:mixedgcd`. The [finite quotient package](../../../Surreal/Foundations/OmnificFiniteQuotients.lean)
+proves `odg:cor:charideals`, including unique ordinary moduli and
+factorization of every finite-target homomorphism through the constant term.
+The [constant rigidity package](../../../Surreal/Foundations/OmnificConstantRigidity.lean)
+proves `odg:prop:canonicalct`, its noninjective-endomorphism example,
+and non-residual-finiteness using an explicit nonzero monomial.
+The [p-adic completion](../../../Surreal/Foundations/OmnificPadicCompletion.lean)
+is ring-isomorphic to `ℤ_p`; its canonical map is integer constant
+extraction followed by the ordinary embedding and has kernel `Π`.
+Other results remain **Pending** unless individually mapped in the ledger.
 
 ## Thirteen sources, one report
 
@@ -850,7 +900,8 @@ of `Z` they give were not found in the repository, and source 13 says the same
 of its exact fiber formulation; at their pin `71e9606` this was true, but the
 collection has contained the quartic guards (Theorems 10.3, 10.4) and the exact
 fiber theorem (Theorem 6.2) since `be06fc8`. The collection now has this
-report and its sibling, and still no Lean. Descriptions of
+report and its sibling, and commit `f879c1e` constructs the actual omnific
+ring and its constant-term retraction in Lean. Descriptions of
 `docs/NORMAL_FORM_BRIDGE.md`, the `Surreal/Foundations/` workspace modules,
 the surcomplex automorphism report's phase twists, the catalogue entry on
 coefficient recovery by a dilation, and the formalization ledger remain
@@ -874,15 +925,17 @@ Section 21; Sections 6–7 and Theorem 7.4 keep their numbers. The blob hashes t
 record (`4c26f4e` at `4cdeaec`, `47af413` at `89bec38` and `f6e031a`) are
 correct. Source C14's "three-source assembly", source C11's "reviewed Sections
 1–7" and source C12's "51-report collection" were true at their pins; the report
-now has thirteen sources, the reviews extend further but not to Sections 16–18,
+now has thirteen sources, the reviews extend further, including the
+all of Section 16, but not the curve classification and subsequent applications,
 and the catalogue has grown. Source C15 inspected the repository through the
 connector at `934810a`, when this report had sources 01, 02, 05, 06 and 07, and
 quoted correctly its guide's statement that `y² = x³ + ax + b` with `a ≠ 0` was
 outside the method; since `c6359e4` the collection settles that equation
 independently (Corollary 16.9), and C15's proof is printed there once. Its remarks
 that the unimodular Fermat case was already here and that the ledger separates
-source assertions, review and Lean coverage are accurate. There is still no Lean
-declaration about omnific integers.
+source assertions, review and Lean coverage are accurate. Their absence-of-Lean
+statements describe the source pins; the ring package is now formalized,
+as recorded above.
 
 ## What the report does not claim
 
@@ -1052,7 +1105,7 @@ to 06 and 07, to 08 and 09, and to C10–C14). The main ones:
   sources here transfer rigidity only from the complex fiber to the real one.
 - [`omnific-preserving-automorphisms`](../omnific-preserving-automorphisms/):
   its Euler derivations map `ℛ_𝔬(k, Γ)` into `Π_k(Γ)` (`opa:par:prop:Euler`),
-  the strict inclusion used in Sections 16–17; sources C10–C14 did not cite it.
+  the support inclusion used in Sections 16–17; sources C10–C14 did not cite it.
 - [`hahn-tate-uniformization`](../../surcomplex/hahn-tate-uniformization/): its
   Tate points are field points of curves with nonconstant `j`-invariant, outside
   the constant-coefficient hypothesis of Section 17; like Remark 17.24 and

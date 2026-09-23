@@ -9,6 +9,7 @@ Author line: research article prepared with ChatGPT for Vladimir Reshetnikov.
 This directory holds one manuscript. It is not a merge: there was no second
 source, and nothing was selected out of a larger body of work. Every result,
 proof, example, question and limitation of the manuscript is printed.
+Independent proof review and formalization are pending.
 
 ```
 article.tex       the report, standalone LaTeX with an internal bibliography

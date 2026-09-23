@@ -536,8 +536,13 @@ together with their material and that of source 13 in
 \cref{odg:def:sec:arithmetic,odg:def:sec:ct,odg:def:sec:reconstruction}, including
 the distinction between intermediate rings and full positive-support rings,
 the detector witnesses, coefficient reconstruction and logical consequences.
-The material they added to \cref{odg:sec:rigidity,odg:sec:guard} remains
-outside the reviews.
+A further pass reviews their Gaussian-fiber and \'etale-norm additions
+in \cref{odg:sec:rigidity}, including support and coefficient-extension
+arguments and explicit boundary examples. The abstract \'etale norm proof
+also works in arbitrary characteristic; separability remains necessary.
+Source 07's quartic in \cref{odg:sec:guard} now also has a proof review,
+including the ambient-ring argument and the integer witnesses for every
+intermediate ring.
 Sources 08 and 09, placed in \texttt{a4dcb91}, were integrated after those
 reviews as \cref{odg:frac:sec:fractions}, together with additions to
 \cref{odg:sec:formal}, one partly answered question and five new questions in
@@ -555,7 +560,10 @@ by one, from Sections 15--17 to 16--18. Sources C10--C14, placed in
 \cref{odg:sec:rigidity,odg:sec:derivations,odg:sec:primitive}, additions to
 \cref{odg:sec:formal}, and, in \cref{odg:sec:questions}, \cref{odg:q:affine}
 answered for smooth curves, two further questions answered in part and six new
-questions; this material is outside all the reviews. Its
+questions. A subsequent elementary pass reviews only
+\cref{odg:cr:sub:rings,odg:cr:sub:euler}: the ring and valuation properties,
+Euler derivations, joint constants and relative algebraic closedness.
+The remaining curve and geometric material is outside the reviews. Its
 insertion moved the same three sections by three more, so that the former Sections
 15--17 are now \cref{odg:sec:coefficients,odg:sec:formal,odg:sec:questions};
 statement numbers in Sections 1--15 are unchanged. Source C15, placed in
@@ -563,7 +571,8 @@ statement numbers in Sections 1--15 are unchanged. Source C15, placed in
 \cref{odg:cr:sec:groups}, with credits added to the results of
 \cref{odg:cr:sec:principle,odg:cr:sec:curves,odg:cr:sec:groups} that it reproves, a
 correction in \cref{odg:cr:sub:singular} and re-scoped notes in
-\cref{odg:sec:questions}; this material is outside all the reviews, and no section or
+\cref{odg:sec:questions}; its elementary ring/Euler claims are included in
+the pass just described, while its other material remains unreviewed. No section or
 statement number changed. Nine earlier
 labels renamed or combined during assembly remain as aliases, so existing
 references resolve.
@@ -714,8 +723,9 @@ report already used the omnific integer part, the floor formula and residue
 arithmetic (\replabel{trigonometry:eq:periodclass}); source 01 mentioned only
 the latter. At the pin there was no report devoted to $\Oz$ and no Lean
 declaration about it. The collection now contains this report and the sibling
-report \fn{docs/surreal/set-sized-quotients-of-omnific-integers}; there is
-still no Lean formalization of omnific integers
+report \fn{docs/surreal/set-sized-quotients-of-omnific-integers}. Commit
+\texttt{f879c1e} constructs the actual omnific ring and proves the
+constant-term package of \cref{odg:prop:ring} in Lean
 (\cref{odg:sec:formal,odg:app:repo}). Sources 06 and 07 inspected the
 repository at the later pin \texttt{71e9606}, which still preceded both
 omnific reports; their statements that no explicit Diophantine definition of
@@ -1730,6 +1740,14 @@ vector of $\mathbf u$ at $\gamma$; so $\ell_j(\mathbf u)=0$ for all $j$ says
 exactly that every $\mathbf u_\gamma$ lies in $\mathcal K_{\C}$, and expanding
 each $\mathbf u_\gamma$ in the basis gives series $t_k$ supported in the
 (set-sized, reverse-well-ordered) union of the coordinate supports.
+More explicitly, the coordinate functionals of the basis are complex
+linear maps on $\mathcal K_{\C}$; apply each to every coefficient vector
+to form $t_k$. Taking a subset of the common support preserves its
+admissibility. Conversely, arbitrary $t_k\in\Pi_{\C}$ give a vector
+with coefficients in $\mathcal K_{\C}$, since only finitely many basis
+vectors are used. Independence of the $\mathbf v_k$ makes these parameters
+unique coefficient by coefficient. This argument uses finite linear
+algebra and Hahn supports, not convergence of a sequence of partial sums.
 Disjointness holds because the constant coefficient of a normal form is
 unique. If $\mathcal K_{\C}=0$, then $\mathbf u=0$.
 \end{proof}
@@ -1751,6 +1769,15 @@ infinite coordinate. The other implications are
 So, subject to one ordinary point, the linear-kernel criterion is not merely
 sufficient: it detects exactly whether a nonzero constant fiber acquires
 infinite directions \src{13}.
+The nonemptiness hypothesis cannot be omitted: $F(X,Y)=X-Y$ and
+$c=\sqrt2$ have kernel $\R(1,1)$, but no omnific solution, because
+taking constants would give an integer difference equal to $\sqrt2$.
+In the Gaussian case the same example works because $\sqrt2\notin\Z[i]$.
+When an ordinary point $\mathbf a$ and a nonzero kernel vector
+$\mathbf v$ do exist, the map $t\mapsto\mathbf a+t\mathbf v$ is
+injective on $\Pi$ (and on $\Pi_{\C}$ in the Gaussian case): a nonzero
+coordinate of $\mathbf v$ allows cancellation. Thus every such fiber
+is a proper class, not merely an infinite set \mergetag.
 
 \begin{remark}[Real and complex kernels \src{13}]\label{odg:dec:rem:kernels}
 For omnific variables the relevant kernel is
@@ -1762,6 +1789,16 @@ on $\R^2$: every omnific solution of $x+iy=c$ is ordinary. For Gaussian
 variables the criterion is the complex kernel. For instance \mergetag,
 $\mathcal K_{\C}=\C(1,i)$ for $X+iY$, and $(1+\omega,\,i\omega)\in\Og^2$
 solves $X+iY=1$, since $(1+\omega)+i\cdot i\omega=1$.
+For an explicit real rank test, write $M$ for the complex matrix of the
+$\ell_j$. Then
+\[
+ \mathcal K=\ker_{\R}
+ \begin{pmatrix}\operatorname{Re}M\\ \operatorname{Im}M\end{pmatrix}:
+\]
+for a real vector, $M\mathbf v=0$ exactly when both its real and
+imaginary parts vanish. Full column rank of this real matrix is the
+necessary and sufficient kernel condition for real variables, whereas
+Gaussian variables use the rank of $M$ over $\C$.
 \end{remark}
 
 \begin{example}[A rank-deficient level \src{13}]\label{odg:dec:ex:rankdeficient}
@@ -1989,29 +2026,52 @@ of $N(\mathbf x)=a\ne0$ lies in $\Z[i]^r$.
 \end{enumerate}
 \end{theorem}
 \begin{proof}
-Let $\overline\Bbbk$ be an algebraic closure of $\Bbbk$. Since $E$ is \'etale,
-there are exactly $r$ homomorphisms of $K$-algebras
-$\sigma_1,\ldots,\sigma_r:E\to\overline\Bbbk$, and together they identify
-$E\otimes_K\overline\Bbbk$ with $\overline\Bbbk^r$. In these coordinates
-multiplication by $\sum_je_jX_j$ is diagonal, so taking its determinant gives
+Let $\overline\Bbbk$ be an algebraic closure of $\Bbbk$. Write
+$E=\prod_{h=1}^s L_h$ as a product of finite separable extensions of $K$
+(the characterization of \'etale algebras over a field is
+\cite[Lemma 10.143.4]{StacksEtaleField}). Choose a primitive element for
+each $L_h$. Its minimal polynomial splits over $\overline\Bbbk$ into
+distinct linear factors, so the polynomial Chinese remainder theorem
+gives
+\[
+ L_h\otimes_K\overline\Bbbk\cong
+ \prod_{\sigma:L_h\hookrightarrow\overline\Bbbk}\overline\Bbbk,
+ \qquad E\otimes_K\overline\Bbbk\cong\overline\Bbbk^r.
+\]
+Each unital $K$-algebra map from $E$ to a field selects one factor
+$L_h$: exactly one of its orthogonal idempotents maps to $1$, and
+the others map to $0$.
+Thus there are exactly $r$ such maps $\sigma_\ell$, and they give the
+displayed isomorphism. In the basis $e_j\otimes1$, its matrix is
+$M=(\sigma_\ell(e_j))$, so $M$ is invertible. These maps need not be
+injective on the product algebra $E$; only their combined map is injective.
+In the split coordinates, multiplication by $\sum_je_jX_j$ is diagonal.
+The determinant is unchanged by this constant change of basis, giving
 the polynomial identity
 \[
  N(\mathbf X)=\prod_{\ell=1}^{r}\Bigl(\sum_{j=1}^{r}\sigma_\ell(e_j)X_j\Bigr)
  \quad\text{in }\overline\Bbbk[X_1,\ldots,X_r].
 \]
-The matrix $(\sigma_\ell(e_j))$ is invertible: the square of its determinant
-is the discriminant $\det(\operatorname{Tr}_{E/K}(e_ie_j))$ of the basis,
-which is nonzero because $E$ is \'etale. (Source 13 argues with power bases:
+Equivalently, the trace matrix is $M^{\mathsf T}M$, because its
+$(i,j)$ entry is $\sum_\ell\sigma_\ell(e_i)\sigma_\ell(e_j)$; hence its
+determinant is $(\det M)^2\ne0$. This is a bilinear trace pairing,
+with transpose, not conjugate transpose. Source 13 argues with power bases:
 for a field the matrix is a Vandermonde matrix of distinct conjugates, for a
 product it is block diagonal, and a change of basis over $K$ preserves
-invertibility.) Coefficient extension embeds $\mathcal A_\Bbbk(\Gamma)$ in
-$\mathcal A_{\overline\Bbbk}(\Gamma)$ without changing any support. Each factor
+invertibility. Coefficient extension embeds $\mathcal A_\Bbbk(\Gamma)$ in
+$\mathcal A_{\overline\Bbbk}(\Gamma)$: injectivity of the coefficient-field
+map preserves every nonzero coefficient and thus every support, and finite
+coefficient convolutions commute with this map. Each factor
 $\sum_j\sigma_\ell(e_j)x_j$ lies in $\mathcal A_{\overline\Bbbk}(\Gamma)$, and
 their product is the nonzero constant $a$, so every factor is constant by
-\cref{odg:def:lem:units}. Inverting the matrix shows that every $x_j$ is a
-constant; as $x_j$ has its coefficients in $\Bbbk$, it lies in $\Bbbk$, hence
+\cref{odg:def:lem:units}. For each positive exponent $\gamma$, their
+coefficient vector is $M\mathbf x_\gamma=0$. Invertibility gives
+$\mathbf x_\gamma=0$, so no $x_j$ has positive support. Its remaining
+coefficient was already in $\Bbbk$, so $x_j\in\Bbbk$, hence
 in $A\cap\Bbbk=\mathfrak o$. For (a) and (b) note that $\Oz\cap\R=\Z$ and
 $\Og\cap\C=\Z[i]$.
+No closure of $A$ under constant extraction is needed: the argument first
+makes the entire coordinate constant and only then uses $A\cap\Bbbk$.
 \end{proof}
 
 \Cref{odg:thm:norm} is the case $K=\Q$, $E$ a number field, $A=\Oz$. Source
@@ -2024,11 +2084,52 @@ ingredient is in one of the two sources. Two cautions from source 07 apply.
 When some coefficients of $N$ in $K$ do not lie in $A$, the equation is read
 in the ambient series ring; to use it literally as a formula with parameters
 in $\mathfrak o$, one assumes that its coefficients and right-hand side lie in
-$\mathfrak o$. The nonzero right-hand side and separability are essential;
-this is not a theorem that every algebraic variety has only constant points.
+$\mathfrak o$. The nonzero right-hand side and the \'etale hypothesis are
+essential to this uniform assertion; this is not a theorem that every
+algebraic variety has only constant points.
 The norm on the left is evaluation of a finite polynomial, not a newly
 postulated norm on a class-sized algebra \src{13}. Pell rigidity in
 intermediate rings (\cref{odg:def:cor:pell}) is the case $E=\Q(\sqrt2)$.
+
+\paragraph{Boundary examples and characteristic.}
+The restrictions can be seen in small polynomial rings \mergetag.
+For the \'etale algebra $E=\Q\times\Q$ with its product basis, the norm
+is $N(X,Y)=XY$; its zero level contains $(0,t)$ for every $t\in\Pi$.
+If \'etaleness is dropped, take the dual-number algebra
+$E=\Q[\epsilon]/(\epsilon^2)$ with basis $(1,\epsilon)$. Multiplication
+by $X+Y\epsilon$ has matrix
+$\left(\begin{smallmatrix}X&0\\Y&X\end{smallmatrix}\right)$ and norm
+$X^2$. Thus the nonzero level $N=1$ contains $(1,t)$ for every
+$t\in\Pi$. A nonzero determinant makes this algebra element a unit;
+it does not force its nilpotent coordinate to be constant.
+
+Characteristic zero, in contrast, is unnecessary for the abstract
+\'etale norm argument \mergetag. For any field $\Bbbk$, form the same
+reverse-well-ordered nonnegative-support Hahn ring and take
+$\mathfrak o\subseteq A\subseteq\mathcal A_\Bbbk(\Gamma)$ with
+$A\cap\Bbbk=\mathfrak o$. The conclusion of
+\cref{odg:dec:thm:etale} still holds for finite \'etale $E/K$,
+$K\subseteq\Bbbk$. The splitting argument uses separability only.
+The units argument also works in any characteristic: in a product of
+nonzero series, the coefficient at the sum of the largest exponents
+is the product of the nonzero leading coefficients. Nonnegative degrees
+whose sum is zero all vanish. The remaining matrix argument is unchanged.
+This is a statement about these abstract Hahn rings; it does not replace
+the real or complex coefficient fields of the actual omnific rings.
+
+Separability cannot be removed from this extension. For instance let
+$K=\mathbb F_2(s)$ with $s$ transcendental, let
+$E=K(\theta)$ with $\theta^2=s$, and use $\Bbbk=E$ as the coefficient
+field. The polynomial $X^2-s$ is irreducible over $K$ (the order at
+$s=0$ of a rational square is even), so $E/K$ has degree two and is
+purely inseparable. Multiplication in the basis $(1,\theta)$ has matrix
+$\left(\begin{smallmatrix}X&sY\\Y&X\end{smallmatrix}\right)$, so its norm is
+$N(X,Y)=X^2-sY^2=X^2+sY^2$. In
+$A=\Bbbk[T]\cong\mathcal A_\Bbbk(\Z)$, the nonconstant pair
+$(1+\theta T,T)$ has norm $1$, since $2=0$ and $\theta^2=s$.
+Here $\mathfrak o=\Bbbk$, so the claimed constant-coordinate conclusion
+would fail. The example locates the obstruction in the failure of
+separable splitting, even though $E$ itself is a field.
 
 \subsection{An algebraic-geometric formulation}
 
@@ -2961,12 +3062,36 @@ A_\R(\Gamma)$ and $A\cap\R=\Z$ (notation of \cref{odg:def:sub:setting}), every
 zero in $A^7$ having all seven coordinates in $\Z$. It differs from
 \eqref{odg:eq:standardquartic} only in comparing $x^2$ with the square $u^2$ of
 the Pell coordinate instead of $t^2$ with the coordinate itself, and is printed
-once, here. The proof is the same; source 07 phrases the bounding step as
-follows: if a finite sum of squares of elements of $\mathcal A_\R(\Gamma)$ is a
-real constant, every summand is constant, because at twice the largest
-occurring degree the coefficient is a sum of squares of real leading
-coefficients, hence positive. Source 07 cites Lagrange's theorem through
-\cite[Section 6]{Conrad}. Over $\Og$ the formula accepts every $x$ (take
+once, here. Here is the argument for the stated intermediate ring, without
+assuming that it is closed under constant extraction. If $F_4=0$, the
+order on the ambient real Hahn field makes both squared expressions zero:
+\[
+ (u-\sqrt2v)(u+\sqrt2v)=1,\qquad
+ x^2+\sum_{j=1}^4a_j^2=u^2.
+\]
+Both factors in the first equation belong to the ambient nonnegative-support
+ring, even when $\sqrt2\notin A$. The constant-product argument of
+\cref{odg:def:lem:units} makes them real constants. Adding and subtracting
+shows $u,v\in\R$, hence $u,v\in A\cap\R=\Z$.
+If any of $x,a_1,\ldots,a_4$ were nonconstant, let $\delta>0$ be the
+largest of their degrees. At exponent $2\delta$, the sum of their
+squares has coefficient equal to the sum of the squares of the nonzero
+leading coefficients of precisely those terms of degree $\delta$.
+That coefficient is positive, contradicting the constant right-hand side
+$u^2$. All five terms are therefore real constants, and membership in $A$
+makes them integers. This proves the assertion about the full zero set,
+including every witness.
+
+Conversely, for $x\in\Z$ choose an ordinary Pell pair
+$(u,v)=(X_k,Y_k)$ with $u\ge |x|$ by \cref{odg:lem:pellsequence}.
+Lagrange's theorem writes the nonnegative integer $u^2-x^2$ as four
+integer squares, including the case zero. These six integer witnesses
+belong to every allowed $A$ and give $F_4=0$. Thus neither divisibility
+nor nontriviality of $\Gamma$ is required; for $\Gamma=0$ the hypothesis
+already forces $A=\Z$. The polynomial has total degree exactly four:
+its $x^4$ coefficient is $1$. The order was used only in the proof,
+not as a symbol in the defining formula. Source 07 cites Lagrange's theorem
+through \cite[Section 6]{Conrad}. Over $\Og$ the formula accepts every $x$ (take
 $u=1$, $v=0$, $a_1=ix$, $a_2=1$, $a_3=a_4=0$), so it is not asserted there;
 the order-free definition of $\Z[i]$ in $\Og$ is
 \cref{odg:def:thm:constants}.
@@ -2981,8 +3106,8 @@ without writing it out. Neither source claims its count optimal
 Mathlib revision pinned by this repository (\texttt{81a5d257}),
 \fn{Nat.sum_four_squares} is proved in
 \fn{Mathlib/NumberTheory/SumFourSquares.lean}, while no three-square
-theorem is present. Only source 05's definition therefore rests on a theorem
-in Mathlib; source 01's would need the three-square theorem imported or
+theorem is present. The four-square definitions of sources 05 and 07
+therefore use an available Mathlib theorem; source 01's would need the three-square theorem imported or
 proved first. The four-square theorem is used only on an ordinary
 nonnegative integer; its analogue for positive omnific integers is false
 (\cref{odg:rem:foursquares}). Source 07's quartic
@@ -6450,23 +6575,31 @@ September 23, 2026, tagged \src{C10}--\src{C14} after their file prefixes
 \src{14} without the letter keep their meaning as manuscripts of the sibling
 report. All five prove the same spine. A smooth geometrically integral affine
 curve with constant coefficients has nonconstant points over a one-sided Hahn
-ring exactly when it is the affine line
+ring with nonzero exponent group exactly when it is the affine line
 (\cref{odg:cr:thm:affine}); in particular every omnific solution of a
 nonsingular Weierstrass equation is an ordinary integer solution
-(\cref{odg:cr:cor:weierstrass}). Each source reaches this by two routes: an
-elementary B\'ezout certificate for squarefree equations $y^m=P(x)$, and a
-geometric \emph{two-ring} argument in which properness and the Euler
-derivations force every global differential form to vanish at a point. Source
+(\cref{odg:cr:cor:weierstrass}). The elementary route gives a B\'ezout
+certificate for squarefree equations $y^m=P(x)$. The geometric
+\emph{two-ring} argument treats more general targets: properness and the
+Euler derivations force the contractions of every global differential
+form at a point to vanish. Source
 C14 is the base because it has the weakest hypotheses on the shared theorems:
 any coefficient field of characteristic zero and any ordered exponent group.
-Sources C10 and C12 assume an algebraically closed field for curves, source
-C11 an algebraically closed field or $\R$, and source C13 a divisible exponent
-group and the fields $\R$, $\C$. The results answer \cref{odg:q:affine} for
+For the affine-curve classification, sources C10 and C12 use an
+algebraically closed field, C11 an algebraically closed field or $\R$,
+and C13 the fields $\R$, $\C$. The abstract proper-rigidity results of
+C11 and C13 already allow every characteristic-zero coefficient field;
+C13 assumes a divisible exponent group. The results answer \cref{odg:q:affine} for
 smooth curves and its Weierstrass test completely, and they answer
 \cref{odg:q:search,odg:q:homogeneous} in part (\cref{odg:cr:sub:settled}).
 They contain \cref{odg:thm:separated,odg:cor:mordell} as special cases.
-Labels of this material carry the sub-prefix \fn{odg:cr:}. The part is outside
-the proof reviews recorded in \fn{RECONCILIATION.md}. A sixth manuscript, source C15
+Labels of this material carry the sub-prefix \fn{odg:cr:}. The proof review in
+\fn{RECONCILIATION.md} covers this section's ring and Euler prerequisites,
+squarefree certificate and two-ring differential principle, through symmetric
+forms and inheritance. The curve classification and subsequent geometric
+applications remain outside it; imported scheme-theoretic foundations are
+identified separately.
+A sixth manuscript, source C15
 (prefix \fn{15-}), reproves much of the part independently and extends the two-ring
 argument to logarithmic forms in every dimension; its new results form
 \cref{odg:log:sub:log}, with the sub-prefix \fn{odg:log:}, and its other results are
@@ -6492,10 +6625,14 @@ $\crO$ is its valuation ring and $\crm$ the maximal ideal. For a subring
 $\mathfrak o\subseteq\Bbbk$ the arithmetic ring is
 $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)=\mathfrak o+\crP$. In the surreal instances
 $\Gamma\subseteq\No$, $\crA$ is the part of $\BR$ or $\BC$ supported in $\Gamma$,
-$\mathcal R_\Z(\R,\Gamma)=\Oz_\Gamma$, and $\crO$ is the workspace form of the
-finite surreals $\Ofin$, with $\crm$ its infinitesimals. The two rings $\crA$
-and $\crO$ point in opposite support directions: $\crA$ is \emph{not} the
-valuation ring and not the ring of finite elements (\cref{odg:rem:notvaluation}).
+$\mathcal R_\Z(\R,\Gamma)=\Oz_\Gamma$. For $\Bbbk=\R$, $\crO$ is the
+workspace form of the finite surreals $\Ofin$, with $\crm$ its infinitesimals;
+for $\Bbbk=\C$, both real and imaginary coordinates must be finite,
+and both are infinitesimal in $\crm$. The two rings $\crA$
+and $\crO$ point in opposite support directions. For $\Gamma\ne0$ they
+are distinct: $\crA$ is not the valuation ring or the ring of finite
+elements (\cref{odg:rem:notvaluation}). For $\Gamma=0$ both reduce to
+the coefficient field.
 
 \paragraph{The $t$-convention of three sources.} Sources C11, C12 and C14 write
 $\Bbbk((t^\Gamma))$ with well-ordered supports and $t^\gamma=\omega^{-\gamma}$, as
@@ -6518,7 +6655,8 @@ identified after passage to a common larger workspace \src{C10, C12, C13}. A
 projective point over a ring is given by an invertible quotient; its finite
 presentation data, like a unit-ideal witness, fit into one workspace \src{C12}.
 By \cref{odg:lem:workspace} every finite datum lies in some $\mathcal A_\R(\Gamma)$
-or $\mathcal A_\C(\Gamma)$, and every theorem below holds for every $\Gamma$, so
+or $\mathcal A_\C(\Gamma)$, and the theorems below hold for arbitrary $\Gamma$
+subject to their stated hypotheses, so
 either the rational span of the supports \src{C10, C12, C13} or the group they
 generate \src{C11, C14} may be used.
 
@@ -6558,10 +6696,18 @@ $\Bbbk$ lies in $\Bbbk$.
 \end{enumerate}
 \end{lemma}
 \begin{proof}
-Parts (a), (c) for $\crA$ and (d) are \cref{odg:def:lem:units} and its proof; on
-$\crO$ the same support arguments apply with the inequalities reversed, and a
-nonzero $f\in\crH$ has $f\in\crO$ or $f^{-1}\in\crm$, so $\crO$ is a valuation
-ring. Part (b) compares supports: a support in $\Gamma^{\ge0}\cap\Gamma^{\le0}$ is
+Parts (a), (c) for $\crA$ and (d) are \cref{odg:def:lem:units} and its proof.
+On $\crO$, addition and multiplication preserve nonpositive support;
+in a product exponent zero can arise only from two zero exponents.
+Thus $\ct$ is a ring homomorphism onto $\Bbbk$, with kernel $\crm$.
+For a nonzero $f\in\crH$, $v(f)\ge0$ means $f\in\crO$, while
+$v(f)<0$ implies $v(f^{-1})>0$ and $f^{-1}\in\crm$.
+This proves the valuation-ring property and also $\Frac\crO=\crH$:
+in the latter case $f=1/f^{-1}$. A nonzero $f\in\crO$ is a unit
+exactly when $v(f)=0$, since $v(f^{-1})=-v(f)$. Its nonunits are
+therefore precisely $\crm$, which is the maximal ideal, and
+$\crO/\crm\cong\Bbbk$ via $\ct$.
+Part (b) compares supports: a support in $\Gamma^{\ge0}\cap\Gamma^{\le0}$ is
 contained in $\{0\}$, and one in $\Gamma^{\ge0}\cap\Gamma^{<0}$ or
 $\Gamma^{>0}\cap\Gamma^{\le0}$ is empty. A unit of
 $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$ is a unit of $\crA$, hence a nonzero
@@ -6569,7 +6715,13 @@ constant, and a constant lies in $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$ exactl
 when it lies in $\mathfrak o$; this gives (c).
 \end{proof}
 
-The ring $\crA$ is not a valuation ring, and nothing below assumes that it is
+For $\Gamma\ne0$, the ring $\crA$ is not a valuation ring. To see this,
+choose $\gamma>0$ and put $q=\omega^\gamma/(1+\omega^\gamma)$.
+Both $q$ and $q^{-1}=1+\omega^{-\gamma}$ have degree zero and are
+nonconstant, whereas every degree-zero element of $\crA$ is constant.
+Neither belongs to $\crA$, violating the valuation-ring criterion.
+If $\Gamma=0$, instead $\crA=\crO=\crH=\Bbbk$ is a field and hence
+a valuation ring. Nothing below assumes that $\crA$ is
 Noetherian, normal, a gcd domain, or that $\Frac\crA=\crH$
 \src{C10, C11, C12, C13, C14}. It is not integrally closed in general
 (\cref{odg:cr:sub:singular}). For $\Gamma=\Z$ it is the polynomial ring
@@ -6621,13 +6773,32 @@ $v(u)=0$ then $\partial u\in\crm$ by \eqref{odg:cr:eq:tworings}, so
 $\partial u/u\in\crm$ \src{C12}.
 \end{proof}
 
-The strict inclusion $\partial(\crA)\subseteq\crP$ is proved by sources C11, C12
+The stronger support inclusion $\partial(\crA)\subseteq\crP$ is proved by sources C11, C12
 and C13, and appears already in the collection, as a derivation
 $\Oz\to\Pi$ in \replabel{osq:prop:classder} and as a map
 $\mathcal R_{\mathfrak o}(k,\Gamma)\to\Pi_k(\Gamma)$ in \replabel{opa:par:prop:Euler}.
 Sources C10 and C14 use only $\partial(\crA)\subseteq\crA$. The inclusion
 $\partial(\crO)\subseteq\crm$ on the \emph{opposite} ring is the new ingredient of
 all five sources; it is the bridge to properness.
+
+These image inclusions need not be proper. For example, when $\Gamma=\Z$
+and $\lambda(n)=n$, the ring $\crA=\Bbbk[\omega]$ has
+$\partial(\crA)=\omega\Bbbk[\omega]=\crP$: the monomial
+$b\omega^n$, $n>0$, is the derivative of $(b/n)\omega^n$.
+Likewise $v(\partial f)\ge v(f)$ need not be a strict inequality.
+For any $u\ne0$, write $u=a\omega^\alpha(1+\varepsilon)$ with
+$a\in\Bbbk^\times$, $\alpha=\ddeg u$ and $\varepsilon\in\crm$.
+Leibniz gives the more precise formula
+\[
+ \frac{\partial_\lambda u}{u}
+ =\lambda(\alpha)+\frac{\partial_\lambda\varepsilon}{1+\varepsilon},
+ \qquad
+ \ct\!\left(\frac{\partial_\lambda u}{u}\right)=\lambda(\alpha).
+\]
+The second summand belongs to $\crm$, since its numerator does and its
+denominator is a unit of $\crO$. This explains both logarithmic-derivative
+clauses: an arbitrary monomial can give a nonzero constant, whereas a
+unit of $\crO$ has $\alpha=0$ \mergetag.
 
 \begin{lemma}[Joint constants and leading detection \src{C10, C11, C12, C13, C14, C15}]\label{odg:cr:lem:separation}
 The common kernel of all Euler derivations of $\crH$ is $\Bbbk$. If
@@ -6656,14 +6827,18 @@ Every element of $\crH$ algebraic over $\Bbbk$ lies in $\Bbbk$.
 \begin{proof}
 Let $p$ be the minimal polynomial of $f$ over $\Bbbk$. In characteristic zero it
 is separable, so $p'(f)\ne0$, and $0=\partial(p(f))=p'(f)\partial f$ for every
-Euler derivation. Thus $f$ is a joint constant, and
+Euler derivation. More explicitly, coprimality of $p$ and $p'$ gives
+$a p+b p'=1$ in $\Bbbk[X]$; evaluating at $f$ makes $p'(f)$ invertible.
+The chain rule therefore forces $\partial f=0$ for every member of the
+family. Thus $f$ is a joint constant, and
 \cref{odg:cr:lem:separation} applies.
 \end{proof}
 
 \subsection{The squarefree certificate}\label{odg:cr:sub:squarefree}
 
 \begin{lemma}[Differential division \src{C14; also C10, C11, C12, C13, C15}]\label{odg:cr:lem:division}
-Let $P\in\Bbbk[X]$ be squarefree and choose $U,W\in\Bbbk[X]$ with
+Let $m\ge1$ be an ordinary integer, let $P\in\Bbbk[X]$ be squarefree,
+and choose $U,W\in\Bbbk[X]$ with
 $UP+WP'=1$. In independent variables $x,y,\xi,\upsilon$ put
 \[
  F=y^m-P(x),\quad G=my^{m-1}\upsilon-P'(x)\xi,\quad
@@ -6680,7 +6855,9 @@ $\partial$ is a $\Bbbk$-derivation of it,
 \end{equation}
 \end{lemma}
 \begin{proof}
-Expanding, the terms in $y^m\xi$ and in $y^{m-1}\upsilon$ cancel and
+Characteristic zero makes $P$ coprime to $P'$, so such $U,W$ exist.
+Expanding in $\Bbbk[x,y,\xi,\upsilon]$, the terms in $y^m\xi$ and in
+$y^{m-1}\upsilon$ cancel and
 $\xi\bigl(1-U(x)P(x)-W(x)P'(x)\bigr)=0$ remains. Substituting
 $\xi=\partial x$, $\upsilon=\partial y$ makes $F$ and $G$ vanish, since the
 derivative of $y^m=P(x)$ is $G=0$ \src{C12, C13}.
@@ -6724,7 +6901,7 @@ write $P(X)=c(X-r_1)(X-r_2)$ with $r_1\ne r_2$, choose $q^2=c$ and put
 $u=x-(r_1+r_2)/2$; then $(y-qu)(y+qu)=-c(r_1-r_2)^2/4\in\bar\Bbbk^\times$, so both
 factors are units of $\mathcal A_{\bar\Bbbk}(\Gamma)$, hence constants, and so are
 $x,y$, whose coefficients lie in $\Bbbk$. This is the constant-product mechanism
-of \cref{odg:lem:constantproduct,odg:thm:binary}. The strict inclusion
+of \cref{odg:lem:constantproduct,odg:thm:binary}. The support inclusion
 $h\in\crP$ of sources C12 and C13 removes the corner without it; it is printed
 as the primary proof, and this unit argument is kept as the second route.
 \end{remark}
@@ -6750,30 +6927,47 @@ For $P(X)=X^3+aX+b$ and $\Delta_0=4a^3+27b^2$,
 \begin{equation}\label{odg:cr:eq:cubic}
  (27b-18aX)\,P(X)+(6aX^2-9bX+4a^2)\,P'(X)=\Delta_0
 \end{equation}
-in $\Z[a,b,X]$. So $P$ is squarefree when $\Delta_0\ne0$; conversely a repeated
-root $r$ gives $a=-3r^2$, $b=2r^3$ and $\Delta_0=0$. On $y^2=P(x)$ and for a
-derivation $\partial$ killing $a,b$,
+in $\Z[a,b,X]$. For $a,b\in\Bbbk$, the polynomial $P$ is squarefree if and
+only if $\Delta_0\ne0$. In every commutative $\Bbbk$-algebra, on
+$y^2=P(x)$ and for a derivation $\partial$ killing $a,b$,
 \begin{equation}\label{odg:cr:eq:cubicdiv}
  \Delta_0\,\partial x=y\bigl((27b-18ax)\,y\,\partial x+2(6ax^2-9bx+4a^2)\,\partial y\bigr),
 \end{equation}
-and, with $U=(27b-18aX)/\Delta_0$ and $W=(6aX^2-9bX+4a^2)/\Delta_0$, the regular
-differential of the affine curve satisfies
+whether or not $\Delta_0$ vanishes. If $\Delta_0\ne0$, set
+$U=(27b-18aX)/\Delta_0$ and $W=(6aX^2-9bX+4a^2)/\Delta_0$. Then the
+differential $\dif x/y$, initially defined where $y\ne0$, extends regularly
+to the whole affine curve by
 \begin{equation}\label{odg:cr:eq:dxy}
  \frac{\dif x}{y}=U(x)\,y\,\dif x+2W(x)\,\dif y .
 \end{equation}
 \end{proposition}
 \begin{proof}
-Expansion proves \eqref{odg:cr:eq:cubic}; a common root of $P$ and $P'$ would
-divide $\Delta_0$. A repeated root satisfies $3r^2+a=0$ and $r^3+ar+b=0$, whence
-$b=2r^3$ and $\Delta_0=4(-3r^2)^3+27(2r^3)^2=0$. Identity \eqref{odg:cr:eq:cubicdiv}
-is \eqref{odg:cr:eq:division} with $m=2$ multiplied by $\Delta_0$. Finally
-$y\bigl(U(x)y\,\dif x+2W(x)\dif y\bigr)=\bigl(U(x)P(x)+W(x)P'(x)\bigr)\dif x=\dif x$ in
-the function field, because $2y\,\dif y=P'(x)\dif x$ \src{C12, C13}.
+Expansion proves \eqref{odg:cr:eq:cubic}. If $\Delta_0\ne0$, dividing this
+identity by $\Delta_0$ proves coprimality of $P$ and $P'$. A repeated root
+satisfies $3r^2+a=0$ and $r^3+ar+b=0$, whence $b=2r^3$ and
+$\Delta_0=4(-3r^2)^3+27(2r^3)^2=0$. Conversely, if $\Delta_0=0$ and $a=0$,
+then $b=0$ and $r=0$ is repeated. If $a\ne0$, put $r=-3b/(2a)$;
+then $r^2=-a/3$ and $r^3=b/2$, so $P(r)=P'(r)=0$.
+
+To obtain \eqref{odg:cr:eq:cubicdiv} without dividing by $\Delta_0$,
+multiply \eqref{odg:cr:eq:cubic} at $x$ by $\partial x$ and substitute
+$P(x)=y^2$ and $P'(x)\partial x=2y\partial y$.
+Now assume $\Delta_0\ne0$ and write
+$\eta=U(x)y\,\dif x+2W(x)\dif y$. This polynomial expression is a global
+regular differential. The relation $2y\,\dif y=P'(x)\dif x$ gives
+$y\eta=(U(x)P(x)+W(x)P'(x))\dif x=\dif x$.
+Thus $\eta=\dif x/y$ where $y\ne0$. Where $P'(x)\ne0$, substituting
+$\dif x=2y\,\dif y/P'(x)$ instead gives $\eta=2\dif y/P'(x)$.
+These two open sets cover the curve because $U(x)y^2+W(x)P'(x)=1$;
+in particular the second formula explains regularity at every point
+with $y=0$ \src{C12, C13}.
 \end{proof}
 
 The right side of \eqref{odg:cr:eq:dxy} is regular on the whole affine curve,
 including its points with $y=0$, and the element $h$ in the proof of
-\cref{odg:cr:thm:squarefree} is its contraction with $\partial$ divided by $2$.
+\cref{odg:cr:thm:squarefree}, for $m=2$ and these $U,W$, is exactly its
+contraction with $\partial$. The half-form $\dif x/(2y)$ instead contracts
+to $h/2$; this is the normalization used in the direct proof below.
 This is the bridge between the elementary certificate and the geometric argument
 below: the certificate exhibits one global regular differential of the curve
 \src{C12, C13}. The classical discriminant of $P$ is $-\Delta_0$ and the elliptic
@@ -6781,18 +6975,21 @@ discriminant is $-16\Delta_0$; only the nonvanishing matters \src{C10, C12}.
 
 \begin{corollary}[Nonsingular short Weierstrass equations \src{C10, C11, C12, C13, C14, C15}]\label{odg:cr:cor:weierstrass}
 For $a,b\in\Bbbk$ with $4a^3+27b^2\ne0$, every solution of $y^2=x^3+ax+b$ in
-$\crA^2$ is constant. For $a,b\in\Z$,
+$\crA^2$ is constant. In particular, for $a,b\in\Z$ with the same
+nonvanishing condition,
 \[
  \{(x,y)\in\Oz^2:y^2=x^3+ax+b\}=\{(x,y)\in\Z^2:y^2=x^3+ax+b\},
 \]
-and for $a,b\in\Z[i]$ the solutions in $\Og^2$ are those in $\Z[i]^2$.
+and for $a,b\in\Z[i]$ satisfying that condition the solutions in $\Og^2$
+are those in $\Z[i]^2$.
 \end{corollary}
 \begin{proof}
 The first assertion is \cref{odg:cr:thm:squarefree} with $(m,d)=(2,3)$ and
 \cref{odg:cr:prop:cubic}. Directly: if $\ddeg x=\alpha>0$ then $2\ddeg y=3\alpha$,
 and with $\ddeg\partial x=\alpha$ the element
-$h=\tfrac12U(x)y\,\partial x+W(x)\,\partial y\in\crP$ satisfies $2yh=\partial x$,
-so $\ddeg h=\alpha-\tfrac32\alpha<0$ in $\Gamma_\Q$, impossible \src{C13, C14}.
+$g=\tfrac12U(x)y\,\partial x+W(x)\,\partial y\in\crP$ satisfies $2yg=\partial x$.
+Here $g\ne0$ since $\partial x\ne0$, so
+$\ddeg g=\alpha-\tfrac32\alpha<0$ in $\Gamma_\Q$, impossible \src{C13, C14}.
 For omnific coordinates put both in one workspace $\mathcal A_\C(\Gamma)$
 (\cref{odg:lem:workspace}); they become complex constants, and
 $\Oz\cap\C=\Z$, $\Og\cap\C=\Z[i]$.
@@ -6820,10 +7017,19 @@ Put $Y=2y+a_1x+a_3$. Then $Y^2=Q(x)$ with
 \]
 because $Y^2-Q(x)$ is four times the difference of the two sides of
 \eqref{odg:cr:eq:generalweierstrass}. The change of variables is invertible over
-$\Bbbk$, and a repeated root $r$ of $Q$ would make the point with $x=r$, $Y=0$
-singular; so $Q$ is squarefree of degree three. \Cref{odg:cr:thm:squarefree} makes
+$\Bbbk$ and extends to the invertible projective linear change
+$[x:y:z]\mapsto[x:2y+a_1x+a_3z:z]$. A repeated root $r\in\bar\Bbbk$ of $Q$
+would give the affine point $(r,0)$ on $Y^2=Q(x)$ where both partial
+derivatives $-Q'(r)$ and $2Y$ vanish, so its tangent space has dimension
+two rather than one (the plane-curve Jacobian criterion
+\cite[Section 53.9]{StacksPlane}). This contradicts nonsingularity of
+the projective cubic. Hence $Q$ is squarefree of degree three.
+\Cref{odg:cr:thm:squarefree} makes
 $x$ and $Y$ constant, hence $y=(Y-a_1x-a_3)/2$. Division by $2$ takes place in
-$\crA$, not in $\Oz$ \src{C13}.
+$\crA$. For omnific coordinates use a common complex workspace and then
+intersect the constant coordinates with $\Oz$ or $\Og$, as in
+\cref{odg:cr:cor:weierstrass}; division by $2$ in the integer coefficient
+ring is not required \src{C13}.
 \end{proof}
 
 Source C13 states this over $\Z$ and $\Z[i]$ with the fields $\R$ and $\C$; the
@@ -6841,7 +7047,9 @@ $s\in\Oz$, nonordinary when $s$ is. Likewise the node $y^2=x^2(x+1)$ carries
 $(h^2-1,\,h(h^2-1))$ and the cusp $y^2=x^3$ carries $(h^2,h^3)$ \src{C11}.
 \end{proposition}
 \begin{proof}
-From $4a^3=-27b^2$ one gets $r^2=9b^2/(4a^2)=-a/3$ and $r^3=r\cdot r^2=b/2$. Then
+If $a=0$, then $b=0$ and the claims hold with $r=0$. If $a\ne0$,
+the identity $4a^3=-27b^2$ gives $r^2=9b^2/(4a^2)=-a/3$ and
+$r^3=r\cdot r^2=b/2$. In both cases
 $X^3-3r^2X+2r^3=(X-r)^2(X+2r)$, and at $x=s^2-2r$ the two factors are
 $(s^2-3r)^2$ and $s^2$, whose product is $y^2$. For integers $a,b$, the number $r$
 is a rational root of the monic integer polynomial $X^3+aX+b$, hence an integer
@@ -6852,7 +7060,7 @@ identities are $(h(h^2-1))^2=(h^2-1)^2h^2$ and $(h^3)^2=(h^2)^3$.
 
 The case $r=0$ is the cusp and $r=1$ the node $y^2=x^3-3x+2$ with
 $(s^2-2,\,s^3-3s)$ \src{C12, C14}. For positive infinite $s\in\Oz$ the map
-$s\mapsto s^2-2r$ is injective, so every singular integral Weierstrass cubic has a
+$s\mapsto s^2-2r$ is injective, so every singular integral short Weierstrass cubic has a
 proper class of distinct omnific points, while a nonsingular one has only its set
 of ordinary points \src{C12, C14}. This is a polynomial family, not a claim that
 every point of a singular curve has a parameter in the same ring \src{C14}. Thus
@@ -6881,6 +7089,21 @@ $L$ may be larger than $\Frac R$ \src{C10, C11, C14}. By
 $(L,R,V,\mathcal D)=(\crH,\crA,\crO,\{\partial_\lambda\})$ is separating data, with
 the stronger inclusion $\partial(\crA)\subseteq\crP$.
 
+Here is the meaning of differentiating a point. For a $\Bbbk$-algebra $S$,
+an $S$-point $p_S$ and a $\Bbbk$-derivation $\partial:S\to M$, where $M$ is
+an $S$-module, compose the natural pullback map with the universal map:
+\[
+ p_S^*\Omega^1_{X/\Bbbk}\longrightarrow\Omega^1_{S/\Bbbk}
+ \xrightarrow{\ \iota_\partial\ }M,
+ \qquad \dif f\longmapsto\partial(f(p_S)).
+\]
+For $S=L$ and $M=L$ this is an $L$-linear functional on the cotangent
+fiber, denoted $\partial p_L$. On an affine open with coordinate algebra
+$B$, the corresponding tangent derivation of $B\otimes_\Bbbk L$ is
+$f\otimes a\mapsto a\,\partial(f(p_L))$: it annihilates the new scalar factor
+$L$. Thus it is a tangent vector to $X_L$ at $p_L$, although the original
+map $\partial:L\to L$ is only $\Bbbk$-linear.
+
 \begin{lemma}[Equality from an ambient field \src{C10, C11, C12, C13, C14, C15}]\label{odg:cr:lem:separated}
 Let $X$ be a separated scheme and $\sigma_1,\sigma_2\in X(S)$. If $S\to T_i$ are
 ring maps whose kernels have zero intersection, and the images of
@@ -6903,29 +7126,47 @@ $\partial_1,\ldots,\partial_r\in\mathcal D$,
 \begin{equation}\label{odg:cr:eq:annihilation}
  s_{p_L}(\partial_1p_L,\ldots,\partial_rp_L)=0 ,
 \end{equation}
-and every global symmetric differential vanishes on the diagonal
-$(\partial p_L,\ldots,\partial p_L)$. Smoothness of $X$ is not needed.
+and every global symmetric differential of positive degree $r$ vanishes on
+the diagonal $(\partial p_L,\ldots,\partial p_L)$. Smoothness of $X$ is not needed.
 \end{theorem}
 \begin{proof}
 A $\Bbbk$-derivation $\partial:S\to M$ into an $S$-module factors uniquely through
 an $S$-linear map $\iota_\partial:\Omega^1_{S/\Bbbk}\to M$,
 $\sum a_j\,\dif b_j\mapsto\sum a_j\partial b_j$; the sums are finite, and no finite
-generation of $S$ is needed \cite[Tag 00RM]{StacksDiff}. Pulling $s$ back along
-$p$ to $(\Omega^1_{R/\Bbbk})^{\otimes r}$ and contracting with the restrictions
-$\partial_j|_R:R\to R$ gives an element $a_R\in R$. By the valuative criterion
+generation of $S$ is needed \cite[Tag 00RM]{StacksDiff}. Pull $s$ back along
+$p$, apply the natural maps to $(\Omega^1_{R/\Bbbk})^{\otimes r}$, and
+contract with the restrictions $\partial_j|_R:R\to R$. The resulting global
+function on $\Spec R$ is an element $a_R\in R$. By the valuative criterion
 for properness, which holds for arbitrary valuation rings and not only discrete
 ones \cite[Tag 0BX5]{StacksProper}, $p_L$ extends to $q\in X(V)$. The restrictions
 $\partial_j|_V$ take values in the $V$-module $\mathfrak m_V$; pulling $s$ back along
 $q$ and contracting gives a finite sum of products of $r$ elements of
-$\mathfrak m_V$ with coefficients in $V$, an element $a_V\in\mathfrak m_V$. Both
-constructions are functorial and restrict to the contraction along $p_L$ by the
-same derivations of $L$; locally, for $s$ written with regular functions $f$ and
-differentials $\dif g$, both give the same finite expression in the values
-$f(p_L)$ and $\partial_j(g(p_L))$, and these local expressions agree on overlaps
-even when the images of $\Spec R$ and $\Spec V$ lie in different affine charts
-\src{C13, C14}. Hence $a_R=a_V\in R\cap\mathfrak m_V=0$. For a symmetric
-differential contract every factor with the same derivation.
+$\mathfrak m_V$ with coefficients in $V$. More precisely,
+$a_V\in\mathfrak m_V^r\subseteq\mathfrak m_V$, since $r\ge1$.
+
+For either $S=R$ or $S=V$, restriction of the contraction to $L$ is the
+composition of $p_L^*\Omega^1_{X/\Bbbk}\to\Omega^1_{L/\Bbbk}$ with the
+same maps $\iota_{\partial_j}$. Indeed, the natural map
+$\Omega^1_{S/\Bbbk}\otimes_S L\to\Omega^1_{L/\Bbbk}$ takes $\dif b$ to
+$\dif b$, and both contractions take it to $\partial_j b$. Tensor products
+and multiplication preserve this compatibility. No claim that this
+natural map is an isomorphism, or that $L=\Frac R$, is needed. Hence
+$a_R$ and $a_V$ have the same image in $L$, even when $p$ and $q$ use
+different affine charts, and that image lies in $R\cap\mathfrak m_V=0$
+\src{C13, C14}.
+
+For a symmetric differential, use one derivation in every factor. The map
+$(\alpha_1,\ldots,\alpha_r)\mapsto
+\prod_j\iota_\partial(\alpha_j)$ is symmetric and therefore descends to
+$\Sym^r\Omega^1$. Its value over $V$ is still in $\mathfrak m_V^r$.
+This uses the quotient definition of the symmetric power; no lift of a
+global symmetric section to a global tensor section is assumed.
 \end{proof}
+
+The positive-degree restriction matters: in degree zero the global section
+$1$ evaluates to $1$, and $\mathfrak m_V^0=V$ gives no vanishing. The joint
+constant condition in \eqref{odg:cr:eq:data} is used only in the later
+descent from zero tangent vectors to constant points.
 
 The derivations are relative to $\Bbbk$, not to $L$: an $L$-linear derivation of
 $L$ is zero and would give nothing. The forms are global and regular; a rational
@@ -6934,7 +7175,11 @@ form with a pole at the centre of $q$ need not contract into $\mathfrak m_V$
 does not assert a ring map $R\to V$ compatible with the embeddings in $L$, and
 such a map generally does not exist \src{C10}. For $X\subseteq\mathbb P^n_\Bbbk$
 the valuative step is concrete: write $p_L=[a_0:\cdots:a_n]$, choose $j$ with $a_j\ne0$
-of least valuation, and use the coordinates $a_i/a_j\in V$ \src{C13}. A regular
+of least valuation among the nonzero coordinates, and use $a_i/a_j\in V$.
+The $j$th coordinate is $1$, so these ratios define a $V$-point of projective
+space. The homogeneous equations of $X$ vanish in $L$ and hence in $V$,
+so the point lies in $X$. This uses only the minimum of a finite set of
+values, with no rank-one or discreteness condition \src{C13}. A regular
 differential thus has two descriptions at the point, one with no strictly
 negative exponent and one, after an Euler derivation, with only strictly negative
 exponents; properness supplies the second even when the affine coordinates of
@@ -6955,6 +7200,12 @@ The constant $R$-point of $p_0$ and $p$ agree over $L$, hence over $R$ by
 point $p$ need not factor through $W$ before this is proved \src{C13}.
 \end{proof}
 
+It is enough to test finitely many algebra generators of $\Bbbk[W]$:
+the derivations kill coefficients in $\Bbbk$ and satisfy the sum and
+product rules. This finite test concerns the chosen affine chart; it
+does not require a finitely generated subalgebra of $L$ stable under
+all the derivations.
+
 \begin{theorem}[Proper differential rigidity \src{C14; also C10, C11, C12, C13}]\label{odg:cr:thm:proper}
 Let $(L,R,V,\mathcal D)$ be separating data and $X$ a smooth proper $\Bbbk$-scheme
 whose cotangent sheaf $\Omega^1_{X/\Bbbk}$ is generated by global sections. Then
@@ -6963,13 +7214,21 @@ $X(\Bbbk)\to X(R)$ is a bijection.
 \begin{proof}
 Let $p\in X(R)$ and $\partial\in\mathcal D$. Differentiation of $p_L$ defines an
 $L$-linear map $p_L^*\Omega^1_{X/\Bbbk}\to L$. Global generation makes
-$H^0(X,\Omega^1_{X/\Bbbk})\otimes_\Bbbk L\to p_L^*\Omega^1_{X/\Bbbk}$ surjective,
-since tensoring a surjection with a residue field preserves surjectivity; by
-\cref{odg:cr:thm:annihilation} the map vanishes on its image, hence is zero. So
+$H^0(X,\Omega^1_{X/\Bbbk})\otimes_\Bbbk L\to p_L^*\Omega^1_{X/\Bbbk}$ surjective:
+pull back the surjective evaluation map
+$H^0(X,\Omega^1_{X/\Bbbk})\otimes_\Bbbk\mathcal O_X\to\Omega^1_{X/\Bbbk}$
+along $p_L$. Pullback is right exact, even when $p_L$ is not a closed
+point. By \cref{odg:cr:thm:annihilation}, the tangent functional vanishes
+on the image of this evaluation map, hence on the whole cotangent fiber. So
 $\partial(f(p_L))=0$ for every regular $f$ on an affine open through $p_L$, and
 \cref{odg:cr:lem:constantpoint} makes $p$ constant. Injectivity follows from
 $\Bbbk\hookrightarrow L$.
 \end{proof}
+
+In fact this proof also works for a proper, possibly singular $X$ whose
+K\"ahler differential sheaf is globally generated: neither its local
+freeness nor smoothness was used. Smoothness in the stated theorem
+provides the cotangent-bundle setting used in the applications below.
 
 \begin{corollary}[Hahn realization \src{C14; also C10, C11, C12, C13}]\label{odg:cr:cor:hahnproper}
 For every field $\Bbbk$ of characteristic zero, every set-sized ordered abelian
@@ -7000,9 +7259,15 @@ $s\in H^0(X,\Sym^r\Omega^1_{X/\Bbbk})$ with $s_x(u,\ldots,u)\ne0$.
 \end{definition}
 
 The quantification over extension fields is needed because the point $p_L$ is
-generally not classical; since proper coherent cohomology commutes with field
-extension, sections after base change are linear combinations of sections over
-$\Bbbk$ \src{C13}.
+generally not classical. For $\mathcal F=\Sym^r\Omega^1_{X/\Bbbk}$, flat base
+change gives
+$H^0(X_L,\mathcal F_L)=H^0(X,\mathcal F)\otimes_\Bbbk L$
+\cite[Tag 02KH]{StacksBaseChange}; here
+$(\Omega^1_{X/\Bbbk})_L=\Omega^1_{X_L/L}$, with the base field changed
+along with the scheme. Thus a detecting section after field
+extension is a finite $L$-linear combination of base-field sections; if
+its value is nonzero, at least one of those sections has nonzero value.
+This justifies using sections over $\Bbbk$ in the definition \src{C13}.
 
 \begin{theorem}[Symmetric-differential rigidity \src{C13, C15}]\label{odg:cr:thm:symmetric}
 If $X$ is smooth and proper over $\Bbbk$ and its global symmetric differentials
@@ -7015,6 +7280,11 @@ would have nonzero diagonal value on it, contrary to
 \cref{odg:cr:lem:constantpoint} applies.
 \end{proof}
 
+The same proof works for any separating data $(L,R,V,\mathcal D)$:
+tangent detection at its field $L$ gives $X(R)=X(\Bbbk)$. The Hahn
+realization supplies one such family, rather than an additional
+geometric ingredient.
+
 \begin{corollary}[A semiample tautological bundle \src{C13}; ample case also \src{C15}]\label{odg:cr:cor:semiample}
 Let $X$ be smooth and projective over $\Bbbk$, and let
 $\mathcal L=\mathcal O_{\mathbb P(\Omega^1_{X/\Bbbk})}(1)$, with $\mathbb P(E)$
@@ -7025,11 +7295,16 @@ ample'' means here, and when $\Sym^r\Omega^1_{X/\Bbbk}$ is globally generated fo
 some $r\ge1$.
 \end{corollary}
 \begin{proof}
-A nonzero tangent vector $u$ at $x$ defines a one-dimensional quotient of the
-cotangent space, a point of $\mathbb P(\Omega^1)$ over $x$. Under
+A nonzero tangent vector $u$ at $x\in X(L)$ is a nonzero $L$-linear map
+$x^*\Omega^1_{X/\Bbbk}\to L$, hence a surjection. It defines a point
+$[u]\in\mathbb P(\Omega^1)(L)$ over $x$. If $\mathcal L^{\otimes r}$ is
+globally generated, its evaluation at $[u]$ is surjective onto a
+one-dimensional $L$-space; at least one base-field section is nonzero
+there. Since $\Omega^1$ is locally free, the projective-bundle identity is
 $H^0(\mathbb P(\Omega^1),\mathcal L^{\otimes r})=H^0(X,\Sym^r\Omega^1)$
-\cite[Tag 01OA]{StacksProjBundle}, a section of $\mathcal L^{\otimes r}$ not vanishing at
-that point is a symmetric differential with $s_x(u,\ldots,u)\ne0$. An ample line
+\cite[Tag 01OA]{StacksProjBundle}. Under the quotient identification
+provided by $u$, the value of that section is exactly
+$s_x(u,\ldots,u)\ne0$. An ample line
 bundle on a projective scheme has a globally generated power
 \cite[Tag 01PR]{StacksAmple}, and global generation of $\Sym^r\Omega^1$ gives that of
 $\mathcal L^{\otimes r}$ through the universal quotient. Apply
@@ -7040,6 +7315,18 @@ Conventions for semiample vector bundles vary, so the hypothesis is stated for
 the tautological line bundle. No implication from nefness, bigness or general
 type is asserted \src{C13}.
 
+For a smooth projective $X$, tangent detection is in fact equivalent to
+this tautological semiampleness condition. To see the converse, put
+$P=\mathbb P(\Omega^1)$ and suppose detection holds. Applying it over
+the residue field of each point of $P$ shows that the nonvanishing loci
+of the sections of all positive powers of $\mathcal L$ cover $P$.
+Quasi-compactness gives a finite subcover, from sections $s_i$ of degrees
+$r_i\ge1$. For a common positive multiple $N$ of the $r_i$, the sections
+$s_i^{N/r_i}$ of $\mathcal L^{\otimes N}$ still have no common zero,
+so they generate that line bundle. If $P$ is empty the conclusion is
+vacuous. This equivalence concerns tangent detection; it does not assert
+that every rigid variety satisfies either condition.
+
 \begin{proposition}[Inheritance \src{C13; also C10, C11, C14, C15}]\label{odg:cr:prop:inherit}
 Let $X$ be a separated $\Bbbk$-scheme of finite type with $X(\crA)=X(\Bbbk)$. Every
 locally closed subscheme $Y\subseteq X$ has $Y(\crA)=Y(\Bbbk)$. For a morphism
@@ -7049,12 +7336,19 @@ fiber of $f$ over a $\Bbbk$-point is rigid, then $Z(\crA)=Z(\Bbbk)$.
 \begin{proof}
 For $y\in Y(\crA)$ its image in $X$ is constant, equal to the image of
 $y_0=\ct(y)\in Y(\Bbbk)$; an immersion is a monomorphism, so $y=y_0$. For $f$, the
-point $f(z)$ is constant with constant term $f(\ct z)$, so $z$ lies in that
-fiber.
+point $f(z)$ is constant with constant term $x_0=f(\ct z)$, so the
+universal property of $Z\times_X\Spec\Bbbk$, formed using $x_0$, puts
+$z$ in that fiber as a $\crA$-point. If the fiber is rigid, this point
+comes from a $\Bbbk$-point of the fiber and hence of $Z$. Conversely,
+constant points always extend, and the retraction makes their extension
+injective. The immersion argument also works for singular or nonreduced
+$Y$; no smoothness is used here.
 \end{proof}
 
-Neither hypothesis of \cref{odg:cr:thm:proper} can be dropped
-\src{C10, C11, C12, C13, C14}. The affine line $\Ga$ has trivial cotangent sheaf,
+Properness and global generation in \cref{odg:cr:thm:proper} cannot in general
+be dropped \src{C10, C11, C12, C13, C14}. For the counterexamples choose
+$\gamma>0$ in $\Gamma$ (when $\Gamma=0$, $\crA=\Bbbk$ already).
+The affine line $\Ga$ has trivial cotangent sheaf,
 generated by $\dif T$, but is not proper, and $\Ga(\crA)=\crA$: the point
 $T=\omega^\gamma$ does not extend to a $\crO$-point of that chart. The projective
 line is proper but has no nonzero global one-form, and $[\omega^\gamma:1]$ is a
@@ -7065,6 +7359,15 @@ generates a finitely generated algebra, but an Euler derivation need not preserv
 it, so one cannot infer that the tuple comes from a polynomial arc; polynomial
 arcs appear only after the classification has forced the affine line
 (\cref{odg:cr:cor:polywitness}) \src{C14}.
+
+For an explicit failure of stability, put $t=\omega^\gamma$, choose
+$\partial t=t$, and set $f=t+t^2$. Then $\partial f=2f-t$ does not belong
+to the finitely generated algebra $\Bbbk[f]$: otherwise $t$ would belong
+to it, whereas every nonconstant polynomial in $f$ has degree at least
+$2\gamma>\gamma=\ddeg t$. The same point $[t:1]$ also illustrates why
+regularity of the form is essential. On $\mathbb P^1$ the rational form
+$\dif T$ contracts to $t$, which is not in $\crm$; at the valuation
+centre, with coordinate $u=T^{-1}$, it is $-u^{-2}\dif u$ and has a pole.
 
 \section{Smooth curves and their omnific points}\label{odg:cr:sec:curves}
 
@@ -7272,7 +7575,7 @@ for all $f\in F$ and all $\partial$, and $F\subseteq\Bbbk$ by
 Source C12 writes ``let $Q$ be its centre'' without showing that $Q$ is closed;
 the step marked \mergetag{} supplies it. Source C15's proof of the same statement
 avoids the step, because its local computation (\cref{odg:log:lem:valuation}) works
-wherever the centre lies (\cref{odg:log:sub:log}). This route needs the strict inclusion
+wherever the centre lies (\cref{odg:log:sub:log}). This route needs the support inclusion
 $\partial(\crA)\subseteq\crP$: with $\partial(\crA)\subseteq\crA$ alone one would only get
 $\eta(\partial)\in\crA\cap\crO=\Bbbk$. It also avoids the unit lemma: $\Gm$ has the
 logarithmic form $\dif x/x$, a genus-one affine curve has regular forms even with
@@ -8219,7 +8522,7 @@ $\partial_\lambda$ need not preserve the function field of the image of $p$; its
 restriction there is a derivation into $\crH$, which is all that the universal property
 of differentials requires \src{C15}. For $E=\varnothing$ the theorem is the diagonal
 symmetric case of \cref{odg:cr:thm:annihilation} for the Hahn data. The logarithmic case
-needs the strict inclusion $\partial(\crA)\subseteq\crP$: a boundary factor contributes
+needs the support inclusion $\partial(\crA)\subseteq\crP$: a boundary factor contributes
 $\partial u/u$, which lies in $\crO$ but in general not in $\crm$ (for $u=\omega^{-\gamma}$
 it is the constant $\lambda(-\gamma)$), so the valuation-ring side gives only an element of
 $\crO$, and $\crP\cap\crO=\{0\}$ must replace $\crA\cap\crm=\{0\}$. This is the mechanism
@@ -8654,10 +8957,38 @@ $\Pi_\R(\Gamma)$.
 
 \subsection{A formalization route}
 
-No part of this report has been formalized. At the placement commit the
-repository contains no Lean declaration about omnific integers. The sources
-proposed overlapping routes; the following merges them. All module
-names are suggestions, not claims that such files or declarations exist.
+At the source placement commits there was no Lean declaration about omnific
+integers. Commit \texttt{f879c1e} now proves \cref{odg:prop:ring}: the actual
+real and complex nonnegative-support rings, the omnific ring, their
+constant-term retractions, the purely infinite ideals and the integer quotient.
+The real purely infinite ideal is also a real vector subspace. The construction
+uses the proved normal-form equivalence of the actual surreal field; it is
+not restricted to one fixed exponent workspace. See
+\fn{Surreal/Foundations/OmnificIntegers.lean},
+\fn{Surreal/Surcomplex/NonnegativeSupportRing.lean} and the exact mappings
+in \fn{docs/FORMALIZATION.md}. Commits \texttt{150b4a0} and
+\texttt{de84022} further prove \cref{odg:lem:degree,odg:prop:units,odg:thm:floor}:
+the degree laws, real and complex support-ring units, ordinary finite
+omnific integers, discrete ordering and the exact omnific integer part.
+The floor proof includes the subtraction of one at an integer constant
+coefficient with a negative infinitesimal tail. These developments are in
+\fn{Surreal/Foundations/OmnificDegree.lean},
+\fn{OmnificUnits.lean}, \fn{OmnificFloor.lean} and their surcomplex degree/unit
+counterparts. Commit \texttt{e69defb} proves the ordinary polynomial-root
+rigidity of \cref{odg:prop:univariate} and transcendence over $\R$ of
+every infinite omnific integer, in
+\fn{Surreal/Foundations/OmnificPolynomialRoots.lean} and
+\fn{Surreal/Surcomplex/ConstantPolynomialRoots.lean}.
+Commit \texttt{efe4957} proves \cref{odg:thm:finitequotients,odg:prop:finitedivisors}
+in \fn{Surreal/Foundations/OmnificResidues.lean} and
+\fn{OmnificIntegerDivisors.lean}. The ordinary-modulus package identifies
+divisibility with constant-term divisibility, constructs the quotient
+isomorphism, and proves the intersections and exact prime-power bounds.
+The divisor result says that every omnific divisor of a nonzero ordinary
+integer is an ordinary integer divisor.
+Other Diophantine results remain pending unless mapped in the ledger.
+The sources proposed overlapping routes; the following merges them. The
+module names in the table are proposals, not the names of the implemented files.
 
 \begin{center}
 \renewcommand{\arraystretch}{1.2}
@@ -8713,7 +9044,7 @@ explicit smallness hypothesis on the input family.\\
 Proposed layer & Main obligations\\
 \midrule
 \fn{Omnific.CurveRigidity} \src{C12, C13; also C10, C15} & First the elementary chain in a
-set-sized Hahn field: the one-sided rings, the strict image
+set-sized Hahn field: the one-sided rings, the image condition
 $\partial(\crA)\subseteq\crP$, the certificate \eqref{odg:cr:eq:universal} and the
 ordered-group degree contradiction; the cubic certificate is a ring-normalization
 identity. Then, separately, the geometric chain in three layers: a differential
@@ -9280,7 +9611,7 @@ every fiber a copy of $\Pi$. The elliptic test equation of \cref{odg:q:affine} i
 first case with a one-line certificate, and its singular members are the polynomial
 case. Source C15 carries the differential side to logarithmic forms: a form with
 logarithmic poles along the boundary still contracts into the valuation ring, so with the
-strict image $\partial(\crA)\subseteq\crP$ it vanishes as well, and complements whose
+image condition $\partial(\crA)\subseteq\crP$ it vanishes as well, and complements whose
 logarithmic forms separate tangent directions are rigid in every dimension.
 
 \subsection{Relations to neighbouring reports}\label{odg:sub:neighbours}
@@ -9323,14 +9654,14 @@ the scalar step of \cref{odg:frac:thm:pullback} (\replabel{osq:tn:thm:hom}).
 Localization at the positive monomials gives $\No$
 (\replabel{osq:prop:fractions}), and the residue field $\Q$ of $\Oz_\Pi$ agrees
 with its list of small primes (\replabel{osq:cor:smallprimes}). Its class-valued
-derivations $\Oz\to\Pi$ (\replabel{osq:prop:classder}) contain the strict inclusion
+derivations $\Oz\to\Pi$ (\replabel{osq:prop:classder}) contain the support inclusion
 $\partial(\crA)\subseteq\crP$ used in \cref{odg:cr:sec:principle}; its theorem that
 derivations of the class ring into set-sized modules vanish
 (\replabel{osq:thm:derivations}) is no conflict, since the Euler derivations here act
 on set-sized workspaces and take values in them.
 \item \fn{docs/surreal/omnific-preserving-automorphisms}: its support-preserving
 Euler derivations map $\mathcal R_{\mathfrak o}(k,\Gamma)$ into $\Pi_k(\Gamma)$
-(\replabel{opa:par:prop:Euler}), the strict inclusion of \cref{odg:cr:lem:euler} on
+(\replabel{opa:par:prop:Euler}), the support inclusion of \cref{odg:cr:lem:euler} on
 the arithmetic rings; sources C10--C14 did not cite it.
 \item \fn{docs/surcomplex/hahn-tate-uniformization}: its Tate points concern field
 points of curves with nonconstant $j$-invariant, outside the constant-coefficient
@@ -9687,7 +10018,7 @@ source C11's arithmetic fibers extend to every $\Bbbk$ by the classification
 \item \emph{Squarefree equations.} The strict-ideal proof of sources C12 and C13 is
 printed (\cref{odg:cr:thm:squarefree}); the unit argument at the corner $(2,2)$ of
 sources C10, C11 and C14 is kept as a second route (\cref{odg:cr:rem:unitroute}).
-The strict inclusion $\partial(\crA)\subseteq\crP$ is credited to
+The support inclusion $\partial(\crA)\subseteq\crP$ is credited to
 \replabel{osq:prop:classder} and \replabel{opa:par:prop:Euler}, which none of the five
 cites.
 \item \emph{Two rings.} Source C13's version for global tensors and symmetric
@@ -10054,7 +10385,7 @@ their curve theorems over algebraically closed fields and source C11 over such f
 or $\R$; the report states them over every field of characteristic zero by source
 C14's descent.
 \item Sources C10, C11 and C14 treat the corner $m=d=2$ of the squarefree theorem by
-units. The strict inclusion $\partial(\crA)\subseteq\crP$ used by sources C12 and C13
+units. The support inclusion $\partial(\crA)\subseteq\crP$ used by sources C12 and C13
 removes it; it is already in \replabel{opa:par:prop:Euler} and
 \replabel{osq:prop:classder}, which none of the five cites. The strict proof is
 printed first and the credit is added.
@@ -10126,8 +10457,8 @@ foundations report already defined $\Oz=\Pi\oplus\Z$
 (\replabel{found:eq:omnific}). The collection now also contains this report and
 the sibling report on set-sized quotients.
 \item All three sources correctly found no report devoted to $\Oz$ and no Lean
-declaration about it at the pin. The first half is no longer true; the second
-still is.
+declaration about it at the pin. Both statements are now historical:
+this report exists, and \cref{odg:prop:ring} has a Lean implementation.
 \item Sources 02 and 05 describe \fn{docs/NORMAL_FORM_BRIDGE.md} and the
 workspace modules; these descriptions are still accurate at the placement
 commit.
@@ -10146,8 +10477,8 @@ sibling.
 twists that move the real axis while fixing $\C$) and of the catalogue entry
 on coefficient recovery by a monomial dilation, and source 07's description of
 the formalization ledger as separating source claims from Lean declarations,
-are accurate at the placement commit \texttt{cf350b1}. There is still no Lean
-declaration about omnific integers.
+are accurate at the placement commit \texttt{cf350b1}. The absence of omnific
+Lean code was true then; \cref{odg:sec:formal} records the implemented ring package.
 \item Sources 08 and 09 inspected the repository through the GitHub connector
 at \texttt{9a385d3}, without a checkout or build. Both cite the
 rational-direction criterion as ``Theorem 11.5'' of this report; it was 11.5 at
@@ -10159,8 +10490,8 @@ Likewise source 09's ``\S\S4,11'' for the absence of lowest terms are now
 and the floor of \cref{odg:sec:basic}) are accurate.
 \item Source 09 describes this report as merged from manuscripts dated
 September 22, 2026. That was true at its pin, when the report had three
-sources; it now has thirteen, dated September 22 and 23. Its statement that the
-omnific-integer results are pending in Lean is still accurate.
+sources; it now has thirteen, dated September 22 and 23. Its fraction results
+remain pending in Lean; the basic ring package is now implemented.
 \item Source 08's bibliography gives the sibling report the title \emph{The
 Universal Set-Sized Quotient of the Omnific Integers}. That was its title at the
 pin; it is now \emph{Set-Sized Quotients of the Omnific Integers}. Source 08 uses
@@ -10191,7 +10522,8 @@ the reviews recorded in \fn{RECONCILIATION.md} extend further, but do not cover
 \cref{odg:cr:sec:principle,odg:cr:sec:curves,odg:cr:sec:groups}.
 \item Source C12 describes the collection as having 51 reports, true at
 \texttt{89bec38}; the catalogue has since grown. The sources' statements that no Lean
-declaration concerns omnific integers are still true.
+declaration concerns omnific integers were true at their pins; the ring package
+is now implemented (\cref{odg:sec:formal}).
 \item Source C15 inspected the repository through the GitHub connector at
 \texttt{934810a}, without a build. At that pin this report had sources 01, 02, 05, 06
 and 07, and its guide stated that $y^2=x^3+ax+b$ with $a\ne0$ is outside the method;
@@ -10200,8 +10532,8 @@ source C15 quotes this correctly and presents its elliptic theorem as settling i
 (\cref{odg:cr:cor:weierstrass}, sources C10--C14), and source C15's proof is printed
 there once. Its statements that the unimodular Fermat case is already in this report in a
 more specific form (\cref{odg:thm:unimodularfermat}) and that the ledger separates source
-assertions, proof review and Lean coverage are accurate; there is still no Lean
-declaration about omnific integers.
+assertions, proof review and Lean coverage are accurate. Its absence-of-Lean
+statement is historical; \cref{odg:sec:formal} records the current coverage.
 \end{enumerate}
 
 \section{Non-claims by source}\label{odg:app:nonclaims}
@@ -10905,7 +11237,7 @@ The principal dependency chains are:
  \ \Longrightarrow\ \text{denominator dichotomy};\\
  &\text{matrix completion}+\text{set-cut bounds}
  \ \Longrightarrow\ \text{congruence orbits, focusing, dense fibers};\\
- &\text{Euler degrees}+\text{strict image}+\gcd(P,P')=1
+ &\text{Euler degrees}+\text{image condition}+\gcd(P,P')=1
  \ \Longrightarrow\ \text{squarefree rigidity};\\
  &\text{two opposite rings}+\text{properness}+\text{global forms}
  \ \Longrightarrow\ \text{proper rigidity};\\
@@ -10913,7 +11245,7 @@ The principal dependency chains are:
  \ \Longrightarrow\ \text{smooth affine curves};\\
  &\text{smooth affine curves}+\ct+\text{separatedness}
  \ \Longrightarrow\ \text{arithmetic fibers and descent};\\
- &\text{strict image}+\text{properness}+\text{logarithmic poles}
+ &\text{image condition}+\text{properness}+\text{logarithmic poles}
  \ \Longrightarrow\ \text{logarithmic tangent criterion}.
 \end{align*}
 The source-05 proofs that most deserve independent review are, by its own
@@ -11433,6 +11765,17 @@ The Stacks Project Authors.
 \url{https://stacks.math.columbia.edu/tag/00RM}. Cited by sources C10 and C14; used
 here in place of source C13's Tag 02AT.
 
+\bibitem{StacksPlane}
+The Stacks Project Authors.
+\emph{Plane curves}, Section 53.9, Tag 0BYA, especially the discussion of
+partial derivatives in the proof of Lemma 53.9.4.
+\url{https://stacks.math.columbia.edu/tag/0BYA}.
+
+\bibitem{StacksBaseChange}
+The Stacks Project Authors.
+\emph{Flat base change}, Lemma 30.5.2, Tag 02KH.
+\url{https://stacks.math.columbia.edu/tag/02KH}.
+
 \bibitem{StacksProper}
 The Stacks Project Authors.
 \emph{Valuative criteria}, Section 29.43 (Tag 0BX4), Lemma 29.43.1, Tag 0BX5.
@@ -11505,6 +11848,11 @@ Jana Glivick\'a and Petr Glivick\'y.
 \emph{Shepherdson's theorems for fragments of open induction}.
 arXiv:1701.02001 (2017), Sections 2.1, 2.3 and Theorem 1.
 \url{https://arxiv.org/abs/1701.02001}.
+
+\bibitem{StacksEtaleField}
+The Stacks Project Authors.
+\emph{\'Etale ring maps}, Lemma 10.143.4: \'etale algebras over a field,
+Tag 00U3. \url{https://stacks.math.columbia.edu/tag/00U3}.
 
 \end{thebibliography}
 \end{document}

@@ -3170,6 +3170,324 @@ the audit accepts 13,813 declarations with only `propext`,
 normalized Fejér–Riesz uniqueness and adds actual-field Fourier coefficient
 bounds. It does not change the pending Lean status of the omnific results.
 
+## Gaussian fibers and étale norm proof review
+
+The additions from sources 07 and 13 to Section 6 of the omnific
+Diophantine report have now been compared with the delivered sources.
+The Gaussian fiber proof constructs its parameters coefficientwise on a
+common admissible support and proves uniqueness. The real kernel test
+uses the stacked real and imaginary parts of the matrix. An explicit
+empty-fiber example explains the ordinary-point hypothesis; when that
+hypothesis holds, a nonzero kernel vector gives a proper class of points.
+
+The étale norm proof now explains separable splitting, the invertible
+matrix of algebra maps, the bilinear trace matrix, and coefficient
+extension. It uses the constant intersection of the intermediate ring
+only after showing that each coordinate is constant. Boundary examples
+show why a nonzero level and the étale assumption matter. The abstract
+Hahn-ring argument extends to arbitrary characteristic; a purely
+inseparable quadratic example in characteristic two shows why separable
+splitting is still needed. This extension does not change the coefficient
+fields of the actual omnific rings. Shared notation also corrects the
+detector name to match the maintained `Ex` macro.
+
+All 194 standard statement texts, 405 labels and existing result numbers
+are unchanged. Section 7 onward is unchanged except for the appended
+Stacks bibliography entry. Three-pass pdfLaTeX builds give a clean
+164-page article and 29-page catalogue. Rendered article pages 12,
+28–35 and 164, and catalogue page 9, have been inspected. The independent
+inventory verifies 3,428 results in 58 main texts; all 3,934 cited source
+labels resolve, and local Markdown links pass. Both supplied finite
+verifiers (07 and 13) reproduce their recorded outputs exactly; these
+checks do not prove the general Hahn-series arguments.
+
+The new combined consequences and characteristic extension remain
+**Pending** in Lean. Source 07's quartic in Section 10, the curve
+material and pointers, companions, imported foundations and remaining
+source reconciliation still require review.
+
+## Combined validation with batch 29 and the actual omnific ring
+
+The Gaussian-fiber and norm review was committed in `85887ed`. Merging
+the twenty incoming commits through `751ff27` preserves that work and
+incorporates six expanded manuscripts: logarithmic rigidity, exact
+homological dimensions, elementary-group kernels, convex factors and
+profinite obstructions, compact groups, and quantum/gauge reductions.
+These additions are indexed, but their independent proof review remains
+pending. The reader map and catalogue now describe the written assemblies
+and link the maintained quantum/gauge PDF.
+
+The combined Diophantine article preserves all 200 incoming standard
+statement texts and 416 labels, with no changes to existing result
+numbers. Clean three-pass builds give a 175-page article and 29-page
+catalogue. The independent inventory verifies 3,592 statements in 58 main
+texts. Mapped statements in the changed manuscripts retain their text;
+the ring proposition and its new actual-field implementation were compared
+directly. The formalization route and repository comparisons now replace
+stale claims that no omnific Lean code exists with the exact ring and
+constant-term coverage supplied by `f879c1e`. Historical source claims
+remain identified by their pins.
+
+The source-label audit resolves all 4,126 references, and all 1,501 local
+Markdown destinations pass. Visual inspection covers combined article
+pages 16, 35, 125–126, 146–148 and 175 and catalogue pages 2, 8–10,
+25–26. The article and catalogue logs have no warnings, unresolved
+references or box diagnostics.
+
+`LEAN_NUM_THREADS=2 lake build` passes all 4,380 jobs; the audit accepts
+14,672 declarations with only `propext`, `Classical.choice` and
+`Quot.sound`. This validates the merged library, including the incoming
+omnific construction, and does not establish the pending manuscript proofs.
+
+## Placement reconciliation after the second synchronization
+
+The next fetch brought three documentation commits through `0e4dc98`,
+merged as `516bb70`. Placement `21375f8` retires the nine archives from
+`190d301` into two report bases and companions to three existing reports.
+No existing manuscript body or Lean source changed in this merge. The
+4,380-job build and 14,672-declaration audit therefore remain applicable.
+
+The inventory now includes the autonomous-dilation base and the
+critical-point-defects base: 3,650 standard statements in 60 main texts.
+The independent index audit passes, all 4,183 cited labels resolve, and
+all 1,517 local Markdown destinations pass. Their local guides explain the
+installed paths separately from delivered filenames; their proof reviews,
+formalization and remaining companion assembly are pending. The reader
+map, root README and catalogue reflect this placement. The catalogue has
+a clean three-pass 29-page build, with its first page and the new entries
+on pages 25 and 29 inspected. No new manuscript theorem is claimed proved
+by these navigation and build checks.
+
+## Catalogue synchronization before publication
+
+The first push was rejected after `main` advanced to `b5f0bfd`, a
+documentation-only catalogue and README revision. The merge retains its
+expanded report descriptions and root overview, the 60-report inventory,
+and the precise Section 6 review boundary and characteristic distinction.
+The Diophantine article and Lean files do not change. The combined
+catalogue compiles cleanly in three passes to 32 pages; its revised
+Diophantine entry and final entry were inspected on pages 9 and 32.
+The independent 3,650-statement inventory, 4,183 source references and
+1,520 local Markdown destinations pass. The earlier two-thread Lean build
+remains applicable.
+
+## Omnific quartic and elementary Euler prerequisites
+
+The remaining source-07 quartic in Section 10 now has a full argument for
+arbitrary intermediate rings with integer constant intersection. The proof
+separates ambient Pell factorization from membership in the intermediate
+ring, proves that every witness is ordinary, and constructs witnesses
+from an unbounded ordinary Pell sequence and four squares. The comparison
+with the delivered Section 8 is recorded in the Diophantine reconciliation.
+
+The elementary ring and Euler subsections 16.2–16.3 were reviewed next.
+The proof now identifies the opposite ring's fraction field, units,
+maximal ideal and residue field. It corrects the zero-exponent-group
+exception to the non-valuation-ring claim and the false suggestion that
+an Euler image inclusion must be proper. Explicit examples establish
+both corrections. The logarithmic-derivative residue is now computed
+as `ct(∂_λ u/u) = λ(deg u)`, and polynomial Bézout makes the joint-constant
+argument for relative algebraic closedness explicit. The shared notation
+and review boundaries reflect these distinctions. The squarefree
+certificate and geometric arguments remain outside this pass.
+
+All 200 standard statement texts, 416 labels and existing result numbers
+are preserved. The source-07 verifier reproduces its recorded output
+exactly, without establishing the general Hahn-series claims. The new
+residue identity and the reviewed elementary results remain **Pending**
+in Lean. No Lean file changes in this review.
+
+Clean three-pass pdfLaTeX builds produce a 176-page article and 32-page
+catalogue, without warnings, unresolved references or box diagnostics.
+Rendered article pages 13, 48–49 and 96–99 and catalogue page 9 have
+been inspected. The independent inventory validates 3,650 statements in
+60 main texts, all 4,184 cited source labels resolve, and all 1,520 local
+Markdown destinations pass. The previous 4,380-job Lean build and
+14,672-declaration axiom audit remain applicable to the unchanged library.
+
+## Combined validation with omnific units and floor
+
+After committing the quartic/Euler review as `6a2d12d`, synchronization
+through `de84022` adds actual omnific degree laws, unit and finite-element
+classifications, discrete ordering and the exact omnific floor. The source
+statements were compared with their new mappings; the manuscript bodies
+are unchanged by those incoming commits. Coverage notes now include
+these proved results while retaining the pending quartic and geometric
+claims. Clean three-pass builds retain the 176-page article and 32-page
+catalogue. The 3,650-statement inventory, 4,185 source references and
+1,527 local Markdown destinations pass.
+
+`LEAN_NUM_THREADS=2 lake build` passes 4,386 jobs, and the axiom audit
+accepts 14,739 declarations with only `propext`, `Classical.choice` and
+`Quot.sound`. This build verifies the merged library, not the remaining
+manuscript proofs.
+
+## Combined validation with ordinary polynomial-root rigidity
+
+The following incoming commit `e69defb` proves ordinary polynomial-root
+rigidity in the real and complex support rings and the omnific ring,
+including transcendence over the ordinary reals of every infinite omnific
+integer. Its statements agree with the unchanged proposition in the report.
+The coverage notes now include this result. All 200 standard statement
+texts, 416 labels and existing result numbers remain unchanged from the
+start of the review. Clean three-pass PDFs retain 176 and 32 pages; the
+final formalization page was inspected on article page 127.
+
+The 3,650-statement inventory, 4,185 source references and 1,530 local
+Markdown destinations pass. The final `LEAN_NUM_THREADS=2 lake build`
+passes 4,388 jobs; its axiom audit accepts 14,747 declarations with only
+`propext`, `Classical.choice` and `Quot.sound`. The quartic and generic
+Euler proof review remains manuscript work; their unmapped results still
+await Lean proofs.
+
+## Omnific squarefree and Weierstrass proof review
+
+The maintained Section 16.4 now has a proof review through singular
+cubic families. The positive-support degree argument handles the
+quadratic endpoint without assuming a divisible or nonzero exponent
+group. Differential division now explicitly requires an ordinary
+integer `m ≥ 1`. The cubic certificate distinguishes the identity valid
+at all discriminants from the normalization requiring `Δ₀ ≠ 0`, and
+its proof establishes squarefreeness in both directions.
+
+A factor-of-two error in the contraction comparison is corrected:
+the assembled squarefree proof uses the contraction of `dx/y`, whereas
+the direct cubic proof uses that of `dx/(2y)`. The targeted comparison
+with source C13 confirms that its own normalization was consistent.
+The rewritten proof explains regularity on two covering affine opens,
+the projective coordinate change for general Weierstrass models, and
+the zero-parameter case of the singular family. General geometric
+foundations remain imported; the two-ring principle and later
+geometric proofs remain outside this review.
+
+Exactly three of 200 standard statement texts change: differential
+division, the cubic proposition and the short Weierstrass corollary,
+whose integer and Gaussian specializations now repeat the discriminant
+hypothesis explicitly; all 416 labels and existing
+result numbers are preserved. C13 and C14's finite verifiers pass
+12,874 and 3,440 assertions and reproduce their recorded results apart
+from the Python version. These checks do not establish arbitrary Hahn
+support or geometric claims. The reviewed squarefree and Weierstrass
+results remain **Pending** in Lean.
+
+Synchronization through `40a3990` adds the actual omnific ordinary
+residue rings and integer-divisor rigidity. Their source statements
+were checked against the new mappings; the report and catalogue now
+include that coverage. `LEAN_NUM_THREADS=2 lake build` passes 4,393
+jobs and audits 14,779 declarations with only `propext`, `Classical.choice`
+and `Quot.sound`.
+
+Clean three-pass builds produce a 177-page article and 32-page catalogue,
+with no warnings, unresolved references or box diagnostics. Article
+pages 99–102 and 128 and catalogue page 9 were visually inspected.
+The independent inventory validates 3,650 standard results in 60 reports;
+all 4,188 cited source references and 1,535 local Markdown destinations
+resolve. The root README and exact review boundaries are refreshed.
+
+## Combined validation with ordinary arithmetic and finite quotients
+
+After the squarefree review commit `fbe795f`, synchronization through
+`753f4b5` adds `odg:cor:mixedgcd` and `odg:cor:charideals`: ordinary
+primes and maximal ideals, mixed gcds, finite Chinese remainders, unique
+ordinary moduli for proper ideals containing an integer, and factorization
+of every finite-target homomorphism through the constant term. The
+incoming declarations and mappings agree with the unchanged manuscript
+statements. The report guide includes this new coverage; the later
+geometric results remain pending. No LaTeX or PDF changed in this sync.
+
+The combined `LEAN_NUM_THREADS=2 lake build` passes 4,406 jobs and its
+axiom audit accepts 14,809 declarations using only `propext`,
+`Classical.choice` and `Quot.sound`. All 4,188 cited source references
+and 1,539 local Markdown destinations resolve. The squarefree proof
+review remains distinct from this new checked ordinary arithmetic.
+
+## Two-ring differential principle and tangent detection
+
+The next Diophantine pass reviews the remainder of Section 16, from
+differential separation data through inheritance. The scalar conventions
+now distinguish a field derivation over `k` from its tangent functional
+after base change to `L`. The two contractions agree by naturality of
+Kähler differentials even without a map between the rings or a common
+affine chart. The valuation-ring contraction lies in the `r`th power
+of its maximal ideal. The symmetric clause explicitly requires positive
+degree; the constant section `1` explains the excluded endpoint.
+Symmetric evaluation is defined on the quotient symmetric power and
+does not rely on lifting global sections to tensor sections.
+
+The proper-rigidity proof now uses right exactness of pullback at the
+field-valued point. It also proves the consequence without smoothness,
+assuming global generation of the Kähler differential sheaf. Symmetric
+rigidity extends to arbitrary separating data. For smooth projective
+schemes, a finite-cover and common-degree argument proves that tangent
+detection is equivalent to semiampleness of the tautological quotient
+line bundle. This is not asserted necessary for rigidity itself.
+Inheritance now spells out the fiber-product argument and the absence
+of smoothness restrictions on the immersed subscheme.
+
+Explicit examples explain why finitely generated coordinate algebras
+need not be stable under Euler differentiation and why a rational form
+with a pole cannot replace a global regular form. The zero exponent
+group, positive tensor degree and complex finite-element conventions
+are explicit. The introduction now distinguishes C11/C13's arbitrary
+characteristic-zero proper-rigidity statements from their more restricted
+curve classifications. The targeted source comparison and imported
+Stacks hypotheses are recorded in the report's reconciliation file.
+The root README, notation guide and catalogue reflect this review.
+
+One of 200 standard statements changes, the annihilation theorem's
+positive-degree clarification. The other 199 statements, all 416 labels
+and existing result numbers are unchanged. All Section 16 results and
+the new prose consequences remain **Pending** in Lean. The curve
+classification, subsequent applications, earlier pointers and remaining
+source reconciliation still require review. No finite symbolic check
+is offered as verification of the geometric argument.
+
+Clean three-pass builds give a 178-page article and 32-page catalogue,
+without warnings, unresolved references or box diagnostics. Rendered
+article pages 102–106 and catalogue page 9 were inspected. The
+independent inventory validates 3,650 standard results in 60 reports;
+all 4,188 source references and 1,539 local Markdown destinations resolve.
+The library is unchanged by this pass; the preceding 4,406-job build and
+14,809-declaration axiom audit remain applicable before synchronization.
+
+## Combined validation with canonical constant extraction
+
+After the two-ring review `bf1d084`, synchronization through `5da5961`
+adds canonical constant extraction, endomorphism preservation, a concrete
+noninjective constant endomorphism and non-residual-finiteness of the actual
+omnific ring. The new declarations agree with the unchanged source
+proposition and its following example; the latter finiteness result does
+not claim the pending inverse-limit or topology constructions. The
+report guide now includes this coverage. Two incoming index entries
+were corrected: the logit and Christoffel labels belong to equations
+inside unlabeled results, not to the enclosing result environments.
+
+The combined `LEAN_NUM_THREADS=2 lake build` passes 4,407 jobs and
+audits 14,830 declarations using only `propext`, `Classical.choice` and
+`Quot.sound`. The independent inventory still validates 3,650 standard
+results, of which 19 are unlabeled, across 60 reports. All 4,189 source
+references and 1,542 local Markdown destinations resolve. No LaTeX or
+PDF changed in this synchronization; the clean 178/32-page artifacts
+remain current.
+
+## Combined validation with the ordinary p-adic completion
+
+The next sync through `6a30999` proves the p-adic clause of
+`odg:eq:profinite` using Mathlib's actual ideal-adic completion and
+p-adic integers. The transition maps, both inverse ring maps, the
+constant-term formula for the canonical map and its purely infinite
+kernel are explicit. The source equation agrees with that scope; the
+profinite completion and congruence-topology assertions remain pending.
+The report guide and incoming root README distinguish those obligations.
+
+The final `LEAN_NUM_THREADS=2 lake build` passes 4,413 jobs and audits
+14,859 declarations with only `propext`, `Classical.choice` and
+`Quot.sound`. The independent 3,650-result inventory, all 4,189 source
+references and 1,544 local Markdown destinations pass. LaTeX and PDFs
+are unchanged by this sync, so the 178/32-page build and visual checks
+remain applicable. Section 17 and subsequent manuscript work remain
+outside the completed review.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

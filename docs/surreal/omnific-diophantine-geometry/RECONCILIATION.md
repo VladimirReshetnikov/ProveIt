@@ -6,15 +6,21 @@ After the three expansions, the reviewed original Sections 11–12 are Sections
 14 and 19; the fractions section is Section 15, and the curve and differential
 rigidity part is Sections 16–18.
 Subsequent passes review the newly added Sections 11–13 from sources 06–07.
-Further passes review all of Section 15 from sources 08–09. The added
-material in Sections 6 and 10, Sections 16–18 with the
-pointers they added in Sections 6, 7 and 14, and Sections 20–21 remain
+Further passes review all of Section 15 from sources 08–09 and the
+Gaussian-fiber and étale-norm additions in Section 6 from sources 07 and 13.
+A further pass reviews source 07's quartic in Section 10 and the
+elementary ring and Euler subsections 16.2–16.3. The subsequent pass
+reviews the squarefree certificate and Weierstrass applications in
+Section 16.4. The next pass covers Section 16.5 through inheritance,
+completing the maintained Section 16 proof chain. Sections 17–18,
+their pointers in Sections 6, 7 and 14, and Sections 20–21 remain
 outside the completed proof review.
-It does **not** certify integration of every result in the twelve manuscripts
+It does **not** certify integration of every result in the thirteen manuscripts
 or review of all later proofs and imported classical results. Section numbers
 below are those current when each pass was made; the last section gives the
-present numbering. The curve and differential rigidity part (Sections 16–18)
-is outside every pass recorded here.
+present numbering. The geometric curve proofs and all of Sections 17–18
+remain outside these passes; the review of Section 16 now includes
+the two-ring principle, symmetric differentials and inheritance.
 
 ## Recoverable sources
 
@@ -567,6 +573,59 @@ a clean three-pass build. The current inventory includes all 194 results;
 the new curve material and later additions remain unreviewed and all
 omnific claims remain **Pending** in Lean.
 
+## Gaussian fibers and étale norms: the Section 6 additions
+
+This pass compares source 07's norm theorem and degree/units proof with
+source 13's Sections 8–9 and the maintained Section 6 additions. The texts
+were recovered from `de0acc6:docs/new/Omnific_Arithmetic_Definability.zip`
+(member `Omnific_Arithmetic_Definability/article.tex`) and
+`de0acc6:docs/new/omnific_rigidity_research.zip`
+(member `omnific_rigidity/article.tex`). Source 13 belongs to the sibling
+quotient report; this pass covers its fiber and norm material printed here,
+not its separate quotient and module theorems.
+
+The Gaussian fiber proof now constructs its basis parameters through
+coefficient functionals, checks admissible supports in both directions,
+and proves parameter uniqueness. It uses no convergence of partial sums.
+The exact kernel criterion retains the ordinary-point hypothesis, with
+`X−Y=√2` as a counterexample if that hypothesis is omitted. A nonzero
+kernel gives an injective copy of the proper-class positive-support ideal
+inside each nonempty fiber; this stronger size conclusion is proved as
+a combined consequence. The real kernel can be computed by stacking the
+real and imaginary parts of the complex coefficient matrix. The Gaussian
+kernel uses the complex matrix itself.
+
+The étale norm proof now constructs the splitting isomorphism by a
+primitive element in each field factor and the polynomial Chinese remainder
+theorem. The individual maps from a product algebra into a field need not
+be injective. Their combined matrix is invertible because it represents
+the splitting isomorphism. The trace matrix is its transpose product,
+without conjugation. Coefficient extension preserves supports and finite
+convolutions; the invertible matrix then kills every positive coefficient
+of the original coordinates. No assumption that the intermediate ring
+is closed under constant extraction is used. The finite étale algebra
+characterization was checked against the primary [Stacks Lemma 10.143.4](https://stacks.math.columbia.edu/tag/00U3)
+on 23 September 2026 and added to the bibliography. The classical
+primitive-element theorem remains an imported finite-algebra result.
+
+New proved boundary examples use `Q×Q` at norm zero and the dual-number
+algebra at norm one. The proof itself extends to abstract nonnegative-support
+Hahn rings in every characteristic: leading-degree multiplication and
+separable splitting use no characteristic-zero hypothesis. This is a
+combined extension, not a claim attributed to either source and not a
+change to the coefficient fields of actual omnific integers. A purely
+inseparable counterexample over `F₂(s)` shows that separability cannot
+be discarded: in the coefficient field containing `θ²=s`, the polynomial
+pair `(1+θT,T)` has norm one and is nonconstant.
+
+All 194 standard statement texts and 405 labels remain, without renumbering.
+The arbitrary-characteristic extension and size consequence are prose
+results with explicit proofs; they remain **Pending** in Lean. Section 7
+onward is byte-identical except for the appended bibliography item.
+This pass does not review the new curve pointer at the end of Section 6,
+the added quartic in Section 10, the curve/differential part (Sections
+16–18), later formalization/questions, or remaining source reconciliation.
+
 ## Integration of the logarithmic manuscript
 
 One further manuscript on curve and differential rigidity, tagged C15 after its
@@ -580,3 +639,196 @@ notes in Sections 1, 20 and 21 (a sufficient answer to the first question of
 `odg:cr:q:higher` and a further rigid class for `odg:q:affine`) and in the
 appendices. That material is outside every pass recorded here. No section,
 statement or equation number changed, and no label was renamed or removed.
+
+## Combined state after the Gaussian-fiber review and batch 29
+
+The Section 6 review was committed in `85887ed` and merged with the
+batch-29 logarithmic additions through `751ff27`. All 200 standard
+statement texts of that incoming article and all 416 labels are preserved;
+existing result numbers are unchanged. A clean three-pass build gives a
+175-page combined article. Source C15 and the other curve material remain
+outside the proof review above.
+
+Commit `f879c1e` also supplies the actual omnific ring construction and the
+ring/constant-term package of `odg:prop:ring`. The guide, formalization
+route and repository comparisons now distinguish historical statements
+about absent Lean code from this coverage. The combined two-thread Lean
+build passes 4,380 jobs and the axiom audit accepts 14,672 declarations.
+Other manuscript results remain pending unless individually mapped in the
+ledger; this build does not verify the remaining Diophantine proofs.
+
+## Quartic and elementary ring/Euler proof review
+
+This pass compares source 07's Section 8 (`lem:squares`, `thm:quartic`
+and `eq:F4`), recovered from the same `de0acc6` archive identified above,
+with Remark 10.5 and its surrounding comparison. The maintained proof now
+gives both directions for every intermediate ring with integer constant
+intersection. Pell factorization is performed in the ambient real support
+ring, where its factors belong even though their coefficients need not
+belong to the intermediate ring. The sum-of-squares argument then forces
+every coordinate to be constant. The reverse direction chooses an ordinary
+Pell coordinate above the integer input's absolute value and uses the
+ordinary four-square theorem. The zero exponent group is included, and
+the Gaussian counterexample is retained. The comparison now correctly
+notes that both four-square versions use a theorem available in Mathlib;
+`Nat.sum_four_squares` was checked in the pinned source. Its classical proof
+and source 07's external exposition are imported, not independently reviewed.
+
+The pass also reviews the maintained elementary subsections 16.2–16.3:
+Lemmas 16.1–16.3 and Corollary 16.4. This is a review of the assembled
+proofs, not a complete comparison of sources C10–C15. The valuation-ring
+proof now gives its fraction field, units, maximal ideal and residue map
+explicitly. Two supporting prose assertions needed correction:
+
+- When the exponent group is zero, the one-sided ring is the coefficient
+  field and is a valuation ring. For a nonzero exponent group, choosing a
+  positive exponent gives `q = ω^γ/(1+ω^γ)` with neither `q` nor `q⁻¹`
+  in the nonnegative-support ring; this proves the correctly qualified claim.
+- The Euler image inclusion in the positive-support ideal need not be
+  proper. On `k[ω]` in characteristic zero, the derivation taking `ωⁿ`
+  to `nωⁿ` has image exactly `ω k[ω]`. The text and shared notation now
+  describe a support condition, not a proper inclusion.
+
+The derivation proof uses finite coefficient convolutions, and detection
+uses a rational coordinate functional on the set-sized divisible hull.
+For a nonzero series `u = a ω^α(1+ε)`, the logarithmic derivative is
+`λ(α) + ∂_λ ε/(1+ε)`; the remainder is in the maximal ideal. This proves
+the new explicit residue identity `ct(∂_λ u/u) = λ(deg u)` and shows why
+the bound for a general logarithmic derivative need not be strict. The
+relative-algebraic-closedness proof now spells out its polynomial Bézout
+identity before applying joint-constant detection.
+
+All 200 standard statement texts, 416 labels and existing result numbers
+are preserved. These elementary results and the new residue identity are
+**Pending** in Lean. The squarefree certificate and later geometric proofs,
+curve pointers, full source comparison and remaining imported foundations
+still require review. The source-07 finite verifier reproduces its recorded
+output exactly; that does not prove the arbitrary-support statements.
+
+## Squarefree certificate and Weierstrass proof review
+
+The review now covers the maintained Section 16.4: Lemma 16.5,
+Theorem 16.6, Remark 16.7, Proposition 16.8, Corollaries 16.9–16.10
+and Proposition 16.11, with their examples and boundary discussion.
+The degree proof uses the positive-support ideal, including the corner
+`m = d = 2`, and works for every ordered abelian exponent group. The
+alternative unit proof and the singular polynomial families were checked
+as well. No nontriviality or divisibility of the exponent group is needed.
+
+Three standard statements needed clarification. Differential division now
+specifies an ordinary integer `m ≥ 1`, so the polynomial exponent `m−1`
+is defined. The cubic proposition now separates the polynomial identity
+valid at every discriminant from the normalized differential requiring
+`Δ₀ ≠ 0`, and states and proves the squarefreeness equivalence. The proof
+obtains the unnormalized derivative identity directly from the polynomial
+certificate, including at `Δ₀ = 0`. The short Weierstrass corollary now repeats
+the same nonvanishing condition for its integer and Gaussian integer
+specializations. The final proper-class consequence explicitly concerns
+the short integral models parametrized in the preceding proposition.
+
+The paragraph identifying the differential contraction had a factor-of-two
+error. In the assembled squarefree proof, `h = Uy∂x + 2W∂y` contracts
+`dx/y`, not half that form. The direct cubic proof now calls its element
+`g = h/2`, the contraction of `dx/(2y)`. This was compared with source
+C13's `eq:hcertificate`, `eq:elliptich` and its geometric explanation,
+recovered from `c6359e4^:docs/new/omnific_differential_rigidity.zip`, member
+`omnific_differential_rigidity/omnific_differential_rigidity.tex`.
+C13 consistently uses the half-form;
+the mismatch was in the assembly. This targeted comparison does not
+constitute a full reconciliation of sources C10–C15.
+
+The regular differential is now described on the covering opens `y ≠ 0`
+and `P′(x) ≠ 0`, with respective expressions `dx/y` and `2dy/P′(x)`.
+For general Weierstrass models the proof displays the invertible projective
+coordinate change and explains why a repeated root over the algebraic
+closure would be singular. The plane-curve derivative criterion was
+checked against [Stacks, Section 53.9](https://stacks.math.columbia.edu/tag/0BYA)
+and is cited; its general geometric foundations are imported. Constant
+descent is performed in the ambient field before intersecting with the
+integer or Gaussian integer ring. The singular-cubic proof now handles
+`a = b = 0` before dividing by `a`.
+
+All 200 standard results and 416 labels are retained. Exactly three standard
+statement texts change: `odg:cr:lem:division`, `odg:cr:prop:cubic` and
+`odg:cr:cor:weierstrass`; the other 197 are unchanged. Their Lean status remains **Pending**.
+The two-ring principle and later geometric proofs, curve pointers and
+remaining source reconciliation still require review.
+
+The delivered C13 and C14 verifiers were rerun with SymPy 1.14.0:
+12,874 and 3,440 finite assertions pass, respectively. Their reports
+match the delivered records except for the Python version. These checks
+cover finite identities and examples, not arbitrary Hahn supports or
+the geometric theorems. The combined Lean build after merging `40a3990`
+passes 4,393 jobs and audits 14,779 declarations using only `propext`,
+`Classical.choice` and `Quot.sound`; this validates the incoming residue
+and divisor formalizations, not the pending squarefree theorem.
+
+## Two-ring contraction, tangent detection and inheritance
+
+This pass reviews Section 16.5, Definitions 16.12 and 16.18 through
+Proposition 16.21, completing the maintained Section 16 proof chain.
+The introduction and conventions now distinguish the coefficient fields
+of C11/C13's proper-rigidity theorems from those of their affine-curve
+classifications, qualify nonconstant examples by a nonzero exponent
+group, and distinguish the real and complex valuation rings of finite elements.
+The class convention retains each theorem's stated hypotheses.
+
+The proof now constructs the tangent functional from pullback and the
+universal property of Kähler differentials. The original field derivation
+is `k`-linear; the tangent derivation of a chart after base change sends
+`f ⊗ a` to `a∂(f(p_L))` and kills the new scalar factor. Contractions over
+the two rings agree by naturality, without an isomorphism between their
+differential modules, a map between the rings, or a common affine chart.
+Over the valuation ring a degree-`r` contraction lands in `m^r`. The
+symmetric clause explicitly requires positive degree: the degree-zero
+section `1` would be a counterexample. Symmetric evaluation descends to
+the quotient symmetric power directly, without assuming that a global
+symmetric section lifts to a global tensor section.
+
+The proper-rigidity proof uses right exactness of pullback at the actual
+field-valued point. The same proof applies without smoothness when the
+Kähler differential sheaf is globally generated. This is recorded as a
+proved manuscript consequence, not as a general rigidity assertion for
+singular varieties. Constant descent needs only affine algebra generators;
+it does not need a finitely generated algebra stable under derivations.
+For example, if `t = ω^γ`, `γ > 0`, and `∂t = t`, then `k[t+t²]` is not
+stable: `∂(t+t²) = 2(t+t²)−t`, and degree excludes `t` from that algebra.
+The rational form `dT` on the projective line gives a separate example
+showing why regularity at the valuation centre is essential.
+
+The symmetric proof works for arbitrary separating data. On a smooth
+projective scheme the stated tangent-detection property is equivalent
+to semiampleness of the tautological quotient line bundle: detection
+gives a cover of its projective bundle by nonvanishing loci of sections
+of positive powers, quasi-compactness gives a finite subcover, and raising
+these sections to a common positive degree gives global generation.
+The empty projective bundle is included. This is a criterion for tangent
+detection, not a necessary condition for rigidity. The inheritance proof
+now supplies the fiber-product factorization and explains that immersion
+inheritance allows singular and nonreduced subschemes.
+
+The contraction, constant-point and symmetric proofs were compared with
+C13's sections “The two-ring differential annihilation theorem” and
+“Cotangent and symmetric-differential rigidity”, recovered from the archive
+identified in the preceding pass. C11's `main:curves` and `main:proper`,
+in `curve-and-abelian-rigidity/article.tex` from
+`c6359e4^:docs/new/Curve_and_Abelian_Rigidity.zip`, were checked for their
+coefficient-field scope. This is a targeted comparison, not full
+reconciliation of sources C10–C15.
+
+The following imported foundations were checked for the needed hypotheses:
+[universal differentials](https://stacks.math.columbia.edu/tag/00RM),
+[properness for arbitrary valuation rings](https://stacks.math.columbia.edu/tag/0BX5),
+[flat cohomological base change](https://stacks.math.columbia.edu/tag/02KH),
+[the quotient projective-bundle convention and locally free pushforward](https://stacks.math.columbia.edu/tag/01OA),
+and [globally generated powers of an ample line bundle](https://stacks.math.columbia.edu/tag/01PR).
+They are cited foundations, not independently formalized or fully re-proved
+here. The new base-change reference and shared notation make the scalar
+and projective conventions explicit.
+
+Exactly one standard statement changes, `odg:cr:thm:annihilation`, by
+specifying positive symmetric degree. The other 199 standard statements
+and all 416 labels are preserved. All Section 16 results and the new
+prose consequences remain **Pending** in Lean. Section 17's curve proofs,
+Section 18, their earlier pointers and later additions remain unreviewed.
+No finite verifier is claimed to validate the geometric argument.

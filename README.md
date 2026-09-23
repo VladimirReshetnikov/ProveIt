@@ -132,7 +132,7 @@ Apache license are included in the repository.
 
 ## Formalization
 
-The [source inventory](docs/FORMALIZATION.md) covers 58 maintained main texts
+The [source inventory](docs/FORMALIZATION.md) covers 60 maintained main texts
 and the source manuscripts preserved in Git history. The
 [coverage and dependency ledger](docs/FORMALIZATION.md) records their statements,
 the proposed Layer A–E implementation order, and the exact scope of each
@@ -154,8 +154,42 @@ constant coefficient must be an ordinary integer. Constant extraction is a
 surjective ring homomorphism onto `ℤ`; its kernel is the purely infinite
 ideal, and the quotient is exactly `ℤ`. The real and complex support rings
 likewise retract onto `ℝ` and `ℂ`. The purely infinite real ideal is also
-proved to be a vector space over `ℝ`. Higher Diophantine and set-sized quotient results
-remain pending; source review is distinct from checked formalization.
+proved to be a vector space over `ℝ`. Degree is identified with the greatest
+normal-form exponent and adds under multiplication. The units of the real
+and complex support rings are exactly their nonzero ordinary constants;
+the omnific units are `1` and `-1`. An omnific integer bounded by an ordinary
+real is an ordinary integer, and `1` is the least positive omnific integer.
+Every surreal now has a unique omnific floor `a` satisfying `a ≤ x < a+1`.
+The proved formula includes the negative-infinitesimal boundary correction;
+for example, the floor of a negative infinitesimal is `-1`. A nonzero
+ordinary integer polynomial has exactly its ordinary integer roots in the
+omnific ring; every infinite omnific integer is transcendental over `ℝ`.
+For every nonzero ordinary integer `n`, divisibility and residues modulo `n`
+depend only on the constant term: `Oz/nOz ≅ ℤ/nℤ`. The purely infinite ideal
+is exactly the intersection of all positive integer multiples, and also of
+all positive powers of any one ordinary prime. A divisor of a nonzero
+ordinary integer must itself be an ordinary integer divisor. Ordinary primes
+remain prime and generate maximal ideals; mixed gcds and finite Chinese
+remainder decompositions reduce to ordinary integer arithmetic.
+
+The finite-quotient classification is also proved: every proper ideal
+containing a nonzero ordinary integer is `nOz` for a unique `n ≥ 2`, and
+every nonzero finite quotient is `ℤ/nℤ`. Every homomorphism to a finite ring
+factors uniquely through the constant-term map, so these maps kill the
+entire purely infinite ideal. Nonzero monomials therefore prove that the
+omnific ring is not residually finite. Constant extraction is also the
+unique unital homomorphism to `ℤ`, and every omnific endomorphism preserves
+it. For every ordinary prime `p`, the actual omnific ring's `p`-adic
+completion is ring-isomorphic to Mathlib's `ℤ_[p]`. Its canonical map takes
+the integer constant term into `ℤ_[p]`, so its kernel is exactly the purely
+infinite ideal. Both the ordinary congruence topology and each `p`-adic
+topology are proved non-Hausdorff: the closure of zero is precisely that
+ideal, and two omnific integers are topologically indistinguishable exactly
+when their integer constant terms agree. Their separation quotients are
+ring-isomorphic to `ℤ`, with constant extraction as the canonical map.
+The profinite completion, completion homeomorphisms, higher Diophantine and
+general set-sized quotient results remain pending; source review is distinct
+from checked formalization.
 
 The [research collection](docs/README.md) also includes work still awaiting
 Lean proofs. The [omnific Diophantine report](docs/surreal/omnific-diophantine-geometry/)
@@ -163,6 +197,12 @@ exhibits dense arithmetic fibers with opposite denominator behavior and
 computes the failure of flatness when finer monomial scales are added.
 Its fraction section now has a full manuscript proof review, including
 a correction to the agreement locus of standard part and rational residue.
+The Gaussian-fiber and étale-norm proofs now spell out their support and
+splitting arguments, with boundary examples explaining the hypotheses.
+The review now covers squarefree and Weierstrass rigidity and the abstract
+two-ring differential principle, including tangent detection and inheritance.
+It corrects differential normalization and hypotheses and makes the
+geometric pullback argument explicit.
 The [review record](docs/REVIEW.md) distinguishes these written proofs
 from formal verification and records the remaining review scope.
 Recent manuscript additions cover curve and differential rigidity, theta

@@ -63,6 +63,31 @@ nonnegative-growth subring, the constant-coefficient kernel is `J + iJ`.
 For a nonzero form, growth degree is the largest supported exponent and
 satisfies `v = −deg` under the reversed valuation convention.
 
+In the curve part of the Diophantine report, `𝒜_k(Γ)` has nonnegative
+growth support, while the valuation ring `𝒪_k(Γ)` has nonpositive growth
+support. For `Γ = 0` both are the coefficient field; the assertion that
+`𝒜_k(Γ)` is not a valuation ring requires `Γ ≠ 0`. An Euler derivation
+sends these rings into their strictly positive and strictly negative
+support ideals, respectively. This concerns the exponents of the image;
+it does not assert a proper inclusion of the image in either ideal.
+For example, on `k[ω]` with `∂(ωⁿ) = nωⁿ` in characteristic zero,
+the image is exactly `ω k[ω]`. For any nonzero Hahn series `u`,
+`ct(∂_λ u/u) = λ(deg u)`; when `u` is a valuation-ring unit this
+residue is zero. Here `ct` is applied to the logarithmic derivative in
+the valuation ring, not asserted multiplicative on the whole Hahn field.
+
+In that report's two-ring principle, `∂p_L` is the tangent functional
+`p_L*Ω¹_{X/k} → L` taking `df` to `∂(f(p_L))`. The field derivation
+`∂: L → L` kills `k`; the associated tangent derivation on a base-changed
+chart sends `f ⊗ a` to `a∂(f(p_L))` and kills the new scalar factor `L`.
+Symmetric differentials use the quotient symmetric power, evaluated by
+the same tangent functional in every factor. The annihilation statement
+requires positive degree; the degree-zero section `1` does not vanish.
+For the cotangent bundle, `P(E)` parametrizes one-dimensional quotients
+of `E`, so a nonzero tangent functional gives a point of `P(Ω¹)` and
+`O(1)` is the tautological quotient line bundle. Semiampleness here means
+that some positive power of this line bundle is globally generated.
+
 In the Diophantine report's Section 11, `𝒜_k(Γ)` is the ring of all
 nonnegative-growth-support forms over `k`, and `ℛ_o(k,Γ) = o + Π_k(Γ)`
 restricts the constant coefficient to `o`. The quotient report writes its
@@ -104,7 +129,7 @@ Gaussian-rational residue, with values in `ℂ` and `ℚ(i)`.
 The polynomial model `𝒫[T] = ℤ + Tℝ[T]` uses a formal variable;
 `𝒫_t` denotes its evaluated image at `0 ≠ t ∈ Π`. The scale-defect
 quotient `Uℝ[U]/Uᵐℝ[U]` has real dimension `m−1` but infinite
-length as a `𝒫[U]`-module for `m ≥ 2`. The class `ℰ(x)` consists
+length as a `𝒫[U]`-module for `m ≥ 2`. The class `Ex(x)` consists
 of exponents `β`; its associated denominators are `ω^β`.
 
 For the full proper class, `Oz/J ≅ ℤ` and, for nonzero ordinary `n`,
@@ -134,6 +159,16 @@ report is a special result, not a convention for arbitrary tuples.
 Its polynomial-arc variable `T` is formal; evaluation at `t ∈ Π` preserves
 omnific membership, while preservation of eventual positive-real signs
 requires `t > 0`. Choosing `t = ω` also ensures finite supports.
+
+For decomposable equations, the real kernel is the kernel of the stacked
+real and imaginary coefficient matrices over `ℝ`; Gaussian variables use
+the complex kernel. A kernel-basis parametrization is coefficientwise Hahn
+linear algebra, without an assertion of partial-sum convergence. The norm
+`N_{E/K}(ΣeⱼXⱼ)` is a finite determinant polynomial over `K`; it does not
+assume an embedding of `E` into the surreal field. Its trace pairing uses
+ordinary transpose, not conjugate transpose. The arbitrary-characteristic
+norm extension concerns abstract Hahn rings with finite étale coefficient
+algebras; actual omnific and Gaussian omnific rings retain `ℝ` and `ℂ`.
 
 ## Monomials, support orientation, and valuation
 

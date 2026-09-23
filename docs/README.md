@@ -51,11 +51,18 @@ compact groups over `No`.
 
 Proof review of this material is recorded in the [review record](REVIEW.md).
 The Diophantine report's review covers its original material and Sections
-11–15 and 19, with the exact boundary in its
+11–15 and 19, plus the Gaussian-fiber and étale-norm additions in Section 6.
+Those proofs now include support arguments and boundary examples. Source
+07's quartic and the elementary ring/Euler subsections 16.2–16.3 are also
+reviewed, with the trivial-exponent-group exception and the meaning of
+image inclusions made explicit. The geometric curve proofs, curve pointers
+and later additions remain outside that review, with the exact boundary in its
 [reconciliation](surreal/omnific-diophantine-geometry/RECONCILIATION.md); its
-rigidity Sections 16–18 and the other new reports and additions await
-review. Lean covers only the omnific ring and constant-term package of the
-Diophantine report.
+remaining rigidity arguments in Sections 16–18 and the other new reports and additions await
+review. Lean covers the omnific ring and constant-term package, degree
+laws, units and finite elements, the exact omnific floor and ordinary
+polynomial-root rigidity of the Diophantine report. Its other unmapped
+Diophantine results remain pending.
 
 Placement `21375f8` (batch 30) adds two report bases,
 [critical-point defects](foundations-and-computation/large-cardinal-embeddings-and-normal-forms/)
