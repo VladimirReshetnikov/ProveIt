@@ -47,6 +47,7 @@ No row below certifies every claim in an entire report.
 | [Expanding polynomial dynamics](surcomplex/expanding-polynomial-dynamics/) | Read the main scale-ideal, inverse-branch, universal-center, fiber, periodicity, topology, extension, deformation, bounded-orbit and surreal-specialization proofs. Made degree preservation explicit in summaries and supplied a higher-degree two-cycle counterexample; clarified universal formal substitution and coefficient stabilization, and supplied the missing noncompactness argument. Distinguished an order unit from rank one, spelled out the proper-class specialization using set-sized compactness, and corrected the README’s ambiguous finite-orbit wording. Aligned partial Lean coverage and the notation guide. Checked the classical quadratic Cantor comparison and spherical Fatou/Julia definitions against Benedetto’s notes; other imports, priority and source-claim reconciliation remain separate. |
 | [Finite surreal probability](surreal/finite-surreal-probability/) | Reviewed main text, Sections 2–17. Expanded workspace closure and standard-part existence, uniqueness, quotient and kernel arguments. Corrected the finite point-weight representation to require all subsets measurable; smaller finite algebras have atom weights. Expanded common-partition expectation, zero-second-moment Cauchy–Schwarz, tail bounds, finite Jensen, positive-denominator Bayes and chain rules, conditional tower and total variance, and both directions of finite coherence. Distinguished arbitrary versions on null atoms from pointwise identities and coherent laws from regular laws. Checked the canonical Hahn embedding and exponential transfer against van den Dries–Ehrlich Section 2 and its erratum. Expanded the conditional skeleton, its pairwise recovery, signed-row selection and Bayes leading coefficients. Corrected the joint-normalizer hypothesis for successive updates, neutral-likelihood wording, the difference numerator sign and sufficient-versus-necessary precision claim. Added the surreal-payoff and exact-threshold counterexamples. Checked the conditional-space comparison and real-payoff domain against Halpern Definition 2.1 and Section 4. Expanded logit inverse and domain checks, softmax gauge and perturbation bounds, separated-scale concentration, entropy and KL equality, support inheritance in the chain rule and data processing, and scoring identities. Distinguished the boundary logarithmic-score infimum from an attained interior minimum. Expanded Gibbs minimization, finite path consistency, adapted optional stopping and Bernoulli variance. Corrected the posterior-support claim after smoothing and the leading coefficient for a general infinitesimal scale. Added nonseparable logistic and non-stopping-time counterexamples and explicit zero-horizon cases. Expanded strong geometric regrouping, common-support coefficient measures, normalized hierarchy support and conditional shadows, real-observable dominated convergence and product Fubini, and the countable-support integration boundary. Distinguished uniform bounds from leading-component essential bounds. Expanded posterior coefficient measurability and added an explicit failure of coefficient integrability before density cancellation; checked the ordinary disintegration input against Kallenberg Theorem 8.5. Expanded the coin coefficient-variation bounds, polynomial-sign argument for relative field embeddings, ultrapower positivity, parity nonuniqueness and the finite compactness models. Replaced the logit change-of-variable shortcut with original Hahn leading data; distinguished finite-support permutations from unrestricted invariance. Checked the cited fine-ideal and fine-ultrafilter construction inputs. Expanded the rare-regime likelihood, martingale and full-observation conditional expectation calculations, supplied a fourth-moment proof of the component strong laws, and separated coefficientwise limits from the nowhere order-Cauchy conclusion. Expanded shadow continuity, internal-algebra measure extension and an explicit Poisson ultraproduct with diagonal saturation. Added a logarithm error bound, a measurable ordinary count and a Markov check for escaped mass. Aligned model weights, exponential hypotheses, notation and dependency claims in the final sections. Remaining imports and source/provenance reconciliation are pending. |
 | [Three duals of Hahn vector spaces](surcomplex/three-duals-of-hahn-vector-spaces/) | Reviewed the main text, Sections 1–15. Expanded support facts, arbitrary regrouping, finite triple convolutions, the uniform shift bound and zero-group cases. Made the strong-map isomorphism and the descending-support counterexample explicit. Expanded coefficient-rank approximation by nets, nonzero-scalar closure and the countable-cofinal sequence construction. Corrected the guide's order-unit summary to distinguish strict completion from the noncyclic middle case. Expanded compatible-ball and Cauchy-net completeness, ball nesting, set-sized Zorn extension and its empty-chain case; corrected the claim that selecting one element of a known nonempty set separately requires choice. Expanded continuous restriction and separation, the canonical quotient kernel, cyclic finite-subsum convergence, Hilbert norm identities and topology, Riesz coefficients and cardinality. Corrected positive-versus-nonnegative bound scope at the zero operator and characterized bounds for unbounded leading coefficients. Expanded dense-kernel, projection, orthogonality and distance-cut proofs; distinguished an orthogonal complement from an orthogonal direct-sum complement. Expanded the cofinal/noncofinal induced topology, two-scale target topology, unique strong extension and normal-form transport. Corrected vector outputs described as scalars, the first-kappa comparison's missing properness hypothesis, spectral extension scope and stale negative-search/current-review claims. Checked BKKPS summability definitions, Kaplan–Krapp–Serra normal-form conventions and Morillon's real-valued one-step statement against primary text. Remaining imports/source reconciliation are pending. |
+| [Hidden negative Hermitian directions](surcomplex/hidden-negative-hermitian-directions/) | Reviewed the main text, Sections 1–11. Expanded character extension, finite support-index bounds, primorial degree, algebraic independence, closure minima, density and the workspace containing an algebraic surreal root. Expanded the positive-kernel lemma, arbitrary-ordered-field pivot argument, explicit Schur congruence and empty-block cases; detailed vector variation and scalar/vector null sets. Corrected the geometric-series witness for incomparable bases, restricted that comparison to rational exponents and explained containment when no order unit exists. Distinguished congruence from unitary diagonalization. Remaining imports, priority and original-source reconciliation are pending; no Lean mapping added. |
 
 
 Each correction was reviewed against its local definitions and downstream uses
@@ -1375,6 +1376,56 @@ The combined build passed 3,994 jobs and audited 7,413 declarations using
 the same three permitted axioms. The independent 49-source index remains
 clean, and all 2,720 cited labels and 1,030 local Markdown destinations resolve.
 
+## Hidden-negative-directions main-text review
+
+The [hidden-negative Hermitian directions](surcomplex/hidden-negative-hermitian-directions/)
+review covers Sections 1–11. Independent readings checked the support and
+character arguments, prime-tail separation and independence, inertia, closure,
+density and transport, and the two-scale matrix and measure criteria. The
+core statements remain valid under their stated hypotheses. Character
+extension now proves well-definedness on the enlarged subgroup, the finite
+support quotient is identified explicitly, and the degree proof shows both
+Bézout generation and the radical upper bound. Formal evaluation spells out
+well-ordered finite sums and finite tagged contributors, including zero inputs.
+
+The bounded-support comparison contained an invalid witness: the unbounded
+geometric series `Σ_{n≥1} t^n = t/(1−t)` is itself a fraction of finite-support
+series. For `Γ = ℚ`, the replacement `√(1+t)` belongs to the probe field but
+not the bounded-support fraction field. The article gives the integer-coset
+projection proof and rational-square obstruction, checked also against
+`bst:cor:onescale`. Incomparability is not asserted for all groups: without
+an order unit each finitely generated subgroup is bounded above, so the
+probe field lies in the bounded-support ring. The guide and nonclaim ledger
+now use the same scope. The spectral comparison also distinguishes the
+explicit triangular congruence from unitary diagonalization.
+
+The closure proof now verifies preservation of the least coordinate
+valuation. The density proof gives an explicit ordered-field continuity
+estimate. For a surcomplex algebraic root, the proof first forms a nonzero
+set-sized workspace containing its normal-form support and the equation's
+parameters, then applies the character bound to shrink the support.
+The two-scale matrix proof defines compression unconditionally, gives the
+positive-pivot argument over an arbitrary ordered-field complexification,
+and displays the Schur congruence and all empty active-block cases.
+The measure proof bounds vector total variation by the entry variations and
+makes the finite-partition and Jordan-decomposition null-set steps explicit.
+
+The baseline and revised PDFs each compiled in three clean `pdflatex`
+passes; the current report has 33 pages (previously 31). All 89 labels and
+result numbers are preserved. Of the 24 standard result environments, 22
+are byte-identical; the two changes clarify intrinsic valuation topology
+and define `ker P` and its compression before testing positivity.
+All seven delivered audit/code/data files remain byte-identical.
+The delivered exact verifier passed under Python 3.13.14 and SymPy 1.14.0,
+matching historical JSON except for the Python version: 35,100 prime-coset
+comparisons, 5,946 real matrix pairs with 1,823 positive cases, plus the
+congruence, orbit and example checks. A separate scratch diagnostic checked
+390,625 Hermitian 2×2 pairs, including complex off-diagonal entries, against
+principal-minor leading signs; all agreed and all 18,145 positive cases
+also matched the rank formula. Those finite checks do not prove arbitrary
+Hahn-support or measure assertions. Remaining imports, literature priority
+and original-source reconciliation remain outside this main-text review.
+
 ## Remaining scope
 
 Batch 22, placed in `7b5f934`, was assembled in `68e2960` and catalogued
@@ -1414,9 +1465,11 @@ remain historical evidence, not a substitute for that review.
 
 Batch 19's [three-duals report](surcomplex/three-duals-of-hahn-vector-spaces/)
 has now received the Sections 1–15 main-text review recorded above;
-remaining imports/source reconciliation are pending. Three other reports
-from that batch have not yet received this mathematical review:
-[hidden negative Hermitian directions](surcomplex/hidden-negative-hermitian-directions/),
+remaining imports/source reconciliation are pending. Its
+[hidden negative Hermitian directions](surcomplex/hidden-negative-hermitian-directions/)
+report has now received the Sections 1–11 main-text review recorded above;
+remaining imports/source reconciliation are pending. Two reports from that
+batch have not yet received this mathematical review:
 [transcendence over bounded support](surreal/transcendence-over-bounded-support/)
 and [matrix scaling](surreal/matrix-scaling-at-surreal-scales/).
 Its nonscalar dynamics, nonlinear holonomic rigidity, Drazin/Fredholm spectral

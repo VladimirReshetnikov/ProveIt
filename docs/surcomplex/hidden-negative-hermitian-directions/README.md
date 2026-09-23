@@ -12,7 +12,7 @@ proof, example, question and limitation of the manuscript is printed.
 
 ```
 article.tex        the report, standalone LaTeX with an internal bibliography
-article.pdf        the compiled report, 31 pages (title, two contents pages, 28 numbered pages)
+article.pdf        the compiled report, 33 pages (title, two contents pages, 30 numbered pages)
 README.md          this guide
 source_audit.md    the source's own repository and literature audit, as delivered
 code/              verify.py (exact finite checks), build.sh (the source's build script)
@@ -173,10 +173,36 @@ independent.
 
 **[transcendence-over-bounded-support](../../surreal/transcendence-over-bounded-support/)**,
 placed in the same commit, works over the fraction field of series with
-support bounded above. Every `h_A` lies in that ring, and `P_Q` contains
-`Σ_n t^n`; neither independence theorem implies the other. Background inputs
+support bounded above. For `Γ = Q` the two bases are incomparable: every `h_A` lies in the
+bounded-support ring but outside `P_Q`, while `√(1+t) ∈ P_Q` lies outside
+the bounded-support fraction field. The article proves the latter by
+projecting a putative fraction to one integer-exponent coset and using
+that `1+t` is not a rational square. Unbounded support alone does not
+suffice: `Σ_{n≥1} t^n = t/(1−t)` already belongs to the fraction field.
+For a group with no order unit, every finitely generated subgroup is
+bounded above, so `P_Γ` is contained in the bounded-support ring. The two
+independence theorems have different bases and witnesses. Background inputs
 are `found:sub:positivesupport` (foundations) and `polynomial:prop:workspace`
 (polynomial-algebra).
+
+## Main-text proof review
+
+Sections 1–11 have received a mathematical proof review. It expands character
+extension, support-index finiteness, the primorial lower and upper bounds,
+closure and density, and the workspace containing an algebraic surreal root.
+The finite matrix proof now displays its Schur congruence and explains why
+positive pivots suffice over nondivisible Hahn groups. The measure proof
+spells out vector-variation finiteness and the null-set argument.
+
+The bounded-support comparison above corrects an invalid geometric-series
+witness and restricts incomparability to the stated exponent group. The
+spectral comparison distinguishes congruence from unitary diagonalization.
+The 24 numbered result statements retain their mathematical content; two
+wording clarifications name the intrinsic valuation topology and define the
+compression even before positivity of `P` is known. All 89 labels and result
+numbers are retained. Remaining imported-result checks, literature priority
+and original-source reconciliation are separate from this main-text review;
+see [the review record](../../REVIEW.md). No Lean mapping was added.
 
 ## Stale statements corrected
 
@@ -224,3 +250,12 @@ it printed the same five `PASS` lines and counts, and its JSON output matched
 runs `latexmk` (or `pdflatex` three times) on `article.tex`, overwriting
 `article.pdf`. As placed under `code/` it does not find `article.tex`; to use
 it, copy this directory and put the script beside `article.tex` in the copy.
+
+During the main-text review, the delivered verifier was rerun with Python
+3.13.14 and SymPy 1.14.0. All five checks passed; its JSON agrees with the
+historical output except for the Python version. An additional scratch
+check compared the criterion with principal-minor signs for 390,625
+Hermitian 2×2 pairs with integer real and imaginary components in
+`{−2,−1,0,1,2}`; all agreed, and the 18,145 positive cases also matched
+the rank formula. These finite diagnostics do not prove the general theorem.
+The current 33-page PDF was rebuilt with three clean `pdflatex` passes.

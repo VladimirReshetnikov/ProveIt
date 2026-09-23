@@ -3327,35 +3327,47 @@ Mappings cover only the hypotheses and clauses they state.
 
 Source: [surcomplex/hidden-negative-hermitian-directions/article.tex](surcomplex/hidden-negative-hermitian-directions/article.tex).
 
+The main-text proof review covers Sections 1–11. It expands character
+extension, the support-index and primorial arguments, closure and density,
+algebraic-root workspace selection, two-scale Schur congruence and
+vector-measure null sets. The comparison with bounded-support fractions
+now uses `√(1+t)` and scopes incomparability to `Γ = ℚ`; a geometric series
+is itself a bounded-support fraction. Congruence is distinguished from
+unitary diagonalization. The 24 standard statements retain their mathematical
+content; the valuation-topology wording and unconditional definition of the
+compression are clarified. All 89 labels and result numbers are retained.
+Remaining imported-result checks and source reconciliation are pending.
+This review adds no Lean implementation mapping.
+
 Statements remain **pending unless explicitly mapped** in the implementation table.
 Mappings cover only the hypotheses and clauses they state.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
 | Theorem | `hnd:thm:preview` (line 171) | Maximal hidden negative inertia; preview |
-| Proposition | `hnd:prop:evaluation` (line 561) | Closure under positive-order formal evaluation |
-| Lemma | `hnd:lem:characterextension` (line 593) | Character extension and separation |
-| Lemma | `hnd:lem:supportdegree` (line 631) | Algebraic degree bounds the support index |
-| Proposition | `hnd:prop:probeclosed` (line 675) | Algebraic closedness of the probe field |
-| Lemma | `hnd:lem:cyclicintersection` (line 726) | Untitled |
-| Theorem | `hnd:thm:barrier` (line 755) | Uniform finite-lattice approximation barrier |
-| Theorem | `hnd:thm:degree` (line 778) | Primorial approximation law |
-| Corollary | `hnd:cor:degreebound` (line 835) | A degree-limited obstruction |
-| Theorem | `hnd:thm:separation` (line 892) | Uniform linear-combination separation |
-| Theorem | `hnd:thm:independence` (line 937) | Independent prime-tail family |
-| Corollary | `hnd:cor:trdeg` (line 1012) | Untitled |
-| Theorem | `hnd:thm:inertia` (line 1035) | Hidden-inertia construction |
-| Corollary | `hnd:cor:smallmatrix` (line 1085) | Smallest example |
-| Theorem | `hnd:thm:closedseparation` (line 1148) | The barrier persists through valuation closure |
-| Proposition | `hnd:prop:lc` (line 1192) | Untitled |
-| Corollary | `hnd:cor:lc` (line 1212) | Untitled |
-| Proposition | `hnd:prop:density` (line 1235) | Quadratic testing characterizes order density |
-| Theorem | `hnd:thm:surreal` (line 1318) | Workspace-independent surreal probe obstruction |
-| Lemma | `hnd:lem:psdkernel` (line 1360) | Untitled |
-| Theorem | `hnd:thm:twoscale` (line 1377) | Two-scale matrix positivity |
-| Theorem | `hnd:thm:measure` (line 1564) | Two-scale matrix null ideals |
-| Corollary | `hnd:cor:measurekernel` (line 1634) | Eventwise kernel and rank |
-| Corollary | `hnd:cor:scalarmeasure` (line 1657) | Scalar specialization |
+| Proposition | `hnd:prop:evaluation` (line 590) | Closure under positive-order formal evaluation |
+| Lemma | `hnd:lem:characterextension` (line 631) | Character extension and separation |
+| Lemma | `hnd:lem:supportdegree` (line 674) | Algebraic degree bounds the support index |
+| Proposition | `hnd:prop:probeclosed` (line 721) | Algebraic closedness of the probe field |
+| Lemma | `hnd:lem:cyclicintersection` (line 776) | Untitled |
+| Theorem | `hnd:thm:barrier` (line 805) | Uniform finite-lattice approximation barrier |
+| Theorem | `hnd:thm:degree` (line 828) | Primorial approximation law |
+| Corollary | `hnd:cor:degreebound` (line 889) | A degree-limited obstruction |
+| Theorem | `hnd:thm:separation` (line 949) | Uniform linear-combination separation |
+| Theorem | `hnd:thm:independence` (line 994) | Independent prime-tail family |
+| Corollary | `hnd:cor:trdeg` (line 1074) | Untitled |
+| Theorem | `hnd:thm:inertia` (line 1097) | Hidden-inertia construction |
+| Corollary | `hnd:cor:smallmatrix` (line 1147) | Smallest example |
+| Theorem | `hnd:thm:closedseparation` (line 1211) | The barrier persists through valuation closure |
+| Proposition | `hnd:prop:lc` (line 1258) | Untitled |
+| Corollary | `hnd:cor:lc` (line 1278) | Untitled |
+| Proposition | `hnd:prop:density` (line 1307) | Quadratic testing characterizes order density |
+| Theorem | `hnd:thm:surreal` (line 1397) | Workspace-independent surreal probe obstruction |
+| Lemma | `hnd:lem:psdkernel` (line 1447) | Untitled |
+| Theorem | `hnd:thm:twoscale` (line 1466) | Two-scale matrix positivity |
+| Theorem | `hnd:thm:measure` (line 1681) | Two-scale matrix null ideals |
+| Corollary | `hnd:cor:measurekernel` (line 1753) | Eventwise kernel and rank |
+| Corollary | `hnd:cor:scalarmeasure` (line 1776) | Scalar specialization |
 
 ### transcendence-over-bounded-support
 

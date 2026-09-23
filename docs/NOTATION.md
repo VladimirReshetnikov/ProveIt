@@ -121,6 +121,23 @@ infinitely many supported exponents to one value; it need not produce a
 Hahn series over the quotient group. The example in `hol:rem:thetacoarse`
 makes this distinction explicit.
 
+The [hidden-negative-directions report](surcomplex/hidden-negative-hermitian-directions/article.tex)
+uses `𝒫_Γ` for complex Hahn series supported in some finitely generated
+additive subgroup of `Γ`; “finite-lattice support” permits infinite supports
+and nondiscrete subgroups. Its valuation closure is `P̄_Γ`, written
+`\overline{\mathscr P}_Γ` in the article, and uses neighborhoods
+`v(x−a) > ρ` for `ρ ∈ Γ`. For `Γ = ℚ` it is the complex Levi–Civita field
+of left-finite series. This differs from the Hahn–Herglotz notation `𝒞_Γ(X)`
+for Hahn series with continuous-function coefficients.
+
+In that report, `A ⪰ 0` tests **every** vector over the stated scalar field;
+positivity on a smaller probe field always names that field. Its two-scale
+measure criterion uses the scalar Jordan parts `ν_u⁺`, `ν_u⁻` of
+`ν_u = u* M₁ u` and the ordinary vector total variation `|σ_u|` of
+`σ_u = M₁ u`. Neither is an entrywise positive part of a matrix measure.
+The null conditions quantify over every ordinary `u` and every measurable
+null set; the resulting matrix positivity quantifies over all Hahn vectors.
+
 ## Inner products and operator spectra
 
 The [finite-dimensional spectral report](surcomplex/spectral-theory/article.tex)
