@@ -23,9 +23,10 @@ data/
   07-initial-core-verification.json                source 07's recorded run
 ```
 
-Every label in `article.tex` carries the prefix `dsn:` (138 labels). The report
-is new, so no label was renamed or removed. No
-[formalization ledger](../../FORMALIZATION.md) row cites a `dsn:` label.
+Every label in `article.tex` carries the prefix `dsn:` (138 labels). The
+[formalization ledger](../../FORMALIZATION.md) now indexes the assembled
+report under these labels, with all claims **Pending**. It supplies no
+checked implementation mapping for this report.
 
 ## Two sources, one report
 

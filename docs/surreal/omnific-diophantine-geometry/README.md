@@ -10,7 +10,7 @@ placed in `cf350b1`, numbered 06 and 07 here), and two more dated 23 September
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 118 pages
+article.pdf                        the compiled report, 119 pages
 README.md                          this guide
 RECONCILIATION.md                  the source comparisons and precise proof-review scope
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
@@ -71,14 +71,17 @@ proof review of Sections 5–7 (`f0bdcf3`) extended one-variable and
 separated-power rigidity to complex coefficients and corrected Remark 7.5; a
 further review of Sections 8–10 (`40c09a3`, `58cd8e1`) expanded their proofs
 without adding or renumbering statements. The later reviews `25e372c` and `3dd4e2c` cover the former Sections 11–12,
-now Sections 14–15, including real-coefficient specialization and the finite
+now Sections 14 and 16, including real-coefficient specialization and the finite
 factorization proof of the two-term root obstruction. These reviews exclude the batch-25
 material (Sections 11–13, the Section 6 results of sources 07 and 13, and
-Remark 10.5). A review of Section 14 (`25e372c`, merged in `ef806c0`) expanded
-its proofs. A further pass reviews Section 11: leading degrees, the quadratic ideal
-predicate, Pell divisibility, intersectivity and the order-free
-integer-defining system, with boundary examples for intermediate rings.
-Sections 12–13 and the new material in Sections 6 and 10 still need review. No review covers the batch-27 material: Section 15, the
+Remark 10.5). A subsequent pass reviews Section 11: leading degrees, the
+quadratic ideal predicate, Pell divisibility, intersectivity and the
+order-free integer-defining system. It adds boundary examples for intermediate
+rings and expands the finite congruence arguments. A further pass reviews
+Section 12: the detector, ideal test, constant-term graph, homomorphisms and
+number-field extension. Its root hypothesis already gives an existential
+ideal and graph. Section 13 and the new material in Sections 6 and 10 still need review.
+No review covers the batch-27 material: Section 15, the
 additions to Section 17, Section 18.3 and Questions 18.12–18.16. Inserting
 Section 15 moved the former Sections 15–17 to 16–18; statement numbers in
 Sections 1–14 are unchanged. See [RECONCILIATION.md](RECONCILIATION.md) for the
@@ -87,8 +90,8 @@ boundary.
 
 The article has 143 standard results (51 theorems, 31 propositions, 25 lemmas,
 36 corollaries), of which 39 are in Section 15. The
-[ledger](../../FORMALIZATION.md) indexes the 67 standard results of the
-three-source assembly by `odg:` label, all **Pending**; no implementation
+[ledger](../../FORMALIZATION.md) indexes all 143 standard results of the
+seven-source assembly by `odg:` label, all **Pending**; no implementation
 mapping cites an `odg:` label, and no Lean code about omnific integers exists
 in the repository.
 
@@ -200,7 +203,8 @@ ring language, via `Std` (Remark 10.11); a quartic with six witnesses for the
 graph of `ct` in `Oz` (Corollary 12.9, replacing source 06's degree-ten,
 eight-witness polynomial); Diophantine definitions of the ideal and of the
 graph of `ct` over number-field coefficient rings through another radicand
-(Remark 12.15); the combined étale norm theorem in intermediate rings (Theorem
+(Remark 12.15, strengthened by the later review: the detector
+hypothesis already supplies the required square root); the combined étale norm theorem in intermediate rings (Theorem
 6.15); the collapse of source 06's quintic over `Oz[i]` at `x = ω` (Remark
 11.10); and the Gaussian point `(1 + ω, iω)` of `X + iY = 1` (Remark 6.5). The
 degrees, witness identities and collapses were checked with SymPy when the
@@ -334,7 +338,9 @@ Numbers refer to the built `article.pdf`.
     Gaussian case, without any size condition (Theorem 12.12); for subrings of
     a number field `K`, a tailored polynomial `Λ_K` gives the same constant
     definition and, with a root of `Λ_K` in `𝕜`, the detector (Lemma 12.13,
-    Theorem 12.14; existential ideal via another radicand, Remark 12.15).
+    Theorem 12.14). The same root hypothesis also gives a one-witness
+    existential ideal and a six-witness existential graph (Remark 12.15):
+    the square of that root supplies a suitable radicand.
 12. **Reconstruction and logic (Section 13).** For `Γ ≠ 0` the multiplier ring
     of the ideal is `𝒜_𝕜(Γ)` and its units with `0` are `𝕜` (Theorem 13.2);
     from the pure ring `Oz` one interprets `No` and defines `R`, the order,
@@ -467,8 +473,11 @@ in the literature.
   Theory*, p. 3, which is added.
 - Source 06's `∃y (x² = 2y²)` fails for number-field coefficient rings with
   `√2` in their fraction field; Remark 12.15 uses another radicand.
-- No mathematical error was found in any main proof of sources 01, 02, 05, 06
-  and 07.
+  Under the detector hypotheses one can use `p`, `q` or `pq`, according
+  to which factor vanishes at the chosen root.
+- The initial assembly reported no mathematical error in the main proofs
+  of the five sources; the proof review and source reconciliation remain
+  incomplete, as recorded above.
 - The later Sections 5–7 review corrected the merge's own divisibility
   identity (Remark 7.5): it requires the derivation to kill `a` and `b`, and
   its use at level `c` also requires `∂c = 0`. The Euler derivations satisfy
@@ -518,6 +527,11 @@ in the literature.
   and makes the witness and congruence steps in the integer definitions
   explicit. The shared notation guide now records the different meanings
   of the two reports' `𝒜` notation.
+- The new Section 12 review checks witness membership even with zero
+  divisors, distinguishes coefficient parameters from integer numerals,
+  adds a detector counterexample in `Z[ω]`, proves the additive splitting
+  explicitly, and derives the existential number-field ideal and graph
+  from the existing detector hypothesis. Standard statements are unchanged.
 
 **Stale repository statements.** Source 01 said the repository's
 trigonometry material used the omnific integer part; at the pin the

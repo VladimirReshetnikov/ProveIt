@@ -535,3 +535,11 @@ import Surreal.Surcomplex.ConditionedCosineSharpness
 import Surreal.Algebra.LaurentAlgebraization
 import Surreal.Surcomplex.TrigonometricPolynomialRootCount
 import Surreal.Surcomplex.TrigonometricPolynomialUniqueness
+import Surreal.Algebra.PolynomialCoordinateMultiplicity
+import Surreal.Algebra.FormalExponentialCoordinate
+import Surreal.Algebra.LaurentCoordinateMultiplicity
+import Surreal.Surcomplex.StrongSeriesFinite
+import Surreal.Surcomplex.AngularLaurentSeries
+import Surreal.Surcomplex.AngularLaurentEvaluation
+import Surreal.Surcomplex.SineLaurentPolynomial
+import Surreal.Surcomplex.SineRootCountSharpness

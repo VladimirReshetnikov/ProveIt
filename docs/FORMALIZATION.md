@@ -42,25 +42,32 @@ remains pending. The original archives remain in Git history at `cafe42f`.
 Inclusion supplies navigation, not mathematical review or formalization. The implementation
 table retains the precise scope of the newly mapped Lean statements.
 
-The omnific-integer reports have expanded since placement in `be06fc8`.
-The Diophantine text now combines seven manuscripts, including the fractions
-addition in `b829d8b`; the quotient text combines sixteen, including the
-relations, polynomial-rigidity and normalization-fibre additions in `aae58bb`.
-The current main texts contain 143 and 227 standard results respectively;
-custom environments add further obligations. All these additions are **Pending**
-in Lean. The [Diophantine reconciliation](surreal/omnific-diophantine-geometry/RECONCILIATION.md)
-records source-level review scopes; historical section numbers must be read
-against its current section map. Assembly does not establish review or Lean coverage.
+The omnific-integer reports have expanded since their placement in `be06fc8`.
+The Diophantine text now combines seven manuscripts (`bbdd536`, `0240140`,
+`b829d8b`); the quotient text combines sixteen (`7494d53`, `3daef3c`,
+`aae58bb`); and the entire-function
+rectification addition is written in `e27070f`. Their new clauses remain
+**Pending** in Lean. The Diophantine review recorded in the
+[reconciliation](surreal/omnific-diophantine-geometry/RECONCILIATION.md) covers
+the original material in Sections 1–10, the newly added Sections 11–12, and
+current Sections 14 and 16. New material in Sections 6 and 10, Sections 13,
+15 and 17–18,
+and remaining source reconciliation are not covered by that review.
+The current Diophantine and quotient sources contain 143 and 227 standard
+results respectively; custom environments supply additional obligations.
 
-The omnific-preserving automorphism and group/lattice reports placed in
-`f4c9504` remain indexed from their assembled texts. The three reports placed
-in `a4dcb91` on definable surreals, omnific notations, and Hahn Hilbert geometry
-are now assembled from two, three and two manuscripts respectively, with
-prefixed labels; the index below uses those current texts. Their Lean results
-remain **Pending**. Placement `c6359e4` adds a main text on discrete initial
-subgroups and omnific normalization, plus eight companions for five existing
-reports. The new main text is indexed as pending; the companions await integration
-and supply additional obligations beyond the standard-environment counts.
+Placement `f4c9504` added omnific-preserving automorphisms and omnific groups
+and lattices, assembled from four and three manuscripts in `9b80a30` and
+`1e54d5a`. The three reports placed in `a4dcb91` are now assembled with their four
+companions: definable surreals and omnific integers (`337d4a4`), omnific
+notations (`600397e`), and Hahn–Hilbert geometry (`e118d89`). The two
+Diophantine companions (08–09) and three quotient companions (17–19) are
+also integrated. The inventory indexes these maintained texts; the nine archives
+in `5610500` and `21016dc` are placed in `c6359e4`. This adds the
+discrete-initial-subgroup and omnific-normalization report and eight
+companions to five existing reports. The new report is indexed as pending;
+those eight companions still require integration and review. These additions remain within the
+goal; placement, assembly and proof review add no Lean coverage.
 
 The source-10 nonscalar dynamics review now covers its angular-rate lemma,
 colored-tree product bound, common-domain proof, exact criterion and examples
@@ -387,7 +394,7 @@ remaining clauses of a partially mapped statement.
 | Full `trigonometry:thm:tangency`, `trigonometry:eq:tangency`, `trigonometry:eq:contactstability`, `trigonometry:eq:contactval`; following cancellation warning | Actual finite offsets and plus/minus branches, their solution and expansion formulas, separation valuations, derivative magnitudes, `tangency_merge_at_canceling_perturbation`, `tangency_no_solution_beyond_canceling_perturbation` in [TangencySplitting.lean](../Surreal/Surcomplex/TangencySplitting.lean); `finiteSin_arccos`, `arccosFunction_difference_eq_two_arctan`, `arccosFunction_one_sub_difference` in [ContactAngleDifference.lean](../Surreal/Surcomplex/ContactAngleDifference.lean); `contact_perturbed_defect_pos`, `contact_perturbed_defect_infinitesimal`, `arccosFunction_contact_expansion`, correction-factor residue and contact valuation theorems in [ContactPerturbation.lean](../Surreal/Surcomplex/ContactPerturbation.lean) | For every positive infinitesimal defect, the actual finite angle lifts realize the displayed square-root branches with a finite cubic normalized remainder, exact half-valuation separation and the literal derivative magnitude. An exact signed half-angle inverse-tangent identity controls the perturbation. Every relatively infinitesimal signed e preserves positivity and infinitesimality of the defect; the displacement is exactly `e/sqrt(tau*(2-tau)) * (1+(e/tau)*E)` with E finite. The parenthesized factor has standard part one. For nonzero e the valuation loses precisely half the defect valuation, expressed both through actual finite exponents and intrinsic doubled valuations. **Proved**, retaining the required `O(e/tau)` rate and allowing negative perturbations; the exact expansion additionally includes e equal to zero. The stated boundary failures are also proved: e equal to negative tau merges the roots into one class, while e less than negative tau leaves no solution. Build and axiom audit pass. |
 | Full `trigonometry:ex:infinitetangent` in the preceding positive-infinitesimal parameter regime | `InfiniteTangent.height`, `coordinate`, `pointPlus`, `pointMinus`, `line_circle_intersection_iff`, `points_ne`, both modulus formulas, `cayleyCoord_pointPlus`, `cayleyCoord_pointMinus`, chart reconstruction, infinitesimal proximity to minus one, `coordinate_not_finite`, `neg_coordinate_not_finite`, `points_finite`, `exists_finite_anglePlus`, `exists_finite_angleMinus` in [InfiniteTangent.lean](../Surreal/Surcomplex/InfiniteTangent.lean) | The exact actual intersections of `X=-1+tau` with the unit circle are the two distinct points with ordinates `±sqrt(tau*(2-tau))`. Their rational half-angle coordinates are exactly `±sqrt((2-tau)/tau)` and reconstruct the points under the Cayley chart. Both coordinates are infinite while the points have finite coordinates and are infinitesimally near minus one. Finite actual angle witnesses have precisely these half-angle tangent values. **Proved** with the positive-infinitesimal tau assumption inherited from the preceding tangency discussion made explicit; without it the claimed two branches and infinite coordinates do not hold. Build and axiom audit pass. |
 | Root, reality, valuation and full-series clauses of `trigonometry:thm:fold` and `trigonometry:eq:foldroots`; analytic multiplicity prerequisites | Complex sine/cosine Taylor identities in [ComplexTrigSeries.lean](../Surreal/Algebra/ComplexTrigSeries.lean); `complexSinSeries_subst_arcsin`, `complexArcsinSeries_subst_sin`, oddness, real coefficients and exact central-binomial coefficients in [ComplexArcsinSeries.lean](../Surreal/Algebra/ComplexArcsinSeries.lean); actual square-root closure and valuation in [InfinitesimalSquare.lean](../Surreal/Surcomplex/InfinitesimalSquare.lean); `infinitesimalSinEquiv`, `infSin_two_mul`, `infCos_two_mul`, inverse-germ conjugation and valuation in [InfinitesimalTrigonometry.lean](../Surreal/Surcomplex/InfinitesimalTrigonometry.lean); `CosineFold.solutions_iff`, `exists_two_roots`, `zero_solution_iff`, `valuations_both_branches`, `positive_real_roots`, `negative_real_roots`, `no_real_root_of_neg` in [CosineFold.lean](../Surreal/Surcomplex/CosineFold.lean); injective strong reindexing in [StrongReindex.lean](../Surreal/Surcomplex/StrongReindex.lean); `infArcsin_eq_strongSum`, `branch_eq_strongSum`, `branch_eq_endpoint`, `branch_expansion`, `scale_sq` in [CosineFoldSeries.lean](../Surreal/Surcomplex/CosineFoldSeries.lean); `fineHasDerivAt_cos`, `derivative_ne_zero_at_root`, `collision_series_order`, `actual_collision_series_order`, `collision_exact_factor`, `local_exact_expansion` in [CosineFoldDerivative.lean](../Surreal/Surcomplex/CosineFoldDerivative.lean) | At every actual complex infinitesimal, zero-centered sine and the real-coefficient formal inverse-sine germ are mutually inverse. For every chosen square root s of τ/2 the cosine equation has precisely the branches ±2 arcsin(s), distinct if τ is nonzero; zero is the unique infinitesimal root at τ=0. Both valuations are literally half the finite valuation exponent of nonzero τ. Positive real parameters have real roots; negative real parameters have precisely two nonzero conjugate purely imaginary roots and no real root. The complete central-binomial strong sum equals the endpoint factor times 2s, with (2s)^2=2τ, making the square-root choices coherent. The displayed cubic factor has an exact finite fourth-order remainder of standard part 35/18432. These clauses are **Proved**. Actual fine differentiation gives a nonzero derivative at every separated root; the collision series has native formal order two over both ℂ and the actual field, with an exact quadratic factor of residue -1/2. Every infinitesimal center has an exact first-order expansion with a finite quadratic remainder. Angular multiplicity is proved in the following row, completing the full theorem together with these clauses. Build and axiom audit pass. |
-| Angular multiplicity clauses of `trigonometry:thm:fold`; cosine-fold instance of the convention in `trigonometry:thm:polyroots` and `trigonometry:eq:algebraization` | `taylorSeries_complex_exp_zero`, `complexEulerSeries` in [ComplexEulerSeries.lean](../Surreal/Algebra/ComplexEulerSeries.lean); `polynomial`, `multiplicity_one`, `multiplicity_at_collision`, `laurentPolynomial_eq`, `multiplicity_laurentPolynomial` in [CosineFoldPolynomial.lean](../Surreal/Algebra/CosineFoldPolynomial.lean); `infinitesimalPhase_eq`, `infinitesimalPhase_eq_finiteExp`, phase addition/inversion, `infCos_eq_phase`, `infCos_add`, `fineHasDerivAt_infinitesimalPhase`, `infinitesimalPhase_derivative_ne_zero` in [InfinitesimalPhase.lean](../Surreal/Surcomplex/InfinitesimalPhase.lean); `localSeries`, `stronglySummable_localSeries`, `strongSum_localSeries`, `strongSum_localSeries_at_root`, `localSeries_order_one`, `localSeries_order_at_collision`, `polynomial_eval_phase`, `polynomial_root_iff`, `polynomial_derivative_at_root`, `angular_multiplicity`, `angular_multiplicity_laurent` in [CosineFoldMultiplicity.lean](../Surreal/Surcomplex/CosineFoldMultiplicity.lean) | The actual coordinate u=exp(iθ) agrees with the established finite exponential and equals cos θ+i sin θ; its actual fine derivative is iu, nonzero. The exact local angular series is cos θ times the embedded series cos H-1 minus sin θ times the embedded series sin H. Its literal terms are strongly summable at every infinitesimal increment, and their sum is the actual cosine difference, hence the original shifted fold equation at any root. This verified series has native order one for nonzero τ and order two at collision. Clearing 2u gives u²-2(1-τ)u+1; evaluation vanishes exactly at the original roots, with polynomial derivative 2i sin θ there. Mathlib's native polynomial root multiplicities are one and two, respectively, and equal the local angular orders. The exact manuscript normalization, half this monic quadratic, is identified explicitly and has the same multiplicities. **Proved** for these clauses; together with the preceding root/series row this completes the full `trigonometry:thm:fold` and `trigonometry:eq:foldroots`. The general strip algebraization, arbitrary Laurent-polynomial multiplicity transport and 2n root bound of `trigonometry:thm:polyroots` remain **Pending**. Build and axiom audit pass. |
+| Angular multiplicity clauses of `trigonometry:thm:fold`; cosine-fold instance of the convention in `trigonometry:thm:polyroots` and `trigonometry:eq:algebraization` | `taylorSeries_complex_exp_zero`, `complexEulerSeries` in [ComplexEulerSeries.lean](../Surreal/Algebra/ComplexEulerSeries.lean); `polynomial`, `multiplicity_one`, `multiplicity_at_collision`, `laurentPolynomial_eq`, `multiplicity_laurentPolynomial` in [CosineFoldPolynomial.lean](../Surreal/Algebra/CosineFoldPolynomial.lean); `infinitesimalPhase_eq`, `infinitesimalPhase_eq_finiteExp`, phase addition/inversion, `infCos_eq_phase`, `infCos_add`, `fineHasDerivAt_infinitesimalPhase`, `infinitesimalPhase_derivative_ne_zero` in [InfinitesimalPhase.lean](../Surreal/Surcomplex/InfinitesimalPhase.lean); `localSeries`, `stronglySummable_localSeries`, `strongSum_localSeries`, `strongSum_localSeries_at_root`, `localSeries_order_one`, `localSeries_order_at_collision`, `polynomial_eval_phase`, `polynomial_root_iff`, `polynomial_derivative_at_root`, `angular_multiplicity`, `angular_multiplicity_laurent` in [CosineFoldMultiplicity.lean](../Surreal/Surcomplex/CosineFoldMultiplicity.lean) | The actual coordinate u=exp(iθ) agrees with the established finite exponential and equals cos θ+i sin θ; its actual fine derivative is iu, nonzero. The exact local angular series is cos θ times the embedded series cos H-1 minus sin θ times the embedded series sin H. Its literal terms are strongly summable at every infinitesimal increment, and their sum is the actual cosine difference, hence the original shifted fold equation at any root. This verified series has native order one for nonzero τ and order two at collision. Clearing 2u gives u²-2(1-τ)u+1; evaluation vanishes exactly at the original roots, with polynomial derivative 2i sin θ there. Mathlib's native polynomial root multiplicities are one and two, respectively, and equal the local angular orders. The exact manuscript normalization, half this monic quadratic, is identified explicitly and has the same multiplicities. **Proved** for these clauses; together with the preceding root/series row this completes the full `trigonometry:thm:fold` and `trigonometry:eq:foldroots`. The general Laurent-polynomial algebraization, finite-angle root bound and angular multiplicity transport are mapped below; the global strip construction remains **Pending**. Build and axiom audit pass. |
 | Full `trigonometry:eq:quadalgebra` and its basis, dimension and point assertions | `quadraticPolynomial`, `quadraticRoot_sq`, `quadraticBasis`, `quadraticQuotient_finrank`, unique remainder coordinates in [QuadraticResidueAlgebra.lean](../Surreal/Algebra/QuadraticResidueAlgebra.lean); `quadraticHomEquivRoots`, normalized coordinate equivalences, `quadraticLineCircleEquiv` and its forward/inverse formulas in [QuadraticLineCircle.lean](../Surreal/Algebra/QuadraticLineCircle.lean); `quadraticDualEquiv`, `quadratic_collision_nilpotent` in [QuadraticDualNumber.lean](../Surreal/Algebra/QuadraticDualNumber.lean); `QuadraticCollision.points_iff`, `exists_point`, `card_points`, `unique_zero_point`, `no_real_point_of_neg`, `imaginaryPoint_sq`, `negative_points_iff`, `conj_imaginaryPoint` in [QuadraticCollisionPoints.lean](../Surreal/Surcomplex/QuadraticCollisionPoints.lean); actual `Algebra`, `lineCircleEquiv`, `finrank_algebra`, `dualEquiv`, `collision_nilpotent` in [QuadraticResidue.lean](../Surreal/Surcomplex/QuadraticResidue.lean) | The native quotient by `X^2-d` has unique linear remainders and the basis one/root, with dimension two at every parameter. Normalization gives an explicit equivalence between algebra homomorphisms out of the quadratic quotient and solutions of the original line-circle equations in every commutative target algebra, including nonreduced targets. The actual surcomplex specialization has the literal normalized discriminant `(A^2+B^2-D^2)/(A^2+B^2)` for every nonzero real normal, without a finiteness restriction. Thus the identification retains nilpotents, rather than only matching field-valued points. At zero the algebra is isomorphic to Mathlib's dual numbers and its root is nonzero with square zero, although its unique field-valued point is zero. Every nonzero actual complex parameter has two points; a negative real parameter has no real point and its two purely imaginary points are conjugates. **Proved** for the full algebra identification and stated degeneration behavior. Build and axiom audit pass. |
 | Full `trigonometry:thm:residuepairing`, `trigonometry:eq:pairmatrix`, `trigonometry:eq:residuesum`; following cancellation examples | `quadraticResidue`, `quadraticResiduePairingEquiv`, `quadraticResidueGram_eq`, `det_quadraticResidueGram`, `quadratic_leftMulMatrix`, `quadratic_trace`, `quadratic_trace_eq_residue` in [QuadraticResidueAlgebra.lean](../Surreal/Algebra/QuadraticResidueAlgebra.lean); arbitrary-degree polynomial evaluation, residue sum/divided difference, `quadraticResidue_mk_zero`, `quadratic_remainder_zero`, `quadratic_mk_zero_eq_taylor` in [QuadraticResidueEvaluation.lean](../Surreal/Algebra/QuadraticResidueEvaluation.lean); verified local Laurent quotients, `coeff_simpleQuotient`, `coeff_negativeQuotient`, `simple_residues_sum`, `coeff_collisionQuotient_eq_derivative` in [QuadraticLocalResidue.lean](../Surreal/Algebra/QuadraticLocalResidue.lean); actual pairing, matrix, determinant, `residue_polynomial`, `residue_eq_local_residue_sum`, `residue_at_collision`, `trace_eq_residue`, `constant_local_residue`, `infinite_local_residues_cancel`, `linear_local_residues` in [QuadraticResidue.lean](../Surreal/Surcomplex/QuadraticResidue.lean) | The linear-remainder coefficient defines a perfect pairing at every actual parameter, with the literal matrix `[[0,1],[1,0]]` and determinant minus one. For arbitrary-degree g and nonzero d, any square root s gives both displayed residue-sum and divided-difference identities. These terms are literally the coefficients at exponent minus one of local Laurent expansions: polynomial translation, the inverse of `2s+T`, and the simple pole produce quotients verified by multiplication with the translated denominator. At zero the verified double-pole quotient has residue `g'(0)`, agreeing with the same linear functional and the unique first Taylor jet. The actual multiplication matrix is `[[a,bd],[b,a]]`; its trace is both twice the constant coordinate and the residue against `2W`. For every positive infinitesimal real d, the actual local residues of the constant numerator are individually infinite and cancel exactly, while the linear numerator gives two halves. **Proved** for the full theorem and examples. The algebraic pairing/trace require no root separation; separated residue evaluation requires only a field with two nonzero, and all results are instantiated at the actual surcomplex field. Build and axiom audit pass. |
 | Root, reality, algebra-rank and Jacobian clauses of `trigonometry:sec:coupled`, with `trigonometry:eq:coupled`, `trigonometry:eq:coupleddiagonal`, `trigonometry:eq:coupledroots` | `coupledHomEquivRoots`, `coupledBasis_apply`, `coupledQuotient_finrank`, `existsUnique_coupled_representation` in [CoupledQuadraticAlgebra.lean](../Surreal/Algebra/CoupledQuadraticAlgebra.lean); `CoupledAngular.solutionsEquiv`, `anglesOfRoots_coordinates`, `diagonal_roots_iff`, `card_solutions`, `homEquivSolutions`, `intersection_finrank` in [CoupledAngularRoots.lean](../Surreal/Surcomplex/CoupledAngularRoots.lean); `fine_partials_first`, `fine_partials_second`, `det_jacobian`, `cosine_factor_isUnit`, `det_jacobian_eq_zero_iff` in [CoupledAngularJacobian.lean](../Surreal/Surcomplex/CoupledAngularJacobian.lean); `infArcsin_im_eq_zero_iff`, `infSin_im_eq_zero_iff`, `hasRealSolution_iff`, `no_real_solution_of_neg`, `all_solutions_real`, `card_real_solutions` in [CoupledAngularReal.lean](../Surreal/Surcomplex/CoupledAngularReal.lean) | Sine/arcsine gives a bijection between all actual infinitesimal angular solutions and the unrestricted product of the square-root sets of `s+2u` and `s-2u`; every such root is automatically infinitesimal. The inverse is literally the displayed pair of arcsines, and independent plus/minus choices exhaust both square-root sets. Exact `Nat.card` formulas give four, two or one distinct complex solutions on the three collision strata. For real parameters, every complex solution is real when both diagonal parameters are nonnegative, and no real solution exists if either is negative; the resulting exact real counts give all stated cases. The tensor product of the two native monic quadratic quotients has basis `1,X,Y,XY`, unique four-coordinate remainders and rank four over any nontrivial commutative ring. Its universal property represents both relations in every commutative target algebra, including targets with nilpotents; its actual surcomplex-valued points are identified with the angular solutions. All four Jacobian entries are actual fine partial derivatives; its determinant is `2 cos α cos β X Y`, with a unit cosine factor, and at every root it vanishes exactly when `s²-4u²=0`. **Proved** for these clauses. The following row proves decomposition into local algebras and their individual dimensions. The subsequent formal-coordinate and multiplicity rows complete transport to angular local dimensions and the finite sum of angular multiplicities. Build and axiom audit pass. |
@@ -400,7 +407,9 @@ remaining clauses of a partially mapped statement.
 | Full `trigonometry:thm:stability`, `trigonometry:eq:stabilitythreshold`, `trigonometry:eq:stabilityfirst`, `trigonometry:eq:stabilitysecond` | `arctanFunction_cubic_remainder` in [InverseTrigonometricTaylor.lean](../Surreal/Surcomplex/InverseTrigonometricTaylor.lean); `angularCayleyInverse`, `angularCayleyCoordinate`, `finitePhase_angularCayleyInverse`, `angularCayleyInverse_coordinate`, `valuation_angularCayleyInverse`, `valuation_angularCayleyCoordinate`, `angularCayleyInverse_cubic_remainder`, `angularCayleyInverse_correction_bound` in [CayleyAngularBounds.lean](../Surreal/Surcomplex/CayleyAngularBounds.lean); `trigonometricCayley_inverse`, `trigonometricCayley_coordinate`, `trigonometric_angular_root_bounds` in [TrigonometricAngularStability.lean](../Surreal/Surcomplex/TrigonometricAngularStability.lean); `trigonometricFunction`, `trigonometricFunction_add`, `fineHasDerivAt_trigonometricFunction`, `trigonometricFourierDerivative_ne_zero_of_simple_numerator` in [TrigonometricPolynomialDerivative.lean](../Surreal/Surcomplex/TrigonometricPolynomialDerivative.lean); `trigonometric_root_stability` in [TrigonometricRootStability.lean](../Surreal/Surcomplex/TrigonometricRootStability.lean) | The functions are real parts of Mathlib Laurent polynomials evaluated at actual finite-angle phases, covering every real-valued Laurent presentation. Their ambient zero extensions agree on all finite angles, and coefficient addition is proved to realize function addition. At every finite angle the formal Fourier sum is the native fine derivative, by the exact rational chart and fine chain/quotient rules. Given a zero at finite `a`, native fine derivative `A` with `v(A)=κ≥0`, finite coefficients of `p` and perturbation coefficients of valuation at least `σ>2κ`, there is exactly one actual surreal displacement `h` in the entire neighborhood `v(h)>κ` for which the perturbed function vanishes at `a+h`. Its native fine derivative is nonzero. The inverse chart `h=2 arctan(x/2)` and forward chart `x=2 tan(h/2)` are mutually inverse on infinitesimals and preserve valuation, including zero. The finite cubic chart remainder preserves the second exponent, proving `v(h)≥σ−κ` and `v(h+g(a)/A)≥2σ−3κ`. A finite frequency bound is obtained internally; neither the statement nor uniqueness fixes a Hahn workspace or restricts exponent rank. **Proved for every clause of the theorem and displayed bounds**. The separate optimality proposition `trigonometry:prop:sharp` is proved in the next row. Build and axiom audit pass. |
 | Full `trigonometry:prop:sharp` | `SineSquare.function`, `slope`, `fineHasDerivAt_function`, `valuation_slope`, `quadratic_remainder` in [SineSquareExpansion.lean](../Surreal/Surcomplex/SineSquareExpansion.lean); `perturbation`, `perturbed_root`, `exact_error_valuations`, `threshold_no_root`, `threshold_valuation` in [SineSquareStabilityErrors.lean](../Surreal/Surcomplex/SineSquareStabilityErrors.lean); `fourier`, `trigonometricFunction_fourier`, `fineHasDerivAt_fourier`, `fourier_finite`, `constant`, `constant_coefficient_valuation` in [SineSquareLaurent.lean](../Surreal/Surcomplex/SineSquareLaurent.lean); `monomialAngle`, `exists_exact_stability_errors`, `exists_threshold_counterexample` in [TrigonometricStabilitySharpness.lean](../Surreal/Surcomplex/TrigonometricStabilitySharpness.lean) | Uses the source's sine-square family with actual native fine derivatives and an explicit three-frequency Mathlib Laurent polynomial. For infinitesimal angles `a,h`, the exact expansion has `sin²(a+h)=sin²(a)+A h+h² Q`, where `A=sin(2a)` and `Q` is finite with standard part one. Thus if `v(a)=κ<v(h)=r`, the constant `d=sin²(a)-sin²(a+h)` has valuation `κ+r`, and `v(h+d/A)=2r−κ`. Choosing actual monomial angles of valuations `κ` and `σ−κ` proves, for every positive surreal `κ` and every `σ>2κ`, witnesses satisfying the full stability hypotheses and attaining `v(h)=σ−κ` and `v(h+g(a)/A)=2σ−3κ`. The Fourier coefficient bound is proved at every integer frequency, and the constant coefficient attains `σ` exactly. At `σ=2κ`, adding `sin²(a)` to `sin²(θ)-sin²(a)` removes every root from `v(θ-a)>κ`; the original root has a nonzero fine derivative of valuation `κ`. This proves failure at equality and attainment of both bounds without a rank-one restriction. The proof parametrizes the perturbed root by its displacement instead of solving for an arbitrary prescribed perturbation or asserting the manuscript's full radical expansion. **Proved for every assertion of the proposition**. Build and axiom audit pass. |
 | Full `trigonometry:thm:conditioned`, `trigonometry:eq:condition`, `trigonometry:eq:inversecos` | `CirclePerturbation.endpoint_margin`, `perturbed_mem_Ioo`, `reciprocal_height_expansion` in [CirclePerturbation.lean](../Surreal/Algebra/CirclePerturbation.lean); `ConditionedCosine.perturbed_mem_Ioo`, `normalized_expansion` in [ConditionedCosineExpansion.lean](../Surreal/Surcomplex/ConditionedCosineExpansion.lean); `valuation_normalized`, `infinitesimal_normalized`, `expansion_valuation`, `conditioned_inversion` in [ConditionedCosineValuation.lean](../Surreal/Surcomplex/ConditionedCosineValuation.lean); `exists_threshold_counterexample` in [ConditionedCosineSharpness.lean](../Surreal/Surcomplex/ConditionedCosineSharpness.lean) | For every actual finite angle strictly between zero and pi, with cosine `c`, positive sine `s`, `v(s)=κ` and `v(ε)=σ>2κ`, the perturbed coordinate remains strictly between minus one and one. Its inverse-cosine displacement is exactly `-ε/s-c ε²/(2s³)+R`, with `v(R)≥3σ−5κ`, `v(h)=σ−κ` and `v(h+ε/s)≥2σ−3κ`. Nonzero perturbation follows from the finite valuation; nonnegative `κ` follows from finite sine. The proof first treats arbitrary finite upper-semicircle coordinates: the exact signed half-angle formula and the inverse-tangent cubic remainder give `h=-s u-c s u²/2+s u³ H`, with `u=ε/s²` infinitesimal and `H` finite. This avoids needing a separate formal inverse-series construction and imposes no restriction on exponent rank. For every positive surreal `κ`, an actual positive infinitesimal monomial angle has sine valuation `κ`; its positive infinitesimal cosine defect and twice that defect both have valuation `2κ`. The former reaches one, and the latter exceeds one and admits no real finite-angle cosine solution. Thus the strict threshold cannot uniformly be replaced by equality. **Proved for the complete theorem and displayed bounds**. The formal all-orders inversion argument in its proof is not asserted by these declarations. Build and axiom audit pass. |
-| Finite algebraization and real-angle bounds of `trigonometry:thm:polyroots`, `trigonometry:eq:algebraization`; coefficient assertions surrounding the theorem | `LaurentAlgebraization.polynomial`, `coeff_polynomial`, `polynomial_eq_zero_iff`, `natDegree_le`, `natDegree_eq`, `eval_polynomial`, `isRoot_iff`, `nonzeroRoots`, `count_nonzeroRoots`, `card_nonzeroRoots_le`, `card_nonzeroRoots_exact`, `card_nonzeroRoots_eq` in [LaurentAlgebraization.lean](../Surreal/Algebra/LaurentAlgebraization.lean); `trigonometricPolynomial_eq_laurentSum`, `card_laurentSum_roots_le`, `sum_laurentSum_rootMultiplicities_le`, `card_laurentSum_roots_mod_period_le`, `card_trigonometricPolynomial_roots_le` in [TrigonometricPolynomialRootCount.lean](../Surreal/Surcomplex/TrigonometricPolynomialRootCount.lean); `laurentSum_coeff_eq_of_ordinary_angles`, `conj_laurentSum`, `laurentSum_real_iff`, `trigonometricPolynomial_eq_of_ordinary_angles`, `exists_ordinary_angle_trigonometricPolynomial_ne_zero`, `trigonometricPolynomial_real_iff` in [TrigonometricPolynomialUniqueness.lean](../Surreal/Surcomplex/TrigonometricPolynomialUniqueness.lean) | Over any field, the literal cleared polynomial has coefficient `c(j-N)` for `j≤2N` and zero otherwise, degree at most `2N`, and value `u^N` times the Laurent sum for nonzero `u`. Its nonzero-root multiset carries Mathlib polynomial multiplicities and has cardinality at most `2N`; over an algebraically closed field the cardinality is degree minus multiplicity at zero, and is exactly `2N` when both endpoint coefficients are nonzero. At actual finite surreal angles, the native Laurent evaluation is identified with the finite coefficient sum. Any finite collection of roots with distinct phases, equivalently inequivalent modulo ordinary full turns, has cardinality at most `2N`; the sum of native polynomial multiplicities over such a collection has the same bound. Ordinary-angle values alone determine all native Laurent coefficients, so a nonzero polynomial cannot vanish at every ordinary angle. Real-valuedness at every finite angle is equivalent to conjugate symmetry at every integer frequency. These clauses are **Proved**, with arbitrary actual surcomplex coefficients. The whole root-count theorem has **Prerequisites proved**: the global strip exponential, its root-class bijection, identification with orders of all actual local angular series, and the sine-family sharpness witness remain pending. Build and axiom audit pass. |
+| Finite algebraization and real-angle bounds of `trigonometry:thm:polyroots`, `trigonometry:eq:algebraization`; coefficient assertions surrounding the theorem | `LaurentAlgebraization.polynomial`, `coeff_polynomial`, `polynomial_eq_zero_iff`, `natDegree_le`, `natDegree_eq`, `eval_polynomial`, `isRoot_iff`, `nonzeroRoots`, `count_nonzeroRoots`, `card_nonzeroRoots_le`, `card_nonzeroRoots_exact`, `card_nonzeroRoots_eq` in [LaurentAlgebraization.lean](../Surreal/Algebra/LaurentAlgebraization.lean); `trigonometricPolynomial_eq_laurentSum`, `card_laurentSum_roots_le`, `sum_laurentSum_rootMultiplicities_le`, `card_laurentSum_roots_mod_period_le`, `card_trigonometricPolynomial_roots_le` in [TrigonometricPolynomialRootCount.lean](../Surreal/Surcomplex/TrigonometricPolynomialRootCount.lean); `laurentSum_coeff_eq_of_ordinary_angles`, `conj_laurentSum`, `laurentSum_real_iff`, `trigonometricPolynomial_eq_of_ordinary_angles`, `exists_ordinary_angle_trigonometricPolynomial_ne_zero`, `trigonometricPolynomial_real_iff` in [TrigonometricPolynomialUniqueness.lean](../Surreal/Surcomplex/TrigonometricPolynomialUniqueness.lean) | Over any field, the literal cleared polynomial has coefficient `c(j-N)` for `j≤2N` and zero otherwise, degree at most `2N`, and value `u^N` times the Laurent sum for nonzero `u`. Its nonzero-root multiset carries Mathlib polynomial multiplicities and has cardinality at most `2N`; over an algebraically closed field the cardinality is degree minus multiplicity at zero, and is exactly `2N` when both endpoint coefficients are nonzero. At actual finite surreal angles, the native Laurent evaluation is identified with the finite coefficient sum. Any finite collection of roots with distinct phases, equivalently inequivalent modulo ordinary full turns, has cardinality at most `2N`; the sum of native polynomial multiplicities over such a collection has the same bound. Ordinary-angle values alone determine all native Laurent coefficients, so a nonzero polynomial cannot vanish at every ordinary angle. Real-valuedness at every finite angle is equivalent to conjugate symmetry at every integer frequency. These clauses are **Proved**, with arbitrary actual surcomplex coefficients. The whole root-count theorem has **Prerequisites proved**: the global strip exponential and its root-class bijection remain pending. The sine-family sharpness witness is proved below. Identification with orders of exact actual local angular series is proved in the next row. Build and axiom audit pass. |
+| General angular multiplicity bridge and multiplicity-weighted finite-angle bound in `trigonometry:thm:polyroots` | `PolynomialCoordinateMultiplicity.constantCoeff_eval`, `order_eval`, `order_eval_of_linear_ne_zero`, `order_unit_mul_eval` in [PolynomialCoordinateMultiplicity.lean](../Surreal/Algebra/PolynomialCoordinateMultiplicity.lean); `FormalExponentialCoordinate.series`, `exponentialUnit`, `exponentialHom`, `exponentialUnit_zpow`, `order_polynomial_coordinate` in [FormalExponentialCoordinate.lean](../Surreal/Algebra/FormalExponentialCoordinate.lean); `LaurentCoordinateMultiplicity.cleared_identity`, `order_localSeries` in [LaurentCoordinateMultiplicity.lean](../Surreal/Algebra/LaurentCoordinateMultiplicity.lean); `strongSeries_scalar`, `strongSeries_finset_sum` in [StrongSeriesFinite.lean](../Surreal/Surcomplex/StrongSeriesFinite.lean); `AngularLaurent.coordinate`, `coordinate_zpow`, `localSeries`, `germ`, `germ_eq_localSeries`, `order_germ_at_finite_angle` in [AngularLaurentSeries.lean](../Surreal/Surcomplex/AngularLaurentSeries.lean); `evaluation_frequency`, `strongSum_localSeries`, `strongSum_germ_at_finite_angle`, `sum_angular_orders_le` in [AngularLaurentEvaluation.lean](../Surreal/Surcomplex/AngularLaurentEvaluation.lean) | Over any field, evaluating a nonzero polynomial in a formal coordinate centered at `a` multiplies its native root multiplicity by the coordinate increment order. A nonzero linear coefficient and any unit factor preserve multiplicity. Mathlib formal exponential identities construct a genuine unit-valued homomorphism; for actual surcomplex `z≠0`, `z exp(iH)` has constant coefficient `z` and nonzero linear coefficient `iz`. The native Laurent germ is defined by Mathlib evaluation in this formal unit, independently of a frequency bound. Clearing a bounded window gives the exact polynomial identity and equality of its root multiplicity with the native power-series order. Each integer frequency is an ordinary exponential germ times one actual scalar. Finite strong-sum closure proves that the literal terms evaluate to the actual Laurent value at `z Ex(ih)` for every complex infinitesimal `h`, even with infinite coefficients. At every finite real angle this is exactly the original native trigonometric polynomial at the displaced angle. Consequently any finite set of inequivalent finite-angle roots has total native angular order at most `2N`. **Proved** for the general local-series multiplicity bridge and this weighted bound. The global strip exponential and global root-class correspondence remain pending; sine-family sharpness is proved below; no global exponential is assumed or constructed here. Build and axiom audit pass. |
+| Sine-family sharpness and complete finite real root classes in `trigonometry:thm:polyroots` | `SineLaurent.fourier`, `coeff_fourier`, `frequency_bound`, `fourier_ne_zero`, `evaluate`, `cleared_polynomial`, `multiplicity_one` in [SineLaurentPolynomial.lean](../Surreal/Surcomplex/SineLaurentPolynomial.lean); `angle`, `phase_angle`, `phase_angle_injective`, `root_angle`, `order_germ_at_root`, `root_iff_exists_unique_index`, `exists_sharp_root_set` in [SineRootCountSharpness.lean](../Surreal/Surcomplex/SineRootCountSharpness.lean) | For every positive ordinary natural `n`, the explicit native Laurent polynomial has coefficients `1/(2i)` and `-1/(2i)` at frequencies `n` and `-n`, is nonzero, and evaluates to the actual `sin(nθ)` at every finite angle. Its cleared polynomial is `1/(2i)*(X^(2n)-1)`. Every nonzero root is simple by its nonvanishing formal derivative, hence every actual finite-angle zero has native angular-series order one. The representatives `jπ/n`, indexed by `Fin(2n)`, have phases equal to consecutive powers of the primitive ordinary `2n`-th root embedded in the actual field. Their phases are injective, and every finite-angle zero has exactly one of those phases. An explicit finite set has cardinality `2n`, distinct phase classes, and all germ orders one. **Proved** for the sharpness clause and the complete finite real classification, with no restriction to ordinary input angles. The whole strip theorem still requires the global exponential and its quotient correspondence. Build and axiom audit pass. |
 | Factorization clauses of `polynomial:thm:fta`, `polynomial:eq:factorization`, `polynomial:eq:logderivative` | `Surreal.FinitePolynomial.exists_root`, `factorization`, `factorization_grouped`, `exists_unique_factorization`, `factorization_unique`, `sum_rootMultiplicities`, `logarithmic_derivative`, `logarithmic_derivative_grouped` in [Polynomial.lean](../Surreal/Algebra/Polynomial.lean) | Root existence, unique scalar/multiset factorization, grouped multiplicities and both logarithmic-derivative formulas. Existence assumes algebraic closedness; uniqueness holds over every field. The rational identities require a nonroot evaluation point. The fixed-Hahn closedness instance and explicit factorization specialization are now constructed below; transfer to the actual surcomplex field remains pending. **Prerequisites proved**; build and axiom audit pass. |
 | Division, gcd and ideal clauses of `polynomial:thm:fta`; gcd formula in `polynomial:eq:logderivative` | `Surreal.FinitePolynomial.exists_unique_division`, `exists_monic_gcd`, `gcd_bezout`, `ideal_principal`, `ideal_pair_eq_span_gcd`, `squarefree_iff_gcd_derivative_eq_one`, `gcd_derivative_rootMultiplicity`, `gcd_derivative_eq_prod` in [PolynomialDivision.lean](../Surreal/Algebra/PolynomialDivision.lean) | Unique division, normalized monic Bézout gcds and principal ideals over every field. The squarefree criterion assumes perfectness (supplied by characteristic zero); derivative multiplicities use characteristic zero. The grouped gcd product assumes a nonzero split polynomial and does not need monicity of the input. **Prerequisites proved**; build and axiom audit pass. |
 | Multiplicity and Taylor clauses of `polynomial:thm:fta` | `Surreal.FinitePolynomial.multiplicity_eq_iff_derivatives`, `multiplicity_isLeast_nonzero_derivative`, `derivative_rootMultiplicity`, `multiple_root_iff`, `taylor_coeff_eq_derivative`, `taylor_eq_sum_derivatives`, `eq_sum_derivatives`, `eval_add_eq_sum_derivatives` in [PolynomialMultiplicity.lean](../Surreal/Algebra/PolynomialMultiplicity.lean) | The least nonvanishing derivative, derivative multiplicity and finite Taylor formulas over characteristic-zero fields. The least-index characterization explicitly excludes the zero polynomial. **Prerequisites proved**; build and axiom audit pass. |
@@ -705,11 +714,11 @@ cannot replace strong Hahn summability.
 `T`, `L`, `P`, `C` mean literal `theorem`, `lemma`, `proposition` and
 `corollary` environments; examples, computations, assessments and other
 custom environments are not included. The inventory covers all 57 main texts
-present in the repository; two are not named `article.tex`. This includes the
-new discrete-initial-subgroup report placed in `c6359e4`; reader-map and
-catalogue inclusion may lag placement. The reports placed in `f4c9504` and
-`a4dcb91` are indexed from their current assembled texts. Their proof review
-and formalization remain separate obligations. The report placed in `e4f8848` and
+present in the repository; two are not named `article.tex`. The reader map
+and typeset catalogue cover the same 57 reports. The two reports placed in
+`f4c9504` are indexed from their assembled texts; the three placed in
+`a4dcb91` are indexed from their assembled texts, including their companions.
+Their proof review and formalization remain pending. The report placed in `e4f8848` and
 written in `7af7056` is indexed from its written, six-source text. The two reports placed in `7b5f934`
 and written in `68e2960`, and the five reports that batch extended, are
 indexed from their written sources. The two reports placed in `d4e71b7`
@@ -1020,11 +1029,11 @@ and [set-sized quotients of the omnific integers](surreal/set-sized-quotients-of
 At placement these added 75 literal standard results, plus three custom
 `maintheorem` statements. The elementary review and first Diophantine assembly
 in `bbdd536` increased its count to 67. The subsequent written expansions
-(`0240140`, `7494d53`, `3daef3c`) previously gave 104 Diophantine and 179 quotient standard
-results; the current assemblies contain 143 and 227 respectively. All remain **Pending** in Lean.
+(`0240140`, `7494d53`, `3daef3c`, `b829d8b`, `aae58bb`) give 143
+Diophantine and 227 quotient standard results in the present sources. All remain **Pending** in Lean.
 
 The Diophantine proof review covers its original Sections 1–12, now
-current Sections 1–10, 14 and 16, excluding the newly inserted material in Sections 6 and 10. It includes complex separated-power rigidity, the
+Sections 1–10, 14 and 16, excluding the newly inserted material in Sections 6 and 10. It includes complex separated-power rigidity, the
 corrected divisibility identity, quadratic polarization, coordinate ideals,
 bounded-set transfer for quantified formulas, induction-domain restrictions,
 primitive real directions and finite ordered specialization. The polynomial-arc
@@ -1036,7 +1045,13 @@ remain **Pending** in Lean. The new Section 11 has now received a proof
 review of its degree algebra, ideal predicate, Pell divisibility,
 intersectivity and integer definitions. It distinguishes intermediate
 rings from full positive-support rings with explicit boundary examples.
-New material in Sections 6 and 10, current Sections 12–13 and 15, and remaining source reconciliation still need review. The former formalization and synthesis sections are now Sections 17–18.
+Section 12 has now received a proof review of the detector, ideal test,
+constant-term graph and number-field extension. In
+`odg:def:rem:numberfieldideal`, the existing root hypothesis already supplies
+an integer radicand for a one-witness existential ideal and six-witness
+existential graph. This further combined consequence remains **Pending**
+in Lean, as do the original claims. New material in Sections 6 and 10,
+Sections 13, 15 and 17–18, and remaining source reconciliation still need review.
 The four Diophantine companions and fifteen quotient companions from the earlier
 placements are now assembled; the entire-function rectification addition is
 also written. These assemblies are distinct from proof review and formalization.
@@ -1045,9 +1060,9 @@ The two reports placed in `f4c9504`,
 [omnific-preserving automorphisms](surreal/omnific-preserving-automorphisms/article.tex)
 and [omnific groups and lattices](surreal/omnific-groups-and-lattices/article.tex),
 are now assembled with prefixed labels. Their proof review and Lean results
-remain **Pending**. Placement `a4dcb91` supplies three additional reports, now assembled from
-their bases and companions as recorded above. Their current labels and
-statements are indexed here; proof review and formalization remain pending.
+remain **Pending**. The three reports placed in `a4dcb91` now incorporate
+their companions as recorded above; the index covers their assembled texts
+without claiming proof review or Lean coverage.
 
 The Diophantine report supplies a dependency plan in `odg:sec:formal`: define
 the support-restricted omnific subring and constant-term retraction, then
@@ -4343,173 +4358,176 @@ It asserts no Lean coverage. All statements remain **pending unless explicitly m
 
 Source: [surreal/omnific-diophantine-geometry/article.tex](surreal/omnific-diophantine-geometry/article.tex).
 
-Indexed from the current text through `c6359e4`. Every result is **Pending**
-in Lean; source assembly and source-level proof review are separate from formalization.
+Sources 01, 02 and 05 were assembled in `bbdd536`. The elementary algebra
+comparison, proof review of the original Sections 1–10 and current Sections 14 and 16 and remaining work are recorded in the report
+reconciliation. Local sources 06–07 were integrated in `0240140`
+(Sections 11–13); subsequent passes review Sections 11–12, including the
+witness-closure and coefficient-intersection distinctions, detector and
+number-field existential graph. Sources 08–09 add Section 15 and clauses
+in Sections 17–18 (`b829d8b`), outside that review. All statements
+below are **Pending** in Lean. The separately styled cited theorem
+`odg:fact:settarget` is also in scope, outside the standard-environment table.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Proposition | `odg:prop:ring` (line 655) | Rings and retraction \src{01, 02, 05} |
-| Lemma | `odg:lem:degree` (line 700) | Degree \src{01, 02, 05} |
-| Proposition | `odg:prop:units` (line 721) | Units and finite elements \src{01, 02, 05} |
-| Lemma | `odg:lem:workspace` (line 753) | Set-sized workspaces \src{05} |
-| Theorem | `odg:thm:floor` (line 785) | Integer-part formula \src{01, 02, 05} |
-| Proposition | `odg:prop:univariate` (line 822) | One-variable rigidity \src{02, 05} |
-| Theorem | `odg:thm:finitequotients` (line 847) | Ordinary moduli \src{01, 02, 05} |
-| Proposition | `odg:prop:finitedivisors` (line 882) | Divisors of integers \src{05} |
-| Corollary | `odg:cor:mixedgcd` (line 891) | Ordinary primes and mixed gcds \src{02, 05} |
-| Corollary | `odg:cor:charideals` (line 910) | Positive-characteristic quotients \src{01, 02, 05} |
-| Proposition | `odg:prop:canonicalct` (line 951) | Uniqueness of the retraction \src{01} |
-| Lemma | `odg:lem:setbounds` (line 1027) | Set-sized exponent bounds \src{01, 02, 05} |
-| Theorem | `odg:thm:commondivisor` (line 1040) | Common monomial divisibility \src{01, 02, 05} |
-| Corollary | `odg:cor:Pglobal` (line 1063) | The purely infinite ideal \src{01, 02, 05} |
-| Corollary | `odg:cor:nilpotent` (line 1096) | Nilpotent tests \src{02} |
-| Proposition | `odg:prop:irreduciblect` (line 1113) | Irreducibles \src{01, 02, 05} |
-| Theorem | `odg:thm:fractions` (line 1145) | Global monomial clearing \src{01, 02, 05} |
-| Corollary | `odg:cor:projectiveclear` (line 1167) | Projective clearing and common multiples \src{01, 02, 05} |
-| Proposition | `odg:prop:division` (line 1192) | Ordered division \src{01, 02, 05} |
-| Theorem | `odg:thm:nogcd` (line 1220) | Pairs without a gcd \src{02}, generalizing \src{01} |
-| Proposition | `odg:prop:notnormal` (line 1259) | Chains and integral closure \src{01, 02, 05} |
-| Theorem | `odg:thm:transfer` (line 1300) | Retraction theorem for equations \src{01, 02, 05} |
-| Corollary | `odg:cor:H10` (line 1342) | Hilbert's tenth problem \src{01, 02, 05} |
-| Proposition | `odg:prop:notdiophantine` (line 1374) | Retraction closure \src{01, 02, 05} |
-| Theorem | `odg:thm:smith` (line 1400) | Smith normal form over the omnific integers \src{01, 02, 05} |
-| Theorem | `odg:thm:linear` (line 1425) | Ordinary right-hand sides \src{05} |
-| Lemma | `odg:lem:constantproduct` (line 1459) | Constant products \src{01, 02, 05} |
-| Theorem | `odg:thm:decomposable` (line 1473) | Exact fibers of decomposable equations \src{02}; case (b) \src{01} |
-| Theorem | `odg:dec:thm:gaussianfibers` (line 1558) | Exact fibers over the Gaussian omnific integers \src{13} |
-| Corollary | `odg:dec:cor:converse` (line 1595) | The kernel criterion is exact \src{13} |
-| Theorem | `odg:thm:binary` (line 1640) | Binary-form rigidity \src{05}, generalizing \src{01, 02} |
-| Corollary | `odg:cor:thue` (line 1666) | Thue levels and equal powers \src{01, 02, 05} |
-| Corollary | `odg:cor:pell` (line 1684) | Pell rigidity \src{01, 02, 05} |
-| Proposition | `odg:prop:zeropell` (line 1731) | The zero Pell fiber \src{01; also 13} |
-| Corollary | `odg:cor:conics` (line 1742) | Nonsingular central conics \src{05} |
-| Theorem | `odg:thm:norm` (line 1779) | Norm-form rigidity \src{01, 02} |
-| Theorem | `odg:dec:thm:etale` (line 1833) | \'Etale norm rigidity in intermediate rings \src{07, 13} \mergetag |
-| Lemma | `odg:lem:derivation` (line 1927) | Euler derivations \src{05} |
-| Lemma | `odg:lem:detection` (line 1948) | Detection of nonconstants \src{05} |
-| Lemma | `odg:lem:wronskian` (line 1970) | A strict Wronskian bound \src{05} |
-| Theorem | `odg:thm:separated` (line 1987) | Separated-power rigidity \src{05} |
-| Corollary | `odg:cor:mordell` (line 2058) | Mordell and Fermat curves \src{05} |
-| Lemma | `odg:lem:pairwise` (line 2108) | Pairwise comaximality \src{05} |
-| Theorem | `odg:thm:unimodularfermat` (line 2121) | Unimodular Fermat rigidity \src{05} |
-| Corollary | `odg:cor:flt` (line 2193) | An omnific form of Fermat's Last Theorem \src{05} |
-| Theorem | `odg:thm:quadclassification` (line 2231) | Quadratic-level dichotomy \src{01}; case (iii) also \src{02} |
-| Lemma | `odg:lem:transvection` (line 2260) | A nilpotent quadratic isometry \src{01, 02} |
-| Lemma | `odg:lem:nullchoices` (line 2321) | An isotropic direction visible from a nonzero point \src{01, 02} |
-| Corollary | `odg:cor:unipotent` (line 2442) | An invisible unipotent subgroup \src{02} |
-| Proposition | `odg:prop:squaresbound` (line 2490) | Positive bounds \src{01, 05} |
-| Theorem | `odg:thm:bounded` (line 2507) | Bounded semialgebraic rigidity \src{02} |
-| Corollary | `odg:cor:definite` (line 2545) | Definite levels \src{01, 02} |
-| Corollary | `odg:cor:orthogonal` (line 2570) | Euclidean orthogonal group \src{01, 02} |
-| Corollary | `odg:cor:symmetric` (line 2598) | Symmetric matrix rigidity \src{01} |
-| Theorem | `odg:thm:infinity` (line 2621) | Leading-homogeneous obstruction \src{01} |
-| Lemma | `odg:lem:pellsequence` (line 2671) | Pell witnesses \src{01, 05} |
-| Lemma | `odg:lem:pellgap` (line 2695) | A three-square gap below a Pell coordinate \src{01} |
-| Theorem | `odg:thm:guard` (line 2729) | Uniform quartic integrality guard \src{01} |
-| Theorem | `odg:thm:standarddef` (line 2762) | A quartic definition of $\Z$ \src{05} |
-| Corollary | `odg:cor:definablect` (line 2849) | Definability of $\ct$ and $\Pi$ \src{01, 05} |
-| Theorem | `odg:thm:induction` (line 2910) | A failed existential induction instance \src{05} |
-| Lemma | `odg:def:lem:units` (line 3053) | Degree, units and algebraic elements \src{06, 07} |
-| Theorem | `odg:def:thm:ideal` (line 3106) | A quadratic definition of the ideal \src{06} |
-| Corollary | `odg:def:cor:idealhom` (line 3153) | Homomorphisms preserve the ideal \src{06} |
-| Corollary | `odg:def:cor:pell` (line 3179) | Pell rigidity in intermediate rings \src{06, 07} |
-| Lemma | `odg:def:lem:pelldiv` (line 3201) | Divisible Pell coordinates \src{06, 07} |
-| Lemma | `odg:def:lem:intmultiple` (line 3231) | Integers in principal ideals \src{07} |
-| Proposition | `odg:def:prop:intersective` (line 3262) | The polynomial $\Lambda$ \src{06, 07} |
-| Theorem | `odg:def:thm:constants` (line 3316) | {One system for $\Z$ and $\Z[i |
-| Corollary | `odg:def:cor:naturals` (line 3419) | The natural numbers \src{06, 07} |
-| Theorem | `odg:def:thm:augdetector` (line 3444) | Augmentation root detector \src{07} |
-| Theorem | `odg:def:thm:detector` (line 3480) | Detecting a nonzero constant term \src{07} |
-| Proposition | `odg:def:prop:support` (line 3503) | Support control of the witnesses \src{07} |
-| Theorem | `odg:def:thm:idealtest` (line 3552) | One polynomial tests every ideal \src{07} |
-| Corollary | `odg:def:cor:universal` (line 3575) | A universal definition of the ideal \src{07} |
-| Theorem | `odg:def:thm:ctgraph` (line 3595) | The graph of $\ct$ is Diophantine \src{06} |
-| Corollary | `odg:def:cor:ctquartic` (line 3618) | A quartic for the graph of $\ct$ \mergetag |
-| Corollary | `odg:def:cor:splitting` (line 3650) | The canonical splitting is definable \src{06} |
-| Theorem | `odg:def:thm:homct` (line 3681) | All homomorphisms respect the constant term \src{06} |
-| Lemma | `odg:def:lem:tailored` (line 3720) | A tailored intersective polynomial \src{07} |
-| Theorem | `odg:def:thm:numberfield` (line 3743) | Coefficient rings in number fields \src{07} |
-| Lemma | `odg:def:lem:ainfrac` (line 3801) | \src{06} |
-| Theorem | `odg:def:thm:multiplier` (line 3809) | The multiplier identity \src{06} |
-| Corollary | `odg:def:cor:internal` (line 3843) | Internal reconstruction \src{06} |
-| Theorem | `odg:def:thm:realrecovery` (line 3876) | Reconstruction of the real structure \src{06} |
-| Corollary | `odg:def:cor:valuegroup` (line 3902) | The value group \src{06} |
-| Theorem | `odg:def:thm:autreal` (line 3917) | Automorphisms fix the real coefficients \src{06} |
-| Proposition | `odg:def:prop:coeffaut` (line 3959) | All coefficient automorphisms occur \src{06} |
-| Lemma | `odg:def:lem:twist` (line 3985) | A phase twist preserving $\Og$ \src{06} |
-| Theorem | `odg:def:thm:norealaxis` (line 4005) | No definable real axis or conjugation \src{06} |
-| Theorem | `odg:def:thm:ce` (line 4038) | Diophantine subsets of $\Z^n$ \src{06} |
-| Corollary | `odg:def:cor:arithmetic` (line 4061) | Standard arithmetic is definable \src{06, 07} |
-| Theorem | `odg:def:thm:collapse` (line 4088) | What equations cannot define \src{06, 07} |
-| Proposition | `odg:def:prop:notqf` (line 4116) | A quantifier-free lower bound \src{06} |
-| Theorem | `odg:def:thm:saturation` (line 4134) | Omitted types \src{07; also 06} |
-| Proposition | `odg:prop:polylift` (line 4178) | Finite polynomial lifting \src{01, 02, 05} |
-| Theorem | `odg:thm:cone` (line 4212) | Homogeneous cone criterion \src{01}; part (b) \src{02} |
-| Proposition | `odg:prop:pythagoras` (line 4284) | Infinite unimodular Pythagorean triples \src{01, 05} |
-| Theorem | `odg:thm:realray` (line 4313) | Rationality of primitive constant directions \src{01} |
-| Lemma | `odg:lem:specialization` (line 4370) | Finite ordered specialization \src{05} |
-| Theorem | `odg:thm:specialization` (line 4409) | Finite-support solutions specialize to arcs \src{05} |
-| Proposition | `odg:frac:prop:calculus` (line 4556) | Calculus of denominator ideals \src{09} |
-| Proposition | `odg:frac:prop:least` (line 4580) | Least denominators \src{09} |
-| Lemma | `odg:frac:lem:unimodular` (line 4597) | Unimodular fractions \src{08, 09} |
-| Proposition | `odg:frac:prop:ordinary` (line 4616) | Ordinary denominators \src{08, 09} |
-| Proposition | `odg:frac:prop:nosetdenominators` (line 4661) | No set of denominators \src{08} |
-| Theorem | `odg:frac:thm:realconstants` (line 4679) | Real constants \src{08, 09} |
-| Lemma | `odg:frac:lem:lattice` (line 4752) | The scalar lattice of a real line \src{08} |
-| Theorem | `odg:frac:thm:pullback` (line 4764) | All ambient scalar representations \src{08}; pairs \src{09} |
-| Lemma | `odg:frac:lem:welldefined` (line 4848) | Well-defined specialization \src{09} |
-| Theorem | `odg:frac:thm:dichotomy` (line 4863) | Denominator dichotomy on the unimodular region \src{09}; \src{08} |
-| Lemma | `odg:frac:lem:evaluation` (line 4909) | Evaluation at an omnific parameter \src{08}; monomials \src{09} |
-| Theorem | `odg:frac:thm:main` (line 4921) | Representations of rational-function tuples \src{08} |
-| Corollary | `odg:frac:cor:lowest` (line 4966) | Lowest terms are all or nothing \src{08}; \src{09} |
-| Corollary | `odg:frac:cor:spectrum` (line 4988) | Leading exponents of denominators \src{08} |
-| Corollary | `odg:frac:cor:onefunction` (line 5002) | One rational function \src{08, 09} |
-| Proposition | `odg:frac:prop:localdense` (line 5097) | Prescribed specialization near a given function \src{09} |
-| Corollary | `odg:frac:cor:curves` (line 5147) | Primitive coordinates on rational curves \src{08} |
-| Corollary | `odg:frac:cor:homogeneous` (line 5181) | Solutions on rational curves \src{08} \mergetag |
-| Lemma | `odg:frac:lem:equivariance` (line 5220) | Equivariance \src{09} |
-| Theorem | `odg:frac:thm:orbits` (line 5229) | Specialization fibers are congruence orbits \src{09} |
-| Corollary | `odg:frac:cor:modular` (line 5250) | Modular equivalence \src{09} |
-| Lemma | `odg:frac:lem:focusmatrix` (line 5263) | Focusing matrices \src{09} |
-| Theorem | `odg:frac:thm:focusing` (line 5289) | Set-wise focusing \src{09} |
-| Corollary | `odg:frac:cor:dense` (line 5314) | Dense fibers \src{09} |
-| Corollary | `odg:frac:cor:bothtypes` (line 5325) | Both denominator types in every interval \src{09} |
-| Corollary | `odg:frac:cor:discontinuous` (line 5347) | Nowhere continuity \src{09} |
-| Proposition | `odg:frac:prop:localization` (line 5397) | A local ring with residue field $\Q$ \src{08} |
-| Proposition | `odg:frac:prop:localeval` (line 5419) | Rational functions in the localization \src{08} |
-| Theorem | `odg:frac:thm:tworesidues` (line 5436) | Independent real and rational residues \src{08} |
-| Proposition | `odg:frac:prop:intersection` (line 5475) | The omnific part of a one-parameter field \src{08} |
-| Proposition | `odg:frac:prop:generators` (line 5497) | Generator counts \src{08} |
-| Theorem | `odg:frac:thm:enlargement` (line 5513) | Enlargement defect \src{08} |
-| Theorem | `odg:frac:thm:scale` (line 5538) | Scale-extension defect \src{08} |
-| Theorem | `odg:frac:thm:nonflat` (line 5563) | An integral extension that is neither finite nor flat \src{08} |
-| Proposition | `odg:frac:prop:tor` (line 5581) | The defect as a Tor group \src{08} |
-| Proposition | `odg:frac:prop:monomial` (line 5614) | Monomial denominators \src{08, 09} |
-| Proposition | `odg:frac:prop:gaussianfrac` (line 5691) | Gaussian fractions \src{08}; \src{09} |
-| Theorem | `odg:frac:thm:gaussian` (line 5710) | Gaussian representation dichotomy \src{08} |
-| Corollary | `odg:frac:cor:gaussiandirections` (line 5733) | Constant directions over $\Z$ and $\Z{[i |
-| Theorem | `odg:thm:quadraticformula` (line 5799) | Square-discriminant criterion \src{02} |
-| Proposition | `odg:prop:initial` (line 5860) | Initial forms of an omnific solution \src{01, 02} |
-| Proposition | `odg:prop:binomial` (line 5902) | A two-term root obstruction \src{05} |
+| Proposition | `odg:prop:ring` (line 660) | Rings and retraction \src{01, 02, 05} |
+| Lemma | `odg:lem:degree` (line 705) | Degree \src{01, 02, 05} |
+| Proposition | `odg:prop:units` (line 726) | Units and finite elements \src{01, 02, 05} |
+| Lemma | `odg:lem:workspace` (line 758) | Set-sized workspaces \src{05} |
+| Theorem | `odg:thm:floor` (line 790) | Integer-part formula \src{01, 02, 05} |
+| Proposition | `odg:prop:univariate` (line 827) | One-variable rigidity \src{02, 05} |
+| Theorem | `odg:thm:finitequotients` (line 852) | Ordinary moduli \src{01, 02, 05} |
+| Proposition | `odg:prop:finitedivisors` (line 887) | Divisors of integers \src{05} |
+| Corollary | `odg:cor:mixedgcd` (line 896) | Ordinary primes and mixed gcds \src{02, 05} |
+| Corollary | `odg:cor:charideals` (line 915) | Positive-characteristic quotients \src{01, 02, 05} |
+| Proposition | `odg:prop:canonicalct` (line 956) | Uniqueness of the retraction \src{01} |
+| Lemma | `odg:lem:setbounds` (line 1032) | Set-sized exponent bounds \src{01, 02, 05} |
+| Theorem | `odg:thm:commondivisor` (line 1045) | Common monomial divisibility \src{01, 02, 05} |
+| Corollary | `odg:cor:Pglobal` (line 1068) | The purely infinite ideal \src{01, 02, 05} |
+| Corollary | `odg:cor:nilpotent` (line 1101) | Nilpotent tests \src{02} |
+| Proposition | `odg:prop:irreduciblect` (line 1118) | Irreducibles \src{01, 02, 05} |
+| Theorem | `odg:thm:fractions` (line 1150) | Global monomial clearing \src{01, 02, 05} |
+| Corollary | `odg:cor:projectiveclear` (line 1172) | Projective clearing and common multiples \src{01, 02, 05} |
+| Proposition | `odg:prop:division` (line 1197) | Ordered division \src{01, 02, 05} |
+| Theorem | `odg:thm:nogcd` (line 1225) | Pairs without a gcd \src{02}, generalizing \src{01} |
+| Proposition | `odg:prop:notnormal` (line 1264) | Chains and integral closure \src{01, 02, 05} |
+| Theorem | `odg:thm:transfer` (line 1305) | Retraction theorem for equations \src{01, 02, 05} |
+| Corollary | `odg:cor:H10` (line 1347) | Hilbert's tenth problem \src{01, 02, 05} |
+| Proposition | `odg:prop:notdiophantine` (line 1379) | Retraction closure \src{01, 02, 05} |
+| Theorem | `odg:thm:smith` (line 1405) | Smith normal form over the omnific integers \src{01, 02, 05} |
+| Theorem | `odg:thm:linear` (line 1430) | Ordinary right-hand sides \src{05} |
+| Lemma | `odg:lem:constantproduct` (line 1464) | Constant products \src{01, 02, 05} |
+| Theorem | `odg:thm:decomposable` (line 1478) | Exact fibers of decomposable equations \src{02}; case (b) \src{01} |
+| Theorem | `odg:dec:thm:gaussianfibers` (line 1563) | Exact fibers over the Gaussian omnific integers \src{13} |
+| Corollary | `odg:dec:cor:converse` (line 1600) | The kernel criterion is exact \src{13} |
+| Theorem | `odg:thm:binary` (line 1645) | Binary-form rigidity \src{05}, generalizing \src{01, 02} |
+| Corollary | `odg:cor:thue` (line 1671) | Thue levels and equal powers \src{01, 02, 05} |
+| Corollary | `odg:cor:pell` (line 1689) | Pell rigidity \src{01, 02, 05} |
+| Proposition | `odg:prop:zeropell` (line 1736) | The zero Pell fiber \src{01; also 13} |
+| Corollary | `odg:cor:conics` (line 1747) | Nonsingular central conics \src{05} |
+| Theorem | `odg:thm:norm` (line 1784) | Norm-form rigidity \src{01, 02} |
+| Theorem | `odg:dec:thm:etale` (line 1838) | \'Etale norm rigidity in intermediate rings \src{07, 13} \mergetag |
+| Lemma | `odg:lem:derivation` (line 1932) | Euler derivations \src{05} |
+| Lemma | `odg:lem:detection` (line 1953) | Detection of nonconstants \src{05} |
+| Lemma | `odg:lem:wronskian` (line 1975) | A strict Wronskian bound \src{05} |
+| Theorem | `odg:thm:separated` (line 1992) | Separated-power rigidity \src{05} |
+| Corollary | `odg:cor:mordell` (line 2063) | Mordell and Fermat curves \src{05} |
+| Lemma | `odg:lem:pairwise` (line 2113) | Pairwise comaximality \src{05} |
+| Theorem | `odg:thm:unimodularfermat` (line 2126) | Unimodular Fermat rigidity \src{05} |
+| Corollary | `odg:cor:flt` (line 2198) | An omnific form of Fermat's Last Theorem \src{05} |
+| Theorem | `odg:thm:quadclassification` (line 2236) | Quadratic-level dichotomy \src{01}; case (iii) also \src{02} |
+| Lemma | `odg:lem:transvection` (line 2265) | A nilpotent quadratic isometry \src{01, 02} |
+| Lemma | `odg:lem:nullchoices` (line 2326) | An isotropic direction visible from a nonzero point \src{01, 02} |
+| Corollary | `odg:cor:unipotent` (line 2447) | An invisible unipotent subgroup \src{02} |
+| Proposition | `odg:prop:squaresbound` (line 2495) | Positive bounds \src{01, 05} |
+| Theorem | `odg:thm:bounded` (line 2512) | Bounded semialgebraic rigidity \src{02} |
+| Corollary | `odg:cor:definite` (line 2550) | Definite levels \src{01, 02} |
+| Corollary | `odg:cor:orthogonal` (line 2575) | Euclidean orthogonal group \src{01, 02} |
+| Corollary | `odg:cor:symmetric` (line 2603) | Symmetric matrix rigidity \src{01} |
+| Theorem | `odg:thm:infinity` (line 2626) | Leading-homogeneous obstruction \src{01} |
+| Lemma | `odg:lem:pellsequence` (line 2676) | Pell witnesses \src{01, 05} |
+| Lemma | `odg:lem:pellgap` (line 2700) | A three-square gap below a Pell coordinate \src{01} |
+| Theorem | `odg:thm:guard` (line 2734) | Uniform quartic integrality guard \src{01} |
+| Theorem | `odg:thm:standarddef` (line 2767) | A quartic definition of $\Z$ \src{05} |
+| Corollary | `odg:cor:definablect` (line 2854) | Definability of $\ct$ and $\Pi$ \src{01, 05} |
+| Theorem | `odg:thm:induction` (line 2915) | A failed existential induction instance \src{05} |
+| Lemma | `odg:def:lem:units` (line 3058) | Degree, units and algebraic elements \src{06, 07} |
+| Theorem | `odg:def:thm:ideal` (line 3111) | A quadratic definition of the ideal \src{06} |
+| Corollary | `odg:def:cor:idealhom` (line 3158) | Homomorphisms preserve the ideal \src{06} |
+| Corollary | `odg:def:cor:pell` (line 3184) | Pell rigidity in intermediate rings \src{06, 07} |
+| Lemma | `odg:def:lem:pelldiv` (line 3206) | Divisible Pell coordinates \src{06, 07} |
+| Lemma | `odg:def:lem:intmultiple` (line 3236) | Integers in principal ideals \src{07} |
+| Proposition | `odg:def:prop:intersective` (line 3267) | The polynomial $\Lambda$ \src{06, 07} |
+| Theorem | `odg:def:thm:constants` (line 3321) | {One system for $\Z$ and $\Z[i]$} \src{06, 07} |
+| Corollary | `odg:def:cor:naturals` (line 3424) | The natural numbers \src{06, 07} |
+| Theorem | `odg:def:thm:augdetector` (line 3449) | Augmentation root detector \src{07} |
+| Theorem | `odg:def:thm:detector` (line 3502) | Detecting a nonzero constant term \src{07} |
+| Proposition | `odg:def:prop:support` (line 3525) | Support control of the witnesses \src{07} |
+| Theorem | `odg:def:thm:idealtest` (line 3585) | One polynomial tests every ideal \src{07} |
+| Corollary | `odg:def:cor:universal` (line 3608) | A universal definition of the ideal \src{07} |
+| Theorem | `odg:def:thm:ctgraph` (line 3632) | The graph of $\ct$ is Diophantine \src{06} |
+| Corollary | `odg:def:cor:ctquartic` (line 3659) | A quartic for the graph of $\ct$ \mergetag |
+| Corollary | `odg:def:cor:splitting` (line 3691) | The canonical splitting is definable \src{06} |
+| Theorem | `odg:def:thm:homct` (line 3735) | All homomorphisms respect the constant term \src{06} |
+| Lemma | `odg:def:lem:tailored` (line 3777) | A tailored intersective polynomial \src{07} |
+| Theorem | `odg:def:thm:numberfield` (line 3802) | Coefficient rings in number fields \src{07} |
+| Lemma | `odg:def:lem:ainfrac` (line 3883) | \src{06} |
+| Theorem | `odg:def:thm:multiplier` (line 3891) | The multiplier identity \src{06} |
+| Corollary | `odg:def:cor:internal` (line 3925) | Internal reconstruction \src{06} |
+| Theorem | `odg:def:thm:realrecovery` (line 3958) | Reconstruction of the real structure \src{06} |
+| Corollary | `odg:def:cor:valuegroup` (line 3984) | The value group \src{06} |
+| Theorem | `odg:def:thm:autreal` (line 3999) | Automorphisms fix the real coefficients \src{06} |
+| Proposition | `odg:def:prop:coeffaut` (line 4041) | All coefficient automorphisms occur \src{06} |
+| Lemma | `odg:def:lem:twist` (line 4067) | A phase twist preserving $\Og$ \src{06} |
+| Theorem | `odg:def:thm:norealaxis` (line 4087) | No definable real axis or conjugation \src{06} |
+| Theorem | `odg:def:thm:ce` (line 4120) | Diophantine subsets of $\Z^n$ \src{06} |
+| Corollary | `odg:def:cor:arithmetic` (line 4143) | Standard arithmetic is definable \src{06, 07} |
+| Theorem | `odg:def:thm:collapse` (line 4170) | What equations cannot define \src{06, 07} |
+| Proposition | `odg:def:prop:notqf` (line 4198) | A quantifier-free lower bound \src{06} |
+| Theorem | `odg:def:thm:saturation` (line 4216) | Omitted types \src{07; also 06} |
+| Proposition | `odg:prop:polylift` (line 4260) | Finite polynomial lifting \src{01, 02, 05} |
+| Theorem | `odg:thm:cone` (line 4294) | Homogeneous cone criterion \src{01}; part (b) \src{02} |
+| Proposition | `odg:prop:pythagoras` (line 4366) | Infinite unimodular Pythagorean triples \src{01, 05} |
+| Theorem | `odg:thm:realray` (line 4395) | Rationality of primitive constant directions \src{01} |
+| Lemma | `odg:lem:specialization` (line 4452) | Finite ordered specialization \src{05} |
+| Theorem | `odg:thm:specialization` (line 4491) | Finite-support solutions specialize to arcs \src{05} |
+| Proposition | `odg:frac:prop:calculus` (line 4638) | Calculus of denominator ideals \src{09} |
+| Proposition | `odg:frac:prop:least` (line 4662) | Least denominators \src{09} |
+| Lemma | `odg:frac:lem:unimodular` (line 4679) | Unimodular fractions \src{08, 09} |
+| Proposition | `odg:frac:prop:ordinary` (line 4698) | Ordinary denominators \src{08, 09} |
+| Proposition | `odg:frac:prop:nosetdenominators` (line 4743) | No set of denominators \src{08} |
+| Theorem | `odg:frac:thm:realconstants` (line 4761) | Real constants \src{08, 09} |
+| Lemma | `odg:frac:lem:lattice` (line 4834) | The scalar lattice of a real line \src{08} |
+| Theorem | `odg:frac:thm:pullback` (line 4846) | All ambient scalar representations \src{08}; pairs \src{09} |
+| Lemma | `odg:frac:lem:welldefined` (line 4930) | Well-defined specialization \src{09} |
+| Theorem | `odg:frac:thm:dichotomy` (line 4945) | Denominator dichotomy on the unimodular region \src{09}; \src{08} |
+| Lemma | `odg:frac:lem:evaluation` (line 4991) | Evaluation at an omnific parameter \src{08}; monomials \src{09} |
+| Theorem | `odg:frac:thm:main` (line 5003) | Representations of rational-function tuples \src{08} |
+| Corollary | `odg:frac:cor:lowest` (line 5048) | Lowest terms are all or nothing \src{08}; \src{09} |
+| Corollary | `odg:frac:cor:spectrum` (line 5070) | Leading exponents of denominators \src{08} |
+| Corollary | `odg:frac:cor:onefunction` (line 5084) | One rational function \src{08, 09} |
+| Proposition | `odg:frac:prop:localdense` (line 5179) | Prescribed specialization near a given function \src{09} |
+| Corollary | `odg:frac:cor:curves` (line 5229) | Primitive coordinates on rational curves \src{08} |
+| Corollary | `odg:frac:cor:homogeneous` (line 5263) | Solutions on rational curves \src{08} \mergetag |
+| Lemma | `odg:frac:lem:equivariance` (line 5302) | Equivariance \src{09} |
+| Theorem | `odg:frac:thm:orbits` (line 5311) | Specialization fibers are congruence orbits \src{09} |
+| Corollary | `odg:frac:cor:modular` (line 5332) | Modular equivalence \src{09} |
+| Lemma | `odg:frac:lem:focusmatrix` (line 5345) | Focusing matrices \src{09} |
+| Theorem | `odg:frac:thm:focusing` (line 5371) | Set-wise focusing \src{09} |
+| Corollary | `odg:frac:cor:dense` (line 5396) | Dense fibers \src{09} |
+| Corollary | `odg:frac:cor:bothtypes` (line 5407) | Both denominator types in every interval \src{09} |
+| Corollary | `odg:frac:cor:discontinuous` (line 5429) | Nowhere continuity \src{09} |
+| Proposition | `odg:frac:prop:localization` (line 5479) | A local ring with residue field $\Q$ \src{08} |
+| Proposition | `odg:frac:prop:localeval` (line 5501) | Rational functions in the localization \src{08} |
+| Theorem | `odg:frac:thm:tworesidues` (line 5518) | Independent real and rational residues \src{08} |
+| Proposition | `odg:frac:prop:intersection` (line 5557) | The omnific part of a one-parameter field \src{08} |
+| Proposition | `odg:frac:prop:generators` (line 5579) | Generator counts \src{08} |
+| Theorem | `odg:frac:thm:enlargement` (line 5595) | Enlargement defect \src{08} |
+| Theorem | `odg:frac:thm:scale` (line 5620) | Scale-extension defect \src{08} |
+| Theorem | `odg:frac:thm:nonflat` (line 5645) | An integral extension that is neither finite nor flat \src{08} |
+| Proposition | `odg:frac:prop:tor` (line 5663) | The defect as a Tor group \src{08} |
+| Proposition | `odg:frac:prop:monomial` (line 5696) | Monomial denominators \src{08, 09} |
+| Proposition | `odg:frac:prop:gaussianfrac` (line 5773) | Gaussian fractions \src{08}; \src{09} |
+| Theorem | `odg:frac:thm:gaussian` (line 5792) | Gaussian representation dichotomy \src{08} |
+| Corollary | `odg:frac:cor:gaussiandirections` (line 5815) | Constant directions over $\Z$ and $\Z{[i]}$ \src{08, 14} |
+| Theorem | `odg:thm:quadraticformula` (line 5881) | Square-discriminant criterion \src{02} |
+| Proposition | `odg:prop:initial` (line 5942) | Initial forms of an omnific solution \src{01, 02} |
+| Proposition | `odg:prop:binomial` (line 5984) | A two-term root obstruction \src{05} |
 
 ### set-sized-quotients-of-omnific-integers
 
 Source: [surreal/set-sized-quotients-of-omnific-integers/article.tex](surreal/set-sized-quotients-of-omnific-integers/article.tex).
 
-Indexed from the current text through `c6359e4`. Every result is **Pending**
-in Lean; source assembly and source-level proof review are separate from formalization.
+Merged report written in `7494d53` (batch 24: eight manuscripts, base 06) and
+extended by batch 25 (local sources 12–16) and batch 26 (17–19,
+`aae58bb`); this index covers the written
+`article.tex`. Proof review and formalization are **Pending**.
+
+The 9 `maintheorem` statements are in scope: `osq:main:universal` (line 233), `osq:main:support` (line 244), `osq:main:thresholds` (line 254), `osq:main:fieldbound` (line 268), `osq:main:internal` (line 277), `osq:main:closure` (line 285), `osq:main:polynomial` (line 297), `osq:main:ordinal` (line 314), `osq:hd:main:cores` (line 320).
+They are not included in the literal standard-environment table below.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Maintheorem | `osq:main:universal` (line 233) | Universal set-sized quotient |
-| Maintheorem | `osq:main:support` (line 244) | The finite side and the support threshold |
-| Maintheorem | `osq:main:thresholds` (line 254) | Detection threshold equals size |
-| Maintheorem | `osq:main:fieldbound` (line 268) | The field bound in a fixed exponent group |
-| Maintheorem | `osq:main:internal` (line 277) | Large internal fields |
-| Maintheorem | `osq:main:closure` (line 285) | Closures and invisible equations |
-| Maintheorem | `osq:main:polynomial` (line 297) | Polynomial maps |
-| Maintheorem | `osq:main:ordinal` (line 314) | Natural ordinal arithmetic |
-| Maintheorem | `osq:hd:main:cores` (line 320) | Homological and tensor algebra of omnific cores |
 | Lemma | `osq:lem:ct` (line 648) | Constant term \src{03, 04, 06, 07, 08, 09, 10, 11, 13, 14, 15, 16} |
 | Lemma | `osq:lem:units` (line 673) | Degree and units \src{03, 04, 07, 08, 09, 10, 11, 13, 14, 16} |
 | Lemma | `osq:lem:gap` (line 747) | Gaps below and above a set \src{03, 04, 06, 07, 08, 09, 10, 11, 13, 15, 16} |
@@ -4713,7 +4731,7 @@ in Lean; source assembly and source-level proof review are separate from formali
 | Theorem | `osq:fs:thm:collapse` (line 7031) | Rational self-maps over any constant ring \src{16}; second route to \cref{osq:pm:thm:rational} |
 | Theorem | `osq:fs:thm:surjective` (line 7047) | Surjective rational self-maps \src{16}; second route to \cref{osq:pm:cor:bijections} |
 | Corollary | `osq:fs:cor:omitted` (line 7062) | Omitted values form a proper class \src{16} |
-| Proposition | `osq:fs:prop:transfer` (line 7082) | Constant-ring transfer \src{16}; 10 for {$D=\Z,\Z[i |
+| Proposition | `osq:fs:prop:transfer` (line 7082) | Constant-ring transfer \src{16}; 10 for {$D=\Z,\Z[i]$} |
 | Theorem | `osq:fs:thm:lower` (line 7099) | Optimal point tests \src{16}; 10, 18 |
 | Proposition | `osq:fs:prop:gausstest` (line 7122) | A finite Gaussian test \src{16} |
 | Lemma | `osq:fs:lem:independent` (line 7135) | Independent fresh coordinates \src{16} |
@@ -4910,8 +4928,8 @@ Lean result below remain **Pending**.
 
 Source: [foundations-and-computation/definable-surreals-and-omnific-integers/article.tex](foundations-and-computation/definable-surreals-and-omnific-integers/article.tex).
 
-Indexed from the current text through `c6359e4`. Every result is **Pending**
-in Lean; source assembly and source-level proof review are separate from formalization.
+All claims are **Pending**. Companions are integrated; independent proof
+review and formalization remain pending.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
@@ -4986,8 +5004,8 @@ in Lean; source assembly and source-level proof review are separate from formali
 
 Source: [foundations-and-computation/omnific-notations/article.tex](foundations-and-computation/omnific-notations/article.tex).
 
-Indexed from the current text through `c6359e4`. Every result is **Pending**
-in Lean; source assembly and source-level proof review are separate from formalization.
+All claims are **Pending**. Companions are integrated; independent proof
+review and formalization remain pending.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
@@ -5072,8 +5090,8 @@ in Lean; source assembly and source-level proof review are separate from formali
 
 Source: [surcomplex/hahn-hilbert-geometry/article.tex](surcomplex/hahn-hilbert-geometry/article.tex).
 
-Indexed from the current text through `c6359e4`. Every result is **Pending**
-in Lean; source assembly and source-level proof review are separate from formalization.
+All claims are **Pending**. Companions are integrated; independent proof
+review and formalization remain pending.
 
 | Kind | Source label or line | Heading |
 |---|---|---|
@@ -5132,11 +5150,11 @@ Source: [surreal/discrete-initial-subgroups-and-omnific-normalization/article.te
 Indexed from the current text through `c6359e4`. Every result is **Pending**
 in Lean; source assembly and source-level proof review are separate from formalization.
 
+The three custom `maintheorem` statements `thm:A`, `thm:B` and `thm:C`
+are also in scope, outside the standard-environment count.
+
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Maintheorem | `thm:A` (line 189) | Omnific normalization |
-| Maintheorem | `thm:B` (line 208) | Sharp image classification |
-| Maintheorem | `thm:C` (line 220) | Removing the bottom cyclic layer |
 | Lemma | `lem:isolate` (line 385) | Isolating a normal-form term |
 | Lemma | `lem:min-tree` (line 401) | A minimum in an initial tree |
 | Proposition | `prop:bottom` (line 418) | Bottom coefficient structure |

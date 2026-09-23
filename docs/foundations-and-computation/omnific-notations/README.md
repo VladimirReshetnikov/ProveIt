@@ -37,10 +37,12 @@ Every label in `article.tex` carries the prefix `onot:`, with the sub-prefixes
 hereditary forms and shielding, source 05), `onot:grid:` (Part III,
 rational–omega grids, source 09) and `onot:neg:` (Part IV, the lower bounds,
 from all three); shared material has bare `onot:`. The report has 217 labels.
-The text placed in `a4dcb91` was source 08 with bare labels; no report or
-ledger on `main` cited them, and they were renamed during this write (for
+The text placed in `a4dcb91` was source 08 with bare labels, renamed during
+assembly (for
 example `thm:tower` is `onot:hol:thm:tower`, `thm:raw-equality` is
 `onot:neg:thm:rawequality`, `prop:treeequality` is `onot:neg:prop:treeequality`).
+The formalization ledger now indexes the assembled statements under these
+labels, all **Pending**; it supplies no checked implementation mapping.
 The source manuscripts are not shipped; their code and data are, under the
 prefixes above, byte-identical to the deliveries. 05's `data/checksums.json`
 and 09's `data/manifest.json` were pure hash lists of the delivered names and

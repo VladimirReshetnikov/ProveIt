@@ -9,8 +9,9 @@ import Surreal.Surcomplex.TrigonometricPolynomialCayley
 The actual-field algebraic part of `trigonometry:thm:polyroots`: a finite
 Laurent sum has at most twice its frequency bound many distinct finite
 real-angle roots modulo ordinary periods. The same bound holds with native
-polynomial multiplicities. This does not yet identify those multiplicities
-with all local angular series, or construct the global exponential strip.
+polynomial multiplicities. `AngularLaurentEvaluation` identifies these with
+orders of exact local angular strong series. The global exponential strip
+remains a separate construction.
 -/
 
 universe u
