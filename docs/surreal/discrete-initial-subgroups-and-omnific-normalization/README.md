@@ -1,17 +1,24 @@
 # Discrete Initial Groups and Omnific Normalization
 
-**Sign-tree surgery, a sharp image classification, and an Ehrlich–Kaplan question**  
-AI-assisted research draft prepared for the Surreal project  
+**Sign-tree surgery, a sharp image classification, and an Ehrlich–Kaplan question**\
+AI-assisted research draft prepared for the Surreal project\
 23 September 2026
 
 ## Status
 
-This package contains a 24-page research article with full proposed proofs of an
+The delivery describes a 24-page research article with full proposed proofs of an
 affirmative answer to Ehrlich and Kaplan's discrete-initial-subgroup question,
 together with structural refinements and reproducible finite regression checks.
 It is an unrefereed manuscript, not an independently certified resolution or a
 claim of established priority. The mathematical argument and the novelty claims
 require independent review. No new Lean formalization is claimed.
+
+Placement `c6359e4` retains the source as `article.tex`, with verification
+code under `code/` and its recorded output under `data/`. No maintained PDF
+was placed. The reported page count and visual checks below describe the
+delivery, not a new repository build. The formalization ledger indexes the
+26 standard results and separately records three custom main theorems, all
+pending.
 
 The question is Question 2 in Section 9, printed page 18, of arXiv:1512.04001v1.
 The crucial imported result is the concrete sufficiency direction of Theorem 1
@@ -46,12 +53,11 @@ but invalid shortcuts, a compact proof appendix, and a proof-review checklist.
 
 | File | Purpose |
 |---|---|
-| `omnific_normalization.pdf` | Finished 24-page article, including references. |
-| `omnific_normalization.tex` | Standalone LaTeX source; bibliography is embedded. |
-| `verify.py` | Exact finite regression checks; Python standard library only. |
-| `verification_report.json` | Recorded PASS result, scope, and assertion counts. |
+| `article.tex` | Standalone LaTeX source; bibliography is embedded. |
+| `code/verify.py` | Exact finite regression checks; Python standard library only. |
+| `data/verification_report.json` | Delivered PASS result, scope, and assertion counts. |
 | `source_audit.md` | Primary sources, repository provenance, and review limits. |
-| `build.sh` | Re-run tests and rebuild the PDF with three LaTeX passes. |
+| `code/build.sh` | Delivered build script; expects the original source name beside it and does not build this placed layout. |
 
 ## Reproduce the tests
 
@@ -59,7 +65,7 @@ Requires Python 3.10 or later. No external Python packages or network access are
 needed.
 
 ```sh
-python3 verify.py --output verification_report.json
+python3 code/verify.py --output /tmp/omnific-normalization-verification.json
 ```
 
 The recorded run passed **450,862 assertions**. It covers finite sign words
@@ -79,21 +85,19 @@ required. In particular, the article uses `newtxtext`, `newtxmath`, `microtype`,
 `tikz`, `tcolorbox`, `hyperref`, and `cleveref`, in addition to common AMS and
 layout packages. No font files are included in this package.
 
-```sh
-sh build.sh
-```
-
-Alternatively, run pdfLaTeX three times:
+From this report directory, compile the placed source into a scratch directory:
 
 ```sh
-pdflatex -interaction=nonstopmode -halt-on-error omnific_normalization.tex
-pdflatex -interaction=nonstopmode -halt-on-error omnific_normalization.tex
-pdflatex -interaction=nonstopmode -halt-on-error omnific_normalization.tex
+mkdir -p /tmp/omnific-normalization-build
+pdflatex -interaction=nonstopmode -halt-on-error -output-directory=/tmp/omnific-normalization-build article.tex
+pdflatex -interaction=nonstopmode -halt-on-error -output-directory=/tmp/omnific-normalization-build article.tex
+pdflatex -interaction=nonstopmode -halt-on-error -output-directory=/tmp/omnific-normalization-build article.tex
 ```
 
-The supplied PDF was compiled successfully with resolved cross-references and
-no overfull boxes. All 24 pages were rendered and visually reviewed. Compilation
-and rendering establish document integrity, not mathematical correctness.
+The delivery reports a successful PDF build with resolved cross-references,
+no overfull boxes and visual review of all 24 pages. This placement has not
+independently repeated that build. Compilation and rendering establish
+document integrity, not mathematical correctness.
 
 ## Relationship to the repository
 

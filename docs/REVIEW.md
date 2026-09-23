@@ -2749,6 +2749,114 @@ implementation mappings and changes no manuscript or PDF. The combined
 The 3,089-row statement audit and 3,582-label audit still pass; all 1,387 local
 Markdown destinations resolve.
 
+## Constant-term detector and graph: the added Section 12
+
+Reviewed Section 12 against source 07's augmentation detector, ideal test
+and number-field arguments and source 06's retraction and homomorphism
+section, using the same `de0acc6` deliveries as the preceding review.
+The maintained proof now identifies the full pullback `A = ε⁻¹(o)` and
+locates scalar cancellation in the coefficient field. An explicit certificate
+in `Z × R` illustrates the allowed zero divisors. A second boundary example,
+`Z[ω]` inside `R[ω]`, shows why an ambient root and integer constant terms
+do not replace the full pullback hypothesis. General polynomial coefficients
+are parameters; the integer coefficients of `Λ` and `Λ_K` are numerals.
+
+The support proof explains finite convolution and retention of the original
+exponent group. The ideal's intersection description includes both
+directions and its failure over coefficient rings containing `Q`. The graph
+proof exhibits its six witnesses and specifies that uniqueness concerns its
+output. The quartic degree follows directly from its `x⁴` coefficient.
+The canonical splitting has an explicit proof and a multiplication formula
+distinguishing the additive direct sum from a ring direct product.
+The homomorphism argument separates preservation of existential equations
+from automorphism invariance of arbitrary first-order definitions.
+
+The number-field proof now constructs witnesses in the coefficient subring,
+without assuming integrality or finite generation. Remark 12.15 adds a
+consequence of the combined sources: the detector's assumed root has square
+`p`, `q` or `pq`, a nonsquare in the base number field. This radicand gives
+a one-witness existential ideal and a six-witness existential graph under
+the same hypotheses, alongside the two-witness complement detector. No
+additional quadratic extension or uniform formula over all number fields
+is asserted. This strengthens the documented conclusion at source level;
+all these omnific claims remain **Pending** in Lean.
+
+All 104 standard statement texts, all 228 labels and their numbers remain
+unchanged, and Section 13 onward is byte-identical. Three-pass LaTeX builds
+produce a 90-page article and 28-page catalogue without warnings or box
+diagnostics. The contents, status paragraph, reviewed pages and section
+transitions were visually checked, as was the catalogue's sole changed
+page. The independent inventory audit checks 3,089 standard results in 56
+main texts; 3,585 cited labels and 1,391 local Markdown destinations resolve.
+The earlier finite suites are unchanged and were not rerun: they are not
+proofs of the added definability consequence.
+
+Before editing, `0502930` was merged by fast-forward. Its conditioned
+inverse-cosine Lean results change no manuscript. The combined
+`LEAN_NUM_THREADS=2 lake build` passes 4,315 jobs, and the axiom audit
+accepts 13,458 declarations using only `propext`, `Classical.choice` and
+`Quot.sound`. The new material in Sections 6 and 10, Sections 13 and
+16–17, and remaining imported foundations, historical priority and source
+reconciliation still need review.
+
+## Constant-term review synchronized with the fraction integrations
+
+The final fetch brought documentation-only `c060ec8`, including the
+fraction integration `b829d8b`, quotient expansion `aae58bb`, and assembled
+definable-surreal, notation and Hahn–Hilbert reports (`337d4a4`, `600397e`,
+`e118d89`). The merge retains the Section 12 review from `229fe0b`
+byte-for-byte and all 143 upstream Diophantine standard statement texts,
+310 labels and their numbers. Section 13 onward matches the fetched source.
+The added fractions are Section 15; the previously reviewed coefficients
+section is now Section 16. Current review boundaries are updated throughout
+the reader map, report guide, reconciliation, ledger and catalogue.
+
+The catalogue now describes seven Diophantine and sixteen quotient sources,
+and the assembled two-source definability, three-source notation and
+two-source Hilbert reports with their maintained PDFs. Their assembly does
+not extend proof-review coverage. The ledger now indexes 3,271 standard
+results in 56 main texts (1,298 theorems, 668 lemmas, 677 propositions,
+628 corollaries), including 143 Diophantine and 227 quotient results. Its
+separate nine custom quotient main-theorem anchors are refreshed as well.
+The new reports' guides now distinguish these pending index entries from
+checked implementation mappings. New archives in `5610500` and `21016dc`
+remain to place and reconcile.
+
+The merged Diophantine PDF builds in three passes to 119 pages, and the
+catalogue to 28 pages, without warnings or box diagnostics. Widened contents
+number columns separate the new `15.10`–`15.12` entries from their titles.
+The contents, review status, Section 12 and its transitions were inspected,
+as were all eight changed catalogue pages. An independent source inventory
+audit passes, all 3,771 cited labels resolve, and all 1,406 local Markdown
+destinations resolve. The incoming changes touch no Lean file, root import,
+package configuration or toolchain, so the 4,315-job build and
+13,458-declaration axiom audit above remain applicable. The full document
+review, source reconciliation and formalization goals remain incomplete.
+
+## Final synchronization: the 57th report and Laurent root counts
+
+A further fetch brought `c6359e4` and `b895e86`. The placement adds one
+main text on discrete initial subgroups and omnific normalization, plus
+eight companions for five existing reports. The reader map and catalogue
+now include the 57th report; the ledger indexes its 26 standard statements
+and separately records its three custom main theorems. Its guide now uses
+the placed file paths and attributes the delivered PDF checks correctly:
+no maintained PDF was placed, and no independent proof review is claimed.
+The eight new companions remain to integrate.
+
+The ledger merge preserves the completed Section 12 review and the incoming
+Laurent algebraization, finite-angle root-count and Fourier-uniqueness
+implementation mapping. No already-mapped manuscript changed. The independent
+inventory audit passes 3,297 standard rows across 57 main texts; all 3,797
+cited labels and 1,413 local Markdown destinations resolve. The expanded
+catalogue builds cleanly in three passes to 29 pages; the new entry and
+adjacent family transition and final page were inspected. The reviewed
+Diophantine source and its 119-page PDF are unchanged in this synchronization.
+
+`LEAN_NUM_THREADS=2 lake build` passes 4,318 jobs. The audit accepts
+13,506 declarations using only `propext`, `Classical.choice` and
+`Quot.sound`. The full review and formalization goals remain incomplete.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

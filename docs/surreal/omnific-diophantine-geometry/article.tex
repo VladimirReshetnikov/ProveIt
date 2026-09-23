@@ -24,6 +24,10 @@
 \setlength{\parindent}{1.2em}
 \setlength{\emergencystretch}{2em}
 \setcounter{tocdepth}{2}
+% Leave room for two-digit subsection numbers such as 15.10.
+\makeatletter
+\renewcommand*{\l@subsection}{\@dottedtocline{2}{1.5em}{3.2em}}
+\makeatother
 \numberwithin{equation}{section}
 \newtheorem{theorem}{Theorem}[section]
 \newaliascnt{proposition}{theorem}
@@ -429,9 +433,10 @@ imported foundations still require review. Sources 06 and 07, placed in
 together with their material and that of source 13 in
 \cref{odg:sec:rigidity} and source 07's quartic
 (\cref{odg:def:rem:quarticvariant}). A subsequent pass reviews
-\cref{odg:def:sec:arithmetic}, including the distinction between intermediate
-rings and full positive-support rings; the rest of this material remains
-outside the reviews.
+\cref{odg:def:sec:arithmetic,odg:def:sec:ct}, including the distinction between
+intermediate rings and full positive-support rings, the detector witnesses
+and the number-field extension. The other newly inserted material
+remains outside the earlier reviews.
 Sources 08 and 09, placed in \texttt{a4dcb91}, were integrated after those
 reviews as \cref{odg:frac:sec:fractions}, together with additions to
 \cref{odg:sec:formal}, one partly answered question and five new questions in
@@ -3460,6 +3465,10 @@ No hypothesis that $\mathcal H$ is a domain, reduced, complete or Henselian is
 needed.
 \end{theorem}
 \begin{proof}
+Identify $\Bbbk$ with its image in $\mathcal H$; the retraction makes this
+embedding injective. Then $A=\varepsilon^{-1}(\mathfrak o)$, since every
+$z\in\mathcal H$ decomposes as $\varepsilon(z)+(z-\varepsilon(z))$, with the
+second summand in the kernel.
 If $as=f(t)$ and $\varepsilon(a)=0$, applying $\varepsilon$ gives
 $f(\varepsilon(t))=0$ with $\varepsilon(t)\in\mathfrak o$, contrary to (a).
 Conversely let $c=\varepsilon(a)\ne0$, choose $b$ by (c), and factor
@@ -3475,7 +3484,20 @@ the nonzero scalar $c$ is inverted, in the field $\Bbbk$.
 \end{proof}
 
 The augmentation need not be part of the ring language: the conclusion is a
-ring-language formula that detects its kernel \src{07}.
+ring-language formula that detects its kernel \src{07}, with the coefficients
+of $f$ as parameters. In the applications below $f\in\Z[T]$, so these are
+integer numerals and the formula is parameter-free.
+
+For a concrete example with zero divisors, take $\mathcal H=\R\times\R$,
+embed $\R$ diagonally, and let $\varepsilon(u,v)=u$. Then
+$A=\Z\times\R$. The zero divisor $a=(1,0)$ has nonzero augmentation and
+admits the certificate
+\[
+ t=(0,\sqrt{13}),\qquad s=(-48841,0),\qquad
+ as=(-48841,0)=\Lambda(t).
+\]
+Thus invertibility of $a$ is not required; the cancellation in the proof
+takes place in $\Bbbk$, after applying $\varepsilon$.
 
 \begin{theorem}[Detecting a nonzero constant term \src{07}]\label{odg:def:thm:detector}
 Let $(\mathfrak o,\Bbbk)$ be $(\Z,\R)$ or $(\Z[i],\C)$ and
@@ -3509,7 +3531,11 @@ nonconstant, $\ddeg t=\ddeg a$ and $\ddeg s=5\ddeg a$.
 \begin{proof}
 The witness $t$ is affine in $a$ and $s$ is a polynomial of degree five in
 $a$ with constant coefficients, so the support inclusions follow from finite
-convolution. Since $b\in\mathfrak o$ and $r\notin\mathfrak o$, $\alpha\ne0$; the
+convolution. Finite sumsets of reverse-well-ordered supports are again
+reverse well ordered, and each fixed exponent has only finitely many
+contributions in each such convolution. All exponents remain in $\Gamma$;
+the scalars $r,\alpha$ change coefficients only.
+Since $b\in\mathfrak o$ and $r\notin\mathfrak o$, $\alpha\ne0$; the
 leading coefficients of the two polynomials in $a$ are $\alpha$ and
 $\alpha^6$, and \cref{odg:def:lem:units} gives the degrees.
 \end{proof}
@@ -3517,6 +3543,9 @@ $\alpha^6$, and \cref{odg:def:lem:units} gives the degrees.
 The construction divides no series by $a$, expands no $(1+h)^{-1}$ and takes
 no limit; it applies unchanged to supports accumulating towards zero and to
 exponent groups of any rank \src{07}.
+
+The predicate $\Theta$ detects a nonzero constant term: it rejects the
+nonzero element $\omega$ and accepts the nonunit $1+\omega$.
 
 \begin{example}[Certificates \src{07}]\label{odg:def:ex:certificates}
 For $a=\omega$ (or $a=\sum_{n\ge1}\omega^{1/n}$) there is no certificate: a
@@ -3543,8 +3572,12 @@ a quotient with the same constant coefficient. So $A/(1+\omega)A\cong\Q$ has no
 root of $\Lambda$, and $(1+\omega)s=\Lambda(t)$ has no solution although
 $\ct(1+\omega)=1$. Here $\Q$ contains no root of $\Lambda$, so hypothesis (b)
 of \cref{odg:def:thm:augdetector} fails. The detector is not asserted for
-arbitrary intermediate rings, whose elements may not contain the polynomial
-witnesses.
+arbitrary intermediate rings, which need not contain the polynomial
+witnesses. For example, take $A=\Z[\omega]\subseteq\R[\omega]$.
+Here $\ct(A)\subseteq\Z$ and the ambient coefficient field contains
+$\sqrt{13}$, but a certificate $(1+\omega)s=\Lambda(t)$ in $A$ would give
+$\Lambda(t(-1))=0$ in $\Z$ upon evaluation at $\omega=-1$. Thus the full
+pullback condition $A=\mathfrak o+\ker\varepsilon$ also matters.
 \end{remark}
 
 \subsection{The largest ideal without a root}
@@ -3586,9 +3619,13 @@ existential one of \cref{odg:def:thm:ideal}; it is kept as the negation of the
 detector. Together, \cref{odg:def:thm:ideal,odg:def:thm:detector} make both $I$
 and its complement Diophantine. Source 07 also notes the external description
 $I=\bigcap_{n\ge1}nA$ for $\mathfrak o=\Z,\Z[i]$, of which
-\eqref{odg:eq:divkernel} is the case of $\Oz$; it must not be transferred to
-coefficient rings containing $\Q$, where division by ordinary integers
-detects nothing.
+\eqref{odg:eq:divkernel} is the case of $\Oz$. Indeed, writing $x=d+u$ with
+$d\in\mathfrak o$ and $u\in I$, we have $x\in nA$ exactly when
+$d\in n\mathfrak o$: necessity follows by applying $\ct$, and sufficiency
+uses $u/n\in I$. An ordinary integer divisible by every positive integer is
+zero; applying this to both coordinates gives the same conclusion in
+$\Z[i]$. If instead $\mathfrak o$ contains $\Q$, then $nA=A$ for every
+$n\ge1$, so this intersection does not detect $I$.
 
 \subsection{The graph of the constant term}
 
@@ -3607,6 +3644,10 @@ replaced by any Diophantine definition of $\Z$.
 The first clause says $n\in\mathfrak o$ (\cref{odg:def:thm:constants}); by
 \cref{odg:def:thm:ideal} the second says $x-n\in I$. In the decomposition
 $A=\mathfrak o\oplus I$ the two conditions together say exactly $n=\ct(x)$.
+Existence is explicit: take $n=\ct(x)$, choose the five witnesses for
+$\Xi(n)$, and put $y=(x-n)/\sqrt2\in I$. Uniqueness concerns the output
+$n$, not the six existential witnesses: two possible outputs differ by an
+element of $\mathfrak o\cap I=\{0\}$.
 \end{proof}
 
 Source 06 proves the theorem with its own predicates, the quintic in the real
@@ -3635,10 +3676,10 @@ when the three squared polynomials vanish, that is, when
 $\Psi_1(m,u,v,w_1,w_2,w_3)=0$ and $(x-m)^2=2y^2$. By \cref{odg:thm:guard},
 witnesses for the first equation exist exactly when $m\in\Z$, and by
 \cref{odg:def:thm:ideal}, a witness $y$ for the second exists exactly when
-$x-m\in\Pi$. Both together say $m=\ct(x)$. Each of the three squared
-polynomials has degree two, and the degree-four part of the sum is a sum of
-squares of three nonzero real quadratic forms, which is nonzero; so the total
-degree is four. The witnesses are $u,v,w_1,w_2,w_3,y$. The variant follows in
+$x-m\in\Pi$. Both together say $m=\ct(x)$. Every term has degree at most
+four, and the coefficient of $x^4$ is $1$, since $\Psi_1$ does not involve
+$x$; hence the total degree is exactly four. The witnesses are
+$u,v,w_1,w_2,w_3,y$. The variant follows in
 the same way from \cref{odg:thm:standarddef} or
 \cref{odg:def:rem:quarticvariant}.
 \end{proof}
@@ -3653,7 +3694,19 @@ $0\to I\to A\xrightarrow{\ct}\mathfrak o\to0$ has a parameter-free definable
 retraction and a parameter-free definable section; its kernel and the graph of
 the retraction are Diophantine.
 \end{corollary}
+\begin{proof}
+The predicate $\Xi$ defines the embedded copy of $\mathfrak o$.
+On that domain the section is the inclusion, with graph $x=n$.
+The retraction has graph $\mathsf{CT}$, and its kernel is defined by
+$\mathsf{Inf}$. These formulas have no parameters.
+\end{proof}
 
+The direct-sum decomposition is additive. In the coordinates
+$x=n+u\leftrightarrow(n,u)$ its multiplication is
+\[
+ (n,u)(m,v)=(nm,nv+mu+uv),
+\]
+so the splitting does not assert a direct product of rings.
 The existence of the sequence is elementary normal-form algebra; the content
 is the definability of the actual splitting, not merely an interpretation of
 $A/I$ \src{06}.
@@ -3669,7 +3722,8 @@ Source 07 defines the graph by $\mathsf{CT}^{\forall}(a,c):\Leftrightarrow
 \]
 where $\mathbf u$ is a quintuple of witnesses. In the first form the witnesses
 for $\Xi(c)$ do not occur in the universal inequality; in the second, a
-single pair $(s,t)$ already produces witnesses for $\Xi(c)$, and conversely a
+single pair, for example $(s,t)=(0,0)$, already produces witnesses for
+$\Xi(c)$, and conversely a
 fixed witness works for all $(s,t)$. Both are correct by
 \cref{odg:def:thm:constants,odg:def:cor:universal}. Source 07 claimed neither
 minimality nor the impossibility of an existential definition; source 06's
@@ -3704,7 +3758,10 @@ $\mathfrak o$, $I$ and $\ct$ up to $\sigma$, which source 07 derives from the
 parameter-free definitions. It does not say that homomorphisms kill the ideal:
 the identity does not. Preservation of the ideal, annihilation of the ideal and
 pointwise fixation of the real coefficients are three different assertions
-\src{06}. For set-sized $\Gamma'$ it is consistent with
+\src{06}. For general homomorphisms the proof uses preservation of
+equations and their existential witnesses; parameter-free first-order
+definability alone would only ensure invariance under automorphisms.
+For set-sized $\Gamma'$ it is consistent with
 \cref{odg:fact:settarget}: every unital homomorphism
 $\Oz\to\mathcal R_\Z(\R,\Gamma')$ is then $x\mapsto\ct(x)1$. Source 07's
 version concerns ring automorphisms of the coefficient-restricted ring; it
@@ -3728,8 +3785,10 @@ Galois extension of $\Q$, whose Galois group has finitely many subgroups. By
 Dirichlet's theorem choose a prime $p\equiv1\pmod8$ with
 $\Q(\sqrt p)\not\subseteq K$, and then a prime $q\equiv1\pmod{8p}$ with
 $\Q(\sqrt q),\Q(\sqrt{pq})\not\subseteq K$; only finitely many $q$ are
-excluded, since distinct values give distinct squarefree radicands $q$ and
-$pq$. Then none of $p,q,pq$ is a square in $K$. For an odd prime
+excluded, since distinct positive squarefree radicands give distinct
+quadratic fields. Both arithmetic progressions have residue $1$ coprime
+to their modulus, so Dirichlet supplies infinitely many candidates; also
+$q\equiv1\pmod p$ ensures $q\ne p$. Then none of $p,q,pq$ is a square in $K$. For an odd prime
 $\ell\notin\{p,q\}$, one of $p,q,pq$ is a nonzero square modulo $\ell$, as in
 \cref{odg:def:prop:intersective}. At $\ell=p$ use $q\equiv1\pmod p$. At
 $\ell=q$, quadratic reciprocity and $p\equiv1\pmod4$ give
@@ -3755,8 +3814,16 @@ The proof of \cref{odg:def:thm:constants} used Pell rigidity
 (\cref{odg:def:cor:pell}), the absence of roots of the polynomial in
 $\mathfrak o$ (\cref{odg:def:lem:tailored,odg:def:lem:units}), a nonzero integer
 in every $x\mathfrak o$ (\cref{odg:def:lem:intmultiple}) and roots modulo all
-integers; it applies verbatim. For the detector, given $c\ne0$ in
-$\mathfrak o$ choose a positive integer $m\in c\mathfrak o$ and $b\in\Z$ with
+integers. More explicitly, for $x\ne0$ the system forces $u,v\in\mathfrak o$
+by Pell rigidity and $v\ne0$ by root exclusion. Then $xw=v$ forces $x$ to
+have degree zero, hence to lie in $A\cap\Bbbk=\mathfrak o$.
+Conversely, if $0\ne x\in\mathfrak o$, choose $m>0$ in $x\mathfrak o$ and
+ordinary Pell coordinates $u,v$ with $0<v\in m\Z$. Put $w=v/x\in\mathfrak o$,
+choose $t\in\Z$ with $\Lambda_K(t)\in v\Z$, and put
+$s=\Lambda_K(t)/v\in\Z$. These are witnesses already in $\mathfrak o$;
+$x=0$ is admitted by the factors $x$ in the defining equations. No
+integrality or finite-generation hypothesis on $\mathfrak o$ is used.
+For the detector, given $c\ne0$ in $\mathfrak o$ choose a positive integer $m\in c\mathfrak o$ and $b\in\Z$ with
 $\Lambda_K(b)\in m\Z$, and apply \cref{odg:def:thm:augdetector} with any root of
 $\Lambda_K$ in $\Bbbk$. The ideal test and the graph use only the detector and
 the constant definition.
@@ -3785,6 +3852,21 @@ applied to the intermediate ring $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$, and
 the second says $x-n\in\Pi_\Bbbk(\Gamma)$. Both definitions are Diophantine;
 they improve source 07's universal and prenex formulas whenever
 $\sqrt\delta\in\Bbbk$, and need no root of $\Lambda_K$ in $\Bbbk$.
+
+In particular, the detector hypothesis in \cref{odg:def:thm:numberfield}
+already suffices for these existential conclusions. If
+$\Lambda_K(r)=0$ in the field $\Bbbk$, one of its three factors vanishes,
+so $r^2=\delta$ for some $\delta\in\{p,q,pq\}$. Each of these radicands is
+nonsquare in $K$, by \cref{odg:def:lem:tailored}. The preceding argument
+therefore applies with this $\delta$, including the composite choice $pq$:
+primality was only a way to find a suitable radicand. Thus the ideal has a
+one-witness Diophantine definition, its complement has the two-witness
+detector, and the graph of $\ct$ has a six-witness Diophantine definition
+under exactly the stated detector hypotheses. This is a further consequence
+of combining sources 06 and 07. The integer $\delta$ is chosen once for
+the fixed coefficient fields; the formulas contain its numeral, not a
+parameter naming $r$, and no uniform choice across all number fields is
+asserted.
 \end{remark}
 
 \section{Coefficient reconstruction and logical consequences}\label{odg:def:sec:reconstruction}
