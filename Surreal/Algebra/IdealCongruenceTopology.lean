@@ -101,4 +101,36 @@ noncomputable def separationQuotientEquiv [TopologicalSpace R] [IsTopologicalRin
     (J : Ideal R) (h : closure ({0} : Set R) = (J : Set R)) (x : R) :
     separationQuotientEquiv J h (SeparationQuotient.mk x) = Ideal.Quotient.mk J x := rfl
 
+omit [Nonempty ι] in
+/-- Matching ideal neighborhood bases through a ring map identifies its induced topology. -/
+theorem isInducing_of_hasBasis {S : Type*} [CommRing S]
+    [TopologicalSpace R] [TopologicalSpace S] (J : ι → Ideal S) (f : R →+* S)
+    (hR : ∀ x, (𝓝 x).HasBasis (fun _ : ι => True) (fun i => {y | y - x ∈ I i}))
+    (hS : ∀ x, (𝓝 x).HasBasis (fun _ : ι => True) (fun i => {y | y - x ∈ J i}))
+    (hmem : ∀ i x, x ∈ I i ↔ f x ∈ J i) : IsInducing f := by
+  apply isInducing_iff_nhds.mpr
+  intro x
+  apply (hR x).eq_of_same_basis
+  convert (hS (f x)).comap f using 1
+  ext i y
+  change y - x ∈ I i ↔ f y - f x ∈ J i
+  rw [hmem, map_sub]
+
+/-- An inducing surjective ring map identifies a separation quotient topologically,
+with precisely the function of the given ring equivalence. -/
+noncomputable def separationHomeomorph {S : Type*} [CommRing S]
+    [TopologicalSpace R] [IsTopologicalRing R] [TopologicalSpace S]
+    (e : SeparationQuotient R ≃+* S) (f : R →+* S)
+    (he : ∀ x, e (SeparationQuotient.mk x) = f x)
+    (hf : IsInducing f) (hs : Function.Surjective f) : SeparationQuotient R ≃ₜ S where
+  toEquiv := e.toEquiv
+  continuous_toFun := SeparationQuotient.isQuotientMap_mk.continuous_iff.mpr (by
+    change Continuous (fun x => e (SeparationQuotient.mk x))
+    simpa only [Function.comp_def, he] using hf.continuous)
+  continuous_invFun := (hf.isQuotientMap_of_surjective hs).continuous_iff.mpr (by
+    convert (SeparationQuotient.continuous_mk : Continuous (SeparationQuotient.mk :
+      R → SeparationQuotient R)) using 1
+    funext x
+    exact e.symm_apply_eq.mpr (he x).symm)
+
 end Surreal.IdealCongruenceTopology

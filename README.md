@@ -186,7 +186,9 @@ infinite ideal. Both the ordinary congruence topology and each `p`-adic
 topology are proved non-Hausdorff: the closure of zero is precisely that
 ideal, and two omnific integers are topologically indistinguishable exactly
 when their integer constant terms agree. Their separation quotients are
-ring-isomorphic to `ℤ`, with constant extraction as the canonical map.
+ring-isomorphic and homeomorphic to `ℤ` with the corresponding ordinary
+congruence or ideal-adic topology. Constant extraction induces each omnific
+topology and is the canonical map to its separated quotient.
 The profinite ring isomorphism is also proved: the inverse limit over all
 positive ordinary moduli is exactly the ordinary profinite integer ring,
 and its canonical map again has the purely infinite ideal as its kernel.
