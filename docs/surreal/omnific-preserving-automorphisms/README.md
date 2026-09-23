@@ -819,7 +819,8 @@ depend on it.
   - 32.5–32.7: removing exact monomial preservation, elementarity of
     coefficient-fixing pair embeddings, coefficient sections (11).
   - 32.8: conjugacy of proper copies (11, 13); **partly answered** by
-    Theorem 29.4.
+    Theorem 29.4. The independent-copies report asks its pair version at a
+    fixed Hahn core (batch 31 note).
   - 32.9: homogeneity of the pair (12, 13).
   - 32.10: surcomplex embeddings without a real form (11).
   - 32.11: the proper-class strong dual (12, 14).
@@ -833,7 +834,9 @@ depend on it.
     existence stays open.
   - 32.15: exponential, omega-map and differential structure (11, 12, 13).
   - 32.16–32.18: restricted workspaces and compositions (11); formalization
-    (11, 12, 13, 14).
+    (11, 12, 13, 14). For 32.17, image inclusion and intersection inside one
+    independent family with `ρ = id` are settled by `isc:thm:boolean` (batch 31
+    status note); composition and the general case stay open.
 - **Question 37.1** (Part IV, 14), new: can the countable detector property be
   weakened to a necessary and sufficient closure condition for product
   detection, and which computable or transseries subfields satisfy it? Example
@@ -848,14 +851,16 @@ depend on it.
   are classified, and those with a common shift set integrate to automorphisms
   inside `No`. The shift-zero and other cases stay open.
 
-Questions of other reports (Section 11.1). These are recorded here only; the
-other reports were not edited.
+Questions of other reports (Section 11.1). These are recorded here; the
+other reports were not edited by these merges (the quotient report received a
+reciprocal status note in batch 31).
 
 - **`osq:q:invisible`**, second clause ("How much can an automorphism of `Oz`
   do inside `Π` while fixing `ct`?"): **answered** in batch 30 (Corollary 24.4).
   Every automorphism is strong (Theorem 23.2) and is `M_{χ,τ} ∘ u` with `u`
-  classified by Theorem 3.3. The first clause stays open. The quotient report
-  still records the question as open; a pointer there is requested, not made.
+  classified by Theorem 3.3. The first clause stays open. Since batch 31 the
+  quotient report records the question as partly answered, citing Corollary
+  24.4.
 - **`odg:def:q:realform`**: **negative information** only (Theorem 10.2,
   Proposition 10.3). It is not answered.
 - **The surcomplex report's "effective descriptions inside the leading-term
@@ -950,8 +955,8 @@ Appendix A.3 records these.
   (`osq:`).
   - Its `osq:q:invisible` is partly answered: the second clause by Corollary 24.4
     (from 12 and 13, and again from 14's factorization and automatic
-    strongness), the first clause not. The quotient report still records the
-    question as open.
+    strongness), the first clause not. Since batch 31 the quotient report
+    records this in its status of the question.
   - Its `osq:prop:classder` derivations are Part II's `D_b`.
   - Its `osq:thm:derivations` (derivations into set-sized modules vanish) is
     consistent with them.
@@ -983,6 +988,17 @@ Appendix A.3 records these.
   (`duals:`). It studies `K`-linear maps on vector-valued Hahn spaces; the
   adjoints of Section 25 are `k`-linear scalar maps for the pairing `ct(xy)`, a
   different convention. No exhaustive non-overlap is claimed.
+- [`independent-surreal-copies`](../independent-surreal-copies/) (`isc:`;
+  batch 31). Its monomial lifts are the maps `J_{h,id}` of Theorem 26.3.
+  `isc:cor:parameters` extends the fixing clause of Theorem 29.6 to an
+  `On`-indexed family whose pairwise intersection is exactly the full Hahn
+  field `R((t^H))` on the rational span `H` of the supports of `A`, jointly
+  linearly disjoint over it (note after Theorem 29.6; for its explicit `H = 0`
+  copies Theorem 28.3(ii) gives closed, uniformly discrete images, a `[merge]`
+  observation). `isc:thm:boolean` settles image inclusion and intersection
+  inside one independent family with `ρ = id` (status note after Question
+  32.17); its second research question is the pair version of Question 32.8
+  (note after that question). Both questions stay open in general.
 - [`large-cardinal-embeddings-and-normal-forms`](../../foundations-and-computation/large-cardinal-embeddings-and-normal-forms/)
   (batch 30, written concurrently; cited by directory only). Under a measurable
   cardinal its sign-sequence embedding answers Question 32.2 negatively; it is not
