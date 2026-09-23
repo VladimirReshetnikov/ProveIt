@@ -8,7 +8,7 @@ draft; not refereed; no Lean formalization.
 
 ```
 article.tex        the report, standalone LaTeX with an internal bibliography
-article.pdf        the compiled report, 35 pages (title, contents i-ii, pages 1-32)
+article.pdf        the compiled report, 37 pages (title, contents i-ii, pages 1-34)
 README.md          this guide
 source_audit.md    the manuscript's own repository and literature audit, as delivered
 code/              verify_examples.py            exact finite checks (standard library only)
@@ -25,13 +25,16 @@ The files in `code/` and `data/` and `source_audit.md` are byte-identical to
 the delivery; `source_audit.md` describes the repository at the manuscript's
 pin, not the current tree (see "Relation to neighbouring reports").
 
-The current proof review covers Sections 2–5: support lemmas and regrouping,
-valuation continuity, strong operators, coefficient-rank completion, cyclicity
-and cofinality boundaries, spherical completeness and contractive extension.
-The proofs now make zero cases, finite coefficient rearrangements, induced
-uniformity and the Zorn argument explicit. The order-unit summary distinguishes
-strict enlargement of the algebraic part from the noncyclic middle case.
-Sections 6 onward and remaining imports/source reconciliation are pending;
+The current proof review covers Sections 2–9: support and strong operators,
+coefficient-rank completion, spherical completeness and extension, continuous
+duality, the two failures of strongness, Hilbert duals and closed hyperplanes.
+The arguments now make finite rearrangements, net convergence, separation,
+quotient maps, norm comparisons, Riesz coefficients and cardinal bounds
+explicit. The norm-attainment comparison distinguishes positive from
+nonnegative bounds, including the zero operator. The hyperplane has zero
+orthogonal complement and no orthogonal direct-sum complement; its distance
+set has no infimum. All result numbers and labels are preserved.
+Sections 10 onward and remaining imports/source reconciliation are pending;
 see the [review record](../../REVIEW.md). No new Lean coverage is claimed.
 
 ## The setting
@@ -145,7 +148,9 @@ the manuscript's limitations was dropped. The main ones:
   formulas. The exact sequence has no canonical splitting; invisible
   functionals have no canonical transport under enlargement.
 - No least real-Hahn operator norm is defined; `F`-valued boundedness is not
-  an ordinary norm estimate.
+  an ordinary norm estimate. The spectral norm-attainment theorem uses
+  **nonnegative** bounds; the zero operator has least nonnegative bound `0`
+  but no least positive bound.
 - Everything is set-sized: no Zorn argument over a proper class, no dual of a
   class-sized space over `No[i]`; the intrinsic topology is not the fine
   topology; a Hilbert vector is not a surcomplex scalar.

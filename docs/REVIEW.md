@@ -46,7 +46,7 @@ No row below certifies every claim in an entire report.
 | [Hahn–Herglotz positivity](surcomplex/hahn-herglotz-positivity/) | Read the main support, scalar and matrix normalization, Harnack, null-ideal, functional, Fourier, quadrature, Schur, hierarchy and finite-prefix proof chains. Proved the Harnack, halo-positivity and common-kernel conclusions without divisibility by scalar normalization of quadratic forms. Expanded the zero-form and matrix-coefficient arguments; supplied the scalar-normalization positivity hypothesis and the integer-group obstruction to identity-block congruence. Corrected finite-valued versus finite-support terminology and the false disjointness of the strong and coefficientwise measure classes. Aligned partial Lean coverage and Fourier notation. Checked the classical disk representation against Bhattacharyya–Bhowmik–Kumar v3 and only the constant-kernel clause of Gesztesy–Tsekanovskii Lemma 5.3 against its preprint; other imports, priority and source-claim reconciliation remain outside this review. |
 | [Expanding polynomial dynamics](surcomplex/expanding-polynomial-dynamics/) | Read the main scale-ideal, inverse-branch, universal-center, fiber, periodicity, topology, extension, deformation, bounded-orbit and surreal-specialization proofs. Made degree preservation explicit in summaries and supplied a higher-degree two-cycle counterexample; clarified universal formal substitution and coefficient stabilization, and supplied the missing noncompactness argument. Distinguished an order unit from rank one, spelled out the proper-class specialization using set-sized compactness, and corrected the README’s ambiguous finite-orbit wording. Aligned partial Lean coverage and the notation guide. Checked the classical quadratic Cantor comparison and spherical Fatou/Julia definitions against Benedetto’s notes; other imports, priority and source-claim reconciliation remain separate. |
 | [Finite surreal probability](surreal/finite-surreal-probability/) | Reviewed main text, Sections 2–17. Expanded workspace closure and standard-part existence, uniqueness, quotient and kernel arguments. Corrected the finite point-weight representation to require all subsets measurable; smaller finite algebras have atom weights. Expanded common-partition expectation, zero-second-moment Cauchy–Schwarz, tail bounds, finite Jensen, positive-denominator Bayes and chain rules, conditional tower and total variance, and both directions of finite coherence. Distinguished arbitrary versions on null atoms from pointwise identities and coherent laws from regular laws. Checked the canonical Hahn embedding and exponential transfer against van den Dries–Ehrlich Section 2 and its erratum. Expanded the conditional skeleton, its pairwise recovery, signed-row selection and Bayes leading coefficients. Corrected the joint-normalizer hypothesis for successive updates, neutral-likelihood wording, the difference numerator sign and sufficient-versus-necessary precision claim. Added the surreal-payoff and exact-threshold counterexamples. Checked the conditional-space comparison and real-payoff domain against Halpern Definition 2.1 and Section 4. Expanded logit inverse and domain checks, softmax gauge and perturbation bounds, separated-scale concentration, entropy and KL equality, support inheritance in the chain rule and data processing, and scoring identities. Distinguished the boundary logarithmic-score infimum from an attained interior minimum. Expanded Gibbs minimization, finite path consistency, adapted optional stopping and Bernoulli variance. Corrected the posterior-support claim after smoothing and the leading coefficient for a general infinitesimal scale. Added nonseparable logistic and non-stopping-time counterexamples and explicit zero-horizon cases. Expanded strong geometric regrouping, common-support coefficient measures, normalized hierarchy support and conditional shadows, real-observable dominated convergence and product Fubini, and the countable-support integration boundary. Distinguished uniform bounds from leading-component essential bounds. Expanded posterior coefficient measurability and added an explicit failure of coefficient integrability before density cancellation; checked the ordinary disintegration input against Kallenberg Theorem 8.5. Expanded the coin coefficient-variation bounds, polynomial-sign argument for relative field embeddings, ultrapower positivity, parity nonuniqueness and the finite compactness models. Replaced the logit change-of-variable shortcut with original Hahn leading data; distinguished finite-support permutations from unrestricted invariance. Checked the cited fine-ideal and fine-ultrafilter construction inputs. Expanded the rare-regime likelihood, martingale and full-observation conditional expectation calculations, supplied a fourth-moment proof of the component strong laws, and separated coefficientwise limits from the nowhere order-Cauchy conclusion. Expanded shadow continuity, internal-algebra measure extension and an explicit Poisson ultraproduct with diagonal saturation. Added a logarithm error bound, a measurable ordinary count and a Markov check for escaped mass. Aligned model weights, exponential hypotheses, notation and dependency claims in the final sections. Remaining imports and source/provenance reconciliation are pending. |
-| [Three duals of Hahn vector spaces](surcomplex/three-duals-of-hahn-vector-spaces/) | Reviewed Sections 2–5. Expanded support facts, arbitrary regrouping, finite triple convolutions, the uniform shift bound and zero-group cases. Made the strong-map isomorphism and the descending-support counterexample explicit. Expanded coefficient-rank approximation by nets, nonzero-scalar closure and the countable-cofinal sequence construction. Corrected the guide's order-unit summary to distinguish strict completion from the noncyclic middle case. Expanded compatible-ball and Cauchy-net completeness, ball nesting, set-sized Zorn extension and its empty-chain case; corrected the claim that selecting one element of a known nonempty set separately requires choice. Sections 6 onward and remaining imports/source reconciliation are pending. |
+| [Three duals of Hahn vector spaces](surcomplex/three-duals-of-hahn-vector-spaces/) | Reviewed Sections 2–9. Expanded support facts, arbitrary regrouping, finite triple convolutions, the uniform shift bound and zero-group cases. Made the strong-map isomorphism and the descending-support counterexample explicit. Expanded coefficient-rank approximation by nets, nonzero-scalar closure and the countable-cofinal sequence construction. Corrected the guide's order-unit summary to distinguish strict completion from the noncyclic middle case. Expanded compatible-ball and Cauchy-net completeness, ball nesting, set-sized Zorn extension and its empty-chain case; corrected the claim that selecting one element of a known nonempty set separately requires choice. Expanded continuous restriction and separation, the canonical quotient kernel, cyclic finite-subsum convergence, Hilbert norm identities and topology, Riesz coefficients and cardinality. Corrected positive-versus-nonnegative bound scope at the zero operator and characterized bounds for unbounded leading coefficients. Expanded dense-kernel, projection, orthogonality and distance-cut proofs; distinguished an orthogonal complement from an orthogonal direct-sum complement. Sections 10 onward and remaining imports/source reconciliation are pending. |
 
 
 Each correction was reviewed against its local definitions and downstream uses
@@ -1239,6 +1239,58 @@ for 7,210 declarations using only `propext`, `Classical.choice` and
 destinations in 108 files resolve. Six incoming gamma/zeta archives remain
 unassembled and are outside the main-source inventory.
 
+### Three-duals continuous duality and Hilbert geometry
+
+The next three-duals pass reviews Sections 6–9. It verifies closure of the
+restriction space under scalar operations, explains why independent constants
+prevent leading cancellation, and expands the separation of every vector
+outside the coefficient-rank completion. The second quotient now has its
+canonical map and exact kernel written out. The finite-dimensional proof
+correctly uses a coefficient-space basis, and the cyclic argument gives the
+finite-index sets, shifted cuts and finite-subsum nets that justify continuity
+implying strongness. The constant-one obstruction is explicitly independent
+of characteristic; the zero-group endpoint is recorded separately.
+
+The Hilbert pass expands norm homogeneity, the real-part comparison in the
+triangle inequality, explicit norm/valuation neighborhoods, strongness of
+represented functionals, the adjoint convention and the cardinal quotient
+argument without a continuum hypothesis. It corrects a citation-scope error:
+the spectral norm-attainment theorem uses nonnegative bounds on nonzero
+coefficient spaces. The zero operator has least nonnegative bound zero but
+no least positive bound. For an ordinarily unbounded leading operator
+coefficient at exponent `s`, all positive Hahn bounds are characterized by
+`v(M) < s`; they need not be the monomials displayed as examples.
+
+The hyperplane pass gives the ordinary dense-kernel contradiction, the
+algebraic direct sum and projection bound, and the exact identity
+`v(u-m) = min(0,v(m))` for distances from an exterior constant. It distinguishes
+the existing zero orthogonal complement from the absent orthogonal direct-sum
+complement. The distance statement repeats the existing nonzero-group
+convention, and the proof excludes every possible infimum, including zero.
+Independent reviews of all four revised sections found no further issue.
+The appendix now also reflects the earlier correction from a claim of two
+uses of choice to the set-sized Zorn argument actually used.
+
+Validation: baseline and revised PDFs compile in three warning-free passes,
+at 35 and 37 pages; the changed pages and contents were visually checked.
+All 77 source labels and numbers (154 with cleveref companions) and all three
+historical audit/code/data artifacts are preserved. The delivered verifier
+reproduces its 610 exact assertions and byte-identical JSON. These finite
+checks do not establish infinite-dimensional duality or the choice-based
+constructions. The independent inventory checks all 2,440 indexed statements
+in 48 sources; all 2,695 cited source labels and 1,015 local Markdown
+destinations resolve. Sections 10 onward and remaining imports/source
+reconciliation are pending. No Lean coverage is added by this proof review.
+
+Merged `fc1c12a` after this review, adding the actual-surcomplex direction
+stability formalization and its root imports. No manuscript source changed
+in that merge. The combined Lean build passed all 3,987 jobs; the default
+axiom audit accepted 7,253 declarations using only `propext`,
+`Classical.choice` and `Quot.sound`. The statement index remains at 2,440
+results in 48 sources, all 2,695 cited labels resolve, and all 1,018 local
+Markdown destinations in 108 files resolve. The merge preserves the reviewed
+three-duals source and PDF exactly.
+
 ## Remaining scope
 
 Batch 22, placed in `7b5f934`, was assembled in `68e2960` and catalogued
@@ -1274,7 +1326,7 @@ the earlier review scopes. Delivered verification and source-audit artifacts
 remain historical evidence, not a substitute for that review.
 
 Batch 19's [three-duals report](surcomplex/three-duals-of-hahn-vector-spaces/)
-has now received the Sections 2–5 review recorded above; its later proofs and
+has now received the Sections 2–9 review recorded above; its later proofs and
 remaining imports/source reconciliation are pending. Three other reports
 from that batch have not yet received this mathematical review:
 [hidden negative Hermitian directions](surcomplex/hidden-negative-hermitian-directions/),
