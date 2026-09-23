@@ -106,6 +106,16 @@ not the current collection. Its original repository operations were reads.
 The maintained article now labels this scope explicitly; the historical
 `data/source-audit.json` is preserved unchanged.
 
+The choice of a global exponential beyond the finite-phase domain, which this
+report declines to make, is taken up in
+[gamma-and-zeta-functions](../../surcomplex/gamma-and-zeta-functions/). There
+Gamma with a named phase is built on the whole horizontal tube
+(`gz:thm:gamma-tube`); outside the finite-phase domain every value is phase data
+(`gz:prop:phase-locus`); and on the vertical strip of infinite height no
+exponential extending the finite-phase one gives reflection (`gz:thm:strip`).
+Its Stirling baseline, recurrence, Gauss formula and phase lemma are this
+report's, cited there.
+
 ## What it does NOT claim
 
 - **Not a resolution of a named published open problem.** The article says so

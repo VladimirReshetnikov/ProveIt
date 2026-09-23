@@ -1,6 +1,6 @@
 # The surreal and surcomplex reports
 
-This collection has **48 research reports in five families**. Start with the
+This collection has **49 research reports in five families**. Start with the
 reading routes below, use the [notation guide](NOTATION.md) when moving between
 reports, and consult the [typeset catalogue](manifest.pdf)
 ([source](manifest.tex)) for longer descriptions. The
@@ -15,6 +15,11 @@ formal verification of the collection is claimed. Each report records its
 hypotheses, limitations and provenance.
 
 ## Newest reports
+
+Batch 23 (placed in `e4f8848`, written in `7af7056`) adds
+[Gamma and zeta](surcomplex/gamma-and-zeta-functions/), merged from six
+manuscripts on the same questions after a claim-by-claim comparison; its
+proof review and formalization remain pending.
 
 Batch 22 (placed in `7b5f934`, written in `68e2960`) adds two reports,
 [first-kappa coefficients](surcomplex/first-kappa-coefficients/) and
@@ -94,7 +99,7 @@ those powers but uses the integer exponent lattice. Their common part includes
 `ℝ[[ω⁻¹]]`. Neither domain theorem subsumes the other. Here `⊗` denotes
 **natural ordinal multiplication**, as distinguished in the notation guide.
 
-## Surcomplex numbers: twenty-five reports
+## Surcomplex numbers: twenty-six reports
 
 | Report | Main subject and useful prerequisite |
 |---|---|
@@ -123,6 +128,7 @@ those powers but uses the integer exponent lattice. Their common part includes
 | [Surcomplex field automorphisms](surcomplex/surcomplex-field-automorphisms/) | Plain, valued, value-fixing and 1-automorphisms of `No(i)`; the real-axis stabilizer `Aut(No)×C₂` and phase twists that move `No`; exponential results are the rigidity report's |
 | [First-κ coefficients](surcomplex/first-kappa-coefficients/) | Hahn series with fewer than `κ` terms: omitted types classified by the first `κ` coefficients, completion iff `cf(Γ) ≠ cf(κ)`, never spherically complete |
 | [Single-dilation Hahn support](surcomplex/single-dilation-hahn-support/) | One monomial dilation defines coefficients, monomials and the valuation ring; its centralizer among all field automorphisms; undecidability |
+| [Gamma and zeta](surcomplex/gamma-and-zeta-functions/) | Finite lifts and RH, strongly summable Dirichlet series at infinity, Stirling and Hurwitz, Gamma and zeta on the horizontal tube for any phase, reflection obstructions at infinite height; six manuscripts reconciled |
 
 Three distinctions recur throughout these reports.
 

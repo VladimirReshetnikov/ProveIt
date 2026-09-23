@@ -7,7 +7,8 @@ The ultrametric law for actual surcomplex displacements prevents a
 triangle from having just one dominant side scale. This proves the
 closing side-valuation assertion of `trigonometry:thm:trianglelaws` and
 the minimum-attainment clause of `trigonometry:thm:valuationtriangle`.
-The latter theorem's angle-defect and radius identities are separate.
+The latter theorem's angle-defect and radius identities are proved in
+`TriangleValuation.lean`.
 -/
 
 universe u
