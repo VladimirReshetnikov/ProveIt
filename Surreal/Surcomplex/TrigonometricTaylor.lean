@@ -227,4 +227,25 @@ theorem powerSeriesEvaluation_taylor_sin_zero (ε : SignSequence.{u})
 
 end
 
+/-- Prescribing the ordinary Taylor rules on every monad uniquely normalizes the finite pair.
+This is `trigonometry:prop:normalization`; the rules already imply ordinary-point agreement. -/
+theorem finiteTrigonometry_unique_of_taylor
+    (S C : SignSequence.FiniteElement.{u} → SignSequence.{u})
+    (hS : ∀ (r : ℝ) (θ : SignSequence.FiniteElement.{u})
+      (hε : SignSequence.IsInfinitesimal (θ.val - SignSequence.ofReal r)),
+      S θ = SignSequence.ofReal (Real.sin r) * cosTaylorSum (θ.val - SignSequence.ofReal r) hε +
+        SignSequence.ofReal (Real.cos r) * sinTaylorSum (θ.val - SignSequence.ofReal r) hε)
+    (hC : ∀ (r : ℝ) (θ : SignSequence.FiniteElement.{u})
+      (hε : SignSequence.IsInfinitesimal (θ.val - SignSequence.ofReal r)),
+      C θ = SignSequence.ofReal (Real.cos r) * cosTaylorSum (θ.val - SignSequence.ofReal r) hε -
+        SignSequence.ofReal (Real.sin r) * sinTaylorSum (θ.val - SignSequence.ofReal r) hε) :
+    S = finiteSin ∧ C = finiteCos := by
+  constructor
+  · funext θ
+    exact (hS (SignSequence.standardPartHom θ) θ
+      (SignSequence.infinitesimal_sub_standardPart θ.property)).trans (finiteSin_eq_taylor θ).symm
+  · funext θ
+    exact (hC (SignSequence.standardPartHom θ) θ
+      (SignSequence.infinitesimal_sub_standardPart θ.property)).trans (finiteCos_eq_taylor θ).symm
+
 end Surreal.Surcomplex

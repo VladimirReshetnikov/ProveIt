@@ -414,12 +414,15 @@ lifts to every actual interior point when the function is analytic on the
 closed interval. This proves the finite trigonometric signs, strict
 monotonicity on the principal intervals, Jordan's inequality, the absolute
 sine bound, and the strict sine/input/tangent comparison, including
-infinitesimal distances from the endpoints.
+infinitesimal distances from the endpoints. The explicit sine and tangent
+expansions through degree five and cosine defect through degree four have
+finite normalized remainders. Their exact valuations and infinitesimal
+relative errors give the stated algebraic asymptotic equivalents. Prescribing
+the ordinary Taylor rules on every monad uniquely determines the finite pair.
 A nonconstant infinitesimal-coset indicator has zero fine derivative everywhere.
 The approximation inequalities alone never give uniqueness: a sufficiently
 small positive monomial produces another solution. Multivariable analytic
-lifting, the explicit trigonometric leading-order expansions, and universe
-coherence remain separate obligations.
+lifting and universe coherence remain separate obligations.
 The reports placed after the canonical inventory are formalized clause by
 clause. Strong sums of nonnegative Hahn series are nonnegative, and strongly
 summable weights define strong Hahn measures on all subsets, additive on every
