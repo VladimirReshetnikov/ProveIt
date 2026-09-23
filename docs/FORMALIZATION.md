@@ -4540,8 +4540,10 @@ consequences. Sources 08–09 add Section 15 and clauses
 in Sections 17–18 (`b829d8b`). The subsequent denominator review covers
 all of Section 15. Further passes cover the Gaussian-fiber and norm
 additions in Section 6, source 07's quartic in Section 10 and the
-elementary ring/Euler subsections 16.2–16.3. The geometric arguments
-and later additions remain unreviewed. The ring/retraction proposition
+elementary ring/Euler subsections 16.2–16.3, followed by the squarefree
+and Weierstrass arguments in Section 16.4. The two-ring principle,
+later geometric arguments and later additions remain unreviewed.
+The ring/retraction proposition
 `odg:prop:ring`, degree lemma `odg:lem:degree`, unit/finite-element
 proposition `odg:prop:units`, exact floor theorem `odg:thm:floor`,
 one-variable rigidity `odg:prop:univariate`, ordinary moduli

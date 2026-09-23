@@ -191,6 +191,11 @@ infinite omnific integer. The [ordinary residue package](../../../Surreal/Founda
 proves `odg:thm:finitequotients`, and
 [integer divisor rigidity](../../../Surreal/Foundations/OmnificIntegerDivisors.lean)
 proves `odg:prop:finitedivisors`.
+The [ordinary arithmetic package](../../../Surreal/Foundations/OmnificOrdinaryArithmetic.lean)
+proves the primality, mixed-gcd and Chinese remainder corollary
+`odg:cor:mixedgcd`. The [finite quotient package](../../../Surreal/Foundations/OmnificFiniteQuotients.lean)
+proves `odg:cor:charideals`, including unique ordinary moduli and
+factorization of every finite-target homomorphism through the constant term.
 Other results remain **Pending** unless individually mapped in the ledger.
 
 ## Thirteen sources, one report

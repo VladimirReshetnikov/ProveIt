@@ -3384,6 +3384,23 @@ The independent inventory validates 3,650 standard results in 60 reports;
 all 4,188 cited source references and 1,535 local Markdown destinations
 resolve. The root README and exact review boundaries are refreshed.
 
+## Combined validation with ordinary arithmetic and finite quotients
+
+After the squarefree review commit `fbe795f`, synchronization through
+`753f4b5` adds `odg:cor:mixedgcd` and `odg:cor:charideals`: ordinary
+primes and maximal ideals, mixed gcds, finite Chinese remainders, unique
+ordinary moduli for proper ideals containing an integer, and factorization
+of every finite-target homomorphism through the constant term. The
+incoming declarations and mappings agree with the unchanged manuscript
+statements. The report guide includes this new coverage; the later
+geometric results remain pending. No LaTeX or PDF changed in this sync.
+
+The combined `LEAN_NUM_THREADS=2 lake build` passes 4,406 jobs and its
+axiom audit accepts 14,809 declarations using only `propext`,
+`Classical.choice` and `Quot.sound`. All 4,188 cited source references
+and 1,539 local Markdown destinations resolve. The squarefree proof
+review remains distinct from this new checked ordinary arithmetic.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
