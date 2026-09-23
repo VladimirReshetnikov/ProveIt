@@ -79,9 +79,10 @@ strongness for `Oz` automorphisms; these new claims await proof review.
 
 Placement `9d28e28` adds [independent surreal copies](surreal/independent-surreal-copies/),
 a proposed construction of copies sharing a prescribed set-sized Hahn core,
-written as a single-source report in `781b19e`. Two of its eight companions
+written as a single-source report in `781b19e`. Three of its eight companions
 are now integrated: automatic summability (`d4d72d7`) and singular curves
-(`1ad4ad8`), while the other six await integration. The singular-curve addition
+(`1ad4ad8`), and finite tests at new scales (`9b463f7`), while the other
+five await integration. The singular-curve addition
 claims a normalization criterion beyond the reviewed smooth case; it remains
 outside the Diophantine proof-review boundary. The new report and its
 class-foundation assumptions remain pending proof review and Lean formalization.

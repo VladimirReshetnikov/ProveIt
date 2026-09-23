@@ -180,7 +180,11 @@ entire purely infinite ideal. Nonzero monomials therefore prove that the
 omnific ring is not residually finite. Constant extraction is also the
 unique unital homomorphism to `ℤ`, and every omnific endomorphism preserves
 it. For every ordinary prime `p`, the actual omnific ring's `p`-adic
-completion is ring-isomorphic to Mathlib's `ℤ_[p]`. Its canonical map takes
+completion is ring-isomorphic and homeomorphic to Mathlib's `ℤ_[p]` with
+its usual metric topology. The source has the inverse-limit topology of
+discrete prime-power quotients; it is compact, Hausdorff and totally
+disconnected. Its canonical map is dense and induces the original omnific
+`p`-adic topology. This map takes
 the integer constant term into `ℤ_[p]`, so its kernel is exactly the purely
 infinite ideal. Both the ordinary congruence topology and each `p`-adic
 topology are proved non-Hausdorff: the closure of zero is precisely that
@@ -196,11 +200,10 @@ The construction satisfies Mathlib's limit universal property, and every
 finite-index omnific ideal occurs in the diagram. With the inverse-limit
 topology this isomorphism is also a homeomorphism of compact Hausdorff,
 totally disconnected topological rings. The canonical map has dense image
-and induces exactly the omnific congruence topology. The `p`-adic completion
-homeomorphism, higher Diophantine and general set-sized quotient results
-remain pending; source review is distinct from checked formalization.
+and induces exactly the omnific congruence topology. Higher Diophantine
+and general set-sized quotient results remain pending; source review is distinct from checked formalization.
 
-The new [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
+The [independent-copies report](docs/surreal/independent-surreal-copies/article.tex)
 proposes strong surreal self-embeddings with prescribed common Hahn cores,
 and transcendental gaps in arithmetic intersections and ordinary composita.
 Its class constructions and proofs remain pending in Lean.

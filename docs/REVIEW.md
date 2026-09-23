@@ -3767,6 +3767,31 @@ the new automorphism arguments and remaining imported foundations still
 need independent proof review. In particular, indexing the normalization
 criterion does not justify using a normalization lift without proof.
 
+## Prime-adic topology and finite-test synchronization
+
+Merged upstream through `cb55b52`: `8eee62a` proves the prime-adic
+completion homeomorphism, and `9b463f7` adds quotient source 22 on finite
+tests at new scales. The topology proof compares residue neighborhoods
+with Mathlib's existing metric on the p-adic integers. Its canonical map
+is dense inducing with the same constant-term formula and kernel. The
+generic topology modules and actual omnific instance were read against
+the ledger; `LEAN_NUM_THREADS=2 lake build` passes 4,427 jobs and the axiom
+audit passes 15,107 declarations using only `propext`, `Classical.choice`
+and `Quot.sound`. The separate uniform-space completion comparison remains
+pending, but both inverse-limit topological identifications are now proved.
+
+The quotient report now assembles nineteen manuscripts, with 277 standard
+results and nine separately styled main theorems. The twelve new standard
+results and the expanded `osq:main:polynomial` remain pending independent
+proof review and Lean formalization. The earlier standard statement bodies
+are unchanged; only source credits are added. The reader map, catalogue
+and ledger reflect the new scope and the five remaining batch-31 companions.
+The independent inventory passes for 3,838 results in 61 reports; all
+4,382 cited source references and 1,578 local Markdown destinations resolve.
+The catalogue again builds cleanly in three passes to 32 pages, and its
+updated quotient entry was inspected. No Diophantine source or review
+boundary changed in this merge.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
