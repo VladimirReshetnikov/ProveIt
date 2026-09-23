@@ -1808,6 +1808,55 @@ Corrected the new guide's blanket label-citation claim: neighbouring guides
 and the ledger cite its labels, while Lean mappings remain absent. This is an
 integration check, not the pending gamma/zeta mathematical review.
 
+## Coverage reconciliation and the spectral singleton exception
+
+The next sync merged `2bef7c0`, including the ten modules introduced by
+`a754069`. All ten root imports occur exactly once, and the source labels in
+the new mappings resolve. The merged target passed
+`LEAN_NUM_THREADS=2 lake build`: 4,051 jobs and an axiom audit of 8,710
+declarations using only `propext`, `Classical.choice` and `Quot.sound`.
+No manuscript source changed in this incoming merge.
+
+The holonomic report's current status now includes integer, affine and
+unit-orbit valuations, generic constant-point avoidance, inward stability
+and torsion covariance. It also retains the already proved partial-theta
+implications and distinguishes them from the pending converse implications
+and full classifications. Section 13.3 records the remaining support,
+closure, recurrence-conversion and generic-line dependencies. The title,
+attribution table, conclusion and guide agree; the earlier review record
+is explicitly historical. These updates record incoming Lean coverage and
+do not prove the source-10 nonlinear or later coefficient-field theorems.
+The updated report still has 90 pages after three LaTeX passes, with no final
+warnings or box notices. All 88 result environments, 274 label numbers and
+28 historical files remain unchanged.
+
+The new row/column-finite algebra mapping exposed a source error in the
+closing clause of `ihs:rf:prop:algebra`. Part II allows any nonempty index
+set, so its unconditional zero-divisor assertion fails for a singleton:
+then `R_I = ℂ` and `𝒜_rf = K` is a field. The source now asserts zero
+divisors when there are two distinct indices, and proves it with the
+nonzero constant matrix units `E_ii` and `E_jj`. Its other algebra, action,
+involution and order-inequality claims retain the original hypotheses.
+The ledger records the conditional Lean theorem and does not claim a
+separately formalized singleton equivalence. This bounded correction does
+not extend the main-text review to the Drazin/Fredholm additions.
+Both baseline and revised PDFs passed three LaTeX passes at 97 pages, with
+no warnings or overfull boxes and the same single underfull-box notice.
+All 404 source labels and 808 AUX numbering entries are unchanged, as are
+all 20 historical files. A rendered comparison of all 97 pages changes only
+physical page 38; that page and its neighbours were visually inspected.
+
+The root guide's exponential-profile summary now retains the ordered
+exponential and nontrivial convex valuation assumptions. The ledger also
+retains the coarsened unique-lift theorem's stabilization assumptions;
+automorphisms preserving only the coarsened valuation ring remain pending.
+The bounded-orbit mapping now acknowledges the proved exterior
+non-preperiodicity clause, and the Markov summary names stochasticity.
+The statement inventory remains 2,534 results in 49 reports; line anchors
+were refreshed after the two source edits. All 2,851 cited source labels
+and 1,120 local Markdown destinations resolve, and `git diff --check` passes.
+These are scope and source corrections, not additional Lean declarations.
+
 ## Remaining scope
 
 Batch 22, placed in `7b5f934`, was assembled in `68e2960` and catalogued

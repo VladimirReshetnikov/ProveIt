@@ -150,10 +150,11 @@ which states it.
 \begin{minipage}{0.94\textwidth}
 \small
 \textbf{Status.} An AI-assisted research report; priority and independent
-refereeing are not certified. Lean covers the positive-support word lemma,
-escape mechanism, bounded-cost exclusion and formal exponential domain; the
-main classifications, the torsion argument and the nonlinear and
-coefficient-field parts are unformalized. The variable derivative is not the
+refereeing are not certified. Lean covers support and escape lemmas,
+exponential and partial-theta domains, polynomial-orbit valuations,
+constant-point avoidance, inward stability and torsion covariance.
+The full classifications and the nonlinear and coefficient-field theorem
+packages remain pending. The variable derivative is not the
 Berarducci--Mantova derivation on surreal coefficients.
 \end{minipage}
 \end{titlepage}
@@ -2392,26 +2393,46 @@ identity with its exact domain and attained exclusion boundary.
 Part~(2) of Lemma~\ref{hol:lem:support} is mapped separately to
 \path{Surreal/HahnSeries/NeumannWords.lean}.
 
-The next dependencies are integer valuation stabilization and the unit-orbit
-residue-polynomial argument, followed by the operator-to-recurrence
-conversions and the differential and dilation classifications.
-The refined periodic threshold, the complete support certificates, the
-new inward-stability lemma, the strengthened torsion equivalence and the
-generic-line extension remain unformalized. The several-variable proof also
-needs countable polynomial avoidance and restriction of a rational
-differential system.
+\path{Surreal/HahnSeries/PartialThetaDomain.lean} covers both sufficient
+criteria of Lemma~\ref{hol:lem:certificate}, the scale-subgroup facts,
+the exact partial-theta domain and the theta identities. It also proves
+\textup{(ii)}$\Rightarrow$\textup{(i)} of Theorem~\ref{hol:main:q}
+and \textup{(i)}$\Rightarrow$\textup{(ii)} of
+Corollary~\ref{hol:cor:detect}; the converse implications remain pending.
 
-Nothing in the nonlinear part,
-Sections~\ref{hol:nl:sec:setting}--\ref{hol:nl:sec:consequences}, or in the
-coefficient-field part,
-Sections~\ref{hol:cf:sec:setting}--\ref{hol:cf:sec:families}, is formalized.
-For the latter source~12 suggests the order: valuation-rank inequality,
-proper-convex-subgroup obstruction, formal coefficient recurrence, all-order
-differential corollary; the mixed statements would also need a formal
-theorem implying the zero-set lemma for nondegenerate exponential
-polynomials. The build and axiom audit cover only imported declarations
-recorded in the ledger. The Python checks are finite checks of formulas and examples; they
-do not establish any remaining infinite statement.
+\path{Surreal/HahnSeries/UnitOrbitPolynomials.lean} covers integer
+valuation stabilization, eventually affine geometric-orbit valuations,
+the unit-orbit theorem and the bivariate index--dilation lemma.
+\path{Surreal/Algebra/GenericConstantPoint.lean} proves
+Lemma~\ref{hol:lem:generic}, including its least-exponent reduction, for
+uncountable constants. \path{Surreal/HahnSeries/TorsionCovariance.lean}
+covers inward stability, all of Proposition~\ref{hol:prop:torsion},
+and the preservation half of Lemma~\ref{hol:lem:support}\,(3).
+These results require no divisibility of the value group.
+
+The remaining dependencies include the refined periodic threshold,
+part~(1) and the reflection half of part~(3) of
+Lemma~\ref{hol:lem:support}, finite-block grouping in
+Lemma~\ref{hol:lem:certificate}, Proposition~\ref{hol:prop:closure},
+and the several-variable strong-domain definition. The operator-to-recurrence
+conversions and full differential and dilation classifications remain
+pending. For the several-variable classification, constant-point avoidance
+is proved; generic-line restriction, restriction of a rational
+differential system, and the resulting D-finiteness argument are pending.
+
+The nonlinear rigidity theorems in
+Sections~\ref{hol:nl:sec:setting}--\ref{hol:nl:sec:consequences}
+and the coefficient-field theorem package in
+Sections~\ref{hol:cf:sec:setting}--\ref{hol:cf:sec:families}
+remain unformalized; the shared support and inward-stability prerequisites
+above do not prove them. For the latter source~12 suggests the order:
+valuation-rank inequality, proper-convex-subgroup obstruction, formal
+coefficient recurrence, all-order differential corollary; the mixed
+statements would also need a formal theorem implying the zero-set lemma
+for nondegenerate exponential polynomials. The build and axiom audit cover
+only imported declarations recorded in the ledger. The Python checks are
+finite checks of formulas and examples; they do not establish any remaining
+infinite statement.
 
 %======================================================================
 % Nonlinear part: source 10 (nonlinear rigidity). Labels use hol:nl:.
@@ -4008,9 +4029,11 @@ Named published open conjecture & None claimed solved; the nonlinear question,
 answered in order one and, without an order unit, in all orders, is a
 question of this report, not a historical conjecture.\\[4pt]
 Priority, peer review, formal verification & Priority and independent
-refereeing are not certified. The support word lemma, escape mechanism and
-formal exponential domain have Lean coverage; the main classifications and
-the whole nonlinear and coefficient-field parts remain unformalized.\\
+refereeing are not certified. Lean covers support and escape lemmas,
+exponential and partial-theta domains, polynomial-orbit valuations,
+constant-point avoidance, inward stability and torsion covariance.
+The full classifications and the nonlinear and coefficient-field theorem
+packages remain pending.\\
 \bottomrule
 \end{longtable}
 
@@ -6049,11 +6072,12 @@ own non-claims are listed in Section~\ref{hol:nl:sub:nonclaims}, while the
 no-order-unit results keep the non-claims of
 Section~\ref{hol:cf:sub:nonclaims}; no complete algorithm for arbitrary
 surreal comparisons or cofinality decisions is claimed; the finite checks
-prove no infinite theorem. The main theorem package, the nonlinear and
-coefficient-field parts included, has no Lean verification or independent
-refereeing; the existing
-support, escape and exponential-domain coverage is recorded in the
-formalization ledger.
+prove no infinite theorem. The full classifications and the nonlinear and coefficient-field theorem
+packages remain without Lean verification or independent refereeing.
+The formalization ledger records the proved support and escape lemmas,
+exponential and partial-theta domains, polynomial-orbit valuations,
+constant-point avoidance, inward stability and torsion covariance,
+including the partial-theta directions of the dilation classification.
 
 \section{Reproducing the document and the finite checks}
 \label{hol:app:reproduce}

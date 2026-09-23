@@ -278,12 +278,13 @@ strongly entire series and `Frac E_Γ(k)` their fraction field in `𝕂((z))`:
 - The arbitrary-rank classification is offered as a **proposed original
   contribution**. Priority is not certified, no named published conjecture is
   claimed solved, and the proofs have not been independently refereed.
-  The [Lean ledger](../../FORMALIZATION.md) maps the positive-support word
-  lemma to [NeumannWords.lean](../../../Surreal/HahnSeries/NeumannWords.lean)
-  and the escape mechanism, bounded-cost exclusion and formal exponential
-  domain to [EscapeChain.lean](../../../Surreal/HahnSeries/EscapeChain.lean).
-  The main classifications, the new inward-stability and torsion results and
-  the whole nonlinear and coefficient-field parts remain unformalized.
+  The [Lean ledger](../../FORMALIZATION.md) records support and escape
+  lemmas, exponential and partial-theta domains, polynomial-orbit
+  valuations, constant-point avoidance, inward stability and torsion
+  covariance. In particular, the partial-theta construction proves one
+  direction of the dilation classification and of the order-unit detection
+  equivalence. The full classifications and the nonlinear and coefficient-field
+  theorem packages remain pending. The detailed coverage is in Section 13.3.
 - Classical material is credited, not claimed: Stanley's D-finite/P-recursive
   correspondence, Hahn–Neumann support lemmas and Higman's lemma, partial
   theta series and their functional identity, and the Conway normal-form
@@ -482,9 +483,10 @@ conversion over the stated Hahn field. The optional coarsening was checked
 against the local `ent:lem:coarsening`; the broader literature comparisons
 were not independently re-audited.
 
-During review, `origin/main` added the checked escape-chain and formal
-exponential-domain results. The coverage descriptions above include that
-merge; the new inward-stability proof has not been formalized.
+During that review, `origin/main` added the checked escape-chain and formal
+exponential-domain results. At that milestone the new inward-stability proof
+was not yet formalized; subsequent Lean work covers it and the other results
+listed in the current coverage summary above.
 
 The reviewed article and catalogue rebuilt in three passes at 39 and 21 pages.
 The status note now fits on the title page; the baseline placed it on a
