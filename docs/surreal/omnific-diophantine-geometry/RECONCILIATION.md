@@ -495,3 +495,17 @@ record, the Section 13 review and the Sections 15.1–15.4 and 15.5–15.7 revie
 call them 16, 17 and 18. They are now
 Sections 19, 20 and 21. Sections 1–15 and their subsections, including the
 Sections 15.1–15.4 reviewed above, keep their numbers.
+
+## Integration of the logarithmic manuscript
+
+One further manuscript on curve and differential rigidity, tagged C15 after its
+file prefix `15-`, was placed in `66d7e55` and integrated as Section 18.6
+(`odg:log:` labels), appended at the end of Section 18: annihilation of
+logarithmic symmetric differentials on normal-crossings compactifications, the
+tangent-separation criterion, descent over any coefficient ring and finite
+products. The same integration added C15 to the credits of results it reproves
+in Sections 16–18, corrected its normality remark in Section 17.5, and added
+notes in Sections 1, 20 and 21 (a sufficient answer to the first question of
+`odg:cr:q:higher` and a further rigid class for `odg:q:affine`) and in the
+appendices. That material is outside every pass recorded here. No section,
+statement or equation number changed, and no label was renamed or removed.
