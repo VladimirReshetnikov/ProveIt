@@ -1,7 +1,26 @@
 # Surreal Scales in Quantum Theory and Gauge Models
 
-**Rare-event shadows, exact elimination, and quaternionic curvature**  
+**Rare-event shadows, exact elimination, and quaternionic curvature**
 Research manuscript prepared for Vladimir Reshetnikov, 23 September 2026.
+
+## Repository placement
+
+Placed in `66d7e55`. The maintained base is [article.tex](article.tex), from
+source 07; there is no maintained PDF yet. Its delivered verification
+program and output are
+[code/07-scales-in-physics-verify_examples.py](code/07-scales-in-physics-verify_examples.py)
+and [data/07-scales-in-physics-verification_results.txt](data/07-scales-in-physics-verification_results.txt).
+The observable-limits (03), gauge-holonomy (04) and quantum-operations (08)
+companions remain to be integrated. Their audit notes, programs and recorded
+outputs are retained under the corresponding prefixes. Independent proof
+review, source reconciliation and Lean verification remain pending.
+
+The contents and reproduction instructions below describe the delivered
+source-07 package and its original filenames. They are not a build record
+for this repository. To typeset the maintained base here, run
+`pdflatex -halt-on-error -interaction=nonstopmode article.tex` from this
+directory until references stabilize. Run finite checks separately using
+the prefixed program above and write new output to a scratch directory.
 
 ## Contents
 

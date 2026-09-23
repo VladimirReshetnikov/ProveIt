@@ -4,7 +4,7 @@ Date: 23 September 2026.
 
 ## Repository and predecessor
 
-Repository: https://github.com/VladimirReshetnikov/Surreal  
+Repository: https://github.com/VladimirReshetnikov/Surreal
 Pinned inspection commit: `9693b28c24e6fcb317ce47969a40185c5dfef402`.
 
 The review included the root README, the formalization ledger, repository directory/catalogue information, and the omnific-groups-and-lattices report guide. It did not constitute a claim-by-claim audit of the whole repository or a local Lean build.

@@ -38,12 +38,19 @@ surcomplexification are proved. This supports results on the actual fields,
 including strong summation, surreal-valued valuation and modulus, fine
 calculus, polynomial root stability and finite geometry.
 
-The source collection also includes omnific-integer
-[Diophantine geometry](docs/surreal/omnific-diophantine-geometry/README.md),
-[set-sized quotients](docs/surreal/set-sized-quotients-of-omnific-integers/README.md),
-groups, lattices and normalization. Their manuscript reviews and corrections
-are recorded in the ledger; the omnific Diophantine and quotient reports
-remain pending in Lean. Source review is distinct from checked formalization.
+The [research collection](docs/README.md) also includes work still awaiting
+Lean proofs. The [omnific Diophantine report](docs/surreal/omnific-diophantine-geometry/)
+exhibits dense arithmetic fibers with opposite denominator behavior and
+computes the failure of flatness when finer monomial scales are added.
+Its fraction section now has a full manuscript proof review, including
+a correction to the agreement locus of standard part and rational residue.
+The [review record](docs/REVIEW.md) distinguishes these written proofs
+from formal verification and records the remaining review scope.
+Recent manuscript additions cover curve and differential rigidity, theta
+descent, support cuts and convex factors, plus a new
+[quantum and gauge report](docs/physics/quantum-and-gauge-scale-reductions/).
+These additions and the newly delivered companions still need proof review
+and source reconciliation.
 
 The complex cosine fold now has its exact infinitesimal root classification,
 real and imaginary branch behavior, half-valuation law, and complete strong

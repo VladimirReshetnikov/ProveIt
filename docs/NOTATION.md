@@ -95,6 +95,18 @@ order topology; its degree topology is a different, non-discrete topology.
 The focusing matrix `F_{x,b}`
 is the identity when `b = 0`; its value `x + 1/b` at infinity requires `b ≠ 0`.
 
+The localization `Oz_Π = (Oz \ Π)⁻¹Oz` differs from `Oz/Π`.
+Its rational residue `res` has domain `Oz_Π`; standard part `st` has
+domain the finite surreals. On their common domain, the maps agree
+exactly on `ℚ ⊕ (ker st ∩ ker res)` additively, not just on `ℚ`.
+In the Gaussian version these are the complex standard part and
+Gaussian-rational residue, with values in `ℂ` and `ℚ(i)`.
+The polynomial model `𝒫[T] = ℤ + Tℝ[T]` uses a formal variable;
+`𝒫_t` denotes its evaluated image at `0 ≠ t ∈ Π`. The scale-defect
+quotient `Uℝ[U]/Uᵐℝ[U]` has real dimension `m−1` but infinite
+length as a `𝒫[U]`-module for `m ≥ 2`. The class `ℰ(x)` consists
+of exponents `β`; its associated denominators are `ω^β`.
+
 For the full proper class, `Oz/J ≅ ℤ` and, for nonzero ordinary `n`,
 `Oz/nOz ≅ ℤ/nℤ` describe quotient
 maps and ordinary representatives; proper-class cosets are not elements of

@@ -12,7 +12,7 @@ prefixes `10-` to `14-`). Prepared for Vladimir Reshetnikov.
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 162 pages
+article.pdf                        the compiled report, 163 pages
 README.md                          this guide
 RECONCILIATION.md                  the source comparisons and precise proof-review scope
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
@@ -127,13 +127,17 @@ automorphisms and logical consequences. It extends coefficient reconstruction
 to the number-field ideal predicates and the c.e.-set classification to
 all characteristic-zero coefficient fields using finite equation systems.
 The new material in Sections 6 and 10 still needs review.
-Further passes review Sections 15.1–15.7: denominator ideals, the
+Further passes review all of Section 15: denominator ideals, the
 multiplier theorem, rational-function and curve applications, congruence
 orbits and density. The focusing formula now handles the zero parameter
 and the projective topology is explicit. The fixed rational-function field
 is discrete in the induced surreal topology, unlike its degree topology.
-The rest of the batch-27 material remains unreviewed: Sections 15.8–15.12,
-the additions to Section 20, Section 21.3 and Questions 21.12–21.16. No review
+The localization review corrects the claim that the two residues agree
+only on `ℚ`: their common kernel contains nonzero infinitesimals. It
+expands the scale-defect and Tor proofs, distinguishes finite real
+dimension from infinite module length, and checks fixed workspaces and
+Gaussian normalization.
+The rest of the batch-27 material remains unreviewed: the additions to Section 20, Section 21.3 and Questions 21.12–21.16. No review
 covers the batch-28 material: Sections 16–18, the pointers added in Sections 6, 7
 and 14, the additions to Section 20, Section 21.4, the re-scoped notes to
 Questions 21.1, 21.3 and 21.8, and Questions 21.17–21.22. Inserting Section 15
@@ -144,9 +148,8 @@ these proof reviews and the remaining review boundary.
 
 The article has 194 standard results (70 theorems, 37 propositions, 41 lemmas,
 46 corollaries), of which 39 are in Section 15 and 51 in Sections 16–18. The
-[ledger](../../FORMALIZATION.md) indexes the 143 standard results of the
-seven-source assembly by `odg:` label, all **Pending**, but not yet the 51 of
-Sections 16–18; no implementation
+[ledger](../../FORMALIZATION.md) indexes all 194 standard results of the
+twelve-source assembly by `odg:` label, all **Pending**; no implementation
 mapping cites an `odg:` label, and no Lean code about omnific integers exists
 in the repository.
 

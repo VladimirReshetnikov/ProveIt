@@ -1,6 +1,6 @@
 # The surreal and surcomplex reports
 
-This collection has **57 research reports in five families**. Start with the
+This collection has **58 research reports in five families**. Start with the
 reading routes below, use the [notation guide](NOTATION.md) when moving between
 reports, and consult the [typeset catalogue](manifest.pdf)
 ([source](manifest.tex)) for longer descriptions. The
@@ -17,18 +17,21 @@ hypotheses, limitations and provenance.
 ## Newest reports
 
 The [omnific Diophantine article](surreal/omnific-diophantine-geometry/)
-now assembles seven manuscripts, and the
+now assembles twelve manuscripts, and the
 [set-sized quotient article](surreal/set-sized-quotients-of-omnific-integers/)
-sixteen. The Diophantine proof review covers the original material in
-Sections 1–10 and current Sections 14 and 16, plus the new elementary
+seventeen. The Diophantine proof review covers the original material in
+Sections 1–10 and current Sections 14 and 19, plus the new elementary
 definability, constant-term and reconstruction Sections 11–13. Added material in Sections 6
-and 10, Sections 15.8–15.12 and 17–18, and remaining source reconciliation need review;
+and 10, new curve material in Sections 16–18 and pointers in Sections 6, 7
+and 14, Sections 20–21, and remaining source reconciliation need review;
 the [reconciliation](surreal/omnific-diophantine-geometry/RECONCILIATION.md)
-records that boundary. Sections 15.1–15.7 now have a proof review of
-denominator ideals, the multiplier theorem, rational-function and curve
-applications, congruence orbits and density. The
+records that boundary. Section 15 now has a proof review throughout:
+denominator ideals, rational-function and curve applications, dense
+arithmetic fibers, localization, scale defects and Gaussian fractions.
+It corrects the agreement locus of the two residues and distinguishes
+finite real dimension from infinite module length in the scale defect. The
 fraction companions (08–09) and quotient companions (17–19) are integrated;
-the remaining fraction proofs and the quotient additions await review. The rectification
+the later Diophantine and quotient additions await review. The rectification
 addition to [entire functions](surcomplex/entire-functions-at-arbitrary-rank/)
 is integrated, but remains outside its earlier review scope.
 
@@ -42,8 +45,12 @@ Placement `a4dcb91` supplied
 incorporate their four companions and have maintained PDFs. Their proof
 review and formalization remain pending. The nine archives in `5610500` and `21016dc` were placed in `c6359e4`: a
 new [discrete-initial-subgroup and normalization report](surreal/discrete-initial-subgroups-and-omnific-normalization/)
-and eight companions to five existing reports. The new report is an
-unreviewed source; those companions await integration.
+and eight companions to five existing reports. Those assemblies are now
+written, including convex factors, support cuts, Boolean branching, theta
+descent and curve rigidity; their new claims await proof review.
+Placement `66d7e55` adds a [quantum and gauge report](physics/quantum-and-gauge-scale-reductions/)
+and companions to five existing reports; those companions await integration.
+The archives subsequently added in `190d301` await placement and reconciliation.
 
 Batch 23 (placed in `e4f8848`, written in `7af7056`) adds
 [Gamma and zeta](surcomplex/gamma-and-zeta-functions/), merged from six
@@ -122,8 +129,8 @@ not extend their earlier proof-review scope.
 | [Vector and tensor fields](surreal/vector-and-tensor-fields/) | Layered tensor calculus with surreal coefficients in every dimension: Hahn-supported smooth fields, Taylor prolongation, Hodge and Stokes; 3D calculus and Minkowski fields as parts; not a physics claim |
 | [Euclidean three-space](surreal/euclidean-three-space/) | Coordinate and spherical geometry of `No³` with finite angles, and the rotation group `SO(3,No)` as a split extension with a perfect infinitesimal kernel; normal subgroups by valuation cuts and the universal set-sized quotient of `SO(3,No)` |
 | [Finite surreal probability](surreal/finite-surreal-probability/) | Surreal-valued probability on finite algebras: conditioning on infinitesimal events, log-odds, entropy, scoring rules; compare the measures report for countable additivity |
-| [Omnific Diophantine geometry](surreal/omnific-diophantine-geometry/) | Arithmetic and Diophantine equations over the omnific integers; constant-term transfer, rigidity and definability; seven-source assembly; reviewed original material in Sections 1–10, new Sections 11–13 and current Sections 14 and 16; other added material and later review pending |
-| [Set-sized quotients of omnific integers](surreal/set-sized-quotients-of-omnific-integers/) | Constant-term factorization of maps to set-sized rings and cardinal/homological thresholds; sixteen-source assembly; relation modules, ordinary-output loci and normalization fibres added; proof review pending |
+| [Omnific Diophantine geometry](surreal/omnific-diophantine-geometry/) | Arithmetic and Diophantine equations over the omnific integers; constant-term transfer, rigidity and definability; twelve-source assembly; reviewed original material in Sections 1–10, new Sections 11–13 and current Sections 14, 15 and 19; other added material and later review pending |
+| [Set-sized quotients of omnific integers](surreal/set-sized-quotients-of-omnific-integers/) | Constant-term factorization of maps to set-sized rings and cardinal/homological thresholds; seventeen-source assembly; Boolean branching, relation modules, ordinary-output loci and normalization fibres added; proof review pending |
 | [Omnific-preserving automorphisms](surreal/omnific-preserving-automorphisms/) | Convex-scale stabilizers, definable constants, nondefinable monomials and algebraic-parameter rigidity; four-source assembly, review pending |
 | [Omnific groups and lattices](surreal/omnific-groups-and-lattices/) | Algebraic groups, elementary kernels and missing lattice minima over omnific integers; three-source assembly, review pending |
 | [Discrete initial subgroups and omnific normalization](surreal/discrete-initial-subgroups-and-omnific-normalization/) | Sign-tree normalization, image classification and removal of a bottom cyclic layer; placed source, independent proof review and formalization pending |
@@ -216,7 +223,7 @@ exponentials and four derivative notions. Noncommutative identities need
 their own hypotheses: the radial exponential obeys the usual product law on
 a common commutative slice, but not on arbitrary pairs of quaternions.
 
-## Physics: one report
+## Physics: two reports
 
 [Surreal scalars and spacetime](physics/surreal-scalars-and-spacetime/)
 separates exact symbolic identities, conditional mathematics, physical
@@ -227,6 +234,13 @@ Schwarzschild mass `m`, the substitution `r = s^q w(s)`, with integer `q ≥ 1`,
 in `48m²/r⁶` gives a pole of order `6q` and leading coefficient
 `48m² w(0)^(−6)`. The recorded special case `w(s) = 1+s` preserves `48m²`;
 general substitutions need the factor `w(0)^(−6)`.
+
+[Quantum and gauge scale reductions](physics/quantum-and-gauge-scale-reductions/)
+adds a placed base on rare conditional states, success-weighted trace
+distance, exact elimination of separated virtual sectors, quaternionic
+simulation and finite gauge curvature. Its three companions remain to be
+integrated. Proof review, priority review and formalization are pending;
+the mathematical models do not establish new experimental predictions.
 
 ## Foundations and computation: seven reports
 
@@ -249,7 +263,8 @@ lattice, supported operations and known implementation defects.
 
 ## Files, provenance and building
 
-Each report has a maintained LaTeX source, its PDF and a local README. Most
+Each report has a LaTeX source and local README; the newly placed quantum/gauge
+base has no maintained PDF yet. Most
 also retain verification programs under `code/` and recorded outputs under
 `data/`. Those finite checks do not establish infinite theorems. The former
 `sources/` archives were retired in `e5791a8`; their tracked originals remain
