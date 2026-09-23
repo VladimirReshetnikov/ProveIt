@@ -164,6 +164,7 @@ import Surreal.Foundations.SignSequenceRealBirthday
 import Surreal.Foundations.SignSequenceBirthdayArithmetic
 import Surreal.Foundations.SignSequenceProductCuts
 import Surreal.Foundations.SignSequenceRoots
+import Surreal.Foundations.SignSequenceSqrtInfinitesimal
 import Surreal.Foundations.DyadicBirthdayArithmetic
 import Surreal.Foundations.SignSequenceDyadicBirthday
 import Surreal.Foundations.DyadicBirthdayProduct
@@ -218,6 +219,13 @@ import Surreal.Surcomplex.Cayley
 import Surreal.Surcomplex.CayleyInfinitesimal
 import Surreal.Surcomplex.InverseTrigonometry
 import Surreal.Surcomplex.InverseTrigonometricDerivative
+import Surreal.Algebra.InverseTrigonometricTaylor
+import Surreal.Surcomplex.InverseTrigonometricTaylor
+import Surreal.Algebra.ArcsinTaylor
+import Surreal.Surcomplex.ArcsinSeries
+import Surreal.Surcomplex.AcosEndpoint
+import Surreal.Surcomplex.AcosEndpointSeries
+import Surreal.Surcomplex.InverseTrigonometricEndpointDerivative
 import Surreal.Surcomplex.TrigonometricFineDerivative
 import Surreal.Surcomplex.TrigonometricOrder
 import Surreal.Surcomplex.TrigonometricLeading

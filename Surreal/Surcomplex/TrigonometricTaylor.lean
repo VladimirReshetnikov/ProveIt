@@ -21,36 +21,6 @@ open Foundations
 
 noncomputable section
 
-private theorem summable_comp_injective {f : ℕ → SignSequence.{u}}
-    (hf : SignSequence.StronglySummable f) (k : ℕ → ℕ) (hk : Function.Injective k) :
-    SignSequence.StronglySummable (fun n => f (k n)) := by
-  constructor
-  · apply hf.1.mono
-    exact Set.iUnion_subset fun n => Set.subset_iUnion_of_subset (k n) (Set.Subset.refl _)
-  · intro a
-    exact (hf.2 a).preimage hk.injOn
-
-private theorem strongSum_comp_injective {f : ℕ → SignSequence.{u}}
-    (hf : SignSequence.StronglySummable f) (k : ℕ → ℕ) (hk : Function.Injective k)
-    (hzero : ∀ n, n ∉ Set.range k → f n = 0) :
-    SignSequence.strongSum (fun n => f (k n)) (summable_comp_injective hf k hk) =
-      SignSequence.strongSum f hf := by
-  apply SignSequence.rawNormalForm_injective
-  rw [SignSequence.rawNormalForm_strongSum, SignSequence.rawNormalForm_strongSum]
-  have he : hf.toHahnFamily =
-      (summable_comp_injective hf k hk).toHahnFamily.embDomain ⟨k, hk⟩ := by
-    apply _root_.HahnSeries.SummableFamily.ext
-    intro n
-    by_cases hn : n ∈ Set.range k
-    · obtain ⟨m, rfl⟩ := hn
-      exact (_root_.HahnSeries.SummableFamily.embDomain_image
-        (summable_comp_injective hf k hk).toHahnFamily ⟨k, hk⟩ (a := m)).symm
-    · rw [_root_.HahnSeries.SummableFamily.embDomain_notin_range
-        (summable_comp_injective hf k hk).toHahnFamily ⟨k, hk⟩ hn]
-      change SignSequence.rawNormalForm (f n) = 0
-      rw [hzero n hn, SignSequence.rawNormalForm_zero]
-  rw [he, _root_.HahnSeries.SummableFamily.hsum_embDomain]
-
 /-- Multiplication of a real infinitesimal by the imaginary unit is infinitesimal. -/
 theorem infinitesimal_ofReal_mul_I (ε : SignSequence.{u})
     (hε : SignSequence.IsInfinitesimal ε) : IsInfinitesimal (ofReal ε * I) := by
@@ -98,7 +68,7 @@ theorem stronglySummable_cosTaylor (ε : SignSequence.{u})
       SignSequence.ofReal ((-1 : ℝ) ^ n / (2 * n).factorial) * ε ^ (2 * n)) := by
   have hf := (stronglySummable_infExp (ofReal ε * I) (infinitesimal_ofReal_mul_I ε hε)).re
   simpa only [exp_even_term, ofReal_re] using
-    summable_comp_injective hf (fun n => 2 * n) (by intro a b h; dsimp at h; omega)
+    SignSequence.StronglySummable.comp_injective hf (fun n => 2 * n) (by intro a b h; dsimp at h; omega)
 
 /-- The separate odd Taylor family for sine is strongly summable. -/
 theorem stronglySummable_sinTaylor (ε : SignSequence.{u})
@@ -108,7 +78,7 @@ theorem stronglySummable_sinTaylor (ε : SignSequence.{u})
   have hf := (stronglySummable_infExp (ofReal ε * I) (infinitesimal_ofReal_mul_I ε hε)).im
   simpa only [exp_odd_term, mul_im, ofReal_re, ofReal_im, I_re, I_im,
     mul_one, zero_mul, add_zero] using
-    summable_comp_injective hf (fun n => 2 * n + 1) (by intro a b h; dsimp at h; omega)
+    SignSequence.StronglySummable.comp_injective hf (fun n => 2 * n + 1) (by intro a b h; dsimp at h; omega)
 
 /-- The literal even strong sum in the source cosine formula. -/
 def cosTaylorSum (ε : SignSequence.{u}) (hε : SignSequence.IsInfinitesimal ε) :
@@ -136,7 +106,7 @@ theorem infExp_ofReal_mul_I_re (ε : SignSequence.{u})
     · exact (hn ⟨k, hk.symm⟩).elim
     · rw [hk, exp_odd_term]
       simp only [mul_re, ofReal_re, ofReal_im, I_re, I_im, mul_zero, zero_mul, sub_zero]
-  have hs := strongSum_comp_injective hf (fun n => 2 * n) (by intro a b h; dsimp at h; omega) hz
+  have hs := SignSequence.strongSum_comp_injective hf (fun n => 2 * n) (by intro a b h; dsimp at h; omega) hz
   rw [infExp_eq_strongSum, strongSum_re]
   simpa only [cosTaylorSum, exp_even_term, ofReal_re] using hs.symm
 
@@ -151,7 +121,7 @@ theorem infExp_ofReal_mul_I_im (ε : SignSequence.{u})
     obtain ⟨k, hk | hk⟩ := Nat.even_or_odd' n
     · rw [hk, exp_even_term, ofReal_im]
     · exact (hn ⟨k, hk.symm⟩).elim
-  have hs := strongSum_comp_injective hf (fun n => 2 * n + 1) (by intro a b h; dsimp at h; omega) hz
+  have hs := SignSequence.strongSum_comp_injective hf (fun n => 2 * n + 1) (by intro a b h; dsimp at h; omega) hz
   rw [infExp_eq_strongSum, strongSum_im]
   simpa only [sinTaylorSum, exp_odd_term, mul_im, ofReal_re, ofReal_im, I_re, I_im,
     mul_one, zero_mul, add_zero] using hs.symm
@@ -197,7 +167,7 @@ theorem powerSeriesEvaluation_taylor_cos_zero (ε : SignSequence.{u})
       simp only [Analytic.coeff_taylorSeries, Real.iteratedDeriv_odd_cos, Pi.mul_apply,
         Pi.pow_apply, Pi.neg_apply, Pi.one_apply, Real.sin_zero, mul_zero, zero_div,
         map_zero, zero_mul]
-  have hs := strongSum_comp_injective hf (fun n => 2 * n)
+  have hs := SignSequence.strongSum_comp_injective hf (fun n => 2 * n)
     (by intro a b h; dsimp at h; omega) hz
   rw [SignSequence.powerSeriesEvaluation_eq_strongSum]
   simpa only [cosTaylorSum, Analytic.coeff_taylorSeries, Real.iteratedDeriv_even_cos,
@@ -219,7 +189,7 @@ theorem powerSeriesEvaluation_taylor_sin_zero (ε : SignSequence.{u})
         Pi.pow_apply, Pi.neg_apply, Pi.one_apply, Real.sin_zero, mul_zero, zero_div,
         map_zero, zero_mul]
     · exact (hn ⟨k, hk.symm⟩).elim
-  have hs := strongSum_comp_injective hf (fun n => 2 * n + 1)
+  have hs := SignSequence.strongSum_comp_injective hf (fun n => 2 * n + 1)
     (by intro a b h; dsimp at h; omega) hz
   rw [SignSequence.powerSeriesEvaluation_eq_strongSum]
   simpa only [sinTaylorSum, Analytic.coeff_taylorSeries, Real.iteratedDeriv_odd_sin,

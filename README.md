@@ -418,7 +418,22 @@ domains: `1/(1+t^2)` even at infinite tangent inputs, and the positive or
 negative reciprocal square root for sine and cosine even infinitesimally
 close to the endpoints. Their continuity follows from the actual interval
 order isomorphisms; a general topological-field inverse rule supplies the
-derivatives.
+derivatives. Geometric inverse tangent and sine agree with their ordinary
+analytic Taylor lifts on the corresponding finite analytic domains. Inverse tangent has the
+full alternating odd-power strong series at infinitesimals, with a finite
+seventh-order remainder after degree five. Substitution of the reciprocal
+gives the expansion at every positive infinite slope, including `omega`,
+and proves that its angle is strictly and infinitesimally below `pi/2`.
+Inverse sine has the full central-binomial strong series, with an exact finite
+ninth-order remainder after degree seven. Both inverse sine and inverse
+tangent preserve valuation at infinitesimals: each is its input times a
+finite factor of standard part one. At every positive infinitesimal defect,
+inverse cosine satisfies the exact square-root half-angle identity and full
+central-binomial strong series. Its normalized cubic expansion has a finite
+fourth-order remainder, and its valuation is half the defect valuation.
+At both inverse-sine endpoints the inward difference quotient eventually
+exceeds every fixed surreal bound, including infinite bounds, so no
+surreal-valued one-sided or fine derivative exists.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual
