@@ -3271,6 +3271,75 @@ The independent 3,650-statement inventory, 4,183 source references and
 1,520 local Markdown destinations pass. The earlier two-thread Lean build
 remains applicable.
 
+## Omnific quartic and elementary Euler prerequisites
+
+The remaining source-07 quartic in Section 10 now has a full argument for
+arbitrary intermediate rings with integer constant intersection. The proof
+separates ambient Pell factorization from membership in the intermediate
+ring, proves that every witness is ordinary, and constructs witnesses
+from an unbounded ordinary Pell sequence and four squares. The comparison
+with the delivered Section 8 is recorded in the Diophantine reconciliation.
+
+The elementary ring and Euler subsections 16.2–16.3 were reviewed next.
+The proof now identifies the opposite ring's fraction field, units,
+maximal ideal and residue field. It corrects the zero-exponent-group
+exception to the non-valuation-ring claim and the false suggestion that
+an Euler image inclusion must be proper. Explicit examples establish
+both corrections. The logarithmic-derivative residue is now computed
+as `ct(∂_λ u/u) = λ(deg u)`, and polynomial Bézout makes the joint-constant
+argument for relative algebraic closedness explicit. The shared notation
+and review boundaries reflect these distinctions. The squarefree
+certificate and geometric arguments remain outside this pass.
+
+All 200 standard statement texts, 416 labels and existing result numbers
+are preserved. The source-07 verifier reproduces its recorded output
+exactly, without establishing the general Hahn-series claims. The new
+residue identity and the reviewed elementary results remain **Pending**
+in Lean. No Lean file changes in this review.
+
+Clean three-pass pdfLaTeX builds produce a 176-page article and 32-page
+catalogue, without warnings, unresolved references or box diagnostics.
+Rendered article pages 13, 48–49 and 96–99 and catalogue page 9 have
+been inspected. The independent inventory validates 3,650 statements in
+60 main texts, all 4,184 cited source labels resolve, and all 1,520 local
+Markdown destinations pass. The previous 4,380-job Lean build and
+14,672-declaration axiom audit remain applicable to the unchanged library.
+
+## Combined validation with omnific units and floor
+
+After committing the quartic/Euler review as `6a2d12d`, synchronization
+through `de84022` adds actual omnific degree laws, unit and finite-element
+classifications, discrete ordering and the exact omnific floor. The source
+statements were compared with their new mappings; the manuscript bodies
+are unchanged by those incoming commits. Coverage notes now include
+these proved results while retaining the pending quartic and geometric
+claims. Clean three-pass builds retain the 176-page article and 32-page
+catalogue. The 3,650-statement inventory, 4,185 source references and
+1,527 local Markdown destinations pass.
+
+`LEAN_NUM_THREADS=2 lake build` passes 4,386 jobs, and the axiom audit
+accepts 14,739 declarations with only `propext`, `Classical.choice` and
+`Quot.sound`. This build verifies the merged library, not the remaining
+manuscript proofs.
+
+## Combined validation with ordinary polynomial-root rigidity
+
+The following incoming commit `e69defb` proves ordinary polynomial-root
+rigidity in the real and complex support rings and the omnific ring,
+including transcendence over the ordinary reals of every infinite omnific
+integer. Its statements agree with the unchanged proposition in the report.
+The coverage notes now include this result. All 200 standard statement
+texts, 416 labels and existing result numbers remain unchanged from the
+start of the review. Clean three-pass PDFs retain 176 and 32 pages; the
+final formalization page was inspected on article page 127.
+
+The 3,650-statement inventory, 4,185 source references and 1,530 local
+Markdown destinations pass. The final `LEAN_NUM_THREADS=2 lake build`
+passes 4,388 jobs; its axiom audit accepts 14,747 declarations with only
+`propext`, `Classical.choice` and `Quot.sound`. The quartic and generic
+Euler proof review remains manuscript work; their unmapped results still
+await Lean proofs.
+
 ## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in

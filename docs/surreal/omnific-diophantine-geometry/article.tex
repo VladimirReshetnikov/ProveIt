@@ -540,7 +540,9 @@ A further pass reviews their Gaussian-fiber and \'etale-norm additions
 in \cref{odg:sec:rigidity}, including support and coefficient-extension
 arguments and explicit boundary examples. The abstract \'etale norm proof
 also works in arbitrary characteristic; separability remains necessary.
-Source 07's quartic in \cref{odg:sec:guard} remains outside the review.
+Source 07's quartic in \cref{odg:sec:guard} now also has a proof review,
+including the ambient-ring argument and the integer witnesses for every
+intermediate ring.
 Sources 08 and 09, placed in \texttt{a4dcb91}, were integrated after those
 reviews as \cref{odg:frac:sec:fractions}, together with additions to
 \cref{odg:sec:formal}, one partly answered question and five new questions in
@@ -558,7 +560,10 @@ by one, from Sections 15--17 to 16--18. Sources C10--C14, placed in
 \cref{odg:sec:rigidity,odg:sec:derivations,odg:sec:primitive}, additions to
 \cref{odg:sec:formal}, and, in \cref{odg:sec:questions}, \cref{odg:q:affine}
 answered for smooth curves, two further questions answered in part and six new
-questions; this material is outside all the reviews. Its
+questions. A subsequent elementary pass reviews only
+\cref{odg:cr:sub:rings,odg:cr:sub:euler}: the ring and valuation properties,
+Euler derivations, joint constants and relative algebraic closedness.
+The remaining curve and geometric material is outside the reviews. Its
 insertion moved the same three sections by three more, so that the former Sections
 15--17 are now \cref{odg:sec:coefficients,odg:sec:formal,odg:sec:questions};
 statement numbers in Sections 1--15 are unchanged. Source C15, placed in
@@ -566,7 +571,8 @@ statement numbers in Sections 1--15 are unchanged. Source C15, placed in
 \cref{odg:cr:sec:groups}, with credits added to the results of
 \cref{odg:cr:sec:principle,odg:cr:sec:curves,odg:cr:sec:groups} that it reproves, a
 correction in \cref{odg:cr:sub:singular} and re-scoped notes in
-\cref{odg:sec:questions}; this material is outside all the reviews, and no section or
+\cref{odg:sec:questions}; its elementary ring/Euler claims are included in
+the pass just described, while its other material remains unreviewed. No section or
 statement number changed. Nine earlier
 labels renamed or combined during assembly remain as aliases, so existing
 references resolve.
@@ -3056,12 +3062,36 @@ A_\R(\Gamma)$ and $A\cap\R=\Z$ (notation of \cref{odg:def:sub:setting}), every
 zero in $A^7$ having all seven coordinates in $\Z$. It differs from
 \eqref{odg:eq:standardquartic} only in comparing $x^2$ with the square $u^2$ of
 the Pell coordinate instead of $t^2$ with the coordinate itself, and is printed
-once, here. The proof is the same; source 07 phrases the bounding step as
-follows: if a finite sum of squares of elements of $\mathcal A_\R(\Gamma)$ is a
-real constant, every summand is constant, because at twice the largest
-occurring degree the coefficient is a sum of squares of real leading
-coefficients, hence positive. Source 07 cites Lagrange's theorem through
-\cite[Section 6]{Conrad}. Over $\Og$ the formula accepts every $x$ (take
+once, here. Here is the argument for the stated intermediate ring, without
+assuming that it is closed under constant extraction. If $F_4=0$, the
+order on the ambient real Hahn field makes both squared expressions zero:
+\[
+ (u-\sqrt2v)(u+\sqrt2v)=1,\qquad
+ x^2+\sum_{j=1}^4a_j^2=u^2.
+\]
+Both factors in the first equation belong to the ambient nonnegative-support
+ring, even when $\sqrt2\notin A$. The constant-product argument of
+\cref{odg:def:lem:units} makes them real constants. Adding and subtracting
+shows $u,v\in\R$, hence $u,v\in A\cap\R=\Z$.
+If any of $x,a_1,\ldots,a_4$ were nonconstant, let $\delta>0$ be the
+largest of their degrees. At exponent $2\delta$, the sum of their
+squares has coefficient equal to the sum of the squares of the nonzero
+leading coefficients of precisely those terms of degree $\delta$.
+That coefficient is positive, contradicting the constant right-hand side
+$u^2$. All five terms are therefore real constants, and membership in $A$
+makes them integers. This proves the assertion about the full zero set,
+including every witness.
+
+Conversely, for $x\in\Z$ choose an ordinary Pell pair
+$(u,v)=(X_k,Y_k)$ with $u\ge |x|$ by \cref{odg:lem:pellsequence}.
+Lagrange's theorem writes the nonnegative integer $u^2-x^2$ as four
+integer squares, including the case zero. These six integer witnesses
+belong to every allowed $A$ and give $F_4=0$. Thus neither divisibility
+nor nontriviality of $\Gamma$ is required; for $\Gamma=0$ the hypothesis
+already forces $A=\Z$. The polynomial has total degree exactly four:
+its $x^4$ coefficient is $1$. The order was used only in the proof,
+not as a symbol in the defining formula. Source 07 cites Lagrange's theorem
+through \cite[Section 6]{Conrad}. Over $\Og$ the formula accepts every $x$ (take
 $u=1$, $v=0$, $a_1=ix$, $a_2=1$, $a_3=a_4=0$), so it is not asserted there;
 the order-free definition of $\Z[i]$ in $\Og$ is
 \cref{odg:def:thm:constants}.
@@ -3076,8 +3106,8 @@ without writing it out. Neither source claims its count optimal
 Mathlib revision pinned by this repository (\texttt{81a5d257}),
 \fn{Nat.sum_four_squares} is proved in
 \fn{Mathlib/NumberTheory/SumFourSquares.lean}, while no three-square
-theorem is present. Only source 05's definition therefore rests on a theorem
-in Mathlib; source 01's would need the three-square theorem imported or
+theorem is present. The four-square definitions of sources 05 and 07
+therefore use an available Mathlib theorem; source 01's would need the three-square theorem imported or
 proved first. The four-square theorem is used only on an ordinary
 nonnegative integer; its analogue for positive omnific integers is false
 (\cref{odg:rem:foursquares}). Source 07's quartic
@@ -6560,8 +6590,10 @@ group and the fields $\R$, $\C$. The results answer \cref{odg:q:affine} for
 smooth curves and its Weierstrass test completely, and they answer
 \cref{odg:q:search,odg:q:homogeneous} in part (\cref{odg:cr:sub:settled}).
 They contain \cref{odg:thm:separated,odg:cor:mordell} as special cases.
-Labels of this material carry the sub-prefix \fn{odg:cr:}. The part is outside
-the proof reviews recorded in \fn{RECONCILIATION.md}. A sixth manuscript, source C15
+Labels of this material carry the sub-prefix \fn{odg:cr:}. Only the elementary ring and Euler subsections
+(\cref{odg:cr:sub:rings,odg:cr:sub:euler}) have a proof review in
+\fn{RECONCILIATION.md}; the curve and geometric proofs remain outside it.
+A sixth manuscript, source C15
 (prefix \fn{15-}), reproves much of the part independently and extends the two-ring
 argument to logarithmic forms in every dimension; its new results form
 \cref{odg:log:sub:log}, with the sub-prefix \fn{odg:log:}, and its other results are
@@ -6589,8 +6621,10 @@ $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)=\mathfrak o+\crP$. In the surreal instan
 $\Gamma\subseteq\No$, $\crA$ is the part of $\BR$ or $\BC$ supported in $\Gamma$,
 $\mathcal R_\Z(\R,\Gamma)=\Oz_\Gamma$, and $\crO$ is the workspace form of the
 finite surreals $\Ofin$, with $\crm$ its infinitesimals. The two rings $\crA$
-and $\crO$ point in opposite support directions: $\crA$ is \emph{not} the
-valuation ring and not the ring of finite elements (\cref{odg:rem:notvaluation}).
+and $\crO$ point in opposite support directions. For $\Gamma\ne0$ they
+are distinct: $\crA$ is not the valuation ring or the ring of finite
+elements (\cref{odg:rem:notvaluation}). For $\Gamma=0$ both reduce to
+the coefficient field.
 
 \paragraph{The $t$-convention of three sources.} Sources C11, C12 and C14 write
 $\Bbbk((t^\Gamma))$ with well-ordered supports and $t^\gamma=\omega^{-\gamma}$, as
@@ -6653,10 +6687,18 @@ $\Bbbk$ lies in $\Bbbk$.
 \end{enumerate}
 \end{lemma}
 \begin{proof}
-Parts (a), (c) for $\crA$ and (d) are \cref{odg:def:lem:units} and its proof; on
-$\crO$ the same support arguments apply with the inequalities reversed, and a
-nonzero $f\in\crH$ has $f\in\crO$ or $f^{-1}\in\crm$, so $\crO$ is a valuation
-ring. Part (b) compares supports: a support in $\Gamma^{\ge0}\cap\Gamma^{\le0}$ is
+Parts (a), (c) for $\crA$ and (d) are \cref{odg:def:lem:units} and its proof.
+On $\crO$, addition and multiplication preserve nonpositive support;
+in a product exponent zero can arise only from two zero exponents.
+Thus $\ct$ is a ring homomorphism onto $\Bbbk$, with kernel $\crm$.
+For a nonzero $f\in\crH$, $v(f)\ge0$ means $f\in\crO$, while
+$v(f)<0$ implies $v(f^{-1})>0$ and $f^{-1}\in\crm$.
+This proves the valuation-ring property and also $\Frac\crO=\crH$:
+in the latter case $f=1/f^{-1}$. A nonzero $f\in\crO$ is a unit
+exactly when $v(f)=0$, since $v(f^{-1})=-v(f)$. Its nonunits are
+therefore precisely $\crm$, which is the maximal ideal, and
+$\crO/\crm\cong\Bbbk$ via $\ct$.
+Part (b) compares supports: a support in $\Gamma^{\ge0}\cap\Gamma^{\le0}$ is
 contained in $\{0\}$, and one in $\Gamma^{\ge0}\cap\Gamma^{<0}$ or
 $\Gamma^{>0}\cap\Gamma^{\le0}$ is empty. A unit of
 $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$ is a unit of $\crA$, hence a nonzero
@@ -6664,7 +6706,13 @@ constant, and a constant lies in $\mathcal R_{\mathfrak o}(\Bbbk,\Gamma)$ exactl
 when it lies in $\mathfrak o$; this gives (c).
 \end{proof}
 
-The ring $\crA$ is not a valuation ring, and nothing below assumes that it is
+For $\Gamma\ne0$, the ring $\crA$ is not a valuation ring. To see this,
+choose $\gamma>0$ and put $q=\omega^\gamma/(1+\omega^\gamma)$.
+Both $q$ and $q^{-1}=1+\omega^{-\gamma}$ have degree zero and are
+nonconstant, whereas every degree-zero element of $\crA$ is constant.
+Neither belongs to $\crA$, violating the valuation-ring criterion.
+If $\Gamma=0$, instead $\crA=\crO=\crH=\Bbbk$ is a field and hence
+a valuation ring. Nothing below assumes that $\crA$ is
 Noetherian, normal, a gcd domain, or that $\Frac\crA=\crH$
 \src{C10, C11, C12, C13, C14}. It is not integrally closed in general
 (\cref{odg:cr:sub:singular}). For $\Gamma=\Z$ it is the polynomial ring
@@ -6716,13 +6764,32 @@ $v(u)=0$ then $\partial u\in\crm$ by \eqref{odg:cr:eq:tworings}, so
 $\partial u/u\in\crm$ \src{C12}.
 \end{proof}
 
-The strict inclusion $\partial(\crA)\subseteq\crP$ is proved by sources C11, C12
+The stronger support inclusion $\partial(\crA)\subseteq\crP$ is proved by sources C11, C12
 and C13, and appears already in the collection, as a derivation
 $\Oz\to\Pi$ in \replabel{osq:prop:classder} and as a map
 $\mathcal R_{\mathfrak o}(k,\Gamma)\to\Pi_k(\Gamma)$ in \replabel{opa:par:prop:Euler}.
 Sources C10 and C14 use only $\partial(\crA)\subseteq\crA$. The inclusion
 $\partial(\crO)\subseteq\crm$ on the \emph{opposite} ring is the new ingredient of
 all five sources; it is the bridge to properness.
+
+These image inclusions need not be proper. For example, when $\Gamma=\Z$
+and $\lambda(n)=n$, the ring $\crA=\Bbbk[\omega]$ has
+$\partial(\crA)=\omega\Bbbk[\omega]=\crP$: the monomial
+$b\omega^n$, $n>0$, is the derivative of $(b/n)\omega^n$.
+Likewise $v(\partial f)\ge v(f)$ need not be a strict inequality.
+For any $u\ne0$, write $u=a\omega^\alpha(1+\varepsilon)$ with
+$a\in\Bbbk^\times$, $\alpha=\ddeg u$ and $\varepsilon\in\crm$.
+Leibniz gives the more precise formula
+\[
+ \frac{\partial_\lambda u}{u}
+ =\lambda(\alpha)+\frac{\partial_\lambda\varepsilon}{1+\varepsilon},
+ \qquad
+ \ct\!\left(\frac{\partial_\lambda u}{u}\right)=\lambda(\alpha).
+\]
+The second summand belongs to $\crm$, since its numerator does and its
+denominator is a unit of $\crO$. This explains both logarithmic-derivative
+clauses: an arbitrary monomial can give a nonzero constant, whereas a
+unit of $\crO$ has $\alpha=0$ \mergetag.
 
 \begin{lemma}[Joint constants and leading detection \src{C10, C11, C12, C13, C14, C15}]\label{odg:cr:lem:separation}
 The common kernel of all Euler derivations of $\crH$ is $\Bbbk$. If
@@ -6751,7 +6818,10 @@ Every element of $\crH$ algebraic over $\Bbbk$ lies in $\Bbbk$.
 \begin{proof}
 Let $p$ be the minimal polynomial of $f$ over $\Bbbk$. In characteristic zero it
 is separable, so $p'(f)\ne0$, and $0=\partial(p(f))=p'(f)\partial f$ for every
-Euler derivation. Thus $f$ is a joint constant, and
+Euler derivation. More explicitly, coprimality of $p$ and $p'$ gives
+$a p+b p'=1$ in $\Bbbk[X]$; evaluating at $f$ makes $p'(f)$ invertible.
+The chain rule therefore forces $\partial f=0$ for every member of the
+family. Thus $f$ is a joint constant, and
 \cref{odg:cr:lem:separation} applies.
 \end{proof}
 
@@ -6819,7 +6889,7 @@ write $P(X)=c(X-r_1)(X-r_2)$ with $r_1\ne r_2$, choose $q^2=c$ and put
 $u=x-(r_1+r_2)/2$; then $(y-qu)(y+qu)=-c(r_1-r_2)^2/4\in\bar\Bbbk^\times$, so both
 factors are units of $\mathcal A_{\bar\Bbbk}(\Gamma)$, hence constants, and so are
 $x,y$, whose coefficients lie in $\Bbbk$. This is the constant-product mechanism
-of \cref{odg:lem:constantproduct,odg:thm:binary}. The strict inclusion
+of \cref{odg:lem:constantproduct,odg:thm:binary}. The support inclusion
 $h\in\crP$ of sources C12 and C13 removes the corner without it; it is printed
 as the primary proof, and this unit argument is kept as the second route.
 \end{remark}
@@ -7367,7 +7437,7 @@ for all $f\in F$ and all $\partial$, and $F\subseteq\Bbbk$ by
 Source C12 writes ``let $Q$ be its centre'' without showing that $Q$ is closed;
 the step marked \mergetag{} supplies it. Source C15's proof of the same statement
 avoids the step, because its local computation (\cref{odg:log:lem:valuation}) works
-wherever the centre lies (\cref{odg:log:sub:log}). This route needs the strict inclusion
+wherever the centre lies (\cref{odg:log:sub:log}). This route needs the support inclusion
 $\partial(\crA)\subseteq\crP$: with $\partial(\crA)\subseteq\crA$ alone one would only get
 $\eta(\partial)\in\crA\cap\crO=\Bbbk$. It also avoids the unit lemma: $\Gm$ has the
 logarithmic form $\dif x/x$, a genus-one affine curve has regular forms even with
@@ -8314,7 +8384,7 @@ $\partial_\lambda$ need not preserve the function field of the image of $p$; its
 restriction there is a derivation into $\crH$, which is all that the universal property
 of differentials requires \src{C15}. For $E=\varnothing$ the theorem is the diagonal
 symmetric case of \cref{odg:cr:thm:annihilation} for the Hahn data. The logarithmic case
-needs the strict inclusion $\partial(\crA)\subseteq\crP$: a boundary factor contributes
+needs the support inclusion $\partial(\crA)\subseteq\crP$: a boundary factor contributes
 $\partial u/u$, which lies in $\crO$ but in general not in $\crm$ (for $u=\omega^{-\gamma}$
 it is the constant $\lambda(-\gamma)$), so the valuation-ring side gives only an element of
 $\crO$, and $\crP\cap\crO=\{0\}$ must replace $\crA\cap\crm=\{0\}$. This is the mechanism
@@ -8758,7 +8828,20 @@ uses the proved normal-form equivalence of the actual surreal field; it is
 not restricted to one fixed exponent workspace. See
 \fn{Surreal/Foundations/OmnificIntegers.lean},
 \fn{Surreal/Surcomplex/NonnegativeSupportRing.lean} and the exact mappings
-in \fn{docs/FORMALIZATION.md}. The remaining Diophantine results are pending.
+in \fn{docs/FORMALIZATION.md}. Commits \texttt{150b4a0} and
+\texttt{de84022} further prove \cref{odg:lem:degree,odg:prop:units,odg:thm:floor}:
+the degree laws, real and complex support-ring units, ordinary finite
+omnific integers, discrete ordering and the exact omnific integer part.
+The floor proof includes the subtraction of one at an integer constant
+coefficient with a negative infinitesimal tail. These developments are in
+\fn{Surreal/Foundations/OmnificDegree.lean},
+\fn{OmnificUnits.lean}, \fn{OmnificFloor.lean} and their surcomplex degree/unit
+counterparts. Commit \texttt{e69defb} proves the ordinary polynomial-root
+rigidity of \cref{odg:prop:univariate} and transcendence over $\R$ of
+every infinite omnific integer, in
+\fn{Surreal/Foundations/OmnificPolynomialRoots.lean} and
+\fn{Surreal/Surcomplex/ConstantPolynomialRoots.lean}.
+Other Diophantine results remain pending unless mapped in the ledger.
 The sources proposed overlapping routes; the following merges them. The
 module names in the table are proposals, not the names of the implemented files.
 
@@ -8816,7 +8899,7 @@ explicit smallness hypothesis on the input family.\\
 Proposed layer & Main obligations\\
 \midrule
 \fn{Omnific.CurveRigidity} \src{C12, C13; also C10, C15} & First the elementary chain in a
-set-sized Hahn field: the one-sided rings, the strict image
+set-sized Hahn field: the one-sided rings, the image condition
 $\partial(\crA)\subseteq\crP$, the certificate \eqref{odg:cr:eq:universal} and the
 ordered-group degree contradiction; the cubic certificate is a ring-normalization
 identity. Then, separately, the geometric chain in three layers: a differential
@@ -9383,7 +9466,7 @@ every fiber a copy of $\Pi$. The elliptic test equation of \cref{odg:q:affine} i
 first case with a one-line certificate, and its singular members are the polynomial
 case. Source C15 carries the differential side to logarithmic forms: a form with
 logarithmic poles along the boundary still contracts into the valuation ring, so with the
-strict image $\partial(\crA)\subseteq\crP$ it vanishes as well, and complements whose
+image condition $\partial(\crA)\subseteq\crP$ it vanishes as well, and complements whose
 logarithmic forms separate tangent directions are rigid in every dimension.
 
 \subsection{Relations to neighbouring reports}\label{odg:sub:neighbours}
@@ -9426,14 +9509,14 @@ the scalar step of \cref{odg:frac:thm:pullback} (\replabel{osq:tn:thm:hom}).
 Localization at the positive monomials gives $\No$
 (\replabel{osq:prop:fractions}), and the residue field $\Q$ of $\Oz_\Pi$ agrees
 with its list of small primes (\replabel{osq:cor:smallprimes}). Its class-valued
-derivations $\Oz\to\Pi$ (\replabel{osq:prop:classder}) contain the strict inclusion
+derivations $\Oz\to\Pi$ (\replabel{osq:prop:classder}) contain the support inclusion
 $\partial(\crA)\subseteq\crP$ used in \cref{odg:cr:sec:principle}; its theorem that
 derivations of the class ring into set-sized modules vanish
 (\replabel{osq:thm:derivations}) is no conflict, since the Euler derivations here act
 on set-sized workspaces and take values in them.
 \item \fn{docs/surreal/omnific-preserving-automorphisms}: its support-preserving
 Euler derivations map $\mathcal R_{\mathfrak o}(k,\Gamma)$ into $\Pi_k(\Gamma)$
-(\replabel{opa:par:prop:Euler}), the strict inclusion of \cref{odg:cr:lem:euler} on
+(\replabel{opa:par:prop:Euler}), the support inclusion of \cref{odg:cr:lem:euler} on
 the arithmetic rings; sources C10--C14 did not cite it.
 \item \fn{docs/surcomplex/hahn-tate-uniformization}: its Tate points concern field
 points of curves with nonconstant $j$-invariant, outside the constant-coefficient
@@ -9790,7 +9873,7 @@ source C11's arithmetic fibers extend to every $\Bbbk$ by the classification
 \item \emph{Squarefree equations.} The strict-ideal proof of sources C12 and C13 is
 printed (\cref{odg:cr:thm:squarefree}); the unit argument at the corner $(2,2)$ of
 sources C10, C11 and C14 is kept as a second route (\cref{odg:cr:rem:unitroute}).
-The strict inclusion $\partial(\crA)\subseteq\crP$ is credited to
+The support inclusion $\partial(\crA)\subseteq\crP$ is credited to
 \replabel{osq:prop:classder} and \replabel{opa:par:prop:Euler}, which none of the five
 cites.
 \item \emph{Two rings.} Source C13's version for global tensors and symmetric
@@ -10157,7 +10240,7 @@ their curve theorems over algebraically closed fields and source C11 over such f
 or $\R$; the report states them over every field of characteristic zero by source
 C14's descent.
 \item Sources C10, C11 and C14 treat the corner $m=d=2$ of the squarefree theorem by
-units. The strict inclusion $\partial(\crA)\subseteq\crP$ used by sources C12 and C13
+units. The support inclusion $\partial(\crA)\subseteq\crP$ used by sources C12 and C13
 removes it; it is already in \replabel{opa:par:prop:Euler} and
 \replabel{osq:prop:classder}, which none of the five cites. The strict proof is
 printed first and the credit is added.
@@ -11009,7 +11092,7 @@ The principal dependency chains are:
  \ \Longrightarrow\ \text{denominator dichotomy};\\
  &\text{matrix completion}+\text{set-cut bounds}
  \ \Longrightarrow\ \text{congruence orbits, focusing, dense fibers};\\
- &\text{Euler degrees}+\text{strict image}+\gcd(P,P')=1
+ &\text{Euler degrees}+\text{image condition}+\gcd(P,P')=1
  \ \Longrightarrow\ \text{squarefree rigidity};\\
  &\text{two opposite rings}+\text{properness}+\text{global forms}
  \ \Longrightarrow\ \text{proper rigidity};\\
@@ -11017,7 +11100,7 @@ The principal dependency chains are:
  \ \Longrightarrow\ \text{smooth affine curves};\\
  &\text{smooth affine curves}+\ct+\text{separatedness}
  \ \Longrightarrow\ \text{arithmetic fibers and descent};\\
- &\text{strict image}+\text{properness}+\text{logarithmic poles}
+ &\text{image condition}+\text{properness}+\text{logarithmic poles}
  \ \Longrightarrow\ \text{logarithmic tangent criterion}.
 \end{align*}
 The source-05 proofs that most deserve independent review are, by its own
