@@ -90,6 +90,7 @@ import Surreal.Algebra.MarkovForest
 import Surreal.Algebra.PseudoResolventLimits
 import Surreal.Algebra.LogModulusClassification
 import Surreal.Algebra.ComplexValuationKernel
+import Surreal.Algebra.GaussianIntegrationByParts
 import Surreal.Foundations.SizeObstructions
 import Surreal.Foundations.SmallCutData
 import Surreal.Foundations.SignSequence
@@ -471,6 +472,15 @@ import Surreal.HahnSeries.RowFiniteInner
 import Surreal.HahnSeries.LatticeEstimate
 import Surreal.HahnSeries.DifferentialRigidity
 import Surreal.HahnSeries.TateExtension
+import Surreal.HahnSeries.FlagRealizationShadows
+import Surreal.HahnSeries.ForestStability
+import Surreal.HahnSeries.HerglotzNormalization
+import Surreal.HahnSeries.FejerNonclosure
+import Surreal.HahnSeries.PronyLattice
+import Surreal.HahnSeries.EntireClosure
+import Surreal.HahnSeries.PeriodicThreshold
+import Surreal.HahnSeries.HahnSpectralBasics
+import Surreal.HahnSeries.ValueGroupLifts
 import Surreal.Surcomplex.ActualStrongMeasures
 import Surreal.Algebra.ComplexTrigSeries
 import Surreal.Algebra.ComplexArcsinSeries
@@ -551,3 +561,10 @@ import Surreal.Surcomplex.FejerRieszExistence
 import Surreal.Surcomplex.PolynomialRootReflection
 import Surreal.Surcomplex.PolynomialPositiveNormalization
 import Surreal.Surcomplex.FejerRieszNormalization
+import Surreal.Algebra.PolynomialReflectionMultiplicity
+import Surreal.Surcomplex.CirclePolynomialNorm
+import Surreal.Surcomplex.OuterPolynomialUniqueness
+import Surreal.Surcomplex.FejerRiesz
+import Surreal.Algebra.FiniteAutocorrelation
+import Surreal.Surcomplex.FejerRieszCoefficients
+import Surreal.Surcomplex.FejerRieszCoefficientBounds

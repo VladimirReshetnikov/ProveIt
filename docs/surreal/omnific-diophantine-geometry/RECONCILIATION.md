@@ -6,8 +6,8 @@ After the three expansions, the reviewed original Sections 11–12 are Sections
 14 and 19; the fractions section is Section 15, and the curve and differential
 rigidity part is Sections 16–18.
 Subsequent passes review the newly added Sections 11–13 from sources 06–07.
-Further passes review Sections 15.1–15.7 from sources 08–09. The added
-material in Sections 6 and 10, Sections 15.8–15.12, Sections 16–18 with the
+Further passes review all of Section 15 from sources 08–09. The added
+material in Sections 6 and 10, Sections 16–18 with the
 pointers they added in Sections 6, 7 and 14, and Sections 20–21 remain
 outside the completed proof review.
 It does **not** certify integration of every result in the twelve manuscripts
@@ -471,6 +471,68 @@ explicit topology consequence, remain pending in Lean. Sections
 15.8–15.12 and 20–21 (numbered 17–18 in this pass), all of Sections 16–18, added material in Sections 6 and 10, new companions
 and remaining imported foundations and source reconciliation need review.
 
+## Localization, scale defects and Gaussian fractions: Sections 15.8–15.12
+
+This pass compares source 08's Sections 8–13 and source 09's monomial,
+workspace and Gaussian discussion with the maintained text. The archived
+sources are those recovered in the preceding fraction reviews. The
+sibling report's statements `osq:hd:lem:cores` and `osq:prop:fractions`
+were checked for the scope comparisons; this is not a review of all
+their proofs. The flatness criterion and tensor-product facts were
+checked against the primary Stacks Project sources, [Tag 00HK](https://stacks.math.columbia.edu/tag/00HK)
+and [Section 10.75](https://stacks.math.columbia.edu/tag/00LY), on
+23 September 2026. The latter supplies the long exact sequence, symmetry
+and quotient-ideal formula for Tor. The existing bibliography entry now
+includes that reference.
+
+The localization proof identifies all nonunits and the unique maximal
+ideal, proves surjectivity using ordinary fractions, and explicitly
+identifies its fraction field. The two-residue quotient uses ordinary
+pairs as representatives without treating proper-class cosets as set
+elements. The claim that the maps agree only on `ℚ` was false:
+`t/(t+1)²` is a nonzero infinitesimal with both residues zero. Their
+agreement locus is exactly the additive sum of `ℚ` and their joint
+kernel. Both the counterexample and the decomposition have proofs and
+are marked as combined consequences. A positive element with negative
+rational residue now proves failure of weak order preservation; a
+positive element with zero residue alone would not prove that.
+
+Polynomial division proves the one-parameter intersection, and evaluation
+at formal zero is transported explicitly to the evaluated polynomial
+ring. The generator-count argument uses cardinalities of finite integer
+linear combinations, without assuming the continuum hypothesis. The
+enlargement proof gives a specific missing small exponent. The scale
+quotient is computed as a module by cancellation and truncated polynomial
+representatives. Its real dimension is `m−1`, but its module length is
+infinite: the top layer contains the strictly increasing submodule chain
+`ℤ ⊊ (1/2)ℤ ⊊ (1/4)ℤ ⊊ …`. This combined consequence is proved explicitly.
+
+Integrality uses monic equations for each monomial and finite integral
+adjoining; non-finiteness uses the real coefficient quotient. The
+nonflatness proof computes both relation modules and the image of the
+old relations after tensoring. The Tor proof presents `J ⊗ B` as the
+quotient of `B²` by that image, using right exactness without assuming
+injectivity on the left. The first-coordinate map gives the claimed
+module isomorphism and the relation `(U,−√2 U)` gives a nonzero class.
+
+Monomial-denominator notation now distinguishes exponents from their
+coefficient-one denominators. The fixed-workspace proof gives both
+localization inclusions, the rational-function field, and full coefficient
+arguments for the exponential and factorial-gap examples. Gaussian
+evaluation, scalar normalization, the transported Bézout row, non-set
+generation and the no-gcd argument are explicit. Constant projective
+directions choose a nonzero coordinate before applying the affine
+denominator theorem, closing the zero-last-coordinate gap. The complex
+standard part and Gaussian-rational residue have their proper names and
+coordinatewise finiteness domain.
+
+All 143 standard statements and 310 labels are retained, with unchanged
+statement text and numbering. Section 16 onward is byte-identical except
+for the expanded Stacks bibliography item. These arguments and the two
+combined consequences remain **Pending** in Lean. The next review work
+concerns Sections 17–18, added material in Sections 6 and 10, companions,
+imported foundations and remaining source reconciliation.
+
 ## Integration of curve and differential rigidity manuscripts and current numbering
 
 Five manuscripts on curve and differential rigidity, tagged C10–C14 after their
@@ -491,10 +553,19 @@ The passes above therefore use three numberings of the last three sections.
 The records up to and including the Section 11 and Section 12 reviews call the
 omnific-coefficients, formalization and questions sections 15, 16 and 17 (and,
 before the batch-25 merge, the families section 11); the fraction-integration
-record, the Section 13 review and the Sections 15.1–15.4 and 15.5–15.7 reviews
+record, the Section 13 review and the Sections 15.1–15.4, 15.5–15.7 and 15.8–15.12 reviews
 call them 16, 17 and 18. They are now
 Sections 19, 20 and 21. Sections 1–15 and their subsections, including the
 Sections 15.1–15.4 reviewed above, keep their numbers.
+
+The merge through `6f47cf9`, following the localization review `b2a8686`,
+preserves all 143 earlier standard statement texts and 310 labels. The
+combined article has 194 standard results and 405 labels. Its reviewed
+fraction body is byte-identical to that review, and its result numbers
+through Section 15 are unchanged. The combined PDF has 163 pages after
+a clean three-pass build. The current inventory includes all 194 results;
+the new curve material and later additions remain unreviewed and all
+omnific claims remain **Pending** in Lean.
 
 ## Integration of the logarithmic manuscript
 

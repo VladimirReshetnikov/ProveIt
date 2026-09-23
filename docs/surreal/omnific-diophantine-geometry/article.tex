@@ -541,13 +541,14 @@ outside the reviews.
 Sources 08 and 09, placed in \texttt{a4dcb91}, were integrated after those
 reviews as \cref{odg:frac:sec:fractions}, together with additions to
 \cref{odg:sec:formal}, one partly answered question and five new questions in
-\cref{odg:sec:questions}. A further pass now reviews
-\cref{odg:frac:sub:conventions,odg:frac:sub:ideals,odg:frac:sub:multiplier,odg:frac:sub:region,odg:frac:sub:rational,odg:frac:sub:curves,odg:frac:sub:orbits}:
-denominator ideals, the multiplier theorem, rational-function and curve
-applications, and the specialization-orbit and density arguments. The rest
-of the fractions material, from Section~15.8 onwards, and its additions to
-\cref{odg:sec:formal,odg:sec:questions} remain unreviewed. The
-insertion of \cref{odg:frac:sec:fractions} moved the three sections after it
+\cref{odg:sec:questions}. Further passes now review all of
+\cref{odg:frac:sec:fractions}: denominator ideals, the multiplier theorem,
+rational-function and curve applications, specialization orbits and density,
+localization, scale defects, fixed workspaces and Gaussian fractions.
+The two residues can agree outside $\Q$, and the scale-defect module has
+infinite length despite finite real dimension; both points now have explicit
+proofs. The additions outside this section remain unreviewed.
+The insertion of \cref{odg:frac:sec:fractions} moved the three sections after it
 by one, from Sections 15--17 to 16--18. Sources C10--C14, placed in
 \texttt{c6359e4}, were integrated after that as
 \cref{odg:cr:sec:principle,odg:cr:sec:curves,odg:cr:sec:groups}, with pointers in
@@ -4845,9 +4846,10 @@ models, the exact denominator defect of a scale extension with its $\Tor_1$
 witness, and the Gaussian dichotomy. The Gaussian dichotomy contains the
 Gaussian unimodular-direction criterion of manuscript 14 of the sibling
 report (\cref{odg:frac:cor:gaussiandirections}). The proof review recorded in
-\fn{RECONCILIATION.md} now covers this section through
-\cref{odg:frac:sub:orbits}; the localization, scale-extension and later
-subsections still await that review.
+\fn{RECONCILIATION.md} now covers this whole section, including the
+localization, scale-extension, fixed-workspace and Gaussian arguments.
+The later additions in \cref{odg:sec:formal,odg:sec:questions}, other
+new material and remaining imported foundations still need review.
 
 \subsection{Conventions}\label{odg:frac:sub:conventions}
 
@@ -5914,8 +5916,11 @@ The ideal $\Pi$ is prime, since $\Oz/\Pi\cong\Z$ is a domain. Let
  \Oz_\Pi=\bigl(\Oz\setminus\Pi\bigr)^{-1}\Oz
  =\Bigl\{\frac ab:a,b\in\Oz,\ \ct(b)\ne0\Bigr\}\subseteq\No ,
 \]
-the localization at $\Pi$, not the quotient $\Oz/\Pi$. Source 08 writes
-$\mathcal A$ and $\rho$ for $\Oz_\Pi$ and $\res$.
+the localization at $\Pi$, not the quotient $\Oz/\Pi$. Its denominators
+are closed under multiplication because their nonzero integer constant
+coefficients multiply. Fractions are realized inside $\No$, so this notation
+does not require a set containing all pairs of omnific integers. Source 08
+writes $\mathcal A$ and $\rho$ for $\Oz_\Pi$ and $\res$.
 
 \begin{proposition}[A local ring with residue field $\Q$ \src{08}]\label{odg:frac:prop:localization}
 The map $\res:\Oz_\Pi\to\Q$, $\res(a/b)=\ct(a)/\ct(b)$, is a well-defined
@@ -5926,13 +5931,19 @@ is neither a field nor a valuation ring of $\No$.
 \begin{proof}
 If $a/b=a'/b'$ with $\ct(b),\ct(b')\ne0$, then $ab'=a'b$; taking constant
 coefficients proves well-definedness, and the fraction rules give a surjective
-homomorphism. If $\res(a/b)\ne0$, then $\ct(a)\ne0$ and $b/a\in\Oz_\Pi$, so $a/b$
-is a unit; an element of $\ker\res$ is not a unit. For $r\in\R$, a
+homomorphism: ordinary fractions already realize every rational value.
+Its kernel consists exactly of fractions with numerator in $\Pi$.
+If $\res(a/b)\ne0$, then $\ct(a)\ne0$ and $b/a\in\Oz_\Pi$, so $a/b$
+is a unit; an element of $\ker\res$ is not a unit, because its image in
+the nonzero field $\Q$ is zero. Thus all nonunits form this proper ideal.
+Every proper ideal contains no unit and hence lies in it, proving that it
+is the unique maximal ideal. For $r\in\R$, a
 representation with denominator outside $\Pi$ exists exactly when $\Den(r)$ has
 an element with nonzero constant, which by \cref{odg:frac:thm:realconstants}
 happens exactly for $r\in\Q$. So neither $\sqrt2$ nor $1/\sqrt2$ lies in
-$\Oz_\Pi$, although $\Frac(\Oz_\Pi)=\No$; a valuation ring contains every
-nonzero element or its inverse. Finally $t\in\ker\res$ is a nonzero nonunit.
+$\Oz_\Pi$. Its fraction field is $\No$, since
+$\Oz\subseteq\Oz_\Pi\subseteq\No$ and $\Frac(\Oz)=\No$. A valuation ring
+of that field would contain $\sqrt2$ or its inverse, so this ring is not one. Finally $t\in\ker\res$ is a nonzero nonunit.
 \end{proof}
 
 This is consistent with the sibling report's list of the prime ideals with
@@ -5973,16 +5984,35 @@ and denominator constant $n\ne0$, so $\res(x_{r,q})=m/n$; the second expression
 differs from $r$ by an infinitesimal. The elements $u=t/(t+1)$ and $v=1/(t+1)$
 lie in $\Oz_\Pi^{\mathrm{fin}}$, satisfy $u+v=1$, and have
 $(\st,\res)(u)=(1,0)$ and $(\st,\res)(v)=(0,1)$. So the kernels are comaximal, and
-the quotient is the Chinese remainder isomorphism.
+the map to the product has kernel $\ker\st\cap\ker\res$. Thus two
+elements have the same pair of residues exactly when their difference lies
+in that intersection. This gives the asserted quotient isomorphism through
+ordinary pairs in $\R\times\Q$ as representatives, without treating
+proper-class cosets as set elements.
 \end{proof}
 
 The standard part sees the behaviour at an infinite parameter and $\res$ the
-constant-coefficient specialization; on finite elements they agree only on
-$\Q$ \src{08}. Neither map is a retraction of $\No$, and their domains differ.
-The map $\res$ is not order preserving: $u>0$ but $\res(u)=0$, and $r>0>q$ gives
-a positive element with negative rational residue. For reduced $f=p/q$, $f(t)$
-is finite exactly when $\deg p\le\deg q$, with standard part $0$ or the ratio of
-leading coefficients. So $\Oz_\Pi^{\mathrm{fin}}\cap\R(t)$ consists of the
+constant-coefficient specialization. Both fix $\Q$ \src{08}, but they can
+also agree on nonrational elements. In fact \mergetag, on their common domain,
+\[
+ \{x\in\Oz_\Pi^{\mathrm{fin}}:\st(x)=\res(x)\}
+   =\Q\oplus(\ker\st\cap\ker\res)
+\]
+as an additive decomposition. If the common value is $q$, it lies in $\Q$
+and $x-q$ lies in both kernels; conversely every such sum has both residues
+$q$. The intersection meets $\Q$ only in zero. It is nonzero: for $t>0$ in
+$\Pi$, the element $t/(t+1)^2$ has both residues zero and is a positive
+infinitesimal, hence is not rational. The earlier phrase ``agree only on
+$\Q$'' was therefore too strong.
+Neither map is a retraction of $\No$, and their domains differ.
+The positive element $u$ above has rational residue zero. To see that
+$\res$ even fails to preserve weak order, take $r>0>q$: then $x_{r,q}>0$
+has rational residue $q<0$. For nonzero reduced $f=p/q$,
+\cref{odg:frac:lem:evaluation} makes $f(t)$ finite exactly when
+$\deg p\le\deg q$. With strict inequality it is infinitesimal. With equal
+degrees, subtracting the ratio $\lc(p)/\lc(q)$ lowers the numerator degree,
+so that ratio is its standard part. The zero function is finite with both
+residues zero. So $\Oz_\Pi^{\mathrm{fin}}\cap\R(t)$ consists of the
 rational functions regular at $0$ and at $\infty$ with a rational value at $0$
 and any real value at $\infty$. The surjection onto $\R\times\Q$ is a set-sized
 quotient of the class ring $\Oz_\Pi^{\mathrm{fin}}$. That ring meets $\Oz$ in $\Z$
@@ -6000,15 +6030,20 @@ $\BR\cap\R(t)=\R[t]$ and $\Oz\cap\R(t)=\Z+t\R[t]$, the image $\Pmod_t$ of
 $\Pmod[T]$ under $T\mapsto t$. Moreover $\Frac(\Pmod_t)=\R(t)$.
 \end{proposition}
 \begin{proof}
-Write a rational function as a polynomial plus a strictly proper part. At $t$ a
-nonzero strictly proper part is infinitesimal, and $\BR$ has no nonzero
-infinitesimal, so an element of $\BR\cap\R(t)$ is a polynomial in $t$; it lies
-in $\Oz$ exactly when its constant coefficient is an integer. The fraction
-field contains $t$ and every real $r=(rt)/t$.
+Polynomial division writes $f=p/q$ as $a+b/q$, with $a,b,q\in\R[T]$
+and either $b=0$ or $\deg b<\deg q$. By \cref{odg:frac:lem:evaluation},
+a nonzero $b(t)/q(t)$ is infinitesimal. If $f(t)\in\BR$, then
+$b(t)/q(t)=f(t)-a(t)\in\BR$ as well, since $a(t)\in\BR$. That ring has
+no nonzero infinitesimal, so $b=0$. This proves the first intersection.
+For a polynomial $a$, the identity $\ct(a(t))=a(0)$ gives the second.
+The fraction field contains $t$ and every real $r=(rt)/t$, since both
+$rt$ and $t$ lie in $\Pmod_t$ and $t\ne0$. Conversely it lies in
+$\R(t)$, proving equality.
 \end{proof}
 
 Real constants are absent from $\Pmod_t$ except for $\Z$ but reappear in its
-fraction field. With $(R,c)=(\R[t],\text{evaluation at }T=0)$,
+fraction field. Transport evaluation at $T=0$ from $\R[T]$ to $\R[t]$
+through the injective evaluation map $T\mapsto t$. With this retraction,
 \cref{odg:frac:thm:pullback} gives, in the notation of \cref{odg:frac:thm:main},
 \begin{equation}\label{odg:frac:eq:modelden}
  \Den_{\Pmod_t}(\mathbf x)=q(t)\,\Pmod_t\quad\text{or}\quad q(t)\cdot t\R[t],
@@ -6023,15 +6058,25 @@ does every $q(t)\,t\R[t]$ with $q\ne0$. The corresponding ideal $q(t)\Pi$ of $\O
 has no set of generators.
 \end{proposition}
 \begin{proof}
-With $I=t\R[t]$, $I^2=t^2\R[t]$ and $I/I^2\cong(\R,+)$ through the coefficient of
-$t$. The action of $\Pmod_t$ on $I/I^2$ factors through $\Pmod_t/I=\Z$, and an
-abelian group generated by $\kappa$ elements has cardinality at most
-$\max(\kappa,\aleph_0)$; so $\mathfrak c$ generators are needed. The set
-$\{rt:r\in\R\}$ generates $I$. Multiplication by $q(t)$ is an isomorphism onto
-the scaled ideal. The last assertion is \cref{odg:frac:thm:main}.
+With $I=t\R[t]$, every product of two members has degree at least two,
+and $t^2a(t)=t\cdot ta(t)$ for $a\in\R[T]$, so $I^2=t^2\R[t]$.
+The coefficient of $t$ gives $I/I^2\cong(\R,+)$. The action of
+$\Pmod_t$ on this quotient factors through $\Pmod_t/I=\Z$.
+If a family of cardinality $\kappa<\mathfrak c$ generated $I$, its
+images would generate $(\R,+)$ as an abelian group. But finite integer
+linear combinations of such a family number at most
+$\max(\kappa,\aleph_0)<\mathfrak c$, a contradiction; this uses no
+continuum hypothesis. Conversely $\{rt:r\in\R\}$ generates $I$, because
+every monomial $rt^j$, $j\ge1$, is $(rt)t^{j-1}$ with
+$t^{j-1}\in\Pmod_t$, and polynomials have finite support.
+Multiplication by $q(t)\ne0$ is a module isomorphism onto the scaled
+ideal. Multiplication by the same scalar identifies $\Pi$ with $q(t)\Pi$,
+so \cref{odg:cor:Pglobal} gives the last assertion even without a specified
+rational-function tuple.
 \end{proof}
 
-For an ideal $J$ of $\Pmod_t$ let $J\Oz$ be its extension to $\Oz$.
+For an ideal $J$ of $\Pmod_t$ let $J\Oz$ be its extension to $\Oz$:
+finite sums of products $ja$ with $j\in J$ and $a\in\Oz$.
 
 \begin{theorem}[Enlargement defect \src{08}]\label{odg:frac:thm:enlargement}
 In the notation of \cref{odg:frac:thm:main},
@@ -6043,7 +6088,7 @@ otherwise.
 Only the second case needs an argument. The extension $(t\R[t])\Oz$ contains $rt$
 for real $r$ and $tu$ for $u\in\Pi$, hence $t\BR$; conversely a product of an
 element of $t\R[t]$ and an omnific integer lies in $t\BR$. For strictness choose
-$0<\varepsilon<\ddeg t$: then $\omega^\varepsilon\in\Pi$, but
+$\varepsilon=\tfrac12\ddeg(t)>0$: then $\omega^\varepsilon\in\Pi$, but
 $\omega^\varepsilon/t$ has negative leading exponent, so it is a nonzero
 infinitesimal outside $\BR$. Multiplication by $q(t)$ preserves the strict
 inclusion.
@@ -6077,28 +6122,56 @@ unchanged; apply \cref{odg:frac:thm:pullback} in both polynomial rings. In the
 rational case both ideals are the same principal ideal. Otherwise they are
 $q(T)I_T$ and $q(U^m)I_U$, and $I_T\Pmod[U]=U^m\R[U]$: the inclusion $\subseteq$ is
 by degrees, and every $rU^m$ comes from $rT$, while multiplication by $U^k$ gives
-the higher monomials.
+the higher monomials. Multiplication by the nonzero polynomial $q(U^m)$
+identifies $U\R[U]$ with the new denominator ideal and $U^m\R[U]$ with
+the extended old one. Its inverse therefore induces the stated quotient
+isomorphism, which is $\Pmod[U]$-linear. Every class has a unique
+representative $\sum_{j=1}^{m-1}r_jU^j$, giving its real basis.
 \end{proof}
 
-The dimension is that of a real coefficient space. It is not a length of a
-$\Pmod[U]$-module, since $\Pmod[U]$ does not contain the real constants \src{08}.
+The dimension counts real coefficient layers, not module length \src{08}.
+The $\Pmod[U]$-action on the displayed quotient is multiplication followed
+by truncation modulo $U^m$. In fact this module has infinite length
+\mergetag: on its top layer $\R U^{m-1}$, positive-degree terms of
+$\Pmod[U]$ act as zero and constants act as integers. Thus
+\[
+ \Z U^{m-1}\subsetneq\tfrac12\Z U^{m-1}
+ \subsetneq\tfrac14\Z U^{m-1}\subsetneq\cdots
+\]
+is a strictly increasing chain of $\Pmod[U]$-submodules. Finite real
+dimension here does not imply finite module length.
 
 \begin{theorem}[An integral extension that is neither finite nor flat \src{08}]\label{odg:frac:thm:nonflat}
 For every $m\ge2$ the inclusion $\Pmod[T]\hookrightarrow\Pmod[U]$ is integral, but
 $\Pmod[U]$ is neither finitely generated nor flat as a $\Pmod[T]$-module.
 \end{theorem}
 \begin{proof}
-Each $rU^k$ with $k\ge1$ is a root of $X^m-r^mT^k$ over $\Pmod[T]$, and sums of
-integral elements are integral. If $\Pmod[U]$ were a finite $\Pmod[T]$-module,
+Each $rU^k$ with $k\ge1$ is a root of the monic polynomial
+$X^m-r^mT^k$ over $\Pmod[T]$: its constant term belongs to $I_T$ even
+when $r$ is not an integer. An element of $\Pmod[U]$ is an integer plus
+a finite sum of such monomials. Adjoining these finitely many integral
+elements gives a finite module, spanned by products of bounded powers;
+the determinant argument then gives a monic equation for their sum.
+This proves integrality. If $\Pmod[U]$ were a finite $\Pmod[T]$-module,
 then
 $\Pmod[U]/I_T\Pmod[U]\cong\Z\oplus\bigoplus_{j=1}^{m-1}\R U^j$ would be finitely
-generated over $\Pmod[T]/I_T=\Z$, which it is not. For flatness put $r=\sqrt2$
-and consider the row $(rT,T):\Pmod[T]^2\to\Pmod[T]$. Its kernel is
-$\{(h,-rh):h\in I_T\}$, because $rh\in\Pmod[T]$ forces $\ct(h)=0$. Over
-$\Pmod[U]$ the kernel of the same row is $\{(h,-rh):h\in I_U\}$, while the image
-of the old relations is only $\{(h,-rh):h\in I_T\Pmod[U]=U^m\R[U]\}$. The relation
-$(U,-rU)$ is not in this image. A flat module preserves the exactness of such
-sequences \cite[Tag 00HK]{StacksFlat}, so $\Pmod[U]$ is not flat.
+generated over $\Pmod[T]/I_T=\Z$, which it is not: its projection onto
+the coefficient of $U$ is the uncountable group $(\R,+)$.
+
+For flatness put $r=\sqrt2$ and consider the row
+$(rT,T):\Pmod[T]^2\to\Pmod[T]$. The equation $rTa+Tb=0$ implies
+$b=-ra$ by cancellation of $T\ne0$. For $a\in\Pmod[T]$, both $a$ and
+$ra$ belong to that ring exactly when its integer constant $\ct(a)$ is
+zero, since $r$ is irrational. Thus the old kernel is
+$L=\{(h,-rh):h\in I_T\}$. After substitution $T=U^m$, the identical
+argument gives the new kernel $\{(h,-rh):h\in I_U\}$.
+The image of $L\otimes_{\Pmod[T]}\Pmod[U]$ in $\Pmod[U]^2$ consists of
+finite sums of old relations multiplied by new scalars, hence is exactly
+$\{(h,-rh):h\in I_T\Pmod[U]=U^m\R[U]\}$.
+The relation $(U,-rU)$ is in the new kernel but not in this image because
+$m\ge2$. Flatness would make these two modules equal by preservation of
+exactness at the middle of the row sequence
+\cite[Tag 00HK]{StacksFlat}. Therefore $\Pmod[U]$ is not flat.
 \end{proof}
 
 \begin{proposition}[The defect as a Tor group \src{08}]\label{odg:frac:prop:tor}
@@ -6106,12 +6179,27 @@ Let $J=(\sqrt2T,T)\subseteq\Pmod[T]$ and $C=\Pmod[T]/J$. Then
 $\Tor_1^{\Pmod[T]}(C,\Pmod[U])\cong U\R[U]/U^m\R[U]$ as $\Pmod[U]$-modules.
 \end{proposition}
 \begin{proof}
-From $0\to J\to\Pmod[T]\to C\to0$ and the freeness of $\Pmod[T]$,
-$\Tor_1(C,\Pmod[U])$ is the kernel of $J\otimes\Pmod[U]\to\Pmod[U]$. Presenting $J$
-by the row $(\sqrt2T,T)$ with its relation module, right exactness identifies
-this kernel with the kernel of the evaluated row modulo the extended old
-relations, both computed in the proof of \cref{odg:frac:thm:nonflat}; the first
-coordinate gives the isomorphism.
+Put $A_0=\Pmod[T]$ and $A_m=\Pmod[U]$ for this proof, with the specified
+embedding $T\mapsto U^m$. From $0\to J\to A_0\to C\to0$, the long exact
+sequence of $\Tor$ and $\Tor_1^{A_0}(A_0,A_m)=0$ identify
+\[
+ \Tor_1^{A_0}(C,A_m)
+   \cong\ker(J\otimes_{A_0}A_m\longrightarrow A_m)
+\]
+(see \cite[Section 10.75]{StacksFlat}). Let
+$L=\ker((\sqrt2T,T):A_0^2\to J)$. Right exactness of tensoring gives
+\[
+ J\otimes_{A_0}A_m\cong
+ A_m^2/\operatorname{im}(L\otimes_{A_0}A_m\longrightarrow A_m^2).
+\]
+Under this presentation the map to $A_m$ is induced by the row
+$(\sqrt2U^m,U^m)$. Its kernel is therefore the new relation module
+modulo the image of the old one, both computed in
+\cref{odg:frac:thm:nonflat}. Taking the first coordinate identifies this
+quotient with $I_U/(I_TA_m)=U\R[U]/U^m\R[U]$, $A_m$-linearly.
+In particular $(U,-\sqrt2U)$ represents a nonzero class. This argument
+uses right exactness, which holds without flatness, and does not assume
+that $L\otimes_{A_0}A_m\to A_m^2$ is injective.
 \end{proof}
 
 \begin{remark}[Scope of the scale computations \src{08}; \mergetag]\label{odg:frac:rem:cores}
@@ -6130,8 +6218,9 @@ $\Pi^{\mathrm{fin}}_\Gamma$ is. No statement of that report is contradicted.
 \subsection{Monomial denominators and fixed workspaces}\label{odg:frac:sub:monomial}
 
 For $x\in\No$ let $\Ex(x)=\{\beta\in\No:\beta\ge0,\ \omega^\beta x\in\Oz\}$, the
-class of exponents of monic monomial denominators. Its elements have coefficient
-$1$; ordinary integers such as $2$ are not of this form. Source 08 writes $M(x)$
+class of exponents of monic monomial denominators. The corresponding
+denominators $\omega^\beta$ have coefficient $1$; ordinary integers such as
+$2$ are not of this form. Source 08 writes $M(x)$
 and source 09 $E(x)$.
 
 \begin{proposition}[Monomial denominators \src{08, 09}]\label{odg:frac:prop:monomial}
@@ -6165,7 +6254,9 @@ $\Ex(r)=\{\beta:\beta>0\}$, and here even unrestricted denominators have no leas
 member (\cref{odg:frac:thm:realconstants}) \src{09}. (iv) The geometric series
 $x=1/(\omega-1)=\sum_{n\ge1}\omega^{-n}$ has least positive denominator
 $\omega-1$, but $\Ex(x)$ is the class of $\beta$ exceeding every ordinary integer,
-with no least member \src{08}. Straightforward monomial clearing therefore needs
+with no least member: if $\beta$ exceeds every ordinary integer, so does
+$\beta-1$ \src{08}. The unrestricted least denominator follows from the
+unimodular pair $(1,\omega-1)$. Straightforward monomial clearing therefore needs
 an exponent above every integer, where a two-term denominator of leading exponent
 $1$ suffices; support bounds cannot replace denominator-ideal arithmetic, and a
 preferred monomial denominator need not be the arithmetically preferred one.
@@ -6179,21 +6270,34 @@ $K\cap\Oz=\Pmod_\omega=\Z+\omega\R[\omega]$, and
  \{\omega^n:n\in\N\}^{-1}\Pmod_\omega=\R[\omega,\omega^{-1}]
  \ \subsetneq\ \Frac(\Pmod_\omega)=\R(\omega)\ \subsetneq\ K .
 \]
+For the localization equality, multiplying any Laurent polynomial by a
+sufficiently high power of $\omega$ makes every exponent positive,
+putting it in $\omega\R[\omega]$ even if its coefficients are not integral.
+Conversely dividing an element of $\Pmod_\omega$ by a power of $\omega$
+gives a Laurent polynomial. The fraction-field equality follows from
+$r=(r\omega)/\omega$ for every $r\in\R$ and the reverse containment
+$\Pmod_\omega\subseteq\R(\omega)$.
 The first inclusion is strict because $1/(\omega-1)=\sum_{n\ge1}\omega^{-n}$ is not
 a Laurent polynomial \src{09}. The second is strict by either of two elements.
 \begin{enumerate}[label=\textup{(\roman*)},leftmargin=*]
 \item $E=\sum_{n\ge0}\omega^{-n}/n!$ \src{08}. If $\sum_nz^n/n!$ were rational, a
 nonzero $\sum_{j=0}^dq_jz^j$ would give $\sum_jq_j/(n-j)!=0$ for all large $n$;
-multiplying by $n!$ gives $\sum_jq_jn(n-1)\cdots(n-j+1)=0$ for infinitely many
-$n$, and falling factorials of distinct degrees are linearly independent.
+multiplying by $n!$ for $n\ge d$ gives
+$\sum_jq_jn(n-1)\cdots(n-j+1)=0$ for infinitely many $n$.
+This polynomial is zero, and the falling factorials have distinct degrees
+and leading coefficient one, forcing every $q_j=0$, a contradiction.
 \item $F=\sum_{n\ge1}\omega^{-n!}$ \src{09}. If $F=A(u)/B(u)$ in $u=\omega^{-1}$ with
-$B(0)\ne0$, comparing coefficients in $BF=A$ gives a linear recurrence of fixed
-length $d$ for all large indices, and a block of $d$ zero coefficients then
-forces all later ones to vanish; the factorial gaps give such blocks followed by
-a coefficient $1$. A constant $B$ would make $F$ a polynomial.
+$B(0)\ne0$ after cancellation (the series is regular at zero), write
+$B=\sum_{j=0}^d b_j u^j$ and $F=\sum c_nu^n$. Comparing coefficients
+in $BF=A$ gives
+$b_0c_n=-\sum_{j=1}^d b_jc_{n-j}$ for $n>\deg A$, with $n\ge d$.
+Since $b_0\ne0$, a block of $d$ consecutive zero coefficients beyond
+this bound forces all later ones to vanish by induction. The factorial
+gaps give such blocks followed by a coefficient $1$, a contradiction.
+A constant $B$ would make $F$ a polynomial, also impossible.
 \end{enumerate}
 In $\No$ the monomial $\omega^\omega$ clears $F$, with exponents $\omega-n!>0$, but
-$\omega^\omega\notin K$ \src{09}.
+$\omega^\omega\notin K$, since $K$ has only integer exponents \src{09}.
 \end{example}
 
 The example is consistent with source 06's non-claim that the fraction field of a
@@ -6220,8 +6324,13 @@ not generated by any set as an ideal of $\Og$.
 Clearing the two rational constants gives the first identity. By
 \cref{odg:lem:degree} a unit of $\BC$ is a complex constant, and the units of
 $\Z[i]$ are the four displayed. Division by a nonzero integer preserves
-positive support, and the support-margin argument of \cref{odg:cor:Pglobal}
-applies to the union of the real and imaginary supports.
+positive support. For a set of proposed generators, the union of their
+real and imaginary supports is a set of positive exponents. Choose
+$\varepsilon>0$ strictly below every exponent in this union, using
+\cref{odg:lem:setbounds}. Multiplication by an element of $\Og$ cannot
+introduce exponents below $\varepsilon$, since its exponents are
+nonnegative; neither can a finite sum. Thus $\omega^{\varepsilon/2}$
+lies outside the generated ideal, proving the last assertion.
 \end{proof}
 
 The identity $\Frac(\Og)=\No[i]$, proved by sources 08 and 09 through clearing
@@ -6240,17 +6349,33 @@ representation has a gcd, and the denominator ideal is $q(t)\,\Pi_{\C}$, with no
 set of generators.
 \end{theorem}
 \begin{proof}
-The evaluated vector is unimodular over $\BC$ by a complex polynomial B\'ezout
-identity, and the identity forces every ambient scalar giving Gaussian omnific
-coordinates into $\BC$. For a nonzero complex residue vector $\mathbf v$, the
+Evaluation at $t$ is injective on $\C[T]$: a nonzero polynomial of degree
+$d$ has leading exponent $d\,\ddeg(t)$ and nonzero leading complex
+coefficient. In particular $q(t)\ne0$. The evaluated vector is unimodular
+over $\BC$ by a complex polynomial B\'ezout identity, and the identity
+forces every ambient scalar giving Gaussian omnific coordinates into
+$\BC$. For a nonzero complex residue vector $\mathbf v$, the
 complex $s$ with $s\mathbf v\in\Z[i]^{n+1}$ are $0$ unless the line is defined over
-$\Q(i)$. In that case choose a primitive Gaussian integral generator; since
-$\Z[i]$ is Euclidean it has a Gaussian B\'ezout identity, and as in
-\cref{odg:frac:lem:lattice} the admissible constant scalars form $\Z[i]$.
+$\Q(i)$. In that case choose $\lambda\in\C^\times$ so that
+$\lambda\mathbf v$ is a primitive Gaussian integral vector. Replace all
+polynomials by their $\lambda$ multiples and the B\'ezout row by its
+$\lambda^{-1}$ multiple. Since $\Z[i]$ is Euclidean, the normalized
+constant vector has a Gaussian B\'ezout identity; as in
+\cref{odg:frac:lem:lattice}, its admissible constant scalars are exactly
+$\Z[i]$. This description is for the normalized vector; before
+normalization the set is $\lambda\Z[i]$.
 Formula \eqref{odg:frac:eq:lift} gives a Gaussian omnific B\'ezout certificate.
-The scalar sets are therefore $\Og$ or $\Pi_{\C}$, the replacement of $d$ by
-$2d$ excludes a gcd in the second case, and the generator assertion is
-\cref{odg:frac:prop:gaussianfrac}.
+The normalized scalar sets are therefore $\Og$ or $\Pi_{\C}$. In the
+first case the lifted identity shows that a common divisor of the
+coordinates of a scalar multiple divides that scalar; primitive multiples
+are precisely unit multiples. The four units give the stated uniqueness.
+In the second case every representing tuple has all entries in $\Pi_{\C}$.
+If $d$ is any common divisor, dividing by $d$ gives another representing
+tuple, so its entries again lie in $\Pi_{\C}$ by the scalar
+classification. They remain Gaussian omnific after division by two.
+Thus $2d$ is still a common divisor, but $2d\mid d$ would require
+$1/2\in\Og$, a contradiction to the existence of a gcd.
+The generator assertion is \cref{odg:frac:prop:gaussianfrac}.
 \end{proof}
 
 \begin{corollary}[Constant directions over $\Z$ and $\Z{[i]}$ \src{08, 14}]\label{odg:frac:cor:gaussiandirections}
@@ -6265,9 +6390,14 @@ The primitive representatives are then the unit multiples of one primitive
 tuple in $D^{n+1}$.
 \end{corollary}
 \begin{proof}
-Apply \cref{odg:frac:thm:gaussian} (or \cref{odg:frac:thm:main} for $D=\Z$) to the
-constant polynomials $r_0,\ldots,r_n$, which have gcd one; after normalization
-the vector is a primitive tuple in $D^{n+1}$.
+Choose a nonzero coordinate and permute it into the denominator position.
+Apply \cref{odg:frac:thm:gaussian} (or \cref{odg:frac:thm:main} for $D=\Z$)
+to these constant polynomials: the chosen denominator is nonzero, and
+their polynomial gcd is one because at least one constant is nonzero.
+In the rational-direction case normalization gives a primitive tuple in
+$D^{n+1}$, and the classification gives exactly its unit multiples as
+primitive representatives. Otherwise no representative has a gcd.
+Undoing the permutation preserves every divisibility and B\'ezout property.
 \end{proof}
 
 \status{The real case is \cref{odg:thm:realray} of source 01. Manuscript 14 of
@@ -6285,9 +6415,13 @@ For constants $z\in\C$, ordinary Gaussian rationality $z\in\Q(i)$ is thus exactl
 the existence of a primitive Gaussian omnific fraction, although Gaussian
 omnific fractions produce every surcomplex number \src{08}. The localization of
 $\Og$ at the elements with nonzero constant has residue field $\Q(i)$, and on its
-finite part the real and rational residues are prescribed independently in
-$\C\times\Q(i)$ by $(zt+w)/(t+1)$ with $z\in\C$ and $w\in\Q(i)$, using a common
-ordinary denominator for the two parts of $w$; the proof is that of
+finite part (both real and imaginary coordinates finite), the complex
+standard part and Gaussian-rational residue are prescribed independently
+in $\C\times\Q(i)$ by $(zt+w)/(t+1)$ with $z\in\C$, $w\in\Q(i)$ and
+$0<t\in\Pi$. A common nonzero ordinary denominator for the two parts
+of $w$ puts this fraction in the localization. Its constant-term residue
+is $w$, while subtracting $z$ leaves $(w-z)/(t+1)$ with infinitesimal
+real and imaginary parts. This is the proof of
 \cref{odg:frac:thm:tworesidues} coordinatewise \src{08}.
 
 \subsection{What is and is not classified}\label{odg:frac:sub:scope}
@@ -6300,7 +6434,8 @@ $\Vreg$. They do not classify $\Den(x)$ for arbitrary $x\in\No$, and they do not
 show that $\Vreg=\mathbb P^1(\No)$; density is weaker than equality, as the
 disjoint dense fibers show \src{09}. A multivariate polynomial gcd of one does
 not give a B\'ezout identity ($T_1$ and $T_2$ have gcd one in $\R[T_1,T_2]$ but
-generate a proper ideal), so the proofs do not extend directly to several
+generate an ideal annihilated by evaluation at $(0,0)$), so the proofs
+do not extend directly to several
 parameters \src{08}. The scale computation is one explicit test case, not a
 general flatness or normalization theorem for Hahn integer parts \src{08}. The
 questions left by the two sources are
@@ -11286,8 +11421,11 @@ Hannah Klawa.
 \bibitem{StacksFlat}
 The Stacks Project Authors.
 \emph{Flat modules and flat ring maps}, Section 10.39, Lemma 10.39.11
-(equational criterion of flatness), Tag 00HK.
-\url{https://stacks.math.columbia.edu/tag/00HK}.
+(equational criterion of flatness), Tag 00HK,
+\url{https://stacks.math.columbia.edu/tag/00HK};
+\emph{Tor groups and flatness}, Section 10.75, especially Lemmas 10.75.2,
+10.75.5 and Remark 10.75.9,
+\url{https://stacks.math.columbia.edu/tag/00LY}.
 
 \bibitem{StacksDiff}
 The Stacks Project Authors.
