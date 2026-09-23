@@ -20,7 +20,8 @@ open Foundations Filter Topology
 
 noncomputable section
 
-private theorem mem_real_Ioo_of_standardPart_mem {x : SignSequence.{u}}
+/-- A finite actual surreal lies in an ordinary open interval whenever its residue does. -/
+theorem mem_real_Ioo_of_standardPart_mem {x : SignSequence.{u}}
     (hx : SignSequence.IsFinite x) {a b : ℝ}
     (h : SignSequence.standardPart x ∈ Set.Ioo a b) :
     x ∈ Set.Ioo (SignSequence.ofReal a) (SignSequence.ofReal b) := by
@@ -173,6 +174,17 @@ theorem arctanFunction_eq_strongSum (x : SignSequence.{u}) (hx : SignSequence.Is
     (by intro a b h; dsimp at h; omega) hz
   rw [arctanFunction_eq_powerSeries x hx, SignSequence.powerSeriesEvaluation_eq_strongSum]
   simpa only [Analytic.coeff_taylorSeries_arctan_odd] using he.symm
+
+/-- The inverse tangent differs from its linear term by a finite cubic remainder. -/
+theorem arctanFunction_cubic_remainder (t : SignSequence.{u})
+    (ht : SignSequence.IsInfinitesimal t) :
+    ∃ R : SignSequence.{u}, SignSequence.IsFinite R ∧ arctanFunction t = t + t ^ 3 * R := by
+  obtain ⟨R, hR, _, he⟩ := SignSequence.exists_finite_powerSeries_remainder t ht
+    (Analytic.taylorSeries Real.arctan 0) 3
+  rw [← arctanFunction_eq_powerSeries t ht] at he
+  simp_rw [Analytic.coeff_taylorSeries_arctan_zero] at he
+  norm_num [Finset.sum_range_succ, map_div₀, map_neg, map_ofNat] at he
+  exact ⟨R, hR, by linear_combination he⟩
 
 /-- The inverse-tangent expansion through degree five has an exact finite seventh-order tail. -/
 theorem arctanFunction_expansion (x : SignSequence.{u}) (hx : SignSequence.IsInfinitesimal x) :

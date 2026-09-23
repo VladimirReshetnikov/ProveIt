@@ -510,3 +510,7 @@ import Surreal.Algebra.LaurentCayley
 import Surreal.Algebra.ComplexPolynomialRealPart
 import Surreal.Surcomplex.TrigonometricPolynomialCayley
 import Surreal.Surcomplex.TrigonometricCayleyStability
+import Surreal.Surcomplex.CayleyAngularBounds
+import Surreal.Surcomplex.TrigonometricAngularStability
+import Surreal.Surcomplex.TrigonometricPolynomialDerivative
+import Surreal.Surcomplex.TrigonometricRootStability

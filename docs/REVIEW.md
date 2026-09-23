@@ -2685,28 +2685,33 @@ exponent triples), and the HOD suite's finite codes, floor and support-coset
 examples. They establish finite regression evidence, not the reports'
 transfinite or definability claims. Delivered data files are unchanged.
 
-The incoming Laurent Cayley implementation retains its precise chart-level
-coverage: angle-coordinate transport and the fine-derivative identification
-remain separate obligations. `LEAN_NUM_THREADS=2 lake build` passes 4,303
-jobs; the audit accepts 13,351 declarations using only `propext`,
-`Classical.choice` and `Quot.sound`. This documentation review adds no Lean
-coverage of omnific integers.
+At synchronization with `9693b28`, the incoming Laurent Cayley implementation
+had chart-level coverage; its build passed 4,303 jobs and audited 13,351
+declarations. The final fetch brought `934810a`, completing transport to
+angular coordinates and identifying the Fourier derivative with the native
+fine derivative. Its exact mapping for `trigonometry:thm:stability` is
+retained. The combined `LEAN_NUM_THREADS=2 lake build` passes 4,307 jobs and
+audits 13,389 declarations, using only `propext`, `Classical.choice` and
+`Quot.sound`. All 3,089 statement-index rows, 3,582 cited labels and 1,383
+local Markdown destinations pass after that merge. The article and catalogue
+PDFs are unchanged by this Lean-only follow-up. This documentation review
+adds no Lean coverage of omnific integers.
 
-## Remaining scope
+## Earlier omnific integration validation
 
 Eleven omnific-integer manuscripts arrived in `f0b7f43` and were placed in
-`be06fc8`, which was merged after the field-automorphism build. This is a
+`be06fc8`, which was merged after the field-automorphism build. That was a
 documentation-only merge: no existing mapped manuscript or Lean source
 changed. At that placement, the two new reports contained only base
 manuscripts 01 and 06, with nine companions still to integrate, obsolete
-build filenames and no current PDFs. The elementary Diophantine update
-above now supplies a partial integration and maintained PDF; the quotient
-report and the later Diophantine comparison remain pending. At placement
+build filenames and no current PDFs. At that stage, the elementary Diophantine update supplied a partial
+integration and maintained PDF; the quotient report and later comparison
+were pending. The synchronization record above supersedes that status. At placement
 the reader map, catalogue and ledger recorded 75
 standard statements, bringing the inventory to 2,610 in 51 reports; the
 quotient base's three `maintheorem` statements are additional claims outside
 the standard-environment count. Proof review and formalization are pending.
-The independent inventory audit passes for all 51 present sources, and all
+The independent inventory audit passes for all 51 sources then present, and all
 3,090 cited labels and 1,261 local Markdown destinations resolve. The
 catalogue's 51 main-document destinations exist; its three-pass build has
 28 pages and no diagnostics, and all pages were visually checked. The
@@ -2723,6 +2728,13 @@ axiom audit passed 12,787 declarations with only `propext`,
 local Markdown destinations resolve, and the 51-source inventory audit
 passes. This is integration validation, not a proof review of the new reports.
 
+## Remaining scope
+
+The current collection has 56 main texts. The synchronization record above
+states the latest omnific review boundary and the remaining companion
+integrations. Historical counts below identify the versions previously
+reviewed; they do not replace the current inventory.
+
 Batch 22, placed in `7b5f934`, was assembled in `68e2960` and catalogued
 in `5d369a0`. Its two reports,
 [first-kappa coefficients](surcomplex/first-kappa-coefficients/) and
@@ -2730,7 +2742,7 @@ in `5d369a0`. Its two reports,
 new sections of entire functions, holonomic rigidity, trigonometry, Euclidean
 three-space and Hahn probability are now indexed from their written sources.
 Their mathematical proof review and source reconciliation remain pending.
-The collection now has 49 assembled reports. The six gamma/zeta archives
+At that stage the collection had 49 assembled reports. The six gamma/zeta archives
 delivered in `cafe42f` and placed in `e4f8848` were assembled in `7af7056` as
 [gamma and zeta functions](surcomplex/gamma-and-zeta-functions/) and catalogued
 in `087ee37`. The current merged source has 94 standard result environments,
