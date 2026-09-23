@@ -370,7 +370,13 @@ For Hilbert coefficients, **order-bounded** means a positive real-Hahn bound.
 When comparing least bounds with the spectral report, allow nonnegative bounds:
 the zero operator has least nonnegative bound `0` but no least positive one.
 A subspace with zero orthogonal complement can have an algebraic direct-sum
-complement while admitting no orthogonal direct-sum complement.
+complement while admitting no orthogonal direct-sum complement. Under exponent-group
+inclusion `Γ ⊆ Δ`, the induced topology on `V_Γ` agrees with its intrinsic
+topology when `Γ` is cofinal; otherwise it is discrete. Strong operator series
+extend uniquely as strong operators. For Hilbert coefficient spaces, norms
+and scalar-valued functionals take values in the scalar field; general operator
+outputs remain vectors. Allowing all positive surreal norm tolerances isolates
+those vectors without identifying them with surcomplex scalars.
 
 A **coefficientwise Hahn sum** in the
 [measure report](surreal/hahn-valued-measures-and-probability/article.tex)

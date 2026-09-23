@@ -15,7 +15,7 @@ that the current Lean target compiles or imports them.
 
 ## Scope and how to read this ledger
 
-The canonical inventory below identifies **49 main texts** with **2465**
+The canonical inventory below identifies **49 current main sources** with **2465**
 standard result environments. Counts cover
 literal `theorem`, `lemma`, `proposition`, and `corollary` environments;
 examples, equations, prose assertions and companion proofs contain further
@@ -36,8 +36,12 @@ expansions remain pending within the review scopes recorded separately. Batch 21
 statements; their review remains pending. Batch 22 (placed in `7b5f934`, written in
 `68e2960`) adds two reports and new sections to five existing ones, all
 indexed in their written form; their review remains pending.
-The subsequently added Gamma–zeta report contributes 25 indexed statements;
-its proof review and Lean formalization remain **Pending**.
+The six gamma/zeta manuscripts placed in `e4f8848` add one report directory.
+Its current main source is the unassembled base manuscript 06, provisionally
+indexed with 25 standard results. The other five source manuscripts are not
+represented by that count; assembly, catalogue integration and review remain
+pending. Their delivered artifacts are preserved under the new report, and
+the original archives remain in Git history at `cafe42f`.
 Inclusion supplies navigation, not mathematical review or formalization. The implementation
 table retains the precise scope of the newly mapped Lean statements.
 
@@ -533,12 +537,11 @@ cannot replace strong Hahn summability.
 
 `T`, `L`, `P`, `C` mean literal `theorem`, `lemma`, `proposition` and
 `corollary` environments; examples, computations, assessments and other
-custom environments are not included. The index covers all 49 main texts
-present in the repository; two are not named `article.tex`. The newly added
-[Gamma–zeta report](surcomplex/gamma-and-zeta-functions/article.tex) has 25
-standard environments, all **Pending**; its finite symbolic checks and source
-audit do not establish mathematical review or Lean coverage.
-The two reports placed in `7b5f934`
+custom environments are not included. The index covers all 49 current main
+sources; two are not named `article.tex`. The reader map and the typeset
+catalogue list 48 assembled reports. The additional gamma/zeta source is
+provisional base manuscript 06 from placement `e4f8848`, pending assembly of
+all six delivered manuscripts. The two reports placed in `7b5f934`
 and written in `68e2960`, and the five reports that batch extended, are
 indexed from their written sources. The two reports placed in `d4e71b7`
 and written in `3a2d35d`,
@@ -1790,48 +1793,6 @@ Source: [surcomplex/finite-deformations/article.tex](surcomplex/finite-deformati
 | Theorem | `finite:thm:rootstability` (line 1572) | Sharp conditioned root stability |
 | Corollary | `finite:cor:matching` (line 1623) | Stable matching of an entire simple cluster |
 | Proposition | `finite:prop:sharpness` (line 1632) | Both bounds attained, and the threshold strict |
-
-### gamma-and-zeta-functions
-
-Source: [surcomplex/gamma-and-zeta-functions/article.tex](surcomplex/gamma-and-zeta-functions/article.tex).
-
-All 25 standard statements are **Pending**, including proof review. The
-report distinguishes canonical finite Taylor–Laurent lifts, strong Dirichlet
-and Hurwitz constructions, phase-dependent global continuations and
-transported elementary-extension models; these domains and their operations
-require separate formalization and comparison. Formalization must retain
-every RH and simplicity hypothesis and distinguish established classical
-analytic inputs from cited external preprints. The delivered finite symbolic checks and source audit
-provide no Lean coverage. Labels below belong to this report; the two
-unlabeled corollaries are identified by source line.
-
-| Kind | Source label or line | Heading |
-|---|---|---|
-| Lemma | `lem:evaluation` (line 250) | Infinitesimal formal evaluation |
-| Proposition | `prop:functorial` (line 323) | Functoriality of canonical lifting |
-| Theorem | `thm:divisor` (line 347) | Divisor preservation and infinitesimal valuation |
-| Corollary | line 384 | Untitled |
-| Proposition | `prop:finitefe` (line 436) | Finite completed functional equation |
-| Theorem | `thm:finiteRH` (line 488) | Untitled |
-| Theorem | `thm:simplestable` (line 521) | Exact critical-line stability at a simple zero |
-| Theorem | `thm:robust` (line 566) | Robust finite RH criterion |
-| Corollary | line 615 | Multiplicity determines the splitting scale |
-| Theorem | `thm:Dirichlet` (line 700) | Arbitrary-coefficient Dirichlet realization |
-| Theorem | `thm:euler` (line 764) | Euler identities and zero-freeness |
-| Proposition | `prop:Dderivative` (line 802) | Local analytic dependence |
-| Proposition | `prop:Strec` (line 882) | Exact Stirling recurrence |
-| Theorem | `thm:Hurwitz` (line 970) | Hurwitz shift, Bernoulli values, and log-Gamma |
-| Theorem | `thm:gamma-obstruction` (line 1121) | Gamma reflection forces extra infinite poles |
-| Proposition | `prop:twofreq` (line 1152) | A two-frequency first-order distinction |
-| Theorem | `thm:resonance` (line 1199) | Phase-forgetting zeta obstruction |
-| Theorem | `thm:weakcompletions` (line 1276) | Explicit symmetric completions with different infinite zeros |
-| Proposition | `prop:embedding` (line 1342) | An ordered-field realization inside the surreals |
-| Theorem | `thm:transferRH` (line 1384) | Elementary RH equivalence |
-| Proposition | `prop:halofree` (line 1457) | Halo transfer of zero-free sets |
-| Corollary | `cor:stableproportion` (line 1566) | Quantitative robust-halo consequence |
-| Proposition | `prop:Hermitian` (line 1650) | Finite Hermitian tests do not become stronger |
-| Lemma | `lem:heatpersist` (line 1705) | Local real-root persistence |
-| Theorem | `thm:escape` (line 1729) | Conditional escape at negative infinitesimal time |
 
 ### global-divisors
 
@@ -3308,7 +3269,7 @@ Mappings cover only the hypotheses and clauses they state.
 
 Source: [surcomplex/three-duals-of-hahn-vector-spaces/article.tex](surcomplex/three-duals-of-hahn-vector-spaces/article.tex).
 
-The proof review covers Sections 2–9. Support and regrouping arguments now
+The main-text proof review covers Sections 1–15. Support and regrouping arguments now
 show finite coefficient and triple rearrangements explicitly; the strong-map
 classification includes canonical `K`-linearity and the discrete zero-group
 case. Completion uses the induced valuation uniformity and an explicit net
@@ -3320,9 +3281,12 @@ argument. The choice explanation is corrected. Continuous restriction,
 separation, quotient kernels, Hilbert norms, Riesz coefficients and the
 hyperplane distance arguments are expanded. The review distinguishes positive
 from nonnegative operator bounds and a zero orthogonal complement from the
-absence of an orthogonal direct-sum complement. Sections 10 onward and
-remaining imports/source reconciliation remain pending. These are source
-improvements, not new Lean mappings.
+absence of an orthogonal direct-sum complement. Exponent enlargement now
+includes the induced-topology dichotomy and unique strong extension;
+normal-form interpretation distinguishes scalar outputs from module vectors.
+Local source comparisons and targeted primary terminology checks are recorded
+in the review ledger. Remaining imports/source reconciliation remain pending.
+These are source improvements, not new Lean mappings.
 
 
 Statements remain **pending unless explicitly mapped** in the implementation table.
@@ -3332,33 +3296,33 @@ Mappings cover only the hypotheses and clauses they state.
 |---|---|---|
 | Theorem | `duals:thm:overview-completion` (line 196) | Completion and enlargement; proved in \cref{duals:sec:completion,duals:sec:enlargement} |
 | Theorem | `duals:thm:overview-duals` (line 218) | Strong maps and the continuous dual; proved in \cref{duals:sec:strong,duals:sec:continuous} |
-| Lemma | `duals:lem:support` (line 386) | Classical support facts |
-| Lemma | `duals:lem:continuous-shift` (line 461) | Continuity is a uniform valuation-shift bound |
-| Theorem | `duals:thm:strong` (line 516) | Global-support classification |
-| Corollary | `duals:cor:strong-calculus` (line 598) | Operator calculus and automatic continuity |
-| Proposition | `duals:prop:algebraic` (line 666) | Finite total coefficient rank |
-| Theorem | `duals:thm:completion` (line 691) | Finite rank below every cut |
-| Lemma | `duals:lem:group` (line 757) | An order-theoretic alternative |
-| Theorem | `duals:thm:cyclic` (line 787) | The cyclic-group boundary |
-| Theorem | `duals:thm:cofinality-completion` (line 816) | The cofinality boundary for nontrivial completion |
-| Proposition | `duals:prop:spherical` (line 893) | Spherical completeness of the full Hahn space |
-| Theorem | `duals:thm:HB` (line 957) | Contractive scalar extension |
-| Lemma | `duals:lem:E-extension` (line 1049) | Extension from constants to their algebraic span |
-| Theorem | `duals:thm:restriction` (line 1072) | Exact restriction sequence |
-| Theorem | `duals:thm:separation` (line 1110) | Separation of the completion defect |
-| Corollary | `duals:cor:ghost-boundary` (line 1162) | Exact existence boundary |
-| Theorem | `duals:thm:twofailures` (line 1183) | Two failures, for every noncyclic group |
-| Corollary | `duals:cor:second-quotient` (line 1229) | A second quotient obstruction |
-| Theorem | `duals:thm:continuous-strong` (line 1266) | When continuous and strong duals agree |
-| Proposition | `duals:prop:norm` (line 1345) | Norm and valuation; standard coefficient extension |
-| Proposition | `duals:prop:order-bound` (line 1411) | Order bounds for all continuous maps |
-| Theorem | `duals:thm:infinite-bounds` (line 1461) | An ordinary unbounded functional has precisely infinite bounds |
-| Theorem | `duals:thm:riesz` (line 1503) | Coefficientwise Riesz criterion and exact first gap |
-| Corollary | `duals:cor:three-duals` (line 1584) | The three-dual trichotomy |
-| Proposition | `duals:prop:dimension` (line 1611) | Untitled |
-| Theorem | `duals:thm:hyperplane` (line 1674) | A closed, strongly complemented hyperplane with zero orthogonal complement |
-| Theorem | `duals:thm:distance` (line 1747) | Exact lower-bound cut for the distance |
-| Theorem | `duals:thm:basechange` (line 1801) | Cofinal preservation and noncofinal collapse |
+| Lemma | `duals:lem:support` (line 398) | Classical support facts |
+| Lemma | `duals:lem:continuous-shift` (line 473) | Continuity is a uniform valuation-shift bound |
+| Theorem | `duals:thm:strong` (line 528) | Global-support classification |
+| Corollary | `duals:cor:strong-calculus` (line 610) | Operator calculus and automatic continuity |
+| Proposition | `duals:prop:algebraic` (line 678) | Finite total coefficient rank |
+| Theorem | `duals:thm:completion` (line 703) | Finite rank below every cut |
+| Lemma | `duals:lem:group` (line 769) | An order-theoretic alternative |
+| Theorem | `duals:thm:cyclic` (line 799) | The cyclic-group boundary |
+| Theorem | `duals:thm:cofinality-completion` (line 828) | The cofinality boundary for nontrivial completion |
+| Proposition | `duals:prop:spherical` (line 905) | Spherical completeness of the full Hahn space |
+| Theorem | `duals:thm:HB` (line 969) | Contractive scalar extension |
+| Lemma | `duals:lem:E-extension` (line 1061) | Extension from constants to their algebraic span |
+| Theorem | `duals:thm:restriction` (line 1084) | Exact restriction sequence |
+| Theorem | `duals:thm:separation` (line 1122) | Separation of the completion defect |
+| Corollary | `duals:cor:ghost-boundary` (line 1174) | Exact existence boundary |
+| Theorem | `duals:thm:twofailures` (line 1195) | Two failures, for every noncyclic group |
+| Corollary | `duals:cor:second-quotient` (line 1241) | A second quotient obstruction |
+| Theorem | `duals:thm:continuous-strong` (line 1278) | When continuous and strong duals agree |
+| Proposition | `duals:prop:norm` (line 1357) | Norm and valuation; standard coefficient extension |
+| Proposition | `duals:prop:order-bound` (line 1423) | Order bounds for all continuous maps |
+| Theorem | `duals:thm:infinite-bounds` (line 1473) | An ordinary unbounded functional has precisely infinite bounds |
+| Theorem | `duals:thm:riesz` (line 1515) | Coefficientwise Riesz criterion and exact first gap |
+| Corollary | `duals:cor:three-duals` (line 1596) | The three-dual trichotomy |
+| Proposition | `duals:prop:dimension` (line 1623) | Untitled |
+| Theorem | `duals:thm:hyperplane` (line 1686) | A closed, strongly complemented hyperplane with zero orthogonal complement |
+| Theorem | `duals:thm:distance` (line 1759) | Exact lower-bound cut for the distance |
+| Theorem | `duals:thm:basechange` (line 1815) | Cofinal preservation and noncofinal collapse |
 
 ### hidden-negative-hermitian-directions
 
@@ -3950,3 +3914,43 @@ are **Pending** unless explicitly mapped in the implementation table.
 | Theorem | `dsup:thm:rationaldef` (line 1549) | Interdefinable dilations |
 | Theorem | `dsup:thm:nonconjugate` (line 1586) | Distinct rational dilations are not conjugate |
 | Theorem | `dsup:thm:surreal` (line 1766) | Surreal and surcomplex consequences |
+
+### gamma-and-zeta-functions
+
+Source: [surcomplex/gamma-and-zeta-functions/article.tex](surcomplex/gamma-and-zeta-functions/article.tex).
+
+Provisional navigation for delivered base manuscript 06, placed in `e4f8848`.
+The six-source report is not assembled: labels are still unprefixed, two
+corollaries are unlabeled, and no assembled PDF is present. Five raw labels
+also occur in other reports; the source path disambiguates these index rows.
+This index does
+not cover the other five manuscripts' additional claims or assert any Lean
+coverage. All statements remain **pending unless explicitly mapped**.
+
+| Kind | Source label or line | Heading |
+|---|---|---|
+| Lemma | `lem:evaluation` (line 250) | Infinitesimal formal evaluation |
+| Proposition | `prop:functorial` (line 323) | Functoriality of canonical lifting |
+| Theorem | `thm:divisor` (line 347) | Divisor preservation and infinitesimal valuation |
+| Corollary | Line 384 (unlabeled) | Untitled |
+| Proposition | `prop:finitefe` (line 436) | Finite completed functional equation |
+| Theorem | `thm:finiteRH` (line 488) | Untitled |
+| Theorem | `thm:simplestable` (line 521) | Exact critical-line stability at a simple zero |
+| Theorem | `thm:robust` (line 566) | Robust finite RH criterion |
+| Corollary | Line 615 (unlabeled) | Multiplicity determines the splitting scale |
+| Theorem | `thm:Dirichlet` (line 700) | Arbitrary-coefficient Dirichlet realization |
+| Theorem | `thm:euler` (line 764) | Euler identities and zero-freeness |
+| Proposition | `prop:Dderivative` (line 802) | Local analytic dependence |
+| Proposition | `prop:Strec` (line 882) | Exact Stirling recurrence |
+| Theorem | `thm:Hurwitz` (line 970) | Hurwitz shift, Bernoulli values, and log-Gamma |
+| Theorem | `thm:gamma-obstruction` (line 1121) | Gamma reflection forces extra infinite poles |
+| Proposition | `prop:twofreq` (line 1152) | A two-frequency first-order distinction |
+| Theorem | `thm:resonance` (line 1199) | Phase-forgetting zeta obstruction |
+| Theorem | `thm:weakcompletions` (line 1276) | Explicit symmetric completions with different infinite zeros |
+| Proposition | `prop:embedding` (line 1342) | An ordered-field realization inside the surreals |
+| Theorem | `thm:transferRH` (line 1384) | Elementary RH equivalence |
+| Proposition | `prop:halofree` (line 1457) | Halo transfer of zero-free sets |
+| Corollary | `cor:stableproportion` (line 1566) | Quantitative robust-halo consequence |
+| Proposition | `prop:Hermitian` (line 1650) | Finite Hermitian tests do not become stronger |
+| Lemma | `lem:heatpersist` (line 1705) | Local real-root persistence |
+| Theorem | `thm:escape` (line 1729) | Conditional escape at negative infinitesimal time |
