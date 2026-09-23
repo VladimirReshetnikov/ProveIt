@@ -3430,24 +3430,34 @@ Source: [surreal/matrix-scaling-at-surreal-scales/article.tex](surreal/matrix-sc
 Statements remain **pending unless explicitly mapped** in the implementation table.
 Mappings cover only the hypotheses and clauses they state.
 
+The main-text documentation review covers Sections 1–14 and the dependency
+appendix. It expands finite-generator composition evaluation, projection
+kernels, formal inversion, recentering, tree replacement, chain base cases and
+strict support feasibility. Evaluated optimality requires a nontrivial value
+group; formal coefficient sharpness retains the trivial group. The remainder
+degree, strict feasible-witness condition and empty basis minimum are explicit.
+Primary-source comparisons were checked, while remaining foundational imports,
+source reconciliation and priority remain separate. This adds no Lean mapping;
+see [the review record](REVIEW.md).
+
 | Kind | Source label or line | Heading |
 |---|---|---|
-| Lemma | `scale:lem:neumann` (line 699) | Positive-support word finiteness |
-| Lemma | `scale:lem:evaluation` (line 724) | Finite-generator evaluation |
-| Theorem | `scale:thm:tree` (line 833) | Weighted tree interpolation |
-| Theorem | `scale:thm:existence` (line 941) | Uniform infinitesimal normalization |
-| Corollary | `scale:cor:gauge` (line 1014) | Untitled |
-| Lemma | `scale:lem:secant` (line 1068) | Exact secant identity |
-| Theorem | `scale:thm:sharp` (line 1106) | Sharp nonlinear tree-gap law |
-| Theorem | `scale:thm:coeffgain` (line 1175) | Coefficientwise gain |
-| Corollary | `scale:cor:remainder` (line 1223) | Finite-degree precision certificate |
-| Theorem | `scale:thm:bottleneck` (line 1246) | Bottleneck replacement formula |
-| Theorem | `scale:thm:chain` (line 1329) | Additive attenuation along the chain |
-| Proposition | `scale:prop:global` (line 1489) | Positive scaling over real closed fields |
-| Proposition | `scale:prop:cutbound` (line 1542) | A finite cut bound |
-| Corollary | `scale:cor:positivebranch` (line 1579) | The positive normalization is the local branch |
-| Theorem | `scale:thm:linear` (line 1618) | Basis-gap normalization |
-| Corollary | `scale:cor:descent` (line 1681) | Exact local support-group descent |
+| Lemma | `scale:lem:neumann` (line 721) | Positive-support word finiteness |
+| Lemma | `scale:lem:evaluation` (line 746) | Finite-generator evaluation |
+| Theorem | `scale:thm:tree` (line 871) | Weighted tree interpolation |
+| Theorem | `scale:thm:existence` (line 994) | Uniform infinitesimal normalization |
+| Corollary | `scale:cor:gauge` (line 1070) | Untitled |
+| Lemma | `scale:lem:secant` (line 1132) | Exact secant identity |
+| Theorem | `scale:thm:sharp` (line 1170) | Sharp nonlinear tree-gap law |
+| Theorem | `scale:thm:coeffgain` (line 1242) | Coefficientwise gain |
+| Corollary | `scale:cor:remainder` (line 1302) | Finite-degree precision certificate |
+| Theorem | `scale:thm:bottleneck` (line 1328) | Bottleneck replacement formula |
+| Theorem | `scale:thm:chain` (line 1420) | Additive attenuation along the chain |
+| Proposition | `scale:prop:global` (line 1584) | Positive scaling over real closed fields |
+| Proposition | `scale:prop:cutbound` (line 1637) | A finite cut bound |
+| Corollary | `scale:cor:positivebranch` (line 1674) | The positive normalization is the local branch |
+| Theorem | `scale:thm:linear` (line 1724) | Basis-gap normalization |
+| Corollary | `scale:cor:descent` (line 1800) | Exact local support-group descent |
 
 ### surcomplex-field-automorphisms
 

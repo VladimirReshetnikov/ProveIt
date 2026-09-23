@@ -3,9 +3,10 @@
 **Spanning-tree gaps, infinitesimal normalization, and exact multiscale propagation**
 Single-source research report, 22 September 2026, built from one manuscript
 (batch 19, number 09, archive `surreal_matrix_scaling`). Prepared for
-Vladimir Reshetnikov. An AI-assisted research draft, not refereed. No `scale:`
-label has a Lean formalization, and the
-[formalization ledger](../../FORMALIZATION.md) maps none.
+Vladimir Reshetnikov. An AI-assisted research draft, not refereed. The
+[formalization ledger](../../FORMALIZATION.md) inventories its 16 standard
+statements but gives none a Lean Implementation mapping; this review adds
+no Lean coverage.
 
 This directory holds one manuscript. It is not a merge. There was no second
 source, and nothing here was selected out of a larger body of work.
@@ -13,7 +14,7 @@ source, and nothing here was selected out of a larger body of work.
 ```
 article.tex        the report, standalone LaTeX with an internal bibliography
                    (delivered as surreal_matrix_scaling.tex, renamed on placement)
-article.pdf        the compiled report, 32 pages
+article.pdf        the compiled report, 33 pages
 README.md          this guide
 PROOF_AUDIT.md     the manuscript's own proof-dependency and self-review record, as delivered
 SOURCE_AUDIT.md    the manuscript's own repository and literature audit, as delivered
@@ -78,7 +79,9 @@ surcomplex forms come through the normal-form embedding `t^γ ↦ ω^(−γ)`.
    the leading coefficient is the positive real ratio `C_e` of minimizing-tree
    amplitudes (equation 6.3), with ties allowed and complex perturbations
    allowed. The proof is an exact secant identity (Lemma 6.1). So `κ_e` is the
-   largest uniform gain; a particular direction can gain more (Remark 6.3).
+   largest uniform gain when `Γ ≠ {0}`; a particular direction can gain more
+   (Remark 6.3). For the trivial group, the evaluated domain is a singleton;
+   the formal coefficient sharpness below still holds.
 4. **Every Taylor order** (Theorem 6.4, `scale:thm:coeffgain`). At entry `e`,
    every positive-degree Taylor coefficient of the logarithmic response and of
    the relative output has valuation at least `κ_e`, at every centre. For a
@@ -94,9 +97,11 @@ surcomplex forms come through the normal-form embedding `t^γ ↦ ω^(−γ)`.
    valuations (equations 8.2–8.4): the gains add along the chain. This holds
    for the nonlinear solution, not only for its linearization. Section 8.3 is
    a rank-two example in lexicographic `Z²`.
-7. **The usual positive normalization is the local branch** (Section 9). Over a
-   real closed field, positive scaling exists and is unique (Proposition 9.1,
-   background, by real scaling and first-order transfer). Proposition 9.2 is a
+7. **The usual positive normalization is the local branch** (Section 9). If the
+   margins have a feasible witness positive on every support edge, every positive
+   kernel on that support has a unique normalized matrix over a real closed field
+   (Proposition 9.1, by real scaling and first-order transfer). On connected
+   support its factors are unique modulo a common reciprocal gauge. Proposition 9.2 is a
    finite cut bound `η^(−N) ≤ P'_e/P_e ≤ η^N`. For divisible `Γ`, Corollary 9.3
    identifies the positive normalization of a relatively infinitesimal
    perturbation with the branch of Theorem 5.1, with tree costs taken from the
@@ -125,9 +130,9 @@ and all are collected in Section 1.4 as (N1)–(N12).
   tree- and basis-gap laws and the chain formulas are **candidate original**
   results after a targeted, non-exhaustive comparison. No named open problem is
   claimed solved. The repository audit was not a line-by-line review, and its
-  indexed searches were unusable as negative evidence. No Lean formalization
-  exists, and Section 13.2's outline of Lean modules does not assert that they
-  exist.
+  indexed searches were unusable as negative evidence. The ledger has no
+  Implementation mapping for these results; Section 13.2's outline of Lean
+  modules does not assert that they exist.
 - **Credited, not claimed:**
   - existence, uniqueness and real continuity of scaling (Idel's review);
   - generalized-series expansions for a one-parameter scaling problem, so no
@@ -142,8 +147,8 @@ and all are collected in Section 1.4 as (N1)–(N12).
   Theorem 10.1 claims no new matroid combinatorics.
 - **No convergence claims.** Not for the alternating Sinkhorn iteration in an
   arbitrary-rank valuation topology, not for its complexity, and not for
-  set-indexed sequences in the surreal fine topology. Strong sums are not limits
-  of partial sums. The remainder certificate does not promise that finite
+  set-indexed sequences in the surreal fine topology. Strong summability alone
+  does not imply convergence of partial sums. The remainder certificate does not promise that finite
   Taylor degree reaches every precision at higher rank.
 - **"Analytic"** means given by a strongly evaluated formal series on the
   relative infinitesimal polydisc; no classical holomorphic structure in the
@@ -152,8 +157,9 @@ and all are collected in Section 1.4 as (N1)–(N12).
 - **The hypotheses matter.** Positive leading coefficients are sufficient, not
   claimed necessary. Margins and support are fixed. `K` is not ordered;
   "positive-leading" concerns only the leading coefficient.
-- **Sharp** means the largest uniform gain, not equality in every direction.
-  Optimality of the exponent `N` in Proposition 9.2 is not claimed.
+- **Sharp** means the largest uniform gain over infinitesimal inputs when
+  `Γ ≠ {0}`, not equality in every direction. Formal coefficient sharpness also
+  holds for the trivial group. Optimality of the exponent `N` in Proposition 9.2 is not claimed.
 - The tree costs are those of the **normalized** base matrix. No equally sharp
   formula from the valuations of an unscaled kernel is claimed.
 - **Divisibility.** The local theory needs none. Only the global positive
@@ -227,7 +233,8 @@ group and real rates; the local theory here assumes neither.
   generators gives the strong evaluation of Lemma 9.5 there
   (`spec:lem:evaluate`); the finitely many generators in `𝒪` are this report's
   addition, and Example 3.5 shows they cannot be arbitrary. The rank-two
-  warning (Example 9.2 there) is the example of Section 12.4 here.
+  warning (Example 9.2 there) uses a geometric series; Section 12.4 here uses
+  an exponential with the same obstruction to convergence of Taylor sums.
 - descent without new exponents (Theorem 9.18 there, `spec:thm:svd`;
   Corollary 11.1 here). The ramification example (11.1) here is computed
   directly, not from that report's Section 10.
@@ -239,12 +246,14 @@ number. Both reports keep their own proofs.
 
 **`surcomplex/prony-reconstruction-at-surreal-scales`.** Its nonuniform
 certificate (Theorem 8.1 there, `prony:thm:graph`) is also a minimum-cost path
-computation in an ordered group, on a directed graph of moment interactions. It
-involves no spanning trees and no normalization.
+computation in an ordered group, on a directed graph of moment interactions.
+It requires positive cycle weights and strict-ball inequalities
+`ρ_i − E_i > δ_i` for every `i`; these are sufficient conditions in that
+report's notation. It involves no spanning trees and no normalization.
 
-These comparisons were added during editorial assembly at `ed88b8f`. The
-theorem numbers of other reports quoted here are from their PDFs committed
-there.
+These comparisons were added during editorial assembly at `ed88b8f` and
+rechecked against the source labels at `034ab96` during the main-text review.
+Historical searches below still describe their original snapshots.
 
 ## Stale repository statements, corrected
 
@@ -285,8 +294,8 @@ give each reference its right name. No number changed.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-This build of `article.tex` gives 32 pages (a title page, two contents pages
-and 29 numbered pages). It has no errors, no undefined or multiply-defined
+This build of `article.tex` gives 33 pages (a title page, two contents pages
+and 30 numbered pages). It has no errors, no undefined or multiply-defined
 references or citations, no duplicate PDF destinations, and no LaTeX, package
 or box warnings. The source needs no external figures and no bibliography
 database.
@@ -332,8 +341,10 @@ A rerun on a copy during assembly took about twenty seconds under Python 3.14.4
 and SymPy 1.14.0. It reproduced the recorded file except for the Python
 version field and the line endings the operating system writes. The console
 record `data/verification_console.txt` prints the path of the original run's
-environment. These are finite checks. They are not a proof of the general
-theorems, and no Lean formalization exists.
+environment. The main-text review reran the unchanged suite under Python
+3.13.14 and SymPy 1.14.0 on a scratch copy; every group passed, and the JSON
+matched except for the Python version. These finite checks do not prove the
+general theorems or add Lean coverage.
 
 ## Provenance
 
@@ -361,8 +372,28 @@ following changes, recorded in Section 1.7 of the article:
 - It renamed the formal series `F(X)` to `Φ(X)` and fixed the cross-reference
   names.
 
-These changes left the mathematics unchanged. The present provenance
-correction distinguishes the two verified commits; it is not a mathematical
-review. `PROOF_AUDIT.md` is the
-manuscript's own self-review, not an independent referee report. No
-subsequent proof review has been recorded for this report.
+The assembly changes left the mathematics unchanged. The provenance correction
+distinguished the two verified commits. The subsequent main-text proof review
+is recorded below; `PROOF_AUDIT.md` remains the manuscript's own self-review,
+not an independent referee report.
+
+## Main-text proof review
+
+Sections 1–14 and the dependency appendix have received a mathematical
+review. The proof expansions make composition evaluation, complementary
+projections, formal unit inversion, recentering, minimum-tree replacement,
+chain base cases, strict feasibility and normalized factor ratios explicit.
+The real-constraint extension includes zero columns, coloops and the empty
+constraint system, with a counterexample showing why Hahn-valued constraint
+minors cannot be omitted from costs.
+
+The scope corrections distinguish formal tangent spaces from evaluated
+infinitesimal domains, require a nontrivial group only for evaluated
+optimality, and separate strong summability from convergence. The two
+published comparison citations now point to Idel's Theorem 4.5 and
+Sharify–Gaubert–Grigori's Theorem 2.4 in the named versions. Their settings,
+the implicit-differentiation comparison and transfer-current background were
+checked against primary sources. Other foundational imports, original-source
+reconciliation and priority remain separate obligations. See
+[the review record](../../REVIEW.md). All nine historical audit/code/data
+files are preserved.

@@ -48,8 +48,8 @@ No row below certifies every claim in an entire report.
 | [Finite surreal probability](surreal/finite-surreal-probability/) | Reviewed main text, Sections 2–17. Expanded workspace closure and standard-part existence, uniqueness, quotient and kernel arguments. Corrected the finite point-weight representation to require all subsets measurable; smaller finite algebras have atom weights. Expanded common-partition expectation, zero-second-moment Cauchy–Schwarz, tail bounds, finite Jensen, positive-denominator Bayes and chain rules, conditional tower and total variance, and both directions of finite coherence. Distinguished arbitrary versions on null atoms from pointwise identities and coherent laws from regular laws. Checked the canonical Hahn embedding and exponential transfer against van den Dries–Ehrlich Section 2 and its erratum. Expanded the conditional skeleton, its pairwise recovery, signed-row selection and Bayes leading coefficients. Corrected the joint-normalizer hypothesis for successive updates, neutral-likelihood wording, the difference numerator sign and sufficient-versus-necessary precision claim. Added the surreal-payoff and exact-threshold counterexamples. Checked the conditional-space comparison and real-payoff domain against Halpern Definition 2.1 and Section 4. Expanded logit inverse and domain checks, softmax gauge and perturbation bounds, separated-scale concentration, entropy and KL equality, support inheritance in the chain rule and data processing, and scoring identities. Distinguished the boundary logarithmic-score infimum from an attained interior minimum. Expanded Gibbs minimization, finite path consistency, adapted optional stopping and Bernoulli variance. Corrected the posterior-support claim after smoothing and the leading coefficient for a general infinitesimal scale. Added nonseparable logistic and non-stopping-time counterexamples and explicit zero-horizon cases. Expanded strong geometric regrouping, common-support coefficient measures, normalized hierarchy support and conditional shadows, real-observable dominated convergence and product Fubini, and the countable-support integration boundary. Distinguished uniform bounds from leading-component essential bounds. Expanded posterior coefficient measurability and added an explicit failure of coefficient integrability before density cancellation; checked the ordinary disintegration input against Kallenberg Theorem 8.5. Expanded the coin coefficient-variation bounds, polynomial-sign argument for relative field embeddings, ultrapower positivity, parity nonuniqueness and the finite compactness models. Replaced the logit change-of-variable shortcut with original Hahn leading data; distinguished finite-support permutations from unrestricted invariance. Checked the cited fine-ideal and fine-ultrafilter construction inputs. Expanded the rare-regime likelihood, martingale and full-observation conditional expectation calculations, supplied a fourth-moment proof of the component strong laws, and separated coefficientwise limits from the nowhere order-Cauchy conclusion. Expanded shadow continuity, internal-algebra measure extension and an explicit Poisson ultraproduct with diagonal saturation. Added a logarithm error bound, a measurable ordinary count and a Markov check for escaped mass. Aligned model weights, exponential hypotheses, notation and dependency claims in the final sections. Remaining imports and source/provenance reconciliation are pending. |
 | [Three duals of Hahn vector spaces](surcomplex/three-duals-of-hahn-vector-spaces/) | Reviewed the main text, Sections 1–15. Expanded support facts, arbitrary regrouping, finite triple convolutions, the uniform shift bound and zero-group cases. Made the strong-map isomorphism and the descending-support counterexample explicit. Expanded coefficient-rank approximation by nets, nonzero-scalar closure and the countable-cofinal sequence construction. Corrected the guide's order-unit summary to distinguish strict completion from the noncyclic middle case. Expanded compatible-ball and Cauchy-net completeness, ball nesting, set-sized Zorn extension and its empty-chain case; corrected the claim that selecting one element of a known nonempty set separately requires choice. Expanded continuous restriction and separation, the canonical quotient kernel, cyclic finite-subsum convergence, Hilbert norm identities and topology, Riesz coefficients and cardinality. Corrected positive-versus-nonnegative bound scope at the zero operator and characterized bounds for unbounded leading coefficients. Expanded dense-kernel, projection, orthogonality and distance-cut proofs; distinguished an orthogonal complement from an orthogonal direct-sum complement. Expanded the cofinal/noncofinal induced topology, two-scale target topology, unique strong extension and normal-form transport. Corrected vector outputs described as scalars, the first-kappa comparison's missing properness hypothesis, spectral extension scope and stale negative-search/current-review claims. Checked BKKPS summability definitions, Kaplan–Krapp–Serra normal-form conventions and Morillon's real-valued one-step statement against primary text. Remaining imports/source reconciliation are pending. |
 | [Hidden negative Hermitian directions](surcomplex/hidden-negative-hermitian-directions/) | Reviewed the main text, Sections 1–11. Expanded character extension, finite support-index bounds, primorial degree, algebraic independence, closure minima, density and the workspace containing an algebraic surreal root. Expanded the positive-kernel lemma, arbitrary-ordered-field pivot argument, explicit Schur congruence and empty-block cases; detailed vector variation and scalar/vector null sets. Corrected the geometric-series witness for incomparable bases, restricted that comparison to rational exponents and explained containment when no order unit exists. Distinguished congruence from unitary diagonalization. Remaining imports, priority and original-source reconciliation are pending; no Lean mapping added. |
-
 | [Bounded-support Hahn arithmetic](surreal/transcendence-over-bounded-support/) | Reviewed Sections 1–10 and the conditional implication in Appendix A. Expanded elementary support bounds, localization, coset and coefficient projections, tensor consequences, separated support bands, coding, top-rank grouping and normalized GCD descent. Replaced the factorial-family limiting argument by a finite Vandermonde proof. Corrected convergence to bounded initial truncations, with an explicit obstruction to finite-subsum convergence at uncountable cofinality. Clarified ideal extension, coefficient-field hypotheses and the neighbouring base-field comparisons. Checked the cited Hahn and rank-one imports against L’Innocente–Mantova v5; the GCD premise remains conditional. Remaining foundational/source reconciliation and priority are separate; no Lean mapping added. |
+| [Matrix scaling at surreal scales](surreal/matrix-scaling-at-surreal-scales/) | Reviewed Sections 1–14 and the dependency appendix. Expanded finite-generator composition, complementary projections, formal coefficient recursion and unit inversion, recentering, tree replacement, chain base cases, positive scaling and local descent. Corrected evaluated-optimality wording for the trivial group, made strict feasibility on every support edge explicit, and separated formal tangent spaces from evaluated infinitesimal domains. Added the Hahn-valued constraint-minor counterexample and corrected two published theorem citations. Checked the current Markov, spectral and Prony comparisons. Other foundational imports, original-source reconciliation and priority remain separate; no Lean mapping added. |
 
 
 Each correction was reviewed against its local definitions and downstream uses
@@ -1535,6 +1535,74 @@ all 19 historical audit/code/data files remain byte-identical. The 19 changed
 PDF pages were visually inspected. Matrix scaling has received this
 provenance correction only; its mathematical proof review remains pending.
 
+## Matrix-scaling main-text review
+
+The [matrix-scaling report](surreal/matrix-scaling-at-surreal-scales/)
+review covers Sections 1–14 and the dependency appendix. Independent readings
+checked the elementary support and tree identities before the normalization,
+secant gain, coefficient bounds, combinatorial certificate, nonlinear chain,
+global positivity, real-constraint extension and surreal transport. The core
+statements remain valid under their intended hypotheses.
+
+The finite-generator evaluation proof now bounds both inner and outer formal
+degrees at each Hahn exponent, explicitly licensing composition. The tree proof
+identifies all four projection images and kernels and distinguishes row from
+column minors. The formal argument uses a weighted Laplacian whose constant
+term is invertible; its formal inverse is used algebraically, while strong
+evaluation still depends on the finite-generator lemma. Recentering displays
+its cut and conservation equations before invoking uniqueness. The remainder
+certificate specifies a nonnegative integer degree, including zero, and handles
+bridge rows and the relative-output series explicitly.
+
+The evaluated “largest uniform gain” claim needs a nontrivial value group:
+for the trivial group the infinitesimal domain is a singleton. The article,
+guide and notation reference now retain the formal coefficient assertion in
+that case without claiming an evaluated witness. Formal tangent spaces are
+identified at each balanced point and distinguished from the infinitesimal
+domain. Strong summability is no longer described as excluding partial-sum
+convergence; it does not imply convergence on its own.
+
+The one-minimum-tree certificate now includes its exchange proof. The chain
+proof states both continuant base cases and checks the `n = 2` case.
+The positive-normalization comparison explicitly requires a feasible matrix
+positive on every prescribed support edge, with a triangular-support
+counterexample to mere positive margins and nonnegative feasibility. Its cut
+bound now explains why root-normalized factor ratios are infinitesimally close
+to one. The real-constraint proof handles zero columns, coloops and empty
+systems; a Hahn-valued row `(1,t^β)` shows the missing minor valuation in a
+formula using entry costs alone. The phase example gives its exact discriminant.
+
+The published comparison now cites continuity as Idel Theorem 4.5 in v1,
+and generalized Dirichlet expansions as Sharify–Gaubert–Grigori Theorem 2.4
+in v2, with the nonnegative square matrix and total-support setting explicit.
+These passages, Eisenberger et al.'s implicit projection and approximate-input
+analysis, and Burton–Pemantle's transfer-current background were checked against
+primary sources. This does not independently re-audit every foundational import
+or certify priority. Current Markov, spectral and Prony source comparisons were
+checked at `034ab96`; the Prony certificate retains its strict-ball hypotheses,
+and the spectral geometric-series example is distinguished from this report's
+exponential example. Historical searches and delivered self-audits remain dated
+evidence, and the 16-statement inventory remains distinct from Lean coverage.
+
+
+The baseline and revised PDFs each passed three clean LaTeX passes, with no
+warnings or box notices. The revised report has 33 pages (previously 32),
+with the bibliography kept together. All 94 source labels and 188 auxiliary
+numbering entries are preserved. Of the 16 standard results, 13 are unchanged;
+three clarify the remainder degree, strict support feasibility and the empty
+basis-minimum convention. All nine historical audit/code/data files remain
+byte-identical to the baseline and raw placement. The unchanged exact verifier
+passes every group under Python 3.13.14 and SymPy 1.14.0, reproducing the recorded
+JSON except for the Python version: 2,056 projection entries, 2,612 edge gaps,
+four formal recurrence examples, 55 chain inverse entries and three square
+identities. These finite checks do not prove the general Hahn assertions.
+
+All revised pages were visually inspected. The independent source-index audit
+still checks 2,465 statements in 49 main sources without issues; all 2,723 cited
+labels and 1,059 local Markdown destinations resolve. The review table now keeps
+both recent reports inside the same Markdown table. No Lean coverage is added
+by these documentation checks.
+
 ## Remaining scope
 
 Batch 22, placed in `7b5f934`, was assembled in `68e2960` and catalogued
@@ -1581,8 +1649,9 @@ remaining imports/source reconciliation are pending. Its
 [transcendence over bounded support](surreal/transcendence-over-bounded-support/)
 report has received the Sections 1–10 and conditional Appendix A review above;
 remaining foundational/source reconciliation and priority are pending.
-[Matrix scaling](surreal/matrix-scaling-at-surreal-scales/) has received a
-provenance correction but still awaits mathematical proof review.
+[Matrix scaling](surreal/matrix-scaling-at-surreal-scales/) has received the
+Sections 1–14 main-text review above; remaining foundational imports,
+original-source reconciliation and priority are pending.
 Its nonscalar dynamics, nonlinear holonomic rigidity, Drazin/Fredholm spectral
 theory additions also remain pending. The critical-potential main-text review now
 covers Sections 35–42; remaining imports and source reconciliation are pending.

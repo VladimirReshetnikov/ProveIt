@@ -154,6 +154,22 @@ In this uncountable case, the net of finite subsums does not reach the neighborh
 because a finite set omits some earlier coefficient. Thus strong summability
 and cofinal support do not alone imply convergence of finite subsums.
 
+The [matrix-scaling report](surreal/matrix-scaling-at-surreal-scales/article.tex)
+uses `κ_e = τ_e⁻ − τ` for a spanning-tree deletion gap, with `∞` for a
+bridge. The costs are valuations of the normalized base entries, and
+“positive-leading” means a positive real leading coefficient even when
+higher coefficients are complex. Its `Π_p` projects onto potential differences
+and `H_p = I − Π_p` onto weighted conserved flows; neither symbol denotes a
+Hermitian form. The general-constraint version requires a real constant matrix
+because Hahn-valued minors can contribute their own valuations.
+
+The formal tangent space of the matrix-scaling conservation equations at a
+balanced `h` is `ker(B diag(p_e exp(h_e)))`, a vector space over the Hahn field.
+The evaluated domain `𝔪^E` is not itself a vector space over that field.
+For the trivial value group it is a singleton: formal coefficient sharpness
+still makes sense, but optimality over nonzero infinitesimal changes requires
+`Γ ≠ {0}`.
+
 ## Inner products and operator spectra
 
 The [finite-dimensional spectral report](surcomplex/spectral-theory/article.tex)
