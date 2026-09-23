@@ -501,6 +501,14 @@ period arithmetic Section 19 studies. The
 Ehrlich–Kaplan robustness questions as not settled; that remains true, with the
 partial answer of Section 19.8.
 
+[gamma-and-zeta-functions](../gamma-and-zeta-functions/) draws the
+special-function consequences of the phase classification: reflection forces
+Gamma poles on the infinite periods of the phase, and zeta acquires extra zeros
+on twice those periods (`gz:thm:forced`, `gz:thm:gamma-tube`,
+`gz:thm:zeta-tube`); with the canonical exponential `Exp` this puts zeros of
+zeta at the negative even omnific integers. Resonances, a notion different from
+periods, are treated in `gz:prop:resonance`.
+
 ## What was run
 
 On Python 3.14.4 with SymPy 1.14.0, each script on a copy outside this
