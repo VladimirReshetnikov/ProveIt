@@ -534,6 +534,13 @@ Near tangency, the two angle branches have square-root splitting. Signed
 perturbations retain the exact finite remainder at relative rate `e/tau`
 and the half-valuation loss. The nearby finite circle points also realize
 the example's infinite rational half-angle coordinates.
+The line-circle coordinate algebra is the quadratic quotient at every
+discriminant, with dimension two and a perfect residue pairing of determinant
+minus one. Its universal property includes nonreduced target algebras;
+at tangency it is the dual-number algebra. Verified local Laurent expansions
+give the two simple residues and the derivative formula at a double root.
+For positive infinitesimal separation, the two constant-numerator residues
+are individually infinite and cancel exactly.
 Finite phase coordinates give sine and cosine with ordinary-constant agreement,
 addition identities, parity, periodicity and integer de Moivre.
 Recentered ordinary real and complex analytic germs evaluate by their actual
@@ -608,5 +615,55 @@ ordered exponential and a nontrivial convex valuation.
 Admissible exponent sets form cones with the period-inequality criterion,
 the bounded-orbit locus of an expanding polynomial is exact, and a
 stochastic compressed resolvent family determines a unique row-Laplacian generator.
+Prony's perturbed annihilator has exactly one simple root in each
+nearest-neighbour ball, the non-monic residue-simple Hensel lemma holds, and
+the Hermite rows of the moment differential are exact. Independent square
+classes give multiquadratic extensions of full degree with every sign
+automorphism, extended coefficientwise to Hahn series, and finite base change
+commutes with Hahn series. The vectors `(n^{-r})` have continuum many
+independent classes modulo the range of `diag(1/n)`. Jensen's disk theorem
+and the weighted incomplete-polynomial hull hold over every ordered field.
+The Euler derivation preserves `K_Γ` exactly when `Γ = {0}` or `1 ∈ Γ`, and a
+primitive of `1` is transcendental. Every nonzero noncyclic ordered abelian
+group has continuum many translation classes of descending positive profiles,
+and quadratic lattice energies admit finite minimum certificates.
+For positive-definite covariance the Wick atoms are strongly summable exactly
+when every `δ_a = λ_a + ½ Σ α_i^a c_ii` is positive, with an explicit balancing
+vector and the stationary power-counting criterion. If a positive strong
+measure has infinitely many atoms of valuation below `γ`, adding any signed
+measure that starts at scale `γ` keeps every nonzero polynomial square
+strictly positive. Moment sequences of positive strong Hahn probabilities are
+characterized row by row, and the scalar Herglotz lemma holds on the halo.
+The matrix-forest expansion gives the determinant, adjugate
+and resolvent of a row Laplacian with nonnegative stochastic entries. Graded
+quadratic forms over Hahn fields, the Newton-sum Hankel matrix, residue change
+of variables for Laurent differentials, the small-divisor tree bound and the
+diagonal resolvent clauses of the row-finite spectral theory are proved.
+Coefficientwise sums of nonnegative real Hahn series are positive with the least
+valuation, and order-limit additivity forces finitely many nonzero masses, so
+it has no Lebesgue extension. The negative-atom measure has its signed
+representation and unique Fourier moments. Prony weight errors incur no second
+conditioning loss. The residue shadows of Hahn row-Laplacian resolvents satisfy
+the same-scale and cross-scale identities and are stochastic, which leaves only
+the endpoint limits for the effective-generator theorem. Truncated Wick sums
+obey the valuation error estimate, the multipliers of expanding polynomial
+dynamics are exact, the algebraic coefficient part is closed, the Tate
+discriminant has `v(Δ) = v(q)`, the all-scale coefficient criterion decides
+entireness, and every positive-order perturbation of `diag(1/n)` keeps a
+cokernel of dimension at least the continuum.
+Prony's main theorem holds in full: above the threshold `Θ` the perturbed
+moments have a unique regular realization labelled by the strict
+nearest-neighbour balls, with the node and weight error bounds, and a
+last-moment perturbation shows that `Θ` is sharp. Positive root-of-unity
+quadratures converge to the nonpositive negative-atom measure. The
+effective-generator theorem holds for the actual residue shadows at every
+scale. The row-finite Hahn inner product is positive with its valuation
+formula and adjoint relation. Automorphisms of `F(i)` are classified by their
+logarithmic modulus, and the extended valuation has kernel `{id, conjugation}`
+over every ordered field with square roots and a convex valuation. Also proved:
+the finite lattice estimate for multivariate domains, differential rigidity of
+holonomic entire Hahn functions, strong measures with actual surreal and
+surcomplex masses, and invariance of the Tate construction under exponent
+embeddings with its abstract extension obstruction.
 A successful build proves only the imported Lean
 statements, not coverage of all the source documents.
