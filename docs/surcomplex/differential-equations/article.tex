@@ -426,8 +426,10 @@ the Berarducci--Mantova clauses \emph{without} surjectivity and without
 regular-singular theory \cite{Levelt,KW,vdH} is its acknowledged antecedent.
 \Cref{diff:aut:part} is stated for the whole class of normalized derivations
 (\cref{diff:aut:def:normalized}), whose one member needed for existence is the
-Berarducci--Mantova derivation; it uses surjectivity in two flagged corollaries
-only, and it imports the classical local normal forms and Rosenlicht's
+Berarducci--Mantova derivation. Surjectivity is assumed only for the
+global primitive-obstruction construction and its finite-primitive
+criterion; the explicit speed threshold needs no such assumption.
+The part imports the classical local normal forms and Rosenlicht's
 algebraic-independence theorem as presented by Noordman, van der Put and Top
 \cite{NPT}, with the standard setting of abelian varieties \cite{Milne} and the
 valuative reading of properness \cite{Stacks}.
@@ -8961,19 +8963,32 @@ $\omega^{-p}v$ as well as an imaginary one, which the multiplicative group does 
 
 \begin{remark}[A finite geometric decision criterion]
 \label{diff:aut:rem:decision}
-For a presented smooth constant curve and meromorphic vector field,
-\cref{diff:aut:thm:main} reduces the existence of a nonconstant surcomplex
-trajectory to a finite test: compute the zeros of $\xi$, their orders and the
-linear coefficients at simple zeros. A multiple zero always contributes
-solutions, and a simple zero does so exactly when its coefficient is a negative
-real number; the formulas then construct all solutions as exact Hahn
-evaluations. This is an effective procedure when the coefficient field has exact
-algebraic operations and a decidable test for the relevant real signs, for
-example with algebraic complex coefficients. It is not an unconditional
-computability claim about arbitrary unencoded complex constants, and producing
-an entire formal solution as a finite string requires a representation by its
-implicit equation and coefficient recursion, not a list of all coefficients. For
-the class it covers it lifts item~N25; beyond the class N25 stands.
+For a presented smooth constant projective curve and a nonzero
+meromorphic vector field, the divisor of that field has finite support.
+Thus \cref{diff:aut:thm:main} reduces existence of a nonconstant
+surcomplex trajectory to a finite test: find the zeros, compute their
+orders, and at each simple zero compute the linear coefficient.
+A multiple zero contributes solutions; a simple zero contributes
+solutions exactly when its coefficient is real and negative.
+The classification then specifies all solutions as Hahn evaluations.
+
+To call this an effective procedure, the presentation must supply
+algorithms for that zero divisor, the local orders and leading
+coefficients, and exact tests for vanishing imaginary part and real
+sign. Exact coefficient-field arithmetic alone does not supply
+these geometric operations. Algebraic complex presentations equipped
+with polynomial factorization and local-expansion algorithms provide
+a sufficient setting. These requirements are a contract for a
+procedure, not an implementation in the repository.
+
+The output is a finite list of local families with their ordinary
+parameters and formal recursions. An infinite series is represented
+by that defining data, not by listing every coefficient. A chosen
+parameter must itself have a representation if coefficients are to
+be computed effectively. No unconditional computability claim is
+made for arbitrary unencoded complex constants. In this qualified
+sense the criterion lifts item~N25 for the stated class; beyond it
+N25 stands.
 \end{remark}
 
 \begin{remark}[Why ordinary formal initial-value results are not enough]
@@ -8986,6 +9001,15 @@ trajectories are centred at zeros, and their rate of approach is constrained by
 the differential structure. This explains the apparent reversal between the local
 formal picture and \cref{diff:aut:thm:main} without conflating their time
 parameters, and it is the nonlinear form of \cref{diff:rem:noclock}.
+For example, the ordinary formal equation $dy/ds=1$ has the
+solution $y=s$ centred at zero. The intrinsic equation $\Dn y=1$
+in $\SC$ instead has exactly $y=\omega+C$, $C\in\C$.
+These points reduce to infinity in $\mathbb P^1$. There the local
+parameter $\sigma=1/y$ satisfies $\Dn\sigma=-\sigma^2$,
+a double zero of the projective vector field, just as the
+classification requires. Substituting an infinitesimal for the
+ordinary time $s$ cannot preserve $ds/ds=1$ under $\Dn$, since
+its intrinsic derivative is infinitesimal.
 \end{remark}
 
 \begin{remark}[Established inputs and proposed contributions]
@@ -9017,6 +9041,18 @@ changes, which the constant-section splitting does not address, and
 noncommutative algebraic groups need another argument because their invariant
 forms need not be closed, which is where the proof of
 \cref{diff:aut:lem:formallog} deliberately stops.
+For instance, the affine group with law
+$(a,b)(a',b')=(aa',b+ab')$ has left-invariant forms
+$da/a$ and $db/a$. Near its identity put $a=1+x$, $b=y$.
+The second form is $dy/(1+x)$, and
+\[
+ d\!\left(\frac{dy}{1+x}\right)
+ =-\frac{dx\wedge dy}{(1+x)^2}\neq0.
+\]
+Thus its invariant forms cannot all be differentials of formal
+logarithm coordinates with additive group law. This pinpoints the
+commutativity step needed above; it is not a classification of
+noncommutative surcomplex differential equations.
 \end{remark}
 
 \begin{remark}[Foundational scope and a formalization route]
@@ -9028,18 +9064,35 @@ all surreal supports is used as a set. Each formal evaluation uses a set-sized
 support, \cref{diff:aut:thm:scales} supplies one set-sized field for the whole
 solution set of a fixed equation, and the imported independence theorem is
 applied in that field; for the abelian theorem each formal computation uses
-finitely many input series and the global sequence is stated pointwise. Member~11
-proposes a formalization in four interfaces: a valued differential field with a
-residue section, small derivative on its valuation ring and an element of
-derivative $1$; a finite-variable strong formal-evaluation interface with
-composition and the chain rule; local smooth algebraic geometry identifying the
-residue monad with infinitesimal formal coordinates; and the one-variable time
-primitive with the constant-field argument --- with commutative formal groups and
-invariant differentials for the abelian extension. A proof of a Hahn identity is
-not a proof that every surcomplex point admits local coordinates, and a residue
-reduction does not justify summing formal series; the two bridges are
-\cref{diff:aut:lem:evaluation,diff:aut:lem:projective}. No Lean file is included,
-and the repository is not claimed to contain these bridges
+finitely many input series and the global sequence is stated pointwise.
+A dependency-ordered formalization uses four interfaces:
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=2.4em]
+\item a valued differential field with ordinary residue section,
+constant field $\C$, small derivative on finite elements and a
+specified element of derivative $1$, together with the exponential,
+order and strong-additivity laws of \cref{diff:aut:def:normalized};
+\item finite-variable strong formal evaluation, zero-constant
+composition and the chain rule for that intrinsic derivation;
+\item smooth algebraic local coordinates identifying the entire
+residue monad with infinitesimal tuples, with projective reduction;
+\item the one-variable time primitive, forced scale and
+constant-field uniqueness argument, followed by commutative formal
+groups and invariant differentials for the abelian extension.
+\end{enumerate}
+A Hahn identity alone supplies neither the geometric coordinates
+nor the summability bridge needed to evaluate them.
+
+The current Lean library already proves actual real and complex
+finite-variable evaluation, strong summability, the ring laws and
+zero-constant composition. The live ledger
+\path{docs/FORMALIZATION.md} records this reusable algebraic portion
+of \cref{diff:aut:lem:evaluation}. It does not yet prove that lemma's
+chain rule for $\Dn$, the full projective-monad statement
+\cref{diff:aut:lem:projective}, or the autonomous classification.
+Checked fine-differentiation rules concern a different derivative
+and cannot fill the intrinsic-derivation interface by a change of
+notation. The source package supplied no Lean file; that historical
+fact is distinct from current partial library coverage
 (\cref{diff:warn:noformalization}).
 \end{remark}
 
@@ -9051,12 +9104,16 @@ formal groups around a good-reduction model and a residue elliptic curve
 \cite{RepoTate}. \Cref{diff:aut:prop:abeliansplit} does this for \emph{constant}
 abelian varieties over $\SC$, with reduction by standard part; it does not do it
 over that report's Hahn fields with a coarse valuation, so this is a cross-link
-and not an answer. That report makes no assertion about the Berarducci--Mantova
-derivation, and this part is the collection's first contact between surreal
-derivations and abelian varieties. The ``autonomous'' flows here are solutions of
-autonomous differential equations; they are unrelated to the embedding of
-near-identity maps into formal flows in the companion report on dynamics and
-normal forms.
+and not an answer. The Tate construction and the present one use
+different residue maps; identifying their formal-group vocabulary
+does not identify their hypotheses or fields. The Tate result
+itself imposes no Berarducci--Mantova differential equation, whereas
+this part determines an intrinsic logarithmic-derivative image.
+Likewise, ``autonomous flow'' here means a solution of an intrinsic
+differential equation. The dynamics report's embedding of a
+near-identity map into a formal flow is a statement about formal
+iteration and its infinitesimal generator. These are different
+constructions, even when they use some of the same formal calculus.
 \end{remark}
 
 \begin{table}[htbp]
@@ -12337,8 +12394,10 @@ used to define $\Obs^{\C}_{\Dn}$ on every input and in
 normalized derivation without surjectivity. A standard part is
 taken only after finiteness of the primitive has been established.
 \item \emph{Effectivity.} The finite geometric decision criterion is an effective
-procedure only when the coefficient field has exact algebraic operations and
-decidable sign tests, for example algebraic complex coefficients. It is not an
+procedure only with effective divisor and local-expansion data, as well
+as exact coefficient operations, equality and sign tests. Algebraic
+complex presentations with the stated geometric algorithms suffice.
+It is not an
 unconditional computability claim about arbitrary unencoded complex constants,
 and producing an entire formal solution as a finite string requires its
 defining implicit equation and coefficient recursion
@@ -12350,9 +12409,11 @@ of all surreal supports is used as a set (\cref{diff:aut:rem:formalization}).
 separately defined symbolic trigonometric functions
 (\cref{diff:aut:ex:riccati}).
 \item \emph{Novelty, verification and the repository comparison.} No peer
-review and no Lean verification is claimed; no Lean file is supplied, and the
-repository is not claimed to contain the evaluation and reduction bridges in the
-generality needed. No named published open problem is claimed solved and no
+review or Lean verification of the autonomous theorems is claimed.
+The source supplied no Lean file. Current library results do cover the
+algebraic finite-variable evaluation and composition clauses; the
+intrinsic chain rule and geometric reduction bridge remain pending,
+as distinguished in \cref{diff:aut:rem:formalization}. No named published open problem is claimed solved and no
 exhaustive priority certificate exists: the results are candidate new theorems
 with proofs, and a specialist may identify earlier equivalents. The repository
 comparison was scoped to the root README, the documentation inventory and this

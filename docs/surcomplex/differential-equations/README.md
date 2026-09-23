@@ -3,13 +3,13 @@
 **The finite-primitive criterion, the phase obstruction, and support-certified
 coordinate systems**
 
-A merged research report, 193 pages, built from eleven manuscripts. Everything
+A merged research report, 194 pages, built from eleven manuscripts. Everything
 in this directory other than `article.tex`, `article.pdf` and this README is
 preserved source material.
 
 ```
 article.tex                        the merged report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled 193-page report
+article.pdf                        the compiled 194-page report
 README.md                          this guide
 11-autonomous-dynamics-sources.md  member 11's literature and repository-review log, unmodified
 code/                              the verification programs and build scripts of the eleven
@@ -27,14 +27,14 @@ placeholder described in the correction record below.
 The current proof review covers the earlier scalar, matrix, workspace and
 coordinate arguments, the complete regular-singular main text (Sections
 23–28), and the autonomous proofs through the abelian image and speed
-threshold (Sections 29–33).
+threshold, together with their scope comparisons (Sections 29–34).
 
-The latest pass expands the formal logarithm, its coordinate independence,
-the identity-monad splitting and the primitive obstruction. The power-speed
-threshold now holds for every normalized derivation: its explicit primitives
-make surjectivity unnecessary. Section 34's scope comparisons, the
-critical-potential part, remaining imports and source reconciliation still
-require review. Detailed scope and validation are in the collection's
+The latest pass makes the finite decision procedure's input requirements
+explicit, illustrates the difference between formal and intrinsic time, and
+explains the noncommutative boundary by an invariant form that is not closed.
+It distinguishes current algebraic evaluation coverage from the pending
+intrinsic chain rule and geometric bridge. The critical-potential part,
+remaining imports and source reconciliation still require review. Detailed scope and validation are in the collection's
 [review record](../../REVIEW.md).
 
 ## What the report is
@@ -729,10 +729,14 @@ N80–N94 from member 11 and N95–N106 from member 13. In outline:
   normal forms and Rosenlicht's theorem are imported (from Noordman–van der
   Put–Top, numbered by its arXiv v1); parametrizations are not canonical;
   constant commutative abelian varieties only, with no uniformization or
-  global exponential; surjectivity only in two flagged corollaries;
-  effectivity only with exact algebraic coefficients and decidable signs; no
-  trigonometric assertion; no refereeing, no Lean file, no priority
-  certificate.
+  global exponential; surjectivity only for the global primitive obstruction
+  and its finite-primitive criterion, not for the explicit speed threshold;
+  effectivity requires divisor/local-expansion algorithms and coefficient
+  equality and sign tests; no trigonometric assertion, refereeing or priority
+  certificate. The source supplied no Lean file; current finite-variable
+  evaluation and composition prerequisites are mapped in the ledger, while
+  the intrinsic chain rule, projective reduction and autonomous theorems remain
+  pending.
 * **Transfinite critical-potential scope (N95–N106).** Scalar unknowns in a
   fixed differential field, not functions on an interval; relative to the one
   fixed `∂`, with the log-atomic formulas imported and not implied by `∂ω = 1`,
@@ -827,17 +831,18 @@ N80–N94 from member 11 and N95–N106 from member 13. In outline:
   Berarducci–Mantova derivation. Part VI's identity-monad splitting does this
   for **constant** abelian varieties over `No[i]`, reducing by standard part —
   a cross-link, not an answer to that report's question over Hahn fields with
-  a coarse valuation — and is the collection's first contact between surreal
-  derivations and abelian varieties. **Cross-link both ways.**
+  a coarse valuation. The two constructions use different residue maps,
+  and the Tate construction imposes no intrinsic differential equation.
+  **Cross-link both ways.**
 * **`docs/surreal/tail-spans-and-differential-transcendence/`** uses the Euler
   derivation that Part V writes `∂_τ`. Part VI's continuum of independent
   solutions concerns algebraic independence of differentially *algebraic*
   solutions, a different notion from that report's differential
   transcendence; there is no conflict.
 * **`docs/surcomplex/dynamics-and-normal-forms/`**: its "autonomous flow" is the
-  embedding of near-identity maps into formal flows; Part VI's autonomous
-  equations are a different subject, and member 11's archive name
-  ("dynamics") should not suggest otherwise.
+  embedding of near-identity maps into formal flows and their generators;
+  Part VI instead solves intrinsic differential equations. Shared formal
+  calculus does not identify these constructions or their time parameters.
 * **`docs/surcomplex/nonabelian-support/`**: its Frobenius theory is for the
   *coordinate* derivative `d/dz` with positive-support residue; Part V is for
   the intrinsic Euler derivation, and the two are not merged.
@@ -1011,6 +1016,28 @@ from `6ae6fd5`. The combined Lean build passed 3,885 jobs and its
 the merge. The independent index still checks 2,030 entries, and all 833
 local Markdown destinations in 93 files resolve. These incoming analytic
 mappings do not formalize the abelian results reviewed here.
+
+The sixth autonomous pass reviewed Section 34's scope and implementation
+comparisons, completing the Part VI main-text pass. It corrected the
+remaining surjectivity wording, made the effective geometric input
+requirements explicit, and distinguished formal time from intrinsic time.
+The affine-group example explains precisely why invariant forms need not
+be closed without commutativity. The ledger now maps the existing actual
+finite-variable evaluation and composition prerequisites, with the
+intrinsic chain rule and geometric bridge still pending.
+
+The PDF rebuilt in three passes at 194 pages with no warnings or box issues,
+against a clean 193-page baseline; the changed Section 34 pages were
+inspected. Exact symbolic checks verified the translation solution, its
+reciprocal projective double zero, and the affine group's left-invariant
+forms and nonzero exterior derivative. These checks illustrate the scope
+boundaries; they do not prove the geometric bridge or intrinsic calculus.
+All 51 historical code, data and source-log files remain byte-identical.
+The independent index audit checks all 2,030 statements across 44 texts,
+and all 835 local Markdown destinations in 93 files resolve. The full Lean
+build passed 3,885 jobs and audited 5,990 declarations using only `propext`,
+`Classical.choice` and `Quot.sound`. The critical-potential part, remaining
+imports and source reconciliation remain outside this review.
 
 ## Re-running the source verifiers
 
