@@ -13,7 +13,7 @@
 \hypersetup{%
   pdftitle={Nonabelian Support Obstructions: A Matrix Cousin Criterion and the Surcomplex Riemann-Hilbert Problem},
   pdfauthor={Merged research manuscript},
-  pdfsubject={Positive Hahn matrix gluing, polar supports, and inverse monodromy}}
+  pdfsubject={Positive Hahn matrix gluing, polar supports, inverse monodromy, and pole localization}}
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\small Nonabelian support obstructions}
@@ -95,6 +95,12 @@
 \newcommand{\betaprofile}{\boldsymbol\beta}
 \newcommand{\NN}[1]{\mathcal N_{\profile,#1}}
 \newcommand{\NNb}[1]{\mathcal N_{\betaprofile,#1}}
+% Part V (pole-localization manuscript)
+\newcommand{\HD}{\mathscr H_\Delta}
+\newcommand{\Oz}{\mathbf{Oz}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Sym}{\operatorname{Sym}}
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 \numberwithin{equation}{section}
 
@@ -109,7 +115,8 @@
 \vspace{0.5cm}
 {\LARGE A Matrix Cousin Criterion\par and the Surcomplex\par Riemann--Hilbert Problem\par}
 \vspace{0.7cm}
-{\large September 21, 2026; Part~III added September 22, 2026\par}
+{\large September 21, 2026; Part~III added September 22, 2026;\par
+Part~V added September 23, 2026\par}
 \vspace{0.55cm}
 \begin{minipage}{0.94\textwidth}
 \begin{abstract}
@@ -159,6 +166,12 @@ classes, a tensor rule, and the failure of semidecidability of isomorphism. It
 does not settle whether Part~I's pole-only examples survive monomial
 localization; over $\Mer((t^\Gamma))$ they become trivial.
 
+Part~V, from a fourth source, settles it negatively: inverting one Hahn monomial
+trivializes Part~I's hidden and deep examples and every descending-scale pole
+cocycle with one fixed nilpotent direction. It also gives free-middle nonsplit
+extensions, an omnific-valued sine family, a proper locally unit ideal of
+projective dimension two, and that family's zeros on finite halos.
+
 \medskip
 \noindent\textbf{The two headline criteria are different criteria on
 different objects.} Part~I tests the supports of normalized polar factors, not
@@ -170,7 +183,7 @@ distinction unavoidable.
 \end{minipage}
 \vfill
 \begin{minipage}{0.94\textwidth}\small
-\textbf{Status and scope.} This report merges three independently written
+\textbf{Status and scope.} This report merges four independently written
 manuscripts; see \cref{nab:app:repro}. The exact global criteria and the
 explicit obstruction families are proposed new results in the specified
 Hahn-coherent categories. The local factorization mechanisms, the Neumann
@@ -183,7 +196,9 @@ support and near-identity monodromy throughout: neither theorem is restated
 over a coefficient field in which negative-valuation changes of frame are
 admitted, and neither is the unrestricted classical Cousin or
 Riemann--Hilbert theorem. Part~III proves nontriviality after localization
-for a different, essential-singularity family only. All infinite algebra is by well-ordered supports and
+for a different, essential-singularity family only, and Part~V proves that
+Part~I's pole-only examples become trivial after localization. All infinite
+algebra is by well-ordered supports and
 finite coefficient multiplicity, never by convergence in the fine surreal
 topology.
 \end{minipage}
@@ -338,6 +353,22 @@ semidecidability of isomorphism (\cref{nab:loc:thm:undecidable}). It also
 records that Part~I's pole-data examples, and the global-divisor report's plane
 Picard classes, become trivial over $\MM$ (\cref{nab:loc:cor:polestrivial}).
 
+Part~V, built from a fourth manuscript, answers the printed question for
+Part~I's examples, negatively. An explicit determinant-one Laurent frame,
+placing interpolation coefficients at the admissible negative exponents
+$-\alpha_n$, trivializes every descending-scale cocycle
+$\exp(t^{\alpha_n}p_nN)$ with finite-order poles and one fixed nilpotent $N$
+after one Hahn monomial is inverted; an integral reduction brings the hidden
+and deep examples to that form, so all of them are trivial over $\HH$
+(\cref{nab:pl:thm:rankthree,nab:pl:cor:deep}). In rank one the opposite holds,
+as the global-divisor report already shows. Part~V also constructs nonsplit
+self-extensions with free middle bundle, an omnific-valued cardinal-sine
+family, a proper locally unit ideal whose quotient has projective dimension
+two, ultrafilter maximal ideals, and the classification of the zeros of the
+sine family on finite halos. To keep the numbering of Parts~I--IV unchanged,
+Part~V is placed after Part~IV; its checks, limitations and questions are
+recorded in \cref{nab:sec:verification,nab:sec:scope,nab:sec:open}.
+
 \subsection{Relation to reports already in the collection}
 
 This report is a continuation of the repository
@@ -394,6 +425,19 @@ collection's index; the global-divisor report uses the same recipe over a
 compact base, and the analysis report \cite{RepoAnalysis} uses its rings for a
 coefficientwise residue (\cref{nab:loc:sec:coefficients}).
 
+Part~V was written against commit
+\texttt{0865f043aec113c14c69ef45006bbc7546a4e75a}, at which this report had
+exactly the text of Parts~I--IV. Its source inspected this report only. The
+merge records its overlaps with three further reports, all cited rather than
+reprinted: the global-divisor report's Picard reduction, line-bundle
+obstruction, Cousin criterion and interpolation criterion; the
+analytic-geometry report's fixed-divisor B\'ezout, corona and ultrafilter
+results on the unit disk \cite{RepoGeometry}, of which Part~V's are plane
+versions; and the trigonometry report's zero sets of the surcomplex sine
+\cite{RepoTrig}. The entire-functions report's B\'ezout theorem
+\cite{RepoEntire} concerns a different ring and does not conflict with
+Part~V (\cref{nab:pl:sub:status}).
+
 \subsection{What is and is not claimed as new}
 
 The Hahn support calculus is classical \cite{Neumann,Poonen}. The analytic
@@ -413,9 +457,10 @@ We do not classify bundles or connections beyond the stated questions. Part~I
 decides triviality on a puncture-and-disk cover for arbitrary finite rank and
 proves a sufficient theorem for arbitrary Stein covers; Part~II inverts
 holonomy for near-identity representations on a punctured plane; Part~III
-classifies one explicit family of bundles and nothing beyond it. The
-boundaries in \cref{nab:sec:scope} are part of the theorem statements, not
-qualifications added afterwards.
+classifies one explicit family of bundles and nothing beyond it; Part~V
+trivializes one family of pole-only cocycles after localization and classifies
+nothing. The boundaries in \cref{nab:sec:scope} are part of the theorem
+statements, not qualifications added afterwards.
 
 \section{The coefficient category}\label{nab:sec:category}
 
@@ -1670,8 +1715,16 @@ essential rather than polar singularities in their transitions, that remain
 nontrivial over $\HH$ and even over the coefficientwise meromorphic sheaf
 $\MM=\Mer((t^\Gamma))$ (\cref{nab:loc:cor:stable}), and it shows that the
 examples of \cref{nab:cor:nontrivialbundles} become trivial over $\MM$
-(\cref{nab:loc:cor:polestrivial}). Whether they remain nontrivial over $\HH$ is
-still not proved in this report, and the claim declined above stays declined.
+(\cref{nab:loc:cor:polestrivial}). Part~III leaves open whether they remain
+nontrivial over $\HH$.
+
+Part~V, added from a fourth source, settles this: they do not. The hidden
+example becomes trivial over $\mathscr I_{\Q}[t^{-1}]$ by explicit
+determinant-one frames of valuation at least $-3/4$
+(\cref{nab:pl:thm:rankthree}), and the deep examples in the same way
+(\cref{nab:pl:cor:deep}). The claim declined above was therefore rightly
+declined: these integral bundles are nontrivial over $\II$ and trivial over
+$\HH$.
 
 This distinction matters for the surcomplex interpretation. Integral models
 describe holomorphic matrices with a defined ordinary reduction and
@@ -2623,9 +2676,9 @@ use ordinary poles; the new ones put descending exponents in front of ordinary
 does not settle the fate of Part~I's pole-only examples, and nothing in this
 part settles it. What this part does add about those examples is narrow: they
 become trivial over $\MM$ (\cref{nab:loc:cor:polestrivial}), so no argument
-that survives meromorphic extension can prove them nontrivial over $\HH$. Their
-status over $\HH$ remains open, and \cref{nab:sec:open} records the question in
-its re-scoped form.
+that survives meromorphic extension can prove them nontrivial over $\HH$. This
+part leaves their status over $\HH$ open; Part~V, added later from a fourth
+source, settles it negatively (\cref{nab:pl:thm:rankthree,nab:pl:cor:deep}).
 
 The mechanism fits in one sentence. A nonzero meromorphic coefficient cannot
 cancel an essential singularity, so a gluing equation that attaches an
@@ -3160,9 +3213,11 @@ is $-(h_n-1)N\neq0$. Hence $\EU(G')\supseteq\{\alpha_n:n\geq1\}$ is not well
 ordered, \cref{nab:thm:criterion} excludes a positive splitting, and
 \cref{nab:prop:integraltrivial} shows that $\mathcal N_{\profile}(N)^{\II}$ is
 nontrivial. The same computation with $h_n$ replaced by a pole datum such as
-$1/(z-n)$ also gives integral nontriviality; the two kinds of data are
-separated only after passage to $\MM$ (\cref{nab:loc:prop:poles}), and
-nothing in this report separates them over $\HH$. What Part~I does not give, and
+$1/(z-n)$ also gives integral nontriviality; within Part~III the two kinds
+of data are separated only after passage to $\MM$ (\cref{nab:loc:prop:poles}).
+Part~V separates them over $\HH$: with finite-order poles in place of $h_n$ the
+bundle becomes trivial after one monomial localization
+(\cref{nab:pl:thm:nilpotent}). What Part~I does not give, and
 this part does, is nontriviality over $\HH$ and $\MM$, stable nontriviality,
 indecomposability, and the classification.
 \end{remark}
@@ -4022,10 +4077,11 @@ and die under meromorphic extension. Second, the corollary concerns the
 displayed families. It does not assert that every class of $\Pic(\C,\HH)$ dies
 over $\MM$, and no statement about the Picard group of $\MM$, or about rank-one
 $\MM$-bundles in general, is made anywhere in this report. Third, for Part~I's
-examples it settles nothing over $\HH$: whether they survive monomial
-localization remains open (\cref{nab:sec:open}), and a proof that they do would
-have to use the holomorphy of gauge coefficients at the punctures, which the
-argument of \cref{nab:loc:thm:obstruction} never uses. Over a compact base the
+examples it settles nothing over $\HH$: a proof of their nontriviality would
+have had to use the holomorphy of gauge coefficients at the punctures, which the
+argument of \cref{nab:loc:thm:obstruction} never uses. Part~V answers
+it by exactly such frames: the examples do not survive monomial localization
+(\cref{nab:pl:thm:rankthree,nab:pl:cor:deep}). Over a compact base the
 global-divisor report identifies exactly which Hahn line bundles become trivial
 over its $\mathscr M_\Gamma$ (those with vanishing valuation class, by its
 \texttt{global:thm:meromorphic}); no plane analogue is claimed.
@@ -4305,7 +4361,7 @@ isomorphism is not semidecidable on a computable input class.
 \section{The accompanying exact and numerical checks}
 \label{nab:sec:verification}
 
-Three independent check suites were delivered with the three source
+Four independent check suites were delivered with the four source
 manuscripts and are preserved unchanged in \texttt{code/} and \texttt{data/} of
 this report directory. No suite verifies a theorem; each audits finite
 identities, and each prints its own scope disclaimer. The facts recorded in this section were
@@ -4399,6 +4455,47 @@ not overwrite the recorded evidence. An independent rerun on a copy, under
 Python 3.14.4 with SymPy 1.14.0, reproduced the recorded JSON exactly except
 for its \texttt{python\_version} field, with the same count of 12{,}355.
 
+\paragraph{Part~V: exact finite algebra.}
+The script \nolinkurl{11-pole-localization-verify.py} is a deterministic SymPy
+program with exact arithmetic; its dependency pin is
+\nolinkurl{data/11-pole-localization-requirements.txt} (SymPy 1.14.0). It
+checks the finite matrix identities of the rank-two and rank-three
+constructions (the frame product, determinants and inverses, the extension row
+and column, the difference of local lifts, the composition of the resolution
+maps, the polar factor \eqref{nab:eq:badPH}, the reduction
+\eqref{nab:pl:eq:rankthreeQ} and the frame equation \eqref{nab:pl:eq:frame}
+for \eqref{nab:pl:eq:Boriginal}); symmetric-power identities in degrees one
+through six; finite-node pole cancellation with simple and multiple poles; the
+cardinal-sine values and derivatives, including the leading root balance of
+\cref{nab:pl:thm:zeros}; and finite support sanity checks, including the
+balanced budget $3/4$.
+\begin{center}\small
+\begin{tabular}{@{}L{0.71\textwidth}r@{}}
+\toprule
+Check family & Count\\
+\midrule
+Matrix identities & 17\\
+Symmetric-power representation & 36\\
+Pole cancellation & 48\\
+Cardinal-sine formulas & 106\\
+Finite support sanity & 8\\
+\midrule
+Total exact checks & 215\\
+\bottomrule
+\end{tabular}
+\end{center}
+The recorded run, \nolinkurl{data/11-pole-localization-verification_results.json},
+passed all 215 under Python 3.13.5 and SymPy 1.14.0. An independent rerun on a
+copy, under Python 3.14.4 with SymPy 1.14.0, exited zero and reproduced the
+recorded JSON except for its \texttt{python\_version} field. By default the
+script writes \texttt{verification\_results.json} beside itself; in this layout
+an in-place run would create that file under \texttt{code/} without touching
+the record under \texttt{data/}, but reruns should use a copy and
+\texttt{-{}-output}, as in \cref{nab:app:repro}. The suite does not check
+\cref{nab:pl:cor:deep}; the merge checked its matrix identities symbolically
+for $3\leq r\leq8$, with symbolic row-one entries and symbolic $f$ and
+$\mathcal S$, in a check that is not shipped with this report.
+
 \paragraph{A warning about rerunning the Part~II script.}
 That script \emph{writes its own evidence}: it emits
 \texttt{verification\_results.json} beside itself, via
@@ -4424,18 +4521,26 @@ cannot establish the well-ordering contradiction for all indices, prove the
 identity theorem for meromorphic functions, certify the sheaf construction,
 the essential-singularity theorem, descent or the classification, verify the
 undecidability statement, or establish historical novelty; they are a
-reproducible algebraic audit of finite steps. No implication in this report
-depends on the outcome of any script: the general proofs are the arguments in
-the body.
+reproducible algebraic audit of finite steps. The Part~V checks do not prove
+that an infinite support is well ordered or that a forbidden descending support
+cannot occur, and they do not check the existence part of Weierstrass's
+theorem, sheaf cohomology or the transfinite implicit recursion; no numerical
+experiment with a large real parameter is used as evidence for a surreal
+identity. No implication in this report depends on the outcome of any script:
+the general proofs are the arguments in the body.
 
 \section{Exactly what is not claimed}\label{nab:sec:scope}
 
-The following list merges the honest limitations stated by all three source
+The following list merges the honest limitations stated by all four source
 manuscripts. Every one of them survives this merge, and none is weakened.
 Items \ref{nab:nc:refereed} through \ref{nab:nc:formal} come from Part~I's
 scope, items \ref{nab:nc:positivity} through \ref{nab:nc:mueller} from
-Part~II's, and items \ref{nab:loc:nc:family} through
-\ref{nab:loc:nc:essential} from Part~III's. The localization manuscript's
+Part~II's, items \ref{nab:loc:nc:family} through
+\ref{nab:loc:nc:essential} from Part~III's, and items \ref{nab:pl:nc:fixedN}
+through \ref{nab:pl:nc:audit} from Part~V's; item~\ref{nab:pl:nc:merge} records
+what the merge added to Part~V. The pole-localization manuscript's generic
+limitations are added to items \ref{nab:nc:refereed}, \ref{nab:nc:priority},
+\ref{nab:nc:code} and \ref{nab:nc:formal}. The localization manuscript's
 generic limitations (refereeing, priority, credits, code, formalization, and
 the M\"uller--Strohmaier distinction) are added to items \ref{nab:nc:refereed},
 \ref{nab:nc:credits}, \ref{nab:nc:priority}, \ref{nab:nc:code},
@@ -4451,16 +4556,24 @@ Nothing here is refereed or proof-assistant verified. All three source
 manuscripts are self-described AI-assisted research drafts and say so on their
 title pages and in their READMEs; the localization manuscript's provenance
 record (\nolinkurl{data/10-localization-bundles-PROVENANCE.json}) also lists
-peer review and proof-assistant verification as false.
+peer review and proof-assistant verification as false. The pole-localization
+manuscript describes itself as an unrefereed AI-assisted research manuscript
+whose proofs have not been formalized in Lean or independently reviewed, and
+its source audit claims no repository build, axiom audit, Wolfram check or
+automated prover check of the infinite arguments; its layout record
+\nolinkurl{data/11-pole-localization-build_report.json} lists formal
+proof-assistant verification and independent peer review as false.
 
 \item\label{nab:nc:localization}
 Nontriviality in Part~I is proved \emph{only} over the integral sheaf $\II$.
 We explicitly do not claim that the examples survive after all monomials are
 inverted, that is over $\HH$, because positive monomials become units there,
 no reduction homomorphism $\HH\to\OO$ exists, and the framing-normalization
-argument of \cref{nab:prop:integraltrivial} cannot be repeated. This is listed
-as an open question, not as a believed consequence. Part~III does not change
-this for Part~I's examples: it proves nontriviality over $\HH$ and over $\MM$
+argument of \cref{nab:prop:integraltrivial} cannot be repeated. This was
+listed as an open question, not as a believed consequence, and Part~V has since
+answered it negatively: the hidden and deep examples are trivial over $\HH$
+(\cref{nab:pl:thm:rankthree,nab:pl:cor:deep}), so the declined claim is in fact
+false. Part~III does not change this for Part~I's examples: it proves nontriviality over $\HH$ and over $\MM$
 for a different, essential-singularity family (\cref{nab:loc:cor:stable}), and
 it shows that Part~I's examples become trivial over $\MM$
 (\cref{nab:loc:cor:polestrivial}), which decides nothing over $\HH$. In
@@ -4530,12 +4643,20 @@ not used as evidence of absence, and no named published conjecture is claimed
 solved. The localization manuscript's novelty assessment is likewise bounded
 by what it inspected --- for this report, its README and two line ranges of its
 article; for the global-divisor report, a truncated README --- and is not a
-proof of historical priority.
+proof of historical priority. The pole-localization manuscript's targeted
+search (Hahn holomorphic coefficient rings, monomial localization of bundles,
+Picard groups, omnific normal forms) found no matching explicit
+pole-localization theorem; it is not exhaustive across generalized-series,
+Cousin-problem or ringed-space terminology, and the manuscript claims a proved
+argument as presented, not a certified breakthrough or a resolved named
+conjecture.
 
 \item\label{nab:nc:code}
 The companion code checks exact finite algebra, finitely many exponent
 samples, and one finite numerical example only; see the final paragraph of
-\cref{nab:sec:verification}.
+\cref{nab:sec:verification}. The Part~V suite's 215 exact checks do not verify
+infinite supports, Weierstrass existence, sheaf cohomology or the transfinite
+implicit recursion.
 
 \item\label{nab:nc:formal}
 Formal verification is future work. The local support recursion, the chain
@@ -4552,7 +4673,16 @@ ordered group embeddings; finite nilpotent exponentials, the Jordan induction
 and $B\mapsto MB-BN$; and bundle descent with the intrinsic global-section flag,
 so that arbitrary isomorphisms, not only flag-preserving gauges, satisfy the
 classification. Omitting the last milestone would weaken the classification to
-a framed statement that is not what is proved. No Lean implementation is
+a framed statement that is not what is proved. For Part~V
+the pole-localization manuscript proposes four layers: the support reversal
+$\alpha_n\mapsto-\alpha_n$, translated-support unions and the fact that
+ordinary evaluation creates no exponent; the determinant-one rank-two
+construction from the five cancellation hypotheses of
+\cref{nab:pl:lem:principal}, as pure ring algebra; the ordinary finite-pole
+cancellation lemma with Weierstrass existence as a declared analytic
+dependency; and the cocycle equivalences, the nonsplitting argument and the
+implicit recursion. The finite rank-three identity is a small first target, but
+a check of that identity alone would not verify the localization theorem. No Lean implementation is
 included or claimed, and the repository's build status is not evidence that
 any of these theorems has been checked. No script is a substitute for such a
 formalization.
@@ -4634,8 +4764,8 @@ generalization proved here. The two criteria are two theorems with two proofs
 \item\label{nab:loc:nc:family}
 The localization-resistant bundles of Part~III form one explicit
 essential-singularity family. Nothing in Part~III settles whether Part~I's
-pole-only hidden and deep examples survive monomial localization; that stays
-open (\cref{nab:sec:open}). The family shows that allowing all negative
+pole-only hidden and deep examples survive monomial localization; Part~V settles
+it negatively (\cref{nab:pl:thm:rankthree,nab:pl:cor:deep}). The family shows that allowing all negative
 exponents, all ordinary meromorphic coefficients, or all exponents of a larger
 ordered workspace need not remove the obstruction. It does not say that these
 extensions never remove other obstructions: \cref{nab:loc:ex:shift} and
@@ -4703,6 +4833,87 @@ assumed.
 It does not assert that every class of $\Pic(\C,\HH)$ becomes trivial over
 $\MM$, it makes no statement about the Picard group of $\MM$ or about rank-one
 $\MM$-bundles in general, and it decides nothing about Part~I's examples over
+$\HH$ (Part~V decides them).
+
+\item\label{nab:pl:nc:fixedN}
+Part~V's localization theorems concern descending-scale cocycles
+$\exp(t^{\alpha_n}p_nN)$ with finite-order poles and one fixed nilpotent $N$,
+the hidden example, and (by the merge) the deep examples. They settle the
+printed repository question, not every pole-only matrix cocycle: there is no
+classification of cocycles with varying or noncommuting nilpotent directions,
+no exact pole-only criterion after localization, and nothing about essential
+singularities, for which the construction is unavailable; Part~III's results
+are unaffected. The frames have holomorphic coefficients; meromorphic
+coefficients are never used as a substitute for holomorphic ones.
+
+\item\label{nab:pl:nc:budget}
+The bounds $-3/4$, $-(2r-3)/4$, $-\alpha_1$ and $-(\nu-1)\alpha_1$ are proved
+upper bounds on the negative budget, not claims of optimality.
+\Cref{nab:pl:cor:smallbudget} is an infimum statement: the infimum is $0$ and is
+not attained, and no least positive budget is asserted. Inverting one monomial
+is distinguished from full Laurent localization.
+
+\item\label{nab:pl:nc:picard}
+The Picard decomposition of \cref{nab:pl:prop:picard} is elementary unit-group
+algebra, printed in the global-divisor report, not a new cohomology theorem;
+$H^1(\C,\JJ)$ is not computed completely. The persistence of pole-data line
+classes over $\HH$ is the global-divisor report's for simple poles.
+
+\item\label{nab:pl:nc:extensions}
+There is no classification of all self-extensions or of all vector bundles.
+$\Ext^1$ in \cref{nab:pl:thm:extension-space} is taken in sheaves of
+$\HH$-modules, not in modules over $A_{\HH}$, and the free-middle classes are
+not claimed to form a subspace outside the displayed family.
+
+\item\label{nab:pl:nc:omnific}
+Omnific values are claimed only at ordinary real arguments: $\mathcal S$ is not
+claimed to give an omnific-valued map at every surreal argument, or a function
+continuous for any topology on $\No$. \Cref{nab:pl:thm:omnific}(iii) concerns
+simultaneous common-domain interpolation, not field inversion.
+
+\item\label{nab:pl:nc:halo}
+Taylor prolongation is defined and used only at finite surcomplex arguments;
+no value, zero or zero theorem at infinite arguments is asserted, and
+$\mathcal S$ is not a strongly entire series. \Cref{nab:pl:thm:zeros} is complete
+on finite halos only. \Cref{nab:pl:thm:bezout} uses ``B\'ezout'' in its literal
+equation sense; it is not a classical corona theorem for bounded functions and
+says nothing about the ring of strongly entire series.
+
+\item\label{nab:pl:nc:ideals}
+The ideal statements (properness, non-B\'ezout, regular sequence, projective
+dimensions, $\Tor$, non-flatness, ultrafilter maximal ideals) concern the
+global ring $A_{\HD}$, not sheaves of modules. The ultrafilter ideals are not
+claimed to exhaust the maximal ideals above $\mathfrak a$, and no description of
+the maximal spectrum is claimed.
+
+\item\label{nab:pl:nc:credits}
+Credited to the literature and not new: the Weierstrass, Mittag--Leffler and
+discrete-interpolation theorems (cited by the pole-localization manuscript to
+course notes \cite{Greenfield}, and by the merge to \cite{Rudin}); the Hahn
+support calculus \cite{Poonen}; symmetric powers of $\SL_2$ and their
+determinant; the implicit root lemma, which is not a new Hensel theorem; the
+interpolation criterion \cref{nab:pl:prop:interpolation}, a standard-style
+consequence (\nolinkurl{global:cor:interp}) and not a priority claim. No Oka
+principle is transferred to the Hahn sheaf; \cite{ForstnericPrezelj} is cited
+for the ordinary context only. \cite{LM} is used for normal-form conventions
+only, with no factorization or Gonshor-type claim.
+
+\item\label{nab:pl:nc:audit}
+The pole-localization manuscript audited this report only, on a branch that was
+changing during its inspection; it fixed the version at commit
+\texttt{0865f04} (an earlier tree response at \texttt{b895e86} was not used for
+provenance). It consulted the Wikipedia overview of surreal numbers for
+orientation only, not to certify conventions or novelty. Its novelty statements are bounded by that
+audit; the overlaps with the global-divisor and analytic-geometry reports were
+found by the merge.
+
+\item\label{nab:pl:nc:merge}
+\Cref{nab:pl:cor:deep}, the consequences (a)--(d) in \cref{nab:pl:sec:printed},
+the credits to other reports in Part~V, and the question on the diagonal
+examples in \cref{nab:sec:open} are added by the merge, not stated by the
+pole-localization manuscript. The merge's symbolic check of
+\cref{nab:pl:cor:deep} is not shipped, and the corollary rests on its written
+proof. The diagonal examples \eqref{nab:eq:SLcounter} are not decided over
 $\HH$.
 \end{enumerate}
 
@@ -4717,13 +4928,19 @@ Part~III follows Part~I's convention, for $\MM$ as well
 
 \section{Questions exposed by the results}\label{nab:sec:open}
 
-\paragraph{Monomial localization (open, re-scoped).}
+\paragraph{Monomial localization (answered for the printed examples;
+re-scoped).}
 Does $\mathcal E_G\otimes_{\II}\HH$ remain nontrivial for the explicit hidden
 and deep examples? A proof would need control of general Hahn matrix gauges,
 not just positive ones, and the ordinary reduction normalization is unavailable
-after localization. This question is intentionally not answered, and it is
-still open after Part~III. What Part~III, from the localization manuscript,
-has settled around it is the following. (a) The broader existence question has
+after localization. Parts~I--III left this question open. Part~V answers it:
+\emph{no}. Both families become trivial over $\mathscr I_{\Q}[t^{-1}]$, by
+determinant-one frames with valuation bounds $-3/4$ and $-(2r-3)/4$
+(\cref{nab:pl:thm:rankthree}, and \cref{nab:pl:cor:deep}, added by the merge),
+and so does every descending-scale cocycle with finite-order poles and one fixed
+nilpotent direction (\cref{nab:pl:thm:nilpotent}). The re-scoped remainder is
+stated in the next three paragraphs. What Part~III, from the localization
+manuscript, had settled around the question is the following. (a) The broader existence question has
 a positive answer: there are determinant-one bundles with trivial ordinary
 reduction that remain nontrivial, indecomposable and not stably trivial over
 $\HH$, and even over $\MM=\Mer((t^\Gamma))$
@@ -4739,7 +4956,46 @@ report's pole-data line bundles are nontrivial over $\HH$ and trivial over
 $\MM$. As the localization manuscript
 puts it, a complete answer for the printed examples must account for
 holomorphic zeros, possible negative-valuation gauges, and the lack of an
-ordinary reduction map after localization.
+ordinary reduction map after localization. Part~V's answer uses exactly these:
+an entire function vanishing at the punctures and a negative-valuation frame.
+
+\paragraph{Varying nilpotent directions (Part~V).}
+For finite-pole data $p_n$ and a descending positive profile, when does
+$\exp(t^{\alpha_n}p_nN_n)$ with puncture-dependent nilpotent $N_n$ become
+trivial over $\HH$? Does simultaneous upper triangularity suffice, and what
+obstruction appears when the directions run through infinitely many flags? A
+simultaneous flag permits induction on rank, but the induction must control
+the supports of the extension corrections, and the failure of global B\'ezout
+in \cref{nab:pl:thm:bezout} warns that a naive extension-by-extension argument
+may not suffice.
+
+\paragraph{An exact pole-only criterion after localization (Part~V).}
+Is there a necessary and sufficient invariant for Laurent triviality of a
+pole-only positive cocycle, computable from its normalized polar factors, and
+can it be split into finite-dimensional ordinary pole data and a well-ordering
+condition stable under Laurent gauges? Criterion~P is not such an invariant:
+the hidden example fails it and is Laurent-trivial. A replacement must see the
+interpolation cancellation of \cref{nab:pl:thm:ranktwo} while still detecting
+essential or genuinely noncommutative obstructions; a uniform nilpotency class
+with finitely many ordinary directions is a natural first case.
+
+\paragraph{The diagonal determinant-one examples over $\HH$ (raised by the
+merge).}
+The cocycles \eqref{nab:eq:SLcounter} are nontrivial over $\II$ and trivial
+over $\MM$ (\cref{nab:loc:cor:polestrivial}), and their two line-bundle
+summands stay nontrivial over $\HH$ (\cref{nab:pl:cor:line}). Is their
+determinant-one direct sum trivial over $\HH$? Part~V's construction applies to
+unipotent cocycles only, and neither the pole-localization manuscript nor this
+merge decides this case.
+
+\paragraph{The exact denominator budget (Part~V).}
+For a Laurent-trivial integral cocycle, determine the set of $b\geq0$ for which
+frames and inverse frames can be chosen with valuation at least $-b$: its lower
+cut, and whether the infimum is attained. What is it for the hidden example,
+where $3/4$ is an upper bound? For the profiles of
+\cref{nab:pl:cor:smallbudget} the infimum is $0$ and not attained. At higher
+rank of $\Gamma$ the answer is an ordered cut rather than a real number, and
+inverting one monomial should be distinguished from full localization.
 
 \paragraph{Arbitrary-cover normal forms.}
 The polar support is exact on the puncture-and-disk cover because every overlap
@@ -4756,8 +5012,8 @@ essential-singularity profile bundles, integral isomorphism is eventual
 equality of profiles and localized isomorphism is eventual equality up to one
 translation (\cref{nab:loc:thm:classification}), and within one profile the
 isomorphism type is the Jordan type (\cref{nab:loc:cor:jordan-class}). The
-general question, including the classification of Part~I's examples, remains
-open.
+general question remains open, including the classification of Part~I's
+examples over $\II$; over $\HH$ they are trivial (Part~V).
 
 \paragraph{The full extension category.}
 The morphisms between the nilpotent bundles of Part~III are known exactly, but
@@ -4813,6 +5069,55 @@ rigidity theorems still apply, but the sharp star-cover invariant does not
 generalize, and for connections the nonlinear flatness equation enters. Both
 directions are open.
 
+\paragraph{Free-middle extension classes (Part~V).}
+Characterize the classes in $\Ext^1_{\HH}(\HH,\HH)$ whose middle bundle is
+free. Is that set closed under Baer sum outside the family of
+\cref{nab:pl:thm:extension-space}, and how is it read from global columns that
+admit local but no global unimodular completion? The image of
+$\C^{\N}/\C^{(\N)}$ there is a subspace of free-middle classes, but the whole
+set need not be a subspace.
+
+\paragraph{Maximal ideals beyond finite-halo evaluation (Part~V).}
+Describe the maximal ideals of $A_{\HH}$ above $(\sin\pi z,\mathcal S)$. Are
+they parametrized by support cuts, by ultrafilters on the nodes, or by both, and
+which parameters survive ordered extension of the value group? Do the ideals of
+\cref{nab:pl:thm:ultrafilter} exhaust them? A first test is the quotient by
+$f$, whose realized value sequences are those with well-ordered combined support
+(\cref{nab:pl:prop:interpolation}; compare \nolinkurl{analytic:thm:fixed-quotient}).
+
+\paragraph{A coefficient enlargement with controlled reciprocals (Part~V).}
+Is there a useful enlargement of the common-domain families that contains the
+reciprocal data $t^{1/n}$ of \cref{nab:pl:thm:omnific} without invalidating
+ordinary evaluation, ring operations and Taylor prolongation? Any proposal must
+state how products and coefficient sums are defined; a sheaf of locally varying
+support bounds or a sequence-valued target solves a different problem, and the
+difference should be explicit.
+
+\paragraph{Mixed poles and essential singularities (Part~V).}
+For $\exp(t^{\alpha_n}p_nN)$ in which some $p_n$ have essential singularities,
+find a sharp condition for Laurent triviality, perhaps through a finite-rank
+measure of the principal-part space interpolating between
+\cref{nab:pl:thm:nilpotent} and Part~III. The failure of one particular frame is
+not a proof that every frame fails; finitely many essential punctures, and
+singular germs obeying fixed finite-dimensional relations, are natural
+intermediate cases.
+
+\paragraph{Other ordinary bases for pole localization (Part~V).}
+Extend \cref{nab:pl:thm:ranktwo} from the plane to open Riemann surfaces,
+tracking the divisor class of the function $f$ and the constant-sheaf summand
+of \eqref{nab:pl:eq:picsplit}. A compact base has no infinite closed discrete
+puncture set, so there the plane statement cannot simply be repeated (compare
+the paragraph on other ordinary bases above).
+
+\paragraph{Omnific-valued coefficient families (Part~V).}
+Classify tractable subclasses of $\OO(\C)((t^\Q))$ whose values at all ordinary
+real arguments are omnific integers, and study their finite-halo zero sets.
+Which infinitesimal displacements can be realized with a simple interpolation
+formula? The normal-form condition constrains exponents and the constant
+coefficient, while the zeros depend on the leading ordinary coefficient after a
+monomial normalization; a theory should relate the two without conflating
+ordinary real arguments with all surreal ones.
+
 \paragraph{Formal verification.}
 See item~\ref{nab:nc:formal} of \cref{nab:sec:scope}.
 
@@ -4858,8 +5163,8 @@ region. Their isomorphism invariant is exactly the eventual exponent profile in
 the integral category, and that profile modulo one eventual translation after
 localization; it is independent of valuation rank and survives every ordered
 exponent enlargement. Pole data, by contrast, die over the meromorphic sheaf,
-so this argument cannot reach Part~I's own examples, whose fate under monomial
-localization is still open.
+so this argument cannot reach Part~I's own examples; Part~V shows that they
+already die over $\HH$.
 Here finite-dimensional linear algebra and ordinary local analytic solvability
 both behave perfectly, while the single global well-ordered support required by
 a Hahn section still does not exist.
@@ -4871,6 +5176,1148 @@ calculus is exactly what makes those ordinary constructions coexist in one
 surcomplex workspace; and the noncommutative correction --- the cross term
 $-a_-c_+$ in Part~I, the mixed commutator $-uv\,CH(\eta_0-\eta_1)$ in Part~II
 --- is what the abelianization cannot see.
+
+Part~V shows how thin the boundary between the integral and the localized
+category is for pole data. A single entire function vanishing at the punctures,
+with interpolation coefficients placed at the admissible exponents
+$-\alpha_n$, turns a forbidden descending positive support into an admissible
+increasing negative one, and one monomial localization then kills every
+descending-scale pole cocycle with a fixed nilpotent direction, Part~I's hidden
+and deep examples included. The same global support information does not
+disappear: it persists in rank one, in the filtration of a free rank-two
+bundle, in a proper locally unit ideal of projective dimension two, and in the
+infinitesimally displaced zeros of an omnific-valued sine family.
+
+\part*{Part V. Pole localization and omnific interpolation}
+\addcontentsline{toc}{section}{\textbf{Part V. Pole localization and omnific interpolation}}
+
+\section{The printed examples after monomial localization: question, source and
+conventions}\label{nab:pl:sec:intro}
+
+\subsection{What this part answers}\label{nab:pl:sub:answer}
+
+Part~I proves its hidden and deep examples nontrivial over the integral sheaf
+$\II$ only, and until this part was added the report asked whether they stay
+nontrivial after monomial localization, over $\HH$
+(\cref{nab:loc:sub:boundary}, item~\ref{nab:nc:localization} of
+\cref{nab:sec:scope}, and the first question of \cref{nab:sec:open}). Part~III
+answered a broader existence question with a different, essential-singularity
+family and left the printed examples open. This part, built from a fourth
+manuscript, answers the printed question, and the answer is \emph{negative}:
+\begin{itemize}
+\item the hidden rank-three example \eqref{nab:eq:badG} of
+\cref{nab:thm:hidden} becomes trivial after the single monomial $t$ is
+inverted, by explicit determinant-one frames whose entries and inverse entries
+all have valuation at least $-3/4$ (\cref{nab:pl:thm:rankthree});
+\item the deep examples of \cref{nab:thm:depth}, $r\geq4$, become trivial in
+the same way, with valuation bound $-(2r-3)/4$
+(\cref{nab:pl:cor:deep}). This case is not treated in the source manuscript; it
+is added by the merge, with a complete proof;
+\item more generally, every descending-scale cocycle
+$\exp(t^{\alpha_n}p_nN)$ with finite-order poles $p_n$ and one fixed nilpotent
+matrix $N$ is integrally nontrivial and becomes trivial after inverting one
+Hahn monomial (\cref{nab:pl:thm:ranktwo,nab:pl:thm:nilpotent}).
+\end{itemize}
+So every bundle of \cref{nab:cor:nontrivialbundles} is nontrivial over $\II$
+and trivial over $\HH$. Nothing printed in this report is retracted: no
+earlier part claimed nontriviality over $\HH$, and item~\ref{nab:nc:localization}
+declined that claim explicitly.
+
+In rank one the answer is the opposite, and this is not new: pole-data line
+bundles stay nontrivial over $\HH$ (\cref{nab:pl:cor:line}), by the Picard
+reduction and the Cousin criterion of the global-divisor report. The same
+interpolation construction then yields self-extensions of the trivial line
+that stay nonsplit although their middle bundle is free
+(\cref{nab:pl:thm:extension,nab:pl:thm:extension-space}); an explicit
+cardinal-sine family with omnific-integer values at every ordinary real
+argument (\cref{nab:pl:thm:omnific}); a proper, nonprincipal, locally unit
+ideal of the global ring whose quotient has projective dimension two
+(\cref{nab:pl:thm:bezout,nab:pl:cor:homological}); ultrafilter maximal
+ideals above it (\cref{nab:pl:thm:ultrafilter}); and the classification of the
+zeros of the sine family on finite surcomplex halos
+(\cref{nab:pl:thm:zeros}).
+
+What stays open is recorded in \cref{nab:sec:open}: pole cocycles whose
+nilpotent directions vary with the puncture, an exact pole-only criterion after
+localization, the optimal negative budget, and the determinant-one diagonal
+examples \eqref{nab:eq:SLcounter}, to which neither the source manuscript nor
+this merge applies.
+
+\subsection{Source and status}\label{nab:pl:sub:status}
+
+This part is built from \emph{Pole Localization and Omnific Interpolation:
+Explicit bundle trivializations, persistent line classes, and a surcomplex
+B\'ezout obstruction}, dated September 23, 2026, called \emph{the
+pole-localization manuscript} below (\cref{nab:app:repro}). It inspected this
+report at commit
+\begin{center}\small\ttfamily
+0865f043aec113c14c69ef45006bbc7546a4e75a,
+\end{center}
+file blob \texttt{c2dc2f9}, which is exactly the text of Parts~I--IV into which
+this part was merged; its quotations of this report are therefore current.
+The manuscript audited this report only. The comparisons with the
+global-divisor, analytic-geometry, trigonometry and entire-functions reports
+below were made by the merge.
+
+Its own assessment of novelty is bounded: it proposes as new the explicit
+pole-localization construction, its resolution of \eqref{nab:eq:badG}, and the
+package of localization, extension, B\'ezout, omnific-interpolation and
+zero-geometry consequences, and it credits Hahn multiplication, positive
+inversion, the Weierstrass and Mittag--Leffler theorems, the description of
+Picard groups by unit cocycles and the symmetric powers of $\SL_2$ as classical
+\cite{Poonen,Greenfield,Rudin,ForstnericPrezelj}. The merge found further
+overlaps, which are printed once and credited:
+\begin{itemize}
+\item The Picard decomposition (\cref{nab:pl:prop:picard}) and the persistence
+of pole-data line classes (\cref{nab:pl:cor:line}) are the global-divisor
+report's \nolinkurl{global:prop:explog}, \nolinkurl{global:prop:Picreduction},
+\nolinkurl{global:thm:piccompact}, \nolinkurl{global:thm:obstruction} and
+\nolinkurl{global:thm:dichotomy} \cite{RepoGlobal}; the discrete interpolation
+criterion (\cref{nab:pl:prop:interpolation}) is its \nolinkurl{global:cor:interp}
+exactly; the nonsplitting argument of \cref{nab:pl:thm:extension} is an
+instance of its \nolinkurl{global:thm:cousincriterion}.
+\item The B\'ezout, corona and ultrafilter statements of
+\cref{nab:pl:sec:omnific} are plane versions of the analytic-geometry report's
+unit-disk results \nolinkurl{analytic:thm:fixed-quotient},
+\nolinkurl{analytic:thm:fixed-bezout}, \nolinkurl{analytic:thm:fixed-corona} and
+\nolinkurl{analytic:thm:fixed-two-ideals}(2) \cite{RepoGeometry}, which use the
+same cardinal-function mechanism with the sine $\sin(\pi/(1-z))$ on the unit
+disk.
+\item The integral nontriviality statements are instances of Criterion~P
+(\cref{nab:thm:criterion}); the pole-only cocycles of
+\cref{nab:pl:thm:nilpotent} are the Part~III bundles with $h_n$ replaced by
+pole data, whose integral nontriviality \cref{nab:loc:rem:criterionP} already
+records.
+\end{itemize}
+What is new relative to the collection is the Laurent frame construction and
+everything it gives over $\HH$ for pole data
+(\cref{nab:pl:sec:frames,nab:pl:sec:printed}), the free-middle nonsplit
+extensions, the projective-dimension computation, the omnific-valued sine family
+and the classification of its zeros on finite halos. None of this has received
+the maintained mathematical review recorded for Parts~I and~II.
+
+\subsection{Conventions, and the three gluing conventions}\label{nab:pl:sub:names}
+
+Throughout this part $\Gamma$ is a set-sized totally ordered abelian group, with
+no divisibility or Archimedean hypothesis unless stated, and the sheaves $\HH$,
+$\II$, $\JJ$ are those of \eqref{nab:eq:H}--\eqref{nab:eq:J}. ``Integral''
+means nonnegative Hahn valuation, as everywhere in this report, not membership
+in the omnific integers $\Oz$. Let $A=\{a_n:n\geq1\}\subset\C$ be closed,
+discrete and infinite, choose pairwise disjoint disks $D_n$ about $a_n$, and put
+$U_0=\C\setminus A$ and $W_n=D_n\setminus\{a_n\}$: a puncture-and-disk cover in
+the sense of \cref{nab:sec:cousin}. For another ordered group $\Delta$ write
+$\HD=\OO((t^\Delta))$ and $A_{\HD}=\OO(\C)((t^\Delta))$; as in Part~III the
+letter $A$ alone is the puncture set, and $A_{\HH}=\HH(\C)$.
+
+\paragraph{The gluing convention, once.} This part writes a trivialization of
+transitions $G_n$ on $W_n$ as matrices $B_0$ over $U_0$ and $B_n$ over $D_n$
+with
+\begin{equation}\label{nab:pl:eq:frame}
+ B_n=B_0G_n\quad\text{on }W_n .
+\end{equation}
+This is a third convention. Part~I writes $G_a=B_0B_a^{-1}$
+(\cref{nab:thm:criterion}); Part~III writes $B_n=G_nB_0$
+(\cref{nab:loc:sub:finite-exp}). If $(B_0,B_n)$ satisfies
+\eqref{nab:pl:eq:frame}, then $(B_0^{-1},B_n^{-1})$ solves Part~I's equation
+$G_n=B_0^{-1}(B_n^{-1})^{-1}$ for the \emph{same} cocycle, so triviality
+statements for a given cocycle mean the same thing in Parts~I and~V; the
+frames of this part are the inverses of Part~I's splitting matrices, and an
+integral frame in this part is a Part~I splitting after the normalization of
+\cref{nab:prop:integraltrivial}. Part~III's equation $B_n=G_nB_0$ is
+\eqref{nab:pl:eq:frame} for the cocycle $G_n^{-1}$ with frames $B_i^{-1}$. For
+the unipotent pole cocycles of this part, $G_n^{-1}$ has the same form with
+$p_n$ replaced by $-p_n$, so no statement depends on the choice.
+
+\paragraph{Names.} The pole-localization manuscript was written independently
+and several of its symbols collide with symbols already in use here. They are
+renamed in this part only:
+\begin{center}\small
+\begin{tabular}{@{}L{0.27\textwidth}L{0.24\textwidth}L{0.39\textwidth}@{}}
+\toprule
+This report & Manuscript & Reason\\
+\midrule
+$A=\{a_n\}$, $D_n$, $W_n$ & $D$, $U_n$, $W_n$ & Part~I's names for punctures
+and disks\\[0.3em]
+$A_{\HH}$, $A_{\HD}$ & $A_\Gamma$, $A_\Delta$ & Part~III's rule: $A$ alone is
+the puncture set\\[0.3em]
+$\mathcal S$ & $S$ & $S$ is used for supports throughout\\[0.3em]
+$\kappa_n$ (and the cardinal sines) & $F_n$, $\ell_n$ & $F$ is Part~I's
+central matrix, $\ell_d$ Part~II's meridians\\[0.3em]
+$\pi_-$ & $\operatorname{PP}_{a_n}$ & $\PP$ is Part~I's algebra of negative
+Laurent parts; the principal part is $\pi_-$ of \cref{nab:lem:laurent}\\[0.3em]
+$F$, $Q_n$, $H_n$ of \cref{nab:ex:repair} & $L^{-1}$, $C_n$, $H_n$ & the
+manuscript's gauges are Part~I's, and $R_n=H_n^{-1}Q_n$\\[0.3em]
+$\Xi_n$ & $Q_n$ & $Q_n$ is already the disk gauge of \cref{nab:ex:repair}\\[0.3em]
+$\mathfrak a=(f,\mathcal S)$, $\overline A=A_{\HD}/\mathfrak a$ & $I$, $Q$ &
+$I$ is the identity matrix\\[0.3em]
+$\mathcal K$, $k_\gamma$, $\mu$ & $H$, $h_\gamma$, $d$ & $\HH$, $h_n$ and
+$d\in D$ are in use\\[0.3em]
+$\theta_m=1-1/m$, $\widehat{\mathcal S}=t\mathcal S$ & $\beta_m$, $T$ &
+$\beta_n$ is Part~III's second profile\\
+\bottomrule
+\end{tabular}
+\end{center}
+The functions $p_n$ with a pole at $a_n$ keep their name; it is the same use as
+in \cref{nab:loc:prop:poles}. The profile $\alpha_n$ is Part~III's. The frames
+$T_0,T_n$ keep the manuscript's names; they are unrelated to the gauge $T$ of
+\cref{nab:prop:torsor}. The function $\phi$ is \eqref{nab:eq:phi}, and
+$t^q=\omega^{-q}$ is the reading \eqref{nab:eq:surrealembedding}. Where the
+manuscript counts pole orders it writes $m_n$; its $\delta$ in
+\cref{nab:pl:cor:balanced} is a local exponent, not the generator of a cyclic
+group.
+
+\section{Explicit Laurent frames for pole-only unipotent cocycles}
+\label{nab:pl:sec:frames}
+
+\subsection{An ordinary principal-part construction}
+
+The following lemma is ordinary complex analysis; it is the only analytic
+preparation needed for the localization theorem.
+
+\begin{lemma}[Pole cancellation by an entire coefficient]\label{nab:pl:lem:principal}
+Suppose $p_n\in\OO(W_n)$ has a pole of exact finite order $m_n\geq1$ at $a_n$.
+There are an entire function $f$ and entire functions $\kappa_n$ such that
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item the zeros of $f$ are exactly the $a_n$, with multiplicities $m_n$;
+\item $fp_n$ extends holomorphically across $a_n$;
+\item $p_n\kappa_j$ extends holomorphically across $a_n$ whenever $j\neq n$;
+\item $1/f+p_n\kappa_n$ extends holomorphically across $a_n$;
+\item $\kappa_n(a_n)\neq0$ and $\kappa_j(a_n)=0$ for $j\neq n$.
+\end{enumerate}
+One may take
+\begin{equation}\label{nab:pl:eq:kappa}
+ q_n=\pi_-\Bigl(-\frac1{f^2p_n}\Bigr)\ \text{at }a_n,\qquad \kappa_n=fq_n,
+\end{equation}
+where the negative Laurent part $q_n$ is a rational function of $z-a_n$.
+\end{lemma}
+
+\begin{proof}
+The ordinary Weierstrass theorem supplies $f$ with the prescribed divisor
+\cite{Rudin,Greenfield}. Near $a_n$ write $u=z-a_n$,
+$f=u^{m_n}h(u)$ and $p_n=u^{-m_n}k(u)$ with $h(0)k(0)\neq0$. The germ
+$-1/(f^2p_n)$ has a pole of order exactly $m_n$; subtracting its principal
+part $q_n$ leaves a holomorphic germ $r_n$, so $-1/(f^2p_n)=q_n+r_n$. The
+rational function $q_n$ has no pole away from $a_n$ and pole order at most $m_n$
+there, so $\kappa_n=fq_n$ is entire, and
+\begin{equation}\label{nab:pl:eq:cancellation}
+ \frac1f+p_n\kappa_n=-fp_nr_n
+\end{equation}
+is holomorphic at $a_n$. For $j\neq n$ the rational function $q_j$ is
+holomorphic at $a_n$, so $\kappa_j$ vanishes there to order at least $m_n$,
+which gives (iii) and the second half of (v); (ii) holds since $fp_n=hk$.
+Finally the leading term of $q_n$ gives $\kappa_n(a_n)=-1/(h(0)k(0))\neq0$.
+Only finite-order ordinary poles occur; no infinite Hahn sum is exchanged with
+an ordinary one.
+\end{proof}
+
+\begin{example}[Simple poles]\label{nab:pl:ex:simple}
+If $p_n=c_n/(z-a_n)$ with $c_n\neq0$ and the zeros of $f$ are simple, then
+\begin{equation}\label{nab:pl:eq:simplekappa}
+ \kappa_n(z)=-\frac{f(z)}{c_nf'(a_n)^2(z-a_n)},\qquad
+ \kappa_n(a_n)=-\frac1{c_nf'(a_n)} .
+\end{equation}
+The singularity at $a_n$ is removable, and \eqref{nab:pl:eq:cancellation}
+cancels one ordinary residue; the coefficient functions for different
+punctures will sit at different Hahn exponents.
+\end{example}
+
+No bound on the pole orders $m_n$ is needed, but each singularity must have
+finite order: an entire function cannot cancel an essential singularity by a
+finite-order zero, and this is exactly where the construction stops applying.
+The essential-singularity bundles of Part~III lie beyond it
+(\cref{nab:loc:lem:essential}).
+
+\subsection{The rank-two theorem}
+
+Fix a strictly decreasing profile
+\begin{equation}\label{nab:pl:eq:profile}
+ \alpha_1>\alpha_2>\cdots>0\quad\text{in }\Gamma,
+\end{equation}
+take $f,\kappa_n$ from \cref{nab:pl:lem:principal}, and put
+\begin{equation}\label{nab:pl:eq:S}
+ \mathcal S=\sum_{j\geq1}t^{-\alpha_j}\kappa_j\in A_{\HH},\qquad
+ T_0=\begin{pmatrix}f&0\\ \mathcal S&f^{-1}\end{pmatrix}\ \text{on }U_0 .
+\end{equation}
+The support of $\mathcal S$ is the strictly increasing, hence well-ordered,
+sequence $(-\alpha_j)$, and $f$ has no zero on $U_0$.
+
+\begin{theorem}[Pole-only unipotent bundles become trivial after one monomial
+localization]\label{nab:pl:thm:ranktwo}
+The transitions
+\begin{equation}\label{nab:pl:eq:ranktwoG}
+ G_n=\begin{pmatrix}1&t^{\alpha_n}p_n\\0&1\end{pmatrix}
+\end{equation}
+define a nontrivial rank-two $\II$-bundle whose extension to $\HH$ is trivial.
+An explicit determinant-one trivialization in the convention
+\eqref{nab:pl:eq:frame} is $T_0$ and
+\begin{equation}\label{nab:pl:eq:Tn}
+ T_n=T_0G_n=
+ \begin{pmatrix}
+  f&t^{\alpha_n}fp_n\\
+  \mathcal S&f^{-1}+t^{\alpha_n}p_n\mathcal S
+ \end{pmatrix}\in\SL_2(\HH(D_n)).
+\end{equation}
+Every entry of $T_0$, $T_n$ and their inverses has valuation at least
+$-\alpha_1$, so the bundle is already trivial over $\II[(t^{\alpha_1})^{-1}]$.
+\end{theorem}
+
+\begin{proof}
+First $\det T_0=1$, and $T_0^{-1}=\begin{pmatrix}f^{-1}&0\\-\mathcal S&f\end{pmatrix}$
+is a Laurent matrix on $U_0$. In \eqref{nab:pl:eq:Tn} the first column is
+entire coefficientwise and $fp_n$ extends across $a_n$. The lower-right entry is
+\begin{equation}\label{nab:pl:eq:lowerright}
+ f^{-1}+p_n\kappa_n+\sum_{j\neq n}t^{\alpha_n-\alpha_j}p_n\kappa_j .
+\end{equation}
+The first two terms combine into a function holomorphic on $D_n$ by
+\cref{nab:pl:lem:principal}(iv), and each other coefficient is holomorphic on
+$D_n$ by (iii). For fixed $n$ the exponents $\alpha_n-\alpha_j$ increase
+strictly with $j$, so their union with $\{0\}$ is well ordered and each
+exponent carries one coefficient: \eqref{nab:pl:eq:lowerright} is a section of
+$\HH(D_n)$, not a formal expression requiring a completion. The identity
+$\det T_n=1$ holds on $W_n$ and hence coefficientwise on $D_n$, so the adjugate
+is the inverse, with the same support bounds. No displayed exponent lies below
+$-\alpha_1$; multiplying by $t^{\alpha_1}$ makes every entry integral.
+
+\emph{Integral nontriviality, a direct route.} Suppose integral frames
+$B_0,B_n$ satisfy \eqref{nab:pl:eq:frame}. Their reductions modulo $\JJ$ agree
+on overlaps, since $G_n$ reduces to $I_2$, and glue to $C\in\GL_2(\OO(\C))$;
+replacing every $B_i$ by $C^{-1}B_i$ makes them positive. At exponent
+$\alpha_n$ the $(1,2)$ entry of $B_n=B_0G_n$ is
+$(B_n)_{12,\alpha_n}=(B_0)_{12,\alpha_n}+p_n$, only the exponent-zero
+coefficient $I_2$ of $B_0$ meeting $t^{\alpha_n}p_nE_{12}$. As $p_n$ has a
+pole, $(B_0)_{12,\alpha_n}\neq0$ for every $n$, and $\supp(B_0-I_2)$ contains
+the descending set $\{\alpha_n\}$, which is impossible. This is also an
+instance of Criterion~P: $\Pol(G_n)=I_2+t^{\alpha_n}\pi_-(p_n)E_{12}$, so
+$\EU(G)\supseteq\{\alpha_n\}$ is not well ordered.
+\end{proof}
+
+\paragraph{What the construction changes.} A positive frame would have to
+place pole-cancelling data at the forbidden exponents $\alpha_n$. The Laurent
+frame instead places the interpolation coefficients $\kappa_n$ at the
+admissible exponents $-\alpha_n$; multiplication by the transition at the $n$th
+puncture moves that one term to exponent zero, where it cancels $1/f$, while all
+other coefficients already vanish to sufficient order there. The determinant
+is exactly one, so the adjugate supplies the inverse inside the required ring;
+invertibility of ordinary values alone would not.
+
+\begin{corollary}[Balanced denominator bound]\label{nab:pl:cor:balanced}
+For $\delta\in\Gamma$ with $0\leq\delta\leq\alpha_1$, the frames
+$\operatorname{diag}(t^{-\delta},t^\delta)T_i$ and their inverses have
+valuation at least $-\max\{\delta,\alpha_1-\delta\}$. If $\alpha_1/2\in\Gamma$
+this bound is $-\alpha_1/2$.
+\end{corollary}
+
+\begin{proof}
+The nonzero entries of the new $T_0$ have valuations $-\delta$,
+$\delta-\alpha_1$ and $\delta$, and its inverse has the same bound. The disk
+frames differ by right multiplication by $G_n$, integral with integral inverse.
+The determinant stays one.
+\end{proof}
+
+\begin{corollary}[Arbitrarily small negative budgets]\label{nab:pl:cor:smallbudget}
+Let $\Gamma=\Q$ and $\alpha_n\to0$ in the ordinary sense. For every rational
+$\varepsilon>0$ the bundle of \cref{nab:pl:thm:ranktwo} admits determinant-one
+Laurent frames whose entries and inverse entries have valuation at least
+$-\varepsilon$; it admits no integral frame.
+\end{corollary}
+
+\begin{proof}
+Choose $N$ with $\alpha_{N+1}<\varepsilon$. On $U_0$ put
+$g_0=I_2+\sum_{n\leq N}t^{\alpha_n}\pi_-(p_n)E_{12}$, the principal parts
+being rational functions with poles only at $a_n$; put $g_n=G_n^{-1}g_0$ for
+$n\leq N$ and $g_n=g_0$ for $n>N$. All these matrices commute, and each $g_n$
+is holomorphic on $D_n$: for $n\leq N$ the coefficient at $\alpha_n$ is
+$\pi_-(p_n)-p_n$, and every other principal part is holomorphic near $a_n$.
+The integral gauge $B_i\mapsto B_ig_i$ turns the cocycle into $I_2$ at the
+first $N$ punctures and leaves $G_n$ unchanged for $n>N$. Apply
+\cref{nab:pl:thm:ranktwo} to the tail, with $f$ vanishing only at $a_n$,
+$n>N$; its frames extend across the first $N$ punctures, where the cocycle is
+now the identity, and have valuation at least $-\alpha_{N+1}>-\varepsilon$.
+Composing with the integral gauge does not lower this bound. Integral
+nontriviality is \cref{nab:pl:thm:ranktwo}.
+\end{proof}
+
+This is an infimum statement: in this family the infimum of admissible
+negative budgets is $0$ and is not attained. It is not a claim that a least
+positive budget exists.
+
+\subsection{Every fixed nilpotent direction}
+
+\begin{theorem}[Fixed-nilpotent pole localization]\label{nab:pl:thm:nilpotent}
+Let $N\in\Mat_r(\C)$ be nonzero and nilpotent with nilpotency index $\nu$, and
+keep the hypotheses on $p_n$ and $\alpha_n$. The transitions
+\begin{equation}\label{nab:pl:eq:nilpotentG}
+ G_n=\exp(t^{\alpha_n}p_nN)=\sum_{j=0}^{\nu-1}\frac{t^{j\alpha_n}p_n^jN^j}{j!}
+\end{equation}
+define an integrally nontrivial bundle that admits determinant-one Laurent
+frames, with frames and inverses of valuation at least $-(\nu-1)\alpha_1$, and
+at least $-(\nu-1)\alpha_1/2$ when $\alpha_1/2\in\Gamma$. One monomial
+localization suffices.
+\end{theorem}
+
+\begin{proof}
+\emph{Integral nontriviality.} Normalize an assumed integral frame to have
+exponent-zero coefficient $I_r$ as in \cref{nab:pl:thm:ranktwo}. The
+coefficient at $\alpha_n$ of $B_n=B_0G_n$ is $(B_0)_{\alpha_n}+p_nN$; the
+higher terms of the exponential have exponent at least $2\alpha_n$ and meet no
+negative support of $B_0$. A nonzero entry of $N$ forces
+$\alpha_n\in\supp(B_0-I_r)$ for every $n$. (With $h_n$ replaced by $p_n$ this
+is the computation of \cref{nab:loc:rem:criterionP}.)
+
+\emph{Existence.} First let $N$ be one Jordan block of size $d+1$. Apply the
+$d$th symmetric power of the standard representation of $\SL_2$, acting on
+homogeneous polynomials of degree $d$ in two variables, to the frames of
+\cref{nab:pl:thm:ranktwo}. The matrix $\exp(aE_{12})$ acts by the substitution
+$Y\mapsto Y+aX$, which is $\exp(a\,X\partial_Y)$, and
+$X\partial_Y(X^{d-k}Y^k)=kX^{d-k+1}Y^{k-1}$; so $X\partial_Y$ is one nilpotent
+Jordan block with nonzero weights $1,\ldots,d$, and a constant diagonal change
+of basis conjugates it to the standard block. Both sides of
+$\Sym^d(\exp(aE_{12}))=\exp(a\,X\partial_Y)$ are polynomial in $a$, so the
+identity holds for Hahn-series values of $a$. Every entry of $\Sym^dM$ is a
+homogeneous polynomial of degree $d$ in the entries of $M$, so the represented
+frames are Hahn matrices with holomorphic coefficients on the same domains, and
+valuation bounds are multiplied by $d$ (\cref{nab:lem:neumann}). The
+represented inverse is the representation of the inverse, and
+$\det\Sym^dM=(\det M)^{d(d+1)/2}=1$ for $M\in\SL_2$: the identity holds for
+diagonal matrices by multiplying the weights, hence for diagonalizable ones,
+hence for all, since both sides are polynomials and diagonalizable matrices are
+Zariski dense. Since $\Sym^d$ is a homomorphism, $\Sym^dT_n=\Sym^dT_0\,\Sym^dG_n$.
+
+For general $N=C(\bigoplus_kJ_k)C^{-1}$ in constant Jordan form, take the block
+sum of the frames just built, identity frames on zero blocks, and conjugate by
+$C$; then $B_0G_n=B_n$ blockwise. Constant conjugation preserves valuation
+bounds and determinants. The largest $d$ is $\nu-1$; starting from the frames
+of \cref{nab:pl:cor:balanced} gives the improved bound.
+\end{proof}
+
+The hypothesis that one $N$ serves every puncture is used. The argument does
+not triangularize puncture-dependent nilpotent matrices simultaneously and does
+not solve a general noncommutative Cousin problem after localization; it gives
+an exact family, not a classification of Laurent-trivial bundles.
+
+\section{The printed examples become trivial over \texorpdfstring{$\HH$}{H}}
+\label{nab:pl:sec:printed}
+
+\subsection{The hidden rank-three example}
+
+Take the data of \cref{nab:sec:rankthree}: $A=\{2,3,\ldots\}$, $u_n=z-n$,
+$\Gamma=\Q$, the cocycle \eqref{nab:eq:badG}, the function $\phi$ of
+\eqref{nab:eq:phi}, and the matrices
+\[
+ F=I_3+t\phi E_{12},\qquad
+ Q_n=I_3+t\Bigl(\phi-\frac1{u_n}\Bigr)E_{12},\qquad
+ H_n=I_3+t^{1/n}E_{23}
+\]
+of \cref{nab:ex:repair} and \eqref{nab:eq:badPH}. They are positive, $F$ on
+$U_0$ and $Q_n,H_n$ on $D_n$, with determinant one.
+
+\begin{theorem}[The hidden obstruction does not survive monomial
+localization]\label{nab:pl:thm:rankthree}
+The transitions \eqref{nab:eq:badG} are integrally nontrivial but admit
+determinant-one Laurent frames whose entries and inverse entries all have
+valuation at least $-3/4$. In particular the bundle $\mathcal E_G$ of
+\cref{nab:cor:nontrivialbundles} is already trivial over
+$\mathscr I_{\Q}[t^{-1}]$, and hence over $\HH$.
+\end{theorem}
+
+\begin{proof}
+Put $\Xi_n=I_3-t^{1+1/n}u_n^{-1}E_{13}$. By \eqref{nab:eq:badPH},
+$G_n=P_nH_n$, and $P_n=\Xi_n\,(I_3+tu_n^{-1}E_{12})$ because $E_{13}E_{12}=0$.
+By \cref{nab:ex:repair}, $I_3+tu_n^{-1}E_{12}=FQ_n^{-1}$. The matrix $\Xi_n$
+commutes with every upper unitriangular matrix, so
+\begin{equation}\label{nab:pl:eq:rankthreeQ}
+ G_n=F\,\Xi_n\,(H_n^{-1}Q_n)^{-1},\qquad
+ \text{equivalently}\quad F^{-1}G_nH_n^{-1}Q_n=\Xi_n .
+\end{equation}
+This integral equivalence turns the example into a rank-two pole cocycle on
+coordinates $1$ and $3$, coordinate $2$ being untouched. Apply
+\cref{nab:pl:thm:ranktwo} to it with $\alpha_n=1+1/n$ and $p_n=-1/u_n$,
+$n\geq2$: choose $f$ entire with simple zeros exactly at $2,3,\ldots$ (for
+instance $f(z)=1/\Gamma_{\mathrm{E}}(2-z)$, with $\Gamma_{\mathrm E}$ Euler's
+gamma function), so that by \eqref{nab:pl:eq:simplekappa}
+\[
+ \kappa_n(z)=\frac{f(z)}{f'(n)^2(z-n)},\qquad
+ \mathcal S=\sum_{n\geq2}t^{-(1+1/n)}\kappa_n,
+\]
+and let
+\begin{equation}\label{nab:pl:eq:T0three}
+ T_0=\begin{pmatrix}f&0&0\\0&1&0\\ \mathcal S&0&f^{-1}\end{pmatrix},\qquad
+ T_n=T_0\Xi_n .
+\end{equation}
+These are determinant-one Laurent frames for $\Xi_n$. Consequently
+\begin{equation}\label{nab:pl:eq:Boriginal}
+ B_0=T_0F^{-1},\qquad B_n=T_nQ_n^{-1}H_n
+\end{equation}
+satisfy $B_0G_n=T_0\Xi_nQ_n^{-1}H_n=B_n$, exactly in the convention
+\eqref{nab:pl:eq:frame}; in Part~I's convention $G_n=B_0^{-1}(B_n^{-1})^{-1}$.
+
+For the bound replace each $T_i$ by $\operatorname{diag}(t^{-3/4},1,t^{3/4})T_i$.
+The largest exponent of the profile is $3/2$, at $n=2$, so
+\cref{nab:pl:cor:balanced} gives valuation at least $-3/4$ for these matrices
+and their inverses, and multiplication by the integral matrices $F^{\pm1}$,
+$Q_n^{\pm1}$, $H_n^{\pm1}$ cannot lower it. Multiplying every entry by $t$ makes
+it integral, so all frames and inverse frames lie over
+$\mathscr I_{\Q}[t^{-1}]$. Finally $\Xi_n$ is integrally nontrivial by
+\cref{nab:pl:thm:ranktwo} applied to its $(1,3)$ entry, and
+\eqref{nab:pl:eq:rankthreeQ} is integral in both directions, which reproves the
+integral half of \cref{nab:thm:hidden} without Criterion~P.
+\end{proof}
+
+The number $3/4$ is a proved upper bound on the negative budget, not a claim of
+optimality. The frames lie in the intended ring $\HH$, not in the
+coefficientwise meromorphic sheaf $\MM$, over which triviality was already
+known (\cref{nab:loc:cor:polestrivial}).
+
+\subsection{The deep examples}
+
+The pole-localization manuscript treats only the hidden example. The deep
+examples reduce in the same way. The following corollary is added by the
+merge.
+
+\begin{corollary}[The deep obstructions do not survive monomial localization;
+merge]\label{nab:pl:cor:deep}
+For every $r\geq3$ the cocycle $G_n=I_r+C_n+a_nE_{12}$ of
+\cref{nab:thm:depth} (for $r=3$ the cocycle \eqref{nab:eq:badG}) is integrally
+equivalent to the rank-two cocycle
+\begin{equation}\label{nab:pl:eq:Xideep}
+ \Xi_n=I_r+(-1)^r\frac{t^{\,r-2+1/n}}{z-n}E_{1r},\qquad n\geq2,
+\end{equation}
+acting on coordinates $1$ and $r$. It admits determinant-one Laurent frames
+whose entries and inverse entries have valuation at least $-(2r-3)/4$, so the
+integral bundle of \cref{nab:cor:nontrivialbundles} is trivial over
+$\mathscr I_{\Q}[t^{-1}]$ and hence over $\HH$.
+\end{corollary}
+
+\begin{proof}
+By \cref{nab:lem:chain}, $G_n=P_nH_n$ with $H_n=I_r+C_n$, and the $(1,r)$
+entry of $P_n$ is
+\[
+ (-1)^{r-2}a_n\prod_{j=2}^{r-1}c_{j,n}
+ =(-1)^r\frac{t}{z-n}\,t^{1-1/n}\,t^{r-4}\,t^{2/n}
+ =(-1)^r\frac{t^{\,r-2+1/n}}{z-n}
+\]
+for $r\geq4$ by \eqref{nab:eq:deepdata}, in agreement with
+\eqref{nab:eq:lastexponent}; for $r=3$ it is $-t^{1+1/n}/u_n$ by
+\eqref{nab:eq:badPH}. Let $P_n'$ be $P_n$ with this entry deleted, as in the
+proof of \cref{nab:thm:depth}. Both $P_n-I_r$ and $P_n'-I_r$ are supported in
+row one, whose products vanish, so $P_n=\Xi_nP_n'$ with $\Xi_n$ as in
+\eqref{nab:pl:eq:Xideep}. The proof of \cref{nab:thm:depth}(ii) supplies
+positive $F'$ on $U_0$ and $Q_n'$ on $D_n$, valued in $I_r+V$, with
+$F'=P_n'Q_n'$ (for $r=3$, $F'=F$ and $Q_n'=Q_n$ of \cref{nab:ex:repair}). The
+matrix $\Xi_n$ commutes with every upper unitriangular matrix, because
+$E_{1r}M=E_{1r}=ME_{1r}$ for such $M$. Hence
+\[
+ G_n=\Xi_nF'Q_n'^{-1}H_n=F'\,\Xi_n\,\bigl(H_n^{-1}Q_n'\bigr)^{-1},
+\]
+an integral equivalence with $\Xi_n$. The cocycle $\Xi_n$ is the rank-two
+cocycle of \cref{nab:pl:thm:ranktwo} on coordinates $1,r$ with the strictly
+decreasing positive profile $\alpha_n=r-2+1/n$ and the simple poles
+$p_n=(-1)^r/(z-n)$, $n\geq2$. With $f$ as in \cref{nab:pl:thm:rankthree},
+$\kappa_n=(-1)^{r+1}f/(f'(n)^2(z-n))$ by \eqref{nab:pl:eq:simplekappa}, and
+$\mathcal S=\sum_{n\geq2}t^{-\alpha_n}\kappa_n$, let $T_0$ be $I_r$ with the
+entries $f$ at $(1,1)$, $\mathcal S$ at $(r,1)$ and $f^{-1}$ at $(r,r)$, and
+$T_n=T_0\Xi_n$. Then
+\[
+ B_0=T_0F'^{-1},\qquad B_n=T_nQ_n'^{-1}H_n
+\]
+are determinant-one Laurent frames with $B_0G_n=B_n$. The largest exponent of
+the profile is $r-3/2$, at $n=2$; \cref{nab:pl:cor:balanced} with
+$\delta=(2r-3)/4$, applied on coordinates $1,r$, gives the bound
+$-(2r-3)/4$, which the integral factors $F'^{\pm1}$, $Q_n'^{\pm1}$,
+$H_n^{\pm1}$ do not lower. For $r=3$ this is \cref{nab:pl:thm:rankthree}.
+\end{proof}
+
+The identities used in this proof were checked symbolically by the merge for
+$3\leq r\leq8$, with symbolic row-one entries of $F'$ and symbolic $f$ and
+$\mathcal S$ (\cref{nab:sec:verification}); the proof above does not depend on
+that check.
+
+\subsection{What this settles and what it does not}
+
+\Cref{nab:pl:thm:rankthree,nab:pl:cor:deep} settle the printed question: every
+explicit example of \cref{nab:cor:nontrivialbundles} is nontrivial over $\II$
+and trivial over $\HH$, already after inverting $t$. Four consequences for the
+rest of the report are recorded here.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item \emph{Criterion~P does not survive localization as a criterion.} The
+hidden example fails the integral polar-support test and is Laurent-trivial.
+An exact criterion after localization would have to recognize the
+interpolation cancellation of \cref{nab:pl:thm:ranktwo}; none is known
+(\cref{nab:sec:open}).
+\item \emph{Poles and essential singularities are separated over $\HH$.}
+\Cref{nab:loc:rem:criterionP} observed that pole and essential data are
+separated only after passage to $\MM$. With one fixed nilpotent $N$, the
+bundles $\exp(t^{\alpha_n}p_nN)$ with finite-order poles $p_n$ are
+$\HH$-trivial (\cref{nab:pl:thm:nilpotent}), whereas those with $h_n=\exp(1/(z-n))$
+are not even stably trivial over $\HH$ (\cref{nab:loc:cor:stable}). The
+dividing line is exactly the finite order in \cref{nab:pl:lem:principal}.
+\item \emph{Consistency.} Triviality over $\HH$ implies the triviality over
+$\MM$ of \cref{nab:loc:cor:polestrivial}(a), by a different mechanism. Bounded
+triviality (\cref{nab:cor:bounded}) and the finite-puncture blindness of
+item~\ref{nab:nc:blackbox} of \cref{nab:sec:scope} are unaffected.
+\item \emph{Not settled.} The determinant-one diagonal cocycles
+\eqref{nab:eq:SLcounter} are not unipotent; their summands are the rank-one
+classes of \cref{nab:pl:cor:line}, which persist over $\HH$, and whether their
+direct sum becomes trivial over $\HH$ is not decided here. Pole cocycles with
+puncture-dependent nilpotent directions are not treated either.
+\end{enumerate}
+
+\section{Line bundles and extensions that localization does not kill}
+\label{nab:pl:sec:persist}
+
+\subsection{Line bundles}
+
+Write $\underline\Gamma$ for the sheaf of locally constant $\Gamma$-valued
+functions on an ordinary domain $X\subseteq\C$. Picard groups below classify
+locally free rank-one modules over the specified sheaf of rings (the group
+$\operatorname{Pic}_{\mathrm{lf}}$ of the global-divisor report; compare its
+\nolinkurl{global:rem:piclf}).
+
+\begin{proposition}[Picard decomposition; global-divisor report]
+\label{nab:pl:prop:picard}
+There are natural decompositions of abelian sheaves
+$\HH^\times\simeq\underline\Gamma\times\II^\times$ and
+$\II^\times\simeq\OO_X^\times\times\JJ$, and hence
+\begin{align}
+ \Pic(\HH)&\simeq H^1(X,\underline\Gamma)\oplus\Pic(\II),\label{nab:pl:eq:picsplit}\\
+ \Pic(\II)&\simeq\Pic(\OO_X)\oplus H^1(X,\JJ).\label{nab:pl:eq:piclog}
+\end{align}
+Extension of scalars $\Pic(\II)\to\Pic(\HH)$ is the inclusion of the second
+summand of \eqref{nab:pl:eq:picsplit}, hence injective. For $X=\C$ it is an
+isomorphism, and both groups are $H^1(\C,\JJ)$.
+\end{proposition}
+
+\begin{proof}
+The sheaf decompositions are \nolinkurl{global:eq:unitsplit} and
+\nolinkurl{global:eq:Iunits} of \nolinkurl{global:prop:explog} \cite{RepoGlobal},
+proved there on every ordinary open set: valuation splits off by the unit
+criterion (\nolinkurl{global:prop:units}; \cref{nab:loc:lem:units}) with section
+$\beta\mapsto t^\beta$, and the positive logarithm identifies the principal
+units with $\JJ$. Taking $H^1$ of these direct-product decompositions, and
+using that locally free rank-one modules are classified by unit cocycles,
+gives \eqref{nab:pl:eq:picsplit} and \eqref{nab:pl:eq:piclog}. For $X=\C$ the
+first summand and $\Pic(\OO_\C)$ vanish, which is
+\nolinkurl{global:prop:Picreduction} and its display \nolinkurl{global:eq:PicH1}.
+\end{proof}
+
+The global-divisor report proves this on the plane and, with the valuation
+summand, over a compact base (\nolinkurl{global:thm:piccompact}); the
+pole-localization manuscript states it on an arbitrary ordinary domain, which
+the same argument covers. It is elementary unit-group algebra, not a new
+cohomology theorem, and the manuscript says so. On the puncture-and-disk cover
+the injectivity is also visible directly: a Laurent splitting $b_n=b_0g_n$ of a
+cocycle $g_n\in1+\JJ(W_n)$ has one common valuation $\beta$ and leading
+coefficients that glue to a nowhere-zero entire $h$, and dividing by $t^\beta h$
+gives a positive splitting. This is the normalization in the proof of
+\nolinkurl{global:thm:obstruction}.
+
+\begin{corollary}[Descending pole line bundles stay nontrivial over
+$\HH$]\label{nab:pl:cor:line}
+Under the hypotheses of \cref{nab:pl:lem:principal} and
+\eqref{nab:pl:eq:profile}, the scalar transitions $g_n=\exp(t^{\alpha_n}p_n)$
+define a line bundle that is nontrivial and not stably trivial over $\HH$, and
+\begin{equation}\label{nab:pl:eq:picseq}
+ (c_n)\longmapsto\bigl[\exp(c_nt^{\alpha_n}p_n)\bigr]
+\end{equation}
+induces an injective group homomorphism
+$\C^{\N}/\C^{(\N)}\hookrightarrow\Pic(\HH)$, where $\C^{(\N)}$ denotes the
+finitely supported sequences.
+\end{corollary}
+
+\begin{proof}
+By the normalization just described a Laurent splitting would give a positive
+one, and taking logarithms would split the additive cocycle
+$c_nt^{\alpha_n}p_n$ in $\JJ$. Its singular support is
+$\{\alpha_n:c_n\neq0\}$, so by \nolinkurl{global:thm:cousincriterion} it splits
+exactly when finitely many $c_n$ are nonzero; for finitely many, the finite sum
+of the principal parts at their exponents is an explicit splitting.
+Exponentials of commuting cocycles multiply as their logarithms add. Stable
+triviality of a line bundle implies triviality by taking determinants.
+\end{proof}
+
+For simple poles this is \nolinkurl{global:thm:obstruction} with
+\nolinkurl{global:eq:injPic} and, over subgroups of $\No$,
+\nolinkurl{global:thm:dichotomy}; the manuscript's contribution is only the
+finite-order generalization and the contrast with
+\cref{nab:pl:thm:ranktwo}: in rank one monomial localization kills nothing,
+in rank two it kills the descending pole cocycles. It agrees with the
+observation after \cref{nab:loc:cor:polestrivial} that pole-data line classes
+survive monomial localization.
+
+\subsection{Nonsplit extensions with a free middle bundle}
+
+For $f$ and $\mathcal S$ as in \eqref{nab:pl:eq:S} put
+\begin{equation}\label{nab:pl:eq:columnrow}
+ v=\begin{pmatrix}f\\ \mathcal S\end{pmatrix},\qquad
+ w=\begin{pmatrix}-\mathcal S&f\end{pmatrix},\qquad wv=0 .
+\end{equation}
+The frames $T_i$ of \cref{nab:pl:thm:ranktwo} have first column $v$, and their
+second columns $s_i$ satisfy $ws_i=1$.
+
+\begin{theorem}[A free middle bundle does not split this extension]
+\label{nab:pl:thm:extension}
+The sequence of sheaves of $\HH$-modules
+\begin{equation}\label{nab:pl:eq:extension}
+ 0\longrightarrow\HH\xrightarrow{\ a\mapsto av\ }\HH^{2}
+ \xrightarrow{\ (x,y)\mapsto-\mathcal Sx+fy\ }\HH\longrightarrow0
+\end{equation}
+is exact but not split. Equivalently, there are no $x,y\in A_{\HH}$ with
+$-\mathcal Sx+fy=1$. Its extension class is represented, up to the sign
+convention, by the additive cocycle $t^{\alpha_n}p_n$.
+\end{theorem}
+
+\begin{proof}
+In the coordinates given by the local determinant-one completions $T_i$ of
+$v$, the sequence is the inclusion of the first coordinate followed by the
+projection to the second, so it is exact. From $T_n=T_0G_n$ one gets
+$s_n-s_0=t^{\alpha_n}p_nv$ on $W_n$. A splitting would give a global $s$ with
+$ws=1$; on each chart $s-s_i=b_iv$ with $b_i\in\HH(U_i)$ (here $U_i$ is $U_0$
+or $D_n$), and on overlaps $t^{\alpha_n}p_n=b_0-b_n$. At exponent $\alpha_n$
+the coefficient of $b_0$ must have a nonremovable pole at $a_n$, since $b_n$ is
+holomorphic there, so $\supp b_0\supseteq\{\alpha_n\}$, which is impossible.
+No positivity of the $b_i$ is assumed: negative support cannot remove the
+forced descending positive support. This is the necessity half of
+\nolinkurl{global:thm:cousincriterion} for the full sheaf $\HH$.
+\end{proof}
+
+\begin{theorem}[Free-middle self-extensions]\label{nab:pl:thm:extension-space}
+The cocycles $c_nt^{\alpha_n}p_n$ induce an injective linear map
+\begin{equation}\label{nab:pl:eq:extspace}
+ \C^{\N}/\C^{(\N)}\hookrightarrow\Ext^1_{\HH}(\HH,\HH),
+\end{equation}
+$\Ext^1$ being taken in sheaves of $\HH$-modules, not in modules over
+$A_{\HH}$. Every class in the image has a representative whose middle sheaf is
+isomorphic to $\HH^2$.
+\end{theorem}
+
+\begin{proof}
+Gluing by upper unitriangular matrices realizes an additive cocycle as an
+extension; addition of cocycles is Baer sum and scalar multiplication acts on
+the upper-right entry. The argument of \cref{nab:pl:thm:extension} proves
+nontriviality whenever infinitely many $c_n$ are nonzero, and finite support
+gives a coboundary by the finite principal-part construction, so the kernel is
+$\C^{(\N)}$. A splitting found on a refinement would still give local
+coefficients $b_i$ on the original charts and the same contradiction. For an
+infinite active set $\{n:c_n\neq0\}$ choose an entire function with zeros
+exactly at the active $a_n$, with the original orders, and apply
+\cref{nab:pl:thm:ranktwo} to the pole functions $c_np_n$ on that subsequence;
+the frames extend across inactive punctures, where the cocycle is the
+identity, so the middle bundle is free. For finite support the extension
+splits and the middle bundle is free again.
+\end{proof}
+
+The injectivity alone is the additive statement of the global-divisor report
+(\nolinkurl{global:cor:H1injection} for $\JJ$, \nolinkurl{global:prop:fullH1} for
+$\HH$); what is new is that every class in this image has a \emph{free} middle
+bundle. There is no conflict with projectivity of free modules over $A_{\HH}$:
+the epimorphism in \eqref{nab:pl:eq:extension} is a sheaf epimorphism whose map
+on global sections is not surjective. Each chart solves $-\mathcal Sx+fy=1$,
+but no single well-ordered support carries a global solution. Nor does an
+isomorphism of middle bundles preserve the chosen subline and quotient: the
+Laurent trivialization moves the subline from a constant coordinate to the
+column $v$, and the missing global complementary lift is the surviving class.
+One cocycle is thus nontrivial as an integral bundle, trivial as a Laurent
+bundle, and nonsplit as a Laurent extension; forgetting the filtration loses
+information, and a line bundle has no filtration to forget.
+
+\section{An omnific-valued cardinal-sine family and a global B\'ezout
+obstruction}\label{nab:pl:sec:omnific}
+
+\subsection{The family}
+
+Enumerate the integers by
+\begin{equation}\label{nab:pl:eq:enumeration}
+ a_1=0,\qquad a_{2k}=k,\qquad a_{2k+1}=-k\quad(k\geq1),
+\end{equation}
+and put
+\begin{equation}\label{nab:pl:eq:sine}
+ f(z)=\sin(\pi z),\qquad
+ \kappa_n(z)=\frac{\sin(\pi(z-a_n))}{\pi(z-a_n)}=\frac{f(z)}{f'(a_n)(z-a_n)},\qquad
+ \mathcal S=\sum_{n\geq1}t^{-1/n}\kappa_n .
+\end{equation}
+The singularities of $\kappa_n$ are removable, $\kappa_n(a_j)=\delta_{nj}$, and
+$\mathcal S(a_n)=t^{-1/n}$. Since $-1,-1/2,-1/3,\ldots$ increases,
+$\mathcal S\in\OO(\C)((t^\Q))$. With
+\begin{equation}\label{nab:pl:eq:sinepole}
+ p_n(z)=-\frac1{f'(a_n)(z-a_n)},\qquad \alpha_n=\frac1n,
+\end{equation}
+\eqref{nab:pl:eq:simplekappa} returns exactly these $\kappa_n$, so every frame,
+localization and extension statement of
+\cref{nab:pl:sec:frames,nab:pl:sec:persist} applies to this pair
+$f,\mathcal S$. The analytic-geometry report uses the same device on the unit
+disk, with $h(z)=\sin(\pi/(1-z))$ and cardinal functions $e_n$
+(\nolinkurl{analytic:lem:fixed-cardinal}) \cite{RepoGeometry}.
+
+Read $t^q=\omega^{-q}$ as in \eqref{nab:eq:surrealembedding}. A real Hahn
+family evaluated at an ordinary real point is then a surreal normal form, and
+complex coefficients are read by real and imaginary parts in $\SC$. A surreal
+number is an omnific integer exactly when its normal form has no term of
+negative exponent and an ordinary integer as coefficient of $\omega^0$
+\cite{LM}.
+
+\begin{theorem}[Omnific interpolation with no Hahn-holomorphic reciprocal
+data]\label{nab:pl:thm:omnific}
+The family \eqref{nab:pl:eq:sine} has the following properties.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item For every ordinary $x\in\R$ the value
+\[
+ \mathcal S(x)=\sum_{n\geq1}\kappa_n(x)\,\omega^{1/n}
+\]
+is a nonzero omnific integer with zero constant coefficient.
+\item $\mathcal S(a_n)=\omega^{1/n}$ for every $n$.
+\item For every order-preserving extension $\Q\hookrightarrow\Delta$ there is
+no $B\in A_{\HD}$ with $B(a_n)=t^{1/n}$ for all $n$; no common-domain Hahn
+family interpolates the reciprocal values $1/\mathcal S(a_n)$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+For real $x$ every $\kappa_n(x)$ is real, the only exponents are the decreasing
+$1/n>0$, and the constant coefficient is zero, so $\mathcal S(x)\in\Oz$. If
+$x\notin\Z$ then $\kappa_1(x)=\sin(\pi x)/(\pi x)\neq0$ is the leading
+coefficient; at an integer exactly one monomial survives. This proves (i) and
+(ii). For (iii), ordinary evaluation can delete exponents but not create them,
+so $B(a_n)=t^{1/n}$ forces $1/n\in\supp B$ for all $n$, a strictly decreasing
+sequence in $\Delta$.
+\end{proof}
+
+The values in (i) are evaluations of one specified Hahn-holomorphic family at
+ordinary real arguments; they are not claimed to define a function continuous
+for any topology on $\No$, and the reciprocals $\omega^{-1/n}$ exist
+individually in $\No$: (iii) concerns their simultaneous common-domain
+interpolation, not field inversion. The argument of (iii) is the
+evaluation-support argument of \nolinkurl{analytic:thm:fixed-corona} and the
+necessity half of \nolinkurl{global:cor:interp}.
+
+\begin{proposition}[Discrete interpolation: the support test]
+\label{nab:pl:prop:interpolation}
+Let $\{a_n\}\subset\C$ be closed and discrete and $b_n\in\K$. There is
+$F\in A_{\HH}$ with $F(a_n)=b_n$ for all $n$ if and only if
+$\bigcup_n\supp b_n$ is well ordered.
+\end{proposition}
+
+\begin{proof}
+This is \nolinkurl{global:cor:interp} of the global-divisor report
+\cite{RepoGlobal}, whose proof interpolates the complex coefficients at each
+exponent of the well-ordered union by an ordinary entire function; it is not
+reprinted. The unit-disk counterpart is the surjectivity in
+\nolinkurl{analytic:thm:fixed-quotient}.
+\end{proof}
+
+For \eqref{nab:pl:eq:sine} the values $t^{-1/n}$ pass this test and the
+reciprocal values $t^{1/n}$ fail it. The pole-localization manuscript proved
+the proposition independently and presented it as a standard-style
+consequence, not as a priority claim.
+
+\subsection{A proper, locally unit, nonprincipal ideal}
+
+\begin{theorem}[A support-controlled B\'ezout obstruction]\label{nab:pl:thm:bezout}
+Let $f$ and $\mathcal S$ be as in \eqref{nab:pl:eq:sine}. For every ordered
+extension $\Q\hookrightarrow\Delta$ the ideal
+\begin{equation}\label{nab:pl:eq:properideal}
+ \mathfrak a=(f,\mathcal S)\subset A_{\HD}
+\end{equation}
+is proper, although the associated ideal sheaf is the unit sheaf on the
+ordinary plane. After Taylor prolongation $f$ and $\mathcal S$ have no common
+zero at any finite surcomplex argument. Every common divisor of $f$ and
+$\mathcal S$ is a unit, $\mathfrak a$ is not principal, and $A_{\HD}$ is not a
+B\'ezout domain.
+\end{theorem}
+
+\begin{proof}[Proof of properness and local generation]
+If $fX+\mathcal SY=1$ in $A_{\HD}$, evaluation at $a_n$ gives $Y(a_n)=t^{1/n}$,
+contrary to \cref{nab:pl:thm:omnific}(iii). On $U_0$, $f$ has the ordinary
+inverse $1/f$; on $D_n$ the determinant-one frame $T_n$ built from
+\eqref{nab:pl:eq:sinepole} completes $(f,\mathcal S)^{\mathsf T}$ to a basis,
+and its second column solves $-\mathcal Sx+fy=1$ there. The same matrices
+remain valid over every ordered extension. If $h$ divides $f$ and
+$\mathcal S$, local generation of the unit ideal makes $h$ locally invertible;
+the local inverses are unique and glue by the sheaf property
+(\cref{nab:loc:lem:sheaf}), since $\HD(\C)=A_{\HD}$, so $h$ is a unit. A
+principal $\mathfrak a$ would therefore be generated by a unit, contrary to
+properness. The statement about finite surcomplex zeros is proved in
+\cref{nab:pl:sub:prolongation}.
+\end{proof}
+
+Consequently $A_{\HD}$ has maximal ideals containing $\mathfrak a$ that are not
+ordinary evaluation ideals: at each $a_n$, where $f$ vanishes,
+$\mathcal S(a_n)\neq0$. The word B\'ezout is used in its literal equation
+sense. The theorem does not concern the classical bounded-function corona
+problem, and it is about the common-domain ring $\OO(\C)((t^\Delta))$, not the
+different ring of strongly entire series, which \emph{is} B\'ezout when
+$\Gamma$ has an order unit (\nolinkurl{ent:thm:bezout} of the entire-functions
+report \cite{RepoEntire}); there is no conflict. The unit-disk version, with
+an exact B\'ezout criterion modulo a fixed simple divisor and norm estimates,
+is \nolinkurl{analytic:thm:fixed-bezout} and \nolinkurl{analytic:thm:fixed-corona};
+the plane version here adds the explicit sine, the omnific values and the
+following homological computation.
+
+\begin{corollary}[Regular sequence and projective dimensions]
+\label{nab:pl:cor:homological}
+For every ordered extension $\Q\hookrightarrow\Delta$ put $A=A_{\HD}$,
+$\mathfrak a=(f,\mathcal S)$ and $\overline A=A/\mathfrak a$. Then $f,\mathcal S$
+is a regular sequence in $A$, and
+\begin{equation}\label{nab:pl:eq:resolution}
+ 0\longrightarrow A\xrightarrow{\ a\mapsto(-\mathcal Sa,fa)\ }A^2
+ \xrightarrow{\ (x,y)\mapsto fx+\mathcal Sy\ }A\longrightarrow\overline A
+ \longrightarrow0
+\end{equation}
+is an exact free resolution. Hence $\operatorname{pd}_A\overline A=2$,
+$\operatorname{pd}_A\mathfrak a=1$, $\Tor^A_2(\overline A,\overline A)\simeq
+\overline A\neq0$, and $\mathfrak a$ is not flat. These are statements about
+modules over the global ring $A$, not about sheaves.
+\end{corollary}
+
+\begin{proof}
+The ring $A$ is a domain, so $f$ is a nonzerodivisor. For $h\in A$,
+\begin{equation}\label{nab:pl:eq:dividesine}
+ h\in(f)\iff h(a_n)=0\ \text{for every }n,
+\end{equation}
+since then every coefficient of $h$ vanishes at every integer and is divisible
+by $\sin(\pi z)$, whose zeros are simple and exactly the integers, with no new
+exponents; this is the plane counterpart of the kernel statement of
+\nolinkurl{analytic:thm:fixed-quotient}. If $\mathcal Sh\in(f)$ then
+$t^{-1/n}h(a_n)=0$ in the field $\K$ for every $n$, so $h\in(f)$: multiplication
+by $\mathcal S$ is injective on $A/(f)$, and with $\mathfrak a\neq A$ this is
+regularity. If $fx+\mathcal Sy=0$ then $y=fa$ for some $a$, and cancelling $f$
+gives $x=-\mathcal Sa$; the first map is injective, and the rest is the
+definition of $\mathfrak a$ and $\overline A$. Tensoring
+\eqref{nab:pl:eq:resolution} with $\overline A$ kills both differentials,
+whose entries lie in $\mathfrak a$, so $\Tor_2^A(\overline A,\overline A)=
+\overline A\neq0$ and $\operatorname{pd}\overline A=2$. The truncation
+$0\to A\to A^2\to\mathfrak a\to0$ gives $\Tor_1^A(\mathfrak a,\overline A)
+\simeq\overline A\neq0$, so $\mathfrak a$ is not flat and has projective
+dimension exactly one.
+\end{proof}
+
+The analytic-geometry report proves non-Noetherianity and the failure of the
+Nullstellensatz for its fixed-domain ring; it does not compute projective
+dimensions, and the merge found no such computation elsewhere in the
+collection.
+
+\subsection{Ultrafilter maximal ideals}
+
+For an ultrafilter $\mathcal U$ on $\N$ let $\C_{\mathcal U}=\C^{\N}/\mathcal U$
+be the ultrapower field: sequences are identified when they agree on a member
+of $\mathcal U$.
+
+\begin{theorem}[Ultrafilter residue fields]\label{nab:pl:thm:ultrafilter}
+For every ordered extension $\Q\hookrightarrow\Delta$ and every nonprincipal
+ultrafilter $\mathcal U$ on $\N$,
+\begin{equation}\label{nab:pl:eq:ultrafilter}
+ \Theta_{\mathcal U}:A_{\HD}\to\C_{\mathcal U}((t^\Delta)),\qquad
+ \sum_\gamma F_\gamma t^\gamma\longmapsto
+ \sum_\gamma\bigl[(F_\gamma(a_n))_{n\geq1}\bigr]_{\mathcal U}t^\gamma,
+\end{equation}
+is a surjective ring homomorphism whose kernel is a maximal ideal containing
+$\mathfrak a$, with residue field exactly $\C_{\mathcal U}((t^\Delta))$.
+Different nonprincipal ultrafilters give different maximal ideals.
+\end{theorem}
+
+\begin{proof}
+The output support is contained in the input support; at a fixed exponent
+Hahn multiplication involves finitely many pairs, and finite sums and products
+commute with the ultrapower quotient. For surjectivity, choose representing
+sequences for the coefficients of a target series and interpolate each by an
+ordinary entire function on the nodes; the functions assemble with the target's
+support. The target is a field, so the kernel is maximal. The function $f$
+vanishes at every node, and the coefficient $\kappa_k$ of $\mathcal S$ at
+$-1/k$ has node values $\delta_{nk}$, which is zero in every nonprincipal
+ultrapower; so $\Theta_{\mathcal U}(f)=\Theta_{\mathcal U}(\mathcal S)=0$. If
+$\mathcal U\neq\mathcal V$, pick $E\in\mathcal U\setminus\mathcal V$ and an
+entire $g$ equal to $1$ at $a_n$ for $n\in E$ and $0$ otherwise; then
+$\Theta_{\mathcal U}(g)=1$ and $\Theta_{\mathcal V}(g)=0$.
+\end{proof}
+
+This is the plane counterpart of \nolinkurl{analytic:thm:fixed-two-ideals}(2),
+where coefficientwise reduction gives $\OO(D)((t^\R))\twoheadrightarrow
+k_{\mathcal U}((t^\R))$ on the unit disk. The calculation is coefficientwise;
+it is not a limit of surcomplex points, and it does not classify the maximal
+ideals above $\mathfrak a$.
+
+\subsection{Taylor prolongation to finite halos}\label{nab:pl:sub:prolongation}
+
+For a set-sized ordered group $\Delta$ containing the relevant exponents,
+$c\in\C$, $\varepsilon\in\C((t^\Delta))$ with $\val(\varepsilon)>0$, and
+$F=\sum t^\gamma F_\gamma$ with coefficients holomorphic near $c$, put
+\begin{equation}\label{nab:pl:eq:prolongation}
+ F^\sharp(c+\varepsilon)=\sum_\gamma\sum_{k\geq0}
+ t^\gamma\frac{F_\gamma^{(k)}(c)}{k!}\varepsilon^k .
+\end{equation}
+This is the halo evaluation \eqref{nab:eq:halo} extended from positive and
+integral families to arbitrary sections of $\HH$: the support lies in
+$\supp F+\angles{\supp\varepsilon}$, which is well ordered with finite
+contributions at each exponent by \cref{nab:lem:neumann} even when $\supp F$
+has negative elements, and ordinary Taylor identities make
+\eqref{nab:pl:eq:prolongation} a ring homomorphism. A finite surcomplex number
+is $c+\varepsilon$ with ordinary standard part $c$ and infinitesimal
+$\varepsilon$; its support, together with the exponents of the functions
+involved, lies in a set-sized ordered subgroup of $\No$, so
+\eqref{nab:pl:eq:prolongation} interprets statements at all finite surcomplex
+arguments without a class-indexed sum. Nothing is evaluated at infinite
+arguments.
+
+\begin{proof}[Completion of the proof of \cref{nab:pl:thm:bezout}]
+If $c\notin\Z$, the constant coefficient of $f^\sharp(c+\varepsilon)$ is
+$\sin(\pi c)\neq0$. If $c=a_n\in\Z$, the zero is simple and
+$f^\sharp(a_n+\varepsilon)=\varepsilon\,(f'(a_n)+\text{positive-valuation
+terms})$, the bracket being a unit, so $f^\sharp$ vanishes on that halo only at
+$\varepsilon=0$, where $\mathcal S^\sharp(a_n)=t^{-1/n}\neq0$. Every step
+survives enlargement of the value group.
+\end{proof}
+
+The zero set of $f^\sharp$ on finite arguments is thus $\Z$, in agreement with
+the trigonometry report, whose canonical sine has zeros exactly $\pi\Z$ on its
+strip of finite imaginary part and is the Taylor lift of the ordinary sine at
+finite surcomplex arguments (\nolinkurl{trigonometry:thm:striptrig}); at infinite
+arguments that report's global sine vanishes exactly on $\pi\Oz$
+(\nolinkurl{trigonometry:cor:globalzeros}) \cite{RepoTrig}, a region where this
+part evaluates nothing. Although $\mathcal S$ has no zero at an ordinary real
+point, $\mathcal S^\sharp$ does have zeros on finite halos; they are classified
+next, and none is a zero of $f^\sharp$.
+
+\section{Zeros of the cardinal-sine family on finite halos}
+\label{nab:pl:sec:zeros}
+
+Put
+\begin{equation}\label{nab:pl:eq:normalize}
+ \widehat{\mathcal S}=t\mathcal S=\kappa_1+\sum_{m\geq2}t^{\theta_m}\kappa_m,
+ \qquad\theta_m=1-\frac1m .
+\end{equation}
+The set $\{\theta_m:m\geq2\}=\{1/2,2/3,3/4,\ldots\}$ is positive and strictly
+increasing, so $\widehat{\mathcal S}$ has ordinary leading coefficient
+$\kappa_1$ and a positive-support remainder; multiplication by the monomial $t$
+does not change zeros.
+
+\begin{lemma}[A support-controlled implicit root]\label{nab:pl:lem:implicit}
+Let $\mathcal K(Z)=k_0(Z)+\sum_{\gamma\in E}t^\gamma k_\gamma(Z)$ with
+$E\subseteq\Gamma_{>0}$ well ordered and all coefficients holomorphic near $c$,
+and suppose $k_0(c)=0$ and $k_0'(c)=\mu\neq0$. Then
+$\mathcal K^\sharp(c+\varepsilon)=0$ has exactly one infinitesimal solution
+$\varepsilon$, zero allowed; it has support in $\angles E\setminus\{0\}$, it is
+$0$ when all $k_\gamma(c)=0$, it is unique also among infinitesimals of every
+ordered value-group extension, and it is real when $c$ and all Taylor
+coefficients are real.
+\end{lemma}
+
+\begin{proof}
+Write the equation as
+$\mu\varepsilon+\sum_{k\geq2}a_k\varepsilon^k+\sum_{\gamma\in E}t^\gamma
+\sum_{k\geq0}b_{\gamma k}\varepsilon^k=0$ and seek
+$\varepsilon=\sum_{\eta\in M\setminus\{0\}}u_\eta t^\eta$ with $M=\angles E$.
+By \cref{nab:lem:neumann} $M$ is well ordered and the coefficient at a fixed
+$\eta$ is a finite sum, in which the unknown $u_\eta$ occurs only as $\mu
+u_\eta$: every other term has at least two positive factors or a positive
+$\gamma$, so it involves only coefficients at smaller exponents. Well-founded
+recursion determines each $u_\eta$ uniquely; with no forcing term the recursion
+gives zero. For uniqueness among arbitrary infinitesimals $x,y$ of an
+extension, factoring differences of powers gives
+$\mathcal K^\sharp(c+x)-\mathcal K^\sharp(c+y)=(x-y)(\mu+R)$ with
+$\val(R)>0$, legitimately by the support lemma, and $\mu+R$ is a unit. Real
+data give a real recursion.
+\end{proof}
+
+This is the positive-support version of the simple-root implicit function
+construction, written as a recursion because sequential valuation convergence
+is not available at arbitrary rank; it is not a new Hensel theorem.
+
+\begin{theorem}[Exact finite-halo zero classification]\label{nab:pl:thm:zeros}
+The zeros of $\mathcal S^\sharp$ at finite surcomplex arguments are exactly one
+real surreal point $z_n=a_n+\varepsilon_n$ for each $n\geq2$. There is no zero
+in the halo of $0$ and none whose standard part is not a nonzero integer. The
+displacement is
+\begin{equation}\label{nab:pl:eq:rootleading}
+ \varepsilon_n=(-1)^{a_n+1}a_n\,\omega^{-(1-1/n)}+r_n,\qquad
+ \val(r_n)>1-\frac1n,
+\end{equation}
+valuation being read through $t^q=\omega^{-q}$ and $r_n$ possibly zero. All
+these roots lie in $\R((t^\Q))$, and ordered value-group extension produces no
+further roots on finite halos.
+\end{theorem}
+
+\begin{proof}
+The exponent-zero coefficient of $\widehat{\mathcal S}^\sharp(c+\varepsilon)$
+is $\kappa_1(c)=\sin(\pi c)/(\pi c)$, with value $1$ at $0$, so a zero needs
+$c$ to be a nonzero integer; these are the zeros of $\kappa_1$ and are simple.
+For $c=a_n$, $n\geq2$,
+\begin{equation}\label{nab:pl:eq:forcing}
+ \widehat{\mathcal S}(a_n)=t^{\theta_n},\qquad
+ \mu_n=\kappa_1'(a_n)=\frac{(-1)^{a_n}}{a_n}\neq0 .
+\end{equation}
+\Cref{nab:pl:lem:implicit} with $E=\{\theta_m\}$ gives a unique real
+infinitesimal root supported in $\angles{\{\theta_m\}}\subset\Q$. Below
+$\theta_n$ there is no forcing term, so by induction all coefficients vanish
+there; at $\theta_n$ the equation reads $\mu_nu_{\theta_n}+1=0$, whence
+$u_{\theta_n}=-\mu_n^{-1}=(-1)^{a_n+1}a_n$, which is
+\eqref{nab:pl:eq:rootleading}. Uniqueness in the lemma excludes other roots in
+the halo even over a larger group, and the leading-coefficient argument
+excludes every other standard part.
+\end{proof}
+
+With \eqref{nab:pl:eq:enumeration}, the first three roots are
+\[
+ z_2=1+\omega^{-1/2}+\cdots,\qquad
+ z_3=-1-\omega^{-2/3}+\cdots,\qquad
+ z_4=2-2\omega^{-3/4}+\cdots,
+\]
+the omitted terms having valuation greater than $1/2$, $2/3$, $3/4$. These are
+exact leading-term descriptions, not numerical approximations with a chosen
+large real $\omega$. At the nodes themselves $\mathcal S$ is an infinite
+nonzero omnific integer.
+
+\paragraph{A limitation on the word ``entire''.} Every coefficient of
+$\mathcal S$ is an ordinary entire function. That does not make $\mathcal S$ one
+power series strongly evaluable at every point of $\C((t^\Q))$, still less of
+$\SC$; it belongs to the common-domain ring $\OO(\C)((t^\Q))$ with the
+finite-halo prolongation \eqref{nab:pl:eq:prolongation}, and
+\cref{nab:pl:thm:zeros} is complete on that domain only. The strongly entire
+series of the entire-functions report form a different ring.
+
+\paragraph{Where the classical theorems enter.} Ordinary Weierstrass,
+Mittag--Leffler and interpolation theorems construct individual coefficient
+functions; they do not by themselves assemble outputs into one well-ordered
+Hahn support. Ordinary Oka and Cartan theorems belong to their own
+finite-dimensional analytic categories \cite{ForstnericPrezelj} and are not
+invoked for $\HH$ because its coefficients are holomorphic;
+\eqref{nab:pl:eq:properideal} shows concretely that a locally surjective map of
+free Hahn sheaves need not be surjective on global sections. Ordinary estimates
+are used only for the normal convergence of \eqref{nab:eq:phi} and inside
+classical inputs; no numerical scale parameter tends to zero, and no
+inadmissible infinite Hahn family is exchanged with an ordinary sum.
+
+\subsection{Scope of Part V}\label{nab:pl:sub:scope}
+
+\begin{center}\small
+\begin{tabular}{@{}L{0.22\textwidth}L{0.35\textwidth}L{0.35\textwidth}@{}}
+\toprule
+Question & Proved in Part~V & Not asserted\\
+\midrule
+Pole-only localization & every fixed-nilpotent descending-scale family; the
+hidden example; the deep examples (merge) & arbitrary varying or noncommuting
+pole matrices; the diagonal examples \eqref{nab:eq:SLcounter}\\[0.3em]
+Coefficient categories & holomorphic common-domain families; one monomial
+localization suffices & meromorphic coefficients as a substitute for
+holomorphic ones\\[0.3em]
+Line bundles & integral Picard injection; plane isomorphism; persistent
+classes (global-divisor report) & a complete calculation of
+$H^1(\C,\JJ)$\\[0.3em]
+Extensions & an injected sequence quotient with free middle representatives &
+a classification of all self-extensions or all vector bundles\\[0.3em]
+Omnific values & $\mathcal S(x)\in\Oz$ at every ordinary real $x$ & an
+omnific-valued map at every surreal argument\\[0.3em]
+Zeros and ideals & exact finite-halo zeros of $\mathcal S$; the pair
+$(f,\mathcal S)$ has none; $\operatorname{pd}=2$; ultrafilter maximal ideals &
+a zero theorem at infinite arguments; a classical corona theorem; all maximal
+ideals above $\mathfrak a$\\[0.3em]
+Verification & written proofs; 215 finite symbolic checks & peer review, Lean
+formalization, certified priority\\
+\bottomrule
+\end{tabular}
+\end{center}
+The corresponding limitations are items
+\ref{nab:pl:nc:fixedN}--\ref{nab:pl:nc:merge} of \cref{nab:sec:scope}, and the
+questions left open are in \cref{nab:sec:open}.
+
 \appendix
 \crefalias{section}{appendix}
 \crefalias{subsection}{appendix}
@@ -5020,6 +6467,42 @@ The Part~III proofs never use a norm on the full surcomplex class, a
 real-valued valuation for an arbitrary-rank group, or a limit of
 bounded-domain trivializations.
 
+\medskip\noindent\textbf{Part~V constructions.}
+\begin{center}\small
+\begin{tabular}{@{}L{0.26\textwidth}L{0.35\textwidth}L{0.29\textwidth}@{}}
+\toprule
+Construction & Support control & Ordinary analytic requirement\\
+\midrule
+Interpolation series $\mathcal S=\sum t^{-\alpha_j}\kappa_j$ &
+The increasing sequence $\{-\alpha_j\}$; one coefficient per exponent &
+Weierstrass products and finite principal parts
+(\cref{nab:pl:lem:principal}).\\ \addlinespace[0.35em]
+Disk frames $T_n=T_0G_n$ &
+$\{0\}\cup\{\alpha_n-\alpha_j\}$, increasing in $j$ &
+Cancellation (iii)--(iv) of \cref{nab:pl:lem:principal}; the determinant is
+one.\\ \addlinespace[0.35em]
+Symmetric powers &
+Degree-$d$ polynomials in the entries; bounds multiplied by $d$ &
+None.\\ \addlinespace[0.35em]
+Hidden and deep reductions &
+Finite unitriangular products; $F'$, $Q_n'$ from the proof of
+\cref{nab:thm:depth} &
+\cref{nab:lem:mlplane} through that proof.\\ \addlinespace[0.35em]
+Persistent line and extension classes &
+A forced descending set $\{\alpha_n\}$ in one global support &
+Nonremovability of a pole; the Cousin criterion of the global-divisor
+report.\\ \addlinespace[0.35em]
+Interpolation, ideal, ultrafilter maps &
+Value supports contained in input supports; no exponent created by evaluation &
+Ordinary interpolation on a discrete set; division by
+$\sin(\pi z)$.\\ \addlinespace[0.35em]
+Taylor prolongation and implicit root &
+$\supp F+\angles{\supp\varepsilon}$; well-founded recursion on $\angles E$ &
+Taylor expansion at an ordinary point.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
 The indispensable hypotheses are these. The value group is a set and is
 totally ordered. Supports are well ordered, not merely bounded below. Matrix
 rank is finite. The puncture set is ordinary closed and discrete. Coefficient
@@ -5029,7 +6512,8 @@ reduce to the identity, or to a specified ordinary bundle in
 positive support; in Part~III the transitions are finite exponentials of one
 constant nilpotent matrix on a fixed puncture-and-disk cover of the plane, the
 punctures and the functions $h_n$ are fixed, and isomorphisms cover the
-identity of the base. None of these hypotheses is replaced anywhere by a
+identity of the base; in Part~V the poles have finite order, the nilpotent
+direction is fixed, and prolongation is used only on finite halos. None of these hypotheses is replaced anywhere by a
 fine-topological convergence assumption.
 
 \section{A dependency map}\label{nab:app:dep}
@@ -5109,15 +6593,35 @@ theorem, respectively. The Part~III chain uses
 use Criterion~P or Criterion~M, and \cref{nab:loc:rem:criterionP} is an
 independent cross-check over $\II$ only.
 
+The Part~V chain is
+\[
+\begin{gathered}
+\text{Weierstrass and finite principal parts (\cref{nab:pl:lem:principal})}\\
+\Downarrow\quad\text{with the Neumann support lemma}\\
+\text{determinant-one rank-two Laurent frames}\\
+\Downarrow\quad\text{symmetric powers; integral reductions of Part~I}\\
+\text{fixed-nilpotent, hidden and deep examples trivial over }\HH\\
+\Downarrow\quad\text{with the sine as the entire function}\\
+\text{free-middle extensions, the proper ideal, }\operatorname{pd}=2
+\text{, ultrafilter ideals}\\
+\Downarrow\quad\text{with Taylor prolongation and a well-founded recursion}\\
+\text{finite-halo zeros of the sine family.}
+\end{gathered}
+\]
+The rank-one persistence and the interpolation criterion are cited from the
+global-divisor report and are not links of this chain. The reduction of the
+hidden and deep examples uses the factorizations of \cref{nab:sec:rankthree}
+and the proof of \cref{nab:thm:depth}, but not Criterion~P.
+
 \section{Provenance, reproduction, and the merge record}\label{nab:app:repro}
 
 \subsection{Sources of this report}
 
-This report merges three independently written manuscripts. The first two are
-dated September 21, 2026, the third September 22, 2026; each was delivered with
-its own code and recorded output, preserved unchanged in \texttt{code/} and
-\texttt{data/} of this directory. The manuscripts themselves are not shipped
-with this report.
+This report merges four independently written manuscripts. The first two are
+dated September 21, 2026, the third September 22, 2026, the fourth September 23,
+2026; each was delivered with its own code and recorded output, preserved
+unchanged in \texttt{code/} and \texttt{data/} of this directory. The
+manuscripts themselves are not shipped with this report.
 
 \begin{itemize}
 \item \emph{Nonabelian Support Obstructions in Surcomplex Analysis: A Sharp
@@ -5169,7 +6673,31 @@ the undecidability theorem of \cref{nab:loc:sub:effectivity}, the Part~III
 check suite of \cref{nab:sec:verification}, the Part~III rows of
 \cref{nab:app:audit,nab:app:dep}, items \ref{nab:loc:nc:family}--%
 \ref{nab:loc:nc:essential} of \cref{nab:sec:scope} with its additions to the
-generic items there, and the last three questions of \cref{nab:sec:open}.
+generic items there, and three questions of \cref{nab:sec:open} (the full
+extension category, several independent descending profiles, and other
+ordinary bases).
+
+\item \emph{Pole Localization and Omnific Interpolation: Explicit bundle
+trivializations, persistent line classes, and a surcomplex B\'ezout
+obstruction}, from the archive \texttt{pole\_localization\_research}. Called
+\emph{the pole-localization manuscript} in the text, it is a 27-page article
+delivered with a README, a source audit, a SymPy verification script with its
+recorded results and requirement pin, a layout record and a SHA-256 manifest.
+The script, its record, the pin and the layout record are placed here as
+\nolinkurl{code/11-pole-localization-verify.py} and
+\nolinkurl{data/11-pole-localization-*}, and the source audit as
+\nolinkurl{11-pole-localization-SOURCE_AUDIT.md} at the top of this directory.
+It contributes Part~V except \cref{nab:pl:cor:deep} and the merge observations
+listed below: the pole-cancellation lemma, the rank-two, balanced,
+small-budget and fixed-nilpotent theorems, the trivialization of the hidden
+example, the Picard and line-bundle statements (credited to the global-divisor
+report), the free-middle extensions, the omnific sine family, the interpolation
+criterion (credited), the B\'ezout obstruction, the resolution, the ultrafilter
+ideals, the prolongation, the implicit root lemma and the zero classification.
+It also contributes the Part~V check suite of \cref{nab:sec:verification},
+items \ref{nab:pl:nc:fixedN}--\ref{nab:pl:nc:audit} of \cref{nab:sec:scope}
+with its additions to the generic items there, its formalization route in
+item~\ref{nab:nc:formal}, and nine questions of \cref{nab:sec:open}.
 \end{itemize}
 
 Where the two manuscripts proved the same fact --- the Neumann support calculus
@@ -5222,6 +6750,32 @@ discussion after it, the relation of $\MM$ to the other reports in
 \cref{nab:loc:sec:coefficients}, and item~\ref{nab:loc:nc:picard} of
 \cref{nab:sec:scope}.
 
+For Part~V the merge made these choices. Part~V is placed after Part~IV, not
+before it, so that every section, statement and item number of Parts~I--IV is
+unchanged; its checks, limitations and questions are added to
+\cref{nab:sec:verification,nab:sec:scope,nab:sec:open}, and its rows to
+\cref{nab:app:audit,nab:app:dep}. Colliding symbols are renamed in the new
+material only (\cref{nab:pl:sub:names}), and its gluing convention is
+reconciled there with those of Parts~I and~III. Results the collection already
+had are printed once: the Picard decomposition and the persistence of pole-data
+line classes (\cref{nab:pl:prop:picard,nab:pl:cor:line}) are reduced to
+citations of the global-divisor report with the manuscript's finite-order
+generalization kept, and the interpolation criterion
+(\cref{nab:pl:prop:interpolation}) is stated with a citation to
+\nolinkurl{global:cor:interp} and not reproved. The B\'ezout, corona and
+ultrafilter statements are kept with their proofs, because they are plane
+versions, not copies, of the analytic-geometry report's unit-disk results, which
+are credited at each. The manuscript's direct proof of integral nontriviality
+is kept as a second route beside Criterion~P. The manuscript's citation of
+course notes for the classical analytic inputs is kept, and a textbook
+reference is added. The merge adds \cref{nab:pl:cor:deep} with its proof, the
+consequences (a)--(d) of \cref{nab:pl:sec:printed}, the explicit choice
+$1/\Gamma_{\mathrm E}(2-z)$ in \cref{nab:pl:thm:rankthree}, the credits to the
+global-divisor, analytic-geometry, trigonometry and entire-functions reports,
+the question on the diagonal examples, and item~\ref{nab:pl:nc:merge}; and it
+updates every statement of Parts~I--IV that called the monomial-localization
+question open. No earlier statement is retracted.
+
 \subsection{Repository provenance}
 
 Repository: \url{https://github.com/VladimirReshetnikov/Surreal}, reviewed at
@@ -5260,6 +6814,19 @@ change, but its four-ring table was present throughout. The comparisons with
 the global-divisor and analysis reports made in Part~III were made by the
 merge against that tree.
 
+The pole-localization manuscript reviewed the repository at commit
+\begin{center}\small\ttfamily
+0865f043aec113c14c69ef45006bbc7546a4e75a,
+\end{center}
+inspected September 23, 2026. By its source audit it read the repository
+README, the documentation inventory, selected manifest entries, and lines
+1--210, 510--800 and 1160--1420 of this report's article, whose blob
+\texttt{c2dc2f9} it records; that blob is exactly the text of Parts~I--IV into
+which Part~V was merged. It audited no other report and no Lean declaration.
+The global-divisor, analytic-geometry, trigonometry and entire-functions
+reports cited in Part~V did not change between that commit and the tree into
+which Part~V was merged; the comparisons with them were made by the merge.
+
 \subsection{Building this report}
 
 The source is standalone, with an internal bibliography, no external
@@ -5274,7 +6841,7 @@ cross-references and contents.
 
 \subsection{Rerunning the delivered checks}
 
-The three scripts are preserved under \texttt{code/} with their original
+The four scripts are preserved under \texttt{code/} with their original
 contents and their recorded outputs under \texttt{data/}. The Part~I script
 needs Python 3.10 or later with SymPy; the Part~II script needs NumPy, SciPy
 and SymPy. The Part~III script needs Python 3.9 or later and SymPy, pinned
@@ -5288,7 +6855,13 @@ python 08-polar-support-matrix-cousin-verify.py
 python 09-support-monodromy-realization-verify-examples.py
 python 10-localization-bundles-verify.py --max-rank 6 \
        --output fresh-verification.json
+python 11-pole-localization-verify.py \
+       --output fresh-pole-verification.json
 \end{verbatim}
+The Part~V script needs Python 3.9 or later and SymPy, pinned at 1.14.0 in
+\nolinkurl{data/11-pole-localization-requirements.txt}; without
+\texttt{-{}-output} it writes \texttt{verification\_results.json} beside
+itself.
 The Part~III script writes only to the path given with \texttt{-{}-output}; the
 recorded files are therefore preserved by an in-place run, and the command above
 writes a fresh file for comparison. It makes no network calls.
@@ -5335,6 +6908,16 @@ document. The provenance record
 exact checks with result PASS, peer review false, proof-assistant verification
 false, and no redistribution of external source files.
 
+For Part~V: the pole-localization manuscript's SHA-256 manifest, which is not
+shipped, verified all eight of its entries at placement, and the five files
+placed here from that archive are byte-identical to the delivered ones. An
+independent rerun of its script on a copy, under Python 3.14.4 with SymPy
+1.14.0, exited zero with all 215 exact checks passed and reproduced the
+recorded JSON except for the Python version field. The file
+\nolinkurl{data/11-pole-localization-build_report.json} describes the build of
+that manuscript's own 27-page PDF, which is not shipped; it is layout quality
+assurance, not theorem verification.
+
 \begin{thebibliography}{99}
 \small\raggedright
 \setlength{\itemsep}{0.3em}
@@ -5380,6 +6963,18 @@ radius-free germs, a Nullstellensatz, and finite maps},
 \texttt{docs/surcomplex/analytic-geometry/README.md}, same repository and
 commit. AI-assisted, unrefereed research documentation.
 
+\bibitem{RepoTrig}
+\emph{Surcomplex trigonometry}, \texttt{docs/surcomplex/trigonometry/}, same
+repository. AI-assisted, unrefereed research documentation. Part~V cites its
+labels \nolinkurl{trigonometry:thm:striptrig} and
+\nolinkurl{trigonometry:cor:globalzeros} as they stand in the tree into which
+Part~V was merged.
+
+\bibitem{RepoEntire}
+\emph{Entire functions at arbitrary rank}, \texttt{docs/surcomplex/entire-functions-at-arbitrary-rank/},
+same repository. AI-assisted, unrefereed research documentation. Part~V cites
+its label \nolinkurl{ent:thm:bezout}.
+
 \bibitem{RepoContours}
 \emph{Contours and Stokes: Jordan separation, Cauchy theory, and Stokes
 calculus on the surcomplex plane},
@@ -5396,6 +6991,13 @@ B.~H.~Neumann, On ordered division rings,
 B.~Poonen, \emph{Maximally complete fields},
 L'Enseignement Math\'ematique (2) \textbf{39} (1993), 87--106.
 DOI: \url{https://doi.org/10.5169/seals-60414}.
+
+\bibitem{LM}
+S.~L'Innocente and V.~Mantova, A factorisation theory for generalised power
+series and omnific integers, \emph{Advances in Mathematics} \textbf{442}
+(2024), 109513; arXiv:1710.07304. Used in Part~V only for the normal-form
+description of omnific integers.
+\url{https://arxiv.org/abs/1710.07304}.
 
 \bibitem{vdDE}
 L.~van den Dries and P.~Ehrlich, Fields of surreal numbers and exponentiation,
@@ -5453,6 +7055,25 @@ version~2. Historical and mathematical exposition of bundle splitting and
 Birkhoff factorization; its usual single-loop setting differs from the
 infinitely many independently supported gluing data treated here.
 \url{https://arxiv.org/abs/2304.08037}.
+
+\bibitem{Greenfield}
+M.~Greenfield, \emph{Constructing holomorphic functions}, Rutgers University,
+Math~503 course notes, modified December~1, 2007. Cited by the
+pole-localization manuscript for the ordinary Weierstrass, Mittag--Leffler and
+discrete-interpolation constructions.
+\url{https://sites.math.rutgers.edu/~greenfie/mill_courses/math503a/construction.html}.
+
+\bibitem{Rudin}
+W.~Rudin, \emph{Real and Complex Analysis}, 3rd ed., McGraw--Hill, 1987,
+Chapters~13 and~15 (Mittag--Leffler and Weierstrass theorems). Added by the
+merge as a textbook reference for the same classical inputs; cited at chapter
+level, not re-verified against a particular theorem number.
+
+\bibitem{ForstnericPrezelj}
+F.~Forstneri\v{c} and J.~Prezelj, Oka's principle for holomorphic fiber
+bundles with sprays, \emph{Mathematische Annalen} \textbf{317} (2000),
+117--154. Cited in Part~V for the ordinary analytic context only; none of its
+results is transferred to the Hahn sheaf.
 
 \bibitem{Chen}
 K.-T.~Chen, \emph{Iterated path integrals},
